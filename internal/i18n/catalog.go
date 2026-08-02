@@ -54,6 +54,18 @@ type Catalog struct {
 }
 
 func BuildCatalog(root string) (*Catalog, error) {
+	return buildCatalog(root, true)
+}
+
+// BuildSourceCatalog parses a prospective upstream tree without assuming the
+// fixed baseline page counts. IDs in the returned value describe current
+// routes only; persistent IDs are assigned exclusively by the committed
+// catalog and the explicit upstream synchronization process.
+func BuildSourceCatalog(root string) (*Catalog, error) {
+	return buildCatalog(root, false)
+}
+
+func buildCatalog(root string, fixedShape bool) (*Catalog, error) {
 	var catalog Catalog
 	for _, article := range ArticleOrder {
 		path := filepath.Join(root, "_content", "tour", article)
@@ -98,7 +110,7 @@ func BuildCatalog(root string) (*Catalog, error) {
 			})
 		}
 	}
-	if err := validateCatalogShape(&catalog); err != nil {
+	if err := validateCatalog(&catalog, fixedShape); err != nil {
 		return nil, err
 	}
 	return &catalog, nil
@@ -182,9 +194,6 @@ func splitConditional(data []byte) ([][]byte, error) {
 		}
 	}
 	flush()
-	if len(result) != 2 {
-		return nil, fmt.Errorf("appengine conditional pages = %d, want 2", len(result))
-	}
 	return result, nil
 }
 
@@ -229,11 +238,11 @@ func sum(source []byte) string {
 	return hex.EncodeToString(h[:])
 }
 
-func validateCatalogShape(c *Catalog) error {
-	if len(c.Pages) != 101 {
+func validateCatalog(c *Catalog, fixedShape bool) error {
+	if fixedShape && len(c.Pages) != 101 {
 		return fmt.Errorf("standalone pages = %d, want 101", len(c.Pages))
 	}
-	if len(c.Conditional) != 2 {
+	if fixedShape && len(c.Conditional) != 2 {
 		return fmt.Errorf("conditional pages = %d, want 2", len(c.Conditional))
 	}
 	ids, routes := map[string]bool{}, map[string]bool{}
@@ -257,7 +266,7 @@ func validateCatalogShape(c *Catalog) error {
 			return fmt.Errorf("conditional %d: invalid title or source_sha256", p.ConditionalIndex)
 		}
 	}
-	if plays != 92 || images != 1 {
+	if fixedShape && (plays != 92 || images != 1) {
 		return fmt.Errorf("directive totals: play=%d image=%d, want 92/1", plays, images)
 	}
 	return nil
@@ -276,6 +285,77 @@ func (c *Catalog) Page(id string) (*Page, error) {
 
 var pageHeader = []string{"page_id", "article", "section_number", "route", "source_title", "source_sha256", "play_count", "image_count"}
 var conditionalHeader = []string{"article", "condition", "conditional_index", "source_title", "source_sha256"}
+
+// ReadCatalog reads the committed catalog, whose page_id column is the source
+// of truth for persistent page identity.
+func ReadCatalog(root string) (*Catalog, error) {
+	pages, err := readTSV(filepath.Join(root, "data", "tour-pages.tsv"), pageHeader)
+	if err != nil {
+		return nil, err
+	}
+	conditional, err := readTSV(filepath.Join(root, "data", "tour-conditional-pages.tsv"), conditionalHeader)
+	if err != nil {
+		return nil, err
+	}
+	c := &Catalog{}
+	for line, record := range pages {
+		section, err := strconv.Atoi(record[2])
+		if err != nil {
+			return nil, fmt.Errorf("page catalog line %d: invalid section_number: %w", line+2, err)
+		}
+		play, err := strconv.Atoi(record[6])
+		if err != nil {
+			return nil, fmt.Errorf("page catalog line %d: invalid play_count: %w", line+2, err)
+		}
+		image, err := strconv.Atoi(record[7])
+		if err != nil {
+			return nil, fmt.Errorf("page catalog line %d: invalid image_count: %w", line+2, err)
+		}
+		c.Pages = append(c.Pages, Page{ID: record[0], Article: record[1], SectionNumber: section, Route: record[3], SourceTitle: record[4], SourceSHA256: record[5], PlayCount: play, ImageCount: image})
+	}
+	for line, record := range conditional {
+		index, err := strconv.Atoi(record[2])
+		if err != nil {
+			return nil, fmt.Errorf("conditional catalog line %d: invalid conditional_index: %w", line+2, err)
+		}
+		c.Conditional = append(c.Conditional, ConditionalPage{Article: record[0], Condition: record[1], ConditionalIndex: index, SourceTitle: record[3], SourceSHA256: record[4]})
+	}
+	if err := validateCatalog(c, false); err != nil {
+		return nil, fmt.Errorf("committed catalog: %w", err)
+	}
+	return c, nil
+}
+
+func readTSV(path string, header []string) ([][]string, error) {
+	f, err := os.Open(path)
+	if err != nil {
+		return nil, err
+	}
+	defer f.Close()
+	r := csv.NewReader(f)
+	r.Comma = '\t'
+	r.FieldsPerRecord = len(header)
+	got, err := r.Read()
+	if err != nil {
+		return nil, err
+	}
+	for i := range header {
+		if got[i] != header[i] {
+			return nil, fmt.Errorf("%s: header column %d=%q, want %q", path, i+1, got[i], header[i])
+		}
+	}
+	var records [][]string
+	for {
+		record, err := r.Read()
+		if err == io.EOF {
+			return records, nil
+		}
+		if err != nil {
+			return nil, err
+		}
+		records = append(records, record)
+	}
+}
 
 func WriteCatalog(c *Catalog, pages io.Writer, conditional io.Writer) error {
 	w := csv.NewWriter(pages)

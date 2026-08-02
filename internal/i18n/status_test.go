@@ -51,6 +51,22 @@ func TestStatusValidationFailures(t *testing.T) {
 	}
 }
 
+func TestStatusUsesPersistentIDNotCatalogPositionOrRoute(t *testing.T) {
+	a := strings.Repeat("a", 64)
+	b := strings.Repeat("b", 64)
+	status := "page_id\tstatus\tattempts\tsource_sha256\tcandidate_path\tupdated_at\tnote\n" +
+		"x/1\tpending\t0\t" + a + "\t\t\t\n" +
+		"x/2\tpending\t0\t" + b + "\t\t\t\n"
+	root := writeStatusFixture(t, status)
+	catalog := &Catalog{Pages: []Page{
+		{ID: "x/2", Route: "/other/3", SectionNumber: 3, SourceSHA256: b},
+		{ID: "x/1", Route: "/other/8", SectionNumber: 8, SourceSHA256: a},
+	}}
+	if err := CheckStatus(root, "zh-CN", catalog); err != nil {
+		t.Fatal(err)
+	}
+}
+
 func writeStatusFixture(t *testing.T, status string) string {
 	t.Helper()
 	root := t.TempDir()

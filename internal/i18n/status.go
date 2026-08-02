@@ -54,14 +54,19 @@ func CheckStatus(root, localeName string, catalog *Catalog) error {
 	if len(statuses) != len(catalog.Pages) {
 		return fmt.Errorf("status entries = %d, want %d", len(statuses), len(catalog.Pages))
 	}
+	pages := make(map[string]Page, len(catalog.Pages))
+	for _, page := range catalog.Pages {
+		pages[page.ID] = page
+	}
 	seen := map[string]bool{}
-	for i, s := range statuses {
+	for _, s := range statuses {
 		if seen[s.PageID] {
 			return fmt.Errorf("duplicate page_id %q", s.PageID)
 		}
 		seen[s.PageID] = true
-		if s.PageID != catalog.Pages[i].ID {
-			return fmt.Errorf("status row %d page_id=%q, want %q", i+1, s.PageID, catalog.Pages[i].ID)
+		page, ok := pages[s.PageID]
+		if !ok {
+			return fmt.Errorf("status has unknown persistent page_id %q", s.PageID)
 		}
 		if !allowedStates[s.State] {
 			return fmt.Errorf("%s: invalid status %q", s.PageID, s.State)
@@ -72,7 +77,7 @@ func CheckStatus(root, localeName string, catalog *Catalog) error {
 		if s.State == "pending" && (s.Attempts != 0 || s.CandidatePath != "") {
 			return fmt.Errorf("%s: pending requires attempts=0 and empty candidate_path", s.PageID)
 		}
-		if s.SourceSHA256 != catalog.Pages[i].SourceSHA256 {
+		if s.SourceSHA256 != page.SourceSHA256 {
 			return fmt.Errorf("%s: stale source_sha256", s.PageID)
 		}
 		if s.UpdatedAt != "" {

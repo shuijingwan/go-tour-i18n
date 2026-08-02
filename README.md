@@ -23,6 +23,8 @@
 
 翻译的最小单元是一个完整顶层 `present.Section`，不会拆成句子级或多 text 槽位 JSON。页面目录位于 [`data/tour-pages.tsv`](data/tour-pages.tsv)，zh-CN 状态位于 [`locales/zh-CN/status.tsv`](locales/zh-CN/status.tsv)。当前 scaffold 不是可发布的中文版，详细约定见 [`locales/zh-CN/README.md`](locales/zh-CN/README.md) 和 [LANGUAGES.md](LANGUAGES.md)。
 
+目录中的 `page_id` 是语言状态、候选文件和发布记录的持久身份；`route` 是可能随上游变化的当前访问路径，`article` 和 `section_number` 是可能变化的当前位置。当前 101 个 ID 已冻结，不会因插入、删除、重排或改标题而自动重编号。完整规则见 [PAGE_IDENTITY.md](PAGE_IDENTITY.md)。
+
 ## 多语言维护工具
 
 检查机器可读页面目录：
@@ -36,6 +38,15 @@ go run -mod=readonly ./cmd/tour-i18n catalog check
 ```bash
 go run -mod=readonly ./cmd/tour-i18n catalog write
 ```
+
+在导入新的上游版本前，只读预览页面变化：
+
+```bash
+go run -mod=readonly ./cmd/tour-i18n upstream preview \
+  --source-root /path/to/website
+```
+
+预览不会修改目录、语言状态或候选文件。`catalog write` 遇到新增、删除或无法可靠识别的页面时会停止，不会按新位置重编号。
 
 导出一个完整英文源页面：
 

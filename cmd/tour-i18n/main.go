@@ -19,25 +19,47 @@ func main() {
 
 func run(args []string) error {
 	if len(args) < 2 {
-		return fmt.Errorf("usage: tour-i18n <catalog|page|status|candidate> <command>")
+		return fmt.Errorf("usage: tour-i18n <catalog|upstream|page|status|candidate> <command>")
 	}
 	root, err := os.Getwd()
 	if err != nil {
 		return err
 	}
-	catalog, err := i18n.BuildCatalog(root)
+	current, err := i18n.BuildSourceCatalog(root)
 	if err != nil {
+		return err
+	}
+	catalog, err := i18n.ReadCatalog(root)
+	if err != nil {
+		return err
+	}
+	if err := i18n.HydrateCatalogSources(catalog, current); err != nil {
 		return err
 	}
 	switch args[0] + " " + args[1] {
 	case "catalog check":
+		report, err := i18n.PreviewCatalog(catalog, current)
+		if err != nil {
+			return err
+		}
+		if !report.SafeForCatalogWrite() || report.Count(i18n.ContentChanged)+report.Count(i18n.Moved) != 0 {
+			return fmt.Errorf("current English source differs from the formal catalog; catalog check does not migrate page IDs: run upstream preview")
+		}
 		if err := i18n.CheckCatalogFiles(root, catalog); err != nil {
 			return err
 		}
 		fmt.Printf("catalog OK: %d standalone pages, %d conditional pages\n", len(catalog.Pages), len(catalog.Conditional))
 		return nil
 	case "catalog write":
-		pages, conditional, err := i18n.CatalogBytes(catalog)
+		report, err := i18n.PreviewCatalog(catalog, current)
+		if err != nil {
+			return err
+		}
+		reconciled, err := i18n.ReconcileCatalog(catalog, current, report)
+		if err != nil {
+			return err
+		}
+		pages, conditional, err := i18n.CatalogBytes(reconciled)
 		if err != nil {
 			return err
 		}
@@ -50,7 +72,26 @@ func run(args []string) error {
 		if err := os.WriteFile(filepath.Join(root, "data", "tour-conditional-pages.tsv"), conditional, 0644); err != nil {
 			return err
 		}
-		fmt.Printf("wrote %d standalone pages and %d conditional pages\n", len(catalog.Pages), len(catalog.Conditional))
+		fmt.Printf("wrote %d standalone pages and %d conditional pages; persistent page IDs preserved\n", len(reconciled.Pages), len(reconciled.Conditional))
+		return nil
+	case "upstream preview":
+		fs := flag.NewFlagSet("upstream preview", flag.ContinueOnError)
+		sourceRoot := fs.String("source-root", "", "prospective website source root")
+		if err := fs.Parse(args[2:]); err != nil {
+			return err
+		}
+		if *sourceRoot == "" {
+			return fmt.Errorf("--source-root is required")
+		}
+		next, err := i18n.BuildSourceCatalog(*sourceRoot)
+		if err != nil {
+			return err
+		}
+		report, err := i18n.PreviewCatalog(catalog, next)
+		if err != nil {
+			return err
+		}
+		printPreview(root, *sourceRoot, next, report)
 		return nil
 	case "page export":
 		return exportPage(root, catalog, args[2:])
@@ -94,6 +135,31 @@ func run(args []string) error {
 	default:
 		return fmt.Errorf("unknown command %q", args[0]+" "+args[1])
 	}
+}
+
+func printPreview(root, sourceRoot string, next *i18n.Catalog, report *i18n.PreviewReport) {
+	fmt.Printf("catalog baseline: %s/data/tour-pages.tsv\n", root)
+	fmt.Printf("source root: %s\n", sourceRoot)
+	fmt.Printf("standalone pages: %d\n", len(next.Pages))
+	fmt.Printf("conditional pages: %d\n", len(next.Conditional))
+	for _, kind := range i18n.ChangeKinds {
+		fmt.Printf("%s: %d\n", kind, report.Count(kind))
+	}
+	for _, kind := range i18n.ChangeKinds {
+		fmt.Printf("conditional %s: %d\n", kind, report.ConditionalCount(kind))
+	}
+	for _, change := range append(append([]i18n.PageChange(nil), report.Changes...), report.ConditionalChanges...) {
+		if change.Kind == i18n.Unchanged {
+			continue
+		}
+		fmt.Printf("detail: kind=%s page_id=%q old=%s:%d %s %q %s new=%s:%d %s %q %s reason=%q\n",
+			change.Kind, change.PageID,
+			change.OldArticle, change.OldSectionNumber, change.OldRoute, change.OldSourceTitle, change.OldSourceSHA256,
+			change.NewArticle, change.NewSectionNumber, change.NewRoute, change.NewSourceTitle, change.NewSourceSHA256,
+			change.Reason)
+	}
+	fmt.Printf("safe for catalog write: %t\n", report.SafeForCatalogWrite())
+	fmt.Printf("manual mapping required: %t\n", report.NeedsManualMapping())
 }
 
 func exportPage(root string, catalog *i18n.Catalog, args []string) error {
