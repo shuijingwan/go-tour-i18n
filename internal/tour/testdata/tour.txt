@@ -1,0 +1,26 @@
+GET https://any/
+redirect == /tour/
+
+GET https://any/tour/
+body contains >A Tour of Go<
+
+GET https://any/tour/lesson/
+body contains "welcome"
+
+GET https://any/tour/static/css/app.css
+body contains .toc
+
+GET https://any/tour/script.js
+body contains SocketTransport
+
+GET https://any/images/go-logo-white.svg
+body contains <svg
+
+GET https://any/images/favicon-gopher.png
+
+GET https://any/images/favicon-gopher-plain.png
+
+GET https://any/images/favicon-gopher.svg
+body contains <svg
+
+GET https://any/favicon.ico
