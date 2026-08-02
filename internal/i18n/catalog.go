@@ -1,0 +1,344 @@
+package i18n
+
+import (
+	"bufio"
+	"bytes"
+	"crypto/sha256"
+	"encoding/csv"
+	"encoding/hex"
+	"fmt"
+	"io"
+	"os"
+	"path/filepath"
+	"regexp"
+	"strconv"
+	"strings"
+
+	"golang.org/x/tools/present"
+)
+
+var ArticleOrder = []string{
+	"welcome.article",
+	"basics.article",
+	"flowcontrol.article",
+	"moretypes.article",
+	"methods.article",
+	"generics.article",
+	"concurrency.article",
+}
+
+type Page struct {
+	ID            string
+	Article       string
+	SectionNumber int
+	Route         string
+	SourceTitle   string
+	SourceSHA256  string
+	PlayCount     int
+	ImageCount    int
+	Source        []byte
+}
+
+type ConditionalPage struct {
+	Article          string
+	Condition        string
+	ConditionalIndex int
+	SourceTitle      string
+	SourceSHA256     string
+	Source           []byte
+}
+
+type Catalog struct {
+	Pages       []Page
+	Conditional []ConditionalPage
+}
+
+func BuildCatalog(root string) (*Catalog, error) {
+	var catalog Catalog
+	for _, article := range ArticleOrder {
+		path := filepath.Join(root, "_content", "tour", article)
+		data, err := os.ReadFile(path)
+		if err != nil {
+			return nil, fmt.Errorf("read %s: %w", article, err)
+		}
+		data = normalizeLF(data)
+		pages, conditional, err := splitArticle(data, article)
+		if err != nil {
+			return nil, err
+		}
+		name := strings.TrimSuffix(article, ".article")
+		for i, source := range pages {
+			if err := parseSinglePage(root, article, source); err != nil {
+				return nil, fmt.Errorf("%s/%d: %w", name, i+1, err)
+			}
+			id := fmt.Sprintf("%s/%d", name, i+1)
+			catalog.Pages = append(catalog.Pages, Page{
+				ID:            id,
+				Article:       article,
+				SectionNumber: i + 1,
+				Route:         "/" + id,
+				SourceTitle:   pageTitle(source),
+				SourceSHA256:  sum(source),
+				PlayCount:     countDirective(source, ".play"),
+				ImageCount:    countDirective(source, ".image"),
+				Source:        source,
+			})
+		}
+		for i, source := range conditional {
+			if err := parseSinglePage(root, article, source); err != nil {
+				return nil, fmt.Errorf("%s appengine/%d: %w", name, i+1, err)
+			}
+			catalog.Conditional = append(catalog.Conditional, ConditionalPage{
+				Article:          article,
+				Condition:        "appengine",
+				ConditionalIndex: i + 1,
+				SourceTitle:      pageTitle(source),
+				SourceSHA256:     sum(source),
+				Source:           source,
+			})
+		}
+	}
+	if err := validateCatalogShape(&catalog); err != nil {
+		return nil, err
+	}
+	return &catalog, nil
+}
+
+func normalizeLF(data []byte) []byte {
+	data = bytes.ReplaceAll(data, []byte("\r\n"), []byte("\n"))
+	return bytes.ReplaceAll(data, []byte("\r"), []byte("\n"))
+}
+
+func splitArticle(data []byte, article string) (pages, conditional [][]byte, err error) {
+	lines := strings.SplitAfter(string(data), "\n")
+	var current []string
+	inConditional := false
+	flush := func() {
+		if len(current) == 0 {
+			return
+		}
+		source := []byte(strings.Join(current, ""))
+		if len(source) == 0 || source[len(source)-1] != '\n' {
+			source = append(source, '\n')
+		}
+		pages = append(pages, source)
+		current = nil
+	}
+	for _, line := range lines {
+		plain := strings.TrimSuffix(line, "\n")
+		if strings.HasPrefix(plain, "#appengine: * ") {
+			flush()
+			inConditional = true
+			continue
+		}
+		if inConditional && strings.HasPrefix(plain, "#appengine:") {
+			continue
+		}
+		if strings.HasPrefix(plain, "* ") {
+			inConditional = false
+			flush()
+			current = append(current, line)
+		} else if len(current) > 0 && !inConditional {
+			current = append(current, line)
+		}
+	}
+	flush()
+
+	if article == "welcome.article" {
+		conditional, err = splitConditional(data)
+		if err != nil {
+			return nil, nil, err
+		}
+	}
+	return pages, conditional, nil
+}
+
+func splitConditional(data []byte) ([][]byte, error) {
+	var result [][]byte
+	var current []string
+	flush := func() {
+		if len(current) == 0 {
+			return
+		}
+		source := []byte(strings.Join(current, ""))
+		if source[len(source)-1] != '\n' {
+			source = append(source, '\n')
+		}
+		result = append(result, source)
+		current = nil
+	}
+	for _, line := range strings.SplitAfter(string(data), "\n") {
+		plain := strings.TrimSuffix(line, "\n")
+		if !strings.HasPrefix(plain, "#appengine:") {
+			continue
+		}
+		stripped := strings.TrimPrefix(plain, "#appengine:")
+		stripped = strings.TrimPrefix(stripped, " ")
+		if strings.HasPrefix(stripped, "* ") {
+			flush()
+		}
+		if len(current) > 0 || strings.HasPrefix(stripped, "* ") {
+			current = append(current, stripped+"\n")
+		}
+	}
+	flush()
+	if len(result) != 2 {
+		return nil, fmt.Errorf("appengine conditional pages = %d, want 2", len(result))
+	}
+	return result, nil
+}
+
+func parseSinglePage(root, article string, source []byte) error {
+	present.PlayEnabled = true
+	ctx := &present.Context{ReadFile: func(name string) ([]byte, error) {
+		clean := filepath.Clean(filepath.FromSlash(name))
+		if filepath.IsAbs(clean) || clean == ".." || strings.HasPrefix(clean, ".."+string(filepath.Separator)) {
+			return nil, fmt.Errorf("unsafe referenced path %q", name)
+		}
+		return os.ReadFile(filepath.Join(root, "_content", "tour", clean))
+	}}
+	wrapped := append([]byte("Tour page\n\n"), source...)
+	doc, err := ctx.Parse(bytes.NewReader(wrapped), article, 0)
+	if err != nil {
+		return fmt.Errorf("present parse: %w", err)
+	}
+	if len(doc.Sections) != 1 {
+		return fmt.Errorf("top-level sections = %d, want 1", len(doc.Sections))
+	}
+	return nil
+}
+
+func pageTitle(source []byte) string {
+	line, _, _ := bytes.Cut(source, []byte("\n"))
+	return strings.TrimPrefix(string(line), "* ")
+}
+
+func countDirective(source []byte, directive string) int {
+	n := 0
+	s := bufio.NewScanner(bytes.NewReader(source))
+	for s.Scan() {
+		if strings.HasPrefix(s.Text(), directive+" ") {
+			n++
+		}
+	}
+	return n
+}
+
+func sum(source []byte) string {
+	h := sha256.Sum256(source)
+	return hex.EncodeToString(h[:])
+}
+
+func validateCatalogShape(c *Catalog) error {
+	if len(c.Pages) != 101 {
+		return fmt.Errorf("standalone pages = %d, want 101", len(c.Pages))
+	}
+	if len(c.Conditional) != 2 {
+		return fmt.Errorf("conditional pages = %d, want 2", len(c.Conditional))
+	}
+	ids, routes := map[string]bool{}, map[string]bool{}
+	plays, images := 0, 0
+	for _, p := range c.Pages {
+		if strings.ContainsAny(p.SourceTitle, "\t\r\n") {
+			return fmt.Errorf("%s: source_title contains a tab or newline", p.ID)
+		}
+		if !sha256RE.MatchString(p.SourceSHA256) {
+			return fmt.Errorf("%s: invalid source_sha256", p.ID)
+		}
+		if ids[p.ID] || routes[p.Route] {
+			return fmt.Errorf("duplicate page_id or route: %s %s", p.ID, p.Route)
+		}
+		ids[p.ID], routes[p.Route] = true, true
+		plays += p.PlayCount
+		images += p.ImageCount
+	}
+	for _, p := range c.Conditional {
+		if strings.ContainsAny(p.SourceTitle, "\t\r\n") || !sha256RE.MatchString(p.SourceSHA256) {
+			return fmt.Errorf("conditional %d: invalid title or source_sha256", p.ConditionalIndex)
+		}
+	}
+	if plays != 92 || images != 1 {
+		return fmt.Errorf("directive totals: play=%d image=%d, want 92/1", plays, images)
+	}
+	return nil
+}
+
+var sha256RE = regexp.MustCompile(`^[0-9a-f]{64}$`)
+
+func (c *Catalog) Page(id string) (*Page, error) {
+	for i := range c.Pages {
+		if c.Pages[i].ID == id {
+			return &c.Pages[i], nil
+		}
+	}
+	return nil, fmt.Errorf("unknown page_id %q", id)
+}
+
+var pageHeader = []string{"page_id", "article", "section_number", "route", "source_title", "source_sha256", "play_count", "image_count"}
+var conditionalHeader = []string{"article", "condition", "conditional_index", "source_title", "source_sha256"}
+
+func WriteCatalog(c *Catalog, pages io.Writer, conditional io.Writer) error {
+	w := csv.NewWriter(pages)
+	w.Comma = '\t'
+	if err := w.Write(pageHeader); err != nil {
+		return err
+	}
+	for _, p := range c.Pages {
+		if err := w.Write([]string{p.ID, p.Article, strconv.Itoa(p.SectionNumber), p.Route, p.SourceTitle, p.SourceSHA256, strconv.Itoa(p.PlayCount), strconv.Itoa(p.ImageCount)}); err != nil {
+			return err
+		}
+	}
+	w.Flush()
+	if err := w.Error(); err != nil {
+		return err
+	}
+	w = csv.NewWriter(conditional)
+	w.Comma = '\t'
+	if err := w.Write(conditionalHeader); err != nil {
+		return err
+	}
+	for _, p := range c.Conditional {
+		if err := w.Write([]string{p.Article, p.Condition, strconv.Itoa(p.ConditionalIndex), p.SourceTitle, p.SourceSHA256}); err != nil {
+			return err
+		}
+	}
+	w.Flush()
+	return w.Error()
+}
+
+func CatalogBytes(c *Catalog) ([]byte, []byte, error) {
+	var pages, conditional bytes.Buffer
+	if err := WriteCatalog(c, &pages, &conditional); err != nil {
+		return nil, nil, err
+	}
+	return pages.Bytes(), conditional.Bytes(), nil
+}
+
+func CheckCatalogFiles(root string, c *Catalog) error {
+	wantPages, wantConditional, err := CatalogBytes(c)
+	if err != nil {
+		return err
+	}
+	return compareFile(filepath.Join(root, "data", "tour-pages.tsv"), wantPages, "page catalog", filepath.Join(root, "data", "tour-conditional-pages.tsv"), wantConditional, "conditional catalog")
+}
+
+func compareFile(path1 string, want1 []byte, label1, path2 string, want2 []byte, label2 string) error {
+	var failures []string
+	for _, item := range []struct {
+		path, label string
+		want        []byte
+	}{{path1, label1, want1}, {path2, label2, want2}} {
+		got, err := os.ReadFile(item.path)
+		if err != nil {
+			failures = append(failures, fmt.Sprintf("%s: %v", item.label, err))
+			continue
+		}
+		if !bytes.Equal(got, item.want) {
+			failures = append(failures, fmt.Sprintf("%s differs from generated content", item.label))
+		}
+	}
+	if len(failures) > 0 {
+		return fmt.Errorf("%s", strings.Join(failures, "; "))
+	}
+	return nil
+}

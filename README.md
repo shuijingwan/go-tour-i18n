@@ -7,6 +7,8 @@
 ## 当前阶段
 
 - 已从固定官方上游导入可独立运行、测试、解析和渲染的英文 Tour 基线。
+- 已建立 101 个 standalone 页面及 2 个条件页面的机器可读目录。
+- 已建立 `zh-CN` 语言 scaffold、术语表边界和只读状态校验；101 页当前全部为 `pending`。
 - 第一阶段目标语言仍为简体中文 `zh-CN`，但尚未开始中文翻译。
 - 当前 module path 为 `github.com/shuijingwan/go-tour-i18n`。
 - 尚未提供生产部署配置，也尚未发布正式版本。
@@ -18,6 +20,47 @@
 - 92 个普通 `.play` 引用；
 - 1 个 `.image` 引用；
 - 2 个单独记录、且不计入上述 101 页的 `#appengine:` 条件页面。
+
+翻译的最小单元是一个完整顶层 `present.Section`，不会拆成句子级或多 text 槽位 JSON。页面目录位于 [`data/tour-pages.tsv`](data/tour-pages.tsv)，zh-CN 状态位于 [`locales/zh-CN/status.tsv`](locales/zh-CN/status.tsv)。当前 scaffold 不是可发布的中文版，详细约定见 [`locales/zh-CN/README.md`](locales/zh-CN/README.md) 和 [LANGUAGES.md](LANGUAGES.md)。
+
+## 多语言维护工具
+
+检查机器可读页面目录：
+
+```bash
+go run -mod=readonly ./cmd/tour-i18n catalog check
+```
+
+显式重新生成目录：
+
+```bash
+go run -mod=readonly ./cmd/tour-i18n catalog write
+```
+
+导出一个完整英文源页面：
+
+```bash
+go run -mod=readonly ./cmd/tour-i18n page export \
+  --id welcome/1 \
+  --output /tmp/welcome-1.article
+```
+
+检查 zh-CN locale 和 101 页状态：
+
+```bash
+go run -mod=readonly ./cmd/tour-i18n status check --locale zh-CN
+```
+
+校验一个完整候选页面：
+
+```bash
+go run -mod=readonly ./cmd/tour-i18n candidate validate \
+  --locale zh-CN \
+  --id welcome/1 \
+  --file /tmp/candidate.article
+```
+
+候选校验只读取英文源、candidate 和状态数据，不会自动修改状态、移动页面或创建 `ready`、`blocked`、`published` 记录。
 
 ## 本地运行
 
@@ -60,7 +103,7 @@ go test -mod=readonly -count=1 ./...
 
 - `zh-CN` 课程翻译；
 - 课程正文与公共 UI 的多语言资源分离；
-- 翻译状态和自动翻译流水线；
+- 状态迁移命令和自动翻译流水线；
 - Playground execution provider 与同源代理；
 - 正式发布和生产部署配置。
 
