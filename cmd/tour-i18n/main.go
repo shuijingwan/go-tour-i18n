@@ -7,7 +7,9 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"os/exec"
 	"path/filepath"
+	"strings"
 
 	"github.com/joho/godotenv"
 	"github.com/shuijingwan/go-tour-i18n/internal/i18n"
@@ -29,7 +31,7 @@ func run(args []string) error {
 		return err
 	}
 	if len(args) < 2 {
-		return fmt.Errorf("usage: tour-i18n <catalog|upstream|page|status|candidate|translate> <command>")
+		return fmt.Errorf("usage: tour-i18n <catalog|upstream|page|status|candidate|translate|preview> <command>")
 	}
 	current, err := i18n.BuildSourceCatalog(root)
 	if err != nil {
@@ -41,6 +43,9 @@ func run(args []string) error {
 	}
 	if err := i18n.HydrateCatalogSources(catalog, current); err != nil {
 		return err
+	}
+	if args[0] == "preview" {
+		return previewCandidate(root, catalog, args[1:])
 	}
 	switch args[0] + " " + args[1] {
 	case "catalog check":
@@ -176,6 +181,33 @@ func run(args []string) error {
 	default:
 		return fmt.Errorf("unknown command %q", args[0]+" "+args[1])
 	}
+}
+
+func previewCandidate(root string, catalog *i18n.Catalog, args []string) error {
+	fs := flag.NewFlagSet("preview", flag.ContinueOnError)
+	locale := fs.String("locale", "", "candidate locale")
+	id := fs.String("id", "", "persistent page_id")
+	httpAddr := fs.String("http", "127.0.0.1:3999", "preview host:port")
+	if err := fs.Parse(args); err != nil {
+		return err
+	}
+	if *locale == "" || *id == "" {
+		return fmt.Errorf("--locale and --id are required")
+	}
+	tempRoot := filepath.Join(os.TempDir(), "go-tour-i18n-preview", *locale, strings.ReplaceAll(*id, "/", "-"))
+	preview, err := i18n.BuildCandidatePreview(root, catalog, *id, *locale, tempRoot)
+	if err != nil {
+		return err
+	}
+	address := "http://" + *httpAddr + "/tour/" + *id
+	fmt.Printf("preview URL: %s\n", address)
+	fmt.Printf("temporary content: %s\n", preview.ContentDir)
+	command := exec.Command("go", "run", "./tour", "-http", *httpAddr, "-openbrowser=false", "-content", preview.ContentDir)
+	command.Dir = root
+	command.Stdout = os.Stdout
+	command.Stderr = os.Stderr
+	command.Stdin = os.Stdin
+	return command.Run()
 }
 
 func loadProjectEnv(root string) error {

@@ -17,6 +17,7 @@
 - `translate run -dev` 仅用于单页开发校准：每条命令只执行 1 次 attempt，可从 pending 或 blocked 继续且不受正式三次上限约束；失败回到 pending，成功进入 ready。正式批量翻译不得使用 dev 模式。
 - standalone 投影已修复：`welcome/1` 只保留 `your computer.` 分支，不含 `#appengine:` 或 remote-server 分支。candidate validator 会拒绝 standalone source/candidate 中的 appengine 内容，并继续校验 present 结构、directive、链接 target、行内代码和预格式化代码。
 - zh-CN glossary 对强制链接 label 使用 protected token 确定性恢复，例如 `A Tour of Go` → `Go 语言之旅`、`previous` → `上一页`、`next` → `下一页`、`Run` → `运行`、`Format` → `格式化`；validator 仍执行防御性术语与禁用译法检查。
+- 已支持 ready candidate 本地预览。运行 `go run ./cmd/tour-i18n preview -id welcome/1 -locale zh-CN` 会在 `/tmp` 创建临时 Tour 内容副本，只替换目标中文 Section，不修改仓库正式 `_content`；其他未翻译页面继续显示英文。
 
 ## 首个 zh-CN 页面
 
@@ -25,4 +26,4 @@
 - 当前 source SHA-256：`3fbd64163f0301d60fcf1440c8aa65a79358e7028fec433aee49ae0c364d3034`
 - 当前 source 的 `attempt-001` 至 `attempt-006` 完整保留在 `data/translation-runs/zh-CN/welcome/1/sources/3fbd64163f0301d60fcf1440c8aa65a79358e7028fec433aee49ae0c364d3034/`，作为开发审计记录；早期错误 source 的历史记录也保留在原路径。
 
-当前唯一下一步：开始验证第二个页面；在完成验证前不扩展批量翻译。
+当前下一步：评估 DeepSeek 新版本的翻译质量。

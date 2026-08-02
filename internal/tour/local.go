@@ -29,14 +29,19 @@ const (
 var (
 	httpListen  *string
 	openBrowser *bool
+	contentRoot *string
 	httpAddr    string
 )
 
 func Main() {
 	httpListen = flag.String("http", "127.0.0.1:3999", "host:port to listen on")
 	openBrowser = flag.Bool("openbrowser", true, "open browser automatically")
+	contentRoot = flag.String("content", "", "optional Tour content directory for local preview")
 
 	flag.Parse()
+	if *contentRoot != "" {
+		contentTour = os.DirFS(*contentRoot)
+	}
 
 	host, port, err := net.SplitHostPort(*httpListen)
 	if err != nil {
