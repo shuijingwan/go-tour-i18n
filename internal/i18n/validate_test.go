@@ -67,6 +67,79 @@ func TestCandidateProtectedChangesFail(t *testing.T) {
 	}
 }
 
+func TestCandidateRejectsAppengineInSourceOrCandidate(t *testing.T) {
+	root := repoRoot(t)
+	badSource := syntheticSource + "#appengine: a remote server.\n"
+	catalog := &Catalog{Pages: []Page{{ID: "synthetic/1", Article: "basics.article", Source: []byte(badSource), SourceSHA256: sum([]byte(badSource))}}}
+	if err := ValidateCandidate(root, catalog, "synthetic/1", []byte(syntheticSource)); err == nil || !strings.Contains(err.Error(), "standalone source contains #appengine") {
+		t.Fatalf("bad standalone source error = %v", err)
+	}
+	if err := ValidateCandidate(root, syntheticCatalog(), "synthetic/1", []byte(syntheticSource+"#appengine: translated remote branch\n")); err == nil || !strings.Contains(err.Error(), "standalone candidate contains #appengine") {
+		t.Fatalf("bad standalone candidate error = %v", err)
+	}
+}
+
+func TestWelcomeCandidateMandatoryGlossary(t *testing.T) {
+	root := repoRoot(t)
+	catalog, err := BuildCatalog(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	page, err := catalog.Page("welcome/1")
+	if err != nil {
+		t.Fatal(err)
+	}
+	valid := string(page.Source)
+	for old, replacement := range map[string]string{
+		"[A Tour of Go]": "[Go 语言之旅]",
+		`["previous"]`:   `["上一页"]`,
+		`["next"]`:       `["下一页"]`,
+		"[Run]":          "[运行]",
+		"[Format]":       "[格式化]",
+		"slides":         "页面",
+	} {
+		valid = strings.ReplaceAll(valid, old, replacement)
+	}
+	if err := ValidateCandidate(root, catalog, "welcome/1", []byte(valid)); err != nil {
+		t.Fatalf("valid mandatory glossary candidate: %v", err)
+	}
+	tests := map[string]string{
+		"tour label": strings.Replace(valid, "[Go 语言之旅]", "[A Tour of Go]", 1),
+		"previous":   strings.Replace(valid, `["上一页"]`, `["previous"]`, 1),
+		"next":       strings.Replace(valid, `["下一页"]`, `["next"]`, 1),
+		"run":        strings.Replace(valid, "[运行]", "[Run]", 1),
+		"format":     strings.Replace(valid, "[格式化]", "[Format]", 1),
+		"slides":     strings.Replace(valid, "页面", "幻灯片", 1),
+	}
+	for name, candidate := range tests {
+		t.Run(name, func(t *testing.T) {
+			if err := ValidateCandidate(root, catalog, "welcome/1", []byte(candidate)); err == nil {
+				t.Fatal("glossary violation accepted")
+			}
+		})
+	}
+}
+
+func TestCandidateRejectsForbiddenTourTranslations(t *testing.T) {
+	root := repoRoot(t)
+	catalog := syntheticCatalog()
+	for name, phrase := range map[string]string{
+		"literal tour":      "本之旅",
+		"unnatural welcome": "欢迎使用 Go 编程语言之旅",
+	} {
+		t.Run(name, func(t *testing.T) {
+			candidate := strings.Replace(syntheticSource, "Source paragraph", phrase, 1)
+			if err := ValidateCandidate(root, catalog, "synthetic/1", []byte(candidate)); err == nil || !strings.Contains(err.Error(), "forbidden zh-CN translation") {
+				t.Fatalf("forbidden candidate error = %v", err)
+			}
+		})
+	}
+	natural := strings.Replace(syntheticSource, "Source paragraph", "本教程介绍相关内容", 1)
+	if err := ValidateCandidate(root, catalog, "synthetic/1", []byte(natural)); err != nil {
+		t.Fatalf("natural 本教程 candidate rejected: %v", err)
+	}
+}
+
 func TestCandidateValidationDoesNotWriteStatus(t *testing.T) {
 	path := filepath.Join(repoRoot(t), "locales", "zh-CN", "status.tsv")
 	before, err := os.ReadFile(path)

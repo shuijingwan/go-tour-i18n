@@ -138,12 +138,11 @@ func splitArticle(data []byte, article string) (pages, conditional [][]byte, err
 	}
 	for _, line := range lines {
 		plain := strings.TrimSuffix(line, "\n")
-		if strings.HasPrefix(plain, "#appengine: * ") {
-			flush()
-			inConditional = true
-			continue
-		}
-		if inConditional && strings.HasPrefix(plain, "#appengine:") {
+		if article == "welcome.article" && strings.HasPrefix(plain, "#appengine:") {
+			if strings.HasPrefix(plain, "#appengine: * ") {
+				flush()
+				inConditional = true
+			}
 			continue
 		}
 		if strings.HasPrefix(plain, "* ") {

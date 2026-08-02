@@ -1,0 +1,24 @@
+{
+  "page_id": "welcome/1",
+  "locale": "zh-CN",
+  "source_sha256": "3fbd64163f0301d60fcf1440c8aa65a79358e7028fec433aee49ae0c364d3034",
+  "body": {
+    "model": "glm-5.2",
+    "stream": false,
+    "thinking": {
+      "type": "disabled"
+    },
+    "do_sample": false,
+    "max_tokens": 8192,
+    "messages": [
+      {
+        "role": "system",
+        "content": "Translate one complete A Tour of Go present.Section from English to Simplified Chinese. Return only complete parseable .article content. Preserve every protection token exactly once and in order. Mandatory glossary translations must be used, corresponding English display text must not remain, and the meaning must not be simplified or changed."
+      },
+      {
+        "role": "user",
+        "content": "page_id: welcome/1\nsource_locale: en\ntarget_locale: zh-CN\n\nMandatory glossary rules:\n- A Tour of Go =\u003e Go 语言之旅 (mandatory; do not retain the English display text)\n- Format =\u003e 格式化 (mandatory; do not retain the English display text)\n- Run =\u003e 运行 (mandatory; do not retain the English display text)\n- next =\u003e 下一页 (mandatory; do not retain the English display text)\n- previous =\u003e 上一页 (mandatory; do not retain the English display text)\n- slides =\u003e 页面 (mandatory; do not retain the English display text)\n- forbidden zh-CN translation: 幻灯片\n- welcome/1 must preserve the meaning of tour as 之旅; do not simplify or change that meaning\n\nComplete protected page:\n* Hello, 世界\n\nWelcome to a tour of the [[⟪GTI18N_3fbd6416_000001⟫][⟪GTI18N_3fbd6416_000002⟫ programming language]].\n\nThe tour is divided into a list of modules that you can\naccess by clicking on\n[[⟪GTI18N_3fbd6416_000003⟫][A Tour of ⟪GTI18N_3fbd6416_000004⟫]] on the top left of the page.\n\nYou can also view the table of contents at any time by clicking on the [[⟪GTI18N_3fbd6416_000005⟫][menu]] on the top right of the page.\n\nThroughout the tour you will find a series of slides and exercises for you\nto complete.\n\nYou can navigate through them using\n\n- [[⟪GTI18N_3fbd6416_000006⟫][\"previous\"]] or ⟪GTI18N_3fbd6416_000007⟫ to go to the previous page,\n\n- [[⟪GTI18N_3fbd6416_000008⟫][\"next\"]] or ⟪GTI18N_3fbd6416_000009⟫ to go to the next page.\n\nThe tour is interactive. Click the\n[[⟪GTI18N_3fbd6416_000010⟫][Run]] button now\n(or press ⟪GTI18N_3fbd6416_000011⟫ + ⟪GTI18N_3fbd6416_000012⟫) to compile and run the program on\nyour computer.\nThe result is displayed below the code.\n\nThese example programs demonstrate different aspects of ⟪GTI18N_3fbd6416_000013⟫. The programs in the tour are meant to be starting points for your own experimentation.\n\nEdit the program and run it again.\n\nWhen you click on [[⟪GTI18N_3fbd6416_000014⟫][Format]]\n(shortcut: ⟪GTI18N_3fbd6416_000015⟫ + ⟪GTI18N_3fbd6416_000016⟫), the text in the editor is formatted using the\n[[⟪GTI18N_3fbd6416_000017⟫][⟪GTI18N_3fbd6416_000018⟫]] tool. You can switch syntax highlighting on and off\nby clicking on the [[⟪GTI18N_3fbd6416_000019⟫][syntax]] button.\n\nWhen you're ready to move on, click the [[⟪GTI18N_3fbd6416_000020⟫][right arrow]] below or type the ⟪GTI18N_3fbd6416_000021⟫ key.\n\n⟪GTI18N_3fbd6416_000022⟫\n\n\n\nPrevious full-page attempt failed validation: welcome/1: glossary link label for target \"javascript:highlight(\\\".logo\\\")\" = \"Go 之旅\", want \"Go 语言之旅\". Translate the complete page again."
+      }
+    ]
+  }
+}

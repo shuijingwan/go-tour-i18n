@@ -1,0 +1,24 @@
+{
+  "page_id": "welcome/1",
+  "locale": "zh-CN",
+  "source_sha256": "491d9386ffb917083a1e556bc9849d57894dd8b29bd243ac855cd9e99f701893",
+  "body": {
+    "model": "glm-5.2",
+    "stream": false,
+    "thinking": {
+      "type": "disabled"
+    },
+    "do_sample": false,
+    "max_tokens": 8192,
+    "messages": [
+      {
+        "role": "system",
+        "content": "Translate one complete A Tour of Go present.Section from English to Simplified Chinese. Return only complete parseable .article content. Preserve every protection token exactly once and in order."
+      },
+      {
+        "role": "user",
+        "content": "page_id: welcome/1\nsource_locale: en\ntarget_locale: zh-CN\n\nComplete protected page:\n* Hello, 世界\n\nWelcome to a tour of the [[⟪GTI18N_491d9386_000001⟫][⟪GTI18N_491d9386_000002⟫ programming language]].\n\nThe tour is divided into a list of modules that you can\naccess by clicking on\n[[⟪GTI18N_491d9386_000003⟫][A Tour of ⟪GTI18N_491d9386_000004⟫]] on the top left of the page.\n\nYou can also view the table of contents at any time by clicking on the [[⟪GTI18N_491d9386_000005⟫][menu]] on the top right of the page.\n\nThroughout the tour you will find a series of slides and exercises for you\nto complete.\n\nYou can navigate through them using\n\n- [[⟪GTI18N_491d9386_000006⟫][\"previous\"]] or ⟪GTI18N_491d9386_000007⟫ to go to the previous page,\n\n- [[⟪GTI18N_491d9386_000008⟫][\"next\"]] or ⟪GTI18N_491d9386_000009⟫ to go to the next page.\n\nThe tour is interactive. Click the\n[[⟪GTI18N_491d9386_000010⟫][Run]] button now\n(or press ⟪GTI18N_491d9386_000011⟫ + ⟪GTI18N_491d9386_000012⟫) to compile and run the program on\n#appengine: a remote server.\nyour computer.\nThe result is displayed below the code.\n\nThese example programs demonstrate different aspects of ⟪GTI18N_491d9386_000013⟫. The programs in the tour are meant to be starting points for your own experimentation.\n\nEdit the program and run it again.\n\nWhen you click on [[⟪GTI18N_491d9386_000014⟫][Format]]\n(shortcut: ⟪GTI18N_491d9386_000015⟫ + ⟪GTI18N_491d9386_000016⟫), the text in the editor is formatted using the\n[[⟪GTI18N_491d9386_000017⟫][⟪GTI18N_491d9386_000018⟫]] tool. You can switch syntax highlighting on and off\nby clicking on the [[⟪GTI18N_491d9386_000019⟫][syntax]] button.\n\nWhen you're ready to move on, click the [[⟪GTI18N_491d9386_000020⟫][right arrow]] below or type the ⟪GTI18N_491d9386_000021⟫ key.\n\n⟪GTI18N_491d9386_000022⟫\n\n"
+      }
+    ]
+  }
+}

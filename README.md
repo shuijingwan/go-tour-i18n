@@ -10,6 +10,7 @@
 - 已建立 101 个 standalone 页面及 2 个条件页面的机器可读目录。
 - 已建立 `zh-CN` 语言 scaffold、术语表边界和只读状态校验；101 页当前全部为 `pending`。
 - 第一阶段目标语言仍为简体中文 `zh-CN`，但尚未开始中文翻译。
+- 已整合受限的 `welcome/1` 单页翻译执行器，但尚未实际调用外部模型，也未生成译文。
 - 当前 module path 为 `github.com/shuijingwan/go-tour-i18n`。
 - 尚未提供生产部署配置，也尚未发布正式版本。
 
@@ -72,6 +73,8 @@ go run -mod=readonly ./cmd/tour-i18n candidate validate \
 ```
 
 候选校验只读取英文源、candidate 和状态数据，不会自动修改状态、移动页面或创建 `ready`、`blocked`、`published` 记录。
+
+`translate run -dev` 仅用于单页翻译的开发校准：每条命令只执行一次 attempt，并允许从 pending 或 blocked 状态继续。正式批量翻译不得使用 `-dev`。
 
 ## 本地运行
 

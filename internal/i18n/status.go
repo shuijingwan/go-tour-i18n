@@ -74,8 +74,8 @@ func CheckStatus(root, localeName string, catalog *Catalog) error {
 		if s.Attempts < 0 {
 			return fmt.Errorf("%s: attempts must be non-negative", s.PageID)
 		}
-		if s.State == "pending" && (s.Attempts != 0 || s.CandidatePath != "") {
-			return fmt.Errorf("%s: pending requires attempts=0 and empty candidate_path", s.PageID)
+		if s.State == "pending" && s.CandidatePath != "" {
+			return fmt.Errorf("%s: pending requires empty candidate_path", s.PageID)
 		}
 		if s.SourceSHA256 != page.SourceSHA256 {
 			return fmt.Errorf("%s: stale source_sha256", s.PageID)

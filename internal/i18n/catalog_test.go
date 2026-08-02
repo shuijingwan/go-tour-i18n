@@ -107,14 +107,37 @@ func TestSplitConditionalPages(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	_, conditional, err := splitArticle(b, "welcome.article")
+	pages, conditional, err := splitArticle(b, "welcome.article")
 	if err != nil {
 		t.Fatal(err)
 	}
 	if len(conditional) != 2 {
 		t.Fatalf("conditional=%d", len(conditional))
 	}
+	if len(pages) == 0 || !bytes.Contains(pages[0], []byte("your computer.")) {
+		t.Fatal("welcome/1 does not contain the standalone computer branch")
+	}
+	if bytes.Contains(pages[0], []byte("#appengine:")) || bytes.Contains(pages[0], []byte("a remote server.")) {
+		t.Fatalf("welcome/1 contains appengine content:\n%s", pages[0])
+	}
 	if pageTitle(conditional[0]) != "Go offline (optional)" || pageTitle(conditional[1]) != "The Go Playground" {
 		t.Fatalf("conditional titles=%q/%q", pageTitle(conditional[0]), pageTitle(conditional[1]))
+	}
+}
+
+func TestWelcomePersistentIDAndBaselineShape(t *testing.T) {
+	catalog, err := BuildCatalog(repoRoot(t))
+	if err != nil {
+		t.Fatal(err)
+	}
+	page, err := catalog.Page("welcome/1")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if page.Route != "/welcome/1" || page.SectionNumber != 1 {
+		t.Fatalf("welcome/1 identity changed: %+v", page)
+	}
+	if len(catalog.Pages) != 101 || len(catalog.Conditional) != 2 {
+		t.Fatalf("pages=%d conditional=%d", len(catalog.Pages), len(catalog.Conditional))
 	}
 }

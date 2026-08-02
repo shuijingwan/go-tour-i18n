@@ -2,11 +2,14 @@ package main
 
 import (
 	"bytes"
+	"context"
+	"encoding/json"
 	"flag"
 	"fmt"
 	"os"
 	"path/filepath"
 
+	"github.com/joho/godotenv"
 	"github.com/shuijingwan/go-tour-i18n/internal/i18n"
 )
 
@@ -18,12 +21,15 @@ func main() {
 }
 
 func run(args []string) error {
-	if len(args) < 2 {
-		return fmt.Errorf("usage: tour-i18n <catalog|upstream|page|status|candidate> <command>")
-	}
 	root, err := os.Getwd()
 	if err != nil {
 		return err
+	}
+	if err := loadProjectEnv(root); err != nil {
+		return err
+	}
+	if len(args) < 2 {
+		return fmt.Errorf("usage: tour-i18n <catalog|upstream|page|status|candidate|translate> <command>")
 	}
 	current, err := i18n.BuildSourceCatalog(root)
 	if err != nil {
@@ -132,9 +138,70 @@ func run(args []string) error {
 		}
 		fmt.Printf("candidate OK: locale=%s page_id=%s\n", *locale, *id)
 		return nil
+	case "translate run":
+		fs := flag.NewFlagSet("translate run", flag.ContinueOnError)
+		locale := fs.String("locale", "", "target locale")
+		id := fs.String("id", "", "persistent page_id")
+		dev := fs.Bool("dev", false, "development calibration mode: one attempt per command; never use for production batch translation")
+		if err := fs.Parse(args[2:]); err != nil {
+			return err
+		}
+		if *locale == "" || *id == "" {
+			return fmt.Errorf("--locale and --id are required")
+		}
+		runner := i18n.TranslationRunner{Root: root, Catalog: catalog, Dev: *dev}
+		result, err := runner.Run(context.Background(), *id, *locale, os.Getenv("ZHIPU_API_KEY"))
+		if err != nil {
+			return err
+		}
+		return printJSON(result)
+	case "translate show":
+		fs := flag.NewFlagSet("translate show", flag.ContinueOnError)
+		locale := fs.String("locale", "", "target locale")
+		id := fs.String("id", "", "persistent page_id")
+		if err := fs.Parse(args[2:]); err != nil {
+			return err
+		}
+		if *locale == "" || *id == "" {
+			return fmt.Errorf("--locale and --id are required")
+		}
+		status, candidate, err := i18n.LoadTranslationResult(root, *id, *locale)
+		if err != nil {
+			return err
+		}
+		return printJSON(struct {
+			*i18n.Status
+			Candidate string `json:"candidate_content"`
+		}{status, candidate})
 	default:
 		return fmt.Errorf("unknown command %q", args[0]+" "+args[1])
 	}
+}
+
+func loadProjectEnv(root string) error {
+	path := filepath.Join(root, ".env")
+	values, err := godotenv.Read(path)
+	if err != nil {
+		if os.IsNotExist(err) {
+			return nil
+		}
+		return fmt.Errorf("load project .env: %w", err)
+	}
+	for key, value := range values {
+		if _, exists := os.LookupEnv(key); exists {
+			continue
+		}
+		if err := os.Setenv(key, value); err != nil {
+			return fmt.Errorf("load project .env variable %q: %w", key, err)
+		}
+	}
+	return nil
+}
+
+func printJSON(value any) error {
+	encoder := json.NewEncoder(os.Stdout)
+	encoder.SetIndent("", "  ")
+	return encoder.Encode(value)
 }
 
 func printPreview(root, sourceRoot string, next *i18n.Catalog, report *i18n.PreviewReport) {
