@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"os"
 	"path/filepath"
+	"reflect"
 	"strings"
 	"testing"
 )
@@ -22,11 +23,17 @@ func TestCommittedStatus(t *testing.T) {
 		t.Fatal(err)
 	}
 	for _, s := range statuses {
-		if s.PageID == "welcome/1" {
+		switch s.PageID {
+		case "welcome/1":
 			continue
-		}
-		if s.State != "pending" || s.Attempts != 0 || s.CandidatePath != "" {
-			t.Fatalf("non-initial status: %+v", s)
+		case "welcome/2":
+			if s.State != "ready" || s.Attempts != 1 || s.CandidatePath != "locales/zh-CN/candidates/welcome-2.article" || s.UpdatedAt != "2026-08-03T09:16:52Z" || s.Note != "人工评审修订后的 candidate 已通过现有 validator" {
+				t.Fatalf("welcome/2 status: %+v", s)
+			}
+		default:
+			if s.State != "pending" || s.Attempts != 0 || s.CandidatePath != "" {
+				t.Fatalf("non-initial status: %+v", s)
+			}
 		}
 	}
 }
@@ -67,6 +74,51 @@ func TestStatusUsesPersistentIDNotCatalogPositionOrRoute(t *testing.T) {
 	}}
 	if err := CheckStatus(root, "zh-CN", catalog); err != nil {
 		t.Fatal(err)
+	}
+}
+
+func TestUpdateTranslationStatusWritesCanonicalTSV(t *testing.T) {
+	a := strings.Repeat("a", 64)
+	b := strings.Repeat("b", 64)
+	c := strings.Repeat("c", 64)
+	before := "page_id\tstatus\tattempts\tsource_sha256\tcandidate_path\tupdated_at\tnote\n" +
+		"x/1\tready\t2\t" + a + "\tlocales/zh-CN/candidates/x-1.article\t2026-01-02T03:04:05Z\texisting ready\n" +
+		"x/2\tpending\t0\t" + b + "\t\"\"\t\"\"\t\"\"\n" +
+		"x/3\tpending\t0\t" + c + "\t\"\"\t\"\"\t\"\"\n"
+	root := writeStatusFixture(t, before)
+
+	if err := updateTranslationStatus(root, "zh-CN", "x/2", "ready", 1, b, "locales/zh-CN/candidates/x-2.article", "2026-02-03T04:05:06Z", "candidate passed"); err != nil {
+		t.Fatal(err)
+	}
+
+	path := filepath.Join(root, "locales", "zh-CN", "status.tsv")
+	got, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	want := strings.Replace(before,
+		"x/2\tpending\t0\t"+b+"\t\"\"\t\"\"\t\"\"",
+		"x/2\tready\t1\t"+b+"\tlocales/zh-CN/candidates/x-2.article\t2026-02-03T04:05:06Z\tcandidate passed", 1)
+	if string(got) != want {
+		t.Fatalf("status.tsv mismatch:\ngot:\n%s\nwant:\n%s", got, want)
+	}
+	for lineNumber, line := range strings.Split(strings.TrimSuffix(string(got), "\n"), "\n") {
+		if strings.TrimRight(line, " \t") != line {
+			t.Errorf("line %d has trailing whitespace: %q", lineNumber+1, line)
+		}
+	}
+
+	statuses, err := ReadStatuses(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	wantStatuses := []Status{
+		{"x/1", "ready", 2, a, "locales/zh-CN/candidates/x-1.article", "2026-01-02T03:04:05Z", "existing ready"},
+		{"x/2", "ready", 1, b, "locales/zh-CN/candidates/x-2.article", "2026-02-03T04:05:06Z", "candidate passed"},
+		{"x/3", "pending", 0, c, "", "", ""},
+	}
+	if !reflect.DeepEqual(statuses, wantStatuses) {
+		t.Fatalf("round trip statuses = %#v, want %#v", statuses, wantStatuses)
 	}
 }
 

@@ -1,0 +1,24 @@
+{
+  "page_id": "welcome/2",
+  "locale": "zh-CN",
+  "source_sha256": "556b44959e651ea6ba4bfae4eb635956bd18aad70626bc5bda3f4e3b7eeeb681",
+  "body": {
+    "model": "glm-5.2",
+    "stream": false,
+    "thinking": {
+      "type": "disabled"
+    },
+    "do_sample": false,
+    "max_tokens": 8192,
+    "messages": [
+      {
+        "role": "system",
+        "content": "Translate one complete A Tour of Go present.Section from English to Simplified Chinese. Return only complete parseable .article content. Preserve every protection token exactly once and in order. Mandatory glossary translations must be used, corresponding English display text must not remain, and the meaning must not be simplified or changed."
+      },
+      {
+        "role": "user",
+        "content": "page_id: welcome/2\nsource_locale: en\ntarget_locale: zh-CN\n\nMandatory glossary rules:\n- A Tour of Go =\u003e Go 语言之旅 (mandatory; do not retain the English display text)\n- Format =\u003e 格式化 (mandatory; do not retain the English display text)\n- Run =\u003e 运行 (mandatory; do not retain the English display text)\n- next =\u003e 下一页 (mandatory; do not retain the English display text)\n- previous =\u003e 上一页 (mandatory; do not retain the English display text)\n- slides =\u003e 页面 (mandatory; do not retain the English display text)\n- ordinary prose the tour =\u003e 本教程 (contextual guidance; translate naturally as part of the complete page)\n- ordinary prose tour =\u003e 教程 (contextual guidance; translate naturally as part of the complete page)\n- forbidden zh-CN translation: 幻灯片\n- forbidden zh-CN translation: 本之旅\n- forbidden zh-CN translation: 欢迎使用 Go 编程语言之旅\n\nComplete protected page:\n* ⟪GTI18N_556b4495_000001⟫ local\n\nThe tour is available in other languages:\n\n- [[⟪GTI18N_556b4495_000002⟫][Brazilian Portuguese — Português do Brasil]]\n- [[⟪GTI18N_556b4495_000003⟫][Catalan — Català]]\n- [[⟪GTI18N_556b4495_000004⟫][Simplified Chinese — 中文（简体）]]\n- [[⟪GTI18N_556b4495_000005⟫][Czech — Česky]]\n- [[⟪GTI18N_556b4495_000006⟫][Indonesian — Bahasa Indonesia]]\n- [[⟪GTI18N_556b4495_000007⟫][Japanese — 日本語]]\n- [[⟪GTI18N_556b4495_000008⟫][Polish — Polski]]\n- [[⟪GTI18N_556b4495_000009⟫][Spanish — Español]]\n- [[⟪GTI18N_556b4495_000010⟫][Thai — ภาษาไทย]]\n- [[⟪GTI18N_556b4495_000011⟫][Ukrainian — Українською]]\n\nClick the [[⟪GTI18N_556b4495_000012⟫][⟪GTI18N_556b4495_000013⟫]] button or type ⟪GTI18N_556b4495_000014⟫ to continue.\n\n"
+      }
+    ]
+  }
+}

@@ -131,3 +131,41 @@ func ReadStatuses(path string) ([]Status, error) {
 	}
 	return out, nil
 }
+
+func writeStatuses(path string, statuses []Status) error {
+	records := make([][]string, 0, len(statuses)+1)
+	records = append(records, []string{"page_id", "status", "attempts", "source_sha256", "candidate_path", "updated_at", "note"})
+	for _, status := range statuses {
+		records = append(records, []string{
+			status.PageID,
+			status.State,
+			strconv.Itoa(status.Attempts),
+			status.SourceSHA256,
+			status.CandidatePath,
+			status.UpdatedAt,
+			status.Note,
+		})
+	}
+
+	var b strings.Builder
+	for _, record := range records {
+		for i, field := range record {
+			if i > 0 {
+				b.WriteByte('\t')
+			}
+			if field == "" {
+				b.WriteString(`""`)
+				continue
+			}
+			if strings.ContainsAny(field, "\"\t\r\n") {
+				b.WriteByte('"')
+				b.WriteString(strings.ReplaceAll(field, `"`, `""`))
+				b.WriteByte('"')
+				continue
+			}
+			b.WriteString(field)
+		}
+		b.WriteByte('\n')
+	}
+	return os.WriteFile(path, []byte(b.String()), 0644)
+}

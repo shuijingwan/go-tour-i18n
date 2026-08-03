@@ -2,7 +2,6 @@ package i18n
 
 import (
 	"context"
-	"encoding/csv"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -57,9 +56,6 @@ func (r *TranslationRunner) Run(ctx context.Context, pageID, locale, apiKey stri
 	}
 	if locale != "zh-CN" {
 		return nil, fmt.Errorf("unsupported locale %q", locale)
-	}
-	if pageID != "welcome/1" {
-		return nil, fmt.Errorf("this milestone only permits welcome/1")
 	}
 	if r.Catalog == nil {
 		return nil, errors.New("translation catalog is required")
@@ -251,18 +247,7 @@ func updateTranslationStatus(root, locale, pageID, state string, attempts int, h
 	if !found {
 		return fmt.Errorf("unknown page_id %q", pageID)
 	}
-	var b strings.Builder
-	w := csv.NewWriter(&b)
-	w.Comma = '\t'
-	_ = w.Write([]string{"page_id", "status", "attempts", "source_sha256", "candidate_path", "updated_at", "note"})
-	for _, status := range statuses {
-		_ = w.Write([]string{status.PageID, status.State, fmt.Sprint(status.Attempts), status.SourceSHA256, status.CandidatePath, status.UpdatedAt, status.Note})
-	}
-	w.Flush()
-	if err := w.Error(); err != nil {
-		return err
-	}
-	return os.WriteFile(path, []byte(b.String()), 0644)
+	return writeStatuses(path, statuses)
 }
 
 func writeTranslationJSON(path string, value any) error {

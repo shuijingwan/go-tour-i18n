@@ -250,15 +250,49 @@ func TestDevTranslationContinuesBlockedOneAttemptPerRun(t *testing.T) {
 	}
 }
 
+func TestDevTranslationAllowsAnotherStandalonePage(t *testing.T) {
+	source := []byte("* Go local\n\nEnglish text.\n")
+	hash := sum(source)
+	root := writeStatusFixture(t, "page_id\tstatus\tattempts\tsource_sha256\tcandidate_path\tupdated_at\tnote\n"+
+		"welcome/2\tpending\t0\t"+hash+"\t\t\t\n")
+	writeTestGlossary(t, root)
+
+	var calls atomic.Int32
+	client := &TranslationClient{Endpoint: "https://example.invalid", HTTP: mockHTTP(func(r *http.Request) (*http.Response, error) {
+		calls.Add(1)
+		body := `{"choices":[{"message":{"role":"assistant","content":""},"finish_reason":"length"}],"usage":{}}`
+		return &http.Response{StatusCode: http.StatusOK, Header: make(http.Header), Body: io.NopCloser(strings.NewReader(body)), Request: r}, nil
+	})}
+	runner := TranslationRunner{
+		Root:    root,
+		Catalog: &Catalog{Pages: []Page{{ID: "welcome/2", Article: "welcome.article", Source: source, SourceSHA256: hash}}},
+		Client:  client,
+		Dev:     true,
+		Now:     func() time.Time { return time.Unix(0, 0) },
+	}
+
+	result, err := runner.Run(context.Background(), "welcome/2", "zh-CN", "test-secret")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if result.PageID != "welcome/2" || result.Status != "pending" || result.Attempts != 1 || calls.Load() != 1 {
+		t.Fatalf("result=%+v calls=%d", result, calls.Load())
+	}
+}
+
 func TestTranslationPreflightDoesNotCallHTTP(t *testing.T) {
 	var calls atomic.Int32
 	client := &TranslationClient{HTTP: mockHTTP(func(*http.Request) (*http.Response, error) {
 		calls.Add(1)
 		return nil, nil
 	})}
-	runner := TranslationRunner{Root: t.TempDir(), Catalog: &Catalog{}, Client: client}
-	if _, err := runner.Run(context.Background(), "welcome.hello", "zh-CN", "test-secret"); err == nil {
-		t.Fatal("parallel page key was accepted")
+	runner := TranslationRunner{Root: t.TempDir(), Catalog: &Catalog{
+		Conditional: []ConditionalPage{{Article: "welcome.article", Condition: "appengine", ConditionalIndex: 1}},
+	}, Client: client}
+	for _, pageID := range []string{"missing/1", "welcome/appengine/1"} {
+		if _, err := runner.Run(context.Background(), pageID, "zh-CN", "test-secret"); err == nil || !strings.Contains(err.Error(), "unknown page_id") {
+			t.Errorf("Run(%q) error = %v, want unknown page_id", pageID, err)
+		}
 	}
 	if calls.Load() != 0 {
 		t.Fatalf("HTTP calls=%d", calls.Load())

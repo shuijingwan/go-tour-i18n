@@ -2,33 +2,33 @@
 
 欢迎来到 [[/][Go 编程语言]]之旅。
 
-本教程分为一系列模块，你可以点击页面左上方的
-[[javascript:highlight(".logo")][Go 语言之旅]]来访问它们。
+本教程由一系列模块组成。点击页面左上角的
+[[javascript:highlight(".logo")][Go 语言之旅]] 即可进入各个模块。
 
-你还可以随时点击页面右上方的 [[javascript:highlightAndClick(".nav")][菜单]] 来查看目录。
+你也可以随时点击页面右上角的 [[javascript:highlightAndClick(".nav")][菜单]] 查看目录。
 
-在本教程中，你将看到一系列页面和练习供你完成。
+本教程包含一系列页面，以及需要你完成的练习。
 
-你可以使用以下方式浏览它们：
+你可以通过以下方式在页面间导航：
 
-- [[javascript:highlight(".prev-page")]["上一页"]] 或 `PageUp` 转到上一页，
+- [[javascript:highlight(".prev-page")]["上一页"]]，或按 `PageUp` 键返回上一页；
 
-- [[javascript:highlight(".next-page")]["下一页"]] 或 `PageDown` 转到下一页。
+- [[javascript:highlight(".next-page")]["下一页"]]，或按 `PageDown` 键前往下一页。
 
-本教程是交互式的。现在点击
+本教程支持交互操作。现在点击
 [[javascript:highlightAndClick("#run")][运行]] 按钮
-（或按 `Shift` + `Enter`）来编译并运行你电脑上的程序。
+（或按 `Shift` + `Enter`），在你的电脑上编译并运行该程序。
 结果会显示在代码下方。
 
-这些示例程序展示了 Go 的不同方面。教程中的程序旨在作为你自己实验的起点。
+这些示例程序展示了 Go 的不同特性。教程中的程序旨在为你进一步探索和实验提供起点。
 
 编辑程序并再次运行。
 
-当你点击 [[javascript:highlightAndClick("#format")][格式化]]
-（快捷键：`Ctrl` + `Enter`）时，编辑器中的文本会使用
-[[/cmd/gofmt/][gofmt]] 工具进行格式化。你可以通过点击
-[[javascript:highlightAndClick(".syntax-checkbox")][语法]] 按钮来开启或关闭语法高亮。
+点击 [[javascript:highlightAndClick("#format")][格式化]]
+（快捷键：`Ctrl` + `Enter`）后，
+[[/cmd/gofmt/][gofmt]] 工具会格式化编辑器中的文本。点击
+[[javascript:highlightAndClick(".syntax-checkbox")][语法]] 按钮可开启或关闭语法高亮。
 
-当你准备好继续时，点击下方的 [[javascript:highlightAndClick(".next-page")][右箭头]] 或按 `PageDown` 键。
+准备继续时，点击下方的 [[javascript:highlightAndClick(".next-page")][右箭头]]，或按 `PageDown` 键。
 
 .play welcome/hello.go
