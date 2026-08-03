@@ -179,7 +179,20 @@ func (r *TranslationRunner) Run(ctx context.Context, pageID, locale, apiKey stri
 }
 
 func makeTranslationRequest(pageID, locale, page, glossaryRules, previous string) TranslationAPIRequest {
-	system := "Translate one complete A Tour of Go present.Section from English to Simplified Chinese. Return only complete parseable .article content. Preserve every protection token exactly once and in order. Mandatory glossary translations must be used, corresponding English display text must not remain, and the meaning must not be simplified or changed."
+	system := `Translate one complete A Tour of Go present.Section from English to Simplified Chinese. Return only complete parseable .article content. Preserve every protection token exactly once and in order. Mandatory glossary translations must be used, corresponding English display text must not remain, and the meaning must not be simplified or changed.
+
+中文表达要求：
+1. 翻译前先理解完整 present.Section 的页面用途和上下文，不要逐词翻译或机械照搬英文语序。
+2. 页面标题应简洁、自然并准确概括页面主题。简短、含双关或依赖上下文的标题，应根据完整页面含义翻译，不能生硬拼接字面译法。
+3. 正文采用自然、清楚、简洁的中国大陆简体中文技术教程风格。在不遗漏、不增加、不改变技术含义的前提下，可以调整语序，并可在同一段落内合理拆分或合并句子。
+4. 避免明显的机器翻译表达，例如机械使用“它们”“你自己”“来进行……”，以及不自然的被动语态或英语式定语顺序。
+5. 准确区分用户操作：按钮应点击；链接应点击；键盘按键应按或按下；命令应执行；文本内容应输入。不得把按键描述为输入字符串，也不得混淆按钮、命令和链接。
+6. 技术词语应根据当前语境选择准确、自然的中文译法，不要仅按固定字典逐词替换。
+7. 可以润色普通中文文本，但不得改变、增删或重新标记任何受保护结构。尤其不得自行新增或删除行内代码反引号、预格式化代码、present directive、链接及链接 target、HTML 或特殊 present 语法；受保护内容的数量、顺序和形式必须保持一致。
+8. 不得增加原文没有的解释、提示、结论或标题。
+9. 输出前静默自检：标题是否自然；是否存在英文语序或机器翻译腔；操作说明是否符合真实操作；技术含义和信息量是否与原文一致；是否无意增删了行内代码、链接、directive 或其他结构。
+
+只输出最终完整的 present.Section，不输出分析、说明或修改过程。`
 	user := fmt.Sprintf("page_id: %s\nsource_locale: en\ntarget_locale: %s\n\nMandatory glossary rules:\n%s\n\nComplete protected page:\n%s", pageID, locale, glossaryRules, page)
 	if previous != "" {
 		user += "\n\nPrevious full-page attempt failed validation: " + previous + ". Translate the complete page again."

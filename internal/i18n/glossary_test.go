@@ -11,12 +11,13 @@ func TestZhCNMandatoryGlossary(t *testing.T) {
 		t.Fatal(err)
 	}
 	want := map[string]string{
-		"A Tour of Go": "Go 语言之旅",
-		"previous":     "上一页",
-		"next":         "下一页",
-		"Run":          "运行",
-		"Format":       "格式化",
-		"slides":       "页面",
+		"A Tour of Go":  "Go 语言之旅",
+		"previous":      "上一页",
+		"next":          "下一页",
+		"Run":           "运行",
+		"Format":        "格式化",
+		"slides":        "页面",
+		"Go Playground": "Go 语言演练场",
 	}
 	for key, value := range want {
 		if got := glossary.Mandatory[key]; got != value {
@@ -31,11 +32,11 @@ func TestZhCNMandatoryGlossary(t *testing.T) {
 			t.Errorf("forbidden missing %q: %v", value, glossary.Forbidden)
 		}
 	}
-	if glossary.Preferred["tour"] != "教程" || glossary.Preferred["the tour"] != "本教程" {
+	if glossary.Preferred["tour"] != "教程" || glossary.Preferred["the tour"] != "本教程" || glossary.Preferred["sandbox"] != "沙箱" || glossary.Preferred["deterministic output"] != "确定性输出" {
 		t.Fatalf("preferred = %v", glossary.Preferred)
 	}
 	rules := glossary.PromptRules("welcome/1")
-	for _, text := range []string{"mandatory", "do not retain the English display text", "A Tour of Go => Go 语言之旅", "ordinary prose tour => 教程", "ordinary prose the tour => 本教程", "do not simplify or change"} {
+	for _, text := range []string{"mandatory", "do not retain the English display text", "A Tour of Go => Go 语言之旅", "Go Playground => Go 语言演练场", "ordinary prose tour => 教程", "ordinary prose the tour => 本教程", "ordinary prose sandbox => 沙箱", "ordinary prose deterministic output => 确定性输出", "do not simplify or change"} {
 		if !strings.Contains(rules, text) {
 			t.Errorf("prompt rules missing %q", text)
 		}

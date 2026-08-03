@@ -36,19 +36,18 @@ func TestCommittedStatus(t *testing.T) {
 			if s.State != "ready" || s.Attempts != 1 || s.CandidatePath != "locales/zh-CN/candidates/welcome-3.article" || s.UpdatedAt != "2026-08-03T09:45:27Z" || s.Note != "人工评审修订后的 candidate 已通过现有 validator" {
 				t.Fatalf("welcome/3 status: %+v", s)
 			}
+		case "welcome/4":
+			if s.State != "ready" || s.Attempts != 1 || s.CandidatePath != "locales/zh-CN/candidates/welcome-4.article" || s.UpdatedAt != "2026-08-03T10:17:53Z" || s.Note != "人工评审修订后的 candidate 已通过现有 validator" {
+				t.Fatalf("welcome/4 status: %+v", s)
+			}
+		case "welcome/5":
+			if s.State != "ready" || s.Attempts != 1 || s.CandidatePath != "locales/zh-CN/candidates/welcome-5.article" || s.UpdatedAt != "2026-08-03T10:50:33Z" || s.Note != "人工评审修订后的 candidate 已通过现有 validator" {
+				t.Fatalf("welcome/5 status: %+v", s)
+			}
 		default:
 			if s.State != "pending" || s.Attempts != 0 || s.CandidatePath != "" {
 				t.Fatalf("non-initial status: %+v", s)
 			}
-		}
-	}
-	for _, pageID := range []string{"welcome/4", "welcome/5"} {
-		status, candidate, err := LoadTranslationResult(root, pageID, "zh-CN")
-		if err != nil {
-			t.Fatal(err)
-		}
-		if status.State != "pending" || status.Attempts != 0 || status.CandidatePath != "" || candidate != "" {
-			t.Fatalf("%s translation result: status=%+v candidate=%q", pageID, status, candidate)
 		}
 	}
 }

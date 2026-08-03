@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "202608031813383ae2b52813724d4f",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 514,
+    "completion_tokens": 221,
+    "total_tokens": 735
+  },
+  "content": "* ⟪GTI18N_bb517d4b_000001⟫ 离线（可选）\n\n本教程也可作为独立程序使用，无需连接互联网即可运行。它会在你的本地机器上构建并运行代码示例。\n\n要在本地运行本教程，你需要先\n[[⟪GTI18N_bb517d4b_000002⟫][安装 ⟪GTI18N_bb517d4b_000003⟫]]，然后执行：\n\n  go install golang.org/x/website/tour@latest\n\n这会将 ⟪GTI18N_bb517d4b_000004⟫ 二进制文件放在你的\n[[⟪GTI18N_bb517d4b_000005⟫][GOPATH]] 的 ⟪GTI18N_bb517d4b_000006⟫ 目录下。\n当你运行该教程程序时，它会打开一个网络浏览器，显示本教程的本地版本。\n\n当然，你也可以继续通过本网站来进行本教程的学习。",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* ⟪GTI18N_bb517d4b_000001⟫ 离线（可选）\n\n本教程也可作为独立程序使用，无需连接互联网即可运行。它会在你的本地机器上构建并运行代码示例。\n\n要在本地运行本教程，你需要先\n[[⟪GTI18N_bb517d4b_000002⟫][安装 ⟪GTI18N_bb517d4b_000003⟫]]，然后执行：\n\n  go install golang.org/x/website/tour@latest\n\n这会将 ⟪GTI18N_bb517d4b_000004⟫ 二进制文件放在你的\n[[⟪GTI18N_bb517d4b_000005⟫][GOPATH]] 的 ⟪GTI18N_bb517d4b_000006⟫ 目录下。\n当你运行该教程程序时，它会打开一个网络浏览器，显示本教程的本地版本。\n\n当然，你也可以继续通过本网站来进行本教程的学习。",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1785752022,
+    "id": "202608031813383ae2b52813724d4f",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "202608031813383ae2b52813724d4f",
+    "usage": {
+      "completion_tokens": 221,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 514,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "total_tokens": 735
+    }
+  }
+}

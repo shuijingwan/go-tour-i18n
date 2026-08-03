@@ -160,7 +160,11 @@ func TestWelcomePersistentIDAndBaselineShape(t *testing.T) {
 			t.Fatal("welcome/5 projected source is incomplete")
 		}
 		if expected.id == "welcome/4" || expected.id == "welcome/5" {
-			if err := ValidateCandidate(repoRoot(t), catalog, expected.id, page.Source); err != nil {
+			candidate := page.Source
+			if expected.id == "welcome/5" {
+				candidate = bytes.Replace(candidate, []byte("[Go Playground]"), []byte("[Go 语言演练场]"), 1)
+			}
+			if err := ValidateCandidate(repoRoot(t), catalog, expected.id, candidate); err != nil {
 				t.Fatalf("%s projected source is not candidate-valid: %v", expected.id, err)
 			}
 		}

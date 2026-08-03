@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "20260803184208373330baaf234b4a",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 1006,
+    "completion_tokens": 329,
+    "total_tokens": 1335
+  },
+  "content": "* ⟪GTI18N_19e6d7da_000001⟫ 演练场\n\n本教程基于 [[⟪GTI18N_19e6d7da_000002⟫][⟪GTI18N_19e6d7da_000003⟫ 演练场]] 构建，这是运行在 [[⟪GTI18N_19e6d7da_000004⟫][golang.org]] 服务器上的一个 Web 服务。\n\n该服务接收 ⟪GTI18N_19e6d7da_000005⟫ 程序，在沙箱中进行编译、链接和运行，然后返回输出结果。\n\n在演练场中运行的程序有以下限制：\n\n- 演练场中的时间从 2009-11-10 23:00:00 UTC 开始（这个日期的意义留给读者思考）。这样可以通过让程序产生确定的输出来更容易地缓存程序。\n\n- 对执行时间以及 CPU 和内存使用量也有限制，并且程序无法访问外部网络主机。\n\n演练场使用 ⟪GTI18N_19e6d7da_000006⟫ 的最新稳定版本。\n\n阅读 \"[[⟪GTI18N_19e6d7da_000007⟫][深入了解 ⟪GTI18N_19e6d7da_000008⟫ 演练场]]\" 以了解更多信息。\n\n⟪GTI18N_19e6d7da_000009⟫",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* ⟪GTI18N_19e6d7da_000001⟫ 演练场\n\n本教程基于 [[⟪GTI18N_19e6d7da_000002⟫][⟪GTI18N_19e6d7da_000003⟫ 演练场]] 构建，这是运行在 [[⟪GTI18N_19e6d7da_000004⟫][golang.org]] 服务器上的一个 Web 服务。\n\n该服务接收 ⟪GTI18N_19e6d7da_000005⟫ 程序，在沙箱中进行编译、链接和运行，然后返回输出结果。\n\n在演练场中运行的程序有以下限制：\n\n- 演练场中的时间从 2009-11-10 23:00:00 UTC 开始（这个日期的意义留给读者思考）。这样可以通过让程序产生确定的输出来更容易地缓存程序。\n\n- 对执行时间以及 CPU 和内存使用量也有限制，并且程序无法访问外部网络主机。\n\n演练场使用 ⟪GTI18N_19e6d7da_000006⟫ 的最新稳定版本。\n\n阅读 \"[[⟪GTI18N_19e6d7da_000007⟫][深入了解 ⟪GTI18N_19e6d7da_000008⟫ 演练场]]\" 以了解更多信息。\n\n⟪GTI18N_19e6d7da_000009⟫",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1785753731,
+    "id": "20260803184208373330baaf234b4a",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "20260803184208373330baaf234b4a",
+    "usage": {
+      "completion_tokens": 329,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 1006,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "total_tokens": 1335
+    }
+  }
+}

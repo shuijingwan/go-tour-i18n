@@ -103,6 +103,40 @@ func TestTranslationClientUsesRoundTripperAndCapturesMetadata(t *testing.T) {
 	}
 }
 
+func TestTranslationRequestIncludesNaturalChineseGuidance(t *testing.T) {
+	request := makeTranslationRequest("example/1", "zh-CN", "* Contextual title\n\nProtected page.\n", "- glossary rule", "")
+	if len(request.Messages) != 2 || request.Messages[0].Role != "system" || request.Messages[1].Role != "user" {
+		t.Fatalf("messages = %+v", request.Messages)
+	}
+	system := request.Messages[0].Content
+	wants := []string{
+		"理解完整 present.Section 的页面用途和上下文",
+		"页面标题应简洁、自然并准确概括页面主题",
+		"中国大陆简体中文技术教程风格",
+		"按钮应点击；链接应点击；键盘按键应按或按下；命令应执行；文本内容应输入",
+		"不得自行新增或删除行内代码反引号、预格式化代码、present directive、链接及链接 target、HTML 或特殊 present 语法",
+		"只输出最终完整的 present.Section，不输出分析、说明或修改过程",
+	}
+	for _, want := range wants {
+		if !strings.Contains(system, want) {
+			t.Errorf("system prompt missing %q", want)
+		}
+	}
+	for _, preserved := range []string{
+		"Preserve every protection token exactly once and in order.",
+		"Mandatory glossary translations must be used",
+		"the meaning must not be simplified or changed",
+	} {
+		if !strings.Contains(system, preserved) {
+			t.Errorf("system prompt weakened existing rule %q", preserved)
+		}
+	}
+	user := request.Messages[1].Content
+	if !strings.Contains(user, "Mandatory glossary rules:\n- glossary rule") || !strings.Contains(user, "Complete protected page:\n* Contextual title") {
+		t.Fatalf("user prompt lost glossary or protected page:\n%s", user)
+	}
+}
+
 func TestTranslationRunnerRetriesAndUsesPersistentPageID(t *testing.T) {
 	root := writeStatusFixture(t, "page_id\tstatus\tattempts\tsource_sha256\tcandidate_path\tupdated_at\tnote\n"+
 		"welcome/1\tpending\t0\t"+strings.Repeat("a", 64)+"\t\t\t\n")

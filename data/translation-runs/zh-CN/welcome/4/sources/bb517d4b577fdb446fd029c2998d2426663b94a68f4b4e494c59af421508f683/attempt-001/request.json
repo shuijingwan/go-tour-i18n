@@ -1,0 +1,24 @@
+{
+  "page_id": "welcome/4",
+  "locale": "zh-CN",
+  "source_sha256": "bb517d4b577fdb446fd029c2998d2426663b94a68f4b4e494c59af421508f683",
+  "body": {
+    "model": "glm-5.2",
+    "stream": false,
+    "thinking": {
+      "type": "disabled"
+    },
+    "do_sample": false,
+    "max_tokens": 8192,
+    "messages": [
+      {
+        "role": "system",
+        "content": "Translate one complete A Tour of Go present.Section from English to Simplified Chinese. Return only complete parseable .article content. Preserve every protection token exactly once and in order. Mandatory glossary translations must be used, corresponding English display text must not remain, and the meaning must not be simplified or changed."
+      },
+      {
+        "role": "user",
+        "content": "page_id: welcome/4\nsource_locale: en\ntarget_locale: zh-CN\n\nMandatory glossary rules:\n- A Tour of Go =\u003e Go 语言之旅 (mandatory; do not retain the English display text)\n- Format =\u003e 格式化 (mandatory; do not retain the English display text)\n- Run =\u003e 运行 (mandatory; do not retain the English display text)\n- next =\u003e 下一页 (mandatory; do not retain the English display text)\n- previous =\u003e 上一页 (mandatory; do not retain the English display text)\n- slides =\u003e 页面 (mandatory; do not retain the English display text)\n- ordinary prose the tour =\u003e 本教程 (contextual guidance; translate naturally as part of the complete page)\n- ordinary prose tour =\u003e 教程 (contextual guidance; translate naturally as part of the complete page)\n- forbidden zh-CN translation: 幻灯片\n- forbidden zh-CN translation: 本之旅\n- forbidden zh-CN translation: 欢迎使用 Go 编程语言之旅\n\nComplete protected page:\n* ⟪GTI18N_bb517d4b_000001⟫ offline (optional)\n\nThis tour is also available as a stand-alone program that you can use\nwithout access to the internet. It builds and runs the code samples on\nyour own machine.\n\nTo run the tour locally, you'll need to first\n[[⟪GTI18N_bb517d4b_000002⟫][install ⟪GTI18N_bb517d4b_000003⟫]] and then run:\n\n  go install golang.org/x/website/tour@latest\n\nThis will place a ⟪GTI18N_bb517d4b_000004⟫ binary in your\n[[⟪GTI18N_bb517d4b_000005⟫][GOPATH]]'s ⟪GTI18N_bb517d4b_000006⟫ directory.\nWhen you run the tour program, it will open a web browser displaying\nyour local version of the tour.\n\nOf course, you can continue to take the tour through this web site.\n"
+      }
+    ]
+  }
+}
