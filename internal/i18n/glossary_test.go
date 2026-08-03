@@ -40,6 +40,7 @@ func TestZhCNMandatoryGlossary(t *testing.T) {
 		"package":              "包",
 		"import path":          "导入路径",
 		"package name":         "包名",
+		"import statement":     "导入语句",
 	}
 	for key, value := range wantPreferred {
 		if got := glossary.Preferred[key]; got != value {

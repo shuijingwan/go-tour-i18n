@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "202608032126062c68178ab767482d",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 872,
+    "completion_tokens": 68,
+    "total_tokens": 940
+  },
+  "content": "* 导入\n\n这段代码将导入路径放在一个带圆括号的“分组”导入语句中。\n\n也可以分别编写多个导入语句，例如：\n\n\timport \"fmt\"\n\timport \"math\"\n\n但使用分组导入语句是更好的风格。\n\n⟪GTI18N_3329c9bf_000001⟫\n",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 导入\n\n这段代码将导入路径放在一个带圆括号的“分组”导入语句中。\n\n也可以分别编写多个导入语句，例如：\n\n\timport \"fmt\"\n\timport \"math\"\n\n但使用分组导入语句是更好的风格。\n\n⟪GTI18N_3329c9bf_000001⟫\n",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1785763568,
+    "id": "202608032126062c68178ab767482d",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "202608032126062c68178ab767482d",
+    "usage": {
+      "completion_tokens": 68,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 872,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "total_tokens": 940
+    }
+  }
+}
