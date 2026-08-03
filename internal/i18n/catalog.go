@@ -53,14 +53,19 @@ type Catalog struct {
 	Conditional []ConditionalPage
 }
 
+type publishedSection struct {
+	ID     string
+	Source []byte
+}
+
 func BuildCatalog(root string) (*Catalog, error) {
 	return buildCatalog(root, true)
 }
 
 // BuildSourceCatalog parses a prospective upstream tree without assuming the
-// fixed baseline page counts. IDs in the returned value describe current
-// routes only; persistent IDs are assigned exclusively by the committed
-// catalog and the explicit upstream synchronization process.
+// fixed baseline page counts. The publication projection assigns known
+// persistent IDs where the project has explicitly frozen them; reconciliation
+// remains responsible for preserving IDs across later upstream changes.
 func BuildSourceCatalog(root string) (*Catalog, error) {
 	return buildCatalog(root, false)
 }
@@ -78,17 +83,21 @@ func buildCatalog(root string, fixedShape bool) (*Catalog, error) {
 		if err != nil {
 			return nil, err
 		}
+		published, err := projectPublishedSections(article, pages, conditional)
+		if err != nil {
+			return nil, err
+		}
 		name := strings.TrimSuffix(article, ".article")
-		for i, source := range pages {
+		for i, section := range published {
+			source := section.Source
 			if err := parseSinglePage(root, article, source); err != nil {
 				return nil, fmt.Errorf("%s/%d: %w", name, i+1, err)
 			}
-			id := fmt.Sprintf("%s/%d", name, i+1)
 			catalog.Pages = append(catalog.Pages, Page{
-				ID:            id,
+				ID:            section.ID,
 				Article:       article,
 				SectionNumber: i + 1,
-				Route:         "/" + id,
+				Route:         fmt.Sprintf("/%s/%d", name, i+1),
 				SourceTitle:   pageTitle(source),
 				SourceSHA256:  sum(source),
 				PlayCount:     countDirective(source, ".play"),
@@ -114,6 +123,55 @@ func buildCatalog(root string, fixedShape bool) (*Catalog, error) {
 		return nil, err
 	}
 	return &catalog, nil
+}
+
+// projectPublishedSections is the single source of truth for the ordered,
+// translatable page projection. Conditional sources remain separately audited
+// in Catalog.Conditional even when a clean Section is also published here.
+func projectPublishedSections(article string, standalone, conditional [][]byte) ([]publishedSection, error) {
+	name := strings.TrimSuffix(article, ".article")
+	if article != "welcome.article" {
+		out := make([]publishedSection, 0, len(standalone))
+		for i, source := range standalone {
+			out = append(out, publishedSection{ID: fmt.Sprintf("%s/%d", name, i+1), Source: source})
+		}
+		return out, nil
+	}
+	if len(standalone) != 3 || len(conditional) != 2 {
+		return nil, fmt.Errorf("welcome publication projection requires 3 standalone and 2 conditional sections, got %d/%d", len(standalone), len(conditional))
+	}
+	return []publishedSection{
+		{ID: "welcome/1", Source: standalone[0]},
+		{ID: "welcome/2", Source: standalone[1]},
+		{ID: "welcome/4", Source: conditional[0]},
+		{ID: "welcome/5", Source: conditional[1]},
+		{ID: "welcome/3", Source: standalone[2]},
+	}, nil
+}
+
+func projectPublishedArticle(data []byte, article string) ([]byte, error) {
+	data = normalizeLF(data)
+	standalone, conditional, err := splitArticle(data, article)
+	if err != nil {
+		return nil, err
+	}
+	published, err := projectPublishedSections(article, standalone, conditional)
+	if err != nil {
+		return nil, err
+	}
+	if article != "welcome.article" {
+		return data, nil
+	}
+	start := bytes.Index(data, []byte("\n* "))
+	if start < 0 {
+		return nil, fmt.Errorf("%s: first present section not found", article)
+	}
+	start++
+	out := append([]byte(nil), data[:start]...)
+	for _, section := range published {
+		out = append(out, section.Source...)
+	}
+	return out, nil
 }
 
 func normalizeLF(data []byte) []byte {
@@ -238,8 +296,8 @@ func sum(source []byte) string {
 }
 
 func validateCatalog(c *Catalog, fixedShape bool) error {
-	if fixedShape && len(c.Pages) != 101 {
-		return fmt.Errorf("standalone pages = %d, want 101", len(c.Pages))
+	if fixedShape && len(c.Pages) != 103 {
+		return fmt.Errorf("published pages = %d, want 103", len(c.Pages))
 	}
 	if fixedShape && len(c.Conditional) != 2 {
 		return fmt.Errorf("conditional pages = %d, want 2", len(c.Conditional))
@@ -265,8 +323,8 @@ func validateCatalog(c *Catalog, fixedShape bool) error {
 			return fmt.Errorf("conditional %d: invalid title or source_sha256", p.ConditionalIndex)
 		}
 	}
-	if fixedShape && (plays != 92 || images != 1) {
-		return fmt.Errorf("directive totals: play=%d image=%d, want 92/1", plays, images)
+	if fixedShape && (plays != 93 || images != 1) {
+		return fmt.Errorf("directive totals: play=%d image=%d, want 93/1", plays, images)
 	}
 	return nil
 }

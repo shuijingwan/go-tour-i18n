@@ -59,7 +59,7 @@ func run(args []string) error {
 		if err := i18n.CheckCatalogFiles(root, catalog); err != nil {
 			return err
 		}
-		fmt.Printf("catalog OK: %d standalone pages, %d conditional pages\n", len(catalog.Pages), len(catalog.Conditional))
+		fmt.Printf("catalog OK: %d published pages, %d conditional source records\n", len(catalog.Pages), len(catalog.Conditional))
 		return nil
 	case "catalog write":
 		report, err := i18n.PreviewCatalog(catalog, current)
@@ -83,7 +83,7 @@ func run(args []string) error {
 		if err := os.WriteFile(filepath.Join(root, "data", "tour-conditional-pages.tsv"), conditional, 0644); err != nil {
 			return err
 		}
-		fmt.Printf("wrote %d standalone pages and %d conditional pages; persistent page IDs preserved\n", len(reconciled.Pages), len(reconciled.Conditional))
+		fmt.Printf("wrote %d published pages and %d conditional source records; persistent page IDs preserved\n", len(reconciled.Pages), len(reconciled.Conditional))
 		return nil
 	case "upstream preview":
 		fs := flag.NewFlagSet("upstream preview", flag.ContinueOnError)
@@ -239,8 +239,8 @@ func printJSON(value any) error {
 func printPreview(root, sourceRoot string, next *i18n.Catalog, report *i18n.PreviewReport) {
 	fmt.Printf("catalog baseline: %s/data/tour-pages.tsv\n", root)
 	fmt.Printf("source root: %s\n", sourceRoot)
-	fmt.Printf("standalone pages: %d\n", len(next.Pages))
-	fmt.Printf("conditional pages: %d\n", len(next.Conditional))
+	fmt.Printf("published pages: %d\n", len(next.Pages))
+	fmt.Printf("conditional source records: %d\n", len(next.Conditional))
 	for _, kind := range i18n.ChangeKinds {
 		fmt.Printf("%s: %d\n", kind, report.Count(kind))
 	}

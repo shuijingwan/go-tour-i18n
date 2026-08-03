@@ -102,7 +102,7 @@ func TestPersistentIDsAndReconcile(t *testing.T) {
 		ids = append(ids, page.ID)
 	}
 	h := sha256.Sum256([]byte(strings.Join(ids, "\n") + "\n"))
-	if got, want := hex.EncodeToString(h[:]), "0a053e8f81bf3944ad57b41f6eb26c9a8b9799a02e63dea7befd00296009225b"; got != want {
+	if got, want := hex.EncodeToString(h[:]), "76313a2fd5fd79405589925070c9fb63657f56767d279d6d4c9764c520238175"; got != want {
 		t.Fatalf("frozen page_id set changed: digest=%s", got)
 	}
 	statuses, err := ReadStatuses(filepath.Join(root, "locales", "zh-CN", "status.tsv"))

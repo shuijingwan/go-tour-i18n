@@ -7,8 +7,8 @@
 ## 当前阶段
 
 - 已从固定官方上游导入可独立运行、测试、解析和渲染的英文 Tour 基线。
-- 已建立 101 个 standalone 页面及 2 个条件页面的机器可读目录。
-- 已建立 `zh-CN` 语言 scaffold、术语表边界和只读状态校验；101 页当前全部为 `pending`。
+- 已建立 103 个正式发布页面及 2 条条件源审计记录的机器可读目录。
+- 已建立 `zh-CN` 语言 scaffold、术语表边界和状态校验；前三个 welcome 页面已有 ready 定稿。
 - 第一阶段目标语言仍为简体中文 `zh-CN`，但尚未开始中文翻译。
 - 已整合受限的 `welcome/1` 单页翻译执行器，但尚未实际调用外部模型，也未生成译文。
 - 当前 module path 为 `github.com/shuijingwan/go-tour-i18n`。
@@ -17,14 +17,14 @@
 当前英文基线包含：
 
 - 7 个一级 `.article`；
-- 101 个 standalone 普通课程页面；
-- 92 个普通 `.play` 引用；
+- 103 个正式发布课程页面，其中两个由 `#appengine:` 条件源去标记后投影；
+- 93 个 `.play` 引用；
 - 1 个 `.image` 引用；
-- 2 个单独记录、且不计入上述 101 页的 `#appengine:` 条件页面。
+- 2 条继续单独保留的 `#appengine:` 条件源审计记录。
 
 翻译的最小单元是一个完整顶层 `present.Section`，不会拆成句子级或多 text 槽位 JSON。页面目录位于 [`data/tour-pages.tsv`](data/tour-pages.tsv)，zh-CN 状态位于 [`locales/zh-CN/status.tsv`](locales/zh-CN/status.tsv)。当前 scaffold 不是可发布的中文版，详细约定见 [`locales/zh-CN/README.md`](locales/zh-CN/README.md) 和 [LANGUAGES.md](LANGUAGES.md)。
 
-目录中的 `page_id` 是语言状态、候选文件和发布记录的持久身份；`route` 是可能随上游变化的当前访问路径，`article` 和 `section_number` 是可能变化的当前位置。当前 101 个 ID 已冻结，不会因插入、删除、重排或改标题而自动重编号。完整规则见 [PAGE_IDENTITY.md](PAGE_IDENTITY.md)。
+目录中的 `page_id` 是语言状态、候选文件和发布记录的持久身份；`route` 是可能随上游变化的当前访问路径，`article` 和 `section_number` 是可能变化的发布投影位置。当前 103 个 ID 已冻结，不会因插入、删除、重排或改标题而自动重编号。完整规则见 [PAGE_IDENTITY.md](PAGE_IDENTITY.md)。
 
 ## 多语言维护工具
 
@@ -57,7 +57,7 @@ go run -mod=readonly ./cmd/tour-i18n page export \
   --output /tmp/welcome-1.article
 ```
 
-检查 zh-CN locale 和 101 页状态：
+检查 zh-CN locale 和 103 页状态：
 
 ```bash
 go run -mod=readonly ./cmd/tour-i18n status check --locale zh-CN

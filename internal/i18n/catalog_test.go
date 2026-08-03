@@ -23,7 +23,7 @@ func TestCatalogBaseline(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(c.Pages) != 101 || len(c.Conditional) != 2 {
+	if len(c.Pages) != 103 || len(c.Conditional) != 2 {
 		t.Fatalf("pages=%d conditional=%d", len(c.Pages), len(c.Conditional))
 	}
 	plays, images := 0, 0
@@ -39,7 +39,7 @@ func TestCatalogBaseline(t *testing.T) {
 			t.Fatalf("%s: unstable hash", p.ID)
 		}
 	}
-	if plays != 92 || images != 1 {
+	if plays != 93 || images != 1 {
 		t.Fatalf("play/image=%d/%d", plays, images)
 	}
 	for article, numbers := range perArticle {
@@ -130,14 +130,45 @@ func TestWelcomePersistentIDAndBaselineShape(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	page, err := catalog.Page("welcome/1")
-	if err != nil {
-		t.Fatal(err)
+	want := []struct {
+		id, route, title, hash string
+	}{
+		{"welcome/1", "/welcome/1", "Hello, 世界", "3fbd64163f0301d60fcf1440c8aa65a79358e7028fec433aee49ae0c364d3034"},
+		{"welcome/2", "/welcome/2", "Go local", "556b44959e651ea6ba4bfae4eb635956bd18aad70626bc5bda3f4e3b7eeeb681"},
+		{"welcome/4", "/welcome/3", "Go offline (optional)", "bb517d4b577fdb446fd029c2998d2426663b94a68f4b4e494c59af421508f683"},
+		{"welcome/5", "/welcome/4", "The Go Playground", "19e6d7da57ca1d191c485754f3dd4ac87775c651b8c0ae8e05c03cbd9b225897"},
+		{"welcome/3", "/welcome/5", "Congratulations", "9a6983b2e50b2fa78ff4f65683210714aea1c1575418e36796c156950ec6330d"},
 	}
-	if page.Route != "/welcome/1" || page.SectionNumber != 1 {
-		t.Fatalf("welcome/1 identity changed: %+v", page)
+	for section, expected := range want {
+		page, err := catalog.Page(expected.id)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if page.Route != expected.route || page.SectionNumber != section+1 || page.SourceTitle != expected.title || page.SourceSHA256 != expected.hash {
+			t.Fatalf("%s projection = %+v", expected.id, page)
+		}
+		if bytes.Contains(page.Source, []byte("#appengine:")) {
+			t.Fatalf("%s projected source contains condition marker", expected.id)
+		}
+		if err := parseSinglePage(repoRoot(t), page.Article, page.Source); err != nil {
+			t.Fatalf("%s projected source: %v", expected.id, err)
+		}
+		if expected.id == "welcome/4" && !bytes.Contains(page.Source, []byte("go install golang.org/x/website/tour@latest")) {
+			t.Fatal("welcome/4 projected source is incomplete")
+		}
+		if expected.id == "welcome/5" && !bytes.Contains(page.Source, []byte("The playground uses the latest stable release of Go.")) {
+			t.Fatal("welcome/5 projected source is incomplete")
+		}
+		if expected.id == "welcome/4" || expected.id == "welcome/5" {
+			if err := ValidateCandidate(repoRoot(t), catalog, expected.id, page.Source); err != nil {
+				t.Fatalf("%s projected source is not candidate-valid: %v", expected.id, err)
+			}
+		}
 	}
-	if len(catalog.Pages) != 101 || len(catalog.Conditional) != 2 {
+	if len(catalog.Pages) != 103 || len(catalog.Conditional) != 2 {
 		t.Fatalf("pages=%d conditional=%d", len(catalog.Pages), len(catalog.Conditional))
+	}
+	if _, err := catalog.Page("welcome/appengine/1"); err == nil {
+		t.Fatal("unprojected conditional identifier was accepted")
 	}
 }

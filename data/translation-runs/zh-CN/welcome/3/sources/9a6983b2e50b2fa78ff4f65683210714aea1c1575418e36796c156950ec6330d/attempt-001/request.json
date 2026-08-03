@@ -1,0 +1,24 @@
+{
+  "page_id": "welcome/3",
+  "locale": "zh-CN",
+  "source_sha256": "9a6983b2e50b2fa78ff4f65683210714aea1c1575418e36796c156950ec6330d",
+  "body": {
+    "model": "glm-5.2",
+    "stream": false,
+    "thinking": {
+      "type": "disabled"
+    },
+    "do_sample": false,
+    "max_tokens": 8192,
+    "messages": [
+      {
+        "role": "system",
+        "content": "Translate one complete A Tour of Go present.Section from English to Simplified Chinese. Return only complete parseable .article content. Preserve every protection token exactly once and in order. Mandatory glossary translations must be used, corresponding English display text must not remain, and the meaning must not be simplified or changed."
+      },
+      {
+        "role": "user",
+        "content": "page_id: welcome/3\nsource_locale: en\ntarget_locale: zh-CN\n\nMandatory glossary rules:\n- A Tour of Go =\u003e Go 语言之旅 (mandatory; do not retain the English display text)\n- Format =\u003e 格式化 (mandatory; do not retain the English display text)\n- Run =\u003e 运行 (mandatory; do not retain the English display text)\n- next =\u003e 下一页 (mandatory; do not retain the English display text)\n- previous =\u003e 上一页 (mandatory; do not retain the English display text)\n- slides =\u003e 页面 (mandatory; do not retain the English display text)\n- ordinary prose the tour =\u003e 本教程 (contextual guidance; translate naturally as part of the complete page)\n- ordinary prose tour =\u003e 教程 (contextual guidance; translate naturally as part of the complete page)\n- forbidden zh-CN translation: 幻灯片\n- forbidden zh-CN translation: 本之旅\n- forbidden zh-CN translation: 欢迎使用 Go 编程语言之旅\n\nComplete protected page:\n* Congratulations\n\nYou've finished the first module of the tour!\n\nNow click on [[⟪GTI18N_9a6983b2_000001⟫][⟪GTI18N_9a6983b2_000002⟫]] to find out what else\nyou can learn about ⟪GTI18N_9a6983b2_000003⟫, or go directly to the [[⟪GTI18N_9a6983b2_000004⟫][next lesson]].\n"
+      }
+    ]
+  }
+}

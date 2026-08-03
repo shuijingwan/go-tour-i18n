@@ -48,4 +48,22 @@ func TestBuildCandidatePreviewDoesNotModifyEnglishSource(t *testing.T) {
 	if bytes.Contains(original, []byte("Go 语言之旅")) {
 		t.Fatal("repository English source unexpectedly contains candidate text")
 	}
+	if bytes.Contains(temporary, []byte("#appengine:")) {
+		t.Fatal("temporary preview contains appengine markers")
+	}
+	wantTitles := [][]byte{
+		[]byte("* Hello, 世界"),
+		[]byte("* Go local"),
+		[]byte("* Go offline (optional)"),
+		[]byte("* The Go Playground"),
+		[]byte("* Congratulations"),
+	}
+	previous := -1
+	for _, title := range wantTitles {
+		index := bytes.Index(temporary, title)
+		if index <= previous {
+			t.Fatalf("temporary preview publication order is wrong at %q", title)
+		}
+		previous = index
+	}
 }

@@ -54,6 +54,10 @@ func BuildCandidatePreview(root string, catalog *Catalog, pageID, locale, tempRo
 	if err != nil {
 		return nil, err
 	}
+	article, err = projectPublishedArticle(article, page.Article)
+	if err != nil {
+		return nil, fmt.Errorf("project %s: %w", page.Article, err)
+	}
 	replaced, err := replacePreviewSection(article, page.SectionNumber, []byte(candidate))
 	if err != nil {
 		return nil, fmt.Errorf("replace %s: %w", pageID, err)

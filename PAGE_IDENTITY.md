@@ -2,11 +2,13 @@
 
 ## `page_id` 的用途
 
-`page_id` 是课程页面在本项目中的持久身份，也是语言状态、候选文件和未来发布记录的永久关联键。当前 [`data/tour-pages.tsv`](data/tour-pages.tsv) 中的 101 个 `page_id` 自本提交起冻结。
+`page_id` 是课程页面在本项目中的持久身份，也是语言状态、候选文件和未来发布记录的永久关联键。当前 [`data/tour-pages.tsv`](data/tour-pages.tsv) 中的 103 个正式发布页面 `page_id` 已冻结。
 
 `route` 是页面当前的课程访问路径，`article` 和 `section_number` 是页面在当前上游 article 中的位置，`source_title` 用于诊断，`source_sha256` 标识当前完整英文页面源版本。这些字段都可能在上游更新时变化，但变化本身不得导致 `page_id` 自动变化。
 
 当前 ID（如 `welcome/1`、`basics/17`）看起来与 route 和位置编号相同，只是因为首次分配采用了当时的位置。不能据此假定未来 `page_id` 永远等于 route，也不能从新的 `section_number` 重新生成 ID。
+
+`welcome/4` 与 `welcome/5` 是从上游 `#appengine:` 条件源投影出的正式页面，当前 route 分别为 `/welcome/3` 与 `/welcome/4`；原有 `welcome/3` 的 route 因发布顺序插入而移动到 `/welcome/5`，其持久 ID 与源哈希均保持不变。条件源本身仍在 `data/tour-conditional-pages.tsv` 中独立留档。
 
 ## 上游变化规则
 

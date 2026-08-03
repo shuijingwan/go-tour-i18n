@@ -4,7 +4,7 @@
 
 - 翻译单元是一个完整的顶层 `present.Section`，不采用句子级或多 text 槽位 JSON。
 - 英文源来自固定官方上游基线，页面目录见 [`../../data/tour-pages.tsv`](../../data/tour-pages.tsv)。
-- 页面状态见 [`status.tsv`](status.tsv)，当前 101 页全部为 `pending`。
+- 页面状态见 [`status.tsv`](status.tsv)，覆盖 103 个正式发布页面；`welcome/1` 至 `welcome/3` 已 ready，新增 `welcome/4`、`welcome/5` 初始为 pending。
 - `page_id` 是状态和语言文件的持久关联键；route、上游位置或标题变化时不得自动更换 ID，规则见 [`../../PAGE_IDENTITY.md`](../../PAGE_IDENTITY.md)。
 - 未来页面文件位于 [`pages/`](pages/)，公共 UI 文案位于 [`ui/`](ui/)。
 - 术语记录在 [`glossary.tsv`](glossary.tsv)，当前仅有表头。
