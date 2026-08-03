@@ -133,7 +133,7 @@ func TestWelcomePersistentIDAndBaselineShape(t *testing.T) {
 	want := []struct {
 		id, route, title, hash string
 	}{
-		{"welcome/1", "/welcome/1", "Hello, 世界", "3fbd64163f0301d60fcf1440c8aa65a79358e7028fec433aee49ae0c364d3034"},
+		{"welcome/1", "/welcome/1", "Hello, 世界", "1f581133d7fa40e6490418c6789a60a2f5e1de26c9c86d7eb6120cb58b145857"},
 		{"welcome/2", "/welcome/2", "Go local", "556b44959e651ea6ba4bfae4eb635956bd18aad70626bc5bda3f4e3b7eeeb681"},
 		{"welcome/4", "/welcome/3", "Go offline (optional)", "bb517d4b577fdb446fd029c2998d2426663b94a68f4b4e494c59af421508f683"},
 		{"welcome/5", "/welcome/4", "The Go Playground", "19e6d7da57ca1d191c485754f3dd4ac87775c651b8c0ae8e05c03cbd9b225897"},
@@ -149,6 +149,9 @@ func TestWelcomePersistentIDAndBaselineShape(t *testing.T) {
 		}
 		if bytes.Contains(page.Source, []byte("#appengine:")) {
 			t.Fatalf("%s projected source contains condition marker", expected.id)
+		}
+		if expected.id == "welcome/1" && (bytes.Contains(page.Source, []byte("your computer.")) || !bytes.Contains(page.Source, []byte("a remote server."))) {
+			t.Fatal("welcome/1 did not select only the remote execution branch")
 		}
 		if err := parseSinglePage(repoRoot(t), page.Article, page.Source); err != nil {
 			t.Fatalf("%s projected source: %v", expected.id, err)

@@ -51,6 +51,9 @@ func TestBuildCandidatePreviewDoesNotModifyEnglishSource(t *testing.T) {
 	if bytes.Contains(temporary, []byte("#appengine:")) {
 		t.Fatal("temporary preview contains appengine markers")
 	}
+	if !bytes.Contains(temporary, []byte("在远程服务器上编译并运行该程序")) || bytes.Contains(temporary, []byte("在你的电脑上编译并运行该程序")) {
+		t.Fatal("temporary preview did not select the translated remote execution branch")
+	}
 	wantTitles := [][]byte{
 		[]byte("* Hello, 世界"),
 		[]byte("* Go local"),

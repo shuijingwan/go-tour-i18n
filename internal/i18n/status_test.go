@@ -25,7 +25,7 @@ func TestCommittedStatus(t *testing.T) {
 	for _, s := range statuses {
 		switch s.PageID {
 		case "welcome/1":
-			if s.State != "ready" || s.Attempts != 6 || s.CandidatePath != "locales/zh-CN/candidates/welcome-1.article" {
+			if s.State != "ready" || s.Attempts != 6 || s.SourceSHA256 != "1f581133d7fa40e6490418c6789a60a2f5e1de26c9c86d7eb6120cb58b145857" || s.CandidatePath != "locales/zh-CN/candidates/welcome-1.article" || s.UpdatedAt != "2026-08-03T11:01:01Z" || s.Note != "发布投影切换为远程执行分支，人工同步后的 candidate 已通过现有 validator" {
 				t.Fatalf("welcome/1 status: %+v", s)
 			}
 		case "welcome/2":

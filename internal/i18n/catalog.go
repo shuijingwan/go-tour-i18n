@@ -83,7 +83,7 @@ func buildCatalog(root string, fixedShape bool) (*Catalog, error) {
 		if err != nil {
 			return nil, err
 		}
-		published, err := projectPublishedSections(article, pages, conditional)
+		published, err := projectPublishedSections(article, data, pages, conditional)
 		if err != nil {
 			return nil, err
 		}
@@ -128,7 +128,7 @@ func buildCatalog(root string, fixedShape bool) (*Catalog, error) {
 // projectPublishedSections is the single source of truth for the ordered,
 // translatable page projection. Conditional sources remain separately audited
 // in Catalog.Conditional even when a clean Section is also published here.
-func projectPublishedSections(article string, standalone, conditional [][]byte) ([]publishedSection, error) {
+func projectPublishedSections(article string, articleSource []byte, standalone, conditional [][]byte) ([]publishedSection, error) {
 	name := strings.TrimSuffix(article, ".article")
 	if article != "welcome.article" {
 		out := make([]publishedSection, 0, len(standalone))
@@ -140,13 +140,52 @@ func projectPublishedSections(article string, standalone, conditional [][]byte) 
 	if len(standalone) != 3 || len(conditional) != 2 {
 		return nil, fmt.Errorf("welcome publication projection requires 3 standalone and 2 conditional sections, got %d/%d", len(standalone), len(conditional))
 	}
+	remoteArticle := projectConditionalContent(articleSource, "appengine")
+	remotePages, _, err := splitArticle(remoteArticle, article)
+	if err != nil {
+		return nil, err
+	}
+	if len(remotePages) != 5 || bytes.Contains(remotePages[0], []byte("#appengine:")) || bytes.Contains(remotePages[0], []byte("your computer.")) || !bytes.Contains(remotePages[0], []byte("a remote server.")) {
+		return nil, fmt.Errorf("welcome remote publication branch is incomplete")
+	}
 	return []publishedSection{
-		{ID: "welcome/1", Source: standalone[0]},
+		{ID: "welcome/1", Source: remotePages[0]},
 		{ID: "welcome/2", Source: standalone[1]},
 		{ID: "welcome/4", Source: conditional[0]},
 		{ID: "welcome/5", Source: conditional[1]},
 		{ID: "welcome/3", Source: standalone[2]},
 	}, nil
+}
+
+// projectConditionalContent applies the upstream conditional-line semantics
+// without changing the checked-in article. A conditional line replaces the
+// next non-blank fallback line; full conditional sections are retained after
+// their prefixes are removed.
+func projectConditionalContent(data []byte, condition string) []byte {
+	prefix := "#" + condition + ":"
+	dropFallback := false
+	var out strings.Builder
+	for _, line := range strings.SplitAfter(string(normalizeLF(data)), "\n") {
+		plain := strings.TrimSuffix(line, "\n")
+		if strings.HasPrefix(plain, prefix) {
+			projected := strings.TrimPrefix(plain, prefix)
+			projected = strings.TrimPrefix(projected, " ")
+			out.WriteString(projected)
+			if strings.HasSuffix(line, "\n") {
+				out.WriteByte('\n')
+			}
+			dropFallback = true
+			continue
+		}
+		if dropFallback {
+			dropFallback = false
+			if plain != "" {
+				continue
+			}
+		}
+		out.WriteString(line)
+	}
+	return []byte(out.String())
 }
 
 func projectPublishedArticle(data []byte, article string) ([]byte, error) {
@@ -155,7 +194,7 @@ func projectPublishedArticle(data []byte, article string) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	published, err := projectPublishedSections(article, standalone, conditional)
+	published, err := projectPublishedSections(article, data, standalone, conditional)
 	if err != nil {
 		return nil, err
 	}
