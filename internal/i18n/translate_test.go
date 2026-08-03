@@ -56,6 +56,69 @@ func TestTranslationProtectionRoundTripAndFailures(t *testing.T) {
 	}
 }
 
+func TestPresentInlineCodeProtection(t *testing.T) {
+	tests := []struct {
+		name, source, raw, content string
+	}{
+		{"ordinary", "Use `main`.", "`main`", "main"},
+		{"legacy space", "statement `package`rand`.", "`package`rand`", "package rand"},
+		{"multiple legacy spaces", "call `go`test`./...`.", "`go`test`./...`", "go test ./..."},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			codes := presentInlineCodes(tt.source)
+			if len(codes) != 1 || codes[0].Raw != tt.raw || codes[0].Content != tt.content {
+				t.Fatalf("presentInlineCodes(%q) = %+v", tt.source, codes)
+			}
+			if strings.HasSuffix(codes[0].Raw, ".") {
+				t.Fatalf("trailing period included in code span: %q", codes[0].Raw)
+			}
+			p := protectTranslation([]byte(tt.source), sum([]byte(tt.source)), nil)
+			if len(p.Values) != 1 || p.Values[0] != tt.raw {
+				t.Fatalf("protected values = %q, want [%q]", p.Values, tt.raw)
+			}
+			restored, failures := p.restore(p.Text)
+			if len(failures) != 0 || restored != tt.source {
+				t.Fatalf("restore = %q, %v; want %q", restored, failures, tt.source)
+			}
+		})
+	}
+}
+
+func TestBasicsPackagesLegacyInlineCodeIsFullyProtected(t *testing.T) {
+	root := repoRoot(t)
+	catalog, err := BuildCatalog(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	page, err := catalog.Page("basics/1")
+	if err != nil {
+		t.Fatal(err)
+	}
+	p := protectTranslation(page.Source, page.SourceSHA256, nil)
+	valueIndex := -1
+	for i, value := range p.Values {
+		if value == "`package`rand`" {
+			valueIndex = i
+			break
+		}
+	}
+	if valueIndex < 0 {
+		t.Fatalf("full legacy inline-code span absent from protected values: %q", p.Values)
+	}
+	want := "statement " + p.Tokens[valueIndex] + "."
+	if !strings.Contains(p.Text, want) || strings.Contains(p.Text, "rand`") {
+		t.Fatalf("protected basics/1 does not contain %q cleanly:\n%s", want, p.Text)
+	}
+	candidate, err := os.ReadFile(filepath.Join(root, "locales", "zh-CN", "candidates", "basics-1.article"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := ValidateCandidate(root, catalog, "basics/1", candidate); err != nil {
+		t.Fatalf("basics/1 candidate validation: %v", err)
+	}
+}
+
 func TestMandatoryGlossaryLinkLabelsAreLocked(t *testing.T) {
 	glossary := &Glossary{Mandatory: map[string]string{
 		"A Tour of Go": "Go 语言之旅",

@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "20260803191030bc1ccc45010c4ec2",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 922,
+    "completion_tokens": 178,
+    "total_tokens": 1100
+  },
+  "content": "* 包\n\n每个 ⟪GTI18N_f769f12c_000001⟫ 程序都由包构成。\n\n程序从 ⟪GTI18N_f769f12c_000002⟫ 包开始运行。\n\n本程序使用了导入路径为 ⟪GTI18N_f769f12c_000003⟫ 和 ⟪GTI18N_f769f12c_000004⟫ 的包。\n\n按照约定，包名与导入路径的最后一个元素相同。例如，⟪GTI18N_f769f12c_000005⟫ 包中的文件以 ⟪GTI18N_f769f12c_000006⟫rand` 语句开头。\n\n⟪GTI18N_f769f12c_000007⟫",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 包\n\n每个 ⟪GTI18N_f769f12c_000001⟫ 程序都由包构成。\n\n程序从 ⟪GTI18N_f769f12c_000002⟫ 包开始运行。\n\n本程序使用了导入路径为 ⟪GTI18N_f769f12c_000003⟫ 和 ⟪GTI18N_f769f12c_000004⟫ 的包。\n\n按照约定，包名与导入路径的最后一个元素相同。例如，⟪GTI18N_f769f12c_000005⟫ 包中的文件以 ⟪GTI18N_f769f12c_000006⟫rand` 语句开头。\n\n⟪GTI18N_f769f12c_000007⟫",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1785755432,
+    "id": "20260803191030bc1ccc45010c4ec2",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "20260803191030bc1ccc45010c4ec2",
+    "usage": {
+      "completion_tokens": 178,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 922,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "total_tokens": 1100
+    }
+  }
+}

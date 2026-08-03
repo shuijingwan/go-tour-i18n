@@ -37,8 +37,8 @@ func protectTranslation(source []byte, hash string, glossary *Glossary) protecte
 			}
 		}
 	}
-	for _, m := range inlineCodeRE.FindAllStringIndex(text, -1) {
-		spans = append(spans, protectedSpan{start: m[0], end: m[1]})
+	for _, code := range presentInlineCodes(text) {
+		spans = append(spans, protectedSpan{start: code.Start, end: code.End})
 	}
 	for _, m := range translationKeepRE.FindAllStringIndex(text, -1) {
 		spans = append(spans, protectedSpan{start: m[0], end: m[1]})

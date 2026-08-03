@@ -1,0 +1,11 @@
+* 包
+
+每个 Go 程序都由包构成。
+
+程序从 `main` 包开始运行。
+
+本程序使用了导入路径为 `"fmt"` 和 `"math/rand"` 的包。
+
+按照约定，包名与导入路径的最后一个元素相同。例如，`"math/rand"` 包中的文件以 `package`rand` 语句开头。
+
+.play basics/packages.go

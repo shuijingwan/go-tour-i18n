@@ -16,9 +16,8 @@ type signature struct {
 }
 
 var (
-	directiveRE  = regexp.MustCompile(`^\.([A-Za-z][A-Za-z0-9_-]*)(?:\s|$)`)
-	linkRE       = regexp.MustCompile(`\[\[([^\]]+)\]\[([^\]]*)\]\]`)
-	inlineCodeRE = regexp.MustCompile("`[^`\\n]+`")
+	directiveRE = regexp.MustCompile(`^\.([A-Za-z][A-Za-z0-9_-]*)(?:\s|$)`)
+	linkRE      = regexp.MustCompile(`\[\[([^\]]+)\]\[([^\]]*)\]\]`)
 )
 
 func ValidateCandidate(root string, catalog *Catalog, pageID string, candidate []byte) error {
@@ -131,8 +130,8 @@ func structuralSignature(source []byte) (signature, error) {
 		for _, match := range linkRE.FindAllStringSubmatch(line, -1) {
 			sig.LinkTargets = append(sig.LinkTargets, match[1])
 		}
-		for _, match := range inlineCodeRE.FindAllString(line, -1) {
-			sig.InlineCode = append(sig.InlineCode, match)
+		for _, code := range presentInlineCodes(line) {
+			sig.InlineCode = append(sig.InlineCode, code.Raw)
 		}
 		if strings.HasPrefix(line, "\t") || strings.HasPrefix(line, "  ") {
 			sig.Preformatted = append(sig.Preformatted, line)
