@@ -52,6 +52,10 @@ func TestCommittedStatus(t *testing.T) {
 			if s.State != "ready" || s.Attempts != 1 || s.SourceSHA256 != "3329c9bff5f7e2b9b1e161fdebfb3804ff57cf1fb11bd4327d228328bcfb3fd0" || s.CandidatePath != "locales/zh-CN/candidates/basics-2.article" || s.UpdatedAt != "2026-08-03T13:30:03Z" || s.Note != "人工评审修订后的 candidate 已通过现有 validator" {
 				t.Fatalf("basics/2 status: %+v", s)
 			}
+		case "basics/3":
+			if s.State != "ready" || s.Attempts != 1 || s.SourceSHA256 != "38b9c70e49184a24f63f6b12f8ba78e64c0b874ad2a6f9a5fe86267615fd1bf6" || s.CandidatePath != "locales/zh-CN/candidates/basics-3.article" || s.UpdatedAt != "2026-08-03T13:37:50Z" || s.Note != "人工评审修订后的 candidate 已通过现有 validator" {
+				t.Fatalf("basics/3 status: %+v", s)
+			}
 		default:
 			if s.State != "pending" || s.Attempts != 0 || s.CandidatePath != "" {
 				t.Fatalf("non-initial status: %+v", s)

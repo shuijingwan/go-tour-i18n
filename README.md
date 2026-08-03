@@ -8,9 +8,8 @@
 
 - 已从固定官方上游导入可独立运行、测试、解析和渲染的英文 Tour 基线。
 - 已建立 103 个正式发布页面及 2 条条件源审计记录的机器可读目录。
-- 已建立 `zh-CN` 语言 scaffold、术语表边界和状态校验；前三个 welcome 页面已有 ready 定稿。
-- 第一阶段目标语言仍为简体中文 `zh-CN`，但尚未开始中文翻译。
-- 已整合受限的 `welcome/1` 单页翻译执行器，但尚未实际调用外部模型，也未生成译文。
+- 第一阶段目标语言为简体中文 `zh-CN`；当前已有 8 个 ready 页面：`welcome/1` 至 `welcome/5`、`basics/1` 至 `basics/3`，其余页面仍为 pending。
+- 已建立完整页面翻译执行器、术语表、结构保护、candidate 校验、状态管理和 attempt 审计记录。
 - 当前 module path 为 `github.com/shuijingwan/go-tour-i18n`。
 - 尚未提供生产部署配置，也尚未发布正式版本。
 
@@ -115,7 +114,7 @@ go test -mod=readonly -count=1 ./...
 
 ## 尚未实现
 
-- `zh-CN` 课程翻译；
+- 剩余 `zh-CN` 课程翻译与统一验证；
 - 课程正文与公共 UI 的多语言资源分离；
 - 状态迁移命令和自动翻译流水线；
 - Playground execution provider 与同源代理；
@@ -130,4 +129,4 @@ go test -mod=readonly -count=1 ./...
 
 ## English Summary
 
-`go-tour-i18n` is a community-maintained, unofficial multilingual A Tour of Go translation project. The official English Tour baseline has been imported; Simplified Chinese (`zh-CN`) remains the first target language but translation has not started. The current server is for loopback-only local development and is not ready for public deployment.
+`go-tour-i18n` is a community-maintained, unofficial multilingual A Tour of Go translation project. The official English Tour baseline has been imported; Simplified Chinese (`zh-CN`) is the first target language, with 8 of 103 projected pages currently ready. The current server is for loopback-only local development and is not ready for public deployment.

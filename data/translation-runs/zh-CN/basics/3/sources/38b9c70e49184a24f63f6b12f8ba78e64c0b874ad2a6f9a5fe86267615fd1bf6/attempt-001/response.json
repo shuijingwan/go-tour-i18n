@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "202608032134462f7c64fb4713499a",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 1097,
+    "completion_tokens": 267,
+    "total_tokens": 1364
+  },
+  "content": "* 导出的名称\n\n在 ⟪GTI18N_38b9c70e_000001⟫ 中，如果一个名称以大写字母开头，它就是导出的。\n例如，⟪GTI18N_38b9c70e_000002⟫ 是一个导出的名称，⟪GTI18N_38b9c70e_000003⟫ 也是从\n⟪GTI18N_38b9c70e_000004⟫ 包中导出的名称。\n\n⟪GTI18N_38b9c70e_000005⟫ 和 ⟪GTI18N_38b9c70e_000006⟫ 不以大写字母开头，因此不是导出的。\n\n导入某个包时，只能引用其中导出的名称。\n任何“未导出”的名称都无法从包外部访问。\n\n运行代码，注意错误信息。\n\n要修复这个错误，请将 ⟪GTI18N_38b9c70e_000007⟫ 重命名为 ⟪GTI18N_38b9c70e_000008⟫，然后再试一次。\n\n⟪GTI18N_38b9c70e_000009⟫",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 导出的名称\n\n在 ⟪GTI18N_38b9c70e_000001⟫ 中，如果一个名称以大写字母开头，它就是导出的。\n例如，⟪GTI18N_38b9c70e_000002⟫ 是一个导出的名称，⟪GTI18N_38b9c70e_000003⟫ 也是从\n⟪GTI18N_38b9c70e_000004⟫ 包中导出的名称。\n\n⟪GTI18N_38b9c70e_000005⟫ 和 ⟪GTI18N_38b9c70e_000006⟫ 不以大写字母开头，因此不是导出的。\n\n导入某个包时，只能引用其中导出的名称。\n任何“未导出”的名称都无法从包外部访问。\n\n运行代码，注意错误信息。\n\n要修复这个错误，请将 ⟪GTI18N_38b9c70e_000007⟫ 重命名为 ⟪GTI18N_38b9c70e_000008⟫，然后再试一次。\n\n⟪GTI18N_38b9c70e_000009⟫",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1785764089,
+    "id": "202608032134462f7c64fb4713499a",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "202608032134462f7c64fb4713499a",
+    "usage": {
+      "completion_tokens": 267,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 1097,
+      "prompt_tokens_details": {
+        "cached_tokens": 448
+      },
+      "total_tokens": 1364
+    }
+  }
+}
