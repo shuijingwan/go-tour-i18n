@@ -72,7 +72,7 @@ func (g *Glossary) PromptRules(pageID string) string {
 	sort.Strings(keys)
 	var rules []string
 	for _, key := range keys {
-		rules = append(rules, fmt.Sprintf("- %s => %s (mandatory; do not retain the English display text)", key, g.Mandatory[key]))
+		rules = append(rules, fmt.Sprintf("- %s => %s（强制；不得保留对应的英文显示文本）", key, g.Mandatory[key]))
 	}
 	preferredKeys := make([]string, 0, len(g.Preferred))
 	for key := range g.Preferred {
@@ -80,13 +80,13 @@ func (g *Glossary) PromptRules(pageID string) string {
 	}
 	sort.Strings(preferredKeys)
 	for _, key := range preferredKeys {
-		rules = append(rules, fmt.Sprintf("- ordinary prose %s => %s (contextual guidance; translate naturally as part of the complete page)", key, g.Preferred[key]))
+		rules = append(rules, fmt.Sprintf("- 普通正文中的 %s => %s（上下文指导；应结合完整页面自然翻译）", key, g.Preferred[key]))
 	}
 	for _, value := range g.Forbidden {
-		rules = append(rules, "- forbidden zh-CN translation: "+value)
+		rules = append(rules, "- 禁止使用的 zh-CN 译法："+value)
 	}
 	if pageID == "welcome/1" {
-		rules = append(rules, "- welcome/1 must preserve the meaning of tour as 之旅; do not simplify or change that meaning")
+		rules = append(rules, "- welcome/1 必须将 tour 的含义保留为“之旅”；不得简化或改变该含义")
 	}
 	return strings.Join(rules, "\n")
 }

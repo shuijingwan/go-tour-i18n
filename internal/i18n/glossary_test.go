@@ -11,13 +11,16 @@ func TestZhCNMandatoryGlossary(t *testing.T) {
 		t.Fatal(err)
 	}
 	want := map[string]string{
-		"A Tour of Go":  "Go 语言之旅",
-		"previous":      "上一页",
-		"next":          "下一页",
-		"Run":           "运行",
-		"Format":        "格式化",
-		"slides":        "页面",
-		"Go Playground": "Go 语言演练场",
+		"A Tour of Go":    "Go 语言之旅",
+		"previous":        "上一页",
+		"next":            "下一页",
+		"Run":             "运行",
+		"Format":          "格式化",
+		"slides":          "页面",
+		"Go Playground":   "Go 语言演练场",
+		"constraint":      "约束",
+		"type parameter":  "类型参数",
+		"type parameters": "类型参数",
 	}
 	for key, value := range want {
 		if got := glossary.Mandatory[key]; got != value {
@@ -50,10 +53,39 @@ func TestZhCNMandatoryGlossary(t *testing.T) {
 		}
 	}
 	rules := glossary.PromptRules("welcome/1")
-	for _, text := range []string{"mandatory", "do not retain the English display text", "A Tour of Go => Go 语言之旅", "Go Playground => Go 语言演练场", "ordinary prose tour => 教程", "ordinary prose the tour => 本教程", "ordinary prose sandbox => 沙箱", "ordinary prose deterministic output => 确定性输出", "do not simplify or change"} {
+	for _, text := range []string{
+		"A Tour of Go => Go 语言之旅（强制；不得保留对应的英文显示文本）",
+		"Go Playground => Go 语言演练场（强制；不得保留对应的英文显示文本）",
+		"普通正文中的 tour => 教程（上下文指导；应结合完整页面自然翻译）",
+		"普通正文中的 the tour => 本教程（上下文指导；应结合完整页面自然翻译）",
+		"普通正文中的 sandbox => 沙箱（上下文指导；应结合完整页面自然翻译）",
+		"普通正文中的 deterministic output => 确定性输出（上下文指导；应结合完整页面自然翻译）",
+		"禁止使用的 zh-CN 译法：幻灯片",
+		"welcome/1 必须将 tour 的含义保留为“之旅”；不得简化或改变该含义",
+	} {
 		if !strings.Contains(rules, text) {
 			t.Errorf("prompt rules missing %q", text)
 		}
+	}
+	for _, old := range []string{"(mandatory;", "ordinary prose ", "forbidden zh-CN translation:", "do not simplify or change"} {
+		if strings.Contains(rules, old) {
+			t.Errorf("prompt rules retain English control text %q", old)
+		}
+	}
+	ordered := []string{
+		"A Tour of Go =>", "Format =>", "Go Playground =>", "Run =>", "next =>", "previous =>", "slides =>",
+		"普通正文中的 deterministic output =>", "普通正文中的 exported name =>", "普通正文中的 import path =>",
+		"普通正文中的 import statement =>", "普通正文中的 package =>", "普通正文中的 package name =>",
+		"普通正文中的 sandbox =>", "普通正文中的 the tour =>", "普通正文中的 tour =>",
+		"普通正文中的 unexported name =>", "禁止使用的 zh-CN 译法：幻灯片",
+	}
+	last := -1
+	for _, text := range ordered {
+		index := strings.Index(rules, text)
+		if index <= last {
+			t.Errorf("prompt rule order is wrong at %q:\n%s", text, rules)
+		}
+		last = index
 	}
 }
 

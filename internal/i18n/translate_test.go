@@ -49,10 +49,161 @@ func TestTranslationProtectionRoundTripAndFailures(t *testing.T) {
 	}
 	for name, output := range invalid {
 		t.Run(name, func(t *testing.T) {
-			if _, failures := p.restore(output); len(failures) == 0 {
+			if got, failures := p.restore(output); len(failures) == 0 || got != "" {
 				t.Fatal("invalid tokens accepted")
 			}
 		})
+	}
+}
+
+func TestInlineTokenBoundaryNormalization(t *testing.T) {
+	tests := []struct {
+		name   string
+		values []string
+		model  func([]string) string
+		want   string
+	}{
+		{"Chinese period", []string{"`comparable`", "`x`"}, func(tokens []string) string { return tokens[0] + "。" + tokens[1] }, "`comparable`。 `x`"},
+		{"Chinese text", []string{"`s`", "`T`"}, func(tokens []string) string { return tokens[0] + "是" + tokens[1] }, "`s` 是 `T`"},
+		{"Chinese conjunction", []string{"`==`", "`!=`"}, func(tokens []string) string { return tokens[0] + "和" + tokens[1] }, "`==` 和 `!=`"},
+		{"Chinese enumeration", []string{"`f`", "`x`", "`y`"}, func(tokens []string) string { return tokens[0] + "、" + tokens[1] + "、" + tokens[2] }, "`f`、 `x`、 `y`"},
+		{"single Chinese punctuation", []string{"`T`"}, func(tokens []string) string { return "调用 " + tokens[0] + "。" }, "调用 `T`。"},
+		{"both Chinese text boundaries", []string{"`T`"}, func(tokens []string) string { return "类型" + tokens[0] + "的值" }, "类型 `T` 的值"},
+		{"existing spaces", []string{"`s`", "`T`"}, func(tokens []string) string { return tokens[0] + " 是 " + tokens[1] }, "`s` 是 `T`"},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			p := protectTranslation([]byte(strings.Join(tt.values, " ")), "12345678", nil)
+			if len(p.Tokens) != len(tt.values) {
+				t.Fatalf("tokens = %d, want %d: %+v", len(p.Tokens), len(tt.values), p)
+			}
+			for i, kind := range p.Kinds {
+				if kind != protectedInlineCode {
+					t.Fatalf("token %d kind = %v, want inline code", i+1, kind)
+				}
+			}
+			model := tt.model(p.Tokens)
+			normalized := normalizeInlineTokenBoundaries(model, p)
+			if twice := normalizeInlineTokenBoundaries(normalized, p); twice != normalized {
+				t.Fatalf("normalization is not idempotent:\nonce:  %q\ntwice: %q", normalized, twice)
+			}
+			got, failures := p.restore(model)
+			if len(failures) != 0 || got != tt.want {
+				t.Fatalf("restore = %q, %v; want %q", got, failures, tt.want)
+			}
+			codes := presentInlineCodes(got)
+			if len(codes) != len(tt.values) {
+				t.Fatalf("presentInlineCodes(%q) = %+v, want %d spans", got, codes, len(tt.values))
+			}
+			for i, code := range codes {
+				if code.Raw != tt.values[i] {
+					t.Errorf("span %d = %q, want %q", i+1, code.Raw, tt.values[i])
+				}
+			}
+		})
+	}
+}
+
+func TestLegacyInlineCodeRemainsOneProtectedSpan(t *testing.T) {
+	tests := []struct {
+		raw, content string
+	}{
+		{"`package`rand`", "package rand"},
+		{"`for`i`:=`range`c`", "for i := range c"},
+		{"`Same(tree.New(1),`tree.New(1))`", "Same(tree.New(1), tree.New(1))"},
+		{"`\"cannot`Sqrt`negative`number:`-2\"`", "\"cannot Sqrt negative number: -2\""},
+	}
+	for _, tt := range tests {
+		t.Run(tt.raw, func(t *testing.T) {
+			p := protectTranslation([]byte(tt.raw), "12345678", nil)
+			if len(p.Tokens) != 1 || len(p.Kinds) != 1 || p.Kinds[0] != protectedInlineCode || p.Values[0] != tt.raw {
+				t.Fatalf("protection = %+v, want one unchanged inline-code span", p)
+			}
+			normalized := normalizeInlineTokenBoundaries(p.Text, p)
+			if normalized != p.Text {
+				t.Fatalf("normalization changed isolated token: %q => %q", p.Text, normalized)
+			}
+			got, failures := p.restore(p.Text)
+			if len(failures) != 0 || got != tt.raw {
+				t.Fatalf("restore = %q, %v; want %q", got, failures, tt.raw)
+			}
+			codes := presentInlineCodes(got)
+			if len(codes) != 1 || codes[0].Raw != tt.raw || codes[0].Content != tt.content {
+				t.Fatalf("presentInlineCodes(%q) = %+v; want raw %q content %q", got, codes, tt.raw, tt.content)
+			}
+		})
+	}
+}
+
+func TestNonInlineTokenKindsAreNotBoundaryNormalized(t *testing.T) {
+	glossary := &Glossary{Mandatory: map[string]string{"A Tour of Go": "Go 语言之旅"}}
+	source := []byte("Go [[/target][A Tour of Go]]\n\n.play example.go")
+	p := protectTranslation(source, "12345678", glossary)
+	wantKinds := map[protectedTokenKind]bool{
+		protectedDirective:      false,
+		protectedLinkTarget:     false,
+		protectedGlossaryOrKeep: false,
+	}
+	for _, kind := range p.Kinds {
+		if kind == protectedInlineCode {
+			t.Fatalf("unexpected inline token in %+v", p)
+		}
+		if _, ok := wantKinds[kind]; ok {
+			wantKinds[kind] = true
+		}
+	}
+	for kind, found := range wantKinds {
+		if !found {
+			t.Errorf("protected kind %v not assigned: %+v", kind, p)
+		}
+	}
+	if got := normalizeInlineTokenBoundaries(p.Text, p); got != p.Text {
+		t.Fatalf("non-inline tokens changed:\ngot:  %q\nwant: %q", got, p.Text)
+	}
+}
+
+func TestGenericsInlineBoundaryNormalizationPassesValidator(t *testing.T) {
+	root := repoRoot(t)
+	catalog, err := BuildCatalog(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	page, err := catalog.Page("generics/1")
+	if err != nil {
+		t.Fatal(err)
+	}
+	glossary, err := LoadGlossary(root, "zh-CN")
+	if err != nil {
+		t.Fatal(err)
+	}
+	p := protectTranslation(page.Source, page.SourceSHA256, glossary)
+	indices := map[string]int{}
+	for i, value := range p.Values {
+		if value == "`comparable`" || value == "`x`" {
+			if _, exists := indices[value]; !exists {
+				indices[value] = i
+			}
+		}
+	}
+	comparable, okComparable := indices["`comparable`"]
+	x, okX := indices["`x`"]
+	if !okComparable || !okX || comparable >= x {
+		t.Fatalf("target inline tokens not found in order: values=%q indices=%v", p.Values, indices)
+	}
+	model := strings.Replace(p.Text, p.Tokens[comparable]+". "+p.Tokens[x], p.Tokens[comparable]+"。"+p.Tokens[x], 1)
+	if model == p.Text {
+		t.Fatal("attempt-003 equivalent protected text was not constructed")
+	}
+	candidate, failures := p.restore(model)
+	if len(failures) != 0 {
+		t.Fatalf("restore failures: %v", failures)
+	}
+	if !strings.Contains(candidate, "`comparable`。 `x`") {
+		t.Fatalf("candidate lacks normalized boundary:\n%s", candidate)
+	}
+	if err := ValidateCandidate(root, catalog, "generics/1", []byte(candidate)); err != nil {
+		t.Fatalf("normalized candidate validation: %v\n%s", err, candidate)
 	}
 }
 
@@ -167,12 +318,19 @@ func TestTranslationClientUsesRoundTripperAndCapturesMetadata(t *testing.T) {
 }
 
 func TestTranslationRequestIncludesNaturalChineseGuidance(t *testing.T) {
-	request := makeTranslationRequest("example/1", "zh-CN", "* Contextual title\n\nProtected page.\n", "- glossary rule", "")
+	source := []byte("* Contextual title\n\nGo uses `T`.\n\n.play example/example.go\n")
+	protected := protectTranslation(source, sum(source), nil)
+	request := makeTranslationRequest("example/1", "zh-CN", protected.Text, len(protected.Tokens), "- glossary rule", "")
 	if len(request.Messages) != 2 || request.Messages[0].Role != "system" || request.Messages[1].Role != "user" {
 		t.Fatalf("messages = %+v", request.Messages)
 	}
 	system := request.Messages[0].Content
 	wants := []string{
+		"请将一个完整的《Go 语言之旅》present.Section 从英文翻译为中国大陆简体中文。",
+		"只返回完整且可由 present 解析的 .article 内容。",
+		"原样出现、恰好出现一次，并严格保持输入顺序",
+		"应当翻译的英文显示文本不得残留",
+		"不得简化、遗漏或改变原文含义",
 		"理解完整 present.Section 的页面用途和上下文",
 		"页面标题应简洁、自然并准确概括页面主题",
 		"中国大陆简体中文技术教程风格",
@@ -185,18 +343,46 @@ func TestTranslationRequestIncludesNaturalChineseGuidance(t *testing.T) {
 			t.Errorf("system prompt missing %q", want)
 		}
 	}
-	for _, preserved := range []string{
+	for _, removed := range []string{
+		"Translate one complete A Tour of Go present.Section",
 		"Preserve every protection token exactly once and in order.",
 		"Mandatory glossary translations must be used",
-		"the meaning must not be simplified or changed",
 	} {
-		if !strings.Contains(system, preserved) {
-			t.Errorf("system prompt weakened existing rule %q", preserved)
+		if strings.Contains(system, removed) {
+			t.Errorf("system prompt retains English fixed instruction %q", removed)
 		}
 	}
 	user := request.Messages[1].Content
-	if !strings.Contains(user, "Mandatory glossary rules:\n- glossary rule") || !strings.Contains(user, "Complete protected page:\n* Contextual title") {
+	for _, want := range []string{
+		"唯一占位符",
+		"恰好输出一次",
+		"不得复制",
+		"不得复用",
+		"严格保持输入顺序",
+		fmt.Sprintf("本页共有 %d 个保护 token，输出中也必须恰好包含 %d 个。", len(protected.Tokens), len(protected.Tokens)),
+	} {
+		if !strings.Contains(user, want) {
+			t.Errorf("user prompt missing protected token rule %q", want)
+		}
+	}
+	if !strings.Contains(user, "强制术语表与译法规则：\n- glossary rule") || !strings.Contains(user, "需要翻译的完整受保护页面：\n* Contextual title") {
 		t.Fatalf("user prompt lost glossary or protected page:\n%s", user)
+	}
+	for _, removed := range []string{"Mandatory glossary rules:", "Complete protected page:", "TOKEN_T", "comparable"} {
+		if strings.Contains(user, removed) {
+			t.Errorf("user prompt contains forbidden fixed text %q", removed)
+		}
+	}
+
+	retry := makeTranslationRequest("example/1", "zh-CN", protected.Text, len(protected.Tokens), "- glossary rule", "token order mismatch")
+	retryUser := retry.Messages[1].Content
+	for _, want := range []string{"上一次完整页面翻译未通过校验：token order mismatch。", "请重新翻译完整页面。"} {
+		if !strings.Contains(retryUser, want) {
+			t.Errorf("retry prompt missing %q:\n%s", want, retryUser)
+		}
+	}
+	if strings.Contains(retryUser, "Previous full-page attempt failed validation:") || strings.Contains(retryUser, "Translate the complete page again.") {
+		t.Errorf("retry prompt retains English fixed instruction:\n%s", retryUser)
 	}
 }
 
@@ -306,7 +492,7 @@ func TestDevTranslationContinuesBlockedOneAttemptPerRun(t *testing.T) {
 				t.Fatal(err)
 			}
 			user := request.Messages[len(request.Messages)-1].Content
-			const marker = "Complete protected page:\n"
+			const marker = "需要翻译的完整受保护页面：\n"
 			content = user[strings.Index(user, marker)+len(marker):]
 			finish = "stop"
 		}

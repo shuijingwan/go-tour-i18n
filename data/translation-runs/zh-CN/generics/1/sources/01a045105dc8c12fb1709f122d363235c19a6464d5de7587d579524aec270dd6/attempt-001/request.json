@@ -1,0 +1,24 @@
+{
+  "page_id": "generics/1",
+  "locale": "zh-CN",
+  "source_sha256": "01a045105dc8c12fb1709f122d363235c19a6464d5de7587d579524aec270dd6",
+  "body": {
+    "model": "glm-5.2",
+    "stream": false,
+    "thinking": {
+      "type": "disabled"
+    },
+    "do_sample": false,
+    "max_tokens": 8192,
+    "messages": [
+      {
+        "role": "system",
+        "content": "Translate one complete A Tour of Go present.Section from English to Simplified Chinese. Return only complete parseable .article content. Preserve every protection token exactly once and in order. Mandatory glossary translations must be used, corresponding English display text must not remain, and the meaning must not be simplified or changed.\n\n中文表达要求：\n1. 翻译前先理解完整 present.Section 的页面用途和上下文，不要逐词翻译或机械照搬英文语序。\n2. 页面标题应简洁、自然并准确概括页面主题。简短、含双关或依赖上下文的标题，应根据完整页面含义翻译，不能生硬拼接字面译法。\n3. 正文采用自然、清楚、简洁的中国大陆简体中文技术教程风格。在不遗漏、不增加、不改变技术含义的前提下，可以调整语序，并可在同一段落内合理拆分或合并句子。\n4. 避免明显的机器翻译表达，例如机械使用“它们”“你自己”“来进行……”，以及不自然的被动语态或英语式定语顺序。\n5. 准确区分用户操作：按钮应点击；链接应点击；键盘按键应按或按下；命令应执行；文本内容应输入。不得把按键描述为输入字符串，也不得混淆按钮、命令和链接。\n6. 技术词语应根据当前语境选择准确、自然的中文译法，不要仅按固定字典逐词替换。\n7. 可以润色普通中文文本，但不得改变、增删或重新标记任何受保护结构。尤其不得自行新增或删除行内代码反引号、预格式化代码、present directive、链接及链接 target、HTML 或特殊 present 语法；受保护内容的数量、顺序和形式必须保持一致。\n8. 不得增加原文没有的解释、提示、结论或标题。\n9. 输出前静默自检：标题是否自然；是否存在英文语序或机器翻译腔；操作说明是否符合真实操作；技术含义和信息量是否与原文一致；是否无意增删了行内代码、链接、directive 或其他结构。\n\n只输出最终完整的 present.Section，不输出分析、说明或修改过程。"
+      },
+      {
+        "role": "user",
+        "content": "page_id: generics/1\nsource_locale: en\ntarget_locale: zh-CN\n\nMandatory glossary rules:\n- A Tour of Go =\u003e Go 语言之旅 (mandatory; do not retain the English display text)\n- Format =\u003e 格式化 (mandatory; do not retain the English display text)\n- Go Playground =\u003e Go 语言演练场 (mandatory; do not retain the English display text)\n- Run =\u003e 运行 (mandatory; do not retain the English display text)\n- next =\u003e 下一页 (mandatory; do not retain the English display text)\n- previous =\u003e 上一页 (mandatory; do not retain the English display text)\n- slides =\u003e 页面 (mandatory; do not retain the English display text)\n- ordinary prose deterministic output =\u003e 确定性输出 (contextual guidance; translate naturally as part of the complete page)\n- ordinary prose exported name =\u003e 导出名 (contextual guidance; translate naturally as part of the complete page)\n- ordinary prose import path =\u003e 导入路径 (contextual guidance; translate naturally as part of the complete page)\n- ordinary prose import statement =\u003e 导入语句 (contextual guidance; translate naturally as part of the complete page)\n- ordinary prose package =\u003e 包 (contextual guidance; translate naturally as part of the complete page)\n- ordinary prose package name =\u003e 包名 (contextual guidance; translate naturally as part of the complete page)\n- ordinary prose sandbox =\u003e 沙箱 (contextual guidance; translate naturally as part of the complete page)\n- ordinary prose the tour =\u003e 本教程 (contextual guidance; translate naturally as part of the complete page)\n- ordinary prose tour =\u003e 教程 (contextual guidance; translate naturally as part of the complete page)\n- ordinary prose unexported name =\u003e 未导出的名称 (contextual guidance; translate naturally as part of the complete page)\n- forbidden zh-CN translation: 幻灯片\n- forbidden zh-CN translation: 本之旅\n- forbidden zh-CN translation: 欢迎使用 Go 编程语言之旅\n\nComplete protected page:\n* Type parameters\n\n⟪GTI18N_01a04510_000001⟫ functions can be written to work on multiple types using type parameters. The\ntype parameters of a function appear between brackets, before the function's\narguments.\n\n  func Index[T comparable](s []T, x T) int\n\nThis declaration means that ⟪GTI18N_01a04510_000002⟫ is a slice of any type ⟪GTI18N_01a04510_000003⟫ that fulfills the\nbuilt-in constraint ⟪GTI18N_01a04510_000004⟫. ⟪GTI18N_01a04510_000005⟫ is also a value of the same type.\n\n⟪GTI18N_01a04510_000006⟫ is a useful constraint that makes it possible to use the ⟪GTI18N_01a04510_000007⟫ and\n⟪GTI18N_01a04510_000008⟫ operators on values of the type. In this example, we use it to compare a\nvalue to all slice elements until a match is found. This ⟪GTI18N_01a04510_000009⟫ function works\nfor any type that supports comparison.\n\n⟪GTI18N_01a04510_000010⟫\n\n"
+      }
+    ]
+  }
+}

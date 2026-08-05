@@ -112,7 +112,7 @@ func (r *TranslationRunner) Run(ctx context.Context, pageID, locale, apiKey stri
 		if err := os.MkdirAll(dir, 0755); err != nil {
 			return nil, err
 		}
-		req := makeTranslationRequest(pageID, locale, protected.Text, glossary.PromptRules(pageID), previous)
+		req := makeTranslationRequest(pageID, locale, protected.Text, len(protected.Tokens), glossary.PromptRules(pageID), previous)
 		if err := writeTranslationJSON(filepath.Join(dir, "request.json"), savedTranslationRequest{pageID, locale, page.SourceSHA256, req}); err != nil {
 			return nil, err
 		}
@@ -178,8 +178,10 @@ func (r *TranslationRunner) Run(ctx context.Context, pageID, locale, apiKey stri
 	return &TranslationRunResult{pageID, locale, page.SourceSHA256, "glm-5.2", maxAttempts, "blocked", "", &last, updated}, nil
 }
 
-func makeTranslationRequest(pageID, locale, page, glossaryRules, previous string) TranslationAPIRequest {
-	system := `Translate one complete A Tour of Go present.Section from English to Simplified Chinese. Return only complete parseable .article content. Preserve every protection token exactly once and in order. Mandatory glossary translations must be used, corresponding English display text must not remain, and the meaning must not be simplified or changed.
+func makeTranslationRequest(pageID, locale, page string, protectedTokenCount int, glossaryRules, previous string) TranslationAPIRequest {
+	system := `请将一个完整的《Go 语言之旅》present.Section 从英文翻译为中国大陆简体中文。
+
+只返回完整且可由 present 解析的 .article 内容。必须保留每个保护 token，使其原样出现、恰好出现一次，并严格保持输入顺序。必须使用术语表中的强制译法；对应的、应当翻译的英文显示文本不得残留；不得简化、遗漏或改变原文含义。
 
 中文表达要求：
 1. 翻译前先理解完整 present.Section 的页面用途和上下文，不要逐词翻译或机械照搬英文语序。
@@ -193,9 +195,23 @@ func makeTranslationRequest(pageID, locale, page, glossaryRules, previous string
 9. 输出前静默自检：标题是否自然；是否存在英文语序或机器翻译腔；操作说明是否符合真实操作；技术含义和信息量是否与原文一致；是否无意增删了行内代码、链接、directive 或其他结构。
 
 只输出最终完整的 present.Section，不输出分析、说明或修改过程。`
-	user := fmt.Sprintf("page_id: %s\nsource_locale: en\ntarget_locale: %s\n\nMandatory glossary rules:\n%s\n\nComplete protected page:\n%s", pageID, locale, glossaryRules, page)
+	user := fmt.Sprintf(`page_id: %s
+source_locale: en
+target_locale: %s
+
+强制术语表与译法规则：
+%s
+
+重要：下文每个形如 ⟪GTI18N_...⟫ 的保护 token 都是唯一占位符。
+本页共有 %d 个保护 token，输出中也必须恰好包含 %d 个。
+每个 token 必须原样输出且恰好输出一次，并严格保持输入顺序。
+不得复制、不得复用、不得删除、不得改写或交换任何 token。
+调整中文语序时，请使用“该类型”“该值”“前者”等普通中文承接，不要再次输出已有 token。
+
+需要翻译的完整受保护页面：
+%s`, pageID, locale, glossaryRules, protectedTokenCount, protectedTokenCount, page)
 	if previous != "" {
-		user += "\n\nPrevious full-page attempt failed validation: " + previous + ". Translate the complete page again."
+		user += "\n\n上一次完整页面翻译未通过校验：" + previous + "。请重新翻译完整页面。"
 	}
 	return TranslationAPIRequest{Model: "glm-5.2", Stream: false, Thinking: map[string]string{"type": "disabled"}, DoSample: false, MaxTokens: 8192, Messages: []TranslationMessage{{Role: "system", Content: system}, {Role: "user", Content: user}}}
 }

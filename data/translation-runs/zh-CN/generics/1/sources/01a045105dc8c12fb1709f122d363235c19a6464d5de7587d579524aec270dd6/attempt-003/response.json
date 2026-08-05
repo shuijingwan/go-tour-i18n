@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "20260805104846d3a7e0999813434f",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 1290,
+    "completion_tokens": 290,
+    "total_tokens": 1580
+  },
+  "content": "* 类型参数\n\n⟪GTI18N_01a04510_000001⟫ 函数可以通过类型参数来处理多种类型。函数的类型参数写在方括号中，位于函数参数之前。\n\n  func Index[T comparable](s []T, x T) int\n\n这个声明表示 ⟪GTI18N_01a04510_000002⟫ 是一个元素类型为 ⟪GTI18N_01a04510_000003⟫ 的切片，且该类型满足内置约束 ⟪GTI18N_01a04510_000004⟫。⟪GTI18N_01a04510_000005⟫ 也是同一类型的值。\n\n⟪GTI18N_01a04510_000006⟫ 是一个实用的约束，允许对该类型的值使用 ⟪GTI18N_01a04510_000007⟫ 和 ⟪GTI18N_01a04510_000008⟫ 运算符。在这个示例中，我们用它将一个值与切片中的每个元素进行比较，直到找到匹配项。这个 ⟪GTI18N_01a04510_000009⟫ 函数适用于任何支持比较操作的类型。\n\n⟪GTI18N_01a04510_000010⟫",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 类型参数\n\n⟪GTI18N_01a04510_000001⟫ 函数可以通过类型参数来处理多种类型。函数的类型参数写在方括号中，位于函数参数之前。\n\n  func Index[T comparable](s []T, x T) int\n\n这个声明表示 ⟪GTI18N_01a04510_000002⟫ 是一个元素类型为 ⟪GTI18N_01a04510_000003⟫ 的切片，且该类型满足内置约束 ⟪GTI18N_01a04510_000004⟫。⟪GTI18N_01a04510_000005⟫ 也是同一类型的值。\n\n⟪GTI18N_01a04510_000006⟫ 是一个实用的约束，允许对该类型的值使用 ⟪GTI18N_01a04510_000007⟫ 和 ⟪GTI18N_01a04510_000008⟫ 运算符。在这个示例中，我们用它将一个值与切片中的每个元素进行比较，直到找到匹配项。这个 ⟪GTI18N_01a04510_000009⟫ 函数适用于任何支持比较操作的类型。\n\n⟪GTI18N_01a04510_000010⟫",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1785898131,
+    "id": "20260805104846d3a7e0999813434f",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "20260805104846d3a7e0999813434f",
+    "usage": {
+      "completion_tokens": 290,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 1290,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "total_tokens": 1580
+    }
+  }
+}
