@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "202608061128474829f4a393b845cf",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 1669,
+    "completion_tokens": 501,
+    "total_tokens": 2170
+  },
+  "content": "* 类型选择\n\n_类型选择_ 是一种允许连续执行多个类型断言的语法结构。\n\n类型选择与常规的 switch 语句类似，但它的 case 指定的是类型而非值，并且会将这些值与给定接口值所持有值的类型进行比较。\n\n⟪GTI18N_26e4da09_000001⟫此处 v 的类型为 T⟪GTI18N_26e4da09_000002⟫此处 v 的类型为 S⟪GTI18N_26e4da09_000003⟫没有匹配；此处 v 与 i 的类型相同⟪GTI18N_26e4da09_000004⟫类型选择中的声明与类型断言 ⟪GTI18N_26e4da09_000005⟫ 语法相同，\n但具体类型 ⟪GTI18N_26e4da09_000006⟫ 被替换为了关键字 ⟪GTI18N_26e4da09_000007⟫。\n\n这个 switch 语句会测试接口值 ⟪GTI18N_26e4da09_000008⟫\n所持有的值是否为 ⟪GTI18N_26e4da09_000009⟫ 或 ⟪GTI18N_26e4da09_000010⟫ 类型。\n在 ⟪GTI18N_26e4da09_000011⟫ 和 ⟪GTI18N_26e4da09_000012⟫ 的 case 中，变量 ⟪GTI18N_26e4da09_000013⟫ 的类型将分别为\n⟪GTI18N_26e4da09_000014⟫ 或 ⟪GTI18N_26e4da09_000015⟫，并持有 ⟪GTI18N_26e4da09_000016⟫ 所持有的值。\n在 default 分支（即没有匹配项）中，变量 ⟪GTI18N_26e4da09_000017⟫\n与 ⟪GTI18N_26e4da09_000018⟫ 具有相同的接口类型和值。\n\n⟪GTI18N_26e4da09_000019⟫",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 类型选择\n\n_类型选择_ 是一种允许连续执行多个类型断言的语法结构。\n\n类型选择与常规的 switch 语句类似，但它的 case 指定的是类型而非值，并且会将这些值与给定接口值所持有值的类型进行比较。\n\n⟪GTI18N_26e4da09_000001⟫此处 v 的类型为 T⟪GTI18N_26e4da09_000002⟫此处 v 的类型为 S⟪GTI18N_26e4da09_000003⟫没有匹配；此处 v 与 i 的类型相同⟪GTI18N_26e4da09_000004⟫类型选择中的声明与类型断言 ⟪GTI18N_26e4da09_000005⟫ 语法相同，\n但具体类型 ⟪GTI18N_26e4da09_000006⟫ 被替换为了关键字 ⟪GTI18N_26e4da09_000007⟫。\n\n这个 switch 语句会测试接口值 ⟪GTI18N_26e4da09_000008⟫\n所持有的值是否为 ⟪GTI18N_26e4da09_000009⟫ 或 ⟪GTI18N_26e4da09_000010⟫ 类型。\n在 ⟪GTI18N_26e4da09_000011⟫ 和 ⟪GTI18N_26e4da09_000012⟫ 的 case 中，变量 ⟪GTI18N_26e4da09_000013⟫ 的类型将分别为\n⟪GTI18N_26e4da09_000014⟫ 或 ⟪GTI18N_26e4da09_000015⟫，并持有 ⟪GTI18N_26e4da09_000016⟫ 所持有的值。\n在 default 分支（即没有匹配项）中，变量 ⟪GTI18N_26e4da09_000017⟫\n与 ⟪GTI18N_26e4da09_000018⟫ 具有相同的接口类型和值。\n\n⟪GTI18N_26e4da09_000019⟫",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1785986935,
+    "id": "202608061128474829f4a393b845cf",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "202608061128474829f4a393b845cf",
+    "usage": {
+      "completion_tokens": 501,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 1669,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "total_tokens": 2170
+    }
+  }
+}

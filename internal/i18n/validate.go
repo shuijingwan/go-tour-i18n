@@ -62,7 +62,18 @@ func ValidateCandidate(root string, catalog *Catalog, pageID string, candidate [
 	if err := compareProtected("inline code", expected.InlineCode, actual.InlineCode); err != nil {
 		return diagnostic(pageID, err)
 	}
-	if err := compareProtected("preformatted code", expected.Preformatted, actual.Preformatted); err != nil {
+	if err := comparePreformatted(string(page.Source), string(candidate)); err != nil {
+		return diagnostic(pageID, err)
+	}
+	expectedFonts, err := parsedFontSpans(root, page.Article, page.Source)
+	if err != nil {
+		return fmt.Errorf("%s: source font structure: %w", pageID, err)
+	}
+	actualFonts, err := parsedFontSpans(root, page.Article, candidate)
+	if err != nil {
+		return fmt.Errorf("%s: candidate font structure: %w", pageID, err)
+	}
+	if err := compareFontSpans(expectedFonts, actualFonts); err != nil {
 		return diagnostic(pageID, err)
 	}
 	return nil
@@ -133,7 +144,7 @@ func structuralSignature(source []byte) (signature, error) {
 		for _, code := range presentInlineCodes(line) {
 			sig.InlineCode = append(sig.InlineCode, code.Raw)
 		}
-		if strings.HasPrefix(line, "\t") || strings.HasPrefix(line, "  ") {
+		if isPreformattedLine(line) {
 			sig.Preformatted = append(sig.Preformatted, line)
 		}
 	}
@@ -154,6 +165,22 @@ func compareProtected(kind string, expected, actual []string) error {
 		return fmt.Errorf("%s count mismatch: expected %d, actual %d; first difference index %d", kind, len(expected), len(actual), limit+1)
 	}
 	return nil
+}
+
+func protectedCountError(kind string, expected, actual int) error {
+	return fmt.Errorf("%s count mismatch: expected %d, actual %d", kind, expected, actual)
+}
+
+func preformattedBlockError(index int, err error) error {
+	return fmt.Errorf("preformatted code block mismatch at index %d: %v", index, err)
+}
+
+func preformattedCommentError(index int, message string) error {
+	return fmt.Errorf("line comment mismatch at index %d: %s", index, message)
+}
+
+func preformattedComparisonError(message string) error {
+	return fmt.Errorf("%s", message)
 }
 
 func diagnostic(pageID string, err error) error {

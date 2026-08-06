@@ -28,6 +28,9 @@ const (
 	protectedDirective
 	protectedLinkTarget
 	protectedGlossaryOrKeep
+	protectedPreformatted
+	protectedPreformattedStatic
+	protectedPreformattedIdentifier
 )
 
 type protectedSpan struct {
@@ -38,7 +41,7 @@ type protectedSpan struct {
 
 func protectTranslation(source []byte, hash string, glossary *Glossary) protectedTranslation {
 	text := string(source)
-	var spans []protectedSpan
+	spans := preformattedProtectionSpans(text)
 	for _, m := range directiveLineRE.FindAllStringIndex(text, -1) {
 		spans = append(spans, protectedSpan{start: m[0], end: m[1], kind: protectedDirective})
 	}

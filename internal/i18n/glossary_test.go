@@ -19,6 +19,13 @@ func TestZhCNMandatoryGlossary(t *testing.T) {
 		"slides":          "页面",
 		"Go Playground":   "Go 语言演练场",
 		"constraint":      "约束",
+		"type switch":     "类型选择",
+		"type switches":   "类型选择",
+		"type assertion":  "类型断言",
+		"type assertions": "类型断言",
+		"interface value": "接口值",
+		"interface type":  "接口类型",
+		"concrete type":   "具体类型",
 		"type parameter":  "类型参数",
 		"type parameters": "类型参数",
 	}

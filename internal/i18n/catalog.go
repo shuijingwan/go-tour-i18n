@@ -13,8 +13,6 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
-
-	"golang.org/x/tools/present"
 )
 
 var ArticleOrder = []string{
@@ -294,23 +292,8 @@ func splitConditional(data []byte) ([][]byte, error) {
 }
 
 func parseSinglePage(root, article string, source []byte) error {
-	present.PlayEnabled = true
-	ctx := &present.Context{ReadFile: func(name string) ([]byte, error) {
-		clean := filepath.Clean(filepath.FromSlash(name))
-		if filepath.IsAbs(clean) || clean == ".." || strings.HasPrefix(clean, ".."+string(filepath.Separator)) {
-			return nil, fmt.Errorf("unsafe referenced path %q", name)
-		}
-		return os.ReadFile(filepath.Join(root, "_content", "tour", clean))
-	}}
-	wrapped := append([]byte("Tour page\n\n"), source...)
-	doc, err := ctx.Parse(bytes.NewReader(wrapped), article, 0)
-	if err != nil {
-		return fmt.Errorf("present parse: %w", err)
-	}
-	if len(doc.Sections) != 1 {
-		return fmt.Errorf("top-level sections = %d, want 1", len(doc.Sections))
-	}
-	return nil
+	_, err := parsePresentPage(root, article, source)
+	return err
 }
 
 func pageTitle(source []byte) string {
