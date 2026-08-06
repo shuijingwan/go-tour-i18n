@@ -60,6 +60,10 @@ func TestCommittedStatus(t *testing.T) {
 			if s.State != "ready" || s.Attempts != 5 || s.SourceSHA256 != "01a045105dc8c12fb1709f122d363235c19a6464d5de7587d579524aec270dd6" || s.CandidatePath != "locales/zh-CN/candidates/generics-1.article" || s.UpdatedAt != "2026-08-05T04:09:16Z" || s.Note != "GLM-5.2 candidate passed existing validator" {
 				t.Fatalf("generics/1 status: %+v", s)
 			}
+		case "flowcontrol/8":
+			if s.State != "ready" || s.Attempts != 1 || s.SourceSHA256 != "d8bbee8455ff59212ef432a08312f7c7703360367325a80df3719157200316e9" || s.CandidatePath != "locales/zh-CN/candidates/flowcontrol-8.article" || s.UpdatedAt != "2026-08-06T00:53:02Z" || s.Note != "GLM-5.2 candidate passed existing validator" {
+				t.Fatalf("flowcontrol/8 status: %+v", s)
+			}
 		default:
 			if s.State != "pending" || s.Attempts != 0 || s.CandidatePath != "" {
 				t.Fatalf("non-initial status: %+v", s)

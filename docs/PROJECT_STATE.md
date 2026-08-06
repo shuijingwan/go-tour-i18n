@@ -1,6 +1,6 @@
 # 项目状态
 
-更新时间：2026-08-05
+更新时间：2026-08-06
 
 ## 基线与架构
 
@@ -25,12 +25,14 @@
 ## zh-CN 翻译进度
 
 - 正式发布投影共 103 页，另保留 2 条条件源页面审计记录。
-- 当前 ready 9 页、pending 94 页、blocked 0 页；新增完成 `generics/1`，其余 ready 页面为 `welcome/1`～`welcome/5`、`basics/1`～`basics/3`。
+- 当前正式页面 103 页，其中 ready 10 页、pending 93 页、blocked 0 页；新增完成 `flowcontrol/8`。
 - `generics/1` 为 `ready`、Attempts=5。五次 attempt 均完整保留：依次暴露网络沙箱失败、token 重复、inline-code 边界失败、token 换序，最终第五次通过全部自动校验。
+- `flowcontrol/8` 为 `ready`、Attempts=1。GLM-5.2 第一次翻译即通过 token、present 和结构校验；本页覆盖 legacy inline code、两个链接、预格式化代码、注意段和 `.play`。
 - 当前已验证 GLM-5.2 在前三个正式 Basics 技术页面中没有出现技术性误译或结构损坏：`basics/1` 可直接通过，`basics/2`、`basics/3` 经轻微人工润色后定稿。
 - `generics/1` 已完成人工润色和重新校验，并通过本地 HTTP 与浏览器预览。
+- `flowcontrol/8` 自动校验通过后，人工发现并修正了“找到最接近 x 的 z”这一技术含义偏差；润色后的 candidate validate 通过，本地 HTTP 和浏览器预览正常。
 
-本阶段 glossary 已新增泛型核心术语：`constraint` → `约束`、`type parameter` → `类型参数`、`type parameters` → `类型参数`；此前沉淀的基础术语保持不变。
+本阶段 glossary 已新增 preferred 术语：`standard library` → `标准库`、`iteration` → `迭代`、`loop condition` → `循环条件`。`square root`、`Newton's method`、`derivative` 等单页术语暂不加入。
 
 ## 本日完成
 
@@ -38,6 +40,7 @@
 - 完成 `basics/1`、`basics/2`、`basics/3` 中文翻译及定稿。
 - 修复 legacy present 行内代码保护，保留所有模型原始 attempt。
 - 完成代表性校准页面 `generics/1` 的翻译、人工定稿、术语沉淀与本地预览验证。
+- 完成代表性校准页面 `flowcontrol/8` 的首次翻译、人工技术校正、术语沉淀与本地预览验证。
 
 ## 后续策略
 
@@ -45,4 +48,4 @@
 - 代表页覆盖较长说明、练习、特殊 present 结构、方法与接口、泛型、并发、图片或其他少见结构。
 - 代表页稳定后自动试跑 10 个普通 pending 页面；试跑稳定后再批量翻译剩余页面。
 - 全量翻译不等于直接发布：失败页面进入重试或 blocked，通过页面仍需统一验证。
-- 代表页清单中的下一页尚未开始；本次成果提交后项目暂时暂停，等待 Codex 周额度恢复。
+- 下一代表页仍为 `methods/16`，尚未开始。

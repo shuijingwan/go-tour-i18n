@@ -46,10 +46,16 @@ func TestZhCNMandatoryGlossary(t *testing.T) {
 		"import statement":     "导入语句",
 		"exported name":        "导出名",
 		"unexported name":      "未导出的名称",
+		"standard library":     "标准库",
+		"iteration":            "迭代",
+		"loop condition":       "循环条件",
 	}
 	for key, value := range wantPreferred {
 		if got := glossary.Preferred[key]; got != value {
 			t.Errorf("preferred[%q] = %q, want %q", key, got, value)
+		}
+		if _, ok := glossary.Mandatory[key]; ok {
+			t.Errorf("preferred term %q is also mandatory", key)
 		}
 	}
 	rules := glossary.PromptRules("welcome/1")
@@ -75,8 +81,9 @@ func TestZhCNMandatoryGlossary(t *testing.T) {
 	ordered := []string{
 		"A Tour of Go =>", "Format =>", "Go Playground =>", "Run =>", "next =>", "previous =>", "slides =>",
 		"普通正文中的 deterministic output =>", "普通正文中的 exported name =>", "普通正文中的 import path =>",
-		"普通正文中的 import statement =>", "普通正文中的 package =>", "普通正文中的 package name =>",
-		"普通正文中的 sandbox =>", "普通正文中的 the tour =>", "普通正文中的 tour =>",
+		"普通正文中的 import statement =>", "普通正文中的 iteration =>", "普通正文中的 loop condition =>",
+		"普通正文中的 package =>", "普通正文中的 package name =>", "普通正文中的 sandbox =>",
+		"普通正文中的 standard library =>", "普通正文中的 the tour =>", "普通正文中的 tour =>",
 		"普通正文中的 unexported name =>", "禁止使用的 zh-CN 译法：幻灯片",
 	}
 	last := -1
