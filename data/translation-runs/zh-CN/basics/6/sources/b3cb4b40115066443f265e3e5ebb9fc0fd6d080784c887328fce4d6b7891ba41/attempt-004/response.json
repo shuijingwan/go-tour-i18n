@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "20260809183642391d5fc72b884c6a",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 1365,
+    "completion_tokens": 57,
+    "total_tokens": 1422
+  },
+  "content": "* 多个返回值\n\n函数可以返回任意数量的结果。\n\n`swap` ⟪GTI18N_b3cb4b40_000001⟫ 函数返回两个字符串。\n\n⟪GTI18N_b3cb4b40_000002⟫",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 多个返回值\n\n函数可以返回任意数量的结果。\n\n`swap` ⟪GTI18N_b3cb4b40_000001⟫ 函数返回两个字符串。\n\n⟪GTI18N_b3cb4b40_000002⟫",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786271803,
+    "id": "20260809183642391d5fc72b884c6a",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "20260809183642391d5fc72b884c6a",
+    "usage": {
+      "completion_tokens": 57,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 1365,
+      "prompt_tokens_details": {
+        "cached_tokens": 512
+      },
+      "total_tokens": 1422
+    }
+  }
+}

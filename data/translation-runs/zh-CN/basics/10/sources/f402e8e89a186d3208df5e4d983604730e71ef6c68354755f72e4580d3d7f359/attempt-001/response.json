@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "202608091734520c1158e5f60d4602",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 1474,
+    "completion_tokens": 164,
+    "total_tokens": 1638
+  },
+  "content": "* 短变量声明\n\n在函数内部，可以使用 ⟪GTI18N_f402e8e8_000001⟫ 短赋值语句来代替带隐式类型的 ⟪GTI18N_f402e8e8_000002⟫ 声明。\n\n在函数外部，每条语句都以关键字（⟪GTI18N_f402e8e8_000003⟫、⟪GTI18N_f402e8e8_000004⟫ 等）开头，因此 ⟪GTI18N_f402e8e8_000005⟫ 这种写法不可用。\n\n⟪GTI18N_f402e8e8_000006⟫",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 短变量声明\n\n在函数内部，可以使用 ⟪GTI18N_f402e8e8_000001⟫ 短赋值语句来代替带隐式类型的 ⟪GTI18N_f402e8e8_000002⟫ 声明。\n\n在函数外部，每条语句都以关键字（⟪GTI18N_f402e8e8_000003⟫、⟪GTI18N_f402e8e8_000004⟫ 等）开头，因此 ⟪GTI18N_f402e8e8_000005⟫ 这种写法不可用。\n\n⟪GTI18N_f402e8e8_000006⟫",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786268094,
+    "id": "202608091734520c1158e5f60d4602",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "202608091734520c1158e5f60d4602",
+    "usage": {
+      "completion_tokens": 164,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 1474,
+      "prompt_tokens_details": {
+        "cached_tokens": 512
+      },
+      "total_tokens": 1638
+    }
+  }
+}

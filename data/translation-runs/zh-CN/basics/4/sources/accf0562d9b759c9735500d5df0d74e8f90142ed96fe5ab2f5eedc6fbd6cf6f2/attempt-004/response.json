@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "20260809175719def165027de4478c",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 1453,
+    "completion_tokens": 145,
+    "total_tokens": 1598
+  },
+  "content": "* 函数\n\n函数可以接受零个或多个参数。\n\n在这个例子中，⟪GTI18N_accf0562_000002⟫ 接受两个 ⟪GTI18N_accf0562_000002⟫ 类型的参数。\n\n注意，类型位于变量名_之后_。\n\n（关于类型为何采用这种写法的更多说明，请参阅 [[⟪GTI18N_accf0562_000003⟫][关于 ⟪GTI18N_accf0562_000004⟫ 声明语法的文章]]。）\n\n⟪GTI18N_accf0562_000005⟫",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 函数\n\n函数可以接受零个或多个参数。\n\n在这个例子中，⟪GTI18N_accf0562_000002⟫ 接受两个 ⟪GTI18N_accf0562_000002⟫ 类型的参数。\n\n注意，类型位于变量名_之后_。\n\n（关于类型为何采用这种写法的更多说明，请参阅 [[⟪GTI18N_accf0562_000003⟫][关于 ⟪GTI18N_accf0562_000004⟫ 声明语法的文章]]。）\n\n⟪GTI18N_accf0562_000005⟫",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786269442,
+    "id": "20260809175719def165027de4478c",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "20260809175719def165027de4478c",
+    "usage": {
+      "completion_tokens": 145,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 1453,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "total_tokens": 1598
+    }
+  }
+}

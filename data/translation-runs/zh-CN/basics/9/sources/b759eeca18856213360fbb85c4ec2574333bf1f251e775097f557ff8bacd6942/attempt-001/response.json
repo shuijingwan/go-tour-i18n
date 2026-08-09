@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "20260809173442deff5cb96336427c",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 1368,
+    "completion_tokens": 62,
+    "total_tokens": 1430
+  },
+  "content": "* 带初始化器的变量\n\nvar 声明可以包含初始化器，每个变量一个。\n\n如果存在初始化器，则类型可以省略；变量会自动取得初始化器的类型。\n\n⟪GTI18N_b759eeca_000001⟫",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 带初始化器的变量\n\nvar 声明可以包含初始化器，每个变量一个。\n\n如果存在初始化器，则类型可以省略；变量会自动取得初始化器的类型。\n\n⟪GTI18N_b759eeca_000001⟫",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786268084,
+    "id": "20260809173442deff5cb96336427c",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "20260809173442deff5cb96336427c",
+    "usage": {
+      "completion_tokens": 62,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 1368,
+      "prompt_tokens_details": {
+        "cached_tokens": 512
+      },
+      "total_tokens": 1430
+    }
+  }
+}

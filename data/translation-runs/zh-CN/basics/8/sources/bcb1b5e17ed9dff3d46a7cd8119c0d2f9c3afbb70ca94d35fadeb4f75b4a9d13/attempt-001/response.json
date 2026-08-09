@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "20260809173434e8223d3f53864970",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 1406,
+    "completion_tokens": 95,
+    "total_tokens": 1501
+  },
+  "content": "* 变量\n\n⟪GTI18N_bcb1b5e1_000001⟫ 语句用于声明一组变量；与函数参数列表一样，类型放在最后。\n\n⟪GTI18N_bcb1b5e1_000002⟫ 语句可以位于包或函数级别。本示例中同时展示了这两种用法。\n\n⟪GTI18N_bcb1b5e1_000003⟫",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 变量\n\n⟪GTI18N_bcb1b5e1_000001⟫ 语句用于声明一组变量；与函数参数列表一样，类型放在最后。\n\n⟪GTI18N_bcb1b5e1_000002⟫ 语句可以位于包或函数级别。本示例中同时展示了这两种用法。\n\n⟪GTI18N_bcb1b5e1_000003⟫",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786268076,
+    "id": "20260809173434e8223d3f53864970",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "20260809173434e8223d3f53864970",
+    "usage": {
+      "completion_tokens": 95,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 1406,
+      "prompt_tokens_details": {
+        "cached_tokens": 512
+      },
+      "total_tokens": 1501
+    }
+  }
+}

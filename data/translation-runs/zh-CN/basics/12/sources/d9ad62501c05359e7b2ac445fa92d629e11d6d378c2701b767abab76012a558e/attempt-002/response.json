@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "20260809173513b8ab550052fe4ddc",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 1480,
+    "completion_tokens": 126,
+    "total_tokens": 1606
+  },
+  "content": "* 零值\n\n声明变量时如果未显式指定初始值，则会被赋予其 _零值_。\n\n零值如下：\n\n- 数值类型为 ⟪GTI18N_d9ad6250_000001⟫，\n- 布尔类型为 ⟪GTI18N_d9ad6250_000002⟫，\n- 字符串类型为 ⟪GTI18N_d9ad6250_000003⟫（空字符串）。\n\n⟪GTI18N_d9ad6250_000004⟫",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 零值\n\n声明变量时如果未显式指定初始值，则会被赋予其 _零值_。\n\n零值如下：\n\n- 数值类型为 ⟪GTI18N_d9ad6250_000001⟫，\n- 布尔类型为 ⟪GTI18N_d9ad6250_000002⟫，\n- 字符串类型为 ⟪GTI18N_d9ad6250_000003⟫（空字符串）。\n\n⟪GTI18N_d9ad6250_000004⟫",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786268115,
+    "id": "20260809173513b8ab550052fe4ddc",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "20260809173513b8ab550052fe4ddc",
+    "usage": {
+      "completion_tokens": 126,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 1480,
+      "prompt_tokens_details": {
+        "cached_tokens": 512
+      },
+      "total_tokens": 1606
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "202608091734253c309d1b4fbc4c1c",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 1455,
+    "completion_tokens": 137,
+    "total_tokens": 1592
+  },
+  "content": "* 命名返回值\n\n⟪GTI18N_1db20ae8_000001⟫ 的返回值可以被命名。如果命名了，它们将被视为在函数顶部定义的变量。\n\n这些名称应当用于说明返回值的含义。\n\n不带参数的 ⟪GTI18N_1db20ae8_000002⟫ 语句会返回已命名的返回值。这称为“裸”返回。\n\n裸返回语句应当仅在简短的函数中使用，如本示例所示。在较长的函数中使用它们会损害可读性。\n\n⟪GTI18N_1db20ae8_000003⟫",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 命名返回值\n\n⟪GTI18N_1db20ae8_000001⟫ 的返回值可以被命名。如果命名了，它们将被视为在函数顶部定义的变量。\n\n这些名称应当用于说明返回值的含义。\n\n不带参数的 ⟪GTI18N_1db20ae8_000002⟫ 语句会返回已命名的返回值。这称为“裸”返回。\n\n裸返回语句应当仅在简短的函数中使用，如本示例所示。在较长的函数中使用它们会损害可读性。\n\n⟪GTI18N_1db20ae8_000003⟫",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786268067,
+    "id": "202608091734253c309d1b4fbc4c1c",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "202608091734253c309d1b4fbc4c1c",
+    "usage": {
+      "completion_tokens": 137,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 1455,
+      "prompt_tokens_details": {
+        "cached_tokens": 512
+      },
+      "total_tokens": 1592
+    }
+  }
+}

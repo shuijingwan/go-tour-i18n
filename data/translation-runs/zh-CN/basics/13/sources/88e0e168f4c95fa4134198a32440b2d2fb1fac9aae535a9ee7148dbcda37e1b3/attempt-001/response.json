@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "20260809173522e9913781265f45ce",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 1524,
+    "completion_tokens": 219,
+    "total_tokens": 1743
+  },
+  "content": "* 类型转换\n\n表达式 ⟪GTI18N_88e0e168_000001⟫ 会将值 ⟪GTI18N_88e0e168_000002⟫ 转换为类型 ⟪GTI18N_88e0e168_000003⟫。\n\n一些数值转换：\n\n⟪GTI18N_88e0e168_000004⟫或者更简单地写为：\n\n⟪GTI18N_88e0e168_000005⟫与 C 不同，在 ⟪GTI18N_88e0e168_000006⟫ 中，不同类型之间的赋值需要显式转换。\n试着在示例中删掉 ⟪GTI18N_88e0e168_000007⟫ 或 ⟪GTI18N_88e0e168_000008⟫ 转换，看看会发生什么。\n\n⟪GTI18N_88e0e168_000009⟫\n",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 类型转换\n\n表达式 ⟪GTI18N_88e0e168_000001⟫ 会将值 ⟪GTI18N_88e0e168_000002⟫ 转换为类型 ⟪GTI18N_88e0e168_000003⟫。\n\n一些数值转换：\n\n⟪GTI18N_88e0e168_000004⟫或者更简单地写为：\n\n⟪GTI18N_88e0e168_000005⟫与 C 不同，在 ⟪GTI18N_88e0e168_000006⟫ 中，不同类型之间的赋值需要显式转换。\n试着在示例中删掉 ⟪GTI18N_88e0e168_000007⟫ 或 ⟪GTI18N_88e0e168_000008⟫ 转换，看看会发生什么。\n\n⟪GTI18N_88e0e168_000009⟫\n",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786268124,
+    "id": "20260809173522e9913781265f45ce",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "20260809173522e9913781265f45ce",
+    "usage": {
+      "completion_tokens": 219,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 1524,
+      "prompt_tokens_details": {
+        "cached_tokens": 512
+      },
+      "total_tokens": 1743
+    }
+  }
+}

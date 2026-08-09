@@ -1,0 +1,24 @@
+{
+  "page_id": "basics/6",
+  "locale": "zh-CN",
+  "source_sha256": "b3cb4b40115066443f265e3e5ebb9fc0fd6d080784c887328fce4d6b7891ba41",
+  "body": {
+    "model": "glm-5.2",
+    "stream": false,
+    "thinking": {
+      "type": "disabled"
+    },
+    "do_sample": false,
+    "max_tokens": 8192,
+    "messages": [
+      {
+        "role": "system",
+        "content": "请将一个完整的《Go 语言之旅》present.Section 从英文翻译为中国大陆简体中文。\n\n只返回完整且可由 present 解析的 .article 内容。必须保留每个保护 token，使其原样出现、恰好出现一次；不得修改、删除、复制或伪造。为适应目标语言自然语序可以调整 token 位置，但不得破坏其所属的链接、代码、directive、预格式化等结构关系。必须使用术语表中的强制译法；对应的、应当翻译的英文显示文本不得残留；不得简化、遗漏或改变原文含义。\n\n中文表达要求：\n1. 翻译前先理解完整 present.Section 的页面用途和上下文，不要逐词翻译或机械照搬英文语序。\n2. 页面标题应简洁、自然并准确概括页面主题。简短、含双关或依赖上下文的标题，应根据完整页面含义翻译，不能生硬拼接字面译法。\n3. 正文采用自然、清楚、简洁的中国大陆简体中文技术教程风格。在不遗漏、不增加、不改变技术含义的前提下，可以调整语序，并可在同一段落内合理拆分或合并句子。\n4. 避免明显的机器翻译表达，例如机械使用“它们”“你自己”“来进行……”，以及不自然的被动语态或英语式定语顺序。\n5. 准确区分用户操作：按钮应点击；链接应点击；键盘按键应按或按下；命令应执行；文本内容应输入。不得把按键描述为输入字符串，也不得混淆按钮、命令和链接。\n6. 技术词语应根据当前语境选择准确、自然的中文译法，不要仅按固定字典逐词替换。\n7. 可以润色普通中文文本，但不得改变、增删或重新标记任何受保护结构。尤其不得自行新增或删除行内代码反引号、预格式化代码、present directive、链接及链接 target、HTML 或特殊 present 语法；所有保护 token 必须完整且唯一，结构关系和形式必须保持一致。\n8. 不得增加原文没有的解释、提示、结论或标题。\n9. 输出前静默自检：标题是否自然；是否存在英文语序或机器翻译腔；操作说明是否符合真实操作；技术含义和信息量是否与原文一致；是否无意增删了行内代码、链接、directive 或其他结构。\n\n只输出最终完整的 present.Section，不输出分析、说明或修改过程。"
+      },
+      {
+        "role": "user",
+        "content": "page_id: basics/6\nsource_locale: en\ntarget_locale: zh-CN\n\n强制术语表与译法规则：\n- A Tour of Go =\u003e Go 语言之旅（强制；不得保留对应的英文显示文本）\n- Format =\u003e 格式化（强制；不得保留对应的英文显示文本）\n- Go Playground =\u003e Go 语言演练场（强制；不得保留对应的英文显示文本）\n- Run =\u003e 运行（强制；不得保留对应的英文显示文本）\n- concrete type =\u003e 具体类型（强制；不得保留对应的英文显示文本）\n- constraint =\u003e 约束（强制；不得保留对应的英文显示文本）\n- interface type =\u003e 接口类型（强制；不得保留对应的英文显示文本）\n- interface value =\u003e 接口值（强制；不得保留对应的英文显示文本）\n- next =\u003e 下一页（强制；不得保留对应的英文显示文本）\n- previous =\u003e 上一页（强制；不得保留对应的英文显示文本）\n- slides =\u003e 页面（强制；不得保留对应的英文显示文本）\n- type assertion =\u003e 类型断言（强制；不得保留对应的英文显示文本）\n- type assertions =\u003e 类型断言（强制；不得保留对应的英文显示文本）\n- type parameter =\u003e 类型参数（强制；不得保留对应的英文显示文本）\n- type parameters =\u003e 类型参数（强制；不得保留对应的英文显示文本）\n- type switch =\u003e 类型选择（强制；不得保留对应的英文显示文本）\n- type switches =\u003e 类型选择（强制；不得保留对应的英文显示文本）\n- 普通正文中的 deterministic output =\u003e 确定性输出（上下文指导；应结合完整页面自然翻译）\n- 普通正文中的 exported name =\u003e 导出名（上下文指导；应结合完整页面自然翻译）\n- 普通正文中的 import path =\u003e 导入路径（上下文指导；应结合完整页面自然翻译）\n- 普通正文中的 import statement =\u003e 导入语句（上下文指导；应结合完整页面自然翻译）\n- 普通正文中的 iteration =\u003e 迭代（上下文指导；应结合完整页面自然翻译）\n- 普通正文中的 loop condition =\u003e 循环条件（上下文指导；应结合完整页面自然翻译）\n- 普通正文中的 package =\u003e 包（上下文指导；应结合完整页面自然翻译）\n- 普通正文中的 package name =\u003e 包名（上下文指导；应结合完整页面自然翻译）\n- 普通正文中的 sandbox =\u003e 沙箱（上下文指导；应结合完整页面自然翻译）\n- 普通正文中的 standard library =\u003e 标准库（上下文指导；应结合完整页面自然翻译）\n- 普通正文中的 the tour =\u003e 本教程（上下文指导；应结合完整页面自然翻译）\n- 普通正文中的 tour =\u003e 教程（上下文指导；应结合完整页面自然翻译）\n- 普通正文中的 unexported name =\u003e 未导出的名称（上下文指导；应结合完整页面自然翻译）\n- 禁止使用的 zh-CN 译法：幻灯片\n- 禁止使用的 zh-CN 译法：本之旅\n- 禁止使用的 zh-CN 译法：欢迎使用 Go 编程语言之旅\n\n重要：下文每个形如 ⟪GTI18N_...⟫ 的保护 token 都是唯一占位符。\n本页共有 3 个保护 token，输出中也必须恰好包含 3 个。\n每个 token 必须原样输出且恰好输出一次。\n不得复制、不得复用、不得删除、不得改写或伪造任何 token。\n可以仅在完整保持所属语义单元和结构关系的前提下调整位置；不得将成对结构 token 拆散、独立移动，也不得将任何内容移入或移出 pair。\n\n行内代码成对结构（反引号由程序恢复，pair 内的英文或标识符不是应翻译的英文显示文本）：\n- 行内代码 pair 1：⟪GTI18N_b3cb4b40_000001⟫ 是 opening token，⟪GTI18N_b3cb4b40_000002⟫ 是 closing token。两者之间当前可见的代码内容必须逐字原样保留在同一 pair 内；不得翻译、改写、增删、移出 pair 或移入其他内容；不得自行添加反引号。\n除上述 pair 外，directive、链接 target、keep-word 等单 token 结构仍只能原样、唯一保留；不得自行重建其隐藏的原始结构。\n\n需要翻译的完整受保护页面：\n* Multiple results\n\nA function can return any number of results.\n\nThe ⟪GTI18N_b3cb4b40_000001⟫swap⟪GTI18N_b3cb4b40_000002⟫ function returns two strings.\n\n⟪GTI18N_b3cb4b40_000003⟫\n\n"
+      }
+    ]
+  }
+}

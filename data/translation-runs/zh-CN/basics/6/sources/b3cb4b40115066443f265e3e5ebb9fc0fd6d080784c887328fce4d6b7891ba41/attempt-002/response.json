@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "2026080917341476c962492d1e409f",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 1416,
+    "completion_tokens": 70,
+    "total_tokens": 1486
+  },
+  "content": "* 多个返回值\n\n函数可以返回任意数量的结果。\n\n`swap` 函数返回两个字符串。\n\n.play basics/multiple-results.go 7,9\n\n⟪GTI18N_b3cb4b40_000001⟫\n\n⟪GTI18N_b3cb4b40_000002⟫",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 多个返回值\n\n函数可以返回任意数量的结果。\n\n`swap` 函数返回两个字符串。\n\n.play basics/multiple-results.go 7,9\n\n⟪GTI18N_b3cb4b40_000001⟫\n\n⟪GTI18N_b3cb4b40_000002⟫",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786268056,
+    "id": "2026080917341476c962492d1e409f",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "2026080917341476c962492d1e409f",
+    "usage": {
+      "completion_tokens": 70,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 1416,
+      "prompt_tokens_details": {
+        "cached_tokens": 1344
+      },
+      "total_tokens": 1486
+    }
+  }
+}

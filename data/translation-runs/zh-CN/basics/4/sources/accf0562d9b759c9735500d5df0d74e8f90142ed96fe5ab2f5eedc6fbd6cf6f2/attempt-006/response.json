@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "202608091757244463e95bf21143fd",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 1510,
+    "completion_tokens": 87,
+    "total_tokens": 1597
+  },
+  "content": "* 函数\n\n函数可以接受零个或多个参数。\n\n在这个例子中，`add` 接受两个 `int` 类型的参数。\n\n注意，类型出现在变量名_之后_。\n\n（关于类型为何如此书写，请参阅 [[https://blog.golang.org/gos-declaration-syntax][关于 Go 声明语法的文章]]。）\n\n.play basics/functions-add.go /func add/,/^}/",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 函数\n\n函数可以接受零个或多个参数。\n\n在这个例子中，`add` 接受两个 `int` 类型的参数。\n\n注意，类型出现在变量名_之后_。\n\n（关于类型为何如此书写，请参阅 [[https://blog.golang.org/gos-declaration-syntax][关于 Go 声明语法的文章]]。）\n\n.play basics/functions-add.go /func add/,/^}/",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786269446,
+    "id": "202608091757244463e95bf21143fd",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "202608091757244463e95bf21143fd",
+    "usage": {
+      "completion_tokens": 87,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 1510,
+      "prompt_tokens_details": {
+        "cached_tokens": 1408
+      },
+      "total_tokens": 1597
+    }
+  }
+}

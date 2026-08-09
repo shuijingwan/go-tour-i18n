@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "2026080917350198ccc5833d7b49cf",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 1622,
+    "completion_tokens": 315,
+    "total_tokens": 1937
+  },
+  "content": "* 基本类型\n\n⟪GTI18N_836ab1dd_000001⟫ 的基本类型有：\n\n⟪GTI18N_836ab1dd_000002⟫是 ⟪GTI18N_836ab1dd_000003⟫ 的别名⟪GTI18N_836ab1dd_000004⟫是 ⟪GTI18N_836ab1dd_000005⟫ 的别名⟪GTI18N_836ab1dd_000006⟫表示一个 Unicode 码位⟪GTI18N_836ab1dd_000007⟫这个例子展示了几个类型的变量，同时还演示了变量声明可以像导入语句一样被“打包”成块。\n\n⟪GTI18N_836ab1dd_000008⟫、⟪GTI18N_836ab1dd_000009⟫ 和 ⟪GTI18N_836ab1dd_000010⟫ 类型在 32 位系统上通常为 32 位宽，在 64 位系统上则为 64 位宽。\n当你需要使用整数值时，除非有特殊理由要使用特定大小或无符号的整数类型，否则都应该使用 ⟪GTI18N_836ab1dd_000011⟫。\n\n⟪GTI18N_836ab1dd_000012⟫",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 基本类型\n\n⟪GTI18N_836ab1dd_000001⟫ 的基本类型有：\n\n⟪GTI18N_836ab1dd_000002⟫是 ⟪GTI18N_836ab1dd_000003⟫ 的别名⟪GTI18N_836ab1dd_000004⟫是 ⟪GTI18N_836ab1dd_000005⟫ 的别名⟪GTI18N_836ab1dd_000006⟫表示一个 Unicode 码位⟪GTI18N_836ab1dd_000007⟫这个例子展示了几个类型的变量，同时还演示了变量声明可以像导入语句一样被“打包”成块。\n\n⟪GTI18N_836ab1dd_000008⟫、⟪GTI18N_836ab1dd_000009⟫ 和 ⟪GTI18N_836ab1dd_000010⟫ 类型在 32 位系统上通常为 32 位宽，在 64 位系统上则为 64 位宽。\n当你需要使用整数值时，除非有特殊理由要使用特定大小或无符号的整数类型，否则都应该使用 ⟪GTI18N_836ab1dd_000011⟫。\n\n⟪GTI18N_836ab1dd_000012⟫",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786268104,
+    "id": "2026080917350198ccc5833d7b49cf",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "2026080917350198ccc5833d7b49cf",
+    "usage": {
+      "completion_tokens": 315,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 1622,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "total_tokens": 1937
+    }
+  }
+}

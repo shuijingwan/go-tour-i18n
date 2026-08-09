@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "202608091734019cc58742f9864a9f",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 1400,
+    "completion_tokens": 93,
+    "total_tokens": 1493
+  },
+  "content": "* 函数（续）\n\n当两个或多个连续命名的函数参数共享同一类型时，可以省略前面的类型，只保留最后一个。\n\n在本示例中，我们将\n\n⟪GTI18N_02e7feb3_000001⟫简写为\n\n⟪GTI18N_02e7feb3_000002⟫⟪GTI18N_02e7feb3_000003⟫",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 函数（续）\n\n当两个或多个连续命名的函数参数共享同一类型时，可以省略前面的类型，只保留最后一个。\n\n在本示例中，我们将\n\n⟪GTI18N_02e7feb3_000001⟫简写为\n\n⟪GTI18N_02e7feb3_000002⟫⟪GTI18N_02e7feb3_000003⟫",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786268042,
+    "id": "202608091734019cc58742f9864a9f",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "202608091734019cc58742f9864a9f",
+    "usage": {
+      "completion_tokens": 93,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 1400,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "total_tokens": 1493
+    }
+  }
+}
