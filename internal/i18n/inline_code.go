@@ -63,6 +63,24 @@ func presentInlineCodes(text string) []presentInlineCode {
 	return result
 }
 
+// linkLabelInlineCodes finds program-font spans in link display labels. They
+// are deliberately excluded from presentInlineCodes because that helper scans
+// ordinary text and treats a link as an opaque structured region. Link labels
+// need a separate scan so their program payload can be protected without
+// treating the surrounding link syntax as ordinary inline code.
+func linkLabelInlineCodes(text string) []presentInlineCode {
+	var result []presentInlineCode
+	for _, link := range linkRE.FindAllStringSubmatchIndex(text, -1) {
+		labelStart, labelEnd := link[4], link[5]
+		for _, code := range presentInlineCodes(text[labelStart:labelEnd]) {
+			code.Start += labelStart
+			code.End += labelStart
+			result = append(result, code)
+		}
+	}
+	return result
+}
+
 func precedingRuneIsPunctuation(s string, offset int) bool {
 	r, _ := utf8.DecodeLastRuneInString(s[:offset])
 	return unicode.IsPunct(r)

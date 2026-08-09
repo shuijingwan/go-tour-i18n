@@ -67,6 +67,33 @@ func TestCandidateProtectedChangesFail(t *testing.T) {
 	}
 }
 
+func TestLinkLabelProgramPayloadValidation(t *testing.T) {
+	root := repoRoot(t)
+	source := "* Root\n\n[[/pkg/][Use `pkg.Type` or `pkg.Other`]].\n\nOutside `first` and `second`.\n"
+	catalog := &Catalog{Pages: []Page{{ID: "synthetic/link-program", Article: "basics.article", Source: []byte(source), SourceSHA256: sum([]byte(source))}}}
+	valid := "* 根\n\n[[/pkg/][使用 `pkg.Other` 或 `pkg.Type`]]。\n\n外部使用 `second` 和 `first`。\n"
+	if err := ValidateCandidate(root, catalog, "synthetic/link-program", []byte(valid)); err != nil {
+		t.Fatalf("valid translated link label rejected: %v", err)
+	}
+	for name, candidate := range map[string]string{
+		"payload modified":           strings.Replace(valid, "`pkg.Type`", "`other.Type`", 1),
+		"program removed":            strings.Replace(valid, "`pkg.Type`", "pkg.Type", 1),
+		"program moved outside link": "* 根\n\n[[/pkg/][使用说明]]。\n\n`pkg.Type`、 `pkg.Other`、 `second` 和 `first`。\n",
+	} {
+		t.Run(name, func(t *testing.T) {
+			if err := ValidateCandidate(root, catalog, "synthetic/link-program", []byte(candidate)); err == nil {
+				t.Fatalf("invalid link program payload accepted:\n%s", candidate)
+			}
+		})
+	}
+
+	plainSource := "* Root\n\n[[/doc/][Go Documentation]].\n"
+	plainCatalog := &Catalog{Pages: []Page{{ID: "synthetic/plain-link", Article: "basics.article", Source: []byte(plainSource), SourceSHA256: sum([]byte(plainSource))}}}
+	if err := ValidateCandidate(root, plainCatalog, "synthetic/plain-link", []byte("* 根\n\n[[/doc/][Go 文档]]。\n")); err != nil {
+		t.Fatalf("ordinary translated link rejected: %v", err)
+	}
+}
+
 func TestCandidateRejectsAppengineInSourceOrCandidate(t *testing.T) {
 	root := repoRoot(t)
 	badSource := syntheticSource + "#appengine: a remote server.\n"

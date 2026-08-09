@@ -72,6 +72,10 @@ func TestCommittedStatus(t *testing.T) {
 			if s.State != "ready" || s.Attempts != 1 || s.SourceSHA256 != "41f1f73320fde60ee5ff30d5927a19ff22d6da6a336bb776e15f2499e4f421d8" || s.CandidatePath != "locales/zh-CN/candidates/methods-20.article" || s.UpdatedAt != "2026-08-09T02:20:46Z" || s.Note != "人工审核确认的 candidate 已通过当前 validator；attempt-001 的旧全局 token 顺序失败记录保留在历史 validation.json" {
 				t.Fatalf("methods/20 status: %+v", s)
 			}
+		case "methods/24":
+			if s.State != "ready" || s.Attempts != 2 || s.SourceSHA256 != "d80f0d46796ad415a7ded4d0cefdef6cdb58deb38d050a61eb64abb25caf27ee" || s.CandidatePath != "locales/zh-CN/candidates/methods-24.article" || s.UpdatedAt != "2026-08-09T08:53:24Z" || s.Note != "GLM-5.2 candidate passed existing validator" {
+				t.Fatalf("methods/24 status: %+v", s)
+			}
 		case "concurrency/7":
 			if s.State != "ready" || s.Attempts != 1 || s.SourceSHA256 != "7c5d3fc7bb2540285d746242f8a1d16075639648eec8909c1df52239297d2917" || s.CandidatePath != "locales/zh-CN/candidates/concurrency-7.article" || s.UpdatedAt != "2026-08-09T04:14:19Z" || s.Note != "GLM-5.2 candidate passed existing validator" {
 				t.Fatalf("concurrency/7 status: %+v", s)

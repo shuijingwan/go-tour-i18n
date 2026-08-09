@@ -166,6 +166,136 @@ func TestNonInlineTokenKindsAreNotBoundaryNormalized(t *testing.T) {
 	}
 }
 
+func TestLinkLabelProgramSpanProtectionRoundTrip(t *testing.T) {
+	source := []byte("* Link\n\n[[/pkg/][Use `pkg.Type` here]].\n")
+	p := protectTranslation(source, "12345678", nil)
+	if len(p.Tokens) != 2 || p.Kinds[0] != protectedLinkTarget || p.Kinds[1] != protectedInlineCode || p.InlineBoundaries[1] {
+		t.Fatalf("protection = %+v, want target then inline-code token", p)
+	}
+	wantProtected := "[[" + p.Tokens[0] + "][Use " + p.Tokens[1] + " here]]"
+	if !strings.Contains(p.Text, wantProtected) {
+		t.Fatalf("link label program span not independently protected:\n%s", p.Text)
+	}
+	model := "* 链接\n\n[[" + p.Tokens[0] + "][使用 " + p.Tokens[1] + "]]。\n"
+	got, failures := p.restore(model)
+	if len(failures) != 0 || got != "* 链接\n\n[[/pkg/][使用 `pkg.Type`]]。\n" {
+		t.Fatalf("restore = %q, failures=%v", got, failures)
+	}
+}
+
+func TestMethods24ProtectionIncludesLinkLabelProgramSpan(t *testing.T) {
+	root := repoRoot(t)
+	catalog, err := BuildCatalog(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	page, err := catalog.Page("methods/24")
+	if err != nil {
+		t.Fatal(err)
+	}
+	p := protectTranslation(page.Source, page.SourceSHA256, nil)
+	counts := map[protectedTokenKind]int{}
+	for _, kind := range p.Kinds {
+		counts[kind]++
+	}
+	if counts[protectedLinkTarget] != 4 || counts[protectedDirective] != 1 || counts[protectedPreformattedStatic] != 1 || counts[protectedInlineCode] != 9 || len(p.Tokens) != 15 {
+		t.Fatalf("protected counts = %+v, total=%d; want links=4 directive=1 static=1 inline=9 total=15", counts, len(p.Tokens))
+	}
+	target, code := "", ""
+	for i, value := range p.Values {
+		switch value {
+		case "/pkg/image/#Rectangle":
+			target = p.Tokens[i]
+		case "`image.Rectangle`":
+			code = p.Tokens[i]
+		}
+	}
+	if target == "" || code == "" || !strings.Contains(p.Text, "[["+target+"]["+code+"]]") {
+		t.Fatalf("methods/24 linked program protection missing: target=%q code=%q\n%s", target, code, p.Text)
+	}
+}
+
+func TestInlineTokenBoundaryNormalizationForLegacyPresent(t *testing.T) {
+	root := repoRoot(t)
+	source := "* Root\n\nUse `code` here.\n"
+	catalog := &Catalog{Pages: []Page{{ID: "synthetic/inline-boundary", Article: "basics.article", Source: []byte(source), SourceSHA256: sum([]byte(source))}}}
+	tests := []struct {
+		name, prefix, suffix, want string
+	}{
+		{"full-width colon before", "说明：", " 方法。", "说明： `code` 方法。"},
+		{"full-width comma before", "说明，", " 方法。", "说明， `code` 方法。"},
+		{"full-width period before", "说明。", " 方法。", "说明。 `code` 方法。"},
+		{"full-width opening parenthesis", "说明（", "）", "说明（ `code`）"},
+		{"full-width closing parenthesis after", "调用 ", "）。", "调用 `code`）。"},
+		{"full-width comma after", "调用 ", "，继续。", "调用 `code`，继续。"},
+		{"full-width period after", "调用 ", "。", "调用 `code`。"},
+		{"han characters on both sides", "使用", "的结果。", "使用 `code` 的结果。"},
+		{"existing ASCII spaces", "use ", " here.", "use `code` here."},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			p := protectTranslation([]byte(source), "12345678", nil)
+			candidate, failures := p.restore("* 根\n\n" + tt.prefix + p.Tokens[0] + tt.suffix + "\n")
+			if len(failures) != 0 {
+				t.Fatal(failures)
+			}
+			if !strings.Contains(candidate, tt.want) {
+				t.Fatalf("restore = %q, want fragment %q", candidate, tt.want)
+			}
+			if err := ValidateCandidate(root, catalog, "synthetic/inline-boundary", []byte(candidate)); err != nil {
+				t.Fatalf("legacy present did not recognize inline code: %v\n%s", err, candidate)
+			}
+		})
+	}
+}
+
+func TestMethods24Attempt001ReplayNormalizesBoundsInlineToken(t *testing.T) {
+	root := repoRoot(t)
+	catalog, err := BuildCatalog(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	page, err := catalog.Page("methods/24")
+	if err != nil {
+		t.Fatal(err)
+	}
+	p := protectTranslation(page.Source, page.SourceSHA256, nil)
+	record, err := os.ReadFile(filepath.Join(root, "data", "translation-runs", "zh-CN", "methods", "24", "sources", page.SourceSHA256, "attempt-001", "response.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	var response struct {
+		Content string `json:"content"`
+	}
+	if err := json.Unmarshal(record, &response); err != nil {
+		t.Fatal(err)
+	}
+	candidate, failures := p.restore(response.Content)
+	if len(failures) != 0 {
+		t.Fatal(failures)
+	}
+	if !strings.Contains(candidate, "*注意*： `Bounds` 方法") {
+		t.Fatalf("Bounds boundary was not normalized:\n%s", candidate)
+	}
+	expected, err := parsedFontSpans(root, page.Article, page.Source)
+	if err != nil {
+		t.Fatal(err)
+	}
+	actual, err := parsedFontSpans(root, page.Article, []byte(candidate))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(expected) != 10 || len(actual) != 10 {
+		t.Fatalf("font spans source=%v candidate=%v\n%s", expected, actual, candidate)
+	}
+	if !strings.Contains(candidate, "[[/pkg/image/#Rectangle][`image.Rectangle`]]") {
+		t.Fatalf("linked program span moved or changed:\n%s", candidate)
+	}
+	if err := ValidateCandidate(root, catalog, "methods/24", []byte(candidate)); err != nil {
+		t.Fatalf("methods/24 attempt-001 replay rejected: %v\n%s", err, candidate)
+	}
+}
+
 func TestTranslationKeepSkipsOnlyHighConfidenceOrdinaryGoVerb(t *testing.T) {
 	tests := []struct {
 		name, source string

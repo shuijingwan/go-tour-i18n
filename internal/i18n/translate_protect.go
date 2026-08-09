@@ -15,10 +15,11 @@ var whereToGoPrefixRE = regexp.MustCompile(`(?i)\bwhere[\t \r\n]+to[\t \r\n]+$`)
 var directiveLineRE = regexp.MustCompile(`(?m)^\.(?:play|image)\s+[^\n]+$`)
 
 type protectedTranslation struct {
-	Text   string
-	Tokens []string
-	Values []string
-	Kinds  []protectedTokenKind
+	Text             string
+	Tokens           []string
+	Values           []string
+	Kinds            []protectedTokenKind
+	InlineBoundaries []bool
 }
 
 type protectedTokenKind uint8
@@ -35,9 +36,10 @@ const (
 )
 
 type protectedSpan struct {
-	start, end int
-	restore    string
-	kind       protectedTokenKind
+	start, end       int
+	restore          string
+	kind             protectedTokenKind
+	inlineBoundaries bool
 }
 
 func protectTranslation(source []byte, hash string, glossary *Glossary) protectedTranslation {
@@ -56,6 +58,9 @@ func protectTranslation(source []byte, hash string, glossary *Glossary) protecte
 		}
 	}
 	for _, code := range presentInlineCodes(text) {
+		spans = append(spans, protectedSpan{start: code.Start, end: code.End, kind: protectedInlineCode, inlineBoundaries: true})
+	}
+	for _, code := range linkLabelInlineCodes(text) {
 		spans = append(spans, protectedSpan{start: code.Start, end: code.End, kind: protectedInlineCode})
 	}
 	for _, m := range translationKeepRE.FindAllStringIndex(text, -1) {
@@ -97,6 +102,7 @@ func protectTranslation(source []byte, hash string, glossary *Glossary) protecte
 		}
 		result.Values = append(result.Values, restore)
 		result.Kinds = append(result.Kinds, span.kind)
+		result.InlineBoundaries = append(result.InlineBoundaries, span.inlineBoundaries)
 		pos = span.end
 	}
 	out.WriteString(text[pos:])
@@ -164,8 +170,10 @@ func normalizeInlineTokenBoundaries(output string, p protectedTranslation) strin
 		return output // restore calls this helper only after strict token validation.
 	}
 	kinds := make(map[string]protectedTokenKind, len(p.Tokens))
+	inlineBoundaries := make(map[string]bool, len(p.Tokens))
 	for i, token := range p.Tokens {
 		kinds[token] = p.Kinds[i]
+		inlineBoundaries[token] = p.InlineBoundaries[i]
 	}
 	segments := make([]string, len(found)+1)
 	pos := 0
@@ -181,8 +189,8 @@ func normalizeInlineTokenBoundaries(output string, p protectedTranslation) strin
 
 	for i, original := range segments {
 		segment := original
-		previousInline := i > 0 && kinds[found[i-1]] == protectedInlineCode
-		nextInline := i < len(found) && kinds[found[i]] == protectedInlineCode
+		previousInline := i > 0 && kinds[found[i-1]] == protectedInlineCode && inlineBoundaries[found[i-1]]
+		nextInline := i < len(found) && kinds[found[i]] == protectedInlineCode && inlineBoundaries[found[i]]
 
 		if previousInline && startsWithNonBoundary(segment) {
 			segment = " " + segment
@@ -218,7 +226,15 @@ func endsWithNonBoundary(s string) bool {
 		return false
 	}
 	r, _ := utf8.DecodeLastRuneInString(s)
-	return !unicode.IsSpace(r) && !unicode.IsPunct(r)
+	return !isLegacyInlineBoundary(r)
+}
+
+// present's legacy program-font parser accepts ASCII punctuation before a
+// backtick span, but does not consistently recognize full-width punctuation.
+// Insert structural whitespace before an inline token only when the preceding
+// rune is neither whitespace nor such an ASCII boundary.
+func isLegacyInlineBoundary(r rune) bool {
+	return unicode.IsSpace(r) || (r <= unicode.MaxASCII && unicode.IsPunct(r))
 }
 
 func containsUnicodeSpace(s string) bool {

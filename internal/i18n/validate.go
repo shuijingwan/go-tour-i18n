@@ -12,10 +12,11 @@ import (
 )
 
 type signature struct {
-	Directives   []string
-	LinkTargets  []string
-	InlineCode   []string
-	Preformatted []string
+	Directives     []string
+	LinkTargets    []string
+	LinkInlineCode [][]string
+	InlineCode     []string
+	Preformatted   []string
 }
 
 var (
@@ -60,6 +61,9 @@ func ValidateCandidate(root string, catalog *Catalog, pageID string, candidate [
 		return diagnostic(pageID, err)
 	}
 	if err := compareProtected("link targets", expected.LinkTargets, actual.LinkTargets); err != nil {
+		return diagnostic(pageID, err)
+	}
+	if err := compareLinkInlineCode(expected.LinkInlineCode, actual.LinkInlineCode); err != nil {
 		return diagnostic(pageID, err)
 	}
 	if err := compareUnorderedProtected("inline code", expected.InlineCode, actual.InlineCode); err != nil {
@@ -146,6 +150,11 @@ func structuralSignature(source []byte) (signature, error) {
 		}
 		for _, match := range linkRE.FindAllStringSubmatch(line, -1) {
 			sig.LinkTargets = append(sig.LinkTargets, match[1])
+			var codes []string
+			for _, code := range presentInlineCodes(match[2]) {
+				codes = append(codes, code.Raw)
+			}
+			sig.LinkInlineCode = append(sig.LinkInlineCode, codes)
 		}
 		for _, code := range presentInlineCodes(line) {
 			sig.InlineCode = append(sig.InlineCode, code.Raw)
@@ -155,6 +164,22 @@ func structuralSignature(source []byte) (signature, error) {
 		}
 	}
 	return sig, s.Err()
+}
+
+// compareLinkInlineCode keeps each program payload attached to the link where
+// it appeared, while treating multiple program spans in one translated label
+// as an unordered set. This preserves natural target-language label order
+// without allowing a span to be changed, removed, or moved to another link.
+func compareLinkInlineCode(expected, actual [][]string) error {
+	if len(expected) != len(actual) {
+		return protectedCountError("link label", len(expected), len(actual))
+	}
+	for i := range expected {
+		if err := compareUnorderedProtected("link inline code at link index "+fmt.Sprint(i+1), expected[i], actual[i]); err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 func compareProtected(kind string, expected, actual []string) error {

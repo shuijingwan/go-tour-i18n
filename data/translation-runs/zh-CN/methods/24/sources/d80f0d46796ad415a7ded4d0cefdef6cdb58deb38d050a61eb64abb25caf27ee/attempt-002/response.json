@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "202608091653200d4b538d41864e95",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 1660,
+    "completion_tokens": 341,
+    "total_tokens": 2001
+  },
+  "content": "* 图片\n\n[[⟪GTI18N_d80f0d46_000001⟫][image 包]]定义了 ⟪GTI18N_d80f0d46_000002⟫ 接口：\n\n⟪GTI18N_d80f0d46_000003⟫*注意*：⟪GTI18N_d80f0d46_000005⟫ 方法的 ⟪GTI18N_d80f0d46_000004⟫ 返回值实际上是\n[[⟪GTI18N_d80f0d46_000006⟫][⟪GTI18N_d80f0d46_000007⟫]]，因为该声明位于 ⟪GTI18N_d80f0d46_000008⟫ 包内。\n\n（详见 [[⟪GTI18N_d80f0d46_000009⟫][文档]]。）\n\n⟪GTI18N_d80f0d46_000010⟫ 和 ⟪GTI18N_d80f0d46_000011⟫ 类型也是接口，但我们会使用预定义的实现 ⟪GTI18N_d80f0d46_000012⟫ 和 ⟪GTI18N_d80f0d46_000013⟫，从而忽略这一点。这些接口和类型由 [[⟪GTI18N_d80f0d46_000014⟫][image/color 包]]定义。\n\n⟪GTI18N_d80f0d46_000015⟫",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 图片\n\n[[⟪GTI18N_d80f0d46_000001⟫][image 包]]定义了 ⟪GTI18N_d80f0d46_000002⟫ 接口：\n\n⟪GTI18N_d80f0d46_000003⟫*注意*：⟪GTI18N_d80f0d46_000005⟫ 方法的 ⟪GTI18N_d80f0d46_000004⟫ 返回值实际上是\n[[⟪GTI18N_d80f0d46_000006⟫][⟪GTI18N_d80f0d46_000007⟫]]，因为该声明位于 ⟪GTI18N_d80f0d46_000008⟫ 包内。\n\n（详见 [[⟪GTI18N_d80f0d46_000009⟫][文档]]。）\n\n⟪GTI18N_d80f0d46_000010⟫ 和 ⟪GTI18N_d80f0d46_000011⟫ 类型也是接口，但我们会使用预定义的实现 ⟪GTI18N_d80f0d46_000012⟫ 和 ⟪GTI18N_d80f0d46_000013⟫，从而忽略这一点。这些接口和类型由 [[⟪GTI18N_d80f0d46_000014⟫][image/color 包]]定义。\n\n⟪GTI18N_d80f0d46_000015⟫",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786265604,
+    "id": "202608091653200d4b538d41864e95",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "202608091653200d4b538d41864e95",
+    "usage": {
+      "completion_tokens": 341,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 1660,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "total_tokens": 2001
+    }
+  }
+}
