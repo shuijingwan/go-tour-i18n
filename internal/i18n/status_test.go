@@ -2,6 +2,7 @@ package i18n
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 	"path/filepath"
 	"reflect"
@@ -23,6 +24,9 @@ func TestCommittedStatus(t *testing.T) {
 		t.Fatal(err)
 	}
 	for _, s := range statuses {
+		if err := validateCommittedStatus(root, c, "zh-CN", s); err != nil {
+			t.Fatal(err)
+		}
 		switch s.PageID {
 		case "welcome/1":
 			if s.State != "ready" || s.Attempts != 6 || s.SourceSHA256 != "1f581133d7fa40e6490418c6789a60a2f5e1de26c9c86d7eb6120cb58b145857" || s.CandidatePath != "locales/zh-CN/candidates/welcome-1.article" || s.UpdatedAt != "2026-08-03T11:01:01Z" || s.Note != "发布投影切换为远程执行分支，人工同步后的 candidate 已通过现有 validator" {
@@ -84,11 +88,85 @@ func TestCommittedStatus(t *testing.T) {
 			if s.State != "ready" || s.Attempts != 4 || s.SourceSHA256 != "45ef131ede663b1355c0a5933634d46c393f66be8a6450b184f86a62e928a64e" || s.CandidatePath != "locales/zh-CN/candidates/concurrency-11.article" || s.UpdatedAt != "2026-08-09T08:13:39Z" || s.Note != "GLM-5.2 candidate passed existing validator" {
 				t.Fatalf("concurrency/11 status: %+v", s)
 			}
-		default:
-			if s.State != "pending" || s.Attempts != 0 || s.CandidatePath != "" {
-				t.Fatalf("non-initial status: %+v", s)
-			}
 		}
+	}
+}
+
+func validateCommittedStatus(root string, catalog *Catalog, locale string, status Status) error {
+	canonicalCandidate := filepath.ToSlash(filepath.Join("locales", locale, "candidates", strings.ReplaceAll(status.PageID, "/", "-")+".article"))
+	switch status.State {
+	case "pending":
+		if status.CandidatePath != "" {
+			return fmt.Errorf("%s: pending status has candidate path %q", status.PageID, status.CandidatePath)
+		}
+	case "blocked":
+		if status.Attempts <= 0 {
+			return fmt.Errorf("%s: blocked status has attempts=%d, want > 0", status.PageID, status.Attempts)
+		}
+		if status.CandidatePath != "" {
+			return fmt.Errorf("%s: blocked status has candidate path %q", status.PageID, status.CandidatePath)
+		}
+	case "ready", "candidate", "published":
+		if status.Attempts <= 0 {
+			return fmt.Errorf("%s: %s status has attempts=%d, want > 0", status.PageID, status.State, status.Attempts)
+		}
+		if status.CandidatePath != canonicalCandidate {
+			return fmt.Errorf("%s: %s candidate path = %q, want %q", status.PageID, status.State, status.CandidatePath, canonicalCandidate)
+		}
+		candidate, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(status.CandidatePath)))
+		if err != nil {
+			return fmt.Errorf("%s: read committed candidate: %w", status.PageID, err)
+		}
+		if err := ValidateCandidateForLocale(root, catalog, status.PageID, locale, candidate); err != nil {
+			return fmt.Errorf("%s: committed candidate validation: %w", status.PageID, err)
+		}
+	default:
+		return fmt.Errorf("%s: unsupported committed status %q", status.PageID, status.State)
+	}
+	return nil
+}
+
+func TestCommittedStateInvariants(t *testing.T) {
+	source := []byte("* Source\n\nSource paragraph with `code`.\n")
+	root := writeStatusFixture(t, "page_id\tstatus\tattempts\tsource_sha256\tcandidate_path\tupdated_at\tnote\nexample/1\tpending\t0\t"+sum(source)+"\t\t\t\n")
+	writeTestGlossary(t, root)
+	catalog := &Catalog{Pages: []Page{{ID: "example/1", Article: "basics.article", Source: source, SourceSHA256: sum(source)}}}
+	canonical := "locales/zh-CN/candidates/example-1.article"
+	valid := []byte("* 来源\n\n包含 `code` 的来源段落。\n")
+	writeCandidate := func(t *testing.T, content []byte) {
+		t.Helper()
+		path := filepath.Join(root, filepath.FromSlash(canonical))
+		if err := os.MkdirAll(filepath.Dir(path), 0755); err != nil {
+			t.Fatal(err)
+		}
+		if err := os.WriteFile(path, content, 0644); err != nil {
+			t.Fatal(err)
+		}
+	}
+	writeCandidate(t, valid)
+	ready := Status{PageID: "example/1", State: "ready", Attempts: 7, SourceSHA256: sum(source), CandidatePath: canonical}
+	if err := validateCommittedStatus(root, catalog, "zh-CN", ready); err != nil {
+		t.Fatalf("valid ready with historical attempts rejected: %v", err)
+	}
+	blocked := Status{PageID: "example/1", State: "blocked", Attempts: 7, SourceSHA256: sum(source)}
+	if err := validateCommittedStatus(root, catalog, "zh-CN", blocked); err != nil {
+		t.Fatalf("valid blocked rejected: %v", err)
+	}
+	for name, status := range map[string]Status{
+		"ready missing candidate": {PageID: "example/1", State: "ready", Attempts: 1, SourceSHA256: sum(source), CandidatePath: "locales/zh-CN/candidates/missing.article"},
+		"ready nonstandard path":  {PageID: "example/1", State: "ready", Attempts: 1, SourceSHA256: sum(source), CandidatePath: "other.article"},
+		"pending candidate":       {PageID: "example/1", State: "pending", CandidatePath: canonical},
+		"blocked no attempts":     {PageID: "example/1", State: "blocked", Attempts: 0},
+	} {
+		t.Run(name, func(t *testing.T) {
+			if err := validateCommittedStatus(root, catalog, "zh-CN", status); err == nil {
+				t.Fatal("invalid committed status accepted")
+			}
+		})
+	}
+	writeCandidate(t, []byte("* 来源\n\n损坏的 `other`。\n"))
+	if err := validateCommittedStatus(root, catalog, "zh-CN", ready); err == nil {
+		t.Fatal("ready candidate with changed inline code accepted")
 	}
 }
 
