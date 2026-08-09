@@ -188,6 +188,22 @@ func run(args []string) error {
 			return err
 		}
 		return printJSON(result)
+	case "translate revalidate-response":
+		fs := flag.NewFlagSet("translate revalidate-response", flag.ContinueOnError)
+		locale := fs.String("locale", "", "target locale")
+		id := fs.String("id", "", "persistent page_id")
+		attempt := fs.Int("attempt", 0, "historical attempt number")
+		if err := fs.Parse(args[2:]); err != nil {
+			return err
+		}
+		if *locale == "" || *id == "" || *attempt <= 0 {
+			return fmt.Errorf("--locale, --id, and positive --attempt are required")
+		}
+		result, err := i18n.RevalidateSavedTranslationResponse(root, catalog, *id, *locale, *attempt, nil)
+		if err != nil {
+			return err
+		}
+		return printJSON(result)
 	case "translate show":
 		fs := flag.NewFlagSet("translate show", flag.ContinueOnError)
 		locale := fs.String("locale", "", "target locale")

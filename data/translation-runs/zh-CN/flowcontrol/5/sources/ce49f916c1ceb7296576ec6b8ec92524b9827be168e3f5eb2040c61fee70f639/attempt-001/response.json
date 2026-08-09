@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "20260809201030e25cde6d6f574d6b",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 1957,
+    "completion_tokens": 201,
+    "total_tokens": 2158
+  },
+  "content": "* If\n\n⟪GTI18N_ce49f916_000001⟫ 的 ⟪GTI18N_ce49f916_000002⟫if⟪GTI18N_ce49f916_000003⟫ 语句类似于其 ⟪GTI18N_ce49f916_000004⟫for⟪GTI18N_ce49f916_000005⟫ 循环；表达式不需要用括号 ⟪GTI18N_ce49f916_000006⟫(`)⟪GTI18N_ce49f916_000007⟫ 包围，但花括号 ⟪GTI18N_ce49f916_000008⟫{`}⟪GTI18N_ce49f916_000009⟫ 是必需的。\n\n⟪GTI18N_ce49f916_000010⟫",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* If\n\n⟪GTI18N_ce49f916_000001⟫ 的 ⟪GTI18N_ce49f916_000002⟫if⟪GTI18N_ce49f916_000003⟫ 语句类似于其 ⟪GTI18N_ce49f916_000004⟫for⟪GTI18N_ce49f916_000005⟫ 循环；表达式不需要用括号 ⟪GTI18N_ce49f916_000006⟫(`)⟪GTI18N_ce49f916_000007⟫ 包围，但花括号 ⟪GTI18N_ce49f916_000008⟫{`}⟪GTI18N_ce49f916_000009⟫ 是必需的。\n\n⟪GTI18N_ce49f916_000010⟫",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786277432,
+    "id": "20260809201030e25cde6d6f574d6b",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "20260809201030e25cde6d6f574d6b",
+    "usage": {
+      "completion_tokens": 201,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 1957,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "total_tokens": 2158
+    }
+  }
+}

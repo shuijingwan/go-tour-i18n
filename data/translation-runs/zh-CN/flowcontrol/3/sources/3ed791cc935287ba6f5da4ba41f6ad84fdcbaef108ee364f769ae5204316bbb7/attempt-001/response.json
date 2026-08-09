@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "20260809201021fe43140e891c4f54",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 1729,
+    "completion_tokens": 237,
+    "total_tokens": 1966
+  },
+  "content": "* 将 ⟪GTI18N_3ed791cc_000001⟫ 的 ⟪GTI18N_3ed791cc_000002⟫while⟪GTI18N_3ed791cc_000003⟫ 写作 ⟪GTI18N_3ed791cc_000004⟫for⟪GTI18N_3ed791cc_000005⟫\n\n此时可以省略分号：C 语言中的 ⟪GTI18N_3ed791cc_000002⟫while⟪GTI18N_3ed791cc_000003⟫ 在 ⟪GTI18N_3ed791cc_000001⟫ 中写作 ⟪GTI18N_3ed791cc_000004⟫for⟪GTI18N_3ed791cc_000005⟫。\n\n⟪GTI18N_3ed791cc_000006⟫\n\n⟪GTI18N_3ed791cc_000007⟫",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 将 ⟪GTI18N_3ed791cc_000001⟫ 的 ⟪GTI18N_3ed791cc_000002⟫while⟪GTI18N_3ed791cc_000003⟫ 写作 ⟪GTI18N_3ed791cc_000004⟫for⟪GTI18N_3ed791cc_000005⟫\n\n此时可以省略分号：C 语言中的 ⟪GTI18N_3ed791cc_000002⟫while⟪GTI18N_3ed791cc_000003⟫ 在 ⟪GTI18N_3ed791cc_000001⟫ 中写作 ⟪GTI18N_3ed791cc_000004⟫for⟪GTI18N_3ed791cc_000005⟫。\n\n⟪GTI18N_3ed791cc_000006⟫\n\n⟪GTI18N_3ed791cc_000007⟫",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786277423,
+    "id": "20260809201021fe43140e891c4f54",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "20260809201021fe43140e891c4f54",
+    "usage": {
+      "completion_tokens": 237,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 1729,
+      "prompt_tokens_details": {
+        "cached_tokens": 512
+      },
+      "total_tokens": 1966
+    }
+  }
+}

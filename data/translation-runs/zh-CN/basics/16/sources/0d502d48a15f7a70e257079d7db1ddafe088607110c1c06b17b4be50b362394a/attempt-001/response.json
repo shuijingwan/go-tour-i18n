@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "2026080920101025dea8293264463f",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 1852,
+    "completion_tokens": 188,
+    "total_tokens": 2040
+  },
+  "content": "* 数值常量\n\n数值常量是高精度的 ⟪GTI18N_0d502d48_000001⟫值⟪GTI18N_0d502d48_000002⟫。\n\n无类型常量会根据其上下文按需获取类型。\n\n试着也打印一下 ⟪GTI18N_0d502d48_000003⟫needInt(Big)⟪GTI18N_0d502d48_000004⟫。\n\n（⟪GTI18N_0d502d48_000005⟫int⟪GTI18N_0d502d48_000006⟫ 最多能存储 64 位整数，有时甚至更少。）\n\n⟪GTI18N_0d502d48_000007⟫\n",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 数值常量\n\n数值常量是高精度的 ⟪GTI18N_0d502d48_000001⟫值⟪GTI18N_0d502d48_000002⟫。\n\n无类型常量会根据其上下文按需获取类型。\n\n试着也打印一下 ⟪GTI18N_0d502d48_000003⟫needInt(Big)⟪GTI18N_0d502d48_000004⟫。\n\n（⟪GTI18N_0d502d48_000005⟫int⟪GTI18N_0d502d48_000006⟫ 最多能存储 64 位整数，有时甚至更少。）\n\n⟪GTI18N_0d502d48_000007⟫\n",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786277412,
+    "id": "2026080920101025dea8293264463f",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "2026080920101025dea8293264463f",
+    "usage": {
+      "completion_tokens": 188,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 1852,
+      "prompt_tokens_details": {
+        "cached_tokens": 512
+      },
+      "total_tokens": 2040
+    }
+  }
+}

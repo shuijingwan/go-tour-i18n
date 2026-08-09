@@ -46,6 +46,34 @@ type TranslationRecoveryResult struct {
 	UpdatedAt    string `json:"updated_at"`
 }
 
+type TranslationRevalidationResult struct {
+	PageID        string                 `json:"page_id"`
+	Locale        string                 `json:"locale"`
+	SourceSHA256  string                 `json:"source_sha256"`
+	SourceAttempt int                    `json:"source_attempt"`
+	Attempts      int                    `json:"attempts"`
+	Status        string                 `json:"status"`
+	CandidatePath string                 `json:"candidate_path,omitempty"`
+	AuditPath     string                 `json:"audit_path"`
+	Validation    *TranslationValidation `json:"validation"`
+	UpdatedAt     string                 `json:"updated_at"`
+}
+
+type responseRevalidationRecord struct {
+	SchemaVersion   int                   `json:"schema_version"`
+	Locale          string                `json:"locale"`
+	PageID          string                `json:"page_id"`
+	SourceSHA256    string                `json:"source_sha256"`
+	SourceAttempt   int                   `json:"source_attempt"`
+	ResponsePath    string                `json:"response_path"`
+	ValidationPath  string                `json:"validation_path"`
+	RevalidatedAt   string                `json:"revalidated_at"`
+	Validation      TranslationValidation `json:"validation"`
+	CandidateSHA256 string                `json:"candidate_sha256,omitempty"`
+	Passed          bool                  `json:"passed"`
+	Failures        []string              `json:"failures,omitempty"`
+}
+
 type networkFailureRecoveryRecord struct {
 	PageID            string `json:"page_id"`
 	Locale            string `json:"locale"`
@@ -290,6 +318,159 @@ func RecoverNetworkBlockedTranslation(root string, catalog *Catalog, pageID, loc
 	return &TranslationRecoveryResult{pageID, locale, page.SourceSHA256, status.Attempts, "pending", filepath.ToSlash(recoveryPath), updated}, nil
 }
 
+// RevalidateSavedTranslationResponse replays no model work: it applies the
+// current protection/restore and candidate validator to one immutable, audited
+// successful response from a blocked page.
+func RevalidateSavedTranslationResponse(root string, catalog *Catalog, pageID, locale string, attempt int, now func() time.Time) (*TranslationRevalidationResult, error) {
+	if attempt <= 0 {
+		return nil, fmt.Errorf("attempt must be a positive integer")
+	}
+	if catalog == nil {
+		return nil, errors.New("translation catalog is required")
+	}
+	page, err := catalog.Page(pageID)
+	if err != nil {
+		return nil, err
+	}
+	if sum(page.Source) != page.SourceSHA256 {
+		return nil, fmt.Errorf("%s: hydrated source hash mismatch", pageID)
+	}
+	status, _, err := LoadTranslationResult(root, pageID, locale)
+	if err != nil {
+		return nil, err
+	}
+	if status.State != "blocked" {
+		return nil, fmt.Errorf("%s is %s, want blocked for response revalidation", pageID, status.State)
+	}
+	if status.SourceSHA256 != page.SourceSHA256 {
+		return nil, fmt.Errorf("%s: blocked status source hash does not match current source", pageID)
+	}
+	glossary, err := LoadGlossary(root, locale)
+	if err != nil {
+		return nil, err
+	}
+	sourceRunDir := filepath.Join(root, "data", "translation-runs", locale, pageID, "sources", page.SourceSHA256)
+	attemptDir := filepath.Join(sourceRunDir, fmt.Sprintf("attempt-%03d", attempt))
+	requestPath, responsePath := filepath.Join(attemptDir, "request.json"), filepath.Join(attemptDir, "response.json")
+	validationPath := filepath.Join(attemptDir, "validation.json")
+	requestBytes, err := os.ReadFile(requestPath)
+	if err != nil {
+		return nil, fmt.Errorf("attempt-%03d request audit: %w", attempt, err)
+	}
+	responseBytes, err := os.ReadFile(responsePath)
+	if err != nil {
+		return nil, fmt.Errorf("attempt-%03d response audit: %w", attempt, err)
+	}
+	validationBytes, err := os.ReadFile(validationPath)
+	if err != nil {
+		return nil, fmt.Errorf("attempt-%03d validation audit: %w", attempt, err)
+	}
+	var request savedTranslationRequest
+	var response TranslationCallResult
+	var historical TranslationValidation
+	if err := json.Unmarshal(requestBytes, &request); err != nil {
+		return nil, fmt.Errorf("attempt-%03d invalid request audit: %w", attempt, err)
+	}
+	if err := json.Unmarshal(responseBytes, &response); err != nil {
+		return nil, fmt.Errorf("attempt-%03d invalid response audit: %w", attempt, err)
+	}
+	if err := json.Unmarshal(validationBytes, &historical); err != nil {
+		return nil, fmt.Errorf("attempt-%03d invalid validation audit: %w", attempt, err)
+	}
+	if request.PageID != pageID || request.Locale != locale || request.SourceSHA256 != page.SourceSHA256 {
+		return nil, fmt.Errorf("attempt-%03d audit identity does not match page, locale, and source hash", attempt)
+	}
+	if historical.Attempt != attempt || !historical.APISuccess {
+		return nil, fmt.Errorf("attempt-%03d is not an audited successful API response", attempt)
+	}
+	if response.StatusCode < 200 || response.StatusCode >= 300 || response.APIError != "" || response.FinishReason != "stop" || strings.TrimSpace(response.Content) == "" {
+		return nil, fmt.Errorf("attempt-%03d has no successful stop response with model content", attempt)
+	}
+	if now == nil {
+		now = time.Now
+	}
+	updated := now().UTC().Format(time.RFC3339)
+	validation := TranslationValidation{Attempt: attempt, APISuccess: true}
+	if strings.Contains(response.Content, "```") || !strings.HasPrefix(strings.TrimSpace(response.Content), "* ") {
+		validation.Failures = append(validation.Failures, "model output is fenced, explained, or not a complete section")
+	}
+	protected := protectTranslation(page.Source, page.SourceSHA256, glossary)
+	candidate, failures := protected.restore(response.Content)
+	validation.Failures = append(validation.Failures, failures...)
+	validation.TokenValid = len(failures) == 0
+	if validation.TokenValid {
+		if err := ValidateCandidateForLocale(root, catalog, pageID, locale, []byte(candidate)); err != nil {
+			validation.Failures = append(validation.Failures, err.Error())
+		} else {
+			validation.PresentValid = true
+		}
+	}
+	validation.Passed = validation.APISuccess && validation.TokenValid && validation.PresentValid && len(validation.Failures) == 0
+	responseAuditPath, err := repositoryRelativePath(root, responsePath)
+	if err != nil {
+		return nil, err
+	}
+	validationAuditPath, err := repositoryRelativePath(root, validationPath)
+	if err != nil {
+		return nil, err
+	}
+	record := responseRevalidationRecord{1, locale, pageID, page.SourceSHA256, attempt, responseAuditPath, validationAuditPath, updated, validation, "", validation.Passed, validation.Failures}
+	if validation.Passed {
+		record.CandidateSHA256 = sum([]byte(candidate))
+	}
+	auditPath, err := nextResponseRevalidationPath(sourceRunDir)
+	if err != nil {
+		return nil, err
+	}
+	if err := writeTranslationJSON(auditPath, record); err != nil {
+		return nil, err
+	}
+	result := &TranslationRevalidationResult{pageID, locale, page.SourceSHA256, attempt, status.Attempts, "blocked", "", filepath.ToSlash(auditPath), &validation, updated}
+	if !validation.Passed {
+		return result, fmt.Errorf("%s attempt-%03d revalidation failed: %s", pageID, attempt, strings.Join(validation.Failures, "; "))
+	}
+	candidatePath := filepath.ToSlash(filepath.Join("locales", locale, "candidates", strings.ReplaceAll(pageID, "/", "-")+".article"))
+	if err := os.MkdirAll(filepath.Join(root, filepath.Dir(candidatePath)), 0755); err != nil {
+		return nil, err
+	}
+	if err := os.WriteFile(filepath.Join(root, filepath.FromSlash(candidatePath)), []byte(candidate), 0644); err != nil {
+		return nil, err
+	}
+	if err := updateTranslationStatus(root, locale, pageID, "ready", status.Attempts, page.SourceSHA256, candidatePath, updated, fmt.Sprintf("historical GLM-5.2 response attempt-%03d passed current restore and validator", attempt)); err != nil {
+		return nil, err
+	}
+	result.Status, result.CandidatePath = "ready", candidatePath
+	return result, nil
+}
+
+func repositoryRelativePath(root, path string) (string, error) {
+	relative, err := filepath.Rel(root, path)
+	if err != nil {
+		return "", fmt.Errorf("make audit path relative to repository: %w", err)
+	}
+	if relative == ".." || strings.HasPrefix(relative, ".."+string(filepath.Separator)) {
+		return "", fmt.Errorf("audit path %q is outside repository root", path)
+	}
+	return filepath.ToSlash(relative), nil
+}
+
+func nextResponseRevalidationPath(sourceRunDir string) (string, error) {
+	entries, err := os.ReadDir(sourceRunDir)
+	if err != nil {
+		return "", err
+	}
+	max := 0
+	for _, entry := range entries {
+		var n int
+		if entry.Type().IsRegular() {
+			if _, err := fmt.Sscanf(entry.Name(), "revalidation-%03d.json", &n); err == nil && n > max {
+				max = n
+			}
+		}
+	}
+	return filepath.Join(sourceRunDir, fmt.Sprintf("revalidation-%03d.json", max+1)), nil
+}
+
 func verifyResponseLessNetworkFailure(dir string, attempt int) error {
 	for _, name := range []string{"request.json", "response.json", "validation.json"} {
 		if _, err := os.Stat(filepath.Join(dir, name)); err != nil {
@@ -426,7 +607,7 @@ target_locale: %s
 本页共有 %d 个保护 token，输出中也必须恰好包含 %d 个。
 每个 token 必须原样输出且恰好输出一次。
 不得复制、不得复用、不得删除、不得改写或伪造任何 token。
-可以仅在完整保持所属语义单元和结构关系的前提下调整位置；不得将成对结构 token 拆散、独立移动，也不得将任何内容移入或移出 pair。
+可以仅在完整保持所属语义单元和结构关系的前提下调整位置；不得将成对结构 token 拆散或独立移动，也不得将任何内容移入或移出 pair。不同的完整 pair 可为自然语序随各自的语义单元整体换位。
 
 %s
 

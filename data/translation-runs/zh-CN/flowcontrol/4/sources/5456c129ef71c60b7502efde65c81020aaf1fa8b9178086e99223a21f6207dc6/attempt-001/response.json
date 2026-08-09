@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "20260809201029c4105e8f076941cb",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 1386,
+    "completion_tokens": 44,
+    "total_tokens": 1430
+  },
+  "content": "* 无限循环\n\n如果省略循环条件，循环就会永远执行下去，因此可以用十分简洁的方式表达无限循环。\n\n⟪GTI18N_5456c129_000001⟫",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 无限循环\n\n如果省略循环条件，循环就会永远执行下去，因此可以用十分简洁的方式表达无限循环。\n\n⟪GTI18N_5456c129_000001⟫",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786277430,
+    "id": "20260809201029c4105e8f076941cb",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "20260809201029c4105e8f076941cb",
+    "usage": {
+      "completion_tokens": 44,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 1386,
+      "prompt_tokens_details": {
+        "cached_tokens": 512
+      },
+      "total_tokens": 1430
+    }
+  }
+}

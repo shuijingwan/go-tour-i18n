@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "20260809201026c5a94743fec140b5",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 1796,
+    "completion_tokens": 149,
+    "total_tokens": 1945
+  },
+  "content": "* 将 For 用作 ⟪GTI18N_3ed791cc_000001⟫ 的 \"while\"\n\n此时可以省略分号：C 语言的 ⟪GTI18N_3ed791cc_000002⟫while⟪GTI18N_3ed791cc_000003⟫ 在 ⟪GTI18N_3ed791cc_000006⟫ 中写作 ⟪GTI18N_3ed791cc_000004⟫for⟪GTI18N_3ed791cc_000005⟫。\n\n⟪GTI18N_3ed791cc_000007⟫",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 将 For 用作 ⟪GTI18N_3ed791cc_000001⟫ 的 \"while\"\n\n此时可以省略分号：C 语言的 ⟪GTI18N_3ed791cc_000002⟫while⟪GTI18N_3ed791cc_000003⟫ 在 ⟪GTI18N_3ed791cc_000006⟫ 中写作 ⟪GTI18N_3ed791cc_000004⟫for⟪GTI18N_3ed791cc_000005⟫。\n\n⟪GTI18N_3ed791cc_000007⟫",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786277428,
+    "id": "20260809201026c5a94743fec140b5",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "20260809201026c5a94743fec140b5",
+    "usage": {
+      "completion_tokens": 149,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 1796,
+      "prompt_tokens_details": {
+        "cached_tokens": 1792
+      },
+      "total_tokens": 1945
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "202608092010146335c400e8214655",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 2435,
+    "completion_tokens": 405,
+    "total_tokens": 2840
+  },
+  "content": "* For 循环\n\n⟪GTI18N_c1169da4_000001⟫ 只有一种循环结构，即 ⟪GTI18N_c1169da4_000002⟫for⟪GTI18N_c1169da4_000003⟫ 循环。\n\n基本的 ⟪GTI18N_c1169da4_000004⟫for⟪GTI18N_c1169da4_000005⟫ 循环包含三个部分，用分号分隔：\n\n- 初始化语句：在第一次迭代前执行\n- 条件表达式：在每次迭代前求值\n- 后置语句：在每次迭代结束后执行\n\n初始化语句通常为短变量声明，在其中声明的变量仅在 ⟪GTI18N_c1169da4_000006⟫for⟪GTI18N_c1169da4_000007⟫ 语句的作用域内可见。\n\n一旦布尔条件求值为 ⟪GTI18N_c1169da4_000008⟫false⟪GTI18N_c1169da4_000009⟫，循环就会停止迭代。\n\n⟪GTI18N_c1169da4_000010⟫注意：⟪GTI18N_c1169da4_000011⟫ 与 C、Java 或 JavaScript 等语言不同，⟪GTI18N_c1169da4_000012⟫for⟪GTI18N_c1169da4_000013⟫ 语句的三个部分不需要用括号包裹，而大括号 ⟪GTI18N_c1169da4_000014⟫{`}⟪GTI18N_c1169da4_000015⟫ 则是必需的。\n\n⟪GTI18N_c1169da4_000016⟫",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* For 循环\n\n⟪GTI18N_c1169da4_000001⟫ 只有一种循环结构，即 ⟪GTI18N_c1169da4_000002⟫for⟪GTI18N_c1169da4_000003⟫ 循环。\n\n基本的 ⟪GTI18N_c1169da4_000004⟫for⟪GTI18N_c1169da4_000005⟫ 循环包含三个部分，用分号分隔：\n\n- 初始化语句：在第一次迭代前执行\n- 条件表达式：在每次迭代前求值\n- 后置语句：在每次迭代结束后执行\n\n初始化语句通常为短变量声明，在其中声明的变量仅在 ⟪GTI18N_c1169da4_000006⟫for⟪GTI18N_c1169da4_000007⟫ 语句的作用域内可见。\n\n一旦布尔条件求值为 ⟪GTI18N_c1169da4_000008⟫false⟪GTI18N_c1169da4_000009⟫，循环就会停止迭代。\n\n⟪GTI18N_c1169da4_000010⟫注意：⟪GTI18N_c1169da4_000011⟫ 与 C、Java 或 JavaScript 等语言不同，⟪GTI18N_c1169da4_000012⟫for⟪GTI18N_c1169da4_000013⟫ 语句的三个部分不需要用括号包裹，而大括号 ⟪GTI18N_c1169da4_000014⟫{`}⟪GTI18N_c1169da4_000015⟫ 则是必需的。\n\n⟪GTI18N_c1169da4_000016⟫",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786277418,
+    "id": "202608092010146335c400e8214655",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "202608092010146335c400e8214655",
+    "usage": {
+      "completion_tokens": 405,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 2435,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "total_tokens": 2840
+    }
+  }
+}

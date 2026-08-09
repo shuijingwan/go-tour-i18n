@@ -156,7 +156,7 @@ func TestCandidateRejectsForbiddenTourTranslations(t *testing.T) {
 	} {
 		t.Run(name, func(t *testing.T) {
 			candidate := strings.Replace(syntheticSource, "Source paragraph", phrase, 1)
-			if err := ValidateCandidate(root, catalog, "synthetic/1", []byte(candidate)); err == nil || !strings.Contains(err.Error(), "forbidden zh-CN translation") {
+			if err := ValidateCandidate(root, catalog, "synthetic/1", []byte(candidate)); err == nil || !strings.Contains(err.Error(), "forbidden locale translation") {
 				t.Fatalf("forbidden candidate error = %v", err)
 			}
 		})
@@ -207,21 +207,6 @@ func TestReorderedProtectedTokensRemainStructurallyValid(t *testing.T) {
 		}
 	})
 
-	t.Run("generics/1 inline pair reorder is rejected", func(t *testing.T) {
-		page, err := catalog.Page("generics/1")
-		if err != nil {
-			t.Fatal(err)
-		}
-		p := protectTranslation(page.Source, page.SourceSHA256, nil)
-		if len(p.InlinePairs) < 2 {
-			t.Fatal("need multiple inline pairs")
-		}
-		first, second := p.InlinePairs[0], p.InlinePairs[1]
-		model := strings.NewReplacer(first.Open, "__first_open__", first.Close, "__first_close__", second.Open, first.Open, second.Close, first.Close, "__first_open__", second.Open, "__first_close__", second.Close).Replace(p.Text)
-		if _, failures := p.restore(model); len(failures) == 0 {
-			t.Fatal("reordered inline pairs accepted")
-		}
-	})
 }
 
 func TestSectionStructureProtection(t *testing.T) {

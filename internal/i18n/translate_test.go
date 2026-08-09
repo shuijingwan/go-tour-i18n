@@ -153,7 +153,7 @@ func TestInlineCodePairProtectionBasics6Regression(t *testing.T) {
 	}
 }
 
-func TestInlineCodePairOrderAndContentAreStrict(t *testing.T) {
+func TestInlineCodePairsMayReorderButCannotCrossOrChangeContent(t *testing.T) {
 	source := "* Source\n\n`int` and `int`: `:=`, `<-`, `fmt.Println`, `math.Sqrt`, `T comparable`.\n"
 	p := protectTranslation([]byte(source), strings.Repeat("c", 64), nil)
 	if len(p.InlinePairs) != 6 {
@@ -166,6 +166,250 @@ func TestInlineCodePairOrderAndContentAreStrict(t *testing.T) {
 	crossed := strings.NewReplacer(first.Open, "__open__", first.Close, second.Close, second.Open, first.Open, "__open__", second.Open).Replace(p.Text)
 	if _, failures := p.restore(crossed); len(failures) == 0 {
 		t.Fatal("crossed inline pairs accepted")
+	}
+}
+
+func TestFlowcontrol6InlinePairsMayReorderAsWholeUnits(t *testing.T) {
+	source := "* If with a short statement\n\n(Try using `v` in the last `return` statement.)\n"
+	p := protectTranslation([]byte(source), strings.Repeat("f", 64), nil)
+	if len(p.InlinePairs) != 2 {
+		t.Fatalf("pairs=%+v", p.InlinePairs)
+	}
+	v, returned := p.InlinePairs[0], p.InlinePairs[1]
+	model := "* 带简短语句的 if\n\n（试着在最后一个 " + returned.Open + "return" + returned.Close + " 语句中使用 " + v.Open + "v" + v.Close + "。）\n"
+	candidate, failures := p.restore(model)
+	if len(failures) != 0 {
+		t.Fatalf("whole-pair reorder rejected: %v", failures)
+	}
+	root := repoRoot(t)
+	catalog := &Catalog{Pages: []Page{{ID: "synthetic/flowcontrol6", Article: "flowcontrol.article", Source: []byte(source), SourceSHA256: sum([]byte(source))}}}
+	if err := ValidateCandidate(root, catalog, "synthetic/flowcontrol6", []byte(candidate)); err != nil {
+		t.Fatalf("reordered candidate rejected: %v\n%s", err, candidate)
+	}
+	for name, bad := range map[string]string{
+		"opening missing": strings.Replace(model, returned.Open, "", 1),
+		"closing missing": strings.Replace(model, returned.Close, "", 1),
+		"content changed": strings.Replace(model, "return", "returns", 1),
+		"duplicate":       model + returned.Open,
+	} {
+		t.Run(name, func(t *testing.T) {
+			if got, failures := p.restore(bad); len(failures) == 0 || got != "" {
+				t.Fatalf("invalid pair accepted: %q %v", got, failures)
+			}
+		})
+	}
+	extra := "* 带简短语句的 if\n\n（`return` 试着在最后一个 " + returned.Open + "return" + returned.Close + " 语句中使用 " + v.Open + "v" + v.Close + "。）\n"
+	got, failures := p.restore(extra)
+	if len(failures) != 0 {
+		t.Fatal(failures)
+	}
+	if err := ValidateCandidate(root, catalog, "synthetic/flowcontrol6", []byte(got)); err == nil {
+		t.Fatal("extra raw inline code accepted")
+	}
+}
+
+func TestRevalidateSavedTranslationResponseFlowcontrol6OrderRegression(t *testing.T) {
+	source := []byte("* If with a short statement\n\n(Try using `v` in the last `return` statement.)\n")
+	root := writeRevalidationFixture(t, "flowcontrol/6", source, 3, "blocked")
+	catalog := &Catalog{Pages: []Page{{ID: "flowcontrol/6", Article: "flowcontrol.article", Source: source, SourceSHA256: sum(source)}}}
+	p := protectTranslation(source, sum(source), nil)
+	v, returned := p.InlinePairs[0], p.InlinePairs[1]
+	content := "* 带简短语句的 if\n\n（试着在最后一个 " + returned.Open + "return" + returned.Close + " 语句中使用 " + v.Open + "v" + v.Close + "。）\n"
+	writeRevalidationAttempt(t, root, "flowcontrol/6", "zh-CN", sum(source), 3, content, "stop", true)
+	result, err := RevalidateSavedTranslationResponse(root, catalog, "flowcontrol/6", "zh-CN", 3, func() time.Time { return time.Unix(0, 0) })
+	if err != nil {
+		t.Fatal(err)
+	}
+	if result.Status != "ready" || result.Attempts != 3 || result.SourceAttempt != 3 {
+		t.Fatalf("result=%+v", result)
+	}
+	if _, err := os.Stat(filepath.Join(root, result.CandidatePath)); err != nil {
+		t.Fatal(err)
+	}
+	status, _, err := LoadTranslationResult(root, "flowcontrol/6", "zh-CN")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if status.State != "ready" || status.Attempts != 3 {
+		t.Fatalf("status=%+v", status)
+	}
+	for _, name := range []string{"request.json", "response.json", "validation.json"} {
+		if _, err := os.Stat(filepath.Join(root, "data", "translation-runs", "zh-CN", "flowcontrol", "6", "sources", sum(source), "attempt-003", name)); err != nil {
+			t.Fatal(err)
+		}
+	}
+	auditPath := filepath.Join(root, "data", "translation-runs", "zh-CN", "flowcontrol", "6", "sources", sum(source), "revalidation-001.json")
+	if _, err := os.Stat(auditPath); err != nil {
+		t.Fatal(err)
+	}
+	var audit responseRevalidationRecord
+	auditBytes, err := os.ReadFile(auditPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := json.Unmarshal(auditBytes, &audit); err != nil {
+		t.Fatal(err)
+	}
+	for _, got := range []string{audit.ResponsePath, audit.ValidationPath} {
+		if filepath.IsAbs(got) || strings.Contains(got, root) {
+			t.Fatalf("audit path is not repository-relative: %q", got)
+		}
+	}
+	wantDir := filepath.ToSlash(filepath.Join("data", "translation-runs", "zh-CN", "flowcontrol", "6", "sources", sum(source), "attempt-003"))
+	if audit.ResponsePath != wantDir+"/response.json" || audit.ValidationPath != wantDir+"/validation.json" {
+		t.Fatalf("audit paths = %q, %q", audit.ResponsePath, audit.ValidationPath)
+	}
+	if _, err := os.Stat(filepath.Join(root, "data", "translation-runs", "zh-CN", "flowcontrol", "6", "sources", sum(source), "attempt-004")); !os.IsNotExist(err) {
+		t.Fatalf("attempt-004 unexpectedly exists: %v", err)
+	}
+}
+
+func TestRevalidateSavedTranslationResponseFailsClosedAndAppendsAudit(t *testing.T) {
+	source := []byte("* Source\n\nUse `code`.\n")
+	root := writeRevalidationFixture(t, "example/1", source, 3, "blocked")
+	catalog := &Catalog{Pages: []Page{{ID: "example/1", Article: "basics.article", Source: source, SourceSHA256: sum(source)}}}
+	p := protectTranslation(source, sum(source), nil)
+	bad := "* 来源\n\n使用 " + p.InlinePairs[0].Open + "changed" + p.InlinePairs[0].Close + "。\n"
+	writeRevalidationAttempt(t, root, "example/1", "zh-CN", sum(source), 3, bad, "stop", true)
+	if _, err := RevalidateSavedTranslationResponse(root, catalog, "example/1", "zh-CN", 3, func() time.Time { return time.Unix(0, 0) }); err == nil {
+		t.Fatal("bad restore accepted")
+	}
+	if _, err := RevalidateSavedTranslationResponse(root, catalog, "example/1", "zh-CN", 3, func() time.Time { return time.Unix(1, 0) }); err == nil {
+		t.Fatal("second bad restore accepted")
+	}
+	status, _, _ := LoadTranslationResult(root, "example/1", "zh-CN")
+	if status.State != "blocked" || status.Attempts != 3 {
+		t.Fatalf("status=%+v", status)
+	}
+	dir := filepath.Join(root, "data", "translation-runs", "zh-CN", "example", "1", "sources", sum(source))
+	for _, name := range []string{"revalidation-001.json", "revalidation-002.json"} {
+		if _, err := os.Stat(filepath.Join(dir, name)); err != nil {
+			t.Fatal(err)
+		}
+	}
+}
+
+func TestRevalidateSavedTranslationResponseEligibility(t *testing.T) {
+	source := []byte("* Source\n\nUse `code`.\n")
+	validCatalog := &Catalog{Pages: []Page{{ID: "example/1", Article: "basics.article", Source: source, SourceSHA256: sum(source)}}}
+	validResponse := func(p protectedTranslation) string {
+		return "* 来源\n\n使用 " + p.InlinePairs[0].Open + "code" + p.InlinePairs[0].Close + "。\n"
+	}
+	for _, tt := range []struct {
+		name, state     string
+		attempt         int
+		content, finish string
+		api             bool
+	}{
+		{"not blocked", "pending", 3, "", "", false},
+		{"attempt missing", "blocked", 3, "", "", false},
+		{"empty content", "blocked", 3, "", "stop", true},
+		{"non stop", "blocked", 3, "ignored", "length", true},
+		{"network attempt", "blocked", 3, "ignored", "stop", false},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			root := writeRevalidationFixture(t, "example/1", source, 3, tt.state)
+			if tt.name != "attempt missing" {
+				writeRevalidationAttempt(t, root, "example/1", "zh-CN", sum(source), tt.attempt, tt.content, tt.finish, tt.api)
+			}
+			if tt.name == "empty content" { /* deliberately empty */
+			} else if tt.content == "ignored" {
+				p := protectTranslation(source, sum(source), nil)
+				writeRevalidationAttempt(t, root, "example/1", "zh-CN", sum(source), tt.attempt, validResponse(p), tt.finish, tt.api)
+			}
+			if _, err := RevalidateSavedTranslationResponse(root, validCatalog, "example/1", "zh-CN", tt.attempt, nil); err == nil {
+				t.Fatal("ineligible response accepted")
+			}
+			status, _, _ := LoadTranslationResult(root, "example/1", "zh-CN")
+			if status.State != tt.state || status.Attempts != 3 {
+				t.Fatalf("status changed: %+v", status)
+			}
+		})
+	}
+	t.Run("source hash changed", func(t *testing.T) {
+		root := writeRevalidationFixture(t, "example/1", source, 3, "blocked")
+		changed := []byte("* Source\n\nUse `other`.\n")
+		changedCatalog := &Catalog{Pages: []Page{{ID: "example/1", Article: "basics.article", Source: changed, SourceSHA256: sum(changed)}}}
+		if _, err := RevalidateSavedTranslationResponse(root, changedCatalog, "example/1", "zh-CN", 3, nil); err == nil {
+			t.Fatal("stale source hash accepted")
+		}
+	})
+}
+
+func TestRevalidateSavedTranslationResponseUsesRequestedLocale(t *testing.T) {
+	source := []byte("* Source\n\nUse `code`.\n")
+	root := writeRevalidationFixture(t, "example/1", source, 3, "blocked")
+	locale := "test-locale"
+	cloneRevalidationLocale(t, root, locale)
+	catalog := &Catalog{Pages: []Page{{ID: "example/1", Article: "basics.article", Source: source, SourceSHA256: sum(source)}}}
+	p := protectTranslation(source, sum(source), nil)
+	content := "* 来源\n\n使用 " + p.InlinePairs[0].Open + "code" + p.InlinePairs[0].Close + "。\n"
+	writeRevalidationAttempt(t, root, "example/1", locale, sum(source), 3, content, "stop", true)
+	if _, err := RevalidateSavedTranslationResponse(root, catalog, "example/1", locale, 3, nil); err != nil {
+		t.Fatal(err)
+	}
+	root = writeRevalidationFixture(t, "example/1", source, 3, "blocked")
+	cloneRevalidationLocale(t, root, locale)
+	writeRevalidationAttempt(t, root, "example/1", locale, sum(source), 3, content, "stop", true)
+	path := filepath.Join(root, "data", "translation-runs", locale, "example", "1", "sources", sum(source), "attempt-003", "request.json")
+	var request savedTranslationRequest
+	b, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := json.Unmarshal(b, &request); err != nil {
+		t.Fatal(err)
+	}
+	request.Locale = "other-locale"
+	if err := writeTranslationJSON(path, request); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := RevalidateSavedTranslationResponse(root, catalog, "example/1", locale, 3, nil); err == nil {
+		t.Fatal("mismatched request locale accepted")
+	}
+	if _, err := RevalidateSavedTranslationResponse(root, catalog, "example/1", "missing-locale", 3, nil); err == nil {
+		t.Fatal("invalid locale accepted")
+	}
+}
+
+func cloneRevalidationLocale(t *testing.T, root, locale string) {
+	t.Helper()
+	dir := filepath.Join(root, "locales", locale)
+	if err := os.MkdirAll(dir, 0755); err != nil {
+		t.Fatal(err)
+	}
+	for _, name := range []string{"status.tsv", "glossary.yaml"} {
+		b, err := os.ReadFile(filepath.Join(root, "locales", "zh-CN", name))
+		if err != nil {
+			t.Fatal(err)
+		}
+		if err := os.WriteFile(filepath.Join(dir, name), b, 0644); err != nil {
+			t.Fatal(err)
+		}
+	}
+}
+
+func writeRevalidationFixture(t *testing.T, pageID string, source []byte, attempts int, state string) string {
+	t.Helper()
+	root := writeStatusFixture(t, "page_id\tstatus\tattempts\tsource_sha256\tcandidate_path\tupdated_at\tnote\n"+pageID+"\t"+state+"\t"+fmt.Sprint(attempts)+"\t"+sum(source)+"\t\t\t\n")
+	writeTestGlossary(t, root)
+	return root
+}
+
+func writeRevalidationAttempt(t *testing.T, root, pageID, locale, hash string, attempt int, content, finish string, apiSuccess bool) {
+	t.Helper()
+	dir := filepath.Join(root, "data", "translation-runs", locale, pageID, "sources", hash, fmt.Sprintf("attempt-%03d", attempt))
+	if err := os.MkdirAll(dir, 0755); err != nil {
+		t.Fatal(err)
+	}
+	if err := writeTranslationJSON(filepath.Join(dir, "request.json"), savedTranslationRequest{pageID, locale, hash, TranslationAPIRequest{Model: "glm-5.2"}}); err != nil {
+		t.Fatal(err)
+	}
+	if err := writeTranslationJSON(filepath.Join(dir, "response.json"), TranslationCallResult{StatusCode: 200, RequestID: "audit", FinishReason: finish, Content: content, Raw: json.RawMessage(`{}`)}); err != nil {
+		t.Fatal(err)
+	}
+	if err := writeTranslationJSON(filepath.Join(dir, "validation.json"), TranslationValidation{Attempt: attempt, APISuccess: apiSuccess, Failures: []string{"old validator failed"}}); err != nil {
+		t.Fatal(err)
 	}
 }
 
@@ -653,7 +897,7 @@ func TestTranslationRequestExplainsDynamicPairProtocol(t *testing.T) {
 	emphasis := emphasisPairsForPrompt(protected)[0]
 	for _, want := range []string{
 		inline.Open, inline.Close, "两者之间当前可见的代码内容必须逐字原样保留在同一 pair 内", "不得翻译、改写、增删、移出 pair", "不得自行添加反引号", "反引号由程序恢复",
-		emphasis.Open, emphasis.Close, "两者之间的自然语言允许翻译", "译文必须始终留在同一 pair 内", "不得将成对结构 token 拆散、独立移动",
+		emphasis.Open, emphasis.Close, "两者之间的自然语言允许翻译", "译文必须始终留在同一 pair 内", "不得将成对结构 token 拆散或独立移动", "不同的完整 pair 可为自然语序随各自的语义单元整体换位",
 		"directive、链接 target、keep-word 等单 token 结构仍只能原样、唯一保留",
 	} {
 		if !strings.Contains(user, want) {

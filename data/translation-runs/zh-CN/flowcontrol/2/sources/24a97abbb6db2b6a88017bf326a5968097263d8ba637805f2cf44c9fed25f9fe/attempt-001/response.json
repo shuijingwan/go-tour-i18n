@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "202608092010194267b7174f564689",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 1375,
+    "completion_tokens": 31,
+    "total_tokens": 1406
+  },
+  "content": "* for 的后续\n\ninit 和 post 语句是可选的。\n\n⟪GTI18N_24a97abb_000001⟫",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* for 的后续\n\ninit 和 post 语句是可选的。\n\n⟪GTI18N_24a97abb_000001⟫",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786277420,
+    "id": "202608092010194267b7174f564689",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "202608092010194267b7174f564689",
+    "usage": {
+      "completion_tokens": 31,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 1375,
+      "prompt_tokens_details": {
+        "cached_tokens": 512
+      },
+      "total_tokens": 1406
+    }
+  }
+}

@@ -231,13 +231,13 @@ func (p protectedTranslation) validateInlinePairs(output string) error {
 	if len(p.InlinePairs) == 0 {
 		return nil
 	}
-	pos := 0
+	type pairPosition struct{ open, close int }
+	positions := make([]pairPosition, len(p.InlinePairs))
 	for i, pair := range p.InlinePairs {
-		open := strings.Index(output[pos:], pair.Open)
+		open := strings.Index(output, pair.Open)
 		if open < 0 {
 			return fmt.Errorf("inline code sentinel %d opening marker missing", i+1)
 		}
-		open += pos
 		contentStart := open + len(pair.Open)
 		closeOffset := strings.Index(output[contentStart:], pair.Close)
 		if closeOffset < 0 {
@@ -247,7 +247,15 @@ func (p protectedTranslation) validateInlinePairs(output string) error {
 		if got := output[contentStart:close]; got != pair.Content {
 			return fmt.Errorf("inline code sentinel %d content changed", i+1)
 		}
-		pos = close + len(pair.Close)
+		positions[i] = pairPosition{open: open, close: close + len(pair.Close)}
+	}
+	for i := range positions {
+		for j := i + 1; j < len(positions); j++ {
+			left, right := positions[i], positions[j]
+			if left.open < right.close && right.open < left.close {
+				return fmt.Errorf("inline code sentinels %d and %d are crossed or nested", i+1, j+1)
+			}
+		}
 	}
 	return nil
 }

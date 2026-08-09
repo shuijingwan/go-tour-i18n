@@ -25,6 +25,12 @@ var (
 )
 
 func ValidateCandidate(root string, catalog *Catalog, pageID string, candidate []byte) error {
+	return ValidateCandidateForLocale(root, catalog, pageID, "zh-CN", candidate)
+}
+
+// ValidateCandidateForLocale applies the same present and structure validation
+// using the glossary associated with the requested locale.
+func ValidateCandidateForLocale(root string, catalog *Catalog, pageID, locale string, candidate []byte) error {
 	page, err := catalog.Page(pageID)
 	if err != nil {
 		return err
@@ -39,7 +45,7 @@ func ValidateCandidate(root string, catalog *Catalog, pageID string, candidate [
 	if bytes.Contains(candidate, []byte("#appengine:")) {
 		return fmt.Errorf("%s: standalone candidate contains #appengine content", pageID)
 	}
-	glossary, err := LoadGlossary(root, "zh-CN")
+	glossary, err := LoadGlossary(root, locale)
 	if err != nil {
 		return err
 	}
@@ -92,7 +98,7 @@ func ValidateCandidate(root string, catalog *Catalog, pageID string, candidate [
 func validateGlossary(pageID string, source, candidate []byte, glossary *Glossary) error {
 	for _, forbidden := range glossary.Forbidden {
 		if bytes.Contains(candidate, []byte(forbidden)) {
-			return fmt.Errorf("%s: candidate contains forbidden zh-CN translation %q", pageID, forbidden)
+			return fmt.Errorf("%s: candidate contains forbidden locale translation %q", pageID, forbidden)
 		}
 	}
 	sourceLinks := linkRE.FindAllSubmatch(source, -1)

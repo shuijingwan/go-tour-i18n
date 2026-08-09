@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "2026080920103538956eac12844375",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 2145,
+    "completion_tokens": 237,
+    "total_tokens": 2382
+  },
+  "content": "* 简短 if 语句\n\n与 ⟪GTI18N_02e31026_000001⟫for⟪GTI18N_02e31026_000002⟫ 一样，⟪GTI18N_02e31026_000003⟫if⟪GTI18N_02e31026_000004⟫ 语句可以在条件之前执行一个简短语句。\n\n该语句声明的变量其作用域仅持续到 ⟪GTI18N_02e31026_000005⟫if⟪GTI18N_02e31026_000006⟫ 语句结束。\n\n（试着在最后一个 ⟪GTI18N_02e31026_000009⟫return⟪GTI18N_02e31026_000010⟫ 语句中使用 ⟪GTI18N_02e31026_000007⟫v⟪GTI18N_02e31026_000008⟫。）\n\n⟪GTI18N_02e31026_000011⟫",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 简短 if 语句\n\n与 ⟪GTI18N_02e31026_000001⟫for⟪GTI18N_02e31026_000002⟫ 一样，⟪GTI18N_02e31026_000003⟫if⟪GTI18N_02e31026_000004⟫ 语句可以在条件之前执行一个简短语句。\n\n该语句声明的变量其作用域仅持续到 ⟪GTI18N_02e31026_000005⟫if⟪GTI18N_02e31026_000006⟫ 语句结束。\n\n（试着在最后一个 ⟪GTI18N_02e31026_000009⟫return⟪GTI18N_02e31026_000010⟫ 语句中使用 ⟪GTI18N_02e31026_000007⟫v⟪GTI18N_02e31026_000008⟫。）\n\n⟪GTI18N_02e31026_000011⟫",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786277438,
+    "id": "2026080920103538956eac12844375",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "2026080920103538956eac12844375",
+    "usage": {
+      "completion_tokens": 237,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 2145,
+      "prompt_tokens_details": {
+        "cached_tokens": 2048
+      },
+      "total_tokens": 2382
+    }
+  }
+}
