@@ -119,16 +119,17 @@ func (p protectedTranslation) restore(output string) (string, []string) {
 		if n := strings.Count(output, token); n != 1 {
 			failures = append(failures, fmt.Sprintf("token %d occurrence count = %d, want 1", i+1, n))
 		}
-		if i < len(found) && found[i] != token {
-			failures = append(failures, fmt.Sprintf("protected token order mismatch at %d", i+1))
-		}
 	}
 	if len(failures) != 0 {
 		return "", failures
 	}
 	restored := normalizeInlineTokenBoundaries(output, p)
+	values := make(map[string]string, len(p.Tokens))
 	for i, token := range p.Tokens {
-		restored = strings.Replace(restored, token, p.Values[i], 1)
+		values[token] = p.Values[i]
+	}
+	for _, token := range found {
+		restored = strings.Replace(restored, token, values[token], 1)
 	}
 	if translationTokenRE.MatchString(restored) {
 		return "", []string{"protected token remains after restoration"}
@@ -141,9 +142,17 @@ func (p protectedTranslation) restore(output string) (string, []string) {
 // word. It runs while token identity is still available and never examines or
 // changes the backticks inside a token's restoration value.
 func normalizeInlineTokenBoundaries(output string, p protectedTranslation) string {
-	segments := make([]string, len(p.Tokens)+1)
-	pos := 0
+	found := translationTokenRE.FindAllString(output, -1)
+	if len(found) != len(p.Tokens) {
+		return output // restore calls this helper only after strict token validation.
+	}
+	kinds := make(map[string]protectedTokenKind, len(p.Tokens))
 	for i, token := range p.Tokens {
+		kinds[token] = p.Kinds[i]
+	}
+	segments := make([]string, len(found)+1)
+	pos := 0
+	for i, token := range found {
 		offset := strings.Index(output[pos:], token)
 		if offset < 0 {
 			return output // restore calls this helper only after strict token validation.
@@ -155,8 +164,8 @@ func normalizeInlineTokenBoundaries(output string, p protectedTranslation) strin
 
 	for i, original := range segments {
 		segment := original
-		previousInline := i > 0 && p.Kinds[i-1] == protectedInlineCode
-		nextInline := i < len(p.Tokens) && p.Kinds[i] == protectedInlineCode
+		previousInline := i > 0 && kinds[found[i-1]] == protectedInlineCode
+		nextInline := i < len(found) && kinds[found[i]] == protectedInlineCode
 
 		if previousInline && startsWithNonBoundary(segment) {
 			segment = " " + segment
@@ -171,7 +180,7 @@ func normalizeInlineTokenBoundaries(output string, p protectedTranslation) strin
 	}
 
 	var normalized strings.Builder
-	for i, token := range p.Tokens {
+	for i, token := range found {
 		normalized.WriteString(segments[i])
 		normalized.WriteString(token)
 	}

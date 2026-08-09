@@ -45,7 +45,6 @@ func TestTranslationProtectionRoundTripAndFailures(t *testing.T) {
 		"missing":   strings.Replace(p.Text, p.Tokens[0], "", 1),
 		"duplicate": p.Text + p.Tokens[0],
 		"unknown":   p.Text + "⟪GTI18N_deadbeef_999999⟫",
-		"order":     strings.Replace(strings.Replace(p.Text, p.Tokens[0], "TEMP", 1), p.Tokens[1], p.Tokens[0], 1) + p.Tokens[1],
 	}
 	for name, output := range invalid {
 		t.Run(name, func(t *testing.T) {
@@ -53,6 +52,10 @@ func TestTranslationProtectionRoundTripAndFailures(t *testing.T) {
 				t.Fatal("invalid tokens accepted")
 			}
 		})
+	}
+	reordered := strings.Replace(strings.Replace(p.Text, p.Tokens[0], "TEMP", 1), p.Tokens[1], p.Tokens[0], 1) + p.Tokens[1]
+	if got, failures := p.restore(reordered); len(failures) != 0 || got == "" {
+		t.Fatalf("reordered tokens rejected: got=%q failures=%v", got, failures)
 	}
 }
 
@@ -328,7 +331,8 @@ func TestTranslationRequestIncludesNaturalChineseGuidance(t *testing.T) {
 	wants := []string{
 		"请将一个完整的《Go 语言之旅》present.Section 从英文翻译为中国大陆简体中文。",
 		"只返回完整且可由 present 解析的 .article 内容。",
-		"原样出现、恰好出现一次，并严格保持输入顺序",
+		"原样出现、恰好出现一次；不得修改、删除、复制或伪造",
+		"为适应目标语言自然语序可以调整 token 位置",
 		"应当翻译的英文显示文本不得残留",
 		"不得简化、遗漏或改变原文含义",
 		"理解完整 present.Section 的页面用途和上下文",
@@ -358,7 +362,7 @@ func TestTranslationRequestIncludesNaturalChineseGuidance(t *testing.T) {
 		"恰好输出一次",
 		"不得复制",
 		"不得复用",
-		"严格保持输入顺序",
+		"可以为自然中文语序调整 token 位置",
 		fmt.Sprintf("本页共有 %d 个保护 token，输出中也必须恰好包含 %d 个。", len(protected.Tokens), len(protected.Tokens)),
 	} {
 		if !strings.Contains(user, want) {

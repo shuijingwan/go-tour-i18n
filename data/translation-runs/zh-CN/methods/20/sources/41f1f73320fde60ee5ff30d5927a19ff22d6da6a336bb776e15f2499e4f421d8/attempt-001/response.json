@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "20260809093755ab9a26f306b243b6",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 1685,
+    "completion_tokens": 412,
+    "total_tokens": 2097
+  },
+  "content": "* 练习：错误\n\n从[[⟪GTI18N_41f1f733_000002⟫][前一个练习]]中复制你的 ⟪GTI18N_41f1f733_000001⟫ 函数，并修改它使其返回一个 ⟪GTI18N_41f1f733_000003⟫ 值。\n\n当传入负数时，⟪GTI18N_41f1f733_000004⟫ 应当返回一个非 nil 的错误值，因为它不支持复数。\n\n创建一个新类型\n\n⟪GTI18N_41f1f733_000005⟫并为其实现\n\n⟪GTI18N_41f1f733_000007⟫方法，使它成为一个 ⟪GTI18N_41f1f733_000006⟫，这样 ⟪GTI18N_41f1f733_000008⟫ 就会返回 ⟪GTI18N_41f1f733_000009⟫。\n\n*注意：* 在 ⟪GTI18N_41f1f733_000011⟫ 方法中调用 ⟪GTI18N_41f1f733_000010⟫ 会导致程序陷入无限循环。可以先转换 ⟪GTI18N_41f1f733_000012⟫ 来避免这个问题：⟪GTI18N_41f1f733_000013⟫。为什么？\n\n修改 ⟪GTI18N_41f1f733_000014⟫ 函数，使其在传入负数时返回一个 ⟪GTI18N_41f1f733_000015⟫ 值。\n\n⟪GTI18N_41f1f733_000016⟫",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 练习：错误\n\n从[[⟪GTI18N_41f1f733_000002⟫][前一个练习]]中复制你的 ⟪GTI18N_41f1f733_000001⟫ 函数，并修改它使其返回一个 ⟪GTI18N_41f1f733_000003⟫ 值。\n\n当传入负数时，⟪GTI18N_41f1f733_000004⟫ 应当返回一个非 nil 的错误值，因为它不支持复数。\n\n创建一个新类型\n\n⟪GTI18N_41f1f733_000005⟫并为其实现\n\n⟪GTI18N_41f1f733_000007⟫方法，使它成为一个 ⟪GTI18N_41f1f733_000006⟫，这样 ⟪GTI18N_41f1f733_000008⟫ 就会返回 ⟪GTI18N_41f1f733_000009⟫。\n\n*注意：* 在 ⟪GTI18N_41f1f733_000011⟫ 方法中调用 ⟪GTI18N_41f1f733_000010⟫ 会导致程序陷入无限循环。可以先转换 ⟪GTI18N_41f1f733_000012⟫ 来避免这个问题：⟪GTI18N_41f1f733_000013⟫。为什么？\n\n修改 ⟪GTI18N_41f1f733_000014⟫ 函数，使其在传入负数时返回一个 ⟪GTI18N_41f1f733_000015⟫ 值。\n\n⟪GTI18N_41f1f733_000016⟫",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786239479,
+    "id": "20260809093755ab9a26f306b243b6",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "20260809093755ab9a26f306b243b6",
+    "usage": {
+      "completion_tokens": 412,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 1685,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "total_tokens": 2097
+    }
+  }
+}

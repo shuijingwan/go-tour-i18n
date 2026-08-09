@@ -1,0 +1,21 @@
+* 练习：错误
+
+从[[/tour/flowcontrol/8][之前的练习]]中复制你的 `Sqrt` 函数，并修改它，让它返回一个 `error` 值。
+
+当传入负数时，`Sqrt` 应当返回一个非 nil 错误值，因为它不支持复数。
+
+创建一个新类型
+
+	type ErrNegativeSqrt float64
+
+并为其实现
+
+	func (e ErrNegativeSqrt) Error() string
+
+方法，使其实现 `error` 接口，这样 `ErrNegativeSqrt(-2).Error()` 就会返回 `"cannot`Sqrt`negative`number:`-2"`。
+
+*注意：* 在 `Error` 方法中调用 `fmt.Sprint(e)` 会导致程序陷入无限循环。可以先转换 `e` 来避免这个问题：`fmt.Sprint(float64(e))`。为什么？
+
+修改 `Sqrt` 函数，使其在传入负数时返回一个 `ErrNegativeSqrt` 值。
+
+.play methods/exercise-errors.go

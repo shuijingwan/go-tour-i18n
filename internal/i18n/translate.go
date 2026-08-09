@@ -181,7 +181,7 @@ func (r *TranslationRunner) Run(ctx context.Context, pageID, locale, apiKey stri
 func makeTranslationRequest(pageID, locale, page string, protectedTokenCount int, glossaryRules, previous string) TranslationAPIRequest {
 	system := `请将一个完整的《Go 语言之旅》present.Section 从英文翻译为中国大陆简体中文。
 
-只返回完整且可由 present 解析的 .article 内容。必须保留每个保护 token，使其原样出现、恰好出现一次，并严格保持输入顺序。必须使用术语表中的强制译法；对应的、应当翻译的英文显示文本不得残留；不得简化、遗漏或改变原文含义。
+只返回完整且可由 present 解析的 .article 内容。必须保留每个保护 token，使其原样出现、恰好出现一次；不得修改、删除、复制或伪造。为适应目标语言自然语序可以调整 token 位置，但不得破坏其所属的链接、代码、directive、预格式化等结构关系。必须使用术语表中的强制译法；对应的、应当翻译的英文显示文本不得残留；不得简化、遗漏或改变原文含义。
 
 中文表达要求：
 1. 翻译前先理解完整 present.Section 的页面用途和上下文，不要逐词翻译或机械照搬英文语序。
@@ -190,7 +190,7 @@ func makeTranslationRequest(pageID, locale, page string, protectedTokenCount int
 4. 避免明显的机器翻译表达，例如机械使用“它们”“你自己”“来进行……”，以及不自然的被动语态或英语式定语顺序。
 5. 准确区分用户操作：按钮应点击；链接应点击；键盘按键应按或按下；命令应执行；文本内容应输入。不得把按键描述为输入字符串，也不得混淆按钮、命令和链接。
 6. 技术词语应根据当前语境选择准确、自然的中文译法，不要仅按固定字典逐词替换。
-7. 可以润色普通中文文本，但不得改变、增删或重新标记任何受保护结构。尤其不得自行新增或删除行内代码反引号、预格式化代码、present directive、链接及链接 target、HTML 或特殊 present 语法；受保护内容的数量、顺序和形式必须保持一致。
+7. 可以润色普通中文文本，但不得改变、增删或重新标记任何受保护结构。尤其不得自行新增或删除行内代码反引号、预格式化代码、present directive、链接及链接 target、HTML 或特殊 present 语法；所有保护 token 必须完整且唯一，结构关系和形式必须保持一致。
 8. 不得增加原文没有的解释、提示、结论或标题。
 9. 输出前静默自检：标题是否自然；是否存在英文语序或机器翻译腔；操作说明是否符合真实操作；技术含义和信息量是否与原文一致；是否无意增删了行内代码、链接、directive 或其他结构。
 
@@ -204,9 +204,9 @@ target_locale: %s
 
 重要：下文每个形如 ⟪GTI18N_...⟫ 的保护 token 都是唯一占位符。
 本页共有 %d 个保护 token，输出中也必须恰好包含 %d 个。
-每个 token 必须原样输出且恰好输出一次，并严格保持输入顺序。
-不得复制、不得复用、不得删除、不得改写或交换任何 token。
-调整中文语序时，请使用“该类型”“该值”“前者”等普通中文承接，不要再次输出已有 token。
+每个 token 必须原样输出且恰好输出一次。
+不得复制、不得复用、不得删除、不得改写或伪造任何 token。
+可以为自然中文语序调整 token 位置，但不得破坏链接、代码、directive、预格式化等结构关系。
 
 需要翻译的完整受保护页面：
 %s`, pageID, locale, glossaryRules, protectedTokenCount, protectedTokenCount, page)

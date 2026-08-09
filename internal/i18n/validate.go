@@ -5,7 +5,10 @@ import (
 	"bytes"
 	"fmt"
 	"regexp"
+	"sort"
 	"strings"
+
+	"golang.org/x/tools/present"
 )
 
 type signature struct {
@@ -59,7 +62,7 @@ func ValidateCandidate(root string, catalog *Catalog, pageID string, candidate [
 	if err := compareProtected("link targets", expected.LinkTargets, actual.LinkTargets); err != nil {
 		return diagnostic(pageID, err)
 	}
-	if err := compareProtected("inline code", expected.InlineCode, actual.InlineCode); err != nil {
+	if err := compareUnorderedProtected("inline code", expected.InlineCode, actual.InlineCode); err != nil {
 		return diagnostic(pageID, err)
 	}
 	if err := comparePreformatted(string(page.Source), string(candidate)); err != nil {
@@ -74,6 +77,9 @@ func ValidateCandidate(root string, catalog *Catalog, pageID string, candidate [
 		return fmt.Errorf("%s: candidate font structure: %w", pageID, err)
 	}
 	if err := compareFontSpans(expectedFonts, actualFonts); err != nil {
+		return diagnostic(pageID, err)
+	}
+	if err := compareSectionStructure(root, page.Article, page.Source, candidate); err != nil {
 		return diagnostic(pageID, err)
 	}
 	return nil
@@ -165,6 +171,96 @@ func compareProtected(kind string, expected, actual []string) error {
 		return fmt.Errorf("%s count mismatch: expected %d, actual %d; first difference index %d", kind, len(expected), len(actual), limit+1)
 	}
 	return nil
+}
+
+func compareUnorderedProtected(kind string, expected, actual []string) error {
+	if len(expected) != len(actual) {
+		return protectedCountError(kind, len(expected), len(actual))
+	}
+	want := append([]string(nil), expected...)
+	got := append([]string(nil), actual...)
+	sort.Strings(want)
+	sort.Strings(got)
+	for i := range want {
+		if want[i] != got[i] {
+			return fmt.Errorf("%s payload mismatch: expected %q, actual %q", kind, shorten(want[i]), shorten(got[i]))
+		}
+	}
+	return nil
+}
+
+type sectionStructure struct {
+	path              string
+	preformatted      int
+	directives        int
+	terminalDirective bool
+}
+
+func compareSectionStructure(root, article string, source, candidate []byte) error {
+	expected, err := sectionStructures(root, article, source)
+	if err != nil {
+		return err
+	}
+	actual, err := sectionStructures(root, article, candidate)
+	if err != nil {
+		return err
+	}
+	if len(expected) != len(actual) {
+		return fmt.Errorf("section topology count mismatch: expected %d, actual %d", len(expected), len(actual))
+	}
+	for i := range expected {
+		want, got := expected[i], actual[i]
+		if want.path != got.path {
+			return fmt.Errorf("section topology mismatch at index %d: expected path %s, actual %s", i+1, want.path, got.path)
+		}
+		if want.preformatted != got.preformatted {
+			return fmt.Errorf("preformatted block section mismatch at %s: expected %d, actual %d", want.path, want.preformatted, got.preformatted)
+		}
+		if want.directives != got.directives {
+			return fmt.Errorf("directive section mismatch at %s: expected %d, actual %d", want.path, want.directives, got.directives)
+		}
+		if want.terminalDirective && !got.terminalDirective {
+			return fmt.Errorf("terminal directive moved within section %s", want.path)
+		}
+	}
+	return nil
+}
+
+func sectionStructures(root, article string, source []byte) ([]sectionStructure, error) {
+	doc, err := parsePresentPage(root, article, source)
+	if err != nil {
+		return nil, err
+	}
+	var result []sectionStructure
+	for i, section := range doc.Sections {
+		collectSectionStructures(section, fmt.Sprintf("%d", i+1), &result)
+	}
+	return result, nil
+}
+
+func collectSectionStructures(section present.Section, path string, result *[]sectionStructure) {
+	structure := sectionStructure{path: path}
+	for i, elem := range section.Elem {
+		switch value := elem.(type) {
+		case present.Text:
+			if value.Pre {
+				structure.preformatted++
+			}
+		case present.Code, present.Image:
+			structure.directives++
+			if i == len(section.Elem)-1 {
+				structure.terminalDirective = true
+			}
+		}
+	}
+	*result = append(*result, structure)
+	child := 0
+	for _, elem := range section.Elem {
+		if nested, ok := elem.(present.Section); ok {
+			child++
+			collectSectionStructures(nested, fmt.Sprintf("%s.%d", path, child), result)
+		}
+	}
 }
 
 func protectedCountError(kind string, expected, actual int) error {

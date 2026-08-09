@@ -68,6 +68,10 @@ func TestCommittedStatus(t *testing.T) {
 			if s.State != "ready" || s.Attempts != 2 || s.SourceSHA256 != "26e4da09e80d30b06368691c76ee2940139b0f6fc40cad47bb6d1d2947933c27" || s.CandidatePath != "locales/zh-CN/candidates/methods-16.article" || s.UpdatedAt != "2026-08-06T03:28:55Z" || s.Note != "GLM-5.2 candidate passed existing validator" {
 				t.Fatalf("methods/16 status: %+v", s)
 			}
+		case "methods/20":
+			if s.State != "ready" || s.Attempts != 1 || s.SourceSHA256 != "41f1f73320fde60ee5ff30d5927a19ff22d6da6a336bb776e15f2499e4f421d8" || s.CandidatePath != "locales/zh-CN/candidates/methods-20.article" || s.UpdatedAt != "2026-08-09T02:20:46Z" || s.Note != "人工审核确认的 candidate 已通过当前 validator；attempt-001 的旧全局 token 顺序失败记录保留在历史 validation.json" {
+				t.Fatalf("methods/20 status: %+v", s)
+			}
 		default:
 			if s.State != "pending" || s.Attempts != 0 || s.CandidatePath != "" {
 				t.Fatalf("non-initial status: %+v", s)

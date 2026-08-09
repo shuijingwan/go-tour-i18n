@@ -157,3 +157,147 @@ func TestCandidateValidationDoesNotWriteStatus(t *testing.T) {
 		t.Fatal("candidate validation modified status.tsv")
 	}
 }
+
+func TestReorderedProtectedTokensRemainStructurallyValid(t *testing.T) {
+	root := repoRoot(t)
+	catalog, err := BuildCatalog(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	t.Run("methods/20 cross-category and inline reorder", func(t *testing.T) {
+		page, err := catalog.Page("methods/20")
+		if err != nil {
+			t.Fatal(err)
+		}
+		p := protectTranslation(page.Source, page.SourceSHA256, nil)
+		if len(p.Tokens) != 16 {
+			t.Fatalf("tokens=%d, want 16", len(p.Tokens))
+		}
+		model := "* 练习：错误\n\n" +
+			"从[[" + p.Tokens[1] + "][前一个练习]]中复制你的 " + p.Tokens[0] + " 函数，并修改它使其返回一个 " + p.Tokens[2] + " 值。\n\n" +
+			"当传入负数时，" + p.Tokens[3] + " 应当返回一个非 nil 的错误值，因为它不支持复数。\n\n创建一个新类型\n\n" +
+			p.Tokens[4] + "并为其实现\n\n" + p.Tokens[6] + "方法，使它成为一个 " + p.Tokens[5] + "，这样 " + p.Tokens[7] + " 就会返回 " + p.Tokens[8] + "。\n\n" +
+			"*注意：* 在 " + p.Tokens[10] + " 方法中调用 " + p.Tokens[9] + " 会导致程序陷入无限循环。可以先转换 " + p.Tokens[11] + " 来避免这个问题：" + p.Tokens[12] + "。为什么？\n\n" +
+			"修改 " + p.Tokens[13] + " 函数，使其在传入负数时返回一个 " + p.Tokens[14] + " 值。\n\n" + p.Tokens[15] + "\n"
+		candidate, failures := p.restore(model)
+		if len(failures) != 0 {
+			t.Fatal(failures)
+		}
+		if err := ValidateCandidate(root, catalog, "methods/20", []byte(candidate)); err != nil {
+			t.Fatalf("reordered methods/20 candidate rejected: %v\n%s", err, candidate)
+		}
+	})
+
+	t.Run("generics/1 comparable and T reorder", func(t *testing.T) {
+		page, err := catalog.Page("generics/1")
+		if err != nil {
+			t.Fatal(err)
+		}
+		p := protectTranslation(page.Source, page.SourceSHA256, nil)
+		var comparable, typeT string
+		for i, value := range p.Values {
+			switch value {
+			case "`comparable`":
+				comparable = p.Tokens[i]
+			case "`T`":
+				if typeT == "" {
+					typeT = p.Tokens[i]
+				}
+			}
+		}
+		model := swapProtectedTokens(p.Text, typeT, comparable)
+		candidate, failures := p.restore(model)
+		if len(failures) != 0 {
+			t.Fatal(failures)
+		}
+		if err := ValidateCandidate(root, catalog, "generics/1", []byte(candidate)); err != nil {
+			t.Fatalf("reordered generics/1 candidate rejected: %v\n%s", err, candidate)
+		}
+	})
+}
+
+func TestSectionStructureProtection(t *testing.T) {
+	root := repoRoot(t)
+	source := "* Root\n\n  first block\n\n** Child\n\n  second block\n\n.play basics/packages.go\n"
+	catalog := &Catalog{Pages: []Page{{ID: "synthetic/sections", Article: "basics.article", Source: []byte(source), SourceSHA256: sum([]byte(source))}}}
+	tests := map[string]string{
+		"preformatted moved to child": "* Root\n\n** Child\n\n  first block\n\n  second block\n\n.play basics/packages.go\n",
+		"directive moved to root":     "* Root\n\n.play basics/packages.go\n\n** Child\n\n  second block\n",
+	}
+	for name, candidate := range tests {
+		t.Run(name, func(t *testing.T) {
+			if err := ValidateCandidate(root, catalog, "synthetic/sections", []byte(candidate)); err == nil {
+				t.Fatalf("invalid section move accepted:\n%s", candidate)
+			}
+		})
+	}
+}
+
+func TestTerminalDirectiveCannotMoveEarlier(t *testing.T) {
+	root := repoRoot(t)
+	source := "* Root\n\nText.\n\n.play basics/packages.go\n"
+	catalog := &Catalog{Pages: []Page{{ID: "synthetic/directive", Article: "basics.article", Source: []byte(source), SourceSHA256: sum([]byte(source))}}}
+	candidate := "* Root\n\n.play basics/packages.go\n\nText.\n"
+	if err := ValidateCandidate(root, catalog, "synthetic/directive", []byte(candidate)); err == nil {
+		t.Fatalf("moved terminal directive accepted:\n%s", candidate)
+	}
+}
+
+func TestStructuralPayloadMutationsFail(t *testing.T) {
+	root := repoRoot(t)
+	tests := []struct {
+		name, source, candidate string
+	}{
+		{
+			name:      "legacy program span changed",
+			source:    "* Root\n\nUse `package`rand`.\n",
+			candidate: "* Root\n\nUse `package`math`.\n",
+		},
+		{
+			name:      "link target outside link",
+			source:    "* Root\n\n[[https://one.test][one]]\n",
+			candidate: "* Root\n\n[[changed][one]] https://one.test\n",
+		},
+		{
+			name:      "link targets swapped",
+			source:    "* Root\n\n[[https://one.test][one]] [[https://two.test][two]]\n",
+			candidate: "* Root\n\n[[https://two.test][one]] [[https://one.test][two]]\n",
+		},
+		{
+			name:      "preformatted blocks swapped",
+			source:    "* Root\n\n  first block\n\n  second block\n",
+			candidate: "* Root\n\n  second block\n\n  first block\n",
+		},
+		{
+			name:      "preformatted block changed",
+			source:    "* Root\n\n  first block\n",
+			candidate: "* Root\n\n  changed block\n",
+		},
+		{
+			name:      "directive content changed",
+			source:    "* Root\n\n.play basics/packages.go\n",
+			candidate: "* Root\n\n.play basics/imports.go\n",
+		},
+		{
+			name:      "directive order changed",
+			source:    "* Root\n\n.play basics/packages.go\n\n.image /tour/static/img/tree.png\n",
+			candidate: "* Root\n\n.image /tour/static/img/tree.png\n\n.play basics/packages.go\n",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			catalog := &Catalog{Pages: []Page{{ID: "synthetic/mutation", Article: "basics.article", Source: []byte(tt.source), SourceSHA256: sum([]byte(tt.source))}}}
+			if err := ValidateCandidate(root, catalog, "synthetic/mutation", []byte(tt.candidate)); err == nil {
+				t.Fatalf("invalid structural mutation accepted:\n%s", tt.candidate)
+			}
+		})
+	}
+}
+
+func swapProtectedTokens(text, first, second string) string {
+	const placeholder = "__PROTECTED_TOKEN_SWAP__"
+	text = strings.Replace(text, first, placeholder, 1)
+	text = strings.Replace(text, second, first, 1)
+	return strings.Replace(text, placeholder, second, 1)
+}
