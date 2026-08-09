@@ -34,6 +34,29 @@ type TranslationRunResult struct {
 	UpdatedAt     string                 `json:"updated_at"`
 }
 
+// TranslationRecoveryResult records an explicit, auditable reset of a formal
+// translation window after the exhausted window proved to be infrastructure-only.
+type TranslationRecoveryResult struct {
+	PageID       string `json:"page_id"`
+	Locale       string `json:"locale"`
+	SourceSHA256 string `json:"source_sha256"`
+	Attempts     int    `json:"attempts"`
+	Status       string `json:"status"`
+	RecoveryPath string `json:"recovery_path"`
+	UpdatedAt    string `json:"updated_at"`
+}
+
+type networkFailureRecoveryRecord struct {
+	PageID            string `json:"page_id"`
+	Locale            string `json:"locale"`
+	SourceSHA256      string `json:"source_sha256"`
+	RecoveredAttempts []int  `json:"recovered_attempts"`
+	PreviousStatus    string `json:"previous_status"`
+	PreviousAttempts  int    `json:"previous_attempts"`
+	RecoveredAt       string `json:"recovered_at"`
+	RecoveryKind      string `json:"recovery_kind"`
+}
+
 type savedTranslationRequest struct {
 	PageID       string                `json:"page_id"`
 	Locale       string                `json:"locale"`
@@ -98,12 +121,22 @@ func (r *TranslationRunner) Run(ctx context.Context, pageID, locale, apiKey stri
 	if err != nil {
 		return nil, err
 	}
-	if firstAttempt > maxAttempts {
-		if !r.Dev {
-			return nil, fmt.Errorf("%s source %s has exhausted %d attempts", pageID, page.SourceSHA256, maxAttempts)
-		}
+	windowStart, windowEnd, err := currentFormalAttemptWindow(sourceRunDir, pageID, locale, page.SourceSHA256, maxAttempts)
+	if err != nil {
+		return nil, err
 	}
-	lastAttempt := maxAttempts
+	if firstAttempt < windowStart {
+		return nil, fmt.Errorf("%s: next historical attempt %d precedes current formal window %d-%d", pageID, firstAttempt, windowStart, windowEnd)
+	}
+	if !r.Dev && firstAttempt > windowEnd {
+		updated := now().UTC().Format(time.RFC3339)
+		note := fmt.Sprintf("formal attempt window %03d-%03d exhausted before this run", windowStart, windowEnd)
+		if err := updateTranslationStatus(r.Root, locale, pageID, "blocked", windowEnd, page.SourceSHA256, "", updated, note); err != nil {
+			return nil, err
+		}
+		return nil, fmt.Errorf("%s formal attempt window %03d-%03d is exhausted", pageID, windowStart, windowEnd)
+	}
+	lastAttempt := windowEnd
 	if r.Dev {
 		lastAttempt = firstAttempt
 	}
@@ -112,7 +145,7 @@ func (r *TranslationRunner) Run(ctx context.Context, pageID, locale, apiKey stri
 		if err := os.MkdirAll(dir, 0755); err != nil {
 			return nil, err
 		}
-		req := makeTranslationRequest(pageID, locale, protected.Text, len(protected.Tokens), glossary.PromptRules(pageID), previous)
+		req := makeTranslationRequest(pageID, locale, protected, glossary.PromptRules(pageID), previous)
 		if err := writeTranslationJSON(filepath.Join(dir, "request.json"), savedTranslationRequest{pageID, locale, page.SourceSHA256, req}); err != nil {
 			return nil, err
 		}
@@ -162,7 +195,7 @@ func (r *TranslationRunner) Run(ctx context.Context, pageID, locale, apiKey stri
 			}
 			return &TranslationRunResult{pageID, locale, page.SourceSHA256, "glm-5.2", attempt, "ready", candidatePath, &last, updated}, nil
 		}
-		previous = strings.Join(last.Failures, "; ")
+		previous = retryFeedback(last.Failures)
 	}
 	updated := now().UTC().Format(time.RFC3339)
 	if r.Dev {
@@ -172,13 +205,200 @@ func (r *TranslationRunner) Run(ctx context.Context, pageID, locale, apiKey stri
 		}
 		return &TranslationRunResult{pageID, locale, page.SourceSHA256, "glm-5.2", attempt, "pending", "", &last, updated}, nil
 	}
-	if err := updateTranslationStatus(r.Root, locale, pageID, "blocked", maxAttempts, page.SourceSHA256, "", updated, previous); err != nil {
+	if err := updateTranslationStatus(r.Root, locale, pageID, "blocked", lastAttempt, page.SourceSHA256, "", updated, previous); err != nil {
 		return nil, err
 	}
-	return &TranslationRunResult{pageID, locale, page.SourceSHA256, "glm-5.2", maxAttempts, "blocked", "", &last, updated}, nil
+	return &TranslationRunResult{pageID, locale, page.SourceSHA256, "glm-5.2", lastAttempt, "blocked", "", &last, updated}, nil
 }
 
-func makeTranslationRequest(pageID, locale, page string, protectedTokenCount int, glossaryRules, previous string) TranslationAPIRequest {
+// retryFeedback deliberately summarizes audited validation failures for the
+// model. Detailed source/candidate diagnostics stay in validation.json and are
+// never echoed into a subsequent model request.
+func retryFeedback(failures []string) string {
+	joined := strings.ToLower(strings.Join(failures, "\n"))
+	switch {
+	case strings.Contains(joined, "protected token") || strings.Contains(joined, "token "):
+		return "上一次输出未能完整、唯一地保留所有受保护 token。每个现有 token 必须原样且恰好出现一次；不得自行重建 token 所代表的代码、directive、链接目标或其他原始结构。请重新翻译完整页面，并保持其他受保护结构不变。"
+	case strings.Contains(joined, "inline code"):
+		return "上一次输出自行新增、删除或改变了行内代码结构。不得在普通文本中自行添加反引号代码；所有已受保护的行内代码只能通过现有 token 表示。请重新翻译完整页面，并保持其他受保护结构不变。"
+	case strings.Contains(joined, "directive"):
+		return "上一次输出出现了未受保护的额外 present directive，或改变了 directive 结构。不得自行书写 .play、.image 等 present directive；directive 只能通过已有保护 token 表示。请重新翻译完整页面，并保持其他受保护结构不变。"
+	case strings.Contains(joined, "font span") || strings.Contains(joined, "emphasis"):
+		return "上一次输出破坏了强调或字体结构。必须保留所有已有强调结构标记；不得自行新增、删除或改变强调类型。请重新翻译完整页面，并保持其他受保护结构不变。"
+	case strings.Contains(joined, "present parse"):
+		return "上一次输出不是可由 present 解析的完整页面。请只输出完整的 present.Section，并保持既有段落与受保护结构。请重新翻译完整页面，并保持其他受保护结构不变。"
+	default:
+		return "上一次输出未通过页面结构校验。请只重新翻译普通文本，完整保留所有已有保护 token 和 present 结构，不要自行增删或改写结构。请重新翻译完整页面，并保持其他受保护结构不变。"
+	}
+}
+
+// RecoverNetworkBlockedTranslation explicitly reopens one formal three-attempt
+// window only when the exhausted window is fully audited as response-less network
+// failures. It never deletes or renumbers attempt records.
+func RecoverNetworkBlockedTranslation(root string, catalog *Catalog, pageID, locale string, now func() time.Time) (*TranslationRecoveryResult, error) {
+	if locale != "zh-CN" {
+		return nil, fmt.Errorf("unsupported locale %q", locale)
+	}
+	if catalog == nil {
+		return nil, errors.New("translation catalog is required")
+	}
+	page, err := catalog.Page(pageID)
+	if err != nil {
+		return nil, err
+	}
+	if sum(page.Source) != page.SourceSHA256 {
+		return nil, fmt.Errorf("%s: hydrated source hash mismatch", pageID)
+	}
+	status, _, err := LoadTranslationResult(root, pageID, locale)
+	if err != nil {
+		return nil, err
+	}
+	if status.State != "blocked" {
+		return nil, fmt.Errorf("%s is %s, want blocked for network recovery", pageID, status.State)
+	}
+	if status.SourceSHA256 != page.SourceSHA256 {
+		return nil, fmt.Errorf("%s: blocked status source hash does not match current source", pageID)
+	}
+	const formalWindow = 3
+	if status.Attempts < formalWindow {
+		return nil, fmt.Errorf("%s: blocked status has only %d attempts, cannot prove an exhausted formal window", pageID, status.Attempts)
+	}
+	sourceRunDir := filepath.Join(root, "data", "translation-runs", locale, pageID, "sources", page.SourceSHA256)
+	recovered := make([]int, 0, formalWindow)
+	for attempt := status.Attempts - formalWindow + 1; attempt <= status.Attempts; attempt++ {
+		if err := verifyResponseLessNetworkFailure(filepath.Join(sourceRunDir, fmt.Sprintf("attempt-%03d", attempt)), attempt); err != nil {
+			return nil, fmt.Errorf("%s: cannot recover formal network window: %w", pageID, err)
+		}
+		recovered = append(recovered, attempt)
+	}
+	if now == nil {
+		now = time.Now
+	}
+	updated := now().UTC().Format(time.RFC3339)
+	recoveryPath, err := nextNetworkRecoveryPath(sourceRunDir)
+	if err != nil {
+		return nil, err
+	}
+	record := networkFailureRecoveryRecord{pageID, locale, page.SourceSHA256, recovered, status.State, status.Attempts, updated, "response-less-network-failure"}
+	if err := writeTranslationJSON(recoveryPath, record); err != nil {
+		return nil, err
+	}
+	note := fmt.Sprintf("formal network recovery recorded for response-less attempts %03d-%03d; next formal window starts at attempt-%03d", recovered[0], recovered[len(recovered)-1], status.Attempts+1)
+	if err := updateTranslationStatus(root, locale, pageID, "pending", status.Attempts, page.SourceSHA256, "", updated, note); err != nil {
+		return nil, err
+	}
+	return &TranslationRecoveryResult{pageID, locale, page.SourceSHA256, status.Attempts, "pending", filepath.ToSlash(recoveryPath), updated}, nil
+}
+
+func verifyResponseLessNetworkFailure(dir string, attempt int) error {
+	for _, name := range []string{"request.json", "response.json", "validation.json"} {
+		if _, err := os.Stat(filepath.Join(dir, name)); err != nil {
+			return fmt.Errorf("attempt-%03d audit is incomplete: %s: %w", attempt, name, err)
+		}
+	}
+	validationBytes, err := os.ReadFile(filepath.Join(dir, "validation.json"))
+	if err != nil {
+		return err
+	}
+	var validation TranslationValidation
+	if err := json.Unmarshal(validationBytes, &validation); err != nil {
+		return fmt.Errorf("attempt-%03d invalid validation audit: %w", attempt, err)
+	}
+	if validation.Attempt != attempt || validation.APISuccess || validation.TokenValid || validation.PresentValid || validation.Passed || len(validation.Failures) == 0 {
+		return fmt.Errorf("attempt-%03d is not a response-less network failure", attempt)
+	}
+	for _, failure := range validation.Failures {
+		if !strings.HasPrefix(failure, "network: ") {
+			return fmt.Errorf("attempt-%03d has non-network failure %q", attempt, failure)
+		}
+	}
+	responseBytes, err := os.ReadFile(filepath.Join(dir, "response.json"))
+	if err != nil {
+		return err
+	}
+	var response TranslationCallResult
+	if err := json.Unmarshal(responseBytes, &response); err != nil {
+		return fmt.Errorf("attempt-%03d invalid response audit: %w", attempt, err)
+	}
+	if response.StatusCode != 0 || response.RequestID != "" || response.FinishReason != "" || response.Content != "" || hasResponseRaw(response.Raw) || response.APIError != "" || response.Usage != (TranslationUsage{}) {
+		return fmt.Errorf("attempt-%03d has an API response and is not recoverable as network-only", attempt)
+	}
+	return nil
+}
+
+func hasResponseRaw(raw json.RawMessage) bool {
+	return len(raw) != 0 && string(raw) != "null"
+}
+
+func nextNetworkRecoveryPath(sourceRunDir string) (string, error) {
+	entries, err := os.ReadDir(sourceRunDir)
+	if err != nil {
+		return "", err
+	}
+	max := 0
+	for _, entry := range entries {
+		var recovery int
+		_, scanErr := fmt.Sscanf(entry.Name(), "network-recovery-%03d.json", &recovery)
+		if entry.Type().IsRegular() && scanErr == nil && recovery > max {
+			max = recovery
+		}
+	}
+	return filepath.Join(sourceRunDir, fmt.Sprintf("network-recovery-%03d.json", max+1)), nil
+}
+
+// currentFormalAttemptWindow derives the only formal window that may run for a
+// source. A recovery audit advances the window; invoking translate run again
+// never does.
+func currentFormalAttemptWindow(sourceRunDir, pageID, locale, sourceSHA256 string, width int) (int, int, error) {
+	if width <= 0 {
+		return 0, 0, fmt.Errorf("formal attempt window width must be positive")
+	}
+	entries, err := os.ReadDir(sourceRunDir)
+	if os.IsNotExist(err) {
+		return 1, width, nil
+	}
+	if err != nil {
+		return 0, 0, err
+	}
+	var latest networkFailureRecoveryRecord
+	latestNumber := 0
+	for _, entry := range entries {
+		if !entry.Type().IsRegular() {
+			continue
+		}
+		var number int
+		if _, err := fmt.Sscanf(entry.Name(), "network-recovery-%03d.json", &number); err != nil || number == 0 {
+			continue
+		}
+		bytes, err := os.ReadFile(filepath.Join(sourceRunDir, entry.Name()))
+		if err != nil {
+			return 0, 0, err
+		}
+		var record networkFailureRecoveryRecord
+		if err := json.Unmarshal(bytes, &record); err != nil {
+			return 0, 0, fmt.Errorf("invalid network recovery audit %s: %w", entry.Name(), err)
+		}
+		if record.PageID != pageID || record.Locale != locale || record.SourceSHA256 != sourceSHA256 || record.RecoveryKind != "response-less-network-failure" || record.PreviousStatus != "blocked" || len(record.RecoveredAttempts) != width || record.PreviousAttempts < width {
+			return 0, 0, fmt.Errorf("invalid network recovery audit %s", entry.Name())
+		}
+		for index, attempt := range record.RecoveredAttempts {
+			if attempt != record.PreviousAttempts-width+1+index {
+				return 0, 0, fmt.Errorf("invalid recovered attempt range in %s", entry.Name())
+			}
+		}
+		if number > latestNumber {
+			latestNumber = number
+			latest = record
+		}
+	}
+	if latestNumber == 0 {
+		return 1, width, nil
+	}
+	start := latest.PreviousAttempts + 1
+	return start, start + width - 1, nil
+}
+
+func makeTranslationRequest(pageID, locale string, protected protectedTranslation, glossaryRules, previous string) TranslationAPIRequest {
 	system := `请将一个完整的《Go 语言之旅》present.Section 从英文翻译为中国大陆简体中文。
 
 只返回完整且可由 present 解析的 .article 内容。必须保留每个保护 token，使其原样出现、恰好出现一次；不得修改、删除、复制或伪造。为适应目标语言自然语序可以调整 token 位置，但不得破坏其所属的链接、代码、directive、预格式化等结构关系。必须使用术语表中的强制译法；对应的、应当翻译的英文显示文本不得残留；不得简化、遗漏或改变原文含义。
@@ -206,14 +426,65 @@ target_locale: %s
 本页共有 %d 个保护 token，输出中也必须恰好包含 %d 个。
 每个 token 必须原样输出且恰好输出一次。
 不得复制、不得复用、不得删除、不得改写或伪造任何 token。
-可以为自然中文语序调整 token 位置，但不得破坏链接、代码、directive、预格式化等结构关系。
+可以仅在完整保持所属语义单元和结构关系的前提下调整位置；不得将成对结构 token 拆散、独立移动，也不得将任何内容移入或移出 pair。
+
+%s
 
 需要翻译的完整受保护页面：
-%s`, pageID, locale, glossaryRules, protectedTokenCount, protectedTokenCount, page)
+%s`, pageID, locale, glossaryRules, len(protected.Tokens), len(protected.Tokens), protectedStructureProtocol(protected), protected.Text)
 	if previous != "" {
-		user += "\n\n上一次完整页面翻译未通过校验：" + previous + "。请重新翻译完整页面。"
+		user += "\n\n上一次完整页面翻译未通过校验：" + previous
 	}
 	return TranslationAPIRequest{Model: "glm-5.2", Stream: false, Thinking: map[string]string{"type": "disabled"}, DoSample: false, MaxTokens: 8192, Messages: []TranslationMessage{{Role: "system", Content: system}, {Role: "user", Content: user}}}
+}
+
+func protectedStructureProtocol(protected protectedTranslation) string {
+	var rules []string
+	if len(protected.InlinePairs) != 0 {
+		rules = append(rules, "行内代码成对结构（反引号由程序恢复，pair 内的英文或标识符不是应翻译的英文显示文本）：")
+		for i, pair := range protected.InlinePairs {
+			rules = append(rules, fmt.Sprintf("- 行内代码 pair %d：%s 是 opening token，%s 是 closing token。两者之间当前可见的代码内容必须逐字原样保留在同一 pair 内；不得翻译、改写、增删、移出 pair 或移入其他内容；不得自行添加反引号。", i+1, pair.Open, pair.Close))
+		}
+	}
+	emphasisPairs := emphasisPairsForPrompt(protected)
+	if len(emphasisPairs) != 0 {
+		rules = append(rules, "强调成对结构：")
+		for i, pair := range emphasisPairs {
+			kind := "italic"
+			if pair.Kind == protectedBoldOpen {
+				kind = "bold"
+			}
+			rules = append(rules, fmt.Sprintf("- %s pair %d：%s 是 opening token，%s 是 closing token。两者之间的自然语言允许翻译，但译文必须始终留在同一 pair 内；不得拆散、交换 token，也不得将内容移出或移入 pair。", kind, i+1, pair.Open, pair.Close))
+		}
+	}
+	if len(rules) == 0 {
+		return "本页没有成对结构 token；所有单 token 结构仍必须原样、唯一保留。"
+	}
+	rules = append(rules, "除上述 pair 外，directive、链接 target、keep-word 等单 token 结构仍只能原样、唯一保留；不得自行重建其隐藏的原始结构。")
+	return strings.Join(rules, "\n")
+}
+
+type promptEmphasisPair struct {
+	Open, Close string
+	Kind        protectedTokenKind
+}
+
+func emphasisPairsForPrompt(protected protectedTranslation) []promptEmphasisPair {
+	var pairs []promptEmphasisPair
+	for i, token := range protected.Tokens {
+		switch protected.Kinds[i] {
+		case protectedItalicOpen, protectedBoldOpen:
+			pairs = append(pairs, promptEmphasisPair{Open: token, Kind: protected.Kinds[i]})
+		case protectedItalicClose, protectedBoldClose:
+			for j := len(pairs) - 1; j >= 0; j-- {
+				if pairs[j].Close == "" {
+					pairs[j].Close = token
+					break
+				}
+			}
+		}
+	}
+	return pairs
 }
 
 func nextTranslationAttempt(sourceRunDir string) (int, error) {

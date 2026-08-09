@@ -3,6 +3,7 @@ package i18n
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -54,8 +55,8 @@ func TestTranslationProtectionRoundTripAndFailures(t *testing.T) {
 		})
 	}
 	reordered := strings.Replace(strings.Replace(p.Text, p.Tokens[0], "TEMP", 1), p.Tokens[1], p.Tokens[0], 1) + p.Tokens[1]
-	if got, failures := p.restore(reordered); len(failures) != 0 || got == "" {
-		t.Fatalf("reordered tokens rejected: got=%q failures=%v", got, failures)
+	if got, failures := p.restore(reordered); len(failures) == 0 || got != "" {
+		t.Fatalf("reordered inline sentinels accepted: got=%q failures=%v", got, failures)
 	}
 }
 
@@ -78,15 +79,14 @@ func TestInlineTokenBoundaryNormalization(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			p := protectTranslation([]byte(strings.Join(tt.values, " ")), "12345678", nil)
-			if len(p.Tokens) != len(tt.values) {
-				t.Fatalf("tokens = %d, want %d: %+v", len(p.Tokens), len(tt.values), p)
+			if len(p.InlinePairs) != len(tt.values) {
+				t.Fatalf("inline pairs = %d, want %d: %+v", len(p.InlinePairs), len(tt.values), p)
 			}
-			for i, kind := range p.Kinds {
-				if kind != protectedInlineCode {
-					t.Fatalf("token %d kind = %v, want inline code", i+1, kind)
-				}
+			spans := make([]string, len(p.InlinePairs))
+			for i, pair := range p.InlinePairs {
+				spans[i] = pair.Open + pair.Content + pair.Close
 			}
-			model := tt.model(p.Tokens)
+			model := tt.model(spans)
 			normalized := normalizeInlineTokenBoundaries(model, p)
 			if twice := normalizeInlineTokenBoundaries(normalized, p); twice != normalized {
 				t.Fatalf("normalization is not idempotent:\nonce:  %q\ntwice: %q", normalized, twice)
@@ -108,6 +108,67 @@ func TestInlineTokenBoundaryNormalization(t *testing.T) {
 	}
 }
 
+func TestInlineCodePairProtectionBasics6Regression(t *testing.T) {
+	source := "* Multiple results\n\nThe `swap` function returns two strings.\n"
+	p := protectTranslation([]byte(source), strings.Repeat("b", 64), nil)
+	if len(p.InlinePairs) != 1 {
+		t.Fatalf("inline pairs = %+v", p.InlinePairs)
+	}
+	pair := p.InlinePairs[0]
+	if !strings.Contains(p.Text, pair.Open+"swap"+pair.Close) || strings.Contains(p.Text, "The "+pair.Open+pair.Close+" function") {
+		t.Fatalf("swap was not retained between sentinels:\n%s", p.Text)
+	}
+	valid := "* 多个返回值\n\n调用" + pair.Open + "swap" + pair.Close + "函数会返回两个字符串。\n"
+	candidate, failures := p.restore(valid)
+	if len(failures) != 0 || !strings.Contains(candidate, "调用 `swap` 函数") {
+		t.Fatalf("restore=%q failures=%v", candidate, failures)
+	}
+	root := repoRoot(t)
+	catalog := &Catalog{Pages: []Page{{ID: "synthetic/basics6", Article: "basics.article", Source: []byte(source), SourceSHA256: sum([]byte(source))}}}
+	if err := ValidateCandidate(root, catalog, "synthetic/basics6", []byte(candidate)); err != nil {
+		t.Fatalf("restored candidate rejected: %v", err)
+	}
+	for name, model := range map[string]string{
+		"changed":    strings.Replace(valid, "swap", "exchange", 1),
+		"translated": strings.Replace(valid, "swap", "交换", 1),
+		"missing":    strings.Replace(valid, pair.Close, "", 1),
+		"duplicate":  valid + pair.Open,
+		"extra raw":  "* 多个返回值\n\n`swap` 调用" + pair.Open + "swap" + pair.Close + "函数会返回两个字符串。\n",
+	} {
+		t.Run(name, func(t *testing.T) {
+			got, rejected := p.restore(model)
+			if name != "extra raw" {
+				if len(rejected) == 0 || got != "" {
+					t.Fatalf("mutated inline pair accepted: %q %v", got, rejected)
+				}
+				return
+			}
+			if len(rejected) != 0 {
+				t.Fatal(rejected)
+			}
+			if err := ValidateCandidate(root, catalog, "synthetic/basics6", []byte(got)); err == nil {
+				t.Fatal("extra raw inline code accepted")
+			}
+		})
+	}
+}
+
+func TestInlineCodePairOrderAndContentAreStrict(t *testing.T) {
+	source := "* Source\n\n`int` and `int`: `:=`, `<-`, `fmt.Println`, `math.Sqrt`, `T comparable`.\n"
+	p := protectTranslation([]byte(source), strings.Repeat("c", 64), nil)
+	if len(p.InlinePairs) != 6 {
+		t.Fatalf("inline pairs=%+v", p.InlinePairs)
+	}
+	if _, failures := p.restore(p.Text); len(failures) != 0 {
+		t.Fatal(failures)
+	}
+	first, second := p.InlinePairs[0], p.InlinePairs[1]
+	crossed := strings.NewReplacer(first.Open, "__open__", first.Close, second.Close, second.Open, first.Open, "__open__", second.Open).Replace(p.Text)
+	if _, failures := p.restore(crossed); len(failures) == 0 {
+		t.Fatal("crossed inline pairs accepted")
+	}
+}
+
 func TestLegacyInlineCodeRemainsOneProtectedSpan(t *testing.T) {
 	tests := []struct {
 		raw, content string
@@ -120,8 +181,9 @@ func TestLegacyInlineCodeRemainsOneProtectedSpan(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.raw, func(t *testing.T) {
 			p := protectTranslation([]byte(tt.raw), "12345678", nil)
-			if len(p.Tokens) != 1 || len(p.Kinds) != 1 || p.Kinds[0] != protectedInlineCode || p.Values[0] != tt.raw {
-				t.Fatalf("protection = %+v, want one unchanged inline-code span", p)
+			rawContent := tt.raw[1 : len(tt.raw)-1]
+			if len(p.InlinePairs) != 1 || p.InlinePairs[0].Content != rawContent || !strings.Contains(p.Text, rawContent) {
+				t.Fatalf("protection = %+v, want one visible inline-code pair", p)
 			}
 			normalized := normalizeInlineTokenBoundaries(p.Text, p)
 			if normalized != p.Text {
@@ -149,7 +211,7 @@ func TestNonInlineTokenKindsAreNotBoundaryNormalized(t *testing.T) {
 		protectedGlossaryOrKeep: false,
 	}
 	for _, kind := range p.Kinds {
-		if kind == protectedInlineCode {
+		if kind == protectedInlineCodeOpen || kind == protectedInlineCodeClose {
 			t.Fatalf("unexpected inline token in %+v", p)
 		}
 		if _, ok := wantKinds[kind]; ok {
@@ -169,14 +231,14 @@ func TestNonInlineTokenKindsAreNotBoundaryNormalized(t *testing.T) {
 func TestLinkLabelProgramSpanProtectionRoundTrip(t *testing.T) {
 	source := []byte("* Link\n\n[[/pkg/][Use `pkg.Type` here]].\n")
 	p := protectTranslation(source, "12345678", nil)
-	if len(p.Tokens) != 2 || p.Kinds[0] != protectedLinkTarget || p.Kinds[1] != protectedInlineCode || p.InlineBoundaries[1] {
-		t.Fatalf("protection = %+v, want target then inline-code token", p)
+	if len(p.Tokens) != 3 || p.Kinds[0] != protectedLinkTarget || len(p.InlinePairs) != 1 || p.InlinePairs[0].Boundaries {
+		t.Fatalf("protection = %+v, want target then inline-code pair", p)
 	}
-	wantProtected := "[[" + p.Tokens[0] + "][Use " + p.Tokens[1] + " here]]"
+	wantProtected := "[[" + p.Tokens[0] + "][Use " + inlinePairText(t, p, 0) + " here]]"
 	if !strings.Contains(p.Text, wantProtected) {
 		t.Fatalf("link label program span not independently protected:\n%s", p.Text)
 	}
-	model := "* 链接\n\n[[" + p.Tokens[0] + "][使用 " + p.Tokens[1] + "]]。\n"
+	model := "* 链接\n\n[[" + p.Tokens[0] + "][使用 " + inlinePairText(t, p, 0) + "]]。\n"
 	got, failures := p.restore(model)
 	if len(failures) != 0 || got != "* 链接\n\n[[/pkg/][使用 `pkg.Type`]]。\n" {
 		t.Fatalf("restore = %q, failures=%v", got, failures)
@@ -198,16 +260,19 @@ func TestMethods24ProtectionIncludesLinkLabelProgramSpan(t *testing.T) {
 	for _, kind := range p.Kinds {
 		counts[kind]++
 	}
-	if counts[protectedLinkTarget] != 4 || counts[protectedDirective] != 1 || counts[protectedPreformattedStatic] != 1 || counts[protectedInlineCode] != 9 || len(p.Tokens) != 15 {
-		t.Fatalf("protected counts = %+v, total=%d; want links=4 directive=1 static=1 inline=9 total=15", counts, len(p.Tokens))
+	if counts[protectedLinkTarget] != 4 || counts[protectedDirective] != 1 || counts[protectedPreformattedStatic] != 1 || counts[protectedInlineCodeOpen] != 9 || counts[protectedInlineCodeClose] != 9 || counts[protectedBoldOpen] != 1 || counts[protectedBoldClose] != 1 || len(p.Tokens) != 26 {
+		t.Fatalf("protected counts = %+v, total=%d; want links=4 directive=1 static=1 inline-open=9 inline-close=9 bold-open=1 bold-close=1 total=26", counts, len(p.Tokens))
 	}
 	target, code := "", ""
 	for i, value := range p.Values {
 		switch value {
 		case "/pkg/image/#Rectangle":
 			target = p.Tokens[i]
-		case "`image.Rectangle`":
-			code = p.Tokens[i]
+		}
+	}
+	for pair := range p.InlinePairs {
+		if p.InlinePairs[pair].Content == "image.Rectangle" {
+			code = inlinePairText(t, p, pair)
 		}
 	}
 	if target == "" || code == "" || !strings.Contains(p.Text, "[["+target+"]["+code+"]]") {
@@ -235,7 +300,7 @@ func TestInlineTokenBoundaryNormalizationForLegacyPresent(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			p := protectTranslation([]byte(source), "12345678", nil)
-			candidate, failures := p.restore("* 根\n\n" + tt.prefix + p.Tokens[0] + tt.suffix + "\n")
+			candidate, failures := p.restore("* 根\n\n" + tt.prefix + inlinePairText(t, p, 0) + tt.suffix + "\n")
 			if len(failures) != 0 {
 				t.Fatal(failures)
 			}
@@ -249,7 +314,7 @@ func TestInlineTokenBoundaryNormalizationForLegacyPresent(t *testing.T) {
 	}
 }
 
-func TestMethods24Attempt001ReplayNormalizesBoundsInlineToken(t *testing.T) {
+func TestMethods24HistoricalResponseWithoutEmphasisSentinelsIsRejected(t *testing.T) {
 	root := repoRoot(t)
 	catalog, err := BuildCatalog(root)
 	if err != nil {
@@ -270,29 +335,8 @@ func TestMethods24Attempt001ReplayNormalizesBoundsInlineToken(t *testing.T) {
 	if err := json.Unmarshal(record, &response); err != nil {
 		t.Fatal(err)
 	}
-	candidate, failures := p.restore(response.Content)
-	if len(failures) != 0 {
-		t.Fatal(failures)
-	}
-	if !strings.Contains(candidate, "*注意*： `Bounds` 方法") {
-		t.Fatalf("Bounds boundary was not normalized:\n%s", candidate)
-	}
-	expected, err := parsedFontSpans(root, page.Article, page.Source)
-	if err != nil {
-		t.Fatal(err)
-	}
-	actual, err := parsedFontSpans(root, page.Article, []byte(candidate))
-	if err != nil {
-		t.Fatal(err)
-	}
-	if len(expected) != 10 || len(actual) != 10 {
-		t.Fatalf("font spans source=%v candidate=%v\n%s", expected, actual, candidate)
-	}
-	if !strings.Contains(candidate, "[[/pkg/image/#Rectangle][`image.Rectangle`]]") {
-		t.Fatalf("linked program span moved or changed:\n%s", candidate)
-	}
-	if err := ValidateCandidate(root, catalog, "methods/24", []byte(candidate)); err != nil {
-		t.Fatalf("methods/24 attempt-001 replay rejected: %v\n%s", err, candidate)
+	if _, failures := p.restore(response.Content); len(failures) == 0 {
+		t.Fatal("historical response without new emphasis sentinels was accepted")
 	}
 }
 
@@ -392,20 +436,19 @@ func TestGenericsInlineBoundaryNormalizationPassesValidator(t *testing.T) {
 		t.Fatal(err)
 	}
 	p := protectTranslation(page.Source, page.SourceSHA256, glossary)
-	indices := map[string]int{}
-	for i, value := range p.Values {
-		if value == "`comparable`" || value == "`x`" {
-			if _, exists := indices[value]; !exists {
-				indices[value] = i
-			}
+	comparable, x := "", ""
+	for _, pair := range p.InlinePairs {
+		if pair.Content == "comparable" && comparable == "" {
+			comparable = pair.Open + pair.Content + pair.Close
+		}
+		if pair.Content == "x" && x == "" {
+			x = pair.Open + pair.Content + pair.Close
 		}
 	}
-	comparable, okComparable := indices["`comparable`"]
-	x, okX := indices["`x`"]
-	if !okComparable || !okX || comparable >= x {
-		t.Fatalf("target inline tokens not found in order: values=%q indices=%v", p.Values, indices)
+	if comparable == "" || x == "" {
+		t.Fatalf("target inline pairs not found: %+v", p.InlinePairs)
 	}
-	model := strings.Replace(p.Text, p.Tokens[comparable]+". "+p.Tokens[x], p.Tokens[comparable]+"。"+p.Tokens[x], 1)
+	model := strings.Replace(p.Text, comparable+". "+x, comparable+"。"+x, 1)
 	if model == p.Text {
 		t.Fatal("attempt-003 equivalent protected text was not constructed")
 	}
@@ -439,8 +482,8 @@ func TestPresentInlineCodeProtection(t *testing.T) {
 				t.Fatalf("trailing period included in code span: %q", codes[0].Raw)
 			}
 			p := protectTranslation([]byte(tt.source), sum([]byte(tt.source)), nil)
-			if len(p.Values) != 1 || p.Values[0] != tt.raw {
-				t.Fatalf("protected values = %q, want [%q]", p.Values, tt.raw)
+			if len(p.InlinePairs) != 1 || p.InlinePairs[0].Content != tt.raw[1:len(tt.raw)-1] {
+				t.Fatalf("inline pairs = %+v, want visible %q", p.InlinePairs, tt.raw[1:len(tt.raw)-1])
 			}
 			restored, failures := p.restore(p.Text)
 			if len(failures) != 0 || restored != tt.source {
@@ -461,18 +504,18 @@ func TestBasicsPackagesLegacyInlineCodeIsFullyProtected(t *testing.T) {
 		t.Fatal(err)
 	}
 	p := protectTranslation(page.Source, page.SourceSHA256, nil)
-	valueIndex := -1
-	for i, value := range p.Values {
-		if value == "`package`rand`" {
-			valueIndex = i
+	var pair protectedInlinePair
+	for _, current := range p.InlinePairs {
+		if current.Content == "package`rand" {
+			pair = current
 			break
 		}
 	}
-	if valueIndex < 0 {
-		t.Fatalf("full legacy inline-code span absent from protected values: %q", p.Values)
+	if pair.Open == "" {
+		t.Fatalf("legacy inline-code pair absent: %+v", p.InlinePairs)
 	}
-	want := "statement " + p.Tokens[valueIndex] + "."
-	if !strings.Contains(p.Text, want) || strings.Contains(p.Text, "rand`") {
+	want := "statement " + pair.Open + "package`rand" + pair.Close + "."
+	if !strings.Contains(p.Text, want) || !strings.Contains(p.Text, "package`rand") {
 		t.Fatalf("protected basics/1 does not contain %q cleanly:\n%s", want, p.Text)
 	}
 	candidate, err := os.ReadFile(filepath.Join(root, "locales", "zh-CN", "candidates", "basics-1.article"))
@@ -534,7 +577,7 @@ func TestTranslationClientUsesRoundTripperAndCapturesMetadata(t *testing.T) {
 func TestTranslationRequestIncludesNaturalChineseGuidance(t *testing.T) {
 	source := []byte("* Contextual title\n\nGo uses `T`.\n\n.play example/example.go\n")
 	protected := protectTranslation(source, sum(source), nil)
-	request := makeTranslationRequest("example/1", "zh-CN", protected.Text, len(protected.Tokens), "- glossary rule", "")
+	request := makeTranslationRequest("example/1", "zh-CN", protected, "- glossary rule", "")
 	if len(request.Messages) != 2 || request.Messages[0].Role != "system" || request.Messages[1].Role != "user" {
 		t.Fatalf("messages = %+v", request.Messages)
 	}
@@ -573,7 +616,7 @@ func TestTranslationRequestIncludesNaturalChineseGuidance(t *testing.T) {
 		"恰好输出一次",
 		"不得复制",
 		"不得复用",
-		"可以为自然中文语序调整 token 位置",
+		"完整保持所属语义单元和结构关系",
 		fmt.Sprintf("本页共有 %d 个保护 token，输出中也必须恰好包含 %d 个。", len(protected.Tokens), len(protected.Tokens)),
 	} {
 		if !strings.Contains(user, want) {
@@ -589,15 +632,148 @@ func TestTranslationRequestIncludesNaturalChineseGuidance(t *testing.T) {
 		}
 	}
 
-	retry := makeTranslationRequest("example/1", "zh-CN", protected.Text, len(protected.Tokens), "- glossary rule", "token order mismatch")
+	retry := makeTranslationRequest("example/1", "zh-CN", protected, "- glossary rule", retryFeedback([]string{"protected token order mismatch at 1"}))
 	retryUser := retry.Messages[1].Content
-	for _, want := range []string{"上一次完整页面翻译未通过校验：token order mismatch。", "请重新翻译完整页面。"} {
+	for _, want := range []string{"上一次完整页面翻译未通过校验：上一次输出未能完整、唯一地保留所有受保护 token。", "每个现有 token 必须原样且恰好出现一次", "请重新翻译完整页面"} {
 		if !strings.Contains(retryUser, want) {
 			t.Errorf("retry prompt missing %q:\n%s", want, retryUser)
 		}
 	}
 	if strings.Contains(retryUser, "Previous full-page attempt failed validation:") || strings.Contains(retryUser, "Translate the complete page again.") {
 		t.Errorf("retry prompt retains English fixed instruction:\n%s", retryUser)
+	}
+}
+
+func TestTranslationRequestExplainsDynamicPairProtocol(t *testing.T) {
+	source := []byte("* Source\n\nThe `swap` is _after_ the value.\n\n.play hidden/example.go\n")
+	protected := protectTranslation(source, sum(source), nil)
+	request := makeTranslationRequest("example/1", "zh-CN", protected, "- glossary rule", "")
+	user := request.Messages[1].Content
+	inline := protected.InlinePairs[0]
+	emphasis := emphasisPairsForPrompt(protected)[0]
+	for _, want := range []string{
+		inline.Open, inline.Close, "两者之间当前可见的代码内容必须逐字原样保留在同一 pair 内", "不得翻译、改写、增删、移出 pair", "不得自行添加反引号", "反引号由程序恢复",
+		emphasis.Open, emphasis.Close, "两者之间的自然语言允许翻译", "译文必须始终留在同一 pair 内", "不得将成对结构 token 拆散、独立移动",
+		"directive、链接 target、keep-word 等单 token 结构仍只能原样、唯一保留",
+	} {
+		if !strings.Contains(user, want) {
+			t.Errorf("pair protocol missing %q:\n%s", want, user)
+		}
+	}
+	for _, forbidden := range []string{"hidden/example.go", ".play hidden"} {
+		if strings.Contains(user, forbidden) {
+			t.Errorf("opaque directive leaked %q:\n%s", forbidden, user)
+		}
+	}
+	retry := makeTranslationRequest("example/1", "zh-CN", protected, "- glossary rule", retryFeedback([]string{"inline code count mismatch"}))
+	for _, want := range []string{inline.Open, inline.Close, emphasis.Open, emphasis.Close, "不得自行添加反引号"} {
+		if !strings.Contains(retry.Messages[1].Content, want) {
+			t.Errorf("retry lacks pair protocol %q:\n%s", want, retry.Messages[1].Content)
+		}
+	}
+}
+
+func TestRetryFeedbackClassifiesFailuresWithoutEchoingDiagnostics(t *testing.T) {
+	tests := []struct {
+		name, failure string
+		wants         []string
+		forbidden     []string
+	}{
+		{
+			name:      "inline code",
+			failure:   "basics/6: protected structure validation failed: inline code count mismatch: expected 1, actual 2; check the named directive or protected content near the first difference",
+			wants:     []string{"不得在普通文本中自行添加反引号代码", "行内代码"},
+			forbidden: []string{"directive", ".play", "expected 1", "actual 2"},
+		},
+		{
+			name:      "directive",
+			failure:   `basics/6: protected structure validation failed: present directives mismatch at index 1: expected ".play basics/multiple-results.go", actual ".play basics/multiple-results.go 7,9"`,
+			wants:     []string{"不得自行书写 .play、.image 等 present directive", "directive 只能通过已有保护 token 表示"},
+			forbidden: []string{"multiple-results.go", "7,9", "expected", "actual"},
+		},
+		{
+			name:      "token",
+			failure:   "token 4 occurrence count = 0, want 1",
+			wants:     []string{"每个现有 token 必须原样且恰好出现一次", "不得自行重建 token 所代表的代码"},
+			forbidden: []string{"occurrence count", "token 4", "want 1"},
+		},
+		{
+			name:      "font",
+			failure:   "methods/24: protected structure validation failed: font span count mismatch: expected 10, actual 9",
+			wants:     []string{"强调或字体结构", "不得自行新增、删除或改变强调类型"},
+			forbidden: []string{"directive", ".play", "inline code", "expected 10"},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			feedback := retryFeedback([]string{tt.failure})
+			for _, want := range tt.wants {
+				if !strings.Contains(feedback, want) {
+					t.Errorf("feedback missing %q:\n%s", want, feedback)
+				}
+			}
+			for _, forbidden := range tt.forbidden {
+				if strings.Contains(feedback, forbidden) {
+					t.Errorf("feedback leaked %q:\n%s", forbidden, feedback)
+				}
+			}
+		})
+	}
+}
+
+func TestRetryFeedbackKeepsRawValidationAuditOutOfNextRequest(t *testing.T) {
+	source := []byte("* Root\n\nUse `code`.\n")
+	hash := sum(source)
+	root := writeStatusFixture(t, "page_id\tstatus\tattempts\tsource_sha256\tcandidate_path\tupdated_at\tnote\n"+
+		"welcome/1\tpending\t0\t"+hash+"\t\t\t\n")
+	writeTestGlossary(t, root)
+	var secondUser string
+	var calls atomic.Int32
+	client := &TranslationClient{Endpoint: "https://example.invalid", HTTP: mockHTTP(func(r *http.Request) (*http.Response, error) {
+		call := calls.Add(1)
+		var request TranslationAPIRequest
+		if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
+			t.Fatal(err)
+		}
+		user := request.Messages[len(request.Messages)-1].Content
+		tokens := translationTokenRE.FindAllString(user, -1)
+		if len(tokens) < 2 {
+			t.Fatalf("inline sentinel tokens = %v", tokens)
+		}
+		content := "* 根\n\n使用 " + tokens[0] + "code" + tokens[1] + "。\n"
+		if call == 1 {
+			content = "* 根\n\n`额外` 和 " + tokens[0] + "code" + tokens[1] + "。\n"
+		} else {
+			secondUser = user
+		}
+		body, _ := json.Marshal(map[string]any{"choices": []any{map[string]any{"message": map[string]string{"role": "assistant", "content": content}, "finish_reason": "stop"}}, "usage": map[string]int{}})
+		return &http.Response{StatusCode: http.StatusOK, Header: make(http.Header), Body: io.NopCloser(strings.NewReader(string(body))), Request: r}, nil
+	})}
+	runner := TranslationRunner{Root: root, Catalog: &Catalog{Pages: []Page{{ID: "welcome/1", Article: "welcome.article", Source: source, SourceSHA256: hash}}}, Client: client, Now: func() time.Time { return time.Unix(0, 0) }}
+	result, err := runner.Run(context.Background(), "welcome/1", "zh-CN", "test-secret")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if result.Status != "ready" || calls.Load() != 2 {
+		t.Fatalf("result=%+v calls=%d", result, calls.Load())
+	}
+	for _, want := range []string{"不得在普通文本中自行添加反引号代码", "所有已受保护的行内代码只能通过现有 token 表示"} {
+		if !strings.Contains(secondUser, want) {
+			t.Errorf("second request missing safe inline feedback %q:\n%s", want, secondUser)
+		}
+	}
+	for _, forbidden := range []string{"inline code count mismatch", "expected 1", "actual 2", "check the named directive", ".play"} {
+		if strings.Contains(secondUser, forbidden) {
+			t.Errorf("second request leaked raw validation diagnostic %q:\n%s", forbidden, secondUser)
+		}
+	}
+	validationPath := filepath.Join(root, "data", "translation-runs", "zh-CN", "welcome", "1", "sources", hash, "attempt-001", "validation.json")
+	validation, err := os.ReadFile(validationPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(string(validation), "inline code count mismatch: expected 1, actual 2") {
+		t.Fatalf("raw validation audit was summarized or lost:\n%s", validation)
 	}
 }
 
@@ -677,6 +853,187 @@ func TestNextTranslationAttemptContinuesCurrentSource(t *testing.T) {
 	}
 	if next != 2 {
 		t.Fatalf("next attempt = %d, want 2", next)
+	}
+}
+
+func TestRecoverNetworkBlockedTranslationRestoresFormalWindowWithoutOverwritingAudits(t *testing.T) {
+	source := []byte("* Hello\n\nEnglish text.\n")
+	hash := sum(source)
+	root := writeStatusFixture(t, "page_id\tstatus\tattempts\tsource_sha256\tcandidate_path\tupdated_at\tnote\n"+
+		"welcome/1\tblocked\t3\t"+hash+"\t\t\tformal attempts exhausted\n")
+	writeTestGlossary(t, root)
+	sourceDir := filepath.Join(root, "data", "translation-runs", "zh-CN", "welcome", "1", "sources", hash)
+	for attempt := 1; attempt <= 3; attempt++ {
+		writeNetworkFailureAudit(t, sourceDir, attempt)
+	}
+	catalog := &Catalog{Pages: []Page{{ID: "welcome/1", Article: "welcome.article", Source: source, SourceSHA256: hash}}}
+	recovered, err := RecoverNetworkBlockedTranslation(root, catalog, "welcome/1", "zh-CN", func() time.Time { return time.Unix(0, 0) })
+	if err != nil {
+		t.Fatal(err)
+	}
+	if recovered.Status != "pending" || recovered.Attempts != 3 || !strings.HasSuffix(recovered.RecoveryPath, "network-recovery-001.json") {
+		t.Fatalf("recovery=%+v", recovered)
+	}
+	for attempt := 1; attempt <= 3; attempt++ {
+		if _, err := os.Stat(filepath.Join(sourceDir, fmt.Sprintf("attempt-%03d", attempt), "validation.json")); err != nil {
+			t.Fatalf("old attempt %d missing after recovery: %v", attempt, err)
+		}
+	}
+	if _, err := os.Stat(recovered.RecoveryPath); err != nil {
+		t.Fatalf("recovery audit missing: %v", err)
+	}
+
+	var calls atomic.Int32
+	runner := TranslationRunner{Root: root, Catalog: catalog, Client: &TranslationClient{Endpoint: "https://example.invalid", HTTP: mockHTTP(func(r *http.Request) (*http.Response, error) {
+		calls.Add(1)
+		return nil, errors.New("temporary network outage")
+	})}, Now: func() time.Time { return time.Unix(1, 0) }}
+	result, err := runner.Run(context.Background(), "welcome/1", "zh-CN", "test-secret")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if result.Status != "blocked" || result.Attempts != 6 || calls.Load() != 3 {
+		t.Fatalf("result=%+v calls=%d, want blocked at attempt 6 after three recovered formal attempts", result, calls.Load())
+	}
+	for attempt := 4; attempt <= 6; attempt++ {
+		if _, err := os.Stat(filepath.Join(sourceDir, fmt.Sprintf("attempt-%03d", attempt), "validation.json")); err != nil {
+			t.Fatalf("recovered formal attempt %d missing: %v", attempt, err)
+		}
+	}
+}
+
+func TestRecoverNetworkBlockedTranslationFailsClosed(t *testing.T) {
+	source := []byte("* Hello\n\nEnglish text.\n")
+	hash := sum(source)
+	catalog := &Catalog{Pages: []Page{{ID: "welcome/1", Article: "welcome.article", Source: source, SourceSHA256: hash}}}
+	for name, mutate := range map[string]func(t *testing.T, sourceDir string){
+		"validator failure": func(t *testing.T, sourceDir string) {
+			writeNetworkFailureAudit(t, sourceDir, 1)
+			writeNetworkFailureAudit(t, sourceDir, 2)
+			writeNetworkFailureAudit(t, sourceDir, 3)
+			path := filepath.Join(sourceDir, "attempt-003", "validation.json")
+			validation := TranslationValidation{Attempt: 3, APISuccess: true, TokenValid: true, Failures: []string{"directive mismatch"}}
+			if err := writeTranslationJSON(path, validation); err != nil {
+				t.Fatal(err)
+			}
+		},
+		"valid API response": func(t *testing.T, sourceDir string) {
+			writeNetworkFailureAudit(t, sourceDir, 1)
+			writeNetworkFailureAudit(t, sourceDir, 2)
+			writeNetworkFailureAudit(t, sourceDir, 3)
+			response := TranslationCallResult{StatusCode: 200, RequestID: "request-id", FinishReason: "stop", Content: "* model response", Raw: json.RawMessage(`{"choices":[]}`)}
+			if err := writeTranslationJSON(filepath.Join(sourceDir, "attempt-003", "response.json"), response); err != nil {
+				t.Fatal(err)
+			}
+		},
+		"incomplete audit": func(t *testing.T, sourceDir string) {
+			writeNetworkFailureAudit(t, sourceDir, 1)
+			writeNetworkFailureAudit(t, sourceDir, 2)
+			if err := os.MkdirAll(filepath.Join(sourceDir, "attempt-003"), 0755); err != nil {
+				t.Fatal(err)
+			}
+		},
+	} {
+		t.Run(name, func(t *testing.T) {
+			root := writeStatusFixture(t, "page_id\tstatus\tattempts\tsource_sha256\tcandidate_path\tupdated_at\tnote\n"+
+				"welcome/1\tblocked\t3\t"+hash+"\t\t\tformal attempts exhausted\n")
+			sourceDir := filepath.Join(root, "data", "translation-runs", "zh-CN", "welcome", "1", "sources", hash)
+			mutate(t, sourceDir)
+			if _, err := RecoverNetworkBlockedTranslation(root, catalog, "welcome/1", "zh-CN", nil); err == nil {
+				t.Fatal("network recovery unexpectedly succeeded")
+			}
+		})
+	}
+
+	t.Run("non-blocked", func(t *testing.T) {
+		root := writeStatusFixture(t, "page_id\tstatus\tattempts\tsource_sha256\tcandidate_path\tupdated_at\tnote\n"+
+			"welcome/1\tpending\t0\t"+hash+"\t\t\t\n")
+		if _, err := RecoverNetworkBlockedTranslation(root, catalog, "welcome/1", "zh-CN", nil); err == nil {
+			t.Fatal("non-blocked page recovered")
+		}
+	})
+}
+
+func TestFormalTranslationResumesOnlyRemainingInitialWindowAttempts(t *testing.T) {
+	source := []byte("* Hello\n\nEnglish text.\n")
+	hash := sum(source)
+	root := writeStatusFixture(t, "page_id\tstatus\tattempts\tsource_sha256\tcandidate_path\tupdated_at\tnote\n"+
+		"welcome/1\tpending\t1\t"+hash+"\t\t\tinterrupted after attempt 1\n")
+	writeTestGlossary(t, root)
+	sourceDir := filepath.Join(root, "data", "translation-runs", "zh-CN", "welcome", "1", "sources", hash)
+	writeNetworkFailureAudit(t, sourceDir, 1)
+	catalog := &Catalog{Pages: []Page{{ID: "welcome/1", Article: "welcome.article", Source: source, SourceSHA256: hash}}}
+	var calls atomic.Int32
+	runner := newNetworkFailureRunner(root, catalog, &calls)
+	result, err := runner.Run(context.Background(), "welcome/1", "zh-CN", "test-secret")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if result.Status != "blocked" || result.Attempts != 3 || calls.Load() != 2 {
+		t.Fatalf("result=%+v calls=%d, want only attempts 2 and 3", result, calls.Load())
+	}
+	if _, err := os.Stat(filepath.Join(sourceDir, "attempt-004")); !os.IsNotExist(err) {
+		t.Fatalf("attempt-004 exists after initial window resume: %v", err)
+	}
+	if _, err := runner.Run(context.Background(), "welcome/1", "zh-CN", "test-secret"); err == nil || !strings.Contains(err.Error(), "is blocked") {
+		t.Fatalf("blocked initial window run error = %v", err)
+	}
+	if calls.Load() != 2 {
+		t.Fatalf("blocked run made additional API calls: %d", calls.Load())
+	}
+}
+
+func TestFormalTranslationResumesOnlyRemainingRecoveredWindowAttempts(t *testing.T) {
+	source := []byte("* Hello\n\nEnglish text.\n")
+	hash := sum(source)
+	root := writeStatusFixture(t, "page_id\tstatus\tattempts\tsource_sha256\tcandidate_path\tupdated_at\tnote\n"+
+		"welcome/1\tblocked\t3\t"+hash+"\t\t\tformal attempts exhausted\n")
+	writeTestGlossary(t, root)
+	sourceDir := filepath.Join(root, "data", "translation-runs", "zh-CN", "welcome", "1", "sources", hash)
+	for attempt := 1; attempt <= 3; attempt++ {
+		writeNetworkFailureAudit(t, sourceDir, attempt)
+	}
+	catalog := &Catalog{Pages: []Page{{ID: "welcome/1", Article: "welcome.article", Source: source, SourceSHA256: hash}}}
+	if _, err := RecoverNetworkBlockedTranslation(root, catalog, "welcome/1", "zh-CN", func() time.Time { return time.Unix(0, 0) }); err != nil {
+		t.Fatal(err)
+	}
+	writeNetworkFailureAudit(t, sourceDir, 4) // Simulate interruption after the first recovered-window attempt.
+	var calls atomic.Int32
+	runner := newNetworkFailureRunner(root, catalog, &calls)
+	result, err := runner.Run(context.Background(), "welcome/1", "zh-CN", "test-secret")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if result.Status != "blocked" || result.Attempts != 6 || calls.Load() != 2 {
+		t.Fatalf("result=%+v calls=%d, want only attempts 5 and 6", result, calls.Load())
+	}
+	if _, err := os.Stat(filepath.Join(sourceDir, "attempt-007")); !os.IsNotExist(err) {
+		t.Fatalf("attempt-007 exists after recovered window resume: %v", err)
+	}
+}
+
+func newNetworkFailureRunner(root string, catalog *Catalog, calls *atomic.Int32) TranslationRunner {
+	return TranslationRunner{Root: root, Catalog: catalog, Client: &TranslationClient{Endpoint: "https://example.invalid", HTTP: mockHTTP(func(r *http.Request) (*http.Response, error) {
+		calls.Add(1)
+		return nil, errors.New("temporary network outage")
+	})}, Now: func() time.Time { return time.Unix(1, 0) }}
+}
+
+func writeNetworkFailureAudit(t *testing.T, sourceDir string, attempt int) {
+	t.Helper()
+	dir := filepath.Join(sourceDir, fmt.Sprintf("attempt-%03d", attempt))
+	if err := os.MkdirAll(dir, 0755); err != nil {
+		t.Fatal(err)
+	}
+	if err := writeTranslationJSON(filepath.Join(dir, "request.json"), savedTranslationRequest{}); err != nil {
+		t.Fatal(err)
+	}
+	if err := writeTranslationJSON(filepath.Join(dir, "response.json"), TranslationCallResult{}); err != nil {
+		t.Fatal(err)
+	}
+	validation := TranslationValidation{Attempt: attempt, Failures: []string{"network: dial udp: socket: operation not permitted"}}
+	if err := writeTranslationJSON(filepath.Join(dir, "validation.json"), validation); err != nil {
+		t.Fatal(err)
 	}
 }
 

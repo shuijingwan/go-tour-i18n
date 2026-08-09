@@ -75,6 +75,16 @@ go run -mod=readonly ./cmd/tour-i18n candidate validate \
 
 `translate run -dev` 仅用于单页翻译的开发校准：每条命令只执行一次 attempt，并允许从 pending 或 blocked 状态继续。正式批量翻译不得使用 `-dev`。
 
+当且仅当某个 `blocked` 页面耗尽的最近三次正式 attempt 都有完整审计、均为未取得模型响应的 `network:` 失败时，可显式恢复一轮正式额度；恢复会保留原 attempt，并写入 recovery 审计：
+
+```bash
+go run -mod=readonly ./cmd/tour-i18n translate recover-network \
+  --locale zh-CN \
+  --id basics/4
+```
+
+该命令拒绝 HTTP/API、模型输出、token、parse、render 或 validator 失败；恢复后仍须单独运行正常的 `translate run`。
+
 ## 本地运行
 
 需要 Go 1.25 或更高版本。从仓库根目录运行：

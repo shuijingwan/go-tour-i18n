@@ -173,6 +173,21 @@ func run(args []string) error {
 			return err
 		}
 		return printJSON(result)
+	case "translate recover-network":
+		fs := flag.NewFlagSet("translate recover-network", flag.ContinueOnError)
+		locale := fs.String("locale", "", "target locale")
+		id := fs.String("id", "", "persistent page_id")
+		if err := fs.Parse(args[2:]); err != nil {
+			return err
+		}
+		if *locale == "" || *id == "" {
+			return fmt.Errorf("--locale and --id are required")
+		}
+		result, err := i18n.RecoverNetworkBlockedTranslation(root, catalog, *id, *locale, nil)
+		if err != nil {
+			return err
+		}
+		return printJSON(result)
 	case "translate show":
 		fs := flag.NewFlagSet("translate show", flag.ContinueOnError)
 		locale := fs.String("locale", "", "target locale")

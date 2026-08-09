@@ -192,22 +192,13 @@ func TestReorderedProtectedTokensRemainStructurallyValid(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	t.Run("methods/20 cross-category and inline reorder", func(t *testing.T) {
+	t.Run("methods/20 protected source round trip", func(t *testing.T) {
 		page, err := catalog.Page("methods/20")
 		if err != nil {
 			t.Fatal(err)
 		}
 		p := protectTranslation(page.Source, page.SourceSHA256, nil)
-		if len(p.Tokens) != 16 {
-			t.Fatalf("tokens=%d, want 16", len(p.Tokens))
-		}
-		model := "* 练习：错误\n\n" +
-			"从[[" + p.Tokens[1] + "][前一个练习]]中复制你的 " + p.Tokens[0] + " 函数，并修改它使其返回一个 " + p.Tokens[2] + " 值。\n\n" +
-			"当传入负数时，" + p.Tokens[3] + " 应当返回一个非 nil 的错误值，因为它不支持复数。\n\n创建一个新类型\n\n" +
-			p.Tokens[4] + "并为其实现\n\n" + p.Tokens[6] + "方法，使它成为一个 " + p.Tokens[5] + "，这样 " + p.Tokens[7] + " 就会返回 " + p.Tokens[8] + "。\n\n" +
-			"*注意：* 在 " + p.Tokens[10] + " 方法中调用 " + p.Tokens[9] + " 会导致程序陷入无限循环。可以先转换 " + p.Tokens[11] + " 来避免这个问题：" + p.Tokens[12] + "。为什么？\n\n" +
-			"修改 " + p.Tokens[13] + " 函数，使其在传入负数时返回一个 " + p.Tokens[14] + " 值。\n\n" + p.Tokens[15] + "\n"
-		candidate, failures := p.restore(model)
+		candidate, failures := p.restore(p.Text)
 		if len(failures) != 0 {
 			t.Fatal(failures)
 		}
@@ -216,30 +207,19 @@ func TestReorderedProtectedTokensRemainStructurallyValid(t *testing.T) {
 		}
 	})
 
-	t.Run("generics/1 comparable and T reorder", func(t *testing.T) {
+	t.Run("generics/1 inline pair reorder is rejected", func(t *testing.T) {
 		page, err := catalog.Page("generics/1")
 		if err != nil {
 			t.Fatal(err)
 		}
 		p := protectTranslation(page.Source, page.SourceSHA256, nil)
-		var comparable, typeT string
-		for i, value := range p.Values {
-			switch value {
-			case "`comparable`":
-				comparable = p.Tokens[i]
-			case "`T`":
-				if typeT == "" {
-					typeT = p.Tokens[i]
-				}
-			}
+		if len(p.InlinePairs) < 2 {
+			t.Fatal("need multiple inline pairs")
 		}
-		model := swapProtectedTokens(p.Text, typeT, comparable)
-		candidate, failures := p.restore(model)
-		if len(failures) != 0 {
-			t.Fatal(failures)
-		}
-		if err := ValidateCandidate(root, catalog, "generics/1", []byte(candidate)); err != nil {
-			t.Fatalf("reordered generics/1 candidate rejected: %v\n%s", err, candidate)
+		first, second := p.InlinePairs[0], p.InlinePairs[1]
+		model := strings.NewReplacer(first.Open, "__first_open__", first.Close, "__first_close__", second.Open, first.Open, second.Close, first.Close, "__first_open__", second.Open, "__first_close__", second.Close).Replace(p.Text)
+		if _, failures := p.restore(model); len(failures) == 0 {
+			t.Fatal("reordered inline pairs accepted")
 		}
 	})
 }
