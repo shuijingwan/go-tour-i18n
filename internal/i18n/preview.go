@@ -151,6 +151,8 @@ func PreviewCatalog(old, next *Catalog) (*PreviewReport, error) {
 		kind, reason := Ambiguous, "current route remains, but protected structure changed"
 		if compatible && oldSignatureCounts[signatureKey(old.Pages[oi].Source)] == 1 && newSignatureCounts[signatureKey(next.Pages[ni].Source)] == 1 {
 			kind, reason = ContentChanged, "current route remains and protected structure is uniquely compatible"
+		} else if isStandaloneConditionalProjection(old.Pages[oi].Source, next.Pages[ni].Source) {
+			kind, reason = ContentChanged, "current route remains and source differs only by standalone conditional projection"
 		}
 		report.Changes = append(report.Changes, makeChange(kind, &old.Pages[oi], &next.Pages[ni], reason))
 		oldUsed[oi], newUsed[ni] = true, true
@@ -195,6 +197,10 @@ func PreviewCatalog(old, next *Catalog) (*PreviewReport, error) {
 	sortChanges(report.Changes)
 	sortChanges(report.ConditionalChanges)
 	return report, nil
+}
+
+func isStandaloneConditionalProjection(old, next []byte) bool {
+	return bytes.Contains(old, []byte("#appengine:")) && bytes.Equal(projectStandaloneConditionalContent(old, "appengine"), next)
 }
 
 func ReconcileCatalog(committed, next *Catalog, report *PreviewReport) (*Catalog, error) {

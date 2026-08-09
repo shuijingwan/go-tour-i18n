@@ -76,6 +76,10 @@ func TestCommittedStatus(t *testing.T) {
 			if s.State != "ready" || s.Attempts != 1 || s.SourceSHA256 != "7c5d3fc7bb2540285d746242f8a1d16075639648eec8909c1df52239297d2917" || s.CandidatePath != "locales/zh-CN/candidates/concurrency-7.article" || s.UpdatedAt != "2026-08-09T04:14:19Z" || s.Note != "GLM-5.2 candidate passed existing validator" {
 				t.Fatalf("concurrency/7 status: %+v", s)
 			}
+		case "concurrency/11":
+			if s.State != "ready" || s.Attempts != 4 || s.SourceSHA256 != "45ef131ede663b1355c0a5933634d46c393f66be8a6450b184f86a62e928a64e" || s.CandidatePath != "locales/zh-CN/candidates/concurrency-11.article" || s.UpdatedAt != "2026-08-09T08:13:39Z" || s.Note != "GLM-5.2 candidate passed existing validator" {
+				t.Fatalf("concurrency/11 status: %+v", s)
+			}
 		default:
 			if s.State != "pending" || s.Attempts != 0 || s.CandidatePath != "" {
 				t.Fatalf("non-initial status: %+v", s)

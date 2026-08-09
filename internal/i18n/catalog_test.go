@@ -35,6 +35,9 @@ func TestCatalogBaseline(t *testing.T) {
 		if err := parseSinglePage(root, p.Article, p.Source); err != nil {
 			t.Fatalf("%s: %v", p.ID, err)
 		}
+		if bytes.Contains(p.Source, []byte("#appengine:")) {
+			t.Fatalf("%s: standalone source contains condition marker", p.ID)
+		}
 		if sum(p.Source) != p.SourceSHA256 {
 			t.Fatalf("%s: unstable hash", p.ID)
 		}
@@ -122,6 +125,92 @@ func TestSplitConditionalPages(t *testing.T) {
 	}
 	if pageTitle(conditional[0]) != "Go offline (optional)" || pageTitle(conditional[1]) != "The Go Playground" {
 		t.Fatalf("conditional titles=%q/%q", pageTitle(conditional[0]), pageTitle(conditional[1]))
+	}
+}
+
+func TestStandaloneConditionalProjection(t *testing.T) {
+	input := []byte("* Root\n\n#appengine: App Engine only.\nFallback.\n\n#appengine: [[/install][installing Go]]\nVisible.\n")
+	want := []byte("* Root\n\nFallback.\n\nVisible.\n")
+	if got := projectStandaloneConditionalContent(input, "appengine"); !bytes.Equal(got, want) {
+		t.Fatalf("standalone projection:\ngot:\n%s\nwant:\n%s", got, want)
+	}
+	plain := []byte("* Root\n\nOrdinary content.\n")
+	if got := projectStandaloneConditionalContent(plain, "appengine"); !bytes.Equal(got, plain) {
+		t.Fatalf("unconditional content changed:\ngot:\n%s\nwant:\n%s", got, plain)
+	}
+}
+
+func TestStandaloneConditionalProjectionIsRecognizedForCatalogMigration(t *testing.T) {
+	oldSource := []byte("* Root\n\n#appengine: [[/install][installing Go]]\nFallback.\n")
+	newSource := []byte("* Root\n\nFallback.\n")
+	old := &Catalog{Pages: []Page{{ID: "example/1", Article: "example.article", SectionNumber: 1, Route: "/example/1", SourceTitle: "Root", SourceSHA256: sum(oldSource), Source: oldSource}}}
+	next := &Catalog{Pages: []Page{{Article: "example.article", SectionNumber: 1, Route: "/example/1", SourceTitle: "Root", SourceSHA256: sum(newSource), Source: newSource}}}
+	report, err := PreviewCatalog(old, next)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(report.Changes) != 1 || report.Changes[0].Kind != ContentChanged || !report.SafeForCatalogWrite() {
+		t.Fatalf("projection report = %+v", report)
+	}
+	reconciled, err := ReconcileCatalog(old, next, report)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(reconciled.Pages) != 1 || reconciled.Pages[0].ID != "example/1" || reconciled.Pages[0].SourceSHA256 != sum(newSource) {
+		t.Fatalf("reconciled catalog = %+v", reconciled.Pages)
+	}
+}
+
+func TestStandaloneProjectionCoversNonWelcomeArticles(t *testing.T) {
+	root := repoRoot(t)
+	catalog, err := BuildCatalog(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	page, err := catalog.Page("concurrency/11")
+	if err != nil {
+		t.Fatal(err)
+	}
+	raw, err := os.ReadFile(filepath.Join(root, "_content", "tour", "concurrency.article"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	start := bytes.Index(raw, []byte("* Where to Go from here...\n"))
+	if start < 0 {
+		t.Fatal("concurrency/11 source section not found")
+	}
+	want := raw[start:]
+	for _, line := range [][]byte{
+		[]byte("#appengine: You can get started by\n"),
+		[]byte("#appengine: [[/doc/install/][installing Go]].\n"),
+		[]byte("#appengine: Once you have Go installed, the\n"),
+		[]byte("#appengine: continue.\n"),
+	} {
+		want = bytes.ReplaceAll(want, line, nil)
+	}
+	if !bytes.Equal(page.Source, want) {
+		t.Fatalf("concurrency/11 standalone projection:\ngot:\n%s\nwant:\n%s", page.Source, want)
+	}
+	for _, forbidden := range [][]byte{[]byte("#appengine:"), []byte("installing Go"), []byte("Once you have Go installed"), []byte("continue.")} {
+		if bytes.Contains(page.Source, forbidden) {
+			t.Fatalf("concurrency/11 source retained %q:\n%s", forbidden, page.Source)
+		}
+	}
+	if !bytes.Contains(page.Source, []byte("The\n[[/doc/][Go Documentation]] is a great place to\nstart.")) {
+		t.Fatalf("concurrency/11 fallback content missing:\n%s", page.Source)
+	}
+	for _, id := range []string{"concurrency/11", "flowcontrol/10"} {
+		p, err := catalog.Page(id)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if bytes.Contains(p.Source, []byte("#appengine:")) {
+			t.Fatalf("%s source retained condition marker", id)
+		}
+	}
+	candidate := bytes.ReplaceAll(page.Source, []byte("[slides]"), []byte("[页面]"))
+	if err := ValidateCandidate(root, catalog, "concurrency/11", candidate); err != nil {
+		t.Fatalf("projected concurrency/11 candidate rejected: %v", err)
 	}
 }
 

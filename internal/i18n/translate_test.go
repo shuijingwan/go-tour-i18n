@@ -166,6 +166,87 @@ func TestNonInlineTokenKindsAreNotBoundaryNormalized(t *testing.T) {
 	}
 }
 
+func TestTranslationKeepSkipsOnlyHighConfidenceOrdinaryGoVerb(t *testing.T) {
+	tests := []struct {
+		name, source string
+		wantGo       bool
+	}{
+		{"where to Go", "* Where to Go from here...\n", false},
+		{"where to Go with whitespace and case variation", "* WHERE\tto  Go next\n", false},
+		{"Go language subject", "Go has only one looping construct.\n", true},
+		{"Go language possessive", "Go's switch is like C's.\n", true},
+		{"Go language object", "Programs written in Go are portable.\n", true},
+		{"install Go", "Install Go before continuing.\n", true},
+		{"Go Documentation", "[[/doc/][Go Documentation]]\n", true},
+		{"A Tour of Go", "[[/tour/][A Tour of Go]]\n", true},
+		{"migrate to Go from another language", "Migrate to Go from another language.\n", true},
+		{"Go local remains conservative", "* Go local\n", true},
+		{"Go offline remains conservative", "* Go offline (optional)\n", true},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			p := protectTranslation([]byte(tt.source), "12345678", nil)
+			gotGo := false
+			for i, value := range p.Values {
+				if value != "Go" {
+					continue
+				}
+				if p.Kinds[i] != protectedGlossaryOrKeep {
+					t.Fatalf("Go token kind = %v, want glossary/keep", p.Kinds[i])
+				}
+				gotGo = true
+			}
+			if gotGo != tt.wantGo {
+				t.Fatalf("Go protected = %t, want %t; values=%q", gotGo, tt.wantGo, p.Values)
+			}
+		})
+	}
+
+	for _, keep := range []string{"gofmt", "PageUp", "PageDown", "Shift", "Enter", "Ctrl"} {
+		t.Run("other keep "+keep, func(t *testing.T) {
+			p := protectTranslation([]byte(keep), "12345678", nil)
+			if len(p.Values) != 1 || p.Values[0] != keep || p.Kinds[0] != protectedGlossaryOrKeep {
+				t.Fatalf("protection = %+v, want %q as glossary/keep", p, keep)
+			}
+		})
+	}
+}
+
+func TestConcurrency11ProjectedProtectionSkipsOnlyTitleGo(t *testing.T) {
+	root := repoRoot(t)
+	catalog, err := BuildCatalog(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	page, err := catalog.Page("concurrency/11")
+	if err != nil {
+		t.Fatal(err)
+	}
+	glossary, err := LoadGlossary(root, "zh-CN")
+	if err != nil {
+		t.Fatal(err)
+	}
+	p := protectTranslation(page.Source, page.SourceSHA256, glossary)
+	var links, keeps int
+	for _, kind := range p.Kinds {
+		switch kind {
+		case protectedLinkTarget:
+			links++
+		case protectedGlossaryOrKeep:
+			keeps++
+		}
+	}
+	if links != 15 || keeps != 11 || len(p.Tokens) != 26 {
+		t.Fatalf("protected counts links=%d keeps=%d total=%d, want 15/11/26", links, keeps, len(p.Tokens))
+	}
+	if strings.Contains(p.Text, "Where to ⟪GTI18N_") || !strings.Contains(p.Text, "* Where to Go from here...") {
+		t.Fatalf("title Go should remain translatable:\n%s", p.Text)
+	}
+	if n := strings.Count(strings.Join(p.Values, "\n"), "Go"); n != 11 {
+		t.Fatalf("protected Go values = %d, want 11; values=%q", n, p.Values)
+	}
+}
+
 func TestGenericsInlineBoundaryNormalizationPassesValidator(t *testing.T) {
 	root := repoRoot(t)
 	catalog, err := BuildCatalog(root)

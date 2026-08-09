@@ -57,7 +57,7 @@ type publishedSection struct {
 }
 
 func BuildCatalog(root string) (*Catalog, error) {
-	return buildCatalog(root, true)
+	return buildCatalog(root, true, true)
 }
 
 // BuildSourceCatalog parses a prospective upstream tree without assuming the
@@ -65,10 +65,16 @@ func BuildCatalog(root string) (*Catalog, error) {
 // persistent IDs where the project has explicitly frozen them; reconciliation
 // remains responsible for preserving IDs across later upstream changes.
 func BuildSourceCatalog(root string) (*Catalog, error) {
-	return buildCatalog(root, false)
+	return buildCatalog(root, false, true)
 }
 
-func buildCatalog(root string, fixedShape bool) (*Catalog, error) {
+// BuildLegacySourceCatalog builds the former unprojected standalone view solely
+// to verify a catalog migration from condition-marked source identities.
+func BuildLegacySourceCatalog(root string) (*Catalog, error) {
+	return buildCatalog(root, false, false)
+}
+
+func buildCatalog(root string, fixedShape, projectStandalone bool) (*Catalog, error) {
 	var catalog Catalog
 	for _, article := range ArticleOrder {
 		path := filepath.Join(root, "_content", "tour", article)
@@ -77,9 +83,25 @@ func buildCatalog(root string, fixedShape bool) (*Catalog, error) {
 			return nil, fmt.Errorf("read %s: %w", article, err)
 		}
 		data = normalizeLF(data)
-		pages, conditional, err := splitArticle(data, article)
+		standaloneData := data
+		if projectStandalone {
+			standaloneData = projectStandaloneConditionalContent(data, "appengine")
+		}
+		if article == "welcome.article" {
+			// welcome has full conditional Sections, whose surrounding blank lines
+			// are part of the existing splitArticle projection.
+			standaloneData = data
+		}
+		pages, _, err := splitArticle(standaloneData, article)
 		if err != nil {
 			return nil, err
+		}
+		var conditional [][]byte
+		if article == "welcome.article" {
+			conditional, err = splitConditional(data)
+			if err != nil {
+				return nil, err
+			}
 		}
 		published, err := projectPublishedSections(article, data, pages, conditional)
 		if err != nil {
@@ -186,25 +208,52 @@ func projectConditionalContent(data []byte, condition string) []byte {
 	return []byte(out.String())
 }
 
+// projectStandaloneConditionalContent removes condition-specific source lines
+// from the standalone Tour. The present parser treats these lines as comments,
+// so the adjacent non-conditional fallback content remains unchanged.
+func projectStandaloneConditionalContent(data []byte, condition string) []byte {
+	prefix := "#" + condition + ":"
+	var out strings.Builder
+	for _, line := range strings.SplitAfter(string(normalizeLF(data)), "\n") {
+		plain := strings.TrimSuffix(line, "\n")
+		if strings.HasPrefix(plain, prefix) {
+			continue
+		}
+		out.WriteString(line)
+	}
+	return []byte(out.String())
+}
+
 func projectPublishedArticle(data []byte, article string) ([]byte, error) {
 	data = normalizeLF(data)
-	standalone, conditional, err := splitArticle(data, article)
+	standaloneData := projectStandaloneConditionalContent(data, "appengine")
+	if article == "welcome.article" {
+		standaloneData = data
+	}
+	standalone, _, err := splitArticle(standaloneData, article)
 	if err != nil {
 		return nil, err
+	}
+	var conditional [][]byte
+	if article == "welcome.article" {
+		conditional, err = splitConditional(data)
+		if err != nil {
+			return nil, err
+		}
 	}
 	published, err := projectPublishedSections(article, data, standalone, conditional)
 	if err != nil {
 		return nil, err
 	}
 	if article != "welcome.article" {
-		return data, nil
+		return standaloneData, nil
 	}
-	start := bytes.Index(data, []byte("\n* "))
+	start := bytes.Index(standaloneData, []byte("\n* "))
 	if start < 0 {
 		return nil, fmt.Errorf("%s: first present section not found", article)
 	}
 	start++
-	out := append([]byte(nil), data[:start]...)
+	out := append([]byte(nil), standaloneData[:start]...)
 	for _, section := range published {
 		out = append(out, section.Source...)
 	}

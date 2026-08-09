@@ -11,6 +11,7 @@ import (
 
 var translationTokenRE = regexp.MustCompile(`⟪GTI18N_[0-9a-f]{8}_[0-9]{6}⟫`)
 var translationKeepRE = regexp.MustCompile(`\b(?:Go|gofmt|PageUp|PageDown|Shift|Enter|Ctrl)\b`)
+var whereToGoPrefixRE = regexp.MustCompile(`(?i)\bwhere[\t \r\n]+to[\t \r\n]+$`)
 var directiveLineRE = regexp.MustCompile(`(?m)^\.(?:play|image)\s+[^\n]+$`)
 
 type protectedTranslation struct {
@@ -58,6 +59,9 @@ func protectTranslation(source []byte, hash string, glossary *Glossary) protecte
 		spans = append(spans, protectedSpan{start: code.Start, end: code.End, kind: protectedInlineCode})
 	}
 	for _, m := range translationKeepRE.FindAllStringIndex(text, -1) {
+		if !shouldProtectTranslationKeep(text, m[0], m[1]) {
+			continue
+		}
 		spans = append(spans, protectedSpan{start: m[0], end: m[1], kind: protectedGlossaryOrKeep})
 	}
 	sort.Slice(spans, func(i, j int) bool {
@@ -98,6 +102,19 @@ func protectTranslation(source []byte, hash string, glossary *Glossary) protecte
 	out.WriteString(text[pos:])
 	result.Text = out.String()
 	return result
+}
+
+// shouldProtectTranslationKeep keeps all literal keep matches by default. A
+// capitalized Go is not necessarily the Go language: English title case turns
+// the ordinary verb in "Where to Go" into "Go". That interrogative infinitive
+// construction is sufficiently specific to leave translatable; weaker clues
+// such as "to Go" or "Go from" are deliberately not enough because they can
+// name the language (for example, "migrate to Go from another language").
+func shouldProtectTranslationKeep(text string, start, end int) bool {
+	if text[start:end] != "Go" {
+		return true
+	}
+	return !whereToGoPrefixRE.MatchString(text[:start])
 }
 
 func (p protectedTranslation) restore(output string) (string, []string) {

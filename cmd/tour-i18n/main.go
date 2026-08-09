@@ -41,8 +41,12 @@ func run(args []string) error {
 	if err != nil {
 		return err
 	}
-	if err := i18n.HydrateCatalogSources(catalog, current); err != nil {
-		return err
+	// catalog write intentionally reconciles compatible source changes below;
+	// every other command requires the committed source lock to match first.
+	if args[0] != "catalog" || args[1] != "write" {
+		if err := i18n.HydrateCatalogSources(catalog, current); err != nil {
+			return err
+		}
 	}
 	if args[0] == "preview" {
 		return previewCandidate(root, catalog, args[1:])
@@ -62,6 +66,15 @@ func run(args []string) error {
 		fmt.Printf("catalog OK: %d published pages, %d conditional source records\n", len(catalog.Pages), len(catalog.Conditional))
 		return nil
 	case "catalog write":
+		legacy, err := i18n.BuildLegacySourceCatalog(root)
+		if err != nil {
+			return err
+		}
+		if err := i18n.HydrateCatalogSources(catalog, current); err != nil {
+			if legacyErr := i18n.HydrateCatalogSources(catalog, legacy); legacyErr != nil {
+				return err
+			}
+		}
 		report, err := i18n.PreviewCatalog(catalog, current)
 		if err != nil {
 			return err
