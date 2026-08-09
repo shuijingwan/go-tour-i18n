@@ -51,7 +51,9 @@
 
 ## 后续策略
 
-- 不再长期按课程顺序逐页人工推进。下一代表页尚未确定；应从尚未覆盖的结构类型中选择，而不是恢复按课程顺序逐页推进。
-- 代表页覆盖较长说明、练习、特殊 present 结构、方法与接口、泛型、并发、图片或其他少见结构。
-- 代表页稳定后自动试跑 10 个普通 pending 页面；试跑稳定后再批量翻译剩余页面。
+- 不再长期按课程顺序逐页人工推进。代表性校准页面总序列已固定为：`generics/1`、`flowcontrol/8`、`methods/16`、`methods/20`、`concurrency/7`、`concurrency/11`、`methods/24`；前四页已 ready。
+- 第 5 页为 `concurrency/7`：唯一包含 `.image` 的正式课程页面，覆盖 `.image` directive、图片与正文混排、非尾部 directive 的 Section 归属，以及 `javascript:click('.next-page')` 链接。
+- 第 6 页为 `concurrency/11`：长篇多段说明与高密度链接组合，覆盖大量 link target、跨段链接、`slides` 强制 glossary label，以及无代码/directive 的长文本翻译。
+- 第 7 页为 `methods/24`：API 说明型页面，覆盖较长静态 interface 代码块、多个 API 链接、强调段与尾部 `.play` 的组合。
+- 完成上述三页后代表页总数达到 7 页；当前官方源没有 `.iframe` 或 `.code` 页面可供真实代表页验证，代表页校准阶段结束，随后自动试跑 10 个普通 pending 页面；试跑稳定后再批量翻译剩余页面。
 - 全量翻译不等于直接发布：失败页面进入重试或 blocked，通过页面仍需统一验证。
