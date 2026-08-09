@@ -190,10 +190,10 @@ func compareUnorderedProtected(kind string, expected, actual []string) error {
 }
 
 type sectionStructure struct {
-	path              string
-	preformatted      int
-	directives        int
-	terminalDirective bool
+	path            string
+	preformatted    int
+	directives      int
+	directiveLayout []string
 }
 
 func compareSectionStructure(root, article string, source, candidate []byte) error {
@@ -219,8 +219,8 @@ func compareSectionStructure(root, article string, source, candidate []byte) err
 		if want.directives != got.directives {
 			return fmt.Errorf("directive section mismatch at %s: expected %d, actual %d", want.path, want.directives, got.directives)
 		}
-		if want.terminalDirective && !got.terminalDirective {
-			return fmt.Errorf("terminal directive moved within section %s", want.path)
+		if !sameStrings(want.directiveLayout, got.directiveLayout) {
+			return fmt.Errorf("directive placement mismatch at %s: expected %s, actual %s", want.path, strings.Join(want.directiveLayout, ", "), strings.Join(got.directiveLayout, ", "))
 		}
 	}
 	return nil
@@ -240,18 +240,26 @@ func sectionStructures(root, article string, source []byte) ([]sectionStructure,
 
 func collectSectionStructures(section present.Section, path string, result *[]sectionStructure) {
 	structure := sectionStructure{path: path}
-	for i, elem := range section.Elem {
+	for _, elem := range section.Elem {
 		switch value := elem.(type) {
 		case present.Text:
 			if value.Pre {
 				structure.preformatted++
+				structure.directiveLayout = append(structure.directiveLayout, "preformatted")
+			} else {
+				structure.directiveLayout = appendCollapsedProse(structure.directiveLayout)
 			}
+		case present.List:
+			structure.directiveLayout = append(structure.directiveLayout, "list")
+		case present.Section:
+			structure.directiveLayout = append(structure.directiveLayout, "section")
 		case present.Code, present.Image:
 			structure.directives++
-			if i == len(section.Elem)-1 {
-				structure.terminalDirective = true
-			}
+			structure.directiveLayout = append(structure.directiveLayout, "directive")
 		}
+	}
+	if structure.directives == 0 {
+		structure.directiveLayout = nil
 	}
 	*result = append(*result, structure)
 	child := 0
@@ -261,6 +269,29 @@ func collectSectionStructures(section present.Section, path string, result *[]se
 			collectSectionStructures(nested, fmt.Sprintf("%s.%d", path, child), result)
 		}
 	}
+}
+
+// appendCollapsedProse records an ordinary-text region without preserving how
+// many present.Text elements it contains. Translators may legitimately split or
+// merge paragraphs, but a directive must remain between the same surrounding
+// top-level structural elements.
+func appendCollapsedProse(layout []string) []string {
+	if len(layout) == 0 || layout[len(layout)-1] != "prose" {
+		return append(layout, "prose")
+	}
+	return layout
+}
+
+func sameStrings(a, b []string) bool {
+	if len(a) != len(b) {
+		return false
+	}
+	for i := range a {
+		if a[i] != b[i] {
+			return false
+		}
+	}
+	return true
 }
 
 func protectedCountError(kind string, expected, actual int) error {

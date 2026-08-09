@@ -238,9 +238,72 @@ func TestTerminalDirectiveCannotMoveEarlier(t *testing.T) {
 	root := repoRoot(t)
 	source := "* Root\n\nText.\n\n.play basics/packages.go\n"
 	catalog := &Catalog{Pages: []Page{{ID: "synthetic/directive", Article: "basics.article", Source: []byte(source), SourceSHA256: sum([]byte(source))}}}
+	if err := ValidateCandidate(root, catalog, "synthetic/directive", []byte(source)); err != nil {
+		t.Fatalf("terminal directive in its original position rejected: %v", err)
+	}
 	candidate := "* Root\n\n.play basics/packages.go\n\nText.\n"
 	if err := ValidateCandidate(root, catalog, "synthetic/directive", []byte(candidate)); err == nil {
 		t.Fatalf("moved terminal directive accepted:\n%s", candidate)
+	}
+}
+
+func TestNonTerminalDirectivePlacement(t *testing.T) {
+	root := repoRoot(t)
+	source := "* Root\n\nBefore image.\n\n.image /tour/static/img/tree.png\n\nAfter image.\n\n  static code\n\nAfter code.\n"
+	catalog := &Catalog{Pages: []Page{{ID: "synthetic/nonterminal-directive", Article: "basics.article", Source: []byte(source), SourceSHA256: sum([]byte(source))}}}
+	tests := []struct {
+		name      string
+		candidate string
+		wantValid bool
+	}{
+		{
+			name:      "image remains between prose regions",
+			candidate: "* Root\n\n图片前的译文。\n\n.image /tour/static/img/tree.png\n\n图片后的译文。\n\n另一段译文。\n\n  static code\n\n代码后的译文。\n",
+			wantValid: true,
+		},
+		{
+			name:      "image moved to section start",
+			candidate: "* Root\n\n.image /tour/static/img/tree.png\n\nBefore image.\n\nAfter image.\n\n  static code\n\nAfter code.\n",
+		},
+		{
+			name:      "image moved to section end",
+			candidate: "* Root\n\nBefore image.\n\nAfter image.\n\n  static code\n\nAfter code.\n\n.image /tour/static/img/tree.png\n",
+		},
+		{
+			name:      "image directive changed",
+			candidate: strings.Replace(source, "tree.png", "gopher.png", 1),
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			err := ValidateCandidate(root, catalog, "synthetic/nonterminal-directive", []byte(tt.candidate))
+			if tt.wantValid && err != nil {
+				t.Fatalf("valid candidate rejected: %v", err)
+			}
+			if !tt.wantValid && err == nil {
+				t.Fatalf("invalid candidate accepted:\n%s", tt.candidate)
+			}
+		})
+	}
+}
+
+func TestNonTerminalPlayDirectivePlacementIsGeneric(t *testing.T) {
+	root := repoRoot(t)
+	source := "* Root\n\nBefore program.\n\n.play basics/packages.go\n\nAfter program.\n\n  static code\n"
+	catalog := &Catalog{Pages: []Page{{ID: "synthetic/nonterminal-play", Article: "basics.article", Source: []byte(source), SourceSHA256: sum([]byte(source))}}}
+	candidate := "* Root\n\nBefore program.\n\nAfter program.\n\n  static code\n\n.play basics/packages.go\n"
+	if err := ValidateCandidate(root, catalog, "synthetic/nonterminal-play", []byte(candidate)); err == nil {
+		t.Fatalf("moved nonterminal .play accepted:\n%s", candidate)
+	}
+}
+
+func TestMultipleDirectivesCannotMoveAsAnOrderedGroup(t *testing.T) {
+	root := repoRoot(t)
+	source := "* Root\n\nBefore first directive.\n\n.play basics/packages.go\n\nBetween directives.\n\n  static code\n\n.image /tour/static/img/tree.png\n\nAfter second directive.\n"
+	catalog := &Catalog{Pages: []Page{{ID: "synthetic/multiple-directives", Article: "basics.article", Source: []byte(source), SourceSHA256: sum([]byte(source))}}}
+	candidate := "* Root\n\n.play basics/packages.go\n\n.image /tour/static/img/tree.png\n\nBefore first directive.\n\nBetween directives.\n\n  static code\n\nAfter second directive.\n"
+	if err := ValidateCandidate(root, catalog, "synthetic/multiple-directives", []byte(candidate)); err == nil {
+		t.Fatalf("ordered directives moved as a group accepted:\n%s", candidate)
 	}
 }
 

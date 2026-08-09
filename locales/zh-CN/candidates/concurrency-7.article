@@ -1,0 +1,18 @@
+* 练习：等价二叉树
+
+存储相同值序列的二叉树可以有多种不同的结构。例如，下面两棵二叉树存储的值序列都是 1, 1, 2, 3, 5, 8, 13。
+
+.image /tour/static/img/tree.png
+
+在大多数语言中，编写一个函数来检查两棵二叉树是否存储相同的值序列都相当复杂。我们将利用 Go 的并发特性和通道来编写一个简洁的解决方案。
+
+本示例使用了 `tree` 包，其中定义了以下类型：
+
+	type Tree struct {
+		Left  *Tree
+		Value int
+		Right *Tree
+	}
+
+
+请在 [[javascript:click('.next-page')][下一页]] 继续阅读说明。

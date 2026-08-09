@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "202608091214172406c239af024c26",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 1519,
+    "completion_tokens": 215,
+    "total_tokens": 1734
+  },
+  "content": "* 练习：等价二叉树\n\n存储相同序列值的二叉树可以有多种不同的结构。例如，下面两棵二叉树存储的序列都是 1, 1, 2, 3, 5, 8, 13。\n\n⟪GTI18N_7c5d3fc7_000001⟫\n\n在大多数语言中，检查两棵二叉树是否存储相同序列的函数都相当复杂。我们将利用 ⟪GTI18N_7c5d3fc7_000002⟫ 的并发特性和通道来编写一个简洁的解决方案。\n\n本示例使用了 ⟪GTI18N_7c5d3fc7_000003⟫ 包，其中定义了以下类型：\n\n⟪GTI18N_7c5d3fc7_000004⟫请到 [[⟪GTI18N_7c5d3fc7_000005⟫][下一页]] 继续查看说明。",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 练习：等价二叉树\n\n存储相同序列值的二叉树可以有多种不同的结构。例如，下面两棵二叉树存储的序列都是 1, 1, 2, 3, 5, 8, 13。\n\n⟪GTI18N_7c5d3fc7_000001⟫\n\n在大多数语言中，检查两棵二叉树是否存储相同序列的函数都相当复杂。我们将利用 ⟪GTI18N_7c5d3fc7_000002⟫ 的并发特性和通道来编写一个简洁的解决方案。\n\n本示例使用了 ⟪GTI18N_7c5d3fc7_000003⟫ 包，其中定义了以下类型：\n\n⟪GTI18N_7c5d3fc7_000004⟫请到 [[⟪GTI18N_7c5d3fc7_000005⟫][下一页]] 继续查看说明。",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786248859,
+    "id": "202608091214172406c239af024c26",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "202608091214172406c239af024c26",
+    "usage": {
+      "completion_tokens": 215,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 1519,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "total_tokens": 1734
+    }
+  }
+}
