@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "20260810183725ce6289d0e41641e1",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 3002,
+    "completion_tokens": 559,
+    "total_tokens": 3561
+  },
+  "content": "* 练习：rot13Reader\n\n一种常见的模式是使用一个 [[⟪GTI18N_11d87614_000001⟫][io.Reader]] 包装另一个 ⟪GTI18N_11d87614_000002⟫io.Reader⟪GTI18N_11d87614_000003⟫，并以某种方式修改数据流。\n\n例如，[[⟪GTI18N_11d87614_000004⟫][gzip.NewReader]] 函数接收一个 ⟪GTI18N_11d87614_000005⟫io.Reader⟪GTI18N_11d87614_000006⟫（压缩数据流），并返回一个同样实现了 ⟪GTI18N_11d87614_000009⟫io.Reader⟪GTI18N_11d87614_000010⟫ 的 ⟪GTI18N_11d87614_000007⟫*gzip.Reader⟪GTI18N_11d87614_000008⟫（解压后的数据流）。\n\n请实现一个 ⟪GTI18N_11d87614_000011⟫rot13Reader⟪GTI18N_11d87614_000012⟫，使其实现 ⟪GTI18N_11d87614_000013⟫io.Reader⟪GTI18N_11d87614_000014⟫ 接口，从 ⟪GTI18N_11d87614_000015⟫io.Reader⟪GTI18N_11d87614_000016⟫ 读取数据，并对所有字母字符应用 [[⟪GTI18N_11d87614_000017⟫][rot13]] 替换密码来修改数据流。\n\n已为你提供了 ⟪GTI18N_11d87614_000018⟫rot13Reader⟪GTI18N_11d87614_000019⟫ 类型，请通过实现其 ⟪GTI18N_11d87614_000022⟫Read⟪GTI18N_11d87614_000023⟫ 方法，使其成为一个 ⟪GTI18N_11d87614_000020⟫io.Reader⟪GTI18N_11d87614_000021⟫。\n\n⟪GTI18N_11d87614_000024⟫",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 练习：rot13Reader\n\n一种常见的模式是使用一个 [[⟪GTI18N_11d87614_000001⟫][io.Reader]] 包装另一个 ⟪GTI18N_11d87614_000002⟫io.Reader⟪GTI18N_11d87614_000003⟫，并以某种方式修改数据流。\n\n例如，[[⟪GTI18N_11d87614_000004⟫][gzip.NewReader]] 函数接收一个 ⟪GTI18N_11d87614_000005⟫io.Reader⟪GTI18N_11d87614_000006⟫（压缩数据流），并返回一个同样实现了 ⟪GTI18N_11d87614_000009⟫io.Reader⟪GTI18N_11d87614_000010⟫ 的 ⟪GTI18N_11d87614_000007⟫*gzip.Reader⟪GTI18N_11d87614_000008⟫（解压后的数据流）。\n\n请实现一个 ⟪GTI18N_11d87614_000011⟫rot13Reader⟪GTI18N_11d87614_000012⟫，使其实现 ⟪GTI18N_11d87614_000013⟫io.Reader⟪GTI18N_11d87614_000014⟫ 接口，从 ⟪GTI18N_11d87614_000015⟫io.Reader⟪GTI18N_11d87614_000016⟫ 读取数据，并对所有字母字符应用 [[⟪GTI18N_11d87614_000017⟫][rot13]] 替换密码来修改数据流。\n\n已为你提供了 ⟪GTI18N_11d87614_000018⟫rot13Reader⟪GTI18N_11d87614_000019⟫ 类型，请通过实现其 ⟪GTI18N_11d87614_000022⟫Read⟪GTI18N_11d87614_000023⟫ 方法，使其成为一个 ⟪GTI18N_11d87614_000020⟫io.Reader⟪GTI18N_11d87614_000021⟫。\n\n⟪GTI18N_11d87614_000024⟫",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786358250,
+    "id": "20260810183725ce6289d0e41641e1",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "20260810183725ce6289d0e41641e1",
+    "usage": {
+      "completion_tokens": 559,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 3002,
+      "prompt_tokens_details": {
+        "cached_tokens": 512
+      },
+      "total_tokens": 3561
+    }
+  }
+}

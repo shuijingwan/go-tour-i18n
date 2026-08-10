@@ -1,0 +1,15 @@
+* Reader
+
+`io` 包定义了 `io.Reader` 接口，它表示数据流的读取端。
+
+Go 标准库中包含了该接口的[[https://cs.opensource.google/search?q=Read%5C(%5Cw%2B%5Cs%5C%5B%5C%5Dbyte%5C)&ss=go%2Fgo][许多实现]]，例如文件、网络连接、压缩器、加密器等。
+
+`io.Reader` 接口有一个 `Read` 方法：
+
+	func (T) Read(b []byte) (n int, err error)
+
+`Read` 用数据填充给定的字节切片，并返回填充的字节数和一个错误值。当流结束时，它会返回 `io.EOF` 错误。
+
+示例代码创建了一个 [[/pkg/strings/#Reader][`strings.Reader`]]，并每次读取 8 个字节来消费其输出。
+
+.play methods/reader.go

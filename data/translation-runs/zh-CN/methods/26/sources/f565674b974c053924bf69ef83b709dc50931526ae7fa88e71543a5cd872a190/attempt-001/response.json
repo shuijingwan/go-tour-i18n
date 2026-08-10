@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "20260810183751c391af64275e465b",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 1447,
+    "completion_tokens": 71,
+    "total_tokens": 1518
+  },
+  "content": "* 恭喜！\n\n你已完成本课！\n\n你可以返回 [[⟪GTI18N_f565674b_000001⟫][模块]] 列表，寻找接下来要学习的内容，也可以继续学习[[⟪GTI18N_f565674b_000002⟫][下一课]]。",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 恭喜！\n\n你已完成本课！\n\n你可以返回 [[⟪GTI18N_f565674b_000001⟫][模块]] 列表，寻找接下来要学习的内容，也可以继续学习[[⟪GTI18N_f565674b_000002⟫][下一课]]。",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786358272,
+    "id": "20260810183751c391af64275e465b",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "20260810183751c391af64275e465b",
+    "usage": {
+      "completion_tokens": 71,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 1447,
+      "prompt_tokens_details": {
+        "cached_tokens": 512
+      },
+      "total_tokens": 1518
+    }
+  }
+}

@@ -1,0 +1,11 @@
+* 练习：rot13Reader
+
+一种常见的模式是使用一个 [[/pkg/io/#Reader][io.Reader]] 包装另一个 `io.Reader`，并以某种方式修改数据流。
+
+例如，[[/pkg/compress/gzip/#NewReader][gzip.NewReader]] 函数接收一个 `io.Reader`（压缩数据流），并返回一个同样实现了 `io.Reader` 的 `*gzip.Reader`（解压后的数据流）。
+
+请实现一个 `rot13Reader`，使其实现 `io.Reader` 接口，从 `io.Reader` 读取数据，并对所有字母字符应用 [[https://en.wikipedia.org/wiki/ROT13][rot13]] 替换密码来修改数据流。
+
+已为你提供了 `rot13Reader` 类型，请通过实现其 `Read` 方法，使其成为一个 `io.Reader`。
+
+.play methods/exercise-rot-reader.go

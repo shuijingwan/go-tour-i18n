@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "2026081018375930928f4545764c5b",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 1542,
+    "completion_tokens": 102,
+    "total_tokens": 1644
+  },
+  "content": "* 泛型类型\n\n除了泛型函数外，⟪GTI18N_08486351_000001⟫ 还支持泛型类型。类型可以通过类型参数进行参数化，这在实现泛型数据结构时非常有用。\n\n这个示例展示了一个简单的类型声明，用于表示可保存任意类型值的单链表。\n\n作为练习，请为这个列表实现添加一些功能。\n\n⟪GTI18N_08486351_000002⟫",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 泛型类型\n\n除了泛型函数外，⟪GTI18N_08486351_000001⟫ 还支持泛型类型。类型可以通过类型参数进行参数化，这在实现泛型数据结构时非常有用。\n\n这个示例展示了一个简单的类型声明，用于表示可保存任意类型值的单链表。\n\n作为练习，请为这个列表实现添加一些功能。\n\n⟪GTI18N_08486351_000002⟫",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786358280,
+    "id": "2026081018375930928f4545764c5b",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "2026081018375930928f4545764c5b",
+    "usage": {
+      "completion_tokens": 102,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 1542,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "total_tokens": 1644
+    }
+  }
+}

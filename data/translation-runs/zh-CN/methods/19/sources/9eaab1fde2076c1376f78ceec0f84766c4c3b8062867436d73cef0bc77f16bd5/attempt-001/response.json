@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "202608101836488fe6a8e85489446f",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 3044,
+    "completion_tokens": 521,
+    "total_tokens": 3565
+  },
+  "content": "* 错误\n\n⟪GTI18N_9eaab1fd_000001⟫ 程序使用 ⟪GTI18N_9eaab1fd_000002⟫error⟪GTI18N_9eaab1fd_000003⟫ 值来表示错误状态。\n\n⟪GTI18N_9eaab1fd_000004⟫error⟪GTI18N_9eaab1fd_000005⟫ 类型是一个内置接口类型，类似于 ⟪GTI18N_9eaab1fd_000006⟫fmt.Stringer⟪GTI18N_9eaab1fd_000007⟫：\n\n⟪GTI18N_9eaab1fd_000008⟫\n\n（与 ⟪GTI18N_9eaab1fd_000009⟫fmt.Stringer⟪GTI18N_9eaab1fd_000010⟫ 类似，⟪GTI18N_9eaab1fd_000011⟫fmt⟪GTI18N_9eaab1fd_000012⟫ 包在打印值时会检查 ⟪GTI18N_9eaab1fd_000013⟫error⟪GTI18N_9eaab1fd_000014⟫ 接口。）\n\n函数通常会返回一个 ⟪GTI18N_9eaab1fd_000015⟫error⟪GTI18N_9eaab1fd_000016⟫ 值，调用方的代码应通过判断该错误是否等于 ⟪GTI18N_9eaab1fd_000017⟫nil⟪GTI18N_9eaab1fd_000018⟫ 来处理错误。\n\n⟪GTI18N_9eaab1fd_000019⟫\n\n值为 ⟪GTI18N_9eaab1fd_000020⟫error⟪GTI18N_9eaab1fd_000021⟫ 的 nil 表示成功；非 nil 的 ⟪GTI18N_9eaab1fd_000022⟫error⟪GTI18N_9eaab1fd_000023⟫ 表示失败。\n\n⟪GTI18N_9eaab1fd_000024⟫",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 错误\n\n⟪GTI18N_9eaab1fd_000001⟫ 程序使用 ⟪GTI18N_9eaab1fd_000002⟫error⟪GTI18N_9eaab1fd_000003⟫ 值来表示错误状态。\n\n⟪GTI18N_9eaab1fd_000004⟫error⟪GTI18N_9eaab1fd_000005⟫ 类型是一个内置接口类型，类似于 ⟪GTI18N_9eaab1fd_000006⟫fmt.Stringer⟪GTI18N_9eaab1fd_000007⟫：\n\n⟪GTI18N_9eaab1fd_000008⟫\n\n（与 ⟪GTI18N_9eaab1fd_000009⟫fmt.Stringer⟪GTI18N_9eaab1fd_000010⟫ 类似，⟪GTI18N_9eaab1fd_000011⟫fmt⟪GTI18N_9eaab1fd_000012⟫ 包在打印值时会检查 ⟪GTI18N_9eaab1fd_000013⟫error⟪GTI18N_9eaab1fd_000014⟫ 接口。）\n\n函数通常会返回一个 ⟪GTI18N_9eaab1fd_000015⟫error⟪GTI18N_9eaab1fd_000016⟫ 值，调用方的代码应通过判断该错误是否等于 ⟪GTI18N_9eaab1fd_000017⟫nil⟪GTI18N_9eaab1fd_000018⟫ 来处理错误。\n\n⟪GTI18N_9eaab1fd_000019⟫\n\n值为 ⟪GTI18N_9eaab1fd_000020⟫error⟪GTI18N_9eaab1fd_000021⟫ 的 nil 表示成功；非 nil 的 ⟪GTI18N_9eaab1fd_000022⟫error⟪GTI18N_9eaab1fd_000023⟫ 表示失败。\n\n⟪GTI18N_9eaab1fd_000024⟫",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786358214,
+    "id": "202608101836488fe6a8e85489446f",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "202608101836488fe6a8e85489446f",
+    "usage": {
+      "completion_tokens": 521,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 3044,
+      "prompt_tokens_details": {
+        "cached_tokens": 512
+      },
+      "total_tokens": 3565
+    }
+  }
+}

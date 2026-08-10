@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "20260810183638f4d02ed0e63843f3",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 2062,
+    "completion_tokens": 200,
+    "total_tokens": 2262
+  },
+  "content": "* 练习：Stringer\n\n让 ⟪GTI18N_ad118644_000001⟫IPAddr⟪GTI18N_ad118644_000002⟫ 类型实现 ⟪GTI18N_ad118644_000003⟫fmt.Stringer⟪GTI18N_ad118644_000004⟫，以便将地址打印为点分四段格式。\n\n例如，⟪GTI18N_ad118644_000005⟫IPAddr{1,`2,`3,`4}⟪GTI18N_ad118644_000006⟫ 应当打印为 ⟪GTI18N_ad118644_000007⟫\"1.2.3.4\"⟪GTI18N_ad118644_000008⟫。\n\n⟪GTI18N_ad118644_000009⟫",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 练习：Stringer\n\n让 ⟪GTI18N_ad118644_000001⟫IPAddr⟪GTI18N_ad118644_000002⟫ 类型实现 ⟪GTI18N_ad118644_000003⟫fmt.Stringer⟪GTI18N_ad118644_000004⟫，以便将地址打印为点分四段格式。\n\n例如，⟪GTI18N_ad118644_000005⟫IPAddr{1,`2,`3,`4}⟪GTI18N_ad118644_000006⟫ 应当打印为 ⟪GTI18N_ad118644_000007⟫\"1.2.3.4\"⟪GTI18N_ad118644_000008⟫。\n\n⟪GTI18N_ad118644_000009⟫",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786358200,
+    "id": "20260810183638f4d02ed0e63843f3",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "20260810183638f4d02ed0e63843f3",
+    "usage": {
+      "completion_tokens": 200,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 2062,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "total_tokens": 2262
+    }
+  }
+}

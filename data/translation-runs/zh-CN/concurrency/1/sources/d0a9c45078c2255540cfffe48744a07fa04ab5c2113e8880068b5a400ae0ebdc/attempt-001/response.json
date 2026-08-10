@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "202608101838167635766ceb0b4734",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 2705,
+    "completion_tokens": 459,
+    "total_tokens": 3164
+  },
+  "content": "* Goroutine\n\n⟪GTI18N_d0a9c450_000001⟫goroutine⟪GTI18N_d0a9c450_000002⟫是由 ⟪GTI18N_d0a9c450_000003⟫ 运行时管理的轻量级线程。\n\n⟪GTI18N_d0a9c450_000004⟫\n\n会启动一个新的 goroutine 来执行\n\n⟪GTI18N_d0a9c450_000005⟫\n\n⟪GTI18N_d0a9c450_000006⟫f⟪GTI18N_d0a9c450_000007⟫、⟪GTI18N_d0a9c450_000008⟫x⟪GTI18N_d0a9c450_000009⟫、⟪GTI18N_d0a9c450_000010⟫y⟪GTI18N_d0a9c450_000011⟫ 和 ⟪GTI18N_d0a9c450_000012⟫z⟪GTI18N_d0a9c450_000013⟫ 的求值发生在当前 goroutine 中，而 ⟪GTI18N_d0a9c450_000014⟫f⟪GTI18N_d0a9c450_000015⟫ 的执行发生在新的 goroutine 中。\n\nGoroutine 在相同的地址空间内运行，因此访问共享内存时必须进行同步。[[⟪GTI18N_d0a9c450_000016⟫][⟪GTI18N_d0a9c450_000017⟫sync⟪GTI18N_d0a9c450_000018⟫]] 包提供了实用的同步原语，不过在 ⟪GTI18N_d0a9c450_000019⟫ 中由于已有其他原语，你不会经常用到它们。（见下一页。）\n\n⟪GTI18N_d0a9c450_000020⟫",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* Goroutine\n\n⟪GTI18N_d0a9c450_000001⟫goroutine⟪GTI18N_d0a9c450_000002⟫是由 ⟪GTI18N_d0a9c450_000003⟫ 运行时管理的轻量级线程。\n\n⟪GTI18N_d0a9c450_000004⟫\n\n会启动一个新的 goroutine 来执行\n\n⟪GTI18N_d0a9c450_000005⟫\n\n⟪GTI18N_d0a9c450_000006⟫f⟪GTI18N_d0a9c450_000007⟫、⟪GTI18N_d0a9c450_000008⟫x⟪GTI18N_d0a9c450_000009⟫、⟪GTI18N_d0a9c450_000010⟫y⟪GTI18N_d0a9c450_000011⟫ 和 ⟪GTI18N_d0a9c450_000012⟫z⟪GTI18N_d0a9c450_000013⟫ 的求值发生在当前 goroutine 中，而 ⟪GTI18N_d0a9c450_000014⟫f⟪GTI18N_d0a9c450_000015⟫ 的执行发生在新的 goroutine 中。\n\nGoroutine 在相同的地址空间内运行，因此访问共享内存时必须进行同步。[[⟪GTI18N_d0a9c450_000016⟫][⟪GTI18N_d0a9c450_000017⟫sync⟪GTI18N_d0a9c450_000018⟫]] 包提供了实用的同步原语，不过在 ⟪GTI18N_d0a9c450_000019⟫ 中由于已有其他原语，你不会经常用到它们。（见下一页。）\n\n⟪GTI18N_d0a9c450_000020⟫",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786358303,
+    "id": "202608101838167635766ceb0b4734",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "202608101838167635766ceb0b4734",
+    "usage": {
+      "completion_tokens": 459,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 2705,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "total_tokens": 3164
+    }
+  }
+}
