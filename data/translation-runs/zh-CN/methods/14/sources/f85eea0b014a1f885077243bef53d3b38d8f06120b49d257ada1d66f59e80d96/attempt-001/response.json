@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "202608101739479e050f657b544952",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 2043,
+    "completion_tokens": 193,
+    "total_tokens": 2236
+  },
+  "content": "* 空接口\n\n不包含任何方法的接口类型被称为 ⟪GTI18N_f85eea0b_000001⟫empty_interface⟪GTI18N_f85eea0b_000002⟫：\n\n⟪GTI18N_f85eea0b_000003⟫\n\n空接口可以保存任意类型的值。（每个类型都至少实现了零个方法。）\n\n空接口常用于处理类型未知的值。例如，⟪GTI18N_f85eea0b_000004⟫fmt.Print⟪GTI18N_f85eea0b_000005⟫ 接受任意数量的 ⟪GTI18N_f85eea0b_000006⟫interface{}⟪GTI18N_f85eea0b_000007⟫ 类型参数。\n\n⟪GTI18N_f85eea0b_000008⟫",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 空接口\n\n不包含任何方法的接口类型被称为 ⟪GTI18N_f85eea0b_000001⟫empty_interface⟪GTI18N_f85eea0b_000002⟫：\n\n⟪GTI18N_f85eea0b_000003⟫\n\n空接口可以保存任意类型的值。（每个类型都至少实现了零个方法。）\n\n空接口常用于处理类型未知的值。例如，⟪GTI18N_f85eea0b_000004⟫fmt.Print⟪GTI18N_f85eea0b_000005⟫ 接受任意数量的 ⟪GTI18N_f85eea0b_000006⟫interface{}⟪GTI18N_f85eea0b_000007⟫ 类型参数。\n\n⟪GTI18N_f85eea0b_000008⟫",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786354790,
+    "id": "202608101739479e050f657b544952",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "202608101739479e050f657b544952",
+    "usage": {
+      "completion_tokens": 193,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 2043,
+      "prompt_tokens_details": {
+        "cached_tokens": 512
+      },
+      "total_tokens": 2236
+    }
+  }
+}

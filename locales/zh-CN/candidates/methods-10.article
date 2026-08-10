@@ -1,0 +1,8 @@
+* 隐式实现接口
+
+类型通过实现其方法来实现接口。
+没有显式的意图声明，也没有“implements”关键字。
+
+隐式接口将接口的定义与其实现解耦，这样实现就可以出现在任何包中，而无需事先安排。
+
+.play methods/interfaces-are-satisfied-implicitly.go

@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "2026081017383978b541d7eedf4632",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 2190,
+    "completion_tokens": 282,
+    "total_tokens": 2472
+  },
+  "content": "* 选择值接收者还是指针接收者\n\n使用指针接收者有两个原因。\n\n第一，方法可以修改接收者所指向的值。\n\n第二，避免每次调用方法时都复制值。例如，当接收者是一个大型结构体时，这样做会更高效。\n\n在本例中，⟪GTI18N_357424f2_000001⟫Scale⟪GTI18N_357424f2_000002⟫ 和 ⟪GTI18N_357424f2_000003⟫Abs⟪GTI18N_357424f2_000004⟫ 的接收者类型都是 ⟪GTI18N_357424f2_000005⟫*Vertex⟪GTI18N_357424f2_000006⟫，尽管 ⟪GTI18N_357424f2_000007⟫Abs⟪GTI18N_357424f2_000008⟫ 方法并不需要修改其接收者。\n\n一般而言，给定类型的所有方法要么都使用值接收者，要么都使用指针接收者，不应混用。（后续几页将说明原因。）\n\n⟪GTI18N_357424f2_000009⟫",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 选择值接收者还是指针接收者\n\n使用指针接收者有两个原因。\n\n第一，方法可以修改接收者所指向的值。\n\n第二，避免每次调用方法时都复制值。例如，当接收者是一个大型结构体时，这样做会更高效。\n\n在本例中，⟪GTI18N_357424f2_000001⟫Scale⟪GTI18N_357424f2_000002⟫ 和 ⟪GTI18N_357424f2_000003⟫Abs⟪GTI18N_357424f2_000004⟫ 的接收者类型都是 ⟪GTI18N_357424f2_000005⟫*Vertex⟪GTI18N_357424f2_000006⟫，尽管 ⟪GTI18N_357424f2_000007⟫Abs⟪GTI18N_357424f2_000008⟫ 方法并不需要修改其接收者。\n\n一般而言，给定类型的所有方法要么都使用值接收者，要么都使用指针接收者，不应混用。（后续几页将说明原因。）\n\n⟪GTI18N_357424f2_000009⟫",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786354723,
+    "id": "2026081017383978b541d7eedf4632",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "2026081017383978b541d7eedf4632",
+    "usage": {
+      "completion_tokens": 282,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 2190,
+      "prompt_tokens_details": {
+        "cached_tokens": 512
+      },
+      "total_tokens": 2472
+    }
+  }
+}

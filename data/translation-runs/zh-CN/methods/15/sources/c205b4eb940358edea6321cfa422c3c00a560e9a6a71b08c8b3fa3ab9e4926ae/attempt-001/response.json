@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "2026081017395602bdc04310694cea",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 3663,
+    "completion_tokens": 697,
+    "total_tokens": 4360
+  },
+  "content": "* 类型断言\n\n⟪GTI18N_c205b4eb_000001⟫类型断言⟪GTI18N_c205b4eb_000002⟫提供对接口值底层的具体值的访问。\n\n⟪GTI18N_c205b4eb_000003⟫\n\n这条语句断言接口值 ⟪GTI18N_c205b4eb_000004⟫i⟪GTI18N_c205b4eb_000005⟫ 持有具体类型 ⟪GTI18N_c205b4eb_000006⟫T⟪GTI18N_c205b4eb_000007⟫，并将底层的 ⟪GTI18N_c205b4eb_000008⟫T⟪GTI18N_c205b4eb_000009⟫ 值赋给变量 ⟪GTI18N_c205b4eb_000010⟫t⟪GTI18N_c205b4eb_000011⟫。\n\n如果 ⟪GTI18N_c205b4eb_000012⟫i⟪GTI18N_c205b4eb_000013⟫ 未持有 ⟪GTI18N_c205b4eb_000014⟫T⟪GTI18N_c205b4eb_000015⟫，该语句会触发 panic。\n\n为了⟪GTI18N_c205b4eb_000016⟫测试⟪GTI18N_c205b4eb_000017⟫接口值是否持有特定类型，类型断言可以返回两个值：底层值以及一个报告断言是否成功的布尔值。\n\n⟪GTI18N_c205b4eb_000018⟫\n\n如果 ⟪GTI18N_c205b4eb_000019⟫i⟪GTI18N_c205b4eb_000020⟫ 持有 ⟪GTI18N_c205b4eb_000021⟫T⟪GTI18N_c205b4eb_000022⟫，则 ⟪GTI18N_c205b4eb_000023⟫t⟪GTI18N_c205b4eb_000024⟫ 将是底层值，且 ⟪GTI18N_c205b4eb_000025⟫ok⟪GTI18N_c205b4eb_000026⟫ 为 true。\n\n否则，⟪GTI18N_c205b4eb_000027⟫ok⟪GTI18N_c205b4eb_000028⟫ 为 false，⟪GTI18N_c205b4eb_000029⟫t⟪GTI18N_c205b4eb_000030⟫ 将是类型 ⟪GTI18N_c205b4eb_000031⟫T⟪GTI18N_c205b4eb_000032⟫ 的零值，并且不会触发 panic。\n\n注意此语法与读取 map 时的相似之处。\n\n⟪GTI18N_c205b4eb_000033⟫",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 类型断言\n\n⟪GTI18N_c205b4eb_000001⟫类型断言⟪GTI18N_c205b4eb_000002⟫提供对接口值底层的具体值的访问。\n\n⟪GTI18N_c205b4eb_000003⟫\n\n这条语句断言接口值 ⟪GTI18N_c205b4eb_000004⟫i⟪GTI18N_c205b4eb_000005⟫ 持有具体类型 ⟪GTI18N_c205b4eb_000006⟫T⟪GTI18N_c205b4eb_000007⟫，并将底层的 ⟪GTI18N_c205b4eb_000008⟫T⟪GTI18N_c205b4eb_000009⟫ 值赋给变量 ⟪GTI18N_c205b4eb_000010⟫t⟪GTI18N_c205b4eb_000011⟫。\n\n如果 ⟪GTI18N_c205b4eb_000012⟫i⟪GTI18N_c205b4eb_000013⟫ 未持有 ⟪GTI18N_c205b4eb_000014⟫T⟪GTI18N_c205b4eb_000015⟫，该语句会触发 panic。\n\n为了⟪GTI18N_c205b4eb_000016⟫测试⟪GTI18N_c205b4eb_000017⟫接口值是否持有特定类型，类型断言可以返回两个值：底层值以及一个报告断言是否成功的布尔值。\n\n⟪GTI18N_c205b4eb_000018⟫\n\n如果 ⟪GTI18N_c205b4eb_000019⟫i⟪GTI18N_c205b4eb_000020⟫ 持有 ⟪GTI18N_c205b4eb_000021⟫T⟪GTI18N_c205b4eb_000022⟫，则 ⟪GTI18N_c205b4eb_000023⟫t⟪GTI18N_c205b4eb_000024⟫ 将是底层值，且 ⟪GTI18N_c205b4eb_000025⟫ok⟪GTI18N_c205b4eb_000026⟫ 为 true。\n\n否则，⟪GTI18N_c205b4eb_000027⟫ok⟪GTI18N_c205b4eb_000028⟫ 为 false，⟪GTI18N_c205b4eb_000029⟫t⟪GTI18N_c205b4eb_000030⟫ 将是类型 ⟪GTI18N_c205b4eb_000031⟫T⟪GTI18N_c205b4eb_000032⟫ 的零值，并且不会触发 panic。\n\n注意此语法与读取 map 时的相似之处。\n\n⟪GTI18N_c205b4eb_000033⟫",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786354802,
+    "id": "2026081017395602bdc04310694cea",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "2026081017395602bdc04310694cea",
+    "usage": {
+      "completion_tokens": 697,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 3663,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "total_tokens": 4360
+    }
+  }
+}

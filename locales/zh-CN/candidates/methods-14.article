@@ -1,0 +1,11 @@
+* 空接口
+
+不包含任何方法的接口类型被称为 _empty_interface_：
+
+	interface{}
+
+空接口可以保存任意类型的值。（每个类型都至少实现了零个方法。）
+
+空接口常用于处理类型未知的值。例如， `fmt.Print` 接受任意数量的 `interface{}` 类型参数。
+
+.play methods/empty-interface.go

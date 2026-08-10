@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "202608101740186c6aec2018f1432f",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 2285,
+    "completion_tokens": 227,
+    "total_tokens": 2512
+  },
+  "content": "* 字符串化\n\n最普遍的接口之一是由 ⟪GTI18N_0363038e_000005⟫fmt⟪GTI18N_0363038e_000006⟫ 包定义的 ⟪GTI18N_0363038e_000002⟫Stringer⟪GTI18N_0363038e_000003⟫。\n\n⟪GTI18N_0363038e_000007⟫\n\n⟪GTI18N_0363038e_000008⟫Stringer⟪GTI18N_0363038e_000009⟫ 是一种能够将自身描述为字符串的类型。⟪GTI18N_0363038e_000010⟫fmt⟪GTI18N_0363038e_000011⟫ 包（以及许多其他包）会查找这个接口来打印值。\n\n⟪GTI18N_0363038e_000012⟫\n",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 字符串化\n\n最普遍的接口之一是由 ⟪GTI18N_0363038e_000005⟫fmt⟪GTI18N_0363038e_000006⟫ 包定义的 ⟪GTI18N_0363038e_000002⟫Stringer⟪GTI18N_0363038e_000003⟫。\n\n⟪GTI18N_0363038e_000007⟫\n\n⟪GTI18N_0363038e_000008⟫Stringer⟪GTI18N_0363038e_000009⟫ 是一种能够将自身描述为字符串的类型。⟪GTI18N_0363038e_000010⟫fmt⟪GTI18N_0363038e_000011⟫ 包（以及许多其他包）会查找这个接口来打印值。\n\n⟪GTI18N_0363038e_000012⟫\n",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786354823,
+    "id": "202608101740186c6aec2018f1432f",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "202608101740186c6aec2018f1432f",
+    "usage": {
+      "completion_tokens": 227,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 2285,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "total_tokens": 2512
+    }
+  }
+}

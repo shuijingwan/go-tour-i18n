@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "20260810173938e46c964a673849d3",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 1632,
+    "completion_tokens": 107,
+    "total_tokens": 1739
+  },
+  "content": "* nil 接口值\n\nnil 接口值既不保存值，也不保存具体类型。\n\n在 nil 接口上调用方法会引发运行时错误，因为接口元组中没有任何类型能指示该调用哪个 ⟪GTI18N_2897922c_000001⟫具体⟪GTI18N_2897922c_000002⟫ 方法。\n\n⟪GTI18N_2897922c_000003⟫",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* nil 接口值\n\nnil 接口值既不保存值，也不保存具体类型。\n\n在 nil 接口上调用方法会引发运行时错误，因为接口元组中没有任何类型能指示该调用哪个 ⟪GTI18N_2897922c_000001⟫具体⟪GTI18N_2897922c_000002⟫ 方法。\n\n⟪GTI18N_2897922c_000003⟫",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786354781,
+    "id": "20260810173938e46c964a673849d3",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "20260810173938e46c964a673849d3",
+    "usage": {
+      "completion_tokens": 107,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 1632,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "total_tokens": 1739
+    }
+  }
+}

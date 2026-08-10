@@ -13,10 +13,19 @@ import (
 
 type signature struct {
 	Directives     []string
+	Links          []linkStructure
 	LinkTargets    []string
 	LinkInlineCode [][]string
 	InlineCode     []string
 	Preformatted   []string
+}
+
+// linkStructure is the protected identity of one complete present link. A
+// target with program-font payload can move with its complete link, but cannot
+// be rebound to another link's protected payload.
+type linkStructure struct {
+	Target     string
+	InlineCode []string
 }
 
 var (
@@ -66,10 +75,7 @@ func ValidateCandidateForLocale(root string, catalog *Catalog, pageID, locale st
 	if err := compareProtected("present directives", expected.Directives, actual.Directives); err != nil {
 		return diagnostic(pageID, err)
 	}
-	if err := compareProtected("link targets", expected.LinkTargets, actual.LinkTargets); err != nil {
-		return diagnostic(pageID, err)
-	}
-	if err := compareLinkInlineCode(expected.LinkInlineCode, actual.LinkInlineCode); err != nil {
+	if err := compareLinkStructures(expected.Links, actual.Links); err != nil {
 		return diagnostic(pageID, err)
 	}
 	if err := compareUnorderedProtected("inline code", expected.InlineCode, actual.InlineCode); err != nil {
@@ -155,11 +161,12 @@ func structuralSignature(source []byte) (signature, error) {
 			sig.Directives = append(sig.Directives, strings.TrimSpace(line))
 		}
 		for _, match := range linkRE.FindAllStringSubmatch(line, -1) {
-			sig.LinkTargets = append(sig.LinkTargets, match[1])
 			var codes []string
 			for _, code := range presentInlineCodes(match[2]) {
 				codes = append(codes, code.Raw)
 			}
+			sig.Links = append(sig.Links, linkStructure{Target: match[1], InlineCode: codes})
+			sig.LinkTargets = append(sig.LinkTargets, match[1])
 			sig.LinkInlineCode = append(sig.LinkInlineCode, codes)
 		}
 		for _, code := range presentInlineCodes(line) {
@@ -172,20 +179,49 @@ func structuralSignature(source []byte) (signature, error) {
 	return sig, s.Err()
 }
 
-// compareLinkInlineCode keeps each program payload attached to the link where
-// it appeared, while treating multiple program spans in one translated label
-// as an unordered set. This preserves natural target-language label order
-// without allowing a span to be changed, removed, or moved to another link.
-func compareLinkInlineCode(expected, actual [][]string) error {
+// compareLinkStructures allows a complete link with protected inline payload
+// to move for target-language word order, while keeping its target and payload
+// attached. Plain labels have no stable cross-language payload identity, so
+// their targets continue to be compared in occurrence order.
+func compareLinkStructures(expected, actual []linkStructure) error {
 	if len(expected) != len(actual) {
-		return protectedCountError("link label", len(expected), len(actual))
+		return protectedCountError("link", len(expected), len(actual))
 	}
-	for i := range expected {
-		if err := compareUnorderedProtected("link inline code at link index "+fmt.Sprint(i+1), expected[i], actual[i]); err != nil {
-			return err
+	expectedTargets := make([]string, len(expected))
+	actualTargets := make([]string, len(actual))
+	expectedStructured := make([]string, len(expected))
+	actualStructured := make([]string, len(actual))
+	var expectedPlain, actualPlain []string
+	for i, link := range expected {
+		expectedTargets[i] = link.Target
+		expectedStructured[i] = linkStructureIdentity(link)
+		if len(link.InlineCode) == 0 {
+			expectedPlain = append(expectedPlain, link.Target)
 		}
 	}
+	for i, link := range actual {
+		actualTargets[i] = link.Target
+		actualStructured[i] = linkStructureIdentity(link)
+		if len(link.InlineCode) == 0 {
+			actualPlain = append(actualPlain, link.Target)
+		}
+	}
+	if err := compareUnorderedProtected("link targets", expectedTargets, actualTargets); err != nil {
+		return err
+	}
+	if err := compareUnorderedProtected("link inline code", expectedStructured, actualStructured); err != nil {
+		return err
+	}
+	if err := compareProtected("plain link targets", expectedPlain, actualPlain); err != nil {
+		return err
+	}
 	return nil
+}
+
+func linkStructureIdentity(link linkStructure) string {
+	codes := append([]string(nil), link.InlineCode...)
+	sort.Strings(codes)
+	return link.Target + "\x00" + strings.Join(codes, "\x00")
 }
 
 func compareProtected(kind string, expected, actual []string) error {

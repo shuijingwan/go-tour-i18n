@@ -1,6 +1,7 @@
 package i18n
 
 import (
+	"encoding/json"
 	"os"
 	"path/filepath"
 	"strings"
@@ -91,6 +92,66 @@ func TestLinkLabelProgramPayloadValidation(t *testing.T) {
 	plainCatalog := &Catalog{Pages: []Page{{ID: "synthetic/plain-link", Article: "basics.article", Source: []byte(plainSource), SourceSHA256: sum([]byte(plainSource))}}}
 	if err := ValidateCandidate(root, plainCatalog, "synthetic/plain-link", []byte("* 根\n\n[[/doc/][Go 文档]]。\n")); err != nil {
 		t.Fatalf("ordinary translated link rejected: %v", err)
+	}
+}
+
+func TestCompleteLinkStructuresMayReorderButCannotRebind(t *testing.T) {
+	root := repoRoot(t)
+	source := "* Root\n\n[[/pkg/fmt/#Stringer][`Stringer`]] is defined by [[/pkg/fmt/][`fmt`]].\n"
+	catalog := &Catalog{Pages: []Page{{ID: "synthetic/link-reorder", Article: "basics.article", Source: []byte(source), SourceSHA256: sum([]byte(source))}}}
+	valid := "* 根\n\n[[/pkg/fmt/#Stringer][`Stringer`]] 由 [[/pkg/fmt/][`fmt`]] 包定义。\n"
+	reordered := "* 根\n\n由 [[/pkg/fmt/][`fmt`]] 包定义的 [[/pkg/fmt/#Stringer][`Stringer`]]。\n"
+	for name, candidate := range map[string]string{"source order": valid, "complete links reordered": reordered} {
+		t.Run(name, func(t *testing.T) {
+			if err := ValidateCandidate(root, catalog, "synthetic/link-reorder", []byte(candidate)); err != nil {
+				t.Fatalf("valid candidate rejected: %v\n%s", err, candidate)
+			}
+		})
+	}
+	for name, candidate := range map[string]string{
+		"target changed":  strings.Replace(reordered, "/pkg/fmt/", "/pkg/fmt/changed", 1),
+		"target rebound":  "* 根\n\n由 [[/pkg/fmt/][`Stringer`]] 包定义的 [[/pkg/fmt/#Stringer][`fmt`]]。\n",
+		"link missing":    "* 根\n\n由 [[/pkg/fmt/][`fmt`]] 包定义。\n",
+		"link duplicated": reordered + "\n[[/pkg/fmt/][`fmt`]]\n",
+	} {
+		t.Run(name, func(t *testing.T) {
+			if err := ValidateCandidate(root, catalog, "synthetic/link-reorder", []byte(candidate)); err == nil {
+				t.Fatalf("invalid link structure accepted:\n%s", candidate)
+			}
+		})
+	}
+}
+
+func TestMethods17Attempt3HistoricalResponseValidatesAfterLinkReorder(t *testing.T) {
+	root := repoRoot(t)
+	catalog, err := BuildCatalog(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	page, err := catalog.Page("methods/17")
+	if err != nil {
+		t.Fatal(err)
+	}
+	responsePath := filepath.Join(root, "data", "translation-runs", "zh-CN", "methods", "17", "sources", page.SourceSHA256, "attempt-003", "response.json")
+	responseBytes, err := os.ReadFile(responsePath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var response TranslationCallResult
+	if err := json.Unmarshal(responseBytes, &response); err != nil {
+		t.Fatal(err)
+	}
+	glossary, err := LoadGlossary(root, "zh-CN")
+	if err != nil {
+		t.Fatal(err)
+	}
+	protected := protectTranslation(page.Source, page.SourceSHA256, glossary)
+	candidate, failures := protected.restore(response.Content)
+	if len(failures) != 0 {
+		t.Fatalf("restore failures: %v", failures)
+	}
+	if err := ValidateCandidateForLocale(root, catalog, "methods/17", "zh-CN", []byte(candidate)); err != nil {
+		t.Fatalf("historical response rejected: %v\n%s", err, candidate)
 	}
 }
 

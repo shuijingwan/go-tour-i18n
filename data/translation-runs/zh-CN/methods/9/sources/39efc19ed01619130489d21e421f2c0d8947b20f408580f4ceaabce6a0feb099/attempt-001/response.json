@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "2026081017385541189588c2024d67",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 2357,
+    "completion_tokens": 295,
+    "total_tokens": 2652
+  },
+  "content": "* 接口\n\n⟪GTI18N_39efc19e_000001⟫接口类型⟪GTI18N_39efc19e_000002⟫ 由一组方法签名定义。\n\n接口类型的值可以保存任何实现了这些方法的值。\n\n⟪GTI18N_39efc19e_000003⟫注意：⟪GTI18N_39efc19e_000004⟫ 示例代码第 22 行有一处错误。\n⟪GTI18N_39efc19e_000005⟫Vertex⟪GTI18N_39efc19e_000006⟫（值类型）没有实现 ⟪GTI18N_39efc19e_000007⟫Abser⟪GTI18N_39efc19e_000008⟫，因为\n⟪GTI18N_39efc19e_000009⟫Abs⟪GTI18N_39efc19e_000010⟫ 方法只定义在 ⟪GTI18N_39efc19e_000011⟫*Vertex⟪GTI18N_39efc19e_000012⟫（指针类型）上。\n\n⟪GTI18N_39efc19e_000013⟫\n",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 接口\n\n⟪GTI18N_39efc19e_000001⟫接口类型⟪GTI18N_39efc19e_000002⟫ 由一组方法签名定义。\n\n接口类型的值可以保存任何实现了这些方法的值。\n\n⟪GTI18N_39efc19e_000003⟫注意：⟪GTI18N_39efc19e_000004⟫ 示例代码第 22 行有一处错误。\n⟪GTI18N_39efc19e_000005⟫Vertex⟪GTI18N_39efc19e_000006⟫（值类型）没有实现 ⟪GTI18N_39efc19e_000007⟫Abser⟪GTI18N_39efc19e_000008⟫，因为\n⟪GTI18N_39efc19e_000009⟫Abs⟪GTI18N_39efc19e_000010⟫ 方法只定义在 ⟪GTI18N_39efc19e_000011⟫*Vertex⟪GTI18N_39efc19e_000012⟫（指针类型）上。\n\n⟪GTI18N_39efc19e_000013⟫\n",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786354738,
+    "id": "2026081017385541189588c2024d67",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "2026081017385541189588c2024d67",
+    "usage": {
+      "completion_tokens": 295,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 2357,
+      "prompt_tokens_details": {
+        "cached_tokens": 512
+      },
+      "total_tokens": 2652
+    }
+  }
+}

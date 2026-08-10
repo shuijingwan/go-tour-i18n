@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "20260810173925a588af54b34e4baa",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 1765,
+    "completion_tokens": 156,
+    "total_tokens": 1921
+  },
+  "content": "* 底层值为 nil 的接口值\n\n如果接口内部的具体值为 nil，方法将以 nil 接收者被调用。\n\n在某些语言中，这会触发空指针异常，但在 ⟪GTI18N_9487ca3c_000001⟫ 中，编写能够优雅处理 nil 接收者调用的方法是很常见的做法（就像本例中的 ⟪GTI18N_9487ca3c_000002⟫M⟪GTI18N_9487ca3c_000003⟫ 方法那样。）\n\n请注意，持有 nil 具体值的接口值本身是非 nil 的。\n\n⟪GTI18N_9487ca3c_000004⟫",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 底层值为 nil 的接口值\n\n如果接口内部的具体值为 nil，方法将以 nil 接收者被调用。\n\n在某些语言中，这会触发空指针异常，但在 ⟪GTI18N_9487ca3c_000001⟫ 中，编写能够优雅处理 nil 接收者调用的方法是很常见的做法（就像本例中的 ⟪GTI18N_9487ca3c_000002⟫M⟪GTI18N_9487ca3c_000003⟫ 方法那样。）\n\n请注意，持有 nil 具体值的接口值本身是非 nil 的。\n\n⟪GTI18N_9487ca3c_000004⟫",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786354767,
+    "id": "20260810173925a588af54b34e4baa",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "20260810173925a588af54b34e4baa",
+    "usage": {
+      "completion_tokens": 156,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 1765,
+      "prompt_tokens_details": {
+        "cached_tokens": 512
+      },
+      "total_tokens": 1921
+    }
+  }
+}

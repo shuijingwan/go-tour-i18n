@@ -1,0 +1,7 @@
+* nil 接口值
+
+nil 接口值既不保存值，也不保存具体类型。
+
+在 nil 接口上调用方法会引发运行时错误，因为接口元组中没有任何类型能指示该调用哪个 _具体_ 方法。
+
+.play methods/nil-interface-values.go

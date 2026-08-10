@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "202608101739161856c828300e4ddf",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 1595,
+    "completion_tokens": 81,
+    "total_tokens": 1676
+  },
+  "content": "* 接口值\n\n在底层，接口值可以看作是具体类型和值的元组：\n\n⟪GTI18N_ccb2ed70_000001⟫\n\n接口值保存了一个特定的底层具体类型的值。\n\n对接口值调用方法，会执行其底层类型中同名的方法。\n\n⟪GTI18N_ccb2ed70_000002⟫\n",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 接口值\n\n在底层，接口值可以看作是具体类型和值的元组：\n\n⟪GTI18N_ccb2ed70_000001⟫\n\n接口值保存了一个特定的底层具体类型的值。\n\n对接口值调用方法，会执行其底层类型中同名的方法。\n\n⟪GTI18N_ccb2ed70_000002⟫\n",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786354757,
+    "id": "202608101739161856c828300e4ddf",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "202608101739161856c828300e4ddf",
+    "usage": {
+      "completion_tokens": 81,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 1595,
+      "prompt_tokens_details": {
+        "cached_tokens": 512
+      },
+      "total_tokens": 1676
+    }
+  }
+}

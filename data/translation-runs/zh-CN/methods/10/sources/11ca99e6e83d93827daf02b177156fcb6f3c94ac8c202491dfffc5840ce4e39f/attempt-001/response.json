@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "2026081017390682072a9640124abf",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 1512,
+    "completion_tokens": 70,
+    "total_tokens": 1582
+  },
+  "content": "* 隐式实现接口\n\n类型通过实现其方法来实现接口。\n没有显式的意图声明，也没有“implements”关键字。\n\n隐式接口将接口的定义与其实现解耦，这样实现就可以出现在任何包中，而无需事先安排。\n\n⟪GTI18N_11ca99e6_000001⟫",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 隐式实现接口\n\n类型通过实现其方法来实现接口。\n没有显式的意图声明，也没有“implements”关键字。\n\n隐式接口将接口的定义与其实现解耦，这样实现就可以出现在任何包中，而无需事先安排。\n\n⟪GTI18N_11ca99e6_000001⟫",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786354748,
+    "id": "2026081017390682072a9640124abf",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "2026081017390682072a9640124abf",
+    "usage": {
+      "completion_tokens": 70,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 1512,
+      "prompt_tokens_details": {
+        "cached_tokens": 512
+      },
+      "total_tokens": 1582
+    }
+  }
+}
