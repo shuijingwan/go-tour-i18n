@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "2026081018485377b024a7764440ce",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 1858,
+    "completion_tokens": 174,
+    "total_tokens": 2032
+  },
+  "content": "* 练习：Web 爬虫\n\n在这个练习中，你将使用 ⟪GTI18N_bb686393_000001⟫ 的并发特性来并行化一个 Web 爬虫。\n\n修改 ⟪GTI18N_bb686393_000002⟫Crawl⟪GTI18N_bb686393_000003⟫ 函数，使其并行抓取 URL，并且不重复抓取同一个 URL。\n\n⟪GTI18N_bb686393_000004⟫提示⟪GTI18N_bb686393_000005⟫：你可以使用 map 来缓存已抓取的 URL，但单独使用 map 并不能安全地进行并发访问！\n\n⟪GTI18N_bb686393_000006⟫",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 练习：Web 爬虫\n\n在这个练习中，你将使用 ⟪GTI18N_bb686393_000001⟫ 的并发特性来并行化一个 Web 爬虫。\n\n修改 ⟪GTI18N_bb686393_000002⟫Crawl⟪GTI18N_bb686393_000003⟫ 函数，使其并行抓取 URL，并且不重复抓取同一个 URL。\n\n⟪GTI18N_bb686393_000004⟫提示⟪GTI18N_bb686393_000005⟫：你可以使用 map 来缓存已抓取的 URL，但单独使用 map 并不能安全地进行并发访问！\n\n⟪GTI18N_bb686393_000006⟫",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786358937,
+    "id": "2026081018485377b024a7764440ce",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "2026081018485377b024a7764440ce",
+    "usage": {
+      "completion_tokens": 174,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 1858,
+      "prompt_tokens_details": {
+        "cached_tokens": 512
+      },
+      "total_tokens": 2032
+    }
+  }
+}

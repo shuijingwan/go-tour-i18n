@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "20260810184817cd857f2c20c74d86",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 2183,
+    "completion_tokens": 338,
+    "total_tokens": 2521
+  },
+  "content": "* 信道\n\n信道是一种带类型的管道，你可以通过信道操作符 ⟪GTI18N_a35e3af2_000001⟫\u003c-⟪GTI18N_a35e3af2_000002⟫ 来发送和接收值。\n\n⟪GTI18N_a35e3af2_000003⟫将 ⟪GTI18N_a35e3af2_000004⟫ 发送至信道 ⟪GTI18N_a35e3af2_000005⟫。⟪GTI18N_a35e3af2_000006⟫从 ⟪GTI18N_a35e3af2_000007⟫ 接收，并⟪GTI18N_a35e3af2_000008⟫将值赋给 ⟪GTI18N_a35e3af2_000009⟫。⟪GTI18N_a35e3af2_000010⟫（数据流的方向由箭头指示。）\n\n与映射和切片一样，信道在使用前必须创建：\n\n⟪GTI18N_a35e3af2_000011⟫\n\n默认情况下，发送和接收操作会阻塞，直到另一端准备好。这使得 goroutine 无需显式的锁或条件变量即可进行同步。\n\n示例代码对一个切片中的数字求和，将计算任务分配给两个 goroutine。\n当两个 goroutine 都完成计算后，再算出最终结果。\n\n⟪GTI18N_a35e3af2_000012⟫",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 信道\n\n信道是一种带类型的管道，你可以通过信道操作符 ⟪GTI18N_a35e3af2_000001⟫\u003c-⟪GTI18N_a35e3af2_000002⟫ 来发送和接收值。\n\n⟪GTI18N_a35e3af2_000003⟫将 ⟪GTI18N_a35e3af2_000004⟫ 发送至信道 ⟪GTI18N_a35e3af2_000005⟫。⟪GTI18N_a35e3af2_000006⟫从 ⟪GTI18N_a35e3af2_000007⟫ 接收，并⟪GTI18N_a35e3af2_000008⟫将值赋给 ⟪GTI18N_a35e3af2_000009⟫。⟪GTI18N_a35e3af2_000010⟫（数据流的方向由箭头指示。）\n\n与映射和切片一样，信道在使用前必须创建：\n\n⟪GTI18N_a35e3af2_000011⟫\n\n默认情况下，发送和接收操作会阻塞，直到另一端准备好。这使得 goroutine 无需显式的锁或条件变量即可进行同步。\n\n示例代码对一个切片中的数字求和，将计算任务分配给两个 goroutine。\n当两个 goroutine 都完成计算后，再算出最终结果。\n\n⟪GTI18N_a35e3af2_000012⟫",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786358900,
+    "id": "20260810184817cd857f2c20c74d86",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "20260810184817cd857f2c20c74d86",
+    "usage": {
+      "completion_tokens": 338,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 2183,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "total_tokens": 2521
+    }
+  }
+}

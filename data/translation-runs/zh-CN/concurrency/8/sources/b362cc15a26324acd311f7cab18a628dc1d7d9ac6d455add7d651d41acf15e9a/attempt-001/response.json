@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "202608101848415dcb6226e3574c72",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 4271,
+    "completion_tokens": 903,
+    "total_tokens": 5174
+  },
+  "content": "* 练习：等价二叉树\n\n⟪GTI18N_b362cc15_000001⟫1.⟪GTI18N_b362cc15_000002⟫ 实现 ⟪GTI18N_b362cc15_000003⟫Walk⟪GTI18N_b362cc15_000004⟫ 函数。\n\n⟪GTI18N_b362cc15_000005⟫2.⟪GTI18N_b362cc15_000006⟫ 测试 ⟪GTI18N_b362cc15_000007⟫Walk⟪GTI18N_b362cc15_000008⟫ 函数。\n\n函数 ⟪GTI18N_b362cc15_000009⟫tree.New(k)⟪GTI18N_b362cc15_000010⟫ 会构造一棵随机结构（但始终有序）的二叉树，其中保存的值为 ⟪GTI18N_b362cc15_000011⟫k⟪GTI18N_b362cc15_000012⟫、⟪GTI18N_b362cc15_000013⟫2k⟪GTI18N_b362cc15_000014⟫、⟪GTI18N_b362cc15_000015⟫3k⟪GTI18N_b362cc15_000016⟫、……、⟪GTI18N_b362cc15_000017⟫10k⟪GTI18N_b362cc15_000018⟫。\n\n创建一个新 channel ⟪GTI18N_b362cc15_000019⟫ch⟪GTI18N_b362cc15_000020⟫，并启动遍历器：\n\n⟪GTI18N_b362cc15_000021⟫\n\n然后从该 channel 读取并打印 10 个值，结果应为数字 1、2、3、……、10。\n\n⟪GTI18N_b362cc15_000022⟫3.⟪GTI18N_b362cc15_000023⟫ 使用 ⟪GTI18N_b362cc15_000026⟫Walk⟪GTI18N_b362cc15_000027⟫ 实现 ⟪GTI18N_b362cc15_000024⟫Same⟪GTI18N_b362cc15_000025⟫ 函数，判断 ⟪GTI18N_b362cc15_000028⟫t1⟪GTI18N_b362cc15_000029⟫ 和 ⟪GTI18N_b362cc15_000030⟫t2⟪GTI18N_b362cc15_000031⟫ 是否存储了相同的值。\n\n⟪GTI18N_b362cc15_000032⟫4.⟪GTI18N_b362cc15_000033⟫ 测试 ⟪GTI18N_b362cc15_000034⟫Same⟪GTI18N_b362cc15_000035⟫ 函数。\n\n⟪GTI18N_b362cc15_000036⟫Same(tree.New(1),`tree.New(1))⟪GTI18N_b362cc15_000037⟫ 应返回 true，而 ⟪GTI18N_b362cc15_000038⟫Same(tree.New(1),`tree.New(2))⟪GTI18N_b362cc15_000039⟫ 应返回 false。\n\n⟪GTI18N_b362cc15_000040⟫Tree⟪GTI18N_b362cc15_000041⟫ 的文档可以在[[⟪GTI18N_b362cc15_000042⟫][这里]]找到。\n\n⟪GTI18N_b362cc15_000043⟫\n",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 练习：等价二叉树\n\n⟪GTI18N_b362cc15_000001⟫1.⟪GTI18N_b362cc15_000002⟫ 实现 ⟪GTI18N_b362cc15_000003⟫Walk⟪GTI18N_b362cc15_000004⟫ 函数。\n\n⟪GTI18N_b362cc15_000005⟫2.⟪GTI18N_b362cc15_000006⟫ 测试 ⟪GTI18N_b362cc15_000007⟫Walk⟪GTI18N_b362cc15_000008⟫ 函数。\n\n函数 ⟪GTI18N_b362cc15_000009⟫tree.New(k)⟪GTI18N_b362cc15_000010⟫ 会构造一棵随机结构（但始终有序）的二叉树，其中保存的值为 ⟪GTI18N_b362cc15_000011⟫k⟪GTI18N_b362cc15_000012⟫、⟪GTI18N_b362cc15_000013⟫2k⟪GTI18N_b362cc15_000014⟫、⟪GTI18N_b362cc15_000015⟫3k⟪GTI18N_b362cc15_000016⟫、……、⟪GTI18N_b362cc15_000017⟫10k⟪GTI18N_b362cc15_000018⟫。\n\n创建一个新 channel ⟪GTI18N_b362cc15_000019⟫ch⟪GTI18N_b362cc15_000020⟫，并启动遍历器：\n\n⟪GTI18N_b362cc15_000021⟫\n\n然后从该 channel 读取并打印 10 个值，结果应为数字 1、2、3、……、10。\n\n⟪GTI18N_b362cc15_000022⟫3.⟪GTI18N_b362cc15_000023⟫ 使用 ⟪GTI18N_b362cc15_000026⟫Walk⟪GTI18N_b362cc15_000027⟫ 实现 ⟪GTI18N_b362cc15_000024⟫Same⟪GTI18N_b362cc15_000025⟫ 函数，判断 ⟪GTI18N_b362cc15_000028⟫t1⟪GTI18N_b362cc15_000029⟫ 和 ⟪GTI18N_b362cc15_000030⟫t2⟪GTI18N_b362cc15_000031⟫ 是否存储了相同的值。\n\n⟪GTI18N_b362cc15_000032⟫4.⟪GTI18N_b362cc15_000033⟫ 测试 ⟪GTI18N_b362cc15_000034⟫Same⟪GTI18N_b362cc15_000035⟫ 函数。\n\n⟪GTI18N_b362cc15_000036⟫Same(tree.New(1),`tree.New(1))⟪GTI18N_b362cc15_000037⟫ 应返回 true，而 ⟪GTI18N_b362cc15_000038⟫Same(tree.New(1),`tree.New(2))⟪GTI18N_b362cc15_000039⟫ 应返回 false。\n\n⟪GTI18N_b362cc15_000040⟫Tree⟪GTI18N_b362cc15_000041⟫ 的文档可以在[[⟪GTI18N_b362cc15_000042⟫][这里]]找到。\n\n⟪GTI18N_b362cc15_000043⟫\n",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786358928,
+    "id": "202608101848415dcb6226e3574c72",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "202608101848415dcb6226e3574c72",
+    "usage": {
+      "completion_tokens": 903,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 4271,
+      "prompt_tokens_details": {
+        "cached_tokens": 512
+      },
+      "total_tokens": 5174
+    }
+  }
+}

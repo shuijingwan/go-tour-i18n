@@ -1,0 +1,9 @@
+* 练习：Web 爬虫
+
+在这个练习中，你将使用 Go 的并发特性来并行化一个 Web 爬虫。
+
+修改 `Crawl` 函数，使其并行抓取 URL，并且不重复抓取同一个 URL。
+
+_提示_：你可以使用 map 来缓存已抓取的 URL，但单独使用 map 并不能安全地进行并发访问！
+
+.play concurrency/exercise-web-crawler.go

@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "2026081018482684f34ce5f21046bd",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 2683,
+    "completion_tokens": 440,
+    "total_tokens": 3123
+  },
+  "content": "* range 和 close\n\n发送方可以 ⟪GTI18N_3e925c67_000001⟫close⟪GTI18N_3e925c67_000002⟫ 一个通道，以表示不会再发送更多值。接收方可以通过为接收表达式分配第二个参数来检测通道是否已被关闭：在执行\n\n⟪GTI18N_3e925c67_000003⟫\n\n之后，如果没有更多值可接收且通道已关闭，则 ⟪GTI18N_3e925c67_000004⟫ok⟪GTI18N_3e925c67_000005⟫ 为 ⟪GTI18N_3e925c67_000006⟫false⟪GTI18N_3e925c67_000007⟫。\n\n循环 ⟪GTI18N_3e925c67_000008⟫for`i`:=`range`c⟪GTI18N_3e925c67_000009⟫ 会不断从通道接收值，直到通道关闭。\n\n⟪GTI18N_3e925c67_000010⟫注意：⟪GTI18N_3e925c67_000011⟫ 只有发送方应该关闭通道，接收方绝不应该关闭。向已关闭的通道发送数据会导致 panic。\n\n⟪GTI18N_3e925c67_000012⟫另一个注意：⟪GTI18N_3e925c67_000013⟫ 通道不像文件，通常不需要关闭它们。只有在需要通知接收方不会再有值发送过来时才需要关闭，例如用于终止 ⟪GTI18N_3e925c67_000014⟫range⟪GTI18N_3e925c67_000015⟫ 循环。\n\n⟪GTI18N_3e925c67_000016⟫\n",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* range 和 close\n\n发送方可以 ⟪GTI18N_3e925c67_000001⟫close⟪GTI18N_3e925c67_000002⟫ 一个通道，以表示不会再发送更多值。接收方可以通过为接收表达式分配第二个参数来检测通道是否已被关闭：在执行\n\n⟪GTI18N_3e925c67_000003⟫\n\n之后，如果没有更多值可接收且通道已关闭，则 ⟪GTI18N_3e925c67_000004⟫ok⟪GTI18N_3e925c67_000005⟫ 为 ⟪GTI18N_3e925c67_000006⟫false⟪GTI18N_3e925c67_000007⟫。\n\n循环 ⟪GTI18N_3e925c67_000008⟫for`i`:=`range`c⟪GTI18N_3e925c67_000009⟫ 会不断从通道接收值，直到通道关闭。\n\n⟪GTI18N_3e925c67_000010⟫注意：⟪GTI18N_3e925c67_000011⟫ 只有发送方应该关闭通道，接收方绝不应该关闭。向已关闭的通道发送数据会导致 panic。\n\n⟪GTI18N_3e925c67_000012⟫另一个注意：⟪GTI18N_3e925c67_000013⟫ 通道不像文件，通常不需要关闭它们。只有在需要通知接收方不会再有值发送过来时才需要关闭，例如用于终止 ⟪GTI18N_3e925c67_000014⟫range⟪GTI18N_3e925c67_000015⟫ 循环。\n\n⟪GTI18N_3e925c67_000016⟫\n",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786358914,
+    "id": "2026081018482684f34ce5f21046bd",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "2026081018482684f34ce5f21046bd",
+    "usage": {
+      "completion_tokens": 440,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 2683,
+      "prompt_tokens_details": {
+        "cached_tokens": 512
+      },
+      "total_tokens": 3123
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "202608101848480eaa28a555f74e8c",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 2989,
+    "completion_tokens": 532,
+    "total_tokens": 3521
+  },
+  "content": "* sync.Mutex\n\n我们已经看到通道非常适合用于 goroutine 之间的通信。\n\n但如果我们不需要通信呢？如果只是想确保同一时间只有一个 goroutine 能访问某个变量，从而避免冲突呢？\n\n这个概念叫做⟪GTI18N_49f72779_000001⟫互斥⟪GTI18N_49f72779_000002⟫，提供互斥能力的数据结构通常称为⟪GTI18N_49f72779_000003⟫互斥锁⟪GTI18N_49f72779_000004⟫。\n\n⟪GTI18N_49f72779_000005⟫ 的标准库通过 [[⟪GTI18N_49f72779_000006⟫][⟪GTI18N_49f72779_000007⟫sync.Mutex⟪GTI18N_49f72779_000008⟫]] 及其两个方法来提供互斥功能：\n\n- ⟪GTI18N_49f72779_000009⟫Lock⟪GTI18N_49f72779_000010⟫\n- ⟪GTI18N_49f72779_000011⟫Unlock⟪GTI18N_49f72779_000012⟫\n\n可以用 ⟪GTI18N_49f72779_000013⟫Lock⟪GTI18N_49f72779_000014⟫ 和 ⟪GTI18N_49f72779_000015⟫Unlock⟪GTI18N_49f72779_000016⟫ 包裹一段代码，使其在互斥环境下执行，如 ⟪GTI18N_49f72779_000017⟫Inc⟪GTI18N_49f72779_000018⟫ 方法所示。\n\n还可以使用 ⟪GTI18N_49f72779_000019⟫defer⟪GTI18N_49f72779_000020⟫ 来确保互斥锁一定会被解锁，如 ⟪GTI18N_49f72779_000021⟫Value⟪GTI18N_49f72779_000022⟫ 方法所示。\n\n⟪GTI18N_49f72779_000023⟫",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* sync.Mutex\n\n我们已经看到通道非常适合用于 goroutine 之间的通信。\n\n但如果我们不需要通信呢？如果只是想确保同一时间只有一个 goroutine 能访问某个变量，从而避免冲突呢？\n\n这个概念叫做⟪GTI18N_49f72779_000001⟫互斥⟪GTI18N_49f72779_000002⟫，提供互斥能力的数据结构通常称为⟪GTI18N_49f72779_000003⟫互斥锁⟪GTI18N_49f72779_000004⟫。\n\n⟪GTI18N_49f72779_000005⟫ 的标准库通过 [[⟪GTI18N_49f72779_000006⟫][⟪GTI18N_49f72779_000007⟫sync.Mutex⟪GTI18N_49f72779_000008⟫]] 及其两个方法来提供互斥功能：\n\n- ⟪GTI18N_49f72779_000009⟫Lock⟪GTI18N_49f72779_000010⟫\n- ⟪GTI18N_49f72779_000011⟫Unlock⟪GTI18N_49f72779_000012⟫\n\n可以用 ⟪GTI18N_49f72779_000013⟫Lock⟪GTI18N_49f72779_000014⟫ 和 ⟪GTI18N_49f72779_000015⟫Unlock⟪GTI18N_49f72779_000016⟫ 包裹一段代码，使其在互斥环境下执行，如 ⟪GTI18N_49f72779_000017⟫Inc⟪GTI18N_49f72779_000018⟫ 方法所示。\n\n还可以使用 ⟪GTI18N_49f72779_000019⟫defer⟪GTI18N_49f72779_000020⟫ 来确保互斥锁一定会被解锁，如 ⟪GTI18N_49f72779_000021⟫Value⟪GTI18N_49f72779_000022⟫ 方法所示。\n\n⟪GTI18N_49f72779_000023⟫",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786358933,
+    "id": "202608101848480eaa28a555f74e8c",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "202608101848480eaa28a555f74e8c",
+    "usage": {
+      "completion_tokens": 532,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 2989,
+      "prompt_tokens_details": {
+        "cached_tokens": 512
+      },
+      "total_tokens": 3521
+    }
+  }
+}
