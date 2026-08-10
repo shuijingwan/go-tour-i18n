@@ -1,6 +1,6 @@
 # 项目状态
 
-更新时间：2026-08-09
+更新时间：2026-08-10
 
 ## 基线与架构
 
@@ -24,6 +24,15 @@
 - link target 继续严格校验内容、数量和自身顺序；preformatted block 继续严格校验内容、块顺序和代码安全；directive 继续严格校验内容、数量、自身顺序和 Section 归属。Section 拓扑、预格式化块与 directive 的 Section 归属均受校验；源中位于 Section 尾部的 directive 在候选中仍必须位于尾部。
 - zh-CN glossary 对强制链接 label 使用 protected token 确定性恢复，例如 `A Tour of Go` → `Go 语言之旅`、`previous` → `上一页`、`next` → `下一页`、`Run` → `运行`、`Format` → `格式化`；validator 仍执行防御性术语与禁用译法检查。
 - 已支持 ready candidate 本地预览。运行 `go run ./cmd/tour-i18n preview -id welcome/1 -locale zh-CN` 会在 `/tmp` 创建临时 Tour 内容副本，只替换目标中文 Section，不修改仓库正式 `_content`；其他未翻译页面继续显示英文。
+
+### 2026-08-10 翻译输入架构实验
+
+- 已提交 `62b1b1a feat: 增加翻译输入实验与最小保护能力`，新增 `--raw-input`、`--minimal-protect` 和受控同进程开发重试 `--dev-attempts`。
+- `--raw-input` 将完整 production 页面直接发送给 GLM-5.2，不执行 protected token/restore；`flowcontrol/6` 首次真实 raw-input 请求即通过统一 validator，usage 为 1,403 tokens。该页旧默认 protected-token attempts 1～3 的失败，属于完整 inline-code 结构为适应中文语序换位后被旧保护/恢复逻辑误判。
+- `methods/24` 两次纯 raw-input 均真实破坏 present 结构：模型会为 `.play methods/images.go` 追加参数，并将链接普通标签中的 `image`、`image/color` 自行改为新的 inline code；完全 raw 当前不足以作为默认生产方案。
+- `--minimal-protect` 当前只保护完整 `.play` directive。`methods/24` 的唯一 `.play` token 被模型原样且恰好一次保留，并精确 restore，directive 问题消失；但链接普通标签新增 inline code 仍存在。随后已增加该失败的针对性 retry feedback 与同进程 `--dev-attempts`，后续实验又出现 font span count mismatch，说明当前 minimal-protect 尚不足以稳定替代默认完整保护流程。
+- 当前结论是：大量 protected token 并非越多越好，会增加提示上下文、restore 复杂度，并可能妨碍符合中文习惯的自然语序调整；完全 raw 又不能稳定保护 present 机器结构。长期方向应为“原始页面优先 + 少量真正高风险机器结构保护 + 严格统一 validator + 针对性 retry feedback”。目前暂停继续扩大 minimal-protect，不主动为每种潜在结构增加保护规则；成熟的默认 protected-token 流程继续作为正式翻译路径。
+- 正式翻译状态与 candidate 已恢复至实验前状态；真实实验 attempts 审计继续保留在 `data/translation-runs`。
 
 ## zh-CN 翻译进度
 
@@ -51,6 +60,7 @@
 
 ## 后续策略
 
+- 停止本轮输入架构探索，回到原计划开始普通 pending 页面的自动试跑；仅针对真实翻译过程中出现的失败继续修复，后续有余量时再根据本轮审计数据继续简化保护架构。
 - 不再长期按课程顺序逐页人工推进。代表性校准页面总序列已固定为：`generics/1`、`flowcontrol/8`、`methods/16`、`methods/20`、`concurrency/7`、`concurrency/11`、`methods/24`；前四页已 ready。
 - 第 5 页为 `concurrency/7`：唯一包含 `.image` 的正式课程页面，覆盖 `.image` directive、图片与正文混排、非尾部 directive 的 Section 归属，以及 `javascript:click('.next-page')` 链接。
 - 第 6 页为 `concurrency/11`：长篇多段说明与高密度链接组合，覆盖大量 link target、跨段链接、`slides` 强制 glossary label，以及无代码/directive 的长文本翻译。
