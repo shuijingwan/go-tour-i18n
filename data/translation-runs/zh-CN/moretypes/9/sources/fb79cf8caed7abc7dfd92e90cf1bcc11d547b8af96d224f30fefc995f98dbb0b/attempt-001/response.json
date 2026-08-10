@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "202608101628092da06322c30d4a1d",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 1612,
+    "completion_tokens": 103,
+    "total_tokens": 1715
+  },
+  "content": "* 切片字面量\n\n切片字面量类似于数组字面量，只是不需要指定长度。\n\n下面是一个数组字面量：\n\n⟪GTI18N_fb79cf8c_000001⟫\n\n而下面这段代码会先创建与上面相同的数组，\n然后构建一个引用该数组的切片：\n\n⟪GTI18N_fb79cf8c_000002⟫\n\n⟪GTI18N_fb79cf8c_000003⟫",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 切片字面量\n\n切片字面量类似于数组字面量，只是不需要指定长度。\n\n下面是一个数组字面量：\n\n⟪GTI18N_fb79cf8c_000001⟫\n\n而下面这段代码会先创建与上面相同的数组，\n然后构建一个引用该数组的切片：\n\n⟪GTI18N_fb79cf8c_000002⟫\n\n⟪GTI18N_fb79cf8c_000003⟫",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786350491,
+    "id": "202608101628092da06322c30d4a1d",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "202608101628092da06322c30d4a1d",
+    "usage": {
+      "completion_tokens": 103,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 1612,
+      "prompt_tokens_details": {
+        "cached_tokens": 512
+      },
+      "total_tokens": 1715
+    }
+  }
+}

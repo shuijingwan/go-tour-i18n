@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "20260810162853f539c60f2f1e4d8c",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 2098,
+    "completion_tokens": 215,
+    "total_tokens": 2313
+  },
+  "content": "* 使用 make 创建切片\n\n可以使用内置的 ⟪GTI18N_d057e6bf_000001⟫make⟪GTI18N_d057e6bf_000002⟫ 函数创建切片，这也是创建动态大小数组的方式。\n\n⟪GTI18N_d057e6bf_000003⟫make⟪GTI18N_d057e6bf_000004⟫ 函数会分配一个零值数组，并返回一个引用该数组的切片：\n\n⟪GTI18N_d057e6bf_000005⟫\n\n要指定容量，可以向 ⟪GTI18N_d057e6bf_000006⟫make⟪GTI18N_d057e6bf_000007⟫ 传入第三个参数：\n\n⟪GTI18N_d057e6bf_000008⟫\n\n⟪GTI18N_d057e6bf_000009⟫\n\n",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 使用 make 创建切片\n\n可以使用内置的 ⟪GTI18N_d057e6bf_000001⟫make⟪GTI18N_d057e6bf_000002⟫ 函数创建切片，这也是创建动态大小数组的方式。\n\n⟪GTI18N_d057e6bf_000003⟫make⟪GTI18N_d057e6bf_000004⟫ 函数会分配一个零值数组，并返回一个引用该数组的切片：\n\n⟪GTI18N_d057e6bf_000005⟫\n\n要指定容量，可以向 ⟪GTI18N_d057e6bf_000006⟫make⟪GTI18N_d057e6bf_000007⟫ 传入第三个参数：\n\n⟪GTI18N_d057e6bf_000008⟫\n\n⟪GTI18N_d057e6bf_000009⟫\n\n",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786350536,
+    "id": "20260810162853f539c60f2f1e4d8c",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "20260810162853f539c60f2f1e4d8c",
+    "usage": {
+      "completion_tokens": 215,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 2098,
+      "prompt_tokens_details": {
+        "cached_tokens": 512
+      },
+      "total_tokens": 2313
+    }
+  }
+}

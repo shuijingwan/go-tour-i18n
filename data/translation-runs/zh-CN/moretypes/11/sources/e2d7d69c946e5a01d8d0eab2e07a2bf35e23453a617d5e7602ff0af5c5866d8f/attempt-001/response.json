@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "20260810162829d3bc6dc76d26428d",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 2299,
+    "completion_tokens": 306,
+    "total_tokens": 2605
+  },
+  "content": "* 切片的长度与容量\n\n切片既有⟪GTI18N_e2d7d69c_000001⟫长度⟪GTI18N_e2d7d69c_000002⟫，也有⟪GTI18N_e2d7d69c_000003⟫容量⟪GTI18N_e2d7d69c_000004⟫。\n\n切片的长度是指它所包含的元素个数。\n\n切片的容量是指从切片的第一个元素开始算起，其底层数组中的元素个数。\n\n通过表达式 ⟪GTI18N_e2d7d69c_000007⟫len(s)⟪GTI18N_e2d7d69c_000008⟫ 和 ⟪GTI18N_e2d7d69c_000009⟫cap(s)⟪GTI18N_e2d7d69c_000010⟫ 可以获取切片 ⟪GTI18N_e2d7d69c_000005⟫s⟪GTI18N_e2d7d69c_000006⟫ 的长度和容量。\n\n只要切片的容量足够，就可以通过重新切片来扩展它的长度。试着修改示例程序中的某个切片操作，将其扩展到超出容量，看看会发生什么。\n\n⟪GTI18N_e2d7d69c_000011⟫\n",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 切片的长度与容量\n\n切片既有⟪GTI18N_e2d7d69c_000001⟫长度⟪GTI18N_e2d7d69c_000002⟫，也有⟪GTI18N_e2d7d69c_000003⟫容量⟪GTI18N_e2d7d69c_000004⟫。\n\n切片的长度是指它所包含的元素个数。\n\n切片的容量是指从切片的第一个元素开始算起，其底层数组中的元素个数。\n\n通过表达式 ⟪GTI18N_e2d7d69c_000007⟫len(s)⟪GTI18N_e2d7d69c_000008⟫ 和 ⟪GTI18N_e2d7d69c_000009⟫cap(s)⟪GTI18N_e2d7d69c_000010⟫ 可以获取切片 ⟪GTI18N_e2d7d69c_000005⟫s⟪GTI18N_e2d7d69c_000006⟫ 的长度和容量。\n\n只要切片的容量足够，就可以通过重新切片来扩展它的长度。试着修改示例程序中的某个切片操作，将其扩展到超出容量，看看会发生什么。\n\n⟪GTI18N_e2d7d69c_000011⟫\n",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786350515,
+    "id": "20260810162829d3bc6dc76d26428d",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "20260810162829d3bc6dc76d26428d",
+    "usage": {
+      "completion_tokens": 306,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 2299,
+      "prompt_tokens_details": {
+        "cached_tokens": 512
+      },
+      "total_tokens": 2605
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "20260810162819dcc7b65258074a06",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 1638,
+    "completion_tokens": 117,
+    "total_tokens": 1755
+  },
+  "content": "* 切片的默认行为\n\n在对切片进行切片操作时，可以省略上界或下界，此时会使用它们的默认值。\n\n下界的默认值为零，上界的默认值为底层的切片或数组的长度。\n\n对于数组\n\n⟪GTI18N_36d1f92f_000001⟫\n\n这些切片表达式是等价的：\n\n⟪GTI18N_36d1f92f_000002⟫\n\n⟪GTI18N_36d1f92f_000003⟫\n\n",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 切片的默认行为\n\n在对切片进行切片操作时，可以省略上界或下界，此时会使用它们的默认值。\n\n下界的默认值为零，上界的默认值为底层的切片或数组的长度。\n\n对于数组\n\n⟪GTI18N_36d1f92f_000001⟫\n\n这些切片表达式是等价的：\n\n⟪GTI18N_36d1f92f_000002⟫\n\n⟪GTI18N_36d1f92f_000003⟫\n\n",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786350502,
+    "id": "20260810162819dcc7b65258074a06",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "20260810162819dcc7b65258074a06",
+    "usage": {
+      "completion_tokens": 117,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 1638,
+      "prompt_tokens_details": {
+        "cached_tokens": 512
+      },
+      "total_tokens": 1755
+    }
+  }
+}

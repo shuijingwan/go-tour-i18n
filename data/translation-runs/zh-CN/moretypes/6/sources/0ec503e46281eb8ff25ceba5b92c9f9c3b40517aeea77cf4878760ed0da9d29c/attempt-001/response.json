@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "202608101627340457973fc0294107",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 2234,
+    "completion_tokens": 273,
+    "total_tokens": 2507
+  },
+  "content": "* 数组\n\n类型 ⟪GTI18N_0ec503e4_000001⟫[n]T⟪GTI18N_0ec503e4_000002⟫ 表示一个包含 ⟪GTI18N_0ec503e4_000003⟫n⟪GTI18N_0ec503e4_000004⟫ 个 ⟪GTI18N_0ec503e4_000005⟫T⟪GTI18N_0ec503e4_000006⟫ 类型值的数组。\n\n表达式\n\n⟪GTI18N_0ec503e4_000007⟫\n\n声明了变量 ⟪GTI18N_0ec503e4_000008⟫a⟪GTI18N_0ec503e4_000009⟫，它是一个包含十个整数的数组。\n\n数组的长度是类型的一部分，因此数组无法改变大小。这看似是个限制，但不必担心；⟪GTI18N_0ec503e4_000010⟫ 提供了一种操作数组的便捷方式。\n\n⟪GTI18N_0ec503e4_000011⟫\n",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 数组\n\n类型 ⟪GTI18N_0ec503e4_000001⟫[n]T⟪GTI18N_0ec503e4_000002⟫ 表示一个包含 ⟪GTI18N_0ec503e4_000003⟫n⟪GTI18N_0ec503e4_000004⟫ 个 ⟪GTI18N_0ec503e4_000005⟫T⟪GTI18N_0ec503e4_000006⟫ 类型值的数组。\n\n表达式\n\n⟪GTI18N_0ec503e4_000007⟫\n\n声明了变量 ⟪GTI18N_0ec503e4_000008⟫a⟪GTI18N_0ec503e4_000009⟫，它是一个包含十个整数的数组。\n\n数组的长度是类型的一部分，因此数组无法改变大小。这看似是个限制，但不必担心；⟪GTI18N_0ec503e4_000010⟫ 提供了一种操作数组的便捷方式。\n\n⟪GTI18N_0ec503e4_000011⟫\n",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786350458,
+    "id": "202608101627340457973fc0294107",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "202608101627340457973fc0294107",
+    "usage": {
+      "completion_tokens": 273,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 2234,
+      "prompt_tokens_details": {
+        "cached_tokens": 512
+      },
+      "total_tokens": 2507
+    }
+  }
+}

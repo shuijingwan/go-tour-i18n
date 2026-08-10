@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "20260810162709f11cff790cf640ec",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 2110,
+    "completion_tokens": 224,
+    "total_tokens": 2334
+  },
+  "content": "* 指向结构体的指针\n\n可以通过结构体指针来访问结构体字段。\n\n如果我们有结构体指针 ⟪GTI18N_29695d33_000003⟫p⟪GTI18N_29695d33_000004⟫，想要访问结构体的字段 ⟪GTI18N_29695d33_000001⟫X⟪GTI18N_29695d33_000002⟫，可以写\n成 ⟪GTI18N_29695d33_000005⟫(*p).X⟪GTI18N_29695d33_000006⟫。\n但这种写法很繁琐，因此语言允许我们直接写\n⟪GTI18N_29695d33_000007⟫p.X⟪GTI18N_29695d33_000008⟫，无需显式解引用。\n\n⟪GTI18N_29695d33_000009⟫",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 指向结构体的指针\n\n可以通过结构体指针来访问结构体字段。\n\n如果我们有结构体指针 ⟪GTI18N_29695d33_000003⟫p⟪GTI18N_29695d33_000004⟫，想要访问结构体的字段 ⟪GTI18N_29695d33_000001⟫X⟪GTI18N_29695d33_000002⟫，可以写\n成 ⟪GTI18N_29695d33_000005⟫(*p).X⟪GTI18N_29695d33_000006⟫。\n但这种写法很繁琐，因此语言允许我们直接写\n⟪GTI18N_29695d33_000007⟫p.X⟪GTI18N_29695d33_000008⟫，无需显式解引用。\n\n⟪GTI18N_29695d33_000009⟫",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786350433,
+    "id": "20260810162709f11cff790cf640ec",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "20260810162709f11cff790cf640ec",
+    "usage": {
+      "completion_tokens": 224,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 2110,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "total_tokens": 2334
+    }
+  }
+}

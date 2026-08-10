@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "202608101628449bd818a0cfad4b5b",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 1693,
+    "completion_tokens": 88,
+    "total_tokens": 1781
+  },
+  "content": "* nil 切片\n\n切片的零值是 ⟪GTI18N_e7a4bb0d_000001⟫nil⟪GTI18N_e7a4bb0d_000002⟫。\n\nnil 切片的长度和容量均为 0，并且没有底层数组。\n\n⟪GTI18N_e7a4bb0d_000003⟫\n\n",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* nil 切片\n\n切片的零值是 ⟪GTI18N_e7a4bb0d_000001⟫nil⟪GTI18N_e7a4bb0d_000002⟫。\n\nnil 切片的长度和容量均为 0，并且没有底层数组。\n\n⟪GTI18N_e7a4bb0d_000003⟫\n\n",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786350526,
+    "id": "202608101628449bd818a0cfad4b5b",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "202608101628449bd818a0cfad4b5b",
+    "usage": {
+      "completion_tokens": 88,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 1693,
+      "prompt_tokens_details": {
+        "cached_tokens": 512
+      },
+      "total_tokens": 1781
+    }
+  }
+}

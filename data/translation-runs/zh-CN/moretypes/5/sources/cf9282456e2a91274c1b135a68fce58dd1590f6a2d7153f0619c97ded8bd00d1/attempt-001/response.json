@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "202608101627221af7cfc0817c43e9",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 1825,
+    "completion_tokens": 140,
+    "total_tokens": 1965
+  },
+  "content": "* 结构体字面量\n\n结构体字面量通过列出其字段的值来表示一个新分配的结构体值。\n\n使用 ⟪GTI18N_cf928245_000001⟫Name:⟪GTI18N_cf928245_000002⟫ 语法可以只列出部分字段。（已命名字段的顺序无关紧要。）\n\n特殊前缀 ⟪GTI18N_cf928245_000003⟫\u0026⟪GTI18N_cf928245_000004⟫ 返回指向该结构体值的指针。\n\n⟪GTI18N_cf928245_000005⟫\n",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 结构体字面量\n\n结构体字面量通过列出其字段的值来表示一个新分配的结构体值。\n\n使用 ⟪GTI18N_cf928245_000001⟫Name:⟪GTI18N_cf928245_000002⟫ 语法可以只列出部分字段。（已命名字段的顺序无关紧要。）\n\n特殊前缀 ⟪GTI18N_cf928245_000003⟫\u0026⟪GTI18N_cf928245_000004⟫ 返回指向该结构体值的指针。\n\n⟪GTI18N_cf928245_000005⟫\n",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786350445,
+    "id": "202608101627221af7cfc0817c43e9",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "202608101627221af7cfc0817c43e9",
+    "usage": {
+      "completion_tokens": 140,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 1825,
+      "prompt_tokens_details": {
+        "cached_tokens": 512
+      },
+      "total_tokens": 1965
+    }
+  }
+}

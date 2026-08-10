@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "202608101627451c0338b147cc4e4d",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 2117,
+    "completion_tokens": 245,
+    "total_tokens": 2362
+  },
+  "content": "* 切片\n\n数组具有固定长度。而切片则是数组的动态长度、灵活视图。在实际使用中，切片比数组更为常见。\n\n类型 ⟪GTI18N_a169cf48_000001⟫[]T⟪GTI18N_a169cf48_000002⟫ 是一个元素类型为 ⟪GTI18N_a169cf48_000003⟫T⟪GTI18N_a169cf48_000004⟫ 的切片。\n\n切片通过指定两个索引（下界和上界）来生成，两者以冒号分隔：\n\n⟪GTI18N_a169cf48_000005⟫\n\n这会选中一个半开区间，包含第一个元素，但排除最后一个元素。\n\n以下表达式会创建一个切片，包含 ⟪GTI18N_a169cf48_000006⟫a⟪GTI18N_a169cf48_000007⟫ 的第 1 到第 3 个元素：\n\n⟪GTI18N_a169cf48_000008⟫\n\n⟪GTI18N_a169cf48_000009⟫\n\n",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 切片\n\n数组具有固定长度。而切片则是数组的动态长度、灵活视图。在实际使用中，切片比数组更为常见。\n\n类型 ⟪GTI18N_a169cf48_000001⟫[]T⟪GTI18N_a169cf48_000002⟫ 是一个元素类型为 ⟪GTI18N_a169cf48_000003⟫T⟪GTI18N_a169cf48_000004⟫ 的切片。\n\n切片通过指定两个索引（下界和上界）来生成，两者以冒号分隔：\n\n⟪GTI18N_a169cf48_000005⟫\n\n这会选中一个半开区间，包含第一个元素，但排除最后一个元素。\n\n以下表达式会创建一个切片，包含 ⟪GTI18N_a169cf48_000006⟫a⟪GTI18N_a169cf48_000007⟫ 的第 1 到第 3 个元素：\n\n⟪GTI18N_a169cf48_000008⟫\n\n⟪GTI18N_a169cf48_000009⟫\n\n",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786350470,
+    "id": "202608101627451c0338b147cc4e4d",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "202608101627451c0338b147cc4e4d",
+    "usage": {
+      "completion_tokens": 245,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 2117,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "total_tokens": 2362
+    }
+  }
+}
