@@ -37,14 +37,12 @@
 ## zh-CN 翻译进度
 
 - 正式发布投影共 103 页，另保留 2 条条件源页面审计记录。
-- 当前正式页面 103 页，其中 ready 12 页、pending 91 页、blocked 0 页；新增完成 `methods/20`。
-- `generics/1` 为 `ready`、Attempts=5。五次 attempt 均完整保留：依次暴露网络沙箱失败、token 重复、inline-code 边界失败、token 换序，最终第五次通过全部自动校验。
-- `flowcontrol/8` 为 `ready`、Attempts=1。GLM-5.2 第一次翻译即通过 token、present 和结构校验；本页覆盖 legacy inline code、两个链接、预格式化代码、注意段和 `.play`。
-- `methods/16` 为 `ready`、Attempts=2。attempt-001 因模型翻译教学代码注释而被旧版预格式化代码逐字校验拒绝；增强安全注释翻译与强调结构校验后，attempt-002 通过，人工润色、candidate validate 和浏览器预览均已完成。
-- `methods/20` 为 `ready`、Attempts=1。attempt-001 的 GLM-5.2 API 调用成功、`finish_reason=stop`，并完整保留 16 个 protected token；旧版全局 token 顺序规则因 link target / `Sqrt`、`error` / 预格式化代码块、`fmt.Sprint(e)` / `Error` 三组自然中文语序调整而错误拒绝。分析确认技术含义与 present 结构均未改变；通用规则修复后对原 response 的确定性回放通过完整 candidate validation，未调用 attempt-002。经人工润色、candidate validate、本地 HTTP 预览和浏览器人工检查后进入 ready；attempt-001 原始失败 response/validation 历史证据继续保留。
-- 当前已验证 GLM-5.2 在前三个正式 Basics 技术页面中没有出现技术性误译或结构损坏：`basics/1` 可直接通过，`basics/2`、`basics/3` 经轻微人工润色后定稿。
-- `generics/1` 已完成人工润色和重新校验，并通过本地 HTTP 与浏览器预览。
-- `flowcontrol/8` 自动校验通过后，人工发现并修正了“找到最接近 x 的 z”这一技术含义偏差；润色后的 candidate validate 通过，本地 HTTP 和浏览器预览正常。
+- 当前正式页面 103 页：`ready=45`、`pending=58`、`blocked=0`。
+- 第三批普通页面已完成，以下 10/10 页面均为 `ready`，canonical candidate 均已通过统一 `candidate validate`：`flowcontrol/7`、`flowcontrol/9`、`flowcontrol/10`、`flowcontrol/11`、`flowcontrol/12`、`flowcontrol/13`、`flowcontrol/14`、`moretypes/1`、`moretypes/2`、`moretypes/3`。
+- 本轮首次翻译 Prompt 校准确认：Protected Token 不仅保护 payload，也具有结构角色。inline pair 可随中文语序整体移动，但必须继续作为行内结构；static preformatted token 代表独立 block；directive token 代表独立 directive 行；教学注释中的 identifier token 代表恢复后仍须词法独立的 Go 标识符。不恢复 protected token 的全局原始顺序，也不限制正常中文语序调整。
+- static preformatted 输入边界的真实根因已修复：原 static span 把尾部 block separator 纳入 payload，整体 token 化后会将源中的 `TOKEN\n\nprose` 退化为 `TOKENprose`。现在仅调整 `protectedPreformattedStatic` 的翻译输入保护右边界，保留 source 中原有 separator 于 token 外；restore 仍逐字节 round-trip，`preformattedBlocks` 与 validator 的 Present block 语义不变。
+- `protectedPreformattedIdentifier` 原本已存在，缺少的是首次 Prompt 的角色说明。现在明确要求其在教学注释中原样保留，恢复后仍是词法独立的 Go 标识符，且不得与自然语言字符拼接。
+- retry feedback 仍接收 `[]string` validation failures。曾因固定 diagnostic suffix 含有 `directive`，使字符串匹配将 preformatted/font failure 误分为 directive；当前通过分类前剥离固定 suffix，并将 preformatted、font/emphasis 分类置于 generic directive 前修复。结构化 failure kind/code 仅是未来可选优化，不是当前待办。
 
 本阶段 glossary 已新增 preferred 术语：`standard library` → `标准库`、`iteration` → `迭代`、`loop condition` → `循环条件`。新增 mandatory 术语：`type switch`、`type switches` → `类型选择`，`type assertion`、`type assertions` → `类型断言`，`interface value` → `接口值`，`interface type` → `接口类型`，`concrete type` → `具体类型`。`square root`、`Newton's method`、`derivative` 等单页术语暂不加入。
 
@@ -52,18 +50,15 @@
 
 ## 本日完成
 
-- 完成 `methods/20` 代表页的完整源与 present 结构分析。
-- 完成 `methods/20` attempt-001：GLM-5.2 成功返回，但暴露 protected token 全局顺序会误判跨语言自然语序的问题。
-- 完成通用 token 恢复与 candidate 校验规则修复，并以 `methods/20` 保存的真实 response 进行确定性回放且通过完整校验。
-- 完成 `methods/20` 人工润色、candidate validate、本地 HTTP 预览和浏览器人工检查；页面最终为 ready / Attempts=1，未创建 attempt-002，attempt-001 的历史失败证据保留。
-- 已同步 `TestCommittedStatus` 基线；`go test ./internal/i18n` 完整通过。
+- 完成第三批 10 个普通 pending 页面的真实 GLM-5.2 翻译与审计，全部最终进入 ready。
+- `flowcontrol/10` 在补充 token 结构角色说明后的干净首次回归一次通过。
+- `moretypes/1` 依次完成 static block 输入边界、教学注释 identifier Prompt 角色说明校准；干净首次回归通过。最终候选的两条教学注释已人工润色为“通过指针 p 读取 i / 通过指针 p 设置 i”，并重新通过统一校验。
+- 完成 retry feedback diagnostic suffix 误分类的局部修复与真实失败文本回归测试。
+- 本轮 prompt、preformatted 输入表示、retry feedback 与全量测试均已验证通过。
 
 ## 后续策略
 
-- 停止本轮输入架构探索，回到原计划开始普通 pending 页面的自动试跑；仅针对真实翻译过程中出现的失败继续修复，后续有余量时再根据本轮审计数据继续简化保护架构。
-- 不再长期按课程顺序逐页人工推进。代表性校准页面总序列已固定为：`generics/1`、`flowcontrol/8`、`methods/16`、`methods/20`、`concurrency/7`、`concurrency/11`、`methods/24`；前四页已 ready。
-- 第 5 页为 `concurrency/7`：唯一包含 `.image` 的正式课程页面，覆盖 `.image` directive、图片与正文混排、非尾部 directive 的 Section 归属，以及 `javascript:click('.next-page')` 链接。
-- 第 6 页为 `concurrency/11`：长篇多段说明与高密度链接组合，覆盖大量 link target、跨段链接、`slides` 强制 glossary label，以及无代码/directive 的长文本翻译。
-- 第 7 页为 `methods/24`：API 说明型页面，覆盖较长静态 interface 代码块、多个 API 链接、强调段与尾部 `.play` 的组合。
-- 完成上述三页后代表页总数达到 7 页；当前官方源没有 `.iframe` 或 `.code` 页面可供真实代表页验证，代表页校准阶段结束，随后自动试跑 10 个普通 pending 页面；试跑稳定后再批量翻译剩余页面。
-- 全量翻译不等于直接发布：失败页面进入重试或 blocked，通过页面仍需统一验证。
+- 第三批已完成并稳定。提交本轮改动后，继续第四批普通 pending 页面。
+- 继续使用默认 protected-token 翻译路径、现有首次 Prompt 结构角色说明、统一 candidate validation 与审计记录；仅在真实失败出现时进行最小、可回归验证的修复。
+- 不把 `flowcontrol/10`、`moretypes/1`、raw-input 对比或 static-block 调试作为当前待办；这些校准结论和历史证据已保留。
+- 全量翻译不等于直接发布：通过页面仍需统一验证与必要的人工审核，失败页面按既有重试或 blocked 流程处理。

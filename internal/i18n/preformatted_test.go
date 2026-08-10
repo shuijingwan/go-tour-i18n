@@ -164,6 +164,86 @@ func TestPreformattedStaticBlocksAreExactlyProtected(t *testing.T) {
 	}
 }
 
+func TestStaticPreformattedTokenLeavesFollowingSourceSeparatorVisible(t *testing.T) {
+	source := "* Static\n\n\tvalue := 1\n\nProse.\n"
+	p := protectTranslation([]byte(source), "12345678", nil)
+	static := protectedTokensOfKind(p, protectedPreformattedStatic)
+	if len(static) != 1 {
+		t.Fatalf("static tokens = %v", static)
+	}
+	if want := "\n\n" + static[0] + "\n\nProse."; !strings.Contains(p.Text, want) {
+		t.Fatalf("protected input missing source block boundaries %q:\n%s", want, p.Text)
+	}
+	if strings.Contains(p.Text, static[0]+"Prose.") {
+		t.Fatalf("static token absorbed following separator:\n%s", p.Text)
+	}
+	restored, failures := p.restore(p.Text)
+	if len(failures) != 0 || restored != source {
+		t.Fatalf("restore = %q, failures=%v; want %q", restored, failures, source)
+	}
+}
+
+func TestStaticPreformattedPayloadPreservesEOFAndDirectiveBoundaries(t *testing.T) {
+	tests := []struct {
+		name, source, suffix string
+	}{
+		{"EOF", "* EOF\n\n\tvalue := 1\n", ""},
+		{"directive", "* Directive\n\n\tvalue := 1\n\n.play example/value.go\n", "\n\n"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			p := protectTranslation([]byte(tt.source), "12345678", nil)
+			static := protectedTokensOfKind(p, protectedPreformattedStatic)
+			if len(static) != 1 {
+				t.Fatalf("static tokens = %v", static)
+			}
+			if tt.suffix == "" {
+				if !strings.HasSuffix(p.Text, static[0]) {
+					t.Fatalf("EOF static token has unexpected suffix:\n%s", p.Text)
+				}
+			} else if !strings.Contains(p.Text, static[0]+tt.suffix) {
+				t.Fatalf("static token lost directive separator %q:\n%s", tt.suffix, p.Text)
+			}
+			restored, failures := p.restore(p.Text)
+			if len(failures) != 0 || restored != tt.source {
+				t.Fatalf("restore = %q, failures=%v; want %q", restored, failures, tt.source)
+			}
+		})
+	}
+}
+
+func TestTourStaticPreformattedTokensRetainVisibleBoundaries(t *testing.T) {
+	root := repoRoot(t)
+	catalog, err := BuildCatalog(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, tt := range []struct {
+		pageID string
+		wants  []string
+	}{
+		{"flowcontrol/10", []string{"\n\n⟪GTI18N_e1479cae_000001⟫\n\ndoes not call"}},
+		{"moretypes/1", []string{"⟪GTI18N_7706eaf0_000008⟫\n\nThe ", "⟪GTI18N_7706eaf0_000011⟫\n\nThe "}},
+	} {
+		t.Run(tt.pageID, func(t *testing.T) {
+			page, err := catalog.Page(tt.pageID)
+			if err != nil {
+				t.Fatal(err)
+			}
+			p := protectTranslation(page.Source, page.SourceSHA256, nil)
+			for _, want := range tt.wants {
+				if !strings.Contains(p.Text, want) {
+					t.Errorf("protected input missing %q:\n%s", want, p.Text)
+				}
+			}
+			restored, failures := p.restore(p.Text)
+			if len(failures) != 0 || restored != string(page.Source) {
+				t.Fatalf("restore failed: %v", failures)
+			}
+		})
+	}
+}
+
 func TestPreformattedStaticCommentsAndBlockCommentsCannotChange(t *testing.T) {
 	tests := []struct {
 		source, candidate string

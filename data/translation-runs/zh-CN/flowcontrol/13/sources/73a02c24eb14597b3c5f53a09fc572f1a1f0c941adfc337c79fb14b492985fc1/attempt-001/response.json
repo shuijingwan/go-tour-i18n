@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "202608101210192fa9cca9d50d40a0",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 1446,
+    "completion_tokens": 92,
+    "total_tokens": 1538
+  },
+  "content": "* 延迟调用的堆栈\n\n延迟的函数调用会被压入一个栈中。当函数返回时，其延迟调用会按后进先出的顺序执行。\n\n要了解有关 defer 语句的更多信息，请阅读这篇\n[[⟪GTI18N_73a02c24_000001⟫][博客文章]]。\n\n⟪GTI18N_73a02c24_000002⟫",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 延迟调用的堆栈\n\n延迟的函数调用会被压入一个栈中。当函数返回时，其延迟调用会按后进先出的顺序执行。\n\n要了解有关 defer 语句的更多信息，请阅读这篇\n[[⟪GTI18N_73a02c24_000001⟫][博客文章]]。\n\n⟪GTI18N_73a02c24_000002⟫",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786335021,
+    "id": "202608101210192fa9cca9d50d40a0",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "202608101210192fa9cca9d50d40a0",
+    "usage": {
+      "completion_tokens": 92,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 1446,
+      "prompt_tokens_details": {
+        "cached_tokens": 512
+      },
+      "total_tokens": 1538
+    }
+  }
+}

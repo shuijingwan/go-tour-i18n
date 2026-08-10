@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "202608101209360476de153a9e48f2",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 1982,
+    "completion_tokens": 296,
+    "total_tokens": 2278
+  },
+  "content": "* Switch\n\n⟪GTI18N_abdc4c29_000001⟫switch⟪GTI18N_abdc4c29_000002⟫ 语句是编写一连串 ⟪GTI18N_abdc4c29_000003⟫if`-`else⟪GTI18N_abdc4c29_000004⟫ 语句的简写方式。它会执行第一个值与条件表达式相等的 case。\n\n⟪GTI18N_abdc4c29_000005⟫ 的 switch 语句类似于 C、C++、Java、JavaScript 和 PHP 中的写法，但区别在于 ⟪GTI18N_abdc4c29_000006⟫ 只会执行选中的 case，而不会自动执行其后所有的 case。也就是说，那些语言中每个 case 末尾所需的 ⟪GTI18N_abdc4c29_000007⟫break⟪GTI18N_abdc4c29_000008⟫ 语句在 ⟪GTI18N_abdc4c29_000009⟫ 中是自动提供的。另一个重要区别是，⟪GTI18N_abdc4c29_000010⟫ 的 switch case 不必是常量，涉及的值也不必是整数。\n\n⟪GTI18N_abdc4c29_000011⟫",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* Switch\n\n⟪GTI18N_abdc4c29_000001⟫switch⟪GTI18N_abdc4c29_000002⟫ 语句是编写一连串 ⟪GTI18N_abdc4c29_000003⟫if`-`else⟪GTI18N_abdc4c29_000004⟫ 语句的简写方式。它会执行第一个值与条件表达式相等的 case。\n\n⟪GTI18N_abdc4c29_000005⟫ 的 switch 语句类似于 C、C++、Java、JavaScript 和 PHP 中的写法，但区别在于 ⟪GTI18N_abdc4c29_000006⟫ 只会执行选中的 case，而不会自动执行其后所有的 case。也就是说，那些语言中每个 case 末尾所需的 ⟪GTI18N_abdc4c29_000007⟫break⟪GTI18N_abdc4c29_000008⟫ 语句在 ⟪GTI18N_abdc4c29_000009⟫ 中是自动提供的。另一个重要区别是，⟪GTI18N_abdc4c29_000010⟫ 的 switch case 不必是常量，涉及的值也不必是整数。\n\n⟪GTI18N_abdc4c29_000011⟫",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786334979,
+    "id": "202608101209360476de153a9e48f2",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "202608101209360476de153a9e48f2",
+    "usage": {
+      "completion_tokens": 296,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 1982,
+      "prompt_tokens_details": {
+        "cached_tokens": 512
+      },
+      "total_tokens": 2278
+    }
+  }
+}

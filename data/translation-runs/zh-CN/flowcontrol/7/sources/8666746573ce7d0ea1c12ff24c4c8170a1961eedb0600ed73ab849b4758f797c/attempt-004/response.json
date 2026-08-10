@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "20260810120918501958c8b7ed4bc5",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 2110,
+    "completion_tokens": 244,
+    "total_tokens": 2354
+  },
+  "content": "* if 与 else\n\n在 ⟪GTI18N_86667465_000001⟫if⟪GTI18N_86667465_000002⟫ 简短语句中声明的变量，在任何 ⟪GTI18N_86667465_000003⟫else⟪GTI18N_86667465_000004⟫ 块中同样可用。\n\n（在 ⟪GTI18N_86667465_000009⟫main⟪GTI18N_86667465_000010⟫ 开始执行之前，对 ⟪GTI18N_86667465_000005⟫pow⟪GTI18N_86667465_000006⟫ 的两次调用都已返回结果，随后才会调用 ⟪GTI18N_86667465_000007⟫fmt.Println⟪GTI18N_86667465_000008⟫。）\n\n⟪GTI18N_86667465_000011⟫",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* if 与 else\n\n在 ⟪GTI18N_86667465_000001⟫if⟪GTI18N_86667465_000002⟫ 简短语句中声明的变量，在任何 ⟪GTI18N_86667465_000003⟫else⟪GTI18N_86667465_000004⟫ 块中同样可用。\n\n（在 ⟪GTI18N_86667465_000009⟫main⟪GTI18N_86667465_000010⟫ 开始执行之前，对 ⟪GTI18N_86667465_000005⟫pow⟪GTI18N_86667465_000006⟫ 的两次调用都已返回结果，随后才会调用 ⟪GTI18N_86667465_000007⟫fmt.Println⟪GTI18N_86667465_000008⟫。）\n\n⟪GTI18N_86667465_000011⟫",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786334962,
+    "id": "20260810120918501958c8b7ed4bc5",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "20260810120918501958c8b7ed4bc5",
+    "usage": {
+      "completion_tokens": 244,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 2110,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "total_tokens": 2354
+    }
+  }
+}

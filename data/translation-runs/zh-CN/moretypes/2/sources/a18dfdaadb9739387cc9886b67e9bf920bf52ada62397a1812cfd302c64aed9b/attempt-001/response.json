@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "20260810121101b9edec3482b24df4",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 1559,
+    "completion_tokens": 60,
+    "total_tokens": 1619
+  },
+  "content": "* 结构体\n\n⟪GTI18N_a18dfdaa_000001⟫struct⟪GTI18N_a18dfdaa_000002⟫ 是字段的集合。\n\n⟪GTI18N_a18dfdaa_000003⟫",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 结构体\n\n⟪GTI18N_a18dfdaa_000001⟫struct⟪GTI18N_a18dfdaa_000002⟫ 是字段的集合。\n\n⟪GTI18N_a18dfdaa_000003⟫",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786335062,
+    "id": "20260810121101b9edec3482b24df4",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "20260810121101b9edec3482b24df4",
+    "usage": {
+      "completion_tokens": 60,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 1559,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "total_tokens": 1619
+    }
+  }
+}

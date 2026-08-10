@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "20260810121109fba2ec3f2fb04380",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 1393,
+    "completion_tokens": 33,
+    "total_tokens": 1426
+  },
+  "content": "* 结构体字段\n\n通过点号来访问结构体字段。\n\n⟪GTI18N_0be9cb4a_000001⟫",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 结构体字段\n\n通过点号来访问结构体字段。\n\n⟪GTI18N_0be9cb4a_000001⟫",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786335071,
+    "id": "20260810121109fba2ec3f2fb04380",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "20260810121109fba2ec3f2fb04380",
+    "usage": {
+      "completion_tokens": 33,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 1393,
+      "prompt_tokens_details": {
+        "cached_tokens": 512
+      },
+      "total_tokens": 1426
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "20260810121003d1cf14a6fd314c88",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 1592,
+    "completion_tokens": 91,
+    "total_tokens": 1683
+  },
+  "content": "* 无条件 switch\n\n不带条件的 switch 相当于 ⟪GTI18N_714b67f4_000001⟫switch`true⟪GTI18N_714b67f4_000002⟫。\n\n这种写法可以用来简洁地编写长串的 if-then-else 链。\n\n⟪GTI18N_714b67f4_000003⟫",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 无条件 switch\n\n不带条件的 switch 相当于 ⟪GTI18N_714b67f4_000001⟫switch`true⟪GTI18N_714b67f4_000002⟫。\n\n这种写法可以用来简洁地编写长串的 if-then-else 链。\n\n⟪GTI18N_714b67f4_000003⟫",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786335005,
+    "id": "20260810121003d1cf14a6fd314c88",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "20260810121003d1cf14a6fd314c88",
+    "usage": {
+      "completion_tokens": 91,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 1592,
+      "prompt_tokens_details": {
+        "cached_tokens": 512
+      },
+      "total_tokens": 1683
+    }
+  }
+}

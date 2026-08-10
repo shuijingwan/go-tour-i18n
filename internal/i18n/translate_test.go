@@ -857,10 +857,10 @@ func TestTranslationRequestIncludesNaturalChineseGuidance(t *testing.T) {
 	user := request.Messages[1].Content
 	for _, want := range []string{
 		"唯一占位符",
-		"恰好输出一次",
+		"输出中也必须恰好包含",
 		"不得复制",
-		"不得复用",
-		"完整保持所属语义单元和结构关系",
+		"带有结构角色",
+		"始终保持原有结构角色和所属关系",
 		fmt.Sprintf("本页共有 %d 个保护 token，输出中也必须恰好包含 %d 个。", len(protected.Tokens), len(protected.Tokens)),
 	} {
 		if !strings.Contains(user, want) {
@@ -1126,9 +1126,9 @@ func TestTranslationRequestExplainsDynamicPairProtocol(t *testing.T) {
 	inline := protected.InlinePairs[0]
 	emphasis := emphasisPairsForPrompt(protected)[0]
 	for _, want := range []string{
-		inline.Open, inline.Close, "两者之间当前可见的代码内容必须逐字原样保留在同一 pair 内", "不得翻译、改写、增删、移出 pair", "不得自行添加反引号", "反引号由程序恢复",
-		emphasis.Open, emphasis.Close, "两者之间的自然语言允许翻译", "译文必须始终留在同一 pair 内", "不得将成对结构 token 拆散或独立移动", "不同的完整 pair 可为自然语序随各自的语义单元整体换位",
-		"directive、链接 target、keep-word 等单 token 结构仍只能原样、唯一保留",
+		inline.Open, inline.Close, "两者之间当前可见的代码内容必须逐字原样保留在同一 pair 内", "不得翻译、改写、增删、移出 pair", "不得自行添加反引号", "反引号由程序恢复", "必须继续作为行内结构存在", "不得插入、贴入或跨越预格式化 block、directive 或其他块级结构边界",
+		emphasis.Open, emphasis.Close, "两者之间的自然语言允许翻译", "译文必须始终留在同一 pair 内", "不得将成对结构 token 拆散或独立移动", "不同的完整 pair 可随各自的语义单元整体换位",
+		"其他单 token 仍须原样、唯一地留在所属结构角色中",
 	} {
 		if !strings.Contains(user, want) {
 			t.Errorf("pair protocol missing %q:\n%s", want, user)
@@ -1147,6 +1147,66 @@ func TestTranslationRequestExplainsDynamicPairProtocol(t *testing.T) {
 	}
 }
 
+func TestTranslationRequestExplainsStaticBlocksAndDirectivesByRole(t *testing.T) {
+	source := []byte("* Source\n\n\tstatic := true\n\nUse `inline`.\n\n.play hidden/example.go\n")
+	protected := protectTranslation(source, sum(source), nil)
+	request := makeTranslationRequest("example/1", "zh-CN", protected, "- glossary rule", "")
+	user := request.Messages[1].Content
+	static := protectedTokensOfKind(protected, protectedPreformattedStatic)
+	directive := protectedTokensOfKind(protected, protectedDirective)
+	if len(static) != 1 || len(directive) != 1 {
+		t.Fatalf("static=%v directive=%v", static, directive)
+	}
+	for _, want := range []string{
+		"静态预格式化 block：", static[0], "完整、独立的预格式化代码块", "不得嵌入普通段落、标题、列表或 directive 行", "不得与相邻自然语言合并",
+		"present directive：", directive[0], "完整 present directive 行", "不得嵌入普通文本或预格式化代码块", "不得自行手写新的 .play、.image 等 directive",
+	} {
+		if !strings.Contains(user, want) {
+			t.Errorf("role protocol missing %q:\n%s", want, user)
+		}
+	}
+	for _, forbidden := range []string{"hidden/example.go", ".play hidden", "所有 protected token 必须保持原始全局顺序", "不得调整 token 相对顺序"} {
+		if strings.Contains(user, forbidden) {
+			t.Errorf("role protocol contains forbidden %q:\n%s", forbidden, user)
+		}
+	}
+}
+
+func TestTranslationRequestExplainsPreformattedIdentifierRole(t *testing.T) {
+	source := []byte("* Source\n\n\tfmt.Println(p) // read p\n\n")
+	protected := protectTranslation(source, sum(source), nil)
+	request := makeTranslationRequest("example/1", "zh-CN", protected, "- glossary rule", "")
+	user := request.Messages[1].Content
+	identifiers := protectedTokensOfKind(protected, protectedPreformattedIdentifier)
+	if len(identifiers) != 1 {
+		t.Fatalf("preformatted identifier tokens = %v", identifiers)
+	}
+	for _, want := range []string{
+		"教学注释中的 Go 标识符：", identifiers[0], "教学注释中引用的 Go 源码标识符", "词法上独立的 Go 标识符识别", "不得翻译、删除、替换、改变拼写", "相邻中文、英文字母、数字、下划线等字符拼接", "整条注释可按自然中文语序翻译",
+	} {
+		if !strings.Contains(user, want) {
+			t.Errorf("identifier protocol missing %q:\n%s", want, user)
+		}
+	}
+	for _, forbidden := range []string{"所有 protected token 必须保持原始全局顺序", "不得调整 token 相对顺序", "保持原绝对位置"} {
+		if strings.Contains(user, forbidden) {
+			t.Errorf("identifier protocol contains forbidden %q:\n%s", forbidden, user)
+		}
+	}
+}
+
+func TestTranslationRequestOmitsAbsentBlockRoleProtocols(t *testing.T) {
+	source := []byte("* Source\n\nUse `inline`.\n")
+	protected := protectTranslation(source, sum(source), nil)
+	request := makeTranslationRequest("example/1", "zh-CN", protected, "- glossary rule", "")
+	user := request.Messages[1].Content
+	for _, forbidden := range []string{"静态预格式化 block：", "教学注释中的 Go 标识符：", "present directive："} {
+		if strings.Contains(user, forbidden) {
+			t.Errorf("unexpected role protocol %q:\n%s", forbidden, user)
+		}
+	}
+}
+
 func TestRetryFeedbackClassifiesFailuresWithoutEchoingDiagnostics(t *testing.T) {
 	tests := []struct {
 		name, failure string
@@ -1161,7 +1221,7 @@ func TestRetryFeedbackClassifiesFailuresWithoutEchoingDiagnostics(t *testing.T) 
 		},
 		{
 			name:      "directive",
-			failure:   `basics/6: protected structure validation failed: present directives mismatch at index 1: expected ".play basics/multiple-results.go", actual ".play basics/multiple-results.go 7,9"`,
+			failure:   `basics/6: protected structure validation failed: present directives mismatch at index 1: expected ".play basics/multiple-results.go", actual ".play basics/multiple-results.go 7,9"; check the named directive or protected content near the first difference`,
 			wants:     []string{"不得自行书写 .play、.image 等 present directive", "directive 只能通过已有保护 token 表示"},
 			forbidden: []string{"multiple-results.go", "7,9", "expected", "actual"},
 		},
@@ -1172,10 +1232,34 @@ func TestRetryFeedbackClassifiesFailuresWithoutEchoingDiagnostics(t *testing.T) 
 			forbidden: []string{"occurrence count", "token 4", "want 1"},
 		},
 		{
-			name:      "font",
-			failure:   "methods/24: protected structure validation failed: font span count mismatch: expected 10, actual 9",
+			name:      "preformatted static block with diagnostic suffix",
+			failure:   "preformatted code block mismatch at index 1: static preformatted block changed; check the named directive or protected content near the first difference",
+			wants:     []string{"预格式化代码或教学注释结构", "静态预格式化代码块必须保持独立 block"},
+			forbidden: []string{"directive", ".play", "static preformatted block changed"},
+		},
+		{
+			name:      "preformatted teaching comment identifier with diagnostic suffix",
+			failure:   "preformatted code block mismatch at index 3: line comment mismatch at index 1: referenced Go identifier count mismatch: expected 1, actual 0; check the named directive or protected content near the first difference",
+			wants:     []string{"预格式化代码或教学注释结构", "教学注释中的受保护 Go 标识符必须保持独立"},
+			forbidden: []string{"directive", ".play", "referenced Go identifier"},
+		},
+		{
+			name:      "font with diagnostic suffix",
+			failure:   "font span count mismatch: expected 5, actual 3; first difference index 4; check the named directive or protected content near the first difference",
 			wants:     []string{"强调或字体结构", "不得自行新增、删除或改变强调类型"},
-			forbidden: []string{"directive", ".play", "inline code", "expected 10"},
+			forbidden: []string{"directive", ".play", "inline code", "expected 5", "actual 3"},
+		},
+		{
+			name:      "present parse",
+			failure:   "present parse failed: malformed section",
+			wants:     []string{"不是可由 present 解析的完整页面"},
+			forbidden: []string{"directive 只能通过已有保护 token 表示"},
+		},
+		{
+			name:      "generic fallback",
+			failure:   "rendered page validation failed",
+			wants:     []string{"只重新翻译普通文本"},
+			forbidden: []string{"directive 只能通过已有保护 token 表示"},
 		},
 	}
 	for _, tt := range tests {

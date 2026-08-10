@@ -237,7 +237,7 @@ func preformattedProtectionSpans(text string) []protectedSpan {
 	for _, block := range preformattedBlocks(text) {
 		analysis := analyzePreformattedGo(block.Text)
 		if analysis.Static || !hasTranslatableComment(analysis.Comments) {
-			spans = append(spans, protectedSpan{start: block.Start, end: block.End, kind: protectedPreformattedStatic})
+			spans = append(spans, protectedSpan{start: block.Start, end: staticPreformattedPayloadEnd(text, block), kind: protectedPreformattedStatic})
 			continue
 		}
 
@@ -263,6 +263,34 @@ func preformattedProtectionSpans(text string) []protectedSpan {
 		}
 	}
 	return spans
+}
+
+// staticPreformattedPayloadEnd leaves the source separator after a static
+// preformatted block visible to the model. preformattedBlocks deliberately
+// owns those trailing blank lines for present validation, but replacing them
+// with the static token would otherwise make the token run directly into the
+// next prose or directive. At EOF there is no following structure to
+// separate, so retain the complete block payload.
+func staticPreformattedPayloadEnd(text string, block preformattedBlock) int {
+	if block.End == len(text) {
+		return block.End
+	}
+	end := block.End
+	for end > block.Start {
+		lineEnd := end
+		if text[lineEnd-1] == '\n' {
+			lineEnd--
+		}
+		lineStart := block.Start
+		if previous := strings.LastIndexByte(text[block.Start:lineEnd], '\n'); previous >= 0 {
+			lineStart += previous + 1
+		}
+		if lineStart != lineEnd {
+			return lineEnd
+		}
+		end = lineStart
+	}
+	return block.End
 }
 
 func hasTranslatableComment(comments []preformattedComment) bool {

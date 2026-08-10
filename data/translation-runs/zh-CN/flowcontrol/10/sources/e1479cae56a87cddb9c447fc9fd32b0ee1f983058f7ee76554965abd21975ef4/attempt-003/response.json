@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "20260810120952910e69628ced49fe",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 1776,
+    "completion_tokens": 136,
+    "total_tokens": 1912
+  },
+  "content": "* switch 的求值顺序\n\nswitch 的 case 语句从上到下逐一求值，在匹配成功时停止。\n\n（例如，\n\n当 ⟪GTI18N_e1479cae_000004⟫i==0⟪GTI18N_e1479cae_000005⟫ 时，⟪GTI18N_e1479cae_000001⟫ 不会调用 ⟪GTI18N_e1479cae_000002⟫f⟪GTI18N_e1479cae_000003⟫。）\n\n\n⟪GTI18N_e1479cae_000006⟫",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* switch 的求值顺序\n\nswitch 的 case 语句从上到下逐一求值，在匹配成功时停止。\n\n（例如，\n\n当 ⟪GTI18N_e1479cae_000004⟫i==0⟪GTI18N_e1479cae_000005⟫ 时，⟪GTI18N_e1479cae_000001⟫ 不会调用 ⟪GTI18N_e1479cae_000002⟫f⟪GTI18N_e1479cae_000003⟫。）\n\n\n⟪GTI18N_e1479cae_000006⟫",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786334994,
+    "id": "20260810120952910e69628ced49fe",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "20260810120952910e69628ced49fe",
+    "usage": {
+      "completion_tokens": 136,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 1776,
+      "prompt_tokens_details": {
+        "cached_tokens": 1728
+      },
+      "total_tokens": 1912
+    }
+  }
+}

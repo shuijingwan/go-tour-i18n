@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "20260810121040dd5a1fd306c24ddb",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 2410,
+    "completion_tokens": 465,
+    "total_tokens": 2875
+  },
+  "content": "* 指针\n\n⟪GTI18N_7706eaf0_000001⟫ 支持指针。\n指针保存值的内存地址。\n\n类型 ⟪GTI18N_7706eaf0_000002⟫*T⟪GTI18N_7706eaf0_000003⟫ 是指向 ⟪GTI18N_7706eaf0_000004⟫T⟪GTI18N_7706eaf0_000005⟫ 值的指针。它的零值是 ⟪GTI18N_7706eaf0_000006⟫nil⟪GTI18N_7706eaf0_000007⟫。\n\n⟪GTI18N_7706eaf0_000008⟫⟪GTI18N_7706eaf0_000009⟫\u0026⟪GTI18N_7706eaf0_000010⟫ 操作符会生成指向其操作数的指针。\n\n⟪GTI18N_7706eaf0_000011⟫⟪GTI18N_7706eaf0_000012⟫*⟪GTI18N_7706eaf0_000013⟫ 操作符表示指针所指向的底层值。\n\n⟪GTI18N_7706eaf0_000014⟫通过指针读取 i ⟪GTI18N_7706eaf0_000015⟫⟪GTI18N_7706eaf0_000016⟫通过指针设置 i ⟪GTI18N_7706eaf0_000017⟫⟪GTI18N_7706eaf0_000018⟫这被称为“解引用”或“间接引用”。\n\n与 C 不同，⟪GTI18N_7706eaf0_000019⟫ 没有指针运算。\n\n⟪GTI18N_7706eaf0_000020⟫\n",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 指针\n\n⟪GTI18N_7706eaf0_000001⟫ 支持指针。\n指针保存值的内存地址。\n\n类型 ⟪GTI18N_7706eaf0_000002⟫*T⟪GTI18N_7706eaf0_000003⟫ 是指向 ⟪GTI18N_7706eaf0_000004⟫T⟪GTI18N_7706eaf0_000005⟫ 值的指针。它的零值是 ⟪GTI18N_7706eaf0_000006⟫nil⟪GTI18N_7706eaf0_000007⟫。\n\n⟪GTI18N_7706eaf0_000008⟫⟪GTI18N_7706eaf0_000009⟫\u0026⟪GTI18N_7706eaf0_000010⟫ 操作符会生成指向其操作数的指针。\n\n⟪GTI18N_7706eaf0_000011⟫⟪GTI18N_7706eaf0_000012⟫*⟪GTI18N_7706eaf0_000013⟫ 操作符表示指针所指向的底层值。\n\n⟪GTI18N_7706eaf0_000014⟫通过指针读取 i ⟪GTI18N_7706eaf0_000015⟫⟪GTI18N_7706eaf0_000016⟫通过指针设置 i ⟪GTI18N_7706eaf0_000017⟫⟪GTI18N_7706eaf0_000018⟫这被称为“解引用”或“间接引用”。\n\n与 C 不同，⟪GTI18N_7706eaf0_000019⟫ 没有指针运算。\n\n⟪GTI18N_7706eaf0_000020⟫\n",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786335045,
+    "id": "20260810121040dd5a1fd306c24ddb",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "20260810121040dd5a1fd306c24ddb",
+    "usage": {
+      "completion_tokens": 465,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 2410,
+      "prompt_tokens_details": {
+        "cached_tokens": 2304
+      },
+      "total_tokens": 2875
+    }
+  }
+}

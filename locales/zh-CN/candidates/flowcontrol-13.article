@@ -1,0 +1,8 @@
+* 延迟调用的堆栈
+
+延迟的函数调用会被压入一个栈中。当函数返回时，其延迟调用会按后进先出的顺序执行。
+
+要了解有关 defer 语句的更多信息，请阅读这篇
+[[/blog/defer-panic-and-recover][博客文章]]。
+
+.play flowcontrol/defer-multi.go

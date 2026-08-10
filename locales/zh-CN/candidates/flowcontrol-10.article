@@ -1,0 +1,15 @@
+* Switch 的求值顺序
+
+Switch 分支从上到下依次求值，直到某个分支匹配成功为止。
+
+例如，
+
+	switch i {
+	case 0:
+	case f():
+	}
+
+在 `i==0` 时不会调用 `f`。
+
+
+.play flowcontrol/switch-evaluation-order.go

@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "202608101210128d9d60a351ca42ae",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 1424,
+    "completion_tokens": 61,
+    "total_tokens": 1485
+  },
+  "content": "* 延迟调用\n\ndefer 语句会延迟函数的执行，直到外围函数返回。\n\n被延迟调用的参数会立即求值，但函数调用本身要到外围函数返回时才会执行。\n\n⟪GTI18N_fa23a1d6_000001⟫",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 延迟调用\n\ndefer 语句会延迟函数的执行，直到外围函数返回。\n\n被延迟调用的参数会立即求值，但函数调用本身要到外围函数返回时才会执行。\n\n⟪GTI18N_fa23a1d6_000001⟫",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786335013,
+    "id": "202608101210128d9d60a351ca42ae",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "202608101210128d9d60a351ca42ae",
+    "usage": {
+      "completion_tokens": 61,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 1424,
+      "prompt_tokens_details": {
+        "cached_tokens": 512
+      },
+      "total_tokens": 1485
+    }
+  }
+}

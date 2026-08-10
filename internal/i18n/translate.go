@@ -286,12 +286,14 @@ func validateDevAttempts(dev bool, attempts int) (int, error) {
 // retryFeedback deliberately summarizes audited validation failures for the
 // model. Detailed source/candidate diagnostics stay in validation.json and are
 // never echoed into a subsequent model request.
+const retryDiagnosticSuffix = "; check the named directive or protected content near the first difference"
+
 func retryFeedback(failures []string) string {
 	return retryFeedbackForMode(failures, false, false)
 }
 
 func retryFeedbackForMode(failures []string, rawInput, minimalProtect bool) string {
-	joined := strings.ToLower(strings.Join(failures, "\n"))
+	joined := retryFailureCore(failures)
 	if strings.Contains(joined, "link inline code") {
 		return "上一次输出在链接显示文本中新增了源页面不存在的行内代码格式。不要给原本是普通文本的链接标签添加反引号或行内代码标记；保留源页面已有的链接 target 和已有行内代码结构。普通链接显示文字仍可正常翻译。请重新翻译完整页面。"
 	}
@@ -302,10 +304,12 @@ func retryFeedbackForMode(failures []string, rawInput, minimalProtect bool) stri
 		switch {
 		case strings.Contains(joined, "inline code"):
 			return "上一次输出改变了行内代码结构。请保留原有反引号代码的内容、数量和位置，不得自行新增或删除行内代码。请重新翻译完整页面，并保持所有 present 结构不变。"
-		case strings.Contains(joined, "directive"):
-			return "上一次输出改变了 present directive 结构。请逐字保留原有 .play、.image 等 directive，不得新增、删除或改写。请重新翻译完整页面，并保持所有 present 结构不变。"
+		case isPreformattedFailure(joined):
+			return "上一次输出改变了预格式化代码或教学注释结构。静态预格式化代码块必须保持独立 block，不得嵌入普通文本；教学注释中的受保护 Go 标识符必须保持独立，且不得改写代码本体或破坏注释与代码的结构关系。请重新翻译完整页面，并保持所有 present 结构不变。"
 		case strings.Contains(joined, "font span") || strings.Contains(joined, "emphasis"):
 			return "上一次输出破坏了强调或字体结构。必须保留所有已有强调结构标记；不得自行新增、删除或改变强调类型。请重新翻译完整页面，并保持所有 present 结构不变。"
+		case strings.Contains(joined, "directive"):
+			return "上一次输出改变了 present directive 结构。请逐字保留原有 .play、.image 等 directive，不得新增、删除或改写。请重新翻译完整页面，并保持所有 present 结构不变。"
 		default:
 			return "上一次输出未通过页面结构校验。请只翻译普通文本，完整保留原有行内代码、预格式化代码、directive、链接、链接 target、HTML 和 present 结构，不要自行增删或改写。请重新翻译完整页面。"
 		}
@@ -315,15 +319,34 @@ func retryFeedbackForMode(failures []string, rawInput, minimalProtect bool) stri
 		return "上一次输出未能完整、唯一地保留所有受保护 token。每个现有 token 必须原样且恰好出现一次；不得自行重建 token 所代表的代码、directive、链接目标或其他原始结构。请重新翻译完整页面，并保持其他受保护结构不变。"
 	case strings.Contains(joined, "inline code"):
 		return "上一次输出自行新增、删除或改变了行内代码结构。不得在普通文本中自行添加反引号代码；所有已受保护的行内代码只能通过现有 token 表示。请重新翻译完整页面，并保持其他受保护结构不变。"
-	case strings.Contains(joined, "directive"):
-		return "上一次输出出现了未受保护的额外 present directive，或改变了 directive 结构。不得自行书写 .play、.image 等 present directive；directive 只能通过已有保护 token 表示。请重新翻译完整页面，并保持其他受保护结构不变。"
+	case isPreformattedFailure(joined):
+		return "上一次输出改变了预格式化代码或教学注释结构。静态预格式化代码块必须保持独立 block，不得嵌入普通文本；教学注释中的受保护 Go 标识符必须保持独立，且不得改写代码本体或破坏注释与代码的结构关系。请重新翻译完整页面，并保持其他受保护结构不变。"
 	case strings.Contains(joined, "font span") || strings.Contains(joined, "emphasis"):
 		return "上一次输出破坏了强调或字体结构。必须保留所有已有强调结构标记；不得自行新增、删除或改变强调类型。请重新翻译完整页面，并保持其他受保护结构不变。"
+	case strings.Contains(joined, "directive"):
+		return "上一次输出出现了未受保护的额外 present directive，或改变了 directive 结构。不得自行书写 .play、.image 等 present directive；directive 只能通过已有保护 token 表示。请重新翻译完整页面，并保持其他受保护结构不变。"
 	case strings.Contains(joined, "present parse"):
 		return "上一次输出不是可由 present 解析的完整页面。请只输出完整的 present.Section，并保持既有段落与受保护结构。请重新翻译完整页面，并保持其他受保护结构不变。"
 	default:
 		return "上一次输出未通过页面结构校验。请只重新翻译普通文本，完整保留所有已有保护 token 和 present 结构，不要自行增删或改写结构。请重新翻译完整页面，并保持其他受保护结构不变。"
 	}
+}
+
+func retryFailureCore(failures []string) string {
+	cores := make([]string, 0, len(failures))
+	for _, failure := range failures {
+		core := strings.TrimSpace(failure)
+		core = strings.TrimSuffix(core, retryDiagnosticSuffix)
+		cores = append(cores, core)
+	}
+	return strings.ToLower(strings.Join(cores, "\n"))
+}
+
+func isPreformattedFailure(failure string) bool {
+	return strings.Contains(failure, "preformatted code block") ||
+		strings.Contains(failure, "static preformatted block") ||
+		strings.Contains(failure, "line comment mismatch") ||
+		strings.Contains(failure, "referenced go identifier")
 }
 
 // RecoverNetworkBlockedTranslation explicitly reopens one formal three-attempt
@@ -715,11 +738,10 @@ target_locale: %s
 强制术语表与译法规则：
 %s
 
-重要：下文每个形如 ⟪GTI18N_...⟫ 的保护 token 都是唯一占位符。
+重要：下文每个形如 ⟪GTI18N_...⟫ 的保护 token 都是带有结构角色的唯一占位符。
 本页共有 %d 个保护 token，输出中也必须恰好包含 %d 个。
-每个 token 必须原样输出且恰好输出一次。
-不得复制、不得复用、不得删除、不得改写或伪造任何 token。
-可以仅在完整保持所属语义单元和结构关系的前提下调整位置；不得将成对结构 token 拆散或独立移动，也不得将任何内容移入或移出 pair。不同的完整 pair 可为自然语序随各自的语义单元整体换位。
+每个 token 必须原样、唯一地输出；不得复制、删除、改写或伪造。
+可以为自然中文语序调整位置，但前提是 token 或 pair 始终保持原有结构角色和所属关系；不得将成对结构 token 拆散或独立移动，也不得将任何内容移入或移出 pair。不同的完整 pair 可随各自的语义单元整体换位。
 
 %s
 
@@ -738,6 +760,7 @@ func protectedStructureProtocol(protected protectedTranslation) string {
 		for i, pair := range protected.InlinePairs {
 			rules = append(rules, fmt.Sprintf("- 行内代码 pair %d：%s 是 opening token，%s 是 closing token。两者之间当前可见的代码内容必须逐字原样保留在同一 pair 内；不得翻译、改写、增删、移出 pair 或移入其他内容；不得自行添加反引号。", i+1, pair.Open, pair.Close))
 		}
+		rules = append(rules, "每个完整 inline pair 可随中文语序整体移动，但必须继续作为行内结构存在；不得插入、贴入或跨越预格式化 block、directive 或其他块级结构边界。")
 	}
 	emphasisPairs := emphasisPairsForPrompt(protected)
 	if len(emphasisPairs) != 0 {
@@ -750,11 +773,42 @@ func protectedStructureProtocol(protected protectedTranslation) string {
 			rules = append(rules, fmt.Sprintf("- %s pair %d：%s 是 opening token，%s 是 closing token。两者之间的自然语言允许翻译，但译文必须始终留在同一 pair 内；不得拆散、交换 token，也不得将内容移出或移入 pair。", kind, i+1, pair.Open, pair.Close))
 		}
 	}
-	if len(rules) == 0 {
-		return "本页没有成对结构 token；所有单 token 结构仍必须原样、唯一保留。"
+	if tokens := protectedTokensOfKind(protected, protectedPreformattedStatic); len(tokens) != 0 {
+		rules = append(rules,
+			"静态预格式化 block：",
+			"- "+strings.Join(tokens, "\n- "),
+			"这些 token 各自代表完整、独立的预格式化代码块，必须继续保持为独立 block；不得嵌入普通段落、标题、列表或 directive 行，也不得与相邻自然语言合并。",
+		)
 	}
-	rules = append(rules, "除上述 pair 外，directive、链接 target、keep-word 等单 token 结构仍只能原样、唯一保留；不得自行重建其隐藏的原始结构。")
+	if tokens := protectedTokensOfKind(protected, protectedPreformattedIdentifier); len(tokens) != 0 {
+		rules = append(rules,
+			"教学注释中的 Go 标识符：",
+			"- "+strings.Join(tokens, "\n- "),
+			"这些 token 各自代表教学注释中引用的 Go 源码标识符，必须在所属教学注释中原样保留，并在恢复后仍可作为词法上独立的 Go 标识符识别；不得翻译、删除、替换、改变拼写，或与相邻中文、英文字母、数字、下划线等字符拼接。整条注释可按自然中文语序翻译，标识符可在不改变自身及独立边界的前提下调整自然位置。",
+		)
+	}
+	if tokens := protectedTokensOfKind(protected, protectedDirective); len(tokens) != 0 {
+		rules = append(rules,
+			"present directive：",
+			"- "+strings.Join(tokens, "\n- "),
+			"这些 token 各自代表完整 present directive 行，必须继续作为独立 directive 行；不得嵌入普通文本或预格式化代码块，也不得自行手写新的 .play、.image 等 directive。",
+		)
+	}
+	if len(rules) == 0 {
+		return "本页没有需要额外说明的成对或块级结构 token；其他单 token 仍须原样、唯一地保留在所属结构角色中。"
+	}
+	rules = append(rules, "除上述结构外，其他单 token 仍须原样、唯一地留在所属结构角色中；不得自行重建其隐藏的原始结构。")
 	return strings.Join(rules, "\n")
+}
+
+func protectedTokensOfKind(protected protectedTranslation, kind protectedTokenKind) []string {
+	var tokens []string
+	for i, token := range protected.Tokens {
+		if protected.Kinds[i] == kind {
+			tokens = append(tokens, token)
+		}
+	}
+	return tokens
 }
 
 type promptEmphasisPair struct {
