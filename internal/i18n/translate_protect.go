@@ -379,31 +379,31 @@ func normalizeInlineTokenBoundaries(output string, p protectedTranslation) strin
 	if len(p.InlinePairs) == 0 {
 		return output
 	}
-	type pairPosition struct{ open, close int }
+	type pairPosition struct {
+		open, close int
+		boundaries  bool
+	}
 	positions := make([]pairPosition, len(p.InlinePairs))
-	pos := 0
 	for i, pair := range p.InlinePairs {
-		open := strings.Index(output[pos:], pair.Open)
+		open := strings.Index(output, pair.Open)
 		if open < 0 {
 			return output
 		}
-		open += pos
 		closeOffset := strings.Index(output[open+len(pair.Open):], pair.Close)
 		if closeOffset < 0 {
 			return output
 		}
 		close := open + len(pair.Open) + closeOffset + len(pair.Close)
-		positions[i] = pairPosition{open, close}
-		pos = close
+		positions[i] = pairPosition{open: open, close: close, boundaries: pair.Boundaries}
 	}
+	sort.Slice(positions, func(i, j int) bool { return positions[i].open < positions[j].open })
 	insert := map[int]bool{}
-	for i, pair := range p.InlinePairs {
-		if !pair.Boundaries {
+	for i, at := range positions {
+		if !at.boundaries {
 			continue
 		}
-		at := positions[i]
-		previousIsInline := i > 0 && positions[i-1].close == at.open && p.InlinePairs[i-1].Boundaries
-		nextIsInline := i+1 < len(positions) && at.close == positions[i+1].open && p.InlinePairs[i+1].Boundaries
+		previousIsInline := i > 0 && positions[i-1].close == at.open && positions[i-1].boundaries
+		nextIsInline := i+1 < len(positions) && at.close == positions[i+1].open && positions[i+1].boundaries
 		if !previousIsInline && endsWithNonBoundary(output[:at.open]) {
 			insert[at.open] = true
 		}

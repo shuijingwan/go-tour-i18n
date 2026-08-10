@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "202608101659047a4aeba451964a3a",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 1486,
+    "completion_tokens": 47,
+    "total_tokens": 1533
+  },
+  "content": "* 映射字面量（续）\n\n如果顶层类型只是一个类型名称，你可以将其从字面量的元素中省略。\n\n⟪GTI18N_0493179c_000001⟫",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 映射字面量（续）\n\n如果顶层类型只是一个类型名称，你可以将其从字面量的元素中省略。\n\n⟪GTI18N_0493179c_000001⟫",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786352347,
+    "id": "202608101659047a4aeba451964a3a",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "202608101659047a4aeba451964a3a",
+    "usage": {
+      "completion_tokens": 47,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 1486,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "total_tokens": 1533
+    }
+  }
+}

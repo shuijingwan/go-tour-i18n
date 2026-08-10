@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "20260810165816ac87f32a802741d7",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 1790,
+    "completion_tokens": 109,
+    "total_tokens": 1899
+  },
+  "content": "* range 续\n\n可以通过将值赋给 ⟪GTI18N_b52cca07_000001⟫_⟪GTI18N_b52cca07_000002⟫ 来跳过索引或值。\n\n⟪GTI18N_b52cca07_000003⟫\n\n如果只需要索引，可以省略第二个变量。\n\n⟪GTI18N_b52cca07_000004⟫\n\n⟪GTI18N_b52cca07_000005⟫",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* range 续\n\n可以通过将值赋给 ⟪GTI18N_b52cca07_000001⟫_⟪GTI18N_b52cca07_000002⟫ 来跳过索引或值。\n\n⟪GTI18N_b52cca07_000003⟫\n\n如果只需要索引，可以省略第二个变量。\n\n⟪GTI18N_b52cca07_000004⟫\n\n⟪GTI18N_b52cca07_000005⟫",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786352299,
+    "id": "20260810165816ac87f32a802741d7",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "20260810165816ac87f32a802741d7",
+    "usage": {
+      "completion_tokens": 109,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 1790,
+      "prompt_tokens_details": {
+        "cached_tokens": 512
+      },
+      "total_tokens": 1899
+    }
+  }
+}

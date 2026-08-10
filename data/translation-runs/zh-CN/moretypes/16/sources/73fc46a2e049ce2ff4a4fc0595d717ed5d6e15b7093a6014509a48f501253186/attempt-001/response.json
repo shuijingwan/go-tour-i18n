@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "202608101658140372c05f3c0443c9",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 1837,
+    "completion_tokens": 135,
+    "total_tokens": 1972
+  },
+  "content": "* range 遍历\n\n⟪GTI18N_73fc46a2_000003⟫for⟪GTI18N_73fc46a2_000004⟫ 循环的 ⟪GTI18N_73fc46a2_000001⟫range⟪GTI18N_73fc46a2_000002⟫ 形式可遍历切片或映射。\n\n遍历切片时，每次迭代会返回两个值：第一个是索引，第二个是该索引处元素的副本。\n\n⟪GTI18N_73fc46a2_000005⟫",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* range 遍历\n\n⟪GTI18N_73fc46a2_000003⟫for⟪GTI18N_73fc46a2_000004⟫ 循环的 ⟪GTI18N_73fc46a2_000001⟫range⟪GTI18N_73fc46a2_000002⟫ 形式可遍历切片或映射。\n\n遍历切片时，每次迭代会返回两个值：第一个是索引，第二个是该索引处元素的副本。\n\n⟪GTI18N_73fc46a2_000005⟫",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786352296,
+    "id": "202608101658140372c05f3c0443c9",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "202608101658140372c05f3c0443c9",
+    "usage": {
+      "completion_tokens": 135,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 1837,
+      "prompt_tokens_details": {
+        "cached_tokens": 512
+      },
+      "total_tokens": 1972
+    }
+  }
+}

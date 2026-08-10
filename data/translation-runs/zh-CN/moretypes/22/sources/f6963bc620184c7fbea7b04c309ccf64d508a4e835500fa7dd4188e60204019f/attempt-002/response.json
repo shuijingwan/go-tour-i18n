@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "202608101659081c3bc2ddfdc44f40",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 3409,
+    "completion_tokens": 622,
+    "total_tokens": 4031
+  },
+  "content": "* 修改映射\n\n在映射 ⟪GTI18N_f6963bc6_000001⟫m⟪GTI18N_f6963bc6_000002⟫ 中插入或更新元素：\n\n⟪GTI18N_f6963bc6_000003⟫\n\n获取元素：\n\n⟪GTI18N_f6963bc6_000004⟫\n\n删除元素：\n\n⟪GTI18N_f6963bc6_000005⟫\n\n通过双值赋值检测某个键是否存在：\n\n⟪GTI18N_f6963bc6_000006⟫\n\n如果 ⟪GTI18N_f6963bc6_000007⟫key⟪GTI18N_f6963bc6_000008⟫ 在 ⟪GTI18N_f6963bc6_000009⟫m⟪GTI18N_f6963bc6_000010⟫ 中，则 ⟪GTI18N_f6963bc6_000011⟫ok⟪GTI18N_f6963bc6_000012⟫ 为 ⟪GTI18N_f6963bc6_000013⟫true⟪GTI18N_f6963bc6_000014⟫。否则，⟪GTI18N_f6963bc6_000015⟫ok⟪GTI18N_f6963bc6_000016⟫ 为 ⟪GTI18N_f6963bc6_000017⟫false⟪GTI18N_f6963bc6_000018⟫。\n\n如果 ⟪GTI18N_f6963bc6_000019⟫key⟪GTI18N_f6963bc6_000020⟫ 不在映射中，那么 ⟪GTI18N_f6963bc6_000021⟫elem⟪GTI18N_f6963bc6_000022⟫ 就是映射元素类型的零值。\n\n⟪GTI18N_f6963bc6_000023⟫注意：⟪GTI18N_f6963bc6_000024⟫ 如果 ⟪GTI18N_f6963bc6_000025⟫elem⟪GTI18N_f6963bc6_000026⟫ 或 ⟪GTI18N_f6963bc6_000027⟫ok⟪GTI18N_f6963bc6_000028⟫ 尚未声明，可以使用短变量声明：\n\n⟪GTI18N_f6963bc6_000029⟫\n\n⟪GTI18N_f6963bc6_000030⟫\n",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 修改映射\n\n在映射 ⟪GTI18N_f6963bc6_000001⟫m⟪GTI18N_f6963bc6_000002⟫ 中插入或更新元素：\n\n⟪GTI18N_f6963bc6_000003⟫\n\n获取元素：\n\n⟪GTI18N_f6963bc6_000004⟫\n\n删除元素：\n\n⟪GTI18N_f6963bc6_000005⟫\n\n通过双值赋值检测某个键是否存在：\n\n⟪GTI18N_f6963bc6_000006⟫\n\n如果 ⟪GTI18N_f6963bc6_000007⟫key⟪GTI18N_f6963bc6_000008⟫ 在 ⟪GTI18N_f6963bc6_000009⟫m⟪GTI18N_f6963bc6_000010⟫ 中，则 ⟪GTI18N_f6963bc6_000011⟫ok⟪GTI18N_f6963bc6_000012⟫ 为 ⟪GTI18N_f6963bc6_000013⟫true⟪GTI18N_f6963bc6_000014⟫。否则，⟪GTI18N_f6963bc6_000015⟫ok⟪GTI18N_f6963bc6_000016⟫ 为 ⟪GTI18N_f6963bc6_000017⟫false⟪GTI18N_f6963bc6_000018⟫。\n\n如果 ⟪GTI18N_f6963bc6_000019⟫key⟪GTI18N_f6963bc6_000020⟫ 不在映射中，那么 ⟪GTI18N_f6963bc6_000021⟫elem⟪GTI18N_f6963bc6_000022⟫ 就是映射元素类型的零值。\n\n⟪GTI18N_f6963bc6_000023⟫注意：⟪GTI18N_f6963bc6_000024⟫ 如果 ⟪GTI18N_f6963bc6_000025⟫elem⟪GTI18N_f6963bc6_000026⟫ 或 ⟪GTI18N_f6963bc6_000027⟫ok⟪GTI18N_f6963bc6_000028⟫ 尚未声明，可以使用短变量声明：\n\n⟪GTI18N_f6963bc6_000029⟫\n\n⟪GTI18N_f6963bc6_000030⟫\n",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786352356,
+    "id": "202608101659081c3bc2ddfdc44f40",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "202608101659081c3bc2ddfdc44f40",
+    "usage": {
+      "completion_tokens": 622,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 3409,
+      "prompt_tokens_details": {
+        "cached_tokens": 512
+      },
+      "total_tokens": 4031
+    }
+  }
+}

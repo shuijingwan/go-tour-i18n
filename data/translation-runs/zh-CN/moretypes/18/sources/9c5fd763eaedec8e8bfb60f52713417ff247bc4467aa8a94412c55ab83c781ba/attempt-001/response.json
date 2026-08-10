@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "2026081016581903301345546544d1",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 2845,
+    "completion_tokens": 472,
+    "total_tokens": 3317
+  },
+  "content": "* 练习：切片\n\n实现 ⟪GTI18N_9c5fd763_000001⟫Pic⟪GTI18N_9c5fd763_000002⟫。它应返回一个长度为 ⟪GTI18N_9c5fd763_000003⟫dy⟪GTI18N_9c5fd763_000004⟫ 的切片，其中每个元素是一个长度为 ⟪GTI18N_9c5fd763_000005⟫dx⟪GTI18N_9c5fd763_000006⟫ 的 8 位无符号整数切片。运行程序时，它会将整数解释为灰度（准确地说是蓝度）值来显示你的图片。\n\n图片内容由你自行决定。有趣的函数包括 ⟪GTI18N_9c5fd763_000007⟫(x+y)/2⟪GTI18N_9c5fd763_000008⟫、⟪GTI18N_9c5fd763_000009⟫x*y⟪GTI18N_9c5fd763_000010⟫ 和 ⟪GTI18N_9c5fd763_000011⟫x^y⟪GTI18N_9c5fd763_000012⟫。\n\n（你需要使用循环为 ⟪GTI18N_9c5fd763_000015⟫[][]uint8⟪GTI18N_9c5fd763_000016⟫ 中的每个 ⟪GTI18N_9c5fd763_000013⟫[]uint8⟪GTI18N_9c5fd763_000014⟫ 分配内存。）\n\n（使用 ⟪GTI18N_9c5fd763_000017⟫uint8(intValue)⟪GTI18N_9c5fd763_000018⟫ 在类型之间进行转换。）\n\n⟪GTI18N_9c5fd763_000019⟫",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 练习：切片\n\n实现 ⟪GTI18N_9c5fd763_000001⟫Pic⟪GTI18N_9c5fd763_000002⟫。它应返回一个长度为 ⟪GTI18N_9c5fd763_000003⟫dy⟪GTI18N_9c5fd763_000004⟫ 的切片，其中每个元素是一个长度为 ⟪GTI18N_9c5fd763_000005⟫dx⟪GTI18N_9c5fd763_000006⟫ 的 8 位无符号整数切片。运行程序时，它会将整数解释为灰度（准确地说是蓝度）值来显示你的图片。\n\n图片内容由你自行决定。有趣的函数包括 ⟪GTI18N_9c5fd763_000007⟫(x+y)/2⟪GTI18N_9c5fd763_000008⟫、⟪GTI18N_9c5fd763_000009⟫x*y⟪GTI18N_9c5fd763_000010⟫ 和 ⟪GTI18N_9c5fd763_000011⟫x^y⟪GTI18N_9c5fd763_000012⟫。\n\n（你需要使用循环为 ⟪GTI18N_9c5fd763_000015⟫[][]uint8⟪GTI18N_9c5fd763_000016⟫ 中的每个 ⟪GTI18N_9c5fd763_000013⟫[]uint8⟪GTI18N_9c5fd763_000014⟫ 分配内存。）\n\n（使用 ⟪GTI18N_9c5fd763_000017⟫uint8(intValue)⟪GTI18N_9c5fd763_000018⟫ 在类型之间进行转换。）\n\n⟪GTI18N_9c5fd763_000019⟫",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786352307,
+    "id": "2026081016581903301345546544d1",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "2026081016581903301345546544d1",
+    "usage": {
+      "completion_tokens": 472,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 2845,
+      "prompt_tokens_details": {
+        "cached_tokens": 512
+      },
+      "total_tokens": 3317
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "2026081016591679ad5cd2dffd4d91",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 1989,
+    "completion_tokens": 201,
+    "total_tokens": 2190
+  },
+  "content": "* 练习：映射\n\n实现 ⟪GTI18N_32149682_000001⟫WordCount⟪GTI18N_32149682_000002⟫。它应当返回一个映射，其中包含字符串 ⟪GTI18N_32149682_000003⟫s⟪GTI18N_32149682_000004⟫ 中每个“单词”的出现次数。⟪GTI18N_32149682_000005⟫wc.Test⟪GTI18N_32149682_000006⟫ 函数会针对所提供的函数运行一组测试，并打印成功或失败。\n\n你可能会发现 [[⟪GTI18N_32149682_000007⟫][strings.Fields]] 很有用。\n\n⟪GTI18N_32149682_000008⟫",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 练习：映射\n\n实现 ⟪GTI18N_32149682_000001⟫WordCount⟪GTI18N_32149682_000002⟫。它应当返回一个映射，其中包含字符串 ⟪GTI18N_32149682_000003⟫s⟪GTI18N_32149682_000004⟫ 中每个“单词”的出现次数。⟪GTI18N_32149682_000005⟫wc.Test⟪GTI18N_32149682_000006⟫ 函数会针对所提供的函数运行一组测试，并打印成功或失败。\n\n你可能会发现 [[⟪GTI18N_32149682_000007⟫][strings.Fields]] 很有用。\n\n⟪GTI18N_32149682_000008⟫",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786352359,
+    "id": "2026081016591679ad5cd2dffd4d91",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "2026081016591679ad5cd2dffd4d91",
+    "usage": {
+      "completion_tokens": 201,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 1989,
+      "prompt_tokens_details": {
+        "cached_tokens": 1984
+      },
+      "total_tokens": 2190
+    }
+  }
+}

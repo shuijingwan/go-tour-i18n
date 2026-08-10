@@ -169,6 +169,101 @@ func TestInlineCodePairsMayReorderButCannotCrossOrChangeContent(t *testing.T) {
 	}
 }
 
+func TestInlineTokenBoundaryNormalizationUsesResponsePairOrder(t *testing.T) {
+	source := []byte("* Source\n\n`first`、 `second`; each `inner` inside `outer`.\n")
+	p := protectTranslation(source, strings.Repeat("d", 64), nil)
+	if len(p.InlinePairs) != 4 {
+		t.Fatalf("inline pairs=%+v", p.InlinePairs)
+	}
+	first, second, inner, outer := p.InlinePairs[0], p.InlinePairs[1], p.InlinePairs[2], p.InlinePairs[3]
+	model := "* 译文\n\n" +
+		first.Open + first.Content + first.Close + "、" + second.Open + second.Content + second.Close +
+		"；在 " + outer.Open + outer.Content + outer.Close + " 中的每个 " + inner.Open + inner.Content + inner.Close + "。\n"
+
+	candidate, failures := p.restore(model)
+	if len(failures) != 0 {
+		t.Fatalf("reordered whole pairs rejected: %v", failures)
+	}
+	for _, want := range []string{"`first`、 `second`", "`outer`", "`inner`"} {
+		if !strings.Contains(candidate, want) {
+			t.Errorf("candidate lacks normalized fragment %q:\n%s", want, candidate)
+		}
+	}
+	codes := presentInlineCodes(candidate)
+	if len(codes) != 4 {
+		t.Fatalf("presentInlineCodes = %+v, want 4 spans\n%s", codes, candidate)
+	}
+
+	for name, bad := range map[string]string{
+		"missing pair token": strings.Replace(model, inner.Open, "", 1),
+		"duplicate token":    model + inner.Open,
+		"crossed pairs": strings.NewReplacer(
+			inner.Open, "__inner_open__",
+			inner.Close, outer.Close,
+			outer.Open, inner.Open,
+			"__inner_open__", outer.Open,
+		).Replace(model),
+		"mismatched close": strings.NewReplacer(
+			inner.Close, "__inner_close__",
+			outer.Close, inner.Close,
+			"__inner_close__", outer.Close,
+		).Replace(model),
+	} {
+		t.Run(name, func(t *testing.T) {
+			if got, failures := p.restore(bad); len(failures) == 0 || got != "" {
+				t.Fatalf("invalid pair accepted: %q %v", got, failures)
+			}
+		})
+	}
+}
+
+func TestMoretypes18HistoricalResponsesRestoreNineInlineCodes(t *testing.T) {
+	root := repoRoot(t)
+	catalog, err := BuildCatalog(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	page, err := catalog.Page("moretypes/18")
+	if err != nil {
+		t.Fatal(err)
+	}
+	glossary, err := LoadGlossary(root, "zh-CN")
+	if err != nil {
+		t.Fatal(err)
+	}
+	protected := protectTranslation(page.Source, page.SourceSHA256, glossary)
+	if len(protected.InlinePairs) != 9 {
+		t.Fatalf("inline pairs=%d, want 9", len(protected.InlinePairs))
+	}
+	for attempt := 1; attempt <= 3; attempt++ {
+		t.Run(fmt.Sprintf("attempt-%03d", attempt), func(t *testing.T) {
+			responsePath := filepath.Join(root, "data", "translation-runs", "zh-CN", "moretypes", "18", "sources", page.SourceSHA256, fmt.Sprintf("attempt-%03d", attempt), "response.json")
+			responseBytes, err := os.ReadFile(responsePath)
+			if err != nil {
+				t.Fatal(err)
+			}
+			var response TranslationCallResult
+			if err := json.Unmarshal(responseBytes, &response); err != nil {
+				t.Fatal(err)
+			}
+			candidate, failures := protected.restore(response.Content)
+			if len(failures) != 0 {
+				t.Fatalf("historical response restore failures: %v", failures)
+			}
+			codes := presentInlineCodes(candidate)
+			if len(codes) != 9 {
+				t.Fatalf("presentInlineCodes = %+v, want 9 spans\n%s", codes, candidate)
+			}
+			if !strings.Contains(candidate, "`(x+y)/2`、 `x*y`") {
+				t.Fatalf("historical response lacks normalized enumeration boundary:\n%s", candidate)
+			}
+			if err := ValidateCandidateForLocale(root, catalog, "moretypes/18", "zh-CN", []byte(candidate)); err != nil {
+				t.Fatalf("historical response candidate rejected: %v\n%s", err, candidate)
+			}
+		})
+	}
+}
+
 func TestFlowcontrol6InlinePairsMayReorderAsWholeUnits(t *testing.T) {
 	source := "* If with a short statement\n\n(Try using `v` in the last `return` statement.)\n"
 	p := protectTranslation([]byte(source), strings.Repeat("f", 64), nil)

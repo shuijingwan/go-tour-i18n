@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "20260810165842b3d437cd1779499a",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 1474,
+    "completion_tokens": 44,
+    "total_tokens": 1518
+  },
+  "content": "* 映射字面量\n\n映射字面量与结构体字面量类似，但键是必需的。\n\n⟪GTI18N_1d3caa45_000001⟫",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 映射字面量\n\n映射字面量与结构体字面量类似，但键是必需的。\n\n⟪GTI18N_1d3caa45_000001⟫",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786352323,
+    "id": "20260810165842b3d437cd1779499a",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "20260810165842b3d437cd1779499a",
+    "usage": {
+      "completion_tokens": 44,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 1474,
+      "prompt_tokens_details": {
+        "cached_tokens": 512
+      },
+      "total_tokens": 1518
+    }
+  }
+}

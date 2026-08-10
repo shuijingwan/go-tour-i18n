@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "2026081016574540cdccaec53f4e2c",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 1472,
+    "completion_tokens": 34,
+    "total_tokens": 1506
+  },
+  "content": "* 切片的切片\n\n切片可以包含任何类型，包括其他切片。\n\n⟪GTI18N_d8bee22c_000001⟫\n\n",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 切片的切片\n\n切片可以包含任何类型，包括其他切片。\n\n⟪GTI18N_d8bee22c_000001⟫\n\n",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786352268,
+    "id": "2026081016574540cdccaec53f4e2c",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "2026081016574540cdccaec53f4e2c",
+    "usage": {
+      "completion_tokens": 34,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 1472,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "total_tokens": 1506
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "20260810165808b06dc10f7c844bb5",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 2846,
+    "completion_tokens": 508,
+    "total_tokens": 3354
+  },
+  "content": "* 向切片追加元素\n\n向切片追加新元素是常见操作，因此 ⟪GTI18N_f2fc257e_000001⟫ 提供了内建的 ⟪GTI18N_f2fc257e_000002⟫append⟪GTI18N_f2fc257e_000003⟫ 函数。内置包的 [[⟪GTI18N_f2fc257e_000004⟫][文档]] 对 ⟪GTI18N_f2fc257e_000005⟫append⟪GTI18N_f2fc257e_000006⟫ 进行了说明。\n\n⟪GTI18N_f2fc257e_000007⟫\n\n⟪GTI18N_f2fc257e_000010⟫append⟪GTI18N_f2fc257e_000011⟫ 的第一个参数 ⟪GTI18N_f2fc257e_000008⟫s⟪GTI18N_f2fc257e_000009⟫ 是类型为 ⟪GTI18N_f2fc257e_000012⟫T⟪GTI18N_f2fc257e_000013⟫ 的切片，其余参数是要追加到该切片的 ⟪GTI18N_f2fc257e_000014⟫T⟪GTI18N_f2fc257e_000015⟫ 值。\n\n⟪GTI18N_f2fc257e_000016⟫append⟪GTI18N_f2fc257e_000017⟫ 的结果是一个切片，包含原切片的所有元素以及提供的值。\n\n如果 ⟪GTI18N_f2fc257e_000018⟫s⟪GTI18N_f2fc257e_000019⟫ 的底层数组太小，无法容纳所有给定的值，就会分配一个更大的数组。返回的切片将指向新分配的数组。\n\n（要进一步了解切片，请阅读 [[⟪GTI18N_f2fc257e_000020⟫][切片：用法与内部原理]] 这篇文章。）\n\n⟪GTI18N_f2fc257e_000021⟫",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 向切片追加元素\n\n向切片追加新元素是常见操作，因此 ⟪GTI18N_f2fc257e_000001⟫ 提供了内建的 ⟪GTI18N_f2fc257e_000002⟫append⟪GTI18N_f2fc257e_000003⟫ 函数。内置包的 [[⟪GTI18N_f2fc257e_000004⟫][文档]] 对 ⟪GTI18N_f2fc257e_000005⟫append⟪GTI18N_f2fc257e_000006⟫ 进行了说明。\n\n⟪GTI18N_f2fc257e_000007⟫\n\n⟪GTI18N_f2fc257e_000010⟫append⟪GTI18N_f2fc257e_000011⟫ 的第一个参数 ⟪GTI18N_f2fc257e_000008⟫s⟪GTI18N_f2fc257e_000009⟫ 是类型为 ⟪GTI18N_f2fc257e_000012⟫T⟪GTI18N_f2fc257e_000013⟫ 的切片，其余参数是要追加到该切片的 ⟪GTI18N_f2fc257e_000014⟫T⟪GTI18N_f2fc257e_000015⟫ 值。\n\n⟪GTI18N_f2fc257e_000016⟫append⟪GTI18N_f2fc257e_000017⟫ 的结果是一个切片，包含原切片的所有元素以及提供的值。\n\n如果 ⟪GTI18N_f2fc257e_000018⟫s⟪GTI18N_f2fc257e_000019⟫ 的底层数组太小，无法容纳所有给定的值，就会分配一个更大的数组。返回的切片将指向新分配的数组。\n\n（要进一步了解切片，请阅读 [[⟪GTI18N_f2fc257e_000020⟫][切片：用法与内部原理]] 这篇文章。）\n\n⟪GTI18N_f2fc257e_000021⟫",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786352294,
+    "id": "20260810165808b06dc10f7c844bb5",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "20260810165808b06dc10f7c844bb5",
+    "usage": {
+      "completion_tokens": 508,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 2846,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "total_tokens": 3354
+    }
+  }
+}

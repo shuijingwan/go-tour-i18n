@@ -1,0 +1,15 @@
+* 向切片追加元素
+
+向切片追加新元素是常见操作，因此 Go 提供了内建的 `append` 函数。内置包的 [[/pkg/builtin/#append][文档]] 对 `append` 进行了说明。
+
+	func append(s []T, vs ...T) []T
+
+`append` 的第一个参数 `s` 是类型为 `T` 的切片，其余参数是要追加到该切片的 `T` 值。
+
+`append` 的结果是一个切片，包含原切片的所有元素以及提供的值。
+
+如果 `s` 的底层数组太小，无法容纳所有给定的值，就会分配一个更大的数组。返回的切片将指向新分配的数组。
+
+（要进一步了解切片，请阅读 [[/blog/go-slices-usage-and-internals][切片：用法与内部原理]] 这篇文章。）
+
+.play moretypes/append.go

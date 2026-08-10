@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "202608101658398cd51bc4618e43a7",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 1963,
+    "completion_tokens": 172,
+    "total_tokens": 2135
+  },
+  "content": "* 映射\n\n映射将键映射到值。\n\n映射的零值是 ⟪GTI18N_39107d53_000001⟫nil⟪GTI18N_39107d53_000002⟫。\n⟪GTI18N_39107d53_000003⟫nil⟪GTI18N_39107d53_000004⟫ 映射既没有键，也无法添加键。\n\n⟪GTI18N_39107d53_000005⟫make⟪GTI18N_39107d53_000006⟫ 函数会返回给定类型的映射，并将其初始化以备使用。\n\n⟪GTI18N_39107d53_000007⟫\n",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 映射\n\n映射将键映射到值。\n\n映射的零值是 ⟪GTI18N_39107d53_000001⟫nil⟪GTI18N_39107d53_000002⟫。\n⟪GTI18N_39107d53_000003⟫nil⟪GTI18N_39107d53_000004⟫ 映射既没有键，也无法添加键。\n\n⟪GTI18N_39107d53_000005⟫make⟪GTI18N_39107d53_000006⟫ 函数会返回给定类型的映射，并将其初始化以备使用。\n\n⟪GTI18N_39107d53_000007⟫\n",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786352321,
+    "id": "202608101658398cd51bc4618e43a7",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "202608101658398cd51bc4618e43a7",
+    "usage": {
+      "completion_tokens": 172,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 1963,
+      "prompt_tokens_details": {
+        "cached_tokens": 512
+      },
+      "total_tokens": 2135
+    }
+  }
+}
