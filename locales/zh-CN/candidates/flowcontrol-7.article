@@ -2,6 +2,6 @@
 
 在 `if` 简短语句中声明的变量，在任何 `else` 块中同样可用。
 
-（在 `main` 开始执行之前，对 `pow` 的两次调用都已返回结果，随后才会调用 `fmt.Println`。）
+（在 `main` 中调用 `fmt.Println` 之前，两次 `pow` 调用都会先返回结果。）
 
 .play flowcontrol/if-and-else.go

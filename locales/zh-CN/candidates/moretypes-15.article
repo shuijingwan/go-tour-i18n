@@ -1,6 +1,6 @@
 * 向切片追加元素
 
-向切片追加新元素是常见操作，因此 Go 提供了内建的 `append` 函数。内置包的 [[/pkg/builtin/#append][文档]] 对 `append` 进行了说明。
+向切片追加新元素是常见操作，因此 Go 提供了内置的 `append` 函数。内置包的 [[/pkg/builtin/#append][文档]] 对 `append` 进行了说明。
 
 	func append(s []T, vs ...T) []T
 

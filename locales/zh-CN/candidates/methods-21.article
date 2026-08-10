@@ -10,6 +10,6 @@ Go 标准库中包含了该接口的[[https://cs.opensource.google/search?q=Read
 
 `Read` 用数据填充给定的字节切片，并返回填充的字节数和一个错误值。当流结束时，它会返回 `io.EOF` 错误。
 
-示例代码创建了一个 [[/pkg/strings/#Reader][`strings.Reader`]]，并每次读取 8 个字节来消费其输出。
+示例代码创建了一个 [[/pkg/strings/#Reader][`strings.Reader`]]，并每次从中读取 8 个字节。
 
 .play methods/reader.go

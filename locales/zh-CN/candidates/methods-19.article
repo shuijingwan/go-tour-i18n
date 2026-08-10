@@ -19,6 +19,6 @@ Go 程序使用 `error` 值来表示错误状态。
 	}
 	fmt.Println("Converted integer:", i)
 
-值为 `error` 的 nil 表示成功；非 nil 的 `error` 表示失败。
+`error` 为 nil 表示成功；非 nil 的 `error` 则表示失败。
 
 .play methods/errors.go

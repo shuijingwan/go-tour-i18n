@@ -6,9 +6,9 @@
 
 	select {
 	case i := <-c:
-		// use i
+		// 使用 i
 	default:
-		// receiving from c would block
+		// 从 c 接收会阻塞
 	}
 
 .play concurrency/default-selection.go
