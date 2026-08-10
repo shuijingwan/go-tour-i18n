@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "20260810172631400c4392d42d4482",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 2496,
+    "completion_tokens": 375,
+    "total_tokens": 2871
+  },
+  "content": "* 方法与指针间接引用\n\n对比前两个程序，你可能会注意到，带指针参数的函数必须接受一个指针：\n\n⟪GTI18N_39fb725b_000001⟫编译错误！⟪GTI18N_39fb725b_000002⟫而带指针接收者的方法在被调用时，接收者既可以是值，也可以是指针：\n\n⟪GTI18N_39fb725b_000003⟫\n\n对于语句 ⟪GTI18N_39fb725b_000004⟫v.Scale(5)⟪GTI18N_39fb725b_000005⟫，即使 ⟪GTI18N_39fb725b_000006⟫v⟪GTI18N_39fb725b_000007⟫ 是一个值而非指针，也会自动调用带指针接收者的方法。\n也就是说，作为便利，⟪GTI18N_39fb725b_000008⟫ 会将语句 ⟪GTI18N_39fb725b_000009⟫v.Scale(5)⟪GTI18N_39fb725b_000010⟫ 解释为\n⟪GTI18N_39fb725b_000011⟫(\u0026v).Scale(5)⟪GTI18N_39fb725b_000012⟫，因为 ⟪GTI18N_39fb725b_000013⟫Scale⟪GTI18N_39fb725b_000014⟫ 方法具有指针接收者。\n\n⟪GTI18N_39fb725b_000015⟫\n",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 方法与指针间接引用\n\n对比前两个程序，你可能会注意到，带指针参数的函数必须接受一个指针：\n\n⟪GTI18N_39fb725b_000001⟫编译错误！⟪GTI18N_39fb725b_000002⟫而带指针接收者的方法在被调用时，接收者既可以是值，也可以是指针：\n\n⟪GTI18N_39fb725b_000003⟫\n\n对于语句 ⟪GTI18N_39fb725b_000004⟫v.Scale(5)⟪GTI18N_39fb725b_000005⟫，即使 ⟪GTI18N_39fb725b_000006⟫v⟪GTI18N_39fb725b_000007⟫ 是一个值而非指针，也会自动调用带指针接收者的方法。\n也就是说，作为便利，⟪GTI18N_39fb725b_000008⟫ 会将语句 ⟪GTI18N_39fb725b_000009⟫v.Scale(5)⟪GTI18N_39fb725b_000010⟫ 解释为\n⟪GTI18N_39fb725b_000011⟫(\u0026v).Scale(5)⟪GTI18N_39fb725b_000012⟫，因为 ⟪GTI18N_39fb725b_000013⟫Scale⟪GTI18N_39fb725b_000014⟫ 方法具有指针接收者。\n\n⟪GTI18N_39fb725b_000015⟫\n",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786353995,
+    "id": "20260810172631400c4392d42d4482",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "20260810172631400c4392d42d4482",
+    "usage": {
+      "completion_tokens": 375,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 2496,
+      "prompt_tokens_details": {
+        "cached_tokens": 512
+      },
+      "total_tokens": 2871
+    }
+  }
+}

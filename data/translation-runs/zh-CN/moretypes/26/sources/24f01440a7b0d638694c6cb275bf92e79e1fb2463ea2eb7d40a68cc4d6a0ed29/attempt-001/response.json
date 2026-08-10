@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "20260810172450fc1addf4dacd4c09",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 1731,
+    "completion_tokens": 140,
+    "total_tokens": 1871
+  },
+  "content": "* 练习：斐波那契闭包\n\n让我们用函数做点有趣的事。\n\n实现一个 ⟪GTI18N_24f01440_000001⟫fibonacci⟪GTI18N_24f01440_000002⟫ 函数，它返回一个返回连续的 [[⟪GTI18N_24f01440_000003⟫][斐波那契数]]（0, 1, 1, 2, 3, 5, ...）的函数（闭包）。\n\n⟪GTI18N_24f01440_000004⟫\n",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 练习：斐波那契闭包\n\n让我们用函数做点有趣的事。\n\n实现一个 ⟪GTI18N_24f01440_000001⟫fibonacci⟪GTI18N_24f01440_000002⟫ 函数，它返回一个返回连续的 [[⟪GTI18N_24f01440_000003⟫][斐波那契数]]（0, 1, 1, 2, 3, 5, ...）的函数（闭包）。\n\n⟪GTI18N_24f01440_000004⟫\n",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786353893,
+    "id": "20260810172450fc1addf4dacd4c09",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "20260810172450fc1addf4dacd4c09",
+    "usage": {
+      "completion_tokens": 140,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 1731,
+      "prompt_tokens_details": {
+        "cached_tokens": 512
+      },
+      "total_tokens": 1871
+    }
+  }
+}

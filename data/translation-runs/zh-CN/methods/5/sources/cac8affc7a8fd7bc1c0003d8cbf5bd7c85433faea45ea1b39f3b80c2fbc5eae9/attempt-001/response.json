@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "2026081017260757c261d21e2b4ef5",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 1962,
+    "completion_tokens": 175,
+    "total_tokens": 2137
+  },
+  "content": "* 指针与函数\n\n这里我们把 ⟪GTI18N_cac8affc_000001⟫Abs⟪GTI18N_cac8affc_000002⟫ 和 ⟪GTI18N_cac8affc_000003⟫Scale⟪GTI18N_cac8affc_000004⟫ 方法改写成了函数。\n\n同样，尝试删除第 16 行中的 ⟪GTI18N_cac8affc_000005⟫*⟪GTI18N_cac8affc_000006⟫。你能看出行为为什么会改变吗？为了让示例编译通过，还需要做哪些修改？\n\n（如果不确定，请继续阅读下一页。）\n\n⟪GTI18N_cac8affc_000007⟫",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 指针与函数\n\n这里我们把 ⟪GTI18N_cac8affc_000001⟫Abs⟪GTI18N_cac8affc_000002⟫ 和 ⟪GTI18N_cac8affc_000003⟫Scale⟪GTI18N_cac8affc_000004⟫ 方法改写成了函数。\n\n同样，尝试删除第 16 行中的 ⟪GTI18N_cac8affc_000005⟫*⟪GTI18N_cac8affc_000006⟫。你能看出行为为什么会改变吗？为了让示例编译通过，还需要做哪些修改？\n\n（如果不确定，请继续阅读下一页。）\n\n⟪GTI18N_cac8affc_000007⟫",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786353970,
+    "id": "2026081017260757c261d21e2b4ef5",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "2026081017260757c261d21e2b4ef5",
+    "usage": {
+      "completion_tokens": 175,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 1962,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "total_tokens": 2137
+    }
+  }
+}

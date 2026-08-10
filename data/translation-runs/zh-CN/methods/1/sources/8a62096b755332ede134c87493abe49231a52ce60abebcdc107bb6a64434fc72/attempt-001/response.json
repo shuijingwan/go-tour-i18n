@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "2026081017251587dc6f192bf249f9",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 2270,
+    "completion_tokens": 284,
+    "total_tokens": 2554
+  },
+  "content": "* 方法\n\n⟪GTI18N_8a62096b_000001⟫ 没有类。\n不过，可以为类型定义方法。\n\n方法是一种带有特殊⟪GTI18N_8a62096b_000002⟫接收者⟪GTI18N_8a62096b_000003⟫参数的函数。\n\n接收者位于 ⟪GTI18N_8a62096b_000004⟫func⟪GTI18N_8a62096b_000005⟫ 关键字和方法名之间，单独作为一个参数列表。\n\n在这个例子中，⟪GTI18N_8a62096b_000006⟫Abs⟪GTI18N_8a62096b_000007⟫ 方法有一个类型为 ⟪GTI18N_8a62096b_000008⟫Vertex⟪GTI18N_8a62096b_000009⟫、名为 ⟪GTI18N_8a62096b_000010⟫v⟪GTI18N_8a62096b_000011⟫ 的接收者。\n\n⟪GTI18N_8a62096b_000012⟫",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 方法\n\n⟪GTI18N_8a62096b_000001⟫ 没有类。\n不过，可以为类型定义方法。\n\n方法是一种带有特殊⟪GTI18N_8a62096b_000002⟫接收者⟪GTI18N_8a62096b_000003⟫参数的函数。\n\n接收者位于 ⟪GTI18N_8a62096b_000004⟫func⟪GTI18N_8a62096b_000005⟫ 关键字和方法名之间，单独作为一个参数列表。\n\n在这个例子中，⟪GTI18N_8a62096b_000006⟫Abs⟪GTI18N_8a62096b_000007⟫ 方法有一个类型为 ⟪GTI18N_8a62096b_000008⟫Vertex⟪GTI18N_8a62096b_000009⟫、名为 ⟪GTI18N_8a62096b_000010⟫v⟪GTI18N_8a62096b_000011⟫ 的接收者。\n\n⟪GTI18N_8a62096b_000012⟫",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786353919,
+    "id": "2026081017251587dc6f192bf249f9",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "2026081017251587dc6f192bf249f9",
+    "usage": {
+      "completion_tokens": 284,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 2270,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "total_tokens": 2554
+    }
+  }
+}

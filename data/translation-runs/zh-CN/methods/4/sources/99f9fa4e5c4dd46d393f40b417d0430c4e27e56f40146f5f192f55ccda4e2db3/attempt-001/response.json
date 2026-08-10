@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "20260810172544c478d73a8b7f4c4c",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 3570,
+    "completion_tokens": 717,
+    "total_tokens": 4287
+  },
+  "content": "* 指针接收者\n\n可以为方法声明指针接收者。\n\n这意味着接收者类型的字面语法是 ⟪GTI18N_99f9fa4e_000001⟫*T⟪GTI18N_99f9fa4e_000002⟫，其中 ⟪GTI18N_99f9fa4e_000003⟫T⟪GTI18N_99f9fa4e_000004⟫ 是某个类型。\n（此外，⟪GTI18N_99f9fa4e_000005⟫T⟪GTI18N_99f9fa4e_000006⟫ 本身不能是指针，例如 ⟪GTI18N_99f9fa4e_000007⟫*int⟪GTI18N_99f9fa4e_000008⟫。）\n\n例如，这里的 ⟪GTI18N_99f9fa4e_000009⟫Scale⟪GTI18N_99f9fa4e_000010⟫ 方法定义在 ⟪GTI18N_99f9fa4e_000011⟫*Vertex⟪GTI18N_99f9fa4e_000012⟫ 上。\n\n带指针接收者的方法可以修改接收者所指向的值（正如这里的 ⟪GTI18N_99f9fa4e_000013⟫Scale⟪GTI18N_99f9fa4e_000014⟫ 所做的）。\n由于方法经常需要修改其接收者，因此指针接收者比值接收者更常见。\n\n尝试将第 16 行 ⟪GTI18N_99f9fa4e_000017⟫Scale⟪GTI18N_99f9fa4e_000018⟫ 函数声明中的 ⟪GTI18N_99f9fa4e_000015⟫*⟪GTI18N_99f9fa4e_000016⟫ 移除，\n观察程序行为有何变化。\n\n如果使用值接收者，⟪GTI18N_99f9fa4e_000019⟫Scale⟪GTI18N_99f9fa4e_000020⟫ 方法操作的就是原始 ⟪GTI18N_99f9fa4e_000021⟫Vertex⟪GTI18N_99f9fa4e_000022⟫ 值的副本。\n（这与其他函数参数的行为相同。）\n⟪GTI18N_99f9fa4e_000023⟫Scale⟪GTI18N_99f9fa4e_000024⟫ 方法必须带有指针接收者，才能修改 ⟪GTI18N_99f9fa4e_000027⟫main⟪GTI18N_99f9fa4e_000028⟫ 函数中声明的 ⟪GTI18N_99f9fa4e_000025⟫Vertex⟪GTI18N_99f9fa4e_000026⟫ 值。\n\n⟪GTI18N_99f9fa4e_000029⟫",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 指针接收者\n\n可以为方法声明指针接收者。\n\n这意味着接收者类型的字面语法是 ⟪GTI18N_99f9fa4e_000001⟫*T⟪GTI18N_99f9fa4e_000002⟫，其中 ⟪GTI18N_99f9fa4e_000003⟫T⟪GTI18N_99f9fa4e_000004⟫ 是某个类型。\n（此外，⟪GTI18N_99f9fa4e_000005⟫T⟪GTI18N_99f9fa4e_000006⟫ 本身不能是指针，例如 ⟪GTI18N_99f9fa4e_000007⟫*int⟪GTI18N_99f9fa4e_000008⟫。）\n\n例如，这里的 ⟪GTI18N_99f9fa4e_000009⟫Scale⟪GTI18N_99f9fa4e_000010⟫ 方法定义在 ⟪GTI18N_99f9fa4e_000011⟫*Vertex⟪GTI18N_99f9fa4e_000012⟫ 上。\n\n带指针接收者的方法可以修改接收者所指向的值（正如这里的 ⟪GTI18N_99f9fa4e_000013⟫Scale⟪GTI18N_99f9fa4e_000014⟫ 所做的）。\n由于方法经常需要修改其接收者，因此指针接收者比值接收者更常见。\n\n尝试将第 16 行 ⟪GTI18N_99f9fa4e_000017⟫Scale⟪GTI18N_99f9fa4e_000018⟫ 函数声明中的 ⟪GTI18N_99f9fa4e_000015⟫*⟪GTI18N_99f9fa4e_000016⟫ 移除，\n观察程序行为有何变化。\n\n如果使用值接收者，⟪GTI18N_99f9fa4e_000019⟫Scale⟪GTI18N_99f9fa4e_000020⟫ 方法操作的就是原始 ⟪GTI18N_99f9fa4e_000021⟫Vertex⟪GTI18N_99f9fa4e_000022⟫ 值的副本。\n（这与其他函数参数的行为相同。）\n⟪GTI18N_99f9fa4e_000023⟫Scale⟪GTI18N_99f9fa4e_000024⟫ 方法必须带有指针接收者，才能修改 ⟪GTI18N_99f9fa4e_000027⟫main⟪GTI18N_99f9fa4e_000028⟫ 函数中声明的 ⟪GTI18N_99f9fa4e_000025⟫Vertex⟪GTI18N_99f9fa4e_000026⟫ 值。\n\n⟪GTI18N_99f9fa4e_000029⟫",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786353952,
+    "id": "20260810172544c478d73a8b7f4c4c",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "20260810172544c478d73a8b7f4c4c",
+    "usage": {
+      "completion_tokens": 717,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 3570,
+      "prompt_tokens_details": {
+        "cached_tokens": 512
+      },
+      "total_tokens": 4287
+    }
+  }
+}

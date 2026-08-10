@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "2026081017244168528beea1294d88",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 1883,
+    "completion_tokens": 184,
+    "total_tokens": 2067
+  },
+  "content": "* 函数闭包\n\n⟪GTI18N_570e535e_000001⟫ 函数可以是闭包。闭包是一种引用了函数体外部变量的函数值。函数可以访问并修改所引用的变量；从这个意义上说，函数与这些变量是“绑定”的。\n\n例如，⟪GTI18N_570e535e_000002⟫adder⟪GTI18N_570e535e_000003⟫ 函数返回一个闭包。每个闭包都绑定到各自的 ⟪GTI18N_570e535e_000004⟫sum⟪GTI18N_570e535e_000005⟫ 变量。\n\n⟪GTI18N_570e535e_000006⟫\n",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 函数闭包\n\n⟪GTI18N_570e535e_000001⟫ 函数可以是闭包。闭包是一种引用了函数体外部变量的函数值。函数可以访问并修改所引用的变量；从这个意义上说，函数与这些变量是“绑定”的。\n\n例如，⟪GTI18N_570e535e_000002⟫adder⟪GTI18N_570e535e_000003⟫ 函数返回一个闭包。每个闭包都绑定到各自的 ⟪GTI18N_570e535e_000004⟫sum⟪GTI18N_570e535e_000005⟫ 变量。\n\n⟪GTI18N_570e535e_000006⟫\n",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786353884,
+    "id": "2026081017244168528beea1294d88",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "2026081017244168528beea1294d88",
+    "usage": {
+      "completion_tokens": 184,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 1883,
+      "prompt_tokens_details": {
+        "cached_tokens": 512
+      },
+      "total_tokens": 2067
+    }
+  }
+}

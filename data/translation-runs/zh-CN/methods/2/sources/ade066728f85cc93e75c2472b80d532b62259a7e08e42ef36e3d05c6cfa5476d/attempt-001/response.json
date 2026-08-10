@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "20260810172526802aa5d5b1104291",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 1681,
+    "completion_tokens": 82,
+    "total_tokens": 1763
+  },
+  "content": "* 方法即函数\n\n请记住：方法不过是带有一个接收者参数的函数。\n\n下面将 ⟪GTI18N_ade06672_000001⟫Abs⟪GTI18N_ade06672_000002⟫ 改写为普通函数，功能没有任何变化。\n\n⟪GTI18N_ade06672_000003⟫",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 方法即函数\n\n请记住：方法不过是带有一个接收者参数的函数。\n\n下面将 ⟪GTI18N_ade06672_000001⟫Abs⟪GTI18N_ade06672_000002⟫ 改写为普通函数，功能没有任何变化。\n\n⟪GTI18N_ade06672_000003⟫",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786353927,
+    "id": "20260810172526802aa5d5b1104291",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "20260810172526802aa5d5b1104291",
+    "usage": {
+      "completion_tokens": 82,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 1681,
+      "prompt_tokens_details": {
+        "cached_tokens": 512
+      },
+      "total_tokens": 1763
+    }
+  }
+}
