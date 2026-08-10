@@ -161,13 +161,30 @@ func run(args []string) error {
 		locale := fs.String("locale", "", "target locale")
 		id := fs.String("id", "", "persistent page_id")
 		dev := fs.Bool("dev", false, "development calibration mode: one attempt per command; never use for production batch translation")
+		devAttempts := fs.Int("dev-attempts", 1, "development attempts in one command (1-3; requires --dev)")
+		rawInput := fs.Bool("raw-input", false, "experimental: send the hydrated production page without protected-token replacement or response restore")
+		minimalProtect := fs.Bool("minimal-protect", false, "experimental: protect only complete .play directive lines")
 		if err := fs.Parse(args[2:]); err != nil {
 			return err
 		}
 		if *locale == "" || *id == "" {
 			return fmt.Errorf("--locale and --id are required")
 		}
-		runner := i18n.TranslationRunner{Root: root, Catalog: catalog, Dev: *dev}
+		if *rawInput && *minimalProtect {
+			return fmt.Errorf("--raw-input and --minimal-protect are mutually exclusive")
+		}
+		devAttemptsSet := false
+		fs.Visit(func(f *flag.Flag) {
+			devAttemptsSet = devAttemptsSet || f.Name == "dev-attempts"
+		})
+		if devAttemptsSet && !*dev {
+			return fmt.Errorf("--dev-attempts requires --dev")
+		}
+		runnerDevAttempts := 0
+		if *dev {
+			runnerDevAttempts = *devAttempts
+		}
+		runner := i18n.TranslationRunner{Root: root, Catalog: catalog, Dev: *dev, DevAttempts: runnerDevAttempts, RawInput: *rawInput, MinimalProtect: *minimalProtect}
 		result, err := runner.Run(context.Background(), *id, *locale, os.Getenv("ZHIPU_API_KEY"))
 		if err != nil {
 			return err

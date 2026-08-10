@@ -99,6 +99,14 @@ type TranslationRunner struct {
 	Now         func() time.Time
 	MaxAttempts int
 	Dev         bool
+	// DevAttempts bounds consecutive attempts in one development run. Zero
+	// retains the historical one-attempt development behavior.
+	DevAttempts int
+	// RawInput sends the hydrated production page directly to the model. It is
+	// intentionally experimental; the normal protected-token flow is default.
+	RawInput bool
+	// MinimalProtect protects only complete .play directive lines.
+	MinimalProtect bool
 }
 
 func (r *TranslationRunner) Run(ctx context.Context, pageID, locale, apiKey string) (*TranslationRunResult, error) {
@@ -107,6 +115,13 @@ func (r *TranslationRunner) Run(ctx context.Context, pageID, locale, apiKey stri
 	}
 	if locale != "zh-CN" {
 		return nil, fmt.Errorf("unsupported locale %q", locale)
+	}
+	if r.RawInput && r.MinimalProtect {
+		return nil, errors.New("raw-input and minimal-protect are mutually exclusive")
+	}
+	devAttempts, err := validateDevAttempts(r.Dev, r.DevAttempts)
+	if err != nil {
+		return nil, err
 	}
 	if r.Catalog == nil {
 		return nil, errors.New("translation catalog is required")
@@ -129,7 +144,14 @@ func (r *TranslationRunner) Run(ctx context.Context, pageID, locale, apiKey stri
 	if err != nil {
 		return nil, err
 	}
-	protected := protectTranslation(page.Source, page.SourceSHA256, glossary)
+	var protected *protectedTranslation
+	if r.MinimalProtect {
+		value := protectPlayDirectives(page.Source, page.SourceSHA256)
+		protected = &value
+	} else if !r.RawInput {
+		value := protectTranslation(page.Source, page.SourceSHA256, glossary)
+		protected = &value
+	}
 	maxAttempts := r.MaxAttempts
 	if maxAttempts == 0 {
 		maxAttempts = 3
@@ -166,14 +188,14 @@ func (r *TranslationRunner) Run(ctx context.Context, pageID, locale, apiKey stri
 	}
 	lastAttempt := windowEnd
 	if r.Dev {
-		lastAttempt = firstAttempt
+		lastAttempt = firstAttempt + devAttempts - 1
 	}
 	for attempt := firstAttempt; attempt <= lastAttempt; attempt++ {
 		dir := filepath.Join(sourceRunDir, fmt.Sprintf("attempt-%03d", attempt))
 		if err := os.MkdirAll(dir, 0755); err != nil {
 			return nil, err
 		}
-		req := makeTranslationRequest(pageID, locale, protected, glossary.PromptRules(pageID), previous)
+		req := makeTranslationRequestForMode(pageID, locale, page.Source, protected, glossary.PromptRules(pageID), previous)
 		if err := writeTranslationJSON(filepath.Join(dir, "request.json"), savedTranslationRequest{pageID, locale, page.SourceSHA256, req}); err != nil {
 			return nil, err
 		}
@@ -193,10 +215,18 @@ func (r *TranslationRunner) Run(ctx context.Context, pageID, locale, apiKey stri
 			if strings.Contains(call.Content, "```") || !strings.HasPrefix(strings.TrimSpace(call.Content), "* ") {
 				last.Failures = append(last.Failures, "model output is fenced, explained, or not a complete section")
 			}
-			var tokenFailures []string
-			candidate, tokenFailures = protected.restore(call.Content)
-			last.Failures = append(last.Failures, tokenFailures...)
-			last.TokenValid = len(tokenFailures) == 0
+			if r.RawInput {
+				// No program-generated tokens were sent, so the model response is
+				// the candidate itself. ValidateCandidate below still enforces all
+				// present, glossary, and protected-structure invariants.
+				candidate = call.Content
+				last.TokenValid = true
+			} else {
+				var tokenFailures []string
+				candidate, tokenFailures = protected.restore(call.Content)
+				last.Failures = append(last.Failures, tokenFailures...)
+				last.TokenValid = len(tokenFailures) == 0
+			}
 			if last.TokenValid {
 				if err := ValidateCandidate(r.Root, r.Catalog, pageID, []byte(candidate)); err != nil {
 					last.Failures = append(last.Failures, err.Error())
@@ -223,15 +253,14 @@ func (r *TranslationRunner) Run(ctx context.Context, pageID, locale, apiKey stri
 			}
 			return &TranslationRunResult{pageID, locale, page.SourceSHA256, "glm-5.2", attempt, "ready", candidatePath, &last, updated}, nil
 		}
-		previous = retryFeedback(last.Failures)
+		previous = retryFeedbackForMode(last.Failures, r.RawInput, r.MinimalProtect)
 	}
 	updated := now().UTC().Format(time.RFC3339)
 	if r.Dev {
-		attempt := firstAttempt
-		if err := updateTranslationStatus(r.Root, locale, pageID, "pending", attempt, page.SourceSHA256, "", updated, previous); err != nil {
+		if err := updateTranslationStatus(r.Root, locale, pageID, "pending", lastAttempt, page.SourceSHA256, "", updated, previous); err != nil {
 			return nil, err
 		}
-		return &TranslationRunResult{pageID, locale, page.SourceSHA256, "glm-5.2", attempt, "pending", "", &last, updated}, nil
+		return &TranslationRunResult{pageID, locale, page.SourceSHA256, "glm-5.2", lastAttempt, "pending", "", &last, updated}, nil
 	}
 	if err := updateTranslationStatus(r.Root, locale, pageID, "blocked", lastAttempt, page.SourceSHA256, "", updated, previous); err != nil {
 		return nil, err
@@ -239,11 +268,48 @@ func (r *TranslationRunner) Run(ctx context.Context, pageID, locale, apiKey stri
 	return &TranslationRunResult{pageID, locale, page.SourceSHA256, "glm-5.2", lastAttempt, "blocked", "", &last, updated}, nil
 }
 
+const maxDevAttempts = 3
+
+func validateDevAttempts(dev bool, attempts int) (int, error) {
+	if !dev && attempts != 0 {
+		return 0, errors.New("dev-attempts requires dev mode")
+	}
+	if attempts == 0 {
+		return 1, nil
+	}
+	if attempts < 1 || attempts > maxDevAttempts {
+		return 0, fmt.Errorf("dev-attempts must be between 1 and %d", maxDevAttempts)
+	}
+	return attempts, nil
+}
+
 // retryFeedback deliberately summarizes audited validation failures for the
 // model. Detailed source/candidate diagnostics stay in validation.json and are
 // never echoed into a subsequent model request.
 func retryFeedback(failures []string) string {
+	return retryFeedbackForMode(failures, false, false)
+}
+
+func retryFeedbackForMode(failures []string, rawInput, minimalProtect bool) string {
 	joined := strings.ToLower(strings.Join(failures, "\n"))
+	if strings.Contains(joined, "link inline code") {
+		return "上一次输出在链接显示文本中新增了源页面不存在的行内代码格式。不要给原本是普通文本的链接标签添加反引号或行内代码标记；保留源页面已有的链接 target 和已有行内代码结构。普通链接显示文字仍可正常翻译。请重新翻译完整页面。"
+	}
+	if minimalProtect {
+		return "上一次输出未通过页面结构校验。唯一的 .play directive 占位符必须原样且恰好出现一次；其余原有 present 结构也不得自行增删或改写。请重新翻译完整页面。"
+	}
+	if rawInput {
+		switch {
+		case strings.Contains(joined, "inline code"):
+			return "上一次输出改变了行内代码结构。请保留原有反引号代码的内容、数量和位置，不得自行新增或删除行内代码。请重新翻译完整页面，并保持所有 present 结构不变。"
+		case strings.Contains(joined, "directive"):
+			return "上一次输出改变了 present directive 结构。请逐字保留原有 .play、.image 等 directive，不得新增、删除或改写。请重新翻译完整页面，并保持所有 present 结构不变。"
+		case strings.Contains(joined, "font span") || strings.Contains(joined, "emphasis"):
+			return "上一次输出破坏了强调或字体结构。必须保留所有已有强调结构标记；不得自行新增、删除或改变强调类型。请重新翻译完整页面，并保持所有 present 结构不变。"
+		default:
+			return "上一次输出未通过页面结构校验。请只翻译普通文本，完整保留原有行内代码、预格式化代码、directive、链接、链接 target、HTML 和 present 结构，不要自行增删或改写。请重新翻译完整页面。"
+		}
+	}
 	switch {
 	case strings.Contains(joined, "protected token") || strings.Contains(joined, "token "):
 		return "上一次输出未能完整、唯一地保留所有受保护 token。每个现有 token 必须原样且恰好出现一次；不得自行重建 token 所代表的代码、directive、链接目标或其他原始结构。请重新翻译完整页面，并保持其他受保护结构不变。"
@@ -580,6 +646,12 @@ func currentFormalAttemptWindow(sourceRunDir, pageID, locale, sourceSHA256 strin
 }
 
 func makeTranslationRequest(pageID, locale string, protected protectedTranslation, glossaryRules, previous string) TranslationAPIRequest {
+	return makeTranslationRequestForMode(pageID, locale, []byte(protected.Text), &protected, glossaryRules, previous)
+}
+
+func makeTranslationRequestForMode(pageID, locale string, source []byte, protected *protectedTranslation, glossaryRules, previous string) TranslationAPIRequest {
+	rawInput := protected == nil
+	minimalProtect := protected != nil && protected.MinimalProtect
 	system := `请将一个完整的《Go 语言之旅》present.Section 从英文翻译为中国大陆简体中文。
 
 只返回完整且可由 present 解析的 .article 内容。必须保留每个保护 token，使其原样出现、恰好出现一次；不得修改、删除、复制或伪造。为适应目标语言自然语序可以调整 token 位置，但不得破坏其所属的链接、代码、directive、预格式化等结构关系。必须使用术语表中的强制译法；对应的、应当翻译的英文显示文本不得残留；不得简化、遗漏或改变原文含义。
@@ -596,6 +668,46 @@ func makeTranslationRequest(pageID, locale string, protected protectedTranslatio
 9. 输出前静默自检：标题是否自然；是否存在英文语序或机器翻译腔；操作说明是否符合真实操作；技术含义和信息量是否与原文一致；是否无意增删了行内代码、链接、directive 或其他结构。
 
 只输出最终完整的 present.Section，不输出分析、说明或修改过程。`
+	if rawInput {
+		system = strings.Replace(system, "只返回完整且可由 present 解析的 .article 内容。必须保留每个保护 token，使其原样出现、恰好出现一次；不得修改、删除、复制或伪造。为适应目标语言自然语序可以调整 token 位置，但不得破坏其所属的链接、代码、directive、预格式化等结构关系。必须使用术语表中的强制译法；对应的、应当翻译的英文显示文本不得残留；不得简化、遗漏或改变原文含义。", "只返回完整且可由 present 解析的 .article 内容。必须保留原有链接、代码、directive、预格式化等结构及其关系；不得修改、删除、复制或伪造。为适应目标语言自然语序可以调整普通文本位置，但不得破坏结构关系。必须使用术语表中的强制译法；对应的、应当翻译的英文显示文本不得残留；不得简化、遗漏或改变原文含义。", 1)
+		system = strings.Replace(system, "可以润色普通中文文本，但不得改变、增删或重新标记任何受保护结构。尤其不得自行新增或删除行内代码反引号、预格式化代码、present directive、链接及链接 target、HTML 或特殊 present 语法；所有保护 token 必须完整且唯一，结构关系和形式必须保持一致。", "可以润色普通中文文本，但不得改变、增删或重新标记任何原有结构。尤其不得自行新增或删除行内代码反引号、预格式化代码、present directive、链接及链接 target、HTML 或特殊 present 语法；结构关系和形式必须保持一致。", 1)
+		user := fmt.Sprintf(`page_id: %s
+source_locale: en
+target_locale: %s
+
+强制术语表与译法规则：
+%s
+
+重要：下文是原始完整页面，未经过程序替换。
+只翻译普通英文文本；必须逐字保留原有行内代码、预格式化代码、present directive、链接及链接 target、HTML 和其他 present 结构。不得新增、删除、复制或改写这些结构。
+
+需要翻译的完整原始页面：
+%s`, pageID, locale, glossaryRules, source)
+		if previous != "" {
+			user += "\n\n上一次完整页面翻译未通过校验：" + previous
+		}
+		return TranslationAPIRequest{Model: "glm-5.2", Stream: false, Thinking: map[string]string{"type": "disabled"}, DoSample: false, MaxTokens: 8192, Messages: []TranslationMessage{{Role: "system", Content: system}, {Role: "user", Content: user}}}
+	}
+	if minimalProtect {
+		system = strings.Replace(system, "只返回完整且可由 present 解析的 .article 内容。必须保留每个保护 token，使其原样出现、恰好出现一次；不得修改、删除、复制或伪造。为适应目标语言自然语序可以调整 token 位置，但不得破坏其所属的链接、代码、directive、预格式化等结构关系。必须使用术语表中的强制译法；对应的、应当翻译的英文显示文本不得残留；不得简化、遗漏或改变原文含义。", "只返回完整且可由 present 解析的 .article 内容。唯一的 .play directive 占位符必须原样出现且恰好一次；不得修改、删除、复制或伪造。其余原有链接、代码、directive、预格式化等结构及其关系也不得破坏。必须使用术语表中的强制译法；对应的、应当翻译的英文显示文本不得残留；不得简化、遗漏或改变原文含义。", 1)
+		system = strings.Replace(system, "可以润色普通中文文本，但不得改变、增删或重新标记任何受保护结构。尤其不得自行新增或删除行内代码反引号、预格式化代码、present directive、链接及链接 target、HTML 或特殊 present 语法；所有保护 token 必须完整且唯一，结构关系和形式必须保持一致。", "可以润色普通中文文本，但不得改变、增删或重新标记任何原有结构。尤其不得自行新增或删除行内代码反引号、预格式化代码、present directive、链接及链接 target、HTML 或特殊 present 语法；结构关系和形式必须保持一致。", 1)
+		user := fmt.Sprintf(`page_id: %s
+source_locale: en
+target_locale: %s
+
+强制术语表与译法规则：
+%s
+
+重要：下文唯一形如 ⟪GTI18N_...⟫ 的保护 token 代表完整 .play directive。
+该 token 必须原样且恰好出现一次；不得修改、删除、复制或伪造。除它以外，页面是原始内容：只翻译普通英文文本，仍必须保留其他原有 present 结构，不得擅自增删或改写。
+
+需要翻译的完整页面：
+%s`, pageID, locale, glossaryRules, protected.Text)
+		if previous != "" {
+			user += "\n\n上一次完整页面翻译未通过校验：" + previous
+		}
+		return TranslationAPIRequest{Model: "glm-5.2", Stream: false, Thinking: map[string]string{"type": "disabled"}, DoSample: false, MaxTokens: 8192, Messages: []TranslationMessage{{Role: "system", Content: system}, {Role: "user", Content: user}}}
+	}
 	user := fmt.Sprintf(`page_id: %s
 source_locale: en
 target_locale: %s
@@ -612,7 +724,7 @@ target_locale: %s
 %s
 
 需要翻译的完整受保护页面：
-%s`, pageID, locale, glossaryRules, len(protected.Tokens), len(protected.Tokens), protectedStructureProtocol(protected), protected.Text)
+%s`, pageID, locale, glossaryRules, len(protected.Tokens), len(protected.Tokens), protectedStructureProtocol(*protected), protected.Text)
 	if previous != "" {
 		user += "\n\n上一次完整页面翻译未通过校验：" + previous
 	}

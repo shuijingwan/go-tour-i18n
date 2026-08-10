@@ -13,6 +13,7 @@ var translationTokenRE = regexp.MustCompile(`⟪GTI18N_[0-9a-f]{8}_[0-9]{6}⟫`)
 var translationKeepRE = regexp.MustCompile(`\b(?:Go|gofmt|PageUp|PageDown|Shift|Enter|Ctrl)\b`)
 var whereToGoPrefixRE = regexp.MustCompile(`(?i)\bwhere[\t \r\n]+to[\t \r\n]+$`)
 var directiveLineRE = regexp.MustCompile(`(?m)^\.(?:play|image)\s+[^\n]+$`)
+var playDirectiveLineRE = regexp.MustCompile(`(?m)^\.play\s+[^\n]+$`)
 
 type protectedTranslation struct {
 	Text             string
@@ -22,6 +23,7 @@ type protectedTranslation struct {
 	InlineBoundaries []bool
 	InlinePairs      []protectedInlinePair
 	EmphasisTokens   []string
+	MinimalProtect   bool
 }
 
 type protectedTokenKind uint8
@@ -102,6 +104,24 @@ func protectTranslation(source []byte, hash string, glossary *Glossary) protecte
 		}
 		spans = append(spans, protectedSpan{start: m[0], end: m[1], kind: protectedGlossaryOrKeep})
 	}
+	return protectedTranslationFromSpans(text, hash, spans)
+}
+
+// protectPlayDirectives deliberately protects only complete .play directive
+// lines. It is the narrowest experiment built on the normal token/restore
+// mechanism; all other source bytes remain visible to the model.
+func protectPlayDirectives(source []byte, hash string) protectedTranslation {
+	text := string(source)
+	var spans []protectedSpan
+	for _, m := range playDirectiveLineRE.FindAllStringIndex(text, -1) {
+		spans = append(spans, protectedSpan{start: m[0], end: m[1], kind: protectedDirective})
+	}
+	result := protectedTranslationFromSpans(text, hash, spans)
+	result.MinimalProtect = true
+	return result
+}
+
+func protectedTranslationFromSpans(text, hash string, spans []protectedSpan) protectedTranslation {
 	sort.Slice(spans, func(i, j int) bool {
 		if spans[i].start == spans[j].start {
 			return spans[i].end > spans[j].end

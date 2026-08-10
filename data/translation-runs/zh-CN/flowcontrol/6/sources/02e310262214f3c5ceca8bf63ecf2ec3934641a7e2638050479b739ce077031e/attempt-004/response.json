@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "20260810102205c042862b34734ca3",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 1318,
+    "completion_tokens": 85,
+    "total_tokens": 1403
+  },
+  "content": "* 带简短语句的 if\n\n与 `for` 一样，`if` 语句可以在条件之前以一个简短语句开始，该语句会在条件之前执行。\n\n该语句声明的变量其作用域仅到 `if` 语句末尾为止。\n\n（可以尝试在最后一个 `return` 语句中使用 `v`。）\n\n.play flowcontrol/if-with-a-short-statement.go",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 带简短语句的 if\n\n与 `for` 一样，`if` 语句可以在条件之前以一个简短语句开始，该语句会在条件之前执行。\n\n该语句声明的变量其作用域仅到 `if` 语句末尾为止。\n\n（可以尝试在最后一个 `return` 语句中使用 `v`。）\n\n.play flowcontrol/if-with-a-short-statement.go",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786328527,
+    "id": "20260810102205c042862b34734ca3",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "20260810102205c042862b34734ca3",
+    "usage": {
+      "completion_tokens": 85,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 1318,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "total_tokens": 1403
+    }
+  }
+}

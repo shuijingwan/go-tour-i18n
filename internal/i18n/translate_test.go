@@ -888,6 +888,236 @@ func TestTranslationRequestIncludesNaturalChineseGuidance(t *testing.T) {
 	}
 }
 
+func TestRawInputTranslationRequestUsesOriginalPageWithoutTokenInstructions(t *testing.T) {
+	source := []byte("* Title\n\nSee [[/target][a link]] and `code`.\n\n.play welcome/hello.go\n")
+	request := makeTranslationRequestForMode("example/1", "zh-CN", source, nil, "- glossary rule", "")
+	if len(request.Messages) != 2 {
+		t.Fatalf("messages = %+v", request.Messages)
+	}
+	all := request.Messages[0].Content + "\n" + request.Messages[1].Content
+	if translationTokenRE.MatchString(all) || strings.Contains(all, "保护 token") || strings.Contains(all, "占位符") {
+		t.Fatalf("raw request contains generated-token content:\n%s", all)
+	}
+	user := request.Messages[1].Content
+	for _, want := range []string{
+		"需要翻译的完整原始页面：\n" + string(source),
+		"[[/target][a link]]",
+		"`code`",
+		".play welcome/hello.go",
+		"逐字保留原有行内代码、预格式化代码、present directive、链接及链接 target",
+	} {
+		if !strings.Contains(user, want) {
+			t.Errorf("raw request missing %q:\n%s", want, user)
+		}
+	}
+}
+
+func TestRawInputRunnerUsesResponseDirectlyAndStillValidatesCandidate(t *testing.T) {
+	source := []byte("* Title\n\nSee [[/target][a link]] and `code`.\n\n.play welcome/hello.go\n")
+	hash := sum(source)
+	root := writeStatusFixture(t, "page_id\tstatus\tattempts\tsource_sha256\tcandidate_path\tupdated_at\tnote\n"+
+		"example/1\tpending\t0\t"+hash+"\t\t\t\n")
+	writeTestGlossary(t, root)
+	if err := os.MkdirAll(filepath.Join(root, "_content", "tour", "welcome"), 0755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(root, "_content", "tour", "welcome", "hello.go"), []byte("package main\n"), 0644); err != nil {
+		t.Fatal(err)
+	}
+	var captured TranslationAPIRequest
+	client := &TranslationClient{Endpoint: "https://example.invalid", HTTP: mockHTTP(func(r *http.Request) (*http.Response, error) {
+		if err := json.NewDecoder(r.Body).Decode(&captured); err != nil {
+			t.Fatal(err)
+		}
+		body, _ := json.Marshal(map[string]any{"choices": []any{map[string]any{"message": map[string]string{"role": "assistant", "content": string(source)}, "finish_reason": "stop"}}, "usage": map[string]int{}})
+		return &http.Response{StatusCode: http.StatusOK, Header: make(http.Header), Body: io.NopCloser(strings.NewReader(string(body))), Request: r}, nil
+	})}
+	runner := TranslationRunner{Root: root, Catalog: &Catalog{Pages: []Page{{ID: "example/1", Article: "welcome.article", Source: source, SourceSHA256: hash}}}, Client: client, RawInput: true, Now: func() time.Time { return time.Unix(0, 0) }}
+	result, err := runner.Run(context.Background(), "example/1", "zh-CN", "test-secret")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if result.Status != "ready" || !result.Validation.TokenValid || !result.Validation.PresentValid {
+		t.Fatalf("result = %+v", result)
+	}
+	requestText := captured.Messages[0].Content + "\n" + captured.Messages[1].Content
+	if translationTokenRE.MatchString(requestText) || strings.Contains(requestText, "保护 token") {
+		t.Fatalf("raw runner generated token request content:\n%s", requestText)
+	}
+	for _, want := range []string{"[[/target][a link]]", "`code`", ".play welcome/hello.go"} {
+		if !strings.Contains(requestText, want) {
+			t.Errorf("raw request changed source structure, missing %q:\n%s", want, requestText)
+		}
+	}
+	candidate, err := os.ReadFile(filepath.Join(root, result.CandidatePath))
+	if err != nil || string(candidate) != string(source) {
+		t.Fatalf("candidate=%q err=%v, want direct response %q", candidate, err, source)
+	}
+}
+
+func TestMinimalProtectMethods24ProtectsOnlyPlayDirective(t *testing.T) {
+	root := repoRoot(t)
+	catalog, err := BuildCatalog(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	page, err := catalog.Page("methods/24")
+	if err != nil {
+		t.Fatal(err)
+	}
+	protected := protectPlayDirectives(page.Source, page.SourceSHA256)
+	if !protected.MinimalProtect || len(protected.Tokens) != 1 || len(protected.Values) != 1 || protected.Values[0] != ".play methods/images.go" || protected.Kinds[0] != protectedDirective {
+		t.Fatalf("minimal protection = %+v", protected)
+	}
+	if strings.Contains(protected.Text, ".play methods/images.go") || !strings.Contains(protected.Text, protected.Tokens[0]) {
+		t.Fatalf("play directive was not replaced exactly once:\n%s", protected.Text)
+	}
+	for _, want := range []string{
+		"[[/pkg/image/#Image][Package image]]",
+		"`Image`",
+		"[[/pkg/image/#Rectangle][`image.Rectangle`]]",
+		"\tpackage image",
+		"*Note*",
+	} {
+		if !strings.Contains(protected.Text, want) {
+			t.Errorf("unprotected source structure missing %q:\n%s", want, protected.Text)
+		}
+	}
+	if got := translationTokenRE.FindAllString(protected.Text, -1); len(got) != 1 || got[0] != protected.Tokens[0] {
+		t.Fatalf("tokens = %q, want only %q", got, protected.Tokens)
+	}
+	request := makeTranslationRequestForMode(page.ID, "zh-CN", page.Source, &protected, "- glossary rule", "")
+	user := request.Messages[1].Content
+	if !strings.Contains(user, "唯一形如 ⟪GTI18N_...⟫") || !strings.Contains(user, protected.Tokens[0]) || strings.Contains(user, ".play methods/images.go") {
+		t.Fatalf("minimal request does not match protected input:\n%s", user)
+	}
+
+	candidate, failures := protected.restore(protected.Text)
+	if len(failures) != 0 || candidate != string(page.Source) {
+		t.Fatalf("restore = %q, failures=%v", candidate, failures)
+	}
+	if err := ValidateCandidate(root, catalog, page.ID, []byte(candidate)); err != nil {
+		t.Fatalf("restored source rejected by shared validator: %v", err)
+	}
+	for name, response := range map[string]string{
+		"missing":   strings.Replace(protected.Text, protected.Tokens[0], "", 1),
+		"duplicate": protected.Text + protected.Tokens[0],
+		"modified":  strings.Replace(protected.Text, protected.Tokens[0], "⟪GTI18N_deadbeef_000001⟫", 1),
+	} {
+		t.Run(name, func(t *testing.T) {
+			if got, failures := protected.restore(response); got != "" || len(failures) == 0 {
+				t.Fatalf("invalid directive placeholder accepted: got=%q failures=%v", got, failures)
+			}
+		})
+	}
+}
+
+func TestTranslationRunnerRejectsMutuallyExclusiveRawModes(t *testing.T) {
+	runner := TranslationRunner{RawInput: true, MinimalProtect: true}
+	if _, err := runner.Run(context.Background(), "example/1", "zh-CN", "test-secret"); err == nil || !strings.Contains(err.Error(), "mutually exclusive") {
+		t.Fatalf("Run error = %v, want mutually exclusive modes", err)
+	}
+}
+
+func TestDevAttemptsRetriesMinimalProtectWithLinkInlineCodeFeedback(t *testing.T) {
+	source := []byte("* Source\n\n[[/target][Package image]]\n\n.play welcome/hello.go\n")
+	hash := sum(source)
+	root := writeStatusFixture(t, "page_id\tstatus\tattempts\tsource_sha256\tcandidate_path\tupdated_at\tnote\nexample/1\tpending\t0\t"+hash+"\t\t\t\n")
+	writeTestGlossary(t, root)
+	if err := os.MkdirAll(filepath.Join(root, "_content", "tour", "welcome"), 0755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(root, "_content", "tour", "welcome", "hello.go"), []byte("package main\n"), 0644); err != nil {
+		t.Fatal(err)
+	}
+	var calls atomic.Int32
+	client := &TranslationClient{Endpoint: "https://example.invalid", HTTP: mockHTTP(func(r *http.Request) (*http.Response, error) {
+		call := calls.Add(1)
+		var request TranslationAPIRequest
+		if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
+			t.Fatal(err)
+		}
+		user := request.Messages[1].Content
+		tokens := translationTokenRE.FindAllString(user, -1)
+		if len(tokens) != 1 {
+			t.Fatalf("tokens=%q", tokens)
+		}
+		content := "* 来源\n\n[[/target][`image` 包]]\n\n" + tokens[0] + "\n"
+		if call == 2 {
+			for _, want := range []string{"链接显示文本中新增了源页面不存在的行内代码格式", "不要给原本是普通文本的链接标签添加反引号", "普通链接显示文字仍可正常翻译"} {
+				if !strings.Contains(user, want) {
+					t.Errorf("second request missing feedback %q:\n%s", want, user)
+				}
+			}
+			for _, forbidden := range []string{"image/color", "link inline code at link index"} {
+				if strings.Contains(user, forbidden) {
+					t.Errorf("second request leaked %q:\n%s", forbidden, user)
+				}
+			}
+			content = "* 来源\n\n[[/target][图像包]]\n\n" + tokens[0] + "\n"
+		}
+		body, _ := json.Marshal(map[string]any{"choices": []any{map[string]any{"message": map[string]string{"role": "assistant", "content": content}, "finish_reason": "stop"}}, "usage": map[string]int{}})
+		return &http.Response{StatusCode: http.StatusOK, Header: make(http.Header), Body: io.NopCloser(strings.NewReader(string(body))), Request: r}, nil
+	})}
+	runner := TranslationRunner{Root: root, Catalog: &Catalog{Pages: []Page{{ID: "example/1", Article: "welcome.article", Source: source, SourceSHA256: hash}}}, Client: client, Dev: true, DevAttempts: 2, MinimalProtect: true, Now: func() time.Time { return time.Unix(0, 0) }}
+	result, err := runner.Run(context.Background(), "example/1", "zh-CN", "test-secret")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if calls.Load() != 2 || result.Status != "ready" || result.Attempts != 2 {
+		t.Fatalf("result=%+v calls=%d", result, calls.Load())
+	}
+}
+
+func TestDevAttemptsFailureRecordsLastAttempt(t *testing.T) {
+	source := []byte("* Source\n\n[[/target][Package image]]\n\n.play welcome/hello.go\n")
+	hash := sum(source)
+	root := writeStatusFixture(t, "page_id\tstatus\tattempts\tsource_sha256\tcandidate_path\tupdated_at\tnote\nexample/1\tpending\t0\t"+hash+"\t\t\t\n")
+	writeTestGlossary(t, root)
+	if err := os.MkdirAll(filepath.Join(root, "_content", "tour", "welcome"), 0755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(root, "_content", "tour", "welcome", "hello.go"), []byte("package main\n"), 0644); err != nil {
+		t.Fatal(err)
+	}
+	var calls atomic.Int32
+	client := &TranslationClient{Endpoint: "https://example.invalid", HTTP: mockHTTP(func(r *http.Request) (*http.Response, error) {
+		calls.Add(1)
+		var request TranslationAPIRequest
+		if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
+			t.Fatal(err)
+		}
+		token := translationTokenRE.FindAllString(request.Messages[1].Content, -1)[0]
+		body, _ := json.Marshal(map[string]any{"choices": []any{map[string]any{"message": map[string]string{"role": "assistant", "content": "* 来源\n\n[[/target][`image` 包]]\n\n" + token + "\n"}, "finish_reason": "stop"}}, "usage": map[string]int{}})
+		return &http.Response{StatusCode: http.StatusOK, Header: make(http.Header), Body: io.NopCloser(strings.NewReader(string(body))), Request: r}, nil
+	})}
+	runner := TranslationRunner{Root: root, Catalog: &Catalog{Pages: []Page{{ID: "example/1", Article: "welcome.article", Source: source, SourceSHA256: hash}}}, Client: client, Dev: true, DevAttempts: 2, MinimalProtect: true, Now: func() time.Time { return time.Unix(0, 0) }}
+	result, err := runner.Run(context.Background(), "example/1", "zh-CN", "test-secret")
+	if err != nil || calls.Load() != 2 || result.Status != "pending" || result.Attempts != 2 {
+		t.Fatalf("result=%+v err=%v calls=%d", result, err, calls.Load())
+	}
+	status, _, err := LoadTranslationResult(root, "example/1", "zh-CN")
+	if err != nil || status.Attempts != 2 || status.State != "pending" {
+		t.Fatalf("status=%+v err=%v", status, err)
+	}
+}
+
+func TestValidateDevAttempts(t *testing.T) {
+	for _, tt := range []struct {
+		dev, wantErr bool
+		attempts     int
+		want         int
+	}{
+		{true, false, 0, 1}, {true, false, 1, 1}, {true, false, 2, 2}, {true, false, 3, 3},
+		{false, false, 0, 1}, {false, true, 1, 0}, {false, true, 2, 0}, {true, true, 4, 0}, {true, true, -1, 0},
+	} {
+		got, err := validateDevAttempts(tt.dev, tt.attempts)
+		if (err != nil) != tt.wantErr || (!tt.wantErr && got != tt.want) {
+			t.Errorf("validateDevAttempts(%t, %d) = %d, %v; want %d, error=%t", tt.dev, tt.attempts, got, err, tt.want, tt.wantErr)
+		}
+	}
+}
+
 func TestTranslationRequestExplainsDynamicPairProtocol(t *testing.T) {
 	source := []byte("* Source\n\nThe `swap` is _after_ the value.\n\n.play hidden/example.go\n")
 	protected := protectTranslation(source, sum(source), nil)

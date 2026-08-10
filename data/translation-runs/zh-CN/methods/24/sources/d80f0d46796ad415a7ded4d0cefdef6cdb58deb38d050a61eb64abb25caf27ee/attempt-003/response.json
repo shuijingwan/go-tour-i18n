@@ -1,0 +1,39 @@
+{
+  "status_code": 200,
+  "request_id": "202608101035179dc5c051177143c7",
+  "finish_reason": "stop",
+  "usage": {
+    "prompt_tokens": 1421,
+    "completion_tokens": 183,
+    "total_tokens": 1604
+  },
+  "content": "* 图片\n\n[[/pkg/image/#Image][`image` 包]]定义了 `Image` 接口：\n\n\tpackage image\n\n\ttype Image interface {\n\t\tColorModel() color.Model\n\t\tBounds() Rectangle\n\t\tAt(x, y int) color.Color\n\t}\n\n*注意*：`Bounds` 方法返回的 `Rectangle` 值实际上是 [[/pkg/image/#Rectangle][`image.Rectangle`]]，因为该声明位于 `image` 包内部。\n\n（完整细节请参阅[[/pkg/image/#Image][相关文档]]。）\n\n`color.Color` 和 `color.Model` 类型也是接口，但这里我们会直接使用预定义的实现 `color.RGBA` 和 `color.RGBAModel`，将此忽略。这些接口和类型由 [[/pkg/image/color/][image/color 包]]定义。\n\n.play methods/images.go /zh-cn/methods/24",
+  "raw": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "* 图片\n\n[[/pkg/image/#Image][`image` 包]]定义了 `Image` 接口：\n\n\tpackage image\n\n\ttype Image interface {\n\t\tColorModel() color.Model\n\t\tBounds() Rectangle\n\t\tAt(x, y int) color.Color\n\t}\n\n*注意*：`Bounds` 方法返回的 `Rectangle` 值实际上是 [[/pkg/image/#Rectangle][`image.Rectangle`]]，因为该声明位于 `image` 包内部。\n\n（完整细节请参阅[[/pkg/image/#Image][相关文档]]。）\n\n`color.Color` 和 `color.Model` 类型也是接口，但这里我们会直接使用预定义的实现 `color.RGBA` 和 `color.RGBAModel`，将此忽略。这些接口和类型由 [[/pkg/image/color/][image/color 包]]定义。\n\n.play methods/images.go /zh-cn/methods/24",
+          "role": "assistant"
+        }
+      }
+    ],
+    "created": 1786329321,
+    "id": "202608101035179dc5c051177143c7",
+    "model": "glm-5.2",
+    "object": "chat.completion",
+    "request_id": "202608101035179dc5c051177143c7",
+    "usage": {
+      "completion_tokens": 183,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens": 1421,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "total_tokens": 1604
+    }
+  }
+}
