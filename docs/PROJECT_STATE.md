@@ -46,8 +46,32 @@
 
 `generics/1` attempt-004 与 `methods/20` attempt-001 共同证明，全局 protected token 顺序要求会误伤正确的跨语言自然语序；该调整是通用多语言恢复与候选校验修复，而非单页特例。
 
-## 当前下一阶段：公共 UI 本地化与发布前 UI 验收
+## 公共 UI 本地化完成状态
 
-- 第一阶段仍只交付 zh-CN，但公共 UI 本地化须面向后续多语言扩展：不得将官方英文 UI 直接硬编码替换为中文；公共 Go 服务端、模板基础结构、CSS 和 JavaScript 应尽量共享，每种语言独立维护其公共 UI 文案，且 UI 文案继续与课程正文翻译分开维护。
-- 当前继续采用构建时单语言生成，不实现运行时动态语言切换；不为未来需求过早引入数据库、Web 审校平台、第三方复杂 i18n 框架或其他重型基础设施。
-- 下一步先对正式 Tour 运行时的公共 UI 可见英文文案完成一次完整只读审计，按 template、JavaScript、Go 服务端动态 UI、accessibility 文案、用户可见错误/状态信息及内部日志或开发者文本分类，明确清单和本地化边界后再决定 UI 修改范围；在此之前不直接开始大规模 UI 修改。
+- 第一阶段公共 UI 本地化已经完成。UI 文案与课程 `.article` 翻译继续分开维护，且未将官方英文 UI 直接硬编码替换为中文。
+- 统一 locale UI catalog 位于 `internal/tour/ui/`：`en.json` 是冻结 upstream UI source/canonical catalog，`zh-CN.json` 是第一阶段正式中文 UI catalog。实现使用 JSON locale 数据、Go `embed` 和标准库加载，并严格校验 key coverage 与 message kind；正式 locale 缺 key 会初始化失败，不提供英文 fallback。
+- 当前为一个构建/进程选择一个 locale 的构建时单语言体系，不实现运行时动态语言切换；未引入数据库、Web 审校平台或第三方复杂 i18n 框架。新增语言原则上只需增加合法 locale JSON 并通过完整性校验，无需修改 catalog loader 注册代码。
+- 已完成的 consumer 包括：
+  - 页面框架：`html lang`、页面 title、顶栏“Go 语言之旅”及主题切换的 `aria-label` / `alt`。
+  - JavaScript 公共 UI：TOC、`Waiting for remote server...`、feedback 入口及 feedback issue 模板。
+  - 课程列表：`欢迎来到 Go 语言之旅`、5 个模块标题和 5 个模块说明。模块 title 为 plain message；description 保持冻结 upstream 的 rich HTML 语义并受严格受限 markup 校验，第一项保留 go.dev 链接。
+  - 编辑器：`Syntax` → “语法高亮”、`Imports` → “导入”、`Run` → “运行”、`Kill` → “终止”、`Format` → “格式化”、`Reset` → “重置”。
+  - 执行状态：`Program exited` → “程序已退出”。
+- 已通过 `tour-i18n preview --locale zh-CN --id basics/6` 的实际浏览器检查：强制刷新后页面框架、`/tour/list`、模块标题和说明、go.dev 链接及编辑器已接入文案均正常；中文长度未造成明显布局问题，保留英文的 on/off 实际观感可接受。单页 preview 只替换目标 Section，因此列表页和 TOC 中其他课程 title / description 仍显示英文是该 preview 机制的既定行为，不是公共 UI 本地化遗漏。
+
+### 第一阶段主动保留项与部署边界
+
+- CSS 生成的 `on` / `off` 继续保持 upstream 原样；不为两个状态词修改 CSS、DOM 或 Angular。
+- `404 page not found` 继续使用 Go 标准库 `http.NotFound`。这是低频异常路径，第一阶段不为本地化接管标准库 404 行为。
+- playground 动态技术状态（例如 `killed`、`status N.`）继续保持 upstream / 技术状态原样。
+- HTTPTransport 部署变体的 `Go vet failed.`、`Go build failed.`、`Error communicating with remote server.` 对应 message 可继续保留在 catalog，但当前不接线。正式生产 deployment / transport 确定后，如 zh-CN 生产使用 HTTPTransport，须在上线前重新评估并处理这三项。
+
+### Upstream 同步维护结论
+
+- UI consumer 开始前的基准为 `519cc38`。经 SHA-256 / 文件核对，以下 upstream-facing 文件在该基准时与冻结 upstream `e11dacba76c5aae474746e9eedee19693f492803` 一致：`_content/tour/template/index.tmpl`、`_content/tour/static/js/app.js`、`_content/tour/static/js/controllers.js`、`_content/tour/static/js/directives.js`、`_content/tour/static/js/values.js`、`_content/tour/static/partials/list.html`、`_content/tour/static/partials/editor.html`。
+- 当前 UI 本地化对 upstream 的改动集中于文案绑定、少量 i18n 接线和数据来源替换，未进行明显 UI 结构性重构。未来 upstream 同步时重点复核上述少量 consumer 文件；继续遵守“低收益 + 高侵入的边缘文案宁可保留 upstream，不为零英文扩大维护面”的原则。
+
+## 当前下一阶段：103 页完整 zh-CN 正式发布投影预览与最终发布验收
+
+- 公共 UI 本地化不再是当前待办。下一阶段不再使用只替换单个 Section 的单页 preview，而是验证完整 103 页 ready candidate 的正式 zh-CN 投影。
+- 后续重点检查 `/tour/list`、完整 TOC、页面跳转、所有课程 title / description、课程正文、公共 UI、示例代码、页面布局、浏览器控制台与资源加载，以及正式 locale 一致性。
