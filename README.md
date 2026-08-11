@@ -14,7 +14,7 @@
 - 已建立完整页面翻译执行器、术语表、结构保护、candidate 校验、状态管理和 attempt 审计记录。
 - 已实现面向 locale 的完整正式投影和本地完整预览；zh-CN 完整投影已通过 103/103 HTTP 页面级验收。
 - 当前 module path 为 `github.com/shuijingwan/go-tour-i18n`。
-- production runtime 已完成，production publish bundle 已完成并通过最终发布前验收；实际生产环境部署尚未执行。
+- zh-CN 第一阶段已经正式上线：production publish 已实现并正式部署，浏览器最终验收通过。
 
 当前英文基线包含：
 
@@ -118,9 +118,9 @@ go run -mod=readonly ./cmd/tour-i18n preview \
 
 当前 zh-CN 完整投影包含 7 个 article、103 个正式页面，并已完成 103/103 HTTP 页面级验收；7/7 个 article title/subtitle 均已本地化。`welcome/1`、`welcome/4` 和 `welcome/5` 的特殊投影也包含在该验收中。article metadata 不计为额外页面，正式页面数仍为 103。
 
-## Production runtime 与 publish
+## Production runtime、publish 与正式上线
 
-production runtime 已在 commit `98877f7` 完成。它使用 `HTTPTransport`，将 `/_/compile` 和 `/_/fmt` 固定代理到官方 Go Playground；production 主机不执行用户提交的 Go 程序。本地 `/socket` 不用于 production：普通请求和 WebSocket Upgrade 均返回 404，`/_/share` 当前未启用并返回 404。Run / Format 已完成真实 Playground 验收。
+production runtime 已完成并正式部署。它使用 `HTTPTransport`，将 `/_/compile` 和 `/_/fmt` 代理到 `https://go.dev/_`；`/_/compile` 按 go.dev 要求保留 form 编码。production 主机不执行用户提交的 Go 程序。本地 `/socket` 不用于 production：普通请求和 WebSocket Upgrade 均返回 404，`/_/share` 当前未启用并返回 404。
 
 使用以下命令生成固定 locale 的 production bundle（当前完成 locale 为 `zh-CN`）：
 
@@ -143,7 +143,11 @@ go run -mod=readonly ./cmd/tour-i18n publish \
 
 `bin/tour` 在构建时固定 locale，从 binary 自身相邻的 `../_content` 加载内容，不需要运行时 `--locale` 或 `--content`，也不依赖当前工作目录。`release.json` 和 `SHA256SUMS` 是确定性的；相同源码、Go 工具链及 GOOS/GOARCH 下的重复 publish 已逐文件一致，185 个 bundle 文件的 SHA-256 均已验收通过。bundle 不包含 candidate、status、translation-runs 等开发期数据。
 
-publish 能力和发布产物的最终发布前验收已经完成，但项目尚未执行实际服务器、CDN、域名或其他生产环境部署。
+当前正式 release 已部署：`/data/go-tour/releases/20260811-zh-CN-925d59d`。项目 commit 为 `925d59d92016e026c92ae60f4535abd9237119ea`。
+
+正式站点：<https://go-tour.shuijingwanwq.com/>。
+
+生产请求链路为：浏览器 → EdgeOne → Nginx → Go Tour → `go.dev` Playground。Go Tour 由 `go-tour.service` 管理，监听 `127.0.0.1:3999`；生产环境不直接暴露本地 `/socket` 代码执行接口。
 
 ## 本地运行
 
@@ -155,7 +159,7 @@ go run -mod=readonly ./tour -http 127.0.0.1:3999 -openbrowser=false
 
 然后访问 <http://127.0.0.1:3999/tour/>。
 
-> **安全警告：** 本地 Tour 的 `/socket` 会使用运行 Tour 的机器上的 Go 环境编译和执行示例代码，只用于本地开发验证，应绑定回环地址，不能直接暴露到公网。production runtime 使用远程 HTTPTransport/官方 Go Playground 代理，不在 production 主机执行用户代码；实际生产环境部署尚未执行。
+> **安全警告：** 本地 Tour 的 `/socket` 会使用运行 Tour 的机器上的 Go 环境编译和执行示例代码，只用于本地开发验证，应绑定回环地址，不能直接暴露到公网。production runtime 使用远程 HTTPTransport/`go.dev` Playground 代理，不在 production 主机执行用户代码。
 
 ## 测试
 
@@ -167,7 +171,16 @@ go test -mod=readonly -count=1 ./...
 
 ## 实际生产部署状态
 
-正式网站不会在 Tour Web 服务器本机执行用户代码。已实现的 production runtime 通过同源轻量代理访问 Go 官方 Playground；当前 Run / Format 依赖 `play.golang.org`，production 不开放本地 `/socket`。production publish bundle 已实现并通过最终发布前验收，但实际服务器、CDN、域名和其他生产部署配置尚未执行。
+zh-CN 第一阶段已经正式上线：<https://go-tour.shuijingwanwq.com/>。
+
+- 正式 release：`/data/go-tour/releases/20260811-zh-CN-925d59d`。
+- 项目 commit：`925d59d92016e026c92ae60f4535abd9237119ea`。
+- production 执行链路：浏览器 → EdgeOne → Nginx → Go Tour → `https://go.dev/_`。
+- systemd 服务：`go-tour.service`，监听 `127.0.0.1:3999`。
+- `/tour/welcome/1`、真实 Run、真实 Format 均已通过公网验收；`/socket` 和 `/_/share` 均返回 404。
+- production binary 为 Linux amd64、`CGO_ENABLED=0`、静态链接，不依赖服务器 glibc 版本。
+
+部署期间已解决动态链接 glibc 兼容、OneinStack 静态资源 location 抢占、release 目录权限和 Nginx systemd 接管问题。Cloudflare 仅负责权威 DNS，业务 CNAME 使用 DNS only，正式流量经过 EdgeOne，不采用 Cloudflare 双层代理。
 
 ## 上游来源
 
@@ -182,10 +195,9 @@ go test -mod=readonly -count=1 ./...
 
 本次原样导入了 Tour 使用的历史前端组件。版本、许可证证据和待复核项见 [THIRD_PARTY.md](THIRD_PARTY.md)。
 
-## 尚未实现
+## 当前边界
 
-- 实际生产服务器、CDN、域名及其他部署配置；
-- 正式网站上线后的运维和发布后流程。
+- zh-CN 第一阶段已经正式上线；后续工作属于发布后的运维和其他语言扩展，不属于本次上线冻结内容。
 
 ## 许可证
 
@@ -196,4 +208,4 @@ go test -mod=readonly -count=1 ./...
 
 ## English Summary
 
-`go-tour-i18n` is a community-maintained, unofficial multilingual A Tour of Go translation project. The official English Tour baseline has been imported; Simplified Chinese (`zh-CN`) is the first completed locale, with all 103 projected pages ready, 7/7 article metadata entries localized, and a 103/103 HTTP page-level acceptance pass. The HTTPTransport-based production runtime and deterministic production publish bundle are implemented and validated; actual production deployment has not yet been performed.
+`go-tour-i18n` is a community-maintained, unofficial multilingual A Tour of Go translation project. The official English Tour baseline has been imported; Simplified Chinese (`zh-CN`) is the first completed locale, with all 103 projected pages ready, 7/7 article metadata entries localized, completed public UI localization, and a successful final browser acceptance pass. The HTTPTransport-based production runtime and deterministic production publish bundle are implemented and deployed at <https://go-tour.shuijingwanwq.com/>.
