@@ -5,6 +5,7 @@
 package tour
 
 import (
+	"io/fs"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
@@ -95,12 +96,12 @@ func TestJSI18nBootstrapLocales(t *testing.T) {
 	}{
 		{
 			locale: "en",
-			want:   []string{"\"toc.title\":\"Table of Contents\"", "\"execution.waiting\":\"Waiting for remote server...\"", "\"feedback.open\":\"Send feedback about this page\"", "\"feedback.context\":\"Context\""},
+			want:   []string{"\"tour.list_heading\":\"Welcome to a tour of Go\"", "\"toc.title\":\"Table of Contents\"", "\"execution.waiting\":\"Waiting for remote server...\"", "\"feedback.open\":\"Send feedback about this page\"", "\"feedback.context\":\"Context\""},
 		},
 		{
 			locale: "zh-CN",
-			want:   []string{"\"toc.title\":\"目录\"", "\"execution.waiting\":\"正在等待远程服务器……\"", "\"feedback.open\":\"发送本页反馈\"", "\"feedback.context\":\"上下文\""},
-			absent: []string{"\"toc.title\":\"Table of Contents\"", "\"execution.waiting\":\"Waiting for remote server...\"", "\"feedback.open\":\"Send feedback about this page\"", "\"feedback.context\":\"Context\""},
+			want:   []string{"\"tour.list_heading\":\"欢迎来到 Go 语言之旅\"", "\"toc.title\":\"目录\"", "\"execution.waiting\":\"正在等待远程服务器……\"", "\"feedback.open\":\"发送本页反馈\"", "\"feedback.context\":\"上下文\""},
+			absent: []string{"\"tour.list_heading\":\"Welcome to a tour of Go\"", "\"toc.title\":\"Table of Contents\"", "\"execution.waiting\":\"Waiting for remote server...\"", "\"feedback.open\":\"Send feedback about this page\"", "\"feedback.context\":\"Context\""},
 		},
 	}
 	for _, test := range tests {
@@ -133,6 +134,143 @@ func TestJSI18nBootstrapLocales(t *testing.T) {
 	}
 }
 
+func TestJSModuleBootstrapLocales(t *testing.T) {
+	tests := []struct {
+		locale string
+		want   []string
+		absent []string
+	}{
+		{
+			locale: "en",
+			want: []string{
+				`"mechanics":{"title":"Using the tour","description":"Welcome to a tour of the Go programming language. The tour covers the most important features of the language, mainly:"}`,
+				`"basics":{"title":"Basics"`, `"methods":{"title":"Methods and interfaces"`, `"generics":{"title":"Generics"`, `"concurrency":{"title":"Concurrency"`,
+				"The starting point, learn all the basics of the language.Declaring variables,", "Learn how to define methods on types, how to declare interfaces, and how to put everything together.", "Learn how to use type parameters in Go functions and structs.", "Go provides concurrency features as part of the core language.This module goes over goroutines",
+			},
+		},
+		{
+			locale: "zh-CN",
+			want: []string{
+				`"mechanics":{"title":"使用本教程","description":"欢迎来到 Go 编程语言之旅。本教程主要介绍该语言最重要的特性："}`,
+				`"basics":{"title":"基础"`, `"methods":{"title":"方法和接口"`, `"generics":{"title":"泛型"`, `"concurrency":{"title":"并发"`,
+				"从这里开始，学习这门语言的基础知识。声明变量、调用函数，以及进入下一课前需要了解的一切。", "学习如何为类型定义方法、如何声明接口，以及如何将它们组合起来。", "学习如何在 Go 函数和结构体中使用类型参数。", "Go 在语言层面提供了并发支持。本模块介绍 goroutine 和 channel，以及如何使用它们实现不同的并发模式。",
+			},
+			absent: []string{
+				`"mechanics":{"title":"Using the tour"`, `"basics":{"title":"Basics"`, `"methods":{"title":"Methods and interfaces"`, `"generics":{"title":"Generics"`, `"concurrency":{"title":"Concurrency"`,
+				"The starting point, learn all the basics of the language.Declaring variables,", "Learn how to define methods on types, how to declare interfaces, and how to put everything together.", "Learn how to use type parameters in Go functions and structs.", "Go provides concurrency features as part of the core language.This module goes over goroutines",
+			},
+		},
+	}
+	for _, test := range tests {
+		t.Run(test.locale, func(t *testing.T) {
+			catalog, err := ui.Load(test.locale)
+			if err != nil {
+				t.Fatal(err)
+			}
+			bootstrap, err := jsModuleBootstrap(catalog)
+			if err != nil {
+				t.Fatal(err)
+			}
+			text := string(bootstrap)
+			for _, want := range test.want {
+				if !strings.Contains(text, want) {
+					t.Errorf("module bootstrap for %s does not contain %q", test.locale, want)
+				}
+			}
+			for _, absent := range test.absent {
+				if strings.Contains(text, absent) {
+					t.Errorf("module bootstrap for %s unexpectedly contains %q", test.locale, absent)
+				}
+			}
+		})
+	}
+}
+
+func TestModuleDescriptionCatalogsArePlainText(t *testing.T) {
+	en := map[string]string{
+		"module.using_tour.description":  "Welcome to a tour of the Go programming language. The tour covers the most important features of the language, mainly:",
+		"module.basics.description":      "The starting point, learn all the basics of the language.Declaring variables, calling functions, and all the things you need to know before moving to the next lessons.",
+		"module.methods.description":     "Learn how to define methods on types, how to declare interfaces, and how to put everything together.",
+		"module.generics.description":    "Learn how to use type parameters in Go functions and structs.",
+		"module.concurrency.description": "Go provides concurrency features as part of the core language.This module goes over goroutines and channels, and how they are used to implement different concurrency patterns.",
+	}
+	for _, locale := range []string{"en", "zh-CN"} {
+		catalog, err := ui.Load(locale)
+		if err != nil {
+			t.Fatal(err)
+		}
+		for key, english := range en {
+			message := catalog.Messages[key]
+			if message.Kind != "plain" {
+				t.Errorf("%s %s kind = %q, want plain", locale, key, message.Kind)
+			}
+			if locale == "en" && message.Text != english {
+				t.Errorf("%s = %q, want frozen upstream text %q", key, message.Text, english)
+			}
+			if locale == "zh-CN" && strings.ContainsAny(message.Text, "<>") {
+				t.Errorf("%s contains markup: %q", key, message.Text)
+			}
+		}
+	}
+}
+
+func TestJSModuleBootstrapRejectsMissingOrNonPlainDescription(t *testing.T) {
+	catalog, err := ui.Load("en")
+	if err != nil {
+		t.Fatal(err)
+	}
+	delete(catalog.Messages, "module.basics.description")
+	if _, err := jsModuleBootstrap(catalog); err == nil || !strings.Contains(err.Error(), "is missing") {
+		t.Fatalf("missing plain message error = %v", err)
+	}
+
+	catalog, err = ui.Load("en")
+	if err != nil {
+		t.Fatal(err)
+	}
+	catalog.Messages["module.basics.description"] = ui.Message{Kind: "unexpected", Text: "Basics"}
+	if _, err := jsModuleBootstrap(catalog); err == nil || !strings.Contains(err.Error(), "not plain") {
+		t.Fatalf("non-plain message error = %v", err)
+	}
+}
+
+func TestTableOfContentsNavigationStructure(t *testing.T) {
+	data, err := fs.ReadFile(contentTour, "tour/static/js/values.js")
+	if err != nil {
+		t.Fatal(err)
+	}
+	text := string(data)
+	fragments := []string{
+		"'id': 'mechanics',", "'lessons': ['welcome']",
+		"'id': 'basics',", "'lessons': ['basics', 'flowcontrol', 'moretypes']",
+		"'id': 'methods',", "'lessons': ['methods']",
+		"'id': 'generics',", "'lessons': ['generics']",
+		"'id': 'concurrency',", "'lessons': ['concurrency']",
+	}
+	position := 0
+	for _, fragment := range fragments {
+		next := strings.Index(text[position:], fragment)
+		if next < 0 {
+			t.Fatalf("tableOfContents is missing %q", fragment)
+		}
+		position += next + len(fragment)
+	}
+}
+
+func TestListDescriptionUsesPlainTextBinding(t *testing.T) {
+	data, err := fs.ReadFile(contentTour, "tour/static/partials/list.html")
+	if err != nil {
+		t.Fatal(err)
+	}
+	text := string(data)
+	if !strings.Contains(text, `ng-bind="m.description"`) {
+		t.Fatal("list description does not use ng-bind")
+	}
+	if strings.Contains(text, `ng-bind-html-unsafe="m.description"`) {
+		t.Fatal("list description still uses ng-bind-html-unsafe")
+	}
+}
+
 func TestJSI18nBootstrapEscapesJSON(t *testing.T) {
 	catalog, err := ui.Load("en")
 	if err != nil {
@@ -148,12 +286,12 @@ func TestJSI18nBootstrapEscapesJSON(t *testing.T) {
 	}
 }
 
-func TestJSI18nBootstrapRejectsNonPlainMessage(t *testing.T) {
+func TestJSI18nBootstrapRejectsInvalidMessageKind(t *testing.T) {
 	catalog, err := ui.Load("en")
 	if err != nil {
 		t.Fatal(err)
 	}
-	catalog.Messages["toc.title"] = ui.Message{Kind: "rich", Text: "<p>Table of Contents</p>"}
+	catalog.Messages["toc.title"] = ui.Message{Kind: "unexpected", Text: "Table of Contents"}
 	if _, err := jsI18nBootstrap(catalog); err == nil || !strings.Contains(err.Error(), "not plain") {
 		t.Fatalf("jsI18nBootstrap error = %v, want plain-message failure", err)
 	}

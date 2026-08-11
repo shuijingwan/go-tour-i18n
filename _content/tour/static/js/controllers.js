@@ -9,6 +9,12 @@
 
 angular.module('tour.controllers', []).
 
+controller('ListCtrl', ['$scope', 'i18n',
+    function($scope, i18n) {
+        $scope.listHeading = i18n.l('tour.list_heading');
+    }
+]).
+
 // Navigation controller
 controller('EditorCtrl', ['$scope', '$routeParams', '$location', 'toc', 'i18n', 'run', 'fmt', 'editor', 'analytics', 'storage',
     function($scope, $routeParams, $location, toc, i18n, run, fmt, editor, analytics, storage) {

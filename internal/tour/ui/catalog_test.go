@@ -23,7 +23,6 @@ func TestLoadEmbeddedCatalogs(t *testing.T) {
 func TestCatalogPlainIsSafeForTemplateUse(t *testing.T) {
 	catalog := Catalog{Messages: map[string]Message{
 		"message.value": {Kind: "plain", Text: `<script>alert("x")</script>`},
-		"message.rich":  {Kind: "rich", Text: "<p>text</p>"},
 	}}
 	tmpl := template.Must(template.New("test").Funcs(template.FuncMap{"ui": catalog.Plain}).Parse(`{{ui "message.value"}}`))
 	var out bytes.Buffer
@@ -33,15 +32,13 @@ func TestCatalogPlainIsSafeForTemplateUse(t *testing.T) {
 	if got, want := out.String(), `&lt;script&gt;alert(&#34;x&#34;)&lt;/script&gt;`; got != want {
 		t.Fatalf("template output = %q, want %q", got, want)
 	}
-	for _, key := range []string{"missing.key", "message.rich"} {
-		if _, err := catalog.Plain(key); err == nil {
-			t.Errorf("Plain(%q) succeeded, want error", key)
-		}
+	if _, err := catalog.Plain("missing.key"); err == nil {
+		t.Error("Plain(missing.key) succeeded, want error")
 	}
 }
 
 func TestValidationFailures(t *testing.T) {
-	source := mustCatalog(t, `{"locale":"en","html_lang":"en","messages":{"message.one":{"kind":"plain","text":"One"},"message.two":{"kind":"rich","text":"<p>Two</p>"}}}`)
+	source := mustCatalog(t, `{"locale":"en","html_lang":"en","messages":{"message.one":{"kind":"plain","text":"One"},"message.two":{"kind":"plain","text":"Two"}}}`)
 	cases := []struct {
 		name       string
 		data       string
@@ -49,8 +46,8 @@ func TestValidationFailures(t *testing.T) {
 		parseFails bool
 	}{
 		{"missing key", `{"locale":"zh-CN","html_lang":"zh-CN","messages":{"message.one":{"kind":"plain","text":"一"}}}`, "missing keys: message.two", false},
-		{"extra key", `{"locale":"zh-CN","html_lang":"zh-CN","messages":{"message.one":{"kind":"plain","text":"一"},"message.two":{"kind":"rich","text":"<p>二</p>"},"message.extra":{"kind":"plain","text":"额外"}}}`, "unknown keys: message.extra", false},
-		{"kind mismatch", `{"locale":"zh-CN","html_lang":"zh-CN","messages":{"message.one":{"kind":"rich","text":"<p>一</p>"},"message.two":{"kind":"rich","text":"<p>二</p>"}}}`, "message kind mismatch: message.one", false},
+		{"extra key", `{"locale":"zh-CN","html_lang":"zh-CN","messages":{"message.one":{"kind":"plain","text":"一"},"message.two":{"kind":"plain","text":"二"},"message.extra":{"kind":"plain","text":"额外"}}}`, "unknown keys: message.extra", false},
+		{"non-plain kind", `{"locale":"zh-CN","html_lang":"zh-CN","messages":{"message.one":{"kind":"rich","text":"一"},"message.two":{"kind":"plain","text":"二"}}}`, "invalid kind \"rich\"", true},
 		{"malformed JSON", `{`, "EOF", true},
 		{"duplicate key", `{"locale":"zh-CN","html_lang":"zh-CN","messages":{"message.one":{"kind":"plain","text":"一"},"message.one":{"kind":"plain","text":"壹"}}}`, "duplicate message key \"message.one\"", true},
 	}

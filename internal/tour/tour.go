@@ -240,7 +240,7 @@ func renderUI(w io.Writer) error {
 func initScript(mux *http.ServeMux, socketAddr, transport string, catalog ui.Catalog) error {
 	modTime := time.Now()
 	b := new(bytes.Buffer)
-	bootstrap, err := jsI18nBootstrap(catalog)
+	bootstrap, err := jsBootstrap(catalog)
 	if err != nil {
 		return err
 	}
@@ -290,12 +290,42 @@ func initScript(mux *http.ServeMux, socketAddr, transport string, catalog ui.Cat
 }
 
 var jsI18nKeys = []string{
+	"tour.list_heading",
 	"toc.title",
 	"execution.waiting",
 	"feedback.open",
 	"feedback.issue_title",
 	"feedback.issue_body",
 	"feedback.context",
+}
+
+type jsModule struct {
+	Title       string `json:"title"`
+	Description string `json:"description"`
+}
+
+var jsModules = []struct {
+	ID             string
+	TitleKey       string
+	DescriptionKey string
+}{
+	{"mechanics", "module.using_tour.title", "module.using_tour.description"},
+	{"basics", "module.basics.title", "module.basics.description"},
+	{"methods", "module.methods.title", "module.methods.description"},
+	{"generics", "module.generics.title", "module.generics.description"},
+	{"concurrency", "module.concurrency.title", "module.concurrency.description"},
+}
+
+func jsBootstrap(catalog ui.Catalog) ([]byte, error) {
+	i18n, err := jsI18nBootstrap(catalog)
+	if err != nil {
+		return nil, err
+	}
+	modules, err := jsModuleBootstrap(catalog)
+	if err != nil {
+		return nil, err
+	}
+	return append(i18n, modules...), nil
 }
 
 func jsI18nBootstrap(catalog ui.Catalog) ([]byte, error) {
@@ -312,4 +342,24 @@ func jsI18nBootstrap(catalog ui.Catalog) ([]byte, error) {
 		return nil, fmt.Errorf("encode JavaScript UI messages: %w", err)
 	}
 	return append(append([]byte("window.__tourUIMessages = "), encoded...), ";\n"...), nil
+}
+
+func jsModuleBootstrap(catalog ui.Catalog) ([]byte, error) {
+	modules := make(map[string]jsModule, len(jsModules))
+	for _, module := range jsModules {
+		title, err := catalog.Plain(module.TitleKey)
+		if err != nil {
+			return nil, fmt.Errorf("read module title %q: %w", module.TitleKey, err)
+		}
+		description, err := catalog.Plain(module.DescriptionKey)
+		if err != nil {
+			return nil, fmt.Errorf("read module description %q: %w", module.DescriptionKey, err)
+		}
+		modules[module.ID] = jsModule{Title: title, Description: description}
+	}
+	encoded, err := json.Marshal(modules)
+	if err != nil {
+		return nil, fmt.Errorf("encode localized Tour modules: %w", err)
+	}
+	return append(append([]byte("window.__tourModules = "), encoded...), ";\n"...), nil
 }

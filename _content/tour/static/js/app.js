@@ -14,6 +14,7 @@ config(['$routeProvider', '$locationProvider',
         }).
         when('/tour/list', {
             templateUrl: '/tour/static/partials/list.html',
+            controller: 'ListCtrl',
         }).
         when('/tour/:lessonId/:pageNumber', {
             templateUrl: '/tour/static/partials/editor.html',

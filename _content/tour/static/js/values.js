@@ -4,33 +4,37 @@
  */
 'use strict';
 
+// Module titles and descriptions are generated from the build-selected UI
+// catalog. IDs, lesson order, and lesson membership remain navigation data.
+var moduleMessages = window.__tourModules;
+
 angular.module('tour.values', []).
 
 // List of modules with description and lessons in it.
 value('tableOfContents', [{
     'id': 'mechanics',
-    'title': 'Using the tour',
-    'description': '<p>Welcome to a tour of the <a href="https://go.dev">Go programming language</a>. The tour covers the most important features of the language, mainly:</p>',
+    'title': moduleMessages.mechanics.title,
+    'description': moduleMessages.mechanics.description,
     'lessons': ['welcome']
 }, {
     'id': 'basics',
-    'title': 'Basics',
-    'description': '<p>The starting point, learn all the basics of the language.</p><p>Declaring variables, calling functions, and all the things you need to know before moving to the next lessons.</p>',
+    'title': moduleMessages.basics.title,
+    'description': moduleMessages.basics.description,
     'lessons': ['basics', 'flowcontrol', 'moretypes']
 }, {
     'id': 'methods',
-    'title': 'Methods and interfaces',
-    'description': '<p>Learn how to define methods on types, how to declare interfaces, and how to put everything together.</p>',
+    'title': moduleMessages.methods.title,
+    'description': moduleMessages.methods.description,
     'lessons': ['methods']
 }, {
     'id': 'generics',
-    'title': 'Generics',
-    'description': '<p>Learn how to use type parameters in Go functions and structs.</p>',
+    'title': moduleMessages.generics.title,
+    'description': moduleMessages.generics.description,
     'lessons': ['generics']
 }, {
     'id': 'concurrency',
-    'title': 'Concurrency',
-    'description': '<p>Go provides concurrency features as part of the core language.</p><p>This module goes over goroutines and channels, and how they are used to implement different concurrency patterns.</p>',
+    'title': moduleMessages.concurrency.title,
+    'description': moduleMessages.concurrency.description,
     'lessons': ['concurrency']
 }]).
 
