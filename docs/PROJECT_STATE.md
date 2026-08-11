@@ -1,6 +1,6 @@
 # 项目状态
 
-更新时间：2026-08-10
+更新时间：2026-08-11
 
 ## 基线与架构
 
@@ -34,31 +34,20 @@
 - 当前结论是：大量 protected token 并非越多越好，会增加提示上下文、restore 复杂度，并可能妨碍符合中文习惯的自然语序调整；完全 raw 又不能稳定保护 present 机器结构。长期方向应为“原始页面优先 + 少量真正高风险机器结构保护 + 严格统一 validator + 针对性 retry feedback”。目前暂停继续扩大 minimal-protect，不主动为每种潜在结构增加保护规则；成熟的默认 protected-token 流程继续作为正式翻译路径。
 - 正式翻译状态与 candidate 已恢复至实验前状态；真实实验 attempts 审计继续保留在 `data/translation-runs`。
 
-## zh-CN 翻译进度
+## zh-CN 课程正文完成状态
 
-- 正式发布投影共 103 页，另保留 2 条条件源页面审计记录。
-- 当前正式页面 103 页：`ready=45`、`pending=58`、`blocked=0`。
-- 第三批普通页面已完成，以下 10/10 页面均为 `ready`，canonical candidate 均已通过统一 `candidate validate`：`flowcontrol/7`、`flowcontrol/9`、`flowcontrol/10`、`flowcontrol/11`、`flowcontrol/12`、`flowcontrol/13`、`flowcontrol/14`、`moretypes/1`、`moretypes/2`、`moretypes/3`。
-- 本轮首次翻译 Prompt 校准确认：Protected Token 不仅保护 payload，也具有结构角色。inline pair 可随中文语序整体移动，但必须继续作为行内结构；static preformatted token 代表独立 block；directive token 代表独立 directive 行；教学注释中的 identifier token 代表恢复后仍须词法独立的 Go 标识符。不恢复 protected token 的全局原始顺序，也不限制正常中文语序调整。
-- static preformatted 输入边界的真实根因已修复：原 static span 把尾部 block separator 纳入 payload，整体 token 化后会将源中的 `TOKEN\n\nprose` 退化为 `TOKENprose`。现在仅调整 `protectedPreformattedStatic` 的翻译输入保护右边界，保留 source 中原有 separator 于 token 外；restore 仍逐字节 round-trip，`preformattedBlocks` 与 validator 的 Present block 语义不变。
-- `protectedPreformattedIdentifier` 原本已存在，缺少的是首次 Prompt 的角色说明。现在明确要求其在教学注释中原样保留，恢复后仍是词法独立的 Go 标识符，且不得与自然语言字符拼接。
-- retry feedback 仍接收 `[]string` validation failures。曾因固定 diagnostic suffix 含有 `directive`，使字符串匹配将 preformatted/font failure 误分为 directive；当前通过分类前剥离固定 suffix，并将 preformatted、font/emphasis 分类置于 generic directive 前修复。结构化 failure kind/code 仅是未来可选优化，不是当前待办。
+- 正式发布投影共 103 页，另保留 2 条条件源页面审计记录；当前正式状态为 `ready=103`、`pending=0`、`blocked=0`。
+- 103 个正式发布页面均已完成翻译，课程正文阶段已经结束；第三批至后续各批的翻译、校准与修复均为已完成的历史过程，不再作为当前推进项。
+- 发布前已完成 103 页全局译文质量审计，并完成必要的修订。全量导出与核对材料完整：100 个普通 Section、3 个特殊投影；英文源 103/103 成功导出且每页 SHA-256 与冻结状态源一致；zh-CN canonical candidate 103/103 成功导出且均与当前状态指向一致；缺失、重复、多余页面均为 0，`index.md` 共 103 条；导出前后 Git 状态一致。
+- 特殊投影已纳入上述审计：`welcome/1` 使用 appengine remote 分支 `a remote server.`；`welcome/4`、`welcome/5` 使用完整 `#appengine:` 条件 Section 去前缀后的投影。
+- 已形成的翻译执行结论继续有效：Protected Token 保护 payload 与结构角色，允许为目标语言自然语序调整位置但不得破坏 present 结构；静态校验持续覆盖链接、代码、directive、预格式化块及其拓扑关系。`flowcontrol/10`、`moretypes/1` 的校准和 raw-input/minimal-protect 实验均已形成结论，不是当前待办。
 
 本阶段 glossary 已新增 preferred 术语：`standard library` → `标准库`、`iteration` → `迭代`、`loop condition` → `循环条件`。新增 mandatory 术语：`type switch`、`type switches` → `类型选择`，`type assertion`、`type assertions` → `类型断言`，`interface value` → `接口值`，`interface type` → `接口类型`，`concrete type` → `具体类型`。`square root`、`Newton's method`、`derivative` 等单页术语暂不加入。
 
-`generics/1` attempt-004 与 `methods/20` attempt-001 共同证明，全局 protected token 顺序要求会误伤正确的跨语言自然语序；本次调整是通用多语言恢复与候选校验修复，而非 `methods/20` 的单页特例。
+`generics/1` attempt-004 与 `methods/20` attempt-001 共同证明，全局 protected token 顺序要求会误伤正确的跨语言自然语序；该调整是通用多语言恢复与候选校验修复，而非单页特例。
 
-## 本日完成
+## 当前下一阶段：公共 UI 本地化与发布前 UI 验收
 
-- 完成第三批 10 个普通 pending 页面的真实 GLM-5.2 翻译与审计，全部最终进入 ready。
-- `flowcontrol/10` 在补充 token 结构角色说明后的干净首次回归一次通过。
-- `moretypes/1` 依次完成 static block 输入边界、教学注释 identifier Prompt 角色说明校准；干净首次回归通过。最终候选的两条教学注释已人工润色为“通过指针 p 读取 i / 通过指针 p 设置 i”，并重新通过统一校验。
-- 完成 retry feedback diagnostic suffix 误分类的局部修复与真实失败文本回归测试。
-- 本轮 prompt、preformatted 输入表示、retry feedback 与全量测试均已验证通过。
-
-## 后续策略
-
-- 第三批已完成并稳定。提交本轮改动后，继续第四批普通 pending 页面。
-- 继续使用默认 protected-token 翻译路径、现有首次 Prompt 结构角色说明、统一 candidate validation 与审计记录；仅在真实失败出现时进行最小、可回归验证的修复。
-- 不把 `flowcontrol/10`、`moretypes/1`、raw-input 对比或 static-block 调试作为当前待办；这些校准结论和历史证据已保留。
-- 全量翻译不等于直接发布：通过页面仍需统一验证与必要的人工审核，失败页面按既有重试或 blocked 流程处理。
+- 第一阶段仍只交付 zh-CN，但公共 UI 本地化须面向后续多语言扩展：不得将官方英文 UI 直接硬编码替换为中文；公共 Go 服务端、模板基础结构、CSS 和 JavaScript 应尽量共享，每种语言独立维护其公共 UI 文案，且 UI 文案继续与课程正文翻译分开维护。
+- 当前继续采用构建时单语言生成，不实现运行时动态语言切换；不为未来需求过早引入数据库、Web 审校平台、第三方复杂 i18n 框架或其他重型基础设施。
+- 下一步先对正式 Tour 运行时的公共 UI 可见英文文案完成一次完整只读审计，按 template、JavaScript、Go 服务端动态 UI、accessibility 文案、用户可见错误/状态信息及内部日志或开发者文本分类，明确清单和本地化边界后再决定 UI 修改范围；在此之前不直接开始大规模 UI 修改。
