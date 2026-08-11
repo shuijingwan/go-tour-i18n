@@ -297,6 +297,12 @@ var jsI18nKeys = []string{
 	"feedback.issue_title",
 	"feedback.issue_body",
 	"feedback.context",
+	"editor.syntax",
+	"editor.imports",
+	"editor.run",
+	"editor.kill",
+	"editor.format",
+	"editor.reset",
 }
 
 type jsModule struct {
@@ -351,7 +357,7 @@ func jsModuleBootstrap(catalog ui.Catalog) ([]byte, error) {
 		if err != nil {
 			return nil, fmt.Errorf("read module title %q: %w", module.TitleKey, err)
 		}
-		description, err := catalog.Plain(module.DescriptionKey)
+		description, err := catalog.Rich(module.DescriptionKey)
 		if err != nil {
 			return nil, fmt.Errorf("read module description %q: %w", module.DescriptionKey, err)
 		}

@@ -37,6 +37,14 @@ controller('EditorCtrl', ['$scope', '$routeParams', '$location', 'toc', 'i18n', 
         $scope.curPage = parseInt($routeParams.pageNumber);
         $scope.curFile = 0;
         $scope.job = null;
+        $scope.editorUI = {
+            syntax: i18n.l('editor.syntax'),
+            imports: i18n.l('editor.imports'),
+            run: i18n.l('editor.run'),
+            kill: i18n.l('editor.kill'),
+            format: i18n.l('editor.format'),
+            reset: i18n.l('editor.reset')
+        };
 
         $scope.nextPageClick = function(event) {
             event.preventDefault();

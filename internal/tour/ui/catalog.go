@@ -23,7 +23,8 @@ var catalogFiles embed.FS
 var localePattern = regexp.MustCompile(`^[a-z]{2,3}(?:-[A-Za-z0-9]{2,8})*$`)
 var messageKeyPattern = regexp.MustCompile(`^[a-z][a-z0-9]*(?:\.[a-z][a-z0-9_]*)+$`)
 
-// Message is a locale-specific UI message.
+// Message is a locale-specific UI message. Rich messages have constrained,
+// catalog-validated markup; callers must not treat plain messages as HTML.
 type Message struct {
 	Kind string `json:"kind"`
 	Text string `json:"text"`
@@ -36,7 +37,9 @@ type Catalog struct {
 	Messages map[string]Message `json:"messages"`
 }
 
-// Plain returns a plain-text message for safe use by html/template.
+// Plain returns a plain-text message for safe use by html/template. Missing
+// keys and rich messages are errors so template consumers cannot silently
+// produce an incomplete or unsafe UI.
 func (c Catalog) Plain(key string) (string, error) {
 	message, ok := c.Messages[key]
 	if !ok {
@@ -44,6 +47,19 @@ func (c Catalog) Plain(key string) (string, error) {
 	}
 	if message.Kind != "plain" {
 		return "", fmt.Errorf("UI message %q has kind %q, not plain", key, message.Kind)
+	}
+	return message.Text, nil
+}
+
+// Rich returns a catalog-validated rich message for a consumer with an
+// explicitly constrained rendering boundary. It is not template.HTML.
+func (c Catalog) Rich(key string) (string, error) {
+	message, ok := c.Messages[key]
+	if !ok {
+		return "", fmt.Errorf("UI message %q is missing", key)
+	}
+	if message.Kind != "rich" {
+		return "", fmt.Errorf("UI message %q has kind %q, not rich", key, message.Kind)
 	}
 	return message.Text, nil
 }
@@ -189,9 +205,43 @@ func validateCatalog(catalog Catalog) error {
 		if message.Text == "" {
 			return fmt.Errorf("message %q is empty", key)
 		}
-		if message.Kind != "plain" {
+		switch message.Kind {
+		case "plain":
+		case "rich":
+			if err := validateRichMarkup(message.Text); err != nil {
+				return fmt.Errorf("rich message %q: %w", key, err)
+			}
+		default:
 			return fmt.Errorf("message %q has invalid kind %q", key, message.Kind)
 		}
+	}
+	return nil
+}
+
+// Rich messages are constrained to the frozen Tour module-description markup.
+func validateRichMarkup(text string) error {
+	tag := regexp.MustCompile(`(?:<p>|</p>|<a href="https://go.dev">|</a>)`)
+	stack := []string{}
+	position := 0
+	for _, match := range tag.FindAllStringIndex(text, -1) {
+		if strings.ContainsAny(text[position:match[0]], "<>") {
+			return fmt.Errorf("contains unsupported markup")
+		}
+		value := text[match[0]:match[1]]
+		switch value {
+		case "<p>", "<a href=\"https://go.dev\">":
+			stack = append(stack, value[1:2])
+		case "</p>", "</a>":
+			want := value[2:3]
+			if len(stack) == 0 || stack[len(stack)-1] != want {
+				return fmt.Errorf("has unbalanced markup")
+			}
+			stack = stack[:len(stack)-1]
+		}
+		position = match[1]
+	}
+	if strings.ContainsAny(text[position:], "<>") || len(stack) != 0 {
+		return fmt.Errorf("has unbalanced or unsupported markup")
 	}
 	return nil
 }

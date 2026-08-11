@@ -7,7 +7,7 @@
 
         <div class="module" ng-repeat="m in toc.modules">
             <p id="{{m.id}}" class="module-title">{{m.title}}</p>
-            <div ng-bind="m.description"></div>
+            <div ng-bind-html-unsafe="m.description"></div>
 
             <div class="lesson" ng-repeat="l in m.lessons">
                 <a href="/tour/{{l}}" class="lesson-title">{{m.lesson[l].Title}}</a>

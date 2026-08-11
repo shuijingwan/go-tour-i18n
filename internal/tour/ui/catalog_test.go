@@ -14,7 +14,7 @@ func TestLoadEmbeddedCatalogs(t *testing.T) {
 		if err != nil {
 			t.Fatalf("Load(%q): %v", locale, err)
 		}
-		if got, want := len(catalog.Messages), 35; got != want {
+		if got, want := len(catalog.Messages), 33; got != want {
 			t.Fatalf("Load(%q) message count = %d, want %d", locale, got, want)
 		}
 	}
@@ -23,6 +23,7 @@ func TestLoadEmbeddedCatalogs(t *testing.T) {
 func TestCatalogPlainIsSafeForTemplateUse(t *testing.T) {
 	catalog := Catalog{Messages: map[string]Message{
 		"message.value": {Kind: "plain", Text: `<script>alert("x")</script>`},
+		"message.rich":  {Kind: "rich", Text: "<p>text</p>"},
 	}}
 	tmpl := template.Must(template.New("test").Funcs(template.FuncMap{"ui": catalog.Plain}).Parse(`{{ui "message.value"}}`))
 	var out bytes.Buffer
@@ -35,10 +36,18 @@ func TestCatalogPlainIsSafeForTemplateUse(t *testing.T) {
 	if _, err := catalog.Plain("missing.key"); err == nil {
 		t.Error("Plain(missing.key) succeeded, want error")
 	}
+	if got, err := catalog.Rich("message.rich"); err != nil || got != "<p>text</p>" {
+		t.Errorf("Rich(message.rich) = %q, %v", got, err)
+	}
+	for _, key := range []string{"missing.key", "message.value"} {
+		if _, err := catalog.Rich(key); err == nil {
+			t.Errorf("Rich(%q) succeeded, want error", key)
+		}
+	}
 }
 
 func TestValidationFailures(t *testing.T) {
-	source := mustCatalog(t, `{"locale":"en","html_lang":"en","messages":{"message.one":{"kind":"plain","text":"One"},"message.two":{"kind":"plain","text":"Two"}}}`)
+	source := mustCatalog(t, `{"locale":"en","html_lang":"en","messages":{"message.one":{"kind":"plain","text":"One"},"message.two":{"kind":"rich","text":"<p>Two</p>"}}}`)
 	cases := []struct {
 		name       string
 		data       string
@@ -46,8 +55,8 @@ func TestValidationFailures(t *testing.T) {
 		parseFails bool
 	}{
 		{"missing key", `{"locale":"zh-CN","html_lang":"zh-CN","messages":{"message.one":{"kind":"plain","text":"一"}}}`, "missing keys: message.two", false},
-		{"extra key", `{"locale":"zh-CN","html_lang":"zh-CN","messages":{"message.one":{"kind":"plain","text":"一"},"message.two":{"kind":"plain","text":"二"},"message.extra":{"kind":"plain","text":"额外"}}}`, "unknown keys: message.extra", false},
-		{"non-plain kind", `{"locale":"zh-CN","html_lang":"zh-CN","messages":{"message.one":{"kind":"rich","text":"一"},"message.two":{"kind":"plain","text":"二"}}}`, "invalid kind \"rich\"", true},
+		{"extra key", `{"locale":"zh-CN","html_lang":"zh-CN","messages":{"message.one":{"kind":"plain","text":"一"},"message.two":{"kind":"rich","text":"<p>二</p>"},"message.extra":{"kind":"plain","text":"额外"}}}`, "unknown keys: message.extra", false},
+		{"kind mismatch", `{"locale":"zh-CN","html_lang":"zh-CN","messages":{"message.one":{"kind":"rich","text":"<p>一</p>"},"message.two":{"kind":"rich","text":"<p>二</p>"}}}`, "message kind mismatch: message.one", false},
 		{"malformed JSON", `{`, "EOF", true},
 		{"duplicate key", `{"locale":"zh-CN","html_lang":"zh-CN","messages":{"message.one":{"kind":"plain","text":"一"},"message.one":{"kind":"plain","text":"壹"}}}`, "duplicate message key \"message.one\"", true},
 	}
@@ -68,6 +77,21 @@ func TestValidationFailures(t *testing.T) {
 				t.Fatalf("validateCoverage error = %v, want %q", err, test.want)
 			}
 		})
+	}
+}
+
+func TestRichMarkupWhitelist(t *testing.T) {
+	valid := `{"locale":"en","html_lang":"en","messages":{"message.rich":{"kind":"rich","text":"<p>Go <a href=\"https://go.dev\">Tour</a></p>"}}}`
+	if _, err := parseCatalog([]byte(valid)); err != nil {
+		t.Fatalf("parse valid rich catalog: %v", err)
+	}
+	for _, invalid := range []string{
+		`{"locale":"en","html_lang":"en","messages":{"message.rich":{"kind":"rich","text":"<p><strong>Tour</strong></p>"}}}`,
+		`{"locale":"en","html_lang":"en","messages":{"message.rich":{"kind":"rich","text":"<p><a href=\"https://example.com\">Tour</a></p>"}}}`,
+	} {
+		if _, err := parseCatalog([]byte(invalid)); err == nil || !strings.Contains(err.Error(), "unsupported markup") {
+			t.Fatalf("parse invalid rich catalog error = %v", err)
+		}
 	}
 }
 

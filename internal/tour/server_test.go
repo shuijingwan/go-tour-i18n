@@ -9,6 +9,8 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"net/url"
+	"os/exec"
+	"regexp"
 	"strings"
 	"testing"
 
@@ -96,12 +98,21 @@ func TestJSI18nBootstrapLocales(t *testing.T) {
 	}{
 		{
 			locale: "en",
-			want:   []string{"\"tour.list_heading\":\"Welcome to a tour of Go\"", "\"toc.title\":\"Table of Contents\"", "\"execution.waiting\":\"Waiting for remote server...\"", "\"feedback.open\":\"Send feedback about this page\"", "\"feedback.context\":\"Context\""},
+			want: []string{
+				"\"tour.list_heading\":\"Welcome to a tour of Go\"", "\"toc.title\":\"Table of Contents\"", "\"execution.waiting\":\"Waiting for remote server...\"", "\"feedback.open\":\"Send feedback about this page\"", "\"feedback.context\":\"Context\"",
+				"\"editor.syntax\":\"Syntax\"", "\"editor.imports\":\"Imports\"", "\"editor.run\":\"Run\"", "\"editor.kill\":\"Kill\"", "\"editor.format\":\"Format\"", "\"editor.reset\":\"Reset\"",
+			},
 		},
 		{
 			locale: "zh-CN",
-			want:   []string{"\"tour.list_heading\":\"欢迎来到 Go 语言之旅\"", "\"toc.title\":\"目录\"", "\"execution.waiting\":\"正在等待远程服务器……\"", "\"feedback.open\":\"发送本页反馈\"", "\"feedback.context\":\"上下文\""},
-			absent: []string{"\"tour.list_heading\":\"Welcome to a tour of Go\"", "\"toc.title\":\"Table of Contents\"", "\"execution.waiting\":\"Waiting for remote server...\"", "\"feedback.open\":\"Send feedback about this page\"", "\"feedback.context\":\"Context\""},
+			want: []string{
+				"\"tour.list_heading\":\"欢迎来到 Go 语言之旅\"", "\"toc.title\":\"目录\"", "\"execution.waiting\":\"正在等待远程服务器……\"", "\"feedback.open\":\"发送本页反馈\"", "\"feedback.context\":\"上下文\"",
+				"\"editor.syntax\":\"语法高亮\"", "\"editor.imports\":\"导入\"", "\"editor.run\":\"运行\"", "\"editor.kill\":\"终止\"", "\"editor.format\":\"格式化\"", "\"editor.reset\":\"重置\"",
+			},
+			absent: []string{
+				"\"tour.list_heading\":\"Welcome to a tour of Go\"", "\"toc.title\":\"Table of Contents\"", "\"execution.waiting\":\"Waiting for remote server...\"", "\"feedback.open\":\"Send feedback about this page\"", "\"feedback.context\":\"Context\"",
+				"\"editor.syntax\":\"Syntax\"", "\"editor.imports\":\"Imports\"", "\"editor.run\":\"Run\"", "\"editor.kill\":\"Kill\"", "\"editor.format\":\"Format\"", "\"editor.reset\":\"Reset\"",
+			},
 		},
 	}
 	for _, test := range tests {
@@ -134,6 +145,24 @@ func TestJSI18nBootstrapLocales(t *testing.T) {
 	}
 }
 
+func TestEditorTemplateUsesLocalizedPlainTextBindings(t *testing.T) {
+	data, err := fs.ReadFile(contentTour, "tour/static/partials/editor.html")
+	if err != nil {
+		t.Fatal(err)
+	}
+	text := string(data)
+	for _, binding := range []string{"editorUI.syntax", "editorUI.imports", "editorUI.run", "editorUI.kill", "editorUI.format", "editorUI.reset"} {
+		if !strings.Contains(text, "{{"+binding+"}}") {
+			t.Errorf("editor template is missing binding %q", binding)
+		}
+	}
+	for _, literal := range []string{">Syntax<", ">Imports<", ">Run<", ">Kill<", ">Format<", ">Reset<"} {
+		if strings.Contains(text, literal) {
+			t.Errorf("editor template still hard-codes %q", literal)
+		}
+	}
+}
+
 func TestJSModuleBootstrapLocales(t *testing.T) {
 	tests := []struct {
 		locale string
@@ -143,21 +172,21 @@ func TestJSModuleBootstrapLocales(t *testing.T) {
 		{
 			locale: "en",
 			want: []string{
-				`"mechanics":{"title":"Using the tour","description":"Welcome to a tour of the Go programming language. The tour covers the most important features of the language, mainly:"}`,
+				`"mechanics":{"title":"Using the tour","description":"\u003cp\u003eWelcome to a tour of the \u003ca href=\"https://go.dev\"\u003eGo programming language\u003c/a\u003e. The tour covers the most important features of the language, mainly:\u003c/p\u003e"}`,
 				`"basics":{"title":"Basics"`, `"methods":{"title":"Methods and interfaces"`, `"generics":{"title":"Generics"`, `"concurrency":{"title":"Concurrency"`,
-				"The starting point, learn all the basics of the language.Declaring variables,", "Learn how to define methods on types, how to declare interfaces, and how to put everything together.", "Learn how to use type parameters in Go functions and structs.", "Go provides concurrency features as part of the core language.This module goes over goroutines",
+				"The starting point, learn all the basics of the language.\\u003c/p\\u003e\\u003cp\\u003eDeclaring variables,", "Learn how to define methods on types, how to declare interfaces, and how to put everything together.\\u003c/p\\u003e", "Learn how to use type parameters in Go functions and structs.\\u003c/p\\u003e", "Go provides concurrency features as part of the core language.\\u003c/p\\u003e\\u003cp\\u003eThis module goes over goroutines",
 			},
 		},
 		{
 			locale: "zh-CN",
 			want: []string{
-				`"mechanics":{"title":"使用本教程","description":"欢迎来到 Go 编程语言之旅。本教程主要介绍该语言最重要的特性："}`,
+				`"mechanics":{"title":"使用本教程","description":"\u003cp\u003e欢迎来到 \u003ca href=\"https://go.dev\"\u003eGo 编程语言\u003c/a\u003e之旅。本教程主要介绍该语言最重要的特性：\u003c/p\u003e"}`,
 				`"basics":{"title":"基础"`, `"methods":{"title":"方法和接口"`, `"generics":{"title":"泛型"`, `"concurrency":{"title":"并发"`,
-				"从这里开始，学习这门语言的基础知识。声明变量、调用函数，以及进入下一课前需要了解的一切。", "学习如何为类型定义方法、如何声明接口，以及如何将它们组合起来。", "学习如何在 Go 函数和结构体中使用类型参数。", "Go 在语言层面提供了并发支持。本模块介绍 goroutine 和 channel，以及如何使用它们实现不同的并发模式。",
+				"从这里开始，学习这门语言的基础知识。\\u003c/p\\u003e\\u003cp\\u003e声明变量、调用函数，以及进入下一课前需要了解的一切。", "学习如何为类型定义方法、如何声明接口，以及如何将它们组合起来。\\u003c/p\\u003e", "学习如何在 Go 函数和结构体中使用类型参数。\\u003c/p\\u003e", "Go 在语言层面提供了并发支持。\\u003c/p\\u003e\\u003cp\\u003e本模块介绍 goroutine 和 channel，以及如何使用它们实现不同的并发模式。",
 			},
 			absent: []string{
 				`"mechanics":{"title":"Using the tour"`, `"basics":{"title":"Basics"`, `"methods":{"title":"Methods and interfaces"`, `"generics":{"title":"Generics"`, `"concurrency":{"title":"Concurrency"`,
-				"The starting point, learn all the basics of the language.Declaring variables,", "Learn how to define methods on types, how to declare interfaces, and how to put everything together.", "Learn how to use type parameters in Go functions and structs.", "Go provides concurrency features as part of the core language.This module goes over goroutines",
+				"The starting point, learn all the basics of the language.\\u003c/p\\u003e\\u003cp\\u003eDeclaring variables,", "Learn how to define methods on types, how to declare interfaces, and how to put everything together.\\u003c/p\\u003e", "Learn how to use type parameters in Go functions and structs.\\u003c/p\\u003e", "Go provides concurrency features as part of the core language.\\u003c/p\\u003e\\u003cp\\u003eThis module goes over goroutines",
 			},
 		},
 	}
@@ -186,51 +215,69 @@ func TestJSModuleBootstrapLocales(t *testing.T) {
 	}
 }
 
-func TestModuleDescriptionCatalogsArePlainText(t *testing.T) {
-	en := map[string]string{
-		"module.using_tour.description":  "Welcome to a tour of the Go programming language. The tour covers the most important features of the language, mainly:",
-		"module.basics.description":      "The starting point, learn all the basics of the language.Declaring variables, calling functions, and all the things you need to know before moving to the next lessons.",
-		"module.methods.description":     "Learn how to define methods on types, how to declare interfaces, and how to put everything together.",
-		"module.generics.description":    "Learn how to use type parameters in Go functions and structs.",
-		"module.concurrency.description": "Go provides concurrency features as part of the core language.This module goes over goroutines and channels, and how they are used to implement different concurrency patterns.",
+func TestEnglishModuleDescriptionsMatchFrozenValues(t *testing.T) {
+	source, err := exec.Command("git", "show", "519cc38:_content/tour/static/js/values.js").Output()
+	if err != nil {
+		t.Fatalf("read frozen values.js: %v", err)
 	}
-	for _, locale := range []string{"en", "zh-CN"} {
-		catalog, err := ui.Load(locale)
-		if err != nil {
-			t.Fatal(err)
+	catalog, err := ui.Load("en")
+	if err != nil {
+		t.Fatal(err)
+	}
+	keys := map[string]string{"mechanics": "module.using_tour.description", "basics": "module.basics.description", "methods": "module.methods.description", "generics": "module.generics.description", "concurrency": "module.concurrency.description"}
+	entries := regexp.MustCompile(`(?m)^\s*'id': '([^']+)',\n\s*'title': '[^']*',\n\s*'description': '([^']*)',$`).FindAllStringSubmatch(string(source), -1)
+	if len(entries) != 5 {
+		t.Fatalf("frozen values.js description entries = %d, want 5", len(entries))
+	}
+	for _, entry := range entries {
+		key := keys[entry[1]]
+		message, ok := catalog.Messages[key]
+		if !ok || message.Kind != "rich" || message.Text != entry[2] {
+			t.Errorf("%s does not match frozen rich description", key)
 		}
-		for key, english := range en {
-			message := catalog.Messages[key]
-			if message.Kind != "plain" {
-				t.Errorf("%s %s kind = %q, want plain", locale, key, message.Kind)
-			}
-			if locale == "en" && message.Text != english {
-				t.Errorf("%s = %q, want frozen upstream text %q", key, message.Text, english)
-			}
-			if locale == "zh-CN" && strings.ContainsAny(message.Text, "<>") {
-				t.Errorf("%s contains markup: %q", key, message.Text)
-			}
+	}
+	if !strings.Contains(catalog.Messages["module.using_tour.description"].Text, "https://go.dev") {
+		t.Error("frozen mechanics description lost go.dev link")
+	}
+}
+
+func TestChineseModuleDescriptionsAreRich(t *testing.T) {
+	catalog, err := ui.Load("zh-CN")
+	if err != nil {
+		t.Fatal(err)
+	}
+	want := map[string]string{
+		"module.using_tour.description":  `<p>欢迎来到 <a href="https://go.dev">Go 编程语言</a>之旅。本教程主要介绍该语言最重要的特性：</p>`,
+		"module.basics.description":      `<p>从这里开始，学习这门语言的基础知识。</p><p>声明变量、调用函数，以及进入下一课前需要了解的一切。</p>`,
+		"module.methods.description":     `<p>学习如何为类型定义方法、如何声明接口，以及如何将它们组合起来。</p>`,
+		"module.generics.description":    `<p>学习如何在 Go 函数和结构体中使用类型参数。</p>`,
+		"module.concurrency.description": `<p>Go 在语言层面提供了并发支持。</p><p>本模块介绍 goroutine 和 channel，以及如何使用它们实现不同的并发模式。</p>`,
+	}
+	for key, text := range want {
+		message, ok := catalog.Messages[key]
+		if !ok || message.Kind != "rich" || message.Text != text {
+			t.Errorf("%s = %#v, want rich %q", key, message, text)
 		}
 	}
 }
 
-func TestJSModuleBootstrapRejectsMissingOrNonPlainDescription(t *testing.T) {
+func TestJSModuleBootstrapRejectsMissingOrNonRichDescription(t *testing.T) {
 	catalog, err := ui.Load("en")
 	if err != nil {
 		t.Fatal(err)
 	}
 	delete(catalog.Messages, "module.basics.description")
 	if _, err := jsModuleBootstrap(catalog); err == nil || !strings.Contains(err.Error(), "is missing") {
-		t.Fatalf("missing plain message error = %v", err)
+		t.Fatalf("missing rich message error = %v", err)
 	}
 
 	catalog, err = ui.Load("en")
 	if err != nil {
 		t.Fatal(err)
 	}
-	catalog.Messages["module.basics.description"] = ui.Message{Kind: "unexpected", Text: "Basics"}
-	if _, err := jsModuleBootstrap(catalog); err == nil || !strings.Contains(err.Error(), "not plain") {
-		t.Fatalf("non-plain message error = %v", err)
+	catalog.Messages["module.basics.description"] = ui.Message{Kind: "plain", Text: "Basics"}
+	if _, err := jsModuleBootstrap(catalog); err == nil || !strings.Contains(err.Error(), "not rich") {
+		t.Fatalf("non-rich message error = %v", err)
 	}
 }
 
@@ -257,17 +304,14 @@ func TestTableOfContentsNavigationStructure(t *testing.T) {
 	}
 }
 
-func TestListDescriptionUsesPlainTextBinding(t *testing.T) {
+func TestListDescriptionUsesFrozenRichBinding(t *testing.T) {
 	data, err := fs.ReadFile(contentTour, "tour/static/partials/list.html")
 	if err != nil {
 		t.Fatal(err)
 	}
 	text := string(data)
-	if !strings.Contains(text, `ng-bind="m.description"`) {
-		t.Fatal("list description does not use ng-bind")
-	}
-	if strings.Contains(text, `ng-bind-html-unsafe="m.description"`) {
-		t.Fatal("list description still uses ng-bind-html-unsafe")
+	if !strings.Contains(text, `ng-bind-html-unsafe="m.description"`) {
+		t.Fatal("list description does not use frozen rich binding")
 	}
 }
 
