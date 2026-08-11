@@ -1,0 +1,95 @@
+package ui
+
+import (
+	"strings"
+	"testing"
+	"testing/fstest"
+)
+
+func TestLoadEmbeddedCatalogs(t *testing.T) {
+	for _, locale := range []string{"en", "zh-CN"} {
+		catalog, err := Load(locale)
+		if err != nil {
+			t.Fatalf("Load(%q): %v", locale, err)
+		}
+		if got, want := len(catalog.Messages), 35; got != want {
+			t.Fatalf("Load(%q) message count = %d, want %d", locale, got, want)
+		}
+	}
+}
+
+func TestValidationFailures(t *testing.T) {
+	source := mustCatalog(t, `{"locale":"en","html_lang":"en","messages":{"message.one":{"kind":"plain","text":"One"},"message.two":{"kind":"rich","text":"<p>Two</p>"}}}`)
+	cases := []struct {
+		name       string
+		data       string
+		want       string
+		parseFails bool
+	}{
+		{"missing key", `{"locale":"zh-CN","html_lang":"zh-CN","messages":{"message.one":{"kind":"plain","text":"一"}}}`, "missing keys: message.two", false},
+		{"extra key", `{"locale":"zh-CN","html_lang":"zh-CN","messages":{"message.one":{"kind":"plain","text":"一"},"message.two":{"kind":"rich","text":"<p>二</p>"},"message.extra":{"kind":"plain","text":"额外"}}}`, "unknown keys: message.extra", false},
+		{"kind mismatch", `{"locale":"zh-CN","html_lang":"zh-CN","messages":{"message.one":{"kind":"rich","text":"<p>一</p>"},"message.two":{"kind":"rich","text":"<p>二</p>"}}}`, "message kind mismatch: message.one", false},
+		{"malformed JSON", `{`, "EOF", true},
+		{"duplicate key", `{"locale":"zh-CN","html_lang":"zh-CN","messages":{"message.one":{"kind":"plain","text":"一"},"message.one":{"kind":"plain","text":"壹"}}}`, "duplicate message key \"message.one\"", true},
+	}
+	for _, test := range cases {
+		t.Run(test.name, func(t *testing.T) {
+			catalog, err := parseCatalog([]byte(test.data))
+			if test.parseFails {
+				if err == nil || !strings.Contains(err.Error(), test.want) {
+					t.Fatalf("parseCatalog error = %v, want %q", err, test.want)
+				}
+				return
+			}
+			if err != nil {
+				t.Fatalf("parseCatalog: %v", err)
+			}
+			err = validateCoverage(source, catalog)
+			if err == nil || !strings.Contains(err.Error(), test.want) {
+				t.Fatalf("validateCoverage error = %v, want %q", err, test.want)
+			}
+		})
+	}
+}
+
+func TestUnknownLocale(t *testing.T) {
+	if _, err := Load("ja"); err == nil || !strings.Contains(err.Error(), "unknown UI locale") {
+		t.Fatalf("Load(ja) error = %v, want unknown locale", err)
+	}
+}
+
+func TestLocaleSyntax(t *testing.T) {
+	for _, locale := range []string{"en", "ja", "ko", "zh-CN", "zh-Hant", "zh-Hans", "pt-BR"} {
+		if !localePattern.MatchString(locale) {
+			t.Errorf("localePattern does not accept %q", locale)
+		}
+	}
+	for _, locale := range []string{"", "/", `\\`, "..", "zh/../CN", ".zh", "zh.", "-zh", "zh-", "zh--Hant"} {
+		if localePattern.MatchString(locale) {
+			t.Errorf("localePattern accepts unsafe locale %q", locale)
+		}
+	}
+}
+
+func TestLoadDiscoversEmbeddedStyleLocaleFile(t *testing.T) {
+	files := fstest.MapFS{
+		"en.json":      {Data: []byte(`{"locale":"en","html_lang":"en","messages":{"message.one":{"kind":"plain","text":"One"}}}`)},
+		"zh-Hant.json": {Data: []byte(`{"locale":"zh-Hant","html_lang":"zh-Hant","messages":{"message.one":{"kind":"plain","text":"一"}}}`)},
+	}
+	catalog, err := load("zh-Hant", files)
+	if err != nil {
+		t.Fatalf("load auto-discovered zh-Hant.json: %v", err)
+	}
+	if got := catalog.Messages["message.one"].Text; got != "一" {
+		t.Fatalf("zh-Hant message = %q, want 一", got)
+	}
+}
+
+func mustCatalog(t *testing.T, text string) Catalog {
+	t.Helper()
+	catalog, err := parseCatalog([]byte(text))
+	if err != nil {
+		t.Fatal(err)
+	}
+	return catalog
+}
