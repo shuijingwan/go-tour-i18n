@@ -263,7 +263,7 @@ func previewCandidate(root string, catalog *i18n.Catalog, args []string) error {
 	address := "http://" + *httpAddr + "/tour/" + *id
 	fmt.Printf("preview URL: %s\n", address)
 	fmt.Printf("temporary content: %s\n", preview.ContentDir)
-	command := exec.Command("go", "run", "./tour", "-http", *httpAddr, "-openbrowser=false", "-content", preview.ContentDir)
+	command := exec.Command("go", "run", "./tour", "-http", *httpAddr, "-openbrowser=false", "-content", preview.ContentDir, "-locale", *locale)
 	command.Dir = root
 	command.Stdout = os.Stdout
 	command.Stderr = os.Stderr

@@ -1,6 +1,8 @@
 package ui
 
 import (
+	"bytes"
+	"html/template"
 	"strings"
 	"testing"
 	"testing/fstest"
@@ -14,6 +16,26 @@ func TestLoadEmbeddedCatalogs(t *testing.T) {
 		}
 		if got, want := len(catalog.Messages), 35; got != want {
 			t.Fatalf("Load(%q) message count = %d, want %d", locale, got, want)
+		}
+	}
+}
+
+func TestCatalogPlainIsSafeForTemplateUse(t *testing.T) {
+	catalog := Catalog{Messages: map[string]Message{
+		"message.value": {Kind: "plain", Text: `<script>alert("x")</script>`},
+		"message.rich":  {Kind: "rich", Text: "<p>text</p>"},
+	}}
+	tmpl := template.Must(template.New("test").Funcs(template.FuncMap{"ui": catalog.Plain}).Parse(`{{ui "message.value"}}`))
+	var out bytes.Buffer
+	if err := tmpl.Execute(&out, nil); err != nil {
+		t.Fatal(err)
+	}
+	if got, want := out.String(), `&lt;script&gt;alert(&#34;x&#34;)&lt;/script&gt;`; got != want {
+		t.Fatalf("template output = %q, want %q", got, want)
+	}
+	for _, key := range []string{"missing.key", "message.rich"} {
+		if _, err := catalog.Plain(key); err == nil {
+			t.Errorf("Plain(%q) succeeded, want error", key)
 		}
 	}
 }

@@ -20,6 +20,7 @@ import (
 	"time"
 
 	"github.com/shuijingwan/go-tour-i18n"
+	"github.com/shuijingwan/go-tour-i18n/internal/tour/ui"
 	"golang.org/x/tools/present"
 )
 
@@ -32,7 +33,7 @@ var (
 var contentTour = website.TourOnly()
 
 // initTour loads tour.article and the relevant HTML templates from root.
-func initTour(mux *http.ServeMux, transport string) error {
+func initTour(mux *http.ServeMux, transport, locale string) error {
 	// Make sure playground is enabled before rendering.
 	present.PlayEnabled = true
 
@@ -47,27 +48,37 @@ func initTour(mux *http.ServeMux, transport string) error {
 		return fmt.Errorf("init lessons: %v", err)
 	}
 
-	// Init UI.
-	ui, err := template.ParseFS(contentTour, "tour/template/index.tmpl")
+	// Load and render the build-selected UI locale once during initialization.
+	uiContent, err = renderIndex(locale)
 	if err != nil {
-		return fmt.Errorf("parse index.tmpl: %v", err)
+		return err
 	}
-	buf := new(bytes.Buffer)
-
-	data := struct {
-		AnalyticsHTML template.HTML
-	}{analyticsHTML}
-
-	if err := ui.Execute(buf, data); err != nil {
-		return fmt.Errorf("render UI: %v", err)
-	}
-	uiContent = buf.Bytes()
 
 	mux.HandleFunc("/tour/", rootHandler)
 	mux.HandleFunc("/tour/lesson/", lessonHandler)
 	mux.Handle("/tour/static/", http.FileServer(http.FS(contentTour)))
 
 	return initScript(mux, socketAddr(), transport)
+}
+
+func renderIndex(locale string) ([]byte, error) {
+	catalog, err := ui.Load(locale)
+	if err != nil {
+		return nil, fmt.Errorf("load UI catalog %q: %w", locale, err)
+	}
+	tmpl, err := template.New("index.tmpl").Funcs(template.FuncMap{"ui": catalog.Plain}).ParseFS(contentTour, "tour/template/index.tmpl")
+	if err != nil {
+		return nil, fmt.Errorf("parse index.tmpl: %w", err)
+	}
+	buf := new(bytes.Buffer)
+	data := struct {
+		AnalyticsHTML template.HTML
+		HTMLLang      string
+	}{analyticsHTML, catalog.HTMLLang}
+	if err := tmpl.Execute(buf, data); err != nil {
+		return nil, fmt.Errorf("render index.tmpl: %w", err)
+	}
+	return buf.Bytes(), nil
 }
 
 // initLessons finds all the lessons in the content directory, renders them,

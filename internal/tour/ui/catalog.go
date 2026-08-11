@@ -37,6 +37,20 @@ type Catalog struct {
 	Messages map[string]Message `json:"messages"`
 }
 
+// Plain returns a plain-text message for safe use by html/template. Missing
+// keys and rich messages are errors so template consumers cannot silently
+// produce an incomplete or unsafe UI.
+func (c Catalog) Plain(key string) (string, error) {
+	message, ok := c.Messages[key]
+	if !ok {
+		return "", fmt.Errorf("UI message %q is missing", key)
+	}
+	if message.Kind != "plain" {
+		return "", fmt.Errorf("UI message %q has kind %q, not plain", key, message.Kind)
+	}
+	return message.Text, nil
+}
+
 // Load returns a complete catalog for a supported build locale. It never
 // falls back to English: a release locale must cover every English source key.
 func Load(locale string) (Catalog, error) {

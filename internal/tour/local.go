@@ -30,6 +30,7 @@ var (
 	httpListen  *string
 	openBrowser *bool
 	contentRoot *string
+	tourLocale  *string
 	httpAddr    string
 )
 
@@ -37,6 +38,7 @@ func Main() {
 	httpListen = flag.String("http", "127.0.0.1:3999", "host:port to listen on")
 	openBrowser = flag.Bool("openbrowser", true, "open browser automatically")
 	contentRoot = flag.String("content", "", "optional Tour content directory for local preview")
+	tourLocale = flag.String("locale", "en", "build-selected UI locale")
 
 	flag.Parse()
 	if *contentRoot != "" {
@@ -55,7 +57,7 @@ func Main() {
 	}
 	httpAddr = host + ":" + port
 
-	if err := initTour(http.DefaultServeMux, "SocketTransport"); err != nil {
+	if err := initTour(http.DefaultServeMux, "SocketTransport", *tourLocale); err != nil {
 		log.Fatal(err)
 	}
 

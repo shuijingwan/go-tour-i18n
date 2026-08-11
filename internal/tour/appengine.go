@@ -14,11 +14,17 @@ import (
 )
 
 func RegisterHandlers(mux *http.ServeMux) error {
+	return RegisterHandlersLocale(mux, "en")
+}
+
+// RegisterHandlersLocale registers the HTTPTransport Tour using one
+// build-selected locale. It does not provide runtime locale switching.
+func RegisterHandlersLocale(mux *http.ServeMux, locale string) error {
 	prepContent = gaePrepContent
 	socketAddr = gaeSocketAddr
 	analyticsHTML = template.HTML(os.Getenv("TOUR_ANALYTICS"))
 
-	if err := initTour(mux, "HTTPTransport"); err != nil {
+	if err := initTour(mux, "HTTPTransport", locale); err != nil {
 		return err
 	}
 
