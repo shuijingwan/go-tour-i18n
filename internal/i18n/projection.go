@@ -39,6 +39,10 @@ func BuildLocaleProjection(root string, catalog *Catalog, locale, outputRoot str
 	if err := CheckStatus(root, locale, catalog); err != nil {
 		return nil, fmt.Errorf("formal locale status: %w", err)
 	}
+	metadataByArticle, err := LoadArticleMetadata(root, locale, catalog)
+	if err != nil {
+		return nil, err
+	}
 	statuses, err := ReadStatuses(filepath.Join(root, "locales", locale, "status.tsv"))
 	if err != nil {
 		return nil, fmt.Errorf("read formal locale status: %w", err)
@@ -154,7 +158,7 @@ func BuildLocaleProjection(root string, catalog *Catalog, locale, outputRoot str
 		for _, page := range pagesByArticle[article] {
 			replacements[page.SectionNumber] = candidates[page.ID]
 		}
-		projected, projectErr := projectCandidateSections(source, article, replacements)
+		projected, projectErr := projectLocalizedArticle(source, article, metadataByArticle[article], replacements)
 		if projectErr != nil {
 			return nil, fmt.Errorf("project %s: %w", article, projectErr)
 		}
@@ -162,7 +166,7 @@ func BuildLocaleProjection(root string, catalog *Catalog, locale, outputRoot str
 			return nil, fmt.Errorf("write %s: %w", article, writeErr)
 		}
 	}
-	if err = validateCompleteProjection(root, contentDir, catalog, locale, candidates); err != nil {
+	if err = validateCompleteProjection(root, contentDir, catalog, locale, candidates, metadataByArticle); err != nil {
 		return nil, fmt.Errorf("validate complete projection: %w", err)
 	}
 
@@ -300,7 +304,7 @@ func validateProjectionArticleSet(contentDir string, pagesByArticle map[string][
 	return nil
 }
 
-func validateCompleteProjection(root, contentDir string, catalog *Catalog, locale string, candidates map[string][]byte) error {
+func validateCompleteProjection(root, contentDir string, catalog *Catalog, locale string, candidates map[string][]byte, metadataByArticle map[string]ArticleMetadata) error {
 	pagesByArticle := make(map[string][]Page)
 	for _, page := range catalog.Pages {
 		pagesByArticle[page.Article] = append(pagesByArticle[page.Article], page)
@@ -317,6 +321,16 @@ func validateCompleteProjection(root, contentDir string, catalog *Catalog, local
 		doc, err := parseProjectedArticle(contentDir, article, data)
 		if err != nil {
 			return fmt.Errorf("%s: %w", article, err)
+		}
+		metadata, ok := metadataByArticle[article]
+		if !ok {
+			return fmt.Errorf("%s has no article metadata", article)
+		}
+		if doc.Title != metadata.Title {
+			return fmt.Errorf("%s final title %q does not equal locale metadata %q", article, doc.Title, metadata.Title)
+		}
+		if doc.Subtitle != metadata.Subtitle {
+			return fmt.Errorf("%s final subtitle %q does not equal locale metadata %q", article, doc.Subtitle, metadata.Subtitle)
 		}
 		sections, _, err := splitArticle(normalizeLF(data), article)
 		if err != nil {

@@ -9,6 +9,8 @@
 - 已从固定官方上游导入可独立运行、测试、解析和渲染的英文 Tour 基线。
 - 已建立 103 个正式发布页面及 2 条条件源审计记录的机器可读目录。
 - 第一阶段目标语言为简体中文 `zh-CN`；课程正文已完成，正式状态为 `ready=103`、`pending=0`、`blocked=0`。
+- 课程正文、article/lesson 根级 metadata 与公共 UI 分开维护：103 个顶层 `present.Section` 使用 canonical candidate；每个 article 的 `title`、`subtitle` 使用独立 locale metadata；公共 UI 使用独立 UI 本地化资源。
+- zh-CN 的 7/7 个正式 article metadata 已完成本地化（title=7/7、subtitle=7/7）。
 - 已建立完整页面翻译执行器、术语表、结构保护、candidate 校验、状态管理和 attempt 审计记录。
 - 已实现面向 locale 的完整正式投影和本地完整预览；zh-CN 完整投影已通过 103/103 HTTP 页面级验收。
 - 当前 module path 为 `github.com/shuijingwan/go-tour-i18n`。
@@ -90,6 +92,8 @@ go run -mod=readonly ./cmd/tour-i18n translate recover-network \
 
 完整投影只接受 catalog 中所有页面对应的 canonical `ready` candidate；存在 pending、blocked、缺失、额外或非 canonical candidate 时会失败，不会回退到英文或旧译文。输出为可直接交给官方 Tour 本地服务的完整内容树，不修改 candidate、status 或 catalog。
 
+课程根级 metadata 位于 `locales/<locale>/article-metadata.json`。它独立于 Section candidate、公共 UI 和 status，逐个维护正式 article 的 `title` 与 `subtitle`。完整 build 与 preview 会严格要求 metadata article 集合与 catalog 推导的正式 article 集合一致，且 title/subtitle 均非空；缺失或不完整时失败，不允许回退到 upstream 英文。
+
 构建一个 locale 的完整正式投影（未提供 `--output` 时使用安全临时目录）：
 
 ```bash
@@ -112,7 +116,7 @@ go run -mod=readonly ./cmd/tour-i18n preview \
   --id <page_id>
 ```
 
-当前 zh-CN 完整投影包含 7 个 article、103 个正式页面，并已完成 103/103 HTTP 页面级验收。`welcome/1`、`welcome/4` 和 `welcome/5` 的特殊投影也包含在该验收中。
+当前 zh-CN 完整投影包含 7 个 article、103 个正式页面，并已完成 103/103 HTTP 页面级验收；7/7 个 article title/subtitle 均已本地化。`welcome/1`、`welcome/4` 和 `welcome/5` 的特殊投影也包含在该验收中。article metadata 不计为额外页面，正式页面数仍为 103。
 
 ## 本地运行
 

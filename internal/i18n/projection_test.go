@@ -2,6 +2,7 @@ package i18n
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -22,6 +23,11 @@ func TestBuildLocaleProjectionReplacesMultipleSectionsAndArticles(t *testing.T) 
 	alpha, err := os.ReadFile(filepath.Join(projection.ContentDir, "tour", "alpha.article"))
 	if err != nil {
 		t.Fatal(err)
+	}
+	for _, want := range []string{"甲课程", "甲课程说明"} {
+		if !bytes.Contains(alpha, []byte(want)) {
+			t.Errorf("projected alpha.article missing localized metadata %q", want)
+		}
 	}
 	for _, want := range []string{"* 第一页", "第一段译文。", "* 第二页", "包含 `code` 的第二段译文。", ".play alpha/one.go"} {
 		if !bytes.Contains(alpha, []byte(want)) {
@@ -54,6 +60,59 @@ func TestBuildLocaleProjectionReplacesMultipleSectionsAndArticles(t *testing.T) 
 	static, err := os.ReadFile(filepath.Join(projection.ContentDir, "tour", "static.txt"))
 	if err != nil || string(static) != "shared static asset\n" {
 		t.Fatalf("shared static asset was not preserved: data=%q err=%v", static, err)
+	}
+}
+
+func TestBuildLocaleProjectionRejectsIncompleteArticleMetadata(t *testing.T) {
+	tests := []struct {
+		name string
+		edit func([]ArticleMetadata) []ArticleMetadata
+		want string
+	}{
+		{"missing", func(entries []ArticleMetadata) []ArticleMetadata { return entries[:1] }, "missing article"},
+		{"extra", func(entries []ArticleMetadata) []ArticleMetadata {
+			return append(entries, ArticleMetadata{Article: "extra.article", Title: "额外", Subtitle: "额外说明"})
+		}, "extra article"},
+		{"duplicate", func(entries []ArticleMetadata) []ArticleMetadata { return append(entries, entries[0]) }, "duplicate article"},
+		{"empty title", func(entries []ArticleMetadata) []ArticleMetadata { entries[0].Title = " "; return entries }, "empty title"},
+		{"empty subtitle", func(entries []ArticleMetadata) []ArticleMetadata { entries[0].Subtitle = " "; return entries }, "empty subtitle"},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			fixture := newProjectionFixture(t)
+			fixture.writeMetadata(t, test.edit(fixture.metadata))
+			_, err := BuildLocaleProjection(fixture.root, fixture.catalog, "zh-CN", filepath.Join(t.TempDir(), "projection"))
+			if err == nil || !strings.Contains(err.Error(), test.want) {
+				t.Fatalf("error = %v, want %q", err, test.want)
+			}
+		})
+	}
+}
+
+func TestBuildLocaleProjectionRejectsMissingOrUnparseableArticleMetadata(t *testing.T) {
+	for _, test := range []struct {
+		name    string
+		prepare func(t *testing.T, fixture *projectionFixture)
+	}{
+		{"missing", func(t *testing.T, fixture *projectionFixture) {
+			t.Helper()
+			if err := os.Remove(fixture.metadataPath()); err != nil {
+				t.Fatal(err)
+			}
+		}},
+		{"unparseable", func(t *testing.T, fixture *projectionFixture) {
+			t.Helper()
+			writeFixtureFile(t, fixture.metadataPath(), []byte("not JSON"))
+		}},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			fixture := newProjectionFixture(t)
+			test.prepare(t, fixture)
+			_, err := BuildLocaleProjection(fixture.root, fixture.catalog, "zh-CN", filepath.Join(t.TempDir(), "projection"))
+			if err == nil || !strings.Contains(err.Error(), "article metadata") {
+				t.Fatalf("error = %v, want article metadata rejection", err)
+			}
+		})
 	}
 }
 
@@ -167,6 +226,30 @@ func TestBuildLocaleProjectionPreservesWelcomePublicationSemantics(t *testing.T)
 	if bytes.Contains(welcome, []byte("#appengine:")) {
 		t.Fatal("welcome projection retained appengine prefixes")
 	}
+	metadata, err := LoadArticleMetadata(root, "zh-CN", catalog)
+	if err != nil {
+		t.Fatal(err)
+	}
+	doc, err := parseProjectedArticle(projection.ContentDir, "welcome.article", welcome)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if doc.Title != metadata["welcome.article"].Title || doc.Subtitle != metadata["welcome.article"].Subtitle {
+		t.Fatalf("welcome metadata = %q / %q, want %q / %q", doc.Title, doc.Subtitle, metadata["welcome.article"].Title, metadata["welcome.article"].Subtitle)
+	}
+	for article, want := range metadata {
+		data, err := os.ReadFile(filepath.Join(projection.ContentDir, "tour", article))
+		if err != nil {
+			t.Fatal(err)
+		}
+		doc, err := parseProjectedArticle(projection.ContentDir, article, data)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if doc.Title != want.Title || doc.Subtitle != want.Subtitle {
+			t.Errorf("%s metadata = %q / %q, want %q / %q", article, doc.Title, doc.Subtitle, want.Title, want.Subtitle)
+		}
+	}
 	sections, _, err := splitArticle(welcome, "welcome.article")
 	if err != nil {
 		t.Fatal(err)
@@ -194,6 +277,7 @@ type projectionFixture struct {
 	catalog    *Catalog
 	statuses   []Status
 	candidates map[string][]byte
+	metadata   []ArticleMetadata
 }
 
 func newProjectionFixture(t *testing.T) *projectionFixture {
@@ -219,14 +303,34 @@ func newProjectionFixture(t *testing.T) *projectionFixture {
 		"alpha/2": []byte("* 第二页\n\n包含 `code` 的第二段译文。\n"),
 		"beta/1":  []byte("* 第三页\n\n第三段译文。\n"),
 	}
-	fixture := &projectionFixture{root: root, catalog: &Catalog{Pages: pages}, candidates: candidates}
+	fixture := &projectionFixture{
+		root: root, catalog: &Catalog{Pages: pages}, candidates: candidates,
+		metadata: []ArticleMetadata{
+			{Article: "alpha.article", Title: "甲课程", Subtitle: "甲课程说明"},
+			{Article: "beta.article", Title: "乙课程", Subtitle: "乙课程说明"},
+		},
+	}
 	for _, page := range pages {
 		path := canonicalCandidatePath("zh-CN", page.ID)
 		writeFixtureFile(t, filepath.Join(root, filepath.FromSlash(path)), candidates[page.ID])
 		fixture.statuses = append(fixture.statuses, Status{PageID: page.ID, State: "ready", Attempts: 1, SourceSHA256: page.SourceSHA256, CandidatePath: path})
 	}
 	fixture.writeStatuses(t)
+	fixture.writeMetadata(t, fixture.metadata)
 	return fixture
+}
+
+func (f *projectionFixture) metadataPath() string {
+	return filepath.Join(f.root, "locales", "zh-CN", "article-metadata.json")
+}
+
+func (f *projectionFixture) writeMetadata(t *testing.T, entries []ArticleMetadata) {
+	t.Helper()
+	data, err := json.Marshal(articleMetadataFile{Locale: "zh-CN", Articles: entries})
+	if err != nil {
+		t.Fatal(err)
+	}
+	writeFixtureFile(t, f.metadataPath(), data)
 }
 
 func (f *projectionFixture) writeStatuses(t *testing.T) {

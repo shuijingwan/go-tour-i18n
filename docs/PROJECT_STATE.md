@@ -81,6 +81,16 @@
 - zh-CN 完整投影验收结果为 `articles=7`、`pages=103`、HTTP `103/103`。全部 catalog page_id 的 `/tour/<page_id>` 页面返回正常 zh-CN Tour HTML，且对应 lesson Section 可渲染。
 - `welcome/1` 的 remote server 分支、`welcome/4` 与 `welcome/5` 的完整条件 Section 去前缀投影均已在完整正式投影和 HTTP 验收中通过；zh-CN 公共 UI 与关键静态资源也已验证。
 
+## Article/lesson metadata 多语言本地化完成状态
+
+- 在 103/103 HTTP 验收后的人工浏览器截图中，发现 7 个 article 的课程导航主标题仍直接使用 upstream 英文。进一步审计确认同一文档层还存在 7 个 `present.Doc.Subtitle`。
+- 根因是当前 103 个 `page_id` catalog 只覆盖顶层 `present.Section`，不覆盖 article 文档根级的 `present.Doc.Title` 与 `present.Doc.Subtitle`；因此 Section candidate 校验、状态以及 103/103 HTTP 页面状态验收均不会定义或校验这一层译文。
+- 已新增独立的 locale article metadata 资源：`locales/<locale>/article-metadata.json`。该资源不属于 Section candidate、公共 UI 或 status；每个正式 article 单独维护 `title` 和 `subtitle`。
+- metadata loader 由 catalog 动态推导正式 article 集合并严格校验：article 集合必须精确一致，title/subtitle 必须非空；缺失、额外、重复或无法解析的 metadata 都会失败，不允许 fallback 到 upstream 英文。
+- 完整 projection 与单页 candidate preview 共用 metadata 应用路径。完整 projection 最终重新解析每个 article，并断言 `Doc.Title`、`Doc.Subtitle` 与 locale metadata 完全一致，同时继续校验全部 103 个 canonical Section。
+- 当前 zh-CN 状态为：Section candidate 103/103 ready（`ready=103`、`pending=0`、`blocked=0`）；article metadata 7/7；title localized 7/7；subtitle localized 7/7；公共 UI 已本地化。
+- 修复后完整预览确认课程导航 lesson title 与 lesson description 均已中文化；全部 103 页 HTTP 验收继续为 103/103，且未发现同类根级 upstream 英文 metadata 残留。article metadata 不计入正式页面数，catalog 仍为 103 个 published pages。
+
 ## 下一阶段：正式 publish 设计与发布后验收
 
 - 生产 publish 当前尚未实现；项目尚未发布，也没有部署配置。

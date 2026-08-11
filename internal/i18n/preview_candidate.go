@@ -24,6 +24,10 @@ func BuildCandidatePreview(root string, catalog *Catalog, pageID, locale, tempRo
 	if err != nil {
 		return nil, err
 	}
+	metadataByArticle, err := LoadArticleMetadata(root, locale, catalog)
+	if err != nil {
+		return nil, err
+	}
 	tempRoot = filepath.Clean(tempRoot)
 	tempBase := filepath.Clean(os.TempDir())
 	rel, err := filepath.Rel(tempBase, tempRoot)
@@ -45,7 +49,7 @@ func BuildCandidatePreview(root string, catalog *Catalog, pageID, locale, tempRo
 	if err != nil {
 		return nil, err
 	}
-	replaced, err := projectCandidateSections(article, page.Article, map[int][]byte{page.SectionNumber: candidate})
+	replaced, err := projectLocalizedArticle(article, page.Article, metadataByArticle[page.Article], map[int][]byte{page.SectionNumber: candidate})
 	if err != nil {
 		return nil, fmt.Errorf("replace %s: %w", pageID, err)
 	}

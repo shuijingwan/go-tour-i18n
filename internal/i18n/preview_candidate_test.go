@@ -40,7 +40,7 @@ func TestBuildCandidatePreviewDoesNotModifyEnglishSource(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	for _, want := range [][]byte{[]byte("Go 语言之旅"), []byte("本教程"), []byte("* Go local")} {
+	for _, want := range [][]byte{[]byte("欢迎！"), []byte("了解如何使用本教程：如何在不同课程之间导航，以及如何运行代码。"), []byte("Go 语言之旅"), []byte("本教程"), []byte("* Go local")} {
 		if !bytes.Contains(temporary, want) {
 			t.Fatalf("temporary preview missing %q", want)
 		}
