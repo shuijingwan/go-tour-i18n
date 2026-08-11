@@ -64,7 +64,7 @@
 - CSS 生成的 `on` / `off` 继续保持 upstream 原样；不为两个状态词修改 CSS、DOM 或 Angular。
 - `404 page not found` 继续使用 Go 标准库 `http.NotFound`。这是低频异常路径，第一阶段不为本地化接管标准库 404 行为。
 - playground 动态技术状态（例如 `killed`、`status N.`）继续保持 upstream / 技术状态原样。
-- HTTPTransport 部署变体的 `Go vet failed.`、`Go build failed.`、`Error communicating with remote server.` 对应 message 可继续保留在 catalog，但当前不接线。正式生产 deployment / transport 确定后，如 zh-CN 生产使用 HTTPTransport，须在上线前重新评估并处理这三项。
+- HTTPTransport 部署变体的 `Go vet failed.`、`Go build failed.`、`Error communicating with remote server.` 对应 message 继续保留在 catalog；production runtime 已确定使用 HTTPTransport，当前运行链路保持 upstream 的技术错误文案边界。
 
 ### Upstream 同步维护结论
 
@@ -91,7 +91,16 @@
 - 当前 zh-CN 状态为：Section candidate 103/103 ready（`ready=103`、`pending=0`、`blocked=0`）；article metadata 7/7；title localized 7/7；subtitle localized 7/7；公共 UI 已本地化。
 - 修复后完整预览确认课程导航 lesson title 与 lesson description 均已中文化；全部 103 页 HTTP 验收继续为 103/103，且未发现同类根级 upstream 英文 metadata 残留。article metadata 不计入正式页面数，catalog 仍为 103 个 published pages。
 
-## 下一阶段：正式 publish 设计与发布后验收
+## Production runtime、publish bundle 与最终发布前验收
 
-- 生产 publish 当前尚未实现；项目尚未发布，也没有部署配置。
-- 下一阶段仅在另行设计正式 publish、部署边界和发布后验收后启动。
+- production runtime 已在 commit `98877f7 feat: 增加安全的生产环境 Tour 运行服务` 中完成：使用 `HTTPTransport`，`/_/compile` 和 `/_/fmt` 固定代理到官方 Go Playground；不注册本地 `SocketTransport` 或 `socket.NewHandler`。
+- production runtime 的 `/socket` 普通请求和 WebSocket Upgrade 均返回 404；`/_/share` 当前未启用并返回 404；未知 `/_/` 路径不会落入 Tour SPA。production 主机不执行用户提交的 Go 程序，Run / Format 已完成真实 Playground 验收。
+- production publish bundle 已在 commit `e4a8fe0 feat: 增加确定性的生产发布包生成` 中完成。正式命令为 `go run -mod=readonly ./cmd/tour-i18n publish --locale zh-CN --output <directory>`，输出包含 `bin/tour`、`_content/`、`release.json` 和 `SHA256SUMS`。
+- publish 构建时将 locale 固定进 production binary；binary 从自身相邻的 `../_content` 定位内容，不依赖当前工作目录，不需要运行时 `--locale` 或 `--content`。bundle 不包含 candidate、status、translation-runs 等开发期数据。
+- 全新 candidate bundle 的最终发布前验收结果为：`ready=103`、`pending=0`、`blocked=0`、`pages=103`、`articles=7`；103/103 课程页面、7/7 lesson JSON、103 个 Section、title/subtitle 和公共中文 UI 均通过验收。
+- 两次 publish 在相同源码、Go 工具链和 GOOS/GOARCH 下逐文件一致；185 个 bundle 文件 SHA-256 校验全部通过。真实 Run / Format、`/socket` 404、WebSocket `/socket` 404、`/_/share` 404 及未知 `/_/` 404 均已验证。
+- 当前阶段明确区分：production runtime 已完成，production publish bundle 已完成，发布产物最终验收已通过；实际服务器、CDN、域名或其他生产环境部署尚未执行。
+
+## 下一阶段：实际生产环境部署
+
+- 下一阶段是实际生产环境部署及其独立上线验收；这不属于当前 publish bundle 实现，也尚未开始。
