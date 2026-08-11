@@ -30,8 +30,16 @@ func run(args []string) error {
 	if err := loadProjectEnv(root); err != nil {
 		return err
 	}
-	if len(args) < 2 {
-		return fmt.Errorf("usage: tour-i18n <catalog|upstream|page|status|candidate|translate|build|preview> <command or flags>")
+	if len(args) == 0 {
+		return fmt.Errorf("usage: tour-i18n <catalog|upstream|page|status|candidate|translate|build|preview|publish> <command or flags>")
+	}
+	var publish *publishOptions
+	if args[0] == "publish" {
+		options, err := parsePublishOptions(args[1:])
+		if err != nil {
+			return err
+		}
+		publish = &options
 	}
 	current, err := i18n.BuildSourceCatalog(root)
 	if err != nil {
@@ -53,6 +61,12 @@ func run(args []string) error {
 	}
 	if args[0] == "build" {
 		return buildLocale(root, catalog, args[1:])
+	}
+	if publish != nil {
+		return publishBundle(root, catalog, *publish)
+	}
+	if len(args) < 2 {
+		return fmt.Errorf("usage: tour-i18n <catalog|upstream|page|status|candidate|translate|build|preview|publish> <command or flags>")
 	}
 	switch args[0] + " " + args[1] {
 	case "catalog check":

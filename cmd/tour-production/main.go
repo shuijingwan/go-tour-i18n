@@ -10,6 +10,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"path/filepath"
 	"strings"
 	"time"
 
@@ -18,7 +19,7 @@ import (
 
 // productionLocale is set by the release build. It is intentionally not a
 // runtime flag: one production binary serves one locale.
-var productionLocale = "zh-CN"
+var productionLocale string
 
 func main() {
 	if err := run(os.Args[1:]); err != nil {
@@ -29,17 +30,20 @@ func main() {
 func run(args []string) error {
 	fs := flag.NewFlagSet("tour-production", flag.ContinueOnError)
 	httpAddr := fs.String("http", "127.0.0.1:3999", "host:port to listen on")
-	contentDir := fs.String("content", "", "published _content directory")
 	if err := fs.Parse(args); err != nil {
 		return err
 	}
 	if fs.NArg() != 0 {
 		return fmt.Errorf("unexpected arguments: %s", strings.Join(fs.Args(), " "))
 	}
-	if strings.TrimSpace(*contentDir) == "" {
-		return fmt.Errorf("--content is required")
+	if strings.TrimSpace(productionLocale) == "" {
+		return fmt.Errorf("production locale was not injected at build time")
 	}
-	handler, err := tour.NewProductionHandler(os.DirFS(*contentDir), productionLocale)
+	contentDir, err := bundleContentDir()
+	if err != nil {
+		return err
+	}
+	handler, err := tour.NewProductionHandler(os.DirFS(contentDir), productionLocale)
 	if err != nil {
 		return err
 	}
@@ -53,4 +57,25 @@ func run(args []string) error {
 	}
 	log.Printf("serving locale %s on http://%s with remote Playground execution", productionLocale, *httpAddr)
 	return server.ListenAndServe()
+}
+
+// bundleContentDir resolves _content relative to this binary, rather than to
+// the caller's current working directory.
+func bundleContentDir() (string, error) {
+	executable, err := os.Executable()
+	if err != nil {
+		return "", fmt.Errorf("locate production binary: %w", err)
+	}
+	if resolved, err := filepath.EvalSymlinks(executable); err == nil {
+		executable = resolved
+	}
+	contentDir := filepath.Clean(filepath.Join(filepath.Dir(executable), "..", "_content"))
+	info, err := os.Stat(contentDir)
+	if err != nil {
+		return "", fmt.Errorf("locate bundle content %q: %w", contentDir, err)
+	}
+	if !info.IsDir() {
+		return "", fmt.Errorf("bundle content %q is not a directory", contentDir)
+	}
+	return contentDir, nil
 }
