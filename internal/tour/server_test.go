@@ -99,18 +99,18 @@ func TestJSI18nBootstrapLocales(t *testing.T) {
 		{
 			locale: "en",
 			want: []string{
-				"\"tour.list_heading\":\"Welcome to a tour of Go\"", "\"toc.title\":\"Table of Contents\"", "\"execution.waiting\":\"Waiting for remote server...\"", "\"feedback.open\":\"Send feedback about this page\"", "\"feedback.context\":\"Context\"",
+				"\"tour.list_heading\":\"Welcome to a tour of Go\"", "\"toc.title\":\"Table of Contents\"", "\"execution.waiting\":\"Waiting for remote server...\"", "\"execution.exited\":\"Program exited\"", "\"feedback.open\":\"Send feedback about this page\"", "\"feedback.context\":\"Context\"",
 				"\"editor.syntax\":\"Syntax\"", "\"editor.imports\":\"Imports\"", "\"editor.run\":\"Run\"", "\"editor.kill\":\"Kill\"", "\"editor.format\":\"Format\"", "\"editor.reset\":\"Reset\"",
 			},
 		},
 		{
 			locale: "zh-CN",
 			want: []string{
-				"\"tour.list_heading\":\"欢迎来到 Go 语言之旅\"", "\"toc.title\":\"目录\"", "\"execution.waiting\":\"正在等待远程服务器……\"", "\"feedback.open\":\"发送本页反馈\"", "\"feedback.context\":\"上下文\"",
+				"\"tour.list_heading\":\"欢迎来到 Go 语言之旅\"", "\"toc.title\":\"目录\"", "\"execution.waiting\":\"正在等待远程服务器……\"", "\"execution.exited\":\"程序已退出\"", "\"feedback.open\":\"发送本页反馈\"", "\"feedback.context\":\"上下文\"",
 				"\"editor.syntax\":\"语法高亮\"", "\"editor.imports\":\"导入\"", "\"editor.run\":\"运行\"", "\"editor.kill\":\"终止\"", "\"editor.format\":\"格式化\"", "\"editor.reset\":\"重置\"",
 			},
 			absent: []string{
-				"\"tour.list_heading\":\"Welcome to a tour of Go\"", "\"toc.title\":\"Table of Contents\"", "\"execution.waiting\":\"Waiting for remote server...\"", "\"feedback.open\":\"Send feedback about this page\"", "\"feedback.context\":\"Context\"",
+				"\"tour.list_heading\":\"Welcome to a tour of Go\"", "\"toc.title\":\"Table of Contents\"", "\"execution.waiting\":\"Waiting for remote server...\"", "\"execution.exited\":\"Program exited\"", "\"feedback.open\":\"Send feedback about this page\"", "\"feedback.context\":\"Context\"",
 				"\"editor.syntax\":\"Syntax\"", "\"editor.imports\":\"Imports\"", "\"editor.run\":\"Run\"", "\"editor.kill\":\"Kill\"", "\"editor.format\":\"Format\"", "\"editor.reset\":\"Reset\"",
 			},
 		},
@@ -142,6 +142,28 @@ func TestJSI18nBootstrapLocales(t *testing.T) {
 				}
 			}
 		})
+	}
+}
+
+func TestPlaygroundUsesBootstrappedExitedMessage(t *testing.T) {
+	data, err := fs.ReadFile(contentTour, "js/playground.js")
+	if err != nil {
+		t.Fatal(err)
+	}
+	text := string(data)
+	if !strings.Contains(text, `window.__tourUIMessages['execution.exited']`) {
+		t.Fatal("playground does not read execution.exited from the shared UI messages")
+	}
+	if strings.Contains(text, "Program exited") {
+		t.Fatal("playground still hard-codes Program exited")
+	}
+	if !strings.Contains(text, `(m ? ': ' + m : '.')`) {
+		t.Fatal("playground changed end-event status/reason formatting")
+	}
+	for _, message := range []string{"Go vet failed.", "Go build failed.", "Error communicating with remote server."} {
+		if !strings.Contains(text, message) {
+			t.Errorf("playground unexpectedly changed deferred HTTPTransport message %q", message)
+		}
 	}
 }
 

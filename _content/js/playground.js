@@ -223,7 +223,7 @@ function PlaygroundOutput(el) {
 
     var m = write.Body;
     if (write.Kind == 'end') {
-      m = '\nProgram exited' + (m ? ': ' + m : '.');
+      m = '\n' + window.__tourUIMessages['execution.exited'] + (m ? ': ' + m : '.');
     }
 
     if (m.indexOf('IMAGE:') === 0) {

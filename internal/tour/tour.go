@@ -293,6 +293,7 @@ var jsI18nKeys = []string{
 	"tour.list_heading",
 	"toc.title",
 	"execution.waiting",
+	"execution.exited",
 	"feedback.open",
 	"feedback.issue_title",
 	"feedback.issue_body",
