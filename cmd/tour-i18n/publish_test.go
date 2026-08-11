@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"reflect"
 	"sort"
 	"strings"
 	"testing"
@@ -27,6 +28,29 @@ func TestPublishCLIRequiresLocaleAndOutput(t *testing.T) {
 	}
 	if err := run([]string{"publish", "--locale", "zh-CN"}); err == nil || !strings.Contains(err.Error(), "--output is required") {
 		t.Fatalf("CLI missing output error = %v", err)
+	}
+}
+
+func TestProductionBuildEnvDisablesCGOWithoutChangingOtherSettings(t *testing.T) {
+	original, hadOriginal := os.LookupEnv("CGO_ENABLED")
+	if err := os.Setenv("CGO_ENABLED", "1"); err != nil {
+		t.Fatal(err)
+	}
+	if hadOriginal {
+		t.Cleanup(func() { _ = os.Setenv("CGO_ENABLED", original) })
+	} else {
+		t.Cleanup(func() { _ = os.Unsetenv("CGO_ENABLED") })
+	}
+
+	env := productionBuildEnv()
+	var cgoValues []string
+	for _, value := range env {
+		if strings.HasPrefix(value, "CGO_ENABLED=") {
+			cgoValues = append(cgoValues, value)
+		}
+	}
+	if !reflect.DeepEqual(cgoValues, []string{"CGO_ENABLED=0"}) {
+		t.Fatalf("CGO_ENABLED entries = %v, want [CGO_ENABLED=0]", cgoValues)
 	}
 }
 

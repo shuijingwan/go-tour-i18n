@@ -168,12 +168,27 @@ func buildProductionBinaryGo(root, locale, binaryPath string) error {
 	}
 	command := exec.Command("go", "build", "-mod=readonly", "-trimpath", "-buildvcs=false", "-ldflags=-buildid= -X main.productionLocale="+locale, "-o", binaryPath, "./cmd/tour-production")
 	command.Dir = root
+	command.Env = productionBuildEnv()
 	command.Stdout = os.Stdout
 	command.Stderr = os.Stderr
 	if err := command.Run(); err != nil {
 		return fmt.Errorf("build production binary: %w", err)
 	}
 	return nil
+}
+
+// productionBuildEnv makes the production binary independent of the build
+// host's libc. Keep the caller's other build settings (including GOOS and
+// GOARCH) unchanged, but always disable cgo for this release artifact.
+func productionBuildEnv() []string {
+	env := os.Environ()
+	for i, value := range env {
+		if strings.HasPrefix(value, "CGO_ENABLED=") {
+			env[i] = "CGO_ENABLED=0"
+			return env
+		}
+	}
+	return append(env, "CGO_ENABLED=0")
 }
 
 func writeReleaseManifest(root string, manifest releaseManifest) error {
