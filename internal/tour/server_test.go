@@ -11,6 +11,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/shuijingwan/go-tour-i18n/internal/tour/ui"
 	"github.com/shuijingwan/go-tour-i18n/internal/webtest"
 )
 
@@ -63,7 +64,11 @@ func TestRenderIndexLocales(t *testing.T) {
 	}
 	for _, test := range tests {
 		t.Run(test.locale, func(t *testing.T) {
-			content, err := renderIndex(test.locale)
+			catalog, err := ui.Load(test.locale)
+			if err != nil {
+				t.Fatal(err)
+			}
+			content, err := renderIndex(catalog)
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -79,6 +84,78 @@ func TestRenderIndexLocales(t *testing.T) {
 				}
 			}
 		})
+	}
+}
+
+func TestJSI18nBootstrapLocales(t *testing.T) {
+	tests := []struct {
+		locale string
+		want   []string
+		absent []string
+	}{
+		{
+			locale: "en",
+			want:   []string{"\"toc.title\":\"Table of Contents\"", "\"execution.waiting\":\"Waiting for remote server...\"", "\"feedback.open\":\"Send feedback about this page\"", "\"feedback.context\":\"Context\""},
+		},
+		{
+			locale: "zh-CN",
+			want:   []string{"\"toc.title\":\"目录\"", "\"execution.waiting\":\"正在等待远程服务器……\"", "\"feedback.open\":\"发送本页反馈\"", "\"feedback.context\":\"上下文\""},
+			absent: []string{"\"toc.title\":\"Table of Contents\"", "\"execution.waiting\":\"Waiting for remote server...\"", "\"feedback.open\":\"Send feedback about this page\"", "\"feedback.context\":\"Context\""},
+		},
+	}
+	for _, test := range tests {
+		t.Run(test.locale, func(t *testing.T) {
+			catalog, err := ui.Load(test.locale)
+			if err != nil {
+				t.Fatal(err)
+			}
+			mux := http.NewServeMux()
+			if err := initScript(mux, "", "SocketTransport", catalog); err != nil {
+				t.Fatal(err)
+			}
+			recorder := httptest.NewRecorder()
+			mux.ServeHTTP(recorder, httptest.NewRequest(http.MethodGet, "/tour/script.js", nil))
+			if recorder.Code != http.StatusOK {
+				t.Fatalf("GET /tour/script.js: status %d", recorder.Code)
+			}
+			text := recorder.Body.String()
+			for _, want := range test.want {
+				if !strings.Contains(text, want) {
+					t.Errorf("bootstrap for %s does not contain %q", test.locale, want)
+				}
+			}
+			for _, absent := range test.absent {
+				if strings.Contains(text, absent) {
+					t.Errorf("bootstrap for %s unexpectedly contains %q", test.locale, absent)
+				}
+			}
+		})
+	}
+}
+
+func TestJSI18nBootstrapEscapesJSON(t *testing.T) {
+	catalog, err := ui.Load("en")
+	if err != nil {
+		t.Fatal(err)
+	}
+	catalog.Messages["feedback.open"] = ui.Message{Kind: "plain", Text: `<>&"`}
+	bootstrap, err := jsI18nBootstrap(catalog)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got := string(bootstrap); strings.ContainsAny(got, "<>&") || !strings.Contains(got, `\u003c\u003e\u0026\"`) {
+		t.Fatalf("bootstrap does not safely JSON-escape message: %q", got)
+	}
+}
+
+func TestJSI18nBootstrapRejectsNonPlainMessage(t *testing.T) {
+	catalog, err := ui.Load("en")
+	if err != nil {
+		t.Fatal(err)
+	}
+	catalog.Messages["toc.title"] = ui.Message{Kind: "rich", Text: "<p>Table of Contents</p>"}
+	if _, err := jsI18nBootstrap(catalog); err == nil || !strings.Contains(err.Error(), "not plain") {
+		t.Fatalf("jsI18nBootstrap error = %v, want plain-message failure", err)
 	}
 }
 

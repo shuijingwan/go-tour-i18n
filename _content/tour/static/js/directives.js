@@ -155,7 +155,7 @@ directive('tableOfContentsButton', ['i18n', function(i18n) {
         restrict: 'A',
         templateUrl: '/tour/static/partials/toc-button.html',
         link: function(scope, elm, attrs) {
-            scope.tocMessage = i18n.l('toc');
+            scope.tocMessage = i18n.l('toc.title');
             elm.on('click', function() {
                 var toc = $(attrs.tableOfContentsButton);
                 // hide all non active lessons before displaying the toc.
@@ -213,16 +213,16 @@ directive('tableOfContents', ['$routeParams', 'toc',
     }
 ]).
 
-directive('feedbackButton', ['i18n', function(i18n) {
+directive('feedbackButton', ['i18n', 'feedbackConfig', function(i18n, feedbackConfig) {
     return {
         restrict: 'A',
         templateUrl: '/tour/static/partials/feedback-button.html',
         link: function(scope, elm, attrs) {
-            scope.feedbackMessage = i18n.l('submit-feedback');
+            scope.feedbackMessage = i18n.l('feedback.open');
 
             elm.on('click', function() {
-                var customURL = i18n.l('custom-feedback-url');
-                if (customURL && customURL !== '(no translation for custom-feedback-url)') {
+                var customURL = feedbackConfig.customURL;
+                if (customURL) {
                     window.open(customURL);
                     return;
                 }
@@ -231,9 +231,9 @@ directive('feedbackButton', ['i18n', function(i18n) {
                     ? '/tour/list'
                     : '/tour/' + scope.params.lessonId + '/' + scope.params.pageNumber;
                 context = window.location.protocol + '//' + window.location.host + context;
-                var title = i18n.l('issue-title');
-                var body = i18n.l('context') + ': '+ context + '\n\n'+ i18n.l('issue-message');
-                var url = 'https://' + i18n.l('github-repo') + '/issues/new'
+                var title = i18n.l('feedback.issue_title');
+                var body = i18n.l('feedback.context') + ': '+ context + '\n\n'+ i18n.l('feedback.issue_body');
+                var url = 'https://' + feedbackConfig.githubRepo + '/issues/new'
                     + '?title=' + encodeURIComponent(title)
                     + '&body=' + encodeURIComponent(body);
                 window.open(url);

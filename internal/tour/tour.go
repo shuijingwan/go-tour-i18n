@@ -48,8 +48,12 @@ func initTour(mux *http.ServeMux, transport, locale string) error {
 		return fmt.Errorf("init lessons: %v", err)
 	}
 
-	// Load and render the build-selected UI locale once during initialization.
-	uiContent, err = renderIndex(locale)
+	// Load the build-selected UI locale once during initialization.
+	catalog, err := ui.Load(locale)
+	if err != nil {
+		return fmt.Errorf("load UI catalog %q: %w", locale, err)
+	}
+	uiContent, err = renderIndex(catalog)
 	if err != nil {
 		return err
 	}
@@ -58,14 +62,10 @@ func initTour(mux *http.ServeMux, transport, locale string) error {
 	mux.HandleFunc("/tour/lesson/", lessonHandler)
 	mux.Handle("/tour/static/", http.FileServer(http.FS(contentTour)))
 
-	return initScript(mux, socketAddr(), transport)
+	return initScript(mux, socketAddr(), transport, catalog)
 }
 
-func renderIndex(locale string) ([]byte, error) {
-	catalog, err := ui.Load(locale)
-	if err != nil {
-		return nil, fmt.Errorf("load UI catalog %q: %w", locale, err)
-	}
+func renderIndex(catalog ui.Catalog) ([]byte, error) {
 	tmpl, err := template.New("index.tmpl").Funcs(template.FuncMap{"ui": catalog.Plain}).ParseFS(contentTour, "tour/template/index.tmpl")
 	if err != nil {
 		return nil, fmt.Errorf("parse index.tmpl: %w", err)
@@ -237,9 +237,14 @@ func renderUI(w io.Writer) error {
 
 // initScript concatenates all the javascript files needed to render
 // the tour UI and serves the result on /script.js.
-func initScript(mux *http.ServeMux, socketAddr, transport string) error {
+func initScript(mux *http.ServeMux, socketAddr, transport string, catalog ui.Catalog) error {
 	modTime := time.Now()
 	b := new(bytes.Buffer)
+	bootstrap, err := jsI18nBootstrap(catalog)
+	if err != nil {
+		return err
+	}
+	b.Write(bootstrap)
 
 	// Keep this list in dependency order
 	files := []string{
@@ -282,4 +287,29 @@ func initScript(mux *http.ServeMux, socketAddr, transport string) error {
 	})
 
 	return nil
+}
+
+var jsI18nKeys = []string{
+	"toc.title",
+	"execution.waiting",
+	"feedback.open",
+	"feedback.issue_title",
+	"feedback.issue_body",
+	"feedback.context",
+}
+
+func jsI18nBootstrap(catalog ui.Catalog) ([]byte, error) {
+	messages := make(map[string]string, len(jsI18nKeys))
+	for _, key := range jsI18nKeys {
+		message, err := catalog.Plain(key)
+		if err != nil {
+			return nil, fmt.Errorf("read JavaScript UI message %q: %w", key, err)
+		}
+		messages[key] = message
+	}
+	encoded, err := json.Marshal(messages)
+	if err != nil {
+		return nil, fmt.Errorf("encode JavaScript UI messages: %w", err)
+	}
+	return append(append([]byte("window.__tourUIMessages = "), encoded...), ";\n"...), nil
 }

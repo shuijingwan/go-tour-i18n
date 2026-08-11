@@ -34,32 +34,13 @@ value('tableOfContents', [{
     'lessons': ['concurrency']
 }]).
 
-// translation
-value('translation', {
-    'off': 'off',
-    'on': 'on',
-    'syntax': 'Syntax-Highlighting',
-    'lineno': 'Line-Numbers',
-    'reset': 'Reset Slide',
-    'format': 'Format Source Code',
-    'kill': 'Kill Program',
-    'run': 'Run',
-    'compile': 'Compile and Run',
-    'more': 'Options',
-    'toc': 'Table of Contents',
-    'prev': 'Previous',
-    'next': 'Next',
-    'waiting': 'Waiting for remote server...',
-    'errcomm': 'Error communicating with remote server.',
-    'submit-feedback': 'Send feedback about this page',
+// translation is generated from the build-selected UI catalog.
+value('translation', window.__tourUIMessages).
 
-    // GitHub issue template: update repo and messaging when translating.
-    // If a custom-feedback-url is set, it takes higher precedence over other fields.
-    'custom-feedback-url': '/doc/contribute#check_tracker',
-    'github-repo': 'github.com/golang/go',
-    'issue-title': 'x/website/_content/tour: [REPLACE WITH SHORT DESCRIPTION]',
-    'issue-message': 'Change the title above to describe your issue and add your feedback here, including code if necessary',
-    'context': 'Context',
+// Feedback destinations are deployment configuration, not locale messages.
+value('feedbackConfig', {
+    customURL: '/doc/contribute#check_tracker',
+    githubRepo: 'github.com/golang/go',
 }).
 
 // Config for codemirror plugin

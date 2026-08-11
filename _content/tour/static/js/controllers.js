@@ -81,7 +81,7 @@ controller('EditorCtrl', ['$scope', '$routeParams', '$location', 'toc', 'i18n', 
         }
 
         $scope.run = function() {
-            log('info', i18n.l('waiting'));
+            log('info', i18n.l('execution.waiting'));
             var f = file();
             $scope.job = run(f.Content, $('.output.active > pre')[0], {
                 path: f.Name
@@ -96,7 +96,7 @@ controller('EditorCtrl', ['$scope', '$routeParams', '$location', 'toc', 'i18n', 
         };
 
         $scope.format = function() {
-            log('info', i18n.l('waiting'));
+            log('info', i18n.l('execution.waiting'));
             fmt(file().Content, editor.imports).then(
                 function(data) {
                     if (data.data.Error !== '') {
