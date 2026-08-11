@@ -5,7 +5,6 @@
 package tour
 
 import (
-	"bytes"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -19,7 +18,7 @@ import (
 )
 
 const (
-	productionPlaygroundURL = "https://play.golang.org"
+	productionPlaygroundURL = "https://go.dev/_"
 	playgroundRequestLimit  = 1 << 20 // 1 MiB
 	playgroundResponseLimit = 4 << 20 // 4 MiB
 	playgroundTimeout       = 20 * time.Second
@@ -73,11 +72,6 @@ func notFound(w http.ResponseWriter, r *http.Request) {
 // golang/website internal/play proxy protocol at
 // e11dacba76c5aae474746e9eedee19693f492803. Execution remains at the remote
 // Playground; this package only performs bounded HTTP conversion.
-type playgroundCompileRequest struct {
-	Body    string
-	WithVet bool
-}
-
 type playgroundCompileResponse struct {
 	Errors    string
 	Events    []playgroundEvent
@@ -122,21 +116,17 @@ func (p *playgroundProxy) compile(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	req := playgroundCompileRequest{
-		Body:    r.PostFormValue("body"),
-		WithVet: r.PostFormValue("withVet") == "true",
+	form := url.Values{
+		"version": {r.PostFormValue("version")},
+		"body":    {r.PostFormValue("body")},
+		"withVet": {r.PostFormValue("withVet")},
 	}
-	payload, err := json.Marshal(req)
-	if err != nil {
-		http.Error(w, "encode Playground request", http.StatusInternalServerError)
-		return
-	}
-	upstream, err := http.NewRequestWithContext(r.Context(), http.MethodPost, p.compileURL, bytes.NewReader(payload))
+	upstream, err := http.NewRequestWithContext(r.Context(), http.MethodPost, p.compileURL, strings.NewReader(form.Encode()))
 	if err != nil {
 		http.Error(w, "create Playground request", http.StatusInternalServerError)
 		return
 	}
-	upstream.Header.Set("Content-Type", "application/json")
+	upstream.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 
 	status, _, body, err := p.do(upstream)
 	if err != nil || status != http.StatusOK {

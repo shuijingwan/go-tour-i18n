@@ -1,7 +1,6 @@
 package tour
 
 import (
-	"encoding/json"
 	"io"
 	"net/http"
 	"net/http/httptest"
@@ -12,6 +11,22 @@ import (
 
 	website "github.com/shuijingwan/go-tour-i18n"
 )
+
+func TestProductionPlaygroundUsesGoDev(t *testing.T) {
+	if productionPlaygroundURL != "https://go.dev/_" {
+		t.Fatalf("production Playground URL = %q, want https://go.dev/_", productionPlaygroundURL)
+	}
+	proxy := mustPlaygroundProxy(t, productionPlaygroundURL)
+	if proxy.compileURL != "https://go.dev/_/compile" {
+		t.Fatalf("compile upstream URL = %q, want https://go.dev/_/compile", proxy.compileURL)
+	}
+	if proxy.formatURL != "https://go.dev/_/fmt" {
+		t.Fatalf("format upstream URL = %q, want https://go.dev/_/fmt", proxy.formatURL)
+	}
+	if strings.Contains(proxy.compileURL, "play.golang.org") || strings.Contains(proxy.formatURL, "play.golang.org") {
+		t.Fatal("production Playground proxy still references play.golang.org")
+	}
+}
 
 func TestProductionHandlerUsesHTTPTransportAndServesTour(t *testing.T) {
 	upstream := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -115,18 +130,17 @@ func TestProductionCompileProxy(t *testing.T) {
 		if r.URL.Path != "/compile" || r.Method != http.MethodPost {
 			t.Fatalf("upstream request = %s %s", r.Method, r.URL.Path)
 		}
-		if got := r.Header.Get("Content-Type"); got != "application/json" {
+		if got := r.Header.Get("Content-Type"); got != "application/x-www-form-urlencoded" {
 			t.Errorf("upstream content type = %q", got)
 		}
 		if got := r.Header.Get("X-User-Header"); got != "" {
 			t.Errorf("user header was forwarded: %q", got)
 		}
-		var request playgroundCompileRequest
-		if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
+		if err := r.ParseForm(); err != nil {
 			t.Fatal(err)
 		}
-		if request.Body != "package main\nfunc main(){}\n" || !request.WithVet {
-			t.Errorf("compile request = %+v", request)
+		if r.Form.Get("version") != "2" || r.Form.Get("body") != "package main\nfunc main(){}\n" || r.Form.Get("withVet") != "true" {
+			t.Errorf("compile form = %v", r.Form)
 		}
 		w.Header().Set("Content-Type", "application/json")
 		_, _ = io.WriteString(w, `{"Errors":"","Events":[{"Message":"ok\n","Kind":"stdout","Delay":0}],"VetErrors":""}`)

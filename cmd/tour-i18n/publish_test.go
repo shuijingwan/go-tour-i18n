@@ -172,7 +172,7 @@ func verifyPublishedBundle(t *testing.T, root string) {
 	if err := json.Unmarshal(manifestData, &manifest); err != nil {
 		t.Fatal(err)
 	}
-	if manifest.Locale != "zh-CN" || manifest.UpstreamCommit != frozenUpstreamCommit || manifest.Pages != 103 || manifest.Articles != 7 || manifest.ExecutionTransport != "http-playground-proxy" || manifest.ExecutionProvider != "play.golang.org" || manifest.LocalSocketEnabled {
+	if manifest.Locale != "zh-CN" || manifest.UpstreamCommit != frozenUpstreamCommit || manifest.Pages != 103 || manifest.Articles != 7 || manifest.ExecutionTransport != "http-playground-proxy" || manifest.ExecutionProvider != "go.dev" || manifest.LocalSocketEnabled {
 		t.Fatalf("unexpected release manifest: %+v", manifest)
 	}
 	forbidden := map[string]bool{"locales": true, "status.tsv": true, "candidate": true, "translation-runs": true, "attempt": true}
