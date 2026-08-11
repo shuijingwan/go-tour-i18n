@@ -32,6 +32,22 @@ var (
 
 var contentTour = website.TourOnly()
 
+// useContent selects the content tree used by subsequent Tour initialization.
+// A Tour process initializes one content tree and locale; runtime switching is
+// deliberately unsupported.
+func useContent(content fs.FS) error {
+	if content == nil {
+		return fmt.Errorf("Tour content is required")
+	}
+	if _, err := fs.Stat(content, "tour/template/index.tmpl"); err != nil {
+		return fmt.Errorf("invalid Tour content: %w", err)
+	}
+	contentTour = content
+	uiContent = nil
+	lessons = make(map[string][]byte)
+	return nil
+}
+
 // initTour loads tour.article and the relevant HTML templates from root.
 func initTour(mux *http.ServeMux, transport, locale string) error {
 	// Make sure playground is enabled before rendering.

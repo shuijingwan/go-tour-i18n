@@ -1,0 +1,249 @@
+// Copyright 2026 The go-tour-i18n Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
+package tour
+
+import (
+	"bytes"
+	"encoding/json"
+	"errors"
+	"fmt"
+	"io"
+	"io/fs"
+	"mime"
+	"net/http"
+	"net/url"
+	"strings"
+	"time"
+)
+
+const (
+	productionPlaygroundURL = "https://play.golang.org"
+	playgroundRequestLimit  = 1 << 20 // 1 MiB
+	playgroundResponseLimit = 4 << 20 // 4 MiB
+	playgroundTimeout       = 20 * time.Second
+)
+
+// NewProductionHandler creates the public Tour handler for one content tree
+// and one build-selected locale. It uses the remote Playground HTTP protocol
+// and never registers the local WebSocket execution handler.
+func NewProductionHandler(content fs.FS, locale string) (http.Handler, error) {
+	proxy, err := newPlaygroundProxy(productionPlaygroundURL)
+	if err != nil {
+		return nil, err
+	}
+	return newProductionHandler(content, locale, proxy)
+}
+
+func newProductionHandler(content fs.FS, locale string, proxy *playgroundProxy) (http.Handler, error) {
+	if proxy == nil {
+		return nil, fmt.Errorf("Playground proxy is required")
+	}
+	if err := useContent(content); err != nil {
+		return nil, err
+	}
+
+	mux := http.NewServeMux()
+	if err := RegisterHandlersLocale(mux, locale); err != nil {
+		return nil, err
+	}
+
+	// These routes are deliberately registered before the SPA fallback. The
+	// production process never exposes the local code-execution WebSocket.
+	mux.HandleFunc("/socket", notFound)
+	mux.HandleFunc("/socket/", notFound)
+	mux.HandleFunc("/_/compile", proxy.compile)
+	mux.HandleFunc("/_/fmt", proxy.format)
+	mux.HandleFunc("/_/share", notFound)
+	mux.HandleFunc("/_/", notFound)
+
+	contentServer := http.FileServer(http.FS(contentTour))
+	mux.Handle("/favicon.ico", contentServer)
+	mux.Handle("/images/", contentServer)
+	mux.HandleFunc("/", rootHandler)
+	return mux, nil
+}
+
+func notFound(w http.ResponseWriter, r *http.Request) {
+	http.NotFound(w, r)
+}
+
+// The structures and browser-facing conversion below follow the frozen
+// golang/website internal/play proxy protocol at
+// e11dacba76c5aae474746e9eedee19693f492803. Execution remains at the remote
+// Playground; this package only performs bounded HTTP conversion.
+type playgroundCompileRequest struct {
+	Body    string
+	WithVet bool
+}
+
+type playgroundCompileResponse struct {
+	Errors    string
+	Events    []playgroundEvent
+	VetErrors string
+}
+
+type playgroundEvent struct {
+	Message string
+	Kind    string
+	Delay   time.Duration
+}
+
+type playgroundProxy struct {
+	compileURL string
+	formatURL  string
+	client     *http.Client
+}
+
+func newPlaygroundProxy(baseURL string) (*playgroundProxy, error) {
+	base, err := url.Parse(baseURL)
+	if err != nil {
+		return nil, fmt.Errorf("parse Playground URL: %w", err)
+	}
+	if base.Scheme != "http" && base.Scheme != "https" || base.Host == "" || base.User != nil || base.RawQuery != "" || base.Fragment != "" {
+		return nil, fmt.Errorf("invalid Playground URL %q", baseURL)
+	}
+	base.Path = strings.TrimRight(base.Path, "/")
+	return &playgroundProxy{
+		compileURL: base.String() + "/compile",
+		formatURL:  base.String() + "/fmt",
+		client: &http.Client{
+			Timeout: playgroundTimeout,
+			CheckRedirect: func(*http.Request, []*http.Request) error {
+				return http.ErrUseLastResponse
+			},
+		},
+	}, nil
+}
+
+func (p *playgroundProxy) compile(w http.ResponseWriter, r *http.Request) {
+	if !requireFormPost(w, r) {
+		return
+	}
+
+	req := playgroundCompileRequest{
+		Body:    r.PostFormValue("body"),
+		WithVet: r.PostFormValue("withVet") == "true",
+	}
+	payload, err := json.Marshal(req)
+	if err != nil {
+		http.Error(w, "encode Playground request", http.StatusInternalServerError)
+		return
+	}
+	upstream, err := http.NewRequestWithContext(r.Context(), http.MethodPost, p.compileURL, bytes.NewReader(payload))
+	if err != nil {
+		http.Error(w, "create Playground request", http.StatusInternalServerError)
+		return
+	}
+	upstream.Header.Set("Content-Type", "application/json")
+
+	status, _, body, err := p.do(upstream)
+	if err != nil || status != http.StatusOK {
+		http.Error(w, "Playground compile unavailable", http.StatusBadGateway)
+		return
+	}
+	var result playgroundCompileResponse
+	if err := json.Unmarshal(body, &result); err != nil {
+		http.Error(w, "invalid Playground compile response", http.StatusBadGateway)
+		return
+	}
+
+	var browserResponse any = result
+	if r.PostFormValue("version") != "2" {
+		browserResponse = struct {
+			CompileErrors string `json:"compile_errors"`
+			Output        string `json:"output"`
+		}{result.Errors, flattenEvents(result.Events)}
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("X-Content-Type-Options", "nosniff")
+	if err := json.NewEncoder(w).Encode(browserResponse); err != nil {
+		return
+	}
+}
+
+func (p *playgroundProxy) format(w http.ResponseWriter, r *http.Request) {
+	if !requireFormPost(w, r) {
+		return
+	}
+	form := url.Values{
+		"body":    {r.PostFormValue("body")},
+		"imports": {r.PostFormValue("imports")},
+	}
+	upstream, err := http.NewRequestWithContext(r.Context(), http.MethodPost, p.formatURL, strings.NewReader(form.Encode()))
+	if err != nil {
+		http.Error(w, "create Playground request", http.StatusInternalServerError)
+		return
+	}
+	upstream.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+
+	status, contentType, body, err := p.do(upstream)
+	if err != nil || status < 200 || status >= 300 {
+		http.Error(w, "Playground format unavailable", http.StatusBadGateway)
+		return
+	}
+	if contentType == "" {
+		contentType = "application/json"
+	}
+	w.Header().Set("Content-Type", contentType)
+	w.Header().Set("X-Content-Type-Options", "nosniff")
+	w.WriteHeader(status)
+	_, _ = w.Write(body)
+}
+
+func requireFormPost(w http.ResponseWriter, r *http.Request) bool {
+	if r.Method != http.MethodPost {
+		w.Header().Set("Allow", http.MethodPost)
+		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+		return false
+	}
+	mediaType, _, err := mime.ParseMediaType(r.Header.Get("Content-Type"))
+	if err != nil || mediaType != "application/x-www-form-urlencoded" {
+		http.Error(w, "unsupported media type", http.StatusUnsupportedMediaType)
+		return false
+	}
+	r.Body = http.MaxBytesReader(w, r.Body, playgroundRequestLimit)
+	if err := r.ParseForm(); err != nil {
+		var tooLarge *http.MaxBytesError
+		if errors.As(err, &tooLarge) {
+			http.Error(w, "request too large", http.StatusRequestEntityTooLarge)
+		} else {
+			http.Error(w, "invalid form request", http.StatusBadRequest)
+		}
+		return false
+	}
+	return true
+}
+
+func (p *playgroundProxy) do(req *http.Request) (int, string, []byte, error) {
+	resp, err := p.client.Do(req)
+	if err != nil {
+		return 0, "", nil, err
+	}
+	defer resp.Body.Close()
+	body, err := readLimited(resp.Body, playgroundResponseLimit)
+	if err != nil {
+		return 0, "", nil, err
+	}
+	return resp.StatusCode, resp.Header.Get("Content-Type"), body, nil
+}
+
+func readLimited(r io.Reader, limit int64) ([]byte, error) {
+	body, err := io.ReadAll(io.LimitReader(r, limit+1))
+	if err != nil {
+		return nil, err
+	}
+	if int64(len(body)) > limit {
+		return nil, fmt.Errorf("Playground response exceeds %d bytes", limit)
+	}
+	return body, nil
+}
+
+func flattenEvents(events []playgroundEvent) string {
+	var out strings.Builder
+	for _, event := range events {
+		out.WriteString(event.Message)
+	}
+	return out.String()
+}
