@@ -8,8 +8,9 @@
 
 - 已从固定官方上游导入可独立运行、测试、解析和渲染的英文 Tour 基线。
 - 已建立 103 个正式发布页面及 2 条条件源审计记录的机器可读目录。
-- 第一阶段目标语言为简体中文 `zh-CN`；当前已有 8 个 ready 页面：`welcome/1` 至 `welcome/5`、`basics/1` 至 `basics/3`，其余页面仍为 pending。
+- 第一阶段目标语言为简体中文 `zh-CN`；课程正文已完成，正式状态为 `ready=103`、`pending=0`、`blocked=0`。
 - 已建立完整页面翻译执行器、术语表、结构保护、candidate 校验、状态管理和 attempt 审计记录。
+- 已实现面向 locale 的完整正式投影和本地完整预览；zh-CN 完整投影已通过 103/103 HTTP 页面级验收。
 - 当前 module path 为 `github.com/shuijingwan/go-tour-i18n`。
 - 尚未提供生产部署配置，也尚未发布正式版本。
 
@@ -21,7 +22,7 @@
 - 1 个 `.image` 引用；
 - 2 条继续单独保留的 `#appengine:` 条件源审计记录。
 
-翻译的最小单元是一个完整顶层 `present.Section`，不会拆成句子级或多 text 槽位 JSON。页面目录位于 [`data/tour-pages.tsv`](data/tour-pages.tsv)，zh-CN 状态位于 [`locales/zh-CN/status.tsv`](locales/zh-CN/status.tsv)。当前 scaffold 不是可发布的中文版，详细约定见 [`locales/zh-CN/README.md`](locales/zh-CN/README.md) 和 [LANGUAGES.md](LANGUAGES.md)。
+翻译的最小单元是一个完整顶层 `present.Section`，不会拆成句子级或多 text 槽位 JSON。页面目录位于 [`data/tour-pages.tsv`](data/tour-pages.tsv)，zh-CN 状态位于 [`locales/zh-CN/status.tsv`](locales/zh-CN/status.tsv)。完整投影能力面向 locale；当前第一阶段完成的 locale 为 zh-CN。生产 publish 尚未实现，详细约定见 [`locales/zh-CN/README.md`](locales/zh-CN/README.md) 和 [LANGUAGES.md](LANGUAGES.md)。
 
 目录中的 `page_id` 是语言状态、候选文件和发布记录的持久身份；`route` 是可能随上游变化的当前访问路径，`article` 和 `section_number` 是可能变化的发布投影位置。当前 103 个 ID 已冻结，不会因插入、删除、重排或改标题而自动重编号。完整规则见 [PAGE_IDENTITY.md](PAGE_IDENTITY.md)。
 
@@ -85,6 +86,34 @@ go run -mod=readonly ./cmd/tour-i18n translate recover-network \
 
 该命令拒绝 HTTP/API、模型输出、token、parse、render 或 validator 失败；恢复后仍须单独运行正常的 `translate run`。
 
+## 正式投影与本地预览
+
+完整投影只接受 catalog 中所有页面对应的 canonical `ready` candidate；存在 pending、blocked、缺失、额外或非 canonical candidate 时会失败，不会回退到英文或旧译文。输出为可直接交给官方 Tour 本地服务的完整内容树，不修改 candidate、status 或 catalog。
+
+构建一个 locale 的完整正式投影（未提供 `--output` 时使用安全临时目录）：
+
+```bash
+go run -mod=readonly ./cmd/tour-i18n build \
+  --locale zh-CN
+```
+
+完整语言本地预览：
+
+```bash
+go run -mod=readonly ./cmd/tour-i18n preview \
+  --locale zh-CN
+```
+
+原有单页 candidate preview 继续可用：
+
+```bash
+go run -mod=readonly ./cmd/tour-i18n preview \
+  --locale zh-CN \
+  --id <page_id>
+```
+
+当前 zh-CN 完整投影包含 7 个 article、103 个正式页面，并已完成 103/103 HTTP 页面级验收。`welcome/1`、`welcome/4` 和 `welcome/5` 的特殊投影也包含在该验收中。
+
 ## 本地运行
 
 需要 Go 1.25 或更高版本。从仓库根目录运行：
@@ -124,11 +153,8 @@ go test -mod=readonly -count=1 ./...
 
 ## 尚未实现
 
-- 剩余 `zh-CN` 课程翻译与统一验证；
-- 课程正文与公共 UI 的多语言资源分离；
-- 状态迁移命令和自动翻译流水线；
 - Playground execution provider 与同源代理；
-- 正式发布和生产部署配置。
+- 正式 publish、发布后验收和生产部署配置。
 
 ## 许可证
 
@@ -139,4 +165,4 @@ go test -mod=readonly -count=1 ./...
 
 ## English Summary
 
-`go-tour-i18n` is a community-maintained, unofficial multilingual A Tour of Go translation project. The official English Tour baseline has been imported; Simplified Chinese (`zh-CN`) is the first target language, with 8 of 103 projected pages currently ready. The current server is for loopback-only local development and is not ready for public deployment.
+`go-tour-i18n` is a community-maintained, unofficial multilingual A Tour of Go translation project. The official English Tour baseline has been imported; Simplified Chinese (`zh-CN`) is the first completed locale, with all 103 projected pages ready and a 103/103 HTTP page-level projection-preview acceptance pass. The projection and local preview tooling are locale-oriented; production publish and deployment are not implemented.

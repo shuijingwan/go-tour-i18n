@@ -31,7 +31,7 @@ func run(args []string) error {
 		return err
 	}
 	if len(args) < 2 {
-		return fmt.Errorf("usage: tour-i18n <catalog|upstream|page|status|candidate|translate|preview> <command>")
+		return fmt.Errorf("usage: tour-i18n <catalog|upstream|page|status|candidate|translate|build|preview> <command or flags>")
 	}
 	current, err := i18n.BuildSourceCatalog(root)
 	if err != nil {
@@ -50,6 +50,9 @@ func run(args []string) error {
 	}
 	if args[0] == "preview" {
 		return previewCandidate(root, catalog, args[1:])
+	}
+	if args[0] == "build" {
+		return buildLocale(root, catalog, args[1:])
 	}
 	switch args[0] + " " + args[1] {
 	case "catalog check":
@@ -245,30 +248,100 @@ func run(args []string) error {
 }
 
 func previewCandidate(root string, catalog *i18n.Catalog, args []string) error {
-	fs := flag.NewFlagSet("preview", flag.ContinueOnError)
-	locale := fs.String("locale", "", "candidate locale")
-	id := fs.String("id", "", "persistent page_id")
-	httpAddr := fs.String("http", "127.0.0.1:3999", "preview host:port")
-	if err := fs.Parse(args); err != nil {
-		return err
-	}
-	if *locale == "" || *id == "" {
-		return fmt.Errorf("--locale and --id are required")
-	}
-	tempRoot := filepath.Join(os.TempDir(), "go-tour-i18n-preview", *locale, strings.ReplaceAll(*id, "/", "-"))
-	preview, err := i18n.BuildCandidatePreview(root, catalog, *id, *locale, tempRoot)
+	options, err := parsePreviewOptions(args)
 	if err != nil {
 		return err
 	}
-	address := "http://" + *httpAddr + "/tour/" + *id
-	fmt.Printf("preview URL: %s\n", address)
+	var preview *i18n.PreviewContent
+	if options.ID != "" {
+		tempRoot := filepath.Join(os.TempDir(), "go-tour-i18n-preview", options.Locale, strings.ReplaceAll(options.ID, "/", "-"))
+		preview, err = i18n.BuildCandidatePreview(root, catalog, options.ID, options.Locale, tempRoot)
+		if err != nil {
+			return err
+		}
+		fmt.Printf("preview URL: http://%s/tour/%s\n", options.HTTPAddr, options.ID)
+	} else {
+		tempRoot, err := os.MkdirTemp("", "go-tour-i18n-preview-"+strings.ReplaceAll(options.Locale, "/", "-")+"-")
+		if err != nil {
+			return fmt.Errorf("create preview directory: %w", err)
+		}
+		projection, err := i18n.BuildLocaleProjection(root, catalog, options.Locale, tempRoot)
+		if err != nil {
+			_ = os.RemoveAll(tempRoot)
+			return err
+		}
+		preview = &i18n.PreviewContent{Root: projection.Root, ContentDir: projection.ContentDir, Locale: projection.Locale}
+		fmt.Printf("local complete preview URL: http://%s/\n", options.HTTPAddr)
+		fmt.Printf("projection: locale=%s ready=%d pending=%d blocked=%d pages=%d articles=%d\n",
+			projection.Locale, projection.Ready, projection.Pending, projection.Blocked, projection.PageCount, projection.ArticleCount)
+	}
 	fmt.Printf("temporary content: %s\n", preview.ContentDir)
-	command := exec.Command("go", "run", "./tour", "-http", *httpAddr, "-openbrowser=false", "-content", preview.ContentDir, "-locale", *locale)
+	command := exec.Command("go", "run", "./tour", "-http", options.HTTPAddr, "-openbrowser=false", "-content", preview.ContentDir, "-locale", options.Locale)
 	command.Dir = root
 	command.Stdout = os.Stdout
 	command.Stderr = os.Stderr
 	command.Stdin = os.Stdin
 	return command.Run()
+}
+
+type previewOptions struct {
+	Locale   string
+	ID       string
+	HTTPAddr string
+}
+
+func parsePreviewOptions(args []string) (previewOptions, error) {
+	fs := flag.NewFlagSet("preview", flag.ContinueOnError)
+	locale := fs.String("locale", "", "candidate locale")
+	id := fs.String("id", "", "persistent page_id")
+	httpAddr := fs.String("http", "127.0.0.1:3999", "preview host:port")
+	if err := fs.Parse(args); err != nil {
+		return previewOptions{}, err
+	}
+	if *locale == "" {
+		return previewOptions{}, fmt.Errorf("--locale is required")
+	}
+	if fs.NArg() != 0 {
+		return previewOptions{}, fmt.Errorf("unexpected preview arguments: %s", strings.Join(fs.Args(), " "))
+	}
+	return previewOptions{Locale: *locale, ID: *id, HTTPAddr: *httpAddr}, nil
+}
+
+func buildLocale(root string, catalog *i18n.Catalog, args []string) error {
+	fs := flag.NewFlagSet("build", flag.ContinueOnError)
+	locale := fs.String("locale", "", "locale")
+	output := fs.String("output", "", "projection output directory")
+	if err := fs.Parse(args); err != nil {
+		return err
+	}
+	if *locale == "" {
+		return fmt.Errorf("--locale is required")
+	}
+	if fs.NArg() != 0 {
+		return fmt.Errorf("unexpected build arguments: %s", strings.Join(fs.Args(), " "))
+	}
+	outputRoot := *output
+	automatic := false
+	if outputRoot == "" {
+		var err error
+		outputRoot, err = os.MkdirTemp("", "go-tour-i18n-build-"+strings.ReplaceAll(*locale, "/", "-")+"-")
+		if err != nil {
+			return fmt.Errorf("create build directory: %w", err)
+		}
+		automatic = true
+	}
+	projection, err := i18n.BuildLocaleProjection(root, catalog, *locale, outputRoot)
+	if err != nil {
+		if automatic {
+			_ = os.RemoveAll(outputRoot)
+		}
+		return err
+	}
+	fmt.Printf("locale projection: %s\n", projection.Root)
+	fmt.Printf("Tour content: %s\n", projection.ContentDir)
+	fmt.Printf("locale=%s ready=%d pending=%d blocked=%d pages=%d articles=%d\n",
+		projection.Locale, projection.Ready, projection.Pending, projection.Blocked, projection.PageCount, projection.ArticleCount)
+	return nil
 }
 
 func loadProjectEnv(root string) error {

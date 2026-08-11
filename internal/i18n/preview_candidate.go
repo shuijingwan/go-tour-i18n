@@ -20,18 +20,9 @@ func BuildCandidatePreview(root string, catalog *Catalog, pageID, locale, tempRo
 	if err != nil {
 		return nil, err
 	}
-	status, candidate, err := LoadTranslationResult(root, pageID, locale)
+	candidate, err := loadReadyCandidate(root, catalog, pageID, locale, nil)
 	if err != nil {
 		return nil, err
-	}
-	if status.State != "ready" || status.CandidatePath == "" {
-		return nil, fmt.Errorf("%s/%s is not a ready candidate", locale, pageID)
-	}
-	if status.SourceSHA256 != page.SourceSHA256 || sum(page.Source) != status.SourceSHA256 {
-		return nil, fmt.Errorf("%s/%s candidate source hash does not match current source", locale, pageID)
-	}
-	if err := ValidateCandidate(root, catalog, pageID, []byte(candidate)); err != nil {
-		return nil, fmt.Errorf("%s/%s candidate validation: %w", locale, pageID, err)
 	}
 	tempRoot = filepath.Clean(tempRoot)
 	tempBase := filepath.Clean(os.TempDir())
@@ -54,11 +45,7 @@ func BuildCandidatePreview(root string, catalog *Catalog, pageID, locale, tempRo
 	if err != nil {
 		return nil, err
 	}
-	article, err = projectPublishedArticle(article, page.Article)
-	if err != nil {
-		return nil, fmt.Errorf("project %s: %w", page.Article, err)
-	}
-	replaced, err := replacePreviewSection(article, page.SectionNumber, []byte(candidate))
+	replaced, err := projectCandidateSections(article, page.Article, map[int][]byte{page.SectionNumber: candidate})
 	if err != nil {
 		return nil, fmt.Errorf("replace %s: %w", pageID, err)
 	}

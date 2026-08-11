@@ -23,7 +23,7 @@
 - candidate validator 基于 present 解析结果校验斜体、粗体和 program span 的类型与结构。inline-code 校验内容和数量（多重集合）及 program span 安全，但不再根据跨语言出现顺序判断技术语义；legacy program span 继续完整保护。跨语言技术语义是否正确不伪装成静态结构校验能力，仍须由提示词与人工审核把关。
 - link target 继续严格校验内容、数量和自身顺序；preformatted block 继续严格校验内容、块顺序和代码安全；directive 继续严格校验内容、数量、自身顺序和 Section 归属。Section 拓扑、预格式化块与 directive 的 Section 归属均受校验；源中位于 Section 尾部的 directive 在候选中仍必须位于尾部。
 - zh-CN glossary 对强制链接 label 使用 protected token 确定性恢复，例如 `A Tour of Go` → `Go 语言之旅`、`previous` → `上一页`、`next` → `下一页`、`Run` → `运行`、`Format` → `格式化`；validator 仍执行防御性术语与禁用译法检查。
-- 已支持 ready candidate 本地预览。运行 `go run ./cmd/tour-i18n preview -id welcome/1 -locale zh-CN` 会在 `/tmp` 创建临时 Tour 内容副本，只替换目标中文 Section，不修改仓库正式 `_content`；其他未翻译页面继续显示英文。
+- 已支持 ready candidate 单页本地预览。运行 `go run ./cmd/tour-i18n preview -id welcome/1 -locale zh-CN` 会在 `/tmp` 创建临时 Tour 内容副本，只替换目标 Section，不修改仓库正式 `_content`。
 
 ### 2026-08-10 翻译输入架构实验
 
@@ -71,7 +71,17 @@
 - UI consumer 开始前的基准为 `519cc38`。经 SHA-256 / 文件核对，以下 upstream-facing 文件在该基准时与冻结 upstream `e11dacba76c5aae474746e9eedee19693f492803` 一致：`_content/tour/template/index.tmpl`、`_content/tour/static/js/app.js`、`_content/tour/static/js/controllers.js`、`_content/tour/static/js/directives.js`、`_content/tour/static/js/values.js`、`_content/tour/static/partials/list.html`、`_content/tour/static/partials/editor.html`。
 - 当前 UI 本地化对 upstream 的改动集中于文案绑定、少量 i18n 接线和数据来源替换，未进行明显 UI 结构性重构。未来 upstream 同步时重点复核上述少量 consumer 文件；继续遵守“低收益 + 高侵入的边缘文案宁可保留 upstream，不为零英文扩大维护面”的原则。
 
-## 当前下一阶段：103 页完整 zh-CN 正式发布投影预览与最终发布验收
+## 完整语言正式投影与本地预览完成状态
 
-- 公共 UI 本地化不再是当前待办。下一阶段不再使用只替换单个 Section 的单页 preview，而是验证完整 103 页 ready candidate 的正式 zh-CN 投影。
-- 后续重点检查 `/tour/list`、完整 TOC、页面跳转、所有课程 title / description、课程正文、公共 UI、示例代码、页面布局、浏览器控制台与资源加载，以及正式 locale 一致性。
+- 当前 upstream 仍为 `master@e11dacba76c5aae474746e9eedee19693f492803`。
+- zh-CN 正式状态为 `ready=103`、`pending=0`、`blocked=0`；catalog 为 103 个 published pages 和 2 条 conditional source records。
+- 已完成全部 103 页 canonical candidate、全局翻译质量审计、zh-CN 公共 UI 本地化、完整语言正式投影与完整语言本地预览。
+- `tour-i18n build --locale <locale>` 从 catalog、locale status 与 canonical ready candidate 构建完整正式投影；它拒绝 pending、blocked、缺失、额外或非 canonical candidate，不回退到英文或旧译文，也不修改 candidate、status 或 catalog。
+- `tour-i18n preview --locale <locale>` 直接复用完整投影能力启动本地预览；带 `--id <page_id>` 时继续是单页 candidate preview。
+- zh-CN 完整投影验收结果为 `articles=7`、`pages=103`、HTTP `103/103`。全部 catalog page_id 的 `/tour/<page_id>` 页面返回正常 zh-CN Tour HTML，且对应 lesson Section 可渲染。
+- `welcome/1` 的 remote server 分支、`welcome/4` 与 `welcome/5` 的完整条件 Section 去前缀投影均已在完整正式投影和 HTTP 验收中通过；zh-CN 公共 UI 与关键静态资源也已验证。
+
+## 下一阶段：正式 publish 设计与发布后验收
+
+- 生产 publish 当前尚未实现；项目尚未发布，也没有部署配置。
+- 下一阶段仅在另行设计正式 publish、部署边界和发布后验收后启动。
