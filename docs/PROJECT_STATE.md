@@ -100,8 +100,13 @@
 - 最终 release bundle 的验收结果为：`ready=103`、`pending=0`、`blocked=0`、`pages=103`、`articles=7`；103/103 课程页面、7/7 lesson JSON、103 个 Section、title/subtitle 和公共中文 UI 均通过验收。
 - 两次 publish 在相同源码、Go 工具链和 GOOS/GOARCH 下逐文件一致；185 个 bundle 文件 SHA-256 校验全部通过。真实 Run / Format、`/socket` 404、WebSocket `/socket` 404、`/_/share` 404 及未知 `/_/` 404 均已验证。
 - 当前正式上线状态：zh-CN 第一阶段已经正式上线。正式站点为 <https://go-dev.shuijingwanwq.com/>，release 为 `/data/go-tour/releases/20260811-zh-CN-925d59d`，项目 commit 为 `925d59d92016e026c92ae60f4535abd9237119ea`。生产链路为浏览器 → EdgeOne → Nginx → Go Tour → `https://go.dev/_`；`go-tour.service` 监听 `127.0.0.1:3999`。production binary 为 Linux amd64、`CGO_ENABLED=0`、静态链接，不依赖服务器 glibc 版本。
-- 2026-08-12 完成生产入口域名迁移：正式生产域名由 `go-tour.shuijingwanwq.com` 调整为 `go-dev.shuijingwanwq.com`，以避免 `go-tour.../tour/...` 中 Tour 语义重复，并为未来可能扩展 go.dev 的其他内容保留更宽泛的站点入口。旧域名通过腾讯云 EdgeOne 永久 301 到新域名，保持原路径与查询参数；已验证旧域名 HTTP/2 301、Location 正确、新域名 HTTP/2 200、浏览器页面访问及远程 Go 示例运行。此次为生产入口域名迁移，不是应用重新部署；既有 release、commit、服务和生产链路不变。
-- 部署期间已解决动态链接 glibc 兼容、OneinStack 静态资源 location 抢占、release 目录权限和 Nginx systemd 接管问题。Cloudflare 仅负责权威 DNS，业务 CNAME 使用 DNS only，正式流量经过 EdgeOne，不采用 Cloudflare 双层代理。
+- 2026-08-12 已完成生产入口域名迁移：正式生产域名为 <https://go-dev.shuijingwanwq.com/>，A Tour of Go 继续使用 `/tour/` 路径。迁移原因是避免 `go-tour.../tour/...` 中 Tour 语义重复，并为未来可能扩展 go.dev 的其他翻译内容保留更宽泛的站点入口；此次仅迁移生产入口，不是应用重新部署，既有 release、commit、`go-tour.service`、`/data/go-tour/` 和生产链路均不变。
+- 旧域名 <https://go-tour.shuijingwanwq.com/> 继续保留 Cloudflare DNS 与 EdgeOne 接入，但仅作为 EdgeOne 永久 301 入口：`go-tour.shuijingwanwq.com/*` 重定向至 `go-dev.shuijingwanwq.com` 同路径并保留查询参数；不再回源。实测 `/tour/welcome/1` 返回 HTTP/2 301，Location 正确指向新域名。
+- 新域名已完成 Cloudflare CNAME → EdgeOne、HTTPS 证书、HTTPS 回源及回源 Host 切换；源站为 `121.40.248.29`，正式回源 Host 为 `go-dev.shuijingwanwq.com`。Nginx 使用 `/usr/local/nginx/conf/vhost/go-dev.shuijingwanwq.com.conf` 和对应新证书，反向代理仍为 `http://127.0.0.1:3999`；旧 go-tour 虚拟主机、证书及备份配置已从源站清理。
+- 服务器 OneinStack 正式维护目录统一为 `/root/oneinstack`；旧版已在完成验收后清理。新虚拟主机通过当前 OneinStack 的 `./vhost.sh --proxy --dnsapi` 创建，使用 Cloudflare DNS provider、Let's Encrypt、HTTP → HTTPS 和 `proxy_pass http://127.0.0.1:3999`。敏感 API 凭据不记录于本文档。acme.sh 当前仅保留 `go-dev.shuijingwanwq.com` 的 `ec-256` Let's Encrypt 记录，旧域名续期记录及证书已清理。
+- OneinStack 自动生成配置中会截获 Tour 静态资源的两段 `location` 已删除；`/tour/static/css/app.css` 和 `/tour/static/lib/codemirror/lib/codemirror.css` 均已验证返回 200。当前环境使用 `nginx -t && service nginx reload` 使配置生效；`service nginx configtest` 不可用，仅支持基础 LSB 动作。
+- 最终验收：新页面 `/tour/welcome/1` 返回 200，新静态资源返回 200，旧域名按预期 301 至新域名；浏览器中文页面、HTTPS、地址栏保持 go-dev 及 Go 示例远程运行均已验证。此前一次远程运行超时为偶发问题，随后运行成功，不属于本次域名迁移阻塞项。
+- 部署期间已解决动态链接 glibc 兼容、release 目录权限和 Nginx systemd 接管问题。Cloudflare 仅负责 DNS，正式流量经过 EdgeOne，不采用 Cloudflare 双层代理。
 
 ## 第一阶段上线冻结
 
