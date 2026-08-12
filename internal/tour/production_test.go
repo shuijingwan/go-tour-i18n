@@ -58,12 +58,15 @@ func TestProductionHandlerUsesHTTPTransportAndServesTour(t *testing.T) {
 		{"/images/go-logo-white.svg", http.StatusOK, "<svg"},
 	}
 
-	for _, want := range []string{"非官方社区多语言翻译项目", "GitHub 项目源码", "蜀ICP备13001590号-1", "2026-08-11 21:15:21 (北京时间)", "golang/website@e11dacba"} {
-		rec := httptest.NewRecorder()
-		handler.ServeHTTP(rec, httptest.NewRequest(http.MethodGet, "/", nil))
-		if !strings.Contains(rec.Body.String(), want) {
+	home := httptest.NewRecorder()
+	handler.ServeHTTP(home, httptest.NewRequest(http.MethodGet, "/", nil))
+	for _, want := range []string{"非官方社区多语言翻译项目", "GitHub 项目源码", "蜀ICP备13001590号-1", "开发环境", "golang/website@e11dacba"} {
+		if !strings.Contains(home.Body.String(), want) {
 			t.Errorf("homepage does not contain %q", want)
 		}
+	}
+	if strings.Contains(home.Body.String(), "最近发布") {
+		t.Error("development homepage renders a production release timestamp")
 	}
 	for _, test := range tests {
 		t.Run(test.path, func(t *testing.T) {

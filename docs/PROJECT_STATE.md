@@ -1,6 +1,6 @@
 # 项目状态
 
-更新时间：2026-08-12 14:59:14（北京时间）
+更新时间：2026-08-12 15:52:16（北京时间）
 
 ## 基线与架构
 
@@ -99,7 +99,8 @@
 - publish 构建时将 locale 固定进 production binary；binary 从自身相邻的 `../_content` 定位内容，不依赖当前工作目录，不需要运行时 `--locale` 或 `--content`。bundle 不包含 candidate、status、translation-runs 等开发期数据。
 - 最终 release bundle 的验收结果为：`ready=103`、`pending=0`、`blocked=0`、`pages=103`、`articles=7`；103/103 课程页面、7/7 lesson JSON、103 个 Section、title/subtitle 和公共中文 UI 均通过验收。
 - 两次 publish 在相同源码、Go 工具链和 GOOS/GOARCH 下逐文件一致；185 个 bundle 文件 SHA-256 校验全部通过。真实 Run / Format、`/socket` 404、WebSocket `/socket` 404、`/_/share` 404 及未知 `/_/` 404 均已验证。
-- 当前正式上线状态：zh-CN 第一阶段已经正式上线。正式站点为 <https://go-dev.shuijingwanwq.com/>，release 为 `/data/go-tour/releases/20260811-zh-CN-925d59d`，项目 commit 为 `925d59d92016e026c92ae60f4535abd9237119ea`。生产链路为浏览器 → EdgeOne → Nginx → Go Tour → `https://go.dev/_`；`go-tour.service` 监听 `127.0.0.1:3999`。production binary 为 Linux amd64、`CGO_ENABLED=0`、静态链接，不依赖服务器 glibc 版本。
+- 当前正式上线状态：commit `acbf24a`（`feat: 完善站点首页与公共项目信息`）已正式部署生产。正式站点为 <https://go-dev.shuijingwanwq.com/>，current 指向 `/data/go-tour/releases/20260812-zh-CN-acbf24a`，production release 为 `/data/go-tour/releases/20260812-zh-CN-acbf24a`；发布时间为 `2026-08-12T07:23:34Z`（北京时间 `2026-08-12 15:23:34`）。zh-CN 状态为 `ready=103`、`pending=0`、`blocked=0`，`pages=103`、`articles=7`。新首页、Logo/favicon、公共 footer 和项目信息已进入生产；Nginx 源站与公网 HTTPS 对 `/`、`/tour/list`、`/tour/welcome/1` 和 `/images/site-logo-32.png` 的验收均通过。生产链路为浏览器 → EdgeOne → Nginx → Go Tour → `https://go.dev/_`；`go-tour.service` active，监听 `127.0.0.1:3999`。production binary 为 Linux amd64、`CGO_ENABLED=0`、静态链接，不依赖服务器 glibc 版本；`/socket` 未开放。
+- 旧 release `/data/go-tour/releases/20260811-zh-CN-925d59d` 继续保留用于回滚；临时 4005 smoke 实例已停止，服务器上传压缩包已清理。此次 smoke 中远程 Playground 曾返回上游 502，属于已知外部依赖波动，不视为本次发布失败。
 - 2026-08-12 已完成生产入口域名迁移：正式生产域名为 <https://go-dev.shuijingwanwq.com/>，A Tour of Go 继续使用 `/tour/` 路径。迁移原因是避免 `go-tour.../tour/...` 中 Tour 语义重复，并为未来可能扩展 go.dev 的其他翻译内容保留更宽泛的站点入口；此次仅迁移生产入口，不是应用重新部署，既有 release、commit、`go-tour.service`、`/data/go-tour/` 和生产链路均不变。
 - 旧域名 <https://go-tour.shuijingwanwq.com/> 继续保留 Cloudflare DNS 与 EdgeOne 接入，但仅作为 EdgeOne 永久 301 入口：`go-tour.shuijingwanwq.com/*` 重定向至 `go-dev.shuijingwanwq.com` 同路径并保留查询参数；不再回源。实测 `/tour/welcome/1` 返回 HTTP/2 301，Location 正确指向新域名。
 - 新域名已完成 Cloudflare CNAME → EdgeOne、HTTPS 证书、HTTPS 回源及回源 Host 切换；源站为 `121.40.248.29`，正式回源 Host 为 `go-dev.shuijingwanwq.com`。Nginx 使用 `/usr/local/nginx/conf/vhost/go-dev.shuijingwanwq.com.conf` 和对应新证书，反向代理仍为 `http://127.0.0.1:3999`；旧 go-tour 虚拟主机、证书及备份配置已从源站清理。
@@ -118,6 +119,7 @@
 - 首页以构建时选定的 UI locale 渲染项目介绍、当前翻译项目、项目状态、语言版本、项目链接及面向读者的翻译与校验说明；不实现运行时语言切换。
 - `internal/tour/project.go` 是稳定项目配置的单一来源，包含正式站点、官方 Tour、GitHub、Issues、开发记录、upstream、备案和版权主体 URL/标识。
 - publish 在 bundle 内 `_content/tour/site-metadata.json` 生成 locale、显式 production bundle 发布时间、upstream commit / UTC 时间、课程页数和 article 数；运行时首页读取该文件。发布时间由 `publish --published-at <RFC3339 UTC>` 显式提供，因此不是 Git commit、服务启动或请求时间。
+- production 发布时间只属于生成出的 release metadata：源码 `_content/tour/site-metadata.json` 是 `go run ./tour` 与 preview 使用的开发态 metadata，不保存或回写真实 production `published_at`，开发态首页显示“开发环境”；publish 仍在 bundle `_content/tour/site-metadata.json` 和根 `release.json` 写入同一真实发布时间，production 首页继续显示该发布时间。
 - 所有主模板页面都使用公共页脚：项目身份、首页、GitHub、开发记录、版权和 ICP 备案入口。页脚采用普通自然文档流，非 fixed、非 sticky：首页正常显示 footer；`/tour/list` 的 footer 位于课程列表自然末尾并横跨页面；`/tour/<page>` 的 footer 位于课程主体和翻页导航之后，并横跨整个 Tour 页面。footer 不属于左侧 `.slide-content`，不再存在 fixed footer 的永久底部预留、`--site-footer-height` 一类高度补偿或 JavaScript 滚动监听；课程内容超过一屏时，footer 会在自然页面滚动到末尾后出现。
 - 右侧 editor 的底部越界已修复：`#explorer + div` 原本同时使用 `top: 32px` 和 `height: 100%`，导致 wrapper 下移后仍保持完整高度并进入 footer 区域；现调整为 `top: 32px` 与 `height: calc(100% - 32px)`。人工验收确认 editor 在 footer 上方自然结束、footer 全宽完整显示且无遮挡，editor 内部纵向滚动正常。
 - 正式生产域名为 <https://go-dev.shuijingwanwq.com/>；公开页面不展示旧 go-tour 域名。博客 → go-dev / GitHub 的反向链接仍属于仓库外待办，需由博客侧另行维护。

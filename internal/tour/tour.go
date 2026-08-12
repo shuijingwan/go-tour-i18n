@@ -101,6 +101,7 @@ func initTour(mux *http.ServeMux, transport, locale string) error {
 type pageTemplateData struct {
 	HTMLLang            string
 	Metadata            SiteMetadata
+	Development         bool
 	PublishedAt         string
 	UpstreamCommitTime  string
 	ShortUpstreamCommit string
@@ -117,13 +118,18 @@ type pageTemplateData struct {
 }
 
 func newPageTemplateData(catalog ui.Catalog, metadata SiteMetadata) (pageTemplateData, error) {
-	publishedAt, err := metadata.PublishedAtBeijing()
-	if err != nil {
-		return pageTemplateData{}, err
+	publishedAt := ""
+	if !metadata.Development {
+		var err error
+		publishedAt, err = metadata.PublishedAtBeijing()
+		if err != nil {
+			return pageTemplateData{}, err
+		}
 	}
 	return pageTemplateData{
 		HTMLLang:            catalog.HTMLLang,
 		Metadata:            metadata,
+		Development:         metadata.Development,
 		PublishedAt:         publishedAt,
 		UpstreamCommitTime:  "2026-07-23 04:05:40（北京时间）",
 		ShortUpstreamCommit: metadata.UpstreamCommit[:8],

@@ -195,6 +195,9 @@ func verifyPublishedBundle(t *testing.T, root string) {
 	if metadata.Locale != manifest.Locale || metadata.PublishedAt != manifest.PublishedAt || metadata.UpstreamCommit != manifest.UpstreamCommit || metadata.UpstreamCommitTime != manifest.UpstreamCommitTime || metadata.Pages != manifest.Pages || metadata.Articles != manifest.Articles {
 		t.Fatalf("site metadata = %+v, want manifest values", metadata)
 	}
+	if metadata.Development || bytes.Contains(metadataData, []byte(`"development"`)) {
+		t.Fatalf("production site metadata unexpectedly contains development state: %s", metadataData)
+	}
 	forbidden := map[string]bool{"locales": true, "status.tsv": true, "candidate": true, "translation-runs": true, "attempt": true}
 	if err := filepath.WalkDir(root, func(path string, entry os.DirEntry, err error) error {
 		if err != nil {

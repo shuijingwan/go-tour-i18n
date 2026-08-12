@@ -106,6 +106,38 @@ func TestRenderIndexLocales(t *testing.T) {
 	}
 }
 
+func TestRenderHomeDistinguishesDevelopmentAndProductionMetadata(t *testing.T) {
+	catalog, err := ui.Load("zh-CN")
+	if err != nil {
+		t.Fatal(err)
+	}
+	development, err := loadSiteMetadata(contentTour)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !development.Development || development.PublishedAt != "" {
+		t.Fatalf("source metadata = %+v, want development metadata without published_at", development)
+	}
+	home, err := renderHome(catalog, development)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got := string(home); !strings.Contains(got, "开发环境") || strings.Contains(got, "最近发布") {
+		t.Fatalf("development homepage has unexpected release status: %s", got)
+	}
+
+	production := development
+	production.Development = false
+	production.PublishedAt = "2026-08-12T07:23:34Z"
+	home, err = renderHome(catalog, production)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got := string(home); !strings.Contains(got, "最近发布") || !strings.Contains(got, "2026-08-12 15:23:34 (北京时间)") || strings.Contains(got, "开发环境") {
+		t.Fatalf("production homepage has unexpected release status: %s", got)
+	}
+}
+
 func TestJSI18nBootstrapLocales(t *testing.T) {
 	tests := []struct {
 		locale string

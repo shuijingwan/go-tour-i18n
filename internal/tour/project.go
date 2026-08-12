@@ -37,9 +37,11 @@ const (
 	FrozenUpstreamCommitTime = "2026-07-22T20:05:40Z"
 )
 
-// SiteMetadata is generated for each production bundle and read from its
-// content tree at startup. Times use RFC 3339 UTC so output is deterministic.
+// SiteMetadata is read from the selected content tree at startup. Source-tree
+// metadata is explicitly development-only; publish writes production metadata
+// with a required RFC 3339 UTC publication time.
 type SiteMetadata struct {
+	Development        bool   `json:"development,omitempty"`
 	Locale             string `json:"locale"`
 	PublishedAt        string `json:"published_at"`
 	UpstreamCommit     string `json:"upstream_commit"`
@@ -49,6 +51,9 @@ type SiteMetadata struct {
 }
 
 func (m SiteMetadata) PublishedAtBeijing() (string, error) {
+	if m.Development {
+		return "", fmt.Errorf("development metadata has no published_at")
+	}
 	t, err := time.Parse(time.RFC3339, m.PublishedAt)
 	if err != nil {
 		return "", fmt.Errorf("parse published_at: %w", err)
@@ -72,7 +77,11 @@ func loadSiteMetadata(content fs.FS) (SiteMetadata, error) {
 	if metadata.Locale == "" || metadata.Pages < 1 || metadata.Articles < 1 || metadata.UpstreamCommit != FrozenUpstreamCommit || metadata.UpstreamCommitTime != FrozenUpstreamCommitTime {
 		return SiteMetadata{}, fmt.Errorf("invalid site metadata")
 	}
-	if _, err := time.Parse(time.RFC3339, metadata.PublishedAt); err != nil {
+	if metadata.Development {
+		if metadata.PublishedAt != "" {
+			return SiteMetadata{}, fmt.Errorf("development site metadata must not contain published_at")
+		}
+	} else if _, err := time.Parse(time.RFC3339, metadata.PublishedAt); err != nil {
 		return SiteMetadata{}, fmt.Errorf("invalid site metadata published_at: %w", err)
 	}
 	return metadata, nil
@@ -81,6 +90,9 @@ func loadSiteMetadata(content fs.FS) (SiteMetadata, error) {
 // WriteSiteMetadata writes the bundle-local metadata consumed by the public
 // homepage. The caller supplies values calculated by the publish projection.
 func WriteSiteMetadata(contentDir string, metadata SiteMetadata) error {
+	if metadata.Development {
+		return fmt.Errorf("production site metadata cannot be development metadata")
+	}
 	if _, err := metadata.PublishedAtBeijing(); err != nil {
 		return err
 	}

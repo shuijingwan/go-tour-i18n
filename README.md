@@ -151,9 +151,9 @@ go run -mod=readonly ./cmd/tour-i18n publish \
 └── SHA256SUMS
 ```
 
-`--published-at` 是当前 locale production bundle 的发布时间，必须使用 RFC 3339 UTC；它不是 Git commit、服务启动或请求时间。`bin/tour` 在构建时固定 locale，从 binary 自身相邻的 `../_content` 加载内容，不需要运行时 `--locale` 或 `--content`，也不依赖当前工作目录。`release.json`、bundle 内的站点 metadata 和 `SHA256SUMS` 由相同输入确定；相同源码、发布时间、Go 工具链及 GOOS/GOARCH 下的重复 publish 逐文件一致。bundle 不包含 candidate、status、translation-runs 等开发期数据。
+`--published-at` 是当前 locale production bundle 的发布时间，必须使用 RFC 3339 UTC；它不是 Git commit、服务启动或请求时间。源码 `_content/tour/site-metadata.json` 仅为 `go run ./tour` 和 preview 提供开发态 metadata，不保存生产发布时间；publish 会在 bundle 内生成真实的站点 metadata。`bin/tour` 在构建时固定 locale，从 binary 自身相邻的 `../_content` 加载内容，不需要运行时 `--locale` 或 `--content`，也不依赖当前工作目录。`release.json`、bundle 内的站点 metadata 和 `SHA256SUMS` 由相同输入确定；相同源码、发布时间、Go 工具链及 GOOS/GOARCH 下的重复 publish 逐文件一致。bundle 不包含 candidate、status、translation-runs 等开发期数据。
 
-当前正式 release 已部署：`/data/go-tour/releases/20260811-zh-CN-925d59d`。项目 commit 为 `925d59d92016e026c92ae60f4535abd9237119ea`。
+当前正式 release 已部署：`/data/go-tour/releases/20260812-zh-CN-acbf24a`。项目 commit 为 `acbf24a`。
 
 正式站点：<https://go-dev.shuijingwanwq.com/>。
 
@@ -183,8 +183,8 @@ go test -mod=readonly -count=1 ./...
 
 zh-CN 第一阶段已经正式上线：<https://go-dev.shuijingwanwq.com/>。
 
-- 正式 release：`/data/go-tour/releases/20260811-zh-CN-925d59d`。
-- 项目 commit：`925d59d92016e026c92ae60f4535abd9237119ea`。
+- 正式 release：`/data/go-tour/releases/20260812-zh-CN-acbf24a`。
+- 项目 commit：`acbf24a`。
 - production 执行链路：浏览器 → EdgeOne → Nginx → Go Tour → `https://go.dev/_`。
 - systemd 服务：`go-tour.service`，监听 `127.0.0.1:3999`。
 - `/tour/welcome/1`、真实 Run、真实 Format 均已通过公网验收；`/socket` 和 `/_/share` 均返回 404。

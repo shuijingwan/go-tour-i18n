@@ -35,7 +35,7 @@
             <dl class="site-status">
                 <dt>{{ui "site.current_language"}}</dt><dd>{{ui "site.simplified_chinese"}}</dd>
                 <dt>{{ui "site.course_pages"}}</dt><dd>{{.Metadata.Pages}}</dd>
-                <dt>{{ui "site.latest_release"}}</dt><dd>{{.PublishedAt}}</dd>
+                {{if .Development}}<dt>{{ui "site.environment"}}</dt><dd>{{ui "site.development_environment"}}</dd>{{else}}<dt>{{ui "site.latest_release"}}</dt><dd>{{.PublishedAt}}</dd>{{end}}
                 <dt>{{ui "site.upstream_baseline"}}</dt><dd><a href="{{.UpstreamCommitURL}}" target="_blank" rel="noopener noreferrer">golang/website@{{.ShortUpstreamCommit}}</a></dd>
                 <dt>{{ui "site.upstream_commit_time"}}</dt><dd>{{.UpstreamCommitTime}}</dd>
             </dl>
