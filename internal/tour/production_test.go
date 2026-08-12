@@ -50,12 +50,20 @@ func TestProductionHandlerUsesHTTPTransportAndServesTour(t *testing.T) {
 		wantStatus int
 		want       string
 	}{
-		{"/", http.StatusFound, ""},
+		{"/", http.StatusOK, "A Tour of Go 多语言翻译项目"},
 		{"/tour/", http.StatusOK, "Go 语言之旅"},
 		{"/tour/list", http.StatusOK, "Go 语言之旅"},
 		{"/tour/lesson/welcome", http.StatusOK, `"Title":"Welcome!"`},
 		{"/tour/static/css/app.css", http.StatusOK, "body"},
 		{"/images/go-logo-white.svg", http.StatusOK, "<svg"},
+	}
+
+	for _, want := range []string{"非官方社区多语言翻译项目", "GitHub 项目源码", "蜀ICP备13001590号-1", "2026-08-11 21:15:21 (北京时间)", "golang/website@e11dacba"} {
+		rec := httptest.NewRecorder()
+		handler.ServeHTTP(rec, httptest.NewRequest(http.MethodGet, "/", nil))
+		if !strings.Contains(rec.Body.String(), want) {
+			t.Errorf("homepage does not contain %q", want)
+		}
 	}
 	for _, test := range tests {
 		t.Run(test.path, func(t *testing.T) {

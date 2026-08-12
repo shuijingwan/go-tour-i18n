@@ -14,7 +14,7 @@ func TestLoadEmbeddedCatalogs(t *testing.T) {
 		if err != nil {
 			t.Fatalf("Load(%q): %v", locale, err)
 		}
-		if got, want := len(catalog.Messages), 33; got != want {
+		if got, want := len(catalog.Messages), 68; got != want {
 			t.Fatalf("Load(%q) message count = %d, want %d", locale, got, want)
 		}
 	}

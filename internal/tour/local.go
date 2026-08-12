@@ -94,10 +94,12 @@ func (l *logging) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	l.h.ServeHTTP(w, r)
 }
 
-// rootHandler returns a handler for all the requests except the ones for lessons.
+// rootHandler serves the project homepage at / and the Tour shell at /tour/.
 func rootHandler(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path == "/" {
-		http.Redirect(w, r, "/tour/", http.StatusFound)
+		if err := renderHomePage(w); err != nil {
+			log.Println(err)
+		}
 		return
 	}
 	if err := renderUI(w); err != nil {

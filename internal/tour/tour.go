@@ -26,6 +26,8 @@ import (
 
 var (
 	uiContent      []byte
+	homeContent    []byte
+	footerContent  []byte
 	lessons        = make(map[string][]byte)
 	lessonNotFound = fmt.Errorf("lesson not found")
 )
@@ -44,6 +46,8 @@ func useContent(content fs.FS) error {
 	}
 	contentTour = content
 	uiContent = nil
+	homeContent = nil
+	footerContent = nil
 	lessons = make(map[string][]byte)
 	return nil
 }
@@ -69,30 +73,121 @@ func initTour(mux *http.ServeMux, transport, locale string) error {
 	if err != nil {
 		return fmt.Errorf("load UI catalog %q: %w", locale, err)
 	}
-	uiContent, err = renderIndex(catalog)
+	metadata, err := loadSiteMetadata(contentTour)
+	if err != nil {
+		return err
+	}
+	uiContent, err = renderIndex(catalog, metadata)
+	if err != nil {
+		return err
+	}
+	homeContent, err = renderHome(catalog, metadata)
+	if err != nil {
+		return err
+	}
+	footerContent, err = renderFooter(catalog, metadata)
 	if err != nil {
 		return err
 	}
 
 	mux.HandleFunc("/tour/", rootHandler)
 	mux.HandleFunc("/tour/lesson/", lessonHandler)
+	mux.HandleFunc("/tour/footer.html", footerHandler)
 	mux.Handle("/tour/static/", http.FileServer(http.FS(contentTour)))
 
 	return initScript(mux, socketAddr(), transport, catalog)
 }
 
-func renderIndex(catalog ui.Catalog) ([]byte, error) {
+type pageTemplateData struct {
+	HTMLLang            string
+	Metadata            SiteMetadata
+	PublishedAt         string
+	UpstreamCommitTime  string
+	ShortUpstreamCommit string
+	UpstreamCommitURL   string
+	SiteURL             string
+	OfficialTourURL     string
+	GitHubURL           string
+	GitHubIssuesURL     string
+	DevelopmentLogURL   string
+	UpstreamURL         string
+	ICPURL              string
+	ICPNumber           string
+	CopyrightHolder     string
+}
+
+func newPageTemplateData(catalog ui.Catalog, metadata SiteMetadata) (pageTemplateData, error) {
+	publishedAt, err := metadata.PublishedAtBeijing()
+	if err != nil {
+		return pageTemplateData{}, err
+	}
+	return pageTemplateData{
+		HTMLLang:            catalog.HTMLLang,
+		Metadata:            metadata,
+		PublishedAt:         publishedAt,
+		UpstreamCommitTime:  "2026-07-23 04:05:40（北京时间）",
+		ShortUpstreamCommit: metadata.UpstreamCommit[:8],
+		UpstreamCommitURL:   Project.UpstreamURL + "/commit/" + metadata.UpstreamCommit,
+		SiteURL:             Project.SiteURL,
+		OfficialTourURL:     Project.OfficialTourURL,
+		GitHubURL:           Project.GitHubURL,
+		GitHubIssuesURL:     Project.GitHubIssuesURL,
+		DevelopmentLogURL:   Project.DevelopmentLogURL,
+		UpstreamURL:         Project.UpstreamURL,
+		ICPURL:              Project.ICPURL,
+		ICPNumber:           Project.ICPNumber,
+		CopyrightHolder:     Project.CopyrightHolder,
+	}, nil
+}
+
+func renderIndex(catalog ui.Catalog, metadata SiteMetadata) ([]byte, error) {
 	tmpl, err := template.New("index.tmpl").Funcs(template.FuncMap{"ui": catalog.Plain}).ParseFS(contentTour, "tour/template/index.tmpl")
 	if err != nil {
 		return nil, fmt.Errorf("parse index.tmpl: %w", err)
 	}
 	buf := new(bytes.Buffer)
-	data := struct {
+	data, err := newPageTemplateData(catalog, metadata)
+	if err != nil {
+		return nil, err
+	}
+	dataWithAnalytics := struct {
+		pageTemplateData
 		AnalyticsHTML template.HTML
-		HTMLLang      string
-	}{analyticsHTML, catalog.HTMLLang}
-	if err := tmpl.Execute(buf, data); err != nil {
+	}{data, analyticsHTML}
+	if err := tmpl.Execute(buf, dataWithAnalytics); err != nil {
 		return nil, fmt.Errorf("render index.tmpl: %w", err)
+	}
+	return buf.Bytes(), nil
+}
+
+func renderHome(catalog ui.Catalog, metadata SiteMetadata) ([]byte, error) {
+	tmpl, err := template.New("home.tmpl").Funcs(template.FuncMap{"ui": catalog.Plain}).ParseFS(contentTour, "tour/template/index.tmpl", "tour/template/home.tmpl")
+	if err != nil {
+		return nil, fmt.Errorf("parse home.tmpl: %w", err)
+	}
+	data, err := newPageTemplateData(catalog, metadata)
+	if err != nil {
+		return nil, err
+	}
+	buf := new(bytes.Buffer)
+	if err := tmpl.ExecuteTemplate(buf, "home.tmpl", data); err != nil {
+		return nil, fmt.Errorf("render home.tmpl: %w", err)
+	}
+	return buf.Bytes(), nil
+}
+
+func renderFooter(catalog ui.Catalog, metadata SiteMetadata) ([]byte, error) {
+	tmpl, err := template.New("index.tmpl").Funcs(template.FuncMap{"ui": catalog.Plain}).ParseFS(contentTour, "tour/template/index.tmpl")
+	if err != nil {
+		return nil, fmt.Errorf("parse index.tmpl: %w", err)
+	}
+	data, err := newPageTemplateData(catalog, metadata)
+	if err != nil {
+		return nil, err
+	}
+	buf := new(bytes.Buffer)
+	if err := tmpl.ExecuteTemplate(buf, "footer", data); err != nil {
+		return nil, fmt.Errorf("render footer: %w", err)
 	}
 	return buf.Bytes(), nil
 }
@@ -249,6 +344,22 @@ func renderUI(w io.Writer) error {
 	}
 	_, err := w.Write(uiContent)
 	return err
+}
+
+func renderHomePage(w io.Writer) error {
+	if homeContent == nil {
+		panic("renderHomePage called before successful initTour")
+	}
+	_, err := w.Write(homeContent)
+	return err
+}
+
+func footerHandler(w http.ResponseWriter, r *http.Request) {
+	if footerContent == nil {
+		panic("footerHandler called before successful initTour")
+	}
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	_, _ = w.Write(footerContent)
 }
 
 // initScript concatenates all the javascript files needed to render

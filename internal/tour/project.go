@@ -1,0 +1,99 @@
+// Copyright 2026 The go-tour-i18n Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
+package tour
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"io"
+	"io/fs"
+	"os"
+	"path/filepath"
+	"time"
+)
+
+// Project holds stable public project configuration. URLs and ownership data
+// live here so templates and release generation do not duplicate them.
+var Project = struct {
+	SiteURL, OfficialTourURL, GitHubURL, GitHubIssuesURL, DevelopmentLogURL string
+	UpstreamURL, ICPURL, ICPNumber, CopyrightHolder                         string
+}{
+	SiteURL:           "https://go-dev.shuijingwanwq.com/",
+	OfficialTourURL:   "https://go.dev/tour/",
+	GitHubURL:         "https://github.com/shuijingwan/go-tour-i18n",
+	GitHubIssuesURL:   "https://github.com/shuijingwan/go-tour-i18n/issues",
+	DevelopmentLogURL: "https://www.shuijingwanwq.com/series/go-tour-chinese-edition-development-series/",
+	UpstreamURL:       "https://github.com/golang/website",
+	ICPURL:            "https://beian.miit.gov.cn/",
+	ICPNumber:         "蜀ICP备13001590号-1",
+	CopyrightHolder:   "永夜",
+}
+
+const (
+	FrozenUpstreamCommit     = "e11dacba76c5aae474746e9eedee19693f492803"
+	FrozenUpstreamCommitTime = "2026-07-22T20:05:40Z"
+)
+
+// SiteMetadata is generated for each production bundle and read from its
+// content tree at startup. Times use RFC 3339 UTC so output is deterministic.
+type SiteMetadata struct {
+	Locale             string `json:"locale"`
+	PublishedAt        string `json:"published_at"`
+	UpstreamCommit     string `json:"upstream_commit"`
+	UpstreamCommitTime string `json:"upstream_commit_time"`
+	Pages              int    `json:"pages"`
+	Articles           int    `json:"articles"`
+}
+
+func (m SiteMetadata) PublishedAtBeijing() (string, error) {
+	t, err := time.Parse(time.RFC3339, m.PublishedAt)
+	if err != nil {
+		return "", fmt.Errorf("parse published_at: %w", err)
+	}
+	return t.In(time.FixedZone("CST", 8*60*60)).Format("2006-01-02 15:04:05 (北京时间)"), nil
+}
+
+func loadSiteMetadata(content fs.FS) (SiteMetadata, error) {
+	data, err := fs.ReadFile(content, "tour/site-metadata.json")
+	if err != nil {
+		return SiteMetadata{}, fmt.Errorf("read site metadata: %w", err)
+	}
+	var metadata SiteMetadata
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	if err := decoder.Decode(&metadata); err != nil {
+		return SiteMetadata{}, fmt.Errorf("parse site metadata: %w", err)
+	}
+	if err := decoder.Decode(&struct{}{}); err != io.EOF {
+		return SiteMetadata{}, fmt.Errorf("parse site metadata: multiple JSON values")
+	}
+	if metadata.Locale == "" || metadata.Pages < 1 || metadata.Articles < 1 || metadata.UpstreamCommit != FrozenUpstreamCommit || metadata.UpstreamCommitTime != FrozenUpstreamCommitTime {
+		return SiteMetadata{}, fmt.Errorf("invalid site metadata")
+	}
+	if _, err := time.Parse(time.RFC3339, metadata.PublishedAt); err != nil {
+		return SiteMetadata{}, fmt.Errorf("invalid site metadata published_at: %w", err)
+	}
+	return metadata, nil
+}
+
+// WriteSiteMetadata writes the bundle-local metadata consumed by the public
+// homepage. The caller supplies values calculated by the publish projection.
+func WriteSiteMetadata(contentDir string, metadata SiteMetadata) error {
+	if _, err := metadata.PublishedAtBeijing(); err != nil {
+		return err
+	}
+	if metadata.Locale == "" || metadata.Pages < 1 || metadata.Articles < 1 || metadata.UpstreamCommit != FrozenUpstreamCommit || metadata.UpstreamCommitTime != FrozenUpstreamCommitTime {
+		return fmt.Errorf("invalid site metadata")
+	}
+	data, err := json.MarshalIndent(metadata, "", "  ")
+	if err != nil {
+		return fmt.Errorf("encode site metadata: %w", err)
+	}
+	data = append(data, '\n')
+	if err := os.WriteFile(filepath.Join(contentDir, "tour", "site-metadata.json"), data, 0644); err != nil {
+		return fmt.Errorf("write site metadata: %w", err)
+	}
+	return nil
+}

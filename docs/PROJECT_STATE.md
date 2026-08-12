@@ -1,6 +1,6 @@
 # 项目状态
 
-更新时间：2026-08-11
+更新时间：2026-08-12 14:59:14（北京时间）
 
 ## 基线与架构
 
@@ -111,3 +111,13 @@
 ## 第一阶段上线冻结
 
 - Section：103/103 ready；article metadata：7/7；公共 UI：已完成；production publish：已实现并正式部署；浏览器最终验收：通过。
+
+## 站点首页、公共页脚与项目互链
+
+- 根路径 `/` 已从课程自动跳转改为 locale 化的项目首页；`/tour/` 继续承载 A Tour of Go，当前没有 `/about` 页面。
+- 首页以构建时选定的 UI locale 渲染项目介绍、当前翻译项目、项目状态、语言版本、项目链接及面向读者的翻译与校验说明；不实现运行时语言切换。
+- `internal/tour/project.go` 是稳定项目配置的单一来源，包含正式站点、官方 Tour、GitHub、Issues、开发记录、upstream、备案和版权主体 URL/标识。
+- publish 在 bundle 内 `_content/tour/site-metadata.json` 生成 locale、显式 production bundle 发布时间、upstream commit / UTC 时间、课程页数和 article 数；运行时首页读取该文件。发布时间由 `publish --published-at <RFC3339 UTC>` 显式提供，因此不是 Git commit、服务启动或请求时间。
+- 所有主模板页面都使用公共页脚：项目身份、首页、GitHub、开发记录、版权和 ICP 备案入口。页脚采用普通自然文档流，非 fixed、非 sticky：首页正常显示 footer；`/tour/list` 的 footer 位于课程列表自然末尾并横跨页面；`/tour/<page>` 的 footer 位于课程主体和翻页导航之后，并横跨整个 Tour 页面。footer 不属于左侧 `.slide-content`，不再存在 fixed footer 的永久底部预留、`--site-footer-height` 一类高度补偿或 JavaScript 滚动监听；课程内容超过一屏时，footer 会在自然页面滚动到末尾后出现。
+- 右侧 editor 的底部越界已修复：`#explorer + div` 原本同时使用 `top: 32px` 和 `height: 100%`，导致 wrapper 下移后仍保持完整高度并进入 footer 区域；现调整为 `top: 32px` 与 `height: calc(100% - 32px)`。人工验收确认 editor 在 footer 上方自然结束、footer 全宽完整显示且无遮挡，editor 内部纵向滚动正常。
+- 正式生产域名为 <https://go-dev.shuijingwanwq.com/>；公开页面不展示旧 go-tour 域名。博客 → go-dev / GitHub 的反向链接仍属于仓库外待办，需由博客侧另行维护。

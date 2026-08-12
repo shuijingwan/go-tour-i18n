@@ -1,8 +1,15 @@
 GET https://any/
-redirect == /tour/
+body contains >A Tour of Go Multilingual Translation Project<
+body contains /tour/welcome/1
+body contains Unofficial community multilingual translation project
+body contains 蜀ICP备13001590号-1
 
 GET https://any/tour/
 body contains >A Tour of Go<
+
+GET https://any/tour/footer.html
+body contains Unofficial community multilingual translation project
+body contains 蜀ICP备13001590号-1
 
 GET https://any/tour/lesson/
 body contains "welcome"

@@ -20,6 +20,8 @@ func TourOnly() fs.FS {
 //
 //go:embed _content/favicon.ico
 //go:embed _content/images/go-logo-white.svg
+//go:embed _content/images/site-logo.png
+//go:embed _content/images/site-logo-32.png
 //go:embed _content/images/icons
 //go:embed _content/images/favicon-gopher.png
 //go:embed _content/images/favicon-gopher-plain.png

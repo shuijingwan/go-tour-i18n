@@ -14,7 +14,10 @@ import (
 	"testing"
 
 	"github.com/shuijingwan/go-tour-i18n/internal/i18n"
+	"github.com/shuijingwan/go-tour-i18n/internal/tour"
 )
+
+const testPublishedAt = "2026-08-12T00:00:00Z"
 
 func TestPublishCLIRequiresLocaleAndOutput(t *testing.T) {
 	if _, err := parsePublishOptions([]string{"--output", "bundle"}); err == nil || !strings.Contains(err.Error(), "--locale is required") {
@@ -22,6 +25,12 @@ func TestPublishCLIRequiresLocaleAndOutput(t *testing.T) {
 	}
 	if _, err := parsePublishOptions([]string{"--locale", "zh-CN"}); err == nil || !strings.Contains(err.Error(), "--output is required") {
 		t.Fatalf("missing output error = %v", err)
+	}
+	if _, err := parsePublishOptions([]string{"--locale", "zh-CN", "--output", "bundle"}); err == nil || !strings.Contains(err.Error(), "--published-at is required") {
+		t.Fatalf("missing published-at error = %v", err)
+	}
+	if _, err := parsePublishOptions([]string{"--locale", "zh-CN", "--output", "bundle", "--published-at", "2026-08-12T00:00:00+08:00"}); err == nil || !strings.Contains(err.Error(), "RFC 3339 UTC") {
+		t.Fatalf("non-UTC published-at error = %v", err)
 	}
 	if err := run([]string{"publish", "--output", "bundle"}); err == nil || !strings.Contains(err.Error(), "--locale is required") {
 		t.Fatalf("CLI missing locale error = %v", err)
@@ -64,7 +73,7 @@ func TestPublishRejectsExistingOutputWithoutChangingIt(t *testing.T) {
 	if err := os.WriteFile(marker, []byte("keep"), 0644); err != nil {
 		t.Fatal(err)
 	}
-	err := publishBundle(root, catalog, publishOptions{Locale: "zh-CN", Output: output})
+	err := publishBundle(root, catalog, publishOptions{Locale: "zh-CN", Output: output, PublishedAt: testPublishedAt})
 	if err == nil || !strings.Contains(err.Error(), "already exists") {
 		t.Fatalf("existing output error = %v", err)
 	}
@@ -79,10 +88,10 @@ func TestPublishBundleStructureIntegrityAndRepeatability(t *testing.T) {
 	parent := t.TempDir()
 	first := filepath.Join(parent, "release-a")
 	second := filepath.Join(parent, "release-b")
-	if err := publishBundle(root, catalog, publishOptions{Locale: "zh-CN", Output: first}); err != nil {
+	if err := publishBundle(root, catalog, publishOptions{Locale: "zh-CN", Output: first, PublishedAt: testPublishedAt}); err != nil {
 		t.Fatal(err)
 	}
-	if err := publishBundle(root, catalog, publishOptions{Locale: "zh-CN", Output: second}); err != nil {
+	if err := publishBundle(root, catalog, publishOptions{Locale: "zh-CN", Output: second, PublishedAt: testPublishedAt}); err != nil {
 		t.Fatal(err)
 	}
 	verifyPublishedBundle(t, first)
@@ -120,7 +129,7 @@ func TestPublishFailureCleansStaging(t *testing.T) {
 	original := buildProductionBinary
 	buildProductionBinary = func(string, string, string) error { return errors.New("injected binary build failure") }
 	t.Cleanup(func() { buildProductionBinary = original })
-	if err := publishBundle(root, catalog, publishOptions{Locale: "zh-CN", Output: output}); err == nil || !strings.Contains(err.Error(), "injected binary build failure") {
+	if err := publishBundle(root, catalog, publishOptions{Locale: "zh-CN", Output: output, PublishedAt: testPublishedAt}); err == nil || !strings.Contains(err.Error(), "injected binary build failure") {
 		t.Fatalf("publish failure = %v", err)
 	}
 	if _, err := os.Lstat(output); !os.IsNotExist(err) {
@@ -172,8 +181,19 @@ func verifyPublishedBundle(t *testing.T, root string) {
 	if err := json.Unmarshal(manifestData, &manifest); err != nil {
 		t.Fatal(err)
 	}
-	if manifest.Locale != "zh-CN" || manifest.UpstreamCommit != frozenUpstreamCommit || manifest.Pages != 103 || manifest.Articles != 7 || manifest.ExecutionTransport != "http-playground-proxy" || manifest.ExecutionProvider != "go.dev" || manifest.LocalSocketEnabled {
+	if manifest.Locale != "zh-CN" || manifest.PublishedAt != testPublishedAt || manifest.UpstreamCommit != tour.FrozenUpstreamCommit || manifest.UpstreamCommitTime != tour.FrozenUpstreamCommitTime || manifest.Pages != 103 || manifest.Articles != 7 || manifest.ExecutionTransport != "http-playground-proxy" || manifest.ExecutionProvider != "go.dev" || manifest.LocalSocketEnabled {
 		t.Fatalf("unexpected release manifest: %+v", manifest)
+	}
+	metadataData, err := os.ReadFile(filepath.Join(root, "_content", "tour", "site-metadata.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	var metadata tour.SiteMetadata
+	if err := json.Unmarshal(metadataData, &metadata); err != nil {
+		t.Fatal(err)
+	}
+	if metadata.Locale != manifest.Locale || metadata.PublishedAt != manifest.PublishedAt || metadata.UpstreamCommit != manifest.UpstreamCommit || metadata.UpstreamCommitTime != manifest.UpstreamCommitTime || metadata.Pages != manifest.Pages || metadata.Articles != manifest.Articles {
+		t.Fatalf("site metadata = %+v, want manifest values", metadata)
 	}
 	forbidden := map[string]bool{"locales": true, "status.tsv": true, "candidate": true, "translation-runs": true, "attempt": true}
 	if err := filepath.WalkDir(root, func(path string, entry os.DirEntry, err error) error {

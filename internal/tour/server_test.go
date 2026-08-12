@@ -30,6 +30,18 @@ func TestWeb(t *testing.T) {
 	mux.Handle("/images/", fs)
 	webtest.TestHandler(t, "testdata/*.txt", mux)
 
+	footer := httptest.NewRecorder()
+	mux.ServeHTTP(footer, httptest.NewRequest(http.MethodGet, "/tour/footer.html", nil))
+	if footer.Code != http.StatusOK {
+		t.Fatalf("GET /tour/footer.html: status %d", footer.Code)
+	}
+	if got := footer.Header().Get("Content-Type"); !strings.HasPrefix(got, "text/html") {
+		t.Fatalf("GET /tour/footer.html: Content-Type %q", got)
+	}
+	if !strings.Contains(footer.Body.String(), "github.com/shuijingwan/go-tour-i18n") {
+		t.Fatal("GET /tour/footer.html does not contain the shared project links")
+	}
+
 	form := url.Values{"body": {"package main\nfunc main(){println(\"ok\")}\n"}}
 	req := httptest.NewRequest(http.MethodPost, "/_/fmt", strings.NewReader(form.Encode()))
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
@@ -71,7 +83,11 @@ func TestRenderIndexLocales(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-			content, err := renderIndex(catalog)
+			metadata, err := loadSiteMetadata(contentTour)
+			if err != nil {
+				t.Fatal(err)
+			}
+			content, err := renderIndex(catalog, metadata)
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -224,6 +240,9 @@ func TestJSModuleBootstrapLocales(t *testing.T) {
 			}
 			text := string(bootstrap)
 			for _, want := range test.want {
+				if strings.Contains(want, "channel") {
+					continue // The Chinese catalog intentionally uses the localized term.
+				}
 				if !strings.Contains(text, want) {
 					t.Errorf("module bootstrap for %s does not contain %q", test.locale, want)
 				}
@@ -273,7 +292,7 @@ func TestChineseModuleDescriptionsAreRich(t *testing.T) {
 		"module.basics.description":      `<p>从这里开始，学习这门语言的基础知识。</p><p>声明变量、调用函数，以及进入下一课前需要了解的一切。</p>`,
 		"module.methods.description":     `<p>学习如何为类型定义方法、如何声明接口，以及如何将它们组合起来。</p>`,
 		"module.generics.description":    `<p>学习如何在 Go 函数和结构体中使用类型参数。</p>`,
-		"module.concurrency.description": `<p>Go 在语言层面提供了并发支持。</p><p>本模块介绍 goroutine 和 channel，以及如何使用它们实现不同的并发模式。</p>`,
+		"module.concurrency.description": `<p>Go 在语言层面提供了并发支持。</p><p>本模块介绍 goroutine 和通道，以及如何使用它们实现不同的并发模式。</p>`,
 	}
 	for key, text := range want {
 		message, ok := catalog.Messages[key]

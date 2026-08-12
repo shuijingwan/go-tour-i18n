@@ -400,21 +400,24 @@ a#run, a#kill {
 
 @media (min-width: 601px) {
     #editor-container {
-        position: fixed;
-        top: 48px;
+        position: relative;
         left: 0px;
         right: 0px;
-        bottom: 0px;
-        overflow: hidden;
+        min-height: calc(100vh - 48px);
+        overflow: visible;
         background: #fff;
     }
     #left-side {
-        position: absolute;
-        top: 0;
-        bottom: 0;
+        position: relative;
         left: 0;
         width: 50%;
-        overflow: hidden;
+        min-height: calc(100vh - 48px);
+        overflow: visible;
+    }
+    #left-side > .relative-content {
+        height: auto;
+        min-height: calc(100vh - 48px);
+        scroll-margin-top: 48px;
     }
     .output {
         background-image: url(/tour/static/img/gopher.png);
@@ -428,7 +431,7 @@ a#run, a#kill {
     div[vertical-slide] {
         position: absolute;
         top: 0px;
-        bottom: 0px;
+        bottom: 0;
         width: 5px;
         background: #e0ebf5;
         left: 50%;
@@ -451,18 +454,11 @@ a#run, a#kill {
         background: #202224;
     }
     .slide-content {
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 0;
-        bottom: 30px;
-        overflow: auto;
+        position: relative;
+        overflow: visible;
     }
     .module-bar {
-        position: absolute;
-        left: 0;
-        right: 0;
-        bottom: 0;
+        position: relative;
         padding: 4px 0;
         margin: 0;
     }
@@ -511,6 +507,7 @@ a#run, a#kill {
     }
     #explorer + div {
         top: 32px;
+        height: calc(100% - 32px);
     }
     #file-menu {
         position: absolute;
@@ -552,15 +549,11 @@ a#run, a#kill {
         overflow: auto;
     }
     #editor-container {
-        padding-bottom: 40px;
+        padding-bottom: 0;
     }
     .module-bar {
-        position: fixed;
+        position: relative;
         background: #e0ebf5;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        z-index: 10;
         height: 42px;
         padding: 0;
         overflow: hidden;
@@ -597,6 +590,163 @@ a#run, a#kill {
     -webkit-user-select: none;
     -ms-user-select: none;
     user-select: none;
+}
+
+/* Project homepage and shared footer. Tour pages include this in their own
+   scrollable content so it follows the natural end of each page. */
+.site-footer {
+    box-sizing: border-box;
+    padding: 8px 24px;
+    color: #dceff3;
+    background: #005f77;
+    font-size: 13px;
+    line-height: 22px;
+    text-align: center;
+}
+.site-footer a {
+    color: #fff;
+}
+.site-home {
+    background: #f5f7f8;
+}
+[data-theme='dark'] .site-home {
+    background: #171717;
+}
+.site-header {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    overflow: visible;
+    text-align: left;
+}
+.site-header .gopherlogo {
+    vertical-align: middle;
+}
+.site-header .site-logo {
+    display: block;
+    width: 2rem;
+    height: 2rem;
+    margin-right: 2.25rem;
+    object-fit: contain;
+}
+.site-header > a:first-child {
+    flex: 0 0 auto;
+}
+.site-header .logo {
+    display: block;
+    min-width: 0;
+    flex: 1 1 auto;
+    white-space: nowrap;
+    overflow: visible;
+}
+.site-main {
+    box-sizing: border-box;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 40px 24px;
+}
+.site-hero, .site-section {
+    margin-bottom: 32px;
+}
+.site-section {
+    margin-bottom: 40px;
+}
+.site-section > h2 {
+    margin-bottom: 18px;
+}
+.site-hero {
+    padding: 36px;
+    border-radius: 8px;
+    color: #fff;
+    background: #007d9c;
+}
+.site-hero h1 {
+    color: #fff;
+    font-size: 2em;
+}
+.site-hero p {
+    max-width: 760px;
+    color: #fff;
+}
+.site-eyebrow {
+    margin-top: 0;
+    font-size: 0.9em;
+    font-weight: bold;
+}
+.site-primary-link {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 10px 18px;
+    border-radius: 4px;
+    color: #075b70;
+    font-weight: bold;
+    background: #fff;
+}
+.site-card-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+.site-card {
+    box-sizing: border-box;
+    padding: 20px;
+    border: 1px solid #d7e1e5;
+    border-radius: 6px;
+    background: #fff;
+}
+.site-card h3 {
+    margin-bottom: 8px;
+}
+.site-status {
+    display: grid;
+    grid-template-columns: minmax(160px, 1fr) 2fr;
+    margin: 0;
+}
+.site-status dt, .site-status dd {
+    margin: 0;
+    padding: 10px 12px;
+    border-bottom: 1px solid #d7e1e5;
+}
+.site-status dt {
+    font-weight: bold;
+}
+.site-links, .site-validation-list {
+    padding-left: 20px;
+    list-style: disc;
+}
+.site-links li, .site-validation-list li {
+    margin: 8px 0;
+}
+[data-theme='dark'] .site-card {
+    border-color: #3d4a4f;
+    background: #202224;
+}
+[data-theme='dark'] .site-status dt, [data-theme='dark'] .site-status dd {
+    border-color: #3d4a4f;
+    color: #f0f1f2;
+}
+@media (max-width: 600px) {
+    .site-main {
+        padding: 24px 16px;
+    }
+    .site-header .logo {
+        font-size: 1em;
+        white-space: normal;
+        line-height: 20px;
+    }
+    .site-hero {
+        padding: 24px;
+    }
+    .site-card-grid {
+        grid-template-columns: 1fr;
+    }
+    .site-status {
+        grid-template-columns: 1fr;
+    }
+    .site-status dt {
+        padding-bottom: 0;
+        border-bottom: 0;
+    }
 }
 [data-theme='dark'] .toc {
     background: #171717;

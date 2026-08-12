@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="{{.HTMLLang}}" data-theme="auto">
+<head>
+    <meta charset="utf-8">
+    <title>{{ui "site.title"}}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/tour/static/css/app.css">
+    <link rel="icon" href="/images/site-logo-32.png" type="image/png" sizes="32x32">
+    <link rel="icon" href="/images/site-logo.png" type="image/png" sizes="512x512">
+</head>
+<body class="site-home">
+    <header class="bar top-bar site-header">
+        <a href="/"><img src="/images/site-logo.png" class="site-logo" alt=""></a>
+        <a class="logo" href="/">{{ui "site.title"}}</a>
+    </header>
+    <main class="site-main">
+        <section class="site-hero">
+            <p class="site-eyebrow">{{ui "site.unofficial"}}</p>
+            <h1>{{ui "site.title"}}</h1>
+            <p>{{ui "site.intro"}}</p>
+            <p>{{ui "site.no_affiliation"}}</p>
+            <a class="site-primary-link" href="/tour/welcome/1">{{ui "site.start_learning"}}</a>
+        </section>
+        <section class="site-section">
+            <h2>{{ui "site.current_projects"}}</h2>
+            <article class="site-card">
+                <h3>A Tour of Go</h3>
+                <p>{{ui "site.tour_description"}}</p>
+                <p><strong>{{ui "site.current_language"}}：</strong>{{ui "site.simplified_chinese"}}</p>
+                <a href="/tour/welcome/1">{{ui "site.enter_tour"}}</a>
+            </article>
+        </section>
+        <section class="site-section">
+            <h2>{{ui "site.project_status"}}</h2>
+            <dl class="site-status">
+                <dt>{{ui "site.current_language"}}</dt><dd>{{ui "site.simplified_chinese"}}</dd>
+                <dt>{{ui "site.course_pages"}}</dt><dd>{{.Metadata.Pages}}</dd>
+                <dt>{{ui "site.latest_release"}}</dt><dd>{{.PublishedAt}}</dd>
+                <dt>{{ui "site.upstream_baseline"}}</dt><dd><a href="{{.UpstreamCommitURL}}" target="_blank" rel="noopener noreferrer">golang/website@{{.ShortUpstreamCommit}}</a></dd>
+                <dt>{{ui "site.upstream_commit_time"}}</dt><dd>{{.UpstreamCommitTime}}</dd>
+            </dl>
+        </section>
+        <section class="site-section">
+            <h2>{{ui "site.language_versions"}}</h2>
+            <div class="site-card-grid">
+                <article class="site-card"><h3>English</h3><p>{{ui "site.official_version"}}</p><a href="{{.OfficialTourURL}}" target="_blank" rel="noopener noreferrer">{{ui "site.open_official_tour"}}</a></article>
+                <article class="site-card"><h3>{{ui "site.simplified_chinese"}}</h3><p>{{ui "site.community_version"}}</p><a href="/tour/welcome/1">{{ui "site.enter_tour"}}</a></article>
+            </div>
+        </section>
+        <section class="site-section">
+            <h2>{{ui "site.project_links"}}</h2>
+            <ul class="site-links">
+                <li><a href="{{.GitHubURL}}" target="_blank" rel="noopener noreferrer">{{ui "site.source_code"}}</a></li>
+                <li><a href="{{.GitHubIssuesURL}}" target="_blank" rel="noopener noreferrer">{{ui "site.issue_feedback"}}</a></li>
+                <li><a href="{{.DevelopmentLogURL}}" target="_blank" rel="noopener noreferrer">{{ui "site.development_log"}}</a></li>
+                <li><a href="{{.UpstreamURL}}" target="_blank" rel="noopener noreferrer">{{ui "site.official_upstream"}}</a></li>
+            </ul>
+        </section>
+        <section class="site-section">
+            <h2>{{ui "site.translation_validation"}}</h2>
+            <p>{{ui "site.translation_validation_intro"}}</p>
+            <ul class="site-validation-list">
+                <li>{{ui "site.validation_page_unit"}}</li><li>{{ui "site.validation_present"}}</li><li>{{ui "site.validation_structure"}}</li><li>{{ui "site.validation_render"}}</li><li>{{ui "site.validation_examples"}}</li>
+            </ul>
+        </section>
+    </main>
+    {{template "footer" .}}
+</body>
+</html>

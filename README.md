@@ -4,6 +4,15 @@
 
 本项目是社区维护的非官方项目，不由 Google、Go 团队或 go.dev 官方维护，也不表示与官方项目存在隶属、认可或背书关系。原始 A Tour of Go 内容和源码来自 Go 官方上游仓库。
 
+## 在线入口
+
+- 在线体验：[A Tour of Go 简体中文](https://go-dev.shuijingwanwq.com/)
+- 官方英文版：[A Tour of Go](https://go.dev/tour/)
+- 开发记录：[《A Tour of Go 多语言翻译项目》](https://www.shuijingwanwq.com/series/go-tour-chinese-edition-development-series/)
+- 问题反馈：[GitHub Issues](https://github.com/shuijingwan/go-tour-i18n/issues)
+
+正式站点为 <https://go-dev.shuijingwanwq.com/>：根路径 `/` 是项目首页，课程位于 `/tour/`。博客页面回链至正式站点和 GitHub 仍由仓库外的博客维护工作完成。
+
 ## 当前阶段
 
 - 已从固定官方上游导入可独立运行、测试、解析和渲染的英文 Tour 基线。
@@ -127,6 +136,7 @@ production runtime 已完成并正式部署。它使用 `HTTPTransport`，将 `/
 ```bash
 go run -mod=readonly ./cmd/tour-i18n publish \
   --locale zh-CN \
+  --published-at 2026-08-12T00:00:00Z \
   --output <directory>
 ```
 
@@ -141,7 +151,7 @@ go run -mod=readonly ./cmd/tour-i18n publish \
 └── SHA256SUMS
 ```
 
-`bin/tour` 在构建时固定 locale，从 binary 自身相邻的 `../_content` 加载内容，不需要运行时 `--locale` 或 `--content`，也不依赖当前工作目录。`release.json` 和 `SHA256SUMS` 是确定性的；相同源码、Go 工具链及 GOOS/GOARCH 下的重复 publish 已逐文件一致，185 个 bundle 文件的 SHA-256 均已验收通过。bundle 不包含 candidate、status、translation-runs 等开发期数据。
+`--published-at` 是当前 locale production bundle 的发布时间，必须使用 RFC 3339 UTC；它不是 Git commit、服务启动或请求时间。`bin/tour` 在构建时固定 locale，从 binary 自身相邻的 `../_content` 加载内容，不需要运行时 `--locale` 或 `--content`，也不依赖当前工作目录。`release.json`、bundle 内的站点 metadata 和 `SHA256SUMS` 由相同输入确定；相同源码、发布时间、Go 工具链及 GOOS/GOARCH 下的重复 publish 逐文件一致。bundle 不包含 candidate、status、translation-runs 等开发期数据。
 
 当前正式 release 已部署：`/data/go-tour/releases/20260811-zh-CN-925d59d`。项目 commit 为 `925d59d92016e026c92ae60f4535abd9237119ea`。
 
@@ -187,6 +197,7 @@ zh-CN 第一阶段已经正式上线：<https://go-dev.shuijingwanwq.com/>。
 - 官方仓库：<https://github.com/golang/website.git>
 - 分支：`master`
 - 固定 commit：`e11dacba76c5aae474746e9eedee19693f492803`
+- upstream commit 时间：`2026-07-23 04:05:40`（北京时间；`2026-07-22T20:05:40Z`）
 - 初始验证环境：`go1.26.0 linux/amd64`
 
 同步原则见 [UPSTREAM.md](UPSTREAM.md)，逐文件来源、模式和 SHA-256 见 [UPSTREAM_MANIFEST.tsv](UPSTREAM_MANIFEST.tsv)。

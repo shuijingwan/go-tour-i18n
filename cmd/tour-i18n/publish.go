@@ -15,25 +15,29 @@ import (
 	"runtime"
 	"sort"
 	"strings"
+	"time"
 
 	"github.com/shuijingwan/go-tour-i18n/internal/i18n"
+	"github.com/shuijingwan/go-tour-i18n/internal/tour"
 )
 
 const (
-	frozenUpstreamCommit    = "e11dacba76c5aae474746e9eedee19693f492803"
 	expectedPublishPages    = 103
 	expectedPublishArticles = 7
 )
 
 type publishOptions struct {
-	Locale string
-	Output string
+	Locale      string
+	Output      string
+	PublishedAt string
 }
 
 type releaseManifest struct {
 	SchemaVersion      int    `json:"schema_version"`
 	Locale             string `json:"locale"`
+	PublishedAt        string `json:"published_at"`
 	UpstreamCommit     string `json:"upstream_commit"`
+	UpstreamCommitTime string `json:"upstream_commit_time"`
 	Pages              int    `json:"pages"`
 	Articles           int    `json:"articles"`
 	ExecutionTransport string `json:"execution_transport"`
@@ -59,6 +63,7 @@ func parsePublishOptions(args []string) (publishOptions, error) {
 	fs := flag.NewFlagSet("publish", flag.ContinueOnError)
 	locale := fs.String("locale", "", "locale")
 	output := fs.String("output", "", "production bundle output directory")
+	publishedAt := fs.String("published-at", "", "production bundle publication time (RFC 3339 UTC)")
 	if err := fs.Parse(args); err != nil {
 		return publishOptions{}, err
 	}
@@ -68,10 +73,17 @@ func parsePublishOptions(args []string) (publishOptions, error) {
 	if strings.TrimSpace(*output) == "" {
 		return publishOptions{}, fmt.Errorf("--output is required")
 	}
+	if strings.TrimSpace(*publishedAt) == "" {
+		return publishOptions{}, fmt.Errorf("--published-at is required")
+	}
+	published, err := time.Parse(time.RFC3339, *publishedAt)
+	if err != nil || published.Location() != time.UTC {
+		return publishOptions{}, fmt.Errorf("--published-at must be RFC 3339 UTC")
+	}
 	if fs.NArg() != 0 {
 		return publishOptions{}, fmt.Errorf("unexpected publish arguments: %s", strings.Join(fs.Args(), " "))
 	}
-	return publishOptions{Locale: *locale, Output: *output}, nil
+	return publishOptions{Locale: *locale, Output: *output, PublishedAt: published.Format(time.RFC3339)}, nil
 }
 
 func publishBundle(root string, catalog *i18n.Catalog, options publishOptions) (err error) {
@@ -111,6 +123,17 @@ func publishBundle(root string, catalog *i18n.Catalog, options publishOptions) (
 	if err := validatePublishProjection(projection); err != nil {
 		return err
 	}
+	metadata := tour.SiteMetadata{
+		Locale:             options.Locale,
+		PublishedAt:        options.PublishedAt,
+		UpstreamCommit:     tour.FrozenUpstreamCommit,
+		UpstreamCommitTime: tour.FrozenUpstreamCommitTime,
+		Pages:              projection.PageCount,
+		Articles:           projection.ArticleCount,
+	}
+	if err := tour.WriteSiteMetadata(projection.ContentDir, metadata); err != nil {
+		return err
+	}
 	binaryPath := filepath.Join(staging, "bin", "tour")
 	if err := buildProductionBinary(root, options.Locale, binaryPath); err != nil {
 		return err
@@ -118,7 +141,9 @@ func publishBundle(root string, catalog *i18n.Catalog, options publishOptions) (
 	manifest := releaseManifest{
 		SchemaVersion:      1,
 		Locale:             options.Locale,
-		UpstreamCommit:     frozenUpstreamCommit,
+		PublishedAt:        options.PublishedAt,
+		UpstreamCommit:     tour.FrozenUpstreamCommit,
+		UpstreamCommitTime: tour.FrozenUpstreamCommitTime,
 		Pages:              projection.PageCount,
 		Articles:           projection.ArticleCount,
 		ExecutionTransport: "http-playground-proxy",

@@ -3,7 +3,9 @@
         <div vertical-slide left="#left-side" right="#right-side"></div>
         <div id="left-side">
             <div class="relative-content" autofocus="toc.lessons[lessonId].Pages[curPage-1].Files.length==0">
-                <div class="slide-content" ng-bind-html-unsafe="toc.lessons[lessonId].Pages[curPage-1].Content"></div>
+                <div class="slide-content">
+                    <div ng-bind-html-unsafe="toc.lessons[lessonId].Pages[curPage-1].Content"></div>
+                </div>
 
                 <div class="bar module-bar">
                     <a href="#" class="prev-page" ng-click="prevPageClick($event)">&lt;</a>
@@ -51,3 +53,4 @@
 
     </div>
 </div>
+<div ng-include="'/tour/footer.html'"></div>
