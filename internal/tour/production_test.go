@@ -99,6 +99,44 @@ func TestProductionHandlerUsesHTTPTransportAndServesTour(t *testing.T) {
 	}
 }
 
+func TestProductionHandlerServesSEODocuments(t *testing.T) {
+	handler := productionTestHandler(t, "http://127.0.0.1:1")
+
+	robots := httptest.NewRecorder()
+	handler.ServeHTTP(robots, httptest.NewRequest(http.MethodGet, "/robots.txt", nil))
+	if robots.Code != http.StatusOK || robots.Header().Get("Content-Type") != "text/plain; charset=utf-8" {
+		t.Fatalf("robots response = %d %q", robots.Code, robots.Header().Get("Content-Type"))
+	}
+	if strings.Contains(robots.Body.String(), "<!doctype html") || !strings.Contains(robots.Body.String(), "Sitemap: https://go-dev.shuijingwanwq.com/sitemap.xml") {
+		t.Fatalf("invalid robots.txt: %q", robots.Body.String())
+	}
+
+	sitemap := httptest.NewRecorder()
+	handler.ServeHTTP(sitemap, httptest.NewRequest(http.MethodGet, "/sitemap.xml", nil))
+	if sitemap.Code != http.StatusOK || sitemap.Header().Get("Content-Type") != "application/xml; charset=utf-8" {
+		t.Fatalf("sitemap response = %d %q", sitemap.Code, sitemap.Header().Get("Content-Type"))
+	}
+	body := sitemap.Body.String()
+	if !strings.HasPrefix(body, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>") || !strings.Contains(body, "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">") || !strings.HasSuffix(strings.TrimSpace(body), "</urlset>") {
+		t.Fatal("sitemap is not well-formed XML")
+	}
+	locs := strings.Split(body, "<loc>")[1:]
+	seen := map[string]bool{}
+	for _, part := range locs {
+		u := strings.SplitN(part, "</loc>", 2)[0]
+		if seen[u] {
+			t.Fatalf("duplicate sitemap URL %q", u)
+		}
+		seen[u] = true
+		if strings.Contains(u, "go-tour.shuijingwanwq.com") {
+			t.Fatalf("old sitemap host in %q", u)
+		}
+	}
+	if len(locs) != 104 {
+		t.Fatalf("sitemap URLs = %d, want 104 (homepage + 103 pages)", len(locs))
+	}
+}
+
 func TestProductionHandlerRejectsSocketAndReservedRoutes(t *testing.T) {
 	upstream := httptest.NewServer(http.NotFoundHandler())
 	defer upstream.Close()

@@ -49,6 +49,7 @@ func useContent(content fs.FS) error {
 	homeContent = nil
 	footerContent = nil
 	lessons = make(map[string][]byte)
+	sitemapContent = nil
 	return nil
 }
 
@@ -66,6 +67,9 @@ func initTour(mux *http.ServeMux, transport, locale string) error {
 	// Init lessons.
 	if err := initLessons(tmpl); err != nil {
 		return fmt.Errorf("init lessons: %v", err)
+	}
+	if err := initSEO(); err != nil {
+		return fmt.Errorf("init SEO documents: %v", err)
 	}
 
 	// Load the build-selected UI locale once during initialization.
