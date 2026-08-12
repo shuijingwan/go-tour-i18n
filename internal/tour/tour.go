@@ -176,7 +176,11 @@ func renderHome(catalog ui.Catalog, metadata SiteMetadata) ([]byte, error) {
 		return nil, err
 	}
 	buf := new(bytes.Buffer)
-	if err := tmpl.ExecuteTemplate(buf, "home.tmpl", data); err != nil {
+	dataWithAnalytics := struct {
+		pageTemplateData
+		AnalyticsHTML template.HTML
+	}{data, analyticsHTML}
+	if err := tmpl.ExecuteTemplate(buf, "home.tmpl", dataWithAnalytics); err != nil {
 		return nil, fmt.Errorf("render home.tmpl: %w", err)
 	}
 	return buf.Bytes(), nil

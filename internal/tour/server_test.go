@@ -5,6 +5,7 @@
 package tour
 
 import (
+	"html/template"
 	"io/fs"
 	"net/http"
 	"net/http/httptest"
@@ -135,6 +136,53 @@ func TestRenderHomeDistinguishesDevelopmentAndProductionMetadata(t *testing.T) {
 	}
 	if got := string(home); !strings.Contains(got, "最近发布") || !strings.Contains(got, "2026-08-12 15:23:34 (北京时间)") || strings.Contains(got, "开发环境") {
 		t.Fatalf("production homepage has unexpected release status: %s", got)
+	}
+}
+
+func TestRenderAnalyticsHTML(t *testing.T) {
+	catalog, err := ui.Load("zh-CN")
+	if err != nil {
+		t.Fatal(err)
+	}
+	metadata, err := loadSiteMetadata(contentTour)
+	if err != nil {
+		t.Fatal(err)
+	}
+	original := analyticsHTML
+	t.Cleanup(func() { analyticsHTML = original })
+
+	for _, test := range []struct {
+		name  string
+		value template.HTML
+		want  string
+	}{
+		{name: "empty", value: "", want: ""},
+		{name: "configured", value: `<script data-test="analytics"></script>`, want: `data-test="analytics"`},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			analyticsHTML = test.value
+
+			home, err := renderHome(catalog, metadata)
+			if err != nil {
+				t.Fatalf("renderHome: %v", err)
+			}
+			tour, err := renderIndex(catalog, metadata)
+			if err != nil {
+				t.Fatalf("renderIndex: %v", err)
+			}
+			for name, content := range map[string][]byte{"home": home, "tour": tour} {
+				page := string(content)
+				if !strings.Contains(page, "<head>") {
+					t.Errorf("%s page does not contain a head", name)
+				}
+				if got := strings.Count(page, test.want); test.want != "" && got != 1 {
+					t.Errorf("%s page contains analytics marker %d times, want 1", name, got)
+				}
+				if test.want == "" && strings.Contains(page, "data-test=\"analytics\"") {
+					t.Errorf("%s page contains analytics marker with empty analyticsHTML", name)
+				}
+			}
+		})
 	}
 }
 
