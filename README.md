@@ -145,7 +145,7 @@ go run -mod=readonly ./cmd/tour-i18n publish \
 
 当前正式 release 已部署：`/data/go-tour/releases/20260811-zh-CN-925d59d`。项目 commit 为 `925d59d92016e026c92ae60f4535abd9237119ea`。
 
-正式站点：<https://go-tour.shuijingwanwq.com/>。
+正式站点：<https://go-dev.shuijingwanwq.com/>。
 
 生产请求链路为：浏览器 → EdgeOne → Nginx → Go Tour → `go.dev` Playground。Go Tour 由 `go-tour.service` 管理，监听 `127.0.0.1:3999`；生产环境不直接暴露本地 `/socket` 代码执行接口。
 
@@ -171,7 +171,7 @@ go test -mod=readonly -count=1 ./...
 
 ## 实际生产部署状态
 
-zh-CN 第一阶段已经正式上线：<https://go-tour.shuijingwanwq.com/>。
+zh-CN 第一阶段已经正式上线：<https://go-dev.shuijingwanwq.com/>。
 
 - 正式 release：`/data/go-tour/releases/20260811-zh-CN-925d59d`。
 - 项目 commit：`925d59d92016e026c92ae60f4535abd9237119ea`。
@@ -208,4 +208,4 @@ zh-CN 第一阶段已经正式上线：<https://go-tour.shuijingwanwq.com/>。
 
 ## English Summary
 
-`go-tour-i18n` is a community-maintained, unofficial multilingual A Tour of Go translation project. The official English Tour baseline has been imported; Simplified Chinese (`zh-CN`) is the first completed locale, with all 103 projected pages ready, 7/7 article metadata entries localized, completed public UI localization, and a successful final browser acceptance pass. The HTTPTransport-based production runtime and deterministic production publish bundle are implemented and deployed at <https://go-tour.shuijingwanwq.com/>.
+`go-tour-i18n` is a community-maintained, unofficial multilingual A Tour of Go translation project. The official English Tour baseline has been imported; Simplified Chinese (`zh-CN`) is the first completed locale, with all 103 projected pages ready, 7/7 article metadata entries localized, completed public UI localization, and a successful final browser acceptance pass. The HTTPTransport-based production runtime and deterministic production publish bundle are implemented and deployed at <https://go-dev.shuijingwanwq.com/>.

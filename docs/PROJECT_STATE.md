@@ -99,7 +99,8 @@
 - publish 构建时将 locale 固定进 production binary；binary 从自身相邻的 `../_content` 定位内容，不依赖当前工作目录，不需要运行时 `--locale` 或 `--content`。bundle 不包含 candidate、status、translation-runs 等开发期数据。
 - 最终 release bundle 的验收结果为：`ready=103`、`pending=0`、`blocked=0`、`pages=103`、`articles=7`；103/103 课程页面、7/7 lesson JSON、103 个 Section、title/subtitle 和公共中文 UI 均通过验收。
 - 两次 publish 在相同源码、Go 工具链和 GOOS/GOARCH 下逐文件一致；185 个 bundle 文件 SHA-256 校验全部通过。真实 Run / Format、`/socket` 404、WebSocket `/socket` 404、`/_/share` 404 及未知 `/_/` 404 均已验证。
-- 当前正式上线状态：zh-CN 第一阶段已经正式上线。正式站点为 <https://go-tour.shuijingwanwq.com/>，release 为 `/data/go-tour/releases/20260811-zh-CN-925d59d`，项目 commit 为 `925d59d92016e026c92ae60f4535abd9237119ea`。生产链路为浏览器 → EdgeOne → Nginx → Go Tour → `https://go.dev/_`；`go-tour.service` 监听 `127.0.0.1:3999`。production binary 为 Linux amd64、`CGO_ENABLED=0`、静态链接，不依赖服务器 glibc 版本。
+- 当前正式上线状态：zh-CN 第一阶段已经正式上线。正式站点为 <https://go-dev.shuijingwanwq.com/>，release 为 `/data/go-tour/releases/20260811-zh-CN-925d59d`，项目 commit 为 `925d59d92016e026c92ae60f4535abd9237119ea`。生产链路为浏览器 → EdgeOne → Nginx → Go Tour → `https://go.dev/_`；`go-tour.service` 监听 `127.0.0.1:3999`。production binary 为 Linux amd64、`CGO_ENABLED=0`、静态链接，不依赖服务器 glibc 版本。
+- 2026-08-12 完成生产入口域名迁移：正式生产域名由 `go-tour.shuijingwanwq.com` 调整为 `go-dev.shuijingwanwq.com`，以避免 `go-tour.../tour/...` 中 Tour 语义重复，并为未来可能扩展 go.dev 的其他内容保留更宽泛的站点入口。旧域名通过腾讯云 EdgeOne 永久 301 到新域名，保持原路径与查询参数；已验证旧域名 HTTP/2 301、Location 正确、新域名 HTTP/2 200、浏览器页面访问及远程 Go 示例运行。此次为生产入口域名迁移，不是应用重新部署；既有 release、commit、服务和生产链路不变。
 - 部署期间已解决动态链接 glibc 兼容、OneinStack 静态资源 location 抢占、release 目录权限和 Nginx systemd 接管问题。Cloudflare 仅负责权威 DNS，业务 CNAME 使用 DNS only，正式流量经过 EdgeOne，不采用 Cloudflare 双层代理。
 
 ## 第一阶段上线冻结
