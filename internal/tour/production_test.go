@@ -1,7 +1,9 @@
 package tour
 
 import (
+	"bytes"
 	"io"
+	"log"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
@@ -209,6 +211,9 @@ func TestProductionCompileProxy(t *testing.T) {
 	if rec.Code != http.StatusOK {
 		t.Fatalf("compile status=%d body=%s", rec.Code, rec.Body.String())
 	}
+	if requestID := rec.Header().Get("X-Request-ID"); requestID == "" {
+		t.Fatal("compile response is missing X-Request-ID")
+	}
 	if calls.Load() != 1 || !strings.Contains(rec.Body.String(), `"Message":"ok\n"`) {
 		t.Fatalf("compile calls=%d body=%s", calls.Load(), rec.Body.String())
 	}
@@ -311,6 +316,96 @@ func TestProductionFormatProxy(t *testing.T) {
 	if rec.Code != http.StatusOK || calls.Load() != 1 || !strings.Contains(rec.Body.String(), "func main() {}") {
 		t.Fatalf("status=%d calls=%d body=%s", rec.Code, calls.Load(), rec.Body.String())
 	}
+	if requestID := rec.Header().Get("X-Request-ID"); requestID == "" {
+		t.Fatal("format response is missing X-Request-ID")
+	}
+}
+
+func TestProductionPlaygroundFailureLoggingIsMinimalAndSilentOnSuccess(t *testing.T) {
+	var logs bytes.Buffer
+	upstream := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		_, _ = io.WriteString(w, `{"Events":[]}`)
+	}))
+	defer upstream.Close()
+
+	proxy := mustPlaygroundProxy(t, upstream.URL)
+	proxy.logger = log.New(&logs, "", 0)
+	form := url.Values{"version": {"2"}, "body": {"package main\nfunc main(){}"}}
+	rec := httptest.NewRecorder()
+	proxy.compile(rec, formRequest(http.MethodPost, "/_/compile", form))
+	if rec.Code != http.StatusOK || logs.Len() != 0 {
+		t.Fatalf("successful compile status=%d logs=%q", rec.Code, logs.String())
+	}
+
+	proxy.client.Transport = roundTripFunc(func(*http.Request) (*http.Response, error) {
+		return nil, io.ErrUnexpectedEOF
+	})
+	rec = httptest.NewRecorder()
+	proxy.compile(rec, formRequest(http.MethodPost, "/_/compile", form))
+	if rec.Code != http.StatusBadGateway {
+		t.Fatalf("failed compile status=%d body=%s", rec.Code, rec.Body.String())
+	}
+	requestID := rec.Header().Get("X-Request-ID")
+	if requestID == "" || !strings.Contains(logs.String(), "request_id="+requestID) || !strings.Contains(logs.String(), "operation=compile") || !strings.Contains(logs.String(), "unexpected EOF") {
+		t.Fatalf("failure log=%q request_id=%q", logs.String(), requestID)
+	}
+	if strings.Contains(logs.String(), "package main") {
+		t.Fatalf("failure log contains source code: %q", logs.String())
+	}
+	if got := strings.Count(logs.String(), "playground "); got != 1 {
+		t.Fatalf("failure log entries=%d logs=%q", got, logs.String())
+	}
+}
+
+func TestProductionPlaygroundInvalidJSONLogsStatusAndKeepsResponse(t *testing.T) {
+	var logs bytes.Buffer
+	upstream := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		_, _ = io.WriteString(w, "not json")
+	}))
+	defer upstream.Close()
+
+	proxy := mustPlaygroundProxy(t, upstream.URL)
+	proxy.logger = log.New(&logs, "", 0)
+	rec := httptest.NewRecorder()
+	proxy.compile(rec, formRequest(http.MethodPost, "/_/compile", url.Values{"version": {"2"}, "body": {"package main"}}))
+	if rec.Code != http.StatusBadGateway || !strings.Contains(rec.Body.String(), "invalid Playground compile response") {
+		t.Fatalf("status=%d body=%s", rec.Code, rec.Body.String())
+	}
+	requestID := rec.Header().Get("X-Request-ID")
+	if requestID == "" || !strings.Contains(logs.String(), "request_id="+requestID) || !strings.Contains(logs.String(), "upstream_status=200") || !strings.Contains(logs.String(), "invalid Playground compile response") {
+		t.Fatalf("invalid JSON log=%q request_id=%q", logs.String(), requestID)
+	}
+}
+
+func TestProductionFormatFailureLogsRequestIDAndStatus(t *testing.T) {
+	var logs bytes.Buffer
+	upstream := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		http.Error(w, "temporary failure", http.StatusServiceUnavailable)
+	}))
+	defer upstream.Close()
+
+	proxy := mustPlaygroundProxy(t, upstream.URL)
+	proxy.logger = log.New(&logs, "", 0)
+	rec := httptest.NewRecorder()
+	proxy.format(rec, formRequest(http.MethodPost, "/_/fmt", url.Values{"body": {"package main"}}))
+	if rec.Code != http.StatusBadGateway {
+		t.Fatalf("status=%d body=%s", rec.Code, rec.Body.String())
+	}
+	requestID := rec.Header().Get("X-Request-ID")
+	if requestID == "" || !strings.Contains(logs.String(), "request_id="+requestID) || !strings.Contains(logs.String(), "operation=format") || !strings.Contains(logs.String(), "upstream_status=503") {
+		t.Fatalf("format failure log=%q request_id=%q", logs.String(), requestID)
+	}
+	if got := strings.Count(logs.String(), "playground "); got != 1 {
+		t.Fatalf("failure log entries=%d logs=%q", got, logs.String())
+	}
+}
+
+type roundTripFunc func(*http.Request) (*http.Response, error)
+
+func (f roundTripFunc) RoundTrip(r *http.Request) (*http.Response, error) {
+	return f(r)
 }
 
 func TestProductionFormatProxyRejectsUnsafeRequestsAndResponses(t *testing.T) {

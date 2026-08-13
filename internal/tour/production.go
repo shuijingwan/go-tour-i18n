@@ -5,15 +5,20 @@
 package tour
 
 import (
+	cryptorand "crypto/rand"
+	"encoding/hex"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
 	"io/fs"
+	"log"
 	"mime"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
+	"sync/atomic"
 	"time"
 )
 
@@ -90,7 +95,10 @@ type playgroundProxy struct {
 	compileURL string
 	formatURL  string
 	client     *http.Client
+	logger     *log.Logger
 }
+
+var requestIDFallback atomic.Uint64
 
 func newPlaygroundProxy(baseURL string) (*playgroundProxy, error) {
 	base, err := url.Parse(baseURL)
@@ -110,10 +118,13 @@ func newPlaygroundProxy(baseURL string) (*playgroundProxy, error) {
 				return http.ErrUseLastResponse
 			},
 		},
+		logger: log.Default(),
 	}, nil
 }
 
 func (p *playgroundProxy) compile(w http.ResponseWriter, r *http.Request) {
+	requestID := newRequestID()
+	w.Header().Set("X-Request-ID", requestID)
 	if !requireFormPost(w, r) {
 		return
 	}
@@ -130,13 +141,16 @@ func (p *playgroundProxy) compile(w http.ResponseWriter, r *http.Request) {
 	}
 	upstream.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 
+	started := time.Now()
 	status, _, body, err := p.do(upstream)
 	if err != nil || status != http.StatusOK {
+		p.logFailure(requestID, "compile", started, status, err)
 		http.Error(w, "Playground compile unavailable", http.StatusBadGateway)
 		return
 	}
 	var result playgroundCompileResponse
 	if err := json.Unmarshal(body, &result); err != nil {
+		p.logFailure(requestID, "compile", started, status, fmt.Errorf("invalid Playground compile response: %w", err))
 		http.Error(w, "invalid Playground compile response", http.StatusBadGateway)
 		return
 	}
@@ -156,6 +170,8 @@ func (p *playgroundProxy) compile(w http.ResponseWriter, r *http.Request) {
 }
 
 func (p *playgroundProxy) format(w http.ResponseWriter, r *http.Request) {
+	requestID := newRequestID()
+	w.Header().Set("X-Request-ID", requestID)
 	if !requireFormPost(w, r) {
 		return
 	}
@@ -170,8 +186,10 @@ func (p *playgroundProxy) format(w http.ResponseWriter, r *http.Request) {
 	}
 	upstream.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 
+	started := time.Now()
 	status, contentType, body, err := p.do(upstream)
 	if err != nil || status < 200 || status >= 300 {
+		p.logFailure(requestID, "format", started, status, err)
 		http.Error(w, "Playground format unavailable", http.StatusBadGateway)
 		return
 	}
@@ -216,9 +234,33 @@ func (p *playgroundProxy) do(req *http.Request) (int, string, []byte, error) {
 	defer resp.Body.Close()
 	body, err := readLimited(resp.Body, playgroundResponseLimit)
 	if err != nil {
-		return 0, "", nil, err
+		return resp.StatusCode, resp.Header.Get("Content-Type"), nil, err
 	}
 	return resp.StatusCode, resp.Header.Get("Content-Type"), body, nil
+}
+
+func (p *playgroundProxy) logFailure(requestID, operation string, started time.Time, status int, err error) {
+	if p.logger == nil {
+		return
+	}
+	if err != nil {
+		if status != 0 {
+			p.logger.Printf("playground request_id=%s operation=%s duration=%s upstream_status=%d error=%q", requestID, operation, time.Since(started), status, err)
+			return
+		}
+		p.logger.Printf("playground request_id=%s operation=%s duration=%s error=%q", requestID, operation, time.Since(started), err)
+		return
+	}
+	p.logger.Printf("playground request_id=%s operation=%s duration=%s upstream_status=%d", requestID, operation, time.Since(started), status)
+}
+
+func newRequestID() string {
+	var raw [8]byte
+	if _, err := cryptorand.Read(raw[:]); err == nil {
+		return hex.EncodeToString(raw[:])
+	}
+	sequence := requestIDFallback.Add(1)
+	return strconv.FormatInt(time.Now().UnixNano(), 16) + "-" + strconv.FormatUint(sequence, 16)
 }
 
 func readLimited(r io.Reader, limit int64) ([]byte, error) {
