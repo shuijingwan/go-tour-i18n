@@ -5,6 +5,7 @@
 package tour
 
 import (
+	"encoding/json"
 	"html/template"
 	"io/fs"
 	"net/http"
@@ -21,7 +22,7 @@ import (
 
 func TestWeb(t *testing.T) {
 	mux := http.NewServeMux()
-	if err := initTour(mux, "SocketTransport", "en"); err != nil {
+	if err := initTour(mux, "SocketTransport", "en", ""); err != nil {
 		t.Fatal(err)
 	}
 	mux.HandleFunc("/", rootHandler)
@@ -218,7 +219,7 @@ func TestJSI18nBootstrapLocales(t *testing.T) {
 				t.Fatal(err)
 			}
 			mux := http.NewServeMux()
-			if err := initScript(mux, "", "SocketTransport", catalog); err != nil {
+			if err := initScript(mux, "", "SocketTransport", "", catalog); err != nil {
 				t.Fatal(err)
 			}
 			recorder := httptest.NewRecorder()
@@ -238,6 +239,67 @@ func TestJSI18nBootstrapLocales(t *testing.T) {
 				}
 			}
 		})
+	}
+}
+
+func TestLocalPlaygroundConfigurationKeepsRelativeHTTPEndpoints(t *testing.T) {
+	catalog, err := ui.Load("en")
+	if err != nil {
+		t.Fatal(err)
+	}
+	mux := http.NewServeMux()
+	if err := initScript(mux, "ws://127.0.0.1:3999/socket", "SocketTransport", "", catalog); err != nil {
+		t.Fatal(err)
+	}
+	recorder := httptest.NewRecorder()
+	mux.ServeHTTP(recorder, httptest.NewRequest(http.MethodGet, "/tour/script.js", nil))
+	if recorder.Code != http.StatusOK {
+		t.Fatalf("GET /tour/script.js: status %d", recorder.Code)
+	}
+	text := recorder.Body.String()
+	for _, want := range []string{
+		`window.transport = SocketTransport();`,
+		`window.socketAddr = "ws://127.0.0.1:3999/socket";`,
+		`window.playgroundBaseURL = "";`,
+		`$.ajax(playgroundURL('/_/compile?backend='`,
+		`$.ajax(playgroundURL('/_/fmt?backend='`,
+		`$http.post(playgroundURL('/_/fmt')`,
+	} {
+		if !strings.Contains(text, want) {
+			t.Errorf("local script does not contain %q", want)
+		}
+	}
+	if strings.Contains(text, productionPlaygroundBaseURL) {
+		t.Fatalf("local script contains production Playground URL")
+	}
+}
+
+func TestPlaygroundBaseURLIsJavaScriptStringEscaped(t *testing.T) {
+	catalog, err := ui.Load("en")
+	if err != nil {
+		t.Fatal(err)
+	}
+	mux := http.NewServeMux()
+	baseURL := `https://example.test/";alert(1)//</script>`
+	if err := initScript(mux, "", "HTTPTransport", baseURL, catalog); err != nil {
+		t.Fatal(err)
+	}
+	recorder := httptest.NewRecorder()
+	mux.ServeHTTP(recorder, httptest.NewRequest(http.MethodGet, "/tour/script.js", nil))
+	if recorder.Code != http.StatusOK {
+		t.Fatalf("GET /tour/script.js: status %d", recorder.Code)
+	}
+	text := recorder.Body.String()
+	if strings.Contains(text, `window.playgroundBaseURL = "https://example.test/";alert(1)//</script>";`) {
+		t.Fatal("Playground base URL was injected without JavaScript escaping")
+	}
+	encoded, err := json.Marshal(baseURL)
+	if err != nil {
+		t.Fatal(err)
+	}
+	want := "window.playgroundBaseURL = " + string(encoded) + ";"
+	if !strings.Contains(text, want) {
+		t.Fatalf("escaped Playground base URL missing from script")
 	}
 }
 

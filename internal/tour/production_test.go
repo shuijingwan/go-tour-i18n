@@ -89,7 +89,7 @@ func TestProductionHandlerUsesHTTPTransportAndServesTour(t *testing.T) {
 		t.Fatalf("GET /tour/script.js: status=%d", rec.Code)
 	}
 	script := rec.Body.String()
-	for _, want := range []string{`window.transport = HTTPTransport();`, `window.socketAddr = "";`} {
+	for _, want := range []string{`window.transport = HTTPTransport();`, `window.socketAddr = "";`, `window.playgroundBaseURL = "https://play.go-dev.shuijingwanwq.com:8443";`, `$.ajax(playgroundURL('/_/compile?backend='`, `$.ajax(playgroundURL('/_/fmt?backend='`, `$http.post(playgroundURL('/_/fmt')`} {
 		if !strings.Contains(script, want) {
 			t.Errorf("production script does not contain %q", want)
 		}
@@ -99,6 +99,31 @@ func TestProductionHandlerUsesHTTPTransportAndServesTour(t *testing.T) {
 			t.Errorf("production script contains %q", forbidden)
 		}
 	}
+	if strings.Contains(script, `window.playgroundBaseURL = "https://go.dev`) {
+		t.Fatal("production script still injects the server-side Playground URL")
+	}
+}
+
+func TestPlaygroundURLConfiguration(t *testing.T) {
+	if got := playgroundURLForTest("", "/_/compile?backend="); got != "/_/compile?backend=" {
+		t.Fatalf("empty Playground base URL = %q", got)
+	}
+	if got := playgroundURLForTest(productionPlaygroundBaseURL, "/_/compile?backend=gc"); got != productionPlaygroundBaseURL+"/compile?backend=gc" {
+		t.Fatalf("production compile URL = %q", got)
+	}
+	if got := playgroundURLForTest(productionPlaygroundBaseURL, "/_/fmt"); got != productionPlaygroundBaseURL+"/fmt" {
+		t.Fatalf("production format URL = %q", got)
+	}
+	if got := playgroundURLForTest(productionPlaygroundBaseURL, "/_/compile?backend=https://attacker.invalid"); !strings.HasPrefix(got, productionPlaygroundBaseURL+"/compile?") {
+		t.Fatalf("backend changed Playground host: %q", got)
+	}
+}
+
+func playgroundURLForTest(base, path string) string {
+	if base == "" {
+		return path
+	}
+	return strings.TrimRight(base, "/") + "/" + strings.TrimPrefix(path, "/_/")
 }
 
 func TestProductionHandlerServesSEODocuments(t *testing.T) {

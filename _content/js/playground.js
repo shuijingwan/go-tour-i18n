@@ -44,6 +44,12 @@ here's a skeleton implementation of a playground transport.
 // HTTPTransport is the default transport.
 // enableVet enables running vet if a program was compiled and ran successfully.
 // If vet returned any errors, display them before the output of a program.
+function playgroundURL(path) {
+  var base = window.playgroundBaseURL || '';
+  if (!base) return path;
+  return base.replace(/\/+$/, '') + path.replace(/^\/_\//, '/');
+}
+
 function HTTPTransport(enableVet) {
   'use strict';
 
@@ -129,7 +135,7 @@ function HTTPTransport(enableVet) {
       seq++;
       var cur = seq;
       var playing;
-      $.ajax('/_/compile?backend=' + (options.backend || ''), {
+      $.ajax(playgroundURL('/_/compile?backend=' + (options.backend || '')), {
         type: 'POST',
         data: { version: 2, body: body, withVet: enableVet },
         dataType: 'json',
@@ -458,7 +464,7 @@ function PlaygroundOutput(el) {
       loading();
       var data = { body: body() };
       data['imports'] = 'true';
-      $.ajax('/_/fmt?backend='+backend(), {
+      $.ajax(playgroundURL('/_/fmt?backend='+backend()), {
         data: data,
         type: 'POST',
         dataType: 'json',

@@ -1,5 +1,6 @@
 window.transport = {{.Transport}}();
 window.socketAddr = "{{.SocketAddr}}";
+window.playgroundBaseURL = {{.PlaygroundBaseURL}};
 
 function highlight(selector) {
     var speed = 50;

@@ -92,7 +92,7 @@ factory('fmt', ['$http',
             var headers = {
                 'Content-Type': 'application/x-www-form-urlencoded'
             };
-            return $http.post('/_/fmt', params, {
+            return $http.post(playgroundURL('/_/fmt'), params, {
                 headers: headers
             });
         };

@@ -54,7 +54,7 @@ func useContent(content fs.FS) error {
 }
 
 // initTour loads tour.article and the relevant HTML templates from root.
-func initTour(mux *http.ServeMux, transport, locale string) error {
+func initTour(mux *http.ServeMux, transport, locale, playgroundBaseURL string) error {
 	// Make sure playground is enabled before rendering.
 	present.PlayEnabled = true
 
@@ -99,7 +99,7 @@ func initTour(mux *http.ServeMux, transport, locale string) error {
 	mux.HandleFunc("/tour/footer.html", footerHandler)
 	mux.Handle("/tour/static/", http.FileServer(http.FS(contentTour)))
 
-	return initScript(mux, socketAddr(), transport, catalog)
+	return initScript(mux, socketAddr(), transport, playgroundBaseURL, catalog)
 }
 
 type pageTemplateData struct {
@@ -378,7 +378,7 @@ func footerHandler(w http.ResponseWriter, r *http.Request) {
 
 // initScript concatenates all the javascript files needed to render
 // the tour UI and serves the result on /script.js.
-func initScript(mux *http.ServeMux, socketAddr, transport string, catalog ui.Catalog) error {
+func initScript(mux *http.ServeMux, socketAddr, transport, playgroundBaseURL string, catalog ui.Catalog) error {
 	modTime := time.Now()
 	b := new(bytes.Buffer)
 	bootstrap, err := jsBootstrap(catalog)
@@ -418,6 +418,11 @@ func initScript(mux *http.ServeMux, socketAddr, transport string, catalog ui.Cat
 	s := string(f)
 	s = strings.ReplaceAll(s, "{{.SocketAddr}}", socketAddr)
 	s = strings.ReplaceAll(s, "{{.Transport}}", transport)
+	playgroundBaseURLJSON, err := json.Marshal(playgroundBaseURL)
+	if err != nil {
+		return fmt.Errorf("encode Playground base URL: %w", err)
+	}
+	s = strings.ReplaceAll(s, "{{.PlaygroundBaseURL}}", string(playgroundBaseURLJSON))
 	b.WriteString(s)
 
 	mux.HandleFunc("/tour/script.js", func(w http.ResponseWriter, r *http.Request) {

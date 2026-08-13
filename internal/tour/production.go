@@ -23,10 +23,11 @@ import (
 )
 
 const (
-	productionPlaygroundURL = "https://go.dev/_"
-	playgroundRequestLimit  = 1 << 20 // 1 MiB
-	playgroundResponseLimit = 4 << 20 // 4 MiB
-	playgroundTimeout       = 20 * time.Second
+	productionPlaygroundBaseURL = "https://play.go-dev.shuijingwanwq.com:8443"
+	productionPlaygroundURL     = "https://go.dev/_"
+	playgroundRequestLimit      = 1 << 20 // 1 MiB
+	playgroundResponseLimit     = 4 << 20 // 4 MiB
+	playgroundTimeout           = 20 * time.Second
 )
 
 // NewProductionHandler creates the public Tour handler for one content tree
@@ -49,7 +50,7 @@ func newProductionHandler(content fs.FS, locale string, proxy *playgroundProxy) 
 	}
 
 	mux := http.NewServeMux()
-	if err := RegisterHandlersLocale(mux, locale); err != nil {
+	if err := registerHandlersLocale(mux, locale, productionPlaygroundBaseURL); err != nil {
 		return nil, err
 	}
 
