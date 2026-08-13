@@ -129,7 +129,7 @@ go run -mod=readonly ./cmd/tour-i18n preview \
 
 ## Production runtime、publish 与正式上线
 
-production runtime 已完成并正式部署。它使用 `HTTPTransport`，将 `/_/compile` 和 `/_/fmt` 代理到 `https://go.dev/_`；`/_/compile` 按 go.dev 要求保留 form 编码。production 主机不执行用户提交的 Go 程序。本地 `/socket` 不用于 production：普通请求和 WebSocket Upgrade 均返回 404，`/_/share` 当前未启用并返回 404。
+production runtime 已完成并正式部署。页面访问链路为：浏览器 → EdgeOne → 阿里云 Nginx → Go Tour。正常 production Run / Format 由浏览器直接请求自建 ZgoCloud 固定代理 `https://play.go-dev.shuijingwanwq.com:8443/compile` 和 `/fmt`，再由该代理转发到官方 Playground `play.golang.org`；不再经过阿里云 Go 服务端的 `/_/compile`、`/_/fmt`。旧服务端路径仍保留为兼容/回滚路径，并按 go.dev 要求保留 form 编码。ZgoCloud 只是本项目自建的固定反向代理，不是 Go 官方服务。production 主机不执行用户提交的 Go 程序。本地 `/socket` 不用于 production：普通请求和 WebSocket Upgrade 均返回 404，`/_/share` 当前未启用并返回 404。
 
 使用以下命令生成固定 locale 的 production bundle（当前完成 locale 为 `zh-CN`）：
 
@@ -157,7 +157,7 @@ go run -mod=readonly ./cmd/tour-i18n publish \
 
 正式站点：<https://go-dev.shuijingwanwq.com/>。
 
-生产请求链路为：浏览器 → EdgeOne → Nginx → Go Tour → `go.dev` Playground。Go Tour 由 `go-tour.service` 管理，监听 `127.0.0.1:3999`；生产环境不直接暴露本地 `/socket` 代码执行接口。
+页面请求链路为：浏览器 → EdgeOne → Nginx → Go Tour。Run 使用 `https://play.go-dev.shuijingwanwq.com:8443/compile`，Format 使用 `https://play.go-dev.shuijingwanwq.com:8443/fmt`，链路随后为 ZgoCloud Nginx → `play.golang.org`。旧的阿里云 Go 服务端 `/_/compile`、`/_/fmt` 仍保留作为兼容/回滚路径。Go Tour 由 `go-tour.service` 管理，监听 `127.0.0.1:3999`；生产环境不直接暴露本地 `/socket` 代码执行接口。
 
 ## 本地运行
 
@@ -185,7 +185,9 @@ zh-CN 第一阶段已经正式上线：<https://go-dev.shuijingwanwq.com/>。
 
 - 正式 release：`/data/go-tour/releases/20260812-zh-CN-acbf24a`。
 - 项目 commit：`acbf24a`。
-- production 执行链路：浏览器 → EdgeOne → Nginx → Go Tour → `https://go.dev/_`。
+- 页面访问链路：浏览器 → EdgeOne → 阿里云 Nginx → Go Tour。
+- 正常 production Run / Format 链路：浏览器 → `https://play.go-dev.shuijingwanwq.com:8443/compile` 或 `/fmt` → ZgoCloud Nginx → `play.golang.org`。
+- 旧阿里云 Go 服务端 `/_/compile`、`/_/fmt` 仍保留作为兼容/回滚路径；production `/socket` 仍禁用，生产主机不执行用户提交的 Go 代码。
 - systemd 服务：`go-tour.service`，监听 `127.0.0.1:3999`。
 - `/tour/welcome/1`、真实 Run、真实 Format 均已通过公网验收；`/socket` 和 `/_/share` 均返回 404。
 - production binary 为 Linux amd64、`CGO_ENABLED=0`、静态链接，不依赖服务器 glibc 版本。

@@ -127,7 +127,7 @@ expected = {
     "pages": 103,
     "articles": 7,
     "execution_transport": "http-playground-proxy",
-    "execution_provider": "go.dev",
+    "execution_provider": "play.golang.org",
     "local_socket_enabled": False,
     "goos": "linux",
     "goarch": "amd64",

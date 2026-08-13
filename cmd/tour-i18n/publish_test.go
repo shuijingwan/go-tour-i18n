@@ -181,7 +181,7 @@ func verifyPublishedBundle(t *testing.T, root string) {
 	if err := json.Unmarshal(manifestData, &manifest); err != nil {
 		t.Fatal(err)
 	}
-	if manifest.Locale != "zh-CN" || manifest.PublishedAt != testPublishedAt || manifest.UpstreamCommit != tour.FrozenUpstreamCommit || manifest.UpstreamCommitTime != tour.FrozenUpstreamCommitTime || manifest.Pages != 103 || manifest.Articles != 7 || manifest.ExecutionTransport != "http-playground-proxy" || manifest.ExecutionProvider != "go.dev" || manifest.LocalSocketEnabled {
+	if manifest.Locale != "zh-CN" || manifest.PublishedAt != testPublishedAt || manifest.UpstreamCommit != tour.FrozenUpstreamCommit || manifest.UpstreamCommitTime != tour.FrozenUpstreamCommitTime || manifest.Pages != 103 || manifest.Articles != 7 || manifest.ExecutionTransport != "http-playground-proxy" || manifest.ExecutionProvider != "play.golang.org" || manifest.LocalSocketEnabled {
 		t.Fatalf("unexpected release manifest: %+v", manifest)
 	}
 	metadataData, err := os.ReadFile(filepath.Join(root, "_content", "tour", "site-metadata.json"))

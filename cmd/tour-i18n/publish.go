@@ -147,7 +147,7 @@ func publishBundle(root string, catalog *i18n.Catalog, options publishOptions) (
 		Pages:              projection.PageCount,
 		Articles:           projection.ArticleCount,
 		ExecutionTransport: "http-playground-proxy",
-		ExecutionProvider:  "go.dev",
+		ExecutionProvider:  "play.golang.org",
 		LocalSocketEnabled: false,
 		GOOS:               runtime.GOOS,
 		GOARCH:             runtime.GOARCH,
