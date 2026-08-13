@@ -726,12 +726,15 @@ a#run, a#kill {
     color: #f0f1f2;
 }
 @media (max-width: 600px) {
+    .site-header .site-logo {
+        margin-right: 0.75rem;
+    }
     .site-main {
         padding: 24px 16px;
     }
     .site-header .logo {
-        font-size: 1em;
-        white-space: normal;
+        font-size: 0.9em;
+        white-space: nowrap;
         line-height: 20px;
     }
     .site-hero {
