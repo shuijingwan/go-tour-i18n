@@ -99,7 +99,12 @@
 - publish 构建时将 locale 固定进 production binary；binary 从自身相邻的 `../_content` 定位内容，不依赖当前工作目录，不需要运行时 `--locale` 或 `--content`。bundle 不包含 candidate、status、translation-runs 等开发期数据。
 - 最终 release bundle 的验收结果为：`ready=103`、`pending=0`、`blocked=0`、`pages=103`、`articles=7`；103/103 课程页面、7/7 lesson JSON、103 个 Section、title/subtitle 和公共中文 UI 均通过验收。
 - 两次 publish 在相同源码、Go 工具链和 GOOS/GOARCH 下逐文件一致；185 个 bundle 文件 SHA-256 校验全部通过。真实 Run / Format、`/socket` 404、WebSocket `/socket` 404、`/_/share` 404 及未知 `/_/` 404 均已验证。
-- 当前正式上线状态：production release 为 `/data/go-tour/releases/20260813-zh-CN-3852bc1`，`current` 已指向该 release；该 release 已通过 production 自动部署脚本完成首次真实生产部署和验收。zh-CN 状态为 `ready=103`、`pending=0`、`blocked=0`、`pages=103`、`articles=7`。新首页、Logo/favicon、公共 footer 和项目信息均已进入生产；页面访问链路为浏览器 → EdgeOne → Nginx → Go Tour，正常 Run / Format 链路为浏览器 → ZgoCloud `/compile` 或 `/fmt` → `play.golang.org`；旧 `/_/compile`、`/_/fmt` 仍为兼容/回滚路径。`go-tour.service` 为 active，监听 `127.0.0.1:3999`，localhost 与正式域名均已验收为 HTTP 200。production binary 为 Linux amd64、`CGO_ENABLED=0`、静态链接，不依赖服务器 glibc 版本；`/socket` 未开放，生产主机不执行用户提交的 Go 代码。
+- 当前正式上线状态：production release 为 `/data/go-tour/releases/20260813-zh-CN-1fe73f5`，对应项目 commit `1fe73f54615b3d05d09133f6e25aa91c5fb07f75`，`current` 已指向该 release；release manifest 为 `execution_transport=http-playground-proxy`、`execution_provider=play.golang.org`、`local_socket_enabled=false`。该 release 已通过 production 自动部署脚本完成本地 release 校验、远端 SHA-256 校验、权限归一化、current 原子切换、`go-tour.service` 重启、连续 3 次 localhost HTTP 200 健康检查和正式域名公网 HTTP 200 验收，部署成功且没有回滚。zh-CN 状态为 `ready=103`、`pending=0`、`blocked=0`、`pages=103`、`articles=7`。页面访问链路为浏览器 → EdgeOne → 阿里云 Nginx → Go Tour；正常 Run / Format 链路分别为浏览器 → `https://play.go-dev.shuijingwanwq.com:8443/compile` 或 `/fmt` → ZgoCloud Nginx → `https://play.golang.org/compile` 或 `/fmt`。ZgoCloud 是本项目自建固定反向代理，不是 Go 官方服务；`play.golang.org` 才是最终官方 Playground provider。正常生产 Run / Format 不再经过阿里云 Go 服务端，旧 `/_/compile`、`/_/fmt` 仍保留为兼容/回滚路径。`go-tour.service` 监听 `127.0.0.1:3999`；production `/socket` 与 `/socket/` 仍为 404，生产服务器不执行用户提交的 Go 程序。
+- ZgoCloud 正式接口已完成真实验收：`/compile` POST 返回 HTTP 200，`/fmt` POST 返回 HTTP 200，CORS OPTIONS 返回 204，错误 Origin 返回 403，GET `/compile` 返回 405，未知路径返回 404，旧 `/_/compile` 与 `/_/fmt` 返回 404；HTTP/2 正常。443 继续由 Wstunnel 使用，8443 由 Nginx 使用，WireGuard 与 Wstunnel 未受此次部署影响。
+- 桌面 Firefox 已完成真实生产浏览器验收：Run 实际请求为 `POST https://play.go-dev.shuijingwanwq.com:8443/compile?backend=...` 并返回 HTTP 200，示例输出为 `Hello, 世界` 和 `程序已退出。`；Format 已切换至 `https://play.go-dev.shuijingwanwq.com:8443/fmt`，响应 CORS 允许来源为 `https://go-dev.shuijingwanwq.com`。
+- 本次发布发现重要的 EdgeOne 缓存运维问题：新 release 切换后，缓存的 `/tour/script.js` 仍可能使浏览器继续请求旧的 `/_/compile`。定向刷新 `https://go-dev.shuijingwanwq.com/tour/script.js` 并重新加载页面后，Run / Format 立即切换到 ZgoCloud 新接口。今后涉及前端执行路径变化时，发布验收必须检查 Network 中的实际请求目标，必要时定向刷新该脚本缓存。
+- 2026-08-13 手机端在未开启 VPN 的真实网络环境下完成生产 Run 验收：页面正常使用，点击“运行”后结果很快返回，用户体感明显优于迁移前阿里云 → Google/Playground 路线偶发卡顿的情况。该实测证明新浏览器 → ZgoCloud → `play.golang.org` 链路在该公网环境下可用且响应快速；结合此前 ZgoCloud → `play.golang.org` 连续测试和桌面浏览器验收，多层证据支持本次迁移方向有效，但不据此推断所有中国大陆运营商和所有时间均稳定。
+- “生产 Playground 执行链路迁移至 ZgoCloud 固定代理”已完成生产部署和真实用户验收。后续仅进行运维观察（包括 ZgoCloud 执行稳定性）；是否删除阿里云旧 `/_/compile`、`/_/fmt` 兼容代理，留待后续评估，不作为当前必须执行事项。
 - 旧 release `/data/go-tour/releases/20260811-zh-CN-925d59d` 继续保留用于回滚；临时 4005 smoke 实例已停止，服务器上传压缩包已清理。此次 smoke 中远程 Playground 曾返回上游 502，属于已知外部依赖波动，不视为本次发布失败。
 - 2026-08-13 已完成 production 自动部署脚本首次真实生产验证。脚本提交为 `3852bc1c2b001ed1fa3c640c28aaa696f6ab9c80 feat: 添加生产发布自动部署脚本`；基于 release `/tmp/go-tour-release-20260813-zh-CN-3852bc1`（`locale=zh-CN`、`ready=103`、`pending=0`、`blocked=0`、`pages=103`、`articles=7`）完成上传、权限归一化、SHA-256 校验、权限验证、current 原子切换、服务重启、连续健康检查和公网验收。首次健康探测为 `active + HTTP 000`，随后连续 3 次 `active + HTTP 200` 后才判定成功，验证了连续 localhost 健康检查的必要性。最终 current 为 `/data/go-tour/releases/20260813-zh-CN-3852bc1`，deployment lock 已释放，service 与 localhost 均正常，正式域名返回 HTTP 200；未发生回滚、人工恢复或 staging/lock 残留。
 - 2026-08-12 已完成生产入口域名迁移：正式生产域名为 <https://go-dev.shuijingwanwq.com/>，A Tour of Go 继续使用 `/tour/` 路径。迁移原因是避免 `go-tour.../tour/...` 中 Tour 语义重复，并为未来可能扩展 go.dev 的其他翻译内容保留更宽泛的站点入口；此次仅迁移生产入口，不是应用重新部署，既有 release、commit、`go-tour.service`、`/data/go-tour/` 和生产链路均不变。
@@ -112,7 +117,7 @@
 
 ## 第一阶段上线冻结
 
-- Section：103/103 ready；article metadata：7/7；公共 UI：已完成；production publish：已实现并正式部署；production 自动部署脚本：首次真实生产验证通过；浏览器最终验收：通过。
+- Section：103/103 ready；article metadata：7/7；公共 UI：已完成；production publish：已实现并正式部署；production 自动部署脚本：首次真实生产验证通过；浏览器最终验收：通过；生产 Playground 执行链路迁移至 ZgoCloud 固定代理：已完成生产部署和真实用户验收。
 
 ## 站点首页、公共页脚与项目互链
 
