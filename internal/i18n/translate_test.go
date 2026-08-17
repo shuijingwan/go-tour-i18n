@@ -1082,6 +1082,12 @@ func TestMinimalProtectMethods24ProtectsOnlyPlayDirective(t *testing.T) {
 		t.Fatalf("tokens = %q, want only %q", got, protected.Tokens)
 	}
 	request := makeTranslationRequestForMode(page.ID, "zh-CN", page.Source, &protected, "- glossary rule", "")
+	system := request.Messages[0].Content
+	for _, want := range []string{"相邻字体结构必须保持 legacy present 可以分别解析的边界", "推荐“*注意*： `Bounds`”", "避免“*注意*：`Bounds`”", "不是中文标点后的普遍空格规则"} {
+		if !strings.Contains(system, want) {
+			t.Errorf("minimal system prompt missing font boundary rule %q:\n%s", want, system)
+		}
+	}
 	user := request.Messages[1].Content
 	if !strings.Contains(user, "唯一形如 ⟪GTI18N_...⟫") || !strings.Contains(user, protected.Tokens[0]) || strings.Contains(user, ".play methods/images.go") {
 		t.Fatalf("minimal request does not match protected input:\n%s", user)
@@ -1142,6 +1148,114 @@ func TestMinimalProtectLeavesLinkTargetUnprotected(t *testing.T) {
 	}
 	if len(minimal.Tokens) != 1 || minimal.Kinds[0] != protectedDirective || !strings.Contains(minimal.Text, "[[/target][label]]") {
 		t.Fatalf("minimal protection unexpectedly protected link target: %+v", minimal)
+	}
+}
+
+func TestMinimalFontBoundaryPromptDoesNotAffectOtherModes(t *testing.T) {
+	source := []byte("* Source\n\n*Note*: use `Bounds`.\n\n.play welcome/hello.go\n")
+	minimal := protectPlayDirectives(source, sum(source))
+	full := protectTranslation(source, sum(source), nil)
+	requests := map[string]TranslationAPIRequest{
+		"minimal": makeTranslationRequestForMode("example/1", "zh-CN", source, &minimal, "- glossary rule", ""),
+		"raw":     makeTranslationRequestForMode("example/1", "zh-CN", source, nil, "- glossary rule", ""),
+		"default": makeTranslationRequestForMode("example/1", "zh-CN", source, &full, "- glossary rule", ""),
+	}
+	marker := "相邻字体结构必须保持 legacy present 可以分别解析的边界"
+	for mode, request := range requests {
+		got := strings.Contains(request.Messages[0].Content, marker)
+		if got != (mode == "minimal") {
+			t.Errorf("%s prompt contains minimal font boundary rule = %t", mode, got)
+		}
+	}
+}
+
+func TestMinimalRetryFeedbackClassifiesFontBeforeGenericFallback(t *testing.T) {
+	fontWants := []string{"没有被 present 正确解析", "marker 本身存在并不一定意味着结构有效", "相邻 font constructs 必须保留可独立解析的 whitespace 边界", "*注意*：`Bounds`", "*注意*： `Bounds`", "不得新增、删除、翻译或改变原有程序字体内容", "不得改变强调类型"}
+	for _, failure := range []string{"font span count mismatch: expected 2, actual 1", "emphasis sentinel order mismatch at 1"} {
+		feedback := retryFeedbackForMode([]string{failure}, false, true)
+		for _, want := range fontWants {
+			if !strings.Contains(feedback, want) {
+				t.Errorf("minimal font feedback for %q missing %q:\n%s", failure, want, feedback)
+			}
+		}
+		if strings.Contains(feedback, "唯一的 .play directive 占位符") {
+			t.Errorf("minimal font failure used generic feedback:\n%s", feedback)
+		}
+	}
+
+	link := retryFeedbackForMode([]string{"link inline code at link index 1 count mismatch"}, false, true)
+	if !strings.Contains(link, "不要给原本是普通文本的链接标签添加反引号") || strings.Contains(link, "相邻 font constructs") {
+		t.Errorf("link feedback lost priority:\n%s", link)
+	}
+	generic := retryFeedbackForMode([]string{"section topology mismatch"}, false, true)
+	if !strings.Contains(generic, "唯一的 .play directive 占位符") || strings.Contains(generic, "相邻 font constructs") {
+		t.Errorf("unknown minimal failure did not use generic fallback:\n%s", generic)
+	}
+}
+
+func TestDevAttemptsRetriesMinimalProtectWithFontBoundaryFeedback(t *testing.T) {
+	source := []byte("* Source\n\n*Note*: use `Bounds`.\n\n.play welcome/hello.go\n")
+	hash := sum(source)
+	root := writeStatusFixture(t, "page_id\tstatus\tattempts\tsource_sha256\tcandidate_path\tupdated_at\tnote\nexample/1\tpending\t0\t"+hash+"\t\t\t\n")
+	writeTestGlossary(t, root)
+	if err := os.MkdirAll(filepath.Join(root, "_content", "tour", "welcome"), 0755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(root, "_content", "tour", "welcome", "hello.go"), []byte("package main\n"), 0644); err != nil {
+		t.Fatal(err)
+	}
+	var calls atomic.Int32
+	client := &TranslationClient{Endpoint: "https://example.invalid", HTTP: mockHTTP(func(r *http.Request) (*http.Response, error) {
+		call := calls.Add(1)
+		var request TranslationAPIRequest
+		if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
+			t.Fatal(err)
+		}
+		all := request.Messages[0].Content + "\n" + request.Messages[1].Content
+		for _, want := range []string{"相邻字体结构必须保持 legacy present 可以分别解析的边界", "推荐“*注意*： `Bounds`”"} {
+			if !strings.Contains(all, want) {
+				t.Errorf("attempt %d missing initial font boundary rule %q:\n%s", call, want, all)
+			}
+		}
+		tokens := translationTokenRE.FindAllString(request.Messages[1].Content, -1)
+		if len(tokens) != 1 {
+			t.Fatalf("attempt %d tokens=%q, want only .play", call, tokens)
+		}
+		content := "* 来源\n\n*注意*：`Bounds`。\n\n" + tokens[0] + "\n"
+		if call == 1 {
+			if strings.Contains(request.Messages[1].Content, "上一次完整页面翻译未通过校验") {
+				t.Fatalf("first request unexpectedly contains retry feedback:\n%s", request.Messages[1].Content)
+			}
+		} else {
+			for _, want := range []string{"没有被 present 正确解析", "marker 本身存在并不一定意味着结构有效", "*注意*：`Bounds`", "*注意*： `Bounds`"} {
+				if !strings.Contains(request.Messages[1].Content, want) {
+					t.Errorf("second request missing font feedback %q:\n%s", want, request.Messages[1].Content)
+				}
+			}
+			content = "* 来源\n\n*注意*： `Bounds`。\n\n" + tokens[0] + "\n"
+		}
+		body, _ := json.Marshal(map[string]any{"choices": []any{map[string]any{"message": map[string]string{"role": "assistant", "content": content}, "finish_reason": "stop"}}, "usage": map[string]int{}})
+		return &http.Response{StatusCode: http.StatusOK, Header: make(http.Header), Body: io.NopCloser(strings.NewReader(string(body))), Request: r}, nil
+	})}
+	runner := TranslationRunner{Root: root, Catalog: &Catalog{Pages: []Page{{ID: "example/1", Article: "welcome.article", Source: source, SourceSHA256: hash}}}, Client: client, Dev: true, DevAttempts: 2, MinimalProtect: true, Now: func() time.Time { return time.Unix(0, 0) }}
+	result, err := runner.Run(context.Background(), "example/1", "zh-CN", "test-secret")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if calls.Load() != 2 || result.Status != "ready" || result.Attempts != 2 || !result.Validation.PresentValid {
+		t.Fatalf("result=%+v calls=%d", result, calls.Load())
+	}
+	firstValidationPath := filepath.Join(root, "data", "translation-runs", "zh-CN", "example", "1", "sources", hash, "attempt-001", "validation.json")
+	firstValidationBytes, err := os.ReadFile(firstValidationPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var firstValidation TranslationValidation
+	if err := json.Unmarshal(firstValidationBytes, &firstValidation); err != nil {
+		t.Fatal(err)
+	}
+	if firstValidation.Passed || firstValidation.PresentValid || !strings.Contains(strings.Join(firstValidation.Failures, "\n"), "font span count mismatch") {
+		t.Fatalf("first validation = %+v, want real font span rejection", firstValidation)
 	}
 }
 

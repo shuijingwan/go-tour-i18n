@@ -298,6 +298,9 @@ func retryFeedbackForMode(failures []string, rawInput, minimalProtect bool) stri
 		return "上一次输出在链接显示文本中新增了源页面不存在的行内代码格式。不要给原本是普通文本的链接标签添加反引号或行内代码标记；保留源页面已有的链接 target 和已有行内代码结构。普通链接显示文字仍可正常翻译。请重新翻译完整页面。"
 	}
 	if minimalProtect {
+		if strings.Contains(joined, "font span") || strings.Contains(joined, "emphasis") {
+			return "上一次输出中的强调、程序字体或行内代码结构没有被 present 正确解析。marker 本身存在并不一定意味着结构有效；相邻 font constructs 必须保留可独立解析的 whitespace 边界。特别检查类似“*注意*：`Bounds`”的结构，应调整为“*注意*： `Bounds`”。不得新增、删除、翻译或改变原有程序字体内容，也不得改变强调类型。请重新翻译完整页面。"
+		}
 		return "上一次输出未通过页面结构校验。唯一的 .play directive 占位符必须原样且恰好出现一次；其余原有 present 结构也不得自行增删或改写。请重新翻译完整页面。"
 	}
 	if rawInput {
@@ -714,6 +717,7 @@ target_locale: %s
 	if minimalProtect {
 		system = strings.Replace(system, "只返回完整且可由 present 解析的 .article 内容。必须保留每个保护 token，使其原样出现、恰好出现一次；不得修改、删除、复制或伪造。为适应目标语言自然语序可以调整 token 位置，但不得破坏其所属的链接、代码、directive、预格式化等结构关系。必须使用术语表中的强制译法；对应的、应当翻译的英文显示文本不得残留；不得简化、遗漏或改变原文含义。", "只返回完整且可由 present 解析的 .article 内容。唯一的 .play directive 占位符必须原样出现且恰好一次；不得修改、删除、复制或伪造。其余原有链接、代码、directive、预格式化等结构及其关系也不得破坏。必须使用术语表中的强制译法；对应的、应当翻译的英文显示文本不得残留；不得简化、遗漏或改变原文含义。", 1)
 		system = strings.Replace(system, "可以润色普通中文文本，但不得改变、增删或重新标记任何受保护结构。尤其不得自行新增或删除行内代码反引号、预格式化代码、present directive、链接及链接 target、HTML 或特殊 present 语法；所有保护 token 必须完整且唯一，结构关系和形式必须保持一致。", "可以润色普通中文文本，但不得改变、增删或重新标记任何原有结构。尤其不得自行新增或删除行内代码反引号、预格式化代码、present directive、链接及链接 target、HTML 或特殊 present 语法；结构关系和形式必须保持一致。", 1)
+		system += "\n\n字体结构边界：保留原有 emphasis、program font 和 inline-code 等字体结构，不得新增、删除或改变。相邻字体结构必须保持 legacy present 可以分别解析的边界；中文全角标点后若紧接另一个字体结构，必要时保留一个 ASCII 空格，例如推荐“*注意*： `Bounds`”，避免“*注意*：`Bounds`”。这不是中文标点后的普遍空格规则，只在保持相邻 present font constructs 可独立解析时使用必要边界。"
 		user := fmt.Sprintf(`page_id: %s
 source_locale: en
 target_locale: %s
