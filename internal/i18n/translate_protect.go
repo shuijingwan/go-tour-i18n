@@ -13,7 +13,6 @@ var translationTokenRE = regexp.MustCompile(`⟪GTI18N_[0-9a-f]{8}_[0-9]{6}⟫`)
 var translationKeepRE = regexp.MustCompile(`\b(?:Go|gofmt|PageUp|PageDown|Shift|Enter|Ctrl)\b`)
 var whereToGoPrefixRE = regexp.MustCompile(`(?i)\bwhere[\t \r\n]+to[\t \r\n]+$`)
 var directiveLineRE = regexp.MustCompile(`(?m)^\.(?:play|image)\s+[^\n]+$`)
-var playDirectiveLineRE = regexp.MustCompile(`(?m)^\.play\s+[^\n]+$`)
 
 type protectedTranslation struct {
 	Text             string
@@ -64,11 +63,9 @@ type protectedInlinePair struct {
 func protectTranslation(source []byte, hash string, glossary *Glossary) protectedTranslation {
 	text := string(source)
 	spans := preformattedProtectionSpans(text)
-	for _, m := range directiveLineRE.FindAllStringIndex(text, -1) {
-		spans = append(spans, protectedSpan{start: m[0], end: m[1], kind: protectedDirective})
-	}
+	spans = append(spans, directiveProtectionSpans(text, false)...)
+	spans = append(spans, linkTargetProtectionSpans(text)...)
 	for _, m := range linkRE.FindAllStringSubmatchIndex(text, -1) {
-		spans = append(spans, protectedSpan{start: m[2], end: m[3], kind: protectedLinkTarget})
 		if glossary != nil {
 			label := text[m[4]:m[5]]
 			if key, wrapper := glossaryKeyForLabel(label, glossary.Mandatory); key != "" && key != "slides" {
@@ -112,13 +109,29 @@ func protectTranslation(source []byte, hash string, glossary *Glossary) protecte
 // mechanism; all other source bytes remain visible to the model.
 func protectPlayDirectives(source []byte, hash string) protectedTranslation {
 	text := string(source)
-	var spans []protectedSpan
-	for _, m := range playDirectiveLineRE.FindAllStringIndex(text, -1) {
-		spans = append(spans, protectedSpan{start: m[0], end: m[1], kind: protectedDirective})
-	}
+	spans := directiveProtectionSpans(text, true)
 	result := protectedTranslationFromSpans(text, hash, spans)
 	result.MinimalProtect = true
 	return result
+}
+
+func directiveProtectionSpans(text string, playOnly bool) []protectedSpan {
+	var spans []protectedSpan
+	for _, match := range directiveLineRE.FindAllStringIndex(text, -1) {
+		if playOnly && !strings.HasPrefix(text[match[0]:match[1]], ".play") {
+			continue
+		}
+		spans = append(spans, protectedSpan{start: match[0], end: match[1], kind: protectedDirective})
+	}
+	return spans
+}
+
+func linkTargetProtectionSpans(text string) []protectedSpan {
+	var spans []protectedSpan
+	for _, match := range linkRE.FindAllStringSubmatchIndex(text, -1) {
+		spans = append(spans, protectedSpan{start: match[2], end: match[3], kind: protectedLinkTarget})
+	}
+	return spans
 }
 
 func protectedTranslationFromSpans(text, hash string, spans []protectedSpan) protectedTranslation {

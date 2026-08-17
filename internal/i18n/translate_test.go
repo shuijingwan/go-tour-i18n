@@ -1107,6 +1107,44 @@ func TestMinimalProtectMethods24ProtectsOnlyPlayDirective(t *testing.T) {
 	}
 }
 
+func TestDirectiveProtectionPoliciesShareCollector(t *testing.T) {
+	source := []byte("* Directives\n\n.play examples/one.go\n\n.image images/two.png\n")
+	full := protectTranslation(source, "12345678", nil)
+	minimal := protectPlayDirectives(source, "12345678")
+
+	if len(full.Tokens) != 2 || len(full.Values) != 2 || full.Values[0] != ".play examples/one.go" || full.Values[1] != ".image images/two.png" {
+		t.Fatalf("default directive protection = %+v, want play and image", full)
+	}
+	if len(minimal.Tokens) != 1 || len(minimal.Values) != 1 || minimal.Values[0] != ".play examples/one.go" {
+		t.Fatalf("minimal directive protection = %+v, want only play", minimal)
+	}
+	if strings.Contains(full.Text, ".play examples/one.go") || strings.Contains(full.Text, ".image images/two.png") {
+		t.Fatalf("default protection left a directive visible:\n%s", full.Text)
+	}
+	if strings.Contains(minimal.Text, ".play examples/one.go") || !strings.Contains(minimal.Text, ".image images/two.png") {
+		t.Fatalf("minimal protection did not select only play:\n%s", minimal.Text)
+	}
+	if restored, failures := full.restore(full.Text); len(failures) != 0 || restored != string(source) {
+		t.Fatalf("default restore = %q, failures=%v", restored, failures)
+	}
+	if restored, failures := minimal.restore(minimal.Text); len(failures) != 0 || restored != string(source) {
+		t.Fatalf("minimal restore = %q, failures=%v", restored, failures)
+	}
+}
+
+func TestMinimalProtectLeavesLinkTargetUnprotected(t *testing.T) {
+	source := []byte("* Link\n\n[[/target][label]]\n\n.play examples/one.go\n")
+	full := protectTranslation(source, "12345678", nil)
+	minimal := protectPlayDirectives(source, "12345678")
+
+	if len(full.Tokens) != 2 || full.Kinds[0] != protectedLinkTarget || full.Values[0] != "/target" || full.Kinds[1] != protectedDirective {
+		t.Fatalf("default link/directive protection = %+v", full)
+	}
+	if len(minimal.Tokens) != 1 || minimal.Kinds[0] != protectedDirective || !strings.Contains(minimal.Text, "[[/target][label]]") {
+		t.Fatalf("minimal protection unexpectedly protected link target: %+v", minimal)
+	}
+}
+
 func TestTranslationRunnerRejectsMutuallyExclusiveRawModes(t *testing.T) {
 	runner := TranslationRunner{RawInput: true, MinimalProtect: true}
 	if _, err := runner.Run(context.Background(), "example/1", "zh-CN", "test-secret"); err == nil || !strings.Contains(err.Error(), "mutually exclusive") {
