@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"slices"
 	"strings"
 	"sync/atomic"
 	"testing"
@@ -21,6 +22,18 @@ func (f roundTripFunc) RoundTrip(r *http.Request) (*http.Response, error) { retu
 
 func mockHTTP(handler roundTripFunc) *http.Client {
 	return &http.Client{Transport: handler}
+}
+
+func uniqueTranslationTokens(text string) []string {
+	seen := map[string]bool{}
+	var tokens []string
+	for _, token := range translationTokenRE.FindAllString(text, -1) {
+		if !seen[token] {
+			seen[token] = true
+			tokens = append(tokens, token)
+		}
+	}
+	return tokens
 }
 
 func writeTestGlossary(t *testing.T, root string) {
@@ -1050,7 +1063,7 @@ func TestRawInputRunnerUsesResponseDirectlyAndStillValidatesCandidate(t *testing
 	}
 }
 
-func TestMinimalProtectMethods24ProtectsOnlyPlayDirective(t *testing.T) {
+func TestMinimalProtectMethods24ProtectsPlayAndEmphasisDelimiters(t *testing.T) {
 	root := repoRoot(t)
 	catalog, err := BuildCatalog(root)
 	if err != nil {
@@ -1061,25 +1074,27 @@ func TestMinimalProtectMethods24ProtectsOnlyPlayDirective(t *testing.T) {
 		t.Fatal(err)
 	}
 	protected := protectPlayDirectives(page.Source, page.SourceSHA256)
-	if !protected.MinimalProtect || len(protected.Tokens) != 1 || len(protected.Values) != 1 || protected.Values[0] != ".play methods/images.go" || protected.Kinds[0] != protectedDirective {
+	wantKinds := []protectedTokenKind{protectedBoldOpen, protectedBoldClose, protectedDirective}
+	wantValues := []string{"*", "*", ".play methods/images.go"}
+	if !protected.MinimalProtect || !slices.Equal(protected.Kinds, wantKinds) || !slices.Equal(protected.Values, wantValues) {
 		t.Fatalf("minimal protection = %+v", protected)
 	}
-	if strings.Contains(protected.Text, ".play methods/images.go") || !strings.Contains(protected.Text, protected.Tokens[0]) {
-		t.Fatalf("play directive was not replaced exactly once:\n%s", protected.Text)
+	if strings.Contains(protected.Text, ".play methods/images.go") || !strings.Contains(protected.Text, "Note") || strings.Contains(protected.Text, "*Note*") {
+		t.Fatalf("play or emphasis delimiters were not protected as expected:\n%s", protected.Text)
 	}
 	for _, want := range []string{
 		"[[/pkg/image/#Image][Package image]]",
 		"`Image`",
 		"[[/pkg/image/#Rectangle][`image.Rectangle`]]",
 		"\tpackage image",
-		"*Note*",
+		"Note",
 	} {
 		if !strings.Contains(protected.Text, want) {
 			t.Errorf("unprotected source structure missing %q:\n%s", want, protected.Text)
 		}
 	}
-	if got := translationTokenRE.FindAllString(protected.Text, -1); len(got) != 1 || got[0] != protected.Tokens[0] {
-		t.Fatalf("tokens = %q, want only %q", got, protected.Tokens)
+	if got := translationTokenRE.FindAllString(protected.Text, -1); !slices.Equal(got, protected.Tokens) {
+		t.Fatalf("tokens = %q, want %q", got, protected.Tokens)
 	}
 	request := makeTranslationRequestForMode(page.ID, "zh-CN", page.Source, &protected, "- glossary rule", "")
 	system := request.Messages[0].Content
@@ -1089,7 +1104,7 @@ func TestMinimalProtectMethods24ProtectsOnlyPlayDirective(t *testing.T) {
 		}
 	}
 	user := request.Messages[1].Content
-	if !strings.Contains(user, "唯一形如 ⟪GTI18N_...⟫") || !strings.Contains(user, protected.Tokens[0]) || strings.Contains(user, ".play methods/images.go") {
+	if !strings.Contains(user, "分别代表完整 .play directive 或 emphasis delimiter") || !strings.Contains(user, protected.Tokens[0]) || strings.Contains(user, ".play methods/images.go") {
 		t.Fatalf("minimal request does not match protected input:\n%s", user)
 	}
 
@@ -1107,9 +1122,33 @@ func TestMinimalProtectMethods24ProtectsOnlyPlayDirective(t *testing.T) {
 	} {
 		t.Run(name, func(t *testing.T) {
 			if got, failures := protected.restore(response); got != "" || len(failures) == 0 {
-				t.Fatalf("invalid directive placeholder accepted: got=%q failures=%v", got, failures)
+				t.Fatalf("invalid minimal placeholder accepted: got=%q failures=%v", got, failures)
 			}
 		})
+	}
+}
+
+func TestMinimalProtectPolicyUsesExistingEmphasisSpans(t *testing.T) {
+	source := []byte("* Source\n\n(*Note:* Use `code` and [[/target][link]].)\n\n.play welcome/hello.go\n")
+	protected := protectPlayDirectives(source, "12345678")
+	wantKinds := []protectedTokenKind{protectedBoldOpen, protectedBoldClose, protectedDirective}
+	wantValues := []string{"*", "*", ".play welcome/hello.go"}
+	if !protected.MinimalProtect || !slices.Equal(protected.Kinds, wantKinds) || !slices.Equal(protected.Values, wantValues) {
+		t.Fatalf("minimal protection = %+v, want kinds %v values %q", protected, wantKinds, wantValues)
+	}
+	if len(protected.Tokens) != 3 || len(protected.EmphasisTokens) != 2 || len(protected.InlinePairs) != 0 {
+		t.Fatalf("minimal token roles = %+v", protected)
+	}
+	for _, visible := range []string{"Note:", "`code`", "[[/target][link]]"} {
+		if !strings.Contains(protected.Text, visible) {
+			t.Errorf("minimal input hid %q:\n%s", visible, protected.Text)
+		}
+	}
+	if strings.Contains(protected.Text, ".play welcome/hello.go") || strings.Contains(protected.Text, "*Note:*") {
+		t.Fatalf("minimal input left protected structure visible:\n%s", protected.Text)
+	}
+	if restored, failures := protected.restore(protected.Text); len(failures) != 0 || restored != string(source) {
+		t.Fatalf("restore = %q, failures=%v, want %q", restored, failures, source)
 	}
 }
 
@@ -1193,8 +1232,17 @@ func TestMinimalRetryFeedbackClassifiesFontBeforeGenericFallback(t *testing.T) {
 	if !strings.Contains(link, "不要给原本是普通文本的链接标签添加反引号") || strings.Contains(link, "相邻 font constructs") {
 		t.Errorf("link feedback lost priority:\n%s", link)
 	}
+	inline := retryFeedbackForMode([]string{"inline code count mismatch: expected 3, actual 4"}, false, true)
+	for _, want := range []string{"新增、删除或改变了原文的行内代码结构", "不得因中文改写而复制并再次添加反引号", "调整中文句式来避免重复", "span 的数量、内容和结构一致"} {
+		if !strings.Contains(inline, want) {
+			t.Errorf("minimal inline feedback missing %q:\n%s", want, inline)
+		}
+	}
+	if strings.Contains(inline, "所有 minimal-protect 占位符") || strings.Contains(inline, "链接显示文本") {
+		t.Errorf("minimal inline failure used the wrong feedback:\n%s", inline)
+	}
 	generic := retryFeedbackForMode([]string{"section topology mismatch"}, false, true)
-	if !strings.Contains(generic, "唯一的 .play directive 占位符") || strings.Contains(generic, "相邻 font constructs") {
+	if !strings.Contains(generic, "所有 minimal-protect 占位符") || strings.Contains(generic, "相邻 font constructs") {
 		t.Errorf("unknown minimal failure did not use generic fallback:\n%s", generic)
 	}
 }
@@ -1223,11 +1271,11 @@ func TestDevAttemptsRetriesMinimalProtectWithFontBoundaryFeedback(t *testing.T) 
 				t.Errorf("attempt %d missing initial font boundary rule %q:\n%s", call, want, all)
 			}
 		}
-		tokens := translationTokenRE.FindAllString(request.Messages[1].Content, -1)
-		if len(tokens) != 1 {
-			t.Fatalf("attempt %d tokens=%q, want only .play", call, tokens)
+		tokens := uniqueTranslationTokens(request.Messages[1].Content)
+		if len(tokens) != 3 {
+			t.Fatalf("attempt %d tokens=%q, want emphasis pair and .play", call, tokens)
 		}
-		content := "* 来源\n\n*注意*：`Bounds`。\n\n" + tokens[0] + "\n"
+		content := "* 来源\n\n" + tokens[0] + "注意" + tokens[1] + "： `Bounds`。 *额外*。\n\n" + tokens[2] + "\n"
 		if call == 1 {
 			if strings.Contains(request.Messages[1].Content, "上一次完整页面翻译未通过校验") {
 				t.Fatalf("first request unexpectedly contains retry feedback:\n%s", request.Messages[1].Content)
@@ -1238,7 +1286,7 @@ func TestDevAttemptsRetriesMinimalProtectWithFontBoundaryFeedback(t *testing.T) 
 					t.Errorf("second request missing font feedback %q:\n%s", want, request.Messages[1].Content)
 				}
 			}
-			content = "* 来源\n\n*注意*： `Bounds`。\n\n" + tokens[0] + "\n"
+			content = "* 来源\n\n" + tokens[0] + "注意" + tokens[1] + "： `Bounds`。\n\n" + tokens[2] + "\n"
 		}
 		body, _ := json.Marshal(map[string]any{"choices": []any{map[string]any{"message": map[string]string{"role": "assistant", "content": content}, "finish_reason": "stop"}}, "usage": map[string]int{}})
 		return &http.Response{StatusCode: http.StatusOK, Header: make(http.Header), Body: io.NopCloser(strings.NewReader(string(body))), Request: r}, nil
@@ -1262,6 +1310,111 @@ func TestDevAttemptsRetriesMinimalProtectWithFontBoundaryFeedback(t *testing.T) 
 	}
 	if firstValidation.Passed || firstValidation.PresentValid || !strings.Contains(strings.Join(firstValidation.Failures, "\n"), "font span count mismatch") {
 		t.Fatalf("first validation = %+v, want real font span rejection", firstValidation)
+	}
+}
+
+func TestMinimalProtectNormalizesEmphasisBoundaryBeforeValidation(t *testing.T) {
+	source := []byte("* Test\n\n(*Note:* If you are interested.)\n\n.play welcome/hello.go\n")
+	hash := sum(source)
+	root := writeStatusFixture(t, "page_id\tstatus\tattempts\tsource_sha256\tcandidate_path\tupdated_at\tnote\nexample/1\tpending\t0\t"+hash+"\t\t\t\n")
+	writeTestGlossary(t, root)
+	if err := os.MkdirAll(filepath.Join(root, "_content", "tour", "welcome"), 0755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(root, "_content", "tour", "welcome", "hello.go"), []byte("package main\n"), 0644); err != nil {
+		t.Fatal(err)
+	}
+	catalog := &Catalog{Pages: []Page{{ID: "example/1", Article: "welcome.article", Source: source, SourceSHA256: hash}}}
+	protected := protectPlayDirectives(source, hash)
+	if !slices.Equal(protected.Kinds, []protectedTokenKind{protectedBoldOpen, protectedBoldClose, protectedDirective}) {
+		t.Fatalf("minimal token kinds = %v", protected.Kinds)
+	}
+	response := "* 测试\n\n（" + protected.Tokens[0] + "注意：" + protected.Tokens[1] + "如果你感兴趣。）\n\n" + protected.Tokens[2] + "\n"
+	candidate, failures := protected.restore(response)
+	if len(failures) != 0 {
+		t.Fatalf("restore failures = %v", failures)
+	}
+	if !strings.Contains(candidate, "（*注意：* 如果你感兴趣。）") {
+		t.Fatalf("restore did not add the required emphasis boundary:\n%s", candidate)
+	}
+	if err := ValidateCandidate(root, catalog, "example/1", []byte(candidate)); err != nil {
+		t.Fatalf("normalized candidate failed shared validator: %v\n%s", err, candidate)
+	}
+	expectedFonts, err := parsedFontSpans(root, "welcome.article", source)
+	if err != nil {
+		t.Fatal(err)
+	}
+	actualFonts, err := parsedFontSpans(root, "welcome.article", []byte(candidate))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !slices.Equal(expectedFonts, []fontSpanKind{fontBold}) || !slices.Equal(actualFonts, expectedFonts) {
+		t.Fatalf("font spans: source=%v candidate=%v", expectedFonts, actualFonts)
+	}
+}
+
+func TestDevAttemptsRetriesMinimalProtectWithInlineCodeFeedback(t *testing.T) {
+	source := []byte("* Generic\n\nThis declaration means that `s` is a slice of any type `T` that fulfills the built-in constraint `comparable`.\n\n.play welcome/hello.go\n")
+	hash := sum(source)
+	root := writeStatusFixture(t, "page_id\tstatus\tattempts\tsource_sha256\tcandidate_path\tupdated_at\tnote\nexample/1\tpending\t0\t"+hash+"\t\t\t\n")
+	writeTestGlossary(t, root)
+	if err := os.MkdirAll(filepath.Join(root, "_content", "tour", "welcome"), 0755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(root, "_content", "tour", "welcome", "hello.go"), []byte("package main\n"), 0644); err != nil {
+		t.Fatal(err)
+	}
+	var calls atomic.Int32
+	client := &TranslationClient{Endpoint: "https://example.invalid", HTTP: mockHTTP(func(r *http.Request) (*http.Response, error) {
+		call := calls.Add(1)
+		var request TranslationAPIRequest
+		if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
+			t.Fatal(err)
+		}
+		user := request.Messages[1].Content
+		tokens := uniqueTranslationTokens(user)
+		if len(tokens) != 1 {
+			t.Fatalf("attempt %d tokens=%q, want only .play", call, tokens)
+		}
+		content := "* 泛型\n\n这个声明表示，`s` 是元素类型为 `T` 的切片，而 `T` 满足内置约束 `comparable`。\n\n" + tokens[0] + "\n"
+		if call == 1 {
+			if strings.Contains(user, "上一次完整页面翻译未通过校验") {
+				t.Fatalf("first request unexpectedly contains retry feedback:\n%s", user)
+			}
+		} else {
+			for _, want := range []string{"新增、删除或改变了原文的行内代码结构", "不得因中文改写而复制并再次添加反引号", "调整中文句式来避免重复", "span 的数量、内容和结构一致"} {
+				if !strings.Contains(user, want) {
+					t.Errorf("second request missing inline feedback %q:\n%s", want, user)
+				}
+			}
+			if strings.Contains(user, "所有 minimal-protect 占位符必须") {
+				t.Errorf("second request used generic minimal feedback:\n%s", user)
+			}
+			content = "* 泛型\n\n这个声明表示，`s` 是一个元素类型为 `T` 且满足内置约束 `comparable` 的切片。\n\n" + tokens[0] + "\n"
+		}
+		body, _ := json.Marshal(map[string]any{"choices": []any{map[string]any{"message": map[string]string{"role": "assistant", "content": content}, "finish_reason": "stop"}}, "usage": map[string]int{}})
+		return &http.Response{StatusCode: http.StatusOK, Header: make(http.Header), Body: io.NopCloser(strings.NewReader(string(body))), Request: r}, nil
+	})}
+	runner := TranslationRunner{Root: root, Catalog: &Catalog{Pages: []Page{{ID: "example/1", Article: "welcome.article", Source: source, SourceSHA256: hash}}}, Client: client, Dev: true, DevAttempts: 2, MinimalProtect: true, Now: func() time.Time { return time.Unix(0, 0) }}
+	result, err := runner.Run(context.Background(), "example/1", "zh-CN", "test-secret")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if calls.Load() != 2 || result.Status != "ready" || result.Attempts != 2 || !result.Validation.Passed {
+		t.Fatalf("result=%+v calls=%d", result, calls.Load())
+	}
+	firstValidationPath := filepath.Join(root, "data", "translation-runs", "zh-CN", "example", "1", "sources", hash, "attempt-001", "validation.json")
+	firstValidationBytes, err := os.ReadFile(firstValidationPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var firstValidation TranslationValidation
+	if err := json.Unmarshal(firstValidationBytes, &firstValidation); err != nil {
+		t.Fatal(err)
+	}
+	wantFailure := "inline code count mismatch: expected 3, actual 4"
+	if firstValidation.Passed || firstValidation.PresentValid || !strings.Contains(strings.Join(firstValidation.Failures, "\n"), wantFailure) {
+		t.Fatalf("first validation = %+v, want %q", firstValidation, wantFailure)
 	}
 }
 
@@ -1291,7 +1444,7 @@ func TestDevAttemptsRetriesMinimalProtectWithLinkInlineCodeFeedback(t *testing.T
 			t.Fatal(err)
 		}
 		user := request.Messages[1].Content
-		tokens := translationTokenRE.FindAllString(user, -1)
+		tokens := uniqueTranslationTokens(user)
 		if len(tokens) != 1 {
 			t.Fatalf("tokens=%q", tokens)
 		}

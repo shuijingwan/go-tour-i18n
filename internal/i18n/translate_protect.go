@@ -104,12 +104,13 @@ func protectTranslation(source []byte, hash string, glossary *Glossary) protecte
 	return protectedTranslationFromSpans(text, hash, spans)
 }
 
-// protectPlayDirectives deliberately protects only complete .play directive
-// lines. It is the narrowest experiment built on the normal token/restore
-// mechanism; all other source bytes remain visible to the model.
+// protectPlayDirectives protects complete .play directive lines and existing
+// emphasis delimiters. The emphasized natural language and all other source
+// bytes remain visible to the model.
 func protectPlayDirectives(source []byte, hash string) protectedTranslation {
 	text := string(source)
 	spans := directiveProtectionSpans(text, true)
+	spans = append(spans, presentEmphasisDelimiterSpans(text)...)
 	result := protectedTranslationFromSpans(text, hash, spans)
 	result.MinimalProtect = true
 	return result
