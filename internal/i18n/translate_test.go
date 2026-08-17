@@ -1162,7 +1162,13 @@ func TestMinimalFontBoundaryPromptDoesNotAffectOtherModes(t *testing.T) {
 	}
 	marker := "相邻字体结构必须保持 legacy present 可以分别解析的边界"
 	for mode, request := range requests {
-		got := strings.Contains(request.Messages[0].Content, marker)
+		system := request.Messages[0].Content
+		for _, want := range []string{"Section/标题行", "“* ”", "ASCII 空格", "不得写成“*标题”", "应保持为“* 标题”"} {
+			if !strings.Contains(system, want) {
+				t.Errorf("%s prompt missing shared Section rule %q", mode, want)
+			}
+		}
+		got := strings.Contains(system, marker)
 		if got != (mode == "minimal") {
 			t.Errorf("%s prompt contains minimal font boundary rule = %t", mode, got)
 		}

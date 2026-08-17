@@ -23,6 +23,16 @@ func syntheticCatalog() *Catalog {
 	return &Catalog{Pages: []Page{{ID: "synthetic/1", Article: "basics.article", Source: []byte(syntheticSource), SourceSHA256: sum([]byte(syntheticSource))}}}
 }
 
+func TestPresentSectionTitleRequiresASCIISpace(t *testing.T) {
+	root := repoRoot(t)
+	if _, err := parsePresentPage(root, "basics.article", []byte("* 图片\n\n正文。\n")); err != nil {
+		t.Fatalf("valid Section title rejected: %v", err)
+	}
+	if _, err := parsePresentPage(root, "basics.article", []byte("*图片\n\n正文。\n")); err == nil || !strings.Contains(err.Error(), "unexpected line: *图片") {
+		t.Fatalf("invalid Section title error = %v, want unexpected line", err)
+	}
+}
+
 func TestCandidateAllowedChanges(t *testing.T) {
 	root := repoRoot(t)
 	c := syntheticCatalog()
