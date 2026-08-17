@@ -1,6 +1,6 @@
 # 项目状态
 
-更新时间：2026-08-12 15:52:16（北京时间）
+更新时间：2026-08-17 21:35:20（北京时间）
 
 ## 基线与架构
 
@@ -33,6 +33,16 @@
 - `--minimal-protect` 当前只保护完整 `.play` directive。`methods/24` 的唯一 `.play` token 被模型原样且恰好一次保留，并精确 restore，directive 问题消失；但链接普通标签新增 inline code 仍存在。随后已增加该失败的针对性 retry feedback 与同进程 `--dev-attempts`，后续实验又出现 font span count mismatch，说明当前 minimal-protect 尚不足以稳定替代默认完整保护流程。
 - 当前结论是：大量 protected token 并非越多越好，会增加提示上下文、restore 复杂度，并可能妨碍符合中文习惯的自然语序调整；完全 raw 又不能稳定保护 present 机器结构。长期方向应为“原始页面优先 + 少量真正高风险机器结构保护 + 严格统一 validator + 针对性 retry feedback”。目前暂停继续扩大 minimal-protect，不主动为每种潜在结构增加保护规则；成熟的默认 protected-token 流程继续作为正式翻译路径。
 - 正式翻译状态与 candidate 已恢复至实验前状态；真实实验 attempts 审计继续保留在 `data/translation-runs`。
+
+### 2026-08-17 翻译质量与 Translation Engine 评估
+
+- 对 7 个代表页的 Default protected-token 信息损失审计确认：157 个保护标记没有隐藏任何需要翻译的英文自然语言，hidden translatable English 为 0 项、0.00%。Default 与 minimal-v1 都保留完整页面级自然语言上下文。
+- 5 个固定页面的重复实验确认，GLM-5.2 在实际 API Request 相同的情况下 response 仍存在运行间波动，且波动可能改变 validator pass / fail；项目不推测服务端原因。
+- 5 页 × 2 模式 × 3 次的重复实验中，Static Context 未显示稳定优势：Default usable/planned 为 12/15，Static Context 为 9/15。Default protected-token 继续作为当前正式翻译执行路径，不再优先投入 minimal-protect / Static Context 的细微调优。
+- 已完成 `methods/24`、`concurrency/7`、`concurrency/11` 三页，ChatGPT、Codex、GLM-5.2 三种候选来源，ChatGPT、DeepSeek、GLM-5.2、豆包四个 judge 的 12 次匿名评审。ChatGPT 获得 8/12 第一名；排除 ChatGPT self-judge 后仍获得 5/9 第一名，当前是下一阶段最值得优先验证的高质量翻译来源。
+- 当前 zh-CN 103/103 ready、canonical candidates 与 production 均保持不变；本轮实验不意味着现有 103 页必须重翻，也不表示 ChatGPT 已接入正式 Translation Engine。
+- 下一阶段是设计尽可能自动化的 ChatGPT retranslation staging，先保存独立候选并与现有 canonical candidate 比较，达到替换标准后才考虑正式切换，不立即覆盖现有译文。
+- 完整实验设计、排名、统计、质量观察和工程决策见 [TRANSLATION_QUALITY_EXPERIMENTS.md](TRANSLATION_QUALITY_EXPERIMENTS.md)。
 
 ## zh-CN 课程正文完成状态
 
