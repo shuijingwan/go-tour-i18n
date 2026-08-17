@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"reflect"
 	"slices"
 	"strings"
 	"sync/atomic"
@@ -1017,6 +1018,167 @@ func TestRawInputTranslationRequestUsesOriginalPageWithoutTokenInstructions(t *t
 		if !strings.Contains(user, want) {
 			t.Errorf("raw request missing %q:\n%s", want, user)
 		}
+	}
+}
+
+func TestDefaultStaticContextRequestOnlyAddsReadOnlyAppendix(t *testing.T) {
+	source := []byte("* Type parameters\n\nSome text about `T`.\n\n  func Index[T comparable](s []T, x T) int\n\n.play generics/index.go\n")
+	protected := protectTranslation(source, sum(source), nil)
+	before := protected
+	blocks := staticContextBlocks(protected)
+	if len(blocks) != 1 {
+		t.Fatalf("static blocks = %+v, want one", blocks)
+	}
+	wantCode := "  func Index[T comparable](s []T, x T) int"
+	if blocks[0].Code != wantCode || protected.Kinds[slices.Index(protected.Tokens, blocks[0].Token)] != protectedPreformattedStatic {
+		t.Fatalf("static block = %+v, want code %q and static kind", blocks[0], wantCode)
+	}
+
+	plain := makeTranslationRequestForMode("generics/1", "zh-CN", source, &protected, "- glossary rule", "")
+	withContext := makeTranslationRequestForModeOptions("generics/1", "zh-CN", source, &protected, "- glossary rule", "", translationRequestOptions{IncludeStaticContext: true})
+	assertProtectedTranslationMetadataEqual(t, before, protected)
+	if plain.Messages[0].Content != withContext.Messages[0].Content {
+		t.Fatal("static context changed the system prompt")
+	}
+	if strings.Count(withContext.Messages[1].Content, "只读技术上下文（不属于输出页面）：") != 1 {
+		t.Fatalf("static appendix count is not one:\n%s", withContext.Messages[1].Content)
+	}
+	appendix := staticContextAppendix(protected)
+	if appendix == "" || !strings.Contains(appendix, "对应 token："+blocks[0].Token+"\n<static-code>\n"+wantCode+"\n</static-code>") {
+		t.Fatalf("static appendix does not contain exact token/code mapping:\n%s", appendix)
+	}
+	if got := strings.Replace(withContext.Messages[1].Content, "\n\n"+appendix, "", 1); got != plain.Messages[1].Content {
+		t.Fatalf("removing deterministic appendix did not reproduce default user message\ngot:\n%s\nwant:\n%s", got, plain.Messages[1].Content)
+	}
+	for i, token := range protected.Tokens {
+		if protected.Kinds[i] != protectedPreformattedStatic && strings.Contains(appendix, protected.Values[i]) {
+			t.Fatalf("appendix contains non-static protected value for token %s: %q", token, protected.Values[i])
+		}
+	}
+	if protocol := protectedStructureProtocol(protected); strings.Count(plain.Messages[1].Content, protocol) != 1 || strings.Count(withContext.Messages[1].Content, protocol) != 1 {
+		t.Fatal("static context changed or duplicated the protected structure protocol")
+	}
+}
+
+func TestDefaultStaticContextIncludesMultipleBlocksInSourceOrder(t *testing.T) {
+	source := []byte("* Exercise\n\nFirst:\n\n\tz := 1.0\n\nSecond:\n\n\tz := float64(1)\n\n.play example.go\n")
+	protected := protectTranslation(source, sum(source), nil)
+	blocks := staticContextBlocks(protected)
+	if len(blocks) != 2 {
+		t.Fatalf("static blocks = %+v, want two", blocks)
+	}
+	wantCodes := []string{"\tz := 1.0", "\tz := float64(1)"}
+	appendix := staticContextAppendix(protected)
+	previousEnd := -1
+	for i, block := range blocks {
+		if block.Code != wantCodes[i] {
+			t.Errorf("block %d code = %q, want %q", i+1, block.Code, wantCodes[i])
+		}
+		entry := "对应 token：" + block.Token + "\n<static-code>\n" + block.Code + "\n</static-code>"
+		if strings.Count(appendix, entry) != 1 {
+			t.Fatalf("block %d mapping count is not one:\n%s", i+1, appendix)
+		}
+		at := strings.Index(appendix, entry)
+		if at <= previousEnd {
+			t.Fatalf("block %d is out of source order:\n%s", i+1, appendix)
+		}
+		previousEnd = at + len(entry)
+	}
+}
+
+func TestDefaultStaticContextWithoutStaticBlockLeavesRequestIdentical(t *testing.T) {
+	source := []byte("* Next\n\nRead [[/doc/][the documentation]].\n")
+	protected := protectTranslation(source, sum(source), nil)
+	if blocks := staticContextBlocks(protected); len(blocks) != 0 {
+		t.Fatalf("static blocks = %+v, want none", blocks)
+	}
+	plain := makeTranslationRequestForMode("example/1", "zh-CN", source, &protected, "- glossary rule", "")
+	withContext := makeTranslationRequestForModeOptions("example/1", "zh-CN", source, &protected, "- glossary rule", "", translationRequestOptions{IncludeStaticContext: true})
+	if !reflect.DeepEqual(plain, withContext) {
+		t.Fatalf("no-static request changed\nplain=%+v\nwith context=%+v", plain, withContext)
+	}
+}
+
+func TestDefaultStaticContextRetryDiffersOnlyByAppendix(t *testing.T) {
+	source := []byte("* Type parameters\n\nText about `T`.\n\n  func Index[T comparable](s []T, x T) int\n")
+	protected := protectTranslation(source, sum(source), nil)
+	feedback := retryFeedbackForMode([]string{"inline code count mismatch: expected 1, actual 2"}, false, false)
+	plain := makeTranslationRequestForMode("generics/1", "zh-CN", source, &protected, "- glossary rule", feedback)
+	withContext := makeTranslationRequestForModeOptions("generics/1", "zh-CN", source, &protected, "- glossary rule", feedback, translationRequestOptions{IncludeStaticContext: true})
+	if plain.Messages[0].Content != withContext.Messages[0].Content {
+		t.Fatal("retry static context changed the system prompt")
+	}
+	retrySuffix := "\n\n上一次完整页面翻译未通过校验：" + feedback
+	for name, user := range map[string]string{"default": plain.Messages[1].Content, "static context": withContext.Messages[1].Content} {
+		if !strings.HasSuffix(user, retrySuffix) {
+			t.Errorf("%s retry feedback is not the last paragraph:\n%s", name, user)
+		}
+	}
+	appendix := staticContextAppendix(protected)
+	appendixAt := strings.Index(withContext.Messages[1].Content, "\n\n"+appendix)
+	retryAt := strings.LastIndex(withContext.Messages[1].Content, retrySuffix)
+	if appendixAt < 0 || retryAt < 0 || appendixAt >= retryAt {
+		t.Fatalf("appendix/retry order is wrong:\n%s", withContext.Messages[1].Content)
+	}
+	if got := strings.Replace(withContext.Messages[1].Content, "\n\n"+appendix, "", 1); got != plain.Messages[1].Content {
+		t.Fatal("retry request differs by more than the deterministic static appendix")
+	}
+}
+
+func TestTranslationRunnerDevStaticContextModeConstraints(t *testing.T) {
+	tests := []struct {
+		name   string
+		runner TranslationRunner
+		want   string
+	}{
+		{"requires dev", TranslationRunner{DevStaticContext: true}, "--dev-static-context requires --dev"},
+		{"rejects raw", TranslationRunner{Dev: true, DevStaticContext: true, RawInput: true}, "--dev-static-context cannot be used with --raw-input"},
+		{"rejects minimal", TranslationRunner{Dev: true, DevStaticContext: true, MinimalProtect: true}, "--dev-static-context cannot be used with --minimal-protect"},
+		{"allows dev default", TranslationRunner{Dev: true, DevStaticContext: true}, ""},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			err := tt.runner.validateModes()
+			if tt.want == "" {
+				if err != nil {
+					t.Fatalf("validateModes() error = %v, want nil", err)
+				}
+				return
+			}
+			if err == nil || err.Error() != tt.want {
+				t.Fatalf("validateModes() error = %v, want %q", err, tt.want)
+			}
+		})
+	}
+}
+
+func TestTranslationRequestOptionsZeroValuePreservesExistingModes(t *testing.T) {
+	source := []byte("* Source\n\n*Note*: use `Bounds`.\n\n  static := true\n\n.play welcome/hello.go\n")
+	full := protectTranslation(source, sum(source), nil)
+	minimal := protectPlayDirectives(source, sum(source))
+	tests := []struct {
+		name      string
+		protected *protectedTranslation
+	}{
+		{"default", &full},
+		{"raw", nil},
+		{"minimal", &minimal},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			plain := makeTranslationRequestForMode("example/1", "zh-CN", source, tt.protected, "- glossary rule", "retry feedback")
+			zeroOptions := makeTranslationRequestForModeOptions("example/1", "zh-CN", source, tt.protected, "- glossary rule", "retry feedback", translationRequestOptions{})
+			if !reflect.DeepEqual(plain, zeroOptions) {
+				t.Fatalf("zero request options changed %s mode", tt.name)
+			}
+		})
+	}
+}
+
+func assertProtectedTranslationMetadataEqual(t *testing.T, want, got protectedTranslation) {
+	t.Helper()
+	if want.Text != got.Text || !slices.Equal(want.Tokens, got.Tokens) || !slices.Equal(want.Values, got.Values) || !slices.Equal(want.Kinds, got.Kinds) || !slices.Equal(want.InlineBoundaries, got.InlineBoundaries) || !slices.Equal(want.InlinePairs, got.InlinePairs) || !slices.Equal(want.EmphasisTokens, got.EmphasisTokens) || want.MinimalProtect != got.MinimalProtect {
+		t.Fatalf("protected translation changed\nwant=%+v\ngot=%+v", want, got)
 	}
 }
 

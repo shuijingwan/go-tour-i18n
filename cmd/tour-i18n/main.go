@@ -181,6 +181,7 @@ func run(args []string) error {
 		devAttempts := fs.Int("dev-attempts", 1, "development attempts in one command (1-3; requires --dev)")
 		rawInput := fs.Bool("raw-input", false, "experimental: send the hydrated production page without protected-token replacement or response restore")
 		minimalProtect := fs.Bool("minimal-protect", false, "experimental: protect only complete .play directive lines")
+		devStaticContext := fs.Bool("dev-static-context", false, "experimental dev-only: add protected static code as read-only translation context")
 		if err := fs.Parse(args[2:]); err != nil {
 			return err
 		}
@@ -189,6 +190,15 @@ func run(args []string) error {
 		}
 		if *rawInput && *minimalProtect {
 			return fmt.Errorf("--raw-input and --minimal-protect are mutually exclusive")
+		}
+		if *devStaticContext && !*dev {
+			return fmt.Errorf("--dev-static-context requires --dev")
+		}
+		if *devStaticContext && *rawInput {
+			return fmt.Errorf("--dev-static-context cannot be used with --raw-input")
+		}
+		if *devStaticContext && *minimalProtect {
+			return fmt.Errorf("--dev-static-context cannot be used with --minimal-protect")
 		}
 		devAttemptsSet := false
 		fs.Visit(func(f *flag.Flag) {
@@ -201,7 +211,7 @@ func run(args []string) error {
 		if *dev {
 			runnerDevAttempts = *devAttempts
 		}
-		runner := i18n.TranslationRunner{Root: root, Catalog: catalog, Dev: *dev, DevAttempts: runnerDevAttempts, RawInput: *rawInput, MinimalProtect: *minimalProtect}
+		runner := i18n.TranslationRunner{Root: root, Catalog: catalog, Dev: *dev, DevAttempts: runnerDevAttempts, RawInput: *rawInput, MinimalProtect: *minimalProtect, DevStaticContext: *devStaticContext}
 		result, err := runner.Run(context.Background(), *id, *locale, os.Getenv("ZHIPU_API_KEY"))
 		if err != nil {
 			return err

@@ -107,6 +107,9 @@ type TranslationRunner struct {
 	RawInput bool
 	// MinimalProtect protects complete .play directive lines and emphasis delimiters.
 	MinimalProtect bool
+	// DevStaticContext adds protected static code to the request as read-only
+	// technical context. It is limited to development runs in default mode.
+	DevStaticContext bool
 }
 
 func (r *TranslationRunner) Run(ctx context.Context, pageID, locale, apiKey string) (*TranslationRunResult, error) {
@@ -116,8 +119,8 @@ func (r *TranslationRunner) Run(ctx context.Context, pageID, locale, apiKey stri
 	if locale != "zh-CN" {
 		return nil, fmt.Errorf("unsupported locale %q", locale)
 	}
-	if r.RawInput && r.MinimalProtect {
-		return nil, errors.New("raw-input and minimal-protect are mutually exclusive")
+	if err := r.validateModes(); err != nil {
+		return nil, err
 	}
 	devAttempts, err := validateDevAttempts(r.Dev, r.DevAttempts)
 	if err != nil {
@@ -195,7 +198,7 @@ func (r *TranslationRunner) Run(ctx context.Context, pageID, locale, apiKey stri
 		if err := os.MkdirAll(dir, 0755); err != nil {
 			return nil, err
 		}
-		req := makeTranslationRequestForMode(pageID, locale, page.Source, protected, glossary.PromptRules(pageID), previous)
+		req := makeTranslationRequestForModeOptions(pageID, locale, page.Source, protected, glossary.PromptRules(pageID), previous, translationRequestOptions{IncludeStaticContext: r.DevStaticContext})
 		if err := writeTranslationJSON(filepath.Join(dir, "request.json"), savedTranslationRequest{pageID, locale, page.SourceSHA256, req}); err != nil {
 			return nil, err
 		}
@@ -266,6 +269,22 @@ func (r *TranslationRunner) Run(ctx context.Context, pageID, locale, apiKey stri
 		return nil, err
 	}
 	return &TranslationRunResult{pageID, locale, page.SourceSHA256, "glm-5.2", lastAttempt, "blocked", "", &last, updated}, nil
+}
+
+func (r *TranslationRunner) validateModes() error {
+	if r.DevStaticContext && !r.Dev {
+		return errors.New("--dev-static-context requires --dev")
+	}
+	if r.DevStaticContext && r.RawInput {
+		return errors.New("--dev-static-context cannot be used with --raw-input")
+	}
+	if r.DevStaticContext && r.MinimalProtect {
+		return errors.New("--dev-static-context cannot be used with --minimal-protect")
+	}
+	if r.RawInput && r.MinimalProtect {
+		return errors.New("raw-input and minimal-protect are mutually exclusive")
+	}
+	return nil
 }
 
 const maxDevAttempts = 3
@@ -679,6 +698,19 @@ func makeTranslationRequest(pageID, locale string, protected protectedTranslatio
 }
 
 func makeTranslationRequestForMode(pageID, locale string, source []byte, protected *protectedTranslation, glossaryRules, previous string) TranslationAPIRequest {
+	return makeTranslationRequestForModeOptions(pageID, locale, source, protected, glossaryRules, previous, translationRequestOptions{})
+}
+
+type translationRequestOptions struct {
+	IncludeStaticContext bool
+}
+
+type staticContextBlock struct {
+	Token string
+	Code  string
+}
+
+func makeTranslationRequestForModeOptions(pageID, locale string, source []byte, protected *protectedTranslation, glossaryRules, previous string, options translationRequestOptions) TranslationAPIRequest {
 	rawInput := protected == nil
 	minimalProtect := protected != nil && protected.MinimalProtect
 	system := `请将一个完整的《Go 语言之旅》present.Section 从英文翻译为中国大陆简体中文。
@@ -757,10 +789,45 @@ target_locale: %s
 
 需要翻译的完整受保护页面：
 %s`, pageID, locale, glossaryRules, len(protected.Tokens), len(protected.Tokens), protectedStructureProtocol(*protected), protected.Text)
+	if options.IncludeStaticContext {
+		if appendix := staticContextAppendix(*protected); appendix != "" {
+			user += "\n\n" + appendix
+		}
+	}
 	if previous != "" {
 		user += "\n\n上一次完整页面翻译未通过校验：" + previous
 	}
 	return TranslationAPIRequest{Model: "glm-5.2", Stream: false, Thinking: map[string]string{"type": "disabled"}, DoSample: false, MaxTokens: 8192, Messages: []TranslationMessage{{Role: "system", Content: system}, {Role: "user", Content: user}}}
+}
+
+func staticContextBlocks(protected protectedTranslation) []staticContextBlock {
+	var blocks []staticContextBlock
+	for i, kind := range protected.Kinds {
+		if kind == protectedPreformattedStatic {
+			blocks = append(blocks, staticContextBlock{Token: protected.Tokens[i], Code: protected.Values[i]})
+		}
+	}
+	return blocks
+}
+
+func staticContextAppendix(protected protectedTranslation) string {
+	blocks := staticContextBlocks(protected)
+	if len(blocks) == 0 {
+		return ""
+	}
+	var appendix strings.Builder
+	appendix.WriteString("只读技术上下文（不属于输出页面）：\n以下代码来自本页面中被保护的 static preformatted 内容，仅用于理解正文中的技术关系。不要翻译、改写或复制这些代码到输出；最终输出仍须保留正文中的对应 protected token。")
+	for _, block := range blocks {
+		appendix.WriteString("\n\n对应 token：")
+		appendix.WriteString(block.Token)
+		appendix.WriteString("\n<static-code>\n")
+		appendix.WriteString(block.Code)
+		if !strings.HasSuffix(block.Code, "\n") {
+			appendix.WriteByte('\n')
+		}
+		appendix.WriteString("</static-code>")
+	}
+	return appendix.String()
 }
 
 func protectedStructureProtocol(protected protectedTranslation) string {
