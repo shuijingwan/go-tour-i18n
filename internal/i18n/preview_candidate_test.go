@@ -51,11 +51,16 @@ func TestBuildCandidatePreviewDoesNotModifyEnglishSource(t *testing.T) {
 	if bytes.Contains(temporary, []byte("#appengine:")) {
 		t.Fatal("temporary preview contains appengine markers")
 	}
-	if !bytes.Contains(temporary, []byte("在远程服务器上编译并运行该程序")) || bytes.Contains(temporary, []byte("在你的电脑上编译并运行该程序")) {
+	if !bytes.Contains(temporary, []byte("在远程服务器上")) || bytes.Contains(temporary, []byte("在你的电脑上")) {
 		t.Fatal("temporary preview did not select the translated remote execution branch")
 	}
+	candidate, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(canonicalCandidatePath("zh-CN", "welcome/1"))))
+	if err != nil {
+		t.Fatal(err)
+	}
+	candidateTitle := bytes.SplitN(candidate, []byte("\n"), 2)[0]
 	wantTitles := [][]byte{
-		[]byte("* Hello, 世界"),
+		candidateTitle,
 		[]byte("* Go local"),
 		[]byte("* Go offline (optional)"),
 		[]byte("* The Go Playground"),

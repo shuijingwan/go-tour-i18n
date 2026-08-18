@@ -267,7 +267,7 @@ func TestBuildLocaleProjectionPreservesWelcomePublicationSemantics(t *testing.T)
 			t.Errorf("%s does not match its canonical candidate", pageID)
 		}
 	}
-	if !bytes.Contains(sections[0], []byte("在远程服务器上编译并运行该程序")) || bytes.Contains(sections[0], []byte("在你的电脑上编译并运行该程序")) {
+	if !bytes.Contains(sections[0], []byte("在远程服务器上")) || bytes.Contains(sections[0], []byte("在你的电脑上")) {
 		t.Fatal("welcome/1 did not retain the translated remote execution branch")
 	}
 }

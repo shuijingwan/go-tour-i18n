@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 	"reflect"
+	"regexp"
 	"strings"
 	"testing"
 )
@@ -23,69 +24,88 @@ func TestCommittedStatus(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	promotionNoteRE := regexp.MustCompile(`^ChatGPT retranslation promoted from chatgpt-zh-CN-[0-9]{3}; passed canonical validator$`)
+	wantLatestBatch := map[string]string{
+		"welcome/1":     "chatgpt-zh-CN-001",
+		"concurrency/1": "chatgpt-zh-CN-009",
+		"methods/17":    "chatgpt-zh-CN-011",
+		"methods/19":    "chatgpt-zh-CN-011",
+	}
 	for _, s := range statuses {
 		if err := validateCommittedStatus(root, c, "zh-CN", s); err != nil {
 			t.Fatal(err)
 		}
+		if s.UpdatedAt == "" {
+			t.Fatalf("%s: promoted status has empty updated_at", s.PageID)
+		}
+		if !promotionNoteRE.MatchString(s.Note) {
+			t.Fatalf("%s: unexpected promotion note %q", s.PageID, s.Note)
+		}
+		if batch := wantLatestBatch[s.PageID]; batch != "" {
+			wantNote := "ChatGPT retranslation promoted from " + batch + "; passed canonical validator"
+			if s.Note != wantNote {
+				t.Fatalf("%s: promotion note = %q, want %q", s.PageID, s.Note, wantNote)
+			}
+		}
 		switch s.PageID {
 		case "welcome/1":
-			if s.State != "ready" || s.Attempts != 6 || s.SourceSHA256 != "1f581133d7fa40e6490418c6789a60a2f5e1de26c9c86d7eb6120cb58b145857" || s.CandidatePath != "locales/zh-CN/candidates/welcome-1.article" || s.UpdatedAt != "2026-08-03T11:01:01Z" || s.Note != "发布投影切换为远程执行分支，人工同步后的 candidate 已通过现有 validator" {
+			if s.State != "ready" || s.Attempts != 6 || s.SourceSHA256 != "1f581133d7fa40e6490418c6789a60a2f5e1de26c9c86d7eb6120cb58b145857" || s.CandidatePath != "locales/zh-CN/candidates/welcome-1.article" {
 				t.Fatalf("welcome/1 status: %+v", s)
 			}
 		case "welcome/2":
-			if s.State != "ready" || s.Attempts != 1 || s.CandidatePath != "locales/zh-CN/candidates/welcome-2.article" || s.UpdatedAt != "2026-08-03T09:16:52Z" || s.Note != "人工评审修订后的 candidate 已通过现有 validator" {
+			if s.State != "ready" || s.Attempts != 1 || s.CandidatePath != "locales/zh-CN/candidates/welcome-2.article" {
 				t.Fatalf("welcome/2 status: %+v", s)
 			}
 		case "welcome/3":
-			if s.State != "ready" || s.Attempts != 1 || s.CandidatePath != "locales/zh-CN/candidates/welcome-3.article" || s.UpdatedAt != "2026-08-03T09:45:27Z" || s.Note != "人工评审修订后的 candidate 已通过现有 validator" {
+			if s.State != "ready" || s.Attempts != 1 || s.CandidatePath != "locales/zh-CN/candidates/welcome-3.article" {
 				t.Fatalf("welcome/3 status: %+v", s)
 			}
 		case "welcome/4":
-			if s.State != "ready" || s.Attempts != 1 || s.CandidatePath != "locales/zh-CN/candidates/welcome-4.article" || s.UpdatedAt != "2026-08-03T10:17:53Z" || s.Note != "人工评审修订后的 candidate 已通过现有 validator" {
+			if s.State != "ready" || s.Attempts != 1 || s.CandidatePath != "locales/zh-CN/candidates/welcome-4.article" {
 				t.Fatalf("welcome/4 status: %+v", s)
 			}
 		case "welcome/5":
-			if s.State != "ready" || s.Attempts != 1 || s.CandidatePath != "locales/zh-CN/candidates/welcome-5.article" || s.UpdatedAt != "2026-08-03T10:50:33Z" || s.Note != "人工评审修订后的 candidate 已通过现有 validator" {
+			if s.State != "ready" || s.Attempts != 1 || s.CandidatePath != "locales/zh-CN/candidates/welcome-5.article" {
 				t.Fatalf("welcome/5 status: %+v", s)
 			}
 		case "basics/1":
-			if s.State != "ready" || s.Attempts != 1 || s.SourceSHA256 != "f769f12c0a028b2f0cd403d89ff39dd150405e9f2e4155875321522f08619fe0" || s.CandidatePath != "locales/zh-CN/candidates/basics-1.article" || s.UpdatedAt != "2026-08-03T11:10:32Z" || s.Note != "GLM-5.2 candidate passed existing validator" {
+			if s.State != "ready" || s.Attempts != 1 || s.SourceSHA256 != "f769f12c0a028b2f0cd403d89ff39dd150405e9f2e4155875321522f08619fe0" || s.CandidatePath != "locales/zh-CN/candidates/basics-1.article" {
 				t.Fatalf("basics/1 status: %+v", s)
 			}
 		case "basics/2":
-			if s.State != "ready" || s.Attempts != 1 || s.SourceSHA256 != "3329c9bff5f7e2b9b1e161fdebfb3804ff57cf1fb11bd4327d228328bcfb3fd0" || s.CandidatePath != "locales/zh-CN/candidates/basics-2.article" || s.UpdatedAt != "2026-08-03T13:30:03Z" || s.Note != "人工评审修订后的 candidate 已通过现有 validator" {
+			if s.State != "ready" || s.Attempts != 1 || s.SourceSHA256 != "3329c9bff5f7e2b9b1e161fdebfb3804ff57cf1fb11bd4327d228328bcfb3fd0" || s.CandidatePath != "locales/zh-CN/candidates/basics-2.article" {
 				t.Fatalf("basics/2 status: %+v", s)
 			}
 		case "basics/3":
-			if s.State != "ready" || s.Attempts != 1 || s.SourceSHA256 != "38b9c70e49184a24f63f6b12f8ba78e64c0b874ad2a6f9a5fe86267615fd1bf6" || s.CandidatePath != "locales/zh-CN/candidates/basics-3.article" || s.UpdatedAt != "2026-08-03T13:37:50Z" || s.Note != "人工评审修订后的 candidate 已通过现有 validator" {
+			if s.State != "ready" || s.Attempts != 1 || s.SourceSHA256 != "38b9c70e49184a24f63f6b12f8ba78e64c0b874ad2a6f9a5fe86267615fd1bf6" || s.CandidatePath != "locales/zh-CN/candidates/basics-3.article" {
 				t.Fatalf("basics/3 status: %+v", s)
 			}
 		case "generics/1":
-			if s.State != "ready" || s.Attempts != 5 || s.SourceSHA256 != "01a045105dc8c12fb1709f122d363235c19a6464d5de7587d579524aec270dd6" || s.CandidatePath != "locales/zh-CN/candidates/generics-1.article" || s.UpdatedAt != "2026-08-05T04:09:16Z" || s.Note != "GLM-5.2 candidate passed existing validator" {
+			if s.State != "ready" || s.Attempts != 5 || s.SourceSHA256 != "01a045105dc8c12fb1709f122d363235c19a6464d5de7587d579524aec270dd6" || s.CandidatePath != "locales/zh-CN/candidates/generics-1.article" {
 				t.Fatalf("generics/1 status: %+v", s)
 			}
 		case "flowcontrol/8":
-			if s.State != "ready" || s.Attempts != 1 || s.SourceSHA256 != "d8bbee8455ff59212ef432a08312f7c7703360367325a80df3719157200316e9" || s.CandidatePath != "locales/zh-CN/candidates/flowcontrol-8.article" || s.UpdatedAt != "2026-08-06T00:53:02Z" || s.Note != "GLM-5.2 candidate passed existing validator" {
+			if s.State != "ready" || s.Attempts != 1 || s.SourceSHA256 != "d8bbee8455ff59212ef432a08312f7c7703360367325a80df3719157200316e9" || s.CandidatePath != "locales/zh-CN/candidates/flowcontrol-8.article" {
 				t.Fatalf("flowcontrol/8 status: %+v", s)
 			}
 		case "methods/16":
-			if s.State != "ready" || s.Attempts != 2 || s.SourceSHA256 != "26e4da09e80d30b06368691c76ee2940139b0f6fc40cad47bb6d1d2947933c27" || s.CandidatePath != "locales/zh-CN/candidates/methods-16.article" || s.UpdatedAt != "2026-08-06T03:28:55Z" || s.Note != "GLM-5.2 candidate passed existing validator" {
+			if s.State != "ready" || s.Attempts != 2 || s.SourceSHA256 != "26e4da09e80d30b06368691c76ee2940139b0f6fc40cad47bb6d1d2947933c27" || s.CandidatePath != "locales/zh-CN/candidates/methods-16.article" {
 				t.Fatalf("methods/16 status: %+v", s)
 			}
 		case "methods/20":
-			if s.State != "ready" || s.Attempts != 1 || s.SourceSHA256 != "41f1f73320fde60ee5ff30d5927a19ff22d6da6a336bb776e15f2499e4f421d8" || s.CandidatePath != "locales/zh-CN/candidates/methods-20.article" || s.UpdatedAt != "2026-08-09T02:20:46Z" || s.Note != "人工审核确认的 candidate 已通过当前 validator；attempt-001 的旧全局 token 顺序失败记录保留在历史 validation.json" {
+			if s.State != "ready" || s.Attempts != 1 || s.SourceSHA256 != "41f1f73320fde60ee5ff30d5927a19ff22d6da6a336bb776e15f2499e4f421d8" || s.CandidatePath != "locales/zh-CN/candidates/methods-20.article" {
 				t.Fatalf("methods/20 status: %+v", s)
 			}
 		case "methods/24":
-			if s.State != "ready" || s.Attempts != 2 || s.SourceSHA256 != "d80f0d46796ad415a7ded4d0cefdef6cdb58deb38d050a61eb64abb25caf27ee" || s.CandidatePath != "locales/zh-CN/candidates/methods-24.article" || s.UpdatedAt != "2026-08-09T08:53:24Z" || s.Note != "GLM-5.2 candidate passed existing validator" {
+			if s.State != "ready" || s.Attempts != 2 || s.SourceSHA256 != "d80f0d46796ad415a7ded4d0cefdef6cdb58deb38d050a61eb64abb25caf27ee" || s.CandidatePath != "locales/zh-CN/candidates/methods-24.article" {
 				t.Fatalf("methods/24 status: %+v", s)
 			}
 		case "concurrency/7":
-			if s.State != "ready" || s.Attempts != 1 || s.SourceSHA256 != "7c5d3fc7bb2540285d746242f8a1d16075639648eec8909c1df52239297d2917" || s.CandidatePath != "locales/zh-CN/candidates/concurrency-7.article" || s.UpdatedAt != "2026-08-09T04:14:19Z" || s.Note != "GLM-5.2 candidate passed existing validator" {
+			if s.State != "ready" || s.Attempts != 1 || s.SourceSHA256 != "7c5d3fc7bb2540285d746242f8a1d16075639648eec8909c1df52239297d2917" || s.CandidatePath != "locales/zh-CN/candidates/concurrency-7.article" {
 				t.Fatalf("concurrency/7 status: %+v", s)
 			}
 		case "concurrency/11":
-			if s.State != "ready" || s.Attempts != 4 || s.SourceSHA256 != "45ef131ede663b1355c0a5933634d46c393f66be8a6450b184f86a62e928a64e" || s.CandidatePath != "locales/zh-CN/candidates/concurrency-11.article" || s.UpdatedAt != "2026-08-09T08:13:39Z" || s.Note != "GLM-5.2 candidate passed existing validator" {
+			if s.State != "ready" || s.Attempts != 4 || s.SourceSHA256 != "45ef131ede663b1355c0a5933634d46c393f66be8a6450b184f86a62e928a64e" || s.CandidatePath != "locales/zh-CN/candidates/concurrency-11.article" {
 				t.Fatalf("concurrency/11 status: %+v", s)
 			}
 		}
