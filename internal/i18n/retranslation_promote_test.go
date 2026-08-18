@@ -153,19 +153,25 @@ func TestRetranslationPromoteRejectsIncompleteAndInvalidEvidence(t *testing.T) {
 			}
 		}, "validation does not match"},
 		{"validator failure", func(t *testing.T, root string, catalog *Catalog, batch string) {
-			path := filepath.Join(root, "data", "retranslation-runs", "zh-CN", batch, "candidates", "lesson-1.article")
-			b, _ := os.ReadFile(path)
-			b = append(b, []byte(" `unexpected`\n")...)
-			if err := os.WriteFile(path, b, 0644); err != nil {
-				t.Fatal(err)
+			batchDir := filepath.Join(root, "data", "retranslation-runs", "zh-CN", batch)
+			for _, relative := range []string{"candidates/lesson-1.article", "raw-responses/lesson-1.article"} {
+				path := filepath.Join(batchDir, filepath.FromSlash(relative))
+				b, _ := os.ReadFile(path)
+				b = append(b, []byte(" `unexpected`\n")...)
+				if err := os.WriteFile(path, b, 0644); err != nil {
+					t.Fatal(err)
+				}
 			}
 		}, "canonical candidate validator"},
 		{"GTI18N token", func(t *testing.T, root string, catalog *Catalog, batch string) {
-			path := filepath.Join(root, "data", "retranslation-runs", "zh-CN", batch, "candidates", "lesson-1.article")
-			b, _ := os.ReadFile(path)
-			b = append(b, []byte(" GTI18N_leftover\n")...)
-			if err := os.WriteFile(path, b, 0644); err != nil {
-				t.Fatal(err)
+			batchDir := filepath.Join(root, "data", "retranslation-runs", "zh-CN", batch)
+			for _, relative := range []string{"candidates/lesson-1.article", "raw-responses/lesson-1.article"} {
+				path := filepath.Join(batchDir, filepath.FromSlash(relative))
+				b, _ := os.ReadFile(path)
+				b = append(b, []byte(" GTI18N_leftover\n")...)
+				if err := os.WriteFile(path, b, 0644); err != nil {
+					t.Fatal(err)
+				}
 			}
 		}, "contains GTI18N token"},
 	}
@@ -173,6 +179,87 @@ func TestRetranslationPromoteRejectsIncompleteAndInvalidEvidence(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			root, catalog, batch := processedPromotionFixture(t, 1)
 			tt.mutate(t, root, catalog, batch)
+			if _, err := PromoteRetranslation(root, catalog, RetranslationPromoteOptions{Locale: "zh-CN"}); err == nil || !strings.Contains(err.Error(), tt.want) {
+				t.Fatalf("error = %v, want %q", err, tt.want)
+			}
+		})
+	}
+}
+
+func TestRetranslationPromoteBindsInputRawAndCandidateEvidence(t *testing.T) {
+	tests := []struct {
+		name   string
+		mutate func(*testing.T, string, string)
+		want   string
+	}{
+		{"validator-valid candidate differs from restore", func(t *testing.T, root, batchDir string) {
+			path := filepath.Join(batchDir, "candidates", "lesson-1.article")
+			candidate, _ := os.ReadFile(path)
+			candidate = bytes.Replace(candidate, []byte("页面"), []byte("网页"), 1)
+			if err := ValidateCandidateForLocale(root, retranslationTestCatalog(1), "lesson/1", "zh-CN", candidate); err != nil {
+				t.Fatalf("mutated candidate must remain validator-valid: %v", err)
+			}
+			if err := os.WriteFile(path, candidate, 0644); err != nil {
+				t.Fatal(err)
+			}
+		}, "restored candidate does not match saved candidate"},
+		{"saved input content", func(t *testing.T, root, batchDir string) {
+			path := filepath.Join(batchDir, "inputs", "lesson-1.article")
+			input, _ := os.ReadFile(path)
+			input = append(input, 'x')
+			if err := os.WriteFile(path, input, 0644); err != nil {
+				t.Fatal(err)
+			}
+			manifestPath := filepath.Join(batchDir, "manifest.json")
+			manifest := readRetranslationManifestAt(t, manifestPath)
+			manifest.Pages[0].InputSHA256 = sum(input)
+			if err := writeTranslationJSON(manifestPath, manifest); err != nil {
+				t.Fatal(err)
+			}
+		}, "regenerated Default protected input differs"},
+		{"input sha", func(t *testing.T, root, batchDir string) {
+			manifestPath := filepath.Join(batchDir, "manifest.json")
+			manifest := readRetranslationManifestAt(t, manifestPath)
+			manifest.Pages[0].InputSHA256 = strings.Repeat("0", 64)
+			if err := writeTranslationJSON(manifestPath, manifest); err != nil {
+				t.Fatal(err)
+			}
+		}, "input_sha256 mismatch"},
+		{"illegal raw path", func(t *testing.T, root, batchDir string) {
+			path := filepath.Join(batchDir, "validation", "lesson-1.json")
+			var validation RetranslationValidation
+			b, _ := os.ReadFile(path)
+			_ = json.Unmarshal(b, &validation)
+			validation.RawResponsePath = "../raw-responses/lesson-1.article"
+			if err := writeTranslationJSON(path, validation); err != nil {
+				t.Fatal(err)
+			}
+		}, "not a recognized attempt"},
+		{"wrong retry attempt", func(t *testing.T, root, batchDir string) {
+			retryDir := filepath.Join(batchDir, "retries", "lesson-1")
+			if err := os.MkdirAll(retryDir, 0755); err != nil {
+				t.Fatal(err)
+			}
+			raw, _ := os.ReadFile(filepath.Join(batchDir, "raw-responses", "lesson-1.article"))
+			raw = bytes.Replace(raw, []byte("页面"), []byte("错误尝试"), 1)
+			if err := os.WriteFile(filepath.Join(retryDir, "attempt-002.article"), raw, 0644); err != nil {
+				t.Fatal(err)
+			}
+			path := filepath.Join(batchDir, "validation", "lesson-1.json")
+			var validation RetranslationValidation
+			b, _ := os.ReadFile(path)
+			_ = json.Unmarshal(b, &validation)
+			validation.RawResponsePath = "retries/lesson-1/attempt-002.article"
+			if err := writeTranslationJSON(path, validation); err != nil {
+				t.Fatal(err)
+			}
+		}, "restored candidate does not match saved candidate"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			root, catalog, batch := processedPromotionFixture(t, 1)
+			batchDir := filepath.Join(root, "data", "retranslation-runs", "zh-CN", batch)
+			tt.mutate(t, root, batchDir)
 			if _, err := PromoteRetranslation(root, catalog, RetranslationPromoteOptions{Locale: "zh-CN"}); err == nil || !strings.Contains(err.Error(), tt.want) {
 				t.Fatalf("error = %v, want %q", err, tt.want)
 			}
@@ -218,6 +305,16 @@ func TestRetranslationPromoteSelectsRetryFinalCandidate(t *testing.T) {
 	valid = []byte(strings.TrimSuffix(string(valid), " `bad`"))
 	writeRetryRaw(t, root, batch, "lesson/1", 2, string(valid))
 	if _, err := ProcessRetranslationRetry(root, catalog, RetranslationRetryOptions{Locale: "zh-CN", BatchID: batch, PageID: "lesson/1"}); err != nil {
+		t.Fatal(err)
+	}
+	validationPath := filepath.Join(batchDir, "validation", "lesson-1.json")
+	var validation RetranslationValidation
+	validationData, _ := os.ReadFile(validationPath)
+	_ = json.Unmarshal(validationData, &validation)
+	if validation.RawResponsePath != "retries/lesson-1/attempt-002.article" {
+		t.Fatalf("final raw_response_path = %q", validation.RawResponsePath)
+	}
+	if err := os.WriteFile(filepath.Join(batchDir, "raw-responses", "lesson-1.article"), []byte("corrupted initial attempt"), 0644); err != nil {
 		t.Fatal(err)
 	}
 	plan, err := PromoteRetranslation(root, catalog, RetranslationPromoteOptions{Locale: "zh-CN"})

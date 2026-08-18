@@ -82,6 +82,10 @@ func PromoteRetranslation(root string, catalog *Catalog, options RetranslationPr
 }
 
 func preflightRetranslationPromotion(root string, catalog *Catalog, locale string) ([]preparedPromotion, error) {
+	glossary, err := LoadGlossary(root, locale)
+	if err != nil {
+		return nil, err
+	}
 	byID := make(map[string]Page, len(catalog.Pages))
 	for _, page := range catalog.Pages {
 		if _, exists := byID[page.ID]; exists {
@@ -202,6 +206,9 @@ func preflightRetranslationPromotion(root string, catalog *Catalog, locale strin
 		if err != nil {
 			return nil, fmt.Errorf("%s: read promotion candidate: %w", id, err)
 		}
+		if err := validatePromotionEvidence(choice.batchDir, byID[id], choice.manifest, validation, glossary, candidate); err != nil {
+			return nil, err
+		}
 		if bytes.Contains(candidate, []byte("GTI18N")) {
 			return nil, fmt.Errorf("%s: candidate contains GTI18N token", id)
 		}
@@ -223,6 +230,44 @@ func preflightRetranslationPromotion(root string, catalog *Catalog, locale strin
 		}})
 	}
 	return prepared, nil
+}
+
+func validatePromotionEvidence(batchDir string, page Page, manifest RetranslationBatchPage, validation *RetranslationValidation, glossary *Glossary, candidate []byte) error {
+	name := flattenedPageArticleName(page.ID)
+	wantInputPath := filepath.ToSlash(filepath.Join("inputs", name))
+	if manifest.InputPath != wantInputPath {
+		return fmt.Errorf("%s: input_path %q, want %q", page.ID, manifest.InputPath, wantInputPath)
+	}
+	savedInput, err := os.ReadFile(filepath.Join(batchDir, filepath.FromSlash(manifest.InputPath)))
+	if err != nil {
+		return fmt.Errorf("%s: read saved input: %w", page.ID, err)
+	}
+	if sum(savedInput) != manifest.InputSHA256 {
+		return fmt.Errorf("%s: input_sha256 mismatch", page.ID)
+	}
+	protected := prepareDefaultTranslationInput(page.Source, page.SourceSHA256, glossary)
+	if !bytes.Equal([]byte(protected.Text), savedInput) {
+		return fmt.Errorf("%s: regenerated Default protected input differs from saved input", page.ID)
+	}
+	if len(protected.Tokens) != manifest.ProtectedTokenCount {
+		return fmt.Errorf("%s: protected_token_count %d, regenerated %d", page.ID, manifest.ProtectedTokenCount, len(protected.Tokens))
+	}
+	flatID := strings.TrimSuffix(name, ".article")
+	if _, err := retryValidationAttempt(validation.RawResponsePath, flatID); err != nil {
+		return fmt.Errorf("%s: %w", page.ID, err)
+	}
+	raw, err := os.ReadFile(filepath.Join(batchDir, filepath.FromSlash(validation.RawResponsePath)))
+	if err != nil {
+		return fmt.Errorf("%s: read validation raw response: %w", page.ID, err)
+	}
+	restored, failures := protected.restore(string(raw))
+	if len(failures) != 0 {
+		return fmt.Errorf("%s: validation raw response restore failed: %s", page.ID, strings.Join(failures, "; "))
+	}
+	if !bytes.Equal([]byte(restored), candidate) {
+		return fmt.Errorf("%s: restored candidate does not match saved candidate", page.ID)
+	}
+	return nil
 }
 
 func readPromotionResult(batchDir, locale, batchID string, pageCount int) (*RetranslationProcessResult, error) {
