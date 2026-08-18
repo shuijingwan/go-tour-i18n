@@ -18,6 +18,7 @@ func TestZhCNMandatoryGlossary(t *testing.T) {
 		"next":            "下一页",
 		"Run":             "运行",
 		"Format":          "格式化",
+		"slide":           "页面",
 		"slides":          "页面",
 		"Go Playground":   "Go 语言演练场",
 		"constraint":      "约束",
@@ -44,7 +45,7 @@ func TestZhCNMandatoryGlossary(t *testing.T) {
 			t.Errorf("forbidden missing %q: %v", value, glossary.Forbidden)
 		}
 	}
-	wantKeep := []string{"Go", "gofmt", "PageUp", "PageDown", "Shift", "Enter", "Ctrl"}
+	wantKeep := []string{"Go", "gofmt", "PageUp", "PageDown", "Shift", "Enter", "Ctrl", "goroutine", "goroutines", "Goroutines"}
 	if len(glossary.Keep) != len(wantKeep) {
 		t.Fatalf("keep = %v, want %v", glossary.Keep, wantKeep)
 	}
@@ -54,19 +55,25 @@ func TestZhCNMandatoryGlossary(t *testing.T) {
 		}
 	}
 	wantPreferred := map[string]string{
-		"tour":                 "教程",
-		"the tour":             "本教程",
-		"sandbox":              "沙箱",
-		"deterministic output": "确定性输出",
-		"package":              "包",
-		"import path":          "导入路径",
-		"package name":         "包名",
-		"import statement":     "导入语句",
-		"exported name":        "导出名",
-		"unexported name":      "未导出的名称",
-		"standard library":     "标准库",
-		"iteration":            "迭代",
-		"loop condition":       "循环条件",
+		"Go programming language": "Go 编程语言",
+		"tour":                    "教程",
+		"the tour":                "本教程",
+		"sandbox":                 "沙箱",
+		"deterministic output":    "确定性输出",
+		"package":                 "包",
+		"import path":             "导入路径",
+		"package name":            "包名",
+		"import statement":        "导入语句",
+		"exported name":           "导出名",
+		"unexported name":         "未导出的名称",
+		"standard library":        "标准库",
+		"iteration":               "迭代",
+		"loop condition":          "循环条件",
+		"module":                  "模块",
+		"exercise":                "练习",
+		"syntax highlighting":     "语法高亮",
+		"map":                     "映射",
+		"maps":                    "映射",
 	}
 	for key, value := range wantPreferred {
 		if got := glossary.Preferred[key]; got != value {
@@ -84,7 +91,10 @@ func TestZhCNMandatoryGlossary(t *testing.T) {
 		"普通正文中的 the tour => 本教程（上下文指导；应结合完整页面自然翻译）",
 		"普通正文中的 sandbox => 沙箱（上下文指导；应结合完整页面自然翻译）",
 		"普通正文中的 deterministic output => 确定性输出（上下文指导；应结合完整页面自然翻译）",
+		"普通正文中的 map => 映射（上下文指导；应结合完整页面自然翻译）",
+		"普通正文中的 maps => 映射（上下文指导；应结合完整页面自然翻译）",
 		"Go（保持原样；不得翻译）",
+		"goroutine（保持原样；不得翻译）",
 		"gofmt（保持原样；不得翻译）",
 		"禁止使用的 zh-CN 译法：幻灯片",
 		"welcome/1 必须将 tour 的含义保留为“之旅”；不得简化或改变该含义",
@@ -99,14 +109,15 @@ func TestZhCNMandatoryGlossary(t *testing.T) {
 		}
 	}
 	ordered := []string{
-		"A Tour of Go =>", "Format =>", "Go Playground =>", "Run =>", "next =>", "previous =>", "slides =>",
-		"普通正文中的 deterministic output =>", "普通正文中的 exported name =>", "普通正文中的 import path =>",
+		"A Tour of Go =>", "Format =>", "Go Playground =>", "Run =>", "next =>", "previous =>", "slide =>", "slides =>",
+		"普通正文中的 Go programming language =>", "普通正文中的 deterministic output =>", "普通正文中的 exercise =>", "普通正文中的 exported name =>", "普通正文中的 import path =>",
 		"普通正文中的 import statement =>", "普通正文中的 iteration =>", "普通正文中的 loop condition =>",
-		"普通正文中的 package =>", "普通正文中的 package name =>", "普通正文中的 sandbox =>",
-		"普通正文中的 standard library =>", "普通正文中的 the tour =>", "普通正文中的 tour =>",
+		"普通正文中的 map =>", "普通正文中的 maps =>", "普通正文中的 module =>", "普通正文中的 package =>", "普通正文中的 package name =>", "普通正文中的 sandbox =>",
+		"普通正文中的 standard library =>", "普通正文中的 syntax highlighting =>", "普通正文中的 the tour =>", "普通正文中的 tour =>",
 		"普通正文中的 unexported name =>", "Ctrl（保持原样；不得翻译）", "Enter（保持原样；不得翻译）",
-		"Go（保持原样；不得翻译）", "PageDown（保持原样；不得翻译）", "PageUp（保持原样；不得翻译）",
-		"Shift（保持原样；不得翻译）", "gofmt（保持原样；不得翻译）", "禁止使用的 zh-CN 译法：幻灯片",
+		"Go（保持原样；不得翻译）", "Goroutines（保持原样；不得翻译）", "PageDown（保持原样；不得翻译）", "PageUp（保持原样；不得翻译）",
+		"Shift（保持原样；不得翻译）", "gofmt（保持原样；不得翻译）",
+		"goroutine（保持原样；不得翻译）", "goroutines（保持原样；不得翻译）", "禁止使用的 zh-CN 译法：幻灯片",
 	}
 	last := -1
 	for _, text := range ordered {
@@ -115,6 +126,13 @@ func TestZhCNMandatoryGlossary(t *testing.T) {
 			t.Errorf("prompt rule order is wrong at %q:\n%s", text, rules)
 		}
 		last = index
+	}
+	glossaryData, err := os.ReadFile(filepath.Join(repoRoot(t), "locales", "zh-CN", "glossary.yaml"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if strings.Contains(string(glossaryData), "\nterms:") {
+		t.Fatal("formal zh-CN glossary still contains legacy terms section")
 	}
 }
 

@@ -5,6 +5,7 @@ mandatory:
   next: 下一页
   Run: 运行
   Format: 格式化
+  slide: 页面
   slides: 页面
   Go Playground: Go 语言演练场
   constraint: 约束
@@ -18,6 +19,7 @@ mandatory:
   type parameter: 类型参数
   type parameters: 类型参数
 preferred:
+  Go programming language: Go 编程语言
   built-in: 内置
   channel: 通道
   tour: 教程
@@ -36,12 +38,11 @@ preferred:
   type inference: 类型推断
   untyped constant: 无类型常量
   untyped numeric constant: 无类型数值常量
-terms:
-  Go programming language: Go 编程语言
   module: 模块
-  slide: 页面
   exercise: 练习
   syntax highlighting: 语法高亮
+  map: 映射
+  maps: 映射
 forbidden:
   - 幻灯片
   - 本之旅
@@ -54,3 +55,6 @@ keep:
   - Shift
   - Enter
   - Ctrl
+  - goroutine
+  - goroutines
+  - Goroutines

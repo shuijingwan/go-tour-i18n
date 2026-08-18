@@ -744,12 +744,12 @@ func TestTranslationKeepSkipsOnlyHighConfidenceOrdinaryGoVerb(t *testing.T) {
 	}
 }
 
-func TestTranslationKeepIsDataDrivenAndDoesNotExpandPolicy(t *testing.T) {
+func TestTranslationKeepProtectsGoroutineButNotMap(t *testing.T) {
 	glossary, err := LoadGlossary(repoRoot(t), "zh-CN")
 	if err != nil {
 		t.Fatal(err)
 	}
-	source := []byte("Go gofmt PageUp PageDown Shift Enter Ctrl goroutine map `Go`\n")
+	source := []byte("Go gofmt PageUp PageDown Shift Enter Ctrl goroutine goroutines Goroutines map maps `Go`\n")
 	p := protectTranslation(source, "12345678", glossary)
 	values := strings.Join(p.Values, "\n")
 	for _, keep := range glossary.Keep {
@@ -757,13 +757,30 @@ func TestTranslationKeepIsDataDrivenAndDoesNotExpandPolicy(t *testing.T) {
 			t.Errorf("keep %q was not protected: %q", keep, p.Values)
 		}
 	}
-	for _, visible := range []string{"goroutine", "map"} {
+	for _, visible := range []string{"map", "maps"} {
 		if !strings.Contains(p.Text, visible) {
 			t.Errorf("%q was unexpectedly protected: %s", visible, p.Text)
 		}
+		if containsString(p.Values, visible) {
+			t.Errorf("%q entered keep protection: values=%q", visible, p.Values)
+		}
 	}
-	if n := strings.Count(values, "Go"); n != 1 {
-		t.Fatalf("Go protected values = %d, want 1 outside inline code; values=%q", n, p.Values)
+	for _, keep := range []string{"goroutine", "goroutines", "Goroutines"} {
+		if strings.Contains(p.Text, keep) {
+			t.Errorf("%q remained visible instead of being protected: %s", keep, p.Text)
+		}
+		if !containsString(p.Values, keep) {
+			t.Errorf("%q missing from protected values: %q", keep, p.Values)
+		}
+	}
+	goValues := 0
+	for _, value := range p.Values {
+		if value == "Go" {
+			goValues++
+		}
+	}
+	if goValues != 1 {
+		t.Fatalf("Go protected values = %d, want 1 outside inline code; values=%q", goValues, p.Values)
 	}
 	restored, failures := p.restore(p.Text)
 	if len(failures) != 0 {
