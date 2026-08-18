@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "batch_id": "chatgpt-zh-CN-004",
+  "locale": "zh-CN",
+  "page_id": "moretypes/1",
+  "status": "validation_failed",
+  "input_path": "inputs/moretypes-1.article",
+  "raw_response_path": "raw-responses/moretypes-1.article",
+  "candidate_path": "candidates/moretypes-1.article",
+  "error": "moretypes/1: protected structure validation failed: preformatted code block mismatch at index 3: line comment mismatch at index 1: referenced Go identifier count mismatch: expected 1, actual 0; check the named directive or protected content near the first difference"
+}
