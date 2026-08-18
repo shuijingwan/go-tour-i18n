@@ -1,0 +1,20 @@
+* Type switches
+
+A ⟪GTI18N_26e4da09_000001⟫type_switch⟪GTI18N_26e4da09_000002⟫ is a construct that permits several type assertions in series.
+
+A type switch is like a regular switch statement, but the cases in a type
+switch specify types (not values), and those values are compared against
+the type of the value held by the given interface value.
+
+⟪GTI18N_26e4da09_000003⟫here ⟪GTI18N_26e4da09_000004⟫ has type ⟪GTI18N_26e4da09_000005⟫⟪GTI18N_26e4da09_000006⟫here ⟪GTI18N_26e4da09_000007⟫ has type ⟪GTI18N_26e4da09_000008⟫⟪GTI18N_26e4da09_000009⟫no match; here ⟪GTI18N_26e4da09_000010⟫ has the same type as ⟪GTI18N_26e4da09_000011⟫⟪GTI18N_26e4da09_000012⟫The declaration in a type switch has the same syntax as a type assertion ⟪GTI18N_26e4da09_000013⟫i.(T)⟪GTI18N_26e4da09_000014⟫,
+but the specific type ⟪GTI18N_26e4da09_000015⟫T⟪GTI18N_26e4da09_000016⟫ is replaced with the keyword ⟪GTI18N_26e4da09_000017⟫type⟪GTI18N_26e4da09_000018⟫.
+
+This switch statement tests whether the interface value ⟪GTI18N_26e4da09_000019⟫i⟪GTI18N_26e4da09_000020⟫
+holds a value of type ⟪GTI18N_26e4da09_000021⟫T⟪GTI18N_26e4da09_000022⟫ or ⟪GTI18N_26e4da09_000023⟫S⟪GTI18N_26e4da09_000024⟫.
+In each of the ⟪GTI18N_26e4da09_000025⟫T⟪GTI18N_26e4da09_000026⟫ and ⟪GTI18N_26e4da09_000027⟫S⟪GTI18N_26e4da09_000028⟫ cases, the variable ⟪GTI18N_26e4da09_000029⟫v⟪GTI18N_26e4da09_000030⟫ will be of type
+⟪GTI18N_26e4da09_000031⟫T⟪GTI18N_26e4da09_000032⟫ or ⟪GTI18N_26e4da09_000033⟫S⟪GTI18N_26e4da09_000034⟫ respectively and hold the value held by ⟪GTI18N_26e4da09_000035⟫i⟪GTI18N_26e4da09_000036⟫.
+In the default case (where there is no match), the variable ⟪GTI18N_26e4da09_000037⟫v⟪GTI18N_26e4da09_000038⟫ is
+of the same interface type and value as ⟪GTI18N_26e4da09_000039⟫i⟪GTI18N_26e4da09_000040⟫.
+
+⟪GTI18N_26e4da09_000041⟫
+
