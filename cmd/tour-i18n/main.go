@@ -242,6 +242,24 @@ func run(args []string) error {
 			return err
 		}
 		return printJSON(result)
+	case "retranslation promote":
+		fs := flag.NewFlagSet("retranslation promote", flag.ContinueOnError)
+		locale := fs.String("locale", "", "target locale")
+		apply := fs.Bool("apply", false, "apply the fully validated promotion plan")
+		if err := fs.Parse(args[2:]); err != nil {
+			return err
+		}
+		if *locale == "" {
+			return fmt.Errorf("--locale is required")
+		}
+		if fs.NArg() != 0 {
+			return fmt.Errorf("unexpected retranslation promote arguments: %s", strings.Join(fs.Args(), " "))
+		}
+		result, err := i18n.PromoteRetranslation(root, catalog, i18n.RetranslationPromoteOptions{Locale: *locale, Apply: *apply})
+		if err != nil {
+			return err
+		}
+		return printJSON(result)
 	case "translate run":
 		fs := flag.NewFlagSet("translate run", flag.ContinueOnError)
 		locale := fs.String("locale", "", "target locale")
