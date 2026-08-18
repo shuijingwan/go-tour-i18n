@@ -1,0 +1,21 @@
+* 方法与指针间接引用（2）
+
+反过来也会发生类似的情况。
+
+带有值参数的函数必须接收该特定类型的值：
+
+	var v Vertex
+	fmt.Println(AbsFunc(v))  // OK
+	fmt.Println(AbsFunc(&v)) // 编译错误！
+
+而使用值接收者的方法在调用时，接收者既可以是值，也可以是指针：
+
+	var v Vertex
+	fmt.Println(v.Abs()) // OK
+	p := &v
+	fmt.Println(p.Abs()) // OK
+
+在这种情况下，方法调用 `p.Abs()` 会被解释为 `(*p).Abs()`。
+
+.play methods/indirection-values.go
+

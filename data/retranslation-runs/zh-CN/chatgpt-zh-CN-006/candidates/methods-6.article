@@ -1,0 +1,23 @@
+* 方法与指针间接引用
+
+比较前两个程序，你可能会注意到，
+带有指针参数的函数必须接收一个指针：
+
+	var v Vertex
+	ScaleFunc(v, 5)  // 编译错误！
+	ScaleFunc(&v, 5) // OK
+
+而使用指针接收者的方法在调用时，接收者既可以是值，也可以是指针：
+
+	var v Vertex
+	v.Scale(5)  // OK
+	p := &v
+	p.Scale(10) // OK
+
+对于语句 `v.Scale(5)`，即使 `v` 是一个值而不是指针，
+也会自动调用使用指针接收者的方法。
+也就是说，为了方便，Go 会把语句 `v.Scale(5)` 解释为
+`(&v).Scale(5)`，因为 `Scale` 方法使用指针接收者。
+
+.play methods/indirection.go
+
