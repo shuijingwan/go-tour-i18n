@@ -1,4 +1,4 @@
-* 图片
+* 图像
 
 [[/pkg/image/#Image][image 包]]定义了 `Image` 接口：
 
@@ -10,11 +10,11 @@
 		At(x, y int) color.Color
 	}
 
-*注意*： `Bounds` 方法的 `Rectangle` 返回值实际上是
-[[/pkg/image/#Rectangle][`image.Rectangle`]]，因为该声明位于 `image` 包内。
+*注意*： `Rectangle` 是 `Bounds` 方法的返回值，实际类型是
+[[/pkg/image/#Rectangle][`image.Rectangle`]]，因为该声明位于 `image` 包中。
 
-（详见 [[/pkg/image/#Image][文档]]。）
+（完整细节请参阅[[/pkg/image/#Image][文档]]。）
 
-`color.Color` 和 `color.Model` 类型也是接口，不过我们将使用预定义的实现 `color.RGBA` 和 `color.RGBAModel`，因此这里暂不考虑这一点。这些接口和类型由 [[/pkg/image/color/][image/color 包]]定义。
+`color.Color` 和 `color.Model` 类型也是接口，不过这里我们使用预定义的实现 `color.RGBA` 和 `color.RGBAModel`，因此可以暂时忽略这一点。这些接口和类型由 [[/pkg/image/color/][image/color 包]]定义。
 
 .play methods/images.go

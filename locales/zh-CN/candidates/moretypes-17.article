@@ -1,6 +1,6 @@
-* range 续
+* Range（续）
 
-可以通过将值赋给 `_` 来跳过索引或值。
+可以通过赋值给 `_` 来跳过索引或值。
 
     for i, _ := range pow
     for _, value := range pow

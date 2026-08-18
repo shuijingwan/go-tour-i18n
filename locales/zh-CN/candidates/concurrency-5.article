@@ -1,7 +1,7 @@
-* Select
+* select
 
-`select` 语句使 goroutine 可以等待多个通信操作。
+`select` 语句使一个 goroutine 可以等待多个通信操作。
 
-`select` 会阻塞，直到某个分支可以执行，随后执行该分支。如果多个分支都就绪，则会随机选择一个执行。
+`select` 会阻塞，直到其中某个分支可以执行，然后执行该分支。如果有多个分支同时就绪，它会随机选择一个。
 
 .play concurrency/select.go
