@@ -253,8 +253,21 @@ func validatePromotionEvidence(batchDir string, page Page, manifest Retranslatio
 		return fmt.Errorf("%s: protected_token_count %d, regenerated %d", page.ID, manifest.ProtectedTokenCount, len(protected.Tokens))
 	}
 	flatID := strings.TrimSuffix(name, ".article")
-	if _, err := retryValidationAttempt(validation.RawResponsePath, flatID); err != nil {
+	currentAttempt, err := retryValidationAttempt(validation.RawResponsePath, flatID)
+	if err != nil {
 		return fmt.Errorf("%s: %w", page.ID, err)
+	}
+	retryDir := filepath.Join(batchDir, "retries", flatID)
+	if currentAttempt == 1 {
+		entries, err := os.ReadDir(retryDir)
+		if err != nil && !os.IsNotExist(err) {
+			return fmt.Errorf("%s: inspect retry history: %w", page.ID, err)
+		}
+		if err == nil && len(entries) != 0 {
+			return fmt.Errorf("%s: validation points to attempt-001 but retry history exists", page.ID)
+		}
+	} else if err := validateRetryAttemptSequence(retryDir, currentAttempt, currentAttempt); err != nil {
+		return fmt.Errorf("%s: invalid final retry provenance: %w", page.ID, err)
 	}
 	raw, err := os.ReadFile(filepath.Join(batchDir, filepath.FromSlash(validation.RawResponsePath)))
 	if err != nil {

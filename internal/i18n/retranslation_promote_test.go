@@ -253,7 +253,7 @@ func TestRetranslationPromoteBindsInputRawAndCandidateEvidence(t *testing.T) {
 			if err := writeTranslationJSON(path, validation); err != nil {
 				t.Fatal(err)
 			}
-		}, "restored candidate does not match saved candidate"},
+		}, "missing retry attempt-001-validation.json"},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -264,6 +264,74 @@ func TestRetranslationPromoteBindsInputRawAndCandidateEvidence(t *testing.T) {
 				t.Fatalf("error = %v, want %q", err, tt.want)
 			}
 		})
+	}
+}
+
+func TestRetranslationPromoteRejectsIncompleteOrRewoundRetryProvenance(t *testing.T) {
+	tests := []struct {
+		name   string
+		mutate func(*testing.T, string)
+		want   string
+	}{
+		{"arbitrary attempt-999", func(t *testing.T, batchDir string) {
+			raw, _ := os.ReadFile(filepath.Join(batchDir, "raw-responses", "lesson-1.article"))
+			retryDir := filepath.Join(batchDir, "retries", "lesson-1")
+			if err := os.MkdirAll(retryDir, 0755); err != nil {
+				t.Fatal(err)
+			}
+			if err := os.WriteFile(filepath.Join(retryDir, "attempt-999.article"), raw, 0644); err != nil {
+				t.Fatal(err)
+			}
+			setPromotionValidationRawPath(t, batchDir, "retries/lesson-1/attempt-999.article")
+		}, "missing retry attempt-002.article"},
+		{"attempt-002 missing history", func(t *testing.T, batchDir string) {
+			raw, _ := os.ReadFile(filepath.Join(batchDir, "raw-responses", "lesson-1.article"))
+			retryDir := filepath.Join(batchDir, "retries", "lesson-1")
+			if err := os.MkdirAll(retryDir, 0755); err != nil {
+				t.Fatal(err)
+			}
+			if err := os.WriteFile(filepath.Join(retryDir, "attempt-002.article"), raw, 0644); err != nil {
+				t.Fatal(err)
+			}
+			setPromotionValidationRawPath(t, batchDir, "retries/lesson-1/attempt-002.article")
+		}, "missing retry attempt-001-validation.json"},
+		{"rewound to attempt-001", func(t *testing.T, batchDir string) {
+			retryDir := filepath.Join(batchDir, "retries", "lesson-1")
+			if err := os.MkdirAll(retryDir, 0755); err != nil {
+				t.Fatal(err)
+			}
+			raw, _ := os.ReadFile(filepath.Join(batchDir, "raw-responses", "lesson-1.article"))
+			if err := os.WriteFile(filepath.Join(retryDir, "attempt-002.article"), raw, 0644); err != nil {
+				t.Fatal(err)
+			}
+			if err := os.WriteFile(filepath.Join(retryDir, "attempt-001-validation.json"), []byte("{}\n"), 0644); err != nil {
+				t.Fatal(err)
+			}
+		}, "validation points to attempt-001 but retry history exists"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			root, catalog, batch := processedPromotionFixture(t, 1)
+			batchDir := filepath.Join(root, "data", "retranslation-runs", "zh-CN", batch)
+			tt.mutate(t, batchDir)
+			if _, err := PromoteRetranslation(root, catalog, RetranslationPromoteOptions{Locale: "zh-CN"}); err == nil || !strings.Contains(err.Error(), tt.want) {
+				t.Fatalf("error = %v, want %q", err, tt.want)
+			}
+		})
+	}
+}
+
+func setPromotionValidationRawPath(t *testing.T, batchDir, rawPath string) {
+	t.Helper()
+	path := filepath.Join(batchDir, "validation", "lesson-1.json")
+	var validation RetranslationValidation
+	b, err := os.ReadFile(path)
+	if err != nil || json.Unmarshal(b, &validation) != nil {
+		t.Fatalf("read validation: %v", err)
+	}
+	validation.RawResponsePath = rawPath
+	if err := writeTranslationJSON(path, validation); err != nil {
+		t.Fatal(err)
 	}
 }
 
