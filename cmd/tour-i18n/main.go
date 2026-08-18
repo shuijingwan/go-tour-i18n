@@ -206,6 +206,25 @@ func run(args []string) error {
 			return nil
 		}
 		return printJSON(result)
+	case "retranslation process":
+		fs := flag.NewFlagSet("retranslation process", flag.ContinueOnError)
+		locale := fs.String("locale", "", "target locale")
+		batchID := fs.String("batch-id", "", "optional explicit batch id")
+		if err := fs.Parse(args[2:]); err != nil {
+			return err
+		}
+		if *locale == "" {
+			return fmt.Errorf("--locale is required")
+		}
+		result, err := i18n.ProcessRetranslationBatch(root, catalog, i18n.RetranslationProcessOptions{Locale: *locale, BatchID: *batchID})
+		if err != nil {
+			return err
+		}
+		if result.NoPendingBatches {
+			fmt.Printf("没有待处理的重译批次：%s。\n", *locale)
+			return nil
+		}
+		return printJSON(result)
 	case "translate run":
 		fs := flag.NewFlagSet("translate run", flag.ContinueOnError)
 		locale := fs.String("locale", "", "target locale")

@@ -107,11 +107,19 @@ ChatGPT 执行重译批次时，应主动从 GitHub 仓库 `main` 分支读取�
 2. manifest 指向的 `data/retranslation-runs/<locale>/<batch-id>/inputs/*.article`；
 3. `locales/<locale>/glossary.yaml`。
 
-整体工作流为：完整顶层 `present.Section` → Default protected input → retranslation batch → ChatGPT 读取批次和最新 locale glossary → 每页独立整页翻译 → 后续 restore、candidate staging 与 validator。当前已经实现批次输入导出；response 导入、restore、candidate staging 及其后续自动化衔接仍属于计划中的流程，不应视为现有能力。
+整体工作流为：完整顶层 `present.Section` → Default protected input → retranslation batch → ChatGPT 读取批次和最新 locale glossary → 每页独立整页翻译 → restore → batch 内 candidate staging → validator。当前已经实现批次输入导出，以及仓库内 `raw-responses/` 的 restore、隔离 candidate staging 和统一 candidate 校验；从聊天自动导入 response、将通过的暂存 candidate 提升为 canonical candidate 等后续自动化衔接仍属于计划中的流程，不应视为现有能力。
 
 一个批次可以包含多个页面（默认 10 页），但每个完整顶层 `present.Section` 始终是独立翻译单元，不得将批次内多个页面合并成一个翻译单元。
 
 正式翻译使用 `main` 分支中目标语言当前最新的 `glossary.yaml`。批次无需额外绑定 glossary commit ID、glossary SHA，也无需复制术语表；如需追溯历史时期使用的规则，使用 Git 历史即可，当前不另建术语版本绑定、数据库或状态机制。这一约定以 GitHub 仓库作为 ChatGPT 获取批次输入和项目规则的主要来源之一，减少人工复制粘贴，并由 Git 历史承担必要的版本追溯。
+
+处理最早一个 raw response 完整且尚未处理的批次：
+
+```bash
+go run -mod=readonly ./cmd/tour-i18n retranslation process --locale zh-CN
+```
+
+处理前会根据当前 Catalog 和 glossary 重新生成 Default protected input，并要求它与批次保存的 input 字节完全一致；随后使用同一份保护映射 restore，并调用正式 `ValidateCandidate`。结果只写入该批次自己的 `candidates/`、`validation/` 和 `result.json`，不会修改 locale 的 canonical candidate 或 status。默认严格保持批次顺序：最早未处理批次缺少 raw response 时会停止，不会跳到后续批次；`--batch-id` 只用于显式调试或恢复。
 
 ## 正式投影与本地预览
 
