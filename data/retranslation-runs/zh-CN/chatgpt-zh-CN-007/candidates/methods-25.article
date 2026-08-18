@@ -1,0 +1,13 @@
+* 练习：图像
+
+还记得你之前编写的[[/tour/moretypes/18][图片生成器]]吗？我们再写一个，不过这次它将返回 `image.Image` 的一个实现，而不是数据切片。
+
+定义你自己的 `Image` 类型，实现[[/pkg/image/#Image][必要的方法]]，然后调用 `pic.ShowImage`。
+
+`Bounds` 应返回一个 `image.Rectangle`，例如 `image.Rect(0,`0,`w,`h)`。
+
+`ColorModel` 应返回 `color.RGBAModel`。
+
+`At` 应返回一种颜色；上一个图片生成器中的值 `v`，在这里对应于 `color.RGBA{v,`v,`255,`255}`。
+
+.play methods/exercise-images.go

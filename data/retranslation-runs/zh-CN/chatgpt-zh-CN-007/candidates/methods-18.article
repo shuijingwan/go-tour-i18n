@@ -1,0 +1,8 @@
+* 练习：Stringer
+
+让 `IPAddr` 类型实现 `fmt.Stringer`，以点分四组的形式
+打印地址。
+
+例如， `IPAddr{1,`2,`3,`4}` 应打印为 `"1.2.3.4"`。
+
+.play methods/exercise-stringer.go
