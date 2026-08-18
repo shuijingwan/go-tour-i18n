@@ -1,0 +1,16 @@
+* Range and Close
+
+A sender can ⟪GTI18N_3e925c67_000001⟫close⟪GTI18N_3e925c67_000002⟫ a channel to indicate that no more values will be sent. Receivers can test whether a channel has been closed by assigning a second parameter to the receive expression: after
+
+⟪GTI18N_3e925c67_000003⟫
+
+⟪GTI18N_3e925c67_000004⟫ok⟪GTI18N_3e925c67_000005⟫ is ⟪GTI18N_3e925c67_000006⟫false⟪GTI18N_3e925c67_000007⟫ if there are no more values to receive and the channel is closed.
+
+The loop ⟪GTI18N_3e925c67_000008⟫for`i`:=`range`c⟪GTI18N_3e925c67_000009⟫ receives values from the channel repeatedly until it is closed.
+
+⟪GTI18N_3e925c67_000010⟫Note:⟪GTI18N_3e925c67_000011⟫ Only the sender should close a channel, never the receiver. Sending on a closed channel will cause a panic.
+
+⟪GTI18N_3e925c67_000012⟫Another*note:⟪GTI18N_3e925c67_000013⟫ Channels aren't like files; you don't usually need to close them. Closing is only necessary when the receiver must be told there are no more values coming, such as to terminate a ⟪GTI18N_3e925c67_000014⟫range⟪GTI18N_3e925c67_000015⟫ loop.
+
+⟪GTI18N_3e925c67_000016⟫
+

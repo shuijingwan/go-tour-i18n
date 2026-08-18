@@ -1,0 +1,22 @@
+* sync.Mutex
+
+We've seen how channels are great for communication among goroutines.
+
+But what if we don't need communication? What if we just want to make sure only
+one goroutine can access a variable at a time to avoid conflicts?
+
+This concept is called ⟪GTI18N_49f72779_000001⟫mutual_exclusion⟪GTI18N_49f72779_000002⟫, and the conventional name for the data structure that provides it is ⟪GTI18N_49f72779_000003⟫mutex⟪GTI18N_49f72779_000004⟫.
+
+⟪GTI18N_49f72779_000005⟫'s standard library provides mutual exclusion with
+[[⟪GTI18N_49f72779_000006⟫][⟪GTI18N_49f72779_000007⟫sync.Mutex⟪GTI18N_49f72779_000008⟫]] and its two methods:
+
+- ⟪GTI18N_49f72779_000009⟫Lock⟪GTI18N_49f72779_000010⟫
+- ⟪GTI18N_49f72779_000011⟫Unlock⟪GTI18N_49f72779_000012⟫
+
+We can define a block of code to be executed in mutual exclusion by surrounding it
+with a call to ⟪GTI18N_49f72779_000013⟫Lock⟪GTI18N_49f72779_000014⟫ and ⟪GTI18N_49f72779_000015⟫Unlock⟪GTI18N_49f72779_000016⟫ as shown on the ⟪GTI18N_49f72779_000017⟫Inc⟪GTI18N_49f72779_000018⟫ method.
+
+We can also use ⟪GTI18N_49f72779_000019⟫defer⟪GTI18N_49f72779_000020⟫ to ensure the mutex will be unlocked as in the ⟪GTI18N_49f72779_000021⟫Value⟪GTI18N_49f72779_000022⟫ method.
+
+⟪GTI18N_49f72779_000023⟫
+

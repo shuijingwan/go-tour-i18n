@@ -1,0 +1,12 @@
+* Buffered Channels
+
+Channels can be ⟪GTI18N_caef0893_000001⟫buffered⟪GTI18N_caef0893_000002⟫.  Provide the buffer length as the second argument to ⟪GTI18N_caef0893_000003⟫make⟪GTI18N_caef0893_000004⟫ to initialize a buffered channel:
+
+⟪GTI18N_caef0893_000005⟫
+
+Sends to a buffered channel block only when the buffer is full. Receives block when the buffer is empty.
+
+Modify the example to overfill the buffer and see what happens.
+
+⟪GTI18N_caef0893_000006⟫
+
