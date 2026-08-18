@@ -1,0 +1,14 @@
+* Go 离线版（可选）
+
+本教程还提供一个独立程序版本，无需访问互联网即可使用。它会在你自己的计算机上构建并运行代码示例。
+
+要在本地运行本教程，需要先
+[[/doc/install][安装 Go]]，然后运行：
+
+  go install golang.org/x/website/tour@latest
+
+这会将一个 `tour` 二进制文件放到你的
+[[/cmd/go/#hdr-GOPATH_and_Modules][GOPATH]] 的 `bin` 目录中。
+运行这个教程程序时，它会打开 Web 浏览器，显示本教程的本地版本。
+
+当然，你也可以继续通过本网站学习本教程。
