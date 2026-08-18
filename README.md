@@ -23,9 +23,9 @@
 - 已建立完整页面翻译执行器、术语表、结构保护、candidate 校验、状态管理和 attempt 审计记录。
 - 已实现面向 locale 的完整正式投影和本地完整预览；zh-CN 完整投影已通过 103/103 HTTP 页面级验收。
 - 当前 module path 为 `github.com/shuijingwan/go-tour-i18n`。
-- zh-CN 第一阶段已经正式上线：production publish 已实现并正式部署，浏览器最终验收通过。
-- 已完成翻译输入保护与 Translation Engine 的匿名质量实验；ChatGPT 是下一阶段优先验证的高质量翻译来源，但尚未接入正式翻译执行路径。
-- 现有 103 个 canonical candidate 与 production 均未因实验替换。下一阶段将研究自动化 ChatGPT retranslation staging，先生成独立候选并完成比较与校验，不立即覆盖现有译文。详见 [翻译质量实验](docs/TRANSLATION_QUALITY_EXPERIMENTS.md)。
+- zh-CN 第一阶段已有 production release 在线运行；production publish、自动部署和浏览器验收能力均已完成。
+- 在匿名质量实验之后，已完成 zh-CN 全部 103 页的 ChatGPT 整页重译、批次处理、统一 validator、语义质量审计和 canonical promotion。当前仓库中的 103 个 canonical candidate 均为本轮正式提升后的 ChatGPT 译文，最终语义质量审计为 A=103、B/C/D=0。
+- 本轮新 canonical 已通过 production bundle 与临时 binary HTTP 验收，但尚未生成并部署新的正式 production release。当前在线站点仍运行此前的 production release；下一阶段是生成本轮正式 release，再单独执行生产部署和线上验收。详见 [翻译质量实验](docs/TRANSLATION_QUALITY_EXPERIMENTS.md) 和 [项目状态](docs/PROJECT_STATE.md)。
 
 当前英文基线包含：
 
@@ -107,7 +107,7 @@ ChatGPT 执行重译批次时，应主动从 GitHub 仓库 `main` 分支读取�
 2. manifest 指向的 `data/retranslation-runs/<locale>/<batch-id>/inputs/*.article`；
 3. `locales/<locale>/glossary.yaml`。
 
-整体工作流为：完整顶层 `present.Section` → Default protected input → retranslation batch → ChatGPT 读取批次和最新 locale glossary → 每页独立整页翻译 → restore → batch 内 candidate staging → validator。当前已经实现批次输入导出，以及仓库内 `raw-responses/` 的 restore、隔离 candidate staging 和统一 candidate 校验；从聊天自动导入 response、将通过的暂存 candidate 提升为 canonical candidate 等后续自动化衔接仍属于计划中的流程，不应视为现有能力。
+整体工作流为：完整顶层 `present.Section` → Default protected input → retranslation batch → ChatGPT 读取批次和最新 locale glossary → 每页独立整页翻译 → raw response → restore → batch candidate → validator → promotion。批次输入导出、隔离 process、连续 retry 和 canonical promotion 均已实现。zh-CN 本轮 Batch 001–011 已封存为不可变历史 evidence；`moretypes/1` 与 `concurrency/1` 的最终结果来自各自的 attempt-002。
 
 一个批次可以包含多个页面（默认 10 页），但每个完整顶层 `present.Section` 始终是独立翻译单元，不得将批次内多个页面合并成一个翻译单元。
 
@@ -137,6 +137,22 @@ go run -mod=readonly ./cmd/tour-i18n retranslation retry \
 ```
 
 `retry` 不调用模型，也不创建或改写 retry raw response；它只接受当前 `result.json` 中的 `restore_failed` 或 `validation_failed` 页面。每次处理前一份 validation 会归档为 `retries/<flattened-page-id>/attempt-NNN-validation.json`，下一份 raw 必须使用连续编号且不得覆盖。处理仍复用原 manifest/input、Default protection mapping、restore 和正式 validator；只更新目标页的 batch candidate、validation 与批次汇总，其他页面保持不变。
+
+在提升前预览完整 promotion plan（默认 dry-run，不修改 canonical candidate 或 status）：
+
+```bash
+go run -mod=readonly ./cmd/tour-i18n retranslation promote --locale zh-CN
+```
+
+只有显式增加 `--apply` 才会正式修改 canonical candidate 与 status：
+
+```bash
+go run -mod=readonly ./cmd/tour-i18n retranslation promote --locale zh-CN --apply
+```
+
+promotion 对每页选择包含该页的最新批次；最新结果未通过时整体失败，不回退旧批次。preflight 会验证 Catalog/manifest metadata、saved input 与 source hash，使用当前 glossary 重建 Default protected input，检查连续 retry provenance，并沿 validation 指向的最终 raw response 重新 restore，要求 restore 结果与历史 batch candidate 字节完全一致，再运行 locale-aware canonical validator。历史 batch candidate 始终保持不变。
+
+batch candidate 到 canonical candidate 的边界只允许一种确定性规范化：移除多余尾部 LF，并保证最终恰好一个 LF；不修改正文或其他字节。plan 分别记录原始 `source_candidate_sha256` 与规范化后的 `candidate_sha256`，并标记 EOF normalization。apply 完成后状态保持 `ready`，保留既有 `Attempts` 和 `SourceSHA256`，同时记录来源 ChatGPT batch；本轮最终 revision 包括 Batch 009、010、011，其中 `methods/17`、`methods/19` 最终来自 Batch 011。
 
 ## 正式投影与本地预览
 
@@ -194,7 +210,7 @@ go run -mod=readonly ./cmd/tour-i18n publish \
 
 `--published-at` 是当前 locale production bundle 的发布时间，必须使用 RFC 3339 UTC；它不是 Git commit、服务启动或请求时间。源码 `_content/tour/site-metadata.json` 仅为 `go run ./tour` 和 preview 提供开发态 metadata，不保存生产发布时间；publish 会在 bundle 内生成真实的站点 metadata。`bin/tour` 在构建时固定 locale，从 binary 自身相邻的 `../_content` 加载内容，不需要运行时 `--locale` 或 `--content`，也不依赖当前工作目录。`release.json`、bundle 内的站点 metadata 和 `SHA256SUMS` 由相同输入确定；相同源码、发布时间、Go 工具链及 GOOS/GOARCH 下的重复 publish 逐文件一致。bundle 不包含 candidate、status、translation-runs 等开发期数据。
 
-当前正式 release 已部署：`/data/go-tour/releases/20260813-zh-CN-1fe73f5`。项目 commit 为 `1fe73f54615b3d05d09133f6e25aa91c5fb07f75`。
+当前正式 release 已部署：`/data/go-tour/releases/20260813-zh-CN-1fe73f5`。项目 commit 为 `1fe73f54615b3d05d09133f6e25aa91c5fb07f75`。这是本轮 ChatGPT canonical promotion 之前的 release；新的 canonical 尚未生成正式 production release 或部署上线。
 
 正式站点：<https://go-dev.shuijingwanwq.com/>。
 
@@ -223,6 +239,8 @@ go test -mod=readonly -count=1 ./...
 ## 实际生产部署状态
 
 zh-CN 第一阶段已经正式上线：<https://go-dev.shuijingwanwq.com/>。
+
+以下是当前在线旧 release 的部署状态，不表示本轮新 ChatGPT canonical 已部署；新 canonical 目前只完成仓库内正式提升以及 production bundle/HTTP 验收。
 
 - 正式 release：`/data/go-tour/releases/20260813-zh-CN-1fe73f5`。
 - 项目 commit：`1fe73f54615b3d05d09133f6e25aa91c5fb07f75`。

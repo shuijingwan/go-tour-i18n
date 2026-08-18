@@ -1,6 +1,6 @@
 # 项目状态
 
-更新时间：2026-08-17 21:35:20（北京时间）
+更新时间：2026-08-18 21:12:04（北京时间）
 
 ## 基线与架构
 
@@ -40,15 +40,27 @@
 - 5 个固定页面的重复实验确认，GLM-5.2 在实际 API Request 相同的情况下 response 仍存在运行间波动，且波动可能改变 validator pass / fail；项目不推测服务端原因。
 - 5 页 × 2 模式 × 3 次的重复实验中，Static Context 未显示稳定优势：Default usable/planned 为 12/15，Static Context 为 9/15。Default protected-token 继续作为当前正式翻译执行路径，不再优先投入 minimal-protect / Static Context 的细微调优。
 - 已完成 `methods/24`、`concurrency/7`、`concurrency/11` 三页，ChatGPT、Codex、GLM-5.2 三种候选来源，ChatGPT、DeepSeek、GLM-5.2、豆包四个 judge 的 12 次匿名评审。ChatGPT 获得 8/12 第一名；排除 ChatGPT self-judge 后仍获得 5/9 第一名，当前是下一阶段最值得优先验证的高质量翻译来源。
-- 当前 zh-CN 103/103 ready、canonical candidates 与 production 均保持不变；本轮实验不意味着现有 103 页必须重翻，也不表示 ChatGPT 已接入正式 Translation Engine。
-- 下一阶段是设计尽可能自动化的 ChatGPT retranslation staging，先保存独立候选并与现有 canonical candidate 比较，达到替换标准后才考虑正式切换，不立即覆盖现有译文。
+- 截至 2026-08-17 本轮实验结束时，zh-CN 103/103 ready、canonical candidates 与 production 均保持不变；本轮实验不意味着现有 103 页必须重翻，也不表示 ChatGPT 已接入正式 Translation Engine。
+- 当时确定的下一阶段是设计尽可能自动化的 ChatGPT retranslation staging，先保存独立候选并与现有 canonical candidate 比较，达到替换标准后才考虑正式切换，不立即覆盖现有译文。
 - 完整实验设计、排名、统计、质量观察和工程决策见 [TRANSLATION_QUALITY_EXPERIMENTS.md](TRANSLATION_QUALITY_EXPERIMENTS.md)。
+
+### 2026-08-18 ChatGPT 全量重译、canonical promotion 与最终验收
+
+- 已完成 zh-CN 全部 103 个正式页面的 ChatGPT 整页重译、批次 process/retry、统一 validator、独立语义审计和正式 canonical promotion。最终语义质量审计为 A=103、B/C/D=0；当前仓库 canonical candidates 103/103 均为本轮正式提升后的 ChatGPT 译文。
+- 重译历史封存在 `data/retranslation-runs/zh-CN/chatgpt-zh-CN-001` 至 `011`，作为不可变 evidence。最终 revision 包括 Batch 009、010、011；`methods/17`、`methods/19` 最终来自 Batch 011。两个正式 retry 页面为 `moretypes/1` attempt-002 和 `concurrency/1` attempt-002。
+- retranslation workflow 已完整实现 export/process/retry/promote。process 重新生成 Default protected input，并完成 raw response → restore → batch candidate → validator；retry 要求连续 raw attempt 和 validation history。promotion 默认 dry-run，只有显式 `--apply` 才修改 canonical/status；每页优先使用包含该页的最新批次，最新批次失败时禁止回退旧成功候选。
+- promotion preflight 验证 Catalog 与 manifest metadata、source/input hash、saved input、当前 glossary 重建的 protected input、最终 raw attempt 的连续 provenance、restore 与历史 batch candidate 的字节一致性，以及 locale-aware canonical validator。历史 batch candidate 不会被修改；plan 分开记录原始 `source_candidate_sha256` 和最终 `candidate_sha256`。
+- batch candidate → canonical candidate 边界采用唯一允许的确定性 EOF normalization：只移除多余尾部 LF，最终保证恰好一个 LF，不改变正文、中间空行、尾部空格或其他字节。正式 apply 结果为 103 pages、102 changed、1 unchanged、EOF normalized=80；apply 后 dry-run 为 0 changed、103 unchanged。
+- promotion 后 103/103 状态均为 `ready`，原 `Attempts` 与 `SourceSHA256` 保留，canonical path 正确，note 记录来源 ChatGPT batch。promotion 数据一致性审计与 `status check` 均通过；正式 canonical promotion 数据提交为 `bfa9f929dd0f425adc97ba4b6ae390a8a50e071a`，验收测试基线提交为 `d2595f3d57cc2ea8c7a4df3034fb03e8c4c325b0`。
+- `go test -mod=readonly -count=1 ./...` 全部通过。临时 production publish bundle 成功，结果为 `ready=103`、`pending=0`、`blocked=0`、`pages=103`、`articles=7`；`release.json` 正确，`SHA256SUMS` 全部通过，bundle 不含 status、candidates、retranslation-runs 等开发态数据。
+- 临时 production binary HTTP 验收通过：103/103 正式课程路由与 7/7 article endpoint 均返回 HTTP 200；首页、`/tour/`、`/tour/list`、robots、sitemap、script 正常；`welcome/1` 使用 remote execution 分支；HTTP transport 正常且 SocketTransport 未启用；`/socket` 和保留路径按设计禁用。sitemap 仍为 104 个唯一 URL（首页 + 103 页），是否加入 `/tour/list` 使其变为 105 是独立 SEO 后续事项。
+- 以上结论仅表示仓库 canonical 已正式切换，并通过临时 production bundle/HTTP 验收。本轮新的 ChatGPT canonical 尚未生成正式 production release，也尚未部署线上。线上站点仍运行此前的 production release，不能将旧站点已上线表述为本轮重译已部署。
 
 ## zh-CN 课程正文完成状态
 
 - 正式发布投影共 103 页，另保留 2 条条件源页面审计记录；当前正式状态为 `ready=103`、`pending=0`、`blocked=0`。
-- 103 个正式发布页面均已完成翻译，课程正文阶段已经结束；第三批至后续各批的翻译、校准与修复均为已完成的历史过程，不再作为当前推进项。
-- 发布前已完成 103 页全局译文质量审计，并完成必要的修订。全量导出与核对材料完整：100 个普通 Section、3 个特殊投影；英文源 103/103 成功导出且每页 SHA-256 与冻结状态源一致；zh-CN canonical candidate 103/103 成功导出且均与当前状态指向一致；缺失、重复、多余页面均为 0，`index.md` 共 103 条；导出前后 Git 状态一致。
+- 103 个正式发布页面均已完成翻译；当前 canonical 103/103 为 2026-08-18 正式提升后的 ChatGPT 整页译文，状态为 `ready`。最终语义质量审计为 A=103、B/C/D=0，缺失、重复和额外页面均为 0。
+- 此前第一阶段译文及其全局质量审计仍是重要历史基线；本轮 ChatGPT 重译通过 Batch 001–011 保留完整 evidence，并经独立语义审核、全量 promotion preflight 与 production bundle/HTTP 验收后完成 canonical 切换。
 - 特殊投影已纳入上述审计：`welcome/1` 使用 appengine remote 分支 `a remote server.`；`welcome/4`、`welcome/5` 使用完整 `#appengine:` 条件 Section 去前缀后的投影。
 - 已形成的翻译执行结论继续有效：Protected Token 保护 payload 与结构角色，允许为目标语言自然语序调整位置但不得破坏 present 结构；静态校验持续覆盖链接、代码、directive、预格式化块及其拓扑关系。`flowcontrol/10`、`moretypes/1` 的校准和 raw-input/minimal-protect 实验均已形成结论，不是当前待办。
 
@@ -128,6 +140,13 @@
 ## 第一阶段上线冻结
 
 - Section：103/103 ready；article metadata：7/7；公共 UI：已完成；production publish：已实现并正式部署；production 自动部署脚本：首次真实生产验证通过；浏览器最终验收：通过；生产 Playground 执行链路迁移至 ZgoCloud 固定代理：已完成生产部署和真实用户验收。
+- 上述上线冻结描述的是现有旧 production release。本轮 ChatGPT canonical 已在仓库完成正式提升与临时 production bundle/HTTP 验收，但尚未生成和部署新的正式 release。
+
+## 下一阶段
+
+- 基于当前已提升的 ChatGPT canonical 生成新的正式 production release，完成 release 内容与校验和复核后，再单独执行生产部署和线上验收。
+- 部署前后必须明确区分旧在线 release 与本轮新 release，不能用现有站点在线状态替代本轮发布证明。
+- `/tour/list` 是否加入 sitemap（104 → 105）作为独立 SEO 后续事项评估，不与本轮重译、release 生成或生产部署混为一项。
 
 ## 站点首页、公共页脚与项目互链
 
