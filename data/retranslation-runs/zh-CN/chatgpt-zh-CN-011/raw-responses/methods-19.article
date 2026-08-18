@@ -1,0 +1,20 @@
+* 错误
+
+⟪GTI18N_9eaab1fd_000001⟫ 程序使用 ⟪GTI18N_9eaab1fd_000002⟫error⟪GTI18N_9eaab1fd_000003⟫ 值表示错误状态。
+
+⟪GTI18N_9eaab1fd_000004⟫error⟪GTI18N_9eaab1fd_000005⟫ 类型是一个内置接口，类似于 ⟪GTI18N_9eaab1fd_000006⟫fmt.Stringer⟪GTI18N_9eaab1fd_000007⟫：
+
+⟪GTI18N_9eaab1fd_000008⟫
+
+（与 ⟪GTI18N_9eaab1fd_000009⟫fmt.Stringer⟪GTI18N_9eaab1fd_000010⟫ 类似，⟪GTI18N_9eaab1fd_000011⟫fmt⟪GTI18N_9eaab1fd_000012⟫ 包在
+打印值时也会检查待打印的值是否实现了 ⟪GTI18N_9eaab1fd_000013⟫error⟪GTI18N_9eaab1fd_000014⟫ 接口。）
+
+函数通常会返回一个 ⟪GTI18N_9eaab1fd_000015⟫error⟪GTI18N_9eaab1fd_000016⟫ 值，调用方应通过判断该错误是否为
+⟪GTI18N_9eaab1fd_000017⟫nil⟪GTI18N_9eaab1fd_000018⟫ 来处理错误。
+
+⟪GTI18N_9eaab1fd_000019⟫
+
+⟪GTI18N_9eaab1fd_000020⟫error⟪GTI18N_9eaab1fd_000021⟫ 为 nil 表示成功；非 nil 的 ⟪GTI18N_9eaab1fd_000022⟫error⟪GTI18N_9eaab1fd_000023⟫ 表示失败。
+
+⟪GTI18N_9eaab1fd_000024⟫
+
