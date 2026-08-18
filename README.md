@@ -99,6 +99,20 @@ go run -mod=readonly ./cmd/tour-i18n translate recover-network \
 
 该命令拒绝 HTTP/API、模型输出、token、parse、render 或 validator 失败；恢复后仍须单独运行正常的 `translate run`。
 
+### ChatGPT 重译批次约定
+
+ChatGPT 执行重译批次时，应主动从 GitHub 仓库 `main` 分支读取批次输入和目标语言当前最新的术语规则。用户无需在每个新会话中重新复制术语表。正常读取顺序为：
+
+1. `data/retranslation-runs/<locale>/<batch-id>/manifest.json`；
+2. manifest 指向的 `data/retranslation-runs/<locale>/<batch-id>/inputs/*.article`；
+3. `locales/<locale>/glossary.yaml`。
+
+整体工作流为：完整顶层 `present.Section` → Default protected input → retranslation batch → ChatGPT 读取批次和最新 locale glossary → 每页独立整页翻译 → 后续 restore、candidate staging 与 validator。当前已经实现批次输入导出；response 导入、restore、candidate staging 及其后续自动化衔接仍属于计划中的流程，不应视为现有能力。
+
+一个批次可以包含多个页面（默认 10 页），但每个完整顶层 `present.Section` 始终是独立翻译单元，不得将批次内多个页面合并成一个翻译单元。
+
+正式翻译使用 `main` 分支中目标语言当前最新的 `glossary.yaml`。批次无需额外绑定 glossary commit ID、glossary SHA，也无需复制术语表；如需追溯历史时期使用的规则，使用 Git 历史即可，当前不另建术语版本绑定、数据库或状态机制。这一约定以 GitHub 仓库作为 ChatGPT 获取批次输入和项目规则的主要来源之一，减少人工复制粘贴，并由 Git 历史承担必要的版本追溯。
+
 ## 正式投影与本地预览
 
 完整投影只接受 catalog 中所有页面对应的 canonical `ready` candidate；存在 pending、blocked、缺失、额外或非 canonical candidate 时会失败，不会回退到英文或旧译文。输出为可直接交给官方 Tour 本地服务的完整内容树，不修改 candidate、status 或 catalog。

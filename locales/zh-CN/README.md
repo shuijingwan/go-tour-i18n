@@ -10,3 +10,13 @@
 - 术语记录在 [`glossary.yaml`](glossary.yaml)。
 - 所有来源的完整页面候选都必须经过同一套自动校验，不允许绕过校验直接发布。
 - 人工逐页校对不是强制发布门槛，但自动解析和结构校验必须通过。
+
+## ChatGPT 重译批次与术语
+
+zh-CN 当前主要术语文件是 [`glossary.yaml`](glossary.yaml)。ChatGPT 开始翻译 zh-CN 批次前，应主动从 GitHub 仓库 `main` 分支读取该文件的最新版本，同时读取目标批次的 `manifest.json` 和其中列出的独立 `.article` 输入。用户无需在每个新会话中重新粘贴 `Exercise → 练习`、`channel → 通道`、`package → 包` 等已经存在于仓库术语表中的规则。
+
+术语文件内各类规则沿用项目现有语义：`mandatory` 是强制译法，`preferred` 是优先译法，`terms` 用于统一术语，`forbidden` 是禁止使用的译法，`keep` 是保持原样的技术词或标识。README 只说明规则类型和文件位置，不复制完整术语表，避免双份维护。
+
+一个批次可以包含多个页面（例如默认 10 页），但每个完整顶层 `present.Section` 仍是独立翻译单元，必须逐页输出，不得合并。若具体页面出现 glossary 尚未覆盖的新术语，ChatGPT 应根据完整页面上下文作出自然、准确、一致的翻译；是否将该术语补充进 glossary，留待后续单独决定。
+
+正式约定使用 `main` 分支当前最新的 `glossary.yaml`，不要求批次绑定 glossary commit ID、glossary SHA 或保存术语表副本。需要追溯历史规则时使用 Git 历史，当前不另建术语版本绑定机制。
