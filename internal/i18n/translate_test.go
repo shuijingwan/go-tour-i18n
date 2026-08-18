@@ -791,6 +791,72 @@ func TestTranslationKeepProtectsGoroutineButNotMap(t *testing.T) {
 	}
 }
 
+func TestTranslationKeepBoundariesAllowPresentEmphasis(t *testing.T) {
+	glossary, err := LoadGlossary(repoRoot(t), "zh-CN")
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, source := range []string{"goroutine", "(goroutine)", "goroutine.", "goroutines", "Goroutines"} {
+		t.Run(source, func(t *testing.T) {
+			p := protectTranslation([]byte(source), "12345678", glossary)
+			if strings.Contains(p.Text, "goroutine") || strings.Contains(p.Text, "Goroutines") {
+				t.Fatalf("keep remained visible: %s", p.Text)
+			}
+		})
+	}
+
+	p := protectTranslation([]byte("_goroutine_"), "12345678", glossary)
+	if !reflect.DeepEqual(p.Values, []string{"_", "goroutine", "_"}) {
+		t.Fatalf("protected values = %q, want emphasis/keep/emphasis", p.Values)
+	}
+	if p.Text != strings.Join(p.Tokens, "") {
+		t.Fatalf("protected emphasis = %q, want three adjacent tokens", p.Text)
+	}
+	restored, failures := p.restore(p.Text)
+	if len(failures) != 0 || restored != "_goroutine_" {
+		t.Fatalf("restore = %q, failures=%v", restored, failures)
+	}
+
+	for _, source := range []string{"mygoroutine", "goroutineWorker", "foo_goroutine_bar", "map", "maps"} {
+		t.Run("visible "+source, func(t *testing.T) {
+			p := protectTranslation([]byte(source), "12345678", glossary)
+			if p.Text != source || len(p.Values) != 0 {
+				t.Fatalf("%q was unexpectedly protected: text=%q values=%q", source, p.Text, p.Values)
+			}
+		})
+	}
+}
+
+func TestConcurrency1ProtectsEmphasizedGoroutine(t *testing.T) {
+	root := repoRoot(t)
+	catalog, err := BuildCatalog(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	page, err := catalog.Page("concurrency/1")
+	if err != nil {
+		t.Fatal(err)
+	}
+	glossary, err := LoadGlossary(root, "zh-CN")
+	if err != nil {
+		t.Fatal(err)
+	}
+	p := prepareDefaultTranslationInput(page.Source, page.SourceSHA256, glossary)
+	if strings.Contains(p.Text, "goroutine") {
+		t.Fatalf("concurrency/1 left emphasized goroutine visible:\n%s", p.Text)
+	}
+	found := false
+	for i, value := range p.Values {
+		if value == "goroutine" && i > 0 && i+1 < len(p.Values) && p.Values[i-1] == "_" && p.Values[i+1] == "_" {
+			found = true
+			break
+		}
+	}
+	if !found {
+		t.Fatalf("concurrency/1 did not produce emphasis/keep/emphasis spans: values=%q", p.Values)
+	}
+}
+
 func TestConcurrency11ProjectedProtectionSkipsOnlyTitleGo(t *testing.T) {
 	root := repoRoot(t)
 	catalog, err := BuildCatalog(root)

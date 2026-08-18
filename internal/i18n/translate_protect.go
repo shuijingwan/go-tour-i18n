@@ -96,10 +96,14 @@ func protectTranslation(source []byte, hash string, glossary *Glossary) protecte
 			protectedSpan{start: code.End - 1, end: code.End, restore: "`", kind: protectedInlineCodeClose, inlinePair: inlinePair, inlineContent: text[code.Start+1 : code.End-1]},
 		)
 	}
-	spans = append(spans, presentEmphasisDelimiterSpans(text)...)
+	emphasisSpans := presentEmphasisDelimiterSpans(text)
+	spans = append(spans, emphasisSpans...)
 	if keepRE := translationKeepMatcher(glossary); keepRE != nil {
 		for _, m := range keepRE.FindAllStringIndex(text, -1) {
 			if withinInlineCode(m[0], m[1], inlineCodes) {
+				continue
+			}
+			if !hasTranslationKeepBoundaries(text, m[0], m[1], emphasisSpans) {
 				continue
 			}
 			if !shouldProtectTranslationKeep(text, m[0], m[1]) {
@@ -126,7 +130,27 @@ func translationKeepMatcher(glossary *Glossary) *regexp.Regexp {
 	for i, value := range keep {
 		quoted[i] = regexp.QuoteMeta(value)
 	}
-	return regexp.MustCompile(`\b(?:` + strings.Join(quoted, "|") + `)\b`)
+	return regexp.MustCompile(`(?:` + strings.Join(quoted, "|") + `)`)
+}
+
+func hasTranslationKeepBoundaries(text string, start, end int, emphasisSpans []protectedSpan) bool {
+	return hasTranslationKeepBoundary(text, start-1, start, emphasisSpans) &&
+		hasTranslationKeepBoundary(text, end, end+1, emphasisSpans)
+}
+
+func hasTranslationKeepBoundary(text string, adjacent, boundary int, emphasisSpans []protectedSpan) bool {
+	if adjacent < 0 || adjacent >= len(text) {
+		return true
+	}
+	if text[adjacent] == '_' {
+		for _, span := range emphasisSpans {
+			if span.start == adjacent && span.end == boundary {
+				return true
+			}
+		}
+	}
+	b := text[adjacent]
+	return !((b >= 'a' && b <= 'z') || (b >= 'A' && b <= 'Z') || (b >= '0' && b <= '9') || b == '_')
 }
 
 // protectPlayDirectives protects complete .play directive lines and existing
