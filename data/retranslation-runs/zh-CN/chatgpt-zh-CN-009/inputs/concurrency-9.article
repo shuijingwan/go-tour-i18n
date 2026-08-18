@@ -1,0 +1,22 @@
+* sync.Mutex
+
+We've seen how channels are great for communication among ⟪GTI18N_49f72779_000001⟫.
+
+But what if we don't need communication? What if we just want to make sure only
+one ⟪GTI18N_49f72779_000002⟫ can access a variable at a time to avoid conflicts?
+
+This concept is called ⟪GTI18N_49f72779_000003⟫mutual_exclusion⟪GTI18N_49f72779_000004⟫, and the conventional name for the data structure that provides it is ⟪GTI18N_49f72779_000005⟫mutex⟪GTI18N_49f72779_000006⟫.
+
+⟪GTI18N_49f72779_000007⟫'s standard library provides mutual exclusion with
+[[⟪GTI18N_49f72779_000008⟫][⟪GTI18N_49f72779_000009⟫sync.Mutex⟪GTI18N_49f72779_000010⟫]] and its two methods:
+
+- ⟪GTI18N_49f72779_000011⟫Lock⟪GTI18N_49f72779_000012⟫
+- ⟪GTI18N_49f72779_000013⟫Unlock⟪GTI18N_49f72779_000014⟫
+
+We can define a block of code to be executed in mutual exclusion by surrounding it
+with a call to ⟪GTI18N_49f72779_000015⟫Lock⟪GTI18N_49f72779_000016⟫ and ⟪GTI18N_49f72779_000017⟫Unlock⟪GTI18N_49f72779_000018⟫ as shown on the ⟪GTI18N_49f72779_000019⟫Inc⟪GTI18N_49f72779_000020⟫ method.
+
+We can also use ⟪GTI18N_49f72779_000021⟫defer⟪GTI18N_49f72779_000022⟫ to ensure the mutex will be unlocked as in the ⟪GTI18N_49f72779_000023⟫Value⟪GTI18N_49f72779_000024⟫ method.
+
+⟪GTI18N_49f72779_000025⟫
+
