@@ -22,6 +22,15 @@ func main() {
 	}
 }
 
+type repeatedStrings []string
+
+func (values *repeatedStrings) String() string { return strings.Join(*values, ",") }
+
+func (values *repeatedStrings) Set(value string) error {
+	*values = append(*values, value)
+	return nil
+}
+
 func run(args []string) error {
 	root, err := os.Getwd()
 	if err != nil {
@@ -31,7 +40,7 @@ func run(args []string) error {
 		return err
 	}
 	if len(args) == 0 {
-		return fmt.Errorf("usage: tour-i18n <catalog|upstream|page|status|candidate|translate|build|preview|publish> <command or flags>")
+		return fmt.Errorf("usage: tour-i18n <catalog|upstream|page|status|candidate|translate|retranslation|build|preview|publish> <command or flags>")
 	}
 	var publish *publishOptions
 	if args[0] == "publish" {
@@ -66,7 +75,7 @@ func run(args []string) error {
 		return publishBundle(root, catalog, *publish)
 	}
 	if len(args) < 2 {
-		return fmt.Errorf("usage: tour-i18n <catalog|upstream|page|status|candidate|translate|build|preview|publish> <command or flags>")
+		return fmt.Errorf("usage: tour-i18n <catalog|upstream|page|status|candidate|translate|retranslation|build|preview|publish> <command or flags>")
 	}
 	switch args[0] + " " + args[1] {
 	case "catalog check":
@@ -173,6 +182,30 @@ func run(args []string) error {
 		}
 		fmt.Printf("candidate OK: locale=%s page_id=%s\n", *locale, *id)
 		return nil
+	case "retranslation export":
+		fs := flag.NewFlagSet("retranslation export", flag.ContinueOnError)
+		locale := fs.String("locale", "", "target locale")
+		batchID := fs.String("batch-id", "", "optional explicit batch id")
+		limit := fs.Int("limit", 10, "maximum pages in an automatic batch")
+		var pageIDs repeatedStrings
+		fs.Var(&pageIDs, "id", "optional page id; repeat for multiple pages")
+		if err := fs.Parse(args[2:]); err != nil {
+			return err
+		}
+		if *locale == "" {
+			return fmt.Errorf("--locale is required")
+		}
+		result, err := i18n.ExportRetranslationBatch(root, catalog, i18n.RetranslationExportOptions{
+			Locale: *locale, BatchID: *batchID, PageIDs: pageIDs, Limit: *limit,
+		})
+		if err != nil {
+			return err
+		}
+		if result.AllExported {
+			fmt.Printf("没有需要导出的页面：%s 已全部完成重译输入导出。\n", *locale)
+			return nil
+		}
+		return printJSON(result)
 	case "translate run":
 		fs := flag.NewFlagSet("translate run", flag.ContinueOnError)
 		locale := fs.String("locale", "", "target locale")

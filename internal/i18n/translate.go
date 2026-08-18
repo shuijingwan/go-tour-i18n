@@ -152,7 +152,7 @@ func (r *TranslationRunner) Run(ctx context.Context, pageID, locale, apiKey stri
 		value := protectPlayDirectives(page.Source, page.SourceSHA256)
 		protected = &value
 	} else if !r.RawInput {
-		value := protectTranslation(page.Source, page.SourceSHA256, glossary)
+		value := prepareDefaultTranslationInput(page.Source, page.SourceSHA256, glossary)
 		protected = &value
 	}
 	maxAttempts := r.MaxAttempts
@@ -243,7 +243,7 @@ func (r *TranslationRunner) Run(ctx context.Context, pageID, locale, apiKey stri
 			return nil, err
 		}
 		if last.Passed {
-			candidatePath := filepath.ToSlash(filepath.Join("locales", locale, "candidates", strings.ReplaceAll(pageID, "/", "-")+".article"))
+			candidatePath := canonicalCandidatePath(locale, pageID)
 			if err := os.MkdirAll(filepath.Join(r.Root, filepath.Dir(candidatePath)), 0755); err != nil {
 				return nil, err
 			}
@@ -543,7 +543,7 @@ func RevalidateSavedTranslationResponse(root string, catalog *Catalog, pageID, l
 	if !validation.Passed {
 		return result, fmt.Errorf("%s attempt-%03d revalidation failed: %s", pageID, attempt, strings.Join(validation.Failures, "; "))
 	}
-	candidatePath := filepath.ToSlash(filepath.Join("locales", locale, "candidates", strings.ReplaceAll(pageID, "/", "-")+".article"))
+	candidatePath := canonicalCandidatePath(locale, pageID)
 	if err := os.MkdirAll(filepath.Join(root, filepath.Dir(candidatePath)), 0755); err != nil {
 		return nil, err
 	}

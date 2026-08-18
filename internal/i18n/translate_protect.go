@@ -52,6 +52,12 @@ type protectedSpan struct {
 	inlineContent    string
 }
 
+// prepareDefaultTranslationInput is the shared entry point for the formal
+// protected-token input used by TranslationRunner and offline input exports.
+func prepareDefaultTranslationInput(source []byte, hash string, glossary *Glossary) protectedTranslation {
+	return protectTranslation(source, hash, glossary)
+}
+
 // protectedInlinePair keeps code visible to the model while requiring its
 // exact source bytes between a pair of structural sentinels.
 type protectedInlinePair struct {

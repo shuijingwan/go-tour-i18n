@@ -178,7 +178,11 @@ func BuildLocaleProjection(root string, catalog *Catalog, locale, outputRoot str
 }
 
 func canonicalCandidatePath(locale, pageID string) string {
-	return filepath.ToSlash(filepath.Join("locales", locale, "candidates", strings.ReplaceAll(pageID, "/", "-")+".article"))
+	return filepath.ToSlash(filepath.Join("locales", locale, "candidates", flattenedPageArticleName(pageID)))
+}
+
+func flattenedPageArticleName(pageID string) string {
+	return strings.ReplaceAll(pageID, "/", "-") + ".article"
 }
 
 func loadReadyCandidate(root string, catalog *Catalog, pageID, locale string, status *Status) ([]byte, error) {
