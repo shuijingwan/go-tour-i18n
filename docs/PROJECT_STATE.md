@@ -1,6 +1,6 @@
 # 项目状态
 
-更新时间：2026-08-18 21:12:04（北京时间）
+更新时间：2026-08-18 21:32:17（北京时间）
 
 ## 基线与架构
 
@@ -54,7 +54,9 @@
 - promotion 后 103/103 状态均为 `ready`，原 `Attempts` 与 `SourceSHA256` 保留，canonical path 正确，note 记录来源 ChatGPT batch。promotion 数据一致性审计与 `status check` 均通过；正式 canonical promotion 数据提交为 `bfa9f929dd0f425adc97ba4b6ae390a8a50e071a`，验收测试基线提交为 `d2595f3d57cc2ea8c7a4df3034fb03e8c4c325b0`。
 - `go test -mod=readonly -count=1 ./...` 全部通过。临时 production publish bundle 成功，结果为 `ready=103`、`pending=0`、`blocked=0`、`pages=103`、`articles=7`；`release.json` 正确，`SHA256SUMS` 全部通过，bundle 不含 status、candidates、retranslation-runs 等开发态数据。
 - 临时 production binary HTTP 验收通过：103/103 正式课程路由与 7/7 article endpoint 均返回 HTTP 200；首页、`/tour/`、`/tour/list`、robots、sitemap、script 正常；`welcome/1` 使用 remote execution 分支；HTTP transport 正常且 SocketTransport 未启用；`/socket` 和保留路径按设计禁用。sitemap 仍为 104 个唯一 URL（首页 + 103 页），是否加入 `/tour/list` 使其变为 105 是独立 SEO 后续事项。
-- 以上结论仅表示仓库 canonical 已正式切换，并通过临时 production bundle/HTTP 验收。本轮新的 ChatGPT canonical 尚未生成正式 production release，也尚未部署线上。线上站点仍运行此前的 production release，不能将旧站点已上线表述为本轮重译已部署。
+- 本轮 ChatGPT canonical 已生成正式 production release `/data/go-tour/releases/20260818-zh-CN-45f4cad`，对应仓库 commit `45f4cad98e67c01dac705559781e2311b75b0948`，`published_at=2026-08-18T13:22:48Z`。production deployment 脚本执行成功并以退出码 0 结束，`/data/go-tour/current` 已切换至该 release；service 为 active，origin 与 public acceptance 均为 HTTP 200，deploy lock 已清理。
+- 最终线上验收全部通过：首页、`/tour/`、`/tour/list`、`robots.txt`、`sitemap.xml`、`tour/script.js` 均返回 HTTP 200；103/103 正式课程路由返回 HTTP 200；7/7 `/tour/lesson/<article>` 公网响应与本次正式 release 本地 binary 响应逐字节完全一致。新 canonical marker“每个 Go 程序都是由包组成的。”已在线，旧 marker“每个 Go 程序都由包构成。”已不再出现。
+- production runtime 验收确认 `HTTPTransport=true`、`socketAddr` 为空、Playground base 为 `https://play.go-dev.shuijingwanwq.com:8443`，SocketTransport 未启用；`/socket`、`/socket/anything`、`/_/share` 均按设计返回 404。真实 Run 成功并输出 `ONLINE_RUN_OK`，真实 Format 成功且输出包含 `ONLINE_FMT_OK`。sitemap 当前仍为 104 个唯一 URL。
 
 ## zh-CN 课程正文完成状态
 
@@ -121,7 +123,7 @@
 - publish 构建时将 locale 固定进 production binary；binary 从自身相邻的 `../_content` 定位内容，不依赖当前工作目录，不需要运行时 `--locale` 或 `--content`。bundle 不包含 candidate、status、translation-runs 等开发期数据。
 - 最终 release bundle 的验收结果为：`ready=103`、`pending=0`、`blocked=0`、`pages=103`、`articles=7`；103/103 课程页面、7/7 lesson JSON、103 个 Section、title/subtitle 和公共中文 UI 均通过验收。
 - 两次 publish 在相同源码、Go 工具链和 GOOS/GOARCH 下逐文件一致；185 个 bundle 文件 SHA-256 校验全部通过。真实 Run / Format、`/socket` 404、WebSocket `/socket` 404、`/_/share` 404 及未知 `/_/` 404 均已验证。
-- 当前正式上线状态：production release 为 `/data/go-tour/releases/20260813-zh-CN-1fe73f5`，对应项目 commit `1fe73f54615b3d05d09133f6e25aa91c5fb07f75`，`current` 已指向该 release；release manifest 为 `execution_transport=http-playground-proxy`、`execution_provider=play.golang.org`、`local_socket_enabled=false`。该 release 已通过 production 自动部署脚本完成本地 release 校验、远端 SHA-256 校验、权限归一化、current 原子切换、`go-tour.service` 重启、连续 3 次 localhost HTTP 200 健康检查和正式域名公网 HTTP 200 验收，部署成功且没有回滚。zh-CN 状态为 `ready=103`、`pending=0`、`blocked=0`、`pages=103`、`articles=7`。页面访问链路为浏览器 → EdgeOne → 阿里云 Nginx → Go Tour；正常 Run / Format 链路分别为浏览器 → `https://play.go-dev.shuijingwanwq.com:8443/compile` 或 `/fmt` → ZgoCloud Nginx → `https://play.golang.org/compile` 或 `/fmt`。ZgoCloud 是本项目自建固定反向代理，不是 Go 官方服务；`play.golang.org` 才是最终官方 Playground provider。正常生产 Run / Format 不再经过阿里云 Go 服务端，旧 `/_/compile`、`/_/fmt` 仍保留为兼容/回滚路径。`go-tour.service` 监听 `127.0.0.1:3999`；production `/socket` 与 `/socket/` 仍为 404，生产服务器不执行用户提交的 Go 程序。
+- 当前正式上线状态：production release 为 `/data/go-tour/releases/20260818-zh-CN-45f4cad`，对应项目 commit `45f4cad98e67c01dac705559781e2311b75b0948`，`published_at=2026-08-18T13:22:48Z`，`current` 已指向该 release；release manifest 为 `execution_transport=http-playground-proxy`、`execution_provider=play.golang.org`、`local_socket_enabled=false`。该 release 包含本轮正式提升后的 103 页 ChatGPT canonical，并已通过 production 自动部署脚本完成校验、权限归一化、current 原子切换、服务重启、origin 健康检查和正式域名公网验收，部署成功且没有回滚。zh-CN 状态为 `ready=103`、`pending=0`、`blocked=0`、`pages=103`、`articles=7`。页面访问链路为浏览器 → EdgeOne → 阿里云 Nginx → Go Tour；正常 Run / Format 链路分别为浏览器 → `https://play.go-dev.shuijingwanwq.com:8443/compile` 或 `/fmt` → ZgoCloud Nginx → `https://play.golang.org/compile` 或 `/fmt`。ZgoCloud 是本项目自建固定反向代理，不是 Go 官方服务；`play.golang.org` 才是最终官方 Playground provider。正常生产 Run / Format 不再经过阿里云 Go 服务端，旧 `/_/compile`、`/_/fmt` 仍保留为兼容/回滚路径。`go-tour.service` 监听 `127.0.0.1:3999`；production `/socket` 与 `/socket/` 仍为 404，生产服务器不执行用户提交的 Go 程序。
 - ZgoCloud 正式接口已完成真实验收：`/compile` POST 返回 HTTP 200，`/fmt` POST 返回 HTTP 200，CORS OPTIONS 返回 204，错误 Origin 返回 403，GET `/compile` 返回 405，未知路径返回 404，旧 `/_/compile` 与 `/_/fmt` 返回 404；HTTP/2 正常。443 继续由 Wstunnel 使用，8443 由 Nginx 使用，WireGuard 与 Wstunnel 未受此次部署影响。
 - 桌面 Firefox 已完成真实生产浏览器验收：Run 实际请求为 `POST https://play.go-dev.shuijingwanwq.com:8443/compile?backend=...` 并返回 HTTP 200，示例输出为 `Hello, 世界` 和 `程序已退出。`；Format 已切换至 `https://play.go-dev.shuijingwanwq.com:8443/fmt`，响应 CORS 允许来源为 `https://go-dev.shuijingwanwq.com`。
 - 本次发布发现重要的 EdgeOne 缓存运维问题：新 release 切换后，缓存的 `/tour/script.js` 仍可能使浏览器继续请求旧的 `/_/compile`。定向刷新 `https://go-dev.shuijingwanwq.com/tour/script.js` 并重新加载页面后，Run / Format 立即切换到 ZgoCloud 新接口。今后涉及前端执行路径变化时，发布验收必须检查 Network 中的实际请求目标，必要时定向刷新该脚本缓存。
@@ -140,13 +142,13 @@
 ## 第一阶段上线冻结
 
 - Section：103/103 ready；article metadata：7/7；公共 UI：已完成；production publish：已实现并正式部署；production 自动部署脚本：首次真实生产验证通过；浏览器最终验收：通过；生产 Playground 执行链路迁移至 ZgoCloud 固定代理：已完成生产部署和真实用户验收。
-- 上述上线冻结描述的是现有旧 production release。本轮 ChatGPT canonical 已在仓库完成正式提升与临时 production bundle/HTTP 验收，但尚未生成和部署新的正式 release。
+- 本轮 ChatGPT 全量重译、canonical promotion、正式 production release、生产部署和线上最终验收均已完成。当前在线 release 即 `/data/go-tour/releases/20260818-zh-CN-45f4cad`，正式服务内容已经切换至本轮 103 页 ChatGPT canonical。
 
 ## 下一阶段
 
-- 基于当前已提升的 ChatGPT canonical 生成新的正式 production release，完成 release 内容与校验和复核后，再单独执行生产部署和线上验收。
-- 部署前后必须明确区分旧在线 release 与本轮新 release，不能用现有站点在线状态替代本轮发布证明。
-- `/tour/list` 是否加入 sitemap（104 → 105）作为独立 SEO 后续事项评估，不与本轮重译、release 生成或生产部署混为一项。
+- `/tour/list` 是否加入 sitemap（104 → 105）作为独立 SEO 完整性事项评估；当前 sitemap 仍为 104 个唯一 URL，不将该事项混入已完成的重译与上线状态。
+- 按冻结 upstream 基线与现有同步规则继续评估后续 upstream 同步。
+- 在复用现有 locale catalog、validator、projection、publish 与 deployment 能力的基础上，评估未来其他语言扩展。
 
 ## 站点首页、公共页脚与项目互链
 

@@ -25,7 +25,7 @@
 - 当前 module path 为 `github.com/shuijingwan/go-tour-i18n`。
 - zh-CN 第一阶段已有 production release 在线运行；production publish、自动部署和浏览器验收能力均已完成。
 - 在匿名质量实验之后，已完成 zh-CN 全部 103 页的 ChatGPT 整页重译、批次处理、统一 validator、语义质量审计和 canonical promotion。当前仓库中的 103 个 canonical candidate 均为本轮正式提升后的 ChatGPT 译文，最终语义质量审计为 A=103、B/C/D=0。
-- 本轮新 canonical 已通过 production bundle 与临时 binary HTTP 验收，但尚未生成并部署新的正式 production release。当前在线站点仍运行此前的 production release；下一阶段是生成本轮正式 release，再单独执行生产部署和线上验收。详见 [翻译质量实验](docs/TRANSLATION_QUALITY_EXPERIMENTS.md) 和 [项目状态](docs/PROJECT_STATE.md)。
+- 本轮 ChatGPT 103 页 canonical 已生成正式 production release、完成生产部署和线上最终验收。正式课程路由 103/103、article endpoint 7/7、真实 Run 与 Format 均通过；当前在线内容已经是本轮正式提升后的 ChatGPT 译文。详见 [翻译质量实验](docs/TRANSLATION_QUALITY_EXPERIMENTS.md) 和 [项目状态](docs/PROJECT_STATE.md)。
 
 当前英文基线包含：
 
@@ -210,7 +210,7 @@ go run -mod=readonly ./cmd/tour-i18n publish \
 
 `--published-at` 是当前 locale production bundle 的发布时间，必须使用 RFC 3339 UTC；它不是 Git commit、服务启动或请求时间。源码 `_content/tour/site-metadata.json` 仅为 `go run ./tour` 和 preview 提供开发态 metadata，不保存生产发布时间；publish 会在 bundle 内生成真实的站点 metadata。`bin/tour` 在构建时固定 locale，从 binary 自身相邻的 `../_content` 加载内容，不需要运行时 `--locale` 或 `--content`，也不依赖当前工作目录。`release.json`、bundle 内的站点 metadata 和 `SHA256SUMS` 由相同输入确定；相同源码、发布时间、Go 工具链及 GOOS/GOARCH 下的重复 publish 逐文件一致。bundle 不包含 candidate、status、translation-runs 等开发期数据。
 
-当前正式 release 已部署：`/data/go-tour/releases/20260813-zh-CN-1fe73f5`。项目 commit 为 `1fe73f54615b3d05d09133f6e25aa91c5fb07f75`。这是本轮 ChatGPT canonical promotion 之前的 release；新的 canonical 尚未生成正式 production release 或部署上线。
+当前正式 release 已部署：`/data/go-tour/releases/20260818-zh-CN-45f4cad`。项目 commit 为 `45f4cad98e67c01dac705559781e2311b75b0948`，`published_at` 为 `2026-08-18T13:22:48Z`。该 release 包含本轮正式提升后的 103 页 ChatGPT canonical，并已完成生产部署与线上最终验收。
 
 正式站点：<https://go-dev.shuijingwanwq.com/>。
 
@@ -240,15 +240,17 @@ go test -mod=readonly -count=1 ./...
 
 zh-CN 第一阶段已经正式上线：<https://go-dev.shuijingwanwq.com/>。
 
-以下是当前在线旧 release 的部署状态，不表示本轮新 ChatGPT canonical 已部署；新 canonical 目前只完成仓库内正式提升以及 production bundle/HTTP 验收。
+以下是包含本轮 ChatGPT canonical 的当前正式 production 部署状态：
 
-- 正式 release：`/data/go-tour/releases/20260813-zh-CN-1fe73f5`。
-- 项目 commit：`1fe73f54615b3d05d09133f6e25aa91c5fb07f75`。
+- 正式 release：`/data/go-tour/releases/20260818-zh-CN-45f4cad`。
+- 项目 commit：`45f4cad98e67c01dac705559781e2311b75b0948`；`published_at=2026-08-18T13:22:48Z`。
+- 正式状态：`ready=103`、`pending=0`、`blocked=0`、`pages=103`、`articles=7`；103/103 课程路由与 7/7 article endpoint 已完成线上验收。
 - 页面访问链路：浏览器 → EdgeOne → 阿里云 Nginx → Go Tour。
 - 正常 production Run / Format 链路：浏览器 → `https://play.go-dev.shuijingwanwq.com:8443/compile` 或 `/fmt` → ZgoCloud Nginx → `play.golang.org`。
 - 旧阿里云 Go 服务端 `/_/compile`、`/_/fmt` 仍保留作为兼容/回滚路径；production `/socket` 仍禁用，生产主机不执行用户提交的 Go 代码。
 - systemd 服务：`go-tour.service`，监听 `127.0.0.1:3999`。
 - `/tour/welcome/1`、真实 Run、真实 Format 均已通过公网验收；`/socket` 和 `/_/share` 均返回 404。
+- sitemap 当前仍为 104 个唯一 URL；是否加入 `/tour/list` 使其变为 105 是独立 SEO 后续事项，尚未实施。
 - production binary 为 Linux amd64、`CGO_ENABLED=0`、静态链接，不依赖服务器 glibc 版本。
 
 部署期间已解决动态链接 glibc 兼容、OneinStack 静态资源 location 抢占、release 目录权限和 Nginx systemd 接管问题。Cloudflare 仅负责权威 DNS，业务 CNAME 使用 DNS only，正式流量经过 EdgeOne，不采用 Cloudflare 双层代理。
