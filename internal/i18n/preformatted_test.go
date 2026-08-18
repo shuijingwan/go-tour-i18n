@@ -218,6 +218,10 @@ func TestTourStaticPreformattedTokensRetainVisibleBoundaries(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	glossary, err := LoadGlossary(root, "zh-CN")
+	if err != nil {
+		t.Fatal(err)
+	}
 	for _, tt := range []struct {
 		pageID string
 		wants  []string
@@ -230,7 +234,7 @@ func TestTourStaticPreformattedTokensRetainVisibleBoundaries(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-			p := protectTranslation(page.Source, page.SourceSHA256, nil)
+			p := protectTranslation(page.Source, page.SourceSHA256, &Glossary{Keep: glossary.Keep})
 			for _, want := range tt.wants {
 				if !strings.Contains(p.Text, want) {
 					t.Errorf("protected input missing %q:\n%s", want, p.Text)

@@ -10,7 +10,6 @@ import (
 )
 
 var translationTokenRE = regexp.MustCompile(`⟪GTI18N_[0-9a-f]{8}_[0-9]{6}⟫`)
-var translationKeepRE = regexp.MustCompile(`\b(?:Go|gofmt|PageUp|PageDown|Shift|Enter|Ctrl)\b`)
 var whereToGoPrefixRE = regexp.MustCompile(`(?i)\bwhere[\t \r\n]+to[\t \r\n]+$`)
 var directiveLineRE = regexp.MustCompile(`(?m)^\.(?:play|image)\s+[^\n]+$`)
 
@@ -98,16 +97,36 @@ func protectTranslation(source []byte, hash string, glossary *Glossary) protecte
 		)
 	}
 	spans = append(spans, presentEmphasisDelimiterSpans(text)...)
-	for _, m := range translationKeepRE.FindAllStringIndex(text, -1) {
-		if withinInlineCode(m[0], m[1], inlineCodes) {
-			continue
+	if keepRE := translationKeepMatcher(glossary); keepRE != nil {
+		for _, m := range keepRE.FindAllStringIndex(text, -1) {
+			if withinInlineCode(m[0], m[1], inlineCodes) {
+				continue
+			}
+			if !shouldProtectTranslationKeep(text, m[0], m[1]) {
+				continue
+			}
+			spans = append(spans, protectedSpan{start: m[0], end: m[1], kind: protectedGlossaryOrKeep})
 		}
-		if !shouldProtectTranslationKeep(text, m[0], m[1]) {
-			continue
-		}
-		spans = append(spans, protectedSpan{start: m[0], end: m[1], kind: protectedGlossaryOrKeep})
 	}
 	return protectedTranslationFromSpans(text, hash, spans)
+}
+
+func translationKeepMatcher(glossary *Glossary) *regexp.Regexp {
+	if glossary == nil || len(glossary.Keep) == 0 {
+		return nil
+	}
+	keep := append([]string(nil), glossary.Keep...)
+	sort.Slice(keep, func(i, j int) bool {
+		if len(keep[i]) != len(keep[j]) {
+			return len(keep[i]) > len(keep[j])
+		}
+		return keep[i] < keep[j]
+	})
+	quoted := make([]string, len(keep))
+	for i, value := range keep {
+		quoted[i] = regexp.QuoteMeta(value)
+	}
+	return regexp.MustCompile(`\b(?:` + strings.Join(quoted, "|") + `)\b`)
 }
 
 // protectPlayDirectives protects complete .play directive lines and existing

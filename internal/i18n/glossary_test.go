@@ -1,6 +1,8 @@
 package i18n
 
 import (
+	"os"
+	"path/filepath"
 	"strings"
 	"testing"
 )
@@ -42,6 +44,15 @@ func TestZhCNMandatoryGlossary(t *testing.T) {
 			t.Errorf("forbidden missing %q: %v", value, glossary.Forbidden)
 		}
 	}
+	wantKeep := []string{"Go", "gofmt", "PageUp", "PageDown", "Shift", "Enter", "Ctrl"}
+	if len(glossary.Keep) != len(wantKeep) {
+		t.Fatalf("keep = %v, want %v", glossary.Keep, wantKeep)
+	}
+	for i, value := range wantKeep {
+		if glossary.Keep[i] != value {
+			t.Errorf("keep[%d] = %q, want %q", i, glossary.Keep[i], value)
+		}
+	}
 	wantPreferred := map[string]string{
 		"tour":                 "教程",
 		"the tour":             "本教程",
@@ -73,6 +84,8 @@ func TestZhCNMandatoryGlossary(t *testing.T) {
 		"普通正文中的 the tour => 本教程（上下文指导；应结合完整页面自然翻译）",
 		"普通正文中的 sandbox => 沙箱（上下文指导；应结合完整页面自然翻译）",
 		"普通正文中的 deterministic output => 确定性输出（上下文指导；应结合完整页面自然翻译）",
+		"Go（保持原样；不得翻译）",
+		"gofmt（保持原样；不得翻译）",
 		"禁止使用的 zh-CN 译法：幻灯片",
 		"welcome/1 必须将 tour 的含义保留为“之旅”；不得简化或改变该含义",
 	} {
@@ -91,7 +104,9 @@ func TestZhCNMandatoryGlossary(t *testing.T) {
 		"普通正文中的 import statement =>", "普通正文中的 iteration =>", "普通正文中的 loop condition =>",
 		"普通正文中的 package =>", "普通正文中的 package name =>", "普通正文中的 sandbox =>",
 		"普通正文中的 standard library =>", "普通正文中的 the tour =>", "普通正文中的 tour =>",
-		"普通正文中的 unexported name =>", "禁止使用的 zh-CN 译法：幻灯片",
+		"普通正文中的 unexported name =>", "Ctrl（保持原样；不得翻译）", "Enter（保持原样；不得翻译）",
+		"Go（保持原样；不得翻译）", "PageDown（保持原样；不得翻译）", "PageUp（保持原样；不得翻译）",
+		"Shift（保持原样；不得翻译）", "gofmt（保持原样；不得翻译）", "禁止使用的 zh-CN 译法：幻灯片",
 	}
 	last := -1
 	for _, text := range ordered {
@@ -101,6 +116,62 @@ func TestZhCNMandatoryGlossary(t *testing.T) {
 		}
 		last = index
 	}
+}
+
+func TestGlossaryKeepValidationAndLegacyTerms(t *testing.T) {
+	tests := []struct {
+		name, body, want string
+	}{
+		{
+			name: "duplicate keep",
+			body: "mandatory:\n  slides: 页面\nkeep:\n  - Go\n  - Go\n",
+			want: "duplicate value \"Go\"",
+		},
+		{
+			name: "empty keep",
+			body: "mandatory:\n  slides: 页面\nkeep:\n  -\n",
+			want: "value is empty",
+		},
+		{
+			name: "unknown section",
+			body: "mandatory:\n  slides: 页面\nunknown:\n  value: ignored\n",
+			want: "unknown glossary section \"unknown\"",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			root := writeGlossaryFixture(t, tt.body)
+			_, err := LoadGlossary(root, "zh-CN")
+			if err == nil || !strings.Contains(err.Error(), tt.want) {
+				t.Fatalf("LoadGlossary error = %v, want %q", err, tt.want)
+			}
+		})
+	}
+
+	root := writeGlossaryFixture(t, "mandatory:\n  slides: 页面\nterms:\n  exercise: 练习\nkeep:\n  - PageDown\n  - Go\n")
+	glossary, err := LoadGlossary(root, "zh-CN")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(glossary.Keep) != 2 || glossary.Keep[0] != "PageDown" || glossary.Keep[1] != "Go" {
+		t.Fatalf("keep order = %v, want [PageDown Go]", glossary.Keep)
+	}
+	if strings.Contains(glossary.PromptRules("example/1"), "exercise") {
+		t.Fatal("legacy terms unexpectedly became active")
+	}
+}
+
+func writeGlossaryFixture(t *testing.T, body string) string {
+	t.Helper()
+	root := t.TempDir()
+	dir := filepath.Join(root, "locales", "zh-CN")
+	if err := os.MkdirAll(dir, 0755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(dir, "glossary.yaml"), []byte(body), 0644); err != nil {
+		t.Fatal(err)
+	}
+	return root
 }
 
 func containsString(values []string, want string) bool {

@@ -145,7 +145,11 @@ func TestEmphasisProtectionFailsClosedForSentinelMutations(t *testing.T) {
 
 func TestBasics4Attempt005EmphasisProtectionRegression(t *testing.T) {
 	source := "* Functions\n\nA function can take zero or more arguments.\n\nIn this example, `add` takes two parameters of type `int`.\n\nNotice that the type comes _after_ the variable name.\n\n(For more about why types look the way they do, see the [[/blog/gos-declaration-syntax][article on Go's declaration syntax]].)\n\n.play basics/functions.go\n"
-	p := protectTranslation([]byte(source), strings.Repeat("c", 64), nil)
+	glossary, err := LoadGlossary(repoRoot(t), "zh-CN")
+	if err != nil {
+		t.Fatal(err)
+	}
+	p := protectTranslation([]byte(source), strings.Repeat("c", 64), &Glossary{Keep: glossary.Keep})
 	add := inlinePairText(t, p, 0)
 	integer := inlinePairText(t, p, 1)
 	italicOpen := emphasisToken(t, p, protectedItalicOpen, 0)

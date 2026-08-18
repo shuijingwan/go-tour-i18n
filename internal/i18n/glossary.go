@@ -13,6 +13,7 @@ type Glossary struct {
 	Mandatory map[string]string
 	Preferred map[string]string
 	Forbidden []string
+	Keep      []string
 }
 
 func LoadGlossary(root, locale string) (*Glossary, error) {
@@ -24,6 +25,7 @@ func LoadGlossary(root, locale string) (*Glossary, error) {
 	defer f.Close()
 	g := &Glossary{Mandatory: map[string]string{}, Preferred: map[string]string{}}
 	section := ""
+	keepSeen := map[string]bool{}
 	scanner := bufio.NewScanner(f)
 	for scanner.Scan() {
 		line := scanner.Text()
@@ -32,7 +34,25 @@ func LoadGlossary(root, locale string) (*Glossary, error) {
 			continue
 		}
 		if !strings.HasPrefix(line, " ") {
-			section = strings.TrimSuffix(trimmed, ":")
+			key, value, ok := strings.Cut(trimmed, ":")
+			if !ok {
+				return nil, fmt.Errorf("parse glossary top-level entry %q", trimmed)
+			}
+			key, value = strings.TrimSpace(key), strings.TrimSpace(value)
+			switch key {
+			case "locale":
+				if value == "" {
+					return nil, fmt.Errorf("parse glossary locale entry %q", trimmed)
+				}
+				section = ""
+			case "mandatory", "preferred", "terms", "forbidden", "keep":
+				if value != "" {
+					return nil, fmt.Errorf("parse glossary section %q", trimmed)
+				}
+				section = key
+			default:
+				return nil, fmt.Errorf("unknown glossary section %q", key)
+			}
 			continue
 		}
 		switch section {
@@ -53,6 +73,27 @@ func LoadGlossary(root, locale string) (*Glossary, error) {
 				return nil, fmt.Errorf("parse glossary forbidden entry %q", trimmed)
 			}
 			g.Forbidden = append(g.Forbidden, strings.TrimSpace(strings.TrimPrefix(trimmed, "- ")))
+		case "keep":
+			if trimmed == "-" {
+				return nil, fmt.Errorf("parse glossary keep entry %q: value is empty", trimmed)
+			}
+			if !strings.HasPrefix(trimmed, "- ") {
+				return nil, fmt.Errorf("parse glossary keep entry %q", trimmed)
+			}
+			value := strings.TrimSpace(strings.TrimPrefix(trimmed, "- "))
+			if value == "" {
+				return nil, fmt.Errorf("parse glossary keep entry %q: value is empty", trimmed)
+			}
+			if keepSeen[value] {
+				return nil, fmt.Errorf("parse glossary keep entry %q: duplicate value %q", trimmed, value)
+			}
+			keepSeen[value] = true
+			g.Keep = append(g.Keep, value)
+		case "terms":
+			// Legacy section: recognized so existing locale files remain valid,
+			// but intentionally not loaded until its policy is migrated.
+		case "":
+			return nil, fmt.Errorf("parse glossary entry outside a section %q", trimmed)
 		}
 	}
 	if err := scanner.Err(); err != nil {
@@ -81,6 +122,11 @@ func (g *Glossary) PromptRules(pageID string) string {
 	sort.Strings(preferredKeys)
 	for _, key := range preferredKeys {
 		rules = append(rules, fmt.Sprintf("- 普通正文中的 %s => %s（上下文指导；应结合完整页面自然翻译）", key, g.Preferred[key]))
+	}
+	keep := append([]string(nil), g.Keep...)
+	sort.Strings(keep)
+	for _, value := range keep {
+		rules = append(rules, fmt.Sprintf("- %s（保持原样；不得翻译）", value))
 	}
 	for _, value := range g.Forbidden {
 		rules = append(rules, "- 禁止使用的 zh-CN 译法："+value)

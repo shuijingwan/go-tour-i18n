@@ -694,6 +694,11 @@ func TestMethods24HistoricalResponseWithoutEmphasisSentinelsIsRejected(t *testin
 }
 
 func TestTranslationKeepSkipsOnlyHighConfidenceOrdinaryGoVerb(t *testing.T) {
+	glossary, err := LoadGlossary(repoRoot(t), "zh-CN")
+	if err != nil {
+		t.Fatal(err)
+	}
+	keepOnly := &Glossary{Keep: glossary.Keep}
 	tests := []struct {
 		name, source string
 		wantGo       bool
@@ -712,7 +717,7 @@ func TestTranslationKeepSkipsOnlyHighConfidenceOrdinaryGoVerb(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			p := protectTranslation([]byte(tt.source), "12345678", nil)
+			p := protectTranslation([]byte(tt.source), "12345678", keepOnly)
 			gotGo := false
 			for i, value := range p.Values {
 				if value != "Go" {
@@ -731,11 +736,41 @@ func TestTranslationKeepSkipsOnlyHighConfidenceOrdinaryGoVerb(t *testing.T) {
 
 	for _, keep := range []string{"gofmt", "PageUp", "PageDown", "Shift", "Enter", "Ctrl"} {
 		t.Run("other keep "+keep, func(t *testing.T) {
-			p := protectTranslation([]byte(keep), "12345678", nil)
+			p := protectTranslation([]byte(keep), "12345678", keepOnly)
 			if len(p.Values) != 1 || p.Values[0] != keep || p.Kinds[0] != protectedGlossaryOrKeep {
 				t.Fatalf("protection = %+v, want %q as glossary/keep", p, keep)
 			}
 		})
+	}
+}
+
+func TestTranslationKeepIsDataDrivenAndDoesNotExpandPolicy(t *testing.T) {
+	glossary, err := LoadGlossary(repoRoot(t), "zh-CN")
+	if err != nil {
+		t.Fatal(err)
+	}
+	source := []byte("Go gofmt PageUp PageDown Shift Enter Ctrl goroutine map `Go`\n")
+	p := protectTranslation(source, "12345678", glossary)
+	values := strings.Join(p.Values, "\n")
+	for _, keep := range glossary.Keep {
+		if !strings.Contains(values, keep) {
+			t.Errorf("keep %q was not protected: %q", keep, p.Values)
+		}
+	}
+	for _, visible := range []string{"goroutine", "map"} {
+		if !strings.Contains(p.Text, visible) {
+			t.Errorf("%q was unexpectedly protected: %s", visible, p.Text)
+		}
+	}
+	if n := strings.Count(values, "Go"); n != 1 {
+		t.Fatalf("Go protected values = %d, want 1 outside inline code; values=%q", n, p.Values)
+	}
+	restored, failures := p.restore(p.Text)
+	if len(failures) != 0 {
+		t.Fatalf("restore failures: %v", failures)
+	}
+	if restored != string(source) {
+		t.Fatalf("restored = %q, want %q", restored, source)
 	}
 }
 
