@@ -196,8 +196,17 @@ func TestRetranslationExportManualSelectionErrors(t *testing.T) {
 	if _, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", PageIDs: []string{"lesson/1", "lesson/1"}}); err == nil || !strings.Contains(err.Error(), "duplicate requested") {
 		t.Fatalf("duplicate request error = %v", err)
 	}
+	if _, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", PageIDs: []string{"lesson/1", "lesson/1"}, AllowReexport: true}); err == nil || !strings.Contains(err.Error(), "duplicate requested") {
+		t.Fatalf("duplicate reexport request error = %v", err)
+	}
 	if _, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", PageIDs: []string{"missing/1"}}); err == nil || !strings.Contains(err.Error(), "unknown page_id") {
 		t.Fatalf("unknown request error = %v", err)
+	}
+	if _, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", PageIDs: []string{"missing/1"}, AllowReexport: true}); err == nil || !strings.Contains(err.Error(), "unknown page_id") {
+		t.Fatalf("unknown reexport request error = %v", err)
+	}
+	if _, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", AllowReexport: true}); err == nil || !strings.Contains(err.Error(), "requires at least one --id") {
+		t.Fatalf("reexport without id error = %v", err)
 	}
 	if _, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", Limit: -1}); err == nil || !strings.Contains(err.Error(), "greater than zero") {
 		t.Fatalf("invalid limit error = %v", err)
@@ -207,6 +216,20 @@ func TestRetranslationExportManualSelectionErrors(t *testing.T) {
 	}
 	if _, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", PageIDs: []string{"lesson/1"}}); err == nil || !strings.Contains(err.Error(), "already exported") {
 		t.Fatalf("already exported error = %v", err)
+	}
+	revision, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", PageIDs: []string{"lesson/1"}, AllowReexport: true})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if revision.BatchID != "chatgpt-zh-CN-002" || len(revision.PageIDs) != 1 || revision.PageIDs[0] != "lesson/1" {
+		t.Fatalf("revision result = %+v", revision)
+	}
+	automatic, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", Limit: 10})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if automatic.BatchID != "chatgpt-zh-CN-003" || !reflect.DeepEqual(automatic.PageIDs, []string{"lesson/2", "lesson/3"}) {
+		t.Fatalf("automatic result after revision = %+v", automatic)
 	}
 }
 
@@ -226,7 +249,7 @@ func TestRetranslationExportRejectsBrokenAndDuplicateHistory(t *testing.T) {
 			t.Fatalf("broken manifest error = %v", err)
 		}
 	})
-	t.Run("duplicate historical page", func(t *testing.T) {
+	t.Run("duplicate historical page remains exported", func(t *testing.T) {
 		root := t.TempDir()
 		writeRetranslationTestGlossary(t, root)
 		base := filepath.Join(root, "data", "retranslation-runs", "zh-CN")
@@ -241,8 +264,12 @@ func TestRetranslationExportRejectsBrokenAndDuplicateHistory(t *testing.T) {
 				t.Fatal(err)
 			}
 		}
-		if _, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN"}); err == nil || !strings.Contains(err.Error(), "multiple retranslation batches") {
-			t.Fatalf("duplicate history error = %v", err)
+		result, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", Limit: 10})
+		if err != nil {
+			t.Fatal(err)
+		}
+		if result.BatchID != "chatgpt-zh-CN-003" || !reflect.DeepEqual(result.PageIDs, []string{"lesson/2", "lesson/3"}) {
+			t.Fatalf("automatic result with duplicate history = %+v", result)
 		}
 	})
 }

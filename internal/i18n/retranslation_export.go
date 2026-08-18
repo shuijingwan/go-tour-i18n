@@ -14,10 +14,11 @@ import (
 const defaultRetranslationExportLimit = 10
 
 type RetranslationExportOptions struct {
-	Locale  string
-	BatchID string
-	PageIDs []string
-	Limit   int
+	Locale        string
+	BatchID       string
+	PageIDs       []string
+	Limit         int
+	AllowReexport bool
 }
 
 type RetranslationBatchPage struct {
@@ -70,6 +71,9 @@ func ExportRetranslationBatch(root string, catalog *Catalog, options Retranslati
 	if options.Locale != "zh-CN" {
 		return nil, fmt.Errorf("unsupported locale %q", options.Locale)
 	}
+	if options.AllowReexport && len(options.PageIDs) == 0 {
+		return nil, errors.New("--allow-reexport requires at least one --id")
+	}
 	limit := options.Limit
 	if limit == 0 {
 		limit = defaultRetranslationExportLimit
@@ -83,7 +87,7 @@ func ExportRetranslationBatch(root string, catalog *Catalog, options Retranslati
 	if err != nil {
 		return nil, err
 	}
-	pages, err := selectRetranslationPages(catalog, options.PageIDs, exported, limit)
+	pages, err := selectRetranslationPages(catalog, options.PageIDs, exported, limit, options.AllowReexport)
 	if err != nil {
 		return nil, err
 	}
@@ -173,7 +177,7 @@ func ExportRetranslationBatch(root string, catalog *Catalog, options Retranslati
 	}, nil
 }
 
-func selectRetranslationPages(catalog *Catalog, requested []string, exported map[string]string, limit int) ([]Page, error) {
+func selectRetranslationPages(catalog *Catalog, requested []string, exported map[string]string, limit int, allowReexport bool) ([]Page, error) {
 	byID := make(map[string]Page, len(catalog.Pages))
 	for _, page := range catalog.Pages {
 		byID[page.ID] = page
@@ -190,7 +194,7 @@ func selectRetranslationPages(catalog *Catalog, requested []string, exported map
 			if !ok {
 				return nil, fmt.Errorf("unknown page_id %q", pageID)
 			}
-			if batch := exported[pageID]; batch != "" {
+			if batch := exported[pageID]; batch != "" && !allowReexport {
 				return nil, fmt.Errorf("page_id %q was already exported in batch %q", pageID, batch)
 			}
 			pages = append(pages, page)
@@ -265,10 +269,9 @@ func scanRetranslationBatches(base, locale string, catalog *Catalog) (map[string
 			if !known[page.PageID] {
 				return nil, 0, fmt.Errorf("retranslation batch %q has unknown page_id %q", entry.Name(), page.PageID)
 			}
-			if previous := exported[page.PageID]; previous != "" {
-				return nil, 0, fmt.Errorf("page_id %q appears in multiple retranslation batches %q and %q", page.PageID, previous, entry.Name())
+			if exported[page.PageID] == "" {
+				exported[page.PageID] = entry.Name()
 			}
-			exported[page.PageID] = entry.Name()
 		}
 	}
 	return exported, nextNumber, nil

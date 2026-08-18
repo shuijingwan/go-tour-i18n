@@ -187,6 +187,7 @@ func run(args []string) error {
 		locale := fs.String("locale", "", "target locale")
 		batchID := fs.String("batch-id", "", "optional explicit batch id")
 		limit := fs.Int("limit", 10, "maximum pages in an automatic batch")
+		allowReexport := fs.Bool("allow-reexport", false, "allow explicitly requested page ids to be exported again")
 		var pageIDs repeatedStrings
 		fs.Var(&pageIDs, "id", "optional page id; repeat for multiple pages")
 		if err := fs.Parse(args[2:]); err != nil {
@@ -196,7 +197,7 @@ func run(args []string) error {
 			return fmt.Errorf("--locale is required")
 		}
 		result, err := i18n.ExportRetranslationBatch(root, catalog, i18n.RetranslationExportOptions{
-			Locale: *locale, BatchID: *batchID, PageIDs: pageIDs, Limit: *limit,
+			Locale: *locale, BatchID: *batchID, PageIDs: pageIDs, Limit: *limit, AllowReexport: *allowReexport,
 		})
 		if err != nil {
 			return err
