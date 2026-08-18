@@ -121,6 +121,23 @@ go run -mod=readonly ./cmd/tour-i18n retranslation process --locale zh-CN
 
 处理前会根据当前 Catalog 和 glossary 重新生成 Default protected input，并要求它与批次保存的 input 字节完全一致；随后使用同一份保护映射 restore，并调用正式 `ValidateCandidate`。结果只写入该批次自己的 `candidates/`、`validation/` 和 `result.json`，不会修改 locale 的 canonical candidate 或 status。默认严格保持批次顺序：最早未处理批次缺少 raw response 时会停止，不会跳到后续批次；`--batch-id` 只用于显式调试或恢复。
 
+失败页的原始重试译文按连续 attempt 单独保存，首次模型原文始终保留在 `raw-responses/`。例如 `moretypes/1` 的第二次原始译文应由 ChatGPT 写入：
+
+```text
+data/retranslation-runs/zh-CN/<batch-id>/retries/moretypes-1/attempt-002.article
+```
+
+文件准备好后，仅处理该失败页：
+
+```bash
+go run -mod=readonly ./cmd/tour-i18n retranslation retry \
+  --locale zh-CN \
+  --batch-id <batch-id> \
+  --page-id moretypes/1
+```
+
+`retry` 不调用模型，也不创建或改写 retry raw response；它只接受当前 `result.json` 中的 `restore_failed` 或 `validation_failed` 页面。每次处理前一份 validation 会归档为 `retries/<flattened-page-id>/attempt-NNN-validation.json`，下一份 raw 必须使用连续编号且不得覆盖。处理仍复用原 manifest/input、Default protection mapping、restore 和正式 validator；只更新目标页的 batch candidate、validation 与批次汇总，其他页面保持不变。
+
 ## 正式投影与本地预览
 
 完整投影只接受 catalog 中所有页面对应的 canonical `ready` candidate；存在 pending、blocked、缺失、额外或非 canonical candidate 时会失败，不会回退到英文或旧译文。输出为可直接交给官方 Tour 本地服务的完整内容树，不修改 candidate、status 或 catalog。

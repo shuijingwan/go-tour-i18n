@@ -225,6 +225,22 @@ func run(args []string) error {
 			return nil
 		}
 		return printJSON(result)
+	case "retranslation retry":
+		fs := flag.NewFlagSet("retranslation retry", flag.ContinueOnError)
+		locale := fs.String("locale", "", "target locale")
+		batchID := fs.String("batch-id", "", "batch id containing the failed page")
+		pageID := fs.String("page-id", "", "failed page id")
+		if err := fs.Parse(args[2:]); err != nil {
+			return err
+		}
+		if *locale == "" || *batchID == "" || *pageID == "" {
+			return fmt.Errorf("--locale, --batch-id, and --page-id are required")
+		}
+		result, err := i18n.ProcessRetranslationRetry(root, catalog, i18n.RetranslationRetryOptions{Locale: *locale, BatchID: *batchID, PageID: *pageID})
+		if err != nil {
+			return err
+		}
+		return printJSON(result)
 	case "translate run":
 		fs := flag.NewFlagSet("translate run", flag.ContinueOnError)
 		locale := fs.String("locale", "", "target locale")
