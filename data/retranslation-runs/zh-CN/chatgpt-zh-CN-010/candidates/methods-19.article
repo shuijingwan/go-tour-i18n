@@ -1,0 +1,27 @@
+* 错误
+
+Go 程序使用 `error` 值表示错误状态。
+
+`error` 类型是一个内置接口，类似于 `fmt.Stringer`：
+
+	type error interface {
+		Error() string
+	}
+
+（与 `fmt.Stringer` 类似， `fmt` 包在
+打印值时也会检查 `error` 接口。）
+
+函数通常会返回一个 `error` 值，调用方代码应通过检查错误是否等于
+`nil` 来处理错误。
+
+	i, err := strconv.Atoi("42")
+	if err != nil {
+		fmt.Printf("couldn't convert number: %v\n", err)
+		return
+	}
+	fmt.Println("Converted integer:", i)
+
+`error` 为 nil 表示成功；非 nil 的 `error` 表示失败。
+
+.play methods/errors.go
+
