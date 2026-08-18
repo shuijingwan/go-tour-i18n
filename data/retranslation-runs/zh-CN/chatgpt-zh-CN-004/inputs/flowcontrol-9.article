@@ -1,0 +1,14 @@
+* Switch
+
+A ⟪GTI18N_abdc4c29_000001⟫switch⟪GTI18N_abdc4c29_000002⟫ statement is a shorter way to write a sequence of ⟪GTI18N_abdc4c29_000003⟫if`-`else⟪GTI18N_abdc4c29_000004⟫ statements.
+It runs the first case whose value is equal to the condition expression.
+
+⟪GTI18N_abdc4c29_000005⟫'s switch is like the one in C, C++, Java, JavaScript, and PHP,
+except that ⟪GTI18N_abdc4c29_000006⟫ only runs the selected case, not all the cases that follow.
+In effect, the ⟪GTI18N_abdc4c29_000007⟫break⟪GTI18N_abdc4c29_000008⟫ statement that is needed at the end of each case in those
+languages is provided automatically in ⟪GTI18N_abdc4c29_000009⟫.
+Another important difference is that ⟪GTI18N_abdc4c29_000010⟫'s switch cases need not
+be constants, and the values involved need not be integers.
+
+⟪GTI18N_abdc4c29_000011⟫
+

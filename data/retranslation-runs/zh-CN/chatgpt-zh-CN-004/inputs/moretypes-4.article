@@ -1,0 +1,11 @@
+* Pointers to structs
+
+Struct fields can be accessed through a struct pointer.
+
+To access the field ⟪GTI18N_29695d33_000001⟫X⟪GTI18N_29695d33_000002⟫ of a struct when we have the struct pointer ⟪GTI18N_29695d33_000003⟫p⟪GTI18N_29695d33_000004⟫ we could
+write ⟪GTI18N_29695d33_000005⟫(*p).X⟪GTI18N_29695d33_000006⟫.
+However, that notation is cumbersome, so the language permits us instead to
+write just ⟪GTI18N_29695d33_000007⟫p.X⟪GTI18N_29695d33_000008⟫, without the explicit dereference.
+
+⟪GTI18N_29695d33_000009⟫
+
