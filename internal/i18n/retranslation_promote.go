@@ -27,17 +27,20 @@ type RetranslationPromotionPage struct {
 	BatchID                string `json:"batch_id"`
 	SourceCandidatePath    string `json:"source_candidate_path"`
 	CanonicalCandidatePath string `json:"canonical_candidate_path"`
+	SourceCandidateSHA256  string `json:"source_candidate_sha256"`
 	CandidateSHA256        string `json:"candidate_sha256"`
+	EOFNormalized          bool   `json:"eof_normalized"`
 	Changed                bool   `json:"changed"`
 }
 
 type RetranslationPromotionPlan struct {
-	Locale         string                       `json:"locale"`
-	PageCount      int                          `json:"page_count"`
-	ChangedCount   int                          `json:"changed_count"`
-	UnchangedCount int                          `json:"unchanged_count"`
-	CanApply       bool                         `json:"can_apply"`
-	Pages          []RetranslationPromotionPage `json:"pages"`
+	Locale             string                       `json:"locale"`
+	PageCount          int                          `json:"page_count"`
+	ChangedCount       int                          `json:"changed_count"`
+	UnchangedCount     int                          `json:"unchanged_count"`
+	EOFNormalizedCount int                          `json:"eof_normalized_count"`
+	CanApply           bool                         `json:"can_apply"`
+	Pages              []RetranslationPromotionPage `json:"pages"`
 }
 
 type preparedPromotion struct {
@@ -71,6 +74,9 @@ func PromoteRetranslation(root string, catalog *Catalog, options RetranslationPr
 			plan.ChangedCount++
 		} else {
 			plan.UnchangedCount++
+		}
+		if item.plan.EOFNormalized {
+			plan.EOFNormalizedCount++
 		}
 	}
 	if options.Apply {
@@ -215,6 +221,10 @@ func preflightRetranslationPromotion(root string, catalog *Catalog, locale strin
 		if err := ValidateCandidateForLocale(root, catalog, id, locale, candidate); err != nil {
 			return nil, fmt.Errorf("%s: canonical candidate validator: %w", id, err)
 		}
+		canonicalCandidate := canonicalizeCandidateEOF(candidate)
+		if err := ValidateCandidateForLocale(root, catalog, id, locale, canonicalCandidate); err != nil {
+			return nil, fmt.Errorf("%s: canonicalized candidate validator: %w", id, err)
+		}
 		canonical := canonicalCandidatePath(locale, id)
 		current, readErr := os.ReadFile(filepath.Join(root, filepath.FromSlash(canonical)))
 		if readErr != nil && !os.IsNotExist(readErr) {
@@ -224,12 +234,21 @@ func preflightRetranslationPromotion(root string, catalog *Catalog, locale strin
 		if err != nil {
 			return nil, err
 		}
-		prepared = append(prepared, preparedPromotion{page: byID[id], candidate: candidate, plan: RetranslationPromotionPage{
+		prepared = append(prepared, preparedPromotion{page: byID[id], candidate: canonicalCandidate, plan: RetranslationPromotionPage{
 			PageID: id, BatchID: choice.batchID, SourceCandidatePath: relSource,
-			CanonicalCandidatePath: canonical, CandidateSHA256: sum(candidate), Changed: readErr != nil || !bytes.Equal(current, candidate),
+			CanonicalCandidatePath: canonical, SourceCandidateSHA256: sum(candidate), CandidateSHA256: sum(canonicalCandidate),
+			EOFNormalized: !bytes.Equal(candidate, canonicalCandidate), Changed: readErr != nil || !bytes.Equal(current, canonicalCandidate),
 		}})
 	}
 	return prepared, nil
+}
+
+func canonicalizeCandidateEOF(candidate []byte) []byte {
+	canonical := bytes.TrimRight(candidate, "\n")
+	out := make([]byte, len(canonical)+1)
+	copy(out, canonical)
+	out[len(out)-1] = '\n'
+	return out
 }
 
 func validatePromotionEvidence(batchDir string, page Page, manifest RetranslationBatchPage, validation *RetranslationValidation, glossary *Glossary, candidate []byte) error {

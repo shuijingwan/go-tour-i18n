@@ -75,6 +75,29 @@ func writePromotionStatus(t *testing.T, root string, catalog *Catalog, canonical
 	}
 }
 
+func TestCanonicalizeCandidateEOF(t *testing.T) {
+	tests := []struct {
+		name string
+		in   string
+		want string
+	}{
+		{"two LF", "abc\n\n", "abc\n"},
+		{"three LF", "abc\n\n\n", "abc\n"},
+		{"one LF unchanged", "abc\n", "abc\n"},
+		{"missing LF", "abc", "abc\n"},
+		{"middle blank line", "abc\n\ndef\n\n", "abc\n\ndef\n"},
+		{"trailing space preserved", "abc \n\n", "abc \n"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := canonicalizeCandidateEOF([]byte(tt.in))
+			if !bytes.Equal(got, []byte(tt.want)) {
+				t.Fatalf("canonicalizeCandidateEOF(%q) = %q, want %q", tt.in, got, tt.want)
+			}
+		})
+	}
+}
+
 func TestRetranslationPromoteDryRunDoesNotModifyCanonicalAndLatestWins(t *testing.T) {
 	root, catalog, _ := processedPromotionFixture(t, 2)
 	addProcessedPromotionBatch(t, root, catalog, "chatgpt-zh-CN-002", []string{"lesson/1"})
@@ -414,6 +437,60 @@ func TestRetranslationPromoteApplyUpdatesCanonicalAndPreservesAttempts(t *testin
 		if err := ValidateCandidateForLocale(root, catalog, status.PageID, "zh-CN", candidate); err != nil {
 			t.Fatal(err)
 		}
+	}
+}
+
+func TestRetranslationPromoteCanonicalizesEOFWithoutChangingHistoricalCandidate(t *testing.T) {
+	root, catalog, batch := processedPromotionFixture(t, 1)
+	batchDir := filepath.Join(root, "data", "retranslation-runs", "zh-CN", batch)
+	sourcePath := filepath.Join(batchDir, "candidates", "lesson-1.article")
+	rawPath := filepath.Join(batchDir, "raw-responses", "lesson-1.article")
+	for _, path := range []string{sourcePath, rawPath} {
+		data, err := os.ReadFile(path)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if err := os.WriteFile(path, append(data, '\n'), 0644); err != nil {
+			t.Fatal(err)
+		}
+	}
+	sourceBefore, _ := os.ReadFile(sourcePath)
+	canonicalized := canonicalizeCandidateEOF(sourceBefore)
+	writePromotionStatus(t, root, catalog, "old canonical\n")
+	canonicalPath := filepath.Join(root, filepath.FromSlash(canonicalCandidatePath("zh-CN", "lesson/1")))
+	canonicalBefore, _ := os.ReadFile(canonicalPath)
+
+	plan, err := PromoteRetranslation(root, catalog, RetranslationPromoteOptions{Locale: "zh-CN"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	page := plan.Pages[0]
+	if plan.EOFNormalizedCount != 1 || !page.EOFNormalized || page.SourceCandidateSHA256 != sum(sourceBefore) || page.CandidateSHA256 != sum(canonicalized) || !page.Changed {
+		t.Fatalf("dry-run plan=%+v page=%+v", plan, page)
+	}
+	canonicalAfterDryRun, _ := os.ReadFile(canonicalPath)
+	sourceAfterDryRun, _ := os.ReadFile(sourcePath)
+	if !bytes.Equal(canonicalBefore, canonicalAfterDryRun) || !bytes.Equal(sourceBefore, sourceAfterDryRun) {
+		t.Fatal("dry-run changed canonical or historical candidate")
+	}
+
+	if _, err := PromoteRetranslation(root, catalog, RetranslationPromoteOptions{Locale: "zh-CN", Apply: true}); err != nil {
+		t.Fatal(err)
+	}
+	canonicalAfterApply, _ := os.ReadFile(canonicalPath)
+	sourceAfterApply, _ := os.ReadFile(sourcePath)
+	if !bytes.Equal(canonicalAfterApply, canonicalized) {
+		t.Fatalf("canonical candidate = %q, want %q", canonicalAfterApply, canonicalized)
+	}
+	if !bytes.Equal(sourceAfterApply, sourceBefore) {
+		t.Fatal("apply changed historical batch candidate")
+	}
+	recheck, err := PromoteRetranslation(root, catalog, RetranslationPromoteOptions{Locale: "zh-CN"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if recheck.ChangedCount != 0 || recheck.UnchangedCount != 1 || recheck.EOFNormalizedCount != 1 || recheck.Pages[0].Changed {
+		t.Fatalf("post-apply plan = %+v", recheck)
 	}
 }
 
