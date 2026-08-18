@@ -1,0 +1,8 @@
+* select
+
+`select` 语句可以让一个 Go 程等待多个通信操作。
+
+`select` 会阻塞，直到其中某个 case 可以执行，然后执行该 case。如果有多个 case 同时就绪，它会随机选择一个。
+
+.play concurrency/select.go
+

@@ -1,0 +1,15 @@
+* 默认选择
+
+`default` case 在 `select` 中，会在其他 case 都没有就绪时执行。
+
+使用 `default` case，可以尝试进行不会阻塞的发送或接收：
+
+	select {
+	case i := <-c:
+		// 使用 i
+	default:
+		// 从 c 接收会阻塞
+	}
+
+.play concurrency/default-selection.go
+

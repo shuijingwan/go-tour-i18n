@@ -1,0 +1,24 @@
+* 练习：等价二叉树
+
+*1.* 实现 `Walk` 函数。
+
+*2.* 测试 `Walk` 函数。
+
+函数 `tree.New(k)` 会构造一棵结构随机（但始终有序）的二叉树，其中保存的值为 `k`、 `2k`、 `3k`、...、 `10k`。
+
+创建一个新通道 `ch`，并启动遍历：
+
+	go Walk(tree.New(1), ch)
+
+然后从通道中读取并打印 10 个值。它们应当是数字 1, 2, 3, ..., 10。
+
+*3.* 实现 `Same` 函数，并使用 `Walk` 来判断 `t1` 和 `t2` 是否存储相同的值。
+
+*4.* 测试 `Same` 函数。
+
+`Same(tree.New(1),`tree.New(1))` 应返回 true，而 `Same(tree.New(1),`tree.New(2))` 应返回 false。
+
+`Tree` 的文档可以在[[https://godoc.org/golang.org/x/tour/tree#Tree][此处]]找到。
+
+.play concurrency/exercise-equivalent-binary-trees.go
+
