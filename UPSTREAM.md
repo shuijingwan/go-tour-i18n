@@ -30,6 +30,8 @@
 
 [`data/tour-pages.tsv`](data/tour-pages.tsv) 基于上述固定 commit 生成。每个 standalone 页面都记录确定性的完整页面源 `source_sha256`，用于发现候选译文所对应英文页面是否已经变化。两个条件页面继续单独记录在 [`data/tour-conditional-pages.tsv`](data/tour-conditional-pages.tsv)。建立这些目录不是第二次上游同步，固定上游 commit 没有变化。
 
+[`data/tour-examples.tsv`](data/tour-examples.tsv) 记录当前正式课程经 `.play` 实际引用的唯一 Go 示例。example 的 `source_sha256` 由当前本地完整 `.go` 文件现场计算，并与 `UPSTREAM_MANIFEST.tsv` 的 `local_sha256` 交叉校验；前者表示 translation source version，后者表示固定上游导入完整性。当前仅建立 source/catalog 识别，示例尚未进入翻译、状态或发布流程。
+
 当前 101 个 `page_id` 自本提交起冻结为持久身份。`route` 是当前访问路径，`article` 和 `section_number` 是当前上游位置；同步不得根据位置重新生成或重编号 ID。详细规则见 [PAGE_IDENTITY.md](PAGE_IDENTITY.md)。
 
 ## 基线原则

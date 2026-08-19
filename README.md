@@ -35,7 +35,9 @@
 - 1 个 `.image` 引用；
 - 2 条继续单独保留的 `#appengine:` 条件源审计记录。
 
-翻译的最小单元是一个完整顶层 `present.Section`，不会拆成句子级或多 text 槽位 JSON。页面目录位于 [`data/tour-pages.tsv`](data/tour-pages.tsv)，zh-CN 状态位于 [`locales/zh-CN/status.tsv`](locales/zh-CN/status.tsv)。完整投影能力面向 locale；当前第一阶段完成的 locale 为 zh-CN。语言约定见 [`locales/zh-CN/README.md`](locales/zh-CN/README.md) 和 [LANGUAGES.md](LANGUAGES.md)。
+页面翻译的最小单元是一个完整顶层 `present.Section`，不会拆成句子级或多 text 槽位 JSON。页面目录位于 [`data/tour-pages.tsv`](data/tour-pages.tsv)，zh-CN 状态位于 [`locales/zh-CN/status.tsv`](locales/zh-CN/status.tsv)。完整投影能力面向 locale；当前第一阶段完成的 locale 为 zh-CN。语言约定见 [`locales/zh-CN/README.md`](locales/zh-CN/README.md) 和 [LANGUAGES.md](LANGUAGES.md)。
+
+系统还会从正式页面经过现有 present 解析确认的 `.play` 指令发现示例，并在 [`data/tour-examples.tsv`](data/tour-examples.tsv) 中记录第二种 source unit。每个 example 的 source 是完整 `.go` 文件，`source_sha256` 覆盖文件全部字节，而不是只覆盖注释。当前阶段只建立 example catalog 和只读 `TranslationUnit` 适配层；example 尚未进入翻译、status、candidate、validator、projection 或 publish 流程。
 
 目录中的 `page_id` 是语言状态、候选文件和发布记录的持久身份；`route` 是可能随上游变化的当前访问路径，`article` 和 `section_number` 是可能变化的发布投影位置。当前 103 个 ID 已冻结，不会因插入、删除、重排或改标题而自动重编号。完整规则见 [PAGE_IDENTITY.md](PAGE_IDENTITY.md)。
 

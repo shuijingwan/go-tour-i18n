@@ -83,6 +83,10 @@ func TestCatalogGenerationDeterministic(t *testing.T) {
 	if !bytes.Equal(p1, p2) || !bytes.Equal(c1, c2) {
 		t.Fatal("catalog output is not deterministic")
 	}
+	e1, err := ExampleCatalogBytes(c)
+	if err != nil {
+		t.Fatal(err)
+	}
 	dir := t.TempDir()
 	if err := os.Mkdir(filepath.Join(dir, "data"), 0755); err != nil {
 		t.Fatal(err)
@@ -91,6 +95,9 @@ func TestCatalogGenerationDeterministic(t *testing.T) {
 		t.Fatal(err)
 	}
 	if err := os.WriteFile(filepath.Join(dir, "data", "tour-conditional-pages.tsv"), c1, 0644); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(dir, "data", "tour-examples.tsv"), e1, 0644); err != nil {
 		t.Fatal(err)
 	}
 	if err := CheckCatalogFiles(dir, c); err != nil {

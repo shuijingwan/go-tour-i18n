@@ -94,6 +94,18 @@ func HydrateCatalogSources(committed, baseline *Catalog) error {
 		}
 		committed.Pages[i].Source = current.Source
 	}
+	examples := make(map[string]*Example, len(baseline.Examples))
+	for i := range baseline.Examples {
+		examples[baseline.Examples[i].ID] = &baseline.Examples[i]
+	}
+	for i := range committed.Examples {
+		current := examples[committed.Examples[i].ID]
+		if current == nil || current.SourcePath != committed.Examples[i].SourcePath || current.SourceSHA256 != committed.Examples[i].SourceSHA256 {
+			return fmt.Errorf("%s: committed example catalog does not match current source", committed.Examples[i].ID)
+		}
+		committed.Examples[i].Source = current.Source
+		committed.Examples[i].ReferencedBy = append([]string(nil), current.ReferencedBy...)
+	}
 	return nil
 }
 

@@ -49,6 +49,7 @@ type ConditionalPage struct {
 type Catalog struct {
 	Pages       []Page
 	Conditional []ConditionalPage
+	Examples    []Example
 }
 
 type publishedSection struct {
@@ -139,6 +140,11 @@ func buildCatalog(root string, fixedShape, projectStandalone bool) (*Catalog, er
 			})
 		}
 	}
+	examples, err := discoverExamples(root, catalog.Pages)
+	if err != nil {
+		return nil, err
+	}
+	catalog.Examples = examples
 	if err := validateCatalog(&catalog, fixedShape); err != nil {
 		return nil, err
 	}
@@ -373,6 +379,9 @@ func validateCatalog(c *Catalog, fixedShape bool) error {
 	if fixedShape && len(c.Conditional) != 2 {
 		return fmt.Errorf("conditional pages = %d, want 2", len(c.Conditional))
 	}
+	if fixedShape && len(c.Examples) != 93 {
+		return fmt.Errorf("play examples = %d, want 93", len(c.Examples))
+	}
 	ids, routes := map[string]bool{}, map[string]bool{}
 	plays, images := 0, 0
 	for _, p := range c.Pages {
@@ -388,6 +397,16 @@ func validateCatalog(c *Catalog, fixedShape bool) error {
 		ids[p.ID], routes[p.Route] = true, true
 		plays += p.PlayCount
 		images += p.ImageCount
+	}
+	exampleIDs, examplePaths := map[string]bool{}, map[string]bool{}
+	for _, example := range c.Examples {
+		if exampleIDs[example.ID] || examplePaths[example.SourcePath] {
+			return fmt.Errorf("duplicate example id or source path: %s %s", example.ID, example.SourcePath)
+		}
+		exampleIDs[example.ID], examplePaths[example.SourcePath] = true, true
+		if !sha256RE.MatchString(example.SourceSHA256) {
+			return fmt.Errorf("%s: invalid source_sha256", example.ID)
+		}
 	}
 	for _, p := range c.Conditional {
 		if strings.ContainsAny(p.SourceTitle, "\t\r\n") || !sha256RE.MatchString(p.SourceSHA256) {
@@ -413,6 +432,7 @@ func (c *Catalog) Page(id string) (*Page, error) {
 
 var pageHeader = []string{"page_id", "article", "section_number", "route", "source_title", "source_sha256", "play_count", "image_count"}
 var conditionalHeader = []string{"article", "condition", "conditional_index", "source_title", "source_sha256"}
+var exampleHeader = []string{"example_id", "source_path", "source_sha256"}
 
 // ReadCatalog reads the committed catalog, whose page_id column is the source
 // of truth for persistent page identity.
@@ -423,6 +443,10 @@ func ReadCatalog(root string) (*Catalog, error) {
 	}
 	conditional, err := readTSV(filepath.Join(root, "data", "tour-conditional-pages.tsv"), conditionalHeader)
 	if err != nil {
+		return nil, err
+	}
+	examples, err := readTSV(filepath.Join(root, "data", "tour-examples.tsv"), exampleHeader)
+	if err != nil && !os.IsNotExist(err) {
 		return nil, err
 	}
 	c := &Catalog{}
@@ -447,6 +471,9 @@ func ReadCatalog(root string) (*Catalog, error) {
 			return nil, fmt.Errorf("conditional catalog line %d: invalid conditional_index: %w", line+2, err)
 		}
 		c.Conditional = append(c.Conditional, ConditionalPage{Article: record[0], Condition: record[1], ConditionalIndex: index, SourceTitle: record[3], SourceSHA256: record[4]})
+	}
+	for _, record := range examples {
+		c.Examples = append(c.Examples, Example{ID: record[0], SourcePath: record[1], SourceSHA256: record[2]})
 	}
 	if err := validateCatalog(c, false); err != nil {
 		return nil, fmt.Errorf("committed catalog: %w", err)
@@ -522,12 +549,45 @@ func CatalogBytes(c *Catalog) ([]byte, []byte, error) {
 	return pages.Bytes(), conditional.Bytes(), nil
 }
 
+func ExampleCatalogBytes(c *Catalog) ([]byte, error) {
+	var examples bytes.Buffer
+	w := csv.NewWriter(&examples)
+	w.Comma = '\t'
+	if err := w.Write(exampleHeader); err != nil {
+		return nil, err
+	}
+	for _, example := range c.Examples {
+		if err := w.Write([]string{example.ID, example.SourcePath, example.SourceSHA256}); err != nil {
+			return nil, err
+		}
+	}
+	w.Flush()
+	if err := w.Error(); err != nil {
+		return nil, err
+	}
+	return examples.Bytes(), nil
+}
+
 func CheckCatalogFiles(root string, c *Catalog) error {
 	wantPages, wantConditional, err := CatalogBytes(c)
 	if err != nil {
 		return err
 	}
-	return compareFile(filepath.Join(root, "data", "tour-pages.tsv"), wantPages, "page catalog", filepath.Join(root, "data", "tour-conditional-pages.tsv"), wantConditional, "conditional catalog")
+	if err := compareFile(filepath.Join(root, "data", "tour-pages.tsv"), wantPages, "page catalog", filepath.Join(root, "data", "tour-conditional-pages.tsv"), wantConditional, "conditional catalog"); err != nil {
+		return err
+	}
+	wantExamples, err := ExampleCatalogBytes(c)
+	if err != nil {
+		return err
+	}
+	gotExamples, err := os.ReadFile(filepath.Join(root, "data", "tour-examples.tsv"))
+	if err != nil {
+		return fmt.Errorf("example catalog: %w", err)
+	}
+	if !bytes.Equal(gotExamples, wantExamples) {
+		return fmt.Errorf("example catalog differs from generated content")
+	}
+	return nil
 }
 
 func compareFile(path1 string, want1 []byte, label1, path2 string, want2 []byte, label2 string) error {

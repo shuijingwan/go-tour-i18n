@@ -89,7 +89,7 @@ func run(args []string) error {
 		if err := i18n.CheckCatalogFiles(root, catalog); err != nil {
 			return err
 		}
-		fmt.Printf("catalog OK: %d published pages, %d conditional source records\n", len(catalog.Pages), len(catalog.Conditional))
+		fmt.Printf("catalog OK: %d published pages, %d conditional source records, %d play examples\n", len(catalog.Pages), len(catalog.Conditional), len(catalog.Examples))
 		return nil
 	case "catalog write":
 		legacy, err := i18n.BuildLegacySourceCatalog(root)
@@ -122,7 +122,14 @@ func run(args []string) error {
 		if err := os.WriteFile(filepath.Join(root, "data", "tour-conditional-pages.tsv"), conditional, 0644); err != nil {
 			return err
 		}
-		fmt.Printf("wrote %d published pages and %d conditional source records; persistent page IDs preserved\n", len(reconciled.Pages), len(reconciled.Conditional))
+		examples, err := i18n.ExampleCatalogBytes(current)
+		if err != nil {
+			return err
+		}
+		if err := os.WriteFile(filepath.Join(root, "data", "tour-examples.tsv"), examples, 0644); err != nil {
+			return err
+		}
+		fmt.Printf("wrote %d published pages, %d conditional source records, and %d play examples; persistent page IDs preserved\n", len(reconciled.Pages), len(reconciled.Conditional), len(current.Examples))
 		return nil
 	case "upstream preview":
 		fs := flag.NewFlagSet("upstream preview", flag.ContinueOnError)
