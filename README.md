@@ -41,6 +41,8 @@
 
 翻译运行器现已通过 `Catalog.Unit` 和 `TranslationUnit` 取得翻译源及其版本哈希；课程页面随后继续进入原有 Page 专用保护、校验和状态流程。当前运行器只开放 page 翻译，识别到 example 时会在创建 attempt 或调用模型前明确拒绝，不能据此认为示例翻译已经实现。
 
+翻译单元的输入准备会按类型分派：page 保持原有保护行为；example 使用 Go scanner 识别真实注释，将代码、字符串、布局、注释分隔符和机器语义注释替换为现有保护 token，只开放普通自然语言注释 payload，并继续使用同一 locale glossary 的 `keep` 规则保护其中必须保持原样的术语。example 输入已经能够通过现有 restore 逐字节恢复完整 `.go` 文件，但仍未接入模型调用、candidate、status、validator、projection 或 publish。
+
 目录中的 `page_id` 是语言状态、候选文件和发布记录的持久身份；`route` 是可能随上游变化的当前访问路径，`article` 和 `section_number` 是可能变化的发布投影位置。当前 103 个 ID 已冻结，不会因插入、删除、重排或改标题而自动重编号。完整规则见 [PAGE_IDENTITY.md](PAGE_IDENTITY.md)。
 
 ## 多语言维护工具

@@ -161,7 +161,10 @@ func (r *TranslationRunner) Run(ctx context.Context, pageID, locale, apiKey stri
 		value := protectPlayDirectives(unit.Source, unit.SourceSHA256)
 		protected = &value
 	} else if !r.RawInput {
-		value := prepareDefaultTranslationInput(unit.Source, unit.SourceSHA256, glossary)
+		value, err := prepareTranslationUnitInput(unit, glossary)
+		if err != nil {
+			return nil, err
+		}
 		protected = &value
 	}
 	maxAttempts := r.MaxAttempts

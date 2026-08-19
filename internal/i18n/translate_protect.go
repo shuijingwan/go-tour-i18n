@@ -14,14 +14,15 @@ var whereToGoPrefixRE = regexp.MustCompile(`(?i)\bwhere[\t \r\n]+to[\t \r\n]+$`)
 var directiveLineRE = regexp.MustCompile(`(?m)^\.(?:play|image)\s+[^\n]+$`)
 
 type protectedTranslation struct {
-	Text             string
-	Tokens           []string
-	Values           []string
-	Kinds            []protectedTokenKind
-	InlineBoundaries []bool
-	InlinePairs      []protectedInlinePair
-	EmphasisTokens   []string
-	MinimalProtect   bool
+	Text              string
+	Tokens            []string
+	Values            []string
+	Kinds             []protectedTokenKind
+	InlineBoundaries  []bool
+	InlinePairs       []protectedInlinePair
+	EmphasisTokens    []string
+	MinimalProtect    bool
+	RequireTokenOrder bool
 }
 
 type protectedTokenKind uint8
@@ -98,21 +99,31 @@ func protectTranslation(source []byte, hash string, glossary *Glossary) protecte
 	}
 	emphasisSpans := presentEmphasisDelimiterSpans(text)
 	spans = append(spans, emphasisSpans...)
-	if keepRE := translationKeepMatcher(glossary); keepRE != nil {
-		for _, m := range keepRE.FindAllStringIndex(text, -1) {
-			if withinInlineCode(m[0], m[1], inlineCodes) {
-				continue
-			}
-			if !hasTranslationKeepBoundaries(text, m[0], m[1], emphasisSpans) {
-				continue
-			}
-			if !shouldProtectTranslationKeep(text, m[0], m[1]) {
-				continue
-			}
-			spans = append(spans, protectedSpan{start: m[0], end: m[1], kind: protectedGlossaryOrKeep})
-		}
-	}
+	spans = append(spans, translationKeepProtectionSpans(text, glossary, emphasisSpans, func(start, end int) bool {
+		return !withinInlineCode(start, end, inlineCodes)
+	})...)
 	return protectedTranslationFromSpans(text, hash, spans)
+}
+
+func translationKeepProtectionSpans(text string, glossary *Glossary, emphasisSpans []protectedSpan, allowed func(start, end int) bool) []protectedSpan {
+	keepRE := translationKeepMatcher(glossary)
+	if keepRE == nil {
+		return nil
+	}
+	var spans []protectedSpan
+	for _, match := range keepRE.FindAllStringIndex(text, -1) {
+		if allowed != nil && !allowed(match[0], match[1]) {
+			continue
+		}
+		if !hasTranslationKeepBoundaries(text, match[0], match[1], emphasisSpans) {
+			continue
+		}
+		if !shouldProtectTranslationKeep(text, match[0], match[1]) {
+			continue
+		}
+		spans = append(spans, protectedSpan{start: match[0], end: match[1], kind: protectedGlossaryOrKeep})
+	}
+	return spans
 }
 
 func translationKeepMatcher(glossary *Glossary) *regexp.Regexp {
@@ -280,6 +291,17 @@ func (p protectedTranslation) restore(output string) (string, []string) {
 	for i, token := range p.Tokens {
 		if n := strings.Count(output, token); n != 1 {
 			failures = append(failures, fmt.Sprintf("token %d occurrence count = %d, want 1", i+1, n))
+		}
+	}
+	if len(failures) == 0 && p.RequireTokenOrder {
+		position := -1
+		for i, token := range p.Tokens {
+			next := strings.Index(output, token)
+			if next <= position {
+				failures = append(failures, fmt.Sprintf("protected token order changed at token %d", i+1))
+				break
+			}
+			position = next
 		}
 	}
 	if len(failures) == 0 {
