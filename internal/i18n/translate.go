@@ -129,11 +129,20 @@ func (r *TranslationRunner) Run(ctx context.Context, pageID, locale, apiKey stri
 	if r.Catalog == nil {
 		return nil, errors.New("translation catalog is required")
 	}
-	page, err := r.Catalog.Page(pageID)
+	unit, err := r.Catalog.Unit(pageID)
 	if err != nil {
 		return nil, err
 	}
-	if sum(page.Source) != page.SourceSHA256 {
+	switch unit.Kind {
+	case UnitKindPage:
+		// The existing protection, validation, retry, candidate, and status
+		// workflow below remains page-specific in this phase.
+	case UnitKindExample:
+		return nil, fmt.Errorf("示例翻译单元 %s 已被 catalog 识别，但当前阶段尚未开放示例翻译", unit.ID)
+	default:
+		return nil, fmt.Errorf("翻译单元 %s 的类型 %q 不受支持", unit.ID, unit.Kind)
+	}
+	if sum(unit.Source) != unit.SourceSHA256 {
 		return nil, fmt.Errorf("%s: hydrated source hash mismatch", pageID)
 	}
 	currentStatus, _, err := LoadTranslationResult(r.Root, pageID, locale)
@@ -149,10 +158,10 @@ func (r *TranslationRunner) Run(ctx context.Context, pageID, locale, apiKey stri
 	}
 	var protected *protectedTranslation
 	if r.MinimalProtect {
-		value := protectPlayDirectives(page.Source, page.SourceSHA256)
+		value := protectPlayDirectives(unit.Source, unit.SourceSHA256)
 		protected = &value
 	} else if !r.RawInput {
-		value := prepareDefaultTranslationInput(page.Source, page.SourceSHA256, glossary)
+		value := prepareDefaultTranslationInput(unit.Source, unit.SourceSHA256, glossary)
 		protected = &value
 	}
 	maxAttempts := r.MaxAttempts
@@ -169,12 +178,12 @@ func (r *TranslationRunner) Run(ctx context.Context, pageID, locale, apiKey stri
 	}
 	var last TranslationValidation
 	var previous string
-	sourceRunDir := filepath.Join(r.Root, "data", "translation-runs", locale, pageID, "sources", page.SourceSHA256)
+	sourceRunDir := filepath.Join(r.Root, "data", "translation-runs", locale, pageID, "sources", unit.SourceSHA256)
 	firstAttempt, err := nextTranslationAttempt(sourceRunDir)
 	if err != nil {
 		return nil, err
 	}
-	windowStart, windowEnd, err := currentFormalAttemptWindow(sourceRunDir, pageID, locale, page.SourceSHA256, maxAttempts)
+	windowStart, windowEnd, err := currentFormalAttemptWindow(sourceRunDir, pageID, locale, unit.SourceSHA256, maxAttempts)
 	if err != nil {
 		return nil, err
 	}
@@ -184,7 +193,7 @@ func (r *TranslationRunner) Run(ctx context.Context, pageID, locale, apiKey stri
 	if !r.Dev && firstAttempt > windowEnd {
 		updated := now().UTC().Format(time.RFC3339)
 		note := fmt.Sprintf("formal attempt window %03d-%03d exhausted before this run", windowStart, windowEnd)
-		if err := updateTranslationStatus(r.Root, locale, pageID, "blocked", windowEnd, page.SourceSHA256, "", updated, note); err != nil {
+		if err := updateTranslationStatus(r.Root, locale, pageID, "blocked", windowEnd, unit.SourceSHA256, "", updated, note); err != nil {
 			return nil, err
 		}
 		return nil, fmt.Errorf("%s formal attempt window %03d-%03d is exhausted", pageID, windowStart, windowEnd)
@@ -198,8 +207,8 @@ func (r *TranslationRunner) Run(ctx context.Context, pageID, locale, apiKey stri
 		if err := os.MkdirAll(dir, 0755); err != nil {
 			return nil, err
 		}
-		req := makeTranslationRequestForModeOptions(pageID, locale, page.Source, protected, glossary.PromptRules(pageID), previous, translationRequestOptions{IncludeStaticContext: r.DevStaticContext})
-		if err := writeTranslationJSON(filepath.Join(dir, "request.json"), savedTranslationRequest{pageID, locale, page.SourceSHA256, req}); err != nil {
+		req := makeTranslationRequestForModeOptions(pageID, locale, unit.Source, protected, glossary.PromptRules(pageID), previous, translationRequestOptions{IncludeStaticContext: r.DevStaticContext})
+		if err := writeTranslationJSON(filepath.Join(dir, "request.json"), savedTranslationRequest{pageID, locale, unit.SourceSHA256, req}); err != nil {
 			return nil, err
 		}
 		call, callErr := client.Call(ctx, apiKey, req)
@@ -251,24 +260,24 @@ func (r *TranslationRunner) Run(ctx context.Context, pageID, locale, apiKey stri
 				return nil, err
 			}
 			updated := now().UTC().Format(time.RFC3339)
-			if err := updateTranslationStatus(r.Root, locale, pageID, "ready", attempt, page.SourceSHA256, candidatePath, updated, "GLM-5.2 candidate passed existing validator"); err != nil {
+			if err := updateTranslationStatus(r.Root, locale, pageID, "ready", attempt, unit.SourceSHA256, candidatePath, updated, "GLM-5.2 candidate passed existing validator"); err != nil {
 				return nil, err
 			}
-			return &TranslationRunResult{pageID, locale, page.SourceSHA256, "glm-5.2", attempt, "ready", candidatePath, &last, updated}, nil
+			return &TranslationRunResult{pageID, locale, unit.SourceSHA256, "glm-5.2", attempt, "ready", candidatePath, &last, updated}, nil
 		}
 		previous = retryFeedbackForMode(last.Failures, r.RawInput, r.MinimalProtect)
 	}
 	updated := now().UTC().Format(time.RFC3339)
 	if r.Dev {
-		if err := updateTranslationStatus(r.Root, locale, pageID, "pending", lastAttempt, page.SourceSHA256, "", updated, previous); err != nil {
+		if err := updateTranslationStatus(r.Root, locale, pageID, "pending", lastAttempt, unit.SourceSHA256, "", updated, previous); err != nil {
 			return nil, err
 		}
-		return &TranslationRunResult{pageID, locale, page.SourceSHA256, "glm-5.2", lastAttempt, "pending", "", &last, updated}, nil
+		return &TranslationRunResult{pageID, locale, unit.SourceSHA256, "glm-5.2", lastAttempt, "pending", "", &last, updated}, nil
 	}
-	if err := updateTranslationStatus(r.Root, locale, pageID, "blocked", lastAttempt, page.SourceSHA256, "", updated, previous); err != nil {
+	if err := updateTranslationStatus(r.Root, locale, pageID, "blocked", lastAttempt, unit.SourceSHA256, "", updated, previous); err != nil {
 		return nil, err
 	}
-	return &TranslationRunResult{pageID, locale, page.SourceSHA256, "glm-5.2", lastAttempt, "blocked", "", &last, updated}, nil
+	return &TranslationRunResult{pageID, locale, unit.SourceSHA256, "glm-5.2", lastAttempt, "blocked", "", &last, updated}, nil
 }
 
 func (r *TranslationRunner) validateModes() error {

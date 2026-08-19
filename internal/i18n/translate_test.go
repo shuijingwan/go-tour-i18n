@@ -2385,15 +2385,56 @@ func TestTranslationPreflightDoesNotCallHTTP(t *testing.T) {
 		calls.Add(1)
 		return nil, nil
 	})}
-	runner := TranslationRunner{Root: t.TempDir(), Catalog: &Catalog{
+	root := t.TempDir()
+	runner := TranslationRunner{Root: root, Catalog: &Catalog{
 		Conditional: []ConditionalPage{{Article: "welcome.article", Condition: "appengine", ConditionalIndex: 1}},
 	}, Client: client}
 	for _, pageID := range []string{"missing/1", "welcome/appengine/1"} {
-		if _, err := runner.Run(context.Background(), pageID, "zh-CN", "test-secret"); err == nil || !strings.Contains(err.Error(), "unknown page_id") {
-			t.Errorf("Run(%q) error = %v, want unknown page_id", pageID, err)
+		if _, err := runner.Run(context.Background(), pageID, "zh-CN", "test-secret"); err == nil || !strings.Contains(err.Error(), "unknown translation unit") {
+			t.Errorf("Run(%q) error = %v, want unknown translation unit", pageID, err)
 		}
 	}
 	if calls.Load() != 0 {
 		t.Fatalf("HTTP calls=%d", calls.Load())
+	}
+}
+
+func TestExampleTranslationIsRejectedBeforeSideEffects(t *testing.T) {
+	root := t.TempDir()
+	statusPath := filepath.Join(root, "locales", "zh-CN", "status.tsv")
+	if err := os.MkdirAll(filepath.Dir(statusPath), 0755); err != nil {
+		t.Fatal(err)
+	}
+	status := []byte("existing status sentinel\n")
+	if err := os.WriteFile(statusPath, status, 0644); err != nil {
+		t.Fatal(err)
+	}
+	var calls atomic.Int32
+	client := &TranslationClient{HTTP: mockHTTP(func(*http.Request) (*http.Response, error) {
+		calls.Add(1)
+		return nil, errors.New("unexpected model call")
+	})}
+	source := []byte("package main\n\n// English comment.\nfunc main() {}\n")
+	id := "example:basics/packages.go"
+	runner := TranslationRunner{Root: root, Catalog: &Catalog{Examples: []Example{{
+		ID: id, SourcePath: "_content/tour/basics/packages.go", Source: source, SourceSHA256: sum(source),
+	}}}, Client: client}
+
+	_, err := runner.Run(context.Background(), id, "zh-CN", "test-secret")
+	if err == nil || !strings.Contains(err.Error(), "已被 catalog 识别，但当前阶段尚未开放示例翻译") {
+		t.Fatalf("Run error=%v", err)
+	}
+	if calls.Load() != 0 {
+		t.Fatalf("model calls=%d, want 0", calls.Load())
+	}
+	if _, err := os.Stat(filepath.Join(root, "data", "translation-runs")); !os.IsNotExist(err) {
+		t.Fatalf("translation attempt directory was created: %v", err)
+	}
+	if _, err := os.Stat(filepath.Join(root, "locales", "zh-CN", "candidates")); !os.IsNotExist(err) {
+		t.Fatalf("candidate directory was created: %v", err)
+	}
+	gotStatus, err := os.ReadFile(statusPath)
+	if err != nil || string(gotStatus) != string(status) {
+		t.Fatalf("status changed: %q err=%v", gotStatus, err)
 	}
 }
