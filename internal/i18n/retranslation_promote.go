@@ -286,6 +286,11 @@ func preflightUnifiedRetranslationPromotion(root string, catalog *Catalog, local
 	if err != nil {
 		return nil, nil, promotionReviewGate{}, 0, 0, err
 	}
+	for _, unit := range expected {
+		if sum(unit.Source) != unit.SourceSHA256 {
+			return nil, nil, promotionReviewGate{}, 0, 0, fmt.Errorf("%s: current Catalog source bytes do not match source_sha256", unit.ID)
+		}
+	}
 	type selected struct {
 		number   int
 		batchID  string
@@ -342,8 +347,11 @@ func preflightUnifiedRetranslationPromotion(root string, catalog *Catalog, local
 			if !ok {
 				continue // Non-workflow historical units do not affect locale promotion.
 			}
-			if record.UnitKind != unit.Kind || record.SourcePath != unit.SourcePath || record.SourceSHA256 != unit.SourceSHA256 || sum(unit.Source) != unit.SourceSHA256 {
-				return nil, nil, promotionReviewGate{}, 0, 0, fmt.Errorf("%s: manifest source metadata does not match current Catalog", unit.ID)
+			if record.UnitKind != unit.Kind || record.SourcePath != unit.SourcePath || record.SourceSHA256 != unit.SourceSHA256 {
+				// A manifest is immutable evidence for its own source revision.
+				// Older revisions must neither block the current revision nor be
+				// eligible as a fallback promotion candidate.
+				continue
 			}
 			unitResult, ok := results[unit.ID]
 			if !ok || unitResult.UnitKind != unit.Kind {
@@ -603,20 +611,20 @@ func applyRetranslationPromotion(root string, catalog *Catalog, options Retransl
 	if err != nil {
 		return fmt.Errorf("read canonical status: %w", err)
 	}
-	if err := CheckStatus(root, options.Locale, catalog); err != nil {
+	allowStaleSource := make(map[string]bool, len(prepared))
+	for _, item := range prepared {
+		if item.unit == nil || item.unit.ID != item.plan.UnitID || item.unit.SourceSHA256 == "" || sum(item.unit.Source) != item.unit.SourceSHA256 {
+			return fmt.Errorf("invalid current-source promotion preparation for %q", item.plan.UnitID)
+		}
+		allowStaleSource[item.unit.ID] = true
+	}
+	if err := checkPromotionStatus(root, options.Locale, catalog, statuses, allowStaleSource); err != nil {
 		return fmt.Errorf("check canonical status: %w", err)
 	}
 	statusByID := map[string]int{}
 	for i, status := range statuses {
-		unit, err := catalog.Unit(status.UnitID)
-		if err != nil {
-			return err
-		}
 		if _, exists := statusByID[status.UnitID]; exists {
 			return fmt.Errorf("duplicate status unit_id %q", status.UnitID)
-		}
-		if status.SourceSHA256 != unit.SourceSHA256 {
-			return fmt.Errorf("%s: invalid canonical status source", status.UnitID)
 		}
 		statusByID[status.UnitID] = i
 	}
@@ -693,6 +701,44 @@ func applyRetranslationPromotion(root string, catalog *Catalog, options Retransl
 		return fmt.Errorf("install canonical status: %w", err)
 	}
 	return nil
+}
+
+// checkPromotionStatus retains CheckStatus's complete locale/status validation
+// while allowing only preflighted units to carry an old source hash until this
+// atomic promotion installs their current-source candidate and status row.
+func checkPromotionStatus(root, locale string, catalog *Catalog, statuses []Status, allowStaleSource map[string]bool) error {
+	shadow := *catalog
+	shadow.Pages = append([]Page(nil), catalog.Pages...)
+	shadow.Examples = append([]Example(nil), catalog.Examples...)
+	pageIndex := make(map[string]int, len(shadow.Pages))
+	exampleIndex := make(map[string]int, len(shadow.Examples))
+	for i := range shadow.Pages {
+		pageIndex[shadow.Pages[i].ID] = i
+	}
+	for i := range shadow.Examples {
+		exampleIndex[shadow.Examples[i].ID] = i
+	}
+	for _, status := range statuses {
+		unit, err := catalog.Unit(status.UnitID)
+		if err != nil {
+			return err
+		}
+		if status.SourceSHA256 == unit.SourceSHA256 {
+			continue
+		}
+		if !allowStaleSource[status.UnitID] {
+			return fmt.Errorf("%s: stale source_sha256 without current-source promotion evidence", status.UnitID)
+		}
+		switch unit.Kind {
+		case UnitKindPage:
+			shadow.Pages[pageIndex[unit.ID]].SourceSHA256 = status.SourceSHA256
+		case UnitKindExample:
+			shadow.Examples[exampleIndex[unit.ID]].SourceSHA256 = status.SourceSHA256
+		default:
+			return fmt.Errorf("%s: unsupported promotion unit kind %q", unit.ID, unit.Kind)
+		}
+	}
+	return CheckStatus(root, locale, &shadow)
 }
 
 func copyDirectory(source, target string) error {

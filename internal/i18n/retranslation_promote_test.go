@@ -383,9 +383,6 @@ func TestRetranslationPromoteRejectsIncompleteAndInvalidEvidence(t *testing.T) {
 				t.Fatal(err)
 			}
 		}, "ambiguous or invalid retranslation batch number"},
-		{"source hash", func(t *testing.T, root string, catalog *Catalog, batch string) {
-			rewriteProcessManifest(t, root, batch, func(m *RetranslationBatchManifest) { m.Units[0].SourceSHA256 = strings.Repeat("0", 64) })
-		}, "source metadata"},
 		{"result validation mismatch", func(t *testing.T, root string, catalog *Catalog, batch string) {
 			path := filepath.Join(root, "data", "retranslation-runs", "zh-CN", batch, "validation", "lesson-1.json")
 			var v RetranslationValidation
@@ -669,6 +666,50 @@ func TestRetranslationPromoteApplyUpdatesCanonicalAndPreservesAttempts(t *testin
 		if err := ValidateCandidateForLocale(root, catalog, status.UnitID, "zh-CN", candidate); err != nil {
 			t.Fatal(err)
 		}
+	}
+}
+
+func TestRetranslationPromoteUsesCurrentSourceRevisionAndRepairsStaleStatus(t *testing.T) {
+	root, catalog, oldBatch := processedPromotionFixture(t, 1)
+	writePromotionStatus(t, root, catalog, "old canonical\n")
+	oldSource := catalog.Pages[0].SourceSHA256
+	catalog.Pages[0].Source = []byte("* Page\n\nUse the updated `Go` source on this page.\n")
+	catalog.Pages[0].SourceSHA256 = sum(catalog.Pages[0].Source)
+	addProcessedPromotionBatch(t, root, catalog, "chatgpt-zh-CN-002", []string{"lesson/1"})
+
+	plan, err := PromoteRetranslation(root, catalog, RetranslationPromoteOptions{Locale: "zh-CN"})
+	if err != nil || !plan.CanApply || len(plan.Units) != 1 || plan.Units[0].BatchID != "chatgpt-zh-CN-002" {
+		t.Fatalf("current revision plan=%+v err=%v", plan, err)
+	}
+	if plan.Units[0].BatchID == oldBatch {
+		t.Fatal("promotion fell back to the old source revision")
+	}
+	if _, err := PromoteRetranslation(root, catalog, RetranslationPromoteOptions{Locale: "zh-CN", Apply: true}); err != nil {
+		t.Fatal(err)
+	}
+	statuses, err := ReadStatuses(filepath.Join(root, "locales", "zh-CN", "status.tsv"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if statuses[0].State != "ready" || statuses[0].SourceSHA256 != catalog.Pages[0].SourceSHA256 || statuses[0].CandidatePath != canonicalCandidatePath("zh-CN", "lesson/1") || statuses[0].Note != "ChatGPT retranslation promoted from chatgpt-zh-CN-002; passed canonical validator" {
+		t.Fatalf("promoted stale status=%+v old_source=%s", statuses[0], oldSource)
+	}
+	if err := CheckStatus(root, "zh-CN", catalog); err != nil {
+		t.Fatalf("post-promotion status: %v", err)
+	}
+}
+
+func TestRetranslationPromoteDoesNotUseOldSourceRevisionEvidence(t *testing.T) {
+	root, catalog, _ := processedPromotionFixture(t, 1)
+	writePromotionStatus(t, root, catalog, "old canonical\n")
+	catalog.Pages[0].Source = []byte("* Page\n\nUse the updated `Go` source on this page.\n")
+	catalog.Pages[0].SourceSHA256 = sum(catalog.Pages[0].Source)
+	plan, err := PromoteRetranslation(root, catalog, RetranslationPromoteOptions{Locale: "zh-CN"})
+	if err != nil || plan.CanApply || !reflect.DeepEqual(plan.MissingEvidence, []string{"lesson/1"}) {
+		t.Fatalf("old revision fallback plan=%+v err=%v", plan, err)
+	}
+	if _, err := PromoteRetranslation(root, catalog, RetranslationPromoteOptions{Locale: "zh-CN", Apply: true}); err == nil || !strings.Contains(err.Error(), "promotion cannot apply") {
+		t.Fatalf("old revision apply error=%v", err)
 	}
 }
 
