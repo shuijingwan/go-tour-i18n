@@ -47,6 +47,7 @@ type RetranslationValidation struct {
 	UnitID          string   `json:"unit_id,omitempty"`
 	UnitKind        UnitKind `json:"unit_kind,omitempty"`
 	SourceSHA256    string   `json:"source_sha256,omitempty"`
+	Attempt         int      `json:"attempt,omitempty"`
 	PageID          string   `json:"page_id"`
 	Status          string   `json:"status"`
 	InputPath       string   `json:"input_path"`
@@ -132,7 +133,7 @@ func ProcessRetranslationBatch(root string, catalog *Catalog, options Retranslat
 		evidence := RetranslationValidation{
 			SchemaVersion: retranslationProcessSchemaVersion, BatchID: batchID, Locale: options.Locale,
 			UnitID: item.unit.ID, UnitKind: item.unit.Kind, SourceSHA256: item.unit.SourceSHA256,
-			PageID: item.manifest.PageID, InputPath: item.manifest.InputPath, RawResponsePath: rawPath,
+			Attempt: 1, PageID: item.manifest.PageID, InputPath: item.manifest.InputPath, RawResponsePath: rawPath,
 		}
 		pageResult := RetranslationPageResult{UnitID: item.unit.ID, UnitKind: item.unit.Kind, PageID: item.manifest.PageID, ValidationPath: validationPath}
 		restored, failures := item.protected.restore(string(item.raw))

@@ -237,15 +237,19 @@ func run(args []string) error {
 	case "retranslation retry":
 		fs := flag.NewFlagSet("retranslation retry", flag.ContinueOnError)
 		locale := fs.String("locale", "", "target locale")
-		batchID := fs.String("batch-id", "", "batch id containing the failed page")
-		pageID := fs.String("page-id", "", "failed page id")
+		batchID := fs.String("batch-id", "", "包含失败翻译单元的批次 ID")
+		unitID := fs.String("unit-id", "", "失败翻译单元 ID")
+		pageID := fs.String("page-id", "", "历史兼容：失败课程页面 ID")
 		if err := fs.Parse(args[2:]); err != nil {
 			return err
 		}
-		if *locale == "" || *batchID == "" || *pageID == "" {
-			return fmt.Errorf("--locale, --batch-id, and --page-id are required")
+		if *unitID != "" && *pageID != "" {
+			return fmt.Errorf("--unit-id 和 --page-id 不能同时指定")
 		}
-		result, err := i18n.ProcessRetranslationRetry(root, catalog, i18n.RetranslationRetryOptions{Locale: *locale, BatchID: *batchID, PageID: *pageID})
+		if *locale == "" || *batchID == "" || (*unitID == "" && *pageID == "") {
+			return fmt.Errorf("--locale、--batch-id，以及 --unit-id/--page-id 二者之一为必填")
+		}
+		result, err := i18n.ProcessRetranslationRetry(root, catalog, i18n.RetranslationRetryOptions{Locale: *locale, BatchID: *batchID, UnitID: *unitID, PageID: *pageID})
 		if err != nil {
 			return err
 		}

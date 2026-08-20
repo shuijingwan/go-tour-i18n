@@ -14,10 +14,9 @@ import (
 type RetranslationRetryOptions struct {
 	Locale  string
 	BatchID string
+	UnitID  string
 	PageID  string
 }
-
-var retryRawPathRE = regexp.MustCompile(`^retries/([^/]+)/attempt-([0-9]{3})\.article$`)
 
 // ProcessRetranslationRetry processes the next pre-existing protected retry
 // response for one failed page. It never writes a raw response itself.
@@ -25,8 +24,18 @@ func ProcessRetranslationRetry(root string, catalog *Catalog, options Retranslat
 	if catalog == nil {
 		return nil, errors.New("retranslation catalog is required")
 	}
-	if options.Locale == "" || options.BatchID == "" || options.PageID == "" {
-		return nil, errors.New("retranslation retry locale, batch_id, and page_id are required")
+	if options.UnitID != "" && options.PageID != "" {
+		return nil, errors.New("--unit-id 和 --page-id 不能同时指定")
+	}
+	unitID := options.UnitID
+	if unitID == "" {
+		unitID = options.PageID
+	}
+	if options.PageID != "" && strings.HasPrefix(options.PageID, "example:") {
+		return nil, errors.New("--page-id 只接受课程页面单元；示例单元请使用 --unit-id")
+	}
+	if options.Locale == "" || options.BatchID == "" || unitID == "" {
+		return nil, errors.New("retranslation retry locale, batch_id, and unit_id are required")
 	}
 	if options.Locale != "zh-CN" {
 		return nil, fmt.Errorf("unsupported locale %q", options.Locale)
@@ -51,58 +60,6 @@ func ProcessRetranslationRetry(root string, catalog *Catalog, options Retranslat
 	if result.SchemaVersion != retranslationProcessSchemaVersion || result.BatchID != options.BatchID || result.Locale != options.Locale || result.PageCount != len(result.Pages) || result.PageCount != manifest.PageCount {
 		return nil, fmt.Errorf("retranslation batch %q has incompatible process result", options.BatchID)
 	}
-	resultIndex := -1
-	for i := range result.Pages {
-		if result.Pages[i].PageID == options.PageID {
-			if resultIndex != -1 {
-				return nil, fmt.Errorf("duplicate result page_id %q", options.PageID)
-			}
-			resultIndex = i
-		}
-	}
-	if resultIndex == -1 {
-		return nil, fmt.Errorf("page_id %q is not in retranslation batch %q", options.PageID, options.BatchID)
-	}
-	if result.Pages[resultIndex].Status != "restore_failed" && result.Pages[resultIndex].Status != "validation_failed" {
-		return nil, fmt.Errorf("page_id %q status %q is not retryable", options.PageID, result.Pages[resultIndex].Status)
-	}
-
-	validationPath := filepath.Join(batchDir, "validation", strings.TrimSuffix(flattenedPageArticleName(options.PageID), ".article")+".json")
-	validationData, err := os.ReadFile(validationPath)
-	if err != nil {
-		return nil, fmt.Errorf("read current validation for %s: %w", options.PageID, err)
-	}
-	var current RetranslationValidation
-	if err := json.Unmarshal(validationData, &current); err != nil {
-		return nil, fmt.Errorf("parse current validation for %s: %w", options.PageID, err)
-	}
-	if current.SchemaVersion != retranslationProcessSchemaVersion || current.BatchID != options.BatchID || current.Locale != options.Locale || current.PageID != options.PageID || current.Status != result.Pages[resultIndex].Status {
-		return nil, fmt.Errorf("current validation for %s does not match result.json", options.PageID)
-	}
-	flatID := strings.TrimSuffix(flattenedPageArticleName(options.PageID), ".article")
-	currentAttempt, err := retryValidationAttempt(current.RawResponsePath, flatID)
-	if err != nil {
-		return nil, fmt.Errorf("%s: %w", options.PageID, err)
-	}
-	nextAttempt := currentAttempt + 1
-	retryDirRelative := filepath.ToSlash(filepath.Join("retries", flatID))
-	retryRawRelative := filepath.ToSlash(filepath.Join(retryDirRelative, fmt.Sprintf("attempt-%03d.article", nextAttempt)))
-	retryRawPath := filepath.Join(batchDir, filepath.FromSlash(retryRawRelative))
-	retryRaw, err := os.ReadFile(retryRawPath)
-	if err != nil {
-		return nil, fmt.Errorf("read next retry raw response %s: %w", retryRawRelative, err)
-	}
-	if err := validateRetryAttemptSequence(filepath.Join(batchDir, filepath.FromSlash(retryDirRelative)), currentAttempt, nextAttempt); err != nil {
-		return nil, err
-	}
-	historyRelative := filepath.ToSlash(filepath.Join(retryDirRelative, fmt.Sprintf("attempt-%03d-validation.json", currentAttempt)))
-	historyPath := filepath.Join(batchDir, filepath.FromSlash(historyRelative))
-	if _, err := os.Stat(historyPath); err == nil {
-		return nil, fmt.Errorf("retry validation history already exists: %s", historyRelative)
-	} else if !os.IsNotExist(err) {
-		return nil, fmt.Errorf("inspect retry validation history: %w", err)
-	}
-
 	glossary, err := LoadGlossary(root, options.Locale)
 	if err != nil {
 		return nil, err
@@ -113,19 +70,73 @@ func ProcessRetranslationRetry(root string, catalog *Catalog, options Retranslat
 	}
 	var item *preparedRetranslationPage
 	for i := range prepared {
-		if prepared[i].page.ID == options.PageID {
+		if prepared[i].unit.ID == unitID {
 			item = &prepared[i]
 			break
 		}
 	}
 	if item == nil {
-		return nil, fmt.Errorf("page_id %q is not in manifest", options.PageID)
+		return nil, fmt.Errorf("translation unit %q is not in retranslation batch %q", unitID, options.BatchID)
+	}
+	name := filepath.Base(filepath.FromSlash(item.manifest.InputPath))
+	extension := filepath.Ext(name)
+	flatID := strings.TrimSuffix(name, extension)
+	resultIndex := -1
+	for i := range result.Pages {
+		if retranslationResultUnitID(result.Pages[i]) == unitID {
+			if resultIndex != -1 {
+				return nil, fmt.Errorf("duplicate result translation unit %q", unitID)
+			}
+			resultIndex = i
+		}
+	}
+	if resultIndex == -1 {
+		return nil, fmt.Errorf("translation unit %q is not in retranslation batch %q", unitID, options.BatchID)
+	}
+	if result.Pages[resultIndex].Status != "restore_failed" && result.Pages[resultIndex].Status != "validation_failed" {
+		return nil, fmt.Errorf("translation unit %q status %q is not retryable", unitID, result.Pages[resultIndex].Status)
 	}
 
-	candidateRelative := filepath.ToSlash(filepath.Join("candidates", flattenedPageArticleName(options.PageID)))
+	validationPath := filepath.Join(batchDir, "validation", flatID+".json")
+	validationData, err := os.ReadFile(validationPath)
+	if err != nil {
+		return nil, fmt.Errorf("read current validation for %s: %w", unitID, err)
+	}
+	var current RetranslationValidation
+	if err := json.Unmarshal(validationData, &current); err != nil {
+		return nil, fmt.Errorf("parse current validation for %s: %w", unitID, err)
+	}
+	if current.SchemaVersion != retranslationProcessSchemaVersion || current.BatchID != options.BatchID || current.Locale != options.Locale || retranslationValidationUnitID(current) != unitID || current.Status != result.Pages[resultIndex].Status {
+		return nil, fmt.Errorf("current validation for %s does not match result.json", unitID)
+	}
+	currentAttempt, err := retryValidationAttemptForExtension(current.RawResponsePath, flatID, extension)
+	if err != nil {
+		return nil, fmt.Errorf("%s: %w", unitID, err)
+	}
+	nextAttempt := currentAttempt + 1
+	retryDirRelative := filepath.ToSlash(filepath.Join("retries", flatID))
+	retryRawRelative := filepath.ToSlash(filepath.Join(retryDirRelative, fmt.Sprintf("attempt-%03d%s", nextAttempt, extension)))
+	retryRawPath := filepath.Join(batchDir, filepath.FromSlash(retryRawRelative))
+	retryRaw, err := os.ReadFile(retryRawPath)
+	if err != nil {
+		return nil, fmt.Errorf("read next retry raw response %s: %w", retryRawRelative, err)
+	}
+	if err := validateRetryAttemptSequenceForExtension(filepath.Join(batchDir, filepath.FromSlash(retryDirRelative)), currentAttempt, nextAttempt, extension); err != nil {
+		return nil, err
+	}
+	historyRelative := filepath.ToSlash(filepath.Join(retryDirRelative, fmt.Sprintf("attempt-%03d-validation.json", currentAttempt)))
+	historyPath := filepath.Join(batchDir, filepath.FromSlash(historyRelative))
+	if _, err := os.Stat(historyPath); err == nil {
+		return nil, fmt.Errorf("retry validation history already exists: %s", historyRelative)
+	} else if !os.IsNotExist(err) {
+		return nil, fmt.Errorf("inspect retry validation history: %w", err)
+	}
+
+	candidateRelative := filepath.ToSlash(filepath.Join("candidates", name))
 	evidence := RetranslationValidation{
 		SchemaVersion: retranslationProcessSchemaVersion, BatchID: options.BatchID, Locale: options.Locale,
-		PageID: options.PageID, InputPath: item.manifest.InputPath, RawResponsePath: retryRawRelative,
+		UnitID: item.unit.ID, UnitKind: item.unit.Kind, SourceSHA256: item.unit.SourceSHA256,
+		Attempt: nextAttempt, PageID: item.manifest.PageID, InputPath: item.manifest.InputPath, RawResponsePath: retryRawRelative,
 	}
 	pageResult := &result.Pages[resultIndex]
 	pageResult.CandidatePath = ""
@@ -139,7 +150,7 @@ func ProcessRetranslationRetry(root string, catalog *Catalog, options Retranslat
 		candidate = []byte(restored)
 		evidence.CandidatePath = candidateRelative
 		pageResult.CandidatePath = candidateRelative
-		if err := ValidateCandidate(root, catalog, options.PageID, candidate); err != nil {
+		if err := ValidateTranslationUnitCandidate(root, catalog, unitID, options.Locale, candidate); err != nil {
 			evidence.Status = "validation_failed"
 			evidence.Error = err.Error()
 		} else {
@@ -175,10 +186,15 @@ func ProcessRetranslationRetry(root string, catalog *Catalog, options Retranslat
 }
 
 func retryValidationAttempt(rawPath, flatID string) (int, error) {
-	if rawPath == filepath.ToSlash(filepath.Join("raw-responses", flatID+".article")) {
+	return retryValidationAttemptForExtension(rawPath, flatID, ".article")
+}
+
+func retryValidationAttemptForExtension(rawPath, flatID, extension string) (int, error) {
+	if rawPath == filepath.ToSlash(filepath.Join("raw-responses", flatID+extension)) {
 		return 1, nil
 	}
-	match := retryRawPathRE.FindStringSubmatch(rawPath)
+	retryRE := regexp.MustCompile(`^retries/([^/]+)/attempt-([0-9]{3})` + regexp.QuoteMeta(extension) + `$`)
+	match := retryRE.FindStringSubmatch(rawPath)
 	if match == nil || match[1] != flatID {
 		return 0, fmt.Errorf("validation raw_response_path %q is not a recognized attempt", rawPath)
 	}
@@ -190,11 +206,15 @@ func retryValidationAttempt(rawPath, flatID string) (int, error) {
 }
 
 func validateRetryAttemptSequence(dir string, current, next int) error {
+	return validateRetryAttemptSequenceForExtension(dir, current, next, ".article")
+}
+
+func validateRetryAttemptSequenceForExtension(dir string, current, next int, extension string) error {
 	entries, err := os.ReadDir(dir)
 	if err != nil {
 		return fmt.Errorf("read retry directory: %w", err)
 	}
-	articleRE := regexp.MustCompile(`^attempt-([0-9]{3})\.article$`)
+	attemptRE := regexp.MustCompile(`^attempt-([0-9]{3})` + regexp.QuoteMeta(extension) + `$`)
 	validationRE := regexp.MustCompile(`^attempt-([0-9]{3})-validation\.json$`)
 	found := map[int]bool{}
 	history := map[int]bool{}
@@ -202,7 +222,7 @@ func validateRetryAttemptSequence(dir string, current, next int) error {
 		if entry.IsDir() {
 			return fmt.Errorf("unexpected retry directory %q", entry.Name())
 		}
-		match := articleRE.FindStringSubmatch(entry.Name())
+		match := attemptRE.FindStringSubmatch(entry.Name())
 		if match == nil {
 			validationMatch := validationRE.FindStringSubmatch(entry.Name())
 			if validationMatch == nil {
@@ -223,7 +243,7 @@ func validateRetryAttemptSequence(dir string, current, next int) error {
 	}
 	for attempt := 2; attempt <= next; attempt++ {
 		if !found[attempt] {
-			return fmt.Errorf("missing retry attempt-%03d.article", attempt)
+			return fmt.Errorf("missing retry attempt-%03d%s", attempt, extension)
 		}
 	}
 	for attempt := 1; attempt < current; attempt++ {
@@ -232,6 +252,20 @@ func validateRetryAttemptSequence(dir string, current, next int) error {
 		}
 	}
 	return nil
+}
+
+func retranslationResultUnitID(result RetranslationPageResult) string {
+	if result.UnitID != "" {
+		return result.UnitID
+	}
+	return result.PageID
+}
+
+func retranslationValidationUnitID(validation RetranslationValidation) string {
+	if validation.UnitID != "" {
+		return validation.UnitID
+	}
+	return validation.PageID
 }
 
 func recountRetranslationResult(result *RetranslationProcessResult) {

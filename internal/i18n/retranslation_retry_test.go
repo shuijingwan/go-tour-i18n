@@ -40,6 +40,38 @@ func writeRetryRaw(t *testing.T, root, batchID, pageID string, attempt int, raw 
 	return path
 }
 
+func processExampleRetryFixture(t *testing.T, firstRaw func(string) string) (string, *Catalog, string, string, string) {
+	t.Helper()
+	root, catalog, batchID, name := makeRetranslationExampleProcessBatch(t)
+	batchDir := filepath.Join(root, "data", "retranslation-runs", "zh-CN", batchID)
+	rawPath := filepath.Join(batchDir, "raw-responses", name)
+	validRaw, err := os.ReadFile(rawPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(rawPath, []byte(firstRaw(string(validRaw))), 0644); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := ProcessRetranslationBatch(root, catalog, RetranslationProcessOptions{Locale: "zh-CN", BatchID: batchID}); err != nil {
+		t.Fatal(err)
+	}
+	return root, catalog, batchID, name, string(validRaw)
+}
+
+func writeExampleRetryRaw(t *testing.T, root, batchID, inputName string, attempt int, raw string) string {
+	t.Helper()
+	flatID := strings.TrimSuffix(inputName, filepath.Ext(inputName))
+	dir := filepath.Join(root, "data", "retranslation-runs", "zh-CN", batchID, "retries", flatID)
+	if err := os.MkdirAll(dir, 0755); err != nil {
+		t.Fatal(err)
+	}
+	path := filepath.Join(dir, "attempt-"+fmtAttempt(attempt)+filepath.Ext(inputName))
+	if err := os.WriteFile(path, []byte(raw), 0644); err != nil {
+		t.Fatal(err)
+	}
+	return path
+}
+
 func fmtAttempt(attempt int) string {
 	return strings.Repeat("0", 3-len(strconv.Itoa(attempt))) + strconv.Itoa(attempt)
 }
@@ -59,6 +91,124 @@ func TestRetranslationRetryRejectsPassedUnknownAndMissingAttempt(t *testing.T) {
 	root, catalog, batchID = processRetryFixture(t, 1, func(raw string) string { return raw + " `bad`" })
 	if _, err := ProcessRetranslationRetry(root, catalog, RetranslationRetryOptions{Locale: "zh-CN", BatchID: batchID, PageID: "lesson/1"}); err == nil || !strings.Contains(err.Error(), "attempt-002.article") {
 		t.Fatalf("missing attempt error = %v", err)
+	}
+}
+
+func TestRetranslationRetryUnitIDPageAndOptionCompatibility(t *testing.T) {
+	root, catalog, batchID := processRetryFixture(t, 1, func(raw string) string { return raw + " `bad`" })
+	batchDir := filepath.Join(root, "data", "retranslation-runs", "zh-CN", batchID)
+	validRaw, _ := os.ReadFile(filepath.Join(batchDir, "inputs", "lesson-1.article"))
+	writeRetryRaw(t, root, batchID, "lesson/1", 2, string(validRaw))
+	result, err := ProcessRetranslationRetry(root, catalog, RetranslationRetryOptions{Locale: "zh-CN", BatchID: batchID, UnitID: "lesson/1"})
+	if err != nil || result.ValidationPassed != 1 {
+		t.Fatalf("page --unit-id result=%+v err=%v", result, err)
+	}
+	if _, err := os.Stat(filepath.Join(batchDir, "retries", "lesson-1", "attempt-002.article")); err != nil {
+		t.Fatalf("historical Page retry extension changed: %v", err)
+	}
+	if _, err := ProcessRetranslationRetry(root, catalog, RetranslationRetryOptions{Locale: "zh-CN", BatchID: batchID, UnitID: "lesson/1", PageID: "lesson/1"}); err == nil || !strings.Contains(err.Error(), "不能同时指定") {
+		t.Fatalf("unit/page option conflict error=%v", err)
+	}
+	if _, err := ProcessRetranslationRetry(root, catalog, RetranslationRetryOptions{Locale: "zh-CN", BatchID: batchID, PageID: "example:basics/channel.go"}); err == nil || !strings.Contains(err.Error(), "只接受课程页面") {
+		t.Fatalf("example through --page-id error=%v", err)
+	}
+}
+
+func TestRetranslationRetryExampleLifecycleUsesGoAttempts(t *testing.T) {
+	root, catalog, batchID, name, validRaw := processExampleRetryFixture(t, func(raw string) string {
+		return strings.Replace(raw, "通过通道发送该值。", "使用了幻灯片。", 1)
+	})
+	unitID := catalog.Examples[0].ID
+	batchDir := filepath.Join(root, "data", "retranslation-runs", "zh-CN", batchID)
+	statusPath := filepath.Join(root, "locales", "zh-CN", "status.tsv")
+	canonicalPath := filepath.Join(root, "locales", "zh-CN", "candidates", "sentinel.go")
+	if err := os.WriteFile(statusPath, []byte("status sentinel\n"), 0644); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.MkdirAll(filepath.Dir(canonicalPath), 0755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(canonicalPath, []byte("canonical sentinel\n"), 0644); err != nil {
+		t.Fatal(err)
+	}
+
+	invalidAttempt := strings.Replace(validRaw, "通过通道发送该值。", "仍然使用幻灯片。", 1)
+	attempt2 := writeExampleRetryRaw(t, root, batchID, name, 2, invalidAttempt)
+	result, err := ProcessRetranslationRetry(root, catalog, RetranslationRetryOptions{Locale: "zh-CN", BatchID: batchID, UnitID: unitID})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if result.Pages[0].Status != "validation_failed" || result.ValidationFailed != 1 || filepath.Ext(attempt2) != ".go" {
+		t.Fatalf("example attempt 2 result=%+v path=%s", result, attempt2)
+	}
+	flatID := strings.TrimSuffix(name, filepath.Ext(name))
+	validationPath := filepath.Join(batchDir, "validation", flatID+".json")
+	validation, _ := os.ReadFile(validationPath)
+	if !strings.Contains(string(validation), `"attempt": 2`) || !strings.Contains(string(validation), `"raw_response_path": "retries/`+flatID+`/attempt-002.go"`) || !strings.Contains(string(validation), "禁止译法") {
+		t.Fatalf("example attempt 2 validation=%s", validation)
+	}
+
+	writeExampleRetryRaw(t, root, batchID, name, 3, validRaw)
+	result, err = ProcessRetranslationRetry(root, catalog, RetranslationRetryOptions{Locale: "zh-CN", BatchID: batchID, UnitID: unitID})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if result.Pages[0].Status != "passed" || result.ValidationPassed != 1 {
+		t.Fatalf("example attempt 3 result=%+v", result)
+	}
+	candidate, err := os.ReadFile(filepath.Join(batchDir, "candidates", name))
+	if err != nil || !strings.Contains(string(candidate), "通过通道发送该值。") {
+		t.Fatalf("example retry candidate=%q err=%v", candidate, err)
+	}
+	for attempt := 1; attempt <= 2; attempt++ {
+		if _, err := os.Stat(filepath.Join(batchDir, "retries", flatID, "attempt-"+fmtAttempt(attempt)+"-validation.json")); err != nil {
+			t.Fatalf("missing example validation history %d: %v", attempt, err)
+		}
+	}
+	for path, want := range map[string]string{statusPath: "status sentinel\n", canonicalPath: "canonical sentinel\n"} {
+		got, err := os.ReadFile(path)
+		if err != nil || string(got) != want {
+			t.Fatalf("formal data changed at %s: %q err=%v", path, got, err)
+		}
+	}
+}
+
+func TestRetranslationRetryExampleRestoreFailureAndPreflightSafety(t *testing.T) {
+	t.Run("restore failure", func(t *testing.T) {
+		root, catalog, batchID, name, validRaw := processExampleRetryFixture(t, func(raw string) string {
+			return strings.Replace(raw, "通过通道发送该值。", "使用了幻灯片。", 1)
+		})
+		broken := strings.Replace(validRaw, translationTokenRE.FindString(validRaw), "", 1)
+		writeExampleRetryRaw(t, root, batchID, name, 2, broken)
+		result, err := ProcessRetranslationRetry(root, catalog, RetranslationRetryOptions{Locale: "zh-CN", BatchID: batchID, UnitID: catalog.Examples[0].ID})
+		if err != nil || result.Pages[0].Status != "restore_failed" {
+			t.Fatalf("example restore retry result=%+v err=%v", result, err)
+		}
+	})
+	for _, tt := range []struct {
+		name   string
+		mutate func(*RetranslationBatchManifest)
+		want   string
+	}{
+		{"source hash", func(m *RetranslationBatchManifest) { m.Pages[0].SourceSHA256 = strings.Repeat("0", 64) }, "source metadata"},
+		{"input hash", func(m *RetranslationBatchManifest) { m.Pages[0].InputSHA256 = strings.Repeat("0", 64) }, "input_sha256"},
+		{"unit kind", func(m *RetranslationBatchManifest) { m.Pages[0].UnitKind = UnitKindPage }, "unit_kind"},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			root, catalog, batchID, name, validRaw := processExampleRetryFixture(t, func(raw string) string {
+				return strings.Replace(raw, "通过通道发送该值。", "使用了幻灯片。", 1)
+			})
+			writeExampleRetryRaw(t, root, batchID, name, 2, validRaw)
+			rewriteProcessManifest(t, root, batchID, tt.mutate)
+			_, err := ProcessRetranslationRetry(root, catalog, RetranslationRetryOptions{Locale: "zh-CN", BatchID: batchID, UnitID: catalog.Examples[0].ID})
+			if err == nil || !strings.Contains(err.Error(), tt.want) {
+				t.Fatalf("preflight error=%v, want %q", err, tt.want)
+			}
+			flatID := strings.TrimSuffix(name, filepath.Ext(name))
+			if _, statErr := os.Stat(filepath.Join(root, "data", "retranslation-runs", "zh-CN", batchID, "retries", flatID, "attempt-001-validation.json")); !os.IsNotExist(statErr) {
+				t.Fatalf("unsafe retry evidence created: %v", statErr)
+			}
+		})
 	}
 }
 
