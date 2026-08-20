@@ -5,6 +5,7 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
+	"time"
 )
 
 func makeRetranslationReviewFixture(t *testing.T) (string, *Catalog, string, string, TranslationReview) {
@@ -141,5 +142,50 @@ func TestCheckRetranslationReviewsRejectedIsValidEvidence(t *testing.T) {
 	report, err := CheckRetranslationReviews(root, catalog, RetranslationReviewCheckOptions{Locale: "zh-CN", BatchID: batchID})
 	if err != nil || report.Rejected != 1 || report.Approved != 0 {
 		t.Fatalf("report=%+v error=%v", report, err)
+	}
+}
+
+func TestRecordRetranslationReviewGenericsEvidenceIsAccepted(t *testing.T) {
+	root := t.TempDir()
+	writeRetranslationTestGlossary(t, root)
+	source := []byte("* Page\n\nUse `Go` on this page.\n")
+	catalog := &Catalog{Pages: []Page{{ID: "generics/1", Article: "generics.article", SectionNumber: 1, Route: "/generics/1", Source: source, SourceSHA256: sum(source)}}}
+	exported, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", UnitIDs: []string{"generics/1"}})
+	if err != nil {
+		t.Fatal(err)
+	}
+	batchDir := filepath.Join(root, exported.BatchPath)
+	manifest := readRetranslationManifest(t, root, exported.BatchID)
+	if err := os.Mkdir(filepath.Join(batchDir, "raw-responses"), 0755); err != nil {
+		t.Fatal(err)
+	}
+	input, err := os.ReadFile(filepath.Join(batchDir, filepath.FromSlash(manifest.Units[0].InputPath)))
+	if err != nil {
+		t.Fatal(err)
+	}
+	raw := strings.ReplaceAll(strings.ReplaceAll(string(input), "* Page", "* 页面"), "Use ", "在此页面使用 ")
+	if err := os.WriteFile(filepath.Join(batchDir, "raw-responses", "generics-1.article"), []byte(raw), 0644); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := ProcessRetranslationBatch(root, catalog, RetranslationProcessOptions{Locale: "zh-CN", BatchID: exported.BatchID}); err != nil {
+		t.Fatal(err)
+	}
+	review, path, err := RecordRetranslationReview(root, catalog, RetranslationReviewRecordOptions{
+		Locale: "zh-CN", BatchID: exported.BatchID, UnitID: "generics/1", Rating: "A", Decision: "approved",
+		Summary: "Accurate and fluent.", Reviewer: "test-reviewer", Rubric: "translation-quality/v1",
+		Now: func() time.Time { return time.Date(2026, 8, 20, 12, 0, 0, 0, time.UTC) },
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if review.SourcePath == "" || review.CandidateSHA256 == "" || review.ValidationSHA256 == "" || review.ReviewedAt != "2026-08-20T12:00:00Z" {
+		t.Fatalf("generated review metadata = %+v", review)
+	}
+	if _, err := os.Stat(filepath.Join(root, filepath.FromSlash(path))); err != nil {
+		t.Fatal(err)
+	}
+	report, err := CheckRetranslationReviews(root, catalog, RetranslationReviewCheckOptions{Locale: "zh-CN", BatchID: exported.BatchID})
+	if err != nil || report.Approved != 1 || report.Rejected != 0 {
+		t.Fatalf("review check report=%+v error=%v", report, err)
 	}
 }

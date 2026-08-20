@@ -255,8 +255,39 @@ func run(args []string) error {
 		}
 		return printJSON(result)
 	case "retranslation review":
-		if len(args) < 3 || args[2] != "check" {
-			return fmt.Errorf("usage: tour-i18n retranslation review check --locale <locale> --batch-id <batch-id>")
+		if len(args) < 3 || (args[2] != "check" && args[2] != "record") {
+			return fmt.Errorf("usage: tour-i18n retranslation review <check|record> ...")
+		}
+		if args[2] == "record" {
+			fs := flag.NewFlagSet("retranslation review record", flag.ContinueOnError)
+			locale := fs.String("locale", "", "target locale (used to locate the batch)")
+			batchID := fs.String("batch-id", "", "batch id (used to locate the batch)")
+			unitID := fs.String("unit-id", "", "translation unit id")
+			rating := fs.String("rating", "", "quality rating: A, B, C, or D")
+			decision := fs.String("decision", "", "workflow decision: approved or rejected")
+			summary := fs.String("summary", "", "review summary")
+			reviewer := fs.String("reviewer", "", "reviewer identifier")
+			rubric := fs.String("rubric", "", "rubric identifier")
+			var issues repeatedStrings
+			fs.Var(&issues, "issue", "specific issue; repeat for multiple issues")
+			if err := fs.Parse(args[3:]); err != nil {
+				return err
+			}
+			if *locale == "" || *batchID == "" || *unitID == "" || *rating == "" || *decision == "" || *summary == "" || *reviewer == "" || *rubric == "" {
+				return fmt.Errorf("--locale, --batch-id, --unit-id, --rating, --decision, --summary, --reviewer, and --rubric are required")
+			}
+			if fs.NArg() != 0 {
+				return fmt.Errorf("unexpected retranslation review record arguments: %s", strings.Join(fs.Args(), " "))
+			}
+			review, path, err := i18n.RecordRetranslationReview(root, catalog, i18n.RetranslationReviewRecordOptions{
+				Locale: *locale, BatchID: *batchID, UnitID: *unitID, Rating: *rating, Decision: *decision,
+				Summary: *summary, Issues: issues, Reviewer: *reviewer, Rubric: *rubric,
+			})
+			if err != nil {
+				return err
+			}
+			fmt.Printf("wrote review evidence: %s (unit=%s decision=%s rating=%s)\n", path, review.UnitID, review.Decision, review.Rating)
+			return nil
 		}
 		fs := flag.NewFlagSet("retranslation review check", flag.ContinueOnError)
 		locale := fs.String("locale", "", "target locale")

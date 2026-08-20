@@ -9,6 +9,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 )
 
 const TranslationReviewSchemaVersion = 1
@@ -26,6 +27,7 @@ type TranslationReview struct {
 	Locale           string   `json:"locale"`
 	UnitID           string   `json:"unit_id"`
 	UnitKind         UnitKind `json:"unit_kind"`
+	SourcePath       string   `json:"source_path,omitempty"`
 	SourceSHA256     string   `json:"source_sha256"`
 	Attempt          int      `json:"attempt"`
 	CandidatePath    string   `json:"candidate_path"`
@@ -39,6 +41,129 @@ type TranslationReview struct {
 	Rating           string   `json:"rating"`
 	Summary          string   `json:"summary"`
 	Issues           []string `json:"issues"`
+}
+
+type RetranslationReviewRecordOptions struct {
+	Locale   string
+	BatchID  string
+	UnitID   string
+	Rating   string
+	Decision string
+	Summary  string
+	Issues   []string
+	Reviewer string
+	Rubric   string
+	Now      func() time.Time
+}
+
+// RecordRetranslationReview creates schema-v1 review evidence from the batch's
+// immutable manifest, process result, candidate, and validation files. Only
+// the quality-review fields are supplied by the reviewer.
+func RecordRetranslationReview(root string, catalog *Catalog, options RetranslationReviewRecordOptions) (*TranslationReview, string, error) {
+	if catalog == nil {
+		return nil, "", errors.New("retranslation catalog is required")
+	}
+	if options.Locale == "" || options.BatchID == "" || options.UnitID == "" {
+		return nil, "", errors.New("retranslation review locale, batch_id, and unit_id are required")
+	}
+	if options.Locale != "zh-CN" {
+		return nil, "", fmt.Errorf("unsupported locale %q", options.Locale)
+	}
+	if err := validateBatchID(options.BatchID); err != nil {
+		return nil, "", err
+	}
+	if options.Rating != "A" && options.Rating != "B" && options.Rating != "C" && options.Rating != "D" {
+		return nil, "", fmt.Errorf("invalid rating %q", options.Rating)
+	}
+	if options.Decision != "approved" && options.Decision != "rejected" {
+		return nil, "", fmt.Errorf("invalid decision %q", options.Decision)
+	}
+	if strings.TrimSpace(options.Summary) == "" || strings.TrimSpace(options.Reviewer) == "" || strings.TrimSpace(options.Rubric) == "" {
+		return nil, "", errors.New("summary, reviewer, and rubric are required")
+	}
+	if options.Now == nil {
+		options.Now = time.Now
+	}
+
+	batchDir := filepath.Join(root, "data", "retranslation-runs", options.Locale, options.BatchID)
+	manifest, err := readRetranslationProcessManifest(batchDir, options.Locale, options.BatchID)
+	if err != nil {
+		return nil, "", err
+	}
+	var record RetranslationBatchUnit
+	for _, candidate := range manifest.Units {
+		if candidate.UnitID == options.UnitID {
+			record = candidate
+			break
+		}
+	}
+	if record.UnitID == "" {
+		return nil, "", fmt.Errorf("unit %q is not in batch %q", options.UnitID, options.BatchID)
+	}
+	unit, err := catalog.Unit(record.UnitID)
+	if err != nil {
+		return nil, "", err
+	}
+	resultData, err := os.ReadFile(filepath.Join(batchDir, "result.json"))
+	if err != nil {
+		return nil, "", fmt.Errorf("read retranslation result: %w", err)
+	}
+	result, err := decodeRetranslationProcessResult(resultData)
+	if err != nil {
+		return nil, "", err
+	}
+	var unitResult RetranslationUnitResult
+	for _, candidate := range result.Units {
+		if candidate.UnitID == options.UnitID {
+			unitResult = candidate
+			break
+		}
+	}
+	if unitResult.UnitID == "" || unitResult.UnitKind != record.UnitKind {
+		return nil, "", fmt.Errorf("unit %q is missing or has incompatible process result", options.UnitID)
+	}
+	candidateData, err := os.ReadFile(filepath.Join(batchDir, filepath.FromSlash(unitResult.CandidatePath)))
+	if err != nil {
+		return nil, "", fmt.Errorf("read candidate for %s: %w", options.UnitID, err)
+	}
+	validationData, err := os.ReadFile(filepath.Join(batchDir, filepath.FromSlash(unitResult.ValidationPath)))
+	if err != nil {
+		return nil, "", fmt.Errorf("read validation for %s: %w", options.UnitID, err)
+	}
+	validation, err := decodeRetranslationValidation(validationData, unit)
+	if err != nil {
+		return nil, "", fmt.Errorf("validation for %s: %w", options.UnitID, err)
+	}
+	if validation.BatchID != options.BatchID || validation.Locale != options.Locale || validation.UnitID != options.UnitID || validation.UnitKind != record.UnitKind {
+		return nil, "", fmt.Errorf("validation for %s has incompatible identity", options.UnitID)
+	}
+	if record.SourceSHA256 != unit.SourceSHA256 || sum(unit.Source) != record.SourceSHA256 {
+		return nil, "", fmt.Errorf("source metadata mismatch for %s", options.UnitID)
+	}
+	review := TranslationReview{
+		SchemaVersion: TranslationReviewSchemaVersion, BatchID: options.BatchID, Locale: options.Locale,
+		UnitID: record.UnitID, UnitKind: record.UnitKind, SourcePath: record.SourcePath, SourceSHA256: record.SourceSHA256,
+		Attempt: validation.Attempt, CandidatePath: unitResult.CandidatePath, CandidateSHA256: sum(candidateData),
+		ValidationPath: unitResult.ValidationPath, ValidationSHA256: sum(validationData), Decision: options.Decision,
+		Reviewer: options.Reviewer, ReviewedAt: options.Now().UTC().Format(time.RFC3339), Rubric: options.Rubric,
+		Rating: options.Rating, Summary: options.Summary, Issues: append([]string(nil), options.Issues...),
+	}
+	if review.Issues == nil {
+		review.Issues = []string{}
+	}
+	path := filepath.Join(batchDir, "review", retranslationReviewName(unit))
+	if _, err := os.Stat(path); err == nil {
+		return nil, "", fmt.Errorf("review already exists for %s", options.UnitID)
+	} else if !os.IsNotExist(err) {
+		return nil, "", fmt.Errorf("inspect review for %s: %w", options.UnitID, err)
+	}
+	if err := os.MkdirAll(filepath.Dir(path), 0755); err != nil {
+		return nil, "", fmt.Errorf("create review directory: %w", err)
+	}
+	if err := writeTranslationJSON(path, review); err != nil {
+		return nil, "", fmt.Errorf("write review for %s: %w", options.UnitID, err)
+	}
+	return &review, filepath.ToSlash(filepath.Join("data", "retranslation-runs", options.Locale, options.BatchID, "review", retranslationReviewName(unit))), nil
 }
 
 type RetranslationReviewCheckResult struct {
