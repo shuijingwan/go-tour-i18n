@@ -36,9 +36,33 @@ type PageChange struct {
 	Reason           string
 }
 
+// ExampleChange reports a path-based change in the independent upstream Go
+// source inventory. Examples are never automatically treated as page moves.
+type ExampleChange struct {
+	Kind                   ChangeKind
+	ExamplePath            string
+	OldSourceSHA256        string
+	OldEligibleTranslation bool
+	NewSourceSHA256        string
+	NewEligibleTranslation bool
+	ClassificationChanged  bool
+	Reason                 string
+}
+
 type PreviewReport struct {
 	Changes            []PageChange
 	ConditionalChanges []PageChange
+	ExampleChanges     []ExampleChange
+}
+
+func (r *PreviewReport) ExampleCount(kind ChangeKind) int {
+	n := 0
+	for _, change := range r.ExampleChanges {
+		if change.Kind == kind {
+			n++
+		}
+	}
+	return n
 }
 
 func (r *PreviewReport) Count(kind ChangeKind) int {
@@ -100,11 +124,13 @@ func HydrateCatalogSources(committed, baseline *Catalog) error {
 	}
 	for i := range committed.Examples {
 		current := examples[committed.Examples[i].ID]
-		if current == nil || current.SourcePath != committed.Examples[i].SourcePath || current.SourceSHA256 != committed.Examples[i].SourceSHA256 {
+		if current == nil || current.SourcePath != committed.Examples[i].SourcePath || current.SourceSHA256 != committed.Examples[i].SourceSHA256 || (committed.Examples[i].EligibilityKnown && current.EligibleTranslation != committed.Examples[i].EligibleTranslation) {
 			return fmt.Errorf("%s: committed example catalog does not match current source", committed.Examples[i].ID)
 		}
 		committed.Examples[i].Source = current.Source
 		committed.Examples[i].ReferencedBy = append([]string(nil), current.ReferencedBy...)
+		committed.Examples[i].EligibleTranslation = current.EligibleTranslation
+		committed.Examples[i].EligibilityKnown = true
 	}
 	return nil
 }
@@ -206,9 +232,70 @@ func PreviewCatalog(old, next *Catalog) (*PreviewReport, error) {
 		}
 	}
 	report.ConditionalChanges = previewConditional(old.Conditional, next.Conditional)
+	exampleChanges, err := previewExamples(old.Examples, next.Examples)
+	if err != nil {
+		return nil, err
+	}
+	report.ExampleChanges = exampleChanges
 	sortChanges(report.Changes)
 	sortChanges(report.ConditionalChanges)
 	return report, nil
+}
+
+func previewExamples(old, next []Example) ([]ExampleChange, error) {
+	oldByPath := make(map[string]Example, len(old))
+	nextByPath := make(map[string]Example, len(next))
+	for _, example := range old {
+		oldByPath[example.SourcePath] = example
+	}
+	for _, example := range next {
+		nextByPath[example.SourcePath] = example
+	}
+	paths := make([]string, 0, len(oldByPath)+len(nextByPath))
+	seen := map[string]bool{}
+	for path := range oldByPath {
+		seen[path] = true
+		paths = append(paths, path)
+	}
+	for path := range nextByPath {
+		if !seen[path] {
+			paths = append(paths, path)
+		}
+	}
+	sort.Strings(paths)
+	changes := make([]ExampleChange, 0, len(paths))
+	for _, path := range paths {
+		oldExample, hadOld := oldByPath[path]
+		nextExample, hadNext := nextByPath[path]
+		change := ExampleChange{ExamplePath: path}
+		if hadOld {
+			eligible, err := hasTranslatableGoExampleComment(oldExample.Source)
+			if err != nil {
+				return nil, fmt.Errorf("%s: classify old example source: %w", path, err)
+			}
+			change.OldSourceSHA256, change.OldEligibleTranslation = oldExample.SourceSHA256, eligible
+		}
+		if hadNext {
+			eligible, err := hasTranslatableGoExampleComment(nextExample.Source)
+			if err != nil {
+				return nil, fmt.Errorf("%s: classify new example source: %w", path, err)
+			}
+			change.NewSourceSHA256, change.NewEligibleTranslation = nextExample.SourceSHA256, eligible
+		}
+		change.ClassificationChanged = hadOld && hadNext && change.OldEligibleTranslation != change.NewEligibleTranslation
+		switch {
+		case hadOld && hadNext && oldExample.SourceSHA256 == nextExample.SourceSHA256:
+			change.Kind, change.Reason = Unchanged, "example source hash is unchanged"
+		case hadOld && hadNext:
+			change.Kind, change.Reason = ContentChanged, "example path remains and source hash changed"
+		case hadOld:
+			change.Kind, change.Reason = Removed, "example source path was removed"
+		default:
+			change.Kind, change.Reason = Added, "example source path was added"
+		}
+		changes = append(changes, change)
+	}
+	return changes, nil
 }
 
 func isStandaloneConditionalProjection(old, next []byte) bool {

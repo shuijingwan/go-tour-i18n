@@ -432,7 +432,7 @@ func (c *Catalog) Page(id string) (*Page, error) {
 
 var pageHeader = []string{"page_id", "article", "section_number", "route", "source_title", "source_sha256", "play_count", "image_count"}
 var conditionalHeader = []string{"article", "condition", "conditional_index", "source_title", "source_sha256"}
-var exampleHeader = []string{"example_id", "source_path", "source_sha256"}
+var exampleHeader = []string{"example_id", "source_path", "source_sha256", "eligible_translation"}
 
 // ReadCatalog reads the committed catalog, whose page_id column is the source
 // of truth for persistent page identity.
@@ -445,7 +445,7 @@ func ReadCatalog(root string) (*Catalog, error) {
 	if err != nil {
 		return nil, err
 	}
-	examples, err := readTSV(filepath.Join(root, "data", "tour-examples.tsv"), exampleHeader)
+	examples, legacyExamples, err := readExampleTSV(filepath.Join(root, "data", "tour-examples.tsv"))
 	if err != nil && !os.IsNotExist(err) {
 		return nil, err
 	}
@@ -472,13 +472,65 @@ func ReadCatalog(root string) (*Catalog, error) {
 		}
 		c.Conditional = append(c.Conditional, ConditionalPage{Article: record[0], Condition: record[1], ConditionalIndex: index, SourceTitle: record[3], SourceSHA256: record[4]})
 	}
-	for _, record := range examples {
-		c.Examples = append(c.Examples, Example{ID: record[0], SourcePath: record[1], SourceSHA256: record[2]})
+	for line, record := range examples {
+		eligible, known := false, !legacyExamples
+		if known {
+			var err error
+			eligible, err = strconv.ParseBool(record[3])
+			if err != nil {
+				return nil, fmt.Errorf("example catalog line %d: invalid eligible_translation: %w", line+2, err)
+			}
+		}
+		c.Examples = append(c.Examples, Example{ID: record[0], SourcePath: record[1], SourceSHA256: record[2], EligibleTranslation: eligible, EligibilityKnown: known})
 	}
 	if err := validateCatalog(c, false); err != nil {
 		return nil, fmt.Errorf("committed catalog: %w", err)
 	}
 	return c, nil
+}
+
+// readExampleTSV accepts the prior three-column source inventory solely so
+// `catalog write` can migrate it to the explicit eligibility schema.
+func readExampleTSV(path string) (records [][]string, legacy bool, err error) {
+	f, err := os.Open(path)
+	if err != nil {
+		return nil, false, err
+	}
+	defer f.Close()
+	r := csv.NewReader(f)
+	r.Comma = '\t'
+	header, err := r.Read()
+	if err != nil {
+		return nil, false, err
+	}
+	legacyHeader := exampleHeader[:3]
+	if len(header) == len(legacyHeader) {
+		for i := range legacyHeader {
+			if header[i] != legacyHeader[i] {
+				return nil, false, fmt.Errorf("%s: header column %d=%q, want %q", path, i+1, header[i], legacyHeader[i])
+			}
+		}
+		legacy = true
+	} else if len(header) == len(exampleHeader) {
+		for i := range exampleHeader {
+			if header[i] != exampleHeader[i] {
+				return nil, false, fmt.Errorf("%s: header column %d=%q, want %q", path, i+1, header[i], exampleHeader[i])
+			}
+		}
+	} else {
+		return nil, false, fmt.Errorf("%s: example inventory has %d columns, want 3 or 4", path, len(header))
+	}
+	r.FieldsPerRecord = len(header)
+	for {
+		record, err := r.Read()
+		if err == io.EOF {
+			return records, legacy, nil
+		}
+		if err != nil {
+			return nil, false, err
+		}
+		records = append(records, record)
+	}
 }
 
 func readTSV(path string, header []string) ([][]string, error) {
@@ -557,7 +609,7 @@ func ExampleCatalogBytes(c *Catalog) ([]byte, error) {
 		return nil, err
 	}
 	for _, example := range c.Examples {
-		if err := w.Write([]string{example.ID, example.SourcePath, example.SourceSHA256}); err != nil {
+		if err := w.Write([]string{example.ID, example.SourcePath, example.SourceSHA256, strconv.FormatBool(example.EligibleTranslation)}); err != nil {
 			return nil, err
 		}
 	}

@@ -555,8 +555,14 @@ func printPreview(root, sourceRoot string, next *i18n.Catalog, report *i18n.Prev
 	fmt.Printf("source root: %s\n", sourceRoot)
 	fmt.Printf("published pages: %d\n", len(next.Pages))
 	fmt.Printf("conditional source records: %d\n", len(next.Conditional))
+	fmt.Printf("example source records: %d\n", len(next.Examples))
+	fmt.Println("Page:")
 	for _, kind := range i18n.ChangeKinds {
 		fmt.Printf("%s: %d\n", kind, report.Count(kind))
+	}
+	fmt.Println("Example:")
+	for _, kind := range []i18n.ChangeKind{i18n.Unchanged, i18n.ContentChanged, i18n.Added, i18n.Removed} {
+		fmt.Printf("%s: %d\n", kind, report.ExampleCount(kind))
 	}
 	for _, kind := range i18n.ChangeKinds {
 		fmt.Printf("conditional %s: %d\n", kind, report.ConditionalCount(kind))
@@ -570,6 +576,18 @@ func printPreview(root, sourceRoot string, next *i18n.Catalog, report *i18n.Prev
 			change.OldArticle, change.OldSectionNumber, change.OldRoute, change.OldSourceTitle, change.OldSourceSHA256,
 			change.NewArticle, change.NewSectionNumber, change.NewRoute, change.NewSourceTitle, change.NewSourceSHA256,
 			change.Reason)
+	}
+	for _, change := range report.ExampleChanges {
+		if change.Kind == i18n.Unchanged {
+			continue
+		}
+		translation := "upstream drift only; not in translation workflow"
+		if change.NewEligibleTranslation {
+			translation = "eligible translation example; retranslation may be required"
+		}
+		fmt.Printf("example detail: kind=%s example_path=%q old_sha256=%s old_eligible=%t new_sha256=%s new_eligible=%t classification_changed=%t reason=%q action=%q\n",
+			change.Kind, change.ExamplePath, change.OldSourceSHA256, change.OldEligibleTranslation,
+			change.NewSourceSHA256, change.NewEligibleTranslation, change.ClassificationChanged, change.Reason, translation)
 	}
 	fmt.Printf("safe for catalog write: %t\n", report.SafeForCatalogWrite())
 	fmt.Printf("manual mapping required: %t\n", report.NeedsManualMapping())

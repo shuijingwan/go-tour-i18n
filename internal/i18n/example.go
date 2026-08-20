@@ -13,11 +13,15 @@ import (
 )
 
 type Example struct {
-	ID           string
-	SourcePath   string
-	SourceSHA256 string
-	Source       []byte
-	ReferencedBy []string
+	ID                  string
+	SourcePath          string
+	SourceSHA256        string
+	EligibleTranslation bool
+	// EligibilityKnown is false only while reading the legacy three-column
+	// inventory, so catalog write can perform a one-time schema migration.
+	EligibilityKnown bool
+	Source           []byte
+	ReferencedBy     []string
 }
 
 type UnitKind string
@@ -73,37 +77,73 @@ func discoverExamples(root string, pages []Page) ([]Example, error) {
 	if err != nil {
 		return nil, err
 	}
-	paths := make([]string, 0, len(references))
-	for path := range references {
-		paths = append(paths, path)
+	// This is deliberately an inventory of upstream Go sources, rather than a
+	// projection of translation workflow units. A source need not be referenced
+	// by a currently published page to be tracked for upstream drift.
+	paths, err := discoverExampleSourcePaths(root)
+	if err != nil {
+		return nil, err
 	}
-	sort.Strings(paths)
 	examples := make([]Example, 0, len(paths))
-	for _, referencedPath := range paths {
-		clean, err := cleanPlayPath(referencedPath)
-		if err != nil {
-			return nil, err
-		}
+	for _, clean := range paths {
 		sourcePath := filepath.ToSlash(filepath.Join("_content", "tour", clean))
 		source, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(sourcePath)))
 		if err != nil {
-			return nil, fmt.Errorf(".play example %q: %w", referencedPath, err)
+			return nil, fmt.Errorf("example source %q: %w", clean, err)
 		}
 		hash := sum(source)
 		if hasManifest {
 			want, ok := manifest[sourcePath]
 			if !ok {
-				return nil, fmt.Errorf(".play example %q is missing from UPSTREAM_MANIFEST.tsv", referencedPath)
+				return nil, fmt.Errorf("example source %q is missing from UPSTREAM_MANIFEST.tsv", clean)
 			}
 			if hash != want {
-				return nil, fmt.Errorf(".play example %q SHA-256 %s does not match UPSTREAM_MANIFEST.tsv local_sha256 %s", referencedPath, hash, want)
+				return nil, fmt.Errorf("example source %q SHA-256 %s does not match UPSTREAM_MANIFEST.tsv local_sha256 %s", clean, hash, want)
 			}
 		}
-		by := append([]string(nil), references[referencedPath]...)
+		eligible, err := hasTranslatableGoExampleComment(source)
+		if err != nil {
+			return nil, fmt.Errorf("example source %q: determine translation eligibility: %w", clean, err)
+		}
+		by := append([]string(nil), references[clean]...)
 		sort.Strings(by)
-		examples = append(examples, Example{ID: "example:" + clean, SourcePath: sourcePath, SourceSHA256: hash, Source: source, ReferencedBy: by})
+		examples = append(examples, Example{ID: "example:" + clean, SourcePath: sourcePath, SourceSHA256: hash, EligibleTranslation: eligible, EligibilityKnown: true, Source: source, ReferencedBy: by})
 	}
 	return examples, nil
+}
+
+func discoverExampleSourcePaths(root string) ([]string, error) {
+	base := filepath.Join(root, "_content", "tour")
+	var paths []string
+	err := filepath.WalkDir(base, func(path string, entry os.DirEntry, walkErr error) error {
+		if walkErr != nil {
+			return walkErr
+		}
+		if entry.IsDir() {
+			if path == filepath.Join(base, "solutions") {
+				return filepath.SkipDir
+			}
+			return nil
+		}
+		if filepath.Ext(path) != ".go" {
+			return nil
+		}
+		rel, err := filepath.Rel(base, path)
+		if err != nil {
+			return err
+		}
+		clean, err := cleanPlayPath(filepath.ToSlash(rel))
+		if err != nil {
+			return err
+		}
+		paths = append(paths, clean)
+		return nil
+	})
+	if err != nil {
+		return nil, fmt.Errorf("discover example sources: %w", err)
+	}
+	sort.Strings(paths)
+	return paths, nil
 }
 
 func appendUnique(values []string, value string) []string {

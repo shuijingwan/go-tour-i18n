@@ -18,6 +18,7 @@ func TestExampleCatalogBaseline(t *testing.T) {
 	if got, want := len(catalog.Examples), 93; got != want {
 		t.Fatalf("examples=%d, want %d", got, want)
 	}
+	eligible := 0
 	seen := map[string]bool{}
 	for _, example := range catalog.Examples {
 		if seen[example.SourcePath] {
@@ -27,6 +28,23 @@ func TestExampleCatalogBaseline(t *testing.T) {
 		if sum(example.Source) != example.SourceSHA256 {
 			t.Fatalf("%s: source hash is not the complete file hash", example.ID)
 		}
+		classified, err := hasTranslatableGoExampleComment(example.Source)
+		if err != nil {
+			t.Fatalf("%s: classify example source: %v", example.ID, err)
+		}
+		if classified != example.EligibleTranslation {
+			t.Fatalf("%s: inventory eligible_translation=%t, current source classification=%t", example.ID, example.EligibleTranslation, classified)
+		}
+		if classified {
+			eligible++
+		}
+	}
+	total, pages, workflowExamples, err := LocaleWorkflowUnitCounts(catalog)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if eligible != 19 || total != 122 || pages != 103 || workflowExamples != 19 {
+		t.Fatalf("workflow total/pages/examples=%d/%d/%d; classified eligible=%d, want 122/103/19/19", total, pages, workflowExamples, eligible)
 	}
 	if seen["_content/tour/solutions/loops.go"] {
 		t.Fatal("unreferenced solution was included in example catalog")

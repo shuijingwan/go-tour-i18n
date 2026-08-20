@@ -91,6 +91,55 @@ func TestConditionalChangesReportedSeparately(t *testing.T) {
 	}
 }
 
+func TestPreviewExampleSourceChanges(t *testing.T) {
+	eligible := testExample("eligible.go", "package main\n\n// This comment needs translation.\nfunc main() {}\n")
+	nonEligible := testExample("plain.go", "package main\n\nfunc main() {}\n")
+	falseToTrue := testExample("false-to-true.go", "package main\n\nfunc main() {}\n")
+	trueToFalse := testExample("true-to-false.go", "package main\n\n// This comment needs translation.\nfunc main() {}\n")
+	old := &Catalog{Examples: []Example{eligible, nonEligible, falseToTrue, trueToFalse, testExample("removed.go", "package main\n\nfunc main() {}\n")}}
+	next := &Catalog{Examples: []Example{
+		testExample("eligible.go", "package main\n\n// This updated comment needs translation.\nfunc main() {}\n"),
+		testExample("plain.go", "package main\n\nvar unchangedClassification = true\nfunc main() {}\n"),
+		testExample("false-to-true.go", "package main\n\n// This comment needs translation.\nfunc main() {}\n"),
+		testExample("true-to-false.go", "package main\n\nfunc main() {}\n"),
+		testExample("added.go", "package main\n\nfunc main() {}\n"),
+	}}
+	report, err := PreviewCatalog(old, next)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got := report.ExampleCount(ContentChanged); got != 4 {
+		t.Fatalf("example content_changed=%d, want 4: %+v", got, report.ExampleChanges)
+	}
+	if got := report.ExampleCount(Added); got != 1 {
+		t.Fatalf("example added=%d, want 1", got)
+	}
+	if got := report.ExampleCount(Removed); got != 1 {
+		t.Fatalf("example removed=%d, want 1", got)
+	}
+	byPath := map[string]ExampleChange{}
+	for _, change := range report.ExampleChanges {
+		byPath[change.ExamplePath] = change
+	}
+	if !byPath[eligible.SourcePath].NewEligibleTranslation || byPath[eligible.SourcePath].ClassificationChanged {
+		t.Fatalf("eligible example change lost eligibility: %+v", byPath[eligible.SourcePath])
+	}
+	if byPath[nonEligible.SourcePath].NewEligibleTranslation || byPath[nonEligible.SourcePath].ClassificationChanged {
+		t.Fatalf("non-eligible example change became eligible: %+v", byPath[nonEligible.SourcePath])
+	}
+	if change := byPath[falseToTrue.SourcePath]; !change.ClassificationChanged || change.OldEligibleTranslation || !change.NewEligibleTranslation {
+		t.Fatalf("false -> true classification = %+v", change)
+	}
+	if change := byPath[trueToFalse.SourcePath]; !change.ClassificationChanged || !change.OldEligibleTranslation || change.NewEligibleTranslation {
+		t.Fatalf("true -> false classification = %+v", change)
+	}
+}
+
+func testExample(name, source string) Example {
+	bytes := []byte(source)
+	return Example{ID: "example:demo/" + name, SourcePath: "_content/tour/demo/" + name, Source: bytes, SourceSHA256: sum(bytes)}
+}
+
 func TestPersistentIDsAndReconcile(t *testing.T) {
 	root := repoRoot(t)
 	committed, err := ReadCatalog(root)
