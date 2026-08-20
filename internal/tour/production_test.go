@@ -104,21 +104,21 @@ func TestProductionHandlerUsesHTTPTransportAndServesTour(t *testing.T) {
 	}
 }
 
-func TestProductionHandlerAdSenseConfiguration(t *testing.T) {
-	original := adsenseHTML
-	t.Cleanup(func() { adsenseHTML = original })
-	const marker = "pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8392190980622725"
+func TestProductionHandlerAdHTMLConfiguration(t *testing.T) {
+	original := adHTML
+	t.Cleanup(func() { adHTML = original })
+	const marker = `<script data-test="ad"></script>`
 
 	for _, test := range []struct {
-		name   string
-		client string
-		count  int
+		name  string
+		value string
+		count int
 	}{
 		{name: "disabled", count: 0},
-		{name: "enabled", client: "ca-pub-8392190980622725", count: 1},
+		{name: "enabled", value: marker, count: 1},
 	} {
 		t.Run(test.name, func(t *testing.T) {
-			t.Setenv("TOUR_ADSENSE_CLIENT", test.client)
+			t.Setenv("TOUR_AD_HTML", test.value)
 			handler := productionTestHandler(t, "http://127.0.0.1:1")
 			for _, requestPath := range []string{"/", "/tour/list", "/tour/welcome/1"} {
 				rec := httptest.NewRecorder()
@@ -127,7 +127,7 @@ func TestProductionHandlerAdSenseConfiguration(t *testing.T) {
 					t.Fatalf("GET %s: status %d", requestPath, rec.Code)
 				}
 				if got := strings.Count(rec.Body.String(), marker); got != test.count {
-					t.Errorf("GET %s contains AdSense site code %d times, want %d", requestPath, got, test.count)
+					t.Errorf("GET %s contains ad HTML %d times, want %d", requestPath, got, test.count)
 				}
 			}
 		})

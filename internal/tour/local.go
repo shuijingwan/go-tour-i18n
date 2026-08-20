@@ -174,5 +174,5 @@ var socketAddr = func() string { return "ws://" + httpAddr + socketPath }
 // analyticsHTML is optional analytics HTML to insert at the beginning of <head>.
 var analyticsHTML template.HTML
 
-// adsenseHTML is optional Google AdSense site code to insert in <head>.
-var adsenseHTML template.HTML
+// adHTML is optional trusted advertising HTML to insert in <head>.
+var adHTML template.HTML
