@@ -58,6 +58,16 @@ type preparedRetranslationInput struct {
 	tokens int
 }
 
+type exportedRetranslationUnit struct {
+	BatchID      string
+	SourceSHA256 string
+}
+
+type retranslationStatus struct {
+	StaleSource bool
+	ReadySource bool
+}
+
 // ExportRetranslationBatch writes one isolated batch of Default protected
 // inputs without invoking a model or changing formal translation state.
 func ExportRetranslationBatch(root string, catalog *Catalog, options RetranslationExportOptions) (*RetranslationExportResult, error) {
@@ -89,7 +99,11 @@ func ExportRetranslationBatch(root string, catalog *Catalog, options Retranslati
 	if err != nil {
 		return nil, err
 	}
-	units, err := selectRetranslationUnits(catalog, options.UnitIDs, options.UnitKind, exported, limit, options.AllowReexport)
+	statuses, err := retranslationStatuses(root, options.Locale, catalog)
+	if err != nil {
+		return nil, err
+	}
+	units, err := selectRetranslationUnits(catalog, options.UnitIDs, options.UnitKind, exported, statuses, limit, options.AllowReexport)
 	if err != nil {
 		return nil, err
 	}
@@ -192,7 +206,7 @@ func ExportRetranslationBatch(root string, catalog *Catalog, options Retranslati
 	}, nil
 }
 
-func selectRetranslationUnits(catalog *Catalog, requested []string, requestedKind UnitKind, exported map[string]string, limit int, allowReexport bool) ([]*TranslationUnit, error) {
+func selectRetranslationUnits(catalog *Catalog, requested []string, requestedKind UnitKind, exported map[string]exportedRetranslationUnit, statuses map[string]retranslationStatus, limit int, allowReexport bool) ([]*TranslationUnit, error) {
 	if len(requested) != 0 {
 		seen := map[string]bool{}
 		units := make([]*TranslationUnit, 0, len(requested))
@@ -213,8 +227,8 @@ func selectRetranslationUnits(catalog *Catalog, requested []string, requestedKin
 				return nil, fmt.Errorf("翻译单元 %s 的类型为 %s，与 --unit-kind %s 不一致", unit.ID, unit.Kind, requestedKind)
 			}
 			kind = unit.Kind
-			if batch := exported[unitID]; batch != "" && !allowReexport {
-				return nil, fmt.Errorf("translation unit %q was already exported in batch %q", unitID, batch)
+			if history := exported[unitID]; history.BatchID != "" && !allowReexport {
+				return nil, fmt.Errorf("translation unit %q was already exported in batch %q", unitID, history.BatchID)
 			}
 			units = append(units, unit)
 		}
@@ -224,9 +238,6 @@ func selectRetranslationUnits(catalog *Catalog, requested []string, requestedKin
 		units := make([]*TranslationUnit, 0, limit)
 		for i := range catalog.Examples {
 			example := &catalog.Examples[i]
-			if exported[example.ID] != "" {
-				continue
-			}
 			hasContent, err := hasTranslatableGoExampleComment(example.Source)
 			if err != nil {
 				return nil, fmt.Errorf("%s: 检查可翻译自然语言注释: %w", example.ID, err)
@@ -238,6 +249,9 @@ func selectRetranslationUnits(catalog *Catalog, requested []string, requestedKin
 			if err != nil {
 				return nil, err
 			}
+			if alreadyExportedForCurrentSource(exported[example.ID], unit, statuses[example.ID]) {
+				continue
+			}
 			units = append(units, unit)
 			if len(units) == limit {
 				break
@@ -247,12 +261,12 @@ func selectRetranslationUnits(catalog *Catalog, requested []string, requestedKin
 	}
 	units := make([]*TranslationUnit, 0, limit)
 	for _, page := range catalog.Pages {
-		if exported[page.ID] != "" {
-			continue
-		}
 		unit, err := catalog.Unit(page.ID)
 		if err != nil {
 			return nil, err
+		}
+		if alreadyExportedForCurrentSource(exported[page.ID], unit, statuses[page.ID]) {
+			continue
 		}
 		units = append(units, unit)
 		if len(units) == limit {
@@ -260,6 +274,43 @@ func selectRetranslationUnits(catalog *Catalog, requested []string, requestedKin
 		}
 	}
 	return units, nil
+}
+
+// alreadyExportedForCurrentSource preserves the normal exported-unit guard,
+// but a formal status tied to an older source version needs one fresh batch.
+func alreadyExportedForCurrentSource(history exportedRetranslationUnit, unit *TranslationUnit, status retranslationStatus) bool {
+	if status.ReadySource {
+		return true
+	}
+	if history.BatchID == "" {
+		return false
+	}
+	return !status.StaleSource || history.SourceSHA256 == unit.SourceSHA256
+}
+
+func retranslationStatuses(root, locale string, catalog *Catalog) (map[string]retranslationStatus, error) {
+	result := map[string]retranslationStatus{}
+	statuses, err := ReadStatuses(filepath.Join(root, "locales", locale, "status.tsv"))
+	if os.IsNotExist(err) {
+		return result, nil
+	}
+	if err != nil {
+		return nil, fmt.Errorf("read formal status for retranslation export: %w", err)
+	}
+	for _, status := range statuses {
+		unit, err := catalog.Unit(status.UnitID)
+		if err != nil {
+			return nil, fmt.Errorf("formal status references unknown translation unit %q", status.UnitID)
+		}
+		if status.SourceSHA256 != unit.SourceSHA256 {
+			result[unit.ID] = retranslationStatus{StaleSource: true}
+			continue
+		}
+		if status.State == "ready" {
+			result[unit.ID] = retranslationStatus{ReadySource: true}
+		}
+	}
+	return result, nil
 }
 
 func retranslationUnitInputName(unit *TranslationUnit) string {
@@ -277,8 +328,8 @@ func retranslationUnitCandidateName(unit *TranslationUnit) string {
 	return flattenedPageArticleName(unit.ID)
 }
 
-func scanRetranslationBatches(base, locale string, catalog *Catalog) (map[string]string, int, error) {
-	exported := map[string]string{}
+func scanRetranslationBatches(base, locale string, catalog *Catalog) (map[string]exportedRetranslationUnit, int, error) {
+	exported := map[string]exportedRetranslationUnit{}
 	entries, err := os.ReadDir(base)
 	if os.IsNotExist(err) {
 		return exported, 1, nil
@@ -340,9 +391,10 @@ func scanRetranslationBatches(base, locale string, catalog *Catalog) (map[string
 			if unitKind != wantKind || manifest.UnitKind != unitKind {
 				return nil, 0, fmt.Errorf("retranslation batch %q translation unit metadata mismatch for %q", entry.Name(), unitID)
 			}
-			if exported[unitID] == "" {
-				exported[unitID] = entry.Name()
-			}
+			// Entries are sorted by batch ID, so retain the latest export for a
+			// unit. Its source hash decides whether a stale formal status still
+			// needs a fresh batch.
+			exported[unitID] = exportedRetranslationUnit{BatchID: entry.Name(), SourceSHA256: record.SourceSHA256}
 		}
 	}
 	return exported, nextNumber, nil

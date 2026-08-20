@@ -553,3 +553,69 @@ func TestRetranslationExportMatchesTranslationRunnerDefaultInput(t *testing.T) {
 		t.Fatalf("exported bytes differ from shared Default input\nexported: %q\ndefault: %q", exported, protected.Text)
 	}
 }
+
+func TestRetranslationExportSelectsReadyStatusWithStaleSource(t *testing.T) {
+	root := t.TempDir()
+	writeRetranslationTestGlossary(t, root)
+	old := retranslationTestCatalog(1)
+	first, err := ExportRetranslationBatch(root, old, RetranslationExportOptions{Locale: "zh-CN", Limit: 1})
+	if err != nil {
+		t.Fatal(err)
+	}
+	oldPage := old.Pages[0]
+	if err := writeStatuses(filepath.Join(root, "locales", "zh-CN", "status.tsv"), []Status{{UnitID: oldPage.ID, State: "ready", Attempts: 1, SourceSHA256: oldPage.SourceSHA256, CandidatePath: "locales/zh-CN/candidates/lesson-1.article"}}); err != nil {
+		t.Fatal(err)
+	}
+	current := retranslationTestCatalog(1)
+	current.Pages[0].Source = []byte("* Page\n\nUse the updated `Go` source.\n")
+	current.Pages[0].SourceSHA256 = sum(current.Pages[0].Source)
+	second, err := ExportRetranslationBatch(root, current, RetranslationExportOptions{Locale: "zh-CN", Limit: 1})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if first.BatchID != "chatgpt-zh-CN-001" || second.BatchID != "chatgpt-zh-CN-002" || !reflect.DeepEqual(second.UnitIDs, []string{current.Pages[0].ID}) {
+		t.Fatalf("stale ready export first=%+v second=%+v", first, second)
+	}
+	third, err := ExportRetranslationBatch(root, current, RetranslationExportOptions{Locale: "zh-CN", Limit: 1})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !third.AllExported || third.UnitCount != 0 {
+		t.Fatalf("current source was exported twice: %+v", third)
+	}
+}
+
+func TestRetranslationExportSkipsMatchingReadyStatusAndKeepsPendingExportable(t *testing.T) {
+	t.Run("matching ready", func(t *testing.T) {
+		root := t.TempDir()
+		writeRetranslationTestGlossary(t, root)
+		catalog := retranslationTestCatalog(1)
+		page := catalog.Pages[0]
+		if err := writeStatuses(filepath.Join(root, "locales", "zh-CN", "status.tsv"), []Status{{UnitID: page.ID, State: "ready", Attempts: 1, SourceSHA256: page.SourceSHA256, CandidatePath: "locales/zh-CN/candidates/lesson-1.article"}}); err != nil {
+			t.Fatal(err)
+		}
+		result, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", Limit: 1})
+		if err != nil {
+			t.Fatal(err)
+		}
+		if !result.AllExported || result.UnitCount != 0 {
+			t.Fatalf("matching ready result=%+v", result)
+		}
+	})
+	t.Run("pending", func(t *testing.T) {
+		root := t.TempDir()
+		writeRetranslationTestGlossary(t, root)
+		catalog := retranslationTestCatalog(1)
+		page := catalog.Pages[0]
+		if err := writeStatuses(filepath.Join(root, "locales", "zh-CN", "status.tsv"), []Status{{UnitID: page.ID, State: "pending", SourceSHA256: page.SourceSHA256}}); err != nil {
+			t.Fatal(err)
+		}
+		result, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", Limit: 1})
+		if err != nil {
+			t.Fatal(err)
+		}
+		if result.UnitCount != 1 || !reflect.DeepEqual(result.UnitIDs, []string{page.ID}) {
+			t.Fatalf("pending result=%+v", result)
+		}
+	})
+}
