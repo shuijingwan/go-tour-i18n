@@ -21,6 +21,12 @@ TOUR_ANALYTICS='<Google Analytics HTML><Baidu Analytics HTML>'
 
 本地开发默认不设置该变量，因此不会加载生产统计代码。实际统计代码以及具体统计 ID 不写入 Git 仓库；公开前端标识也不在本手册中固定记录。
 
+Google AdSense 使用独立的 `TOUR_ADSENSE_CLIENT`。变量为空时，首页和课程页面完全不注入广告代码，自行部署默认关闭；生产环境显式设置后，服务端会校验 `ca-pub-...` 格式，并在每个完整 HTML 页面的 `<head>` 中生成一次 Auto Ads 站点代码，不插入手工广告位。当前从公开博客首页核验到的配置为：
+
+```text
+TOUR_ADSENSE_CLIENT='ca-pub-8392190980622725'
+```
+
 正式服务通过 systemd 环境文件读取统计配置：
 
 ```text
@@ -42,7 +48,7 @@ EnvironmentFile=/etc/go-tour/go-tour.env
 
 新增或修改 systemd drop-in 后执行 `systemctl daemon-reload`；仅修改 `go-tour.env` 内容时，也必须重启 `go-tour.service`，使新进程重新读取统计环境变量。不要在 shell 历史、发布包或其他仓库文件中复制完整统计代码。
 
-修改 `TOUR_ANALYTICS` 或其他影响 HTML shell 的内容后，EdgeOne 可能继续命中旧 HTML。若公网响应仍显示旧页面，应刷新 `go-dev.shuijingwanwq.com` 的 Hostname 级缓存；不要仅根据源站验证就判断公网已更新。公开的 `/socket` 既有安全原则保持不变：production 不注册或开放本地 Socket transport，普通请求和 WebSocket Upgrade 均应保持 404。
+修改 `TOUR_ANALYTICS`、`TOUR_ADSENSE_CLIENT` 或其他影响 HTML shell 的内容后，EdgeOne 可能继续命中旧 HTML。若公网响应仍显示旧页面，应刷新 `go-dev.shuijingwanwq.com` 的 Hostname 级缓存；不要仅根据源站验证就判断公网已更新。公开的 `/socket` 既有安全原则保持不变：production 不注册或开放本地 Socket transport，普通请求和 WebSocket Upgrade 均应保持 404。
 
 ## 域名与 EdgeOne
 

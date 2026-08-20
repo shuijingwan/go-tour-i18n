@@ -122,7 +122,7 @@ except (OSError, json.JSONDecodeError) as exc:
     raise SystemExit(f"bundle metadata error: {exc}")
 
 expected = {
-    "schema_version": 1,
+    "schema_version": 2,
     "locale": "zh-CN",
     "pages": 103,
     "articles": 7,
@@ -137,6 +137,15 @@ for key, want in expected.items():
         raise SystemExit(
             f"release.json constraint failed: {key}={manifest.get(key)!r}, want {want!r}"
         )
+
+for key in ("translation_units", "eligible_examples"):
+    value = manifest.get(key)
+    if type(value) is not int or value < 0:
+        raise SystemExit(f"release.json constraint failed: {key}={value!r}, want non-negative int")
+if manifest["translation_units"] != manifest["pages"] + manifest["eligible_examples"]:
+    raise SystemExit(
+        "release.json constraint failed: translation_units must equal pages + eligible_examples"
+    )
 
 for key in (
     "locale",

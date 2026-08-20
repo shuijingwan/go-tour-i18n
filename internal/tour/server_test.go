@@ -187,6 +187,55 @@ func TestRenderAnalyticsHTML(t *testing.T) {
 	}
 }
 
+func TestRenderAdSenseHTML(t *testing.T) {
+	catalog, err := ui.Load("zh-CN")
+	if err != nil {
+		t.Fatal(err)
+	}
+	metadata, err := loadSiteMetadata(contentTour)
+	if err != nil {
+		t.Fatal(err)
+	}
+	original := adsenseHTML
+	t.Cleanup(func() { adsenseHTML = original })
+
+	if _, err := adsenseSiteHTML("pub-123"); err == nil {
+		t.Fatal("invalid AdSense client was accepted")
+	}
+	for _, test := range []struct {
+		name   string
+		client string
+		want   string
+	}{
+		{name: "empty"},
+		{name: "configured", client: "ca-pub-8392190980622725", want: "pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8392190980622725"},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			adsenseHTML, err = adsenseSiteHTML(test.client)
+			if err != nil {
+				t.Fatal(err)
+			}
+			home, err := renderHome(catalog, metadata)
+			if err != nil {
+				t.Fatal(err)
+			}
+			tour, err := renderIndex(catalog, metadata)
+			if err != nil {
+				t.Fatal(err)
+			}
+			for name, content := range map[string][]byte{"home": home, "tour": tour} {
+				page := string(content)
+				if test.want == "" && strings.Contains(page, "pagead2.googlesyndication.com") {
+					t.Errorf("%s contains AdSense when unconfigured", name)
+				}
+				if test.want != "" && strings.Count(page, test.want) != 1 {
+					t.Errorf("%s does not contain exactly one configured AdSense site code", name)
+				}
+			}
+		})
+	}
+}
+
 func TestJSI18nBootstrapLocales(t *testing.T) {
 	tests := []struct {
 		locale string

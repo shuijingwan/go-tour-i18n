@@ -697,6 +697,16 @@ a#run, a#kill {
 .site-card h3 {
     margin-bottom: 8px;
 }
+.site-card-following {
+    margin-top: 16px;
+}
+.site-learning-link {
+    color: #fff;
+    background: #007d9c;
+}
+[data-theme='dark'] .site-learning-link {
+    color: #fff;
+}
 .site-status {
     display: grid;
     grid-template-columns: minmax(160px, 1fr) 2fr;

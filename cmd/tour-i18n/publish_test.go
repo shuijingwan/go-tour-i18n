@@ -136,6 +136,75 @@ func TestValidatePublishProjectionUsesDynamicWorkflowCounts(t *testing.T) {
 	}
 }
 
+func TestBuildReleaseManifestSchemaV2UsesWorkflowCounts(t *testing.T) {
+	_, catalog := publishTestCatalog(t)
+	total, pages, examples, err := i18n.LocaleWorkflowUnitCounts(catalog)
+	if err != nil {
+		t.Fatal(err)
+	}
+	projection := &i18n.LocaleProjection{
+		UnitCount: total, PageCount: pages, ExampleCount: examples, ArticleCount: expectedPublishArticles,
+	}
+	manifest, err := buildReleaseManifest(catalog, projection, publishOptions{Locale: "zh-CN", PublishedAt: testPublishedAt})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if manifest.SchemaVersion != 2 || manifest.TranslationUnits != 122 || manifest.Pages != 103 || manifest.EligibleExamples != 19 || manifest.Articles != 7 {
+		t.Fatalf("current workflow manifest = %+v", manifest)
+	}
+
+	pageSource := []byte("* Page\n")
+	exampleSource := []byte("package main\n\n// Explain this example.\nfunc main() {}\n")
+	pageHash := fmt.Sprintf("%x", sha256.Sum256(pageSource))
+	exampleHash := fmt.Sprintf("%x", sha256.Sum256(exampleSource))
+	smallCatalog := &i18n.Catalog{
+		Pages:    []i18n.Page{{ID: "small/1", Article: "small.article", SectionNumber: 1, Source: pageSource, SourceSHA256: pageHash}},
+		Examples: []i18n.Example{{ID: "example:small/example.go", SourcePath: "_content/tour/small/example.go", Source: exampleSource, SourceSHA256: exampleHash}},
+	}
+	smallProjection := &i18n.LocaleProjection{UnitCount: 2, PageCount: 1, ExampleCount: 1, ArticleCount: 1}
+	smallManifest, err := buildReleaseManifest(smallCatalog, smallProjection, publishOptions{Locale: "test", PublishedAt: testPublishedAt})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if smallManifest.TranslationUnits != 2 || smallManifest.Pages != 1 || smallManifest.EligibleExamples != 1 || smallManifest.Articles != 1 {
+		t.Fatalf("dynamic workflow manifest = %+v", smallManifest)
+	}
+	smallProjection.ExampleCount = 0
+	if _, err := buildReleaseManifest(smallCatalog, smallProjection, publishOptions{}); err == nil || !strings.Contains(err.Error(), "do not match projection") {
+		t.Fatalf("mismatched workflow/projection error = %v", err)
+	}
+}
+
+func TestValidateBundleAcceptsSchemaV2AndChecksums(t *testing.T) {
+	root := t.TempDir()
+	if err := os.MkdirAll(filepath.Join(root, "bin"), 0755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.Mkdir(filepath.Join(root, "_content"), 0755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(root, "bin", "tour"), []byte("test binary\n"), 0755); err != nil {
+		t.Fatal(err)
+	}
+	manifest := releaseManifest{
+		SchemaVersion: releaseManifestSchemaVersion, Locale: "zh-CN", TranslationUnits: 122,
+		Pages: 103, EligibleExamples: 19, Articles: 7,
+	}
+	if err := writeReleaseManifest(root, manifest); err != nil {
+		t.Fatal(err)
+	}
+	checksums, err := bundleChecksums(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(root, "SHA256SUMS"), checksums, 0644); err != nil {
+		t.Fatal(err)
+	}
+	if err := validateBundle(root, manifest, checksums); err != nil {
+		t.Fatalf("schema v2 bundle validation failed: %v", err)
+	}
+}
+
 func publishTestCatalog(t *testing.T) (string, *i18n.Catalog) {
 	t.Helper()
 	root, err := filepath.Abs(filepath.Join("..", ".."))
@@ -229,7 +298,7 @@ func verifyPublishedBundle(t *testing.T, root string) {
 	if err := json.Unmarshal(manifestData, &manifest); err != nil {
 		t.Fatal(err)
 	}
-	if manifest.Locale != "zh-CN" || manifest.PublishedAt != testPublishedAt || manifest.UpstreamCommit != tour.FrozenUpstreamCommit || manifest.UpstreamCommitTime != tour.FrozenUpstreamCommitTime || manifest.Pages != 103 || manifest.Articles != 7 || manifest.ExecutionTransport != "http-playground-proxy" || manifest.ExecutionProvider != "play.golang.org" || manifest.LocalSocketEnabled {
+	if manifest.SchemaVersion != releaseManifestSchemaVersion || manifest.Locale != "zh-CN" || manifest.PublishedAt != testPublishedAt || manifest.UpstreamCommit != tour.FrozenUpstreamCommit || manifest.UpstreamCommitTime != tour.FrozenUpstreamCommitTime || manifest.TranslationUnits != 122 || manifest.Pages != 103 || manifest.EligibleExamples != 19 || manifest.Articles != 7 || manifest.ExecutionTransport != "http-playground-proxy" || manifest.ExecutionProvider != "play.golang.org" || manifest.LocalSocketEnabled {
 		t.Fatalf("unexpected release manifest: %+v", manifest)
 	}
 	metadataData, err := os.ReadFile(filepath.Join(root, "_content", "tour", "site-metadata.json"))

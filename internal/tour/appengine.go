@@ -7,11 +7,15 @@ package tour
 import (
 	"bufio"
 	"bytes"
+	"fmt"
 	"html/template"
 	"io"
 	"net/http"
 	"os"
+	"regexp"
 )
+
+var adsenseClientPattern = regexp.MustCompile(`^ca-pub-[0-9]+$`)
 
 func RegisterHandlers(mux *http.ServeMux) error {
 	return RegisterHandlersLocale(mux, "en")
@@ -27,12 +31,27 @@ func registerHandlersLocale(mux *http.ServeMux, locale, playgroundBaseURL string
 	prepContent = gaePrepContent
 	socketAddr = gaeSocketAddr
 	analyticsHTML = template.HTML(os.Getenv("TOUR_ANALYTICS"))
+	var err error
+	adsenseHTML, err = adsenseSiteHTML(os.Getenv("TOUR_ADSENSE_CLIENT"))
+	if err != nil {
+		return err
+	}
 
 	if err := initTour(mux, "HTTPTransport", locale, playgroundBaseURL); err != nil {
 		return err
 	}
 
 	return nil
+}
+
+func adsenseSiteHTML(client string) (template.HTML, error) {
+	if client == "" {
+		return "", nil
+	}
+	if !adsenseClientPattern.MatchString(client) {
+		return "", fmt.Errorf("invalid TOUR_ADSENSE_CLIENT %q", client)
+	}
+	return template.HTML(`<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=` + client + `" crossorigin="anonymous"></script>` + "\n"), nil
 }
 
 // gaePrepContent returns a Reader that produces the content from the given

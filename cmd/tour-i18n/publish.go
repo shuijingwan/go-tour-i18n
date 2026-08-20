@@ -22,7 +22,8 @@ import (
 )
 
 const (
-	expectedPublishArticles = 7
+	releaseManifestSchemaVersion = 2
+	expectedPublishArticles      = 7
 )
 
 type publishOptions struct {
@@ -37,7 +38,9 @@ type releaseManifest struct {
 	PublishedAt        string `json:"published_at"`
 	UpstreamCommit     string `json:"upstream_commit"`
 	UpstreamCommitTime string `json:"upstream_commit_time"`
+	TranslationUnits   int    `json:"translation_units"`
 	Pages              int    `json:"pages"`
+	EligibleExamples   int    `json:"eligible_examples"`
 	Articles           int    `json:"articles"`
 	ExecutionTransport string `json:"execution_transport"`
 	ExecutionProvider  string `json:"execution_provider"`
@@ -122,6 +125,10 @@ func publishBundle(root string, catalog *i18n.Catalog, options publishOptions) (
 	if err := validatePublishProjection(catalog, projection); err != nil {
 		return err
 	}
+	manifest, err := buildReleaseManifest(catalog, projection, options)
+	if err != nil {
+		return err
+	}
 	metadata := tour.SiteMetadata{
 		Locale:             options.Locale,
 		PublishedAt:        options.PublishedAt,
@@ -136,20 +143,6 @@ func publishBundle(root string, catalog *i18n.Catalog, options publishOptions) (
 	binaryPath := filepath.Join(staging, "bin", "tour")
 	if err := buildProductionBinary(root, options.Locale, binaryPath); err != nil {
 		return err
-	}
-	manifest := releaseManifest{
-		SchemaVersion:      1,
-		Locale:             options.Locale,
-		PublishedAt:        options.PublishedAt,
-		UpstreamCommit:     tour.FrozenUpstreamCommit,
-		UpstreamCommitTime: tour.FrozenUpstreamCommitTime,
-		Pages:              projection.PageCount,
-		Articles:           projection.ArticleCount,
-		ExecutionTransport: "http-playground-proxy",
-		ExecutionProvider:  "play.golang.org",
-		LocalSocketEnabled: false,
-		GOOS:               runtime.GOOS,
-		GOARCH:             runtime.GOARCH,
 	}
 	if err := writeReleaseManifest(staging, manifest); err != nil {
 		return err
@@ -172,6 +165,36 @@ func publishBundle(root string, catalog *i18n.Catalog, options publishOptions) (
 	fmt.Printf("locale=%s ready=%d pending=%d blocked=%d pages=%d articles=%d\n",
 		projection.Locale, projection.Ready, projection.Pending, projection.Blocked, projection.PageCount, projection.ArticleCount)
 	return nil
+}
+
+func buildReleaseManifest(catalog *i18n.Catalog, projection *i18n.LocaleProjection, options publishOptions) (releaseManifest, error) {
+	if projection == nil {
+		return releaseManifest{}, fmt.Errorf("locale projection is required")
+	}
+	total, pages, examples, err := i18n.LocaleWorkflowUnitCounts(catalog)
+	if err != nil {
+		return releaseManifest{}, fmt.Errorf("determine release workflow: %w", err)
+	}
+	if total != projection.UnitCount || pages != projection.PageCount || examples != projection.ExampleCount {
+		return releaseManifest{}, fmt.Errorf("release workflow counts do not match projection: workflow units=%d pages=%d examples=%d; projection units=%d pages=%d examples=%d",
+			total, pages, examples, projection.UnitCount, projection.PageCount, projection.ExampleCount)
+	}
+	return releaseManifest{
+		SchemaVersion:      releaseManifestSchemaVersion,
+		Locale:             options.Locale,
+		PublishedAt:        options.PublishedAt,
+		UpstreamCommit:     tour.FrozenUpstreamCommit,
+		UpstreamCommitTime: tour.FrozenUpstreamCommitTime,
+		TranslationUnits:   total,
+		Pages:              pages,
+		EligibleExamples:   examples,
+		Articles:           projection.ArticleCount,
+		ExecutionTransport: "http-playground-proxy",
+		ExecutionProvider:  "play.golang.org",
+		LocalSocketEnabled: false,
+		GOOS:               runtime.GOOS,
+		GOARCH:             runtime.GOARCH,
+	}, nil
 }
 
 func validatePublishProjection(catalog *i18n.Catalog, projection *i18n.LocaleProjection) error {
@@ -307,6 +330,9 @@ func validateBundle(root string, wantManifest releaseManifest, wantChecksums []b
 	var actualManifest releaseManifest
 	if err := json.Unmarshal(manifestData, &actualManifest); err != nil {
 		return fmt.Errorf("read release manifest: %w", err)
+	}
+	if actualManifest.SchemaVersion != releaseManifestSchemaVersion {
+		return fmt.Errorf("unsupported release manifest schema version %d", actualManifest.SchemaVersion)
 	}
 	if actualManifest != wantManifest {
 		return fmt.Errorf("release manifest verification failed")

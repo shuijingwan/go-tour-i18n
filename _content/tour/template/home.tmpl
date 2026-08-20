@@ -1,8 +1,8 @@
 <!doctype html>
 <html lang="{{.HTMLLang}}" data-theme="auto">
 <head>
-{{.AnalyticsHTML}}    <meta charset="utf-8">
-    <title>{{ui "site.title"}}</title>
+{{.AnalyticsHTML}}{{.AdSenseHTML}}    <meta charset="utf-8">
+    <title>{{ui "site.browser_title"}}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/tour/static/css/app.css">
     <link rel="icon" href="/images/site-logo-32.png" type="image/png" sizes="32x32">
@@ -62,6 +62,31 @@
             <ul class="site-validation-list">
                 <li>{{ui "site.validation_page_unit"}}</li><li>{{ui "site.validation_present"}}</li><li>{{ui "site.validation_structure"}}</li><li>{{ui "site.validation_render"}}</li><li>{{ui "site.validation_examples"}}</li>
             </ul>
+        </section>
+        <section class="site-section">
+            <h2>{{ui "site.how_it_works"}}</h2>
+            <p>{{ui "site.how_it_works_intro"}}</p>
+            <div class="site-card">
+                <h3>{{ui "site.workflow_title"}}</h3>
+                <p>{{ui "site.workflow_units"}}</p>
+                <p>{{ui "site.workflow_process"}}</p>
+                <p>{{ui "site.workflow_review"}}</p>
+                <p>{{ui "site.workflow_publish"}}</p>
+            </div>
+            <div class="site-card site-card-following">
+                <h3>{{ui "site.architecture_title"}}</h3>
+                <p>{{ui "site.architecture_upstream"}}</p>
+                <p>{{ui "site.architecture_playground"}}</p>
+                <p>{{ui "site.architecture_languages"}}</p>
+            </div>
+            <p>{{ui "site.operations_note"}}</p>
+        </section>
+        <section class="site-section">
+            <h2>{{ui "site.continue_learning_title"}}</h2>
+            <article class="site-card">
+                <p>{{ui "site.continue_learning_description"}}</p>
+                <a class="site-primary-link site-learning-link" href="https://go.dev/" target="_blank" rel="noopener noreferrer">{{ui "site.continue_learning"}}</a>
+            </article>
         </section>
     </main>
     {{template "footer" .}}

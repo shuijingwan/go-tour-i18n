@@ -62,7 +62,7 @@ func TestProductionHandlerUsesHTTPTransportAndServesTour(t *testing.T) {
 
 	home := httptest.NewRecorder()
 	handler.ServeHTTP(home, httptest.NewRequest(http.MethodGet, "/", nil))
-	for _, want := range []string{"非官方社区多语言翻译项目", "GitHub 项目源码", "蜀ICP备13001590号-1", "开发环境", "golang/website@e11dacba"} {
+	for _, want := range []string{"永夜维护 · 非官方社区多语言翻译项目", "项目如何工作", "继续在 go.dev 学习", "本站可能展示广告", "GitHub 项目源码", "蜀ICP备13001590号-1", "开发环境", "golang/website@e11dacba"} {
 		if !strings.Contains(home.Body.String(), want) {
 			t.Errorf("homepage does not contain %q", want)
 		}
@@ -101,6 +101,36 @@ func TestProductionHandlerUsesHTTPTransportAndServesTour(t *testing.T) {
 	}
 	if strings.Contains(script, `window.playgroundBaseURL = "https://go.dev`) {
 		t.Fatal("production script still injects the server-side Playground URL")
+	}
+}
+
+func TestProductionHandlerAdSenseConfiguration(t *testing.T) {
+	original := adsenseHTML
+	t.Cleanup(func() { adsenseHTML = original })
+	const marker = "pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8392190980622725"
+
+	for _, test := range []struct {
+		name   string
+		client string
+		count  int
+	}{
+		{name: "disabled", count: 0},
+		{name: "enabled", client: "ca-pub-8392190980622725", count: 1},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			t.Setenv("TOUR_ADSENSE_CLIENT", test.client)
+			handler := productionTestHandler(t, "http://127.0.0.1:1")
+			for _, requestPath := range []string{"/", "/tour/list", "/tour/welcome/1"} {
+				rec := httptest.NewRecorder()
+				handler.ServeHTTP(rec, httptest.NewRequest(http.MethodGet, requestPath, nil))
+				if rec.Code != http.StatusOK {
+					t.Fatalf("GET %s: status %d", requestPath, rec.Code)
+				}
+				if got := strings.Count(rec.Body.String(), marker); got != test.count {
+					t.Errorf("GET %s contains AdSense site code %d times, want %d", requestPath, got, test.count)
+				}
+			}
+		})
 	}
 }
 
@@ -159,8 +189,14 @@ func TestProductionHandlerServesSEODocuments(t *testing.T) {
 			t.Fatalf("old sitemap host in %q", u)
 		}
 	}
-	if len(locs) != 104 {
-		t.Fatalf("sitemap URLs = %d, want 104 (homepage + 103 pages)", len(locs))
+	if len(locs) != 105 {
+		t.Fatalf("sitemap URLs = %d, want 105 (homepage + list + 103 pages)", len(locs))
+	}
+	if !seen[sitemapHost+"/"] || !seen[sitemapHost+"/tour/list"] {
+		t.Fatalf("sitemap is missing homepage or tour list: %v", seen)
+	}
+	if first, second := strings.SplitN(locs[0], "</loc>", 2)[0], strings.SplitN(locs[1], "</loc>", 2)[0]; first != sitemapHost+"/" || second != sitemapHost+"/tour/list" {
+		t.Fatalf("sitemap starts with %q, %q", first, second)
 	}
 }
 

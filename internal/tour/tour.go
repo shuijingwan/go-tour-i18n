@@ -160,11 +160,12 @@ func renderIndex(catalog ui.Catalog, metadata SiteMetadata) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	dataWithAnalytics := struct {
+	dataWithHeadHTML := struct {
 		pageTemplateData
 		AnalyticsHTML template.HTML
-	}{data, analyticsHTML}
-	if err := tmpl.Execute(buf, dataWithAnalytics); err != nil {
+		AdSenseHTML   template.HTML
+	}{data, analyticsHTML, adsenseHTML}
+	if err := tmpl.Execute(buf, dataWithHeadHTML); err != nil {
 		return nil, fmt.Errorf("render index.tmpl: %w", err)
 	}
 	return buf.Bytes(), nil
@@ -180,11 +181,12 @@ func renderHome(catalog ui.Catalog, metadata SiteMetadata) ([]byte, error) {
 		return nil, err
 	}
 	buf := new(bytes.Buffer)
-	dataWithAnalytics := struct {
+	dataWithHeadHTML := struct {
 		pageTemplateData
 		AnalyticsHTML template.HTML
-	}{data, analyticsHTML}
-	if err := tmpl.ExecuteTemplate(buf, "home.tmpl", dataWithAnalytics); err != nil {
+		AdSenseHTML   template.HTML
+	}{data, analyticsHTML, adsenseHTML}
+	if err := tmpl.ExecuteTemplate(buf, "home.tmpl", dataWithHeadHTML); err != nil {
 		return nil, fmt.Errorf("render home.tmpl: %w", err)
 	}
 	return buf.Bytes(), nil

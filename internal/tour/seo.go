@@ -13,7 +13,7 @@ const sitemapHost = "https://go-dev.shuijingwanwq.com"
 var sitemapContent []byte
 
 func initSEO() error {
-	urls := []string{sitemapHost + "/"}
+	urls := []string{sitemapHost + "/", sitemapHost + "/tour/list"}
 	articles := make([]string, 0, len(lessons))
 	for article := range lessons {
 		articles = append(articles, article)
