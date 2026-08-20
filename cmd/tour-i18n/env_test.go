@@ -5,8 +5,6 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
-
-	"github.com/shuijingwan/go-tour-i18n/internal/i18n"
 )
 
 func TestLoadProjectEnvMissingFile(t *testing.T) {
@@ -81,24 +79,10 @@ func TestParsePreviewOptionsSupportsSingleAndCompletePreview(t *testing.T) {
 }
 
 func TestBuildLocaleCommandRequiresCompleteWorkflow(t *testing.T) {
-	root, err := filepath.Abs(filepath.Join("..", ".."))
-	if err != nil {
-		t.Fatal(err)
-	}
-	current, err := i18n.BuildSourceCatalog(root)
-	if err != nil {
-		t.Fatal(err)
-	}
-	catalog, err := i18n.ReadCatalog(root)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if err := i18n.HydrateCatalogSources(catalog, current); err != nil {
-		t.Fatal(err)
-	}
+	root, catalog, pendingUnit := incompletePublishTestCatalog(t)
 	output := filepath.Join(t.TempDir(), "cli-projection")
-	err = buildLocale(root, catalog, []string{"--locale", "zh-CN", "--output", output})
-	if err == nil || !strings.Contains(err.Error(), "all 122 workflow translation units") || !strings.Contains(err.Error(), "example:basics/numeric-constants.go=pending") {
+	err := buildLocale(root, catalog, []string{"--locale", "zh-CN", "--output", output})
+	if err == nil || !strings.Contains(err.Error(), "workflow translation units") || !strings.Contains(err.Error(), pendingUnit+"=pending") {
 		t.Fatalf("CLI projection error = %v", err)
 	}
 	if _, statErr := os.Stat(output); !os.IsNotExist(statErr) {

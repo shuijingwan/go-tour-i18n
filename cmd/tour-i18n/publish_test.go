@@ -84,11 +84,11 @@ func TestPublishRejectsExistingOutputWithoutChangingIt(t *testing.T) {
 }
 
 func TestPublishRequiresCompleteTranslationUnitWorkflow(t *testing.T) {
-	root, catalog := publishTestCatalog(t)
+	root, catalog, pendingUnit := incompletePublishTestCatalog(t)
 	parent := t.TempDir()
 	first := filepath.Join(parent, "release-a")
 	err := publishBundle(root, catalog, publishOptions{Locale: "zh-CN", Output: first, PublishedAt: testPublishedAt})
-	if err == nil || !strings.Contains(err.Error(), "all 122 workflow translation units") || !strings.Contains(err.Error(), "example:basics/numeric-constants.go=pending") {
+	if err == nil || !strings.Contains(err.Error(), "workflow translation units") || !strings.Contains(err.Error(), pendingUnit+"=pending") {
 		t.Fatalf("incomplete workflow publish error = %v", err)
 	}
 	if _, statErr := os.Lstat(first); !os.IsNotExist(statErr) {
@@ -97,10 +97,10 @@ func TestPublishRequiresCompleteTranslationUnitWorkflow(t *testing.T) {
 }
 
 func TestPublishFailureCleansStaging(t *testing.T) {
-	root, catalog := publishTestCatalog(t)
+	root, catalog, _ := incompletePublishTestCatalog(t)
 	parent := t.TempDir()
 	output := filepath.Join(parent, "failed-release")
-	if err := publishBundle(root, catalog, publishOptions{Locale: "zh-CN", Output: output, PublishedAt: testPublishedAt}); err == nil || !strings.Contains(err.Error(), "all 122 workflow translation units") {
+	if err := publishBundle(root, catalog, publishOptions{Locale: "zh-CN", Output: output, PublishedAt: testPublishedAt}); err == nil || !strings.Contains(err.Error(), "workflow translation units") {
 		t.Fatalf("publish failure = %v", err)
 	}
 	if _, err := os.Lstat(output); !os.IsNotExist(err) {
@@ -114,6 +114,25 @@ func TestPublishFailureCleansStaging(t *testing.T) {
 		if strings.Contains(entry.Name(), ".staging-") {
 			t.Fatalf("staging directory remains after failure: %s", entry.Name())
 		}
+	}
+}
+
+func TestValidatePublishProjectionUsesDynamicWorkflowCounts(t *testing.T) {
+	_, catalog := publishTestCatalog(t)
+	total, pages, examples, err := i18n.LocaleWorkflowUnitCounts(catalog)
+	if err != nil {
+		t.Fatal(err)
+	}
+	projection := &i18n.LocaleProjection{
+		UnitCount: total, Ready: total, PageCount: pages, ExampleCount: examples, ArticleCount: expectedPublishArticles,
+	}
+	if err := validatePublishProjection(catalog, projection); err != nil {
+		t.Fatalf("complete dynamic workflow rejected: %v", err)
+	}
+	projection.Ready--
+	projection.Pending++
+	if err := validatePublishProjection(catalog, projection); err == nil {
+		t.Fatal("incomplete dynamic workflow accepted")
 	}
 }
 
@@ -135,6 +154,64 @@ func publishTestCatalog(t *testing.T) (string, *i18n.Catalog) {
 		t.Fatal(err)
 	}
 	return root, catalog
+}
+
+func incompletePublishTestCatalog(t *testing.T) (string, *i18n.Catalog, string) {
+	t.Helper()
+	sourceRoot, catalog := publishTestCatalog(t)
+	root := t.TempDir()
+	for _, relative := range []string{"_content", filepath.Join("locales", "zh-CN")} {
+		if err := os.CopyFS(filepath.Join(root, relative), os.DirFS(filepath.Join(sourceRoot, relative))); err != nil {
+			t.Fatal(err)
+		}
+	}
+	return root, catalog, makeEligibleExamplePending(t, root, catalog)
+}
+
+func makeEligibleExamplePending(t *testing.T, root string, catalog *i18n.Catalog) string {
+	t.Helper()
+	statusPath := filepath.Join(root, "locales", "zh-CN", "status.tsv")
+	statuses, err := i18n.ReadStatuses(statusPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	pendingUnit := ""
+	for _, status := range statuses {
+		unit, unitErr := catalog.Unit(status.UnitID)
+		if unitErr != nil {
+			t.Fatal(unitErr)
+		}
+		if unit.Kind == i18n.UnitKindExample {
+			pendingUnit = status.UnitID
+			break
+		}
+	}
+	if pendingUnit == "" {
+		t.Fatal("workflow has no eligible Example")
+	}
+	data, err := os.ReadFile(statusPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	lines := strings.Split(string(data), "\n")
+	changed := false
+	for index, line := range lines {
+		fields := strings.Split(line, "\t")
+		if len(fields) != 7 || fields[0] != pendingUnit {
+			continue
+		}
+		fields[1], fields[2], fields[4], fields[5], fields[6] = "pending", "0", "", "", ""
+		lines[index] = strings.Join(fields, "\t")
+		changed = true
+		break
+	}
+	if !changed {
+		t.Fatalf("status row for %s not found", pendingUnit)
+	}
+	if err := os.WriteFile(statusPath, []byte(strings.Join(lines, "\n")), 0644); err != nil {
+		t.Fatal(err)
+	}
+	return pendingUnit
 }
 
 func verifyPublishedBundle(t *testing.T, root string) {

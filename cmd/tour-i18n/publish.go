@@ -22,7 +22,6 @@ import (
 )
 
 const (
-	expectedPublishPages    = 103
 	expectedPublishArticles = 7
 )
 
@@ -120,7 +119,7 @@ func publishBundle(root string, catalog *i18n.Catalog, options publishOptions) (
 	if err != nil {
 		return err
 	}
-	if err := validatePublishProjection(projection); err != nil {
+	if err := validatePublishProjection(catalog, projection); err != nil {
 		return err
 	}
 	metadata := tour.SiteMetadata{
@@ -175,14 +174,18 @@ func publishBundle(root string, catalog *i18n.Catalog, options publishOptions) (
 	return nil
 }
 
-func validatePublishProjection(projection *i18n.LocaleProjection) error {
+func validatePublishProjection(catalog *i18n.Catalog, projection *i18n.LocaleProjection) error {
 	if projection == nil {
 		return fmt.Errorf("locale projection is required")
 	}
-	if projection.Ready != expectedPublishPages || projection.Pending != 0 || projection.Blocked != 0 || projection.PageCount != expectedPublishPages || projection.ArticleCount != expectedPublishArticles {
-		return fmt.Errorf("publish requires ready=%d pending=0 blocked=0 pages=%d articles=%d; got ready=%d pending=%d blocked=%d pages=%d articles=%d",
-			expectedPublishPages, expectedPublishPages, expectedPublishArticles,
-			projection.Ready, projection.Pending, projection.Blocked, projection.PageCount, projection.ArticleCount)
+	total, pages, examples, err := i18n.LocaleWorkflowUnitCounts(catalog)
+	if err != nil {
+		return fmt.Errorf("determine publish workflow: %w", err)
+	}
+	if projection.UnitCount != total || projection.Ready != total || projection.Pending != 0 || projection.Blocked != 0 || projection.PageCount != pages || projection.ExampleCount != examples || projection.ArticleCount != expectedPublishArticles {
+		return fmt.Errorf("publish requires units=%d ready=%d pending=0 blocked=0 pages=%d examples=%d articles=%d; got units=%d ready=%d pending=%d blocked=%d pages=%d examples=%d articles=%d",
+			total, total, pages, examples, expectedPublishArticles,
+			projection.UnitCount, projection.Ready, projection.Pending, projection.Blocked, projection.PageCount, projection.ExampleCount, projection.ArticleCount)
 	}
 	return nil
 }

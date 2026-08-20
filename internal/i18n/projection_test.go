@@ -239,22 +239,14 @@ func TestBuildLocaleProjectionRejectsResidualProtectedToken(t *testing.T) {
 	}
 }
 
-func TestBuildLocaleProjectionRealCorpusRequiresEligibleExamplesReady(t *testing.T) {
-	root := repoRoot(t)
-	current, err := BuildSourceCatalog(root)
-	if err != nil {
-		t.Fatal(err)
-	}
-	catalog, err := ReadCatalog(root)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if err := HydrateCatalogSources(catalog, current); err != nil {
-		t.Fatal(err)
-	}
-	_, err = BuildLocaleProjection(root, catalog, "zh-CN", filepath.Join(t.TempDir(), "projection"))
-	if err == nil || !strings.Contains(err.Error(), "all 122 workflow translation units") || !strings.Contains(err.Error(), "example:basics/numeric-constants.go=pending") {
-		t.Fatalf("real corpus projection error=%v", err)
+func TestBuildLocaleProjectionRequiresAllEligibleExamplesReady(t *testing.T) {
+	fixture := newProjectionFixture(t)
+	status := &fixture.statuses[len(fixture.statuses)-1]
+	status.State, status.Attempts, status.CandidatePath, status.UpdatedAt, status.Note = "pending", 0, "", "", ""
+	fixture.writeStatuses(t)
+	_, err := BuildLocaleProjection(fixture.root, fixture.catalog, "zh-CN", filepath.Join(t.TempDir(), "projection"))
+	if err == nil || !strings.Contains(err.Error(), "all 4 workflow translation units") || !strings.Contains(err.Error(), "example:alpha/one.go=pending") {
+		t.Fatalf("incomplete workflow projection error=%v", err)
 	}
 }
 
