@@ -362,9 +362,16 @@ func decodeRetranslationValidation(data []byte, unit *TranslationUnit) (*Retrans
 	if legacy.SchemaVersion != 1 || unit == nil || legacy.PageID != unit.ID || unit.Kind != UnitKindPage {
 		return nil, errors.New("unsupported legacy retranslation validation")
 	}
+	name := retranslationUnitInputName(unit)
+	extension := filepath.Ext(name)
+	flatID := strings.TrimSuffix(name, extension)
+	attempt, err := retryValidationAttemptForExtension(legacy.RawResponsePath, flatID, extension)
+	if err != nil {
+		return nil, fmt.Errorf("legacy retranslation validation: %w", err)
+	}
 	return &RetranslationValidation{
 		SchemaVersion: retranslationProcessSchemaVersion, BatchID: legacy.BatchID, Locale: legacy.Locale,
-		UnitID: unit.ID, UnitKind: unit.Kind, SourceSHA256: unit.SourceSHA256, Attempt: 1,
+		UnitID: unit.ID, UnitKind: unit.Kind, SourceSHA256: unit.SourceSHA256, Attempt: attempt,
 		Status: legacy.Status, InputPath: legacy.InputPath, RawResponsePath: legacy.RawResponsePath,
 		CandidatePath: legacy.CandidatePath, Error: legacy.Error,
 	}, nil

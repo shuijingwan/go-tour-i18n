@@ -38,6 +38,58 @@ func makeRetranslationProcessBatch(t *testing.T, count int) (string, *Catalog, s
 	return root, catalog, result.BatchID
 }
 
+func TestDecodeLegacyRetranslationValidationDerivesAttemptFromProvenance(t *testing.T) {
+	unit := &TranslationUnit{ID: "moretypes/1", Kind: UnitKindPage, SourceSHA256: strings.Repeat("a", 64)}
+	tests := []struct {
+		name    string
+		rawPath string
+		want    int
+		wantErr string
+	}{
+		{name: "initial", rawPath: "raw-responses/moretypes-1.article", want: 1},
+		{name: "retry", rawPath: "retries/moretypes-1/attempt-002.article", want: 2},
+		{name: "invalid", rawPath: "retries/other/attempt-002.article", wantErr: "not a recognized attempt"},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			data, err := json.Marshal(legacyRetranslationValidation{
+				SchemaVersion: 1, BatchID: "chatgpt-zh-CN-004", Locale: "zh-CN", PageID: unit.ID,
+				Status: "passed", InputPath: "inputs/moretypes-1.article", RawResponsePath: test.rawPath,
+				CandidatePath: "candidates/moretypes-1.article",
+			})
+			if err != nil {
+				t.Fatal(err)
+			}
+			validation, err := decodeRetranslationValidation(data, unit)
+			if test.wantErr != "" {
+				if err == nil || !strings.Contains(err.Error(), test.wantErr) {
+					t.Fatalf("error = %v, want %q", err, test.wantErr)
+				}
+				return
+			}
+			if err != nil || validation.Attempt != test.want {
+				t.Fatalf("validation=%+v error=%v, want attempt=%d", validation, err, test.want)
+			}
+		})
+	}
+}
+
+func TestDecodeSchemaV2RetranslationValidationBehaviorUnchanged(t *testing.T) {
+	unit := &TranslationUnit{ID: "moretypes/1", Kind: UnitKindPage}
+	want := RetranslationValidation{
+		SchemaVersion: retranslationProcessSchemaVersion, UnitID: unit.ID, UnitKind: unit.Kind,
+		Attempt: 7, RawResponsePath: "preserved-by-v2-decoder",
+	}
+	data, err := json.Marshal(want)
+	if err != nil {
+		t.Fatal(err)
+	}
+	got, err := decodeRetranslationValidation(data, unit)
+	if err != nil || got.Attempt != want.Attempt || got.RawResponsePath != want.RawResponsePath {
+		t.Fatalf("validation=%+v error=%v", got, err)
+	}
+}
+
 func rewriteProcessManifest(t *testing.T, root, batchID string, mutate func(*RetranslationBatchManifest)) {
 	t.Helper()
 	manifest := readRetranslationManifest(t, root, batchID)

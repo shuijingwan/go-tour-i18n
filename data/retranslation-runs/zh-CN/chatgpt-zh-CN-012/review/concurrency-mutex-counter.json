@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "batch_id": "chatgpt-zh-CN-012",
+  "locale": "zh-CN",
+  "unit_id": "example:concurrency/mutex-counter.go",
+  "unit_kind": "example",
+  "source_path": "_content/tour/concurrency/mutex-counter.go",
+  "source_sha256": "74488ecc347a123c8538069175ffeef5ea38577bb37b2c7a9ceb6bba47ab02b4",
+  "attempt": 1,
+  "candidate_path": "candidates/concurrency-mutex-counter.go",
+  "candidate_sha256": "4a2696b4934fbeb497de2551949e7ea868d919aff206bf3a7894482a7e43bfb8",
+  "validation_path": "validation/concurrency-mutex-counter.json",
+  "validation_sha256": "1391b8e07161652be0a39b41e281b40640ae2c3c5bcadb458f61051cb6852884",
+  "decision": "approved",
+  "reviewer": "ChatGPT",
+  "reviewed_at": "2026-08-20T10:09:54Z",
+  "rubric": "translation-quality/v1",
+  "rating": "A",
+  "summary": "并发、互斥和 goroutine 相关含义准确，可直接发布。",
+  "issues": []
+}
