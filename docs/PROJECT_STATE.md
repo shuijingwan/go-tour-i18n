@@ -1,6 +1,6 @@
 # 项目状态
 
-更新时间：2026-08-18 21:32:17（北京时间）
+更新时间：2026-08-20 22:56:44（北京时间）
 
 ## 基线与架构
 
@@ -60,7 +60,7 @@
 
 ## zh-CN 课程正文完成状态
 
-- 正式发布投影共 103 页，另保留 2 条条件源页面审计记录；当前正式状态为 `ready=103`、`pending=0`、`blocked=0`。
+- 当前仓库／当前候选 release 的统一 TranslationUnit workflow 共 122 个 unit：103 个 Page 与 19 个 eligible Example；另保留 93 个 referenced Example source inventory 和 2 条条件源页面审计记录。当前状态为 `ready=122`、`pending=0`、`blocked=0`。
 - 103 个正式发布页面均已完成翻译；当前 canonical 103/103 为 2026-08-18 正式提升后的 ChatGPT 整页译文，状态为 `ready`。最终语义质量审计为 A=103、B/C/D=0，缺失、重复和额外页面均为 0。
 - 此前第一阶段译文及其全局质量审计仍是重要历史基线；本轮 ChatGPT 重译通过 Batch 001–011 保留完整 evidence，并经独立语义审核、全量 promotion preflight 与 production bundle/HTTP 验收后完成 canonical 切换。
 - 特殊投影已纳入上述审计：`welcome/1` 使用 appengine remote 分支 `a remote server.`；`welcome/4`、`welcome/5` 使用完整 `#appengine:` 条件 Section 去前缀后的投影。
@@ -96,10 +96,24 @@
 - 当前 UI 本地化对 upstream 的改动集中于文案绑定、少量 i18n 接线和数据来源替换，未进行明显 UI 结构性重构。未来 upstream 同步时重点复核上述少量 consumer 文件；继续遵守“低收益 + 高侵入的边缘文案宁可保留 upstream，不为零英文扩大维护面”的原则。
 - 已提供受限的人工 source 同步维护入口：先以 `upstream preview --source-root <website>` 只读检查，再人工复制已确认的 `_content/tour` 变化；当 Page route 与 conditional identity 保持不变时，使用 `catalog write --allow-source-change` 重建三个 source catalog。该命令不修改 locale status、candidate、review evidence 或 translation runs；Page 新增、删除、移动和无法识别的身份变化仍会拒绝。
 
+#### 2026-08-20 upstream source 同步、stale retranslation 与本地候选验收
+
+- active frozen upstream baseline 已从 `e11dacba76c5aae474746e9eedee19693f492803` 更新至 `645042eb697eaf69e33a9af00c6b5b3fffdead5a`。
+- 本次官方 Tour source 的实际变化为：`welcome.article` 删除旧的简体中文社区翻译链接；`basics.article` 将 `var` 改为 inline code 标记；93 个 referenced Example source 均无内容变化。
+- 同步流程为：`upstream preview --source-root ~/code/go-website-upstream` → 人工复制并确认 source 变化 → `catalog write --allow-source-change`。最终 preview 为 Page `unchanged=103`、`content_changed=0`；Example `unchanged=93`、`content_changed=0`；conditional `unchanged=2`；`safe for catalog write=true`、`manual mapping required=false`。
+- catalog source hash 更新后，`welcome/2` 与 `basics/9` 的既有 `ready` status 因 source revision 变化进入 stale。`retranslation export` 已支持将 `ready + stale` 的当前 source revision 重新导出，而不会因历史 `unit_id` 已存在而永久跳过。
+- 已生成 Batch `chatgpt-zh-CN-013`，包含 2 个 Page unit：`welcome/2`、`basics/9`。两页均完成 `export → ChatGPT raw response → process → restore → validation → Translation Quality Review → promotion`；process 结果为 `restore_passed=2`、`restore_failed=0`、`validation_passed=2`、`validation_failed=0`；review 为 2/2 approved，均为 A。
+- promotion preflight 结果为：`unit_count=122`、`page_count=103`、`example_count=19`、`changed_count=2`、`unchanged_count=120`、`review_approved_count=122`、`can_apply=true`。apply 后状态为：`status OK: 122 translation units for zh-CN (103 pages, 19 examples)`。
+- 本次真实 upstream revision 场景修复了两个 promotion 问题：历史 batch 属于旧 source revision 时，不应阻塞当前 Catalog，也绝不能 fallback 为当前 source 的 promotion evidence；stale canonical status 是“当前 source 需要重新 promotion”的合法过渡状态，只要当前 source revision 已有完整的 passed validation 和 approved review evidence，promotion 应允许原子更新 candidate/status。
+- 修复后的规则为：历史 batch 保持不可变；promotion 仅在 source metadata 与当前 Catalog revision 匹配的 batch 中选择最高 batch number；旧 source revision evidence 被保留但不参与当前 revision promotion；当前 revision 没有 evidence 时进入 MissingEvidence；stale status 仅在当前 revision 的 preflighted promotion evidence 覆盖该 unit 时允许 apply；apply 后恢复严格 `CheckStatus`。对应正式提交为 `a1112043fd82234f2c2ba91e9a119719dbc7e7f7`（`fix: 支持 upstream 变更后的重译 promotion`）。
+- 当前仓库／当前候选 release 的统一 workflow 状态为：translation units=122、Pages=103、eligible Examples=19、referenced Example source inventory=93、conditional source records=2、`ready=122`、`pending=0`、`blocked=0`、articles=7。93 个 Example 是被引用的 source inventory，不是 93 个需要翻译的 Example；只有当前 upstream source 含普通自然语言注释的 19 个 eligible Example 进入 locale translation/status/review/promotion workflow，其余 74 个直接继承 upstream source。
+- 最终本地验收已完成：`go test ./...` 全部通过；`tour-i18n build --locale zh-CN` 输出 `ready=122 pending=0 blocked=0 pages=103 articles=7`；production publish bundle 在本地成功。其 `release.json` 为 `schema_version=2`、`upstream_commit=645042eb697eaf69e33a9af00c6b5b3fffdead5a`、`translation_units=122`、`pages=103`、`eligible_examples=19`、`articles=7`、`execution_transport=http-playground-proxy`、`execution_provider=play.golang.org`、`local_socket_enabled=false`。
+- 该 bundle 仅为本地最终验收包，尚未部署生产。当前线上 production release 仍是下文记录的 2026-08-18 `/data/go-tour/releases/20260818-zh-CN-45f4cad`；不得将本次 upstream baseline 或 `ready=122` 候选状态表述为已上线。
+
 ## 完整语言正式投影与本地预览完成状态
 
 - 当前 upstream 为 `master@645042eb697eaf69e33a9af00c6b5b3fffdead5a`。
-- zh-CN 正式状态为 `ready=103`、`pending=0`、`blocked=0`；catalog 为 103 个 published pages 和 2 条 conditional source records。
+- 当前仓库／当前候选 release 的 zh-CN workflow 状态为 `ready=122`、`pending=0`、`blocked=0`；catalog 为 103 个 published pages、19 个 eligible Example 和 2 条 conditional source records（另有 93 个 referenced Example source inventory）。
 - 已完成全部 103 页 canonical candidate、全局翻译质量审计、zh-CN 公共 UI 本地化、完整语言正式投影与完整语言本地预览。
 - `tour-i18n build --locale <locale>` 从 catalog、locale status 与 canonical ready candidate 构建完整正式投影；它拒绝 pending、blocked、缺失、额外或非 canonical candidate，不回退到英文或旧译文，也不修改 candidate、status 或 catalog。
 - `tour-i18n preview --locale <locale>` 直接复用完整投影能力启动本地预览；带 `--id <page_id>` 时继续是单页 candidate preview。
@@ -113,7 +127,7 @@
 - 已新增独立的 locale article metadata 资源：`locales/<locale>/article-metadata.json`。该资源不属于 Section candidate、公共 UI 或 status；每个正式 article 单独维护 `title` 和 `subtitle`。
 - metadata loader 由 catalog 动态推导正式 article 集合并严格校验：article 集合必须精确一致，title/subtitle 必须非空；缺失、额外、重复或无法解析的 metadata 都会失败，不允许 fallback 到 upstream 英文。
 - 完整 projection 与单页 candidate preview 共用 metadata 应用路径。完整 projection 最终重新解析每个 article，并断言 `Doc.Title`、`Doc.Subtitle` 与 locale metadata 完全一致，同时继续校验全部 103 个 canonical Section。
-- 当前 zh-CN 状态为：Section candidate 103/103 ready（`ready=103`、`pending=0`、`blocked=0`）；article metadata 7/7；title localized 7/7；subtitle localized 7/7；公共 UI 已本地化。
+- 当前仓库／当前候选 release 的 zh-CN 状态为：103/103 Section Page candidate ready、19/19 eligible Example ready（合计 `ready=122`、`pending=0`、`blocked=0`）；article metadata 7/7；title localized 7/7；subtitle localized 7/7；公共 UI 已本地化。
 - 修复后完整预览确认课程导航 lesson title 与 lesson description 均已中文化；全部 103 页 HTTP 验收继续为 103/103，且未发现同类根级 upstream 英文 metadata 残留。article metadata 不计入正式页面数，catalog 仍为 103 个 published pages。
 
 ## Production runtime、publish bundle 与上线验收
