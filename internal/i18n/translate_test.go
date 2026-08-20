@@ -500,7 +500,7 @@ func cloneRevalidationLocale(t *testing.T, root, locale string) {
 
 func writeRevalidationFixture(t *testing.T, pageID string, source []byte, attempts int, state string) string {
 	t.Helper()
-	root := writeStatusFixture(t, "page_id\tstatus\tattempts\tsource_sha256\tcandidate_path\tupdated_at\tnote\n"+pageID+"\t"+state+"\t"+fmt.Sprint(attempts)+"\t"+sum(source)+"\t\t\t\n")
+	root := writeStatusFixture(t, "unit_id\tstatus\tattempts\tsource_sha256\tcandidate_path\tupdated_at\tnote\n"+pageID+"\t"+state+"\t"+fmt.Sprint(attempts)+"\t"+sum(source)+"\t\t\t\n")
 	writeTestGlossary(t, root)
 	return root
 }

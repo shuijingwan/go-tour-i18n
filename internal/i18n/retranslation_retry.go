@@ -15,7 +15,6 @@ type RetranslationRetryOptions struct {
 	Locale  string
 	BatchID string
 	UnitID  string
-	PageID  string
 }
 
 // ProcessRetranslationRetry processes the next pre-existing protected retry
@@ -24,16 +23,7 @@ func ProcessRetranslationRetry(root string, catalog *Catalog, options Retranslat
 	if catalog == nil {
 		return nil, errors.New("retranslation catalog is required")
 	}
-	if options.UnitID != "" && options.PageID != "" {
-		return nil, errors.New("--unit-id 和 --page-id 不能同时指定")
-	}
 	unitID := options.UnitID
-	if unitID == "" {
-		unitID = options.PageID
-	}
-	if options.PageID != "" && strings.HasPrefix(options.PageID, "example:") {
-		return nil, errors.New("--page-id 只接受课程页面单元；示例单元请使用 --unit-id")
-	}
 	if options.Locale == "" || options.BatchID == "" || unitID == "" {
 		return nil, errors.New("retranslation retry locale, batch_id, and unit_id are required")
 	}
@@ -53,11 +43,12 @@ func ProcessRetranslationRetry(root string, catalog *Catalog, options Retranslat
 	if err != nil {
 		return nil, fmt.Errorf("read retranslation result for %q: %w", options.BatchID, err)
 	}
-	var result RetranslationProcessResult
-	if err := json.Unmarshal(resultData, &result); err != nil {
+	resultPtr, err := decodeRetranslationProcessResult(resultData)
+	if err != nil {
 		return nil, fmt.Errorf("parse retranslation result for %q: %w", options.BatchID, err)
 	}
-	if result.SchemaVersion != retranslationProcessSchemaVersion || result.BatchID != options.BatchID || result.Locale != options.Locale || result.PageCount != len(result.Pages) || result.PageCount != manifest.PageCount {
+	result := *resultPtr
+	if result.SchemaVersion != retranslationProcessSchemaVersion || result.BatchID != options.BatchID || result.Locale != options.Locale || result.UnitCount != len(result.Units) || result.UnitCount != manifest.UnitCount {
 		return nil, fmt.Errorf("retranslation batch %q has incompatible process result", options.BatchID)
 	}
 	glossary, err := LoadGlossary(root, options.Locale)
@@ -82,8 +73,8 @@ func ProcessRetranslationRetry(root string, catalog *Catalog, options Retranslat
 	extension := filepath.Ext(name)
 	flatID := strings.TrimSuffix(name, extension)
 	resultIndex := -1
-	for i := range result.Pages {
-		if retranslationResultUnitID(result.Pages[i]) == unitID {
+	for i := range result.Units {
+		if result.Units[i].UnitID == unitID {
 			if resultIndex != -1 {
 				return nil, fmt.Errorf("duplicate result translation unit %q", unitID)
 			}
@@ -93,8 +84,8 @@ func ProcessRetranslationRetry(root string, catalog *Catalog, options Retranslat
 	if resultIndex == -1 {
 		return nil, fmt.Errorf("translation unit %q is not in retranslation batch %q", unitID, options.BatchID)
 	}
-	if result.Pages[resultIndex].Status != "restore_failed" && result.Pages[resultIndex].Status != "validation_failed" {
-		return nil, fmt.Errorf("translation unit %q status %q is not retryable", unitID, result.Pages[resultIndex].Status)
+	if result.Units[resultIndex].Status != "restore_failed" && result.Units[resultIndex].Status != "validation_failed" {
+		return nil, fmt.Errorf("translation unit %q status %q is not retryable", unitID, result.Units[resultIndex].Status)
 	}
 
 	validationPath := filepath.Join(batchDir, "validation", flatID+".json")
@@ -102,11 +93,12 @@ func ProcessRetranslationRetry(root string, catalog *Catalog, options Retranslat
 	if err != nil {
 		return nil, fmt.Errorf("read current validation for %s: %w", unitID, err)
 	}
-	var current RetranslationValidation
-	if err := json.Unmarshal(validationData, &current); err != nil {
+	currentPtr, err := decodeRetranslationValidation(validationData, item.unit)
+	if err != nil {
 		return nil, fmt.Errorf("parse current validation for %s: %w", unitID, err)
 	}
-	if current.SchemaVersion != retranslationProcessSchemaVersion || current.BatchID != options.BatchID || current.Locale != options.Locale || retranslationValidationUnitID(current) != unitID || current.Status != result.Pages[resultIndex].Status {
+	current := *currentPtr
+	if current.SchemaVersion != retranslationProcessSchemaVersion || current.BatchID != options.BatchID || current.Locale != options.Locale || current.UnitID != unitID || current.Status != result.Units[resultIndex].Status {
 		return nil, fmt.Errorf("current validation for %s does not match result.json", unitID)
 	}
 	currentAttempt, err := retryValidationAttemptForExtension(current.RawResponsePath, flatID, extension)
@@ -136,27 +128,27 @@ func ProcessRetranslationRetry(root string, catalog *Catalog, options Retranslat
 	evidence := RetranslationValidation{
 		SchemaVersion: retranslationProcessSchemaVersion, BatchID: options.BatchID, Locale: options.Locale,
 		UnitID: item.unit.ID, UnitKind: item.unit.Kind, SourceSHA256: item.unit.SourceSHA256,
-		Attempt: nextAttempt, PageID: item.manifest.PageID, InputPath: item.manifest.InputPath, RawResponsePath: retryRawRelative,
+		Attempt: nextAttempt, InputPath: item.manifest.InputPath, RawResponsePath: retryRawRelative,
 	}
-	pageResult := &result.Pages[resultIndex]
-	pageResult.CandidatePath = ""
+	unitResult := &result.Units[resultIndex]
+	unitResult.CandidatePath = ""
 	restored, failures := item.protected.restore(string(retryRaw))
 	var candidate []byte
 	if len(failures) != 0 {
 		evidence.Status = "restore_failed"
 		evidence.Error = strings.Join(failures, "; ")
-		pageResult.Status = evidence.Status
+		unitResult.Status = evidence.Status
 	} else {
 		candidate = []byte(restored)
 		evidence.CandidatePath = candidateRelative
-		pageResult.CandidatePath = candidateRelative
+		unitResult.CandidatePath = candidateRelative
 		if err := ValidateTranslationUnitCandidate(root, catalog, unitID, options.Locale, candidate); err != nil {
 			evidence.Status = "validation_failed"
 			evidence.Error = err.Error()
 		} else {
 			evidence.Status = "passed"
 		}
-		pageResult.Status = evidence.Status
+		unitResult.Status = evidence.Status
 	}
 	recountRetranslationResult(&result)
 	newValidation, err := json.MarshalIndent(evidence, "", "  ")
@@ -254,27 +246,13 @@ func validateRetryAttemptSequenceForExtension(dir string, current, next int, ext
 	return nil
 }
 
-func retranslationResultUnitID(result RetranslationPageResult) string {
-	if result.UnitID != "" {
-		return result.UnitID
-	}
-	return result.PageID
-}
-
-func retranslationValidationUnitID(validation RetranslationValidation) string {
-	if validation.UnitID != "" {
-		return validation.UnitID
-	}
-	return validation.PageID
-}
-
 func recountRetranslationResult(result *RetranslationProcessResult) {
 	result.RestorePassed = 0
 	result.RestoreFailed = 0
 	result.ValidationPassed = 0
 	result.ValidationFailed = 0
-	for _, page := range result.Pages {
-		switch page.Status {
+	for _, unit := range result.Units {
+		switch unit.Status {
 		case "restore_failed":
 			result.RestoreFailed++
 		case "validation_failed":

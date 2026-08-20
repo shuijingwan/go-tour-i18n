@@ -78,23 +78,23 @@ func fmtAttempt(attempt int) string {
 
 func TestRetranslationRetryRejectsPassedUnknownAndMissingAttempt(t *testing.T) {
 	root, catalog, batchID := processRetryFixture(t, 1, func(raw string) string { return raw })
-	if _, err := ProcessRetranslationRetry(root, catalog, RetranslationRetryOptions{Locale: "zh-CN", BatchID: batchID, PageID: "lesson/1"}); err == nil || !strings.Contains(err.Error(), "not retryable") {
+	if _, err := ProcessRetranslationRetry(root, catalog, RetranslationRetryOptions{Locale: "zh-CN", BatchID: batchID, UnitID: "lesson/1"}); err == nil || !strings.Contains(err.Error(), "not retryable") {
 		t.Fatalf("passed retry error = %v", err)
 	}
-	if _, err := ProcessRetranslationRetry(root, catalog, RetranslationRetryOptions{Locale: "zh-CN", BatchID: batchID, PageID: "missing/1"}); err == nil || !strings.Contains(err.Error(), "not in retranslation batch") {
+	if _, err := ProcessRetranslationRetry(root, catalog, RetranslationRetryOptions{Locale: "zh-CN", BatchID: batchID, UnitID: "missing/1"}); err == nil || !strings.Contains(err.Error(), "not in retranslation batch") {
 		t.Fatalf("unknown page error = %v", err)
 	}
-	if _, err := ProcessRetranslationRetry(root, catalog, RetranslationRetryOptions{Locale: "zh-CN", BatchID: "missing-batch", PageID: "lesson/1"}); err == nil {
+	if _, err := ProcessRetranslationRetry(root, catalog, RetranslationRetryOptions{Locale: "zh-CN", BatchID: "missing-batch", UnitID: "lesson/1"}); err == nil {
 		t.Fatal("unknown batch accepted")
 	}
 
 	root, catalog, batchID = processRetryFixture(t, 1, func(raw string) string { return raw + " `bad`" })
-	if _, err := ProcessRetranslationRetry(root, catalog, RetranslationRetryOptions{Locale: "zh-CN", BatchID: batchID, PageID: "lesson/1"}); err == nil || !strings.Contains(err.Error(), "attempt-002.article") {
+	if _, err := ProcessRetranslationRetry(root, catalog, RetranslationRetryOptions{Locale: "zh-CN", BatchID: batchID, UnitID: "lesson/1"}); err == nil || !strings.Contains(err.Error(), "attempt-002.article") {
 		t.Fatalf("missing attempt error = %v", err)
 	}
 }
 
-func TestRetranslationRetryUnitIDPageAndOptionCompatibility(t *testing.T) {
+func TestRetranslationRetryUnitIDPage(t *testing.T) {
 	root, catalog, batchID := processRetryFixture(t, 1, func(raw string) string { return raw + " `bad`" })
 	batchDir := filepath.Join(root, "data", "retranslation-runs", "zh-CN", batchID)
 	validRaw, _ := os.ReadFile(filepath.Join(batchDir, "inputs", "lesson-1.article"))
@@ -105,12 +105,6 @@ func TestRetranslationRetryUnitIDPageAndOptionCompatibility(t *testing.T) {
 	}
 	if _, err := os.Stat(filepath.Join(batchDir, "retries", "lesson-1", "attempt-002.article")); err != nil {
 		t.Fatalf("historical Page retry extension changed: %v", err)
-	}
-	if _, err := ProcessRetranslationRetry(root, catalog, RetranslationRetryOptions{Locale: "zh-CN", BatchID: batchID, UnitID: "lesson/1", PageID: "lesson/1"}); err == nil || !strings.Contains(err.Error(), "不能同时指定") {
-		t.Fatalf("unit/page option conflict error=%v", err)
-	}
-	if _, err := ProcessRetranslationRetry(root, catalog, RetranslationRetryOptions{Locale: "zh-CN", BatchID: batchID, PageID: "example:basics/channel.go"}); err == nil || !strings.Contains(err.Error(), "只接受课程页面") {
-		t.Fatalf("example through --page-id error=%v", err)
 	}
 }
 
@@ -138,7 +132,7 @@ func TestRetranslationRetryExampleLifecycleUsesGoAttempts(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if result.Pages[0].Status != "validation_failed" || result.ValidationFailed != 1 || filepath.Ext(attempt2) != ".go" {
+	if result.Units[0].Status != "validation_failed" || result.ValidationFailed != 1 || filepath.Ext(attempt2) != ".go" {
 		t.Fatalf("example attempt 2 result=%+v path=%s", result, attempt2)
 	}
 	flatID := strings.TrimSuffix(name, filepath.Ext(name))
@@ -153,7 +147,7 @@ func TestRetranslationRetryExampleLifecycleUsesGoAttempts(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if result.Pages[0].Status != "passed" || result.ValidationPassed != 1 {
+	if result.Units[0].Status != "passed" || result.ValidationPassed != 1 {
 		t.Fatalf("example attempt 3 result=%+v", result)
 	}
 	candidate, err := os.ReadFile(filepath.Join(batchDir, "candidates", name))
@@ -181,7 +175,7 @@ func TestRetranslationRetryExampleRestoreFailureAndPreflightSafety(t *testing.T)
 		broken := strings.Replace(validRaw, translationTokenRE.FindString(validRaw), "", 1)
 		writeExampleRetryRaw(t, root, batchID, name, 2, broken)
 		result, err := ProcessRetranslationRetry(root, catalog, RetranslationRetryOptions{Locale: "zh-CN", BatchID: batchID, UnitID: catalog.Examples[0].ID})
-		if err != nil || result.Pages[0].Status != "restore_failed" {
+		if err != nil || result.Units[0].Status != "restore_failed" {
 			t.Fatalf("example restore retry result=%+v err=%v", result, err)
 		}
 	})
@@ -190,9 +184,9 @@ func TestRetranslationRetryExampleRestoreFailureAndPreflightSafety(t *testing.T)
 		mutate func(*RetranslationBatchManifest)
 		want   string
 	}{
-		{"source hash", func(m *RetranslationBatchManifest) { m.Pages[0].SourceSHA256 = strings.Repeat("0", 64) }, "source metadata"},
-		{"input hash", func(m *RetranslationBatchManifest) { m.Pages[0].InputSHA256 = strings.Repeat("0", 64) }, "input_sha256"},
-		{"unit kind", func(m *RetranslationBatchManifest) { m.Pages[0].UnitKind = UnitKindPage }, "unit_kind"},
+		{"source hash", func(m *RetranslationBatchManifest) { m.Units[0].SourceSHA256 = strings.Repeat("0", 64) }, "source metadata"},
+		{"input hash", func(m *RetranslationBatchManifest) { m.Units[0].InputSHA256 = strings.Repeat("0", 64) }, "input_sha256"},
+		{"unit kind", func(m *RetranslationBatchManifest) { m.Units[0].UnitKind = UnitKindPage }, "unit_kind"},
 	} {
 		t.Run(tt.name, func(t *testing.T) {
 			root, catalog, batchID, name, validRaw := processExampleRetryFixture(t, func(raw string) string {
@@ -238,18 +232,18 @@ func TestRetranslationRetryLifecyclePreservesEvidenceAndOtherPages(t *testing.T)
 	missingToken := strings.Replace(string(validRaw), translationTokenRE.FindString(string(validRaw)), "", 1)
 	attempt2 := writeRetryRaw(t, root, batchID, "lesson/1", 2, missingToken)
 	attempt2Before, _ := os.ReadFile(attempt2)
-	result, err := ProcessRetranslationRetry(root, catalog, RetranslationRetryOptions{Locale: "zh-CN", BatchID: batchID, PageID: "lesson/1"})
+	result, err := ProcessRetranslationRetry(root, catalog, RetranslationRetryOptions{Locale: "zh-CN", BatchID: batchID, UnitID: "lesson/1"})
 	if err != nil {
 		t.Fatal(err)
 	}
-	if result.Pages[0].Status != "restore_failed" || result.RestoreFailed != 1 || result.ValidationPassed != 1 {
+	if result.Units[0].Status != "restore_failed" || result.RestoreFailed != 1 || result.ValidationPassed != 1 {
 		t.Fatalf("attempt 2 result = %+v", result)
 	}
 	history1, _ := os.ReadFile(filepath.Join(batchDir, "retries", "lesson-1", "attempt-001-validation.json"))
 	if string(history1) != string(originalValidation) {
 		t.Fatal("attempt-001 validation history differs")
 	}
-	if _, err := ProcessRetranslationRetry(root, catalog, RetranslationRetryOptions{Locale: "zh-CN", BatchID: batchID, PageID: "lesson/1"}); err == nil || !strings.Contains(err.Error(), "attempt-003.article") {
+	if _, err := ProcessRetranslationRetry(root, catalog, RetranslationRetryOptions{Locale: "zh-CN", BatchID: batchID, UnitID: "lesson/1"}); err == nil || !strings.Contains(err.Error(), "attempt-003.article") {
 		t.Fatalf("repeated attempt error = %v", err)
 	}
 	attempt2After, _ := os.ReadFile(attempt2)
@@ -259,20 +253,20 @@ func TestRetranslationRetryLifecyclePreservesEvidenceAndOtherPages(t *testing.T)
 
 	invalidRaw := string(validRaw) + " `bad`"
 	writeRetryRaw(t, root, batchID, "lesson/1", 3, invalidRaw)
-	result, err = ProcessRetranslationRetry(root, catalog, RetranslationRetryOptions{Locale: "zh-CN", BatchID: batchID, PageID: "lesson/1"})
+	result, err = ProcessRetranslationRetry(root, catalog, RetranslationRetryOptions{Locale: "zh-CN", BatchID: batchID, UnitID: "lesson/1"})
 	if err != nil {
 		t.Fatal(err)
 	}
-	if result.Pages[0].Status != "validation_failed" || result.ValidationFailed != 1 {
+	if result.Units[0].Status != "validation_failed" || result.ValidationFailed != 1 {
 		t.Fatalf("attempt 3 result = %+v", result)
 	}
 
 	writeRetryRaw(t, root, batchID, "lesson/1", 4, string(validRaw))
-	result, err = ProcessRetranslationRetry(root, catalog, RetranslationRetryOptions{Locale: "zh-CN", BatchID: batchID, PageID: "lesson/1"})
+	result, err = ProcessRetranslationRetry(root, catalog, RetranslationRetryOptions{Locale: "zh-CN", BatchID: batchID, UnitID: "lesson/1"})
 	if err != nil {
 		t.Fatal(err)
 	}
-	if result.RestorePassed != 2 || result.RestoreFailed != 0 || result.ValidationPassed != 2 || result.ValidationFailed != 0 || result.Pages[0].Status != "passed" {
+	if result.RestorePassed != 2 || result.RestoreFailed != 0 || result.ValidationPassed != 2 || result.ValidationFailed != 0 || result.Units[0].Status != "passed" {
 		t.Fatalf("attempt 4 result = %+v", result)
 	}
 	validation, _ := os.ReadFile(filepath.Join(batchDir, "validation", "lesson-1.json"))
@@ -309,7 +303,7 @@ func TestRetranslationRetryAcceptsInitialRestoreFailureAndRequiresOriginalInput(
 	batchDir := filepath.Join(root, "data", "retranslation-runs", "zh-CN", batchID)
 	validRaw, _ := os.ReadFile(filepath.Join(batchDir, "inputs", "lesson-1.article"))
 	writeRetryRaw(t, root, batchID, "lesson/1", 2, string(validRaw))
-	result, err := ProcessRetranslationRetry(root, catalog, RetranslationRetryOptions{Locale: "zh-CN", BatchID: batchID, PageID: "lesson/1"})
+	result, err := ProcessRetranslationRetry(root, catalog, RetranslationRetryOptions{Locale: "zh-CN", BatchID: batchID, UnitID: "lesson/1"})
 	if err != nil || result.ValidationPassed != 1 {
 		t.Fatalf("restore retry result=%+v err=%v", result, err)
 	}
@@ -322,9 +316,9 @@ func TestRetranslationRetryAcceptsInitialRestoreFailureAndRequiresOriginalInput(
 	if err := os.WriteFile(inputPath, input, 0644); err != nil {
 		t.Fatal(err)
 	}
-	rewriteProcessManifest(t, root, batchID, func(m *RetranslationBatchManifest) { m.Pages[0].InputSHA256 = sum(input) })
+	rewriteProcessManifest(t, root, batchID, func(m *RetranslationBatchManifest) { m.Units[0].InputSHA256 = sum(input) })
 	writeRetryRaw(t, root, batchID, "lesson/1", 2, string(validRaw))
-	if _, err := ProcessRetranslationRetry(root, catalog, RetranslationRetryOptions{Locale: "zh-CN", BatchID: batchID, PageID: "lesson/1"}); err == nil || !strings.Contains(err.Error(), "regenerated Default protected input differs") {
+	if _, err := ProcessRetranslationRetry(root, catalog, RetranslationRetryOptions{Locale: "zh-CN", BatchID: batchID, UnitID: "lesson/1"}); err == nil || !strings.Contains(err.Error(), "regenerated Default protected input differs") {
 		t.Fatalf("input mismatch error = %v", err)
 	}
 }

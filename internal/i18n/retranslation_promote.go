@@ -2,7 +2,6 @@ package i18n
 
 import (
 	"bytes"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
@@ -108,8 +107,8 @@ func preflightRetranslationPromotion(root string, catalog *Catalog, locale strin
 		number   int
 		batchID  string
 		batchDir string
-		manifest RetranslationBatchPage
-		result   RetranslationPageResult
+		manifest RetranslationBatchUnit
+		result   RetranslationUnitResult
 	}
 	selectedByID := map[string]selected{}
 	seenNumbers := map[int]string{}
@@ -137,36 +136,42 @@ func preflightRetranslationPromotion(root string, catalog *Catalog, locale strin
 		if err != nil {
 			return nil, err
 		}
-		result, err := readPromotionResult(batchDir, locale, entry.Name(), manifest.PageCount)
+		result, err := readPromotionResult(batchDir, locale, entry.Name(), manifest.UnitCount)
 		if err != nil {
 			return nil, err
 		}
-		results := map[string]RetranslationPageResult{}
-		for _, record := range result.Pages {
-			if _, exists := results[record.PageID]; exists {
-				return nil, fmt.Errorf("retranslation batch %q has duplicate result page_id %q", entry.Name(), record.PageID)
+		results := map[string]RetranslationUnitResult{}
+		for _, record := range result.Units {
+			if record.UnitKind != UnitKindPage {
+				continue
 			}
-			results[record.PageID] = record
+			if _, exists := results[record.UnitID]; exists {
+				return nil, fmt.Errorf("retranslation batch %q has duplicate Page unit_id %q", entry.Name(), record.UnitID)
+			}
+			results[record.UnitID] = record
 		}
 		manifestSeen := map[string]bool{}
-		for _, record := range manifest.Pages {
-			if manifestSeen[record.PageID] {
-				return nil, fmt.Errorf("retranslation batch %q has duplicate manifest page_id %q", entry.Name(), record.PageID)
+		for _, record := range manifest.Units {
+			if record.UnitKind != UnitKindPage {
+				continue
 			}
-			manifestSeen[record.PageID] = true
-			page, ok := byID[record.PageID]
+			if manifestSeen[record.UnitID] {
+				return nil, fmt.Errorf("retranslation batch %q has duplicate manifest Page unit_id %q", entry.Name(), record.UnitID)
+			}
+			manifestSeen[record.UnitID] = true
+			page, ok := byID[record.UnitID]
 			if !ok {
-				return nil, fmt.Errorf("retranslation batch %q has extra page_id %q", entry.Name(), record.PageID)
+				return nil, fmt.Errorf("retranslation batch %q has extra Page unit_id %q", entry.Name(), record.UnitID)
 			}
-			if record.Article != page.Article || record.SectionNumber != page.SectionNumber || record.Route != page.Route || record.SourceSHA256 != page.SourceSHA256 || sum(page.Source) != page.SourceSHA256 {
-				return nil, fmt.Errorf("%s: manifest source metadata does not match current Catalog", record.PageID)
+			if record.SourcePath != filepath.ToSlash(filepath.Join("_content", "tour", page.Article)) || record.SourceSHA256 != page.SourceSHA256 || sum(page.Source) != page.SourceSHA256 {
+				return nil, fmt.Errorf("%s: manifest source metadata does not match current Catalog", record.UnitID)
 			}
-			pageResult, ok := results[record.PageID]
+			pageResult, ok := results[record.UnitID]
 			if !ok {
-				return nil, fmt.Errorf("retranslation batch %q result missing page_id %q", entry.Name(), record.PageID)
+				return nil, fmt.Errorf("retranslation batch %q result missing Page unit_id %q", entry.Name(), record.UnitID)
 			}
-			if current, ok := selectedByID[record.PageID]; !ok || number > current.number {
-				selectedByID[record.PageID] = selected{number: number, batchID: entry.Name(), batchDir: batchDir, manifest: record, result: pageResult}
+			if current, ok := selectedByID[record.UnitID]; !ok || number > current.number {
+				selectedByID[record.UnitID] = selected{number: number, batchID: entry.Name(), batchDir: batchDir, manifest: record, result: pageResult}
 			}
 		}
 		if len(results) != len(manifestSeen) {
@@ -251,7 +256,7 @@ func canonicalizeCandidateEOF(candidate []byte) []byte {
 	return out
 }
 
-func validatePromotionEvidence(batchDir string, page Page, manifest RetranslationBatchPage, validation *RetranslationValidation, glossary *Glossary, candidate []byte) error {
+func validatePromotionEvidence(batchDir string, page Page, manifest RetranslationBatchUnit, validation *RetranslationValidation, glossary *Glossary, candidate []byte) error {
 	name := flattenedPageArticleName(page.ID)
 	wantInputPath := filepath.ToSlash(filepath.Join("inputs", name))
 	if manifest.InputPath != wantInputPath {
@@ -302,34 +307,35 @@ func validatePromotionEvidence(batchDir string, page Page, manifest Retranslatio
 	return nil
 }
 
-func readPromotionResult(batchDir, locale, batchID string, pageCount int) (*RetranslationProcessResult, error) {
+func readPromotionResult(batchDir, locale, batchID string, unitCount int) (*RetranslationProcessResult, error) {
 	b, err := os.ReadFile(filepath.Join(batchDir, "result.json"))
 	if err != nil {
 		return nil, fmt.Errorf("read retranslation result for %q: %w", batchID, err)
 	}
-	var result RetranslationProcessResult
-	if err := json.Unmarshal(b, &result); err != nil {
+	result, err := decodeRetranslationProcessResult(b)
+	if err != nil {
 		return nil, fmt.Errorf("parse retranslation result for %q: %w", batchID, err)
 	}
-	if result.SchemaVersion != retranslationProcessSchemaVersion || result.BatchID != batchID || result.Locale != locale || result.PageCount != pageCount || len(result.Pages) != pageCount {
+	if result.SchemaVersion != retranslationProcessSchemaVersion || result.BatchID != batchID || result.Locale != locale || result.UnitCount != unitCount || len(result.Units) != unitCount {
 		return nil, fmt.Errorf("retranslation batch %q has incompatible process result", batchID)
 	}
-	return &result, nil
+	return result, nil
 }
 
-func readPromotionValidation(batchDir, batchID, locale string, manifest RetranslationBatchPage, result RetranslationPageResult) (*RetranslationValidation, error) {
+func readPromotionValidation(batchDir, batchID, locale string, manifest RetranslationBatchUnit, result RetranslationUnitResult) (*RetranslationValidation, error) {
 	b, err := os.ReadFile(filepath.Join(batchDir, filepath.FromSlash(result.ValidationPath)))
 	if err != nil {
-		return nil, fmt.Errorf("%s: read promotion validation: %w", manifest.PageID, err)
+		return nil, fmt.Errorf("%s: read promotion validation: %w", manifest.UnitID, err)
 	}
-	var validation RetranslationValidation
-	if err := json.Unmarshal(b, &validation); err != nil {
-		return nil, fmt.Errorf("%s: parse promotion validation: %w", manifest.PageID, err)
+	unit := &TranslationUnit{ID: manifest.UnitID, Kind: manifest.UnitKind, SourceSHA256: manifest.SourceSHA256}
+	validation, err := decodeRetranslationValidation(b, unit)
+	if err != nil {
+		return nil, fmt.Errorf("%s: parse promotion validation: %w", manifest.UnitID, err)
 	}
-	if validation.SchemaVersion != retranslationProcessSchemaVersion || validation.BatchID != batchID || validation.Locale != locale || validation.PageID != manifest.PageID || validation.InputPath != manifest.InputPath || validation.Status != result.Status || validation.CandidatePath != result.CandidatePath {
-		return nil, fmt.Errorf("%s: validation does not match manifest/result.json", manifest.PageID)
+	if validation.SchemaVersion != retranslationProcessSchemaVersion || validation.BatchID != batchID || validation.Locale != locale || validation.UnitID != manifest.UnitID || validation.UnitKind != manifest.UnitKind || validation.InputPath != manifest.InputPath || validation.Status != result.Status || validation.CandidatePath != result.CandidatePath {
+		return nil, fmt.Errorf("%s: validation does not match manifest/result.json", manifest.UnitID)
 	}
-	return &validation, nil
+	return validation, nil
 }
 
 func applyRetranslationPromotion(root string, catalog *Catalog, options RetranslationPromoteOptions, prepared []preparedPromotion) error {
@@ -339,19 +345,26 @@ func applyRetranslationPromotion(root string, catalog *Catalog, options Retransl
 	if err != nil {
 		return fmt.Errorf("read canonical status: %w", err)
 	}
-	if len(statuses) != len(catalog.Pages) {
-		return fmt.Errorf("status entries = %d, want %d", len(statuses), len(catalog.Pages))
+	if err := CheckStatus(root, options.Locale, catalog); err != nil {
+		return fmt.Errorf("check canonical status: %w", err)
 	}
 	statusByID := map[string]int{}
 	for i, status := range statuses {
-		if _, exists := statusByID[status.PageID]; exists {
-			return fmt.Errorf("duplicate status page_id %q", status.PageID)
+		unit, err := catalog.Unit(status.UnitID)
+		if err != nil {
+			return err
 		}
-		page, err := catalog.Page(status.PageID)
+		if unit.Kind != UnitKindPage {
+			continue
+		}
+		if _, exists := statusByID[status.UnitID]; exists {
+			return fmt.Errorf("duplicate status unit_id %q", status.UnitID)
+		}
+		page, err := catalog.Page(status.UnitID)
 		if err != nil || status.SourceSHA256 != page.SourceSHA256 {
-			return fmt.Errorf("%s: invalid canonical status source", status.PageID)
+			return fmt.Errorf("%s: invalid canonical status source", status.UnitID)
 		}
-		statusByID[status.PageID] = i
+		statusByID[status.UnitID] = i
 	}
 	now := options.Now
 	if now == nil {

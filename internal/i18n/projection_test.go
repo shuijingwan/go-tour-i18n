@@ -161,7 +161,7 @@ func TestBuildLocaleProjectionRejectsCatalogStatusSetMismatch(t *testing.T) {
 	})
 	t.Run("extra", func(t *testing.T) {
 		fixture := newProjectionFixture(t)
-		fixture.statuses = append(fixture.statuses, Status{PageID: "extra/1", State: "pending", SourceSHA256: strings.Repeat("a", 64)})
+		fixture.statuses = append(fixture.statuses, Status{UnitID: "extra/1", State: "pending", SourceSHA256: strings.Repeat("a", 64)})
 		fixture.writeStatuses(t)
 		if _, err := BuildLocaleProjection(fixture.root, fixture.catalog, "zh-CN", filepath.Join(t.TempDir(), "projection")); err == nil {
 			t.Fatal("extra status page was accepted")
@@ -190,7 +190,7 @@ func TestBuildLocaleProjectionRequiresCanonicalCandidatePath(t *testing.T) {
 
 func TestBuildLocaleProjectionRejectsResidualProtectedToken(t *testing.T) {
 	fixture := newProjectionFixture(t)
-	pageID := fixture.statuses[2].PageID
+	pageID := fixture.statuses[2].UnitID
 	candidate := append([]byte(nil), fixture.candidates[pageID]...)
 	candidate = bytes.Replace(candidate, []byte("第三段译文。"), []byte("第三段译文。⟪GTI18N_deadbeef_000001⟫"), 1)
 	if err := os.WriteFile(filepath.Join(fixture.root, filepath.FromSlash(fixture.statuses[2].CandidatePath)), candidate, 0644); err != nil {
@@ -314,9 +314,9 @@ func newProjectionFixture(t *testing.T) *projectionFixture {
 	for _, page := range pages {
 		path := canonicalCandidatePath("zh-CN", page.ID)
 		writeFixtureFile(t, filepath.Join(root, filepath.FromSlash(path)), candidates[page.ID])
-		fixture.statuses = append(fixture.statuses, Status{PageID: page.ID, State: "ready", Attempts: 1, SourceSHA256: page.SourceSHA256, CandidatePath: path})
+		fixture.statuses = append(fixture.statuses, Status{UnitID: page.ID, State: "ready", Attempts: 1, SourceSHA256: page.SourceSHA256, CandidatePath: path})
 	}
-	fixture.statuses = append(fixture.statuses, Status{PageID: "example:alpha/one.go", State: "pending", SourceSHA256: sum(exampleSource)})
+	fixture.statuses = append(fixture.statuses, Status{UnitID: "example:alpha/one.go", State: "pending", SourceSHA256: sum(exampleSource)})
 	fixture.writeStatuses(t)
 	fixture.writeMetadata(t, fixture.metadata)
 	return fixture

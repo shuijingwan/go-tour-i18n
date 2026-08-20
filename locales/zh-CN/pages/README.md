@@ -9,4 +9,4 @@
 - build / projection 从 catalog、locale status 和全部 canonical `ready` candidates 生成正式语言内容；缺少 ready candidate 时失败，不回退到英文或旧译文。
 - production release bundle 使用生成后的正式内容，不依赖 `pages/` 作为手工维护的最终译文集合。
 
-页面继续以持久 `page_id` 关联 catalog、状态和 candidate；route、上游位置或标题变化时不得自动更换 ID。完整规则见 [`../../../PAGE_IDENTITY.md`](../../../PAGE_IDENTITY.md)。
+页面继续以冻结的 Page ID 关联 catalog；统一状态和 canonical candidate 使用 `unit_id`。route、上游位置或标题变化时不得自动更换 Page ID，完整规则见 [`../../../PAGE_IDENTITY.md`](../../../PAGE_IDENTITY.md)。

@@ -209,7 +209,7 @@ func run(args []string) error {
 			return fmt.Errorf("--locale is required")
 		}
 		result, err := i18n.ExportRetranslationBatch(root, catalog, i18n.RetranslationExportOptions{
-			Locale: *locale, BatchID: *batchID, PageIDs: pageIDs, UnitKind: i18n.UnitKind(*unitKind), Limit: *limit, AllowReexport: *allowReexport,
+			Locale: *locale, BatchID: *batchID, UnitIDs: pageIDs, UnitKind: i18n.UnitKind(*unitKind), Limit: *limit, AllowReexport: *allowReexport,
 		})
 		if err != nil {
 			return err
@@ -243,17 +243,13 @@ func run(args []string) error {
 		locale := fs.String("locale", "", "target locale")
 		batchID := fs.String("batch-id", "", "包含失败翻译单元的批次 ID")
 		unitID := fs.String("unit-id", "", "失败翻译单元 ID")
-		pageID := fs.String("page-id", "", "历史兼容：失败课程页面 ID")
 		if err := fs.Parse(args[2:]); err != nil {
 			return err
 		}
-		if *unitID != "" && *pageID != "" {
-			return fmt.Errorf("--unit-id 和 --page-id 不能同时指定")
+		if *locale == "" || *batchID == "" || *unitID == "" {
+			return fmt.Errorf("--locale、--batch-id 和 --unit-id 为必填")
 		}
-		if *locale == "" || *batchID == "" || (*unitID == "" && *pageID == "") {
-			return fmt.Errorf("--locale、--batch-id，以及 --unit-id/--page-id 二者之一为必填")
-		}
-		result, err := i18n.ProcessRetranslationRetry(root, catalog, i18n.RetranslationRetryOptions{Locale: *locale, BatchID: *batchID, UnitID: *unitID, PageID: *pageID})
+		result, err := i18n.ProcessRetranslationRetry(root, catalog, i18n.RetranslationRetryOptions{Locale: *locale, BatchID: *batchID, UnitID: *unitID})
 		if err != nil {
 			return err
 		}

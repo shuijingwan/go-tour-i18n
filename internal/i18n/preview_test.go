@@ -111,12 +111,12 @@ func TestPersistentIDsAndReconcile(t *testing.T) {
 	}
 	var statusIDs []string
 	for _, status := range statuses {
-		unit, err := committed.Unit(status.UnitID())
+		unit, err := committed.Unit(status.UnitID)
 		if err != nil {
 			t.Fatal(err)
 		}
 		if unit.Kind == UnitKindPage {
-			statusIDs = append(statusIDs, status.UnitID())
+			statusIDs = append(statusIDs, status.UnitID)
 		}
 	}
 	if !reflect.DeepEqual(ids, statusIDs) {

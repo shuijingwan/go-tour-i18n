@@ -11,17 +11,16 @@ import (
 	"strings"
 )
 
-const retranslationProcessSchemaVersion = 1
+const retranslationProcessSchemaVersion = 2
 
 type RetranslationProcessOptions struct {
 	Locale  string
 	BatchID string
 }
 
-type RetranslationPageResult struct {
-	UnitID         string   `json:"unit_id,omitempty"`
-	UnitKind       UnitKind `json:"unit_kind,omitempty"`
-	PageID         string   `json:"page_id"`
+type RetranslationUnitResult struct {
+	UnitID         string   `json:"unit_id"`
+	UnitKind       UnitKind `json:"unit_kind"`
 	Status         string   `json:"status"`
 	CandidatePath  string   `json:"candidate_path,omitempty"`
 	ValidationPath string   `json:"validation_path"`
@@ -31,12 +30,12 @@ type RetranslationProcessResult struct {
 	SchemaVersion    int                       `json:"schema_version"`
 	BatchID          string                    `json:"batch_id"`
 	Locale           string                    `json:"locale"`
-	PageCount        int                       `json:"page_count"`
+	UnitCount        int                       `json:"unit_count"`
 	RestorePassed    int                       `json:"restore_passed"`
 	RestoreFailed    int                       `json:"restore_failed"`
 	ValidationPassed int                       `json:"validation_passed"`
 	ValidationFailed int                       `json:"validation_failed"`
-	Pages            []RetranslationPageResult `json:"pages"`
+	Units            []RetranslationUnitResult `json:"units"`
 	NoPendingBatches bool                      `json:"no_pending_batches,omitempty"`
 }
 
@@ -44,11 +43,10 @@ type RetranslationValidation struct {
 	SchemaVersion   int      `json:"schema_version"`
 	BatchID         string   `json:"batch_id"`
 	Locale          string   `json:"locale"`
-	UnitID          string   `json:"unit_id,omitempty"`
-	UnitKind        UnitKind `json:"unit_kind,omitempty"`
-	SourceSHA256    string   `json:"source_sha256,omitempty"`
-	Attempt         int      `json:"attempt,omitempty"`
-	PageID          string   `json:"page_id"`
+	UnitID          string   `json:"unit_id"`
+	UnitKind        UnitKind `json:"unit_kind"`
+	SourceSHA256    string   `json:"source_sha256"`
+	Attempt         int      `json:"attempt"`
 	Status          string   `json:"status"`
 	InputPath       string   `json:"input_path"`
 	RawResponsePath string   `json:"raw_response_path"`
@@ -57,9 +55,8 @@ type RetranslationValidation struct {
 }
 
 type preparedRetranslationPage struct {
-	manifest  RetranslationBatchPage
+	manifest  RetranslationBatchUnit
 	unit      *TranslationUnit
-	page      Page
 	protected protectedTranslation
 	raw       []byte
 }
@@ -123,7 +120,7 @@ func ProcessRetranslationBatch(root string, catalog *Catalog, options Retranslat
 	}
 	result := &RetranslationProcessResult{
 		SchemaVersion: retranslationProcessSchemaVersion, BatchID: batchID, Locale: options.Locale,
-		PageCount: len(prepared), Pages: make([]RetranslationPageResult, 0, len(prepared)),
+		UnitCount: len(prepared), Units: make([]RetranslationUnitResult, 0, len(prepared)),
 	}
 	for _, item := range prepared {
 		name := filepath.Base(filepath.FromSlash(item.manifest.InputPath))
@@ -133,14 +130,14 @@ func ProcessRetranslationBatch(root string, catalog *Catalog, options Retranslat
 		evidence := RetranslationValidation{
 			SchemaVersion: retranslationProcessSchemaVersion, BatchID: batchID, Locale: options.Locale,
 			UnitID: item.unit.ID, UnitKind: item.unit.Kind, SourceSHA256: item.unit.SourceSHA256,
-			Attempt: 1, PageID: item.manifest.PageID, InputPath: item.manifest.InputPath, RawResponsePath: rawPath,
+			Attempt: 1, InputPath: item.manifest.InputPath, RawResponsePath: rawPath,
 		}
-		pageResult := RetranslationPageResult{UnitID: item.unit.ID, UnitKind: item.unit.Kind, PageID: item.manifest.PageID, ValidationPath: validationPath}
+		unitResult := RetranslationUnitResult{UnitID: item.unit.ID, UnitKind: item.unit.Kind, ValidationPath: validationPath}
 		restored, failures := item.protected.restore(string(item.raw))
 		if len(failures) != 0 {
 			evidence.Status = "restore_failed"
 			evidence.Error = strings.Join(failures, "; ")
-			pageResult.Status = evidence.Status
+			unitResult.Status = evidence.Status
 			result.RestoreFailed++
 		} else {
 			result.RestorePassed++
@@ -148,7 +145,7 @@ func ProcessRetranslationBatch(root string, catalog *Catalog, options Retranslat
 				return nil, fmt.Errorf("write staged candidate for %s: %w", item.unit.ID, err)
 			}
 			evidence.CandidatePath = candidatePath
-			pageResult.CandidatePath = candidatePath
+			unitResult.CandidatePath = candidatePath
 			if err := ValidateTranslationUnitCandidate(root, catalog, item.unit.ID, options.Locale, []byte(restored)); err != nil {
 				evidence.Status = "validation_failed"
 				evidence.Error = err.Error()
@@ -157,12 +154,12 @@ func ProcessRetranslationBatch(root string, catalog *Catalog, options Retranslat
 				evidence.Status = "passed"
 				result.ValidationPassed++
 			}
-			pageResult.Status = evidence.Status
+			unitResult.Status = evidence.Status
 		}
 		if err := writeTranslationJSON(filepath.Join(staging, filepath.FromSlash(validationPath)), evidence); err != nil {
 			return nil, fmt.Errorf("write validation for %s: %w", item.unit.ID, err)
 		}
-		result.Pages = append(result.Pages, pageResult)
+		result.Units = append(result.Units, unitResult)
 	}
 	if err := writeTranslationJSON(filepath.Join(staging, "result.json"), result); err != nil {
 		return nil, fmt.Errorf("write retranslation result: %w", err)
@@ -227,17 +224,149 @@ func readRetranslationProcessManifest(batchDir, locale, batchID string) (*Retran
 	if err != nil {
 		return nil, fmt.Errorf("read retranslation manifest for %q: %w", batchID, err)
 	}
-	var manifest RetranslationBatchManifest
-	if err := json.Unmarshal(data, &manifest); err != nil {
+	manifest, err := decodeRetranslationManifest(data)
+	if err != nil {
 		return nil, fmt.Errorf("parse retranslation manifest for %q: %w", batchID, err)
 	}
-	if manifest.SchemaVersion != 1 || manifest.BatchID != batchID || manifest.Locale != locale || manifest.ProtectionMode != "default" || (manifest.TranslationUnit != "present.Section" && manifest.TranslationUnit != "go.example") {
+	if manifest.SchemaVersion != 2 || manifest.BatchID != batchID || manifest.Locale != locale || manifest.ProtectionMode != "default" || (manifest.UnitKind != UnitKindPage && manifest.UnitKind != UnitKindExample) {
 		return nil, fmt.Errorf("retranslation batch %q has incompatible manifest metadata", batchID)
 	}
-	if manifest.PageCount < 1 || manifest.PageCount != len(manifest.Pages) {
-		return nil, fmt.Errorf("retranslation batch %q page_count %d does not match pages %d", batchID, manifest.PageCount, len(manifest.Pages))
+	if manifest.UnitCount < 1 || manifest.UnitCount != len(manifest.Units) {
+		return nil, fmt.Errorf("retranslation batch %q unit_count %d does not match units %d", batchID, manifest.UnitCount, len(manifest.Units))
 	}
-	return &manifest, nil
+	return manifest, nil
+}
+
+// legacyRetranslationManifest is the single compatibility boundary for the
+// immutable Page-only Batch 001-011 audit evidence.
+type legacyRetranslationManifest struct {
+	SchemaVersion   int    `json:"schema_version"`
+	BatchID         string `json:"batch_id"`
+	Locale          string `json:"locale"`
+	ProtectionMode  string `json:"protection_mode"`
+	TranslationUnit string `json:"translation_unit"`
+	PageCount       int    `json:"page_count"`
+	Pages           []struct {
+		PageID              string `json:"page_id"`
+		Article             string `json:"article"`
+		SourceSHA256        string `json:"source_sha256"`
+		InputPath           string `json:"input_path"`
+		InputSHA256         string `json:"input_sha256"`
+		ProtectedTokenCount int    `json:"protected_token_count"`
+	} `json:"pages"`
+}
+
+func decodeRetranslationManifest(data []byte) (*RetranslationBatchManifest, error) {
+	var current RetranslationBatchManifest
+	if err := json.Unmarshal(data, &current); err != nil {
+		return nil, err
+	}
+	if current.SchemaVersion == 2 {
+		return &current, nil
+	}
+	var legacy legacyRetranslationManifest
+	if err := json.Unmarshal(data, &legacy); err != nil {
+		return nil, err
+	}
+	if legacy.SchemaVersion != 1 || legacy.TranslationUnit != "present.Section" || legacy.PageCount != len(legacy.Pages) {
+		return nil, errors.New("unsupported legacy retranslation manifest")
+	}
+	normalized := &RetranslationBatchManifest{
+		SchemaVersion: 2, BatchID: legacy.BatchID, Locale: legacy.Locale,
+		ProtectionMode: legacy.ProtectionMode, UnitKind: UnitKindPage,
+		UnitCount: legacy.PageCount, Units: make([]RetranslationBatchUnit, 0, legacy.PageCount),
+	}
+	for _, page := range legacy.Pages {
+		normalized.Units = append(normalized.Units, RetranslationBatchUnit{
+			UnitID: page.PageID, UnitKind: UnitKindPage,
+			SourcePath:   filepath.ToSlash(filepath.Join("_content", "tour", page.Article)),
+			SourceSHA256: page.SourceSHA256, InputPath: page.InputPath,
+			InputSHA256: page.InputSHA256, ProtectedTokenCount: page.ProtectedTokenCount,
+		})
+	}
+	return normalized, nil
+}
+
+type legacyRetranslationProcessResult struct {
+	SchemaVersion    int    `json:"schema_version"`
+	BatchID          string `json:"batch_id"`
+	Locale           string `json:"locale"`
+	PageCount        int    `json:"page_count"`
+	RestorePassed    int    `json:"restore_passed"`
+	RestoreFailed    int    `json:"restore_failed"`
+	ValidationPassed int    `json:"validation_passed"`
+	ValidationFailed int    `json:"validation_failed"`
+	Pages            []struct {
+		PageID         string `json:"page_id"`
+		Status         string `json:"status"`
+		CandidatePath  string `json:"candidate_path"`
+		ValidationPath string `json:"validation_path"`
+	} `json:"pages"`
+}
+
+func decodeRetranslationProcessResult(data []byte) (*RetranslationProcessResult, error) {
+	var current RetranslationProcessResult
+	if err := json.Unmarshal(data, &current); err != nil {
+		return nil, err
+	}
+	if current.SchemaVersion == retranslationProcessSchemaVersion {
+		return &current, nil
+	}
+	var legacy legacyRetranslationProcessResult
+	if err := json.Unmarshal(data, &legacy); err != nil {
+		return nil, err
+	}
+	if legacy.SchemaVersion != 1 || legacy.PageCount != len(legacy.Pages) {
+		return nil, errors.New("unsupported legacy retranslation process result")
+	}
+	normalized := &RetranslationProcessResult{
+		SchemaVersion: retranslationProcessSchemaVersion, BatchID: legacy.BatchID, Locale: legacy.Locale,
+		UnitCount: legacy.PageCount, RestorePassed: legacy.RestorePassed, RestoreFailed: legacy.RestoreFailed,
+		ValidationPassed: legacy.ValidationPassed, ValidationFailed: legacy.ValidationFailed,
+		Units: make([]RetranslationUnitResult, 0, legacy.PageCount),
+	}
+	for _, page := range legacy.Pages {
+		normalized.Units = append(normalized.Units, RetranslationUnitResult{
+			UnitID: page.PageID, UnitKind: UnitKindPage, Status: page.Status,
+			CandidatePath: page.CandidatePath, ValidationPath: page.ValidationPath,
+		})
+	}
+	return normalized, nil
+}
+
+type legacyRetranslationValidation struct {
+	SchemaVersion   int    `json:"schema_version"`
+	BatchID         string `json:"batch_id"`
+	Locale          string `json:"locale"`
+	PageID          string `json:"page_id"`
+	Status          string `json:"status"`
+	InputPath       string `json:"input_path"`
+	RawResponsePath string `json:"raw_response_path"`
+	CandidatePath   string `json:"candidate_path"`
+	Error           string `json:"error"`
+}
+
+func decodeRetranslationValidation(data []byte, unit *TranslationUnit) (*RetranslationValidation, error) {
+	var current RetranslationValidation
+	if err := json.Unmarshal(data, &current); err != nil {
+		return nil, err
+	}
+	if current.SchemaVersion == retranslationProcessSchemaVersion {
+		return &current, nil
+	}
+	var legacy legacyRetranslationValidation
+	if err := json.Unmarshal(data, &legacy); err != nil {
+		return nil, err
+	}
+	if legacy.SchemaVersion != 1 || unit == nil || legacy.PageID != unit.ID || unit.Kind != UnitKindPage {
+		return nil, errors.New("unsupported legacy retranslation validation")
+	}
+	return &RetranslationValidation{
+		SchemaVersion: retranslationProcessSchemaVersion, BatchID: legacy.BatchID, Locale: legacy.Locale,
+		UnitID: unit.ID, UnitKind: unit.Kind, SourceSHA256: unit.SourceSHA256, Attempt: 1,
+		Status: legacy.Status, InputPath: legacy.InputPath, RawResponsePath: legacy.RawResponsePath,
+		CandidatePath: legacy.CandidatePath, Error: legacy.Error,
+	}, nil
 }
 
 func preflightRetranslationProcess(batchDir string, catalog *Catalog, glossary *Glossary, manifest *RetranslationBatchManifest) ([]preparedRetranslationPage, error) {
@@ -246,11 +375,11 @@ func preflightRetranslationProcess(batchDir string, catalog *Catalog, glossary *
 	if err != nil {
 		return nil, fmt.Errorf("read raw responses: %w", err)
 	}
-	expectedRaw := make(map[string]bool, len(manifest.Pages))
+	expectedRaw := make(map[string]bool, len(manifest.Units))
 	seenUnits := map[string]bool{}
-	prepared := make([]preparedRetranslationPage, 0, len(manifest.Pages))
-	for _, record := range manifest.Pages {
-		unitID, unitKind := retranslationManifestUnit(record)
+	prepared := make([]preparedRetranslationPage, 0, len(manifest.Units))
+	for _, record := range manifest.Units {
+		unitID, unitKind := record.UnitID, record.UnitKind
 		if unitID == "" {
 			return nil, errors.New("retranslation manifest has empty translation unit id")
 		}
@@ -262,25 +391,14 @@ func preflightRetranslationProcess(batchDir string, catalog *Catalog, glossary *
 		if err != nil {
 			return nil, fmt.Errorf("manifest translation unit %q: %w", unitID, err)
 		}
-		if unit.Kind != unitKind || manifest.TranslationUnit != retranslationUnitType(unitKind) {
+		if unit.Kind != unitKind || manifest.UnitKind != unitKind {
 			return nil, fmt.Errorf("%s: manifest unit_kind %q does not match Catalog kind %q", unitID, unitKind, unit.Kind)
 		}
 		if unit.SourceSHA256 != record.SourceSHA256 || sum(unit.Source) != record.SourceSHA256 {
 			return nil, fmt.Errorf("%s: manifest source metadata does not match current Catalog", unitID)
 		}
-		if record.UnitID != "" && record.SourcePath != unit.SourcePath {
+		if record.SourcePath != unit.SourcePath {
 			return nil, fmt.Errorf("%s: manifest source_path %q does not match %q", unitID, record.SourcePath, unit.SourcePath)
-		}
-		var page Page
-		if unit.Kind == UnitKindPage {
-			pagePtr, err := catalog.Page(unitID)
-			if err != nil {
-				return nil, err
-			}
-			page = *pagePtr
-			if record.PageID != unitID || page.Article != record.Article || page.SectionNumber != record.SectionNumber || page.Route != record.Route {
-				return nil, fmt.Errorf("%s: manifest page metadata does not match current Catalog", unitID)
-			}
 		}
 		name := filepath.Base(filepath.FromSlash(record.InputPath))
 		wantInputPath := filepath.ToSlash(filepath.Join("inputs", name))
@@ -313,7 +431,7 @@ func preflightRetranslationProcess(batchDir string, catalog *Catalog, glossary *
 		if err != nil {
 			return nil, fmt.Errorf("%s: read raw response: %w", unitID, err)
 		}
-		prepared = append(prepared, preparedRetranslationPage{manifest: record, unit: unit, page: page, protected: protected, raw: raw})
+		prepared = append(prepared, preparedRetranslationPage{manifest: record, unit: unit, protected: protected, raw: raw})
 	}
 	actual := map[string]bool{}
 	for _, entry := range entries {
@@ -332,11 +450,4 @@ func preflightRetranslationProcess(batchDir string, catalog *Catalog, glossary *
 		return nil, fmt.Errorf("raw response count %d, want %d", len(actual), len(expectedRaw))
 	}
 	return prepared, nil
-}
-
-func retranslationManifestUnit(record RetranslationBatchPage) (string, UnitKind) {
-	if record.UnitID == "" {
-		return record.PageID, UnitKindPage
-	}
-	return record.UnitID, record.UnitKind
 }

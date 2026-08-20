@@ -23,7 +23,7 @@ type Locale struct {
 }
 
 type Status struct {
-	PageID        string
+	UnitID        string
 	State         string
 	Attempts      int
 	SourceSHA256  string
@@ -31,10 +31,6 @@ type Status struct {
 	UpdatedAt     string
 	Note          string
 }
-
-// UnitID returns the translation unit identity stored in the legacy page_id
-// column. The on-disk name remains unchanged for compatibility.
-func (s Status) UnitID() string { return s.PageID }
 
 var allowedStates = map[string]bool{"pending": true, "candidate": true, "ready": true, "blocked": true, "published": true}
 
@@ -64,7 +60,7 @@ func CheckStatus(root, localeName string, catalog *Catalog) error {
 	}
 	seen := map[string]bool{}
 	for _, s := range statuses {
-		unitID := s.UnitID()
+		unitID := s.UnitID
 		if seen[unitID] {
 			return fmt.Errorf("duplicate translation unit ID %q", unitID)
 		}
@@ -173,7 +169,7 @@ func ReadStatuses(path string) ([]Status, error) {
 	if err != nil {
 		return nil, err
 	}
-	want := []string{"page_id", "status", "attempts", "source_sha256", "candidate_path", "updated_at", "note"}
+	want := []string{"unit_id", "status", "attempts", "source_sha256", "candidate_path", "updated_at", "note"}
 	for i := range want {
 		if header[i] != want[i] {
 			return nil, fmt.Errorf("status header column %d=%q, want %q", i+1, header[i], want[i])
@@ -204,10 +200,10 @@ func ReadStatuses(path string) ([]Status, error) {
 
 func writeStatuses(path string, statuses []Status) error {
 	records := make([][]string, 0, len(statuses)+1)
-	records = append(records, []string{"page_id", "status", "attempts", "source_sha256", "candidate_path", "updated_at", "note"})
+	records = append(records, []string{"unit_id", "status", "attempts", "source_sha256", "candidate_path", "updated_at", "note"})
 	for _, status := range statuses {
 		records = append(records, []string{
-			status.PageID,
+			status.UnitID,
 			status.State,
 			strconv.Itoa(status.Attempts),
 			status.SourceSHA256,

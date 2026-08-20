@@ -51,17 +51,17 @@ func BuildLocaleProjection(root string, catalog *Catalog, locale, outputRoot str
 	statusByID := make(map[string]Status, len(statuses))
 	result := &LocaleProjection{Locale: locale}
 	for _, status := range statuses {
-		unit, unitErr := catalog.Unit(status.UnitID())
+		unit, unitErr := catalog.Unit(status.UnitID)
 		if unitErr != nil {
 			return nil, unitErr
 		}
 		if unit.Kind != UnitKindPage {
 			continue
 		}
-		if _, exists := statusByID[status.UnitID()]; exists {
-			return nil, fmt.Errorf("duplicate status page_id %q", status.UnitID())
+		if _, exists := statusByID[status.UnitID]; exists {
+			return nil, fmt.Errorf("duplicate status unit_id %q", status.UnitID)
 		}
-		statusByID[status.UnitID()] = status
+		statusByID[status.UnitID] = status
 		switch status.State {
 		case "ready":
 			result.Ready++
@@ -251,7 +251,7 @@ func loadPageStatus(root, pageID, locale string) (*Status, error) {
 		return nil, err
 	}
 	for i := range statuses {
-		if statuses[i].PageID == pageID {
+		if statuses[i].UnitID == pageID {
 			return &statuses[i], nil
 		}
 	}

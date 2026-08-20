@@ -37,7 +37,7 @@ func TestCommittedStatus(t *testing.T) {
 		if err := validateCommittedStatus(root, c, "zh-CN", s); err != nil {
 			t.Fatal(err)
 		}
-		unit, err := c.Unit(s.UnitID())
+		unit, err := c.Unit(s.UnitID)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -50,18 +50,18 @@ func TestCommittedStatus(t *testing.T) {
 		}
 		pageCount++
 		if s.UpdatedAt == "" {
-			t.Fatalf("%s: promoted status has empty updated_at", s.PageID)
+			t.Fatalf("%s: promoted status has empty updated_at", s.UnitID)
 		}
 		if !promotionNoteRE.MatchString(s.Note) {
-			t.Fatalf("%s: unexpected promotion note %q", s.PageID, s.Note)
+			t.Fatalf("%s: unexpected promotion note %q", s.UnitID, s.Note)
 		}
-		if batch := wantLatestBatch[s.PageID]; batch != "" {
+		if batch := wantLatestBatch[s.UnitID]; batch != "" {
 			wantNote := "ChatGPT retranslation promoted from " + batch + "; passed canonical validator"
 			if s.Note != wantNote {
-				t.Fatalf("%s: promotion note = %q, want %q", s.PageID, s.Note, wantNote)
+				t.Fatalf("%s: promotion note = %q, want %q", s.UnitID, s.Note, wantNote)
 			}
 		}
-		switch s.PageID {
+		switch s.UnitID {
 		case "welcome/1":
 			if s.State != "ready" || s.Attempts != 6 || s.SourceSHA256 != "1f581133d7fa40e6490418c6789a60a2f5e1de26c9c86d7eb6120cb58b145857" || s.CandidatePath != "locales/zh-CN/candidates/welcome-1.article" {
 				t.Fatalf("welcome/1 status: %+v", s)
@@ -130,7 +130,7 @@ func TestCommittedStatus(t *testing.T) {
 }
 
 func validateCommittedStatus(root string, catalog *Catalog, locale string, status Status) error {
-	unit, err := catalog.Unit(status.UnitID())
+	unit, err := catalog.Unit(status.UnitID)
 	if err != nil {
 		return err
 	}
@@ -141,31 +141,31 @@ func validateCommittedStatus(root string, catalog *Catalog, locale string, statu
 	switch status.State {
 	case "pending":
 		if status.CandidatePath != "" {
-			return fmt.Errorf("%s: pending status has candidate path %q", status.PageID, status.CandidatePath)
+			return fmt.Errorf("%s: pending status has candidate path %q", status.UnitID, status.CandidatePath)
 		}
 	case "blocked":
 		if status.Attempts <= 0 {
-			return fmt.Errorf("%s: blocked status has attempts=%d, want > 0", status.PageID, status.Attempts)
+			return fmt.Errorf("%s: blocked status has attempts=%d, want > 0", status.UnitID, status.Attempts)
 		}
 		if status.CandidatePath != "" {
-			return fmt.Errorf("%s: blocked status has candidate path %q", status.PageID, status.CandidatePath)
+			return fmt.Errorf("%s: blocked status has candidate path %q", status.UnitID, status.CandidatePath)
 		}
 	case "ready", "candidate", "published":
 		if status.Attempts <= 0 {
-			return fmt.Errorf("%s: %s status has attempts=%d, want > 0", status.PageID, status.State, status.Attempts)
+			return fmt.Errorf("%s: %s status has attempts=%d, want > 0", status.UnitID, status.State, status.Attempts)
 		}
 		if status.CandidatePath != canonicalCandidate {
-			return fmt.Errorf("%s: %s candidate path = %q, want %q", status.PageID, status.State, status.CandidatePath, canonicalCandidate)
+			return fmt.Errorf("%s: %s candidate path = %q, want %q", status.UnitID, status.State, status.CandidatePath, canonicalCandidate)
 		}
 		candidate, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(status.CandidatePath)))
 		if err != nil {
-			return fmt.Errorf("%s: read committed candidate: %w", status.PageID, err)
+			return fmt.Errorf("%s: read committed candidate: %w", status.UnitID, err)
 		}
-		if err := ValidateTranslationUnitCandidate(root, catalog, status.UnitID(), locale, candidate); err != nil {
-			return fmt.Errorf("%s: committed candidate validation: %w", status.PageID, err)
+		if err := ValidateTranslationUnitCandidate(root, catalog, status.UnitID, locale, candidate); err != nil {
+			return fmt.Errorf("%s: committed candidate validation: %w", status.UnitID, err)
 		}
 	default:
-		return fmt.Errorf("%s: unsupported committed status %q", status.PageID, status.State)
+		return fmt.Errorf("%s: unsupported committed status %q", status.UnitID, status.State)
 	}
 	return nil
 }
@@ -217,7 +217,7 @@ func TestCommittedWorkflowCanonicalCandidatePathsAreUnique(t *testing.T) {
 
 func TestCommittedStateInvariants(t *testing.T) {
 	source := []byte("* Source\n\nSource paragraph with `code`.\n")
-	root := writeStatusFixture(t, "page_id\tstatus\tattempts\tsource_sha256\tcandidate_path\tupdated_at\tnote\nexample/1\tpending\t0\t"+sum(source)+"\t\t\t\n")
+	root := writeStatusFixture(t, "unit_id\tstatus\tattempts\tsource_sha256\tcandidate_path\tupdated_at\tnote\nexample/1\tpending\t0\t"+sum(source)+"\t\t\t\n")
 	writeTestGlossary(t, root)
 	catalog := &Catalog{Pages: []Page{{ID: "example/1", Article: "basics.article", Source: source, SourceSHA256: sum(source)}}}
 	canonical := "locales/zh-CN/candidates/example-1.article"
@@ -233,19 +233,19 @@ func TestCommittedStateInvariants(t *testing.T) {
 		}
 	}
 	writeCandidate(t, valid)
-	ready := Status{PageID: "example/1", State: "ready", Attempts: 7, SourceSHA256: sum(source), CandidatePath: canonical}
+	ready := Status{UnitID: "example/1", State: "ready", Attempts: 7, SourceSHA256: sum(source), CandidatePath: canonical}
 	if err := validateCommittedStatus(root, catalog, "zh-CN", ready); err != nil {
 		t.Fatalf("valid ready with historical attempts rejected: %v", err)
 	}
-	blocked := Status{PageID: "example/1", State: "blocked", Attempts: 7, SourceSHA256: sum(source)}
+	blocked := Status{UnitID: "example/1", State: "blocked", Attempts: 7, SourceSHA256: sum(source)}
 	if err := validateCommittedStatus(root, catalog, "zh-CN", blocked); err != nil {
 		t.Fatalf("valid blocked rejected: %v", err)
 	}
 	for name, status := range map[string]Status{
-		"ready missing candidate": {PageID: "example/1", State: "ready", Attempts: 1, SourceSHA256: sum(source), CandidatePath: "locales/zh-CN/candidates/missing.article"},
-		"ready nonstandard path":  {PageID: "example/1", State: "ready", Attempts: 1, SourceSHA256: sum(source), CandidatePath: "other.article"},
-		"pending candidate":       {PageID: "example/1", State: "pending", CandidatePath: canonical},
-		"blocked no attempts":     {PageID: "example/1", State: "blocked", Attempts: 0},
+		"ready missing candidate": {UnitID: "example/1", State: "ready", Attempts: 1, SourceSHA256: sum(source), CandidatePath: "locales/zh-CN/candidates/missing.article"},
+		"ready nonstandard path":  {UnitID: "example/1", State: "ready", Attempts: 1, SourceSHA256: sum(source), CandidatePath: "other.article"},
+		"pending candidate":       {UnitID: "example/1", State: "pending", CandidatePath: canonical},
+		"blocked no attempts":     {UnitID: "example/1", State: "blocked", Attempts: 0},
 	} {
 		t.Run(name, func(t *testing.T) {
 			if err := validateCommittedStatus(root, catalog, "zh-CN", status); err == nil {
@@ -261,7 +261,7 @@ func TestCommittedStateInvariants(t *testing.T) {
 
 func TestStatusValidationFailures(t *testing.T) {
 	c := &Catalog{Pages: []Page{{ID: "x/1", SourceSHA256: strings.Repeat("a", 64)}, {ID: "x/2", SourceSHA256: strings.Repeat("b", 64)}}}
-	valid := "page_id\tstatus\tattempts\tsource_sha256\tcandidate_path\tupdated_at\tnote\n" +
+	valid := "unit_id\tstatus\tattempts\tsource_sha256\tcandidate_path\tupdated_at\tnote\n" +
 		"x/1\tpending\t0\t" + strings.Repeat("a", 64) + "\t\t\t\n" +
 		"x/2\tpending\t0\t" + strings.Repeat("b", 64) + "\t\t\t\n"
 	tests := map[string]string{
@@ -294,12 +294,12 @@ func TestUnifiedStatusExpectedSet(t *testing.T) {
 		},
 	}
 	valid := []Status{
-		{PageID: "page/1", State: "pending", SourceSHA256: sum(pageSource)},
-		{PageID: "example:eligible.go", State: "pending", SourceSHA256: sum(eligibleSource)},
+		{UnitID: "page/1", State: "pending", SourceSHA256: sum(pageSource)},
+		{UnitID: "example:eligible.go", State: "pending", SourceSHA256: sum(eligibleSource)},
 	}
 	check := func(t *testing.T, statuses []Status) error {
 		t.Helper()
-		root := writeStatusFixture(t, "page_id\tstatus\tattempts\tsource_sha256\tcandidate_path\tupdated_at\tnote\n")
+		root := writeStatusFixture(t, "unit_id\tstatus\tattempts\tsource_sha256\tcandidate_path\tupdated_at\tnote\n")
 		if err := writeStatuses(filepath.Join(root, "locales", "zh-CN", "status.tsv"), statuses); err != nil {
 			t.Fatal(err)
 		}
@@ -311,12 +311,12 @@ func TestUnifiedStatusExpectedSet(t *testing.T) {
 	tests := map[string][]Status{
 		"missing page":             {valid[1]},
 		"missing eligible example": {valid[0]},
-		"non-eligible example":     {valid[0], {PageID: "example:ineligible.go", State: "pending", SourceSHA256: sum(ineligibleSource)}},
-		"unknown ID":               {valid[0], {PageID: "example:unknown.go", State: "pending", SourceSHA256: sum(eligibleSource)}},
+		"non-eligible example":     {valid[0], {UnitID: "example:ineligible.go", State: "pending", SourceSHA256: sum(ineligibleSource)}},
+		"unknown ID":               {valid[0], {UnitID: "example:unknown.go", State: "pending", SourceSHA256: sum(eligibleSource)}},
 		"duplicate page":           {valid[0], valid[0]},
 		"duplicate example":        {valid[1], valid[1]},
-		"Example hash mismatch":    {valid[0], {PageID: valid[1].PageID, State: "pending", SourceSHA256: strings.Repeat("f", 64)}},
-		"Page hash mismatch":       {{PageID: valid[0].PageID, State: "pending", SourceSHA256: strings.Repeat("f", 64)}, valid[1]},
+		"Example hash mismatch":    {valid[0], {UnitID: valid[1].UnitID, State: "pending", SourceSHA256: strings.Repeat("f", 64)}},
+		"Page hash mismatch":       {{UnitID: valid[0].UnitID, State: "pending", SourceSHA256: strings.Repeat("f", 64)}, valid[1]},
 	}
 	for name, statuses := range tests {
 		t.Run(name, func(t *testing.T) {
@@ -343,7 +343,7 @@ func TestUnifiedStatusExpectedSet(t *testing.T) {
 func TestStatusUsesPersistentIDNotCatalogPositionOrRoute(t *testing.T) {
 	a := strings.Repeat("a", 64)
 	b := strings.Repeat("b", 64)
-	status := "page_id\tstatus\tattempts\tsource_sha256\tcandidate_path\tupdated_at\tnote\n" +
+	status := "unit_id\tstatus\tattempts\tsource_sha256\tcandidate_path\tupdated_at\tnote\n" +
 		"x/1\tpending\t0\t" + a + "\t\t\t\n" +
 		"x/2\tpending\t0\t" + b + "\t\t\t\n"
 	root := writeStatusFixture(t, status)
@@ -360,7 +360,7 @@ func TestUpdateTranslationStatusWritesCanonicalTSV(t *testing.T) {
 	a := strings.Repeat("a", 64)
 	b := strings.Repeat("b", 64)
 	c := strings.Repeat("c", 64)
-	before := "page_id\tstatus\tattempts\tsource_sha256\tcandidate_path\tupdated_at\tnote\n" +
+	before := "unit_id\tstatus\tattempts\tsource_sha256\tcandidate_path\tupdated_at\tnote\n" +
 		"x/1\tready\t2\t" + a + "\tlocales/zh-CN/candidates/x-1.article\t2026-01-02T03:04:05Z\texisting ready\n" +
 		"x/2\tpending\t0\t" + b + "\t\"\"\t\"\"\t\"\"\n" +
 		"x/3\tpending\t0\t" + c + "\t\"\"\t\"\"\t\"\"\n"
@@ -413,6 +413,9 @@ func TestUpdateTranslationStatusWritesCanonicalTSV(t *testing.T) {
 
 func writeStatusFixture(t *testing.T, status string) string {
 	t.Helper()
+	// Older TranslationRunner tests focus on Page behavior rather than the
+	// status schema; normalize their inline fixture header to the current one.
+	status = strings.Replace(status, "page_id\tstatus\t", "unit_id\tstatus\t", 1)
 	root := t.TempDir()
 	dir := filepath.Join(root, "locales", "zh-CN")
 	if err := os.MkdirAll(dir, 0755); err != nil {

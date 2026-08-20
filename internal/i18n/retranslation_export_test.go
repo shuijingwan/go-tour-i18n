@@ -1,6 +1,7 @@
 package i18n
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"io"
@@ -70,11 +71,11 @@ func TestRetranslationExportAutomaticBatchProgression(t *testing.T) {
 			t.Fatalf("batch %d: %v", batch+1, err)
 		}
 		wantBatchID := "chatgpt-zh-CN-00" + fmtInt(batch+1)
-		if result.BatchID != wantBatchID || result.PageCount != wantCount || result.AllExported {
+		if result.BatchID != wantBatchID || result.UnitCount != wantCount || result.AllExported {
 			t.Fatalf("batch %d result = %+v, want id=%s count=%d", batch+1, result, wantBatchID, wantCount)
 		}
 		manifest := readRetranslationManifest(t, root, result.BatchID)
-		if manifest.PageCount != wantCount || manifest.ProtectionMode != "default" || manifest.TranslationUnit != "present.Section" {
+		if manifest.UnitCount != wantCount || manifest.ProtectionMode != "default" || manifest.UnitKind != UnitKindPage {
 			t.Fatalf("batch %d manifest = %+v", batch+1, manifest)
 		}
 		entries, err := os.ReadDir(filepath.Join(root, result.BatchPath, "inputs"))
@@ -84,15 +85,15 @@ func TestRetranslationExportAutomaticBatchProgression(t *testing.T) {
 		if len(entries) != wantCount {
 			t.Fatalf("batch %d inputs = %d, want %d", batch+1, len(entries), wantCount)
 		}
-		for _, page := range manifest.Pages {
-			input, err := os.ReadFile(filepath.Join(root, result.BatchPath, filepath.FromSlash(page.InputPath)))
+		for _, unit := range manifest.Units {
+			input, err := os.ReadFile(filepath.Join(root, result.BatchPath, filepath.FromSlash(unit.InputPath)))
 			if err != nil {
 				t.Fatal(err)
 			}
-			if len(input) == 0 || sum(input) != page.InputSHA256 {
-				t.Fatalf("%s input hash/content mismatch", page.PageID)
+			if len(input) == 0 || sum(input) != unit.InputSHA256 {
+				t.Fatalf("%s input hash/content mismatch", unit.UnitID)
 			}
-			gotIDs = append(gotIDs, page.PageID)
+			gotIDs = append(gotIDs, unit.UnitID)
 		}
 	}
 	wantIDs := make([]string, 0, len(catalog.Pages))
@@ -114,7 +115,7 @@ func TestRetranslationExportAutomaticBatchProgression(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if !result.AllExported || result.PageCount != 0 || len(after) != len(before) {
+	if !result.AllExported || result.UnitCount != 0 || len(after) != len(before) {
 		t.Fatalf("completed export result=%+v directories=%d->%d", result, len(before), len(after))
 	}
 }
@@ -128,8 +129,8 @@ func TestRetranslationExportLimitTwentyKeepsIndependentPages(t *testing.T) {
 		t.Fatal(err)
 	}
 	manifest := readRetranslationManifest(t, root, result.BatchID)
-	if result.PageCount != 20 || manifest.PageCount != 20 || len(manifest.Pages) != 20 {
-		t.Fatalf("limit 20 result=%+v manifest count=%d", result, len(manifest.Pages))
+	if result.UnitCount != 20 || manifest.UnitCount != 20 || len(manifest.Units) != 20 {
+		t.Fatalf("limit 20 result=%+v manifest count=%d", result, len(manifest.Units))
 	}
 }
 
@@ -140,8 +141,8 @@ func TestRetranslationExportExplicitPageKindDefaultsToTen(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if result.PageCount != 10 {
-		t.Fatalf("explicit page kind count=%d, want 10", result.PageCount)
+	if result.UnitCount != 10 {
+		t.Fatalf("explicit page kind count=%d, want 10", result.UnitCount)
 	}
 }
 
@@ -158,14 +159,14 @@ func TestRetranslationExportAutomaticExampleProgression(t *testing.T) {
 		if err != nil {
 			t.Fatalf("example batch %d: %v", batch+1, err)
 		}
-		if result.PageCount != wantCount {
-			t.Fatalf("example batch %d count=%d, want %d", batch+1, result.PageCount, wantCount)
+		if result.UnitCount != wantCount {
+			t.Fatalf("example batch %d count=%d, want %d", batch+1, result.UnitCount, wantCount)
 		}
 		manifest := readRetranslationManifest(t, root, result.BatchID)
-		if manifest.TranslationUnit != "go.example" || len(manifest.Pages) != wantCount {
+		if manifest.UnitKind != UnitKindExample || len(manifest.Units) != wantCount {
 			t.Fatalf("example batch %d manifest=%+v", batch+1, manifest)
 		}
-		for _, record := range manifest.Pages {
+		for _, record := range manifest.Units {
 			if seen[record.UnitID] {
 				t.Fatalf("example %s was exported twice", record.UnitID)
 			}
@@ -187,7 +188,7 @@ func TestRetranslationExportAutomaticExampleProgression(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if !result.AllExported || result.PageCount != 0 {
+	if !result.AllExported || result.UnitCount != 0 {
 		t.Fatalf("completed example export result=%+v", result)
 	}
 }
@@ -203,7 +204,7 @@ func TestRetranslationExportAutomaticExampleLimitTwentySelectsCorpusNineteen(t *
 	if err != nil {
 		t.Fatal(err)
 	}
-	if result.PageCount != 19 || len(result.PageIDs) != 19 {
+	if result.UnitCount != 19 || len(result.UnitIDs) != 19 {
 		t.Fatalf("example limit 20 result=%+v, want 19 eligible units", result)
 	}
 }
@@ -217,24 +218,33 @@ func TestRetranslationExportExplicitExamples(t *testing.T) {
 	}
 	catalog := &Catalog{Examples: examples}
 	ids := []string{examples[0].ID, examples[1].ID}
-	result, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", PageIDs: ids})
+	result, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", UnitIDs: ids})
 	if err != nil {
 		t.Fatal(err)
 	}
 	manifest := readRetranslationManifest(t, root, result.BatchID)
-	if manifest.TranslationUnit != "go.example" || manifest.PageCount != 2 || !reflect.DeepEqual(result.PageIDs, ids) {
+	manifestJSON, err := json.Marshal(manifest)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, obsolete := range []string{`"page_id"`, `"article"`, `"section_number"`, `"route"`, `"translation_unit"`, `"page_count"`, `"pages"`} {
+		if bytes.Contains(manifestJSON, []byte(obsolete)) {
+			t.Fatalf("new manifest contains obsolete field %s: %s", obsolete, manifestJSON)
+		}
+	}
+	if manifest.UnitKind != UnitKindExample || manifest.UnitCount != 2 || !reflect.DeepEqual(result.UnitIDs, ids) {
 		t.Fatalf("example export result=%+v manifest=%+v", result, manifest)
 	}
 	glossary, err := LoadGlossary(root, "zh-CN")
 	if err != nil {
 		t.Fatal(err)
 	}
-	for i, record := range manifest.Pages {
+	for i, record := range manifest.Units {
 		unit, err := catalog.Unit(ids[i])
 		if err != nil {
 			t.Fatal(err)
 		}
-		if record.UnitID != unit.ID || record.UnitKind != UnitKindExample || record.SourcePath != unit.SourcePath || record.PageID != "" {
+		if record.UnitID != unit.ID || record.UnitKind != UnitKindExample || record.SourcePath != unit.SourcePath {
 			t.Fatalf("example manifest record=%+v", record)
 		}
 		if filepath.Ext(record.InputPath) != ".go" || record.SourceSHA256 != sum(unit.Source) {
@@ -260,13 +270,13 @@ func TestRetranslationExportExplicitUnitKindValidation(t *testing.T) {
 	example := retranslationTestExample("example:demo/comment.go", "_content/tour/demo/comment.go", "package main\n\n// Translate this comment.\nfunc main() {}\n")
 	catalog := retranslationTestCatalog(1)
 	catalog.Examples = []Example{example}
-	if _, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", UnitKind: UnitKindExample, PageIDs: []string{example.ID}}); err != nil {
+	if _, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", UnitKind: UnitKindExample, UnitIDs: []string{example.ID}}); err != nil {
 		t.Fatalf("matching explicit example kind: %v", err)
 	}
 
 	root = t.TempDir()
 	writeRetranslationTestGlossary(t, root)
-	if _, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", UnitKind: UnitKindPage, PageIDs: []string{example.ID}}); err == nil || !strings.Contains(err.Error(), "不一致") {
+	if _, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", UnitKind: UnitKindPage, UnitIDs: []string{example.ID}}); err == nil || !strings.Contains(err.Error(), "不一致") {
 		t.Fatalf("mismatched explicit kind error=%v", err)
 	}
 	if _, err := os.Stat(filepath.Join(root, "data", "retranslation-runs")); !os.IsNotExist(err) {
@@ -289,7 +299,7 @@ func TestRetranslationExportRejectsNonTranslatableAndMixedExamples(t *testing.T)
 		retranslationTestExample("example:demo/empty.go", "_content/tour/demo/empty.go", "package main\n\nfunc main() {}\n"),
 		retranslationTestExample("example:demo/comment.go", "_content/tour/demo/comment.go", "package main\n\n// Translate this comment.\nfunc main() {}\n"),
 	}
-	if _, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", PageIDs: []string{catalog.Examples[0].ID}}); err == nil || !strings.Contains(err.Error(), "没有需要翻译的普通自然语言注释") {
+	if _, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", UnitIDs: []string{catalog.Examples[0].ID}}); err == nil || !strings.Contains(err.Error(), "没有需要翻译的普通自然语言注释") {
 		t.Fatalf("non-translatable example error=%v", err)
 	}
 	base := filepath.Join(root, "data", "retranslation-runs", "zh-CN")
@@ -298,7 +308,7 @@ func TestRetranslationExportRejectsNonTranslatableAndMixedExamples(t *testing.T)
 	} else if err != nil && !os.IsNotExist(err) {
 		t.Fatal(err)
 	}
-	if _, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", PageIDs: []string{"lesson/1", catalog.Examples[1].ID}}); err == nil || !strings.Contains(err.Error(), "不能混合") {
+	if _, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", UnitIDs: []string{"lesson/1", catalog.Examples[1].ID}}); err == nil || !strings.Contains(err.Error(), "不能混合") {
 		t.Fatalf("mixed-kind error=%v", err)
 	}
 }
@@ -313,7 +323,7 @@ func TestRetranslationExportDefaultSelectionRemainsPageOnly(t *testing.T) {
 		t.Fatal(err)
 	}
 	manifest := readRetranslationManifest(t, root, result.BatchID)
-	if !reflect.DeepEqual(result.PageIDs, []string{"lesson/1"}) || manifest.TranslationUnit != "present.Section" {
+	if !reflect.DeepEqual(result.UnitIDs, []string{"lesson/1"}) || manifest.UnitKind != UnitKindPage {
 		t.Fatalf("default export selected non-page unit: result=%+v manifest=%+v", result, manifest)
 	}
 }
@@ -325,13 +335,13 @@ func TestRetranslationExportAutomaticProgressionAfterFutureManualPage(t *testing
 
 	manualPageID := catalog.Pages[14].ID
 	manual, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{
-		Locale: "zh-CN", BatchID: "manual-future-page", PageIDs: []string{manualPageID},
+		Locale: "zh-CN", BatchID: "manual-future-page", UnitIDs: []string{manualPageID},
 	})
 	if err != nil {
 		t.Fatal(err)
 	}
-	if !reflect.DeepEqual(manual.PageIDs, []string{manualPageID}) {
-		t.Fatalf("manual page IDs = %v, want [%s]", manual.PageIDs, manualPageID)
+	if !reflect.DeepEqual(manual.UnitIDs, []string{manualPageID}) {
+		t.Fatalf("manual unit IDs = %v, want [%s]", manual.UnitIDs, manualPageID)
 	}
 
 	exported := map[string]bool{manualPageID: true}
@@ -352,15 +362,15 @@ func TestRetranslationExportAutomaticProgressionAfterFutureManualPage(t *testing
 			t.Fatal(err)
 		}
 		if len(want) == 0 {
-			if !result.AllExported || result.PageCount != 0 {
+			if !result.AllExported || result.UnitCount != 0 {
 				t.Fatalf("completed result = %+v", result)
 			}
 			break
 		}
-		if result.AllExported || !reflect.DeepEqual(result.PageIDs, want) {
-			t.Fatalf("automatic page IDs = %v, want earliest unexported %v", result.PageIDs, want)
+		if result.AllExported || !reflect.DeepEqual(result.UnitIDs, want) {
+			t.Fatalf("automatic unit IDs = %v, want earliest unexported %v", result.UnitIDs, want)
 		}
-		for _, pageID := range result.PageIDs {
+		for _, pageID := range result.UnitIDs {
 			if exported[pageID] {
 				t.Fatalf("page_id %q exported more than once", pageID)
 			}
@@ -379,8 +389,8 @@ func TestRetranslationExportAutomaticProgressionAfterFutureManualPage(t *testing
 			continue
 		}
 		manifest := readRetranslationManifest(t, root, entry.Name())
-		for _, page := range manifest.Pages {
-			counts[page.PageID]++
+		for _, unit := range manifest.Units {
+			counts[unit.UnitID]++
 		}
 	}
 	if len(counts) != len(catalog.Pages) {
@@ -397,16 +407,16 @@ func TestRetranslationExportManualSelectionErrors(t *testing.T) {
 	root := t.TempDir()
 	writeRetranslationTestGlossary(t, root)
 	catalog := retranslationTestCatalog(3)
-	if _, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", PageIDs: []string{"lesson/1", "lesson/1"}}); err == nil || !strings.Contains(err.Error(), "duplicate requested") {
+	if _, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", UnitIDs: []string{"lesson/1", "lesson/1"}}); err == nil || !strings.Contains(err.Error(), "duplicate requested") {
 		t.Fatalf("duplicate request error = %v", err)
 	}
-	if _, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", PageIDs: []string{"lesson/1", "lesson/1"}, AllowReexport: true}); err == nil || !strings.Contains(err.Error(), "duplicate requested") {
+	if _, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", UnitIDs: []string{"lesson/1", "lesson/1"}, AllowReexport: true}); err == nil || !strings.Contains(err.Error(), "duplicate requested") {
 		t.Fatalf("duplicate reexport request error = %v", err)
 	}
-	if _, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", PageIDs: []string{"missing/1"}}); err == nil || !strings.Contains(err.Error(), "unknown page_id") {
+	if _, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", UnitIDs: []string{"missing/1"}}); err == nil || !strings.Contains(err.Error(), "unknown translation unit") {
 		t.Fatalf("unknown request error = %v", err)
 	}
-	if _, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", PageIDs: []string{"missing/1"}, AllowReexport: true}); err == nil || !strings.Contains(err.Error(), "unknown page_id") {
+	if _, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", UnitIDs: []string{"missing/1"}, AllowReexport: true}); err == nil || !strings.Contains(err.Error(), "unknown translation unit") {
 		t.Fatalf("unknown reexport request error = %v", err)
 	}
 	if _, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", AllowReexport: true}); err == nil || !strings.Contains(err.Error(), "requires at least one --id") {
@@ -418,21 +428,21 @@ func TestRetranslationExportManualSelectionErrors(t *testing.T) {
 	if _, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", Limit: 1}); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", PageIDs: []string{"lesson/1"}}); err == nil || !strings.Contains(err.Error(), "already exported") {
+	if _, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", UnitIDs: []string{"lesson/1"}}); err == nil || !strings.Contains(err.Error(), "already exported") {
 		t.Fatalf("already exported error = %v", err)
 	}
-	revision, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", PageIDs: []string{"lesson/1"}, AllowReexport: true})
+	revision, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", UnitIDs: []string{"lesson/1"}, AllowReexport: true})
 	if err != nil {
 		t.Fatal(err)
 	}
-	if revision.BatchID != "chatgpt-zh-CN-002" || len(revision.PageIDs) != 1 || revision.PageIDs[0] != "lesson/1" {
+	if revision.BatchID != "chatgpt-zh-CN-002" || len(revision.UnitIDs) != 1 || revision.UnitIDs[0] != "lesson/1" {
 		t.Fatalf("revision result = %+v", revision)
 	}
 	automatic, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", Limit: 10})
 	if err != nil {
 		t.Fatal(err)
 	}
-	if automatic.BatchID != "chatgpt-zh-CN-003" || !reflect.DeepEqual(automatic.PageIDs, []string{"lesson/2", "lesson/3"}) {
+	if automatic.BatchID != "chatgpt-zh-CN-003" || !reflect.DeepEqual(automatic.UnitIDs, []string{"lesson/2", "lesson/3"}) {
 		t.Fatalf("automatic result after revision = %+v", automatic)
 	}
 }
@@ -463,7 +473,7 @@ func TestRetranslationExportRejectsBrokenAndDuplicateHistory(t *testing.T) {
 			if err := os.MkdirAll(dir, 0755); err != nil {
 				t.Fatal(err)
 			}
-			manifest := RetranslationBatchManifest{SchemaVersion: 1, BatchID: batchID, Locale: "zh-CN", ProtectionMode: "default", TranslationUnit: "present.Section", PageCount: 1, Pages: []RetranslationBatchPage{{PageID: "lesson/1"}}}
+			manifest := RetranslationBatchManifest{SchemaVersion: 2, BatchID: batchID, Locale: "zh-CN", ProtectionMode: "default", UnitKind: UnitKindPage, UnitCount: 1, Units: []RetranslationBatchUnit{{UnitID: "lesson/1", UnitKind: UnitKindPage}}}
 			if err := writeTranslationJSON(filepath.Join(dir, "manifest.json"), manifest); err != nil {
 				t.Fatal(err)
 			}
@@ -472,7 +482,7 @@ func TestRetranslationExportRejectsBrokenAndDuplicateHistory(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		if result.BatchID != "chatgpt-zh-CN-003" || !reflect.DeepEqual(result.PageIDs, []string{"lesson/2", "lesson/3"}) {
+		if result.BatchID != "chatgpt-zh-CN-003" || !reflect.DeepEqual(result.UnitIDs, []string{"lesson/2", "lesson/3"}) {
 			t.Fatalf("automatic result with duplicate history = %+v", result)
 		}
 	})
@@ -487,11 +497,11 @@ func TestRetranslationExportRejectsExistingExplicitBatch(t *testing.T) {
 	if err := os.MkdirAll(dir, 0755); err != nil {
 		t.Fatal(err)
 	}
-	manifest := RetranslationBatchManifest{SchemaVersion: 1, BatchID: batchID, Locale: "zh-CN", ProtectionMode: "default", TranslationUnit: "present.Section", PageCount: 1, Pages: []RetranslationBatchPage{{PageID: "lesson/1"}}}
+	manifest := RetranslationBatchManifest{SchemaVersion: 2, BatchID: batchID, Locale: "zh-CN", ProtectionMode: "default", UnitKind: UnitKindPage, UnitCount: 1, Units: []RetranslationBatchUnit{{UnitID: "lesson/1", UnitKind: UnitKindPage}}}
 	if err := writeTranslationJSON(filepath.Join(dir, "manifest.json"), manifest); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", BatchID: batchID, PageIDs: []string{"lesson/2"}}); err == nil || !strings.Contains(err.Error(), "already exists") {
+	if _, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", BatchID: batchID, UnitIDs: []string{"lesson/2"}}); err == nil || !strings.Contains(err.Error(), "already exists") {
 		t.Fatalf("existing batch error = %v", err)
 	}
 }
@@ -504,7 +514,7 @@ func TestRetranslationExportMatchesTranslationRunnerDefaultInput(t *testing.T) {
 	if err := os.MkdirAll(filepath.Join(root, "locales", "zh-CN"), 0755); err != nil {
 		t.Fatal(err)
 	}
-	if err := writeStatuses(filepath.Join(root, "locales", "zh-CN", "status.tsv"), []Status{{PageID: page.ID, State: "pending", SourceSHA256: page.SourceSHA256}}); err != nil {
+	if err := writeStatuses(filepath.Join(root, "locales", "zh-CN", "status.tsv"), []Status{{UnitID: page.ID, State: "pending", SourceSHA256: page.SourceSHA256}}); err != nil {
 		t.Fatal(err)
 	}
 	result, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", Limit: 1})

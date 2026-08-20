@@ -1,6 +1,7 @@
 package i18n
 
 import (
+	"bytes"
 	"encoding/json"
 	"os"
 	"path/filepath"
@@ -22,7 +23,7 @@ func makeRetranslationProcessBatch(t *testing.T, count int) (string, *Catalog, s
 		t.Fatal(err)
 	}
 	manifest := readRetranslationManifest(t, root, result.BatchID)
-	for _, page := range manifest.Pages {
+	for _, page := range manifest.Units {
 		input, err := os.ReadFile(filepath.Join(batchDir, filepath.FromSlash(page.InputPath)))
 		if err != nil {
 			t.Fatal(err)
@@ -30,7 +31,7 @@ func makeRetranslationProcessBatch(t *testing.T, count int) (string, *Catalog, s
 		raw := strings.ReplaceAll(string(input), "* Page", "* 页面")
 		raw = strings.ReplaceAll(raw, "Use ", "在此页面使用 ")
 		raw = strings.ReplaceAll(raw, " on this page.", "。")
-		if err := os.WriteFile(filepath.Join(batchDir, "raw-responses", flattenedPageArticleName(page.PageID)), []byte(raw), 0644); err != nil {
+		if err := os.WriteFile(filepath.Join(batchDir, "raw-responses", retranslationUnitInputName(&TranslationUnit{ID: page.UnitID, Kind: page.UnitKind})), []byte(raw), 0644); err != nil {
 			t.Fatal(err)
 		}
 	}
@@ -57,7 +58,7 @@ func makeRetranslationExampleProcessBatch(t *testing.T) (string, *Catalog, strin
 	}
 	catalog := &Catalog{Examples: []Example{example}}
 	result, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{
-		Locale: "zh-CN", UnitKind: UnitKindExample, PageIDs: []string{example.ID},
+		Locale: "zh-CN", UnitKind: UnitKindExample, UnitIDs: []string{example.ID},
 	})
 	if err != nil {
 		t.Fatal(err)
@@ -67,13 +68,13 @@ func makeRetranslationExampleProcessBatch(t *testing.T) (string, *Catalog, strin
 		t.Fatal(err)
 	}
 	manifest := readRetranslationManifest(t, root, result.BatchID)
-	input, err := os.ReadFile(filepath.Join(batchDir, filepath.FromSlash(manifest.Pages[0].InputPath)))
+	input, err := os.ReadFile(filepath.Join(batchDir, filepath.FromSlash(manifest.Units[0].InputPath)))
 	if err != nil {
 		t.Fatal(err)
 	}
 	raw := strings.Replace(string(input), "A ", "一个 ", 1)
 	raw = strings.Replace(raw, " sends the value through the channel.", " 通过通道发送该值。", 1)
-	name := filepath.Base(filepath.FromSlash(manifest.Pages[0].InputPath))
+	name := filepath.Base(filepath.FromSlash(manifest.Units[0].InputPath))
 	if err := os.WriteFile(filepath.Join(batchDir, "raw-responses", name), []byte(raw), 0644); err != nil {
 		t.Fatal(err)
 	}
@@ -97,7 +98,7 @@ func TestRetranslationProcessExampleRestoresValidatesAndPreservesFormalData(t *t
 	if err != nil {
 		t.Fatal(err)
 	}
-	if result.RestorePassed != 1 || result.ValidationPassed != 1 || result.Pages[0].UnitKind != UnitKindExample || result.Pages[0].UnitID != catalog.Examples[0].ID || result.Pages[0].PageID != "" {
+	if result.RestorePassed != 1 || result.ValidationPassed != 1 || result.Units[0].UnitKind != UnitKindExample || result.Units[0].UnitID != catalog.Examples[0].ID {
 		t.Fatalf("example process result=%+v", result)
 	}
 	batchDir := filepath.Join(root, "data", "retranslation-runs", "zh-CN", batchID)
@@ -117,6 +118,17 @@ func TestRetranslationProcessExampleRestoresValidatesAndPreservesFormalData(t *t
 	if evidence.Status != "passed" || evidence.UnitID != catalog.Examples[0].ID || evidence.UnitKind != UnitKindExample || evidence.SourceSHA256 != catalog.Examples[0].SourceSHA256 || evidence.RawResponsePath != filepath.ToSlash(filepath.Join("raw-responses", name)) {
 		t.Fatalf("example validation evidence=%+v", evidence)
 	}
+	resultJSON, err := json.Marshal(result)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for label, encoded := range map[string][]byte{"result": resultJSON, "validation": data} {
+		for _, obsolete := range []string{`"page_id"`, `"page_count"`, `"pages"`} {
+			if bytes.Contains(encoded, []byte(obsolete)) {
+				t.Fatalf("new %s evidence contains obsolete field %s: %s", label, obsolete, encoded)
+			}
+		}
+	}
 	for path, want := range map[string]string{statusPath: "status sentinel\n", canonicalPath: "candidate sentinel\n"} {
 		got, err := os.ReadFile(path)
 		if err != nil || string(got) != want {
@@ -132,10 +144,10 @@ func TestRetranslationProcessExamplePreflightRejectsUnsafeBatch(t *testing.T) {
 		want   string
 	}{
 		{"source hash", func(t *testing.T, root string, _ *Catalog, batch, _ string) {
-			rewriteProcessManifest(t, root, batch, func(m *RetranslationBatchManifest) { m.Pages[0].SourceSHA256 = strings.Repeat("0", 64) })
+			rewriteProcessManifest(t, root, batch, func(m *RetranslationBatchManifest) { m.Units[0].SourceSHA256 = strings.Repeat("0", 64) })
 		}, "source metadata"},
 		{"input hash", func(t *testing.T, root string, _ *Catalog, batch, _ string) {
-			rewriteProcessManifest(t, root, batch, func(m *RetranslationBatchManifest) { m.Pages[0].InputSHA256 = strings.Repeat("0", 64) })
+			rewriteProcessManifest(t, root, batch, func(m *RetranslationBatchManifest) { m.Units[0].InputSHA256 = strings.Repeat("0", 64) })
 		}, "input_sha256 mismatch"},
 		{"saved input differs", func(t *testing.T, root string, _ *Catalog, batch, name string) {
 			path := filepath.Join(root, "data", "retranslation-runs", "zh-CN", batch, "inputs", name)
@@ -144,20 +156,20 @@ func TestRetranslationProcessExamplePreflightRejectsUnsafeBatch(t *testing.T) {
 			if err := os.WriteFile(path, data, 0644); err != nil {
 				t.Fatal(err)
 			}
-			rewriteProcessManifest(t, root, batch, func(m *RetranslationBatchManifest) { m.Pages[0].InputSHA256 = sum(data) })
+			rewriteProcessManifest(t, root, batch, func(m *RetranslationBatchManifest) { m.Units[0].InputSHA256 = sum(data) })
 		}, "regenerated protected input differs"},
 		{"unit kind", func(t *testing.T, root string, _ *Catalog, batch, _ string) {
 			rewriteProcessManifest(t, root, batch, func(m *RetranslationBatchManifest) {
-				m.TranslationUnit = "present.Section"
-				m.Pages[0].UnitKind = UnitKindPage
+				m.UnitKind = UnitKindPage
+				m.Units[0].UnitKind = UnitKindPage
 			})
 		}, "unit_kind"},
 		{"mixed kind", func(t *testing.T, root string, catalog *Catalog, batch, name string) {
 			pageSource := []byte("* Page\n")
 			catalog.Pages = append(catalog.Pages, Page{ID: "lesson/1", Article: "lesson.article", SectionNumber: 1, Route: "/lesson/1", Source: pageSource, SourceSHA256: sum(pageSource)})
 			rewriteProcessManifest(t, root, batch, func(m *RetranslationBatchManifest) {
-				m.PageCount++
-				m.Pages = append(m.Pages, RetranslationBatchPage{UnitID: "lesson/1", UnitKind: UnitKindPage, PageID: "lesson/1", Article: "lesson.article", SectionNumber: 1, Route: "/lesson/1", SourceSHA256: sum(pageSource), InputPath: "inputs/lesson-1.article"})
+				m.UnitCount++
+				m.Units = append(m.Units, RetranslationBatchUnit{UnitID: "lesson/1", UnitKind: UnitKindPage, SourcePath: "_content/tour/lesson.article", SourceSHA256: sum(pageSource), InputPath: "inputs/lesson-1.article"})
 			})
 			_ = name
 		}, "unit_kind"},
@@ -217,7 +229,7 @@ func TestRetranslationProcessExampleRecordsRestoreAndValidationFailures(t *testi
 			if err != nil {
 				t.Fatal(err)
 			}
-			if result.Pages[0].Status != tt.status {
+			if result.Units[0].Status != tt.status {
 				t.Fatalf("result=%+v", result)
 			}
 			validationName := strings.TrimSuffix(name, filepath.Ext(name)) + ".json"
@@ -226,19 +238,6 @@ func TestRetranslationProcessExampleRecordsRestoreAndValidationFailures(t *testi
 				t.Fatalf("validation=%s, want %q", data, tt.want)
 			}
 		})
-	}
-}
-
-func TestRetranslationProcessHistoricalPageManifestFallback(t *testing.T) {
-	root, catalog, batchID := makeRetranslationProcessBatch(t, 1)
-	rewriteProcessManifest(t, root, batchID, func(m *RetranslationBatchManifest) {
-		m.Pages[0].UnitID = ""
-		m.Pages[0].UnitKind = ""
-		m.Pages[0].SourcePath = ""
-	})
-	result, err := ProcessRetranslationBatch(root, catalog, RetranslationProcessOptions{Locale: "zh-CN", BatchID: batchID})
-	if err != nil || result.ValidationPassed != 1 {
-		t.Fatalf("historical page process result=%+v err=%v", result, err)
 	}
 }
 
@@ -303,7 +302,7 @@ func TestRetranslationProcessRestoresValidatesAndPreservesFormalData(t *testing.
 	if err != nil {
 		t.Fatal(err)
 	}
-	if result.BatchID != batchID || result.RestorePassed != 1 || result.ValidationPassed != 1 || result.RestoreFailed != 0 || result.ValidationFailed != 0 || result.Pages[0].Status != "passed" {
+	if result.BatchID != batchID || result.RestorePassed != 1 || result.ValidationPassed != 1 || result.RestoreFailed != 0 || result.ValidationFailed != 0 || result.Units[0].Status != "passed" {
 		t.Fatalf("result = %+v", result)
 	}
 	candidate, err := os.ReadFile(filepath.Join(batchDir, "candidates", "lesson-1.article"))
@@ -349,16 +348,16 @@ func TestRetranslationProcessPreflightRejectsUnsafeBatch(t *testing.T) {
 			if err := os.WriteFile(path, data, 0644); err != nil {
 				t.Fatal(err)
 			}
-			rewriteProcessManifest(t, root, batch, func(m *RetranslationBatchManifest) { m.Pages[0].InputSHA256 = sum(data) })
+			rewriteProcessManifest(t, root, batch, func(m *RetranslationBatchManifest) { m.Units[0].InputSHA256 = sum(data) })
 		}, "regenerated Default protected input differs"},
 		{"source hash", func(t *testing.T, root, batch string) {
-			rewriteProcessManifest(t, root, batch, func(m *RetranslationBatchManifest) { m.Pages[0].SourceSHA256 = strings.Repeat("0", 64) })
+			rewriteProcessManifest(t, root, batch, func(m *RetranslationBatchManifest) { m.Units[0].SourceSHA256 = strings.Repeat("0", 64) })
 		}, "source metadata"},
 		{"input hash", func(t *testing.T, root, batch string) {
-			rewriteProcessManifest(t, root, batch, func(m *RetranslationBatchManifest) { m.Pages[0].InputSHA256 = strings.Repeat("0", 64) })
+			rewriteProcessManifest(t, root, batch, func(m *RetranslationBatchManifest) { m.Units[0].InputSHA256 = strings.Repeat("0", 64) })
 		}, "input_sha256 mismatch"},
 		{"token count", func(t *testing.T, root, batch string) {
-			rewriteProcessManifest(t, root, batch, func(m *RetranslationBatchManifest) { m.Pages[0].ProtectedTokenCount++ })
+			rewriteProcessManifest(t, root, batch, func(m *RetranslationBatchManifest) { m.Units[0].ProtectedTokenCount++ })
 		}, "protected_token_count"},
 		{"missing raw", func(t *testing.T, root, batch string) {
 			if err := os.Remove(filepath.Join(root, "data", "retranslation-runs", "zh-CN", batch, "raw-responses", "lesson-1.article")); err != nil {
@@ -412,7 +411,7 @@ func TestRetranslationProcessRecordsRestoreFailures(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-			if result.RestoreFailed != 1 || result.Pages[0].Status != "restore_failed" {
+			if result.RestoreFailed != 1 || result.Units[0].Status != "restore_failed" {
 				t.Fatalf("result = %+v", result)
 			}
 			if _, err := os.Stat(filepath.Join(batchDir, "candidates", "lesson-1.article")); !os.IsNotExist(err) {
@@ -439,7 +438,7 @@ func TestRetranslationProcessKeepsCandidateWhenValidationFails(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if result.RestorePassed != 1 || result.ValidationFailed != 1 || result.Pages[0].Status != "validation_failed" {
+	if result.RestorePassed != 1 || result.ValidationFailed != 1 || result.Units[0].Status != "validation_failed" {
 		t.Fatalf("result = %+v", result)
 	}
 	if _, err := os.Stat(filepath.Join(batchDir, "candidates", "lesson-1.article")); err != nil {
@@ -467,8 +466,8 @@ func TestRetranslationProcessAutomaticBatchOrdering(t *testing.T) {
 	}
 	secondManifest := readRetranslationManifest(t, root, second.BatchID)
 	secondDir := filepath.Join(root, second.BatchPath)
-	input, _ := os.ReadFile(filepath.Join(secondDir, filepath.FromSlash(secondManifest.Pages[0].InputPath)))
-	if err := os.WriteFile(filepath.Join(secondDir, "raw-responses", flattenedPageArticleName(secondManifest.Pages[0].PageID)), input, 0644); err != nil {
+	input, _ := os.ReadFile(filepath.Join(secondDir, filepath.FromSlash(secondManifest.Units[0].InputPath)))
+	if err := os.WriteFile(filepath.Join(secondDir, "raw-responses", retranslationUnitInputName(&TranslationUnit{ID: secondManifest.Units[0].UnitID, Kind: secondManifest.Units[0].UnitKind})), input, 0644); err != nil {
 		t.Fatal(err)
 	}
 	if _, err := ProcessRetranslationBatch(root, catalog, RetranslationProcessOptions{Locale: "zh-CN"}); err == nil || !strings.Contains(err.Error(), "read raw response") {
@@ -476,8 +475,8 @@ func TestRetranslationProcessAutomaticBatchOrdering(t *testing.T) {
 	}
 	firstManifest := readRetranslationManifest(t, root, first.BatchID)
 	firstDir := filepath.Join(root, first.BatchPath)
-	input, _ = os.ReadFile(filepath.Join(firstDir, filepath.FromSlash(firstManifest.Pages[0].InputPath)))
-	if err := os.WriteFile(filepath.Join(firstDir, "raw-responses", flattenedPageArticleName(firstManifest.Pages[0].PageID)), input, 0644); err != nil {
+	input, _ = os.ReadFile(filepath.Join(firstDir, filepath.FromSlash(firstManifest.Units[0].InputPath)))
+	if err := os.WriteFile(filepath.Join(firstDir, "raw-responses", retranslationUnitInputName(&TranslationUnit{ID: firstManifest.Units[0].UnitID, Kind: firstManifest.Units[0].UnitKind})), input, 0644); err != nil {
 		t.Fatal(err)
 	}
 	processed, err := ProcessRetranslationBatch(root, catalog, RetranslationProcessOptions{Locale: "zh-CN"})

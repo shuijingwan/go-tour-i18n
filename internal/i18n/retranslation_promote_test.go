@@ -22,7 +22,7 @@ func processedPromotionFixture(t *testing.T, count int) (string, *Catalog, strin
 
 func addProcessedPromotionBatch(t *testing.T, root string, catalog *Catalog, batchID string, ids []string) {
 	t.Helper()
-	result, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", BatchID: batchID, PageIDs: ids, Limit: len(ids), AllowReexport: true})
+	result, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", BatchID: batchID, UnitIDs: ids, Limit: len(ids), AllowReexport: true})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -31,7 +31,7 @@ func addProcessedPromotionBatch(t *testing.T, root string, catalog *Catalog, bat
 		t.Fatal(err)
 	}
 	manifest := readRetranslationManifest(t, root, batchID)
-	for _, record := range manifest.Pages {
+	for _, record := range manifest.Units {
 		input, err := os.ReadFile(filepath.Join(batchDir, filepath.FromSlash(record.InputPath)))
 		if err != nil {
 			t.Fatal(err)
@@ -39,7 +39,7 @@ func addProcessedPromotionBatch(t *testing.T, root string, catalog *Catalog, bat
 		translated := strings.ReplaceAll(string(input), "* Page", "* 新页面")
 		translated = strings.ReplaceAll(translated, "Use ", "新批次使用 ")
 		translated = strings.ReplaceAll(translated, " on this page.", "。")
-		if err := os.WriteFile(filepath.Join(batchDir, "raw-responses", flattenedPageArticleName(record.PageID)), []byte(translated), 0644); err != nil {
+		if err := os.WriteFile(filepath.Join(batchDir, "raw-responses", retranslationUnitInputName(&TranslationUnit{ID: record.UnitID, Kind: record.UnitKind})), []byte(translated), 0644); err != nil {
 			t.Fatal(err)
 		}
 	}
@@ -68,7 +68,7 @@ func writePromotionStatus(t *testing.T, root string, catalog *Catalog, canonical
 				t.Fatal(err)
 			}
 		}
-		statuses = append(statuses, Status{PageID: page.ID, State: state, Attempts: 7, SourceSHA256: page.SourceSHA256, CandidatePath: path})
+		statuses = append(statuses, Status{UnitID: page.ID, State: state, Attempts: 7, SourceSHA256: page.SourceSHA256, CandidatePath: path})
 	}
 	if err := writeStatuses(filepath.Join(localeDir, "status.tsv"), statuses); err != nil {
 		t.Fatal(err)
@@ -127,7 +127,7 @@ func TestRetranslationPromoteLatestFailureDoesNotFallback(t *testing.T) {
 	var result RetranslationProcessResult
 	b, _ := os.ReadFile(filepath.Join(batchDir, "result.json"))
 	_ = json.Unmarshal(b, &result)
-	result.Pages[0].Status = "validation_failed"
+	result.Units[0].Status = "validation_failed"
 	if err := writeTranslationJSON(filepath.Join(batchDir, "result.json"), result); err != nil {
 		t.Fatal(err)
 	}
@@ -163,7 +163,7 @@ func TestRetranslationPromoteRejectsIncompleteAndInvalidEvidence(t *testing.T) {
 			}
 		}, "ambiguous retranslation batch number"},
 		{"source hash", func(t *testing.T, root string, catalog *Catalog, batch string) {
-			rewriteProcessManifest(t, root, batch, func(m *RetranslationBatchManifest) { m.Pages[0].SourceSHA256 = strings.Repeat("0", 64) })
+			rewriteProcessManifest(t, root, batch, func(m *RetranslationBatchManifest) { m.Units[0].SourceSHA256 = strings.Repeat("0", 64) })
 		}, "source metadata"},
 		{"result validation mismatch", func(t *testing.T, root string, catalog *Catalog, batch string) {
 			path := filepath.Join(root, "data", "retranslation-runs", "zh-CN", batch, "validation", "lesson-1.json")
@@ -235,7 +235,7 @@ func TestRetranslationPromoteBindsInputRawAndCandidateEvidence(t *testing.T) {
 			}
 			manifestPath := filepath.Join(batchDir, "manifest.json")
 			manifest := readRetranslationManifestAt(t, manifestPath)
-			manifest.Pages[0].InputSHA256 = sum(input)
+			manifest.Units[0].InputSHA256 = sum(input)
 			if err := writeTranslationJSON(manifestPath, manifest); err != nil {
 				t.Fatal(err)
 			}
@@ -243,7 +243,7 @@ func TestRetranslationPromoteBindsInputRawAndCandidateEvidence(t *testing.T) {
 		{"input sha", func(t *testing.T, root, batchDir string) {
 			manifestPath := filepath.Join(batchDir, "manifest.json")
 			manifest := readRetranslationManifestAt(t, manifestPath)
-			manifest.Pages[0].InputSHA256 = strings.Repeat("0", 64)
+			manifest.Units[0].InputSHA256 = strings.Repeat("0", 64)
 			if err := writeTranslationJSON(manifestPath, manifest); err != nil {
 				t.Fatal(err)
 			}
@@ -395,7 +395,7 @@ func TestRetranslationPromoteSelectsRetryFinalCandidate(t *testing.T) {
 	valid, _ := os.ReadFile(filepath.Join(batchDir, "raw-responses", "lesson-1.article"))
 	valid = []byte(strings.TrimSuffix(string(valid), " `bad`"))
 	writeRetryRaw(t, root, batch, "lesson/1", 2, string(valid))
-	if _, err := ProcessRetranslationRetry(root, catalog, RetranslationRetryOptions{Locale: "zh-CN", BatchID: batch, PageID: "lesson/1"}); err != nil {
+	if _, err := ProcessRetranslationRetry(root, catalog, RetranslationRetryOptions{Locale: "zh-CN", BatchID: batch, UnitID: "lesson/1"}); err != nil {
 		t.Fatal(err)
 	}
 	validationPath := filepath.Join(batchDir, "validation", "lesson-1.json")
@@ -427,14 +427,14 @@ func TestRetranslationPromoteApplyUpdatesCanonicalAndPreservesAttempts(t *testin
 		t.Fatal(err)
 	}
 	for _, status := range statuses {
-		if status.State != "ready" || status.Attempts != 7 || status.SourceSHA256 == "" || status.CandidatePath != canonicalCandidatePath("zh-CN", status.PageID) || status.UpdatedAt != "2026-08-17T19:04:05Z" || status.Note != "ChatGPT retranslation promoted from "+batch+"; passed canonical validator" {
+		if status.State != "ready" || status.Attempts != 7 || status.SourceSHA256 == "" || status.CandidatePath != canonicalCandidatePath("zh-CN", status.UnitID) || status.UpdatedAt != "2026-08-17T19:04:05Z" || status.Note != "ChatGPT retranslation promoted from "+batch+"; passed canonical validator" {
 			t.Fatalf("status = %+v", status)
 		}
 		candidate, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(status.CandidatePath)))
 		if err != nil {
 			t.Fatal(err)
 		}
-		if err := ValidateCandidateForLocale(root, catalog, status.PageID, "zh-CN", candidate); err != nil {
+		if err := ValidateCandidateForLocale(root, catalog, status.UnitID, "zh-CN", candidate); err != nil {
 			t.Fatal(err)
 		}
 	}

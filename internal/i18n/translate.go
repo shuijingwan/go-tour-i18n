@@ -950,7 +950,7 @@ func LoadTranslationResult(root, pageID, locale string) (*Status, string, error)
 		return nil, "", err
 	}
 	for i := range statuses {
-		if statuses[i].PageID != pageID {
+		if statuses[i].UnitID != pageID {
 			continue
 		}
 		candidate := ""
@@ -974,7 +974,7 @@ func updateTranslationStatus(root, locale, pageID, state string, attempts int, h
 	}
 	found := false
 	for i := range statuses {
-		if statuses[i].PageID == pageID {
+		if statuses[i].UnitID == pageID {
 			statuses[i] = Status{pageID, state, attempts, hash, candidate, updated, note}
 			found = true
 			break

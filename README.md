@@ -43,7 +43,7 @@
 
 翻译单元的输入准备会按类型分派：page 保持原有保护行为；example 使用 Go scanner 识别真实注释，将代码、字符串、布局、注释分隔符和机器语义注释替换为现有保护 token，只开放普通自然语言注释 payload，并继续使用同一 locale glossary 的 `keep` 规则保护其中必须保持原样的术语。example 输入已经能够通过现有 restore 逐字节恢复完整 `.go` 文件，但仍未接入模型调用、candidate、status、validator、projection 或 publish。
 
-目录中的 `page_id` 是语言状态、候选文件和发布记录的持久身份；`route` 是可能随上游变化的当前访问路径，`article` 和 `section_number` 是可能变化的发布投影位置。当前 103 个 ID 已冻结，不会因插入、删除、重排或改标题而自动重编号。完整规则见 [PAGE_IDENTITY.md](PAGE_IDENTITY.md)。
+Page 和 Example 是两种一级 `TranslationUnit`。统一控制面使用 `unit_id` 和 `unit_kind`；Page 的持久 ID 仍遵循既有冻结规则，`route`、`article` 和 `section_number` 只描述当前投影位置。完整 Page 身份规则见 [PAGE_IDENTITY.md](PAGE_IDENTITY.md)。
 
 ## 多语言维护工具
 
@@ -127,22 +127,22 @@ go run -mod=readonly ./cmd/tour-i18n retranslation process --locale zh-CN
 
 处理前会根据当前 Catalog 和 glossary 重新生成 Default protected input，并要求它与批次保存的 input 字节完全一致；随后使用同一份保护映射 restore，并调用正式 `ValidateCandidate`。结果只写入该批次自己的 `candidates/`、`validation/` 和 `result.json`，不会修改 locale 的 canonical candidate 或 status。默认严格保持批次顺序：最早未处理批次缺少 raw response 时会停止，不会跳到后续批次；`--batch-id` 只用于显式调试或恢复。
 
-失败页的原始重试译文按连续 attempt 单独保存，首次模型原文始终保留在 `raw-responses/`。例如 `moretypes/1` 的第二次原始译文应由 ChatGPT 写入：
+失败翻译单元的原始重试译文按连续 attempt 单独保存，首次模型原文始终保留在 `raw-responses/`。例如 `moretypes/1` 的第二次原始译文应由 ChatGPT 写入：
 
 ```text
 data/retranslation-runs/zh-CN/<batch-id>/retries/moretypes-1/attempt-002.article
 ```
 
-文件准备好后，仅处理该失败页：
+文件准备好后，仅处理该失败翻译单元：
 
 ```bash
 go run -mod=readonly ./cmd/tour-i18n retranslation retry \
   --locale zh-CN \
   --batch-id <batch-id> \
-  --page-id moretypes/1
+  --unit-id moretypes/1
 ```
 
-`retry` 不调用模型，也不创建或改写 retry raw response；它只接受当前 `result.json` 中的 `restore_failed` 或 `validation_failed` 页面。每次处理前一份 validation 会归档为 `retries/<flattened-page-id>/attempt-NNN-validation.json`，下一份 raw 必须使用连续编号且不得覆盖。处理仍复用原 manifest/input、Default protection mapping、restore 和正式 validator；只更新目标页的 batch candidate、validation 与批次汇总，其他页面保持不变。
+`retry` 不调用模型，也不创建或改写 retry raw response；它只接受当前 `result.json` 中 `restore_failed` 或 `validation_failed` 的 TranslationUnit。每次处理前一份 validation 会归档为 `retries/<flattened-unit-id>/attempt-NNN-validation.json`，下一份 raw 必须使用连续编号且不得覆盖。处理仍复用原 manifest/input、对应 UnitKind 的 protection、restore 和正式 validator；只更新目标单元的 batch candidate、validation 与批次汇总。
 
 在提升前预览完整 promotion plan（默认 dry-run，不修改 canonical candidate 或 status）：
 

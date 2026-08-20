@@ -4,8 +4,8 @@
 
 - 翻译单元是一个完整的顶层 `present.Section`，不采用句子级或多 text 槽位 JSON。
 - 英文源来自固定官方上游基线，页面目录见 [`../../data/tour-pages.tsv`](../../data/tour-pages.tsv)。
-- 统一翻译单元状态见 [`status.tsv`](status.tsv)：覆盖 103 个正式 Page 和 19 个 eligible Example；Page 全部 ready，Example 当前全部 pending。其余 74 个无需翻译自然语言注释的 Example 不进入 status。
-- `page_id` 是状态和语言文件的持久关联键；route、上游位置或标题变化时不得自动更换 ID，规则见 [`../../PAGE_IDENTITY.md`](../../PAGE_IDENTITY.md)。
+- 统一翻译单元状态见 [`status.tsv`](status.tsv)，第一列 `unit_id` 同时标识 Page 和 Example：覆盖 103 个正式 Page 和 19 个 eligible Example；Page 全部 ready，Example 当前全部 pending。其余 74 个无需翻译自然语言注释的 Example 不进入 status。
+- `unit_id` 是统一状态和 canonical candidate 的持久关联键；其中 Page ID 的冻结及 route 变更规则见 [`../../PAGE_IDENTITY.md`](../../PAGE_IDENTITY.md)。
 - canonical 课程译文位于 [`candidates/`](candidates/)；ready candidate 经 build / projection 生成正式语言内容，不使用历史预留的 [`pages/`](pages/) 作为正式译文维护目录；公共 UI 文案位于 [`ui/`](ui/)。
 - 术语记录在 [`glossary.yaml`](glossary.yaml)。
 - 所有来源的完整页面候选都必须经过同一套自动校验，不允许绕过校验直接发布。
