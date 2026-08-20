@@ -111,7 +111,13 @@ func TestPersistentIDsAndReconcile(t *testing.T) {
 	}
 	var statusIDs []string
 	for _, status := range statuses {
-		statusIDs = append(statusIDs, status.PageID)
+		unit, err := committed.Unit(status.UnitID())
+		if err != nil {
+			t.Fatal(err)
+		}
+		if unit.Kind == UnitKindPage {
+			statusIDs = append(statusIDs, status.UnitID())
+		}
 	}
 	if !reflect.DeepEqual(ids, statusIDs) {
 		t.Fatal("status page IDs differ from the frozen catalog")

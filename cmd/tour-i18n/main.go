@@ -164,7 +164,11 @@ func run(args []string) error {
 		if err := i18n.CheckStatus(root, *locale, catalog); err != nil {
 			return err
 		}
-		fmt.Printf("status OK: %d pages for %s\n", len(catalog.Pages), *locale)
+		total, pages, examples, err := i18n.LocaleWorkflowUnitCounts(catalog)
+		if err != nil {
+			return err
+		}
+		fmt.Printf("status OK: %d translation units for %s (%d pages, %d examples)\n", total, *locale, pages, examples)
 		return nil
 	case "candidate validate":
 		fs := flag.NewFlagSet("candidate validate", flag.ContinueOnError)

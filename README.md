@@ -17,7 +17,7 @@
 
 - 已从固定官方上游导入可独立运行、测试、解析和渲染的英文 Tour 基线。
 - 已建立 103 个正式发布页面及 2 条条件源审计记录的机器可读目录。
-- 第一阶段目标语言为简体中文 `zh-CN`；课程正文已完成，正式状态为 `ready=103`、`pending=0`、`blocked=0`。
+- 第一阶段目标语言为简体中文 `zh-CN`；统一 locale workflow status 当前包含 103 个 ready Page 和 19 个 pending Example，另有 74 个无需翻译自然语言注释的 Example 不进入 status。
 - 课程正文、article/lesson 根级 metadata 与公共 UI 分开维护：103 个顶层 `present.Section` 使用 canonical candidate；每个 article 的 `title`、`subtitle` 使用独立 locale metadata；公共 UI 使用独立 UI 本地化资源。
 - zh-CN 的 7/7 个正式 article metadata 已完成本地化（title=7/7、subtitle=7/7）。
 - 已建立完整页面翻译执行器、术语表、结构保护、candidate 校验、状态管理和 attempt 审计记录。
@@ -35,9 +35,9 @@
 - 1 个 `.image` 引用；
 - 2 条继续单独保留的 `#appengine:` 条件源审计记录。
 
-页面翻译的最小单元是一个完整顶层 `present.Section`，不会拆成句子级或多 text 槽位 JSON。页面目录位于 [`data/tour-pages.tsv`](data/tour-pages.tsv)，zh-CN 状态位于 [`locales/zh-CN/status.tsv`](locales/zh-CN/status.tsv)。完整投影能力面向 locale；当前第一阶段完成的 locale 为 zh-CN。语言约定见 [`locales/zh-CN/README.md`](locales/zh-CN/README.md) 和 [LANGUAGES.md](LANGUAGES.md)。
+页面翻译的最小单元是一个完整顶层 `present.Section`，Example 翻译单元是完整 `.go` 文件。页面目录位于 [`data/tour-pages.tsv`](data/tour-pages.tsv)，统一的 zh-CN workflow 状态位于 [`locales/zh-CN/status.tsv`](locales/zh-CN/status.tsv)。当前 projection 仍只消费 103 个 ready Page；19 个 eligible Example 已进入 status，但保持 pending。语言约定见 [`locales/zh-CN/README.md`](locales/zh-CN/README.md) 和 [LANGUAGES.md](LANGUAGES.md)。
 
-系统还会从正式页面经过现有 present 解析确认的 `.play` 指令发现示例，并在 [`data/tour-examples.tsv`](data/tour-examples.tsv) 中记录第二种 source unit。每个 example 的 source 是完整 `.go` 文件，`source_sha256` 覆盖文件全部字节，而不是只覆盖注释。当前阶段只建立 example catalog 和只读 `TranslationUnit` 适配层；example 尚未进入翻译、status、candidate、validator、projection 或 publish 流程。
+系统还会从正式页面经过现有 present 解析确认的 `.play` 指令发现示例，并在 [`data/tour-examples.tsv`](data/tour-examples.tsv) 中记录第二种 source unit。每个 example 的 source 是完整 `.go` 文件，`source_sha256` 覆盖文件全部字节，而不是只覆盖注释。当前 93 个 Example 中有 19 个含普通可翻译自然语言注释，已进入统一 status 并保持 pending；其余 74 个只参与 source tracking。Example 尚未进入 canonical promotion、projection 或 publish。
 
 翻译运行器现已通过 `Catalog.Unit` 和 `TranslationUnit` 取得翻译源及其版本哈希；课程页面随后继续进入原有 Page 专用保护、校验和状态流程。当前运行器只开放 page 翻译，识别到 example 时会在创建 attempt 或调用模型前明确拒绝，不能据此认为示例翻译已经实现。
 
@@ -76,7 +76,7 @@ go run -mod=readonly ./cmd/tour-i18n page export \
   --output /tmp/welcome-1.article
 ```
 
-检查 zh-CN locale 和 103 页状态：
+检查 zh-CN locale 的统一状态（103 个 Page、19 个 eligible Example）：
 
 ```bash
 go run -mod=readonly ./cmd/tour-i18n status check --locale zh-CN

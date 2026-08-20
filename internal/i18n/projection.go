@@ -51,10 +51,17 @@ func BuildLocaleProjection(root string, catalog *Catalog, locale, outputRoot str
 	statusByID := make(map[string]Status, len(statuses))
 	result := &LocaleProjection{Locale: locale}
 	for _, status := range statuses {
-		if _, exists := statusByID[status.PageID]; exists {
-			return nil, fmt.Errorf("duplicate status page_id %q", status.PageID)
+		unit, unitErr := catalog.Unit(status.UnitID())
+		if unitErr != nil {
+			return nil, unitErr
 		}
-		statusByID[status.PageID] = status
+		if unit.Kind != UnitKindPage {
+			continue
+		}
+		if _, exists := statusByID[status.UnitID()]; exists {
+			return nil, fmt.Errorf("duplicate status page_id %q", status.UnitID())
+		}
+		statusByID[status.UnitID()] = status
 		switch status.State {
 		case "ready":
 			result.Ready++
@@ -178,7 +185,25 @@ func BuildLocaleProjection(root string, catalog *Catalog, locale, outputRoot str
 }
 
 func canonicalCandidatePath(locale, pageID string) string {
-	return filepath.ToSlash(filepath.Join("locales", locale, "candidates", flattenedPageArticleName(pageID)))
+	path, err := canonicalTranslationUnitCandidatePath(locale, &TranslationUnit{ID: pageID, Kind: UnitKindPage})
+	if err != nil {
+		panic(err)
+	}
+	return path
+}
+
+func canonicalTranslationUnitCandidatePath(locale string, unit *TranslationUnit) (string, error) {
+	if unit == nil {
+		return "", fmt.Errorf("translation unit is required")
+	}
+	if unit.Kind != UnitKindPage && unit.Kind != UnitKindExample {
+		return "", fmt.Errorf("%s: unsupported translation unit kind %q", unit.ID, unit.Kind)
+	}
+	name := retranslationUnitInputName(unit)
+	if name == "" || filepath.Base(name) != name {
+		return "", fmt.Errorf("%s: unsafe canonical candidate name %q", unit.ID, name)
+	}
+	return filepath.ToSlash(filepath.Join("locales", locale, "candidates", name)), nil
 }
 
 func flattenedPageArticleName(pageID string) string {

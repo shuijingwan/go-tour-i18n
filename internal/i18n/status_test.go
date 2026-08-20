@@ -1,6 +1,7 @@
 package i18n
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"os"
@@ -31,10 +32,23 @@ func TestCommittedStatus(t *testing.T) {
 		"methods/17":    "chatgpt-zh-CN-011",
 		"methods/19":    "chatgpt-zh-CN-011",
 	}
+	pageCount, exampleCount := 0, 0
 	for _, s := range statuses {
 		if err := validateCommittedStatus(root, c, "zh-CN", s); err != nil {
 			t.Fatal(err)
 		}
+		unit, err := c.Unit(s.UnitID())
+		if err != nil {
+			t.Fatal(err)
+		}
+		if unit.Kind == UnitKindExample {
+			exampleCount++
+			if s.State != "pending" || s.Attempts != 0 || s.CandidatePath != "" || s.UpdatedAt != "" || s.Note != "" || s.SourceSHA256 != unit.SourceSHA256 {
+				t.Fatalf("eligible Example status = %+v", s)
+			}
+			continue
+		}
+		pageCount++
 		if s.UpdatedAt == "" {
 			t.Fatalf("%s: promoted status has empty updated_at", s.PageID)
 		}
@@ -110,10 +124,20 @@ func TestCommittedStatus(t *testing.T) {
 			}
 		}
 	}
+	if len(statuses) != 122 || pageCount != 103 || exampleCount != 19 {
+		t.Fatalf("status counts: total=%d pages=%d examples=%d", len(statuses), pageCount, exampleCount)
+	}
 }
 
 func validateCommittedStatus(root string, catalog *Catalog, locale string, status Status) error {
-	canonicalCandidate := filepath.ToSlash(filepath.Join("locales", locale, "candidates", strings.ReplaceAll(status.PageID, "/", "-")+".article"))
+	unit, err := catalog.Unit(status.UnitID())
+	if err != nil {
+		return err
+	}
+	canonicalCandidate, err := canonicalTranslationUnitCandidatePath(locale, unit)
+	if err != nil {
+		return err
+	}
 	switch status.State {
 	case "pending":
 		if status.CandidatePath != "" {
@@ -137,13 +161,58 @@ func validateCommittedStatus(root string, catalog *Catalog, locale string, statu
 		if err != nil {
 			return fmt.Errorf("%s: read committed candidate: %w", status.PageID, err)
 		}
-		if err := ValidateCandidateForLocale(root, catalog, status.PageID, locale, candidate); err != nil {
+		if err := ValidateTranslationUnitCandidate(root, catalog, status.UnitID(), locale, candidate); err != nil {
 			return fmt.Errorf("%s: committed candidate validation: %w", status.PageID, err)
 		}
 	default:
 		return fmt.Errorf("%s: unsupported committed status %q", status.PageID, status.State)
 	}
 	return nil
+}
+
+func TestCommittedWorkflowCanonicalCandidatePathsAreUnique(t *testing.T) {
+	root := repoRoot(t)
+	catalog, err := BuildCatalog(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	units, pages, examples, err := localeWorkflowUnits(catalog)
+	if err != nil {
+		t.Fatal(err)
+	}
+	seen := make(map[string]string, len(units))
+	for _, unit := range units {
+		path, err := canonicalTranslationUnitCandidatePath("zh-CN", unit)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if previous := seen[path]; previous != "" {
+			t.Fatalf("canonical path %q collides for %s and %s", path, previous, unit.ID)
+		}
+		seen[path] = unit.ID
+		if unit.Kind == UnitKindPage && filepath.Ext(path) != ".article" {
+			t.Errorf("Page %s canonical path = %q", unit.ID, path)
+		}
+		if unit.Kind == UnitKindExample && filepath.Ext(path) != ".go" {
+			t.Errorf("Example %s canonical path = %q", unit.ID, path)
+		}
+	}
+	if pages != 103 || examples != 19 || len(units) != 122 || len(seen) != 122 {
+		t.Fatalf("workflow/canonical counts: units=%d pages=%d examples=%d paths=%d", len(units), pages, examples, len(seen))
+	}
+	for _, page := range catalog.Pages {
+		unit, err := catalog.Unit(page.ID)
+		if err != nil {
+			t.Fatal(err)
+		}
+		got, err := canonicalTranslationUnitCandidatePath("zh-CN", unit)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if want := filepath.ToSlash(filepath.Join("locales", "zh-CN", "candidates", strings.ReplaceAll(page.ID, "/", "-")+".article")); got != want {
+			t.Fatalf("Page %s canonical path = %q, want %q", page.ID, got, want)
+		}
+	}
 }
 
 func TestCommittedStateInvariants(t *testing.T) {
@@ -213,6 +282,64 @@ func TestStatusValidationFailures(t *testing.T) {
 	}
 }
 
+func TestUnifiedStatusExpectedSet(t *testing.T) {
+	pageSource := []byte("* Page\n\nPage source.\n")
+	eligibleSource := []byte("package main\n\n// Explain this example.\nfunc main() {}\n")
+	ineligibleSource := []byte("package main\n\nfunc main() {}\n")
+	catalog := &Catalog{
+		Pages: []Page{{ID: "page/1", Source: pageSource, SourceSHA256: sum(pageSource)}},
+		Examples: []Example{
+			{ID: "example:eligible.go", SourcePath: "_content/tour/eligible.go", Source: eligibleSource, SourceSHA256: sum(eligibleSource)},
+			{ID: "example:ineligible.go", SourcePath: "_content/tour/ineligible.go", Source: ineligibleSource, SourceSHA256: sum(ineligibleSource)},
+		},
+	}
+	valid := []Status{
+		{PageID: "page/1", State: "pending", SourceSHA256: sum(pageSource)},
+		{PageID: "example:eligible.go", State: "pending", SourceSHA256: sum(eligibleSource)},
+	}
+	check := func(t *testing.T, statuses []Status) error {
+		t.Helper()
+		root := writeStatusFixture(t, "page_id\tstatus\tattempts\tsource_sha256\tcandidate_path\tupdated_at\tnote\n")
+		if err := writeStatuses(filepath.Join(root, "locales", "zh-CN", "status.tsv"), statuses); err != nil {
+			t.Fatal(err)
+		}
+		return CheckStatus(root, "zh-CN", catalog)
+	}
+	if err := check(t, valid); err != nil {
+		t.Fatal(err)
+	}
+	tests := map[string][]Status{
+		"missing page":             {valid[1]},
+		"missing eligible example": {valid[0]},
+		"non-eligible example":     {valid[0], {PageID: "example:ineligible.go", State: "pending", SourceSHA256: sum(ineligibleSource)}},
+		"unknown ID":               {valid[0], {PageID: "example:unknown.go", State: "pending", SourceSHA256: sum(eligibleSource)}},
+		"duplicate page":           {valid[0], valid[0]},
+		"duplicate example":        {valid[1], valid[1]},
+		"Example hash mismatch":    {valid[0], {PageID: valid[1].PageID, State: "pending", SourceSHA256: strings.Repeat("f", 64)}},
+		"Page hash mismatch":       {{PageID: valid[0].PageID, State: "pending", SourceSHA256: strings.Repeat("f", 64)}, valid[1]},
+	}
+	for name, statuses := range tests {
+		t.Run(name, func(t *testing.T) {
+			if err := check(t, statuses); err == nil {
+				t.Fatal("invalid unified status accepted")
+			}
+		})
+	}
+	t.Run("ready Example canonical path", func(t *testing.T) {
+		statuses := append([]Status(nil), valid...)
+		statuses[1].State = "ready"
+		statuses[1].Attempts = 1
+		statuses[1].CandidatePath = "locales/zh-CN/candidates/eligible.go"
+		if err := check(t, statuses); err != nil {
+			t.Fatal(err)
+		}
+		statuses[1].CandidatePath = "locales/zh-CN/candidates/eligible.article"
+		if err := check(t, statuses); err == nil {
+			t.Fatal("noncanonical Example candidate path accepted")
+		}
+	})
+}
+
 func TestStatusUsesPersistentIDNotCatalogPositionOrRoute(t *testing.T) {
 	a := strings.Repeat("a", 64)
 	b := strings.Repeat("b", 64)
@@ -271,6 +398,16 @@ func TestUpdateTranslationStatusWritesCanonicalTSV(t *testing.T) {
 	}
 	if !reflect.DeepEqual(statuses, wantStatuses) {
 		t.Fatalf("round trip statuses = %#v, want %#v", statuses, wantStatuses)
+	}
+	if err := writeStatuses(path, statuses); err != nil {
+		t.Fatal(err)
+	}
+	rewritten, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !bytes.Equal(rewritten, got) {
+		t.Fatal("writing the same statuses twice produced a different status.tsv")
 	}
 }
 

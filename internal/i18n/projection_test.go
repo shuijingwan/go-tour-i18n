@@ -288,7 +288,8 @@ func newProjectionFixture(t *testing.T) *projectionFixture {
 	betaOne := []byte("* Three\n\nEnglish third paragraph.\n")
 	writeFixtureFile(t, filepath.Join(root, "_content", "tour", "alpha.article"), appendArticle("Alpha", alphaOne, alphaTwo))
 	writeFixtureFile(t, filepath.Join(root, "_content", "tour", "beta.article"), appendArticle("Beta", betaOne))
-	writeFixtureFile(t, filepath.Join(root, "_content", "tour", "alpha", "one.go"), []byte("package main\n"))
+	exampleSource := []byte("package main\n\n// Print a greeting.\nfunc main() {}\n")
+	writeFixtureFile(t, filepath.Join(root, "_content", "tour", "alpha", "one.go"), exampleSource)
 	writeFixtureFile(t, filepath.Join(root, "_content", "tour", "static.txt"), []byte("shared static asset\n"))
 	writeFixtureFile(t, filepath.Join(root, "locales", "zh-CN", "locale.json"), []byte(`{"locale":"zh-CN","language_name":"简体中文","english_name":"Simplified Chinese","html_lang":"zh-CN","phase":"scaffold","translation_unit":"present.Section","default_language":true}`))
 	writeFixtureFile(t, filepath.Join(root, "locales", "zh-CN", "glossary.yaml"), []byte("mandatory:\n  slides: 幻灯片\n"))
@@ -304,7 +305,7 @@ func newProjectionFixture(t *testing.T) *projectionFixture {
 		"beta/1":  []byte("* 第三页\n\n第三段译文。\n"),
 	}
 	fixture := &projectionFixture{
-		root: root, catalog: &Catalog{Pages: pages}, candidates: candidates,
+		root: root, catalog: &Catalog{Pages: pages, Examples: []Example{{ID: "example:alpha/one.go", SourcePath: "_content/tour/alpha/one.go", Source: exampleSource, SourceSHA256: sum(exampleSource)}}}, candidates: candidates,
 		metadata: []ArticleMetadata{
 			{Article: "alpha.article", Title: "甲课程", Subtitle: "甲课程说明"},
 			{Article: "beta.article", Title: "乙课程", Subtitle: "乙课程说明"},
@@ -315,6 +316,7 @@ func newProjectionFixture(t *testing.T) *projectionFixture {
 		writeFixtureFile(t, filepath.Join(root, filepath.FromSlash(path)), candidates[page.ID])
 		fixture.statuses = append(fixture.statuses, Status{PageID: page.ID, State: "ready", Attempts: 1, SourceSHA256: page.SourceSHA256, CandidatePath: path})
 	}
+	fixture.statuses = append(fixture.statuses, Status{PageID: "example:alpha/one.go", State: "pending", SourceSHA256: sum(exampleSource)})
 	fixture.writeStatuses(t)
 	fixture.writeMetadata(t, fixture.metadata)
 	return fixture
