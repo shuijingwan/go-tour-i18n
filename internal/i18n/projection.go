@@ -22,7 +22,9 @@ type LocaleProjection struct {
 	Ready        int
 	Pending      int
 	Blocked      int
+	UnitCount    int
 	PageCount    int
+	ExampleCount int
 	ArticleCount int
 }
 
@@ -51,12 +53,9 @@ func BuildLocaleProjection(root string, catalog *Catalog, locale, outputRoot str
 	statusByID := make(map[string]Status, len(statuses))
 	result := &LocaleProjection{Locale: locale}
 	for _, status := range statuses {
-		unit, unitErr := catalog.Unit(status.UnitID)
+		_, unitErr := catalog.Unit(status.UnitID)
 		if unitErr != nil {
 			return nil, unitErr
-		}
-		if unit.Kind != UnitKindPage {
-			continue
 		}
 		if _, exists := statusByID[status.UnitID]; exists {
 			return nil, fmt.Errorf("duplicate status unit_id %q", status.UnitID)
@@ -73,6 +72,7 @@ func BuildLocaleProjection(root string, catalog *Catalog, locale, outputRoot str
 	}
 
 	candidates := make(map[string][]byte, len(catalog.Pages))
+	exampleCandidates := make(map[string][]byte)
 	pagesByArticle := make(map[string][]Page)
 	seenIDs := make(map[string]bool, len(catalog.Pages))
 	seenLocations := make(map[string]string, len(catalog.Pages))
@@ -108,14 +108,28 @@ func BuildLocaleProjection(root string, catalog *Catalog, locale, outputRoot str
 		candidates[page.ID] = candidate
 		pagesByArticle[page.Article] = append(pagesByArticle[page.Article], page)
 	}
-	for pageID := range statusByID {
-		if !seenIDs[pageID] {
-			return nil, fmt.Errorf("status has extra page_id %q", pageID)
+	workflow, _, exampleCount, err := localeWorkflowUnits(catalog)
+	if err != nil {
+		return nil, err
+	}
+	for unitID, unit := range workflow {
+		if unit.Kind != UnitKindExample {
+			continue
 		}
+		status := statusByID[unitID]
+		if status.State != "ready" {
+			unavailable = append(unavailable, fmt.Sprintf("%s=%s", unitID, status.State))
+			continue
+		}
+		candidate, err := loadReadyTranslationUnitCandidate(root, catalog, unit, locale, &status)
+		if err != nil {
+			return nil, err
+		}
+		exampleCandidates[unitID] = candidate
 	}
 	if len(unavailable) > 0 {
 		sort.Strings(unavailable)
-		return nil, fmt.Errorf("complete projection requires every catalog page to be ready; unavailable: %s", strings.Join(unavailable, ", "))
+		return nil, fmt.Errorf("complete projection requires all %d workflow translation units to be ready; unavailable: %s", len(workflow), strings.Join(unavailable, ", "))
 	}
 
 	if strings.TrimSpace(outputRoot) == "" {
@@ -145,6 +159,17 @@ func BuildLocaleProjection(root string, catalog *Catalog, locale, outputRoot str
 	createdContent = true
 	if err = os.CopyFS(contentDir, os.DirFS(sourceContentDir)); err != nil {
 		return nil, fmt.Errorf("copy Tour content: %w", err)
+	}
+	for unitID, candidate := range exampleCandidates {
+		unit := workflow[unitID]
+		relative, relErr := filepath.Rel("_content", filepath.FromSlash(unit.SourcePath))
+		if relErr != nil || relative == "." || strings.HasPrefix(relative, ".."+string(filepath.Separator)) {
+			return nil, fmt.Errorf("%s: unsafe Example source path %q", unitID, unit.SourcePath)
+		}
+		target := filepath.Join(contentDir, relative)
+		if err = os.WriteFile(target, candidate, 0644); err != nil {
+			return nil, fmt.Errorf("write projected Example %s: %w", unitID, err)
+		}
 	}
 
 	if err = validateProjectionArticleSet(contentDir, pagesByArticle); err != nil {
@@ -179,9 +204,32 @@ func BuildLocaleProjection(root string, catalog *Catalog, locale, outputRoot str
 
 	result.Root = outputRoot
 	result.ContentDir = contentDir
+	result.UnitCount = len(workflow)
 	result.PageCount = len(catalog.Pages)
+	result.ExampleCount = exampleCount
 	result.ArticleCount = len(pagesByArticle)
 	return result, nil
+}
+
+func loadReadyTranslationUnitCandidate(root string, catalog *Catalog, unit *TranslationUnit, locale string, status *Status) ([]byte, error) {
+	if unit == nil || status == nil || status.State != "ready" || status.CandidatePath == "" {
+		return nil, fmt.Errorf("%s is not a ready translation unit", unit.ID)
+	}
+	wantPath, err := canonicalTranslationUnitCandidatePath(locale, unit)
+	if err != nil {
+		return nil, err
+	}
+	if status.CandidatePath != wantPath || status.SourceSHA256 != unit.SourceSHA256 || sum(unit.Source) != unit.SourceSHA256 {
+		return nil, fmt.Errorf("%s: ready candidate identity/path mismatch", unit.ID)
+	}
+	candidate, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(status.CandidatePath)))
+	if err != nil {
+		return nil, fmt.Errorf("%s: read canonical candidate: %w", unit.ID, err)
+	}
+	if err := ValidateTranslationUnitCandidate(root, catalog, unit.ID, locale, candidate); err != nil {
+		return nil, fmt.Errorf("%s: candidate validation: %w", unit.ID, err)
+	}
+	return candidate, nil
 }
 
 func canonicalCandidatePath(locale, pageID string) string {

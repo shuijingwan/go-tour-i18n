@@ -83,42 +83,16 @@ func TestPublishRejectsExistingOutputWithoutChangingIt(t *testing.T) {
 	}
 }
 
-func TestPublishBundleStructureIntegrityAndRepeatability(t *testing.T) {
+func TestPublishRequiresCompleteTranslationUnitWorkflow(t *testing.T) {
 	root, catalog := publishTestCatalog(t)
 	parent := t.TempDir()
 	first := filepath.Join(parent, "release-a")
-	second := filepath.Join(parent, "release-b")
-	if err := publishBundle(root, catalog, publishOptions{Locale: "zh-CN", Output: first, PublishedAt: testPublishedAt}); err != nil {
-		t.Fatal(err)
+	err := publishBundle(root, catalog, publishOptions{Locale: "zh-CN", Output: first, PublishedAt: testPublishedAt})
+	if err == nil || !strings.Contains(err.Error(), "all 122 workflow translation units") || !strings.Contains(err.Error(), "example:basics/numeric-constants.go=pending") {
+		t.Fatalf("incomplete workflow publish error = %v", err)
 	}
-	if err := publishBundle(root, catalog, publishOptions{Locale: "zh-CN", Output: second, PublishedAt: testPublishedAt}); err != nil {
-		t.Fatal(err)
-	}
-	verifyPublishedBundle(t, first)
-	verifyPublishedBundle(t, second)
-	assertTreeEqual(t, first, second)
-
-	firstManifest, err := os.ReadFile(filepath.Join(first, "release.json"))
-	if err != nil {
-		t.Fatal(err)
-	}
-	secondManifest, err := os.ReadFile(filepath.Join(second, "release.json"))
-	if err != nil {
-		t.Fatal(err)
-	}
-	if !bytes.Equal(firstManifest, secondManifest) {
-		t.Fatal("release.json differs between identical publishes")
-	}
-	firstSums, err := os.ReadFile(filepath.Join(first, "SHA256SUMS"))
-	if err != nil {
-		t.Fatal(err)
-	}
-	secondSums, err := os.ReadFile(filepath.Join(second, "SHA256SUMS"))
-	if err != nil {
-		t.Fatal(err)
-	}
-	if !bytes.Equal(firstSums, secondSums) {
-		t.Fatal("SHA256SUMS differs between identical publishes")
+	if _, statErr := os.Lstat(first); !os.IsNotExist(statErr) {
+		t.Fatalf("blocked publish created output: %v", statErr)
 	}
 }
 
@@ -126,10 +100,7 @@ func TestPublishFailureCleansStaging(t *testing.T) {
 	root, catalog := publishTestCatalog(t)
 	parent := t.TempDir()
 	output := filepath.Join(parent, "failed-release")
-	original := buildProductionBinary
-	buildProductionBinary = func(string, string, string) error { return errors.New("injected binary build failure") }
-	t.Cleanup(func() { buildProductionBinary = original })
-	if err := publishBundle(root, catalog, publishOptions{Locale: "zh-CN", Output: output, PublishedAt: testPublishedAt}); err == nil || !strings.Contains(err.Error(), "injected binary build failure") {
+	if err := publishBundle(root, catalog, publishOptions{Locale: "zh-CN", Output: output, PublishedAt: testPublishedAt}); err == nil || !strings.Contains(err.Error(), "all 122 workflow translation units") {
 		t.Fatalf("publish failure = %v", err)
 	}
 	if _, err := os.Lstat(output); !os.IsNotExist(err) {

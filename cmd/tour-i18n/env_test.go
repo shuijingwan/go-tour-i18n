@@ -80,7 +80,7 @@ func TestParsePreviewOptionsSupportsSingleAndCompletePreview(t *testing.T) {
 	}
 }
 
-func TestBuildLocaleCommand(t *testing.T) {
+func TestBuildLocaleCommandRequiresCompleteWorkflow(t *testing.T) {
 	root, err := filepath.Abs(filepath.Join("..", ".."))
 	if err != nil {
 		t.Fatal(err)
@@ -97,12 +97,11 @@ func TestBuildLocaleCommand(t *testing.T) {
 		t.Fatal(err)
 	}
 	output := filepath.Join(t.TempDir(), "cli-projection")
-	if err := buildLocale(root, catalog, []string{"--locale", "zh-CN", "--output", output}); err != nil {
-		t.Fatal(err)
+	err = buildLocale(root, catalog, []string{"--locale", "zh-CN", "--output", output})
+	if err == nil || !strings.Contains(err.Error(), "all 122 workflow translation units") || !strings.Contains(err.Error(), "example:basics/numeric-constants.go=pending") {
+		t.Fatalf("CLI projection error = %v", err)
 	}
-	for _, article := range []string{"welcome.article", "methods.article"} {
-		if _, err := os.Stat(filepath.Join(output, "_content", "tour", article)); err != nil {
-			t.Fatalf("CLI projection missing %s: %v", article, err)
-		}
+	if _, statErr := os.Stat(output); !os.IsNotExist(statErr) {
+		t.Fatalf("blocked CLI projection created output: %v", statErr)
 	}
 }

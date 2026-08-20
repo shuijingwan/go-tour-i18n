@@ -4,8 +4,10 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"os"
 	"path/filepath"
+	"reflect"
 	"strings"
 	"testing"
 	"time"
@@ -39,6 +41,7 @@ func addProcessedPromotionBatch(t *testing.T, root string, catalog *Catalog, bat
 		translated := strings.ReplaceAll(string(input), "* Page", "* 新页面")
 		translated = strings.ReplaceAll(translated, "Use ", "新批次使用 ")
 		translated = strings.ReplaceAll(translated, " on this page.", "。")
+		translated = strings.ReplaceAll(translated, "Translate this comment.", "翻译这条注释。")
 		if err := os.WriteFile(filepath.Join(batchDir, "raw-responses", retranslationUnitInputName(&TranslationUnit{ID: record.UnitID, Kind: record.UnitKind})), []byte(translated), 0644); err != nil {
 			t.Fatal(err)
 		}
@@ -70,8 +73,114 @@ func writePromotionStatus(t *testing.T, root string, catalog *Catalog, canonical
 		}
 		statuses = append(statuses, Status{UnitID: page.ID, State: state, Attempts: 7, SourceSHA256: page.SourceSHA256, CandidatePath: path})
 	}
+	for i := range catalog.Examples {
+		example := &catalog.Examples[i]
+		eligible, err := hasTranslatableGoExampleComment(example.Source)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if eligible {
+			statuses = append(statuses, Status{UnitID: example.ID, State: "pending", SourceSHA256: example.SourceSHA256})
+		}
+	}
 	if err := writeStatuses(filepath.Join(localeDir, "status.tsv"), statuses); err != nil {
 		t.Fatal(err)
+	}
+}
+
+func complete122PromotionFixture(t *testing.T) (string, *Catalog) {
+	t.Helper()
+	root := t.TempDir()
+	writeRetranslationTestGlossary(t, root)
+	catalog := retranslationTestCatalog(103)
+	for i := 0; i < 19; i++ {
+		id := fmt.Sprintf("example:demo/example-%02d.go", i+1)
+		source := []byte("package main\n\n// Translate this comment.\nfunc main() {}\n")
+		catalog.Examples = append(catalog.Examples, Example{ID: id, SourcePath: "_content/tour/demo/" + filepath.Base(strings.TrimPrefix(id, "example:demo/")), Source: source, SourceSHA256: sum(source)})
+	}
+	pageIDs := make([]string, 0, 103)
+	for _, page := range catalog.Pages {
+		pageIDs = append(pageIDs, page.ID)
+	}
+	exampleIDs := make([]string, 0, 19)
+	for _, example := range catalog.Examples {
+		exampleIDs = append(exampleIDs, example.ID)
+	}
+	addProcessedPromotionBatch(t, root, catalog, "chatgpt-zh-CN-001", pageIDs)
+	addProcessedPromotionBatch(t, root, catalog, "chatgpt-zh-CN-002", exampleIDs)
+	writePromotionStatus(t, root, catalog, "")
+	return root, catalog
+}
+
+func TestRetranslationPromoteComplete122UnitWorkflow(t *testing.T) {
+	root, catalog := complete122PromotionFixture(t)
+	plan, err := PromoteRetranslation(root, catalog, RetranslationPromoteOptions{Locale: "zh-CN"})
+	if err != nil || !plan.CanApply || plan.UnitCount != 122 || plan.PageCount != 103 || plan.ExampleCount != 19 || len(plan.Units) != 122 {
+		t.Fatalf("122-unit plan=%+v err=%v", plan, err)
+	}
+	for _, unit := range plan.Units {
+		if unit.UnitKind == UnitKindExample && unit.EOFNormalized {
+			t.Fatalf("Example %s was EOF-normalized", unit.UnitID)
+		}
+	}
+	plan, err = PromoteRetranslation(root, catalog, RetranslationPromoteOptions{Locale: "zh-CN", Apply: true})
+	if err != nil || !plan.CanApply {
+		t.Fatalf("122-unit apply plan=%+v err=%v", plan, err)
+	}
+	statuses, err := ReadStatuses(filepath.Join(root, "locales", "zh-CN", "status.tsv"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	readyExamples := 0
+	for _, status := range statuses {
+		if strings.HasPrefix(status.UnitID, "example:") {
+			readyExamples++
+			if status.State != "ready" || status.Attempts != 1 || filepath.Ext(status.CandidatePath) != ".go" {
+				t.Fatalf("promoted Example status=%+v", status)
+			}
+			candidate, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(status.CandidatePath)))
+			if err != nil {
+				t.Fatal(err)
+			}
+			if !bytes.Equal(candidate, []byte("package main\n\n// 翻译这条注释。\nfunc main() {}\n")) {
+				t.Fatalf("promoted Example %s bytes=%q", status.UnitID, candidate)
+			}
+		}
+	}
+	if readyExamples != 19 {
+		t.Fatalf("ready Examples=%d, want 19", readyExamples)
+	}
+}
+
+func TestRetranslationPromoteComplete122UnitApplyRollback(t *testing.T) {
+	root, catalog := complete122PromotionFixture(t)
+	statusPath := filepath.Join(root, "locales", "zh-CN", "status.tsv")
+	statusBefore, err := os.ReadFile(statusPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	candidatesDir := filepath.Join(root, "locales", "zh-CN", "candidates")
+	calls := 0
+	rename := func(old, new string) error {
+		calls++
+		if calls == 4 {
+			return errors.New("injected full-workflow failure")
+		}
+		return os.Rename(old, new)
+	}
+	if _, err := PromoteRetranslation(root, catalog, RetranslationPromoteOptions{Locale: "zh-CN", Apply: true, rename: rename}); err == nil || !strings.Contains(err.Error(), "injected full-workflow failure") {
+		t.Fatalf("error = %v", err)
+	}
+	statusAfter, _ := os.ReadFile(statusPath)
+	if !bytes.Equal(statusBefore, statusAfter) {
+		t.Fatal("failed 122-unit apply changed status")
+	}
+	entries, err := os.ReadDir(candidatesDir)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(entries) != 0 {
+		t.Fatalf("failed 122-unit apply left %d canonical candidates", len(entries))
 	}
 }
 
@@ -110,7 +219,7 @@ func TestRetranslationPromoteDryRunDoesNotModifyCanonicalAndLatestWins(t *testin
 	if err != nil {
 		t.Fatal(err)
 	}
-	if plan.PageCount != 2 || plan.ChangedCount != 2 || plan.UnchangedCount != 0 || !plan.CanApply || plan.Pages[0].BatchID != "chatgpt-zh-CN-002" {
+	if plan.UnitCount != 2 || plan.ChangedCount != 2 || plan.UnchangedCount != 0 || !plan.CanApply || plan.Units[0].BatchID != "chatgpt-zh-CN-002" {
 		t.Fatalf("plan = %+v", plan)
 	}
 	statusAfter, _ := os.ReadFile(statusPath)
@@ -131,8 +240,9 @@ func TestRetranslationPromoteLatestFailureDoesNotFallback(t *testing.T) {
 	if err := writeTranslationJSON(filepath.Join(batchDir, "result.json"), result); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := PromoteRetranslation(root, catalog, RetranslationPromoteOptions{Locale: "zh-CN"}); err == nil || !strings.Contains(err.Error(), "refusing fallback") {
-		t.Fatalf("error = %v", err)
+	plan, err := PromoteRetranslation(root, catalog, RetranslationPromoteOptions{Locale: "zh-CN"})
+	if err != nil || plan.CanApply || len(plan.MissingEvidence) != 1 || !strings.Contains(plan.MissingEvidence[0], "validation_failed") {
+		t.Fatalf("plan=%+v error=%v", plan, err)
 	}
 }
 
@@ -142,9 +252,6 @@ func TestRetranslationPromoteRejectsIncompleteAndInvalidEvidence(t *testing.T) {
 		mutate func(*testing.T, string, *Catalog, string)
 		want   string
 	}{
-		{"missing page", func(t *testing.T, root string, catalog *Catalog, batch string) {
-			catalog.Pages = append(catalog.Pages, Page{ID: "missing/1", Article: "missing.article", Source: []byte("* Missing\n"), SourceSHA256: sum([]byte("* Missing\n"))})
-		}, "covers 1 of 2"},
 		{"illegal batch", func(t *testing.T, root string, catalog *Catalog, batch string) {
 			if err := os.MkdirAll(filepath.Join(root, "data", "retranslation-runs", "zh-CN", "bad"), 0755); err != nil {
 				t.Fatal(err)
@@ -161,7 +268,7 @@ func TestRetranslationPromoteRejectsIncompleteAndInvalidEvidence(t *testing.T) {
 			if err := writeTranslationJSON(filepath.Join(target, "manifest.json"), manifest); err != nil {
 				t.Fatal(err)
 			}
-		}, "ambiguous retranslation batch number"},
+		}, "ambiguous or invalid retranslation batch number"},
 		{"source hash", func(t *testing.T, root string, catalog *Catalog, batch string) {
 			rewriteProcessManifest(t, root, batch, func(m *RetranslationBatchManifest) { m.Units[0].SourceSHA256 = strings.Repeat("0", 64) })
 		}, "source metadata"},
@@ -185,7 +292,7 @@ func TestRetranslationPromoteRejectsIncompleteAndInvalidEvidence(t *testing.T) {
 					t.Fatal(err)
 				}
 			}
-		}, "canonical candidate validator"},
+		}, "canonical validation"},
 		{"GTI18N token", func(t *testing.T, root string, catalog *Catalog, batch string) {
 			batchDir := filepath.Join(root, "data", "retranslation-runs", "zh-CN", batch)
 			for _, relative := range []string{"candidates/lesson-1.article", "raw-responses/lesson-1.article"} {
@@ -206,6 +313,16 @@ func TestRetranslationPromoteRejectsIncompleteAndInvalidEvidence(t *testing.T) {
 				t.Fatalf("error = %v, want %q", err, tt.want)
 			}
 		})
+	}
+}
+
+func TestRetranslationPromoteMissingWorkflowUnitEvidenceCannotApply(t *testing.T) {
+	root, catalog, _ := processedPromotionFixture(t, 1)
+	source := []byte("* Missing\n\nMissing source.\n")
+	catalog.Pages = append(catalog.Pages, Page{ID: "missing/1", Article: "missing.article", Source: source, SourceSHA256: sum(source)})
+	plan, err := PromoteRetranslation(root, catalog, RetranslationPromoteOptions{Locale: "zh-CN"})
+	if err != nil || plan.CanApply || plan.UnitCount != 2 || !reflect.DeepEqual(plan.MissingEvidence, []string{"missing/1"}) {
+		t.Fatalf("plan=%+v err=%v", plan, err)
 	}
 }
 
@@ -239,7 +356,7 @@ func TestRetranslationPromoteBindsInputRawAndCandidateEvidence(t *testing.T) {
 			if err := writeTranslationJSON(manifestPath, manifest); err != nil {
 				t.Fatal(err)
 			}
-		}, "regenerated Default protected input differs"},
+		}, "regenerated protected input differs"},
 		{"input sha", func(t *testing.T, root, batchDir string) {
 			manifestPath := filepath.Join(batchDir, "manifest.json")
 			manifest := readRetranslationManifestAt(t, manifestPath)
@@ -409,7 +526,7 @@ func TestRetranslationPromoteSelectsRetryFinalCandidate(t *testing.T) {
 		t.Fatal(err)
 	}
 	plan, err := PromoteRetranslation(root, catalog, RetranslationPromoteOptions{Locale: "zh-CN"})
-	if err != nil || plan.PageCount != 1 || plan.Pages[0].BatchID != batch {
+	if err != nil || plan.UnitCount != 1 || plan.Units[0].BatchID != batch {
 		t.Fatalf("plan=%+v err=%v", plan, err)
 	}
 }
@@ -427,7 +544,7 @@ func TestRetranslationPromoteApplyUpdatesCanonicalAndPreservesAttempts(t *testin
 		t.Fatal(err)
 	}
 	for _, status := range statuses {
-		if status.State != "ready" || status.Attempts != 7 || status.SourceSHA256 == "" || status.CandidatePath != canonicalCandidatePath("zh-CN", status.UnitID) || status.UpdatedAt != "2026-08-17T19:04:05Z" || status.Note != "ChatGPT retranslation promoted from "+batch+"; passed canonical validator" {
+		if status.State != "ready" || status.Attempts != 1 || status.SourceSHA256 == "" || status.CandidatePath != canonicalCandidatePath("zh-CN", status.UnitID) || status.UpdatedAt != "2026-08-17T19:04:05Z" || status.Note != "ChatGPT retranslation promoted from "+batch+"; passed canonical validator" {
 			t.Fatalf("status = %+v", status)
 		}
 		candidate, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(status.CandidatePath)))
@@ -464,7 +581,7 @@ func TestRetranslationPromoteCanonicalizesEOFWithoutChangingHistoricalCandidate(
 	if err != nil {
 		t.Fatal(err)
 	}
-	page := plan.Pages[0]
+	page := plan.Units[0]
 	if plan.EOFNormalizedCount != 1 || !page.EOFNormalized || page.SourceCandidateSHA256 != sum(sourceBefore) || page.CandidateSHA256 != sum(canonicalized) || !page.Changed {
 		t.Fatalf("dry-run plan=%+v page=%+v", plan, page)
 	}
@@ -489,7 +606,7 @@ func TestRetranslationPromoteCanonicalizesEOFWithoutChangingHistoricalCandidate(
 	if err != nil {
 		t.Fatal(err)
 	}
-	if recheck.ChangedCount != 0 || recheck.UnchangedCount != 1 || recheck.EOFNormalizedCount != 1 || recheck.Pages[0].Changed {
+	if recheck.ChangedCount != 0 || recheck.UnchangedCount != 1 || recheck.EOFNormalizedCount != 1 || recheck.Units[0].Changed {
 		t.Fatalf("post-apply plan = %+v", recheck)
 	}
 }

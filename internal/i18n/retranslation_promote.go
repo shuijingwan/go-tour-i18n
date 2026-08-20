@@ -21,31 +21,36 @@ type RetranslationPromoteOptions struct {
 	rename func(string, string) error
 }
 
-type RetranslationPromotionPage struct {
-	PageID                 string `json:"page_id"`
-	BatchID                string `json:"batch_id"`
-	SourceCandidatePath    string `json:"source_candidate_path"`
-	CanonicalCandidatePath string `json:"canonical_candidate_path"`
-	SourceCandidateSHA256  string `json:"source_candidate_sha256"`
-	CandidateSHA256        string `json:"candidate_sha256"`
-	EOFNormalized          bool   `json:"eof_normalized"`
-	Changed                bool   `json:"changed"`
+type RetranslationPromotionUnit struct {
+	UnitID                 string   `json:"unit_id"`
+	UnitKind               UnitKind `json:"unit_kind"`
+	BatchID                string   `json:"batch_id"`
+	SourceCandidatePath    string   `json:"source_candidate_path"`
+	CanonicalCandidatePath string   `json:"canonical_candidate_path"`
+	SourceCandidateSHA256  string   `json:"source_candidate_sha256"`
+	CandidateSHA256        string   `json:"candidate_sha256"`
+	EOFNormalized          bool     `json:"eof_normalized"`
+	Changed                bool     `json:"changed"`
 }
 
 type RetranslationPromotionPlan struct {
 	Locale             string                       `json:"locale"`
+	UnitCount          int                          `json:"unit_count"`
 	PageCount          int                          `json:"page_count"`
+	ExampleCount       int                          `json:"example_count"`
 	ChangedCount       int                          `json:"changed_count"`
 	UnchangedCount     int                          `json:"unchanged_count"`
 	EOFNormalizedCount int                          `json:"eof_normalized_count"`
 	CanApply           bool                         `json:"can_apply"`
-	Pages              []RetranslationPromotionPage `json:"pages"`
+	MissingEvidence    []string                     `json:"missing_evidence,omitempty"`
+	Units              []RetranslationPromotionUnit `json:"units"`
 }
 
 type preparedPromotion struct {
-	plan      RetranslationPromotionPage
+	plan      RetranslationPromotionUnit
 	candidate []byte
-	page      Page
+	unit      *TranslationUnit
+	attempt   int
 }
 
 var promotionBatchRE = regexp.MustCompile(`^chatgpt-(zh-CN)-([0-9]+)$`)
@@ -62,13 +67,17 @@ func PromoteRetranslation(root string, catalog *Catalog, options RetranslationPr
 	if options.Locale != "zh-CN" {
 		return nil, fmt.Errorf("unsupported locale %q", options.Locale)
 	}
-	prepared, err := preflightRetranslationPromotion(root, catalog, options.Locale)
+	prepared, missing, pages, examples, err := preflightUnifiedRetranslationPromotion(root, catalog, options.Locale)
 	if err != nil {
 		return nil, err
 	}
-	plan := &RetranslationPromotionPlan{Locale: options.Locale, PageCount: len(prepared), CanApply: true, Pages: make([]RetranslationPromotionPage, 0, len(prepared))}
+	plan := &RetranslationPromotionPlan{
+		Locale: options.Locale, UnitCount: pages + examples, PageCount: pages, ExampleCount: examples,
+		CanApply: len(missing) == 0, MissingEvidence: missing,
+		Units: make([]RetranslationPromotionUnit, 0, len(prepared)),
+	}
 	for _, item := range prepared {
-		plan.Pages = append(plan.Pages, item.plan)
+		plan.Units = append(plan.Units, item.plan)
 		if item.plan.Changed {
 			plan.ChangedCount++
 		} else {
@@ -79,6 +88,9 @@ func PromoteRetranslation(root string, catalog *Catalog, options RetranslationPr
 		}
 	}
 	if options.Apply {
+		if !plan.CanApply {
+			return plan, fmt.Errorf("promotion cannot apply: missing valid evidence for %d translation units", len(missing))
+		}
 		if err := applyRetranslationPromotion(root, catalog, options, prepared); err != nil {
 			return nil, err
 		}
@@ -239,13 +251,197 @@ func preflightRetranslationPromotion(root string, catalog *Catalog, locale strin
 		if err != nil {
 			return nil, err
 		}
-		prepared = append(prepared, preparedPromotion{page: byID[id], candidate: canonicalCandidate, plan: RetranslationPromotionPage{
-			PageID: id, BatchID: choice.batchID, SourceCandidatePath: relSource,
+		pageUnit, err := catalog.Unit(id)
+		if err != nil {
+			return nil, err
+		}
+		prepared = append(prepared, preparedPromotion{unit: pageUnit, attempt: 1, candidate: canonicalCandidate, plan: RetranslationPromotionUnit{
+			UnitID: id, UnitKind: UnitKindPage, BatchID: choice.batchID, SourceCandidatePath: relSource,
 			CanonicalCandidatePath: canonical, SourceCandidateSHA256: sum(candidate), CandidateSHA256: sum(canonicalCandidate),
 			EOFNormalized: !bytes.Equal(candidate, canonicalCandidate), Changed: readErr != nil || !bytes.Equal(current, canonicalCandidate),
 		}})
 	}
 	return prepared, nil
+}
+
+func preflightUnifiedRetranslationPromotion(root string, catalog *Catalog, locale string) ([]preparedPromotion, []string, int, int, error) {
+	glossary, err := LoadGlossary(root, locale)
+	if err != nil {
+		return nil, nil, 0, 0, err
+	}
+	expected, pageCount, exampleCount, err := localeWorkflowUnits(catalog)
+	if err != nil {
+		return nil, nil, 0, 0, err
+	}
+	type selected struct {
+		number   int
+		batchID  string
+		batchDir string
+		manifest RetranslationBatchUnit
+		result   RetranslationUnitResult
+	}
+	selectedByID := make(map[string]selected, len(expected))
+	base := filepath.Join(root, "data", "retranslation-runs", locale)
+	entries, err := os.ReadDir(base)
+	if err != nil {
+		return nil, nil, 0, 0, fmt.Errorf("scan retranslation batches: %w", err)
+	}
+	seenNumbers := map[int]string{}
+	for _, entry := range entries {
+		if strings.HasPrefix(entry.Name(), ".") {
+			continue
+		}
+		if !entry.IsDir() {
+			return nil, nil, 0, 0, fmt.Errorf("illegal retranslation batch entry %q", entry.Name())
+		}
+		match := promotionBatchRE.FindStringSubmatch(entry.Name())
+		if match == nil || match[1] != locale {
+			return nil, nil, 0, 0, fmt.Errorf("illegal retranslation batch %q", entry.Name())
+		}
+		number, _ := strconv.Atoi(match[2])
+		if number < 1 || seenNumbers[number] != "" {
+			return nil, nil, 0, 0, fmt.Errorf("ambiguous or invalid retranslation batch number %03d", number)
+		}
+		seenNumbers[number] = entry.Name()
+		batchDir := filepath.Join(base, entry.Name())
+		manifest, err := readRetranslationProcessManifest(batchDir, locale, entry.Name())
+		if err != nil {
+			return nil, nil, 0, 0, err
+		}
+		result, err := readPromotionResult(batchDir, locale, entry.Name(), manifest.UnitCount)
+		if err != nil {
+			return nil, nil, 0, 0, err
+		}
+		results := make(map[string]RetranslationUnitResult, len(result.Units))
+		for _, record := range result.Units {
+			if _, duplicate := results[record.UnitID]; duplicate {
+				return nil, nil, 0, 0, fmt.Errorf("batch %q has duplicate result unit_id %q", entry.Name(), record.UnitID)
+			}
+			results[record.UnitID] = record
+		}
+		seen := map[string]bool{}
+		for _, record := range manifest.Units {
+			if seen[record.UnitID] {
+				return nil, nil, 0, 0, fmt.Errorf("batch %q has duplicate manifest unit_id %q", entry.Name(), record.UnitID)
+			}
+			seen[record.UnitID] = true
+			unit, ok := expected[record.UnitID]
+			if !ok {
+				continue // Non-workflow historical units do not affect locale promotion.
+			}
+			if record.UnitKind != unit.Kind || record.SourcePath != unit.SourcePath || record.SourceSHA256 != unit.SourceSHA256 || sum(unit.Source) != unit.SourceSHA256 {
+				return nil, nil, 0, 0, fmt.Errorf("%s: manifest source metadata does not match current Catalog", unit.ID)
+			}
+			unitResult, ok := results[unit.ID]
+			if !ok || unitResult.UnitKind != unit.Kind {
+				return nil, nil, 0, 0, fmt.Errorf("batch %q result missing or mismatching unit %q", entry.Name(), unit.ID)
+			}
+			if current, exists := selectedByID[unit.ID]; !exists || number > current.number {
+				selectedByID[unit.ID] = selected{number: number, batchID: entry.Name(), batchDir: batchDir, manifest: record, result: unitResult}
+			}
+		}
+	}
+	ids := make([]string, 0, len(expected))
+	for id := range expected {
+		ids = append(ids, id)
+	}
+	sort.Strings(ids)
+	prepared := make([]preparedPromotion, 0, len(ids))
+	missing := make([]string, 0)
+	for _, id := range ids {
+		unit := expected[id]
+		choice, ok := selectedByID[id]
+		if !ok {
+			missing = append(missing, id)
+			continue
+		}
+		if choice.result.Status != "passed" {
+			missing = append(missing, fmt.Sprintf("%s (latest %s=%s)", id, choice.batchID, choice.result.Status))
+			continue
+		}
+		name := filepath.Base(filepath.FromSlash(choice.manifest.InputPath))
+		wantCandidate := filepath.ToSlash(filepath.Join("candidates", name))
+		wantValidation := filepath.ToSlash(filepath.Join("validation", strings.TrimSuffix(name, filepath.Ext(name))+".json"))
+		if choice.result.CandidatePath != wantCandidate || choice.result.ValidationPath != wantValidation {
+			return nil, nil, 0, 0, fmt.Errorf("%s: result candidate/validation path mismatch", id)
+		}
+		validation, err := readPromotionValidation(choice.batchDir, choice.batchID, locale, choice.manifest, choice.result)
+		if err != nil {
+			return nil, nil, 0, 0, err
+		}
+		candidate, err := os.ReadFile(filepath.Join(choice.batchDir, filepath.FromSlash(wantCandidate)))
+		if err != nil {
+			return nil, nil, 0, 0, fmt.Errorf("%s: read promotion candidate: %w", id, err)
+		}
+		attempt, err := validateUnifiedPromotionEvidence(root, choice.batchDir, catalog, unit, choice.manifest, validation, glossary, candidate, locale)
+		if err != nil {
+			return nil, nil, 0, 0, err
+		}
+		canonicalCandidate := candidate
+		if unit.Kind == UnitKindPage {
+			canonicalCandidate = canonicalizeCandidateEOF(candidate)
+		}
+		canonicalPath, err := canonicalTranslationUnitCandidatePath(locale, unit)
+		if err != nil {
+			return nil, nil, 0, 0, err
+		}
+		existing, readErr := os.ReadFile(filepath.Join(root, filepath.FromSlash(canonicalPath)))
+		changed := readErr != nil || !bytes.Equal(existing, canonicalCandidate)
+		prepared = append(prepared, preparedPromotion{
+			plan: RetranslationPromotionUnit{
+				UnitID: id, UnitKind: unit.Kind, BatchID: choice.batchID,
+				SourceCandidatePath:    filepath.ToSlash(filepath.Join("data", "retranslation-runs", locale, choice.batchID, wantCandidate)),
+				CanonicalCandidatePath: canonicalPath, SourceCandidateSHA256: sum(candidate), CandidateSHA256: sum(canonicalCandidate),
+				EOFNormalized: !bytes.Equal(candidate, canonicalCandidate), Changed: changed,
+			},
+			candidate: canonicalCandidate, unit: unit, attempt: attempt,
+		})
+	}
+	return prepared, missing, pageCount, exampleCount, nil
+}
+
+func validateUnifiedPromotionEvidence(root, batchDir string, catalog *Catalog, unit *TranslationUnit, manifest RetranslationBatchUnit, validation *RetranslationValidation, glossary *Glossary, candidate []byte, locale string) (int, error) {
+	input, err := os.ReadFile(filepath.Join(batchDir, filepath.FromSlash(manifest.InputPath)))
+	if err != nil || sum(input) != manifest.InputSHA256 {
+		return 0, fmt.Errorf("%s: input_sha256 mismatch", unit.ID)
+	}
+	protected, err := prepareTranslationUnitInput(unit, glossary)
+	if err != nil || !bytes.Equal(input, []byte(protected.Text)) || len(protected.Tokens) != manifest.ProtectedTokenCount {
+		return 0, fmt.Errorf("%s: regenerated protected input differs from saved input", unit.ID)
+	}
+	extension := filepath.Ext(filepath.Base(manifest.InputPath))
+	flatID := strings.TrimSuffix(filepath.Base(manifest.InputPath), extension)
+	attempt, err := retryValidationAttemptForExtension(validation.RawResponsePath, flatID, extension)
+	if err != nil {
+		return 0, fmt.Errorf("%s: %w", unit.ID, err)
+	}
+	retryDir := filepath.Join(batchDir, "retries", flatID)
+	if attempt == 1 {
+		entries, readErr := os.ReadDir(retryDir)
+		if readErr != nil && !os.IsNotExist(readErr) {
+			return 0, fmt.Errorf("%s: inspect retry history: %w", unit.ID, readErr)
+		}
+		if readErr == nil && len(entries) != 0 {
+			return 0, fmt.Errorf("%s: validation points to attempt-001 but retry history exists", unit.ID)
+		}
+	} else if err := validateRetryAttemptSequenceForExtension(retryDir, attempt, attempt, extension); err != nil {
+		return 0, fmt.Errorf("%s: invalid final retry provenance: %w", unit.ID, err)
+	}
+	raw, err := os.ReadFile(filepath.Join(batchDir, filepath.FromSlash(validation.RawResponsePath)))
+	if err != nil {
+		return 0, fmt.Errorf("%s: read validation raw response: %w", unit.ID, err)
+	}
+	restored, failures := protected.restore(string(raw))
+	if len(failures) != 0 || !bytes.Equal([]byte(restored), candidate) {
+		return 0, fmt.Errorf("%s: restored candidate does not match saved candidate", unit.ID)
+	}
+	if bytes.Contains(candidate, []byte("GTI18N")) || containsProtectedTranslationToken(candidate) {
+		return 0, fmt.Errorf("%s: candidate contains GTI18N token", unit.ID)
+	}
+	if err := ValidateTranslationUnitCandidate(root, catalog, unit.ID, locale, candidate); err != nil {
+		return 0, fmt.Errorf("%s: canonical validation: %w", unit.ID, err)
+	}
+	return attempt, nil
 }
 
 func canonicalizeCandidateEOF(candidate []byte) []byte {
@@ -354,14 +550,10 @@ func applyRetranslationPromotion(root string, catalog *Catalog, options Retransl
 		if err != nil {
 			return err
 		}
-		if unit.Kind != UnitKindPage {
-			continue
-		}
 		if _, exists := statusByID[status.UnitID]; exists {
 			return fmt.Errorf("duplicate status unit_id %q", status.UnitID)
 		}
-		page, err := catalog.Page(status.UnitID)
-		if err != nil || status.SourceSHA256 != page.SourceSHA256 {
+		if status.SourceSHA256 != unit.SourceSHA256 {
 			return fmt.Errorf("%s: invalid canonical status source", status.UnitID)
 		}
 		statusByID[status.UnitID] = i
@@ -389,12 +581,13 @@ func applyRetranslationPromotion(root string, catalog *Catalog, options Retransl
 		if err := os.WriteFile(target, item.candidate, 0644); err != nil {
 			return err
 		}
-		i, ok := statusByID[item.plan.PageID]
+		i, ok := statusByID[item.plan.UnitID]
 		if !ok {
-			return fmt.Errorf("status missing page_id %q", item.plan.PageID)
+			return fmt.Errorf("status missing unit_id %q", item.plan.UnitID)
 		}
 		statuses[i].State = "ready"
-		statuses[i].SourceSHA256 = item.page.SourceSHA256
+		statuses[i].Attempts = item.attempt
+		statuses[i].SourceSHA256 = item.unit.SourceSHA256
 		statuses[i].CandidatePath = item.plan.CanonicalCandidatePath
 		statuses[i].UpdatedAt = updated
 		statuses[i].Note = fmt.Sprintf("ChatGPT retranslation promoted from %s; passed canonical validator", item.plan.BatchID)

@@ -17,7 +17,7 @@ func TestBuildLocaleProjectionReplacesMultipleSectionsAndArticles(t *testing.T) 
 	if err != nil {
 		t.Fatal(err)
 	}
-	if projection.PageCount != 3 || projection.ArticleCount != 2 || projection.Ready != 3 || projection.Pending != 0 || projection.Blocked != 0 {
+	if projection.UnitCount != 4 || projection.PageCount != 3 || projection.ExampleCount != 1 || projection.ArticleCount != 2 || projection.Ready != 4 || projection.Pending != 0 || projection.Blocked != 0 {
 		t.Fatalf("projection counts = %+v", projection)
 	}
 	alpha, err := os.ReadFile(filepath.Join(projection.ContentDir, "tour", "alpha.article"))
@@ -46,16 +46,18 @@ func TestBuildLocaleProjectionReplacesMultipleSectionsAndArticles(t *testing.T) 
 	if !bytes.Contains(beta, []byte("第三段译文。")) || bytes.Contains(beta, []byte("English third paragraph.")) {
 		t.Fatalf("beta projection did not replace its candidate:\n%s", beta)
 	}
-	wantProgram, err := os.ReadFile(filepath.Join(fixture.root, "_content", "tour", "alpha", "one.go"))
-	if err != nil {
-		t.Fatal(err)
-	}
+	wantProgram := fixture.candidates["example:alpha/one.go"]
 	gotProgram, err := os.ReadFile(filepath.Join(projection.ContentDir, "tour", "alpha", "one.go"))
 	if err != nil {
 		t.Fatal(err)
 	}
 	if !bytes.Equal(gotProgram, wantProgram) {
-		t.Fatal("copied program source changed")
+		t.Fatal("eligible Example candidate was not projected")
+	}
+	upstreamStaticExample, _ := os.ReadFile(filepath.Join(fixture.root, "_content", "tour", "alpha", "static.go"))
+	projectedStaticExample, _ := os.ReadFile(filepath.Join(projection.ContentDir, "tour", "alpha", "static.go"))
+	if !bytes.Equal(upstreamStaticExample, projectedStaticExample) {
+		t.Fatal("non-eligible Example changed during projection")
 	}
 	static, err := os.ReadFile(filepath.Join(projection.ContentDir, "tour", "static.txt"))
 	if err != nil || string(static) != "shared static asset\n" {
@@ -127,11 +129,46 @@ func TestBuildLocaleProjectionRejectsNonReadyPages(t *testing.T) {
 			}
 			fixture.writeStatuses(t)
 			_, err := BuildLocaleProjection(fixture.root, fixture.catalog, "zh-CN", filepath.Join(t.TempDir(), "projection"))
-			if err == nil || !strings.Contains(err.Error(), "complete projection requires every catalog page to be ready") {
+			if err == nil || !strings.Contains(err.Error(), "workflow translation units to be ready") {
 				t.Fatalf("error = %v, want non-ready rejection", err)
 			}
 		})
 	}
+}
+
+func TestBuildLocaleProjectionRequiresReadyValidExample(t *testing.T) {
+	t.Run("pending", func(t *testing.T) {
+		fixture := newProjectionFixture(t)
+		status := &fixture.statuses[len(fixture.statuses)-1]
+		status.State, status.Attempts, status.CandidatePath = "pending", 0, ""
+		fixture.writeStatuses(t)
+		_, err := BuildLocaleProjection(fixture.root, fixture.catalog, "zh-CN", filepath.Join(t.TempDir(), "projection"))
+		if err == nil || !strings.Contains(err.Error(), "example:alpha/one.go=pending") {
+			t.Fatalf("pending Example error=%v", err)
+		}
+	})
+	t.Run("missing candidate", func(t *testing.T) {
+		fixture := newProjectionFixture(t)
+		status := fixture.statuses[len(fixture.statuses)-1]
+		if err := os.Remove(filepath.Join(fixture.root, filepath.FromSlash(status.CandidatePath))); err != nil {
+			t.Fatal(err)
+		}
+		_, err := BuildLocaleProjection(fixture.root, fixture.catalog, "zh-CN", filepath.Join(t.TempDir(), "projection"))
+		if err == nil || !strings.Contains(err.Error(), "read canonical candidate") {
+			t.Fatalf("missing Example candidate error=%v", err)
+		}
+	})
+	t.Run("invalid candidate", func(t *testing.T) {
+		fixture := newProjectionFixture(t)
+		status := fixture.statuses[len(fixture.statuses)-1]
+		if err := os.WriteFile(filepath.Join(fixture.root, filepath.FromSlash(status.CandidatePath)), []byte("package changed\n"), 0644); err != nil {
+			t.Fatal(err)
+		}
+		_, err := BuildLocaleProjection(fixture.root, fixture.catalog, "zh-CN", filepath.Join(t.TempDir(), "projection"))
+		if err == nil || !strings.Contains(err.Error(), "candidate validation") {
+			t.Fatalf("invalid Example candidate error=%v", err)
+		}
+	})
 }
 
 func TestBuildLocaleProjectionRejectsMissingCandidateWithoutFallback(t *testing.T) {
@@ -202,7 +239,7 @@ func TestBuildLocaleProjectionRejectsResidualProtectedToken(t *testing.T) {
 	}
 }
 
-func TestBuildLocaleProjectionPreservesWelcomePublicationSemantics(t *testing.T) {
+func TestBuildLocaleProjectionRealCorpusRequiresEligibleExamplesReady(t *testing.T) {
 	root := repoRoot(t)
 	current, err := BuildSourceCatalog(root)
 	if err != nil {
@@ -215,60 +252,9 @@ func TestBuildLocaleProjectionPreservesWelcomePublicationSemantics(t *testing.T)
 	if err := HydrateCatalogSources(catalog, current); err != nil {
 		t.Fatal(err)
 	}
-	projection, err := BuildLocaleProjection(root, catalog, "zh-CN", filepath.Join(t.TempDir(), "projection"))
-	if err != nil {
-		t.Fatal(err)
-	}
-	welcome, err := os.ReadFile(filepath.Join(projection.ContentDir, "tour", "welcome.article"))
-	if err != nil {
-		t.Fatal(err)
-	}
-	if bytes.Contains(welcome, []byte("#appengine:")) {
-		t.Fatal("welcome projection retained appengine prefixes")
-	}
-	metadata, err := LoadArticleMetadata(root, "zh-CN", catalog)
-	if err != nil {
-		t.Fatal(err)
-	}
-	doc, err := parseProjectedArticle(projection.ContentDir, "welcome.article", welcome)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if doc.Title != metadata["welcome.article"].Title || doc.Subtitle != metadata["welcome.article"].Subtitle {
-		t.Fatalf("welcome metadata = %q / %q, want %q / %q", doc.Title, doc.Subtitle, metadata["welcome.article"].Title, metadata["welcome.article"].Subtitle)
-	}
-	for article, want := range metadata {
-		data, err := os.ReadFile(filepath.Join(projection.ContentDir, "tour", article))
-		if err != nil {
-			t.Fatal(err)
-		}
-		doc, err := parseProjectedArticle(projection.ContentDir, article, data)
-		if err != nil {
-			t.Fatal(err)
-		}
-		if doc.Title != want.Title || doc.Subtitle != want.Subtitle {
-			t.Errorf("%s metadata = %q / %q, want %q / %q", article, doc.Title, doc.Subtitle, want.Title, want.Subtitle)
-		}
-	}
-	sections, _, err := splitArticle(welcome, "welcome.article")
-	if err != nil {
-		t.Fatal(err)
-	}
-	for _, pageID := range []string{"welcome/1", "welcome/4", "welcome/5"} {
-		page, err := catalog.Page(pageID)
-		if err != nil {
-			t.Fatal(err)
-		}
-		candidate, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(canonicalCandidatePath("zh-CN", pageID))))
-		if err != nil {
-			t.Fatal(err)
-		}
-		if !sameProjectedSection(sections[page.SectionNumber-1], candidate) {
-			t.Errorf("%s does not match its canonical candidate", pageID)
-		}
-	}
-	if !bytes.Contains(sections[0], []byte("在远程服务器上")) || bytes.Contains(sections[0], []byte("在你的电脑上")) {
-		t.Fatal("welcome/1 did not retain the translated remote execution branch")
+	_, err = BuildLocaleProjection(root, catalog, "zh-CN", filepath.Join(t.TempDir(), "projection"))
+	if err == nil || !strings.Contains(err.Error(), "all 122 workflow translation units") || !strings.Contains(err.Error(), "example:basics/numeric-constants.go=pending") {
+		t.Fatalf("real corpus projection error=%v", err)
 	}
 }
 
@@ -289,7 +275,10 @@ func newProjectionFixture(t *testing.T) *projectionFixture {
 	writeFixtureFile(t, filepath.Join(root, "_content", "tour", "alpha.article"), appendArticle("Alpha", alphaOne, alphaTwo))
 	writeFixtureFile(t, filepath.Join(root, "_content", "tour", "beta.article"), appendArticle("Beta", betaOne))
 	exampleSource := []byte("package main\n\n// Print a greeting.\nfunc main() {}\n")
+	exampleCandidate := []byte("package main\n\n// 打印问候语。\nfunc main() {}\n")
+	staticExample := []byte("package main\n\nfunc helper() {}\n")
 	writeFixtureFile(t, filepath.Join(root, "_content", "tour", "alpha", "one.go"), exampleSource)
+	writeFixtureFile(t, filepath.Join(root, "_content", "tour", "alpha", "static.go"), staticExample)
 	writeFixtureFile(t, filepath.Join(root, "_content", "tour", "static.txt"), []byte("shared static asset\n"))
 	writeFixtureFile(t, filepath.Join(root, "locales", "zh-CN", "locale.json"), []byte(`{"locale":"zh-CN","language_name":"简体中文","english_name":"Simplified Chinese","html_lang":"zh-CN","phase":"scaffold","translation_unit":"present.Section","default_language":true}`))
 	writeFixtureFile(t, filepath.Join(root, "locales", "zh-CN", "glossary.yaml"), []byte("mandatory:\n  slides: 幻灯片\n"))
@@ -305,7 +294,10 @@ func newProjectionFixture(t *testing.T) *projectionFixture {
 		"beta/1":  []byte("* 第三页\n\n第三段译文。\n"),
 	}
 	fixture := &projectionFixture{
-		root: root, catalog: &Catalog{Pages: pages, Examples: []Example{{ID: "example:alpha/one.go", SourcePath: "_content/tour/alpha/one.go", Source: exampleSource, SourceSHA256: sum(exampleSource)}}}, candidates: candidates,
+		root: root, catalog: &Catalog{Pages: pages, Examples: []Example{
+			{ID: "example:alpha/one.go", SourcePath: "_content/tour/alpha/one.go", Source: exampleSource, SourceSHA256: sum(exampleSource)},
+			{ID: "example:alpha/static.go", SourcePath: "_content/tour/alpha/static.go", Source: staticExample, SourceSHA256: sum(staticExample)},
+		}}, candidates: candidates,
 		metadata: []ArticleMetadata{
 			{Article: "alpha.article", Title: "甲课程", Subtitle: "甲课程说明"},
 			{Article: "beta.article", Title: "乙课程", Subtitle: "乙课程说明"},
@@ -316,7 +308,13 @@ func newProjectionFixture(t *testing.T) *projectionFixture {
 		writeFixtureFile(t, filepath.Join(root, filepath.FromSlash(path)), candidates[page.ID])
 		fixture.statuses = append(fixture.statuses, Status{UnitID: page.ID, State: "ready", Attempts: 1, SourceSHA256: page.SourceSHA256, CandidatePath: path})
 	}
-	fixture.statuses = append(fixture.statuses, Status{UnitID: "example:alpha/one.go", State: "pending", SourceSHA256: sum(exampleSource)})
+	examplePath, err := canonicalTranslationUnitCandidatePath("zh-CN", &TranslationUnit{ID: "example:alpha/one.go", Kind: UnitKindExample})
+	if err != nil {
+		t.Fatal(err)
+	}
+	writeFixtureFile(t, filepath.Join(root, filepath.FromSlash(examplePath)), exampleCandidate)
+	fixture.candidates["example:alpha/one.go"] = exampleCandidate
+	fixture.statuses = append(fixture.statuses, Status{UnitID: "example:alpha/one.go", State: "ready", Attempts: 1, SourceSHA256: sum(exampleSource), CandidatePath: examplePath})
 	fixture.writeStatuses(t)
 	fixture.writeMetadata(t, fixture.metadata)
 	return fixture
