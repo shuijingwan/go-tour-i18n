@@ -4,7 +4,7 @@
 
 ## 基线与架构
 
-- 官方 upstream 基线为 `golang/website` 的 `master` 分支 commit `e11dacba76c5aae474746e9eedee19693f492803`；翻译运行时使用仓库内固定的最小 Tour 源码闭包，外部 checkout 仅用于同步与校验。
+- 官方 upstream 基线为 `golang/website` 的 `master` 分支 commit `645042eb697eaf69e33a9af00c6b5b3fffdead5a`；翻译运行时使用仓库内固定的最小 Tour 源码闭包，外部 checkout 仅用于同步与校验。
 - 当前目录包含 103 个正式发布页面和 2 条单独保留的 `#appengine:` 条件源审计记录；两个条件 Section 去标记后同时投影为 `welcome/4`、`welcome/5`。
 - 唯一维护 CLI 是 `cmd/tour-i18n`。
 - 页面身份使用 `data/tour-pages.tsv` 中冻结的持久 `page_id`，不会以页面位置或临时语义 key 替代。
@@ -94,10 +94,11 @@
 
 - UI consumer 开始前的基准为 `519cc38`。经 SHA-256 / 文件核对，以下 upstream-facing 文件在该基准时与冻结 upstream `e11dacba76c5aae474746e9eedee19693f492803` 一致：`_content/tour/template/index.tmpl`、`_content/tour/static/js/app.js`、`_content/tour/static/js/controllers.js`、`_content/tour/static/js/directives.js`、`_content/tour/static/js/values.js`、`_content/tour/static/partials/list.html`、`_content/tour/static/partials/editor.html`。
 - 当前 UI 本地化对 upstream 的改动集中于文案绑定、少量 i18n 接线和数据来源替换，未进行明显 UI 结构性重构。未来 upstream 同步时重点复核上述少量 consumer 文件；继续遵守“低收益 + 高侵入的边缘文案宁可保留 upstream，不为零英文扩大维护面”的原则。
+- 已提供受限的人工 source 同步维护入口：先以 `upstream preview --source-root <website>` 只读检查，再人工复制已确认的 `_content/tour` 变化；当 Page route 与 conditional identity 保持不变时，使用 `catalog write --allow-source-change` 重建三个 source catalog。该命令不修改 locale status、candidate、review evidence 或 translation runs；Page 新增、删除、移动和无法识别的身份变化仍会拒绝。
 
 ## 完整语言正式投影与本地预览完成状态
 
-- 当前 upstream 仍为 `master@e11dacba76c5aae474746e9eedee19693f492803`。
+- 当前 upstream 为 `master@645042eb697eaf69e33a9af00c6b5b3fffdead5a`。
 - zh-CN 正式状态为 `ready=103`、`pending=0`、`blocked=0`；catalog 为 103 个 published pages 和 2 条 conditional source records。
 - 已完成全部 103 页 canonical candidate、全局翻译质量审计、zh-CN 公共 UI 本地化、完整语言正式投影与完整语言本地预览。
 - `tour-i18n build --locale <locale>` 从 catalog、locale status 与 canonical ready candidate 构建完整正式投影；它拒绝 pending、blocked、缺失、额外或非 canonical candidate，不回退到英文或旧译文，也不修改 candidate、status 或 catalog。

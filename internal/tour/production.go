@@ -78,7 +78,7 @@ func notFound(w http.ResponseWriter, r *http.Request) {
 
 // The structures and browser-facing conversion below follow the frozen
 // golang/website internal/play proxy protocol at
-// e11dacba76c5aae474746e9eedee19693f492803. Execution remains at the remote
+// 645042eb697eaf69e33a9af00c6b5b3fffdead5a. Execution remains at the remote
 // Playground; this package only performs bounded HTTP conversion.
 type playgroundCompileResponse struct {
 	Errors    string

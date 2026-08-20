@@ -9,7 +9,7 @@
 - 仓库 URL：<https://github.com/golang/website.git>
 - 示例本地只读目录：`$HOME/code/go-website-upstream`（可按实际环境调整）
 - 分支：`master`
-- 固定 commit：`e11dacba76c5aae474746e9eedee19693f492803`
+- 固定 commit：`645042eb697eaf69e33a9af00c6b5b3fffdead5a`
 - Go 版本：`go1.26.0 linux/amd64`
 - 首次确认日期：2026-08-02
 - 首次 Tour 范围源码导入日期：2026-08-02

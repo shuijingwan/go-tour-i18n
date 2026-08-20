@@ -68,6 +68,14 @@ go run -mod=readonly ./cmd/tour-i18n upstream preview \
 
 预览不会修改目录、语言状态或候选文件。`catalog write` 遇到新增、删除或无法可靠识别的页面时会停止，不会按新位置重编号。
 
+上游同步前先运行 `upstream preview` 检测变化。完成经确认的人工 `_content/tour` source 复制后，如 Page route 与 conditional identity 未变，可显式重建三个 source catalog：
+
+```bash
+go run -mod=readonly ./cmd/tour-i18n catalog write --allow-source-change
+```
+
+该模式仅更新 `data/tour-pages.tsv`、`data/tour-conditional-pages.tsv` 和 `data/tour-examples.tsv`；不会修改 locale status、candidate 或 review evidence，新增、删除、移动或无法识别的 Page 仍会被拒绝。
+
 导出一个完整英文源页面：
 
 ```bash
@@ -267,8 +275,8 @@ zh-CN 第一阶段已经正式上线：<https://go-dev.shuijingwanwq.com/>。
 
 - 官方仓库：<https://github.com/golang/website.git>
 - 分支：`master`
-- 固定 commit：`e11dacba76c5aae474746e9eedee19693f492803`
-- upstream commit 时间：`2026-07-23 04:05:40`（北京时间；`2026-07-22T20:05:40Z`）
+- 固定 commit：`645042eb697eaf69e33a9af00c6b5b3fffdead5a`
+- upstream commit 时间：`2026-08-20 13:56:11`（北京时间；`2026-08-20T05:56:11Z`）
 - 初始验证环境：`go1.26.0 linux/amd64`
 
 同步原则见 [UPSTREAM.md](UPSTREAM.md)，逐文件来源、模式和 SHA-256 见 [UPSTREAM_MANIFEST.tsv](UPSTREAM_MANIFEST.tsv)。

@@ -13,7 +13,7 @@ import (
 )
 
 func TestLoadSiteMetadataDistinguishesDevelopmentAndProduction(t *testing.T) {
-	const fields = `"locale":"zh-CN","upstream_commit":"e11dacba76c5aae474746e9eedee19693f492803","upstream_commit_time":"2026-07-22T20:05:40Z","pages":103,"articles":7`
+	const fields = `"locale":"zh-CN","upstream_commit":"645042eb697eaf69e33a9af00c6b5b3fffdead5a","upstream_commit_time":"2026-08-20T05:56:11Z","pages":103,"articles":7`
 	tests := []struct {
 		name    string
 		json    string

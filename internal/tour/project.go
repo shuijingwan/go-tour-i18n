@@ -33,8 +33,8 @@ var Project = struct {
 }
 
 const (
-	FrozenUpstreamCommit     = "e11dacba76c5aae474746e9eedee19693f492803"
-	FrozenUpstreamCommitTime = "2026-07-22T20:05:40Z"
+	FrozenUpstreamCommit     = "645042eb697eaf69e33a9af00c6b5b3fffdead5a"
+	FrozenUpstreamCommitTime = "2026-08-20T05:56:11Z"
 )
 
 // SiteMetadata is read from the selected content tree at startup. Source-tree

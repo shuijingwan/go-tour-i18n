@@ -92,20 +92,33 @@ func run(args []string) error {
 		fmt.Printf("catalog OK: %d published pages, %d conditional source records, %d play examples\n", len(catalog.Pages), len(catalog.Conditional), len(catalog.Examples))
 		return nil
 	case "catalog write":
-		legacy, err := i18n.BuildLegacySourceCatalog(root)
-		if err != nil {
+		fs := flag.NewFlagSet("catalog write", flag.ContinueOnError)
+		allowSourceChange := fs.Bool("allow-source-change", false, "rebuild catalogs after an explicitly verified manual upstream source update; page routes and conditional identities must be unchanged")
+		if err := fs.Parse(args[2:]); err != nil {
 			return err
 		}
-		if err := i18n.HydrateCatalogSources(catalog, current); err != nil {
-			if legacyErr := i18n.HydrateCatalogSources(catalog, legacy); legacyErr != nil {
-				return err
+		if len(fs.Args()) != 0 {
+			return fmt.Errorf("unexpected catalog write arguments: %s", strings.Join(fs.Args(), " "))
+		}
+		var reconciled *i18n.Catalog
+		if *allowSourceChange {
+			reconciled, err = i18n.ReconcileCatalogAfterSourceChange(catalog, current)
+		} else {
+			legacy, legacyErr := i18n.BuildLegacySourceCatalog(root)
+			if legacyErr != nil {
+				return legacyErr
 			}
+			if hydrateErr := i18n.HydrateCatalogSources(catalog, current); hydrateErr != nil {
+				if legacyErr := i18n.HydrateCatalogSources(catalog, legacy); legacyErr != nil {
+					return hydrateErr
+				}
+			}
+			report, previewErr := i18n.PreviewCatalog(catalog, current)
+			if previewErr != nil {
+				return previewErr
+			}
+			reconciled, err = i18n.ReconcileCatalog(catalog, current, report)
 		}
-		report, err := i18n.PreviewCatalog(catalog, current)
-		if err != nil {
-			return err
-		}
-		reconciled, err := i18n.ReconcileCatalog(catalog, current, report)
 		if err != nil {
 			return err
 		}

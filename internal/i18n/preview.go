@@ -322,6 +322,55 @@ func ReconcileCatalog(committed, next *Catalog, report *PreviewReport) (*Catalog
 	return out, nil
 }
 
+// ReconcileCatalogAfterSourceChange rebuilds the source catalogs after a
+// manually applied upstream update. Unlike ReconcileCatalog, it cannot inspect
+// the old page source: the local source tree has already been replaced. It
+// therefore accepts content changes only when every persistent page location
+// and every conditional identity remains unchanged.
+func ReconcileCatalogAfterSourceChange(committed, next *Catalog) (*Catalog, error) {
+	if len(committed.Pages) != len(next.Pages) {
+		return nil, fmt.Errorf("manual source update changed published page count: committed=%d current=%d", len(committed.Pages), len(next.Pages))
+	}
+	oldByRoute := make(map[string]Page, len(committed.Pages))
+	for _, page := range committed.Pages {
+		oldByRoute[page.Route] = page
+	}
+	out := &Catalog{Pages: make([]Page, 0, len(next.Pages)), Conditional: append([]ConditionalPage(nil), next.Conditional...)}
+	for _, page := range next.Pages {
+		old, ok := oldByRoute[page.Route]
+		if !ok || !sameLocation(old, page) {
+			return nil, fmt.Errorf("manual source update changed page identity at route %q; added, removed, moved, and ambiguous pages require upstream preview and explicit mapping", page.Route)
+		}
+		page.ID = old.ID
+		out.Pages = append(out.Pages, page)
+	}
+	if err := sameConditionalIdentities(committed.Conditional, next.Conditional); err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func sameConditionalIdentities(old, next []ConditionalPage) error {
+	if len(old) != len(next) {
+		return fmt.Errorf("manual source update changed conditional page count: committed=%d current=%d", len(old), len(next))
+	}
+	oldKeys := make(map[string]bool, len(old))
+	for _, page := range old {
+		oldKeys[conditionalIdentity(page)] = true
+	}
+	for _, page := range next {
+		key := conditionalIdentity(page)
+		if !oldKeys[key] {
+			return fmt.Errorf("manual source update changed conditional page identity %q; added, removed, moved, and ambiguous pages require upstream preview and explicit mapping", key)
+		}
+	}
+	return nil
+}
+
+func conditionalIdentity(page ConditionalPage) string {
+	return fmt.Sprintf("%s#%s/%d", page.Article, page.Condition, page.ConditionalIndex)
+}
+
 func indexPages(pages []Page, key func(Page) string) map[string][]int {
 	out := map[string][]int{}
 	for i, page := range pages {

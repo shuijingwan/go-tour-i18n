@@ -62,7 +62,7 @@ func TestProductionHandlerUsesHTTPTransportAndServesTour(t *testing.T) {
 
 	home := httptest.NewRecorder()
 	handler.ServeHTTP(home, httptest.NewRequest(http.MethodGet, "/", nil))
-	for _, want := range []string{"永夜维护 · 非官方社区多语言翻译项目", "项目如何工作", "继续在 go.dev 学习", "本站可能展示广告", "GitHub 项目源码", "蜀ICP备13001590号-1", "开发环境", "golang/website@e11dacba"} {
+	for _, want := range []string{"永夜维护 · 非官方社区多语言翻译项目", "项目如何工作", "继续在 go.dev 学习", "本站可能展示广告", "GitHub 项目源码", "蜀ICP备13001590号-1", "开发环境", "golang/website@645042eb"} {
 		if !strings.Contains(home.Body.String(), want) {
 			t.Errorf("homepage does not contain %q", want)
 		}

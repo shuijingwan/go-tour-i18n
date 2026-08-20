@@ -227,6 +227,49 @@ func TestPreviewAndCatalogWriteDoNotTouchStatus(t *testing.T) {
 	}
 }
 
+func TestReconcileCatalogAfterSourceChangeAllowsWelcomeContentChange(t *testing.T) {
+	oldSource := []byte("* Welcome\n\nThe old upstream link.\n")
+	newSource := []byte("* Welcome\n\nThe link was removed upstream.\n")
+	committed := &Catalog{Pages: []Page{{ID: "welcome/2", Article: "welcome.article", SectionNumber: 2, Route: "/welcome/2", SourceTitle: "Welcome", SourceSHA256: sum(oldSource)}}}
+	current := &Catalog{Pages: []Page{{Article: "welcome.article", SectionNumber: 2, Route: "/welcome/2", SourceTitle: "Welcome", Source: newSource, SourceSHA256: sum(newSource)}}}
+	reconciled, err := ReconcileCatalogAfterSourceChange(committed, current)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got := reconciled.Pages[0]; got.ID != "welcome/2" || got.SourceSHA256 != sum(newSource) {
+		t.Fatalf("reconciled welcome page = %+v", got)
+	}
+}
+
+func TestReconcileCatalogAfterSourceChangeRejectsRouteChanges(t *testing.T) {
+	committed := &Catalog{Pages: []Page{
+		testPage("welcome/1", "welcome.article", 1, "/welcome/1", "One", "first\n"),
+		testPage("welcome/2", "welcome.article", 2, "/welcome/2", "Two", "second\n"),
+	}}
+	for _, test := range []struct {
+		name string
+		next []Page
+	}{
+		{"removed", []Page{committed.Pages[0]}},
+		{"added", append(append([]Page(nil), committed.Pages...), testPage("temporary/3", "welcome.article", 3, "/welcome/3", "Three", "third\n"))},
+		{"moved", []Page{at(committed.Pages[0], "welcome.article", 2, "/welcome/2"), at(committed.Pages[1], "welcome.article", 3, "/welcome/3")}},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			if _, err := ReconcileCatalogAfterSourceChange(committed, &Catalog{Pages: test.next}); err == nil || !strings.Contains(err.Error(), "manual source update changed") {
+				t.Fatalf("error=%v", err)
+			}
+		})
+	}
+}
+
+func TestHydrateCatalogSourcesRemainsStrictForDefaultCatalogWrite(t *testing.T) {
+	old := testPage("welcome/2", "welcome.article", 2, "/welcome/2", "Welcome", "old content\n")
+	changed := testPage("welcome/2", "welcome.article", 2, "/welcome/2", "Welcome", "new content\n")
+	if err := HydrateCatalogSources(&Catalog{Pages: []Page{old}}, &Catalog{Pages: []Page{changed}}); err == nil || !strings.Contains(err.Error(), "does not match current English source") {
+		t.Fatalf("default source lock error=%v", err)
+	}
+}
+
 func testPage(id, article string, section int, route, title, body string) Page {
 	source := []byte("* " + title + "\n\n" + body)
 	if source[len(source)-1] != '\n' {

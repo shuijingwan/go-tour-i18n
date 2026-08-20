@@ -230,7 +230,7 @@ func TestWelcomePersistentIDAndBaselineShape(t *testing.T) {
 		id, route, title, hash string
 	}{
 		{"welcome/1", "/welcome/1", "Hello, 世界", "1f581133d7fa40e6490418c6789a60a2f5e1de26c9c86d7eb6120cb58b145857"},
-		{"welcome/2", "/welcome/2", "Go local", "556b44959e651ea6ba4bfae4eb635956bd18aad70626bc5bda3f4e3b7eeeb681"},
+		{"welcome/2", "/welcome/2", "Go local", "c1c8c34dfe10b11b5cc72e1daae4336290d613bbbe5445012be949ab904fd3fa"},
 		{"welcome/4", "/welcome/3", "Go offline (optional)", "bb517d4b577fdb446fd029c2998d2426663b94a68f4b4e494c59af421508f683"},
 		{"welcome/5", "/welcome/4", "The Go Playground", "19e6d7da57ca1d191c485754f3dd4ac87775c651b8c0ae8e05c03cbd9b225897"},
 		{"welcome/3", "/welcome/5", "Congratulations", "9a6983b2e50b2fa78ff4f65683210714aea1c1575418e36796c156950ec6330d"},
