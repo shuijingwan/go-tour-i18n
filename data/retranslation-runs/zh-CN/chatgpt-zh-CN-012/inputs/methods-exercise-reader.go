@@ -1,0 +1,1 @@
+⟪GTI18N_7f5acb25_000001⟫TODO: Add a Read([]byte) (int, error) method to MyReader.⟪GTI18N_7f5acb25_000002⟫
