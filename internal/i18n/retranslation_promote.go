@@ -34,16 +34,27 @@ type RetranslationPromotionUnit struct {
 }
 
 type RetranslationPromotionPlan struct {
-	Locale             string                       `json:"locale"`
-	UnitCount          int                          `json:"unit_count"`
-	PageCount          int                          `json:"page_count"`
-	ExampleCount       int                          `json:"example_count"`
-	ChangedCount       int                          `json:"changed_count"`
-	UnchangedCount     int                          `json:"unchanged_count"`
-	EOFNormalizedCount int                          `json:"eof_normalized_count"`
-	CanApply           bool                         `json:"can_apply"`
-	MissingEvidence    []string                     `json:"missing_evidence,omitempty"`
-	Units              []RetranslationPromotionUnit `json:"units"`
+	Locale              string                       `json:"locale"`
+	UnitCount           int                          `json:"unit_count"`
+	PageCount           int                          `json:"page_count"`
+	ExampleCount        int                          `json:"example_count"`
+	ChangedCount        int                          `json:"changed_count"`
+	UnchangedCount      int                          `json:"unchanged_count"`
+	EOFNormalizedCount  int                          `json:"eof_normalized_count"`
+	ReviewApprovedCount int                          `json:"review_approved_count"`
+	CanApply            bool                         `json:"can_apply"`
+	MissingEvidence     []string                     `json:"missing_evidence,omitempty"`
+	MissingReview       []string                     `json:"missing_review"`
+	RejectedReview      []string                     `json:"rejected_review"`
+	InvalidReview       []string                     `json:"invalid_review"`
+	Units               []RetranslationPromotionUnit `json:"units"`
+}
+
+type promotionReviewGate struct {
+	approved int
+	missing  []string
+	rejected []string
+	invalid  []string
 }
 
 type preparedPromotion struct {
@@ -67,13 +78,15 @@ func PromoteRetranslation(root string, catalog *Catalog, options RetranslationPr
 	if options.Locale != "zh-CN" {
 		return nil, fmt.Errorf("unsupported locale %q", options.Locale)
 	}
-	prepared, missing, pages, examples, err := preflightUnifiedRetranslationPromotion(root, catalog, options.Locale)
+	prepared, missing, reviews, pages, examples, err := preflightUnifiedRetranslationPromotion(root, catalog, options.Locale)
 	if err != nil {
 		return nil, err
 	}
 	plan := &RetranslationPromotionPlan{
 		Locale: options.Locale, UnitCount: pages + examples, PageCount: pages, ExampleCount: examples,
-		CanApply: len(missing) == 0, MissingEvidence: missing,
+		ReviewApprovedCount: reviews.approved,
+		CanApply:            len(missing) == 0 && len(reviews.missing) == 0 && len(reviews.rejected) == 0 && len(reviews.invalid) == 0,
+		MissingEvidence:     missing, MissingReview: reviews.missing, RejectedReview: reviews.rejected, InvalidReview: reviews.invalid,
 		Units: make([]RetranslationPromotionUnit, 0, len(prepared)),
 	}
 	for _, item := range prepared {
@@ -89,7 +102,7 @@ func PromoteRetranslation(root string, catalog *Catalog, options RetranslationPr
 	}
 	if options.Apply {
 		if !plan.CanApply {
-			return plan, fmt.Errorf("promotion cannot apply: missing valid evidence for %d translation units", len(missing))
+			return plan, fmt.Errorf("promotion cannot apply: missing or invalid evidence")
 		}
 		if err := applyRetranslationPromotion(root, catalog, options, prepared); err != nil {
 			return nil, err
@@ -264,14 +277,14 @@ func preflightRetranslationPromotion(root string, catalog *Catalog, locale strin
 	return prepared, nil
 }
 
-func preflightUnifiedRetranslationPromotion(root string, catalog *Catalog, locale string) ([]preparedPromotion, []string, int, int, error) {
+func preflightUnifiedRetranslationPromotion(root string, catalog *Catalog, locale string) ([]preparedPromotion, []string, promotionReviewGate, int, int, error) {
 	glossary, err := LoadGlossary(root, locale)
 	if err != nil {
-		return nil, nil, 0, 0, err
+		return nil, nil, promotionReviewGate{}, 0, 0, err
 	}
 	expected, pageCount, exampleCount, err := localeWorkflowUnits(catalog)
 	if err != nil {
-		return nil, nil, 0, 0, err
+		return nil, nil, promotionReviewGate{}, 0, 0, err
 	}
 	type selected struct {
 		number   int
@@ -284,7 +297,7 @@ func preflightUnifiedRetranslationPromotion(root string, catalog *Catalog, local
 	base := filepath.Join(root, "data", "retranslation-runs", locale)
 	entries, err := os.ReadDir(base)
 	if err != nil {
-		return nil, nil, 0, 0, fmt.Errorf("scan retranslation batches: %w", err)
+		return nil, nil, promotionReviewGate{}, 0, 0, fmt.Errorf("scan retranslation batches: %w", err)
 	}
 	seenNumbers := map[int]string{}
 	for _, entry := range entries {
@@ -292,37 +305,37 @@ func preflightUnifiedRetranslationPromotion(root string, catalog *Catalog, local
 			continue
 		}
 		if !entry.IsDir() {
-			return nil, nil, 0, 0, fmt.Errorf("illegal retranslation batch entry %q", entry.Name())
+			return nil, nil, promotionReviewGate{}, 0, 0, fmt.Errorf("illegal retranslation batch entry %q", entry.Name())
 		}
 		match := promotionBatchRE.FindStringSubmatch(entry.Name())
 		if match == nil || match[1] != locale {
-			return nil, nil, 0, 0, fmt.Errorf("illegal retranslation batch %q", entry.Name())
+			return nil, nil, promotionReviewGate{}, 0, 0, fmt.Errorf("illegal retranslation batch %q", entry.Name())
 		}
 		number, _ := strconv.Atoi(match[2])
 		if number < 1 || seenNumbers[number] != "" {
-			return nil, nil, 0, 0, fmt.Errorf("ambiguous or invalid retranslation batch number %03d", number)
+			return nil, nil, promotionReviewGate{}, 0, 0, fmt.Errorf("ambiguous or invalid retranslation batch number %03d", number)
 		}
 		seenNumbers[number] = entry.Name()
 		batchDir := filepath.Join(base, entry.Name())
 		manifest, err := readRetranslationProcessManifest(batchDir, locale, entry.Name())
 		if err != nil {
-			return nil, nil, 0, 0, err
+			return nil, nil, promotionReviewGate{}, 0, 0, err
 		}
 		result, err := readPromotionResult(batchDir, locale, entry.Name(), manifest.UnitCount)
 		if err != nil {
-			return nil, nil, 0, 0, err
+			return nil, nil, promotionReviewGate{}, 0, 0, err
 		}
 		results := make(map[string]RetranslationUnitResult, len(result.Units))
 		for _, record := range result.Units {
 			if _, duplicate := results[record.UnitID]; duplicate {
-				return nil, nil, 0, 0, fmt.Errorf("batch %q has duplicate result unit_id %q", entry.Name(), record.UnitID)
+				return nil, nil, promotionReviewGate{}, 0, 0, fmt.Errorf("batch %q has duplicate result unit_id %q", entry.Name(), record.UnitID)
 			}
 			results[record.UnitID] = record
 		}
 		seen := map[string]bool{}
 		for _, record := range manifest.Units {
 			if seen[record.UnitID] {
-				return nil, nil, 0, 0, fmt.Errorf("batch %q has duplicate manifest unit_id %q", entry.Name(), record.UnitID)
+				return nil, nil, promotionReviewGate{}, 0, 0, fmt.Errorf("batch %q has duplicate manifest unit_id %q", entry.Name(), record.UnitID)
 			}
 			seen[record.UnitID] = true
 			unit, ok := expected[record.UnitID]
@@ -330,11 +343,11 @@ func preflightUnifiedRetranslationPromotion(root string, catalog *Catalog, local
 				continue // Non-workflow historical units do not affect locale promotion.
 			}
 			if record.UnitKind != unit.Kind || record.SourcePath != unit.SourcePath || record.SourceSHA256 != unit.SourceSHA256 || sum(unit.Source) != unit.SourceSHA256 {
-				return nil, nil, 0, 0, fmt.Errorf("%s: manifest source metadata does not match current Catalog", unit.ID)
+				return nil, nil, promotionReviewGate{}, 0, 0, fmt.Errorf("%s: manifest source metadata does not match current Catalog", unit.ID)
 			}
 			unitResult, ok := results[unit.ID]
 			if !ok || unitResult.UnitKind != unit.Kind {
-				return nil, nil, 0, 0, fmt.Errorf("batch %q result missing or mismatching unit %q", entry.Name(), unit.ID)
+				return nil, nil, promotionReviewGate{}, 0, 0, fmt.Errorf("batch %q result missing or mismatching unit %q", entry.Name(), unit.ID)
 			}
 			if current, exists := selectedByID[unit.ID]; !exists || number > current.number {
 				selectedByID[unit.ID] = selected{number: number, batchID: entry.Name(), batchDir: batchDir, manifest: record, result: unitResult}
@@ -348,6 +361,7 @@ func preflightUnifiedRetranslationPromotion(root string, catalog *Catalog, local
 	sort.Strings(ids)
 	prepared := make([]preparedPromotion, 0, len(ids))
 	missing := make([]string, 0)
+	reviews := promotionReviewGate{missing: []string{}, rejected: []string{}, invalid: []string{}}
 	for _, id := range ids {
 		unit := expected[id]
 		choice, ok := selectedByID[id]
@@ -363,27 +377,43 @@ func preflightUnifiedRetranslationPromotion(root string, catalog *Catalog, local
 		wantCandidate := filepath.ToSlash(filepath.Join("candidates", retranslationUnitCandidateName(unit)))
 		wantValidation := filepath.ToSlash(filepath.Join("validation", strings.TrimSuffix(name, filepath.Ext(name))+".json"))
 		if choice.result.CandidatePath != wantCandidate || choice.result.ValidationPath != wantValidation {
-			return nil, nil, 0, 0, fmt.Errorf("%s: result candidate/validation path mismatch", id)
+			return nil, nil, promotionReviewGate{}, 0, 0, fmt.Errorf("%s: result candidate/validation path mismatch", id)
 		}
 		validation, err := readPromotionValidation(choice.batchDir, choice.batchID, locale, choice.manifest, choice.result)
 		if err != nil {
-			return nil, nil, 0, 0, err
+			return nil, nil, promotionReviewGate{}, 0, 0, err
 		}
 		candidate, err := os.ReadFile(filepath.Join(choice.batchDir, filepath.FromSlash(wantCandidate)))
 		if err != nil {
-			return nil, nil, 0, 0, fmt.Errorf("%s: read promotion candidate: %w", id, err)
+			return nil, nil, promotionReviewGate{}, 0, 0, fmt.Errorf("%s: read promotion candidate: %w", id, err)
 		}
 		attempt, err := validateUnifiedPromotionEvidence(root, choice.batchDir, catalog, unit, choice.manifest, validation, glossary, candidate, locale)
 		if err != nil {
-			return nil, nil, 0, 0, err
+			return nil, nil, promotionReviewGate{}, 0, 0, err
 		}
+		reviewState, err := checkPromotionReview(choice.batchDir, choice.batchID, locale, unit, choice.manifest, choice.result, validation, candidate, attempt)
+		if err != nil {
+			return nil, nil, promotionReviewGate{}, 0, 0, err
+		}
+		switch reviewState {
+		case "missing":
+			reviews.missing = append(reviews.missing, id)
+			continue
+		case "rejected":
+			reviews.rejected = append(reviews.rejected, id)
+			continue
+		case "invalid":
+			reviews.invalid = append(reviews.invalid, id)
+			continue
+		}
+		reviews.approved++
 		canonicalCandidate := candidate
 		if unit.Kind == UnitKindPage {
 			canonicalCandidate = canonicalizeCandidateEOF(candidate)
 		}
 		canonicalPath, err := canonicalTranslationUnitCandidatePath(locale, unit)
 		if err != nil {
-			return nil, nil, 0, 0, err
+			return nil, nil, promotionReviewGate{}, 0, 0, err
 		}
 		existing, readErr := os.ReadFile(filepath.Join(root, filepath.FromSlash(canonicalPath)))
 		changed := readErr != nil || !bytes.Equal(existing, canonicalCandidate)
@@ -397,7 +427,39 @@ func preflightUnifiedRetranslationPromotion(root string, catalog *Catalog, local
 			candidate: canonicalCandidate, unit: unit, attempt: attempt,
 		})
 	}
-	return prepared, missing, pageCount, exampleCount, nil
+	return prepared, missing, reviews, pageCount, exampleCount, nil
+}
+
+func checkPromotionReview(batchDir, batchID, locale string, unit *TranslationUnit, manifest RetranslationBatchUnit, result RetranslationUnitResult, validation *RetranslationValidation, candidate []byte, attempt int) (string, error) {
+	path := filepath.Join(batchDir, "review", retranslationReviewName(unit))
+	b, err := os.ReadFile(path)
+	if os.IsNotExist(err) {
+		return "missing", nil
+	}
+	if err != nil {
+		return "", fmt.Errorf("%s: read promotion review: %w", unit.ID, err)
+	}
+	review, err := decodeTranslationReview(b)
+	if err != nil {
+		return "invalid", nil
+	}
+	validationBytes, err := os.ReadFile(filepath.Join(batchDir, filepath.FromSlash(result.ValidationPath)))
+	if err != nil {
+		return "", fmt.Errorf("%s: read promotion validation for review: %w", unit.ID, err)
+	}
+	if review.SchemaVersion != TranslationReviewSchemaVersion || review.BatchID != batchID || review.Locale != locale ||
+		review.UnitID != unit.ID || review.UnitKind != unit.Kind || review.SourceSHA256 != manifest.SourceSHA256 ||
+		review.Attempt != attempt || review.Attempt != validation.Attempt || review.CandidatePath != result.CandidatePath ||
+		review.CandidateSHA256 != sum(candidate) || review.ValidationPath != result.ValidationPath || review.ValidationSHA256 != sum(validationBytes) ||
+		review.Reviewer == "" || review.ReviewedAt == "" || review.Rubric == "" || review.Summary == "" || review.Issues == nil ||
+		(review.Decision != "approved" && review.Decision != "rejected") ||
+		(review.Rating != "A" && review.Rating != "B" && review.Rating != "C" && review.Rating != "D") {
+		return "invalid", nil
+	}
+	if review.Decision == "rejected" {
+		return "rejected", nil
+	}
+	return "approved", nil
 }
 
 func validateUnifiedPromotionEvidence(root, batchDir string, catalog *Catalog, unit *TranslationUnit, manifest RetranslationBatchUnit, validation *RetranslationValidation, glossary *Glossary, candidate []byte, locale string) (int, error) {

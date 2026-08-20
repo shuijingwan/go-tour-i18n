@@ -254,6 +254,32 @@ func run(args []string) error {
 			return err
 		}
 		return printJSON(result)
+	case "retranslation review":
+		if len(args) < 3 || args[2] != "check" {
+			return fmt.Errorf("usage: tour-i18n retranslation review check --locale <locale> --batch-id <batch-id>")
+		}
+		fs := flag.NewFlagSet("retranslation review check", flag.ContinueOnError)
+		locale := fs.String("locale", "", "target locale")
+		batchID := fs.String("batch-id", "", "batch id")
+		if err := fs.Parse(args[3:]); err != nil {
+			return err
+		}
+		if *locale == "" || *batchID == "" {
+			return fmt.Errorf("--locale and --batch-id are required")
+		}
+		if fs.NArg() != 0 {
+			return fmt.Errorf("unexpected retranslation review check arguments: %s", strings.Join(fs.Args(), " "))
+		}
+		report, err := i18n.CheckRetranslationReviews(root, catalog, i18n.RetranslationReviewCheckOptions{Locale: *locale, BatchID: *batchID})
+		if err != nil {
+			return err
+		}
+		if report.Rejected == 0 {
+			fmt.Printf("review OK: %d units approved\n", report.Approved)
+		} else {
+			fmt.Printf("review OK: %d units approved, %d units rejected\n", report.Approved, report.Rejected)
+		}
+		return nil
 	case "retranslation promote":
 		fs := flag.NewFlagSet("retranslation promote", flag.ContinueOnError)
 		locale := fs.String("locale", "", "target locale")

@@ -113,7 +113,7 @@ ChatGPT 执行重译批次时，应主动从 GitHub 仓库 `main` 分支读取�
 2. manifest 指向的受保护输入（Page 为 `inputs/*.article`，Example 为 `inputs/*.txt`）；
 3. `locales/<locale>/glossary.yaml`。
 
-整体工作流为：完整 TranslationUnit → Default protected input → retranslation batch → ChatGPT 读取批次和最新 locale glossary → 每单元独立翻译 → raw response → restore → batch candidate → validator → promotion。Page 与 Example 共用批次输入导出、隔离 process、连续 retry 和 canonical promotion。zh-CN 本轮 Batch 001–011 已封存为不可变历史 evidence；`moretypes/1` 与 `concurrency/1` 的最终结果来自各自的 attempt-002。
+整体工作流为：TranslationUnit → export → model translation → process → automatic validation → Translation Quality Review → promotion → ready → projection / publish。Automatic validation 负责机器安全性，不能替代独立的翻译质量审核；所有进入 locale translation workflow 并产生 candidate 的 TranslationUnit 都必须在 promotion 前逐单元审核。长期、多语言通用规则见 [Translation Quality Review 规范](docs/TRANSLATION_QUALITY_REVIEW.md)。Page 与 Example 共用批次输入导出、隔离 process、连续 retry 和 canonical promotion。zh-CN 本轮 Batch 001–011 已封存为不可变历史 evidence；`moretypes/1` 与 `concurrency/1` 的最终结果来自各自的 attempt-002。
 
 Artifact 后缀按语义区分：Page 继续使用 `.article`；Example 的 upstream source 与 restore 后 candidate 使用 `.go`，受保护 input、首次 raw response 与 retry raw response 使用 `.txt`。只有恢复并重新成为合法 Go source 的 artifact 才使用 `.go`。
 
@@ -158,7 +158,7 @@ go run -mod=readonly ./cmd/tour-i18n retranslation promote --locale zh-CN
 go run -mod=readonly ./cmd/tour-i18n retranslation promote --locale zh-CN --apply
 ```
 
-promotion 对每个 workflow TranslationUnit 选择包含该单元的最新批次；最新结果未通过时整体失败，不回退旧批次。preflight 会验证 Catalog/manifest metadata、saved input 与 source hash，使用当前 glossary 重建 Default protected input，检查连续 retry provenance，并沿 validation 指向的最终 raw response 重新 restore，要求 restore 结果与历史 batch candidate 字节完全一致，再按 UnitKind 运行 locale-aware canonical validator。只有 103 Page + 19 eligible Example 全部具备可提升 evidence 时才允许 apply；历史 batch candidate 始终保持不变。
+promotion 对每个 workflow TranslationUnit 选择包含该单元的最新批次；最新 validation 或 review 未通过、缺失或无效时整体失败，不回退旧批次。preflight 会验证 Catalog/manifest metadata、saved input 与 source hash，使用当前 glossary 重建 Default protected input，检查连续 retry provenance，并沿 validation 指向的最终 raw response 重新 restore，要求 restore 结果与历史 batch candidate 字节完全一致，再按 UnitKind 运行 locale-aware canonical validator，并要求与最终 source、candidate、validation 和 attempt 绑定的 approved review evidence。只有 103 Page + 19 eligible Example 全部具备可提升 evidence 时才允许 apply；历史 batch candidate 始终保持不变。Review evidence 规范见 [Translation Quality Review](docs/TRANSLATION_QUALITY_REVIEW.md)。
 
 batch candidate 到 canonical candidate 的边界只允许一种确定性规范化：移除多余尾部 LF，并保证最终恰好一个 LF；不修改正文或其他字节。plan 分别记录原始 `source_candidate_sha256` 与规范化后的 `candidate_sha256`，并标记 EOF normalization。apply 完成后状态保持 `ready`，保留既有 `Attempts` 和 `SourceSHA256`，同时记录来源 ChatGPT batch；本轮最终 revision 包括 Batch 009、010、011，其中 `methods/17`、`methods/19` 最终来自 Batch 011。
 

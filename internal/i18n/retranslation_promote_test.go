@@ -19,6 +19,7 @@ func processedPromotionFixture(t *testing.T, count int) (string, *Catalog, strin
 	if _, err := ProcessRetranslationBatch(root, catalog, RetranslationProcessOptions{Locale: "zh-CN", BatchID: batchID}); err != nil {
 		t.Fatal(err)
 	}
+	writeApprovedPromotionReviews(t, root, catalog, batchID)
 	return root, catalog, batchID
 }
 
@@ -48,6 +49,53 @@ func addProcessedPromotionBatch(t *testing.T, root string, catalog *Catalog, bat
 	}
 	if _, err := ProcessRetranslationBatch(root, catalog, RetranslationProcessOptions{Locale: "zh-CN", BatchID: batchID}); err != nil {
 		t.Fatal(err)
+	}
+	writeApprovedPromotionReviews(t, root, catalog, batchID)
+}
+
+func writeApprovedPromotionReviews(t *testing.T, root string, catalog *Catalog, batchID string) {
+	t.Helper()
+	batchDir := filepath.Join(root, "data", "retranslation-runs", "zh-CN", batchID)
+	manifest := readRetranslationManifest(t, root, batchID)
+	resultBytes, err := os.ReadFile(filepath.Join(batchDir, "result.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	result, err := decodeRetranslationProcessResult(resultBytes)
+	if err != nil {
+		t.Fatal(err)
+	}
+	results := make(map[string]RetranslationUnitResult, len(result.Units))
+	for _, record := range result.Units {
+		results[record.UnitID] = record
+	}
+	for _, record := range manifest.Units {
+		unit, err := catalog.Unit(record.UnitID)
+		if err != nil {
+			t.Fatal(err)
+		}
+		unitResult := results[record.UnitID]
+		candidate, err := os.ReadFile(filepath.Join(batchDir, filepath.FromSlash(unitResult.CandidatePath)))
+		if err != nil {
+			t.Fatal(err)
+		}
+		validationBytes, err := os.ReadFile(filepath.Join(batchDir, filepath.FromSlash(unitResult.ValidationPath)))
+		if err != nil {
+			t.Fatal(err)
+		}
+		validation, err := decodeRetranslationValidation(validationBytes, unit)
+		if err != nil {
+			t.Fatal(err)
+		}
+		review := TranslationReview{
+			SchemaVersion: TranslationReviewSchemaVersion, BatchID: batchID, Locale: "zh-CN",
+			UnitID: unit.ID, UnitKind: unit.Kind, SourceSHA256: unit.SourceSHA256, Attempt: validation.Attempt,
+			CandidatePath: unitResult.CandidatePath, CandidateSHA256: sum(candidate),
+			ValidationPath: unitResult.ValidationPath, ValidationSHA256: sum(validationBytes),
+			Decision: "approved", Reviewer: "promotion-test", ReviewedAt: "2026-08-20T12:00:00Z",
+			Rubric: "translation-quality-v1", Rating: "A", Summary: "Approved for promotion.", Issues: []string{},
+		}
+		writeRetranslationReview(t, filepath.Join(batchDir, "review", retranslationReviewName(unit)), review)
 	}
 }
 
@@ -115,7 +163,7 @@ func complete122PromotionFixture(t *testing.T) (string, *Catalog) {
 func TestRetranslationPromoteComplete122UnitWorkflow(t *testing.T) {
 	root, catalog := complete122PromotionFixture(t)
 	plan, err := PromoteRetranslation(root, catalog, RetranslationPromoteOptions{Locale: "zh-CN"})
-	if err != nil || !plan.CanApply || plan.UnitCount != 122 || plan.PageCount != 103 || plan.ExampleCount != 19 || len(plan.Units) != 122 {
+	if err != nil || !plan.CanApply || plan.UnitCount != 122 || plan.PageCount != 103 || plan.ExampleCount != 19 || plan.ReviewApprovedCount != 122 || len(plan.Units) != 122 {
 		t.Fatalf("122-unit plan=%+v err=%v", plan, err)
 	}
 	for _, unit := range plan.Units {
@@ -243,6 +291,72 @@ func TestRetranslationPromoteLatestFailureDoesNotFallback(t *testing.T) {
 	plan, err := PromoteRetranslation(root, catalog, RetranslationPromoteOptions{Locale: "zh-CN"})
 	if err != nil || plan.CanApply || len(plan.MissingEvidence) != 1 || !strings.Contains(plan.MissingEvidence[0], "validation_failed") {
 		t.Fatalf("plan=%+v error=%v", plan, err)
+	}
+}
+
+func TestRetranslationPromoteLatestMissingReviewDoesNotFallback(t *testing.T) {
+	root, catalog, _ := processedPromotionFixture(t, 1)
+	addProcessedPromotionBatch(t, root, catalog, "chatgpt-zh-CN-002", []string{"lesson/1"})
+	path := filepath.Join(root, "data", "retranslation-runs", "zh-CN", "chatgpt-zh-CN-002", "review", "lesson-1.json")
+	if err := os.Remove(path); err != nil {
+		t.Fatal(err)
+	}
+	plan, err := PromoteRetranslation(root, catalog, RetranslationPromoteOptions{Locale: "zh-CN"})
+	if err != nil || plan.CanApply || !reflect.DeepEqual(plan.MissingReview, []string{"lesson/1"}) || plan.ReviewApprovedCount != 0 {
+		t.Fatalf("plan=%+v error=%v", plan, err)
+	}
+}
+
+func TestRetranslationPromoteReviewGate(t *testing.T) {
+	tests := []struct {
+		name   string
+		mutate func(*testing.T, string, *TranslationReview)
+		field  func(*RetranslationPromotionPlan) []string
+	}{
+		{"missing review", func(t *testing.T, path string, review *TranslationReview) {
+			if err := os.Remove(path); err != nil {
+				t.Fatal(err)
+			}
+		}, func(plan *RetranslationPromotionPlan) []string { return plan.MissingReview }},
+		{"rejected", func(t *testing.T, path string, review *TranslationReview) {
+			review.Decision = "rejected"
+			writeRetranslationReview(t, path, *review)
+		}, func(plan *RetranslationPromotionPlan) []string { return plan.RejectedReview }},
+		{"candidate hash mismatch", func(t *testing.T, path string, review *TranslationReview) {
+			review.CandidateSHA256 = strings.Repeat("0", 64)
+			writeRetranslationReview(t, path, *review)
+		}, func(plan *RetranslationPromotionPlan) []string { return plan.InvalidReview }},
+		{"validation hash mismatch", func(t *testing.T, path string, review *TranslationReview) {
+			review.ValidationSHA256 = strings.Repeat("0", 64)
+			writeRetranslationReview(t, path, *review)
+		}, func(plan *RetranslationPromotionPlan) []string { return plan.InvalidReview }},
+		{"unit mismatch", func(t *testing.T, path string, review *TranslationReview) {
+			review.UnitID = "lesson/2"
+			writeRetranslationReview(t, path, *review)
+		}, func(plan *RetranslationPromotionPlan) []string { return plan.InvalidReview }},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			root, catalog, batch := processedPromotionFixture(t, 1)
+			writePromotionStatus(t, root, catalog, "old canonical\n")
+			canonicalPath := filepath.Join(root, filepath.FromSlash(canonicalCandidatePath("zh-CN", "lesson/1")))
+			before, _ := os.ReadFile(canonicalPath)
+			reviewPath := filepath.Join(root, "data", "retranslation-runs", "zh-CN", batch, "review", "lesson-1.json")
+			var review TranslationReview
+			b, err := os.ReadFile(reviewPath)
+			if err != nil || json.Unmarshal(b, &review) != nil {
+				t.Fatalf("read review: %v", err)
+			}
+			test.mutate(t, reviewPath, &review)
+			plan, err := PromoteRetranslation(root, catalog, RetranslationPromoteOptions{Locale: "zh-CN", Apply: true})
+			if err == nil || plan == nil || plan.CanApply || !reflect.DeepEqual(test.field(plan), []string{"lesson/1"}) {
+				t.Fatalf("plan=%+v error=%v", plan, err)
+			}
+			after, _ := os.ReadFile(canonicalPath)
+			if !bytes.Equal(before, after) {
+				t.Fatal("blocked review gate changed canonical candidate")
+			}
+		})
 	}
 }
 
@@ -525,6 +639,7 @@ func TestRetranslationPromoteSelectsRetryFinalCandidate(t *testing.T) {
 	if err := os.WriteFile(filepath.Join(batchDir, "raw-responses", "lesson-1.article"), []byte("corrupted initial attempt"), 0644); err != nil {
 		t.Fatal(err)
 	}
+	writeApprovedPromotionReviews(t, root, catalog, batch)
 	plan, err := PromoteRetranslation(root, catalog, RetranslationPromoteOptions{Locale: "zh-CN"})
 	if err != nil || plan.UnitCount != 1 || plan.Units[0].BatchID != batch {
 		t.Fatalf("plan=%+v err=%v", plan, err)
@@ -571,6 +686,7 @@ func TestRetranslationPromoteCanonicalizesEOFWithoutChangingHistoricalCandidate(
 			t.Fatal(err)
 		}
 	}
+	writeApprovedPromotionReviews(t, root, catalog, batch)
 	sourceBefore, _ := os.ReadFile(sourcePath)
 	canonicalized := canonicalizeCandidateEOF(sourceBefore)
 	writePromotionStatus(t, root, catalog, "old canonical\n")
