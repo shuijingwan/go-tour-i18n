@@ -19,10 +19,12 @@ type RetranslationProcessOptions struct {
 }
 
 type RetranslationPageResult struct {
-	PageID         string `json:"page_id"`
-	Status         string `json:"status"`
-	CandidatePath  string `json:"candidate_path,omitempty"`
-	ValidationPath string `json:"validation_path"`
+	UnitID         string   `json:"unit_id,omitempty"`
+	UnitKind       UnitKind `json:"unit_kind,omitempty"`
+	PageID         string   `json:"page_id"`
+	Status         string   `json:"status"`
+	CandidatePath  string   `json:"candidate_path,omitempty"`
+	ValidationPath string   `json:"validation_path"`
 }
 
 type RetranslationProcessResult struct {
@@ -39,19 +41,23 @@ type RetranslationProcessResult struct {
 }
 
 type RetranslationValidation struct {
-	SchemaVersion   int    `json:"schema_version"`
-	BatchID         string `json:"batch_id"`
-	Locale          string `json:"locale"`
-	PageID          string `json:"page_id"`
-	Status          string `json:"status"`
-	InputPath       string `json:"input_path"`
-	RawResponsePath string `json:"raw_response_path"`
-	CandidatePath   string `json:"candidate_path,omitempty"`
-	Error           string `json:"error,omitempty"`
+	SchemaVersion   int      `json:"schema_version"`
+	BatchID         string   `json:"batch_id"`
+	Locale          string   `json:"locale"`
+	UnitID          string   `json:"unit_id,omitempty"`
+	UnitKind        UnitKind `json:"unit_kind,omitempty"`
+	SourceSHA256    string   `json:"source_sha256,omitempty"`
+	PageID          string   `json:"page_id"`
+	Status          string   `json:"status"`
+	InputPath       string   `json:"input_path"`
+	RawResponsePath string   `json:"raw_response_path"`
+	CandidatePath   string   `json:"candidate_path,omitempty"`
+	Error           string   `json:"error,omitempty"`
 }
 
 type preparedRetranslationPage struct {
 	manifest  RetranslationBatchPage
+	unit      *TranslationUnit
 	page      Page
 	protected protectedTranslation
 	raw       []byte
@@ -119,15 +125,16 @@ func ProcessRetranslationBatch(root string, catalog *Catalog, options Retranslat
 		PageCount: len(prepared), Pages: make([]RetranslationPageResult, 0, len(prepared)),
 	}
 	for _, item := range prepared {
-		name := flattenedPageArticleName(item.page.ID)
+		name := filepath.Base(filepath.FromSlash(item.manifest.InputPath))
 		rawPath := filepath.ToSlash(filepath.Join("raw-responses", name))
 		candidatePath := filepath.ToSlash(filepath.Join("candidates", name))
-		validationPath := filepath.ToSlash(filepath.Join("validation", strings.TrimSuffix(name, ".article")+".json"))
+		validationPath := filepath.ToSlash(filepath.Join("validation", strings.TrimSuffix(name, filepath.Ext(name))+".json"))
 		evidence := RetranslationValidation{
 			SchemaVersion: retranslationProcessSchemaVersion, BatchID: batchID, Locale: options.Locale,
-			PageID: item.page.ID, InputPath: item.manifest.InputPath, RawResponsePath: rawPath,
+			UnitID: item.unit.ID, UnitKind: item.unit.Kind, SourceSHA256: item.unit.SourceSHA256,
+			PageID: item.manifest.PageID, InputPath: item.manifest.InputPath, RawResponsePath: rawPath,
 		}
-		pageResult := RetranslationPageResult{PageID: item.page.ID, ValidationPath: validationPath}
+		pageResult := RetranslationPageResult{UnitID: item.unit.ID, UnitKind: item.unit.Kind, PageID: item.manifest.PageID, ValidationPath: validationPath}
 		restored, failures := item.protected.restore(string(item.raw))
 		if len(failures) != 0 {
 			evidence.Status = "restore_failed"
@@ -137,11 +144,11 @@ func ProcessRetranslationBatch(root string, catalog *Catalog, options Retranslat
 		} else {
 			result.RestorePassed++
 			if err := os.WriteFile(filepath.Join(staging, "candidates", name), []byte(restored), 0644); err != nil {
-				return nil, fmt.Errorf("write staged candidate for %s: %w", item.page.ID, err)
+				return nil, fmt.Errorf("write staged candidate for %s: %w", item.unit.ID, err)
 			}
 			evidence.CandidatePath = candidatePath
 			pageResult.CandidatePath = candidatePath
-			if err := ValidateCandidate(root, catalog, item.page.ID, []byte(restored)); err != nil {
+			if err := ValidateTranslationUnitCandidate(root, catalog, item.unit.ID, options.Locale, []byte(restored)); err != nil {
 				evidence.Status = "validation_failed"
 				evidence.Error = err.Error()
 				result.ValidationFailed++
@@ -152,7 +159,7 @@ func ProcessRetranslationBatch(root string, catalog *Catalog, options Retranslat
 			pageResult.Status = evidence.Status
 		}
 		if err := writeTranslationJSON(filepath.Join(staging, filepath.FromSlash(validationPath)), evidence); err != nil {
-			return nil, fmt.Errorf("write validation for %s: %w", item.page.ID, err)
+			return nil, fmt.Errorf("write validation for %s: %w", item.unit.ID, err)
 		}
 		result.Pages = append(result.Pages, pageResult)
 	}
@@ -223,7 +230,7 @@ func readRetranslationProcessManifest(batchDir, locale, batchID string) (*Retran
 	if err := json.Unmarshal(data, &manifest); err != nil {
 		return nil, fmt.Errorf("parse retranslation manifest for %q: %w", batchID, err)
 	}
-	if manifest.SchemaVersion != 1 || manifest.BatchID != batchID || manifest.Locale != locale || manifest.ProtectionMode != "default" || manifest.TranslationUnit != "present.Section" {
+	if manifest.SchemaVersion != 1 || manifest.BatchID != batchID || manifest.Locale != locale || manifest.ProtectionMode != "default" || (manifest.TranslationUnit != "present.Section" && manifest.TranslationUnit != "go.example") {
 		return nil, fmt.Errorf("retranslation batch %q has incompatible manifest metadata", batchID)
 	}
 	if manifest.PageCount < 1 || manifest.PageCount != len(manifest.Pages) {
@@ -239,46 +246,73 @@ func preflightRetranslationProcess(batchDir string, catalog *Catalog, glossary *
 		return nil, fmt.Errorf("read raw responses: %w", err)
 	}
 	expectedRaw := make(map[string]bool, len(manifest.Pages))
-	seenPages := map[string]bool{}
+	seenUnits := map[string]bool{}
 	prepared := make([]preparedRetranslationPage, 0, len(manifest.Pages))
 	for _, record := range manifest.Pages {
-		if seenPages[record.PageID] {
-			return nil, fmt.Errorf("duplicate manifest page_id %q", record.PageID)
+		unitID, unitKind := retranslationManifestUnit(record)
+		if unitID == "" {
+			return nil, errors.New("retranslation manifest has empty translation unit id")
 		}
-		seenPages[record.PageID] = true
-		page, err := catalog.Page(record.PageID)
+		if seenUnits[unitID] {
+			return nil, fmt.Errorf("duplicate manifest translation unit %q", unitID)
+		}
+		seenUnits[unitID] = true
+		unit, err := catalog.Unit(unitID)
 		if err != nil {
-			return nil, fmt.Errorf("manifest page_id %q: %w", record.PageID, err)
+			return nil, fmt.Errorf("manifest translation unit %q: %w", unitID, err)
 		}
-		if page.Article != record.Article || page.SectionNumber != record.SectionNumber || page.Route != record.Route || page.SourceSHA256 != record.SourceSHA256 || sum(page.Source) != record.SourceSHA256 {
-			return nil, fmt.Errorf("%s: manifest source metadata does not match current Catalog", record.PageID)
+		if unit.Kind != unitKind || manifest.TranslationUnit != retranslationUnitType(unitKind) {
+			return nil, fmt.Errorf("%s: manifest unit_kind %q does not match Catalog kind %q", unitID, unitKind, unit.Kind)
 		}
-		name := flattenedPageArticleName(record.PageID)
+		if unit.SourceSHA256 != record.SourceSHA256 || sum(unit.Source) != record.SourceSHA256 {
+			return nil, fmt.Errorf("%s: manifest source metadata does not match current Catalog", unitID)
+		}
+		if record.UnitID != "" && record.SourcePath != unit.SourcePath {
+			return nil, fmt.Errorf("%s: manifest source_path %q does not match %q", unitID, record.SourcePath, unit.SourcePath)
+		}
+		var page Page
+		if unit.Kind == UnitKindPage {
+			pagePtr, err := catalog.Page(unitID)
+			if err != nil {
+				return nil, err
+			}
+			page = *pagePtr
+			if record.PageID != unitID || page.Article != record.Article || page.SectionNumber != record.SectionNumber || page.Route != record.Route {
+				return nil, fmt.Errorf("%s: manifest page metadata does not match current Catalog", unitID)
+			}
+		}
+		name := filepath.Base(filepath.FromSlash(record.InputPath))
 		wantInputPath := filepath.ToSlash(filepath.Join("inputs", name))
-		if record.InputPath != wantInputPath {
-			return nil, fmt.Errorf("%s: input_path %q, want %q", record.PageID, record.InputPath, wantInputPath)
+		if name == "." || record.InputPath != wantInputPath {
+			return nil, fmt.Errorf("%s: unsafe or non-canonical input_path %q", unitID, record.InputPath)
 		}
 		input, err := os.ReadFile(filepath.Join(batchDir, filepath.FromSlash(record.InputPath)))
 		if err != nil {
-			return nil, fmt.Errorf("%s: read saved input: %w", record.PageID, err)
+			return nil, fmt.Errorf("%s: read saved input: %w", unitID, err)
 		}
 		if sum(input) != record.InputSHA256 {
-			return nil, fmt.Errorf("%s: input_sha256 mismatch", record.PageID)
+			return nil, fmt.Errorf("%s: input_sha256 mismatch", unitID)
 		}
-		protected := prepareDefaultTranslationInput(page.Source, page.SourceSHA256, glossary)
+		protected, err := prepareTranslationUnitInput(unit, glossary)
+		if err != nil {
+			return nil, fmt.Errorf("%s: prepare protected input: %w", unitID, err)
+		}
 		if !bytes.Equal([]byte(protected.Text), input) {
-			return nil, fmt.Errorf("%s: regenerated Default protected input differs from saved input", record.PageID)
+			if unit.Kind == UnitKindPage {
+				return nil, fmt.Errorf("%s: regenerated Default protected input differs from saved input", unitID)
+			}
+			return nil, fmt.Errorf("%s: regenerated protected input differs from saved input", unitID)
 		}
 		if len(protected.Tokens) != record.ProtectedTokenCount {
-			return nil, fmt.Errorf("%s: protected_token_count %d, regenerated %d", record.PageID, record.ProtectedTokenCount, len(protected.Tokens))
+			return nil, fmt.Errorf("%s: protected_token_count %d, regenerated %d", unitID, record.ProtectedTokenCount, len(protected.Tokens))
 		}
 		rawName := name
 		expectedRaw[rawName] = true
 		raw, err := os.ReadFile(filepath.Join(rawDir, rawName))
 		if err != nil {
-			return nil, fmt.Errorf("%s: read raw response: %w", record.PageID, err)
+			return nil, fmt.Errorf("%s: read raw response: %w", unitID, err)
 		}
-		prepared = append(prepared, preparedRetranslationPage{manifest: record, page: *page, protected: protected, raw: raw})
+		prepared = append(prepared, preparedRetranslationPage{manifest: record, unit: unit, page: page, protected: protected, raw: raw})
 	}
 	actual := map[string]bool{}
 	for _, entry := range entries {
@@ -297,4 +331,11 @@ func preflightRetranslationProcess(batchDir string, catalog *Catalog, glossary *
 		return nil, fmt.Errorf("raw response count %d, want %d", len(actual), len(expectedRaw))
 	}
 	return prepared, nil
+}
+
+func retranslationManifestUnit(record RetranslationBatchPage) (string, UnitKind) {
+	if record.UnitID == "" {
+		return record.PageID, UnitKindPage
+	}
+	return record.UnitID, record.UnitKind
 }
