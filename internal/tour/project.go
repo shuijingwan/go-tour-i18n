@@ -61,6 +61,14 @@ func (m SiteMetadata) PublishedAtBeijing() (string, error) {
 	return t.In(time.FixedZone("CST", 8*60*60)).Format("2006-01-02 15:04:05 (北京时间)"), nil
 }
 
+func (m SiteMetadata) UpstreamCommitTimeBeijing() (string, error) {
+	t, err := time.Parse(time.RFC3339, m.UpstreamCommitTime)
+	if err != nil {
+		return "", fmt.Errorf("parse upstream_commit_time: %w", err)
+	}
+	return t.In(time.FixedZone("CST", 8*60*60)).Format("2006-01-02 15:04:05（北京时间）"), nil
+}
+
 func loadSiteMetadata(content fs.FS) (SiteMetadata, error) {
 	data, err := fs.ReadFile(content, "tour/site-metadata.json")
 	if err != nil {

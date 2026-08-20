@@ -61,3 +61,14 @@ func TestWriteSiteMetadataRejectsDevelopmentMetadata(t *testing.T) {
 		t.Fatalf("development metadata file exists or unexpected stat error: %v", err)
 	}
 }
+
+func TestUpstreamCommitTimeBeijing(t *testing.T) {
+	metadata := SiteMetadata{UpstreamCommitTime: "2026-08-20T05:56:11Z"}
+	got, err := metadata.UpstreamCommitTimeBeijing()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if want := "2026-08-20 13:56:11（北京时间）"; got != want {
+		t.Fatalf("UpstreamCommitTimeBeijing() = %q, want %q", got, want)
+	}
+}

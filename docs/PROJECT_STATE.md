@@ -1,6 +1,6 @@
 # 项目状态
 
-更新时间：2026-08-20 22:56:44（北京时间）
+更新时间：2026-08-20 23:12:37（北京时间）
 
 ## 基线与架构
 
@@ -60,7 +60,7 @@
 
 ## zh-CN 课程正文完成状态
 
-- 当前仓库／当前候选 release 的统一 TranslationUnit workflow 共 122 个 unit：103 个 Page 与 19 个 eligible Example；另保留 93 个 referenced Example source inventory 和 2 条条件源页面审计记录。当前状态为 `ready=122`、`pending=0`、`blocked=0`。
+- 当前仓库／当前 production 的统一 TranslationUnit workflow 共 122 个 unit：103 个 Page 与 19 个 eligible Example；另保留 93 个 referenced Example source inventory 和 2 条条件源页面审计记录。当前状态为 `ready=122`、`pending=0`、`blocked=0`。
 - 103 个正式发布页面均已完成翻译；当前 canonical 103/103 为 2026-08-18 正式提升后的 ChatGPT 整页译文，状态为 `ready`。最终语义质量审计为 A=103、B/C/D=0，缺失、重复和额外页面均为 0。
 - 此前第一阶段译文及其全局质量审计仍是重要历史基线；本轮 ChatGPT 重译通过 Batch 001–011 保留完整 evidence，并经独立语义审核、全量 promotion preflight 与 production bundle/HTTP 验收后完成 canonical 切换。
 - 特殊投影已纳入上述审计：`welcome/1` 使用 appengine remote 分支 `a remote server.`；`welcome/4`、`welcome/5` 使用完整 `#appengine:` 条件 Section 去前缀后的投影。
@@ -96,7 +96,7 @@
 - 当前 UI 本地化对 upstream 的改动集中于文案绑定、少量 i18n 接线和数据来源替换，未进行明显 UI 结构性重构。未来 upstream 同步时重点复核上述少量 consumer 文件；继续遵守“低收益 + 高侵入的边缘文案宁可保留 upstream，不为零英文扩大维护面”的原则。
 - 已提供受限的人工 source 同步维护入口：先以 `upstream preview --source-root <website>` 只读检查，再人工复制已确认的 `_content/tour` 变化；当 Page route 与 conditional identity 保持不变时，使用 `catalog write --allow-source-change` 重建三个 source catalog。该命令不修改 locale status、candidate、review evidence 或 translation runs；Page 新增、删除、移动和无法识别的身份变化仍会拒绝。
 
-#### 2026-08-20 upstream source 同步、stale retranslation 与本地候选验收
+#### 2026-08-20 upstream source 同步、stale retranslation 与生产验收
 
 - active frozen upstream baseline 已从 `e11dacba76c5aae474746e9eedee19693f492803` 更新至 `645042eb697eaf69e33a9af00c6b5b3fffdead5a`。
 - 本次官方 Tour source 的实际变化为：`welcome.article` 删除旧的简体中文社区翻译链接；`basics.article` 将 `var` 改为 inline code 标记；93 个 referenced Example source 均无内容变化。
@@ -106,14 +106,14 @@
 - promotion preflight 结果为：`unit_count=122`、`page_count=103`、`example_count=19`、`changed_count=2`、`unchanged_count=120`、`review_approved_count=122`、`can_apply=true`。apply 后状态为：`status OK: 122 translation units for zh-CN (103 pages, 19 examples)`。
 - 本次真实 upstream revision 场景修复了两个 promotion 问题：历史 batch 属于旧 source revision 时，不应阻塞当前 Catalog，也绝不能 fallback 为当前 source 的 promotion evidence；stale canonical status 是“当前 source 需要重新 promotion”的合法过渡状态，只要当前 source revision 已有完整的 passed validation 和 approved review evidence，promotion 应允许原子更新 candidate/status。
 - 修复后的规则为：历史 batch 保持不可变；promotion 仅在 source metadata 与当前 Catalog revision 匹配的 batch 中选择最高 batch number；旧 source revision evidence 被保留但不参与当前 revision promotion；当前 revision 没有 evidence 时进入 MissingEvidence；stale status 仅在当前 revision 的 preflighted promotion evidence 覆盖该 unit 时允许 apply；apply 后恢复严格 `CheckStatus`。对应正式提交为 `a1112043fd82234f2c2ba91e9a119719dbc7e7f7`（`fix: 支持 upstream 变更后的重译 promotion`）。
-- 当前仓库／当前候选 release 的统一 workflow 状态为：translation units=122、Pages=103、eligible Examples=19、referenced Example source inventory=93、conditional source records=2、`ready=122`、`pending=0`、`blocked=0`、articles=7。93 个 Example 是被引用的 source inventory，不是 93 个需要翻译的 Example；只有当前 upstream source 含普通自然语言注释的 19 个 eligible Example 进入 locale translation/status/review/promotion workflow，其余 74 个直接继承 upstream source。
+- 当前仓库／当前 production 的统一 workflow 状态为：translation units=122、Pages=103、eligible Examples=19、referenced Example source inventory=93、conditional source records=2、`ready=122`、`pending=0`、`blocked=0`、articles=7。93 个 Example 是被引用的 source inventory，不是 93 个需要翻译的 Example；只有当前 upstream source 含普通自然语言注释的 19 个 eligible Example 进入 locale translation/status/review/promotion workflow，其余 74 个直接继承 upstream source。
 - 最终本地验收已完成：`go test ./...` 全部通过；`tour-i18n build --locale zh-CN` 输出 `ready=122 pending=0 blocked=0 pages=103 articles=7`；production publish bundle 在本地成功。其 `release.json` 为 `schema_version=2`、`upstream_commit=645042eb697eaf69e33a9af00c6b5b3fffdead5a`、`translation_units=122`、`pages=103`、`eligible_examples=19`、`articles=7`、`execution_transport=http-playground-proxy`、`execution_provider=play.golang.org`、`local_socket_enabled=false`。
-- 该 bundle 仅为本地最终验收包，尚未部署生产。当前线上 production release 仍是下文记录的 2026-08-18 `/data/go-tour/releases/20260818-zh-CN-45f4cad`；不得将本次 upstream baseline 或 `ready=122` 候选状态表述为已上线。
+- 本次 upstream revision 与 Batch 013 的 stale retranslation 已于 2026-08-20 正式部署。当前线上 production release 为 `/data/go-tour/releases/20260820-zh-CN-6ae139c`，`current` 已原子切换至该 release；`deploy-production.sh`、service health 与公网 acceptance 均通过。当前 production workflow 为 `ready=122`、`pending=0`、`blocked=0`、`pages=103`、`eligible_examples=19`、`articles=7`，upstream 为 `645042eb697eaf69e33a9af00c6b5b3fffdead5a`。
 
 ## 完整语言正式投影与本地预览完成状态
 
 - 当前 upstream 为 `master@645042eb697eaf69e33a9af00c6b5b3fffdead5a`。
-- 当前仓库／当前候选 release 的 zh-CN workflow 状态为 `ready=122`、`pending=0`、`blocked=0`；catalog 为 103 个 published pages、19 个 eligible Example 和 2 条 conditional source records（另有 93 个 referenced Example source inventory）。
+- 当前仓库／当前 production 的 zh-CN workflow 状态为 `ready=122`、`pending=0`、`blocked=0`；catalog 为 103 个 published pages、19 个 eligible Example 和 2 条 conditional source records（另有 93 个 referenced Example source inventory）。
 - 已完成全部 103 页 canonical candidate、全局翻译质量审计、zh-CN 公共 UI 本地化、完整语言正式投影与完整语言本地预览。
 - `tour-i18n build --locale <locale>` 从 catalog、locale status 与 canonical ready candidate 构建完整正式投影；它拒绝 pending、blocked、缺失、额外或非 canonical candidate，不回退到英文或旧译文，也不修改 candidate、status 或 catalog。
 - `tour-i18n preview --locale <locale>` 直接复用完整投影能力启动本地预览；带 `--id <page_id>` 时继续是单页 candidate preview。
@@ -127,7 +127,7 @@
 - 已新增独立的 locale article metadata 资源：`locales/<locale>/article-metadata.json`。该资源不属于 Section candidate、公共 UI 或 status；每个正式 article 单独维护 `title` 和 `subtitle`。
 - metadata loader 由 catalog 动态推导正式 article 集合并严格校验：article 集合必须精确一致，title/subtitle 必须非空；缺失、额外、重复或无法解析的 metadata 都会失败，不允许 fallback 到 upstream 英文。
 - 完整 projection 与单页 candidate preview 共用 metadata 应用路径。完整 projection 最终重新解析每个 article，并断言 `Doc.Title`、`Doc.Subtitle` 与 locale metadata 完全一致，同时继续校验全部 103 个 canonical Section。
-- 当前仓库／当前候选 release 的 zh-CN 状态为：103/103 Section Page candidate ready、19/19 eligible Example ready（合计 `ready=122`、`pending=0`、`blocked=0`）；article metadata 7/7；title localized 7/7；subtitle localized 7/7；公共 UI 已本地化。
+- 当前仓库／当前 production 的 zh-CN 状态为：103/103 Section Page candidate ready、19/19 eligible Example ready（合计 `ready=122`、`pending=0`、`blocked=0`）；article metadata 7/7；title localized 7/7；subtitle localized 7/7；公共 UI 已本地化。
 - 修复后完整预览确认课程导航 lesson title 与 lesson description 均已中文化；全部 103 页 HTTP 验收继续为 103/103，且未发现同类根级 upstream 英文 metadata 残留。article metadata 不计入正式页面数，catalog 仍为 103 个 published pages。
 
 ## Production runtime、publish bundle 与上线验收
@@ -136,9 +136,9 @@
 - production runtime 的 `/socket` 普通请求和 WebSocket Upgrade 均返回 404；`/_/share` 当前未启用并返回 404；未知 `/_/` 路径不会落入 Tour SPA。production 主机不执行用户提交的 Go 程序，真实 Run / Format 已完成公网验收。
 - production publish bundle 已在 commit `e4a8fe0 feat: 增加确定性的生产发布包生成` 中完成。正式命令为 `go run -mod=readonly ./cmd/tour-i18n publish --locale zh-CN --output <directory>`，输出包含 `bin/tour`、`_content/`、`release.json` 和 `SHA256SUMS`。
 - publish 构建时将 locale 固定进 production binary；binary 从自身相邻的 `../_content` 定位内容，不依赖当前工作目录，不需要运行时 `--locale` 或 `--content`。bundle 不包含 candidate、status、translation-runs 等开发期数据。
-- 最终 release bundle 的验收结果为：`ready=103`、`pending=0`、`blocked=0`、`pages=103`、`articles=7`；103/103 课程页面、7/7 lesson JSON、103 个 Section、title/subtitle 和公共中文 UI 均通过验收。
+- 2026-08-18 历史 release bundle 的验收结果为：`ready=103`、`pending=0`、`blocked=0`、`pages=103`、`articles=7`；103/103 课程页面、7/7 lesson JSON、103 个 Section、title/subtitle 和公共中文 UI 均通过验收。
 - 两次 publish 在相同源码、Go 工具链和 GOOS/GOARCH 下逐文件一致；185 个 bundle 文件 SHA-256 校验全部通过。真实 Run / Format、`/socket` 404、WebSocket `/socket` 404、`/_/share` 404 及未知 `/_/` 404 均已验证。
-- 当前正式上线状态：production release 为 `/data/go-tour/releases/20260818-zh-CN-45f4cad`，对应项目 commit `45f4cad98e67c01dac705559781e2311b75b0948`，`published_at=2026-08-18T13:22:48Z`，`current` 已指向该 release；release manifest 为 `execution_transport=http-playground-proxy`、`execution_provider=play.golang.org`、`local_socket_enabled=false`。该 release 包含本轮正式提升后的 103 页 ChatGPT canonical，并已通过 production 自动部署脚本完成校验、权限归一化、current 原子切换、服务重启、origin 健康检查和正式域名公网验收，部署成功且没有回滚。zh-CN 状态为 `ready=103`、`pending=0`、`blocked=0`、`pages=103`、`articles=7`。页面访问链路为浏览器 → EdgeOne → 阿里云 Nginx → Go Tour；正常 Run / Format 链路分别为浏览器 → `https://play.go-dev.shuijingwanwq.com:8443/compile` 或 `/fmt` → ZgoCloud Nginx → `https://play.golang.org/compile` 或 `/fmt`。ZgoCloud 是本项目自建固定反向代理，不是 Go 官方服务；`play.golang.org` 才是最终官方 Playground provider。正常生产 Run / Format 不再经过阿里云 Go 服务端，旧 `/_/compile`、`/_/fmt` 仍保留为兼容/回滚路径。`go-tour.service` 监听 `127.0.0.1:3999`；production `/socket` 与 `/socket/` 仍为 404，生产服务器不执行用户提交的 Go 程序。
+- 当前正式上线状态：production release 为 `/data/go-tour/releases/20260820-zh-CN-6ae139c`，`current` 已指向该 release；release manifest 为 `schema_version=2`、`locale=zh-CN`、`published_at=2026-08-20T15:04:14Z`、`upstream_commit=645042eb697eaf69e33a9af00c6b5b3fffdead5a`、`upstream_commit_time=2026-08-20T05:56:11Z`、`translation_units=122`、`pages=103`、`eligible_examples=19`、`articles=7`、`execution_transport=http-playground-proxy`、`execution_provider=play.golang.org`、`local_socket_enabled=false`、`goos=linux`、`goarch=amd64`。`deploy-production.sh` 已完整成功执行：本地 bundle preflight、远端 permissions 与 SHA-256 verification、staging → final release、current 原子切换和 service restart 均通过；`go-tour.service` 为 active (running)，日志确认以 remote Playground execution 在 `http://127.0.0.1:3999` 服务 zh-CN，连续 3 次 localhost HTTP health check 均为 200，首页 `https://go-dev.shuijingwanwq.com/` 的 public acceptance 为 HTTP 200，且 `/`、`/tour/welcome/2`、`/tour/basics/9` 均为 HTTP 200。部署未发生自动回滚。页面访问链路为浏览器 → EdgeOne → 阿里云 Nginx → Go Tour；正常 Run / Format 链路分别为浏览器 → `https://play.go-dev.shuijingwanwq.com:8443/compile` 或 `/fmt` → ZgoCloud Nginx → `https://play.golang.org/compile` 或 `/fmt`。ZgoCloud 是本项目自建固定反向代理，不是 Go 官方服务；`play.golang.org` 才是最终官方 Playground provider。正常生产 Run / Format 不再经过阿里云 Go 服务端，旧 `/_/compile`、`/_/fmt` 仍保留为兼容/回滚路径。`go-tour.service` 监听 `127.0.0.1:3999`；remote Playground execution 保持，`local_socket_enabled=false`，production `/socket` 与 `/socket/` 仍为 404，生产服务器不执行用户提交的 Go 程序。
 - ZgoCloud 正式接口已完成真实验收：`/compile` POST 返回 HTTP 200，`/fmt` POST 返回 HTTP 200，CORS OPTIONS 返回 204，错误 Origin 返回 403，GET `/compile` 返回 405，未知路径返回 404，旧 `/_/compile` 与 `/_/fmt` 返回 404；HTTP/2 正常。443 继续由 Wstunnel 使用，8443 由 Nginx 使用，WireGuard 与 Wstunnel 未受此次部署影响。
 - 桌面 Firefox 已完成真实生产浏览器验收：Run 实际请求为 `POST https://play.go-dev.shuijingwanwq.com:8443/compile?backend=...` 并返回 HTTP 200，示例输出为 `Hello, 世界` 和 `程序已退出。`；Format 已切换至 `https://play.go-dev.shuijingwanwq.com:8443/fmt`，响应 CORS 允许来源为 `https://go-dev.shuijingwanwq.com`。
 - 本次发布发现重要的 EdgeOne 缓存运维问题：新 release 切换后，缓存的 `/tour/script.js` 仍可能使浏览器继续请求旧的 `/_/compile`。定向刷新 `https://go-dev.shuijingwanwq.com/tour/script.js` 并重新加载页面后，Run / Format 立即切换到 ZgoCloud 新接口。今后涉及前端执行路径变化时，发布验收必须检查 Network 中的实际请求目标，必要时定向刷新该脚本缓存。
@@ -157,7 +157,7 @@
 ## 第一阶段上线冻结
 
 - Section：103/103 ready；article metadata：7/7；公共 UI：已完成；production publish：已实现并正式部署；production 自动部署脚本：首次真实生产验证通过；浏览器最终验收：通过；生产 Playground 执行链路迁移至 ZgoCloud 固定代理：已完成生产部署和真实用户验收。
-- 本轮 ChatGPT 全量重译、canonical promotion、正式 production release、生产部署和线上最终验收均已完成。当前在线 release 即 `/data/go-tour/releases/20260818-zh-CN-45f4cad`，正式服务内容已经切换至本轮 103 页 ChatGPT canonical。
+- 本轮 ChatGPT 全量重译、canonical promotion、upstream revision stale retranslation、正式 production release、生产部署和线上最终验收均已完成。当前在线 release 为 `/data/go-tour/releases/20260820-zh-CN-6ae139c`，正式服务内容已切换至 upstream `645042eb697eaf69e33a9af00c6b5b3fffdead5a` 的 122-unit workflow（103 Pages、19 eligible Examples）。
 
 ## 下一阶段
 

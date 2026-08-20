@@ -122,9 +122,12 @@ type pageTemplateData struct {
 }
 
 func newPageTemplateData(catalog ui.Catalog, metadata SiteMetadata) (pageTemplateData, error) {
+	upstreamCommitTime, err := metadata.UpstreamCommitTimeBeijing()
+	if err != nil {
+		return pageTemplateData{}, err
+	}
 	publishedAt := ""
 	if !metadata.Development {
-		var err error
 		publishedAt, err = metadata.PublishedAtBeijing()
 		if err != nil {
 			return pageTemplateData{}, err
@@ -135,7 +138,7 @@ func newPageTemplateData(catalog ui.Catalog, metadata SiteMetadata) (pageTemplat
 		Metadata:            metadata,
 		Development:         metadata.Development,
 		PublishedAt:         publishedAt,
-		UpstreamCommitTime:  "2026-07-23 04:05:40（北京时间）",
+		UpstreamCommitTime:  upstreamCommitTime,
 		ShortUpstreamCommit: metadata.UpstreamCommit[:8],
 		UpstreamCommitURL:   Project.UpstreamURL + "/commit/" + metadata.UpstreamCommit,
 		SiteURL:             Project.SiteURL,
