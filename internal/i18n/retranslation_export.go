@@ -17,19 +17,23 @@ type RetranslationExportOptions struct {
 	Locale        string
 	BatchID       string
 	PageIDs       []string
+	UnitKind      UnitKind
 	Limit         int
 	AllowReexport bool
 }
 
 type RetranslationBatchPage struct {
-	PageID              string `json:"page_id"`
-	Article             string `json:"article"`
-	SectionNumber       int    `json:"section_number"`
-	Route               string `json:"route"`
-	SourceSHA256        string `json:"source_sha256"`
-	InputPath           string `json:"input_path"`
-	InputSHA256         string `json:"input_sha256"`
-	ProtectedTokenCount int    `json:"protected_token_count"`
+	UnitID              string   `json:"unit_id,omitempty"`
+	UnitKind            UnitKind `json:"unit_kind,omitempty"`
+	SourcePath          string   `json:"source_path,omitempty"`
+	PageID              string   `json:"page_id,omitempty"`
+	Article             string   `json:"article,omitempty"`
+	SectionNumber       int      `json:"section_number,omitempty"`
+	Route               string   `json:"route,omitempty"`
+	SourceSHA256        string   `json:"source_sha256"`
+	InputPath           string   `json:"input_path"`
+	InputSHA256         string   `json:"input_sha256"`
+	ProtectedTokenCount int      `json:"protected_token_count"`
 }
 
 type RetranslationBatchManifest struct {
@@ -52,7 +56,8 @@ type RetranslationExportResult struct {
 }
 
 type preparedRetranslationInput struct {
-	page   Page
+	unit   *TranslationUnit
+	page   *Page
 	text   string
 	path   string
 	hash   string
@@ -71,6 +76,9 @@ func ExportRetranslationBatch(root string, catalog *Catalog, options Retranslati
 	if options.Locale != "zh-CN" {
 		return nil, fmt.Errorf("unsupported locale %q", options.Locale)
 	}
+	if options.UnitKind != "" && options.UnitKind != UnitKindPage && options.UnitKind != UnitKindExample {
+		return nil, fmt.Errorf("不支持的翻译单元类型 %q；只支持 page 或 example", options.UnitKind)
+	}
 	if options.AllowReexport && len(options.PageIDs) == 0 {
 		return nil, errors.New("--allow-reexport requires at least one --id")
 	}
@@ -87,11 +95,11 @@ func ExportRetranslationBatch(root string, catalog *Catalog, options Retranslati
 	if err != nil {
 		return nil, err
 	}
-	pages, err := selectRetranslationPages(catalog, options.PageIDs, exported, limit, options.AllowReexport)
+	units, err := selectRetranslationUnits(catalog, options.PageIDs, options.UnitKind, exported, limit, options.AllowReexport)
 	if err != nil {
 		return nil, err
 	}
-	if len(pages) == 0 {
+	if len(units) == 0 {
 		return &RetranslationExportResult{Locale: options.Locale, AllExported: true}, nil
 	}
 
@@ -111,15 +119,34 @@ func ExportRetranslationBatch(root string, catalog *Catalog, options Retranslati
 	if err != nil {
 		return nil, err
 	}
-	prepared := make([]preparedRetranslationInput, 0, len(pages))
-	for _, page := range pages {
-		if sum(page.Source) != page.SourceSHA256 {
-			return nil, fmt.Errorf("%s: hydrated source hash mismatch", page.ID)
+	prepared := make([]preparedRetranslationInput, 0, len(units))
+	for _, unit := range units {
+		if sum(unit.Source) != unit.SourceSHA256 {
+			return nil, fmt.Errorf("%s: hydrated source hash mismatch", unit.ID)
 		}
-		protected := prepareDefaultTranslationInput(page.Source, page.SourceSHA256, glossary)
-		inputPath := filepath.ToSlash(filepath.Join("inputs", flattenedPageArticleName(page.ID)))
+		if unit.Kind == UnitKindExample {
+			hasContent, err := hasTranslatableGoExampleComment(unit.Source)
+			if err != nil {
+				return nil, fmt.Errorf("%s: 检查可翻译自然语言注释: %w", unit.ID, err)
+			}
+			if !hasContent {
+				return nil, fmt.Errorf("示例翻译单元 %s 没有需要翻译的普通自然语言注释", unit.ID)
+			}
+		}
+		protected, err := prepareTranslationUnitInput(unit, glossary)
+		if err != nil {
+			return nil, fmt.Errorf("%s: 准备受保护输入: %w", unit.ID, err)
+		}
+		inputPath := filepath.ToSlash(filepath.Join("inputs", retranslationUnitInputName(unit)))
+		var page *Page
+		if unit.Kind == UnitKindPage {
+			page, err = catalog.Page(unit.ID)
+			if err != nil {
+				return nil, err
+			}
+		}
 		prepared = append(prepared, preparedRetranslationInput{
-			page: page, text: protected.Text, path: inputPath,
+			unit: unit, page: page, text: protected.Text, path: inputPath,
 			hash: sum([]byte(protected.Text)), tokens: len(protected.Tokens),
 		})
 	}
@@ -142,20 +169,27 @@ func ExportRetranslationBatch(root string, catalog *Catalog, options Retranslati
 	}
 	manifest := RetranslationBatchManifest{
 		SchemaVersion: 1, BatchID: batchID, Locale: options.Locale,
-		ProtectionMode: "default", TranslationUnit: "present.Section",
+		ProtectionMode: "default", TranslationUnit: retranslationUnitType(prepared[0].unit.Kind),
 		PageCount: len(prepared), Pages: make([]RetranslationBatchPage, 0, len(prepared)),
 	}
 	pageIDs := make([]string, 0, len(prepared))
 	for _, input := range prepared {
 		if err := os.WriteFile(filepath.Join(staging, filepath.FromSlash(input.path)), []byte(input.text), 0644); err != nil {
-			return nil, fmt.Errorf("write retranslation input for %s: %w", input.page.ID, err)
+			return nil, fmt.Errorf("write retranslation input for %s: %w", input.unit.ID, err)
 		}
-		manifest.Pages = append(manifest.Pages, RetranslationBatchPage{
-			PageID: input.page.ID, Article: input.page.Article, SectionNumber: input.page.SectionNumber,
-			Route: input.page.Route, SourceSHA256: input.page.SourceSHA256, InputPath: input.path,
+		record := RetranslationBatchPage{
+			UnitID: input.unit.ID, UnitKind: input.unit.Kind, SourcePath: input.unit.SourcePath,
+			SourceSHA256: input.unit.SourceSHA256, InputPath: input.path,
 			InputSHA256: input.hash, ProtectedTokenCount: input.tokens,
-		})
-		pageIDs = append(pageIDs, input.page.ID)
+		}
+		if input.page != nil {
+			record.PageID = input.page.ID
+			record.Article = input.page.Article
+			record.SectionNumber = input.page.SectionNumber
+			record.Route = input.page.Route
+		}
+		manifest.Pages = append(manifest.Pages, record)
+		pageIDs = append(pageIDs, input.unit.ID)
 	}
 	if err := writeTranslationJSON(filepath.Join(staging, "manifest.json"), manifest); err != nil {
 		return nil, fmt.Errorf("write retranslation manifest: %w", err)
@@ -177,41 +211,91 @@ func ExportRetranslationBatch(root string, catalog *Catalog, options Retranslati
 	}, nil
 }
 
-func selectRetranslationPages(catalog *Catalog, requested []string, exported map[string]string, limit int, allowReexport bool) ([]Page, error) {
-	byID := make(map[string]Page, len(catalog.Pages))
-	for _, page := range catalog.Pages {
-		byID[page.ID] = page
-	}
+func selectRetranslationUnits(catalog *Catalog, requested []string, requestedKind UnitKind, exported map[string]string, limit int, allowReexport bool) ([]*TranslationUnit, error) {
 	if len(requested) != 0 {
 		seen := map[string]bool{}
-		pages := make([]Page, 0, len(requested))
-		for _, pageID := range requested {
-			if seen[pageID] {
-				return nil, fmt.Errorf("duplicate requested page_id %q", pageID)
+		units := make([]*TranslationUnit, 0, len(requested))
+		var kind UnitKind
+		for _, unitID := range requested {
+			if seen[unitID] {
+				return nil, fmt.Errorf("duplicate requested translation unit %q", unitID)
 			}
-			seen[pageID] = true
-			page, ok := byID[pageID]
-			if !ok {
-				return nil, fmt.Errorf("unknown page_id %q", pageID)
+			seen[unitID] = true
+			unit, err := catalog.Unit(unitID)
+			if err != nil {
+				if !strings.HasPrefix(unitID, "example:") {
+					return nil, fmt.Errorf("unknown page_id %q", unitID)
+				}
+				return nil, err
 			}
-			if batch := exported[pageID]; batch != "" && !allowReexport {
-				return nil, fmt.Errorf("page_id %q was already exported in batch %q", pageID, batch)
+			if kind != "" && unit.Kind != kind {
+				return nil, errors.New("一个重译批次不能混合课程页面单元和示例单元")
 			}
-			pages = append(pages, page)
+			if requestedKind != "" && unit.Kind != requestedKind {
+				return nil, fmt.Errorf("翻译单元 %s 的类型为 %s，与 --unit-kind %s 不一致", unit.ID, unit.Kind, requestedKind)
+			}
+			kind = unit.Kind
+			if batch := exported[unitID]; batch != "" && !allowReexport {
+				return nil, fmt.Errorf("translation unit %q was already exported in batch %q", unitID, batch)
+			}
+			units = append(units, unit)
 		}
-		return pages, nil
+		return units, nil
 	}
-	pages := make([]Page, 0, limit)
+	if requestedKind == UnitKindExample {
+		units := make([]*TranslationUnit, 0, limit)
+		for i := range catalog.Examples {
+			example := &catalog.Examples[i]
+			if exported[example.ID] != "" {
+				continue
+			}
+			hasContent, err := hasTranslatableGoExampleComment(example.Source)
+			if err != nil {
+				return nil, fmt.Errorf("%s: 检查可翻译自然语言注释: %w", example.ID, err)
+			}
+			if !hasContent {
+				continue
+			}
+			unit, err := catalog.Unit(example.ID)
+			if err != nil {
+				return nil, err
+			}
+			units = append(units, unit)
+			if len(units) == limit {
+				break
+			}
+		}
+		return units, nil
+	}
+	units := make([]*TranslationUnit, 0, limit)
 	for _, page := range catalog.Pages {
 		if exported[page.ID] != "" {
 			continue
 		}
-		pages = append(pages, page)
-		if len(pages) == limit {
+		unit, err := catalog.Unit(page.ID)
+		if err != nil {
+			return nil, err
+		}
+		units = append(units, unit)
+		if len(units) == limit {
 			break
 		}
 	}
-	return pages, nil
+	return units, nil
+}
+
+func retranslationUnitType(kind UnitKind) string {
+	if kind == UnitKindExample {
+		return "go.example"
+	}
+	return "present.Section"
+}
+
+func retranslationUnitInputName(unit *TranslationUnit) string {
+	if unit.Kind == UnitKindExample {
+		return strings.ReplaceAll(strings.TrimPrefix(unit.ID, "example:"), "/", "-")
+	}
+	return flattenedPageArticleName(unit.ID)
 }
 
 func scanRetranslationBatches(base, locale string, catalog *Catalog) (map[string]string, int, error) {
@@ -223,9 +307,12 @@ func scanRetranslationBatches(base, locale string, catalog *Catalog) (map[string
 	if err != nil {
 		return nil, 0, fmt.Errorf("scan retranslation batches: %w", err)
 	}
-	known := make(map[string]bool, len(catalog.Pages))
+	known := make(map[string]UnitKind, len(catalog.Pages)+len(catalog.Examples))
 	for _, page := range catalog.Pages {
-		known[page.ID] = true
+		known[page.ID] = UnitKindPage
+	}
+	for _, example := range catalog.Examples {
+		known[example.ID] = UnitKindExample
 	}
 	prefix := "chatgpt-" + locale + "-"
 	batchPattern := regexp.MustCompile("^" + regexp.QuoteMeta(prefix) + `([0-9]+)$`)
@@ -256,7 +343,7 @@ func scanRetranslationBatches(base, locale string, catalog *Catalog) (map[string
 		if manifest.Locale != locale {
 			return nil, 0, fmt.Errorf("retranslation batch %q locale %q does not match %q", entry.Name(), manifest.Locale, locale)
 		}
-		if manifest.SchemaVersion != 1 || manifest.ProtectionMode != "default" || manifest.TranslationUnit != "present.Section" {
+		if manifest.SchemaVersion != 1 || manifest.ProtectionMode != "default" || (manifest.TranslationUnit != "present.Section" && manifest.TranslationUnit != "go.example") {
 			return nil, 0, fmt.Errorf("retranslation batch %q has incompatible manifest metadata", entry.Name())
 		}
 		if manifest.PageCount == 0 {
@@ -265,12 +352,25 @@ func scanRetranslationBatches(base, locale string, catalog *Catalog) (map[string
 		if manifest.PageCount != len(manifest.Pages) {
 			return nil, 0, fmt.Errorf("retranslation batch %q page_count %d does not match pages %d", entry.Name(), manifest.PageCount, len(manifest.Pages))
 		}
-		for _, page := range manifest.Pages {
-			if !known[page.PageID] {
-				return nil, 0, fmt.Errorf("retranslation batch %q has unknown page_id %q", entry.Name(), page.PageID)
+		for _, record := range manifest.Pages {
+			unitID := record.UnitID
+			unitKind := record.UnitKind
+			if unitID == "" { // Historical page manifests only have page_id.
+				unitID = record.PageID
+				unitKind = UnitKindPage
 			}
-			if exported[page.PageID] == "" {
-				exported[page.PageID] = entry.Name()
+			wantKind, ok := known[unitID]
+			if !ok {
+				return nil, 0, fmt.Errorf("retranslation batch %q has unknown translation unit %q", entry.Name(), unitID)
+			}
+			if unitKind != wantKind || manifest.TranslationUnit != retranslationUnitType(unitKind) {
+				return nil, 0, fmt.Errorf("retranslation batch %q translation unit metadata mismatch for %q", entry.Name(), unitID)
+			}
+			if unitKind == UnitKindPage && record.PageID != unitID {
+				return nil, 0, fmt.Errorf("retranslation batch %q page_id does not match unit_id %q", entry.Name(), unitID)
+			}
+			if exported[unitID] == "" {
+				exported[unitID] = entry.Name()
 			}
 		}
 	}
