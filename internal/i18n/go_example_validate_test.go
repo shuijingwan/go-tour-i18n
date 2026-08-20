@@ -37,6 +37,25 @@ func TestValidateGoExampleCandidateAllowsNaturalCommentTranslation(t *testing.T)
 	}
 }
 
+func TestValidateGoExampleCandidateAllowsNumericConstantsShiftVerbTranslation(t *testing.T) {
+	root := repoRoot(t)
+	catalog, err := BuildCatalog(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	unit, err := catalog.Unit("example:basics/numeric-constants.go")
+	if err != nil {
+		t.Fatal(err)
+	}
+	candidate := strings.Replace(string(unit.Source), "Shift it right again 99 places, so we end up with 1<<1, or 2.", "再向右移位 99 位，最终得到 1<<1，即 2。", 1)
+	if candidate == string(unit.Source) {
+		t.Fatal("numeric-constants Shift comment was not found")
+	}
+	if err := ValidateGoExampleCandidate(root, unit, "zh-CN", []byte(candidate)); err != nil {
+		t.Fatalf("translated Shift verb candidate: %v", err)
+	}
+}
+
 func TestValidateGoExampleCandidateRejectsNonCommentChanges(t *testing.T) {
 	root := t.TempDir()
 	writeGoExampleValidationGlossary(t, root)

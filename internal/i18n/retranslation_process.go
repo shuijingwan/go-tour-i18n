@@ -125,7 +125,8 @@ func ProcessRetranslationBatch(root string, catalog *Catalog, options Retranslat
 	for _, item := range prepared {
 		name := filepath.Base(filepath.FromSlash(item.manifest.InputPath))
 		rawPath := filepath.ToSlash(filepath.Join("raw-responses", name))
-		candidatePath := filepath.ToSlash(filepath.Join("candidates", name))
+		candidateName := retranslationUnitCandidateName(item.unit)
+		candidatePath := filepath.ToSlash(filepath.Join("candidates", candidateName))
 		validationPath := filepath.ToSlash(filepath.Join("validation", strings.TrimSuffix(name, filepath.Ext(name))+".json"))
 		evidence := RetranslationValidation{
 			SchemaVersion: retranslationProcessSchemaVersion, BatchID: batchID, Locale: options.Locale,
@@ -141,7 +142,7 @@ func ProcessRetranslationBatch(root string, catalog *Catalog, options Retranslat
 			result.RestoreFailed++
 		} else {
 			result.RestorePassed++
-			if err := os.WriteFile(filepath.Join(staging, "candidates", name), []byte(restored), 0644); err != nil {
+			if err := os.WriteFile(filepath.Join(staging, "candidates", candidateName), []byte(restored), 0644); err != nil {
 				return nil, fmt.Errorf("write staged candidate for %s: %w", item.unit.ID, err)
 			}
 			evidence.CandidatePath = candidatePath
@@ -401,7 +402,7 @@ func preflightRetranslationProcess(batchDir string, catalog *Catalog, glossary *
 			return nil, fmt.Errorf("%s: manifest source_path %q does not match %q", unitID, record.SourcePath, unit.SourcePath)
 		}
 		name := filepath.Base(filepath.FromSlash(record.InputPath))
-		wantInputPath := filepath.ToSlash(filepath.Join("inputs", name))
+		wantInputPath := filepath.ToSlash(filepath.Join("inputs", retranslationUnitInputName(unit)))
 		if name == "." || record.InputPath != wantInputPath {
 			return nil, fmt.Errorf("%s: unsafe or non-canonical input_path %q", unitID, record.InputPath)
 		}

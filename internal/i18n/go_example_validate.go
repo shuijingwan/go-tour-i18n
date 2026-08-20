@@ -184,7 +184,7 @@ func validateGoExampleGlossary(unitID string, source, candidate []byte, sourceCo
 }
 
 func goExampleKeepItems(payload string, glossary *Glossary) []string {
-	spans := translationKeepProtectionSpans(payload, glossary, nil, nil)
+	spans := goExampleKeepProtectionSpans(payload, glossary, nil)
 	items := make([]string, 0, len(spans))
 	for _, span := range spans {
 		items = append(items, payload[span.start:span.end])

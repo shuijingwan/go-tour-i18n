@@ -247,7 +247,7 @@ func canonicalTranslationUnitCandidatePath(locale string, unit *TranslationUnit)
 	if unit.Kind != UnitKindPage && unit.Kind != UnitKindExample {
 		return "", fmt.Errorf("%s: unsupported translation unit kind %q", unit.ID, unit.Kind)
 	}
-	name := retranslationUnitInputName(unit)
+	name := retranslationUnitCandidateName(unit)
 	if name == "" || filepath.Base(name) != name {
 		return "", fmt.Errorf("%s: unsafe canonical candidate name %q", unit.ID, name)
 	}

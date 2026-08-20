@@ -110,10 +110,12 @@ go run -mod=readonly ./cmd/tour-i18n translate recover-network \
 ChatGPT 执行重译批次时，应主动从 GitHub 仓库 `main` 分支读取批次输入和目标语言当前最新的术语规则。用户无需在每个新会话中重新复制术语表。正常读取顺序为：
 
 1. `data/retranslation-runs/<locale>/<batch-id>/manifest.json`；
-2. manifest 指向的 `data/retranslation-runs/<locale>/<batch-id>/inputs/*.article`；
+2. manifest 指向的受保护输入（Page 为 `inputs/*.article`，Example 为 `inputs/*.txt`）；
 3. `locales/<locale>/glossary.yaml`。
 
 整体工作流为：完整 TranslationUnit → Default protected input → retranslation batch → ChatGPT 读取批次和最新 locale glossary → 每单元独立翻译 → raw response → restore → batch candidate → validator → promotion。Page 与 Example 共用批次输入导出、隔离 process、连续 retry 和 canonical promotion。zh-CN 本轮 Batch 001–011 已封存为不可变历史 evidence；`moretypes/1` 与 `concurrency/1` 的最终结果来自各自的 attempt-002。
+
+Artifact 后缀按语义区分：Page 继续使用 `.article`；Example 的 upstream source 与 restore 后 candidate 使用 `.go`，受保护 input、首次 raw response 与 retry raw response 使用 `.txt`。只有恢复并重新成为合法 Go source 的 artifact 才使用 `.go`。
 
 一个批次可以包含多个页面（默认 10 页），但每个完整顶层 `present.Section` 始终是独立翻译单元，不得将批次内多个页面合并成一个翻译单元。
 

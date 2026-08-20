@@ -64,6 +64,41 @@ func TestGoExampleProtectionKeepsGlossaryTermsInsideNaturalComments(t *testing.T
 	}
 }
 
+func TestGoExampleProtectionTreatsShiftVerbAsTranslatable(t *testing.T) {
+	root := repoRoot(t)
+	catalog, err := BuildCatalog(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	unit, err := catalog.Unit("example:basics/numeric-constants.go")
+	if err != nil {
+		t.Fatal(err)
+	}
+	glossary, err := LoadGlossary(root, "zh-CN")
+	if err != nil {
+		t.Fatal(err)
+	}
+	protected, err := prepareTranslationUnitInput(unit, glossary)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(protected.Text, "Shift it right again 99 places, so we end up with") {
+		t.Fatalf("Shift verb was protected instead of exposed:\n%s", protected.Text)
+	}
+	if containsString(protected.Values, "Shift") {
+		t.Fatalf("Shift verb became an independent keep token: %q", protected.Values)
+	}
+
+	keyboard := []byte("package main\n\n// Press the Shift key to continue.\nfunc main() {}\n")
+	keyboardProtected, err := prepareGoExampleTranslationInput(keyboard, sum(keyboard), glossary)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !containsString(keyboardProtected.Values, "Shift") || strings.Contains(keyboardProtected.Text, "Shift key") {
+		t.Fatalf("keyboard Shift was not protected: text=%q values=%q", keyboardProtected.Text, keyboardProtected.Values)
+	}
+}
+
 func TestGoExampleProtectionBlockAndMultipleCommentsStayOneInput(t *testing.T) {
 	source := []byte("package main\n\n/* This is a longer explanation. */\nfunc a() {}\n\n// Second explanation related to the first one.\nfunc b() {}\n")
 	unit := &TranslationUnit{ID: "example:demo.go", Kind: UnitKindExample, Source: source, SourceSHA256: sum(source)}
@@ -205,7 +240,6 @@ func TestAllCatalogExamplesProtectAndRestore(t *testing.T) {
 	keepFiles := map[string]bool{}
 	keepItems := map[string]bool{}
 	var conservativelyProtected []string
-	keepRE := translationKeepMatcher(glossary)
 	for _, example := range catalog.Examples {
 		comments, err := scanGoExampleComments(example.Source)
 		if err != nil {
@@ -218,15 +252,10 @@ func TestAllCatalogExamplesProtectAndRestore(t *testing.T) {
 			case goExampleCommentNatural:
 				natural = true
 				onlySpecial = false
-				if keepRE != nil {
-					payload := string(example.Source[comment.PayloadStart:comment.PayloadEnd])
-					for _, match := range keepRE.FindAllStringIndex(payload, -1) {
-						start, end := comment.PayloadStart+match[0], comment.PayloadStart+match[1]
-						if hasTranslationKeepBoundaries(string(example.Source), start, end, nil) && shouldProtectTranslationKeep(string(example.Source), start, end) {
-							keepFiles[example.ID] = true
-							keepItems[string(example.Source[start:end])] = true
-						}
-					}
+				payload := string(example.Source[comment.PayloadStart:comment.PayloadEnd])
+				for _, span := range goExampleKeepProtectionSpans(payload, glossary, nil) {
+					keepFiles[example.ID] = true
+					keepItems[payload[span.start:span.end]] = true
 				}
 			case goExampleCommentNonNatural:
 				onlySpecial = false
@@ -272,8 +301,8 @@ func TestAllCatalogExamplesProtectAndRestore(t *testing.T) {
 		items = append(items, item)
 	}
 	sort.Strings(items)
-	if !reflect.DeepEqual(items, []string{"Shift", "goroutine"}) || len(keepFiles) != 2 {
-		t.Fatalf("corpus glossary.keep files=%d items=%v, want 2 and [Shift goroutine]", len(keepFiles), items)
+	if !reflect.DeepEqual(items, []string{"goroutine"}) || len(keepFiles) != 1 {
+		t.Fatalf("corpus glossary.keep files=%d items=%v, want 1 and [goroutine]", len(keepFiles), items)
 	}
 	sort.Strings(conservativelyProtected)
 	t.Logf("examples: natural=%d without-natural=%d special-only=%d glossary-keep-files=%d keep-items=%v special-kinds=%v conservatively-protected=%v", withNatural, withoutNatural, specialOnly, len(keepFiles), items, kinds, conservativelyProtected)

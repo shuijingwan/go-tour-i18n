@@ -29,6 +29,8 @@ type goExampleComment struct {
 	Kind         goExampleCommentKind
 }
 
+var goExampleShiftVerbRE = regexp.MustCompile(`^Shift\s+it\s+(?:left|right)\b`)
+
 var presentCommentMarkerRE = regexp.MustCompile(`^(?:(?:START|END)\s+[A-Z][A-Z0-9_]*|(?:OMIT|HL|HIGHLIGHT))$`)
 
 func prepareTranslationUnitInput(unit *TranslationUnit, glossary *Glossary) (protectedTranslation, error) {
@@ -74,7 +76,7 @@ func prepareGoExampleTranslationInput(source []byte, hash string, glossary *Glos
 	if position < len(text) {
 		spans = append(spans, protectedSpan{start: position, end: len(text), kind: protectedOther})
 	}
-	spans = append(spans, translationKeepProtectionSpans(text, glossary, nil, func(start, end int) bool {
+	spans = append(spans, goExampleKeepProtectionSpans(text, glossary, func(start, end int) bool {
 		for _, comment := range translatable {
 			if start >= comment.PayloadStart && end <= comment.PayloadEnd {
 				return true
@@ -85,6 +87,22 @@ func prepareGoExampleTranslationInput(source []byte, hash string, glossary *Glos
 	result := protectedTranslationFromSpans(text, hash, spans)
 	result.RequireTokenOrder = true
 	return result, nil
+}
+
+// goExampleKeepProtectionSpans applies the shared Example keep semantics used
+// by both input protection and candidate validation. Shift remains protected as
+// a keyboard key, while the specific English verb construction "Shift it
+// left/right" remains translatable.
+func goExampleKeepProtectionSpans(text string, glossary *Glossary, allowed func(start, end int) bool) []protectedSpan {
+	spans := translationKeepProtectionSpans(text, glossary, nil, allowed)
+	filtered := spans[:0]
+	for _, span := range spans {
+		if text[span.start:span.end] == "Shift" && goExampleShiftVerbRE.MatchString(text[span.start:]) {
+			continue
+		}
+		filtered = append(filtered, span)
+	}
+	return filtered
 }
 
 func scanGoExampleComments(source []byte) ([]goExampleComment, error) {

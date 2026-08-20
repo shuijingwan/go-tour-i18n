@@ -124,7 +124,7 @@ func ProcessRetranslationRetry(root string, catalog *Catalog, options Retranslat
 		return nil, fmt.Errorf("inspect retry validation history: %w", err)
 	}
 
-	candidateRelative := filepath.ToSlash(filepath.Join("candidates", name))
+	candidateRelative := filepath.ToSlash(filepath.Join("candidates", retranslationUnitCandidateName(item.unit)))
 	evidence := RetranslationValidation{
 		SchemaVersion: retranslationProcessSchemaVersion, BatchID: options.BatchID, Locale: options.Locale,
 		UnitID: item.unit.ID, UnitKind: item.unit.Kind, SourceSHA256: item.unit.SourceSHA256,

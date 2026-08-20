@@ -264,6 +264,14 @@ func selectRetranslationUnits(catalog *Catalog, requested []string, requestedKin
 
 func retranslationUnitInputName(unit *TranslationUnit) string {
 	if unit.Kind == UnitKindExample {
+		name := strings.ReplaceAll(strings.TrimPrefix(unit.ID, "example:"), "/", "-")
+		return strings.TrimSuffix(name, filepath.Ext(name)) + ".txt"
+	}
+	return flattenedPageArticleName(unit.ID)
+}
+
+func retranslationUnitCandidateName(unit *TranslationUnit) string {
+	if unit.Kind == UnitKindExample {
 		return strings.ReplaceAll(strings.TrimPrefix(unit.ID, "example:"), "/", "-")
 	}
 	return flattenedPageArticleName(unit.ID)

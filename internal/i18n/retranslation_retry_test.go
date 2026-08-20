@@ -132,13 +132,13 @@ func TestRetranslationRetryExampleLifecycleUsesGoAttempts(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if result.Units[0].Status != "validation_failed" || result.ValidationFailed != 1 || filepath.Ext(attempt2) != ".go" {
+	if result.Units[0].Status != "validation_failed" || result.ValidationFailed != 1 || filepath.Ext(attempt2) != ".txt" {
 		t.Fatalf("example attempt 2 result=%+v path=%s", result, attempt2)
 	}
 	flatID := strings.TrimSuffix(name, filepath.Ext(name))
 	validationPath := filepath.Join(batchDir, "validation", flatID+".json")
 	validation, _ := os.ReadFile(validationPath)
-	if !strings.Contains(string(validation), `"attempt": 2`) || !strings.Contains(string(validation), `"raw_response_path": "retries/`+flatID+`/attempt-002.go"`) || !strings.Contains(string(validation), "禁止译法") {
+	if !strings.Contains(string(validation), `"attempt": 2`) || !strings.Contains(string(validation), `"raw_response_path": "retries/`+flatID+`/attempt-002.txt"`) || !strings.Contains(string(validation), "禁止译法") {
 		t.Fatalf("example attempt 2 validation=%s", validation)
 	}
 
@@ -150,7 +150,8 @@ func TestRetranslationRetryExampleLifecycleUsesGoAttempts(t *testing.T) {
 	if result.Units[0].Status != "passed" || result.ValidationPassed != 1 {
 		t.Fatalf("example attempt 3 result=%+v", result)
 	}
-	candidate, err := os.ReadFile(filepath.Join(batchDir, "candidates", name))
+	candidateName := retranslationUnitCandidateName(&TranslationUnit{ID: unitID, Kind: UnitKindExample})
+	candidate, err := os.ReadFile(filepath.Join(batchDir, "candidates", candidateName))
 	if err != nil || !strings.Contains(string(candidate), "通过通道发送该值。") {
 		t.Fatalf("example retry candidate=%q err=%v", candidate, err)
 	}

@@ -102,12 +102,13 @@ func TestRetranslationProcessExampleRestoresValidatesAndPreservesFormalData(t *t
 		t.Fatalf("example process result=%+v", result)
 	}
 	batchDir := filepath.Join(root, "data", "retranslation-runs", "zh-CN", batchID)
-	candidate, err := os.ReadFile(filepath.Join(batchDir, "candidates", name))
+	candidateName := retranslationUnitCandidateName(&TranslationUnit{ID: catalog.Examples[0].ID, Kind: UnitKindExample})
+	candidate, err := os.ReadFile(filepath.Join(batchDir, "candidates", candidateName))
 	if err != nil {
 		t.Fatal(err)
 	}
-	if filepath.Ext(name) != ".go" || !strings.Contains(string(candidate), "// 一个 goroutine 通过通道发送该值。") {
-		t.Fatalf("example candidate %s=%q", name, candidate)
+	if filepath.Ext(name) != ".txt" || filepath.Ext(candidateName) != ".go" || !strings.Contains(string(candidate), "// 一个 goroutine 通过通道发送该值。") {
+		t.Fatalf("example input=%s candidate %s=%q", name, candidateName, candidate)
 	}
 	validationName := strings.TrimSuffix(name, filepath.Ext(name)) + ".json"
 	var evidence RetranslationValidation

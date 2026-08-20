@@ -360,7 +360,7 @@ func preflightUnifiedRetranslationPromotion(root string, catalog *Catalog, local
 			continue
 		}
 		name := filepath.Base(filepath.FromSlash(choice.manifest.InputPath))
-		wantCandidate := filepath.ToSlash(filepath.Join("candidates", name))
+		wantCandidate := filepath.ToSlash(filepath.Join("candidates", retranslationUnitCandidateName(unit)))
 		wantValidation := filepath.ToSlash(filepath.Join("validation", strings.TrimSuffix(name, filepath.Ext(name))+".json"))
 		if choice.result.CandidatePath != wantCandidate || choice.result.ValidationPath != wantValidation {
 			return nil, nil, 0, 0, fmt.Errorf("%s: result candidate/validation path mismatch", id)

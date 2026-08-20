@@ -247,7 +247,7 @@ func TestRetranslationExportExplicitExamples(t *testing.T) {
 		if record.UnitID != unit.ID || record.UnitKind != UnitKindExample || record.SourcePath != unit.SourcePath {
 			t.Fatalf("example manifest record=%+v", record)
 		}
-		if filepath.Ext(record.InputPath) != ".go" || record.SourceSHA256 != sum(unit.Source) {
+		if filepath.Ext(record.InputPath) != ".txt" || record.SourceSHA256 != sum(unit.Source) {
 			t.Fatalf("example identity/path record=%+v", record)
 		}
 		input, err := os.ReadFile(filepath.Join(root, result.BatchPath, filepath.FromSlash(record.InputPath)))
