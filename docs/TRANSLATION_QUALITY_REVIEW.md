@@ -133,6 +133,8 @@ automatic validation → Final Review
 
 不得把旧 review evidence 套用到新 candidate 或新的 validation evidence 上。
 
+翻译质量修订不覆盖旧 candidate。需要修订时，必须通过新的 revision batch 产生新的 candidate 和 validation evidence；旧 batch 的 review evidence 不适用于新的 candidate。
+
 ## Review evidence schema v1
 
 每个 TranslationUnit 的正式 evidence 是 Final Review 的产物，位于：

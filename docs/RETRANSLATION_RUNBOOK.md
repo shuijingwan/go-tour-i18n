@@ -27,8 +27,10 @@ git pull
 → candidate
 → automatic validation
 → Quality Check
-→ revision loop（如需要）
-→ final validation
+→ revision batch（如需要）
+→ 新 batch process
+→ automatic validation
+→ Quality Check
 → git commit
 → git push
 ```
@@ -37,6 +39,7 @@ ChatGPT：
 
 ```text
 执行 Final Review
+→ 生成 review evidence
 → git commit
 → git push
 ```
@@ -100,9 +103,9 @@ process
 
 执行 Quality Check，用于发现翻译质量问题。当前流程由 ChatGPT 作为质量检查执行者。Quality Check 可以多轮执行，但不生成正式 review evidence。
 
-如需修订，由 ChatGPT 修改 raw response，不直接修改 candidate。修改后，本地终端重新 process 和重新 validation，再继续 Quality Check，直至得到最终 candidate。
+如需修订，进入新的 revision batch，不在原 batch 内修改 raw response 或重新 process。revision batch 完成 process 和 automatic validation 后，再继续 Quality Check，直至得到最终 candidate。
 
-最终 candidate 通过 final validation 后，本地终端提交并推送 candidate / validation 结果。随后由 ChatGPT 对最终 candidate 执行 Final Review，生成正式 review evidence，并将 review evidence 提交并推送至 GitHub。
+最终 candidate 通过 automatic validation 后，本地终端提交并推送 candidate / validation 结果。随后由 ChatGPT 对最终 candidate 执行 Final Review，生成正式 review evidence，并将 review evidence 提交并推送至 GitHub。
 
 本地终端再执行：
 
@@ -113,26 +116,34 @@ git pull
 
 正式 review evidence 是 Final Review 的产物，也是 promote 前的审核依据。具体的 candidate、validation、review evidence 和 promotion 条件分别以对应规范为准。
 
-## 7. Revision loop
+## 7. Revision batch
 
-Quality Check 发现需要修订的问题时，按以下顺序处理：
+Quality Check 或 Final Review 发现翻译质量问题时，按以下顺序处理：
 
 ```text
-修订 raw response
-→ 重新 process
-→ 重新 validation
-→ 重新 Quality Check
+创建新的 revision batch
+→ re-export 需要修订的 TranslationUnit
+→ ChatGPT 在新 batch 中生成修订后的 raw response
+→ 新 batch process
+→ automatic validation
+→ Quality Check
 ```
 
-Final Review 若要求修订，也回到同一 revision loop；新的最终 candidate 完成 final validation 后，必须重新执行 Final Review 并生成其正式 review evidence。
+已处理 batch 保持不可变，candidate 和 validation evidence 不直接覆盖。revision batch 是翻译质量优化的正常流程。新的最终 candidate 通过 automatic validation 后，必须重新执行 Final Review 并生成其正式 review evidence。
 
-修订后的 raw response、重新生成的处理结果和最终 review evidence 仍按上述 GitHub 中转与角色交接流程提交、推送和拉取。
+revision batch 的 raw response、candidate、validation evidence 和最终 review evidence 仍按上述 GitHub 中转与角色交接流程提交、推送和拉取。
 
-## 8. 不包含的内容
+## 8. Retry 与 revision batch
+
+retry 用于 `restore_failed`、`validation_failed` 等处理失败，不用于已经 validation 通过后的翻译质量修改。
+
+revision batch 用于 Quality Check 或 Final Review 发现翻译质量问题的场景。
+
+## 9. 不包含的内容
 
 UI catalog 翻译是独立流程，不属于页面/示例翻译任务。
 
-## 9. 故障排查
+## 10. 故障排查
 
 - token 遗失
 - 验证器失败
