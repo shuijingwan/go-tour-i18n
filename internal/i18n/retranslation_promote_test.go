@@ -23,6 +23,18 @@ func processedPromotionFixture(t *testing.T, count int) (string, *Catalog, strin
 	return root, catalog, batchID
 }
 
+func TestPromotionBatchREIsLocaleAwareAndKeepsZHCNCompatibility(t *testing.T) {
+	if !promotionBatchRE("zh-CN").MatchString("chatgpt-zh-CN-013") {
+		t.Fatal("zh-CN historical batch was rejected")
+	}
+	if !promotionBatchRE("ja-JP").MatchString("chatgpt-ja-JP-001") {
+		t.Fatal("ja-JP batch was rejected")
+	}
+	if promotionBatchRE("ja-JP").MatchString("chatgpt-zh-CN-001") {
+		t.Fatal("ja-JP matcher accepted a different locale")
+	}
+}
+
 func addProcessedPromotionBatch(t *testing.T, root string, catalog *Catalog, batchID string, ids []string) {
 	t.Helper()
 	result, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", BatchID: batchID, UnitIDs: ids, Limit: len(ids), AllowReexport: true})
@@ -100,12 +112,16 @@ func writeApprovedPromotionReviews(t *testing.T, root string, catalog *Catalog, 
 }
 
 func writePromotionStatus(t *testing.T, root string, catalog *Catalog, canonical string) {
+	writePromotionStatusForLocale(t, root, "zh-CN", catalog, canonical)
+}
+
+func writePromotionStatusForLocale(t *testing.T, root, locale string, catalog *Catalog, canonical string) {
 	t.Helper()
-	localeDir := filepath.Join(root, "locales", "zh-CN")
+	localeDir := filepath.Join(root, "locales", locale)
 	if err := os.MkdirAll(filepath.Join(localeDir, "candidates"), 0755); err != nil {
 		t.Fatal(err)
 	}
-	if err := os.WriteFile(filepath.Join(localeDir, "locale.json"), []byte(`{"locale":"zh-CN","phase":"scaffold","translation_unit":"present.Section"}`), 0644); err != nil {
+	if err := os.WriteFile(filepath.Join(localeDir, "locale.json"), []byte(`{"locale":"`+locale+`","phase":"scaffold","translation_unit":"present.Section"}`), 0644); err != nil {
 		t.Fatal(err)
 	}
 	statuses := make([]Status, 0, len(catalog.Pages))
@@ -113,7 +129,7 @@ func writePromotionStatus(t *testing.T, root string, catalog *Catalog, canonical
 		path := ""
 		state := "pending"
 		if canonical != "" {
-			path = canonicalCandidatePath("zh-CN", page.ID)
+			path = canonicalCandidatePath(locale, page.ID)
 			state = "ready"
 			if err := os.WriteFile(filepath.Join(root, filepath.FromSlash(path)), []byte(canonical), 0644); err != nil {
 				t.Fatal(err)
@@ -133,6 +149,32 @@ func writePromotionStatus(t *testing.T, root string, catalog *Catalog, canonical
 	}
 	if err := writeStatuses(filepath.Join(localeDir, "status.tsv"), statuses); err != nil {
 		t.Fatal(err)
+	}
+}
+
+func TestRetranslationPromotionSupportsLocaleAwareWorkflow(t *testing.T) {
+	const locale = "ja-JP"
+	root, catalog, batchID := makeRetranslationProcessBatchForLocale(t, locale, 1)
+	if _, err := ProcessRetranslationBatch(root, catalog, RetranslationProcessOptions{Locale: locale, BatchID: batchID}); err != nil {
+		t.Fatal(err)
+	}
+	if _, _, err := RecordRetranslationReview(root, catalog, RetranslationReviewRecordOptions{
+		Locale: locale, BatchID: batchID, UnitID: "lesson/1", Rating: "A", Decision: "approved",
+		Summary: "Valid fixture.", Reviewer: "test", Rubric: "test-v1", Now: func() time.Time { return time.Unix(0, 0) },
+	}); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := CheckRetranslationReviews(root, catalog, RetranslationReviewCheckOptions{Locale: locale, BatchID: batchID}); err != nil {
+		t.Fatal(err)
+	}
+	writePromotionStatusForLocale(t, root, locale, catalog, "")
+	plan, err := PromoteRetranslation(root, catalog, RetranslationPromoteOptions{Locale: locale, Apply: true})
+	if err != nil || !plan.CanApply || plan.Locale != locale {
+		t.Fatalf("promotion plan=%+v err=%v", plan, err)
+	}
+	statuses, err := ReadStatuses(filepath.Join(root, "locales", locale, "status.tsv"))
+	if err != nil || len(statuses) != 1 || statuses[0].State != "ready" || !strings.HasPrefix(statuses[0].CandidatePath, "locales/ja-JP/") {
+		t.Fatalf("ja-JP statuses=%+v err=%v", statuses, err)
 	}
 }
 

@@ -10,10 +10,10 @@
 | --- | --- |
 | `go-dev.<实际域名>` | 默认简体中文 `zh-CN` 站，也是未来更多 go.dev 翻译内容的主入口 |
 | `en.go-dev.<实际域名>` | 未来英文 `en` 站 |
-| `ja.go-dev.<实际域名>` | 未来日语 `ja` 站 |
+| `ja.go-dev.<实际域名>` | 未来日语 `ja-JP` 站 |
 | `go-dev.<实际域名>/about/` | 项目介绍、语言选择、上游信息和 GitHub 入口 |
 
-不创建 `zh.` 或 `zh-cn.` 子域。域名标签使用小写，而目录和 HTML 使用规范 locale/lang，例如目录 `zh-CN`、`en`、`ja`，HTML 使用 `lang="zh-CN"`。
+不创建 `zh.` 或 `zh-cn.` 子域。域名标签使用小写；目录和 HTML 使用规范 locale/lang，例如目录 `zh-CN`、`ja-JP`，HTML 使用对应的 `lang` 值。
 
 ## CDN 角色
 

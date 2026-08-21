@@ -40,6 +40,9 @@ func ValidateCandidate(root string, catalog *Catalog, pageID string, candidate [
 // ValidateCandidateForLocale applies the same present and structure validation
 // using the glossary associated with the requested locale.
 func ValidateCandidateForLocale(root string, catalog *Catalog, pageID, locale string, candidate []byte) error {
+	if err := ValidateLocaleName(locale); err != nil {
+		return err
+	}
 	page, err := catalog.Page(pageID)
 	if err != nil {
 		return err

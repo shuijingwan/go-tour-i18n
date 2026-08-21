@@ -27,8 +27,8 @@ func ProcessRetranslationRetry(root string, catalog *Catalog, options Retranslat
 	if options.Locale == "" || options.BatchID == "" || unitID == "" {
 		return nil, errors.New("retranslation retry locale, batch_id, and unit_id are required")
 	}
-	if options.Locale != "zh-CN" {
-		return nil, fmt.Errorf("unsupported locale %q", options.Locale)
+	if err := ValidateLocaleName(options.Locale); err != nil {
+		return nil, err
 	}
 	if err := validateBatchID(options.BatchID); err != nil {
 		return nil, err

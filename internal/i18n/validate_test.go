@@ -49,6 +49,13 @@ func TestCandidateAllowedChanges(t *testing.T) {
 	}
 }
 
+func TestValidateCandidateForLocaleRejectsInvalidLocale(t *testing.T) {
+	err := ValidateCandidateForLocale(repoRoot(t), syntheticCatalog(), "synthetic/1", "../ja-JP", []byte(syntheticSource))
+	if err == nil || !strings.Contains(err.Error(), "invalid locale") {
+		t.Fatalf("error = %v, want invalid locale", err)
+	}
+}
+
 func TestCandidateProtectedChangesFail(t *testing.T) {
 	root := repoRoot(t)
 	c := syntheticCatalog()

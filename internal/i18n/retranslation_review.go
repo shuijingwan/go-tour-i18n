@@ -66,8 +66,8 @@ func RecordRetranslationReview(root string, catalog *Catalog, options Retranslat
 	if options.Locale == "" || options.BatchID == "" || options.UnitID == "" {
 		return nil, "", errors.New("retranslation review locale, batch_id, and unit_id are required")
 	}
-	if options.Locale != "zh-CN" {
-		return nil, "", fmt.Errorf("unsupported locale %q", options.Locale)
+	if err := ValidateLocaleName(options.Locale); err != nil {
+		return nil, "", err
 	}
 	if err := validateBatchID(options.BatchID); err != nil {
 		return nil, "", err
@@ -185,8 +185,8 @@ func CheckRetranslationReviews(root string, catalog *Catalog, options Retranslat
 	if options.Locale == "" || options.BatchID == "" {
 		return nil, errors.New("retranslation review locale and batch_id are required")
 	}
-	if options.Locale != "zh-CN" {
-		return nil, fmt.Errorf("unsupported locale %q", options.Locale)
+	if err := ValidateLocaleName(options.Locale); err != nil {
+		return nil, err
 	}
 	if err := validateBatchID(options.BatchID); err != nil {
 		return nil, err

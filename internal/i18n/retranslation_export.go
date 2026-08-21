@@ -77,8 +77,8 @@ func ExportRetranslationBatch(root string, catalog *Catalog, options Retranslati
 	if options.Locale == "" {
 		return nil, errors.New("retranslation locale is required")
 	}
-	if options.Locale != "zh-CN" {
-		return nil, fmt.Errorf("unsupported locale %q", options.Locale)
+	if err := ValidateLocaleName(options.Locale); err != nil {
+		return nil, err
 	}
 	if options.UnitKind != "" && options.UnitKind != UnitKindPage && options.UnitKind != UnitKindExample {
 		return nil, fmt.Errorf("不支持的翻译单元类型 %q；只支持 page 或 example", options.UnitKind)

@@ -64,7 +64,9 @@ type preparedPromotion struct {
 	attempt   int
 }
 
-var promotionBatchRE = regexp.MustCompile(`^chatgpt-(zh-CN)-([0-9]+)$`)
+func promotionBatchRE(locale string) *regexp.Regexp {
+	return regexp.MustCompile(`^chatgpt-(` + regexp.QuoteMeta(locale) + `)-([0-9]+)$`)
+}
 
 // PromoteRetranslation builds a complete, validated promotion plan and only
 // writes canonical files when Apply is explicitly true.
@@ -75,8 +77,8 @@ func PromoteRetranslation(root string, catalog *Catalog, options RetranslationPr
 	if options.Locale == "" {
 		return nil, errors.New("retranslation locale is required")
 	}
-	if options.Locale != "zh-CN" {
-		return nil, fmt.Errorf("unsupported locale %q", options.Locale)
+	if err := ValidateLocaleName(options.Locale); err != nil {
+		return nil, err
 	}
 	prepared, missing, reviews, pages, examples, err := preflightUnifiedRetranslationPromotion(root, catalog, options.Locale)
 	if err != nil {
@@ -144,7 +146,7 @@ func preflightRetranslationPromotion(root string, catalog *Catalog, locale strin
 		if !entry.IsDir() {
 			return nil, fmt.Errorf("illegal retranslation batch entry %q", entry.Name())
 		}
-		match := promotionBatchRE.FindStringSubmatch(entry.Name())
+		match := promotionBatchRE(locale).FindStringSubmatch(entry.Name())
 		if match == nil || match[1] != locale {
 			return nil, fmt.Errorf("illegal retranslation batch %q", entry.Name())
 		}
@@ -312,7 +314,7 @@ func preflightUnifiedRetranslationPromotion(root string, catalog *Catalog, local
 		if !entry.IsDir() {
 			return nil, nil, promotionReviewGate{}, 0, 0, fmt.Errorf("illegal retranslation batch entry %q", entry.Name())
 		}
-		match := promotionBatchRE.FindStringSubmatch(entry.Name())
+		match := promotionBatchRE(locale).FindStringSubmatch(entry.Name())
 		if match == nil || match[1] != locale {
 			return nil, nil, promotionReviewGate{}, 0, 0, fmt.Errorf("illegal retranslation batch %q", entry.Name())
 		}

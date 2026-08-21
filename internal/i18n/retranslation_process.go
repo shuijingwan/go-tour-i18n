@@ -70,8 +70,8 @@ func ProcessRetranslationBatch(root string, catalog *Catalog, options Retranslat
 	if options.Locale == "" {
 		return nil, errors.New("retranslation locale is required")
 	}
-	if options.Locale != "zh-CN" {
-		return nil, fmt.Errorf("unsupported locale %q", options.Locale)
+	if err := ValidateLocaleName(options.Locale); err != nil {
+		return nil, err
 	}
 	base := filepath.Join(root, "data", "retranslation-runs", options.Locale)
 	batchID, noPending, err := selectRetranslationProcessBatch(base, options.Locale, options.BatchID)

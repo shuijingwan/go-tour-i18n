@@ -31,8 +31,12 @@ func fmtInt(value int) string {
 }
 
 func writeRetranslationTestGlossary(t *testing.T, root string) {
+	writeRetranslationTestGlossaryForLocale(t, root, "zh-CN")
+}
+
+func writeRetranslationTestGlossaryForLocale(t *testing.T, root, locale string) {
 	t.Helper()
-	dir := filepath.Join(root, "locales", "zh-CN")
+	dir := filepath.Join(root, "locales", locale)
 	if err := os.MkdirAll(dir, 0755); err != nil {
 		t.Fatal(err)
 	}
@@ -47,8 +51,12 @@ func retranslationTestExample(id, path, source string) Example {
 }
 
 func readRetranslationManifest(t *testing.T, root, batchID string) RetranslationBatchManifest {
+	return readRetranslationManifestForLocale(t, root, "zh-CN", batchID)
+}
+
+func readRetranslationManifestForLocale(t *testing.T, root, locale, batchID string) RetranslationBatchManifest {
 	t.Helper()
-	path := filepath.Join(root, "data", "retranslation-runs", "zh-CN", batchID, "manifest.json")
+	path := filepath.Join(root, "data", "retranslation-runs", locale, batchID, "manifest.json")
 	data, err := os.ReadFile(path)
 	if err != nil {
 		t.Fatal(err)
@@ -58,6 +66,23 @@ func readRetranslationManifest(t *testing.T, root, batchID string) Retranslation
 		t.Fatal(err)
 	}
 	return manifest
+}
+
+func TestRetranslationExportSupportsLocaleAwareBatchPath(t *testing.T) {
+	root := t.TempDir()
+	const locale = "ja-JP"
+	writeRetranslationTestGlossaryForLocale(t, root, locale)
+	result, err := ExportRetranslationBatch(root, retranslationTestCatalog(1), RetranslationExportOptions{Locale: locale, Limit: 1})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if result.BatchID != "chatgpt-ja-JP-001" || !strings.HasPrefix(result.BatchPath, "data/retranslation-runs/ja-JP/") {
+		t.Fatalf("export result = %+v", result)
+	}
+	manifest := readRetranslationManifestForLocale(t, root, locale, result.BatchID)
+	if manifest.Locale != locale || manifest.BatchID != result.BatchID {
+		t.Fatalf("manifest = %+v", manifest)
+	}
 }
 
 func TestRetranslationExportAutomaticBatchProgression(t *testing.T) {

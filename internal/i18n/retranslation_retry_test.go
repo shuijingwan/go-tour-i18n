@@ -76,6 +76,37 @@ func fmtAttempt(attempt int) string {
 	return strings.Repeat("0", 3-len(strconv.Itoa(attempt))) + strconv.Itoa(attempt)
 }
 
+func TestRetranslationRetryUsesLocaleSpecificBatchDirectory(t *testing.T) {
+	const locale = "ja-JP"
+	root, catalog, batchID := makeRetranslationProcessBatchForLocale(t, locale, 1)
+	batchDir := filepath.Join(root, "data", "retranslation-runs", locale, batchID)
+	rawPath := filepath.Join(batchDir, "raw-responses", "lesson-1.article")
+	validRaw, err := os.ReadFile(rawPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(rawPath, []byte("invalid protected response"), 0644); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := ProcessRetranslationBatch(root, catalog, RetranslationProcessOptions{Locale: locale, BatchID: batchID}); err != nil {
+		t.Fatal(err)
+	}
+	retryDir := filepath.Join(batchDir, "retries", "lesson-1")
+	if err := os.MkdirAll(retryDir, 0755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(retryDir, "attempt-002.article"), validRaw, 0644); err != nil {
+		t.Fatal(err)
+	}
+	result, err := ProcessRetranslationRetry(root, catalog, RetranslationRetryOptions{Locale: locale, BatchID: batchID, UnitID: "lesson/1"})
+	if err != nil || result.Locale != locale || result.Units[0].Status != "passed" {
+		t.Fatalf("retry result=%+v err=%v", result, err)
+	}
+	if _, err := os.Stat(filepath.Join(root, "data", "retranslation-runs", "zh-CN", batchID)); !os.IsNotExist(err) {
+		t.Fatalf("retry unexpectedly used zh-CN batch path: %v", err)
+	}
+}
+
 func TestRetranslationRetryRejectsPassedUnknownAndMissingAttempt(t *testing.T) {
 	root, catalog, batchID := processRetryFixture(t, 1, func(raw string) string { return raw })
 	if _, err := ProcessRetranslationRetry(root, catalog, RetranslationRetryOptions{Locale: "zh-CN", BatchID: batchID, UnitID: "lesson/1"}); err == nil || !strings.Contains(err.Error(), "not retryable") {

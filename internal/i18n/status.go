@@ -7,6 +7,7 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strconv"
 	"strings"
 	"time"
@@ -34,7 +35,22 @@ type Status struct {
 
 var allowedStates = map[string]bool{"pending": true, "candidate": true, "ready": true, "blocked": true, "published": true}
 
+var localeNameRE = regexp.MustCompile(`^[a-z]{2,8}(?:-[A-Za-z0-9]{2,8})*$`)
+
+// ValidateLocaleName accepts the locale tags that are safe to use as one
+// locale directory name. Configuration and workflow completeness are checked
+// separately by callers that require them.
+func ValidateLocaleName(locale string) error {
+	if !localeNameRE.MatchString(locale) {
+		return fmt.Errorf("invalid locale %q", locale)
+	}
+	return nil
+}
+
 func CheckStatus(root, localeName string, catalog *Catalog) error {
+	if err := ValidateLocaleName(localeName); err != nil {
+		return err
+	}
 	localeDir := filepath.Join(root, "locales", localeName)
 	b, err := os.ReadFile(filepath.Join(localeDir, "locale.json"))
 	if err != nil {

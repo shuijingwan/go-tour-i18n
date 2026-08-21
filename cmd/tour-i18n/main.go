@@ -194,14 +194,14 @@ func run(args []string) error {
 		if *locale == "" || *id == "" || *file == "" {
 			return fmt.Errorf("--locale, --id, and --file are required")
 		}
-		if *locale != "zh-CN" {
-			return fmt.Errorf("unsupported locale %q", *locale)
+		if err := i18n.ValidateLocaleName(*locale); err != nil {
+			return err
 		}
 		data, err := os.ReadFile(*file)
 		if err != nil {
 			return err
 		}
-		if err := i18n.ValidateCandidate(root, catalog, *id, data); err != nil {
+		if err := i18n.ValidateCandidateForLocale(root, catalog, *id, *locale, data); err != nil {
 			return err
 		}
 		fmt.Printf("candidate OK: locale=%s page_id=%s\n", *locale, *id)

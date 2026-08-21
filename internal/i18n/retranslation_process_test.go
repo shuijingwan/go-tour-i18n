@@ -10,11 +10,15 @@ import (
 )
 
 func makeRetranslationProcessBatch(t *testing.T, count int) (string, *Catalog, string) {
+	return makeRetranslationProcessBatchForLocale(t, "zh-CN", count)
+}
+
+func makeRetranslationProcessBatchForLocale(t *testing.T, locale string, count int) (string, *Catalog, string) {
 	t.Helper()
 	root := t.TempDir()
-	writeRetranslationTestGlossary(t, root)
+	writeRetranslationTestGlossaryForLocale(t, root, locale)
 	catalog := retranslationTestCatalog(count)
-	result, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", Limit: count})
+	result, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: locale, Limit: count})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -22,7 +26,7 @@ func makeRetranslationProcessBatch(t *testing.T, count int) (string, *Catalog, s
 	if err := os.Mkdir(filepath.Join(batchDir, "raw-responses"), 0755); err != nil {
 		t.Fatal(err)
 	}
-	manifest := readRetranslationManifest(t, root, result.BatchID)
+	manifest := readRetranslationManifestForLocale(t, root, locale, result.BatchID)
 	for _, page := range manifest.Units {
 		input, err := os.ReadFile(filepath.Join(batchDir, filepath.FromSlash(page.InputPath)))
 		if err != nil {
@@ -36,6 +40,19 @@ func makeRetranslationProcessBatch(t *testing.T, count int) (string, *Catalog, s
 		}
 	}
 	return root, catalog, result.BatchID
+}
+
+func TestRetranslationProcessRejectsManifestLocaleMismatch(t *testing.T) {
+	const locale = "ja-JP"
+	root, catalog, batchID := makeRetranslationProcessBatchForLocale(t, locale, 1)
+	manifest := readRetranslationManifestForLocale(t, root, locale, batchID)
+	manifest.Locale = "zh-CN"
+	if err := writeTranslationJSON(filepath.Join(root, "data", "retranslation-runs", locale, batchID, "manifest.json"), manifest); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := ProcessRetranslationBatch(root, catalog, RetranslationProcessOptions{Locale: locale, BatchID: batchID}); err == nil || !strings.Contains(err.Error(), "incompatible manifest metadata") {
+		t.Fatalf("process error = %v, want locale mismatch", err)
+	}
 }
 
 func TestDecodeLegacyRetranslationValidationDerivesAttemptFromProvenance(t *testing.T) {
