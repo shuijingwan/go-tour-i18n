@@ -12,7 +12,7 @@ TranslationUnit
 → model translation
 → process
 → automatic validation
-→ Translation Quality Review
+→ Final Review
 → promotion
 → ready
 → projection / publish
@@ -73,13 +73,13 @@ Validator 通过不能替代质量审核。
 
 - 不应直接发布；
 - 存在需要修改的翻译质量问题；
-- 修订后必须重新 review。
+- 修订后必须重新 Final Review。
 
 ### D
 
 - 不可接受；
 - 存在严重误译、漏译、技术含义错误或明显不符合翻译要求；
-- 必须重新翻译或大幅修订，再重新 automatic validation 和 review。
+- 必须重新翻译或大幅修订，再重新 automatic validation 和 Final Review。
 
 ## Rating 与 decision 分离
 
@@ -99,9 +99,15 @@ decision = approved | rejected
 
 Promotion gate 的机器判断只接受 `decision == approved`。这种边界保留了质量评级与 workflow 决策的独立性。
 
+## Quality Check 与 Final Review
+
+Quality Check 用于发现翻译质量问题，可以在 candidate 形成后的修订过程中由质量检查执行者多轮执行。它不生成正式 review evidence，也不作为 promotion 的直接依据。
+
+Final Review 是针对最终 candidate 的正式 Translation Quality Review。只有 Final Review 生成 review evidence；该 evidence 必须对应最终 candidate 及其 validation evidence，作为 promotion 的审核依据。
+
 ## 必须逐 TranslationUnit 审核
 
-每一个最终准备进入 promotion 的 TranslationUnit candidate，都必须有与其字节内容绑定的独立 review evidence。不采用以下规则：
+每一个最终准备进入 promotion 的 TranslationUnit candidate，都必须有其 Final Review 生成、且与其字节内容绑定的独立 review evidence。不采用以下规则：
 
 - 只审核首批，后续抽样；
 - validator 通过即免审；
@@ -122,14 +128,14 @@ Review evidence 同时绑定：
 因此，candidate 字节发生变化、retry 产生新 candidate，或 validation evidence 发生变化时，旧 review 自动失效。新的最终 candidate 必须重新经过：
 
 ```text
-automatic validation → Translation Quality Review
+automatic validation → Final Review
 ```
 
 不得把旧 review evidence 套用到新 candidate 或新的 validation evidence 上。
 
 ## Review evidence schema v1
 
-每个 TranslationUnit 的正式 evidence 位于：
+每个 TranslationUnit 的正式 evidence 是 Final Review 的产物，位于：
 
 ```text
 data/retranslation-runs/<locale>/<batch-id>/review/<unit-name>.json
@@ -198,10 +204,10 @@ Promotion preflight 对 locale workflow 的全部 TranslationUnit 检查 review�
 
 ## 多语言复用原则
 
-Review 机制不绑定 `zh-CN`、ChatGPT、Page 或 Example。未来任何 locale、任何翻译模型、任何 TranslationUnit kind，只要产生翻译 candidate 并准备 promotion，都必须执行：
+Review 机制不绑定 `zh-CN`、ChatGPT、Page 或 Example。未来任何 locale、任何翻译模型、任何 TranslationUnit kind，只要产生翻译 candidate 并准备 promotion，都必须对最终 candidate 执行：
 
 ```text
-automatic validation → Translation Quality Review → promotion
+automatic validation → Final Review → promotion
 ```
 
 新增语言无需重新决定是否审核，也无需重新定义 A/B/C/D 的基本含义。语言特定的术语和表达要求可以在同一正式 rubric 下补充，但不能取消逐 TranslationUnit review 或弱化 promotion gate。

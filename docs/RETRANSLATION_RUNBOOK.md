@@ -24,7 +24,11 @@ ChatGPT：
 ```text
 git pull
 → process
-→ candidate / validation
+→ candidate
+→ automatic validation
+→ Quality Check
+→ revision loop（如需要）
+→ final validation
 → git commit
 → git push
 ```
@@ -32,7 +36,7 @@ git pull
 ChatGPT：
 
 ```text
-执行 Translation Quality Review
+执行 Final Review
 → git commit
 → git push
 ```
@@ -84,18 +88,21 @@ article → article
 
 go → txt → txt → go
 
-## 6. 本地处理、审核与提升
+## 6. 本地处理、质量检查、最终审核与提升
 
 本地终端取得 ChatGPT 返回的 raw response 后，依次执行：
 
 ```text
 process
-→ candidate / validation
-→ git commit
-→ git push
+→ candidate
+→ automatic validation
 ```
 
-随后由 ChatGPT 执行 Translation Quality Review。review 完成后，ChatGPT 将 review evidence 提交并推送至 GitHub。
+执行 Quality Check，用于发现翻译质量问题。当前流程由 ChatGPT 作为质量检查执行者。Quality Check 可以多轮执行，但不生成正式 review evidence。
+
+如需修订，由 ChatGPT 修改 raw response，不直接修改 candidate。修改后，本地终端重新 process 和重新 validation，再继续 Quality Check，直至得到最终 candidate。
+
+最终 candidate 通过 final validation 后，本地终端提交并推送 candidate / validation 结果。随后由 ChatGPT 对最终 candidate 执行 Final Review，生成正式 review evidence，并将 review evidence 提交并推送至 GitHub。
 
 本地终端再执行：
 
@@ -104,20 +111,22 @@ git pull
 → promote
 ```
 
-具体的 candidate、validation、review evidence 和 promotion 条件分别以对应规范为准。
+正式 review evidence 是 Final Review 的产物，也是 promote 前的审核依据。具体的 candidate、validation、review evidence 和 promotion 条件分别以对应规范为准。
 
-## 7. Review 修订闭环
+## 7. Revision loop
 
-当 review 为 C 或 D 时，不进行 promote。按以下顺序处理：
+Quality Check 发现需要修订的问题时，按以下顺序处理：
 
 ```text
 修订 raw response
 → 重新 process
 → 重新 validation
-→ 重新 review
+→ 重新 Quality Check
 ```
 
-修订后的 raw response、重新生成的处理结果和 review evidence 仍按上述 GitHub 中转与角色交接流程提交、推送和拉取。
+Final Review 若要求修订，也回到同一 revision loop；新的最终 candidate 完成 final validation 后，必须重新执行 Final Review 并生成其正式 review evidence。
+
+修订后的 raw response、重新生成的处理结果和最终 review evidence 仍按上述 GitHub 中转与角色交接流程提交、推送和拉取。
 
 ## 8. 不包含的内容
 
