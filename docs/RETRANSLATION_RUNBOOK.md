@@ -2,10 +2,11 @@
 
 ## 1. 流程概览
 
-导出
-→ Git 提交 / 发布批次输入
-→ ChatGPT 翻译
-→ raw-responses
+本地导出批次
+→ Git 提交并推送批次输入至 GitHub
+→ ChatGPT 从 GitHub 读取 manifest.json、inputs 和 glossary
+→ ChatGPT 生成 raw-responses 并提交返回 GitHub
+→ 本地拉取 GitHub 返回内容
 → process
 → 验证
 → review
@@ -20,6 +21,8 @@
 - inputs/
 
 ## 3. ChatGPT 翻译流程
+
+批次输入须先由本地 Git 提交并推送至 GitHub。ChatGPT 以 GitHub 中的批次内容作为输入，并将生成的 raw-responses 提交返回 GitHub；随后在本地拉取该返回内容，再执行 process。
 
 读取顺序：
 
