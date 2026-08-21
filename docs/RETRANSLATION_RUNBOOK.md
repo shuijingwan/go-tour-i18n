@@ -15,6 +15,7 @@ ChatGPT：
 ```text
 从 GitHub 读取 batch 输入
 → 生成 raw-responses/*
+→ 检查 raw-responses 文件格式
 → git commit
 → git push
 ```
@@ -82,6 +83,14 @@ data/retranslation-runs/<locale>/<batch-id>/raw-responses/
 - 保留 protected token
 
 完成后，ChatGPT 将 `raw-responses/*` 提交并推送至 GitHub。本地终端先 `git pull` 获取返回内容，再执行 process。
+
+提交前检查：
+
+- `raw-responses/*.article` 是纯 article 文本；
+- 第一层内容不是 JSON；
+- 不包含 Markdown code fence；
+- 不包含 GitHub API metadata；
+- 文件可以直接作为 retranslation process 输入。
 
 ## 4. 页面翻译
 

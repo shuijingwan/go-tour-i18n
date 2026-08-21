@@ -73,6 +73,47 @@ manifest 是任务身份的权威来源，记录 locale、batch、Translation Un
 
 Page 的 raw response 使用与 input 对应的 `.article` 文件；Example 的 raw response 使用与 input 对应的 `.txt` 文件。
 
+### Raw response 文件格式
+
+raw response 是 retranslation process 的直接输入。Page raw response 的路径为：
+
+```text
+data/retranslation-runs/<locale>/<batch-id>/raw-responses/*.article
+```
+
+该文件必须是纯 present article 文本。允许包含：
+
+- present article 原始结构；
+- 翻译后的自然语言；
+- present directive；
+- 链接结构；
+- 代码和技术标识。
+
+禁止包含：
+
+- JSON wrapper；
+- GitHub API 返回对象；
+- Markdown code fence；
+- 文件说明文字；
+- 额外解释内容。
+
+正确示例：
+
+```text
+* Hello, 世界
+
+Go 言語ツアーへようこそ。
+```
+
+错误示例：
+
+```json
+{
+  "content": "* Hello, 世界...",
+  "encoding": "utf-8"
+}
+```
+
 ## 6. Locale 资源
 
 `locales/<locale>/glossary.yaml` 定义该语言的翻译规则，包括强制译法、优先译法、禁止译法和必须保持原样的内容。翻译任务必须使用目标 locale 的 glossary，不得借用其他 locale 的自然语言译法。
