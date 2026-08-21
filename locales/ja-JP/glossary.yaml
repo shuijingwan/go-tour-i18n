@@ -1,8 +1,59 @@
 locale: ja-JP
 mandatory:
-  Go: Go
+  A Tour of Go: Go 言語ツアー
+  previous: 前へ
+  next: 次へ
+  Run: 実行
+  Format: フォーマット
+  slide: ページ
+  slides: ページ
+  Go Playground: Go Playground
+  constraint: 制約
+  type switch: 型スイッチ
+  type switches: 型スイッチ
+  type assertion: 型アサーション
+  type assertions: 型アサーション
+  interface value: インターフェース値
+  interface type: インターフェース型
+  concrete type: 具象型
+  type parameter: 型パラメータ
+  type parameters: 型パラメータ
 preferred:
+  Go programming language: Go プログラミング言語
+  built-in: 組み込み
+  channel: チャネル
+  tour: ツアー
+  the tour: このツアー
+  sandbox: サンドボックス
+  deterministic output: 決定的な出力
+  package: パッケージ
+  import path: インポートパス
+  package name: パッケージ名
+  import statement: インポート文
+  exported name: エクスポートされた名前
+  unexported name: エクスポートされていない名前
+  standard library: 標準ライブラリ
+  iteration: 反復
+  loop condition: ループ条件
+  type inference: 型推論
+  untyped constant: 型なし定数
+  untyped numeric constant: 型なし数値定数
+  module: モジュール
+  exercise: 練習問題
+  syntax highlighting: シンタックスハイライト
+  map: マップ
+  maps: マップ
+  slice: スライス
+  slices: スライス
 forbidden:
 keep:
   - Go
   - gofmt
+  - goroutine
+  - goroutines
+  - Goroutines
+  - PageUp
+  - PageDown
+  - Shift
+  - Enter
+  - Ctrl
