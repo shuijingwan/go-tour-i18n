@@ -167,7 +167,7 @@ batch raw-responses artifact
 边界如下：
 
 - TranslationUnit 是翻译与质量审核的最小单元；
-- Batch 是 GitHub batch input、process 和 validation 的最小执行单元。
+- Batch 是一次翻译执行和结果归档容器，不作为 validation、review、promotion 状态判断的最小单位。相关状态判断均以 TranslationUnit 为准。
 
 ## 5. 页面翻译
 
@@ -201,6 +201,8 @@ git pull
 ```
 
 正式 review evidence 是 Final Review 的产物，也是 promote 前的审核依据。具体的 candidate、validation、review evidence 和 promotion 条件分别以对应规范为准。
+
+`retranslation review record` 仅用于写入已经完成的 Final Review 结果，不执行翻译质量审核。
 
 ## 8. Revision batch
 
