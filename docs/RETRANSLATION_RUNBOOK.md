@@ -77,6 +77,8 @@ data/retranslation-runs/<locale>/<batch-id>/raw-responses/
 - 不输出 Markdown code fence
 - 不输出 JSON
 - 保留 protected token
+- protected token 不可展开：即使可从上下文推断真实内容，也不得恢复、重写、补充代码示例或添加原文不存在的技术说明；只翻译 token 前后的自然语言。
+- 保持原始 present 结构：不得新增原文不存在的代码块、preformatted section、`.play` directive 或示例说明；不要根据教程上下文重新编写页面。
 
 完成后，ChatGPT 交付 raw-responses artifact（例如 zip）。本地将 artifact 中的 `raw-responses/*` 导入上述目录，直接执行 retranslation process。
 

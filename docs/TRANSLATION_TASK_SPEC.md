@@ -73,6 +73,36 @@ manifest 是任务身份的权威来源，记录 locale、batch、Translation Un
 
 Page 的 raw response 使用与 input 对应的 `.article` 文件；Example 的 raw response 使用与 input 对应的 `.txt` 文件。
 
+### Protected token 内容保持规则
+
+翻译过程中，protected token 是不可展开内容。即使模型可以根据上下文推断 token 对应的内容，也禁止：
+
+- 恢复真实文本；
+- 重写真实文本；
+- 补充代码示例；
+- 添加原文不存在的技术说明。
+
+token 前后的自然语言可以正常翻译，但 token 本身必须原样且唯一地保留。翻译目标是保持原始 present 结构，不是根据教程上下文重新编写页面。
+
+禁止新增原文不存在的代码块、preformatted section、`.play` directive 或示例说明。
+
+正确：
+
+```text
+⟪GTI18N_xxx⟫ はエクスポートされた名前です。
+```
+
+错误：根据上下文补充 `package math` 的 `Pi` 定数说明，或新增：
+
+```text
+var i int
+j := i
+```
+
+这些错误示例将 token 展开或补充了原文不存在的内容，不能作为 raw response 交付。
+
+`basics/14` 曾出现类型推论失败：模型根据上下文补充了原文不存在的代码块，导致 `preformatted block section mismatch`。该案例说明，合理的教程上下文推断不能成为新增受保护内容或页面结构的理由。
+
 ### Raw response 文件格式
 
 raw response 是 retranslation process 的直接输入。Page raw response 的路径为：
