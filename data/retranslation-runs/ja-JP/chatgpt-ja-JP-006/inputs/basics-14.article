@@ -1,0 +1,14 @@
+* Type inference
+
+When declaring a variable without specifying an explicit type (either by using the ⟪GTI18N_21c4077c_000001⟫:=⟪GTI18N_21c4077c_000002⟫ syntax or ⟪GTI18N_21c4077c_000003⟫var`=⟪GTI18N_21c4077c_000004⟫ expression syntax), the variable's type is inferred from the value on the right hand side.
+
+When the right hand side of the declaration is typed, the new variable is of that same type:
+
+⟪GTI18N_21c4077c_000005⟫⟪GTI18N_21c4077c_000006⟫ is an ⟪GTI18N_21c4077c_000007⟫⟪GTI18N_21c4077c_000008⟫But when the right hand side contains an untyped numeric constant, the new variable may be an ⟪GTI18N_21c4077c_000009⟫int⟪GTI18N_21c4077c_000010⟫, ⟪GTI18N_21c4077c_000011⟫float64⟪GTI18N_21c4077c_000012⟫, or ⟪GTI18N_21c4077c_000013⟫complex128⟪GTI18N_21c4077c_000014⟫ depending on the precision of the constant:
+
+⟪GTI18N_21c4077c_000015⟫
+
+Try changing the initial value of ⟪GTI18N_21c4077c_000016⟫v⟪GTI18N_21c4077c_000017⟫ in the example code and observe how its type is affected.
+
+⟪GTI18N_21c4077c_000018⟫
+

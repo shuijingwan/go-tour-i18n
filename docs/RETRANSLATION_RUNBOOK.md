@@ -92,15 +92,49 @@ data/retranslation-runs/<locale>/<batch-id>/raw-responses/
 - 不包含 GitHub API metadata；
 - 文件可以直接作为 retranslation process 输入。
 
-## 4. 页面翻译
+## 4. TranslationUnit 与 batch 粒度
+
+翻译生成以 TranslationUnit 为最小单元。不同 TranslationUnit kind 的输入与输出如下：
+
+Page：
+
+```text
+inputs/*.article
+→ ChatGPT 翻译
+→ raw-responses/*.article
+```
+
+Example：
+
+```text
+inputs/*.txt
+→ ChatGPT 翻译
+→ raw-responses/*.txt
+```
+
+每一个 TranslationUnit 独立翻译，但不要求每个 TranslationUnit 单独形成 Git commit。多个 TranslationUnit 可以属于同一个 batch；全部 `raw-responses` 准备完成后，以 batch 为单位执行：
+
+```text
+batch raw-responses
+→ git commit
+→ git push
+→ retranslation process
+```
+
+边界如下：
+
+- TranslationUnit 是翻译与质量审核的最小单元；
+- Batch 是 GitHub 中转、process 和 validation 的最小执行单元。
+
+## 5. 页面翻译
 
 article → article
 
-## 5. 示例翻译
+## 6. 示例翻译
 
 go → txt → txt → go
 
-## 6. 本地处理、质量检查、最终审核与提升
+## 7. 本地处理、质量检查、最终审核与提升
 
 本地终端取得 ChatGPT 返回的 raw response 后，依次执行：
 
@@ -125,7 +159,7 @@ git pull
 
 正式 review evidence 是 Final Review 的产物，也是 promote 前的审核依据。具体的 candidate、validation、review evidence 和 promotion 条件分别以对应规范为准。
 
-## 7. Revision batch
+## 8. Revision batch
 
 Quality Check 或 Final Review 发现翻译质量问题时，按以下顺序处理：
 
@@ -142,17 +176,17 @@ Quality Check 或 Final Review 发现翻译质量问题时，按以下顺序处�
 
 revision batch 的 raw response、candidate、validation evidence 和最终 review evidence 仍按上述 GitHub 中转与角色交接流程提交、推送和拉取。
 
-## 8. Retry 与 revision batch
+## 9. Retry 与 revision batch
 
 retry 用于 `restore_failed`、`validation_failed` 等处理失败，不用于已经 validation 通过后的翻译质量修改。
 
 revision batch 用于 Quality Check 或 Final Review 发现翻译质量问题的场景。
 
-## 9. 不包含的内容
+## 10. 不包含的内容
 
 UI catalog 翻译是独立流程，不属于页面/示例翻译任务。
 
-## 10. 故障排查
+## 11. 故障排查
 
 - token 遗失
 - 验证器失败
