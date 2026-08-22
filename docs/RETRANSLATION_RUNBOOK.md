@@ -14,14 +14,14 @@ ChatGPT：
 
 ```text
 从 GitHub 读取 batch 输入
-→ 生成 raw-responses/*
+→ 生成 raw-responses artifact（例如 zip）
 → 检查 raw-responses 文件格式
 ```
 
 本地终端：
 
 ```text
-导入 raw-responses/*
+导入 raw-responses artifact
 → process
 → candidate
 → automatic validation
@@ -78,11 +78,11 @@ data/retranslation-runs/<locale>/<batch-id>/raw-responses/
 - 不输出 JSON
 - 保留 protected token
 
-完成后，本地将 ChatGPT 生成的 `raw-responses/*` 导入上述目录，直接执行 retranslation process。
+完成后，ChatGPT 交付 raw-responses artifact（例如 zip）。本地将 artifact 中的 `raw-responses/*` 导入上述目录，直接执行 retranslation process。
 
-raw-responses 是 retranslation process 的输入产物，不要求将其作为流程必要步骤执行 `git add`、`git commit` 或 `git push`。Git 主要保存 batch 定义、candidate、validation evidence、review evidence 和 promotion 状态。
+raw-responses 是 retranslation process 的输入产物，不要求将其作为流程必要步骤执行 `git add`、`git commit` 或 `git push`。Git 主要保存 batch 定义、manifest、candidate、validation evidence、review evidence 和 promotion 状态；raw-responses artifact 不作为默认 Git 上传流程。
 
-提交前检查：
+导入前检查：
 
 - `raw-responses/*.article` 是纯 article 文本；
 - 第一层内容不是 JSON；
@@ -97,7 +97,8 @@ raw-responses 是 retranslation process 的输入产物，不要求将其作为�
 ```text
 inputs/
 → ChatGPT 翻译
-→ raw-responses/
+→ raw-responses artifact
+→ 本地导入 raw-responses/
 → 本地 process
 → validation
 ```
@@ -128,7 +129,7 @@ inputs/
 ## 已验证 ChatGPT retranslation 能力
 
 - `chatgpt-ja-JP-005` 已验证 20 Page TranslationUnit batch。
-- ChatGPT 已验证可以生成 retranslation raw-responses，并进入后续 process 和 validation 流程。
+- ChatGPT 已验证可以读取 batch inputs 并生成 retranslation raw-responses，生成结果可进入后续 process 和 validation 流程。
 - Page 与 Example 均可显式使用 20 TranslationUnit batch。
 - 20 TranslationUnit 需要通过 `retranslation export --limit 20` 指定。
 - 当前默认 export limit 保持代码实现中的默认值，不修改。
@@ -156,7 +157,7 @@ inputs/*.txt
 每一个 TranslationUnit 独立翻译。多个 TranslationUnit 可以属于同一个 batch；全部 `raw-responses` 准备完成后，以 batch 为单位导入并执行：
 
 ```text
-batch raw-responses
+batch raw-responses artifact
 → 导入 data/retranslation-runs/<locale>/<batch-id>/raw-responses/
 → retranslation process
 ```
@@ -164,7 +165,7 @@ batch raw-responses
 边界如下：
 
 - TranslationUnit 是翻译与质量审核的最小单元；
-- Batch 是 GitHub 中转、process 和 validation 的最小执行单元。
+- Batch 是 GitHub batch input、process 和 validation 的最小执行单元。
 
 ## 5. 页面翻译
 
@@ -176,7 +177,7 @@ go → txt → txt → go
 
 ## 7. 本地处理、质量检查、最终审核与提升
 
-本地终端取得 ChatGPT 返回的 raw response 后，依次执行：
+本地终端接收 ChatGPT 返回的 raw-responses artifact 并导入后，依次执行：
 
 ```text
 process
