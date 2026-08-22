@@ -1,0 +1,26 @@
+* 基本型
+
+Go の基本型は次のとおりです。
+
+	bool
+
+	string
+
+	int  int8  int16  int32  int64
+	uint uint8 uint16 uint32 uint64 uintptr
+
+	byte // alias for uint8
+
+	rune // alias for int32
+	     // Unicode コードポイントを表します
+
+	float32 float64
+
+	complex64 complex128
+
+この例では複数の型の変数を示し、import 文と同様に変数宣言をブロックへ「まとめる」ことができることも示しています。
+
+`int`、 `uint`、 `uintptr` 型は通常、32 ビットシステムでは 32 ビット幅、64 ビットシステムでは 64 ビット幅です。
+整数値が必要な場合、サイズ指定や符号なし整数型を使う特別な理由がない限り、 `int` を使用してください。
+
+.play basics/basic-types.go
