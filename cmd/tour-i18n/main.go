@@ -251,6 +251,25 @@ func run(args []string) error {
 			return nil
 		}
 		return printJSON(result)
+	case "retranslation import":
+		fs := flag.NewFlagSet("retranslation import", flag.ContinueOnError)
+		locale := fs.String("locale", "", "target locale")
+		batchID := fs.String("batch-id", "", "batch id")
+		archive := fs.String("archive", "", "raw-response ZIP artifact")
+		if err := fs.Parse(args[2:]); err != nil {
+			return err
+		}
+		if *locale == "" || *batchID == "" || *archive == "" {
+			return fmt.Errorf("--locale, --batch-id, and --archive are required")
+		}
+		if fs.NArg() != 0 {
+			return fmt.Errorf("unexpected retranslation import arguments: %s", strings.Join(fs.Args(), " "))
+		}
+		result, err := i18n.ImportRetranslationRawResponses(root, i18n.RetranslationImportOptions{Locale: *locale, BatchID: *batchID, Archive: *archive})
+		if err != nil {
+			return err
+		}
+		return printJSON(result)
 	case "retranslation retry":
 		fs := flag.NewFlagSet("retranslation retry", flag.ContinueOnError)
 		locale := fs.String("locale", "", "target locale")
