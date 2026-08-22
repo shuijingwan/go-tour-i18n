@@ -92,31 +92,50 @@ data/retranslation-runs/<locale>/<batch-id>/raw-responses/
 - 不包含 GitHub API metadata；
 - 文件可以直接作为 retranslation process 输入。
 
-## ChatGPT 执行触发规则
+## ChatGPT 执行能力规则
 
-当用户明确发送以下指令时：
+本项目已经验证 ChatGPT 可以完成以下 retranslation 交付流程：
+
+```text
+inputs/
+→ ChatGPT 翻译
+→ raw-responses/
+→ GitHub commit/push
+→ 本地 process
+→ validation
+```
+
+该能力属于项目固定执行模式。后续新的 retranslation batch 不需要依赖历史聊天记录重新判断该能力是否存在。
+
+当用户明确要求：
 
 - `执行。`
 - `继续执行当前任务。`
 - `执行 batch：<batch-id>`
 
-表示方案已经确认，不需要再次讨论流程，进入实际执行阶段。
+表示：
 
-执行阶段：
+- 已完成方案确认；
+- 进入实际执行阶段；
+- 按项目已验证模式执行。
 
-- 直接处理当前任务；
-- 不重复讨论已经验证过的能力；
-- 不建议切换其他执行方案；
-- 不重新评估 batch 设计。
+执行阶段不要：
 
-只有实际执行失败时，才报告文件不存在、权限失败、工具失败或写入失败。
+- 重新讨论 ChatGPT 是否具备 GitHub 写入能力；
+- 建议改由 Codex 负责翻译；
+- 重新设计 retranslation 架构；
+- 重复验证已经验证过的流程。
 
-## 已验证执行能力
+只有实际执行失败时，才报告具体失败原因。
 
-- ChatGPT 已验证可以生成 retranslation raw-responses。
-- Page 与 Example 均已验证可以使用 20 TranslationUnit batch。
-- 20 TranslationUnit batch 需要通过 `retranslation export --limit 20` 显式指定。
-- raw-responses 可以进入 process 和 validation。
+## 已验证 ChatGPT retranslation 能力
+
+- `chatgpt-ja-JP-005` 已验证 20 Page TranslationUnit batch。
+- ChatGPT 可以生成 raw-responses。
+- raw-responses 可以提交 GitHub 并进入 process。
+- Page 与 Example 均可显式使用 20 TranslationUnit batch。
+- 20 TranslationUnit 需要通过 `retranslation export --limit 20` 指定。
+- 当前默认 export limit 保持代码实现中的默认值，不修改。
 
 ## 4. TranslationUnit 与 batch 粒度
 
