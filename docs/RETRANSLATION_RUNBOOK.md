@@ -16,14 +16,12 @@ ChatGPT：
 从 GitHub 读取 batch 输入
 → 生成 raw-responses/*
 → 检查 raw-responses 文件格式
-→ git commit
-→ git push
 ```
 
 本地终端：
 
 ```text
-git pull
+导入 raw-responses/*
 → process
 → candidate
 → automatic validation
@@ -41,14 +39,12 @@ ChatGPT：
 ```text
 执行 Final Review
 → 生成 review evidence
-→ git commit
-→ git push
 ```
 
 本地终端：
 
 ```text
-git pull
+保存 review evidence
 → promote
 ```
 
@@ -82,7 +78,9 @@ data/retranslation-runs/<locale>/<batch-id>/raw-responses/
 - 不输出 JSON
 - 保留 protected token
 
-完成后，ChatGPT 将 `raw-responses/*` 提交并推送至 GitHub。本地终端先 `git pull` 获取返回内容，再执行 process。
+完成后，本地将 ChatGPT 生成的 `raw-responses/*` 导入上述目录，直接执行 retranslation process。
+
+raw-responses 是 retranslation process 的输入产物，不要求将其作为流程必要步骤执行 `git add`、`git commit` 或 `git push`。Git 主要保存 batch 定义、candidate、validation evidence、review evidence 和 promotion 状态。
 
 提交前检查：
 
@@ -100,7 +98,6 @@ data/retranslation-runs/<locale>/<batch-id>/raw-responses/
 inputs/
 → ChatGPT 翻译
 → raw-responses/
-→ GitHub commit/push
 → 本地 process
 → validation
 ```
@@ -121,7 +118,7 @@ inputs/
 
 执行阶段不要：
 
-- 重新讨论 ChatGPT 是否具备 GitHub 写入能力；
+- 重新讨论已经验证的 ChatGPT 翻译与 raw-responses 交付能力；
 - 建议改由 Codex 负责翻译；
 - 重新设计 retranslation 架构；
 - 重复验证已经验证过的流程。
@@ -131,8 +128,7 @@ inputs/
 ## 已验证 ChatGPT retranslation 能力
 
 - `chatgpt-ja-JP-005` 已验证 20 Page TranslationUnit batch。
-- ChatGPT 可以生成 raw-responses。
-- raw-responses 可以提交 GitHub 并进入 process。
+- ChatGPT 已验证可以生成 retranslation raw-responses，并进入后续 process 和 validation 流程。
 - Page 与 Example 均可显式使用 20 TranslationUnit batch。
 - 20 TranslationUnit 需要通过 `retranslation export --limit 20` 指定。
 - 当前默认 export limit 保持代码实现中的默认值，不修改。
@@ -157,12 +153,11 @@ inputs/*.txt
 → raw-responses/*.txt
 ```
 
-每一个 TranslationUnit 独立翻译，但不要求每个 TranslationUnit 单独形成 Git commit。多个 TranslationUnit 可以属于同一个 batch；全部 `raw-responses` 准备完成后，以 batch 为单位执行：
+每一个 TranslationUnit 独立翻译。多个 TranslationUnit 可以属于同一个 batch；全部 `raw-responses` 准备完成后，以 batch 为单位导入并执行：
 
 ```text
 batch raw-responses
-→ git commit
-→ git push
+→ 导入 data/retranslation-runs/<locale>/<batch-id>/raw-responses/
 → retranslation process
 ```
 
@@ -193,7 +188,7 @@ process
 
 如需修订，进入新的 revision batch，不在原 batch 内修改 raw response 或重新 process。revision batch 完成 process 和 automatic validation 后，再继续 Quality Check，直至得到最终 candidate。
 
-最终 candidate 通过 automatic validation 后，本地终端提交并推送 candidate / validation 结果。随后由 ChatGPT 对最终 candidate 执行 Final Review，生成正式 review evidence，并将 review evidence 提交并推送至 GitHub。
+最终 candidate 通过 automatic validation 后，本地终端提交并推送 candidate / validation 结果。随后由 ChatGPT 对最终 candidate 执行 Final Review，生成正式 review evidence；review evidence 由仓库维护流程保存。
 
 本地终端再执行：
 
@@ -219,7 +214,7 @@ Quality Check 或 Final Review 发现翻译质量问题时，按以下顺序处�
 
 已处理 batch 保持不可变，candidate 和 validation evidence 不直接覆盖。revision batch 是翻译质量优化的正常流程。新的最终 candidate 通过 automatic validation 后，必须重新执行 Final Review 并生成其正式 review evidence。
 
-revision batch 的 raw response、candidate、validation evidence 和最终 review evidence 仍按上述 GitHub 中转与角色交接流程提交、推送和拉取。
+revision batch 的 raw response 仍按上述方式导入并 process；candidate、validation evidence、最终 review evidence 和 promotion 状态由仓库维护流程保存。
 
 ## 9. Retry 与 revision batch
 

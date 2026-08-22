@@ -28,7 +28,7 @@
 执行 Page 或 Example 翻译、导出重译批次、处理模型返回和重试时，阅读：
 
 - [翻译任务规范](TRANSLATION_TASK_SPEC.md)：TranslationUnit、模型输入/输出契约及结构约束。
-- [Retranslation 执行手册](RETRANSLATION_RUNBOOK.md)：批次执行顺序，以及 ChatGPT 与 GitHub 的读取/写回流程。
+- [Retranslation 执行手册](RETRANSLATION_RUNBOOK.md)：批次执行顺序，以及 ChatGPT 的输入与交付流程，以及 GitHub 中转流程。
 
 翻译任务输出为 raw response；后续 restore、validation、review 与 promotion 由下一阶段规范约束。
 
