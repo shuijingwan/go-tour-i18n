@@ -92,6 +92,32 @@ data/retranslation-runs/<locale>/<batch-id>/raw-responses/
 - 不包含 GitHub API metadata；
 - 文件可以直接作为 retranslation process 输入。
 
+## ChatGPT 执行触发规则
+
+当用户明确发送以下指令时：
+
+- `执行。`
+- `继续执行当前任务。`
+- `执行 batch：<batch-id>`
+
+表示方案已经确认，不需要再次讨论流程，进入实际执行阶段。
+
+执行阶段：
+
+- 直接处理当前任务；
+- 不重复讨论已经验证过的能力；
+- 不建议切换其他执行方案；
+- 不重新评估 batch 设计。
+
+只有实际执行失败时，才报告文件不存在、权限失败、工具失败或写入失败。
+
+## 已验证执行能力
+
+- ChatGPT 已验证可以生成 retranslation raw-responses。
+- Page 与 Example 均已验证可以使用 20 TranslationUnit batch。
+- 20 TranslationUnit batch 需要通过 `retranslation export --limit 20` 显式指定。
+- raw-responses 可以进入 process 和 validation。
+
 ## 4. TranslationUnit 与 batch 粒度
 
 翻译生成以 TranslationUnit 为最小单元。不同 TranslationUnit kind 的输入与输出如下：
