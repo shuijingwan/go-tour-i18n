@@ -251,41 +251,6 @@ func run(args []string) error {
 			return nil
 		}
 		return printJSON(result)
-	case "retranslation import":
-		fs := flag.NewFlagSet("retranslation import", flag.ContinueOnError)
-		locale := fs.String("locale", "", "target locale")
-		batchID := fs.String("batch-id", "", "batch id")
-		archive := fs.String("archive", "", "raw-response ZIP artifact")
-		translationResult := fs.String("translation-result", "", "translation-result.json artifact")
-		if err := fs.Parse(args[2:]); err != nil {
-			return err
-		}
-		if fs.NArg() != 0 {
-			return fmt.Errorf("unexpected retranslation import arguments: %s", strings.Join(fs.Args(), " "))
-		}
-		if *archive != "" && *translationResult != "" {
-			return fmt.Errorf("--archive and --translation-result are mutually exclusive")
-		}
-		var result any
-		var err error
-		switch {
-		case *translationResult != "":
-			if *locale != "" || *batchID != "" {
-				return fmt.Errorf("--locale and --batch-id are read from --translation-result")
-			}
-			result, err = i18n.ImportRetranslationResult(root, *translationResult)
-		case *archive != "":
-			if *locale == "" || *batchID == "" {
-				return fmt.Errorf("--locale, --batch-id, and --archive are required")
-			}
-			result, err = i18n.ImportRetranslationRawResponses(root, i18n.RetranslationImportOptions{Locale: *locale, BatchID: *batchID, Archive: *archive})
-		default:
-			return fmt.Errorf("--translation-result or --locale, --batch-id, and --archive are required")
-		}
-		if err != nil {
-			return err
-		}
-		return printJSON(result)
 	case "retranslation retry":
 		fs := flag.NewFlagSet("retranslation retry", flag.ContinueOnError)
 		locale := fs.String("locale", "", "target locale")
