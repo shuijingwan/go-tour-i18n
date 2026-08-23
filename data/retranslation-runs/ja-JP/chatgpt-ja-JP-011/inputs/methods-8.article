@@ -1,0 +1,18 @@
+* Choosing a value or pointer receiver
+
+There are two reasons to use a pointer receiver.
+
+The first is so that the method can modify the value that its receiver points to.
+
+The second is to avoid copying the value on each method call.
+This can be more efficient if the receiver is a large struct, for example.
+
+In this example, both ⟪GTI18N_357424f2_000001⟫Scale⟪GTI18N_357424f2_000002⟫ and ⟪GTI18N_357424f2_000003⟫Abs⟪GTI18N_357424f2_000004⟫ are methods with receiver type ⟪GTI18N_357424f2_000005⟫*Vertex⟪GTI18N_357424f2_000006⟫,
+even though the ⟪GTI18N_357424f2_000007⟫Abs⟪GTI18N_357424f2_000008⟫ method needn't modify its receiver.
+
+In general, all methods on a given type should have either value or pointer
+receivers, but not a mixture of both.
+(We'll see why over the next few pages.)
+
+⟪GTI18N_357424f2_000009⟫
+

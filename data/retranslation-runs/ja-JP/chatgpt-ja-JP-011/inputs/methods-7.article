@@ -1,0 +1,15 @@
+* Methods and pointer indirection (2)
+
+The equivalent thing happens in the reverse direction.
+
+Functions that take a value argument must take a value of that specific type:
+
+⟪GTI18N_61a9cb84_000001⟫Compile error!⟪GTI18N_61a9cb84_000002⟫while methods with value receivers take either a value or a pointer as the
+receiver when they are called:
+
+⟪GTI18N_61a9cb84_000003⟫
+
+In this case, the method call ⟪GTI18N_61a9cb84_000004⟫p.Abs()⟪GTI18N_61a9cb84_000005⟫ is interpreted as ⟪GTI18N_61a9cb84_000006⟫(*p).Abs()⟪GTI18N_61a9cb84_000007⟫.
+
+⟪GTI18N_61a9cb84_000008⟫
+

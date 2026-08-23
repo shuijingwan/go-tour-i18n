@@ -1,0 +1,18 @@
+* エラー
+
+⟪GTI18N_9eaab1fd_000001⟫ のプログラムは、エラー状態を ⟪GTI18N_9eaab1fd_000002⟫error⟪GTI18N_9eaab1fd_000003⟫ 値で表します。
+
+⟪GTI18N_9eaab1fd_000004⟫error⟪GTI18N_9eaab1fd_000005⟫ 型は、⟪GTI18N_9eaab1fd_000006⟫fmt.Stringer⟪GTI18N_9eaab1fd_000007⟫ に似た組み込みインターフェースです。
+
+⟪GTI18N_9eaab1fd_000008⟫
+
+（⟪GTI18N_9eaab1fd_000009⟫fmt.Stringer⟪GTI18N_9eaab1fd_000010⟫ と同様に、⟪GTI18N_9eaab1fd_000011⟫fmt⟪GTI18N_9eaab1fd_000012⟫ パッケージは値を表示するときに ⟪GTI18N_9eaab1fd_000013⟫error⟪GTI18N_9eaab1fd_000014⟫ インターフェースを探します。）
+
+関数は ⟪GTI18N_9eaab1fd_000015⟫error⟪GTI18N_9eaab1fd_000016⟫ 値を返すことが多く、呼び出し側のコードでは、そのエラーが ⟪GTI18N_9eaab1fd_000017⟫nil⟪GTI18N_9eaab1fd_000018⟫ と等しいかどうかを確認してエラーを処理する必要があります。
+
+⟪GTI18N_9eaab1fd_000019⟫
+
+nil の ⟪GTI18N_9eaab1fd_000020⟫error⟪GTI18N_9eaab1fd_000021⟫ は成功を表し、nil でない ⟪GTI18N_9eaab1fd_000022⟫error⟪GTI18N_9eaab1fd_000023⟫ は失敗を表します。
+
+⟪GTI18N_9eaab1fd_000024⟫
+

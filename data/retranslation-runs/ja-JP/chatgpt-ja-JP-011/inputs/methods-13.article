@@ -1,0 +1,9 @@
+* Nil interface values
+
+A nil interface value holds neither value nor concrete type.
+
+Calling a method on a nil interface is a run-time error because there is no
+type inside the interface tuple to indicate which ⟪GTI18N_2897922c_000001⟫concrete⟪GTI18N_2897922c_000002⟫ method to call.
+
+⟪GTI18N_2897922c_000003⟫
+

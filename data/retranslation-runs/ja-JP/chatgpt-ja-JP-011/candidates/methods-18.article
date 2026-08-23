@@ -1,0 +1,8 @@
+* 練習問題：Stringer
+
+`IPAddr` 型に `fmt.Stringer` を実装し、アドレスをドットで区切られた 4 つの数値として表示できるようにしてください。
+
+たとえば、 `IPAddr{1,`2,`3,`4}` は `"1.2.3.4"` と表示されるようにします。
+
+.play methods/exercise-stringer.go
+
