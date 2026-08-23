@@ -1,0 +1,273 @@
+{
+"pages": [
+{
+"unit_id": "methods/24",
+"candidates": {
+"A": {
+"technical_accuracy": 30,
+"fidelity": 20,
+"chinese_naturalness": 19,
+"teaching_expression": 15,
+"terminology_consistency": 10,
+"readability": 4,
+"total": 98,
+"critical": [],
+"major": [],
+"minor": [
+"个别括号、代码标记与中文标点之间的空格处理略显不统一，但不影响含义。"
+]
+},
+"B": {
+"technical_accuracy": 29,
+"fidelity": 20,
+"chinese_naturalness": 18,
+"teaching_expression": 14,
+"terminology_consistency": 10,
+"readability": 4,
+"total": 95,
+"critical": [],
+"major": [],
+"minor": [
+"“`Rectangle` 类型的 `Bounds` 方法返回值”修饰关系略显含混，容易在第一遍阅读时被理解成 `Bounds` 是 `Rectangle` 类型的方法；原意只是 `Bounds` 的返回值实际为 `image.Rectangle`。",
+"局部“image 包]]定义了”一类衔接稍显生硬。"
+]
+},
+"C": {
+"technical_accuracy": 29,
+"fidelity": 19,
+"chinese_naturalness": 19,
+"teaching_expression": 15,
+"terminology_consistency": 9,
+"readability": 5,
+"total": 96,
+"critical": [],
+"major": [],
+"minor": [
+"将链接显示文字 “Package image” 译为“图像包”，没有保留 `image` 这一实际包名，精确性和术语一致性略逊于“image 包”。"
+]
+}
+},
+"ranking": [
+"A",
+"C",
+"B"
+],
+"ranking_reason": "A 对 `Bounds` 返回值与 `image.Rectangle` 的关系表达最准确直接，同时保留了 image 包名。C 整体自然，但把 “Package image” 译成“图像包”，丢失了包标识符。B 的主要差距是“`Rectangle` 类型的 `Bounds` 方法返回值”修饰关系不够清晰，教学表达略逊。"
+},
+{
+"unit_id": "concurrency/7",
+"candidates": {
+"A": {
+"technical_accuracy": 30,
+"fidelity": 19,
+"chinese_naturalness": 18,
+"teaching_expression": 15,
+"terminology_consistency": 10,
+"readability": 5,
+"total": 97,
+"critical": [],
+"major": [],
+"minor": [
+"“许多不同的二叉树中可以存储相同的值序列”略有翻译腔，不如直接说“许多不同的二叉树都可以存储相同的值序列”自然。",
+"末句增加了“题目”这一限定；结合练习语境可以理解，但原文只说继续阅读 description。"
+]
+},
+"B": {
+"technical_accuracy": 30,
+"fidelity": 20,
+"chinese_naturalness": 19,
+"teaching_expression": 15,
+"terminology_consistency": 10,
+"readability": 4,
+"total": 98,
+"critical": [],
+"major": [],
+"minor": [
+"“可以有许多不同的二叉树存储着……”稍显直译，但含义准确。",
+"末尾链接与“继续”直接相连，版面细节略欠利落。"
+]
+},
+"C": {
+"technical_accuracy": 30,
+"fidelity": 20,
+"chinese_naturalness": 20,
+"teaching_expression": 15,
+"terminology_consistency": 10,
+"readability": 4,
+"total": 99,
+"critical": [],
+"major": [],
+"minor": [
+"数值序列使用英文逗号而非中文顿号，与正文中文排版风格不完全一致。"
+]
+}
+},
+"ranking": [
+"C",
+"B",
+"A"
+],
+"ranking_reason": "三份技术含义均准确。C 的“许多不同的二叉树都可能存储同一个数值序列”最自然，末句也最贴近原文，仅有数字列表标点的小问题。B 忠实且清晰，但首句稍有直译感。A 的首句中文句式最不自然，并在末句轻微增加了“题目”限定，因此排第三。"
+},
+{
+"unit_id": "concurrency/11",
+"candidates": {
+"A": {
+"technical_accuracy": 30,
+"fidelity": 20,
+"chinese_naturalness": 19,
+"teaching_expression": 14,
+"terminology_consistency": 10,
+"readability": 4,
+"total": 97,
+"critical": [],
+"major": [],
+"minor": [
+"“包参考”略显生硬，“包参考文档”更符合中文技术文档习惯。",
+"若干链接显示文字与后续中文直接相连，整体排版节奏稍逊。"
+]
+},
+"B": {
+"technical_accuracy": 30,
+"fidelity": 20,
+"chinese_naturalness": 19,
+"teaching_expression": 15,
+"terminology_consistency": 10,
+"readability": 4,
+"total": 98,
+"critical": [],
+"major": [],
+"minor": [
+"标题“接下来去哪里……”较贴近英文表面结构，但作为中文教程标题略显直译。"
+]
+},
+"C": {
+"technical_accuracy": 30,
+"fidelity": 20,
+"chinese_naturalness": 18,
+"teaching_expression": 14,
+"terminology_consistency": 10,
+"readability": 4,
+"total": 96,
+"critical": [],
+"major": [],
+"minor": [
+"标题“接下来去哪儿……”口语色彩较强，与正式技术教程的整体语体略有距离。",
+"将开头原本两个独立句子合并为一句，信息没有遗漏，但削弱了原文先推荐入口、再说明其内容的教学节奏。"
+]
+}
+},
+"ranking": [
+"B",
+"A",
+"C"
+],
+"ranking_reason": "B 的正文整体最完整、自然，“包参考文档”等表达也更符合中文技术文档习惯，主要不足只是标题略直译。A 的标题更自然，但“包参考”等局部表达略生硬。C 正文准确，但标题偏口语，并合并了开头两个教学句，正式度与节奏稍逊。"
+},
+{
+"unit_id": "generics/1",
+"candidates": {
+"A": {
+"technical_accuracy": 30,
+"fidelity": 20,
+"chinese_naturalness": 19,
+"teaching_expression": 15,
+"terminology_consistency": 10,
+"readability": 5,
+"total": 99,
+"critical": [],
+"major": [],
+"minor": [
+"“任意类型 `T` 的切片”略带直译痕迹，但技术含义明确且不会造成误解。"
+]
+},
+"B": {
+"technical_accuracy": 30,
+"fidelity": 20,
+"chinese_naturalness": 18,
+"teaching_expression": 15,
+"terminology_consistency": 10,
+"readability": 5,
+"total": 98,
+"critical": [],
+"major": [],
+"minor": [
+"“Go 函数可以通过类型参数编写成适用于多种类型的形式”句式略绕，不如直接说明“使用类型参数可以编写处理多种类型的 Go 函数”自然。"
+]
+},
+"C": {
+"technical_accuracy": 30,
+"fidelity": 20,
+"chinese_naturalness": 20,
+"teaching_expression": 15,
+"terminology_consistency": 10,
+"readability": 5,
+"total": 100,
+"critical": [],
+"major": [],
+"minor": []
+}
+},
+"ranking": [
+"C",
+"A",
+"B"
+],
+"ranking_reason": "C 对类型参数、`comparable` 约束以及比较过程的表达准确、自然且完整，没有明显质量问题。A 同样非常准确，仅有“任意类型 `T` 的切片”等轻微直译感。B 技术内容无误，但开头“编写成适用于多种类型的形式”句式略繁复，因此略低一档。"
+},
+{
+"unit_id": "flowcontrol/8",
+"candidates": {
+"A": {
+"technical_accuracy": 30,
+"fidelity": 20,
+"chinese_naturalness": 18,
+"teaching_expression": 14,
+"terminology_consistency": 10,
+"readability": 5,
+"total": 97,
+"critical": [],
+"major": [],
+"minor": [
+"将多条循序渐进的练习指令合并成长段，虽然信息完整，但削弱了原文逐步实验、观察结果的教学节奏。",
+"牛顿法说明整体准确，但“除以 2z 是利用 z² 的导数”略显压缩，表达不如另外两份展开得清楚。"
+]
+},
+"B": {
+"technical_accuracy": 30,
+"fidelity": 20,
+"chinese_naturalness": 20,
+"teaching_expression": 15,
+"terminology_consistency": 10,
+"readability": 5,
+"total": 100,
+"critical": [],
+"major": [],
+"minor": []
+},
+"C": {
+"technical_accuracy": 30,
+"fidelity": 20,
+"chinese_naturalness": 19,
+"teaching_expression": 15,
+"terminology_consistency": 10,
+"readability": 5,
+"total": 99,
+"critical": [],
+"major": [],
+"minor": [
+"“看看这需要多于还是少于 10 次迭代”略显生硬，中文通常会表达为“看看所需的迭代次数是多于还是少于 10 次”。"
+]
+}
+},
+"ranking": [
+"B",
+"C",
+"A"
+],
+"ranking_reason": "B 完整保留了原文逐步修改、观察和比较的教学结构，牛顿法解释也准确自然，整体没有明显缺陷。C 几乎同等准确，仅有个别句式略生硬。A 信息和技术含义均正确，但多处将连续教学步骤压缩成长段，使阅读节奏和练习指导感弱于 B、C。"
+}
+],
+"overall_observations": "五页中三份候选整体技术准确度都很高，没有发现需要判定为 critical 或 major 的问题。真正拉开排名的因素主要反复出现在中文自然度和教学表达上：是否避免直译式修饰关系，是否准确保留包名等技术标识，标题是否符合正式教程语体，以及是否维持原文循序渐进的句子和段落节奏。另有少量中文标点、链接衔接和空格等可读性差异，但这些均属于 minor 层面。"
+}
+

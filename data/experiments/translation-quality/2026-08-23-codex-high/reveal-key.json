@@ -1,0 +1,31 @@
+{
+  "experiment": "tour-translation-quality-review-20260823-v2",
+  "anonymization": "independent random permutation per TranslationUnit",
+  "units": {
+    "methods/24": {
+      "A": "codex-high",
+      "B": "chatgpt-high",
+      "C": "codex-extra-high"
+    },
+    "concurrency/7": {
+      "A": "codex-extra-high",
+      "B": "chatgpt-high",
+      "C": "codex-high"
+    },
+    "concurrency/11": {
+      "A": "chatgpt-high",
+      "B": "codex-high",
+      "C": "codex-extra-high"
+    },
+    "generics/1": {
+      "A": "codex-extra-high",
+      "B": "chatgpt-high",
+      "C": "codex-high"
+    },
+    "flowcontrol/8": {
+      "A": "codex-extra-high",
+      "B": "chatgpt-high",
+      "C": "codex-high"
+    }
+  }
+}

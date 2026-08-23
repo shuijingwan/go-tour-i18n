@@ -1,0 +1,254 @@
+{
+  "pages": [
+    {
+      "unit_id": "methods/24",
+      "candidates": {
+        "A": {
+          "technical_accuracy": 30,
+          "fidelity": 20,
+          "chinese_naturalness": 20,
+          "teaching_expression": 15,
+          "terminology_consistency": 10,
+          "readability": 5,
+          "total": 100,
+          "critical": [],
+          "major": [],
+          "minor": []
+        },
+        "B": {
+          "technical_accuracy": 28,
+          "fidelity": 19,
+          "chinese_naturalness": 18,
+          "teaching_expression": 14,
+          "terminology_consistency": 10,
+          "readability": 4,
+          "total": 93,
+          "critical": [],
+          "major": [],
+          "minor": [
+            "`Rectangle` 类型的 `Bounds` 方法返回值表述语序不佳，易产生轻微歧义",
+            "部分链接文字后缺少空格，排版不够规整"
+          ]
+        },
+        "C": {
+          "technical_accuracy": 30,
+          "fidelity": 17,
+          "chinese_naturalness": 17,
+          "teaching_expression": 13,
+          "terminology_consistency": 7,
+          "readability": 4,
+          "total": 88,
+          "critical": [],
+          "major": [
+            "将原文方式状语 by using... 误译为因果关系「因而」，语义逻辑出现偏差"
+          ],
+          "minor": [
+            "首处包名译为「图像包」，不符合术语规范",
+            "部分句子表述稍显啰嗦"
+          ]
+        }
+      },
+      "ranking": ["A", "B", "C"],
+      "ranking_reason": "A译文技术准确、忠实流畅，无明显问题，综合质量最优；B存在轻微表述歧义与排版细节问题，整体略逊于A；C存在逻辑关系误译与术语错误，质量相对最弱。"
+    },
+    {
+      "unit_id": "concurrency/7",
+      "candidates": {
+        "A": {
+          "technical_accuracy": 30,
+          "fidelity": 18,
+          "chinese_naturalness": 19,
+          "teaching_expression": 14,
+          "terminology_consistency": 10,
+          "readability": 5,
+          "total": 96,
+          "critical": [],
+          "major": [],
+          "minor": [
+            "「题目说明」增译了原文未提及的「题目」",
+            "首句「许多不同的二叉树中可以存储」表述稍拗口"
+          ]
+        },
+        "B": {
+          "technical_accuracy": 30,
+          "fidelity": 20,
+          "chinese_naturalness": 20,
+          "teaching_expression": 15,
+          "terminology_consistency": 10,
+          "readability": 4,
+          "total": 99,
+          "critical": [],
+          "major": [],
+          "minor": [
+            "部分链接文字后缺少空格，排版稍紧凑"
+          ]
+        },
+        "C": {
+          "technical_accuracy": 30,
+          "fidelity": 18,
+          "chinese_naturalness": 18,
+          "teaching_expression": 13,
+          "terminology_consistency": 10,
+          "readability": 4,
+          "total": 93,
+          "critical": [],
+          "major": [],
+          "minor": [
+            "「同一个数值序列」表述不准确，易产生歧义",
+            "序列数字使用英文逗号，不符合中文排版习惯"
+          ]
+        }
+      },
+      "ranking": ["B", "A", "C"],
+      "ranking_reason": "B对原文字句与逻辑的还原最精准，自然度与教学表达俱佳；A整体质量良好，但存在轻微增译与句式拗口问题；C在语义准确性与排版细节上稍逊。"
+    },
+    {
+      "unit_id": "concurrency/11",
+      "candidates": {
+        "A": {
+          "technical_accuracy": 30,
+          "fidelity": 20,
+          "chinese_naturalness": 20,
+          "teaching_expression": 15,
+          "terminology_consistency": 10,
+          "readability": 5,
+          "total": 100,
+          "critical": [],
+          "major": [],
+          "minor": []
+        },
+        "B": {
+          "technical_accuracy": 30,
+          "fidelity": 19,
+          "chinese_naturalness": 18,
+          "teaching_expression": 14,
+          "terminology_consistency": 10,
+          "readability": 3,
+          "total": 94,
+          "critical": [],
+          "major": [],
+          "minor": [
+            "「包参考文档」增译「文档」二字",
+            "多处链接文字前后空格不一致，排版不统一"
+          ]
+        },
+        "C": {
+          "technical_accuracy": 30,
+          "fidelity": 18,
+          "chinese_naturalness": 17,
+          "teaching_expression": 13,
+          "terminology_consistency": 10,
+          "readability": 4,
+          "total": 92,
+          "critical": [],
+          "major": [],
+          "minor": [
+            "标题「接下来去哪儿」偏口语，不符合正式教程调性",
+            "首段合并原文两个独立句子，改变了原文节奏"
+          ]
+        }
+      },
+      "ranking": ["A", "B", "C"],
+      "ranking_reason": "A译文忠实严谨，自然流畅，排版规整，完全契合正式技术教程风格；B整体准确，但存在轻微增译与排版细节问题；C口语化表达与句式调整稍影响教程的正式感与阅读节奏。"
+    },
+    {
+      "unit_id": "generics/1",
+      "candidates": {
+        "A": {
+          "technical_accuracy": 30,
+          "fidelity": 20,
+          "chinese_naturalness": 20,
+          "teaching_expression": 15,
+          "terminology_consistency": 10,
+          "readability": 5,
+          "total": 100,
+          "critical": [],
+          "major": [],
+          "minor": []
+        },
+        "B": {
+          "technical_accuracy": 30,
+          "fidelity": 18,
+          "chinese_naturalness": 18,
+          "teaching_expression": 14,
+          "terminology_consistency": 10,
+          "readability": 4,
+          "total": 94,
+          "critical": [],
+          "major": [],
+          "minor": [
+            "「必须满足」加重了原文语气",
+            "首句「编写成适用于多种类型的形式」表述稍显累赘"
+          ]
+        },
+        "C": {
+          "technical_accuracy": 30,
+          "fidelity": 18,
+          "chinese_naturalness": 16,
+          "teaching_expression": 12,
+          "terminology_consistency": 10,
+          "readability": 2,
+          "total": 88,
+          "critical": [],
+          "major": [],
+          "minor": [
+            "多处不必要的句子内换行，破坏阅读连贯性",
+            "部分句子省略指示代词，与原文对应性稍弱"
+          ]
+        }
+      },
+      "ranking": ["A", "B", "C"],
+      "ranking_reason": "A译文准确流畅，排版规整，教学表达清晰；B整体合格，但存在语气偏差与表述累赘问题；C存在多处不当断行，严重影响可读性与教学流畅度。"
+    },
+    {
+      "unit_id": "flowcontrol/8",
+      "candidates": {
+        "A": {
+          "technical_accuracy": 30,
+          "fidelity": 20,
+          "chinese_naturalness": 20,
+          "teaching_expression": 15,
+          "terminology_consistency": 10,
+          "readability": 5,
+          "total": 100,
+          "critical": [],
+          "major": [],
+          "minor": []
+        },
+        "B": {
+          "technical_accuracy": 30,
+          "fidelity": 19,
+          "chinese_naturalness": 19,
+          "teaching_expression": 14,
+          "terminology_consistency": 10,
+          "readability": 4,
+          "total": 96,
+          "critical": [],
+          "major": [],
+          "minor": [
+            "「还可以尝试」属于轻微增译",
+            "部分句子换行偏细碎，节奏稍散"
+          ]
+        },
+        "C": {
+          "technical_accuracy": 30,
+          "fidelity": 18,
+          "chinese_naturalness": 18,
+          "teaching_expression": 13,
+          "terminology_consistency": 10,
+          "readability": 4,
+          "total": 93,
+          "critical": [],
+          "major": [],
+          "minor": [
+            "「看看」等表述偏口语，正式度稍弱",
+            "首句增译「使用」二字"
+          ]
+        }
+      },
+      "ranking": ["A", "B", "C"],
+      "ranking_reason": "A译文精准流畅，正式度与教学感平衡最佳；B整体质量优秀，但存在轻微增译与句式细碎问题；C口语化表达稍多，教程正式感略逊。"
+    }
+  ],
+  "overall_observations": "Candidate A 整体表现最稳定，在技术准确性、忠实度、中文自然度与排版细节上始终保持高质量，术语使用规范，很好地适配初学者教程的教学需求。Candidate B 整体质量良好，多数页面接近 A 的水平，但偶有表述歧义、轻微增译或排版空格不一致的问题，稳定性略逊。Candidate C 质量波动较大，多个页面出现术语不规范、逻辑关系误译、口语化表达或不当断行等问题，整体弱于 A、B。"
+}

@@ -1,0 +1,220 @@
+{
+  "pages": [
+    {
+      "unit_id": "methods/24",
+      "candidates": {
+        "A": {
+          "technical_accuracy": 30,
+          "fidelity": 20,
+          "chinese_naturalness": 20,
+          "teaching_expression": 15,
+          "terminology_consistency": 10,
+          "readability": 5,
+          "total": 100,
+          "critical": [],
+          "major": [],
+          "minor": []
+        },
+        "B": {
+          "technical_accuracy": 30,
+          "fidelity": 20,
+          "chinese_naturalness": 19,
+          "teaching_expression": 14,
+          "terminology_consistency": 10,
+          "readability": 5,
+          "total": 98,
+          "critical": [],
+          "major": [],
+          "minor": ["“Rectangle类型的Bounds方法返回值”表述不够清晰，可能引起对返回类型的误解。"]
+        },
+        "C": {
+          "technical_accuracy": 30,
+          "fidelity": 20,
+          "chinese_naturalness": 20,
+          "teaching_expression": 15,
+          "terminology_consistency": 7,
+          "readability": 5,
+          "total": 97,
+          "critical": [],
+          "major": [],
+          "minor": ["将包名“image”误译为“图像”，违反包名保留惯例。"]
+        }
+      },
+      "ranking": ["A", "B", "C"],
+      "ranking_reason": "A表达清晰准确；B的表述略有歧义；C误译包名，术语一致性问题较明显。"
+    },
+    {
+      "unit_id": "concurrency/7",
+      "candidates": {
+        "A": {
+          "technical_accuracy": 30,
+          "fidelity": 18,
+          "chinese_naturalness": 17,
+          "teaching_expression": 13,
+          "terminology_consistency": 10,
+          "readability": 5,
+          "total": 93,
+          "critical": [],
+          "major": [],
+          "minor": ["“许多不同的二叉树中可以”不自然；添加“题目”不忠实于原文描述。"]
+        },
+        "B": {
+          "technical_accuracy": 30,
+          "fidelity": 20,
+          "chinese_naturalness": 20,
+          "teaching_expression": 15,
+          "terminology_consistency": 10,
+          "readability": 5,
+          "total": 100,
+          "critical": [],
+          "major": [],
+          "minor": []
+        },
+        "C": {
+          "technical_accuracy": 30,
+          "fidelity": 20,
+          "chinese_naturalness": 19,
+          "teaching_expression": 14,
+          "terminology_consistency": 10,
+          "readability": 5,
+          "total": 98,
+          "critical": [],
+          "major": [],
+          "minor": ["“数值序列”不如“值序列”准确，但影响很小。"]
+        }
+      },
+      "ranking": ["B", "C", "A"],
+      "ranking_reason": "B最自然流畅且忠实；C略有措辞偏差；A存在不自然和增译，明显落后。"
+    },
+    {
+      "unit_id": "concurrency/11",
+      "candidates": {
+        "A": {
+          "technical_accuracy": 30,
+          "fidelity": 18,
+          "chinese_naturalness": 20,
+          "teaching_expression": 14,
+          "terminology_consistency": 10,
+          "readability": 5,
+          "total": 97,
+          "critical": [],
+          "major": [],
+          "minor": ["标题“接下来……”省略了原文“from here”的疑问语气，略有忠实缺失。"]
+        },
+        "B": {
+          "technical_accuracy": 30,
+          "fidelity": 20,
+          "chinese_naturalness": 19,
+          "teaching_expression": 14,
+          "terminology_consistency": 10,
+          "readability": 5,
+          "total": 98,
+          "critical": [],
+          "major": [],
+          "minor": []
+        },
+        "C": {
+          "technical_accuracy": 30,
+          "fidelity": 20,
+          "chinese_naturalness": 18,
+          "teaching_expression": 13,
+          "terminology_consistency": 10,
+          "readability": 5,
+          "total": 96,
+          "critical": [],
+          "major": [],
+          "minor": ["“去哪儿”过于口语化，不够正式。"]
+        }
+      },
+      "ranking": ["B", "A", "C"],
+      "ranking_reason": "B标题更忠实、整体自然；A虽流畅但忠实略欠；C口语化稍重，教学表达略逊。"
+    },
+    {
+      "unit_id": "generics/1",
+      "candidates": {
+        "A": {
+          "technical_accuracy": 30,
+          "fidelity": 20,
+          "chinese_naturalness": 20,
+          "teaching_expression": 15,
+          "terminology_consistency": 10,
+          "readability": 5,
+          "total": 100,
+          "critical": [],
+          "major": [],
+          "minor": []
+        },
+        "B": {
+          "technical_accuracy": 30,
+          "fidelity": 20,
+          "chinese_naturalness": 19,
+          "teaching_expression": 14,
+          "terminology_consistency": 10,
+          "readability": 5,
+          "total": 98,
+          "critical": [],
+          "major": [],
+          "minor": ["“很有用”略显冗余，但不影响理解。"]
+        },
+        "C": {
+          "technical_accuracy": 30,
+          "fidelity": 20,
+          "chinese_naturalness": 18,
+          "teaching_expression": 13,
+          "terminology_consistency": 10,
+          "readability": 5,
+          "total": 96,
+          "critical": [],
+          "major": [],
+          "minor": ["被动语态“使==和!=运算符可用于”不够自然。"]
+        }
+      },
+      "ranking": ["A", "B", "C"],
+      "ranking_reason": "A最简洁准确；B稍显冗余；C被动句式影响自然度和教学表达。"
+    },
+    {
+      "unit_id": "flowcontrol/8",
+      "candidates": {
+        "A": {
+          "technical_accuracy": 30,
+          "fidelity": 20,
+          "chinese_naturalness": 20,
+          "teaching_expression": 15,
+          "terminology_consistency": 10,
+          "readability": 5,
+          "total": 100,
+          "critical": [],
+          "major": [],
+          "minor": []
+        },
+        "B": {
+          "technical_accuracy": 30,
+          "fidelity": 20,
+          "chinese_naturalness": 18,
+          "teaching_expression": 13,
+          "terminology_consistency": 10,
+          "readability": 5,
+          "total": 96,
+          "critical": [],
+          "major": [],
+          "minor": ["“应达到的位置”不如“目标值”自然，且“变化的快慢”略显生硬。"]
+        },
+        "C": {
+          "technical_accuracy": 30,
+          "fidelity": 20,
+          "chinese_naturalness": 19,
+          "teaching_expression": 14,
+          "terminology_consistency": 10,
+          "readability": 5,
+          "total": 98,
+          "critical": [],
+          "major": [],
+          "minor": ["“已提供的”稍显多余，但不影响整体。"]
+        }
+      },
+      "ranking": ["A", "C", "B"],
+      "ranking_reason": "A自然准确；C略优于B，B的个别用词不够自然，教学表达稍弱。"
+    }
+  ],
+  "overall_observations": "候选A整体最为准确自然，但偶有增译或省略；候选B通常忠实原文，但部分表述不够流畅或措辞生硬；候选C存在术语误译或口语化倾向，在术语一致性和正式度上稍逊。"
+}

@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "source_reviews": [
+    "reviews/chatgpt-gpt56-high-raw.txt",
+    "reviews/deepseek-raw.txt",
+    "reviews/doubao21-raw.txt",
+    "reviews/glm53-raw.txt"
+  ],
+  "reveal_key_path": "reveal-key.json",
+  "score_rule": "Use the arithmetic sum of the six component scores; preserve raw reviewer files and their reported totals unchanged.",
+  "known_raw_total_correction": {
+    "reviewer": "GLM-5.3",
+    "unit_id": "concurrency/11",
+    "candidate": "C",
+    "reported_total": 95,
+    "component_sum": 96,
+    "ranking_changed": false
+  },
+  "external_reviewers": {
+    "reviewers": [
+      "DeepSeek",
+      "豆包 2.1",
+      "GLM-5.3"
+    ],
+    "comparison_count_per_model": 15,
+    "models": {
+      "ChatGPT GPT-5.6 High": {
+        "average_score": 96.6667,
+        "average_rank": 1.7333,
+        "first_place": 5
+      },
+      "Codex GPT-5.6 Sol High": {
+        "average_score": 95.7333,
+        "average_rank": 2.0667,
+        "first_place": 5
+      },
+      "Codex GPT-5.6 Sol Extra High": {
+        "average_score": 95.8667,
+        "average_rank": 2.2,
+        "first_place": 5
+      }
+    }
+  },
+  "all_reviewers": {
+    "reviewers": [
+      "ChatGPT GPT-5.6 High",
+      "DeepSeek",
+      "豆包 2.1",
+      "GLM-5.3"
+    ],
+    "comparison_count_per_model": 20,
+    "models": {
+      "ChatGPT GPT-5.6 High": {
+        "average_score": 96.9,
+        "average_rank": 1.85,
+        "first_place": 6
+      },
+      "Codex GPT-5.6 Sol High": {
+        "average_score": 96.5,
+        "average_rank": 1.85,
+        "first_place": 9
+      },
+      "Codex GPT-5.6 Sol Extra High": {
+        "average_score": 96.15,
+        "average_rank": 2.3,
+        "first_place": 5
+      }
+    }
+  }
+}

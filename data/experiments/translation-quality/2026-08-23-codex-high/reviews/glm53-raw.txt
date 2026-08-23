@@ -1,0 +1,267 @@
+{
+  "pages": [
+    {
+      "unit_id": "methods/24",
+      "candidates": {
+        "A": {
+          "technical_accuracy": 30,
+          "fidelity": 19,
+          "chinese_naturalness": 19,
+          "teaching_expression": 14,
+          "terminology_consistency": 10,
+          "readability": 5,
+          "total": 97,
+          "critical": [],
+          "major": [],
+          "minor": [
+            "“we'll ignore that by using...”重排为“使用……，暂且不考虑这一点”，语义保留但衔接稍松",
+            "“specified”译作“定义”，语义略有合并（极轻）"
+          ]
+        },
+        "B": {
+          "technical_accuracy": 29,
+          "fidelity": 19,
+          "chinese_naturalness": 18,
+          "teaching_expression": 14,
+          "terminology_consistency": 10,
+          "readability": 5,
+          "total": 95,
+          "critical": [],
+          "major": [],
+          "minor": [
+            "“`Rectangle` 类型的 `Bounds` 方法返回值”定语堆叠，易被误读为 Bounds 是 Rectangle 类型的方法（原文意为 Bounds 方法返回 Rectangle 类型的值），句式较生硬"
+          ]
+        },
+        "C": {
+          "technical_accuracy": 29,
+          "fidelity": 18,
+          "chinese_naturalness": 19,
+          "teaching_expression": 14,
+          "terminology_consistency": 9,
+          "readability": 5,
+          "total": 94,
+          "critical": [],
+          "major": [],
+          "minor": [
+            "链接文字译作“图像包”，与代码标识符 image 及正文“`image` 包”不一致",
+            "“`Rectangle` 是 `Bounds` 方法的返回值”将类型与返回值混同，表述欠精确"
+          ]
+        }
+      },
+      "ranking": ["A", "B", "C"],
+      "ranking_reason": "决定性差异在 Note 一句：A 用括注“（`Bounds` 方法的返回值）”把 Bounds 与 Rectangle 的关系表达得最清楚且全文无误；B 的“`Rectangle` 类型的 `Bounds` 方法返回值”易误读且生硬；C 的链接文字“图像包”与代码标识符及正文不一致。"
+    },
+    {
+      "unit_id": "concurrency/7",
+      "candidates": {
+        "A": {
+          "technical_accuracy": 29,
+          "fidelity": 19,
+          "chinese_naturalness": 18,
+          "teaching_expression": 14,
+          "terminology_consistency": 10,
+          "readability": 5,
+          "total": 95,
+          "critical": [],
+          "major": [],
+          "minor": [
+            "首句“许多不同的二叉树中可以存储相同的值序列”略显生硬，带翻译腔",
+            "“题目说明”对 description 的语境化处理恰当（优点）"
+          ]
+        },
+        "B": {
+          "technical_accuracy": 29,
+          "fidelity": 19,
+          "chinese_naturalness": 19,
+          "teaching_expression": 14,
+          "terminology_consistency": 10,
+          "readability": 5,
+          "total": 96,
+          "critical": [],
+          "major": [],
+          "minor": [
+            "“在大多数语言中，编写一个……的函数都相当复杂”长定语加“都”稍显滞重（可接受）",
+            "链接“下一页]]继续阅读说明”后无空格，排版略不一致"
+          ]
+        },
+        "C": {
+          "technical_accuracy": 29,
+          "fidelity": 18,
+          "chinese_naturalness": 19,
+          "teaching_expression": 14,
+          "terminology_consistency": 10,
+          "readability": 4,
+          "total": 94,
+          "critical": [],
+          "major": [],
+          "minor": [
+            "序列列表沿用半角逗号“1, 1, 2, 3, 5, 8, 13”，未遵循中文顿号规范",
+            "“同一个数值序列”把 the same sequence of values 略窄化为数值序列"
+          ]
+        }
+      },
+      "ranking": ["B", "A", "C"],
+      "ranking_reason": "B 首句“可以有许多不同的二叉树存储着相同的值序列”最自然且忠实，全篇顺畅；A 首句带翻译腔；C 语义准确，但半角逗号列表与“数值序列”的轻微窄化使其排在末位。"
+    },
+    {
+      "unit_id": "concurrency/11",
+      "candidates": {
+        "A": {
+          "technical_accuracy": 30,
+          "fidelity": 18,
+          "chinese_naturalness": 19,
+          "teaching_expression": 14,
+          "terminology_consistency": 10,
+          "readability": 5,
+          "total": 96,
+          "critical": [],
+          "major": [],
+          "minor": [
+            "标题“Where to Go from here...”简化为“接下来……”，丢失“去哪里”的字面语义",
+            "“For help with the language itself”改写为“如果需要了解语言本身”，“帮助”义被弱化，且与前句“……方面的帮助”失去排比"
+          ]
+        },
+        "B": {
+          "technical_accuracy": 30,
+          "fidelity": 19,
+          "chinese_naturalness": 19,
+          "teaching_expression": 14,
+          "terminology_consistency": 10,
+          "readability": 5,
+          "total": 97,
+          "critical": [],
+          "major": [],
+          "minor": [
+            "“如果需要语言本身的帮助”措辞略含混，易读作“语言本身提供的帮助”",
+            "“package reference”译作“包参考文档”略作增词"
+          ]
+        },
+        "C": {
+          "technical_accuracy": 30,
+          "fidelity": 19,
+          "chinese_naturalness": 18,
+          "teaching_expression": 14,
+          "terminology_consistency": 10,
+          "readability": 5,
+          "total": 95,
+          "critical": [],
+          "major": [],
+          "minor": [
+            "标题“接下来去哪儿……”口语化（“哪儿”），与正式中文技术教程语域不符",
+            "原文前两句合并为一句（语义保留，结构小改）"
+          ]
+        }
+      },
+      "ranking": ["B", "A", "C"],
+      "ranking_reason": "B 标题“接下来去哪里……”完整保留原文语义，通篇正式流畅，仅个别措辞略含混；A 正文流畅但标题简化为“接下来……”且一处“help with”被改写；C 语义完整，但口语化标题“去哪儿”与教程语域不符，故居末。"
+    },
+    {
+      "unit_id": "generics/1",
+      "candidates": {
+        "A": {
+          "technical_accuracy": 30,
+          "fidelity": 19,
+          "chinese_naturalness": 19,
+          "teaching_expression": 14,
+          "terminology_consistency": 10,
+          "readability": 5,
+          "total": 97,
+          "critical": [],
+          "major": [],
+          "minor": [
+            "“依次”“每个元素”把原文隐含的线性扫描细节显化，属轻微增译（不影响理解）"
+          ]
+        },
+        "B": {
+          "technical_accuracy": 30,
+          "fidelity": 19,
+          "chinese_naturalness": 18,
+          "teaching_expression": 14,
+          "terminology_consistency": 10,
+          "readability": 5,
+          "total": 96,
+          "critical": [],
+          "major": [],
+          "minor": [
+            "首句“Go 函数可以通过类型参数编写成适用于多种类型的形式”表达迂回",
+            "“而该类型必须满足”中“必须”较原文 fulfills 略作强化（可接受）"
+          ]
+        },
+        "C": {
+          "technical_accuracy": 30,
+          "fidelity": 19,
+          "chinese_naturalness": 19,
+          "teaching_expression": 14,
+          "terminology_consistency": 10,
+          "readability": 3,
+          "total": 95,
+          "critical": [],
+          "major": [],
+          "minor": [
+            "句中多处多余空格：“函数的 类型参数”“满足 内置约束”“一个 值”“函数 适用于”，明显影响排版整洁",
+            "“This `Index` function”中的 This 被省略（极轻）"
+          ]
+        }
+      },
+      "ranking": ["A", "B", "C"],
+      "ranking_reason": "A 表达最简洁准确、术语到位、无瑕疵；B 内容同样准确，但首句绕、个别措辞偏重；C 措辞干净，却因多处句中多余空格这类排版错误在读感上明显落后。"
+    },
+    {
+      "unit_id": "flowcontrol/8",
+      "candidates": {
+        "A": {
+          "technical_accuracy": 30,
+          "fidelity": 19,
+          "chinese_naturalness": 17,
+          "teaching_expression": 13,
+          "terminology_consistency": 10,
+          "readability": 5,
+          "total": 94,
+          "critical": [],
+          "major": [],
+          "minor": [
+            "“结果能多么接近正确答案”中“多么”用法不当，应为“有多”，关键指令句因此不顺畅",
+            "“z 都可以从一个不错的猜测值 1 开始”同位语生硬",
+            "“给定一个数 x，找出一个数 z”丢失 we want to find 的陈述语气（轻微）"
+          ]
+        },
+        "B": {
+          "technical_accuracy": 30,
+          "fidelity": 19,
+          "chinese_naturalness": 19,
+          "teaching_expression": 14,
+          "terminology_consistency": 10,
+          "readability": 4,
+          "total": 96,
+          "critical": [],
+          "major": [],
+          "minor": [
+            "多处逗号、句号后有多余空格（如“调整 z， 从而”“幅度。 这种”）",
+            "“在每次计算过程中打印 z”稍显拘谨",
+            "“还可以尝试”为原文所无的衔接增词（轻微）"
+          ]
+        },
+        "C": {
+          "technical_accuracy": 30,
+          "fidelity": 19,
+          "chinese_naturalness": 18,
+          "teaching_expression": 14,
+          "terminology_consistency": 10,
+          "readability": 4,
+          "total": 95,
+          "critical": [],
+          "major": [],
+          "minor": [
+            "“让我们实现一个平方根函数”略带翻译腔",
+            "“z 的一个合理初始猜测值都是 1”中“一个……都是”搭配欠妥",
+            "多处逗号后有多余空格"
+          ]
+        }
+      },
+      "ranking": ["B", "C", "A"],
+      "ranking_reason": "B 全篇最流畅，“从 1 这个不错的初始猜测值开始”“结果能有多接近正确答案”等关键句处理最佳；C 准确自然，仅“让我们”“一个……都是 1”稍欠地道并有标点空格问题；A 的“能多么接近正确答案”（“多么”应为“有多”）与“从一个不错的猜测值 1 开始”两处生硬落在练习指令上，拖累整体。"
+    }
+  ],
+  "overall_observations": "三份译文均未出现误导性的技术错误，差距集中在语言质量与规范细节。Candidate B 最稳定，五页均居前两名，在忠实与自然之间平衡最好，仅偶有标点后多余空格和个别含混措辞。Candidate A 上限很高（methods/24、generics/1 两页第一），整体正式流畅，但在 flowcontrol/8 出现“多么”误用、同位语生硬等明显语言瑕疵，标题翻译也偶有简化（concurrency/11）。Candidate C 内容基本准确、行文自然，但细节问题反复出现：链接文字与代码标识符不一致（“图像包”）、半角逗号列表、口语化标题（“去哪儿”）、句中多余空格（generics/1）等，术语与排版规范执行稍弱，五页中四页居末。"
+}
+

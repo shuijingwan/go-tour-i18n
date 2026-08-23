@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "experiment_id": "2026-08-23-codex-high",
+  "date": "2026-08-23",
+  "locale": "zh-CN",
+  "unit_kind": "page",
+  "unit_count": 5,
+  "units": [
+    "methods/24",
+    "concurrency/7",
+    "concurrency/11",
+    "generics/1",
+    "flowcontrol/8"
+  ],
+  "experiment_commit": "4c1c5d8db6767f45d83656a99446c176fdddd586",
+  "experiment_commit_basis": "The zh-CN glossary SHA-256 and all five catalog source SHA-256 values at this commit match the archived manifest; no export, protection, glossary, catalog, or Tour source files changed between this commit and archive creation.",
+  "archive_created_from_commit": "96a13421460e07678573c6d07da9c42395c919c2",
+  "input_manifest_path": "input-batch/manifest.json",
+  "input_manifest_sha256": "bbbbc53483cd0ced5d81f7c82175aa8ca1bfbef0b9c16154e0c2bafff9ef8041",
+  "glossary_path": "locales/zh-CN/glossary.yaml",
+  "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+  "review_prompt_path": "anonymous-review/review-prompt.md",
+  "review_prompt_sha256": "94a386eca3680a663409f3be4a7e770310189bb762733cd435ff40f7d91a2add",
+  "engineering_gate_path": "engineering-gate.json",
+  "reveal_key_path": "reveal-key.json",
+  "aggregate_path": "aggregate.json",
+  "candidate_models": [
+    "ChatGPT GPT-5.6 High",
+    "Codex GPT-5.6 Sol High",
+    "Codex GPT-5.6 Sol Extra High"
+  ],
+  "reviewers": [
+    "ChatGPT GPT-5.6 High",
+    "DeepSeek",
+    "豆包 2.1",
+    "GLM-5.3"
+  ],
+  "production_decision": {
+    "default_translation_engine": "Codex GPT-5.6 Sol High",
+    "quality_check": "ChatGPT",
+    "extra_high_default": false
+  }
+}
