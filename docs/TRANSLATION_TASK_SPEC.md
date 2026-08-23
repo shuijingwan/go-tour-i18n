@@ -52,13 +52,17 @@ Example 的源是完整 `.go` 文件，其流程中的 artifact 语义如下：
 
 ## 4. 输入契约
 
-执行一次翻译任务时，模型应读取：
+一次正式 TranslationUnit 翻译的模型输入由以下三部分共同构成：
 
 1. `data/retranslation-runs/<locale>/<batch-id>/manifest.json`；
 2. manifest 列出的 `inputs/*` 文件；
 3. `locales/<locale>/glossary.yaml`。
 
 manifest 是任务身份的权威来源，记录 locale、batch、Translation Unit、source 身份、input 路径与保护 token 数量。模型必须只处理 manifest 列出的 unit，并将输出写入与该 input 对应的文件。
+
+`manifest.json`、manifest 列出的全部 `inputs/*` 与 `locales/<locale>/glossary.yaml` 是不可拆分的正式输入。任何一部分缺失，都不属于合规的正式 TranslationUnit 翻译执行。Glossary 必须在模型开始翻译前读取并用于生成译文，不是仅供 validator 在输出后检查的材料；不得因用户 Prompt 未重复提醒而省略，也不得用聊天上下文中的旧规则代替仓库当前内容。
+
+曾有翻译实验漏读 glossary，导致全部候选都产生 forbidden 译法；因此输入完整性本身是正式执行契约的一部分。
 
 ## 5. 输出契约
 
@@ -146,7 +150,7 @@ Go 言語ツアーへようこそ。
 
 ## 6. Locale 资源
 
-`locales/<locale>/glossary.yaml` 定义该语言的翻译规则，包括强制译法、优先译法、禁止译法和必须保持原样的内容。翻译任务必须使用目标 locale 的 glossary，不得借用其他 locale 的自然语言译法。
+`locales/<locale>/glossary.yaml` 定义该语言的 `mandatory`、`preferred`、`forbidden` 和 `keep` 规则。翻译任务必须在生成译文前完整读取并遵守目标 locale 的 glossary，不得借用其他 locale 的自然语言译法。
 
 公共 UI catalog 属于独立的本地化 workflow，不属于 Page 或 Example 翻译任务，也不应写入本规范定义的 raw response。
 

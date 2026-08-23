@@ -17,7 +17,7 @@
 
 - 已从固定官方上游导入可独立运行、测试、解析和渲染的英文 Tour 基线。
 - 已建立 103 个正式发布页面及 2 条条件源审计记录的机器可读目录。
-- 第一阶段目标语言为简体中文 `zh-CN`；统一 locale workflow status 当前包含 103 个 ready Page 和 19 个 pending Example，另有 74 个无需翻译自然语言注释的 Example 不进入 status。
+- 第一阶段目标语言为简体中文 `zh-CN`；统一 locale workflow status 当前包含 103 个 ready Page 和 19 个 ready Example，另有 74 个无需翻译自然语言注释的 Example 不进入 status。
 - 课程正文、article/lesson 根级 metadata 与公共 UI 分开维护：103 个顶层 `present.Section` 使用 canonical candidate；每个 article 的 `title`、`subtitle` 使用独立 locale metadata；公共 UI 使用独立 UI 本地化资源。
 - zh-CN 的 7/7 个正式 article metadata 已完成本地化（title=7/7、subtitle=7/7）。
 - 已建立完整页面翻译执行器、术语表、结构保护、candidate 校验、状态管理和 attempt 审计记录。
@@ -35,13 +35,13 @@
 - 1 个 `.image` 引用；
 - 2 条继续单独保留的 `#appengine:` 条件源审计记录。
 
-页面翻译的最小单元是一个完整顶层 `present.Section`，Example 翻译单元是完整 `.go` 文件。页面目录位于 [`data/tour-pages.tsv`](data/tour-pages.tsv)，统一的 zh-CN workflow 状态位于 [`locales/zh-CN/status.tsv`](locales/zh-CN/status.tsv)。完整 projection 统一要求 103 个 Page 和 19 个 eligible Example 全部 ready；当前 19 个 Example 仍为 pending，因此新的完整 build 会被发布门禁阻止。语言约定见 [`locales/zh-CN/README.md`](locales/zh-CN/README.md) 和 [LANGUAGES.md](LANGUAGES.md)。
+页面翻译的最小单元是一个完整顶层 `present.Section`，Example 翻译单元是完整 `.go` 文件。页面目录位于 [`data/tour-pages.tsv`](data/tour-pages.tsv)，统一的 zh-CN workflow 状态位于 [`locales/zh-CN/status.tsv`](locales/zh-CN/status.tsv)。完整 projection 统一要求 103 个 Page 和 19 个 eligible Example 全部 ready；当前 122/122 TranslationUnit 均为 ready。语言约定见 [`locales/zh-CN/README.md`](locales/zh-CN/README.md) 和 [LANGUAGES.md](LANGUAGES.md)。
 
-系统还会从正式页面经过现有 present 解析确认的 `.play` 指令发现示例，并在 [`data/tour-examples.tsv`](data/tour-examples.tsv) 中记录第二种 source unit。每个 example 的 source 是完整 `.go` 文件，`source_sha256` 覆盖文件全部字节，而不是只覆盖注释。当前 93 个 Example 中有 19 个含普通可翻译自然语言注释，已进入统一 status 并保持 pending；其余 74 个只参与 source tracking，projection 保留 upstream 原文。统一 promotion 可将通过验证的 Example 提升为 canonical `.go` candidate，projection 会将 ready Example 覆盖到完整内容树。
+系统还会从正式页面经过现有 present 解析确认的 `.play` 指令发现示例，并在 [`data/tour-examples.tsv`](data/tour-examples.tsv) 中记录第二种 source unit。每个 example 的 source 是完整 `.go` 文件，`source_sha256` 覆盖文件全部字节，而不是只覆盖注释。当前 93 个 Example 中有 19 个含普通可翻译自然语言注释，已进入统一 status 并达到 ready；其余 74 个只参与 source tracking，projection 保留 upstream 原文。统一 promotion 可将通过验证的 Example 提升为 canonical `.go` candidate，projection 会将 ready Example 覆盖到完整内容树。
 
 翻译运行器现已通过 `Catalog.Unit` 和 `TranslationUnit` 取得翻译源及其版本哈希；课程页面随后继续进入原有 Page 专用保护、校验和状态流程。当前运行器只开放 page 翻译，识别到 example 时会在创建 attempt 或调用模型前明确拒绝，不能据此认为示例翻译已经实现。
 
-翻译单元的输入准备会按类型分派：page 保持原有保护行为；example 使用 Go scanner 识别真实注释，将代码、字符串、布局、注释分隔符和机器语义注释替换为现有保护 token，只开放普通自然语言注释 payload，并继续使用同一 locale glossary 的 `keep` 规则保护其中必须保持原样的术语。example 输入能够通过现有 restore 逐字节恢复完整 `.go` 文件，并已接入 batch process/retry、统一 validator、canonical promotion、status 和 projection；当前真实 corpus 尚无 Example 翻译 evidence 与 canonical candidate。
+翻译单元的输入准备会按类型分派：page 保持原有保护行为；example 使用 Go scanner 识别真实注释，将代码、字符串、布局、注释分隔符和机器语义注释替换为现有保护 token，只开放普通自然语言注释 payload，并继续使用同一 locale glossary 的 `keep` 规则保护其中必须保持原样的术语。example 输入能够通过现有 restore 逐字节恢复完整 `.go` 文件，并已接入 batch process/retry、统一 validator、canonical promotion、status 和 projection；当前 19 个 eligible Example 已具备翻译 evidence 与 canonical candidate。
 
 Page 和 Example 是两种一级 `TranslationUnit`。统一控制面使用 `unit_id` 和 `unit_kind`；Page 的持久 ID 仍遵循既有冻结规则，`route`、`article` 和 `section_number` 只描述当前投影位置。完整 Page 身份规则见 [PAGE_IDENTITY.md](PAGE_IDENTITY.md)。
 
@@ -113,62 +113,28 @@ go run -mod=readonly ./cmd/tour-i18n translate recover-network \
 
 该命令拒绝 HTTP/API、模型输出、token、parse、render 或 validator 失败；恢复后仍须单独运行正常的 `translate run`。
 
-### ChatGPT 重译批次约定
+### 正式 TranslationUnit 翻译流程
 
-ChatGPT 执行重译批次时，应主动从 GitHub 仓库 `main` 分支读取批次输入和目标语言当前最新的术语规则。用户无需在每个新会话中重新复制术语表。正常读取顺序为：
+当前默认生产 Translation Engine 为 **Codex GPT-5.6 Sol + High**，ChatGPT 统一承担 Quality Check。Codex 直接读取仓库中的 batch 输入并写入 `raw-responses/`，不经过 ZIP、JSON wrapper 或本地导入环节。
 
-1. `data/retranslation-runs/<locale>/<batch-id>/manifest.json`；
-2. manifest 指向的受保护输入（Page 为 `inputs/*.article`，Example 为 `inputs/*.txt`）；
-3. `locales/<locale>/glossary.yaml`。
+正式模型输入由当前 batch 的 `manifest.json`、manifest 列出的全部 `inputs/*` 与 `locales/<locale>/glossary.yaml` 共同构成，三者不可拆分。Glossary 必须在翻译前读取并完整遵守，不只是 validator 的后置检查材料。
 
-整体工作流为：TranslationUnit → export → model translation → process → automatic validation → Translation Quality Review → promotion → ready → projection / publish。Automatic validation 负责机器安全性，不能替代独立的翻译质量审核；所有进入 locale translation workflow 并产生 candidate 的 TranslationUnit 都必须在 promotion 前逐单元审核。长期、多语言通用规则见 [Translation Quality Review 规范](docs/TRANSLATION_QUALITY_REVIEW.md)。Page 与 Example 共用批次输入导出、隔离 process、连续 retry 和 canonical promotion。zh-CN 本轮 Batch 001–011 已封存为不可变历史 evidence；`moretypes/1` 与 `concurrency/1` 的最终结果来自各自的 attempt-002。
-
-Artifact 后缀按语义区分：Page 继续使用 `.article`；Example 的 upstream source 与 restore 后 candidate 使用 `.go`，受保护 input、首次 raw response 与 retry raw response 使用 `.txt`。只有恢复并重新成为合法 Go source 的 artifact 才使用 `.go`。
-
-一个批次可以包含多个页面（默认 10 页），但每个完整顶层 `present.Section` 始终是独立翻译单元，不得将批次内多个页面合并成一个翻译单元。
-
-正式翻译使用 `main` 分支中目标语言当前最新的 `glossary.yaml`。批次无需额外绑定 glossary commit ID、glossary SHA，也无需复制术语表；如需追溯历史时期使用的规则，使用 Git 历史即可，当前不另建术语版本绑定、数据库或状态机制。这一约定以 GitHub 仓库作为 ChatGPT 获取批次输入和项目规则的主要来源之一，减少人工复制粘贴，并由 Git 历史承担必要的版本追溯。
-
-处理最早一个 raw response 完整且尚未处理的批次：
-
-```bash
-go run -mod=readonly ./cmd/tour-i18n retranslation process --locale zh-CN
-```
-
-处理前会根据当前 Catalog 和 glossary 重新生成 Default protected input，并要求它与批次保存的 input 字节完全一致；随后使用同一份保护映射 restore，并调用正式 `ValidateCandidate`。结果只写入该批次自己的 `candidates/`、`validation/` 和 `result.json`，不会修改 locale 的 canonical candidate 或 status。默认严格保持批次顺序：最早未处理批次缺少 raw response 时会停止，不会跳到后续批次；`--batch-id` 只用于显式调试或恢复。
-
-失败翻译单元的原始重试译文按连续 attempt 单独保存，首次模型原文始终保留在 `raw-responses/`。例如 `moretypes/1` 的第二次原始译文应由 ChatGPT 写入：
+当前流程为：
 
 ```text
-data/retranslation-runs/zh-CN/<batch-id>/retries/moretypes-1/attempt-002.article
+export
+→ Codex High 翻译
+→ raw-responses/
+→ process
+→ automatic validation
+→ ChatGPT Quality Check
+→ Final Review
+→ promotion
 ```
 
-文件准备好后，仅处理该失败翻译单元：
+Retry 只处理 `restore_failed` 与 `validation_failed`，且 `retranslation retry` 本身不调用模型、不生成译文。Automatic validation 通过后的 B/C/D 质量问题必须进入新的 revision batch，不得使用 retry。所有 TranslationUnit 的 ChatGPT Quality Check 均为 A 后才能进入 Final Review；Final Review 也只有 A 才允许 promotion。
 
-```bash
-go run -mod=readonly ./cmd/tour-i18n retranslation retry \
-  --locale zh-CN \
-  --batch-id <batch-id> \
-  --unit-id moretypes/1
-```
-
-`retry` 不调用模型，也不创建或改写 retry raw response；它只接受当前 `result.json` 中 `restore_failed` 或 `validation_failed` 的 TranslationUnit。每次处理前一份 validation 会归档为 `retries/<flattened-unit-id>/attempt-NNN-validation.json`，下一份 raw 必须使用连续编号且不得覆盖。处理仍复用原 manifest/input、对应 UnitKind 的 protection、restore 和正式 validator；只更新目标单元的 batch candidate、validation 与批次汇总。
-
-在提升前预览完整 promotion plan（默认 dry-run，不修改 canonical candidate 或 status）：
-
-```bash
-go run -mod=readonly ./cmd/tour-i18n retranslation promote --locale zh-CN
-```
-
-只有显式增加 `--apply` 才会正式修改 canonical candidate 与 status：
-
-```bash
-go run -mod=readonly ./cmd/tour-i18n retranslation promote --locale zh-CN --apply
-```
-
-promotion 对每个 workflow TranslationUnit 选择包含该单元的最新批次；最新 validation 或 review 未通过、缺失或无效时整体失败，不回退旧批次。preflight 会验证 Catalog/manifest metadata、saved input 与 source hash，使用当前 glossary 重建 Default protected input，检查连续 retry provenance，并沿 validation 指向的最终 raw response 重新 restore，要求 restore 结果与历史 batch candidate 字节完全一致，再按 UnitKind 运行 locale-aware canonical validator，并要求与最终 source、candidate、validation 和 attempt 绑定的 approved review evidence。只有 103 Page + 19 eligible Example 全部具备可提升 evidence 时才允许 apply；历史 batch candidate 始终保持不变。Review evidence 规范见 [Translation Quality Review](docs/TRANSLATION_QUALITY_REVIEW.md)。
-
-batch candidate 到 canonical candidate 的边界只允许一种确定性规范化：移除多余尾部 LF，并保证最终恰好一个 LF；不修改正文或其他字节。plan 分别记录原始 `source_candidate_sha256` 与规范化后的 `candidate_sha256`，并标记 EOF normalization。apply 完成后状态保持 `ready`，保留既有 `Attempts` 和 `SourceSHA256`，同时记录来源 ChatGPT batch；本轮最终 revision 包括 Batch 009、010、011，其中 `methods/17`、`methods/19` 最终来自 Batch 011。
+完整导航见 [多语言翻译流程](docs/TRANSLATION_WORKFLOW.md)，输入/输出契约见 [翻译任务规范](docs/TRANSLATION_TASK_SPEC.md)，Codex 规则见 [Codex TranslationUnit 翻译执行规范](docs/CODEX_TRANSLATION.md)，执行顺序见 [Retranslation 执行手册](docs/RETRANSLATION_RUNBOOK.md)。历史上 zh-CN 103 页由 ChatGPT 完成并提升为 canonical 的事实继续保留。
 
 ## 正式投影与本地预览
 
@@ -226,7 +192,7 @@ go run -mod=readonly ./cmd/tour-i18n publish \
 
 `--published-at` 是当前 locale production bundle 的发布时间，必须使用 RFC 3339 UTC；它不是 Git commit、服务启动或请求时间。源码 `_content/tour/site-metadata.json` 仅为 `go run ./tour` 和 preview 使用的开发态 metadata，不保存生产发布时间；publish 会在 bundle 内生成真实的站点 metadata。`bin/tour` 在构建时固定 locale，从 binary 自身相邻的 `../_content` 加载内容，不需要运行时 `--locale` 或 `--content`，也不依赖当前工作目录。schema v2 `release.json` 同时记录 `translation_units`、`pages`、`eligible_examples` 和 `articles`；`translation_units` 与 `eligible_examples` 由当前 Catalog 的统一 workflow 动态计算。`release.json`、bundle 内的站点 metadata 和 `SHA256SUMS` 由相同输入确定；相同源码、发布时间、Go 工具链及 GOOS/GOARCH 下的重复 publish 逐文件一致。bundle 不包含 candidate、status、translation-runs 等开发期数据。
 
-当前正式 release 已部署：`/data/go-tour/releases/20260818-zh-CN-45f4cad`。项目 commit 为 `45f4cad98e67c01dac705559781e2311b75b0948`，`published_at` 为 `2026-08-18T13:22:48Z`。该 release 包含本轮正式提升后的 103 页 ChatGPT canonical，并已完成生产部署与线上最终验收。
+当前正式 release 已部署：`/data/go-tour/releases/20260820-zh-CN-6ae139c`。该 release 使用 upstream `645042eb697eaf69e33a9af00c6b5b3fffdead5a`，包含 103 个 ready Page 与 19 个 ready eligible Example；历史上正式提升后的 103 页 ChatGPT canonical 事实保持不变。
 
 正式站点：<https://go-dev.shuijingwanwq.com/>。
 
@@ -256,11 +222,11 @@ go test -mod=readonly -count=1 ./...
 
 zh-CN 第一阶段已经正式上线：<https://go-dev.shuijingwanwq.com/>。
 
-以下是包含本轮 ChatGPT canonical 的当前正式 production 部署状态：
+以下是当前正式 production 部署状态：
 
-- 正式 release：`/data/go-tour/releases/20260818-zh-CN-45f4cad`。
-- 项目 commit：`45f4cad98e67c01dac705559781e2311b75b0948`；`published_at=2026-08-18T13:22:48Z`。
-- 正式状态：`ready=103`、`pending=0`、`blocked=0`、`pages=103`、`articles=7`；103/103 课程路由与 7/7 article endpoint 已完成线上验收。
+- 正式 release：`/data/go-tour/releases/20260820-zh-CN-6ae139c`。
+- Upstream commit：`645042eb697eaf69e33a9af00c6b5b3fffdead5a`。
+- 正式状态：`ready=122`、`pending=0`、`blocked=0`、`pages=103`、`eligible_examples=19`、`articles=7`；103/103 课程路由与 7/7 article endpoint 已完成线上验收。
 - 页面访问链路：浏览器 → EdgeOne → 阿里云 Nginx → Go Tour。
 - 正常 production Run / Format 链路：浏览器 → `https://play.go-dev.shuijingwanwq.com:8443/compile` 或 `/fmt` → ZgoCloud Nginx → `play.golang.org`。
 - 旧阿里云 Go 服务端 `/_/compile`、`/_/fmt` 仍保留作为兼容/回滚路径；production `/socket` 仍禁用，生产主机不执行用户提交的 Go 代码。

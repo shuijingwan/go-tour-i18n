@@ -172,15 +172,15 @@ Codex 在 `concurrency/7`、`concurrency/11` 的首次实际 candidate 校验中
 - 三种来源总体都能生成高质量候选；多数差异集中于高质量译文之间的精细择优，而不是明显技术错误。
 - 不能从 3 个页面直接推断现有 103 页都需要被替换，也不能把 94、95、96、97 等单次 judge 分数当成整个 103 页的绝对质量分。
 
-## 当前决策与下一阶段
+## 2026-08-17 当时的决策与下一阶段
 
-### 已决定
+### 当时已决定
 
-- 当前生产 zh-CN 继续保持 103/103 ready。
-- 当前 canonical candidates 不因本次实验被批量覆盖，当前 production release 不变。
-- Default protected-token 仍是当前已经实现并验证的正式翻译执行路径。
+- 当时生产 zh-CN 继续保持 103/103 ready。
+- 当时 canonical candidates 不因该次实验被批量覆盖，production release 不变。
+- Default protected-token 是当时已经实现并验证的正式翻译输入路径。
 - 不再优先投入 minimal-protect / Static Context 的细微调优。
-- ChatGPT 是目前下一阶段最值得优先验证的高质量翻译来源，但尚未接入当前正式执行路径。
+- ChatGPT 是当时下一阶段最值得优先验证的高质量翻译来源，但尚未接入当时的正式执行路径。
 - Codex 继续适合承担仓库读取、写入、结构适配、validator、render/test 等工程工作；本次实验也证明其自身翻译能力具有竞争力。
 - GLM-5.2 现有 103 页并非质量失败，本实验不否定已经完成的翻译工作。
 
@@ -192,7 +192,7 @@ Codex 在 `concurrency/7`、`concurrency/11` 的首次实际 candidate 校验中
 
 ### 下一阶段目标
 
-下一阶段先设计自动化 ChatGPT retranslation staging，不立即覆盖生产。理想流程为：
+当时的下一阶段先设计自动化 ChatGPT retranslation staging，不立即覆盖生产。理想流程为：
 
 ```text
 完整英文 Section
@@ -216,9 +216,29 @@ Codex 在 `concurrency/7`、`concurrency/11` 的首次实际 candidate 校验中
 - 在自动校验和质量标准通过前，不改变 production。
 - 不为这一阶段过早开发数据库、Web 审校平台或复杂队列系统。
 
-当前只记录下一阶段需要研究“尽可能自动化的 ChatGPT 翻译接入方式”，具体如何调用 ChatGPT 留待后续单独设计。
+该阶段只记录下一阶段需要研究“尽可能自动化的 ChatGPT 翻译接入方式”，具体如何调用 ChatGPT 当时留待后续单独设计。
 
 ## 相关公开记录
 
 - [《A Tour of Go 中文翻译完成后，我为什么重新评估 minimal-protect 翻译模式》](https://www.shuijingwanwq.com/2026/08/16/26323/)
 - [《A Tour of Go 翻译实验：更多原始上下文为什么没有更好？从 157 个保护标记到 30 次重复盲评》](https://www.shuijingwanwq.com/2026/08/17/26558/)
+
+## 2026-08-23：Codex High 生产配置评估
+
+本轮比较 ChatGPT High、Codex High 与 Codex Extra High。外部评审汇总为：
+
+| Translation Engine | 平均分 | 平均名次 | 第一名 |
+| --- | ---: | ---: | ---: |
+| ChatGPT High | 96.67 | 1.73 | 5/15 |
+| Codex High | 95.73 | 2.07 | 5/15 |
+| Codex Extra High | 95.87 | 2.20 | 5/15 |
+
+四评审汇总为：
+
+| Translation Engine | 平均分 | 平均名次 | 第一名 |
+| --- | ---: | ---: | ---: |
+| ChatGPT High | 96.90 | 1.85 | 6/20 |
+| Codex High | 96.50 | 1.85 | 9/20 |
+| Codex Extra High | 96.15 | 2.30 | 5/20 |
+
+结论：Codex High 已进入与 ChatGPT High 基本相同的质量梯队，Extra High 没有显示稳定收益。后续默认生产 Translation Engine 改为 **Codex GPT-5.6 Sol High**；ChatGPT 改为所有 TranslationUnit 的统一 Quality Check 执行者。此前 zh-CN 103 页由 ChatGPT 完成的事实属于历史结果，不因生产配置切换而改变。

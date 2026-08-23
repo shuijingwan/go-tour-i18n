@@ -25,10 +25,11 @@
 
 ## 2. 翻译执行
 
-执行 Page 或 Example 翻译、导出重译批次、处理模型返回和重试时，阅读：
+`AGENTS.md` 是 Codex 自动导航入口。执行 Page 或 Example 翻译、导出重译批次、处理模型返回和重试时，阅读：
 
 - [翻译任务规范](TRANSLATION_TASK_SPEC.md)：TranslationUnit、模型输入/输出契约及结构约束。
-- [Retranslation 执行手册](RETRANSLATION_RUNBOOK.md)：批次执行顺序，以及 ChatGPT 的输入与 artifact 交付流程，以及 GitHub 输入和项目状态管理中转流程。
+- [Codex 翻译执行规范](CODEX_TRANSLATION.md)：当前默认 Codex TranslationUnit 翻译与直接写入规则。
+- [Retranslation 执行手册](RETRANSLATION_RUNBOOK.md)：batch、retry、revision、质量检查与提升的执行顺序。
 
 翻译任务输出为 raw response；后续 restore、validation、review 与 promotion 由下一阶段规范约束。
 
@@ -38,7 +39,7 @@ candidate 完成 automatic validation 后、promotion 前，阅读：
 
 - [Translation Quality Review 规范](TRANSLATION_QUALITY_REVIEW.md)：A/B/C/D rubric、逐 TranslationUnit review evidence、`approved` 决策与 promotion gate。
 
-只有与最终 candidate 和 validation evidence 匹配的有效、`approved` review，才能进入 promotion。
+当前严格生产策略要求所有 TranslationUnit 的 ChatGPT Quality Check 均为 A 后才能进入 Final Review；Final Review 也只有 A 才能 `approved` 并进入 promotion。
 
 ## 4. 发布部署
 
@@ -55,4 +56,4 @@ promotion 后构建 production bundle、部署和验收时，阅读：
 
 ## 文档优先级
 
-发生冲突时，以阶段对应的正式规范为准：术语以 `TRANSLATION_TERMINOLOGY.md` 为准，翻译任务契约以 `TRANSLATION_TASK_SPEC.md` 为准，质量审核和 promotion gate 以 `TRANSLATION_QUALITY_REVIEW.md` 为准，发布部署以 `PRODUCTION_RUNBOOK.md` 为准。`PROJECT_STATE.md` 与 `TRANSLATION_QUALITY_EXPERIMENTS.md` 用于理解状态和历史，不替代正式规范。
+发生冲突时，以阶段对应的正式规范为准：术语以 `TRANSLATION_TERMINOLOGY.md` 为准；模型无关输入/输出契约以 `TRANSLATION_TASK_SPEC.md` 为准；当前默认 Codex 执行规则以 `CODEX_TRANSLATION.md` 为准；batch、retry 与 revision 顺序以 `RETRANSLATION_RUNBOOK.md` 为准；质量审核和 promotion gate 以 `TRANSLATION_QUALITY_REVIEW.md` 为准；发布部署以 `PRODUCTION_RUNBOOK.md` 为准。`AGENTS.md` 只提供 Codex 自动导航，`PROJECT_STATE.md` 与 `TRANSLATION_QUALITY_EXPERIMENTS.md` 只记录状态和历史。

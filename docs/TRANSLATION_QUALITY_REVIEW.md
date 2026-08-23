@@ -12,6 +12,7 @@ TranslationUnit
 → model translation
 → process
 → automatic validation
+→ ChatGPT Quality Check
 → Final Review
 → promotion
 → ready
@@ -67,7 +68,7 @@ Validator 通过不能替代质量审核。
 
 - 基本达到发布质量；
 - 只有轻微润色空间或非常小的问题；
-- 不影响技术理解和正式发布。
+- 在通用 rubric 中与 A 保持区分；在本项目当前严格生产策略下仍须修订。
 
 ### C
 
@@ -90,20 +91,20 @@ rating = A | B | C | D
 decision = approved | rejected
 ```
 
-程序不得只根据 rating 推导 decision。正式推荐规则是：
+程序不得只根据 rating 推导 decision，通用 schema 继续保留二者分离。当前项目采用更严格的 A-only 生产策略：
 
-- A：通常 `approved`；
-- B：允许 `approved`，reviewer 也可以根据具体问题决定 `rejected`；
-- C：原则上 `rejected`；
-- D：`rejected`。
+- A：可以 `approved`；
+- B、C、D：必须 `rejected` 并进入 revision batch。
 
 Promotion gate 的机器判断只接受 `decision == approved`。这种边界保留了质量评级与 workflow 决策的独立性。
 
 ## Quality Check 与 Final Review
 
-Quality Check 用于发现翻译质量问题，可以在 candidate 形成后的修订过程中由质量检查执行者多轮执行。它不生成正式 review evidence，也不作为 promotion 的直接依据。
+Quality Check 用于发现翻译质量问题，可以在 candidate 形成后的修订过程中多轮执行。当前由 ChatGPT 统一执行，且覆盖所有 TranslationUnit。它不生成正式 review evidence，也不作为 promotion 的直接依据。
 
-Final Review 是针对最终 candidate 的正式 Translation Quality Review。只有 Final Review 生成 review evidence；该 evidence 必须对应最终 candidate 及其 validation evidence，作为 promotion 的审核依据。
+当前严格生产 gate 为：A 通过；B、C、D 均不通过并进入新的 revision batch。只有完整语言达到 `A = 全部 TranslationUnit，B = 0，C = 0，D = 0`，才能进入 Final Review。
+
+Final Review 是针对最终 candidate 的正式 Translation Quality Review，会重新审核最终 candidate。只有 Final Review 生成 review evidence；该 evidence 必须对应最终 candidate 及其 validation evidence，作为 promotion 的审核依据。当前严格策略下只有 Final Review A 可以 `approved`；B、C、D 不得 promotion，必须进入新的 revision batch，修订后重新走 process、automatic validation、ChatGPT Quality Check 和 Final Review。
 
 ## 必须逐 TranslationUnit 审核
 
@@ -128,7 +129,7 @@ Review evidence 同时绑定：
 因此，candidate 字节发生变化、retry 产生新 candidate，或 validation evidence 发生变化时，旧 review 自动失效。新的最终 candidate 必须重新经过：
 
 ```text
-automatic validation → Final Review
+automatic validation → ChatGPT Quality Check → Final Review
 ```
 
 不得把旧 review evidence 套用到新 candidate 或新的 validation evidence 上。
@@ -176,7 +177,7 @@ translation-quality/v1
 
 ## Reviewer
 
-`reviewer` 是审核主体标识，不是账号或权限系统。当前正式翻译可以由 ChatGPT 生成，Review 也可以由 ChatGPT 在独立重新读取 source、candidate 和相关 evidence 后执行。
+`reviewer` 是审核主体标识，不是账号或权限系统。历史正式翻译可以由 ChatGPT 生成；当前默认翻译由 Codex 执行，ChatGPT 统一承担 Quality Check。Final Review 的审核主体必须独立重新读取 source、candidate 和相关 evidence 后执行审核。
 
 审核必须重新判断译文质量，不得仅因为 reviewer 或同一模型生成了译文就自动批准。未来可以使用其他模型或人工 reviewer，但都必须遵循同一正式 rubric 和 evidence schema。本项目当前不构建 reviewer 账号系统。
 
@@ -196,7 +197,7 @@ Promotion preflight 对 locale workflow 的全部 TranslationUnit 检查 review�
 - candidate 或 validation hash mismatch；
 - batch、locale、unit、source、attempt 或 path identity mismatch。
 
-只有 `decision == approved` 的有效 evidence 才允许对应 TranslationUnit 继续 promotion。最新 batch 的 review 缺失、rejected 或无效时，不允许回退到旧 batch 的 approved review。
+只有 rating A 且 `decision == approved` 的有效 evidence 才允许对应 TranslationUnit 继续 promotion。最新 batch 的 review 缺失、非 A、rejected 或无效时，不允许回退到旧 batch 的 approved review。
 
 ## 历史质量记录
 
@@ -209,7 +210,7 @@ Promotion preflight 对 locale workflow 的全部 TranslationUnit 检查 review�
 Review 机制不绑定 `zh-CN`、ChatGPT、Page 或 Example。未来任何 locale、任何翻译模型、任何 TranslationUnit kind，只要产生翻译 candidate 并准备 promotion，都必须对最终 candidate 执行：
 
 ```text
-automatic validation → Final Review → promotion
+automatic validation → ChatGPT Quality Check → Final Review → promotion
 ```
 
 新增语言无需重新决定是否审核，也无需重新定义 A/B/C/D 的基本含义。语言特定的术语和表达要求可以在同一正式 rubric 下补充，但不能取消逐 TranslationUnit review 或弱化 promotion gate。
