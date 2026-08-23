@@ -2,12 +2,26 @@ package i18n
 
 import (
 	"archive/zip"
+	"encoding/json"
 	"os"
 	"path/filepath"
 	"sort"
 	"strings"
 	"testing"
 )
+
+func writeTranslationResult(t *testing.T, root, batchID, locale string, units []retranslationResultFileUnit) string {
+	t.Helper()
+	data, err := json.Marshal(retranslationResultFile{BatchID: batchID, Locale: locale, Units: units})
+	if err != nil {
+		t.Fatal(err)
+	}
+	path := filepath.Join(root, "translation-result.json")
+	if err := os.WriteFile(path, data, 0644); err != nil {
+		t.Fatal(err)
+	}
+	return path
+}
 
 func makeRetranslationImportBatch(t *testing.T, count int) (string, string, RetranslationBatchManifest) {
 	t.Helper()
@@ -124,5 +138,28 @@ func TestRetranslationImportRejectsExistingRawResponses(t *testing.T) {
 	_, err := ImportRetranslationRawResponses(root, RetranslationImportOptions{Locale: "zh-CN", BatchID: batchID, Archive: archive})
 	if err == nil || !strings.Contains(err.Error(), "already has raw responses") {
 		t.Fatalf("import error = %v", err)
+	}
+}
+
+func TestImportRetranslationResultImportsIncrementalRawResponses(t *testing.T) {
+	root, batchID, _ := makeRetranslationImportBatch(t, 2)
+	first := writeTranslationResult(t, root, batchID, "zh-CN", []retranslationResultFileUnit{{UnitID: "lesson-1", Content: "* 第一篇\n"}})
+	result, err := ImportRetranslationResult(root, first)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if result.UnitCount != 1 {
+		t.Fatalf("unit count = %d, want 1", result.UnitCount)
+	}
+	data, err := os.ReadFile(filepath.Join(root, result.RawDirectory, "lesson-1.article"))
+	if err != nil || string(data) != "* 第一篇\n" {
+		t.Fatalf("first raw response = %q, err=%v", data, err)
+	}
+	second := writeTranslationResult(t, root, batchID, "zh-CN", []retranslationResultFileUnit{{UnitID: "lesson-2", Content: "* 第二篇\n"}})
+	if _, err := ImportRetranslationResult(root, second); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := ImportRetranslationResult(root, first); err == nil || !strings.Contains(err.Error(), "already has raw response") {
+		t.Fatalf("duplicate import error = %v", err)
 	}
 }
