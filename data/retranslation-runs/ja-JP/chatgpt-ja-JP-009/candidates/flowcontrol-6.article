@@ -1,0 +1,10 @@
+* If with a short statement
+
+`for` と同様に、 `if` ステートメントは、条件の前に実行する短いステートメントから開始できます。
+
+そのステートメントで宣言された変数は、 `if` の末尾までのスコープになります。
+
+（最後の `return` ステートメントで `v` を使用してみてください。）
+
+.play flowcontrol/if-with-a-short-statement.go
+

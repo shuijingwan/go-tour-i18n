@@ -1,0 +1,12 @@
+* Switch
+
+`switch` ステートメントは、一連の `if`-`else` ステートメントを短く記述する方法です。
+条件式の値と一致する最初の case を実行します。
+
+Goの switch は、C、C++、Java、JavaScript、PHP のものと似ています。
+ただし、Goは選択された case だけを実行し、その後に続くすべての case は実行しません。
+つまり、これらの言語で各 case の最後に必要となる `break` ステートメントは、Goで自動的に提供されます。
+もう 1 つの重要な違いは、Goの switch case は定数である必要がなく、扱う値も整数である必要はありません。
+
+.play flowcontrol/switch.go
+
