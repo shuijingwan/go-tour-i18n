@@ -4,16 +4,36 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"net/url"
 	"sort"
 	"strings"
 )
 
-const sitemapHost = "https://go-dev.shuijingwanwq.com"
+type seoDocuments struct {
+	origin  string
+	sitemap []byte
+}
 
-var sitemapContent []byte
+func productionOriginForLocale(locale string) (string, error) {
+	for _, language := range languageRegistry {
+		if language.Locale != locale {
+			continue
+		}
+		u, err := url.Parse(language.URL)
+		if err != nil || (u.Scheme != "http" && u.Scheme != "https") || u.Host == "" || u.User != nil {
+			return "", fmt.Errorf("invalid production URL for locale %q: %q", locale, language.URL)
+		}
+		return u.Scheme + "://" + u.Host, nil
+	}
+	return "", fmt.Errorf("missing production URL for locale %q", locale)
+}
 
-func initSEO() error {
-	urls := []string{sitemapHost + "/", sitemapHost + "/tour/list"}
+func initSEO(locale string) (seoDocuments, error) {
+	origin, err := productionOriginForLocale(locale)
+	if err != nil {
+		return seoDocuments{}, err
+	}
+	urls := []string{origin + "/", origin + "/tour/list"}
 	articles := make([]string, 0, len(lessons))
 	for article := range lessons {
 		articles = append(articles, article)
@@ -22,10 +42,10 @@ func initSEO() error {
 	for _, name := range articles {
 		var l lesson
 		if err := json.Unmarshal(lessons[name], &l); err != nil {
-			return fmt.Errorf("parse lesson %s for sitemap: %w", name, err)
+			return seoDocuments{}, fmt.Errorf("parse lesson %s for sitemap: %w", name, err)
 		}
 		for page := range l.Pages {
-			urls = append(urls, fmt.Sprintf("%s/tour/%s/%d", sitemapHost, name, page+1))
+			urls = append(urls, fmt.Sprintf("%s/tour/%s/%d", origin, name, page+1))
 		}
 	}
 	var b strings.Builder
@@ -34,16 +54,19 @@ func initSEO() error {
 		fmt.Fprintf(&b, "  <url><loc>%s</loc></url>\n", loc)
 	}
 	b.WriteString("</urlset>\n")
-	sitemapContent = []byte(b.String())
-	return nil
+	return seoDocuments{origin: origin, sitemap: []byte(b.String())}, nil
 }
 
-func robotsHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
-	fmt.Fprintf(w, "User-agent: *\nAllow: /\n\nSitemap: %s/sitemap.xml\n", sitemapHost)
+func robotsHandler(documents seoDocuments) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+		fmt.Fprintf(w, "User-agent: *\nAllow: /\n\nSitemap: %s/sitemap.xml\n", documents.origin)
+	}
 }
 
-func sitemapHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/xml; charset=utf-8")
-	_, _ = w.Write(sitemapContent)
+func sitemapHandler(documents seoDocuments) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/xml; charset=utf-8")
+		_, _ = w.Write(documents.sitemap)
+	}
 }

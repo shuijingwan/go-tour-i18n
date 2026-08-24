@@ -50,7 +50,8 @@ func newProductionHandler(content fs.FS, locale string, proxy *playgroundProxy) 
 	}
 
 	mux := http.NewServeMux()
-	if err := registerHandlersLocale(mux, locale, productionPlaygroundBaseURL); err != nil {
+	documents, err := registerHandlersLocale(mux, locale, productionPlaygroundBaseURL)
+	if err != nil {
 		return nil, err
 	}
 
@@ -64,8 +65,8 @@ func newProductionHandler(content fs.FS, locale string, proxy *playgroundProxy) 
 	mux.HandleFunc("/_/", notFound)
 
 	contentServer := http.FileServer(http.FS(contentTour))
-	mux.HandleFunc("/robots.txt", robotsHandler)
-	mux.HandleFunc("/sitemap.xml", sitemapHandler)
+	mux.Handle("/robots.txt", robotsHandler(documents))
+	mux.Handle("/sitemap.xml", sitemapHandler(documents))
 	mux.Handle("/favicon.ico", contentServer)
 	mux.Handle("/images/", contentServer)
 	mux.HandleFunc("/", rootHandler)

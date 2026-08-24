@@ -23,7 +23,7 @@ import (
 
 func TestWeb(t *testing.T) {
 	mux := http.NewServeMux()
-	if err := initTour(mux, "SocketTransport", "en", ""); err != nil {
+	if _, err := initTour(mux, "SocketTransport", "en", ""); err != nil {
 		t.Fatal(err)
 	}
 	mux.HandleFunc("/", rootHandler)

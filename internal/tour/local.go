@@ -57,7 +57,7 @@ func Main() {
 	}
 	httpAddr = host + ":" + port
 
-	if err := initTour(http.DefaultServeMux, "SocketTransport", *tourLocale, ""); err != nil {
+	if _, err := initTour(http.DefaultServeMux, "SocketTransport", *tourLocale, ""); err != nil {
 		log.Fatal(err)
 	}
 

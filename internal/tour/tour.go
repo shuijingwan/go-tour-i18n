@@ -50,49 +50,49 @@ func useContent(content fs.FS) error {
 	homeContent = nil
 	footerContent = nil
 	lessons = make(map[string][]byte)
-	sitemapContent = nil
 	return nil
 }
 
 // initTour loads tour.article and the relevant HTML templates from root.
-func initTour(mux *http.ServeMux, transport, locale, playgroundBaseURL string) error {
+func initTour(mux *http.ServeMux, transport, locale, playgroundBaseURL string) (seoDocuments, error) {
 	// Make sure playground is enabled before rendering.
 	present.PlayEnabled = true
 
 	// Set up templates.
 	tmpl, err := present.Template().ParseFS(contentTour, "tour/template/action.tmpl")
 	if err != nil {
-		return fmt.Errorf("parse templates: %v", err)
+		return seoDocuments{}, fmt.Errorf("parse templates: %v", err)
 	}
 
 	// Init lessons.
 	if err := initLessons(tmpl); err != nil {
-		return fmt.Errorf("init lessons: %v", err)
+		return seoDocuments{}, fmt.Errorf("init lessons: %v", err)
 	}
-	if err := initSEO(); err != nil {
-		return fmt.Errorf("init SEO documents: %v", err)
+	documents, err := initSEO(locale)
+	if err != nil {
+		return seoDocuments{}, fmt.Errorf("init SEO documents: %v", err)
 	}
 
 	// Load the build-selected UI locale once during initialization.
 	catalog, err := ui.Load(locale)
 	if err != nil {
-		return fmt.Errorf("load UI catalog %q: %w", locale, err)
+		return seoDocuments{}, fmt.Errorf("load UI catalog %q: %w", locale, err)
 	}
 	metadata, err := loadSiteMetadata(contentTour)
 	if err != nil {
-		return err
+		return seoDocuments{}, err
 	}
 	uiContent, err = renderIndex(catalog, metadata)
 	if err != nil {
-		return err
+		return seoDocuments{}, err
 	}
 	homeContent, err = renderHome(catalog, metadata)
 	if err != nil {
-		return err
+		return seoDocuments{}, err
 	}
 	footerContent, err = renderFooter(catalog, metadata)
 	if err != nil {
-		return err
+		return seoDocuments{}, err
 	}
 
 	mux.HandleFunc("/tour/", rootHandler)
@@ -100,7 +100,10 @@ func initTour(mux *http.ServeMux, transport, locale, playgroundBaseURL string) e
 	mux.HandleFunc("/tour/footer.html", footerHandler)
 	mux.Handle("/tour/static/", http.FileServer(http.FS(contentTour)))
 
-	return initScript(mux, socketAddr(), transport, playgroundBaseURL, catalog)
+	if err := initScript(mux, socketAddr(), transport, playgroundBaseURL, catalog); err != nil {
+		return seoDocuments{}, err
+	}
+	return documents, nil
 }
 
 type pageTemplateData struct {

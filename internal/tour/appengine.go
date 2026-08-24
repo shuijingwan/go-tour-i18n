@@ -20,20 +20,22 @@ func RegisterHandlers(mux *http.ServeMux) error {
 // RegisterHandlersLocale registers the HTTPTransport Tour using one
 // build-selected locale. It does not provide runtime locale switching.
 func RegisterHandlersLocale(mux *http.ServeMux, locale string) error {
-	return registerHandlersLocale(mux, locale, productionPlaygroundBaseURL)
+	_, err := registerHandlersLocale(mux, locale, productionPlaygroundBaseURL)
+	return err
 }
 
-func registerHandlersLocale(mux *http.ServeMux, locale, playgroundBaseURL string) error {
+func registerHandlersLocale(mux *http.ServeMux, locale, playgroundBaseURL string) (seoDocuments, error) {
 	prepContent = gaePrepContent
 	socketAddr = gaeSocketAddr
 	analyticsHTML = template.HTML(os.Getenv("TOUR_ANALYTICS"))
 	adHTML = template.HTML(os.Getenv("TOUR_AD_HTML"))
 
-	if err := initTour(mux, "HTTPTransport", locale, playgroundBaseURL); err != nil {
-		return err
+	documents, err := initTour(mux, "HTTPTransport", locale, playgroundBaseURL)
+	if err != nil {
+		return seoDocuments{}, err
 	}
 
-	return nil
+	return documents, nil
 }
 
 // gaePrepContent returns a Reader that produces the content from the given
