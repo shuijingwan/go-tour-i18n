@@ -24,7 +24,21 @@ Page 的源文件片段使用 `.article`，其流程中的 artifact 语义如下
 
 模型应翻译 Page 中开放的自然语言，并保持完整的 `present.Section`。模型必须保留链接 target、present directive、行内代码、preformatted 的代码与结构以及其他受保护内容；不得删除、伪造、复制或改写保护 token 所代表的内容。
 
-标题行仍须保留 `* ` 这一 present 语法前缀。模型可以按目标语言的自然语序调整普通文本，但不得改变页面结构或技术含义。
+### Page 标题
+
+Page 标题属于该 TranslationUnit 的可翻译自然语言。标题行必须保留 `* ` 这一 present 语法前缀，标题中的普通自然语言必须翻译；其中的 Go 关键字、技术标识符、glossary `keep` 内容及其他不可翻译技术身份保持原样。不得把“保留 `* ` 前缀”解释为“保留英文标题”。模型可以按目标语言的自然语序调整标题和正文中的普通文本，但不得改变页面结构或技术含义。
+
+例如：
+
+```text
+source: * Switch with no condition
+ja-JP:  * 条件なしの switch
+
+source: * Switch
+ja-JP:  * Switch
+```
+
+第二个标题可以保留，因为 `switch` 是 Go 关键字；第一个标题中的普通自然语言仍须翻译。
 
 ### Page preformatted 中的 teaching comment
 
