@@ -24,6 +24,10 @@ func TestSharedPathsFirstVersionAllowlist(t *testing.T) {
 
 func TestURL(t *testing.T) {
 	const asset = "tour/static/css/app.css"
+	const sharedBaseURL = "https://assets-go-dev.shuijingwanwq.com"
+	if BaseURL != sharedBaseURL {
+		t.Fatalf("BaseURL = %q, want %q", BaseURL, sharedBaseURL)
+	}
 	for _, test := range []struct {
 		name, locale string
 		development  bool
@@ -32,8 +36,8 @@ func TestURL(t *testing.T) {
 		{"zh development", "zh-CN", true, "/" + asset},
 		{"zh production", "zh-CN", false, "/" + asset},
 		{"ja preview", "ja-JP", true, "/" + asset},
-		{"ja production", "ja-JP", false, BaseURL + "/" + asset},
-		{"future production", "ko", false, BaseURL + "/" + asset},
+		{"ja production", "ja-JP", false, sharedBaseURL + "/" + asset},
+		{"future production", "ko", false, sharedBaseURL + "/" + asset},
 	} {
 		t.Run(test.name, func(t *testing.T) {
 			got, err := URL(test.locale, test.development, asset)

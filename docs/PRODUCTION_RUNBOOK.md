@@ -134,7 +134,7 @@ localhost 连续健康后，脚本才检查 <https://go-dev.shuijingwanwq.com/>�
 所有非中文社区语言的 production 页面计划使用：
 
 ```text
-https://assets.go-dev.shuijingwanwq.com/
+https://assets-go-dev.shuijingwanwq.com/
 ```
 
 zh-CN development 和 production 继续使用 language origin 的本地静态资源；所有 locale 的 development/preview 也始终使用本地资源，不依赖公网 CDN。第一版共享清单只有：
@@ -162,7 +162,7 @@ go run -mod=readonly ./cmd/tour-i18n assets export \
 
 第一版固定使用原逻辑路径，不使用 assets-release-id、content-hash URL、独立 versioned assets release，也不升级 language `release.json`。`/tour/script.js` 明确不拆分、不共享，继续由 language origin 动态拼接并提供。Angular partial、`tree.png`、lesson/footer、HTML、locale 内容、metadata、analytics/ads 和 Playground endpoint 均继续由 language origin 提供；Google Fonts 继续使用现有外部 Inconsolata CSS。所有 language bundle 仍保持完整自包含，并保留全部本地静态资源作为 preview、rollback 和 CDN 故障排查能力。
 
-Cloudflare 后续计划使用 28 天 Edge Cache TTL。项目不主动覆盖 Browser Cache TTL，不给这些固定 URL 设置 `immutable` 或一年浏览器缓存；使用 Cloudflare/origin 默认行为或 Respect Existing Headers。每次共享文件发生变化后必须按顺序执行：
+Cloudflare 后续计划使用 1 个月 Edge Cache TTL。项目不主动覆盖 Browser Cache TTL，不给这些固定 URL 设置 `immutable` 或一年浏览器缓存；使用 Cloudflare/origin 默认行为或 Respect Existing Headers。每次共享文件发生变化后必须按顺序执行：
 
 1. 更新普通服务器上的 assets origin 文件；
 2. purge Cloudflare 对应缓存；

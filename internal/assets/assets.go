@@ -11,7 +11,7 @@ import (
 	"strings"
 )
 
-const BaseURL = "https://assets.go-dev.shuijingwanwq.com"
+const BaseURL = "https://assets-go-dev.shuijingwanwq.com"
 
 // SharedPaths is the complete first-version assets origin allowlist. Paths are
 // relative to the repository's _content directory and retain their public URL
