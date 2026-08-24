@@ -1,0 +1,15 @@
+* switch の評価順序
+
+switch の case は上から下へ順に評価され、条件が成立した case で停止します。
+
+（たとえば、
+
+	switch i {
+	case 0:
+	case f():
+	}
+
+では、 `f` は `i==0` の場合には呼び出されません。）
+
+
+.play flowcontrol/switch-evaluation-order.go

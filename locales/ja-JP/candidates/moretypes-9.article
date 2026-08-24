@@ -1,0 +1,13 @@
+* スライスリテラル
+
+スライスリテラルは、長さの指定がない配列リテラルのようなものです。
+
+これは配列リテラルです。
+
+	[3]bool{true, true, false}
+
+次の式は、上と同じ配列を作成し、それを参照するスライスを作ります。
+
+	[]bool{true, true, false}
+
+.play moretypes/slice-literals.go

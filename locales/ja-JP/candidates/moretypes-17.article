@@ -1,0 +1,12 @@
+* Range（続き）
+
+`_` に代入することで、インデックスまたは値を読み捨てることができます。
+
+    for i, _ := range pow
+    for _, value := range pow
+
+インデックスだけが必要な場合は、2 つ目の変数を省略できます。
+
+    for i := range pow
+
+.play moretypes/range-continued.go

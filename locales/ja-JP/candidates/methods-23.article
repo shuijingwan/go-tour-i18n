@@ -1,0 +1,12 @@
+* 練習問題：rot13Reader
+
+[[/pkg/io/#Reader][io.Reader]] で別の `io.Reader` をラップし、ストリームに何らかの変更を加えるのは、よく使われるパターンです。
+
+たとえば、[[/pkg/compress/gzip/#NewReader][gzip.NewReader]] 関数は、 `io.Reader`（圧縮データのストリーム）を受け取り、 `*gzip.Reader`（展開されたデータのストリーム）を返します。後者も `io.Reader` を実装しています。
+
+`rot13Reader` を実装してください。この型は `io.Reader` を実装し、 `io.Reader` から読み取ったすべての英字に [[https://en.wikipedia.org/wiki/ROT13][rot13]] 置換暗号を適用して、ストリームを変更します。
+
+`rot13Reader` 型はあらかじめ用意されています。
+この型を `io.Reader` にするため、その `Read` メソッドを実装してください。
+
+.play methods/exercise-rot-reader.go

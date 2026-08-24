@@ -1,0 +1,20 @@
+* メソッドとポインタの間接参照（2）
+
+逆方向でも同じことが起こります。
+
+値引数を取る関数には、指定された型の値を渡さなければなりません。
+
+	var v Vertex
+	fmt.Println(AbsFunc(v))  // OK
+	fmt.Println(AbsFunc(&v)) // コンパイルエラー！
+
+一方、値レシーバを持つメソッドは、呼び出すときに値またはポインタのどちらでもレシーバとして受け取ります。
+
+	var v Vertex
+	fmt.Println(v.Abs()) // OK
+	p := &v
+	fmt.Println(p.Abs()) // OK
+
+この場合、メソッド呼び出し `p.Abs()` は `(*p).Abs()` と解釈されます。
+
+.play methods/indirection-values.go

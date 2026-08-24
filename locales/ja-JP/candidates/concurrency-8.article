@@ -1,0 +1,23 @@
+* 練習問題：等価な二分木
+
+*1.* `Walk` 関数を実装してください。
+
+*2.* `Walk` 関数をテストしてください。
+
+関数 `tree.New(k)` は、値 `k`、 `2k`、 `3k`、…、 `10k` を格納する、ランダムな構造の（ただし常にソートされた）二分木を作成します。
+
+新しいチャネル `ch` を作成し、走査を開始します。
+
+	go Walk(tree.New(1), ch)
+
+次に、チャネルから 10 個の値を読み取り、表示します。1、2、3、…、10 と表示されるはずです。
+
+*3.* `Same` 関数を実装してください。 `Walk` を使って、 `t1` と `t2` が同じ値を格納しているかどうかを判定します。
+
+*4.* `Same` 関数をテストしてください。
+
+`Same(tree.New(1),`tree.New(1))` は true を返し、 `Same(tree.New(1),`tree.New(2))` は false を返すはずです。
+
+`Tree` のドキュメントは [[https://godoc.org/golang.org/x/tour/tree#Tree][こちら]] にあります。
+
+.play concurrency/exercise-equivalent-binary-trees.go

@@ -1,0 +1,8 @@
+* defer の積み重ね
+
+遅延実行される関数呼び出しはスタックに積まれます。関数から処理が戻ると、遅延された呼び出しは後入れ先出しの順序で実行されます。
+
+defer 文について詳しくは、こちらの
+[[/blog/defer-panic-and-recover][ブログ記事]]をお読みください。
+
+.play flowcontrol/defer-multi.go

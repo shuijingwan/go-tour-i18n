@@ -1,0 +1,7 @@
+* Select
+
+`select` 文を使うと、goroutine は複数の通信操作を待機できます。
+
+`select` は、いずれかの case を実行できるようになるまでブロックし、実行可能になった case を実行します。複数の case を実行できる場合は、その中から 1 つをランダムに選びます。
+
+.play concurrency/select.go

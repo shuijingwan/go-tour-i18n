@@ -1,0 +1,20 @@
+* 型変換
+
+式 `T(v)` は、値 `v` を型 `T` に変換します。
+
+いくつかの数値変換:
+
+	var i int = 42
+	var f float64 = float64(i)
+	var u uint = uint(f)
+
+または、より簡単に書くと:
+
+	i := 42
+	f := float64(i)
+	u := uint(f)
+
+C とは異なり、Go では異なる型の値同士を代入する場合、明示的な変換が必要です。
+例から `float64` または `uint` の変換を削除して、何が起こるか確認してみてください。
+
+.play basics/type-conversions.go
