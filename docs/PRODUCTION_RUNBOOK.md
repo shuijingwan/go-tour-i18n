@@ -131,7 +131,7 @@ localhost 连续健康后，脚本才检查 <https://go-dev.shuijingwanwq.com/>�
 
 ## 非中文共享静态资源第一版
 
-所有非中文社区语言的 production 页面计划使用：
+所有非中文社区语言的 production 页面使用：
 
 ```text
 https://assets-go-dev.shuijingwanwq.com/
@@ -162,7 +162,9 @@ go run -mod=readonly ./cmd/tour-i18n assets export \
 
 第一版固定使用原逻辑路径，不使用 assets-release-id、content-hash URL、独立 versioned assets release，也不升级 language `release.json`。`/tour/script.js` 明确不拆分、不共享，继续由 language origin 动态拼接并提供。Angular partial、`tree.png`、lesson/footer、HTML、locale 内容、metadata、analytics/ads 和 Playground endpoint 均继续由 language origin 提供；Google Fonts 继续使用现有外部 Inconsolata CSS。所有 language bundle 仍保持完整自包含，并保留全部本地静态资源作为 preview、rollback 和 CDN 故障排查能力。
 
-Cloudflare 后续计划使用 1 个月 Edge Cache TTL。项目不主动覆盖 Browser Cache TTL，不给这些固定 URL 设置 `immutable` 或一年浏览器缓存；使用 Cloudflare/origin 默认行为或 Respect Existing Headers。每次共享文件发生变化后必须按顺序执行：
+`assets-go-dev.shuijingwanwq.com` 已正式部署，Cloudflare 已代理；源站为 `121.40.248.29`，origin root 为 `/data/wwwroot/assets-go-dev.shuijingwanwq.com`，Nginx vhost 为 `/usr/local/nginx/conf/vhost/assets-go-dev.shuijingwanwq.com.conf`。TLS 使用 Let's Encrypt / acme.sh / `dns_cf`，证书和私钥分别位于 `/usr/local/nginx/conf/ssl/assets-go-dev.shuijingwanwq.com.crt` 与 `/usr/local/nginx/conf/ssl/assets-go-dev.shuijingwanwq.com.key`；HTTP 80 永久跳转 HTTPS。
+
+Cloudflare Edge Cache TTL 为 1 个月。项目不主动覆盖 Browser Cache TTL，不给这些固定 URL 设置 `immutable` 或一年浏览器缓存；使用 Cloudflare/origin 默认或 Respect Existing Headers。公网 9/9 allowlist 文件 SHA-256 已验证；`/tour/script.js`、`/tour/static/img/tree.png` 与 `/tour/static/partials/editor.html` 均验证为 HTTP 404；Cloudflare 缓存已验证 MISS → HIT。每次共享文件发生变化后必须按顺序执行：
 
 1. 更新普通服务器上的 assets origin 文件；
 2. purge Cloudflare 对应缓存；
@@ -170,7 +172,7 @@ Cloudflare 后续计划使用 1 个月 Edge Cache TTL。项目不主动覆盖 Br
 4. 再次请求并确认 HIT；
 5. 对照 `SHA256SUMS` 核对公网资源内容。
 
-当前仓库只具备导出与引用能力；尚未创建 assets DNS、TLS、Nginx origin、Cloudflare Cache Rule 或实际部署。不要把以上规划描述为已上线状态，也不要在 zh-CN 的现有 EdgeOne发布流程中加入 assets域名依赖。
+旧 `assets.go-dev.shuijingwanwq.com` 未上线、已废弃，不提供兼容或迁移。不要在 zh-CN 的现有 EdgeOne 发布流程中加入 assets 域名依赖。
 
 ## 最小生产验收
 
