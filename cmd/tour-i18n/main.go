@@ -268,8 +268,46 @@ func run(args []string) error {
 		}
 		return printJSON(result)
 	case "retranslation review":
-		if len(args) < 3 || (args[2] != "check" && args[2] != "record") {
-			return fmt.Errorf("usage: tour-i18n retranslation review <check|record> ...")
+		if len(args) < 3 || (args[2] != "check" && args[2] != "record" && args[2] != "record-batch") {
+			return fmt.Errorf("usage: tour-i18n retranslation review <check|record|record-batch> ...")
+		}
+		if args[2] == "record-batch" {
+			fs := flag.NewFlagSet("retranslation review record-batch", flag.ContinueOnError)
+			locale := fs.String("locale", "", "target locale")
+			snapshotID := fs.String("snapshot-id", "", "Candidate Snapshot id")
+			startIndex := fs.Int("start-index", 1, "first stable Candidate Snapshot index (1-based)")
+			limit := fs.Int("limit", i18n.DefaultRetranslationReviewBatchLimit, "maximum TranslationUnits to record")
+			rating := fs.String("rating", "", "quality rating: A, B, C, or D")
+			decision := fs.String("decision", "", "workflow decision: approved or rejected")
+			summary := fs.String("summary", "", "review summary")
+			reviewer := fs.String("reviewer", "", "reviewer identifier")
+			rubric := fs.String("rubric", "", "rubric identifier")
+			var issues repeatedStrings
+			fs.Var(&issues, "issue", "specific issue; repeat for multiple issues")
+			if err := fs.Parse(args[3:]); err != nil {
+				return err
+			}
+			if *locale == "" || *snapshotID == "" || *rating == "" || *decision == "" || *summary == "" || *reviewer == "" || *rubric == "" {
+				return fmt.Errorf("--locale, --snapshot-id, --rating, --decision, --summary, --reviewer, and --rubric are required")
+			}
+			if *startIndex < 1 {
+				return fmt.Errorf("--start-index must be at least 1")
+			}
+			if *limit < 1 {
+				return fmt.Errorf("--limit must be at least 1")
+			}
+			if fs.NArg() != 0 {
+				return fmt.Errorf("unexpected retranslation review record-batch arguments: %s", strings.Join(fs.Args(), " "))
+			}
+			result, err := i18n.RecordRetranslationReviewBatch(root, catalog, i18n.RetranslationReviewBatchRecordOptions{
+				Locale: *locale, SnapshotID: *snapshotID, StartIndex: *startIndex, Limit: *limit,
+				Rating: *rating, Decision: *decision, Summary: *summary, Reviewer: *reviewer, Rubric: *rubric, Issues: issues,
+			})
+			if err != nil {
+				return err
+			}
+			fmt.Printf("wrote batch review evidence: snapshot=%s indexes=%d-%d units=%d\n", result.SnapshotID, result.StartIndex, result.EndIndex, result.RecordedCount)
+			return nil
 		}
 		if args[2] == "record" {
 			fs := flag.NewFlagSet("retranslation review record", flag.ContinueOnError)

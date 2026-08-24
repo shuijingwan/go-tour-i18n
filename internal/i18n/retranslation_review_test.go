@@ -1,8 +1,12 @@
 package i18n
 
 import (
+	"bytes"
+	"encoding/json"
 	"os"
 	"path/filepath"
+	"reflect"
+	"strconv"
 	"strings"
 	"testing"
 	"time"
@@ -57,6 +61,36 @@ func writeRetranslationReview(t *testing.T, path string, review TranslationRevie
 	if err := writeTranslationJSON(path, review); err != nil {
 		t.Fatal(err)
 	}
+}
+
+func makeRetranslationReviewBatchFixture(t *testing.T, count int, snapshotID string) (string, *Catalog, string) {
+	t.Helper()
+	root, catalog, batchID := makeRetranslationProcessBatch(t, count)
+	if _, err := ProcessRetranslationBatch(root, catalog, RetranslationProcessOptions{Locale: "zh-CN", BatchID: batchID}); err != nil {
+		t.Fatal(err)
+	}
+	materializeSnapshotSources(t, root, catalog)
+	if _, _, err := CreateQualityCheckCandidateSnapshot(root, catalog, QualityCheckSnapshotOptions{Locale: "zh-CN", SnapshotID: snapshotID}); err != nil {
+		t.Fatal(err)
+	}
+	return root, catalog, batchID
+}
+
+func reviewBatchOptions(snapshotID string) RetranslationReviewBatchRecordOptions {
+	return RetranslationReviewBatchRecordOptions{
+		Locale: "zh-CN", SnapshotID: snapshotID, Rating: "A", Decision: "approved",
+		Summary: "Accurate and fluent.", Reviewer: "final-reviewer", Rubric: "translation-quality/v1",
+		Now: func() time.Time { return time.Date(2026, 8, 24, 12, 0, 0, 0, time.UTC) },
+	}
+}
+
+func reviewEvidencePath(t *testing.T, root string, catalog *Catalog, batchID, unitID string) string {
+	t.Helper()
+	unit, err := catalog.Unit(unitID)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return filepath.Join(root, "data", "retranslation-runs", "zh-CN", batchID, "review", retranslationReviewName(unit))
 }
 
 func TestCheckRetranslationReviewsValidReview(t *testing.T) {
@@ -187,5 +221,167 @@ func TestRecordRetranslationReviewGenericsEvidenceIsAccepted(t *testing.T) {
 	report, err := CheckRetranslationReviews(root, catalog, RetranslationReviewCheckOptions{Locale: "zh-CN", BatchID: exported.BatchID})
 	if err != nil || report.Approved != 1 || report.Rejected != 0 {
 		t.Fatalf("review check report=%+v error=%v", report, err)
+	}
+}
+
+func TestRecordRetranslationReviewBatchDefaultsToTwenty(t *testing.T) {
+	root, catalog, batchID := makeRetranslationReviewBatchFixture(t, 23, "default-twenty")
+	result, err := RecordRetranslationReviewBatch(root, catalog, reviewBatchOptions("default-twenty"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if result.StartIndex != 1 || result.EndIndex != 20 || result.Limit != 20 || result.RecordedCount != 20 || len(result.Reviews) != 20 {
+		t.Fatalf("batch result=%+v", result)
+	}
+	for i := 1; i <= 20; i++ {
+		if _, err := os.Stat(reviewEvidencePath(t, root, catalog, batchID, "lesson/"+strconv.Itoa(i))); err != nil {
+			t.Fatalf("review %d: %v", i, err)
+		}
+	}
+	if _, err := os.Stat(reviewEvidencePath(t, root, catalog, batchID, "lesson/21")); !os.IsNotExist(err) {
+		t.Fatalf("default batch wrote index 21: %v", err)
+	}
+}
+
+func TestRecordRetranslationReviewBatchUsesSnapshotSelectedBatches(t *testing.T) {
+	root, catalog, firstBatch := makeRetranslationProcessBatch(t, 3)
+	if _, err := ProcessRetranslationBatch(root, catalog, RetranslationProcessOptions{Locale: "zh-CN", BatchID: firstBatch}); err != nil {
+		t.Fatal(err)
+	}
+	const secondBatch = "chatgpt-zh-CN-002"
+	addProcessedPromotionBatch(t, root, catalog, secondBatch, []string{"lesson/1"})
+	if err := os.RemoveAll(filepath.Join(root, "data", "retranslation-runs", "zh-CN", secondBatch, "review")); err != nil {
+		t.Fatal(err)
+	}
+	materializeSnapshotSources(t, root, catalog)
+	if _, _, err := CreateQualityCheckCandidateSnapshot(root, catalog, QualityCheckSnapshotOptions{Locale: "zh-CN", SnapshotID: "mixed-batches"}); err != nil {
+		t.Fatal(err)
+	}
+	options := reviewBatchOptions("mixed-batches")
+	options.Limit = 3
+	result, err := RecordRetranslationReviewBatch(root, catalog, options)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got := []string{result.Reviews[0].BatchID, result.Reviews[1].BatchID, result.Reviews[2].BatchID}; !reflect.DeepEqual(got, []string{secondBatch, firstBatch, firstBatch}) {
+		t.Fatalf("selected batches=%v", got)
+	}
+	for _, review := range result.Reviews {
+		if _, err := os.Stat(filepath.Join(root, filepath.FromSlash(review.Path))); err != nil {
+			t.Fatalf("review %s: %v", review.UnitID, err)
+		}
+	}
+}
+
+func TestRecordRetranslationReviewBatchRangeBoundaries(t *testing.T) {
+	t.Run("final partial chunk", func(t *testing.T) {
+		root, catalog, _ := makeRetranslationReviewBatchFixture(t, 23, "final-partial")
+		options := reviewBatchOptions("final-partial")
+		options.StartIndex = 22
+		result, err := RecordRetranslationReviewBatch(root, catalog, options)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if result.StartIndex != 22 || result.EndIndex != 23 || result.RecordedCount != 2 {
+			t.Fatalf("final chunk=%+v", result)
+		}
+	})
+
+	t.Run("start outside snapshot", func(t *testing.T) {
+		root, catalog, batchID := makeRetranslationReviewBatchFixture(t, 3, "outside")
+		options := reviewBatchOptions("outside")
+		options.StartIndex = 4
+		if _, err := RecordRetranslationReviewBatch(root, catalog, options); err == nil || !strings.Contains(err.Error(), "outside snapshot range") {
+			t.Fatalf("range error=%v", err)
+		}
+		if _, err := os.Stat(reviewEvidencePath(t, root, catalog, batchID, "lesson/1")); !os.IsNotExist(err) {
+			t.Fatalf("out-of-range batch wrote evidence: %v", err)
+		}
+	})
+}
+
+func TestRecordRetranslationReviewBatchDoesNotOverwriteExistingReview(t *testing.T) {
+	root, catalog, batchID := makeRetranslationReviewBatchFixture(t, 3, "existing-review")
+	if _, _, err := RecordRetranslationReview(root, catalog, RetranslationReviewRecordOptions{
+		Locale: "zh-CN", BatchID: batchID, UnitID: "lesson/2", Rating: "A", Decision: "approved",
+		Summary: "Existing evidence.", Reviewer: "first-reviewer", Rubric: "translation-quality/v1",
+		Now: func() time.Time { return time.Date(2026, 8, 24, 11, 0, 0, 0, time.UTC) },
+	}); err != nil {
+		t.Fatal(err)
+	}
+	existingPath := reviewEvidencePath(t, root, catalog, batchID, "lesson/2")
+	existingBefore, err := os.ReadFile(existingPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	options := reviewBatchOptions("existing-review")
+	options.Limit = 3
+	if _, err := RecordRetranslationReviewBatch(root, catalog, options); err == nil || !strings.Contains(err.Error(), "review already exists") {
+		t.Fatalf("existing review error=%v", err)
+	}
+	if _, err := os.Stat(reviewEvidencePath(t, root, catalog, batchID, "lesson/1")); !os.IsNotExist(err) {
+		t.Fatalf("preflight failure wrote earlier review: %v", err)
+	}
+	existingAfter, err := os.ReadFile(existingPath)
+	if err != nil || !bytes.Equal(existingBefore, existingAfter) {
+		t.Fatalf("existing review changed: err=%v", err)
+	}
+}
+
+func TestRecordRetranslationReviewBatchPreflightPreventsPartialWritesOnIdentityAndHashMismatch(t *testing.T) {
+	tests := []struct {
+		name   string
+		mutate func(*testing.T, string, string)
+		want   string
+	}{
+		{
+			name: "validation identity mismatch",
+			mutate: func(t *testing.T, root, batchID string) {
+				path := filepath.Join(root, "data", "retranslation-runs", "zh-CN", batchID, "validation", "lesson-2.json")
+				data, err := os.ReadFile(path)
+				if err != nil {
+					t.Fatal(err)
+				}
+				var validation RetranslationValidation
+				if err := json.Unmarshal(data, &validation); err != nil {
+					t.Fatal(err)
+				}
+				validation.UnitID = "lesson/1"
+				if err := writeTranslationJSON(path, validation); err != nil {
+					t.Fatal(err)
+				}
+			},
+			want: "incompatible identity",
+		},
+		{
+			name: "candidate hash mismatch",
+			mutate: func(t *testing.T, root, batchID string) {
+				path := filepath.Join(root, "data", "retranslation-runs", "zh-CN", batchID, "candidates", "lesson-2.article")
+				data, err := os.ReadFile(path)
+				if err != nil {
+					t.Fatal(err)
+				}
+				if err := os.WriteFile(path, append(data, '\n'), 0644); err != nil {
+					t.Fatal(err)
+				}
+			},
+			want: "candidate path or hash",
+		},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			root, catalog, batchID := makeRetranslationReviewBatchFixture(t, 3, "mismatch")
+			test.mutate(t, root, batchID)
+			options := reviewBatchOptions("mismatch")
+			options.Limit = 3
+			if _, err := RecordRetranslationReviewBatch(root, catalog, options); err == nil || !strings.Contains(err.Error(), test.want) {
+				t.Fatalf("mismatch error=%v, want %q", err, test.want)
+			}
+			for _, unitID := range []string{"lesson/1", "lesson/2", "lesson/3"} {
+				if _, err := os.Stat(reviewEvidencePath(t, root, catalog, batchID, unitID)); !os.IsNotExist(err) {
+					t.Fatalf("failed preflight wrote %s review: %v", unitID, err)
+				}
+			}
+		})
 	}
 }

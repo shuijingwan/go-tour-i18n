@@ -14,6 +14,8 @@ import (
 
 const TranslationReviewSchemaVersion = 1
 
+const DefaultRetranslationReviewBatchLimit = 20
+
 type RetranslationReviewCheckOptions struct {
 	Locale  string
 	BatchID string
@@ -56,30 +58,78 @@ type RetranslationReviewRecordOptions struct {
 	Now      func() time.Time
 }
 
+type RetranslationReviewBatchRecordOptions struct {
+	Locale     string
+	SnapshotID string
+	StartIndex int
+	Limit      int
+	Rating     string
+	Decision   string
+	Summary    string
+	Issues     []string
+	Reviewer   string
+	Rubric     string
+	Now        func() time.Time
+}
+
+type RetranslationReviewBatchRecord struct {
+	Index   int    `json:"index"`
+	UnitID  string `json:"unit_id"`
+	BatchID string `json:"batch_id"`
+	Path    string `json:"path"`
+}
+
+type RetranslationReviewBatchRecordResult struct {
+	Locale        string                           `json:"locale"`
+	SnapshotID    string                           `json:"snapshot_id"`
+	StartIndex    int                              `json:"start_index"`
+	EndIndex      int                              `json:"end_index"`
+	Limit         int                              `json:"limit"`
+	RecordedCount int                              `json:"recorded_count"`
+	Reviews       []RetranslationReviewBatchRecord `json:"reviews"`
+}
+
+type preparedRetranslationReview struct {
+	review         TranslationReview
+	path           string
+	repositoryPath string
+}
+
 // RecordRetranslationReview creates schema-v1 review evidence from the batch's
 // immutable manifest, process result, candidate, and validation files. Only
 // the quality-review fields are supplied by the reviewer.
 func RecordRetranslationReview(root string, catalog *Catalog, options RetranslationReviewRecordOptions) (*TranslationReview, string, error) {
+	prepared, err := prepareRetranslationReview(root, catalog, options)
+	if err != nil {
+		return nil, "", err
+	}
+	if err := writePreparedRetranslationReview(prepared); err != nil {
+		return nil, "", err
+	}
+	return &prepared.review, prepared.repositoryPath, nil
+}
+
+func prepareRetranslationReview(root string, catalog *Catalog, options RetranslationReviewRecordOptions) (*preparedRetranslationReview, error) {
 	if catalog == nil {
-		return nil, "", errors.New("retranslation catalog is required")
+		return nil, errors.New("retranslation catalog is required")
 	}
 	if options.Locale == "" || options.BatchID == "" || options.UnitID == "" {
-		return nil, "", errors.New("retranslation review locale, batch_id, and unit_id are required")
+		return nil, errors.New("retranslation review locale, batch_id, and unit_id are required")
 	}
 	if err := ValidateLocaleName(options.Locale); err != nil {
-		return nil, "", err
+		return nil, err
 	}
 	if err := validateBatchID(options.BatchID); err != nil {
-		return nil, "", err
+		return nil, err
 	}
 	if options.Rating != "A" && options.Rating != "B" && options.Rating != "C" && options.Rating != "D" {
-		return nil, "", fmt.Errorf("invalid rating %q", options.Rating)
+		return nil, fmt.Errorf("invalid rating %q", options.Rating)
 	}
 	if options.Decision != "approved" && options.Decision != "rejected" {
-		return nil, "", fmt.Errorf("invalid decision %q", options.Decision)
+		return nil, fmt.Errorf("invalid decision %q", options.Decision)
 	}
 	if strings.TrimSpace(options.Summary) == "" || strings.TrimSpace(options.Reviewer) == "" || strings.TrimSpace(options.Rubric) == "" {
-		return nil, "", errors.New("summary, reviewer, and rubric are required")
+		return nil, errors.New("summary, reviewer, and rubric are required")
 	}
 	if options.Now == nil {
 		options.Now = time.Now
@@ -88,7 +138,7 @@ func RecordRetranslationReview(root string, catalog *Catalog, options Retranslat
 	batchDir := filepath.Join(root, "data", "retranslation-runs", options.Locale, options.BatchID)
 	manifest, err := readRetranslationProcessManifest(batchDir, options.Locale, options.BatchID)
 	if err != nil {
-		return nil, "", err
+		return nil, err
 	}
 	var record RetranslationBatchUnit
 	for _, candidate := range manifest.Units {
@@ -98,19 +148,19 @@ func RecordRetranslationReview(root string, catalog *Catalog, options Retranslat
 		}
 	}
 	if record.UnitID == "" {
-		return nil, "", fmt.Errorf("unit %q is not in batch %q", options.UnitID, options.BatchID)
+		return nil, fmt.Errorf("unit %q is not in batch %q", options.UnitID, options.BatchID)
 	}
 	unit, err := catalog.Unit(record.UnitID)
 	if err != nil {
-		return nil, "", err
+		return nil, err
 	}
 	resultData, err := os.ReadFile(filepath.Join(batchDir, "result.json"))
 	if err != nil {
-		return nil, "", fmt.Errorf("read retranslation result: %w", err)
+		return nil, fmt.Errorf("read retranslation result: %w", err)
 	}
 	result, err := decodeRetranslationProcessResult(resultData)
 	if err != nil {
-		return nil, "", err
+		return nil, err
 	}
 	var unitResult RetranslationUnitResult
 	for _, candidate := range result.Units {
@@ -120,25 +170,25 @@ func RecordRetranslationReview(root string, catalog *Catalog, options Retranslat
 		}
 	}
 	if unitResult.UnitID == "" || unitResult.UnitKind != record.UnitKind {
-		return nil, "", fmt.Errorf("unit %q is missing or has incompatible process result", options.UnitID)
+		return nil, fmt.Errorf("unit %q is missing or has incompatible process result", options.UnitID)
 	}
 	candidateData, err := os.ReadFile(filepath.Join(batchDir, filepath.FromSlash(unitResult.CandidatePath)))
 	if err != nil {
-		return nil, "", fmt.Errorf("read candidate for %s: %w", options.UnitID, err)
+		return nil, fmt.Errorf("read candidate for %s: %w", options.UnitID, err)
 	}
 	validationData, err := os.ReadFile(filepath.Join(batchDir, filepath.FromSlash(unitResult.ValidationPath)))
 	if err != nil {
-		return nil, "", fmt.Errorf("read validation for %s: %w", options.UnitID, err)
+		return nil, fmt.Errorf("read validation for %s: %w", options.UnitID, err)
 	}
 	validation, err := decodeRetranslationValidation(validationData, unit)
 	if err != nil {
-		return nil, "", fmt.Errorf("validation for %s: %w", options.UnitID, err)
+		return nil, fmt.Errorf("validation for %s: %w", options.UnitID, err)
 	}
 	if validation.BatchID != options.BatchID || validation.Locale != options.Locale || validation.UnitID != options.UnitID || validation.UnitKind != record.UnitKind {
-		return nil, "", fmt.Errorf("validation for %s has incompatible identity", options.UnitID)
+		return nil, fmt.Errorf("validation for %s has incompatible identity", options.UnitID)
 	}
 	if record.SourceSHA256 != unit.SourceSHA256 || sum(unit.Source) != record.SourceSHA256 {
-		return nil, "", fmt.Errorf("source metadata mismatch for %s", options.UnitID)
+		return nil, fmt.Errorf("source metadata mismatch for %s", options.UnitID)
 	}
 	review := TranslationReview{
 		SchemaVersion: TranslationReviewSchemaVersion, BatchID: options.BatchID, Locale: options.Locale,
@@ -153,17 +203,214 @@ func RecordRetranslationReview(root string, catalog *Catalog, options Retranslat
 	}
 	path := filepath.Join(batchDir, "review", retranslationReviewName(unit))
 	if _, err := os.Stat(path); err == nil {
-		return nil, "", fmt.Errorf("review already exists for %s", options.UnitID)
+		return nil, fmt.Errorf("review already exists for %s", options.UnitID)
 	} else if !os.IsNotExist(err) {
-		return nil, "", fmt.Errorf("inspect review for %s: %w", options.UnitID, err)
+		return nil, fmt.Errorf("inspect review for %s: %w", options.UnitID, err)
 	}
-	if err := os.MkdirAll(filepath.Dir(path), 0755); err != nil {
-		return nil, "", fmt.Errorf("create review directory: %w", err)
+	return &preparedRetranslationReview{
+		review:         review,
+		path:           path,
+		repositoryPath: filepath.ToSlash(filepath.Join("data", "retranslation-runs", options.Locale, options.BatchID, "review", retranslationReviewName(unit))),
+	}, nil
+}
+
+func writePreparedRetranslationReview(prepared *preparedRetranslationReview) error {
+	if err := os.MkdirAll(filepath.Dir(prepared.path), 0755); err != nil {
+		return fmt.Errorf("create review directory: %w", err)
 	}
-	if err := writeTranslationJSON(path, review); err != nil {
-		return nil, "", fmt.Errorf("write review for %s: %w", options.UnitID, err)
+	data, err := json.MarshalIndent(prepared.review, "", "  ")
+	if err != nil {
+		return fmt.Errorf("marshal review for %s: %w", prepared.review.UnitID, err)
 	}
-	return &review, filepath.ToSlash(filepath.Join("data", "retranslation-runs", options.Locale, options.BatchID, "review", retranslationReviewName(unit))), nil
+	file, err := os.OpenFile(prepared.path, os.O_WRONLY|os.O_CREATE|os.O_EXCL, 0644)
+	if os.IsExist(err) {
+		return fmt.Errorf("review already exists for %s", prepared.review.UnitID)
+	}
+	if err != nil {
+		return fmt.Errorf("write review for %s: %w", prepared.review.UnitID, err)
+	}
+	remove := true
+	defer func() {
+		_ = file.Close()
+		if remove {
+			_ = os.Remove(prepared.path)
+		}
+	}()
+	if _, err := file.Write(append(data, '\n')); err != nil {
+		return fmt.Errorf("write review for %s: %w", prepared.review.UnitID, err)
+	}
+	if err := file.Close(); err != nil {
+		return fmt.Errorf("close review for %s: %w", prepared.review.UnitID, err)
+	}
+	remove = false
+	return nil
+}
+
+// RecordRetranslationReviewBatch records one stable Candidate Snapshot index
+// range. Every unit is fully preflighted through the single-unit review path
+// and checked against the snapshot before any review evidence is written.
+func RecordRetranslationReviewBatch(root string, catalog *Catalog, options RetranslationReviewBatchRecordOptions) (*RetranslationReviewBatchRecordResult, error) {
+	if catalog == nil {
+		return nil, errors.New("retranslation catalog is required")
+	}
+	if err := ValidateLocaleName(options.Locale); err != nil {
+		return nil, err
+	}
+	if err := validateSnapshotID(options.SnapshotID); err != nil {
+		return nil, err
+	}
+	startIndex := options.StartIndex
+	if startIndex == 0 {
+		startIndex = 1
+	}
+	if startIndex < 1 {
+		return nil, fmt.Errorf("start_index must be at least 1, got %d", options.StartIndex)
+	}
+	limit := options.Limit
+	if limit == 0 {
+		limit = DefaultRetranslationReviewBatchLimit
+	}
+	if limit < 1 {
+		return nil, fmt.Errorf("limit must be at least 1, got %d", options.Limit)
+	}
+
+	snapshot, err := readQualityCheckSnapshotForReview(root, options.Locale, options.SnapshotID)
+	if err != nil {
+		return nil, err
+	}
+	if startIndex > snapshot.UnitCount {
+		return nil, fmt.Errorf("start_index %d is outside snapshot range 1-%d", startIndex, snapshot.UnitCount)
+	}
+	endIndex := startIndex + limit - 1
+	if endIndex > snapshot.UnitCount || endIndex < startIndex {
+		endIndex = snapshot.UnitCount
+	}
+	selected := snapshot.Units[startIndex-1 : endIndex]
+
+	reviewedAt := time.Now()
+	if options.Now != nil {
+		reviewedAt = options.Now()
+	}
+	fixedNow := func() time.Time { return reviewedAt }
+	prepared := make([]*preparedRetranslationReview, 0, len(selected))
+	result := &RetranslationReviewBatchRecordResult{
+		Locale: options.Locale, SnapshotID: options.SnapshotID,
+		StartIndex: startIndex, EndIndex: endIndex, Limit: limit,
+		RecordedCount: len(selected), Reviews: make([]RetranslationReviewBatchRecord, 0, len(selected)),
+	}
+	for _, snapshotUnit := range selected {
+		item, err := prepareRetranslationReview(root, catalog, RetranslationReviewRecordOptions{
+			Locale: options.Locale, BatchID: snapshotUnit.SelectedBatchID, UnitID: snapshotUnit.UnitID,
+			Rating: options.Rating, Decision: options.Decision, Summary: options.Summary,
+			Issues: options.Issues, Reviewer: options.Reviewer, Rubric: options.Rubric, Now: fixedNow,
+		})
+		if err != nil {
+			return nil, fmt.Errorf("snapshot index %d (%s) preflight: %w", snapshotUnit.Index, snapshotUnit.UnitID, err)
+		}
+		if err := checkPreparedReviewAgainstSnapshot(options.Locale, snapshotUnit, item); err != nil {
+			return nil, fmt.Errorf("snapshot index %d (%s) preflight: %w", snapshotUnit.Index, snapshotUnit.UnitID, err)
+		}
+		prepared = append(prepared, item)
+		result.Reviews = append(result.Reviews, RetranslationReviewBatchRecord{
+			Index: snapshotUnit.Index, UnitID: item.review.UnitID, BatchID: item.review.BatchID, Path: item.repositoryPath,
+		})
+	}
+
+	written := make([]string, 0, len(prepared))
+	for _, item := range prepared {
+		if err := writePreparedRetranslationReview(item); err != nil {
+			rollbackErrors := []error{err}
+			for i := len(written) - 1; i >= 0; i-- {
+				if removeErr := os.Remove(written[i]); removeErr != nil && !os.IsNotExist(removeErr) {
+					rollbackErrors = append(rollbackErrors, fmt.Errorf("rollback %s: %w", filepath.ToSlash(written[i]), removeErr))
+				}
+			}
+			return nil, fmt.Errorf("commit review batch: %w", errors.Join(rollbackErrors...))
+		}
+		written = append(written, item.path)
+	}
+	return result, nil
+}
+
+func readQualityCheckSnapshotForReview(root, locale, snapshotID string) (*QualityCheckSnapshotManifest, error) {
+	path := filepath.Join(root, "data", "quality-check-snapshots", locale, snapshotID, "manifest.json")
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return nil, fmt.Errorf("read quality-check snapshot %q: %w", snapshotID, err)
+	}
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	var manifest QualityCheckSnapshotManifest
+	if err := decoder.Decode(&manifest); err != nil {
+		return nil, fmt.Errorf("parse quality-check snapshot %q: %w", snapshotID, err)
+	}
+	if err := decoder.Decode(&struct{}{}); err != io.EOF {
+		return nil, fmt.Errorf("parse quality-check snapshot %q: multiple JSON values", snapshotID)
+	}
+	if manifest.SchemaVersion != QualityCheckSnapshotSchemaVersion || manifest.SnapshotID != snapshotID || manifest.Locale != locale {
+		return nil, fmt.Errorf("quality-check snapshot %q has incompatible identity", snapshotID)
+	}
+	if manifest.UnitCount < 1 || manifest.UnitCount != len(manifest.Units) || manifest.PageCount+manifest.ExampleCount != manifest.UnitCount {
+		return nil, fmt.Errorf("quality-check snapshot %q has incompatible unit counts", snapshotID)
+	}
+	wantGlossaryPath := filepath.ToSlash(filepath.Join("locales", locale, "glossary.yaml"))
+	if manifest.GlossaryPath != wantGlossaryPath || manifest.GlossarySHA256 == "" {
+		return nil, fmt.Errorf("quality-check snapshot %q has incompatible glossary identity", snapshotID)
+	}
+	glossaryData, err := readSnapshotReferencedFile(root, manifest.GlossaryPath)
+	if err != nil {
+		return nil, fmt.Errorf("quality-check snapshot %q glossary: %w", snapshotID, err)
+	}
+	if sum(glossaryData) != manifest.GlossarySHA256 {
+		return nil, fmt.Errorf("quality-check snapshot %q glossary hash mismatch", snapshotID)
+	}
+	seen := make(map[string]bool, len(manifest.Units))
+	pageCount, exampleCount := 0, 0
+	for i, unit := range manifest.Units {
+		if unit.Index != i+1 {
+			return nil, fmt.Errorf("quality-check snapshot %q has unstable index %d at position %d", snapshotID, unit.Index, i+1)
+		}
+		if unit.UnitID == "" || seen[unit.UnitID] {
+			return nil, fmt.Errorf("quality-check snapshot %q has empty or duplicate unit_id %q", snapshotID, unit.UnitID)
+		}
+		seen[unit.UnitID] = true
+		switch unit.UnitKind {
+		case UnitKindPage:
+			pageCount++
+		case UnitKindExample:
+			exampleCount++
+		default:
+			return nil, fmt.Errorf("quality-check snapshot %q unit %s has invalid unit_kind %q", snapshotID, unit.UnitID, unit.UnitKind)
+		}
+		if err := validateBatchID(unit.SelectedBatchID); err != nil {
+			return nil, fmt.Errorf("quality-check snapshot %q unit %s: %w", snapshotID, unit.UnitID, err)
+		}
+		if unit.SourcePath == "" || unit.SourceSHA256 == "" || unit.CandidatePath == "" || unit.CandidateSHA256 == "" ||
+			unit.ValidationPath == "" || unit.ValidationSHA256 == "" || unit.Attempt < 1 {
+			return nil, fmt.Errorf("quality-check snapshot %q unit %s has empty evidence identity", snapshotID, unit.UnitID)
+		}
+	}
+	if pageCount != manifest.PageCount || exampleCount != manifest.ExampleCount {
+		return nil, fmt.Errorf("quality-check snapshot %q has incompatible kind counts", snapshotID)
+	}
+	return &manifest, nil
+}
+
+func checkPreparedReviewAgainstSnapshot(locale string, snapshot QualityCheckSnapshotUnit, prepared *preparedRetranslationReview) error {
+	review := prepared.review
+	wantCandidatePath := filepath.ToSlash(filepath.Join("data", "retranslation-runs", locale, review.BatchID, review.CandidatePath))
+	wantValidationPath := filepath.ToSlash(filepath.Join("data", "retranslation-runs", locale, review.BatchID, review.ValidationPath))
+	if review.BatchID != snapshot.SelectedBatchID || review.UnitID != snapshot.UnitID || review.UnitKind != snapshot.UnitKind ||
+		review.SourcePath != snapshot.SourcePath || review.SourceSHA256 != snapshot.SourceSHA256 || review.Attempt != snapshot.Attempt {
+		return errors.New("review identity does not match Candidate Snapshot")
+	}
+	if wantCandidatePath != snapshot.CandidatePath || review.CandidateSHA256 != snapshot.CandidateSHA256 {
+		return errors.New("candidate path or hash does not match Candidate Snapshot")
+	}
+	if wantValidationPath != snapshot.ValidationPath || review.ValidationSHA256 != snapshot.ValidationSHA256 {
+		return errors.New("validation path or hash does not match Candidate Snapshot")
+	}
+	return nil
 }
 
 type RetranslationReviewCheckResult struct {
