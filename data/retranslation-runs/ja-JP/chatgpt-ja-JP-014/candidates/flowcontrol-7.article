@@ -1,0 +1,7 @@
+* if と else
+
+`if` の短い文の中で宣言された変数は、どの `else` ブロック内でも使用できます。
+
+（ `pow` の 2 回の呼び出しはどちらも、 `fmt.Println` の呼び出しが `main` 内で始まる前に結果を返します。）
+
+.play flowcontrol/if-and-else.go

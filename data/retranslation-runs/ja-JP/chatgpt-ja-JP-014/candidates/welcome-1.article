@@ -1,0 +1,35 @@
+* こんにちは、世界
+
+[[/][Go プログラミング言語]]のツアーへようこそ。
+
+このツアーはいくつかのモジュールで構成されており、
+ページ左上の
+[[javascript:highlight(".logo")][Go 言語ツアー]]をクリックしてアクセスできます。
+
+ページ右上の[[javascript:highlightAndClick(".nav")][メニュー]]をクリックすれば、いつでも目次を表示できます。
+
+ツアーには、順に取り組める一連のページと練習問題が用意されています。
+
+次の操作でページ間を移動できます。
+
+- 前のページへ戻るには、[[javascript:highlight(".prev-page")]["前へ"]]をクリックするか、 `PageUp` キーを押します。
+
+- 次のページへ進むには、[[javascript:highlight(".next-page")]["次へ"]]をクリックするか、 `PageDown` キーを押します。
+
+このツアーは対話形式です。ここで
+[[javascript:highlightAndClick("#run")][実行]]ボタンをクリックして
+（または `Shift` + `Enter` を押して）、リモートサーバー上でプログラムをコンパイルして実行してみましょう。
+結果はコードの下に表示されます。
+
+これらのサンプルプログラムは、Go のさまざまな側面を示しています。ツアー内のプログラムは、自分で試すための出発点として用意されています。
+
+プログラムを編集して、もう一度実行してみてください。
+
+[[javascript:highlightAndClick("#format")][フォーマット]]をクリックすると
+（ショートカット： `Ctrl` + `Enter`）、エディター内のテキストが
+[[/cmd/gofmt/][gofmt]]ツールでフォーマットされます。[[javascript:highlightAndClick(".syntax-checkbox")][シンタックスハイライト]]ボタンをクリックすると、シンタックスハイライトのオンとオフを切り替えられます。
+
+次へ進む準備ができたら、下の[[javascript:highlightAndClick(".next-page")][右矢印]]をクリックするか、 `PageDown` キーを押してください。
+
+.play welcome/hello.go
+
