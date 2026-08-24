@@ -1,0 +1,13 @@
+* 練習問題：画像
+
+以前作成した [[/tour/moretypes/18][画像ジェネレータ]] を覚えていますか？もう一度作成してみましょう。ただし今回は、データのスライスではなく、 `image.Image` の実装を返すようにします。
+
+独自の `Image` 型を定義し、[[/pkg/image/#Image][必要なメソッド]] を実装して、 `pic.ShowImage` を呼び出してください。
+
+`Bounds` は、 `image.Rectangle` を返すようにします。たとえば、 `image.Rect(0,`0,`w,`h)` のようにします。
+
+`ColorModel` は `color.RGBAModel` を返すようにします。
+
+`At` は色を返すようにします。前回の画像ジェネレータの値 `v` は、今回は `color.RGBA{v,`v,`255,`255}` に対応します。
+
+.play methods/exercise-images.go

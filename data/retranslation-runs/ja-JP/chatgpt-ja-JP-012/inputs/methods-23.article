@@ -1,0 +1,13 @@
+* Exercise: rot13Reader
+
+A common pattern is an [[⟪GTI18N_11d87614_000001⟫][io.Reader]] that wraps another ⟪GTI18N_11d87614_000002⟫io.Reader⟪GTI18N_11d87614_000003⟫, modifying the stream in some way.
+
+For example, the [[⟪GTI18N_11d87614_000004⟫][gzip.NewReader]] function takes an ⟪GTI18N_11d87614_000005⟫io.Reader⟪GTI18N_11d87614_000006⟫ (a stream of compressed data) and returns a ⟪GTI18N_11d87614_000007⟫*gzip.Reader⟪GTI18N_11d87614_000008⟫ that also implements ⟪GTI18N_11d87614_000009⟫io.Reader⟪GTI18N_11d87614_000010⟫ (a stream of the decompressed data).
+
+Implement a ⟪GTI18N_11d87614_000011⟫rot13Reader⟪GTI18N_11d87614_000012⟫ that implements ⟪GTI18N_11d87614_000013⟫io.Reader⟪GTI18N_11d87614_000014⟫ and reads from an ⟪GTI18N_11d87614_000015⟫io.Reader⟪GTI18N_11d87614_000016⟫, modifying the stream by applying the [[⟪GTI18N_11d87614_000017⟫][rot13]] substitution cipher to all alphabetical characters.
+
+The ⟪GTI18N_11d87614_000018⟫rot13Reader⟪GTI18N_11d87614_000019⟫ type is provided for you.
+Make it an ⟪GTI18N_11d87614_000020⟫io.Reader⟪GTI18N_11d87614_000021⟫ by implementing its ⟪GTI18N_11d87614_000022⟫Read⟪GTI18N_11d87614_000023⟫ method.
+
+⟪GTI18N_11d87614_000024⟫
+

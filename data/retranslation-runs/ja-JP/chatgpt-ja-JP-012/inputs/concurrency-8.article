@@ -1,0 +1,24 @@
+* Exercise: Equivalent Binary Trees
+
+⟪GTI18N_b362cc15_000001⟫1.⟪GTI18N_b362cc15_000002⟫ Implement the ⟪GTI18N_b362cc15_000003⟫Walk⟪GTI18N_b362cc15_000004⟫ function.
+
+⟪GTI18N_b362cc15_000005⟫2.⟪GTI18N_b362cc15_000006⟫ Test the ⟪GTI18N_b362cc15_000007⟫Walk⟪GTI18N_b362cc15_000008⟫ function.
+
+The function ⟪GTI18N_b362cc15_000009⟫tree.New(k)⟪GTI18N_b362cc15_000010⟫ constructs a randomly-structured (but always sorted) binary tree holding the values ⟪GTI18N_b362cc15_000011⟫k⟪GTI18N_b362cc15_000012⟫, ⟪GTI18N_b362cc15_000013⟫2k⟪GTI18N_b362cc15_000014⟫, ⟪GTI18N_b362cc15_000015⟫3k⟪GTI18N_b362cc15_000016⟫, ..., ⟪GTI18N_b362cc15_000017⟫10k⟪GTI18N_b362cc15_000018⟫.
+
+Create a new channel ⟪GTI18N_b362cc15_000019⟫ch⟪GTI18N_b362cc15_000020⟫ and kick off the walker:
+
+⟪GTI18N_b362cc15_000021⟫
+
+Then read and print 10 values from the channel. It should be the numbers 1, 2, 3, ..., 10.
+
+⟪GTI18N_b362cc15_000022⟫3.⟪GTI18N_b362cc15_000023⟫ Implement the ⟪GTI18N_b362cc15_000024⟫Same⟪GTI18N_b362cc15_000025⟫ function using ⟪GTI18N_b362cc15_000026⟫Walk⟪GTI18N_b362cc15_000027⟫ to determine whether ⟪GTI18N_b362cc15_000028⟫t1⟪GTI18N_b362cc15_000029⟫ and ⟪GTI18N_b362cc15_000030⟫t2⟪GTI18N_b362cc15_000031⟫ store the same values.
+
+⟪GTI18N_b362cc15_000032⟫4.⟪GTI18N_b362cc15_000033⟫ Test the ⟪GTI18N_b362cc15_000034⟫Same⟪GTI18N_b362cc15_000035⟫ function.
+
+⟪GTI18N_b362cc15_000036⟫Same(tree.New(1),`tree.New(1))⟪GTI18N_b362cc15_000037⟫ should return true, and ⟪GTI18N_b362cc15_000038⟫Same(tree.New(1),`tree.New(2))⟪GTI18N_b362cc15_000039⟫ should return false.
+
+The documentation for ⟪GTI18N_b362cc15_000040⟫Tree⟪GTI18N_b362cc15_000041⟫ can be found [[⟪GTI18N_b362cc15_000042⟫][here]].
+
+⟪GTI18N_b362cc15_000043⟫
+

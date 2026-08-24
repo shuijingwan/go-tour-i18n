@@ -1,0 +1,16 @@
+* Reader
+
+`io` パッケージは、データストリームの読み取り側を表す `io.Reader` インターフェースを定義しています。
+
+Go 標準ライブラリには、ファイル、ネットワーク接続、圧縮、暗号など、このインターフェースの [[https://cs.opensource.google/search?q=Read%5C(%5Cw%2B%5Cs%5C%5B%5C%5Dbyte%5C)&ss=go%2Fgo][多くの実装]] が含まれています。
+
+`io.Reader` インターフェースには、 `Read` メソッドがあります。
+
+	func (T) Read(b []byte) (n int, err error)
+
+`Read` は、渡されたバイトスライスにデータを格納し、格納したバイト数とエラー値を返します。ストリームが終了すると `io.EOF` エラーを返します。
+
+サンプルコードは [[/pkg/strings/#Reader][`strings.Reader`]] を作成し、その出力を一度に 8 バイトずつ読み取ります。
+
+.play methods/reader.go
+

@@ -1,0 +1,15 @@
+* Goroutines
+
+_goroutine_ は、Go ランタイムによって管理される軽量スレッドです。
+
+	go f(x, y, z)
+
+は、次を実行する新しい goroutine を開始します。
+
+	f(x, y, z)
+
+`f`、 `x`、 `y`、 `z` の評価は現在の goroutine で行われ、 `f` の実行は新しい goroutine で行われます。
+
+Goroutines は同じアドレス空間で実行されるため、共有メモリへのアクセスは同期させる必要があります。[[/pkg/sync/][`sync`]] パッケージには便利なプリミティブが用意されていますが、Go にはほかのプリミティブがあるため、これらを使う機会はあまりありません。（次のページを参照してください。）
+
+.play concurrency/goroutines.go

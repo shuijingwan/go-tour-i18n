@@ -1,0 +1,14 @@
+* デフォルト選択
+
+`default` case は、 `select` でほかに準備のできている case がなければ実行されます。
+
+送信や受信をブロックせずに試すには、 `default` case を使います。
+
+	select {
+	case i := <-c:
+		// i を使用
+	default:
+		// c から受信するとブロックされる
+	}
+
+.play concurrency/default-selection.go
