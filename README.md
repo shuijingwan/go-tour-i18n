@@ -7,11 +7,12 @@
 ## 在线入口
 
 - 在线体验：[A Tour of Go 简体中文](https://go-dev.shuijingwanwq.com/)
+- 在线体验：[A Tour of Go 日本語](https://ja-go-dev.shuijingwanwq.com/)
 - 官方英文版：[A Tour of Go](https://go.dev/tour/)
 - 开发记录：[《A Tour of Go 多语言翻译项目》](https://www.shuijingwanwq.com/series/go-tour-chinese-edition-development-series/)
 - 问题反馈：[GitHub Issues](https://github.com/shuijingwan/go-tour-i18n/issues)
 
-正式站点为 <https://go-dev.shuijingwanwq.com/>：根路径 `/` 是项目首页，课程位于 `/tour/`。博客页面回链至正式站点和 GitHub 仍由仓库外的博客维护工作完成。
+正式社区语言站为简体中文 <https://go-dev.shuijingwanwq.com/> 和日本語 <https://ja-go-dev.shuijingwanwq.com/>：根路径 `/` 是项目首页，课程位于 `/tour/`。博客页面回链至正式站点和 GitHub 仍由仓库外的博客维护工作完成。
 
 ## 当前阶段
 
@@ -24,6 +25,7 @@
 - 已实现面向 locale 的完整正式投影和本地完整预览；zh-CN 完整投影已通过 103/103 HTTP 页面级验收。
 - 当前 module path 为 `github.com/shuijingwan/go-tour-i18n`。
 - zh-CN 第一阶段已有 production release 在线运行；production publish、自动部署和浏览器验收能力均已完成。
+- ja-JP 已完成 production release 部署、Cloudflare Free 公网接入、SEO 全量验收和 Playground 浏览器验收，并正式上线。
 - 在匿名质量实验之后，已完成 zh-CN 全部 103 页的 ChatGPT 整页重译、批次处理、统一 validator、语义质量审计和 canonical promotion。当前仓库中的 103 个 canonical candidate 均为本轮正式提升后的 ChatGPT 译文，最终语义质量审计为 A=103、B/C/D=0。
 - 本轮 ChatGPT 103 页 canonical 已生成正式 production release、完成生产部署和线上最终验收。正式课程路由 103/103、article endpoint 7/7、真实 Run 与 Format 均通过；当前在线内容已经是本轮正式提升后的 ChatGPT 译文。详见 [翻译质量实验](docs/TRANSLATION_QUALITY_EXPERIMENTS.md) 和 [项目状态](docs/PROJECT_STATE.md)。
 
@@ -168,9 +170,9 @@ go run -mod=readonly ./cmd/tour-i18n preview \
 
 ## Production runtime、publish 与正式上线
 
-production runtime 已完成并正式部署。页面访问链路为：浏览器 → EdgeOne → 阿里云 Nginx → Go Tour。正常 production Run / Format 由浏览器直接请求自建 ZgoCloud 固定代理 `https://play.go-dev.shuijingwanwq.com:8443/compile` 和 `/fmt`，再由该代理转发到官方 Playground `play.golang.org`；不再经过阿里云 Go 服务端的 `/_/compile`、`/_/fmt`。旧服务端路径仍保留为兼容/回滚路径，并按 go.dev 要求保留 form 编码。ZgoCloud 只是本项目自建的固定反向代理，不是 Go 官方服务。production 主机不执行用户提交的 Go 程序。本地 `/socket` 不用于 production：普通请求和 WebSocket Upgrade 均返回 404，`/_/share` 当前未启用并返回 404。
+production runtime 已在 zh-CN 和 ja-JP 正式部署。zh-CN 页面经 EdgeOne 接入，ja-JP 页面经 Cloudflare Free 接入，随后均由阿里云 Nginx 转发至各自 Go Tour 服务。正常 production Run / Format 由浏览器直接请求自建 ZgoCloud 固定代理 `https://play.go-dev.shuijingwanwq.com:8443/compile` 和 `/fmt`，再由该代理转发到官方 Playground `play.golang.org`；代理已允许 `https://go-dev.shuijingwanwq.com` 与 `https://ja-go-dev.shuijingwanwq.com` 两个正式 Origin。旧服务端路径仍保留为兼容/回滚路径，并按 go.dev 要求保留 form 编码。ZgoCloud 只是本项目自建的固定反向代理，不是 Go 官方服务。production 主机不执行用户提交的 Go 程序。本地 `/socket` 不用于 production：普通请求和 WebSocket Upgrade 均返回 404，`/_/share` 当前未启用并返回 404。
 
-使用以下命令生成固定 locale 的 production bundle（当前完成 locale 为 `zh-CN`）：
+使用以下命令生成固定 locale 的 production bundle（当前正式上线 locale 为 `zh-CN` 和 `ja-JP`）：
 
 ```bash
 go run -mod=readonly ./cmd/tour-i18n publish \
@@ -192,11 +194,13 @@ go run -mod=readonly ./cmd/tour-i18n publish \
 
 `--published-at` 是当前 locale production bundle 的发布时间，必须使用 RFC 3339 UTC；它不是 Git commit、服务启动或请求时间。源码 `_content/tour/site-metadata.json` 仅为 `go run ./tour` 和 preview 使用的开发态 metadata，不保存生产发布时间；publish 会在 bundle 内生成真实的站点 metadata。`bin/tour` 在构建时固定 locale，从 binary 自身相邻的 `../_content` 加载内容，不需要运行时 `--locale` 或 `--content`，也不依赖当前工作目录。schema v2 `release.json` 同时记录 `translation_units`、`pages`、`eligible_examples` 和 `articles`；`translation_units` 与 `eligible_examples` 由当前 Catalog 的统一 workflow 动态计算。`release.json`、bundle 内的站点 metadata 和 `SHA256SUMS` 由相同输入确定；相同源码、发布时间、Go 工具链及 GOOS/GOARCH 下的重复 publish 逐文件一致。bundle 不包含 candidate、status、translation-runs 等开发期数据。
 
-当前正式 release 已部署：`/data/go-tour/releases/20260820-zh-CN-6ae139c`。该 release 使用 upstream `645042eb697eaf69e33a9af00c6b5b3fffdead5a`，包含 103 个 ready Page 与 19 个 ready eligible Example；历史上正式提升后的 103 页 ChatGPT canonical 事实保持不变。
+当前 zh-CN 正式 release 已部署：`/data/go-tour/releases/20260824-zh-CN-7f6474b0`。该 release 使用 upstream `645042eb697eaf69e33a9af00c6b5b3fffdead5a`，包含 103 个 ready Page 与 19 个 ready eligible Example；历史上正式提升后的 103 页 ChatGPT canonical 事实保持不变。
 
-正式站点：<https://go-dev.shuijingwanwq.com/>。
+当前 ja-JP 正式 release 为 `/data/go-tour-ja-JP/releases/20260824-ja-JP-164fecdd`，由 `go-tour-ja-JP.service` 在 `127.0.0.1:4000` 提供服务；非中文 production 静态资源使用 <https://assets-go-dev.shuijingwanwq.com/>。
 
-页面请求链路为：浏览器 → EdgeOne → Nginx → Go Tour。Run 使用 `https://play.go-dev.shuijingwanwq.com:8443/compile`，Format 使用 `https://play.go-dev.shuijingwanwq.com:8443/fmt`，链路随后为 ZgoCloud Nginx → `play.golang.org`。旧的阿里云 Go 服务端 `/_/compile`、`/_/fmt` 仍保留作为兼容/回滚路径。Go Tour 由 `go-tour.service` 管理，监听 `127.0.0.1:3999`；生产环境不直接暴露本地 `/socket` 代码执行接口。
+zh-CN 正式站点：<https://go-dev.shuijingwanwq.com/>。
+
+zh-CN 页面请求链路为：浏览器 → EdgeOne → Nginx → Go Tour。Run 使用 `https://play.go-dev.shuijingwanwq.com:8443/compile`，Format 使用 `https://play.go-dev.shuijingwanwq.com:8443/fmt`，链路随后为 ZgoCloud Nginx → `play.golang.org`。旧的阿里云 Go 服务端 `/_/compile`、`/_/fmt` 仍保留作为兼容/回滚路径。Go Tour 由 `go-tour.service` 管理，监听 `127.0.0.1:3999`；生产环境不直接暴露本地 `/socket` 代码执行接口。
 
 ## 本地运行
 
@@ -220,22 +224,26 @@ go test -mod=readonly -count=1 ./...
 
 ## 实际生产部署状态
 
-zh-CN 第一阶段已经正式上线：<https://go-dev.shuijingwanwq.com/>。
+zh-CN 与 ja-JP 均已正式上线：<https://go-dev.shuijingwanwq.com/>、<https://ja-go-dev.shuijingwanwq.com/>。
 
 以下是当前正式 production 部署状态：
 
-- 正式 release：`/data/go-tour/releases/20260820-zh-CN-6ae139c`。
-- Upstream commit：`645042eb697eaf69e33a9af00c6b5b3fffdead5a`。
-- 正式状态：`ready=122`、`pending=0`、`blocked=0`、`pages=103`、`eligible_examples=19`、`articles=7`；103/103 课程路由与 7/7 article endpoint 已完成线上验收。
-- 页面访问链路：浏览器 → EdgeOne → 阿里云 Nginx → Go Tour。
+- zh-CN 正式 release：`/data/go-tour/releases/20260824-zh-CN-7f6474b0`。
+- zh-CN Upstream commit：`645042eb697eaf69e33a9af00c6b5b3fffdead5a`。
+- zh-CN 正式状态：`ready=122`、`pending=0`、`blocked=0`、`pages=103`、`eligible_examples=19`、`articles=7`；103/103 课程路由与 7/7 article endpoint 已完成线上验收。
+- zh-CN 页面访问链路：浏览器 → EdgeOne → 阿里云 Nginx → Go Tour。
 - 正常 production Run / Format 链路：浏览器 → `https://play.go-dev.shuijingwanwq.com:8443/compile` 或 `/fmt` → ZgoCloud Nginx → `play.golang.org`。
 - 旧阿里云 Go 服务端 `/_/compile`、`/_/fmt` 仍保留作为兼容/回滚路径；production `/socket` 仍禁用，生产主机不执行用户提交的 Go 代码。
 - systemd 服务：`go-tour.service`，监听 `127.0.0.1:3999`。
 - `/tour/welcome/1`、真实 Run、真实 Format 均已通过公网验收；`/socket` 和 `/_/share` 均返回 404。
 - sitemap 包含首页、`/tour/list` 和 103 个课程页面，共 105 个唯一 URL。
 - production binary 为 Linux amd64、`CGO_ENABLED=0`、静态链接，不依赖服务器 glibc 版本。
+- ja-JP 正式 release：`/data/go-tour-ja-JP/releases/20260824-ja-JP-164fecdd`；data root 为 `/data/go-tour-ja-JP`，systemd 服务为 `go-tour-ja-JP.service`，监听 `127.0.0.1:4000`，公网使用 Cloudflare Free。
+- ja-JP sitemap 已验证 105/105，host mismatch=0、HTTP failure=0；`robots.txt` 正确指向 <https://ja-go-dev.shuijingwanwq.com/sitemap.xml>。
+- ja-JP Playground compile、fmt 和浏览器实际运行均已通过；Playground 允许 zh-CN 与 ja-JP 两个正式 Origin。
+- 非中文共享静态资源由 <https://assets-go-dev.shuijingwanwq.com/> 提供；旧 `assets.go-dev.shuijingwanwq.com` 已废弃并清理。
 
-部署期间已解决动态链接 glibc 兼容、OneinStack 静态资源 location 抢占、release 目录权限和 Nginx systemd 接管问题。Cloudflare 仅负责权威 DNS，业务 CNAME 使用 DNS only，正式流量经过 EdgeOne，不采用 Cloudflare 双层代理。
+部署期间已解决动态链接 glibc 兼容、OneinStack 静态资源 location 抢占、release 目录权限和 Nginx systemd 接管问题。当前 CDN 接入明确区分：zh-CN 使用 EdgeOne；ja-JP 使用 Cloudflare Free；`assets-go-dev.shuijingwanwq.com` 使用 Cloudflare 代理。不存在 Cloudflare 与 EdgeOne 双层代理。
 
 ## 上游来源
 

@@ -5,7 +5,7 @@
 ## 当前 production 语言站点
 
 - `zh-CN`：<https://go-dev.shuijingwanwq.com/>，服务 `go-tour.service`，监听 `127.0.0.1:3999`，data root 为 `/data/go-tour/`。
-- `ja-JP`：<https://ja-go-dev.shuijingwanwq.com/>，服务 `go-tour-ja-JP.service`，监听 `127.0.0.1:4000`，data root 为 `/data/go-tour-ja-JP/`。
+- `ja-JP`：<https://ja-go-dev.shuijingwanwq.com/>，使用 Cloudflare Free；服务 `go-tour-ja-JP.service`，监听 `127.0.0.1:4000`，data root 为 `/data/go-tour-ja-JP/`，当前 release 为 `/data/go-tour-ja-JP/releases/20260824-ja-JP-164fecdd`。
 
 `zh-CN` 请求链路为 Cloudflare 权威 DNS → 腾讯云 EdgeOne → 源站 `121.40.248.29:443` → Nginx → `127.0.0.1:3999`。EdgeOne 到源站使用 HTTPS，回源 Host 为 `go-dev.shuijingwanwq.com`。
 
@@ -186,7 +186,20 @@ Cloudflare Edge Cache TTL 为 1 个月。项目不主动覆盖 Browser Cache TTL
 4. 再次请求并确认 HIT；
 5. 对照 `SHA256SUMS` 核对公网资源内容。
 
-旧 `assets.go-dev.shuijingwanwq.com` 未上线、已废弃，不提供兼容或迁移。不要在 zh-CN 的现有 EdgeOne 发布流程中加入 assets 域名依赖。
+旧 `assets.go-dev.shuijingwanwq.com` 已废弃并清理，不提供兼容或迁移。不要在 zh-CN 的现有 EdgeOne 发布流程中加入 assets 域名依赖。
+
+## ja-JP production 验收状态
+
+ja-JP 当前 release `/data/go-tour-ja-JP/releases/20260824-ja-JP-164fecdd` 已完成源站和 Cloudflare Free 公网验收。sitemap 的 105 个 URL 已全部验证，结果为 105/105、host mismatch=0、HTTP failure=0；`robots.txt` 已确认指向 <https://ja-go-dev.shuijingwanwq.com/sitemap.xml>。
+
+Playground 代理当前允许以下两个正式 Origin：
+
+```text
+https://go-dev.shuijingwanwq.com
+https://ja-go-dev.shuijingwanwq.com
+```
+
+ja-JP 的 Playground compile、fmt 和浏览器实际运行均已通过。非中文共享静态资源由 <https://assets-go-dev.shuijingwanwq.com/> 提供。
 
 ## 最小生产验收
 

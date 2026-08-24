@@ -1,8 +1,16 @@
 # 项目状态
 
-更新时间：2026-08-23（北京时间）
+更新时间：2026-08-24（北京时间）
 
 ## 基线与架构
+
+### 2026-08-24 ja-JP production 上线
+
+- ja-JP 已在 <https://ja-go-dev.shuijingwanwq.com/> 正式上线，公网使用 Cloudflare Free；data root 为 `/data/go-tour-ja-JP`，服务为 `go-tour-ja-JP.service`，监听 `127.0.0.1:4000`。
+- 当前 ja-JP release 为 `/data/go-tour-ja-JP/releases/20260824-ja-JP-164fecdd`。
+- 非中文 production 共享静态资源由 <https://assets-go-dev.shuijingwanwq.com/> 提供；旧 `assets.go-dev.shuijingwanwq.com` 已废弃并清理。
+- Playground 已允许 `https://go-dev.shuijingwanwq.com` 与 `https://ja-go-dev.shuijingwanwq.com` 两个正式 Origin。ja-JP compile、fmt 和浏览器实际运行均已通过。
+- ja-JP sitemap 已验证 105/105，host mismatch=0、HTTP failure=0；`robots.txt` 正确指向 <https://ja-go-dev.shuijingwanwq.com/sitemap.xml>。
 
 - 官方 upstream 基线为 `golang/website` 的 `master` 分支 commit `645042eb697eaf69e33a9af00c6b5b3fffdead5a`；翻译运行时使用仓库内固定的最小 Tour 源码闭包，外部 checkout 仅用于同步与校验。
 - 当前目录包含 103 个正式发布页面和 2 条单独保留的 `#appengine:` 条件源审计记录；两个条件 Section 去标记后同时投影为 `welcome/4`、`welcome/5`。
