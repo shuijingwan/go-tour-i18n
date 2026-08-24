@@ -40,7 +40,13 @@ func run(args []string) error {
 		return err
 	}
 	if len(args) == 0 {
-		return fmt.Errorf("usage: tour-i18n <catalog|upstream|page|status|candidate|translate|retranslation|quality-check|build|preview|publish> <command or flags>")
+		return fmt.Errorf("usage: tour-i18n <assets|catalog|upstream|page|status|candidate|translate|retranslation|quality-check|build|preview|publish> <command or flags>")
+	}
+	if args[0] == "assets" {
+		if len(args) < 2 || args[1] != "export" {
+			return fmt.Errorf("usage: tour-i18n assets export --output <directory>")
+		}
+		return exportAssets(root, args[2:])
 	}
 	var publish *publishOptions
 	if args[0] == "publish" {
@@ -75,7 +81,7 @@ func run(args []string) error {
 		return publishBundle(root, catalog, *publish)
 	}
 	if len(args) < 2 {
-		return fmt.Errorf("usage: tour-i18n <catalog|upstream|page|status|candidate|translate|retranslation|quality-check|build|preview|publish> <command or flags>")
+		return fmt.Errorf("usage: tour-i18n <assets|catalog|upstream|page|status|candidate|translate|retranslation|quality-check|build|preview|publish> <command or flags>")
 	}
 	switch args[0] + " " + args[1] {
 	case "catalog check":

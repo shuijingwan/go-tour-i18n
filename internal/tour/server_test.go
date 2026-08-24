@@ -16,6 +16,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/shuijingwan/go-tour-i18n/internal/assets"
 	"github.com/shuijingwan/go-tour-i18n/internal/tour/ui"
 	"github.com/shuijingwan/go-tour-i18n/internal/webtest"
 )
@@ -105,6 +106,109 @@ func TestRenderIndexLocales(t *testing.T) {
 				}
 			}
 		})
+	}
+}
+
+func TestRenderedAssetURLsFollowLocaleAndEnvironment(t *testing.T) {
+	development, err := loadSiteMetadata(contentTour)
+	if err != nil {
+		t.Fatal(err)
+	}
+	production := development
+	production.Development = false
+	production.PublishedAt = "2026-08-12T07:23:34Z"
+
+	for _, test := range []struct {
+		name, locale string
+		metadata     SiteMetadata
+		prefix       string
+	}{
+		{"zh development", "zh-CN", development, ""},
+		{"zh production", "zh-CN", production, ""},
+		{"ja preview", "ja-JP", development, ""},
+		{"ja production", "ja-JP", production, assets.BaseURL},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			catalog, err := ui.Load(test.locale)
+			if err != nil {
+				t.Fatal(err)
+			}
+			metadata := test.metadata
+			metadata.Locale = test.locale
+			home, err := renderHome(catalog, metadata)
+			if err != nil {
+				t.Fatal(err)
+			}
+			index, err := renderIndex(catalog, metadata)
+			if err != nil {
+				t.Fatal(err)
+			}
+			pages := string(home) + string(index)
+			for _, logicalPath := range []string{
+				"tour/static/css/app.css",
+				"tour/static/lib/codemirror/lib/codemirror.css",
+				"images/site-logo.png",
+				"images/site-logo-32.png",
+				"images/go-logo-white.svg",
+				"images/icons/brightness_6_gm_grey_24dp.svg",
+				"images/icons/brightness_2_gm_grey_24dp.svg",
+				"images/icons/light_mode_gm_grey_24dp.svg",
+			} {
+				want := test.prefix + "/" + logicalPath
+				if !strings.Contains(pages, want) {
+					t.Errorf("rendered pages do not contain asset URL %q", want)
+				}
+			}
+			if !strings.Contains(string(index), `<script src="/tour/script.js"></script>`) {
+				t.Error("Tour script is not language-origin relative")
+			}
+			if strings.Contains(string(index), assets.BaseURL+"/tour/script.js") {
+				t.Error("Tour script unexpectedly uses shared assets origin")
+			}
+		})
+	}
+}
+
+func TestNonSharedRuntimePathsRemainLanguageOrigin(t *testing.T) {
+	for path, want := range map[string]string{
+		"tour/static/js/app.js":            "templateUrl: '/tour/static/partials/list.html'",
+		"tour/static/js/directives.js":     "templateUrl: '/tour/static/partials/toc.html'",
+		"tour/static/js/services.js":       "$http.get('/tour/lesson/')",
+		"tour/static/partials/editor.html": "ng-include=\"'/tour/footer.html'\"",
+		"tour/concurrency.article":         ".image /tour/static/img/tree.png",
+	} {
+		data, err := fs.ReadFile(contentTour, path)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if !strings.Contains(string(data), want) {
+			t.Errorf("%s does not retain %q", path, want)
+		}
+		if strings.Contains(string(data), assets.BaseURL) {
+			t.Errorf("%s unexpectedly references shared assets origin", path)
+		}
+	}
+}
+
+func TestAppCSSUsesRelativeSharedGopher(t *testing.T) {
+	data, err := fs.ReadFile(contentTour, "tour/static/css/app.css")
+	if err != nil {
+		t.Fatal(err)
+	}
+	css := string(data)
+	if !strings.Contains(css, "url(../img/gopher.png)") || strings.Contains(css, "url(/tour/static/img/gopher.png)") {
+		t.Fatalf("app.css has unexpected gopher URL")
+	}
+	for _, base := range []string{"/tour/static/css/", assets.BaseURL + "/tour/static/css/"} {
+		baseURL, err := url.Parse(base + "app.css")
+		if err != nil {
+			t.Fatal(err)
+		}
+		resolved := baseURL.ResolveReference(&url.URL{Path: "../img/gopher.png"}).String()
+		want := strings.TrimSuffix(base, "css/") + "img/gopher.png"
+		if resolved != want {
+			t.Fatalf("gopher URL resolved to %q, want %q", resolved, want)
+		}
 	}
 }
 

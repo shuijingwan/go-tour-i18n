@@ -4,13 +4,13 @@
 {{.AnalyticsHTML}}{{.AdHTML}}    <meta charset="utf-8">
     <title>{{ui "site.browser_title"}}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/tour/static/css/app.css">
-    <link rel="icon" href="/images/site-logo-32.png" type="image/png" sizes="32x32">
-    <link rel="icon" href="/images/site-logo.png" type="image/png" sizes="512x512">
+    <link rel="stylesheet" href="{{asset "tour/static/css/app.css"}}">
+    <link rel="icon" href="{{asset "images/site-logo-32.png"}}" type="image/png" sizes="32x32">
+    <link rel="icon" href="{{asset "images/site-logo.png"}}" type="image/png" sizes="512x512">
 </head>
 <body class="site-home">
     <header class="bar top-bar site-header">
-        <a href="/"><img src="/images/site-logo.png" class="site-logo" alt=""></a>
+        <a href="/"><img src="{{asset "images/site-logo.png"}}" class="site-logo" alt=""></a>
         <a class="logo" href="/">{{ui "site.title"}}</a>
     </header>
     <main class="site-main">

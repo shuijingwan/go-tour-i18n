@@ -20,6 +20,7 @@ import (
 	"time"
 
 	"github.com/shuijingwan/go-tour-i18n"
+	"github.com/shuijingwan/go-tour-i18n/internal/assets"
 	"github.com/shuijingwan/go-tour-i18n/internal/tour/ui"
 	"golang.org/x/tools/present"
 )
@@ -166,7 +167,7 @@ func newPageTemplateData(catalog ui.Catalog, metadata SiteMetadata) (pageTemplat
 }
 
 func renderIndex(catalog ui.Catalog, metadata SiteMetadata) ([]byte, error) {
-	tmpl, err := template.New("index.tmpl").Funcs(template.FuncMap{"ui": catalog.Plain}).ParseFS(contentTour, "tour/template/index.tmpl")
+	tmpl, err := template.New("index.tmpl").Funcs(pageTemplateFuncs(catalog, metadata)).ParseFS(contentTour, "tour/template/index.tmpl")
 	if err != nil {
 		return nil, fmt.Errorf("parse index.tmpl: %w", err)
 	}
@@ -187,7 +188,7 @@ func renderIndex(catalog ui.Catalog, metadata SiteMetadata) ([]byte, error) {
 }
 
 func renderHome(catalog ui.Catalog, metadata SiteMetadata) ([]byte, error) {
-	tmpl, err := template.New("home.tmpl").Funcs(template.FuncMap{"ui": catalog.Plain}).ParseFS(contentTour, "tour/template/index.tmpl", "tour/template/home.tmpl")
+	tmpl, err := template.New("home.tmpl").Funcs(pageTemplateFuncs(catalog, metadata)).ParseFS(contentTour, "tour/template/index.tmpl", "tour/template/home.tmpl")
 	if err != nil {
 		return nil, fmt.Errorf("parse home.tmpl: %w", err)
 	}
@@ -208,7 +209,7 @@ func renderHome(catalog ui.Catalog, metadata SiteMetadata) ([]byte, error) {
 }
 
 func renderFooter(catalog ui.Catalog, metadata SiteMetadata) ([]byte, error) {
-	tmpl, err := template.New("index.tmpl").Funcs(template.FuncMap{"ui": catalog.Plain}).ParseFS(contentTour, "tour/template/index.tmpl")
+	tmpl, err := template.New("index.tmpl").Funcs(pageTemplateFuncs(catalog, metadata)).ParseFS(contentTour, "tour/template/index.tmpl")
 	if err != nil {
 		return nil, fmt.Errorf("parse index.tmpl: %w", err)
 	}
@@ -221,6 +222,15 @@ func renderFooter(catalog ui.Catalog, metadata SiteMetadata) ([]byte, error) {
 		return nil, fmt.Errorf("render footer: %w", err)
 	}
 	return buf.Bytes(), nil
+}
+
+func pageTemplateFuncs(catalog ui.Catalog, metadata SiteMetadata) template.FuncMap {
+	return template.FuncMap{
+		"ui": catalog.Plain,
+		"asset": func(logicalPath string) (string, error) {
+			return assets.URL(catalog.Locale, metadata.Development, logicalPath)
+		},
+	}
 }
 
 // initLessons finds all the lessons in the content directory, renders them,

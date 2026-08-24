@@ -129,6 +129,49 @@ ssh aliyun 'journalctl -u go-tour.service -n 80 --no-pager'
 
 localhost 连续健康后，脚本才检查 <https://go-dev.shuijingwanwq.com/>。正式域名异常属于 CDN、HTTPS、Nginx 或其他外部验收问题，不会自动回滚一个已经稳定健康的源站 release。脚本不调用 EdgeOne API，也不自动清理缓存；若 HTML 或静态资源仍显示旧版本，应检查 `EO-Cache-Status`、`Age` 并按需人工刷新 EdgeOne Hostname 缓存。
 
+## 非中文共享静态资源第一版
+
+所有非中文社区语言的 production 页面计划使用：
+
+```text
+https://assets.go-dev.shuijingwanwq.com/
+```
+
+zh-CN development 和 production 继续使用 language origin 的本地静态资源；所有 locale 的 development/preview 也始终使用本地资源，不依赖公网 CDN。第一版共享清单只有：
+
+```text
+tour/static/css/app.css
+tour/static/lib/codemirror/lib/codemirror.css
+tour/static/img/gopher.png
+images/site-logo.png
+images/site-logo-32.png
+images/go-logo-white.svg
+images/icons/brightness_6_gm_grey_24dp.svg
+images/icons/brightness_2_gm_grey_24dp.svg
+images/icons/light_mode_gm_grey_24dp.svg
+```
+
+使用以下命令把清单导出为可直接作为普通服务器静态目录的 origin tree：
+
+```sh
+go run -mod=readonly ./cmd/tour-i18n assets export \
+  --output /tmp/go-tour-shared-assets
+```
+
+目标目录必须不存在。命令通过同级 staging 目录构建，逐字节复制固定 allowlist，生成 `SHA256SUMS`，验证文件集合与校验和后再原子重命名为目标目录。`SHA256SUMS` 只用于部署前后完整性验证，不参与 URL、cache key 或版本选择。不要把完整 `_content` 同步到 assets origin。
+
+第一版固定使用原逻辑路径，不使用 assets-release-id、content-hash URL、独立 versioned assets release，也不升级 language `release.json`。`/tour/script.js` 明确不拆分、不共享，继续由 language origin 动态拼接并提供。Angular partial、`tree.png`、lesson/footer、HTML、locale 内容、metadata、analytics/ads 和 Playground endpoint 均继续由 language origin 提供；Google Fonts 继续使用现有外部 Inconsolata CSS。所有 language bundle 仍保持完整自包含，并保留全部本地静态资源作为 preview、rollback 和 CDN 故障排查能力。
+
+Cloudflare 后续计划使用 28 天 Edge Cache TTL。项目不主动覆盖 Browser Cache TTL，不给这些固定 URL 设置 `immutable` 或一年浏览器缓存；使用 Cloudflare/origin 默认行为或 Respect Existing Headers。每次共享文件发生变化后必须按顺序执行：
+
+1. 更新普通服务器上的 assets origin 文件；
+2. purge Cloudflare 对应缓存；
+3. 请求资源并确认首次为 MISS；
+4. 再次请求并确认 HIT；
+5. 对照 `SHA256SUMS` 核对公网资源内容。
+
+当前仓库只具备导出与引用能力；尚未创建 assets DNS、TLS、Nginx origin、Cloudflare Cache Rule 或实际部署。不要把以上规划描述为已上线状态，也不要在 zh-CN 的现有 EdgeOne发布流程中加入 assets域名依赖。
+
 ## 最小生产验收
 
 统计配置变更建议按“源站 → 公网 → 浏览器真实上报”三层验收：
