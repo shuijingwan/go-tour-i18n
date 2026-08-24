@@ -2,6 +2,8 @@
 
 Translation Quality Review 是所有语言翻译工作流在 promotion 前的正式必经步骤。这套规范面向长期维护和多语言复用，不绑定 `zh-CN`、ChatGPT、Page、Example 或任何特定模型。
 
+本规范只审核 TranslationUnit candidate。公共 UI、首页、`/tour/list`、导航、语言选择器、runtime message、article metadata、SEO 与桌面/移动端组合页面由独立的 [Locale Surface Review](LOCALE_SURFACE_REVIEW.md) 审核。Surface Review 是 promotion 后、publish / production 前的 locale release gate，不生成本规范的 review evidence，也不改变全 A、逐 TranslationUnit 和 Final Review A-only 规则。
+
 ## 正式流程
 
 所有进入 locale translation workflow 并产生翻译结果的 TranslationUnit 必须遵循：

@@ -1,5 +1,12 @@
 # Codex 项目导航
 
+当用户要求新增一门语言、建立新 locale、准备新语言首次上线或评估新 locale 完成度时，Codex 必须先读取：
+
+1. `docs/NEW_LOCALE_RUNBOOK.md`
+2. `docs/LOCALE_SURFACE_REVIEW.md`
+
+新增 locale 的 TranslationUnit 翻译仍须继续遵守下列不可拆分输入规则；上述入口不能代替具体翻译规范。
+
 当用户要求执行 retranslation 正式翻译、retranslation retry 的译文生成、revision batch 翻译或任何 TranslationUnit 翻译时，Codex 在写文件前必须读取：
 
 1. `docs/TRANSLATION_WORKFLOW.md`

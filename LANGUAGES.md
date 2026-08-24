@@ -2,6 +2,8 @@
 
 `go-tour-i18n` 采用构建时单语言站点：每个社区语言独立构建和部署，不实现运行时 locale switching。首页语言入口共享一份有序 registry，并链接到各语言的正式站点或官方来源。
 
+新增语言统一从 [新增 Locale 执行手册](docs/NEW_LOCALE_RUNBOOK.md) 开始；不要只在 registry 中增加一行就视为完成。新 locale 必须先明确规范 locale、显示名称、domain/CDN、全站 glossary 决策和 production profile，并通过独立的 TranslationUnit Quality Review 与 Locale Surface Review。
+
 ## 语言站点与 CDN
 
 | Locale | 显示名称 | 正式入口 | CDN | 说明 |

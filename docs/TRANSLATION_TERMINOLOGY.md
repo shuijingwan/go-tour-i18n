@@ -89,6 +89,12 @@ Glossary 和术语政策负责：
 - mandatory 和 preferred 译法；
 - forbidden 错误译法。
 
+Locale glossary 不只服务于 TranslationUnit 模型输入。它也是该 locale 的正式术语权威来源；公共 UI、首页、`/tour/`、`/tour/list`、导航、语言选择器、编辑器动作、runtime message、article metadata 与 SEO 可见文案都必须遵守同一份 `mandatory`、`preferred`、`forbidden` 和 `keep` 决策。自动 validator 未覆盖这些表层时，由 [Locale Surface Review](LOCALE_SURFACE_REVIEW.md) 执行发布前人工审核。
+
+Glossary 不能替代 source ↔ target 语言质量比较。术语全部合规的 target 仍可能存在误译、漏译、不自然表达、英文残留或无依据扩写；这些问题必须结合对应英文/source identity 审核。
+
+`Go Playground` 一类在不同语言中可能翻译、部分本地化或保持原文的名称，必须由每个 locale 显式决定并写入其 glossary。不同 locale 不要求字面处理相同；同一 locale 必须全站一致。新增这项治理规则不意味着自动改写 zh-CN 或 ja-JP 的现有译文，既有语言应在独立术语维护任务中评估具体变更。
+
 不能为了保险，把已经由 protector 保护的 Go keyword、builtin、API、路径和包名再次复制成巨大的 keep 表。这样既会造成双份维护，也会把代码身份与自然语言概念混为一谈。
 
 ## 4. 已冻结的专门术语政策
