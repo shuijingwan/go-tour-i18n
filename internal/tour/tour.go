@@ -68,15 +68,16 @@ func initTour(mux *http.ServeMux, transport, locale, playgroundBaseURL string) (
 	if err := initLessons(tmpl); err != nil {
 		return seoDocuments{}, fmt.Errorf("init lessons: %v", err)
 	}
-	documents, err := initSEO(locale)
-	if err != nil {
-		return seoDocuments{}, fmt.Errorf("init SEO documents: %v", err)
-	}
 
-	// Load the build-selected UI locale once during initialization.
+	// Validate and load the build-selected UI locale before resolving its
+	// production origin, preserving the public error for unsupported locales.
 	catalog, err := ui.Load(locale)
 	if err != nil {
 		return seoDocuments{}, fmt.Errorf("load UI catalog %q: %w", locale, err)
+	}
+	documents, err := initSEO(locale)
+	if err != nil {
+		return seoDocuments{}, fmt.Errorf("init SEO documents: %v", err)
 	}
 	metadata, err := loadSiteMetadata(contentTour)
 	if err != nil {

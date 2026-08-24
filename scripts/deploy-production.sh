@@ -4,16 +4,19 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 readonly SSH_HOST='aliyun'
-readonly RELEASES_DIR='/data/go-tour/releases'
-readonly CURRENT_LINK='/data/go-tour/current'
-readonly DEPLOY_LOCK='/data/go-tour/.deploy.lock'
-readonly SERVICE='go-tour.service'
 readonly SERVICE_USER='go-tour'
-readonly HEALTH_URL='http://127.0.0.1:3999/'
-readonly PUBLIC_URL='https://go-dev.shuijingwanwq.com/'
 readonly HEALTH_ATTEMPTS=12
 readonly HEALTH_INTERVAL=3
 readonly -a SSH_OPTIONS=(-o BatchMode=yes -o ConnectTimeout=10)
+
+RELEASE_LOCALE=''
+RELEASES_DIR=''
+CURRENT_LINK=''
+DEPLOY_LOCK=''
+SERVICE=''
+HEALTH_URL=''
+PUBLIC_URL=''
+PUBLIC_ACCEPTANCE_HINT=''
 
 log() {
     printf '[deploy] %s\n' "$*"
@@ -25,6 +28,35 @@ error() {
 
 usage() {
     printf 'usage: %s /tmp/go-tour-release-YYYYMMDD-<locale>-<shortsha>\n' "${0##*/}" >&2
+}
+
+select_deployment_profile() {
+    local locale=$1
+
+    case $locale in
+        zh-CN)
+            RELEASES_DIR='/data/go-tour/releases'
+            CURRENT_LINK='/data/go-tour/current'
+            DEPLOY_LOCK='/data/go-tour/.deploy.lock'
+            SERVICE='go-tour.service'
+            HEALTH_URL='http://127.0.0.1:3999/'
+            PUBLIC_URL='https://go-dev.shuijingwanwq.com/'
+            PUBLIC_ACCEPTANCE_HINT='inspect the CDN/reverse-proxy cache and refresh it manually if needed'
+            ;;
+        ja-JP)
+            RELEASES_DIR='/data/go-tour-ja-JP/releases'
+            CURRENT_LINK='/data/go-tour-ja-JP/current'
+            DEPLOY_LOCK='/data/go-tour-ja-JP/.deploy.lock'
+            SERVICE='go-tour-ja-JP.service'
+            HEALTH_URL='http://127.0.0.1:4000/'
+            PUBLIC_URL='https://ja-go-dev.shuijingwanwq.com/'
+            PUBLIC_ACCEPTANCE_HINT='inspect the CDN/reverse-proxy cache and refresh it manually if needed'
+            ;;
+        *)
+            error "unsupported production locale in release.json: $locale"
+            return 1
+            ;;
+    esac
 }
 
 manual_check_hint() {
@@ -107,12 +139,36 @@ validate_local_release() {
         return 1
     fi
 
-    if ! python3 - "$release_dir" <<'PY'
+    RELEASE_LOCALE=$(python3 - "$release_dir" <<'PY'
 import json
 import pathlib
 import sys
 
 root = pathlib.Path(sys.argv[1])
+try:
+    manifest = json.loads((root / "release.json").read_text(encoding="utf-8"))
+except (OSError, json.JSONDecodeError) as exc:
+    raise SystemExit(f"bundle metadata error: {exc}")
+locale = manifest.get("locale")
+if type(locale) is not str or not locale:
+    raise SystemExit(f"release.json constraint failed: locale={locale!r}, want non-empty string")
+print(locale)
+PY
+    ) || {
+        error 'release locale validation failed'
+        return 1
+    }
+
+    # This whitelist is resolved before any SSH, upload, lock, or production change.
+    select_deployment_profile "$RELEASE_LOCALE" || return 1
+
+    if ! python3 - "$release_dir" "$RELEASE_LOCALE" <<'PY'
+import json
+import pathlib
+import sys
+
+root = pathlib.Path(sys.argv[1])
+profile_locale = sys.argv[2]
 try:
     manifest = json.loads((root / "release.json").read_text(encoding="utf-8"))
     metadata = json.loads(
@@ -123,7 +179,7 @@ except (OSError, json.JSONDecodeError) as exc:
 
 expected = {
     "schema_version": 2,
-    "locale": "zh-CN",
+    "locale": profile_locale,
     "pages": 103,
     "articles": 7,
     "execution_transport": "http-playground-proxy",
@@ -404,11 +460,11 @@ check_public() {
     if [[ $http_code != 200 ]]; then
         error "localhost is healthy, but public acceptance returned HTTP ${http_code:-000}: $PUBLIC_URL"
         error 'this CDN/reverse-proxy result did not roll back the healthy source release'
-        error 'if static assets are stale, inspect or refresh the EdgeOne cache manually'
+        error "$PUBLIC_ACCEPTANCE_HINT"
         return 1
     fi
     log "public acceptance passed: HTTP 200 $PUBLIC_URL"
-    log 'if static assets are stale, inspect or refresh the EdgeOne cache manually'
+    log "$PUBLIC_ACCEPTANCE_HINT"
 }
 
 main() {
@@ -437,6 +493,8 @@ main() {
     remote_name=$(release_name_from_path "$release_input") || return 1
     validate_local_release "$release_input" || return 1
     release_dir=$(cd -P -- "$release_input" && pwd -P)
+
+    log "selected production profile from release.json: $RELEASE_LOCALE"
 
     link_suffix="$(date -u +%Y%m%dT%H%M%SZ)-$$-${RANDOM}"
     remote_final="$RELEASES_DIR/$remote_name"

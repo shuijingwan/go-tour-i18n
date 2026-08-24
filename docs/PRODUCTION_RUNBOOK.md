@@ -2,12 +2,12 @@
 
 本文档记录当前已验证的生产维护入口与操作边界。项目进度和部署历史见 [PROJECT_STATE.md](PROJECT_STATE.md)。
 
-## 当前生产架构
+## 当前 production 语言站点
 
-- 正式站点：<https://go-dev.shuijingwanwq.com/>；A Tour of Go 使用 `/tour/` 路径。
-- 请求链路：Cloudflare 权威 DNS → 腾讯云 EdgeOne → 源站 `121.40.248.29:443` → Nginx → `127.0.0.1:3999`。
-- EdgeOne 到源站使用 HTTPS，回源 Host 为 `go-dev.shuijingwanwq.com`。
-- Go 生产服务为 `go-tour.service`，监听 `127.0.0.1:3999`，release 根目录为 `/data/go-tour/`。
+- `zh-CN`：<https://go-dev.shuijingwanwq.com/>，服务 `go-tour.service`，监听 `127.0.0.1:3999`，data root 为 `/data/go-tour/`。
+- `ja-JP`：<https://ja-go-dev.shuijingwanwq.com/>，服务 `go-tour-ja-JP.service`，监听 `127.0.0.1:4000`，data root 为 `/data/go-tour-ja-JP/`。
+
+`zh-CN` 请求链路为 Cloudflare 权威 DNS → 腾讯云 EdgeOne → 源站 `121.40.248.29:443` → Nginx → `127.0.0.1:3999`。EdgeOne 到源站使用 HTTPS，回源 Host 为 `go-dev.shuijingwanwq.com`。
 
 公网域名迁移不改变 `go-tour.service`、`/data/go-tour/`、仓库名或 Go module path。
 
@@ -95,12 +95,26 @@ Cloudflare API Token 及其他密钥属于敏感凭据，不写入文档、不�
 
 ## Production release 自动部署
 
-先使用仓库现有的 `publish` 命令生成并验收 Linux/amd64、`zh-CN` production bundle。部署脚本不会自动构建 bundle，只接受一个已经生成的本地 release 目录：
+先使用仓库现有的 `publish` 命令生成并验收 Linux/amd64 production bundle。部署脚本不会自动构建 bundle，只接受一个已经生成的本地 release 目录。调用方式对所有语言相同：
 
 ```sh
+# zh-CN
 scripts/deploy-production.sh \
   /tmp/go-tour-release-20260813-zh-CN-a4d4dca
+
+# ja-JP
+scripts/deploy-production.sh \
+  /tmp/go-tour-release-20260824-ja-JP-<shortsha>
 ```
+
+脚本严格读取 `release.json` 的 `locale` 作为唯一事实来源，不接受 `--locale`，也不根据目录名猜测语言。当前 production 白名单仅包含 `zh-CN` 和 `ja-JP`；不支持的 locale 会在 SSH、上传、远端加锁及任何生产修改之前 fail closed。所选 profile 如下：
+
+| locale | releases | current | deploy lock | systemd service | localhost health | public acceptance |
+| --- | --- | --- | --- | --- | --- | --- |
+| `zh-CN` | `/data/go-tour/releases` | `/data/go-tour/current` | `/data/go-tour/.deploy.lock` | `go-tour.service` | `http://127.0.0.1:3999/` | `https://go-dev.shuijingwanwq.com/` |
+| `ja-JP` | `/data/go-tour-ja-JP/releases` | `/data/go-tour-ja-JP/current` | `/data/go-tour-ja-JP/.deploy.lock` | `go-tour-ja-JP.service` | `http://127.0.0.1:4000/` | `https://ja-go-dev.shuijingwanwq.com/` |
+
+两个 profile 的 service user 均为 `go-tour`。
 
 本地目录名应遵循 `go-tour-release-YYYYMMDD-<locale>-<shortsha>` 约定，并且必须以 `go-tour-release-` 开头。脚本只删除这个固定前缀，并对剩余名称执行安全字符检查；因此上例对应的远端目录为：
 
@@ -110,15 +124,15 @@ scripts/deploy-production.sh \
 
 脚本固定使用 SSH 别名 `aliyun`。当前生产运维账号为 root；远端 `id -u` 不是 `0` 时会在上传前失败，不使用或依赖 `sudo`。部署过程如下：
 
-1. 本地严格检查 bundle 根结构、symlink、`bin/tour`、`release.json`、`site-metadata.json` 和 `SHA256SUMS`；manifest 必须满足当前 `zh-CN` production 约束。
-2. 远端通过原子创建 `/data/go-tour/.deploy.lock` 防止并发部署，并验证 `current`、当前 release、目标名称和 `go-tour.service`。同名 release 已存在时拒绝覆盖；锁已存在表示可能有正在执行或上一次未完成的部署，脚本直接停止，不分析或自动删除该锁。
-3. `rsync` 只上传到 `/data/go-tour/releases/.<release>.staging-<token>`，不直接写最终 release 或 `current`，也不使用 `--delete` 覆盖 release。
+1. 本地严格检查 bundle 根结构、symlink、`bin/tour`、`release.json`、`site-metadata.json` 和 `SHA256SUMS`；manifest 必须满足 production 约束，其 locale 必须与由同一 `release.json` 选出的 profile 一致。
+2. 远端在所选 profile 的 data root 中原子创建 `.deploy.lock` 防止并发部署，并验证 `current`、当前 release、目标名称和对应 systemd service。同名 release 已存在时拒绝覆盖；锁已存在表示可能有正在执行或上一次未完成的部署，脚本直接停止，不分析或自动删除该锁。
+3. `rsync` 只上传到所选 profile 的 `releases/.<release>.staging-<token>`，不直接写最终 release 或 `current`，也不使用 `--delete` 覆盖 release。
 4. 上传后无条件执行权限归一化：owner/group 为 `root:root`，所有目录为 `0755`，普通文件为 `0644`，`bin/tour` 为 `0755`。随后在远端重新验证 SHA-256，以及 `go-tour` 用户对二进制和必要内容的访问权限；production manifest 已在本地严格检查，第一版不在远端重复解析。
-5. staging 在同一文件系统内原子重命名为最终 release；脚本创建临时 symlink 后以原子 `mv` 替换 `/data/go-tour/current`，再 restart `go-tour.service`。
-6. 新版本只有在连续 3 次同时满足 `go-tour.service` 为 `active`、`http://127.0.0.1:3999/` 严格返回 HTTP 200 后才算健康。检查最多 12 轮，每轮间隔 3 秒；任何失败都会把连续计数归零，不能用瞬时一次 `active` 判断成功。
+5. staging 在同一文件系统内原子重命名为最终 release；脚本创建临时 symlink 后以原子 `mv` 替换 profile 的 `current`，再 restart 对应 service。
+6. 新版本只有在连续 3 次同时满足 profile service 为 `active`、profile localhost health URL 严格返回 HTTP 200 后才算健康。检查最多 12 轮，每轮间隔 3 秒；任何失败都会把连续计数归零，不能用瞬时一次 `active` 判断成功。
 7. 只有在 `current` 已明确切换到新 release 后，restart 失败或新版本健康检查明确失败，脚本才会自动回滚：`current` 原子切回旧 release、restart 服务，并使用相同的连续 3 次规则验证旧 release。失败的新 release 会保留用于诊断，不自动删除历史 release。
 
-脚本只区分三类主要结果：在 `current` 原子替换开始前，若脚本能够明确安全清理本次部署资源，会清理 staging/final、临时 symlink 和锁，`current` 保持不变；若远端状态与预期不一致，则保留现场并要求人工检查；新版本明确失败且旧版本恢复健康时会报告已回滚；激活 SSH 中断、current 切换状态无法确认、回滚失败或其他远端状态不确定时会保留 deployment lock 和现场，停止自动处理。遇到最后一种情况不要直接重复部署，应先人工检查：
+脚本只区分三类主要结果：在 `current` 原子替换开始前，若脚本能够明确安全清理本次部署资源，会清理 staging/final、临时 symlink 和锁，`current` 保持不变；若远端状态与预期不一致，则保留现场并要求人工检查；新版本明确失败且旧版本恢复健康时会报告已回滚；激活 SSH 中断、current 切换状态无法确认、回滚失败或其他远端状态不确定时会保留 deployment lock 和现场，停止自动处理。遇到最后一种情况不要直接重复部署，应先按日志中所选 profile 的参数人工检查。以下为 `zh-CN` 示例；`ja-JP` 应替换为 `/data/go-tour-ja-JP/current`、`go-tour-ja-JP.service` 和 `http://127.0.0.1:4000/`：
 
 ```sh
 ssh aliyun 'readlink -f /data/go-tour/current'
@@ -127,7 +141,7 @@ ssh aliyun 'curl -sS -o /dev/null -w "%{http_code}\n" http://127.0.0.1:3999/'
 ssh aliyun 'journalctl -u go-tour.service -n 80 --no-pager'
 ```
 
-localhost 连续健康后，脚本才检查 <https://go-dev.shuijingwanwq.com/>。正式域名异常属于 CDN、HTTPS、Nginx 或其他外部验收问题，不会自动回滚一个已经稳定健康的源站 release。脚本不调用 EdgeOne API，也不自动清理缓存；若 HTML 或静态资源仍显示旧版本，应检查 `EO-Cache-Status`、`Age` 并按需人工刷新 EdgeOne Hostname 缓存。
+localhost 连续健康后，脚本才检查对应 profile 的 public URL。正式域名异常属于 CDN、HTTPS、Nginx 或其他外部验收问题，不会自动回滚一个已经稳定健康的源站 release。脚本不调用 CDN API，也不自动清理缓存；若 HTML 或静态资源仍显示旧版本，应根据该语言站点实际使用的 CDN / reverse proxy 检查缓存状态并按需人工刷新。
 
 ## 非中文共享静态资源第一版
 
