@@ -1,0 +1,1 @@
+⟪GTI18N_184cbbd1_000001⟫Walk walks the tree t sending all values⟪GTI18N_184cbbd1_000002⟫from the tree to the channel ch.⟪GTI18N_184cbbd1_000003⟫Same determines whether the trees⟪GTI18N_184cbbd1_000004⟫t1 and t2 contain the same values.⟪GTI18N_184cbbd1_000005⟫
