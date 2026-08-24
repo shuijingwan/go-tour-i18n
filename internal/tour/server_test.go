@@ -135,8 +135,67 @@ func TestRenderHomeDistinguishesDevelopmentAndProductionMetadata(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if got := string(home); !strings.Contains(got, "最近发布") || !strings.Contains(got, "2026-08-12 15:23:34 (北京时间)") || !strings.Contains(got, "2026-08-20 13:56:11（北京时间）") || strings.Contains(got, "2026-07-23 04:05:40（北京时间）") || strings.Contains(got, "开发环境") {
+	if got := string(home); !strings.Contains(got, "最近发布") || !strings.Contains(got, "2026-08-12 15:23:34（北京时间）") || !strings.Contains(got, "2026-08-20 13:56:11（北京时间）") || strings.Contains(got, "2026-07-23 04:05:40（北京时间）") || strings.Contains(got, "开发环境") {
 		t.Fatalf("production homepage has unexpected release status: %s", got)
+	}
+}
+
+func TestHomepageLanguageRegistryAndLocaleProfiles(t *testing.T) {
+	if got, want := len(languageRegistry), 3; got != want {
+		t.Fatalf("language registry length = %d, want %d", got, want)
+	}
+	for i, want := range []LanguageLink{
+		{Locale: "zh-CN", Autonym: "简体中文", URL: "https://go-dev.shuijingwanwq.com/tour/welcome/1"},
+		{Locale: "en", Autonym: "English", URL: "https://go.dev/tour/", Official: true},
+		{Locale: "ja-JP", Autonym: "日本語", URL: "https://ja.go-dev.shuijingwanwq.com/tour/welcome/1"},
+	} {
+		if got := languageRegistry[i]; got != want {
+			t.Errorf("languageRegistry[%d] = %+v, want %+v", i, got, want)
+		}
+	}
+
+	metadata := SiteMetadata{Locale: "zh-CN", PublishedAt: "2026-08-20T05:56:11Z", UpstreamCommit: FrozenUpstreamCommit, UpstreamCommitTime: FrozenUpstreamCommitTime, Pages: 122, Articles: 122}
+	tests := []struct {
+		locale, autonym, logURL, published, upstream, currentPublicURL string
+	}{
+		{"zh-CN", "简体中文", "https://www.shuijingwanwq.com/series/go-tour-chinese-edition-development-series/", "2026-08-20 13:56:11（北京时间）", "2026-08-20 13:56:11（北京时间）", languageRegistry[0].URL},
+		{"ja-JP", "日本語", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 14:56:11（日本時間）", "2026-08-20 14:56:11（日本時間）", languageRegistry[2].URL},
+	}
+	for _, test := range tests {
+		t.Run(test.locale, func(t *testing.T) {
+			catalog, err := ui.Load(test.locale)
+			if err != nil {
+				t.Fatal(err)
+			}
+			localizedMetadata := metadata
+			localizedMetadata.Locale = test.locale
+			data, err := newPageTemplateData(catalog, localizedMetadata)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if data.CurrentLanguage.Autonym != test.autonym || data.DevelopmentLogURL != test.logURL || data.PublishedAt != test.published || data.UpstreamCommitTime != test.upstream {
+				t.Errorf("localized page data = %+v", data)
+			}
+			homeBytes, err := renderHome(catalog, localizedMetadata)
+			if err != nil {
+				t.Fatal(err)
+			}
+			home := string(homeBytes)
+			for _, want := range []string{"简体中文", "English", "日本語", `aria-current="page">` + test.autonym, test.logURL, test.published, test.upstream, "© 2026 永夜", "蜀ICP备13001590号-1", `href="https://beian.miit.gov.cn/"`} {
+				if !strings.Contains(home, want) {
+					t.Errorf("homepage does not contain %q", want)
+				}
+			}
+			if strings.Contains(home, `href="`+test.currentPublicURL+`"`) {
+				t.Errorf("current locale links local preview to public URL %q", test.currentPublicURL)
+			}
+			if strings.Count(home, `href="`+test.logURL+`"`) != 2 {
+				t.Errorf("development log URL is not shared by homepage and footer")
+			}
+			if strings.Contains(home, "site-card-grid") {
+				t.Error("homepage still uses card grid for languages")
+			}
+		})
 	}
 }
 

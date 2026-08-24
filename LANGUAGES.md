@@ -1,26 +1,35 @@
-# 语言、域名与 CDN 规划
+# 语言、域名、CDN 与共享静态资源规划
 
-`go-tour-i18n` 面向多语言扩展，第一阶段只交付简体中文 `zh-CN`。当前采用构建时单语言生成，不实现运行时语言切换；英文上游基准继续由 `_content/tour` 提供。
+`go-tour-i18n` 采用构建时单语言站点：每个社区语言独立构建和部署，不实现运行时 locale switching。首页语言入口共享一份有序 registry，并链接到各语言的正式站点或官方来源。
 
-## 域名模式
+## 语言站点与 CDN
 
-以下均为规划模式，`<实际域名>` 不是已经部署的真实域名：
+| Locale | 显示名称 | 正式入口 | CDN | 说明 |
+| --- | --- | --- | --- | --- |
+| `zh-CN` | 简体中文 | <https://go-dev.shuijingwanwq.com/> | EdgeOne | 当前默认社区语言站；不创建 `zh.go-dev` 或 `zh-cn.go-dev` |
+| `en` | English | <https://go.dev/tour/> | Go 官方提供 | 继续使用官方 A Tour of Go；当前不建设本项目的英文社区版本，也不规划 `en.go-dev.shuijingwanwq.com` |
+| `ja-JP` | 日本語 | <https://ja.go-dev.shuijingwanwq.com/> | Cloudflare | 日语社区语言站 |
 
-| 模式 | 语言与用途 |
-| --- | --- |
-| `go-dev.<实际域名>` | 默认简体中文 `zh-CN` 站，也是未来更多 go.dev 翻译内容的主入口 |
-| `en.go-dev.<实际域名>` | 未来英文 `en` 站 |
-| `ja.go-dev.<实际域名>` | 未来日语 `ja-JP` 站 |
-| `go-dev.<实际域名>/about/` | 项目介绍、语言选择、上游信息和 GitHub 入口 |
+后续所有非中文社区语言统一采用：
 
-不创建 `zh.` 或 `zh-cn.` 子域。域名标签使用小写；目录和 HTML 使用规范 locale/lang，例如目录 `zh-CN`、`ja-JP`，HTML 使用对应的 `lang` 值。
+```text
+https://<language-code>.go-dev.shuijingwanwq.com/
+```
 
-## CDN 角色
+例如 `ko.go-dev.shuijingwanwq.com`、`de.go-dev.shuijingwanwq.com` 和 `fr.go-dev.shuijingwanwq.com`，统一使用 Cloudflare。域名标签使用小写；仓库目录和 HTML `lang` 使用项目确定的规范 locale，例如 `zh-CN`、`ja-JP`。
 
-- 默认 zh-CN 主站：EdgeOne（当前正式入口为 `go-dev.shuijingwanwq.com`）
-- 英文站：Cloudflare
-- 未来日语站：Cloudflare
+## 共享静态资源规划
 
-每种语言未来可以独立选择 CDN、部署区域和发布节奏。第一阶段仍只有 zh-CN，采用构建时单语言生成，不实现运行时语言切换；英文、日文等语言暂未发布。
+未来所有非中文社区语言可通过 Cloudflare 共享真正 locale-neutral 的静态资源：
 
-第一阶段不创建繁体中文。只有真实流量或用户需求支持时，才考虑未来的 `zh-Hant`，它不是近期交付计划。
+```text
+https://assets.go-dev.shuijingwanwq.com/
+```
+
+适用内容包括 CSS、公共 JavaScript、图片、Logo、图标、字体、CodeMirror 等第三方静态库，以及其他真正与语言无关的文件。`ja.go-dev.shuijingwanwq.com`、`ko.go-dev.shuijingwanwq.com`、`de.go-dev.shuijingwanwq.com` 等站点均可使用这一静态资源域名。
+
+当前 `/tour/script.js` 包含 `window.__tourUIMessages`、`window.__tourModules` 等 locale-specific UI bootstrap，因此现阶段不是所有语言可直接共用的 locale-neutral 静态资源。未来如有明确收益，可另行评估拆分 locale bootstrap；本阶段不实施该重构。
+
+zh-CN 继续由 <https://go-dev.shuijingwanwq.com/> 同时提供 HTML 和自己的静态资源，并继续使用 EdgeOne。只有确认中文静态资源拆分有明确实际收益时，才考虑类似 `assets-cn.go-dev.shuijingwanwq.com` 的域名；当前不创建、不实现。
+
+本文件只记录正式规划。本阶段不修改 `/tour/static/`、`/images/`、CSS、JavaScript、图片、字体 URL，不修改构建、发布投影、部署、DNS、Cloudflare 或 EdgeOne 配置，也不创建 `assets.go-dev.shuijingwanwq.com` 的实际部署配置。

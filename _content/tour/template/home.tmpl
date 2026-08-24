@@ -26,14 +26,14 @@
             <article class="site-card">
                 <h3>A Tour of Go</h3>
                 <p>{{ui "site.tour_description"}}</p>
-                <p><strong>{{ui "site.current_language"}}：</strong>{{ui "site.simplified_chinese"}}</p>
+                <p><strong>{{ui "site.current_language"}}：</strong>{{.CurrentLanguage.Autonym}}</p>
                 <a href="/tour/welcome/1">{{ui "site.enter_tour"}}</a>
             </article>
         </section>
         <section class="site-section">
             <h2>{{ui "site.project_status"}}</h2>
             <dl class="site-status">
-                <dt>{{ui "site.current_language"}}</dt><dd>{{ui "site.simplified_chinese"}}</dd>
+                <dt>{{ui "site.current_language"}}</dt><dd>{{.CurrentLanguage.Autonym}}</dd>
                 <dt>{{ui "site.course_pages"}}</dt><dd>{{.Metadata.Pages}}</dd>
                 {{if .Development}}<dt>{{ui "site.environment"}}</dt><dd>{{ui "site.development_environment"}}</dd>{{else}}<dt>{{ui "site.latest_release"}}</dt><dd>{{.PublishedAt}}</dd>{{end}}
                 <dt>{{ui "site.upstream_baseline"}}</dt><dd><a href="{{.UpstreamCommitURL}}" target="_blank" rel="noopener noreferrer">golang/website@{{.ShortUpstreamCommit}}</a></dd>
@@ -42,10 +42,9 @@
         </section>
         <section class="site-section">
             <h2>{{ui "site.language_versions"}}</h2>
-            <div class="site-card-grid">
-                <article class="site-card"><h3>English</h3><p>{{ui "site.official_version"}}</p><a href="{{.OfficialTourURL}}" target="_blank" rel="noopener noreferrer">{{ui "site.open_official_tour"}}</a></article>
-                <article class="site-card"><h3>{{ui "site.simplified_chinese"}}</h3><p>{{ui "site.community_version"}}</p><a href="/tour/welcome/1">{{ui "site.enter_tour"}}</a></article>
-            </div>
+            <ul class="site-language-list">
+                {{range .Languages}}<li>{{if .Current}}<span aria-current="page">{{.Autonym}}</span>{{else}}<a href="{{.URL}}"{{if .Official}} target="_blank" rel="noopener noreferrer"{{end}}>{{.Autonym}}</a>{{end}}</li>{{end}}
+            </ul>
         </section>
         <section class="site-section">
             <h2>{{ui "site.project_links"}}</h2>

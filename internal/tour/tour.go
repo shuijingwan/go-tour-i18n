@@ -110,8 +110,6 @@ type pageTemplateData struct {
 	UpstreamCommitTime  string
 	ShortUpstreamCommit string
 	UpstreamCommitURL   string
-	SiteURL             string
-	OfficialTourURL     string
 	GitHubURL           string
 	GitHubIssuesURL     string
 	DevelopmentLogURL   string
@@ -119,16 +117,30 @@ type pageTemplateData struct {
 	ICPURL              string
 	ICPNumber           string
 	CopyrightHolder     string
+	Languages           []LanguageLink
+	CurrentLanguage     LanguageLink
 }
 
 func newPageTemplateData(catalog ui.Catalog, metadata SiteMetadata) (pageTemplateData, error) {
-	upstreamCommitTime, err := metadata.UpstreamCommitTimeBeijing()
+	profile, ok := localeProfiles[catalog.Locale]
+	if !ok {
+		return pageTemplateData{}, fmt.Errorf("unsupported site locale %q", catalog.Locale)
+	}
+	languages, err := languagesFor(catalog.Locale)
+	if err != nil {
+		return pageTemplateData{}, err
+	}
+	currentLanguage, err := currentLanguage(languages)
+	if err != nil {
+		return pageTemplateData{}, err
+	}
+	upstreamCommitTime, err := metadata.UpstreamCommitTimeFor(profile)
 	if err != nil {
 		return pageTemplateData{}, err
 	}
 	publishedAt := ""
 	if !metadata.Development {
-		publishedAt, err = metadata.PublishedAtBeijing()
+		publishedAt, err = metadata.PublishedAtFor(profile)
 		if err != nil {
 			return pageTemplateData{}, err
 		}
@@ -141,15 +153,15 @@ func newPageTemplateData(catalog ui.Catalog, metadata SiteMetadata) (pageTemplat
 		UpstreamCommitTime:  upstreamCommitTime,
 		ShortUpstreamCommit: metadata.UpstreamCommit[:8],
 		UpstreamCommitURL:   Project.UpstreamURL + "/commit/" + metadata.UpstreamCommit,
-		SiteURL:             Project.SiteURL,
-		OfficialTourURL:     Project.OfficialTourURL,
 		GitHubURL:           Project.GitHubURL,
 		GitHubIssuesURL:     Project.GitHubIssuesURL,
-		DevelopmentLogURL:   Project.DevelopmentLogURL,
+		DevelopmentLogURL:   profile.DevelopmentLogURL,
 		UpstreamURL:         Project.UpstreamURL,
 		ICPURL:              Project.ICPURL,
 		ICPNumber:           Project.ICPNumber,
 		CopyrightHolder:     Project.CopyrightHolder,
+		Languages:           languages,
+		CurrentLanguage:     currentLanguage,
 	}, nil
 }
 

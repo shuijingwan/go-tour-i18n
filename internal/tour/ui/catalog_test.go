@@ -14,7 +14,7 @@ func TestLoadEmbeddedCatalogs(t *testing.T) {
 		if err != nil {
 			t.Fatalf("Load(%q): %v", locale, err)
 		}
-		if got, want := len(catalog.Messages), 86; got != want {
+		if got, want := len(catalog.Messages), 85; got != want {
 			t.Fatalf("Load(%q) message count = %d, want %d", locale, got, want)
 		}
 	}
@@ -32,14 +32,11 @@ func TestJapaneseCatalogMatchesEnglishSource(t *testing.T) {
 	if japanese.HTMLLang != "ja-JP" {
 		t.Fatalf("ja-JP HTMLLang = %q, want ja-JP", japanese.HTMLLang)
 	}
-	if got, want := len(japanese.Messages), 86; got != want {
+	if got, want := len(japanese.Messages), 85; got != want {
 		t.Fatalf("ja-JP message count = %d, want %d", got, want)
 	}
 	if err := validateCoverage(source, japanese); err != nil {
 		t.Fatalf("ja-JP coverage: %v", err)
-	}
-	if got := japanese.Messages["site.simplified_chinese"].Text; got != "日本語" {
-		t.Fatalf("ja-JP site.simplified_chinese = %q, want 日本語", got)
 	}
 	allowedUntranslatedNames := map[string]bool{
 		"site.issue_feedback": true,

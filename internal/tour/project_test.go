@@ -62,13 +62,18 @@ func TestWriteSiteMetadataRejectsDevelopmentMetadata(t *testing.T) {
 	}
 }
 
-func TestUpstreamCommitTimeBeijing(t *testing.T) {
+func TestSiteMetadataTimesAreLocaleAware(t *testing.T) {
 	metadata := SiteMetadata{UpstreamCommitTime: "2026-08-20T05:56:11Z"}
-	got, err := metadata.UpstreamCommitTimeBeijing()
-	if err != nil {
-		t.Fatal(err)
-	}
-	if want := "2026-08-20 13:56:11（北京时间）"; got != want {
-		t.Fatalf("UpstreamCommitTimeBeijing() = %q, want %q", got, want)
+	for locale, want := range map[string]string{
+		"zh-CN": "2026-08-20 13:56:11（北京时间）",
+		"ja-JP": "2026-08-20 14:56:11（日本時間）",
+	} {
+		got, err := metadata.UpstreamCommitTimeFor(localeProfiles[locale])
+		if err != nil {
+			t.Fatal(err)
+		}
+		if got != want {
+			t.Errorf("UpstreamCommitTimeFor(%s) = %q, want %q", locale, got, want)
+		}
 	}
 }

@@ -682,10 +682,16 @@ a#run, a#kill {
     font-weight: bold;
     background: #fff;
 }
-.site-card-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 16px;
+.site-language-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 24px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.site-language-list [aria-current='page'] {
+    font-weight: bold;
 }
 .site-card {
     box-sizing: border-box;
@@ -749,9 +755,6 @@ a#run, a#kill {
     }
     .site-hero {
         padding: 24px;
-    }
-    .site-card-grid {
-        grid-template-columns: 1fr;
     }
     .site-status {
         grid-template-columns: 1fr;

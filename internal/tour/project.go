@@ -18,18 +18,15 @@ import (
 // Project holds stable public project configuration. URLs and ownership data
 // live here so templates and release generation do not duplicate them.
 var Project = struct {
-	SiteURL, OfficialTourURL, GitHubURL, GitHubIssuesURL, DevelopmentLogURL string
-	UpstreamURL, ICPURL, ICPNumber, CopyrightHolder                         string
+	GitHubURL, GitHubIssuesURL                      string
+	UpstreamURL, ICPURL, ICPNumber, CopyrightHolder string
 }{
-	SiteURL:           "https://go-dev.shuijingwanwq.com/",
-	OfficialTourURL:   "https://go.dev/tour/",
-	GitHubURL:         "https://github.com/shuijingwan/go-tour-i18n",
-	GitHubIssuesURL:   "https://github.com/shuijingwan/go-tour-i18n/issues",
-	DevelopmentLogURL: "https://www.shuijingwanwq.com/series/go-tour-chinese-edition-development-series/",
-	UpstreamURL:       "https://github.com/golang/website",
-	ICPURL:            "https://beian.miit.gov.cn/",
-	ICPNumber:         "蜀ICP备13001590号-1",
-	CopyrightHolder:   "永夜",
+	GitHubURL:       "https://github.com/shuijingwan/go-tour-i18n",
+	GitHubIssuesURL: "https://github.com/shuijingwan/go-tour-i18n/issues",
+	UpstreamURL:     "https://github.com/golang/website",
+	ICPURL:          "https://beian.miit.gov.cn/",
+	ICPNumber:       "蜀ICP备13001590号-1",
+	CopyrightHolder: "永夜",
 }
 
 const (
@@ -50,7 +47,7 @@ type SiteMetadata struct {
 	Articles           int    `json:"articles"`
 }
 
-func (m SiteMetadata) PublishedAtBeijing() (string, error) {
+func (m SiteMetadata) PublishedAtFor(profile localeProfile) (string, error) {
 	if m.Development {
 		return "", fmt.Errorf("development metadata has no published_at")
 	}
@@ -58,15 +55,19 @@ func (m SiteMetadata) PublishedAtBeijing() (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("parse published_at: %w", err)
 	}
-	return t.In(time.FixedZone("CST", 8*60*60)).Format("2006-01-02 15:04:05 (北京时间)"), nil
+	return formatSiteTime(t, profile), nil
 }
 
-func (m SiteMetadata) UpstreamCommitTimeBeijing() (string, error) {
+func (m SiteMetadata) UpstreamCommitTimeFor(profile localeProfile) (string, error) {
 	t, err := time.Parse(time.RFC3339, m.UpstreamCommitTime)
 	if err != nil {
 		return "", fmt.Errorf("parse upstream_commit_time: %w", err)
 	}
-	return t.In(time.FixedZone("CST", 8*60*60)).Format("2006-01-02 15:04:05（北京时间）"), nil
+	return formatSiteTime(t, profile), nil
+}
+
+func formatSiteTime(t time.Time, profile localeProfile) string {
+	return t.In(profile.TimeZone).Format("2006-01-02 15:04:05") + "（" + profile.TimeLabel + "）"
 }
 
 func loadSiteMetadata(content fs.FS) (SiteMetadata, error) {
@@ -101,8 +102,8 @@ func WriteSiteMetadata(contentDir string, metadata SiteMetadata) error {
 	if metadata.Development {
 		return fmt.Errorf("production site metadata cannot be development metadata")
 	}
-	if _, err := metadata.PublishedAtBeijing(); err != nil {
-		return err
+	if _, err := time.Parse(time.RFC3339, metadata.PublishedAt); err != nil {
+		return fmt.Errorf("parse published_at: %w", err)
 	}
 	if metadata.Locale == "" || metadata.Pages < 1 || metadata.Articles < 1 || metadata.UpstreamCommit != FrozenUpstreamCommit || metadata.UpstreamCommitTime != FrozenUpstreamCommitTime {
 		return fmt.Errorf("invalid site metadata")
