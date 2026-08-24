@@ -9,13 +9,45 @@ import (
 )
 
 func TestLoadEmbeddedCatalogs(t *testing.T) {
-	for _, locale := range []string{"en", "zh-CN"} {
+	for _, locale := range []string{"en", "ja-JP", "zh-CN"} {
 		catalog, err := Load(locale)
 		if err != nil {
 			t.Fatalf("Load(%q): %v", locale, err)
 		}
 		if got, want := len(catalog.Messages), 86; got != want {
 			t.Fatalf("Load(%q) message count = %d, want %d", locale, got, want)
+		}
+	}
+}
+
+func TestJapaneseCatalogMatchesEnglishSource(t *testing.T) {
+	source, err := Load("en")
+	if err != nil {
+		t.Fatal(err)
+	}
+	japanese, err := Load("ja-JP")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if japanese.HTMLLang != "ja-JP" {
+		t.Fatalf("ja-JP HTMLLang = %q, want ja-JP", japanese.HTMLLang)
+	}
+	if got, want := len(japanese.Messages), 86; got != want {
+		t.Fatalf("ja-JP message count = %d, want %d", got, want)
+	}
+	if err := validateCoverage(source, japanese); err != nil {
+		t.Fatalf("ja-JP coverage: %v", err)
+	}
+	if got := japanese.Messages["site.simplified_chinese"].Text; got != "日本語" {
+		t.Fatalf("ja-JP site.simplified_chinese = %q, want 日本語", got)
+	}
+	allowedUntranslatedNames := map[string]bool{
+		"site.issue_feedback": true,
+		"footer.github":       true,
+	}
+	for key, sourceMessage := range source.Messages {
+		if japanese.Messages[key].Text == sourceMessage.Text && !allowedUntranslatedNames[key] {
+			t.Errorf("ja-JP message %q duplicates English source text", key)
 		}
 	}
 }
