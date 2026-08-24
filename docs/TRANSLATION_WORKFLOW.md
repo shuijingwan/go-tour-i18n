@@ -7,7 +7,9 @@
 ```text
 术语准备
 → 翻译执行
-→ 自动校验与质量审核
+→ automatic validation
+→ Candidate Snapshot
+→ ChatGPT Quality Check 与 Final Review
 → promotion
 → 发布部署
 → 项目状态确认
@@ -35,11 +37,11 @@
 
 ## 3. 质量审核
 
-candidate 完成 automatic validation 后、promotion 前，阅读：
+candidate 完成 automatic validation 后，先生成覆盖完整 locale workflow 的 Candidate Snapshot，再进入 ChatGPT Quality Check；promotion 前还必须完成 Final Review。阅读：
 
 - [Translation Quality Review 规范](TRANSLATION_QUALITY_REVIEW.md)：A/B/C/D rubric、逐 TranslationUnit review evidence、`approved` 决策与 promotion gate。
 
-当前严格生产策略要求所有 TranslationUnit 的 ChatGPT Quality Check 均为 A 后才能进入 Final Review；Final Review 也只有 A 才能 `approved` 并进入 promotion。
+Candidate Snapshot 只冻结本轮审核使用的唯一最终 candidate 集合，manifest 引用现有 source、candidate 和 validation evidence，不复制文件、不修改 status，也不产生审核结果。当前严格生产策略要求 snapshot 中所有 TranslationUnit 的 ChatGPT Quality Check 均为 A 后才能进入 Final Review；Final Review 也只有 A 才能 `approved` 并进入 promotion。
 
 ## 4. 发布部署
 

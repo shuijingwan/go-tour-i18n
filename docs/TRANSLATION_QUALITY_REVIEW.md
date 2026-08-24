@@ -12,6 +12,7 @@ TranslationUnit
 → model translation
 → process
 → automatic validation
+→ Candidate Snapshot
 → ChatGPT Quality Check
 → Final Review
 → promotion
@@ -35,7 +36,7 @@ Validator 通过不能替代质量审核。
 
 审核范围不是 Catalog 中的全部 source，而是所有进入 locale translation workflow 并产生 translation candidate 的 TranslationUnit。
 
-当前 `zh-CN` workflow 包含：
+当前完整 locale workflow 包含：
 
 ```text
 103 Page + 19 eligible Example = 122 TranslationUnit
@@ -50,6 +51,37 @@ Validator 通过不能替代质量审核。
 - projection 继续直接使用 upstream source。
 
 它们不会被复制为语言目录中的独立翻译 candidate。
+
+## Candidate Snapshot
+
+Candidate Snapshot 是 automatic validation 与 ChatGPT Quality Check 之间的正式轻量边界。它回答本轮完整语言审核使用哪 122 个 candidate，不执行审核本身。
+
+正式命令为：
+
+```bash
+go run -mod=readonly ./cmd/tour-i18n quality-check snapshot \
+  --locale <locale> \
+  --snapshot-id <snapshot-id>
+```
+
+产物固定为：
+
+```text
+data/quality-check-snapshots/<locale>/<snapshot-id>/manifest.json
+```
+
+Snapshot 对每个当前 workflow TranslationUnit 复用 promotion 的 latest-batch 选择与自动证据校验边界：
+
+- 按 numeric batch number 选择最新的一份；
+- 最新结果必须匹配当前 source revision identity 且状态为 `passed`；
+- 最新结果失败或 identity 不匹配时绝不 fallback 到旧 batch；
+- retry 后 validation 必须指向连续 provenance 的最终 attempt；
+- manifest、source、input、candidate、validation identity 和相关 SHA-256 必须一致；
+- 顺序固定为 Catalog 中的 Page 顺序，其后为 eligible Example inventory 顺序。
+
+Snapshot manifest 顶层记录 `schema_version`、`snapshot_id`、`locale`、`glossary_path`、`glossary_sha256`、`unit_count`、`page_count`、`example_count` 和 `units`。每个 unit 记录稳定 `index`、`unit_id`、`unit_kind`、`selected_batch_id`、source/candidate/validation 的 path 与 SHA-256，以及 `attempt`；Page 另以 `page_section` 记录 `article`、`section_number`、`source_title` 和 `route`，从完整 article source path 唯一定位该 `present.Section`。
+
+所有 path 都是对仓库已有文件的引用。Snapshot 不复制 source、candidate、validation 或 `_content`，不生成 ZIP，不修改 `locales/<locale>/status.tsv`，不 promotion，也不生成 Quality Check 或 Final Review evidence。Snapshot 目录只包含 `manifest.json`。
 
 ## 正式质量评级
 
@@ -100,7 +132,7 @@ Promotion gate 的机器判断只接受 `decision == approved`。这种边界保
 
 ## Quality Check 与 Final Review
 
-Quality Check 用于发现翻译质量问题，可以在 candidate 形成后的修订过程中多轮执行。当前由 ChatGPT 统一执行，且覆盖所有 TranslationUnit。它不生成正式 review evidence，也不作为 promotion 的直接依据。
+Quality Check 用于发现翻译质量问题，可以在 candidate 形成后的修订过程中多轮执行。当前由 ChatGPT 统一执行，且必须覆盖同一份 Candidate Snapshot 中的所有 TranslationUnit。它不生成正式 review evidence，也不作为 promotion 的直接依据。
 
 当前严格生产 gate 为：A 通过；B、C、D 均不通过并进入新的 revision batch。只有完整语言达到 `A = 全部 TranslationUnit，B = 0，C = 0，D = 0`，才能进入 Final Review。
 
@@ -129,12 +161,12 @@ Review evidence 同时绑定：
 因此，candidate 字节发生变化、retry 产生新 candidate，或 validation evidence 发生变化时，旧 review 自动失效。新的最终 candidate 必须重新经过：
 
 ```text
-automatic validation → ChatGPT Quality Check → Final Review
+automatic validation → Candidate Snapshot → ChatGPT Quality Check → Final Review
 ```
 
 不得把旧 review evidence 套用到新 candidate 或新的 validation evidence 上。
 
-翻译质量修订不覆盖旧 candidate。需要修订时，必须通过新的 revision batch 产生新的 candidate 和 validation evidence；旧 batch 的 review evidence 不适用于新的 candidate。
+翻译质量修订不覆盖旧 candidate。需要修订时，必须通过新的 revision batch 产生新的 candidate 和 validation evidence，并重新生成完整 locale Candidate Snapshot；旧 snapshot 仍是历史审核范围，不会自动改指新 candidate，旧 batch 的 review evidence 也不适用于新的 candidate。
 
 ## Review evidence schema v1
 
@@ -210,7 +242,7 @@ Promotion preflight 对 locale workflow 的全部 TranslationUnit 检查 review�
 Review 机制不绑定 `zh-CN`、ChatGPT、Page 或 Example。未来任何 locale、任何翻译模型、任何 TranslationUnit kind，只要产生翻译 candidate 并准备 promotion，都必须对最终 candidate 执行：
 
 ```text
-automatic validation → ChatGPT Quality Check → Final Review → promotion
+automatic validation → Candidate Snapshot → ChatGPT Quality Check → Final Review → promotion
 ```
 
 新增语言无需重新决定是否审核，也无需重新定义 A/B/C/D 的基本含义。语言特定的术语和表达要求可以在同一正式 rubric 下补充，但不能取消逐 TranslationUnit review 或弱化 promotion gate。

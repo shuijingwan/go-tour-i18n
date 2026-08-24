@@ -40,7 +40,7 @@ func run(args []string) error {
 		return err
 	}
 	if len(args) == 0 {
-		return fmt.Errorf("usage: tour-i18n <catalog|upstream|page|status|candidate|translate|retranslation|build|preview|publish> <command or flags>")
+		return fmt.Errorf("usage: tour-i18n <catalog|upstream|page|status|candidate|translate|retranslation|quality-check|build|preview|publish> <command or flags>")
 	}
 	var publish *publishOptions
 	if args[0] == "publish" {
@@ -75,7 +75,7 @@ func run(args []string) error {
 		return publishBundle(root, catalog, *publish)
 	}
 	if len(args) < 2 {
-		return fmt.Errorf("usage: tour-i18n <catalog|upstream|page|status|candidate|translate|retranslation|build|preview|publish> <command or flags>")
+		return fmt.Errorf("usage: tour-i18n <catalog|upstream|page|status|candidate|translate|retranslation|quality-check|build|preview|publish> <command or flags>")
 	}
 	switch args[0] + " " + args[1] {
 	case "catalog check":
@@ -342,6 +342,27 @@ func run(args []string) error {
 			return err
 		}
 		return printJSON(result)
+	case "quality-check snapshot":
+		fs := flag.NewFlagSet("quality-check snapshot", flag.ContinueOnError)
+		locale := fs.String("locale", "", "target locale")
+		snapshotID := fs.String("snapshot-id", "", "immutable quality-check candidate snapshot id")
+		if err := fs.Parse(args[2:]); err != nil {
+			return err
+		}
+		if *locale == "" || *snapshotID == "" {
+			return fmt.Errorf("--locale and --snapshot-id are required")
+		}
+		if fs.NArg() != 0 {
+			return fmt.Errorf("unexpected quality-check snapshot arguments: %s", strings.Join(fs.Args(), " "))
+		}
+		manifest, path, err := i18n.CreateQualityCheckCandidateSnapshot(root, catalog, i18n.QualityCheckSnapshotOptions{
+			Locale: *locale, SnapshotID: *snapshotID,
+		})
+		if err != nil {
+			return err
+		}
+		fmt.Printf("wrote quality-check candidate snapshot: %s (%d units: %d pages, %d examples)\n", path, manifest.UnitCount, manifest.PageCount, manifest.ExampleCount)
+		return nil
 	case "translate run":
 		fs := flag.NewFlagSet("translate run", flag.ContinueOnError)
 		locale := fs.String("locale", "", "target locale")

@@ -9,6 +9,7 @@ retranslation export
 → Codex（High）翻译并直接写入 raw-responses/
 → retranslation process
 → automatic validation
+→ quality-check snapshot
 → ChatGPT Quality Check
 → Final Review
 → promote
@@ -63,9 +64,29 @@ go run -mod=readonly ./cmd/tour-i18n retranslation retry \
 
 `retranslation retry` 本身不调用模型、不生成或改写译文；它只处理已经存在的 retry raw response，归档前一份 validation，并更新目标 unit 的 candidate、validation 与 batch 汇总。Attempt 必须连续且不得覆盖。
 
-## 5. Quality Check 与 revision batch
+## 5. Candidate Snapshot
 
-每个通过 automatic validation 的 TranslationUnit 都必须经过 ChatGPT Quality Check。当前严格生产策略只接受 A：
+完整 locale workflow 的所有 TranslationUnit 都有通过 automatic validation 的最终 candidate 后，生成本轮审核的 Candidate Snapshot：
+
+```bash
+go run -mod=readonly ./cmd/tour-i18n quality-check snapshot \
+  --locale <locale> \
+  --snapshot-id <snapshot-id>
+```
+
+产物只有：
+
+```text
+data/quality-check-snapshots/<locale>/<snapshot-id>/manifest.json
+```
+
+Snapshot 按 Catalog 的 Page 顺序、再按 eligible Example inventory 顺序冻结完整 workflow。当前基线是 103 Page + 19 eligible Example = 122 TranslationUnit。每个 unit 先按 batch number 选择最新的一份结果，再要求它匹配当前 source revision 且状态为 `passed`；最新结果失败或 identity 不匹配时都禁止回退旧 batch。Snapshot 同时校验 manifest/source/input/candidate/validation identity、相关 SHA-256、restore 绑定和 retry 最终 attempt。
+
+Manifest 只引用仓库中已有的 glossary、source、candidate 和 validation 文件，不复制这些文件，不创建 `_content`、ZIP 或 review artifact。该命令不修改 `locales/<locale>/status.tsv`，不执行 Quality Check、Final Review 或 promotion。
+
+## 6. Quality Check 与 revision batch
+
+ChatGPT Quality Check 必须以同一份 Candidate Snapshot manifest 为审核范围，不得自行从各 batch 中重新挑选 candidate。当前严格生产策略只接受 A：
 
 - A：通过 Quality Check；
 - B、C、D：未通过质量 gate，必须进入 revision batch。
@@ -78,12 +99,13 @@ Quality Check 的质量修改不得使用 retry。Revision 流程为：
 → Codex 重新读取完整正式输入并重新翻译
 → process
 → automatic validation
+→ 生成新的完整 locale Candidate Snapshot
 → ChatGPT Quality Check
 ```
 
 重复以上流程直到 Quality Check 为 A。旧 batch 及其 evidence 保持不可变。
 
-## 6. Final Review 与 promotion
+## 7. Final Review 与 promotion
 
 只有完整语言满足以下条件，才能进入 Final Review：
 
@@ -106,6 +128,6 @@ go run -mod=readonly ./cmd/tour-i18n retranslation promote --locale <locale>
 
 只有用户明确要求应用时才使用 `--apply`。Promotion 会验证最新 batch 的 manifest/source/input、glossary 重建结果、retry provenance、candidate、validation 和 approved Final Review evidence；最新结果失败时不得回退到旧 batch。
 
-## 7. 阶段边界
+## 8. 阶段边界
 
 Codex 完成首次翻译或 retry 译文生成后，不自动继续执行 process、Quality Check、Final Review 或 promote，除非用户明确要求继续。UI catalog 翻译是独立流程，不属于本手册。

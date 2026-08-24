@@ -22,9 +22,23 @@ Page 的源文件片段使用 `.article`，其流程中的 artifact 语义如下
 | model output | `raw-responses/*.article` |
 | candidate | restore 后的 `.article` |
 
-模型应翻译 Page 中开放的自然语言，并保持完整的 `present.Section`。模型必须保留链接 target、present directive、行内代码、预格式化内容和其他受保护结构；不得删除、伪造、复制或改写保护 token 所代表的内容。
+模型应翻译 Page 中开放的自然语言，并保持完整的 `present.Section`。模型必须保留链接 target、present directive、行内代码、preformatted 的代码与结构以及其他受保护内容；不得删除、伪造、复制或改写保护 token 所代表的内容。
 
 标题行仍须保留 `* ` 这一 present 语法前缀。模型可以按目标语言的自然语序调整普通文本，但不得改变页面结构或技术含义。
+
+### Page preformatted 中的 teaching comment
+
+Page 的 preformatted block 不是一律禁止翻译。对于 protector 能安全识别的 Go preformatted，普通 `//` teaching comment 的自然语言 body 属于开放翻译区域，应当翻译；comment delimiter、缩进和换行等结构仍受保护。
+
+下列内容继续保持受保护或不可翻译：
+
+- Go 代码、语法和整体布局；
+- comment delimiter 与 block comment；
+- 标识符，以及 teaching comment 中引用代码身份的标识符；
+- `// int`、`// OK`、`// len(...)` 等机器语义或静态技术注释；
+- protector 判定不能安全开放的其他 preformatted 内容。
+
+Automatic validator 应允许安全 Go preformatted 中已开放的 teaching comment body 使用目标语言，不得仅因自然语言注释被翻译而报告违规；代码、结构、标识符和不可翻译内容仍必须保持不变。
 
 ## 3. Example 翻译任务
 
@@ -88,7 +102,7 @@ Page 的 raw response 使用与 input 对应的 `.article` 文件；Example 的 
 
 token 前后的自然语言可以正常翻译，但 token 本身必须原样且唯一地保留。翻译目标是保持原始 present 结构，不是根据教程上下文重新编写页面。
 
-禁止新增原文不存在的代码块、preformatted section、`.play` directive 或示例说明。
+禁止新增原文不存在的代码块、preformatted section、`.play` directive 或示例说明。允许翻译既有安全 Go preformatted 中已开放的 teaching comment body，不等于允许新增、删除或重排 preformatted 内容。
 
 正确：
 
@@ -158,4 +172,4 @@ Go 言語ツアーへようこそ。
 
 本文件只定义翻译任务的输入、输出和结构边界。
 
-raw response 后续如何 restore、由 validator 如何校验、如何进行 Translation Quality Review，以及何时 promotion 为 canonical candidate 和 `ready` 状态，分别由相关 workflow 与规范负责。
+raw response 后续如何 restore、由 validator 如何校验、如何生成完整 locale Candidate Snapshot、如何进行 Translation Quality Review，以及何时 promotion 为 canonical candidate 和 `ready` 状态，分别由相关 workflow 与规范负责。

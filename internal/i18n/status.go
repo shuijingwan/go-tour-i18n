@@ -125,19 +125,36 @@ func CheckStatus(root, localeName string, catalog *Catalog) error {
 }
 
 func localeWorkflowUnits(catalog *Catalog) (map[string]*TranslationUnit, int, int, error) {
+	ordered, pageCount, exampleCount, err := localeWorkflowUnitList(catalog)
+	if err != nil {
+		return nil, 0, 0, err
+	}
+	units := make(map[string]*TranslationUnit, len(ordered))
+	for _, unit := range ordered {
+		units[unit.ID] = unit
+	}
+	return units, pageCount, exampleCount, nil
+}
+
+// localeWorkflowUnitList is the stable workflow order used by artifacts that
+// need an index: Catalog Page order first, then eligible Example inventory
+// order. localeWorkflowUnits retains the map view used by status/projection.
+func localeWorkflowUnitList(catalog *Catalog) ([]*TranslationUnit, int, int, error) {
 	if catalog == nil {
 		return nil, 0, 0, fmt.Errorf("catalog is required")
 	}
-	units := make(map[string]*TranslationUnit, len(catalog.Pages)+len(catalog.Examples))
+	units := make([]*TranslationUnit, 0, len(catalog.Pages)+len(catalog.Examples))
+	seen := make(map[string]bool, cap(units))
 	for i := range catalog.Pages {
 		unit, err := catalog.Unit(catalog.Pages[i].ID)
 		if err != nil {
 			return nil, 0, 0, err
 		}
-		if _, exists := units[unit.ID]; exists {
+		if seen[unit.ID] {
 			return nil, 0, 0, fmt.Errorf("duplicate catalog translation unit %q", unit.ID)
 		}
-		units[unit.ID] = unit
+		seen[unit.ID] = true
+		units = append(units, unit)
 	}
 	exampleCount := 0
 	for i := range catalog.Examples {
@@ -153,10 +170,11 @@ func localeWorkflowUnits(catalog *Catalog) (map[string]*TranslationUnit, int, in
 		if err != nil {
 			return nil, 0, 0, err
 		}
-		if _, exists := units[unit.ID]; exists {
+		if seen[unit.ID] {
 			return nil, 0, 0, fmt.Errorf("duplicate catalog translation unit %q", unit.ID)
 		}
-		units[unit.ID] = unit
+		seen[unit.ID] = true
+		units = append(units, unit)
 		exampleCount++
 	}
 	return units, len(catalog.Pages), exampleCount, nil

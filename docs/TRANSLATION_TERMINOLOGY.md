@@ -71,7 +71,7 @@ Protector 和结构校验负责结构上必须保持身份或字节稳定的对�
 - URL、域名和 link target；
 - import path；
 - program span 和 inline code；
-- preformatted code；
+- preformatted 中的 Go 代码、结构、标识符和不可翻译注释（不包括 protector 已安全开放的 teaching comment 自然语言 body）；
 - API identifier；
 - package identifier；
 - 类型名、函数名、方法名和字段名；
