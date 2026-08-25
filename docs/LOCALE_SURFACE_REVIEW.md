@@ -41,6 +41,7 @@ Glossary 只回答正式术语选择，不能证明完整译文忠实、准确�
 其他 locale-level 资产也必须结合其对应英文或 source identity 审核：
 
 - `locales/<locale>/article-metadata.json` 对照当前正式 article 集合及各 article 的英文根级 `title`、`subtitle`；
+- `locales/<locale>/course-metadata.json` 按 [课程页正式 SEO Metadata 规范](COURSE_SEO_METADATA.md) 对照当前 catalog 的每个完整 Page source、完整最终 canonical target 与当前 glossary，逐页审核 description；
 - 首页、导航、语言选择器、`/tour/list` 和 runtime message 对照其英文 catalog key、模板或稳定项目配置中的 source identity；
 - SEO 可见文案对照生成它的英文/source 字段，并核对 locale、hostname 与页面身份。
 

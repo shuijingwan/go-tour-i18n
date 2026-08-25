@@ -14,6 +14,7 @@ locale / domain / CDN 决策
 → TranslationUnit 翻译与 automatic validation
 → Candidate Snapshot → Quality Check → Final Review
 → promotion
+→ 离线生成并验证课程页 SEO metadata
 → 完整 projection / preview
 → Locale Surface Review
 → production publish
@@ -59,6 +60,7 @@ Glossary 同时承担两项正式职责：
 - `locales/<locale>/locale.json`：locale 身份；
 - `internal/tour/ui/<locale>.json`：完整公共 UI catalog，key 与 `plain` / `rich` kind 必须匹配英文 source `internal/tour/ui/en.json`，正式 locale 不使用英文 fallback；
 - `locales/<locale>/article-metadata.json`：全部正式 article 的本地化 `title` 与 `subtitle`；
+- `locales/<locale>/course-metadata.json`：全部正式课程页的目标语言 SEO description；其 schema、离线生成输入和 stale 规则见 [课程页正式 SEO Metadata 规范](COURSE_SEO_METADATA.md)；
 - 首页、导航、语言选择器与语言 registry 所需的 locale 条目。
 
 UI catalog、首页和 metadata 不属于 TranslationUnit candidate、status、Quality Check、Final Review 或 promotion。它们必须在后续 Surface Review 中单独验收。
