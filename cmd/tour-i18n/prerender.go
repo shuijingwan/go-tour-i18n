@@ -318,8 +318,8 @@ func validateRenderedCoursePage(data []byte, route tour.CourseRoute) error {
 		return fmt.Errorf("canonical=%q, want %q", attrValue(canonical, "href"), route.Canonical)
 	}
 	description := findElement(document, "meta", "name", "description")
-	if description == nil || strings.TrimSpace(attrValue(description, "content")) == "" {
-		return fmt.Errorf("missing description")
+	if description == nil || attrValue(description, "content") != route.Description {
+		return fmt.Errorf("description=%q, want formal metadata %q", attrValue(description, "content"), route.Description)
 	}
 	course := findElement(document, "div", "id", "editor-container")
 	slide := findElementByClass(document, "slide-content")

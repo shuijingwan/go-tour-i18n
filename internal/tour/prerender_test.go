@@ -68,6 +68,14 @@ func TestLoadPrerenderedPagesFailsClosed(t *testing.T) {
 	}
 }
 
+func TestValidatePrerenderedPageRequiresExactFormalDescription(t *testing.T) {
+	route := CourseRoute{Path: "/tour/basics/1", Canonical: "https://example.test/tour/basics/1", PageTitle: "Packages", Description: "the formal description"}
+	html := []byte(`<!doctype html><html data-tour-rendered-route="/tour/basics/1"><head>` + runtimeHeadMarker + `<title>Packages</title><link rel="canonical" href="https://example.test/tour/basics/1"><meta name="description" content="different"></head><body><div id="editor-container"></div></body></html>`)
+	if err := validatePrerenderedPage(html, route); err == nil || !strings.Contains(err.Error(), "want formal metadata") {
+		t.Fatalf("mismatched description error=%v", err)
+	}
+}
+
 func TestProductionHandlerRequiresCompletePrerenderTree(t *testing.T) {
 	t.Cleanup(func() {
 		if err := useContent(website.TourOnly()); err != nil {

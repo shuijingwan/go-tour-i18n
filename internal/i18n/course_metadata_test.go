@@ -24,12 +24,28 @@ func TestValidateCourseMetadataCompleteSet(t *testing.T) {
 
 func TestCourseMetadataCurrentProductionBaselineIs103Pages(t *testing.T) {
 	root := filepath.Clean(filepath.Join("..", ".."))
+	current, err := BuildSourceCatalog(root)
+	if err != nil {
+		t.Fatal(err)
+	}
 	catalog, err := ReadCatalog(root)
 	if err != nil {
 		t.Fatal(err)
 	}
 	if len(catalog.Pages) != 103 {
 		t.Fatalf("current production catalog pages=%d, want 103", len(catalog.Pages))
+	}
+	if err := HydrateCatalogSources(catalog, current); err != nil {
+		t.Fatal(err)
+	}
+	for _, locale := range []string{"zh-CN", "ja-JP"} {
+		metadata, err := LoadCourseMetadata(root, locale, catalog)
+		if err != nil {
+			t.Fatalf("load current %s formal course metadata: %v", locale, err)
+		}
+		if len(metadata.Pages) != len(catalog.Pages) {
+			t.Fatalf("%s formal pages=%d, catalog=%d", locale, len(metadata.Pages), len(catalog.Pages))
+		}
 	}
 }
 

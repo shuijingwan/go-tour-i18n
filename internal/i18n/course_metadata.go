@@ -79,7 +79,6 @@ type courseDescriptionEntry struct {
 }
 
 // LoadCourseMetadata loads and strictly validates the committed formal asset.
-// It is intentionally not called by projection or production in phase one.
 func LoadCourseMetadata(root, locale string, catalog *Catalog) (*CourseMetadata, error) {
 	if catalog == nil {
 		return nil, fmt.Errorf("catalog is required")

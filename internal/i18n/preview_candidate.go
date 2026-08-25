@@ -16,6 +16,10 @@ type PreviewContent struct {
 }
 
 func BuildCandidatePreview(root string, catalog *Catalog, pageID, locale, tempRoot string) (*PreviewContent, error) {
+	courseMetadata, err := LoadCourseMetadata(root, locale, catalog)
+	if err != nil {
+		return nil, fmt.Errorf("load formal course metadata: %w", err)
+	}
 	page, err := catalog.Page(pageID)
 	if err != nil {
 		return nil, err
@@ -54,6 +58,9 @@ func BuildCandidatePreview(root string, catalog *Catalog, pageID, locale, tempRo
 		return nil, fmt.Errorf("replace %s: %w", pageID, err)
 	}
 	if err := os.WriteFile(articlePath, replaced, 0644); err != nil {
+		return nil, err
+	}
+	if err := writeProjectedCourseSEO(contentDir, courseMetadata); err != nil {
 		return nil, err
 	}
 	return &PreviewContent{Root: tempRoot, ContentDir: contentDir, PageID: pageID, Locale: locale}, nil

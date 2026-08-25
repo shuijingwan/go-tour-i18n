@@ -38,7 +38,14 @@ func NewProductionHandler(content fs.FS, locale string) (http.Handler, error) {
 	if err != nil {
 		return nil, err
 	}
-	return newProductionHandler(content, locale, proxy)
+	handler, documents, err := newTourHandler(content, locale, proxy, true, true)
+	if err != nil {
+		return nil, err
+	}
+	if !documents.courseMetadataComplete {
+		return nil, fmt.Errorf("formal projected course SEO is missing")
+	}
+	return handler, nil
 }
 
 // PrerenderSource is the private build server and its canonical course routes.

@@ -1,8 +1,12 @@
 package tour
 
 import (
+	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
+	"io"
+	"io/fs"
 	"net/http"
 	"net/url"
 	"sort"
@@ -10,9 +14,11 @@ import (
 )
 
 type seoDocuments struct {
-	origin       string
-	sitemap      []byte
-	courseRoutes []CourseRoute
+	origin                 string
+	sitemap                []byte
+	courseRoutes           []CourseRoute
+	descriptions           map[string]string
+	courseMetadataComplete bool
 }
 
 // CourseRoute is one canonical lesson/page route derived from the same
@@ -23,6 +29,7 @@ type CourseRoute struct {
 	PageTitle   string
 	LessonTitle string
 	Files       []string
+	Description string
 }
 
 func productionOriginForLocale(locale string) (string, error) {
@@ -45,7 +52,12 @@ func initSEO(locale string) (seoDocuments, error) {
 		return seoDocuments{}, err
 	}
 	urls := []string{origin + "/", origin + "/tour/list"}
+	descriptions, metadataPresent, err := loadProjectedCourseSEO(contentTour)
+	if err != nil {
+		return seoDocuments{}, err
+	}
 	var courseRoutes []CourseRoute
+	seenRoutes := make(map[string]bool)
 	articles := make([]string, 0, len(lessons))
 	for article := range lessons {
 		articles = append(articles, article)
@@ -70,7 +82,9 @@ func initSEO(locale string) (seoDocuments, error) {
 				PageTitle:   page.Title,
 				LessonTitle: l.Title,
 				Files:       files,
+				Description: descriptions[routePath],
 			})
+			seenRoutes[routePath] = true
 		}
 	}
 	var b strings.Builder
@@ -79,7 +93,58 @@ func initSEO(locale string) (seoDocuments, error) {
 		fmt.Fprintf(&b, "  <url><loc>%s</loc></url>\n", loc)
 	}
 	b.WriteString("</urlset>\n")
-	return seoDocuments{origin: origin, sitemap: []byte(b.String()), courseRoutes: courseRoutes}, nil
+	if metadataPresent {
+		for _, route := range courseRoutes {
+			if route.Description == "" {
+				return seoDocuments{}, fmt.Errorf("projected course SEO is missing route %q", route.Path)
+			}
+		}
+		for route := range descriptions {
+			if !seenRoutes[route] {
+				return seoDocuments{}, fmt.Errorf("projected course SEO has unknown route %q", route)
+			}
+		}
+	}
+	return seoDocuments{origin: origin, sitemap: []byte(b.String()), courseRoutes: courseRoutes, descriptions: descriptions, courseMetadataComplete: metadataPresent}, nil
+}
+
+type projectedCourseSEOFile struct {
+	Pages []projectedCourseSEOPage `json:"pages"`
+}
+
+type projectedCourseSEOPage struct {
+	Route       string `json:"route"`
+	Description string `json:"description"`
+}
+
+func loadProjectedCourseSEO(content fs.FS) (map[string]string, bool, error) {
+	data, err := fs.ReadFile(content, "tour/course-seo.json")
+	if err != nil {
+		if errors.Is(err, fs.ErrNotExist) {
+			return map[string]string{}, false, nil
+		}
+		return nil, false, fmt.Errorf("read projected course SEO: %w", err)
+	}
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	var file projectedCourseSEOFile
+	if err := decoder.Decode(&file); err != nil {
+		return nil, false, fmt.Errorf("parse projected course SEO: %w", err)
+	}
+	if err := decoder.Decode(&struct{}{}); err != io.EOF {
+		return nil, false, fmt.Errorf("parse projected course SEO: trailing JSON")
+	}
+	result := make(map[string]string, len(file.Pages))
+	for _, page := range file.Pages {
+		if page.Route == "" || page.Description == "" {
+			return nil, false, fmt.Errorf("projected course SEO contains an empty route or description")
+		}
+		if _, exists := result[page.Route]; exists {
+			return nil, false, fmt.Errorf("projected course SEO has duplicate route %q", page.Route)
+		}
+		result[page.Route] = page.Description
+	}
+	return result, true, nil
 }
 
 func robotsHandler(documents seoDocuments) http.HandlerFunc {

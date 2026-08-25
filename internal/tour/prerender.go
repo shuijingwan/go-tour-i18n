@@ -11,6 +11,8 @@ import (
 	"net/http"
 	"path"
 	"strings"
+
+	"golang.org/x/net/html"
 )
 
 const runtimeHeadMarker = `<script id="tour-runtime-head"></script>`
@@ -55,7 +57,6 @@ func validatePrerenderedPage(data []byte, route CourseRoute) error {
 		{[]byte(runtimeHeadMarker), "runtime head marker"},
 		{[]byte(`data-tour-rendered-route="` + route.Path + `"`), "render completion marker"},
 		{[]byte(`<link rel="canonical" href="` + route.Canonical + `"`), "canonical"},
-		{[]byte(`<meta name="description" content="`), "description"},
 		{[]byte("<title>"), "title"},
 		{[]byte(route.PageTitle), "page title"},
 		{[]byte(`id="editor-container"`), "course body"},
@@ -65,8 +66,13 @@ func validatePrerenderedPage(data []byte, route CourseRoute) error {
 			return fmt.Errorf("missing %s", check.name)
 		}
 	}
-	if bytes.Contains(data, []byte(`<meta name="description" content="">`)) {
-		return fmt.Errorf("empty description")
+	document, err := html.Parse(bytes.NewReader(data))
+	if err != nil {
+		return fmt.Errorf("parse HTML: %w", err)
+	}
+	description := findElement(document, "meta", "name", "description")
+	if description == nil || attrValue(description, "content") != route.Description {
+		return fmt.Errorf("description=%q, want formal metadata %q", attrValue(description, "content"), route.Description)
 	}
 	for _, forbidden := range [][]byte{
 		[]byte("<iframe"),
@@ -85,6 +91,32 @@ func validatePrerenderedPage(data []byte, route CourseRoute) error {
 		return fmt.Errorf("embedded sources=%d, want %d", got, len(route.Files))
 	}
 	return nil
+}
+
+func findElement(node *html.Node, element, attr, value string) *html.Node {
+	if node.Type == html.ElementNode && node.Data == element {
+		if attr == "" || attrValue(node, attr) == value {
+			return node
+		}
+	}
+	for child := node.FirstChild; child != nil; child = child.NextSibling {
+		if found := findElement(child, element, attr, value); found != nil {
+			return found
+		}
+	}
+	return nil
+}
+
+func attrValue(node *html.Node, key string) string {
+	if node == nil {
+		return ""
+	}
+	for _, attr := range node.Attr {
+		if attr.Key == key {
+			return attr.Val
+		}
+	}
+	return ""
 }
 
 func registerPrerenderedPages(mux *http.ServeMux, pages []prerenderedPage) {

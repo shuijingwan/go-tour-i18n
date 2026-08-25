@@ -2,6 +2,7 @@ package i18n
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -131,6 +132,10 @@ func BuildLocaleProjection(root string, catalog *Catalog, locale, outputRoot str
 		sort.Strings(unavailable)
 		return nil, fmt.Errorf("complete projection requires all %d workflow translation units to be ready; unavailable: %s", len(workflow), strings.Join(unavailable, ", "))
 	}
+	courseMetadata, err := LoadCourseMetadata(root, locale, catalog)
+	if err != nil {
+		return nil, fmt.Errorf("load formal course metadata: %w", err)
+	}
 
 	if strings.TrimSpace(outputRoot) == "" {
 		return nil, fmt.Errorf("output directory is required")
@@ -201,6 +206,9 @@ func BuildLocaleProjection(root string, catalog *Catalog, locale, outputRoot str
 	if err = validateCompleteProjection(root, contentDir, catalog, locale, candidates, metadataByArticle); err != nil {
 		return nil, fmt.Errorf("validate complete projection: %w", err)
 	}
+	if err = writeProjectedCourseSEO(contentDir, courseMetadata); err != nil {
+		return nil, err
+	}
 
 	result.Root = outputRoot
 	result.ContentDir = contentDir
@@ -209,6 +217,33 @@ func BuildLocaleProjection(root string, catalog *Catalog, locale, outputRoot str
 	result.ExampleCount = exampleCount
 	result.ArticleCount = len(pagesByArticle)
 	return result, nil
+}
+
+const projectedCourseSEOPath = "tour/course-seo.json"
+
+type projectedCourseSEO struct {
+	Pages []projectedCourseSEOPage `json:"pages"`
+}
+
+type projectedCourseSEOPage struct {
+	Route       string `json:"route"`
+	Description string `json:"description"`
+}
+
+func writeProjectedCourseSEO(contentDir string, metadata *CourseMetadata) error {
+	projected := projectedCourseSEO{Pages: make([]projectedCourseSEOPage, len(metadata.Pages))}
+	for i, page := range metadata.Pages {
+		projected.Pages[i] = projectedCourseSEOPage{Route: "/tour" + page.Route, Description: page.Description}
+	}
+	data, err := json.MarshalIndent(projected, "", "  ")
+	if err != nil {
+		return fmt.Errorf("encode projected course SEO: %w", err)
+	}
+	data = append(data, '\n')
+	if err := os.WriteFile(filepath.Join(contentDir, filepath.FromSlash(projectedCourseSEOPath)), data, 0644); err != nil {
+		return fmt.Errorf("write projected course SEO: %w", err)
+	}
+	return nil
 }
 
 func loadReadyTranslationUnitCandidate(root string, catalog *Catalog, unit *TranslationUnit, locale string, status *Status) ([]byte, error) {

@@ -101,7 +101,7 @@ func initTour(mux *http.ServeMux, transport, locale, playgroundBaseURL string) (
 	mux.HandleFunc("/tour/footer.html", footerHandler)
 	mux.Handle("/tour/static/", http.FileServer(http.FS(contentTour)))
 
-	if err := initScript(mux, socketAddr(), transport, playgroundBaseURL, catalog); err != nil {
+	if err := initScript(mux, socketAddr(), transport, playgroundBaseURL, catalog, documents.descriptions, documents.courseMetadataComplete); err != nil {
 		return seoDocuments{}, err
 	}
 	return documents, nil
@@ -415,10 +415,10 @@ func footerHandler(w http.ResponseWriter, r *http.Request) {
 
 // initScript concatenates all the javascript files needed to render
 // the tour UI and serves the result on /script.js.
-func initScript(mux *http.ServeMux, socketAddr, transport, playgroundBaseURL string, catalog ui.Catalog) error {
+func initScript(mux *http.ServeMux, socketAddr, transport, playgroundBaseURL string, catalog ui.Catalog, descriptions map[string]string, courseMetadataRequired bool) error {
 	modTime := time.Now()
 	b := new(bytes.Buffer)
-	bootstrap, err := jsBootstrap(catalog)
+	bootstrap, err := jsBootstrap(catalog, descriptions, courseMetadataRequired)
 	if err != nil {
 		return err
 	}
@@ -506,7 +506,7 @@ var jsModules = []struct {
 	{"concurrency", "module.concurrency.title", "module.concurrency.description"},
 }
 
-func jsBootstrap(catalog ui.Catalog) ([]byte, error) {
+func jsBootstrap(catalog ui.Catalog, descriptions map[string]string, courseMetadataRequired bool) ([]byte, error) {
 	i18n, err := jsI18nBootstrap(catalog)
 	if err != nil {
 		return nil, err
@@ -515,7 +515,7 @@ func jsBootstrap(catalog ui.Catalog) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	seo, err := jsSEOBootstrap(catalog)
+	seo, err := jsSEOBootstrap(catalog, descriptions, courseMetadataRequired)
 	if err != nil {
 		return nil, err
 	}
@@ -523,7 +523,7 @@ func jsBootstrap(catalog ui.Catalog) ([]byte, error) {
 	return append(result, seo...), nil
 }
 
-func jsSEOBootstrap(catalog ui.Catalog) ([]byte, error) {
+func jsSEOBootstrap(catalog ui.Catalog, descriptions map[string]string, courseMetadataRequired bool) ([]byte, error) {
 	origin, err := productionOriginForLocale(catalog.Locale)
 	if err != nil {
 		return nil, err
@@ -533,9 +533,11 @@ func jsSEOBootstrap(catalog ui.Catalog) ([]byte, error) {
 		return nil, fmt.Errorf("read Tour title for SEO: %w", err)
 	}
 	encoded, err := json.Marshal(struct {
-		Origin    string `json:"origin"`
-		SiteTitle string `json:"siteTitle"`
-	}{origin, title})
+		Origin                 string            `json:"origin"`
+		SiteTitle              string            `json:"siteTitle"`
+		Descriptions           map[string]string `json:"descriptions"`
+		CourseMetadataRequired bool              `json:"courseMetadataRequired"`
+	}{origin, title, descriptions, courseMetadataRequired})
 	if err != nil {
 		return nil, fmt.Errorf("encode Tour SEO configuration: %w", err)
 	}

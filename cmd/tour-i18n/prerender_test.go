@@ -29,6 +29,7 @@ import (
 	"time"
 
 	website "github.com/shuijingwan/go-tour-i18n"
+	"github.com/shuijingwan/go-tour-i18n/internal/i18n"
 	"github.com/shuijingwan/go-tour-i18n/internal/tour"
 	"golang.org/x/net/html"
 )
@@ -135,14 +136,11 @@ func TestPrerenderRepresentativeCoursePagesInBrowser(t *testing.T) {
 
 	for _, locale := range []string{"zh-CN", "ja-JP"} {
 		t.Run(locale, func(t *testing.T) {
-			source, err := tour.NewPrerenderSource(website.TourOnly(), locale)
-			if err != nil {
-				t.Fatal(err)
-			}
+			source := formalPrerenderSource(t, locale)
 			server := newIPv4TestServer(t, source.Handler)
 			outputRoot := t.TempDir()
 			var pages [][]byte
-			for _, routePath := range []string{"/tour/welcome/2", "/tour/basics/1"} {
+			for _, routePath := range []string{"/tour/welcome/1", "/tour/methods/6", "/tour/methods/21", "/tour/concurrency/11"} {
 				route, ok := courseRoute(source.Routes, routePath)
 				if !ok {
 					t.Fatalf("route %s not found", routePath)
@@ -174,6 +172,13 @@ func TestPrerenderRepresentativeCoursePagesInBrowser(t *testing.T) {
 				if got := bytes.Count(page, []byte("data-tour-prerender-source=")); got != len(route.Files) {
 					t.Errorf("%s embedded sources=%d, want %d", route.Path, got, len(route.Files))
 				}
+				document, err := html.Parse(bytes.NewReader(page))
+				if err != nil {
+					t.Fatal(err)
+				}
+				if got := attrValue(findElement(document, "meta", "name", "description"), "content"); got != route.Description {
+					t.Errorf("%s description=%q, want formal metadata %q", route.Path, got, route.Description)
+				}
 			}
 			if bytes.Equal(pages[0], pages[1]) {
 				t.Fatal("two course URLs produced identical initial HTML")
@@ -182,12 +187,9 @@ func TestPrerenderRepresentativeCoursePagesInBrowser(t *testing.T) {
 	}
 }
 
-func TestPrerenderDescriptionExcludesBlockCodeInBrowser(t *testing.T) {
+func TestPrerenderDescriptionEqualsFormalMetadataInBrowser(t *testing.T) {
 	chrome := browserTestChrome(t)
-	source, err := tour.NewPrerenderSource(website.TourOnly(), "zh-CN")
-	if err != nil {
-		t.Fatal(err)
-	}
+	source := formalPrerenderSource(t, "zh-CN")
 	const routePath = "/tour/methods/6"
 	route, ok := courseRoute(source.Routes, routePath)
 	if !ok {
@@ -212,21 +214,64 @@ func TestPrerenderDescriptionExcludesBlockCodeInBrowser(t *testing.T) {
 		t.Fatal(err)
 	}
 	description := attrValue(findElement(document, "meta", "name", "description"), "content")
-	for _, forbidden := range []string{"var v Vertex", "ScaleFunc(v, 5)", "v.Scale(5)  // OK"} {
-		if strings.Contains(description, forbidden) {
-			t.Errorf("description contains block code %q: %q", forbidden, description)
-		}
-	}
-	for _, want := range []string{"Comparing the previous two programs", "while methods with pointer receivers"} {
-		if !strings.Contains(description, want) {
-			t.Errorf("description lost natural-language content %q: %q", want, description)
-		}
+	if description != route.Description {
+		t.Fatalf("description=%q, want formal metadata %q", description, route.Description)
 	}
 }
 
 func TestSPACourseNavigationUpdatesMetadataInBrowser(t *testing.T) {
 	chrome := browserTestChrome(t)
-	var err error
+	source := formalPrerenderSource(t, "zh-CN")
+	const initialPath = "/tour/basics/2"
+	const nextPath = "/tour/basics/3"
+	initialRoute, _ := courseRoute(source.Routes, initialPath)
+	nextRoute, _ := courseRoute(source.Routes, nextPath)
+	instrumented := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path != initialPath {
+			source.Handler.ServeHTTP(w, r)
+			return
+		}
+		recorder := httptest.NewRecorder()
+		source.Handler.ServeHTTP(recorder, r)
+		for key, values := range recorder.Header() {
+			for _, value := range values {
+				w.Header().Add(key, value)
+			}
+		}
+		w.WriteHeader(recorder.Code)
+		script := fmt.Sprintf(`<script>
+(function waitForInitialPage() {
+  if (document.documentElement.getAttribute('data-tour-rendered-route') !== %q || !document.querySelector('.next-page')) {
+    setTimeout(waitForInitialPage, 20); return;
+  }
+  var oldTitle = document.title;
+  var oldDescription = document.querySelector('meta[name="description"]').content;
+  document.querySelector('.next-page').click();
+  (function waitForNextPage() {
+    var canonical = document.querySelector('link[rel="canonical"]').href;
+    var description = document.querySelector('meta[name="description"]').content;
+    if (location.pathname === %q &&
+        document.documentElement.getAttribute('data-tour-rendered-route') === %q &&
+        canonical === 'https://go-dev.shuijingwanwq.com' + %q &&
+        oldDescription === %q && description === %q && document.title !== oldTitle) {
+      document.documentElement.setAttribute('data-tour-seo-navigation', 'PASS'); return;
+    }
+    setTimeout(waitForNextPage, 20);
+  }());
+}());
+</script>`, initialPath, nextPath, nextPath, nextPath, initialRoute.Description, nextRoute.Description)
+		body := bytes.Replace(recorder.Body.Bytes(), []byte("</body>"), []byte(script+"</body>"), 1)
+		_, _ = w.Write(body)
+	})
+	server := newIPv4TestServer(t, instrumented)
+	output := browserDumpDOM(t, chrome, server.URL+initialPath, 7000)
+	if !bytes.Contains(output, []byte(`data-tour-seo-navigation="PASS"`)) {
+		t.Fatalf("SPA navigation did not update route metadata: %s", output)
+	}
+}
+
+func TestSourceDevelopmentCourseNavigationInBrowser(t *testing.T) {
+	chrome := browserTestChrome(t)
 	source, err := tour.NewPrerenderSource(website.TourOnly(), "zh-CN")
 	if err != nil {
 		t.Fatal(err)
@@ -246,35 +291,51 @@ func TestSPACourseNavigationUpdatesMetadataInBrowser(t *testing.T) {
 			}
 		}
 		w.WriteHeader(recorder.Code)
-		script := `<script>
+		script := fmt.Sprintf(`<script>
+window.addEventListener('error', function() {
+  document.documentElement.setAttribute('data-tour-source-navigation', 'JS-ERROR');
+});
 (function waitForInitialPage() {
-  if (document.documentElement.getAttribute('data-tour-rendered-route') !== '` + initialPath + `' || !document.querySelector('.next-page')) {
+  if (document.documentElement.getAttribute('data-tour-rendered-route') !== %q || !document.querySelector('.next-page')) {
     setTimeout(waitForInitialPage, 20); return;
   }
-  var oldTitle = document.title;
-  var oldDescription = document.querySelector('meta[name="description"]').content;
   document.querySelector('.next-page').click();
   (function waitForNextPage() {
-    var canonical = document.querySelector('link[rel="canonical"]').href;
-    var description = document.querySelector('meta[name="description"]').content;
-    if (location.pathname === '` + nextPath + `' &&
-        document.documentElement.getAttribute('data-tour-rendered-route') === '` + nextPath + `' &&
-        canonical === 'https://go-dev.shuijingwanwq.com` + nextPath + `' &&
-        document.title !== oldTitle && description && description !== oldDescription) {
-      document.documentElement.setAttribute('data-tour-seo-navigation', 'PASS'); return;
+    if (document.documentElement.getAttribute('data-tour-rendered-route') !== %q || !document.querySelector('.prev-page')) {
+      setTimeout(waitForNextPage, 20); return;
     }
-    setTimeout(waitForNextPage, 20);
+    document.querySelector('.prev-page').click();
+    (function waitForPreviousPage() {
+      if (document.documentElement.getAttribute('data-tour-rendered-route') === %q) {
+        document.documentElement.setAttribute('data-tour-source-navigation', 'PASS'); return;
+      }
+      setTimeout(waitForPreviousPage, 20);
+    }());
   }());
 }());
-</script>`
+</script>`, initialPath, nextPath, initialPath)
 		body := bytes.Replace(recorder.Body.Bytes(), []byte("</body>"), []byte(script+"</body>"), 1)
 		_, _ = w.Write(body)
 	})
 	server := newIPv4TestServer(t, instrumented)
 	output := browserDumpDOM(t, chrome, server.URL+initialPath, 7000)
-	if !bytes.Contains(output, []byte(`data-tour-seo-navigation="PASS"`)) {
-		t.Fatalf("SPA navigation did not update route metadata: %s", output)
+	if !bytes.Contains(output, []byte(`data-tour-source-navigation="PASS"`)) {
+		t.Fatalf("source development SPA navigation failed: %s", output)
 	}
+}
+
+func formalPrerenderSource(t *testing.T, locale string) *tour.PrerenderSource {
+	t.Helper()
+	root, catalog := publishTestCatalog(t)
+	projection, err := i18n.BuildLocaleProjection(root, catalog, locale, filepath.Join(t.TempDir(), "projection"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	source, err := tour.NewPrerenderSource(os.DirFS(projection.ContentDir), locale)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return source
 }
 
 func TestPublishedBundlePrerenderEndToEndInBrowser(t *testing.T) {

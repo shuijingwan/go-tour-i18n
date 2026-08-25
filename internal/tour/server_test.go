@@ -58,6 +58,24 @@ func TestWeb(t *testing.T) {
 	}
 }
 
+func TestCourseSEORuntimeHasNoContentFallback(t *testing.T) {
+	data, err := fs.ReadFile(contentTour, "tour/static/js/services.js")
+	if err != nil {
+		t.Fatal(err)
+	}
+	script := string(data)
+	for _, want := range []string{"config.descriptions[path]", "missing formal course description"} {
+		if !strings.Contains(script, want) {
+			t.Errorf("course SEO runtime is missing %q", want)
+		}
+	}
+	for _, forbidden := range []string{"plainText", "page.Content", "substring(0, 200)", "querySelectorAll('pre')"} {
+		if strings.Contains(script, forbidden) {
+			t.Errorf("course SEO runtime retained fallback %q", forbidden)
+		}
+	}
+}
+
 func TestRenderIndexLocales(t *testing.T) {
 	tests := []struct {
 		locale string
@@ -457,7 +475,7 @@ func TestJSI18nBootstrapLocales(t *testing.T) {
 				t.Fatal(err)
 			}
 			mux := http.NewServeMux()
-			if err := initScript(mux, "", "SocketTransport", "", catalog); err != nil {
+			if err := initScript(mux, "", "SocketTransport", "", catalog, map[string]string{}, false); err != nil {
 				t.Fatal(err)
 			}
 			recorder := httptest.NewRecorder()
@@ -494,12 +512,12 @@ func TestJSRouteMetadataUsesLocaleRegistryOrigins(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-			bootstrap, err := jsSEOBootstrap(catalog)
+			bootstrap, err := jsSEOBootstrap(catalog, map[string]string{}, false)
 			if err != nil {
 				t.Fatal(err)
 			}
 			text := string(bootstrap)
-			for _, want := range []string{`window.__tourSEO = `, `"origin":"` + test.origin + `"`, `"siteTitle":"` + test.title + `"`} {
+			for _, want := range []string{`window.__tourSEO = `, `"origin":"` + test.origin + `"`, `"siteTitle":"` + test.title + `"`, `"courseMetadataRequired":false`} {
 				if !strings.Contains(text, want) {
 					t.Errorf("SEO bootstrap for %s is missing %q: %s", test.locale, want, text)
 				}
@@ -533,7 +551,7 @@ func TestLocalPlaygroundConfigurationKeepsRelativeHTTPEndpoints(t *testing.T) {
 		t.Fatal(err)
 	}
 	mux := http.NewServeMux()
-	if err := initScript(mux, "ws://127.0.0.1:3999/socket", "SocketTransport", "", catalog); err != nil {
+	if err := initScript(mux, "ws://127.0.0.1:3999/socket", "SocketTransport", "", catalog, map[string]string{}, false); err != nil {
 		t.Fatal(err)
 	}
 	recorder := httptest.NewRecorder()
@@ -566,7 +584,7 @@ func TestPlaygroundBaseURLIsJavaScriptStringEscaped(t *testing.T) {
 	}
 	mux := http.NewServeMux()
 	baseURL := `https://example.test/";alert(1)//</script>`
-	if err := initScript(mux, "", "HTTPTransport", baseURL, catalog); err != nil {
+	if err := initScript(mux, "", "HTTPTransport", baseURL, catalog, map[string]string{}, false); err != nil {
 		t.Fatal(err)
 	}
 	recorder := httptest.NewRecorder()

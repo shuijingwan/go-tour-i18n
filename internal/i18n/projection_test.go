@@ -65,6 +65,51 @@ func TestBuildLocaleProjectionReplacesMultipleSectionsAndArticles(t *testing.T) 
 	}
 }
 
+func TestBuildLocaleProjectionFailsClosedOnInvalidCourseMetadata(t *testing.T) {
+	tests := []struct {
+		name string
+		edit func(*testing.T, *projectionFixture, *CourseMetadata)
+	}{
+		{"missing file", func(t *testing.T, f *projectionFixture, _ *CourseMetadata) {
+			if err := os.Remove(filepath.Join(f.root, "locales", "zh-CN", "course-metadata.json")); err != nil {
+				t.Fatal(err)
+			}
+		}},
+		{"missing page", func(_ *testing.T, _ *projectionFixture, m *CourseMetadata) { m.Pages = m.Pages[:len(m.Pages)-1] }},
+		{"route mismatch", func(_ *testing.T, _ *projectionFixture, m *CourseMetadata) { m.Pages[0].Route = "/wrong/route" }},
+		{"stale source", func(_ *testing.T, _ *projectionFixture, m *CourseMetadata) {
+			m.Pages[0].SourceSHA256 = strings.Repeat("0", 64)
+		}},
+		{"stale target", func(_ *testing.T, _ *projectionFixture, m *CourseMetadata) {
+			m.Pages[0].TargetSHA256 = strings.Repeat("0", 64)
+		}},
+		{"stale glossary", func(_ *testing.T, _ *projectionFixture, m *CourseMetadata) {
+			m.Pages[0].GlossarySHA256 = strings.Repeat("0", 64)
+		}},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			fixture := newProjectionFixture(t)
+			path := filepath.Join(fixture.root, "locales", "zh-CN", "course-metadata.json")
+			data, err := os.ReadFile(path)
+			if err != nil {
+				t.Fatal(err)
+			}
+			var metadata CourseMetadata
+			if err := json.Unmarshal(data, &metadata); err != nil {
+				t.Fatal(err)
+			}
+			test.edit(t, fixture, &metadata)
+			if test.name != "missing file" {
+				writeFixtureFile(t, path, marshalCourseMetadata(t, &metadata))
+			}
+			if _, err := BuildLocaleProjection(fixture.root, fixture.catalog, "zh-CN", filepath.Join(t.TempDir(), "projection")); err == nil {
+				t.Fatal("projection accepted invalid formal course metadata")
+			}
+		})
+	}
+}
+
 func TestCourseAdMountIsIdenticalInSupportedLocaleProjections(t *testing.T) {
 	root, err := filepath.Abs(filepath.Join("..", ".."))
 	if err != nil {
@@ -87,6 +132,29 @@ func TestCourseAdMountIsIdenticalInSupportedLocaleProjections(t *testing.T) {
 		projection, err := BuildLocaleProjection(root, catalog, locale, filepath.Join(t.TempDir(), locale))
 		if err != nil {
 			t.Fatalf("build %s projection: %v", locale, err)
+		}
+		formal, err := LoadCourseMetadata(root, locale, catalog)
+		if err != nil {
+			t.Fatal(err)
+		}
+		projectedData, err := os.ReadFile(filepath.Join(projection.ContentDir, filepath.FromSlash(projectedCourseSEOPath)))
+		if err != nil {
+			t.Fatal(err)
+		}
+		var seo projectedCourseSEO
+		if err := json.Unmarshal(projectedData, &seo); err != nil {
+			t.Fatal(err)
+		}
+		if len(seo.Pages) != len(formal.Pages) {
+			t.Fatalf("%s projected descriptions=%d, formal=%d", locale, len(seo.Pages), len(formal.Pages))
+		}
+		for i := range formal.Pages {
+			if seo.Pages[i].Route != "/tour"+formal.Pages[i].Route || seo.Pages[i].Description != formal.Pages[i].Description {
+				t.Fatalf("%s projected course SEO mismatch at %s", locale, formal.Pages[i].PageID)
+			}
+			if formal.Pages[i].PageID == "welcome/4" && seo.Pages[i].Route != "/tour/welcome/3" {
+				t.Fatalf("%s welcome special mapping=%q", locale, seo.Pages[i].Route)
+			}
 		}
 		data, err := os.ReadFile(filepath.Join(projection.ContentDir, "tour", "static", "partials", "editor.html"))
 		if err != nil {
@@ -348,7 +416,27 @@ func newProjectionFixture(t *testing.T) *projectionFixture {
 	fixture.statuses = append(fixture.statuses, Status{UnitID: "example:alpha/one.go", State: "ready", Attempts: 1, SourceSHA256: sum(exampleSource), CandidatePath: examplePath})
 	fixture.writeStatuses(t)
 	fixture.writeMetadata(t, fixture.metadata)
+	fixture.writeCourseMetadata(t)
 	return fixture
+}
+
+func (f *projectionFixture) writeCourseMetadata(t *testing.T) {
+	t.Helper()
+	glossary, err := os.ReadFile(filepath.Join(f.root, "locales", "zh-CN", "glossary.yaml"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	metadata := CourseMetadata{SchemaVersion: CourseMetadataSchemaVersion, Locale: "zh-CN", GeneratorContract: CourseMetadataGeneratorContract}
+	for i, page := range f.catalog.Pages {
+		target := f.candidates[page.ID]
+		metadata.Pages = append(metadata.Pages, CoursePageMetadata{
+			PageID: page.ID, Route: page.Route,
+			Description:  fmt.Sprintf("这是第 %d 个课程页面的正式搜索摘要，用于完整说明当前页面所教授的主题与学习内容。", i+1),
+			SourceSHA256: page.SourceSHA256, TargetSHA256: sum(target), GlossarySHA256: sum(glossary),
+			Generation: CourseMetadataGeneration{Provider: "fixture", Model: "fixture", PromptVersion: CourseMetadataPromptVersion, GeneratedAt: "2026-08-25T00:00:00Z"},
+		})
+	}
+	writeFixtureFile(t, filepath.Join(f.root, "locales", "zh-CN", "course-metadata.json"), marshalCourseMetadata(t, &metadata))
 }
 
 func (f *projectionFixture) metadataPath() string {

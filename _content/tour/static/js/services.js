@@ -45,17 +45,6 @@ factory('seo', ['$document',
             return doc.querySelector('meta[name="description"]');
         }
 
-        function plainText(html) {
-            var container = doc.createElement('div');
-            container.innerHTML = html;
-            var blockCode = container.querySelectorAll('pre');
-            for (var i = 0; i < blockCode.length; i++) {
-                blockCode[i].parentNode.removeChild(blockCode[i]);
-            }
-            return (container.textContent || container.innerText || '')
-                .replace(/\s+/g, ' ').trim().substring(0, 200);
-        }
-
         function markRendered(path) {
             doc.documentElement.setAttribute('data-tour-rendered-route', path);
         }
@@ -63,9 +52,15 @@ factory('seo', ['$document',
         return {
             page: function(lessonId, pageNumber, lesson, page) {
                 var path = '/tour/' + lessonId + '/' + pageNumber;
+                if (config.courseMetadataRequired) {
+                    var courseDescription = config.descriptions[path];
+                    if (typeof courseDescription !== 'string' || courseDescription.length === 0) {
+                        throw new Error('missing formal course description for ' + path);
+                    }
+                    description().setAttribute('content', courseDescription);
+                }
                 doc.title = page.Title + ' — ' + lesson.Title + ' — ' + config.siteTitle;
                 canonical().setAttribute('href', config.origin + path);
-                description().setAttribute('content', plainText(page.Content));
                 markRendered(path);
             },
             list: function() {

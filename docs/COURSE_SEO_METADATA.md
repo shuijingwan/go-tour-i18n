@@ -150,6 +150,10 @@ go run -mod=readonly ./cmd/tour-i18n course-metadata assemble \
 
 Surface Review evidence 应记录 catalog、course metadata、glossary 和 target identity，以及完整 page count 和 validation 结果。自动 validation 通过不能替代逐页语言质量审核；任一页未通过时不得 publish。
 
-## 第一阶段实现状态
+## 当前实现状态
 
-第一阶段只提供 schema、严格 loader/validator、自动测试和本规范。它不生成真实 description，不把 metadata gate 接入 projection/publish，不改变 prerender、production runtime、`window.__tourSEO` 或当前浏览器 metadata 行为。后续阶段只有在所有正式 locale 准备好完整且审核通过的资产后，才可移除现有机械摘要逻辑并启用 production fail-closed gate。
+schema、严格 loader/validator、离线 assembler 与自动测试均已完成，zh-CN 和 ja-JP 的完整正式资产已经进入 Git。projection 与 preview 统一通过 `LoadCourseMetadata` 验证资产，并只把 runtime 所需的课程 route 与 description 注入投影内容和 `window.__tourSEO`；publish、prerender 与 production runtime 均消费该确定性结果。课程页的 `plainText` 机械摘要 fallback 已删除，缺失、不完整、route 不匹配、stale 或 description 不合法都会使正式构建和发布 fail closed，prerender 也会逐页验证最终 description 与正式 metadata 精确相等。
+
+后续 release 仍须完成 Locale Surface Review 和 production rendered acceptance。本接入不改变 TranslationUnit workflow，也不替代这些上线验收步骤。
+
+正式 projected preview、publish 与 production 使用严格课程 metadata；普通 upstream/source development Tour 不属于正式 locale SEO surface，也不生成课程 description。
