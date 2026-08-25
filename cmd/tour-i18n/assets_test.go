@@ -46,8 +46,8 @@ func TestAssetsExportContainsOnlyAllowlistedFilesAndValidChecksums(t *testing.T)
 			t.Errorf("forbidden export path %s exists or returned unexpected error: %v", forbidden, err)
 		}
 	}
-	if got := assetPayloadSize(output); got != 217051 {
-		t.Fatalf("asset payload size = %d, want 217051", got)
+	if got := assetPayloadSize(output); got != 216803 {
+		t.Fatalf("asset payload size = %d, want 216803", got)
 	}
 }
 

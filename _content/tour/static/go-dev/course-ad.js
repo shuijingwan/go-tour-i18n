@@ -13,10 +13,18 @@
         }
         element.setAttribute(mountedAttribute, 'true');
         element.setAttribute('role', 'complementary');
-        element.setAttribute('aria-label', 'Test advertisement');
-        element.innerHTML =
-            '<span class="go-dev-course-ad__label">TEST AD</span>' +
-            '<span class="go-dev-course-ad__detail">Advertisement placeholder — no ad request is made.</span>';
+        element.setAttribute('aria-label', 'Advertisement');
+
+        var ad = document.createElement('ins');
+        ad.className = 'adsbygoogle';
+        ad.style.display = 'block';
+        ad.setAttribute('data-ad-client', 'ca-pub-8392190980622725');
+        ad.setAttribute('data-ad-slot', '4728596962');
+        ad.setAttribute('data-ad-format', 'auto');
+        ad.setAttribute('data-full-width-responsive', 'true');
+        element.appendChild(ad);
+
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
     }
 
     function mountWithin(root) {

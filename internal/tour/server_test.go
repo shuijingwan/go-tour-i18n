@@ -612,13 +612,15 @@ func TestCourseAdAssetsAreFlowOnlyAndAngularIndependent(t *testing.T) {
 		t.Fatal(err)
 	}
 	css := string(cssData)
-	for _, forbidden := range []string{"position: fixed", "position: absolute", "position: sticky", "vh", "viewport"} {
+	for _, forbidden := range []string{"position: fixed", "position: absolute", "position: sticky", "height:", "min-height:", "vh", "viewport"} {
 		if strings.Contains(css, forbidden) {
 			t.Errorf("course ad CSS contains forbidden layout behavior %q", forbidden)
 		}
 	}
-	if !strings.Contains(css, "margin: 24px auto 16px") || !strings.Contains(css, "[data-theme='dark']") || !strings.Contains(css, "@media (max-width: 600px)") {
-		t.Error("course ad CSS is missing spacing, dark theme, or mobile behavior")
+	for _, want := range []string{"margin: 24px auto 16px", "@media (max-width: 600px)", `ins.adsbygoogle[data-ad-status="unfilled"]`, "display: none !important"} {
+		if !strings.Contains(css, want) {
+			t.Errorf("course ad CSS is missing %q", want)
+		}
 	}
 
 	jsData, err := fs.ReadFile(contentTour, "tour/static/go-dev/course-ad.js")
@@ -626,15 +628,29 @@ func TestCourseAdAssetsAreFlowOnlyAndAngularIndependent(t *testing.T) {
 		t.Fatal(err)
 	}
 	js := string(jsData)
-	for _, want := range []string{"function mountAll()", "new MutationObserver", "data-go-dev-course-ad-mounted", "TEST AD"} {
+	for _, want := range []string{
+		"function mountAll()",
+		"new MutationObserver",
+		"data-go-dev-course-ad-mounted",
+		"document.createElement('ins')",
+		"ad.className = 'adsbygoogle'",
+		"data-ad-client', 'ca-pub-8392190980622725'",
+		"data-ad-slot', '4728596962'",
+		"data-ad-format', 'auto'",
+		"data-full-width-responsive', 'true'",
+		"(window.adsbygoogle = window.adsbygoogle || []).push({})",
+	} {
 		if !strings.Contains(js, want) {
 			t.Errorf("course ad JS is missing %q", want)
 		}
 	}
-	for _, forbidden := range []string{"angular", "adsbygoogle", "googlesyndication", "locale"} {
+	for _, forbidden := range []string{"test ad", "googlesyndication", "pagead2", "angular", "locale", "setinterval", "settimeout"} {
 		if strings.Contains(strings.ToLower(js), forbidden) {
 			t.Errorf("course ad JS contains forbidden dependency %q", forbidden)
 		}
+	}
+	if got := strings.Count(js, ".push({})"); got != 1 {
+		t.Errorf("course ad JS push count = %d, want 1", got)
 	}
 }
 
