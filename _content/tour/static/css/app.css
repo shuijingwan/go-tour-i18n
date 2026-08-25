@@ -407,6 +407,9 @@ a#run, a#kill {
         overflow: visible;
         background: #fff;
     }
+    [data-theme='dark'] #editor-container {
+        background: #202224;
+    }
     #left-side {
         position: relative;
         left: 0;
