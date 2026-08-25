@@ -9,15 +9,16 @@
 
 angular.module('tour.controllers', []).
 
-controller('ListCtrl', ['$scope', 'i18n',
-    function($scope, i18n) {
+controller('ListCtrl', ['$scope', 'i18n', 'seo',
+    function($scope, i18n, seo) {
         $scope.listHeading = i18n.l('tour.list_heading');
+        seo.list();
     }
 ]).
 
 // Navigation controller
-controller('EditorCtrl', ['$scope', '$routeParams', '$location', 'toc', 'i18n', 'run', 'fmt', 'editor', 'analytics', 'storage',
-    function($scope, $routeParams, $location, toc, i18n, run, fmt, editor, analytics, storage) {
+controller('EditorCtrl', ['$scope', '$routeParams', '$location', 'toc', 'i18n', 'run', 'fmt', 'editor', 'analytics', 'storage', 'seo',
+    function($scope, $routeParams, $location, toc, i18n, run, fmt, editor, analytics, storage, seo) {
         var lessons = [];
         toc.lessons.then(function(v) {
             lessons = v;
@@ -74,6 +75,7 @@ controller('EditorCtrl', ['$scope', '$routeParams', '$location', 'toc', 'i18n', 
                 page = (page < 1) ? lessons[l].Pages.length : 1;
             }
             $location.path('/tour/' + l + '/' + page);
+            seo.page(l, page, lessons[l], lessons[l].Pages[page - 1]);
             $scope.openFile($scope.curFile);
             analytics.trackView();
         };

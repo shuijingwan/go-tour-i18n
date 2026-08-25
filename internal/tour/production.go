@@ -41,18 +41,56 @@ func NewProductionHandler(content fs.FS, locale string) (http.Handler, error) {
 	return newProductionHandler(content, locale, proxy)
 }
 
+// PrerenderSource is the private build server and its canonical course routes.
+// It deliberately omits runtime analytics and advertising configuration so a
+// publish cannot freeze third-party DOM into the release artifact.
+type PrerenderSource struct {
+	Handler http.Handler
+	Routes  []CourseRoute
+}
+
+// NewPrerenderSource creates the local-only source server used by publish.
+func NewPrerenderSource(content fs.FS, locale string) (*PrerenderSource, error) {
+	proxy, err := newPlaygroundProxy(productionPlaygroundURL)
+	if err != nil {
+		return nil, err
+	}
+	handler, documents, err := newTourHandler(content, locale, proxy, false, false)
+	if err != nil {
+		return nil, err
+	}
+	routes := append([]CourseRoute(nil), documents.courseRoutes...)
+	return &PrerenderSource{Handler: handler, Routes: routes}, nil
+}
+
 func newProductionHandler(content fs.FS, locale string, proxy *playgroundProxy) (http.Handler, error) {
+	handler, _, err := newTourHandler(content, locale, proxy, true, true)
+	return handler, err
+}
+
+func newTourHandler(content fs.FS, locale string, proxy *playgroundProxy, requirePrerender, includeRuntimeHead bool) (http.Handler, seoDocuments, error) {
 	if proxy == nil {
-		return nil, fmt.Errorf("Playground proxy is required")
+		return nil, seoDocuments{}, fmt.Errorf("Playground proxy is required")
 	}
 	if err := useContent(content); err != nil {
-		return nil, err
+		return nil, seoDocuments{}, err
 	}
 
 	mux := http.NewServeMux()
-	documents, err := registerHandlersLocale(mux, locale, productionPlaygroundBaseURL)
+	documents, err := registerHandlersLocaleWithRuntimeHead(mux, locale, productionPlaygroundBaseURL, includeRuntimeHead)
 	if err != nil {
-		return nil, err
+		return nil, seoDocuments{}, err
+	}
+	metadata, err := loadSiteMetadata(contentTour)
+	if err != nil {
+		return nil, seoDocuments{}, err
+	}
+	if requirePrerender && !metadata.Development {
+		pages, err := loadPrerenderedPages(contentTour, documents.courseRoutes)
+		if err != nil {
+			return nil, seoDocuments{}, err
+		}
+		registerPrerenderedPages(mux, pages)
 	}
 
 	// These routes are deliberately registered before the SPA fallback. The
@@ -70,7 +108,7 @@ func newProductionHandler(content fs.FS, locale string, proxy *playgroundProxy) 
 	mux.Handle("/favicon.ico", contentServer)
 	mux.Handle("/images/", contentServer)
 	mux.HandleFunc("/", rootHandler)
-	return mux, nil
+	return mux, documents, nil
 }
 
 func notFound(w http.ResponseWriter, r *http.Request) {

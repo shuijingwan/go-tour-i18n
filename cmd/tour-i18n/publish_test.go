@@ -117,6 +117,47 @@ func TestPublishFailureCleansStaging(t *testing.T) {
 	}
 }
 
+func TestPublishPrerenderFailureCleansStagingAndDoesNotCreateRelease(t *testing.T) {
+	root, catalog := publishTestCatalog(t)
+	parent := t.TempDir()
+	output := filepath.Join(parent, "failed-prerender-release")
+	originalBuild := buildProductionBinary
+	originalPrerender := prerenderProductionPages
+	t.Cleanup(func() {
+		buildProductionBinary = originalBuild
+		prerenderProductionPages = originalPrerender
+	})
+	buildProductionBinary = func(_, _, binaryPath string) error {
+		if err := os.MkdirAll(filepath.Dir(binaryPath), 0755); err != nil {
+			return err
+		}
+		return os.WriteFile(binaryPath, []byte("test binary\n"), 0755)
+	}
+	prerenderProductionPages = func(contentDir, locale string, expectedPages int) error {
+		if locale != "zh-CN" || expectedPages != 103 || !strings.HasSuffix(contentDir, filepath.Join("_content")) {
+			return fmt.Errorf("unexpected prerender input: %s %s %d", contentDir, locale, expectedPages)
+		}
+		return errors.New("Chrome did not render course body")
+	}
+
+	err := publishBundle(root, catalog, publishOptions{Locale: "zh-CN", Output: output, PublishedAt: testPublishedAt})
+	if err == nil || !strings.Contains(err.Error(), "prerender course pages") || !strings.Contains(err.Error(), "Chrome did not render course body") {
+		t.Fatalf("publish prerender error=%v", err)
+	}
+	if _, err := os.Lstat(output); !os.IsNotExist(err) {
+		t.Fatalf("failed publish created output: %v", err)
+	}
+	entries, err := os.ReadDir(parent)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, entry := range entries {
+		if strings.Contains(entry.Name(), ".staging-") {
+			t.Fatalf("staging remains after prerender failure: %s", entry.Name())
+		}
+	}
+}
+
 func TestValidatePublishProjectionUsesDynamicWorkflowCounts(t *testing.T) {
 	_, catalog := publishTestCatalog(t)
 	total, pages, examples, err := i18n.LocaleWorkflowUnitCounts(catalog)

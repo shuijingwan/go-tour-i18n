@@ -149,7 +149,7 @@ Playground allowed Origin
 
 ### Production release 自动部署
 
-先使用仓库现有的 `publish` 命令生成并验收 Linux/amd64 production bundle。部署脚本不会自动构建 bundle，只接受一个已经生成的本地 release 目录。调用方式对所有语言相同：
+先使用仓库现有的 `publish` 命令生成并验收 Linux/amd64 production bundle。publish 环境必须存在 `google-chrome`；构建会对当前 locale 的全部正式课程 URL 执行 headless Chrome prerender，并将 route-specific HTML 写入 `_content/tour/prerender/<lesson>/<page>.html`。Chrome 缺失、任一页面未完成渲染或产物缺少 route metadata、正文、完整示例源码时均 fail closed。部署脚本不会自动构建 bundle，只接受一个已经生成的本地 release 目录。调用方式对所有语言相同：
 
 ```sh
 # zh-CN

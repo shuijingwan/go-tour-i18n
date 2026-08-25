@@ -25,10 +25,18 @@ func RegisterHandlersLocale(mux *http.ServeMux, locale string) error {
 }
 
 func registerHandlersLocale(mux *http.ServeMux, locale, playgroundBaseURL string) (seoDocuments, error) {
+	return registerHandlersLocaleWithRuntimeHead(mux, locale, playgroundBaseURL, true)
+}
+
+func registerHandlersLocaleWithRuntimeHead(mux *http.ServeMux, locale, playgroundBaseURL string, includeRuntimeHead bool) (seoDocuments, error) {
 	prepContent = gaePrepContent
 	socketAddr = gaeSocketAddr
-	analyticsHTML = template.HTML(os.Getenv("TOUR_ANALYTICS"))
-	adHTML = template.HTML(os.Getenv("TOUR_AD_HTML"))
+	analyticsHTML = ""
+	adHTML = ""
+	if includeRuntimeHead {
+		analyticsHTML = template.HTML(os.Getenv("TOUR_ANALYTICS"))
+		adHTML = template.HTML(os.Getenv("TOUR_AD_HTML"))
+	}
 
 	documents, err := initTour(mux, "HTTPTransport", locale, playgroundBaseURL)
 	if err != nil {

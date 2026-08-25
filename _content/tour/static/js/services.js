@@ -30,6 +30,50 @@ factory('i18n', ['translation',
     }
 ]).
 
+// Route-specific document metadata. This is updated on every SPA navigation
+// and is also captured into the build-time prerendered HTML.
+factory('seo', ['$document',
+    function(documents) {
+        var doc = documents[0];
+        var config = window.__tourSEO;
+
+        function canonical() {
+            return doc.querySelector('link[rel="canonical"]');
+        }
+
+        function description() {
+            return doc.querySelector('meta[name="description"]');
+        }
+
+        function plainText(html) {
+            var container = doc.createElement('div');
+            container.innerHTML = html;
+            return (container.textContent || container.innerText || '')
+                .replace(/\s+/g, ' ').trim().substring(0, 200);
+        }
+
+        function markRendered(path) {
+            doc.documentElement.setAttribute('data-tour-rendered-route', path);
+        }
+
+        return {
+            page: function(lessonId, pageNumber, lesson, page) {
+                var path = '/tour/' + lessonId + '/' + pageNumber;
+                doc.title = page.Title + ' — ' + lesson.Title + ' — ' + config.siteTitle;
+                canonical().setAttribute('href', config.origin + path);
+                description().setAttribute('content', plainText(page.Content));
+                markRendered(path);
+            },
+            list: function() {
+                doc.title = config.siteTitle;
+                canonical().setAttribute('href', config.origin + '/tour/list');
+                description().setAttribute('content', config.siteTitle);
+                markRendered('/tour/list');
+            }
+        };
+    }
+]).
+
 // Running code
 factory('run', ['$window', 'editor',
     function(win, editor) {

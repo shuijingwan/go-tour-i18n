@@ -480,6 +480,53 @@ func TestJSI18nBootstrapLocales(t *testing.T) {
 	}
 }
 
+func TestJSRouteMetadataUsesLocaleRegistryOrigins(t *testing.T) {
+	for _, test := range []struct {
+		locale string
+		origin string
+		title  string
+	}{
+		{"zh-CN", "https://go-dev.shuijingwanwq.com", "Go 语言之旅"},
+		{"ja-JP", "https://ja-go-dev.shuijingwanwq.com", "Go 言語ツアー"},
+	} {
+		t.Run(test.locale, func(t *testing.T) {
+			catalog, err := ui.Load(test.locale)
+			if err != nil {
+				t.Fatal(err)
+			}
+			bootstrap, err := jsSEOBootstrap(catalog)
+			if err != nil {
+				t.Fatal(err)
+			}
+			text := string(bootstrap)
+			for _, want := range []string{`window.__tourSEO = `, `"origin":"` + test.origin + `"`, `"siteTitle":"` + test.title + `"`} {
+				if !strings.Contains(text, want) {
+					t.Errorf("SEO bootstrap for %s is missing %q: %s", test.locale, want, text)
+				}
+			}
+		})
+	}
+
+	controllers, err := fs.ReadFile(contentTour, "tour/static/js/controllers.js")
+	if err != nil {
+		t.Fatal(err)
+	}
+	services, err := fs.ReadFile(contentTour, "tour/static/js/services.js")
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, want := range []string{"seo.page(l, page", "seo.list()"} {
+		if !strings.Contains(string(controllers), want) {
+			t.Errorf("controllers.js is missing SPA metadata update %q", want)
+		}
+	}
+	for _, want := range []string{`doc.title = page.Title`, `link[rel="canonical"]`, `meta[name="description"]`, `data-tour-rendered-route`} {
+		if !strings.Contains(string(services), want) {
+			t.Errorf("services.js is missing route metadata behavior %q", want)
+		}
+	}
+}
+
 func TestLocalPlaygroundConfigurationKeepsRelativeHTTPEndpoints(t *testing.T) {
 	catalog, err := ui.Load("en")
 	if err != nil {

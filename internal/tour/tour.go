@@ -124,6 +124,7 @@ type pageTemplateData struct {
 	CopyrightHolder     string
 	Languages           []LanguageLink
 	CurrentLanguage     LanguageLink
+	SEOOrigin           string
 }
 
 func newPageTemplateData(catalog ui.Catalog, metadata SiteMetadata) (pageTemplateData, error) {
@@ -136,6 +137,10 @@ func newPageTemplateData(catalog ui.Catalog, metadata SiteMetadata) (pageTemplat
 		return pageTemplateData{}, err
 	}
 	currentLanguage, err := currentLanguage(languages)
+	if err != nil {
+		return pageTemplateData{}, err
+	}
+	seoOrigin, err := productionOriginForLocale(catalog.Locale)
 	if err != nil {
 		return pageTemplateData{}, err
 	}
@@ -167,6 +172,7 @@ func newPageTemplateData(catalog ui.Catalog, metadata SiteMetadata) (pageTemplat
 		CopyrightHolder:     Project.CopyrightHolder,
 		Languages:           languages,
 		CurrentLanguage:     currentLanguage,
+		SEOOrigin:           seoOrigin,
 	}, nil
 }
 
@@ -509,7 +515,31 @@ func jsBootstrap(catalog ui.Catalog) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	return append(i18n, modules...), nil
+	seo, err := jsSEOBootstrap(catalog)
+	if err != nil {
+		return nil, err
+	}
+	result := append(i18n, modules...)
+	return append(result, seo...), nil
+}
+
+func jsSEOBootstrap(catalog ui.Catalog) ([]byte, error) {
+	origin, err := productionOriginForLocale(catalog.Locale)
+	if err != nil {
+		return nil, err
+	}
+	title, err := catalog.Plain("tour.title")
+	if err != nil {
+		return nil, fmt.Errorf("read Tour title for SEO: %w", err)
+	}
+	encoded, err := json.Marshal(struct {
+		Origin    string `json:"origin"`
+		SiteTitle string `json:"siteTitle"`
+	}{origin, title})
+	if err != nil {
+		return nil, fmt.Errorf("encode Tour SEO configuration: %w", err)
+	}
+	return append(append([]byte("window.__tourSEO = "), encoded...), ";\n"...), nil
 }
 
 func jsI18nBootstrap(catalog ui.Catalog) ([]byte, error) {

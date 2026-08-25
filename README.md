@@ -174,6 +174,8 @@ production runtime 已在 zh-CN 和 ja-JP 正式部署。zh-CN 页面经 EdgeOne
 
 使用以下命令生成固定 locale 的 production bundle（当前正式上线 locale 为 `zh-CN` 和 `ja-JP`）：
 
+publish 主机必须安装可执行文件名为 `google-chrome` 的 Chrome。publish 在完整 locale projection、production metadata 与 binary 之后，以 `--headless=new --dump-dom` 渲染 sitemap/lesson 数据中的全部正式课程路由；Chrome 缺失、任一路由未完成 AngularJS 渲染或 metadata/正文/示例源码不完整时，整个 publish 都会失败并清理 staging；第三方广告运行时 DOM 会在写入 prerender 产物前清理，清理后仍有残留则 validation 失败。
+
 ```bash
 go run -mod=readonly ./cmd/tour-i18n publish \
   --locale zh-CN \
@@ -188,11 +190,13 @@ go run -mod=readonly ./cmd/tour-i18n publish \
 ├── bin/
 │   └── tour
 ├── _content/
+│   └── tour/prerender/
+│       └── <lesson>/<page>.html
 ├── release.json
 └── SHA256SUMS
 ```
 
-`--published-at` 是当前 locale production bundle 的发布时间，必须使用 RFC 3339 UTC；它不是 Git commit、服务启动或请求时间。源码 `_content/tour/site-metadata.json` 仅为 `go run ./tour` 和 preview 使用的开发态 metadata，不保存生产发布时间；publish 会在 bundle 内生成真实的站点 metadata。`bin/tour` 在构建时固定 locale，从 binary 自身相邻的 `../_content` 加载内容，不需要运行时 `--locale` 或 `--content`，也不依赖当前工作目录。schema v2 `release.json` 同时记录 `translation_units`、`pages`、`eligible_examples` 和 `articles`；`translation_units` 与 `eligible_examples` 由当前 Catalog 的统一 workflow 动态计算。`release.json`、bundle 内的站点 metadata 和 `SHA256SUMS` 由相同输入确定；相同源码、发布时间、Go 工具链及 GOOS/GOARCH 下的重复 publish 逐文件一致。bundle 不包含 candidate、status、translation-runs 等开发期数据。
+`--published-at` 是当前 locale production bundle 的发布时间，必须使用 RFC 3339 UTC；它不是 Git commit、服务启动或请求时间。源码 `_content/tour/site-metadata.json` 仅为 `go run ./tour` 和 preview 使用的开发态 metadata，不保存生产发布时间；publish 会在 bundle 内生成真实的站点 metadata。`bin/tour` 在构建时固定 locale，从 binary 自身相邻的 `../_content` 加载内容，不需要运行时 `--locale` 或 `--content`，也不依赖当前工作目录。production 启动时会按同一课程数据逐页加载并验证 `_content/tour/prerender`，缺页或无效页面会直接拒绝启动；正式课程 URL 返回对应静态初始 HTML，AngularJS 随后继续接管同一页面与 SPA 导航。统计和广告配置只在请求时注入预留 head 节点，不进入 prerender 产物；运行时生成的 iframe、`adsbygoogle` 内容等也不会被固化。schema v2 `release.json` 同时记录 `translation_units`、`pages`、`eligible_examples` 和 `articles`；`translation_units` 与 `eligible_examples` 由当前 Catalog 的统一 workflow 动态计算。`release.json`、bundle 内的站点 metadata 和 `SHA256SUMS` 由相同输入确定；相同源码、发布时间、Go 工具链、Chrome 版本及 GOOS/GOARCH 下的重复 publish 逐文件一致。bundle 不包含 candidate、status、translation-runs 等开发期数据。
 
 当前 zh-CN 正式 release 已部署：`/data/go-tour/releases/20260824-zh-CN-7f6474b0`。该 release 使用 upstream `645042eb697eaf69e33a9af00c6b5b3fffdead5a`，包含 103 个 ready Page 与 19 个 ready eligible Example；历史上正式提升后的 103 页 ChatGPT canonical 事实保持不变。
 

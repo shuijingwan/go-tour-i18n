@@ -53,6 +53,10 @@ type releaseManifest struct {
 // staging cleanup. Production publishes always use buildProductionBinaryGo.
 var buildProductionBinary = buildProductionBinaryGo
 
+// prerenderProductionPages is replaceable only by package tests. Production
+// publishes always execute the Chrome implementation.
+var prerenderProductionPages = prerenderProductionPagesChrome
+
 func publishLocale(root string, catalog *i18n.Catalog, args []string) error {
 	options, err := parsePublishOptions(args)
 	if err != nil {
@@ -143,6 +147,9 @@ func publishBundle(root string, catalog *i18n.Catalog, options publishOptions) (
 	binaryPath := filepath.Join(staging, "bin", "tour")
 	if err := buildProductionBinary(root, options.Locale, binaryPath); err != nil {
 		return err
+	}
+	if err := prerenderProductionPages(projection.ContentDir, options.Locale, projection.PageCount); err != nil {
+		return fmt.Errorf("prerender course pages: %w", err)
 	}
 	if err := writeReleaseManifest(staging, manifest); err != nil {
 		return err

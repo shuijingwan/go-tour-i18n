@@ -10,8 +10,19 @@ import (
 )
 
 type seoDocuments struct {
-	origin  string
-	sitemap []byte
+	origin       string
+	sitemap      []byte
+	courseRoutes []CourseRoute
+}
+
+// CourseRoute is one canonical lesson/page route derived from the same
+// parsed lesson data used to build sitemap.xml.
+type CourseRoute struct {
+	Path        string
+	Canonical   string
+	PageTitle   string
+	LessonTitle string
+	Files       []string
 }
 
 func productionOriginForLocale(locale string) (string, error) {
@@ -34,6 +45,7 @@ func initSEO(locale string) (seoDocuments, error) {
 		return seoDocuments{}, err
 	}
 	urls := []string{origin + "/", origin + "/tour/list"}
+	var courseRoutes []CourseRoute
 	articles := make([]string, 0, len(lessons))
 	for article := range lessons {
 		articles = append(articles, article)
@@ -44,8 +56,21 @@ func initSEO(locale string) (seoDocuments, error) {
 		if err := json.Unmarshal(lessons[name], &l); err != nil {
 			return seoDocuments{}, fmt.Errorf("parse lesson %s for sitemap: %w", name, err)
 		}
-		for page := range l.Pages {
-			urls = append(urls, fmt.Sprintf("%s/tour/%s/%d", origin, name, page+1))
+		for pageIndex, page := range l.Pages {
+			routePath := fmt.Sprintf("/tour/%s/%d", name, pageIndex+1)
+			canonical := origin + routePath
+			urls = append(urls, canonical)
+			files := make([]string, len(page.Files))
+			for i := range page.Files {
+				files[i] = page.Files[i].Content
+			}
+			courseRoutes = append(courseRoutes, CourseRoute{
+				Path:        routePath,
+				Canonical:   canonical,
+				PageTitle:   page.Title,
+				LessonTitle: l.Title,
+				Files:       files,
+			})
 		}
 	}
 	var b strings.Builder
@@ -54,7 +79,7 @@ func initSEO(locale string) (seoDocuments, error) {
 		fmt.Fprintf(&b, "  <url><loc>%s</loc></url>\n", loc)
 	}
 	b.WriteString("</urlset>\n")
-	return seoDocuments{origin: origin, sitemap: []byte(b.String())}, nil
+	return seoDocuments{origin: origin, sitemap: []byte(b.String()), courseRoutes: courseRoutes}, nil
 }
 
 func robotsHandler(documents seoDocuments) http.HandlerFunc {
