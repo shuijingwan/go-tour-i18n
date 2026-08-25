@@ -617,7 +617,27 @@ func TestCourseAdAssetsAreFlowOnlyAndAngularIndependent(t *testing.T) {
 			t.Errorf("course ad CSS contains forbidden layout behavior %q", forbidden)
 		}
 	}
-	for _, want := range []string{"margin: 24px auto 16px", "@media (max-width: 600px)", `ins.adsbygoogle[data-ad-status="unfilled"]`, "display: none !important"} {
+	mobileStart := strings.Index(css, "@media (max-width: 600px)")
+	if mobileStart < 0 {
+		t.Fatal("course ad CSS has no mobile media query")
+	}
+	mobileCSS := css[mobileStart:]
+	if !strings.Contains(mobileCSS, "margin-top: 24px") || strings.Contains(mobileCSS, "margin-top: auto") {
+		t.Error("mobile course ad does not keep ordinary document-flow spacing")
+	}
+	for _, want := range []string{
+		"#left-side > .relative-content",
+		"display: flex",
+		"flex-direction: column",
+		"width: calc(100% - 80px)",
+		"max-width: 620px",
+		"margin-top: auto",
+		"margin-bottom: 24px",
+		"@media (max-width: 600px)",
+		"margin-top: 24px",
+		`ins.adsbygoogle[data-ad-status="unfilled"]`,
+		"display: none !important",
+	} {
 		if !strings.Contains(css, want) {
 			t.Errorf("course ad CSS is missing %q", want)
 		}
@@ -638,6 +658,14 @@ func TestCourseAdAssetsAreFlowOnlyAndAngularIndependent(t *testing.T) {
 		"data-ad-slot', '4728596962'",
 		"data-ad-format', 'auto'",
 		"data-full-width-responsive', 'true'",
+		"element.style.getPropertyValue('height') === 'auto'",
+		"element.style.getPropertyPriority('height') === 'important'",
+		"element.style.getPropertyValue('min-height') === '0px'",
+		"element.style.getPropertyPriority('min-height') === 'important'",
+		"element.style.removeProperty('height')",
+		"element.style.removeProperty('min-height')",
+		"attributeFilter: ['style']",
+		"layoutObserver.disconnect()",
 		"(window.adsbygoogle = window.adsbygoogle || []).push({})",
 	} {
 		if !strings.Contains(js, want) {
@@ -651,6 +679,11 @@ func TestCourseAdAssetsAreFlowOnlyAndAngularIndependent(t *testing.T) {
 	}
 	if got := strings.Count(js, ".push({})"); got != 1 {
 		t.Errorf("course ad JS push count = %d, want 1", got)
+	}
+	for _, forbidden := range []string{"removeAttribute('style')", `setAttribute('style', '')`, "document.body, {attributes: true"} {
+		if strings.Contains(js, forbidden) {
+			t.Errorf("course ad JS contains broad style cleanup %q", forbidden)
+		}
 	}
 }
 
