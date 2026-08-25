@@ -1,0 +1,1449 @@
+{
+  "schema_version": 1,
+  "locale": "ja-JP",
+  "generator_contract": "course-seo-description-v1",
+  "pages": [
+    {
+      "page_id": "welcome/1",
+      "route": "/welcome/1",
+      "description": "Go 言語ツアーの構成、ページ移動、プログラムの実行と編集、gofmt によるフォーマットやシンタックスハイライトの操作を案内します。",
+      "source_sha256": "1f581133d7fa40e6490418c6789a60a2f5e1de26c9c86d7eb6120cb58b145857",
+      "target_sha256": "e16f7249524232fda2594567bc350b99c5d8d8b660e19c6767c6ed0c249c34da",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "welcome/2",
+      "route": "/welcome/2",
+      "description": "このツアーを利用できる日本語、ブラジルポルトガル語、カタルーニャ語などの各言語版と、次のページへの進み方を紹介します。",
+      "source_sha256": "c1c8c34dfe10b11b5cc72e1daae4336290d613bbbe5445012be949ab904fd3fa",
+      "target_sha256": "77610a65c501520a63dbc2a1993664dc2b0b9bf57562a1fd4281ab2b90e0a4d8",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "welcome/4",
+      "route": "/welcome/3",
+      "description": "Go をインストールしてツアーを自分のマシンで動かし、インターネット接続なしでコード例をビルド、実行する方法を説明します。",
+      "source_sha256": "bb517d4b577fdb446fd029c2998d2426663b94a68f4b4e494c59af421508f683",
+      "target_sha256": "c8044112a1e92416b781bbaa6e85163e746978c77825fbc134ac46759075ae5c",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "welcome/5",
+      "route": "/welcome/4",
+      "description": "Go Playground がプログラムをサンドボックス内でコンパイル、実行する仕組みと、時刻、実行時間、CPU、メモリ、外部通信の制限を説明します。",
+      "source_sha256": "19e6d7da57ca1d191c485754f3dd4ac87775c651b8c0ae8e05c03cbd9b225897",
+      "target_sha256": "4807ed2c575e821b996c1e33c2ebf0f9c4c8e3533b4775ab9f682aadc328661c",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "welcome/3",
+      "route": "/welcome/5",
+      "description": "ツアーの最初のモジュールを終えたことを確認し、Go について学べるほかの内容を探すか、次のレッスンへ進むよう案内します。",
+      "source_sha256": "9a6983b2e50b2fa78ff4f65683210714aea1c1575418e36796c156950ec6330d",
+      "target_sha256": "2a4b35f056e96594544afad4b1c554aa4f58e7c483913becfabf281f2c05cb07",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "basics/1",
+      "route": "/basics/1",
+      "description": "Go プログラムを構成するパッケージ、実行を始める main パッケージ、インポートパスとパッケージ名の慣例を学びます。",
+      "source_sha256": "f769f12c0a028b2f0cd403d89ff39dd150405e9f2e4155875321522f08619fe0",
+      "target_sha256": "6766271297b1fd453eca00059cd53327ef119572c5cf37eeb833e352a2325377",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "basics/2",
+      "route": "/basics/2",
+      "description": "複数のインポートを個別に書く方法と、括弧でまとめたグループ形式のインポート文を推奨するスタイルを説明します。",
+      "source_sha256": "3329c9bff5f7e2b9b1e161fdebfb3804ff57cf1fb11bd4327d228328bcfb3fd0",
+      "target_sha256": "bc94107d45e168bdc8bebc73897d30fb688946bd25ff5e5e49b434e9e1e386b7",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "basics/3",
+      "route": "/basics/3",
+      "description": "大文字で始まるエクスポートされた名前と、それ以外の名前に対するパッケージ外からのアクセス規則を、エラーの修正を通して確認します。",
+      "source_sha256": "38b9c70e49184a24f63f6b12f8ba78e64c0b874ad2a6f9a5fe86267615fd1bf6",
+      "target_sha256": "ddbf1ea17556e2e56f716c93c061f34c7d4d15aae2a253621e13b552b0d75684",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "basics/4",
+      "route": "/basics/4",
+      "description": "Go の関数が受け取れる引数とパラメータの書き方を取り上げ、型を変数名の後ろに記述する宣言構文を説明します。",
+      "source_sha256": "accf0562d9b759c9735500d5df0d74e8f90142ed96fe5ab2f5eedc6fbd6cf6f2",
+      "target_sha256": "43a2732fb1fc1e2d2ed7eb67593ab884e32da6d0dfd93c1431728fd023ac7fe0",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "basics/5",
+      "route": "/basics/5",
+      "description": "同じ型を共有する名前付き関数パラメータが連続するとき、最後のパラメータ以外の型を省略して簡潔に書く方法を学びます。",
+      "source_sha256": "02e7feb341329e18143e18d533fe45381883a6ba6425abb09a847e2f0edf228a",
+      "target_sha256": "ded6bbbcfdbc63d48894854e01e30617e2a34dcf3a40295fbc050754c3d3aef3",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "basics/6",
+      "route": "/basics/6",
+      "description": "Go の関数は任意の数の結果を返せることを、2 つの文字列を返す関数の例で確認します。",
+      "source_sha256": "b3cb4b40115066443f265e3e5ebb9fc0fd6d080784c887328fce4d6b7891ba41",
+      "target_sha256": "f3d5330c05cbf078caa280ae30fc994dddef6ae0186a7277d8dcf084e6fb6d14",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "basics/7",
+      "route": "/basics/7",
+      "description": "戻り値に名前を付けて意味を示す方法、引数なしの return が名前付き戻り値を返す仕組み、裸の return を短い関数に限る理由を扱います。",
+      "source_sha256": "1db20ae87ce5d9d4b20f15e4638ba2a3295a7ce781c961ef618982890fc562fa",
+      "target_sha256": "4c6922dec4795b805a9e696095ecf3a0cde5a1bac04b8697834bb0c5ce8f64e9",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "basics/8",
+      "route": "/basics/8",
+      "description": "var 文による変数一覧の宣言と型の位置を学び、パッケージレベルと関数レベルの両方で宣言できることを確認します。",
+      "source_sha256": "bcb1b5e17ed9dff3d46a7cd8119c0d2f9c3afbb70ca94d35fadeb4f75b4a9d13",
+      "target_sha256": "71d20436bee82f583ec0664746074611dcc8a641c9560ac42eb8bcedb9b7b837",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "basics/9",
+      "route": "/basics/9",
+      "description": "var 宣言で各変数に初期値を指定する方法と、初期値がある場合に型を省略してその値の型を採用できる仕組みを説明します。",
+      "source_sha256": "d51c17ba355753484b96c0eefda9fcce9f6f041a8ae2bf3e96fd0ad0c44680cc",
+      "target_sha256": "68a78ea658385cbe9e402b461651504bc3aca32d993b92aed22818ed719e2b6d",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "basics/10",
+      "route": "/basics/10",
+      "description": "関数内で var 宣言の代わりに短い変数宣言を使う方法と、この構文を関数外では利用できない理由を学びます。",
+      "source_sha256": "f402e8e89a186d3208df5e4d983604730e71ef6c68354755f72e4580d3d7f359",
+      "target_sha256": "6d11755469c733eec00319dd548dbcf56111fcf16ebbfe37a2549df9c764e3fa",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "basics/11",
+      "route": "/basics/11",
+      "description": "論理型、文字列、整数、浮動小数点数、複素数など Go の基本型と別名を概観し、変数宣言のグループ化や整数型の選び方を説明します。",
+      "source_sha256": "836ab1dd659798dcf5e90f283c4ee794aed1d2cf0766c2ccc268fa91684e9d05",
+      "target_sha256": "377ccdd20b5dfc9f30a57ae6834a7f309f8ea681b4d5ad89a75112fcd4b768ef",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "basics/12",
+      "route": "/basics/12",
+      "description": "明示的な初期値を持たない変数に与えられるゼロ値を学び、数値型、論理型、文字列それぞれの値を確認します。",
+      "source_sha256": "d9ad62501c05359e7b2ac445fa92d629e11d6d378c2701b767abab76012a558e",
+      "target_sha256": "fae7577204987c340b9d9a37036c476cb2d586682241cde401254960ed4914b7",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "basics/13",
+      "route": "/basics/13",
+      "description": "値を別の型へ変換する式を学び、Go では異なる型の値を代入するときに明示的な型変換が必要であることを確認します。",
+      "source_sha256": "88e0e168f4c95fa4134198a32440b2d2fb1fac9aae535a9ee7148dbcda37e1b3",
+      "target_sha256": "651ec0fb924c86151d6f76e27348de4daf106424bcad7544b5810d3e9b521315",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "basics/14",
+      "route": "/basics/14",
+      "description": "明示的な型を省いた変数宣言の型推論と、右辺が型付きの値か型なし数値定数かによって決まる型の違いを学びます。",
+      "source_sha256": "21c4077c25629545dee0313b8b6b03e709edc4a74e1d73d9f4c9b0a49e46f6b3",
+      "target_sha256": "eb8ab0710b268bb898b1fdad07d422cfd1d950b25cdd65e2e94e3b02dc779d53",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "basics/15",
+      "route": "/basics/15",
+      "description": "const キーワードを使った定数の宣言、定数にできる文字・文字列・論理値・数値と、短い変数宣言を使えない規則を説明します。",
+      "source_sha256": "964ac515c0860a54b3a7780d77c7b4862ca38b744ae1f6be4b155a4386e2a229",
+      "target_sha256": "d2788c8dd6922b167421abb98177f7d18de286d5fca3d8d62e3ccdca9bb4d6ce",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "basics/16",
+      "route": "/basics/16",
+      "description": "高精度な値である数値定数と、型なし定数が文脈に必要な型を取る仕組みを学び、int が保持できる範囲も確認します。",
+      "source_sha256": "0d502d48a15f7a70e257079d7db1ddafe088607110c1c06b17b4be50b362394a",
+      "target_sha256": "0542f79c90bf9fc6119a304949ac6835c6b5bcdfb9fe8299a5d7cfe436650081",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "basics/17",
+      "route": "/basics/17",
+      "description": "このレッスンの完了を確認し、モジュール一覧で次に学ぶ内容を選ぶか、そのまま次のレッスンへ進むための案内です。",
+      "source_sha256": "f565674b974c053924bf69ef83b709dc50931526ae7fa88e71543a5cd872a190",
+      "target_sha256": "ddb0af5ca5d7d09bcf5869d7fec257f32e470857876edcf771596fe295e520e4",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/1",
+      "route": "/flowcontrol/1",
+      "description": "Go 唯一のループ構文である for について、初期化文、条件式、後処理文の実行順序、変数のスコープ、括弧と中括弧の規則を学びます。",
+      "source_sha256": "c1169da4fac9516ce733f1a4439d4181c5c42635c9839625d6f82dd8e4951042",
+      "target_sha256": "1baa6d8ff5b7fbfb6005d1f6752eb8a0e1c8fde06ad8925c3df38a66c9376ec1",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/2",
+      "route": "/flowcontrol/2",
+      "description": "基本的な for ループを簡略化し、初期化文と後処理文を必要に応じて省略できることをコード例で確認します。",
+      "source_sha256": "24a97abbb6db2b6a88017bf326a5968097263d8ba637805f2cf44c9fed25f9fe",
+      "target_sha256": "37c4efc0d996b70753daab5d254cb849d1bec00ce6c7d3a9885190e42301a23e",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/3",
+      "route": "/flowcontrol/3",
+      "description": "初期化文と後処理文がない for ではセミコロンも省略でき、Go では C の while に相当するループも for で表すことを学びます。",
+      "source_sha256": "3ed791cc935287ba6f5da4ba41f6ad84fdcbaef108ee364f769ae5204316bbb7",
+      "target_sha256": "3840773032fb84870dd5e2e62b3d9a4dd832ac51b85efb31b67ec47dd209c3be",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/4",
+      "route": "/flowcontrol/4",
+      "description": "for のループ条件を省略すると処理が永続的に繰り返され、無限ループを簡潔に表現できることを確認します。",
+      "source_sha256": "5456c129ef71c60b7502efde65c81020aaf1fa8b9178086e99223a21f6207dc6",
+      "target_sha256": "8aae90d6a5bf028ae213f792aa9b9059f6e438d2238b78eba76c295aff332eb6",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/5",
+      "route": "/flowcontrol/5",
+      "description": "Go の if 文では条件式を括弧で囲む必要がない一方、for ループと同様に中括弧が必須であることを学びます。",
+      "source_sha256": "ce49f916c1ceb7296576ec6b8ec92524b9827be168e3f5eb2040c61fee70f639",
+      "target_sha256": "7f54d306fa973440631544b580d969f76ee1c627d05f76949a59c36e73af2699",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/6",
+      "route": "/flowcontrol/6",
+      "description": "if 文の条件評価前に短い文を実行する書き方と、その文で宣言した変数のスコープが if 文の末尾までであることを説明します。",
+      "source_sha256": "02e310262214f3c5ceca8bf63ecf2ec3934641a7e2638050479b739ce077031e",
+      "target_sha256": "46034c286b6d1ccfe163e1d39c06e7ec4be0367ea4b83f09307199a3989c3d1f",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/7",
+      "route": "/flowcontrol/7",
+      "description": "if の短い文で宣言した変数を else ブロック内でも使用できることと、例に含まれる関数呼び出しの評価順序を確認します。",
+      "source_sha256": "8666746573ce7d0ea1c12ff24c4c8170a1961eedb0600ed73ab849b4758f797c",
+      "target_sha256": "5ad11edfd0633ad52f4811e9778b07332aacc2d3e809411975a83d1926eb88c0",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/8",
+      "route": "/flowcontrol/8",
+      "description": "ループと関数を使い、推測値を繰り返し改善するニュートン法で平方根を求める Sqrt 関数を実装し、停止条件や初期値を検討します。",
+      "source_sha256": "d8bbee8455ff59212ef432a08312f7c7703360367325a80df3719157200316e9",
+      "target_sha256": "63e15d6482806544ec7c1175aa23c5aa47ef25d8dab4011790d1d8ab0e887ff0",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/9",
+      "route": "/flowcontrol/9",
+      "description": "switch が条件に一致する最初の case だけを実行する仕組み、自動的な終了、case が定数や整数に限られない点を学びます。",
+      "source_sha256": "abdc4c295fa7b4aec2616acf83badbbf2b581a9f62e41d03ca2ff984ebb6f7ed",
+      "target_sha256": "2dd10f4f4d1d831d3a72701ea70cef3c804f36f3cb2bba45429a18be6b3e764e",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/10",
+      "route": "/flowcontrol/10",
+      "description": "switch の case が上から下へ評価され、条件が成立した時点で後続の case を評価せずに停止する順序を例で確認します。",
+      "source_sha256": "e1479cae56a87cddb9c447fc9fd32b0ee1f983058f7ee76554965abd21975ef4",
+      "target_sha256": "b719b00327549ccf408d23e87a1defb7eeb7d13dc871b718b228f4cf7b937743",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/11",
+      "route": "/flowcontrol/11",
+      "description": "条件を指定しない switch が true を条件とする switch と同じ働きをし、長い if-then-else を簡潔に書けることを学びます。",
+      "source_sha256": "714b67f479583e47080cd0f38489f465a28c002938390c4155af6dfeebb9225b",
+      "target_sha256": "754701500d04fca7deb148ab57fc88318a895085db98b54c725a66d386de6131",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/12",
+      "route": "/flowcontrol/12",
+      "description": "defer が関数呼び出しを周囲の関数の終了まで遅らせる一方、その呼び出しに渡す引数は直ちに評価されることを説明します。",
+      "source_sha256": "fa23a1d6ebf12f11843d38fe79c413a9c19bfcaf305ae64b75c360db24a436ec",
+      "target_sha256": "13a8ab738234c827c53c56480074bf9b5f520de08ed9f04356dbe560cb875dd1",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/13",
+      "route": "/flowcontrol/13",
+      "description": "複数の defer による関数呼び出しがスタックに積まれ、周囲の関数が戻ると後入れ先出しの順で実行される仕組みを学びます。",
+      "source_sha256": "73a02c24eb14597b3c5f53a09fc572f1a1f0c941adfc337c79fb14b492985fc1",
+      "target_sha256": "2bac3a59d85132ac32422c4bf99eebaefcba0d248e7ae90505a2ee90dca9d30d",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/14",
+      "route": "/flowcontrol/14",
+      "description": "レッスン修了後に、モジュール一覧へ戻って学習先を探す方法と、次のレッスンへ続けて進む選択肢を案内します。",
+      "source_sha256": "f565674b974c053924bf69ef83b709dc50931526ae7fa88e71543a5cd872a190",
+      "target_sha256": "821343f0c3aebeac31454f38babf0df4dd3bd2ffa6aeda93a140febd3944c701",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "moretypes/1",
+      "route": "/moretypes/1",
+      "description": "値のメモリアドレスを保持するポインタの型とゼロ値、アドレス取得と間接参照の演算子を学び、Go にポインタ演算がないことを確認します。",
+      "source_sha256": "7706eaf0d46acc79fdad3b7953e5571bf404551d71aaefafd8ba79f5761f9806",
+      "target_sha256": "f19f6f4b8da5c7d45bdbf8dc2c77c323674562046a741a6db192708ff2673d19",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "moretypes/2",
+      "route": "/moretypes/2",
+      "description": "Go の struct が複数のフィールドをひとまとまりにした構造体であることを、簡潔なプログラム例から学びます。",
+      "source_sha256": "a18dfdaadb9739387cc9886b67e9bf920bf52ada62397a1812cfd302c64aed9b",
+      "target_sha256": "a3bf7df5c69d6833d2e58a66c7cb752f2e4e4f2197c9316ba3c61807da69d160",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "moretypes/3",
+      "route": "/moretypes/3",
+      "description": "構造体に格納された個々のフィールドへ、ドットを使った選択式でアクセスする基本的な書き方を確認します。",
+      "source_sha256": "0be9cb4a59a0d95526c208e5d8d96ebe6a15fd84b6e3a2ff9a07963226cb7b58",
+      "target_sha256": "38ca6debc31f4b397c58478191c0b1a66bbc5c3368a346bfabd83592c2f48d61",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "moretypes/4",
+      "route": "/moretypes/4",
+      "description": "構造体へのポインタからフィールドへアクセスする際、明示的な間接参照を省き、値の場合と同じドット表記を使える仕組みを学びます。",
+      "source_sha256": "29695d334b6ff809e84ae8caeb7b9dc493143236783c07c16a83ecc64514c310",
+      "target_sha256": "ba96ef711061479c4e71833e93e54ab3951eb237f350a06876d8b6043561acd0",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "moretypes/5",
+      "route": "/moretypes/5",
+      "description": "構造体リテラルでフィールド値を列挙する方法、名前付きフィールドの一部だけを順不同で指定する方法、ポインタを得る接頭辞を扱います。",
+      "source_sha256": "cf9282456e2a91274c1b135a68fce58dd1590f6a2d7153f0619c97ded8bd00d1",
+      "target_sha256": "d0b7302cc0da80d26f48d8340f335b102ef35706eb17004516d885d8cfa20995",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "moretypes/6",
+      "route": "/moretypes/6",
+      "description": "要素数と要素型で表す Go の配列を学び、配列の長さが型の一部であるため作成後にサイズを変更できないことを確認します。",
+      "source_sha256": "0ec503e46281eb8ff25ceba5b92c9f9c3b40517aeea77cf4878760ed0da9d29c",
+      "target_sha256": "99dffea8c12d4ccbb42fbd2d4f4f4d4b411f49939dff20fd7e37f66e87a903f5",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "moretypes/7",
+      "route": "/moretypes/7",
+      "description": "配列の要素を柔軟に参照する動的なスライスについて、要素型の表記と、下限を含み上限を含まない範囲指定を学びます。",
+      "source_sha256": "a169cf48dd659510ff7f1f8adfdbed5a247b51a1f7c3a45ae972f18921925033",
+      "target_sha256": "8435a18fc01bae6454d2deaab92e464c69b3d1fa91b03cbf39465f7c3749c9ae",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "moretypes/8",
+      "route": "/moretypes/8",
+      "description": "スライスがデータを持たず基となる配列の一部を表し、要素の変更が同じ配列を共有するほかのスライスにも反映されることを説明します。",
+      "source_sha256": "e577f9e98a9c871cdc6f39ecca1bdd0965c26da3b9ab6c2a7cab42b3b0f3a568",
+      "target_sha256": "8d13245f76d4dac5af8c36b9f91949d9fdfcf5cfae67cd219f99c88265ccf046",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "moretypes/9",
+      "route": "/moretypes/9",
+      "description": "長さを指定しない配列リテラルのようにスライスリテラルを記述し、作成された配列を参照するスライスを得る方法を学びます。",
+      "source_sha256": "fb79cf8caed7abc7dfd92e90cf1bcc11d547b8af96d224f30fefc995f98dbb0b",
+      "target_sha256": "2c2c18684fe30e5f462c16501fa9286db6bd8562f182c8eeb45b09448a808831",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "moretypes/10",
+      "route": "/moretypes/10",
+      "description": "スライス式で下限や上限を省略した場合に使われるデフォルト値を学び、同じ範囲を表す複数の記法を確認します。",
+      "source_sha256": "36d1f92fc5e51cddcd26be7f74a875e60bf24633dd7c8689672fa23a6720e2a1",
+      "target_sha256": "6f530b896f1483c362f974c0f1d5312e43165753b5f8c9c610bd664a93b72401",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "moretypes/11",
+      "route": "/moretypes/11",
+      "description": "スライスの長さと、基となる配列に対する容量の意味、両者を取得する方法、容量内で再スライスして長さを拡張する方法を説明します。",
+      "source_sha256": "e2d7d69c946e5a01d8d0eab2e07a2bf35e23453a617d5e7602ff0af5c5866d8f",
+      "target_sha256": "6c8338a3c5a3148d1f4f6551cc9c8ee6303124b68c6406f8998c8729abe3453a",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "moretypes/12",
+      "route": "/moretypes/12",
+      "description": "スライスのゼロ値である nil について、長さと容量がともに 0 で、基となる配列を持たない状態を学びます。",
+      "source_sha256": "e7a4bb0d5e7928c2da06312d983eba2adb533b30299025f507df183f00fefc89",
+      "target_sha256": "07eecfe15293c9987ae432e56cc4a34c625bdd1f940721bded1b55b2071af10d",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "moretypes/13",
+      "route": "/moretypes/13",
+      "description": "組み込みの make 関数がゼロ値で初期化した配列を割り当て、その配列を参照するスライスを長さや容量の指定付きで返す仕組みを学びます。",
+      "source_sha256": "d057e6bf75421597d430ff52f844499b5828ab2c4b4c5148ad88b6b89326ac20",
+      "target_sha256": "cab6e3e07d2dd8e25ea35f749c09065b65a36a2425e93bfdc795a58e75991017",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "moretypes/14",
+      "route": "/moretypes/14",
+      "description": "スライスは任意の型を要素として保持でき、別のスライスを要素にした多次元のデータ構造も作れることを例で確認します。",
+      "source_sha256": "d8bee22c0382cf5fd5647c4d7106165d153cb15aaed8ec82e1f06e12ad0c73d1",
+      "target_sha256": "356f666fcfc1ff14db056834f27c95cbe888934cc021d6de2b21bcdabb634e94",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "moretypes/15",
+      "route": "/moretypes/15",
+      "description": "組み込みの append 関数でスライスへ値を追加する方法と、基となる配列の容量が不足したとき新しい配列が割り当てられる仕組みを説明します。",
+      "source_sha256": "f2fc257e7c5f118321acc3b75e946053601532d411e8540534280d7fba795289",
+      "target_sha256": "f9559949e45a1118cba5469600a280ef0c5459c652db8eca1b0ab3230587cf53",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "moretypes/16",
+      "route": "/moretypes/16",
+      "description": "for の range 形式でスライスやマップを反復し、スライスでは各回にインデックスと要素のコピーが得られることを学びます。",
+      "source_sha256": "73fc46a2e049ce2ff4a4fc0595d717ed5d6e15b7093a6014509a48f501253186",
+      "target_sha256": "5016bf0be927c19684cb8fe75b3aba27b2b560845f564c9853d6891cb2a57a9f",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "moretypes/17",
+      "route": "/moretypes/17",
+      "description": "range による反復で不要なインデックスや値を読み捨てる記法と、インデックスだけが必要な場合に第 2 変数を省略する方法を学びます。",
+      "source_sha256": "b52cca070f62a3ffeab3adf20f2745e1dd9aa2644a3985c23ac295e81e2c3bc9",
+      "target_sha256": "251b93835d83d62e5f17e77a890ec945bb1a6e833081fc3f3ac4f9eed3ed40fa",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "moretypes/18",
+      "route": "/moretypes/18",
+      "description": "8 ビット符号なし整数の二重スライスを返す Pic 関数を実装し、座標から求めた値を色として表示する画像生成に取り組みます。",
+      "source_sha256": "9c5fd763eaedec8e8bfb60f52713417ff247bc4467aa8a94412c55ab83c781ba",
+      "target_sha256": "5dc11318612e72ee1ad12580a875566589a4c7b93aedfbb5cd4aaa5210adb22b",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "moretypes/19",
+      "route": "/moretypes/19",
+      "description": "キーと値を対応付けるマップについて、ゼロ値の nil マップにはキーを追加できないことと、make で使用可能な状態に初期化する方法を学びます。",
+      "source_sha256": "39107d53feaffd26d7bb13103fe6e40746e9844d9b37bbf84559f7b91db312f3",
+      "target_sha256": "b2e61a098bbe3422d86f83e4ae947086647c6cd39ae9e1649c8c40951d11a631",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "moretypes/20",
+      "route": "/moretypes/20",
+      "description": "構造体リテラルと似た形式を持ちながら、各要素にキーの指定が必要となるマップリテラルの基本構文を確認します。",
+      "source_sha256": "1d3caa45093f65b50d5ebcff6a57559c3fe70faba85f3a0bb41db38c5375a507",
+      "target_sha256": "cb6e03de277432f054901a68ace6b5500ff863db7f1fc10d5168636d448edc29",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "moretypes/21",
+      "route": "/moretypes/21",
+      "description": "マップリテラルの最上位が単純な型名である場合、各要素から重複する型名を省略して簡潔に記述できることを学びます。",
+      "source_sha256": "0493179c2396f2e755fa5f1e579ce6f4cc716842ef5ee77a0b1c742210c15f9f",
+      "target_sha256": "871cec00dc37dfd0446aa75b9f50796ca23a9776162f70c413de009b190e5943",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "moretypes/22",
+      "route": "/moretypes/22",
+      "description": "マップ要素の挿入、更新、取得、削除に加え、2 つの戻り値でキーの存在を判定し、不在時のゼロ値を扱う方法を学びます。",
+      "source_sha256": "f6963bc620184c7fbea7b04c309ccf64d508a4e835500fa7dd4188e60204019f",
+      "target_sha256": "5a1c1044fec9961f0894f34345e797d698d78451cf2fe197127b2c10042186be",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "moretypes/23",
+      "route": "/moretypes/23",
+      "description": "文字列中の各単語の出現回数をマップで返す WordCount を実装し、用意されたテストで結果を確かめる練習問題です。",
+      "source_sha256": "3214968207b659c3fb6bf92ee3d1ba0858bf7d3240dfad30fada7c5d8bddea69",
+      "target_sha256": "096707193f6929f6c8f245a36678e95c0b64e0c7ce72969af4bc661bd6dc4979",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "moretypes/24",
+      "route": "/moretypes/24",
+      "description": "Go では関数も値として扱われ、ほかの値と同じように受け渡したり、関数の引数や戻り値として利用したりできることを学びます。",
+      "source_sha256": "91b508ec19d3baf6fd1b2382e54b0f4ec226e9af99d027e86d734cf081d9c897",
+      "target_sha256": "aaef9dc0560829860f5c3c15754b37c55ac3430f4f54a6b1fdb82e5bcbecdcd5",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "moretypes/25",
+      "route": "/moretypes/25",
+      "description": "関数本体の外にある変数を参照して読み書きできるクロージャと、生成された各クロージャが固有の変数に結び付く仕組みを説明します。",
+      "source_sha256": "570e535e9c2b2d1978534eb3b42f226102b11da36a3f9e61620dc5eafdb6be5f",
+      "target_sha256": "5b51037c25925a0945b8c38cdec683366a7279e710cd5fb5c37c6223c8606fba",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "moretypes/26",
+      "route": "/moretypes/26",
+      "description": "呼び出すたびにフィボナッチ数を順番に返すクロージャを生成する fibonacci 関数を実装し、関数値の使い方を練習します。",
+      "source_sha256": "24f01440a7b0d638694c6cb275bf92e79e1fb2463ea2eb7d40a68cc4d6a0ed29",
+      "target_sha256": "d2eff02f25cbe1d639d1cb882bcd28bcecef8259d52147ba0bdc676b54c9fabe",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "moretypes/27",
+      "route": "/moretypes/27",
+      "description": "学習したレッスンの修了を知らせ、次の学習内容をモジュール一覧から探す場合と、次のレッスンへ直接進む場合を示します。",
+      "source_sha256": "f565674b974c053924bf69ef83b709dc50931526ae7fa88e71543a5cd872a190",
+      "target_sha256": "b59c33ac7fe1fafd4345a6f168a3623e53ba45b5ef0a2689f2a9927469050783",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "methods/1",
+      "route": "/methods/1",
+      "description": "クラスを持たない Go で型にメソッドを定義する方法と、func とメソッド名の間に記述する特別なレシーバ引数を学びます。",
+      "source_sha256": "8a62096b755332ede134c87493abe49231a52ce60abebcdc107bb6a64434fc72",
+      "target_sha256": "26faff7aa68aad0ba69c49e0f7e0859ff684a4c61c088073fc413406a07ab452",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "methods/2",
+      "route": "/methods/2",
+      "description": "メソッドがレシーバ引数を持つ関数であることを、Vertex の Abs メソッドを同じ機能の通常関数に書き換えて確認します。",
+      "source_sha256": "ade066728f85cc93e75c2472b80d532b62259a7e08e42ef36e3d05c6cfa5476d",
+      "target_sha256": "8c6c89909255f1e0b48f4466b6eeab179974a009ce5658bd91687438ba885f0e",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "methods/3",
+      "route": "/methods/3",
+      "description": "構造体以外の型にもメソッドを宣言できることと、レシーバ型はメソッドと同じパッケージで定義されていなければならない規則を学びます。",
+      "source_sha256": "31c4fd0d80c8f1d96cf3efb1ecc1f9d3c0d1b5b70bb5c23bf7227b7007469588",
+      "target_sha256": "3afaeca1e7e579c85683702fb59a3f27bc5db4c522d1732f1d0d2fbdca155616",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "methods/4",
+      "route": "/methods/4",
+      "description": "ポインタレシーバを持つメソッドが指し先の値を変更できることを学び、値レシーバでは元の Vertex のコピーを操作する違いを確認します。",
+      "source_sha256": "99f9fa4e5c4dd46d393f40b417d0430c4e27e56f40146f5f192f55ccda4e2db3",
+      "target_sha256": "fea862c7ae076f302ddf421ab48632fc508958626d156b8fd6a47b13f502007b",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "methods/5",
+      "route": "/methods/5",
+      "description": "Abs と Scale のメソッドを通常の関数として書き直し、ポインタ指定を外したときの動作やコンパイルに必要な変更を考えます。",
+      "source_sha256": "cac8affc7a8fd7bc1c0003d8cbf5bd7c85433faea45ea1b39f3b80c2fbc5eae9",
+      "target_sha256": "b2ac7b58eaefc8bc45daeb48970cf356523efc45496ec34520702324499c17e3",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "methods/6",
+      "route": "/methods/6",
+      "description": "ポインタ引数を取る関数にはポインタが必要なのに対し、ポインタレシーバのメソッドは値からでも自動的にアドレスを介して呼べることを学びます。",
+      "source_sha256": "39fb725b0a084ce3634dc973c215ff7a0f034c5f7b51c2ffe25934088072ebf6",
+      "target_sha256": "51a19a36d0db09ff77392601b18d326cdc1ba0824c36ac6d568d5a5b666f85d9",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "methods/7",
+      "route": "/methods/7",
+      "description": "値引数を取る関数には値を渡す必要がある一方、値レシーバのメソッドはポインタからでも自動的な間接参照によって呼び出せることを説明します。",
+      "source_sha256": "61a9cb8411e6ce15dce3383a68a52c6644599e84269b3faf240129277d238f7e",
+      "target_sha256": "96eb5403f200c06e77cb2b1c0627ff389445beaa61a15b4dd4ce050a6d0d0ec9",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "methods/8",
+      "route": "/methods/8",
+      "description": "値の変更と呼び出し時のコピー回避というポインタレシーバを選ぶ 2 つの理由を学び、同じ型のレシーバ種別を統一する指針を確認します。",
+      "source_sha256": "357424f2a76613085184054178042b442331b5689d156ac9c37e09e57c436dae",
+      "target_sha256": "23aeeaa580e5d61fc5df1507dec67b291b253d4ade65827a5f64aeb2e7859131",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "methods/9",
+      "route": "/methods/9",
+      "description": "メソッドシグネチャの集合として定義されるインターフェース型と、そのメソッドを実装する値を保持する仕組みを Vertex の例で学びます。",
+      "source_sha256": "39efc19ed01619130489d21e421f2c0d8947b20f408580f4ceaabce6a0feb099",
+      "target_sha256": "62edeecf7350d3b7407e82dd6a318c814bacb29bcc54d02e4be1497c7e77088a",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "methods/10",
+      "route": "/methods/10",
+      "description": "型が必要なメソッドを実装するだけでインターフェースを暗黙的に満たし、明示的な implements 宣言なしに定義と実装を分離できることを学びます。",
+      "source_sha256": "11ca99e6e83d93827daf02b177156fcb6f3c94ac8c202491dfffc5840ce4e39f",
+      "target_sha256": "fab37de8902961569c4062f81d8479525062bb01c5add730925d49bd81e98554",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "methods/11",
+      "route": "/methods/11",
+      "description": "インターフェース値を値と具象型の組として捉え、メソッド呼び出しが基となる型に定義された同名メソッドを実行する仕組みを説明します。",
+      "source_sha256": "ccb2ed709b887724d22fb93714702fed5de4b7a83ca976876864045ff4752270",
+      "target_sha256": "774135284eb26176cc665f77124bf53c0dbb50b19bbfb0c020781d75f822b08f",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "methods/12",
+      "route": "/methods/12",
+      "description": "インターフェース値内の具象値が nil でも nil レシーバでメソッドが呼ばれることと、そのインターフェース値自体は nil ではない点を学びます。",
+      "source_sha256": "9487ca3c9872972d42af8cfa389755678fe8a7cca110b592aac2a762332febf5",
+      "target_sha256": "438d1a33573ca2f30d9a3e23024a2c7b6eb3bbbddf53ccfc4a62774bd1b6c299",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "methods/13",
+      "route": "/methods/13",
+      "description": "nil インターフェース値は値も具象型も保持せず、呼び出す具体的なメソッドを決められないため、メソッド呼び出しが実行時エラーになることを説明します。",
+      "source_sha256": "2897922c0b088ccd46b3e42a442aeecda0787c4162db1329d0e8f39d05735547",
+      "target_sha256": "a71a31e8fa78e5687f257ef5f30be87911503fae98f72c7e15b00d50f7404933",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "methods/14",
+      "route": "/methods/14",
+      "description": "メソッドを指定しない空のインターフェースが任意の型の値を保持でき、型が不明な値を扱うコードで利用されることを学びます。",
+      "source_sha256": "f85eea0b014a1f885077243bef53d3b38d8f06120b49d257ada1d66f59e80d96",
+      "target_sha256": "2ca385ed9347ce8a459782ce7f2183ae098a4f828d85164fa80c080d3384b11e",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "methods/15",
+      "route": "/methods/15",
+      "description": "型アサーションでインターフェース値の基となる具象値へアクセスし、失敗時の panic または真偽値を使った安全な判定を扱います。",
+      "source_sha256": "c205b4eb940358edea6321cfa422c3c00a560e9a6a71b08c8b3fa3ab9e4926ae",
+      "target_sha256": "a486df3527c8af538823e5b03b6d10cc4042a989121a8066ddf7d4c3b51cf852",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "methods/16",
+      "route": "/methods/16",
+      "description": "型スイッチで複数の型アサーションを順に行い、インターフェース値が保持する値の型に応じて分岐し、各 case で値を扱う方法を学びます。",
+      "source_sha256": "26e4da09e80d30b06368691c76ee2940139b0f6fc40cad47bb6d1d2947933c27",
+      "target_sha256": "b0d5b53cc2f6a4f59deff6c99781902658a060e0528e65a00b6912e51ce9153e",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "methods/17",
+      "route": "/methods/17",
+      "description": "fmt パッケージの Stringer インターフェースと、自身を文字列として表現する型の値を表示時に利用する仕組みを学びます。",
+      "source_sha256": "0363038e64b6f186e1bbd55c3323a5d7770a2b728605d8e3f01ae234aff6a444",
+      "target_sha256": "11d07961d0b6ef59c95f257d7a9f5dfc651389eb650c3560093920c70190131c",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "methods/18",
+      "route": "/methods/18",
+      "description": "IPAddr 型に fmt パッケージの Stringer を実装し、4 つの数値からなるアドレスをドット区切りの文字列として表示する練習問題です。",
+      "source_sha256": "ad118644f53755586f14409e203bccfb5ac4cff7c01734157032a45648fb06d3",
+      "target_sha256": "db97f115a90390daa7016ec84e672b7738631664a9be58df2b3362c488d6fe59",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "methods/19",
+      "route": "/methods/19",
+      "description": "Go のエラー状態を表す組み込みの error インターフェースと、関数が返す値を nil と比較して成功か失敗かを処理する方法を学びます。",
+      "source_sha256": "9eaab1fde2076c1376f78ceec0f84766c4c3b8062867436d73cef0bc77f16bd5",
+      "target_sha256": "163a0486d7d140dd0a8ab4f100cc461275c902b2415f236599e7869c23c9eca3",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "methods/20",
+      "route": "/methods/20",
+      "description": "Sqrt を error も返す関数へ変更し、負数用の独自エラー型と Error メソッドを実装して、再帰的な表示による無限ループも検討します。",
+      "source_sha256": "41f1f73320fde60ee5ff30d5927a19ff22d6da6a336bb776e15f2499e4f421d8",
+      "target_sha256": "1e38f6f05fde4eed211625859b53ba639ad83a11a4c3bb7cc21a53474f47c312",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "methods/21",
+      "route": "/methods/21",
+      "description": "データストリームの読み取り側を表す io.Reader と Read メソッドを学び、読み取ったバイト数とエラーを受け取り、io.EOF でストリーム終端を判断する例を確認します。",
+      "source_sha256": "120c3fc9f67579cf78605cf0c9f006fc28d3569043a08079ddb645ca9c3fc3b1",
+      "target_sha256": "b3a45b47f0badad420e5002ab0711fa21f1e6a3a7fc8eab98d99d7026bb73f99",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "methods/22",
+      "route": "/methods/22",
+      "description": "ASCII 文字の A を終わりなく生成する Reader 型を実装し、ストリームを提供する読み取り処理の作成を練習します。",
+      "source_sha256": "0df444d989996a06d6dd50f4b109af4ae1cb2302b8dd867bcbe9bf98e424d230",
+      "target_sha256": "8d04bf318b15a89692c5422380eddb2929f726bd1e893470ccd35a184aab2889",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "methods/23",
+      "route": "/methods/23",
+      "description": "別の io.Reader をラップしてストリームを変換するパターンを学び、すべての英字に rot13 置換暗号を適用する Read メソッドを実装します。",
+      "source_sha256": "11d876145fae980b2e283e3fac7357a950eb20f022b7da48cc58efed5b1e8e04",
+      "target_sha256": "5a605e2d403533e2afa611f0b117f1da033b91f61c9f05fbc61a0634ef10fe1e",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "methods/24",
+      "route": "/methods/24",
+      "description": "image パッケージの Image インターフェースを構成するメソッドと戻り値を確認し、色モデルや色を表す既定の実装を学びます。",
+      "source_sha256": "d80f0d46796ad415a7ded4d0cefdef6cdb58deb38d050a61eb64abb25caf27ee",
+      "target_sha256": "c243f774e8ac96a3d682e631165b42d2eb19ce89277277aac36d796e313add35",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "methods/25",
+      "route": "/methods/25",
+      "description": "独自の Image 型に境界、色モデル、座標ごとの色を返すメソッドを実装し、スライスではなく image パッケージの Image として画像を生成します。",
+      "source_sha256": "a196bc59d96602c3fe72cf765419366094a5c1e96de0d24dd140887ebd1826b5",
+      "target_sha256": "d5286de2f88497e17e0e30b2b169b6cc7fbf998a605f086fa8908000f4cae1a9",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "methods/26",
+      "route": "/methods/26",
+      "description": "このレッスンを終えた後の進路として、モジュール一覧から新しい題材を選ぶ方法と、次のレッスンを開始する方法を案内します。",
+      "source_sha256": "f565674b974c053924bf69ef83b709dc50931526ae7fa88e71543a5cd872a190",
+      "target_sha256": "b59c33ac7fe1fafd4345a6f168a3623e53ba45b5ef0a2689f2a9927469050783",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "generics/1",
+      "route": "/generics/1",
+      "description": "型パラメータと組み込みの comparable 制約を使い、比較可能な任意の型のスライスから値を探せるジェネリック関数を学びます。",
+      "source_sha256": "01a045105dc8c12fb1709f122d363235c19a6464d5de7587d579524aec270dd6",
+      "target_sha256": "f50f9587070de82aa8569c64a19bb16f6e7d50665d81489e7c74c9d892371001",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "generics/2",
+      "route": "/generics/2",
+      "description": "型パラメータで型をパラメータ化してジェネリックなデータ構造を作る方法を、任意の型の値を保持する単方向連結リストで学びます。",
+      "source_sha256": "08486351895e62792a84bc3eeab6aa85df7b1658735b7239040d219812f63277",
+      "target_sha256": "df31633de2e127578cc8f3c70f25f79703f76217a472d65ff2e229e5bf730eef",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "generics/3",
+      "route": "/generics/3",
+      "description": "レッスンを修了したことを確かめ、一覧に戻って別のモジュールを探すか、続くレッスンへ移るための選択肢を示します。",
+      "source_sha256": "f565674b974c053924bf69ef83b709dc50931526ae7fa88e71543a5cd872a190",
+      "target_sha256": "b59c33ac7fe1fafd4345a6f168a3623e53ba45b5ef0a2689f2a9927469050783",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "concurrency/1",
+      "route": "/concurrency/1",
+      "description": "Go ランタイムが管理する軽量スレッド goroutine の開始と評価の流れを学び、共有メモリへのアクセスには同期が必要なことを確認します。",
+      "source_sha256": "d0a9c45078c2255540cfffe48744a07fa04ab5c2113e8880068b5a400ae0ebdc",
+      "target_sha256": "a5d895b6da292cb0e2075d2b6b18d8d65dad8c9033abf90c49dad88cdce1459e",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "concurrency/2",
+      "route": "/concurrency/2",
+      "description": "goroutines 間で型付きの値を送受信するチャネルの作成と演算子、相手を待つブロック動作を学び、分担した計算の同期を確認します。",
+      "source_sha256": "a35e3af26b51f8c2c2a6dfaf09f9c7cab0fdb4b1b56f9e4dc9b793f1dac1e295",
+      "target_sha256": "1fe8efabe80d50be2bada016ad0eb968a58cdcbb4120aa4e39f4b7153563bbb8",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "concurrency/3",
+      "route": "/concurrency/3",
+      "description": "make で長さを指定してバッファ付きチャネルを作成し、バッファが満杯のときの送信と、空のときの受信がブロックされることを学びます。",
+      "source_sha256": "caef0893a54c61f192be397f6b27a039d81dc007f98f2d203a5a287383c0682e",
+      "target_sha256": "7a073e7ee60451aef552cab321b32a5d08654cac9e8618cbc438348c13df6300",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "concurrency/4",
+      "route": "/concurrency/4",
+      "description": "チャネルを閉じて送信終了を伝え、受信時の真偽値や range で終端を検出する方法と、閉じるのは送信側だけという規則を学びます。",
+      "source_sha256": "3e925c6745255a443c61f25cd8131d538dc8677938f1c5021ce798465020b42e",
+      "target_sha256": "3802c95d7b9c42eff1b97262f6666a05d6791dc2672fb601678ada1b79795c5d",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "concurrency/5",
+      "route": "/concurrency/5",
+      "description": "select 文で goroutine が複数の通信操作を待ち、実行可能な case を選ぶ仕組みと、複数が準備済みならランダムに選択する動作を学びます。",
+      "source_sha256": "8d8de56f080d4f702ac455aa60cb13b745472bedc9755000e8b5d6a2a898577d",
+      "target_sha256": "3440f034f0b1311bb1b37b0066450908fd2da01e7abc1527c8c028c4507877fc",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "concurrency/6",
+      "route": "/concurrency/6",
+      "description": "select でほかの case が準備できていないときに default を実行し、ブロックせずにチャネルの送信や受信を試す方法を学びます。",
+      "source_sha256": "82e9cd932e14e6c4852fc8f865f4c45dc75845bd1a306649152ebc045f0c3b2c",
+      "target_sha256": "3f7a47092a7652670e988c0f252f1ab9d4d1beb1770e8eef611c93c097d57c89",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "concurrency/7",
+      "route": "/concurrency/7",
+      "description": "形が異なっても同じ値の並びを持つ二分木を題材に、Go の並行処理とチャネルで等価性を調べる練習問題の目的と Tree 型を紹介します。",
+      "source_sha256": "7c5d3fc7bb2540285d746242f8a1d16075639648eec8909c1df52239297d2917",
+      "target_sha256": "3124edc5adf7613c2ba576312f7eaca71e767ec28197d4a566487d26f83b8233",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "concurrency/8",
+      "route": "/concurrency/8",
+      "description": "二分木を走査して値をチャネルへ送る Walk と、2 本の木が同じ値を保持するか判定する Same を実装し、複数の木でテストします。",
+      "source_sha256": "b362cc15a26324acd311f7cab18a628dc1d7d9ac6d455add7d651d41acf15e9a",
+      "target_sha256": "cb76e3a084d2a23d7e280924de459b96d40fdddd6434d5882c90c5e924fc7e3c",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "concurrency/9",
+      "route": "/concurrency/9",
+      "description": "複数の goroutines による変数アクセスの競合を避ける相互排他と、sync パッケージの Mutex、Lock、Unlock、defer を使った保護を学びます。",
+      "source_sha256": "49f727794604c2ef8a8dda9508d0f412d7015cea77754c675a02b166dd9bfc93",
+      "target_sha256": "7d8e522ca2e91260498b9cf38a8621519b07c1ccbeb1d6fbee05cab6ffd57dc4",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "concurrency/10",
+      "route": "/concurrency/10",
+      "description": "Go の並行処理機能で Web クローラを並列化し、同じ URL を重複取得しないよう、並行利用に安全な取得済み管理を実装します。",
+      "source_sha256": "bb686393225ef2335e627819a1664a84456f00b64af133af64920d43f0abdb94",
+      "target_sha256": "4ed90670199c8da3ef2fdb6a9687479dd0071a8a1271d53ac9fd17068c20cb3d",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    },
+    {
+      "page_id": "concurrency/11",
+      "route": "/concurrency/11",
+      "description": "ツアー修了後に学習を続けるため、Go のドキュメント、標準ライブラリ、言語仕様、並行処理、Web アプリ、関数型、ブログなどの資料を紹介します。",
+      "source_sha256": "45ef131ede663b1355c0a5933634d46c393f66be8a6450b184f86a62e928a64e",
+      "target_sha256": "09d0a23fe88e36a175c1cda17cda9035d1efe4084bb3ff3ee5f519796336fa1a",
+      "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:02:24Z"
+      }
+    }
+  ]
+}
