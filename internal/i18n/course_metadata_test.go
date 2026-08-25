@@ -108,6 +108,7 @@ func TestValidateCourseMetadataDescriptionFailures(t *testing.T) {
 		{"tilde code fence", "This description is deliberately long enough and contains ~~~a forbidden code fence~~~.", "code fence"},
 		{"url", "This description is deliberately long enough and links to https://example.com/forbidden.", "URL"},
 		{"bare domain", "This description is deliberately long enough and contains the forbidden URL go.dev/doc.", "URL"},
+		{"www domain", "This description is deliberately long enough and contains the forbidden URL www.example.com.", "URL"},
 		{"control", "This description is deliberately long enough but contains a forbidden\u0001 control character.", "control"},
 		{"too long", strings.Repeat("界", CourseDescriptionMaxRunes+1), "maximum"},
 	}
@@ -118,6 +119,25 @@ func TestValidateCourseMetadataDescriptionFailures(t *testing.T) {
 			_, err := validateCourseMetadata(marshalCourseMetadata(t, metadata), "test-LOCALE", catalog, targets, glossary)
 			if err == nil || !strings.Contains(err.Error(), test.want) {
 				t.Fatalf("error=%v, want substring %q", err, test.want)
+			}
+		})
+	}
+}
+
+func TestValidateCourseDescriptionAllowsGoSelectors(t *testing.T) {
+	selectors := []string{
+		"io.Reader",
+		"io.EOF",
+		"fmt.Stringer",
+		"image.Image",
+		"sync.Mutex",
+		"color.RGBA",
+	}
+	for _, selector := range selectors {
+		t.Run(selector, func(t *testing.T) {
+			description := "This complete course description explains the Go selector " + selector + " in its lesson context."
+			if err := validateCourseDescription(description); err != nil {
+				t.Fatalf("validateCourseDescription(%q): %v", description, err)
 			}
 		})
 	}

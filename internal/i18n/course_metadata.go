@@ -24,8 +24,11 @@ const (
 )
 
 var (
-	htmlTagRE = regexp.MustCompile(`(?i)</?[a-z][^>]*>|<![a-z][^>]*>`)
-	urlRE     = regexp.MustCompile(`(?i)(?:[a-z][a-z0-9+.-]*://|www\.|\b[a-z0-9](?:[a-z0-9-]{0,62}\.)+[a-z]{2,}(?:/\S*)?)`)
+	htmlTagRE       = regexp.MustCompile(`(?i)</?[a-z][^>]*>|<![a-z][^>]*>`)
+	schemeURLRE     = regexp.MustCompile(`(?i)[a-z][a-z0-9+.-]*://`)
+	wwwURLRE        = regexp.MustCompile(`(?i)\bwww\.`)
+	bareDomainURLRE = regexp.MustCompile(`(?i)\b[a-z0-9](?:[a-z0-9-]{0,62}\.)+[a-z]{2,}(?:/\S*)?`)
+	goSelectorRE    = regexp.MustCompile(`^[a-z][a-z0-9_]*\.[A-Z][A-Za-z0-9_]*$`)
 )
 
 // CourseMetadata is the complete locale-level SEO asset for the formal Page
@@ -317,7 +320,7 @@ func validateCourseDescription(description string) error {
 	if strings.Contains(description, "```") || strings.Contains(description, "~~~") {
 		return fmt.Errorf("description contains a Markdown code fence")
 	}
-	if urlRE.MatchString(description) {
+	if containsCourseDescriptionURL(description) {
 		return fmt.Errorf("description contains a URL")
 	}
 	length := utf8.RuneCountInString(description)
@@ -331,6 +334,21 @@ func validateCourseDescription(description string) error {
 		return fmt.Errorf("description has no letters or numbers")
 	}
 	return nil
+}
+
+func containsCourseDescriptionURL(description string) bool {
+	if schemeURLRE.MatchString(description) || wwwURLRE.MatchString(description) {
+		return true
+	}
+	for _, match := range bareDomainURLRE.FindAllString(description, -1) {
+		// A lowercase package qualifier followed by an exported Go identifier,
+		// such as io.Reader, is a selector rather than a bare domain.
+		if goSelectorRE.MatchString(match) {
+			continue
+		}
+		return true
+	}
+	return false
 }
 
 func normalizeCourseDescription(description string) string {
