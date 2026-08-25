@@ -165,6 +165,15 @@ func TestRenderedAssetURLsFollowLocaleAndEnvironment(t *testing.T) {
 			if strings.Contains(string(index), assets.BaseURL+"/tour/script.js") {
 				t.Error("Tour script unexpectedly uses shared assets origin")
 			}
+			for _, logicalPath := range []string{
+				"tour/static/go-dev/course-ad.css",
+				"tour/static/go-dev/course-ad.js",
+			} {
+				want := assets.BaseURL + "/" + logicalPath
+				if !strings.Contains(string(index), want) {
+					t.Errorf("Tour index does not use fixed shared ad asset URL %q", want)
+				}
+			}
 		})
 	}
 }
@@ -568,6 +577,63 @@ func TestEditorTemplateUsesLocalizedPlainTextBindings(t *testing.T) {
 	for _, literal := range []string{">Syntax<", ">Imports<", ">Run<", ">Kill<", ">Format<", ">Reset<"} {
 		if strings.Contains(text, literal) {
 			t.Errorf("editor template still hard-codes %q", literal)
+		}
+	}
+}
+
+func TestCourseAdMountFollowsModuleBar(t *testing.T) {
+	data, err := fs.ReadFile(contentTour, "tour/static/partials/editor.html")
+	if err != nil {
+		t.Fatal(err)
+	}
+	text := string(data)
+	mount := `<div class="go-dev-course-ad" data-go-dev-course-ad></div>`
+	if strings.Count(text, mount) != 1 {
+		t.Fatalf("course ad mount count = %d, want 1", strings.Count(text, mount))
+	}
+	moduleStart := strings.Index(text, `<div class="bar module-bar">`)
+	mountStart := strings.Index(text, mount)
+	if moduleStart < 0 || mountStart < 0 {
+		t.Fatal("course ad mount or module bar is missing")
+	}
+	moduleEnd := strings.Index(text[moduleStart:], "</div>")
+	if moduleEnd < 0 {
+		t.Fatal("module bar has no closing tag")
+	}
+	between := text[moduleStart+moduleEnd+len("</div>") : mountStart]
+	if strings.TrimSpace(between) != "" {
+		t.Fatalf("course ad mount does not immediately follow module bar: %q", between)
+	}
+}
+
+func TestCourseAdAssetsAreFlowOnlyAndAngularIndependent(t *testing.T) {
+	cssData, err := fs.ReadFile(contentTour, "tour/static/go-dev/course-ad.css")
+	if err != nil {
+		t.Fatal(err)
+	}
+	css := string(cssData)
+	for _, forbidden := range []string{"position: fixed", "position: absolute", "position: sticky", "vh", "viewport"} {
+		if strings.Contains(css, forbidden) {
+			t.Errorf("course ad CSS contains forbidden layout behavior %q", forbidden)
+		}
+	}
+	if !strings.Contains(css, "margin: 24px auto 16px") || !strings.Contains(css, "[data-theme='dark']") || !strings.Contains(css, "@media (max-width: 600px)") {
+		t.Error("course ad CSS is missing spacing, dark theme, or mobile behavior")
+	}
+
+	jsData, err := fs.ReadFile(contentTour, "tour/static/go-dev/course-ad.js")
+	if err != nil {
+		t.Fatal(err)
+	}
+	js := string(jsData)
+	for _, want := range []string{"function mountAll()", "new MutationObserver", "data-go-dev-course-ad-mounted", "TEST AD"} {
+		if !strings.Contains(js, want) {
+			t.Errorf("course ad JS is missing %q", want)
+		}
+	}
+	for _, forbidden := range []string{"angular", "adsbygoogle", "googlesyndication", "locale"} {
+		if strings.Contains(strings.ToLower(js), forbidden) {
+			t.Errorf("course ad JS contains forbidden dependency %q", forbidden)
 		}
 	}
 }

@@ -13,7 +13,7 @@ import (
 
 const BaseURL = "https://assets-go-dev.shuijingwanwq.com"
 
-// SharedPaths is the complete first-version assets origin allowlist. Paths are
+// SharedPaths is the complete assets origin allowlist. Paths are
 // relative to the repository's _content directory and retain their public URL
 // layout. Keep this list small: adding a file changes the public export.
 var sharedPaths = []string{
@@ -24,6 +24,8 @@ var sharedPaths = []string{
 	"images/site-logo-32.png",
 	"images/site-logo.png",
 	"tour/static/css/app.css",
+	"tour/static/go-dev/course-ad.css",
+	"tour/static/go-dev/course-ad.js",
 	"tour/static/img/gopher.png",
 	"tour/static/lib/codemirror/lib/codemirror.css",
 }
@@ -36,7 +38,7 @@ var sharedPathSet = func() map[string]bool {
 	return result
 }()
 
-// SharedPaths returns a copy of the complete first-version allowlist.
+// SharedPaths returns a copy of the complete allowlist.
 func SharedPaths() []string {
 	return append([]string(nil), sharedPaths...)
 }

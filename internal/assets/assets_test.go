@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func TestSharedPathsFirstVersionAllowlist(t *testing.T) {
+func TestSharedPathsAllowlist(t *testing.T) {
 	want := []string{
 		"images/go-logo-white.svg",
 		"images/icons/brightness_2_gm_grey_24dp.svg",
@@ -14,6 +14,8 @@ func TestSharedPathsFirstVersionAllowlist(t *testing.T) {
 		"images/site-logo-32.png",
 		"images/site-logo.png",
 		"tour/static/css/app.css",
+		"tour/static/go-dev/course-ad.css",
+		"tour/static/go-dev/course-ad.js",
 		"tour/static/img/gopher.png",
 		"tour/static/lib/codemirror/lib/codemirror.css",
 	}

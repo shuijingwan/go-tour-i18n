@@ -65,6 +65,45 @@ func TestBuildLocaleProjectionReplacesMultipleSectionsAndArticles(t *testing.T) 
 	}
 }
 
+func TestCourseAdMountIsIdenticalInSupportedLocaleProjections(t *testing.T) {
+	root, err := filepath.Abs(filepath.Join("..", ".."))
+	if err != nil {
+		t.Fatal(err)
+	}
+	current, err := BuildSourceCatalog(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	catalog, err := ReadCatalog(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := HydrateCatalogSources(catalog, current); err != nil {
+		t.Fatal(err)
+	}
+
+	var projectedEditor []byte
+	for _, locale := range []string{"zh-CN", "ja-JP"} {
+		projection, err := BuildLocaleProjection(root, catalog, locale, filepath.Join(t.TempDir(), locale))
+		if err != nil {
+			t.Fatalf("build %s projection: %v", locale, err)
+		}
+		data, err := os.ReadFile(filepath.Join(projection.ContentDir, "tour", "static", "partials", "editor.html"))
+		if err != nil {
+			t.Fatal(err)
+		}
+		mount := []byte(`<div class="go-dev-course-ad" data-go-dev-course-ad></div>`)
+		if bytes.Count(data, mount) != 1 {
+			t.Fatalf("%s projected course ad mount count = %d, want 1", locale, bytes.Count(data, mount))
+		}
+		if projectedEditor == nil {
+			projectedEditor = data
+		} else if !bytes.Equal(projectedEditor, data) {
+			t.Fatalf("%s projection has locale-specific editor/ad markup", locale)
+		}
+	}
+}
+
 func TestBuildLocaleProjectionRejectsIncompleteArticleMetadata(t *testing.T) {
 	tests := []struct {
 		name string
