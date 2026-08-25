@@ -28,13 +28,13 @@ https://<language-code>-go-dev.shuijingwanwq.com/
 https://assets-go-dev.shuijingwanwq.com/
 ```
 
-第一版只包括 `app.css`、CodeMirror CSS、站点 Logo、32/512 PNG favicon、Go Logo、三个 theme icon 和 `app.css` 使用的 `gopher.png`。URL 保留原逻辑路径，例如 `https://assets-go-dev.shuijingwanwq.com/tour/static/css/app.css`。development/preview 始终使用本地同源资源；zh-CN development 与 production 也始终使用本域资源。非中文 production 才解析到共享域名。
+当前代码 allowlist 包括 `app.css`、课程页 `course-ad.css` / `course-ad.js`、CodeMirror CSS、站点 Logo、32/512 PNG favicon、Go Logo、三个 theme icon 和 `app.css` 使用的 `gopher.png`，共 11 个文件。URL 保留原逻辑路径，例如 `https://assets-go-dev.shuijingwanwq.com/tour/static/css/app.css`。development/preview 始终保留完整本地副本；课程广告 CSS/JS 由所有 locale 使用固定 assets-go-dev URL，其余资源仍按 build-selected site 的既有策略解析。
 
-第一版明确不拆分或共享 `/tour/script.js`：它继续包含 locale bootstrap、runtime 配置和现有上游 JavaScript 拼接链，并由每个 language origin 提供。Angular partial、`/tour/lesson/*`、`/tour/footer.html`、课程中的 `tree.png`、HTML、locale article/example、metadata、analytics、ads 和 Playground endpoint 也不共享。Inconsolata 继续由 Google Fonts 外部提供，不在共享资源中自托管。
+第一版明确不拆分或共享 `/tour/script.js`：它继续包含 locale bootstrap、runtime 配置和现有上游 JavaScript 拼接链，并由每个 language origin 提供。Angular partial、`/tour/lesson/*`、`/tour/footer.html`、课程中的 `tree.png`、HTML、locale article/example、metadata、analytics 和 Playground endpoint 也不共享。课程广告的自有 CSS/JS 是 locale-neutral shared assets；Google 官方 `adsbygoogle.js` 仍直接从 Google 加载，不由 assets origin 代理或自托管。Inconsolata 继续使用现有 Google Fonts 外部资源。
 
 第一版使用固定 URL，不使用 assets-release-id、content-hash URL、asset manifest version mapping 或独立 versioned assets release。共享资源以普通服务器静态目录作为 origin，经 Cloudflare 代理提供；不引入 R2、S3、Workers 或 Pages。language projection 和 production bundle 继续携带完整 `_content`，不会因为非中文 HTML 使用共享资源而裁剪本地副本。
 
-`assets-go-dev.shuijingwanwq.com` 已正式部署并由 Cloudflare 代理。Cloudflare Edge Cache TTL 为 1 个月；Browser Cache TTL 不由项目主动覆盖，使用 Cloudflare/origin 默认或 Respect Existing Headers。公网 9/9 allowlist 文件 SHA-256 已验证，且 Cloudflare 缓存已验证 MISS → HIT。旧 `assets.go-dev.shuijingwanwq.com` 已废弃并清理，不提供兼容或迁移。固定 URL 下每次更新必须按“更新 origin → Cloudflare purge → 首次请求确认 MISS → 再次请求确认 HIT → 核对新资源内容”执行。
+`assets-go-dev.shuijingwanwq.com` 已正式部署并由 Cloudflare 代理。Cloudflare Edge Cache TTL 为 1 个月；Browser Cache TTL 不由项目主动覆盖，使用 Cloudflare/origin 默认或 Respect Existing Headers。production origin 当前仍是历史 9 文件并已通过 9/9 SHA-256 与 MISS → HIT 验收；真实课程页 AdSense 的两个 shared assets 已进入代码 allowlist，但尚未完成首次 origin 部署和 11/11 公网验收。固定 URL 更新按“完整 origin tree 更新 → 维护者在 Cloudflare Dashboard 按 URL Custom Purge → 首次 MISS → 再次 HIT → SHA-256”执行；详细 human gate 和当前尚待固化的 origin 更新命令见 [生产运维手册](docs/PRODUCTION_RUNBOOK.md)。旧 `assets.go-dev.shuijingwanwq.com` 已废弃并清理，不提供兼容或迁移。
 
 zh-CN 继续由 <https://go-dev.shuijingwanwq.com/> 同时提供 HTML 和自己的静态资源，并继续使用 EdgeOne。只有确认中文静态资源拆分有明确实际收益时，才考虑类似 `assets-cn.go-dev.shuijingwanwq.com` 的域名；当前不创建、不实现。
 

@@ -2,6 +2,8 @@
 
 本文档记录当前已验证的 production 基线，并严格区分“新 locale 首次生产部署”和“已有 locale 日常维护部署”。项目进度和部署历史见 [PROJECT_STATE.md](PROJECT_STATE.md)；新增语言的完整阶段导航见 [新增 Locale 执行手册](NEW_LOCALE_RUNBOOK.md)。
 
+本文档中的标准终端步骤不绑定执行主体。维护者可以直接执行，也可以在明确要求且具备相应终端访问能力时交由工具执行；两种方式使用相同命令、前置条件、验收标准和停止规则。只有明确标为 **HUMAN GATE** 的 UI 操作必须由维护者完成。标准化流程应能在没有工具持续参与的情况下按文档独立完成。
+
 ## 已验证服务器基线
 
 除非已验证基线实际发生变化，新 locale 首次部署直接复用以下事实，不重新探测或重新设计整台服务器：
@@ -232,13 +234,144 @@ go run -mod=readonly ./cmd/tour-i18n assets export \
 
 `assets-go-dev.shuijingwanwq.com` 已正式部署，Cloudflare 已代理；源站为 `121.40.248.29`，origin root 为 `/data/wwwroot/assets-go-dev.shuijingwanwq.com`，Nginx vhost 为 `/usr/local/nginx/conf/vhost/assets-go-dev.shuijingwanwq.com.conf`。TLS 使用 Let's Encrypt / acme.sh / `dns_cf`，证书和私钥分别位于 `/usr/local/nginx/conf/ssl/assets-go-dev.shuijingwanwq.com.crt` 与 `/usr/local/nginx/conf/ssl/assets-go-dev.shuijingwanwq.com.key`；HTTP 80 永久跳转 HTTPS。
 
-Cloudflare Edge Cache TTL 为 1 个月。项目不主动覆盖 Browser Cache TTL，不给这些固定 URL 设置 `immutable` 或一年浏览器缓存；使用 Cloudflare/origin 默认或 Respect Existing Headers。当前 allowlist 为 11 个文件；最近一次 production 公网验收仍是扩展前的 9/9，新增课程页 TEST AD CSS/JS 尚未部署或验收。`/tour/script.js`、`/tour/static/img/tree.png` 与 `/tour/static/partials/editor.html` 均应保持 HTTP 404。每次共享文件发生变化后必须按顺序执行：
+Cloudflare Edge Cache TTL 为 1 个月。项目不主动覆盖 Browser Cache TTL，不给这些固定 URL 设置 `immutable` 或一年浏览器缓存；使用 Cloudflare/origin 默认或 Respect Existing Headers。当前代码 allowlist 为 11 个文件，`course-ad.css` 与 `course-ad.js` 已包含真实课程页 AdSense integration；production assets origin 仍是扩展前的 9 文件，历史公网验收为 9/9。两个 course-ad 文件尚未完成首次 production origin 部署，首次 11/11 production 验收也尚未完成，不能描述为真实广告已经通过 assets production 上线。
 
-1. 更新普通服务器上的 assets origin 文件；
-2. purge Cloudflare 对应缓存；
-3. 请求资源并确认首次为 MISS；
-4. 再次请求并确认 HIT；
-5. 对照 `SHA256SUMS` 核对公网资源内容。
+### Shared-assets production 发布状态机
+
+以下阶段 A、B、C、E、F、G 是标准终端步骤；维护者可以直接执行，也可以委托具备终端访问能力的工具执行。阶段 D 是唯一的人工 UI 门。任一阶段不满足验收条件时停止，不跳过、不把后续阶段的结果用于掩盖当前失败。
+
+#### 阶段 A：本地生成
+
+目标目录必须不存在。在仓库根目录执行：
+
+```sh
+go run -mod=readonly ./cmd/tour-i18n assets export \
+  --output /tmp/go-tour-shared-assets
+```
+
+核对导出恰好包含 `SHA256SUMS` 和上述 11 个 allowlist 文件，不包含完整 `_content`、symlink 或其他文件，并执行：
+
+```sh
+cd /tmp/go-tour-shared-assets
+find . -type f -printf '%P\n' | sort
+test "$(find . -type f ! -name SHA256SUMS | wc -l)" -eq 11
+sha256sum -c --strict SHA256SUMS
+```
+
+只有文件集合正确且 11/11 校验通过，才能进入阶段 B。
+
+#### 阶段 B：production origin 更新
+
+production 目标是完整的 shared-assets export tree：
+
+```text
+/data/wwwroot/assets-go-dev.shuijingwanwq.com
+```
+
+当前仓库的代码、文档、scripts 与可读取 Git 历史只证明首次 9 文件 origin 已成功上线及通过校验，没有记录当时实际成功使用的完整 origin 更新命令。尤其缺少 staging/替换方式、旧 allowlist 残留删除方式和权限归一化命令。不得根据目标路径自行拼装 `scp`、`rsync --delete`、`mv` 或覆盖命令，也不得只手工复制本次新增的两个文件，使 origin 形成不可复现状态。
+
+因此阶段 B 当前标记为：**需要通过一次受控 production 操作确认并固化**。在正式命令补入本节之前，shared-assets production 发布到达此处必须停止，不能执行 origin 写入。需要确认的最小事实是首次成功更新完整 export tree 时所用的精确命令，包括：
+
+- 本地 source、SSH alias `aliyun` 与 production destination；
+- staging 和切换方式；
+- 如何使远端最终文件集合与完整 export 完全一致并清理旧残留；
+- owner、group、目录和普通文件权限；
+- 切换前后失败的停止、清理或恢复边界。
+
+该受控操作完成后，必须把实际成功命令和边界原样整理到本节，后续例行发布才能复用。origin 更新后还必须在源站执行以下只读校验：
+
+```sh
+ssh aliyun '
+  set -eu
+  cd /data/wwwroot/assets-go-dev.shuijingwanwq.com
+  find . -type f -printf "%P\n" | sort
+  test "$(find . -type f ! -name SHA256SUMS | wc -l)" -eq 11
+  sha256sum -c --strict SHA256SUMS
+  find . -printf "%u:%g %m %P\n" | sort
+'
+```
+
+文件集合必须只有 `SHA256SUMS` 与 11 个 allowlist 文件，SHA-256 必须为 11/11，权限必须符合该受控操作确认并写回本节的基线，并且不得存在额外可公开文件。任一条件不满足都停止，不进入缓存刷新。
+
+#### 阶段 C：确定 purge URL
+
+根据更新前后的 SHA-256 比较，只列出内容实际发生变化的固定 URL；不要默认刷新全部 11 个 URL，也不要默认使用 Purge Everything。首次部署课程广告资源时至少包括：
+
+```text
+https://assets-go-dev.shuijingwanwq.com/tour/static/go-dev/course-ad.css
+https://assets-go-dev.shuijingwanwq.com/tour/static/go-dev/course-ad.js
+```
+
+如果 SHA-256 比较证明其他 allowlist 文件也发生变化，把相应固定 URL 一并加入清单。输出完整 purge URL 清单后到达阶段 D，并停止后续公网缓存验收。
+
+#### 阶段 D：HUMAN GATE — Cloudflare Dashboard Custom Purge
+
+维护者在 Cloudflare Dashboard 中选择 `assets-go-dev.shuijingwanwq.com` 所属 zone，进入缓存管理的 Purge Cache / Custom Purge 功能，按 URL 刷新阶段 C 的精确清单。Cloudflare UI 文案可能变化，这里只定义操作目标，不把 UI 文案当作程序接口。
+
+当前 shared-assets production 发布不要求自动化 Cloudflare purge。不得为此搜索本地或服务器上的 Cloudflare Token、要求维护者提供 API Token、把凭据写入仓库或 shell history、猜测既有凭据入口、调用 Cloudflare API、使用 Wrangler 自动刷新或安装新的 Cloudflare CLI。未来如需自动化，应作为独立受控改进处理。
+
+Dashboard purge 是正常 human gate，不是 deployment failure，也不是缺少 API 权限错误。维护者明确确认 Custom Purge 已完成后，才能继续阶段 E；确认前不得把 MISS/HIT 不符合预期解释为新资源发布失败。
+
+#### 阶段 E：公网缓存验收
+
+对阶段 C 的每个 URL 连续请求两次并保留响应头。第一次应符合刷新后首次回源预期，例如 `CF-Cache-Status: MISS`；第二次应符合缓存命中预期，例如 `CF-Cache-Status: HIT`。如果实际响应头名称或 Cloudflare 行为与已验证基线不同，记录真实响应并停止判断，不猜测或伪造 MISS/HIT 结论。
+
+当前两个首次部署 URL 的验收命令如下；如果阶段 C 还列出其他变化 URL，把它们追加到 `urls`：
+
+```sh
+urls=(
+  'https://assets-go-dev.shuijingwanwq.com/tour/static/go-dev/course-ad.css'
+  'https://assets-go-dev.shuijingwanwq.com/tour/static/go-dev/course-ad.js'
+)
+for url in "${urls[@]}"; do
+  curl -fsS -o /dev/null -D - "$url"
+  curl -fsS -o /dev/null -D - "$url"
+done
+```
+
+#### 阶段 F：完整性验收
+
+逐一请求正式 11 个 allowlist URL，确认 HTTP 正常，并把公网响应内容的 SHA-256 与阶段 A 的 `SHA256SUMS` 对照。必须达到 11/11 内容一致；只验证本次 purge 的文件不能替代完整 allowlist 验收。
+
+```sh
+public_assets=$(mktemp -d)
+while read -r checksum logical_path; do
+  mkdir -p "$public_assets/$(dirname "$logical_path")"
+  curl -fsS \
+    "https://assets-go-dev.shuijingwanwq.com/$logical_path" \
+    -o "$public_assets/$logical_path"
+done < /tmp/go-tour-shared-assets/SHA256SUMS
+cp /tmp/go-tour-shared-assets/SHA256SUMS "$public_assets/SHA256SUMS"
+cd "$public_assets"
+sha256sum -c --strict SHA256SUMS
+```
+
+验收结束后可删除该 `mktemp` 输出目录；不要把它误作下一次正式 export source。
+
+#### 阶段 G：边界验收
+
+以下路径不属于 shared allowlist，必须继续返回 HTTP 404：
+
+```text
+/tour/script.js
+/tour/static/img/tree.png
+/tour/static/partials/editor.html
+```
+
+任一路径意外返回共享内容，shared-assets 发布验收失败。固定 URL、Cloudflare Edge Cache TTL 与 Browser Cache TTL 策略保持不变；不引入 hash filename、version directory、query version、loader、manifest 或 assets release ID。
+
+```sh
+for path in \
+  /tour/script.js \
+  /tour/static/img/tree.png \
+  /tour/static/partials/editor.html
+do
+  curl -sS -o /dev/null -w "$path %{http_code}\n" \
+    "https://assets-go-dev.shuijingwanwq.com$path"
+done
+```
+
+Google 官方 `adsbygoogle.js` 继续直接从 Google 域名加载，不下载、代理、镜像或 self-host 到 assets origin。
 
 旧 `assets.go-dev.shuijingwanwq.com` 已废弃并清理，不提供兼容或迁移。不要在 zh-CN 的现有 EdgeOne 发布流程中加入 assets 域名依赖。
 
