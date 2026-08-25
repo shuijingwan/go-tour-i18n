@@ -1,0 +1,1449 @@
+{
+  "schema_version": 1,
+  "locale": "zh-CN",
+  "generator_contract": "course-seo-description-v1",
+  "pages": [
+    {
+      "page_id": "welcome/1",
+      "route": "/welcome/1",
+      "description": "介绍 Go 语言之旅的模块与目录导航，以及运行、编辑和格式化示例程序、切换语法高亮等交互式学习操作。",
+      "source_sha256": "1f581133d7fa40e6490418c6789a60a2f5e1de26c9c86d7eb6120cb58b145857",
+      "target_sha256": "12f33f6967612f21f59aa8ac818c9fecb886c8dc43d06afe389e8644f2e1db78",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "welcome/2",
+      "route": "/welcome/2",
+      "description": "列出本教程提供的巴西葡萄牙语、日语、西班牙语等其他语言版本，并说明如何继续前往下一页。",
+      "source_sha256": "c1c8c34dfe10b11b5cc72e1daae4336290d613bbbe5445012be949ab904fd3fa",
+      "target_sha256": "5d200e770b9934fa7772c17283d0d720155a529f7f6ee7b66ddfd123d0e41088",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "welcome/4",
+      "route": "/welcome/3",
+      "description": "说明如何安装 Go 并在自己的计算机上运行独立版教程，从而离线构建和执行代码示例，同时也可继续使用网站版本。",
+      "source_sha256": "bb517d4b577fdb446fd029c2998d2426663b94a68f4b4e494c59af421508f683",
+      "target_sha256": "33f08511d176e78fbab565b066cce4af7f6af616ff5f809cabf97559db55ba24",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "welcome/5",
+      "route": "/welcome/4",
+      "description": "介绍 Go 语言演练场在沙箱中编译、链接并运行程序的方式，以及时间、执行时长、CPU、内存和外部网络等限制。",
+      "source_sha256": "19e6d7da57ca1d191c485754f3dd4ac87775c651b8c0ae8e05c03cbd9b225897",
+      "target_sha256": "198c97c8b0dae67877e0069b6f14a462c82cdf469985e17da995c1ab0dbbd0a1",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "welcome/3",
+      "route": "/welcome/5",
+      "description": "确认本教程的第一个模块已经完成，并引导学习者查看其他 Go 学习内容或直接进入下一课。",
+      "source_sha256": "9a6983b2e50b2fa78ff4f65683210714aea1c1575418e36796c156950ec6330d",
+      "target_sha256": "eaafbe5d64e69b22a2aeebf43357eec68173f5f01dfa608d427ab74989eba5a5",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "basics/1",
+      "route": "/basics/1",
+      "description": "讲解 Go 程序由包组成、程序从 main 包开始运行，以及导入路径最后一项通常与包名相同的惯例。",
+      "source_sha256": "f769f12c0a028b2f0cd403d89ff39dd150405e9f2e4155875321522f08619fe0",
+      "target_sha256": "672173f5500327fe8328c4d06ba8ba134021c4305d8ca0a2b8c7a9cc002bafec",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "basics/2",
+      "route": "/basics/2",
+      "description": "比较分别编写多个导入语句与使用括号分组的写法，并说明分组导入语句是更好的 Go 代码风格。",
+      "source_sha256": "3329c9bff5f7e2b9b1e161fdebfb3804ff57cf1fb11bd4327d228328bcfb3fd0",
+      "target_sha256": "0c68200f68fb6ad38d026b3e86dc6fd14b2c6c971d93e835496fe2d62e099568",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "basics/3",
+      "route": "/basics/3",
+      "description": "说明大写字母开头的导出名如何决定包外访问权限，并通过将未导出的 pi 改为导出的 Pi 来理解包外访问限制。",
+      "source_sha256": "38b9c70e49184a24f63f6b12f8ba78e64c0b874ad2a6f9a5fe86267615fd1bf6",
+      "target_sha256": "40aec67490a1600156039539e5c138ecec20483f252ec5bbc1263737cb4f6041",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "basics/4",
+      "route": "/basics/4",
+      "description": "介绍 Go 函数可以接收任意数量的参数，并以 add 函数为例说明参数类型写在变量名之后的声明语法。",
+      "source_sha256": "accf0562d9b759c9735500d5df0d74e8f90142ed96fe5ab2f5eedc6fbd6cf6f2",
+      "target_sha256": "caf0c035f9b86f4ee6c9bc46587aae135e0983bb5b2b9efe3d7fb1b0d475ac6d",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "basics/5",
+      "route": "/basics/5",
+      "description": "讲解多个连续的具名函数参数具有相同类型时，如何仅在最后一个参数后保留类型，使声明更简洁。",
+      "source_sha256": "02e7feb341329e18143e18d533fe45381883a6ba6425abb09a847e2f0edf228a",
+      "target_sha256": "31343e1227ae717d4474d567625309d95e8d1e8c1cb7e7e6890b5333b635a9ef",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "basics/6",
+      "route": "/basics/6",
+      "description": "通过返回两个字符串的 swap 函数，说明 Go 函数可以一次返回任意数量的返回值。",
+      "source_sha256": "b3cb4b40115066443f265e3e5ebb9fc0fd6d080784c887328fce4d6b7891ba41",
+      "target_sha256": "524cc7d6399dfc778acf91f9db34acf1354f09533a6fa5ac37dfe1f327334760",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "basics/7",
+      "route": "/basics/7",
+      "description": "介绍命名返回值及其说明作用、不带参数的裸返回，并解释为何裸返回只适合较短的函数以免影响可读性。",
+      "source_sha256": "1db20ae87ce5d9d4b20f15e4638ba2a3295a7ce781c961ef618982890fc562fa",
+      "target_sha256": "4573a99f5d9208cb7ba7d566e67bf5e52af4c39fbfad13a627b96189d61813e3",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "basics/8",
+      "route": "/basics/8",
+      "description": "讲解 var 语句如何声明一组变量、类型在列表中的位置，以及变量声明可以位于包级别或函数级别。",
+      "source_sha256": "bcb1b5e17ed9dff3d46a7cd8119c0d2f9c3afbb70ca94d35fadeb4f75b4a9d13",
+      "target_sha256": "0423a428a90f4ae14042bda9c70689b86c9dc5ee8897aa6c29c3e05ea19994e3",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "basics/9",
+      "route": "/basics/9",
+      "description": "说明 var 声明可为每个变量提供初始值，并在有初始值时省略显式类型，让变量采用初始值的类型。",
+      "source_sha256": "d51c17ba355753484b96c0eefda9fcce9f6f041a8ae2bf3e96fd0ad0c44680cc",
+      "target_sha256": "cd585236910d39b9851db5cf4a4643eff3e339d05dde5c956749887fd96339b2",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "basics/10",
+      "route": "/basics/10",
+      "description": "介绍函数内部使用短变量声明替代隐式类型 var 声明的方式，并说明这种写法为何不能用于函数外部。",
+      "source_sha256": "f402e8e89a186d3208df5e4d983604730e71ef6c68354755f72e4580d3d7f359",
+      "target_sha256": "ef1ab03b8eb14d303e9a5fd49fdd00b5cedacb9f6f48d39929d5352ad08010e1",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "basics/11",
+      "route": "/basics/11",
+      "description": "概览 Go 的布尔、字符串、整数、浮点数和复数等基本类型，说明变量声明分组方式及整数类型的选择建议。",
+      "source_sha256": "836ab1dd659798dcf5e90f283c4ee794aed1d2cf0766c2ccc268fa91684e9d05",
+      "target_sha256": "f5d0ce6118f0e6fc93b28e01e22509c0c12db4691799957849943ee2e37fe214",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "basics/12",
+      "route": "/basics/12",
+      "description": "讲解未显式指定初始值的变量会获得零值，并分别说明数值、布尔类型和字符串对应的零值。",
+      "source_sha256": "d9ad62501c05359e7b2ac445fa92d629e11d6d378c2701b767abab76012a558e",
+      "target_sha256": "5441fff1dacedd15645b5fa362a4e5cc1685f4ee4395829a419486deb4442880",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "basics/13",
+      "route": "/basics/13",
+      "description": "介绍将值转换为指定类型的表达式，并说明 Go 在不同类型的值之间赋值时需要进行显式转换。",
+      "source_sha256": "88e0e168f4c95fa4134198a32440b2d2fb1fac9aae535a9ee7148dbcda37e1b3",
+      "target_sha256": "28c61a7f4073f8f7df1189bb770abb7e5887a1c2c72ca991ed33635c72f86468",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "basics/14",
+      "route": "/basics/14",
+      "description": "讲解省略显式类型时的类型推断，比较右侧为有类型值与无类型数值常量时，新变量类型的确定方式。",
+      "source_sha256": "21c4077c25629545dee0313b8b6b03e709edc4a74e1d73d9f4c9b0a49e46f6b3",
+      "target_sha256": "a0a09dbf054e6757b7d9fbbb33aa8da493b7c4877b5a9e1dae5e426693ac7a7c",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "basics/15",
+      "route": "/basics/15",
+      "description": "说明使用 const 关键字声明字符、字符串、布尔值或数值常量，并指出短变量声明语法不能用于常量。",
+      "source_sha256": "964ac515c0860a54b3a7780d77c7b4862ca38b744ae1f6be4b155a4386e2a229",
+      "target_sha256": "8bc9e06295202446fd2b44f5c2eb54480da8c2ef140196ca013c8c433db36be2",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "basics/16",
+      "route": "/basics/16",
+      "description": "介绍数值常量是高精度值、无类型常量会根据上下文取得所需类型，并说明 int 可存储整数的范围限制。",
+      "source_sha256": "0d502d48a15f7a70e257079d7db1ddafe088607110c1c06b17b4be50b362394a",
+      "target_sha256": "06bfc11ec15f5cba49cb1df300a10e743bc94e5fe70876f697a4d8c7d362f11b",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "basics/17",
+      "route": "/basics/17",
+      "description": "提示这一课已经完成，并说明可以返回模块列表选择后续学习内容，也可以直接继续下一课。",
+      "source_sha256": "f565674b974c053924bf69ef83b709dc50931526ae7fa88e71543a5cd872a190",
+      "target_sha256": "c07d3240c402b7af2f714f7c845f65de6f9b1cb13682aa8211b2467e248738a2",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/1",
+      "route": "/flowcontrol/1",
+      "description": "系统介绍 Go 唯一的循环结构 for，包括初始化语句、条件表达式、后置语句的执行顺序、作用域和括号规则。",
+      "source_sha256": "c1169da4fac9516ce733f1a4439d4181c5c42635c9839625d6f82dd8e4951042",
+      "target_sha256": "5e9cf1482c06c2cd8e04a4a13377bb73998490084ab072a10b5adec3507a3a59",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/2",
+      "route": "/flowcontrol/2",
+      "description": "在基本 for 循环的基础上，说明初始化语句和后置语句都属于可选部分，可以根据需要省略。",
+      "source_sha256": "24a97abbb6db2b6a88017bf326a5968097263d8ba637805f2cf44c9fed25f9fe",
+      "target_sha256": "d9a954155d2cf7504e9cae8223ce7ff9236e340a7a66a36f642ffa6960d57b92",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/3",
+      "route": "/flowcontrol/3",
+      "description": "说明省去初始化语句和后置语句后还可以省略分号，此时 Go 的 for 就相当于 C 语言中的 while。",
+      "source_sha256": "3ed791cc935287ba6f5da4ba41f6ad84fdcbaef108ee364f769ae5204316bbb7",
+      "target_sha256": "6d27f5b422681f4bca60b6677b05ef077d4d44635269d8c8535d6d8dbfe5fd49",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/4",
+      "route": "/flowcontrol/4",
+      "description": "讲解省略 for 的循环条件会让循环持续运行，从而用非常简洁的形式表达无限循环。",
+      "source_sha256": "5456c129ef71c60b7502efde65c81020aaf1fa8b9178086e99223a21f6207dc6",
+      "target_sha256": "ff65c60ec8c073356865bf9ebce23c6f5648bc8b92922e37c1febbdd425d5037",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/5",
+      "route": "/flowcontrol/5",
+      "description": "介绍 Go 的 if 语句与 for 循环相似的语法规则：条件表达式不需要括号，但大括号始终必需。",
+      "source_sha256": "ce49f916c1ceb7296576ec6b8ec92524b9827be168e3f5eb2040c61fee70f639",
+      "target_sha256": "8c66f3d65d07bd9ea8f1059da7430dee5c3803eece7c06a0413709a8f48bbadb",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/6",
+      "route": "/flowcontrol/6",
+      "description": "讲解 if 可在判断条件前先执行一条简短语句，并说明其中声明的变量只在整个 if 语句内有效。",
+      "source_sha256": "02e310262214f3c5ceca8bf63ecf2ec3934641a7e2638050479b739ce077031e",
+      "target_sha256": "99f3b25117254585eea3bcc9596fd172177a342053e4b47168e62b4105c9a375",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/7",
+      "route": "/flowcontrol/7",
+      "description": "说明 if 简短语句中声明的变量也可用于各个 else 代码块，并结合函数调用解释示例中的求值顺序。",
+      "source_sha256": "8666746573ce7d0ea1c12ff24c4c8170a1961eedb0600ed73ab849b4758f797c",
+      "target_sha256": "ec170cca8da1941a012a53a43f4a5ec4c90deaefa77d7d6ae402dd7e07572be6",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/8",
+      "route": "/flowcontrol/8",
+      "description": "练习使用循环和函数，以牛顿法反复改进猜测值来实现平方根计算，并比较停止条件、初始值与标准库结果。",
+      "source_sha256": "d8bbee8455ff59212ef432a08312f7c7703360367325a80df3719157200316e9",
+      "target_sha256": "3622e848a8615281156cd6eae46c3b610b461853ba78b2524a88386129e85c19",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/9",
+      "route": "/flowcontrol/9",
+      "description": "介绍 switch 如何执行首个匹配分支、自动结束该分支，以及 Go 的分支条件不必是常量或整数等特点。",
+      "source_sha256": "abdc4c295fa7b4aec2616acf83badbbf2b581a9f62e41d03ca2ff984ebb6f7ed",
+      "target_sha256": "57cd8b0ba41a8e47a076fa761cecc8857d23e98854a07ea92d2ed7a5990cd73b",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/10",
+      "route": "/flowcontrol/10",
+      "description": "说明 switch 分支会从上到下依次求值，并在第一个匹配成功的分支处停止，不再计算后续条件。",
+      "source_sha256": "e1479cae56a87cddb9c447fc9fd32b0ee1f983058f7ee76554965abd21975ef4",
+      "target_sha256": "8ce9c36ba900ad72eebd0439ce2fe786a47ec736d903463ee606c542887abd2c",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/11",
+      "route": "/flowcontrol/11",
+      "description": "讲解不带条件的 switch 与以 true 为条件的写法等价，可用于简洁表达较长的 if-then-else 链。",
+      "source_sha256": "714b67f479583e47080cd0f38489f465a28c002938390c4155af6dfeebb9225b",
+      "target_sha256": "ee398a6a8ef82a240e12365661ea6bff3db0d330ad6d2c4a42e33239ca519fb9",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/12",
+      "route": "/flowcontrol/12",
+      "description": "介绍 defer 将函数调用推迟到外围函数返回时执行，但被延迟调用所使用的参数会立即求值。",
+      "source_sha256": "fa23a1d6ebf12f11843d38fe79c413a9c19bfcaf305ae64b75c360db24a436ec",
+      "target_sha256": "932d9a02dde09e38a8009cc5d11434464085b1148264c93705e993711d3d8a9f",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/13",
+      "route": "/flowcontrol/13",
+      "description": "讲解多个 defer 调用会被压入栈中，并在外围函数返回时按照后进先出的顺序依次执行。",
+      "source_sha256": "73a02c24eb14597b3c5f53a09fc572f1a1f0c941adfc337c79fb14b492985fc1",
+      "target_sha256": "8beb516979e53bfa9f4a5b754dd8a1c9b5d1933b5926a09b01b782c31717c63c",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/14",
+      "route": "/flowcontrol/14",
+      "description": "在课程结束后提供两种继续方式：回到模块列表寻找新的学习主题，或者紧接着进入下一课。",
+      "source_sha256": "f565674b974c053924bf69ef83b709dc50931526ae7fa88e71543a5cd872a190",
+      "target_sha256": "c07d3240c402b7af2f714f7c845f65de6f9b1cb13682aa8211b2467e248738a2",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "moretypes/1",
+      "route": "/moretypes/1",
+      "description": "介绍保存内存地址的指针、指针类型及其零值，以及取地址和解引用运算，并说明 Go 不支持指针运算。",
+      "source_sha256": "7706eaf0d46acc79fdad3b7953e5571bf404551d71aaefafd8ba79f5761f9806",
+      "target_sha256": "2cb3af908e6d251266b0b692ec752011d9ef89e9a920470dc4c7039dec4bbbb6",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "moretypes/2",
+      "route": "/moretypes/2",
+      "description": "通过简短示例介绍 Go 的 struct，说明结构体是一组相关字段组成的集合。",
+      "source_sha256": "a18dfdaadb9739387cc9886b67e9bf920bf52ada62397a1812cfd302c64aed9b",
+      "target_sha256": "272b523d57e93a8271e0e1242454c38bcaa885446dc05c5728b1717f555e6248",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "moretypes/3",
+      "route": "/moretypes/3",
+      "description": "说明如何使用点号选择并访问结构体中的字段，掌握结构体字段访问的基本方式。",
+      "source_sha256": "0be9cb4a59a0d95526c208e5d8d96ebe6a15fd84b6e3a2ff9a07963226cb7b58",
+      "target_sha256": "aba03bfc581a658b13c5fe23ea651762702b5dcb1bde4379c86cf0303af35272",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "moretypes/4",
+      "route": "/moretypes/4",
+      "description": "讲解通过结构体指针访问字段时，可以使用与结构体值相同的点号写法，而不必显式进行解引用。",
+      "source_sha256": "29695d334b6ff809e84ae8caeb7b9dc493143236783c07c16a83ecc64514c310",
+      "target_sha256": "e9fc7a592c8ea06c7bd4ede69f1c12e110058f793e43380a118f31fb39420981",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "moretypes/5",
+      "route": "/moretypes/5",
+      "description": "介绍结构体字面量如何列出字段值、按名称选择部分字段且不受顺序限制，以及如何获得结构体值的指针。",
+      "source_sha256": "cf9282456e2a91274c1b135a68fce58dd1590f6a2d7153f0619c97ded8bd00d1",
+      "target_sha256": "9588fea22f7b360aec5ba4e7a1c0c0e16e674066a505987add2d057c3e8b9343",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "moretypes/6",
+      "route": "/moretypes/6",
+      "description": "讲解由元素数量和元素类型表示的 Go 数组，并说明数组长度属于类型的一部分，因此数组不能调整大小。",
+      "source_sha256": "0ec503e46281eb8ff25ceba5b92c9f9c3b40517aeea77cf4878760ed0da9d29c",
+      "target_sha256": "de763da4c5434abbe8776cf6c80218e18a14d8ba126ca957b482ab33b4acf543",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "moretypes/7",
+      "route": "/moretypes/7",
+      "description": "介绍切片是数组元素的动态灵活视图，说明切片类型，以及下界包含、上界不包含的半开区间取值规则。",
+      "source_sha256": "a169cf48dd659510ff7f1f8adfdbed5a247b51a1f7c3a45ae972f18921925033",
+      "target_sha256": "48a85f4748c727c857a913aae9040f2a250a7a55f0a62ec4c37c88fe8c61fcce",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "moretypes/8",
+      "route": "/moretypes/8",
+      "description": "说明切片本身不存储数据，而是描述底层数组的一段；修改元素会影响底层数组及共享它的其他切片。",
+      "source_sha256": "e577f9e98a9c871cdc6f39ecca1bdd0965c26da3b9ab6c2a7cab42b3b0f3a568",
+      "target_sha256": "52a24bbf24e3734616b0ad9b918b684a83672fdede3db25b545180977006acbc",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "moretypes/9",
+      "route": "/moretypes/9",
+      "description": "比较数组字面量与不指定长度的切片字面量，说明后者会创建数组并构建一个引用该数组的切片。",
+      "source_sha256": "fb79cf8caed7abc7dfd92e90cf1bcc11d547b8af96d224f30fefc995f98dbb0b",
+      "target_sha256": "d46657706f8ec2068a7b6fbcddafe519d417eab0d9140b7f940eead65bde4712",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "moretypes/10",
+      "route": "/moretypes/10",
+      "description": "讲解切片表达式省略下界或上界时采用的默认值，并比较多种表示同一完整范围的等价写法。",
+      "source_sha256": "36d1f92fc5e51cddcd26be7f74a875e60bf24633dd7c8689672fa23a6720e2a1",
+      "target_sha256": "e3b598e1cb6af3de96998023e849da7754688411db7aae77bd278603e5bf7a97",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "moretypes/11",
+      "route": "/moretypes/11",
+      "description": "说明切片长度与容量的含义和获取方式，以及在容量足够时通过重新切片扩展长度，并观察超出容量时的结果。",
+      "source_sha256": "e2d7d69c946e5a01d8d0eab2e07a2bf35e23453a617d5e7602ff0af5c5866d8f",
+      "target_sha256": "28547a9c0c75e0638843ba218b2916db95922a040c4be52897e1d8a509e7aa0e",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "moretypes/12",
+      "route": "/moretypes/12",
+      "description": "介绍切片的零值 nil，说明 nil 切片的长度和容量均为零，而且不存在底层数组。",
+      "source_sha256": "e7a4bb0d5e7928c2da06312d983eba2adb533b30299025f507df183f00fefc89",
+      "target_sha256": "5748a52aee9dd561d6cc8d680c17ddf809a1f8536cc52bd2b80c52c86a9da9e0",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "moretypes/13",
+      "route": "/moretypes/13",
+      "description": "讲解内置 make 函数如何分配零值数组并返回引用它的切片，以及如何分别指定切片的长度和容量。",
+      "source_sha256": "d057e6bf75421597d430ff52f844499b5828ab2c4b4c5148ad88b6b89326ac20",
+      "target_sha256": "8e7c532038bf9301ebb28f14d4ef703e9d7af75ae1e7e345cd343812c0afea7e",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "moretypes/14",
+      "route": "/moretypes/14",
+      "description": "说明切片可以容纳任意类型的元素，包括把其他切片作为元素来组织嵌套数据。",
+      "source_sha256": "d8bee22c0382cf5fd5647c4d7106165d153cb15aaed8ec82e1f06e12ad0c73d1",
+      "target_sha256": "d1d0a3510bfef543351f029293dc658a72a63e92875d9a12b8aba715c025af18",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "moretypes/15",
+      "route": "/moretypes/15",
+      "description": "介绍内置 append 函数如何向切片添加值，并说明底层数组容量不足时会分配更大的数组并返回新切片。",
+      "source_sha256": "f2fc257e7c5f118321acc3b75e946053601532d411e8540534280d7fba795289",
+      "target_sha256": "7f3fbc16e01c85fdb0ca5c2b62b5e1493f3887657242afc2413a3fcf690eebf3",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "moretypes/16",
+      "route": "/moretypes/16",
+      "description": "讲解使用 for 的 range 形式遍历切片或映射，以及遍历切片时每次迭代得到索引和元素副本的规则。",
+      "source_sha256": "73fc46a2e049ce2ff4a4fc0595d717ed5d6e15b7093a6014509a48f501253186",
+      "target_sha256": "e1e1531aa21eab521f3766d36944eed1ff649b23690c0b0143af8fef44dbfb69",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "moretypes/17",
+      "route": "/moretypes/17",
+      "description": "说明 range 遍历时如何忽略不需要的索引或值，以及只需要索引时省略第二个变量的简化写法。",
+      "source_sha256": "b52cca070f62a3ffeab3adf20f2745e1dd9aa2644a3985c23ac295e81e2c3bc9",
+      "target_sha256": "ecfbd986f012e802e63258c2f60a10a5892d285497a87ba17f7e81effbaf545c",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "moretypes/18",
+      "route": "/moretypes/18",
+      "description": "练习实现 Pic 函数，创建由 8 位无符号整数切片组成的二维切片，并把计算出的数值解释为颜色来显示图片。",
+      "source_sha256": "9c5fd763eaedec8e8bfb60f52713417ff247bc4467aa8a94412c55ab83c781ba",
+      "target_sha256": "d30384dc942c1499efc075556ad28efbfe45a86371351f03e0d87814cd8519d5",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "moretypes/19",
+      "route": "/moretypes/19",
+      "description": "介绍将键关联到值的映射，说明 nil 映射不能添加键，以及如何使用 make 得到已初始化且可用的映射。",
+      "source_sha256": "39107d53feaffd26d7bb13103fe6e40746e9844d9b37bbf84559f7b91db312f3",
+      "target_sha256": "6d312f9bcbc44f716ae93ba848b605e2f39caeec73f98d61583fe2adc0fb34a7",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "moretypes/20",
+      "route": "/moretypes/20",
+      "description": "说明映射字面量的写法与结构体字面量相似，但映射中的每个元素都必须明确指定键。",
+      "source_sha256": "1d3caa45093f65b50d5ebcff6a57559c3fe70faba85f3a0bb41db38c5375a507",
+      "target_sha256": "690804fc7e97510c3513d1b51841d7c4b95b2381beb7dca021237a0ebee7ccdb",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "moretypes/21",
+      "route": "/moretypes/21",
+      "description": "讲解映射字面量的顶层类型只是类型名时，可以在各个元素中省略重复的类型名称。",
+      "source_sha256": "0493179c2396f2e755fa5f1e579ce6f4cc716842ef5ee77a0b1c742210c15f9f",
+      "target_sha256": "216af2e7627088840b84844ae7b0b3bcc24bf98a579a8b7c2fc0c1253047b0fc",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "moretypes/22",
+      "route": "/moretypes/22",
+      "description": "介绍映射元素的插入、更新、获取和删除，并通过双赋值判断键是否存在及处理不存在时的零值。",
+      "source_sha256": "f6963bc620184c7fbea7b04c309ccf64d508a4e835500fa7dd4188e60204019f",
+      "target_sha256": "49dec739105fb70d11a2a3b66d746e56502ec7d1aefd908219bd49a2023aaa36",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "moretypes/23",
+      "route": "/moretypes/23",
+      "description": "练习实现 WordCount，返回记录字符串中每个单词出现次数的映射，并使用提供的测试检查成功或失败。",
+      "source_sha256": "3214968207b659c3fb6bf92ee3d1ba0858bf7d3240dfad30fada7c5d8bddea69",
+      "target_sha256": "e34b048947dabdd51e3179e3914b794df5633d27b9c8da52338054f1929a6c2c",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "moretypes/24",
+      "route": "/moretypes/24",
+      "description": "说明函数在 Go 中也是值，可以像其他值一样传递，并可作为另一个函数的参数或返回值。",
+      "source_sha256": "91b508ec19d3baf6fd1b2382e54b0f4ec226e9af99d027e86d734cf081d9c897",
+      "target_sha256": "8b2e45ebc1886e010425f86b1b37f4f3627e227b73252714989c6a9c102db8af",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "moretypes/25",
+      "route": "/moretypes/25",
+      "description": "介绍闭包如何引用、访问和修改函数体外的变量，并说明每个返回的闭包都会绑定自己的变量。",
+      "source_sha256": "570e535e9c2b2d1978534eb3b42f226102b11da36a3f9e61620dc5eafdb6be5f",
+      "target_sha256": "b5f38ea4e503f5527164833307c6ea7716552d151db4a06de31e445d1688e0ee",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "moretypes/26",
+      "route": "/moretypes/26",
+      "description": "练习实现 fibonacci 函数，让它返回一个闭包，并在后续调用中依次生成斐波那契数。",
+      "source_sha256": "24f01440a7b0d638694c6cb275bf92e79e1fb2463ea2eb7d40a68cc4d6a0ed29",
+      "target_sha256": "db33ad2b5dabcabdc058a65b1fc63bbe4b09641000c1ae4deb1b9e50a0812aa1",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "moretypes/27",
+      "route": "/moretypes/27",
+      "description": "告知学习者本课已经结束，并引导其从模块列表寻找接下来的内容，或继续进入后续课程。",
+      "source_sha256": "f565674b974c053924bf69ef83b709dc50931526ae7fa88e71543a5cd872a190",
+      "target_sha256": "c07d3240c402b7af2f714f7c845f65de6f9b1cb13682aa8211b2467e248738a2",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "methods/1",
+      "route": "/methods/1",
+      "description": "说明没有类的 Go 如何为类型定义方法，并介绍位于 func 关键字和方法名之间的特殊接收者参数。",
+      "source_sha256": "8a62096b755332ede134c87493abe49231a52ce60abebcdc107bb6a64434fc72",
+      "target_sha256": "446dcac952b79d76e041242d70e9be3515c64b06bc9e320aa8ec98ffa13c5eca",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "methods/2",
+      "route": "/methods/2",
+      "description": "通过把 Vertex 的 Abs 方法改写为功能相同的普通函数，说明方法本质上是带接收者参数的函数。",
+      "source_sha256": "ade066728f85cc93e75c2472b80d532b62259a7e08e42ef36e3d05c6cfa5476d",
+      "target_sha256": "8c1f6a58643b123572098b3ac3a2526a5336f1b1ea3a2a9f0227efcbd5d28ba1",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "methods/3",
+      "route": "/methods/3",
+      "description": "说明非结构体类型也可以声明方法，但接收者类型必须与方法定义在同一个包中，不能来自其他包或内置类型。",
+      "source_sha256": "31c4fd0d80c8f1d96cf3efb1ecc1f9d3c0d1b5b70bb5c23bf7227b7007469588",
+      "target_sha256": "16f7dd846e5fe10975ca5b5148a39ac8aeb9498f27bdbd6681b2dd27b43061e2",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "methods/4",
+      "route": "/methods/4",
+      "description": "讲解指针接收者方法可以修改所指向的值，并通过 Scale 对比值接收者只操作原始 Vertex 副本的行为。",
+      "source_sha256": "99f9fa4e5c4dd46d393f40b417d0430c4e27e56f40146f5f192f55ccda4e2db3",
+      "target_sha256": "7879779cf5f9bee03b0c0bcba59aab196c16747460140499da3f0fc019333450",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "methods/5",
+      "route": "/methods/5",
+      "description": "将 Abs 和 Scale 方法改写成普通函数，通过移除指针标记来观察行为变化，并思考编译所需的其他调整。",
+      "source_sha256": "cac8affc7a8fd7bc1c0003d8cbf5bd7c85433faea45ea1b39f3b80c2fbc5eae9",
+      "target_sha256": "897909cf8501ac72f905d180674a5d0f7ab1a483b3297ee1e4e54bdd1aca3cc5",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "methods/6",
+      "route": "/methods/6",
+      "description": "比较函数与方法的指针间接引用：指针参数必须传入指针，而指针接收者方法可由值自动取地址后调用。",
+      "source_sha256": "39fb725b0a084ce3634dc973c215ff7a0f034c5f7b51c2ffe25934088072ebf6",
+      "target_sha256": "387ea5d1cd48fb06bede7c58cb5fd870eecb60e89c4c807c912fc892b97d90b3",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "methods/7",
+      "route": "/methods/7",
+      "description": "从相反方向说明值参数函数必须接收值，而值接收者方法也能通过指针调用，此时 Go 会自动进行解引用。",
+      "source_sha256": "61a9cb8411e6ce15dce3383a68a52c6644599e84269b3faf240129277d238f7e",
+      "target_sha256": "a53509e9feb31c3de1c4826cba5d69c688c58acb148e57a8bbcb346f81d5bb77",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "methods/8",
+      "route": "/methods/8",
+      "description": "说明选择指针接收者的两个原因：修改所指向的值和避免每次调用复制数据，并给出同一类型统一接收者形式的建议。",
+      "source_sha256": "357424f2a76613085184054178042b442331b5689d156ac9c37e09e57c436dae",
+      "target_sha256": "e4052339ee4c480a434e948dff04539440ef7f6dee10425b19f4ae6f9bdc1fdd",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "methods/9",
+      "route": "/methods/9",
+      "description": "介绍由一组方法签名定义的接口类型，以及接口类型的值如何保存实现这些方法的值，并分析 Vertex 示例中的错误。",
+      "source_sha256": "39efc19ed01619130489d21e421f2c0d8947b20f408580f4ceaabce6a0feb099",
+      "target_sha256": "17be820c3cfe55f48a62d471adf0c90e1ce69401c7e0ecb70521e81dcbc4b3d2",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "methods/10",
+      "route": "/methods/10",
+      "description": "讲解类型只需实现所需方法便会隐式实现接口，无需 implements 声明，从而让接口定义与具体实现彼此解耦。",
+      "source_sha256": "11ca99e6e83d93827daf02b177156fcb6f3c94ac8c202491dfffc5840ce4e39f",
+      "target_sha256": "e29cb4d71db66baff1f278b7a1eb36dadd32b721ca26f0f4b8c5b9933588ff1d",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "methods/11",
+      "route": "/methods/11",
+      "description": "将接口值理解为值与具体类型组成的元组，并说明在接口值上调用方法时会执行其底层类型的同名方法。",
+      "source_sha256": "ccb2ed709b887724d22fb93714702fed5de4b7a83ca976876864045ff4752270",
+      "target_sha256": "377d5f7d889df13dfaa2a517f3c5daa9c819d717a3acd98c81b32cf40591ffc8",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "methods/12",
+      "route": "/methods/12",
+      "description": "说明接口内部的具体值为 nil 时仍会以 nil 接收者调用方法，同时该接口值本身并不等于 nil。",
+      "source_sha256": "9487ca3c9872972d42af8cfa389755678fe8a7cca110b592aac2a762332febf5",
+      "target_sha256": "3761f1bac2e9407f748c55696dc3aff39dc1a6d43365e4f00a6ca441f8473567",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "methods/13",
+      "route": "/methods/13",
+      "description": "讲解 nil 接口值既不保存值也不保存具体类型，因此无法确定要调用的方法，并会在方法调用时产生运行时错误。",
+      "source_sha256": "2897922c0b088ccd46b3e42a442aeecda0787c4162db1329d0e8f39d05735547",
+      "target_sha256": "125524e9df52e0146b2b1a2495b14b7dad62c117aad22a7aba1a4daf9f25b498",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "methods/14",
+      "route": "/methods/14",
+      "description": "介绍不指定任何方法的空接口，它可以保存任意类型的值，常用于处理具体类型尚不明确的数据。",
+      "source_sha256": "f85eea0b014a1f885077243bef53d3b38d8f06120b49d257ada1d66f59e80d96",
+      "target_sha256": "87a0d9942dfa6a3551c605b30e68c5cd3b62271e99e1c016206809129f5b01ef",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "methods/15",
+      "route": "/methods/15",
+      "description": "讲解类型断言如何访问接口值的底层具体值，以及断言失败时触发 panic 或用双返回值安全判断的两种方式。",
+      "source_sha256": "c205b4eb940358edea6321cfa422c3c00a560e9a6a71b08c8b3fa3ab9e4926ae",
+      "target_sha256": "d7ee24a4f6aa7b5e09e06a840b8d9968bbe5c337e878bfdde184091b08c2de9e",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "methods/16",
+      "route": "/methods/16",
+      "description": "介绍类型选择如何连续执行多个类型断言，根据接口值所保存值的类型进入不同分支，并确定分支变量的类型和值。",
+      "source_sha256": "26e4da09e80d30b06368691c76ee2940139b0f6fc40cad47bb6d1d2947933c27",
+      "target_sha256": "cf949fc4456d4ee8d1b08e86a3e2aa28d8fd557c2943c0e8dd220e78fa67453c",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "methods/17",
+      "route": "/methods/17",
+      "description": "介绍 fmt 包定义的 Stringer 接口，以及能够用字符串描述自身的类型如何被 fmt 等包用于打印值。",
+      "source_sha256": "0363038e64b6f186e1bbd55c3323a5d7770a2b728605d8e3f01ae234aff6a444",
+      "target_sha256": "1a96860ae59e5992156892f1ea62794cf0dc8dfd5eb1039b4c217159e43de60d",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "methods/18",
+      "route": "/methods/18",
+      "description": "练习让 IPAddr 类型实现 fmt.Stringer，使四个数值组成的地址能够以点分四组的字符串形式打印。",
+      "source_sha256": "ad118644f53755586f14409e203bccfb5ac4cff7c01734157032a45648fb06d3",
+      "target_sha256": "e2bd8af33b230895d165706e82ccdcc24041be56a8c7340f4a95e17c9e95394b",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "methods/19",
+      "route": "/methods/19",
+      "description": "介绍表示错误状态的内置 error 接口，并说明函数调用方如何通过 error 是否为 nil 来区分成功与失败。",
+      "source_sha256": "9eaab1fde2076c1376f78ceec0f84766c4c3b8062867436d73cef0bc77f16bd5",
+      "target_sha256": "49c97f946f670eef7af25744cf46b04916ae1785c15001b389b897d254c58322",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "methods/20",
+      "route": "/methods/20",
+      "description": "练习修改 Sqrt 以返回 error，为负数定义 ErrNegativeSqrt 错误类型，并分析 Error 方法中可能出现的无限循环。",
+      "source_sha256": "41f1f73320fde60ee5ff30d5927a19ff22d6da6a336bb776e15f2499e4f421d8",
+      "target_sha256": "51222d7d4bd3b35c59a9f31de053a322d3f6769af3bd0becef72143cbd6e8aca",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "methods/21",
+      "route": "/methods/21",
+      "description": "介绍表示数据流读取端的 io.Reader 接口及 Read 方法，说明如何获得读取字节数和错误，并用 io.EOF 判断流结束。",
+      "source_sha256": "120c3fc9f67579cf78605cf0c9f006fc28d3569043a08079ddb645ca9c3fc3b1",
+      "target_sha256": "d09d6f854da0e6b08f44d56ef843915d2e5988a7fb165e71542155094ec37af5",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "methods/22",
+      "route": "/methods/22",
+      "description": "练习实现 Reader 类型，使其能够持续生成由 ASCII 字符 A 组成的无限数据流。",
+      "source_sha256": "0df444d989996a06d6dd50f4b109af4ae1cb2302b8dd867bcbe9bf98e424d230",
+      "target_sha256": "01f135b91d4822c814a609050a53590c10d273b27a0d3932f2780003d26ea942",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "methods/23",
+      "route": "/methods/23",
+      "description": "练习实现包装另一个 io.Reader 的 rot13Reader，通过 Read 方法对数据流中的所有字母应用 rot13 替换密码。",
+      "source_sha256": "11d876145fae980b2e283e3fac7357a950eb20f022b7da48cc58efed5b1e8e04",
+      "target_sha256": "1def01537526baa45f800aa61461303749b98ef12126ccdd1b13ae9c014b40c1",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "methods/24",
+      "route": "/methods/24",
+      "description": "介绍 image 包的 Image 接口及其颜色模型、边界和取色方法，并说明相关返回类型与预定义颜色实现。",
+      "source_sha256": "d80f0d46796ad415a7ded4d0cefdef6cdb58deb38d050a61eb64abb25caf27ee",
+      "target_sha256": "5f901f6d2413ab67deac1111cb03969112c564664d37ec1ffa784218b61323af",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "methods/25",
+      "route": "/methods/25",
+      "description": "练习定义自己的 Image 类型，实现 image.Image 所需的边界、颜色模型和取色方法，并将结果显示为图片。",
+      "source_sha256": "a196bc59d96602c3fe72cf765419366094a5c1e96de0d24dd140887ebd1826b5",
+      "target_sha256": "22a44e9894ef48eacf7c9429b2d375b191382a0fbd54f60e87e6783ee1933688",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "methods/26",
+      "route": "/methods/26",
+      "description": "完成本课后，可以返回模块列表挑选新的学习方向，或者不离开当前学习流程而直接进入下一课。",
+      "source_sha256": "f565674b974c053924bf69ef83b709dc50931526ae7fa88e71543a5cd872a190",
+      "target_sha256": "c07d3240c402b7af2f714f7c845f65de6f9b1cb13682aa8211b2467e248738a2",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "generics/1",
+      "route": "/generics/1",
+      "description": "介绍函数的类型参数和内置 comparable 约束，借助可比较类型的 Index 函数在切片中逐项查找匹配值。",
+      "source_sha256": "01a045105dc8c12fb1709f122d363235c19a6464d5de7587d579524aec270dd6",
+      "target_sha256": "0105eb18df3d6399bd36e8cb3409df3a3a6068696aec258ca56e19d203ef4d00",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "generics/2",
+      "route": "/generics/2",
+      "description": "讲解如何用类型参数定义泛型类型，并以可保存任意类型值的单链表说明泛型数据结构，再通过练习扩展其功能。",
+      "source_sha256": "08486351895e62792a84bc3eeab6aa85df7b1658735b7239040d219812f63277",
+      "target_sha256": "3e3e3dd915820d3f5e6807946a6a7ef37bfd21a499f35daf8b676126de9c3ade",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "generics/3",
+      "route": "/generics/3",
+      "description": "确认当前课程内容已学完，并提供返回模块目录查找新主题或顺序继续下一课的导航选择。",
+      "source_sha256": "f565674b974c053924bf69ef83b709dc50931526ae7fa88e71543a5cd872a190",
+      "target_sha256": "c07d3240c402b7af2f714f7c845f65de6f9b1cb13682aa8211b2467e248738a2",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "concurrency/1",
+      "route": "/concurrency/1",
+      "description": "介绍由 Go 运行时管理的轻量级线程 goroutine，说明启动与求值过程，以及共享内存访问必须同步的原因。",
+      "source_sha256": "d0a9c45078c2255540cfffe48744a07fa04ab5c2113e8880068b5a400ae0ebdc",
+      "target_sha256": "18da5c9f63240f5c471aa7ce1733aa47af46f132a6275417600c74fc673eea7a",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "concurrency/2",
+      "route": "/concurrency/2",
+      "description": "讲解 goroutines 之间通过带类型的通道发送和接收值、阻塞等待对端，并以分工求和展示无需显式锁的同步。",
+      "source_sha256": "a35e3af26b51f8c2c2a6dfaf09f9c7cab0fdb4b1b56f9e4dc9b793f1dac1e295",
+      "target_sha256": "365cbe79b0f4d9cceabbb94f8f7fca32ebb924ab4279933b1a8eef8911ca3cac",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "concurrency/3",
+      "route": "/concurrency/3",
+      "description": "介绍使用 make 指定容量来创建缓冲通道，并说明缓冲区满时发送会阻塞、缓冲区空时接收会阻塞。",
+      "source_sha256": "caef0893a54c61f192be397f6b27a039d81dc007f98f2d203a5a287383c0682e",
+      "target_sha256": "f20a2e5e23cca56a8b44878fd43777217074cc50d96f96edecfc53366bf6b995",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "concurrency/4",
+      "route": "/concurrency/4",
+      "description": "讲解发送者关闭通道、接收者检测关闭状态及使用 range 持续接收的方法，并说明何时需要关闭以及误用会引发 panic。",
+      "source_sha256": "3e925c6745255a443c61f25cd8131d538dc8677938f1c5021ce798465020b42e",
+      "target_sha256": "3286a405a06ad1a844a09adbe98c7334744ef054b01dce0a4ec584993ed3ea05",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "concurrency/5",
+      "route": "/concurrency/5",
+      "description": "介绍 select 如何让 goroutine 等待多个通信操作，在某个分支可执行时选择它，并在多个分支就绪时随机选择。",
+      "source_sha256": "8d8de56f080d4f702ac455aa60cb13b745472bedc9755000e8b5d6a2a898577d",
+      "target_sha256": "7bb830c3df7f181cae18f73068dc490707f8671d9fa4eaa77c170f9709429170",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "concurrency/6",
+      "route": "/concurrency/6",
+      "description": "讲解 select 中的 default 分支会在其他分支均未就绪时执行，从而尝试不会阻塞的通道发送或接收。",
+      "source_sha256": "82e9cd932e14e6c4852fc8f865f4c45dc75845bd1a306649152ebc045f0c3b2c",
+      "target_sha256": "1bcece8a05eb05e5c012ba11af6c631b16d8fd6ead8a660aa05e9c00da90ae2e",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "concurrency/7",
+      "route": "/concurrency/7",
+      "description": "以不同形状却保存相同序列的二叉树为背景，介绍利用 Go 并发机制和通道判断等价性的练习目标及 Tree 类型。",
+      "source_sha256": "7c5d3fc7bb2540285d746242f8a1d16075639648eec8909c1df52239297d2917",
+      "target_sha256": "cc4b732c2a766054ce9dc5ce51a627fe7dc84a93aec7beff66ee21e9deb2d329",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "concurrency/8",
+      "route": "/concurrency/8",
+      "description": "练习实现并测试 Walk 来遍历二叉树并向通道发送值，再实现 Same 判断两棵树是否保存相同的值。",
+      "source_sha256": "b362cc15a26324acd311f7cab18a628dc1d7d9ac6d455add7d651d41acf15e9a",
+      "target_sha256": "0be60a11505c2df26e83ad391d82848d4b799c0b7011e0048c1cdf7252def2e3",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "concurrency/9",
+      "route": "/concurrency/9",
+      "description": "介绍防止 goroutines 并发访问变量产生冲突的互斥机制，以及使用 sync.Mutex、Lock、Unlock 和 defer 保护代码。",
+      "source_sha256": "49f727794604c2ef8a8dda9508d0f412d7015cea77754c675a02b166dd9bfc93",
+      "target_sha256": "3831cbd810eac0c0ecb74313c29cbb7e5caa038f0dfe23020dfd1b20c562b870",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "concurrency/10",
+      "route": "/concurrency/10",
+      "description": "练习运用 Go 并发特性并行执行 Web 爬虫，在避免重复抓取同一 URL 的同时安全管理已抓取记录。",
+      "source_sha256": "bb686393225ef2335e627819a1664a84456f00b64af133af64920d43f0abdb94",
+      "target_sha256": "19ad543d40054c902db1495e0525d57c9fcfdc15a0bf8912054c3734b1a5db9d",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    },
+    {
+      "page_id": "concurrency/11",
+      "route": "/concurrency/11",
+      "description": "为教程结束后的继续学习提供资料指引，涵盖 Go 文档、标准库、语言规范、并发模式、Web 应用、函数类型和博客。",
+      "source_sha256": "45ef131ede663b1355c0a5933634d46c393f66be8a6450b184f86a62e928a64e",
+      "target_sha256": "674a15a50938ec8d8cb465cd362e8a121d1eba4eafd8ec6658fdea6623bfc7eb",
+      "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-25T15:28:02Z"
+      }
+    }
+  ]
+}
