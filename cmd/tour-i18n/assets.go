@@ -85,6 +85,53 @@ func exportAssets(root string, args []string) (err error) {
 	return nil
 }
 
+func validateAssets(root string, args []string) error {
+	fs := flag.NewFlagSet("assets validate", flag.ContinueOnError)
+	inputFlag := fs.String("input", "", "shared assets export directory")
+	if err := fs.Parse(args); err != nil {
+		if errors.Is(err, flag.ErrHelp) {
+			return nil
+		}
+		return err
+	}
+	if strings.TrimSpace(*inputFlag) == "" {
+		return fmt.Errorf("--input is required")
+	}
+	if fs.NArg() != 0 {
+		return fmt.Errorf("unexpected assets validate arguments: %s", strings.Join(fs.Args(), " "))
+	}
+	input, err := filepath.Abs(*inputFlag)
+	if err != nil {
+		return fmt.Errorf("resolve input: %w", err)
+	}
+	info, err := os.Lstat(input)
+	if err != nil {
+		return fmt.Errorf("inspect input %q: %w", input, err)
+	}
+	if !info.IsDir() || info.Mode()&os.ModeSymlink != 0 {
+		return fmt.Errorf("input must be a real directory, not a symlink: %q", input)
+	}
+	if err := validateAssetsExport(input); err != nil {
+		return err
+	}
+	for _, logicalPath := range assets.SharedPaths() {
+		exported, err := os.ReadFile(filepath.Join(input, filepath.FromSlash(logicalPath)))
+		if err != nil {
+			return err
+		}
+		source, err := os.ReadFile(filepath.Join(root, "_content", filepath.FromSlash(logicalPath)))
+		if err != nil {
+			return err
+		}
+		if !bytes.Equal(exported, source) {
+			return fmt.Errorf("exported asset differs from repository source: %s", logicalPath)
+		}
+	}
+	fmt.Printf("shared assets valid: %s\n", input)
+	fmt.Printf("files=%d bytes=%d\n", len(assets.SharedPaths()), assetPayloadSize(input))
+	return nil
+}
+
 func copyAssetFile(source, target string) error {
 	in, err := os.Open(source)
 	if err != nil {

@@ -34,7 +34,7 @@ https://assets-go-dev.shuijingwanwq.com/
 
 第一版使用固定 URL，不使用 assets-release-id、content-hash URL、asset manifest version mapping 或独立 versioned assets release。共享资源以普通服务器静态目录作为 origin，经 Cloudflare 代理提供；不引入 R2、S3、Workers 或 Pages。language projection 和 production bundle 继续携带完整 `_content`，不会因为非中文 HTML 使用共享资源而裁剪本地副本。
 
-`assets-go-dev.shuijingwanwq.com` 已正式部署并由 Cloudflare 代理。Cloudflare Edge Cache TTL 为 1 个月；Browser Cache TTL 不由项目主动覆盖，使用 Cloudflare/origin 默认或 Respect Existing Headers。production origin 当前仍是历史 9 文件并已通过 9/9 SHA-256 与 MISS → HIT 验收；真实课程页 AdSense 的两个 shared assets 已进入代码 allowlist，但尚未完成首次 origin 部署和 11/11 公网验收。固定 URL 更新按“完整 origin tree 更新 → 维护者在 Cloudflare Dashboard 按 URL Custom Purge → 首次 MISS → 再次 HIT → SHA-256”执行；详细 human gate 和当前尚待固化的 origin 更新命令见 [生产运维手册](docs/PRODUCTION_RUNBOOK.md)。旧 `assets.go-dev.shuijingwanwq.com` 已废弃并清理，不提供兼容或迁移。
+`assets-go-dev.shuijingwanwq.com` 已正式部署并由 Cloudflare 代理。Cloudflare Edge Cache TTL 为 1 个月；Browser Cache TTL 不由项目主动覆盖，使用 Cloudflare/origin 默认或 Respect Existing Headers。production origin 当前仍是历史 9 文件并已通过 9/9 SHA-256 与 MISS → HIT 验收；真实课程页 AdSense 的两个 shared assets 已进入代码 allowlist，但尚未完成首次 origin 部署和 11/11 公网验收。固定 URL 更新使用专用 `scripts/deploy-shared-assets.sh` 完整更新 origin tree，再由维护者在 Cloudflare Dashboard 按脚本输出 URL 执行 Custom Purge，最后完成 MISS → HIT → SHA-256；脚本已通过本地 mock 测试但尚未完成首次真实 production deployment 验证。详细安全边界和 human gate 见 [生产运维手册](docs/PRODUCTION_RUNBOOK.md)。旧 `assets.go-dev.shuijingwanwq.com` 已废弃并清理，不提供兼容或迁移。
 
 zh-CN 继续由 <https://go-dev.shuijingwanwq.com/> 同时提供 HTML 和自己的静态资源，并继续使用 EdgeOne。只有确认中文静态资源拆分有明确实际收益时，才考虑类似 `assets-cn.go-dev.shuijingwanwq.com` 的域名；当前不创建、不实现。
 

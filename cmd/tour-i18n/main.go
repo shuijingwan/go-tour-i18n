@@ -43,10 +43,17 @@ func run(args []string) error {
 		return fmt.Errorf("usage: tour-i18n <assets|catalog|upstream|page|status|candidate|translate|retranslation|quality-check|build|preview|publish> <command or flags>")
 	}
 	if args[0] == "assets" {
-		if len(args) < 2 || args[1] != "export" {
-			return fmt.Errorf("usage: tour-i18n assets export --output <directory>")
+		if len(args) < 2 {
+			return fmt.Errorf("usage: tour-i18n assets <export --output|validate --input> <directory>")
 		}
-		return exportAssets(root, args[2:])
+		switch args[1] {
+		case "export":
+			return exportAssets(root, args[2:])
+		case "validate":
+			return validateAssets(root, args[2:])
+		default:
+			return fmt.Errorf("usage: tour-i18n assets <export --output|validate --input> <directory>")
+		}
 	}
 	var publish *publishOptions
 	if args[0] == "publish" {

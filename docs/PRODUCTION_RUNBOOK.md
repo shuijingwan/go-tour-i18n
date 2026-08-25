@@ -268,17 +268,26 @@ production 目标是完整的 shared-assets export tree：
 /data/wwwroot/assets-go-dev.shuijingwanwq.com
 ```
 
-当前仓库的代码、文档、scripts 与可读取 Git 历史只证明首次 9 文件 origin 已成功上线及通过校验，没有记录当时实际成功使用的完整 origin 更新命令。尤其缺少 staging/替换方式、旧 allowlist 残留删除方式和权限归一化命令。不得根据目标路径自行拼装 `scp`、`rsync --delete`、`mv` 或覆盖命令，也不得只手工复制本次新增的两个文件，使 origin 形成不可复现状态。
+正式部署接口为：
 
-因此阶段 B 当前标记为：**需要通过一次受控 production 操作确认并固化**。在正式命令补入本节之前，shared-assets production 发布到达此处必须停止，不能执行 origin 写入。需要确认的最小事实是首次成功更新完整 export tree 时所用的精确命令，包括：
+```sh
+scripts/deploy-shared-assets.sh \
+  /tmp/go-tour-shared-assets
+```
 
-- 本地 source、SSH alias `aliyun` 与 production destination；
-- staging 和切换方式；
-- 如何使远端最终文件集合与完整 export 完全一致并清理旧残留；
-- owner、group、目录和普通文件权限；
-- 切换前后失败的停止、清理或恢复边界。
+脚本不运行 assets export；它只接受阶段 A 已生成的目录。脚本先调用仓库的 `assets validate` 复用唯一 Go allowlist，要求输入逐字节等于当前仓库正式资源，并验证顶层真实目录、无 symlink/unsupported entry、`SHA256SUMS` 的安全路径、文件集合与 11/11 SHA-256。用户自行制作一份 checksum 文件不能绕过正式 allowlist 与仓库 source 校验。
 
-该受控操作完成后，必须把实际成功命令和边界原样整理到本节，后续例行发布才能复用。origin 更新后还必须在源站执行以下只读校验：
+固定 production profile 为 SSH alias `aliyun`、origin `/data/wwwroot/assets-go-dev.shuijingwanwq.com`、lock `/data/wwwroot/.assets-go-dev.deploy.lock`。脚本使用唯一 token 在 `/data/wwwroot/` 建立非公开 `.assets-go-dev.staging-*`，上传后在远端重新校验文件集合、SHA-256 和权限；它从当前 origin 读取并要求统一的 owner/group、目录 mode 与普通文件 mode，不修改 `/data/wwwroot/` 中其他站点的权限。
+
+如果 staging 与 origin 逐文件相同，脚本输出 `NO CHANGES`，清理 staging/lock，不创建 backup，也不产生 purge URL。如果有变化，脚本在第一次修改 origin 前创建并验证完整非公开备份 `/data/wwwroot/assets-go-dev.shuijingwanwq.com.bak.<token>`，随后才在服务器端把完整 staging tree 以受限 `rsync --delete` 同步进固定 origin。delete 只作用于该精确 origin 内，确保新增、修改、删除后 production 文件集合与正式 export 完全一致；历史 backup 不自动删除。
+
+preflight、lock、upload、staging validation 或 backup 阶段失败时，origin 不变，脚本只在能确认安全时清理本次 staging/lock。production mutation 开始后若同步或严格验证失败，脚本使用刚创建的完整 backup 恢复并重新验证；回滚明确成功时报告部署失败但旧内容已恢复。如果回滚失败、SSH 中断或状态无法确认，脚本保留 lock、staging、backup 与现场，输出只读人工检查命令，禁止直接自动重试。INT、TERM、HUP 在 mutation 前按安全边界清理，mutation 后保留 evidence。
+
+脚本成功只表示 origin deployment 完成。它按稳定顺序输出 added、modified、deleted 的实际固定 URL（`SHA256SUMS` 如发生变化也属于 changed URL），然后在 Cloudflare HUMAN GATE 结束；不调用 Cloudflare API/CLI，也不在 purge 前执行公网 MISS/HIT 验收。
+
+`deploy-shared-assets.sh` 已通过本地 mock 自动化测试，但尚未完成第一次真实 production deployment 验证。当前 production origin 仍是历史 9 文件，两个 course-ad 文件仍未部署，11/11 production 验收仍待完成。第一次受控运行必须严格观察脚本输出和远端状态；如果真实权限或工具基线与预检不符，立即停止，不绕过检查。
+
+origin 更新成功后，脚本已经执行文件集合、SHA-256、与 staging 一致性、无 symlink/unsupported entry 和权限验证。需要人工复核时可执行以下只读命令：
 
 ```sh
 ssh aliyun '
@@ -291,18 +300,18 @@ ssh aliyun '
 '
 ```
 
-文件集合必须只有 `SHA256SUMS` 与 11 个 allowlist 文件，SHA-256 必须为 11/11，权限必须符合该受控操作确认并写回本节的基线，并且不得存在额外可公开文件。任一条件不满足都停止，不进入缓存刷新。
+文件集合必须只有 `SHA256SUMS` 与 11 个 allowlist 文件，SHA-256 必须为 11/11，权限必须符合脚本从部署前 origin 读取并保持的模型，并且不得存在额外可公开文件。任一条件不满足都停止，不进入缓存刷新。
 
 #### 阶段 C：确定 purge URL
 
-根据更新前后的 SHA-256 比较，只列出内容实际发生变化的固定 URL；不要默认刷新全部 11 个 URL，也不要默认使用 Purge Everything。首次部署课程广告资源时至少包括：
+部署脚本比较更新前 origin 与已验证 staging，只列出内容实际新增、修改或删除的固定 URL；不要默认刷新全部 11 个 URL，也不要默认使用 Purge Everything。首次部署课程广告资源时至少包括：
 
 ```text
 https://assets-go-dev.shuijingwanwq.com/tour/static/go-dev/course-ad.css
 https://assets-go-dev.shuijingwanwq.com/tour/static/go-dev/course-ad.js
 ```
 
-如果 SHA-256 比较证明其他 allowlist 文件也发生变化，把相应固定 URL 一并加入清单。输出完整 purge URL 清单后到达阶段 D，并停止后续公网缓存验收。
+如果脚本输出其他变化 URL，把它们一并加入清单；删除路径的旧 URL 也必须刷新。脚本输出完整清单后到达阶段 D 并结束，不继续公网缓存验收。
 
 #### 阶段 D：HUMAN GATE — Cloudflare Dashboard Custom Purge
 

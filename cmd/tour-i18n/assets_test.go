@@ -69,3 +69,67 @@ func TestAssetsExportRejectsExistingOutputWithoutChangingIt(t *testing.T) {
 		t.Fatalf("existing output changed: %q, %v", data, err)
 	}
 }
+
+func TestValidateAssetsAcceptsOnlyFormalExport(t *testing.T) {
+	root, err := filepath.Abs(filepath.Join("..", ".."))
+	if err != nil {
+		t.Fatal(err)
+	}
+	output := filepath.Join(t.TempDir(), "assets")
+	if err := exportAssets(root, []string{"--output", output}); err != nil {
+		t.Fatal(err)
+	}
+	if err := validateAssets(root, []string{"--input", output}); err != nil {
+		t.Fatalf("formal export rejected: %v", err)
+	}
+	if err := os.WriteFile(filepath.Join(output, "extra.txt"), []byte("extra"), 0644); err != nil {
+		t.Fatal(err)
+	}
+	if err := validateAssets(root, []string{"--input", output}); err == nil {
+		t.Fatal("export with an unauthorized file was accepted")
+	}
+}
+
+func TestValidateAssetsRejectsModifiedFormalPath(t *testing.T) {
+	root, err := filepath.Abs(filepath.Join("..", ".."))
+	if err != nil {
+		t.Fatal(err)
+	}
+	output := filepath.Join(t.TempDir(), "assets")
+	if err := exportAssets(root, []string{"--output", output}); err != nil {
+		t.Fatal(err)
+	}
+	assetPath := filepath.Join(output, "tour", "static", "css", "app.css")
+	if err := os.WriteFile(assetPath, []byte("self-consistent but not formal\n"), 0644); err != nil {
+		t.Fatal(err)
+	}
+	checksums, err := bundleChecksums(output)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(output, "SHA256SUMS"), checksums, 0644); err != nil {
+		t.Fatal(err)
+	}
+	if err := validateAssets(root, []string{"--input", output}); err == nil {
+		t.Fatal("self-consistent export with modified formal asset was accepted")
+	}
+}
+
+func TestValidateAssetsRejectsSymlinkInput(t *testing.T) {
+	root, err := filepath.Abs(filepath.Join("..", ".."))
+	if err != nil {
+		t.Fatal(err)
+	}
+	parent := t.TempDir()
+	output := filepath.Join(parent, "assets")
+	if err := exportAssets(root, []string{"--output", output}); err != nil {
+		t.Fatal(err)
+	}
+	link := filepath.Join(parent, "assets-link")
+	if err := os.Symlink(output, link); err != nil {
+		t.Fatal(err)
+	}
+	if err := validateAssets(root, []string{"--input", link}); err == nil {
+		t.Fatal("symlink input was accepted")
+	}
+}
