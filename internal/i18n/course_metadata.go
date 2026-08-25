@@ -56,6 +56,25 @@ type CourseMetadataGeneration struct {
 	GeneratedAt   string `json:"generated_at"`
 }
 
+// CourseMetadataAssemblyOptions contains generation provenance supplied by the
+// offline caller. All content identities are derived from the repository.
+type CourseMetadataAssemblyOptions struct {
+	Locale       string
+	Provider     string
+	Model        string
+	GeneratedAt  string
+	Descriptions []byte
+}
+
+type courseDescriptionsFile struct {
+	Pages []courseDescriptionEntry `json:"pages"`
+}
+
+type courseDescriptionEntry struct {
+	PageID      string `json:"page_id"`
+	Description string `json:"description"`
+}
+
 // LoadCourseMetadata loads and strictly validates the committed formal asset.
 // It is intentionally not called by projection or production in phase one.
 func LoadCourseMetadata(root, locale string, catalog *Catalog) (*CourseMetadata, error) {
@@ -67,18 +86,26 @@ func LoadCourseMetadata(root, locale string, catalog *Catalog) (*CourseMetadata,
 	if err != nil {
 		return nil, fmt.Errorf("read course metadata: %w", err)
 	}
+	targets, glossary, err := loadReadyCourseMetadataInputs(root, locale, catalog)
+	if err != nil {
+		return nil, err
+	}
+	return validateCourseMetadata(data, locale, catalog, targets, glossary)
+}
+
+func loadReadyCourseMetadataInputs(root, locale string, catalog *Catalog) (map[string][]byte, []byte, error) {
 	glossary, err := os.ReadFile(filepath.Join(root, "locales", locale, "glossary.yaml"))
 	if err != nil {
-		return nil, fmt.Errorf("read course metadata glossary: %w", err)
+		return nil, nil, fmt.Errorf("read course metadata glossary: %w", err)
 	}
 	statuses, err := ReadStatuses(filepath.Join(root, "locales", locale, "status.tsv"))
 	if err != nil {
-		return nil, fmt.Errorf("read course metadata status: %w", err)
+		return nil, nil, fmt.Errorf("read course metadata status: %w", err)
 	}
 	statusByID := make(map[string]*Status, len(statuses))
 	for i := range statuses {
 		if _, exists := statusByID[statuses[i].UnitID]; exists {
-			return nil, fmt.Errorf("course metadata status has duplicate unit_id %q", statuses[i].UnitID)
+			return nil, nil, fmt.Errorf("course metadata status has duplicate unit_id %q", statuses[i].UnitID)
 		}
 		statusByID[statuses[i].UnitID] = &statuses[i]
 	}
@@ -86,15 +113,89 @@ func LoadCourseMetadata(root, locale string, catalog *Catalog) (*CourseMetadata,
 	for _, page := range catalog.Pages {
 		status, ok := statusByID[page.ID]
 		if !ok {
-			return nil, fmt.Errorf("%s: formal locale status is missing", page.ID)
+			return nil, nil, fmt.Errorf("%s: formal locale status is missing", page.ID)
 		}
 		target, err := loadReadyCandidate(root, catalog, page.ID, locale, status)
 		if err != nil {
-			return nil, fmt.Errorf("%s: load ready canonical Page target: %w", page.ID, err)
+			return nil, nil, fmt.Errorf("%s: load ready canonical Page target: %w", page.ID, err)
 		}
 		targets[page.ID] = target
 	}
-	return validateCourseMetadata(data, locale, catalog, targets, glossary)
+	return targets, glossary, nil
+}
+
+// AssembleCourseMetadata deterministically expands a complete page_id to
+// description input into the formal schema. It performs no model calls and
+// validates the assembled bytes with the same validator used by the loader.
+func AssembleCourseMetadata(root string, catalog *Catalog, options CourseMetadataAssemblyOptions) ([]byte, error) {
+	if catalog == nil {
+		return nil, fmt.Errorf("catalog is required")
+	}
+	decoder := json.NewDecoder(bytes.NewReader(options.Descriptions))
+	decoder.DisallowUnknownFields()
+	var descriptions courseDescriptionsFile
+	if err := decoder.Decode(&descriptions); err != nil {
+		return nil, fmt.Errorf("parse course descriptions: %w", err)
+	}
+	if err := decoder.Decode(&struct{}{}); err != io.EOF {
+		if err == nil {
+			return nil, fmt.Errorf("parse course descriptions: multiple JSON values")
+		}
+		return nil, fmt.Errorf("parse course descriptions: %w", err)
+	}
+	descriptionByID := make(map[string]string, len(descriptions.Pages))
+	for _, entry := range descriptions.Pages {
+		if _, exists := descriptionByID[entry.PageID]; exists {
+			return nil, fmt.Errorf("course descriptions has duplicate page_id %q", entry.PageID)
+		}
+		descriptionByID[entry.PageID] = entry.Description
+	}
+	expected := make(map[string]struct{}, len(catalog.Pages))
+	for _, page := range catalog.Pages {
+		expected[page.ID] = struct{}{}
+	}
+	for pageID := range descriptionByID {
+		if _, ok := expected[pageID]; !ok {
+			return nil, fmt.Errorf("course descriptions has extra page_id %q", pageID)
+		}
+	}
+	var missing []string
+	for _, page := range catalog.Pages {
+		if _, ok := descriptionByID[page.ID]; !ok {
+			missing = append(missing, page.ID)
+		}
+	}
+	if len(missing) > 0 {
+		sort.Strings(missing)
+		return nil, fmt.Errorf("course descriptions is missing page(s): %s", strings.Join(missing, ", "))
+	}
+
+	targets, glossary, err := loadReadyCourseMetadataInputs(root, options.Locale, catalog)
+	if err != nil {
+		return nil, err
+	}
+	metadata := CourseMetadata{
+		SchemaVersion: CourseMetadataSchemaVersion, Locale: options.Locale, GeneratorContract: CourseMetadataGeneratorContract,
+		Pages: make([]CoursePageMetadata, 0, len(catalog.Pages)),
+	}
+	for _, page := range catalog.Pages {
+		metadata.Pages = append(metadata.Pages, CoursePageMetadata{
+			PageID: page.ID, Route: page.Route, Description: descriptionByID[page.ID],
+			SourceSHA256: page.SourceSHA256, TargetSHA256: sum(targets[page.ID]), GlossarySHA256: sum(glossary),
+			Generation: CourseMetadataGeneration{
+				Provider: options.Provider, Model: options.Model, PromptVersion: CourseMetadataPromptVersion, GeneratedAt: options.GeneratedAt,
+			},
+		})
+	}
+	data, err := json.MarshalIndent(metadata, "", "  ")
+	if err != nil {
+		return nil, fmt.Errorf("encode course metadata: %w", err)
+	}
+	data = append(data, '\n')
+	if _, err := validateCourseMetadata(data, options.Locale, catalog, targets, glossary); err != nil {
+		return nil, fmt.Errorf("validate assembled course metadata: %w", err)
+	}
+	return data, nil
 }
 
 func validateCourseMetadata(data []byte, locale string, catalog *Catalog, targets map[string][]byte, glossary []byte) (*CourseMetadata, error) {

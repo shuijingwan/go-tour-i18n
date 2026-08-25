@@ -190,6 +190,104 @@ func TestLoadCourseMetadataRequiresReadyCanonicalStatus(t *testing.T) {
 	}
 }
 
+func TestAssembleCourseMetadataDeterministicValidOutput(t *testing.T) {
+	root, catalog, _ := writeCourseMetadataLoaderFixture(t)
+	descriptions := marshalCourseDescriptions(t, catalog)
+	options := CourseMetadataAssemblyOptions{
+		Locale: "test-LOCALE", Provider: "codex", Model: "fixture-model", GeneratedAt: "2026-08-26T01:02:03Z", Descriptions: descriptions,
+	}
+	first, err := AssembleCourseMetadata(root, catalog, options)
+	if err != nil {
+		t.Fatal(err)
+	}
+	second, err := AssembleCourseMetadata(root, catalog, options)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if string(first) != string(second) {
+		t.Fatal("identical assembly inputs produced different bytes")
+	}
+	if len(first) == 0 || first[len(first)-1] != '\n' {
+		t.Fatal("assembled metadata does not have a fixed trailing newline")
+	}
+	var metadata CourseMetadata
+	if err := json.Unmarshal(first, &metadata); err != nil {
+		t.Fatal(err)
+	}
+	for i, page := range catalog.Pages {
+		if metadata.Pages[i].PageID != page.ID || metadata.Pages[i].Route != page.Route {
+			t.Fatalf("page %d identity=%s %s, want %s %s", i, metadata.Pages[i].PageID, metadata.Pages[i].Route, page.ID, page.Route)
+		}
+	}
+	output := filepath.Join(root, "locales", "test-LOCALE", "course-metadata.json")
+	if err := os.WriteFile(output, first, 0644); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := LoadCourseMetadata(root, "test-LOCALE", catalog); err != nil {
+		t.Fatalf("assembled output did not pass the formal loader: %v", err)
+	}
+}
+
+func TestAssembleCourseMetadataDescriptionSetFailures(t *testing.T) {
+	tests := []struct {
+		name string
+		edit func(*courseDescriptionsFile)
+		want string
+	}{
+		{"missing page", func(input *courseDescriptionsFile) { input.Pages = input.Pages[:len(input.Pages)-1] }, "missing page"},
+		{"extra page", func(input *courseDescriptionsFile) {
+			input.Pages = append(input.Pages, courseDescriptionEntry{PageID: "extra/1", Description: courseDescription("extra/1")})
+		}, "extra page_id"},
+		{"duplicate page id", func(input *courseDescriptionsFile) {
+			input.Pages = append(input.Pages, input.Pages[0])
+		}, "duplicate page_id"},
+		{"invalid description", func(input *courseDescriptionsFile) { input.Pages[0].Description = "short" }, "minimum"},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			root, catalog, _ := writeCourseMetadataLoaderFixture(t)
+			input := courseDescriptionsForCatalog(catalog)
+			test.edit(&input)
+			data, err := json.Marshal(input)
+			if err != nil {
+				t.Fatal(err)
+			}
+			_, err = AssembleCourseMetadata(root, catalog, CourseMetadataAssemblyOptions{
+				Locale: "test-LOCALE", Provider: "codex", Model: "fixture-model", GeneratedAt: "2026-08-26T01:02:03Z", Descriptions: data,
+			})
+			if err == nil || !strings.Contains(err.Error(), test.want) {
+				t.Fatalf("error=%v, want substring %q", err, test.want)
+			}
+		})
+	}
+}
+
+func TestAssembleCourseMetadataRejectsNonReadyOrStaleTarget(t *testing.T) {
+	tests := []struct {
+		name string
+		edit func(*Status)
+		want string
+	}{
+		{"non-ready", func(status *Status) { status.State = "pending" }, "not a ready candidate"},
+		{"stale source identity", func(status *Status) { status.SourceSHA256 = strings.Repeat("0", 64) }, "source hash does not match current source"},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			root, catalog, statuses := writeCourseMetadataLoaderFixture(t)
+			test.edit(&statuses[0])
+			if err := writeStatuses(filepath.Join(root, "locales", "test-LOCALE", "status.tsv"), statuses); err != nil {
+				t.Fatal(err)
+			}
+			_, err := AssembleCourseMetadata(root, catalog, CourseMetadataAssemblyOptions{
+				Locale: "test-LOCALE", Provider: "codex", Model: "fixture-model", GeneratedAt: "2026-08-26T01:02:03Z", Descriptions: marshalCourseDescriptions(t, catalog),
+			})
+			if err == nil || !strings.Contains(err.Error(), test.want) {
+				t.Fatalf("error=%v, want substring %q", err, test.want)
+			}
+		})
+	}
+}
+
 func writeCourseMetadataLoaderFixture(t *testing.T) (string, *Catalog, []Status) {
 	t.Helper()
 	root := t.TempDir()
@@ -253,6 +351,23 @@ func courseDescription(identity string) string {
 func marshalCourseMetadata(t *testing.T, metadata *CourseMetadata) []byte {
 	t.Helper()
 	data, err := json.Marshal(metadata)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return data
+}
+
+func courseDescriptionsForCatalog(catalog *Catalog) courseDescriptionsFile {
+	input := courseDescriptionsFile{Pages: make([]courseDescriptionEntry, 0, len(catalog.Pages))}
+	for _, page := range catalog.Pages {
+		input.Pages = append(input.Pages, courseDescriptionEntry{PageID: page.ID, Description: courseDescription(page.ID)})
+	}
+	return input
+}
+
+func marshalCourseDescriptions(t *testing.T, catalog *Catalog) []byte {
+	t.Helper()
+	data, err := json.Marshal(courseDescriptionsForCatalog(catalog))
 	if err != nil {
 		t.Fatal(err)
 	}

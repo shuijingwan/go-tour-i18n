@@ -74,6 +74,34 @@ AI 只能在 promotion 完成后作为离线维护步骤生成 metadata。禁止
 
 本规范不改变 TranslationUnit 翻译、automatic validation、Quality Check、Final Review 或 promotion。metadata 生成失败只阻止后续 locale release，不得反向伪造 TranslationUnit review evidence。
 
+### 离线组装
+
+AI 只负责提供完整的 `page_id → description` 集合，严格输入格式为：
+
+```json
+{
+  "pages": [
+    {"page_id": "welcome/1", "description": "目标语言摘要"}
+  ]
+}
+```
+
+输入不得携带 route、hash、schema 或 generation provenance。使用离线命令组装正式文件：
+
+```sh
+go run -mod=readonly ./cmd/tour-i18n course-metadata assemble \
+  --locale <locale> \
+  --descriptions <descriptions.json> \
+  --provider <provider> \
+  --model <model> \
+  --generated-at <RFC3339-UTC> \
+  --output <output>
+```
+
+工具从当前 catalog、完整 glossary、正式 ready status 和通过 candidate validation 的 canonical Page target 自动生成全部 identity 与 provenance 字段，按 catalog Page 顺序固定缩进和结尾换行。
+组装结果先在内存中通过同一正式 validator，再原子写入 output；输入集合不完整、identity stale 或 description 不合法时不留下半成品。
+该命令不调用模型，也不从页面内容生成或补齐 description。
+
 ## Strict validation
 
 唯一 loader/validator 必须严格解析 JSON，拒绝未知字段和额外 JSON value，并验证：
