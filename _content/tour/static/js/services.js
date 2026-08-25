@@ -48,6 +48,10 @@ factory('seo', ['$document',
         function plainText(html) {
             var container = doc.createElement('div');
             container.innerHTML = html;
+            var blockCode = container.querySelectorAll('pre');
+            for (var i = 0; i < blockCode.length; i++) {
+                blockCode[i].parentNode.removeChild(blockCode[i]);
+            }
             return (container.textContent || container.innerText || '')
                 .replace(/\s+/g, ' ').trim().substring(0, 200);
         }

@@ -182,6 +182,48 @@ func TestPrerenderRepresentativeCoursePagesInBrowser(t *testing.T) {
 	}
 }
 
+func TestPrerenderDescriptionExcludesBlockCodeInBrowser(t *testing.T) {
+	chrome := browserTestChrome(t)
+	source, err := tour.NewPrerenderSource(website.TourOnly(), "zh-CN")
+	if err != nil {
+		t.Fatal(err)
+	}
+	const routePath = "/tour/methods/6"
+	route, ok := courseRoute(source.Routes, routePath)
+	if !ok {
+		t.Fatalf("route %s not found", routePath)
+	}
+	server := newIPv4TestServer(t, source.Handler)
+	outputRoot := t.TempDir()
+	profile := filepath.Join(t.TempDir(), "chrome-profile")
+	if err := prerenderRouteWithChrome(t.Context(), chrome, server.URL, profile, outputRoot, route); err != nil {
+		t.Fatal(err)
+	}
+	outputPath, err := prerenderOutputPath(outputRoot, route.Path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	page, err := os.ReadFile(outputPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	document, err := html.Parse(bytes.NewReader(page))
+	if err != nil {
+		t.Fatal(err)
+	}
+	description := attrValue(findElement(document, "meta", "name", "description"), "content")
+	for _, forbidden := range []string{"var v Vertex", "ScaleFunc(v, 5)", "v.Scale(5)  // OK"} {
+		if strings.Contains(description, forbidden) {
+			t.Errorf("description contains block code %q: %q", forbidden, description)
+		}
+	}
+	for _, want := range []string{"Comparing the previous two programs", "while methods with pointer receivers"} {
+		if !strings.Contains(description, want) {
+			t.Errorf("description lost natural-language content %q: %q", want, description)
+		}
+	}
+}
+
 func TestSPACourseNavigationUpdatesMetadataInBrowser(t *testing.T) {
 	chrome := browserTestChrome(t)
 	var err error
