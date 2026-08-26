@@ -18,7 +18,15 @@ config(['$routeProvider', '$locationProvider',
         }).
         when('/tour/:lessonId/:pageNumber', {
             templateUrl: '/tour/static/partials/editor.html',
-            controller: 'EditorCtrl'
+            controller: 'EditorCtrl',
+            // Keep a prerendered course view in place while the one lesson
+            // request needed to hydrate the editor is still pending. ngView
+            // only swaps its contents after route resolves complete.
+            resolve: {
+                lessons: ['toc', function(toc) {
+                    return toc.lessons;
+                }]
+            }
         }).
         when('/tour/:lessonId', {
             redirectTo: '/tour/:lessonId/1'

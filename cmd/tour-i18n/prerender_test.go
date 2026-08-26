@@ -107,26 +107,44 @@ func TestPrerenderOutputPath(t *testing.T) {
 	}
 }
 
-func TestEmbedPrerenderedSourcesPreservesCompleteEscapedGoFiles(t *testing.T) {
+func TestSetPrerenderedEditorSourceUsesOnlyDefaultFile(t *testing.T) {
 	route := tour.CourseRoute{
-		Path:  "/tour/test/1",
-		Files: []string{"package main\n\nfunc main() { println(\"</pre> & complete\") }\n"},
+		Path: "/tour/test/1",
+		Files: []string{
+			"package main\n\nfunc main() { println(\"</textarea> & complete\") }\n",
+			"package second\n",
+		},
 	}
-	input := []byte(`<!doctype html><html><body><div id="editor-container"><div class="CodeMirror"></div></div></body></html>`)
-	got, err := embedPrerenderedSources(input, route)
+	input := []byte(`<!doctype html><html><body><div id="editor-container"><textarea ui-codemirror>stale</textarea></div></body></html>`)
+	got, err := setPrerenderedEditorSource(input, route)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if !bytes.Contains(got, []byte("data-tour-prerender-source")) || !bytes.Contains(got, []byte("&lt;/pre&gt; &amp; complete")) {
-		t.Fatalf("embedded source was not safely preserved: %s", got)
+	if bytes.Contains(got, []byte("data-tour-prerender-source")) || bytes.Contains(got, []byte(route.Files[1])) {
+		t.Fatalf("output contains a duplicate source carrier: %s", got)
 	}
 	document, err := html.Parse(bytes.NewReader(got))
 	if err != nil {
 		t.Fatal(err)
 	}
-	sources := findElementsWithAttr(document, "data-tour-prerender-source")
-	if len(sources) != 1 || nodeText(sources[0]) != route.Files[0] {
-		t.Fatalf("embedded source round trip failed")
+	textarea := findElement(document, "textarea", "ui-codemirror", "")
+	if textarea == nil || nodeText(textarea) != route.Files[0] {
+		t.Fatalf("textarea source round trip failed: %s", got)
+	}
+}
+
+func TestSetPrerenderedEditorSourceRemovesTextareaForPagesWithoutExamples(t *testing.T) {
+	input := []byte(`<!doctype html><html><body><div id="editor-container"><textarea ui-codemirror>stale</textarea></div></body></html>`)
+	got, err := setPrerenderedEditorSource(input, tour.CourseRoute{Path: "/tour/test/1"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	document, err := html.Parse(bytes.NewReader(got))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if findElement(document, "textarea", "ui-codemirror", "") != nil {
+		t.Fatalf("no-example page retained a textarea source: %s", got)
 	}
 }
 
@@ -168,15 +186,23 @@ func TestPrerenderRepresentativeCoursePagesInBrowser(t *testing.T) {
 				if len(route.Files) > 0 && !bytes.Contains(page, []byte("ui-codemirror")) {
 					t.Errorf("%s does not contain ui-codemirror textarea", route.Path)
 				}
-				if got := bytes.Count(page, []byte("data-tour-prerender-source=")); got != len(route.Files) {
-					t.Errorf("%s embedded sources=%d, want %d", route.Path, got, len(route.Files))
-				}
 				document, err := html.Parse(bytes.NewReader(page))
 				if err != nil {
 					t.Fatal(err)
 				}
 				if got := attrValue(findElement(document, "meta", "name", "description"), "content"); got != route.Description {
 					t.Errorf("%s description=%q, want formal metadata %q", route.Path, got, route.Description)
+				}
+				textarea := findElement(document, "textarea", "ui-codemirror", "")
+				if len(route.Files) == 0 {
+					if textarea != nil {
+						t.Errorf("%s no-example page contains editor textarea", route.Path)
+					}
+				} else if textarea == nil || nodeText(textarea) != route.Files[0] {
+					t.Errorf("%s textarea does not contain default source", route.Path)
+				}
+				if findElementsWithAttr(document, "data-tour-prerender-source") != nil {
+					t.Errorf("%s contains deprecated hidden source", route.Path)
 				}
 			}
 			if bytes.Equal(pages[0], pages[1]) {
@@ -215,6 +241,78 @@ func TestPrerenderDescriptionEqualsFormalMetadataInBrowser(t *testing.T) {
 	description := attrValue(findElement(document, "meta", "name", "description"), "content")
 	if description != route.Description {
 		t.Fatalf("description=%q, want formal metadata %q", description, route.Description)
+	}
+}
+
+func TestPrerenderedEditorRemainsVisibleUntilLessonHydrationInBrowser(t *testing.T) {
+	chrome := browserTestChrome(t)
+	source := formalPrerenderSource(t, "zh-CN")
+	const initialPath = "/tour/basics/1"
+	route, ok := courseRoute(source.Routes, initialPath)
+	if !ok || len(route.Files) == 0 {
+		t.Fatalf("route %s is not an example", initialPath)
+	}
+
+	prerenderServer := newIPv4TestServer(t, source.Handler)
+	outputRoot := t.TempDir()
+	if err := prerenderRouteWithChrome(t.Context(), chrome, prerenderServer.URL, filepath.Join(t.TempDir(), "chrome-profile"), outputRoot, route); err != nil {
+		t.Fatal(err)
+	}
+	outputPath, err := prerenderOutputPath(outputRoot, route.Path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	prerendered, err := os.ReadFile(outputPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	lessonRelease := make(chan struct{})
+	var releaseOnce sync.Once
+	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		switch r.URL.Path {
+		case initialPath:
+			script := `<script>
+(function() {
+  var source = ` + fmt.Sprintf("%q", route.Files[0]) + `;
+  function releaseWhenStaticSourceIsVisible() {
+    var textarea = document.querySelector('textarea[ui-codemirror]');
+    if (!textarea || textarea.textContent !== source || document.querySelector('.CodeMirror') || document.querySelectorAll('textarea[ui-codemirror]').length !== 1) {
+      setTimeout(releaseWhenStaticSourceIsVisible, 20); return;
+    }
+    document.documentElement.setAttribute('data-tour-static-editor', 'PASS');
+    fetch('/__release-lesson').then(function() { waitForHydration(); });
+  }
+  function waitForHydration() {
+    var editor = document.querySelector('.CodeMirror');
+    if (!editor || !editor.CodeMirror || editor.CodeMirror.getValue() !== source) {
+      setTimeout(waitForHydration, 20); return;
+    }
+    document.documentElement.setAttribute('data-tour-editor-hydration', 'PASS');
+  }
+  releaseWhenStaticSourceIsVisible();
+}());
+</script>`
+			_, _ = w.Write(bytes.Replace(prerendered, []byte("</body>"), []byte(script+"</body>"), 1))
+		case "/__release-lesson":
+			releaseOnce.Do(func() { close(lessonRelease) })
+			w.WriteHeader(http.StatusNoContent)
+		case "/tour/lesson/":
+			<-lessonRelease
+			source.Handler.ServeHTTP(w, r)
+		default:
+			source.Handler.ServeHTTP(w, r)
+		}
+	})
+	server := newIPv4TestServer(t, handler)
+	output := browserDumpDOM(t, chrome, server.URL+initialPath, 7000)
+	for _, want := range []string{
+		`data-tour-static-editor="PASS"`,
+		`data-tour-editor-hydration="PASS"`,
+	} {
+		if !bytes.Contains(output, []byte(want)) {
+			t.Fatalf("delayed lesson hydration missing %s: %s", want, browserOutputSummary(output))
+		}
 	}
 }
 

@@ -17,21 +17,8 @@ controller('ListCtrl', ['$scope', 'i18n', 'seo',
 ]).
 
 // Navigation controller
-controller('EditorCtrl', ['$scope', '$routeParams', '$location', 'toc', 'i18n', 'run', 'fmt', 'editor', 'analytics', 'storage', 'seo',
-    function($scope, $routeParams, $location, toc, i18n, run, fmt, editor, analytics, storage, seo) {
-        var lessons = [];
-        toc.lessons.then(function(v) {
-            lessons = v;
-            $scope.gotoPage($scope.curPage);
-
-            // Store changes on the current file to local storage.
-            $scope.$watch(function() {
-                var f = file();
-                return f && f.Content;
-            }, function(val) {
-                if (val) storage.set(file().Hash, val);
-            });
-        });
+controller('EditorCtrl', ['$scope', '$routeParams', '$location', 'toc', 'lessons', 'i18n', 'run', 'fmt', 'editor', 'analytics', 'storage', 'seo',
+    function($scope, $routeParams, $location, toc, lessons, i18n, run, fmt, editor, analytics, storage, seo) {
 
         $scope.toc = toc;
         $scope.lessonId = $routeParams.lessonId;
@@ -130,5 +117,15 @@ controller('EditorCtrl', ['$scope', '$routeParams', '$location', 'toc', 'i18n', 
         $scope.reset = function() {
             file().Content = file().OrigContent;
         };
+
+        $scope.gotoPage($scope.curPage);
+
+        // Store changes on the current file to local storage.
+        $scope.$watch(function() {
+            var f = file();
+            return f && f.Content;
+        }, function(val) {
+            if (val) storage.set(file().Hash, val);
+        });
     }
 ]);

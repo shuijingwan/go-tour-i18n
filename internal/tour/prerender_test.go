@@ -76,6 +76,28 @@ func TestValidatePrerenderedPageRequiresExactFormalDescription(t *testing.T) {
 	}
 }
 
+func TestValidatePrerenderedPageRequiresDefaultTextareaSourceOnly(t *testing.T) {
+	route := CourseRoute{
+		Path:        "/tour/basics/1",
+		Canonical:   "https://example.test/tour/basics/1",
+		PageTitle:   "Packages",
+		Description: "the formal description",
+		Files:       []string{"package main\n", "package second\n"},
+	}
+	base := `<!doctype html><html data-tour-rendered-route="/tour/basics/1"><head>` + runtimeHeadMarker + `<title>Packages</title><link rel="canonical" href="https://example.test/tour/basics/1"><meta name="description" content="the formal description"></head><body><div id="editor-container"><textarea ui-codemirror>` + route.Files[0] + `</textarea></div></body></html>`
+	if err := validatePrerenderedPage([]byte(base), route); err != nil {
+		t.Fatalf("valid default textarea source: %v", err)
+	}
+	withHiddenSource := strings.Replace(base, "</body>", `<pre hidden data-tour-prerender-source="example-2.go">`+route.Files[1]+`</pre></body>`, 1)
+	if err := validatePrerenderedPage([]byte(withHiddenSource), route); err == nil || !strings.Contains(err.Error(), "deprecated") {
+		t.Fatalf("hidden source error=%v", err)
+	}
+	wrongDefault := strings.Replace(base, route.Files[0], route.Files[1], 1)
+	if err := validatePrerenderedPage([]byte(wrongDefault), route); err == nil || !strings.Contains(err.Error(), "default lesson file") {
+		t.Fatalf("wrong textarea error=%v", err)
+	}
+}
+
 func TestProductionHandlerRequiresCompletePrerenderTree(t *testing.T) {
 	t.Cleanup(func() {
 		if err := useContent(website.TourOnly()); err != nil {

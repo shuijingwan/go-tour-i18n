@@ -133,9 +133,9 @@ func prerenderRouteWithChrome(parent context.Context, chrome, serverURL, profile
 	if err != nil {
 		return fmt.Errorf("sanitize %s: %w", route.Path, err)
 	}
-	output, err = embedPrerenderedSources(output, route)
+	output, err = setPrerenderedEditorSource(output, route)
 	if err != nil {
-		return fmt.Errorf("embed sources %s: %w", route.Path, err)
+		return fmt.Errorf("set editor source %s: %w", route.Path, err)
 	}
 	if err := validateRenderedCoursePage(output, route); err != nil {
 		return fmt.Errorf("validate %s: %w", route.Path, err)
@@ -220,28 +220,33 @@ func sanitizePrerenderedHTML(data []byte) ([]byte, error) {
 	return output.Bytes(), nil
 }
 
-func embedPrerenderedSources(data []byte, route tour.CourseRoute) ([]byte, error) {
+// setPrerenderedEditorSource makes the surviving source textarea the one
+// canonical static representation of the default editor file. CodeMirror's
+// wrapper is deliberately removed by sanitizePrerenderedHTML.
+func setPrerenderedEditorSource(data []byte, route tour.CourseRoute) ([]byte, error) {
 	document, err := html.Parse(bytes.NewReader(data))
 	if err != nil {
 		return nil, err
 	}
-	course := findElement(document, "div", "id", "editor-container")
-	if course == nil {
-		return nil, fmt.Errorf("missing course body")
-	}
-	for index, source := range route.Files {
-		name := fmt.Sprintf("example-%d.go", index+1)
-		pre := &html.Node{
-			Type: html.ElementNode,
-			Data: "pre",
-			Attr: []html.Attribute{
-				{Key: "hidden", Val: ""},
-				{Key: "data-tour-prerender-source", Val: name},
-			},
+	textarea := findElement(document, "textarea", "ui-codemirror", "")
+	if len(route.Files) == 0 {
+		if textarea == nil {
+			return data, nil
 		}
-		pre.AppendChild(&html.Node{Type: html.TextNode, Data: source})
-		course.AppendChild(pre)
+		textarea.Parent.RemoveChild(textarea)
+		var output bytes.Buffer
+		if err := html.Render(&output, document); err != nil {
+			return nil, err
+		}
+		return output.Bytes(), nil
 	}
+	if textarea == nil {
+		return nil, fmt.Errorf("example page is missing ui-codemirror textarea")
+	}
+	for textarea.FirstChild != nil {
+		textarea.RemoveChild(textarea.FirstChild)
+	}
+	textarea.AppendChild(&html.Node{Type: html.TextNode, Data: route.Files[0]})
 	var output bytes.Buffer
 	if err := html.Render(&output, document); err != nil {
 		return nil, err
@@ -330,8 +335,8 @@ func validateRenderedCoursePage(data []byte, route tour.CourseRoute) error {
 	}
 
 	if len(route.Files) == 0 {
-		if findElementsWithAttr(document, "data-tour-prerender-source") != nil {
-			return fmt.Errorf("page without an example contains embedded source")
+		if findElement(document, "textarea", "ui-codemirror", "") != nil {
+			return fmt.Errorf("page without an example contains ui-codemirror textarea")
 		}
 		return nil
 	}
@@ -344,14 +349,11 @@ func validateRenderedCoursePage(data []byte, route tour.CourseRoute) error {
 		return fmt.Errorf("ui-codemirror textarea contains runtime style")
 	}
 
-	sources := findElementsWithAttr(document, "data-tour-prerender-source")
-	if len(sources) != len(route.Files) {
-		return fmt.Errorf("embedded sources=%d, want %d", len(sources), len(route.Files))
+	if nodeText(textarea) != route.Files[0] {
+		return fmt.Errorf("ui-codemirror textarea does not match default lesson file")
 	}
-	for index, source := range sources {
-		if nodeText(source) != route.Files[index] {
-			return fmt.Errorf("embedded source %d does not match lesson data", index)
-		}
+	if findElementsWithAttr(document, "data-tour-prerender-source") != nil {
+		return fmt.Errorf("page contains deprecated embedded source")
 	}
 	return nil
 }

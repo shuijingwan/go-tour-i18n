@@ -84,11 +84,21 @@ func validatePrerenderedPage(data []byte, route CourseRoute) error {
 			return fmt.Errorf("contains forbidden runtime DOM %q", forbidden)
 		}
 	}
-	if len(route.Files) > 0 && !bytes.Contains(data, []byte("ui-codemirror")) {
+	textarea := findElement(document, "textarea", "ui-codemirror", "")
+	if len(route.Files) == 0 {
+		if textarea != nil {
+			return fmt.Errorf("page without an example contains ui-codemirror textarea")
+		}
+		return nil
+	}
+	if textarea == nil {
 		return fmt.Errorf("page example is missing ui-codemirror textarea")
 	}
-	if got := bytes.Count(data, []byte("data-tour-prerender-source=")); got != len(route.Files) {
-		return fmt.Errorf("embedded sources=%d, want %d", got, len(route.Files))
+	if nodeText(textarea) != route.Files[0] {
+		return fmt.Errorf("ui-codemirror textarea does not match default lesson file")
+	}
+	if bytes.Contains(data, []byte("data-tour-prerender-source=")) {
+		return fmt.Errorf("page contains deprecated embedded source")
 	}
 	return nil
 }
@@ -117,6 +127,24 @@ func attrValue(node *html.Node, key string) string {
 		}
 	}
 	return ""
+}
+
+func nodeText(node *html.Node) string {
+	if node == nil {
+		return ""
+	}
+	var text strings.Builder
+	var walk func(*html.Node)
+	walk = func(current *html.Node) {
+		if current.Type == html.TextNode {
+			text.WriteString(current.Data)
+		}
+		for child := current.FirstChild; child != nil; child = child.NextSibling {
+			walk(child)
+		}
+	}
+	walk(node)
+	return text.String()
 }
 
 func registerPrerenderedPages(mux *http.ServeMux, pages []prerenderedPage) {
