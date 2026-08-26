@@ -719,6 +719,13 @@ func TestCourseAdAssetsUseAngularViewLifecycle(t *testing.T) {
 	}
 	js := string(jsData)
 	for _, want := range []string{
+		"function removeAdSenseHeightOverrides(element)",
+		"function protectLayoutForMount(element)",
+		"function stopProtectingLayout(element)",
+		"new MutationObserver",
+		"attributeFilter: ['style']",
+		"element.style.getPropertyValue('height') === 'auto'",
+		"element.style.getPropertyValue('min-height') === '0px'",
 		"document.createElement('ins')",
 		"ad.className = 'adsbygoogle'",
 		"data-ad-client', 'ca-pub-8392190980622725'",
@@ -735,7 +742,7 @@ func TestCourseAdAssetsUseAngularViewLifecycle(t *testing.T) {
 			t.Errorf("course ad JS is missing %q", want)
 		}
 	}
-	for _, forbidden := range []string{"test ad", "googlesyndication", "pagead2", "mutationobserver", "document.body", "mountall", "mountwithin", "currentmount", "layoutobserver", "setinterval", "settimeout"} {
+	for _, forbidden := range []string{"test ad", "googlesyndication", "pagead2", "document.body", "mountall", "mountwithin", "currentmount", "layoutobserver", "setinterval", "settimeout"} {
 		if strings.Contains(strings.ToLower(js), forbidden) {
 			t.Errorf("course ad JS contains forbidden dependency %q", forbidden)
 		}
