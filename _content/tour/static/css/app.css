@@ -534,6 +534,15 @@ a#run, a#kill {
     }
 }
 @media (max-width: 600px) {
+    #explorer {
+        height: auto;
+    }
+    #explorer .menu-button {
+        display: table;
+    }
+    #explorer .imports-checkbox, #explorer .syntax-checkbox {
+        float: none;
+    }
     #top-part {
         border: 1px solid #ccc;
     }
@@ -753,7 +762,8 @@ a#run, a#kill {
     }
     .site-header .logo {
         font-size: 0.9em;
-        white-space: nowrap;
+        white-space: normal;
+        overflow-wrap: anywhere;
         line-height: 20px;
     }
     .site-hero {
