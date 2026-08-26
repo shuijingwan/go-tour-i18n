@@ -693,12 +693,14 @@ func TestCourseAdAssetsUseAngularViewLifecycle(t *testing.T) {
 	if !strings.Contains(mobileCSS, "margin-top: 24px") || strings.Contains(mobileCSS, "margin-top: auto") {
 		t.Error("mobile course ad does not keep ordinary document-flow spacing")
 	}
+	if strings.Contains(css, "max-width: 620px") {
+		t.Error("course ad CSS retains the deprecated desktop width cap")
+	}
 	for _, want := range []string{
 		"#left-side > .relative-content",
 		"display: flex",
 		"flex-direction: column",
 		"width: calc(100% - 80px)",
-		"max-width: 620px",
 		"margin-top: auto",
 		"margin-bottom: 24px",
 		"@media (max-width: 600px)",
