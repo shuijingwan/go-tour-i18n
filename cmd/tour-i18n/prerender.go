@@ -201,7 +201,6 @@ func sanitizePrerenderedHTML(data []byte) ([]byte, error) {
 					child.RemoveChild(child.FirstChild)
 				}
 				for _, attr := range []string{
-					"data-go-dev-course-ad-mounted",
 					"role",
 					"aria-label",
 				} {

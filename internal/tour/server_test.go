@@ -187,10 +187,13 @@ func TestRenderedAssetURLsFollowLocaleAndEnvironment(t *testing.T) {
 				"tour/static/go-dev/course-ad.css",
 				"tour/static/go-dev/course-ad.js",
 			} {
-				want := assets.BaseURL + "/" + logicalPath
+				want := test.prefix + "/" + logicalPath
 				if !strings.Contains(string(index), want) {
-					t.Errorf("Tour index does not use fixed shared ad asset URL %q", want)
+					t.Errorf("Tour index does not use locale-selected ad asset URL %q", want)
 				}
+			}
+			if test.locale == "zh-CN" && strings.Contains(string(index), assets.BaseURL+"/tour/static/go-dev/course-ad") {
+				t.Error("zh-CN Tour index unexpectedly uses the shared origin for course ad assets")
 			}
 		})
 	}
@@ -652,7 +655,7 @@ func TestCourseAdMountFollowsModuleBar(t *testing.T) {
 		t.Fatal(err)
 	}
 	text := string(data)
-	mount := `<div class="go-dev-course-ad" data-go-dev-course-ad></div>`
+	mount := `<div class="go-dev-course-ad" data-go-dev-course-ad course-ad></div>`
 	if strings.Count(text, mount) != 1 {
 		t.Fatalf("course ad mount count = %d, want 1", strings.Count(text, mount))
 	}
@@ -671,7 +674,7 @@ func TestCourseAdMountFollowsModuleBar(t *testing.T) {
 	}
 }
 
-func TestCourseAdAssetsAreFlowOnlyAndAngularIndependent(t *testing.T) {
+func TestCourseAdAssetsUseAngularViewLifecycle(t *testing.T) {
 	cssData, err := fs.ReadFile(contentTour, "tour/static/go-dev/course-ad.css")
 	if err != nil {
 		t.Fatal(err)
@@ -714,30 +717,23 @@ func TestCourseAdAssetsAreFlowOnlyAndAngularIndependent(t *testing.T) {
 	}
 	js := string(jsData)
 	for _, want := range []string{
-		"function mountAll()",
-		"new MutationObserver",
-		"data-go-dev-course-ad-mounted",
 		"document.createElement('ins')",
 		"ad.className = 'adsbygoogle'",
 		"data-ad-client', 'ca-pub-8392190980622725'",
 		"data-ad-slot', '4728596962'",
 		"data-ad-format', 'auto'",
 		"data-full-width-responsive', 'true'",
-		"element.style.getPropertyValue('height') === 'auto'",
-		"element.style.getPropertyPriority('height') === 'important'",
-		"element.style.getPropertyValue('min-height') === '0px'",
-		"element.style.getPropertyPriority('min-height') === 'important'",
-		"element.style.removeProperty('height')",
-		"element.style.removeProperty('min-height')",
-		"attributeFilter: ['style']",
-		"layoutObserver.disconnect()",
+		"function unmount(element)",
+		"window.goDevCourseAd",
+		"try {",
+		"console.warn('course ad request failed', error)",
 		"(window.adsbygoogle = window.adsbygoogle || []).push({})",
 	} {
 		if !strings.Contains(js, want) {
 			t.Errorf("course ad JS is missing %q", want)
 		}
 	}
-	for _, forbidden := range []string{"test ad", "googlesyndication", "pagead2", "angular", "locale", "setinterval", "settimeout"} {
+	for _, forbidden := range []string{"test ad", "googlesyndication", "pagead2", "mutationobserver", "document.body", "mountall", "mountwithin", "currentmount", "layoutobserver", "setinterval", "settimeout"} {
 		if strings.Contains(strings.ToLower(js), forbidden) {
 			t.Errorf("course ad JS contains forbidden dependency %q", forbidden)
 		}
@@ -745,9 +741,19 @@ func TestCourseAdAssetsAreFlowOnlyAndAngularIndependent(t *testing.T) {
 	if got := strings.Count(js, ".push({})"); got != 1 {
 		t.Errorf("course ad JS push count = %d, want 1", got)
 	}
-	for _, forbidden := range []string{"removeAttribute('style')", `setAttribute('style', '')`, "document.body, {attributes: true"} {
+	for _, forbidden := range []string{"removeAttribute('style')", `setAttribute('style', '')`} {
 		if strings.Contains(js, forbidden) {
 			t.Errorf("course ad JS contains broad style cleanup %q", forbidden)
+		}
+	}
+	directivesData, err := fs.ReadFile(contentTour, "tour/static/js/directives.js")
+	if err != nil {
+		t.Fatal(err)
+	}
+	directives := string(directivesData)
+	for _, want := range []string{"directive('courseAd'", "lifecycle.mount(elm[0])", "scope.$on('$destroy'", "lifecycle.unmount(elm[0])"} {
+		if !strings.Contains(directives, want) {
+			t.Errorf("course ad directive is missing %q", want)
 		}
 	}
 }

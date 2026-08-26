@@ -42,7 +42,7 @@ func TestSanitizePrerenderedHTMLRemovesThirdPartyRuntimeDOM(t *testing.T) {
 <div class="CodeMirror"><span>runtime editor</span></div>
 <li class="toc-page ng-scope" style="overflow: hidden; height: 0px;">TOC</li>
 <textarea ui-codemirror style="display: none;">package main</textarea>
-<div class="go-dev-course-ad" data-go-dev-course-ad data-go-dev-course-ad-mounted="true" role="complementary" aria-label="Advertisement"><span>runtime ad child</span></div>
+<div class="go-dev-course-ad" data-go-dev-course-ad course-ad role="complementary" aria-label="Advertisement"><span>runtime ad child</span></div>
 <main>keep me</main></body></html>`)
 	got, err := sanitizePrerenderedHTML(input)
 	if err != nil {
@@ -53,7 +53,6 @@ func TestSanitizePrerenderedHTMLRemovesThirdPartyRuntimeDOM(t *testing.T) {
 		"adsbygoogle",
 		"data-google-query-id",
 		"runtime ad child",
-		"data-go-dev-course-ad-mounted",
 		`role="complementary"`,
 		`aria-label="Advertisement"`,
 		`class="CodeMirror`,
@@ -88,7 +87,7 @@ func TestSanitizePrerenderedHTMLRemovesThirdPartyRuntimeDOM(t *testing.T) {
 	if mount.FirstChild != nil {
 		t.Errorf("course ad mount still has runtime children: %s", got)
 	}
-	if len(mount.Attr) != 2 || attrValue(mount, "class") != "go-dev-course-ad" {
+	if len(mount.Attr) != 3 || attrValue(mount, "class") != "go-dev-course-ad" || !hasAttr(mount, "course-ad", "") {
 		t.Errorf("course ad mount attributes=%v, want only static template attributes", mount.Attr)
 	}
 }

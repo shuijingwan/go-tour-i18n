@@ -14,7 +14,7 @@ import (
 	"testing"
 )
 
-func TestCourseAdLayoutProtectionInBrowser(t *testing.T) {
+func TestCourseAdSPALifecycleInBrowser(t *testing.T) {
 	if os.Getenv("GO_TOUR_RUN_BROWSER_TESTS") != "1" {
 		t.Skip("set GO_TOUR_RUN_BROWSER_TESTS=1 to run the Chrome integration test")
 	}
@@ -22,110 +22,91 @@ func TestCourseAdLayoutProtectionInBrowser(t *testing.T) {
 	if err != nil {
 		t.Skip("google-chrome is not installed")
 	}
-	adScript, err := fs.ReadFile(contentTour, "tour/static/go-dev/course-ad.js")
-	if err != nil {
-		t.Fatal(err)
+	read := func(name string) []byte {
+		data, err := fs.ReadFile(contentTour, name)
+		if err != nil {
+			t.Fatal(err)
+		}
+		return data
 	}
+	angular := read("tour/static/lib/angular.min.js")
+	adScript := read("tour/static/go-dev/course-ad.js")
+	directives := read("tour/static/js/directives.js")
 
-	const editor = `<div id="editor-container" style="height:auto!important;min-height:0px!important;color:red">
-<div class="relative-content" style="height:auto!important;min-height:0px!important;color:red">
-<div id="left-side" style="height:auto!important;min-height:0px!important;color:red">
-<div class="relative-content" style="height:auto!important;min-height:0px!important;color:red">
-<div class="bar module-bar"></div><div class="go-dev-course-ad" data-go-dev-course-ad></div>
-</div></div></div></div>`
+	document := `<!doctype html><html ng-app="courseAdTest"><body><div ng-view></div>
+<script type="text/ng-template" id="course-page"><div id="editor-container" class="course-body" data-page="{{page}}"><div class="go-dev-course-ad" data-go-dev-course-ad course-ad></div></div></script>
+<script>` + string(angular) + `</script><script>` + string(adScript) + `</script><script>` + string(directives) + `</script><script>
+(function() {
+    'use strict';
+    var requests = 0;
+    var failPush = false;
+    var uncaught = false;
+    window.adsbygoogle = { push: function() { requests++; if (failPush) throw new Error('fake AdSense failure'); } };
+    window.addEventListener('error', function() { uncaught = true; });
+    angular.module('courseAdTest', ['ng', 'tour.directives']).config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
+        $routeProvider.when('/:page', { templateUrl: 'course-page', controller: ['$scope', '$routeParams', function($scope, $routeParams) { $scope.page = $routeParams.page; }] });
+        $locationProvider.hashPrefix('!');
+    }]);
 
-	document := `<!doctype html><html><body>` + editor + `<script>` + string(adScript) + `</script><script>
-(async function() {
     function assert(condition, message) {
         if (!condition) throw new Error(message);
     }
-    function tick() {
-        return new Promise(function(resolve) { setTimeout(resolve, 0); });
+    function waitFor(page, done) {
+        var current = document.querySelector('#editor-container');
+        if (current && current.getAttribute('data-page') === page) { done(current); return; }
+        setTimeout(function() { waitFor(page, done); }, 10);
     }
-    function nodes(editor) {
-        var editorContent = editor.children[0];
-        var leftSide = editorContent.children[0];
-        return [editor, editorContent, leftSide, leftSide.children[0]];
+    function navigate(path, done) {
+        var injector = angular.element(document.documentElement).injector();
+        injector.get('$rootScope').$apply(function() { injector.get('$location').path(path); });
+        waitFor(path.slice(1), done);
     }
-    function newEditor() {
-        var wrapper = document.createElement('div');
-        wrapper.innerHTML = ` + "`" + editor + "`" + `;
-        return wrapper.firstElementChild;
+    function currentAdCount() {
+        return document.querySelectorAll('[data-go-dev-course-ad] ins.adsbygoogle').length;
     }
 
-    try {
-        var firstEditor = document.querySelector('#editor-container');
-        var firstNodes = nodes(firstEditor);
-        assert(window.adsbygoogle.length === 1, 'initial ad request count');
-        assert(firstEditor.querySelectorAll('ins.adsbygoogle').length === 1, 'initial ad count');
-        firstNodes.forEach(function(node) {
-            assert(node.style.getPropertyValue('height') === '', 'initial exact height was not removed');
-            assert(node.style.getPropertyValue('min-height') === '', 'initial exact min-height was not removed');
-            assert(node.style.getPropertyValue('color') === 'red', 'unrelated initial style was removed');
-        });
-
-        firstNodes.forEach(function(node) {
-            node.style.setProperty('height', 'auto', 'important');
-            node.style.setProperty('min-height', '0px', 'important');
-            node.style.setProperty('width', '37px', 'important');
-        });
-        await tick();
-        firstNodes.forEach(function(node) {
-            assert(node.style.getPropertyValue('height') === '', 'observed exact height was not removed');
-            assert(node.style.getPropertyValue('min-height') === '', 'observed exact min-height was not removed');
-            assert(node.style.getPropertyValue('width') === '37px', 'unrelated observed style was removed');
-        });
-
-        firstNodes[0].style.setProperty('height', 'auto');
-        firstNodes[1].style.setProperty('height', '100px', 'important');
-        firstNodes[2].style.setProperty('min-height', '0px');
-        firstNodes[3].style.setProperty('min-height', '1px', 'important');
-        await tick();
-        assert(firstNodes[0].style.getPropertyValue('height') === 'auto', 'non-important height was removed');
-        assert(firstNodes[1].style.getPropertyValue('height') === '100px', 'non-exact height was removed');
-        assert(firstNodes[2].style.getPropertyValue('min-height') === '0px', 'non-important min-height was removed');
-        assert(firstNodes[3].style.getPropertyValue('min-height') === '1px', 'non-exact min-height was removed');
-
-        var firstMount = firstEditor.querySelector('[data-go-dev-course-ad]');
-        var firstLeftContent = firstNodes[3];
-        firstLeftContent.removeChild(firstMount);
-        firstLeftContent.appendChild(firstMount);
-        await tick();
-        assert(window.adsbygoogle.length === 1, 'filled mount requested twice');
-        assert(firstMount.querySelectorAll('ins.adsbygoogle').length === 1, 'filled ad mounted twice');
-
-        firstMount.querySelector('ins').setAttribute('data-ad-status', 'unfilled');
-        firstLeftContent.removeChild(firstMount);
-        firstLeftContent.appendChild(firstMount);
-        await tick();
-        assert(window.adsbygoogle.length === 1, 'unfilled mount requested twice');
-        assert(firstMount.querySelectorAll('ins.adsbygoogle').length === 1, 'unfilled ad mounted twice');
-
-        var secondEditor = newEditor();
-        firstEditor.remove();
-        document.body.appendChild(secondEditor);
-        await tick();
-        var secondNodes = nodes(secondEditor);
-        assert(window.adsbygoogle.length === 2, 'SPA editor did not request exactly one new ad');
-        assert(secondEditor.querySelectorAll('ins.adsbygoogle').length === 1, 'SPA editor ad mount count');
-        secondNodes.forEach(function(node) {
-            assert(node.style.getPropertyValue('height') === '', 'SPA initial exact height was not removed');
-            assert(node.style.getPropertyValue('min-height') === '', 'SPA initial exact min-height was not removed');
-            assert(node.style.getPropertyValue('color') === 'red', 'SPA unrelated initial style was removed');
-        });
-
-        firstNodes[0].style.setProperty('height', 'auto', 'important');
-        secondNodes[0].style.setProperty('height', 'auto', 'important');
-        secondNodes[3].style.setProperty('min-height', '0px', 'important');
-        await tick();
-        assert(firstNodes[0].style.getPropertyValue('height') === 'auto', 'old editor observer stayed active');
-        assert(secondNodes[0].style.getPropertyValue('height') === '', 'new editor height was not protected');
-        assert(secondNodes[3].style.getPropertyValue('min-height') === '', 'new editor min-height was not protected');
-
-        document.body.setAttribute('data-course-ad-test', 'PASS');
-    } catch (error) {
-        document.body.setAttribute('data-course-ad-test', 'FAIL: ' + error.message);
-    }
+    setTimeout(function() {
+        try {
+            var injector = angular.element(document.documentElement).injector();
+            injector.get('$rootScope').$apply(function() { injector.get('$location').path('/one'); });
+            waitFor('one', function(first) {
+                assert(document.querySelectorAll('[data-go-dev-course-ad]').length === 1, 'initial container count');
+                assert(currentAdCount() === 1 && requests === 1, 'initial ad lifecycle');
+                navigate('/two', function() {
+                    assert(!document.documentElement.contains(first), 'old view remains after navigation');
+                    assert(first.querySelectorAll('ins.adsbygoogle').length === 0, 'old ad lifecycle did not end');
+                    assert(document.querySelectorAll('[data-go-dev-course-ad]').length === 1 && currentAdCount() === 1 && requests === 2, 'second ad lifecycle');
+                    navigate('/three', function() {
+                        navigate('/four', function() {
+                            navigate('/five', function() {
+                                assert(document.querySelectorAll('[data-go-dev-course-ad]').length === 1 && currentAdCount() === 1 && requests === 5, 'three SPA transitions accumulated ads');
+                                failPush = true;
+                                navigate('/failure', function() {
+                                    assert(document.querySelector('.course-body') && currentAdCount() === 1, 'failed ad request broke the new view');
+                                    failPush = false;
+                                    navigate('/recovered', function() {
+                                        assert(document.querySelector('.course-body') && currentAdCount() === 1 && !uncaught, 'navigation did not recover after failed ad request');
+                                        var beforeRapid = requests;
+                                        injector.get('$rootScope').$apply(function() {
+                                            injector.get('$location').path('/rapid-one');
+                                            injector.get('$location').path('/rapid-two');
+                                        });
+                                        waitFor('rapid-two', function() {
+                                            assert(document.querySelectorAll('[data-go-dev-course-ad]').length === 1 && currentAdCount() === 1, 'rapid navigation left multiple ads');
+                                            assert(requests === beforeRapid + 1, 'rapid navigation requested a stale view ad');
+                                            document.body.setAttribute('data-course-ad-test', 'PASS');
+                                        });
+                                    });
+                                });
+                            });
+                        });
+                    });
+                });
+            });
+        } catch (error) {
+            document.body.setAttribute('data-course-ad-test', 'FAIL: ' + error.message);
+        }
+    }, 0);
 }());
 </script></body></html>`
 
@@ -134,26 +115,12 @@ func TestCourseAdLayoutProtectionInBrowser(t *testing.T) {
 	if err := os.WriteFile(path, []byte(document), 0o600); err != nil {
 		t.Fatal(err)
 	}
-	cmd := exec.Command(chrome,
-		"--headless=new",
-		"--no-sandbox",
-		"--disable-gpu",
-		"--disable-dev-shm-usage",
-		"--disable-breakpad",
-		"--disable-crash-reporter",
-		"--noerrdialogs",
-		"--user-data-dir="+filepath.Join(tempDir, "chrome-profile"),
-		"--run-all-compositor-stages-before-draw",
-		"--virtual-time-budget=2000",
-		"--dump-dom",
-		"file://"+path,
-	)
+	cmd := exec.Command(chrome, "--headless=new", "--no-sandbox", "--disable-gpu", "--disable-dev-shm-usage", "--disable-breakpad", "--disable-crash-reporter", "--noerrdialogs", "--user-data-dir="+filepath.Join(tempDir, "chrome-profile"), "--run-all-compositor-stages-before-draw", "--virtual-time-budget=3000", "--dump-dom", "file://"+path)
 	output, err := cmd.CombinedOutput()
 	if err != nil {
 		t.Fatalf("google-chrome: %v\n%s", err, output)
 	}
-	got := string(output)
-	if !strings.Contains(got, `data-course-ad-test="PASS"`) {
-		t.Fatalf("course ad browser test failed:\n%s", html.UnescapeString(got))
+	if !strings.Contains(string(output), `data-course-ad-test="PASS"`) {
+		t.Fatalf("course ad browser test failed:\n%s", html.UnescapeString(string(output)))
 	}
 }

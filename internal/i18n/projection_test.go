@@ -160,7 +160,7 @@ func TestCourseAdMountIsIdenticalInSupportedLocaleProjections(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		mount := []byte(`<div class="go-dev-course-ad" data-go-dev-course-ad></div>`)
+		mount := []byte(`<div class="go-dev-course-ad" data-go-dev-course-ad course-ad></div>`)
 		if bytes.Count(data, mount) != 1 {
 			t.Fatalf("%s projected course ad mount count = %d, want 1", locale, bytes.Count(data, mount))
 		}
