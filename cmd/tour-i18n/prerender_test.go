@@ -212,6 +212,52 @@ func TestPrerenderRepresentativeCoursePagesInBrowser(t *testing.T) {
 	}
 }
 
+func TestPrerenderedCourseHTMLIsByteDeterministicInBrowser(t *testing.T) {
+	chrome := browserTestChrome(t)
+	source := formalPrerenderSource(t, "zh-CN")
+	const routePath = "/tour/basics/1"
+	route, ok := courseRoute(source.Routes, routePath)
+	if !ok || len(route.Files) == 0 {
+		t.Fatalf("route %s is not an example", routePath)
+	}
+	server := newIPv4TestServer(t, source.Handler)
+
+	pages := make([][]byte, 2)
+	for i := range pages {
+		outputRoot := t.TempDir()
+		profile := filepath.Join(t.TempDir(), "chrome-profile")
+		if err := prerenderRouteWithChrome(t.Context(), chrome, server.URL, profile, outputRoot, route); err != nil {
+			t.Fatal(err)
+		}
+		outputPath, err := prerenderOutputPath(outputRoot, route.Path)
+		if err != nil {
+			t.Fatal(err)
+		}
+		pages[i], err = os.ReadFile(outputPath)
+		if err != nil {
+			t.Fatal(err)
+		}
+	}
+	if !bytes.Equal(pages[0], pages[1]) {
+		t.Fatal("independent prerender runs produced different HTML")
+	}
+
+	document, err := html.Parse(bytes.NewReader(pages[0]))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if findElementByClass(document, "CodeMirror") != nil {
+		t.Fatal("deterministic prerender contains CodeMirror runtime DOM")
+	}
+	textarea := findElement(document, "textarea", "ui-codemirror", "")
+	if textarea == nil || nodeText(textarea) != route.Files[0] {
+		t.Fatal("deterministic prerender textarea does not contain default source")
+	}
+	if findElementsWithAttr(document, "data-tour-prerender-source") != nil {
+		t.Fatal("deterministic prerender contains deprecated hidden source")
+	}
+}
+
 func TestPrerenderDescriptionEqualsFormalMetadataInBrowser(t *testing.T) {
 	chrome := browserTestChrome(t)
 	source := formalPrerenderSource(t, "zh-CN")
