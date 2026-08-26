@@ -291,8 +291,17 @@ func TestPrerenderDescriptionEqualsFormalMetadataInBrowser(t *testing.T) {
 }
 
 func TestPrerenderedEditorRemainsVisibleUntilLessonHydrationInBrowser(t *testing.T) {
+	for _, locale := range []string{"zh-CN", "ja-JP"} {
+		t.Run(locale, func(t *testing.T) {
+			testPrerenderedEditorRemainsVisibleUntilLessonHydrationInBrowser(t, locale)
+		})
+	}
+}
+
+func testPrerenderedEditorRemainsVisibleUntilLessonHydrationInBrowser(t *testing.T, locale string) {
+	t.Helper()
 	chrome := browserTestChrome(t)
-	source := formalPrerenderSource(t, "zh-CN")
+	source := formalPrerenderSource(t, locale)
 	const initialPath = "/tour/basics/1"
 	route, ok := courseRoute(source.Routes, initialPath)
 	if !ok || len(route.Files) == 0 {
@@ -321,10 +330,31 @@ func TestPrerenderedEditorRemainsVisibleUntilLessonHydrationInBrowser(t *testing
 			script := `<script>
 (function() {
   var source = ` + fmt.Sprintf("%q", route.Files[0]) + `;
+  var initialLayout;
+  function box(selector) {
+    var rect = document.querySelector(selector).getBoundingClientRect();
+    return { top: rect.top, bottom: rect.bottom, height: rect.height, width: rect.width };
+  }
+  function layoutIsStable(before, after) {
+    var tolerance = 2;
+    return Math.abs(before.editor.top - after.editor.top) <= tolerance &&
+      Math.abs(before.editor.bottom - after.editor.bottom) <= tolerance &&
+      Math.abs(before.footer.top - after.footer.top) <= tolerance &&
+      Math.abs(before.footer.height - after.footer.height) <= tolerance;
+  }
   function releaseWhenStaticSourceIsVisible() {
     var textarea = document.querySelector('textarea[ui-codemirror]');
-    if (!textarea || textarea.textContent !== source || document.querySelector('.CodeMirror') || document.querySelectorAll('textarea[ui-codemirror]').length !== 1) {
+    var style = textarea && window.getComputedStyle(textarea);
+    var rect = textarea && textarea.getBoundingClientRect();
+    if (!textarea || textarea.value !== source || textarea.textContent !== source ||
+        !style || style.display === 'none' || style.visibility === 'hidden' ||
+        !rect || rect.width <= 0 || rect.height <= 0 ||
+        document.querySelector('.CodeMirror') || document.querySelectorAll('textarea[ui-codemirror]').length !== 1) {
       setTimeout(releaseWhenStaticSourceIsVisible, 20); return;
+    }
+    initialLayout = { editor: box('#editor-container'), footer: box('.site-footer') };
+    if (initialLayout.editor.bottom > initialLayout.footer.top + 2) {
+      document.documentElement.setAttribute('data-tour-editor-layout', 'FAIL: footer overlaps course'); return;
     }
     document.documentElement.setAttribute('data-tour-static-editor', 'PASS');
     fetch('/__release-lesson').then(function() { waitForHydration(); });
@@ -334,6 +364,11 @@ func TestPrerenderedEditorRemainsVisibleUntilLessonHydrationInBrowser(t *testing
     if (!editor || !editor.CodeMirror || editor.CodeMirror.getValue() !== source) {
       setTimeout(waitForHydration, 20); return;
     }
+    var finalLayout = { editor: box('#editor-container'), footer: box('.site-footer') };
+    if (!layoutIsStable(initialLayout, finalLayout) || finalLayout.editor.bottom > finalLayout.footer.top + 2) {
+      document.documentElement.setAttribute('data-tour-editor-layout', 'FAIL: hydration moved course or footer'); return;
+    }
+    document.documentElement.setAttribute('data-tour-editor-layout', 'PASS');
     document.documentElement.setAttribute('data-tour-editor-hydration', 'PASS');
   }
   releaseWhenStaticSourceIsVisible();
@@ -354,6 +389,7 @@ func TestPrerenderedEditorRemainsVisibleUntilLessonHydrationInBrowser(t *testing
 	output := browserDumpDOM(t, chrome, server.URL+initialPath, 7000)
 	for _, want := range []string{
 		`data-tour-static-editor="PASS"`,
+		`data-tour-editor-layout="PASS"`,
 		`data-tour-editor-hydration="PASS"`,
 	} {
 		if !bytes.Contains(output, []byte(want)) {

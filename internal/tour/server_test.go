@@ -204,7 +204,7 @@ func TestNonSharedRuntimePathsRemainLanguageOrigin(t *testing.T) {
 		"tour/static/js/app.js":            "templateUrl: '/tour/static/partials/list.html'",
 		"tour/static/js/directives.js":     "templateUrl: '/tour/static/partials/toc.html'",
 		"tour/static/js/services.js":       "$http.get('/tour/lesson/')",
-		"tour/static/partials/editor.html": "ng-include=\"'/tour/footer.html'\"",
+		"tour/template/index.tmpl":          "{{template \"footer\" .}}",
 		"tour/concurrency.article":         ".image /tour/static/img/tree.png",
 	} {
 		data, err := fs.ReadFile(contentTour, path)
