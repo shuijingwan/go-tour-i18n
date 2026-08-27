@@ -313,24 +313,199 @@ Preview rendered surface acceptance 不要求真实 AdSense。
 
 ## Production verification
 
-状态：`pending`
+状态：`passed`
 
-与本次 Surface Review 对应的新 production release 尚未部署，因此 production verification 尚未执行。
+### Production identity
 
-仍待真实 production 验证：
+最终验收 release：
 
-- production release identity；
-- 公网 HTTPS 页面；
-- CDN / hostname；
-- production canonical；
-- production `robots.txt`；
-- production sitemap；
-- 真实 production Playground endpoint；
-- 精确 production Playground Origin；
-- desktop / mobile production smoke check；
-- 轻量广告确认。
+- source commit：`916a23e45210f25e751b84b40b7c354d5a839dac`
+- release：`/data/go-tour/releases/20260827-zh-CN-916a23e4`
+- published_at：`2026-08-27T09:55:54Z`
+- public URL：`https://go-dev.shuijingwanwq.com/`
+- locale：`zh-CN`
+- TranslationUnit：`122`
+- Page：`103`
+- eligible Example：`19`
+- article：`7`
+- execution transport：`http-playground-proxy`
+- execution provider：`play.golang.org`
+- local socket：disabled
 
-在这些检查真实执行之前，不记录 production verification 为 passed。
+部署后确认：
+
+- `go-tour.service` 为 `active`；
+- 源站 `http://127.0.0.1:3999/` 返回 200；
+- deploy lock 不存在；
+- 公网 `/`、`/tour/`、`/tour/list` 均返回 200。
+
+### CDN 与公网 HTML
+
+首次部署后检查发现 EdgeOne 首页仍命中旧缓存：
+
+- `EO-Cache-Status: HIT`
+- `Age` 为旧缓存年龄；
+- 公网首页仍显示旧的 `A Tour of Go` 项目标题。
+
+随后按 production runbook 对 `go-dev.shuijingwanwq.com` 执行整站缓存清除。
+
+清除后确认：
+
+- 首页重新回源并返回 `EO-Cache-Status: MISS`；
+- 公网首页 title、description、canonical 与当前源站一致；
+- 首页显示 `Go 语言之旅`；
+- `/tour/methods/14` title、description、canonical 与当前 source 一致。
+
+后续重新部署最终修复 release 后，再次确认公网首页已经包含当前语言版本入口。
+
+### Production SEO 与 routing
+
+真实公网确认：
+
+- `/robots.txt` 正确指向 `https://go-dev.shuijingwanwq.com/sitemap.xml`；
+- sitemap URL 总数：`105`；
+- unique URL：`105`；
+- wrong host：`0`；
+- `/socket` 返回 404；
+- canonical 使用正式 zh-CN hostname；
+- 公网页面没有使用 localhost identity。
+
+### Playground production verification
+
+浏览器 production Run / Format 使用正式 Playground 链路。
+
+命令行真实请求确认：
+
+- compile endpoint：
+  `https://play.go-dev.shuijingwanwq.com:8443/compile?backend=`
+- fmt endpoint：
+  `https://play.go-dev.shuijingwanwq.com:8443/fmt`
+- Origin：
+  `https://go-dev.shuijingwanwq.com`
+
+真实 compile 成功并输出：
+
+`Hello, 世界`
+
+真实 Format 将：
+
+`func main(){}`
+
+格式化为：
+
+`func main() {}`
+
+浏览器中：
+
+- Run 正常；
+- Format 正常；
+- Reset 正常；
+- 制造真实语法错误后，Go 编译器返回原始英文技术错误；
+- 页面本地化 runtime message 显示 `Go 构建失败。`。
+
+第一次浏览器测试时曾看到英文 `Go build failed.`。检查确认 production source、catalog 与前端实现均为 zh-CN，本次现象来自部署前已经打开的旧浏览器页面状态。强制刷新 production 页面后重新测试，runtime message 正确显示 `Go 构建失败。`，因此没有遗留本地化缺陷。
+
+### Desktop / mobile production smoke check
+
+桌面端检查：
+
+- `/`
+- `/tour/`
+- `/tour/list`
+- `/tour/methods/14`
+
+确认：
+
+- 无重叠；
+- 无异常截断；
+- 无异常页面级横向滚动；
+- 导航正常；
+- language selector 正常；
+- theme control 正常。
+
+移动端使用约 `390×844` viewport 检查课程页：
+
+- editor 可操作；
+- Run 正常；
+- Format 正常；
+- Reset 正常；
+- 导航、按钮、footer 无明显重叠或布局异常。
+
+测试过程中出现过示例自身的：
+
+`panic: interface conversion: interface {} is string, not float64`
+
+该结果证明程序已经成功编译并运行；这是示例中的运行时类型断言 panic，不是 Playground 不支持 `any`，不属于发布缺陷。
+
+### SPA production acceptance
+
+真实点击：
+
+`methods/14 → methods/15`
+
+确认：
+
+- SPA 下一页正常；
+- 页面正文更新；
+- title 更新；
+- description 更新；
+- canonical 更新；
+- 没有上一页 metadata 残留。
+
+### Language selector production issue and resolution
+
+production smoke check 发现首页语言版本中的日本語链接原先指向：
+
+`https://ja-go-dev.shuijingwanwq.com/tour/welcome/1`
+
+按当前站点入口约定，应指向该 locale 的项目首页：
+
+`https://ja-go-dev.shuijingwanwq.com/`
+
+同时将 zh-CN registry 统一为：
+
+`https://go-dev.shuijingwanwq.com/`
+
+修复提交：
+
+`916a23e45210f25e751b84b40b7c354d5a839dac`
+
+修复后：
+
+- registry test 通过；
+- 新 zh-CN production release 已重新 publish / deploy；
+- 源站首页日本語链接正确；
+- EdgeOne 公网首页日本語链接也已确认正确。
+
+该 production-only Surface Review 问题已解决，无遗留 blocker。
+
+### Lightweight AdSense verification
+
+production HTML 确认：
+
+- AdSense loader 存在；
+- course ad mount 存在。
+
+真实浏览器检查进一步确认：
+
+- `adsbygoogle.js` loader：`1`；
+- course ad mount 正常；
+- `ins.adsbygoogle` 中存在 `filled` 广告；
+- 同时允许存在 `unfilled` 广告；
+- 存在真实 Google AdSense / DoubleClick iframe；
+- 存在多条真实广告网络请求；
+- desktop course ad 实际获得有效尺寸；
+- mobile viewport 下也产生真实响应式广告请求；
+- 页面高度与 footer 无明显异常；
+- SPA 下一页后继续存在新的广告请求机会。
+
+本次只执行 locale production 所需的轻量广告确认，没有重复执行共享广告架构完整 regression。
+
+### Production verification result
+
+`passed`
+
+最终 production release、CDN、公网 HTML、SEO、routing、Playground、runtime message、desktop/mobile、SPA、language selector 与轻量广告确认均已通过。
 
 ## Reviewer
 
@@ -340,20 +515,20 @@ Preview rendered surface acceptance 不要求真实 AdSense。
 
 ## Issues
 
-当前唯一尚未完成的 release gate：
+当前没有未解决的 release blocker。
 
-- production verification 尚未执行。
+本次 production verification 中发现并已解决：
 
-A 阶段没有遗留语言质量问题。
+- EdgeOne 首页旧缓存：执行 hostname 整站缓存清除后恢复当前内容；
+- language selector 日本語入口指向课程页：修复为 locale 项目首页并重新部署；
+- 浏览器旧页面曾显示英文 `Go build failed.`：强制刷新当前 production release 后复测，正确显示 `Go 构建失败。`。
 
-Preview acceptance 没有遗留阻塞问题。
+A 阶段、Preview acceptance 与 Production verification 均无遗留阻塞问题。
 
 ## Decision
 
-`decision = failed`
+`decision = passed`
 
-原因：
+Locale-level language quality review、Preview rendered surface acceptance 与最终 Production verification 均已通过。
 
-Locale-level language quality review 与 preview acceptance 均已通过，但 production verification 仍为 pending。
-
-按照 Locale Surface Review 正式规则，在真实 production release 完成最终复核以前，整体 decision 不能写为 `passed`。
+本次 zh-CN upstream 同步后的正式 release 已完成最终 Locale Surface Review，可以进入日常维护状态。
