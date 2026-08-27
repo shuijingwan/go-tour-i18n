@@ -314,15 +314,15 @@
     {
       "page_id": "flowcontrol/1",
       "route": "/flowcontrol/1",
-      "description": "Go 唯一のループ構文である for について、初期化文、条件式、後処理文の実行順序、変数のスコープ、括弧と中括弧の規則を学びます。",
-      "source_sha256": "c1169da4fac9516ce733f1a4439d4181c5c42635c9839625d6f82dd8e4951042",
-      "target_sha256": "1baa6d8ff5b7fbfb6005d1f6752eb8a0e1c8fde06ad8925c3df38a66c9376ec1",
+      "description": "Go の唯一のループ構文である for について、初期化ステートメント、条件式、後処理ステートメントの実行タイミング、変数のスコープ、丸括弧と波括弧の規則を解説します。",
+      "source_sha256": "c6cd458bda99bffc7b753e122c56575a59508586054180be1f8d7bb1fe2391df",
+      "target_sha256": "2d07651b05f96e2537d10c8c46819e45ba123763ce607bf64692bf49973a7b7a",
       "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
       "generation": {
         "provider": "codex",
         "model": "gpt-5.6-sol-high",
         "prompt_version": "course-seo-description-v1",
-        "generated_at": "2026-08-25T15:02:24Z"
+        "generated_at": "2026-08-27T12:13:36Z"
       }
     },
     {
@@ -1070,15 +1070,15 @@
     {
       "page_id": "methods/14",
       "route": "/methods/14",
-      "description": "メソッドを指定しない空のインターフェースが任意の型の値を保持でき、型が不明な値を扱うコードで利用されることを学びます。",
-      "source_sha256": "f85eea0b014a1f885077243bef53d3b38d8f06120b49d257ada1d66f59e80d96",
-      "target_sha256": "2ca385ed9347ce8a459782ce7f2183ae098a4f828d85164fa80c080d3384b11e",
+      "description": "メソッドを指定しない空のインターフェースが任意の型の値を保持できる性質、any が interface{} のエイリアスで完全に同等であること、未知の型の値や fmt.Print の引数を扱う用途を解説します。",
+      "source_sha256": "7a09a7654c8b6ac6d96a1a8ddaafac368782f89ec2e6e61f323d40eb01cbf750",
+      "target_sha256": "cc7e370ddfa6088d390210ff720bba22b10950956e2c015b6f49c820e2d910a0",
       "glossary_sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4",
       "generation": {
         "provider": "codex",
         "model": "gpt-5.6-sol-high",
         "prompt_version": "course-seo-description-v1",
-        "generated_at": "2026-08-25T15:02:24Z"
+        "generated_at": "2026-08-27T12:13:36Z"
       }
     },
     {
