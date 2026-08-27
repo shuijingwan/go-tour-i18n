@@ -52,7 +52,7 @@ func TestProductionHandlerUsesHTTPTransportAndServesTour(t *testing.T) {
 		wantStatus int
 		want       string
 	}{
-		{"/", http.StatusOK, "A Tour of Go 多语言翻译项目"},
+		{"/", http.StatusOK, "Go 语言之旅多语言翻译项目"},
 		{"/tour/", http.StatusOK, "Go 语言之旅"},
 		{"/tour/list", http.StatusOK, "Go 语言之旅"},
 		{"/tour/lesson/welcome", http.StatusOK, `"Title":"Welcome!"`},

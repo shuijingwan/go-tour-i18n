@@ -455,18 +455,18 @@ func TestJSI18nBootstrapLocales(t *testing.T) {
 		{
 			locale: "en",
 			want: []string{
-				"\"tour.list_heading\":\"Welcome to a tour of Go\"", "\"toc.title\":\"Table of Contents\"", "\"execution.waiting\":\"Waiting for remote server...\"", "\"execution.exited\":\"Program exited\"", "\"feedback.open\":\"Send feedback about this page\"", "\"feedback.context\":\"Context\"",
+				"\"tour.list_heading\":\"Welcome to a tour of Go\"", "\"toc.title\":\"Table of Contents\"", "\"execution.waiting\":\"Waiting for remote server...\"", "\"execution.exited\":\"Program exited\"", "\"execution.vet_failed\":\"Go vet failed.\"", "\"execution.build_failed\":\"Go build failed.\"", "\"execution.communication_error\":\"Error communicating with remote server.\"", "\"execution.test_failed\":\"{count} test failed.\"", "\"execution.tests_failed\":\"{count} tests failed.\"", "\"execution.tests_passed\":\"All tests passed.\"", "\"feedback.open\":\"Send feedback about this page\"", "\"feedback.context\":\"Context\"",
 				"\"editor.syntax\":\"Syntax\"", "\"editor.imports\":\"Imports\"", "\"editor.run\":\"Run\"", "\"editor.kill\":\"Kill\"", "\"editor.format\":\"Format\"", "\"editor.reset\":\"Reset\"",
 			},
 		},
 		{
 			locale: "zh-CN",
 			want: []string{
-				"\"tour.list_heading\":\"欢迎来到 Go 语言之旅\"", "\"toc.title\":\"目录\"", "\"execution.waiting\":\"正在等待远程服务器……\"", "\"execution.exited\":\"程序已退出\"", "\"feedback.open\":\"发送本页反馈\"", "\"feedback.context\":\"上下文\"",
+				"\"tour.list_heading\":\"欢迎来到 Go 语言之旅\"", "\"toc.title\":\"目录\"", "\"execution.waiting\":\"正在等待远程服务器……\"", "\"execution.exited\":\"程序已退出\"", "\"execution.vet_failed\":\"Go vet 检查失败。\"", "\"execution.build_failed\":\"Go 构建失败。\"", "\"execution.communication_error\":\"与远程服务器通信时出错。\"", "\"execution.test_failed\":\"{count} 个测试失败。\"", "\"execution.tests_failed\":\"{count} 个测试失败。\"", "\"execution.tests_passed\":\"所有测试均已通过。\"", "\"feedback.open\":\"发送本页反馈\"", "\"feedback.context\":\"上下文\"",
 				"\"editor.syntax\":\"语法高亮\"", "\"editor.imports\":\"导入\"", "\"editor.run\":\"运行\"", "\"editor.kill\":\"终止\"", "\"editor.format\":\"格式化\"", "\"editor.reset\":\"重置\"",
 			},
 			absent: []string{
-				"\"tour.list_heading\":\"Welcome to a tour of Go\"", "\"toc.title\":\"Table of Contents\"", "\"execution.waiting\":\"Waiting for remote server...\"", "\"execution.exited\":\"Program exited\"", "\"feedback.open\":\"Send feedback about this page\"", "\"feedback.context\":\"Context\"",
+				"\"tour.list_heading\":\"Welcome to a tour of Go\"", "\"toc.title\":\"Table of Contents\"", "\"execution.waiting\":\"Waiting for remote server...\"", "\"execution.exited\":\"Program exited\"", "\"execution.vet_failed\":\"Go vet failed.\"", "\"execution.build_failed\":\"Go build failed.\"", "\"execution.communication_error\":\"Error communicating with remote server.\"", "\"execution.test_failed\":\"{count} test failed.\"", "\"execution.tests_failed\":\"{count} tests failed.\"", "\"execution.tests_passed\":\"All tests passed.\"", "\"feedback.open\":\"Send feedback about this page\"", "\"feedback.context\":\"Context\"",
 				"\"editor.syntax\":\"Syntax\"", "\"editor.imports\":\"Imports\"", "\"editor.run\":\"Run\"", "\"editor.kill\":\"Kill\"", "\"editor.format\":\"Format\"", "\"editor.reset\":\"Reset\"",
 			},
 		},
@@ -624,10 +624,48 @@ func TestPlaygroundUsesBootstrappedExitedMessage(t *testing.T) {
 	if !strings.Contains(text, `(m ? ': ' + m : '.')`) {
 		t.Fatal("playground changed end-event status/reason formatting")
 	}
-	for _, message := range []string{"Go vet failed.", "Go build failed.", "Error communicating with remote server."} {
-		if !strings.Contains(text, message) {
-			t.Errorf("playground unexpectedly changed deferred HTTPTransport message %q", message)
+	httpTransportStart := strings.Index(text, "function HTTPTransport")
+	socketTransportStart := strings.Index(text, "function SocketTransport")
+	if httpTransportStart < 0 || socketTransportStart < 0 || socketTransportStart <= httpTransportStart {
+		t.Fatal("playground does not contain the expected HTTPTransport boundary")
+	}
+	httpTransport := text[httpTransportStart:socketTransportStart]
+	for _, key := range []string{"execution.vet_failed", "execution.build_failed", "execution.communication_error", "execution.test_failed", "execution.tests_failed", "execution.tests_passed"} {
+		if !strings.Contains(httpTransport, `window.__tourUIMessages['`+key+`']`) {
+			t.Errorf("playground does not read %q from the shared UI messages", key)
 		}
+	}
+	for _, message := range []string{"Go vet failed.", "Go build failed.", "Error communicating with remote server.", "All tests passed.", " test failed."} {
+		if strings.Contains(httpTransport, message) {
+			t.Errorf("playground still hard-codes runtime message %q", message)
+		}
+	}
+	for _, want := range []string{`'\n' + window.__tourUIMessages['execution.vet_failed'] + '\n\n'`, `testsFailed == 1`, `execution.test_failed`, `execution.tests_failed`} {
+		if !strings.Contains(httpTransport, want) {
+			t.Errorf("playground changed required runtime formatting or plural branch %q", want)
+		}
+	}
+}
+
+func TestChineseHomeProjectCardUsesTourTitle(t *testing.T) {
+	catalog, err := ui.Load("zh-CN")
+	if err != nil {
+		t.Fatal(err)
+	}
+	metadata, err := loadSiteMetadata(contentTour)
+	if err != nil {
+		t.Fatal(err)
+	}
+	home, err := renderHome(catalog, metadata)
+	if err != nil {
+		t.Fatal(err)
+	}
+	text := string(home)
+	if !strings.Contains(text, "<h3>Go 语言之旅</h3>") {
+		t.Fatal("Chinese homepage project card does not use tour.title")
+	}
+	if strings.Contains(text, "<h3>A Tour of Go</h3>") {
+		t.Fatal("Chinese homepage project card still hard-codes A Tour of Go")
 	}
 }
 

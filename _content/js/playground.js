@@ -66,23 +66,19 @@ function HTTPTransport(enableVet) {
     output({ Kind: 'start' });
     if (vetErrors !== '') {
       output({ Kind: 'stderr', Body: vetErrors });
-      output({ Kind: 'system', Body: '\nGo vet failed.\n\n' });
+      output({ Kind: 'system', Body: '\n' + window.__tourUIMessages['execution.vet_failed'] + '\n\n' });
     }
     function next() {
       if (!events || events.length === 0) {
         if (isTest) {
           if (testsFailed > 0) {
-            output({
-              Kind: 'system',
-              Body:
-                '\n' +
-                testsFailed +
-                ' test' +
-                (testsFailed > 1 ? 's' : '') +
-                ' failed.',
-            });
+            if (testsFailed == 1) {
+              output({ Kind: 'system', Body: '\n' + window.__tourUIMessages['execution.test_failed'].replace('{count}', testsFailed) });
+            } else {
+              output({ Kind: 'system', Body: '\n' + window.__tourUIMessages['execution.tests_failed'].replace('{count}', testsFailed) });
+            }
           } else {
-            output({ Kind: 'system', Body: '\nAll tests passed.' });
+            output({ Kind: 'system', Body: '\n' + window.__tourUIMessages['execution.tests_passed'] });
           }
         } else {
           if (status > 0) {
@@ -126,7 +122,7 @@ function HTTPTransport(enableVet) {
   function buildFailed(output, msg) {
     output({ Kind: 'start' });
     output({ Kind: 'stderr', Body: msg });
-    output({ Kind: 'system', Body: '\nGo build failed.' });
+    output({ Kind: 'system', Body: '\n' + window.__tourUIMessages['execution.build_failed'] });
   }
 
   var seq = 0;
@@ -155,7 +151,7 @@ function HTTPTransport(enableVet) {
           playing = playback(output, data);
         },
         error: function() {
-          error(output, 'Error communicating with remote server.');
+          error(output, window.__tourUIMessages['execution.communication_error']);
         },
       });
       return {

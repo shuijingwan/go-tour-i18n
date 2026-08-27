@@ -14,7 +14,7 @@ func TestLoadEmbeddedCatalogs(t *testing.T) {
 		if err != nil {
 			t.Fatalf("Load(%q): %v", locale, err)
 		}
-		if got, want := len(catalog.Messages), 85; got != want {
+		if got, want := len(catalog.Messages), 88; got != want {
 			t.Fatalf("Load(%q) message count = %d, want %d", locale, got, want)
 		}
 	}
@@ -32,7 +32,7 @@ func TestJapaneseCatalogMatchesEnglishSource(t *testing.T) {
 	if japanese.HTMLLang != "ja-JP" {
 		t.Fatalf("ja-JP HTMLLang = %q, want ja-JP", japanese.HTMLLang)
 	}
-	if got, want := len(japanese.Messages), 85; got != want {
+	if got, want := len(japanese.Messages), 88; got != want {
 		t.Fatalf("ja-JP message count = %d, want %d", got, want)
 	}
 	if err := validateCoverage(source, japanese); err != nil {
