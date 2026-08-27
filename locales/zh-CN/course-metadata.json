@@ -314,15 +314,15 @@
     {
       "page_id": "flowcontrol/1",
       "route": "/flowcontrol/1",
-      "description": "系统介绍 Go 唯一的循环结构 for，包括初始化语句、条件表达式、后置语句的执行顺序、作用域和括号规则。",
-      "source_sha256": "c1169da4fac9516ce733f1a4439d4181c5c42635c9839625d6f82dd8e4951042",
-      "target_sha256": "5e9cf1482c06c2cd8e04a4a13377bb73998490084ab072a10b5adec3507a3a59",
+      "description": "介绍 Go 唯一的循环结构 for，说明初始化语句、条件表达式和后置语句的执行时机、变量作用域、终止条件以及括号与花括号规则。",
+      "source_sha256": "c6cd458bda99bffc7b753e122c56575a59508586054180be1f8d7bb1fe2391df",
+      "target_sha256": "c9b6373609d48d1fc91be5cd3b544e783069105ab62bbb77520eb76189d835ad",
       "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
       "generation": {
         "provider": "codex",
         "model": "gpt-5.6-sol-high",
         "prompt_version": "course-seo-description-v1",
-        "generated_at": "2026-08-25T15:28:02Z"
+        "generated_at": "2026-08-27T06:39:19Z"
       }
     },
     {
@@ -1070,15 +1070,15 @@
     {
       "page_id": "methods/14",
       "route": "/methods/14",
-      "description": "介绍不指定任何方法的空接口，它可以保存任意类型的值，常用于处理具体类型尚不明确的数据。",
-      "source_sha256": "f85eea0b014a1f885077243bef53d3b38d8f06120b49d257ada1d66f59e80d96",
-      "target_sha256": "87a0d9942dfa6a3551c605b30e68c5cd3b62271e99e1c016206809129f5b01ef",
+      "description": "介绍零方法的空接口可保存任意类型值，说明 any 是 interface{} 的完全等价别名，并展示其处理未知类型值及 fmt.Print 参数的用途。",
+      "source_sha256": "7a09a7654c8b6ac6d96a1a8ddaafac368782f89ec2e6e61f323d40eb01cbf750",
+      "target_sha256": "e8b423ab945184b032614eef0c2d7fede932667e1896f55e0e6fa70e8d9fd1bc",
       "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
       "generation": {
         "provider": "codex",
         "model": "gpt-5.6-sol-high",
         "prompt_version": "course-seo-description-v1",
-        "generated_at": "2026-08-25T15:28:02Z"
+        "generated_at": "2026-08-27T06:39:19Z"
       }
     },
     {
@@ -1168,15 +1168,15 @@
     {
       "page_id": "methods/21",
       "route": "/methods/21",
-      "description": "介绍表示数据流读取端的 io.Reader 接口及 Read 方法，说明如何获得读取字节数和错误，并用 io.EOF 判断流结束。",
+      "description": "介绍表示数据流读取端的 io.Reader 接口与 Read 方法，说明返回的读取字节数、错误值和流结束时的 io.EOF，并演示 strings.Reader 的分块读取。",
       "source_sha256": "120c3fc9f67579cf78605cf0c9f006fc28d3569043a08079ddb645ca9c3fc3b1",
-      "target_sha256": "d09d6f854da0e6b08f44d56ef843915d2e5988a7fb165e71542155094ec37af5",
+      "target_sha256": "59aba9b26cc40a1fd9980063d00d0f63e0ab4a77424f91e44b2d298f0ef03b26",
       "glossary_sha256": "0f8c5619ed8288ae9df2a380b2b98d34df1e05d36e846517de36f0b75f218e96",
       "generation": {
         "provider": "codex",
         "model": "gpt-5.6-sol-high",
         "prompt_version": "course-seo-description-v1",
-        "generated_at": "2026-08-25T15:28:02Z"
+        "generated_at": "2026-08-27T06:39:19Z"
       }
     },
     {
