@@ -1,0 +1,17 @@
+* The empty interface
+
+The interface type that specifies zero methods is known as the ⟪GTI18N_7a09a765_000001⟫empty_interface⟪GTI18N_7a09a765_000002⟫:
+
+⟪GTI18N_7a09a765_000003⟫
+
+An empty interface may hold values of any type.
+(Every type implements at least zero methods.)
+
+⟪GTI18N_7a09a765_000004⟫any⟪GTI18N_7a09a765_000005⟫ is an alias for ⟪GTI18N_7a09a765_000006⟫interface{}⟪GTI18N_7a09a765_000007⟫, and the two are completely
+equivalent.
+
+Empty interfaces are used by code that handles values of unknown type.
+For example, ⟪GTI18N_7a09a765_000008⟫fmt.Print⟪GTI18N_7a09a765_000009⟫ takes any number of arguments of type ⟪GTI18N_7a09a765_000010⟫any⟪GTI18N_7a09a765_000011⟫.
+
+⟪GTI18N_7a09a765_000012⟫
+
