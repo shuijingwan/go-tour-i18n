@@ -8,7 +8,7 @@ func main() {
 	s := []int{2, 3, 5, 7, 11, 13}
 	printSlice(s)
 
-	// 对该切片重新切片，使其长度为 0。
+	// 将该切片重新切片，使其长度为 0。
 	s = s[:0]
 	printSlice(s)
 
@@ -16,7 +16,7 @@ func main() {
 	s = s[:4]
 	printSlice(s)
 
-	// 丢弃它的前两个值。
+	// 去掉前两个元素。
 	s = s[2:]
 	printSlice(s)
 }
