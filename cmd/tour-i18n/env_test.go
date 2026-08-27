@@ -1,10 +1,15 @@
 package main
 
 import (
+	"io"
+	"net/http"
 	"os"
 	"path/filepath"
 	"strings"
 	"testing"
+
+	"github.com/shuijingwan/go-tour-i18n/internal/i18n"
+	"github.com/shuijingwan/go-tour-i18n/internal/tour"
 )
 
 func TestLoadProjectEnvMissingFile(t *testing.T) {
@@ -87,5 +92,54 @@ func TestBuildLocaleCommandRequiresCompleteWorkflow(t *testing.T) {
 	}
 	if _, statErr := os.Stat(output); !os.IsNotExist(statErr) {
 		t.Fatalf("blocked CLI projection created output: %v", statErr)
+	}
+}
+
+func TestCompletePreviewHandlerUsesProductionStyleSurface(t *testing.T) {
+	root, catalog := publishTestCatalog(t)
+	projection, err := i18n.BuildLocaleProjection(root, catalog, "zh-CN", filepath.Join(t.TempDir(), "projection"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	handler, err := tour.NewPreviewHandler(os.DirFS(projection.ContentDir), "zh-CN")
+	if err != nil {
+		t.Fatal(err)
+	}
+	server := newIPv4TestServer(t, handler)
+
+	get := func(path string) (int, string, string) {
+		t.Helper()
+		response, err := http.Get(server.URL + path)
+		if err != nil {
+			t.Fatal(err)
+		}
+		defer response.Body.Close()
+		body, err := io.ReadAll(response.Body)
+		if err != nil {
+			t.Fatal(err)
+		}
+		return response.StatusCode, response.Header.Get("Content-Type"), string(body)
+	}
+	if status, contentType, body := get("/robots.txt"); status != http.StatusOK || contentType != "text/plain; charset=utf-8" || !strings.Contains(body, "Sitemap: https://go-dev.shuijingwanwq.com/sitemap.xml") || strings.Contains(body, "<!doctype html") {
+		t.Fatalf("robots = status=%d content-type=%q body=%q", status, contentType, body)
+	}
+	if status, contentType, body := get("/sitemap.xml"); status != http.StatusOK || contentType != "application/xml; charset=utf-8" || !strings.Contains(body, "<loc>https://go-dev.shuijingwanwq.com/tour/welcome/1</loc>") || strings.Contains(body, "<!doctype html") {
+		t.Fatalf("sitemap = status=%d content-type=%q body=%q", status, contentType, body)
+	}
+	if status, _, body := get("/"); status != http.StatusOK || !strings.Contains(body, `<meta name="description" content="这是一个由社区维护的 Go 官方学习内容翻译项目。当前首先提供简体中文，后续可自然扩展至其他语言和其他 Go 内容。">`) || !strings.Contains(body, `<link rel="canonical" href="https://go-dev.shuijingwanwq.com/">`) {
+		t.Fatalf("homepage = status=%d body=%q", status, body)
+	}
+	if status, _, body := get("/tour/script.js"); status != http.StatusOK || !strings.Contains(body, "window.transport = HTTPTransport();") || !strings.Contains(body, `window.socketAddr = "";`) || !strings.Contains(body, `window.playgroundBaseURL = "";`) || strings.Contains(body, "window.transport = SocketTransport();") || strings.Contains(body, "https://play.go-dev.shuijingwanwq.com:8443") {
+		t.Fatalf("preview script is not HTTPTransport: status=%d body=%q", status, body)
+	}
+	for _, path := range []string{"/socket", "/socket/", "/_/compile", "/_/fmt"} {
+		status, _, body := get(path)
+		if path == "/socket" || path == "/socket/" {
+			if status != http.StatusNotFound {
+				t.Errorf("GET %s: status=%d body=%q, want 404", path, status, body)
+			}
+		} else if status == http.StatusOK || strings.Contains(body, "<!doctype html") {
+			t.Errorf("GET %s did not reach HTTP Playground path: status=%d body=%q", path, status, body)
+		}
 	}
 }

@@ -16,6 +16,8 @@ Surface Review：
 
 两个 gate 必须都通过。若 Surface Review 发现 candidate 本身的误译、漏译或术语问题，必须创建 revision batch，并重新走 automatic validation、Quality Check、Final Review 和 promotion；不得直接改 canonical candidate 来绕过 A-only gate。
 
+完整 locale preview（`tour-i18n preview --locale <locale>`）是用于本阶段的 production-style Surface Review preview：它使用 HTTP Playground transport、正式 public canonical identity、robots 与 sitemap，但不注入 production analytics 或广告。带 `--id` 的 candidate preview 保持本地 SocketTransport 开发语义，不替代完整 locale preview。
+
 ## 正式术语基线
 
 `locales/<locale>/glossary.yaml` 是该 locale 全站的正式术语权威来源。审核 TranslationUnit 之外的公共 UI、首页、列表、metadata、runtime message 与 SEO 文案时，同样检查 glossary 的 `mandatory`、`preferred`、`forbidden` 和 `keep` 决策。

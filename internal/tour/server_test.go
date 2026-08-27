@@ -201,11 +201,11 @@ func TestRenderedAssetURLsFollowLocaleAndEnvironment(t *testing.T) {
 
 func TestNonSharedRuntimePathsRemainLanguageOrigin(t *testing.T) {
 	for path, want := range map[string]string{
-		"tour/static/js/app.js":            "templateUrl: '/tour/static/partials/list.html'",
-		"tour/static/js/directives.js":     "templateUrl: '/tour/static/partials/toc.html'",
-		"tour/static/js/services.js":       "$http.get('/tour/lesson/')",
-		"tour/template/index.tmpl":          "{{template \"footer\" .}}",
-		"tour/concurrency.article":         ".image /tour/static/img/tree.png",
+		"tour/static/js/app.js":        "templateUrl: '/tour/static/partials/list.html'",
+		"tour/static/js/directives.js": "templateUrl: '/tour/static/partials/toc.html'",
+		"tour/static/js/services.js":   "$http.get('/tour/lesson/')",
+		"tour/template/index.tmpl":     "{{template \"footer\" .}}",
+		"tour/concurrency.article":     ".image /tour/static/img/tree.png",
 	} {
 		data, err := fs.ReadFile(contentTour, path)
 		if err != nil {
@@ -666,6 +666,37 @@ func TestChineseHomeProjectCardUsesTourTitle(t *testing.T) {
 	}
 	if strings.Contains(text, "<h3>A Tour of Go</h3>") {
 		t.Fatal("Chinese homepage project card still hard-codes A Tour of Go")
+	}
+}
+
+func TestRenderHomeUsesLocaleSEOIdentity(t *testing.T) {
+	metadata, err := loadSiteMetadata(contentTour)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, test := range []struct {
+		locale, description, canonical, otherCanonical string
+	}{
+		{"zh-CN", "这是一个由社区维护的 Go 官方学习内容翻译项目。当前首先提供简体中文，后续可自然扩展至其他语言和其他 Go 内容。", "https://go-dev.shuijingwanwq.com/", "https://ja-go-dev.shuijingwanwq.com/"},
+		{"ja-JP", "Go の公式学習コンテンツをコミュニティで翻訳・維持するプロジェクトです。最初に利用できる言語は簡体字中国語で、今後さらに多くの言語や Go コンテンツに対応できる構成になっています。", "https://ja-go-dev.shuijingwanwq.com/", "https://go-dev.shuijingwanwq.com/"},
+	} {
+		t.Run(test.locale, func(t *testing.T) {
+			catalog, err := ui.Load(test.locale)
+			if err != nil {
+				t.Fatal(err)
+			}
+			home, err := renderHome(catalog, metadata)
+			if err != nil {
+				t.Fatal(err)
+			}
+			text := string(home)
+			if !strings.Contains(text, `<meta name="description" content="`+test.description+`">`) {
+				t.Errorf("homepage description does not use locale UI catalog: %s", text)
+			}
+			if !strings.Contains(text, `<link rel="canonical" href="`+test.canonical+`">`) || strings.Contains(text, `<link rel="canonical" href="`+test.otherCanonical+`">`) {
+				t.Errorf("homepage canonical has wrong locale identity: %s", text)
+			}
+		})
 	}
 }
 

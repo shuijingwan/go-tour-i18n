@@ -4,9 +4,13 @@ import (
 	"bytes"
 	"io"
 	"log"
+	"net"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
+	"os"
+	"os/exec"
+	"path/filepath"
 	"strings"
 	"sync/atomic"
 	"testing"
@@ -101,6 +105,104 @@ func TestProductionHandlerUsesHTTPTransportAndServesTour(t *testing.T) {
 	}
 	if strings.Contains(script, `window.playgroundBaseURL = "https://go.dev`) {
 		t.Fatal("production script still injects the server-side Playground URL")
+	}
+}
+
+func TestHTTPTransportRuntimeLocalizationInBrowser(t *testing.T) {
+	if os.Getenv("GO_TOUR_RUN_BROWSER_TESTS") != "1" {
+		t.Skip("set GO_TOUR_RUN_BROWSER_TESTS=1 to run the Chrome integration test")
+	}
+	chrome, err := exec.LookPath("google-chrome")
+	if err != nil {
+		t.Skip("google-chrome is not installed")
+	}
+	upstream := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPost || r.URL.Path != "/compile" || r.ParseForm() != nil {
+			http.Error(w, "unexpected request", http.StatusBadRequest)
+			return
+		}
+		body := r.Form.Get("body")
+		if strings.Contains(body, "runtime-communication-error") {
+			http.Error(w, "controlled upstream failure", http.StatusInternalServerError)
+			return
+		}
+		w.Header().Set("Content-Type", "application/json")
+		switch {
+		case strings.Contains(body, "runtime-build-failure"):
+			_, _ = io.WriteString(w, `{"Errors":"controlled build failure"}`)
+		case strings.Contains(body, "runtime-vet-failure"):
+			_, _ = io.WriteString(w, `{"VetErrors":"controlled vet failure","Events":[]}`)
+		case strings.Contains(body, "runtime-test-one"):
+			_, _ = io.WriteString(w, `{"IsTest":true,"TestsFailed":1,"Events":[]}`)
+		case strings.Contains(body, "runtime-test-many"):
+			_, _ = io.WriteString(w, `{"IsTest":true,"TestsFailed":2,"Events":[]}`)
+		case strings.Contains(body, "runtime-test-pass"):
+			_, _ = io.WriteString(w, `{"IsTest":true,"TestsFailed":0,"Events":[]}`)
+		default:
+			http.Error(w, "unexpected program", http.StatusBadRequest)
+		}
+	}))
+	defer upstream.Close()
+	proxy := mustPlaygroundProxy(t, upstream.URL)
+	listener, err := net.Listen("tcp4", "127.0.0.1:0")
+	if err != nil {
+		t.Fatal(err)
+	}
+	baseURL := "http://" + listener.Addr().String()
+	handler, _, err := newTourHandlerWithPlaygroundBase(website.TourOnly(), "zh-CN", proxy, baseURL+"/_", false, false)
+	if err != nil {
+		t.Fatal(err)
+	}
+	const route = "/tour/basics/1"
+	instrumented := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path != route {
+			handler.ServeHTTP(w, r)
+			return
+		}
+		recorder := httptest.NewRecorder()
+		handler.ServeHTTP(recorder, r)
+		for key, values := range recorder.Header() {
+			for _, value := range values {
+				w.Header().Add(key, value)
+			}
+		}
+		w.WriteHeader(recorder.Code)
+		script := `<script>
+(function waitForRuntime() {
+  if (document.documentElement.getAttribute('data-tour-rendered-route') !== '` + route + `' || !document.querySelector('#run') || !document.querySelector('.CodeMirror')) {
+    setTimeout(waitForRuntime, 20); return;
+  }
+  var cases = [['runtime-build-failure', 'Go 构建失败。'], ['runtime-vet-failure', 'Go vet 检查失败。'], ['runtime-communication-error', '与远程服务器通信时出错。'], ['runtime-test-one', '1 个测试失败。'], ['runtime-test-many', '2 个测试失败。'], ['runtime-test-pass', '所有测试均已通过。']];
+  var index = 0;
+  function runNext() {
+    if (index === cases.length) { document.documentElement.setAttribute('data-tour-runtime-i18n', 'PASS'); return; }
+    var item = cases[index++];
+    document.querySelector('.CodeMirror').CodeMirror.setValue('package main\n// ' + item[0] + '\nfunc main() {}\n');
+    setTimeout(function() {
+      document.querySelector('#run').click();
+      (function waitForOutput() {
+        var output = document.querySelector('.output.active');
+        if (output && output.textContent.indexOf(item[1]) !== -1) { runNext(); return; }
+        setTimeout(waitForOutput, 20);
+      }());
+    }, 20);
+  }
+  runNext();
+}());
+</script>`
+		_, _ = w.Write(bytes.Replace(recorder.Body.Bytes(), []byte("</body>"), []byte(script+"</body>"), 1))
+	})
+	server := httptest.NewUnstartedServer(instrumented)
+	server.Listener = listener
+	server.Start()
+	defer server.Close()
+	command := exec.Command(chrome, "--headless=new", "--no-sandbox", "--disable-gpu", "--disable-dev-shm-usage", "--disable-breakpad", "--disable-crash-reporter", "--disable-background-networking", "--disable-default-apps", "--disable-extensions", "--no-first-run", "--noerrdialogs", "--user-data-dir="+filepath.Join(t.TempDir(), "chrome-profile"), "--run-all-compositor-stages-before-draw", "--virtual-time-budget=12000", "--dump-dom", server.URL+route)
+	output, err := command.CombinedOutput()
+	if err != nil {
+		t.Fatalf("google-chrome: %v\n%s", err, output)
+	}
+	if !bytes.Contains(output, []byte(`data-tour-runtime-i18n="PASS"`)) {
+		t.Fatalf("HTTPTransport runtime localization failed:\n%s", output)
 	}
 }
 

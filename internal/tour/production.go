@@ -48,6 +48,27 @@ func NewProductionHandler(content fs.FS, locale string) (http.Handler, error) {
 	return handler, nil
 }
 
+// NewPreviewHandler creates the complete-locale preview handler used for
+// rendered surface acceptance. It uses HTTPTransport and public SEO identity,
+// while omitting prerendered pages, analytics, and advertising runtime
+// configuration. Its browser Playground requests stay same-origin so this
+// handler can proxy them to the real Playground without requiring localhost in
+// the production proxy's Origin allowlist.
+func NewPreviewHandler(content fs.FS, locale string) (http.Handler, error) {
+	proxy, err := newPlaygroundProxy(productionPlaygroundURL)
+	if err != nil {
+		return nil, err
+	}
+	handler, documents, err := newTourHandlerWithPlaygroundBase(content, locale, proxy, "", false, false)
+	if err != nil {
+		return nil, err
+	}
+	if !documents.courseMetadataComplete {
+		return nil, fmt.Errorf("formal projected course SEO is missing")
+	}
+	return handler, nil
+}
+
 // PrerenderSource is the private build server and its canonical course routes.
 // It deliberately omits runtime analytics and advertising configuration so a
 // publish cannot freeze third-party DOM into the release artifact.
@@ -76,6 +97,10 @@ func newProductionHandler(content fs.FS, locale string, proxy *playgroundProxy) 
 }
 
 func newTourHandler(content fs.FS, locale string, proxy *playgroundProxy, requirePrerender, includeRuntimeHead bool) (http.Handler, seoDocuments, error) {
+	return newTourHandlerWithPlaygroundBase(content, locale, proxy, productionPlaygroundBaseURL, requirePrerender, includeRuntimeHead)
+}
+
+func newTourHandlerWithPlaygroundBase(content fs.FS, locale string, proxy *playgroundProxy, playgroundBaseURL string, requirePrerender, includeRuntimeHead bool) (http.Handler, seoDocuments, error) {
 	if proxy == nil {
 		return nil, seoDocuments{}, fmt.Errorf("Playground proxy is required")
 	}
@@ -84,7 +109,7 @@ func newTourHandler(content fs.FS, locale string, proxy *playgroundProxy, requir
 	}
 
 	mux := http.NewServeMux()
-	documents, err := registerHandlersLocaleWithRuntimeHead(mux, locale, productionPlaygroundBaseURL, includeRuntimeHead)
+	documents, err := registerHandlersLocaleWithRuntimeHead(mux, locale, playgroundBaseURL, includeRuntimeHead)
 	if err != nil {
 		return nil, seoDocuments{}, err
 	}
@@ -127,9 +152,11 @@ func notFound(w http.ResponseWriter, r *http.Request) {
 // 645042eb697eaf69e33a9af00c6b5b3fffdead5a. Execution remains at the remote
 // Playground; this package only performs bounded HTTP conversion.
 type playgroundCompileResponse struct {
-	Errors    string
-	Events    []playgroundEvent
-	VetErrors string
+	Errors      string
+	Events      []playgroundEvent
+	VetErrors   string
+	IsTest      bool
+	TestsFailed int
 }
 
 type playgroundEvent struct {

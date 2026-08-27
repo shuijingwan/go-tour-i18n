@@ -3,6 +3,8 @@
 <head>
 {{.AnalyticsHTML}}{{.AdHTML}}    <meta charset="utf-8">
     <title>{{ui "site.browser_title"}}</title>
+    <meta name="description" content="{{ui "site.intro"}}">
+    <link rel="canonical" href="{{.SEOOrigin}}/">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{asset "tour/static/css/app.css"}}">
     <link rel="icon" href="{{asset "images/site-logo-32.png"}}" type="image/png" sizes="32x32">

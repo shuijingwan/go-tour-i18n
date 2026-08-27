@@ -6,6 +6,8 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"net"
+	"net/http"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -13,6 +15,7 @@ import (
 
 	"github.com/joho/godotenv"
 	"github.com/shuijingwan/go-tour-i18n/internal/i18n"
+	"github.com/shuijingwan/go-tour-i18n/internal/tour"
 )
 
 func main() {
@@ -570,36 +573,45 @@ func previewCandidate(root string, catalog *i18n.Catalog, args []string) error {
 	if err != nil {
 		return err
 	}
-	var preview *i18n.PreviewContent
 	if options.ID != "" {
 		tempRoot := filepath.Join(os.TempDir(), "go-tour-i18n-preview", options.Locale, strings.ReplaceAll(options.ID, "/", "-"))
-		preview, err = i18n.BuildCandidatePreview(root, catalog, options.ID, options.Locale, tempRoot)
+		preview, err := i18n.BuildCandidatePreview(root, catalog, options.ID, options.Locale, tempRoot)
 		if err != nil {
 			return err
 		}
 		fmt.Printf("preview URL: http://%s/tour/%s\n", options.HTTPAddr, options.ID)
-	} else {
-		tempRoot, err := os.MkdirTemp("", "go-tour-i18n-preview-"+strings.ReplaceAll(options.Locale, "/", "-")+"-")
-		if err != nil {
-			return fmt.Errorf("create preview directory: %w", err)
-		}
-		projection, err := i18n.BuildLocaleProjection(root, catalog, options.Locale, tempRoot)
-		if err != nil {
-			_ = os.RemoveAll(tempRoot)
-			return err
-		}
-		preview = &i18n.PreviewContent{Root: projection.Root, ContentDir: projection.ContentDir, Locale: projection.Locale}
-		fmt.Printf("local complete preview URL: http://%s/\n", options.HTTPAddr)
-		fmt.Printf("projection: locale=%s ready=%d pending=%d blocked=%d pages=%d articles=%d\n",
-			projection.Locale, projection.Ready, projection.Pending, projection.Blocked, projection.PageCount, projection.ArticleCount)
+		fmt.Printf("temporary content: %s\n", preview.ContentDir)
+		command := exec.Command("go", "run", "./tour", "-http", options.HTTPAddr, "-openbrowser=false", "-content", preview.ContentDir, "-locale", options.Locale)
+		command.Dir = root
+		command.Stdout = os.Stdout
+		command.Stderr = os.Stderr
+		command.Stdin = os.Stdin
+		return command.Run()
 	}
-	fmt.Printf("temporary content: %s\n", preview.ContentDir)
-	command := exec.Command("go", "run", "./tour", "-http", options.HTTPAddr, "-openbrowser=false", "-content", preview.ContentDir, "-locale", options.Locale)
-	command.Dir = root
-	command.Stdout = os.Stdout
-	command.Stderr = os.Stderr
-	command.Stdin = os.Stdin
-	return command.Run()
+
+	tempRoot, err := os.MkdirTemp("", "go-tour-i18n-preview-"+strings.ReplaceAll(options.Locale, "/", "-")+"-")
+	if err != nil {
+		return fmt.Errorf("create preview directory: %w", err)
+	}
+	projection, err := i18n.BuildLocaleProjection(root, catalog, options.Locale, tempRoot)
+	if err != nil {
+		_ = os.RemoveAll(tempRoot)
+		return err
+	}
+	handler, err := tour.NewPreviewHandler(os.DirFS(projection.ContentDir), projection.Locale)
+	if err != nil {
+		return err
+	}
+	listener, err := net.Listen("tcp", options.HTTPAddr)
+	if err != nil {
+		return err
+	}
+	defer listener.Close()
+	fmt.Printf("local complete preview URL: http://%s/\n", listener.Addr())
+	fmt.Printf("projection: locale=%s ready=%d pending=%d blocked=%d pages=%d articles=%d\n",
+		projection.Locale, projection.Ready, projection.Pending, projection.Blocked, projection.PageCount, projection.ArticleCount)
+	fmt.Printf("temporary content: %s\n", projection.ContentDir)
+	return (&http.Server{Handler: handler}).Serve(listener)
 }
 
 type previewOptions struct {
