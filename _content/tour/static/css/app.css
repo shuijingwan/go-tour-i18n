@@ -699,6 +699,7 @@ a#run, a#kill {
 .site-hero h1 {
     color: #fff;
     font-size: 2em;
+    line-height: 1.25;
 }
 .site-hero p {
     max-width: 760px;
@@ -778,6 +779,10 @@ a#run, a#kill {
     color: #f0f1f2;
 }
 @media (max-width: 600px) {
+    .site-header {
+        height: auto;
+        min-height: 48px;
+    }
     .site-header .site-logo {
         margin-right: 0.75rem;
     }
@@ -788,7 +793,7 @@ a#run, a#kill {
         font-size: 0.9em;
         white-space: normal;
         overflow-wrap: anywhere;
-        line-height: 20px;
+        line-height: 1.25;
     }
     .site-hero {
         padding: 24px;
