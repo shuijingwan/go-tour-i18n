@@ -45,4 +45,4 @@ go run -mod=readonly ./cmd/tour-i18n upstream preview \
 
 `catalog write` 只在现有页面能够安全一一对应时更新允许变化的目录字段，不负责自动迁移语言状态，不创建新 ID，也不删除旧状态。出现 `added`、`removed` 或 `ambiguous` 时会停止并提示先查看预览。
 
-当前尚未发生第二次 upstream 同步，固定上游 commit 仍未改变。
+2026-08-27 已完成第二次 upstream 同步至 `b3fc6537086f09e88cb3c1ecd09bd47c31c54241`。`methods/14` 的内容修订曾因保护结构变化在 preview 中标为 `ambiguous`；人工确认其仍为同一 Section 后保留原持久 ID。同步没有新增、删除、移动或重编号页面。

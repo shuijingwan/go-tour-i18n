@@ -253,8 +253,8 @@ zh-CN 与 ja-JP 均已正式上线：<https://go-dev.shuijingwanwq.com/>、<http
 
 - 官方仓库：<https://github.com/golang/website.git>
 - 分支：`master`
-- 固定 commit：`645042eb697eaf69e33a9af00c6b5b3fffdead5a`
-- upstream commit 时间：`2026-08-20 13:56:11`（北京时间；`2026-08-20T05:56:11Z`）
+- 固定 commit：`b3fc6537086f09e88cb3c1ecd09bd47c31c54241`
+- upstream commit 时间：`2026-08-27 05:55:26`（北京时间；`2026-08-26T21:55:26Z`）
 - 初始验证环境：`go1.26.0 linux/amd64`
 
 同步原则见 [UPSTREAM.md](UPSTREAM.md)，逐文件来源、模式和 SHA-256 见 [UPSTREAM_MANIFEST.tsv](UPSTREAM_MANIFEST.tsv)。

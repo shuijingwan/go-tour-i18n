@@ -9,7 +9,7 @@
 - 仓库 URL：<https://github.com/golang/website.git>
 - 示例本地只读目录：`$HOME/code/go-website-upstream`（可按实际环境调整）
 - 分支：`master`
-- 固定 commit：`645042eb697eaf69e33a9af00c6b5b3fffdead5a`
+- 固定 commit：`b3fc6537086f09e88cb3c1ecd09bd47c31c54241`
 - Go 版本：`go1.26.0 linux/amd64`
 - 首次确认日期：2026-08-02
 - 首次 Tour 范围源码导入日期：2026-08-02
@@ -28,7 +28,7 @@
 - 1 个 `.image` 引用；
 - 2 个 `welcome.article` 中的 `#appengine:` 条件页面，不计入 101 个 standalone 页面。
 
-[`data/tour-pages.tsv`](data/tour-pages.tsv) 基于上述固定 commit 生成。每个 standalone 页面都记录确定性的完整页面源 `source_sha256`，用于发现候选译文所对应英文页面是否已经变化。两个条件页面继续单独记录在 [`data/tour-conditional-pages.tsv`](data/tour-conditional-pages.tsv)。建立这些目录不是第二次上游同步，固定上游 commit 没有变化。
+[`data/tour-pages.tsv`](data/tour-pages.tsv) 基于上述固定 commit 生成。每个 standalone 页面都记录确定性的完整页面源 `source_sha256`，用于发现候选译文所对应英文页面是否已经变化。两个条件页面继续单独记录在 [`data/tour-conditional-pages.tsv`](data/tour-conditional-pages.tsv)。
 
 [`data/tour-examples.tsv`](data/tour-examples.tsv) 记录当前正式课程经 `.play` 实际引用的唯一 Go 示例。example 的 `source_sha256` 由当前本地完整 `.go` 文件现场计算，并与 `UPSTREAM_MANIFEST.tsv` 的 `local_sha256` 交叉校验；前者表示 translation source version，后者表示固定上游导入完整性。当前仅建立 source/catalog 识别，示例尚未进入翻译、状态或发布流程。
 
@@ -61,7 +61,13 @@ go run -mod=readonly ./cmd/tour-i18n upstream preview \
   --source-root /path/to/website
 ```
 
-本次只是建立预览与身份保护能力，仍不是第二次 upstream 同步。
+### 2026-08-27 同步记录
+
+- 基线从 `645042eb697eaf69e33a9af00c6b5b3fffdead5a` 更新至 `b3fc6537086f09e88cb3c1ecd09bd47c31c54241`。
+- Tour 实际变更仅为 `flowcontrol.article` 的 init statement 措辞修订，以及 `methods.article` 的 `any` / `interface{}` 说明增补；93 个引用 Example 与两个条件源均未变化。
+- preview 自动将 `flowcontrol/1` 判为 `content_changed`。`methods/14` 因保护结构变化被判为 `ambiguous`，经人工核对其 article、section、route、标题和 `.play` 引用均未变，明确映射回原持久 ID；未创建或重编号 page ID。
+- 手工复制确认的 Tour source 后已运行 `catalog write --allow-source-change`，最终 preview 为 Page `unchanged=103`、Example `unchanged=93`、conditional `unchanged=2`。
+- `flowcontrol/1` 与 `methods/14` 的既有译文 source hash 已过期。本轮未执行 TranslationUnit 翻译、状态提升或 Locale Surface Review；生产 release 仍使用旧基线，待后续 stale retranslation 完成后再发布。
 
 ## 基线验证命令
 

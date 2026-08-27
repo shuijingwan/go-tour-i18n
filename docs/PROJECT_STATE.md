@@ -1,8 +1,14 @@
 # 项目状态
 
-更新时间：2026-08-24（北京时间）
+更新时间：2026-08-27（北京时间）
 
 ## 基线与架构
+
+### 2026-08-27 upstream source 同步
+
+- upstream 基线已由 `645042eb697eaf69e33a9af00c6b5b3fffdead5a` 更新至 `master@b3fc6537086f09e88cb3c1ecd09bd47c31c54241`。Tour 实际仅更新 `flowcontrol.article` 的 init statement 措辞，以及 `methods.article` 中 `any` 是 `interface{}` 别名的说明；93 个引用 Example 与两个条件源无变化。
+- `flowcontrol/1` 自动保持身份；`methods/14` 因保护结构变化被 preview 标为 ambiguous，人工核对 article、section、route、标题和 `.play` 引用不变后映射回原 ID。catalog 重建后最终 preview 为 103 个 Page、93 个 Example 和 2 条条件源全部 unchanged，未新增、删除、移动或重编号 ID。
+- 本轮未翻译 TranslationUnit、未进行 Locale Surface Review、未执行 promotion 或发布。`flowcontrol/1` 与 `methods/14` 的 canonical status 保留历史 source hash，因而为 stale；现有 production release 仍使用 `645042e…`，待二者完成 stale retranslation 后再推进生产基线。
 
 ### 2026-08-24 ja-JP production 上线
 
@@ -12,7 +18,7 @@
 - Playground 已允许 `https://go-dev.shuijingwanwq.com` 与 `https://ja-go-dev.shuijingwanwq.com` 两个正式 Origin。ja-JP compile、fmt 和浏览器实际运行均已通过。
 - ja-JP sitemap 已验证 105/105，host mismatch=0、HTTP failure=0；`robots.txt` 正确指向 <https://ja-go-dev.shuijingwanwq.com/sitemap.xml>。
 
-- 官方 upstream 基线为 `golang/website` 的 `master` 分支 commit `645042eb697eaf69e33a9af00c6b5b3fffdead5a`；翻译运行时使用仓库内固定的最小 Tour 源码闭包，外部 checkout 仅用于同步与校验。
+- 官方 upstream 基线为 `golang/website` 的 `master` 分支 commit `b3fc6537086f09e88cb3c1ecd09bd47c31c54241`；翻译运行时使用仓库内固定的最小 Tour 源码闭包，外部 checkout 仅用于同步与校验。
 - 当前目录包含 103 个正式发布页面和 2 条单独保留的 `#appengine:` 条件源审计记录；两个条件 Section 去标记后同时投影为 `welcome/4`、`welcome/5`。
 - 唯一维护 CLI 是 `cmd/tour-i18n`。
 - 页面身份使用 `data/tour-pages.tsv` 中冻结的持久 `page_id`，不会以页面位置或临时语义 key 替代。
@@ -119,13 +125,13 @@
 - promotion preflight 结果为：`unit_count=122`、`page_count=103`、`example_count=19`、`changed_count=2`、`unchanged_count=120`、`review_approved_count=122`、`can_apply=true`。apply 后状态为：`status OK: 122 translation units for zh-CN (103 pages, 19 examples)`。
 - 本次真实 upstream revision 场景修复了两个 promotion 问题：历史 batch 属于旧 source revision 时，不应阻塞当前 Catalog，也绝不能 fallback 为当前 source 的 promotion evidence；stale canonical status 是“当前 source 需要重新 promotion”的合法过渡状态，只要当前 source revision 已有完整的 passed validation 和 approved review evidence，promotion 应允许原子更新 candidate/status。
 - 修复后的规则为：历史 batch 保持不可变；promotion 仅在 source metadata 与当前 Catalog revision 匹配的 batch 中选择最高 batch number；旧 source revision evidence 被保留但不参与当前 revision promotion；当前 revision 没有 evidence 时进入 MissingEvidence；stale status 仅在当前 revision 的 preflighted promotion evidence 覆盖该 unit 时允许 apply；apply 后恢复严格 `CheckStatus`。对应正式提交为 `a1112043fd82234f2c2ba91e9a119719dbc7e7f7`（`fix: 支持 upstream 变更后的重译 promotion`）。
-- 当前仓库／当前 production 的统一 workflow 状态为：translation units=122、Pages=103、eligible Examples=19、referenced Example source inventory=93、conditional source records=2、`ready=122`、`pending=0`、`blocked=0`、articles=7。93 个 Example 是被引用的 source inventory，不是 93 个需要翻译的 Example；只有当前 upstream source 含普通自然语言注释的 19 个 eligible Example 进入 locale translation/status/review/promotion workflow，其余 74 个直接继承 upstream source。
+- 2026-08-20 当时仓库／production 的统一 workflow 状态为：translation units=122、Pages=103、eligible Examples=19、referenced Example source inventory=93、conditional source records=2、`ready=122`、`pending=0`、`blocked=0`、articles=7。93 个 Example 是被引用的 source inventory，不是 93 个需要翻译的 Example；只有当前 upstream source 含普通自然语言注释的 19 个 eligible Example 进入 locale translation/status/review/promotion workflow，其余 74 个直接继承 upstream source。
 - 最终本地验收已完成：`go test ./...` 全部通过；`tour-i18n build --locale zh-CN` 输出 `ready=122 pending=0 blocked=0 pages=103 articles=7`；production publish bundle 在本地成功。其 `release.json` 为 `schema_version=2`、`upstream_commit=645042eb697eaf69e33a9af00c6b5b3fffdead5a`、`translation_units=122`、`pages=103`、`eligible_examples=19`、`articles=7`、`execution_transport=http-playground-proxy`、`execution_provider=play.golang.org`、`local_socket_enabled=false`。
 - 本次 upstream revision 与 Batch 013 的 stale retranslation 已于 2026-08-20 正式部署。当前线上 production release 为 `/data/go-tour/releases/20260820-zh-CN-6ae139c`，`current` 已原子切换至该 release；`deploy-production.sh`、service health 与公网 acceptance 均通过。当前 production workflow 为 `ready=122`、`pending=0`、`blocked=0`、`pages=103`、`eligible_examples=19`、`articles=7`，upstream 为 `645042eb697eaf69e33a9af00c6b5b3fffdead5a`。
 
 ## 完整语言正式投影与本地预览完成状态
 
-- 当前 upstream 为 `master@645042eb697eaf69e33a9af00c6b5b3fffdead5a`。
+- 当前 upstream 为 `master@b3fc6537086f09e88cb3c1ecd09bd47c31c54241`。
 - 当前仓库／当前 production 的 zh-CN workflow 状态为 `ready=122`、`pending=0`、`blocked=0`；catalog 为 103 个 published pages、19 个 eligible Example 和 2 条 conditional source records（另有 93 个 referenced Example source inventory）。
 - 已完成全部 103 页 canonical candidate、全局翻译质量审计、zh-CN 公共 UI 本地化、完整语言正式投影与完整语言本地预览。
 - `tour-i18n build --locale <locale>` 从 catalog、locale status 与 canonical ready candidate 构建完整正式投影；它拒绝 pending、blocked、缺失、额外或非 canonical candidate，不回退到英文或旧译文，也不修改 candidate、status 或 catalog。
