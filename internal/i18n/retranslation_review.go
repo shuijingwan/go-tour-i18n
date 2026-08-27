@@ -16,6 +16,27 @@ const TranslationReviewSchemaVersion = 1
 
 const DefaultRetranslationReviewBatchLimit = 20
 
+// TranslationQualityRubric is the current production rubric. Changing the
+// identifier deliberately invalidates prior review evidence for reuse.
+const TranslationQualityRubric = "translation-quality/v1"
+
+type RetranslationReviewScopeReason string
+
+const (
+	ReviewScopeReasonMissingReview   RetranslationReviewScopeReason = "missing_review"
+	ReviewScopeReasonIdentityChanged RetranslationReviewScopeReason = "identity_changed"
+	ReviewScopeReasonRubricMismatch  RetranslationReviewScopeReason = "rubric_mismatch"
+	ReviewScopeReasonNonAReview      RetranslationReviewScopeReason = "non_a_review"
+	ReviewScopeReasonRejectedReview  RetranslationReviewScopeReason = "rejected_review"
+)
+
+type RetranslationReviewRequiredAction string
+
+const (
+	ReviewScopeActionReviewRequired   RetranslationReviewRequiredAction = "review_required"
+	ReviewScopeActionRevisionRequired RetranslationReviewRequiredAction = "revision_required"
+)
+
 type RetranslationReviewCheckOptions struct {
 	Locale  string
 	BatchID string
@@ -89,6 +110,53 @@ type RetranslationReviewBatchRecordResult struct {
 	Reviews       []RetranslationReviewBatchRecord `json:"reviews"`
 }
 
+// RetranslationReviewSupersedeOptions is deliberately separate from normal
+// record options: it is only for renewing an otherwise-identical A + approved
+// review whose rubric has expired.
+type RetranslationReviewSupersedeOptions struct {
+	Locale     string
+	SnapshotID string
+	UnitID     string
+	Rating     string
+	Decision   string
+	Summary    string
+	Issues     []string
+	Reviewer   string
+	Rubric     string
+	Now        func() time.Time
+}
+
+type RetranslationReviewSupersedeResult struct {
+	Locale      string `json:"locale"`
+	SnapshotID  string `json:"snapshot_id"`
+	UnitID      string `json:"unit_id"`
+	BatchID     string `json:"batch_id"`
+	CurrentPath string `json:"current_path"`
+	HistoryPath string `json:"history_path"`
+}
+
+// RetranslationReviewScope is the review work derived from a complete,
+// immutable Candidate Snapshot. The Snapshot is never narrowed; only the
+// reviewer work set excludes valid, reusable Final Review evidence.
+type RetranslationReviewScope struct {
+	Locale        string                         `json:"locale"`
+	SnapshotID    string                         `json:"snapshot_id"`
+	UnitCount     int                            `json:"unit_count"`
+	ReusableCount int                            `json:"reusable_count"`
+	PendingCount  int                            `json:"pending_count"`
+	Reusable      []RetranslationReviewScopeUnit `json:"-"`
+	Pending       []RetranslationReviewScopeUnit `json:"pending_review_units"`
+}
+
+type RetranslationReviewScopeUnit struct {
+	Index          int                               `json:"index"`
+	UnitID         string                            `json:"unit_id"`
+	UnitKind       UnitKind                          `json:"unit_kind"`
+	BatchID        string                            `json:"batch_id"`
+	Reason         RetranslationReviewScopeReason    `json:"reason,omitempty"`
+	RequiredAction RetranslationReviewRequiredAction `json:"required_action,omitempty"`
+}
+
 type preparedRetranslationReview struct {
 	review         TranslationReview
 	path           string
@@ -110,6 +178,10 @@ func RecordRetranslationReview(root string, catalog *Catalog, options Retranslat
 }
 
 func prepareRetranslationReview(root string, catalog *Catalog, options RetranslationReviewRecordOptions) (*preparedRetranslationReview, error) {
+	return prepareRetranslationReviewAllowExisting(root, catalog, options, false)
+}
+
+func prepareRetranslationReviewAllowExisting(root string, catalog *Catalog, options RetranslationReviewRecordOptions, allowExisting bool) (*preparedRetranslationReview, error) {
 	if catalog == nil {
 		return nil, errors.New("retranslation catalog is required")
 	}
@@ -128,8 +200,8 @@ func prepareRetranslationReview(root string, catalog *Catalog, options Retransla
 	if options.Decision != "approved" && options.Decision != "rejected" {
 		return nil, fmt.Errorf("invalid decision %q", options.Decision)
 	}
-	if strings.TrimSpace(options.Summary) == "" || strings.TrimSpace(options.Reviewer) == "" || strings.TrimSpace(options.Rubric) == "" {
-		return nil, errors.New("summary, reviewer, and rubric are required")
+	if strings.TrimSpace(options.Summary) == "" || strings.TrimSpace(options.Reviewer) == "" || options.Rubric != TranslationQualityRubric {
+		return nil, fmt.Errorf("summary and reviewer are required; rubric must be %q", TranslationQualityRubric)
 	}
 	if options.Now == nil {
 		options.Now = time.Now
@@ -203,7 +275,9 @@ func prepareRetranslationReview(root string, catalog *Catalog, options Retransla
 	}
 	path := filepath.Join(batchDir, "review", retranslationReviewName(unit))
 	if _, err := os.Stat(path); err == nil {
-		return nil, fmt.Errorf("review already exists for %s", options.UnitID)
+		if !allowExisting {
+			return nil, fmt.Errorf("review already exists for %s", options.UnitID)
+		}
 	} else if !os.IsNotExist(err) {
 		return nil, fmt.Errorf("inspect review for %s: %w", options.UnitID, err)
 	}
@@ -246,6 +320,110 @@ func writePreparedRetranslationReview(prepared *preparedRetranslationReview) err
 	return nil
 }
 
+// SupersedeRetranslationReview renews exactly one rubric-expired A + approved
+// review after a reviewer has performed a new Final Review. It is not a
+// revision path: all candidate identity fields must still match the Snapshot.
+func SupersedeRetranslationReview(root string, catalog *Catalog, options RetranslationReviewSupersedeOptions) (*RetranslationReviewSupersedeResult, error) {
+	if options.Locale == "" || options.SnapshotID == "" || options.UnitID == "" {
+		return nil, errors.New("retranslation review supersede locale, snapshot_id, and unit_id are required")
+	}
+	if options.Rating != "A" || options.Decision != "approved" {
+		return nil, errors.New("retranslation review supersede requires rating A and decision approved")
+	}
+	scope, err := BuildRetranslationReviewScope(root, catalog, RetranslationReviewScopeOptions{Locale: options.Locale, SnapshotID: options.SnapshotID})
+	if err != nil {
+		return nil, err
+	}
+	var pending *RetranslationReviewScopeUnit
+	for i := range scope.Pending {
+		if scope.Pending[i].UnitID == options.UnitID {
+			pending = &scope.Pending[i]
+			break
+		}
+	}
+	if pending == nil {
+		return nil, fmt.Errorf("unit %q is not pending review in snapshot %q", options.UnitID, options.SnapshotID)
+	}
+	if pending.Reason != ReviewScopeReasonRubricMismatch || pending.RequiredAction != ReviewScopeActionReviewRequired {
+		return nil, fmt.Errorf("unit %q is %s/%s; only rubric_mismatch/review_required may be superseded", options.UnitID, pending.Reason, pending.RequiredAction)
+	}
+	snapshotUnit, err := snapshotUnitForReviewScope(root, options.Locale, options.SnapshotID, options.UnitID)
+	if err != nil {
+		return nil, err
+	}
+	batchDir := filepath.Join(root, "data", "retranslation-runs", options.Locale, snapshotUnit.SelectedBatchID)
+	unit, err := catalog.Unit(options.UnitID)
+	if err != nil {
+		return nil, err
+	}
+	currentPath := filepath.Join(batchDir, "review", retranslationReviewName(unit))
+	oldData, err := os.ReadFile(currentPath)
+	if err != nil {
+		return nil, fmt.Errorf("read current review for supersede: %w", err)
+	}
+	old, err := decodeTranslationReview(oldData)
+	if err != nil || !reviewMatchesSnapshotIdentity(options.Locale, snapshotUnit, *old) || old.Rating != "A" || old.Decision != "approved" || old.Rubric == TranslationQualityRubric {
+		return nil, errors.New("current review is not an identity-matching rubric-expired A + approved review")
+	}
+	prepared, err := prepareRetranslationReviewAllowExisting(root, catalog, RetranslationReviewRecordOptions{
+		Locale: options.Locale, BatchID: snapshotUnit.SelectedBatchID, UnitID: options.UnitID,
+		Rating: options.Rating, Decision: options.Decision, Summary: options.Summary, Issues: options.Issues,
+		Reviewer: options.Reviewer, Rubric: options.Rubric, Now: options.Now,
+	}, true)
+	if err != nil {
+		return nil, err
+	}
+	if err := checkPreparedReviewAgainstSnapshot(options.Locale, snapshotUnit, prepared); err != nil {
+		return nil, err
+	}
+	when := time.Now()
+	if options.Now != nil {
+		when = options.Now()
+	}
+	historyName := strings.TrimSuffix(filepath.Base(currentPath), ".json") + ".superseded-" + when.UTC().Format("20060102T150405.000000000Z") + ".json"
+	historyPath := filepath.Join(batchDir, "review", "history", historyName)
+	if err := os.MkdirAll(filepath.Dir(historyPath), 0755); err != nil {
+		return nil, fmt.Errorf("create review history directory: %w", err)
+	}
+	history, err := os.OpenFile(historyPath, os.O_WRONLY|os.O_CREATE|os.O_EXCL, 0644)
+	if err != nil {
+		return nil, fmt.Errorf("archive current review: %w", err)
+	}
+	if _, err := history.Write(oldData); err != nil {
+		_ = history.Close()
+		_ = os.Remove(historyPath)
+		return nil, fmt.Errorf("archive current review: %w", err)
+	}
+	if err := history.Close(); err != nil {
+		return nil, fmt.Errorf("archive current review: %w", err)
+	}
+	newData, err := json.MarshalIndent(prepared.review, "", "  ")
+	if err != nil {
+		return nil, fmt.Errorf("marshal superseding review: %w", err)
+	}
+	temporary, err := os.CreateTemp(filepath.Dir(currentPath), ".review-supersede-*")
+	if err != nil {
+		return nil, fmt.Errorf("create superseding review: %w", err)
+	}
+	temporaryPath := temporary.Name()
+	defer os.Remove(temporaryPath)
+	if _, err := temporary.Write(append(newData, '\n')); err != nil {
+		_ = temporary.Close()
+		return nil, fmt.Errorf("write superseding review: %w", err)
+	}
+	if err := temporary.Close(); err != nil {
+		return nil, fmt.Errorf("close superseding review: %w", err)
+	}
+	if err := os.Rename(temporaryPath, currentPath); err != nil {
+		return nil, fmt.Errorf("replace superseding review: %w", err)
+	}
+	return &RetranslationReviewSupersedeResult{
+		Locale: options.Locale, SnapshotID: options.SnapshotID, UnitID: options.UnitID, BatchID: snapshotUnit.SelectedBatchID,
+		CurrentPath: prepared.repositoryPath,
+		HistoryPath: filepath.ToSlash(filepath.Join("data", "retranslation-runs", options.Locale, snapshotUnit.SelectedBatchID, "review", "history", historyName)),
+	}, nil
+}
+
 // RecordRetranslationReviewBatch records one stable Candidate Snapshot index
 // range. Every unit is fully preflighted through the single-unit review path
 // and checked against the snapshot before any review evidence is written.
@@ -274,18 +452,26 @@ func RecordRetranslationReviewBatch(root string, catalog *Catalog, options Retra
 		return nil, fmt.Errorf("limit must be at least 1, got %d", options.Limit)
 	}
 
-	snapshot, err := readQualityCheckSnapshotForReview(root, options.Locale, options.SnapshotID)
+	scope, err := BuildRetranslationReviewScope(root, catalog, RetranslationReviewScopeOptions{Locale: options.Locale, SnapshotID: options.SnapshotID})
 	if err != nil {
 		return nil, err
 	}
-	if startIndex > snapshot.UnitCount {
-		return nil, fmt.Errorf("start_index %d is outside snapshot range 1-%d", startIndex, snapshot.UnitCount)
+	recordable := make([]RetranslationReviewScopeUnit, 0, len(scope.Pending))
+	for _, pending := range scope.Pending {
+		// A rubric renewal needs an explicit supersede; B/C/D and rejected
+		// evidence require a revision instead of another Final Review record.
+		if pending.Reason == ReviewScopeReasonMissingReview || pending.Reason == ReviewScopeReasonIdentityChanged {
+			recordable = append(recordable, pending)
+		}
+	}
+	if startIndex > len(recordable) {
+		return nil, fmt.Errorf("start_index %d is outside recordable review range 1-%d", startIndex, len(recordable))
 	}
 	endIndex := startIndex + limit - 1
-	if endIndex > snapshot.UnitCount || endIndex < startIndex {
-		endIndex = snapshot.UnitCount
+	if endIndex > len(recordable) || endIndex < startIndex {
+		endIndex = len(recordable)
 	}
-	selected := snapshot.Units[startIndex-1 : endIndex]
+	selected := recordable[startIndex-1 : endIndex]
 
 	reviewedAt := time.Now()
 	if options.Now != nil {
@@ -298,7 +484,11 @@ func RecordRetranslationReviewBatch(root string, catalog *Catalog, options Retra
 		StartIndex: startIndex, EndIndex: endIndex, Limit: limit,
 		RecordedCount: len(selected), Reviews: make([]RetranslationReviewBatchRecord, 0, len(selected)),
 	}
-	for _, snapshotUnit := range selected {
+	for _, scopedUnit := range selected {
+		snapshotUnit, err := snapshotUnitForReviewScope(root, options.Locale, options.SnapshotID, scopedUnit.UnitID)
+		if err != nil {
+			return nil, err
+		}
 		item, err := prepareRetranslationReview(root, catalog, RetranslationReviewRecordOptions{
 			Locale: options.Locale, BatchID: snapshotUnit.SelectedBatchID, UnitID: snapshotUnit.UnitID,
 			Rating: options.Rating, Decision: options.Decision, Summary: options.Summary,
@@ -330,6 +520,157 @@ func RecordRetranslationReviewBatch(root string, catalog *Catalog, options Retra
 		written = append(written, item.path)
 	}
 	return result, nil
+}
+
+type RetranslationReviewScopeOptions struct {
+	Locale     string
+	SnapshotID string
+}
+
+// BuildRetranslationReviewScope separates a complete Snapshot into valid
+// reusable Final Reviews and the units that still require Quality Check and
+// Final Review. It never writes evidence.
+func BuildRetranslationReviewScope(root string, catalog *Catalog, options RetranslationReviewScopeOptions) (*RetranslationReviewScope, error) {
+	if catalog == nil {
+		return nil, errors.New("retranslation catalog is required")
+	}
+	if err := ValidateLocaleName(options.Locale); err != nil {
+		return nil, err
+	}
+	if err := validateSnapshotID(options.SnapshotID); err != nil {
+		return nil, err
+	}
+	snapshot, err := readQualityCheckSnapshotForReview(root, options.Locale, options.SnapshotID)
+	if err != nil {
+		return nil, err
+	}
+	scope := &RetranslationReviewScope{Locale: options.Locale, SnapshotID: options.SnapshotID, UnitCount: snapshot.UnitCount,
+		Reusable: []RetranslationReviewScopeUnit{}, Pending: []RetranslationReviewScopeUnit{}}
+	for _, snapshotUnit := range snapshot.Units {
+		unit := RetranslationReviewScopeUnit{Index: snapshotUnit.Index, UnitID: snapshotUnit.UnitID, UnitKind: snapshotUnit.UnitKind, BatchID: snapshotUnit.SelectedBatchID}
+		if reason, action := reviewScopePendingDisposition(root, catalog, options.Locale, snapshotUnit); reason != "" {
+			unit.Reason = reason
+			unit.RequiredAction = action
+			scope.Pending = append(scope.Pending, unit)
+			continue
+		}
+		scope.Reusable = append(scope.Reusable, unit)
+	}
+	scope.ReusableCount = len(scope.Reusable)
+	scope.PendingCount = len(scope.Pending)
+	return scope, nil
+}
+
+func snapshotUnitForReviewScope(root, locale, snapshotID, unitID string) (QualityCheckSnapshotUnit, error) {
+	snapshot, err := readQualityCheckSnapshotForReview(root, locale, snapshotID)
+	if err != nil {
+		return QualityCheckSnapshotUnit{}, err
+	}
+	for _, unit := range snapshot.Units {
+		if unit.UnitID == unitID {
+			return unit, nil
+		}
+	}
+	return QualityCheckSnapshotUnit{}, fmt.Errorf("snapshot %q has no pending unit %q", snapshotID, unitID)
+}
+
+func reviewScopePendingDisposition(root string, catalog *Catalog, locale string, snapshot QualityCheckSnapshotUnit) (RetranslationReviewScopeReason, RetranslationReviewRequiredAction) {
+	unit, err := catalog.Unit(snapshot.UnitID)
+	if err != nil || unit.Kind != snapshot.UnitKind || unit.SourcePath != snapshot.SourcePath || unit.SourceSHA256 != snapshot.SourceSHA256 {
+		return ReviewScopeReasonIdentityChanged, ReviewScopeActionReviewRequired
+	}
+	candidate, err := readSnapshotReferencedFile(root, snapshot.CandidatePath)
+	if err != nil || sum(candidate) != snapshot.CandidateSHA256 {
+		return ReviewScopeReasonIdentityChanged, ReviewScopeActionReviewRequired
+	}
+	validation, err := readSnapshotReferencedFile(root, snapshot.ValidationPath)
+	if err != nil || sum(validation) != snapshot.ValidationSHA256 {
+		return ReviewScopeReasonIdentityChanged, ReviewScopeActionReviewRequired
+	}
+	batchDir := filepath.Join(root, "data", "retranslation-runs", locale, snapshot.SelectedBatchID)
+	manifest, err := readRetranslationProcessManifest(batchDir, locale, snapshot.SelectedBatchID)
+	if err != nil {
+		return ReviewScopeReasonIdentityChanged, ReviewScopeActionReviewRequired
+	}
+	var record RetranslationBatchUnit
+	for _, item := range manifest.Units {
+		if item.UnitID == snapshot.UnitID {
+			record = item
+			break
+		}
+	}
+	if record.UnitID == "" || record.UnitKind != snapshot.UnitKind || record.SourcePath != snapshot.SourcePath || record.SourceSHA256 != snapshot.SourceSHA256 {
+		return ReviewScopeReasonIdentityChanged, ReviewScopeActionReviewRequired
+	}
+	result, err := readPromotionResult(batchDir, locale, snapshot.SelectedBatchID, len(manifest.Units))
+	if err != nil {
+		return ReviewScopeReasonIdentityChanged, ReviewScopeActionReviewRequired
+	}
+	var unitResult RetranslationUnitResult
+	for _, item := range result.Units {
+		if item.UnitID == snapshot.UnitID {
+			unitResult = item
+			break
+		}
+	}
+	if unitResult.UnitID == "" || unitResult.Status != "passed" ||
+		filepath.ToSlash(filepath.Join("data", "retranslation-runs", locale, snapshot.SelectedBatchID, unitResult.CandidatePath)) != snapshot.CandidatePath ||
+		filepath.ToSlash(filepath.Join("data", "retranslation-runs", locale, snapshot.SelectedBatchID, unitResult.ValidationPath)) != snapshot.ValidationPath {
+		return ReviewScopeReasonIdentityChanged, ReviewScopeActionReviewRequired
+	}
+	parsedValidation, err := readPromotionValidation(batchDir, snapshot.SelectedBatchID, locale, record, unitResult)
+	if err != nil || parsedValidation.Attempt != snapshot.Attempt {
+		return ReviewScopeReasonIdentityChanged, ReviewScopeActionReviewRequired
+	}
+	reviewPath := filepath.Join(batchDir, "review", retranslationReviewName(unit))
+	reviewData, err := os.ReadFile(reviewPath)
+	if os.IsNotExist(err) {
+		return ReviewScopeReasonMissingReview, ReviewScopeActionReviewRequired
+	}
+	if err != nil {
+		return ReviewScopeReasonIdentityChanged, ReviewScopeActionReviewRequired
+	}
+	review, err := decodeTranslationReview(reviewData)
+	if err != nil || !reviewMatchesSnapshotIdentity(locale, snapshot, *review) {
+		return ReviewScopeReasonIdentityChanged, ReviewScopeActionReviewRequired
+	}
+	if review.Rating != "A" {
+		return ReviewScopeReasonNonAReview, ReviewScopeActionRevisionRequired
+	}
+	if review.Decision != "approved" {
+		return ReviewScopeReasonRejectedReview, ReviewScopeActionRevisionRequired
+	}
+	if review.Rubric != TranslationQualityRubric {
+		return ReviewScopeReasonRubricMismatch, ReviewScopeActionReviewRequired
+	}
+	state, err := checkPromotionReview(batchDir, snapshot.SelectedBatchID, locale, unit, record, unitResult, parsedValidation, candidate, snapshot.Attempt)
+	if err != nil {
+		return ReviewScopeReasonIdentityChanged, ReviewScopeActionReviewRequired
+	}
+	switch state {
+	case "approved":
+		return "", ""
+	case "missing":
+		return ReviewScopeReasonMissingReview, ReviewScopeActionReviewRequired
+	case "rejected":
+		return ReviewScopeReasonRejectedReview, ReviewScopeActionRevisionRequired
+	default:
+		return ReviewScopeReasonIdentityChanged, ReviewScopeActionReviewRequired
+	}
+}
+
+// reviewMatchesSnapshotIdentity intentionally does not require source_path:
+// schema-v1 legacy evidence did not require it, while source hash and the
+// selected batch identity remain immutable and sufficient for comparison.
+func reviewMatchesSnapshotIdentity(locale string, snapshot QualityCheckSnapshotUnit, review TranslationReview) bool {
+	return review.SchemaVersion == TranslationReviewSchemaVersion && review.BatchID == snapshot.SelectedBatchID &&
+		review.Locale == locale && review.UnitID == snapshot.UnitID && review.UnitKind == snapshot.UnitKind &&
+		review.SourceSHA256 == snapshot.SourceSHA256 && review.Attempt == snapshot.Attempt &&
+		filepath.ToSlash(filepath.Join("data", "retranslation-runs", locale, review.BatchID, review.CandidatePath)) == snapshot.CandidatePath &&
+		review.CandidateSHA256 == snapshot.CandidateSHA256 &&
+		filepath.ToSlash(filepath.Join("data", "retranslation-runs", locale, review.BatchID, review.ValidationPath)) == snapshot.ValidationPath &&
+		review.ValidationSHA256 == snapshot.ValidationSHA256 && review.Reviewer != "" && review.ReviewedAt != "" &&
+		review.Summary != "" && review.Issues != nil
 }
 
 func readQualityCheckSnapshotForReview(root, locale, snapshotID string) (*QualityCheckSnapshotManifest, error) {
@@ -499,7 +840,7 @@ func CheckRetranslationReviews(root string, catalog *Catalog, options Retranslat
 		if review.Rating != "A" && review.Rating != "B" && review.Rating != "C" && review.Rating != "D" {
 			return nil, fmt.Errorf("review %s: invalid rating %q", record.UnitID, review.Rating)
 		}
-		if review.Attempt < 1 || review.Reviewer == "" || review.ReviewedAt == "" || review.Rubric == "" || review.Summary == "" || review.Issues == nil {
+		if review.Attempt < 1 || review.Reviewer == "" || review.ReviewedAt == "" || review.Rubric != TranslationQualityRubric || review.Summary == "" || review.Issues == nil {
 			return nil, fmt.Errorf("review %s: invalid JSON schema: empty required value", record.UnitID)
 		}
 		if err := checkReviewFileHash(batchDir, record.UnitID, "candidate", review.CandidatePath, unitResult.CandidatePath, review.CandidateSHA256); err != nil {

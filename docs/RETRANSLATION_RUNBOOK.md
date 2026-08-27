@@ -84,7 +84,7 @@ Snapshot 按 Catalog 的 Page 顺序、再按 eligible Example inventory 顺序�
 
 Manifest 只引用仓库中已有的 glossary、source、candidate 和 validation 文件，不复制这些文件，不创建 `_content`、ZIP 或 review artifact。该命令不修改 `locales/<locale>/status.tsv`，不执行 Quality Check、Final Review 或 promotion。
 
-后续审核默认按 manifest 的稳定 `index` 每轮连续处理 20 个 TranslationUnit；最后不足 20 个时处理全部剩余 unit。这个 20-unit chunk 只用于执行分片，Snapshot 仍必须一次冻结完整 locale workflow，不得按 chunk 创建局部 snapshot。
+Snapshot 后先运行 `retranslation review scope --locale <locale> --snapshot-id <snapshot-id>`。scope 在完整 Snapshot 内区分可复用的有效 A + approved Final Review evidence 与 pending review unit，并对每项输出 `reason`、`required_action`：`review_required` 才进入实际复审，`revision_required` 必须先建 revision batch。首次 locale 的 pending 等于全部 Snapshot，后续 revision 只审核 identity 已变化或 evidence 无效的 Unit。glossary snapshot mismatch 是 scope 的整体 blocker，不是 unit pending。默认每轮 20 个 reviewer chunk 针对可复审的 pending unit，Snapshot 仍必须一次冻结完整 locale workflow，不得按 chunk 创建局部 snapshot。
 
 ## 6. Quality Check 与 revision batch
 
@@ -122,7 +122,7 @@ D = 0
 
 Final Review 重新审核最终 candidate 并生成正式 review evidence。当前严格策略下，Final Review A 才允许 `approved`；Final Review B、C、D 不得 promotion，必须创建新的 revision batch，随后重新执行 process、automatic validation、ChatGPT Quality Check 和 Final Review。
 
-Final Review 也默认每轮逐一审核 20 个连续 snapshot index；最后一轮处理全部剩余 unit。完成一轮后，默认用以下命令记录本轮 evidence：
+Final Review 也默认每轮逐一审核 20 个连续 `review_required` unit；最后一轮处理全部剩余可记录 unit。完成一轮后，默认用以下命令记录本轮 evidence：
 
 ```bash
 go run -mod=readonly ./cmd/tour-i18n retranslation review record-batch \
@@ -136,7 +136,7 @@ go run -mod=readonly ./cmd/tour-i18n retranslation review record-batch \
   --rubric translation-quality/v1
 ```
 
-`--limit` 默认 20，`--issue` 可以重复。命令按 Candidate Snapshot 自动使用每个 unit 的 `selected_batch_id`，即使一轮跨越多个 retranslation batch，也不要求调用者人工拆分或判断 batch。它对整轮先完成单 unit review 记录所用的 schema、identity、attempt 与 hash preflight，并与 snapshot evidence 对齐；全部通过后才写文件。任一 unit 失败时本轮不产生部分 review evidence，已有 review 不覆盖。相同 rating/decision/summary 等参数必须真实适用于本轮每个 unit；若审核结论不同，应按适用的连续范围分别记录。
+`--limit` 默认 20，`--start-index` 是普通 record 可处理列表的 1-based 起点，`--issue` 可以重复。命令按 Candidate Snapshot 自动使用每个 unit 的 `selected_batch_id`，即使一轮跨越多个 retranslation batch，也不要求调用者人工拆分或判断 batch。它对整轮先完成单 unit review 记录所用的 schema、identity、attempt 与 hash preflight，并与 snapshot evidence 对齐；全部通过后才写文件。任一 unit 失败时本轮不产生部分 review evidence，已有 review 不覆盖。相同 rating/decision/summary 等参数必须真实适用于本轮每个 unit；若审核结论不同，应按适用的连续范围分别记录。rubric 仅过期而 identity 未变时，实际复审后必须使用 Quality Review 规范中的显式 `review supersede`；这不重新翻译 candidate，也不新建 batch。
 
 Review evidence 与 promotion gate 的完整规则见 [Translation Quality Review 规范](TRANSLATION_QUALITY_REVIEW.md)。`retranslation review record-batch` 与保留的单 unit `retranslation review record` 都只记录已完成的 Final Review，不执行审核，也不改变 promotion gate。
 

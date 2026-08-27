@@ -283,8 +283,27 @@ func run(args []string) error {
 		}
 		return printJSON(result)
 	case "retranslation review":
-		if len(args) < 3 || (args[2] != "check" && args[2] != "record" && args[2] != "record-batch") {
-			return fmt.Errorf("usage: tour-i18n retranslation review <check|record|record-batch> ...")
+		if len(args) < 3 || (args[2] != "check" && args[2] != "scope" && args[2] != "record" && args[2] != "record-batch" && args[2] != "supersede") {
+			return fmt.Errorf("usage: tour-i18n retranslation review <check|scope|record|record-batch|supersede> ...")
+		}
+		if args[2] == "scope" {
+			fs := flag.NewFlagSet("retranslation review scope", flag.ContinueOnError)
+			locale := fs.String("locale", "", "target locale")
+			snapshotID := fs.String("snapshot-id", "", "Candidate Snapshot id")
+			if err := fs.Parse(args[3:]); err != nil {
+				return err
+			}
+			if *locale == "" || *snapshotID == "" {
+				return fmt.Errorf("--locale and --snapshot-id are required")
+			}
+			if fs.NArg() != 0 {
+				return fmt.Errorf("unexpected retranslation review scope arguments: %s", strings.Join(fs.Args(), " "))
+			}
+			scope, err := i18n.BuildRetranslationReviewScope(root, catalog, i18n.RetranslationReviewScopeOptions{Locale: *locale, SnapshotID: *snapshotID})
+			if err != nil {
+				return err
+			}
+			return printJSON(scope)
 		}
 		if args[2] == "record-batch" {
 			fs := flag.NewFlagSet("retranslation review record-batch", flag.ContinueOnError)
@@ -354,6 +373,36 @@ func run(args []string) error {
 			}
 			fmt.Printf("wrote review evidence: %s (unit=%s decision=%s rating=%s)\n", path, review.UnitID, review.Decision, review.Rating)
 			return nil
+		}
+		if args[2] == "supersede" {
+			fs := flag.NewFlagSet("retranslation review supersede", flag.ContinueOnError)
+			locale := fs.String("locale", "", "target locale")
+			snapshotID := fs.String("snapshot-id", "", "Candidate Snapshot id")
+			unitID := fs.String("unit-id", "", "translation unit id")
+			rating := fs.String("rating", "", "must be A")
+			decision := fs.String("decision", "", "must be approved")
+			summary := fs.String("summary", "", "new Final Review summary")
+			reviewer := fs.String("reviewer", "", "reviewer identifier")
+			rubric := fs.String("rubric", "", "current rubric identifier")
+			var issues repeatedStrings
+			fs.Var(&issues, "issue", "specific issue; repeat for multiple issues")
+			if err := fs.Parse(args[3:]); err != nil {
+				return err
+			}
+			if *locale == "" || *snapshotID == "" || *unitID == "" || *rating == "" || *decision == "" || *summary == "" || *reviewer == "" || *rubric == "" {
+				return fmt.Errorf("--locale, --snapshot-id, --unit-id, --rating, --decision, --summary, --reviewer, and --rubric are required")
+			}
+			if fs.NArg() != 0 {
+				return fmt.Errorf("unexpected retranslation review supersede arguments: %s", strings.Join(fs.Args(), " "))
+			}
+			result, err := i18n.SupersedeRetranslationReview(root, catalog, i18n.RetranslationReviewSupersedeOptions{
+				Locale: *locale, SnapshotID: *snapshotID, UnitID: *unitID, Rating: *rating, Decision: *decision,
+				Summary: *summary, Issues: issues, Reviewer: *reviewer, Rubric: *rubric,
+			})
+			if err != nil {
+				return err
+			}
+			return printJSON(result)
 		}
 		fs := flag.NewFlagSet("retranslation review check", flag.ContinueOnError)
 		locale := fs.String("locale", "", "target locale")

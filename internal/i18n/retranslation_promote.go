@@ -202,12 +202,12 @@ func checkPromotionReview(batchDir, batchID, locale string, unit *TranslationUni
 		review.UnitID != unit.ID || review.UnitKind != unit.Kind || review.SourceSHA256 != manifest.SourceSHA256 ||
 		review.Attempt != attempt || review.Attempt != validation.Attempt || review.CandidatePath != result.CandidatePath ||
 		review.CandidateSHA256 != sum(candidate) || review.ValidationPath != result.ValidationPath || review.ValidationSHA256 != sum(validationBytes) ||
-		review.Reviewer == "" || review.ReviewedAt == "" || review.Rubric == "" || review.Summary == "" || review.Issues == nil ||
+		review.Reviewer == "" || review.ReviewedAt == "" || review.Rubric != TranslationQualityRubric || review.Summary == "" || review.Issues == nil ||
 		(review.Decision != "approved" && review.Decision != "rejected") ||
 		(review.Rating != "A" && review.Rating != "B" && review.Rating != "C" && review.Rating != "D") {
 		return "invalid", nil
 	}
-	if review.Decision == "rejected" {
+	if review.Decision != "approved" || review.Rating != "A" {
 		return "rejected", nil
 	}
 	return "approved", nil

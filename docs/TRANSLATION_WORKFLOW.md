@@ -41,7 +41,7 @@ candidate 完成 automatic validation 后，先生成覆盖完整 locale workflo
 
 - [Translation Quality Review 规范](TRANSLATION_QUALITY_REVIEW.md)：A/B/C/D rubric、逐 TranslationUnit review evidence、`approved` 决策与 promotion gate。
 
-Candidate Snapshot 只冻结本轮审核使用的唯一最终 candidate 集合，manifest 引用现有 source、candidate 和 validation evidence，不复制文件、不修改 status，也不产生审核结果。ChatGPT Quality Check 与 Final Review 默认均按 snapshot 稳定 index 每轮执行 20 个 TranslationUnit，最后一轮处理全部剩余 unit；20 只代表执行 chunk，不改变完整 snapshot 范围或逐 TranslationUnit 审核。当前严格生产策略要求 snapshot 中所有 TranslationUnit 的 ChatGPT Quality Check 均为 A 后才能进入 Final Review；Final Review 也只有 A 才能 `approved` 并进入 promotion。
+Candidate Snapshot 只冻结本轮审核使用的唯一完整 candidate 集合，manifest 引用现有 source、candidate 和 validation evidence，不复制文件、不修改 status，也不产生审核结果。随后 review scope 在同一 full Snapshot 中识别可复用的有效 A + approved Final Review evidence 与带 `reason` / `required_action` 的 pending unit；20-unit reviewer chunk 只处理 `review_required` unit，`revision_required` 先走 revision batch。rubric 过期但 candidate identity 未变时，必须实际重新 Final Review 并通过显式 supersede 续审，不重新翻译 candidate。promotion 仍要求完整 workflow 的每个 Unit 都有与当前最终 candidate 匹配的 A + approved Final Review evidence。
 
 ## 4. 发布部署
 

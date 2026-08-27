@@ -105,7 +105,7 @@ func writeApprovedPromotionReviews(t *testing.T, root string, catalog *Catalog, 
 			CandidatePath: unitResult.CandidatePath, CandidateSHA256: sum(candidate),
 			ValidationPath: unitResult.ValidationPath, ValidationSHA256: sum(validationBytes),
 			Decision: "approved", Reviewer: "promotion-test", ReviewedAt: "2026-08-20T12:00:00Z",
-			Rubric: "translation-quality-v1", Rating: "A", Summary: "Approved for promotion.", Issues: []string{},
+			Rubric: TranslationQualityRubric, Rating: "A", Summary: "Approved for promotion.", Issues: []string{},
 		}
 		writeRetranslationReview(t, filepath.Join(batchDir, "review", retranslationReviewName(unit)), review)
 	}
@@ -160,7 +160,7 @@ func TestRetranslationPromotionSupportsLocaleAwareWorkflow(t *testing.T) {
 	}
 	if _, _, err := RecordRetranslationReview(root, catalog, RetranslationReviewRecordOptions{
 		Locale: locale, BatchID: batchID, UnitID: "lesson/1", Rating: "A", Decision: "approved",
-		Summary: "Valid fixture.", Reviewer: "test", Rubric: "test-v1", Now: func() time.Time { return time.Unix(0, 0) },
+		Summary: "Valid fixture.", Reviewer: "test", Rubric: TranslationQualityRubric, Now: func() time.Time { return time.Unix(0, 0) },
 	}); err != nil {
 		t.Fatal(err)
 	}
@@ -362,6 +362,10 @@ func TestRetranslationPromoteReviewGate(t *testing.T) {
 		}, func(plan *RetranslationPromotionPlan) []string { return plan.MissingReview }},
 		{"rejected", func(t *testing.T, path string, review *TranslationReview) {
 			review.Decision = "rejected"
+			writeRetranslationReview(t, path, *review)
+		}, func(plan *RetranslationPromotionPlan) []string { return plan.RejectedReview }},
+		{"approved rating B", func(t *testing.T, path string, review *TranslationReview) {
+			review.Rating = "B"
 			writeRetranslationReview(t, path, *review)
 		}, func(plan *RetranslationPromotionPlan) []string { return plan.RejectedReview }},
 		{"candidate hash mismatch", func(t *testing.T, path string, review *TranslationReview) {

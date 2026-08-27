@@ -85,6 +85,25 @@ Snapshot manifest 顶层记录 `schema_version`、`snapshot_id`、`locale`、`gl
 
 所有 path 都是对仓库已有文件的引用。Snapshot 不复制 source、candidate、validation 或 `_content`，不生成 ZIP，不修改 `locales/<locale>/status.tsv`，不 promotion，也不生成 Quality Check 或 Final Review evidence。Snapshot 目录只包含 `manifest.json`。
 
+## Full Snapshot 与 review scope
+
+Candidate Snapshot 始终是 **full Snapshot**：它冻结完整 locale workflow 的全部 TranslationUnit。当前 `zh-CN` 与 `ja-JP` 都是 103 Page + 19 eligible Example = 122 Unit。不得为了维护批次创建只含变化 Unit 的 Snapshot。
+
+在同一份 full Snapshot 上，以下命令只读地建立 **review scope**：
+
+```bash
+go run -mod=readonly ./cmd/tour-i18n retranslation review scope \
+  --locale <locale> \
+  --snapshot-id <snapshot-id>
+```
+
+- **reusable reviewed unit**：存在有效且完全匹配当前 Snapshot identity 的 Final Review evidence，且 `rating=A`、`decision=approved`、rubric 为当前 `translation-quality/v1`。匹配 batch、locale、unit、source SHA-256、candidate/validation path 与 SHA-256，以及最终 attempt。
+- **pending review unit**：scope 为每个 pending Unit 输出机器可读的 `reason` 和 `required_action`。`missing_review`、`identity_changed` 与 `rubric_mismatch` 的 action 是 `review_required`；`non_a_review`（B/C/D）是 `revision_required`；`rejected_review` 保守地也是 `revision_required`。前两类需要实际重新审核，后两类不得借重新记录 review 绕过 revision batch。
+
+首次 locale 没有可复用 evidence，因此 review scope 等于 full Snapshot，是 **full review**。后续 upstream sync 或 revision 中，full Snapshot 仍保持完整；只审核 identity 已变化或 evidence 失效的 pending Unit，是 **incremental review**。
+
+Snapshot 的 glossary SHA-256 会在读取 review scope 时与当前 glossary 重新核验。glossary 已变化时，scope 以 **snapshot-level blocker** 失败，必须先创建新的 full Snapshot；不得把它伪装为普通 unit pending。rubric 使用明确版本 identifier，当前有效 evidence 必须是 `translation-quality/v1`；升级该 identifier 会使旧 evidence 以 `rubric_mismatch/review_required` 进入 pending。上述 guard 不能缩小 promotion gate。
+
 ## 正式质量评级
 
 `A`、`B`、`C`、`D` 是长期正式质量 rubric，不是某个模型盲评实验的专用机制。
@@ -136,7 +155,7 @@ Promotion gate 的机器判断只接受 `decision == approved`。这种边界保
 
 Quality Check 用于发现翻译质量问题，可以在 candidate 形成后的修订过程中多轮执行。当前由 ChatGPT 统一执行，且必须覆盖同一份 Candidate Snapshot 中的所有 TranslationUnit。它不生成正式 review evidence，也不作为 promotion 的直接依据。
 
-ChatGPT Quality Check 与 Final Review 的默认审核执行分片均为每轮 20 个 TranslationUnit。执行分片按同一份 Candidate Snapshot manifest 中从 1 开始的稳定 `index` 连续选择；最后一轮不足 20 个时审核全部剩余 TranslationUnit。20 只是 reviewer 每轮读取和处理的 chunk size，不缩小或重新生成 Candidate Snapshot，不改变该 snapshot 的完整 locale workflow 范围，也不把逐 TranslationUnit 审核改成批次级审核或抽样。每个 TranslationUnit 在 Quality Check 和 Final Review 两个阶段仍分别接受独立判断。
+ChatGPT Quality Check 与 Final Review 的默认审核执行分片均为每轮 20 个 **pending review unit**。pending 列表保持 Snapshot 的稳定 index 顺序；最后一轮不足 20 个时审核全部剩余 pending Unit。20 只是 reviewer 每轮读取和处理的 chunk size，不缩小或重新生成 Candidate Snapshot，不改变该 snapshot 的完整 locale workflow 范围，也不把逐 TranslationUnit 审核改成批次级审核或抽样。每个 pending TranslationUnit 在 Quality Check 和 Final Review 两个阶段仍分别接受独立判断。
 
 当前严格生产 gate 为：A 通过；B、C、D 均不通过并进入新的 revision batch。只有完整语言达到 `A = 全部 TranslationUnit，B = 0，C = 0，D = 0`，才能进入 Final Review。
 
@@ -209,7 +228,7 @@ Schema v1 的字段及含义如下：
 translation-quality/v1
 ```
 
-当前 schema 实现要求 `rubric` 非空，但没有在程序中把它限制为某个固定枚举。Reviewer 应使用上述 identifier；未来 rubric 演进应使用新的明确版本，而不是静默改变同一 identifier 的含义。
+当前正式实现要求 `rubric` 精确为上述 identifier。未来 rubric 演进必须使用新的明确版本，而不是静默改变同一 identifier 的含义。
 
 ## 批量记录 Final Review evidence
 
@@ -227,11 +246,26 @@ go run -mod=readonly ./cmd/tour-i18n retranslation review record-batch \
   --rubric translation-quality/v1
 ```
 
-`--limit` 默认是 20；可以显式设置，最后一轮会自动截断到 snapshot 的最后一个 unit。`--issue` 可以重复。命令只记录已经完成的 Final Review，不执行或推导审核；传入的 `rating`、`decision`、`summary`、`reviewer`、`rubric` 和 `issue` 应真实适用于本轮选中的每个 TranslationUnit。
+`--limit` 默认是 20；可以显式设置，最后一轮会自动截断到可由普通 record 写入的 `missing_review/identity_changed` 列表末尾。`--start-index` 是该列表的 1-based 起点；`--issue` 可以重复。`rubric_mismatch` 必须使用下述显式 supersede；B/C/D 和 rejected review 必须走 revision。命令只记录已经完成的 Final Review，不执行或推导审核；传入的 `rating`、`decision`、`summary`、`reviewer`、`rubric` 和 `issue` 应真实适用于本轮选中的每个 TranslationUnit。
 
 命令从 snapshot unit 自动读取 `selected_batch_id`，调用者不得也无需人工判断 candidate 属于哪个 batch。它先对选中范围内的全部 unit 完成单 unit `RecordRetranslationReview` 所用的 schema、identity 和 hash preflight，并核对 snapshot 中的 source、candidate、validation、attempt 与 path；全部通过后才写 evidence。任一 unit preflight 失败时本轮不写任何新 review，已有 review 也不会被覆盖。原有 `retranslation review record --batch-id ... --unit-id ...` 继续保留，用于明确的单 TranslationUnit 记录。
 
 `record-batch` 只是 Final Review evidence 的写入工具。它不会改变 Candidate Snapshot、Quality Check/Final Review 的逐 TranslationUnit 语义、A-only 生产策略或 promotion gate。
+
+## Rubric renewal / supersede
+
+rubric 升级不等于 TranslationUnit 重译：candidate、source、validation、attempt、batch 与 path identity 完全不变时，reviewer 仍须实际重新读取并完成 Final Review，但不得重新翻译 candidate，也不得伪造新的 retranslation batch。
+
+仅当 scope 明确给出 `rubric_mismatch` 和 `review_required`，且旧 canonical review 本身是 identity 完全匹配的 A + approved 时，才能显式执行：
+
+```bash
+go run -mod=readonly ./cmd/tour-i18n retranslation review supersede \
+  --locale <locale> --snapshot-id <snapshot-id> --unit-id <unit-id> \
+  --rating A --decision approved --summary <summary> \
+  --reviewer <reviewer> --rubric translation-quality/v1
+```
+
+该命令先逐字段核对 identity，再将旧 canonical JSON 原样保存到同一 batch 的 `review/history/`，随后才原子替换 canonical `review/*.json`。普通 `record` 和 `record-batch` 永不覆盖已有 review。B/C/D、rejected、缺失或 identity 不匹配的 evidence 不可 supersede；它们必须按 scope 指示重审或创建 revision batch。promotion 只读取 canonical review，history 不参与 gate，但始终保留可审计性。
 
 ## Reviewer
 
@@ -255,7 +289,7 @@ Promotion preflight 对 locale workflow 的全部 TranslationUnit 检查 review�
 - candidate 或 validation hash mismatch；
 - batch、locale、unit、source、attempt 或 path identity mismatch。
 
-只有 rating A 且 `decision == approved` 的有效 evidence 才允许对应 TranslationUnit 继续 promotion。最新 batch 的 review 缺失、非 A、rejected 或无效时，不允许回退到旧 batch 的 approved review。
+只有 rating A 且 `decision == approved` 的有效 evidence 才允许对应 TranslationUnit 继续 promotion。promotion preflight 始终检查完整 locale workflow，而不是当前 review scope；最新 batch 的 review 缺失、非 A、rejected 或无效时，不允许回退到旧 batch 的 approved review。
 
 ## 历史质量记录
 
