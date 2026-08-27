@@ -44,6 +44,40 @@ func assembleCourseMetadata(root string, catalog *i18n.Catalog, args []string) e
 	return nil
 }
 
+func refreshCourseMetadata(root string, catalog *i18n.Catalog, args []string) error {
+	fs := flag.NewFlagSet("course-metadata refresh", flag.ContinueOnError)
+	locale := fs.String("locale", "", "target locale")
+	descriptionsPath := fs.String("descriptions", "", "strict stale page_id and description JSON input")
+	provider := fs.String("provider", "", "generation provider provenance for stale Pages")
+	model := fs.String("model", "", "generation model provenance for stale Pages")
+	generatedAt := fs.String("generated-at", "", "generation time for stale Pages (RFC 3339 UTC)")
+	output := fs.String("output", "", "refreshed formal metadata output path")
+	if err := fs.Parse(args); err != nil {
+		return err
+	}
+	if *locale == "" || *descriptionsPath == "" || *provider == "" || *model == "" || *generatedAt == "" || *output == "" {
+		return fmt.Errorf("--locale, --descriptions, --provider, --model, --generated-at, and --output are required")
+	}
+	if fs.NArg() != 0 {
+		return fmt.Errorf("unexpected course-metadata refresh arguments: %s", strings.Join(fs.Args(), " "))
+	}
+	descriptions, err := os.ReadFile(*descriptionsPath)
+	if err != nil {
+		return fmt.Errorf("read course refresh descriptions: %w", err)
+	}
+	refreshed, stale, err := i18n.RefreshCourseMetadata(root, catalog, i18n.CourseMetadataRefreshOptions{
+		Locale: *locale, Provider: *provider, Model: *model, GeneratedAt: *generatedAt, Descriptions: descriptions,
+	})
+	if err != nil {
+		return err
+	}
+	if err := writeCourseMetadataAtomic(*output, refreshed); err != nil {
+		return err
+	}
+	fmt.Printf("refreshed course metadata: %s (locale=%s stale_pages=%d: %s)\n", *output, *locale, len(stale), strings.Join(stale, ", "))
+	return nil
+}
+
 func writeCourseMetadataAtomic(output string, data []byte) (err error) {
 	if strings.TrimSpace(output) == "" {
 		return fmt.Errorf("course metadata output path is required")

@@ -74,9 +74,9 @@ AI 只能在 promotion 完成后作为离线维护步骤生成 metadata。禁止
 
 本规范不改变 TranslationUnit 翻译、automatic validation、Quality Check、Final Review 或 promotion。metadata 生成失败只阻止后续 locale release，不得反向伪造 TranslationUnit review evidence。
 
-### 离线组装
+### Assemble：首次或全量生成
 
-AI 只负责提供完整的 `page_id → description` 集合，严格输入格式为：
+`assemble` 用于首次生成，或明确重新生成整个 locale。AI 必须提供完整 catalog 的 `page_id → description` 集合，严格输入格式为：
 
 ```json
 {
@@ -98,9 +98,27 @@ go run -mod=readonly ./cmd/tour-i18n course-metadata assemble \
   --output <output>
 ```
 
-工具从当前 catalog、完整 glossary、正式 ready status 和通过 candidate validation 的 canonical Page target 自动生成全部 identity 与 provenance 字段，按 catalog Page 顺序固定缩进和结尾换行。
+工具从当前 catalog、完整 glossary、正式 ready status 和通过 candidate validation 的 canonical Page target 自动生成全部 identity 与 provenance 字段，按 catalog Page 顺序固定缩进和结尾换行。因为所有 description 都是本轮生成，所有 entry 的 generation provenance 都记录本轮真实 provider、model 与 generated_at。
 组装结果先在内存中通过同一正式 validator，再原子写入 output；输入集合不完整、identity stale 或 description 不合法时不留下半成品。
 该命令不调用模型，也不从页面内容生成或补齐 description。
+
+### Refresh：日常增量维护
+
+`refresh` 用于 upstream、canonical candidate、glossary 或 metadata 生成契约变化后的日常维护。它以已提交的 `locales/<locale>/course-metadata.json` 为 base，并只接受自动判定为 stale 的 Page 的新 description：
+
+```sh
+go run -mod=readonly ./cmd/tour-i18n course-metadata refresh \
+  --locale <locale> \
+  --descriptions <stale-descriptions.json> \
+  --provider <provider> \
+  --model <model> \
+  --generated-at <RFC3339-UTC> \
+  --output <output>
+```
+
+`stale-descriptions.json` 使用与 assemble 相同的输入 schema，但 `pages` 必须精确等于本次 stale Page 集合。工具使用正式 ready canonical target loader 和同一个 strict identity validator 计算 stale；调用者不得手工提供 hash。缺少任一 stale Page、提供 non-stale 或 extra `page_id` 都会 fail closed。
+
+非 stale entry 的 description 和整个 generation provenance 均按 base 原样保留，不得把旧 description 伪装成本轮生成；stale entry 才写入新的 description、当前 identity 和本轮真实 provenance。输出始终是完整的 current catalog Page 集合，并且在原子写入前通过与 assemble、loader 相同的 strict validator。catalog Page set 与 base 不一致时 refresh fail closed；glossary 任意字节变化会使整个 locale 全量 stale。因此 refresh 不等于 partial metadata 文件，也不代表重新生成或重新审核所有 Page。
 
 ## Strict validation
 
@@ -136,7 +154,7 @@ go run -mod=readonly ./cmd/tour-i18n course-metadata assemble \
 
 任一 identity 改变都视为 stale：target、source 或 route 改变使对应 page stale；catalog 新增或删除页面使 exact-set validation 失败；generator contract 或 prompt version 升级必须通过修改受支持版本显式失效。第一版中 glossary 任意字节改变都会使该 locale 每一条记录的 `glossary_sha256` 失配，因此整个 locale 全量 stale，不做术语影响范围猜测。
 
-允许离线工具只重新生成 stale page，但写入并准备发布的正式文件始终必须是完整集合，不能把 partial metadata 当作正式资产。
+允许离线 `refresh` 只重新生成 stale page，但写入并准备发布的正式文件始终必须是完整集合，不能把 partial metadata 当作正式资产。首次 locale 或显式全量重写使用 `assemble`；两条命令都产生同一个完整正式 `course-metadata.json`。
 
 ## Locale Surface Review
 
@@ -152,7 +170,7 @@ Surface Review evidence 应记录 catalog、course metadata、glossary 和 targe
 
 ## 当前实现状态
 
-schema、严格 loader/validator、离线 assembler 与自动测试均已完成，zh-CN 和 ja-JP 的完整正式资产已经进入 Git。projection 与 preview 统一通过 `LoadCourseMetadata` 验证资产，并只把 runtime 所需的课程 route 与 description 注入投影内容和 `window.__tourSEO`；publish、prerender 与 production runtime 均消费该确定性结果。课程页的 `plainText` 机械摘要 fallback 已删除，缺失、不完整、route 不匹配、stale 或 description 不合法都会使正式构建和发布 fail closed，prerender 也会逐页验证最终 description 与正式 metadata 精确相等。
+schema、严格 loader/validator、离线 assemble/refresh 与自动测试均已完成，zh-CN 和 ja-JP 的完整正式资产已经进入 Git。projection 与 preview 统一通过 `LoadCourseMetadata` 验证资产，并只把 runtime 所需的课程 route 与 description 注入投影内容和 `window.__tourSEO`；publish、prerender 与 production runtime 均消费该确定性结果。课程页的 `plainText` 机械摘要 fallback 已删除，缺失、不完整、route 不匹配、stale 或 description 不合法都会使正式构建和发布 fail closed，prerender 也会逐页验证最终 description 与正式 metadata 精确相等。
 
 后续 release 仍须完成 Locale Surface Review 和 production rendered acceptance。本接入不改变 TranslationUnit workflow，也不替代这些上线验收步骤。
 

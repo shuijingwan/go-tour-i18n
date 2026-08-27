@@ -69,6 +69,17 @@ type CourseMetadataAssemblyOptions struct {
 	Descriptions []byte
 }
 
+// CourseMetadataRefreshOptions supplies only descriptions that must be
+// regenerated. The existing formal metadata asset is the immutable base for
+// every non-stale Page entry.
+type CourseMetadataRefreshOptions struct {
+	Locale       string
+	Provider     string
+	Model        string
+	GeneratedAt  string
+	Descriptions []byte
+}
+
 type courseDescriptionsFile struct {
 	Pages []courseDescriptionEntry `json:"pages"`
 }
@@ -133,24 +144,9 @@ func AssembleCourseMetadata(root string, catalog *Catalog, options CourseMetadat
 	if catalog == nil {
 		return nil, fmt.Errorf("catalog is required")
 	}
-	decoder := json.NewDecoder(bytes.NewReader(options.Descriptions))
-	decoder.DisallowUnknownFields()
-	var descriptions courseDescriptionsFile
-	if err := decoder.Decode(&descriptions); err != nil {
-		return nil, fmt.Errorf("parse course descriptions: %w", err)
-	}
-	if err := decoder.Decode(&struct{}{}); err != io.EOF {
-		if err == nil {
-			return nil, fmt.Errorf("parse course descriptions: multiple JSON values")
-		}
-		return nil, fmt.Errorf("parse course descriptions: %w", err)
-	}
-	descriptionByID := make(map[string]string, len(descriptions.Pages))
-	for _, entry := range descriptions.Pages {
-		if _, exists := descriptionByID[entry.PageID]; exists {
-			return nil, fmt.Errorf("course descriptions has duplicate page_id %q", entry.PageID)
-		}
-		descriptionByID[entry.PageID] = entry.Description
+	descriptionByID, err := parseCourseDescriptions(options.Descriptions)
+	if err != nil {
+		return nil, err
 	}
 	expected := make(map[string]struct{}, len(catalog.Pages))
 	for _, page := range catalog.Pages {
@@ -198,6 +194,171 @@ func AssembleCourseMetadata(root string, catalog *Catalog, options CourseMetadat
 		return nil, fmt.Errorf("validate assembled course metadata: %w", err)
 	}
 	return data, nil
+}
+
+// RefreshCourseMetadata produces a complete current metadata asset while
+// requiring new AI descriptions only for Pages whose existing metadata
+// identity is stale. It never treats the previous description as new output.
+func RefreshCourseMetadata(root string, catalog *Catalog, options CourseMetadataRefreshOptions) ([]byte, []string, error) {
+	if catalog == nil {
+		return nil, nil, fmt.Errorf("catalog is required")
+	}
+	basePath := filepath.Join(root, "locales", options.Locale, "course-metadata.json")
+	baseData, err := os.ReadFile(basePath)
+	if err != nil {
+		return nil, nil, fmt.Errorf("read course metadata refresh base: %w", err)
+	}
+	base, err := decodeCourseMetadata(baseData)
+	if err != nil {
+		return nil, nil, fmt.Errorf("parse course metadata refresh base: %w", err)
+	}
+	if base.SchemaVersion != CourseMetadataSchemaVersion {
+		return nil, nil, fmt.Errorf("course metadata refresh base schema_version=%d, want %d", base.SchemaVersion, CourseMetadataSchemaVersion)
+	}
+	if base.Locale != options.Locale {
+		return nil, nil, fmt.Errorf("course metadata refresh base locale %q does not match requested locale %q", base.Locale, options.Locale)
+	}
+	baseByID, err := courseMetadataBaseIndex(base, catalog)
+	if err != nil {
+		return nil, nil, err
+	}
+	targets, glossary, err := loadReadyCourseMetadataInputs(root, options.Locale, catalog)
+	if err != nil {
+		return nil, nil, err
+	}
+	glossaryHash := sum(glossary)
+	stale := make([]string, 0)
+	staleByID := make(map[string]bool, len(catalog.Pages))
+	for _, page := range catalog.Pages {
+		entry := baseByID[page.ID]
+		if courseMetadataEntryIsStale(base, entry, page, targets[page.ID], glossaryHash) {
+			stale = append(stale, page.ID)
+			staleByID[page.ID] = true
+		}
+	}
+	descriptionByID, err := parseCourseDescriptions(options.Descriptions)
+	if err != nil {
+		return nil, nil, err
+	}
+	for pageID := range descriptionByID {
+		if _, ok := baseByID[pageID]; !ok {
+			return nil, nil, fmt.Errorf("course refresh descriptions has extra page_id %q", pageID)
+		}
+		if !staleByID[pageID] {
+			return nil, nil, fmt.Errorf("course refresh descriptions has non-stale page_id %q", pageID)
+		}
+	}
+	if missing := missingCourseDescriptionIDs(stale, descriptionByID); len(missing) > 0 {
+		return nil, nil, fmt.Errorf("course refresh descriptions is missing stale page(s): %s", strings.Join(missing, ", "))
+	}
+
+	metadata := CourseMetadata{
+		SchemaVersion: CourseMetadataSchemaVersion, Locale: options.Locale, GeneratorContract: CourseMetadataGeneratorContract,
+		Pages: make([]CoursePageMetadata, 0, len(catalog.Pages)),
+	}
+	for _, page := range catalog.Pages {
+		entry := baseByID[page.ID]
+		if staleByID[page.ID] {
+			entry = CoursePageMetadata{
+				PageID: page.ID, Route: page.Route, Description: descriptionByID[page.ID],
+				SourceSHA256: page.SourceSHA256, TargetSHA256: sum(targets[page.ID]), GlossarySHA256: glossaryHash,
+				Generation: CourseMetadataGeneration{Provider: options.Provider, Model: options.Model, PromptVersion: CourseMetadataPromptVersion, GeneratedAt: options.GeneratedAt},
+			}
+		}
+		metadata.Pages = append(metadata.Pages, entry)
+	}
+	data, err := json.MarshalIndent(metadata, "", "  ")
+	if err != nil {
+		return nil, nil, fmt.Errorf("encode refreshed course metadata: %w", err)
+	}
+	data = append(data, '\n')
+	if _, err := validateCourseMetadata(data, options.Locale, catalog, targets, glossary); err != nil {
+		return nil, nil, fmt.Errorf("validate refreshed course metadata: %w", err)
+	}
+	return data, stale, nil
+}
+
+func parseCourseDescriptions(data []byte) (map[string]string, error) {
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	var descriptions courseDescriptionsFile
+	if err := decoder.Decode(&descriptions); err != nil {
+		return nil, fmt.Errorf("parse course descriptions: %w", err)
+	}
+	if err := decoder.Decode(&struct{}{}); err != io.EOF {
+		if err == nil {
+			return nil, fmt.Errorf("parse course descriptions: multiple JSON values")
+		}
+		return nil, fmt.Errorf("parse course descriptions: %w", err)
+	}
+	descriptionByID := make(map[string]string, len(descriptions.Pages))
+	for _, entry := range descriptions.Pages {
+		if _, exists := descriptionByID[entry.PageID]; exists {
+			return nil, fmt.Errorf("course descriptions has duplicate page_id %q", entry.PageID)
+		}
+		descriptionByID[entry.PageID] = entry.Description
+	}
+	return descriptionByID, nil
+}
+
+func decodeCourseMetadata(data []byte) (*CourseMetadata, error) {
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	var metadata CourseMetadata
+	if err := decoder.Decode(&metadata); err != nil {
+		return nil, err
+	}
+	if err := decoder.Decode(&struct{}{}); err != io.EOF {
+		if err == nil {
+			return nil, fmt.Errorf("multiple JSON values")
+		}
+		return nil, err
+	}
+	return &metadata, nil
+}
+
+func courseMetadataBaseIndex(metadata *CourseMetadata, catalog *Catalog) (map[string]CoursePageMetadata, error) {
+	expected := make(map[string]struct{}, len(catalog.Pages))
+	for _, page := range catalog.Pages {
+		expected[page.ID] = struct{}{}
+	}
+	entries := make(map[string]CoursePageMetadata, len(metadata.Pages))
+	for _, entry := range metadata.Pages {
+		if _, ok := expected[entry.PageID]; !ok {
+			return nil, fmt.Errorf("course metadata refresh base has extra page_id %q", entry.PageID)
+		}
+		if _, exists := entries[entry.PageID]; exists {
+			return nil, fmt.Errorf("course metadata refresh base has duplicate page_id %q", entry.PageID)
+		}
+		entries[entry.PageID] = entry
+	}
+	missing := make([]string, 0)
+	for _, page := range catalog.Pages {
+		if _, ok := entries[page.ID]; !ok {
+			missing = append(missing, page.ID)
+		}
+	}
+	if len(missing) > 0 || len(entries) != len(catalog.Pages) {
+		sort.Strings(missing)
+		return nil, fmt.Errorf("course metadata refresh base page set does not match current catalog; missing page(s): %s", strings.Join(missing, ", "))
+	}
+	return entries, nil
+}
+
+func courseMetadataEntryIsStale(metadata *CourseMetadata, entry CoursePageMetadata, page Page, target []byte, glossaryHash string) bool {
+	return metadata.GeneratorContract != CourseMetadataGeneratorContract || entry.Route != page.Route ||
+		entry.SourceSHA256 != page.SourceSHA256 || entry.TargetSHA256 != sum(target) ||
+		entry.GlossarySHA256 != glossaryHash || entry.Generation.PromptVersion != CourseMetadataPromptVersion
+}
+
+func missingCourseDescriptionIDs(stale []string, descriptions map[string]string) []string {
+	missing := make([]string, 0)
+	for _, pageID := range stale {
+		if _, ok := descriptions[pageID]; !ok {
+			missing = append(missing, pageID)
+		}
+	}
+	return missing
 }
 
 func validateCourseMetadata(data []byte, locale string, catalog *Catalog, targets map[string][]byte, glossary []byte) (*CourseMetadata, error) {

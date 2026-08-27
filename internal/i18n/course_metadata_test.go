@@ -2,8 +2,10 @@ package i18n
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 	"path/filepath"
+	"reflect"
 	"strings"
 	"testing"
 )
@@ -408,4 +410,182 @@ func marshalCourseDescriptions(t *testing.T, catalog *Catalog) []byte {
 		t.Fatal(err)
 	}
 	return data
+}
+
+func TestRefreshCourseMetadataRegeneratesOnlyStalePages(t *testing.T) {
+	root, catalog, base := writeCourseMetadataRefreshFixture(t, 103)
+	staleIDs := []string{catalog.Pages[0].ID, catalog.Pages[51].ID, catalog.Pages[102].ID}
+	for _, pageID := range staleIDs {
+		base.Pages[pageIndex(t, base, pageID)].SourceSHA256 = strings.Repeat("0", 64)
+	}
+	writeCourseMetadataFixture(t, root, "test-LOCALE", base)
+
+	data, stale, err := RefreshCourseMetadata(root, catalog, CourseMetadataRefreshOptions{
+		Locale: "test-LOCALE", Provider: "new-provider", Model: "new-model", GeneratedAt: "2026-08-27T06:30:00Z",
+		Descriptions: marshalCourseRefreshDescriptions(t, staleIDs),
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !reflect.DeepEqual(stale, staleIDs) {
+		t.Fatalf("stale=%v, want %v", stale, staleIDs)
+	}
+	var refreshed CourseMetadata
+	if err := json.Unmarshal(data, &refreshed); err != nil {
+		t.Fatal(err)
+	}
+	for _, page := range catalog.Pages {
+		old := base.Pages[pageIndex(t, base, page.ID)]
+		got := refreshed.Pages[pageIndex(t, &refreshed, page.ID)]
+		isStale := page.ID == staleIDs[0] || page.ID == staleIDs[1] || page.ID == staleIDs[2]
+		if !isStale {
+			if got.Description != old.Description || !reflect.DeepEqual(got.Generation, old.Generation) {
+				t.Fatalf("non-stale %s was regenerated: got=%+v old=%+v", page.ID, got, old)
+			}
+			continue
+		}
+		if got.Description != courseDescription("refresh "+page.ID) || got.SourceSHA256 != page.SourceSHA256 || got.Route != page.Route ||
+			got.Generation.Provider != "new-provider" || got.Generation.Model != "new-model" || got.Generation.GeneratedAt != "2026-08-27T06:30:00Z" {
+			t.Fatalf("stale %s was not refreshed from current identity: %+v", page.ID, got)
+		}
+	}
+	writeCourseMetadataFixture(t, root, "test-LOCALE", &refreshed)
+	if _, err := LoadCourseMetadata(root, "test-LOCALE", catalog); err != nil {
+		t.Fatalf("refreshed metadata did not pass strict validation: %v", err)
+	}
+}
+
+func TestRefreshCourseMetadataDescriptionSetAndGlossaryGuards(t *testing.T) {
+	t.Run("missing stale description", func(t *testing.T) {
+		root, catalog, base := writeCourseMetadataRefreshFixture(t, 3)
+		base.Pages[0].TargetSHA256 = strings.Repeat("0", 64)
+		base.Pages[1].SourceSHA256 = strings.Repeat("0", 64)
+		writeCourseMetadataFixture(t, root, "test-LOCALE", base)
+		_, _, err := RefreshCourseMetadata(root, catalog, CourseMetadataRefreshOptions{
+			Locale: "test-LOCALE", Provider: "provider", Model: "model", GeneratedAt: "2026-08-27T06:30:00Z",
+			Descriptions: marshalCourseRefreshDescriptions(t, []string{catalog.Pages[0].ID}),
+		})
+		if err == nil || !strings.Contains(err.Error(), "missing stale page") {
+			t.Fatalf("error=%v", err)
+		}
+	})
+	t.Run("non-stale and extra descriptions", func(t *testing.T) {
+		root, catalog, base := writeCourseMetadataRefreshFixture(t, 3)
+		base.Pages[0].SourceSHA256 = strings.Repeat("0", 64)
+		writeCourseMetadataFixture(t, root, "test-LOCALE", base)
+		for _, input := range [][]byte{
+			marshalCourseRefreshDescriptions(t, []string{catalog.Pages[0].ID, catalog.Pages[1].ID}),
+			[]byte(`{"pages":[{"page_id":"extra/1","description":"A complete and distinct course summary grounded in the target lesson for extra/1."}]}`),
+		} {
+			_, _, err := RefreshCourseMetadata(root, catalog, CourseMetadataRefreshOptions{Locale: "test-LOCALE", Provider: "provider", Model: "model", GeneratedAt: "2026-08-27T06:30:00Z", Descriptions: input})
+			if err == nil || (!strings.Contains(err.Error(), "non-stale") && !strings.Contains(err.Error(), "extra page_id")) {
+				t.Fatalf("error=%v", err)
+			}
+		}
+	})
+	t.Run("glossary change makes every page stale", func(t *testing.T) {
+		root, catalog, _ := writeCourseMetadataRefreshFixture(t, 3)
+		path := filepath.Join(root, "locales", "test-LOCALE", "glossary.yaml")
+		glossary, err := os.ReadFile(path)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if err := os.WriteFile(path, append(glossary, []byte("preferred:\n  tour: course\n")...), 0644); err != nil {
+			t.Fatal(err)
+		}
+		ids := []string{catalog.Pages[0].ID, catalog.Pages[1].ID, catalog.Pages[2].ID}
+		data, stale, err := RefreshCourseMetadata(root, catalog, CourseMetadataRefreshOptions{Locale: "test-LOCALE", Provider: "provider", Model: "model", GeneratedAt: "2026-08-27T06:30:00Z", Descriptions: marshalCourseRefreshDescriptions(t, ids)})
+		if err != nil || !reflect.DeepEqual(stale, ids) {
+			t.Fatalf("stale=%v err=%v", stale, err)
+		}
+		var refreshed CourseMetadata
+		if err := json.Unmarshal(data, &refreshed); err != nil {
+			t.Fatal(err)
+		}
+		writeCourseMetadataFixture(t, root, "test-LOCALE", &refreshed)
+		if _, err := LoadCourseMetadata(root, "test-LOCALE", catalog); err != nil {
+			t.Fatal(err)
+		}
+	})
+}
+
+func TestRefreshCourseMetadataFailsClosedOnCatalogPageSetChange(t *testing.T) {
+	root, catalog, _ := writeCourseMetadataRefreshFixture(t, 3)
+	catalog.Pages = catalog.Pages[:2]
+	_, _, err := RefreshCourseMetadata(root, catalog, CourseMetadataRefreshOptions{
+		Locale: "test-LOCALE", Provider: "provider", Model: "model", GeneratedAt: "2026-08-27T06:30:00Z", Descriptions: []byte(`{"pages":[]}`),
+	})
+	if err == nil || !strings.Contains(err.Error(), "base has extra page_id") {
+		t.Fatalf("error=%v", err)
+	}
+}
+
+func writeCourseMetadataRefreshFixture(t *testing.T, count int) (string, *Catalog, *CourseMetadata) {
+	t.Helper()
+	root := t.TempDir()
+	locale := "test-LOCALE"
+	glossary := []byte("locale: test-LOCALE\nmandatory:\n  slides: slides\n")
+	catalog := &Catalog{Pages: make([]Page, 0, count)}
+	metadata := &CourseMetadata{SchemaVersion: CourseMetadataSchemaVersion, Locale: locale, GeneratorContract: CourseMetadataGeneratorContract, Pages: make([]CoursePageMetadata, 0, count)}
+	localeDir := filepath.Join(root, "locales", locale)
+	if err := os.MkdirAll(filepath.Join(localeDir, "candidates"), 0755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(localeDir, "glossary.yaml"), glossary, 0644); err != nil {
+		t.Fatal(err)
+	}
+	statuses := make([]Status, 0, count)
+	for i := 1; i <= count; i++ {
+		id := fmt.Sprintf("lesson/%03d", i)
+		source := []byte(fmt.Sprintf("* Source %03d\n\nComplete source paragraph for lesson %03d.\n", i, i))
+		target := []byte(fmt.Sprintf("* Target %03d\n\nComplete target paragraph for lesson %03d.\n", i, i))
+		page := Page{ID: id, Article: "lesson.article", Route: "/" + id, Source: source, SourceSHA256: sum(source)}
+		catalog.Pages = append(catalog.Pages, page)
+		path := canonicalCandidatePath(locale, id)
+		if err := os.WriteFile(filepath.Join(root, filepath.FromSlash(path)), target, 0644); err != nil {
+			t.Fatal(err)
+		}
+		statuses = append(statuses, Status{UnitID: id, State: "ready", Attempts: 1, SourceSHA256: page.SourceSHA256, CandidatePath: path})
+		metadata.Pages = append(metadata.Pages, CoursePageMetadata{PageID: id, Route: page.Route, Description: courseDescription(id), SourceSHA256: page.SourceSHA256, TargetSHA256: sum(target), GlossarySHA256: sum(glossary), Generation: CourseMetadataGeneration{Provider: "fixture", Model: "fixture-model", PromptVersion: CourseMetadataPromptVersion, GeneratedAt: "2026-08-25T12:00:00Z"}})
+	}
+	if err := writeStatuses(filepath.Join(localeDir, "status.tsv"), statuses); err != nil {
+		t.Fatal(err)
+	}
+	writeCourseMetadataFixture(t, root, locale, metadata)
+	return root, catalog, metadata
+}
+
+func writeCourseMetadataFixture(t *testing.T, root, locale string, metadata *CourseMetadata) {
+	t.Helper()
+	data, err := json.MarshalIndent(metadata, "", "  ")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(root, "locales", locale, "course-metadata.json"), append(data, '\n'), 0644); err != nil {
+		t.Fatal(err)
+	}
+}
+
+func marshalCourseRefreshDescriptions(t *testing.T, ids []string) []byte {
+	t.Helper()
+	input := courseDescriptionsFile{Pages: make([]courseDescriptionEntry, 0, len(ids))}
+	for _, id := range ids {
+		input.Pages = append(input.Pages, courseDescriptionEntry{PageID: id, Description: courseDescription("refresh " + id)})
+	}
+	data, err := json.Marshal(input)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return data
+}
+
+func pageIndex(t *testing.T, metadata *CourseMetadata, pageID string) int {
+	t.Helper()
+	for i, entry := range metadata.Pages {
+		if entry.PageID == pageID {
+			return i
+		}
+	}
+	t.Fatalf("metadata has no page %s", pageID)
+	return -1
 }

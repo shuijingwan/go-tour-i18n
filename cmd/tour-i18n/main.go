@@ -93,6 +93,8 @@ func run(args []string) error {
 	switch args[0] + " " + args[1] {
 	case "course-metadata assemble":
 		return assembleCourseMetadata(root, catalog, args[2:])
+	case "course-metadata refresh":
+		return refreshCourseMetadata(root, catalog, args[2:])
 	case "catalog check":
 		report, err := i18n.PreviewCatalog(catalog, current)
 		if err != nil {
