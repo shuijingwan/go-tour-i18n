@@ -39,6 +39,22 @@ go run -mod=readonly ./cmd/tour-i18n retranslation process --locale <locale>
 
 Automatic validation 只负责结构、保护 token、代码、链接、source identity 等机器安全性，不能替代翻译质量检查。
 
+### 提交前 whitespace 检查与不可变 artifact 例外
+
+`git diff --check` 仍是所有正式提交前的必做检查，默认不得带 whitespace error 提交。源码、文档、手工编辑文件，以及普通 trailing whitespace，都必须正常修复；本节的例外不能用于它们。
+
+极少数情况下，正式 exporter 生成的 immutable artifact 可能带有单一 `new blank line at EOF` warning。仅当**全部**满足以下条件时，允许将该 warning 作为局部、可审计的例外保留并继续提交：
+
+- artifact 由正式 exporter 生成，且已由 manifest 与相关 SHA-256 固定；
+- artifact 已参与该 batch 的正式 `retranslation process`；
+- 该 batch 的 restore 和 automatic validation 都已通过；
+- 修改该 artifact 会改变正式 input 或 hash identity；
+- `git diff --check` 除这一项 EOF blank-line warning 外没有任何其他错误。
+
+满足条件时，不得仅为了让 `git diff --check` 全绿而改写 immutable artifact，必须保留 exporter 的原始字节，并在提交记录中明确该例外的 artifact、warning 与通过的 process/validation。该规则源于已验证 artifact 的身份不可变性，不是通用 whitespace 豁免。
+
+下列情况绝不适用本例外：尚未冻结或未完成 process 的 artifact、restore 或 validation 未通过的 artifact、任何普通 trailing whitespace、源码或文档、多项 whitespace error，以及任何可能掩盖实际内容损坏的 warning。
+
 ## 4. Retry：只处理 restore/validation failure
 
 Retry 只用于：
