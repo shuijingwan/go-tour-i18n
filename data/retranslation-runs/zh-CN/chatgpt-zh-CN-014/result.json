@@ -1,0 +1,26 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-zh-CN-014",
+  "locale": "zh-CN",
+  "unit_count": 2,
+  "restore_passed": 2,
+  "restore_failed": 0,
+  "validation_passed": 2,
+  "validation_failed": 0,
+  "units": [
+    {
+      "unit_id": "flowcontrol/1",
+      "unit_kind": "page",
+      "status": "passed",
+      "candidate_path": "candidates/flowcontrol-1.article",
+      "validation_path": "validation/flowcontrol-1.json"
+    },
+    {
+      "unit_id": "methods/14",
+      "unit_kind": "page",
+      "status": "passed",
+      "candidate_path": "candidates/methods-14.article",
+      "validation_path": "validation/methods-14.json"
+    }
+  ]
+}
