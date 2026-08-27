@@ -65,6 +65,8 @@ Glossary 一致但忠实度、准确性或自然度不合格时，语言质量�
 
 只有完整语言质量审核通过，并且 TranslationUnit promotion、locale 配置、UI catalog 与 article metadata 已组成完整 projection 后，才在 preview 上执行本阶段；部署后再在 production 复核公网相关项目。浏览器检查用于发现组合、布局、交互、runtime 和部署问题，不能替代 A 阶段对全部可翻译资产的 source ↔ target 审核。
 
+广告不属于 Locale-level language quality review，也不扩展为 TranslationUnit 或语言质量 gate。preview rendered surface acceptance 不要求真实 AdSense；首次 production 的最终 rendered surface acceptance 仅在既有 production verification 中顺带记录一次轻量广告确认，具体接入和确认项见[生产运维手册](PRODUCTION_RUNBOOK.md)。本规范不重复广告实现、共享回归或广告失败隔离测试细节。
+
 ### 1. 公共 UI 与页面 shell
 
 - UI catalog 渲染时无英文 fallback、缺失文案、错误 rich markup 或占位符泄漏；
@@ -128,7 +130,7 @@ data/locale-surface-reviews/<locale>/<review-id>.md
 - `UI / metadata identity`：英文和目标 UI catalog、article metadata 及其他被审核 locale-level source/target 的 path 与 commit 或 SHA-256；
 - `language quality review result`：完整范围、结果与问题；
 - `preview acceptance result`：preview identity、环境、覆盖范围、结果与问题；
-- `production verification result`：production release/URL、环境、覆盖范围、结果与问题；
+- `production verification result`：production release/URL、环境、覆盖范围、结果与问题；首次 production 同时记录按生产运维手册完成的轻量广告确认；
 - `reviewer`；
 - `date`；
 - `decision = passed | failed`；

@@ -41,7 +41,7 @@ TOUR_ANALYTICS='<Google Analytics HTML><Baidu Analytics HTML>'
 
 本地开发默认不设置该变量，因此不会加载生产统计代码。实际统计代码以及具体统计 ID 不写入 Git 仓库；公开前端标识也不在本手册中固定记录。
 
-Google AdSense 使用独立的 `TOUR_ADSENSE_CLIENT`。变量为空时，首页和课程页面完全不注入广告代码，自行部署默认关闭；生产环境显式设置后，服务端会校验 `ca-pub-...` 格式，并在每个完整 HTML 页面的 `<head>` 中生成一次 Auto Ads 站点代码，不插入手工广告位。当前从公开博客首页核验到的配置为：
+Google AdSense 使用独立的 `TOUR_ADSENSE_CLIENT`。服务端只在该变量为有效 `ca-pub-...` 值时，才在每个完整 HTML 页面的 `<head>` 中生成一次 Auto Ads 站点代码。课程页同时已有共享的手动 `course-ad` 实现：课程 editor partial 提供 mount 容器，Angular route view 在 link / `$destroy` 时调用其 mount / unmount，模板加载课程广告 CSS/JS；该 helper 创建一个 responsive AdSense `ins` 并请求广告。局部 layout protection 只移除 AdSense/Funding Choices 曾写入编辑器祖先的两种高度覆盖，以保持课程高度和 footer 布局。课程页广告资源与 Auto Ads 一起构成最终广告形态，并非“只注入 Auto Ads、不插入手工广告位”。当前从公开博客首页核验到的配置为：
 
 ```text
 TOUR_ADSENSE_CLIENT='ca-pub-8392190980622725'
@@ -68,7 +68,30 @@ EnvironmentFile=/etc/go-tour/go-tour.env
 
 新增或修改 systemd drop-in 后执行 `systemctl daemon-reload`；仅修改 `go-tour.env` 内容时，也必须重启 `go-tour.service`，使新进程重新读取统计环境变量。不要在 shell 历史、发布包或其他仓库文件中复制完整统计代码。
 
-修改 `TOUR_ANALYTICS`、`TOUR_ADSENSE_CLIENT` 或其他影响 HTML shell 的内容后，EdgeOne 可能继续命中旧 HTML。若公网响应仍显示旧页面，应刷新 `go-dev.shuijingwanwq.com` 的 Hostname 级缓存；不要仅根据源站验证就判断公网已更新。公开的 `/socket` 既有安全原则保持不变：production 不注册或开放本地 Socket transport，普通请求和 WebSocket Upgrade 均应保持 404。
+修改 `TOUR_ANALYTICS`、`TOUR_ADSENSE_CLIENT` 或其他影响 HTML shell 的内容后，EdgeOne 可能继续命中旧 HTML。若公网响应仍显示旧页面，应刷新对应 production hostname 的缓存；不要仅根据源站验证就判断公网已更新。公开的 `/socket` 既有安全原则保持不变：production 不注册或开放本地 Socket transport，普通请求和 WebSocket Upgrade 均应保持 404。
+
+### 广告职责、首次接入与最终验收边界
+
+Auto Ads、课程页手动广告、Angular SPA mount/unmount 生命周期、局部 AdSense layout protection，以及覆盖这些行为的 browser tests，都是项目共享实现。新增 locale 只接入和使用这套既有能力；第三门及后续 locale 不重新设计广告位、不重复共享架构验证，也不把广告纳入 TranslationUnit 或 Locale-level language quality review。
+
+新 locale 必须在**首次 production release 激活前**完成以下 production 广告接入准备：
+
+- 在目标 locale service 的 EnvironmentFile 中设置有效的 `TOUR_ADSENSE_CLIENT`，并完成对应 systemd drop-in 配置；
+- 完成 Auto Ads 所需的 production 配置；
+- 准备并验收课程广告 CSS/JS 的 production asset 来源（zh-CN 为同源；非中文 locale 按共享 assets 策略）；
+- 非中文 locale 使用 shared-assets 时，在首次上线前确认共享的 `course-ad.css` 与 `course-ad.js` 已部署，且已完成缓存验收。
+
+此阶段只准备 production 配置和资源，不要求证明尚未激活的 production 进程已实际读取变量、正式 HTML 已生成 Auto Ads head code，或浏览器已产生真实广告请求；这些都属于激活后的最终 production acceptance。因此首次正式部署启动后即为最终“已启用广告”形态，不允许先上线无广告版本、再以第二次上线接入广告。
+
+首次 production 激活后，只在同一次最终 production acceptance 中完成轻量广告确认，并记录在现有 `data/locale-surface-reviews/<locale>/<review-id>.md` 的 `production verification result`：
+
+- 实际 production HTML 已加载或生成预期的 AdSense loader / Auto Ads head 配置；
+- 课程页存在手动广告 mount；
+- 浏览器存在真实广告请求机会；广告可为 filled 或 unfilled，不以填充为通过条件；
+- 课程高度与 footer 没有明显布局异常；
+- SPA 跳到下一页正常。
+
+此处不要求每个 locale 为广告专项重跑 observer 累积、完整 browser regression、广告失败隔离，或 Run / Format / Reset 等共享广告架构测试；这些属于共享实现的变更验证。新 locale 原有的基础浏览器与 Playground 验收仍按首次部署清单执行，但不以它们替代或扩大上述五项广告确认。也不把“无广告完整验收 → 开广告 → 再完整验收”作为首次上线流程。
 
 ## 域名与 EdgeOne
 
@@ -127,6 +150,7 @@ systemd service / service user
 loopback port / localhost health URL
 Nginx vhost / TLS certificate paths
 Playground allowed Origin
+AdSense service environment / Auto Ads 与课程广告资产来源
 ```
 
 按以下顺序执行：
@@ -136,12 +160,13 @@ Playground allowed Origin
 3. **TLS 与 vhost**：在 `/root/oneinstack` 使用 `./vhost.sh --proxy --dnsapi` 创建 HTTPS reverse-proxy vhost，使用 Let's Encrypt、`ec-256` 和 `dns_cf`，反向代理到精确 loopback port。检查自动生成的 `location`，不得截获 `/tour/static/`；使用 `nginx -t && service nginx reload`。
 4. **DNS / CDN**：创建新 hostname 的 DNS 并启用约定 CDN。等待公开解析生效后分别核对 HTTP → HTTPS、证书 hostname、源站 Host 和 CDN 响应；凭据不进入仓库或命令记录。
 5. **Playground Origin**：把新站的精确 `https://<hostname>` 加入 ZgoCloud Playground 代理 allowlist，保持错误 Origin 403、OPTIONS/POST 方法边界和既有 origin 不受影响。未完成此项时 Run / Format 的页面渲染成功不算上线成功。
-6. **部署脚本 profile**：为新 locale 明确增加并测试 `scripts/deploy-production.sh` 的 fail-closed profile，包括全部路径、service、health URL 和 public URL。该步骤属于首次接入所需的代码能力变更；在 profile 合入前脚本应继续拒绝该 locale，不能用目录名猜测或临时绕过白名单。
-7. **首个 release 激活**：部署已验收的 Linux/amd64 bundle，验证权限、SHA-256、`current`、service restart 和连续 localhost health。首次没有可回滚旧 release 时，必须事先定义人工恢复路径，不得声称自动回滚已覆盖。
-8. **SEO 与公网验收**：检查 `/`、`/tour/`、`/tour/list`、全部 sitemap URL、`robots.txt`、canonical host、`html lang`、静态资源、`/socket` 404 与保留路径；确认 sitemap 无错误 host、重复或 HTTP failure。
-9. **真实浏览器验收**：桌面和移动端复核导航、语言选择器、编辑器、Run / Format / Reset 与 runtime message；从 Network 确认实际 Playground endpoint 与 CORS Origin。最后在 production 重新执行 rendered surface acceptance 关键项，并完成 `data/locale-surface-reviews/<locale>/<review-id>.md` 的 production 结果与最终 decision。
+6. **AdSense production 接入**：在首个 release 激活前，完成本手册“广告职责、首次接入与最终验收边界”所列的 service 环境、Auto Ads 与课程广告资源准备；不得把它留到 production 上线后再补做。
+7. **部署脚本 profile**：为新 locale 明确增加并测试 `scripts/deploy-production.sh` 的 fail-closed profile，包括全部路径、service、health URL 和 public URL。该步骤属于首次接入所需的代码能力变更；在 profile 合入前脚本应继续拒绝该 locale，不能用目录名猜测或临时绕过白名单。
+8. **首个 release 激活**：部署已验收的 Linux/amd64 bundle，验证权限、SHA-256、`current`、service restart 和连续 localhost health。首次没有可回滚旧 release 时，必须事先定义人工恢复路径，不得声称自动回滚已覆盖。
+9. **SEO 与公网验收**：检查 `/`、`/tour/`、`/tour/list`、全部 sitemap URL、`robots.txt`、canonical host、`html lang`、静态资源、`/socket` 404 与保留路径；确认 sitemap 无错误 host、重复或 HTTP failure。
+10. **真实浏览器与最终广告验收**：桌面和移动端复核导航、语言选择器、编辑器、Run / Format / Reset 与 runtime message；从 Network 确认实际 Playground endpoint 与 CORS Origin。同时执行上述五项轻量广告确认。最后在 production 重新执行 rendered surface acceptance 关键项，并完成 `data/locale-surface-reviews/<locale>/<review-id>.md` 的 production 结果与最终 decision；不另行执行无广告版本的完整验收。
 
-首次上线记录至少包含：上述冻结值、vhost/证书路径、CDN 类型、当前 release、localhost 与 public 结果、sitemap 汇总、Playground Origin 和浏览器结果。全部通过后，该 locale 才进入日常维护状态。
+首次上线记录至少包含：上述冻结值、vhost/证书路径、CDN 类型、当前 release、localhost 与 public 结果、sitemap 汇总、Playground Origin、轻量广告确认和浏览器结果。全部通过后，该 locale 才进入日常维护状态。
 
 ## 已有 Locale 日常维护部署
 

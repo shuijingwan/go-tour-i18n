@@ -18,15 +18,15 @@ locale / domain / CDN 决策
 → 完整 projection / preview
 → Locale Surface Review
 → production publish
-→ 首次生产基础设施与部署
-→ 源站、公网和浏览器上线验收
+→ 首次 production 基础设施、部署 profile 与广告接入
+→ 最终源站、公网和浏览器上线验收
 ```
 
 必须区分四类工作：
 
 1. **TranslationUnit 质量审核**只审核进入 translation workflow 的 Page 和 eligible Example candidate，规则见 [Translation Quality Review](TRANSLATION_QUALITY_REVIEW.md)。它保持逐 TranslationUnit、Quality Check 全 A、Final Review A-only 的既有 promotion gate。
 2. **Locale Surface Review**审核 TranslationUnit 之外及组合后页面上的语言表层，规则见 [Locale Surface Review](LOCALE_SURFACE_REVIEW.md)。它是独立的 locale release gate，不生成 TranslationUnit review evidence，也不允许替代或弱化 A-only gate。
-3. **首次生产部署**为新 locale 建立 hostname、CDN、service、port、TLS、vhost、DNS/CDN、Playground Origin 和部署 profile；它不是一次普通 release 切换。
+3. **首次生产部署**为新 locale 建立 hostname、CDN、service、port、TLS、vhost、DNS/CDN、Playground Origin、部署 profile，以及对既有 AdSense 能力的 production 接入；它不是一次普通 release 切换。课程页手动广告、Auto Ads、Angular SPA 生命周期和局部布局保护均为共享实现，第三门及后续 locale 不重新开发广告功能。
 4. **日常维护部署**只对已完成上述基线的 locale 执行 `scripts/deploy-production.sh <release-dir>`，不重新探测或设计服务器环境。
 
 ## 1. 冻结语言与生产身份
@@ -102,7 +102,7 @@ go run -mod=readonly ./cmd/tour-i18n preview --locale <locale>
 
 Surface Review 通过后，按 [生产运维手册](PRODUCTION_RUNBOOK.md) 生成 Linux/amd64 production bundle，并核对 `release.json`、bundle 内 `site-metadata.json`、文件集合和 `SHA256SUMS`。`publish` 只生成 release，不创建 hostname、service、TLS、vhost 或部署脚本 profile。
 
-随后执行该手册的“新 locale 首次生产部署”：先完成并记录 production profile 与基础设施，再部署已验收 bundle。当前 `scripts/deploy-production.sh` 对 locale fail closed；新 locale 未经明确 profile 实现和验证前，不能假定通用命令已经支持它。
+随后执行该手册的“新 locale 首次生产部署”：先完成并记录 production profile、基础设施和 AdSense production 接入，再部署已验收 bundle。首次激活的页面必须已是最终的启用广告形态，不安排“先无广告上线、再接广告”的两次发布。当前 `scripts/deploy-production.sh` 对 locale fail closed；新 locale 未经明确 profile 实现和验证前，不能假定通用命令已经支持它。
 
 ## 7. 正式上线验收与移交
 
@@ -110,6 +110,6 @@ Surface Review 通过后，按 [生产运维手册](PRODUCTION_RUNBOOK.md) 生�
 
 - **源站层**：service active、loopback 连续健康、关键路由和静态资源正确、`/socket` 与保留路径符合 production 安全边界；
 - **公网层**：HTTPS、CDN/DNS、首页、`/tour/`、`/tour/list`、课程页、静态资源、`robots.txt`、sitemap 全量 URL 与 canonical host；
-- **真实浏览器层**：桌面与移动端页面、导航、语言选择器、Run / Format / Reset、runtime message，以及 Network 中真实 Playground endpoint 和允许的 Origin。
+- **真实浏览器层**：桌面与移动端页面、导航、语言选择器、Run / Format / Reset、runtime message，以及 Network 中真实 Playground endpoint 和允许的 Origin；并按生产运维手册对最终课程页做轻量广告确认。
 
-最后重新执行 production 上的 rendered surface acceptance 关键项，在同一 Surface Review evidence 中记录 public URL、profile、证书/vhost 路径、当前 release、sitemap 结果、Playground 验收结果与最终 `decision = passed | failed`。只有最终通过，该 locale 才从“首次部署”转入 [日常维护部署](PRODUCTION_RUNBOOK.md#已有-locale-日常维护部署)。
+首次 production 部署后只做这一次最终验收；不执行“无广告完整验收 → 开广告 → 再完整验收”的双重流程。最后重新执行 production 上的 rendered surface acceptance 关键项，在同一 Surface Review evidence 中记录 public URL、profile、证书/vhost 路径、当前 release、sitemap、Playground 与轻量广告验收结果，以及最终 `decision = passed | failed`。只有最终通过，该 locale 才从“首次部署”转入 [日常维护部署](PRODUCTION_RUNBOOK.md#已有-locale-日常维护部署)。
