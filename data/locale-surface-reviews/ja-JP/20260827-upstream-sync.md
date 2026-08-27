@@ -199,24 +199,128 @@ Course metadata：
 
 ## Production verification
 
-状态：`pending`
+状态：`passed`
 
-当前 production：
+### Production identity
 
+最终 production release：
+
+- source commit：`0646777`
+- release：`/data/go-tour-ja-JP/releases/20260827-ja-JP-06467777`
+- published_at：`2026-08-27T12:50:34Z`
 - public URL：`https://ja-go-dev.shuijingwanwq.com/`
-- 当前已知旧 release：`/data/go-tour-ja-JP/releases/20260824-ja-JP-164fecdd`
+- locale：`ja-JP`
+- TranslationUnit：`122`
+- Page：`103`
+- eligible Example：`19`
+- article：`7`
+- execution transport：`http-playground-proxy`
+- execution provider：`play.golang.org`
+- local socket：disabled
 
-本次 `800a0e7` 尚未 publish / deploy，因此 production 仍可能显示旧 upstream baseline 与旧首页共享模板。
+部署确认：
 
-待完成：
+- `current` 已切换至新 release；
+- `go-tour-ja-JP.service` 为 `active`；
+- localhost `http://127.0.0.1:4000/` 返回 200；
+- deploy script 连续 3 次 health check 均达到 `active + HTTP 200`；
+- public acceptance 返回 HTTP 200。
 
-- publish 新 ja-JP release；
-- 使用既有 locale 日常维护部署流程部署；
-- 公网 `/`、`/tour/`、`/tour/list` 与本轮两个变更 Page smoke check；
-- production Playground Run / Format / Reset；
-- desktop / mobile 受影响范围复核；
-- canonical / robots / sitemap / hostname 检查；
-- 按现有共享广告实现进行轻量 production 广告确认，不重跑完整广告 regression。
+### Shared-assets production verification
+
+本轮共享 `_content/tour/static/css/app.css` 发生变化，因此在 ja-JP release 激活前同步更新正式 shared-assets。
+
+正式 export：
+
+- allowlist：`11` 个文件；
+- 本地 SHA-256：`11/11` 通过。
+
+production origin：
+
+- `https://assets-go-dev.shuijingwanwq.com/`
+- origin deployment：`passed`
+- 完整 backup：
+  `/data/wwwroot/assets-go-dev.shuijingwanwq.com.bak.20260827T125703Z-2491224-6790`
+
+实际变化 URL：
+
+- `/SHA256SUMS`
+- `/tour/static/css/app.css`
+
+完成 Cloudflare Custom Purge 后确认：
+
+- 公网 allowlist 文件：`11`
+- SHA-256：`11/11`
+- `/tour/script.js`：404
+- `/tour/static/img/tree.png`：404
+- `/tour/static/partials/editor.html`：404
+
+期间本地网络到 SSH / Cloudflare 曾出现瞬时连接中断以及 HTTP 520 / 522 / 525；没有发生未确认的 production mutation。服务器侧与后续公网复核均恢复正常，正式内容完整性和 boundary 验收全部通过。
+
+### Production HTTP / SEO / routing
+
+最终公网检查：
+
+- `/`：200
+- `/tour/`：200
+- `/tour/list`：200
+- `/tour/flowcontrol/1`：200
+- `/tour/methods/14`：200
+- `/robots.txt`：200
+- `/sitemap.xml`：200
+- `/socket`：404
+
+HTML identity：
+
+- 首页显示 `Go 言語ツアー`；
+- upstream baseline 显示 `b3fc6537…`；
+- `flowcontrol/1` 当前 upstream 修订内容已上线；
+- `methods/14` 当前 `any` / `interface{}` 修订内容已上线；
+- canonical 使用正式 ja-JP hostname；
+- AdSense loader 存在；
+- course ad mount 存在。
+
+sitemap：
+
+- URL：`105`
+- unique：`105`
+- wrong host：`0`
+
+### Production browser acceptance
+
+真实 production 浏览器完成 desktop / mobile 受影响范围复核。
+
+移动端使用 `393×852` viewport：
+
+- 首页 header 长标题完整显示；
+- Hero 两行标题行距正常；
+- 无明显异常横向滚动或截断；
+- 本轮共享移动端 CSS 修复已实际进入 production。
+
+课程页确认：
+
+- `flowcontrol/1` 正常；
+- `methods/14` 正确显示：
+  `any は interface{} のエイリアスであり、両者は完全に同等です。`
+- Run：passed；
+- Format：passed；
+- Reset：passed；
+- SPA 下一页：passed。
+
+### Lightweight ads verification
+
+本轮没有重复执行共享广告架构完整 regression。
+
+production 确认：
+
+- HTML 存在 AdSense loader；
+- 课程页存在手动 course ad mount；
+- 浏览器存在真实广告请求机会；
+- 移动端课程页实际观察到 filled 广告；
+- 广告区域、课程高度与 footer 无明显布局异常；
+- SPA 下一页保持正常。
+
+filled / unfilled 均不作为单独 gate；本轮实际观察到 filled 只作为 production 请求链路正常的额外 evidence。
 
 ## Reviewer
 
@@ -226,12 +330,10 @@ Course metadata：
 
 ## Issues
 
-当前无未解决的语言质量或 preview rendered 阻塞问题。
-
-production verification 尚未执行。
+当前无未解决的 TranslationUnit、locale-level language、rendered surface、production routing、Playground、shared-assets 或广告接入阻塞问题。
 
 ## Decision
 
-`decision = failed`
+`decision = passed`
 
-这是部署前的临时工作状态：A 阶段与 preview acceptance 均已 `passed`，仅因为 production verification 尚未执行，所以不能提前写最终 `passed`。production 复核完成后更新同一 evidence。
+ja-JP 本轮 upstream 同步已完成 TranslationUnit Quality Check、Final Review、promotion、Locale Surface Review、production publish、日常 deployment 与最终 production verification。
