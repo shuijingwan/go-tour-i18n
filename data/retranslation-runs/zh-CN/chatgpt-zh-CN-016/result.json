@@ -1,0 +1,26 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-zh-CN-016",
+  "locale": "zh-CN",
+  "unit_count": 2,
+  "restore_passed": 2,
+  "restore_failed": 0,
+  "validation_passed": 2,
+  "validation_failed": 0,
+  "units": [
+    {
+      "unit_id": "example:moretypes/slice-len-cap.go",
+      "unit_kind": "example",
+      "status": "passed",
+      "candidate_path": "candidates/moretypes-slice-len-cap.go",
+      "validation_path": "validation/moretypes-slice-len-cap.json"
+    },
+    {
+      "unit_id": "example:moretypes/struct-literals.go",
+      "unit_kind": "example",
+      "status": "passed",
+      "candidate_path": "candidates/moretypes-struct-literals.go",
+      "validation_path": "validation/moretypes-struct-literals.json"
+    }
+  ]
+}
