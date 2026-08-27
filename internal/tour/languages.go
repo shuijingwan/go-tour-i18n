@@ -21,9 +21,9 @@ type LanguageLink struct {
 }
 
 var languageRegistry = []LanguageLink{
-	{Locale: "zh-CN", Autonym: "简体中文", URL: "https://go-dev.shuijingwanwq.com/tour/welcome/1"},
+	{Locale: "zh-CN", Autonym: "简体中文", URL: "https://go-dev.shuijingwanwq.com/"},
 	{Locale: "en", Autonym: "English", URL: "https://go.dev/tour/", Official: true},
-	{Locale: "ja-JP", Autonym: "日本語", URL: "https://ja-go-dev.shuijingwanwq.com/tour/welcome/1"},
+	{Locale: "ja-JP", Autonym: "日本語", URL: "https://ja-go-dev.shuijingwanwq.com/"},
 }
 
 type localeProfile struct {

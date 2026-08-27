@@ -279,9 +279,9 @@ func TestHomepageLanguageRegistryAndLocaleProfiles(t *testing.T) {
 		t.Fatalf("language registry length = %d, want %d", got, want)
 	}
 	for i, want := range []LanguageLink{
-		{Locale: "zh-CN", Autonym: "简体中文", URL: "https://go-dev.shuijingwanwq.com/tour/welcome/1"},
+		{Locale: "zh-CN", Autonym: "简体中文", URL: "https://go-dev.shuijingwanwq.com/"},
 		{Locale: "en", Autonym: "English", URL: "https://go.dev/tour/", Official: true},
-		{Locale: "ja-JP", Autonym: "日本語", URL: "https://ja-go-dev.shuijingwanwq.com/tour/welcome/1"},
+		{Locale: "ja-JP", Autonym: "日本語", URL: "https://ja-go-dev.shuijingwanwq.com/"},
 	} {
 		if got := languageRegistry[i]; got != want {
 			t.Errorf("languageRegistry[%d] = %+v, want %+v", i, got, want)
@@ -292,8 +292,8 @@ func TestHomepageLanguageRegistryAndLocaleProfiles(t *testing.T) {
 	tests := []struct {
 		locale, autonym, logURL, published, upstream, currentPublicURL string
 	}{
-		{"zh-CN", "简体中文", "https://www.shuijingwanwq.com/series/go-tour-chinese-edition-development-series/", "2026-08-20 13:56:11（北京时间）", "2026-08-20 13:56:11（北京时间）", languageRegistry[0].URL},
-		{"ja-JP", "日本語", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 14:56:11（日本時間）", "2026-08-20 14:56:11（日本時間）", languageRegistry[2].URL},
+		{"zh-CN", "简体中文", "https://www.shuijingwanwq.com/series/go-tour-chinese-edition-development-series/", "2026-08-20 13:56:11（北京时间）", "2026-08-27 05:55:26（北京时间）", languageRegistry[0].URL},
+		{"ja-JP", "日本語", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 14:56:11（日本時間）", "2026-08-27 06:55:26（日本時間）", languageRegistry[2].URL},
 	}
 	for _, test := range tests {
 		t.Run(test.locale, func(t *testing.T) {
@@ -320,8 +320,8 @@ func TestHomepageLanguageRegistryAndLocaleProfiles(t *testing.T) {
 					t.Errorf("homepage does not contain %q", want)
 				}
 			}
-			if strings.Contains(home, `href="`+test.currentPublicURL+`"`) {
-				t.Errorf("current locale links local preview to public URL %q", test.currentPublicURL)
+			if strings.Contains(home, `href="`+test.currentPublicURL+`">`+test.autonym+`</a>`) {
+				t.Errorf("current locale language entry links to public URL %q", test.currentPublicURL)
 			}
 			if strings.Count(home, `href="`+test.logURL+`"`) != 2 {
 				t.Errorf("development log URL is not shared by homepage and footer")
