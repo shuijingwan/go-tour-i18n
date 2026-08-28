@@ -322,7 +322,7 @@ func run(args []string) error {
 			locale := fs.String("locale", "", "target locale")
 			snapshotID := fs.String("snapshot-id", "", "Candidate Snapshot id")
 			startIndex := fs.Int("start-index", 1, "first stable Candidate Snapshot index (1-based)")
-			limit := fs.Int("limit", i18n.DefaultRetranslationReviewBatchLimit, "maximum TranslationUnits to record")
+			limit := fs.Int("limit", i18n.DefaultRetranslationReviewBatchLimit, "maximum consecutive Candidate Snapshot units to record")
 			rating := fs.String("rating", "", "quality rating: A, B, C, or D")
 			decision := fs.String("decision", "", "workflow decision: approved or rejected")
 			summary := fs.String("summary", "", "review summary")

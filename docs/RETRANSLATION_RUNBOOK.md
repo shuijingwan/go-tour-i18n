@@ -150,13 +150,13 @@ Final Review 重新审核最终 candidate 并生成正式 review evidence。当�
 
 Quality Check carry-forward 不缩小首次 Final Review。首次 locale 没有正式 Final Review evidence 时，`retranslation review scope` 仍必须返回全部 TranslationUnit 为 `missing_review`。只有后续已有 identity 完全匹配的 Final Review A + approved evidence 时，当前 Final Review incremental scope 才能复用它。
 
-Final Review 也默认每轮逐一审核 20 个连续 `review_required` unit；最后一轮处理全部剩余可记录 unit。完成一轮后，默认用以下命令记录本轮 evidence：
+`retranslation review scope` 中 `required_action=review_required` 的 Unit 决定实际需要 Final Review 的工作集。`record-batch` 则始终按 Candidate Snapshot stable index 写入固定连续范围：`--start-index` 从该 stable index 起算，`--limit` 选择最多 20 个连续 Snapshot Unit。首次 full Final Review 的全部 Unit 都是 pending，因此可自然按 `1-20`、`21-40`、`41-60`… 分片。完成一轮后，用以下命令记录该固定范围的 evidence：
 
 ```bash
 go run -mod=readonly ./cmd/tour-i18n retranslation review record-batch \
   --locale <locale> \
   --snapshot-id <snapshot-id> \
-  --start-index <1-based-index> \
+  --start-index <Candidate-Snapshot-stable-index> \
   --rating A \
   --decision approved \
   --summary <summary> \
@@ -164,7 +164,7 @@ go run -mod=readonly ./cmd/tour-i18n retranslation review record-batch \
   --rubric translation-quality/v1
 ```
 
-`--limit` 默认 20，`--start-index` 是普通 record 可处理列表的 1-based 起点，`--issue` 可以重复。命令按 Candidate Snapshot 自动使用每个 unit 的 `selected_batch_id`，即使一轮跨越多个 retranslation batch，也不要求调用者人工拆分或判断 batch。它对整轮先完成单 unit review 记录所用的 schema、identity、attempt 与 hash preflight，并与 snapshot evidence 对齐；全部通过后才写文件。任一 unit 失败时本轮不产生部分 review evidence，已有 review 不覆盖。相同 rating/decision/summary 等参数必须真实适用于本轮每个 unit；若审核结论不同，应按适用的连续范围分别记录。rubric 仅过期而 identity 未变时，实际复审后必须使用 Quality Review 规范中的显式 `review supersede`；这不重新翻译 candidate，也不新建 batch。
+`--start-index N` 始终表示 Candidate Snapshot manifest 中固定的 `index=N`，不是当前 pending/processable 列表中的位置。`--limit M` 表示从 stable index N 开始连续最多 M 个 Snapshot Unit；仅当该固定范围越过 Snapshot 尾部时才截断，绝不会因为 pending gap 自动截断或跳过 Unit。incremental Final Review 的 pending Unit 可以稀疏，例如 index 17、37、94；不得以 `--start-index 17 --limit 20` 跨过其中的 reusable Unit。应将 `review_required` Unit 按 stable index 划分为连续、且范围内全部可普通 record 的 range，每个 range 最多 20 个；在 reusable、supersede 或 revision Unit 前结束。稀疏 pending 可使用多个短 range，必要时使用 `--limit 1`。已有 evidence 不会被静默跳过，范围也不会向后漂移：请求范围内任何 Unit 已有有效 review、需要 supersede/revision，或因其他状态不可由普通 record 写入时，命令都会在写文件前失败，并报告具体 Snapshot index 与 `unit_id`。这是预期的安全行为，不要求程序自动截断或跳过。`--issue` 可以重复。命令按 Candidate Snapshot 自动使用每个 unit 的 `selected_batch_id`，即使一轮跨越多个 retranslation batch，也不要求调用者人工拆分或判断 batch。它对固定范围内的全部 Unit 先完成单 unit review schema、identity、attempt 与 hash preflight，并与 Snapshot evidence 对齐；全部通过后才写 evidence。任一 Unit 失败时本轮不产生部分 evidence，已有 review 不覆盖。相同 rating/decision/summary 等参数必须真实适用于本轮每个 Unit；若审核结论不同，应按适用的 stable index 连续范围分别记录。rubric 仅过期而 identity 未变时，实际复审后必须使用 Quality Review 规范中的显式 `review supersede`；这不重新翻译 candidate，也不新建 batch。
 
 Review evidence 与 promotion gate 的完整规则见 [Translation Quality Review 规范](TRANSLATION_QUALITY_REVIEW.md)。`retranslation review record-batch` 与保留的单 unit `retranslation review record` 都只记录已完成的 Final Review，不执行审核，也不改变 promotion gate。
 

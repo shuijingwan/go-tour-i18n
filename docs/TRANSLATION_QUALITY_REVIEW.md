@@ -205,7 +205,7 @@ Promotion gate 的机器判断只接受 `decision == approved`。这种边界保
 
 Quality Check 用于发现翻译质量问题，可以在 candidate 形成后的修订过程中多轮执行。当前由 ChatGPT 统一执行，且必须通过本轮直接结果与有效 carry-forward 合计覆盖同一份 full Candidate Snapshot 中的所有 TranslationUnit。它只生成上述轻量 Quality Check result，不生成正式 Final Review evidence，也不作为 promotion 的直接依据。
 
-ChatGPT Quality Check 与 Final Review 的默认审核执行分片均为每轮 20 个本阶段的 pending Unit。Quality Check 使用 `quality-check scope` 的 `pending_quality_check_units`；Final Review 使用 `retranslation review scope` 的 `pending_review_units`。列表都保持 Snapshot 的稳定 index 顺序；最后一轮不足 20 个时审核全部剩余 pending Unit。20 只是 reviewer 每轮读取和处理的 chunk size，不缩小或重新生成 Candidate Snapshot，不改变该 snapshot 的完整 locale workflow 范围，也不把逐 TranslationUnit 审核改成批次级审核或抽样。
+ChatGPT Quality Check 与 Final Review 的实际审核工作集分别由 scope 中的 pending Unit 决定：Quality Check 使用 `pending_quality_check_units`，Final Review 只使用 `required_action=review_required` 的 `pending_review_units`。列表都保持 Snapshot 的稳定 index 顺序。Final Review 首次 full review 时全部 Unit 都 pending，因而可按每轮 20 个连续 stable index（`1-20`、`21-40`、`41-60`…）处理；incremental Final Review 的 `review_required` Unit 可以不连续，不能把“20 个 pending Unit”解释成可以跨过中间 Snapshot Unit 的 record 范围。20 只是每个 `record-batch` 固定连续 Snapshot range 的最大长度，不缩小或重新生成 Candidate Snapshot，不改变该 snapshot 的完整 locale workflow 范围，也不把逐 TranslationUnit 审核改成批次级审核或抽样。
 
 当前严格生产 gate 为：A 通过；B、C、D 均不通过并进入新的 revision batch。只有完整语言达到 `A = 全部 TranslationUnit，B = 0，C = 0，D = 0`，才能进入 Final Review。
 
@@ -288,7 +288,7 @@ Final Review 完成一个默认 20-unit 执行分片后，使用 Candidate Snaps
 go run -mod=readonly ./cmd/tour-i18n retranslation review record-batch \
   --locale <locale> \
   --snapshot-id <snapshot-id> \
-  --start-index <1-based-index> \
+  --start-index <Candidate-Snapshot-stable-index> \
   --rating A \
   --decision approved \
   --summary <summary> \
@@ -296,9 +296,9 @@ go run -mod=readonly ./cmd/tour-i18n retranslation review record-batch \
   --rubric translation-quality/v1
 ```
 
-`--limit` 默认是 20；可以显式设置，最后一轮会自动截断到可由普通 record 写入的 `missing_review/identity_changed` 列表末尾。`--start-index` 是该列表的 1-based 起点；`--issue` 可以重复。`rubric_mismatch` 必须使用下述显式 supersede；B/C/D 和 rejected review 必须走 revision。命令只记录已经完成的 Final Review，不执行或推导审核；传入的 `rating`、`decision`、`summary`、`reviewer`、`rubric` 和 `issue` 应真实适用于本轮选中的每个 TranslationUnit。
+`--start-index N` 精确表示 Candidate Snapshot manifest 的 stable `index=N`；它不是动态 pending/processable 列表的 1-based 位置。`--limit M` 精确选择从 N 开始连续最多 M 个 Snapshot Unit，只在该固定范围越过 Snapshot 尾部时截断；它不会在 pending gap 自动截断，也不会跳过已有 evidence 后继续选择更靠后的 Unit。首次 full Final Review 可依序记录 `1-20`、`21-40`、`41-60`…，因为范围内全部 Unit 都是可 record 的 pending。incremental Final Review 必须先以 scope 的 `review_required` Unit 划分 stable-index 连续且全部可普通 record 的 range，每个 range 最多 20 个；遇到 reusable、`supersede` 或 `revision_required` Unit 就在 gap 前结束。若 pending 为 17、37、94，则分别使用短 range（必要时 `--limit 1`），不得使用 `--start-index 17 --limit 20`。固定范围内若有 Unit 已有有效 Final Review evidence、需要 `supersede`、必须 revision，或因 identity/state 不可由普通 record 写入，整批会在写文件前失败，错误包含该 Unit 的 Snapshot index 和 `unit_id`；这是预期的安全行为，不要求程序自动截断或跳过。`rubric_mismatch` 必须使用下述显式 supersede；B/C/D 和 rejected review 必须走 revision。命令只记录已经完成的 Final Review，不执行或推导审核；传入的 `rating`、`decision`、`summary`、`reviewer`、`rubric` 和 `issue` 应真实适用于本轮固定范围内的每个 TranslationUnit。
 
-命令从 snapshot unit 自动读取 `selected_batch_id`，调用者不得也无需人工判断 candidate 属于哪个 batch。它先对选中范围内的全部 unit 完成单 unit `RecordRetranslationReview` 所用的 schema、identity 和 hash preflight，并核对 snapshot 中的 source、candidate、validation、attempt 与 path；全部通过后才写 evidence。任一 unit preflight 失败时本轮不写任何新 review，已有 review 也不会被覆盖。原有 `retranslation review record --batch-id ... --unit-id ...` 继续保留，用于明确的单 TranslationUnit 记录。
+命令从 Snapshot unit 自动读取 `selected_batch_id`，调用者不得也无需人工判断 candidate 属于哪个 batch。它先对 stable index 固定范围内的全部 Unit 完成单 Unit `RecordRetranslationReview` 所用的 schema、identity 和 hash preflight，并核对 Snapshot 中的 source、candidate、validation、attempt 与 path；全部通过后才写 evidence。任一 Unit preflight 失败时本轮不写任何新 review，已有 review 也不会被覆盖。成功输出中的 `indexes=N-E` 就是实际 Candidate Snapshot stable index 范围，`units` 是该范围实际写入数。原有 `retranslation review record --batch-id ... --unit-id ...` 继续保留，用于明确的单 TranslationUnit 记录。
 
 `record-batch` 只是 Final Review evidence 的写入工具。它不会改变 Candidate Snapshot、Quality Check/Final Review 的逐 TranslationUnit 语义、A-only 生产策略或 promotion gate。
 

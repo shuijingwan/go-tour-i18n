@@ -427,6 +427,9 @@ func TestRecordRetranslationReviewBatchDefaultsToTwenty(t *testing.T) {
 	if result.StartIndex != 1 || result.EndIndex != 20 || result.Limit != 20 || result.RecordedCount != 20 || len(result.Reviews) != 20 {
 		t.Fatalf("batch result=%+v", result)
 	}
+	if result.Reviews[0].Index != 1 || result.Reviews[19].Index != 20 || result.Reviews[0].UnitID != "lesson/1" || result.Reviews[19].UnitID != "lesson/20" {
+		t.Fatalf("stable Snapshot range=%+v", result.Reviews)
+	}
 	for i := 1; i <= 20; i++ {
 		if _, err := os.Stat(reviewEvidencePath(t, root, catalog, batchID, "lesson/"+strconv.Itoa(i))); err != nil {
 			t.Fatalf("review %d: %v", i, err)
@@ -434,6 +437,58 @@ func TestRecordRetranslationReviewBatchDefaultsToTwenty(t *testing.T) {
 	}
 	if _, err := os.Stat(reviewEvidencePath(t, root, catalog, batchID, "lesson/21")); !os.IsNotExist(err) {
 		t.Fatalf("default batch wrote index 21: %v", err)
+	}
+}
+
+func TestRecordRetranslationReviewBatchUsesStableIndexAfterReviewedPrefix(t *testing.T) {
+	root, catalog, batchID := makeRetranslationReviewBatchFixture(t, 45, "stable-prefix")
+	first := reviewBatchOptions("stable-prefix")
+	first.Limit = 20
+	if _, err := RecordRetranslationReviewBatch(root, catalog, first); err != nil {
+		t.Fatal(err)
+	}
+	second := reviewBatchOptions("stable-prefix")
+	second.StartIndex = 21
+	second.Limit = 20
+	result, err := RecordRetranslationReviewBatch(root, catalog, second)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if result.StartIndex != 21 || result.EndIndex != 40 || result.RecordedCount != 20 || result.Reviews[0].Index != 21 || result.Reviews[19].Index != 40 || result.Reviews[0].UnitID != "lesson/21" || result.Reviews[19].UnitID != "lesson/40" {
+		t.Fatalf("second stable Snapshot range=%+v", result)
+	}
+	for i := 21; i <= 40; i++ {
+		if _, err := os.Stat(reviewEvidencePath(t, root, catalog, batchID, "lesson/"+strconv.Itoa(i))); err != nil {
+			t.Fatalf("review %d: %v", i, err)
+		}
+	}
+	if _, err := os.Stat(reviewEvidencePath(t, root, catalog, batchID, "lesson/41")); !os.IsNotExist(err) {
+		t.Fatalf("stable range drifted to index 41: %v", err)
+	}
+}
+
+func TestRecordRetranslationReviewBatchDoesNotShiftForNonContiguousEvidence(t *testing.T) {
+	root, catalog, batchID := makeRetranslationReviewBatchFixture(t, 6, "non-contiguous")
+	for _, unitID := range []string{"lesson/1", "lesson/3"} {
+		if _, _, err := RecordRetranslationReview(root, catalog, RetranslationReviewRecordOptions{
+			Locale: "zh-CN", BatchID: batchID, UnitID: unitID, Rating: "A", Decision: "approved",
+			Summary: "Existing evidence.", Reviewer: "reviewer", Rubric: TranslationQualityRubric,
+		}); err != nil {
+			t.Fatal(err)
+		}
+	}
+	options := reviewBatchOptions("non-contiguous")
+	options.StartIndex = 2
+	options.Limit = 1
+	result, err := RecordRetranslationReviewBatch(root, catalog, options)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if result.StartIndex != 2 || result.EndIndex != 2 || result.RecordedCount != 1 || result.Reviews[0].Index != 2 || result.Reviews[0].UnitID != "lesson/2" {
+		t.Fatalf("non-contiguous stable range=%+v", result)
+	}
+	if _, err := os.Stat(reviewEvidencePath(t, root, catalog, batchID, "lesson/4")); !os.IsNotExist(err) {
+		t.Fatalf("non-contiguous evidence shifted write to lesson/4: %v", err)
 	}
 }
 
@@ -485,7 +540,7 @@ func TestRecordRetranslationReviewBatchRangeBoundaries(t *testing.T) {
 		root, catalog, batchID := makeRetranslationReviewBatchFixture(t, 3, "outside")
 		options := reviewBatchOptions("outside")
 		options.StartIndex = 4
-		if _, err := RecordRetranslationReviewBatch(root, catalog, options); err == nil || !strings.Contains(err.Error(), "outside recordable review range") {
+		if _, err := RecordRetranslationReviewBatch(root, catalog, options); err == nil || !strings.Contains(err.Error(), "outside Candidate Snapshot range") {
 			t.Fatalf("range error=%v", err)
 		}
 		if _, err := os.Stat(reviewEvidencePath(t, root, catalog, batchID, "lesson/1")); !os.IsNotExist(err) {
@@ -494,7 +549,7 @@ func TestRecordRetranslationReviewBatchRangeBoundaries(t *testing.T) {
 	})
 }
 
-func TestRecordRetranslationReviewBatchDoesNotOverwriteExistingReview(t *testing.T) {
+func TestRecordRetranslationReviewBatchFailsAtomicallyWhenStableRangeContainsExistingReview(t *testing.T) {
 	root, catalog, batchID := makeRetranslationReviewBatchFixture(t, 3, "existing-review")
 	if _, _, err := RecordRetranslationReview(root, catalog, RetranslationReviewRecordOptions{
 		Locale: "zh-CN", BatchID: batchID, UnitID: "lesson/2", Rating: "A", Decision: "approved",
@@ -517,11 +572,13 @@ func TestRecordRetranslationReviewBatchDoesNotOverwriteExistingReview(t *testing
 	options := reviewBatchOptions("existing-review")
 	options.Limit = 3
 	result, err := RecordRetranslationReviewBatch(root, catalog, options)
-	if err != nil || result.RecordedCount != 2 || result.Reviews[0].UnitID != "lesson/1" || result.Reviews[1].UnitID != "lesson/3" {
-		t.Fatalf("pending-only batch result=%+v error=%v", result, err)
+	if err == nil || result != nil || !strings.Contains(err.Error(), "snapshot index 2 (lesson/2)") || !strings.Contains(err.Error(), "valid Final Review evidence already exists") {
+		t.Fatalf("stable range existing-review result=%+v error=%v", result, err)
 	}
-	if _, err := os.Stat(reviewEvidencePath(t, root, catalog, batchID, "lesson/1")); err != nil {
-		t.Fatalf("pending lesson/1 was not reviewed: %v", err)
+	for _, unitID := range []string{"lesson/1", "lesson/3"} {
+		if _, err := os.Stat(reviewEvidencePath(t, root, catalog, batchID, unitID)); !os.IsNotExist(err) {
+			t.Fatalf("failed stable-range preflight wrote %s: %v", unitID, err)
+		}
 	}
 	existingAfter, err := os.ReadFile(existingPath)
 	if err != nil || !bytes.Equal(existingBefore, existingAfter) {

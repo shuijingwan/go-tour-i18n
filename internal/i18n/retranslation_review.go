@@ -452,26 +452,27 @@ func RecordRetranslationReviewBatch(root string, catalog *Catalog, options Retra
 		return nil, fmt.Errorf("limit must be at least 1, got %d", options.Limit)
 	}
 
+	snapshot, err := readQualityCheckSnapshotForReview(root, options.Locale, options.SnapshotID)
+	if err != nil {
+		return nil, err
+	}
+	if startIndex > snapshot.UnitCount {
+		return nil, fmt.Errorf("start_index %d is outside Candidate Snapshot range 1-%d", startIndex, snapshot.UnitCount)
+	}
+	endIndex := startIndex + limit - 1
+	if endIndex > snapshot.UnitCount || endIndex < startIndex {
+		endIndex = snapshot.UnitCount
+	}
+	selected := snapshot.Units[startIndex-1 : endIndex]
+
 	scope, err := BuildRetranslationReviewScope(root, catalog, RetranslationReviewScopeOptions{Locale: options.Locale, SnapshotID: options.SnapshotID})
 	if err != nil {
 		return nil, err
 	}
-	recordable := make([]RetranslationReviewScopeUnit, 0, len(scope.Pending))
+	pendingByIndex := make(map[int]RetranslationReviewScopeUnit, len(scope.Pending))
 	for _, pending := range scope.Pending {
-		// A rubric renewal needs an explicit supersede; B/C/D and rejected
-		// evidence require a revision instead of another Final Review record.
-		if pending.Reason == ReviewScopeReasonMissingReview || pending.Reason == ReviewScopeReasonIdentityChanged {
-			recordable = append(recordable, pending)
-		}
+		pendingByIndex[pending.Index] = pending
 	}
-	if startIndex > len(recordable) {
-		return nil, fmt.Errorf("start_index %d is outside recordable review range 1-%d", startIndex, len(recordable))
-	}
-	endIndex := startIndex + limit - 1
-	if endIndex > len(recordable) || endIndex < startIndex {
-		endIndex = len(recordable)
-	}
-	selected := recordable[startIndex-1 : endIndex]
 
 	reviewedAt := time.Now()
 	if options.Now != nil {
@@ -484,10 +485,15 @@ func RecordRetranslationReviewBatch(root string, catalog *Catalog, options Retra
 		StartIndex: startIndex, EndIndex: endIndex, Limit: limit,
 		RecordedCount: len(selected), Reviews: make([]RetranslationReviewBatchRecord, 0, len(selected)),
 	}
-	for _, scopedUnit := range selected {
-		snapshotUnit, err := snapshotUnitForReviewScope(root, options.Locale, options.SnapshotID, scopedUnit.UnitID)
-		if err != nil {
-			return nil, err
+	for _, snapshotUnit := range selected {
+		pending, isPending := pendingByIndex[snapshotUnit.Index]
+		if !isPending {
+			return nil, fmt.Errorf("snapshot index %d (%s) is not recordable: valid Final Review evidence already exists", snapshotUnit.Index, snapshotUnit.UnitID)
+		}
+		// A rubric renewal needs an explicit supersede; B/C/D and rejected
+		// evidence require a revision instead of another Final Review record.
+		if pending.Reason != ReviewScopeReasonMissingReview && pending.Reason != ReviewScopeReasonIdentityChanged {
+			return nil, fmt.Errorf("snapshot index %d (%s) is not recordable: %s/%s", snapshotUnit.Index, snapshotUnit.UnitID, pending.Reason, pending.RequiredAction)
 		}
 		item, err := prepareRetranslationReview(root, catalog, RetranslationReviewRecordOptions{
 			Locale: options.Locale, BatchID: snapshotUnit.SelectedBatchID, UnitID: snapshotUnit.UnitID,
