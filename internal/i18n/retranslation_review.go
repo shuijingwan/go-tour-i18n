@@ -528,8 +528,8 @@ type RetranslationReviewScopeOptions struct {
 }
 
 // BuildRetranslationReviewScope separates a complete Snapshot into valid
-// reusable Final Reviews and the units that still require Quality Check and
-// Final Review. It never writes evidence.
+// reusable Final Reviews and the units that still require Final Review or a
+// revision. Quality Check results never enter this scope. It writes nothing.
 func BuildRetranslationReviewScope(root string, catalog *Catalog, options RetranslationReviewScopeOptions) (*RetranslationReviewScope, error) {
 	if catalog == nil {
 		return nil, errors.New("retranslation catalog is required")
@@ -575,54 +575,11 @@ func snapshotUnitForReviewScope(root, locale, snapshotID, unitID string) (Qualit
 }
 
 func reviewScopePendingDisposition(root string, catalog *Catalog, locale string, snapshot QualityCheckSnapshotUnit) (RetranslationReviewScopeReason, RetranslationReviewRequiredAction) {
-	unit, err := catalog.Unit(snapshot.UnitID)
-	if err != nil || unit.Kind != snapshot.UnitKind || unit.SourcePath != snapshot.SourcePath || unit.SourceSHA256 != snapshot.SourceSHA256 {
-		return ReviewScopeReasonIdentityChanged, ReviewScopeActionReviewRequired
-	}
-	candidate, err := readSnapshotReferencedFile(root, snapshot.CandidatePath)
-	if err != nil || sum(candidate) != snapshot.CandidateSHA256 {
-		return ReviewScopeReasonIdentityChanged, ReviewScopeActionReviewRequired
-	}
-	validation, err := readSnapshotReferencedFile(root, snapshot.ValidationPath)
-	if err != nil || sum(validation) != snapshot.ValidationSHA256 {
-		return ReviewScopeReasonIdentityChanged, ReviewScopeActionReviewRequired
-	}
-	batchDir := filepath.Join(root, "data", "retranslation-runs", locale, snapshot.SelectedBatchID)
-	manifest, err := readRetranslationProcessManifest(batchDir, locale, snapshot.SelectedBatchID)
+	evidence, err := readSnapshotUnitRepositoryEvidence(root, catalog, locale, snapshot)
 	if err != nil {
 		return ReviewScopeReasonIdentityChanged, ReviewScopeActionReviewRequired
 	}
-	var record RetranslationBatchUnit
-	for _, item := range manifest.Units {
-		if item.UnitID == snapshot.UnitID {
-			record = item
-			break
-		}
-	}
-	if record.UnitID == "" || record.UnitKind != snapshot.UnitKind || record.SourcePath != snapshot.SourcePath || record.SourceSHA256 != snapshot.SourceSHA256 {
-		return ReviewScopeReasonIdentityChanged, ReviewScopeActionReviewRequired
-	}
-	result, err := readPromotionResult(batchDir, locale, snapshot.SelectedBatchID, len(manifest.Units))
-	if err != nil {
-		return ReviewScopeReasonIdentityChanged, ReviewScopeActionReviewRequired
-	}
-	var unitResult RetranslationUnitResult
-	for _, item := range result.Units {
-		if item.UnitID == snapshot.UnitID {
-			unitResult = item
-			break
-		}
-	}
-	if unitResult.UnitID == "" || unitResult.Status != "passed" ||
-		filepath.ToSlash(filepath.Join("data", "retranslation-runs", locale, snapshot.SelectedBatchID, unitResult.CandidatePath)) != snapshot.CandidatePath ||
-		filepath.ToSlash(filepath.Join("data", "retranslation-runs", locale, snapshot.SelectedBatchID, unitResult.ValidationPath)) != snapshot.ValidationPath {
-		return ReviewScopeReasonIdentityChanged, ReviewScopeActionReviewRequired
-	}
-	parsedValidation, err := readPromotionValidation(batchDir, snapshot.SelectedBatchID, locale, record, unitResult)
-	if err != nil || parsedValidation.Attempt != snapshot.Attempt {
-		return ReviewScopeReasonIdentityChanged, ReviewScopeActionReviewRequired
-	}
-	reviewPath := filepath.Join(batchDir, "review", retranslationReviewName(unit))
+	reviewPath := filepath.Join(evidence.batchDir, "review", retranslationReviewName(evidence.unit))
 	reviewData, err := os.ReadFile(reviewPath)
 	if os.IsNotExist(err) {
 		return ReviewScopeReasonMissingReview, ReviewScopeActionReviewRequired
@@ -643,7 +600,7 @@ func reviewScopePendingDisposition(root string, catalog *Catalog, locale string,
 	if review.Rubric != TranslationQualityRubric {
 		return ReviewScopeReasonRubricMismatch, ReviewScopeActionReviewRequired
 	}
-	state, err := checkPromotionReview(batchDir, snapshot.SelectedBatchID, locale, unit, record, unitResult, parsedValidation, candidate, snapshot.Attempt)
+	state, err := checkPromotionReview(evidence.batchDir, snapshot.SelectedBatchID, locale, evidence.unit, evidence.record, evidence.result, evidence.validation, evidence.candidate, snapshot.Attempt)
 	if err != nil {
 		return ReviewScopeReasonIdentityChanged, ReviewScopeActionReviewRequired
 	}
@@ -657,6 +614,71 @@ func reviewScopePendingDisposition(root string, catalog *Catalog, locale string,
 	default:
 		return ReviewScopeReasonIdentityChanged, ReviewScopeActionReviewRequired
 	}
+}
+
+type snapshotUnitRepositoryEvidence struct {
+	unit       *TranslationUnit
+	candidate  []byte
+	batchDir   string
+	record     RetranslationBatchUnit
+	result     RetranslationUnitResult
+	validation *RetranslationValidation
+}
+
+// readSnapshotUnitRepositoryEvidence checks that a Snapshot unit still points
+// to the exact current source, candidate, validation, and final attempt. Both
+// Quality Check and Final Review scopes use this shared identity boundary.
+func readSnapshotUnitRepositoryEvidence(root string, catalog *Catalog, locale string, snapshot QualityCheckSnapshotUnit) (*snapshotUnitRepositoryEvidence, error) {
+	unit, err := catalog.Unit(snapshot.UnitID)
+	if err != nil || unit.Kind != snapshot.UnitKind || unit.SourcePath != snapshot.SourcePath || unit.SourceSHA256 != snapshot.SourceSHA256 {
+		return nil, errors.New("source identity does not match Candidate Snapshot")
+	}
+	candidate, err := readSnapshotReferencedFile(root, snapshot.CandidatePath)
+	if err != nil || sum(candidate) != snapshot.CandidateSHA256 {
+		return nil, errors.New("candidate identity does not match Candidate Snapshot")
+	}
+	validation, err := readSnapshotReferencedFile(root, snapshot.ValidationPath)
+	if err != nil || sum(validation) != snapshot.ValidationSHA256 {
+		return nil, errors.New("validation identity does not match Candidate Snapshot")
+	}
+	batchDir := filepath.Join(root, "data", "retranslation-runs", locale, snapshot.SelectedBatchID)
+	manifest, err := readRetranslationProcessManifest(batchDir, locale, snapshot.SelectedBatchID)
+	if err != nil {
+		return nil, err
+	}
+	var record RetranslationBatchUnit
+	for _, item := range manifest.Units {
+		if item.UnitID == snapshot.UnitID {
+			record = item
+			break
+		}
+	}
+	if record.UnitID == "" || record.UnitKind != snapshot.UnitKind || record.SourcePath != snapshot.SourcePath || record.SourceSHA256 != snapshot.SourceSHA256 {
+		return nil, errors.New("batch manifest identity does not match Candidate Snapshot")
+	}
+	result, err := readPromotionResult(batchDir, locale, snapshot.SelectedBatchID, len(manifest.Units))
+	if err != nil {
+		return nil, err
+	}
+	var unitResult RetranslationUnitResult
+	for _, item := range result.Units {
+		if item.UnitID == snapshot.UnitID {
+			unitResult = item
+			break
+		}
+	}
+	if unitResult.UnitID == "" || unitResult.Status != "passed" ||
+		filepath.ToSlash(filepath.Join("data", "retranslation-runs", locale, snapshot.SelectedBatchID, unitResult.CandidatePath)) != snapshot.CandidatePath ||
+		filepath.ToSlash(filepath.Join("data", "retranslation-runs", locale, snapshot.SelectedBatchID, unitResult.ValidationPath)) != snapshot.ValidationPath {
+		return nil, errors.New("batch result identity does not match Candidate Snapshot")
+	}
+	parsedValidation, err := readPromotionValidation(batchDir, snapshot.SelectedBatchID, locale, record, unitResult)
+	if err != nil || parsedValidation.Attempt != snapshot.Attempt {
+		return nil, errors.New("final attempt identity does not match Candidate Snapshot")
+	}
+	return &snapshotUnitRepositoryEvidence{
+		unit: unit, candidate: candidate, batchDir: batchDir, record: record, result: unitResult, validation: parsedValidation,
+	}, nil
 }
 
 // reviewMatchesSnapshotIdentity intentionally does not require source_path:
@@ -674,6 +696,10 @@ func reviewMatchesSnapshotIdentity(locale string, snapshot QualityCheckSnapshotU
 }
 
 func readQualityCheckSnapshotForReview(root, locale, snapshotID string) (*QualityCheckSnapshotManifest, error) {
+	return readQualityCheckSnapshot(root, locale, snapshotID, true)
+}
+
+func readQualityCheckSnapshot(root, locale, snapshotID string, verifyCurrentGlossary bool) (*QualityCheckSnapshotManifest, error) {
 	path := filepath.Join(root, "data", "quality-check-snapshots", locale, snapshotID, "manifest.json")
 	data, err := os.ReadFile(path)
 	if err != nil {
@@ -698,12 +724,14 @@ func readQualityCheckSnapshotForReview(root, locale, snapshotID string) (*Qualit
 	if manifest.GlossaryPath != wantGlossaryPath || manifest.GlossarySHA256 == "" {
 		return nil, fmt.Errorf("quality-check snapshot %q has incompatible glossary identity", snapshotID)
 	}
-	glossaryData, err := readSnapshotReferencedFile(root, manifest.GlossaryPath)
-	if err != nil {
-		return nil, fmt.Errorf("quality-check snapshot %q glossary: %w", snapshotID, err)
-	}
-	if sum(glossaryData) != manifest.GlossarySHA256 {
-		return nil, fmt.Errorf("quality-check snapshot %q glossary hash mismatch", snapshotID)
+	if verifyCurrentGlossary {
+		glossaryData, err := readSnapshotReferencedFile(root, manifest.GlossaryPath)
+		if err != nil {
+			return nil, fmt.Errorf("quality-check snapshot %q glossary: %w", snapshotID, err)
+		}
+		if sum(glossaryData) != manifest.GlossarySHA256 {
+			return nil, fmt.Errorf("quality-check snapshot %q glossary hash mismatch", snapshotID)
+		}
 	}
 	seen := make(map[string]bool, len(manifest.Units))
 	pageCount, exampleCount := 0, 0

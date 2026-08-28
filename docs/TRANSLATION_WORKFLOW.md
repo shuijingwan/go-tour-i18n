@@ -50,7 +50,7 @@ candidate 完成 automatic validation 后，先生成覆盖完整 locale workflo
 
 - [Translation Quality Review 规范](TRANSLATION_QUALITY_REVIEW.md)：A/B/C/D rubric、逐 TranslationUnit review evidence、`approved` 决策与 promotion gate。
 
-Candidate Snapshot 只冻结本轮审核使用的唯一完整 candidate 集合，manifest 引用现有 source、candidate 和 validation evidence，不复制文件、不修改 status，也不产生审核结果。随后 review scope 在同一 full Snapshot 中识别可复用的有效 A + approved Final Review evidence 与带 `reason` / `required_action` 的 pending unit；20-unit reviewer chunk 只处理 `review_required` unit，`revision_required` 先走 revision batch。rubric 过期但 candidate identity 未变时，必须实际重新 Final Review 并通过显式 supersede 续审，不重新翻译 candidate。promotion 仍要求完整 workflow 的每个 Unit 都有与当前最终 candidate 匹配的 A + approved Final Review evidence。
+Candidate Snapshot 只冻结本轮审核使用的唯一完整 candidate 集合，manifest 引用现有 source、candidate 和 validation evidence，不复制文件、不修改 status，也不产生审核结果。Quality Check 使用独立的 `quality-check scope` 与轻量 `quality-check-results.json`：revision 后只 carry-forward identity 完全未变且上一轮为 A 的 Unit；该结果不是 Final Review evidence，不能用于 promotion。Final Review 继续使用 `retranslation review scope`，只复用有效 A + approved Final Review evidence；首次 locale 即使 QC 已全 A，仍须完整执行 Final Review。rubric 过期但 candidate identity 未变时，必须实际重新 Final Review 并通过显式 supersede 续审。promotion 始终要求完整 workflow 的每个 Unit 都有与当前最终 candidate 匹配的 A + approved Final Review evidence。
 
 ## 4. 发布部署
 

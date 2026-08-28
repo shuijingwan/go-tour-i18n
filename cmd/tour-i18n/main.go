@@ -456,6 +456,77 @@ func run(args []string) error {
 			return err
 		}
 		return printJSON(result)
+	case "quality-check scope":
+		fs := flag.NewFlagSet("quality-check scope", flag.ContinueOnError)
+		locale := fs.String("locale", "", "target locale")
+		snapshotID := fs.String("snapshot-id", "", "current Candidate Snapshot id")
+		previousSnapshotID := fs.String("previous-snapshot-id", "", "previous Quality Check Snapshot id for carry-forward")
+		if err := fs.Parse(args[2:]); err != nil {
+			return err
+		}
+		if *locale == "" || *snapshotID == "" {
+			return fmt.Errorf("--locale and --snapshot-id are required")
+		}
+		if fs.NArg() != 0 {
+			return fmt.Errorf("unexpected quality-check scope arguments: %s", strings.Join(fs.Args(), " "))
+		}
+		scope, err := i18n.BuildQualityCheckScope(root, catalog, i18n.QualityCheckScopeOptions{
+			Locale: *locale, SnapshotID: *snapshotID, PreviousSnapshotID: *previousSnapshotID,
+		})
+		if err != nil {
+			return err
+		}
+		return printJSON(scope)
+	case "quality-check record":
+		fs := flag.NewFlagSet("quality-check record", flag.ContinueOnError)
+		locale := fs.String("locale", "", "target locale")
+		snapshotID := fs.String("snapshot-id", "", "Candidate Snapshot id")
+		previousSnapshotID := fs.String("previous-snapshot-id", "", "previous Quality Check Snapshot id for carry-forward")
+		rating := fs.String("rating", "", "Quality Check rating: A, B, C, or D")
+		var unitIDs repeatedStrings
+		fs.Var(&unitIDs, "unit-id", "TranslationUnit id; repeat for multiple units with the same rating")
+		if err := fs.Parse(args[2:]); err != nil {
+			return err
+		}
+		if *locale == "" || *snapshotID == "" || *rating == "" || len(unitIDs) == 0 {
+			return fmt.Errorf("--locale, --snapshot-id, at least one --unit-id, and --rating are required")
+		}
+		if fs.NArg() != 0 {
+			return fmt.Errorf("unexpected quality-check record arguments: %s", strings.Join(fs.Args(), " "))
+		}
+		result, err := i18n.RecordQualityCheckResults(root, catalog, i18n.QualityCheckRecordOptions{
+			Locale: *locale, SnapshotID: *snapshotID, PreviousSnapshotID: *previousSnapshotID,
+			UnitIDs: unitIDs, Rating: *rating,
+		})
+		if err != nil {
+			return err
+		}
+		return printJSON(result)
+	case "quality-check record-batch":
+		fs := flag.NewFlagSet("quality-check record-batch", flag.ContinueOnError)
+		locale := fs.String("locale", "", "target locale")
+		snapshotID := fs.String("snapshot-id", "", "Candidate Snapshot id")
+		previousSnapshotID := fs.String("previous-snapshot-id", "", "previous Quality Check Snapshot id for carry-forward")
+		startIndex := fs.Int("start-index", 1, "first stable Candidate Snapshot index (1-based)")
+		limit := fs.Int("limit", i18n.DefaultRetranslationReviewBatchLimit, "maximum TranslationUnits to record")
+		rating := fs.String("rating", "", "Quality Check rating: A, B, C, or D")
+		if err := fs.Parse(args[2:]); err != nil {
+			return err
+		}
+		if *locale == "" || *snapshotID == "" || *rating == "" {
+			return fmt.Errorf("--locale, --snapshot-id, and --rating are required")
+		}
+		if fs.NArg() != 0 {
+			return fmt.Errorf("unexpected quality-check record-batch arguments: %s", strings.Join(fs.Args(), " "))
+		}
+		result, err := i18n.RecordQualityCheckResultBatch(root, catalog, i18n.QualityCheckRecordBatchOptions{
+			Locale: *locale, SnapshotID: *snapshotID, PreviousSnapshotID: *previousSnapshotID,
+			StartIndex: *startIndex, Limit: *limit, Rating: *rating,
+		})
+		if err != nil {
+			return err
+		}
+		return printJSON(result)
 	case "quality-check snapshot":
 		fs := flag.NewFlagSet("quality-check snapshot", flag.ContinueOnError)
 		locale := fs.String("locale", "", "target locale")

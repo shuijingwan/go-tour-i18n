@@ -98,7 +98,7 @@ go run -mod=readonly ./cmd/tour-i18n quality-check snapshot \
   --snapshot-id <snapshot-id>
 ```
 
-产物只有：
+Snapshot 命令本身只创建：
 
 ```text
 data/quality-check-snapshots/<locale>/<snapshot-id>/manifest.json
@@ -106,18 +106,18 @@ data/quality-check-snapshots/<locale>/<snapshot-id>/manifest.json
 
 Snapshot 按 Catalog 的 Page 顺序、再按 eligible Example inventory 顺序冻结完整 workflow。当前基线是 103 Page + 19 eligible Example = 122 TranslationUnit。每个 unit 先按 batch number 选择最新的一份结果，再要求它匹配当前 source revision 且状态为 `passed`；最新结果失败或 identity 不匹配时都禁止回退旧 batch。Snapshot 同时校验 manifest/source/input/candidate/validation identity、相关 SHA-256、restore 绑定和 retry 最终 attempt。
 
-Manifest 只引用仓库中已有的 glossary、source、candidate 和 validation 文件，不复制这些文件，不创建 `_content`、ZIP 或 review artifact。该命令不修改 `locales/<locale>/status.tsv`，不执行 Quality Check、Final Review 或 promotion。
+Manifest 只引用仓库中已有的 glossary、source、candidate 和 validation 文件，不复制这些文件，不创建 `_content`、ZIP 或 review artifact。该命令不修改 `locales/<locale>/status.tsv`，不执行 Quality Check、Final Review 或 promotion。后续 `quality-check record` 可以在同一 Snapshot 目录新增独立的 `quality-check-results.json`，但不改写 manifest。
 
-Snapshot 后先运行 `retranslation review scope --locale <locale> --snapshot-id <snapshot-id>`。scope 在完整 Snapshot 内区分可复用的有效 A + approved Final Review evidence 与 pending review unit，并对每项输出 `reason`、`required_action`：`review_required` 才进入实际复审，`revision_required` 必须先建 revision batch。首次 locale 的 pending 等于全部 Snapshot，后续 revision 只审核 identity 已变化或 evidence 无效的 Unit。glossary snapshot mismatch 是 scope 的整体 blocker，不是 unit pending。默认每轮 20 个 reviewer chunk 针对可复审的 pending unit，Snapshot 仍必须一次冻结完整 locale workflow，不得按 chunk 创建局部 snapshot。
+Snapshot 后的两个 scope 必须分开执行。ChatGPT Quality Check 使用 `quality-check scope --locale <locale> --snapshot-id <snapshot-id>`；revision 后另加 `--previous-snapshot-id <previous-snapshot-id>`，只 carry-forward 上一轮 A 且 source/candidate/validation/attempt identity 完全相同的 Unit。Final Review 使用 `retranslation review scope --locale <locale> --snapshot-id <snapshot-id>`，只复用有效 A + approved Final Review evidence。两种 scope 都基于完整 Snapshot，但 evidence 与 pending 列表互不混用。glossary snapshot mismatch 是 scope 的整体 blocker，不是 unit pending。
 
 ## 6. Quality Check 与 revision batch
 
-ChatGPT Quality Check 必须以同一份 Candidate Snapshot manifest 为审核范围，不得自行从各 batch 中重新挑选 candidate。当前严格生产策略只接受 A：
+ChatGPT Quality Check 必须以同一份 Candidate Snapshot manifest 为审核范围，不得自行从各 batch 中重新挑选 candidate。首次 locale 没有历史 QC result 时，`quality-check scope` 必须返回全部 Unit pending。完成实际审核后用 `quality-check record` 或 `quality-check record-batch` 写入该 Snapshot 的 `quality-check-results.json`。该轻量结果只服务于多轮 revision carry-forward，不是 Final Review evidence，也不参与 promotion。当前严格生产策略只接受 A：
 
 - A：通过 Quality Check；
 - B、C、D：未通过质量 gate，必须进入 revision batch。
 
-Quality Check 默认每轮审核 20 个连续 snapshot index，但必须逐 TranslationUnit 给出判断，并在多轮结束后覆盖同一 snapshot 的全部 unit。分片不是抽样，不改变 `A = 全部 TranslationUnit` 才能进入 Final Review 的条件。
+Quality Check 默认每轮审核 `quality-check scope` 中 20 个 pending Unit，但必须逐 TranslationUnit 给出判断，并在直接结果与 carry-forward 合计后覆盖同一 full Snapshot 的全部 Unit。分片不是抽样，不改变 `A = 全部 TranslationUnit` 才能进入 Final Review 的条件。
 
 Quality Check 的质量修改不得使用 retry。Revision 流程为：
 
@@ -128,7 +128,9 @@ Quality Check 的质量修改不得使用 retry。Revision 流程为：
 → process
 → automatic validation
 → 生成新的完整 locale Candidate Snapshot
-→ ChatGPT Quality Check
+→ `quality-check scope --previous-snapshot-id ...`
+→ 只对 identity 变化、无有效 A 结果或旧结果非 A 的 Unit 执行 ChatGPT Quality Check
+→ `quality-check record` 记录新结果
 ```
 
 重复以上流程直到 Quality Check 为 A。旧 batch 及其 evidence 保持不可变。
@@ -145,6 +147,8 @@ D = 0
 ```
 
 Final Review 重新审核最终 candidate 并生成正式 review evidence。当前严格策略下，Final Review A 才允许 `approved`；Final Review B、C、D 不得 promotion，必须创建新的 revision batch，随后重新执行 process、automatic validation、ChatGPT Quality Check 和 Final Review。
+
+Quality Check carry-forward 不缩小首次 Final Review。首次 locale 没有正式 Final Review evidence 时，`retranslation review scope` 仍必须返回全部 TranslationUnit 为 `missing_review`。只有后续已有 identity 完全匹配的 Final Review A + approved evidence 时，当前 Final Review incremental scope 才能复用它。
 
 Final Review 也默认每轮逐一审核 20 个连续 `review_required` unit；最后一轮处理全部剩余可记录 unit。完成一轮后，默认用以下命令记录本轮 evidence：
 
