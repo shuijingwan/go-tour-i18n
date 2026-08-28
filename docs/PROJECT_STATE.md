@@ -1,8 +1,21 @@
 # 项目状态
 
-更新时间：2026-08-27（北京时间）
+更新时间：2026-08-28（北京时间）
 
 ## 基线与架构
+
+
+### 2026-08-28 课程广告 ABCD 自然流量实验上线
+
+- 共享课程广告实现提交：`b6551ac32aed6c145dc7407290c46641a0202b59`。
+- 四组均为 Responsive AdSense：A=`3362554728` / max-width 336px，B=`1260537939` / 468px，C=`4220340824` / 728px，D=`4728596962` / unrestricted Responsive control；自然流量各 25%。
+- 同一浏览器 tab session 使用 `sessionStorage` 保持稳定分组；存储不可用时回退当前 window 内存。Angular SPA mount/unmount、Auto Ads、局部 layout protection 与无全局 DOM observer 的共享架构保持不变。
+- shared-assets 已更新 production origin；Cloudflare 对 `SHA256SUMS`、`course-ad.css`、`course-ad.js` 执行精确 Custom Purge，随后三个 URL 均确认 MISS → HIT，公网 allowlist SHA-256 11/11 通过，三个非 allowlist boundary 均保持 404。
+- zh-CN 已部署 `/data/go-tour/releases/20260828-zh-CN-b6551ac`，连续 3 次 localhost health 与 public acceptance 均通过；EdgeOne 对 `course-ad.css`、`course-ad.js` 执行精确缓存清除。
+- ja-JP 无需重新部署 language release；其 production 课程广告 CSS/JS 来自已更新的 shared-assets。
+- production 浏览器验证：zh-CN 实际分到 C，`welcome/1 → welcome/2` 后仍为 C / `4220340824` / max-728；ja-JP 实际分到 A，SPA 下一页后仍为 A / `3362554728` / max-336。两站均保持 responsive `auto` 行为。
+- 不为验证实验而人工刷齐四组；后续直接使用自然流量和 AdSense Ad unit 报表比较各组表现。
+
 
 ### 2026-08-27 upstream source 同步
 

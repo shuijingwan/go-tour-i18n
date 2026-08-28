@@ -41,7 +41,7 @@ TOUR_ANALYTICS='<Google Analytics HTML><Baidu Analytics HTML>'
 
 本地开发默认不设置该变量，因此不会加载生产统计代码。实际统计代码以及具体统计 ID 不写入 Git 仓库；公开前端标识也不在本手册中固定记录。
 
-Google AdSense 使用独立的 `TOUR_ADSENSE_CLIENT`。服务端只在该变量为有效 `ca-pub-...` 值时，才在每个完整 HTML 页面的 `<head>` 中生成一次 Auto Ads 站点代码。课程页同时已有共享的手动 `course-ad` 实现：课程 editor partial 提供 mount 容器，Angular route view 在 link / `$destroy` 时调用其 mount / unmount，模板加载课程广告 CSS/JS；该 helper 创建一个 responsive AdSense `ins` 并请求广告。局部 layout protection 只移除 AdSense/Funding Choices 曾写入编辑器祖先的两种高度覆盖，以保持课程高度和 footer 布局。课程页广告资源与 Auto Ads 一起构成最终广告形态，并非“只注入 Auto Ads、不插入手工广告位”。当前从公开博客首页核验到的配置为：
+Google AdSense 使用独立的 `TOUR_ADSENSE_CLIENT`。服务端只在该变量为有效 `ca-pub-...` 值时，才在每个完整 HTML 页面的 `<head>` 中生成一次 Auto Ads 站点代码。课程页同时已有共享的手动 `course-ad` 实现：课程 editor partial 提供 mount 容器，Angular route view 在 link / `$destroy` 时调用其 mount / unmount，模板加载课程广告 CSS/JS；该 helper 创建 responsive AdSense `ins` 并请求广告。当前课程广告正在运行 ABCD 自然流量实验：A/B/C/D 各 25%，同一浏览器 tab session 通过 `sessionStorage` 保持稳定，存储不可用时回退为当前 window 内存；A/B/C 分别限制容器最大宽度为 336/468/728px，D 保持不限制宽度的 Responsive 对照组。四组均保持 `data-ad-format="auto"` 和 `data-full-width-responsive="true"`，不使用固定尺寸广告。局部 layout protection 只移除 AdSense/Funding Choices 曾写入编辑器祖先的两种高度覆盖，以保持课程高度和 footer 布局。课程页广告资源与 Auto Ads 一起构成最终广告形态，并非“只注入 Auto Ads、不插入手工广告位”。当前从公开博客首页核验到的配置为：
 
 ```text
 TOUR_ADSENSE_CLIENT='ca-pub-8392190980622725'
