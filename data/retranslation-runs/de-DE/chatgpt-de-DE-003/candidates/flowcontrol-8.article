@@ -1,0 +1,38 @@
+* Übung: Schleifen und Funktionen
+
+Um mit Funktionen und Schleifen zu experimentieren, implementieren wir eine Quadratwurzelfunktion: Für eine gegebene Zahl x wollen wir die Zahl z finden, deren z² möglichst nahe bei x liegt.
+
+Computer berechnen die Quadratwurzel von x üblicherweise mithilfe einer Schleife.
+Ausgehend von einem Schätzwert z können wir z abhängig davon anpassen, wie nahe z² an x liegt,
+und so einen besseren Schätzwert erhalten:
+
+	z -= (z*z - x) / (2*z)
+
+Durch wiederholtes Anwenden dieser Anpassung wird der Schätzwert immer genauer,
+bis wir eine Antwort erhalten, die der tatsächlichen Quadratwurzel so nahe wie möglich kommt.
+
+Implementieren Sie dies in der bereitgestellten Funktion `func`Sqrt`.
+Unabhängig von der Eingabe ist 1 ein brauchbarer Ausgangsschätzwert für z.
+Beginnen Sie damit, die Berechnung 10-mal zu wiederholen und dabei jeden Wert von z auszugeben.
+Beobachten Sie, wie nahe Sie für verschiedene Werte von x (1, 2, 3, ...)
+an das Ergebnis herankommen und wie schnell sich der Schätzwert verbessert.
+
+Hinweis: Um einen Gleitkommawert zu deklarieren und zu initialisieren,
+verwenden Sie Gleitkommasyntax oder eine Konvertierung:
+
+	z := 1.0
+	z := float64(1)
+
+Ändern Sie als Nächstes die Schleifenbedingung so, dass die Schleife beendet wird, sobald sich der Wert nicht mehr
+ändert (oder nur noch um einen sehr kleinen Betrag).
+Prüfen Sie, ob dafür mehr oder weniger als 10 Iterationen erforderlich sind.
+Probieren Sie andere Ausgangsschätzwerte für z aus, etwa x oder x/2.
+Wie nahe liegen die Ergebnisse Ihrer Funktion an denen von [[/pkg/math/#Sqrt][math.Sqrt]] aus der Standardbibliothek?
+
+(*Hinweis:* Falls Sie an den Details des Algorithmus interessiert sind: Der obige Ausdruck z² − x gibt an,
+wie weit z² von seinem Zielwert x entfernt ist, und die Division durch 2z entspricht der Ableitung
+von z². Dadurch wird die Größe der Anpassung daran skaliert, wie schnell sich z² ändert.
+Dieses allgemeine Verfahren wird als [[https://en.wikipedia.org/wiki/Newton%27s_method][Newton-Verfahren]] bezeichnet.
+Es eignet sich für viele Funktionen, besonders gut jedoch für Quadratwurzeln.)
+
+.play flowcontrol/exercise-loops-and-functions.go
