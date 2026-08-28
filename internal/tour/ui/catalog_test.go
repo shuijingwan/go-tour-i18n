@@ -3,19 +3,61 @@ package ui
 import (
 	"bytes"
 	"html/template"
+	"regexp"
 	"strings"
 	"testing"
 	"testing/fstest"
 )
 
 func TestLoadEmbeddedCatalogs(t *testing.T) {
-	for _, locale := range []string{"en", "ja-JP", "zh-CN"} {
+	for _, locale := range []string{"de-DE", "en", "ja-JP", "zh-CN"} {
 		catalog, err := Load(locale)
 		if err != nil {
 			t.Fatalf("Load(%q): %v", locale, err)
 		}
 		if got, want := len(catalog.Messages), 88; got != want {
 			t.Fatalf("Load(%q) message count = %d, want %d", locale, got, want)
+		}
+	}
+}
+
+func TestGermanCatalogMatchesEnglishSource(t *testing.T) {
+	source, err := Load("en")
+	if err != nil {
+		t.Fatal(err)
+	}
+	german, err := Load("de-DE")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if german.HTMLLang != "de-DE" {
+		t.Fatalf("de-DE HTMLLang = %q, want de-DE", german.HTMLLang)
+	}
+	if got, want := len(german.Messages), 88; got != want {
+		t.Fatalf("de-DE message count = %d, want %d", got, want)
+	}
+	if err := validateCoverage(source, german); err != nil {
+		t.Fatalf("de-DE coverage: %v", err)
+	}
+	placeholderRE := regexp.MustCompile(`\{[a-z][a-z0-9_]*\}`)
+	markupRE := regexp.MustCompile(`<[^>]+>`)
+	allowedUntranslatedNames := map[string]bool{
+		"module.generics.title": true,
+		"site.issue_feedback":   true,
+		"footer.github":         true,
+	}
+	for key, sourceMessage := range source.Messages {
+		germanMessage := german.Messages[key]
+		if got, want := strings.Join(placeholderRE.FindAllString(germanMessage.Text, -1), "\x00"), strings.Join(placeholderRE.FindAllString(sourceMessage.Text, -1), "\x00"); got != want {
+			t.Errorf("de-DE message %q placeholders = %q, want %q", key, got, want)
+		}
+		if sourceMessage.Kind == "rich" {
+			if got, want := strings.Join(markupRE.FindAllString(germanMessage.Text, -1), "\x00"), strings.Join(markupRE.FindAllString(sourceMessage.Text, -1), "\x00"); got != want {
+				t.Errorf("de-DE rich message %q markup = %q, want %q", key, got, want)
+			}
+		}
+		if germanMessage.Text == sourceMessage.Text && !allowedUntranslatedNames[key] {
+			t.Errorf("de-DE message %q duplicates English source text", key)
 		}
 	}
 }

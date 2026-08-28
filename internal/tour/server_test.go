@@ -83,6 +83,15 @@ func TestRenderIndexLocales(t *testing.T) {
 		absent []string
 	}{
 		{
+			locale: "de-DE",
+			want: []string{
+				`<html lang="de-DE"`, "Eine Tour durch Go", `aria-label="Design wechseln"`, `alt="Systemdesign"`, `alt="Dunkles Design"`, `alt="Helles Design"`,
+			},
+			absent: []string{
+				`aria-label="Toggle theme"`, `alt="System theme"`, `alt="Dark theme"`, `alt="Light theme"`,
+			},
+		},
+		{
 			locale: "en",
 			want: []string{
 				`<html lang="en"`, "A Tour of Go", `aria-label="Toggle theme"`, `alt="System theme"`, `alt="Dark theme"`, `alt="Light theme"`,
@@ -312,6 +321,7 @@ func TestHomepageLanguageRegistryAndLocaleProfiles(t *testing.T) {
 		locale, autonym, logURL, published, upstream, currentPublicURL string
 	}{
 		{"zh-CN", "简体中文", "https://www.shuijingwanwq.com/series/go-tour-chinese-edition-development-series/", "2026-08-20 13:56:11（北京时间）", "2026-08-27 05:55:26（北京时间）", languageRegistry[0].URL},
+		{"de-DE", "Deutsch", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 07:56:11 (Ortszeit)", "2026-08-26 23:55:26 (Ortszeit)", languageRegistry[2].URL},
 		{"ja-JP", "日本語", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 14:56:11（日本時間）", "2026-08-27 06:55:26（日本時間）", languageRegistry[3].URL},
 	}
 	for _, test := range tests {
@@ -472,6 +482,17 @@ func TestJSI18nBootstrapLocales(t *testing.T) {
 		absent []string
 	}{
 		{
+			locale: "de-DE",
+			want: []string{
+				"\"tour.list_heading\":\"Willkommen zu einer Tour durch Go\"", "\"toc.title\":\"Inhaltsverzeichnis\"", "\"execution.waiting\":\"Warten auf den Remote-Server …\"", "\"execution.exited\":\"Programm beendet\"", "\"execution.vet_failed\":\"Ausführung von go vet fehlgeschlagen.\"", "\"execution.build_failed\":\"Ausführung von go build fehlgeschlagen.\"", "\"execution.communication_error\":\"Fehler bei der Kommunikation mit dem Remote-Server.\"", "\"execution.test_failed\":\"{count} Test fehlgeschlagen.\"", "\"execution.tests_failed\":\"{count} Tests fehlgeschlagen.\"", "\"execution.tests_passed\":\"Alle Tests bestanden.\"", "\"feedback.open\":\"Feedback zu dieser Seite senden\"", "\"feedback.context\":\"Kontext\"",
+				"\"editor.syntax\":\"Syntaxhervorhebung\"", "\"editor.imports\":\"Importe\"", "\"editor.run\":\"Ausführen\"", "\"editor.kill\":\"Stoppen\"", "\"editor.format\":\"Formatieren\"", "\"editor.reset\":\"Zurücksetzen\"",
+			},
+			absent: []string{
+				"\"tour.list_heading\":\"Welcome to a tour of Go\"", "\"toc.title\":\"Table of Contents\"", "\"execution.waiting\":\"Waiting for remote server...\"", "\"execution.exited\":\"Program exited\"", "\"execution.vet_failed\":\"Go vet failed.\"", "\"execution.build_failed\":\"Go build failed.\"", "\"execution.communication_error\":\"Error communicating with remote server.\"", "\"execution.test_failed\":\"{count} test failed.\"", "\"execution.tests_failed\":\"{count} tests failed.\"", "\"execution.tests_passed\":\"All tests passed.\"", "\"feedback.open\":\"Send feedback about this page\"", "\"feedback.context\":\"Context\"",
+				"\"editor.syntax\":\"Syntax\"", "\"editor.imports\":\"Imports\"", "\"editor.run\":\"Run\"", "\"editor.kill\":\"Kill\"", "\"editor.format\":\"Format\"", "\"editor.reset\":\"Reset\"",
+			},
+		},
+		{
 			locale: "en",
 			want: []string{
 				"\"tour.list_heading\":\"Welcome to a tour of Go\"", "\"toc.title\":\"Table of Contents\"", "\"execution.waiting\":\"Waiting for remote server...\"", "\"execution.exited\":\"Program exited\"", "\"execution.vet_failed\":\"Go vet failed.\"", "\"execution.build_failed\":\"Go build failed.\"", "\"execution.communication_error\":\"Error communicating with remote server.\"", "\"execution.test_failed\":\"{count} test failed.\"", "\"execution.tests_failed\":\"{count} tests failed.\"", "\"execution.tests_passed\":\"All tests passed.\"", "\"feedback.open\":\"Send feedback about this page\"", "\"feedback.context\":\"Context\"",
@@ -527,6 +548,7 @@ func TestJSRouteMetadataUsesLocaleRegistryOrigins(t *testing.T) {
 		title  string
 	}{
 		{"zh-CN", "https://go-dev.shuijingwanwq.com", "Go 语言之旅"},
+		{"de-DE", "https://de-go-dev.shuijingwanwq.com", "Eine Tour durch Go"},
 		{"ja-JP", "https://ja-go-dev.shuijingwanwq.com", "Go 言語ツアー"},
 	} {
 		t.Run(test.locale, func(t *testing.T) {
@@ -697,6 +719,7 @@ func TestRenderHomeUsesLocaleSEOIdentity(t *testing.T) {
 		locale, description, canonical, otherCanonical string
 	}{
 		{"zh-CN", "这是一个由社区维护的 Go 官方学习内容翻译项目。当前首先提供简体中文，后续可自然扩展至其他语言和其他 Go 内容。", "https://go-dev.shuijingwanwq.com/", "https://ja-go-dev.shuijingwanwq.com/"},
+		{"de-DE", "Ein von der Community betreutes Übersetzungsprojekt für offizielle Go-Lerninhalte. Als erste Sprache wurde vereinfachtes Chinesisch bereitgestellt; die Struktur lässt sich auf weitere Sprachen und Go-Inhalte erweitern.", "https://de-go-dev.shuijingwanwq.com/", "https://ja-go-dev.shuijingwanwq.com/"},
 		{"ja-JP", "Go の公式学習コンテンツをコミュニティで翻訳・維持するプロジェクトです。最初に利用できる言語は簡体字中国語で、今後さらに多くの言語や Go コンテンツに対応できる構成になっています。", "https://ja-go-dev.shuijingwanwq.com/", "https://go-dev.shuijingwanwq.com/"},
 	} {
 		t.Run(test.locale, func(t *testing.T) {
@@ -1060,6 +1083,7 @@ func TestRegisterHandlersLocale(t *testing.T) {
 		locale string
 		want   string
 	}{
+		{locale: "de-DE", want: `aria-label="Design wechseln"`},
 		{locale: "en", want: `aria-label="Toggle theme"`},
 		{locale: "zh-CN", want: `aria-label="切换主题"`},
 	}

@@ -162,6 +162,12 @@ func TestDeDEGlossary(t *testing.T) {
 	for key, want := range map[string]string{
 		"Go programming language": "Programmiersprache Go",
 		"channel":                 "Kanal",
+		"interface":               "Interface",
+		"struct":                  "Struct",
+		"array":                   "Array",
+		"concurrency":             "Nebenläufigkeit",
+		"generics":                "Generics",
+		"generic programming":     "generische Programmierung",
 		"package":                 "Paket",
 		"standard library":        "Standardbibliothek",
 		"map":                     "Map",
