@@ -5,6 +5,13 @@
 ## 基线与架构
 
 
+### 2026-08-28 production CDN 整站缓存统一
+
+- `go-dev.shuijingwanwq.com` 的 EdgeOne 新增整站规则：节点缓存 TTL 30 天、强制缓存关闭。首页 `/` 与课程页 `/tour/welcome/1` 已实际确认 `MISS → HIT`。
+- Cloudflare 现有 shared-assets Cache Rule 扩展为同时匹配 `assets-go-dev.shuijingwanwq.com` 与 `ja-go-dev.shuijingwanwq.com`，规则名为 `assets + ja-go-dev 缓存 1 个月`；两者 Edge Cache TTL 均为 1 个月。
+- `ja-go-dev.shuijingwanwq.com` 首页和课程页均已实际确认 `MISS → HIT`；响应继续保留现有 Browser Cache 行为，不把浏览器缓存强制设为 1 个月。
+- shared-assets 已完成正式 11 文件 production deployment；`SHA256SUMS`、`course-ad.css`、`course-ad.js` 精确 Custom Purge 后均确认 `MISS → HIT`，公网 SHA-256 为 11/11 一致，三个非 allowlist boundary 路径均保持 404。
+- 后续 language production release 更新后必须主动刷新对应 hostname CDN 缓存：zh-CN 使用 EdgeOne Hostname 刷新 `go-dev.shuijingwanwq.com`，ja-JP 使用 Cloudflare Custom Purge by Hostname 刷新 `ja-go-dev.shuijingwanwq.com`。shared-assets 继续按部署脚本输出的实际 changed URLs 精确 purge。
 ### 2026-08-28 课程广告 ABCD 自然流量实验上线
 
 - 共享课程广告实现提交：`b6551ac32aed6c145dc7407290c46641a0202b59`。

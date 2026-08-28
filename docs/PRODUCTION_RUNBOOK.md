@@ -29,6 +29,16 @@
 
 `zh-CN` 请求链路为 Cloudflare 权威 DNS → 腾讯云 EdgeOne → 源站 `121.40.248.29:443` → Nginx → `127.0.0.1:3999`。EdgeOne 到源站使用 HTTPS，回源 Host 为 `go-dev.shuijingwanwq.com`。
 
+### Production CDN 缓存策略
+
+当前 production hostname 统一采用约 1 个月的 CDN Edge Cache TTL，不主动把 Browser Cache TTL 强制设为 1 个月：
+
+- `go-dev.shuijingwanwq.com`：EdgeOne 节点缓存 TTL 为 30 天，匹配整个 hostname，强制缓存关闭；已用首页 `/` 与课程页 `/tour/welcome/1` 验证公网 `MISS → HIT`。
+- `ja-go-dev.shuijingwanwq.com`：Cloudflare Cache Rule 将整个 hostname 标记为 Eligible for cache，Edge Cache TTL 为 1 个月；该规则与 `assets-go-dev.shuijingwanwq.com` 共用。首页 `/` 与课程页 `/tour/welcome/1` 均已验证 `MISS → HIT`。
+- `assets-go-dev.shuijingwanwq.com`：Cloudflare Edge Cache TTL 为 1 个月，Browser Cache TTL 不主动覆盖；shared-assets 继续按部署脚本输出的实际 changed URLs 做精确 Custom Purge。
+
+language production 使用固定 URL，因此 release 更新后不能等待约 1 个月自然过期。`zh-CN` release 激活后应对 EdgeOne 执行 `go-dev.shuijingwanwq.com` Hostname 缓存刷新；`ja-JP` release 激活后应在 Cloudflare Custom Purge 中按 Hostname 刷新 `ja-go-dev.shuijingwanwq.com`。不得为刷新单一 language hostname 使用会影响同 zone 其他 hostname 的 Purge Everything。shared-assets 继续使用已有的 changed-URL 精确 purge 流程，不改为整 hostname purge。
+
 公网域名迁移不改变 `go-tour.service`、`/data/go-tour/`、仓库名或 Go module path。
 
 ## 生产统计配置
@@ -68,7 +78,7 @@ EnvironmentFile=/etc/go-tour/go-tour.env
 
 新增或修改 systemd drop-in 后执行 `systemctl daemon-reload`；仅修改 `go-tour.env` 内容时，也必须重启 `go-tour.service`，使新进程重新读取统计环境变量。不要在 shell 历史、发布包或其他仓库文件中复制完整统计代码。
 
-修改 `TOUR_ANALYTICS`、`TOUR_ADSENSE_CLIENT` 或其他影响 HTML shell 的内容后，EdgeOne 可能继续命中旧 HTML。若公网响应仍显示旧页面，应刷新对应 production hostname 的缓存；不要仅根据源站验证就判断公网已更新。公开的 `/socket` 既有安全原则保持不变：production 不注册或开放本地 Socket transport，普通请求和 WebSocket Upgrade 均应保持 404。
+修改 `TOUR_ANALYTICS`、`TOUR_ADSENSE_CLIENT` 或其他影响 HTML shell 的内容后，必须按“Production CDN 缓存策略”刷新对应 language hostname；不要仅根据源站验证或 `deploy-production.sh` 的 public HTTP 200 就判断新 release 已在全部 CDN 边缘节点生效。公开的 `/socket` 既有安全原则保持不变：production 不注册或开放本地 Socket transport，普通请求和 WebSocket Upgrade 均应保持 404。
 
 ### 广告职责、首次接入与最终验收边界
 
@@ -220,7 +230,7 @@ ssh aliyun 'curl -sS -o /dev/null -w "%{http_code}\n" http://127.0.0.1:3999/'
 ssh aliyun 'journalctl -u go-tour.service -n 80 --no-pager'
 ```
 
-localhost 连续健康后，脚本才检查对应 profile 的 public URL。正式域名异常属于 CDN、HTTPS、Nginx 或其他外部验收问题，不会自动回滚一个已经稳定健康的源站 release。脚本不调用 CDN API，也不自动清理缓存；若 HTML 或静态资源仍显示旧版本，应根据该语言站点实际使用的 CDN / reverse proxy 检查缓存状态并按需人工刷新。
+localhost 连续健康后，脚本才检查对应 profile 的 public URL。正式域名异常属于 CDN、HTTPS、Nginx 或其他外部验收问题，不会自动回滚一个已经稳定健康的源站 release。脚本不调用 CDN API，也不自动清理缓存；language release 成功后必须按“Production CDN 缓存策略”主动刷新对应 hostname，并完成后续 CDN 验收。public HTTP 200 只证明公网入口可用，不能替代 hostname purge 或证明新 release 已在全部边缘节点生效。
 
 ## 非中文共享静态资源第一版
 
@@ -259,7 +269,7 @@ go run -mod=readonly ./cmd/tour-i18n assets export \
 
 `assets-go-dev.shuijingwanwq.com` 已正式部署，Cloudflare 已代理；源站为 `121.40.248.29`，origin root 为 `/data/wwwroot/assets-go-dev.shuijingwanwq.com`，Nginx vhost 为 `/usr/local/nginx/conf/vhost/assets-go-dev.shuijingwanwq.com.conf`。TLS 使用 Let's Encrypt / acme.sh / `dns_cf`，证书和私钥分别位于 `/usr/local/nginx/conf/ssl/assets-go-dev.shuijingwanwq.com.crt` 与 `/usr/local/nginx/conf/ssl/assets-go-dev.shuijingwanwq.com.key`；HTTP 80 永久跳转 HTTPS。
 
-Cloudflare Edge Cache TTL 为 1 个月。项目不主动覆盖 Browser Cache TTL，不给这些固定 URL 设置 `immutable` 或一年浏览器缓存；使用 Cloudflare/origin 默认或 Respect Existing Headers。当前代码 allowlist 为 11 个文件，`course-ad.css` 与 `course-ad.js` 已包含真实课程页 AdSense integration；production assets origin 仍是扩展前的 9 文件，历史公网验收为 9/9。两个 course-ad 文件尚未完成首次 production origin 部署，首次 11/11 production 验收也尚未完成，不能描述为真实广告已经通过 assets production 上线。
+Cloudflare Edge Cache TTL 为 1 个月。项目不主动覆盖 Browser Cache TTL，不给这些固定 URL 设置 `immutable` 或一年浏览器缓存；使用 Cloudflare/origin 默认或 Respect Existing Headers。当前正式 allowlist 为 11 个文件，`course-ad.css` 与 `course-ad.js` 已包含课程页 AdSense integration。11 文件 production origin 已完成正式部署；对实际变化的 `SHA256SUMS`、`course-ad.css`、`course-ad.js` 完成 Custom Purge 后均验证 `MISS → HIT`，公网内容 SHA-256 为 11/11 一致，三个非 allowlist boundary 路径继续返回 404。
 
 ### Shared-assets production 发布状态机
 
@@ -310,7 +320,7 @@ preflight、lock、upload、staging validation 或 backup 阶段失败时，orig
 
 脚本成功只表示 origin deployment 完成。它按稳定顺序输出 added、modified、deleted 的实际固定 URL（`SHA256SUMS` 如发生变化也属于 changed URL），然后在 Cloudflare HUMAN GATE 结束；不调用 Cloudflare API/CLI，也不在 purge 前执行公网 MISS/HIT 验收。
 
-`deploy-shared-assets.sh` 已通过本地 mock 自动化测试，但尚未完成第一次真实 production deployment 验证。当前 production origin 仍是历史 9 文件，两个 course-ad 文件仍未部署，11/11 production 验收仍待完成。第一次受控运行必须严格观察脚本输出和远端状态；如果真实权限或工具基线与预检不符，立即停止，不绕过检查。
+`deploy-shared-assets.sh` 已通过本地 mock 自动化测试，并已完成首次真实 11 文件 production deployment 验证。`SHA256SUMS`、`course-ad.css` 与 `course-ad.js` 的实际 changed URLs 已完成精确 Custom Purge 与 `MISS → HIT` 验收；公网 allowlist SHA-256 为 11/11 一致，三个非 allowlist boundary 路径继续返回 404。后续发布仍以脚本输出的实际 changed URLs 为唯一 purge 清单；如果真实权限或工具基线与预检不符，立即停止，不绕过检查。
 
 origin 更新成功后，脚本已经执行文件集合、SHA-256、与 staging 一致性、无 symlink/unsupported entry 和权限验证。需要人工复核时可执行以下只读命令：
 
@@ -329,7 +339,7 @@ ssh aliyun '
 
 #### 阶段 C：确定 purge URL
 
-部署脚本比较更新前 origin 与已验证 staging，只列出内容实际新增、修改或删除的固定 URL；不要默认刷新全部 11 个 URL，也不要默认使用 Purge Everything。首次部署课程广告资源时至少包括：
+部署脚本比较更新前 origin 与已验证 staging，只列出内容实际新增、修改或删除的固定 URL；不要默认刷新全部 11 个 URL，也不要默认使用 Purge Everything。此前首次课程广告资源部署的 changed URLs 包括：
 
 ```text
 https://assets-go-dev.shuijingwanwq.com/tour/static/go-dev/course-ad.css
@@ -350,7 +360,7 @@ Dashboard purge 是正常 human gate，不是 deployment failure，也不是缺�
 
 对阶段 C 的每个 URL 连续请求两次并保留响应头。第一次应符合刷新后首次回源预期，例如 `CF-Cache-Status: MISS`；第二次应符合缓存命中预期，例如 `CF-Cache-Status: HIT`。如果实际响应头名称或 Cloudflare 行为与已验证基线不同，记录真实响应并停止判断，不猜测或伪造 MISS/HIT 结论。
 
-当前两个首次部署 URL 的验收命令如下；如果阶段 C 还列出其他变化 URL，把它们追加到 `urls`：
+以下为此前两个课程广告 changed URLs 的验收示例；每次应以阶段 C 实际输出为准，并将其他 changed URLs 一并加入 `urls`：
 
 ```sh
 urls=(
