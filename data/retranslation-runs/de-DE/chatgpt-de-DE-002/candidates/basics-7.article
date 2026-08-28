@@ -1,0 +1,11 @@
+* Benannte Rückgabewerte
+
+Die Rückgabewerte von Go können benannt werden. In diesem Fall werden sie wie Variablen behandelt, die am Anfang der Funktion definiert sind.
+
+Diese Namen sollten die Bedeutung der Rückgabewerte dokumentieren.
+
+Eine `return`-Anweisung ohne Argumente gibt die benannten Rückgabewerte zurück. Dies wird als „nackte“ Rückgabe bezeichnet.
+
+„Nackte“ Rückgabeanweisungen sollten wie im hier gezeigten Beispiel nur in kurzen Funktionen verwendet werden. In längeren Funktionen können sie die Lesbarkeit beeinträchtigen.
+
+.play basics/named-results.go

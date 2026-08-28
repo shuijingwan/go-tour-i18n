@@ -1,0 +1,13 @@
+* Typinferenz
+
+Wird eine Variable deklariert, ohne einen expliziten Typ anzugeben (entweder mit der Syntax ⟪GTI18N_21c4077c_000001⟫:=⟪GTI18N_21c4077c_000002⟫ oder mit der Ausdruckssyntax ⟪GTI18N_21c4077c_000003⟫var`=⟪GTI18N_21c4077c_000004⟫), wird ihr Typ aus dem Wert auf der rechten Seite abgeleitet.
+
+Hat die rechte Seite der Deklaration einen Typ, erhält die neue Variable denselben Typ:
+
+⟪GTI18N_21c4077c_000005⟫⟪GTI18N_21c4077c_000006⟫ hat den Typ ⟪GTI18N_21c4077c_000007⟫⟪GTI18N_21c4077c_000008⟫Enthält die rechte Seite dagegen eine untypisierte numerische Konstante, kann die neue Variable je nach Genauigkeit der Konstante den Typ ⟪GTI18N_21c4077c_000009⟫int⟪GTI18N_21c4077c_000010⟫, ⟪GTI18N_21c4077c_000011⟫float64⟪GTI18N_21c4077c_000012⟫ oder ⟪GTI18N_21c4077c_000013⟫complex128⟪GTI18N_21c4077c_000014⟫ haben:
+
+⟪GTI18N_21c4077c_000015⟫
+
+Ändern Sie im Beispielcode den Anfangswert von ⟪GTI18N_21c4077c_000016⟫v⟪GTI18N_21c4077c_000017⟫ und beobachten Sie, wie sich dies auf seinen Typ auswirkt.
+
+⟪GTI18N_21c4077c_000018⟫

@@ -1,0 +1,12 @@
+* Nullwerte
+
+Variablen, die ohne expliziten Anfangswert deklariert werden, erhalten ihren
+_zero_value_.
+
+Der Nullwert ist:
+
+- `0` für numerische Typen,
+- `false` für den booleschen Typ und
+- `""` (die leere Zeichenkette) für Zeichenketten.
+
+.play basics/zero.go

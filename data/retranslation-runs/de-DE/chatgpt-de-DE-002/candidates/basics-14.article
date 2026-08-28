@@ -1,0 +1,18 @@
+* Typinferenz
+
+Wird eine Variable deklariert, ohne einen expliziten Typ anzugeben (entweder mit der Syntax `:=` oder mit der Ausdruckssyntax `var`=`), wird ihr Typ aus dem Wert auf der rechten Seite abgeleitet.
+
+Hat die rechte Seite der Deklaration einen Typ, erhält die neue Variable denselben Typ:
+
+	var i int
+	j := i // j hat den Typ int
+
+Enthält die rechte Seite dagegen eine untypisierte numerische Konstante, kann die neue Variable je nach Genauigkeit der Konstante den Typ `int`, `float64` oder `complex128` haben:
+
+	i := 42           // int
+	f := 3.142        // float64
+	g := 0.867 + 0.5i // complex128
+
+Ändern Sie im Beispielcode den Anfangswert von `v` und beobachten Sie, wie sich dies auf seinen Typ auswirkt.
+
+.play basics/type-inference.go
