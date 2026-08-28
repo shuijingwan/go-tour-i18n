@@ -772,6 +772,12 @@ func TestCourseAdAssetsUseAngularViewLifecycle(t *testing.T) {
 		"width: calc(100% - 80px)",
 		"margin-top: auto",
 		"margin-bottom: 24px",
+		".go-dev-course-ad--max-336",
+		"max-width: 336px",
+		".go-dev-course-ad--max-468",
+		"max-width: 468px",
+		".go-dev-course-ad--max-728",
+		"max-width: 728px",
 		"@media (max-width: 600px)",
 		"margin-top: 24px",
 		`ins.adsbygoogle[data-ad-status="unfilled"]`,
@@ -798,7 +804,15 @@ func TestCourseAdAssetsUseAngularViewLifecycle(t *testing.T) {
 		"document.createElement('ins')",
 		"ad.className = 'adsbygoogle'",
 		"data-ad-client', 'ca-pub-8392190980622725'",
-		"data-ad-slot', '4728596962'",
+		"experimentStorageKey = 'goDevCourseAdExperimentGroup'",
+		"{name: 'A', slot: '3362554728', maxWidth: 336}",
+		"{name: 'B', slot: '1260537939', maxWidth: 468}",
+		"{name: 'C', slot: '4220340824', maxWidth: 728}",
+		"{name: 'D', slot: '4728596962'}",
+		"Math.floor(Math.random() * experimentGroups.length)",
+		"window.sessionStorage.getItem(experimentStorageKey)",
+		"window.sessionStorage.setItem(experimentStorageKey, group.name)",
+		"data-go-dev-course-ad-group",
 		"data-ad-format', 'auto'",
 		"data-full-width-responsive', 'true'",
 		"function unmount(element)",
@@ -818,6 +832,11 @@ func TestCourseAdAssetsUseAngularViewLifecycle(t *testing.T) {
 	}
 	if got := strings.Count(js, ".push({})"); got != 1 {
 		t.Errorf("course ad JS push count = %d, want 1", got)
+	}
+	for _, forbidden := range []string{"970", "data-ad-width", "data-ad-height"} {
+		if strings.Contains(js, forbidden) {
+			t.Errorf("course ad JS contains unsupported experiment behavior %q", forbidden)
+		}
 	}
 	for _, forbidden := range []string{"removeAttribute('style')", `setAttribute('style', '')`} {
 		if strings.Contains(js, forbidden) {

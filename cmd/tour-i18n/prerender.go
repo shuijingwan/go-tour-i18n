@@ -203,8 +203,16 @@ func sanitizePrerenderedHTML(data []byte) ([]byte, error) {
 				for _, attr := range []string{
 					"role",
 					"aria-label",
+					"data-go-dev-course-ad-group",
 				} {
 					removeAttr(child, attr)
+				}
+				for _, class := range []string{
+					"go-dev-course-ad--max-336",
+					"go-dev-course-ad--max-468",
+					"go-dev-course-ad--max-728",
+				} {
+					removeClass(child, class)
 				}
 			}
 
@@ -300,6 +308,23 @@ func hasClass(node *html.Node, class string) bool {
 		}
 	}
 	return false
+}
+
+func removeClass(node *html.Node, class string) {
+	for i := range node.Attr {
+		if node.Attr[i].Key != "class" {
+			continue
+		}
+		classes := strings.Fields(node.Attr[i].Val)
+		kept := classes[:0]
+		for _, value := range classes {
+			if value != class {
+				kept = append(kept, value)
+			}
+		}
+		node.Attr[i].Val = strings.Join(kept, " ")
+		return
+	}
 }
 
 func validateRenderedCoursePage(data []byte, route tour.CourseRoute) error {

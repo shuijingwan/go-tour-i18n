@@ -42,7 +42,7 @@ func TestSanitizePrerenderedHTMLRemovesThirdPartyRuntimeDOM(t *testing.T) {
 <div class="CodeMirror"><span>runtime editor</span></div>
 <li class="toc-page ng-scope" style="overflow: hidden; height: 0px;">TOC</li>
 <textarea ui-codemirror style="display: none;">package main</textarea>
-<div class="go-dev-course-ad" data-go-dev-course-ad course-ad role="complementary" aria-label="Advertisement"><span>runtime ad child</span></div>
+<div class="go-dev-course-ad go-dev-course-ad--max-468" data-go-dev-course-ad data-go-dev-course-ad-group="B" course-ad role="complementary" aria-label="Advertisement"><span>runtime ad child</span></div>
 <main>keep me</main></body></html>`)
 	got, err := sanitizePrerenderedHTML(input)
 	if err != nil {
@@ -55,6 +55,8 @@ func TestSanitizePrerenderedHTMLRemovesThirdPartyRuntimeDOM(t *testing.T) {
 		"runtime ad child",
 		`role="complementary"`,
 		`aria-label="Advertisement"`,
+		`data-go-dev-course-ad-group`,
+		`go-dev-course-ad--max-468`,
 		`class="CodeMirror`,
 		`style="overflow: hidden; height: 0px;"`,
 		`style="display: none;"`,

@@ -42,6 +42,9 @@ func TestCourseAdSPALifecycleInBrowser(t *testing.T) {
     var failPush = false;
     var uncaught = false;
     window.adsbygoogle = { push: function() { requests++; if (failPush) throw new Error('fake AdSense failure'); } };
+    // file:// Chrome tests may deny sessionStorage; exercise the helper's
+    // same-window fallback used when browser privacy settings do the same.
+    window.__goDevCourseAdExperimentGroup = 'B';
     window.addEventListener('error', function() { uncaught = true; });
     angular.module('courseAdTest', ['ng', 'tour.directives']).config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
         $routeProvider.when('/:page', { templateUrl: 'course-page', controller: ['$scope', '$routeParams', function($scope, $routeParams) { $scope.page = $routeParams.page; }] });
@@ -64,6 +67,13 @@ func TestCourseAdSPALifecycleInBrowser(t *testing.T) {
     function currentAdCount() {
         return document.querySelectorAll('[data-go-dev-course-ad] ins.adsbygoogle').length;
     }
+    function assertExperimentB(container, label) {
+        var ad = container.querySelector('ins.adsbygoogle');
+        assert(container.getAttribute('data-go-dev-course-ad-group') === 'B', label + ': group changed');
+        assert(container.classList.contains('go-dev-course-ad--max-468'), label + ': width strategy changed');
+        assert(ad && ad.getAttribute('data-ad-slot') === '1260537939', label + ': slot changed');
+        assert(ad.getAttribute('data-ad-format') === 'auto' && ad.getAttribute('data-full-width-responsive') === 'true', label + ': ad is no longer responsive');
+    }
 
     setTimeout(function() {
         try {
@@ -72,14 +82,17 @@ func TestCourseAdSPALifecycleInBrowser(t *testing.T) {
             waitFor('one', function(first) {
                 assert(document.querySelectorAll('[data-go-dev-course-ad]').length === 1, 'initial container count');
                 assert(currentAdCount() === 1 && requests === 1, 'initial ad lifecycle');
+                assertExperimentB(document.querySelector('[data-go-dev-course-ad]'), 'initial mount');
                 navigate('/two', function() {
                     assert(!document.documentElement.contains(first), 'old view remains after navigation');
                     assert(first.querySelectorAll('ins.adsbygoogle').length === 0, 'old ad lifecycle did not end');
                     assert(document.querySelectorAll('[data-go-dev-course-ad]').length === 1 && currentAdCount() === 1 && requests === 2, 'second ad lifecycle');
+                    assertExperimentB(document.querySelector('[data-go-dev-course-ad]'), 'second mount');
                     navigate('/three', function() {
                         navigate('/four', function() {
                             navigate('/five', function() {
                                 assert(document.querySelectorAll('[data-go-dev-course-ad]').length === 1 && currentAdCount() === 1 && requests === 5, 'three SPA transitions accumulated ads');
+                                assertExperimentB(document.querySelector('[data-go-dev-course-ad]'), 'later SPA mount');
                                 failPush = true;
                                 navigate('/failure', function() {
                                     assert(document.querySelector('.course-body') && currentAdCount() === 1, 'failed ad request broke the new view');
