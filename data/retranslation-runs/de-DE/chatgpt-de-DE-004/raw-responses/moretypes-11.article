@@ -1,0 +1,18 @@
+* Länge und Kapazität einer Slice
+
+Eine Slice hat sowohl eine ⟪GTI18N_e2d7d69c_000001⟫Länge⟪GTI18N_e2d7d69c_000002⟫ als auch eine ⟪GTI18N_e2d7d69c_000003⟫Kapazität⟪GTI18N_e2d7d69c_000004⟫.
+
+Die Länge einer Slice ist die Anzahl der Elemente, die sie enthält.
+
+Die Kapazität einer Slice ist die Anzahl der Elemente im zugrunde liegenden Array,
+gezählt ab dem ersten Element der Slice.
+
+Die Länge und Kapazität einer Slice ⟪GTI18N_e2d7d69c_000005⟫s⟪GTI18N_e2d7d69c_000006⟫ lassen sich mit den Ausdrücken
+⟪GTI18N_e2d7d69c_000007⟫len(s)⟪GTI18N_e2d7d69c_000008⟫ und ⟪GTI18N_e2d7d69c_000009⟫cap(s)⟪GTI18N_e2d7d69c_000010⟫ ermitteln.
+
+Sie können die Länge einer Slice durch erneutes Slicing vergrößern,
+sofern ihre Kapazität ausreicht.
+Versuchen Sie, im Beispielprogramm eine der Slice-Operationen so zu ändern, dass die Slice
+über ihre Kapazität hinaus erweitert wird, und beobachten Sie, was geschieht.
+
+⟪GTI18N_e2d7d69c_000011⟫

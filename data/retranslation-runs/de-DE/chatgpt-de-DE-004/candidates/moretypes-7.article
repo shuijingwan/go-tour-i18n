@@ -1,0 +1,22 @@
+* Slices
+
+Ein Array hat eine feste Größe.
+Eine Slice dagegen ist eine dynamisch dimensionierte, flexible Ansicht auf die Elemente eines Arrays.
+In der Praxis werden Slices deutlich häufiger als Arrays verwendet.
+
+Der Typ `[]T` ist eine Slice mit Elementen vom Typ `T`.
+
+Eine Slice wird durch die Angabe zweier Indizes gebildet: einer unteren und
+einer oberen Grenze, getrennt durch einen Doppelpunkt:
+
+	a[low : high]
+
+Dadurch wird ein halboffener Bereich ausgewählt, der das erste
+Element einschließt, das letzte jedoch ausschließt.
+
+Der folgende Ausdruck erstellt eine Slice, die die Elemente 1 bis 3 von
+`a` enthält:
+
+	a[1:4]
+
+.play moretypes/slices.go

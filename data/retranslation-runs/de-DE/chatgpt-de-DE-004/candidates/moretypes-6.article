@@ -1,0 +1,15 @@
+* Arrays
+
+Der Typ `[n]T` ist ein Array aus `n` Werten vom Typ `T`.
+
+Der Ausdruck
+
+	var a [10]int
+
+deklariert eine Variable `a` als Array aus zehn Ganzzahlen.
+
+Die Länge eines Arrays ist Bestandteil seines Typs; Arrays können daher nicht in der Größe verändert werden.
+Das wirkt einschränkend, ist aber kein Grund zur Sorge:
+Go bietet eine komfortable Möglichkeit, mit Arrays zu arbeiten.
+
+.play moretypes/array.go

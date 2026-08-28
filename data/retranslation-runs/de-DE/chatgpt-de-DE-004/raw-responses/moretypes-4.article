@@ -1,0 +1,10 @@
+* Zeiger auf Structs
+
+Auf Struct-Felder kann über einen Struct-Zeiger zugegriffen werden.
+
+Um auf das Feld ⟪GTI18N_29695d33_000001⟫X⟪GTI18N_29695d33_000002⟫ eines Structs zuzugreifen, wenn der Struct-Zeiger ⟪GTI18N_29695d33_000003⟫p⟪GTI18N_29695d33_000004⟫ vorliegt, könnten wir
+⟪GTI18N_29695d33_000005⟫(*p).X⟪GTI18N_29695d33_000006⟫ schreiben.
+Diese Schreibweise ist jedoch umständlich. Daher erlaubt die Sprache stattdessen einfach
+⟪GTI18N_29695d33_000007⟫p.X⟪GTI18N_29695d33_000008⟫ ohne explizite Dereferenzierung.
+
+⟪GTI18N_29695d33_000009⟫

@@ -1,0 +1,11 @@
+* Slices ähneln Referenzen auf Arrays
+
+Eine Slice speichert selbst keine Daten,
+sondern beschreibt lediglich einen Abschnitt eines zugrunde liegenden Arrays.
+
+Das Ändern der Elemente einer Slice verändert die
+entsprechenden Elemente ihres zugrunde liegenden Arrays.
+
+Die Änderungen sind auch in anderen Slices sichtbar, die dasselbe zugrunde liegende Array verwenden.
+
+⟪GTI18N_e577f9e9_000001⟫
