@@ -1,0 +1,21 @@
+* Anhängen an eine Slice
+
+Es ist üblich, neue Elemente an eine Slice anzuhängen. Daher stellt ⟪GTI18N_f2fc257e_000001⟫ die eingebaute
+Funktion ⟪GTI18N_f2fc257e_000002⟫append⟪GTI18N_f2fc257e_000003⟫ bereit. Die [[⟪GTI18N_f2fc257e_000004⟫][Dokumentation]]
+des eingebauten Pakets beschreibt ⟪GTI18N_f2fc257e_000005⟫append⟪GTI18N_f2fc257e_000006⟫.
+
+⟪GTI18N_f2fc257e_000007⟫
+
+Der erste Parameter ⟪GTI18N_f2fc257e_000008⟫s⟪GTI18N_f2fc257e_000009⟫ von ⟪GTI18N_f2fc257e_000010⟫append⟪GTI18N_f2fc257e_000011⟫ ist eine Slice vom Typ ⟪GTI18N_f2fc257e_000012⟫T⟪GTI18N_f2fc257e_000013⟫; die übrigen Parameter sind
+Werte vom Typ ⟪GTI18N_f2fc257e_000014⟫T⟪GTI18N_f2fc257e_000015⟫, die an die Slice angehängt werden.
+
+Der Rückgabewert von ⟪GTI18N_f2fc257e_000016⟫append⟪GTI18N_f2fc257e_000017⟫ ist eine Slice, die alle Elemente der
+ursprünglichen Slice sowie die übergebenen Werte enthält.
+
+Wenn das zugrunde liegende Array von ⟪GTI18N_f2fc257e_000018⟫s⟪GTI18N_f2fc257e_000019⟫ zu klein für alle übergebenen Werte ist, wird ein größeres
+Array reserviert. Die zurückgegebene Slice verweist auf das neu reservierte
+Array.
+
+(Weitere Informationen über Slices finden Sie im Artikel [[⟪GTI18N_f2fc257e_000020⟫][Slices: Verwendung und Interna]].)
+
+⟪GTI18N_f2fc257e_000021⟫

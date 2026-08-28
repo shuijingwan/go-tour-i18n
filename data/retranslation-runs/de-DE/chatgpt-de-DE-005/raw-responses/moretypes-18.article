@@ -1,0 +1,11 @@
+* Übung: Slices
+
+Implementieren Sie ⟪GTI18N_9c5fd763_000001⟫Pic⟪GTI18N_9c5fd763_000002⟫. Die Funktion soll eine Slice der Länge ⟪GTI18N_9c5fd763_000003⟫dy⟪GTI18N_9c5fd763_000004⟫ zurückgeben, deren Elemente jeweils Slices aus ⟪GTI18N_9c5fd763_000005⟫dx⟪GTI18N_9c5fd763_000006⟫ vorzeichenlosen 8-Bit-Ganzzahlen sind. Beim Ausführen zeigt das Programm Ihr Bild an und interpretiert die Ganzzahlen als Graustufenwerte (genauer gesagt: Blaustufenwerte).
+
+Wie das Bild aussieht, bleibt Ihnen überlassen. Interessante Funktionen sind ⟪GTI18N_9c5fd763_000007⟫(x+y)/2⟪GTI18N_9c5fd763_000008⟫, ⟪GTI18N_9c5fd763_000009⟫x*y⟪GTI18N_9c5fd763_000010⟫ und ⟪GTI18N_9c5fd763_000011⟫x^y⟪GTI18N_9c5fd763_000012⟫.
+
+(Sie müssen eine Schleife verwenden, um jede Slice vom Typ ⟪GTI18N_9c5fd763_000013⟫[]uint8⟪GTI18N_9c5fd763_000014⟫ innerhalb der Slice vom Typ ⟪GTI18N_9c5fd763_000015⟫[][]uint8⟪GTI18N_9c5fd763_000016⟫ zu reservieren.)
+
+(Verwenden Sie ⟪GTI18N_9c5fd763_000017⟫uint8(intValue)⟪GTI18N_9c5fd763_000018⟫, um zwischen den Typen zu konvertieren.)
+
+⟪GTI18N_9c5fd763_000019⟫

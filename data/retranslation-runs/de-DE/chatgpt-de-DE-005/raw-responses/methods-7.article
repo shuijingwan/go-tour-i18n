@@ -1,0 +1,14 @@
+* Methoden und Zeigerindirektion (2)
+
+In umgekehrter Richtung geschieht das Entsprechende.
+
+Funktionen, die ein Wertargument erwarten, müssen einen Wert dieses bestimmten Typs erhalten:
+
+⟪GTI18N_61a9cb84_000001⟫Kompilierfehler!⟪GTI18N_61a9cb84_000002⟫während Methoden mit Wertempfängern beim Aufruf entweder einen Wert oder einen Zeiger als
+Empfänger akzeptieren:
+
+⟪GTI18N_61a9cb84_000003⟫
+
+In diesem Fall wird der Methodenaufruf ⟪GTI18N_61a9cb84_000004⟫p.Abs()⟪GTI18N_61a9cb84_000005⟫ als ⟪GTI18N_61a9cb84_000006⟫(*p).Abs()⟪GTI18N_61a9cb84_000007⟫ interpretiert.
+
+⟪GTI18N_61a9cb84_000008⟫

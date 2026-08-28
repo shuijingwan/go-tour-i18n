@@ -1,0 +1,15 @@
+* Methoden und Zeigerindirektion
+
+Beim Vergleich der beiden vorherigen Programme fällt Ihnen möglicherweise auf, dass
+Funktionen mit einem Zeigerargument einen Zeiger erhalten müssen:
+
+⟪GTI18N_39fb725b_000001⟫Kompilierfehler!⟪GTI18N_39fb725b_000002⟫während Methoden mit Zeigerempfängern beim Aufruf entweder einen Wert oder einen Zeiger als
+Empfänger akzeptieren:
+
+⟪GTI18N_39fb725b_000003⟫
+
+Bei der Anweisung ⟪GTI18N_39fb725b_000004⟫v.Scale(5)⟪GTI18N_39fb725b_000005⟫ wird die Methode mit dem Zeigerempfänger automatisch aufgerufen, obwohl ⟪GTI18N_39fb725b_000006⟫v⟪GTI18N_39fb725b_000007⟫ ein Wert und kein Zeiger ist.
+Der Einfachheit halber interpretiert ⟪GTI18N_39fb725b_000008⟫ die Anweisung ⟪GTI18N_39fb725b_000009⟫v.Scale(5)⟪GTI18N_39fb725b_000010⟫ also als
+⟪GTI18N_39fb725b_000011⟫(&v).Scale(5)⟪GTI18N_39fb725b_000012⟫, da die Methode ⟪GTI18N_39fb725b_000013⟫Scale⟪GTI18N_39fb725b_000014⟫ einen Zeigerempfänger hat.
+
+⟪GTI18N_39fb725b_000015⟫

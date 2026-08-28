@@ -1,0 +1,12 @@
+* Range (Fortsetzung)
+
+Sie können den Index oder den Wert überspringen, indem Sie ihn `_` zuweisen.
+
+    for i, _ := range pow
+    for _, value := range pow
+
+Wenn Sie nur den Index benötigen, können Sie die zweite Variable weglassen.
+
+    for i := range pow
+
+.play moretypes/range-continued.go

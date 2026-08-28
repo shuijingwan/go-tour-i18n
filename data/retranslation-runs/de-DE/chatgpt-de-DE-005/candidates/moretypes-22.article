@@ -1,0 +1,27 @@
+* Maps verändern
+
+Ein Element in die Map `m` einfügen oder darin aktualisieren:
+
+	m[key] = elem
+
+Ein Element abrufen:
+
+	elem = m[key]
+
+Ein Element löschen:
+
+	delete(m, key)
+
+Mit einer Zwei-Wert-Zuweisung prüfen, ob ein Schlüssel vorhanden ist:
+
+	elem, ok = m[key]
+
+Wenn `key` in `m` enthalten ist, hat `ok` den Wert `true`. Andernfalls hat `ok` den Wert `false`.
+
+Wenn `key` nicht in der Map enthalten ist, enthält `elem` den Nullwert des Elementtyps der Map.
+
+*Hinweis:* Wenn `elem` oder `ok` noch nicht deklariert wurden, können Sie die Kurzform einer Deklaration verwenden:
+
+	elem, ok := m[key]
+
+.play moretypes/mutating-maps.go

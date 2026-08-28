@@ -1,0 +1,24 @@
+* Zeigerempfänger
+
+Sie können Methoden mit Zeigerempfängern deklarieren.
+
+Das bedeutet, dass der Empfängertyp die Literalsyntax ⟪GTI18N_99f9fa4e_000001⟫*T⟪GTI18N_99f9fa4e_000002⟫ für einen bestimmten Typ ⟪GTI18N_99f9fa4e_000003⟫T⟪GTI18N_99f9fa4e_000004⟫ hat.
+(Außerdem darf ⟪GTI18N_99f9fa4e_000005⟫T⟪GTI18N_99f9fa4e_000006⟫ nicht selbst ein Zeiger wie ⟪GTI18N_99f9fa4e_000007⟫*int⟪GTI18N_99f9fa4e_000008⟫ sein.)
+
+Beispielsweise ist die Methode ⟪GTI18N_99f9fa4e_000009⟫Scale⟪GTI18N_99f9fa4e_000010⟫ hier für ⟪GTI18N_99f9fa4e_000011⟫*Vertex⟪GTI18N_99f9fa4e_000012⟫ definiert.
+
+Methoden mit Zeigerempfängern können den Wert ändern, auf den der Empfänger
+verweist, wie es ⟪GTI18N_99f9fa4e_000013⟫Scale⟪GTI18N_99f9fa4e_000014⟫ hier tut.
+Da Methoden ihren Empfänger häufig ändern müssen, kommen Zeigerempfänger
+häufiger als Wertempfänger vor.
+
+Entfernen Sie versuchsweise das ⟪GTI18N_99f9fa4e_000015⟫*⟪GTI18N_99f9fa4e_000016⟫ aus der Deklaration der Funktion ⟪GTI18N_99f9fa4e_000017⟫Scale⟪GTI18N_99f9fa4e_000018⟫ in Zeile 16
+und beobachten Sie, wie sich das Verhalten des Programms ändert.
+
+Mit einem Wertempfänger arbeitet die Methode ⟪GTI18N_99f9fa4e_000019⟫Scale⟪GTI18N_99f9fa4e_000020⟫ mit einer Kopie des ursprünglichen
+⟪GTI18N_99f9fa4e_000021⟫Vertex⟪GTI18N_99f9fa4e_000022⟫-Werts.
+(Dies entspricht dem Verhalten jedes anderen Funktionsarguments.)
+Die Methode ⟪GTI18N_99f9fa4e_000023⟫Scale⟪GTI18N_99f9fa4e_000024⟫ benötigt einen Zeigerempfänger, um den ⟪GTI18N_99f9fa4e_000025⟫Vertex⟪GTI18N_99f9fa4e_000026⟫-Wert zu ändern,
+der in der Funktion ⟪GTI18N_99f9fa4e_000027⟫main⟪GTI18N_99f9fa4e_000028⟫ deklariert ist.
+
+⟪GTI18N_99f9fa4e_000029⟫

@@ -1,0 +1,8 @@
+* Range
+
+Die `range`-Form der `for`-Schleife iteriert über eine Slice oder Map.
+
+Beim Iterieren über eine Slice werden für jede Iteration zwei Werte zurückgegeben.
+Der erste ist der Index, der zweite eine Kopie des Elements an diesem Index.
+
+.play moretypes/range.go

@@ -1,0 +1,12 @@
+* Methoden (Fortsetzung)
+
+Sie können auch eine Methode für Typen deklarieren, die keine Structs sind.
+
+In diesem Beispiel sehen wir den numerischen Typ ⟪GTI18N_31c4fd0d_000001⟫MyFloat⟪GTI18N_31c4fd0d_000002⟫ mit einer Methode ⟪GTI18N_31c4fd0d_000003⟫Abs⟪GTI18N_31c4fd0d_000004⟫.
+
+Eine Methode kann nur mit einem Empfänger deklariert werden, dessen Typ im selben
+Paket wie die Methode definiert ist.
+Sie können keine Methode mit einem Empfänger deklarieren, dessen Typ in einem anderen
+Paket definiert ist. Dies schließt eingebaute Typen wie ⟪GTI18N_31c4fd0d_000005⟫int⟪GTI18N_31c4fd0d_000006⟫ ein.
+
+⟪GTI18N_31c4fd0d_000007⟫

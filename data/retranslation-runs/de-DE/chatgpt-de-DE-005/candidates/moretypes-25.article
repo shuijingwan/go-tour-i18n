@@ -1,0 +1,7 @@
+* Funktions-Closures
+
+Funktionen in Go können Closures sein. Eine Closure ist ein Funktionswert, der auf Variablen außerhalb seines Funktionskörpers verweist. Die Funktion kann auf die referenzierten Variablen zugreifen und ihnen Werte zuweisen; in diesem Sinne ist die Funktion an die Variablen „gebunden“.
+
+Beispielsweise gibt die Funktion `adder` eine Closure zurück. Jede Closure ist an ihre eigene Variable `sum` gebunden.
+
+.play moretypes/function-closures.go
