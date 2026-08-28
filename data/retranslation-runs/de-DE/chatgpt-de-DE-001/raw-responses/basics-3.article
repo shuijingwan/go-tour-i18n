@@ -1,0 +1,17 @@
+* Exportierte Namen
+
+In ⟪GTI18N_38b9c70e_000001⟫ ist ein Name exportiert, wenn er mit einem Großbuchstaben beginnt.
+Beispielsweise ist ⟪GTI18N_38b9c70e_000002⟫Pizza⟪GTI18N_38b9c70e_000003⟫ ebenso ein exportierter Name wie ⟪GTI18N_38b9c70e_000004⟫Pi⟪GTI18N_38b9c70e_000005⟫, der aus dem Paket
+⟪GTI18N_38b9c70e_000006⟫math⟪GTI18N_38b9c70e_000007⟫ exportiert wird.
+
+⟪GTI18N_38b9c70e_000008⟫pizza⟪GTI18N_38b9c70e_000009⟫ und ⟪GTI18N_38b9c70e_000010⟫pi⟪GTI18N_38b9c70e_000011⟫ beginnen nicht mit einem Großbuchstaben und werden daher nicht exportiert.
+
+Beim Importieren eines Pakets können Sie nur auf dessen exportierte Namen zugreifen.
+Nicht exportierte Namen sind von außerhalb des Pakets nicht zugänglich.
+
+Führen Sie den Code aus. Beachten Sie die Fehlermeldung.
+
+Um den Fehler zu beheben, benennen Sie ⟪GTI18N_38b9c70e_000012⟫math.pi⟪GTI18N_38b9c70e_000013⟫ in ⟪GTI18N_38b9c70e_000014⟫math.Pi⟪GTI18N_38b9c70e_000015⟫ um und versuchen Sie es erneut.
+
+⟪GTI18N_38b9c70e_000016⟫
+
