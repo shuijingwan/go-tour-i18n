@@ -1,0 +1,9 @@
+* Gestapelte defer-Aufrufe
+
+Aufgeschobene Funktionsaufrufe werden auf einen Stack gelegt. Wenn eine Funktion zurückkehrt, werden ihre
+aufgeschobenen Aufrufe in Last-in-first-out-Reihenfolge ausgeführt.
+
+Weitere Informationen über defer-Anweisungen finden Sie in diesem
+[[/blog/defer-panic-and-recover][Blogbeitrag]].
+
+.play flowcontrol/defer-multi.go

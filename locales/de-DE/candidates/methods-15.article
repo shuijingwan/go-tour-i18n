@@ -1,0 +1,25 @@
+* Typzusicherungen
+
+Eine _Typzusicherung_ ermöglicht den Zugriff auf den zugrunde liegenden konkreten Wert eines Interface-Werts.
+
+	t := i.(T)
+
+Diese Anweisung sichert zu, dass der Interface-Wert `i` den konkreten Typ `T` enthält,
+und weist den zugrunde liegenden `T`-Wert der Variablen `t` zu.
+
+Wenn `i` keinen Wert des Typs `T` enthält, löst die Anweisung eine panic aus.
+
+Um zu _prüfen_, ob ein Interface-Wert einen bestimmten Typ enthält,
+kann eine Typzusicherung zwei Werte zurückgeben: den zugrunde liegenden Wert
+und einen booleschen Wert, der angibt, ob die Zusicherung erfolgreich war.
+
+	t, ok := i.(T)
+
+Wenn `i` einen Wert des Typs `T` enthält, ist `t` der zugrunde liegende Wert und `ok` hat den Wert true.
+
+Andernfalls hat `ok` den Wert false und `t` den Nullwert des Typs `T`;
+es tritt keine panic auf.
+
+Beachten Sie die Ähnlichkeit dieser Syntax mit dem Lesen aus einer Map.
+
+.play methods/type-assertions.go

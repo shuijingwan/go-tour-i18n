@@ -1,0 +1,11 @@
+* Gepufferte Kanäle
+
+Kanäle können _gepuffert_ sein. Geben Sie beim Aufruf von `make` die Pufferlänge als zweites Argument an, um einen gepufferten Kanal zu initialisieren:
+
+	ch := make(chan int, 100)
+
+Sendevorgänge an einen gepufferten Kanal blockieren nur, wenn der Puffer voll ist. Empfangsvorgänge blockieren, wenn der Puffer leer ist.
+
+Ändern Sie das Beispiel so, dass der Puffer überfüllt wird, und beobachten Sie, was geschieht.
+
+.play concurrency/buffered-channels.go

@@ -1,0 +1,9 @@
+* Interfaces werden implizit implementiert
+
+Ein Typ implementiert ein Interface, indem er dessen Methoden implementiert.
+Es gibt keine ausdrückliche Absichtserklärung und kein Schlüsselwort „implements“.
+
+Implizite Interfaces entkoppeln die Definition eines Interfaces von seiner
+Implementierung. Dadurch kann die Implementierung ohne vorherige Abstimmung in jedem beliebigen Paket erfolgen.
+
+.play methods/interfaces-are-satisfied-implicitly.go

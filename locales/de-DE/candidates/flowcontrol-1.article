@@ -1,0 +1,18 @@
+* For
+
+Go verfügt nur über ein Schleifenkonstrukt, die `for`-Schleife.
+
+Die grundlegende `for`-Schleife besteht aus drei durch Semikolons getrennten Komponenten:
+
+- die Initialisierungsanweisung: wird vor der ersten Iteration ausgeführt
+- der Bedingungsausdruck: wird vor jeder Iteration ausgewertet
+- die Post-Anweisung: wird am Ende jeder Iteration ausgeführt
+
+Die Initialisierungsanweisung ist häufig eine Variablendeklaration; die dort deklarierten
+Variablen sind nur im Gültigkeitsbereich der `for`-Anweisung sichtbar.
+
+Die Schleife wird beendet, sobald die boolesche Bedingung zu `false` ausgewertet wird.
+
+*Hinweis:* Anders als in anderen Sprachen wie C, Java oder JavaScript stehen um die drei Komponenten der `for`-Anweisung keine runden Klammern, und die geschweiften Klammern `{`}` sind immer erforderlich.
+
+.play flowcontrol/for.go

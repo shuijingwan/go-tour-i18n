@@ -1,0 +1,13 @@
+* Interface-Werte
+
+Intern kann man sich Interface-Werte als Tupel aus einem Wert und einem
+konkreten Typ vorstellen:
+
+	(value, type)
+
+Ein Interface-Wert enthält einen Wert eines bestimmten zugrunde liegenden konkreten Typs.
+
+Beim Aufruf einer Methode für einen Interface-Wert wird die gleichnamige Methode seines
+zugrunde liegenden Typs ausgeführt.
+
+.play methods/interface-values.go

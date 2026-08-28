@@ -1,0 +1,13 @@
+* Funktionen (Fortsetzung)
+
+Wenn zwei oder mehr aufeinanderfolgende benannte Funktionsparameter denselben Typ haben, können Sie den Typ bei allen bis auf den letzten weglassen.
+
+In diesem Beispiel wird die Schreibweise
+
+	x int, y int
+
+wie folgt verkürzt:
+
+	x, y int
+
+.play basics/functions-continued.go

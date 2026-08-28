@@ -1,0 +1,16 @@
+* Das leere Interface
+
+Der Interface-Typ, der keine Methoden angibt, wird als _leeres_Interface_ bezeichnet:
+
+	interface{}
+
+Ein leeres Interface kann Werte jedes Typs enthalten.
+(Jeder Typ implementiert mindestens null Methoden.)
+
+`any` ist ein Alias für `interface{}`; beide sind vollständig
+gleichwertig.
+
+Leere Interfaces werden von Code verwendet, der Werte unbekannten Typs verarbeitet.
+Beispielsweise akzeptiert `fmt.Print` eine beliebige Anzahl von Argumenten des Typs `any`.
+
+.play methods/empty-interface.go

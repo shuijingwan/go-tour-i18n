@@ -1,0 +1,23 @@
+* Übung: Äquivalente Binärbäume
+
+*1.* Implementieren Sie die Funktion `Walk`.
+
+*2.* Testen Sie die Funktion `Walk`.
+
+Die Funktion `tree.New(k)` erzeugt einen zufällig strukturierten (aber stets sortierten) Binärbaum, der die Werte `k`, `2k`, `3k`, ..., `10k` enthält.
+
+Erstellen Sie einen neuen Kanal `ch` und starten Sie den Durchlauf:
+
+	go Walk(tree.New(1), ch)
+
+Lesen Sie anschließend zehn Werte aus dem Kanal und geben Sie sie aus. Es sollten die Zahlen 1, 2, 3, ..., 10 sein.
+
+*3.* Implementieren Sie die Funktion `Same` mithilfe von `Walk`, um zu ermitteln, ob `t1` und `t2` dieselben Werte speichern.
+
+*4.* Testen Sie die Funktion `Same`.
+
+`Same(tree.New(1),`tree.New(1))` sollte true zurückgeben und `Same(tree.New(1),`tree.New(2))` sollte false zurückgeben.
+
+Die Dokumentation zu `Tree` finden Sie [[https://godoc.org/golang.org/x/tour/tree#Tree][hier]].
+
+.play concurrency/exercise-equivalent-binary-trees.go

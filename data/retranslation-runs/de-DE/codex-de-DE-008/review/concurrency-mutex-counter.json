@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "batch_id": "codex-de-DE-008",
+  "locale": "de-DE",
+  "unit_id": "example:concurrency/mutex-counter.go",
+  "unit_kind": "example",
+  "source_path": "_content/tour/concurrency/mutex-counter.go",
+  "source_sha256": "74488ecc347a123c8538069175ffeef5ea38577bb37b2c7a9ceb6bba47ab02b4",
+  "attempt": 1,
+  "candidate_path": "candidates/concurrency-mutex-counter.go",
+  "candidate_sha256": "175d6c67f7903e44d10d90341f86e1bb39ef61833c73c8a9dde7a68af8db507a",
+  "validation_path": "validation/concurrency-mutex-counter.json",
+  "validation_sha256": "856c0486c4fe261e76124bbfc87e2abfa20569c62fea68697ae2446d13fd616c",
+  "decision": "approved",
+  "reviewer": "chatgpt-gpt-5.6-sol",
+  "reviewed_at": "2026-08-28T15:38:04Z",
+  "rubric": "translation-quality/v1",
+  "rating": "A",
+  "summary": "Final Review index 101-120：逐 TranslationUnit 独立审核，全部达到正式发布质量",
+  "issues": []
+}

@@ -1,0 +1,7 @@
+* Kurze Variablendeklarationen
+
+Innerhalb einer Funktion kann die kurze Zuweisungsanweisung `:=` anstelle einer `var`-Deklaration mit implizitem Typ verwendet werden.
+
+Außerhalb einer Funktion beginnt jede Anweisung mit einem Schlüsselwort (`var`, `func` usw.); daher ist das Konstrukt `:=` dort nicht verfügbar.
+
+.play basics/short-variable-declarations.go

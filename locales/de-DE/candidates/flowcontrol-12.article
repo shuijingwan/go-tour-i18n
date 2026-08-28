@@ -1,0 +1,9 @@
+* Defer
+
+Eine defer-Anweisung verschiebt die Ausführung einer Funktion, bis die umgebende
+Funktion zurückkehrt.
+
+Die Argumente des aufgeschobenen Funktionsaufrufs werden sofort ausgewertet, der Funktionsaufruf
+selbst wird jedoch erst ausgeführt, wenn die umgebende Funktion zurückkehrt.
+
+.play flowcontrol/defer.go

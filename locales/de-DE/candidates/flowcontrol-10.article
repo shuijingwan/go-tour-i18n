@@ -1,0 +1,15 @@
+* Auswertungsreihenfolge bei switch
+
+Die Zweige einer switch-Anweisung werden von oben nach unten ausgewertet; sobald ein Zweig zutrifft, endet die Auswertung.
+
+(Zum Beispiel wird in
+
+	switch i {
+	case 0:
+	case f():
+	}
+
+`f` nicht aufgerufen, wenn `i==0` gilt.)
+
+
+.play flowcontrol/switch-evaluation-order.go

@@ -1,0 +1,28 @@
+* Grundtypen
+
+Die Grundtypen von Go sind
+
+	bool
+
+	string
+
+	int  int8  int16  int32  int64
+	uint uint8 uint16 uint32 uint64 uintptr
+
+	byte // Alias für uint8
+
+	rune // Alias für int32
+	     // steht für einen Unicode-Codepunkt
+
+	float32 float64
+
+	complex64 complex128
+
+Das Beispiel zeigt Variablen verschiedener Typen
+und außerdem, dass Variablendeklarationen wie Importanweisungen
+zu Blöcken zusammengefasst werden können.
+
+Die Typen `int`, `uint` und `uintptr` sind auf 32-Bit-Systemen in der Regel 32 Bit und auf 64-Bit-Systemen 64 Bit breit.
+Wenn Sie einen Ganzzahlwert benötigen, sollten Sie `int` verwenden, sofern es keinen bestimmten Grund gibt, einen Ganzzahltyp mit festgelegter Größe oder einen vorzeichenlosen Ganzzahltyp zu verwenden.
+
+.play basics/basic-types.go

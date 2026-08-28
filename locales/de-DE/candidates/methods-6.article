@@ -1,0 +1,22 @@
+* Methoden und Zeigerindirektion
+
+Beim Vergleich der beiden vorherigen Programme fällt Ihnen möglicherweise auf, dass
+Funktionen mit einem Zeigerargument einen Zeiger erhalten müssen:
+
+	var v Vertex
+	ScaleFunc(v, 5)  // Kompilierfehler!
+	ScaleFunc(&v, 5) // OK
+
+während Methoden mit Zeigerempfängern beim Aufruf entweder einen Wert oder einen Zeiger als
+Empfänger akzeptieren:
+
+	var v Vertex
+	v.Scale(5)  // OK
+	p := &v
+	p.Scale(10) // OK
+
+Bei der Anweisung `v.Scale(5)` wird die Methode mit dem Zeigerempfänger automatisch aufgerufen, obwohl `v` ein Wert und kein Zeiger ist.
+Der Einfachheit halber interpretiert Go die Anweisung `v.Scale(5)` also als
+`(&v).Scale(5)`, da die Methode `Scale` einen Zeigerempfänger hat.
+
+.play methods/indirection.go

@@ -1,0 +1,18 @@
+* Standardwerte beim Slicing
+
+Beim Slicing können Sie die obere oder untere Grenze weglassen, um stattdessen deren Standardwert zu verwenden.
+
+Der Standardwert für die untere Grenze ist null; für die obere Grenze ist es die Länge der zugrunde liegenden Slice beziehungsweise des zugrunde liegenden Arrays.
+
+Für das Array
+
+	var a [10]int
+
+sind diese Slice-Ausdrücke äquivalent:
+
+	a[0:10]
+	a[:10]
+	a[0:]
+	a[:]
+
+.play moretypes/slice-bounds.go

@@ -1,0 +1,15 @@
+* Goroutines
+
+Eine _goroutine_ ist ein schlanker Thread, der von der Go-Laufzeitumgebung verwaltet wird.
+
+	go f(x, y, z)
+
+startet eine neue goroutine, die
+
+	f(x, y, z)
+
+ausführt. Die Auswertung von `f`, `x`, `y` und `z` erfolgt in der aktuellen goroutine, die Ausführung von `f` dagegen in der neuen goroutine.
+
+Goroutines werden im selben Adressraum ausgeführt, daher muss der Zugriff auf gemeinsam genutzten Speicher synchronisiert werden. Das [[/pkg/sync/][`sync`]]-Paket stellt nützliche Primitive bereit. Sie werden sie in Go jedoch kaum benötigen, da es dort andere Primitive gibt. (Siehe nächste Seite.)
+
+.play concurrency/goroutines.go

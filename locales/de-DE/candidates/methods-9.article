@@ -1,0 +1,11 @@
+* Interfaces
+
+Ein _Interface-Typ_ wird als Menge von Methodensignaturen definiert.
+
+Ein Wert eines Interface-Typs kann jeden Wert enthalten, der diese Methoden implementiert.
+
+*Hinweis:* Der Beispielcode enthält in Zeile 22 einen Fehler.
+`Vertex` (der Werttyp) implementiert `Abser` nicht, weil
+die Methode `Abs` nur für `*Vertex` (den Zeigertyp) definiert ist.
+
+.play methods/interfaces.go

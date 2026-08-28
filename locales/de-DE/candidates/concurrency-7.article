@@ -1,0 +1,18 @@
+* Übung: Äquivalente Binärbäume
+
+Es kann viele verschiedene Binärbäume geben, in denen dieselbe Wertfolge gespeichert ist. Hier sind beispielsweise zwei Binärbäume, die die Folge 1, 1, 2, 3, 5, 8, 13 speichern.
+
+.image /tour/static/img/tree.png
+
+Eine Funktion, die prüft, ob zwei Binärbäume dieselbe Folge speichern, ist in den meisten Sprachen ziemlich komplex. Wir werden die Nebenläufigkeit und die Kanäle von Go nutzen, um eine einfache Lösung zu schreiben.
+
+Dieses Beispiel verwendet das `tree`-Paket, das folgenden Typ definiert:
+
+	type Tree struct {
+		Left  *Tree
+		Value int
+		Right *Tree
+	}
+
+
+Die Beschreibung wird auf der [[javascript:click('.next-page')][nächsten Seite]] fortgesetzt.
