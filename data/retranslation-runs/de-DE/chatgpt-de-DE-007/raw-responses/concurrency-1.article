@@ -1,0 +1,15 @@
+* ⟪GTI18N_d0a9c450_000001⟫
+
+Eine ⟪GTI18N_d0a9c450_000002⟫⟪GTI18N_d0a9c450_000003⟫⟪GTI18N_d0a9c450_000004⟫ ist ein schlanker Thread, der von der ⟪GTI18N_d0a9c450_000005⟫-Laufzeitumgebung verwaltet wird.
+
+⟪GTI18N_d0a9c450_000006⟫
+
+startet eine neue ⟪GTI18N_d0a9c450_000007⟫, die
+
+⟪GTI18N_d0a9c450_000008⟫
+
+ausführt. Die Auswertung von ⟪GTI18N_d0a9c450_000009⟫f⟪GTI18N_d0a9c450_000010⟫, ⟪GTI18N_d0a9c450_000011⟫x⟪GTI18N_d0a9c450_000012⟫, ⟪GTI18N_d0a9c450_000013⟫y⟪GTI18N_d0a9c450_000014⟫ und ⟪GTI18N_d0a9c450_000015⟫z⟪GTI18N_d0a9c450_000016⟫ erfolgt in der aktuellen ⟪GTI18N_d0a9c450_000017⟫, die Ausführung von ⟪GTI18N_d0a9c450_000018⟫f⟪GTI18N_d0a9c450_000019⟫ dagegen in der neuen ⟪GTI18N_d0a9c450_000020⟫.
+
+⟪GTI18N_d0a9c450_000021⟫ werden im selben Adressraum ausgeführt, daher muss der Zugriff auf gemeinsam genutzten Speicher synchronisiert werden. Das [[⟪GTI18N_d0a9c450_000022⟫][⟪GTI18N_d0a9c450_000023⟫sync⟪GTI18N_d0a9c450_000024⟫]]-Paket stellt nützliche Primitive bereit. Sie werden sie in ⟪GTI18N_d0a9c450_000025⟫ jedoch kaum benötigen, da es dort andere Primitive gibt. (Siehe nächste Seite.)
+
+⟪GTI18N_d0a9c450_000026⟫

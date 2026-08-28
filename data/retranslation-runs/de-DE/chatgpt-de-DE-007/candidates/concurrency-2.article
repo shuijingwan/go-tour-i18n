@@ -1,0 +1,20 @@
+* Kanäle
+
+Kanäle sind typisierte Leitungen, über die Sie mit dem Kanaloperator `<-` Werte senden und empfangen können.
+
+	ch <- v    // Sende v an Kanal ch.
+	v := <-ch  // Empfange aus ch und
+	           // weise den Wert v zu.
+
+(Die Daten fließen in Pfeilrichtung.)
+
+Wie Maps und Slices müssen Kanäle vor der Verwendung erstellt werden:
+
+	ch := make(chan int)
+
+Standardmäßig blockieren Sende- und Empfangsvorgänge, bis die jeweils andere Seite bereit ist. Dadurch können sich goroutines ohne explizite Sperren oder Bedingungsvariablen synchronisieren.
+
+Der Beispielcode summiert die Zahlen in einem Slice und verteilt die Arbeit auf zwei goroutines.
+Sobald beide goroutines ihre Berechnung abgeschlossen haben, berechnet er das Endergebnis.
+
+.play concurrency/channels.go

@@ -1,0 +1,10 @@
+* Übung: Webcrawler
+
+In dieser Übung nutzen Sie die Nebenläufigkeitsfunktionen von ⟪GTI18N_bb686393_000001⟫, um einen Webcrawler zu parallelisieren.
+
+Ändern Sie die Funktion ⟪GTI18N_bb686393_000002⟫Crawl⟪GTI18N_bb686393_000003⟫ so, dass sie URLs parallel abruft, ohne dieselbe URL zweimal abzurufen.
+
+⟪GTI18N_bb686393_000004⟫Hinweis⟪GTI18N_bb686393_000005⟫: Sie können einen Cache der bereits abgerufenen URLs in einer Map führen, aber Maps allein sind für die
+nebenläufige Verwendung nicht sicher!
+
+⟪GTI18N_bb686393_000006⟫

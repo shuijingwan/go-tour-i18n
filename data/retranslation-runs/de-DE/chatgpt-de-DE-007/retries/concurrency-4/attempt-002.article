@@ -1,0 +1,15 @@
+* Range und Close
+
+Ein Sender kann einen Kanal mit ⟪GTI18N_3e925c67_000001⟫close⟪GTI18N_3e925c67_000002⟫ schließen, um anzuzeigen, dass keine weiteren Werte gesendet werden. Empfänger können prüfen, ob ein Kanal geschlossen wurde, indem sie der Empfangsexpression einen zweiten Parameter zuweisen. Nach
+
+⟪GTI18N_3e925c67_000003⟫
+
+ist ⟪GTI18N_3e925c67_000004⟫ok⟪GTI18N_3e925c67_000005⟫ gleich ⟪GTI18N_3e925c67_000006⟫false⟪GTI18N_3e925c67_000007⟫, wenn keine weiteren Werte empfangen werden können und der Kanal geschlossen ist.
+
+Die Schleife ⟪GTI18N_3e925c67_000008⟫for`i`:=`range`c⟪GTI18N_3e925c67_000009⟫ empfängt wiederholt Werte aus dem Kanal, bis dieser geschlossen wird.
+
+⟪GTI18N_3e925c67_000010⟫Hinweis:⟪GTI18N_3e925c67_000011⟫ Nur der Sender sollte einen Kanal schließen, niemals der Empfänger. Das Senden an einen geschlossenen Kanal löst eine Panic aus.
+
+⟪GTI18N_3e925c67_000012⟫Weiterer*Hinweis:⟪GTI18N_3e925c67_000013⟫ Kanäle sind nicht wie Dateien; normalerweise müssen sie nicht geschlossen werden. Das Schließen ist nur erforderlich, wenn dem Empfänger mitgeteilt werden muss, dass keine weiteren Werte folgen, etwa um eine ⟪GTI18N_3e925c67_000014⟫range⟪GTI18N_3e925c67_000015⟫-Schleife zu beenden.
+
+⟪GTI18N_3e925c67_000016⟫

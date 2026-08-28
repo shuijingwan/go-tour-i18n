@@ -1,0 +1,15 @@
+* Range und Close
+
+Ein Sender kann einen Kanal mit `close` schließen, um anzuzeigen, dass keine weiteren Werte gesendet werden. Empfänger können prüfen, ob ein Kanal geschlossen wurde, indem sie der Empfangsexpression einen zweiten Parameter zuweisen. Nach
+
+	v, ok := <-ch
+
+ist `ok` gleich `false`, wenn keine weiteren Werte empfangen werden können und der Kanal geschlossen ist.
+
+Die Schleife `for`i`:=`range`c` empfängt wiederholt Werte aus dem Kanal, bis dieser geschlossen wird.
+
+*Hinweis:* Nur der Sender sollte einen Kanal schließen, niemals der Empfänger. Das Senden an einen geschlossenen Kanal löst eine Panic aus.
+
+*Weiterer*Hinweis:* Kanäle sind nicht wie Dateien; normalerweise müssen sie nicht geschlossen werden. Das Schließen ist nur erforderlich, wenn dem Empfänger mitgeteilt werden muss, dass keine weiteren Werte folgen, etwa um eine `range`-Schleife zu beenden.
+
+.play concurrency/range-and-close.go

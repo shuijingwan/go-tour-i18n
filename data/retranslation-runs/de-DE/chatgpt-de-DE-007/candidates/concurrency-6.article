@@ -1,0 +1,14 @@
+* Default-Auswahl
+
+Der `default`-Fall in einem `select` wird ausgeführt, wenn kein anderer Fall bereit ist.
+
+Verwenden Sie einen `default`-Fall, um einen Sende- oder Empfangsvorgang auszuprobieren, ohne zu blockieren:
+
+	select {
+	case i := <-c:
+		// verwende i
+	default:
+		// Empfangen aus c würde blockieren
+	}
+
+.play concurrency/default-selection.go
