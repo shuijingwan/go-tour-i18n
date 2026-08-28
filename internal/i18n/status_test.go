@@ -34,6 +34,174 @@ func TestDeDELocaleIdentity(t *testing.T) {
 	}
 }
 
+func TestInitializeLocaleStatusFromStableWorkflowInventory(t *testing.T) {
+	pageTwo := []byte("* Two\n\nSecond Page.\n")
+	pageOne := []byte("* One\n\nFirst Page.\n")
+	ineligible := []byte("package main\n\nfunc main() {}\n")
+	eligible := []byte("package main\n\n// Explain this example.\nfunc main() {}\n")
+	catalog := &Catalog{
+		Pages: []Page{
+			{ID: "lesson/2", Article: "lesson.article", Source: pageTwo, SourceSHA256: sum(pageTwo)},
+			{ID: "lesson/1", Article: "lesson.article", Source: pageOne, SourceSHA256: sum(pageOne)},
+		},
+		Examples: []Example{
+			{ID: "example:demo/ineligible.go", SourcePath: "_content/tour/demo/ineligible.go", Source: ineligible, SourceSHA256: sum(ineligible)},
+			{ID: "example:demo/eligible.go", SourcePath: "_content/tour/demo/eligible.go", Source: eligible, SourceSHA256: sum(eligible)},
+		},
+	}
+
+	initialize := func(t *testing.T) (string, []byte) {
+		t.Helper()
+		root := t.TempDir()
+		writeInitializableLocale(t, root, "de-DE", Locale{
+			Locale: "de-DE", LanguageName: "Deutsch", EnglishName: "German", HTMLLang: "de-DE",
+			Phase: "scaffold", TranslationUnit: "present.Section",
+		})
+		result, err := InitializeLocaleStatus(root, "de-DE", catalog)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if *result != (StatusInitializationResult{Total: 3, Pages: 2, Examples: 1}) {
+			t.Fatalf("initialization result = %+v", result)
+		}
+		path := filepath.Join(root, "locales", "de-DE", "status.tsv")
+		data, err := os.ReadFile(path)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if got := bytes.Count(data, []byte("\n")); got != 4 {
+			t.Fatalf("status.tsv lines = %d, want 4", got)
+		}
+		statuses, err := ReadStatuses(path)
+		if err != nil {
+			t.Fatal(err)
+		}
+		want := []Status{
+			{UnitID: "lesson/2", State: "pending", Attempts: 0, SourceSHA256: sum(pageTwo)},
+			{UnitID: "lesson/1", State: "pending", Attempts: 0, SourceSHA256: sum(pageOne)},
+			{UnitID: "example:demo/eligible.go", State: "pending", Attempts: 0, SourceSHA256: sum(eligible)},
+		}
+		if !reflect.DeepEqual(statuses, want) {
+			t.Fatalf("statuses = %#v, want %#v", statuses, want)
+		}
+		for _, status := range statuses {
+			if status.CandidatePath != "" || status.UpdatedAt != "" || status.Note != "" {
+				t.Fatalf("initial status contains workflow output: %+v", status)
+			}
+			if status.UnitID == "example:demo/ineligible.go" {
+				t.Fatal("non-eligible Example was initialized")
+			}
+		}
+		if err := CheckStatus(root, "de-DE", catalog); err != nil {
+			t.Fatalf("initialized status failed CheckStatus: %v", err)
+		}
+		entries, err := os.ReadDir(filepath.Dir(path))
+		if err != nil {
+			t.Fatal(err)
+		}
+		if len(entries) != 2 {
+			t.Fatalf("locale directory contains temporary initialization files: %v", entries)
+		}
+		return root, data
+	}
+
+	_, first := initialize(t)
+	_, second := initialize(t)
+	if !bytes.Equal(first, second) {
+		t.Fatal("same catalog produced different status.tsv bytes")
+	}
+}
+
+func TestInitializeLocaleStatusRefusesExistingFileWithoutChangingBytes(t *testing.T) {
+	root := t.TempDir()
+	writeInitializableLocale(t, root, "de-DE", Locale{Locale: "de-DE", Phase: "scaffold", TranslationUnit: "present.Section"})
+	path := filepath.Join(root, "locales", "de-DE", "status.tsv")
+	before := []byte("established formal workflow state\n")
+	if err := os.WriteFile(path, before, 0644); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := InitializeLocaleStatus(root, "de-DE", &Catalog{}); err == nil || !strings.Contains(err.Error(), "already exists") {
+		t.Fatalf("existing status error = %v", err)
+	}
+	after, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !bytes.Equal(after, before) {
+		t.Fatalf("existing status changed: got %q, want %q", after, before)
+	}
+}
+
+func TestInitializeLocaleStatusRejectsMissingOrInvalidMetadataWithoutOutput(t *testing.T) {
+	tests := []struct {
+		name string
+		body []byte
+	}{
+		{name: "missing"},
+		{name: "malformed JSON", body: []byte("{")},
+		{name: "locale mismatch", body: []byte(`{"locale":"de","phase":"scaffold","translation_unit":"present.Section"}`)},
+		{name: "phase mismatch", body: []byte(`{"locale":"de-DE","phase":"production","translation_unit":"present.Section"}`)},
+		{name: "translation unit mismatch", body: []byte(`{"locale":"de-DE","phase":"scaffold","translation_unit":"other"}`)},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			root := t.TempDir()
+			if test.body != nil {
+				dir := filepath.Join(root, "locales", "de-DE")
+				if err := os.MkdirAll(dir, 0755); err != nil {
+					t.Fatal(err)
+				}
+				if err := os.WriteFile(filepath.Join(dir, "locale.json"), test.body, 0644); err != nil {
+					t.Fatal(err)
+				}
+			}
+			if _, err := InitializeLocaleStatus(root, "de-DE", &Catalog{}); err == nil {
+				t.Fatal("invalid locale metadata was accepted")
+			}
+			if _, err := os.Lstat(filepath.Join(root, "locales", "de-DE", "status.tsv")); !os.IsNotExist(err) {
+				t.Fatalf("failed initialization left status.tsv: %v", err)
+			}
+		})
+	}
+}
+
+func TestInitializeLocaleStatusRejectsInvalidLocale(t *testing.T) {
+	root := t.TempDir()
+	if _, err := InitializeLocaleStatus(root, "../de-DE", &Catalog{}); err == nil || !strings.Contains(err.Error(), "invalid locale") {
+		t.Fatalf("invalid locale error = %v", err)
+	}
+	if _, err := os.Lstat(filepath.Join(root, "status.tsv")); !os.IsNotExist(err) {
+		t.Fatalf("invalid locale created status.tsv outside locale directory: %v", err)
+	}
+}
+
+func TestCommittedDeDEStatusUsesStableWorkflowOrder(t *testing.T) {
+	root := repoRoot(t)
+	catalog, err := BuildCatalog(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := CheckStatus(root, "de-DE", catalog); err != nil {
+		t.Fatal(err)
+	}
+	units, pages, examples, err := localeWorkflowUnitList(catalog)
+	if err != nil {
+		t.Fatal(err)
+	}
+	statuses, err := ReadStatuses(filepath.Join(root, "locales", "de-DE", "status.tsv"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(statuses) != 122 || len(units) != 122 || pages != 103 || examples != 19 {
+		t.Fatalf("de-DE workflow counts: statuses=%d units=%d pages=%d examples=%d", len(statuses), len(units), pages, examples)
+	}
+	for i := range units {
+		if statuses[i].UnitID != units[i].ID {
+			t.Fatalf("de-DE status row %d unit_id=%q, want stable workflow unit %q", i+1, statuses[i].UnitID, units[i].ID)
+		}
+	}
+}
+
 func TestCommittedStatus(t *testing.T) {
 	root := repoRoot(t)
 	c, err := BuildCatalog(root)
@@ -390,4 +558,19 @@ func writeStatusFixture(t *testing.T, status string) string {
 		t.Fatal(err)
 	}
 	return root
+}
+
+func writeInitializableLocale(t *testing.T, root, localeName string, locale Locale) {
+	t.Helper()
+	dir := filepath.Join(root, "locales", localeName)
+	if err := os.MkdirAll(dir, 0755); err != nil {
+		t.Fatal(err)
+	}
+	b, err := json.Marshal(locale)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(dir, "locale.json"), append(b, '\n'), 0644); err != nil {
+		t.Fatal(err)
+	}
 }

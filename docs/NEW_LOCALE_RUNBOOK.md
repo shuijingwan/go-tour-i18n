@@ -65,6 +65,15 @@ Glossary 同时承担两项正式职责：
 
 UI catalog、首页和 metadata 不属于 TranslationUnit candidate、status、Quality Check、Final Review 或 promotion。它们必须在后续 Surface Review 中单独验收。
 
+`status.tsv` 不是语言资产，也不得从其他 locale 复制。完成上述 locale 配置后、第一次进入 TranslationUnit retranslation export 前，必须以当前正式 TranslationUnit catalog 初始化该 locale 的统一状态表，并立即校验：
+
+```sh
+go run -mod=readonly ./cmd/tour-i18n status init --locale <locale>
+go run -mod=readonly ./cmd/tour-i18n status check --locale <locale>
+```
+
+`status init` 只负责首次创建缺失的 `locales/<locale>/status.tsv`：按 Catalog Page 顺序、再按 eligible Example inventory 顺序写入当前 workflow 的全部 TranslationUnit，初始状态均为 `pending`。命令不写当前时间、不覆盖已有文件，也不承担已有状态的修复、同步或 source 更新迁移。只有 `status check` 通过后，才能执行首次 retranslation export。
+
 ## 4. 执行 TranslationUnit workflow
 
 TranslationUnit 工作从 [多语言翻译流程](TRANSLATION_WORKFLOW.md) 进入。正式翻译前还必须读取 [翻译任务规范](TRANSLATION_TASK_SPEC.md)、[Retranslation 执行手册](RETRANSLATION_RUNBOOK.md)、[Codex 翻译执行规范](CODEX_TRANSLATION.md)、当前 batch manifest、manifest 列出的全部 inputs，以及目标 locale glossary。

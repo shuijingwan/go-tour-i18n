@@ -185,6 +185,13 @@ func run(args []string) error {
 		return nil
 	case "page export":
 		return exportPage(root, catalog, args[2:])
+	case "status init":
+		locale, result, err := initializeLocaleStatusCommand(root, catalog, args[2:])
+		if err != nil {
+			return err
+		}
+		fmt.Printf("status initialized: %d translation units for %s (%d pages, %d examples)\n", result.Total, locale, result.Pages, result.Examples)
+		return nil
 	case "status check":
 		fs := flag.NewFlagSet("status check", flag.ContinueOnError)
 		locale := fs.String("locale", "", "locale")
@@ -566,6 +573,25 @@ func run(args []string) error {
 	default:
 		return fmt.Errorf("unknown command %q", args[0]+" "+args[1])
 	}
+}
+
+func initializeLocaleStatusCommand(root string, catalog *i18n.Catalog, args []string) (string, *i18n.StatusInitializationResult, error) {
+	fs := flag.NewFlagSet("status init", flag.ContinueOnError)
+	locale := fs.String("locale", "", "locale")
+	if err := fs.Parse(args); err != nil {
+		return "", nil, err
+	}
+	if *locale == "" {
+		return "", nil, fmt.Errorf("--locale is required")
+	}
+	if fs.NArg() != 0 {
+		return "", nil, fmt.Errorf("unexpected status init arguments: %s", strings.Join(fs.Args(), " "))
+	}
+	result, err := i18n.InitializeLocaleStatus(root, *locale, catalog)
+	if err != nil {
+		return "", nil, err
+	}
+	return *locale, result, nil
 }
 
 func previewCandidate(root string, catalog *i18n.Catalog, args []string) error {

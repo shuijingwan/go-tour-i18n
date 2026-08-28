@@ -33,6 +33,14 @@ type Status struct {
 	Note          string
 }
 
+// StatusInitializationResult reports the stable workflow inventory written by
+// InitializeLocaleStatus.
+type StatusInitializationResult struct {
+	Total    int
+	Pages    int
+	Examples int
+}
+
 var allowedStates = map[string]bool{"pending": true, "candidate": true, "ready": true, "blocked": true, "published": true}
 
 var localeNameRE = regexp.MustCompile(`^[a-z]{2,8}(?:-[A-Za-z0-9]{2,8})*$`)
@@ -47,26 +55,38 @@ func ValidateLocaleName(locale string) error {
 	return nil
 }
 
-func CheckStatus(root, localeName string, catalog *Catalog) error {
+func localeWorkflowDirectory(root, localeName string) (string, error) {
 	if err := ValidateLocaleName(localeName); err != nil {
-		return err
+		return "", err
 	}
 	localeDir := filepath.Join(root, "locales", localeName)
 	b, err := os.ReadFile(filepath.Join(localeDir, "locale.json"))
 	if err != nil {
-		return err
+		return "", err
 	}
 	var locale Locale
 	if err := json.Unmarshal(b, &locale); err != nil {
-		return fmt.Errorf("locale.json: %w", err)
+		return "", fmt.Errorf("locale.json: %w", err)
 	}
 	if locale.Locale != localeName || locale.Phase != "scaffold" || locale.TranslationUnit != "present.Section" {
-		return fmt.Errorf("locale metadata mismatch: locale=%q phase=%q translation_unit=%q", locale.Locale, locale.Phase, locale.TranslationUnit)
+		return "", fmt.Errorf("locale metadata mismatch: locale=%q phase=%q translation_unit=%q", locale.Locale, locale.Phase, locale.TranslationUnit)
+	}
+	return localeDir, nil
+}
+
+func CheckStatus(root, localeName string, catalog *Catalog) error {
+	localeDir, err := localeWorkflowDirectory(root, localeName)
+	if err != nil {
+		return err
 	}
 	statuses, err := ReadStatuses(filepath.Join(localeDir, "status.tsv"))
 	if err != nil {
 		return err
 	}
+	return checkStatuses(localeName, catalog, statuses)
+}
+
+func checkStatuses(localeName string, catalog *Catalog, statuses []Status) error {
 	expected, _, _, err := localeWorkflowUnits(catalog)
 	if err != nil {
 		return err
@@ -122,6 +142,79 @@ func CheckStatus(root, localeName string, catalog *Catalog) error {
 		}
 	}
 	return nil
+}
+
+// InitializeLocaleStatus creates the first status.tsv for a locale from the
+// current formal TranslationUnit catalog. It never overwrites an existing
+// status file and does not repair or migrate established workflow state.
+func InitializeLocaleStatus(root, localeName string, catalog *Catalog) (*StatusInitializationResult, error) {
+	localeDir, err := localeWorkflowDirectory(root, localeName)
+	if err != nil {
+		return nil, err
+	}
+	statusPath := filepath.Join(localeDir, "status.tsv")
+	if _, err := os.Lstat(statusPath); err == nil {
+		return nil, fmt.Errorf("status.tsv already exists for locale %q", localeName)
+	} else if !os.IsNotExist(err) {
+		return nil, fmt.Errorf("check status.tsv for locale %q: %w", localeName, err)
+	}
+
+	units, pages, examples, err := localeWorkflowUnitList(catalog)
+	if err != nil {
+		return nil, err
+	}
+	statuses := make([]Status, 0, len(units))
+	for _, unit := range units {
+		statuses = append(statuses, Status{
+			UnitID:       unit.ID,
+			State:        "pending",
+			Attempts:     0,
+			SourceSHA256: unit.SourceSHA256,
+		})
+	}
+	if err := checkStatuses(localeName, catalog, statuses); err != nil {
+		return nil, fmt.Errorf("validate initial status: %w", err)
+	}
+
+	temporary, err := os.CreateTemp(localeDir, ".status.tsv.init-")
+	if err != nil {
+		return nil, fmt.Errorf("create temporary status.tsv: %w", err)
+	}
+	temporaryPath := temporary.Name()
+	defer func() {
+		_ = temporary.Close()
+		_ = os.Remove(temporaryPath)
+	}()
+	if err := temporary.Chmod(0644); err != nil {
+		return nil, fmt.Errorf("set temporary status.tsv permissions: %w", err)
+	}
+	data := statusBytes(statuses)
+	if written, err := temporary.Write(data); err != nil {
+		return nil, fmt.Errorf("write temporary status.tsv: %w", err)
+	} else if written != len(data) {
+		return nil, fmt.Errorf("write temporary status.tsv: %w", io.ErrShortWrite)
+	}
+	if err := temporary.Sync(); err != nil {
+		return nil, fmt.Errorf("sync temporary status.tsv: %w", err)
+	}
+	if err := temporary.Close(); err != nil {
+		return nil, fmt.Errorf("close temporary status.tsv: %w", err)
+	}
+	decoded, err := ReadStatuses(temporaryPath)
+	if err != nil {
+		return nil, fmt.Errorf("verify temporary status.tsv encoding: %w", err)
+	}
+	if err := checkStatuses(localeName, catalog, decoded); err != nil {
+		return nil, fmt.Errorf("verify temporary status.tsv: %w", err)
+	}
+	if err := os.Link(temporaryPath, statusPath); err != nil {
+		if os.IsExist(err) {
+			return nil, fmt.Errorf("status.tsv already exists for locale %q", localeName)
+		}
+		return nil, fmt.Errorf("commit status.tsv for locale %q: %w", localeName, err)
+	}
+
+	return &StatusInitializationResult{Total: len(units), Pages: pages, Examples: examples}, nil
 }
 
 func localeWorkflowUnits(catalog *Catalog) (map[string]*TranslationUnit, int, int, error) {
@@ -233,6 +326,10 @@ func ReadStatuses(path string) ([]Status, error) {
 }
 
 func writeStatuses(path string, statuses []Status) error {
+	return os.WriteFile(path, statusBytes(statuses), 0644)
+}
+
+func statusBytes(statuses []Status) []byte {
 	records := make([][]string, 0, len(statuses)+1)
 	records = append(records, []string{"unit_id", "status", "attempts", "source_sha256", "candidate_path", "updated_at", "note"})
 	for _, status := range statuses {
@@ -267,5 +364,5 @@ func writeStatuses(path string, statuses []Status) error {
 		}
 		b.WriteByte('\n')
 	}
-	return os.WriteFile(path, []byte(b.String()), 0644)
+	return []byte(b.String())
 }

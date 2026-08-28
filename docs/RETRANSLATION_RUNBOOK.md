@@ -19,6 +19,15 @@ retranslation export
 
 ## 2. Export 与首次翻译
 
+新 locale 第一次 export 前必须已经完成统一状态表初始化：
+
+```bash
+go run -mod=readonly ./cmd/tour-i18n status init --locale <locale>
+go run -mod=readonly ./cmd/tour-i18n status check --locale <locale>
+```
+
+只有 `status check` 通过后，才进入首次 `retranslation export`。`status init` 只创建缺失的初始 `status.tsv`，不得用于重置或同步已有 locale；已有 locale 的 source 更新与状态迁移继续走现有正式流程。
+
 使用 `retranslation export` 创建 batch。开始翻译前，Codex 必须读取当前 batch 的：
 
 1. `manifest.json`；

@@ -33,6 +33,15 @@
 - [Codex 翻译执行规范](CODEX_TRANSLATION.md)：当前默认 Codex TranslationUnit 翻译与直接写入规则。
 - [Retranslation 执行手册](RETRANSLATION_RUNBOOK.md)：batch、retry、revision、质量检查与提升的执行顺序。
 
+新 locale 在第一次 `retranslation export` 前，必须从当前正式 TranslationUnit catalog 初始化统一状态表并通过完整性检查：
+
+```bash
+go run -mod=readonly ./cmd/tour-i18n status init --locale <locale>
+go run -mod=readonly ./cmd/tour-i18n status check --locale <locale>
+```
+
+初始化只允许在 `locales/<locale>/status.tsv` 尚不存在时执行；它不会覆盖、修复或同步已有状态。已有 locale 的 source 更新与状态迁移继续使用对应正式流程，不得通过重新初始化清除 candidate、ready 或 published 状态。
+
 翻译任务输出为 raw response；后续 restore、validation、review 与 promotion 由下一阶段规范约束。
 
 ## 3. 质量审核
