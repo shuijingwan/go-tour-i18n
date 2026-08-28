@@ -664,10 +664,12 @@ func copyTestTree(source, target string) error {
 }
 
 func TestRetranslationPromoteSelectsRetryFinalCandidate(t *testing.T) {
-	root, catalog, batch := processRetryFixture(t, 1, func(raw string) string { return raw + " `bad`" })
+	root, catalog, batch := processRetryFixture(t, 1, func(raw string) string {
+		return appendBeforeRetranslationArtifactEOF(raw, " `bad`")
+	})
 	batchDir := filepath.Join(root, "data", "retranslation-runs", "zh-CN", batch)
 	valid, _ := os.ReadFile(filepath.Join(batchDir, "raw-responses", "lesson-1.article"))
-	valid = []byte(strings.TrimSuffix(string(valid), " `bad`"))
+	valid = []byte(strings.Replace(string(valid), " `bad`", "", 1))
 	writeRetryRaw(t, root, batch, "lesson/1", 2, string(valid))
 	if _, err := ProcessRetranslationRetry(root, catalog, RetranslationRetryOptions{Locale: "zh-CN", BatchID: batch, UnitID: "lesson/1"}); err != nil {
 		t.Fatal(err)

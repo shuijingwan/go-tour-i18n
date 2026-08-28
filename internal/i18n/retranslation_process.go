@@ -11,7 +11,31 @@ import (
 	"strings"
 )
 
-const retranslationProcessSchemaVersion = 2
+const (
+	retranslationProcessSchemaVersion = 2
+	retranslationArtifactEOFSingleLF  = "single_lf"
+)
+
+// canonicalizeRetranslationArtifactEOF gives text artifacts exactly one final
+// LF without changing any non-EOF bytes.
+func canonicalizeRetranslationArtifactEOF(data []byte) []byte {
+	trimmed := bytes.TrimRight(data, "\n")
+	out := make([]byte, len(trimmed)+1)
+	copy(out, trimmed)
+	out[len(out)-1] = '\n'
+	return out
+}
+
+func validateRetranslationArtifactEOF(data []byte) error {
+	if !bytes.Equal(data, canonicalizeRetranslationArtifactEOF(data)) {
+		return fmt.Errorf("must end with exactly one LF and no blank line at EOF")
+	}
+	return nil
+}
+
+func supportedRetranslationArtifactEOFPolicy(policy string) bool {
+	return policy == "" || policy == retranslationArtifactEOFSingleLF
+}
 
 type RetranslationProcessOptions struct {
 	Locale  string
@@ -142,12 +166,16 @@ func ProcessRetranslationBatch(root string, catalog *Catalog, options Retranslat
 			result.RestoreFailed++
 		} else {
 			result.RestorePassed++
-			if err := os.WriteFile(filepath.Join(staging, "candidates", candidateName), []byte(restored), 0644); err != nil {
+			candidate := []byte(restored)
+			if manifest.ArtifactEOF == retranslationArtifactEOFSingleLF {
+				candidate = canonicalizeRetranslationArtifactEOF(candidate)
+			}
+			if err := os.WriteFile(filepath.Join(staging, "candidates", candidateName), candidate, 0644); err != nil {
 				return nil, fmt.Errorf("write staged candidate for %s: %w", item.unit.ID, err)
 			}
 			evidence.CandidatePath = candidatePath
 			unitResult.CandidatePath = candidatePath
-			if err := ValidateTranslationUnitCandidate(root, catalog, item.unit.ID, options.Locale, []byte(restored)); err != nil {
+			if err := ValidateTranslationUnitCandidate(root, catalog, item.unit.ID, options.Locale, candidate); err != nil {
 				evidence.Status = "validation_failed"
 				evidence.Error = err.Error()
 				result.ValidationFailed++
@@ -229,7 +257,7 @@ func readRetranslationProcessManifest(batchDir, locale, batchID string) (*Retran
 	if err != nil {
 		return nil, fmt.Errorf("parse retranslation manifest for %q: %w", batchID, err)
 	}
-	if manifest.SchemaVersion != 2 || manifest.BatchID != batchID || manifest.Locale != locale || manifest.ProtectionMode != "default" || (manifest.UnitKind != UnitKindPage && manifest.UnitKind != UnitKindExample) {
+	if manifest.SchemaVersion != 2 || manifest.BatchID != batchID || manifest.Locale != locale || manifest.ProtectionMode != "default" || !supportedRetranslationArtifactEOFPolicy(manifest.ArtifactEOF) || (manifest.UnitKind != UnitKindPage && manifest.UnitKind != UnitKindExample) {
 		return nil, fmt.Errorf("retranslation batch %q has incompatible manifest metadata", batchID)
 	}
 	if manifest.UnitCount < 1 || manifest.UnitCount != len(manifest.Units) {
@@ -424,7 +452,11 @@ func preflightRetranslationProcess(batchDir string, catalog *Catalog, glossary *
 		if err != nil {
 			return nil, fmt.Errorf("%s: prepare protected input: %w", unitID, err)
 		}
-		if !bytes.Equal([]byte(protected.Text), input) {
+		expectedInput := []byte(protected.Text)
+		if manifest.ArtifactEOF == retranslationArtifactEOFSingleLF {
+			expectedInput = canonicalizeRetranslationArtifactEOF(expectedInput)
+		}
+		if !bytes.Equal(expectedInput, input) {
 			if unit.Kind == UnitKindPage {
 				return nil, fmt.Errorf("%s: regenerated Default protected input differs from saved input", unitID)
 			}
@@ -438,6 +470,11 @@ func preflightRetranslationProcess(batchDir string, catalog *Catalog, glossary *
 		raw, err := os.ReadFile(filepath.Join(rawDir, rawName))
 		if err != nil {
 			return nil, fmt.Errorf("%s: read raw response: %w", unitID, err)
+		}
+		if manifest.ArtifactEOF == retranslationArtifactEOFSingleLF {
+			if err := validateRetranslationArtifactEOF(raw); err != nil {
+				return nil, fmt.Errorf("%s: raw response %s %w", unitID, rawName, err)
+			}
 		}
 		prepared = append(prepared, preparedRetranslationPage{manifest: record, unit: unit, protected: protected, raw: raw})
 	}

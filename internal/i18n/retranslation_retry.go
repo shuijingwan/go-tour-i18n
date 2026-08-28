@@ -113,6 +113,11 @@ func ProcessRetranslationRetry(root string, catalog *Catalog, options Retranslat
 	if err != nil {
 		return nil, fmt.Errorf("read next retry raw response %s: %w", retryRawRelative, err)
 	}
+	if manifest.ArtifactEOF == retranslationArtifactEOFSingleLF {
+		if err := validateRetranslationArtifactEOF(retryRaw); err != nil {
+			return nil, fmt.Errorf("retry raw response %s %w", retryRawRelative, err)
+		}
+	}
 	if err := validateRetryAttemptSequenceForExtension(filepath.Join(batchDir, filepath.FromSlash(retryDirRelative)), currentAttempt, nextAttempt, extension); err != nil {
 		return nil, err
 	}
@@ -140,6 +145,9 @@ func ProcessRetranslationRetry(root string, catalog *Catalog, options Retranslat
 		unitResult.Status = evidence.Status
 	} else {
 		candidate = []byte(restored)
+		if manifest.ArtifactEOF == retranslationArtifactEOFSingleLF {
+			candidate = canonicalizeRetranslationArtifactEOF(candidate)
+		}
 		evidence.CandidatePath = candidateRelative
 		unitResult.CandidatePath = candidateRelative
 		if err := ValidateTranslationUnitCandidate(root, catalog, unitID, options.Locale, candidate); err != nil {

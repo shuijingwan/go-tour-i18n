@@ -36,6 +36,7 @@ type RetranslationBatchManifest struct {
 	BatchID        string                   `json:"batch_id"`
 	Locale         string                   `json:"locale"`
 	ProtectionMode string                   `json:"protection_mode"`
+	ArtifactEOF    string                   `json:"artifact_eof,omitempty"`
 	UnitKind       UnitKind                 `json:"unit_kind"`
 	UnitCount      int                      `json:"unit_count"`
 	Units          []RetranslationBatchUnit `json:"units"`
@@ -146,9 +147,10 @@ func ExportRetranslationBatch(root string, catalog *Catalog, options Retranslati
 			return nil, fmt.Errorf("%s: 准备受保护输入: %w", unit.ID, err)
 		}
 		inputPath := filepath.ToSlash(filepath.Join("inputs", retranslationUnitInputName(unit)))
+		input := canonicalizeRetranslationArtifactEOF([]byte(protected.Text))
 		prepared = append(prepared, preparedRetranslationInput{
-			unit: unit, text: protected.Text, path: inputPath,
-			hash: sum([]byte(protected.Text)), tokens: len(protected.Tokens),
+			unit: unit, text: string(input), path: inputPath,
+			hash: sum(input), tokens: len(protected.Tokens),
 		})
 	}
 
@@ -170,7 +172,7 @@ func ExportRetranslationBatch(root string, catalog *Catalog, options Retranslati
 	}
 	manifest := RetranslationBatchManifest{
 		SchemaVersion: 2, BatchID: batchID, Locale: options.Locale,
-		ProtectionMode: "default", UnitKind: prepared[0].unit.Kind,
+		ProtectionMode: "default", ArtifactEOF: retranslationArtifactEOFSingleLF, UnitKind: prepared[0].unit.Kind,
 		UnitCount: len(prepared), Units: make([]RetranslationBatchUnit, 0, len(prepared)),
 	}
 	unitIDs := make([]string, 0, len(prepared))
@@ -373,7 +375,7 @@ func scanRetranslationBatches(base, locale string, catalog *Catalog) (map[string
 		if manifest.Locale != locale {
 			return nil, 0, fmt.Errorf("retranslation batch %q locale %q does not match %q", entry.Name(), manifest.Locale, locale)
 		}
-		if manifest.SchemaVersion != 2 || manifest.ProtectionMode != "default" || (manifest.UnitKind != UnitKindPage && manifest.UnitKind != UnitKindExample) {
+		if manifest.SchemaVersion != 2 || manifest.ProtectionMode != "default" || !supportedRetranslationArtifactEOFPolicy(manifest.ArtifactEOF) || (manifest.UnitKind != UnitKindPage && manifest.UnitKind != UnitKindExample) {
 			return nil, 0, fmt.Errorf("retranslation batch %q has incompatible manifest metadata", entry.Name())
 		}
 		if manifest.UnitCount == 0 {

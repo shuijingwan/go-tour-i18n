@@ -9,6 +9,10 @@ import (
 	"testing"
 )
 
+func appendBeforeRetranslationArtifactEOF(text, suffix string) string {
+	return strings.TrimSuffix(text, "\n") + suffix + "\n"
+}
+
 func makeRetranslationProcessBatch(t *testing.T, count int) (string, *Catalog, string) {
 	return makeRetranslationProcessBatchForLocale(t, "zh-CN", count)
 }
@@ -179,6 +183,9 @@ func TestRetranslationProcessExampleRestoresValidatesAndPreservesFormalData(t *t
 	if filepath.Ext(name) != ".txt" || filepath.Ext(candidateName) != ".go" || !strings.Contains(string(candidate), "// 一个 goroutine 通过通道发送该值。") {
 		t.Fatalf("example input=%s candidate %s=%q", name, candidateName, candidate)
 	}
+	if err := validateRetranslationArtifactEOF(candidate); err != nil {
+		t.Fatalf("example candidate EOF: %v; candidate=%q", err, candidate)
+	}
 	validationName := strings.TrimSuffix(name, filepath.Ext(name)) + ".json"
 	var evidence RetranslationValidation
 	data, err := os.ReadFile(filepath.Join(batchDir, "validation", validationName))
@@ -273,7 +280,9 @@ func TestRetranslationProcessExampleRecordsRestoreAndValidationFailures(t *testi
 		{"token modified", func(raw string) string {
 			return strings.Replace(raw, translationTokenRE.FindString(raw), "⟪GTI18N_deadbeef_999999⟫", 1)
 		}, "restore_failed", "unknown protected token"},
-		{"token duplicated", func(raw string) string { return raw + translationTokenRE.FindString(raw) }, "restore_failed", "occurrence count"},
+		{"token duplicated", func(raw string) string {
+			return appendBeforeRetranslationArtifactEOF(raw, translationTokenRE.FindString(raw))
+		}, "restore_failed", "occurrence count"},
 		{"token reordered", func(raw string) string {
 			tokens := translationTokenRE.FindAllString(raw, -1)
 			if len(tokens) < 2 {
@@ -405,6 +414,59 @@ func TestRetranslationProcessRestoresValidatesAndPreservesFormalData(t *testing.
 	}
 }
 
+func TestRetranslationProcessRejectsNoncanonicalRawEOFAndWritesCanonicalPageCandidate(t *testing.T) {
+	root := t.TempDir()
+	writeRetranslationTestGlossary(t, root)
+	source := []byte("* Page\n\nUse `Go` on this page.\n\n")
+	catalog := &Catalog{Pages: []Page{{
+		ID: "lesson/1", Article: "lesson.article", SectionNumber: 1,
+		Route: "/lesson/1", SourceSHA256: sum(source), Source: source,
+	}}}
+	result, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", Limit: 1})
+	if err != nil {
+		t.Fatal(err)
+	}
+	batchID := result.BatchID
+	batchDir := filepath.Join(root, "data", "retranslation-runs", "zh-CN", batchID)
+	if err := os.Mkdir(filepath.Join(batchDir, "raw-responses"), 0755); err != nil {
+		t.Fatal(err)
+	}
+	manifest := readRetranslationManifest(t, root, batchID)
+	input, err := os.ReadFile(filepath.Join(batchDir, filepath.FromSlash(manifest.Units[0].InputPath)))
+	if err != nil {
+		t.Fatal(err)
+	}
+	raw := strings.ReplaceAll(string(input), "* Page", "* 页面")
+	raw = strings.ReplaceAll(raw, "Use ", "在此页面使用 ")
+	raw = strings.ReplaceAll(raw, " on this page.", "。")
+	rawPath := filepath.Join(batchDir, "raw-responses", "lesson-1.article")
+	if err := os.WriteFile(rawPath, append([]byte(raw), '\n'), 0644); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := ProcessRetranslationBatch(root, catalog, RetranslationProcessOptions{Locale: "zh-CN", BatchID: batchID}); err == nil || !strings.Contains(err.Error(), "exactly one LF") {
+		t.Fatalf("noncanonical raw EOF error=%v", err)
+	}
+	for _, output := range []string{"candidates", "validation", "result.json"} {
+		if _, err := os.Stat(filepath.Join(batchDir, output)); !os.IsNotExist(err) {
+			t.Fatalf("EOF preflight failure created %s: %v", output, err)
+		}
+	}
+	canonicalRaw := canonicalizeRetranslationArtifactEOF([]byte(raw))
+	if err := os.WriteFile(rawPath, canonicalRaw, 0644); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := ProcessRetranslationBatch(root, catalog, RetranslationProcessOptions{Locale: "zh-CN", BatchID: batchID}); err != nil {
+		t.Fatal(err)
+	}
+	candidate, err := os.ReadFile(filepath.Join(batchDir, "candidates", "lesson-1.article"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := validateRetranslationArtifactEOF(candidate); err != nil {
+		t.Fatalf("page candidate EOF: %v; candidate=%q", err, candidate)
+	}
+}
+
 func TestRetranslationProcessPreflightRejectsUnsafeBatch(t *testing.T) {
 	tests := []struct {
 		name   string
@@ -465,8 +527,13 @@ func TestRetranslationProcessRecordsRestoreFailures(t *testing.T) {
 		want   string
 	}{
 		{"missing token", func(raw string) string { return strings.Replace(raw, translationTokenRE.FindString(raw), "", 1) }, "occurrence count"},
-		{"duplicate token", func(raw string) string { token := translationTokenRE.FindString(raw); return raw + token }, "occurrence count"},
-		{"unknown token", func(raw string) string { return raw + "⟪GTI18N_deadbeef_999999⟫" }, "unknown protected token"},
+		{"duplicate token", func(raw string) string {
+			token := translationTokenRE.FindString(raw)
+			return appendBeforeRetranslationArtifactEOF(raw, token)
+		}, "occurrence count"},
+		{"unknown token", func(raw string) string {
+			return appendBeforeRetranslationArtifactEOF(raw, "⟪GTI18N_deadbeef_999999⟫")
+		}, "unknown protected token"},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

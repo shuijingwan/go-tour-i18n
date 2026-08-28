@@ -101,7 +101,8 @@ manifest 是任务身份的权威来源，记录 locale、batch、Translation Un
 - 不添加解释、分析、前言或后记；
 - 不输出 JSON；
 - 原样且唯一地保留所有已有保护 token；
-- 不自行构造保护 token 所代表的代码、directive、链接或其他结构。
+- 不自行构造保护 token 所代表的代码、directive、链接或其他结构；
+- 以恰好一个 LF 结束，EOF 不得有额外空行。
 
 Page 的 raw response 使用与 input 对应的 `.article` 文件；Example 的 raw response 使用与 input 对应的 `.txt` 文件。
 

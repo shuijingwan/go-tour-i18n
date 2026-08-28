@@ -219,7 +219,7 @@ func validateUnifiedPromotionEvidence(root, batchDir string, catalog *Catalog, u
 		return 0, fmt.Errorf("%s: input_sha256 mismatch", unit.ID)
 	}
 	protected, err := prepareTranslationUnitInput(unit, glossary)
-	if err != nil || !bytes.Equal(input, []byte(protected.Text)) || len(protected.Tokens) != manifest.ProtectedTokenCount {
+	if err != nil || (!bytes.Equal(input, []byte(protected.Text)) && !bytes.Equal(input, canonicalizeRetranslationArtifactEOF([]byte(protected.Text)))) || len(protected.Tokens) != manifest.ProtectedTokenCount {
 		return 0, fmt.Errorf("%s: regenerated protected input differs from saved input", unit.ID)
 	}
 	extension := filepath.Ext(filepath.Base(manifest.InputPath))
@@ -248,7 +248,8 @@ func validateUnifiedPromotionEvidence(root, batchDir string, catalog *Catalog, u
 		return 0, fmt.Errorf("%s: read validation raw response: %w", unit.ID, err)
 	}
 	restored, failures := protected.restore(string(raw))
-	if len(failures) != 0 || !bytes.Equal([]byte(restored), candidate) {
+	restoredBytes := []byte(restored)
+	if len(failures) != 0 || (!bytes.Equal(restoredBytes, candidate) && !bytes.Equal(canonicalizeRetranslationArtifactEOF(restoredBytes), candidate)) {
 		return 0, fmt.Errorf("%s: restored candidate does not match saved candidate", unit.ID)
 	}
 	if bytes.Contains(candidate, []byte("GTI18N")) || containsProtectedTranslationToken(candidate) {
@@ -261,11 +262,7 @@ func validateUnifiedPromotionEvidence(root, batchDir string, catalog *Catalog, u
 }
 
 func canonicalizeCandidateEOF(candidate []byte) []byte {
-	canonical := bytes.TrimRight(candidate, "\n")
-	out := make([]byte, len(canonical)+1)
-	copy(out, canonical)
-	out[len(out)-1] = '\n'
-	return out
+	return canonicalizeRetranslationArtifactEOF(candidate)
 }
 
 func readPromotionResult(batchDir, locale, batchID string, unitCount int) (*RetranslationProcessResult, error) {

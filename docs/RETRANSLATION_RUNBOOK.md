@@ -48,21 +48,18 @@ go run -mod=readonly ./cmd/tour-i18n retranslation process --locale <locale>
 
 Automatic validation 只负责结构、保护 token、代码、链接、source identity 等机器安全性，不能替代翻译质量检查。
 
-### 提交前 whitespace 检查与不可变 artifact 例外
+### 提交前 whitespace 检查与 EOF 契约
 
-`git diff --check` 仍是所有正式提交前的必做检查，默认不得带 whitespace error 提交。源码、文档、手工编辑文件，以及普通 trailing whitespace，都必须正常修复；本节的例外不能用于它们。
+`git diff --check` 是所有正式提交前的必做检查，不得带 whitespace error 提交。Retranslation 文本 artifact 的统一 EOF 契约是：文件以**恰好一个 LF**结束，不得在 EOF 保留额外空行。不为 `data/retranslation-runs/` 设置 Git whitespace 豁免。
 
-极少数情况下，正式 exporter 生成的 immutable artifact 可能带有单一 `new blank line at EOF` warning。仅当**全部**满足以下条件时，允许将该 warning 作为局部、可审计的例外保留并继续提交：
+新导出的 batch 在 manifest 中声明 `artifact_eof: single_lf`，并按以下边界执行：
 
-- artifact 由正式 exporter 生成，且已由 manifest 与相关 SHA-256 固定；
-- artifact 已参与该 batch 的正式 `retranslation process`；
-- 该 batch 的 restore 和 automatic validation 都已通过；
-- 修改该 artifact 会改变正式 input 或 hash identity；
-- `git diff --check` 除这一项 EOF blank-line warning 外没有任何其他错误。
+- exporter 在写入 Page `.article` 和 Example `.txt` input 前规范化 EOF；`source_sha256` 仍绑定原始 TranslationUnit source 字节，`input_sha256` 绑定规范化后的 protected input；
+- Codex 生成的 `raw-responses/*` 与 `retries/*/attempt-NNN.*` 必须以恰好一个 LF 结束；
+- `retranslation process` 和 `retranslation retry` 在 restore 前检查对应 raw artifact；EOF 不合规时直接失败，不自动改写 raw response，也不产生部分 candidate 或 validation evidence；
+- restore 成功后，process/retry 在 validation 与写入前将 Page `.article` 和 Example `.go` candidate 规范化为恰好一个结尾 LF。
 
-满足条件时，不得仅为了让 `git diff --check` 全绿而改写 immutable artifact，必须保留 exporter 的原始字节，并在提交记录中明确该例外的 artifact、warning 与通过的 process/validation。该规则源于已验证 artifact 的身份不可变性，不是通用 whitespace 豁免。
-
-下列情况绝不适用本例外：尚未冻结或未完成 process 的 artifact、restore 或 validation 未通过的 artifact、任何普通 trailing whitespace、源码或文档、多项 whitespace error，以及任何可能掩盖实际内容损坏的 warning。
+历史 manifest 没有 `artifact_eof` 字段时，流程仍按历史字节进行兼容验证；不得为追加新字段或消除历史 warning 而改写已提交的 batch artifact。该兼容边界不是新 batch 的 whitespace 例外；新 batch 必须满足上述 EOF 契约并通过 `git diff --check`。
 
 ## 4. Retry：只处理 restore/validation failure
 
@@ -78,6 +75,8 @@ retries/<flattened-unit-id>/attempt-NNN.article
 retries/<flattened-unit-id>/attempt-NNN.txt
 ```
 
+`raw-responses/<unit>.*` 是正式 attempt 1，其初始 validation evidence 也记录 `attempt: 1`。因此首次 retry 必须写入 `attempt-002.*`，不得创建 `attempt-001.*`；之后从当前 validation 的 attempt 依次加一，且不得覆盖已有 attempt。`attempt-001-validation.json` 是 retry 命令归档的初始 validation evidence，不是需要 Codex 生成的 retry raw response。
+
 文件已存在后再执行：
 
 ```bash
@@ -87,7 +86,7 @@ go run -mod=readonly ./cmd/tour-i18n retranslation retry \
   --unit-id <unit-id>
 ```
 
-`retranslation retry` 本身不调用模型、不生成或改写译文；它只处理已经存在的 retry raw response，归档前一份 validation，并更新目标 unit 的 candidate、validation 与 batch 汇总。Attempt 必须连续且不得覆盖。
+`retranslation retry` 本身不调用模型、不生成或改写译文；它只处理已经存在的 retry raw response，归档前一份 validation，并更新目标 unit 的 candidate、validation 与 batch 汇总。
 
 ## 5. Candidate Snapshot
 

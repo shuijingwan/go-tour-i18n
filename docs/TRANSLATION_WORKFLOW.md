@@ -42,7 +42,7 @@ go run -mod=readonly ./cmd/tour-i18n status check --locale <locale>
 
 初始化只允许在 `locales/<locale>/status.tsv` 尚不存在时执行；它不会覆盖、修复或同步已有状态。已有 locale 的 source 更新与状态迁移继续使用对应正式流程，不得通过重新初始化清除 candidate、ready 或 published 状态。
 
-翻译任务输出为 raw response；后续 restore、validation、review 与 promotion 由下一阶段规范约束。
+翻译任务输出为 raw response；新 retranslation batch 的 input、raw response、retry raw response 与 candidate 统一使用恰好一个结尾 LF，详细生成与拒绝边界见对应执行规范。后续 restore、validation、review 与 promotion 由下一阶段规范约束。
 
 ## 3. 质量审核
 

@@ -124,7 +124,9 @@ func TestQualityCheckSnapshotLatestRevisionBatchWinsPerUnit(t *testing.T) {
 }
 
 func TestQualityCheckSnapshotUsesFinalRetryAttempt(t *testing.T) {
-	root, catalog, batchID := processRetryFixture(t, 1, func(raw string) string { return raw + " `bad`" })
+	root, catalog, batchID := processRetryFixture(t, 1, func(raw string) string {
+		return appendBeforeRetranslationArtifactEOF(raw, " `bad`")
+	})
 	batchDir := filepath.Join(root, "data", "retranslation-runs", "zh-CN", batchID)
 	validRaw, err := os.ReadFile(filepath.Join(batchDir, "inputs", "lesson-1.article"))
 	if err != nil {

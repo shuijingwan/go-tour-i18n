@@ -283,9 +283,70 @@ func TestRetranslationExportExplicitExamples(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		if string(input) != protected.Text || sum(input) != record.InputSHA256 || !strings.Contains(string(input), "GTI18N") {
+		if !bytes.Equal(input, canonicalizeRetranslationArtifactEOF([]byte(protected.Text))) || sum(input) != record.InputSHA256 || !strings.Contains(string(input), "GTI18N") {
 			t.Fatalf("%s protected input/hash mismatch: %q", unit.ID, input)
 		}
+	}
+}
+
+func TestRetranslationExportCanonicalizesPageAndExampleInputEOF(t *testing.T) {
+	tests := []struct {
+		name     string
+		catalog  *Catalog
+		unitKind UnitKind
+		unitID   string
+	}{
+		{
+			name: "page",
+			catalog: func() *Catalog {
+				source := []byte("* Page\n\nUse `Go` on this page.\n\n")
+				return &Catalog{Pages: []Page{{
+					ID: "lesson/1", Article: "lesson.article", SectionNumber: 1,
+					Route: "/lesson/1", SourceSHA256: sum(source), Source: source,
+				}}}
+			}(),
+			unitKind: UnitKindPage,
+			unitID:   "lesson/1",
+		},
+		{
+			name: "example txt",
+			catalog: &Catalog{Examples: []Example{retranslationTestExample(
+				"example:demo/comment.go", "_content/tour/demo/comment.go",
+				"package main\n\n// Translate this comment.\nfunc main() {}\n\n",
+			)}},
+			unitKind: UnitKindExample,
+			unitID:   "example:demo/comment.go",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			root := t.TempDir()
+			writeRetranslationTestGlossary(t, root)
+			result, err := ExportRetranslationBatch(root, tt.catalog, RetranslationExportOptions{
+				Locale: "zh-CN", UnitKind: tt.unitKind, UnitIDs: []string{tt.unitID},
+			})
+			if err != nil {
+				t.Fatal(err)
+			}
+			manifest := readRetranslationManifest(t, root, result.BatchID)
+			if manifest.ArtifactEOF != retranslationArtifactEOFSingleLF {
+				t.Fatalf("artifact_eof=%q", manifest.ArtifactEOF)
+			}
+			input, err := os.ReadFile(filepath.Join(root, result.BatchPath, filepath.FromSlash(manifest.Units[0].InputPath)))
+			if err != nil {
+				t.Fatal(err)
+			}
+			if err := validateRetranslationArtifactEOF(input); err != nil {
+				t.Fatalf("exported input EOF: %v; input=%q", err, input)
+			}
+			unit, err := tt.catalog.Unit(tt.unitID)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if manifest.Units[0].SourceSHA256 != sum(unit.Source) || manifest.Units[0].InputSHA256 != sum(input) {
+				t.Fatalf("manifest identity changed: %+v", manifest.Units[0])
+			}
+		})
 	}
 }
 
