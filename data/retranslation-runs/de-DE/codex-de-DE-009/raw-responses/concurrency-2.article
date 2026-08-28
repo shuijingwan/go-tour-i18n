@@ -1,0 +1,16 @@
+* Kanäle
+
+Kanäle sind typisierte Verbindungen, über die mit dem Kanaloperator ⟪GTI18N_a35e3af2_000001⟫<-⟪GTI18N_a35e3af2_000002⟫ Werte gesendet und empfangen werden können.
+
+⟪GTI18N_a35e3af2_000003⟫Sende ⟪GTI18N_a35e3af2_000004⟫ an den Kanal ⟪GTI18N_a35e3af2_000005⟫.⟪GTI18N_a35e3af2_000006⟫Empfange einen Wert aus ⟪GTI18N_a35e3af2_000007⟫ und⟪GTI18N_a35e3af2_000008⟫weise den empfangenen Wert der Variablen ⟪GTI18N_a35e3af2_000009⟫ zu.⟪GTI18N_a35e3af2_000010⟫(Die Daten fließen in Pfeilrichtung.)
+
+Wie Maps und Slices müssen Kanäle vor ihrer Verwendung erstellt werden:
+
+⟪GTI18N_a35e3af2_000011⟫
+
+Standardmäßig blockieren Sende- und Empfangsvorgänge, bis die jeweils andere Seite bereit ist. Dadurch können sich ⟪GTI18N_a35e3af2_000012⟫ ohne explizite Sperren oder Bedingungsvariablen synchronisieren.
+
+Der Beispielcode summiert die Zahlen in einem Slice und verteilt die Arbeit auf zwei ⟪GTI18N_a35e3af2_000013⟫.
+Sobald beide ⟪GTI18N_a35e3af2_000014⟫ ihre Berechnung abgeschlossen haben, berechnet er das Endergebnis.
+
+⟪GTI18N_a35e3af2_000015⟫

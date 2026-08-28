@@ -1,0 +1,38 @@
+{
+  "schema_version": 2,
+  "batch_id": "codex-de-DE-009",
+  "locale": "de-DE",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 3,
+  "units": [
+    {
+      "unit_id": "basics/12",
+      "unit_kind": "page",
+      "source_path": "_content/tour/basics.article",
+      "source_sha256": "d9ad62501c05359e7b2ac445fa92d629e11d6d378c2701b767abab76012a558e",
+      "input_path": "inputs/basics-12.article",
+      "input_sha256": "1ea463ab789d88cad33a6c7adf44fb524ea1f7e2574059f723a345f3c097faa7",
+      "protected_token_count": 9
+    },
+    {
+      "unit_id": "moretypes/1",
+      "unit_kind": "page",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "7706eaf0d46acc79fdad3b7953e5571bf404551d71aaefafd8ba79f5761f9806",
+      "input_path": "inputs/moretypes-1.article",
+      "input_sha256": "b6b916daff7c87dfb9553a2c0e739f4ce3004aa40023a62d15e19ad5a693e67c",
+      "protected_token_count": 20
+    },
+    {
+      "unit_id": "concurrency/2",
+      "unit_kind": "page",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "a35e3af26b51f8c2c2a6dfaf09f9c7cab0fdb4b1b56f9e4dc9b793f1dac1e295",
+      "input_path": "inputs/concurrency-2.article",
+      "input_sha256": "f88ab0b53baaa3421f19920457b2457b93328f959812169bdf2a0359a020d22e",
+      "protected_token_count": 15
+    }
+  ]
+}

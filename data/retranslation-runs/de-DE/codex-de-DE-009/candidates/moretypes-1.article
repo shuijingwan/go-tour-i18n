@@ -1,0 +1,24 @@
+* Zeiger
+
+Go kennt Zeiger.
+Ein Zeiger enthält die Speicheradresse eines Werts.
+
+Der Typ `*T` ist ein Zeiger auf einen Wert vom Typ `T`. Sein Nullwert ist `nil`.
+
+	var p *int
+
+Der Operator `&` erzeugt einen Zeiger auf seinen Operanden.
+
+	i := 42
+	p = &i
+
+Der Operator `*` bezeichnet den Wert, auf den der Zeiger verweist.
+
+	fmt.Println(*p) // Auslesen von i über den Zeiger p
+	*p = 21         // Setzen von i über den Zeiger p
+
+Dies wird als „Dereferenzieren“ oder „Indirektion“ bezeichnet.
+
+Im Gegensatz zu C gibt es in Go keine Zeigerarithmetik.
+
+.play moretypes/pointers.go

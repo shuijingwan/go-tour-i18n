@@ -1,0 +1,33 @@
+{
+  "schema_version": 2,
+  "batch_id": "codex-de-DE-009",
+  "locale": "de-DE",
+  "unit_count": 3,
+  "restore_passed": 3,
+  "restore_failed": 0,
+  "validation_passed": 3,
+  "validation_failed": 0,
+  "units": [
+    {
+      "unit_id": "basics/12",
+      "unit_kind": "page",
+      "status": "passed",
+      "candidate_path": "candidates/basics-12.article",
+      "validation_path": "validation/basics-12.json"
+    },
+    {
+      "unit_id": "moretypes/1",
+      "unit_kind": "page",
+      "status": "passed",
+      "candidate_path": "candidates/moretypes-1.article",
+      "validation_path": "validation/moretypes-1.json"
+    },
+    {
+      "unit_id": "concurrency/2",
+      "unit_kind": "page",
+      "status": "passed",
+      "candidate_path": "candidates/concurrency-2.article",
+      "validation_path": "validation/concurrency-2.json"
+    }
+  ]
+}
