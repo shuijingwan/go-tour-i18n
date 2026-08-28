@@ -11,6 +11,29 @@ import (
 	"testing"
 )
 
+func TestDeDELocaleIdentity(t *testing.T) {
+	data, err := os.ReadFile(filepath.Join(repoRoot(t), "locales", "de-DE", "locale.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	var got Locale
+	if err := json.Unmarshal(data, &got); err != nil {
+		t.Fatal(err)
+	}
+	want := Locale{
+		Locale:          "de-DE",
+		LanguageName:    "Deutsch",
+		EnglishName:     "German",
+		HTMLLang:        "de-DE",
+		Phase:           "scaffold",
+		TranslationUnit: "present.Section",
+		DefaultLanguage: false,
+	}
+	if !reflect.DeepEqual(got, want) {
+		t.Fatalf("de-DE locale identity = %+v, want %+v", got, want)
+	}
+}
+
 func TestCommittedStatus(t *testing.T) {
 	root := repoRoot(t)
 	c, err := BuildCatalog(root)

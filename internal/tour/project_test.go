@@ -66,6 +66,7 @@ func TestSiteMetadataTimesAreLocaleAware(t *testing.T) {
 	metadata := SiteMetadata{UpstreamCommitTime: "2026-08-20T05:56:11Z"}
 	for locale, want := range map[string]string{
 		"zh-CN": "2026-08-20 13:56:11（北京时间）",
+		"de-DE": "2026-08-20 07:56:11 (Ortszeit)",
 		"ja-JP": "2026-08-20 14:56:11（日本時間）",
 	} {
 		got, err := metadata.UpstreamCommitTimeFor(localeProfiles[locale])
@@ -75,5 +76,25 @@ func TestSiteMetadataTimesAreLocaleAware(t *testing.T) {
 		if got != want {
 			t.Errorf("UpstreamCommitTimeFor(%s) = %q, want %q", locale, got, want)
 		}
+	}
+}
+
+func TestGermanSiteTimeObservesDaylightSavingTime(t *testing.T) {
+	for _, test := range []struct {
+		name, source, want string
+	}{
+		{"winter", "2026-01-15T12:00:00Z", "2026-01-15 13:00:00 (Ortszeit)"},
+		{"summer", "2026-07-15T12:00:00Z", "2026-07-15 14:00:00 (Ortszeit)"},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			metadata := SiteMetadata{UpstreamCommitTime: test.source}
+			got, err := metadata.UpstreamCommitTimeFor(localeProfiles["de-DE"])
+			if err != nil {
+				t.Fatal(err)
+			}
+			if got != test.want {
+				t.Fatalf("UpstreamCommitTimeFor(de-DE) = %q, want %q", got, test.want)
+			}
+		})
 	}
 }

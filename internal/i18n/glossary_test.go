@@ -136,6 +136,53 @@ func TestZhCNMandatoryGlossary(t *testing.T) {
 	}
 }
 
+func TestDeDEGlossary(t *testing.T) {
+	glossary, err := LoadGlossary(repoRoot(t), "de-DE")
+	if err != nil {
+		t.Fatal(err)
+	}
+	for key, want := range map[string]string{
+		"A Tour of Go":    "Eine Tour durch Go",
+		"Go Playground":   "Go Playground",
+		"Run":             "Ausführen",
+		"Format":          "Formatieren",
+		"Reset":           "Zurücksetzen",
+		"slide":           "Seite",
+		"slides":          "Seiten",
+		"constraint":      "Typbeschränkung",
+		"type switch":     "Typ-Switch",
+		"type assertion":  "Typzusicherung",
+		"interface value": "Interface-Wert",
+		"type parameter":  "Typparameter",
+	} {
+		if got := glossary.Mandatory[key]; got != want {
+			t.Errorf("mandatory[%q] = %q, want %q", key, got, want)
+		}
+	}
+	for key, want := range map[string]string{
+		"Go programming language": "Programmiersprache Go",
+		"channel":                 "Kanal",
+		"package":                 "Paket",
+		"standard library":        "Standardbibliothek",
+		"map":                     "Map",
+		"slice":                   "Slice",
+	} {
+		if got := glossary.Preferred[key]; got != want {
+			t.Errorf("preferred[%q] = %q, want %q", key, got, want)
+		}
+	}
+	for _, want := range []string{"Folie", "Folien", "Go-Spielplatz", "Typenschalter", "Typbehauptung", "Go-Routine"} {
+		if !containsString(glossary.Forbidden, want) {
+			t.Errorf("forbidden missing %q: %v", want, glossary.Forbidden)
+		}
+	}
+	for _, want := range []string{"Go", "gofmt", "goroutine", "goroutines", "Goroutines"} {
+		if !containsString(glossary.Keep, want) {
+			t.Errorf("keep missing %q: %v", want, glossary.Keep)
+		}
+	}
+}
+
 func TestGlossaryKeepValidationAndLegacyTerms(t *testing.T) {
 	tests := []struct {
 		name, body, want string

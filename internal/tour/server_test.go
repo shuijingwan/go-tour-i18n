@@ -275,17 +275,36 @@ func TestRenderHomeDistinguishesDevelopmentAndProductionMetadata(t *testing.T) {
 }
 
 func TestHomepageLanguageRegistryAndLocaleProfiles(t *testing.T) {
-	if got, want := len(languageRegistry), 3; got != want {
+	if got, want := len(languageRegistry), 4; got != want {
 		t.Fatalf("language registry length = %d, want %d", got, want)
 	}
 	for i, want := range []LanguageLink{
 		{Locale: "zh-CN", Autonym: "简体中文", URL: "https://go-dev.shuijingwanwq.com/"},
 		{Locale: "en", Autonym: "English", URL: "https://go.dev/tour/", Official: true},
+		{Locale: "de-DE", Autonym: "Deutsch", URL: "https://de-go-dev.shuijingwanwq.com/"},
 		{Locale: "ja-JP", Autonym: "日本語", URL: "https://ja-go-dev.shuijingwanwq.com/"},
 	} {
 		if got := languageRegistry[i]; got != want {
 			t.Errorf("languageRegistry[%d] = %+v, want %+v", i, got, want)
 		}
+	}
+	deLanguages, err := languagesFor("de-DE")
+	if err != nil {
+		t.Fatal(err)
+	}
+	deCurrent, err := currentLanguage(deLanguages)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if deCurrent != (LanguageLink{Locale: "de-DE", Autonym: "Deutsch", URL: "https://de-go-dev.shuijingwanwq.com/", Current: true}) {
+		t.Fatalf("de-DE current language = %+v", deCurrent)
+	}
+	deProfile := localeProfiles["de-DE"]
+	if got, want := deProfile.TimeZone.String(), "Europe/Berlin"; got != want {
+		t.Fatalf("de-DE time zone = %q, want %q", got, want)
+	}
+	if got, want := deProfile.DevelopmentLogURL, "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/"; got != want {
+		t.Fatalf("de-DE development log URL = %q, want %q", got, want)
 	}
 
 	metadata := SiteMetadata{Locale: "zh-CN", PublishedAt: "2026-08-20T05:56:11Z", UpstreamCommit: FrozenUpstreamCommit, UpstreamCommitTime: FrozenUpstreamCommitTime, Pages: 122, Articles: 122}
@@ -293,7 +312,7 @@ func TestHomepageLanguageRegistryAndLocaleProfiles(t *testing.T) {
 		locale, autonym, logURL, published, upstream, currentPublicURL string
 	}{
 		{"zh-CN", "简体中文", "https://www.shuijingwanwq.com/series/go-tour-chinese-edition-development-series/", "2026-08-20 13:56:11（北京时间）", "2026-08-27 05:55:26（北京时间）", languageRegistry[0].URL},
-		{"ja-JP", "日本語", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 14:56:11（日本時間）", "2026-08-27 06:55:26（日本時間）", languageRegistry[2].URL},
+		{"ja-JP", "日本語", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 14:56:11（日本時間）", "2026-08-27 06:55:26（日本時間）", languageRegistry[3].URL},
 	}
 	for _, test := range tests {
 		t.Run(test.locale, func(t *testing.T) {
@@ -315,7 +334,7 @@ func TestHomepageLanguageRegistryAndLocaleProfiles(t *testing.T) {
 				t.Fatal(err)
 			}
 			home := string(homeBytes)
-			for _, want := range []string{"简体中文", "English", "日本語", `aria-current="page">` + test.autonym, test.logURL, test.published, test.upstream, "© 2026 永夜", "蜀ICP备13001590号-1", `href="https://beian.miit.gov.cn/"`} {
+			for _, want := range []string{"简体中文", "English", "Deutsch", "日本語", `aria-current="page">` + test.autonym, test.logURL, test.published, test.upstream, "© 2026 永夜", "蜀ICP备13001590号-1", `href="https://beian.miit.gov.cn/"`} {
 				if !strings.Contains(home, want) {
 					t.Errorf("homepage does not contain %q", want)
 				}

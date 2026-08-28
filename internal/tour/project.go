@@ -67,7 +67,7 @@ func (m SiteMetadata) UpstreamCommitTimeFor(profile localeProfile) (string, erro
 }
 
 func formatSiteTime(t time.Time, profile localeProfile) string {
-	return t.In(profile.TimeZone).Format("2006-01-02 15:04:05") + "（" + profile.TimeLabel + "）"
+	return t.In(profile.TimeZone).Format("2006-01-02 15:04:05") + fmt.Sprintf(profile.TimeLabelFormat, profile.TimeLabel)
 }
 
 func loadSiteMetadata(content fs.FS) (SiteMetadata, error) {
