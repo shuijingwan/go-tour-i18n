@@ -1,0 +1,12 @@
+* Interface-Werte mit zugrunde liegenden nil-Werten
+
+Wenn der konkrete Wert im Interface selbst nil ist,
+wird die Methode mit einem nil-Empfänger aufgerufen.
+
+In manchen Sprachen würde dies eine Nullzeigerausnahme auslösen.
+In ⟪GTI18N_9487ca3c_000001⟫ ist es jedoch üblich, Methoden so zu schreiben, dass sie einen Aufruf
+mit einem nil-Empfänger ordnungsgemäß behandeln, wie die Methode ⟪GTI18N_9487ca3c_000002⟫M⟪GTI18N_9487ca3c_000003⟫ in diesem Beispiel.
+
+Beachten Sie, dass ein Interface-Wert, der einen konkreten nil-Wert enthält, selbst nicht nil ist.
+
+⟪GTI18N_9487ca3c_000004⟫

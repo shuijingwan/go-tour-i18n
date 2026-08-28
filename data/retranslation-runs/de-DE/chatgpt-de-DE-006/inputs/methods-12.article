@@ -1,0 +1,12 @@
+* Interface values with nil underlying values
+
+If the concrete value inside the interface itself is nil,
+the method will be called with a nil receiver.
+
+In some languages this would trigger a null pointer exception,
+but in ⟪GTI18N_9487ca3c_000001⟫ it is common to write methods that gracefully handle being called
+with a nil receiver (as with the method ⟪GTI18N_9487ca3c_000002⟫M⟪GTI18N_9487ca3c_000003⟫ in this example.)
+
+Note that an interface value that holds a nil concrete value is itself non-nil.
+
+⟪GTI18N_9487ca3c_000004⟫

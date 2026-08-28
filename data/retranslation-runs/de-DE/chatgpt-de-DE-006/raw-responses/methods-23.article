@@ -1,0 +1,12 @@
+* Übung: rot13Reader
+
+Ein verbreitetes Muster ist ein [[⟪GTI18N_11d87614_000001⟫][io.Reader]], der einen anderen ⟪GTI18N_11d87614_000002⟫io.Reader⟪GTI18N_11d87614_000003⟫ umschließt und den Datenstrom dabei auf irgendeine Weise verändert.
+
+Beispielsweise nimmt die Funktion [[⟪GTI18N_11d87614_000004⟫][gzip.NewReader]] einen ⟪GTI18N_11d87614_000005⟫io.Reader⟪GTI18N_11d87614_000006⟫ mit einem Strom komprimierter Daten entgegen und gibt einen ⟪GTI18N_11d87614_000007⟫*gzip.Reader⟪GTI18N_11d87614_000008⟫ zurück, der ebenfalls ⟪GTI18N_11d87614_000009⟫io.Reader⟪GTI18N_11d87614_000010⟫ implementiert und einen Strom dekomprimierter Daten liefert.
+
+Implementieren Sie einen ⟪GTI18N_11d87614_000011⟫rot13Reader⟪GTI18N_11d87614_000012⟫, der ⟪GTI18N_11d87614_000013⟫io.Reader⟪GTI18N_11d87614_000014⟫ implementiert und aus einem ⟪GTI18N_11d87614_000015⟫io.Reader⟪GTI18N_11d87614_000016⟫ liest. Dabei soll er den Datenstrom verändern, indem er die [[⟪GTI18N_11d87614_000017⟫][rot13]]-Substitutionschiffre auf alle Buchstaben anwendet.
+
+Der Typ ⟪GTI18N_11d87614_000018⟫rot13Reader⟪GTI18N_11d87614_000019⟫ ist bereits vorgegeben.
+Lassen Sie ihn zu einem ⟪GTI18N_11d87614_000020⟫io.Reader⟪GTI18N_11d87614_000021⟫ werden, indem Sie seine Methode ⟪GTI18N_11d87614_000022⟫Read⟪GTI18N_11d87614_000023⟫ implementieren.
+
+⟪GTI18N_11d87614_000024⟫

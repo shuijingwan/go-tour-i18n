@@ -1,0 +1,17 @@
+* Typparameter
+
+Funktionen in ⟪GTI18N_01a04510_000001⟫ können mithilfe von Typparametern so geschrieben werden, dass sie mit mehreren Typen arbeiten. Die
+Typparameter einer Funktion stehen in eckigen Klammern vor den
+Argumenten der Funktion.
+
+⟪GTI18N_01a04510_000002⟫
+
+Diese Deklaration bedeutet, dass ⟪GTI18N_01a04510_000003⟫s⟪GTI18N_01a04510_000004⟫ eine Slice eines beliebigen Typs ⟪GTI18N_01a04510_000005⟫T⟪GTI18N_01a04510_000006⟫ ist, der die
+eingebaute Typbeschränkung ⟪GTI18N_01a04510_000007⟫comparable⟪GTI18N_01a04510_000008⟫ erfüllt. ⟪GTI18N_01a04510_000009⟫x⟪GTI18N_01a04510_000010⟫ ist ebenfalls ein Wert desselben Typs.
+
+⟪GTI18N_01a04510_000011⟫comparable⟪GTI18N_01a04510_000012⟫ ist eine nützliche Typbeschränkung, die es ermöglicht, die Operatoren ⟪GTI18N_01a04510_000013⟫==⟪GTI18N_01a04510_000014⟫ und
+⟪GTI18N_01a04510_000015⟫!=⟪GTI18N_01a04510_000016⟫ auf Werte des Typs anzuwenden. In diesem Beispiel vergleichen wir damit einen
+Wert mit allen Slice-Elementen, bis eine Übereinstimmung gefunden wird. Diese Funktion ⟪GTI18N_01a04510_000017⟫Index⟪GTI18N_01a04510_000018⟫ funktioniert
+für jeden Typ, der Vergleiche unterstützt.
+
+⟪GTI18N_01a04510_000019⟫

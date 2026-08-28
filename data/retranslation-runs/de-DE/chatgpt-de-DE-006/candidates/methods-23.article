@@ -1,0 +1,12 @@
+* Übung: rot13Reader
+
+Ein verbreitetes Muster ist ein [[/pkg/io/#Reader][io.Reader]], der einen anderen `io.Reader` umschließt und den Datenstrom dabei auf irgendeine Weise verändert.
+
+Beispielsweise nimmt die Funktion [[/pkg/compress/gzip/#NewReader][gzip.NewReader]] einen `io.Reader` mit einem Strom komprimierter Daten entgegen und gibt einen `*gzip.Reader` zurück, der ebenfalls `io.Reader` implementiert und einen Strom dekomprimierter Daten liefert.
+
+Implementieren Sie einen `rot13Reader`, der `io.Reader` implementiert und aus einem `io.Reader` liest. Dabei soll er den Datenstrom verändern, indem er die [[https://en.wikipedia.org/wiki/ROT13][rot13]]-Substitutionschiffre auf alle Buchstaben anwendet.
+
+Der Typ `rot13Reader` ist bereits vorgegeben.
+Lassen Sie ihn zu einem `io.Reader` werden, indem Sie seine Methode `Read` implementieren.
+
+.play methods/exercise-rot-reader.go

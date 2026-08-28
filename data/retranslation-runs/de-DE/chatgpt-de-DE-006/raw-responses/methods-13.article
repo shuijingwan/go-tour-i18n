@@ -1,0 +1,8 @@
+* nil-Interface-Werte
+
+Ein nil-Interface-Wert enthält weder einen Wert noch einen konkreten Typ.
+
+Der Aufruf einer Methode für ein nil-Interface führt zu einem Laufzeitfehler, da das Interface-Tupel keinen
+Typ enthält, der angibt, welche ⟪GTI18N_2897922c_000001⟫konkrete⟪GTI18N_2897922c_000002⟫ Methode aufgerufen werden soll.
+
+⟪GTI18N_2897922c_000003⟫

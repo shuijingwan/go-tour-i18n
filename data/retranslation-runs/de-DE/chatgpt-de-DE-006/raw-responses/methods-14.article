@@ -1,0 +1,16 @@
+* Das leere Interface
+
+Der Interface-Typ, der keine Methoden angibt, wird als ⟪GTI18N_7a09a765_000001⟫leeres Interface⟪GTI18N_7a09a765_000002⟫ bezeichnet:
+
+⟪GTI18N_7a09a765_000003⟫
+
+Ein leeres Interface kann Werte jedes Typs enthalten.
+(Jeder Typ implementiert mindestens null Methoden.)
+
+⟪GTI18N_7a09a765_000004⟫any⟪GTI18N_7a09a765_000005⟫ ist ein Alias für ⟪GTI18N_7a09a765_000006⟫interface{}⟪GTI18N_7a09a765_000007⟫; beide sind vollständig
+gleichwertig.
+
+Leere Interfaces werden von Code verwendet, der Werte unbekannten Typs verarbeitet.
+Beispielsweise akzeptiert ⟪GTI18N_7a09a765_000008⟫fmt.Print⟪GTI18N_7a09a765_000009⟫ eine beliebige Anzahl von Argumenten des Typs ⟪GTI18N_7a09a765_000010⟫any⟪GTI18N_7a09a765_000011⟫.
+
+⟪GTI18N_7a09a765_000012⟫

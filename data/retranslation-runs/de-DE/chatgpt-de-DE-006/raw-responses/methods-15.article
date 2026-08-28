@@ -1,0 +1,25 @@
+* Typzusicherungen
+
+Eine ⟪GTI18N_c205b4eb_000001⟫Typzusicherung⟪GTI18N_c205b4eb_000002⟫ ermöglicht den Zugriff auf den zugrunde liegenden konkreten Wert eines Interface-Werts.
+
+⟪GTI18N_c205b4eb_000003⟫
+
+Diese Anweisung sichert zu, dass der Interface-Wert ⟪GTI18N_c205b4eb_000004⟫i⟪GTI18N_c205b4eb_000005⟫ den konkreten Typ ⟪GTI18N_c205b4eb_000006⟫T⟪GTI18N_c205b4eb_000007⟫ enthält,
+und weist den zugrunde liegenden ⟪GTI18N_c205b4eb_000008⟫T⟪GTI18N_c205b4eb_000009⟫-Wert der Variablen ⟪GTI18N_c205b4eb_000010⟫t⟪GTI18N_c205b4eb_000011⟫ zu.
+
+Wenn ⟪GTI18N_c205b4eb_000012⟫i⟪GTI18N_c205b4eb_000013⟫ keinen Wert des Typs ⟪GTI18N_c205b4eb_000014⟫T⟪GTI18N_c205b4eb_000015⟫ enthält, löst die Anweisung eine panic aus.
+
+Um zu ⟪GTI18N_c205b4eb_000016⟫prüfen⟪GTI18N_c205b4eb_000017⟫, ob ein Interface-Wert einen bestimmten Typ enthält,
+kann eine Typzusicherung zwei Werte zurückgeben: den zugrunde liegenden Wert
+und einen booleschen Wert, der angibt, ob die Zusicherung erfolgreich war.
+
+⟪GTI18N_c205b4eb_000018⟫
+
+Wenn ⟪GTI18N_c205b4eb_000019⟫i⟪GTI18N_c205b4eb_000020⟫ einen Wert des Typs ⟪GTI18N_c205b4eb_000021⟫T⟪GTI18N_c205b4eb_000022⟫ enthält, ist ⟪GTI18N_c205b4eb_000023⟫t⟪GTI18N_c205b4eb_000024⟫ der zugrunde liegende Wert und ⟪GTI18N_c205b4eb_000025⟫ok⟪GTI18N_c205b4eb_000026⟫ hat den Wert true.
+
+Andernfalls hat ⟪GTI18N_c205b4eb_000027⟫ok⟪GTI18N_c205b4eb_000028⟫ den Wert false und ⟪GTI18N_c205b4eb_000029⟫t⟪GTI18N_c205b4eb_000030⟫ den Nullwert des Typs ⟪GTI18N_c205b4eb_000031⟫T⟪GTI18N_c205b4eb_000032⟫;
+es tritt keine panic auf.
+
+Beachten Sie die Ähnlichkeit dieser Syntax mit dem Lesen aus einer Map.
+
+⟪GTI18N_c205b4eb_000033⟫

@@ -1,0 +1,19 @@
+* Typ-Switches
+
+Ein ⟪GTI18N_26e4da09_000001⟫Typ-Switch⟪GTI18N_26e4da09_000002⟫ ist ein Konstrukt, das mehrere aufeinanderfolgende Typzusicherungen ermöglicht.
+
+Ein Typ-Switch ähnelt einer gewöhnlichen switch-Anweisung. Die Zweige eines Typ-Switches
+geben jedoch Typen statt Werten an; diese Typen werden mit dem Typ des Werts verglichen,
+den der angegebene Interface-Wert enthält.
+
+⟪GTI18N_26e4da09_000003⟫hier hat ⟪GTI18N_26e4da09_000004⟫ den Typ ⟪GTI18N_26e4da09_000005⟫⟪GTI18N_26e4da09_000006⟫hier hat ⟪GTI18N_26e4da09_000007⟫ den Typ ⟪GTI18N_26e4da09_000008⟫⟪GTI18N_26e4da09_000009⟫keine Übereinstimmung; hier hat ⟪GTI18N_26e4da09_000010⟫ denselben Typ wie ⟪GTI18N_26e4da09_000011⟫⟪GTI18N_26e4da09_000012⟫Die Deklaration in einem Typ-Switch hat dieselbe Syntax wie die Typzusicherung ⟪GTI18N_26e4da09_000013⟫i.(T)⟪GTI18N_26e4da09_000014⟫,
+der konkrete Typ ⟪GTI18N_26e4da09_000015⟫T⟪GTI18N_26e4da09_000016⟫ wird jedoch durch das Schlüsselwort ⟪GTI18N_26e4da09_000017⟫type⟪GTI18N_26e4da09_000018⟫ ersetzt.
+
+Diese switch-Anweisung prüft, ob der Interface-Wert ⟪GTI18N_26e4da09_000019⟫i⟪GTI18N_26e4da09_000020⟫
+einen Wert des Typs ⟪GTI18N_26e4da09_000021⟫T⟪GTI18N_26e4da09_000022⟫ oder ⟪GTI18N_26e4da09_000023⟫S⟪GTI18N_26e4da09_000024⟫ enthält.
+In den Zweigen ⟪GTI18N_26e4da09_000025⟫T⟪GTI18N_26e4da09_000026⟫ beziehungsweise ⟪GTI18N_26e4da09_000027⟫S⟪GTI18N_26e4da09_000028⟫ hat die Variable ⟪GTI18N_26e4da09_000029⟫v⟪GTI18N_26e4da09_000030⟫ den Typ
+⟪GTI18N_26e4da09_000031⟫T⟪GTI18N_26e4da09_000032⟫ beziehungsweise ⟪GTI18N_26e4da09_000033⟫S⟪GTI18N_26e4da09_000034⟫ und enthält den in ⟪GTI18N_26e4da09_000035⟫i⟪GTI18N_26e4da09_000036⟫ enthaltenen Wert.
+Im default-Zweig, in dem keine Übereinstimmung vorliegt, hat die Variable ⟪GTI18N_26e4da09_000037⟫v⟪GTI18N_26e4da09_000038⟫
+denselben Interface-Typ und Wert wie ⟪GTI18N_26e4da09_000039⟫i⟪GTI18N_26e4da09_000040⟫.
+
+⟪GTI18N_26e4da09_000041⟫

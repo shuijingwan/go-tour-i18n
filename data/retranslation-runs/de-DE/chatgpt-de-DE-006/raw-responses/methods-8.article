@@ -1,0 +1,17 @@
+* Wahl zwischen Wert- und Zeigerempfänger
+
+Es gibt zwei Gründe, einen Zeigerempfänger zu verwenden.
+
+Der erste besteht darin, dass die Methode den Wert ändern kann, auf den ihr Empfänger verweist.
+
+Der zweite besteht darin, das Kopieren des Werts bei jedem Methodenaufruf zu vermeiden.
+Dies kann beispielsweise effizienter sein, wenn der Empfänger ein großer Struct ist.
+
+In diesem Beispiel sind sowohl ⟪GTI18N_357424f2_000001⟫Scale⟪GTI18N_357424f2_000002⟫ als auch ⟪GTI18N_357424f2_000003⟫Abs⟪GTI18N_357424f2_000004⟫ Methoden mit dem Empfängertyp ⟪GTI18N_357424f2_000005⟫*Vertex⟪GTI18N_357424f2_000006⟫,
+obwohl die Methode ⟪GTI18N_357424f2_000007⟫Abs⟪GTI18N_357424f2_000008⟫ ihren Empfänger nicht ändern muss.
+
+Im Allgemeinen sollten alle Methoden eines bestimmten Typs entweder Wert- oder Zeigerempfänger
+haben, jedoch keine Mischung aus beiden.
+(Auf den nächsten Seiten werden wir sehen, warum.)
+
+⟪GTI18N_357424f2_000009⟫

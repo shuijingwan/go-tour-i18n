@@ -1,0 +1,17 @@
+* Wahl zwischen Wert- und Zeigerempfänger
+
+Es gibt zwei Gründe, einen Zeigerempfänger zu verwenden.
+
+Der erste besteht darin, dass die Methode den Wert ändern kann, auf den ihr Empfänger verweist.
+
+Der zweite besteht darin, das Kopieren des Werts bei jedem Methodenaufruf zu vermeiden.
+Dies kann beispielsweise effizienter sein, wenn der Empfänger ein großer Struct ist.
+
+In diesem Beispiel sind sowohl `Scale` als auch `Abs` Methoden mit dem Empfängertyp `*Vertex`,
+obwohl die Methode `Abs` ihren Empfänger nicht ändern muss.
+
+Im Allgemeinen sollten alle Methoden eines bestimmten Typs entweder Wert- oder Zeigerempfänger
+haben, jedoch keine Mischung aus beiden.
+(Auf den nächsten Seiten werden wir sehen, warum.)
+
+.play methods/methods-with-pointer-receivers.go

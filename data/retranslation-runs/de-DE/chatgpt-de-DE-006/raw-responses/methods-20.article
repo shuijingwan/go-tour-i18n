@@ -1,0 +1,21 @@
+* Übung: Fehler
+
+Kopieren Sie Ihre Funktion ⟪GTI18N_41f1f733_000001⟫Sqrt⟪GTI18N_41f1f733_000002⟫ aus der [[⟪GTI18N_41f1f733_000003⟫][früheren Übung]] und ändern Sie sie so, dass sie einen ⟪GTI18N_41f1f733_000004⟫error⟪GTI18N_41f1f733_000005⟫-Wert zurückgibt.
+
+⟪GTI18N_41f1f733_000006⟫Sqrt⟪GTI18N_41f1f733_000007⟫ sollte bei einer negativen Zahl einen error-Wert ungleich nil zurückgeben, da die Funktion keine komplexen Zahlen unterstützt.
+
+Erstellen Sie einen neuen Typ
+
+⟪GTI18N_41f1f733_000008⟫
+
+und sorgen Sie dafür, dass er ⟪GTI18N_41f1f733_000009⟫error⟪GTI18N_41f1f733_000010⟫ implementiert, indem Sie ihm die Methode
+
+⟪GTI18N_41f1f733_000011⟫
+
+geben, sodass ⟪GTI18N_41f1f733_000012⟫ErrNegativeSqrt(-2).Error()⟪GTI18N_41f1f733_000013⟫ den Wert ⟪GTI18N_41f1f733_000014⟫"cannot`Sqrt`negative`number:`-2"⟪GTI18N_41f1f733_000015⟫ zurückgibt.
+
+⟪GTI18N_41f1f733_000016⟫Hinweis:⟪GTI18N_41f1f733_000017⟫ Ein Aufruf von ⟪GTI18N_41f1f733_000018⟫fmt.Sprint(e)⟪GTI18N_41f1f733_000019⟫ innerhalb der Methode ⟪GTI18N_41f1f733_000020⟫Error⟪GTI18N_41f1f733_000021⟫ führt das Programm in eine Endlosschleife. Sie können dies vermeiden, indem Sie ⟪GTI18N_41f1f733_000022⟫e⟪GTI18N_41f1f733_000023⟫ zuerst konvertieren: ⟪GTI18N_41f1f733_000024⟫fmt.Sprint(float64(e))⟪GTI18N_41f1f733_000025⟫. Warum?
+
+Ändern Sie Ihre Funktion ⟪GTI18N_41f1f733_000026⟫Sqrt⟪GTI18N_41f1f733_000027⟫ so, dass sie bei einer negativen Zahl einen Wert vom Typ ⟪GTI18N_41f1f733_000028⟫ErrNegativeSqrt⟪GTI18N_41f1f733_000029⟫ zurückgibt.
+
+⟪GTI18N_41f1f733_000030⟫
