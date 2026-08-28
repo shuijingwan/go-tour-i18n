@@ -63,7 +63,7 @@ type preparedPromotion struct {
 }
 
 func promotionBatchRE(locale string) *regexp.Regexp {
-	return regexp.MustCompile(`^chatgpt-(` + regexp.QuoteMeta(locale) + `)-([0-9]+)$`)
+	return regexp.MustCompile(`^(?:chatgpt|codex)-(` + regexp.QuoteMeta(locale) + `)-([0-9]+)$`)
 }
 
 // PromoteRetranslation builds a complete, validated promotion plan and only

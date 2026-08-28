@@ -27,6 +27,9 @@ func TestPromotionBatchREIsLocaleAwareAndKeepsZHCNCompatibility(t *testing.T) {
 	if !promotionBatchRE("zh-CN").MatchString("chatgpt-zh-CN-013") {
 		t.Fatal("zh-CN historical batch was rejected")
 	}
+	if !promotionBatchRE("zh-CN").MatchString("codex-zh-CN-014") {
+		t.Fatal("Codex batch was rejected")
+	}
 	if !promotionBatchRE("ja-JP").MatchString("chatgpt-ja-JP-001") {
 		t.Fatal("ja-JP batch was rejected")
 	}
@@ -299,7 +302,8 @@ func TestCanonicalizeCandidateEOF(t *testing.T) {
 
 func TestRetranslationPromoteDryRunDoesNotModifyCanonicalAndLatestWins(t *testing.T) {
 	root, catalog, _ := processedPromotionFixture(t, 2)
-	addProcessedPromotionBatch(t, root, catalog, "chatgpt-zh-CN-002", []string{"lesson/1"})
+	addProcessedPromotionBatch(t, root, catalog, "chatgpt-zh-CN-007", []string{"lesson/1"})
+	addProcessedPromotionBatch(t, root, catalog, "codex-zh-CN-008", []string{"lesson/1"})
 	writePromotionStatus(t, root, catalog, "old canonical\n")
 	statusPath := filepath.Join(root, "locales", "zh-CN", "status.tsv")
 	statusBefore, _ := os.ReadFile(statusPath)
@@ -309,7 +313,7 @@ func TestRetranslationPromoteDryRunDoesNotModifyCanonicalAndLatestWins(t *testin
 	if err != nil {
 		t.Fatal(err)
 	}
-	if plan.UnitCount != 2 || plan.ChangedCount != 2 || plan.UnchangedCount != 0 || !plan.CanApply || plan.Units[0].BatchID != "chatgpt-zh-CN-002" {
+	if plan.UnitCount != 2 || plan.ChangedCount != 2 || plan.UnchangedCount != 0 || !plan.CanApply || plan.Units[0].BatchID != "codex-zh-CN-008" {
 		t.Fatalf("plan = %+v", plan)
 	}
 	statusAfter, _ := os.ReadFile(statusPath)

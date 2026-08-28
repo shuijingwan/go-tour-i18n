@@ -109,17 +109,29 @@ func TestQualityCheckSnapshotFreezesCompleteWorkflowWithoutCopyingEvidence(t *te
 
 func TestQualityCheckSnapshotLatestRevisionBatchWinsPerUnit(t *testing.T) {
 	root, catalog, firstBatch := processedPromotionFixture(t, 2)
-	addProcessedPromotionBatch(t, root, catalog, "chatgpt-zh-CN-002", []string{"lesson/1"})
+	addProcessedPromotionBatch(t, root, catalog, "chatgpt-zh-CN-007", []string{"lesson/1"})
+	addProcessedPromotionBatch(t, root, catalog, "codex-zh-CN-008", []string{"lesson/1"})
 	materializeSnapshotSources(t, root, catalog)
 	manifest, _, err := CreateQualityCheckCandidateSnapshot(root, catalog, QualityCheckSnapshotOptions{Locale: "zh-CN", SnapshotID: "revision"})
 	if err != nil {
 		t.Fatal(err)
 	}
-	if got := snapshotUnit(t, manifest, "lesson/1").SelectedBatchID; got != "chatgpt-zh-CN-002" {
+	if got := snapshotUnit(t, manifest, "lesson/1").SelectedBatchID; got != "codex-zh-CN-008" {
 		t.Fatalf("latest revision batch = %q", got)
 	}
 	if got := snapshotUnit(t, manifest, "lesson/2").SelectedBatchID; got != firstBatch {
 		t.Fatalf("unrevised unit batch = %q, want %q", got, firstBatch)
+	}
+}
+
+func TestQualityCheckSnapshotRejectsCrossPrefixDuplicateBatchNumber(t *testing.T) {
+	root, catalog, _ := processedPromotionFixture(t, 1)
+	addProcessedPromotionBatch(t, root, catalog, "codex-zh-CN-001", []string{"lesson/1"})
+	materializeSnapshotSources(t, root, catalog)
+
+	_, _, err := CreateQualityCheckCandidateSnapshot(root, catalog, QualityCheckSnapshotOptions{Locale: "zh-CN", SnapshotID: "ambiguous"})
+	if err == nil || !strings.Contains(err.Error(), "ambiguous or invalid retranslation batch number 001") {
+		t.Fatalf("cross-prefix duplicate error=%v", err)
 	}
 }
 
