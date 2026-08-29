@@ -51,19 +51,17 @@ TOUR_ANALYTICS='<Google Analytics HTML><Baidu Analytics HTML>'
 
 本地开发默认不设置该变量，因此不会加载生产统计代码。实际统计代码以及具体统计 ID 不写入 Git 仓库；公开前端标识也不在本手册中固定记录。
 
-Google AdSense 使用独立的 `TOUR_ADSENSE_CLIENT`。服务端只在该变量为有效 `ca-pub-...` 值时，才在每个完整 HTML 页面的 `<head>` 中生成一次 Auto Ads 站点代码。课程页同时已有共享的手动 `course-ad` 实现：课程 editor partial 提供 mount 容器，Angular route view 在 link / `$destroy` 时调用其 mount / unmount，模板加载课程广告 CSS/JS；该 helper 创建 responsive AdSense `ins` 并请求广告。当前课程广告正在运行 ABCD 自然流量实验：A/B/C/D 各 25%，同一浏览器 tab session 通过 `sessionStorage` 保持稳定，存储不可用时回退为当前 window 内存；A/B/C 分别限制容器最大宽度为 336/468/728px，D 保持不限制宽度的 Responsive 对照组。四组均保持 `data-ad-format="auto"` 和 `data-full-width-responsive="true"`，不使用固定尺寸广告。局部 layout protection 只移除 AdSense/Funding Choices 曾写入编辑器祖先的两种高度覆盖，以保持课程高度和 footer 布局。课程页广告资源与 Auto Ads 一起构成最终广告形态，并非“只注入 Auto Ads、不插入手工广告位”。当前从公开博客首页核验到的配置为：
+Google AdSense 使用独立的 `TOUR_AD_HTML`。该变量包含 production AdSense HTML / loader；production runtime 将其视为受信任 HTML，注入每个完整页面的 HTML shell。实际 AdSense HTML、publisher ID 和完整变量值不写入 Git 仓库。
 
-```text
-TOUR_ADSENSE_CLIENT='ca-pub-8392190980622725'
-```
+当前课程页共享广告架构保持不变：课程 editor partial 提供手动 `course-ad` mount 容器，Angular route view 在 link / `$destroy` 时调用其 mount / unmount，模板加载课程广告 CSS/JS；该 helper 创建 responsive AdSense `ins` 并请求广告。当前课程广告正在运行 ABCD 自然流量实验：A/B/C/D 各 25%，同一浏览器 tab session 通过 `sessionStorage` 保持稳定，存储不可用时回退为当前 window 内存；A/B/C 分别限制容器最大宽度为 336/468/728px，D 保持不限制宽度的 Responsive 对照组。四组均保持 `data-ad-format="auto"` 和 `data-full-width-responsive="true"`，不使用固定尺寸广告。局部 layout protection 只移除 AdSense/Funding Choices 曾写入编辑器祖先的两种高度覆盖，以保持课程高度和 footer 布局。课程页广告资源与 Auto Ads 一起构成最终广告形态，并非“只注入 Auto Ads、不插入手工广告位”。本手册不重新设计这套共享广告架构。
 
-正式服务通过 systemd 环境文件读取统计配置：
+正式服务通过 systemd `EnvironmentFile` 读取统计和广告配置：
 
 ```text
 /etc/go-tour/go-tour.env
 ```
 
-该文件权限应为 `600`，所有者为 `root:root`。`go-tour.service` 使用以下 drop-in 引入它：
+该文件权限应为 `600`，所有者为 `root:root`。以下是 `go-tour.service` 的既有历史 drop-in 配置示例，不是所有 locale 的统一强制架构：
 
 ```text
 /etc/systemd/system/go-tour.service.d/analytics.conf
@@ -76,9 +74,9 @@ TOUR_ADSENSE_CLIENT='ca-pub-8392190980622725'
 EnvironmentFile=/etc/go-tour/go-tour.env
 ```
 
-新增或修改 systemd drop-in 后执行 `systemctl daemon-reload`；仅修改 `go-tour.env` 内容时，也必须重启 `go-tour.service`，使新进程重新读取统计环境变量。不要在 shell 历史、发布包或其他仓库文件中复制完整统计代码。
+目标 production service 必须引用包含有效 `TOUR_AD_HTML` 的正确 `EnvironmentFile`；该引用可以直接写在 unit 本体中，也可以由既有 drop-in 引入，新 locale 不要求为了形式统一额外创建 drop-in。新增或修改 systemd drop-in 时执行 `systemctl daemon-reload`；仅修改 `EnvironmentFile` 内容时，无需因文件内容变化本身执行 `daemon-reload`，但必须重启相关 production service，使新进程重新读取统计和广告环境变量。修改 `TOUR_AD_HTML` 后同样必须重启相关 production service 才会读取新值。不要在 shell 历史、发布包或其他仓库文件中复制完整统计或广告 HTML。
 
-修改 `TOUR_ANALYTICS`、`TOUR_ADSENSE_CLIENT` 或其他影响 HTML shell 的内容后，必须按“Production CDN 缓存策略”刷新对应 language hostname；不要仅根据源站验证或 `deploy-production.sh` 的 public HTTP 200 就判断新 release 已在全部 CDN 边缘节点生效。公开的 `/socket` 既有安全原则保持不变：production 不注册或开放本地 Socket transport，普通请求和 WebSocket Upgrade 均应保持 404。
+修改 `TOUR_ANALYTICS`、`TOUR_AD_HTML` 或其他影响 HTML shell 的内容后，必须在相关 service restart 后按“Production CDN 缓存策略”刷新对应 language hostname；不要仅根据源站验证或 `deploy-production.sh` 的 public HTTP 200 就判断新 release 已在全部 CDN 边缘节点生效。公开的 `/socket` 既有安全原则保持不变：production 不注册或开放本地 Socket transport，普通请求和 WebSocket Upgrade 均应保持 404。
 
 ### 广告职责、首次接入与最终验收边界
 
@@ -86,7 +84,7 @@ Auto Ads、课程页手动广告、Angular SPA mount/unmount 生命周期、局�
 
 新 locale 必须在**首次 production release 激活前**完成以下 production 广告接入准备：
 
-- 在目标 locale service 的 EnvironmentFile 中设置有效的 `TOUR_ADSENSE_CLIENT`，并完成对应 systemd drop-in 配置；
+- 确认目标 locale 的 production service 引用包含有效 `TOUR_AD_HTML` 的正确 `EnvironmentFile`；该文件可由 unit 本体或既有 drop-in 引入，无需为新 locale 额外创建 drop-in；
 - 完成 Auto Ads 所需的 production 配置；
 - 准备并验收课程广告 CSS/JS 的 production asset 来源（zh-CN 为同源；非中文 locale 按共享 assets 策略）；
 - 非中文 locale 使用 shared-assets 时，在首次上线前确认共享的 `course-ad.css` 与 `course-ad.js` 已部署，且已完成缓存验收。
