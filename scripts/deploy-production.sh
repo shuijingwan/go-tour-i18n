@@ -7,6 +7,7 @@ readonly SSH_HOST='aliyun'
 readonly SERVICE_USER='go-tour'
 readonly HEALTH_ATTEMPTS=12
 readonly HEALTH_INTERVAL=3
+readonly NO_OLD_RELEASE='NO_OLD_RELEASE'
 readonly -a SSH_OPTIONS=(-o BatchMode=yes -o ConnectTimeout=10)
 
 RELEASE_LOCALE=''
@@ -244,6 +245,7 @@ prepare_remote() {
         "$remote_staging" "$remote_final" <<'REMOTE_PREPARE'
 set -Eeuo pipefail
 IFS=$'\n\t'
+readonly NO_OLD_RELEASE='NO_OLD_RELEASE'
 
 releases_dir=$1
 current_link=$2
@@ -272,7 +274,7 @@ if [[ -L $current_link ]]; then
     esac
 elif [[ ! -e $current_link ]]; then
     deployment_mode=FIRST_DEPLOYMENT
-    old=''
+    old="$NO_OLD_RELEASE"
 else
     fail "current exists but is not a symlink: $current_link"
 fi
@@ -378,6 +380,7 @@ expected_old=$9
 staging=${10}
 final=${11}
 link_suffix=${12}
+readonly NO_OLD_RELEASE='NO_OLD_RELEASE'
 next_link="${current_link}.next-${link_suffix}"
 rollback_link="${current_link}.rollback-${link_suffix}"
 
@@ -441,7 +444,7 @@ case $deployment_mode in
         esac
         ;;
     FIRST_DEPLOYMENT)
-        [[ -z $expected_old && ! -e $current_link && ! -L $current_link ]] || exit 1
+        [[ $expected_old == NO_OLD_RELEASE && ! -e $current_link && ! -L $current_link ]] || exit 1
         ;;
     *) exit 1 ;;
 esac
@@ -542,7 +545,7 @@ main() {
         return 1
     fi
     IFS=$'\t' read -r deployment_mode old_release <<<"$prepare_output"
-    [[ ( $deployment_mode == EXISTING && -n $old_release ) || ( $deployment_mode == FIRST_DEPLOYMENT && -z $old_release ) ]] || {
+    [[ ( $deployment_mode == EXISTING && -n $old_release ) || ( $deployment_mode == FIRST_DEPLOYMENT && $old_release == "$NO_OLD_RELEASE" ) ]] || {
         error 'remote preflight returned an invalid deployment mode'
         manual_check_hint
         return 1

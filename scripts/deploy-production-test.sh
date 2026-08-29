@@ -88,6 +88,14 @@ for index in "${!arguments[@]}"; do
         /data/go-tour-de-DE/.deploy.lock) arguments[index]=$FAKE_DE_LOCK ;;
     esac
 done
+if [[ ${FAKE_REQUIRE_NONEMPTY_ACTIVATION_ARGS:-0} == 1 && ${#arguments[@]} == 15 ]]; then
+    for index in {3..14}; do
+        [[ -n ${arguments[index]} ]] || {
+            printf '[deploy-test:ssh] first deployment SSH positional argument regression: empty activation argument %s\n' "$index" >&2
+            exit 97
+        }
+    done
+fi
 exec "${arguments[@]}"
 SH
 chmod 0755 -- "$fake_bin"/*
@@ -195,11 +203,13 @@ for locale in zh-CN ja-JP; do
 done
 
 # First deployment permits an absent current link, creates it atomically, and uses the same health acceptance.
-export FAKE_HTTP_FAIL_CALLS=0
+# The fake SSH rejects any empty activation argument, modelling OpenSSH command flattening.
+export FAKE_HTTP_FAIL_CALLS=0 FAKE_REQUIRE_NONEMPTY_ACTIVATION_ARGS=1
 IFS=$'\t' read -r rc current final lock _ <<<"$(prepare_and_activate de-DE absent de-first-success)"
 [[ $rc == 0 && -L $current && $(readlink -f -- "$current") == "$final" && ! -e $lock ]] || \
-    fail 'first deployment did not create current or clean the lock'
+    fail 'first deployment SSH positional argument regression: activation did not create current or clean the lock'
 [[ $(<"$fixture/health-de-first-success") -ge 3 ]] || fail 'first deployment health acceptance did not require three successes'
+unset FAKE_REQUIRE_NONEMPTY_ACTIVATION_ARGS
 
 # Existing deployment failure retains the existing rollback behavior.
 export FAKE_HTTP_FAIL_CALLS=12
