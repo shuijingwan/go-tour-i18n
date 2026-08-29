@@ -42,6 +42,8 @@ locale / domain / CDN 决策
 
 这些决定应先形成明确记录，再修改 locale 资源或生产环境。不得根据其他 locale 的目录名、端口或译法自动推导新 locale。
 
+首页 language registry 是 build-time registry：新 locale 的 release 会包含构建时的完整 registry，但既有 production locale 会继续运行各自已部署 release 中的 registry，直到其下一次正常 publish/deploy。正式采用 **existing locale language list = eventual consistency**。因此，新 locale 首次 production gate 只要求验证新 locale 自己的语言选择器：current identity、当前正式 registry、指向已有 locale 的链接，以及 English 指向官方 Tour。已有 locale → 新 locale 的反向链接不属于首次上线 gate；不得仅为即时出现新语言而批量重跑旧 locale 的 Quality Check、Final Review、Surface Review、publish、deploy、CDN purge 或 production final。未来只有明确要求全部 locale 即时同步语言列表时，才重新评估 runtime registry 解耦。
+
 ## 2. 建立 locale 术语权威来源
 
 先阅读 [术语治理政策](TRANSLATION_TERMINOLOGY.md) 和 [术语制定指南](TERMINOLOGY_GUIDE.md)，再建立 `locales/<locale>/glossary.yaml`。不得机器翻译 zh-CN、ja-JP 或其他 locale 的 glossary。

@@ -178,6 +178,10 @@ AdSense service environment / Auto Ads 与课程广告资产来源
 9. **SEO 与公网验收**：检查 `/`、`/tour/`、`/tour/list`、全部 sitemap URL、`robots.txt`、canonical host、`html lang`、静态资源、`/socket` 404 与保留路径；确认 sitemap 无错误 host、重复或 HTTP failure。
 10. **真实浏览器与最终广告验收**：桌面和移动端复核导航、语言选择器、编辑器、Run / Format / Reset 与 runtime message；从 Network 确认实际 Playground endpoint 与 CORS Origin。同时执行上述五项轻量广告确认。最后在 production 重新执行 rendered surface acceptance 关键项，并完成 `data/locale-surface-reviews/<locale>/<review-id>.md` 的 production 结果与最终 decision；不另行执行无广告版本的完整验收。
 
+### Existing locale language-list consistency
+
+首页 language registry 在 build 时写入每个 locale release。新增 locale 的首次 production gate 只验证**新 locale → 已有 locale**：新站必须显示当前正式 registry，current language 不为链接，已有 locale 与官方 English Tour 链接正确。**已有 locale → 新 locale** 采用 eventual consistency：已运行的旧 locale release 不需要在新语言上线当天立即获得新条目；它们在下一次正常 upstream sync、UI 更新或日常 release 的 publish/deploy 中自然获得当前 registry。不得只为反向链接即时同步而重新设计 runtime registry，或批量要求旧 locale 重新 Quality Check、Final Review、Locale Surface Review、publish、deploy、CDN purge 或 production final。
+
 首次上线记录至少包含：上述冻结值、vhost/证书路径、CDN 类型、当前 release、localhost 与 public 结果、sitemap 汇总、Playground Origin、轻量广告确认和浏览器结果。全部通过后，该 locale 才进入日常维护状态。
 
 ## 已有 Locale 日常维护部署

@@ -89,6 +89,8 @@ Glossary 一致但忠实度、准确性或自然度不合格时，语言质量�
 - 语言选择器显示名称、顺序、当前语言状态与 URL 正确，不把其他语言的译文混入当前 locale；
 - 键盘、鼠标和触摸操作的基本跳转可用。
 
+language registry 是 build-time 输入，因此新增 locale 的首次 production Surface Review 只验收**新 locale → 已有 locale**：新站自身必须渲染当前正式 registry、正确标示 current language、链接已有 production locale，并保持 English 指向官方 Tour。**已有 locale → 新 locale** 采用 eventual consistency：旧 production release 无需在新 locale 上线当天立即显示反向链接，也不得因此单独重跑旧 locale 的 Quality Check、Final Review、Surface Review、publish、deploy、CDN purge 或 production final；旧 locale 会在下一次正常 release 时自然获得当前 registry。
+
 ### 4. 编辑器、动作与 runtime message
 
 - 编辑器周边标签、帮助文案和按钮显示完整；

@@ -1,6 +1,6 @@
-# de-DE Locale Surface Review — 2026-08-29 首次 production 工作记录
+# de-DE Locale Surface Review — 2026-08-29 首次 production 最终 evidence
 
-这是首次 production 前的 Surface Review 工作记录，不是最终上线 evidence。production 部署和公网验收完成后，必须在本文件补充真实 production evidence，才可将正式 decision 改为 `passed`。
+这是 de-DE 首次 production 的最终 Surface Review evidence。Locale-level language quality review、complete preview rendered acceptance、production machine acceptance、production browser acceptance 与 lightweight ads confirmation 均已完成并通过。
 
 ## 审核身份
 
@@ -238,23 +238,76 @@ go test ./cmd/tour-i18n \
 git diff --check
 ```
 
-仓库已知的 4 个无关 upstream fixture 漂移测试失败不属于本轮 de-DE blocker。
+仓库已知的 4 个无关 stale upstream commit/time fixture expectation failures 不属于本轮 de-DE blocker：fixture 仍期待旧 baseline `645042eb`，而当前正式 FrozenUpstreamCommit 为 `b3fc6537086f09e88cb3c1ecd09bd47c31c54241`、commit time 为 `2026-08-26T21:55:26Z`。它们与 release / shared-assets SHA-256、cross-locale language selector 或本次 zh-CN / ja-JP 同步无关。
 
 ## Production verification
 
-状态：`pending / not yet executed`
+结果：`passed`
 
-尚未执行，因而不得视为 passed：
+### Production identity
 
-- production publish bundle deployment；
-- de-DE 首次 production infrastructure activation；
-- public HTTPS / CDN verification；
-- production Playground Origin / Network verification；
-- production Run / Format / Reset；
-- production sitemap HTTP verification；
-- lightweight AdSense confirmation。
+- locale：`de-DE`
+- public origin：<https://de-go-dev.shuijingwanwq.com/>
+- production release：`/data/go-tour-de-DE/releases/20260829-de-DE-8937fdc`
+- local bundle：`/tmp/go-tour-release-20260829-de-DE-8937fdc`
+- service：`go-tour-de-DE.service`
+- loopback：`http://127.0.0.1:4001/`
+- data root：`/data/go-tour-de-DE`
+- CDN：Cloudflare Free
+- shared assets：<https://assets-go-dev.shuijingwanwq.com/>
+- Playground：`https://play.go-dev.shuijingwanwq.com:8443`
+- allowed Origin：`https://de-go-dev.shuijingwanwq.com`
 
-未记录 release path、published_at、systemd 状态、TLS、CDN 或广告结果；这些均须由首次 production 后的真实证据补充。
+### First production deployment
+
+- local release preflight：`passed`
+- remote permissions / SHA-256 verification：`passed`
+- `current` 已切换至 `/data/go-tour-de-DE/releases/20260829-de-DE-8937fdc`
+- service health 最终连续 3 次：`active + HTTP 200`
+- source deployment：`succeeded`
+- public homepage：`HTTP 200`
+
+首次 startup probe 的 `HTTP 000` 属于 service restart startup race；之后连续 3 次均为 HTTP 200，不构成 blocker。Cloudflare 对 `de-go-dev.shuijingwanwq.com` 执行 hostname purge，未使用 Purge Everything。
+
+### Production machine acceptance
+
+实际执行：
+
+```sh
+scripts/verify-production.sh \
+  /tmp/go-tour-release-20260829-de-DE-8937fdc
+```
+
+- release identity：`PASS`
+- remote identity：`PASS`
+- source routes：`7/7 PASS`
+- public routes：`7/7 PASS`
+- HTML identity：`PASS`
+- sitemap：`105/105`；host mismatch `0`；HTTP failure `0`；`PASS`
+- socket boundary：`PASS`
+- CDN `/`：`HIT -> HIT -> HIT PASS`
+- CDN `/tour/welcome/1`：`HIT -> HIT -> HIT PASS`
+- final：`PRODUCTION MACHINE ACCEPTANCE: PASS`
+
+CDN gate 是 cache status observation，不强制 `MISS -> HIT`；三次 `HIT` 表示 cache 已 warm，属于正常 `PASS`。
+
+### Production browser / Playground acceptance
+
+实际 production browser acceptance 已覆盖首页、`/tour/`、`/tour/list`、desktop、mobile、navigation、language selector、Run、Format、Reset 及 SPA Weiter 下一页，结果均为 `passed`。runtime message 为 `Programm beendet.`。Network 确认 Playground endpoint 为 `https://play.go-dev.shuijingwanwq.com:8443`，Origin 为 `https://de-go-dev.shuijingwanwq.com`，未错误使用 `/socket`。
+
+### Lightweight ads confirmation
+
+共享广告实现未变；首次 de-DE production 按正式 lightweight 范围确认：production HTML / Auto Ads loader/config 符合预期、manual `course-ad` mount 存在、浏览器存在真实广告请求机会、course height / footer 无明显异常、SPA Weiter 下一页正常。filled 或 unfilled 均允许，不以 filled ad 为 gate。结果：`passed`。
+
+### Supplemental / non-blocking cross-locale confirmation
+
+本次 zh-CN 与 ja-JP 的额外同步仅作为 supplemental confirmation，不是 de-DE 首次 production gate，de-DE 的 `decision = passed` 不依赖它；未来新增 locale 也不要求旧 locale 在上线当天即时同步语言列表。
+
+- zh-CN release：`/data/go-tour/releases/20260829-zh-CN-9c06f0f`；machine acceptance：`PASS`；sitemap `105/105`、host mismatch `0`、HTTP failure `0`；CDN `/` 为 `MISS -> MISS -> HIT PASS`，`/tour/welcome/1` 为 `MISS -> HIT -> HIT PASS`。
+- ja-JP release：`/data/go-tour-ja-JP/releases/20260829-ja-JP-9c06f0f`；machine acceptance：`PASS`；sitemap `105/105`、host mismatch `0`、HTTP failure `0`；CDN `/` 为 `MISS -> HIT -> HIT PASS`，`/tour/welcome/1` 为 `MISS -> HIT -> HIT PASS`。
+- 两个 existing locale 的真实浏览器均显示 `Deutsch`，并正确链接至 <https://de-go-dev.shuijingwanwq.com/>。
+
+此确认不改变正式边界：existing locale language list 采用 eventual consistency，旧 locale 会在其下一次正常 upstream sync、UI 更新或日常 release 中自然获得最新 build-time registry。
 
 ## Reviewer
 
@@ -264,12 +317,20 @@ git diff --check
 
 ## Issues
 
-当前没有 unresolved language 或 preview blocker。
+unresolved language blocker：`none`
 
-唯一未完成项为首次 production verification；它尚未执行。
+unresolved rendered blocker：`none`
+
+unresolved production blocker：`none`
 
 ## Decision
 
-`decision = failed`
+`decision = passed`
 
-A language quality review 与 preview acceptance 均为 `passed`，但首次 production verification 仍为 `pending`，因此 overall final release gate 尚未完成。该 `failed` 仅表示缺少首次 production evidence，并非存在未解决的语言或 preview defect。production 完成后将在本文件补充真实 evidence；只有全部通过才可改为 `decision = passed`。
+- A language quality review：`passed`
+- preview rendered acceptance：`passed`
+- production machine acceptance：`passed`
+- production browser acceptance：`passed`
+- lightweight ads confirmation：`passed`
+
+de-DE 已完成首次 production gate，进入 existing locale daily maintenance 状态。
