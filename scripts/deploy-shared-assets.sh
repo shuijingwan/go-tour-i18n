@@ -5,6 +5,12 @@ IFS=$'\n\t'
 
 readonly -a SSH_OPTIONS=(-o BatchMode=yes -o ConnectTimeout=10)
 readonly PUBLIC_BASE_URL='https://assets-go-dev.shuijingwanwq.com'
+readonly RECEIPT_SCHEMA='go-tour-i18n/shared-assets-production-receipt/v1'
+readonly -a BOUNDARY_PATHS=(
+    'tour/script.js'
+    'tour/static/img/tree.png'
+    'tour/static/partials/editor.html'
+)
 readonly SSH_HOST='aliyun'
 readonly WWWROOT='/data/wwwroot'
 readonly ORIGIN_ROOT='/data/wwwroot/assets-go-dev.shuijingwanwq.com'
@@ -46,12 +52,71 @@ manual_check_hint() {
 
 validate_local_tools() {
     local command_name
-    for command_name in basename date find go readlink rsync sha256sum ssh; do
+    for command_name in basename date find go mktemp mv python3 readlink rsync sha256sum ssh; do
         command -v "$command_name" >/dev/null || {
             error "required local command is missing: $command_name"
             return 1
         }
     done
+}
+
+is_safe_logical_path() {
+    local path=$1
+    [[ $path =~ ^[A-Za-z0-9._/-]+$ && $path != /* && $path != *'..'* && $path != *'//'* && $path != *'\\'* ]]
+}
+
+write_verification_receipt() {
+    local export_dir=$1 result=$2 receipt temporary path
+    shift 2
+    local -a changed_paths=("$@")
+
+    [[ $result == NO_CHANGES || $result == DEPLOYED ]] || {
+        error 'cannot create receipt for an unknown deployment result'
+        return 1
+    }
+    for path in "${changed_paths[@]}"; do
+        is_safe_logical_path "$path" || {
+            error "cannot create receipt with unsafe changed path: $path"
+            return 1
+        }
+    done
+    if [[ $result == NO_CHANGES && ${#changed_paths[@]} -ne 0 ]]; then
+        error 'NO_CHANGES receipt cannot contain changed paths'
+        return 1
+    fi
+    if [[ $result == DEPLOYED && ${#changed_paths[@]} -eq 0 ]]; then
+        error 'DEPLOYED receipt must contain changed paths'
+        return 1
+    fi
+    receipt="$export_dir.verification-receipt.json"
+    temporary=$(mktemp "$receipt.tmp.XXXXXX") || return 1
+    python3 - "$temporary" "$RECEIPT_SCHEMA" "$export_dir" "$LOCAL_MANIFEST_SHA" "$result" "$PUBLIC_BASE_URL" \
+        "${BOUNDARY_PATHS[0]}" "${BOUNDARY_PATHS[1]}" "${BOUNDARY_PATHS[2]}" "${changed_paths[@]}" <<'PY' || {
+import json
+import sys
+
+temporary, schema, export_dir, manifest_sha256, result, base_url, *paths = sys.argv[1:]
+boundary_paths = paths[:3]
+changed_paths = paths[3:]
+with open(temporary, "w", encoding="utf-8") as receipt:
+    json.dump({
+        "schema": schema,
+        "export_dir": export_dir,
+        "manifest_sha256": manifest_sha256,
+        "deployment_result": result,
+        "production_base_url": base_url,
+        "changed_paths": changed_paths,
+        "boundary_paths": boundary_paths,
+    }, receipt, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+    receipt.write("\n")
+PY
+        rm -f -- "$temporary"
+        return 1
+    }
+    chmod 0644 -- "$temporary"
+    mv -f -- "$temporary" "$receipt"
+    printf 'verification receipt: %s\n' "$receipt"
+    printf 'next command: scripts/verify-shared-assets-production.sh %s\n' "$receipt"
 }
 
 validate_local_export() {
@@ -414,6 +479,7 @@ main() {
     if (( ${#changed_paths[@]} == 0 )); then
         cleanup_before_mutation
         log 'NO CHANGES: production origin already matches the formal export; no backup or purge is required'
+        write_verification_receipt "$export_dir" NO_CHANGES
         return 0
     fi
     BACKUP_STARTED=1
@@ -456,12 +522,13 @@ main() {
     esac
 
     log 'SHARED ASSETS ORIGIN DEPLOYMENT COMPLETED'
+    write_verification_receipt "$export_dir" DEPLOYED "${changed_paths[@]}"
     printf '\nCloudflare HUMAN GATE:\n'
     printf '请在 Cloudflare Dashboard 对以下 URL 执行 Custom Purge：\n'
     for path in "${changed_paths[@]}"; do
         printf '%s/%s\n' "$PUBLIC_BASE_URL" "$path"
     done
-    printf '完成后再单独执行 MISS → HIT → SHA-256 → allowlist → 404 boundary 验收。\n'
+    printf '完成后运行上述 verification receipt 对应的唯一后续命令。\n'
 }
 
 if [[ ${BASH_SOURCE[0]} == "$0" ]]; then

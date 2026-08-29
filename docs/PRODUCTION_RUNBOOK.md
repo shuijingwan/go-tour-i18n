@@ -322,7 +322,7 @@ scripts/deploy-shared-assets.sh \
 
 preflight、lock、upload、staging validation 或 backup 阶段失败时，origin 不变，脚本只在能确认安全时清理本次 staging/lock。production mutation 开始后若同步或严格验证失败，脚本使用刚创建的完整 backup 恢复并重新验证；回滚明确成功时报告部署失败但旧内容已恢复。如果回滚失败、SSH 中断或状态无法确认，脚本保留 lock、staging、backup 与现场，输出只读人工检查命令，禁止直接自动重试。INT、TERM、HUP 在 mutation 前按安全边界清理，mutation 后保留 evidence。
 
-脚本成功只表示 origin deployment 完成。它按稳定顺序输出 added、modified、deleted 的实际固定 URL（`SHA256SUMS` 如发生变化也属于 changed URL），然后在 Cloudflare HUMAN GATE 结束；不调用 Cloudflare API/CLI，也不在 purge 前执行公网 MISS/HIT 验收。
+脚本成功后生成与当前正式 export 的绝对路径和 `SHA256SUMS` identity 绑定的 machine-readable verification receipt，并打印 `verification receipt: <path>` 与唯一后续命令 `scripts/verify-shared-assets-production.sh <receipt>`。receipt 还包含 deployment result（`NO_CHANGES` 或 `DEPLOYED`）、实际 changed logical paths、固定 production base URL 和固定 boundary 路径；不包含 secret。它按稳定顺序输出 added、modified、deleted 的实际固定 URL（`SHA256SUMS` 如发生变化也属于 changed URL）。`DEPLOYED` 时脚本仍在 Cloudflare HUMAN GATE 前结束，不调用 Cloudflare API/CLI，也不在 purge 前执行公网 MISS/HIT 验收；`NO_CHANGES` 时也生成 receipt，直接执行其验证命令。
 
 `deploy-shared-assets.sh` 已通过本地 mock 自动化测试，并已完成首次真实 11 文件 production deployment 验证。`SHA256SUMS`、`course-ad.css` 与 `course-ad.js` 的实际 changed URLs 已完成精确 Custom Purge 与 `MISS → HIT` 验收；公网 allowlist SHA-256 为 11/11 一致，三个非 allowlist boundary 路径继续返回 404。后续发布仍以脚本输出的实际 changed URLs 为唯一 purge 清单；如果真实权限或工具基线与预检不符，立即停止，不绕过检查。
 
@@ -358,47 +358,19 @@ https://assets-go-dev.shuijingwanwq.com/tour/static/go-dev/course-ad.js
 
 当前 shared-assets production 发布不要求自动化 Cloudflare purge。不得为此搜索本地或服务器上的 Cloudflare Token、要求维护者提供 API Token、把凭据写入仓库或 shell history、猜测既有凭据入口、调用 Cloudflare API、使用 Wrangler 自动刷新或安装新的 Cloudflare CLI。未来如需自动化，应作为独立受控改进处理。
 
-Dashboard purge 是正常 human gate，不是 deployment failure，也不是缺少 API 权限错误。维护者明确确认 Custom Purge 已完成后，才能继续阶段 E；确认前不得把 MISS/HIT 不符合预期解释为新资源发布失败。
+Dashboard purge 是正常 human gate，不是 deployment failure，也不是缺少 API 权限错误。维护者明确确认 Custom Purge 已完成后，运行 deployment 输出的唯一后续命令 `scripts/verify-shared-assets-production.sh <receipt>`；确认前不得把 MISS/HIT 不符合预期解释为新资源发布失败。
 
 #### 阶段 E：公网缓存验收
 
-对阶段 C 的每个 URL 连续请求两次并保留响应头。第一次应符合刷新后首次回源预期，例如 `CF-Cache-Status: MISS`；第二次应符合缓存命中预期，例如 `CF-Cache-Status: HIT`。如果实际响应头名称或 Cloudflare 行为与已验证基线不同，记录真实响应并停止判断，不猜测或伪造 MISS/HIT 结论。
-
-以下为此前两个课程广告 changed URLs 的验收示例；每次应以阶段 C 实际输出为准，并将其他 changed URLs 一并加入 `urls`：
-
-```sh
-urls=(
-  'https://assets-go-dev.shuijingwanwq.com/tour/static/go-dev/course-ad.css'
-  'https://assets-go-dev.shuijingwanwq.com/tour/static/go-dev/course-ad.js'
-)
-for url in "${urls[@]}"; do
-  curl -fsS -o /dev/null -D - "$url"
-  curl -fsS -o /dev/null -D - "$url"
-done
-```
+由 receipt 指定的 `scripts/verify-shared-assets-production.sh <receipt>` 自动对阶段 C 的每个实际 changed URL 连续请求两次、要求 HTTP 200，并按当前基线验证 `CF-Cache-Status: MISS → HIT`，逐 URL 输出明确结果。Cloudflare 实际状态不符合基线时脚本 fail closed；不要手工复制 URL 或猜测、伪造 MISS/HIT 结论。`NO_CHANGES` 没有 changed URL，脚本明确输出 `SKIP CACHE PURGE VERIFICATION: NO CHANGES`，不要求 MISS → HIT。
 
 #### 阶段 F：完整性验收
 
-逐一请求正式 11 个 allowlist URL，确认 HTTP 正常，并把公网响应内容的 SHA-256 与阶段 A 的 `SHA256SUMS` 对照。必须达到 11/11 内容一致；只验证本次 purge 的文件不能替代完整 allowlist 验收。
-
-```sh
-public_assets=$(mktemp -d)
-while read -r checksum logical_path; do
-  mkdir -p "$public_assets/$(dirname "$logical_path")"
-  curl -fsS \
-    "https://assets-go-dev.shuijingwanwq.com/$logical_path" \
-    -o "$public_assets/$logical_path"
-done < /tmp/go-tour-shared-assets/SHA256SUMS
-cp /tmp/go-tour-shared-assets/SHA256SUMS "$public_assets/SHA256SUMS"
-cd "$public_assets"
-sha256sum -c --strict SHA256SUMS
-```
-
-验收结束后可删除该 `mktemp` 输出目录；不要把它误作下一次正式 export source。
+同一验证脚本自动请求正式 11 个 allowlist URL，要求 HTTP 成功，并逐一将公网内容 SHA-256 与 receipt 绑定的当前 export `SHA256SUMS` 对照。必须达到 11/11 内容一致；只验证本次 purge 的文件不能替代完整 allowlist 验收。receipt 与当前 export identity 不符、export 不再通过正式 `assets validate`，或任一公网 SHA-256 不符时，脚本 fail closed，必须重新走正式 shared-assets 流程。receipt 可以保留作为本次 execution evidence，但不能作为未来 current-state freshness gate 的替代。
 
 #### 阶段 G：边界验收
 
-以下路径不属于 shared allowlist，必须继续返回 HTTP 404：
+同一验证脚本还自动确认以下固定非 allowlist 路径全部返回 HTTP 404：
 
 ```text
 /tour/script.js
@@ -408,16 +380,6 @@ sha256sum -c --strict SHA256SUMS
 
 任一路径意外返回共享内容，shared-assets 发布验收失败。固定 URL、Cloudflare Edge Cache TTL 与 Browser Cache TTL 策略保持不变；不引入 hash filename、version directory、query version、loader、manifest 或 assets release ID。
 
-```sh
-for path in \
-  /tour/script.js \
-  /tour/static/img/tree.png \
-  /tour/static/partials/editor.html
-do
-  curl -sS -o /dev/null -w "$path %{http_code}\n" \
-    "https://assets-go-dev.shuijingwanwq.com$path"
-done
-```
 
 Google 官方 `adsbygoogle.js` 继续直接从 Google 域名加载，不下载、代理、镜像或 self-host 到 assets origin。
 

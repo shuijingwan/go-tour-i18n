@@ -24,6 +24,14 @@ assert_not_contains() {
     [[ $text != *"$unwanted"* ]] || fail "output unexpectedly contains: $unwanted"
 }
 
+receipt_result() {
+    python3 - "$1" <<'PY'
+import json
+import sys
+print(json.load(open(sys.argv[1], encoding="utf-8"))["deployment_result"])
+PY
+}
+
 fake_bin=$fixture/bin
 wwwroot=$fixture/wwwroot
 origin=$wwwroot/assets-go-dev.shuijingwanwq.com
@@ -199,7 +207,12 @@ if "$deploy_script" "$bad" >/dev/null 2>&1; then fail 'manifest path traversal a
 reset_remote
 output=$(run_deploy) || fail 'no-op deployment failed'
 assert_contains "$output" 'NO CHANGES'
+assert_contains "$output" 'verification receipt:'
+assert_contains "$output" 'verify-shared-assets-production.sh'
 assert_not_contains "$output" 'https://assets-go-dev.shuijingwanwq.com/'
+receipt=$export_dir.verification-receipt.json
+[[ -f $receipt && ! -L $receipt ]] || fail 'no-op did not write a regular verification receipt'
+[[ $(receipt_result "$receipt") == NO_CHANGES ]] || fail 'no-op receipt has wrong deployment result'
 [[ ! -e $lock ]] || fail 'no-op left deployment lock'
 [[ -z $(find "$wwwroot" -maxdepth 1 -name 'assets-go-dev.shuijingwanwq.com.bak.*' -print -quit) ]] || fail 'no-op created backup'
 
@@ -259,6 +272,14 @@ printf 'old app css\n' >"$origin/tour/static/css/app.css"; rehash_tree "$origin"
 output=$(run_deploy) || fail 'modified-file deployment failed'
 assert_contains "$output" '/tour/static/css/app.css'
 assert_contains "$output" '/SHA256SUMS'
+assert_contains "$output" 'Cloudflare HUMAN GATE'
+[[ $(receipt_result "$receipt") == DEPLOYED ]] || fail 'deployment receipt has wrong deployment result'
+python3 - "$receipt" <<'PY' || fail 'deployment receipt omitted modified path'
+import json
+import sys
+if "tour/static/css/app.css" not in json.load(open(sys.argv[1], encoding="utf-8"))["changed_paths"]:
+    raise SystemExit(1)
+PY
 assert_not_contains "$output" '/images/site-logo.png'
 diff -qr -- "$export_dir" "$origin" >/dev/null || fail 'modified-file final tree mismatch'
 
@@ -332,5 +353,21 @@ if output=$(deploy_env FAKE_REWRITE_ORIGIN_OUTSIDE=1 FAKE_OUTSIDE_ORIGIN="$outsi
 if grep -Eiq 'api\.cloudflare|wrangler|cloudflared|purge_cache|curl .*assets-go-dev' "$deploy_script"; then
     fail 'deployment script contains Cloudflare API/CLI or public acceptance logic'
 fi
+
+# Receipt generation is valid JSON even when its absolute export path has JSON-special characters.
+special_export="$fixture/export \"quoted\" \\ path"
+(
+    source "$deploy_script"
+    LOCAL_MANIFEST_SHA=$(sha256sum -- "$export_dir/SHA256SUMS"); LOCAL_MANIFEST_SHA=${LOCAL_MANIFEST_SHA%% *}
+    write_verification_receipt "$special_export" DEPLOYED SHA256SUMS tour/static/css/app.css
+) >/dev/null || fail 'special-character receipt generation failed'
+special_receipt=$special_export.verification-receipt.json
+python3 - "$special_receipt" "$special_export" <<'PY' || fail 'special-character receipt is invalid JSON'
+import json
+import sys
+receipt = json.load(open(sys.argv[1], encoding="utf-8"))
+if receipt["export_dir"] != sys.argv[2] or receipt["changed_paths"] != ["SHA256SUMS", "tour/static/css/app.css"]:
+    raise SystemExit(1)
+PY
 
 printf '[deploy-shared-assets-test] PASS\n'
