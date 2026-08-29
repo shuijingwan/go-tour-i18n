@@ -164,13 +164,13 @@ AdSense service environment / Auto Ads 与课程广告资产来源
 按以下顺序执行：
 
 1. **Hostname 与 CDN 决策**：按 [LANGUAGES.md](../LANGUAGES.md) 确认 hostname。非中文社区语言使用 Cloudflare Free，不引入 EdgeOne + Cloudflare 双层代理；确认共享 assets 策略。
-2. **Service、port 与 data root**：为新 locale 选择未占用的 loopback port，建立独立 `/data/go-tour-<locale>/releases`、`current` 和 `.deploy.lock` 边界；创建独立 systemd service，service user 保持 `go-tour`。service 必须从 `current` 下的 release 启动，不能绑定临时上传目录。
+2. **Service、port 与 data root**：为新 locale 选择未占用的 loopback port，建立独立 `/data/go-tour-<locale>/releases`、`current` 和 `.deploy.lock` 边界；创建独立 systemd service，service user 保持 `go-tour`。service 必须从 `current` 下的 release 启动，不能绑定临时上传目录；首次 deployment 前 `current` 可以尚不存在，由首次激活原子创建。
 3. **TLS 与 vhost**：在 `/root/oneinstack` 使用 `./vhost.sh --proxy --dnsapi` 创建 HTTPS reverse-proxy vhost，使用 Let's Encrypt、`ec-256` 和 `dns_cf`，反向代理到精确 loopback port。检查自动生成的 `location`，不得截获 `/tour/static/`；使用 `nginx -t && service nginx reload`。
 4. **DNS / CDN**：创建新 hostname 的 DNS 并启用约定 CDN。等待公开解析生效后分别核对 HTTP → HTTPS、证书 hostname、源站 Host 和 CDN 响应；凭据不进入仓库或命令记录。
 5. **Playground Origin**：把新站的精确 `https://<hostname>` 加入 ZgoCloud Playground 代理 allowlist，保持错误 Origin 403、OPTIONS/POST 方法边界和既有 origin 不受影响。未完成此项时 Run / Format 的页面渲染成功不算上线成功。
 6. **AdSense production 接入**：在首个 release 激活前，完成本手册“广告职责、首次接入与最终验收边界”所列的 service 环境、Auto Ads 与课程广告资源准备；不得把它留到 production 上线后再补做。
 7. **部署脚本 profile**：为新 locale 明确增加并测试 `scripts/deploy-production.sh` 的 fail-closed profile，包括全部路径、service、health URL 和 public URL。该步骤属于首次接入所需的代码能力变更；在 profile 合入前脚本应继续拒绝该 locale，不能用目录名猜测或临时绕过白名单。
-8. **首个 release 激活**：部署已验收的 Linux/amd64 bundle，验证权限、SHA-256、`current`、service restart 和连续 localhost health。首次没有可回滚旧 release 时，必须事先定义人工恢复路径，不得声称自动回滚已覆盖。
+8. **首个 release 激活**：部署已验收的 Linux/amd64 bundle，验证权限、SHA-256、`current`、service restart 和连续 localhost health。首次没有可回滚旧 release 时，若首次切换后的 restart 或 health failure，脚本保留 `current`、lock 和现场供人工检查，不得声称自动回滚已覆盖或直接重复部署。
 9. **SEO 与公网验收**：检查 `/`、`/tour/`、`/tour/list`、全部 sitemap URL、`robots.txt`、canonical host、`html lang`、静态资源、`/socket` 404 与保留路径；确认 sitemap 无错误 host、重复或 HTTP failure。
 10. **真实浏览器与最终广告验收**：桌面和移动端复核导航、语言选择器、编辑器、Run / Format / Reset 与 runtime message；从 Network 确认实际 Playground endpoint 与 CORS Origin。同时执行上述五项轻量广告确认。最后在 production 重新执行 rendered surface acceptance 关键项，并完成 `data/locale-surface-reviews/<locale>/<review-id>.md` 的 production 结果与最终 decision；不另行执行无广告版本的完整验收。
 
@@ -194,14 +194,15 @@ scripts/deploy-production.sh \
   /tmp/go-tour-release-20260824-ja-JP-<shortsha>
 ```
 
-脚本严格读取 `release.json` 的 `locale` 作为唯一事实来源，不接受 `--locale`，也不根据目录名猜测语言。当前 production 白名单仅包含 `zh-CN` 和 `ja-JP`；不支持的 locale 会在 SSH、上传、远端加锁及任何生产修改之前 fail closed。所选 profile 如下：
+脚本严格读取 `release.json` 的 `locale` 作为唯一事实来源，不接受 `--locale`，也不根据目录名猜测语言。当前 production 白名单包含 `zh-CN`、`ja-JP` 和 `de-DE`；不支持的 locale 会在 SSH、上传、远端加锁及任何生产修改之前 fail closed。所选 profile 如下：
 
 | locale | releases | current | deploy lock | systemd service | localhost health | public acceptance |
 | --- | --- | --- | --- | --- | --- | --- |
 | `zh-CN` | `/data/go-tour/releases` | `/data/go-tour/current` | `/data/go-tour/.deploy.lock` | `go-tour.service` | `http://127.0.0.1:3999/` | `https://go-dev.shuijingwanwq.com/` |
 | `ja-JP` | `/data/go-tour-ja-JP/releases` | `/data/go-tour-ja-JP/current` | `/data/go-tour-ja-JP/.deploy.lock` | `go-tour-ja-JP.service` | `http://127.0.0.1:4000/` | `https://ja-go-dev.shuijingwanwq.com/` |
+| `de-DE` | `/data/go-tour-de-DE/releases` | `/data/go-tour-de-DE/current` | `/data/go-tour-de-DE/.deploy.lock` | `go-tour-de-DE.service` | `http://127.0.0.1:4001/` | `https://de-go-dev.shuijingwanwq.com/` |
 
-两个 profile 的 service user 均为 `go-tour`。
+三个 profile 的 service user 均为 `go-tour`。
 
 本地目录名应遵循 `go-tour-release-YYYYMMDD-<locale>-<shortsha>` 约定，并且必须以 `go-tour-release-` 开头。脚本只删除这个固定前缀，并对剩余名称执行安全字符检查；因此上例对应的远端目录为：
 
@@ -212,14 +213,14 @@ scripts/deploy-production.sh \
 脚本固定使用 SSH 别名 `aliyun`。当前生产运维账号为 root；远端 `id -u` 不是 `0` 时会在上传前失败，不使用或依赖 `sudo`。部署过程如下：
 
 1. 本地严格检查 bundle 根结构、symlink、`bin/tour`、`release.json`、`site-metadata.json` 和 `SHA256SUMS`；manifest 必须满足 production 约束，其 locale 必须与由同一 `release.json` 选出的 profile 一致。
-2. 远端在所选 profile 的 data root 中原子创建 `.deploy.lock` 防止并发部署，并验证 `current`、当前 release、目标名称和对应 systemd service。同名 release 已存在时拒绝覆盖；锁已存在表示可能有正在执行或上一次未完成的部署，脚本直接停止，不分析或自动删除该锁。
+2. 远端在所选 profile 的 data root 中原子创建 `.deploy.lock` 防止并发部署，并验证 `current`、当前 release、目标名称和对应 systemd service。首次 deployment 仅在 `current` 完全不存在时允许继续；已有 locale deployment 则要求其为指向 release root 内当前 release 的合法 symlink。`current` 存在但不是 symlink、或指向 release root 外时均 fail closed。同名 release 已存在时拒绝覆盖；锁已存在表示可能有正在执行或上一次未完成的部署，脚本直接停止，不分析或自动删除该锁。
 3. `rsync` 只上传到所选 profile 的 `releases/.<release>.staging-<token>`，不直接写最终 release 或 `current`，也不使用 `--delete` 覆盖 release。
 4. 上传后无条件执行权限归一化：owner/group 为 `root:root`，所有目录为 `0755`，普通文件为 `0644`，`bin/tour` 为 `0755`。随后在远端重新验证 SHA-256，以及 `go-tour` 用户对二进制和必要内容的访问权限；production manifest 已在本地严格检查，第一版不在远端重复解析。
 5. staging 在同一文件系统内原子重命名为最终 release；脚本创建临时 symlink 后以原子 `mv` 替换 profile 的 `current`，再 restart 对应 service。
 6. 新版本只有在连续 3 次同时满足 profile service 为 `active`、profile localhost health URL 严格返回 HTTP 200 后才算健康。检查最多 12 轮，每轮间隔 3 秒；任何失败都会把连续计数归零，不能用瞬时一次 `active` 判断成功。
-7. 只有在 `current` 已明确切换到新 release 后，restart 失败或新版本健康检查明确失败，脚本才会自动回滚：`current` 原子切回旧 release、restart 服务，并使用相同的连续 3 次规则验证旧 release。失败的新 release 会保留用于诊断，不自动删除历史 release。
+7. 只有在已有 locale 的 `current` 已明确切换到新 release 后，restart 失败或新版本健康检查明确失败，脚本才会自动回滚：`current` 原子切回旧 release、restart 服务，并使用相同的连续 3 次规则验证旧 release。失败的新 release 会保留用于诊断，不自动删除历史 release。首次 deployment 没有旧 release；若首次切换后的 health failure，脚本明确报告 `FIRST_DEPLOYMENT` failure、保留 `current`、lock 与现场并给出人工检查提示，不伪造 rollback。
 
-脚本只区分三类主要结果：在 `current` 原子替换开始前，若脚本能够明确安全清理本次部署资源，会清理 staging/final、临时 symlink 和锁，`current` 保持不变；若远端状态与预期不一致，则保留现场并要求人工检查；新版本明确失败且旧版本恢复健康时会报告已回滚；激活 SSH 中断、current 切换状态无法确认、回滚失败或其他远端状态不确定时会保留 deployment lock 和现场，停止自动处理。遇到最后一种情况不要直接重复部署，应先按日志中所选 profile 的参数人工检查。以下为 `zh-CN` 示例；`ja-JP` 应替换为 `/data/go-tour-ja-JP/current`、`go-tour-ja-JP.service` 和 `http://127.0.0.1:4000/`：
+脚本只区分三类主要结果：在 `current` 原子替换开始前，若脚本能够明确安全清理本次部署资源，会清理 staging/final、临时 symlink 和锁，`current` 保持不变；若远端状态与预期不一致，则保留现场并要求人工检查；新版本明确失败且旧版本恢复健康时会报告已回滚；激活 SSH 中断、current 切换状态无法确认、回滚失败或其他远端状态不确定时会保留 deployment lock 和现场，停止自动处理。遇到最后一种情况不要直接重复部署，应先按日志中所选 profile 的参数人工检查。以下为 `zh-CN` 示例；`ja-JP` 应替换为 `/data/go-tour-ja-JP/current`、`go-tour-ja-JP.service` 和 `http://127.0.0.1:4000/`，`de-DE` 应替换为 `/data/go-tour-de-DE/current`、`go-tour-de-DE.service` 和 `http://127.0.0.1:4001/`：
 
 ```sh
 ssh aliyun 'readlink -f /data/go-tour/current'

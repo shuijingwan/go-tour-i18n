@@ -113,7 +113,7 @@ Surface Review 通过并完成其中所有修复后，使用 `assets-go-dev.shui
 
 随后按 [生产运维手册](PRODUCTION_RUNBOOK.md) 生成 Linux/amd64 production bundle，并核对 `release.json`、bundle 内 `site-metadata.json`、文件集合和 `SHA256SUMS`。`publish` 只生成 release，不创建 hostname、service、TLS、vhost 或部署脚本 profile。
 
-随后执行该手册的“新 locale 首次生产部署”：先完成并记录 production profile、基础设施和 AdSense production 接入，再部署已验收 bundle。首次激活的页面必须已是最终的启用广告形态，不安排“先无广告上线、再接广告”的两次发布。当前 `scripts/deploy-production.sh` 对 locale fail closed；新 locale 未经明确 profile 实现和验证前，不能假定通用命令已经支持它。
+随后执行该手册的“新 locale 首次生产部署”：先完成并记录 production profile、基础设施和 AdSense production 接入，再部署已验收 bundle。首次 deployment 的 `current` 可以尚不存在；脚本首次原子创建它后，如新 release 健康检查失败，没有旧 release 可回滚，必须保留现场并人工检查。已有 locale 的日常 deployment 继续要求 `current` 为指向 release root 内既有 release 的合法 symlink，并沿用既有 rollback 流程。首次激活的页面必须已是最终的启用广告形态，不安排“先无广告上线、再接广告”的两次发布。当前 `scripts/deploy-production.sh` 对 locale fail closed；新 locale 未经明确 profile 实现和验证前，不能假定通用命令已经支持它。
 
 ## 7. 正式上线验收与移交
 

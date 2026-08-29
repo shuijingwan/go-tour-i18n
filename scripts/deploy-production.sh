@@ -52,6 +52,15 @@ select_deployment_profile() {
             PUBLIC_URL='https://ja-go-dev.shuijingwanwq.com/'
             PUBLIC_ACCEPTANCE_HINT='inspect the CDN/reverse-proxy cache and refresh it manually if needed'
             ;;
+        de-DE)
+            RELEASES_DIR='/data/go-tour-de-DE/releases'
+            CURRENT_LINK='/data/go-tour-de-DE/current'
+            DEPLOY_LOCK='/data/go-tour-de-DE/.deploy.lock'
+            SERVICE='go-tour-de-DE.service'
+            HEALTH_URL='http://127.0.0.1:4001/'
+            PUBLIC_URL='https://de-go-dev.shuijingwanwq.com/'
+            PUBLIC_ACCEPTANCE_HINT='inspect the CDN/reverse-proxy cache and refresh it manually if needed'
+            ;;
         *)
             error "unsupported production locale in release.json: $locale"
             return 1
@@ -253,15 +262,22 @@ fail() {
 for command_name in rsync sha256sum find chmod chown systemctl readlink ln mv; do
     command -v "$command_name" >/dev/null || fail "required remote command is missing: $command_name"
 done
-[[ -L $current_link ]] || fail "current must be a symlink: $current_link"
-old=$(readlink -f -- "$current_link") || fail 'cannot resolve current release'
-[[ -d $old ]] || fail "current does not resolve to a directory: $old"
-case $old in
-    "$releases_dir"/*) ;;
-    *) fail "current points outside release root: $old" ;;
-esac
+if [[ -L $current_link ]]; then
+    deployment_mode=EXISTING
+    old=$(readlink -f -- "$current_link") || fail 'cannot resolve current release'
+    [[ -d $old ]] || fail "current does not resolve to a directory: $old"
+    case $old in
+        "$releases_dir"/*) ;;
+        *) fail "current points outside release root: $old" ;;
+    esac
+elif [[ ! -e $current_link ]]; then
+    deployment_mode=FIRST_DEPLOYMENT
+    old=''
+else
+    fail "current exists but is not a symlink: $current_link"
+fi
 systemctl cat "$service" >/dev/null || fail "systemd service does not exist: $service"
-[[ $final != "$old" ]] || fail 'new release is already current'
+[[ $deployment_mode != EXISTING || $final != "$old" ]] || fail 'new release is already current'
 [[ ! -e $final && ! -L $final ]] || fail "remote release already exists: $final"
 [[ ! -e $staging && ! -L $staging ]] || fail "remote staging already exists: $staging"
 
@@ -273,7 +289,7 @@ if ! mkdir -m 0700 -- "$staging"; then
     fail "cannot create staging: $staging"
 fi
 
-printf '%s\n' "$old"
+printf '%s\t%s\n' "$deployment_mode" "$old"
 REMOTE_PREPARE
 }
 
@@ -337,14 +353,15 @@ REMOTE_CLEANUP
 }
 
 activate_release() {
-    local old_release=$1
-    local remote_staging=$2
-    local remote_final=$3
-    local link_suffix=$4
+    local deployment_mode=$1
+    local old_release=$2
+    local remote_staging=$3
+    local remote_final=$4
+    local link_suffix=$5
 
     ssh "${SSH_OPTIONS[@]}" "$SSH_HOST" bash -s -- \
         "$RELEASES_DIR" "$CURRENT_LINK" "$DEPLOY_LOCK" "$SERVICE" "$HEALTH_URL" \
-        "$HEALTH_ATTEMPTS" "$HEALTH_INTERVAL" "$old_release" "$remote_staging" \
+        "$HEALTH_ATTEMPTS" "$HEALTH_INTERVAL" "$deployment_mode" "$old_release" "$remote_staging" \
         "$remote_final" "$link_suffix" <<'REMOTE_ACTIVATE'
 set -Eeuo pipefail
 IFS=$'\n\t'
@@ -356,10 +373,11 @@ service=$4
 health_url=$5
 health_attempts=$6
 health_interval=$7
-expected_old=$8
-staging=$9
-final=${10}
-link_suffix=${11}
+deployment_mode=$8
+expected_old=$9
+staging=${10}
+final=${11}
+link_suffix=${12}
 next_link="${current_link}.next-${link_suffix}"
 rollback_link="${current_link}.rollback-${link_suffix}"
 
@@ -409,14 +427,22 @@ rollback() {
 }
 
 [[ -d $deploy_lock ]] || exit 1
-[[ -L $current_link ]] || exit 1
-actual_old=$(readlink -f -- "$current_link") || exit 1
-[[ $actual_old == "$expected_old" ]] || {
-    printf '[deploy:remote] ERROR: current changed since preflight: %s\n' "$actual_old" >&2
-    exit 1
-}
-case $actual_old in
-    "$releases_dir"/*) ;;
+case $deployment_mode in
+    EXISTING)
+        [[ -L $current_link ]] || exit 1
+        actual_old=$(readlink -f -- "$current_link") || exit 1
+        [[ $actual_old == "$expected_old" ]] || {
+            printf '[deploy:remote] ERROR: current changed since preflight: %s\n' "$actual_old" >&2
+            exit 1
+        }
+        case $actual_old in
+            "$releases_dir"/*) ;;
+            *) exit 1 ;;
+        esac
+        ;;
+    FIRST_DEPLOYMENT)
+        [[ -z $expected_old && ! -e $current_link && ! -L $current_link ]] || exit 1
+        ;;
     *) exit 1 ;;
 esac
 [[ -d $staging ]] || exit 1
@@ -438,17 +464,26 @@ if systemctl restart "$service" && health_check; then
     exit 0
 fi
 
-if rollback; then
-    rmdir -- "$deploy_lock"
-    printf '[deploy:remote] rollback completed; old release is healthy\n' >&2
-    exit 20
+if [[ $deployment_mode == EXISTING ]]; then
+    if rollback; then
+        rmdir -- "$deploy_lock"
+        printf '[deploy:remote] rollback completed; old release is healthy\n' >&2
+        exit 20
+    fi
+
+    printf '[deploy:remote] ERROR: rollback failed; manual recovery is required\n' >&2
+    printf '[deploy:remote] current=%s\n' "$(readlink -f -- "$current_link" 2>/dev/null || printf unresolved)" >&2
+    systemctl status "$service" --no-pager -l >&2 || true
+    journalctl -u "$service" -n 80 --no-pager >&2 || true
+    exit 21
 fi
 
-printf '[deploy:remote] ERROR: rollback failed; manual recovery is required\n' >&2
+printf '[deploy:remote] ERROR: FIRST_DEPLOYMENT health failure; no rollback target exists\n' >&2
 printf '[deploy:remote] current=%s\n' "$(readlink -f -- "$current_link" 2>/dev/null || printf unresolved)" >&2
 systemctl status "$service" --no-pager -l >&2 || true
 journalctl -u "$service" -n 80 --no-pager >&2 || true
-exit 21
+printf '[deploy:remote] RESULT=FIRST_DEPLOYMENT_HEALTH_FAILURE\n'
+exit 22
 REMOTE_ACTIVATE
 }
 
@@ -468,7 +503,7 @@ check_public() {
 }
 
 main() {
-    local release_input release_dir remote_name remote_final remote_staging old_release
+    local release_input release_dir remote_name remote_final remote_staging old_release deployment_mode prepare_output
     local link_suffix activation_rc activation_output
     local staging_ready=0 activation_started=0
 
@@ -501,11 +536,17 @@ main() {
     remote_staging="$RELEASES_DIR/.${remote_name}.staging-${link_suffix}"
 
     log "remote preflight and lock: $SSH_HOST"
-    if ! old_release=$(prepare_remote "$remote_staging" "$remote_final"); then
+    if ! prepare_output=$(prepare_remote "$remote_staging" "$remote_final"); then
         error 'deployment stopped before upload; production current was not changed'
         error "if SSH was interrupted, check whether $DEPLOY_LOCK was left behind before retrying"
         return 1
     fi
+    IFS=$'\t' read -r deployment_mode old_release <<<"$prepare_output"
+    [[ ( $deployment_mode == EXISTING && -n $old_release ) || ( $deployment_mode == FIRST_DEPLOYMENT && -z $old_release ) ]] || {
+        error 'remote preflight returned an invalid deployment mode'
+        manual_check_hint
+        return 1
+    }
     staging_ready=1
 
     log "uploading release to staging: $remote_staging"
@@ -527,7 +568,7 @@ main() {
     activation_started=1
     log "activating release: $remote_final"
     set +e
-    activation_output=$(activate_release "$old_release" "$remote_staging" "$remote_final" "$link_suffix")
+    activation_output=$(activate_release "$deployment_mode" "$old_release" "$remote_staging" "$remote_final" "$link_suffix")
     activation_rc=$?
     set -e
     trap - INT TERM HUP
@@ -540,6 +581,12 @@ main() {
         20)
             printf '%s\n' "$activation_output"
             error 'new release failed, but the old release was rolled back and is healthy'
+            return 1
+            ;;
+        22)
+            printf '%s\n' "$activation_output"
+            error 'FIRST_DEPLOYMENT health failure; no rollback was attempted and deployment evidence was preserved'
+            manual_check_hint
             return 1
             ;;
         *)
