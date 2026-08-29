@@ -113,14 +113,14 @@ Surface Review 通过并完成其中所有修复后，使用 `assets-go-dev.shui
 
 随后按 [生产运维手册](PRODUCTION_RUNBOOK.md) 生成 Linux/amd64 production bundle，并核对 `release.json`、bundle 内 `site-metadata.json`、文件集合和 `SHA256SUMS`。`publish` 只生成 release，不创建 hostname、service、TLS、vhost 或部署脚本 profile。
 
-随后执行该手册的“新 locale 首次生产部署”：先完成并记录 production profile、基础设施和 AdSense production 接入，再部署已验收 bundle。首次 deployment 的 `current` 可以尚不存在；脚本首次原子创建它后，如新 release 健康检查失败，没有旧 release 可回滚，必须保留现场并人工检查。已有 locale 的日常 deployment 继续要求 `current` 为指向 release root 内既有 release 的合法 symlink，并沿用既有 rollback 流程。首次激活的页面必须已是最终的启用广告形态，不安排“先无广告上线、再接广告”的两次发布。当前 `scripts/deploy-production.sh` 对 locale fail closed；新 locale 未经明确 profile 实现和验证前，不能假定通用命令已经支持它。
+随后执行该手册的“新 locale 首次生产部署”：先完成并记录 production profile、基础设施和 AdSense production 接入，再部署已验收 bundle。首次 deployment 的 `current` 可以尚不存在；脚本首次原子创建它后，如新 release 健康检查失败，没有旧 release 可回滚，必须保留现场并人工检查。已有 locale 的日常 deployment 继续要求 `current` 为指向 release root 内既有 release 的合法 symlink，并沿用既有 rollback 流程。首次激活的页面必须已是最终的启用广告形态，不安排“先无广告上线、再接广告”的两次发布。当前 `scripts/deploy-production.sh` 与 `scripts/verify-production.sh` 都对 locale fail closed；新 locale 未经明确 deployment/verification profile 实现和测试前，不能假定通用命令已经支持它。
 
 ## 7. 正式上线验收与移交
 
 首次上线至少完成三层验收：
 
-- **源站层**：service active、loopback 连续健康、关键路由和静态资源正确、`/socket` 与保留路径符合 production 安全边界；
-- **公网层**：HTTPS、CDN/DNS、首页、`/tour/`、`/tour/list`、课程页、静态资源、`robots.txt`、sitemap 全量 URL 与 canonical host；
+- **源站层**：deployment 已完成 service 与 loopback 连续健康；hostname purge 后运行 `scripts/verify-production.sh <release-dir>`，确认目标 `current`、service、lock、关键路由和静态资源；
+- **公网层**：同一 machine acceptance 命令确认 HTTPS 关键路由、首页、`/tour/`、`/tour/list`、课程页、静态资源、`robots.txt`、sitemap 全量 URL、canonical/locale identity、`/socket` 404，并记录 CDN cache status；cache observation 要求 HTTP 200、对应 header 存在且状态属于正式 allowlist，但不以固定 `MISS → HIT` 时序或固定次数内出现 `HIT` 作为上线 gate；
 - **真实浏览器层**：桌面与移动端页面、导航、语言选择器、Run / Format / Reset、runtime message，以及 Network 中真实 Playground endpoint 和允许的 Origin；并按生产运维手册对最终课程页做轻量广告确认。
 
-首次 production 部署后只做这一次最终验收；不执行“无广告完整验收 → 开广告 → 再完整验收”的双重流程。最后重新执行 production 上的 rendered surface acceptance 关键项，在同一 Surface Review evidence 中记录 public URL、profile、证书/vhost 路径、当前 release、sitemap、Playground 与轻量广告验收结果，以及最终 `decision = passed | failed`。只有最终通过，该 locale 才从“首次部署”转入 [日常维护部署](PRODUCTION_RUNBOOK.md#已有-locale-日常维护部署)。
+正式顺序为 `deploy-production.sh` → EdgeOne/Cloudflare hostname purge **HUMAN GATE** → `verify-production.sh <release-dir>` 一键 machine acceptance → browser acceptance **HUMAN GATE**。verification 脚本不执行 purge，也不以 curl 代替 rendered surface、交互、Playground Network 或轻量广告验收。首次 production 部署后只做这一次最终验收；不执行“无广告完整验收 → 开广告 → 再完整验收”的双重流程。最后重新执行 production 上的 rendered surface acceptance 关键项，在同一 Surface Review evidence 中记录 public URL、profile、证书/vhost 路径、当前 release、sitemap、Playground 与轻量广告验收结果，以及最终 `decision = passed | failed`。只有最终通过，该 locale 才从“首次部署”转入 [日常维护部署](PRODUCTION_RUNBOOK.md#已有-locale-日常维护部署)。

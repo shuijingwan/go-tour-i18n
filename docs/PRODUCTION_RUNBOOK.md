@@ -26,6 +26,7 @@
 
 - `zh-CN`：<https://go-dev.shuijingwanwq.com/>，服务 `go-tour.service`，监听 `127.0.0.1:3999`，data root 为 `/data/go-tour/`。
 - `ja-JP`：<https://ja-go-dev.shuijingwanwq.com/>，使用 Cloudflare Free；服务 `go-tour-ja-JP.service`，监听 `127.0.0.1:4000`，data root 为 `/data/go-tour-ja-JP/`，当前 release 为 `/data/go-tour-ja-JP/releases/20260824-ja-JP-164fecdd`。
+- `de-DE`：<https://de-go-dev.shuijingwanwq.com/>，使用 Cloudflare Free；服务 `go-tour-de-DE.service`，监听 `127.0.0.1:4001`，data root 为 `/data/go-tour-de-DE/`。
 
 `zh-CN` 请求链路为 Cloudflare 权威 DNS → 腾讯云 EdgeOne → 源站 `121.40.248.29:443` → Nginx → `127.0.0.1:3999`。EdgeOne 到源站使用 HTTPS，回源 Host 为 `go-dev.shuijingwanwq.com`。
 
@@ -35,9 +36,12 @@
 
 - `go-dev.shuijingwanwq.com`：EdgeOne 节点缓存 TTL 为 30 天，匹配整个 hostname，强制缓存关闭；已用首页 `/` 与课程页 `/tour/welcome/1` 验证公网 `MISS → HIT`。
 - `ja-go-dev.shuijingwanwq.com`：Cloudflare Cache Rule 将整个 hostname 标记为 Eligible for cache，Edge Cache TTL 为 1 个月；该规则与 `assets-go-dev.shuijingwanwq.com` 共用。首页 `/` 与课程页 `/tour/welcome/1` 均已验证 `MISS → HIT`。
+- `de-go-dev.shuijingwanwq.com`：Cloudflare Cache Rule 将整个 hostname 标记为 Eligible for cache，Edge Cache TTL 为 1 个月；首页 `/` 与课程页 `/tour/welcome/1` 均已验证 `MISS → HIT`。
 - `assets-go-dev.shuijingwanwq.com`：Cloudflare Edge Cache TTL 为 1 个月，Browser Cache TTL 不主动覆盖；shared-assets 继续按部署脚本输出的实际 changed URLs 做精确 Custom Purge。
 
-language production 使用固定 URL，因此 release 更新后不能等待约 1 个月自然过期。`zh-CN` release 激活后应对 EdgeOne 执行 `go-dev.shuijingwanwq.com` Hostname 缓存刷新；`ja-JP` release 激活后应在 Cloudflare Custom Purge 中按 Hostname 刷新 `ja-go-dev.shuijingwanwq.com`。不得为刷新单一 language hostname 使用会影响同 zone 其他 hostname 的 Purge Everything。shared-assets 继续使用已有的 changed-URL 精确 purge 流程，不改为整 hostname purge。
+language production 使用固定 URL，因此 release 更新后不能等待约 1 个月自然过期。`zh-CN` release 激活后应对 EdgeOne 执行 `go-dev.shuijingwanwq.com` Hostname 缓存刷新；`ja-JP` 与 `de-DE` release 激活后应在 Cloudflare Custom Purge 中按 Hostname 刷新各自 production hostname。不得为刷新单一 language hostname 使用会影响同 zone 其他 hostname 的 Purge Everything。shared-assets 继续使用已有的 changed-URL 精确 purge 流程，不改为整 hostname purge。
+
+hostname purge 后观察到 `MISS → HIT` 是理想结果，但真实 CDN 可能在连续多次请求中仍返回 `MISS`，因此 language production 的 machine gate 不以固定次数内出现 `HIT` 或任何固定 cache status 时序作为通过条件。正式 verification 只记录 cache status，并确认请求进入预期的 cache eligibility 路径。
 
 公网域名迁移不改变 `go-tour.service`、`/data/go-tour/`、仓库名或 Go module path。
 
@@ -230,6 +234,30 @@ ssh aliyun 'journalctl -u go-tour.service -n 80 --no-pager'
 ```
 
 localhost 连续健康后，脚本才检查对应 profile 的 public URL。正式域名异常属于 CDN、HTTPS、Nginx 或其他外部验收问题，不会自动回滚一个已经稳定健康的源站 release。脚本不调用 CDN API，也不自动清理缓存；language release 成功后必须按“Production CDN 缓存策略”主动刷新对应 hostname，并完成后续 CDN 验收。public HTTP 200 只证明公网入口可用，不能替代 hostname purge 或证明新 release 已在全部边缘节点生效。
+
+### Production machine acceptance
+
+部署完成后，production 的正式顺序固定为：
+
+```text
+scripts/deploy-production.sh <release-dir>
+→ EdgeOne / Cloudflare hostname purge HUMAN GATE
+→ scripts/verify-production.sh <release-dir>
+→ browser acceptance HUMAN GATE
+```
+
+`scripts/verify-production.sh` 从 release 目录的 `release.json` 读取 locale，并以与部署脚本一致的 fail-closed profile 选择 releases/current/lock、service、loopback origin、production hostname 和 CDN header；当前支持 `zh-CN`、`ja-JP`、`de-DE`。调用者不得另外传 hostname、port、service 或 remote release name：
+
+```sh
+scripts/verify-production.sh \
+  /tmp/go-tour-release-YYYYMMDD-<locale>-<shortsha>
+```
+
+脚本只执行只读、机器可确定的验收：本地 release identity；远端 `current` 精确指向目标 release、service active、deployment lock 不存在；7 条 source 与 public 关键路由严格 HTTP 200；首页和 welcome 页精确 `html lang` 与 canonical；公网 sitemap 恰好包含 105 个 HTTPS、正确 production hostname、无重复且逐 URL HTTP 200 的 URL；普通及 WebSocket Upgrade `/socket` 均为 404。hostname purge 后，对首页和 welcome 页各请求 3 次并记录 cache status：`ja-JP`、`de-DE` 读取 `CF-Cache-Status`，`zh-CN` 读取 `EO-Cache-Status`。每次都必须为 HTTP 200 且 header 存在；`MISS`、`HIT`、`EXPIRED`、`REVALIDATED`、`UPDATING`、`STALE` 均为允许的 observation，顺序不受限制，3 次全为 `MISS` 仍通过并注明 cache 尚未 warm。`BYPASS`、`DYNAMIC`、header 缺失或其他未允许状态表示请求没有进入预期 cache eligibility 路径，必须 fail closed。任一检查失败均输出 stage、URL/check、expected、actual 并以非零状态结束；全部通过时输出 `PRODUCTION MACHINE ACCEPTANCE: PASS`。
+
+脚本不调用 EdgeOne 或 Cloudflare API，不搜索 token、不执行 purge、不修改 DNS/Cache Rule。hostname purge 是运行脚本前的 **HUMAN GATE**；machine verification 只观察 purge 后实际返回的三个 cache status，不要求第一次为 `MISS`、后续为 `HIT`，也不要求固定次数内出现 `HIT`。
+
+真实浏览器仍是独立 **HUMAN GATE**：桌面/移动端 rendered surface、语言选择器交互、Run / Format / Reset、runtime message、Playground Network endpoint/Origin，以及轻量广告真实请求机会、课程布局和 SPA 下一页均不由 curl machine acceptance 替代。
 
 ## 非中文共享静态资源第一版
 
