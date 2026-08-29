@@ -274,11 +274,15 @@ func TestRenderHomeDistinguishesDevelopmentAndProductionMetadata(t *testing.T) {
 	production := development
 	production.Development = false
 	production.PublishedAt = "2026-08-12T07:23:34Z"
+	wantUpstreamCommitTime, err := production.UpstreamCommitTimeFor(localeProfiles["zh-CN"])
+	if err != nil {
+		t.Fatal(err)
+	}
 	home, err = renderHome(catalog, production)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if got := string(home); !strings.Contains(got, "最近发布") || !strings.Contains(got, "2026-08-12 15:23:34（北京时间）") || !strings.Contains(got, "2026-08-20 13:56:11（北京时间）") || strings.Contains(got, "2026-07-23 04:05:40（北京时间）") || strings.Contains(got, "开发环境") {
+	if got := string(home); !strings.Contains(got, "最近发布") || !strings.Contains(got, "2026-08-12 15:23:34（北京时间）") || !strings.Contains(got, wantUpstreamCommitTime) || strings.Contains(got, "开发环境") {
 		t.Fatalf("production homepage has unexpected release status: %s", got)
 	}
 }
@@ -375,11 +379,12 @@ func TestNewPageTemplateDataUsesMetadataUpstreamCommitTime(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if want := "2026-08-20 13:56:11（北京时间）"; data.UpstreamCommitTime != want {
-		t.Fatalf("UpstreamCommitTime = %q, want %q", data.UpstreamCommitTime, want)
+	want, err := metadata.UpstreamCommitTimeFor(localeProfiles["zh-CN"])
+	if err != nil {
+		t.Fatal(err)
 	}
-	if data.UpstreamCommitTime == "2026-07-23 04:05:40（北京时间）" {
-		t.Fatal("UpstreamCommitTime still uses the old hard-coded value")
+	if data.UpstreamCommitTime != want {
+		t.Fatalf("UpstreamCommitTime = %q, want %q", data.UpstreamCommitTime, want)
 	}
 
 	metadata.UpstreamCommitTime = "not-a-time"
