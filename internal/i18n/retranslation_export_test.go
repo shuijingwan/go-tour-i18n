@@ -76,7 +76,7 @@ func TestRetranslationExportSupportsLocaleAwareBatchPath(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if result.BatchID != "chatgpt-ja-JP-001" || !strings.HasPrefix(result.BatchPath, "data/retranslation-runs/ja-JP/") {
+	if result.BatchID != "codex-ja-JP-001" || !strings.HasPrefix(result.BatchPath, "data/retranslation-runs/ja-JP/") {
 		t.Fatalf("export result = %+v", result)
 	}
 	manifest := readRetranslationManifestForLocale(t, root, locale, result.BatchID)
@@ -95,7 +95,7 @@ func TestRetranslationExportAutomaticBatchProgression(t *testing.T) {
 		if err != nil {
 			t.Fatalf("batch %d: %v", batch+1, err)
 		}
-		wantBatchID := "chatgpt-zh-CN-00" + fmtInt(batch+1)
+		wantBatchID := "codex-zh-CN-00" + fmtInt(batch+1)
 		if result.BatchID != wantBatchID || result.UnitCount != wantCount || result.AllExported {
 			t.Fatalf("batch %d result = %+v, want id=%s count=%d", batch+1, result, wantBatchID, wantCount)
 		}
@@ -142,6 +142,61 @@ func TestRetranslationExportAutomaticBatchProgression(t *testing.T) {
 	}
 	if !result.AllExported || result.UnitCount != 0 || len(after) != len(before) {
 		t.Fatalf("completed export result=%+v directories=%d->%d", result, len(before), len(after))
+	}
+}
+
+func TestRetranslationExportDefaultBatchIDScansCompatibleHistory(t *testing.T) {
+	const locale = "de-DE"
+	cases := []struct {
+		name      string
+		history   []string
+		unrelated bool
+		want      string
+	}{
+		{name: "no history", want: "codex-de-DE-001"},
+		{name: "chatgpt history", history: []string{"chatgpt-de-DE-013"}, want: "codex-de-DE-014"},
+		{name: "codex history", history: []string{"codex-de-DE-013"}, want: "codex-de-DE-014"},
+		{name: "mixed history", history: []string{"chatgpt-de-DE-009", "codex-de-DE-014"}, want: "codex-de-DE-015"},
+		{name: "unrelated directory", unrelated: true, want: "codex-de-DE-001"},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			root := t.TempDir()
+			writeRetranslationTestGlossaryForLocale(t, root, locale)
+			for _, batchID := range tc.history {
+				writeRetranslationHistoryManifest(t, root, locale, batchID)
+			}
+			if tc.unrelated {
+				if err := os.MkdirAll(filepath.Join(root, "data", "retranslation-runs", locale, "notes"), 0755); err != nil {
+					t.Fatal(err)
+				}
+			}
+			result, err := ExportRetranslationBatch(root, retranslationTestCatalog(1), RetranslationExportOptions{
+				Locale: locale, UnitIDs: []string{"lesson/1"}, AllowReexport: true,
+			})
+			if err != nil {
+				t.Fatal(err)
+			}
+			if result.BatchID != tc.want {
+				t.Fatalf("batch ID = %q, want %q", result.BatchID, tc.want)
+			}
+		})
+	}
+}
+
+func writeRetranslationHistoryManifest(t *testing.T, root, locale, batchID string) {
+	t.Helper()
+	dir := filepath.Join(root, "data", "retranslation-runs", locale, batchID)
+	if err := os.MkdirAll(dir, 0755); err != nil {
+		t.Fatal(err)
+	}
+	manifest := RetranslationBatchManifest{
+		SchemaVersion: 2, BatchID: batchID, Locale: locale, ProtectionMode: "default",
+		UnitKind: UnitKindPage, UnitCount: 1,
+		Units: []RetranslationBatchUnit{{UnitID: "lesson/1", UnitKind: UnitKindPage}},
+	}
+	if err := writeTranslationJSON(filepath.Join(dir, "manifest.json"), manifest); err != nil {
+		t.Fatal(err)
 	}
 }
 
@@ -521,14 +576,14 @@ func TestRetranslationExportManualSelectionErrors(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if revision.BatchID != "chatgpt-zh-CN-002" || len(revision.UnitIDs) != 1 || revision.UnitIDs[0] != "lesson/1" {
+	if revision.BatchID != "codex-zh-CN-002" || len(revision.UnitIDs) != 1 || revision.UnitIDs[0] != "lesson/1" {
 		t.Fatalf("revision result = %+v", revision)
 	}
 	automatic, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", Limit: 10})
 	if err != nil {
 		t.Fatal(err)
 	}
-	if automatic.BatchID != "chatgpt-zh-CN-003" || !reflect.DeepEqual(automatic.UnitIDs, []string{"lesson/2", "lesson/3"}) {
+	if automatic.BatchID != "codex-zh-CN-003" || !reflect.DeepEqual(automatic.UnitIDs, []string{"lesson/2", "lesson/3"}) {
 		t.Fatalf("automatic result after revision = %+v", automatic)
 	}
 }
@@ -568,7 +623,7 @@ func TestRetranslationExportRejectsBrokenAndDuplicateHistory(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		if result.BatchID != "chatgpt-zh-CN-003" || !reflect.DeepEqual(result.UnitIDs, []string{"lesson/2", "lesson/3"}) {
+		if result.BatchID != "codex-zh-CN-003" || !reflect.DeepEqual(result.UnitIDs, []string{"lesson/2", "lesson/3"}) {
 			t.Fatalf("automatic result with duplicate history = %+v", result)
 		}
 	})
@@ -659,7 +714,7 @@ func TestRetranslationExportSelectsReadyStatusWithStaleSource(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if first.BatchID != "chatgpt-zh-CN-001" || second.BatchID != "chatgpt-zh-CN-002" || !reflect.DeepEqual(second.UnitIDs, []string{current.Pages[0].ID}) {
+	if first.BatchID != "codex-zh-CN-001" || second.BatchID != "codex-zh-CN-002" || !reflect.DeepEqual(second.UnitIDs, []string{current.Pages[0].ID}) {
 		t.Fatalf("stale ready export first=%+v second=%+v", first, second)
 	}
 	third, err := ExportRetranslationBatch(root, current, RetranslationExportOptions{Locale: "zh-CN", Limit: 1})

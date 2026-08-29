@@ -126,7 +126,7 @@ func TestQualityCheckSnapshotLatestRevisionBatchWinsPerUnit(t *testing.T) {
 
 func TestQualityCheckSnapshotRejectsCrossPrefixDuplicateBatchNumber(t *testing.T) {
 	root, catalog, _ := processedPromotionFixture(t, 1)
-	addProcessedPromotionBatch(t, root, catalog, "codex-zh-CN-001", []string{"lesson/1"})
+	addProcessedPromotionBatch(t, root, catalog, "chatgpt-zh-CN-001", []string{"lesson/1"})
 	materializeSnapshotSources(t, root, catalog)
 
 	_, _, err := CreateQualityCheckCandidateSnapshot(root, catalog, QualityCheckSnapshotOptions{Locale: "zh-CN", SnapshotID: "ambiguous"})

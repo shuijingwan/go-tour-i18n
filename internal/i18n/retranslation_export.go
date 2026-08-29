@@ -114,7 +114,7 @@ func ExportRetranslationBatch(root string, catalog *Catalog, options Retranslati
 
 	batchID := options.BatchID
 	if batchID == "" {
-		batchID = fmt.Sprintf("chatgpt-%s-%03d", options.Locale, nextNumber)
+		batchID = fmt.Sprintf("codex-%s-%03d", options.Locale, nextNumber)
 	}
 	if err := validateBatchID(batchID); err != nil {
 		return nil, err
@@ -346,15 +346,15 @@ func scanRetranslationBatches(base, locale string, catalog *Catalog) (map[string
 	for _, example := range catalog.Examples {
 		known[example.ID] = UnitKindExample
 	}
-	prefix := "chatgpt-" + locale + "-"
-	batchPattern := regexp.MustCompile("^" + regexp.QuoteMeta(prefix) + `([0-9]+)$`)
+	batchPattern := regexp.MustCompile(`^(?:chatgpt|codex)-` + regexp.QuoteMeta(locale) + `-([0-9]+)$`)
 	nextNumber := 1
 	sort.Slice(entries, func(i, j int) bool { return entries[i].Name() < entries[j].Name() })
 	for _, entry := range entries {
 		if !entry.IsDir() || strings.HasPrefix(entry.Name(), ".") {
 			continue
 		}
-		if match := batchPattern.FindStringSubmatch(entry.Name()); match != nil {
+		match := batchPattern.FindStringSubmatch(entry.Name())
+		if match != nil {
 			var number int
 			if _, err := fmt.Sscanf(match[1], "%d", &number); err == nil && number >= nextNumber {
 				nextNumber = number + 1
@@ -362,6 +362,9 @@ func scanRetranslationBatches(base, locale string, catalog *Catalog) (map[string
 		}
 		manifestPath := filepath.Join(base, entry.Name(), "manifest.json")
 		data, err := os.ReadFile(manifestPath)
+		if os.IsNotExist(err) && match == nil {
+			continue
+		}
 		if err != nil {
 			return nil, 0, fmt.Errorf("read retranslation manifest %s: %w", filepath.ToSlash(manifestPath), err)
 		}

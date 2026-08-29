@@ -422,16 +422,7 @@ func TestRetranslationPromoteRejectsIncompleteAndInvalidEvidence(t *testing.T) {
 			}
 		}, "illegal retranslation batch"},
 		{"ambiguous batch number", func(t *testing.T, root string, catalog *Catalog, batch string) {
-			source := filepath.Join(root, "data", "retranslation-runs", "zh-CN", batch)
-			target := filepath.Join(root, "data", "retranslation-runs", "zh-CN", "chatgpt-zh-CN-01")
-			if err := copyTestTree(source, target); err != nil {
-				t.Fatal(err)
-			}
-			manifest := readRetranslationManifestAt(t, filepath.Join(target, "manifest.json"))
-			manifest.BatchID = "chatgpt-zh-CN-01"
-			if err := writeTranslationJSON(filepath.Join(target, "manifest.json"), manifest); err != nil {
-				t.Fatal(err)
-			}
+			addProcessedPromotionBatch(t, root, catalog, "chatgpt-zh-CN-001", []string{"lesson/1"})
 		}, "ambiguous or invalid retranslation batch number"},
 		{"result validation mismatch", func(t *testing.T, root string, catalog *Catalog, batch string) {
 			path := filepath.Join(root, "data", "retranslation-runs", "zh-CN", batch, "validation", "lesson-1.json")

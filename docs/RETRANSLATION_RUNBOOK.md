@@ -30,6 +30,8 @@ go run -mod=readonly ./cmd/tour-i18n status check --locale <locale>
 
 使用 `retranslation export` 创建 batch。开始翻译前，Codex 必须读取当前 batch 的：
 
+未传 `--batch-id` 时，新 batch 自动命名为 `codex-<locale>-NNN`。自动编号同时扫描保留的 `chatgpt-<locale>-NNN` 与 `codex-<locale>-NNN` 历史目录，取实际最大序号后递增；历史 batch 名称、manifest 和 evidence 均保持不变。
+
 1. `manifest.json`；
 2. manifest 列出的全部 `inputs/*`；
 3. `locales/<locale>/glossary.yaml`。
