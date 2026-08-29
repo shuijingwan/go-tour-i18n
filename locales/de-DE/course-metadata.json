@@ -258,7 +258,7 @@
     {
       "page_id": "basics/14",
       "route": "/basics/14",
-      "description": "Die Typinferenz leitet Variablentypen aus der rechten Seite ab; bei untypisierten numerischen Konstanten entscheiden Wert und Genauigkeit über den Typ.",
+      "description": "Die Typinferenz leitet Variablentypen aus der rechten Seite ab; bei untypisierten numerischen Konstanten bestimmt die Genauigkeit der Konstante den Typ.",
       "source_sha256": "21c4077c25629545dee0313b8b6b03e709edc4a74e1d73d9f4c9b0a49e46f6b3",
       "target_sha256": "12cacc5f08525a8a0484a1719dce27ed77dbabb0e55ef745c88c6bc36f02e163",
       "glossary_sha256": "e13b933c218596b3cf8b522d892bc7d08aba7d6008719e7d77234c958b4ad6d5",
@@ -266,7 +266,7 @@
         "provider": "codex",
         "model": "gpt-5.6-sol-high",
         "prompt_version": "course-seo-description-v1",
-        "generated_at": "2026-08-28T15:55:14Z"
+        "generated_at": "2026-08-28T16:24:02Z"
       }
     },
     {
@@ -426,7 +426,7 @@
     {
       "page_id": "flowcontrol/9",
       "route": "/flowcontrol/9",
-      "description": "Switch verkürzt if-else-Folgen; Go führt nur den ersten passenden Zweig aus, benötigt kein break und erlaubt nicht konstante Werte beliebiger Typen.",
+      "description": "Switch verkürzt if-else-Folgen; Go führt nur den ersten passenden Zweig aus, benötigt kein break, und die Zweigwerte müssen weder konstant noch ganzzahlig sein.",
       "source_sha256": "abdc4c295fa7b4aec2616acf83badbbf2b581a9f62e41d03ca2ff984ebb6f7ed",
       "target_sha256": "74b6d4d6b56c3e405237d43d0f8afad35284e5fb1221cdb5cc9ca2bc6e8fb6c5",
       "glossary_sha256": "e13b933c218596b3cf8b522d892bc7d08aba7d6008719e7d77234c958b4ad6d5",
@@ -434,7 +434,7 @@
         "provider": "codex",
         "model": "gpt-5.6-sol-high",
         "prompt_version": "course-seo-description-v1",
-        "generated_at": "2026-08-28T15:55:14Z"
+        "generated_at": "2026-08-28T16:24:02Z"
       }
     },
     {
@@ -566,7 +566,7 @@
     {
       "page_id": "moretypes/5",
       "route": "/moretypes/5",
-      "description": "Struct-Literale erzeugen neue Struct-Werte; benannte Felder können in beliebiger Reihenfolge ausgewählt und mit \u0026 als Zeiger zurückgegeben werden.",
+      "description": "Struct-Literale erzeugen neue Struct-Werte; mit Name: lässt sich eine Teilmenge der Felder ohne feste Reihenfolge angeben, während \u0026 einen Zeiger auf den gesamten Struct-Wert liefert.",
       "source_sha256": "cf9282456e2a91274c1b135a68fce58dd1590f6a2d7153f0619c97ded8bd00d1",
       "target_sha256": "a6be5f1f4d5a15d457d6acaba003da44baf7130babaf9c752b1e68aff7b3ff18",
       "glossary_sha256": "e13b933c218596b3cf8b522d892bc7d08aba7d6008719e7d77234c958b4ad6d5",
@@ -574,7 +574,7 @@
         "provider": "codex",
         "model": "gpt-5.6-sol-high",
         "prompt_version": "course-seo-description-v1",
-        "generated_at": "2026-08-28T15:55:14Z"
+        "generated_at": "2026-08-28T16:24:02Z"
       }
     },
     {
@@ -706,7 +706,7 @@
     {
       "page_id": "moretypes/15",
       "route": "/moretypes/15",
-      "description": "Append hängt Werte an eine Slice an und liefert die resultierende Slice; reicht das zugrunde liegende Array nicht aus, wird ein größeres reserviert.",
+      "description": "Die eingebaute Funktion append hängt Werte an eine Slice an und liefert die resultierende Slice; reicht das zugrunde liegende Array nicht aus, wird ein größeres reserviert.",
       "source_sha256": "f2fc257e7c5f118321acc3b75e946053601532d411e8540534280d7fba795289",
       "target_sha256": "5916a5ce4cf5b562e4d5f0d6a7c2dbf784c650dcea46c3cc81b804a61ea478f3",
       "glossary_sha256": "e13b933c218596b3cf8b522d892bc7d08aba7d6008719e7d77234c958b4ad6d5",
@@ -714,7 +714,7 @@
         "provider": "codex",
         "model": "gpt-5.6-sol-high",
         "prompt_version": "course-seo-description-v1",
-        "generated_at": "2026-08-28T15:55:14Z"
+        "generated_at": "2026-08-28T16:24:02Z"
       }
     },
     {
@@ -1252,7 +1252,7 @@
     {
       "page_id": "generics/1",
       "route": "/generics/1",
-      "description": "Typparameter ermöglichen Funktionen für mehrere Typen; Index verwendet die eingebaute Typbeschränkung comparable für Vergleiche in beliebigen Slices.",
+      "description": "Typparameter ermöglichen Funktionen für mehrere Typen; Index durchsucht eine Slice nach einem Wert, sofern ihr Elementtyp T die eingebaute Typbeschränkung comparable erfüllt.",
       "source_sha256": "01a045105dc8c12fb1709f122d363235c19a6464d5de7587d579524aec270dd6",
       "target_sha256": "c9e2e3c7569f93ce377ebe16ab0548aaea2f1ad9f60b38ee532949bafbaeef75",
       "glossary_sha256": "e13b933c218596b3cf8b522d892bc7d08aba7d6008719e7d77234c958b4ad6d5",
@@ -1260,7 +1260,7 @@
         "provider": "codex",
         "model": "gpt-5.6-sol-high",
         "prompt_version": "course-seo-description-v1",
-        "generated_at": "2026-08-28T15:55:14Z"
+        "generated_at": "2026-08-28T16:24:02Z"
       }
     },
     {

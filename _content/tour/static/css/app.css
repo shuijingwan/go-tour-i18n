@@ -292,7 +292,7 @@ ul {
 a#run, a#kill {
     background-color: #375eab;
     color: #fff;
-    width: 40px;
+    min-width: 40px;
     text-align: center;
 }
 [data-theme='dark'] a#run, [data-theme='dark'] a#kill {
@@ -573,11 +573,17 @@ a#run, a#kill {
     #left-side {
         background: #e0ebf5;
     }
+    [data-theme='dark'] #left-side, [data-theme='dark'] #right-side {
+        background: #202224;
+    }
     #right-side {
         padding-top: 48px;
     }
     #file-menu {
         height: 32px;
+    }
+    [data-theme='dark'] #file-menu {
+        background: #171717;
     }
     .output {
         background: white;
@@ -587,19 +593,30 @@ a#run, a#kill {
     #editor-container {
         padding-bottom: 0;
     }
+    [data-theme='dark'] #editor-container {
+        background: #202224;
+    }
     .module-bar {
-        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
         background: #e0ebf5;
-        height: 42px;
+        min-height: 44px;
         padding: 0;
-        overflow: hidden;
-        text-align: center;
     }
     .module-bar * {
-        display: inline-block;
-        width: 25%;
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 44px;
+        min-height: 44px;
         font-size: 1.1em;
-        padding: 8px 0;
+        padding: 0;
+    }
+    .module-bar span {
+        flex: 1 1 auto;
+        min-width: 0;
     }
     div[horizontal-slide], div[vertical-slide] {
         display: none;
@@ -861,6 +878,48 @@ a#run, a#kill {
     font-weight: bold;
 }
 @media (max-width: 600px) {
+    .top-bar {
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        height: auto;
+        min-height: 48px;
+        padding: 8px 16px;
+        overflow: visible;
+        text-align: left;
+    }
+    .top-bar .left {
+        display: flex;
+        align-items: center;
+        flex: 1 1 0;
+        min-width: 0;
+        margin-right: 0;
+    }
+    .top-bar .right {
+        display: flex;
+        align-items: center;
+        flex: 0 0 auto;
+        margin-left: 10px;
+    }
+    .top-bar .gopherlogo {
+        flex: 0 0 auto;
+        width: 3.84375rem;
+        height: 1.5rem;
+        margin-right: 0.75rem;
+    }
+    .top-bar .logo {
+        flex: 1 1 auto;
+        min-width: 0;
+        font-size: 0.9em;
+        line-height: 1.25;
+        overflow-wrap: anywhere;
+    }
+    .wrapper {
+        top: 64px;
+    }
+    .list-wrapper {
+        top: auto;
+    }
     .toc {
         position: absolute;
         left: 0;
