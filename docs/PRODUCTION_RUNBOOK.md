@@ -87,7 +87,7 @@ Auto Ads、课程页手动广告、Angular SPA mount/unmount 生命周期、局�
 - 确认目标 locale 的 production service 引用包含有效 `TOUR_AD_HTML` 的正确 `EnvironmentFile`；该文件可由 unit 本体或既有 drop-in 引入，无需为新 locale 额外创建 drop-in；
 - 完成 Auto Ads 所需的 production 配置；
 - 准备并验收课程广告 CSS/JS 的 production asset 来源（zh-CN 为同源；非中文 locale 按共享 assets 策略）；
-- 非中文 locale 使用 shared-assets 时，在首次上线前确认共享的 `course-ad.css` 与 `course-ad.js` 已部署，且已完成缓存验收。
+- 非中文 locale 使用 shared-assets 时，在首次上线前确认共享的 `course-ad.css` 与 `course-ad.js` 已部署，且已完成缓存验收；这项广告专项检查不能替代完整 11 文件 current-state freshness gate，后者按“非中文共享静态资源第一版”和 shared-assets 发布状态机执行。
 
 此阶段只准备 production 配置和资源，不要求证明尚未激活的 production 进程已实际读取变量、正式 HTML 已生成 Auto Ads head code，或浏览器已产生真实广告请求；这些都属于激活后的最终 production acceptance。因此首次正式部署启动后即为最终“已启用广告”形态，不允许先上线无广告版本、再以第二次上线接入广告。
 
@@ -259,6 +259,9 @@ images/icons/light_mode_gm_grey_24dp.svg
 ```sh
 go run -mod=readonly ./cmd/tour-i18n assets export \
   --output /tmp/go-tour-shared-assets
+
+go run -mod=readonly ./cmd/tour-i18n assets validate \
+  --input /tmp/go-tour-shared-assets
 ```
 
 目标目录必须不存在。命令通过同级 staging 目录构建，逐字节复制固定 allowlist，生成 `SHA256SUMS`，验证文件集合与校验和后再原子重命名为目标目录。`SHA256SUMS` 只用于部署前后完整性验证，不参与 URL、cache key 或版本选择。不要把完整 `_content` 同步到 assets origin。
@@ -267,11 +270,11 @@ go run -mod=readonly ./cmd/tour-i18n assets export \
 
 `assets-go-dev.shuijingwanwq.com` 已正式部署，Cloudflare 已代理；源站为 `121.40.248.29`，origin root 为 `/data/wwwroot/assets-go-dev.shuijingwanwq.com`，Nginx vhost 为 `/usr/local/nginx/conf/vhost/assets-go-dev.shuijingwanwq.com.conf`。TLS 使用 Let's Encrypt / acme.sh / `dns_cf`，证书和私钥分别位于 `/usr/local/nginx/conf/ssl/assets-go-dev.shuijingwanwq.com.crt` 与 `/usr/local/nginx/conf/ssl/assets-go-dev.shuijingwanwq.com.key`；HTTP 80 永久跳转 HTTPS。
 
-Cloudflare Edge Cache TTL 为 1 个月。项目不主动覆盖 Browser Cache TTL，不给这些固定 URL 设置 `immutable` 或一年浏览器缓存；使用 Cloudflare/origin 默认或 Respect Existing Headers。当前正式 allowlist 为 11 个文件，`course-ad.css` 与 `course-ad.js` 已包含课程页 AdSense integration。11 文件 production origin 已完成正式部署；对实际变化的 `SHA256SUMS`、`course-ad.css`、`course-ad.js` 完成 Custom Purge 后均验证 `MISS → HIT`，公网内容 SHA-256 为 11/11 一致，三个非 allowlist boundary 路径继续返回 404。
+Cloudflare Edge Cache TTL 为 1 个月。项目不主动覆盖 Browser Cache TTL，不给这些固定 URL 设置 `immutable` 或一年浏览器缓存；使用 Cloudflare/origin 默认或 Respect Existing Headers。当前正式 allowlist 是完整 11 文件，不只 `course-ad.css` 与 `course-ad.js`；后两者已包含课程页 AdSense integration。文档中“11/11 已正式部署”记录的是一次历史 production acceptance，不是当前仓库状态的永久保证。判断当前 production 是否最新，必须以当前仓库执行正式 `assets export` / `assets validate` 所代表的完整 allowlist 内容为准，并运行下述 `scripts/deploy-shared-assets.sh` 由脚本比较 current export 与 production origin；不得依赖历史记录、Git 历史、上次部署时间或人工判断文件是否变化。任一 allowlist 文件都属于此完整比较范围，包括但不限于 `app.css`、`course-ad.css` 与 `course-ad.js`。脚本输出 changed URLs 时，必须走既有 changed URL Custom Purge 与 public validation；输出 `NO CHANGES` 时不执行 Custom Purge，但仍须完成完整 11/11 公网 SHA-256 与当前 export 的对照。不引入 assets version、query version 或 content-hash URL，也不改变 shared-assets 架构。历史首次 11 文件 production acceptance 中，对实际变化的 `SHA256SUMS`、`course-ad.css`、`course-ad.js` 已完成 Custom Purge 后的 `MISS → HIT` 验收，公网内容 SHA-256 为 11/11 一致，三个非 allowlist boundary 路径继续返回 404。
 
 ### Shared-assets production 发布状态机
 
-以下阶段 A、B、C、E、F、G 是标准终端步骤；维护者可以直接执行，也可以委托具备终端访问能力的工具执行。阶段 D 是唯一的人工 UI 门。任一阶段不满足验收条件时停止，不跳过、不把后续阶段的结果用于掩盖当前失败。
+以下阶段 A、B、C、E、F、G 是标准终端步骤；维护者可以直接执行，也可以委托具备终端访问能力的工具执行。阶段 D 是唯一的人工 UI 门。确定 current-state freshness 时，必须依次完成阶段 A、运行阶段 B 的 `scripts/deploy-shared-assets.sh` 比较 current export 与 production origin，并完成阶段 F 的完整 11/11 公网校验；只有脚本输出 changed URLs 时才执行阶段 C、D、E 的精确 Custom Purge 与缓存验收。任一阶段不满足验收条件时停止，不跳过、不把后续阶段的结果用于掩盖当前失败。
 
 #### 阶段 A：本地生成
 
@@ -280,6 +283,9 @@ Cloudflare Edge Cache TTL 为 1 个月。项目不主动覆盖 Browser Cache TTL
 ```sh
 go run -mod=readonly ./cmd/tour-i18n assets export \
   --output /tmp/go-tour-shared-assets
+
+go run -mod=readonly ./cmd/tour-i18n assets validate \
+  --input /tmp/go-tour-shared-assets
 ```
 
 核对导出恰好包含 `SHA256SUMS` 和上述 11 个 allowlist 文件，不包含完整 `_content`、symlink 或其他文件，并执行：
@@ -312,7 +318,7 @@ scripts/deploy-shared-assets.sh \
 
 固定 production profile 为 SSH alias `aliyun`、origin `/data/wwwroot/assets-go-dev.shuijingwanwq.com`、lock `/data/wwwroot/.assets-go-dev.deploy.lock`。脚本使用唯一 token 在 `/data/wwwroot/` 建立非公开 `.assets-go-dev.staging-*`，上传后在远端重新校验文件集合、SHA-256 和权限；它从当前 origin 读取并要求统一的 owner/group、目录 mode 与普通文件 mode，不修改 `/data/wwwroot/` 中其他站点的权限。
 
-如果 staging 与 origin 逐文件相同，脚本输出 `NO CHANGES`，清理 staging/lock，不创建 backup，也不产生 purge URL。如果有变化，脚本在第一次修改 origin 前创建并验证完整非公开备份 `/data/wwwroot/assets-go-dev.shuijingwanwq.com.bak.<token>`，随后才在服务器端把完整 staging tree 以受限 `rsync --delete` 同步进固定 origin。delete 只作用于该精确 origin 内，确保新增、修改、删除后 production 文件集合与正式 export 完全一致；历史 backup 不自动删除。
+如果 staging 与 origin 逐文件相同，脚本输出 `NO CHANGES`，清理 staging/lock，不创建 backup，也不产生 purge URL；这证明 origin 已与当前 export 一致，但不替代阶段 F 的完整 11/11 公网 SHA-256 对照。如果有变化，脚本在第一次修改 origin 前创建并验证完整非公开备份 `/data/wwwroot/assets-go-dev.shuijingwanwq.com.bak.<token>`，随后才在服务器端把完整 staging tree 以受限 `rsync --delete` 同步进固定 origin。delete 只作用于该精确 origin 内，确保新增、修改、删除后 production 文件集合与正式 export 完全一致；历史 backup 不自动删除。
 
 preflight、lock、upload、staging validation 或 backup 阶段失败时，origin 不变，脚本只在能确认安全时清理本次 staging/lock。production mutation 开始后若同步或严格验证失败，脚本使用刚创建的完整 backup 恢复并重新验证；回滚明确成功时报告部署失败但旧内容已恢复。如果回滚失败、SSH 中断或状态无法确认，脚本保留 lock、staging、backup 与现场，输出只读人工检查命令，禁止直接自动重试。INT、TERM、HUP 在 mutation 前按安全边界清理，mutation 后保留 evidence。
 
