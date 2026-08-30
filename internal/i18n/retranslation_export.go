@@ -10,7 +10,7 @@ import (
 	"strings"
 )
 
-const defaultRetranslationExportLimit = 10
+const DefaultRetranslationExportLimit = 30
 
 type RetranslationExportOptions struct {
 	Locale        string
@@ -46,6 +46,7 @@ type RetranslationExportResult struct {
 	Locale      string   `json:"locale"`
 	BatchID     string   `json:"batch_id,omitempty"`
 	BatchPath   string   `json:"batch_path,omitempty"`
+	UnitKind    UnitKind `json:"unit_kind,omitempty"`
 	UnitCount   int      `json:"unit_count"`
 	UnitIDs     []string `json:"unit_ids,omitempty"`
 	AllExported bool     `json:"all_exported"`
@@ -89,10 +90,16 @@ func ExportRetranslationBatch(root string, catalog *Catalog, options Retranslati
 	}
 	limit := options.Limit
 	if limit == 0 {
-		limit = defaultRetranslationExportLimit
+		limit = DefaultRetranslationExportLimit
 	}
 	if limit < 1 {
 		return nil, errors.New("retranslation export limit must be greater than zero")
+	}
+	if limit > DefaultRetranslationExportLimit {
+		return nil, fmt.Errorf("retranslation export limit must not exceed %d", DefaultRetranslationExportLimit)
+	}
+	if len(options.UnitIDs) > DefaultRetranslationExportLimit {
+		return nil, fmt.Errorf("a retranslation batch must not contain more than %d TranslationUnits", DefaultRetranslationExportLimit)
 	}
 
 	base := filepath.Join(root, "data", "retranslation-runs", options.Locale)
@@ -204,7 +211,7 @@ func ExportRetranslationBatch(root string, catalog *Catalog, options Retranslati
 	}
 	return &RetranslationExportResult{
 		Locale: options.Locale, BatchID: batchID, BatchPath: batchPath,
-		UnitCount: len(unitIDs), UnitIDs: unitIDs,
+		UnitKind: prepared[0].unit.Kind, UnitCount: len(unitIDs), UnitIDs: unitIDs,
 	}, nil
 }
 

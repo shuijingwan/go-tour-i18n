@@ -199,8 +199,14 @@ func complete122PromotionFixture(t *testing.T) (string, *Catalog) {
 	for _, example := range catalog.Examples {
 		exampleIDs = append(exampleIDs, example.ID)
 	}
-	addProcessedPromotionBatch(t, root, catalog, "chatgpt-zh-CN-001", pageIDs)
-	addProcessedPromotionBatch(t, root, catalog, "chatgpt-zh-CN-002", exampleIDs)
+	for start, number := 0, 1; start < len(pageIDs); start, number = start+DefaultRetranslationReviewBatchLimit, number+1 {
+		end := start + DefaultRetranslationReviewBatchLimit
+		if end > len(pageIDs) {
+			end = len(pageIDs)
+		}
+		addProcessedPromotionBatch(t, root, catalog, fmt.Sprintf("chatgpt-zh-CN-%03d", number), pageIDs[start:end])
+	}
+	addProcessedPromotionBatch(t, root, catalog, "chatgpt-zh-CN-005", exampleIDs)
 	writePromotionStatus(t, root, catalog, "")
 	return root, catalog
 }

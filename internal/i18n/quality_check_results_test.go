@@ -181,8 +181,8 @@ func TestQualityCheckScopeRevisionCarries119AndRequiresExactlyThree(t *testing.T
 	recordQualityCheckRatings(t, root, catalog, "qc-001", "", "A", approved)
 	recordQualityCheckRatings(t, root, catalog, "qc-001", "", "B", revised)
 
-	addProcessedPromotionBatch(t, root, catalog, "chatgpt-zh-CN-002", revised)
-	if err := os.RemoveAll(filepath.Join(root, "data", "retranslation-runs", "zh-CN", "chatgpt-zh-CN-002", "review")); err != nil {
+	addProcessedPromotionBatch(t, root, catalog, "chatgpt-zh-CN-006", revised)
+	if err := os.RemoveAll(filepath.Join(root, "data", "retranslation-runs", "zh-CN", "chatgpt-zh-CN-006", "review")); err != nil {
 		t.Fatal(err)
 	}
 	if _, _, err := CreateQualityCheckCandidateSnapshot(root, catalog, QualityCheckSnapshotOptions{Locale: "zh-CN", SnapshotID: "qc-002"}); err != nil {
@@ -223,6 +223,30 @@ func TestQualityCheckScopeRevisionCarries119AndRequiresExactlyThree(t *testing.T
 	third, err := BuildQualityCheckScope(root, catalog, QualityCheckScopeOptions{Locale: "zh-CN", SnapshotID: "qc-003", PreviousSnapshotID: "qc-002"})
 	if err != nil || third.ACount != 122 || third.CarryForwardCount != 122 || third.PendingCount != 0 || !third.ReadyForFinalReview {
 		t.Fatalf("multi-revision lineage scope=%+v err=%v", third, err)
+	}
+}
+
+func TestReviewRecordBatchesRejectThirtyOneAndPageExampleMix(t *testing.T) {
+	root, catalog := complete122PromotionFixture(t)
+	materializeSnapshotSources(t, root, catalog)
+	if _, _, err := CreateQualityCheckCandidateSnapshot(root, catalog, QualityCheckSnapshotOptions{Locale: "zh-CN", SnapshotID: "batch-boundaries"}); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := RecordQualityCheckResultBatch(root, catalog, QualityCheckRecordBatchOptions{
+		Locale: "zh-CN", SnapshotID: "batch-boundaries", StartIndex: 1, Limit: 31, Rating: "A",
+	}); err == nil {
+		t.Fatal("Quality Check limit 31 was accepted")
+	}
+	if _, err := RecordQualityCheckResultBatch(root, catalog, QualityCheckRecordBatchOptions{
+		Locale: "zh-CN", SnapshotID: "batch-boundaries", StartIndex: 103, Limit: 2, Rating: "A",
+	}); err == nil || !strings.Contains(err.Error(), "must not mix") {
+		t.Fatalf("Quality Check Page/Example mixed range error=%v", err)
+	}
+	if _, err := RecordRetranslationReviewBatch(root, catalog, RetranslationReviewBatchRecordOptions{
+		Locale: "zh-CN", SnapshotID: "batch-boundaries", StartIndex: 103, Limit: 2,
+		Rating: "A", Decision: "approved", Summary: "reviewed", Reviewer: "test", Rubric: TranslationQualityRubric,
+	}); err == nil || !strings.Contains(err.Error(), "must not mix") {
+		t.Fatalf("Final Review Page/Example mixed range error=%v", err)
 	}
 }
 

@@ -43,7 +43,7 @@ func run(args []string) error {
 		return err
 	}
 	if len(args) == 0 {
-		return fmt.Errorf("usage: tour-i18n <assets|catalog|upstream|page|status|candidate|translate|retranslation|quality-check|course-metadata|build|preview|publish> <command or flags>")
+		return fmt.Errorf("usage: tour-i18n <assets|catalog|upstream|page|locale|status|candidate|translate|retranslation|quality-check|course-metadata|build|preview|publish> <command or flags>")
 	}
 	if args[0] == "assets" {
 		if len(args) < 2 {
@@ -91,9 +91,17 @@ func run(args []string) error {
 		return publishBundle(root, catalog, *publish)
 	}
 	if len(args) < 2 {
-		return fmt.Errorf("usage: tour-i18n <assets|catalog|upstream|page|status|candidate|translate|retranslation|quality-check|course-metadata|build|preview|publish> <command or flags>")
+		return fmt.Errorf("usage: tour-i18n <assets|catalog|upstream|page|locale|status|candidate|translate|retranslation|quality-check|course-metadata|build|preview|publish> <command or flags>")
 	}
 	switch args[0] + " " + args[1] {
+	case "locale init":
+		result, err := initializeLocaleCommand(root, catalog, args[2:])
+		if err != nil {
+			return err
+		}
+		fmt.Printf("Locale 骨架初始化：PASS\nlocale: %s\nlocale_dir: %s\nui_catalog: %s\nstatus: %d TranslationUnits（%d Page，%d Example）\n下一步：完成人工 glossary、UI 与 metadata；promotion 后生成正式 course metadata，全部完成后删除 %s。\n",
+			result.Locale, result.LocaleDir, result.UICatalog, result.UnitCount, result.PageCount, result.ExampleCount, localeInitIncompleteMarker)
+		return nil
 	case "course-metadata assemble":
 		return assembleCourseMetadata(root, catalog, args[2:])
 	case "course-metadata refresh":
@@ -238,7 +246,8 @@ func run(args []string) error {
 		locale := fs.String("locale", "", "target locale")
 		batchID := fs.String("batch-id", "", "optional explicit batch id")
 		unitKind := fs.String("unit-kind", "", "自动选批的翻译单元类型：page（默认）或 example")
-		limit := fs.Int("limit", 10, "自动批次中最多包含的独立翻译单元数")
+		limit := fs.Int("limit", i18n.DefaultRetranslationExportLimit, "自动批次中最多包含的独立翻译单元数（上限 30）")
+		jsonOutput := fs.Bool("json", false, "输出完整 machine-readable JSON")
 		allowReexport := fs.Bool("allow-reexport", false, "allow explicitly requested page ids to be exported again")
 		var pageIDs repeatedStrings
 		fs.Var(&pageIDs, "id", "optional translation unit id; repeat for multiple units")
@@ -255,14 +264,26 @@ func run(args []string) error {
 			return err
 		}
 		if result.AllExported {
-			fmt.Printf("没有需要导出的页面：%s 已全部完成重译输入导出。\n", *locale)
+			if *jsonOutput {
+				return printJSON(result)
+			}
+			completedKind := i18n.UnitKind(*unitKind)
+			if completedKind == "" {
+				completedKind = i18n.UnitKindPage
+			}
+			fmt.Printf("没有需要导出的翻译单元：%s 的 %s 已全部完成重译输入导出。\n", *locale, completedKind)
 			return nil
 		}
-		return printJSON(result)
+		if *jsonOutput {
+			return printJSON(result)
+		}
+		printRetranslationExportSummary(result)
+		return nil
 	case "retranslation process":
 		fs := flag.NewFlagSet("retranslation process", flag.ContinueOnError)
 		locale := fs.String("locale", "", "target locale")
 		batchID := fs.String("batch-id", "", "optional explicit batch id")
+		jsonOutput := fs.Bool("json", false, "输出完整 machine-readable JSON")
 		if err := fs.Parse(args[2:]); err != nil {
 			return err
 		}
@@ -274,10 +295,17 @@ func run(args []string) error {
 			return err
 		}
 		if result.NoPendingBatches {
+			if *jsonOutput {
+				return printJSON(result)
+			}
 			fmt.Printf("没有待处理的重译批次：%s。\n", *locale)
 			return nil
 		}
-		return printJSON(result)
+		if *jsonOutput {
+			return printJSON(result)
+		}
+		printRetranslationProcessSummary(result)
+		return nil
 	case "retranslation retry":
 		fs := flag.NewFlagSet("retranslation retry", flag.ContinueOnError)
 		locale := fs.String("locale", "", "target locale")
@@ -302,6 +330,7 @@ func run(args []string) error {
 			fs := flag.NewFlagSet("retranslation review scope", flag.ContinueOnError)
 			locale := fs.String("locale", "", "target locale")
 			snapshotID := fs.String("snapshot-id", "", "Candidate Snapshot id")
+			jsonOutput := fs.Bool("json", false, "输出包含完整 pending 列表的 machine-readable JSON")
 			if err := fs.Parse(args[3:]); err != nil {
 				return err
 			}
@@ -315,7 +344,11 @@ func run(args []string) error {
 			if err != nil {
 				return err
 			}
-			return printJSON(scope)
+			if *jsonOutput {
+				return printJSON(scope)
+			}
+			printRetranslationReviewScopeSummary(scope)
+			return nil
 		}
 		if args[2] == "record-batch" {
 			fs := flag.NewFlagSet("retranslation review record-batch", flag.ContinueOnError)
@@ -461,6 +494,7 @@ func run(args []string) error {
 		locale := fs.String("locale", "", "target locale")
 		snapshotID := fs.String("snapshot-id", "", "current Candidate Snapshot id")
 		previousSnapshotID := fs.String("previous-snapshot-id", "", "previous Quality Check Snapshot id for carry-forward")
+		jsonOutput := fs.Bool("json", false, "输出包含完整 carry-forward/pending 列表的 machine-readable JSON")
 		if err := fs.Parse(args[2:]); err != nil {
 			return err
 		}
@@ -476,7 +510,11 @@ func run(args []string) error {
 		if err != nil {
 			return err
 		}
-		return printJSON(scope)
+		if *jsonOutput {
+			return printJSON(scope)
+		}
+		printQualityCheckScopeSummary(scope)
+		return nil
 	case "quality-check record":
 		fs := flag.NewFlagSet("quality-check record", flag.ContinueOnError)
 		locale := fs.String("locale", "", "target locale")
@@ -685,6 +723,9 @@ func previewCandidate(root string, catalog *i18n.Catalog, args []string) error {
 		command.Stdin = os.Stdin
 		return command.Run()
 	}
+	if err := requireLocaleInitializationComplete(root, options.Locale); err != nil {
+		return err
+	}
 
 	tempRoot, err := os.MkdirTemp("", "go-tour-i18n-preview-"+strings.ReplaceAll(options.Locale, "/", "-")+"-")
 	if err != nil {
@@ -747,6 +788,9 @@ func buildLocale(root string, catalog *i18n.Catalog, args []string) error {
 	if fs.NArg() != 0 {
 		return fmt.Errorf("unexpected build arguments: %s", strings.Join(fs.Args(), " "))
 	}
+	if err := requireLocaleInitializationComplete(root, *locale); err != nil {
+		return err
+	}
 	outputRoot := *output
 	automatic := false
 	if outputRoot == "" {
@@ -795,6 +839,88 @@ func printJSON(value any) error {
 	encoder := json.NewEncoder(os.Stdout)
 	encoder.SetIndent("", "  ")
 	return encoder.Encode(value)
+}
+
+func printRetranslationExportSummary(result *i18n.RetranslationExportResult) {
+	fmt.Printf("重译导出：PASS\n")
+	fmt.Printf("batch_id: %s\nlocale: %s\nunit_kind: %s\nunit_count: %d\nbatch_path: %s\n",
+		result.BatchID, result.Locale, result.UnitKind, result.UnitCount, result.BatchPath)
+}
+
+func printRetranslationProcessSummary(result *i18n.RetranslationProcessResult) {
+	overall := "PASS"
+	if result.RestoreFailed != 0 || result.ValidationFailed != 0 {
+		overall = "FAILED"
+	}
+	fmt.Printf("重译处理：%s\n", overall)
+	fmt.Printf("batch_id: %s\nlocale: %s\nunit_count: %d\nrestore_passed: %d\nrestore_failed: %d\nvalidation_passed: %d\nvalidation_failed: %d\n",
+		result.BatchID, result.Locale, result.UnitCount, result.RestorePassed, result.RestoreFailed, result.ValidationPassed, result.ValidationFailed)
+	for _, unit := range result.Units {
+		if unit.Status == "passed" {
+			continue
+		}
+		fmt.Printf("失败 Unit：unit_id=%s status=%s validation_path=%s", unit.UnitID, unit.Status, unit.ValidationPath)
+		if unit.CandidatePath != "" {
+			fmt.Printf(" candidate_path=%s", unit.CandidatePath)
+		}
+		if unit.Error != "" {
+			fmt.Printf(" reason=%q", unit.Error)
+		}
+		fmt.Println()
+	}
+}
+
+func printQualityCheckScopeSummary(scope *i18n.QualityCheckScope) {
+	fmt.Printf("Quality Check scope：locale=%s snapshot=%s total=%d current=%d carry_forward=%d pending=%d A/B/C/D=%d/%d/%d/%d ready_for_final_review=%t\n",
+		scope.Locale, scope.SnapshotID, scope.UnitCount, scope.CurrentResultCount, scope.CarryForwardCount,
+		scope.PendingCount, scope.ACount, scope.BCount, scope.CCount, scope.DCount, scope.ReadyForFinalReview)
+	printQualityCheckPending(scope.Pending)
+}
+
+func printQualityCheckPending(units []i18n.QualityCheckScopeUnit) {
+	limit := i18n.DefaultRetranslationReviewBatchLimit
+	if len(units) < limit {
+		limit = len(units)
+	}
+	if limit > 0 {
+		for i := 1; i < limit; i++ {
+			if units[i].UnitKind != units[0].UnitKind {
+				limit = i
+				break
+			}
+		}
+	}
+	for _, unit := range units[:limit] {
+		fmt.Printf("pending: index=%d unit_id=%s unit_kind=%s batch_id=%s reason=%s action=%s\n",
+			unit.Index, unit.UnitID, unit.UnitKind, unit.BatchID, unit.Reason, unit.RequiredAction)
+	}
+	if len(units) > limit {
+		fmt.Printf("其余 pending Unit：%d；使用 --json 获取完整列表。\n", len(units)-limit)
+	}
+}
+
+func printRetranslationReviewScopeSummary(scope *i18n.RetranslationReviewScope) {
+	fmt.Printf("Final Review scope：locale=%s snapshot=%s total=%d reusable=%d pending=%d\n",
+		scope.Locale, scope.SnapshotID, scope.UnitCount, scope.ReusableCount, scope.PendingCount)
+	limit := i18n.DefaultRetranslationReviewBatchLimit
+	if len(scope.Pending) < limit {
+		limit = len(scope.Pending)
+	}
+	if limit > 0 {
+		for i := 1; i < limit; i++ {
+			if scope.Pending[i].UnitKind != scope.Pending[0].UnitKind {
+				limit = i
+				break
+			}
+		}
+	}
+	for _, unit := range scope.Pending[:limit] {
+		fmt.Printf("pending: index=%d unit_id=%s unit_kind=%s batch_id=%s reason=%s action=%s\n",
+			unit.Index, unit.UnitID, unit.UnitKind, unit.BatchID, unit.Reason, unit.RequiredAction)
+	}
+	if len(scope.Pending) > limit {
+		fmt.Printf("其余 pending Unit：%d；使用 --json 获取完整列表。\n", len(scope.Pending)-limit)
+	}
 }
 
 func printPreview(root, sourceRoot string, next *i18n.Catalog, report *i18n.PreviewReport) {

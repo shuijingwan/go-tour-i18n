@@ -3,6 +3,7 @@ package i18n
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"os"
 	"path/filepath"
 	"reflect"
@@ -65,6 +66,35 @@ func writeRetranslationReview(t *testing.T, path string, review TranslationRevie
 
 func makeRetranslationReviewBatchFixture(t *testing.T, count int, snapshotID string) (string, *Catalog, string) {
 	t.Helper()
+	if count > DefaultRetranslationReviewBatchLimit {
+		root := t.TempDir()
+		writeRetranslationTestGlossary(t, root)
+		catalog := retranslationTestCatalog(count)
+		var firstBatch string
+		for start, number := 0, 1; start < count; start, number = start+DefaultRetranslationReviewBatchLimit, number+1 {
+			end := start + DefaultRetranslationReviewBatchLimit
+			if end > count {
+				end = count
+			}
+			ids := make([]string, 0, end-start)
+			for _, page := range catalog.Pages[start:end] {
+				ids = append(ids, page.ID)
+			}
+			batchID := fmt.Sprintf("codex-zh-CN-%03d", number)
+			addProcessedPromotionBatch(t, root, catalog, batchID, ids)
+			if err := os.RemoveAll(filepath.Join(root, "data", "retranslation-runs", "zh-CN", batchID, "review")); err != nil {
+				t.Fatal(err)
+			}
+			if firstBatch == "" {
+				firstBatch = batchID
+			}
+		}
+		materializeSnapshotSources(t, root, catalog)
+		if _, _, err := CreateQualityCheckCandidateSnapshot(root, catalog, QualityCheckSnapshotOptions{Locale: "zh-CN", SnapshotID: snapshotID}); err != nil {
+			t.Fatal(err)
+		}
+		return root, catalog, firstBatch
+	}
 	root, catalog, batchID := makeRetranslationProcessBatch(t, count)
 	if _, err := ProcessRetranslationBatch(root, catalog, RetranslationProcessOptions{Locale: "zh-CN", BatchID: batchID}); err != nil {
 		t.Fatal(err)
@@ -90,7 +120,15 @@ func reviewEvidencePath(t *testing.T, root string, catalog *Catalog, batchID, un
 	if err != nil {
 		t.Fatal(err)
 	}
-	return filepath.Join(root, "data", "retranslation-runs", "zh-CN", batchID, "review", retranslationReviewName(unit))
+	path := filepath.Join(root, "data", "retranslation-runs", "zh-CN", batchID, "review", retranslationReviewName(unit))
+	if _, err := os.Stat(path); err == nil {
+		return path
+	}
+	matches, globErr := filepath.Glob(filepath.Join(root, "data", "retranslation-runs", "zh-CN", "*", "review", retranslationReviewName(unit)))
+	if globErr == nil && len(matches) == 1 {
+		return matches[0]
+	}
+	return path
 }
 
 func TestCheckRetranslationReviewsValidReview(t *testing.T) {
@@ -418,25 +456,34 @@ func TestRecordRetranslationReviewGenericsEvidenceIsAccepted(t *testing.T) {
 	}
 }
 
-func TestRecordRetranslationReviewBatchDefaultsToTwenty(t *testing.T) {
-	root, catalog, batchID := makeRetranslationReviewBatchFixture(t, 23, "default-twenty")
-	result, err := RecordRetranslationReviewBatch(root, catalog, reviewBatchOptions("default-twenty"))
+func TestRecordRetranslationReviewBatchDefaultsToThirty(t *testing.T) {
+	root, catalog, batchID := makeRetranslationReviewBatchFixture(t, 31, "default-thirty")
+	result, err := RecordRetranslationReviewBatch(root, catalog, reviewBatchOptions("default-thirty"))
 	if err != nil {
 		t.Fatal(err)
 	}
-	if result.StartIndex != 1 || result.EndIndex != 20 || result.Limit != 20 || result.RecordedCount != 20 || len(result.Reviews) != 20 {
+	if result.StartIndex != 1 || result.EndIndex != 30 || result.Limit != 30 || result.RecordedCount != 30 || len(result.Reviews) != 30 {
 		t.Fatalf("batch result=%+v", result)
 	}
-	if result.Reviews[0].Index != 1 || result.Reviews[19].Index != 20 || result.Reviews[0].UnitID != "lesson/1" || result.Reviews[19].UnitID != "lesson/20" {
+	if result.Reviews[0].Index != 1 || result.Reviews[29].Index != 30 || result.Reviews[0].UnitID != "lesson/1" || result.Reviews[29].UnitID != "lesson/30" {
 		t.Fatalf("stable Snapshot range=%+v", result.Reviews)
 	}
-	for i := 1; i <= 20; i++ {
+	for i := 1; i <= 30; i++ {
 		if _, err := os.Stat(reviewEvidencePath(t, root, catalog, batchID, "lesson/"+strconv.Itoa(i))); err != nil {
 			t.Fatalf("review %d: %v", i, err)
 		}
 	}
-	if _, err := os.Stat(reviewEvidencePath(t, root, catalog, batchID, "lesson/21")); !os.IsNotExist(err) {
-		t.Fatalf("default batch wrote index 21: %v", err)
+	if _, err := os.Stat(reviewEvidencePath(t, root, catalog, batchID, "lesson/31")); !os.IsNotExist(err) {
+		t.Fatalf("default batch wrote index 31: %v", err)
+	}
+}
+
+func TestRecordRetranslationReviewBatchRejectsThirtyOne(t *testing.T) {
+	root, catalog, _ := makeRetranslationReviewBatchFixture(t, 31, "reject-thirty-one")
+	options := reviewBatchOptions("reject-thirty-one")
+	options.Limit = 31
+	if _, err := RecordRetranslationReviewBatch(root, catalog, options); err == nil {
+		t.Fatal("Final Review limit 31 was accepted")
 	}
 }
 

@@ -14,7 +14,7 @@ import (
 
 const TranslationReviewSchemaVersion = 1
 
-const DefaultRetranslationReviewBatchLimit = 20
+const DefaultRetranslationReviewBatchLimit = 30
 
 // TranslationQualityRubric is the current production rubric. Changing the
 // identifier deliberately invalidates prior review evidence for reuse.
@@ -451,6 +451,9 @@ func RecordRetranslationReviewBatch(root string, catalog *Catalog, options Retra
 	if limit < 1 {
 		return nil, fmt.Errorf("limit must be at least 1, got %d", options.Limit)
 	}
+	if limit > DefaultRetranslationReviewBatchLimit {
+		return nil, fmt.Errorf("limit must not exceed %d, got %d", DefaultRetranslationReviewBatchLimit, options.Limit)
+	}
 
 	snapshot, err := readQualityCheckSnapshotForReview(root, options.Locale, options.SnapshotID)
 	if err != nil {
@@ -464,6 +467,11 @@ func RecordRetranslationReviewBatch(root string, catalog *Catalog, options Retra
 		endIndex = snapshot.UnitCount
 	}
 	selected := snapshot.Units[startIndex-1 : endIndex]
+	for _, unit := range selected[1:] {
+		if unit.UnitKind != selected[0].UnitKind {
+			return nil, fmt.Errorf("record-batch range must not mix %s and %s TranslationUnits; end the range at the Unit kind boundary", selected[0].UnitKind, unit.UnitKind)
+		}
+	}
 
 	scope, err := BuildRetranslationReviewScope(root, catalog, RetranslationReviewScopeOptions{Locale: options.Locale, SnapshotID: options.SnapshotID})
 	if err != nil {

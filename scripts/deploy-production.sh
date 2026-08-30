@@ -8,7 +8,19 @@ readonly SERVICE_USER='go-tour'
 readonly HEALTH_ATTEMPTS=12
 readonly HEALTH_INTERVAL=3
 readonly NO_OLD_RELEASE='NO_OLD_RELEASE'
-readonly -a SSH_OPTIONS=(-o BatchMode=yes -o ConnectTimeout=10)
+readonly -a SSH_BASE_OPTIONS=(
+    -o BatchMode=yes
+    -o ConnectTimeout=10
+    -o ServerAliveInterval=5
+    -o ServerAliveCountMax=3
+    -o ConnectionAttempts=3
+    -o ControlMaster=auto
+    -o ControlPersist=60
+)
+SSH_OPTIONS=("${SSH_BASE_OPTIONS[@]}")
+RSYNC_SSH_COMMAND='ssh'
+SSH_CONTROL_DIR=''
+SSH_CONTROL_PATH=''
 
 RELEASE_LOCALE=''
 RELEASES_DIR=''
@@ -18,6 +30,33 @@ SERVICE=''
 HEALTH_URL=''
 PUBLIC_URL=''
 PUBLIC_ACCEPTANCE_HINT=''
+
+setup_ssh_multiplex() {
+    local option quoted
+    SSH_CONTROL_DIR=$(mktemp -d "${TMPDIR:-/tmp}/go-tour-production-ssh.XXXXXX") || {
+        error '无法创建本次 deployment 专用的 SSH control 目录'
+        return 1
+    }
+    SSH_CONTROL_PATH="$SSH_CONTROL_DIR/control"
+    SSH_OPTIONS=("${SSH_BASE_OPTIONS[@]}" -o "ControlPath=$SSH_CONTROL_PATH")
+    RSYNC_SSH_COMMAND='ssh'
+    for option in "${SSH_OPTIONS[@]}"; do
+        printf -v quoted '%q' "$option"
+        RSYNC_SSH_COMMAND+=" $quoted"
+    done
+}
+
+cleanup_ssh_multiplex() {
+    if [[ -n $SSH_CONTROL_DIR && -n $SSH_CONTROL_PATH && $SSH_CONTROL_PATH == "$SSH_CONTROL_DIR/control" && ${SSH_CONTROL_DIR##*/} == go-tour-production-ssh.* ]]; then
+        if [[ -S $SSH_CONTROL_PATH ]]; then
+            ssh "${SSH_OPTIONS[@]}" -O exit "$SSH_HOST" >/dev/null 2>&1 || true
+        fi
+        rm -f -- "$SSH_CONTROL_PATH"
+        rmdir -- "$SSH_CONTROL_DIR" 2>/dev/null || true
+    fi
+    SSH_CONTROL_DIR=''
+    SSH_CONTROL_PATH=''
+}
 
 log() {
     printf '[deploy] %s\n' "$*"
@@ -91,7 +130,7 @@ manual_check_hint() {
 validate_local_tools() {
     local command_name
 
-    for command_name in basename curl date find python3 rsync sha256sum ssh; do
+    for command_name in basename curl date find mktemp python3 rsync sha256sum ssh; do
         command -v "$command_name" >/dev/null || {
             error "required local command is missing: $command_name"
             return 1
@@ -309,7 +348,7 @@ upload_release() {
     local remote_staging=$2
 
     rsync -rlt --no-owner --no-group --no-perms --protect-args \
-        -e 'ssh -o BatchMode=yes -o ConnectTimeout=10' -- \
+        -e "$RSYNC_SSH_COMMAND" -- \
         "$release_dir/" "$SSH_HOST:$remote_staging/"
 }
 
@@ -537,6 +576,8 @@ main() {
     fi
     release_input=$1
     validate_local_tools || return 1
+    setup_ssh_multiplex || return 1
+    trap cleanup_ssh_multiplex EXIT
     remote_name=$(release_name_from_path "$release_input") || return 1
     validate_local_release "$release_input" || return 1
     release_dir=$(cd -P -- "$release_input" && pwd -P)
@@ -612,6 +653,11 @@ main() {
             ;;
     esac
 
+    if [[ $deployment_mode == FIRST_DEPLOYMENT ]]; then
+        log 'FIRST_DEPLOYMENT 源站已就绪；不执行 public acceptance，也不执行无旧缓存可刷新的 hostname purge'
+        log "下一步：从外部主机使用 production hostname + --resolve 验收源站，通过后再启用正式 proxied DNS：$PUBLIC_URL"
+        return 0
+    fi
     check_public
 }
 

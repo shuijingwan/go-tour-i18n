@@ -171,12 +171,12 @@ AdSense service environment / Auto Ads 与课程广告资产来源
 1. **Hostname 与 CDN 决策**：按 [LANGUAGES.md](../LANGUAGES.md) 确认 hostname。非中文社区语言使用 Cloudflare Free，不引入 EdgeOne + Cloudflare 双层代理；确认共享 assets 策略。
 2. **Service、port 与 data root**：为新 locale 选择未占用的 loopback port，建立独立 `/data/go-tour-<locale>/releases`、`current` 和 `.deploy.lock` 边界；创建独立 systemd service，service user 保持 `go-tour`。service 必须从 `current` 下的 release 启动，不能绑定临时上传目录；首次 deployment 前 `current` 可以尚不存在，由首次激活原子创建。
 3. **TLS 与 vhost**：在 `/root/oneinstack` 使用 `./vhost.sh --proxy --dnsapi` 创建 HTTPS reverse-proxy vhost，使用 Let's Encrypt、`ec-256` 和 `dns_cf`，反向代理到精确 loopback port。检查自动生成的 `location`，不得截获 `/tour/static/`；使用 `nginx -t && service nginx reload`。
-4. **DNS / CDN**：创建新 hostname 的 DNS 并启用约定 CDN。等待公开解析生效后分别核对 HTTP → HTTPS、证书 hostname、源站 Host 和 CDN 响应；凭据不进入仓库或命令记录。
-5. **Playground Origin**：把新站的精确 `https://<hostname>` 加入 ZgoCloud Playground 代理 allowlist，保持错误 Origin 403、OPTIONS/POST 方法边界和既有 origin 不受影响。未完成此项时 Run / Format 的页面渲染成功不算上线成功。
-6. **AdSense production 接入**：在首个 release 激活前，完成本手册“广告职责、首次接入与最终验收边界”所列的 service 环境、Auto Ads 与课程广告资源准备；不得把它留到 production 上线后再补做。
-7. **部署脚本 profile**：为新 locale 明确增加并测试 `scripts/deploy-production.sh` 的 fail-closed profile，包括全部路径、service、health URL 和 public URL。该步骤属于首次接入所需的代码能力变更；在 profile 合入前脚本应继续拒绝该 locale，不能用目录名猜测或临时绕过白名单。
-8. **首个 release 激活**：部署已验收的 Linux/amd64 bundle，验证权限、SHA-256、`current`、service restart 和连续 localhost health。首次没有可回滚旧 release 时，若首次切换后的 restart 或 health failure，脚本保留 `current`、lock 和现场供人工检查，不得声称自动回滚已覆盖或直接重复部署。
-9. **SEO 与公网验收**：检查 `/`、`/tour/`、`/tour/list`、全部 sitemap URL、`robots.txt`、canonical host、`html lang`、静态资源、`/socket` 404 与保留路径；确认 sitemap 无错误 host、重复或 HTTP failure。
+4. **Playground Origin**：把新站的精确 `https://<hostname>` 加入 ZgoCloud Playground 代理 allowlist，保持错误 Origin 403、OPTIONS/POST 方法边界和既有 origin 不受影响。未完成此项时 Run / Format 的页面渲染成功不算上线成功。
+5. **AdSense production 接入**：在首个 release 激活前，完成本手册“广告职责、首次接入与最终验收边界”所列的 service 环境、Auto Ads 与课程广告资源准备；不得把它留到 production 上线后再补做。
+6. **部署脚本 profile**：为新 locale 明确增加并测试 `scripts/deploy-production.sh` 的 fail-closed profile，包括全部路径、service、health URL 和 public URL。该步骤属于首次接入所需的代码能力变更；在 profile 合入前脚本应继续拒绝该 locale，不能用目录名猜测或临时绕过白名单。
+7. **首个 release 激活**：部署已验收的 Linux/amd64 bundle，验证权限、SHA-256、`current`、service restart 和连续 localhost health。首次没有可回滚旧 release 时，若首次切换后的 restart 或 health failure，脚本保留 `current`、lock 和现场供人工检查，不得声称自动回滚已覆盖或直接重复部署。
+8. **外部 direct-origin 验收**：在创建正式公网 DNS 前，从外部主机使用 production hostname + `--resolve <hostname>:443:<origin-ip>` 验证 TLS/SNI、HTTP → HTTPS 和关键 route；这一步不依赖 public DNS 或 CDN cache。
+9. **DNS / CDN 与公网验收**：direct-origin 通过后才创建/启用 `proxied=true` 的正式 DNS；随后检查 `/`、`/tour/`、`/tour/list`、全部 sitemap URL、`robots.txt`、canonical host、`html lang`、静态资源、`/socket` 404 与保留路径，确认 sitemap 无错误 host、重复或 HTTP failure。首次 deployment 尚无旧 cache 时不要求 hostname purge。
 10. **真实浏览器与最终广告验收**：桌面和移动端复核导航、语言选择器、编辑器、Run / Format / Reset 与 runtime message；从 Network 确认实际 Playground endpoint 与 CORS Origin。同时执行上述五项轻量广告确认。最后在 production 重新执行 rendered surface acceptance 关键项，并完成 `data/locale-surface-reviews/<locale>/<review-id>.md` 的 production 结果与最终 decision；不另行执行无广告版本的完整验收。
 
 ### Existing locale language-list consistency
@@ -222,6 +222,8 @@ scripts/deploy-production.sh \
 
 脚本固定使用 SSH 别名 `aliyun`。当前生产运维账号为 root；远端 `id -u` 不是 `0` 时会在上传前失败，不使用或依赖 `sudo`。部署过程如下：
 
+一次 `deploy-production.sh` 调用会为 aliyun 建立 invocation-scoped SSH ControlMaster，后续 preflight、rsync、remote validation 与 activation 复用同一连接；使用 BatchMode、连接/keepalive/retry 边界，并在主流程退出时清理 ControlMaster。SSH 中断后状态不确定时仍保留既有 lock/evidence，不能因 multiplex 自动盲目重试 mutation。
+
 1. 本地严格检查 bundle 根结构、symlink、`bin/tour`、`release.json`、`site-metadata.json` 和 `SHA256SUMS`；manifest 必须满足 production 约束，其 locale 必须与由同一 `release.json` 选出的 profile 一致。
 2. 远端在所选 profile 的 data root 中原子创建 `.deploy.lock` 防止并发部署，并验证 `current`、当前 release、目标名称和对应 systemd service。首次 deployment 仅在 `current` 完全不存在时允许继续；已有 locale deployment 则要求其为指向 release root 内当前 release 的合法 symlink。`current` 存在但不是 symlink、或指向 release root 外时均 fail closed。同名 release 已存在时拒绝覆盖；锁已存在表示可能有正在执行或上一次未完成的部署，脚本直接停止，不分析或自动删除该锁。
 3. `rsync` 只上传到所选 profile 的 `releases/.<release>.staging-<token>`，不直接写最终 release 或 `current`，也不使用 `--delete` 覆盖 release。
@@ -241,9 +243,11 @@ ssh aliyun 'journalctl -u go-tour.service -n 80 --no-pager'
 
 localhost 连续健康后，脚本才检查对应 profile 的 public URL。正式域名异常属于 CDN、HTTPS、Nginx 或其他外部验收问题，不会自动回滚一个已经稳定健康的源站 release。脚本不调用 CDN API，也不自动清理缓存；language release 成功后必须按“Production CDN 缓存策略”主动刷新对应 hostname，并完成后续 CDN 验收。public HTTP 200 只证明公网入口可用，不能替代 hostname purge 或证明新 release 已在全部边缘节点生效。
 
+`FIRST_DEPLOYMENT` 是例外：连续 localhost health 通过后脚本停止于源站 ready，不要求尚未启用 DNS 的 public URL，也不做无旧 release/cache 可刷新的 hostname purge。下一步必须先从外部主机使用 production hostname + `--resolve <hostname>:443:<origin-ip>` 完成 TLS/SNI、HTTP → HTTPS 和关键 route 的 direct-origin acceptance；通过后再创建/启用 `proxied=true` 的正式 DNS，并执行 public machine/browser acceptance。`EXISTING_DEPLOYMENT` 继续保持 `deploy → hostname purge → verify`。
+
 ### Production machine acceptance
 
-部署完成后，production 的正式顺序固定为：
+已有 locale 日常部署的正式顺序固定为：
 
 ```text
 scripts/deploy-production.sh <release-dir>

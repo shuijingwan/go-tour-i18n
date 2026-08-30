@@ -41,8 +41,21 @@ if select_deployment_profile it-IT 2>/dev/null; then
     fail 'unsupported locale was accepted'
 fi
 
+main_source=$(declare -f main)
+[[ $main_source == *'deployment_mode == FIRST_DEPLOYMENT'* && $main_source == *'不执行 public acceptance'* ]] || \
+    fail 'FIRST_DEPLOYMENT does not explicitly skip pre-DNS public acceptance/purge'
+[[ $main_source == *'check_public'* ]] || fail 'EXISTING_DEPLOYMENT public acceptance was removed'
+
 fixture=$(mktemp -d)
 trap 'rm -rf -- "$fixture"' EXIT
+
+TMPDIR=$fixture setup_ssh_multiplex || fail 'SSH multiplex setup failed'
+control_dir=$SSH_CONTROL_DIR
+[[ -d $control_dir && $SSH_CONTROL_PATH == "$control_dir/control" && $RSYNC_SSH_COMMAND == *ControlPath* ]] || \
+    fail 'SSH multiplex setup did not create invocation-scoped options'
+cleanup_ssh_multiplex
+[[ ! -e $control_dir && -z $SSH_CONTROL_DIR && -z $SSH_CONTROL_PATH ]] || \
+    fail 'SSH multiplex cleanup left invocation-scoped state'
 
 fake_bin=$fixture/bin
 mkdir -p -- "$fake_bin"

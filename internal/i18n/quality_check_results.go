@@ -249,6 +249,9 @@ func RecordQualityCheckResultBatch(root string, catalog *Catalog, options Qualit
 	if start < 1 || limit < 1 {
 		return nil, errors.New("quality-check start_index and limit must be at least 1")
 	}
+	if limit > DefaultRetranslationReviewBatchLimit {
+		return nil, fmt.Errorf("quality-check limit must not exceed %d", DefaultRetranslationReviewBatchLimit)
+	}
 	snapshot, err := readQualityCheckSnapshotForReview(root, options.Locale, options.SnapshotID)
 	if err != nil {
 		return nil, err
@@ -261,7 +264,13 @@ func RecordQualityCheckResultBatch(root string, catalog *Catalog, options Qualit
 		end = len(snapshot.Units)
 	}
 	unitIDs := make([]string, 0, end-start+1)
-	for _, unit := range snapshot.Units[start-1 : end] {
+	selected := snapshot.Units[start-1 : end]
+	for _, unit := range selected[1:] {
+		if unit.UnitKind != selected[0].UnitKind {
+			return nil, fmt.Errorf("quality-check record-batch range must not mix %s and %s TranslationUnits", selected[0].UnitKind, unit.UnitKind)
+		}
+	}
+	for _, unit := range selected {
 		unitIDs = append(unitIDs, unit.UnitID)
 	}
 	return RecordQualityCheckResults(root, catalog, QualityCheckRecordOptions{

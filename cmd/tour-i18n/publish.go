@@ -93,6 +93,9 @@ func parsePublishOptions(args []string) (publishOptions, error) {
 }
 
 func publishBundle(root string, catalog *i18n.Catalog, options publishOptions) (err error) {
+	if err := requireLocaleInitializationComplete(root, options.Locale); err != nil {
+		return err
+	}
 	output, err := filepath.Abs(options.Output)
 	if err != nil {
 		return fmt.Errorf("resolve output: %w", err)

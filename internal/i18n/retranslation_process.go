@@ -48,6 +48,7 @@ type RetranslationUnitResult struct {
 	Status         string   `json:"status"`
 	CandidatePath  string   `json:"candidate_path,omitempty"`
 	ValidationPath string   `json:"validation_path"`
+	Error          string   `json:"error,omitempty"`
 }
 
 type RetranslationProcessResult struct {
@@ -163,6 +164,7 @@ func ProcessRetranslationBatch(root string, catalog *Catalog, options Retranslat
 			evidence.Status = "restore_failed"
 			evidence.Error = strings.Join(failures, "; ")
 			unitResult.Status = evidence.Status
+			unitResult.Error = evidence.Error
 			result.RestoreFailed++
 		} else {
 			result.RestorePassed++
@@ -178,6 +180,7 @@ func ProcessRetranslationBatch(root string, catalog *Catalog, options Retranslat
 			if err := ValidateTranslationUnitCandidate(root, catalog, item.unit.ID, options.Locale, candidate); err != nil {
 				evidence.Status = "validation_failed"
 				evidence.Error = err.Error()
+				unitResult.Error = evidence.Error
 				result.ValidationFailed++
 			} else {
 				evidence.Status = "passed"

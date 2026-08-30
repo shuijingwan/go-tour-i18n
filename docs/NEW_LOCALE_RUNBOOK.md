@@ -57,24 +57,36 @@ Glossary 同时承担两项正式职责：
 
 ## 3. 建立非 TranslationUnit 语言资产
 
-以现有 locale 的**结构**为参考，不复制其语言内容：
+先运行正式初始化命令生成机械骨架；locale 目录或 UI catalog 已存在时命令 fail closed，绝不覆盖：
+
+```sh
+go run -mod=readonly ./cmd/tour-i18n locale init \
+  --locale <locale> \
+  --language-name <autonym> \
+  --english-name <English-name> \
+  --html-lang <html-lang>
+```
+
+命令生成 `locale.json`、显式 TODO glossary、保持英文 source 的 UI key/kind/占位符/markup identity 的 TODO catalog、article metadata、`course-metadata.todo.json` Page inventory，以及按 Page 后 Example 正式顺序初始化的 `status.tsv`。同时创建 `.locale-init-incomplete`；该标记存在时，完整 build、完整 preview 和 publish 均 fail closed。TODO 只是不可发布的工作标记，不是译文；进入 export 前必须完成 glossary，进入 Surface Review 前必须完成全部 UI 与 metadata 语言内容。
+
+生成后按以下边界补充语言内容，不复制其他 locale 的语言内容：
 
 - `locales/<locale>/locale.json`：locale 身份；
 - `internal/tour/ui/<locale>.json`：完整公共 UI catalog，key 与 `plain` / `rich` kind 必须匹配英文 source `internal/tour/ui/en.json`，正式 locale 不使用英文 fallback；
 - `locales/<locale>/article-metadata.json`：全部正式 article 的本地化 `title` 与 `subtitle`；
-- `locales/<locale>/course-metadata.json`：全部正式课程页的目标语言 SEO description；其 schema、离线生成输入和 stale 规则见 [课程页正式 SEO Metadata 规范](COURSE_SEO_METADATA.md)；
+- `locales/<locale>/course-metadata.todo.json`：初始化阶段的 Page inventory，不是正式 SEO metadata；
+- `locales/<locale>/course-metadata.json`：全部 TranslationUnit promotion 后，按 [课程页正式 SEO Metadata 规范](COURSE_SEO_METADATA.md) 的 schema、离线生成输入和 stale 规则正式生成全部课程页的目标语言 SEO description；
 - 首页、导航、语言选择器与语言 registry 所需的 locale 条目。
 
 UI catalog、首页和 metadata 不属于 TranslationUnit candidate、status、Quality Check、Final Review 或 promotion。它们必须在后续 Surface Review 中单独验收。
 
-`status.tsv` 不是语言资产，也不得从其他 locale 复制。完成上述 locale 配置后、第一次进入 TranslationUnit retranslation export 前，必须以当前正式 TranslationUnit catalog 初始化该 locale 的统一状态表，并立即校验：
+`status.tsv` 不是语言资产，也不得从其他 locale 复制。`locale init` 已调用与 `status init` 相同的正式 catalog 初始化逻辑；不要再次运行会因文件已存在而 fail closed 的 `status init`。第一次进入 TranslationUnit retranslation export 前立即校验：
 
 ```sh
-go run -mod=readonly ./cmd/tour-i18n status init --locale <locale>
 go run -mod=readonly ./cmd/tour-i18n status check --locale <locale>
 ```
 
-`status init` 只负责首次创建缺失的 `locales/<locale>/status.tsv`：按 Catalog Page 顺序、再按 eligible Example inventory 顺序写入当前 workflow 的全部 TranslationUnit，初始状态均为 `pending`。命令不写当前时间、不覆盖已有文件，也不承担已有状态的修复、同步或 source 更新迁移。只有 `status check` 通过后，才能执行首次 retranslation export。
+底层正式初始化逻辑只负责首次创建缺失的 `locales/<locale>/status.tsv`：按 Catalog Page 顺序、再按 eligible Example inventory 顺序写入当前 workflow 的全部 TranslationUnit，初始状态均为 `pending`。它不写当前时间、不覆盖已有文件，也不承担已有状态的修复、同步或 source 更新迁移。只有 `status check` 通过后，才能执行首次 retranslation export。
 
 ## 4. 执行 TranslationUnit workflow
 
@@ -98,7 +110,7 @@ export
 
 ## 5. 完整投影、预览与 Surface Review
 
-只有 promotion 完成、全部 workflow TranslationUnit 为 canonical `ready`，并且 locale 配置、UI catalog 和 article metadata 完整后，才构建完整 projection 和 locale preview：
+只有 promotion 完成、全部 workflow TranslationUnit 为 canonical `ready`，并且 locale 配置、UI catalog、article metadata 与正式 `course-metadata.json` 完整后，才删除 `.locale-init-incomplete`，并构建完整 projection 和 locale preview。不得仅为绕过 gate 提前删除标记：
 
 ```sh
 go run -mod=readonly ./cmd/tour-i18n build --locale <locale>
@@ -121,8 +133,8 @@ Surface Review 通过并完成其中所有修复后，使用 `assets-go-dev.shui
 
 首次上线至少完成三层验收：
 
-- **源站层**：deployment 已完成 service 与 loopback 连续健康；hostname purge 后运行 `scripts/verify-production.sh <release-dir>`，确认目标 `current`、service、lock、关键路由和静态资源；
+- **源站层**：deployment 已完成 service 与 loopback 连续健康；FIRST_DEPLOYMENT 先用 production hostname + `--resolve` 做外部 direct-origin acceptance，EXISTING_DEPLOYMENT 则在 hostname purge 后运行 `scripts/verify-production.sh <release-dir>`；
 - **公网层**：同一 machine acceptance 命令确认 HTTPS 关键路由、首页、`/tour/`、`/tour/list`、课程页、静态资源、`robots.txt`、sitemap 全量 URL、canonical/locale identity、`/socket` 404，并记录 CDN cache status；cache observation 要求 HTTP 200、对应 header 存在且状态属于正式 allowlist，但不以固定 `MISS → HIT` 时序或固定次数内出现 `HIT` 作为上线 gate；
 - **真实浏览器层**：桌面与移动端页面、导航、语言选择器、Run / Format / Reset、runtime message，以及 Network 中真实 Playground endpoint 和允许的 Origin；并按生产运维手册对最终课程页做轻量广告确认。
 
-正式顺序为 `deploy-production.sh` → EdgeOne/Cloudflare hostname purge **HUMAN GATE** → `verify-production.sh <release-dir>` 一键 machine acceptance → browser acceptance **HUMAN GATE**。verification 脚本不执行 purge，也不以 curl 代替 rendered surface、交互、Playground Network 或轻量广告验收。首次 production 部署后只做这一次最终验收；不执行“无广告完整验收 → 开广告 → 再完整验收”的双重流程。最后重新执行 production 上的 rendered surface acceptance 关键项，在同一 Surface Review evidence 中记录 public URL、profile、证书/vhost 路径、当前 release、sitemap、Playground 与轻量广告验收结果，以及最终 `decision = passed | failed`。只有最终通过，该 locale 才从“首次部署”转入 [日常维护部署](PRODUCTION_RUNBOOK.md#已有-locale-日常维护部署)。
+FIRST_DEPLOYMENT 的正式顺序为 `deploy-production.sh` → 外部 direct-origin `--resolve` acceptance → 创建/启用正式 proxied DNS → `verify-production.sh <release-dir>` → browser acceptance **HUMAN GATE**；尚无正式公网 DNS/cache 时不要求 hostname purge。EXISTING_DEPLOYMENT 保持 `deploy-production.sh` → EdgeOne/Cloudflare hostname purge **HUMAN GATE** → `verify-production.sh <release-dir>` → browser acceptance **HUMAN GATE**。verification 脚本不执行 purge，也不以 curl 代替 rendered surface、交互、Playground Network 或轻量广告验收。首次 production 部署后只做这一次最终验收；不执行“无广告完整验收 → 开广告 → 再完整验收”的双重流程。最后重新执行 production 上的 rendered surface acceptance 关键项，在同一 Surface Review evidence 中记录 public URL、profile、证书/vhost 路径、当前 release、sitemap、Playground 与轻量广告验收结果，以及最终 `decision = passed | failed`。只有最终通过，该 locale 才从“首次部署”转入 [日常维护部署](PRODUCTION_RUNBOOK.md#已有-locale-日常维护部署)。

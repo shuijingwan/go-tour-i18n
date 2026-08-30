@@ -200,29 +200,29 @@ func writeRetranslationHistoryManifest(t *testing.T, root, locale, batchID strin
 	}
 }
 
-func TestRetranslationExportLimitTwentyKeepsIndependentPages(t *testing.T) {
+func TestRetranslationExportLimitThirtyKeepsIndependentPages(t *testing.T) {
 	root := t.TempDir()
 	writeRetranslationTestGlossary(t, root)
-	catalog := retranslationTestCatalog(23)
-	result, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", UnitKind: UnitKindPage, Limit: 20})
+	catalog := retranslationTestCatalog(31)
+	result, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", UnitKind: UnitKindPage, Limit: 30})
 	if err != nil {
 		t.Fatal(err)
 	}
 	manifest := readRetranslationManifest(t, root, result.BatchID)
-	if result.UnitCount != 20 || manifest.UnitCount != 20 || len(manifest.Units) != 20 {
-		t.Fatalf("limit 20 result=%+v manifest count=%d", result, len(manifest.Units))
+	if result.UnitCount != 30 || manifest.UnitCount != 30 || len(manifest.Units) != 30 {
+		t.Fatalf("limit 30 result=%+v manifest count=%d", result, len(manifest.Units))
 	}
 }
 
-func TestRetranslationExportExplicitPageKindDefaultsToTen(t *testing.T) {
+func TestRetranslationExportExplicitPageKindDefaultsToThirty(t *testing.T) {
 	root := t.TempDir()
 	writeRetranslationTestGlossary(t, root)
-	result, err := ExportRetranslationBatch(root, retranslationTestCatalog(23), RetranslationExportOptions{Locale: "zh-CN", UnitKind: UnitKindPage})
+	result, err := ExportRetranslationBatch(root, retranslationTestCatalog(31), RetranslationExportOptions{Locale: "zh-CN", UnitKind: UnitKindPage})
 	if err != nil {
 		t.Fatal(err)
 	}
-	if result.UnitCount != 10 {
-		t.Fatalf("explicit page kind count=%d, want 10", result.UnitCount)
+	if result.UnitCount != 30 {
+		t.Fatalf("explicit page kind count=%d, want 30", result.UnitCount)
 	}
 }
 
@@ -234,7 +234,7 @@ func TestRetranslationExportAutomaticExampleProgression(t *testing.T) {
 	root := t.TempDir()
 	writeRetranslationTestGlossary(t, root)
 	seen := map[string]bool{}
-	for batch, wantCount := range []int{10, 9} {
+	for batch, wantCount := range []int{19} {
 		result, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", UnitKind: UnitKindExample})
 		if err != nil {
 			t.Fatalf("example batch %d: %v", batch+1, err)
@@ -273,19 +273,35 @@ func TestRetranslationExportAutomaticExampleProgression(t *testing.T) {
 	}
 }
 
-func TestRetranslationExportAutomaticExampleLimitTwentySelectsCorpusNineteen(t *testing.T) {
+func TestRetranslationExportAutomaticExampleLimitThirtySelectsCorpusNineteen(t *testing.T) {
 	catalog, err := BuildCatalog(repoRoot(t))
 	if err != nil {
 		t.Fatal(err)
 	}
 	root := t.TempDir()
 	writeRetranslationTestGlossary(t, root)
-	result, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", UnitKind: UnitKindExample, Limit: 20})
+	result, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", UnitKind: UnitKindExample, Limit: 30})
 	if err != nil {
 		t.Fatal(err)
 	}
 	if result.UnitCount != 19 || len(result.UnitIDs) != 19 {
-		t.Fatalf("example limit 20 result=%+v, want 19 eligible units", result)
+		t.Fatalf("example limit 30 result=%+v, want 19 eligible units", result)
+	}
+}
+
+func TestRetranslationExportRejectsThirtyOneUnits(t *testing.T) {
+	root := t.TempDir()
+	writeRetranslationTestGlossary(t, root)
+	catalog := retranslationTestCatalog(31)
+	if _, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", UnitKind: UnitKindPage, Limit: 31}); err == nil {
+		t.Fatal("limit 31 was accepted")
+	}
+	ids := make([]string, 0, 31)
+	for i := range catalog.Pages {
+		ids = append(ids, catalog.Pages[i].ID)
+	}
+	if _, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", UnitIDs: ids, Limit: 30}); err == nil {
+		t.Fatal("31 explicit TranslationUnits were accepted")
 	}
 }
 
