@@ -23,7 +23,11 @@ import (
 	"golang.org/x/net/html"
 )
 
-const prerenderRuntimeHeadMarker = `<script id="tour-runtime-head"></script>`
+const (
+	prerenderRuntimeHeadMarker  = `<script id="tour-runtime-head"></script>`
+	prerenderChromeWorkerLimit  = 2
+	prerenderChromeRouteTimeout = 60 * time.Second
+)
 
 func prerenderProductionPagesChrome(contentDir, locale string, expectedPages int) error {
 	chrome, err := exec.LookPath("google-chrome")
@@ -58,7 +62,7 @@ func prerenderProductionPagesChrome(contentDir, locale string, expectedPages int
 	var workers sync.WaitGroup
 	var firstErr error
 	var errorMu sync.Mutex
-	workerCount := min(4, max(1, runtime.NumCPU()))
+	workerCount := min(prerenderChromeWorkerLimit, max(1, runtime.NumCPU()))
 	for worker := 0; worker < workerCount; worker++ {
 		workers.Add(1)
 		go func(worker int) {
@@ -99,7 +103,7 @@ func prerenderProductionPagesChrome(contentDir, locale string, expectedPages int
 }
 
 func prerenderRouteWithChrome(parent context.Context, chrome, serverURL, profileRoot, contentDir string, route tour.CourseRoute) error {
-	ctx, cancel := context.WithTimeout(parent, 30*time.Second)
+	ctx, cancel := context.WithTimeout(parent, prerenderChromeRouteTimeout)
 	defer cancel()
 	command := exec.CommandContext(ctx, chrome,
 		"--headless=new",

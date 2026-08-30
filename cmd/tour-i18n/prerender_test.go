@@ -34,6 +34,15 @@ import (
 	"golang.org/x/net/html"
 )
 
+func TestProductionPrerenderChromeDefaults(t *testing.T) {
+	if prerenderChromeWorkerLimit != 2 {
+		t.Fatalf("prerender Chrome worker limit = %d, want 2", prerenderChromeWorkerLimit)
+	}
+	if prerenderChromeRouteTimeout != 60*time.Second {
+		t.Fatalf("prerender Chrome route timeout = %s, want 60s", prerenderChromeRouteTimeout)
+	}
+}
+
 func TestSanitizePrerenderedHTMLRemovesThirdPartyRuntimeDOM(t *testing.T) {
 	input := []byte(`<!doctype html><html><head><script id="tour-runtime-head"></script></head><body>
 <iframe src="https://ads.invalid"></iframe>
