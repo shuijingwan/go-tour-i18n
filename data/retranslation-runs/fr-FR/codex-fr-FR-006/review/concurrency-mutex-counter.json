@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "batch_id": "codex-fr-FR-006",
+  "locale": "fr-FR",
+  "unit_id": "example:concurrency/mutex-counter.go",
+  "unit_kind": "example",
+  "source_path": "_content/tour/concurrency/mutex-counter.go",
+  "source_sha256": "74488ecc347a123c8538069175ffeef5ea38577bb37b2c7a9ceb6bba47ab02b4",
+  "attempt": 1,
+  "candidate_path": "candidates/concurrency-mutex-counter.go",
+  "candidate_sha256": "53140db9b501987b011b4c128f585b52dc82d7ee70d4bbc6d2da637e12a5cf51",
+  "validation_path": "validation/concurrency-mutex-counter.json",
+  "validation_sha256": "8077682abbd3995433cabf96682d63088255d2c7a555f348ca8be8a21c661737",
+  "decision": "approved",
+  "reviewer": "ChatGPT GPT-5.6 Sol",
+  "reviewed_at": "2026-08-30T08:46:52Z",
+  "rubric": "translation-quality/v1",
+  "rating": "A",
+  "summary": "Final Review：逐 TranslationUnit 重新核对 source、最终 candidate、fr-FR glossary、validation evidence 与 qc-004 identity；index 101-120 均达到正式发布质量，无需修订。",
+  "issues": []
+}

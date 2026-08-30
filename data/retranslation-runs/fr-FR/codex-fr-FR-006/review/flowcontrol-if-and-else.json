@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "batch_id": "codex-fr-FR-006",
+  "locale": "fr-FR",
+  "unit_id": "example:flowcontrol/if-and-else.go",
+  "unit_kind": "example",
+  "source_path": "_content/tour/flowcontrol/if-and-else.go",
+  "source_sha256": "9d3030966f45fb90105c0325c9a090e8ac3fce2e7c4b10106d8f75caf0e536cf",
+  "attempt": 1,
+  "candidate_path": "candidates/flowcontrol-if-and-else.go",
+  "candidate_sha256": "3082a69e36c228c4ad016279dcef6a6eee2db97483877792f8143c88b6c60c0f",
+  "validation_path": "validation/flowcontrol-if-and-else.json",
+  "validation_sha256": "566eac9b5a934a22b3b42a9cace1351c8e84a9ab28b4d3ceeef4d53d030d5be7",
+  "decision": "approved",
+  "reviewer": "ChatGPT GPT-5.6 Sol",
+  "reviewed_at": "2026-08-30T08:46:52Z",
+  "rubric": "translation-quality/v1",
+  "rating": "A",
+  "summary": "Final Review：逐 TranslationUnit 重新核对 source、最终 candidate、fr-FR glossary、validation evidence 与 qc-004 identity；index 101-120 均达到正式发布质量，无需修订。",
+  "issues": []
+}
