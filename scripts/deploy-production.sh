@@ -62,6 +62,15 @@ select_deployment_profile() {
             PUBLIC_URL='https://de-go-dev.shuijingwanwq.com/'
             PUBLIC_ACCEPTANCE_HINT='inspect the CDN/reverse-proxy cache and refresh it manually if needed'
             ;;
+        fr-FR)
+            RELEASES_DIR='/data/go-tour-fr-FR/releases'
+            CURRENT_LINK='/data/go-tour-fr-FR/current'
+            DEPLOY_LOCK='/data/go-tour-fr-FR/.deploy.lock'
+            SERVICE='go-tour-fr-FR.service'
+            HEALTH_URL='http://127.0.0.1:4002/'
+            PUBLIC_URL='https://fr-go-dev.shuijingwanwq.com/'
+            PUBLIC_ACCEPTANCE_HINT='inspect the CDN/reverse-proxy cache and refresh it manually if needed'
+            ;;
         *)
             error "unsupported production locale in release.json: $locale"
             return 1

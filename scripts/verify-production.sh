@@ -79,8 +79,18 @@ select_production_profile() {
             PRODUCTION_HOST='de-go-dev.shuijingwanwq.com'
             CACHE_HEADER='CF-Cache-Status'
             ;;
+        fr-FR)
+            RELEASES_DIR='/data/go-tour-fr-FR/releases'
+            CURRENT_LINK='/data/go-tour-fr-FR/current'
+            DEPLOY_LOCK='/data/go-tour-fr-FR/.deploy.lock'
+            SERVICE='go-tour-fr-FR.service'
+            LOOPBACK_ORIGIN='http://127.0.0.1:4002'
+            PUBLIC_ORIGIN='https://fr-go-dev.shuijingwanwq.com'
+            PRODUCTION_HOST='fr-go-dev.shuijingwanwq.com'
+            CACHE_HEADER='CF-Cache-Status'
+            ;;
         *)
-            fail_check 'release identity' locale 'supported production locale (zh-CN, ja-JP, de-DE)' "$locale"
+            fail_check 'release identity' locale 'supported production locale (zh-CN, ja-JP, de-DE, fr-FR)' "$locale"
             return 1
             ;;
     esac

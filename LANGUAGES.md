@@ -20,7 +20,7 @@
 
 fr-FR 使用规范 locale 与 HTML `lang` `fr-FR`，本地显示名为 `Français`，英文名为 `French`，域名 language code 为 `fr`。production hostname 为 <https://fr-go-dev.shuijingwanwq.com/>，CDN 使用 Cloudflare Free；非中文共享静态资源使用 <https://assets-go-dev.shuijingwanwq.com/>。Playground 代理后续需要加入的精确 Origin 为 `https://fr-go-dev.shuijingwanwq.com`。
 
-后续首次生产部署使用以下已冻结 profile；这些值当前只完成事实落库，不表示基础设施、部署脚本、verification 脚本或 Playground allowlist 已经配置：
+后续首次生产部署使用以下已冻结 profile。`deploy-production.sh` 与 `verify-production.sh` 的精确 profile 已实现并通过本地测试；production 基础设施、Playground Origin、AdSense production 接入和首次 deployment 仍待执行：
 
 | 项目 | 值 |
 | --- | --- |
@@ -36,7 +36,7 @@ fr-FR 使用规范 locale 与 HTML `lang` `fr-FR`，本地显示名为 `Françai
 | TLS certificate | `/usr/local/nginx/conf/ssl/fr-go-dev.shuijingwanwq.com.crt` |
 | TLS private key | `/usr/local/nginx/conf/ssl/fr-go-dev.shuijingwanwq.com.key` |
 
-2026-08-30 的最小只读服务器预检已确认 `go-tour` 用户存在、`4002` 端口空闲、`/data/go-tour-fr-FR` 尚不存在且可用、`go-tour-fr-FR.service` 尚不存在且可用。首次生产部署阶段仍须按生产运维手册重新执行目标校验，并在该阶段明确增加和测试 deploy / verify profile、创建基础设施、配置精确 Playground Origin 与完成 AdSense production 接入；首次 TranslationUnit export 前不提前放宽 production 脚本白名单。
+2026-08-30 的最小只读服务器预检已确认 `go-tour` 用户存在、`4002` 端口空闲、`/data/go-tour-fr-FR` 尚不存在且可用、`go-tour-fr-FR.service` 尚不存在且可用。首次 production profile 已实现并测试，但这不表示 fr-FR 已完成 production deployment。首次部署阶段仍须按生产运维手册重新执行目标校验、创建基础设施、配置精确 Playground Origin 并完成 AdSense production 接入。
 
 ## de-DE 已冻结身份与后续生产 profile
 
@@ -79,7 +79,7 @@ https://assets-go-dev.shuijingwanwq.com/
 
 第一版使用固定 URL，不使用 assets-release-id、content-hash URL、asset manifest version mapping 或独立 versioned assets release。共享资源以普通服务器静态目录作为 origin，经 Cloudflare 代理提供；不引入 R2、S3、Workers 或 Pages。language projection 和 production bundle 继续携带完整 `_content`，不会因为非中文 HTML 使用共享资源而裁剪本地副本。
 
-`assets-go-dev.shuijingwanwq.com` 已正式部署并由 Cloudflare 代理。Cloudflare Edge Cache TTL 为 1 个月；Browser Cache TTL 不由项目主动覆盖，使用 Cloudflare/origin 默认或 Respect Existing Headers。production origin 当前仍是历史 9 文件并已通过 9/9 SHA-256 与 MISS → HIT 验收；真实课程页 AdSense 的两个 shared assets 已进入代码 allowlist，但尚未完成首次 origin 部署和 11/11 公网验收。固定 URL 更新使用专用 `scripts/deploy-shared-assets.sh` 完整更新 origin tree，再由维护者在 Cloudflare Dashboard 按脚本输出 URL 执行 Custom Purge，最后完成 MISS → HIT → SHA-256；脚本已通过本地 mock 测试但尚未完成首次真实 production deployment 验证。详细安全边界和 human gate 见 [生产运维手册](docs/PRODUCTION_RUNBOOK.md)。旧 `assets.go-dev.shuijingwanwq.com` 已废弃并清理，不提供兼容或迁移。
+`assets-go-dev.shuijingwanwq.com` 已正式部署并由 Cloudflare 代理。Cloudflare Edge Cache TTL 为 1 个月；Browser Cache TTL 不由项目主动覆盖，使用 Cloudflare/origin 默认或 Respect Existing Headers。formal allowlist 为 11 个文件，production origin 已部署当前 11 文件，公网 SHA-256 为 11/11 PASS。本次 changed URLs 为 `/SHA256SUMS` 与 `/tour/static/css/app.css`，Cloudflare Custom Purge 后均为 `MISS → HIT`；`/tour/script.js`、`/tour/static/img/tree.png` 与 `/tour/static/partials/editor.html` 均为 404。固定 URL 更新继续使用专用 `scripts/deploy-shared-assets.sh` 完整更新 origin tree，再由维护者在 Cloudflare Dashboard 按脚本输出 URL 执行 Custom Purge，最后完成 MISS → HIT → SHA-256。详细安全边界和 human gate 见 [生产运维手册](docs/PRODUCTION_RUNBOOK.md)。旧 `assets.go-dev.shuijingwanwq.com` 已废弃并清理，不提供兼容或迁移。
 
 zh-CN 继续由 <https://go-dev.shuijingwanwq.com/> 同时提供 HTML 和自己的静态资源，并继续使用 EdgeOne。只有确认中文静态资源拆分有明确实际收益时，才考虑类似 `assets-cn.go-dev.shuijingwanwq.com` 的域名；当前不创建、不实现。
 

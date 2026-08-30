@@ -39,6 +39,13 @@ assert_contains() {
         && $LOOPBACK_ORIGIN == http://127.0.0.1:4001 \
         && $PUBLIC_ORIGIN == https://de-go-dev.shuijingwanwq.com \
         && $CACHE_HEADER == CF-Cache-Status ]]
+    select_production_profile fr-FR
+    [[ $RELEASES_DIR == /data/go-tour-fr-FR/releases && $CURRENT_LINK == /data/go-tour-fr-FR/current \
+        && $DEPLOY_LOCK == /data/go-tour-fr-FR/.deploy.lock && $SERVICE == go-tour-fr-FR.service \
+        && $LOOPBACK_ORIGIN == http://127.0.0.1:4002 \
+        && $PUBLIC_ORIGIN == https://fr-go-dev.shuijingwanwq.com \
+        && $PRODUCTION_HOST == fr-go-dev.shuijingwanwq.com \
+        && $CACHE_HEADER == CF-Cache-Status ]]
 ) || fail 'verification profiles differ from the formal production values'
 
 fake_bin=$fixture/bin
@@ -75,6 +82,18 @@ for index in "${!arguments[@]}"; do
             arguments[index]=$FAKE_REMOTE_CURRENT
             ;;
         /data/go-tour-de-DE/.deploy.lock)
+            arguments[index]=$FAKE_REMOTE_LOCK
+            ;;
+        /data/go-tour-fr-FR/releases)
+            arguments[index]=$FAKE_REMOTE_RELEASES
+            ;;
+        /data/go-tour-fr-FR/releases/*)
+            arguments[index]="$FAKE_REMOTE_RELEASES/${value#/data/go-tour-fr-FR/releases/}"
+            ;;
+        /data/go-tour-fr-FR/current)
+            arguments[index]=$FAKE_REMOTE_CURRENT
+            ;;
+        /data/go-tour-fr-FR/.deploy.lock)
             arguments[index]=$FAKE_REMOTE_LOCK
             ;;
     esac
@@ -165,7 +184,7 @@ fi
 if [[ $status == 200 && $body != /dev/null ]]; then
     case $path in
         /)
-            lang=de-DE
+            lang=${FAKE_HTML_LANG:-de-DE}
             canonical="$FAKE_PUBLIC_ORIGIN/"
             [[ ${FAKE_HTML_MODE:-} == LANG ]] && lang=en
             [[ ${FAKE_HTML_MODE:-} == CANONICAL ]] && canonical=https://wrong.example/
@@ -173,7 +192,7 @@ if [[ $status == 200 && $body != /dev/null ]]; then
                 "$lang" "$canonical" >"$body"
             ;;
         /tour/welcome/1)
-            lang=de-DE
+            lang=${FAKE_HTML_LANG:-de-DE}
             canonical="$FAKE_PUBLIC_ORIGIN/tour/welcome/1"
             [[ ${FAKE_HTML_MODE:-} == LANG ]] && lang=en
             [[ ${FAKE_HTML_MODE:-} == CANONICAL ]] && canonical=https://wrong.example/tour/welcome/1
@@ -222,9 +241,20 @@ chmod 0755 -- "$fake_bin"/*
 release_dir=$fixture/go-tour-release-20260829-de-DE-8937fdc
 mkdir -p -- "$release_dir"
 printf '{"locale":"de-DE"}\n' >"$release_dir/release.json"
+de_release_dir=$release_dir
+fr_release_dir=$fixture/go-tour-release-20260830-fr-FR-bd8df0a
+mkdir -p -- "$fr_release_dir"
+printf '{"locale":"fr-FR"}\n' >"$fr_release_dir/release.json"
 
 setup_case() {
-    local current_mode=${1:-expected} release_name
+    local current_mode=${1:-expected} locale=${2:-de-DE} release_name
+    if [[ $locale == fr-FR ]]; then
+        release_dir=$fr_release_dir
+        export FAKE_PUBLIC_ORIGIN=https://fr-go-dev.shuijingwanwq.com FAKE_HTML_LANG=fr-FR
+    else
+        release_dir=$de_release_dir
+        export FAKE_PUBLIC_ORIGIN=https://de-go-dev.shuijingwanwq.com FAKE_HTML_LANG=de-DE
+    fi
     rm -rf -- "$fixture/remote" "$fixture/state"
     mkdir -p -- "$fixture/remote/releases" "$fixture/state"
     release_name=${release_dir##*/}; release_name=${release_name#go-tour-release-}
@@ -240,7 +270,6 @@ setup_case() {
     export FAKE_REMOTE_LOCK=$fixture/remote/.deploy.lock
     export FAKE_STATE_DIR=$fixture/state
     export FAKE_SSH_MARKER=$fixture/ssh-called
-    export FAKE_PUBLIC_ORIGIN=https://de-go-dev.shuijingwanwq.com
     rm -f -- "$FAKE_SSH_MARKER"
     unset FAKE_SOURCE_FAIL_PATH FAKE_PUBLIC_FAIL_PATH FAKE_HTML_MODE FAKE_SITEMAP_MODE
     unset FAKE_SITEMAP_FAIL_URL FAKE_SOCKET_NORMAL_STATUS FAKE_SOCKET_UPGRADE_STATUS
@@ -266,6 +295,12 @@ output=$(run_verify) || fail 'de-DE complete success failed'
 assert_contains "$output" '[verify-production] source routes: 7/7 PASS'
 assert_contains "$output" '[verify-production] public routes: 7/7 PASS'
 assert_contains "$output" '[verify-production] sitemap: 105/105 PASS'
+assert_contains "$output" '[verify-production] CDN /: MISS -> HIT -> HIT PASS'
+assert_contains "$output" 'PRODUCTION MACHINE ACCEPTANCE: PASS'
+
+setup_case expected fr-FR
+output=$(run_verify) || fail 'fr-FR complete success failed'
+assert_contains "$output" '[verify-production] release identity: PASS (fr-FR -> /data/go-tour-fr-FR/releases/'
 assert_contains "$output" '[verify-production] CDN /: MISS -> HIT -> HIT PASS'
 assert_contains "$output" 'PRODUCTION MACHINE ACCEPTANCE: PASS'
 
@@ -335,9 +370,9 @@ setup_case
 export FAKE_CACHE_HTTP_STATUS=503
 expect_failure 'cache observation HTTP failure' 'expected=HTTP 200 actual=HTTP 503'
 
-unsupported=$fixture/go-tour-release-20260829-fr-FR-unsupported
+unsupported=$fixture/go-tour-release-20260829-it-IT-unsupported
 mkdir -p -- "$unsupported"
-printf '{"locale":"fr-FR"}\n' >"$unsupported/release.json"
+printf '{"locale":"it-IT"}\n' >"$unsupported/release.json"
 release_dir=$unsupported
 rm -f -- "$FAKE_SSH_MARKER"
 expect_failure 'unsupported locale' 'supported production locale'

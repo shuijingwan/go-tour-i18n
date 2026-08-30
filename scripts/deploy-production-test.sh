@@ -33,8 +33,11 @@ assert_profile ja-JP /data/go-tour-ja-JP/releases /data/go-tour-ja-JP/current \
 assert_profile de-DE /data/go-tour-de-DE/releases /data/go-tour-de-DE/current \
     /data/go-tour-de-DE/.deploy.lock go-tour-de-DE.service http://127.0.0.1:4001/ \
     https://de-go-dev.shuijingwanwq.com/
+assert_profile fr-FR /data/go-tour-fr-FR/releases /data/go-tour-fr-FR/current \
+    /data/go-tour-fr-FR/.deploy.lock go-tour-fr-FR.service http://127.0.0.1:4002/ \
+    https://fr-go-dev.shuijingwanwq.com/
 
-if select_deployment_profile fr-FR 2>/dev/null; then
+if select_deployment_profile it-IT 2>/dev/null; then
     fail 'unsupported locale was accepted'
 fi
 
@@ -86,6 +89,9 @@ for index in "${!arguments[@]}"; do
         /data/go-tour-de-DE/releases) arguments[index]=$FAKE_DE_RELEASES ;;
         /data/go-tour-de-DE/current) arguments[index]=$FAKE_DE_CURRENT ;;
         /data/go-tour-de-DE/.deploy.lock) arguments[index]=$FAKE_DE_LOCK ;;
+        /data/go-tour-fr-FR/releases) arguments[index]=$FAKE_FR_RELEASES ;;
+        /data/go-tour-fr-FR/current) arguments[index]=$FAKE_FR_CURRENT ;;
+        /data/go-tour-fr-FR/.deploy.lock) arguments[index]=$FAKE_FR_LOCK ;;
     esac
 done
 if [[ ${FAKE_REQUIRE_NONEMPTY_ACTIVATION_ARGS:-0} == 1 && ${#arguments[@]} == 15 ]]; then
@@ -116,6 +122,7 @@ setup_remote() {
         zh-CN) export FAKE_ZH_RELEASES=$releases FAKE_ZH_CURRENT=$current FAKE_ZH_LOCK=$lock ;;
         ja-JP) export FAKE_JA_RELEASES=$releases FAKE_JA_CURRENT=$current FAKE_JA_LOCK=$lock ;;
         de-DE) export FAKE_DE_RELEASES=$releases FAKE_DE_CURRENT=$current FAKE_DE_LOCK=$lock ;;
+        fr-FR) export FAKE_FR_RELEASES=$releases FAKE_FR_CURRENT=$current FAKE_FR_LOCK=$lock ;;
     esac
     TEST_RELEASES=$releases; TEST_CURRENT=$current; TEST_LOCK=$lock
 }
@@ -166,7 +173,7 @@ validate_local_release "$fake_ja" >/dev/null || fail 'valid ja-JP bundle was rej
     fail 'directory name overrode release.json locale'
 
 fake_unsupported="$fixture/go-tour-release-20260824-zh-CN-unsupported"
-make_bundle "$fake_unsupported" fr-FR
+make_bundle "$fake_unsupported" it-IT
 (
     remote_called=0
     prepare_remote() { remote_called=1; return 1; }
@@ -174,7 +181,7 @@ make_bundle "$fake_unsupported" fr-FR
     if main "$fake_unsupported" >/dev/null 2>&1; then
         exit 1
     fi
-    (( remote_called == 0 )) && [[ $RELEASE_LOCALE == fr-FR ]]
+    (( remote_called == 0 )) && [[ $RELEASE_LOCALE == it-IT ]]
 ) || fail 'unsupported locale was accepted or reached a remote operation'
 
 mismatched="$fixture/go-tour-release-20260824-ja-JP-mismatch"
@@ -210,6 +217,13 @@ IFS=$'\t' read -r rc current final lock _ <<<"$(prepare_and_activate de-DE absen
     fail 'first deployment SSH positional argument regression: activation did not create current or clean the lock'
 [[ $(<"$fixture/health-de-first-success") -ge 3 ]] || fail 'first deployment health acceptance did not require three successes'
 unset FAKE_REQUIRE_NONEMPTY_ACTIVATION_ARGS
+
+# The new fr-FR profile follows the same first-deployment activation and health gate.
+export FAKE_HTTP_FAIL_CALLS=0
+IFS=$'\t' read -r rc current final lock _ <<<"$(prepare_and_activate fr-FR absent fr-first-success)"
+[[ $rc == 0 && -L $current && $(readlink -f -- "$current") == "$final" && ! -e $lock ]] || \
+    fail 'fr-FR first deployment did not activate with its exact profile'
+[[ $(<"$fixture/health-fr-first-success") -ge 3 ]] || fail 'fr-FR health acceptance did not require three successes'
 
 # Existing deployment failure retains the existing rollback behavior.
 export FAKE_HTTP_FAIL_CALLS=12
