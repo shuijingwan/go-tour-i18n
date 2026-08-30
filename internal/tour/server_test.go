@@ -301,11 +301,11 @@ func TestHomepageLanguageRegistryAndLocaleProfiles(t *testing.T) {
 		t.Fatalf("language registry length = %d, want %d", got, want)
 	}
 	for i, want := range []LanguageLink{
-		{Locale: "zh-CN", Autonym: "简体中文", URL: "https://go-dev.shuijingwanwq.com/"},
-		{Locale: "en", Autonym: "English", URL: "https://go.dev/tour/", Official: true},
-		{Locale: "fr-FR", Autonym: "Français", URL: "https://fr-go-dev.shuijingwanwq.com/"},
-		{Locale: "de-DE", Autonym: "Deutsch", URL: "https://de-go-dev.shuijingwanwq.com/"},
-		{Locale: "ja-JP", Autonym: "日本語", URL: "https://ja-go-dev.shuijingwanwq.com/"},
+		{Locale: "zh-CN", EnglishName: "Simplified Chinese", Autonym: "简体中文", URL: "https://go-dev.shuijingwanwq.com/"},
+		{Locale: "en", EnglishName: "English", Autonym: "English", URL: "https://go.dev/tour/", Official: true},
+		{Locale: "fr-FR", EnglishName: "French", Autonym: "Français", URL: "https://fr-go-dev.shuijingwanwq.com/"},
+		{Locale: "de-DE", EnglishName: "German", Autonym: "Deutsch", URL: "https://de-go-dev.shuijingwanwq.com/"},
+		{Locale: "ja-JP", EnglishName: "Japanese", Autonym: "日本語", URL: "https://ja-go-dev.shuijingwanwq.com/"},
 	} {
 		if got := languageRegistry[i]; got != want {
 			t.Errorf("languageRegistry[%d] = %+v, want %+v", i, got, want)
@@ -319,7 +319,7 @@ func TestHomepageLanguageRegistryAndLocaleProfiles(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if deCurrent != (LanguageLink{Locale: "de-DE", Autonym: "Deutsch", URL: "https://de-go-dev.shuijingwanwq.com/", Current: true}) {
+	if deCurrent != (LanguageLink{Locale: "de-DE", EnglishName: "German", Autonym: "Deutsch", Label: "German — Deutsch", URL: "https://de-go-dev.shuijingwanwq.com/", Current: true}) {
 		t.Fatalf("de-DE current language = %+v", deCurrent)
 	}
 	deProfile := localeProfiles["de-DE"]
@@ -337,7 +337,7 @@ func TestHomepageLanguageRegistryAndLocaleProfiles(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if frCurrent != (LanguageLink{Locale: "fr-FR", Autonym: "Français", URL: "https://fr-go-dev.shuijingwanwq.com/", Current: true}) {
+	if frCurrent != (LanguageLink{Locale: "fr-FR", EnglishName: "French", Autonym: "Français", Label: "French — Français", URL: "https://fr-go-dev.shuijingwanwq.com/", Current: true}) {
 		t.Fatalf("fr-FR current language = %+v", frCurrent)
 	}
 	frProfile := localeProfiles["fr-FR"]
@@ -377,13 +377,38 @@ func TestHomepageLanguageRegistryAndLocaleProfiles(t *testing.T) {
 				t.Fatal(err)
 			}
 			home := string(homeBytes)
-			for _, want := range []string{"简体中文", "English", "Français", "Deutsch", "日本語", `aria-current="page">` + test.autonym, test.logURL, test.published, test.upstream, "© 2026 永夜", "蜀ICP备13001590号-1", `href="https://beian.miit.gov.cn/"`} {
+			labels := []string{"Simplified Chinese — 简体中文", "English", "French — Français", "German — Deutsch", "Japanese — 日本語"}
+			for _, want := range append(labels, test.logURL, test.published, test.upstream, "© 2026 永夜", "蜀ICP备13001590号-1", `href="https://beian.miit.gov.cn/"`) {
 				if !strings.Contains(home, want) {
 					t.Errorf("homepage does not contain %q", want)
 				}
 			}
-			if strings.Contains(home, `href="`+test.currentPublicURL+`">`+test.autonym+`</a>`) {
+			if strings.Contains(home, "English — English") {
+				t.Error("homepage duplicates the identical English name and autonym")
+			}
+			last := -1
+			for _, label := range labels {
+				index := strings.Index(home, label)
+				if index <= last {
+					t.Errorf("homepage language %q is missing or out of registry order", label)
+				}
+				last = index
+			}
+			currentLabel := data.CurrentLanguage.Label
+			if !strings.Contains(home, `aria-current="page">`+currentLabel+`</span>`) {
+				t.Errorf("current locale is not marked with its generated label %q", currentLabel)
+			}
+			if strings.Contains(home, `href="`+test.currentPublicURL+`">`+currentLabel+`</a>`) {
 				t.Errorf("current locale language entry links to public URL %q", test.currentPublicURL)
+			}
+			for i, language := range languageRegistry {
+				if language.Locale == test.locale {
+					continue
+				}
+				label := labels[i]
+				if !strings.Contains(home, `href="`+language.URL+`"`) || !strings.Contains(home, `>`+label+`</a>`) {
+					t.Errorf("homepage language link %q does not preserve registry URL %q", label, language.URL)
+				}
 			}
 			if strings.Count(home, `href="`+test.logURL+`"`) != 2 {
 				t.Errorf("development log URL is not shared by homepage and footer")
@@ -519,7 +544,7 @@ func TestJSI18nBootstrapLocales(t *testing.T) {
 			locale: "fr-FR",
 			want: []string{
 				"\"tour.list_heading\":\"Bienvenue dans ce tour de Go\"", "\"toc.title\":\"Table des matières\"", "\"execution.waiting\":\"En attente du serveur distant…\"", "\"execution.exited\":\"Programme terminé\"", "\"execution.vet_failed\":\"Échec de go vet.\"", "\"execution.build_failed\":\"Échec de go build.\"", "\"execution.communication_error\":\"Erreur de communication avec le serveur distant.\"", "\"execution.test_failed\":\"{count} test a échoué.\"", "\"execution.tests_failed\":\"{count} tests ont échoué.\"", "\"execution.tests_passed\":\"Tous les tests ont réussi.\"", "\"feedback.open\":\"Envoyer un commentaire sur cette page\"", "\"feedback.context\":\"Contexte\"",
-				"\"editor.syntax\":\"Coloration syntaxique\"", "\"editor.imports\":\"Importations\"", "\"editor.run\":\"Exécuter\"", "\"editor.kill\":\"Arrêter\"", "\"editor.format\":\"Formater\"", "\"editor.reset\":\"Réinitialiser\"",
+				"\"editor.syntax\":\"Coloration syntaxique\"", "\"editor.imports\":\"Importations\"", "\"editor.on\":\"Activé\"", "\"editor.off\":\"Désactivé\"", "\"editor.run\":\"Exécuter\"", "\"editor.kill\":\"Arrêter\"", "\"editor.format\":\"Formater\"", "\"editor.reset\":\"Réinitialiser\"",
 			},
 			absent: []string{
 				"\"tour.list_heading\":\"Welcome to a tour of Go\"", "\"toc.title\":\"Table of Contents\"", "\"execution.waiting\":\"Waiting for remote server...\"", "\"execution.exited\":\"Program exited\"", "\"execution.vet_failed\":\"Go vet failed.\"", "\"execution.build_failed\":\"Go build failed.\"", "\"execution.communication_error\":\"Error communicating with remote server.\"", "\"execution.test_failed\":\"{count} test failed.\"", "\"execution.tests_failed\":\"{count} tests failed.\"", "\"execution.tests_passed\":\"All tests passed.\"", "\"feedback.open\":\"Send feedback about this page\"", "\"feedback.context\":\"Context\"",
@@ -530,11 +555,11 @@ func TestJSI18nBootstrapLocales(t *testing.T) {
 			locale: "de-DE",
 			want: []string{
 				"\"tour.list_heading\":\"Willkommen zu einer Tour durch Go\"", "\"toc.title\":\"Inhaltsverzeichnis\"", "\"execution.waiting\":\"Warten auf den Remote-Server …\"", "\"execution.exited\":\"Programm beendet\"", "\"execution.vet_failed\":\"Ausführung von go vet fehlgeschlagen.\"", "\"execution.build_failed\":\"Ausführung von go build fehlgeschlagen.\"", "\"execution.communication_error\":\"Fehler bei der Kommunikation mit dem Remote-Server.\"", "\"execution.test_failed\":\"{count} Test fehlgeschlagen.\"", "\"execution.tests_failed\":\"{count} Tests fehlgeschlagen.\"", "\"execution.tests_passed\":\"Alle Tests bestanden.\"", "\"feedback.open\":\"Feedback zu dieser Seite senden\"", "\"feedback.context\":\"Kontext\"",
-				"\"editor.syntax\":\"Syntaxhervorhebung\"", "\"editor.imports\":\"Importe\"", "\"editor.run\":\"Ausführen\"", "\"editor.kill\":\"Stoppen\"", "\"editor.format\":\"Formatieren\"", "\"editor.reset\":\"Zurücksetzen\"",
+				"\"editor.syntax\":\"Syntaxhervorhebung\"", "\"editor.imports\":\"Importe\"", "\"editor.on\":\"Ein\"", "\"editor.off\":\"Aus\"", "\"editor.run\":\"Ausführen\"", "\"editor.kill\":\"Stoppen\"", "\"editor.format\":\"Formatieren\"", "\"editor.reset\":\"Zurücksetzen\"",
 			},
 			absent: []string{
 				"\"tour.list_heading\":\"Welcome to a tour of Go\"", "\"toc.title\":\"Table of Contents\"", "\"execution.waiting\":\"Waiting for remote server...\"", "\"execution.exited\":\"Program exited\"", "\"execution.vet_failed\":\"Go vet failed.\"", "\"execution.build_failed\":\"Go build failed.\"", "\"execution.communication_error\":\"Error communicating with remote server.\"", "\"execution.test_failed\":\"{count} test failed.\"", "\"execution.tests_failed\":\"{count} tests failed.\"", "\"execution.tests_passed\":\"All tests passed.\"", "\"feedback.open\":\"Send feedback about this page\"", "\"feedback.context\":\"Context\"",
-				"\"editor.syntax\":\"Syntax\"", "\"editor.imports\":\"Imports\"", "\"editor.run\":\"Run\"", "\"editor.kill\":\"Kill\"", "\"editor.format\":\"Format\"", "\"editor.reset\":\"Reset\"",
+				"\"editor.syntax\":\"Syntax\"", "\"editor.imports\":\"Imports\"", "\"editor.on\":\"On\"", "\"editor.off\":\"Off\"", "\"editor.run\":\"Run\"", "\"editor.kill\":\"Kill\"", "\"editor.format\":\"Format\"", "\"editor.reset\":\"Reset\"",
 			},
 		},
 		{
@@ -548,7 +573,7 @@ func TestJSI18nBootstrapLocales(t *testing.T) {
 			locale: "zh-CN",
 			want: []string{
 				"\"tour.list_heading\":\"欢迎来到 Go 语言之旅\"", "\"toc.title\":\"目录\"", "\"execution.waiting\":\"正在等待远程服务器……\"", "\"execution.exited\":\"程序已退出\"", "\"execution.vet_failed\":\"Go vet 检查失败。\"", "\"execution.build_failed\":\"Go 构建失败。\"", "\"execution.communication_error\":\"与远程服务器通信时出错。\"", "\"execution.test_failed\":\"{count} 个测试失败。\"", "\"execution.tests_failed\":\"{count} 个测试失败。\"", "\"execution.tests_passed\":\"所有测试均已通过。\"", "\"feedback.open\":\"发送本页反馈\"", "\"feedback.context\":\"上下文\"",
-				"\"editor.syntax\":\"语法高亮\"", "\"editor.imports\":\"导入\"", "\"editor.run\":\"运行\"", "\"editor.kill\":\"终止\"", "\"editor.format\":\"格式化\"", "\"editor.reset\":\"重置\"",
+				"\"editor.syntax\":\"语法高亮\"", "\"editor.imports\":\"导入\"", "\"editor.on\":\"开启\"", "\"editor.off\":\"关闭\"", "\"editor.run\":\"运行\"", "\"editor.kill\":\"终止\"", "\"editor.format\":\"格式化\"", "\"editor.reset\":\"重置\"",
 			},
 			absent: []string{
 				"\"tour.list_heading\":\"Welcome to a tour of Go\"", "\"toc.title\":\"Table of Contents\"", "\"execution.waiting\":\"Waiting for remote server...\"", "\"execution.exited\":\"Program exited\"", "\"execution.vet_failed\":\"Go vet failed.\"", "\"execution.build_failed\":\"Go build failed.\"", "\"execution.communication_error\":\"Error communicating with remote server.\"", "\"execution.test_failed\":\"{count} test failed.\"", "\"execution.tests_failed\":\"{count} tests failed.\"", "\"execution.tests_passed\":\"All tests passed.\"", "\"feedback.open\":\"Send feedback about this page\"", "\"feedback.context\":\"Context\"",
@@ -795,7 +820,7 @@ func TestEditorTemplateUsesLocalizedPlainTextBindings(t *testing.T) {
 		t.Fatal(err)
 	}
 	text := string(data)
-	for _, binding := range []string{"editorUI.syntax", "editorUI.imports", "editorUI.run", "editorUI.kill", "editorUI.format", "editorUI.reset"} {
+	for _, binding := range []string{"editorUI.syntax", "editorUI.imports", "editorUI.on", "editorUI.off", "editorUI.run", "editorUI.kill", "editorUI.format", "editorUI.reset"} {
 		if !strings.Contains(text, "{{"+binding+"}}") {
 			t.Errorf("editor template is missing binding %q", binding)
 		}
@@ -804,6 +829,48 @@ func TestEditorTemplateUsesLocalizedPlainTextBindings(t *testing.T) {
 		if strings.Contains(text, literal) {
 			t.Errorf("editor template still hard-codes %q", literal)
 		}
+	}
+}
+
+func TestEditorToggleStateAndLessonPreUseScopedUI(t *testing.T) {
+	templateData, err := fs.ReadFile(contentTour, "tour/static/partials/editor.html")
+	if err != nil {
+		t.Fatal(err)
+	}
+	templateText := string(templateData)
+	for _, want := range []string{
+		`ng-show="editor.syntax">{{editorUI.on}}`,
+		`ng-hide="editor.syntax">{{editorUI.off}}`,
+		`ng-show="editor.imports">{{editorUI.on}}`,
+		`ng-hide="editor.imports">{{editorUI.off}}`,
+	} {
+		if !strings.Contains(templateText, want) {
+			t.Errorf("editor template is missing localized toggle expression %q", want)
+		}
+	}
+
+	cssData, err := fs.ReadFile(contentTour, "tour/static/css/app.css")
+	if err != nil {
+		t.Fatal(err)
+	}
+	css := string(cssData)
+	for _, forbidden := range []string{"content: ' on'", "content: ' off'", "content: \" on\"", "content: \" off\""} {
+		if strings.Contains(css, forbidden) {
+			t.Errorf("shared CSS still hard-codes state text %q", forbidden)
+		}
+	}
+	mobileStart := strings.Index(css, "@media (max-width: 600px)")
+	if mobileStart < 0 {
+		t.Fatal("shared CSS has no mobile breakpoint")
+	}
+	mobileCSS := css[mobileStart:]
+	for _, want := range []string{".slide-content pre", "box-sizing: border-box", "max-width: 100%", "white-space: pre-wrap", "overflow-wrap: anywhere"} {
+		if !strings.Contains(mobileCSS, want) {
+			t.Errorf("lesson pre CSS is missing %q", want)
+		}
+	}
+	if strings.Contains(mobileCSS, ".slide-content pre {\n        overflow-x: auto") {
+		t.Error("mobile lesson pre still opts into horizontal scrolling")
 	}
 }
 

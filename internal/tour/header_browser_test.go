@@ -73,6 +73,49 @@ try {
 	}
 }
 
+func TestHomepageLanguageListFitsMobileViewport(t *testing.T) {
+	if os.Getenv("GO_TOUR_RUN_BROWSER_TESTS") != "1" {
+		t.Skip("set GO_TOUR_RUN_BROWSER_TESTS=1 to run the Chrome integration test")
+	}
+	chrome, err := exec.LookPath("google-chrome")
+	if err != nil {
+		t.Skip("google-chrome is not installed")
+	}
+	css, err := fs.ReadFile(contentTour, "tour/static/css/app.css")
+	if err != nil {
+		t.Fatal(err)
+	}
+	document := fmt.Sprintf(`<!doctype html><html data-theme="auto"><head><meta name="viewport" content="width=device-width, initial-scale=1"><style>%s</style></head><body class="site-home">
+<main class="site-main"><section class="site-section"><h2>Versions linguistiques</h2><ul class="site-language-list">
+<li><a href="https://go-dev.shuijingwanwq.com/">Simplified Chinese — 简体中文</a></li>
+<li><a href="https://go.dev/tour/">English</a></li>
+<li><span aria-current="page">French — Français</span></li>
+<li><a href="https://de-go-dev.shuijingwanwq.com/">German — Deutsch</a></li>
+<li><a href="https://ja-go-dev.shuijingwanwq.com/">Japanese — 日本語</a></li>
+</ul></section></main>
+<script>
+function assert(condition, message) { if (!condition) throw new Error(message); }
+try {
+  const list = document.querySelector('.site-language-list'), items = [...list.children], current = document.querySelector('[aria-current="page"]');
+  assert(innerWidth === 375, 'CSS viewport width is ' + innerWidth);
+  assert(items.length === 5, 'language count changed');
+  assert(items.every((item, index) => index === 0 || item.getBoundingClientRect().top > items[index - 1].getBoundingClientRect().top), 'languages are not one per line');
+  assert(parseInt(getComputedStyle(current).fontWeight, 10) >= 700, 'current language is not emphasized');
+  assert(list.scrollWidth <= list.clientWidth, 'language list has horizontal overflow');
+  assert(document.documentElement.scrollWidth <= document.documentElement.clientWidth, 'homepage has horizontal overflow');
+  document.body.setAttribute('data-tour-header-test', 'PASS');
+} catch (error) { document.body.setAttribute('data-tour-header-test', 'FAIL: ' + error.message); }
+</script></body></html>`, css)
+	path := filepath.Join(t.TempDir(), "homepage-language-list-test.html")
+	if err := os.WriteFile(path, []byte(document), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	result := evaluateHeaderAtViewport(t, chrome, "file://"+path, 375)
+	if result.Status != "PASS" {
+		t.Fatalf("homepage language list browser test failed: %s", result.Status)
+	}
+}
+
 type headerViewportResult struct {
 	Status   string `json:"status"`
 	Viewport int    `json:"viewport"`

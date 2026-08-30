@@ -15,8 +15,33 @@ func TestLoadEmbeddedCatalogs(t *testing.T) {
 		if err != nil {
 			t.Fatalf("Load(%q): %v", locale, err)
 		}
-		if got, want := len(catalog.Messages), 88; got != want {
+		if got, want := len(catalog.Messages), 90; got != want {
 			t.Fatalf("Load(%q) message count = %d, want %d", locale, got, want)
+		}
+	}
+}
+
+func TestEditorToggleStatesAreLocalizedPerCatalog(t *testing.T) {
+	wants := map[string][2]string{
+		"en":    {"On", "Off"},
+		"de-DE": {"Ein", "Aus"},
+		"fr-FR": {"Activé", "Désactivé"},
+		"ja-JP": {"オン", "オフ"},
+		"zh-CN": {"开启", "关闭"},
+	}
+	for locale, want := range wants {
+		catalog, err := Load(locale)
+		if err != nil {
+			t.Fatal(err)
+		}
+		for index, key := range []string{"editor.on", "editor.off"} {
+			got, err := catalog.Plain(key)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if got != want[index] {
+				t.Errorf("%s %s = %q, want %q", locale, key, got, want[index])
+			}
 		}
 	}
 }
@@ -33,7 +58,7 @@ func TestFrenchCatalogMatchesEnglishSource(t *testing.T) {
 	if french.HTMLLang != "fr-FR" {
 		t.Fatalf("fr-FR HTMLLang = %q, want fr-FR", french.HTMLLang)
 	}
-	if got, want := len(french.Messages), 88; got != want {
+	if got, want := len(french.Messages), 90; got != want {
 		t.Fatalf("fr-FR message count = %d, want %d", got, want)
 	}
 	if err := validateCoverage(source, french); err != nil {
@@ -73,7 +98,7 @@ func TestGermanCatalogMatchesEnglishSource(t *testing.T) {
 	if german.HTMLLang != "de-DE" {
 		t.Fatalf("de-DE HTMLLang = %q, want de-DE", german.HTMLLang)
 	}
-	if got, want := len(german.Messages), 88; got != want {
+	if got, want := len(german.Messages), 90; got != want {
 		t.Fatalf("de-DE message count = %d, want %d", got, want)
 	}
 	if err := validateCoverage(source, german); err != nil {
@@ -114,7 +139,7 @@ func TestJapaneseCatalogMatchesEnglishSource(t *testing.T) {
 	if japanese.HTMLLang != "ja-JP" {
 		t.Fatalf("ja-JP HTMLLang = %q, want ja-JP", japanese.HTMLLang)
 	}
-	if got, want := len(japanese.Messages), 88; got != want {
+	if got, want := len(japanese.Messages), 90; got != want {
 		t.Fatalf("ja-JP message count = %d, want %d", got, want)
 	}
 	if err := validateCoverage(source, japanese); err != nil {

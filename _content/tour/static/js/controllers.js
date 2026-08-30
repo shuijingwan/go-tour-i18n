@@ -28,6 +28,8 @@ controller('EditorCtrl', ['$scope', '$routeParams', '$location', 'toc', 'lessons
         $scope.editorUI = {
             syntax: i18n.l('editor.syntax'),
             imports: i18n.l('editor.imports'),
+            on: i18n.l('editor.on'),
+            off: i18n.l('editor.off'),
             run: i18n.l('editor.run'),
             kill: i18n.l('editor.kill'),
             format: i18n.l('editor.format'),

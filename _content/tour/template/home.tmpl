@@ -45,7 +45,7 @@
         <section class="site-section">
             <h2>{{ui "site.language_versions"}}</h2>
             <ul class="site-language-list">
-                {{range .Languages}}<li>{{if .Current}}<span aria-current="page">{{.Autonym}}</span>{{else}}<a href="{{.URL}}"{{if .Official}} target="_blank" rel="noopener noreferrer"{{end}}>{{.Autonym}}</a>{{end}}</li>{{end}}
+                {{range .Languages}}<li>{{if .Current}}<span aria-current="page">{{.Label}}</span>{{else}}<a href="{{.URL}}"{{if .Official}} target="_blank" rel="noopener noreferrer"{{end}}>{{.Label}}</a>{{end}}</li>{{end}}
             </ul>
         </section>
         <section class="site-section">

@@ -270,18 +270,6 @@ ul {
     background: #3D3D3E;
     color: #BABABA;
 }
-.menu-button[imports-checkbox]:after {
-    content: ' off';
-}
-.menu-button[imports-checkbox].active:after {
-    content: ' on';
-}
-.menu-button[syntax-checkbox]:after {
-    content: ' off';
-}
-.menu-button[syntax-checkbox].active:after {
-    content: ' on';
-}
 #file-menu .menu-button {
     float: right;
 }
@@ -558,6 +546,12 @@ a#run, a#kill {
     }
 }
 @media (max-width: 600px) {
+    .slide-content pre {
+        box-sizing: border-box;
+        max-width: 100%;
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+    }
     #explorer {
         height: auto;
     }
@@ -737,12 +731,12 @@ a#run, a#kill {
     background: #fff;
 }
 .site-language-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px 24px;
     margin: 0;
     padding: 0;
     list-style: none;
+}
+.site-language-list li {
+    overflow-wrap: anywhere;
 }
 .site-language-list [aria-current='page'] {
     font-weight: bold;

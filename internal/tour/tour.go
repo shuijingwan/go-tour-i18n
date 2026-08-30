@@ -489,6 +489,8 @@ var jsI18nKeys = []string{
 	"feedback.context",
 	"editor.syntax",
 	"editor.imports",
+	"editor.on",
+	"editor.off",
 	"editor.run",
 	"editor.kill",
 	"editor.format",

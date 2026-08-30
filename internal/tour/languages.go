@@ -13,20 +13,22 @@ import (
 // homepage. Registry order is presentation order and is shared by every
 // locale build.
 type LanguageLink struct {
-	Locale   string
-	Autonym  string
-	URL      string
-	Official bool
-	Current  bool
+	Locale      string
+	EnglishName string
+	Autonym     string
+	Label       string
+	URL         string
+	Official    bool
+	Current     bool
 }
 
 var languageRegistry = []LanguageLink{
 	// 展示顺序按英文语言名称字母顺序排列。
-	{Locale: "zh-CN", Autonym: "简体中文", URL: "https://go-dev.shuijingwanwq.com/"},
-	{Locale: "en", Autonym: "English", URL: "https://go.dev/tour/", Official: true},
-	{Locale: "fr-FR", Autonym: "Français", URL: "https://fr-go-dev.shuijingwanwq.com/"},
-	{Locale: "de-DE", Autonym: "Deutsch", URL: "https://de-go-dev.shuijingwanwq.com/"},
-	{Locale: "ja-JP", Autonym: "日本語", URL: "https://ja-go-dev.shuijingwanwq.com/"},
+	{Locale: "zh-CN", EnglishName: "Simplified Chinese", Autonym: "简体中文", URL: "https://go-dev.shuijingwanwq.com/"},
+	{Locale: "en", EnglishName: "English", Autonym: "English", URL: "https://go.dev/tour/", Official: true},
+	{Locale: "fr-FR", EnglishName: "French", Autonym: "Français", URL: "https://fr-go-dev.shuijingwanwq.com/"},
+	{Locale: "de-DE", EnglishName: "German", Autonym: "Deutsch", URL: "https://de-go-dev.shuijingwanwq.com/"},
+	{Locale: "ja-JP", EnglishName: "Japanese", Autonym: "日本語", URL: "https://ja-go-dev.shuijingwanwq.com/"},
 }
 
 type localeProfile struct {
@@ -91,6 +93,10 @@ func languagesFor(locale string) ([]LanguageLink, error) {
 	languages := make([]LanguageLink, len(languageRegistry))
 	copy(languages, languageRegistry)
 	for i := range languages {
+		languages[i].Label = languages[i].EnglishName
+		if languages[i].EnglishName != languages[i].Autonym {
+			languages[i].Label += " — " + languages[i].Autonym
+		}
 		languages[i].Current = languages[i].Locale == locale
 	}
 	return languages, nil
