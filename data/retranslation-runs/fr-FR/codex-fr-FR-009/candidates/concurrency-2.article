@@ -1,0 +1,20 @@
+* Canaux
+
+Les canaux sont des conduits typés qui permettent d’envoyer et de recevoir des valeurs à l’aide de l’opérateur de canal `<-`.
+
+	ch <- v    // Envoyer v dans le canal ch.
+	v := <-ch  // Recevoir depuis ch, et
+	           // affecter la valeur à v.
+
+(Les données circulent dans le sens de la flèche.)
+
+Comme les maps et les slices, les canaux doivent être créés avant d’être utilisés :
+
+	ch := make(chan int)
+
+Par défaut, les envois et les réceptions restent bloqués jusqu’à ce que l’autre côté soit prêt. Les goroutines peuvent ainsi se synchroniser sans verrou explicite ni variable de condition.
+
+Le code d’exemple additionne les nombres d’une slice en répartissant le travail entre deux goroutines.
+Lorsque les deux goroutines ont terminé leur calcul, il calcule le résultat final.
+
+.play concurrency/channels.go

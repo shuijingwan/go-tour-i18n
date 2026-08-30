@@ -1,0 +1,29 @@
+{
+  "schema_version": 2,
+  "batch_id": "codex-fr-FR-009",
+  "locale": "fr-FR",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 2,
+  "units": [
+    {
+      "unit_id": "generics/1",
+      "unit_kind": "page",
+      "source_path": "_content/tour/generics.article",
+      "source_sha256": "01a045105dc8c12fb1709f122d363235c19a6464d5de7587d579524aec270dd6",
+      "input_path": "inputs/generics-1.article",
+      "input_sha256": "3ff19664d7491cff23bc7f49a5fdd513a6af4184e596d7fda9cbe009b9342639",
+      "protected_token_count": 19
+    },
+    {
+      "unit_id": "concurrency/2",
+      "unit_kind": "page",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "a35e3af26b51f8c2c2a6dfaf09f9c7cab0fdb4b1b56f9e4dc9b793f1dac1e295",
+      "input_path": "inputs/concurrency-2.article",
+      "input_sha256": "f88ab0b53baaa3421f19920457b2457b93328f959812169bdf2a0359a020d22e",
+      "protected_token_count": 15
+    }
+  ]
+}
