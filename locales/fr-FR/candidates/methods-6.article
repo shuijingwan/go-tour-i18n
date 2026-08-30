@@ -1,0 +1,23 @@
+* Méthodes et indirection de pointeur
+
+En comparant les deux programmes précédents, vous remarquerez peut-être que
+les fonctions dotées d’un argument pointeur doivent recevoir un pointeur :
+
+	var v Vertex
+	ScaleFunc(v, 5)  // Erreur de compilation !
+	ScaleFunc(&v, 5) // OK
+
+tandis que les méthodes avec un récepteur par pointeur acceptent une valeur ou un pointeur comme
+récepteur lors de leur appel :
+
+	var v Vertex
+	v.Scale(5)  // OK
+	p := &v
+	p.Scale(10) // OK
+
+Pour l’instruction `v.Scale(5)`, bien que `v` soit une valeur et non un pointeur,
+la méthode avec le récepteur par pointeur est appelée automatiquement.
+Autrement dit, par commodité, Go interprète l’instruction `v.Scale(5)` comme
+`(&v).Scale(5)`, puisque la méthode `Scale` possède un récepteur par pointeur.
+
+.play methods/indirection.go

@@ -1,0 +1,24 @@
+* Récepteurs par pointeur
+
+Vous pouvez déclarer des méthodes avec des récepteurs par pointeur.
+
+Cela signifie que le type du récepteur possède la syntaxe littérale `*T` pour un type `T` donné.
+(De plus, `T` ne peut pas être lui-même un pointeur tel que `*int`.)
+
+Par exemple, la méthode `Scale` présentée ici est définie sur `*Vertex`.
+
+Les méthodes avec un récepteur par pointeur peuvent modifier la valeur vers laquelle pointe le récepteur
+(comme le fait ici `Scale`).
+Comme les méthodes doivent souvent modifier leur récepteur, les récepteurs par pointeur sont plus
+courants que les récepteurs par valeur.
+
+Essayez de supprimer le `*` de la déclaration de la fonction `Scale` à la ligne 16,
+puis observez la modification du comportement du programme.
+
+Avec un récepteur par valeur, la méthode `Scale` opère sur une copie de la valeur
+`Vertex` d’origine.
+(Ce comportement est identique à celui de tout autre argument de fonction.)
+La méthode `Scale` doit avoir un récepteur par pointeur pour modifier la valeur `Vertex`
+déclarée dans la fonction `main`.
+
+.play methods/methods-pointers.go

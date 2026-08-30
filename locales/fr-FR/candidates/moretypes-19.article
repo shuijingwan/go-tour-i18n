@@ -1,0 +1,11 @@
+* Maps
+
+Une map associe des clés à des valeurs.
+
+La valeur zéro d’une map est `nil`.
+Une map `nil` ne contient aucune clé, et aucune clé ne peut lui être ajoutée.
+
+La fonction `make` renvoie une map du type indiqué,
+initialisée et prête à l’emploi.
+
+.play moretypes/maps.go

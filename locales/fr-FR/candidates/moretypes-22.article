@@ -1,0 +1,27 @@
+* Modification des maps
+
+Insérer ou mettre à jour un élément dans la map `m` :
+
+	m[key] = elem
+
+Récupérer un élément :
+
+	elem = m[key]
+
+Supprimer un élément :
+
+	delete(m, key)
+
+Vérifier la présence d’une clé à l’aide d’une affectation à deux valeurs :
+
+	elem, ok = m[key]
+
+Si `key` se trouve dans `m`, `ok` vaut `true`. Sinon, `ok` vaut `false`.
+
+Si `key` ne se trouve pas dans la map, `elem` prend la valeur zéro du type des éléments de la map.
+
+*Remarque* : si `elem` ou `ok` n’ont pas encore été déclarés, vous pouvez utiliser une déclaration courte :
+
+	elem, ok := m[key]
+
+.play moretypes/mutating-maps.go

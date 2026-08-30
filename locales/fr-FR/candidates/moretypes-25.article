@@ -1,0 +1,7 @@
+* Fermetures de fonctions
+
+Les fonctions de Go peuvent être des fermetures. Une fermeture est une valeur de fonction qui fait référence à des variables extérieures à son corps. La fonction peut accéder aux variables référencées et leur affecter des valeurs ; en ce sens, elle est « liée » à ces variables.
+
+Par exemple, la fonction `adder` renvoie une fermeture. Chaque fermeture est liée à sa propre variable `sum`.
+
+.play moretypes/function-closures.go

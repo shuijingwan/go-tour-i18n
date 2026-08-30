@@ -1,0 +1,9 @@
+* Defer
+
+Une instruction defer reporte l’exécution d’une fonction jusqu’au retour de la fonction
+englobante.
+
+Les arguments de l’appel différé sont évalués immédiatement, mais l’appel de fonction
+n’est exécuté qu’au retour de la fonction englobante.
+
+.play flowcontrol/defer.go

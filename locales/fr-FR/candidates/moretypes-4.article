@@ -1,0 +1,10 @@
+* Pointeurs vers des structures
+
+Les champs d’une structure sont accessibles par l’intermédiaire d’un pointeur vers celle-ci.
+
+Pour accéder au champ `X` d’une structure lorsque nous disposons du pointeur `p` vers celle-ci, nous pourrions
+écrire `(*p).X`.
+Cette notation est toutefois fastidieuse ; le langage nous permet donc d’écrire simplement
+`p.X`, sans déréférencement explicite.
+
+.play moretypes/struct-pointers.go

@@ -1,0 +1,18 @@
+* Création d’une slice avec make
+
+Les slices peuvent être créées avec la fonction intégrée `make` ;
+c’est ainsi que l’on crée des tableaux de taille dynamique.
+
+La fonction `make` alloue un tableau initialisé avec des valeurs zéro
+et renvoie une slice qui fait référence à ce tableau :
+
+	a := make([]int, 5)  // len(a)=5
+
+Pour préciser une capacité, passez un troisième argument à `make` :
+
+	b := make([]int, 0, 5) // len(b)=0, cap(b)=5
+
+	b = b[:cap(b)] // len(b)=5, cap(b)=5
+	b = b[1:]      // len(b)=4, cap(b)=4
+
+.play moretypes/making-slices.go

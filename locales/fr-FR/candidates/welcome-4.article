@@ -1,0 +1,17 @@
+* Go hors ligne (facultatif)
+
+Ce tour est également disponible sous forme de programme autonome que vous pouvez utiliser
+sans accès à Internet. Il compile et exécute les exemples de code sur
+votre propre machine.
+
+Pour exécuter le tour en local, vous devez d’abord
+[[/doc/install][installer Go]], puis exécuter :
+
+  go install golang.org/x/website/tour@latest
+
+Cette commande placera un exécutable `tour` dans le répertoire
+`bin` de votre [[/cmd/go/#hdr-GOPATH_and_Modules][GOPATH]].
+Lorsque vous exécuterez le programme du tour, il ouvrira un navigateur web affichant
+votre version locale du tour.
+
+Bien entendu, vous pouvez continuer à suivre le tour sur ce site web.

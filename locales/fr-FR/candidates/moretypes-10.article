@@ -1,0 +1,18 @@
+* Valeurs par défaut des slices
+
+Lors du découpage, vous pouvez omettre la borne supérieure ou inférieure afin d’utiliser sa valeur par défaut.
+
+La valeur par défaut est zéro pour la borne inférieure, et la longueur de la slice ou du tableau sous-jacent pour la borne supérieure.
+
+Pour le tableau
+
+	var a [10]int
+
+les expressions de slice suivantes sont équivalentes :
+
+	a[0:10]
+	a[:10]
+	a[0:]
+	a[:]
+
+.play moretypes/slice-bounds.go

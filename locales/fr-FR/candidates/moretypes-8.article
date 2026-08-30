@@ -1,0 +1,11 @@
+* Les slices sont comme des références à des tableaux
+
+Une slice ne stocke aucune donnée ;
+elle décrit simplement une partie d’un tableau sous-jacent.
+
+Modifier les éléments d’une slice modifie les
+éléments correspondants de son tableau sous-jacent.
+
+Les autres slices qui partagent le même tableau sous-jacent verront ces modifications.
+
+.play moretypes/slices-pointers.go

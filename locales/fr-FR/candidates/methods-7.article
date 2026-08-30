@@ -1,0 +1,21 @@
+* Méthodes et indirection de pointeur (2)
+
+L’opération équivalente se produit dans l’autre sens.
+
+Les fonctions qui acceptent un argument par valeur doivent recevoir une valeur de ce type précis :
+
+	var v Vertex
+	fmt.Println(AbsFunc(v))  // OK
+	fmt.Println(AbsFunc(&v)) // Erreur de compilation !
+
+tandis que les méthodes avec un récepteur par valeur acceptent une valeur ou un pointeur comme
+récepteur lors de leur appel :
+
+	var v Vertex
+	fmt.Println(v.Abs()) // OK
+	p := &v
+	fmt.Println(p.Abs()) // OK
+
+Dans ce cas, l’appel de méthode `p.Abs()` est interprété comme `(*p).Abs()`.
+
+.play methods/indirection-values.go
