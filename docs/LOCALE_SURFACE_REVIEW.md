@@ -111,6 +111,7 @@ language registry 是 build-time 输入，因此新增 locale 的首次 producti
 - 至少在一个桌面 viewport 和一个移动 viewport 检查 `/`、`/tour/`、`/tour/list`、一个普通课程页和一个带编辑器的课程页；
 - header、导航、语言选择器、正文、代码编辑器、按钮和 footer 可见且无重叠；
 - 长译文可换行，横向滚动只出现在预期代码区域；
+- 移动端长代码 / 长 `pre` 布局的固定回归页面为 `/tour/moretypes/1`，各 locale 只需替换 production hostname；已验证示例为 <https://ja-go-dev.shuijingwanwq.com/tour/moretypes/1>，用于确认长代码课程页不会横向撑破整个页面；
 - 移动端能完成基本导航，并真实执行一次 Run、Format 和 Reset；
 - 主题切换及已有的明暗模式图标/可见文本不因 locale 失效。
 
