@@ -1,0 +1,9 @@
+* If avec une instruction courte
+
+Comme `for`, l’instruction `if` peut commencer par une instruction courte à exécuter avant la condition.
+
+Les variables déclarées par cette instruction ne sont dans la portée que jusqu’à la fin du bloc `if`.
+
+(Essayez d’utiliser `v` dans la dernière instruction `return`.)
+
+.play flowcontrol/if-with-a-short-statement.go

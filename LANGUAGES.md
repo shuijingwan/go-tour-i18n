@@ -4,7 +4,7 @@
 
 新增语言统一从 [新增 Locale 执行手册](docs/NEW_LOCALE_RUNBOOK.md) 开始；不要只在 registry 中增加一行就视为完成。新 locale 必须先明确规范 locale、显示名称、domain/CDN、全站 glossary 决策和 production profile，并通过独立的 TranslationUnit Quality Review 与 Locale Surface Review。
 
-语言 registry 的正式展示顺序按语言的英文名称字母顺序排列，不按加入项目的时间排列。当前顺序为 Chinese（`zh-CN`）→ English（`en`）→ German（`de-DE`）→ Japanese（`ja-JP`）。
+语言 registry 的正式展示顺序按语言的英文名称字母顺序排列，不按加入项目的时间排列。当前顺序为 Chinese（`zh-CN`）→ English（`en`）→ French（`fr-FR`）→ German（`de-DE`）→ Japanese（`ja-JP`）。
 
 ## 语言站点与 CDN
 
@@ -12,8 +12,31 @@
 | --- | --- | --- | --- | --- |
 | `zh-CN` | 简体中文 | <https://go-dev.shuijingwanwq.com/> | EdgeOne | 当前默认社区语言站；不创建 `zh.go-dev` 或 `zh-cn.go-dev` |
 | `en` | English | <https://go.dev/tour/> | Go 官方提供 | 继续使用官方 A Tour of Go；当前不建设本项目的英文社区版本，也不规划 `en-go-dev.shuijingwanwq.com` |
+| `fr-FR` | Français | <https://fr-go-dev.shuijingwanwq.com/> | Cloudflare Free | 法语社区语言站；域名 language code 为 `fr`，首次上线准备中 |
 | `de-DE` | Deutsch | <https://de-go-dev.shuijingwanwq.com/> | Cloudflare Free | 德语社区语言站；域名 language code 为 `de` |
 | `ja-JP` | 日本語 | <https://ja-go-dev.shuijingwanwq.com/> | Cloudflare Free | 已正式上线的日语社区语言站 |
+
+## fr-FR 已冻结身份与后续生产 profile
+
+fr-FR 使用规范 locale 与 HTML `lang` `fr-FR`，本地显示名为 `Français`，英文名为 `French`，域名 language code 为 `fr`。production hostname 为 <https://fr-go-dev.shuijingwanwq.com/>，CDN 使用 Cloudflare Free；非中文共享静态资源使用 <https://assets-go-dev.shuijingwanwq.com/>。Playground 代理后续需要加入的精确 Origin 为 `https://fr-go-dev.shuijingwanwq.com`。
+
+后续首次生产部署使用以下已冻结 profile；这些值当前只完成事实落库，不表示基础设施、部署脚本、verification 脚本或 Playground allowlist 已经配置：
+
+| 项目 | 值 |
+| --- | --- |
+| data root | `/data/go-tour-fr-FR` |
+| releases | `/data/go-tour-fr-FR/releases` |
+| current | `/data/go-tour-fr-FR/current` |
+| deploy lock | `/data/go-tour-fr-FR/.deploy.lock` |
+| systemd service | `go-tour-fr-FR.service` |
+| service user | `go-tour` |
+| loopback port | `4002` |
+| health URL | <http://127.0.0.1:4002/> |
+| Nginx vhost | `/usr/local/nginx/conf/vhost/fr-go-dev.shuijingwanwq.com.conf` |
+| TLS certificate | `/usr/local/nginx/conf/ssl/fr-go-dev.shuijingwanwq.com.crt` |
+| TLS private key | `/usr/local/nginx/conf/ssl/fr-go-dev.shuijingwanwq.com.key` |
+
+2026-08-30 的最小只读服务器预检已确认 `go-tour` 用户存在、`4002` 端口空闲、`/data/go-tour-fr-FR` 尚不存在且可用、`go-tour-fr-FR.service` 尚不存在且可用。首次生产部署阶段仍须按生产运维手册重新执行目标校验，并在该阶段明确增加和测试 deploy / verify profile、创建基础设施、配置精确 Playground Origin 与完成 AdSense production 接入；首次 TranslationUnit export 前不提前放宽 production 脚本白名单。
 
 ## de-DE 已冻结身份与后续生产 profile
 

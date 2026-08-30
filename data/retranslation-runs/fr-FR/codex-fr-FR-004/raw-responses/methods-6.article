@@ -1,0 +1,16 @@
+* Méthodes et indirection de pointeur
+
+En comparant les deux programmes précédents, vous remarquerez peut-être que
+les fonctions dotées d’un argument pointeur doivent recevoir un pointeur :
+
+⟪GTI18N_39fb725b_000001⟫Erreur de compilation !⟪GTI18N_39fb725b_000002⟫tandis que les méthodes avec un récepteur par pointeur acceptent une valeur ou un pointeur comme
+récepteur lors de leur appel :
+
+⟪GTI18N_39fb725b_000003⟫
+
+Pour l’instruction ⟪GTI18N_39fb725b_000004⟫v.Scale(5)⟪GTI18N_39fb725b_000005⟫, bien que ⟪GTI18N_39fb725b_000006⟫v⟪GTI18N_39fb725b_000007⟫ soit une valeur et non un pointeur,
+la méthode avec le récepteur par pointeur est appelée automatiquement.
+Autrement dit, par commodité, ⟪GTI18N_39fb725b_000008⟫ interprète l’instruction ⟪GTI18N_39fb725b_000009⟫v.Scale(5)⟪GTI18N_39fb725b_000010⟫ comme
+⟪GTI18N_39fb725b_000011⟫(&v).Scale(5)⟪GTI18N_39fb725b_000012⟫, puisque la méthode ⟪GTI18N_39fb725b_000013⟫Scale⟪GTI18N_39fb725b_000014⟫ possède un récepteur par pointeur.
+
+⟪GTI18N_39fb725b_000015⟫

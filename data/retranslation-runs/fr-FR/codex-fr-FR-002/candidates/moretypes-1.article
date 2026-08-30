@@ -1,0 +1,24 @@
+* Pointeurs
+
+Go possède des pointeurs.
+Un pointeur contient l’adresse mémoire d’une valeur.
+
+Le type `*T` est un pointeur vers une valeur `T`. Sa valeur zéro est `nil`.
+
+	var p *int
+
+L’opérateur `&` produit un pointeur vers son opérande.
+
+	i := 42
+	p = &i
+
+L’opérateur `*` désigne la valeur sous-jacente du pointeur.
+
+	fmt.Println(*p) // lire i via le pointeur p
+	*p = 21         // définir i via le pointeur p
+
+Cette opération est appelée « déréférencement » ou « indirection ».
+
+Contrairement au C, Go ne permet pas l’arithmétique des pointeurs.
+
+.play moretypes/pointers.go

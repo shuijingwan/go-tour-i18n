@@ -34,6 +34,29 @@ func TestDeDELocaleIdentity(t *testing.T) {
 	}
 }
 
+func TestFrFRLocaleIdentity(t *testing.T) {
+	data, err := os.ReadFile(filepath.Join(repoRoot(t), "locales", "fr-FR", "locale.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	var got Locale
+	if err := json.Unmarshal(data, &got); err != nil {
+		t.Fatal(err)
+	}
+	want := Locale{
+		Locale:          "fr-FR",
+		LanguageName:    "Français",
+		EnglishName:     "French",
+		HTMLLang:        "fr-FR",
+		Phase:           "scaffold",
+		TranslationUnit: "present.Section",
+		DefaultLanguage: false,
+	}
+	if !reflect.DeepEqual(got, want) {
+		t.Fatalf("fr-FR locale identity = %+v, want %+v", got, want)
+	}
+}
+
 func TestInitializeLocaleStatusFromStableWorkflowInventory(t *testing.T) {
 	pageTwo := []byte("* Two\n\nSecond Page.\n")
 	pageOne := []byte("* One\n\nFirst Page.\n")

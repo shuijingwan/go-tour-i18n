@@ -1,0 +1,12 @@
+* Types de base
+
+Les types de base de ⟪GTI18N_836ab1dd_000001⟫ sont
+
+⟪GTI18N_836ab1dd_000002⟫alias de ⟪GTI18N_836ab1dd_000003⟫⟪GTI18N_836ab1dd_000004⟫alias de ⟪GTI18N_836ab1dd_000005⟫⟪GTI18N_836ab1dd_000006⟫représente un point de code Unicode⟪GTI18N_836ab1dd_000007⟫L’exemple présente des variables de plusieurs types,
+et montre également que les déclarations de variables peuvent être « factorisées » en blocs,
+comme les déclarations d’importation.
+
+Les types ⟪GTI18N_836ab1dd_000008⟫int⟪GTI18N_836ab1dd_000009⟫, ⟪GTI18N_836ab1dd_000010⟫uint⟪GTI18N_836ab1dd_000011⟫ et ⟪GTI18N_836ab1dd_000012⟫uintptr⟪GTI18N_836ab1dd_000013⟫ ont généralement une largeur de 32 bits sur les systèmes 32 bits et de 64 bits sur les systèmes 64 bits.
+Lorsque vous avez besoin d’une valeur entière, utilisez ⟪GTI18N_836ab1dd_000014⟫int⟪GTI18N_836ab1dd_000015⟫, sauf si vous avez une raison précise d’utiliser un type entier de taille définie ou non signé.
+
+⟪GTI18N_836ab1dd_000016⟫

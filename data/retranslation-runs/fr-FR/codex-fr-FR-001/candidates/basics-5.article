@@ -1,0 +1,13 @@
+* Fonctions (suite)
+
+Lorsque plusieurs paramètres nommés consécutifs d’une fonction ont le même type, vous pouvez omettre le type pour tous sauf le dernier.
+
+Dans cet exemple, nous avons raccourci
+
+	x int, y int
+
+en
+
+	x, y int
+
+.play basics/functions-continued.go

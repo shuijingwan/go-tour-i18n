@@ -1,0 +1,12 @@
+* Valeurs d’interface avec valeurs sous-jacentes nil
+
+Si la valeur concrète à l’intérieur de l’interface est elle-même nil,
+la méthode est appelée avec un récepteur nil.
+
+Dans certains langages, cela déclencherait une exception de pointeur nul,
+mais en Go, il est courant d’écrire des méthodes qui gèrent correctement un appel
+avec un récepteur nil (comme la méthode `M` dans cet exemple.)
+
+Notez qu’une valeur d’interface qui contient une valeur concrète nil n’est pas elle-même nil.
+
+.play methods/interface-values-with-nil.go

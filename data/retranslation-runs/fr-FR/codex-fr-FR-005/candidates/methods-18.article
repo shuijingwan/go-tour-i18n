@@ -1,0 +1,8 @@
+* Exercice : Stringers
+
+Faites en sorte que le type `IPAddr` implémente `fmt.Stringer` afin d’afficher l’adresse en
+notation décimale pointée.
+
+Par exemple, `IPAddr{1,`2,`3,`4}` doit s’afficher sous la forme `"1.2.3.4"`.
+
+.play methods/exercise-stringer.go

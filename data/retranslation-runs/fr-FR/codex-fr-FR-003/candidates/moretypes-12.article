@@ -1,0 +1,8 @@
+* Slices nil
+
+La valeur zéro d’une slice est `nil`.
+
+Une slice nil a une longueur et une capacité de 0
+et ne possède aucun tableau sous-jacent.
+
+.play moretypes/nil-slices.go

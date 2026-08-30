@@ -1,0 +1,11 @@
+* Canaux avec tampon
+
+Les canaux peuvent être _dotés_d’un_tampon_. Indiquez la longueur du tampon comme deuxième argument de `make` pour initialiser un canal avec tampon :
+
+	ch := make(chan int, 100)
+
+Les envois dans un canal avec tampon ne sont bloquants que lorsque le tampon est plein. Les réceptions sont bloquantes lorsque le tampon est vide.
+
+Modifiez l’exemple afin de dépasser la capacité du tampon et observez ce qui se passe.
+
+.play concurrency/buffered-channels.go

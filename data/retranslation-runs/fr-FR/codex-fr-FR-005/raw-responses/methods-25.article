@@ -1,0 +1,13 @@
+* Exercice : images
+
+Vous souvenez-vous du [[⟪GTI18N_a196bc59_000001⟫][générateur d’images]] que vous avez écrit précédemment ? Écrivons-en un autre, mais cette fois il renverra une implémentation de ⟪GTI18N_a196bc59_000002⟫image.Image⟪GTI18N_a196bc59_000003⟫ au lieu d’une slice de données.
+
+Définissez votre propre type ⟪GTI18N_a196bc59_000004⟫Image⟪GTI18N_a196bc59_000005⟫, implémentez [[⟪GTI18N_a196bc59_000006⟫][les méthodes nécessaires]], puis appelez ⟪GTI18N_a196bc59_000007⟫pic.ShowImage⟪GTI18N_a196bc59_000008⟫.
+
+⟪GTI18N_a196bc59_000009⟫Bounds⟪GTI18N_a196bc59_000010⟫ doit renvoyer un ⟪GTI18N_a196bc59_000011⟫image.Rectangle⟪GTI18N_a196bc59_000012⟫, tel que ⟪GTI18N_a196bc59_000013⟫image.Rect(0,`0,`w,`h)⟪GTI18N_a196bc59_000014⟫.
+
+⟪GTI18N_a196bc59_000015⟫ColorModel⟪GTI18N_a196bc59_000016⟫ doit renvoyer ⟪GTI18N_a196bc59_000017⟫color.RGBAModel⟪GTI18N_a196bc59_000018⟫.
+
+⟪GTI18N_a196bc59_000019⟫At⟪GTI18N_a196bc59_000020⟫ doit renvoyer une couleur ; la valeur ⟪GTI18N_a196bc59_000021⟫v⟪GTI18N_a196bc59_000022⟫ du dernier générateur d’images correspond ici à ⟪GTI18N_a196bc59_000023⟫color.RGBA{v,`v,`255,`255}⟪GTI18N_a196bc59_000024⟫.
+
+⟪GTI18N_a196bc59_000025⟫

@@ -1,0 +1,19 @@
+* Erreurs
+
+Les programmes ⟪GTI18N_9eaab1fd_000001⟫ représentent un état d’erreur à l’aide de valeurs ⟪GTI18N_9eaab1fd_000002⟫error⟪GTI18N_9eaab1fd_000003⟫.
+
+Le type ⟪GTI18N_9eaab1fd_000004⟫error⟪GTI18N_9eaab1fd_000005⟫ est une interface intégrée semblable à ⟪GTI18N_9eaab1fd_000006⟫fmt.Stringer⟪GTI18N_9eaab1fd_000007⟫ :
+
+⟪GTI18N_9eaab1fd_000008⟫
+
+(Comme pour ⟪GTI18N_9eaab1fd_000009⟫fmt.Stringer⟪GTI18N_9eaab1fd_000010⟫, le paquet ⟪GTI18N_9eaab1fd_000011⟫fmt⟪GTI18N_9eaab1fd_000012⟫ recherche l’interface ⟪GTI18N_9eaab1fd_000013⟫error⟪GTI18N_9eaab1fd_000014⟫ lors de
+l’affichage des valeurs.)
+
+Les fonctions renvoient souvent une valeur ⟪GTI18N_9eaab1fd_000015⟫error⟪GTI18N_9eaab1fd_000016⟫, et le code appelant doit gérer les erreurs
+en vérifiant si l’erreur est égale à ⟪GTI18N_9eaab1fd_000017⟫nil⟪GTI18N_9eaab1fd_000018⟫.
+
+⟪GTI18N_9eaab1fd_000019⟫
+
+Une valeur ⟪GTI18N_9eaab1fd_000020⟫error⟪GTI18N_9eaab1fd_000021⟫ nil indique une réussite ; une valeur ⟪GTI18N_9eaab1fd_000022⟫error⟪GTI18N_9eaab1fd_000023⟫ non nil indique un échec.
+
+⟪GTI18N_9eaab1fd_000024⟫

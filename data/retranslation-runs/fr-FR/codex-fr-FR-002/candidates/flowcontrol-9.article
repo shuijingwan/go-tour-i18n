@@ -1,0 +1,13 @@
+* Switch
+
+Une instruction `switch` permet d’écrire plus succinctement une suite d’instructions `if`-`else`.
+Elle exécute le premier cas dont la valeur est égale à l’expression conditionnelle.
+
+Le switch de Go ressemble à ceux de C, C++, Java, JavaScript et PHP,
+à ceci près que Go n’exécute que le cas sélectionné, et non tous ceux qui suivent.
+En pratique, l’instruction `break` nécessaire à la fin de chaque cas dans ces
+langages est ajoutée automatiquement dans Go.
+Autre différence importante : les cas du switch de Go ne doivent pas nécessairement
+être des constantes, et les valeurs concernées ne doivent pas nécessairement être des entiers.
+
+.play flowcontrol/switch.go

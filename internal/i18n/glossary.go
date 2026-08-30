@@ -10,6 +10,7 @@ import (
 )
 
 type Glossary struct {
+	Locale    string
 	Mandatory map[string]string
 	Preferred map[string]string
 	Forbidden []string
@@ -23,7 +24,7 @@ func LoadGlossary(root, locale string) (*Glossary, error) {
 		return nil, fmt.Errorf("read glossary: %w", err)
 	}
 	defer f.Close()
-	g := &Glossary{Mandatory: map[string]string{}, Preferred: map[string]string{}}
+	g := &Glossary{Locale: locale, Mandatory: map[string]string{}, Preferred: map[string]string{}}
 	section := ""
 	keepSeen := map[string]bool{}
 	scanner := bufio.NewScanner(f)
@@ -129,9 +130,13 @@ func (g *Glossary) PromptRules(pageID string) string {
 		rules = append(rules, fmt.Sprintf("- %s（保持原样；不得翻译）", value))
 	}
 	for _, value := range g.Forbidden {
-		rules = append(rules, "- 禁止使用的 zh-CN 译法："+value)
+		locale := g.Locale
+		if locale == "" {
+			locale = "目标 locale"
+		}
+		rules = append(rules, "- 禁止使用的 "+locale+" 译法："+value)
 	}
-	if pageID == "welcome/1" {
+	if g.Locale == "zh-CN" && pageID == "welcome/1" {
 		rules = append(rules, "- welcome/1 必须将 tour 的含义保留为“之旅”；不得简化或改变该含义")
 	}
 	return strings.Join(rules, "\n")

@@ -1,0 +1,10 @@
+* Pointeurs vers des structures
+
+Les champs d’une structure sont accessibles par l’intermédiaire d’un pointeur vers celle-ci.
+
+Pour accéder au champ ⟪GTI18N_29695d33_000001⟫X⟪GTI18N_29695d33_000002⟫ d’une structure lorsque nous disposons du pointeur ⟪GTI18N_29695d33_000003⟫p⟪GTI18N_29695d33_000004⟫ vers celle-ci, nous pourrions
+écrire ⟪GTI18N_29695d33_000005⟫(*p).X⟪GTI18N_29695d33_000006⟫.
+Cette notation est toutefois fastidieuse ; le langage nous permet donc d’écrire simplement
+⟪GTI18N_29695d33_000007⟫p.X⟪GTI18N_29695d33_000008⟫, sans déréférencement explicite.
+
+⟪GTI18N_29695d33_000009⟫

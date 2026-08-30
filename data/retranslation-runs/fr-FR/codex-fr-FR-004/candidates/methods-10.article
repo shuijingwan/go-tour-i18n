@@ -1,0 +1,9 @@
+* Les interfaces sont implémentées implicitement
+
+Un type implémente une interface en implémentant ses méthodes.
+Il n’existe aucune déclaration d’intention explicite, ni aucun mot-clé « implements ».
+
+Les interfaces implicites dissocient la définition d’une interface de son
+implémentation, qui peut alors apparaître dans n’importe quel paquet sans arrangement préalable.
+
+.play methods/interfaces-are-satisfied-implicitly.go

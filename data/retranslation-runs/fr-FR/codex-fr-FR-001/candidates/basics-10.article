@@ -1,0 +1,7 @@
+* Déclarations courtes de variables
+
+À l’intérieur d’une fonction, l’instruction d’affectation courte `:=` peut remplacer une déclaration `var` dont le type est implicite.
+
+À l’extérieur d’une fonction, chaque instruction commence par un mot-clé (`var`, `func`, etc.) ; la construction `:=` n’est donc pas disponible.
+
+.play basics/short-variable-declarations.go

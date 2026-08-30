@@ -1,0 +1,14 @@
+* Littéraux de slice
+
+Un littéral de slice est semblable à un littéral de tableau sans la longueur.
+
+Voici un littéral de tableau :
+
+	[3]bool{true, true, false}
+
+Et ceci crée le même tableau que ci-dessus,
+puis construit une slice qui y fait référence :
+
+	[]bool{true, true, false}
+
+.play moretypes/slice-literals.go

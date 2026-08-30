@@ -1,0 +1,15 @@
+* Range et fermeture
+
+Un émetteur peut ⟪GTI18N_3e925c67_000001⟫close⟪GTI18N_3e925c67_000002⟫ un canal pour indiquer qu’aucune autre valeur ne sera envoyée. Les récepteurs peuvent vérifier si un canal a été fermé en affectant un deuxième paramètre à l’expression de réception : après
+
+⟪GTI18N_3e925c67_000003⟫
+
+⟪GTI18N_3e925c67_000004⟫ok⟪GTI18N_3e925c67_000005⟫ vaut ⟪GTI18N_3e925c67_000006⟫false⟪GTI18N_3e925c67_000007⟫ s’il n’y a plus de valeurs à recevoir et que le canal est fermé.
+
+La boucle ⟪GTI18N_3e925c67_000008⟫for`i`:=`range`c⟪GTI18N_3e925c67_000009⟫ reçoit successivement les valeurs du canal jusqu’à sa fermeture.
+
+⟪GTI18N_3e925c67_000010⟫Remarque⟪GTI18N_3e925c67_000011⟫ : seul l’émetteur doit fermer un canal, jamais le récepteur. Envoyer une valeur dans un canal fermé provoque une panique.
+
+⟪GTI18N_3e925c67_000012⟫Autre*remarque⟪GTI18N_3e925c67_000013⟫ : les canaux ne sont pas comme les fichiers ; il n’est généralement pas nécessaire de les fermer. La fermeture n’est nécessaire que lorsque le récepteur doit être informé qu’aucune autre valeur n’arrivera, par exemple pour mettre fin à une boucle ⟪GTI18N_3e925c67_000014⟫range⟪GTI18N_3e925c67_000015⟫.
+
+⟪GTI18N_3e925c67_000016⟫

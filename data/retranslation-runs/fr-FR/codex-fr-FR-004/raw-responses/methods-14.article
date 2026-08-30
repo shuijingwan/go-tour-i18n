@@ -1,0 +1,16 @@
+* L’interface vide
+
+Le type interface qui ne spécifie aucune méthode est appelé ⟪GTI18N_7a09a765_000001⟫empty_interface⟪GTI18N_7a09a765_000002⟫ :
+
+⟪GTI18N_7a09a765_000003⟫
+
+Une interface vide peut contenir des valeurs de n’importe quel type.
+(Chaque type implémente au moins zéro méthode.)
+
+⟪GTI18N_7a09a765_000004⟫any⟪GTI18N_7a09a765_000005⟫ est un alias de ⟪GTI18N_7a09a765_000006⟫interface{}⟪GTI18N_7a09a765_000007⟫, et les deux sont parfaitement
+équivalents.
+
+Les interfaces vides sont utilisées par du code qui traite des valeurs de type inconnu.
+Par exemple, ⟪GTI18N_7a09a765_000008⟫fmt.Print⟪GTI18N_7a09a765_000009⟫ accepte un nombre quelconque d’arguments de type ⟪GTI18N_7a09a765_000010⟫any⟪GTI18N_7a09a765_000011⟫.
+
+⟪GTI18N_7a09a765_000012⟫

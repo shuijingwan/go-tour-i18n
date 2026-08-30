@@ -1,0 +1,12 @@
+* Range (suite)
+
+Vous pouvez ignorer l’indice ou la valeur en l’affectant à `_`.
+
+    for i, _ := range pow
+    for _, value := range pow
+
+Si vous ne souhaitez récupérer que l’indice, vous pouvez omettre la seconde variable.
+
+    for i := range pow
+
+.play moretypes/range-continued.go

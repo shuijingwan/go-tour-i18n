@@ -1,0 +1,10 @@
+* Exercice : robot d’exploration web
+
+Dans cet exercice, vous utiliserez les fonctionnalités de concurrence de ⟪GTI18N_bb686393_000001⟫ pour paralléliser un robot d’exploration web.
+
+Modifiez la fonction ⟪GTI18N_bb686393_000002⟫Crawl⟪GTI18N_bb686393_000003⟫ afin qu’elle récupère les URL en parallèle sans récupérer deux fois la même URL.
+
+⟪GTI18N_bb686393_000004⟫Conseil⟪GTI18N_bb686393_000005⟫ : vous pouvez conserver dans une map un cache des URL déjà récupérées, mais les maps seules ne sont pas
+sûres pour une utilisation concurrente !
+
+⟪GTI18N_bb686393_000006⟫

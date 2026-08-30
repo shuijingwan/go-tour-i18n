@@ -1,0 +1,11 @@
+* Valeurs de retour nommées
+
+Les valeurs de retour de ⟪GTI18N_1db20ae8_000001⟫ peuvent être nommées. Dans ce cas, elles sont traitées comme des variables définies au début de la fonction.
+
+Ces noms doivent servir à documenter la signification des valeurs de retour.
+
+Une instruction ⟪GTI18N_1db20ae8_000002⟫return⟪GTI18N_1db20ae8_000003⟫ sans argument renvoie les valeurs de retour nommées. C’est ce que l’on appelle un retour « nu ».
+
+Les instructions de retour nues ne doivent être utilisées que dans des fonctions courtes, comme dans l’exemple présenté ici. Dans les fonctions plus longues, elles peuvent nuire à la lisibilité.
+
+⟪GTI18N_1db20ae8_000004⟫

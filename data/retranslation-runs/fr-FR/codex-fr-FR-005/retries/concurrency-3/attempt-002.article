@@ -1,0 +1,11 @@
+* Canaux avec tampon
+
+Les canaux peuvent être ⟪GTI18N_caef0893_000001⟫dotés_d’un_tampon⟪GTI18N_caef0893_000002⟫. Indiquez la longueur du tampon comme deuxième argument de ⟪GTI18N_caef0893_000003⟫make⟪GTI18N_caef0893_000004⟫ pour initialiser un canal avec tampon :
+
+⟪GTI18N_caef0893_000005⟫
+
+Les envois dans un canal avec tampon ne sont bloquants que lorsque le tampon est plein. Les réceptions sont bloquantes lorsque le tampon est vide.
+
+Modifiez l’exemple afin de dépasser la capacité du tampon et observez ce qui se passe.
+
+⟪GTI18N_caef0893_000006⟫

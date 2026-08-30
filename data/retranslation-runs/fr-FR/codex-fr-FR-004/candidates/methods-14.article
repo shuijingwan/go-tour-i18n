@@ -1,0 +1,16 @@
+* L’interface vide
+
+Le type interface qui ne spécifie aucune méthode est appelé _empty_interface_ :
+
+	interface{}
+
+Une interface vide peut contenir des valeurs de n’importe quel type.
+(Chaque type implémente au moins zéro méthode.)
+
+`any` est un alias de `interface{}`, et les deux sont parfaitement
+équivalents.
+
+Les interfaces vides sont utilisées par du code qui traite des valeurs de type inconnu.
+Par exemple, `fmt.Print` accepte un nombre quelconque d’arguments de type `any`.
+
+.play methods/empty-interface.go

@@ -1,0 +1,15 @@
+* Création d’une slice avec make
+
+Les slices peuvent être créées avec la fonction intégrée ⟪GTI18N_d057e6bf_000001⟫make⟪GTI18N_d057e6bf_000002⟫ ;
+c’est ainsi que l’on crée des tableaux de taille dynamique.
+
+La fonction ⟪GTI18N_d057e6bf_000003⟫make⟪GTI18N_d057e6bf_000004⟫ alloue un tableau initialisé avec des valeurs zéro
+et renvoie une slice qui fait référence à ce tableau :
+
+⟪GTI18N_d057e6bf_000005⟫
+
+Pour préciser une capacité, passez un troisième argument à ⟪GTI18N_d057e6bf_000006⟫make⟪GTI18N_d057e6bf_000007⟫ :
+
+⟪GTI18N_d057e6bf_000008⟫
+
+⟪GTI18N_d057e6bf_000009⟫

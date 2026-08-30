@@ -1,0 +1,24 @@
+* Récepteurs par pointeur
+
+Vous pouvez déclarer des méthodes avec des récepteurs par pointeur.
+
+Cela signifie que le type du récepteur possède la syntaxe littérale ⟪GTI18N_99f9fa4e_000001⟫*T⟪GTI18N_99f9fa4e_000002⟫ pour un type ⟪GTI18N_99f9fa4e_000003⟫T⟪GTI18N_99f9fa4e_000004⟫ donné.
+(De plus, ⟪GTI18N_99f9fa4e_000005⟫T⟪GTI18N_99f9fa4e_000006⟫ ne peut pas être lui-même un pointeur tel que ⟪GTI18N_99f9fa4e_000007⟫*int⟪GTI18N_99f9fa4e_000008⟫.)
+
+Par exemple, la méthode ⟪GTI18N_99f9fa4e_000009⟫Scale⟪GTI18N_99f9fa4e_000010⟫ présentée ici est définie sur ⟪GTI18N_99f9fa4e_000011⟫*Vertex⟪GTI18N_99f9fa4e_000012⟫.
+
+Les méthodes avec un récepteur par pointeur peuvent modifier la valeur vers laquelle pointe le récepteur
+(comme le fait ici ⟪GTI18N_99f9fa4e_000013⟫Scale⟪GTI18N_99f9fa4e_000014⟫).
+Comme les méthodes doivent souvent modifier leur récepteur, les récepteurs par pointeur sont plus
+courants que les récepteurs par valeur.
+
+Essayez de supprimer le ⟪GTI18N_99f9fa4e_000015⟫*⟪GTI18N_99f9fa4e_000016⟫ de la déclaration de la fonction ⟪GTI18N_99f9fa4e_000017⟫Scale⟪GTI18N_99f9fa4e_000018⟫ à la ligne 16,
+puis observez la modification du comportement du programme.
+
+Avec un récepteur par valeur, la méthode ⟪GTI18N_99f9fa4e_000019⟫Scale⟪GTI18N_99f9fa4e_000020⟫ opère sur une copie de la valeur
+⟪GTI18N_99f9fa4e_000021⟫Vertex⟪GTI18N_99f9fa4e_000022⟫ d’origine.
+(Ce comportement est identique à celui de tout autre argument de fonction.)
+La méthode ⟪GTI18N_99f9fa4e_000023⟫Scale⟪GTI18N_99f9fa4e_000024⟫ doit avoir un récepteur par pointeur pour modifier la valeur ⟪GTI18N_99f9fa4e_000025⟫Vertex⟪GTI18N_99f9fa4e_000026⟫
+déclarée dans la fonction ⟪GTI18N_99f9fa4e_000027⟫main⟪GTI18N_99f9fa4e_000028⟫.
+
+⟪GTI18N_99f9fa4e_000029⟫

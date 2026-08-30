@@ -189,6 +189,71 @@ func TestDeDEGlossary(t *testing.T) {
 	}
 }
 
+func TestFrFRGlossary(t *testing.T) {
+	glossary, err := LoadGlossary(repoRoot(t), "fr-FR")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if glossary.Locale != "fr-FR" {
+		t.Fatalf("glossary locale = %q, want fr-FR", glossary.Locale)
+	}
+	for key, want := range map[string]string{
+		"A Tour of Go":    "Un tour de Go",
+		"Go Playground":   "Go Playground",
+		"Run":             "Exécuter",
+		"Format":          "Formater",
+		"Reset":           "Réinitialiser",
+		"slide":           "page",
+		"slides":          "pages",
+		"constraint":      "contrainte",
+		"type switch":     "switch de type",
+		"type assertion":  "assertion de type",
+		"interface value": "valeur d’interface",
+		"type parameter":  "paramètre de type",
+	} {
+		if got := glossary.Mandatory[key]; got != want {
+			t.Errorf("mandatory[%q] = %q, want %q", key, got, want)
+		}
+	}
+	for key, want := range map[string]string{
+		"Go programming language": "langage de programmation Go",
+		"channel":                 "canal",
+		"interface":               "interface",
+		"struct":                  "structure",
+		"array":                   "tableau",
+		"concurrency":             "concurrence",
+		"generics":                "génériques",
+		"generic programming":     "programmation générique",
+		"package":                 "paquet",
+		"standard library":        "bibliothèque standard",
+		"map":                     "map",
+		"slice":                   "slice",
+	} {
+		if got := glossary.Preferred[key]; got != want {
+			t.Errorf("preferred[%q] = %q, want %q", key, got, want)
+		}
+	}
+	for _, want := range []string{"diapositive", "diapositives", "terrain de jeu de Go", "affirmation de type", "routine Go"} {
+		if !containsString(glossary.Forbidden, want) {
+			t.Errorf("forbidden missing %q: %v", want, glossary.Forbidden)
+		}
+	}
+	for _, want := range []string{"Go", "gofmt", "goroutine", "goroutines", "Goroutines"} {
+		if !containsString(glossary.Keep, want) {
+			t.Errorf("keep missing %q: %v", want, glossary.Keep)
+		}
+	}
+	rules := glossary.PromptRules("welcome/1")
+	if !strings.Contains(rules, "禁止使用的 fr-FR 译法：diapositive") {
+		t.Errorf("fr-FR prompt rules do not identify the locale:\n%s", rules)
+	}
+	for _, unwanted := range []string{"禁止使用的 zh-CN 译法", "必须将 tour 的含义保留为“之旅”"} {
+		if strings.Contains(rules, unwanted) {
+			t.Errorf("fr-FR prompt rules contain zh-CN-only instruction %q:\n%s", unwanted, rules)
+		}
+	}
+}
+
 func TestGlossaryKeepValidationAndLegacyTerms(t *testing.T) {
 	tests := []struct {
 		name, body, want string

@@ -1,0 +1,23 @@
+* Slices
+
+Un tableau a une taille fixe.
+Une slice, en revanche, est une vue flexible, de taille dynamique,
+sur les éléments d’un tableau.
+En pratique, les slices sont beaucoup plus courantes que les tableaux.
+
+Le type ⟪GTI18N_a169cf48_000001⟫[]T⟪GTI18N_a169cf48_000002⟫ est une slice dont les éléments sont de type ⟪GTI18N_a169cf48_000003⟫T⟪GTI18N_a169cf48_000004⟫.
+
+Une slice est formée en indiquant deux indices, une borne inférieure et
+une borne supérieure, séparés par un deux-points :
+
+⟪GTI18N_a169cf48_000005⟫
+
+Cela sélectionne un intervalle semi-ouvert qui inclut le premier
+élément, mais exclut le dernier.
+
+L’expression suivante crée une slice qui inclut les
+éléments d’indice 1 à 3 de ⟪GTI18N_a169cf48_000006⟫a⟪GTI18N_a169cf48_000007⟫ :
+
+⟪GTI18N_a169cf48_000008⟫
+
+⟪GTI18N_a169cf48_000009⟫

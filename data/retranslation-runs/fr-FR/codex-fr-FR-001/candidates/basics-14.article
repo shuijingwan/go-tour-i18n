@@ -1,0 +1,18 @@
+* Inférence de type
+
+Lorsqu’une variable est déclarée sans type explicite (soit avec la syntaxe `:=`, soit avec la syntaxe d’expression `var`=`), son type est inféré à partir de la valeur du membre droit.
+
+Lorsque le membre droit de la déclaration est typé, la nouvelle variable a ce même type :
+
+	var i int
+	j := i // j est un int
+
+En revanche, lorsque le membre droit contient une constante numérique non typée, la nouvelle variable peut être un `int`, un `float64` ou un `complex128`, selon la précision de la constante :
+
+	i := 42           // int
+	f := 3.142        // float64
+	g := 0.867 + 0.5i // complex128
+
+Essayez de modifier la valeur initiale de `v` dans l’exemple de code et observez l’effet sur son type.
+
+.play basics/type-inference.go

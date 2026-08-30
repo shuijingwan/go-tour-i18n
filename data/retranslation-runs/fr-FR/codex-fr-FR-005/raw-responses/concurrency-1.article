@@ -1,0 +1,15 @@
+* ⟪GTI18N_d0a9c450_000001⟫
+
+Une ⟪GTI18N_d0a9c450_000002⟫⟪GTI18N_d0a9c450_000003⟫⟪GTI18N_d0a9c450_000004⟫ est un fil d’exécution léger géré par le runtime de ⟪GTI18N_d0a9c450_000005⟫.
+
+⟪GTI18N_d0a9c450_000006⟫
+
+démarre une nouvelle ⟪GTI18N_d0a9c450_000007⟫ qui exécute
+
+⟪GTI18N_d0a9c450_000008⟫
+
+L’évaluation de ⟪GTI18N_d0a9c450_000009⟫f⟪GTI18N_d0a9c450_000010⟫, ⟪GTI18N_d0a9c450_000011⟫x⟪GTI18N_d0a9c450_000012⟫, ⟪GTI18N_d0a9c450_000013⟫y⟪GTI18N_d0a9c450_000014⟫ et ⟪GTI18N_d0a9c450_000015⟫z⟪GTI18N_d0a9c450_000016⟫ a lieu dans la ⟪GTI18N_d0a9c450_000017⟫ courante, tandis que l’exécution de ⟪GTI18N_d0a9c450_000018⟫f⟪GTI18N_d0a9c450_000019⟫ a lieu dans la nouvelle ⟪GTI18N_d0a9c450_000020⟫.
+
+Les ⟪GTI18N_d0a9c450_000021⟫ s’exécutent dans le même espace d’adressage : l’accès à la mémoire partagée doit donc être synchronisé. Le paquet [[⟪GTI18N_d0a9c450_000022⟫][⟪GTI18N_d0a9c450_000023⟫sync⟪GTI18N_d0a9c450_000024⟫]] fournit des primitives utiles, même si vous en aurez rarement besoin dans ⟪GTI18N_d0a9c450_000025⟫, car il existe d’autres primitives. (Voir la page suivante.)
+
+⟪GTI18N_d0a9c450_000026⟫

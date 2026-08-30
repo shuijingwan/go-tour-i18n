@@ -1,0 +1,8 @@
+* Range
+
+La forme `range` de la boucle `for` parcourt une slice ou une map.
+
+Lorsqu’une slice est parcourue avec range, deux valeurs sont renvoyées à chaque itération.
+La première est l’indice, et la seconde une copie de l’élément situé à cet indice.
+
+.play moretypes/range.go

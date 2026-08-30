@@ -1,0 +1,19 @@
+* Le ⟪GTI18N_19e6d7da_000001⟫ Playground
+
+Ce tour repose sur le [[⟪GTI18N_19e6d7da_000002⟫][⟪GTI18N_19e6d7da_000003⟫]], un
+service web qui s’exécute sur les serveurs de [[⟪GTI18N_19e6d7da_000004⟫][golang.org]].
+
+Le service reçoit un programme ⟪GTI18N_19e6d7da_000005⟫, le compile, effectue l’édition de liens et l’exécute dans
+un bac à sable, puis renvoie la sortie.
+
+Les programmes pouvant être exécutés dans le playground sont soumis à certaines limitations :
+
+- Dans le playground, le temps commence le 2009-11-10 à 23:00:00 UTC (déterminer la signification de cette date est un exercice laissé au lecteur). Cela facilite la mise en cache des programmes en leur donnant une sortie déterministe.
+
+- Le temps d’exécution ainsi que l’utilisation du processeur et de la mémoire sont également limités, et le programme ne peut pas accéder à des hôtes réseau externes.
+
+Le playground utilise la dernière version stable de ⟪GTI18N_19e6d7da_000006⟫.
+
+Lisez « [[⟪GTI18N_19e6d7da_000007⟫][Les coulisses du ⟪GTI18N_19e6d7da_000008⟫ Playground]] » pour en savoir plus.
+
+⟪GTI18N_19e6d7da_000009⟫

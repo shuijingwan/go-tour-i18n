@@ -1,0 +1,12 @@
+* Exercice : rot13Reader
+
+Un modèle courant consiste à utiliser un [[⟪GTI18N_11d87614_000001⟫][io.Reader]] qui enveloppe un autre ⟪GTI18N_11d87614_000002⟫io.Reader⟪GTI18N_11d87614_000003⟫, en modifiant le flux d’une certaine manière.
+
+Par exemple, la fonction [[⟪GTI18N_11d87614_000004⟫][gzip.NewReader]] reçoit un ⟪GTI18N_11d87614_000005⟫io.Reader⟪GTI18N_11d87614_000006⟫ (un flux de données compressées) et renvoie un ⟪GTI18N_11d87614_000007⟫*gzip.Reader⟪GTI18N_11d87614_000008⟫ qui implémente également ⟪GTI18N_11d87614_000009⟫io.Reader⟪GTI18N_11d87614_000010⟫ (un flux de données décompressées).
+
+Implémentez un ⟪GTI18N_11d87614_000011⟫rot13Reader⟪GTI18N_11d87614_000012⟫ qui implémente ⟪GTI18N_11d87614_000013⟫io.Reader⟪GTI18N_11d87614_000014⟫ et lit depuis un ⟪GTI18N_11d87614_000015⟫io.Reader⟪GTI18N_11d87614_000016⟫, en modifiant le flux par l’application du chiffrement par substitution [[⟪GTI18N_11d87614_000017⟫][rot13]] à tous les caractères alphabétiques.
+
+Le type ⟪GTI18N_11d87614_000018⟫rot13Reader⟪GTI18N_11d87614_000019⟫ vous est fourni.
+Faites-en un ⟪GTI18N_11d87614_000020⟫io.Reader⟪GTI18N_11d87614_000021⟫ en implémentant sa méthode ⟪GTI18N_11d87614_000022⟫Read⟪GTI18N_11d87614_000023⟫.
+
+⟪GTI18N_11d87614_000024⟫

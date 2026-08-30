@@ -1,0 +1,13 @@
+* Inférence de type
+
+Lorsqu’une variable est déclarée sans type explicite (soit avec la syntaxe ⟪GTI18N_21c4077c_000001⟫:=⟪GTI18N_21c4077c_000002⟫, soit avec la syntaxe d’expression ⟪GTI18N_21c4077c_000003⟫var`=⟪GTI18N_21c4077c_000004⟫), son type est inféré à partir de la valeur du membre droit.
+
+Lorsque le membre droit de la déclaration est typé, la nouvelle variable a ce même type :
+
+⟪GTI18N_21c4077c_000005⟫⟪GTI18N_21c4077c_000006⟫ est un ⟪GTI18N_21c4077c_000007⟫⟪GTI18N_21c4077c_000008⟫En revanche, lorsque le membre droit contient une constante numérique non typée, la nouvelle variable peut être un ⟪GTI18N_21c4077c_000009⟫int⟪GTI18N_21c4077c_000010⟫, un ⟪GTI18N_21c4077c_000011⟫float64⟪GTI18N_21c4077c_000012⟫ ou un ⟪GTI18N_21c4077c_000013⟫complex128⟪GTI18N_21c4077c_000014⟫, selon la précision de la constante :
+
+⟪GTI18N_21c4077c_000015⟫
+
+Essayez de modifier la valeur initiale de ⟪GTI18N_21c4077c_000016⟫v⟪GTI18N_21c4077c_000017⟫ dans l’exemple de code et observez l’effet sur son type.
+
+⟪GTI18N_21c4077c_000018⟫

@@ -1,0 +1,12 @@
+* Valeurs d’interface avec valeurs sous-jacentes nil
+
+Si la valeur concrète à l’intérieur de l’interface est elle-même nil,
+la méthode est appelée avec un récepteur nil.
+
+Dans certains langages, cela déclencherait une exception de pointeur nul,
+mais en ⟪GTI18N_9487ca3c_000001⟫, il est courant d’écrire des méthodes qui gèrent correctement un appel
+avec un récepteur nil (comme la méthode ⟪GTI18N_9487ca3c_000002⟫M⟪GTI18N_9487ca3c_000003⟫ dans cet exemple.)
+
+Notez qu’une valeur d’interface qui contient une valeur concrète nil n’est pas elle-même nil.
+
+⟪GTI18N_9487ca3c_000004⟫

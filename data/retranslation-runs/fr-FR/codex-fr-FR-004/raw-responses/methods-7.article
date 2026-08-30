@@ -1,0 +1,14 @@
+* Méthodes et indirection de pointeur (2)
+
+L’opération équivalente se produit dans l’autre sens.
+
+Les fonctions qui acceptent un argument par valeur doivent recevoir une valeur de ce type précis :
+
+⟪GTI18N_61a9cb84_000001⟫Erreur de compilation !⟪GTI18N_61a9cb84_000002⟫tandis que les méthodes avec un récepteur par valeur acceptent une valeur ou un pointeur comme
+récepteur lors de leur appel :
+
+⟪GTI18N_61a9cb84_000003⟫
+
+Dans ce cas, l’appel de méthode ⟪GTI18N_61a9cb84_000004⟫p.Abs()⟪GTI18N_61a9cb84_000005⟫ est interprété comme ⟪GTI18N_61a9cb84_000006⟫(*p).Abs()⟪GTI18N_61a9cb84_000007⟫.
+
+⟪GTI18N_61a9cb84_000008⟫

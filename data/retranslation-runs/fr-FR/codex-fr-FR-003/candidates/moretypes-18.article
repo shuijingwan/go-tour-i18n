@@ -1,0 +1,11 @@
+* Exercice : slices
+
+Implémentez `Pic`. Cette fonction doit renvoyer une slice de longueur `dy`, dont chaque élément est une slice de `dx` entiers non signés sur 8 bits. Lorsque vous exécuterez le programme, il affichera votre image en interprétant les entiers comme des niveaux de gris (enfin, de bleu).
+
+Le choix de l’image vous appartient. Parmi les fonctions intéressantes figurent `(x+y)/2`, `x*y` et `x^y`.
+
+(Vous devez utiliser une boucle pour allouer chaque `[]uint8` à l’intérieur de la valeur `[][]uint8`.)
+
+(Utilisez `uint8(intValue)` pour effectuer une conversion entre les types.)
+
+.play moretypes/exercise-slices.go

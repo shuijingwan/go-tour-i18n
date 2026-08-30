@@ -1,0 +1,21 @@
+* For
+
+Go ne possède qu’une seule construction de boucle : la boucle `for`.
+
+La boucle `for` de base comporte trois éléments séparés par des points-virgules :
+
+- l’instruction d’initialisation : exécutée avant la première itération
+- l’expression conditionnelle : évaluée avant chaque itération
+- l’instruction de post-itération : exécutée à la fin de chaque itération
+
+L’instruction d’initialisation est souvent une déclaration de variable, et les
+variables ainsi déclarées ne sont visibles que dans la portée de l’instruction
+`for`.
+
+La boucle cesse de s’exécuter dès que la condition booléenne est évaluée à `false`.
+
+*Remarque* : contrairement à d’autres langages comme C, Java ou JavaScript, les trois éléments de l’instruction
+`for` ne sont pas entourés de parenthèses, tandis que les accolades `{`}` sont
+toujours obligatoires.
+
+.play flowcontrol/for.go

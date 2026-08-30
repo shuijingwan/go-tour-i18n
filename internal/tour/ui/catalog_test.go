@@ -10,13 +10,53 @@ import (
 )
 
 func TestLoadEmbeddedCatalogs(t *testing.T) {
-	for _, locale := range []string{"de-DE", "en", "ja-JP", "zh-CN"} {
+	for _, locale := range []string{"de-DE", "en", "fr-FR", "ja-JP", "zh-CN"} {
 		catalog, err := Load(locale)
 		if err != nil {
 			t.Fatalf("Load(%q): %v", locale, err)
 		}
 		if got, want := len(catalog.Messages), 88; got != want {
 			t.Fatalf("Load(%q) message count = %d, want %d", locale, got, want)
+		}
+	}
+}
+
+func TestFrenchCatalogMatchesEnglishSource(t *testing.T) {
+	source, err := Load("en")
+	if err != nil {
+		t.Fatal(err)
+	}
+	french, err := Load("fr-FR")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if french.HTMLLang != "fr-FR" {
+		t.Fatalf("fr-FR HTMLLang = %q, want fr-FR", french.HTMLLang)
+	}
+	if got, want := len(french.Messages), 88; got != want {
+		t.Fatalf("fr-FR message count = %d, want %d", got, want)
+	}
+	if err := validateCoverage(source, french); err != nil {
+		t.Fatalf("fr-FR coverage: %v", err)
+	}
+	placeholderRE := regexp.MustCompile(`\{[a-z][a-z0-9_]*\}`)
+	markupRE := regexp.MustCompile(`<[^>]+>`)
+	allowedUntranslatedNames := map[string]bool{
+		"site.issue_feedback": true,
+		"footer.github":       true,
+	}
+	for key, sourceMessage := range source.Messages {
+		frenchMessage := french.Messages[key]
+		if got, want := strings.Join(placeholderRE.FindAllString(frenchMessage.Text, -1), "\x00"), strings.Join(placeholderRE.FindAllString(sourceMessage.Text, -1), "\x00"); got != want {
+			t.Errorf("fr-FR message %q placeholders = %q, want %q", key, got, want)
+		}
+		if sourceMessage.Kind == "rich" {
+			if got, want := strings.Join(markupRE.FindAllString(frenchMessage.Text, -1), "\x00"), strings.Join(markupRE.FindAllString(sourceMessage.Text, -1), "\x00"); got != want {
+				t.Errorf("fr-FR rich message %q markup = %q, want %q", key, got, want)
+			}
+		}
+		if frenchMessage.Text == sourceMessage.Text && !allowedUntranslatedNames[key] {
+			t.Errorf("fr-FR message %q duplicates English source text", key)
 		}
 	}
 }

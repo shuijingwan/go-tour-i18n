@@ -1,0 +1,12 @@
+* Méthodes (suite)
+
+Vous pouvez également déclarer une méthode sur des types qui ne sont pas des structures.
+
+Dans cet exemple, nous voyons un type numérique ⟪GTI18N_31c4fd0d_000001⟫MyFloat⟪GTI18N_31c4fd0d_000002⟫ doté d’une méthode ⟪GTI18N_31c4fd0d_000003⟫Abs⟪GTI18N_31c4fd0d_000004⟫.
+
+Vous ne pouvez déclarer une méthode qu’avec un récepteur dont le type est défini dans le même
+paquet que la méthode.
+Vous ne pouvez pas déclarer une méthode avec un récepteur dont le type est défini dans un autre
+paquet (ce qui inclut les types intégrés tels que ⟪GTI18N_31c4fd0d_000005⟫int⟪GTI18N_31c4fd0d_000006⟫).
+
+⟪GTI18N_31c4fd0d_000007⟫

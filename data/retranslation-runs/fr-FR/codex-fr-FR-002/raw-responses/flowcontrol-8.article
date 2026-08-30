@@ -1,0 +1,37 @@
+* Exercice : boucles et fonctions
+
+Pour expérimenter avec les fonctions et les boucles, implémentons une fonction de racine carrée : étant donné un nombre x, nous voulons trouver le nombre z pour lequel z² est aussi proche que possible de x.
+
+Les ordinateurs calculent généralement la racine carrée de x à l’aide d’une boucle.
+En partant d’une estimation z, nous pouvons ajuster z selon la proximité de z² avec x,
+afin d’obtenir une meilleure estimation :
+
+⟪GTI18N_d8bbee84_000001⟫
+
+La répétition de cet ajustement améliore progressivement l’estimation,
+jusqu’à obtenir une réponse aussi proche que possible de la racine carrée réelle.
+
+Implémentez cette méthode dans la fonction ⟪GTI18N_d8bbee84_000002⟫func`Sqrt⟪GTI18N_d8bbee84_000003⟫ fournie.
+Une estimation initiale convenable pour z est 1, quelle que soit l’entrée.
+Commencez par répéter le calcul 10 fois et affichez chaque valeur de z au fur et à mesure.
+Observez la proximité du résultat pour différentes valeurs de x (1, 2, 3, ...)
+et la rapidité avec laquelle l’estimation s’améliore.
+
+Conseil : pour déclarer et initialiser une valeur à virgule flottante,
+utilisez une syntaxe à virgule flottante ou une conversion :
+
+⟪GTI18N_d8bbee84_000004⟫
+
+Ensuite, modifiez la condition de boucle pour l’arrêter lorsque la valeur ne change plus
+(ou qu’elle ne change que très légèrement).
+Vérifiez si cela nécessite plus ou moins de 10 itérations.
+Essayez d’autres estimations initiales pour z, comme x ou x/2.
+À quel point les résultats de votre fonction sont-ils proches de ceux de [[⟪GTI18N_d8bbee84_000005⟫][math.Sqrt]] dans la bibliothèque standard ?
+
+(⟪GTI18N_d8bbee84_000006⟫Remarque :⟪GTI18N_d8bbee84_000007⟫ si les détails de l’algorithme vous intéressent, le z² − x ci-dessus
+représente l’écart entre z² et sa valeur cible (x), tandis que la division par 2z est la dérivée
+de z² ; elle permet d’adapter l’ajustement de z à la vitesse de variation de z².
+Cette approche générale est appelée [[⟪GTI18N_d8bbee84_000008⟫][méthode de Newton]].
+Elle fonctionne bien pour de nombreuses fonctions, et particulièrement bien pour la racine carrée.)
+
+⟪GTI18N_d8bbee84_000009⟫
