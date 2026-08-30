@@ -37,11 +37,14 @@ wwwroot=$fixture/wwwroot
 origin=$wwwroot/assets-go-dev.shuijingwanwq.com
 lock=$wwwroot/.assets-go-dev.deploy.lock
 export_dir=$fixture/formal-export
+connection_log=$fixture/connection.log
+calculate_counter=$fixture/calculate.counter
 mkdir -p -- "$fake_bin" "$wwwroot"
 
 cat >"$fake_bin/ssh" <<'SH'
 #!/usr/bin/env bash
 set -Eeuo pipefail
+printf 'ssh\t%s\n' "$*" >>"${FAKE_CONNECTION_LOG:-/dev/null}"
 while [[ ${1:-} == -o ]]; do shift 2; done
 shift
 arguments=("$@")
@@ -64,6 +67,30 @@ if [[ ${FAKE_REPLACE_ORIGIN_SYMLINK_BEFORE_UPDATE:-0} == 1 && ${#arguments[@]} -
     ln -s -- "$FAKE_WWWROOT/other-site" "$mapped_origin"
 fi
 export SHARED_ASSETS_REMOTE_TEST_MODE=1
+phase=other
+has_origin=0
+has_staging=0
+has_lock=0
+for argument in "${arguments[@]}"; do
+    [[ $argument != "$FAKE_WWWROOT/assets-go-dev.shuijingwanwq.com" ]] || has_origin=1
+    [[ $argument != "$FAKE_WWWROOT"/.assets-go-dev.staging-* ]] || has_staging=1
+    [[ $argument != "$FAKE_WWWROOT/.assets-go-dev.deploy.lock" ]] || has_lock=1
+done
+if (( has_origin && has_staging && ! has_lock )); then
+    phase=calculate
+elif [[ ${#arguments[@]} == 8 ]]; then
+    phase=backup
+elif [[ ${#arguments[@]} -ge 12 ]]; then
+    phase=update
+fi
+printf 'phase=%s\n' "$phase" >>"${FAKE_CONNECTION_LOG:-/dev/null}"
+if [[ $phase == calculate && ${FAKE_CALCULATE_FAILURES:-0} -gt 0 ]]; then
+    count=0
+    [[ ! -f $FAKE_CALCULATE_COUNTER ]] || count=$(<"$FAKE_CALCULATE_COUNTER")
+    count=$((count + 1))
+    printf '%s\n' "$count" >"$FAKE_CALCULATE_COUNTER"
+    (( count > FAKE_CALCULATE_FAILURES )) || exit 255
+fi
 if [[ ${FAKE_SSH_LOSE_PREPARE_RESULT:-0} == 1 && ${#arguments[@]} == 7 ]]; then
     "${arguments[@]}" >/dev/null
     exit 255
@@ -72,12 +99,16 @@ if [[ ${FAKE_SSH_LOSE_BACKUP_RESULT:-0} == 1 && ${#arguments[@]} == 8 ]]; then
     "${arguments[@]}" >/dev/null
     exit 255
 fi
+if [[ $phase == update && ${FAKE_SSH_FAIL_UPDATE_BEFORE_EXEC:-0} == 1 ]]; then
+    exit 255
+fi
 exec "${arguments[@]}"
 SH
 
 cat >"$fake_bin/rsync" <<'SH'
 #!/usr/bin/env bash
 set -Eeuo pipefail
+printf 'rsync\t%s\n' "$*" >>"${FAKE_CONNECTION_LOG:-/dev/null}"
 source_path=${@: -2:1}
 destination=${@: -1}
 remote_upload=0
@@ -166,6 +197,9 @@ deploy_env() {
     env \
         PATH="$fake_bin:$PATH" \
         FAKE_WWWROOT="$wwwroot" \
+        FAKE_CONNECTION_LOG="$connection_log" \
+        FAKE_CALCULATE_COUNTER="$calculate_counter" \
+        TMPDIR="$fixture" \
         "$@"
 }
 
@@ -216,6 +250,31 @@ receipt=$export_dir.verification-receipt.json
 [[ ! -e $lock ]] || fail 'no-op left deployment lock'
 [[ -z $(find "$wwwroot" -maxdepth 1 -name 'assets-go-dev.shuijingwanwq.com.bak.*' -print -quit) ]] || fail 'no-op created backup'
 
+# SSH and rsync share one invocation-scoped multiplex transport and stable defaults.
+first_control_path=$(grep -o 'ControlPath=[^ ]*' "$connection_log" | cut -d= -f2- | head -1)
+[[ -n $first_control_path ]] || fail 'SSH ControlPath was not configured'
+[[ ! -e ${first_control_path%/control} ]] || fail 'invocation-scoped SSH control directory was not cleaned'
+for option in BatchMode=yes ConnectTimeout=10 ServerAliveInterval=5 ServerAliveCountMax=3 ConnectionAttempts=3 ControlMaster=auto ControlPersist=60; do
+    grep -F "ssh" "$connection_log" | grep -F "$option" >/dev/null || fail "ssh missing stable option: $option"
+    grep -F "rsync" "$connection_log" | grep -F "$option" >/dev/null || fail "rsync transport missing stable option: $option"
+done
+if grep -F 'ssh' "$connection_log" | grep -v -F "ControlPath=$first_control_path" >/dev/null; then fail 'ssh commands did not share one ControlPath'; fi
+grep -F 'rsync' "$connection_log" | grep -F "ControlPath=$first_control_path" >/dev/null || fail 'rsync did not share the SSH ControlPath'
+rm -f -- "$connection_log"
+reset_remote
+output=$(run_deploy) || fail 'second no-op deployment failed'
+second_control_path=$(grep -o 'ControlPath=[^ ]*' "$connection_log" | cut -d= -f2- | head -1)
+[[ -n $second_control_path && $second_control_path != "$first_control_path" ]] || fail 'concurrent-safe invocation ControlPath was reused'
+[[ ! -e ${second_control_path%/control} ]] || fail 'second SSH control directory was not cleaned'
+
+# calculate_changes is read-only and may recover from two transient SSH failures.
+rm -f -- "$connection_log" "$calculate_counter"
+reset_remote
+output=$(deploy_env FAKE_CALCULATE_FAILURES=2 "$deploy_script" "$export_dir" 2>&1) || fail 'read-only calculate_changes retry did not recover'
+[[ $(grep -c '^phase=calculate$' "$connection_log") == 3 ]] || fail 'calculate_changes did not use the bounded three attempts'
+assert_contains "$output" 'attempt 1/3'
+assert_contains "$output" 'attempt 2/3'
+
 # Existing lock and staging fail closed.
 reset_remote; mkdir -- "$lock"
 if output=$(run_deploy); then fail 'existing lock accepted'; fi
@@ -251,9 +310,20 @@ if output=$(deploy_env FAKE_CP_FAIL_BACKUP=1 "$deploy_script" "$export_dir" 2>&1
 [[ $(sha256sum "$origin/tour/static/css/app.css") == "$before" && ! -e $lock ]] || fail 'backup failure changed origin or left lock'
 reset_remote
 printf 'old app css\n' >"$origin/tour/static/css/app.css"; rehash_tree "$origin"
+rm -f -- "$connection_log"
 if output=$(deploy_env FAKE_SSH_LOSE_BACKUP_RESULT=1 "$deploy_script" "$export_dir" 2>&1); then fail 'uncertain backup result accepted'; fi
 assert_contains "$output" 'backup state could not be safely confirmed'
+[[ $(grep -c '^phase=backup$' "$connection_log") == 1 ]] || fail 'uncertain backup was automatically retried'
 [[ -d $lock && -n $(find "$wwwroot" -maxdepth 1 -name '.assets-go-dev.staging-*' -print -quit) && -n $(find "$wwwroot" -maxdepth 1 -name 'assets-go-dev.shuijingwanwq.com.bak.*' -print -quit) ]] || fail 'uncertain backup result did not preserve evidence'
+
+# An uncertain update connection is never retried and preserves pre-command evidence.
+reset_remote
+printf 'old app css\n' >"$origin/tour/static/css/app.css"; rehash_tree "$origin"
+rm -f -- "$connection_log"
+if output=$(deploy_env FAKE_SSH_FAIL_UPDATE_BEFORE_EXEC=1 "$deploy_script" "$export_dir" 2>&1); then fail 'uncertain update result accepted'; fi
+assert_contains "$output" '远端状态无法安全确定'
+[[ $(grep -c '^phase=update$' "$connection_log") == 1 ]] || fail 'uncertain update was automatically retried'
+[[ -d $lock && -n $(find "$wwwroot" -maxdepth 1 -name '.assets-go-dev.staging-*' -print -quit) && -n $(find "$wwwroot" -maxdepth 1 -name 'assets-go-dev.shuijingwanwq.com.bak.*' -print -quit) ]] || fail 'uncertain update did not preserve lock, staging, and backup'
 
 # Added files: old 9-file origin becomes the exact formal 11-file tree.
 reset_remote

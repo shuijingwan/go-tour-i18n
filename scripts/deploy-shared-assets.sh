@@ -3,7 +3,19 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
-readonly -a SSH_OPTIONS=(-o BatchMode=yes -o ConnectTimeout=10)
+readonly -a SSH_BASE_OPTIONS=(
+    -o BatchMode=yes
+    -o ConnectTimeout=10
+    -o ServerAliveInterval=5
+    -o ServerAliveCountMax=3
+    -o ConnectionAttempts=3
+    -o ControlMaster=auto
+    -o ControlPersist=60
+)
+SSH_OPTIONS=("${SSH_BASE_OPTIONS[@]}")
+RSYNC_SSH_COMMAND='ssh'
+SSH_CONTROL_DIR=''
+SSH_CONTROL_PATH=''
 readonly PUBLIC_BASE_URL='https://assets-go-dev.shuijingwanwq.com'
 readonly RECEIPT_SCHEMA='go-tour-i18n/shared-assets-production-receipt/v1'
 readonly -a BOUNDARY_PATHS=(
@@ -26,6 +38,33 @@ LOCAL_MANIFEST_SHA=''
 REMOTE_PREPARED=0
 MUTATION_STARTED=0
 BACKUP_STARTED=0
+
+setup_ssh_multiplex() {
+    local option quoted
+    SSH_CONTROL_DIR=$(mktemp -d "${TMPDIR:-/tmp}/go-tour-shared-assets-ssh.XXXXXX") || {
+        error 'cannot create invocation-scoped SSH control directory'
+        return 1
+    }
+    SSH_CONTROL_PATH="$SSH_CONTROL_DIR/control"
+    SSH_OPTIONS=("${SSH_BASE_OPTIONS[@]}" -o "ControlPath=$SSH_CONTROL_PATH")
+    RSYNC_SSH_COMMAND='ssh'
+    for option in "${SSH_OPTIONS[@]}"; do
+        printf -v quoted '%q' "$option"
+        RSYNC_SSH_COMMAND+=" $quoted"
+    done
+}
+
+cleanup_ssh_multiplex() {
+    if [[ -n $SSH_CONTROL_DIR && -n $SSH_CONTROL_PATH && $SSH_CONTROL_PATH == "$SSH_CONTROL_DIR/control" && ${SSH_CONTROL_DIR##*/} == go-tour-shared-assets-ssh.* ]]; then
+        if [[ -S $SSH_CONTROL_PATH ]]; then
+            ssh "${SSH_OPTIONS[@]}" -O exit "$SSH_HOST" >/dev/null 2>&1 || true
+        fi
+        rm -f -- "$SSH_CONTROL_PATH"
+        rmdir -- "$SSH_CONTROL_DIR" 2>/dev/null || true
+    fi
+    SSH_CONTROL_DIR=''
+    SSH_CONTROL_PATH=''
+}
 
 log() {
     printf '[deploy-shared-assets] %s\n' "$*"
@@ -215,7 +254,7 @@ REMOTE_PREPARE
 upload_export() {
     local export_dir=$1
     rsync -rlt --no-owner --no-group --no-perms --protect-args \
-        -e 'ssh -o BatchMode=yes -o ConnectTimeout=10' -- \
+        -e "$RSYNC_SSH_COMMAND" -- \
         "$export_dir/" "$SSH_HOST:$REMOTE_STAGING/"
 }
 
@@ -282,6 +321,21 @@ while IFS= read -r -d '' path; do
     fi
 done < <({ cd -- "$origin" && find . -type f -printf '%P\0'; cd -- "$staging" && find . -type f -printf '%P\0'; } | LC_ALL=C sort -zu)
 REMOTE_CHANGES
+}
+
+calculate_changes_with_retry() {
+    local attempt output
+    for attempt in 1 2 3; do
+        if output=$(calculate_changes); then
+            printf '%s' "$output"
+            return 0
+        fi
+        if (( attempt < 3 )); then
+            error "read-only changed-assets calculation failed (attempt $attempt/3); retrying"
+            sleep 1
+        fi
+    done
+    return 1
 }
 
 create_backup() {
@@ -428,6 +482,8 @@ main() {
     (( $# == 1 )) || { usage; return 2; }
     validate_local_tools
     export_dir=$(validate_local_export "$1")
+    setup_ssh_multiplex
+    trap cleanup_ssh_multiplex EXIT
     LOCAL_MANIFEST_SHA=$(sha256sum -- "$export_dir/SHA256SUMS")
     LOCAL_MANIFEST_SHA=${LOCAL_MANIFEST_SHA%% *}
     [[ $LOCAL_MANIFEST_SHA =~ ^[0-9a-f]{64}$ ]] || {
@@ -468,7 +524,7 @@ main() {
         return 1
     fi
 
-    if ! changes_output=$(calculate_changes); then
+    if ! changes_output=$(calculate_changes_with_retry); then
         error 'cannot calculate changed assets before production mutation'
         cleanup_before_mutation || manual_check_hint
         return 1
