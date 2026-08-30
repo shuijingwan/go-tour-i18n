@@ -1,15 +1,17 @@
-# fr-FR Locale Surface Review — 2026-08-30 首次 production 工作记录
+# fr-FR Locale Surface Review — 2026-08-30 首次 production 最终 evidence
 
-这是 fr-FR 首次 production 的 Surface Review 工作记录，不是 production 完成后的最终 evidence。Locale-level language quality review 与 complete preview rendered acceptance 已完成并通过，允许进入 publish / first production；production verification 尚未执行，待真实首次 production 完成后在同一路径补写实际 evidence 和最终 decision。
+这是 fr-FR 首次 production 的最终 Locale Surface Review evidence。Locale-level language quality review、complete preview rendered acceptance、production machine acceptance 与 production browser acceptance 均已完成并通过。
 
 ## 审核身份
 
 - locale：`fr-FR`
 - review_id：`20260830-first-production`
 - reviewed commit：`7adaa3c99efd221b9d79c4bd492a6c88d665348c` (`7adaa3c`)
+- local production bundle：`/tmp/go-tour-release-20260830-fr-FR-bd8df0a`
+- remote production release：`/data/go-tour-fr-FR/releases/20260830-fr-FR-bd8df0a`
 - upstream baseline：`golang/website` `master` 的 `b3fc6537086f09e88cb3c1ecd09bd47c31c54241`
 - upstream commit time：`2026-08-26T21:55:26Z`
-- intended production public identity：`https://fr-go-dev.shuijingwanwq.com/`
+- production public identity：`https://fr-go-dev.shuijingwanwq.com/`
 - date：`2026-08-30`
 
 ### TranslationUnit / projection identity
@@ -193,28 +195,86 @@ go run -mod=readonly ./cmd/tour-i18n preview --locale fr-FR
 
 ## Production verification
 
-结果：`pending`
+结果：`passed`
 
-production verification 尚未执行。本工作记录不声明或推断以下尚待真实首次 production 完成的项目：
+### Release / deployment identity
 
-- production release path；
-- service 状态；
-- TLS / vhost 实际结果；
-- DNS / CDN 实际结果；
-- Playground Origin 配置与验收结果；
-- AdSense production 接入结果；
-- production machine acceptance；
-- production browser acceptance；
-- lightweight ads confirmation。
+- local bundle：`/tmp/go-tour-release-20260830-fr-FR-bd8df0a`；
+- remote release：`/data/go-tour-fr-FR/releases/20260830-fr-FR-bd8df0a`；
+- public URL：`https://fr-go-dev.shuijingwanwq.com/`；
+- service：`go-tour-fr-FR.service`；
+- loopback：`127.0.0.1:4002`。
 
-完成真实首次 production 后，必须在本文件继续补写 production release identity、源站与公网 machine acceptance、真实浏览器与 Playground Network 验收、lightweight ads confirmation 和其他实际结果；全部必需阶段完成后，才可填写正式最终 decision。
+首次 deployment 通过 `scripts/deploy-production.sh` 完成。远端 SHA-256 与 permissions validation passed；`current` 已切换到上述正式 release；service 为 `active`；localhost health 连续 3 次 HTTP 200；public acceptance HTTP 200。
+
+### DNS / TLS / Nginx
+
+- Cloudflare Free 已启用，DNS 已公开解析到 Cloudflare；
+- HTTP → HTTPS 返回 301；
+- Let's Encrypt 证书 hostname 为 `fr-go-dev.shuijingwanwq.com`；
+- fr-FR Nginx vhost 使用独立 port 80 server → 301 HTTPS，以及独立 443 server → `127.0.0.1:4002`；
+- 自动生成且会截获静态资源的额外 location 已删除；
+- `nginx -t` passed。
+
+### Playground Origin
+
+精确 allowlist Origin `https://fr-go-dev.shuijingwanwq.com` 已配置并实际验收：
+
+- fr-FR `OPTIONS /compile`、`OPTIONS /fmt`：204；
+- 既有 zh-CN、ja-JP、de-DE Origin：继续 204；
+- wrong Origin：403；
+- `GET /compile`、`GET /fmt`：405；
+- `POST /compile`：200；
+- `POST /fmt`：200。
+
+### AdSense production preparation
+
+- `/etc/go-tour/go-tour.env`：`root:root`、mode `600`；
+- `TOUR_AD_HTML` 存在有效非空配置；
+- `go-tour-fr-FR.service` 正确引用该 EnvironmentFile；
+- shared course-ad assets 使用既有非中文 shared-assets production 基线；
+- 首次启动即为正式 ads-enabled 形态。
+
+### Production machine acceptance
+
+执行：
+
+```sh
+scripts/verify-production.sh /tmp/go-tour-release-20260830-fr-FR-bd8df0a
+```
+
+实际结果：
+
+- release identity：PASS；
+- remote identity：PASS；
+- source routes：7/7 PASS；
+- public routes：7/7 PASS；
+- html identity：PASS；
+- sitemap URLs：105/105，host mismatch 0，HTTP failure 0；
+- sitemap：105/105 PASS；
+- socket boundary：PASS；
+- CDN `/`：`MISS -> HIT -> HIT PASS`；
+- CDN `/tour/welcome/1`：`MISS -> HIT -> HIT PASS`；
+- `PRODUCTION MACHINE ACCEPTANCE: PASS`。
+
+### Production browser acceptance
+
+人工浏览器完成正式 production 验收，结果为 `passed`，没有发现 blocker。覆盖首页、`/tour/`、`/tour/list`、课程页、导航、语言选择器、editor、Run / Format / Reset、runtime、desktop/mobile 与长代码页面等首次 production Surface Review 必需范围。
+
+Playground 实际功能正常；移动端页面布局正常；`/tour/moretypes/1` 长代码回归没有整页横向 overflow。
+
+### Lightweight ads confirmation
+
+实际 production 已出现真实 filled course ad，证明存在真实广告请求和填充机会。课程页面、footer 和 SPA 下一页未发现阻塞性布局或功能异常；filled / unfilled 不作为 gate。
+
+发现一个非阻塞共享视觉 follow-up：课程广告区域左上方存在一个单独的 `=` 字符，广告尚未填充时尤其明显，填充后仍可见但影响较小。本次不修复，不作为 fr-FR production blocker；该问题属于 shared course-ad visual follow-up，不是 TranslationUnit、fr-FR 翻译或 locale-specific 缺陷。
 
 ## Reviewer
 
 - TranslationUnit Quality Check / Final Review：ChatGPT GPT-5.6 Sol
 - Locale-level language quality review：ChatGPT GPT-5.6 Sol
 - Rendered browser acceptance：人工浏览器验收 + Codex GPT-5.6 Sol 分析
-- 本工作记录整理：Codex GPT-5.6 Sol（轻度）
+- 最终 evidence 整理：Codex GPT-5.6 Sol（轻度）
 
 ## Issues
 
@@ -222,13 +282,15 @@ unresolved language blocker：`none`
 
 unresolved preview rendered blocker：`none`
 
-production verification：`pending`
+unresolved production blocker：`none`
+
+non-blocking follow-up：shared course-ad 区域左上方的单独 `=` 字符；不属于 TranslationUnit、fr-FR 翻译或 locale-specific 缺陷。
 
 ## Current gate status
 
 - A language quality review：`passed`
 - preview rendered acceptance：`passed`
-- production verification：`pending`
-- final decision：尚未给出
+- production verification：`passed`
+- final decision：`passed`
 
-本记录当前仅确认 fr-FR 已通过进入 publish / first production 之前所需的 Surface Review 阶段；它不宣告 fr-FR 已完成首次 production，也不包含最终 decision。
+`decision = passed`
