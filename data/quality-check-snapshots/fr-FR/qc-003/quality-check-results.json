@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "evidence_type": "quality_check_results",
+  "locale": "fr-FR",
+  "snapshot_id": "qc-003",
+  "snapshot_manifest_sha256": "c3c927483f60c2facfa651c54865581c62ab9b01fbec8c5f6caa11e6f235cd1a",
+  "previous_snapshot_id": "qc-002",
+  "rubric": "translation-quality/v1",
+  "result_count": 4,
+  "results": [
+    {
+      "index": 90,
+      "unit_id": "generics/1",
+      "rating": "A"
+    },
+    {
+      "index": 94,
+      "unit_id": "concurrency/2",
+      "rating": "A"
+    },
+    {
+      "index": 108,
+      "unit_id": "example:concurrency/exercise-web-crawler.go",
+      "rating": "B"
+    },
+    {
+      "index": 111,
+      "unit_id": "example:generics/index.go",
+      "rating": "A"
+    }
+  ]
+}
