@@ -1,0 +1,19 @@
+* Switches de type
+
+Un ⟪GTI18N_26e4da09_000001⟫switch_de_type⟪GTI18N_26e4da09_000002⟫ est une construction qui permet d’enchaîner plusieurs assertions de type.
+
+Un switch de type ressemble à une instruction switch classique, mais ses clauses case
+indiquent des types plutôt que des valeurs. Chaque type est comparé au type concret
+contenu dans la valeur d’interface considérée.
+
+⟪GTI18N_26e4da09_000003⟫ici ⟪GTI18N_26e4da09_000004⟫ est de type ⟪GTI18N_26e4da09_000005⟫⟪GTI18N_26e4da09_000006⟫ici ⟪GTI18N_26e4da09_000007⟫ est de type ⟪GTI18N_26e4da09_000008⟫⟪GTI18N_26e4da09_000009⟫aucune correspondance ; ici ⟪GTI18N_26e4da09_000010⟫ est du même type que ⟪GTI18N_26e4da09_000011⟫⟪GTI18N_26e4da09_000012⟫La déclaration d’un switch de type utilise la même syntaxe qu’une assertion de type ⟪GTI18N_26e4da09_000013⟫i.(T)⟪GTI18N_26e4da09_000014⟫,
+mais le type précis ⟪GTI18N_26e4da09_000015⟫T⟪GTI18N_26e4da09_000016⟫ est remplacé par le mot-clé ⟪GTI18N_26e4da09_000017⟫type⟪GTI18N_26e4da09_000018⟫.
+
+Cette instruction switch vérifie si la valeur d’interface ⟪GTI18N_26e4da09_000019⟫i⟪GTI18N_26e4da09_000020⟫
+contient une valeur de type ⟪GTI18N_26e4da09_000021⟫T⟪GTI18N_26e4da09_000022⟫ ou ⟪GTI18N_26e4da09_000023⟫S⟪GTI18N_26e4da09_000024⟫.
+Dans les clauses case ⟪GTI18N_26e4da09_000025⟫T⟪GTI18N_26e4da09_000026⟫ et ⟪GTI18N_26e4da09_000027⟫S⟪GTI18N_26e4da09_000028⟫, la variable ⟪GTI18N_26e4da09_000029⟫v⟪GTI18N_26e4da09_000030⟫ est respectivement de type
+⟪GTI18N_26e4da09_000031⟫T⟪GTI18N_26e4da09_000032⟫ ou ⟪GTI18N_26e4da09_000033⟫S⟪GTI18N_26e4da09_000034⟫ et reprend la valeur contenue dans ⟪GTI18N_26e4da09_000035⟫i⟪GTI18N_26e4da09_000036⟫.
+Dans la clause default (lorsqu’aucun type ne correspond), la variable ⟪GTI18N_26e4da09_000037⟫v⟪GTI18N_26e4da09_000038⟫ est
+du même type interface et contient la même valeur que ⟪GTI18N_26e4da09_000039⟫i⟪GTI18N_26e4da09_000040⟫.
+
+⟪GTI18N_26e4da09_000041⟫

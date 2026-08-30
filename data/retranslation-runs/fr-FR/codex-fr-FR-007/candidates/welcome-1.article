@@ -1,0 +1,37 @@
+* Bonjour, 世界
+
+Bienvenue dans ce tour consacré au [[/][langage de programmation Go]].
+
+Le tour est organisé en une série de modules auxquels vous pouvez
+accéder en cliquant sur
+[[javascript:highlight(".logo")][Un tour de Go]], en haut à gauche de la page.
+
+Vous pouvez également afficher la table des matières à tout moment en cliquant sur le [[javascript:highlightAndClick(".nav")][menu]], en haut à droite de la page.
+
+Tout au long du tour, vous trouverez une série de pages et d’exercices
+à réaliser.
+
+Pour naviguer entre ces pages, utilisez :
+
+- [[javascript:highlight(".prev-page")]["Précédent"]] ou `PageUp` pour revenir à la page précédente ;
+
+- [[javascript:highlight(".next-page")]["Suivant"]] ou `PageDown` pour passer à la page suivante.
+
+Ce tour est interactif. Cliquez maintenant sur le bouton
+[[javascript:highlightAndClick("#run")][Exécuter]]
+(ou appuyez sur `Shift` + `Enter`) pour compiler et exécuter le programme sur
+un serveur distant.
+Le résultat s’affiche sous le code.
+
+Ces programmes d’exemple illustrent différents aspects de Go. Les programmes du tour sont conçus comme des points de départ pour vos propres expérimentations.
+
+Modifiez le programme, puis exécutez-le de nouveau.
+
+Lorsque vous cliquez sur [[javascript:highlightAndClick("#format")][Formater]]
+(raccourci : `Ctrl` + `Enter`), le texte de l’éditeur est formaté à l’aide de l’outil
+[[/cmd/gofmt/][gofmt]]. Vous pouvez activer ou désactiver la coloration syntaxique
+en cliquant sur le bouton [[javascript:highlightAndClick(".syntax-checkbox")][syntaxe]].
+
+Lorsque vous êtes prêt à continuer, cliquez sur la [[javascript:highlightAndClick(".next-page")][flèche vers la droite]] ci-dessous ou appuyez sur la touche `PageDown`.
+
+.play welcome/hello.go
