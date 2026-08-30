@@ -1,0 +1,1449 @@
+{
+  "schema_version": 1,
+  "locale": "fr-FR",
+  "generator_contract": "course-seo-description-v1",
+  "pages": [
+    {
+      "page_id": "welcome/1",
+      "route": "/welcome/1",
+      "description": "Découvrez comment parcourir ce tour interactif, exécuter et formater les exemples Go, modifier le code et utiliser les raccourcis de navigation.",
+      "source_sha256": "1f581133d7fa40e6490418c6789a60a2f5e1de26c9c86d7eb6120cb58b145857",
+      "target_sha256": "b0e33378fd9d919293d6f263baf9ad8698690bc7056cd3b1bdc8a392f108f7fc",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "welcome/2",
+      "route": "/welcome/2",
+      "description": "Consultez les versions du tour disponibles dans différentes langues et utilisez le bouton Suivant ou PageDown pour continuer.",
+      "source_sha256": "c1c8c34dfe10b11b5cc72e1daae4336290d613bbbe5445012be949ab904fd3fa",
+      "target_sha256": "904fa24bcc5cf8f2e6f7194049767c42b5b414dcfbc65673faa27d25f912ffef",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "welcome/4",
+      "route": "/welcome/3",
+      "description": "Apprenez à installer et exécuter localement la version autonome du tour afin de compiler les exemples Go sur votre propre machine, même hors ligne.",
+      "source_sha256": "bb517d4b577fdb446fd029c2998d2426663b94a68f4b4e494c59af421508f683",
+      "target_sha256": "fdedf8801b2c769e521305fa232e9b17635b74980a4e0dd3ab55965d2f2875ce",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "welcome/5",
+      "route": "/welcome/4",
+      "description": "Comprenez le fonctionnement du Go Playground, son exécution en bac à sable, ses limites de ressources et de réseau, ainsi que sa sortie déterministe.",
+      "source_sha256": "19e6d7da57ca1d191c485754f3dd4ac87775c651b8c0ae8e05c03cbd9b225897",
+      "target_sha256": "1cb3fac4e64ace64e818555962826256c65f6c11102f8c4e73f7bba5a0931c29",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "welcome/3",
+      "route": "/welcome/5",
+      "description": "Vous avez terminé le premier module : consultez les autres sujets du tour ou accédez directement à la leçon suivante.",
+      "source_sha256": "9a6983b2e50b2fa78ff4f65683210714aea1c1575418e36796c156950ec6330d",
+      "target_sha256": "f21ce428faddd2e6d5bddb3539bc6570b7aebb4ac42fc38098edb3a23e8ce770",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "basics/1",
+      "route": "/basics/1",
+      "description": "Découvrez comment les programmes Go sont organisés en paquets, commencent dans main et suivent les conventions de nom et de chemin d’importation.",
+      "source_sha256": "f769f12c0a028b2f0cd403d89ff39dd150405e9f2e4155875321522f08619fe0",
+      "target_sha256": "2dddf5c4c5cbb4fd180cc79b0f850b2429908bb837969655b1609b58162c2abd",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "basics/2",
+      "route": "/basics/2",
+      "description": "Apprenez à regrouper les importations Go dans une déclaration d’importation factorisée, forme recommandée plutôt que plusieurs déclarations séparées.",
+      "source_sha256": "3329c9bff5f7e2b9b1e161fdebfb3804ff57cf1fb11bd4327d228328bcfb3fd0",
+      "target_sha256": "b5a6a5ad08a6044abbf9ee820cdde7fe983645b27a9f06255025cbf5860face1",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "basics/3",
+      "route": "/basics/3",
+      "description": "Comprenez comment la majuscule initiale distingue un nom exporté d’un nom non exporté et détermine son accessibilité depuis un autre paquet.",
+      "source_sha256": "38b9c70e49184a24f63f6b12f8ba78e64c0b874ad2a6f9a5fe86267615fd1bf6",
+      "target_sha256": "d279230063c9f267a4f36913769655bfe6caff493b28697b2760ab4e98cef3a4",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "basics/4",
+      "route": "/basics/4",
+      "description": "Découvrez la déclaration des fonctions Go, leurs arguments et la position du type après le nom de chaque paramètre.",
+      "source_sha256": "accf0562d9b759c9735500d5df0d74e8f90142ed96fe5ab2f5eedc6fbd6cf6f2",
+      "target_sha256": "1859003cfe220d2709c092fe0adab704b166e1e87581078064dcbf33fe2929f8",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "basics/5",
+      "route": "/basics/5",
+      "description": "Simplifiez la signature d’une fonction en omettant les types répétés de paramètres nommés consécutifs qui partagent le même type.",
+      "source_sha256": "02e7feb341329e18143e18d533fe45381883a6ba6425abb09a847e2f0edf228a",
+      "target_sha256": "535773e4678b8d818b1cfd21517ae32f6c58381cb13315677b5eb7b94195d044",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "basics/6",
+      "route": "/basics/6",
+      "description": "Découvrez qu’une fonction Go peut renvoyer plusieurs résultats, comme la fonction swap qui produit deux chaînes de caractères.",
+      "source_sha256": "b3cb4b40115066443f265e3e5ebb9fc0fd6d080784c887328fce4d6b7891ba41",
+      "target_sha256": "ef6c9767ef52cd888ce90dc9bc647daef30e0ab32ba4e1fdacf4302259a6e232",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "basics/7",
+      "route": "/basics/7",
+      "description": "Apprenez à nommer les valeurs de retour, à documenter leur rôle et à employer avec prudence une instruction return sans argument.",
+      "source_sha256": "1db20ae87ce5d9d4b20f15e4638ba2a3295a7ce781c961ef618982890fc562fa",
+      "target_sha256": "c09bc611cc9cee1faefa3f8907f03487201238655c62ca2d3b413e020755e934",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "basics/8",
+      "route": "/basics/8",
+      "description": "Découvrez comment var déclare des variables avec le type placé en dernier, au niveau du paquet comme à celui d’une fonction.",
+      "source_sha256": "bcb1b5e17ed9dff3d46a7cd8119c0d2f9c3afbb70ca94d35fadeb4f75b4a9d13",
+      "target_sha256": "6fc84e4bfc53e581bb37f5028b2079837a248ae6648047ed5dfdb98f3552b0a5",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "basics/9",
+      "route": "/basics/9",
+      "description": "Initialisez les variables dans une déclaration var et laissez Go déduire leur type à partir de la valeur initiale lorsque le type est omis.",
+      "source_sha256": "d51c17ba355753484b96c0eefda9fcce9f6f041a8ae2bf3e96fd0ad0c44680cc",
+      "target_sha256": "559d7dbf5f14808032ab2409968d46b5670135899a1f153435779a7e48c6741f",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "basics/10",
+      "route": "/basics/10",
+      "description": "Utilisez l’affectation courte := pour déclarer des variables de type implicite dans une fonction et comprenez pourquoi elle est interdite à l’extérieur.",
+      "source_sha256": "f402e8e89a186d3208df5e4d983604730e71ef6c68354755f72e4580d3d7f359",
+      "target_sha256": "e9a80b65aa1e4698d4adb49c5e1fdd5c480e95cf101fc052d762eda660a02017",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "basics/11",
+      "route": "/basics/11",
+      "description": "Passez en revue les types de base de Go, les déclarations factorisées et le choix habituel de int selon l’architecture et les besoins numériques.",
+      "source_sha256": "836ab1dd659798dcf5e90f283c4ee794aed1d2cf0766c2ccc268fa91684e9d05",
+      "target_sha256": "80a9c52068cc7a8d80bc42167b337e9e2810ae56ef56c46ff8452e6d4c238b4f",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "basics/12",
+      "route": "/basics/12",
+      "description": "Découvrez les valeurs zéro attribuées aux variables sans initialisation explicite : 0 pour les nombres, false pour les booléens et chaîne vide.",
+      "source_sha256": "d9ad62501c05359e7b2ac445fa92d629e11d6d378c2701b767abab76012a558e",
+      "target_sha256": "7c70178bcf65471929b1c25cf71985f0a3d9daffb64d20fcdf4c19291ca0b979",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "basics/13",
+      "route": "/basics/13",
+      "description": "Apprenez à convertir explicitement une valeur avec T(v), exigence de Go pour les affectations entre éléments de types différents.",
+      "source_sha256": "88e0e168f4c95fa4134198a32440b2d2fb1fac9aae535a9ee7148dbcda37e1b3",
+      "target_sha256": "afd96754efe949ea992f955b98a74b78c6f1cfdb65f9117a6b87884d7865531c",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "basics/14",
+      "route": "/basics/14",
+      "description": "Comprenez l’inférence de type à partir d’une valeur typée ou d’une constante numérique non typée, selon sa valeur et sa précision.",
+      "source_sha256": "21c4077c25629545dee0313b8b6b03e709edc4a74e1d73d9f4c9b0a49e46f6b3",
+      "target_sha256": "8c44c6acb40af0981a0e2949105ab6435db480da0a7f600395f894099565e60a",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "basics/15",
+      "route": "/basics/15",
+      "description": "Déclarez des constantes avec const, découvrez les catégories de valeurs possibles et retenez que la syntaxe := ne peut pas les créer.",
+      "source_sha256": "964ac515c0860a54b3a7780d77c7b4862ca38b744ae1f6be4b155a4386e2a229",
+      "target_sha256": "e417fc5064b7bdd461eecf7ae5cbaa04214f15701398f728eb723e0349ed9b4c",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "basics/16",
+      "route": "/basics/16",
+      "description": "Explorez la haute précision des constantes numériques, leur typage selon le contexte et les limites de représentation du type int.",
+      "source_sha256": "0d502d48a15f7a70e257079d7db1ddafe088607110c1c06b17b4be50b362394a",
+      "target_sha256": "3d57b83acc15e1b21019dc3fb2c708deca855f542c297492b2c9134d68ed81f8",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "basics/17",
+      "route": "/basics/17",
+      "description": "Cette page confirme la fin de la leçon et propose de revenir aux modules ou de poursuivre directement avec la leçon suivante.",
+      "source_sha256": "f565674b974c053924bf69ef83b709dc50931526ae7fa88e71543a5cd872a190",
+      "target_sha256": "c280d1b2ced7ccb886743fa1f797dc7012b5be6a0ed872e67b4dc345e681fb49",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/1",
+      "route": "/flowcontrol/1",
+      "description": "Découvrez la boucle for de Go, ses instructions d’initialisation et de post-itération, sa condition, sa portée et ses accolades obligatoires.",
+      "source_sha256": "c6cd458bda99bffc7b753e122c56575a59508586054180be1f8d7bb1fe2391df",
+      "target_sha256": "2c680d261ed14a35ea4ab813c74edd2b7f48565e46b812cfe2005561a9dfeca2",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/2",
+      "route": "/flowcontrol/2",
+      "description": "Apprenez que les instructions d’initialisation et de post-itération d’une boucle for sont facultatives.",
+      "source_sha256": "24a97abbb6db2b6a88017bf326a5968097263d8ba637805f2cf44c9fed25f9fe",
+      "target_sha256": "f07a8fa2414a0e6a64416d8c8aa95c3f40e67eb7d44954557cfcdbcf0f0428a8",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/3",
+      "route": "/flowcontrol/3",
+      "description": "Utilisez for comme l’équivalent du while du C en omettant les points-virgules lorsque seule la condition de boucle subsiste.",
+      "source_sha256": "3ed791cc935287ba6f5da4ba41f6ad84fdcbaef108ee364f769ae5204316bbb7",
+      "target_sha256": "b482a08122d972c4b0fd89bbfb81e80a0900e2a873838d33aa93a69e3deeaa59",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/4",
+      "route": "/flowcontrol/4",
+      "description": "Exprimez simplement une boucle infinie en supprimant la condition de la boucle for de Go.",
+      "source_sha256": "5456c129ef71c60b7502efde65c81020aaf1fa8b9178086e99223a21f6207dc6",
+      "target_sha256": "77663d8b54456777915fe66101c5ec2eadd6ec143a64d906741147daeb825b59",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/5",
+      "route": "/flowcontrol/5",
+      "description": "Découvrez la syntaxe de if en Go : aucune parenthèse n’est nécessaire autour de l’expression, mais les accolades restent obligatoires.",
+      "source_sha256": "ce49f916c1ceb7296576ec6b8ec92524b9827be168e3f5eb2040c61fee70f639",
+      "target_sha256": "fedc5b72f6c8f00e7a26d2116e86129514d23d71a285e92bc628a422d2430993",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/6",
+      "route": "/flowcontrol/6",
+      "description": "Faites précéder la condition d’un if par une instruction courte et limitez la portée des variables ainsi déclarées à cette instruction.",
+      "source_sha256": "02e310262214f3c5ceca8bf63ecf2ec3934641a7e2638050479b739ce077031e",
+      "target_sha256": "f4813c234b65d3d9ef54abc954e0e6be5458792b626eeed577236a2bf6998c54",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/7",
+      "route": "/flowcontrol/7",
+      "description": "Comprenez que les variables d’une instruction courte if restent accessibles dans les blocs else associés.",
+      "source_sha256": "8666746573ce7d0ea1c12ff24c4c8170a1961eedb0600ed73ab849b4758f797c",
+      "target_sha256": "f97ad413c65e5d18c5322c31782d03885caab3c871cc22654a6e9b6c3af6f944",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/8",
+      "route": "/flowcontrol/8",
+      "description": "Implémentez une racine carrée par itérations de la méthode de Newton, ajustez la condition de boucle et comparez le résultat à math.Sqrt.",
+      "source_sha256": "d8bbee8455ff59212ef432a08312f7c7703360367325a80df3719157200316e9",
+      "target_sha256": "70b6703639572290f23b9682f7626156db0603eee8979c0d2bc2170930e55773",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/9",
+      "route": "/flowcontrol/9",
+      "description": "Découvrez le switch de Go : il exécute le premier cas correspondant sans break explicite, et ses cas peuvent utiliser des valeurs non constantes.",
+      "source_sha256": "abdc4c295fa7b4aec2616acf83badbbf2b581a9f62e41d03ca2ff984ebb6f7ed",
+      "target_sha256": "ff8b61ba2bf0dc97d76bd09201e172d610a6ea6ab8e2e2e894bdf185c7bebe21",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/10",
+      "route": "/flowcontrol/10",
+      "description": "Comprenez que les cas d’un switch sont évalués de haut en bas et que l’évaluation s’arrête dès la première correspondance.",
+      "source_sha256": "e1479cae56a87cddb9c447fc9fd32b0ee1f983058f7ee76554965abd21975ef4",
+      "target_sha256": "04f7a899bf6dad2097bfaa87c3d373df0389e813d6ac9bdfea376a81134fc2f9",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/11",
+      "route": "/flowcontrol/11",
+      "description": "Utilisez un switch sans condition, équivalent à switch true, pour écrire clairement de longues chaînes de conditions if et else.",
+      "source_sha256": "714b67f479583e47080cd0f38489f465a28c002938390c4155af6dfeebb9225b",
+      "target_sha256": "16efcdbec487217b10cd469f8fe674c81888bc06a3e33b113ec42dc4b9d82259",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/12",
+      "route": "/flowcontrol/12",
+      "description": "Découvrez defer : ses arguments sont évalués immédiatement, tandis que l’appel est reporté jusqu’au retour de la fonction englobante.",
+      "source_sha256": "fa23a1d6ebf12f11843d38fe79c413a9c19bfcaf305ae64b75c360db24a436ec",
+      "target_sha256": "8ab83afdc767ddaacd9ab5f623a28ff68d3f234ca3b9395f2d8d8797ab720fc9",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/13",
+      "route": "/flowcontrol/13",
+      "description": "Apprenez que les appels différés sont empilés puis exécutés dans l’ordre dernier entré, premier sorti au retour de la fonction.",
+      "source_sha256": "73a02c24eb14597b3c5f53a09fc572f1a1f0c941adfc337c79fb14b492985fc1",
+      "target_sha256": "8217e2aa94a884e763b4de61f891c9714492daacb5676190ecb48d70b6302063",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/14",
+      "route": "/flowcontrol/14",
+      "description": "La leçon est terminée : revenez à la liste des modules pour choisir la suite, ou passez immédiatement à la leçon suivante.",
+      "source_sha256": "f565674b974c053924bf69ef83b709dc50931526ae7fa88e71543a5cd872a190",
+      "target_sha256": "c280d1b2ced7ccb886743fa1f797dc7012b5be6a0ed872e67b4dc345e681fb49",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "moretypes/1",
+      "route": "/moretypes/1",
+      "description": "Découvrez les pointeurs Go, les opérateurs \u0026 et *, le déréférencement, la valeur nil et l’absence d’arithmétique des pointeurs.",
+      "source_sha256": "7706eaf0d46acc79fdad3b7953e5571bf404551d71aaefafd8ba79f5761f9806",
+      "target_sha256": "948d45b879596aa86b0ae670d1dea3f6e8cb6d9e728f828c30b4a5a8d8fe89eb",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "moretypes/2",
+      "route": "/moretypes/2",
+      "description": "Découvrez qu’une structure Go regroupe plusieurs champs dans une même structure de données.",
+      "source_sha256": "a18dfdaadb9739387cc9886b67e9bf920bf52ada62397a1812cfd302c64aed9b",
+      "target_sha256": "a7cbaeb34400178cb19a1939768d10ddaedc103b5cb78fbbeb95c69706daf10f",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "moretypes/3",
+      "route": "/moretypes/3",
+      "description": "Apprenez à accéder aux champs d’une structure Go à l’aide de la notation par point.",
+      "source_sha256": "0be9cb4a59a0d95526c208e5d8d96ebe6a15fd84b6e3a2ff9a07963226cb7b58",
+      "target_sha256": "507d84465597ef73e2cce5726830dfde511e2b3521a435196397b9dd55577876",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "moretypes/4",
+      "route": "/moretypes/4",
+      "description": "Accédez aux champs d’une structure par son pointeur avec la notation simplifiée p.X, sans écrire explicitement le déréférencement (*p).X.",
+      "source_sha256": "29695d334b6ff809e84ae8caeb7b9dc493143236783c07c16a83ecc64514c310",
+      "target_sha256": "b2f1fcabdf0248768624892d5248713c2109c6cab46073c3b6ff1b050855ed5f",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "moretypes/5",
+      "route": "/moretypes/5",
+      "description": "Créez des valeurs avec des littéraux de structure, sélectionnez des champs nommés et utilisez \u0026 pour obtenir un pointeur vers la valeur.",
+      "source_sha256": "cf9282456e2a91274c1b135a68fce58dd1590f6a2d7153f0619c97ded8bd00d1",
+      "target_sha256": "d515b4543c759597439e955f835fe27c5e1edb4ec0262a495b4afa76ee44e74a",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "moretypes/6",
+      "route": "/moretypes/6",
+      "description": "Découvrez les tableaux Go de type [n]T, dont la longueur fixe appartient au type et empêche tout redimensionnement.",
+      "source_sha256": "0ec503e46281eb8ff25ceba5b92c9f9c3b40517aeea77cf4878760ed0da9d29c",
+      "target_sha256": "35055ddd42202229df451b7703d387cfefcfe7d5a5d91353b56c189348f5d64f",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "moretypes/7",
+      "route": "/moretypes/7",
+      "description": "Découvrez les slices, vues dynamiques sur un tableau, leur type []T et la sélection d’un intervalle semi-ouvert entre deux indices.",
+      "source_sha256": "a169cf48dd659510ff7f1f8adfdbed5a247b51a1f7c3a45ae972f18921925033",
+      "target_sha256": "470e15e42f3700286d8143b91347819e2d0d39946fc4f6da3f8aa47826bfcce8",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "moretypes/8",
+      "route": "/moretypes/8",
+      "description": "Comprenez qu’une slice décrit une partie d’un tableau sous-jacent et que ses modifications sont visibles par les autres slices qui le partagent.",
+      "source_sha256": "e577f9e98a9c871cdc6f39ecca1bdd0965c26da3b9ab6c2a7cab42b3b0f3a568",
+      "target_sha256": "57e556f70555cd14be73b19fad206e57cb337d2db3e342d0b2638a17b8c265f3",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "moretypes/9",
+      "route": "/moretypes/9",
+      "description": "Découvrez qu’un littéral de slice ressemble à un littéral de tableau sans longueur et crée une slice référant au tableau construit.",
+      "source_sha256": "fb79cf8caed7abc7dfd92e90cf1bcc11d547b8af96d224f30fefc995f98dbb0b",
+      "target_sha256": "3b3f141175726cef9fbe8d4f4efcfeb97f554458b0ccc3fa88cb9b188e1abf98",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "moretypes/10",
+      "route": "/moretypes/10",
+      "description": "Apprenez les bornes par défaut d’une expression de slice et les formes équivalentes obtenues en omettant la borne inférieure ou supérieure.",
+      "source_sha256": "36d1f92fc5e51cddcd26be7f74a875e60bf24633dd7c8689672fa23a6720e2a1",
+      "target_sha256": "635cc0be8ede0e39f9c02c7eff50fede67e5a1c5b8c2742d1378613bbf4303d5",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "moretypes/11",
+      "route": "/moretypes/11",
+      "description": "Comprenez la longueur et la capacité d’une slice, mesurez-les avec len et cap, puis étendez la slice dans la limite de sa capacité.",
+      "source_sha256": "e2d7d69c946e5a01d8d0eab2e07a2bf35e23453a617d5e7602ff0af5c5866d8f",
+      "target_sha256": "da5f07c85cdc2f3c182d05f4eae028651d354a25dd92ad64d9a81ba16a663d03",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "moretypes/12",
+      "route": "/moretypes/12",
+      "description": "Découvrez qu’une slice nil est la valeur zéro d’une slice, sans tableau sous-jacent, avec une longueur et une capacité nulles.",
+      "source_sha256": "e7a4bb0d5e7928c2da06312d983eba2adb533b30299025f507df183f00fefc89",
+      "target_sha256": "66dbb7102478835aaa5da7538d76819433b4e1759318c5620c4253f15003339b",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "moretypes/13",
+      "route": "/moretypes/13",
+      "description": "Créez une slice avec la fonction intégrée make, en indiquant sa longueur et, si nécessaire, sa capacité.",
+      "source_sha256": "d057e6bf75421597d430ff52f844499b5828ab2c4b4c5148ad88b6b89326ac20",
+      "target_sha256": "67ce2a21d03d1be0d2c9e13a6b93832c5684b22e8d48d4732f81a9ed544f87d6",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "moretypes/14",
+      "route": "/moretypes/14",
+      "description": "Découvrez que les slices peuvent contenir des éléments de tout type, y compris d’autres slices pour former des structures imbriquées.",
+      "source_sha256": "d8bee22c0382cf5fd5647c4d7106165d153cb15aaed8ec82e1f06e12ad0c73d1",
+      "target_sha256": "d9ac9f174664e7b1ae8e2af8ee35adf9eee7211c91157a629445460ec9c1eb12",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "moretypes/15",
+      "route": "/moretypes/15",
+      "description": "Ajoutez des éléments à une slice avec append et comprenez l’allocation d’un nouveau tableau sous-jacent lorsque la capacité devient insuffisante.",
+      "source_sha256": "f2fc257e7c5f118321acc3b75e946053601532d411e8540534280d7fba795289",
+      "target_sha256": "a3b49b7c70f083be90d40e0c05a6981d2bc697b466b0ca82d22eabcf0282ecaa",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "moretypes/16",
+      "route": "/moretypes/16",
+      "description": "Parcourez une slice ou une map avec range et découvrez que, pour une slice, chaque itération renvoie l’indice et une copie de l’élément.",
+      "source_sha256": "73fc46a2e049ce2ff4a4fc0595d717ed5d6e15b7093a6014509a48f501253186",
+      "target_sha256": "f4d54cba3500bf71a52c70868dc322097266afe7161a68c85ba9de6a20ddfa4d",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "moretypes/17",
+      "route": "/moretypes/17",
+      "description": "Ignorez l’indice ou la valeur produits par range avec l’identificateur vide _, ou omettez la seconde variable pour ne conserver que l’indice.",
+      "source_sha256": "b52cca070f62a3ffeab3adf20f2745e1dd9aa2644a3985c23ac295e81e2c3bc9",
+      "target_sha256": "bf8c062636d5be487451bcba1ffab7e0fcdfc93218398c305fcd03c931912d18",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "moretypes/18",
+      "route": "/moretypes/18",
+      "description": "Implémentez Pic avec une slice de slices d’entiers uint8, allouez chaque ligne et produisez une image à partir de valeurs de couleur.",
+      "source_sha256": "9c5fd763eaedec8e8bfb60f52713417ff247bc4467aa8a94412c55ab83c781ba",
+      "target_sha256": "2bb5267b98a7ab43dfa8b58e919ac6f68ba881e9d51b079b1bb416c31751e037",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "moretypes/19",
+      "route": "/moretypes/19",
+      "description": "Découvrez les maps, leur association de clés à des valeurs, leur valeur zéro nil et leur initialisation prête à l’emploi avec make.",
+      "source_sha256": "39107d53feaffd26d7bb13103fe6e40746e9844d9b37bbf84559f7b91db312f3",
+      "target_sha256": "cef5db130a8a3dec8f6d9e7531493cd48cfd7b350cfdadd4a74fe15482e66331",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "moretypes/20",
+      "route": "/moretypes/20",
+      "description": "Apprenez à écrire des littéraux de map, semblables aux littéraux de structure mais avec une clé obligatoire pour chaque élément.",
+      "source_sha256": "1d3caa45093f65b50d5ebcff6a57559c3fe70faba85f3a0bb41db38c5375a507",
+      "target_sha256": "3e247bfc639f4bb5c912ef2e0d12e4e93be08c575bbf4e975cc910a36da6bc8f",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "moretypes/21",
+      "route": "/moretypes/21",
+      "description": "Simplifiez un littéral de map en omettant le type dans ses éléments lorsque le type de niveau supérieur est un simple nom de type.",
+      "source_sha256": "0493179c2396f2e755fa5f1e579ce6f4cc716842ef5ee77a0b1c742210c15f9f",
+      "target_sha256": "4804ebb18b7f2a5f9796e6a7d96d04e9fc43b59d8329e0dae5c8b13cd9c8eab0",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "moretypes/22",
+      "route": "/moretypes/22",
+      "description": "Insérez, récupérez et supprimez des éléments d’une map, puis testez la présence d’une clé avec l’affectation à deux valeurs elem et ok.",
+      "source_sha256": "f6963bc620184c7fbea7b04c309ccf64d508a4e835500fa7dd4188e60204019f",
+      "target_sha256": "2941bc627606e8a1582f77f40874c642fbfa41d3b77c94a5d04f0f3f098004d9",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "moretypes/23",
+      "route": "/moretypes/23",
+      "description": "Implémentez WordCount pour compter les occurrences de chaque mot d’une chaîne dans une map et vérifiez le résultat avec la suite de tests.",
+      "source_sha256": "3214968207b659c3fb6bf92ee3d1ba0858bf7d3240dfad30fada7c5d8bddea69",
+      "target_sha256": "a2931ed013176699714eb9adb105a1552987d3053176d3576b718a2afd986825",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "moretypes/24",
+      "route": "/moretypes/24",
+      "description": "Découvrez que les fonctions sont des valeurs et qu’elles peuvent être transmises ou utilisées comme arguments et valeurs de retour.",
+      "source_sha256": "91b508ec19d3baf6fd1b2382e54b0f4ec226e9af99d027e86d734cf081d9c897",
+      "target_sha256": "9d4550ac029e7b9ba02ee40e73485e5cbece128fef32d7f2d60d21e7f2e6b0da",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "moretypes/25",
+      "route": "/moretypes/25",
+      "description": "Comprenez les fermetures Go, des valeurs de fonction liées à des variables extérieures qu’elles peuvent consulter et modifier.",
+      "source_sha256": "570e535e9c2b2d1978534eb3b42f226102b11da36a3f9e61620dc5eafdb6be5f",
+      "target_sha256": "42bf9f10d8802b55b71b40d8cf8e2749496d705bf95fb758f05c6f3b7d7ef3af",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "moretypes/26",
+      "route": "/moretypes/26",
+      "description": "Implémentez une fonction fibonacci qui renvoie une fermeture produisant successivement les nombres de Fibonacci.",
+      "source_sha256": "24f01440a7b0d638694c6cb275bf92e79e1fb2463ea2eb7d40a68cc4d6a0ed29",
+      "target_sha256": "ef6bb66661c9883058646becb36e538c53b2e843dd5dacdc9f52ea9b37dd318a",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "moretypes/27",
+      "route": "/moretypes/27",
+      "description": "Après avoir terminé cette leçon, consultez la liste des modules pour continuer votre parcours ou ouvrez la leçon suivante.",
+      "source_sha256": "f565674b974c053924bf69ef83b709dc50931526ae7fa88e71543a5cd872a190",
+      "target_sha256": "c280d1b2ced7ccb886743fa1f797dc7012b5be6a0ed872e67b4dc345e681fb49",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "methods/1",
+      "route": "/methods/1",
+      "description": "Découvrez comment définir une méthode sur un type Go et placer son argument récepteur entre func et le nom de la méthode.",
+      "source_sha256": "8a62096b755332ede134c87493abe49231a52ce60abebcdc107bb6a64434fc72",
+      "target_sha256": "6d37d4cd1e81956ba71df6da31ab9111858f6f7707c91cdb47d0c44c2fe78292",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "methods/2",
+      "route": "/methods/2",
+      "description": "Comprenez qu’une méthode est une fonction munie d’un argument récepteur en comparant Abs à sa version sous forme de fonction ordinaire.",
+      "source_sha256": "ade066728f85cc93e75c2472b80d532b62259a7e08e42ef36e3d05c6cfa5476d",
+      "target_sha256": "3ff062fe0297472bdeca94ccac138fc67a07e0082299070f47435f73155047a5",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "methods/3",
+      "route": "/methods/3",
+      "description": "Déclarez des méthodes sur des types autres que des structures et respectez la règle qui impose de définir le type du récepteur dans le même paquet.",
+      "source_sha256": "31c4fd0d80c8f1d96cf3efb1ecc1f9d3c0d1b5b70bb5c23bf7227b7007469588",
+      "target_sha256": "3ca3933e5782999647f16f4d237f50ee21489a6d57ae951d54739e211925f342",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "methods/4",
+      "route": "/methods/4",
+      "description": "Utilisez un récepteur par pointeur pour modifier la valeur d’origine et comprenez pourquoi un récepteur par valeur n’agit que sur une copie.",
+      "source_sha256": "99f9fa4e5c4dd46d393f40b417d0430c4e27e56f40146f5f192f55ccda4e2db3",
+      "target_sha256": "696f34b255ffdea97b046bada13f714bcaf10bd2e45cfd3fb4b9036dbcc16175",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "methods/5",
+      "route": "/methods/5",
+      "description": "Comparez les méthodes Abs et Scale à leurs versions sous forme de fonctions pour observer les effets des pointeurs sur le comportement et la compilation.",
+      "source_sha256": "cac8affc7a8fd7bc1c0003d8cbf5bd7c85433faea45ea1b39f3b80c2fbc5eae9",
+      "target_sha256": "e7472a070f05bc238dbc3e651a2bb8bf52a284faf8fbc8bb2eaf37a4a2ec6339",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "methods/6",
+      "route": "/methods/6",
+      "description": "Comprenez l’indirection automatique qui permet d’appeler une méthode à récepteur par pointeur sur une valeur avec v.Scale.",
+      "source_sha256": "39fb725b0a084ce3634dc973c215ff7a0f034c5f7b51c2ffe25934088072ebf6",
+      "target_sha256": "4fedd507ec2d3a651b7a0a13db8f97620373eb2d5f018c7cff6bc1a7423444ae",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "methods/7",
+      "route": "/methods/7",
+      "description": "Découvrez l’indirection inverse : une méthode à récepteur par valeur peut être appelée sur un pointeur, que Go interprète par déréférencement.",
+      "source_sha256": "61a9cb8411e6ce15dce3383a68a52c6644599e84269b3faf240129277d238f7e",
+      "target_sha256": "70f06db3610b1f4e3d7eac64e147343e25450d868842e61556d1ffce0d5f82d1",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "methods/8",
+      "route": "/methods/8",
+      "description": "Choisissez un récepteur par pointeur pour modifier une valeur ou éviter sa copie, et gardez un type cohérent de récepteur pour les méthodes d’un même type.",
+      "source_sha256": "357424f2a76613085184054178042b442331b5689d156ac9c37e09e57c436dae",
+      "target_sha256": "e2d78305c5e6805eeadc7506c3367c97fe1035ea31fce072504c70e7852b2757",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "methods/9",
+      "route": "/methods/9",
+      "description": "Découvrez qu’un type interface définit un ensemble de signatures de méthodes et pourquoi Vertex n’implémente pas Abser lorsque Abs n’existe que sur *Vertex.",
+      "source_sha256": "39efc19ed01619130489d21e421f2c0d8947b20f408580f4ceaabce6a0feb099",
+      "target_sha256": "4998f64ef43e79dbc80b37e232b553b3c6249736784d5a11323a69fc5592a678",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "methods/10",
+      "route": "/methods/10",
+      "description": "Comprenez l’implémentation implicite des interfaces Go, sans déclaration ni mot-clé implements, qui dissocie interface et implémentation.",
+      "source_sha256": "11ca99e6e83d93827daf02b177156fcb6f3c94ac8c202491dfffc5840ce4e39f",
+      "target_sha256": "435502555ba531e38d6eab2d61e17390e2f2dc6f3aedcc384505227c4296af85",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "methods/11",
+      "route": "/methods/11",
+      "description": "Représentez une valeur d’interface comme un couple valeur et type concret, puis comprenez la sélection de la méthode du type sous-jacent.",
+      "source_sha256": "ccb2ed709b887724d22fb93714702fed5de4b7a83ca976876864045ff4752270",
+      "target_sha256": "742e647e6ae030d35b672beeef973e738552de4aa55f6483349a4722457686b9",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "methods/12",
+      "route": "/methods/12",
+      "description": "Découvrez l’appel d’une méthode avec un récepteur nil lorsque la valeur concrète d’une interface est nil, alors que la valeur d’interface ne l’est pas.",
+      "source_sha256": "9487ca3c9872972d42af8cfa389755678fe8a7cca110b592aac2a762332febf5",
+      "target_sha256": "cb2ee3ca447c05336d2df6d321c934d6adbb11cf3e3d3893cb3da3ec6e9893c4",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "methods/13",
+      "route": "/methods/13",
+      "description": "Comprenez pourquoi l’appel d’une méthode sur une valeur d’interface nil provoque une erreur d’exécution en l’absence de type concret.",
+      "source_sha256": "2897922c0b088ccd46b3e42a442aeecda0787c4162db1329d0e8f39d05735547",
+      "target_sha256": "3a6b376102724ea2dbe82caa0de1a1d98a2b7bead3f78629d6a1fb950bb428d7",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "methods/14",
+      "route": "/methods/14",
+      "description": "Découvrez l’interface vide, capable de contenir tout type, et son alias any utilisé par le code qui manipule des valeurs de type inconnu.",
+      "source_sha256": "7a09a7654c8b6ac6d96a1a8ddaafac368782f89ec2e6e61f323d40eb01cbf750",
+      "target_sha256": "ae88f7e04f2d080a4605b13754a702ddcbacc762be5052e056010006fd0042a3",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "methods/15",
+      "route": "/methods/15",
+      "description": "Utilisez une assertion de type pour extraire la valeur concrète d’une interface, avec panique ou avec un booléen ok pour tester sans risque.",
+      "source_sha256": "c205b4eb940358edea6321cfa422c3c00a560e9a6a71b08c8b3fa3ab9e4926ae",
+      "target_sha256": "8b8a725d088d3e6eabeb4922e286677d3a4b547269fc6fb5750f87983fbe6ed0",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "methods/16",
+      "route": "/methods/16",
+      "description": "Employez un switch de type pour enchaîner plusieurs assertions de type et traiter la valeur concrète d’une interface selon le cas correspondant.",
+      "source_sha256": "26e4da09e80d30b06368691c76ee2940139b0f6fc40cad47bb6d1d2947933c27",
+      "target_sha256": "5b0b088b95af17901ef890042e3515bbe345d284499661f8f07de0ffa0b9b021",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "methods/17",
+      "route": "/methods/17",
+      "description": "Découvrez l’interface fmt.Stringer et sa méthode String, utilisées par fmt et d’autres paquets pour obtenir la représentation textuelle d’une valeur.",
+      "source_sha256": "0363038e64b6f186e1bbd55c3323a5d7770a2b728605d8e3f01ae234aff6a444",
+      "target_sha256": "729173ddd8d07319fe7fdc6b90d021766483b1eb178da5894a0a4bbf5ab35be9",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "methods/18",
+      "route": "/methods/18",
+      "description": "Faites implémenter fmt.Stringer au type IPAddr afin d’afficher une adresse sous forme de quatre nombres en notation décimale pointée.",
+      "source_sha256": "ad118644f53755586f14409e203bccfb5ac4cff7c01734157032a45648fb06d3",
+      "target_sha256": "851497353f79bce06708e3413c0da08d6eb9f9918347ec1a8fa420bb8f0429ea",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "methods/19",
+      "route": "/methods/19",
+      "description": "Découvrez l’interface intégrée error, sa méthode Error et la convention selon laquelle nil indique une réussite et une valeur non nil un échec.",
+      "source_sha256": "9eaab1fde2076c1376f78ceec0f84766c4c3b8062867436d73cef0bc77f16bd5",
+      "target_sha256": "afef0841e882c7401934f1b60043987bb4fa8da71c565054002c52bdcc3e0e92",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "methods/20",
+      "route": "/methods/20",
+      "description": "Modifiez Sqrt pour renvoyer ErrNegativeSqrt avec les nombres négatifs et évitez une boucle infinie dans Error en convertissant sa valeur.",
+      "source_sha256": "41f1f73320fde60ee5ff30d5927a19ff22d6da6a336bb776e15f2499e4f421d8",
+      "target_sha256": "b65ea3a852a3152df435cd71591e333706e8cfd25e98cfd88d6716879d0f1de7",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "methods/21",
+      "route": "/methods/21",
+      "description": "Découvrez io.Reader, sa méthode Read, le signal io.EOF et la lecture d’un flux dans une slice d’octets, illustrée par blocs de huit octets.",
+      "source_sha256": "120c3fc9f67579cf78605cf0c9f006fc28d3569043a08079ddb645ca9c3fc3b1",
+      "target_sha256": "5d8356e083df9f68d7eaa0d6220186f75bdec1dff8aacdfb42a9e46a6f183329",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "methods/22",
+      "route": "/methods/22",
+      "description": "Implémentez un type Reader qui produit un flux infini composé du caractère ASCII A.",
+      "source_sha256": "0df444d989996a06d6dd50f4b109af4ae1cb2302b8dd867bcbe9bf98e424d230",
+      "target_sha256": "c28bcc35afc63cf21f56b172d8cb91f44aa9ccf5d4b7dcab72445b7df8614b43",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "methods/23",
+      "route": "/methods/23",
+      "description": "Créez un rot13Reader qui enveloppe un io.Reader, implémente Read et transforme tous les caractères alphabétiques du flux avec le chiffrement ROT13.",
+      "source_sha256": "11d876145fae980b2e283e3fac7357a950eb20f022b7da48cc58efed5b1e8e04",
+      "target_sha256": "84a633a1769e98ba04cb6414e1bb816a51e3d0a7d4dc5eb8019e29fc74c0cdb6",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "methods/24",
+      "route": "/methods/24",
+      "description": "Découvrez l’interface image.Image, ses méthodes ColorModel, Bounds et At, ainsi que les types de couleur utilisés par ses implémentations.",
+      "source_sha256": "d80f0d46796ad415a7ded4d0cefdef6cdb58deb38d050a61eb64abb25caf27ee",
+      "target_sha256": "bce89c2b82bee78c41172b0bd614355cd04375db82969e3b7ee38252488077ae",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "methods/25",
+      "route": "/methods/25",
+      "description": "Définissez votre propre type Image, implémentez image.Image avec Bounds, ColorModel et At, puis affichez l’image produite.",
+      "source_sha256": "a196bc59d96602c3fe72cf765419366094a5c1e96de0d24dd140887ebd1826b5",
+      "target_sha256": "2fd99cb09e1ccbe4d207f2bd456aea4f330e7fd7c66b1fda398892ef2b00c494",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "methods/26",
+      "route": "/methods/26",
+      "description": "Vous avez achevé cette leçon ; choisissez un autre module dans la liste ou continuez votre apprentissage avec la leçon suivante.",
+      "source_sha256": "f565674b974c053924bf69ef83b709dc50931526ae7fa88e71543a5cd872a190",
+      "target_sha256": "c280d1b2ced7ccb886743fa1f797dc7012b5be6a0ed872e67b4dc345e681fb49",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "generics/1",
+      "route": "/generics/1",
+      "description": "Découvrez les paramètres de type et la contrainte intégrée comparable en écrivant une fonction Index utilisable avec tout type comparable.",
+      "source_sha256": "01a045105dc8c12fb1709f122d363235c19a6464d5de7587d579524aec270dd6",
+      "target_sha256": "dc8806f4f262e68bc6c6fc17bfd3c2071f34cdf877626e58e204347bcb0e834d",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "generics/2",
+      "route": "/generics/2",
+      "description": "Créez un type générique paramétré et étudiez une liste simplement chaînée capable de contenir des valeurs de n’importe quel type.",
+      "source_sha256": "08486351895e62792a84bc3eeab6aa85df7b1658735b7239040d219812f63277",
+      "target_sha256": "a3d4a85e254003fec769ad413c61c888b1db638bdf0abcfaf2cdc99615ee938d",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "generics/3",
+      "route": "/generics/3",
+      "description": "Fin de cette leçon : retournez à la liste des modules pour voir les sujets restants, ou poursuivez avec la prochaine leçon.",
+      "source_sha256": "f565674b974c053924bf69ef83b709dc50931526ae7fa88e71543a5cd872a190",
+      "target_sha256": "c280d1b2ced7ccb886743fa1f797dc7012b5be6a0ed872e67b4dc345e681fb49",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "concurrency/1",
+      "route": "/concurrency/1",
+      "description": "Découvrez les goroutines, l’évaluation de leurs arguments, leur espace d’adressage partagé et la nécessité de synchroniser les accès à la mémoire.",
+      "source_sha256": "d0a9c45078c2255540cfffe48744a07fa04ab5c2113e8880068b5a400ae0ebdc",
+      "target_sha256": "c5237f0487eac5753e4a08cd82fea1adc40f6addd4bb93191106aa5bd1d970f4",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "concurrency/2",
+      "route": "/concurrency/2",
+      "description": "Utilisez des canaux pour envoyer et recevoir des valeurs, synchroniser des goroutines par blocage et répartir le calcul d’une somme.",
+      "source_sha256": "a35e3af26b51f8c2c2a6dfaf09f9c7cab0fdb4b1b56f9e4dc9b793f1dac1e295",
+      "target_sha256": "d87860ee01562ec7d1e72a9ed4bf68026778398f2ea6c617b6aa984cbcffc083",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "concurrency/3",
+      "route": "/concurrency/3",
+      "description": "Créez un canal avec tampon en précisant sa capacité et comprenez quand les envois ou les réceptions deviennent bloquants.",
+      "source_sha256": "caef0893a54c61f192be397f6b27a039d81dc007f98f2d203a5a287383c0682e",
+      "target_sha256": "b2689f7f0224a9e9f40bd0d54da75ba69445aa700907573836bfa80cd8141bbf",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "concurrency/4",
+      "route": "/concurrency/4",
+      "description": "Fermez un canal du côté émetteur, détectez sa fermeture avec ok et parcourez ses valeurs avec range jusqu’à leur épuisement.",
+      "source_sha256": "3e925c6745255a443c61f25cd8131d538dc8677938f1c5021ce798465020b42e",
+      "target_sha256": "cead6cb2fc63207e73f2cc8351ff55436eab8b9293b6ac5b10dfec2beaa4e1e7",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "concurrency/5",
+      "route": "/concurrency/5",
+      "description": "Utilisez select pour attendre plusieurs opérations de communication et laisser Go choisir aléatoirement parmi les cas prêts.",
+      "source_sha256": "8d8de56f080d4f702ac455aa60cb13b745472bedc9755000e8b5d6a2a898577d",
+      "target_sha256": "81018c60b082e14b1a1914dbb91f26f39bff9cc80046750a955191af44b55995",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "concurrency/6",
+      "route": "/concurrency/6",
+      "description": "Ajoutez un cas default à select pour tenter un envoi ou une réception sans rester bloqué lorsqu’aucun autre cas n’est prêt.",
+      "source_sha256": "82e9cd932e14e6c4852fc8f865f4c45dc75845bd1a306649152ebc045f0c3b2c",
+      "target_sha256": "41c42e6d212c2a8d0b87f1d2a190fcf17ee89e4da140b840536c3f0d26f1987d",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "concurrency/7",
+      "route": "/concurrency/7",
+      "description": "Introduisez l’exercice des arbres binaires équivalents et préparez une solution fondée sur la concurrence, les canaux et le type Tree.",
+      "source_sha256": "7c5d3fc7bb2540285d746242f8a1d16075639648eec8909c1df52239297d2917",
+      "target_sha256": "a07102720d2243c3e38e8add7d8dead74eaa755feeb8bd0158544ca908c22f30",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "concurrency/8",
+      "route": "/concurrency/8",
+      "description": "Implémentez Walk pour parcourir un arbre par canal, puis Same pour vérifier si deux arbres binaires contiennent les mêmes valeurs.",
+      "source_sha256": "b362cc15a26324acd311f7cab18a628dc1d7d9ac6d455add7d651d41acf15e9a",
+      "target_sha256": "e6dc65bbf5e9e2cb49164d06d9e9347bec4648b5f9d1ca22015dca823a00be5f",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "concurrency/9",
+      "route": "/concurrency/9",
+      "description": "Protégez une variable partagée avec sync.Mutex, Lock et Unlock, puis utilisez defer pour garantir le déverrouillage.",
+      "source_sha256": "49f727794604c2ef8a8dda9508d0f412d7015cea77754c675a02b166dd9bfc93",
+      "target_sha256": "6f947375dd474b974c653ab021b36f21459bcb06be619fd22f61f2ad30e0f720",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "concurrency/10",
+      "route": "/concurrency/10",
+      "description": "Parallélisez un robot d’exploration web avec les outils de concurrence de Go, sans récupérer deux fois la même URL et en sécurisant le cache.",
+      "source_sha256": "bb686393225ef2335e627819a1664a84456f00b64af133af64920d43f0abdb94",
+      "target_sha256": "bfb16e44621e5e74c39e1d8ef364d225029ad5a6c05e078d5ec1d27f58515c28",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    },
+    {
+      "page_id": "concurrency/11",
+      "route": "/concurrency/11",
+      "description": "Poursuivez votre apprentissage de Go grâce aux références, tutoriels, ressources sur la concurrence, applications web, fonctions et paquets.",
+      "source_sha256": "45ef131ede663b1355c0a5933634d46c393f66be8a6450b184f86a62e928a64e",
+      "target_sha256": "9113e2eecfa329c9ca8ce9b43a8ac954c02f0319f6f0add22ad54cba5226689b",
+      "glossary_sha256": "bd3c4f96e956dd13784f42238f36cd5b97255cd5eeb1827394f37a633f9bb7fc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-08-30T09:00:58Z"
+      }
+    }
+  ]
+}
