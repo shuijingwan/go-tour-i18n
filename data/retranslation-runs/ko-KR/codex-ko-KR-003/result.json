@@ -5,8 +5,8 @@
   "unit_count": 30,
   "restore_passed": 30,
   "restore_failed": 0,
-  "validation_passed": 26,
-  "validation_failed": 4,
+  "validation_passed": 30,
+  "validation_failed": 0,
   "units": [
     {
       "unit_id": "moretypes/25",
@@ -88,10 +88,9 @@
     {
       "unit_id": "methods/9",
       "unit_kind": "page",
-      "status": "validation_failed",
+      "status": "passed",
       "candidate_path": "candidates/methods-9.article",
-      "validation_path": "validation/methods-9.json",
-      "error": "methods/9: protected structure validation failed: font span mismatch at index 1: expected italic, actual bold; check the named directive or protected content near the first difference"
+      "validation_path": "validation/methods-9.json"
     },
     {
       "unit_id": "methods/10",
@@ -124,26 +123,23 @@
     {
       "unit_id": "methods/14",
       "unit_kind": "page",
-      "status": "validation_failed",
+      "status": "passed",
       "candidate_path": "candidates/methods-14.article",
-      "validation_path": "validation/methods-14.json",
-      "error": "methods/14: protected structure validation failed: font span mismatch at index 1: expected italic, actual program; check the named directive or protected content near the first difference"
+      "validation_path": "validation/methods-14.json"
     },
     {
       "unit_id": "methods/15",
       "unit_kind": "page",
-      "status": "validation_failed",
+      "status": "passed",
       "candidate_path": "candidates/methods-15.article",
-      "validation_path": "validation/methods-15.json",
-      "error": "methods/15: protected structure validation failed: font span mismatch at index 1: expected italic, actual program; check the named directive or protected content near the first difference"
+      "validation_path": "validation/methods-15.json"
     },
     {
       "unit_id": "methods/16",
       "unit_kind": "page",
-      "status": "validation_failed",
+      "status": "passed",
       "candidate_path": "candidates/methods-16.article",
-      "validation_path": "validation/methods-16.json",
-      "error": "methods/16: protected structure validation failed: preformatted code block mismatch at index 1: line comment mismatch at index 1: referenced Go identifier count mismatch: expected 2, actual 0; check the named directive or protected content near the first difference"
+      "validation_path": "validation/methods-16.json"
     },
     {
       "unit_id": "methods/17",
