@@ -4,7 +4,7 @@
 
 新增语言统一从 [新增 Locale 执行手册](docs/NEW_LOCALE_RUNBOOK.md) 开始；不要只在 registry 中增加一行就视为完成。新 locale 必须先明确规范 locale、显示名称、domain/CDN、全站 glossary 决策和 production profile，并通过独立的 TranslationUnit Quality Review 与 Locale Surface Review。
 
-语言 registry 的正式展示顺序按语言的英文名称字母顺序排列，不按加入项目的时间排列。当前顺序为 Chinese（`zh-CN`）→ English（`en`）→ French（`fr-FR`）→ German（`de-DE`）→ Japanese（`ja-JP`）。
+语言 registry 的正式展示顺序按语言的英文名称字母顺序排列，不按加入项目的时间排列。当前顺序为 Chinese（`zh-CN`）→ English（`en`）→ French（`fr-FR`）→ German（`de-DE`）→ Japanese（`ja-JP`）→ Korean（`ko-KR`）。
 
 ## 语言站点与 CDN
 
@@ -15,6 +15,29 @@
 | `fr-FR` | Français | <https://fr-go-dev.shuijingwanwq.com/> | Cloudflare Free | 已正式上线的法语社区语言站；域名 language code 为 `fr` |
 | `de-DE` | Deutsch | <https://de-go-dev.shuijingwanwq.com/> | Cloudflare Free | 德语社区语言站；域名 language code 为 `de` |
 | `ja-JP` | 日本語 | <https://ja-go-dev.shuijingwanwq.com/> | Cloudflare Free | 已正式上线的日语社区语言站 |
+| `ko-KR` | 한국어 | <https://ko-go-dev.shuijingwanwq.com/> | Cloudflare Free | 已冻结生产身份、尚未首次上线的韩语社区语言站；域名 language code 为 `ko` |
+
+## ko-KR production identity
+
+ko-KR 使用规范 locale 与 HTML `lang` `ko-KR`，本地显示名为 `한국어`，英文名为 `Korean`，域名 language code 为 `ko`。production hostname 为 <https://ko-go-dev.shuijingwanwq.com/>，CDN 使用 Cloudflare Free；非中文共享静态资源使用 <https://assets-go-dev.shuijingwanwq.com/>。Playground 后续需要允许的精确 Origin 为 `https://ko-go-dev.shuijingwanwq.com`。
+
+以下值是已冻结 production identity 的可读快照；权威、可执行来源为 `production/identity.json`。当前 `production_state` 使用现有首次上线生命周期值 `first-production`，只表示该 identity 将供未来首次生产编排器使用，不表示生产基础设施或部署已经完成。
+
+| 项目 | 值 |
+| --- | --- |
+| data root | `/data/go-tour-ko-KR` |
+| releases | `/data/go-tour-ko-KR/releases` |
+| current | `/data/go-tour-ko-KR/current` |
+| deploy lock | `/data/go-tour-ko-KR/.deploy.lock` |
+| systemd service | `go-tour-ko-KR.service` |
+| service user | `go-tour` |
+| loopback port | `4003` |
+| health URL | <http://127.0.0.1:4003/> |
+| Nginx vhost | `/usr/local/nginx/conf/vhost/ko-go-dev.shuijingwanwq.com.conf` |
+| TLS certificate | `/usr/local/nginx/conf/ssl/ko-go-dev.shuijingwanwq.com.crt` |
+| TLS private key | `/usr/local/nginx/conf/ssl/ko-go-dev.shuijingwanwq.com.key` |
+
+生产服务器已实际确认 `3999`、`4000`、`4001`、`4002` 正在监听，`4003` 当前未监听，因此正式采用 `4003`。本阶段不创建服务器文件，不修改 systemd、Nginx、Cloudflare 或 Playground，也不执行首次 production 部署。
 
 ## fr-FR production identity
 

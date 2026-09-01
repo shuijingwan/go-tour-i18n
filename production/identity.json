@@ -109,6 +109,30 @@
       "shared_assets_policy": "shared-cloudflare",
       "production_public_url": "https://fr-go-dev.shuijingwanwq.com/",
       "cache_header": "CF-Cache-Status"
+    },
+    {
+      "locale": "ko-KR",
+      "production_state": "first-production",
+      "production_hostname": "ko-go-dev.shuijingwanwq.com",
+      "cdn": "cloudflare",
+      "origin_ssh_alias": "aliyun",
+      "origin_ip": "121.40.248.29",
+      "data_root": "/data/go-tour-ko-KR",
+      "releases_root": "/data/go-tour-ko-KR/releases",
+      "current": "/data/go-tour-ko-KR/current",
+      "deployment_lock": "/data/go-tour-ko-KR/.deploy.lock",
+      "systemd_service": "go-tour-ko-KR.service",
+      "service_user": "go-tour",
+      "loopback_port": 4003,
+      "localhost_health_url": "http://127.0.0.1:4003/",
+      "environment_file": "/etc/go-tour/go-tour.env",
+      "nginx_vhost_path": "/usr/local/nginx/conf/vhost/ko-go-dev.shuijingwanwq.com.conf",
+      "tls_certificate_path": "/usr/local/nginx/conf/ssl/ko-go-dev.shuijingwanwq.com.crt",
+      "tls_key_path": "/usr/local/nginx/conf/ssl/ko-go-dev.shuijingwanwq.com.key",
+      "playground_allowed_origin": "https://ko-go-dev.shuijingwanwq.com",
+      "shared_assets_policy": "shared-cloudflare",
+      "production_public_url": "https://ko-go-dev.shuijingwanwq.com/",
+      "cache_header": "CF-Cache-Status"
     }
   ]
 }

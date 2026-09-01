@@ -92,13 +92,14 @@ func TestHomepageLanguageListFitsMobileViewport(t *testing.T) {
 <li><span aria-current="page">French — Français</span></li>
 <li><a href="https://de-go-dev.shuijingwanwq.com/">German — Deutsch</a></li>
 <li><a href="https://ja-go-dev.shuijingwanwq.com/">Japanese — 日本語</a></li>
+<li><a href="https://ko-go-dev.shuijingwanwq.com/">Korean — 한국어</a></li>
 </ul></section></main>
 <script>
 function assert(condition, message) { if (!condition) throw new Error(message); }
 try {
   const list = document.querySelector('.site-language-list'), items = [...list.children], current = document.querySelector('[aria-current="page"]');
   assert(innerWidth === 375, 'CSS viewport width is ' + innerWidth);
-  assert(items.length === 5, 'language count changed');
+  assert(items.length === 6, 'language count changed');
   assert(items.every((item, index) => index === 0 || item.getBoundingClientRect().top > items[index - 1].getBoundingClientRect().top), 'languages are not one per line');
   assert(parseInt(getComputedStyle(current).fontWeight, 10) >= 700, 'current language is not emphasized');
   assert(list.scrollWidth <= list.clientWidth, 'language list has horizontal overflow');
