@@ -52,7 +52,7 @@ go run -mod=readonly ./cmd/tour-i18n retranslation process --locale <locale>
 
 Automatic validation 只负责结构、保护 token、代码、链接、source identity 等机器安全性，不能替代翻译质量检查。
 
-`retranslation export`、`retranslation process`、`retranslation retry`、`quality-check scope` 与 `retranslation review scope` 默认输出适合复制的人类摘要；成功 Unit、reusable Unit 和 carry-forward Unit 不逐条展开，失败 Unit 保留原因与 evidence path，scope 最多显示本轮 30 个 pending Unit。已有机器调用方应显式传 `--json` 获取完整稳定 JSON；JSON 写 stdout，错误与诊断写 stderr。
+`retranslation export`、`retranslation process`、`retranslation revalidate`、`retranslation retry`、`quality-check scope` 与 `retranslation review scope` 默认输出适合复制的人类摘要；成功 Unit、reusable Unit 和 carry-forward Unit 不逐条展开，失败 Unit 保留原因与 evidence path，scope 最多显示本轮 30 个 pending Unit。已有机器调用方应显式传 `--json` 获取完整稳定 JSON；JSON 写 stdout，错误与诊断写 stderr。
 
 ### 提交前 whitespace 检查与 EOF 契约
 
@@ -67,7 +67,24 @@ Automatic validation 只负责结构、保护 token、代码、链接、source i
 
 历史 manifest 没有 `artifact_eof` 字段时，流程仍按历史字节进行兼容验证；不得为追加新字段或消除历史 warning 而改写已提交的 batch artifact。该兼容边界不是新 batch 的 whitespace 例外；新 batch 必须满足上述 EOF 契约并通过 `git diff --check`。
 
-## 4. Retry：只处理 restore/validation failure
+## 4. Revalidate：validator 变更后重验同一 candidate
+
+当已处理 Unit 的 restore 已成功、candidate 已存在，而旧 `validation_failed` 已确认来自 validator 规则错误或规则更新时，使用：
+
+```bash
+go run -mod=readonly ./cmd/tour-i18n retranslation revalidate \
+  --locale <locale> \
+  --batch-id <batch-id> \
+  --unit-id <unit-id>
+```
+
+该命令重新生成并核对 protected input，确认当前 validation、raw response、restore 结果、candidate、manifest 与 `result.json` 的 identity 一致，然后只用当前 canonical validator 重验现有 candidate。它不生成或修改 raw response/candidate，不增加 translation attempt；当前 validation 的 `attempt` 与 `raw_response_path` 原样保留。
+
+每次更新前，旧 validation evidence 按原始字节归档到 `revalidation-history/<flattened-unit-id>/revalidation-NNN-validation.json`。这个连续编号只表示 validator revalidation 次数，不是 translation attempt。随后命令原子更新当前 `validation/<unit>.json` 和 `result.json`。默认 human summary 显示 attempt、revalidation 序号、前后状态和 history/current evidence path；`--json` 输出完整 revalidation result。
+
+Candidate Snapshot 仍读取当前 `validation/` evidence，并绑定其 SHA-256；revalidation 后的 evidence 是最终 evidence，但 attempt 仍由未变的 raw-response provenance 决定。Restore 失败或 candidate 不存在的 Unit 不允许 revalidate，仍须按 Retry 流程产生真实的新 translation attempt。
+
+## 5. Retry：只处理 restore/validation failure
 
 Retry 只用于：
 
@@ -96,7 +113,7 @@ go run -mod=readonly ./cmd/tour-i18n retranslation retry \
 
 `retranslation retry` 默认只输出目标 Unit 的 PASS/FAILED、当前 attempt/status 和整个 batch 的 restore/validation 汇总，不展开 batch 中的全部成功 Unit；失败时同时显示当前失败原因及 candidate/validation evidence path。需要完整 `RetranslationProcessResult` JSON（包括 `units` 数组）的机器调用方必须显式传 `--json`。
 
-## 5. Candidate Snapshot
+## 6. Candidate Snapshot
 
 完整 locale workflow 的所有 TranslationUnit 都有通过 automatic validation 的最终 candidate 后，生成本轮审核的 Candidate Snapshot：
 
@@ -118,7 +135,7 @@ Manifest 只引用仓库中已有的 glossary、source、candidate 和 validatio
 
 Snapshot 后的两个 scope 必须分开执行。ChatGPT Quality Check 使用 `quality-check scope --locale <locale> --snapshot-id <snapshot-id>`；revision 后另加 `--previous-snapshot-id <previous-snapshot-id>`，只 carry-forward 上一轮 A 且 source/candidate/validation/attempt identity 完全相同的 Unit。Final Review 使用 `retranslation review scope --locale <locale> --snapshot-id <snapshot-id>`，只复用有效 A + approved Final Review evidence。两种 scope 都基于完整 Snapshot，但 evidence 与 pending 列表互不混用。glossary snapshot mismatch 是 scope 的整体 blocker，不是 unit pending。
 
-## 6. Quality Check 与 revision batch
+## 7. Quality Check 与 revision batch
 
 ChatGPT Quality Check 必须以同一份 Candidate Snapshot manifest 为审核范围，不得自行从各 batch 中重新挑选 candidate。首次 locale 没有历史 QC result 时，`quality-check scope` 必须返回全部 Unit pending。完成实际审核后用 `quality-check record` 或 `quality-check record-batch` 写入该 Snapshot 的 `quality-check-results.json`。该轻量结果只服务于多轮 revision carry-forward，不是 Final Review evidence，也不参与 promotion。当前严格生产策略只接受 A：
 
@@ -143,7 +160,7 @@ Quality Check 的质量修改不得使用 retry。Revision 流程为：
 
 重复以上流程直到 Quality Check 为 A。旧 batch 及其 evidence 保持不可变。
 
-## 7. Final Review 与 promotion
+## 8. Final Review 与 promotion
 
 只有完整语言满足以下条件，才能进入 Final Review：
 
@@ -184,6 +201,6 @@ go run -mod=readonly ./cmd/tour-i18n retranslation promote --locale <locale>
 
 只有用户明确要求应用时才使用 `--apply`。Promotion 会验证最新 batch 的 manifest/source/input、glossary 重建结果、retry provenance、candidate、validation 和 approved Final Review evidence；最新结果失败时不得回退到旧 batch。
 
-## 8. 阶段边界
+## 9. 阶段边界
 
 Codex 完成首次翻译或 retry 译文生成后，不自动继续执行 process、Quality Check、Final Review 或 promote，除非用户明确要求继续。UI catalog 翻译是独立流程，不属于本手册。

@@ -173,17 +173,17 @@ func ProcessRetranslationRetry(root string, catalog *Catalog, options Retranslat
 		return nil, err
 	}
 	newResult = append(newResult, '\n')
-	updates := []retryFileUpdate{
+	updates := []retranslationFileUpdate{
 		{target: historyPath, data: validationData, requireMissing: true},
 	}
 	if candidate != nil {
-		updates = append(updates, retryFileUpdate{target: filepath.Join(batchDir, filepath.FromSlash(candidateRelative)), data: candidate})
+		updates = append(updates, retranslationFileUpdate{target: filepath.Join(batchDir, filepath.FromSlash(candidateRelative)), data: candidate})
 	}
 	updates = append(updates,
-		retryFileUpdate{target: validationPath, data: newValidation},
-		retryFileUpdate{target: resultPath, data: newResult},
+		retranslationFileUpdate{target: validationPath, data: newValidation},
+		retranslationFileUpdate{target: resultPath, data: newResult},
 	)
-	if err := commitRetryFileUpdates(batchDir, updates); err != nil {
+	if err := commitRetranslationFileUpdates(batchDir, updates); err != nil {
 		return nil, err
 	}
 	return &result, nil
@@ -277,14 +277,14 @@ func recountRetranslationResult(result *RetranslationProcessResult) {
 	}
 }
 
-type retryFileUpdate struct {
+type retranslationFileUpdate struct {
 	target         string
 	data           []byte
 	requireMissing bool
 }
 
-func commitRetryFileUpdates(batchDir string, updates []retryFileUpdate) error {
-	staging, err := os.MkdirTemp(batchDir, ".retry-staging-")
+func commitRetranslationFileUpdates(batchDir string, updates []retranslationFileUpdate) error {
+	staging, err := os.MkdirTemp(batchDir, ".update-staging-")
 	if err != nil {
 		return fmt.Errorf("create retry staging: %w", err)
 	}
@@ -309,7 +309,7 @@ func commitRetryFileUpdates(batchDir string, updates []retryFileUpdate) error {
 		if update.requireMissing {
 			if _, err := os.Stat(update.target); err == nil {
 				rollback()
-				return fmt.Errorf("retry evidence already exists: %s", update.target)
+				return fmt.Errorf("evidence already exists: %s", update.target)
 			} else if !os.IsNotExist(err) {
 				rollback()
 				return err

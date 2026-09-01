@@ -163,6 +163,30 @@ func TestQualityCheckSnapshotUsesFinalRetryAttempt(t *testing.T) {
 	}
 }
 
+func TestQualityCheckSnapshotUsesRevalidatedEvidenceWithoutNewAttempt(t *testing.T) {
+	root, catalog, batchID, _, _, _ := makeRevalidationFixture(t)
+	result, err := RevalidateRetranslationCandidate(root, catalog, RetranslationRevalidateOptions{Locale: "zh-CN", BatchID: batchID, UnitID: "lesson/1"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	materializeSnapshotSources(t, root, catalog)
+	manifest, _, err := CreateQualityCheckCandidateSnapshot(root, catalog, QualityCheckSnapshotOptions{Locale: "zh-CN", SnapshotID: "revalidated"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	unit := snapshotUnit(t, manifest, "lesson/1")
+	if unit.Attempt != 1 || result.Attempt != 1 {
+		t.Fatalf("snapshot attempt=%d revalidation attempt=%d, want 1", unit.Attempt, result.Attempt)
+	}
+	validation, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(unit.ValidationPath)))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if unit.ValidationSHA256 != sum(validation) {
+		t.Fatal("snapshot did not bind the final revalidated evidence")
+	}
+}
+
 func TestQualityCheckSnapshotLatestFailureNeverFallsBack(t *testing.T) {
 	root, catalog, _ := processedPromotionFixture(t, 1)
 	addProcessedPromotionBatch(t, root, catalog, "chatgpt-zh-CN-002", []string{"lesson/1"})

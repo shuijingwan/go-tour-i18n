@@ -94,3 +94,27 @@ func TestRetranslationRetryJSONKeepsFullProcessResultSchema(t *testing.T) {
 		t.Fatalf("retry --json mixed human summary with JSON:\n%s", output.String())
 	}
 }
+
+func TestRetranslationRevalidationOutput(t *testing.T) {
+	result := &i18n.RetranslationRevalidationResult{SchemaVersion: 1, BatchID: "codex-ko-KR-004", Locale: "ko-KR", UnitID: "concurrency/2", UnitKind: i18n.UnitKindPage, Attempt: 1, Revalidation: 1, PreviousStatus: "validation_failed", Status: "passed", HistoryPath: "revalidation-history/concurrency-2/revalidation-001-validation.json", ValidationPath: "validation/concurrency-2.json", ResultPath: "result.json", ValidationPassed: 2, ValidationFailed: 1}
+	var output bytes.Buffer
+	if err := writeRetranslationRevalidationOutput(&output, result, false); err != nil {
+		t.Fatal(err)
+	}
+	for _, want := range []string{"重译重新验证：PASS", "attempt: 1", "revalidation: 1", "previous_status: validation_failed", "status: passed", result.HistoryPath} {
+		if !strings.Contains(output.String(), want) {
+			t.Errorf("summary missing %q:\n%s", want, output.String())
+		}
+	}
+	output.Reset()
+	if err := writeRetranslationRevalidationOutput(&output, result, true); err != nil {
+		t.Fatal(err)
+	}
+	var document map[string]any
+	if err := json.Unmarshal(output.Bytes(), &document); err != nil {
+		t.Fatal(err)
+	}
+	if document["attempt"] != float64(1) || document["revalidation"] != float64(1) {
+		t.Fatalf("json=%#v", document)
+	}
+}

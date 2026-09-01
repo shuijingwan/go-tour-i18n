@@ -324,6 +324,23 @@ func run(args []string) error {
 			return err
 		}
 		return writeRetranslationRetryOutput(os.Stdout, result, *unitID, *jsonOutput)
+	case "retranslation revalidate":
+		fs := flag.NewFlagSet("retranslation revalidate", flag.ContinueOnError)
+		locale := fs.String("locale", "", "target locale")
+		batchID := fs.String("batch-id", "", "已处理批次 ID")
+		unitID := fs.String("unit-id", "", "已有 candidate 的翻译单元 ID")
+		jsonOutput := fs.Bool("json", false, "输出 machine-readable JSON")
+		if err := fs.Parse(args[2:]); err != nil {
+			return err
+		}
+		if *locale == "" || *batchID == "" || *unitID == "" {
+			return fmt.Errorf("--locale、--batch-id 和 --unit-id 为必填")
+		}
+		result, err := i18n.RevalidateRetranslationCandidate(root, catalog, i18n.RetranslationRevalidateOptions{Locale: *locale, BatchID: *batchID, UnitID: *unitID})
+		if err != nil {
+			return err
+		}
+		return writeRetranslationRevalidationOutput(os.Stdout, result, *jsonOutput)
 	case "retranslation review":
 		if len(args) < 3 || (args[2] != "check" && args[2] != "scope" && args[2] != "record" && args[2] != "record-batch" && args[2] != "supersede") {
 			return fmt.Errorf("usage: tour-i18n retranslation review <check|scope|record|record-batch|supersede> ...")
@@ -909,6 +926,23 @@ func writeRetranslationRetryOutput(w io.Writer, result *i18n.RetranslationProces
 		fmt.Fprintf(w, " reason=%q", target.Error)
 	}
 	fmt.Fprintln(w)
+	return nil
+}
+
+func writeRetranslationRevalidationOutput(w io.Writer, result *i18n.RetranslationRevalidationResult, jsonOutput bool) error {
+	if jsonOutput {
+		return writeJSON(w, result)
+	}
+	overall := "PASS"
+	if result.Status != "passed" {
+		overall = "FAILED"
+	}
+	fmt.Fprintf(w, "重译重新验证：%s\n", overall)
+	fmt.Fprintf(w, "batch_id: %s\nlocale: %s\nunit_id: %s\nattempt: %d\nrevalidation: %d\nprevious_status: %s\nstatus: %s\n", result.BatchID, result.Locale, result.UnitID, result.Attempt, result.Revalidation, result.PreviousStatus, result.Status)
+	fmt.Fprintf(w, "history_path: %s\nvalidation_path: %s\nresult_path: %s\nvalidation_passed: %d\nvalidation_failed: %d\n", result.HistoryPath, result.ValidationPath, result.ResultPath, result.ValidationPassed, result.ValidationFailed)
+	if result.Error != "" {
+		fmt.Fprintf(w, "reason: %q\n", result.Error)
+	}
 	return nil
 }
 

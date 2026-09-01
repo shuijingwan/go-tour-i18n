@@ -46,4 +46,6 @@ Page 输出为 `raw-responses/*.article`，Example 输出为 `raw-responses/*.tx
 
 首次 raw response 写入 `raw-responses/`，并被记为 attempt 1。若 `process` 得到 `restore_failed` 或 `validation_failed`，Codex 根据失败 evidence 生成下一份连续编号的 `retries/<unit>/attempt-NNN.*`；因此首次 retry 必须是 `attempt-002.*`，不得写 `attempt-001.*`。Retry raw response 同样必须以恰好一个 LF 结束且 EOF 无额外空行。现有 `retranslation retry` 命令只处理该文件，不调用模型、不生成或自动改写译文。
 
+若 failure 已确认只来自 validator 规则修正，且 restore 成功、原 candidate 保持有效，不得伪造 retry。使用 `retranslation revalidate --locale ... --batch-id ... --unit-id ...` 以当前 canonical validator 重验同一 candidate；命令归档旧 validation evidence，更新当前 validation/result，但保持 raw response、candidate 和 translation attempt 不变。
+
 翻译质量问题不使用 retry。Automatic validation 已通过后，Quality Check 或 Final Review 得到 B、C、D 时，必须创建 revision batch，并按 [Retranslation 执行手册](RETRANSLATION_RUNBOOK.md) 重新导出和翻译。
