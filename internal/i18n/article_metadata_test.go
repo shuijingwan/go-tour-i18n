@@ -2,6 +2,7 @@ package i18n
 
 import (
 	"path/filepath"
+	"strings"
 	"testing"
 )
 
@@ -98,6 +99,43 @@ func TestJapaneseArticleMetadataCoversCatalog(t *testing.T) {
 	for _, article := range wantArticles {
 		if _, ok := metadata[article]; !ok {
 			t.Errorf("ja-JP article metadata is missing %s", article)
+		}
+	}
+}
+
+func TestKoreanArticleMetadataCoversCatalog(t *testing.T) {
+	root := filepath.Clean(filepath.Join("..", ".."))
+	catalog, err := ReadCatalog(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	metadata, err := LoadArticleMetadata(root, "ko-KR", catalog)
+	if err != nil {
+		t.Fatal(err)
+	}
+	wantTitles := map[string]string{
+		"welcome.article":     "환영합니다!",
+		"basics.article":      "패키지, 변수, 함수",
+		"flowcontrol.article": "흐름 제어문: for, if, else, switch, defer",
+		"moretypes.article":   "더 다양한 타입: 구조체, 슬라이스, 맵",
+		"methods.article":     "메서드와 인터페이스",
+		"generics.article":    "제네릭",
+		"concurrency.article": "동시성",
+	}
+	if len(metadata) != len(wantTitles) {
+		t.Fatalf("ko-KR article metadata count = %d, want %d", len(metadata), len(wantTitles))
+	}
+	for article, title := range wantTitles {
+		entry, ok := metadata[article]
+		if !ok {
+			t.Errorf("ko-KR article metadata is missing %s", article)
+			continue
+		}
+		if entry.Title != title || entry.Subtitle == "" {
+			t.Errorf("ko-KR article metadata %s = %+v, want title %q and a subtitle", article, entry, title)
+		}
+		if strings.Contains(entry.Title, "TODO") || strings.Contains(entry.Subtitle, "TODO") {
+			t.Errorf("ko-KR article metadata %s retains TODO", article)
 		}
 	}
 }

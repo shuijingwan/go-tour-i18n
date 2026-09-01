@@ -101,6 +101,15 @@ func TestRenderIndexLocales(t *testing.T) {
 			},
 		},
 		{
+			locale: "ko-KR",
+			want: []string{
+				`<html lang="ko-KR"`, "Go 언어 투어", `aria-label="테마 전환"`, `alt="시스템 테마"`, `alt="다크 테마"`, `alt="라이트 테마"`,
+			},
+			absent: []string{
+				`aria-label="Toggle theme"`, `alt="System theme"`, `alt="Dark theme"`, `alt="Light theme"`,
+			},
+		},
+		{
 			locale: "en",
 			want: []string{
 				`<html lang="en"`, "A Tour of Go", `aria-label="Toggle theme"`, `alt="System theme"`, `alt="Dark theme"`, `alt="Light theme"`,
@@ -348,6 +357,17 @@ func TestHomepageLanguageRegistryAndLocaleProfiles(t *testing.T) {
 	if got, want := frProfile.DevelopmentLogURL, "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/"; got != want {
 		t.Fatalf("fr-FR development log URL = %q, want %q", got, want)
 	}
+	koLanguages, err := languagesFor("ko-KR")
+	if err != nil {
+		t.Fatal(err)
+	}
+	koCurrent, err := currentLanguage(koLanguages)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if koCurrent != (LanguageLink{Locale: "ko-KR", EnglishName: "Korean", Autonym: "한국어", Label: "Korean — 한국어", URL: "https://ko-go-dev.shuijingwanwq.com/", Current: true}) {
+		t.Fatalf("ko-KR current language = %+v", koCurrent)
+	}
 
 	metadata := SiteMetadata{Locale: "zh-CN", PublishedAt: "2026-08-20T05:56:11Z", UpstreamCommit: FrozenUpstreamCommit, UpstreamCommitTime: FrozenUpstreamCommitTime, Pages: 122, Articles: 122}
 	tests := []struct {
@@ -357,6 +377,7 @@ func TestHomepageLanguageRegistryAndLocaleProfiles(t *testing.T) {
 		{"fr-FR", "Français", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 07:56:11 (heure locale)", "2026-08-26 23:55:26 (heure locale)", languageRegistry[2].URL},
 		{"de-DE", "Deutsch", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 07:56:11 (Ortszeit)", "2026-08-26 23:55:26 (Ortszeit)", languageRegistry[3].URL},
 		{"ja-JP", "日本語", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 14:56:11（日本時間）", "2026-08-27 06:55:26（日本時間）", languageRegistry[4].URL},
+		{"ko-KR", "한국어", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 14:56:11 (한국 표준시)", "2026-08-27 06:55:26 (한국 표준시)", languageRegistry[5].URL},
 	}
 	for _, test := range tests {
 		t.Run(test.locale, func(t *testing.T) {
@@ -622,6 +643,7 @@ func TestJSRouteMetadataUsesLocaleRegistryOrigins(t *testing.T) {
 		{"fr-FR", "https://fr-go-dev.shuijingwanwq.com", "Un tour de Go"},
 		{"de-DE", "https://de-go-dev.shuijingwanwq.com", "Eine Tour durch Go"},
 		{"ja-JP", "https://ja-go-dev.shuijingwanwq.com", "Go 言語ツアー"},
+		{"ko-KR", "https://ko-go-dev.shuijingwanwq.com", "Go 언어 투어"},
 	} {
 		t.Run(test.locale, func(t *testing.T) {
 			catalog, err := ui.Load(test.locale)
@@ -794,6 +816,7 @@ func TestRenderHomeUsesLocaleSEOIdentity(t *testing.T) {
 		{"fr-FR", "Un projet de traduction maintenu par la communauté pour les contenus pédagogiques officiels de Go. Le chinois simplifié a été la première langue proposée, et la structure peut évoluer pour prendre en charge davantage de langues et de contenus Go.", "https://fr-go-dev.shuijingwanwq.com/", "https://ja-go-dev.shuijingwanwq.com/"},
 		{"de-DE", "Ein von der Community betreutes Übersetzungsprojekt für offizielle Go-Lerninhalte. Als erste Sprache wurde vereinfachtes Chinesisch bereitgestellt; die Struktur lässt sich auf weitere Sprachen und Go-Inhalte erweitern.", "https://de-go-dev.shuijingwanwq.com/", "https://ja-go-dev.shuijingwanwq.com/"},
 		{"ja-JP", "Go の公式学習コンテンツをコミュニティで翻訳・維持するプロジェクトです。最初に利用できる言語は簡体字中国語で、今後さらに多くの言語や Go コンテンツに対応できる構成になっています。", "https://ja-go-dev.shuijingwanwq.com/", "https://go-dev.shuijingwanwq.com/"},
+		{"ko-KR", "Go 공식 학습 콘텐츠를 커뮤니티가 번역하고 관리하는 프로젝트입니다. 첫 제공 언어는 중국어 간체이며, 더 많은 언어와 Go 콘텐츠를 지원할 수 있도록 확장 가능한 구조로 되어 있습니다.", "https://ko-go-dev.shuijingwanwq.com/", "https://go-dev.shuijingwanwq.com/"},
 	} {
 		t.Run(test.locale, func(t *testing.T) {
 			catalog, err := ui.Load(test.locale)

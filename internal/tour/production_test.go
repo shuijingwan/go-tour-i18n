@@ -264,6 +264,7 @@ func TestProductionHandlerServesLocaleSpecificSEODocuments(t *testing.T) {
 	}{
 		{"zh-CN", "https://go-dev.shuijingwanwq.com", "https://ja-go-dev.shuijingwanwq.com"},
 		{"ja-JP", "https://ja-go-dev.shuijingwanwq.com", "https://go-dev.shuijingwanwq.com"},
+		{"ko-KR", "https://ko-go-dev.shuijingwanwq.com", "https://go-dev.shuijingwanwq.com"},
 	} {
 		t.Run(test.locale, func(t *testing.T) {
 			handler := productionTestHandlerLocale(t, "http://127.0.0.1:1", test.locale)

@@ -23,6 +23,7 @@ func TestPrerenderRoutesReuseSitemapLessonDataForEveryLocale(t *testing.T) {
 	}{
 		{"zh-CN", "https://go-dev.shuijingwanwq.com"},
 		{"ja-JP", "https://ja-go-dev.shuijingwanwq.com"},
+		{"ko-KR", "https://ko-go-dev.shuijingwanwq.com"},
 	} {
 		t.Run(test.locale, func(t *testing.T) {
 			source, err := NewPrerenderSource(website.TourOnly(), test.locale)

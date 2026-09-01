@@ -10,7 +10,7 @@ import (
 )
 
 func TestLoadEmbeddedCatalogs(t *testing.T) {
-	for _, locale := range []string{"de-DE", "en", "fr-FR", "ja-JP", "zh-CN"} {
+	for _, locale := range []string{"de-DE", "en", "fr-FR", "ja-JP", "ko-KR", "zh-CN"} {
 		catalog, err := Load(locale)
 		if err != nil {
 			t.Fatalf("Load(%q): %v", locale, err)
@@ -27,6 +27,7 @@ func TestEditorToggleStatesAreLocalizedPerCatalog(t *testing.T) {
 		"de-DE": {"Ein", "Aus"},
 		"fr-FR": {"Activé", "Désactivé"},
 		"ja-JP": {"オン", "オフ"},
+		"ko-KR": {"켜기", "끄기"},
 		"zh-CN": {"开启", "关闭"},
 	}
 	for locale, want := range wants {
@@ -152,6 +153,49 @@ func TestJapaneseCatalogMatchesEnglishSource(t *testing.T) {
 	for key, sourceMessage := range source.Messages {
 		if japanese.Messages[key].Text == sourceMessage.Text && !allowedUntranslatedNames[key] {
 			t.Errorf("ja-JP message %q duplicates English source text", key)
+		}
+	}
+}
+
+func TestKoreanCatalogMatchesEnglishSource(t *testing.T) {
+	source, err := Load("en")
+	if err != nil {
+		t.Fatal(err)
+	}
+	korean, err := Load("ko-KR")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if korean.HTMLLang != "ko-KR" {
+		t.Fatalf("ko-KR HTMLLang = %q, want ko-KR", korean.HTMLLang)
+	}
+	if got, want := len(korean.Messages), 90; got != want {
+		t.Fatalf("ko-KR message count = %d, want %d", got, want)
+	}
+	if err := validateCoverage(source, korean); err != nil {
+		t.Fatalf("ko-KR coverage: %v", err)
+	}
+	placeholderRE := regexp.MustCompile(`\{[a-z][a-z0-9_]*\}`)
+	markupRE := regexp.MustCompile(`<[^>]+>`)
+	allowedUntranslatedNames := map[string]bool{
+		"site.issue_feedback": true,
+		"footer.github":       true,
+	}
+	for key, sourceMessage := range source.Messages {
+		koreanMessage := korean.Messages[key]
+		if got, want := strings.Join(placeholderRE.FindAllString(koreanMessage.Text, -1), "\x00"), strings.Join(placeholderRE.FindAllString(sourceMessage.Text, -1), "\x00"); got != want {
+			t.Errorf("ko-KR message %q placeholders = %q, want %q", key, got, want)
+		}
+		if sourceMessage.Kind == "rich" {
+			if got, want := strings.Join(markupRE.FindAllString(koreanMessage.Text, -1), "\x00"), strings.Join(markupRE.FindAllString(sourceMessage.Text, -1), "\x00"); got != want {
+				t.Errorf("ko-KR rich message %q markup = %q, want %q", key, got, want)
+			}
+		}
+		if koreanMessage.Text == sourceMessage.Text && !allowedUntranslatedNames[key] {
+			t.Errorf("ko-KR message %q duplicates English source text", key)
+		}
+		if strings.Contains(koreanMessage.Text, "TODO") {
+			t.Errorf("ko-KR message %q retains TODO", key)
 		}
 	}
 }

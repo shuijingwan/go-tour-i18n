@@ -69,6 +69,12 @@ var localeProfiles = map[string]localeProfile{
 		TimeLabel:         "日本時間",
 		TimeLabelFormat:   "（%s）",
 	},
+	"ko-KR": {
+		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",
+		TimeZone:          time.FixedZone("UTC+9", 9*60*60),
+		TimeLabel:         "한국 표준시",
+		TimeLabelFormat:   " (%s)",
+	},
 	// English is the catalog source and remains renderable for development,
 	// although the English language entry points to the official Tour.
 	"en": {
