@@ -423,6 +423,85 @@ func TestPreformattedConcurrency2MultilineTeachingCommentTranslation(t *testing.
 	}
 }
 
+func TestKoKRPreformattedTeachingCommentIdentifierSuffixes(t *testing.T) {
+	root := repoRoot(t)
+	catalog, err := BuildCatalog(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	channels, err := catalog.Page("concurrency/2")
+	if err != nil {
+		t.Fatal(err)
+	}
+	translatedChannels := strings.NewReplacer(
+		"Send v to channel ch.", "v를 채널 ch로 보냅니다.",
+		"Receive from ch, and", "ch에서 값을 받아",
+		"assign value to v.", "v에 할당합니다.",
+	).Replace(string(channels.Source))
+	if err := ValidateCandidateForLocale(root, catalog, "concurrency/2", "ko-KR", []byte(translatedChannels)); err != nil {
+		t.Fatalf("ko-KR Hangul suffixes rejected: %v\n%s", err, translatedChannels)
+	}
+
+	selection, err := catalog.Page("concurrency/6")
+	if err != nil {
+		t.Fatal(err)
+	}
+	translatedSelection := strings.NewReplacer(
+		"use i", "i를 사용합니다",
+		"receiving from c would block", "c에서 수신하면 블록됩니다",
+	).Replace(string(selection.Source))
+	if err := ValidateCandidateForLocale(root, catalog, "concurrency/6", "ko-KR", []byte(translatedSelection)); err != nil {
+		t.Fatalf("ko-KR select comment suffixes rejected: %v\n%s", err, translatedSelection)
+	}
+
+	if err := ValidateCandidateForLocale(root, catalog, "concurrency/2", "zh-CN", []byte(translatedChannels)); err == nil || !strings.Contains(err.Error(), "referenced Go identifier") {
+		t.Fatalf("non-ko-KR locale accepted Hangul-attached identifiers: %v", err)
+	}
+}
+
+func TestKoKRPreformattedTeachingCommentIdentifierMutationsFail(t *testing.T) {
+	root := repoRoot(t)
+	catalog, err := BuildCatalog(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	page, err := catalog.Page("concurrency/2")
+	if err != nil {
+		t.Fatal(err)
+	}
+	valid := strings.NewReplacer(
+		"Send v to channel ch.", "v를 채널 ch로 보냅니다.",
+		"Receive from ch, and", "ch에서 값을 받아",
+		"assign value to v.", "v에 할당합니다.",
+	).Replace(string(page.Source))
+	tests := map[string]string{
+		"ASCII letters appended":  strings.Replace(valid, "v를 채널", "value를 채널", 1),
+		"ASCII digit appended":    strings.Replace(valid, "v를 채널", "v2를 채널", 1),
+		"ASCII underscore prefix": strings.Replace(valid, "v를 채널", "_v를 채널", 1),
+		"case changed":            strings.Replace(valid, "v를 채널", "V를 채널", 1),
+		"identifier missing":      strings.Replace(valid, "v를 채널", "값을 채널", 1),
+		"identifier repeated":     strings.Replace(valid, "v를 채널", "v를 v를 채널", 1),
+		"identifiers reordered":   strings.Replace(valid, "v를 채널 ch로 보냅니다.", "ch로 v를 보냅니다.", 1),
+	}
+	for name, candidate := range tests {
+		t.Run(name, func(t *testing.T) {
+			if candidate == valid {
+				t.Fatal("test mutation did not change candidate")
+			}
+			err := ValidateCandidateForLocale(root, catalog, "concurrency/2", "ko-KR", []byte(candidate))
+			if err == nil || !strings.Contains(err.Error(), "referenced Go identifier") {
+				t.Fatalf("identifier mutation was not rejected by the identifier validator: %v\n%s", err, candidate)
+			}
+		})
+	}
+
+	codeChanged := strings.Replace(valid, "ch <- v", "channel <- v", 1)
+	if err := ValidateCandidateForLocale(root, catalog, "concurrency/2", "ko-KR", []byte(codeChanged)); err == nil || !strings.Contains(err.Error(), "non-comment bytes") {
+		t.Fatalf("ko-KR fallback weakened non-comment Go code validation: %v", err)
+	}
+}
+
 func TestFlowcontrol8PreformattedProtectionRoundTrip(t *testing.T) {
 	root := repoRoot(t)
 	catalog, err := BuildCatalog(root)

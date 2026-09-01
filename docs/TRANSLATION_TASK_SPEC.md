@@ -54,6 +54,8 @@ Page 的 preformatted block 不是一律禁止翻译。对于 protector 能安�
 
 Automatic validator 应允许安全 Go preformatted 中已开放的 teaching comment body 使用目标语言，不得仅因自然语言注释被翻译而报告违规；代码、结构、标识符和不可翻译内容仍必须保持不变。
 
+对于 ko-KR teaching comment，原样保留的完整 ASCII Go identifier 后可以按正常韩语语法直接附着一个或多个 Hangul 字符，不要求为了 validator 插入空格、零宽字符、反引号或额外名词。该后缀不属于 Go identifier 的技术身份；ASCII identifier 自身的字节、大小写、数量、顺序和所属注释仍必须保持不变，追加 ASCII 字母、数字或下划线仍属于标识符改写并必须拒绝。该窄规则只适用于 ko-KR candidate 的可翻译 teaching comment body，不放宽非注释 Go code、其他 protected structure 或其他 locale 的 identifier 校验。
+
 ## 3. Example 翻译任务
 
 Example 的源是完整 `.go` 文件，其流程中的 artifact 语义如下：

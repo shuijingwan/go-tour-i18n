@@ -779,7 +779,7 @@ target_locale: %s
 %s
 
 需要翻译的完整页面：
-%s`, pageID, locale, glossaryRules, protectedStructureProtocol(*protected), protected.Text)
+%s`, pageID, locale, glossaryRules, protectedStructureProtocol(*protected, locale), protected.Text)
 		if previous != "" {
 			user += "\n\n上一次完整页面翻译未通过校验：" + previous
 		}
@@ -800,7 +800,7 @@ target_locale: %s
 %s
 
 需要翻译的完整受保护页面：
-%s`, pageID, locale, glossaryRules, len(protected.Tokens), len(protected.Tokens), protectedStructureProtocol(*protected), protected.Text)
+%s`, pageID, locale, glossaryRules, len(protected.Tokens), len(protected.Tokens), protectedStructureProtocol(*protected, locale), protected.Text)
 	if options.IncludeStaticContext {
 		if appendix := staticContextAppendix(*protected); appendix != "" {
 			user += "\n\n" + appendix
@@ -842,7 +842,7 @@ func staticContextAppendix(protected protectedTranslation) string {
 	return appendix.String()
 }
 
-func protectedStructureProtocol(protected protectedTranslation) string {
+func protectedStructureProtocol(protected protectedTranslation, locale string) string {
 	var rules []string
 	if len(protected.InlinePairs) != 0 {
 		rules = append(rules, "行内代码成对结构（反引号由程序恢复，pair 内的英文或标识符不是应翻译的英文显示文本）：")
@@ -870,10 +870,14 @@ func protectedStructureProtocol(protected protectedTranslation) string {
 		)
 	}
 	if tokens := protectedTokensOfKind(protected, protectedPreformattedIdentifier); len(tokens) != 0 {
+		identifierRule := "这些 token 各自代表教学注释中引用的 Go 源码标识符，必须在所属教学注释中原样保留，并在恢复后仍可作为词法上独立的 Go 标识符识别；不得翻译、删除、替换、改变拼写，或与相邻中文、英文字母、数字、下划线等字符拼接。整条注释可按自然中文语序翻译，标识符可在不改变自身及独立边界的前提下调整自然位置。"
+		if locale == "ko-KR" {
+			identifierRule = "这些 token 各自代表教学注释中引用的 Go 源码标识符，必须在所属教学注释中逐字原样保留；不得翻译、删除、替换、改变 ASCII 字节或大小写，也不得在标识符本身追加英文字母、数字或下划线。韩语译文可以按正常语法把一个或多个 Hangul 字符直接附着在标识符之后，不需要插入空格、零宽字符、反引号或额外名词；整条注释仍可按自然韩语语序翻译，但不得改变标识符的数量、顺序或所属注释。"
+		}
 		rules = append(rules,
 			"教学注释中的 Go 标识符：",
 			"- "+strings.Join(tokens, "\n- "),
-			"这些 token 各自代表教学注释中引用的 Go 源码标识符，必须在所属教学注释中原样保留，并在恢复后仍可作为词法上独立的 Go 标识符识别；不得翻译、删除、替换、改变拼写，或与相邻中文、英文字母、数字、下划线等字符拼接。整条注释可按自然中文语序翻译，标识符可在不改变自身及独立边界的前提下调整自然位置。",
+			identifierRule,
 		)
 	}
 	if tokens := protectedTokensOfKind(protected, protectedDirective); len(tokens) != 0 {

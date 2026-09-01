@@ -1173,7 +1173,7 @@ func TestDefaultStaticContextRequestOnlyAddsReadOnlyAppendix(t *testing.T) {
 			t.Fatalf("appendix contains non-static protected value for token %s: %q", token, protected.Values[i])
 		}
 	}
-	if protocol := protectedStructureProtocol(protected); strings.Count(plain.Messages[1].Content, protocol) != 1 || strings.Count(withContext.Messages[1].Content, protocol) != 1 {
+	if protocol := protectedStructureProtocol(protected, "zh-CN"); strings.Count(plain.Messages[1].Content, protocol) != 1 || strings.Count(withContext.Messages[1].Content, protocol) != 1 {
 		t.Fatal("static context changed or duplicated the protected structure protocol")
 	}
 }
@@ -1878,6 +1878,23 @@ func TestTranslationRequestExplainsPreformattedIdentifierRole(t *testing.T) {
 		if strings.Contains(user, forbidden) {
 			t.Errorf("identifier protocol contains forbidden %q:\n%s", forbidden, user)
 		}
+	}
+}
+
+func TestKoKRTranslationRequestAllowsHangulIdentifierSuffix(t *testing.T) {
+	source := []byte("* Source\n\n\tfmt.Println(p) // read p\n\n")
+	protected := protectTranslation(source, sum(source), nil)
+	request := makeTranslationRequest("example/1", "ko-KR", protected, "- glossary rule", "")
+	user := request.Messages[1].Content
+	for _, want := range []string{
+		"逐字原样保留", "不得在标识符本身追加英文字母、数字或下划线", "一个或多个 Hangul 字符直接附着", "不需要插入空格、零宽字符、反引号或额外名词", "不得改变标识符的数量、顺序或所属注释",
+	} {
+		if !strings.Contains(user, want) {
+			t.Errorf("ko-KR identifier protocol missing %q:\n%s", want, user)
+		}
+	}
+	if strings.Contains(user, "相邻中文、英文字母、数字、下划线等字符拼接") {
+		t.Fatalf("ko-KR identifier protocol retains the incompatible boundary rule:\n%s", user)
 	}
 }
 

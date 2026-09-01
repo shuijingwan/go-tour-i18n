@@ -135,6 +135,10 @@ func analyzePreformattedGo(text string) preformattedAnalysis {
 }
 
 func referencedCommentIdentifiers(body string, base int, codeIdentifiers map[string]bool) []preformattedIdentifier {
+	return referencedCandidateCommentIdentifiers(body, base, codeIdentifiers, "")
+}
+
+func referencedCandidateCommentIdentifiers(body string, base int, codeIdentifiers map[string]bool, locale string) []preformattedIdentifier {
 	fset := token.NewFileSet()
 	file := fset.AddFile("comment.go", -1, len(body))
 	var identifiers []preformattedIdentifier
@@ -145,12 +149,56 @@ func referencedCommentIdentifiers(body string, base int, codeIdentifiers map[str
 		if tok == token.EOF {
 			return identifiers
 		}
-		if tok != token.IDENT || !codeIdentifiers[literal] {
+		if tok != token.IDENT {
 			continue
 		}
 		start := base + file.Offset(pos)
-		identifiers = append(identifiers, preformattedIdentifier{Start: start, End: start + len(literal), Value: literal})
+		if codeIdentifiers[literal] {
+			identifiers = append(identifiers, preformattedIdentifier{Start: start, End: start + len(literal), Value: literal})
+			continue
+		}
+		if locale == "ko-KR" {
+			if identifier, ok := koKRIdentifierWithHangulSuffix(literal, codeIdentifiers); ok {
+				identifiers = append(identifiers, preformattedIdentifier{Start: start, End: start + len(identifier), Value: identifier})
+			}
+		}
 	}
+}
+
+// koKRIdentifierWithHangulSuffix recognizes the narrow natural-language form
+// used when Korean grammatical text is attached directly to an ASCII Go
+// identifier. The maximal ASCII identifier prefix must itself be a source-code
+// identifier, and every remaining rune must be Hangul. ASCII extensions such
+// as value, v2, or _v therefore cannot be mistaken for v.
+func koKRIdentifierWithHangulSuffix(literal string, codeIdentifiers map[string]bool) (string, bool) {
+	if literal == "" || !isASCIIGoIdentifierStart(literal[0]) {
+		return "", false
+	}
+	split := 1
+	for split < len(literal) && isASCIIGoIdentifierContinue(literal[split]) {
+		split++
+	}
+	if split == len(literal) {
+		return "", false
+	}
+	identifier := literal[:split]
+	if !codeIdentifiers[identifier] {
+		return "", false
+	}
+	for _, r := range literal[split:] {
+		if !unicode.In(r, unicode.Hangul) {
+			return "", false
+		}
+	}
+	return identifier, true
+}
+
+func isASCIIGoIdentifierStart(b byte) bool {
+	return b == '_' || 'a' <= b && b <= 'z' || 'A' <= b && b <= 'Z'
+}
+
+func isASCIIGoIdentifierContinue(b byte) bool {
+	return isASCIIGoIdentifierStart(b) || '0' <= b && b <= '9'
 }
 
 func isSafeGoFragment(text string) bool {
@@ -303,13 +351,17 @@ func hasTranslatableComment(comments []preformattedComment) bool {
 }
 
 func comparePreformatted(source, candidate string) error {
+	return comparePreformattedForLocale(source, candidate, "")
+}
+
+func comparePreformattedForLocale(source, candidate, locale string) error {
 	expected := preformattedBlocks(source)
 	actual := preformattedBlocks(candidate)
 	if len(expected) != len(actual) {
 		return protectedCountError("preformatted code block", len(expected), len(actual))
 	}
 	for i := range expected {
-		if err := comparePreformattedBlock(expected[i].Text, actual[i].Text); err != nil {
+		if err := comparePreformattedBlockForLocale(expected[i].Text, actual[i].Text, locale); err != nil {
 			return preformattedBlockError(i+1, err)
 		}
 	}
@@ -317,6 +369,10 @@ func comparePreformatted(source, candidate string) error {
 }
 
 func comparePreformattedBlock(source, candidate string) error {
+	return comparePreformattedBlockForLocale(source, candidate, "")
+}
+
+func comparePreformattedBlockForLocale(source, candidate, locale string) error {
 	expected := analyzePreformattedGo(source)
 	if expected.Static || !hasTranslatableComment(expected.Comments) {
 		return compareExactPreformatted(source, candidate)
@@ -345,7 +401,7 @@ func comparePreformattedBlock(source, candidate string) error {
 			if strings.Contains(gotBody, "//") || strings.Contains(gotBody, "/*") || strings.Contains(gotBody, "*/") {
 				return preformattedCommentError(i+1, "translated comment body contains a comment marker")
 			}
-			gotIdentifiers := referencedCommentIdentifiers(gotBody, 0, expected.CodeIdentifiers)
+			gotIdentifiers := referencedCandidateCommentIdentifiers(gotBody, 0, expected.CodeIdentifiers, locale)
 			if err := compareCommentIdentifiers(want.Identifiers, gotIdentifiers); err != nil {
 				return preformattedCommentError(i+1, err.Error())
 			}

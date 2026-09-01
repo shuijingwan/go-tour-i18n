@@ -84,7 +84,7 @@ func ValidateCandidateForLocale(root string, catalog *Catalog, pageID, locale st
 	if err := compareUnorderedProtected("inline code", expected.InlineCode, actual.InlineCode); err != nil {
 		return diagnostic(pageID, err)
 	}
-	if err := comparePreformatted(string(page.Source), string(candidate)); err != nil {
+	if err := comparePreformattedForLocale(string(page.Source), string(candidate), locale); err != nil {
 		return diagnostic(pageID, err)
 	}
 	expectedFonts, err := parsedFontSpans(root, page.Article, page.Source)
