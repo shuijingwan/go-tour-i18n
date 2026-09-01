@@ -43,4 +43,12 @@
 
 ## 问题登记
 
-当前无已登记 deferred issue。
+### DI-20260901-001：术语政策对 glossary keep 实现状态的描述已过期
+
+- ID：`DI-20260901-001`
+- 发现日期：`2026-09-01`
+- 发现阶段/场景：制定 ko-KR 正式 glossary 并核对 `docs/TRANSLATION_TERMINOLOGY.md`、`internal/i18n/glossary.go` 与 glossary tests。
+- 问题描述：`docs/TRANSLATION_TERMINOLOGY.md` 第 9.1 节仍称 loader 不解析 YAML `keep`、实际 keep 仅来自硬编码保护；当前 `LoadGlossary` 已解析并校验 `keep`，`PromptRules` 也会把它作为“保持原样”规则注入模型 prompt，现有测试对此有覆盖。政策文档与真实实现不一致。
+- 暂缓原因：本轮明确只制定 ko-KR glossary，不调整跨 locale 术语政策或实现状态文档。
+- 当前状态：`open`
+- 后续处理/核销证据：暂无；保持 open。后续应在独立术语治理维护任务中核对 protector、prompt 与 validator 的当前边界并更新第 9 节。

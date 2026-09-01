@@ -1,6 +1,101 @@
 locale: ko-KR
 mandatory:
-  TODO_SOURCE_TERM: TODO_TARGET_TERM
+  A Tour of Go: Go 언어 투어
+  previous: 이전
+  next: 다음
+  Run: 실행
+  Format: 포맷
+  Reset: 초기화
+  slide: 페이지
+  slides: 페이지
+  Go Playground: Go 플레이그라운드
+  constraint: 타입 제약
+  type switch: 타입 스위치
+  type switches: 타입 스위치
+  type assertion: 타입 단언
+  type assertions: 타입 단언
+  interface value: 인터페이스 값
+  interface type: 인터페이스 타입
+  concrete type: 구체 타입
+  type parameter: 타입 매개변수
+  type parameters: 타입 매개변수
 preferred:
+  Go programming language: Go 프로그래밍 언어
+  built-in: 내장
+  channel: 채널
+  channels: 채널
+  buffered channel: 버퍼 채널
+  unbuffered channel: 버퍼 없는 채널
+  interface: 인터페이스
+  interfaces: 인터페이스
+  empty interface: 빈 인터페이스
+  nil interface: nil 인터페이스
+  struct: 구조체
+  structs: 구조체
+  array: 배열
+  arrays: 배열
+  concurrency: 동시성
+  generics: 제네릭
+  generic programming: 제네릭 프로그래밍
+  generic function: 제네릭 함수
+  type argument: 타입 인수
+  type arguments: 타입 인수
+  type set: 타입 집합
+  underlying type: 기저 타입
+  named type: 명명된 타입
+  defined type: 정의된 타입
+  method set: 메서드 집합
+  tour: 투어
+  the tour: 이 투어
+  sandbox: 샌드박스
+  deterministic output: 결정적 출력
+  package: 패키지
+  import path: 임포트 경로
+  package name: 패키지 이름
+  import statement: 임포트 문
+  exported name: 공개된 이름
+  unexported name: 공개되지 않은 이름
+  standard library: 표준 라이브러리
+  iteration: 반복
+  loop condition: 반복 조건
+  type inference: 타입 추론
+  untyped constant: 타입 미지정 상수
+  untyped numeric constant: 타입 미지정 숫자 상수
+  module: 모듈
+  exercise: 연습문제
+  syntax highlighting: 구문 강조
+  map: 맵
+  maps: 맵
+  slice: 슬라이스
+  slices: 슬라이스
+  pointer: 포인터
+  pointer receiver: 포인터 리시버
+  value receiver: 값 리시버
+  receiver: 리시버
+  method: 메서드
+  function: 함수
+  loop: 반복문
+  constant: 상수
+  zero value: 제로 값
+  mutex: 뮤텍스
+  pipeline: 파이프라인
+  closure: 클로저
+  deadlock: 교착 상태
 forbidden:
+  - Go 놀이터
+  - Go 플레이 그라운드
+  - 고루틴
+  - Go 루틴
+  - 타입 주장
+  - 슬라이드
+  - Golang
+  - 골랭
 keep:
+  - Go
+  - gofmt
+  - GOPATH
+  - URL
+  - API
+  - goroutine
+  - goroutines
+  - Goroutines

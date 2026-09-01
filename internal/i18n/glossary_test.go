@@ -254,6 +254,75 @@ func TestFrFRGlossary(t *testing.T) {
 	}
 }
 
+func TestKoKRGlossary(t *testing.T) {
+	glossary, err := LoadGlossary(repoRoot(t), "ko-KR")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if glossary.Locale != "ko-KR" {
+		t.Fatalf("glossary locale = %q, want ko-KR", glossary.Locale)
+	}
+	for key, want := range map[string]string{
+		"A Tour of Go":    "Go 언어 투어",
+		"Go Playground":   "Go 플레이그라운드",
+		"Run":             "실행",
+		"Format":          "포맷",
+		"Reset":           "초기화",
+		"slide":           "페이지",
+		"constraint":      "타입 제약",
+		"type switch":     "타입 스위치",
+		"type assertion":  "타입 단언",
+		"interface value": "인터페이스 값",
+		"type parameter":  "타입 매개변수",
+	} {
+		if got := glossary.Mandatory[key]; got != want {
+			t.Errorf("mandatory[%q] = %q, want %q", key, got, want)
+		}
+	}
+	for key, want := range map[string]string{
+		"Go programming language": "Go 프로그래밍 언어",
+		"channel":                 "채널",
+		"interface":               "인터페이스",
+		"struct":                  "구조체",
+		"array":                   "배열",
+		"concurrency":             "동시성",
+		"generics":                "제네릭",
+		"package":                 "패키지",
+		"standard library":        "표준 라이브러리",
+		"map":                     "맵",
+		"slice":                   "슬라이스",
+		"pointer":                 "포인터",
+		"receiver":                "리시버",
+		"zero value":              "제로 값",
+	} {
+		if got := glossary.Preferred[key]; got != want {
+			t.Errorf("preferred[%q] = %q, want %q", key, got, want)
+		}
+	}
+	for _, want := range []string{"Go 놀이터", "고루틴", "Go 루틴", "타입 주장", "슬라이드", "Golang", "골랭"} {
+		if !containsString(glossary.Forbidden, want) {
+			t.Errorf("forbidden missing %q: %v", want, glossary.Forbidden)
+		}
+	}
+	for _, want := range []string{"Go", "gofmt", "GOPATH", "URL", "API", "goroutine", "goroutines", "Goroutines"} {
+		if !containsString(glossary.Keep, want) {
+			t.Errorf("keep missing %q: %v", want, glossary.Keep)
+		}
+	}
+	rules := glossary.PromptRules("welcome/1")
+	for _, want := range []string{
+		"A Tour of Go => Go 언어 투어（强制；不得保留对应的英文显示文本）",
+		"Go Playground => Go 플레이그라운드（强制；不得保留对应的英文显示文本）",
+		"普通正文中的 channel => 채널（上下文指导；应结合完整页面自然翻译）",
+		"goroutine（保持原样；不得翻译）",
+		"禁止使用的 ko-KR 译法：고루틴",
+	} {
+		if !strings.Contains(rules, want) {
+			t.Errorf("prompt rules missing %q", want)
+		}
+	}
+}
+
 func TestGlossaryKeepValidationAndLegacyTerms(t *testing.T) {
 	tests := []struct {
 		name, body, want string
