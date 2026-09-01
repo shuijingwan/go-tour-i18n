@@ -1,0 +1,21 @@
+* 타입 변환
+
+표현식 `T(v)` 는 값 `v` 를 타입 `T` 로 변환합니다.
+
+몇 가지 숫자 변환의 예는 다음과 같습니다.
+
+	var i int = 42
+	var f float64 = float64(i)
+	var u uint = uint(f)
+
+더 간단히 쓰면 다음과 같습니다.
+
+	i := 42
+	f := float64(i)
+	u := uint(f)
+
+C와 달리 Go에서는 타입이 서로 다른 항목을 대입할 때
+명시적 변환이 필요합니다.
+예제에서 `float64` 또는 `uint` 변환을 제거하고 어떤 일이 일어나는지 확인해 보세요.
+
+.play basics/type-conversions.go

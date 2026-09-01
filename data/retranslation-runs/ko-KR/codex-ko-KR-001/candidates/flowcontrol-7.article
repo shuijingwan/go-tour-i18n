@@ -1,0 +1,9 @@
+* if와 else
+
+`if` 의 짧은 문 안에서 선언된 변수는 모든
+`else` 블록 안에서도 사용할 수 있습니다.
+
+(`pow` 를 호출한 두 곳은 모두 `fmt.Println` 호출이
+`main` 에서 시작되기 전에 결과를 반환합니다.)
+
+.play flowcontrol/if-and-else.go
