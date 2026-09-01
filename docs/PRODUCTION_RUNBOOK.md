@@ -27,7 +27,7 @@
 - `zh-CN`：<https://go-dev.shuijingwanwq.com/>，服务 `go-tour.service`，监听 `127.0.0.1:3999`，data root 为 `/data/go-tour/`。
 - `ja-JP`：<https://ja-go-dev.shuijingwanwq.com/>，使用 Cloudflare Free；服务 `go-tour-ja-JP.service`，监听 `127.0.0.1:4000`，data root 为 `/data/go-tour-ja-JP/`，当前 release 为 `/data/go-tour-ja-JP/releases/20260824-ja-JP-164fecdd`。
 - `de-DE`：<https://de-go-dev.shuijingwanwq.com/>，使用 Cloudflare Free；服务 `go-tour-de-DE.service`，监听 `127.0.0.1:4001`，data root 为 `/data/go-tour-de-DE/`。
-- `fr-FR`：首次 production profile 已实现并测试，使用 Cloudflare Free；计划服务 `go-tour-fr-FR.service`，监听 `127.0.0.1:4002`，data root 为 `/data/go-tour-fr-FR/`。production 基础设施与首次 deployment 尚未执行，不视为已上线。
+- `fr-FR`：<https://fr-go-dev.shuijingwanwq.com/>，使用 Cloudflare Free；服务 `go-tour-fr-FR.service`，监听 `127.0.0.1:4002`，data root 为 `/data/go-tour-fr-FR/`。2026-08-30 已完成首次 production 与最终验收。
 
 `zh-CN` 请求链路为 Cloudflare 权威 DNS → 腾讯云 EdgeOne → 源站 `121.40.248.29:443` → Nginx → `127.0.0.1:3999`。EdgeOne 到源站使用 HTTPS，回源 Host 为 `go-dev.shuijingwanwq.com`。
 
@@ -40,7 +40,7 @@
 - `de-go-dev.shuijingwanwq.com`：Cloudflare Cache Rule 将整个 hostname 标记为 Eligible for cache，Edge Cache TTL 为 1 个月；首页 `/` 与课程页 `/tour/welcome/1` 均已验证 `MISS → HIT`。
 - `assets-go-dev.shuijingwanwq.com`：Cloudflare Edge Cache TTL 为 1 个月，Browser Cache TTL 不主动覆盖；shared-assets 继续按部署脚本输出的实际 changed URLs 做精确 Custom Purge。
 
-language production 使用固定 URL，因此 release 更新后不能等待约 1 个月自然过期。`zh-CN` release 激活后应对 EdgeOne 执行 `go-dev.shuijingwanwq.com` Hostname 缓存刷新；`ja-JP`、`de-DE` 与后续完成首次 deployment 的 `fr-FR` release 激活后应在 Cloudflare Custom Purge 中按 Hostname 刷新各自 production hostname。不得为刷新单一 language hostname 使用会影响同 zone 其他 hostname 的 Purge Everything。shared-assets 继续使用已有的 changed-URL 精确 purge 流程，不改为整 hostname purge。
+language production 使用固定 URL，因此 release 更新后不能等待约 1 个月自然过期。`zh-CN` release 激活后应对 EdgeOne 执行 `go-dev.shuijingwanwq.com` Hostname 缓存刷新；`ja-JP`、`de-DE` 与 `fr-FR` release 激活后应在 Cloudflare Custom Purge 中按 Hostname 刷新各自 production hostname。不得为刷新单一 language hostname 使用会影响同 zone 其他 hostname 的 Purge Everything。shared-assets 继续使用已有的 changed-URL 精确 purge 流程，不改为整 hostname purge。
 
 hostname purge 后观察到 `MISS → HIT` 是理想结果，但真实 CDN 可能在连续多次请求中仍返回 `MISS`，因此 language production 的 machine gate 不以固定次数内出现 `HIT` 或任何固定 cache status 时序作为通过条件。正式 verification 只记录 cache status，并确认请求进入预期的 cache eligibility 路径。
 
@@ -151,33 +151,89 @@ acme.sh 记录必须与当前实际 HTTPS origin 一致，不再采用“本项�
 
 Cloudflare API Token 及其他密钥属于敏感凭据，不写入文档、不提交仓库，也不记录真实值。
 
-## 新 Locale 首次生产部署
+## 正式 production identity 与 secret 边界
 
-首次部署是建立新 locale 的 production 基础设施和部署 profile，不得直接套用日常 release 切换。开始前应已完成 TranslationUnit promotion、完整 projection、[Locale Surface Review](LOCALE_SURFACE_REVIEW.md) 的完整语言质量审核与 preview acceptance，以及 production publish；production 部署后的 rendered surface 复核和最终 evidence decision 仍属于上线必经步骤。开始前冻结以下值：
+所有 language production 的非 secret 身份统一保存在 [`production/identity.json`](../production/identity.json)。`scripts/production-identity.py validate` 对 schema、路径边界、URL/port 对应关系以及 hostname、port、service、data root、vhost、证书等跨 locale 冲突做严格校验；`deploy-production.sh`、`verify-production.sh` 与首次生产编排器均消费这一个来源，不再各自维护 profile case。JSON 是 Go 可直接解码的稳定格式；shell 通过 `scripts/production-identity.sh` 的有序无 `eval` 接口读取。
 
-```text
-locale
-hostname / public URL / CDN
-data root / releases / current / deploy lock
-systemd service / service user
-loopback port / localhost health URL
-Nginx vhost / TLS certificate paths
-Playground allowed Origin
-AdSense service environment / Auto Ads 与课程广告资产来源
+新 locale 在这里取得正式、唯一 identity 前，所有生产命令都 fail closed。不得从 locale 字符串推导 hostname、port、service 或路径，也不得静默 fallback 到其他 locale。`production_state` 是首次生产的显式生命周期门：编排器只接受 `first-production`；已经上线的 locale 必须为 `live`，即使 `current` 或历史 receipt 缺失也不得再次 bootstrap。首次生产及 evidence 完成后必须把该字段改为 `live`；日常 deploy/verify 接受已建立的正式 identity，不借此字段猜测远端状态。该文件只保存 identity，不保存 credential、广告 HTML、analytics HTML 或私钥。
+
+Cloudflare API Token 的正式来源为 aliyun 上的 `/etc/go-tour/cloudflare.env`，必须是 `root:root`、mode `0600` 的普通文件，并定义非空 `CF_Token`。管理员只需一次性 provision；不要在命令行参数、shell history、日志、receipt 或 Git 中写入 token。可先安全建立空文件，再用 root editor 填写：
+
+```sh
+ssh aliyun 'install -o root -g root -m 0600 /dev/null /etc/go-tour/cloudflare.env'
+ssh -t aliyun 'editor /etc/go-tour/cloudflare.env'
 ```
 
-按以下顺序执行：
+编排器只检查文件 identity 和变量是否存在，不输出变量值。Cloudflare zone ID 不落库：每次用正式 zone name 查询，且结果必须唯一。
 
-1. **Hostname 与 CDN 决策**：按 [LANGUAGES.md](../LANGUAGES.md) 确认 hostname。非中文社区语言使用 Cloudflare Free，不引入 EdgeOne + Cloudflare 双层代理；确认共享 assets 策略。
-2. **Service、port 与 data root**：为新 locale 选择未占用的 loopback port，建立独立 `/data/go-tour-<locale>/releases`、`current` 和 `.deploy.lock` 边界；创建独立 systemd service，service user 保持 `go-tour`。service 必须从 `current` 下的 release 启动，不能绑定临时上传目录；首次 deployment 前 `current` 可以尚不存在，由首次激活原子创建。
-3. **TLS 与 vhost**：在 `/root/oneinstack` 使用 `./vhost.sh --proxy --dnsapi` 创建 HTTPS reverse-proxy vhost，使用 Let's Encrypt、`ec-256` 和 `dns_cf`，反向代理到精确 loopback port。检查自动生成的 `location`，不得截获 `/tour/static/`；使用 `nginx -t && service nginx reload`。
-4. **Playground Origin**：把新站的精确 `https://<hostname>` 加入 ZgoCloud Playground 代理 allowlist，保持错误 Origin 403、OPTIONS/POST 方法边界和既有 origin 不受影响。未完成此项时 Run / Format 的页面渲染成功不算上线成功。
-5. **AdSense production 接入**：在首个 release 激活前，完成本手册“广告职责、首次接入与最终验收边界”所列的 service 环境、Auto Ads 与课程广告资源准备；不得把它留到 production 上线后再补做。
-6. **部署脚本 profile**：为新 locale 明确增加并测试 `scripts/deploy-production.sh` 的 fail-closed profile，包括全部路径、service、health URL 和 public URL。该步骤属于首次接入所需的代码能力变更；在 profile 合入前脚本应继续拒绝该 locale，不能用目录名猜测或临时绕过白名单。
-7. **首个 release 激活**：部署已验收的 Linux/amd64 bundle，验证权限、SHA-256、`current`、service restart 和连续 localhost health。首次没有可回滚旧 release 时，若首次切换后的 restart 或 health failure，脚本保留 `current`、lock 和现场供人工检查，不得声称自动回滚已覆盖或直接重复部署。
-8. **外部 direct-origin 验收**：在创建正式公网 DNS 前，从外部主机使用 production hostname + `--resolve <hostname>:443:<origin-ip>` 验证 TLS/SNI、HTTP → HTTPS 和关键 route；这一步不依赖 public DNS 或 CDN cache。
-9. **DNS / CDN 与公网验收**：direct-origin 通过后才创建/启用 `proxied=true` 的正式 DNS；随后检查 `/`、`/tour/`、`/tour/list`、全部 sitemap URL、`robots.txt`、canonical host、`html lang`、静态资源、`/socket` 404 与保留路径，确认 sitemap 无错误 host、重复或 HTTP failure。首次 deployment 尚无旧 cache 时不要求 hostname purge。
-10. **真实浏览器与最终广告验收**：桌面和移动端复核导航、语言选择器、编辑器、Run / Format / Reset 与 runtime message；从 Network 确认实际 Playground endpoint 与 CORS Origin。同时执行上述五项轻量广告确认。最后在 production 重新执行 rendered surface acceptance 关键项，并完成 `data/locale-surface-reviews/<locale>/<review-id>.md` 的 production 结果与最终 decision；不另行执行无广告版本的完整验收。
+## 新 Locale 首次生产部署
+
+首次部署是建立新 locale 的 production 基础设施，不得直接套用日常 release 切换。开始前必须已完成 TranslationUnit promotion、完整 projection、Surface Review 的语言质量与 preview acceptance、production publish，以及 shared-assets current-state freshness gate。
+
+正式入口只有 release 目录：
+
+```sh
+scripts/first-production.sh \
+  /tmp/go-tour-release-YYYYMMDD-<locale>-<shortsha>
+```
+
+脚本从 `release.json.locale` 选择正式 identity，并要求其显式为 `production_state=first-production`；当前 `zh-CN`、`ja-JP`、`de-DE`、`fr-FR` 均为 `live`，不能用于 bootstrap。脚本不接受调用者重复传 hostname、port、service、data root、origin IP 或 zone。一个 run 为 aliyun 和 zgocloud 分别建立 invocation-scoped ControlMaster；正常、失败和 signal 退出均清理 control socket。状态 receipt 写在 release 同级的 `<release>.first-production-receipt.json`，只记录 run/stage/locale/hostname/release/time/result 等非 secret identity。若已完成 deploy 后本地连接中断，重跑同一命令会识别未完成 receipt，重新验证 `current`、service/source health 和全部关键 identity，再从后续幂等阶段继续；已完成 receipt 拒绝重复 bootstrap。
+
+正式顺序固定为：
+
+```text
+全量无 mutation preflight
+→ aliyun data root / systemd / DNS-01 TLS / Nginx bootstrap
+→ ZgoCloud Playground Origin 精确幂等更新与接口/boundary 验收
+→ scripts/deploy-production.sh <release-dir>
+→ zgocloud --resolve direct-origin acceptance
+→ Cloudflare proxied A record
+→ zgocloud public machine acceptance
+→ scripts/verify-production.sh <release-dir>
+→ Chrome automated browser acceptance
+→ 极小 HUMAN visual gate
+→ evidence finalize
+```
+
+preflight 在任何 production mutation 前同时检查：正式 bundle 与 identity、TODO/unknown locale 间接由 publish/identity gate 拒绝、两台 SSH 和 root account、port/service/data-root/vhost/certificate 冲突、EnvironmentFile 与非空 `TOUR_AD_HTML`（不输出值）、Cloudflare secret 权限与变量、zone 唯一性、目标 DNS 无冲突、Playground 两个 location 的结构一致性，以及 shared-assets origin/public SHA-256 freshness。任一项失败时，不建立目录、unit、证书、vhost、DNS 或 Origin。
+
+基础设施阶段复用已验证的 production service hardening 与 OneinStack Nginx/TLS 结构；所有 server name、proxy port、service、current、证书和私钥路径均从目标 locale 的正式 identity 渲染，不从 fr-FR 或 locale 名称复制值。service 从精确 `current` 启动，TLS 使用 Let's Encrypt/acme.sh `dns_cf`、`ec-256`，Nginx 只有精确 loopback proxy，不生成会截获 `/tour/static/` 的静态 location。证书通过 DNS-01 签发，不要求先建立 production A record；`nginx -t` 通过后才 reload。已存在未知或不兼容配置时停止，不覆盖。失败边界保留为可审计、可 resume 的首次创建物：已经精确写入的 data root、unit 或 ACME/TLS 现场不做不确定删除，后续 preflight 必须重新逐项验证；本次新建 vhost 若 `nginx -t` 或 reload 失败则移除并恢复原 Nginx 状态。任一失败均不会记录 infrastructure PASS，service enable/start/restart 失败也不能进入后续 stage。
+
+Playground mutation 只接受当前已验证的“两处相同精确 Origin 正则 + 唯一 compile/fmt location”结构，保留全部既有 origin、避免重复，并在 `nginx -t`/reload 失败时恢复备份。随后验证新 origin 的 OPTIONS 204、POST 200、wrong Origin 403、GET 405。
+
+FIRST_DEPLOYMENT 仍严格复用 `deploy-production.sh` 的 upload/current/health 状态机；编排器不实现第二套部署逻辑。源站连续健康后先从 zgocloud 用真实 hostname/SNI 和 `--resolve` 验收 HTTPS、HTTP redirect、关键 route、canonical、`html lang`、shared-assets 与 `/socket`。只有这一步通过才调用 Cloudflare API；已存在完全相同的 proxied A record 幂等通过，未知类型、IP、proxy 状态或重复记录一律拒绝。API failure 不回滚已健康的 origin。
+
+Cloudflare Cache Rule 只做只读、低风险判断：能证明已启用的 cache-settings rule 以精确 host、可求值 wildcard 或 `ends_with` 匹配当前 hostname 时记录 `verified`；否则保留 `HUMAN_GATE`，不猜 rule ID、不修改 account-wide rule。
+
+公网 DNS 生效后，zgocloud 完成关键 route、105 URL sitemap、canonical/locale、socket、cache header、shared asset 与 Playground 验收；随后仍调用现有 `verify-production.sh` 做正式 machine acceptance。首次编排器为该命令设置内部 `VERIFY_PRODUCTION_NETWORK_SSH=zgocloud`，verification 建立 invocation-scoped SSH/SOCKS ControlMaster，使全部 public curl 的 TCP/DNS 从 zgocloud 发出；远端 identity/source 检查仍直接访问 aliyun。普通维护者调用方式不变。`verify-production-browser.py` 使用仓库既有 `google-chrome`/DevTools 基线，自动覆盖 desktop/mobile、普通与 editor course、`/tour/moretypes/1`、语言列表、Run/Format/Reset、runtime output、Playground endpoint、canonical/lang/SEO、socket、shared assets、course-ad mount/loader/request opportunity 和 SPA 下一页。广告 filled/unfilled 均可通过。
+
+全部自动验收 PASS 后，唯一人工 production gate 为：
+
+1. Desktop 打开一个 editor 课程页，肉眼确认整体布局、editor 和广告区域无明显视觉异常。
+2. Mobile 打开 `/tour/moretypes/1`，确认无非预期整页横向 overflow、广告/footer 无明显异常，并点击一次“下一页”确认 SPA 视觉正常。
+
+人工记录只写 `passed` 或 `failed: <问题>`。人工不再重复 Run、Format、Reset、SEO、canonical、Network Origin 或 `/socket`。通过后，把 receipt、HUMAN visual 结果与 production URL 写回既有 Surface Review evidence，并把最终 `decision` 设为 `passed`。
+
+成功摘要保持简洁，例如：
+
+```text
+[首次生产] 基础设施：PASS
+[首次生产] Playground Origin：PASS
+[首次生产] 源站验收：PASS
+[首次生产] Cloudflare DNS：PASS
+[首次生产] 公网验收：PASS
+[首次生产] 浏览器验收：PASS
+```
+
+失败固定给出 stage、expected、actual 与下一步，不输出 secret，例如：
+
+```text
+[首次生产] FAILED
+stage: playground-origin
+expected: command exit 0
+actual: expected HTTP 204, got 403
+下一步：按 stage/evidence 检查后重试
+```
 
 ### Existing locale language-list consistency
 
@@ -203,7 +259,7 @@ scripts/deploy-production.sh \
   /tmp/go-tour-release-20260824-ja-JP-<shortsha>
 ```
 
-脚本严格读取 `release.json` 的 `locale` 作为唯一事实来源，不接受 `--locale`，也不根据目录名猜测语言。当前 production 白名单包含 `zh-CN`、`ja-JP`、`de-DE` 和 `fr-FR`；不支持的 locale 会在 SSH、上传、远端加锁及任何生产修改之前 fail closed。所选 profile 如下：
+脚本严格读取 `release.json` 的 `locale` 作为唯一事实来源，不接受 `--locale`，也不根据目录名猜测语言。当前正式 identity 包含 `zh-CN`、`ja-JP`、`de-DE` 和 `fr-FR`；不支持、重复、冲突或 schema 不合法的 locale 会在 SSH、上传、远端加锁及任何生产修改之前 fail closed。下表只是便于阅读的当前快照，权威来源是 `production/identity.json`：
 
 | locale | releases | current | deploy lock | systemd service | localhost health | public acceptance |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -267,7 +323,7 @@ scripts/verify-production.sh \
 
 脚本不调用 EdgeOne 或 Cloudflare API，不搜索 token、不执行 purge、不修改 DNS/Cache Rule。hostname purge 是运行脚本前的 **HUMAN GATE**；machine verification 只观察 purge 后实际返回的三个 cache status，不要求第一次为 `MISS`、后续为 `HIT`，也不要求固定次数内出现 `HIT`。
 
-真实浏览器仍是独立 **HUMAN GATE**：桌面/移动端 rendered surface、语言选择器交互、Run / Format / Reset、runtime message、Playground Network endpoint/Origin，以及轻量广告真实请求机会、课程布局和 SPA 下一页均不由 curl machine acceptance 替代。
+curl machine acceptance 后可运行 `scripts/verify-production-browser.py <production-public-url> <locale>` 完成 rendered/interaction 自动验收；首次 production 已由 `first-production.sh` 自动调用。桌面/移动端、语言列表、Run / Format / Reset、runtime message、Playground endpoint、轻量广告 request opportunity、SPA 和长代码 overflow 均由 Chrome 检查。机器通过后只保留本手册“新 Locale 首次生产部署”定义的极小 visual HUMAN gate；不要人工重复机器项目。
 
 ## 非中文共享静态资源第一版
 

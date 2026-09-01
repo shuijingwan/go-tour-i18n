@@ -13,6 +13,13 @@ fail() {
     exit 1
 }
 
+verify_source=$(<"$verify_script")
+[[ $verify_source == *'VERIFY_PRODUCTION_NETWORK_SSH'* \
+    && $verify_source == *'ControlMaster=yes'* \
+    && $verify_source == *'--socks5-hostname'* \
+    && $verify_source == *'cleanup_network_ssh'* ]] || \
+    fail 'zgocloud invocation-scoped public network runner is incomplete'
+
 assert_contains() {
     [[ $1 == *"$2"* ]] || fail "output does not contain: $2"
 }
@@ -375,7 +382,7 @@ mkdir -p -- "$unsupported"
 printf '{"locale":"it-IT"}\n' >"$unsupported/release.json"
 release_dir=$unsupported
 rm -f -- "$FAKE_SSH_MARKER"
-expect_failure 'unsupported locale' 'supported production locale'
+expect_failure 'unsupported locale' 'locale with one valid formal production identity'
 [[ ! -e $FAKE_SSH_MARKER ]] || fail 'unsupported locale reached SSH'
 
 printf '[verify-production-test] PASS\n'

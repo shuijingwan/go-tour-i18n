@@ -3,8 +3,13 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
-readonly SSH_HOST='aliyun'
-readonly -a SSH_OPTIONS=(-o BatchMode=yes -o ConnectTimeout=10)
+readonly -a SSH_OPTIONS=(
+    -o BatchMode=yes
+    -o ConnectTimeout=10
+    -o ServerAliveInterval=5
+    -o ServerAliveCountMax=3
+    -o ConnectionAttempts=3
+)
 readonly CURL_CONNECT_TIMEOUT=5
 readonly CURL_MAX_TIME=15
 readonly EXPECTED_SITEMAP_URLS=105
@@ -30,6 +35,17 @@ CACHE_HEADER=''
 CACHE_HOME_RESULT=''
 CACHE_WELCOME_RESULT=''
 TEMP_DIR=''
+SSH_HOST=''
+CURL_NETWORK_OPTIONS=()
+NETWORK_SSH_HOST=${VERIFY_PRODUCTION_NETWORK_SSH:-}
+NETWORK_CONTROL_DIR=''
+NETWORK_CONTROL_PATH=''
+NETWORK_PROXY_PORT=''
+
+script_dir=$(cd -P -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)
+# shellcheck source=production-identity.sh
+source "$script_dir/production-identity.sh"
+unset script_dir
 
 error() {
     printf '[verify-production] ERROR: %s\n' "$*" >&2
@@ -45,55 +61,59 @@ usage() {
     printf 'usage: %s <release-dir>\n' "${0##*/}" >&2
 }
 
+setup_network_ssh() {
+    [[ -n $NETWORK_SSH_HOST ]] || return 0
+    [[ $NETWORK_SSH_HOST =~ ^[A-Za-z0-9._-]+$ ]] || {
+        fail_check 'network runner' SSH-alias 'safe SSH alias' "$NETWORK_SSH_HOST"
+        return 1
+    }
+    NETWORK_CONTROL_DIR=$(mktemp -d "${TMPDIR:-/tmp}/go-tour-verify-network.XXXXXX") || return 1
+    NETWORK_CONTROL_PATH=$NETWORK_CONTROL_DIR/control
+    NETWORK_PROXY_PORT=$(python3 - <<'PY'
+import socket
+with socket.socket() as listener:
+    listener.bind(("127.0.0.1", 0))
+    print(listener.getsockname()[1])
+PY
+    ) || return 1
+    ssh -o BatchMode=yes -o ConnectTimeout=10 -o ServerAliveInterval=5 \
+        -o ServerAliveCountMax=3 -o ConnectionAttempts=3 -o ControlMaster=yes \
+        -o ControlPersist=60 -o "ControlPath=$NETWORK_CONTROL_PATH" \
+        -N -f -D "127.0.0.1:$NETWORK_PROXY_PORT" "$NETWORK_SSH_HOST" || {
+        fail_check 'network runner' SSH "$NETWORK_SSH_HOST ControlMaster + SOCKS ready" failed
+        return 1
+    }
+    CURL_NETWORK_OPTIONS=(--socks5-hostname "127.0.0.1:$NETWORK_PROXY_PORT")
+    printf '[verify-production] public network runner: %s\n' "$NETWORK_SSH_HOST"
+}
+
+cleanup_network_ssh() {
+    if [[ -n $NETWORK_CONTROL_DIR && -n $NETWORK_CONTROL_PATH && $NETWORK_CONTROL_PATH == "$NETWORK_CONTROL_DIR/control" && ${NETWORK_CONTROL_DIR##*/} == go-tour-verify-network.* ]]; then
+        if [[ -S $NETWORK_CONTROL_PATH ]]; then
+            ssh -o BatchMode=yes -o ConnectTimeout=10 -o "ControlPath=$NETWORK_CONTROL_PATH" \
+                -O exit "$NETWORK_SSH_HOST" >/dev/null 2>&1 || true
+        fi
+        rm -f -- "$NETWORK_CONTROL_PATH"
+        rmdir -- "$NETWORK_CONTROL_DIR" 2>/dev/null || true
+    fi
+}
+
 select_production_profile() {
     local locale=$1
 
-    case $locale in
-        zh-CN)
-            RELEASES_DIR='/data/go-tour/releases'
-            CURRENT_LINK='/data/go-tour/current'
-            DEPLOY_LOCK='/data/go-tour/.deploy.lock'
-            SERVICE='go-tour.service'
-            LOOPBACK_ORIGIN='http://127.0.0.1:3999'
-            PUBLIC_ORIGIN='https://go-dev.shuijingwanwq.com'
-            PRODUCTION_HOST='go-dev.shuijingwanwq.com'
-            CACHE_HEADER='EO-Cache-Status'
-            ;;
-        ja-JP)
-            RELEASES_DIR='/data/go-tour-ja-JP/releases'
-            CURRENT_LINK='/data/go-tour-ja-JP/current'
-            DEPLOY_LOCK='/data/go-tour-ja-JP/.deploy.lock'
-            SERVICE='go-tour-ja-JP.service'
-            LOOPBACK_ORIGIN='http://127.0.0.1:4000'
-            PUBLIC_ORIGIN='https://ja-go-dev.shuijingwanwq.com'
-            PRODUCTION_HOST='ja-go-dev.shuijingwanwq.com'
-            CACHE_HEADER='CF-Cache-Status'
-            ;;
-        de-DE)
-            RELEASES_DIR='/data/go-tour-de-DE/releases'
-            CURRENT_LINK='/data/go-tour-de-DE/current'
-            DEPLOY_LOCK='/data/go-tour-de-DE/.deploy.lock'
-            SERVICE='go-tour-de-DE.service'
-            LOOPBACK_ORIGIN='http://127.0.0.1:4001'
-            PUBLIC_ORIGIN='https://de-go-dev.shuijingwanwq.com'
-            PRODUCTION_HOST='de-go-dev.shuijingwanwq.com'
-            CACHE_HEADER='CF-Cache-Status'
-            ;;
-        fr-FR)
-            RELEASES_DIR='/data/go-tour-fr-FR/releases'
-            CURRENT_LINK='/data/go-tour-fr-FR/current'
-            DEPLOY_LOCK='/data/go-tour-fr-FR/.deploy.lock'
-            SERVICE='go-tour-fr-FR.service'
-            LOOPBACK_ORIGIN='http://127.0.0.1:4002'
-            PUBLIC_ORIGIN='https://fr-go-dev.shuijingwanwq.com'
-            PRODUCTION_HOST='fr-go-dev.shuijingwanwq.com'
-            CACHE_HEADER='CF-Cache-Status'
-            ;;
-        *)
-            fail_check 'release identity' locale 'supported production locale (zh-CN, ja-JP, de-DE, fr-FR)' "$locale"
-            return 1
-            ;;
-    esac
+    if ! load_production_identity_locale "$locale"; then
+        fail_check 'release identity' locale 'locale with one valid formal production identity' "$locale"
+        return 1
+    fi
+    SSH_HOST=$PRODUCTION_ORIGIN_SSH_ALIAS
+    RELEASES_DIR=$PRODUCTION_RELEASES_ROOT
+    CURRENT_LINK=$PRODUCTION_CURRENT
+    DEPLOY_LOCK=$PRODUCTION_DEPLOYMENT_LOCK
+    SERVICE=$PRODUCTION_SYSTEMD_SERVICE
+    LOOPBACK_ORIGIN=${PRODUCTION_LOCALHOST_HEALTH_URL%/}
+    PUBLIC_ORIGIN=${PRODUCTION_PUBLIC_URL%/}
+    PRODUCTION_HOST=$PRODUCTION_HOSTNAME
+    CACHE_HEADER=$PRODUCTION_CACHE_HEADER
 }
 
 validate_local_tools() {
@@ -191,7 +211,7 @@ http_request() {
     local url=$1 body=$2 headers=$3
     shift 3
     curl -sS --connect-timeout "$CURL_CONNECT_TIMEOUT" --max-time "$CURL_MAX_TIME" \
-        -D "$headers" -o "$body" -w '%{http_code}' "$@" "$url" || true
+        "${CURL_NETWORK_OPTIONS[@]}" -D "$headers" -o "$body" -w '%{http_code}' "$@" "$url" || true
 }
 
 header_value() {
@@ -437,7 +457,8 @@ main() {
         fail_check 'release identity' temporary-directory created failed
         return 1
     }
-    trap 'rm -rf -- "$TEMP_DIR"' EXIT
+    trap 'cleanup_network_ssh; rm -rf -- "$TEMP_DIR"' EXIT
+    setup_network_ssh || return 1
 
     if ! verify_remote_and_source "$expected_remote"; then
         error 'stage=remote/source batch check=SSH aliyun expected=completed actual=failed'

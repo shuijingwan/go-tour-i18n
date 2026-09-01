@@ -3,8 +3,6 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
-readonly SSH_HOST='aliyun'
-readonly SERVICE_USER='go-tour'
 readonly HEALTH_ATTEMPTS=12
 readonly HEALTH_INTERVAL=3
 readonly NO_OLD_RELEASE='NO_OLD_RELEASE'
@@ -22,7 +20,14 @@ RSYNC_SSH_COMMAND='ssh'
 SSH_CONTROL_DIR=''
 SSH_CONTROL_PATH=''
 
+script_dir=$(cd -P -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)
+# shellcheck source=production-identity.sh
+source "$script_dir/production-identity.sh"
+unset script_dir
+
 RELEASE_LOCALE=''
+SSH_HOST=''
+SERVICE_USER=''
 RELEASES_DIR=''
 CURRENT_LINK=''
 DEPLOY_LOCK=''
@@ -30,6 +35,7 @@ SERVICE=''
 HEALTH_URL=''
 PUBLIC_URL=''
 PUBLIC_ACCEPTANCE_HINT=''
+EXPECTED_DEPLOYMENT_MODE=''
 
 setup_ssh_multiplex() {
     local option quoted
@@ -73,47 +79,23 @@ usage() {
 select_deployment_profile() {
     local locale=$1
 
-    case $locale in
-        zh-CN)
-            RELEASES_DIR='/data/go-tour/releases'
-            CURRENT_LINK='/data/go-tour/current'
-            DEPLOY_LOCK='/data/go-tour/.deploy.lock'
-            SERVICE='go-tour.service'
-            HEALTH_URL='http://127.0.0.1:3999/'
-            PUBLIC_URL='https://go-dev.shuijingwanwq.com/'
-            PUBLIC_ACCEPTANCE_HINT='inspect the CDN/reverse-proxy cache and refresh it manually if needed'
-            ;;
-        ja-JP)
-            RELEASES_DIR='/data/go-tour-ja-JP/releases'
-            CURRENT_LINK='/data/go-tour-ja-JP/current'
-            DEPLOY_LOCK='/data/go-tour-ja-JP/.deploy.lock'
-            SERVICE='go-tour-ja-JP.service'
-            HEALTH_URL='http://127.0.0.1:4000/'
-            PUBLIC_URL='https://ja-go-dev.shuijingwanwq.com/'
-            PUBLIC_ACCEPTANCE_HINT='inspect the CDN/reverse-proxy cache and refresh it manually if needed'
-            ;;
-        de-DE)
-            RELEASES_DIR='/data/go-tour-de-DE/releases'
-            CURRENT_LINK='/data/go-tour-de-DE/current'
-            DEPLOY_LOCK='/data/go-tour-de-DE/.deploy.lock'
-            SERVICE='go-tour-de-DE.service'
-            HEALTH_URL='http://127.0.0.1:4001/'
-            PUBLIC_URL='https://de-go-dev.shuijingwanwq.com/'
-            PUBLIC_ACCEPTANCE_HINT='inspect the CDN/reverse-proxy cache and refresh it manually if needed'
-            ;;
-        fr-FR)
-            RELEASES_DIR='/data/go-tour-fr-FR/releases'
-            CURRENT_LINK='/data/go-tour-fr-FR/current'
-            DEPLOY_LOCK='/data/go-tour-fr-FR/.deploy.lock'
-            SERVICE='go-tour-fr-FR.service'
-            HEALTH_URL='http://127.0.0.1:4002/'
-            PUBLIC_URL='https://fr-go-dev.shuijingwanwq.com/'
-            PUBLIC_ACCEPTANCE_HINT='inspect the CDN/reverse-proxy cache and refresh it manually if needed'
-            ;;
-        *)
-            error "unsupported production locale in release.json: $locale"
-            return 1
-            ;;
+    if ! load_production_identity_locale "$locale"; then
+        error "unsupported or invalid production locale in release.json: $locale"
+        return 1
+    fi
+    SSH_HOST=$PRODUCTION_ORIGIN_SSH_ALIAS
+    SERVICE_USER=$PRODUCTION_SERVICE_USER
+    RELEASES_DIR=$PRODUCTION_RELEASES_ROOT
+    CURRENT_LINK=$PRODUCTION_CURRENT
+    DEPLOY_LOCK=$PRODUCTION_DEPLOYMENT_LOCK
+    SERVICE=$PRODUCTION_SYSTEMD_SERVICE
+    HEALTH_URL=$PRODUCTION_LOCALHOST_HEALTH_URL
+    PUBLIC_URL=$PRODUCTION_PUBLIC_URL
+    PUBLIC_ACCEPTANCE_HINT='inspect the CDN/reverse-proxy cache and refresh it manually if needed'
+    case $PRODUCTION_STATE in
+        live) EXPECTED_DEPLOYMENT_MODE=EXISTING ;;
+        first-production) EXPECTED_DEPLOYMENT_MODE=FIRST_DEPLOYMENT ;;
+        *) error "unsupported production state: $PRODUCTION_STATE"; return 1 ;;
     esac
 }
 
@@ -290,7 +272,7 @@ prepare_remote() {
 
     ssh "${SSH_OPTIONS[@]}" "$SSH_HOST" bash -s -- \
         "$RELEASES_DIR" "$CURRENT_LINK" "$DEPLOY_LOCK" "$SERVICE" \
-        "$remote_staging" "$remote_final" <<'REMOTE_PREPARE'
+        "$remote_staging" "$remote_final" "$EXPECTED_DEPLOYMENT_MODE" <<'REMOTE_PREPARE'
 set -Eeuo pipefail
 IFS=$'\n\t'
 readonly NO_OLD_RELEASE='NO_OLD_RELEASE'
@@ -301,6 +283,7 @@ deploy_lock=$3
 service=$4
 staging=$5
 final=$6
+expected_mode=$7
 
 fail() {
     printf '[deploy:remote] ERROR: %s\n' "$*" >&2
@@ -326,6 +309,7 @@ elif [[ ! -e $current_link ]]; then
 else
     fail "current exists but is not a symlink: $current_link"
 fi
+[[ $deployment_mode == "$expected_mode" ]] || fail "remote state is $deployment_mode but formal production identity requires $expected_mode"
 systemctl cat "$service" >/dev/null || fail "systemd service does not exist: $service"
 [[ $deployment_mode != EXISTING || $final != "$old" ]] || fail 'new release is already current'
 [[ ! -e $final && ! -L $final ]] || fail "remote release already exists: $final"

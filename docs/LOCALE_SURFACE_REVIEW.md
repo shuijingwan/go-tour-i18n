@@ -67,7 +67,7 @@ Glossary 一致但忠实度、准确性或自然度不合格时，语言质量�
 
 只有完整语言质量审核通过，并且 TranslationUnit promotion、locale 配置、UI catalog 与 article metadata 已组成完整 projection 后，才在 preview 上执行本阶段；部署后再在 production 复核公网相关项目。浏览器检查用于发现组合、布局、交互、runtime 和部署问题，不能替代 A 阶段对全部可翻译资产的 source ↔ target 审核。
 
-广告不属于 Locale-level language quality review，也不扩展为 TranslationUnit 或语言质量 gate。preview rendered surface acceptance 不要求真实 AdSense；首次 production 的最终 rendered surface acceptance 仅在既有 production verification 中顺带记录一次轻量广告确认，具体接入和确认项见[生产运维手册](PRODUCTION_RUNBOOK.md)。本规范不重复广告实现、共享回归或广告失败隔离测试细节。
+广告不属于 Locale-level language quality review，也不扩展为 TranslationUnit 或语言质量 gate。preview rendered surface acceptance 不要求真实 AdSense；首次 production 的最终 rendered surface acceptance 由 production browser automation 检查 loader、course-ad mount、请求机会、layout 与 SPA，filled/unfilled 均允许，再以极小 visual HUMAN gate 确认整体观感。具体边界见[生产运维手册](PRODUCTION_RUNBOOK.md)。本规范不重复广告实现、共享回归或广告失败隔离测试细节。
 
 ### 1. 公共 UI 与页面 shell
 

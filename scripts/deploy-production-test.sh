@@ -21,6 +21,7 @@ assert_profile() {
     [[ $SERVICE == "$service" ]] || fail "$locale service profile"
     [[ $HEALTH_URL == "$health" ]] || fail "$locale health profile"
     [[ $PUBLIC_URL == "$public" ]] || fail "$locale public profile"
+    [[ $EXPECTED_DEPLOYMENT_MODE == EXISTING ]] || fail "$locale lifecycle profile"
     [[ $PUBLIC_ACCEPTANCE_HINT == 'inspect the CDN/reverse-proxy cache and refresh it manually if needed' ]] || fail "$locale public acceptance hint"
 }
 
@@ -145,6 +146,7 @@ prepare_and_activate() {
     setup_remote "$locale" "$state"
     releases=$TEST_RELEASES; current=$TEST_CURRENT; lock=$TEST_LOCK
     select_deployment_profile "$locale"
+    [[ $state != absent ]] || EXPECTED_DEPLOYMENT_MODE=FIRST_DEPLOYMENT
     staging="$releases/.new.staging-$suffix"; final="$releases/new-$suffix"
     prepared=$(prepare_remote "$staging" "$final") || return 1
     IFS=$'\t' read -r mode old <<<"$prepared"
@@ -259,5 +261,13 @@ for state in regular outside; do
     fi
     [[ ! -e $TEST_LOCK ]] || fail "invalid current state $state created a lock"
 done
+
+# A live locale never falls back to FIRST_DEPLOYMENT when current is missing.
+setup_remote fr-FR absent
+select_deployment_profile fr-FR
+if prepare_remote "$TEST_RELEASES/.staging-live-absent" "$TEST_RELEASES/new-live-absent" >/dev/null 2>&1; then
+    fail 'live locale with missing current was accepted as FIRST_DEPLOYMENT'
+fi
+[[ ! -e $TEST_LOCK ]] || fail 'live locale lifecycle mismatch created a lock'
 
 printf '[deploy-test] PASS\n'

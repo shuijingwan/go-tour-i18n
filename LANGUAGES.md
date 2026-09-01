@@ -12,15 +12,15 @@
 | --- | --- | --- | --- | --- |
 | `zh-CN` | 简体中文 | <https://go-dev.shuijingwanwq.com/> | EdgeOne | 当前默认社区语言站；不创建 `zh.go-dev` 或 `zh-cn.go-dev` |
 | `en` | English | <https://go.dev/tour/> | Go 官方提供 | 继续使用官方 A Tour of Go；当前不建设本项目的英文社区版本，也不规划 `en-go-dev.shuijingwanwq.com` |
-| `fr-FR` | Français | <https://fr-go-dev.shuijingwanwq.com/> | Cloudflare Free | 法语社区语言站；域名 language code 为 `fr`，首次上线准备中 |
+| `fr-FR` | Français | <https://fr-go-dev.shuijingwanwq.com/> | Cloudflare Free | 已正式上线的法语社区语言站；域名 language code 为 `fr` |
 | `de-DE` | Deutsch | <https://de-go-dev.shuijingwanwq.com/> | Cloudflare Free | 德语社区语言站；域名 language code 为 `de` |
 | `ja-JP` | 日本語 | <https://ja-go-dev.shuijingwanwq.com/> | Cloudflare Free | 已正式上线的日语社区语言站 |
 
-## fr-FR 已冻结身份与后续生产 profile
+## fr-FR production identity
 
-fr-FR 使用规范 locale 与 HTML `lang` `fr-FR`，本地显示名为 `Français`，英文名为 `French`，域名 language code 为 `fr`。production hostname 为 <https://fr-go-dev.shuijingwanwq.com/>，CDN 使用 Cloudflare Free；非中文共享静态资源使用 <https://assets-go-dev.shuijingwanwq.com/>。Playground 代理后续需要加入的精确 Origin 为 `https://fr-go-dev.shuijingwanwq.com`。
+fr-FR 使用规范 locale 与 HTML `lang` `fr-FR`，本地显示名为 `Français`，英文名为 `French`，域名 language code 为 `fr`。production hostname 为 <https://fr-go-dev.shuijingwanwq.com/>，CDN 使用 Cloudflare Free；非中文共享静态资源使用 <https://assets-go-dev.shuijingwanwq.com/>。Playground 精确 Origin 为 `https://fr-go-dev.shuijingwanwq.com`。
 
-后续首次生产部署使用以下已冻结 profile。`deploy-production.sh` 与 `verify-production.sh` 的精确 profile 已实现并通过本地测试；production 基础设施、Playground Origin、AdSense production 接入和首次 deployment 仍待执行：
+以下值是当前 production identity 的可读快照；权威、可执行来源为 `production/identity.json`：
 
 | 项目 | 值 |
 | --- | --- |
@@ -36,13 +36,13 @@ fr-FR 使用规范 locale 与 HTML `lang` `fr-FR`，本地显示名为 `Françai
 | TLS certificate | `/usr/local/nginx/conf/ssl/fr-go-dev.shuijingwanwq.com.crt` |
 | TLS private key | `/usr/local/nginx/conf/ssl/fr-go-dev.shuijingwanwq.com.key` |
 
-2026-08-30 的最小只读服务器预检已确认 `go-tour` 用户存在、`4002` 端口空闲、`/data/go-tour-fr-FR` 尚不存在且可用、`go-tour-fr-FR.service` 尚不存在且可用。首次 production profile 已实现并测试，但这不表示 fr-FR 已完成 production deployment。首次部署阶段仍须按生产运维手册重新执行目标校验、创建基础设施、配置精确 Playground Origin 并完成 AdSense production 接入。
+fr-FR 已于 2026-08-30 完成首次 production、Cloudflare、Playground、machine/browser 与广告轻量验收；最终 evidence 为 `data/locale-surface-reviews/fr-FR/20260830-first-production.md`。
 
-## de-DE 已冻结身份与后续生产 profile
+## de-DE production identity
 
-de-DE 使用规范 locale 与 HTML `lang` `de-DE`，本地显示名为 `Deutsch`，英文名为 `German`，域名 language code 为 `de`。production hostname 为 <https://de-go-dev.shuijingwanwq.com/>，CDN 使用 Cloudflare Free；非中文共享静态资源使用 <https://assets-go-dev.shuijingwanwq.com/>。Playground 代理后续需要加入的精确 Origin 为 `https://de-go-dev.shuijingwanwq.com`。
+de-DE 使用规范 locale 与 HTML `lang` `de-DE`，本地显示名为 `Deutsch`，英文名为 `German`，域名 language code 为 `de`。production hostname 为 <https://de-go-dev.shuijingwanwq.com/>，CDN 使用 Cloudflare Free；非中文共享静态资源使用 <https://assets-go-dev.shuijingwanwq.com/>。Playground 已允许精确 Origin `https://de-go-dev.shuijingwanwq.com`。
 
-后续首次生产部署使用以下已冻结 profile；这些值当前只完成事实落库，不表示基础设施、部署脚本或 Playground allowlist 已经配置：
+以下值是当前 production identity 的可读快照；权威、可执行来源为 `production/identity.json`：
 
 | 项目 | 值 |
 | --- | --- |
@@ -55,7 +55,7 @@ de-DE 使用规范 locale 与 HTML `lang` `de-DE`，本地显示名为 `Deutsch`
 | loopback port | `4001` |
 | health URL | <http://127.0.0.1:4001/> |
 
-服务器预检已确认 `go-tour` 用户存在、`4001` 端口空闲、`/data/go-tour-de-DE` 尚不存在且可用、`go-tour-de-DE.service` 尚不存在且可用。首次生产部署阶段仍须按生产运维手册重新执行必要的部署前检查与完整验收。
+de-DE 已完成首次 production；历史最终 evidence 为 `data/locale-surface-reviews/de-DE/20260829-first-production.md`。后续 release 使用日常维护部署流程。
 
 后续所有非中文社区语言统一采用：
 
