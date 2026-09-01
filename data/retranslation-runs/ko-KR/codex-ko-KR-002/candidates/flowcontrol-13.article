@@ -1,0 +1,9 @@
+* defer 호출 쌓기
+
+지연된 함수 호출은 스택에 쌓입니다. 함수가 반환되면 지연된 호출은
+후입선출 순서로 실행됩니다.
+
+defer 문에 관해 자세히 알아보려면 이
+[[/blog/defer-panic-and-recover][블로그 글]]을 읽어 보세요.
+
+.play flowcontrol/defer-multi.go

@@ -1,0 +1,15 @@
+* switch 평가 순서
+
+switch의 case는 위에서 아래로 평가되며, 성공하는 case를 만나면 평가를 멈춥니다.
+
+(예를 들어,
+
+	switch i {
+	case 0:
+	case f():
+	}
+
+`f` 는 `i==0` 이면 호출되지 않습니다.)
+
+
+.play flowcontrol/switch-evaluation-order.go

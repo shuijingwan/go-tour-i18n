@@ -1,0 +1,12 @@
+* range 계속하기
+
+`_` 에 할당하면 인덱스나 값을 건너뛸 수 있습니다.
+
+    for i, _ := range pow
+    for _, value := range pow
+
+인덱스만 필요하다면 두 번째 변수를 생략할 수 있습니다.
+
+    for i := range pow
+
+.play moretypes/range-continued.go
