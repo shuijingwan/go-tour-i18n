@@ -1,0 +1,7 @@
+* Select
+
+`select` 문을 사용하면 goroutine이 여러 통신 연산을 기다릴 수 있습니다.
+
+`select` 문은 자신의 case 중 하나를 실행할 수 있을 때까지 블록된 후 해당 case를 실행합니다. 여러 case가 준비되어 있으면 그중 하나를 무작위로 선택합니다.
+
+.play concurrency/select.go

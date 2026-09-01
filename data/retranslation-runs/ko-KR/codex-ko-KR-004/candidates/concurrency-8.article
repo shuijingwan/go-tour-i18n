@@ -1,0 +1,23 @@
+* 연습문제: 동등한 이진 트리
+
+*1.* `Walk` 함수를 구현하세요.
+
+*2.* `Walk` 함수를 테스트하세요.
+
+`tree.New(k)` 함수는 무작위 구조를 가지지만 항상 정렬된 이진 트리를 만들며, 이 트리는 `k`, `2k`, `3k`, ..., `10k` 값을 담습니다.
+
+새 채널 `ch` 를 만들고 순회를 시작하세요.
+
+	go Walk(tree.New(1), ch)
+
+그런 다음 채널에서 값 10개를 읽어 출력하세요. 1, 2, 3, ..., 10이 출력되어야 합니다.
+
+*3.* `Same` 함수를 구현하세요. `Walk` 함수를 사용해 `t1` 과 `t2` 가 같은 값을 저장하는지 판별해야 합니다.
+
+*4.* `Same` 함수를 테스트하세요.
+
+`Same(tree.New(1),`tree.New(1))` 은 true를 반환해야 하고, `Same(tree.New(1),`tree.New(2))` 는 false를 반환해야 합니다.
+
+`Tree` 문서는 [[https://godoc.org/golang.org/x/tour/tree#Tree][여기]]에서 확인할 수 있습니다.
+
+.play concurrency/exercise-equivalent-binary-trees.go
