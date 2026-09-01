@@ -5,8 +5,8 @@
   "unit_count": 13,
   "restore_passed": 13,
   "restore_failed": 0,
-  "validation_passed": 10,
-  "validation_failed": 3,
+  "validation_passed": 12,
+  "validation_failed": 1,
   "units": [
     {
       "unit_id": "generics/2",
@@ -32,10 +32,9 @@
     {
       "unit_id": "concurrency/2",
       "unit_kind": "page",
-      "status": "validation_failed",
+      "status": "passed",
       "candidate_path": "candidates/concurrency-2.article",
-      "validation_path": "validation/concurrency-2.json",
-      "error": "concurrency/2: protected structure validation failed: preformatted code block mismatch at index 1: line comment mismatch at index 1: referenced Go identifier count mismatch: expected 2, actual 0; check the named directive or protected content near the first difference"
+      "validation_path": "validation/concurrency-2.json"
     },
     {
       "unit_id": "concurrency/3",
@@ -62,10 +61,9 @@
     {
       "unit_id": "concurrency/6",
       "unit_kind": "page",
-      "status": "validation_failed",
+      "status": "passed",
       "candidate_path": "candidates/concurrency-6.article",
-      "validation_path": "validation/concurrency-6.json",
-      "error": "concurrency/6: protected structure validation failed: preformatted code block mismatch at index 1: line comment mismatch at index 1: referenced Go identifier count mismatch: expected 1, actual 0; check the named directive or protected content near the first difference"
+      "validation_path": "validation/concurrency-6.json"
     },
     {
       "unit_id": "concurrency/7",
