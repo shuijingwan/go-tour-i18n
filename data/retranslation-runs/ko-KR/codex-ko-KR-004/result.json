@@ -5,8 +5,8 @@
   "unit_count": 13,
   "restore_passed": 13,
   "restore_failed": 0,
-  "validation_passed": 12,
-  "validation_failed": 1,
+  "validation_passed": 13,
+  "validation_failed": 0,
   "units": [
     {
       "unit_id": "generics/2",
@@ -46,10 +46,9 @@
     {
       "unit_id": "concurrency/4",
       "unit_kind": "page",
-      "status": "validation_failed",
+      "status": "passed",
       "candidate_path": "candidates/concurrency-4.article",
-      "validation_path": "validation/concurrency-4.json",
-      "error": "concurrency/4: protected structure validation failed: font span mismatch at index 6: expected bold, actual program; check the named directive or protected content near the first difference"
+      "validation_path": "validation/concurrency-4.json"
     },
     {
       "unit_id": "concurrency/5",
