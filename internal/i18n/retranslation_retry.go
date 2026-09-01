@@ -106,6 +106,7 @@ func ProcessRetranslationRetry(root string, catalog *Catalog, options Retranslat
 		return nil, fmt.Errorf("%s: %w", unitID, err)
 	}
 	nextAttempt := currentAttempt + 1
+	result.RetryAttempt = nextAttempt
 	retryDirRelative := filepath.ToSlash(filepath.Join("retries", flatID))
 	retryRawRelative := filepath.ToSlash(filepath.Join(retryDirRelative, fmt.Sprintf("attempt-%03d%s", nextAttempt, extension)))
 	retryRawPath := filepath.Join(batchDir, filepath.FromSlash(retryRawRelative))
@@ -137,12 +138,14 @@ func ProcessRetranslationRetry(root string, catalog *Catalog, options Retranslat
 	}
 	unitResult := &result.Units[resultIndex]
 	unitResult.CandidatePath = ""
+	unitResult.Error = ""
 	restored, failures := item.protected.restore(string(retryRaw))
 	var candidate []byte
 	if len(failures) != 0 {
 		evidence.Status = "restore_failed"
 		evidence.Error = strings.Join(failures, "; ")
 		unitResult.Status = evidence.Status
+		unitResult.Error = evidence.Error
 	} else {
 		candidate = []byte(restored)
 		if manifest.ArtifactEOF == retranslationArtifactEOFSingleLF {
@@ -153,6 +156,7 @@ func ProcessRetranslationRetry(root string, catalog *Catalog, options Retranslat
 		if err := ValidateTranslationUnitCandidate(root, catalog, unitID, options.Locale, candidate); err != nil {
 			evidence.Status = "validation_failed"
 			evidence.Error = err.Error()
+			unitResult.Error = evidence.Error
 		} else {
 			evidence.Status = "passed"
 		}

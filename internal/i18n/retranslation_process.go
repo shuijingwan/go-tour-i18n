@@ -62,6 +62,7 @@ type RetranslationProcessResult struct {
 	ValidationFailed int                       `json:"validation_failed"`
 	Units            []RetranslationUnitResult `json:"units"`
 	NoPendingBatches bool                      `json:"no_pending_batches,omitempty"`
+	RetryAttempt     int                       `json:"-"`
 }
 
 type RetranslationValidation struct {

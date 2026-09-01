@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"io"
 	"net"
 	"net/http"
 	"os"
@@ -311,6 +312,7 @@ func run(args []string) error {
 		locale := fs.String("locale", "", "target locale")
 		batchID := fs.String("batch-id", "", "包含失败翻译单元的批次 ID")
 		unitID := fs.String("unit-id", "", "失败翻译单元 ID")
+		jsonOutput := fs.Bool("json", false, "输出完整 machine-readable JSON")
 		if err := fs.Parse(args[2:]); err != nil {
 			return err
 		}
@@ -321,7 +323,7 @@ func run(args []string) error {
 		if err != nil {
 			return err
 		}
-		return printJSON(result)
+		return writeRetranslationRetryOutput(os.Stdout, result, *unitID, *jsonOutput)
 	case "retranslation review":
 		if len(args) < 3 || (args[2] != "check" && args[2] != "scope" && args[2] != "record" && args[2] != "record-batch" && args[2] != "supersede") {
 			return fmt.Errorf("usage: tour-i18n retranslation review <check|scope|record|record-batch|supersede> ...")
@@ -836,7 +838,11 @@ func loadProjectEnv(root string) error {
 }
 
 func printJSON(value any) error {
-	encoder := json.NewEncoder(os.Stdout)
+	return writeJSON(os.Stdout, value)
+}
+
+func writeJSON(w io.Writer, value any) error {
+	encoder := json.NewEncoder(w)
 	encoder.SetIndent("", "  ")
 	return encoder.Encode(value)
 }
@@ -868,6 +874,42 @@ func printRetranslationProcessSummary(result *i18n.RetranslationProcessResult) {
 		}
 		fmt.Println()
 	}
+}
+
+func writeRetranslationRetryOutput(w io.Writer, result *i18n.RetranslationProcessResult, unitID string, jsonOutput bool) error {
+	if jsonOutput {
+		return writeJSON(w, result)
+	}
+	var target *i18n.RetranslationUnitResult
+	for i := range result.Units {
+		if result.Units[i].UnitID == unitID {
+			target = &result.Units[i]
+			break
+		}
+	}
+	if target == nil {
+		return fmt.Errorf("retry result does not contain translation unit %q", unitID)
+	}
+	overall := "PASS"
+	if target.Status != "passed" {
+		overall = "FAILED"
+	}
+	fmt.Fprintf(w, "重译重试：%s\n", overall)
+	fmt.Fprintf(w, "batch_id: %s\nlocale: %s\nunit_id: %s\nattempt: %d\nstatus: %s\n", result.BatchID, result.Locale, target.UnitID, result.RetryAttempt, target.Status)
+	fmt.Fprintf(w, "unit_count: %d\nrestore_passed: %d\nrestore_failed: %d\nvalidation_passed: %d\nvalidation_failed: %d\n",
+		result.UnitCount, result.RestorePassed, result.RestoreFailed, result.ValidationPassed, result.ValidationFailed)
+	if target.Status == "passed" {
+		return nil
+	}
+	fmt.Fprintf(w, "失败 Unit：unit_id=%s status=%s validation_path=%s", target.UnitID, target.Status, target.ValidationPath)
+	if target.CandidatePath != "" {
+		fmt.Fprintf(w, " candidate_path=%s", target.CandidatePath)
+	}
+	if target.Error != "" {
+		fmt.Fprintf(w, " reason=%q", target.Error)
+	}
+	fmt.Fprintln(w)
+	return nil
 }
 
 func printQualityCheckScopeSummary(scope *i18n.QualityCheckScope) {

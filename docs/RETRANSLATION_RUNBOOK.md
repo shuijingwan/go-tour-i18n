@@ -52,7 +52,7 @@ go run -mod=readonly ./cmd/tour-i18n retranslation process --locale <locale>
 
 Automatic validation 只负责结构、保护 token、代码、链接、source identity 等机器安全性，不能替代翻译质量检查。
 
-`retranslation export`、`retranslation process`、`quality-check scope` 与 `retranslation review scope` 默认输出适合复制的人类摘要；成功 Unit、reusable Unit 和 carry-forward Unit 不逐条展开，失败 Unit 保留原因与 evidence path，scope 最多显示本轮 30 个 pending Unit。已有机器调用方应显式传 `--json` 获取完整稳定 JSON；JSON 写 stdout，错误与诊断写 stderr。
+`retranslation export`、`retranslation process`、`retranslation retry`、`quality-check scope` 与 `retranslation review scope` 默认输出适合复制的人类摘要；成功 Unit、reusable Unit 和 carry-forward Unit 不逐条展开，失败 Unit 保留原因与 evidence path，scope 最多显示本轮 30 个 pending Unit。已有机器调用方应显式传 `--json` 获取完整稳定 JSON；JSON 写 stdout，错误与诊断写 stderr。
 
 ### 提交前 whitespace 检查与 EOF 契约
 
@@ -93,6 +93,8 @@ go run -mod=readonly ./cmd/tour-i18n retranslation retry \
 ```
 
 `retranslation retry` 本身不调用模型、不生成或改写译文；它只处理已经存在的 retry raw response，归档前一份 validation，并更新目标 unit 的 candidate、validation 与 batch 汇总。
+
+`retranslation retry` 默认只输出目标 Unit 的 PASS/FAILED、当前 attempt/status 和整个 batch 的 restore/validation 汇总，不展开 batch 中的全部成功 Unit；失败时同时显示当前失败原因及 candidate/validation evidence path。需要完整 `RetranslationProcessResult` JSON（包括 `units` 数组）的机器调用方必须显式传 `--json`。
 
 ## 5. Candidate Snapshot
 

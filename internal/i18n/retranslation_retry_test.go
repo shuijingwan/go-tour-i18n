@@ -135,7 +135,7 @@ func TestRetranslationRetryUnitIDPage(t *testing.T) {
 	validRaw, _ := os.ReadFile(filepath.Join(batchDir, "inputs", "lesson-1.article"))
 	writeRetryRaw(t, root, batchID, "lesson/1", 2, string(validRaw))
 	result, err := ProcessRetranslationRetry(root, catalog, RetranslationRetryOptions{Locale: "zh-CN", BatchID: batchID, UnitID: "lesson/1"})
-	if err != nil || result.ValidationPassed != 1 {
+	if err != nil || result.ValidationPassed != 1 || result.RetryAttempt != 2 {
 		t.Fatalf("page --unit-id result=%+v err=%v", result, err)
 	}
 	if _, err := os.Stat(filepath.Join(batchDir, "retries", "lesson-1", "attempt-002.article")); err != nil {
@@ -334,6 +334,9 @@ func TestRetranslationRetryLifecyclePreservesEvidenceAndOtherPages(t *testing.T)
 	if result.Units[0].Status != "restore_failed" || result.RestoreFailed != 1 || result.ValidationPassed != 1 {
 		t.Fatalf("attempt 2 result = %+v", result)
 	}
+	if result.Units[0].Error == "" {
+		t.Fatalf("attempt 2 current error was not recorded: %+v", result.Units[0])
+	}
 	history1, _ := os.ReadFile(filepath.Join(batchDir, "retries", "lesson-1", "attempt-001-validation.json"))
 	if string(history1) != string(originalValidation) {
 		t.Fatal("attempt-001 validation history differs")
@@ -355,22 +358,46 @@ func TestRetranslationRetryLifecyclePreservesEvidenceAndOtherPages(t *testing.T)
 	if result.Units[0].Status != "validation_failed" || result.ValidationFailed != 1 {
 		t.Fatalf("attempt 3 result = %+v", result)
 	}
+	if !strings.Contains(result.Units[0].Error, "inline code") {
+		t.Fatalf("attempt 3 current error = %q", result.Units[0].Error)
+	}
+	failedStoredData, err := os.ReadFile(filepath.Join(batchDir, "result.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	failedStored, err := decodeRetranslationProcessResult(failedStoredData)
+	if err != nil || !strings.Contains(failedStored.Units[0].Error, "inline code") {
+		t.Fatalf("persisted attempt 3 result=%+v err=%v", failedStored, err)
+	}
 
 	writeRetryRaw(t, root, batchID, "lesson/1", 4, string(validRaw))
 	result, err = ProcessRetranslationRetry(root, catalog, RetranslationRetryOptions{Locale: "zh-CN", BatchID: batchID, UnitID: "lesson/1"})
 	if err != nil {
 		t.Fatal(err)
 	}
-	if result.RestorePassed != 2 || result.RestoreFailed != 0 || result.ValidationPassed != 2 || result.ValidationFailed != 0 || result.Units[0].Status != "passed" {
+	if result.RestorePassed != 2 || result.RestoreFailed != 0 || result.ValidationPassed != 2 || result.ValidationFailed != 0 || result.Units[0].Status != "passed" || result.Units[0].Error != "" || result.RetryAttempt != 4 {
 		t.Fatalf("attempt 4 result = %+v", result)
 	}
 	validation, _ := os.ReadFile(filepath.Join(batchDir, "validation", "lesson-1.json"))
-	if !strings.Contains(string(validation), `"raw_response_path": "retries/lesson-1/attempt-004.article"`) {
+	if !strings.Contains(string(validation), `"raw_response_path": "retries/lesson-1/attempt-004.article"`) || strings.Contains(string(validation), `"error"`) {
 		t.Fatalf("final validation = %s", validation)
 	}
+	storedData, err := os.ReadFile(filepath.Join(batchDir, "result.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	stored, err := decodeRetranslationProcessResult(storedData)
+	if err != nil || stored.Units[0].Status != "passed" || stored.Units[0].Error != "" {
+		t.Fatalf("persisted final result=%+v err=%v", stored, err)
+	}
 	for attempt := 1; attempt <= 3; attempt++ {
-		if _, err := os.Stat(filepath.Join(batchDir, "retries", "lesson-1", "attempt-"+fmtAttempt(attempt)+"-validation.json")); err != nil {
+		historyPath := filepath.Join(batchDir, "retries", "lesson-1", "attempt-"+fmtAttempt(attempt)+"-validation.json")
+		history, err := os.ReadFile(historyPath)
+		if err != nil {
 			t.Fatalf("missing validation history %d: %v", attempt, err)
+		}
+		if !strings.Contains(string(history), `"error"`) {
+			t.Fatalf("validation history %d lost its failure: %s", attempt, history)
 		}
 	}
 	for path, before := range map[string][]byte{otherCandidatePath: otherCandidate, otherValidationPath: otherValidation} {
