@@ -1,0 +1,7 @@
+* 연습문제: Stringer
+
+주소를 점으로 구분된 네 숫자로 출력하도록 `IPAddr` 타입이 `fmt.Stringer` 를 구현하게 만드세요.
+
+예를 들어 `IPAddr{1,`2,`3,`4}` 는 `"1.2.3.4"` 로 출력되어야 합니다.
+
+.play methods/exercise-stringer.go

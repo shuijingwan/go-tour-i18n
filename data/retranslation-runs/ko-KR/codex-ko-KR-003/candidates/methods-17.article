@@ -1,0 +1,11 @@
+* Stringer
+
+가장 널리 사용되는 인터페이스 중 하나는 [[/pkg/fmt/#Stringer][`Stringer`]]이며, [[/pkg/fmt/][`fmt`]] 패키지에 정의되어 있습니다.
+
+	type Stringer interface {
+		String() string
+	}
+
+`Stringer` 는 자신을 문자열로 설명할 수 있는 타입입니다. `fmt` 패키지와 그 밖의 많은 패키지는 값을 출력하기 위해 이 인터페이스를 찾습니다.
+
+.play methods/stringer.go

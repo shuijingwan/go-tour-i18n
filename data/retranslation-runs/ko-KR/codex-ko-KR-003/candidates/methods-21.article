@@ -1,0 +1,15 @@
+* Reader
+
+`io` 패키지는 데이터 스트림에서 읽는 쪽을 나타내는 `io.Reader` 인터페이스를 정의합니다.
+
+Go 표준 라이브러리에는 파일, 네트워크 연결, 압축기, 암호화 처리기 등을 포함하여 이 인터페이스의 [[https://cs.opensource.google/search?q=Read%5C(%5Cw%2B%5Cs%5C%5B%5C%5Dbyte%5C)&ss=go%2Fgo][구현이 많이]] 있습니다.
+
+`io.Reader` 인터페이스에는 `Read` 메서드가 있습니다.
+
+	func (T) Read(b []byte) (n int, err error)
+
+`Read` 는 주어진 바이트 슬라이스를 데이터로 채우고, 채운 바이트 수와 오류 값을 반환합니다. 스트림이 끝나면 `io.EOF` 오류를 반환합니다.
+
+예제 코드는 [[/pkg/strings/#Reader][`strings.Reader`]]를 만들고 그 출력을 한 번에 8바이트씩 읽습니다.
+
+.play methods/reader.go
