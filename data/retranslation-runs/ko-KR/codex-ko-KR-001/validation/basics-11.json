@@ -5,10 +5,9 @@
   "unit_id": "basics/11",
   "unit_kind": "page",
   "source_sha256": "836ab1dd659798dcf5e90f283c4ee794aed1d2cf0766c2ccc268fa91684e9d05",
-  "attempt": 1,
-  "status": "validation_failed",
+  "attempt": 2,
+  "status": "passed",
   "input_path": "inputs/basics-11.article",
-  "raw_response_path": "raw-responses/basics-11.article",
-  "candidate_path": "candidates/basics-11.article",
-  "error": "basics/11: protected structure validation failed: preformatted code block mismatch at index 1: line comment mismatch at index 1: referenced Go identifier count mismatch: expected 1, actual 0; check the named directive or protected content near the first difference"
+  "raw_response_path": "retries/basics-11/attempt-002.article",
+  "candidate_path": "candidates/basics-11.article"
 }

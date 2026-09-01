@@ -5,8 +5,8 @@
   "unit_count": 30,
   "restore_passed": 30,
   "restore_failed": 0,
-  "validation_passed": 28,
-  "validation_failed": 2,
+  "validation_passed": 30,
+  "validation_failed": 0,
   "units": [
     {
       "unit_id": "welcome/1",
@@ -116,10 +116,9 @@
     {
       "unit_id": "basics/11",
       "unit_kind": "page",
-      "status": "validation_failed",
+      "status": "passed",
       "candidate_path": "candidates/basics-11.article",
-      "validation_path": "validation/basics-11.json",
-      "error": "basics/11: protected structure validation failed: preformatted code block mismatch at index 1: line comment mismatch at index 1: referenced Go identifier count mismatch: expected 1, actual 0; check the named directive or protected content near the first difference"
+      "validation_path": "validation/basics-11.json"
     },
     {
       "unit_id": "basics/12",
@@ -138,10 +137,9 @@
     {
       "unit_id": "basics/14",
       "unit_kind": "page",
-      "status": "validation_failed",
+      "status": "passed",
       "candidate_path": "candidates/basics-14.article",
-      "validation_path": "validation/basics-14.json",
-      "error": "basics/14: protected structure validation failed: preformatted code block mismatch at index 1: line comment mismatch at index 1: referenced Go identifier count mismatch: expected 2, actual 0; check the named directive or protected content near the first difference"
+      "validation_path": "validation/basics-14.json"
     },
     {
       "unit_id": "basics/15",
