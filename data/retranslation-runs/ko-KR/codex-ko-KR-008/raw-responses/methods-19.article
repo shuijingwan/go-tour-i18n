@@ -1,0 +1,17 @@
+* 오류
+
+⟪GTI18N_9eaab1fd_000001⟫ 프로그램은 ⟪GTI18N_9eaab1fd_000002⟫error⟪GTI18N_9eaab1fd_000003⟫ 값으로 오류 상태를 표현합니다.
+
+⟪GTI18N_9eaab1fd_000004⟫error⟪GTI18N_9eaab1fd_000005⟫ 타입은 ⟪GTI18N_9eaab1fd_000006⟫fmt.Stringer⟪GTI18N_9eaab1fd_000007⟫ 인터페이스와 비슷한 내장 인터페이스입니다.
+
+⟪GTI18N_9eaab1fd_000008⟫
+
+(⟪GTI18N_9eaab1fd_000009⟫fmt.Stringer⟪GTI18N_9eaab1fd_000010⟫ 인터페이스와 마찬가지로, ⟪GTI18N_9eaab1fd_000011⟫fmt⟪GTI18N_9eaab1fd_000012⟫ 패키지는 값을 출력할 때 ⟪GTI18N_9eaab1fd_000013⟫error⟪GTI18N_9eaab1fd_000014⟫ 인터페이스의 구현 여부를 확인합니다.)
+
+함수는 ⟪GTI18N_9eaab1fd_000015⟫error⟪GTI18N_9eaab1fd_000016⟫ 값을 반환하는 경우가 많습니다. 호출하는 코드는 오류 값을 ⟪GTI18N_9eaab1fd_000017⟫nil⟪GTI18N_9eaab1fd_000018⟫ 상태와 비교하여 오류를 처리해야 합니다.
+
+⟪GTI18N_9eaab1fd_000019⟫
+
+nil 상태의 ⟪GTI18N_9eaab1fd_000020⟫error⟪GTI18N_9eaab1fd_000021⟫ 값은 성공을 나타내고, nil이 아닌 ⟪GTI18N_9eaab1fd_000022⟫error⟪GTI18N_9eaab1fd_000023⟫ 값은 실패를 나타냅니다.
+
+⟪GTI18N_9eaab1fd_000024⟫

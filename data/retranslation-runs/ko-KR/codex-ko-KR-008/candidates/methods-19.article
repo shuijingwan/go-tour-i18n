@@ -1,0 +1,24 @@
+* 오류
+
+Go 프로그램은 `error` 값으로 오류 상태를 표현합니다.
+
+`error` 타입은 `fmt.Stringer` 인터페이스와 비슷한 내장 인터페이스입니다.
+
+	type error interface {
+		Error() string
+	}
+
+(`fmt.Stringer` 인터페이스와 마찬가지로, `fmt` 패키지는 값을 출력할 때 `error` 인터페이스의 구현 여부를 확인합니다.)
+
+함수는 `error` 값을 반환하는 경우가 많습니다. 호출하는 코드는 오류 값을 `nil` 상태와 비교하여 오류를 처리해야 합니다.
+
+	i, err := strconv.Atoi("42")
+	if err != nil {
+		fmt.Printf("couldn't convert number: %v\n", err)
+		return
+	}
+	fmt.Println("Converted integer:", i)
+
+nil 상태의 `error` 값은 성공을 나타내고, nil이 아닌 `error` 값은 실패를 나타냅니다.
+
+.play methods/errors.go
