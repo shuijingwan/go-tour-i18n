@@ -5,8 +5,8 @@
   "unit_count": 19,
   "restore_passed": 19,
   "restore_failed": 0,
-  "validation_passed": 18,
-  "validation_failed": 1,
+  "validation_passed": 19,
+  "validation_failed": 0,
   "units": [
     {
       "unit_id": "example:basics/numeric-constants.go",
@@ -39,10 +39,9 @@
     {
       "unit_id": "example:concurrency/exercise-web-crawler.go",
       "unit_kind": "example",
-      "status": "validation_failed",
+      "status": "passed",
       "candidate_path": "candidates/concurrency-exercise-web-crawler.go",
-      "validation_path": "validation/concurrency-exercise-web-crawler.json",
-      "error": "示例翻译单元 example:concurrency/exercise-web-crawler.go 的普通注释 3 glossary.keep 发生变化: source=[] candidate=[URL]"
+      "validation_path": "validation/concurrency-exercise-web-crawler.json"
     },
     {
       "unit_id": "example:concurrency/mutex-counter.go",
