@@ -43,6 +43,8 @@
 
 `keep` 正式表示 do-not-translate：对象以其对应技术身份出现在普通、可翻译的自然语言区域中时，仍必须保持规范原始形式，不得本地化。
 
+keep 保护的是规范技术 identity，不要求目标语言复制英语语法词尾。对于 `URL`、`API` 一类全大写 ASCII 技术标识，英语 source 中的 `URLs`、`APIs` 分别表示技术 identity `URL`、`API` 加英语复数后缀 `s`；目标语言只须逐字保持规范技术 identity，并按自身语法表达数量、格或其他关系。例如 ko-KR 的 `URL을`、`URL들을`、`여러 URL을` 都保持了 `URL` identity，不要求写成 `URLs을`。这不允许改变 identity 的 ASCII 字节或大小写，也不建立通用 stemming、`es` / `ies` 推断或任意后缀剥离规则。
+
 keep 不是代码保护列表。一个对象只有同时满足以下条件，才应考虑进入 keep：
 
 1. 它会出现在可翻译的自然语言区域；
@@ -238,7 +240,7 @@ Locale glossary 决定目标语言中的自然语言译法。例如 zh-CN 包括
 
 ### 9.1 当前 glossary 实现
 
-当前 `locales/zh-CN/glossary.yaml` 声明了：
+当前 locale glossary 可以声明：
 
 - `mandatory`；
 - `preferred`；
@@ -246,22 +248,23 @@ Locale glossary 决定目标语言中的自然语言译法。例如 zh-CN 包括
 - `forbidden`；
 - `keep`。
 
-但当前 loader 实际只解析：
+当前 loader 实际解析并校验：
 
 - `mandatory`；
 - `preferred`；
-- `forbidden`。
+- `forbidden`；
+- `keep`。
 
-`terms` 当前未加载，YAML 中的 `keep` 当前也未加载。当前实际 keep 来源是翻译保护代码中的硬编码规则，而不是 YAML keep。因此不得声称修改 YAML keep 就会改变当前运行时行为，也不得声称本文所有政策已经由代码自动保证。
+`PromptRules` 会把已加载的 `keep` 作为“保持原样；不得翻译”规则提供给翻译任务。默认 protector 会在适用的开放自然语言区域保护精确 keep 表面形式；Example candidate validator 会逐普通注释比较 keep identity，并对全大写 ASCII 技术标识支持窄的英语单个小写复数后缀 `s` 归一化。该归一化只属于 Example validation，不改变共享 protector、protected input 或 Page validation。
+
+`terms` 是为历史 locale 文件保留的兼容 section，当前仍不加载其映射。不得因为某项政策存在，就推断 validator 已自动覆盖所有正文或 locale surface。
 
 ### 9.2 已知实现缺口
 
 后续独立实现阶段需要：
 
 1. 决定 `terms` 是否保留独立语义，或并入 `preferred` / `mandatory`；
-2. 决定 YAML keep 是否成为唯一配置源；
-3. 消除 YAML keep 与翻译保护代码硬编码的双份维护；
-4. 根据正式政策决定 validator 是否需要增加必要且可可靠执行的检查。
+2. 根据正式政策继续评估 validator 尚未覆盖、且适合可靠自动判断的术语检查。
 
 本文档不决定具体代码修复方式。
 

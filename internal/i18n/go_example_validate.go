@@ -189,8 +189,62 @@ func goExampleKeepItems(payload string, glossary *Glossary) []string {
 	for _, span := range spans {
 		items = append(items, payload[span.start:span.end])
 	}
+	if glossary != nil {
+		for _, keep := range glossary.Keep {
+			if !isUpperASCIITechnicalKeep(keep) {
+				continue
+			}
+			plural := keep + "s"
+			for offset := 0; offset < len(payload); {
+				relative := strings.Index(payload[offset:], plural)
+				if relative < 0 {
+					break
+				}
+				start := offset + relative
+				end := start + len(plural)
+				offset = start + 1
+				if !hasTranslationKeepBoundary(payload, start-1, start, nil) ||
+					!hasTranslationKeepBoundary(payload, end, end+1, nil) ||
+					protectedSpanOverlaps(spans, start, end) {
+					continue
+				}
+				items = append(items, keep)
+			}
+		}
+	}
 	sort.Strings(items)
 	return items
+}
+
+// isUpperASCIITechnicalKeep identifies the narrow keep class whose canonical
+// technical identity may carry one lowercase English plural suffix. Mixed-case
+// names and ordinary lowercase technical terms retain their exact configured
+// surface forms.
+func isUpperASCIITechnicalKeep(value string) bool {
+	if len(value) < 2 {
+		return false
+	}
+	letters := 0
+	for i := 0; i < len(value); i++ {
+		b := value[i]
+		switch {
+		case b >= 'A' && b <= 'Z':
+			letters++
+		case b >= '0' && b <= '9', b == '_':
+		default:
+			return false
+		}
+	}
+	return letters >= 2
+}
+
+func protectedSpanOverlaps(spans []protectedSpan, start, end int) bool {
+	for _, span := range spans {
+		if start < span.end && end > span.start {
+			return true
+		}
+	}
+	return false
 }
 
 func equalStrings(a, b []string) bool {
