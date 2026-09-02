@@ -384,21 +384,40 @@ if [[ -e $vhost || -L $vhost ]]; then
   actual_vhost_sha=$(sha256sum "$vhost"); actual_vhost_sha=${actual_vhost_sha%% *}
   [[ $actual_vhost_sha == "$expected_vhost_sha" ]] || fail 'existing vhost content is not the exact formal baseline'
 fi
-python3 - "$vhost" "$hostname" <<'PY' || fail 'production hostname is already declared by another Nginx vhost'
+set +e
+vhost_scan_output=$(python3 - "$vhost" "$hostname" <<'PY' 2>&1
 import pathlib,sys
 target=pathlib.Path(sys.argv[1]); hostname=sys.argv[2]
-hits=set()
-for path in target.parent.iterdir():
-    if not path.is_file():
-        continue
-    try: text=path.read_text(encoding='utf-8')
-    except (OSError,UnicodeError): continue
-    for raw in text.splitlines():
-        line=raw.split('#',1)[0].strip()
-        if line.startswith('server_name ') and hostname in line.removeprefix('server_name ').removesuffix(';').split():
-            hits.add(path)
-assert not hits or hits == {target}
+try:
+    hits=set()
+    for path in target.parent.iterdir():
+        if not path.is_file():
+            continue
+        try: text=path.read_text(encoding='utf-8')
+        except (OSError,UnicodeError): continue
+        for raw in text.splitlines():
+            line=raw.split('#',1)[0].strip()
+            if line.startswith('server_name '):
+                names=line[len('server_name '):]
+                if names.endswith(';'):
+                    names=names[:-1]
+                if hostname in names.split():
+                    hits.add(path)
+except Exception as exc:
+    sys.stderr.write('vhost hostname checker exception: {}\n'.format(exc))
+    raise SystemExit(2)
+if hits and hits != {target}:
+    sys.stderr.write('production hostname is declared by: {}\n'.format(', '.join(sorted(str(path) for path in hits))) )
+    raise SystemExit(10)
 PY
+)
+vhost_scan_status=$?
+set -e
+case $vhost_scan_status in
+  0) ;;
+  10) fail 'production hostname is already declared by another Nginx vhost';;
+  *) fail "Nginx vhost hostname checker failed: ${vhost_scan_output:-exit $vhost_scan_status}";;
+esac
 if [[ -e $cert || -L $cert || -e $key || -L $key ]]; then
   [[ -f $cert && ! -L $cert && -f $key && ! -L $key ]] || fail 'TLS certificate/key identity is partial or invalid'
   openssl x509 -in "$cert" -noout -checkhost "$hostname" >/dev/null || fail 'existing certificate does not cover hostname'

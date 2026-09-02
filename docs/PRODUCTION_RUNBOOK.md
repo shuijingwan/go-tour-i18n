@@ -13,6 +13,7 @@
 | 主机与登录 | 阿里云源站 `121.40.248.29`；部署脚本使用 SSH alias `aliyun`，远端生产运维账号为 root |
 | Web stack | OneinStack，唯一正式维护目录 `/root/oneinstack` |
 | Nginx | vhost 位于 `/usr/local/nginx/conf/vhost/`，证书/私钥位于 `/usr/local/nginx/conf/ssl/`；OneinStack executable 为 `/usr/local/nginx/sbin/nginx`，配置检查与重载使用 `/usr/local/nginx/sbin/nginx -t && service nginx reload` |
+| Python | aliyun 的 system/default `/usr/bin/python3` 为 Python 3.6.8；Alibaba Cloud Linux 3 的 dnf/yum 使用 `/usr/libexec/platform-python`（Python 3.6）。当前不升级或替换 system/platform Python，所有 aliyun production remote helper 必须兼容此实际基线。未来可单独评估升级日常 `/usr/bin/python3`，但不得直接替换 `platform-python`。zgocloud 当前为 Python 3.10.12。 |
 | TLS | Let's Encrypt，由 OneinStack 内部 acme.sh 与 Cloudflare DNS API（`cf` / `dns_cf`）管理，当前使用 `ec-256` |
 | 应用数据 | 每个 locale 使用独立 `/data/go-tour[-<locale>]/`，包含 `releases/`、原子 `current` symlink 和 `.deploy.lock` |
 | 进程管理 | systemd；service user 为 `go-tour`；每个 locale 使用独立 service 与 `127.0.0.1:<port>` |

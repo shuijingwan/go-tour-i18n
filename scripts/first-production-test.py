@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 
+import ast
 import importlib.util
 import json
 import pathlib
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -198,6 +200,40 @@ class FirstProductionTest(unittest.TestCase):
         self.assertIn('if ! "$nginx" -t; then', infrastructure)
         self.assertIn('"$nginx" -t && service nginx reload', infrastructure)
         self.assertNotIn("if ! nginx -t", infrastructure)
+
+    def test_aliyun_vhost_scanner_is_python36_compatible_and_separates_failures(self):
+        identity = FIRST.IDENTITY.load_identity(ROOT / "production" / "identity.json")
+        instance = FIRST.Orchestrator.__new__(FIRST.Orchestrator)
+        instance.profile = next(profile for profile in identity["locales"] if profile["locale"] == "ko-KR")
+        instance.shared = identity["shared"]
+        instance.release_name = "20260902-ko-KR-test"
+        instance.stage_passed = lambda stage: False
+        calls = []
+        instance.ssh = lambda host, script, args=(), **kwargs: calls.append(script) or "zone_id=test"
+        instance.aliyun_preflight()
+        remote = calls[0]
+        marker = 'python3 - "$vhost" "$hostname" <<\'PY\' 2>&1\n'
+        self.assertIn(marker, remote)
+        scanner = remote.split(marker, 1)[1].split('\nPY\n)', 1)[0]
+        ast.parse(scanner, feature_version=(3, 6))
+        self.assertNotIn("removeprefix", scanner)
+        self.assertNotIn("removesuffix", scanner)
+        self.assertIn("vhost_scan_status", remote)
+        self.assertIn("Nginx vhost hostname checker failed", remote)
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            target = root / "ko.conf"
+            target.write_text("server_name ko-go-dev.shuijingwanwq.com;\n", encoding="utf-8")
+            clean = subprocess.run([sys.executable, "-c", scanner, str(target), "ko-go-dev.shuijingwanwq.com"], capture_output=True, text=True)
+            self.assertEqual(clean.returncode, 0)
+            (root / "conflict.conf").write_text("server_name ko-go-dev.shuijingwanwq.com;\n", encoding="utf-8")
+            conflict = subprocess.run([sys.executable, "-c", scanner, str(target), "ko-go-dev.shuijingwanwq.com"], capture_output=True, text=True)
+            self.assertEqual(conflict.returncode, 10)
+            self.assertIn("production hostname is declared by:", conflict.stderr)
+        broken = subprocess.run([sys.executable, "-c", scanner, "/missing/vhost.conf", "ko-go-dev.shuijingwanwq.com"], capture_output=True, text=True)
+        self.assertEqual(broken.returncode, 2)
+        self.assertIn("vhost hostname checker exception:", broken.stderr)
 
     def test_shared_assets_freshness_reuses_public_core_after_current_export(self):
         source = (ROOT / "scripts" / "first-production.py").read_text(encoding="utf-8")
