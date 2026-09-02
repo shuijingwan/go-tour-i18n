@@ -1,0 +1,33 @@
+{
+  "schema_version": 2,
+  "batch_id": "codex-ko-KR-010",
+  "locale": "ko-KR",
+  "unit_count": 3,
+  "restore_passed": 3,
+  "restore_failed": 0,
+  "validation_passed": 3,
+  "validation_failed": 0,
+  "units": [
+    {
+      "unit_id": "example:basics/numeric-constants.go",
+      "unit_kind": "example",
+      "status": "passed",
+      "candidate_path": "candidates/basics-numeric-constants.go",
+      "validation_path": "validation/basics-numeric-constants.json"
+    },
+    {
+      "unit_id": "example:basics/type-inference.go",
+      "unit_kind": "example",
+      "status": "passed",
+      "candidate_path": "candidates/basics-type-inference.go",
+      "validation_path": "validation/basics-type-inference.json"
+    },
+    {
+      "unit_id": "example:concurrency/exercise-web-crawler.go",
+      "unit_kind": "example",
+      "status": "passed",
+      "candidate_path": "candidates/concurrency-exercise-web-crawler.go",
+      "validation_path": "validation/concurrency-exercise-web-crawler.json"
+    }
+  ]
+}
