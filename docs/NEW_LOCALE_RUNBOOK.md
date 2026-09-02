@@ -114,10 +114,18 @@ export
 
 ```sh
 go run -mod=readonly ./cmd/tour-i18n build --locale <locale>
-go run -mod=readonly ./cmd/tour-i18n preview --locale <locale>
+go run -mod=readonly ./cmd/tour-i18n preview \
+  --locale <locale> \
+  --http 127.0.0.1:0
 ```
 
-执行 [Locale Surface Review](LOCALE_SURFACE_REVIEW.md) 时，先以英文/source、目标资产和 glossary 为正式输入，完整审核 TranslationUnit 之外的 UI catalog、article metadata、首页及其他 locale-level 文案；不得用浏览器抽查替代。语言质量通过后，再在完整 preview 上验收首页、课程入口、列表、导航、语言选择器、编辑器、runtime message、SEO 以及桌面和移动端。
+命令打印实际 loopback URL 后，运行正式自动验收入口：
+
+```sh
+scripts/verify-preview-browser.py http://127.0.0.1:<port>/ <locale>
+```
+
+执行 [Locale Surface Review](LOCALE_SURFACE_REVIEW.md) 时，先以英文/source、目标资产和 glossary 为正式输入，完整审核 TranslationUnit 之外的 UI catalog、article metadata、首页及其他 locale-level 文案；不得用浏览器抽查替代。语言质量通过后，必须先使 automated preview acceptance 完整 PASS，再执行规范定义的极小 visual HUMAN gate。机器已经覆盖的 canonical、sitemap、language selector URL、Run / Format / Reset、SPA、`/socket` 和 desktop/mobile overflow 不由人工重复。
 
 正式审核记录写入 `data/locale-surface-reviews/<locale>/<review-id>.md`。发现 TranslationUnit 内容问题时，回到新的 revision batch 和完整 A-only 审核链；发现表层资产问题时，修正对应 locale 资产并重新执行受影响的 Surface Review。语言质量审核或 preview acceptance 未通过，不得 publish production bundle。
 

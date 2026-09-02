@@ -86,11 +86,12 @@ class FirstProductionTest(unittest.TestCase):
         self.assertEqual(captured[0][3]["playground_public_origin"], "https://play.go-dev.shuijingwanwq.com:8443")
 
     def test_browser_acceptance_checks_observable_behavior(self):
-        source = (ROOT / "scripts" / "verify-production-browser.py").read_text(encoding="utf-8")
+        source = (ROOT / "scripts" / "browser_acceptance.py").read_text(encoding="utf-8")
         for evidence in (
-            "formatted !=", "Reset did not restore source", "Run produced no browser-visible expected result",
+            "formatted !=", "Reset did not restore Angular model", "Reset did not restore CodeMirror view",
+            "Run produced no browser-visible expected result",
             "Playground POST Origin mismatch", "SPA next-page transition did not change route",
-            "unexpected page-level horizontal overflow", 'identity["canonical"] == identity["href"]',
+            "unexpected page-level horizontal overflow", 'identity["canonical"] == expected_canonical',
             'identity["origin"] == base.rstrip("/")',
         ):
             self.assertIn(evidence, source)

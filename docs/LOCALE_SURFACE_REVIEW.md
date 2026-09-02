@@ -69,6 +69,24 @@ Glossary 一致但忠实度、准确性或自然度不合格时，语言质量�
 
 广告不属于 Locale-level language quality review，也不扩展为 TranslationUnit 或语言质量 gate。preview rendered surface acceptance 不要求真实 AdSense；首次 production 的最终 rendered surface acceptance 由 production browser automation 检查 loader、course-ad mount、请求机会、layout 与 SPA，filled/unfilled 均允许，再以极小 visual HUMAN gate 确认整体观感。具体边界见[生产运维手册](PRODUCTION_RUNBOOK.md)。本规范不重复广告实现、共享回归或广告失败隔离测试细节。
 
+### Automated preview acceptance 与 visual HUMAN gate
+
+完整 locale preview 必须监听带显式端口的本机 loopback HTTP origin。命令打印实际 URL 后运行正式机器入口：
+
+```sh
+go run -mod=readonly ./cmd/tour-i18n preview \
+  --locale <locale> \
+  --http 127.0.0.1:0
+
+scripts/verify-preview-browser.py http://127.0.0.1:<port>/ <locale>
+```
+
+脚本从 `production/identity.json`、`data/tour-pages.tsv` 与 `internal/tour/languages.go` 读取权威 identity，fail closed 验证 preview loopback identity、正式 production canonical、关键 HTTP/SEO route、robots、完整 sitemap 及其全部本地映射、language selector、desktop/mobile rendered geometry、Run / Format / Reset、same-origin `/_/fmt` 与 `/_/compile`、SPA canonical/DOM 更新和 `/socket` 404。preview 不注入 production advertising 或 analytics；该入口不执行 AdSense、course-ad、production Playground Origin、CDN、TLS 或其他 production-only gate。
+
+Canonical 分为不可混淆的三层：preview 原始 HTTP `GET /tour/` 返回的 shell 必须 self-canonical 为正式 production origin 下的 `/tour/`，`GET /tour/list` 同理使用 `/tour/list`；preview 不加载 production prerender，因此原始 course route 返回 canonical 为 `/tour/` 的通用 Angular shell，不冒充 course-specific HTML。Angular 渲染后，`/tour/` 按唯一正式 route contract 跳转到 `/tour/welcome/1`，最终 pathname、`data-tour-rendered-route`、canonical、title 与正式 course description 必须精确对应该课程 route；其他受检 course route 不允许意外跳转。Production raw course HTML 仍由独立 prerender gate 要求 course self-canonical 与正式 description，本 preview 规则不降低该 gate。
+
+只有输出 `PREVIEW SURFACE ACCEPTANCE: PASS` 后才进入极小 **visual HUMAN gate**。人工只确认桌面与移动端整体排版观感正常，以及不存在自动 geometry 难以识别的视觉异常；不得再次人工检查 canonical、sitemap 数量、Run / Format / Reset、SPA、`/socket`、language selector URL 或脚本已覆盖的 desktop/mobile overflow。自动化不能替代 A 阶段语言质量审核，visual HUMAN gate 也不能替代自动验收。
+
 ### 1. 公共 UI 与页面 shell
 
 - UI catalog 渲染时无英文 fallback、缺失文案、错误 rich markup 或占位符泄漏；
@@ -97,7 +115,7 @@ language registry 是 build-time 输入，因此新增 locale 的首次 producti
 - Run、Format、Reset 的用词与 A 阶段审核通过的 target 一致；
 - Run 返回的运行中、成功、程序退出、编译错误、网络错误等可见 runtime message 正确显示；
 - Format 与 Reset 实际生效，状态反馈明确，不因文案长度破坏编辑器布局；
-- production 浏览器 Network 中 Run / Format 使用正式 Playground endpoint，CORS Origin 为当前 locale 的精确 production origin；`/socket` 不被启用。
+- preview 浏览器 Network 中 Run / Format 使用 same-origin `/_/compile` 与 `/_/fmt`，由 preview handler 代理到真实 Playground；production 浏览器继续使用正式 Playground endpoint，CORS Origin 为当前 locale 的精确 production origin；两者的 `/socket` 均不被启用。
 
 ### 5. SEO 与 production 可见身份
 
