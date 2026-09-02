@@ -1,0 +1,146 @@
+{
+  "schema_version": 2,
+  "batch_id": "codex-ko-KR-005",
+  "locale": "ko-KR",
+  "unit_count": 19,
+  "restore_passed": 19,
+  "restore_failed": 0,
+  "validation_passed": 18,
+  "validation_failed": 1,
+  "units": [
+    {
+      "unit_id": "example:basics/numeric-constants.go",
+      "unit_kind": "example",
+      "status": "passed",
+      "candidate_path": "candidates/basics-numeric-constants.go",
+      "validation_path": "validation/basics-numeric-constants.json"
+    },
+    {
+      "unit_id": "example:basics/type-inference.go",
+      "unit_kind": "example",
+      "status": "passed",
+      "candidate_path": "candidates/basics-type-inference.go",
+      "validation_path": "validation/basics-type-inference.json"
+    },
+    {
+      "unit_id": "example:concurrency/channels.go",
+      "unit_kind": "example",
+      "status": "passed",
+      "candidate_path": "candidates/concurrency-channels.go",
+      "validation_path": "validation/concurrency-channels.json"
+    },
+    {
+      "unit_id": "example:concurrency/exercise-equivalent-binary-trees.go",
+      "unit_kind": "example",
+      "status": "passed",
+      "candidate_path": "candidates/concurrency-exercise-equivalent-binary-trees.go",
+      "validation_path": "validation/concurrency-exercise-equivalent-binary-trees.json"
+    },
+    {
+      "unit_id": "example:concurrency/exercise-web-crawler.go",
+      "unit_kind": "example",
+      "status": "validation_failed",
+      "candidate_path": "candidates/concurrency-exercise-web-crawler.go",
+      "validation_path": "validation/concurrency-exercise-web-crawler.json",
+      "error": "示例翻译单元 example:concurrency/exercise-web-crawler.go 的普通注释 3 glossary.keep 发生变化: source=[] candidate=[URL]"
+    },
+    {
+      "unit_id": "example:concurrency/mutex-counter.go",
+      "unit_kind": "example",
+      "status": "passed",
+      "candidate_path": "candidates/concurrency-mutex-counter.go",
+      "validation_path": "validation/concurrency-mutex-counter.json"
+    },
+    {
+      "unit_id": "example:flowcontrol/if-and-else.go",
+      "unit_kind": "example",
+      "status": "passed",
+      "candidate_path": "candidates/flowcontrol-if-and-else.go",
+      "validation_path": "validation/flowcontrol-if-and-else.json"
+    },
+    {
+      "unit_id": "example:generics/index.go",
+      "unit_kind": "example",
+      "status": "passed",
+      "candidate_path": "candidates/generics-index.go",
+      "validation_path": "validation/generics-index.json"
+    },
+    {
+      "unit_id": "example:generics/list.go",
+      "unit_kind": "example",
+      "status": "passed",
+      "candidate_path": "candidates/generics-list.go",
+      "validation_path": "validation/generics-list.json"
+    },
+    {
+      "unit_id": "example:methods/exercise-reader.go",
+      "unit_kind": "example",
+      "status": "passed",
+      "candidate_path": "candidates/methods-exercise-reader.go",
+      "validation_path": "validation/methods-exercise-reader.json"
+    },
+    {
+      "unit_id": "example:methods/exercise-stringer.go",
+      "unit_kind": "example",
+      "status": "passed",
+      "candidate_path": "candidates/methods-exercise-stringer.go",
+      "validation_path": "validation/methods-exercise-stringer.json"
+    },
+    {
+      "unit_id": "example:methods/interfaces-are-satisfied-implicitly.go",
+      "unit_kind": "example",
+      "status": "passed",
+      "candidate_path": "candidates/methods-interfaces-are-satisfied-implicitly.go",
+      "validation_path": "validation/methods-interfaces-are-satisfied-implicitly.json"
+    },
+    {
+      "unit_id": "example:methods/interfaces.go",
+      "unit_kind": "example",
+      "status": "passed",
+      "candidate_path": "candidates/methods-interfaces.go",
+      "validation_path": "validation/methods-interfaces.json"
+    },
+    {
+      "unit_id": "example:moretypes/append.go",
+      "unit_kind": "example",
+      "status": "passed",
+      "candidate_path": "candidates/moretypes-append.go",
+      "validation_path": "validation/moretypes-append.json"
+    },
+    {
+      "unit_id": "example:moretypes/exercise-fibonacci-closure.go",
+      "unit_kind": "example",
+      "status": "passed",
+      "candidate_path": "candidates/moretypes-exercise-fibonacci-closure.go",
+      "validation_path": "validation/moretypes-exercise-fibonacci-closure.json"
+    },
+    {
+      "unit_id": "example:moretypes/pointers.go",
+      "unit_kind": "example",
+      "status": "passed",
+      "candidate_path": "candidates/moretypes-pointers.go",
+      "validation_path": "validation/moretypes-pointers.json"
+    },
+    {
+      "unit_id": "example:moretypes/slice-len-cap.go",
+      "unit_kind": "example",
+      "status": "passed",
+      "candidate_path": "candidates/moretypes-slice-len-cap.go",
+      "validation_path": "validation/moretypes-slice-len-cap.json"
+    },
+    {
+      "unit_id": "example:moretypes/slices-of-slice.go",
+      "unit_kind": "example",
+      "status": "passed",
+      "candidate_path": "candidates/moretypes-slices-of-slice.go",
+      "validation_path": "validation/moretypes-slices-of-slice.json"
+    },
+    {
+      "unit_id": "example:moretypes/struct-literals.go",
+      "unit_kind": "example",
+      "status": "passed",
+      "candidate_path": "candidates/moretypes-struct-literals.go",
+      "validation_path": "validation/moretypes-struct-literals.json"
+    }
+  ]
+}
