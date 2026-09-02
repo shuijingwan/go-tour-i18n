@@ -1,0 +1,21 @@
+* For
+
+⟪GTI18N_c6cd458b_000001⟫ has only one looping construct, the ⟪GTI18N_c6cd458b_000002⟫for⟪GTI18N_c6cd458b_000003⟫ loop.
+
+The basic ⟪GTI18N_c6cd458b_000004⟫for⟪GTI18N_c6cd458b_000005⟫ loop has three components separated by semicolons:
+
+- the init statement: executed before the first iteration
+- the condition expression: evaluated before every iteration
+- the post statement: executed at the end of every iteration
+
+The init statement will often be a variable declaration, and the
+variables declared there are visible only in the scope of the ⟪GTI18N_c6cd458b_000006⟫for⟪GTI18N_c6cd458b_000007⟫
+statement.
+
+The loop will stop iterating once the boolean condition evaluates to ⟪GTI18N_c6cd458b_000008⟫false⟪GTI18N_c6cd458b_000009⟫.
+
+⟪GTI18N_c6cd458b_000010⟫Note:⟪GTI18N_c6cd458b_000011⟫ Unlike other languages like C, Java, or JavaScript there are no parentheses
+surrounding the three components of the ⟪GTI18N_c6cd458b_000012⟫for⟪GTI18N_c6cd458b_000013⟫ statement and the braces ⟪GTI18N_c6cd458b_000014⟫{`}⟪GTI18N_c6cd458b_000015⟫ are
+always required.
+
+⟪GTI18N_c6cd458b_000016⟫
