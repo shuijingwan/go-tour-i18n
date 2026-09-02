@@ -1,0 +1,2216 @@
+{
+  "schema_version": 1,
+  "snapshot_id": "qc-001",
+  "locale": "ko-KR",
+  "glossary_path": "locales/ko-KR/glossary.yaml",
+  "glossary_sha256": "dcc0ad47b83965c6347daf9da6ecc9e7517136640d4ba9d1972743def7c97f39",
+  "unit_count": 122,
+  "page_count": 103,
+  "example_count": 19,
+  "units": [
+    {
+      "index": 1,
+      "unit_id": "welcome/1",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-001",
+      "source_path": "_content/tour/welcome.article",
+      "source_sha256": "1f581133d7fa40e6490418c6789a60a2f5e1de26c9c86d7eb6120cb58b145857",
+      "page_section": {
+        "article": "welcome.article",
+        "section_number": 1,
+        "source_title": "Hello, 世界",
+        "route": "/welcome/1"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-001/candidates/welcome-1.article",
+      "candidate_sha256": "3d85b1b6f116e059c8f0c98ae7d28bde463789c5ac6ae027d90022a5f72b47ff",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-001/validation/welcome-1.json",
+      "validation_sha256": "5675cd9644e048146097ecb33f7e89435b5f928f7245b9ead86083661ace7026",
+      "attempt": 1
+    },
+    {
+      "index": 2,
+      "unit_id": "welcome/2",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-001",
+      "source_path": "_content/tour/welcome.article",
+      "source_sha256": "c1c8c34dfe10b11b5cc72e1daae4336290d613bbbe5445012be949ab904fd3fa",
+      "page_section": {
+        "article": "welcome.article",
+        "section_number": 2,
+        "source_title": "Go local",
+        "route": "/welcome/2"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-001/candidates/welcome-2.article",
+      "candidate_sha256": "cb26040502f7d1e7dcaa72cad6cd82c44750408606c7b2409751a9c7e857541e",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-001/validation/welcome-2.json",
+      "validation_sha256": "31f8f4f84fb4208f1d6f7ec77401e61c334b908965562190d4884a0fd1602ea5",
+      "attempt": 1
+    },
+    {
+      "index": 3,
+      "unit_id": "welcome/4",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-001",
+      "source_path": "_content/tour/welcome.article",
+      "source_sha256": "bb517d4b577fdb446fd029c2998d2426663b94a68f4b4e494c59af421508f683",
+      "page_section": {
+        "article": "welcome.article",
+        "section_number": 3,
+        "source_title": "Go offline (optional)",
+        "route": "/welcome/3"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-001/candidates/welcome-4.article",
+      "candidate_sha256": "66f3f9f83e93f0c0d278004a681c934c394b5cc29f290f43715c349b7b204714",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-001/validation/welcome-4.json",
+      "validation_sha256": "4bacf54bde72e20d6b2d53c5e083b6bc111c3d665fc1f28b4081853c01bd2038",
+      "attempt": 1
+    },
+    {
+      "index": 4,
+      "unit_id": "welcome/5",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-001",
+      "source_path": "_content/tour/welcome.article",
+      "source_sha256": "19e6d7da57ca1d191c485754f3dd4ac87775c651b8c0ae8e05c03cbd9b225897",
+      "page_section": {
+        "article": "welcome.article",
+        "section_number": 4,
+        "source_title": "The Go Playground",
+        "route": "/welcome/4"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-001/candidates/welcome-5.article",
+      "candidate_sha256": "f77fb9ee05f08b3bfc69f54dd3ad9c69aad16d9a3b333808a1af3c1d1b6e77c9",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-001/validation/welcome-5.json",
+      "validation_sha256": "49c845bf7893a18bd6c7bc6199239dd3c68eb29b0c00a8df16fd8860d5da9330",
+      "attempt": 1
+    },
+    {
+      "index": 5,
+      "unit_id": "welcome/3",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-001",
+      "source_path": "_content/tour/welcome.article",
+      "source_sha256": "9a6983b2e50b2fa78ff4f65683210714aea1c1575418e36796c156950ec6330d",
+      "page_section": {
+        "article": "welcome.article",
+        "section_number": 5,
+        "source_title": "Congratulations",
+        "route": "/welcome/5"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-001/candidates/welcome-3.article",
+      "candidate_sha256": "52deb3673763e89be4e47769fbd85f07d2934c9e2588339afe2baf2d8c0f4f6c",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-001/validation/welcome-3.json",
+      "validation_sha256": "e65d1f1ac76185fb62bea48c1f972927e92a9d25911e53cf2017437cb5fa5456",
+      "attempt": 1
+    },
+    {
+      "index": 6,
+      "unit_id": "basics/1",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-001",
+      "source_path": "_content/tour/basics.article",
+      "source_sha256": "f769f12c0a028b2f0cd403d89ff39dd150405e9f2e4155875321522f08619fe0",
+      "page_section": {
+        "article": "basics.article",
+        "section_number": 1,
+        "source_title": "Packages",
+        "route": "/basics/1"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-001/candidates/basics-1.article",
+      "candidate_sha256": "da630edaf473d42525148d90304fc10a4d74c2bd532f0c5e2acf8735d177289b",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-001/validation/basics-1.json",
+      "validation_sha256": "94b3cdcaeee3bb1e81daeb3bdb9e40a35f63c972a12dcafbd664531883747f85",
+      "attempt": 1
+    },
+    {
+      "index": 7,
+      "unit_id": "basics/2",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-001",
+      "source_path": "_content/tour/basics.article",
+      "source_sha256": "3329c9bff5f7e2b9b1e161fdebfb3804ff57cf1fb11bd4327d228328bcfb3fd0",
+      "page_section": {
+        "article": "basics.article",
+        "section_number": 2,
+        "source_title": "Imports",
+        "route": "/basics/2"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-001/candidates/basics-2.article",
+      "candidate_sha256": "e5a2e9951514d70a51692b9e72cae8835efaa1ecd46dd8b5e6b7363686b7cb2d",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-001/validation/basics-2.json",
+      "validation_sha256": "351f32fe4f414ee25599ef460899be26092fc0a34fb202f1eaad85db3f22c394",
+      "attempt": 1
+    },
+    {
+      "index": 8,
+      "unit_id": "basics/3",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-001",
+      "source_path": "_content/tour/basics.article",
+      "source_sha256": "38b9c70e49184a24f63f6b12f8ba78e64c0b874ad2a6f9a5fe86267615fd1bf6",
+      "page_section": {
+        "article": "basics.article",
+        "section_number": 3,
+        "source_title": "Exported names",
+        "route": "/basics/3"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-001/candidates/basics-3.article",
+      "candidate_sha256": "41418cbbbad0fb19ad0354bc1e0fe5040b55cabdae06bafa610dad11462d0271",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-001/validation/basics-3.json",
+      "validation_sha256": "b6ff3001a52b9733e6713e90c0f6248471cdc815c7bdc7526f6f06101cb15bc2",
+      "attempt": 1
+    },
+    {
+      "index": 9,
+      "unit_id": "basics/4",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-001",
+      "source_path": "_content/tour/basics.article",
+      "source_sha256": "accf0562d9b759c9735500d5df0d74e8f90142ed96fe5ab2f5eedc6fbd6cf6f2",
+      "page_section": {
+        "article": "basics.article",
+        "section_number": 4,
+        "source_title": "Functions",
+        "route": "/basics/4"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-001/candidates/basics-4.article",
+      "candidate_sha256": "0b5d3402d71dfda6084e645dee1cbca4798a47fc3f1669714a7a7b91e639f02b",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-001/validation/basics-4.json",
+      "validation_sha256": "7e84e8a45894348e6c9d876a84e2f395000c9b62b889d9b7630e4e3540e1c6e3",
+      "attempt": 1
+    },
+    {
+      "index": 10,
+      "unit_id": "basics/5",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-001",
+      "source_path": "_content/tour/basics.article",
+      "source_sha256": "02e7feb341329e18143e18d533fe45381883a6ba6425abb09a847e2f0edf228a",
+      "page_section": {
+        "article": "basics.article",
+        "section_number": 5,
+        "source_title": "Functions continued",
+        "route": "/basics/5"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-001/candidates/basics-5.article",
+      "candidate_sha256": "d87ba098cb20acbdc2dafc635795059519e1257a6d1553d3d771d6a8792b8777",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-001/validation/basics-5.json",
+      "validation_sha256": "cce3f6a55bcf4e8863dada7b6341a9eba7cee3474802c7eb9c4a165491ae992f",
+      "attempt": 1
+    },
+    {
+      "index": 11,
+      "unit_id": "basics/6",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-001",
+      "source_path": "_content/tour/basics.article",
+      "source_sha256": "b3cb4b40115066443f265e3e5ebb9fc0fd6d080784c887328fce4d6b7891ba41",
+      "page_section": {
+        "article": "basics.article",
+        "section_number": 6,
+        "source_title": "Multiple results",
+        "route": "/basics/6"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-001/candidates/basics-6.article",
+      "candidate_sha256": "a850bd146938ac3c16c64701f1a49e9f5b9e8238d30bc1fa5f40b72a97427e28",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-001/validation/basics-6.json",
+      "validation_sha256": "b541704450255803bc9273ae55f3bf682e4fb54e2ef169b58baeb94368919cac",
+      "attempt": 1
+    },
+    {
+      "index": 12,
+      "unit_id": "basics/7",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-001",
+      "source_path": "_content/tour/basics.article",
+      "source_sha256": "1db20ae87ce5d9d4b20f15e4638ba2a3295a7ce781c961ef618982890fc562fa",
+      "page_section": {
+        "article": "basics.article",
+        "section_number": 7,
+        "source_title": "Named return values",
+        "route": "/basics/7"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-001/candidates/basics-7.article",
+      "candidate_sha256": "a280835967efbc264dbf3c6422757018f77f43aee29cdcfa36b55fd25103a948",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-001/validation/basics-7.json",
+      "validation_sha256": "8252d97dd26596cd3cb46f30fadada3ad4fd1ed8b7eaefbf049d208af3490e1b",
+      "attempt": 1
+    },
+    {
+      "index": 13,
+      "unit_id": "basics/8",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-001",
+      "source_path": "_content/tour/basics.article",
+      "source_sha256": "bcb1b5e17ed9dff3d46a7cd8119c0d2f9c3afbb70ca94d35fadeb4f75b4a9d13",
+      "page_section": {
+        "article": "basics.article",
+        "section_number": 8,
+        "source_title": "Variables",
+        "route": "/basics/8"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-001/candidates/basics-8.article",
+      "candidate_sha256": "d009282356270ddc387d6f053fe8ff28bc852e6496335827fb7e8c316b2bc6bb",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-001/validation/basics-8.json",
+      "validation_sha256": "99fc6c4cbfcc7ac744ed7add59bd77510717edbb8b6f84297a950f59a99b28c6",
+      "attempt": 1
+    },
+    {
+      "index": 14,
+      "unit_id": "basics/9",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-001",
+      "source_path": "_content/tour/basics.article",
+      "source_sha256": "d51c17ba355753484b96c0eefda9fcce9f6f041a8ae2bf3e96fd0ad0c44680cc",
+      "page_section": {
+        "article": "basics.article",
+        "section_number": 9,
+        "source_title": "Variables with initializers",
+        "route": "/basics/9"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-001/candidates/basics-9.article",
+      "candidate_sha256": "f8c362a20e61cb4f0464682d7723388cd1a4bf0f4a3a1065c78a05ed2ad41634",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-001/validation/basics-9.json",
+      "validation_sha256": "84b88ce203929feadf7c80d2c902753bfe9aca52a1a89e3dd4a5301fd4ac6b9b",
+      "attempt": 1
+    },
+    {
+      "index": 15,
+      "unit_id": "basics/10",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-001",
+      "source_path": "_content/tour/basics.article",
+      "source_sha256": "f402e8e89a186d3208df5e4d983604730e71ef6c68354755f72e4580d3d7f359",
+      "page_section": {
+        "article": "basics.article",
+        "section_number": 10,
+        "source_title": "Short variable declarations",
+        "route": "/basics/10"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-001/candidates/basics-10.article",
+      "candidate_sha256": "4a7b4920c97b3c26ed2e6a534dee0787ac77a91a22e4e7f4100393e88b6efbbe",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-001/validation/basics-10.json",
+      "validation_sha256": "e4cb7a71555cf78717d1d199c0643de1054fa2bcc38afe3ebbf5d2287cbc6163",
+      "attempt": 1
+    },
+    {
+      "index": 16,
+      "unit_id": "basics/11",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-001",
+      "source_path": "_content/tour/basics.article",
+      "source_sha256": "836ab1dd659798dcf5e90f283c4ee794aed1d2cf0766c2ccc268fa91684e9d05",
+      "page_section": {
+        "article": "basics.article",
+        "section_number": 11,
+        "source_title": "Basic types",
+        "route": "/basics/11"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-001/candidates/basics-11.article",
+      "candidate_sha256": "b8f40ab24555121fda69522801b0347653d95d0460571cd8e083406f3f9abe2e",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-001/validation/basics-11.json",
+      "validation_sha256": "1311d8b24ae6b1412265057e724c695bd9869d936ede766eeab173ac277b6e11",
+      "attempt": 2
+    },
+    {
+      "index": 17,
+      "unit_id": "basics/12",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-001",
+      "source_path": "_content/tour/basics.article",
+      "source_sha256": "d9ad62501c05359e7b2ac445fa92d629e11d6d378c2701b767abab76012a558e",
+      "page_section": {
+        "article": "basics.article",
+        "section_number": 12,
+        "source_title": "Zero values",
+        "route": "/basics/12"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-001/candidates/basics-12.article",
+      "candidate_sha256": "1af3c64558fd6b65b169844dc84ddba72f823b5af231a6864ec567ecdc2ccbd0",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-001/validation/basics-12.json",
+      "validation_sha256": "372fa4e84242be416bf31ff7e2a91ae955d4e77cfc02e594f16ba63acc8f10b0",
+      "attempt": 1
+    },
+    {
+      "index": 18,
+      "unit_id": "basics/13",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-001",
+      "source_path": "_content/tour/basics.article",
+      "source_sha256": "88e0e168f4c95fa4134198a32440b2d2fb1fac9aae535a9ee7148dbcda37e1b3",
+      "page_section": {
+        "article": "basics.article",
+        "section_number": 13,
+        "source_title": "Type conversions",
+        "route": "/basics/13"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-001/candidates/basics-13.article",
+      "candidate_sha256": "0a2c5737f11b0534180c5c015761ec8436987ab4f1cbcaf54de5f4ea16a6389d",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-001/validation/basics-13.json",
+      "validation_sha256": "6e59d00618ed8424b5f5a75e00ee14b7f32c32b2649c919a12a0465e0b4c5d08",
+      "attempt": 1
+    },
+    {
+      "index": 19,
+      "unit_id": "basics/14",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-001",
+      "source_path": "_content/tour/basics.article",
+      "source_sha256": "21c4077c25629545dee0313b8b6b03e709edc4a74e1d73d9f4c9b0a49e46f6b3",
+      "page_section": {
+        "article": "basics.article",
+        "section_number": 14,
+        "source_title": "Type inference",
+        "route": "/basics/14"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-001/candidates/basics-14.article",
+      "candidate_sha256": "15d2cea732e17e085b71be2a215c8320c654e8e1d559772136cfac49f43612b1",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-001/validation/basics-14.json",
+      "validation_sha256": "19f2351781c00d9e9838c31308ba0b8e3bc9974136315cf188ae766fbc4257bc",
+      "attempt": 2
+    },
+    {
+      "index": 20,
+      "unit_id": "basics/15",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-001",
+      "source_path": "_content/tour/basics.article",
+      "source_sha256": "964ac515c0860a54b3a7780d77c7b4862ca38b744ae1f6be4b155a4386e2a229",
+      "page_section": {
+        "article": "basics.article",
+        "section_number": 15,
+        "source_title": "Constants",
+        "route": "/basics/15"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-001/candidates/basics-15.article",
+      "candidate_sha256": "55a13506095ef04b38c5ffcc7b2155c5a86403262a4c196e870e47d7565679b8",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-001/validation/basics-15.json",
+      "validation_sha256": "d7b1eb6e00dd3ea16c803d827c653d9ab54169af05276d09bedae9f01a27ea5f",
+      "attempt": 1
+    },
+    {
+      "index": 21,
+      "unit_id": "basics/16",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-001",
+      "source_path": "_content/tour/basics.article",
+      "source_sha256": "0d502d48a15f7a70e257079d7db1ddafe088607110c1c06b17b4be50b362394a",
+      "page_section": {
+        "article": "basics.article",
+        "section_number": 16,
+        "source_title": "Numeric Constants",
+        "route": "/basics/16"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-001/candidates/basics-16.article",
+      "candidate_sha256": "43a631b77a0a9c8910ccabfbe0b47fbe2dcffe59b08f9c55465ce1a8853ca7b0",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-001/validation/basics-16.json",
+      "validation_sha256": "ef421705cdd7b71a75caa8e0286a5992611601491f27affba7faad4c5dd255db",
+      "attempt": 1
+    },
+    {
+      "index": 22,
+      "unit_id": "basics/17",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-001",
+      "source_path": "_content/tour/basics.article",
+      "source_sha256": "f565674b974c053924bf69ef83b709dc50931526ae7fa88e71543a5cd872a190",
+      "page_section": {
+        "article": "basics.article",
+        "section_number": 17,
+        "source_title": "Congratulations!",
+        "route": "/basics/17"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-001/candidates/basics-17.article",
+      "candidate_sha256": "5443a5b701d27b923580451eef07d56c7c6014b941d1c616e168a6a1192f1ac0",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-001/validation/basics-17.json",
+      "validation_sha256": "fcc9c6f8ef9e98e802814b985733cc665cfd0252ccfcd2bc4abe3f9b5afdd3f5",
+      "attempt": 1
+    },
+    {
+      "index": 23,
+      "unit_id": "flowcontrol/1",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-001",
+      "source_path": "_content/tour/flowcontrol.article",
+      "source_sha256": "c6cd458bda99bffc7b753e122c56575a59508586054180be1f8d7bb1fe2391df",
+      "page_section": {
+        "article": "flowcontrol.article",
+        "section_number": 1,
+        "source_title": "For",
+        "route": "/flowcontrol/1"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-001/candidates/flowcontrol-1.article",
+      "candidate_sha256": "26152b862ed5100cc9c1700b5a1153a1d0b8f21b07f2c4ac9cba817c5555e6c3",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-001/validation/flowcontrol-1.json",
+      "validation_sha256": "bf9724f86511e383f066e88b87a5f0bf982027fe2e61bcf3091004fc29354aef",
+      "attempt": 1
+    },
+    {
+      "index": 24,
+      "unit_id": "flowcontrol/2",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-001",
+      "source_path": "_content/tour/flowcontrol.article",
+      "source_sha256": "24a97abbb6db2b6a88017bf326a5968097263d8ba637805f2cf44c9fed25f9fe",
+      "page_section": {
+        "article": "flowcontrol.article",
+        "section_number": 2,
+        "source_title": "For continued",
+        "route": "/flowcontrol/2"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-001/candidates/flowcontrol-2.article",
+      "candidate_sha256": "3ea603535696c5b55b518bfdb4bc2452802a31eface0fa11ffe8bd2ccb9564f6",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-001/validation/flowcontrol-2.json",
+      "validation_sha256": "984159698d4c8d0802aba40ed588a8ddb9f1d1d422a76b0616c20a83c2065972",
+      "attempt": 1
+    },
+    {
+      "index": 25,
+      "unit_id": "flowcontrol/3",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-001",
+      "source_path": "_content/tour/flowcontrol.article",
+      "source_sha256": "3ed791cc935287ba6f5da4ba41f6ad84fdcbaef108ee364f769ae5204316bbb7",
+      "page_section": {
+        "article": "flowcontrol.article",
+        "section_number": 3,
+        "source_title": "For is Go's \"while\"",
+        "route": "/flowcontrol/3"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-001/candidates/flowcontrol-3.article",
+      "candidate_sha256": "d1e85e37ca2a6a5e8837d24c2dd75401b37cdb74a48709be007e961f86d0c5fa",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-001/validation/flowcontrol-3.json",
+      "validation_sha256": "cae586eb4d4a8e9da87f76e54a942c70a50a6e16e51a7c755f74d086fd004f6c",
+      "attempt": 1
+    },
+    {
+      "index": 26,
+      "unit_id": "flowcontrol/4",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-001",
+      "source_path": "_content/tour/flowcontrol.article",
+      "source_sha256": "5456c129ef71c60b7502efde65c81020aaf1fa8b9178086e99223a21f6207dc6",
+      "page_section": {
+        "article": "flowcontrol.article",
+        "section_number": 4,
+        "source_title": "Forever",
+        "route": "/flowcontrol/4"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-001/candidates/flowcontrol-4.article",
+      "candidate_sha256": "78e84c628d594455377003e91538171918ae6b96225669efbce56d8ea6080d36",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-001/validation/flowcontrol-4.json",
+      "validation_sha256": "0dc6b75ef481daf2b09533cce51b4fcf7f1c882bab2023b272fdc33ddd527b9c",
+      "attempt": 1
+    },
+    {
+      "index": 27,
+      "unit_id": "flowcontrol/5",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-001",
+      "source_path": "_content/tour/flowcontrol.article",
+      "source_sha256": "ce49f916c1ceb7296576ec6b8ec92524b9827be168e3f5eb2040c61fee70f639",
+      "page_section": {
+        "article": "flowcontrol.article",
+        "section_number": 5,
+        "source_title": "If",
+        "route": "/flowcontrol/5"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-001/candidates/flowcontrol-5.article",
+      "candidate_sha256": "7e8c1e59315adabbdd9a9f8fcd392cd008458c7bd7289fc37d42e9f2cf65fdb1",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-001/validation/flowcontrol-5.json",
+      "validation_sha256": "ae36a150f74a32747a7ad07758c8795f5e94e903c17115b4da321d360b66479f",
+      "attempt": 1
+    },
+    {
+      "index": 28,
+      "unit_id": "flowcontrol/6",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-001",
+      "source_path": "_content/tour/flowcontrol.article",
+      "source_sha256": "02e310262214f3c5ceca8bf63ecf2ec3934641a7e2638050479b739ce077031e",
+      "page_section": {
+        "article": "flowcontrol.article",
+        "section_number": 6,
+        "source_title": "If with a short statement",
+        "route": "/flowcontrol/6"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-001/candidates/flowcontrol-6.article",
+      "candidate_sha256": "ff5acfebff83d67469e0d0d27a75f1c56ebe6b1213f327c6cee2df22bf014ec5",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-001/validation/flowcontrol-6.json",
+      "validation_sha256": "f1fc96ad52f306b0ee284b34994632525de2c360c5eb4925caffc31c2dd11f4b",
+      "attempt": 1
+    },
+    {
+      "index": 29,
+      "unit_id": "flowcontrol/7",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-001",
+      "source_path": "_content/tour/flowcontrol.article",
+      "source_sha256": "8666746573ce7d0ea1c12ff24c4c8170a1961eedb0600ed73ab849b4758f797c",
+      "page_section": {
+        "article": "flowcontrol.article",
+        "section_number": 7,
+        "source_title": "If and else",
+        "route": "/flowcontrol/7"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-001/candidates/flowcontrol-7.article",
+      "candidate_sha256": "9bade3a60d7b93afc1d7450db02cc4dd6b22447325e531501a3534232165a94e",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-001/validation/flowcontrol-7.json",
+      "validation_sha256": "3d2f42ffc184a9c1b79db603d4b3c8cb3fe4ce372f8b8c79390ef92f4bef3ba0",
+      "attempt": 1
+    },
+    {
+      "index": 30,
+      "unit_id": "flowcontrol/8",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-001",
+      "source_path": "_content/tour/flowcontrol.article",
+      "source_sha256": "d8bbee8455ff59212ef432a08312f7c7703360367325a80df3719157200316e9",
+      "page_section": {
+        "article": "flowcontrol.article",
+        "section_number": 8,
+        "source_title": "Exercise: Loops and Functions",
+        "route": "/flowcontrol/8"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-001/candidates/flowcontrol-8.article",
+      "candidate_sha256": "99d6880feffd938b14c12fd13d8d64f8515c9f8003cc2bf1a52f7a6c0885342b",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-001/validation/flowcontrol-8.json",
+      "validation_sha256": "9265cc7f6bba1c440e3fc854ff89b438ba15c7aa43da0ba5aa21ce3387d3e32b",
+      "attempt": 1
+    },
+    {
+      "index": 31,
+      "unit_id": "flowcontrol/9",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-002",
+      "source_path": "_content/tour/flowcontrol.article",
+      "source_sha256": "abdc4c295fa7b4aec2616acf83badbbf2b581a9f62e41d03ca2ff984ebb6f7ed",
+      "page_section": {
+        "article": "flowcontrol.article",
+        "section_number": 9,
+        "source_title": "Switch",
+        "route": "/flowcontrol/9"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-002/candidates/flowcontrol-9.article",
+      "candidate_sha256": "0653861b61f802cde24ea69e97e66b971f5d1f76a2841d96ebb7e420254e4fc4",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-002/validation/flowcontrol-9.json",
+      "validation_sha256": "e634587b08e6bac108be68856a1e4f9dadc003b33f8162e7f0efbe0acc14d13c",
+      "attempt": 1
+    },
+    {
+      "index": 32,
+      "unit_id": "flowcontrol/10",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-002",
+      "source_path": "_content/tour/flowcontrol.article",
+      "source_sha256": "e1479cae56a87cddb9c447fc9fd32b0ee1f983058f7ee76554965abd21975ef4",
+      "page_section": {
+        "article": "flowcontrol.article",
+        "section_number": 10,
+        "source_title": "Switch evaluation order",
+        "route": "/flowcontrol/10"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-002/candidates/flowcontrol-10.article",
+      "candidate_sha256": "ae68d287143a65f1da5bdf51251486ba973412a9c66f9308d85464e68984744e",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-002/validation/flowcontrol-10.json",
+      "validation_sha256": "2a8d6eb4fd77921df5a80b21fad00ed282952e1c0a2fcdf6c3cdc09fe70152f4",
+      "attempt": 1
+    },
+    {
+      "index": 33,
+      "unit_id": "flowcontrol/11",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-002",
+      "source_path": "_content/tour/flowcontrol.article",
+      "source_sha256": "714b67f479583e47080cd0f38489f465a28c002938390c4155af6dfeebb9225b",
+      "page_section": {
+        "article": "flowcontrol.article",
+        "section_number": 11,
+        "source_title": "Switch with no condition",
+        "route": "/flowcontrol/11"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-002/candidates/flowcontrol-11.article",
+      "candidate_sha256": "1aa50248c3f8629b3491a277767e471656b2bd62dd1ef2164bf9ec5eef57013d",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-002/validation/flowcontrol-11.json",
+      "validation_sha256": "c56c4419e1f0b2946a0c815eaed1e3d77bc381dd54779d3d03d309b960d6d955",
+      "attempt": 1
+    },
+    {
+      "index": 34,
+      "unit_id": "flowcontrol/12",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-002",
+      "source_path": "_content/tour/flowcontrol.article",
+      "source_sha256": "fa23a1d6ebf12f11843d38fe79c413a9c19bfcaf305ae64b75c360db24a436ec",
+      "page_section": {
+        "article": "flowcontrol.article",
+        "section_number": 12,
+        "source_title": "Defer",
+        "route": "/flowcontrol/12"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-002/candidates/flowcontrol-12.article",
+      "candidate_sha256": "5a12ade530878886e8cd70c08f5bc6dd232dddca7b52e7c9eff83c26d26528f3",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-002/validation/flowcontrol-12.json",
+      "validation_sha256": "0678de12c79bd524455632c9786d95e1ab72d6edf2246c9c4eab2b9c2f7cde20",
+      "attempt": 1
+    },
+    {
+      "index": 35,
+      "unit_id": "flowcontrol/13",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-002",
+      "source_path": "_content/tour/flowcontrol.article",
+      "source_sha256": "73a02c24eb14597b3c5f53a09fc572f1a1f0c941adfc337c79fb14b492985fc1",
+      "page_section": {
+        "article": "flowcontrol.article",
+        "section_number": 13,
+        "source_title": "Stacking defers",
+        "route": "/flowcontrol/13"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-002/candidates/flowcontrol-13.article",
+      "candidate_sha256": "b8b8a92aea887cc3e282283880d671fe6d188498224e3df45f36b9ac21992b5e",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-002/validation/flowcontrol-13.json",
+      "validation_sha256": "529cb0892988373fc6f84e47ad96ee940f0b8e2eb62f1eeacfaacdaf1624cc19",
+      "attempt": 1
+    },
+    {
+      "index": 36,
+      "unit_id": "flowcontrol/14",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-002",
+      "source_path": "_content/tour/flowcontrol.article",
+      "source_sha256": "f565674b974c053924bf69ef83b709dc50931526ae7fa88e71543a5cd872a190",
+      "page_section": {
+        "article": "flowcontrol.article",
+        "section_number": 14,
+        "source_title": "Congratulations!",
+        "route": "/flowcontrol/14"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-002/candidates/flowcontrol-14.article",
+      "candidate_sha256": "5443a5b701d27b923580451eef07d56c7c6014b941d1c616e168a6a1192f1ac0",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-002/validation/flowcontrol-14.json",
+      "validation_sha256": "46faf70b96f16b77d3eb5bed50b4f41f423334228a3d565935b3fb8b4b28b267",
+      "attempt": 1
+    },
+    {
+      "index": 37,
+      "unit_id": "moretypes/1",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-002",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "7706eaf0d46acc79fdad3b7953e5571bf404551d71aaefafd8ba79f5761f9806",
+      "page_section": {
+        "article": "moretypes.article",
+        "section_number": 1,
+        "source_title": "Pointers",
+        "route": "/moretypes/1"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-002/candidates/moretypes-1.article",
+      "candidate_sha256": "8bc8e2f1a9a96524f638854004ac5642438200014b0267ca04bf67a5995c4307",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-002/validation/moretypes-1.json",
+      "validation_sha256": "14c587850f78d7a9d9523ad53d104e96b245fcb7e684a5d021d51ea61da13022",
+      "attempt": 1
+    },
+    {
+      "index": 38,
+      "unit_id": "moretypes/2",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-002",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "a18dfdaadb9739387cc9886b67e9bf920bf52ada62397a1812cfd302c64aed9b",
+      "page_section": {
+        "article": "moretypes.article",
+        "section_number": 2,
+        "source_title": "Structs",
+        "route": "/moretypes/2"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-002/candidates/moretypes-2.article",
+      "candidate_sha256": "077dd9ac0f7d43c22b83f35b904a561a8ab7cda1ae2d0a9899aa0d799d8b5a91",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-002/validation/moretypes-2.json",
+      "validation_sha256": "270e4ae2d8e1e417281ff7f45afd11da95d2e9d7f57fd9308f77ed1d5cce0a9f",
+      "attempt": 1
+    },
+    {
+      "index": 39,
+      "unit_id": "moretypes/3",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-002",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "0be9cb4a59a0d95526c208e5d8d96ebe6a15fd84b6e3a2ff9a07963226cb7b58",
+      "page_section": {
+        "article": "moretypes.article",
+        "section_number": 3,
+        "source_title": "Struct Fields",
+        "route": "/moretypes/3"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-002/candidates/moretypes-3.article",
+      "candidate_sha256": "e4b26ad257cd0d435165162d75e7a3f221bcf075b18156ad416f8973a044ef3c",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-002/validation/moretypes-3.json",
+      "validation_sha256": "c67dcdeaf6edb156bf8bd1c74f9c268ce371cb47bc5213e3e1849d8a4336e452",
+      "attempt": 1
+    },
+    {
+      "index": 40,
+      "unit_id": "moretypes/4",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-002",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "29695d334b6ff809e84ae8caeb7b9dc493143236783c07c16a83ecc64514c310",
+      "page_section": {
+        "article": "moretypes.article",
+        "section_number": 4,
+        "source_title": "Pointers to structs",
+        "route": "/moretypes/4"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-002/candidates/moretypes-4.article",
+      "candidate_sha256": "fc48a8de0e3427b5e7e10c0a9d9ce45373584bf2a8b871b0c02fe732b855c2a5",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-002/validation/moretypes-4.json",
+      "validation_sha256": "a4fe8eac327646bc403fc70f593a0a0fc99e7110679a5da1b9235a33eabd5892",
+      "attempt": 1
+    },
+    {
+      "index": 41,
+      "unit_id": "moretypes/5",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-002",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "cf9282456e2a91274c1b135a68fce58dd1590f6a2d7153f0619c97ded8bd00d1",
+      "page_section": {
+        "article": "moretypes.article",
+        "section_number": 5,
+        "source_title": "Struct Literals",
+        "route": "/moretypes/5"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-002/candidates/moretypes-5.article",
+      "candidate_sha256": "3f091621d307d0646fd9e8488eaf09905d8defafa6320f5dfa968e0ded4609bc",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-002/validation/moretypes-5.json",
+      "validation_sha256": "cf06fa344a99184f38477cece4d63507183698b943ffd919930db2adf99dffed",
+      "attempt": 1
+    },
+    {
+      "index": 42,
+      "unit_id": "moretypes/6",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-002",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "0ec503e46281eb8ff25ceba5b92c9f9c3b40517aeea77cf4878760ed0da9d29c",
+      "page_section": {
+        "article": "moretypes.article",
+        "section_number": 6,
+        "source_title": "Arrays",
+        "route": "/moretypes/6"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-002/candidates/moretypes-6.article",
+      "candidate_sha256": "d6fae796dbc5a00fb262956a441ac0af6073d94ecca26bec906b3d8c71aaf7ee",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-002/validation/moretypes-6.json",
+      "validation_sha256": "403ddbe4af9c8a06af3d8b7557bba93f7dbc4b062b07ca4e8d3edb574a9489ba",
+      "attempt": 1
+    },
+    {
+      "index": 43,
+      "unit_id": "moretypes/7",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-002",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "a169cf48dd659510ff7f1f8adfdbed5a247b51a1f7c3a45ae972f18921925033",
+      "page_section": {
+        "article": "moretypes.article",
+        "section_number": 7,
+        "source_title": "Slices",
+        "route": "/moretypes/7"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-002/candidates/moretypes-7.article",
+      "candidate_sha256": "c9bf92b2d50689f8c4332e375aec4ca2afe43fc871f23b8edcbd0e56ed18510d",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-002/validation/moretypes-7.json",
+      "validation_sha256": "0c4f80684ba0bcea9bbca1eef2fae9e3e365b68cd7033bf999705c00b4c18452",
+      "attempt": 1
+    },
+    {
+      "index": 44,
+      "unit_id": "moretypes/8",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-002",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "e577f9e98a9c871cdc6f39ecca1bdd0965c26da3b9ab6c2a7cab42b3b0f3a568",
+      "page_section": {
+        "article": "moretypes.article",
+        "section_number": 8,
+        "source_title": "Slices are like references to arrays",
+        "route": "/moretypes/8"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-002/candidates/moretypes-8.article",
+      "candidate_sha256": "e6d458fd136a9a81af1754b7ba5661aa5af3ea3799e2d3fb04c99b90dad827c1",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-002/validation/moretypes-8.json",
+      "validation_sha256": "e64fb0ace6e6f1e09184a0a12217f06768885a3021404a39013ce52f3ebf0035",
+      "attempt": 1
+    },
+    {
+      "index": 45,
+      "unit_id": "moretypes/9",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-002",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "fb79cf8caed7abc7dfd92e90cf1bcc11d547b8af96d224f30fefc995f98dbb0b",
+      "page_section": {
+        "article": "moretypes.article",
+        "section_number": 9,
+        "source_title": "Slice literals",
+        "route": "/moretypes/9"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-002/candidates/moretypes-9.article",
+      "candidate_sha256": "e69ca0c59a96fe1c146120bd315f7ad722303034300e54c5bb4add7847b87ee7",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-002/validation/moretypes-9.json",
+      "validation_sha256": "298141eb9ea500d3818a969c91a4a14c7f23e46980eef832db17cf1500c65c8d",
+      "attempt": 1
+    },
+    {
+      "index": 46,
+      "unit_id": "moretypes/10",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-002",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "36d1f92fc5e51cddcd26be7f74a875e60bf24633dd7c8689672fa23a6720e2a1",
+      "page_section": {
+        "article": "moretypes.article",
+        "section_number": 10,
+        "source_title": "Slice defaults",
+        "route": "/moretypes/10"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-002/candidates/moretypes-10.article",
+      "candidate_sha256": "dad31f75a941e9f70511d96d60c59af083ebc72bfee3959cb4777368b6d563c2",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-002/validation/moretypes-10.json",
+      "validation_sha256": "bf2f8f0b7fb12bc1329d1b226da9f7c18a131f08a62124b60ece3d60db9f925f",
+      "attempt": 1
+    },
+    {
+      "index": 47,
+      "unit_id": "moretypes/11",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-002",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "e2d7d69c946e5a01d8d0eab2e07a2bf35e23453a617d5e7602ff0af5c5866d8f",
+      "page_section": {
+        "article": "moretypes.article",
+        "section_number": 11,
+        "source_title": "Slice length and capacity",
+        "route": "/moretypes/11"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-002/candidates/moretypes-11.article",
+      "candidate_sha256": "0d88693960699252a2d8f5c232b1bff0c07e91473d47e131239a6871d883840b",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-002/validation/moretypes-11.json",
+      "validation_sha256": "e837fd1ffc307a5dd6823611455745003966ea261df7cc76e0c11a6a26b409b2",
+      "attempt": 1
+    },
+    {
+      "index": 48,
+      "unit_id": "moretypes/12",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-002",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "e7a4bb0d5e7928c2da06312d983eba2adb533b30299025f507df183f00fefc89",
+      "page_section": {
+        "article": "moretypes.article",
+        "section_number": 12,
+        "source_title": "Nil slices",
+        "route": "/moretypes/12"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-002/candidates/moretypes-12.article",
+      "candidate_sha256": "196de5a761356761c2b0a090023c056bd9a559eb546925b801dd2f969b7ac6ad",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-002/validation/moretypes-12.json",
+      "validation_sha256": "70ecf8598eaae0255d7b4c59d84943f80cedf43e4c718e4c5fcf2db2ece6ae1d",
+      "attempt": 1
+    },
+    {
+      "index": 49,
+      "unit_id": "moretypes/13",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-002",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "d057e6bf75421597d430ff52f844499b5828ab2c4b4c5148ad88b6b89326ac20",
+      "page_section": {
+        "article": "moretypes.article",
+        "section_number": 13,
+        "source_title": "Creating a slice with make",
+        "route": "/moretypes/13"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-002/candidates/moretypes-13.article",
+      "candidate_sha256": "35aca8dcecaffadf3513a289da4be22a54c5335d6914e98a91f0e962aceeb682",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-002/validation/moretypes-13.json",
+      "validation_sha256": "c0e5efb27760251f5d8f5622e3496cb570cd8c47da07b24ee263512d28d72d68",
+      "attempt": 1
+    },
+    {
+      "index": 50,
+      "unit_id": "moretypes/14",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-002",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "d8bee22c0382cf5fd5647c4d7106165d153cb15aaed8ec82e1f06e12ad0c73d1",
+      "page_section": {
+        "article": "moretypes.article",
+        "section_number": 14,
+        "source_title": "Slices of slices",
+        "route": "/moretypes/14"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-002/candidates/moretypes-14.article",
+      "candidate_sha256": "f6de1b1365c4322fa66ae9e570bdd3ee0bbb374e9f8a337d1ee65b7801950488",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-002/validation/moretypes-14.json",
+      "validation_sha256": "6067fd2676f87398e64d87468eb3191a06bac54c79e181db462f7b2c5916ba7e",
+      "attempt": 1
+    },
+    {
+      "index": 51,
+      "unit_id": "moretypes/15",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-002",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "f2fc257e7c5f118321acc3b75e946053601532d411e8540534280d7fba795289",
+      "page_section": {
+        "article": "moretypes.article",
+        "section_number": 15,
+        "source_title": "Appending to a slice",
+        "route": "/moretypes/15"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-002/candidates/moretypes-15.article",
+      "candidate_sha256": "3624ae363cbaff5c936d4f5e3e1f980ba7e6eccaf0970e133ebf613f50e522a2",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-002/validation/moretypes-15.json",
+      "validation_sha256": "499c49ace8b6ee28c21cf6b7b6a413d093926365729bc2a04775fa3770738be7",
+      "attempt": 1
+    },
+    {
+      "index": 52,
+      "unit_id": "moretypes/16",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-002",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "73fc46a2e049ce2ff4a4fc0595d717ed5d6e15b7093a6014509a48f501253186",
+      "page_section": {
+        "article": "moretypes.article",
+        "section_number": 16,
+        "source_title": "Range",
+        "route": "/moretypes/16"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-002/candidates/moretypes-16.article",
+      "candidate_sha256": "033e530229a447d11795ee93eb536f02572cd1b9dc3408f0db39ff6b45551c2d",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-002/validation/moretypes-16.json",
+      "validation_sha256": "f17493002c32605d662668c763e9d044c9a5a02f49f35c4f20cf04f4c305d17b",
+      "attempt": 1
+    },
+    {
+      "index": 53,
+      "unit_id": "moretypes/17",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-002",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "b52cca070f62a3ffeab3adf20f2745e1dd9aa2644a3985c23ac295e81e2c3bc9",
+      "page_section": {
+        "article": "moretypes.article",
+        "section_number": 17,
+        "source_title": "Range continued",
+        "route": "/moretypes/17"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-002/candidates/moretypes-17.article",
+      "candidate_sha256": "c3be4ae8ac32ec4527722f02eeea32a83f0fa341be9c0898677d88b8558a16d5",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-002/validation/moretypes-17.json",
+      "validation_sha256": "70e1b7fd13c66bd9cc3c47a54be3a0068ad9eb6bd3d772ba96af4508f6a43277",
+      "attempt": 1
+    },
+    {
+      "index": 54,
+      "unit_id": "moretypes/18",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-002",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "9c5fd763eaedec8e8bfb60f52713417ff247bc4467aa8a94412c55ab83c781ba",
+      "page_section": {
+        "article": "moretypes.article",
+        "section_number": 18,
+        "source_title": "Exercise: Slices",
+        "route": "/moretypes/18"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-002/candidates/moretypes-18.article",
+      "candidate_sha256": "3b4c3de0dd5ca14d5c5a76ed0993c77cf5f15cf63bb63881443f0536a09b1df6",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-002/validation/moretypes-18.json",
+      "validation_sha256": "b248388a339070bf11e0beff56c7f72c7eb867eaca97c65dcf98720503c961d2",
+      "attempt": 1
+    },
+    {
+      "index": 55,
+      "unit_id": "moretypes/19",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-002",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "39107d53feaffd26d7bb13103fe6e40746e9844d9b37bbf84559f7b91db312f3",
+      "page_section": {
+        "article": "moretypes.article",
+        "section_number": 19,
+        "source_title": "Maps",
+        "route": "/moretypes/19"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-002/candidates/moretypes-19.article",
+      "candidate_sha256": "390077a1be86c7b2d9443e9fb33c089a471b93fda1c1c506ae75e9cc599087e6",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-002/validation/moretypes-19.json",
+      "validation_sha256": "a10ac2f7946b347c155caaef85085eaf9e36dd2d1225eca523fef16bbc055911",
+      "attempt": 1
+    },
+    {
+      "index": 56,
+      "unit_id": "moretypes/20",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-002",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "1d3caa45093f65b50d5ebcff6a57559c3fe70faba85f3a0bb41db38c5375a507",
+      "page_section": {
+        "article": "moretypes.article",
+        "section_number": 20,
+        "source_title": "Map literals",
+        "route": "/moretypes/20"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-002/candidates/moretypes-20.article",
+      "candidate_sha256": "90d178dc62a0f19f5d1619d90c9e1f958e836d894f866691115f432ab1eb191c",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-002/validation/moretypes-20.json",
+      "validation_sha256": "a10dfe0e98c193496bf20f3d591d26a8fbc2a1004a62d104d48cda6fea210fd6",
+      "attempt": 1
+    },
+    {
+      "index": 57,
+      "unit_id": "moretypes/21",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-002",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "0493179c2396f2e755fa5f1e579ce6f4cc716842ef5ee77a0b1c742210c15f9f",
+      "page_section": {
+        "article": "moretypes.article",
+        "section_number": 21,
+        "source_title": "Map literals continued",
+        "route": "/moretypes/21"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-002/candidates/moretypes-21.article",
+      "candidate_sha256": "adcad202e22112cc79ab6444a6ed110d50eeeabb6fe4d54e951ffebc7724fc90",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-002/validation/moretypes-21.json",
+      "validation_sha256": "1790a932d3aee096d1b794fc69622225cb11e33652febc56c90ab2e48d24581f",
+      "attempt": 1
+    },
+    {
+      "index": 58,
+      "unit_id": "moretypes/22",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-002",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "f6963bc620184c7fbea7b04c309ccf64d508a4e835500fa7dd4188e60204019f",
+      "page_section": {
+        "article": "moretypes.article",
+        "section_number": 22,
+        "source_title": "Mutating Maps",
+        "route": "/moretypes/22"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-002/candidates/moretypes-22.article",
+      "candidate_sha256": "c5508b8ba5f606cfa7b7117c52dcde8014a80926ec839b71a602f2f3441b1327",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-002/validation/moretypes-22.json",
+      "validation_sha256": "34ded067460d805aa48a1a38ce5fc02a619ebf4d67a922605fcc7082100c10cf",
+      "attempt": 1
+    },
+    {
+      "index": 59,
+      "unit_id": "moretypes/23",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-002",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "3214968207b659c3fb6bf92ee3d1ba0858bf7d3240dfad30fada7c5d8bddea69",
+      "page_section": {
+        "article": "moretypes.article",
+        "section_number": 23,
+        "source_title": "Exercise: Maps",
+        "route": "/moretypes/23"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-002/candidates/moretypes-23.article",
+      "candidate_sha256": "aea4ffba1e085008718e590bfa3cdd82c019f0113ce0fc5201e44d68c1453a80",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-002/validation/moretypes-23.json",
+      "validation_sha256": "612d3e57855363e5d202179449fdcfaa6bb51c68fefc7260607a613152c940d8",
+      "attempt": 1
+    },
+    {
+      "index": 60,
+      "unit_id": "moretypes/24",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-002",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "91b508ec19d3baf6fd1b2382e54b0f4ec226e9af99d027e86d734cf081d9c897",
+      "page_section": {
+        "article": "moretypes.article",
+        "section_number": 24,
+        "source_title": "Function values",
+        "route": "/moretypes/24"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-002/candidates/moretypes-24.article",
+      "candidate_sha256": "98e063f4a04fbb891638a5e9f7221fdcb3c58a2838351862fe411d387a5c1d6b",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-002/validation/moretypes-24.json",
+      "validation_sha256": "d96a0db29d2d0ed9e665840b720d330936ace63f730d8836f58a8d2676fa4229",
+      "attempt": 1
+    },
+    {
+      "index": 61,
+      "unit_id": "moretypes/25",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-003",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "570e535e9c2b2d1978534eb3b42f226102b11da36a3f9e61620dc5eafdb6be5f",
+      "page_section": {
+        "article": "moretypes.article",
+        "section_number": 25,
+        "source_title": "Function closures",
+        "route": "/moretypes/25"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-003/candidates/moretypes-25.article",
+      "candidate_sha256": "6e21d394a38fa13c8781573797a554cd34248ebd6b1227b4de142cf3c8426487",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-003/validation/moretypes-25.json",
+      "validation_sha256": "a475f5c4b3679b7f5d506226eaa27d974f8e29b429dbd12cb73b679c7896f812",
+      "attempt": 1
+    },
+    {
+      "index": 62,
+      "unit_id": "moretypes/26",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-003",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "24f01440a7b0d638694c6cb275bf92e79e1fb2463ea2eb7d40a68cc4d6a0ed29",
+      "page_section": {
+        "article": "moretypes.article",
+        "section_number": 26,
+        "source_title": "Exercise: Fibonacci closure",
+        "route": "/moretypes/26"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-003/candidates/moretypes-26.article",
+      "candidate_sha256": "697080317e2d2bc5ab3f073766b313d9638ee5f58143cd3ab85380a76b48d2f3",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-003/validation/moretypes-26.json",
+      "validation_sha256": "acd124d3ad8e170ddcb20218b9e988ec3c375f09fd61c478d27c948e6219f670",
+      "attempt": 1
+    },
+    {
+      "index": 63,
+      "unit_id": "moretypes/27",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-003",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "f565674b974c053924bf69ef83b709dc50931526ae7fa88e71543a5cd872a190",
+      "page_section": {
+        "article": "moretypes.article",
+        "section_number": 27,
+        "source_title": "Congratulations!",
+        "route": "/moretypes/27"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-003/candidates/moretypes-27.article",
+      "candidate_sha256": "5443a5b701d27b923580451eef07d56c7c6014b941d1c616e168a6a1192f1ac0",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-003/validation/moretypes-27.json",
+      "validation_sha256": "6203a1a90b2461fe7620af69325f1fc3dfd86be93f64ec8ead084244013ecc48",
+      "attempt": 1
+    },
+    {
+      "index": 64,
+      "unit_id": "methods/1",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-003",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "8a62096b755332ede134c87493abe49231a52ce60abebcdc107bb6a64434fc72",
+      "page_section": {
+        "article": "methods.article",
+        "section_number": 1,
+        "source_title": "Methods",
+        "route": "/methods/1"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-003/candidates/methods-1.article",
+      "candidate_sha256": "bbb1dceed81f987b08852926e34fa5b00f3ea438dd78f4f4e3579e0a2484a78f",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-003/validation/methods-1.json",
+      "validation_sha256": "9a55f2ad6d31459fcfd9233855c9a8ddb728caa95b4f3beb9c999efc47581d06",
+      "attempt": 1
+    },
+    {
+      "index": 65,
+      "unit_id": "methods/2",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-003",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "ade066728f85cc93e75c2472b80d532b62259a7e08e42ef36e3d05c6cfa5476d",
+      "page_section": {
+        "article": "methods.article",
+        "section_number": 2,
+        "source_title": "Methods are functions",
+        "route": "/methods/2"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-003/candidates/methods-2.article",
+      "candidate_sha256": "1853869c39ecc5ccb386fed8ef1ad3acb6d9e9892500215b24df6d32dbcd21e9",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-003/validation/methods-2.json",
+      "validation_sha256": "fae4fe5bb350d7dc67822f0a3a5318ddae9892c45d641e734ed05b3956a3c216",
+      "attempt": 1
+    },
+    {
+      "index": 66,
+      "unit_id": "methods/3",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-003",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "31c4fd0d80c8f1d96cf3efb1ecc1f9d3c0d1b5b70bb5c23bf7227b7007469588",
+      "page_section": {
+        "article": "methods.article",
+        "section_number": 3,
+        "source_title": "Methods continued",
+        "route": "/methods/3"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-003/candidates/methods-3.article",
+      "candidate_sha256": "4fe764b64d24a8b88e13342add69b55d8882b4d79a28419050427264f9432813",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-003/validation/methods-3.json",
+      "validation_sha256": "643e57473a61a0e8a3383232dcf281b0abf82708f08f727e1254625786c79aa2",
+      "attempt": 1
+    },
+    {
+      "index": 67,
+      "unit_id": "methods/4",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-003",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "99f9fa4e5c4dd46d393f40b417d0430c4e27e56f40146f5f192f55ccda4e2db3",
+      "page_section": {
+        "article": "methods.article",
+        "section_number": 4,
+        "source_title": "Pointer receivers",
+        "route": "/methods/4"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-003/candidates/methods-4.article",
+      "candidate_sha256": "7c251462b393740b26f4404d8c252d72dfe67f77d705bdaf59a92c350877b549",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-003/validation/methods-4.json",
+      "validation_sha256": "0878ffac404e9ec1d9018cb49832fbb7bca7b3f7a8e7b35b08a10621b183b77e",
+      "attempt": 1
+    },
+    {
+      "index": 68,
+      "unit_id": "methods/5",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-003",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "cac8affc7a8fd7bc1c0003d8cbf5bd7c85433faea45ea1b39f3b80c2fbc5eae9",
+      "page_section": {
+        "article": "methods.article",
+        "section_number": 5,
+        "source_title": "Pointers and functions",
+        "route": "/methods/5"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-003/candidates/methods-5.article",
+      "candidate_sha256": "3d94d91ec5fe242fb75851b272ad465cdb1112afa3a2141e3583844fde611dd8",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-003/validation/methods-5.json",
+      "validation_sha256": "f5368cc65a09e4921b22884fed8e9ecb0b905a0b9d8dbfc277faa92882dbe4af",
+      "attempt": 1
+    },
+    {
+      "index": 69,
+      "unit_id": "methods/6",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-003",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "39fb725b0a084ce3634dc973c215ff7a0f034c5f7b51c2ffe25934088072ebf6",
+      "page_section": {
+        "article": "methods.article",
+        "section_number": 6,
+        "source_title": "Methods and pointer indirection",
+        "route": "/methods/6"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-003/candidates/methods-6.article",
+      "candidate_sha256": "e486be1f6a21e6802ce86b202f5e3345f2c774859fd9147fb979b1f90955e43f",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-003/validation/methods-6.json",
+      "validation_sha256": "93606cd8b1633542150dc1b099f664efe588a3708f0a5989647b76af19cef2ca",
+      "attempt": 1
+    },
+    {
+      "index": 70,
+      "unit_id": "methods/7",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-003",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "61a9cb8411e6ce15dce3383a68a52c6644599e84269b3faf240129277d238f7e",
+      "page_section": {
+        "article": "methods.article",
+        "section_number": 7,
+        "source_title": "Methods and pointer indirection (2)",
+        "route": "/methods/7"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-003/candidates/methods-7.article",
+      "candidate_sha256": "123ebf44994b31fca9acce7067124d99ee23ab83746806b5a70c61cfa92c280f",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-003/validation/methods-7.json",
+      "validation_sha256": "feee2db0518c14e638fc0d1d426d475706095df1546e977bf310a40f2261b63a",
+      "attempt": 1
+    },
+    {
+      "index": 71,
+      "unit_id": "methods/8",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-003",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "357424f2a76613085184054178042b442331b5689d156ac9c37e09e57c436dae",
+      "page_section": {
+        "article": "methods.article",
+        "section_number": 8,
+        "source_title": "Choosing a value or pointer receiver",
+        "route": "/methods/8"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-003/candidates/methods-8.article",
+      "candidate_sha256": "7341d9a018904471b35a28cb2e44a2df778e426ce507e2a32716baefaeef60b4",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-003/validation/methods-8.json",
+      "validation_sha256": "970994057eec5a7457dd88cca2221ee0fec7e44b5f45f49ab7b37feabce4374c",
+      "attempt": 1
+    },
+    {
+      "index": 72,
+      "unit_id": "methods/9",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-003",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "39efc19ed01619130489d21e421f2c0d8947b20f408580f4ceaabce6a0feb099",
+      "page_section": {
+        "article": "methods.article",
+        "section_number": 9,
+        "source_title": "Interfaces",
+        "route": "/methods/9"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-003/candidates/methods-9.article",
+      "candidate_sha256": "d7b2fc5ca40ba7a46dd56fe6e4709a6a3b670a4c5d66fae3235305164745aea8",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-003/validation/methods-9.json",
+      "validation_sha256": "5e192c5fe980d7d07371a47e9e51f10fd65946a1b996a1736fa688ae70070b12",
+      "attempt": 2
+    },
+    {
+      "index": 73,
+      "unit_id": "methods/10",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-003",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "11ca99e6e83d93827daf02b177156fcb6f3c94ac8c202491dfffc5840ce4e39f",
+      "page_section": {
+        "article": "methods.article",
+        "section_number": 10,
+        "source_title": "Interfaces are implemented implicitly",
+        "route": "/methods/10"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-003/candidates/methods-10.article",
+      "candidate_sha256": "c8a014c8c6c4a229d6a0723856765728d335444d63a63682eb28ff256c868942",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-003/validation/methods-10.json",
+      "validation_sha256": "6a42eeffa8f1b93a4918f4b2b4bd21df0a58b136a2aaddb01c0dad98662a7f13",
+      "attempt": 1
+    },
+    {
+      "index": 74,
+      "unit_id": "methods/11",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-003",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "ccb2ed709b887724d22fb93714702fed5de4b7a83ca976876864045ff4752270",
+      "page_section": {
+        "article": "methods.article",
+        "section_number": 11,
+        "source_title": "Interface values",
+        "route": "/methods/11"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-003/candidates/methods-11.article",
+      "candidate_sha256": "3299c3011fc628a077d9bfc676d4c08fcc685216a78e274dec383407b4a6a473",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-003/validation/methods-11.json",
+      "validation_sha256": "41b548f1c782116ca157d79300bbb376689d3cb7f35b91939aa86268ba3b3151",
+      "attempt": 1
+    },
+    {
+      "index": 75,
+      "unit_id": "methods/12",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-003",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "9487ca3c9872972d42af8cfa389755678fe8a7cca110b592aac2a762332febf5",
+      "page_section": {
+        "article": "methods.article",
+        "section_number": 12,
+        "source_title": "Interface values with nil underlying values",
+        "route": "/methods/12"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-003/candidates/methods-12.article",
+      "candidate_sha256": "dc02bc2137e0083dbdb91e6750b62aeae5156f871751dfdf60753661a4adf05c",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-003/validation/methods-12.json",
+      "validation_sha256": "905f60f422a4b73045d5dd1012d3f95dc4761a27f2b94c06d8cc80fd66b5a1bf",
+      "attempt": 1
+    },
+    {
+      "index": 76,
+      "unit_id": "methods/13",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-003",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "2897922c0b088ccd46b3e42a442aeecda0787c4162db1329d0e8f39d05735547",
+      "page_section": {
+        "article": "methods.article",
+        "section_number": 13,
+        "source_title": "Nil interface values",
+        "route": "/methods/13"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-003/candidates/methods-13.article",
+      "candidate_sha256": "5b3fb3fbd91c21f0151afc26757c32049aa1077afe1a9bd51e2b2bee8e2859a6",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-003/validation/methods-13.json",
+      "validation_sha256": "f46e2b4c4ccda7876f7edb0bd4489adf9d314365fe5f53556988fec43185a1ce",
+      "attempt": 1
+    },
+    {
+      "index": 77,
+      "unit_id": "methods/14",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-003",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "7a09a7654c8b6ac6d96a1a8ddaafac368782f89ec2e6e61f323d40eb01cbf750",
+      "page_section": {
+        "article": "methods.article",
+        "section_number": 14,
+        "source_title": "The empty interface",
+        "route": "/methods/14"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-003/candidates/methods-14.article",
+      "candidate_sha256": "d01ef96312279f7b153f75d6138fa4999442f30e17404a2728b80ab5959c814c",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-003/validation/methods-14.json",
+      "validation_sha256": "9cd652cce6e3eedf04af7b10e792e752883df7c9baa30f6b282594973429603e",
+      "attempt": 2
+    },
+    {
+      "index": 78,
+      "unit_id": "methods/15",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-003",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "c205b4eb940358edea6321cfa422c3c00a560e9a6a71b08c8b3fa3ab9e4926ae",
+      "page_section": {
+        "article": "methods.article",
+        "section_number": 15,
+        "source_title": "Type assertions",
+        "route": "/methods/15"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-003/candidates/methods-15.article",
+      "candidate_sha256": "37167df971950cc024641cf8142dc6c378b730d66009a0e20659aca4f75a9f58",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-003/validation/methods-15.json",
+      "validation_sha256": "f1e20006f8c8b789fa824c765af3fab462d5227dbe47027c0b2f6cfe0f40ea5b",
+      "attempt": 2
+    },
+    {
+      "index": 79,
+      "unit_id": "methods/16",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-003",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "26e4da09e80d30b06368691c76ee2940139b0f6fc40cad47bb6d1d2947933c27",
+      "page_section": {
+        "article": "methods.article",
+        "section_number": 16,
+        "source_title": "Type switches",
+        "route": "/methods/16"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-003/candidates/methods-16.article",
+      "candidate_sha256": "d3877a3a08f300610970bb3d168fef880efbcf48ac63cdd77565b01d5d3b3038",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-003/validation/methods-16.json",
+      "validation_sha256": "9b3034ddca5179478a6d593230b8dc4995b3aeef59f534932aceb4ff14d8ae69",
+      "attempt": 2
+    },
+    {
+      "index": 80,
+      "unit_id": "methods/17",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-003",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "0363038e64b6f186e1bbd55c3323a5d7770a2b728605d8e3f01ae234aff6a444",
+      "page_section": {
+        "article": "methods.article",
+        "section_number": 17,
+        "source_title": "Stringers",
+        "route": "/methods/17"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-003/candidates/methods-17.article",
+      "candidate_sha256": "15bccacb307b12cbfbb68f00f40346ad27f8b5d66e1324c52503a6167d13ffd7",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-003/validation/methods-17.json",
+      "validation_sha256": "bcf3ddfb3c158ac347abc5b93f6ac1fa9cbbfedaeaaa8a1d1fd2453cb7eaac9e",
+      "attempt": 1
+    },
+    {
+      "index": 81,
+      "unit_id": "methods/18",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-003",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "ad118644f53755586f14409e203bccfb5ac4cff7c01734157032a45648fb06d3",
+      "page_section": {
+        "article": "methods.article",
+        "section_number": 18,
+        "source_title": "Exercise: Stringers",
+        "route": "/methods/18"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-003/candidates/methods-18.article",
+      "candidate_sha256": "2e54b23cbacd86fd9b68ee691138a1098ff37c478031a1f8f1bd6ffc2e6e6c9e",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-003/validation/methods-18.json",
+      "validation_sha256": "4e8abe0b6dc265422a044eb3f5dbc1f6acbf0834d04ad921509d6fc3b699d988",
+      "attempt": 1
+    },
+    {
+      "index": 82,
+      "unit_id": "methods/19",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-003",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "9eaab1fde2076c1376f78ceec0f84766c4c3b8062867436d73cef0bc77f16bd5",
+      "page_section": {
+        "article": "methods.article",
+        "section_number": 19,
+        "source_title": "Errors",
+        "route": "/methods/19"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-003/candidates/methods-19.article",
+      "candidate_sha256": "795d1c7af62593937e8001f47f6b668fca950189b17eca8b33c8f2913b936aea",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-003/validation/methods-19.json",
+      "validation_sha256": "a18216b95ba6531ff669a274d26e8ed0b8fcf7a7265ea65e532234fc5087302c",
+      "attempt": 1
+    },
+    {
+      "index": 83,
+      "unit_id": "methods/20",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-003",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "41f1f73320fde60ee5ff30d5927a19ff22d6da6a336bb776e15f2499e4f421d8",
+      "page_section": {
+        "article": "methods.article",
+        "section_number": 20,
+        "source_title": "Exercise: Errors",
+        "route": "/methods/20"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-003/candidates/methods-20.article",
+      "candidate_sha256": "478436f09b462da541b0aa604e05b9f8b4c43242f690158fe16e7cdd99b13200",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-003/validation/methods-20.json",
+      "validation_sha256": "8e5fdaa90c6fa25ad9b075f701deec479209f40ba5e2954098aa14a1652d2d44",
+      "attempt": 1
+    },
+    {
+      "index": 84,
+      "unit_id": "methods/21",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-003",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "120c3fc9f67579cf78605cf0c9f006fc28d3569043a08079ddb645ca9c3fc3b1",
+      "page_section": {
+        "article": "methods.article",
+        "section_number": 21,
+        "source_title": "Readers",
+        "route": "/methods/21"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-003/candidates/methods-21.article",
+      "candidate_sha256": "13ae45288f7a021d616c851e4357d7515addb7e000069f8602543f967e77ad66",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-003/validation/methods-21.json",
+      "validation_sha256": "6f20f6717dc68d94e670d0a109ef5909f50362a12a2e7c788d28e483cf7a39dd",
+      "attempt": 1
+    },
+    {
+      "index": 85,
+      "unit_id": "methods/22",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-003",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "0df444d989996a06d6dd50f4b109af4ae1cb2302b8dd867bcbe9bf98e424d230",
+      "page_section": {
+        "article": "methods.article",
+        "section_number": 22,
+        "source_title": "Exercise: Readers",
+        "route": "/methods/22"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-003/candidates/methods-22.article",
+      "candidate_sha256": "88df0823131756da8e7617147747f7ba50ad58540fb62d5e138f8e3baa5f68aa",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-003/validation/methods-22.json",
+      "validation_sha256": "686bf16125749d9647a4463f6a5232269ef56db1cd416e76f33213b6d2e7d928",
+      "attempt": 1
+    },
+    {
+      "index": 86,
+      "unit_id": "methods/23",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-003",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "11d876145fae980b2e283e3fac7357a950eb20f022b7da48cc58efed5b1e8e04",
+      "page_section": {
+        "article": "methods.article",
+        "section_number": 23,
+        "source_title": "Exercise: rot13Reader",
+        "route": "/methods/23"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-003/candidates/methods-23.article",
+      "candidate_sha256": "80cb83d86f2ac50ba816f775e0a36c95d012ee20cd481b8b43c16102fb989b93",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-003/validation/methods-23.json",
+      "validation_sha256": "a70d2a97c1d94971e9f53a6fc873b41a98f181b4a80243826e8c4c2067292a60",
+      "attempt": 1
+    },
+    {
+      "index": 87,
+      "unit_id": "methods/24",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-003",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "d80f0d46796ad415a7ded4d0cefdef6cdb58deb38d050a61eb64abb25caf27ee",
+      "page_section": {
+        "article": "methods.article",
+        "section_number": 24,
+        "source_title": "Images",
+        "route": "/methods/24"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-003/candidates/methods-24.article",
+      "candidate_sha256": "ad6fe96439172938f96c52c45d3aa5672be1de5acd605ca9bdc070bd6695e7ac",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-003/validation/methods-24.json",
+      "validation_sha256": "a3d5eef1a792b1a7674fc7ff53628c4ea5cad94553380074d25f122ee9fbb1bf",
+      "attempt": 1
+    },
+    {
+      "index": 88,
+      "unit_id": "methods/25",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-003",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "a196bc59d96602c3fe72cf765419366094a5c1e96de0d24dd140887ebd1826b5",
+      "page_section": {
+        "article": "methods.article",
+        "section_number": 25,
+        "source_title": "Exercise: Images",
+        "route": "/methods/25"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-003/candidates/methods-25.article",
+      "candidate_sha256": "fc920f4d53c98b4531f5f69c41c14fa58c019c62652627be2206e950b987769b",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-003/validation/methods-25.json",
+      "validation_sha256": "b28b929769875df320fa086716eeb957d33f7c6c1608dbe2e7bdac97c221fc20",
+      "attempt": 1
+    },
+    {
+      "index": 89,
+      "unit_id": "methods/26",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-003",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "f565674b974c053924bf69ef83b709dc50931526ae7fa88e71543a5cd872a190",
+      "page_section": {
+        "article": "methods.article",
+        "section_number": 26,
+        "source_title": "Congratulations!",
+        "route": "/methods/26"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-003/candidates/methods-26.article",
+      "candidate_sha256": "5443a5b701d27b923580451eef07d56c7c6014b941d1c616e168a6a1192f1ac0",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-003/validation/methods-26.json",
+      "validation_sha256": "7ea8ec9b78f3830a550a9caea62eb44e66fe09fb2c5c0f4b311e0acf460ba288",
+      "attempt": 1
+    },
+    {
+      "index": 90,
+      "unit_id": "generics/1",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-003",
+      "source_path": "_content/tour/generics.article",
+      "source_sha256": "01a045105dc8c12fb1709f122d363235c19a6464d5de7587d579524aec270dd6",
+      "page_section": {
+        "article": "generics.article",
+        "section_number": 1,
+        "source_title": "Type parameters",
+        "route": "/generics/1"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-003/candidates/generics-1.article",
+      "candidate_sha256": "920299e59fad98ad7615dc92afea77a494267d0af1fb5f5cc17613fa7087e84d",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-003/validation/generics-1.json",
+      "validation_sha256": "7bbebe5d03186007cec8355cbeea60f7af65ac4c0582601b035eb0b9fe2b76da",
+      "attempt": 1
+    },
+    {
+      "index": 91,
+      "unit_id": "generics/2",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-004",
+      "source_path": "_content/tour/generics.article",
+      "source_sha256": "08486351895e62792a84bc3eeab6aa85df7b1658735b7239040d219812f63277",
+      "page_section": {
+        "article": "generics.article",
+        "section_number": 2,
+        "source_title": "Generic types",
+        "route": "/generics/2"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-004/candidates/generics-2.article",
+      "candidate_sha256": "86cfca7e09a3200d8d5a75c5391147649416736aaf165aef77750f4ae574d75c",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-004/validation/generics-2.json",
+      "validation_sha256": "f12130cbd9e95cc01a0c1142bbe7d07a266f2934514f9572aa4bffbd57dafff1",
+      "attempt": 1
+    },
+    {
+      "index": 92,
+      "unit_id": "generics/3",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-004",
+      "source_path": "_content/tour/generics.article",
+      "source_sha256": "f565674b974c053924bf69ef83b709dc50931526ae7fa88e71543a5cd872a190",
+      "page_section": {
+        "article": "generics.article",
+        "section_number": 3,
+        "source_title": "Congratulations!",
+        "route": "/generics/3"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-004/candidates/generics-3.article",
+      "candidate_sha256": "5443a5b701d27b923580451eef07d56c7c6014b941d1c616e168a6a1192f1ac0",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-004/validation/generics-3.json",
+      "validation_sha256": "369f68b816b62bf7d02714c211c7fd4b5de36392ed2307aeb37d29a033e41760",
+      "attempt": 1
+    },
+    {
+      "index": 93,
+      "unit_id": "concurrency/1",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-004",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "d0a9c45078c2255540cfffe48744a07fa04ab5c2113e8880068b5a400ae0ebdc",
+      "page_section": {
+        "article": "concurrency.article",
+        "section_number": 1,
+        "source_title": "Goroutines",
+        "route": "/concurrency/1"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-004/candidates/concurrency-1.article",
+      "candidate_sha256": "0a4e8d312f27e699c8ef4772fafa0707c06e3c5cb5405f0813585c89e17241b6",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-004/validation/concurrency-1.json",
+      "validation_sha256": "45e7970f366ae95d9f6d5892827cc0cbb1878d2dd86d1ffbb74e980eaf401441",
+      "attempt": 1
+    },
+    {
+      "index": 94,
+      "unit_id": "concurrency/2",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-004",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "a35e3af26b51f8c2c2a6dfaf09f9c7cab0fdb4b1b56f9e4dc9b793f1dac1e295",
+      "page_section": {
+        "article": "concurrency.article",
+        "section_number": 2,
+        "source_title": "Channels",
+        "route": "/concurrency/2"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-004/candidates/concurrency-2.article",
+      "candidate_sha256": "d06239b6c0464678c5d08b903ee996b874b28d502a5cc30b8fb67179ccf80c67",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-004/validation/concurrency-2.json",
+      "validation_sha256": "3f70eccba927fa143be5b3bd9b40ed7acbc55969fe3b2a33d9980e312d44cc19",
+      "attempt": 1
+    },
+    {
+      "index": 95,
+      "unit_id": "concurrency/3",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-004",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "caef0893a54c61f192be397f6b27a039d81dc007f98f2d203a5a287383c0682e",
+      "page_section": {
+        "article": "concurrency.article",
+        "section_number": 3,
+        "source_title": "Buffered Channels",
+        "route": "/concurrency/3"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-004/candidates/concurrency-3.article",
+      "candidate_sha256": "2dd0382d8f3a422d27b8c71e477017ac68e2297cda77b84792347de17f3767a1",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-004/validation/concurrency-3.json",
+      "validation_sha256": "6d6ed661ffce27ef50dbff2495e744ac383f45eb50dc1ec752e3f2ab2dcdf57a",
+      "attempt": 1
+    },
+    {
+      "index": 96,
+      "unit_id": "concurrency/4",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-004",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "3e925c6745255a443c61f25cd8131d538dc8677938f1c5021ce798465020b42e",
+      "page_section": {
+        "article": "concurrency.article",
+        "section_number": 4,
+        "source_title": "Range and Close",
+        "route": "/concurrency/4"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-004/candidates/concurrency-4.article",
+      "candidate_sha256": "7aeb0216769f543e4b548e3dfa7e91406ab69e736ae6f8bcd7f7040b972a5eeb",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-004/validation/concurrency-4.json",
+      "validation_sha256": "f8a424192fd481b0c2d53f5b02fc38f852237be422166bec4aefe264bf7ccab0",
+      "attempt": 2
+    },
+    {
+      "index": 97,
+      "unit_id": "concurrency/5",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-004",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "8d8de56f080d4f702ac455aa60cb13b745472bedc9755000e8b5d6a2a898577d",
+      "page_section": {
+        "article": "concurrency.article",
+        "section_number": 5,
+        "source_title": "Select",
+        "route": "/concurrency/5"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-004/candidates/concurrency-5.article",
+      "candidate_sha256": "0fc49086c236a23810cce5472fbccadd1bae8be3c42f7a3e7faa6d63cc810ea0",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-004/validation/concurrency-5.json",
+      "validation_sha256": "d41ce699146d9f444dd1b8ad96ccfc46a4b1f76c94732ba88631083e515ccf9a",
+      "attempt": 1
+    },
+    {
+      "index": 98,
+      "unit_id": "concurrency/6",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-004",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "82e9cd932e14e6c4852fc8f865f4c45dc75845bd1a306649152ebc045f0c3b2c",
+      "page_section": {
+        "article": "concurrency.article",
+        "section_number": 6,
+        "source_title": "Default Selection",
+        "route": "/concurrency/6"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-004/candidates/concurrency-6.article",
+      "candidate_sha256": "673b4cfda3d985ef3a44410f8c0e0eee5a9f199838b7128be971139764922ca5",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-004/validation/concurrency-6.json",
+      "validation_sha256": "1b22b16a1474bac917784b6df6ccf9a74615b104bb6ab29ec56d01f5d718c600",
+      "attempt": 1
+    },
+    {
+      "index": 99,
+      "unit_id": "concurrency/7",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-004",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "7c5d3fc7bb2540285d746242f8a1d16075639648eec8909c1df52239297d2917",
+      "page_section": {
+        "article": "concurrency.article",
+        "section_number": 7,
+        "source_title": "Exercise: Equivalent Binary Trees",
+        "route": "/concurrency/7"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-004/candidates/concurrency-7.article",
+      "candidate_sha256": "f1777cbeb776952678a5f0ecdbb6911edde9e76c4be6a180e1e687227b97ccf8",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-004/validation/concurrency-7.json",
+      "validation_sha256": "16654edbe1f89fb0ecff46a356175ef5df65ef21fc0a246d44e62e95a390e231",
+      "attempt": 1
+    },
+    {
+      "index": 100,
+      "unit_id": "concurrency/8",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-004",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "b362cc15a26324acd311f7cab18a628dc1d7d9ac6d455add7d651d41acf15e9a",
+      "page_section": {
+        "article": "concurrency.article",
+        "section_number": 8,
+        "source_title": "Exercise: Equivalent Binary Trees",
+        "route": "/concurrency/8"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-004/candidates/concurrency-8.article",
+      "candidate_sha256": "85361a37720e3b5098c1d1da68435ce26c1df33121d71bd009d4d3057303fae5",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-004/validation/concurrency-8.json",
+      "validation_sha256": "36acc68c53f27f2eb36376789d59af1745efe4799415d20951ea7557cba097ee",
+      "attempt": 1
+    },
+    {
+      "index": 101,
+      "unit_id": "concurrency/9",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-004",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "49f727794604c2ef8a8dda9508d0f412d7015cea77754c675a02b166dd9bfc93",
+      "page_section": {
+        "article": "concurrency.article",
+        "section_number": 9,
+        "source_title": "sync.Mutex",
+        "route": "/concurrency/9"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-004/candidates/concurrency-9.article",
+      "candidate_sha256": "cb2fc415ad8afcea170c9571f440bb14ab0055cc10d81cb91acd6bbc8b93c492",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-004/validation/concurrency-9.json",
+      "validation_sha256": "0f5cd81a18bce5fe10c17892137b68ffe96a65ef90ce1d9c680103722659b154",
+      "attempt": 1
+    },
+    {
+      "index": 102,
+      "unit_id": "concurrency/10",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-004",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "bb686393225ef2335e627819a1664a84456f00b64af133af64920d43f0abdb94",
+      "page_section": {
+        "article": "concurrency.article",
+        "section_number": 10,
+        "source_title": "Exercise: Web Crawler",
+        "route": "/concurrency/10"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-004/candidates/concurrency-10.article",
+      "candidate_sha256": "fb8603d3d16e59b5e7f710260b55364dd6c1dcc27132c495cad961eb7d77e5f8",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-004/validation/concurrency-10.json",
+      "validation_sha256": "4bfa0b33dad5906c5bebd152e3cf3e133ae26f22ffa28e88a0beb8a17f4a6f40",
+      "attempt": 1
+    },
+    {
+      "index": 103,
+      "unit_id": "concurrency/11",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-ko-KR-004",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "45ef131ede663b1355c0a5933634d46c393f66be8a6450b184f86a62e928a64e",
+      "page_section": {
+        "article": "concurrency.article",
+        "section_number": 11,
+        "source_title": "Where to Go from here...",
+        "route": "/concurrency/11"
+      },
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-004/candidates/concurrency-11.article",
+      "candidate_sha256": "051b3aac2789ef1d530b330ba0823ef756f953d65f5027e6e5de7a15ea1b988c",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-004/validation/concurrency-11.json",
+      "validation_sha256": "8c0ce5ecb4f6fbdfeac6d976e1bcb849b3805fe362eba15318b671124639d76a",
+      "attempt": 1
+    },
+    {
+      "index": 104,
+      "unit_id": "example:basics/numeric-constants.go",
+      "unit_kind": "example",
+      "selected_batch_id": "codex-ko-KR-005",
+      "source_path": "_content/tour/basics/numeric-constants.go",
+      "source_sha256": "338906e7c0e0d5e81312c97b37638442b48a621d59e69215be78eed6bd003544",
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-005/candidates/basics-numeric-constants.go",
+      "candidate_sha256": "8b66b5d3f67c970db4456a55b15288a977a5f45badc28aa20c04b23d49e8052d",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-005/validation/basics-numeric-constants.json",
+      "validation_sha256": "3fffe92a172f30325732f1e5aac1a3d2394570a5098089159181df6d84e177f0",
+      "attempt": 1
+    },
+    {
+      "index": 105,
+      "unit_id": "example:basics/type-inference.go",
+      "unit_kind": "example",
+      "selected_batch_id": "codex-ko-KR-005",
+      "source_path": "_content/tour/basics/type-inference.go",
+      "source_sha256": "fb638103bfaf5990d88398765cf801cee94cd8e199cace94740cebe562afc33d",
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-005/candidates/basics-type-inference.go",
+      "candidate_sha256": "5f11619ab2a8f5064c32fecb327b3d25d1bf5b1b4931962061191db6add50c30",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-005/validation/basics-type-inference.json",
+      "validation_sha256": "880315efeed5fb78a86b8455d5a8c07083e8a65f30c80fb54fa1869127eb07d3",
+      "attempt": 1
+    },
+    {
+      "index": 106,
+      "unit_id": "example:concurrency/channels.go",
+      "unit_kind": "example",
+      "selected_batch_id": "codex-ko-KR-005",
+      "source_path": "_content/tour/concurrency/channels.go",
+      "source_sha256": "8c3ce8583c8274e42ee0522989bf4cf2003b6f8045bcb6b16a6a79364f97aa70",
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-005/candidates/concurrency-channels.go",
+      "candidate_sha256": "193fb0719fa2d49f58f8cb84524af98e636c8898f44babd7b757e490511672dd",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-005/validation/concurrency-channels.json",
+      "validation_sha256": "0ef45984eef2977426f3aa3ab6cf8a55f7e2f37d2eec05894218d30af0bbbfbe",
+      "attempt": 1
+    },
+    {
+      "index": 107,
+      "unit_id": "example:concurrency/exercise-equivalent-binary-trees.go",
+      "unit_kind": "example",
+      "selected_batch_id": "codex-ko-KR-005",
+      "source_path": "_content/tour/concurrency/exercise-equivalent-binary-trees.go",
+      "source_sha256": "184cbbd1e662b64de6e6928d4af6f2469c7bccdbc9a8b5f477c1b694b9ab02b1",
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-005/candidates/concurrency-exercise-equivalent-binary-trees.go",
+      "candidate_sha256": "b53014e805749fec539443a9c91773fa1db9938d33d121c2af37e0efad373bbc",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-005/validation/concurrency-exercise-equivalent-binary-trees.json",
+      "validation_sha256": "37ee17d7f90addfee6deef60c347f97f86dd66882218e9a7fe716cf6ce898bb6",
+      "attempt": 1
+    },
+    {
+      "index": 108,
+      "unit_id": "example:concurrency/exercise-web-crawler.go",
+      "unit_kind": "example",
+      "selected_batch_id": "codex-ko-KR-005",
+      "source_path": "_content/tour/concurrency/exercise-web-crawler.go",
+      "source_sha256": "bd6226dcae3b663a3aa1cbf502d840357ac0efb6de46e7a66612ca2834cf5e37",
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-005/candidates/concurrency-exercise-web-crawler.go",
+      "candidate_sha256": "f1e2f907852dc5b5d04c5deccde5ff8890f2b802b5eda26c0f9483a934ee167d",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-005/validation/concurrency-exercise-web-crawler.json",
+      "validation_sha256": "2538f2609162408b1c46bc3b67e5da27387e778f9faf87c8e5938f98d2c1897b",
+      "attempt": 1
+    },
+    {
+      "index": 109,
+      "unit_id": "example:concurrency/mutex-counter.go",
+      "unit_kind": "example",
+      "selected_batch_id": "codex-ko-KR-005",
+      "source_path": "_content/tour/concurrency/mutex-counter.go",
+      "source_sha256": "74488ecc347a123c8538069175ffeef5ea38577bb37b2c7a9ceb6bba47ab02b4",
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-005/candidates/concurrency-mutex-counter.go",
+      "candidate_sha256": "019b49a7b36919c54fe0476f0afd0e4fcec05f5611c7e6afaa6eb1e81369c0e7",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-005/validation/concurrency-mutex-counter.json",
+      "validation_sha256": "481c6ea9ca0ab6e315b07f56f6cd76e248ad6dafae21045d86b1e269fee9bb0a",
+      "attempt": 1
+    },
+    {
+      "index": 110,
+      "unit_id": "example:flowcontrol/if-and-else.go",
+      "unit_kind": "example",
+      "selected_batch_id": "codex-ko-KR-005",
+      "source_path": "_content/tour/flowcontrol/if-and-else.go",
+      "source_sha256": "9d3030966f45fb90105c0325c9a090e8ac3fce2e7c4b10106d8f75caf0e536cf",
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-005/candidates/flowcontrol-if-and-else.go",
+      "candidate_sha256": "51503234f33beed4457c1f1850c2bffac58629d0110ebff598a178e9489665d9",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-005/validation/flowcontrol-if-and-else.json",
+      "validation_sha256": "068c5b1dbdaadb03dfe7f99f7ac1fc894f4987429d02eac9ed66c2317f1a3461",
+      "attempt": 1
+    },
+    {
+      "index": 111,
+      "unit_id": "example:generics/index.go",
+      "unit_kind": "example",
+      "selected_batch_id": "codex-ko-KR-005",
+      "source_path": "_content/tour/generics/index.go",
+      "source_sha256": "398dd72a4b01efa279d571667bedbcccd1bbbceaeb77218635db48edf38fd983",
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-005/candidates/generics-index.go",
+      "candidate_sha256": "be152d8ff485d1373463f7354453ca0f9c7be00e5c76f74a39627ce4e71e45bf",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-005/validation/generics-index.json",
+      "validation_sha256": "b4d1545a50f39a9d8c3f29962bf721734f614ffa5e08df95e966c2a436565ca6",
+      "attempt": 1
+    },
+    {
+      "index": 112,
+      "unit_id": "example:generics/list.go",
+      "unit_kind": "example",
+      "selected_batch_id": "codex-ko-KR-005",
+      "source_path": "_content/tour/generics/list.go",
+      "source_sha256": "ab72fc4fd321f507abde796abe0830876e0f8bcd8661d9ce4ac34c3da2f68060",
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-005/candidates/generics-list.go",
+      "candidate_sha256": "355e59739e1ac5b836e94900f0579690a8f0add1beb9d90d9577f82ac121ab4e",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-005/validation/generics-list.json",
+      "validation_sha256": "6dd6348ccb79edd8d247caa477e1e37a0a68c273135aea62f65e69ac8152adf2",
+      "attempt": 1
+    },
+    {
+      "index": 113,
+      "unit_id": "example:methods/exercise-reader.go",
+      "unit_kind": "example",
+      "selected_batch_id": "codex-ko-KR-005",
+      "source_path": "_content/tour/methods/exercise-reader.go",
+      "source_sha256": "7f5acb25434e41b1641fffd602725903cd2e217fb7f8809596c4369ac0900137",
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-005/candidates/methods-exercise-reader.go",
+      "candidate_sha256": "2b39eeeeb20294717919fd964fa21bcff1ca8973889c1fb35110726ad70ce84d",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-005/validation/methods-exercise-reader.json",
+      "validation_sha256": "e051de03f73833146bd7371cabf9f1e099ec640235c238b54045095c43eb2744",
+      "attempt": 1
+    },
+    {
+      "index": 114,
+      "unit_id": "example:methods/exercise-stringer.go",
+      "unit_kind": "example",
+      "selected_batch_id": "codex-ko-KR-005",
+      "source_path": "_content/tour/methods/exercise-stringer.go",
+      "source_sha256": "b5bd782b7e0e7cd9541df782ccac827e8373a0867011f3fc998b8895fb470efc",
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-005/candidates/methods-exercise-stringer.go",
+      "candidate_sha256": "75a118c2c212bde6a9d4edf9015f2f6a781b408240b7d887bd1b764a599b94ba",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-005/validation/methods-exercise-stringer.json",
+      "validation_sha256": "535d774c1b8ba4be2709f1f8f4253d53574798bd9ad3f4ce91f8bc981a4d3efb",
+      "attempt": 1
+    },
+    {
+      "index": 115,
+      "unit_id": "example:methods/interfaces-are-satisfied-implicitly.go",
+      "unit_kind": "example",
+      "selected_batch_id": "codex-ko-KR-005",
+      "source_path": "_content/tour/methods/interfaces-are-satisfied-implicitly.go",
+      "source_sha256": "44e0699af42c651abaa67a36b4c48143d33a8651adb0a6bb8e285b65ec058dc2",
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-005/candidates/methods-interfaces-are-satisfied-implicitly.go",
+      "candidate_sha256": "17e5924069e796e2fbacc5b99ba66320d1076e50dca107d2a5810cbf47277933",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-005/validation/methods-interfaces-are-satisfied-implicitly.json",
+      "validation_sha256": "f233912f3ac64f394b80e34bfc06cde96aee8902b7c04bcd092638153178f567",
+      "attempt": 1
+    },
+    {
+      "index": 116,
+      "unit_id": "example:methods/interfaces.go",
+      "unit_kind": "example",
+      "selected_batch_id": "codex-ko-KR-005",
+      "source_path": "_content/tour/methods/interfaces.go",
+      "source_sha256": "2530ef039212284377a46fe1063db6206d8db3a42a8138c6eed44275bb7eb10b",
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-005/candidates/methods-interfaces.go",
+      "candidate_sha256": "4716927ea29f40243cda0ea81edef17058fcb9b78826f0dec3e16f879b4c8dc4",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-005/validation/methods-interfaces.json",
+      "validation_sha256": "e77368d34fda8c96f7537f380d6d5ea33b239045ea64cb9117da2ff6f6e94c35",
+      "attempt": 1
+    },
+    {
+      "index": 117,
+      "unit_id": "example:moretypes/append.go",
+      "unit_kind": "example",
+      "selected_batch_id": "codex-ko-KR-005",
+      "source_path": "_content/tour/moretypes/append.go",
+      "source_sha256": "655ee5085fec61bcb38c9f029741bb1a06a414f94b8b36ed0362055b0d6b10bb",
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-005/candidates/moretypes-append.go",
+      "candidate_sha256": "ec4bcb803641689a0d23486775c97317d0c7b52f6047d64e6aeea4dba819d203",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-005/validation/moretypes-append.json",
+      "validation_sha256": "9b9617aec0ff7f2bacd7c3a9535d5f03fdc5261ac00f7bf93d331da14be6805b",
+      "attempt": 1
+    },
+    {
+      "index": 118,
+      "unit_id": "example:moretypes/exercise-fibonacci-closure.go",
+      "unit_kind": "example",
+      "selected_batch_id": "codex-ko-KR-005",
+      "source_path": "_content/tour/moretypes/exercise-fibonacci-closure.go",
+      "source_sha256": "a04ba02819628af3c95c045330a5ce733f9f182e755e6ba74e78c0aea602530c",
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-005/candidates/moretypes-exercise-fibonacci-closure.go",
+      "candidate_sha256": "956cf0b60347f59bdc3dccbced36f5cae906574a6207bd57900fab6b37319d57",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-005/validation/moretypes-exercise-fibonacci-closure.json",
+      "validation_sha256": "195687f148f02a41796f1260a375373aa0d18dda76ed94a63043a7b7f7037004",
+      "attempt": 1
+    },
+    {
+      "index": 119,
+      "unit_id": "example:moretypes/pointers.go",
+      "unit_kind": "example",
+      "selected_batch_id": "codex-ko-KR-005",
+      "source_path": "_content/tour/moretypes/pointers.go",
+      "source_sha256": "bbc4a25d868979e959aa383f0de7894135e7f8ae4b2d766e653a033178a9a378",
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-005/candidates/moretypes-pointers.go",
+      "candidate_sha256": "60123f1a28cbb9f6964e3ee6c8e69a3460d54634085cd0e86e2f9338943a9f04",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-005/validation/moretypes-pointers.json",
+      "validation_sha256": "8f7e12f13d0be6978b7b1495a66ee897ac7d2d58ca1956b1acaf861be1e2e12d",
+      "attempt": 1
+    },
+    {
+      "index": 120,
+      "unit_id": "example:moretypes/slice-len-cap.go",
+      "unit_kind": "example",
+      "selected_batch_id": "codex-ko-KR-005",
+      "source_path": "_content/tour/moretypes/slice-len-cap.go",
+      "source_sha256": "b2e5f7a96c8a04998c150ebe6ce344bc198db8b18f4826e6a85ff75ae3033f98",
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-005/candidates/moretypes-slice-len-cap.go",
+      "candidate_sha256": "b0d46a6bb631bad28a7fec6589f1edb4691e7a68c8441a5a3e0d6a5a39dcf8e1",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-005/validation/moretypes-slice-len-cap.json",
+      "validation_sha256": "7b485a4f17d74ab217ffecb1595d79164e3b797912d570862bdebd7630058266",
+      "attempt": 1
+    },
+    {
+      "index": 121,
+      "unit_id": "example:moretypes/slices-of-slice.go",
+      "unit_kind": "example",
+      "selected_batch_id": "codex-ko-KR-005",
+      "source_path": "_content/tour/moretypes/slices-of-slice.go",
+      "source_sha256": "545cde9f9bc3ec940adbdcac0a801f5e834b6ee3cd5bf1b780f6f81d556562b3",
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-005/candidates/moretypes-slices-of-slice.go",
+      "candidate_sha256": "210b7cb1f460b7fa4a1b42d3f1d6f053bbb08033af6ae77b9a4417d2861fd43b",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-005/validation/moretypes-slices-of-slice.json",
+      "validation_sha256": "956d6947a77a7008b62cff882abaa0e73658115c2a476505e0ff653f39de1c96",
+      "attempt": 1
+    },
+    {
+      "index": 122,
+      "unit_id": "example:moretypes/struct-literals.go",
+      "unit_kind": "example",
+      "selected_batch_id": "codex-ko-KR-005",
+      "source_path": "_content/tour/moretypes/struct-literals.go",
+      "source_sha256": "c54fd1b039d00a926550fd74ac26c6ed6388c8ca6fe043e64ebdaad921ba2761",
+      "candidate_path": "data/retranslation-runs/ko-KR/codex-ko-KR-005/candidates/moretypes-struct-literals.go",
+      "candidate_sha256": "f7d8c050a5cef023914382353c5f617cfc883bf4a5dab53587849b14f89f313d",
+      "validation_path": "data/retranslation-runs/ko-KR/codex-ko-KR-005/validation/moretypes-struct-literals.json",
+      "validation_sha256": "eab71fa31aed634fe64e4c29bf70711170161b0c7f4a55b4bfe3f3c00395e85f",
+      "attempt": 1
+    }
+  ]
+}
