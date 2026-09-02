@@ -1,0 +1,393 @@
+{
+  "schema_version": 2,
+  "evidence_type": "quality_check_results",
+  "locale": "ko-KR",
+  "snapshot_id": "qc-002",
+  "snapshot_manifest_sha256": "317539c47fa826a9acde19bafbd06bb20b4100e760a32cfbc5799c5f2f2d5f9b",
+  "previous_snapshot_id": "qc-001",
+  "rubric": "translation-quality/v1",
+  "result_count": 73,
+  "results": [
+    {
+      "index": 1,
+      "unit_id": "welcome/1",
+      "rating": "A"
+    },
+    {
+      "index": 2,
+      "unit_id": "welcome/2",
+      "rating": "A"
+    },
+    {
+      "index": 4,
+      "unit_id": "welcome/5",
+      "rating": "B",
+      "finding": "deterministic output 未按 ko-KR glossary 的 preferred 正式术语 결정적 출력 表达；当前“출력이 결정적이 되므로”也有翻译腔。Revision 应使用正式术语并自然重写该句，不增减技术含义。"
+    },
+    {
+      "index": 5,
+      "unit_id": "welcome/3",
+      "rating": "B",
+      "finding": "“Go 언어 투어 항목”和“다음 레슨 항목”作为课程导航表达明显生硬，是规避 present 边界后的残余翻译腔。Revision 应保持链接身份不变，通过自然韩语句法表达点击 Go 언어 투어或直接进入下一课。"
+    },
+    {
+      "index": 6,
+      "unit_id": "basics/1",
+      "rating": "A"
+    },
+    {
+      "index": 8,
+      "unit_id": "basics/3",
+      "rating": "B",
+      "finding": "“식별자 Pizza 및 Pi 두 이름”“pizza 및 pi 두 이름”存在“식별자/이름/두 이름”重复和明显书面翻译腔。Revision 应忠实表达 exported/unexported name，同时自然重组句子并保持各 Go identifier 身份。"
+    },
+    {
+      "index": 9,
+      "unit_id": "basics/4",
+      "rating": "B",
+      "finding": "“함수는 인수를 받지 않거나 여러 개 받을 수 있습니다”容易被理解为函数只能接收 0 个或多个复数参数，没有准确覆盖 source 的 zero or more（包括恰好一个参数）。Revision 应明确、自然表达函数可以接收 0 个或任意数量的参数。"
+    },
+    {
+      "index": 16,
+      "unit_id": "basics/11",
+      "rating": "B",
+      "finding": "代码 teaching comment 中“별칭 대상: uint8”“별칭 대상: int32”表达像内部标签而非自然教程注释。Revision 应在保持 uint8/int32 等技术身份和 comment 语义不变的前提下，自然表达 alias for 的含义。"
+    },
+    {
+      "index": 17,
+      "unit_id": "basics/12",
+      "rating": "A"
+    },
+    {
+      "index": 18,
+      "unit_id": "basics/13",
+      "rating": "A"
+    },
+    {
+      "index": 19,
+      "unit_id": "basics/14",
+      "rating": "B",
+      "finding": "代码 teaching comment “j타입: int”中 Go identifier j 与韩语黏连，书写不自然。Revision 应保持 j 独立技术身份，自然表达“j is an int”，同时不要恢复上一轮“int 타입”重复表达。"
+    },
+    {
+      "index": 21,
+      "unit_id": "basics/16",
+      "rating": "A"
+    },
+    {
+      "index": 22,
+      "unit_id": "basics/17",
+      "rating": "A"
+    },
+    {
+      "index": 23,
+      "unit_id": "flowcontrol/1",
+      "rating": "A"
+    },
+    {
+      "index": 25,
+      "unit_id": "flowcontrol/3",
+      "rating": "A"
+    },
+    {
+      "index": 27,
+      "unit_id": "flowcontrol/5",
+      "rating": "A"
+    },
+    {
+      "index": 28,
+      "unit_id": "flowcontrol/6",
+      "rating": "A"
+    },
+    {
+      "index": 29,
+      "unit_id": "flowcontrol/7",
+      "rating": "A"
+    },
+    {
+      "index": 30,
+      "unit_id": "flowcontrol/8",
+      "rating": "A"
+    },
+    {
+      "index": 32,
+      "unit_id": "flowcontrol/10",
+      "rating": "A"
+    },
+    {
+      "index": 33,
+      "unit_id": "flowcontrol/11",
+      "rating": "A"
+    },
+    {
+      "index": 36,
+      "unit_id": "flowcontrol/14",
+      "rating": "A"
+    },
+    {
+      "index": 37,
+      "unit_id": "moretypes/1",
+      "rating": "B",
+      "finding": "source 明确为 pointer arithmetic，当前“Go 언어에는 포인터 연산이 없습니다”把含义扩大为一般指针运算，容易与本页刚介绍的 \u0026 和 * 指针运算产生冲突。Revision 应准确表达“pointer arithmetic / 指针算术”这一限定含义。"
+    },
+    {
+      "index": 38,
+      "unit_id": "moretypes/2",
+      "rating": "A"
+    },
+    {
+      "index": 40,
+      "unit_id": "moretypes/4",
+      "rating": "A"
+    },
+    {
+      "index": 41,
+      "unit_id": "moretypes/5",
+      "rating": "A"
+    },
+    {
+      "index": 42,
+      "unit_id": "moretypes/6",
+      "rating": "A"
+    },
+    {
+      "index": 43,
+      "unit_id": "moretypes/7",
+      "rating": "A"
+    },
+    {
+      "index": 47,
+      "unit_id": "moretypes/11",
+      "rating": "A"
+    },
+    {
+      "index": 48,
+      "unit_id": "moretypes/12",
+      "rating": "A"
+    },
+    {
+      "index": 49,
+      "unit_id": "moretypes/13",
+      "rating": "A"
+    },
+    {
+      "index": 51,
+      "unit_id": "moretypes/15",
+      "rating": "B",
+      "finding": "source 明确称 s 为 append 的 first parameter；当前译文“s 매개변수는 append 함수의 첫 번째 인수”混用了 parameter 与 argument。Revision 应准确区分并自然表达 append 的第一个参数 s 及其余待追加值。"
+    },
+    {
+      "index": 53,
+      "unit_id": "moretypes/17",
+      "rating": "B",
+      "finding": "“빈 식별자 _ 위치에 할당합니다”表达生硬，没有自然表达 source 中 assigning to blank identifier _ 的含义。Revision 应保持 _ 的技术身份，通过自然韩语说明可将索引或值赋给 blank identifier 从而忽略它。"
+    },
+    {
+      "index": 54,
+      "unit_id": "moretypes/18",
+      "rating": "A"
+    },
+    {
+      "index": 55,
+      "unit_id": "moretypes/19",
+      "rating": "A"
+    },
+    {
+      "index": 58,
+      "unit_id": "moretypes/22",
+      "rating": "A"
+    },
+    {
+      "index": 59,
+      "unit_id": "moretypes/23",
+      "rating": "A"
+    },
+    {
+      "index": 63,
+      "unit_id": "moretypes/27",
+      "rating": "A"
+    },
+    {
+      "index": 64,
+      "unit_id": "methods/1",
+      "rating": "A"
+    },
+    {
+      "index": 65,
+      "unit_id": "methods/2",
+      "rating": "A"
+    },
+    {
+      "index": 66,
+      "unit_id": "methods/3",
+      "rating": "B",
+      "finding": "“숫자 타입 MyFloat 정의와 Abs 메서드가 나옵니다”名词堆叠生硬，也没有自然明确表达 source 中 MyFloat 是拥有 Abs 方法的 numeric type。Revision 应保持 MyFloat/Abs 技术身份并自然表达二者关系。"
+    },
+    {
+      "index": 67,
+      "unit_id": "methods/4",
+      "rating": "A"
+    },
+    {
+      "index": 68,
+      "unit_id": "methods/5",
+      "rating": "A"
+    },
+    {
+      "index": 69,
+      "unit_id": "methods/6",
+      "rating": "A"
+    },
+    {
+      "index": 70,
+      "unit_id": "methods/7",
+      "rating": "A"
+    },
+    {
+      "index": 71,
+      "unit_id": "methods/8",
+      "rating": "A"
+    },
+    {
+      "index": 72,
+      "unit_id": "methods/9",
+      "rating": "A"
+    },
+    {
+      "index": 77,
+      "unit_id": "methods/14",
+      "rating": "A"
+    },
+    {
+      "index": 78,
+      "unit_id": "methods/15",
+      "rating": "A"
+    },
+    {
+      "index": 79,
+      "unit_id": "methods/16",
+      "rating": "A"
+    },
+    {
+      "index": 80,
+      "unit_id": "methods/17",
+      "rating": "A"
+    },
+    {
+      "index": 81,
+      "unit_id": "methods/18",
+      "rating": "A"
+    },
+    {
+      "index": 82,
+      "unit_id": "methods/19",
+      "rating": "A"
+    },
+    {
+      "index": 83,
+      "unit_id": "methods/20",
+      "rating": "A"
+    },
+    {
+      "index": 84,
+      "unit_id": "methods/21",
+      "rating": "A"
+    },
+    {
+      "index": 85,
+      "unit_id": "methods/22",
+      "rating": "A"
+    },
+    {
+      "index": 86,
+      "unit_id": "methods/23",
+      "rating": "B",
+      "finding": "gzip.NewReader 段落中的“io.Reader 형식의 압축 데이터 스트림”容易把 io.Reader 描述为压缩数据的格式，而 source 是接收一个表示压缩数据流的 io.Reader。Revision 应准确表达接口值与数据流的关系。"
+    },
+    {
+      "index": 87,
+      "unit_id": "methods/24",
+      "rating": "A"
+    },
+    {
+      "index": 88,
+      "unit_id": "methods/25",
+      "rating": "B",
+      "finding": "“필요한 메서드 목록을 구현”搭配不自然，语义上近似于实现“方法列表”，而 source 是 implement the necessary methods。Revision 应自然表达定义 Image 类型、实现所需方法并调用 pic.ShowImage。"
+    },
+    {
+      "index": 89,
+      "unit_id": "methods/26",
+      "rating": "A"
+    },
+    {
+      "index": 90,
+      "unit_id": "generics/1",
+      "rating": "A"
+    },
+    {
+      "index": 92,
+      "unit_id": "generics/3",
+      "rating": "A"
+    },
+    {
+      "index": 93,
+      "unit_id": "concurrency/1",
+      "rating": "B",
+      "finding": "source 说明 sync primitives 在 Go 中因为还有其他 primitives 而不太常需要；当前译文改成“이 투어에서는 자주 필요하지 않습니다”，把适用范围缩窄为本 Tour。Revision 应恢复原本针对 Go 的语义范围，并保持 goroutine、sync 等技术身份不变。"
+    },
+    {
+      "index": 94,
+      "unit_id": "concurrency/2",
+      "rating": "B",
+      "finding": "当前“goroutines 사이는”“goroutines 두 개”把英文复数形式直接与韩语助词和量词组合，作为正式教程韩语仍不自然。Revision 应保持 glossary keep 的 goroutine 技术身份，通过自然韩语数量和句法结构表达两个 goroutine 之间的同步与分工。"
+    },
+    {
+      "index": 95,
+      "unit_id": "concurrency/3",
+      "rating": "B",
+      "finding": "“채널은 버퍼 기능을 사용할 수 있습니다”将 source 的“Channels can be buffered”绕写成“可以使用缓冲功能”，仍有明显翻译腔。Revision 应保持 버퍼 채널、make 第二参数和 blocking 语义准确，通过自然韩语直接表达 channel 可以带有 buffer，同时遵守 legacy present boundary。"
+    },
+    {
+      "index": 96,
+      "unit_id": "concurrency/4",
+      "rating": "B",
+      "finding": "“수신 표현식의 두 번째 매개변수를 변수에 할당하여”容易被理解为 receive expression 已有一个“第二参数”再被赋给变量，关系表达不自然且容易误解。Revision 应忠实保持 source 对 v, ok := \u003c-ch 的关闭检测说明，自然重写第二值与变量的关系，不改变代码。"
+    },
+    {
+      "index": 98,
+      "unit_id": "concurrency/6",
+      "rating": "A"
+    },
+    {
+      "index": 100,
+      "unit_id": "concurrency/8",
+      "rating": "A"
+    },
+    {
+      "index": 101,
+      "unit_id": "concurrency/9",
+      "rating": "A"
+    },
+    {
+      "index": 103,
+      "unit_id": "concurrency/11",
+      "rating": "A"
+    },
+    {
+      "index": 104,
+      "unit_id": "example:basics/numeric-constants.go",
+      "rating": "A"
+    },
+    {
+      "index": 105,
+      "unit_id": "example:basics/type-inference.go",
+      "rating": "A"
+    },
+    {
+      "index": 108,
+      "unit_id": "example:concurrency/exercise-web-crawler.go",
+      "rating": "A"
+    }
+  ]
+}
