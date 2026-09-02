@@ -1,0 +1,47 @@
+{
+  "schema_version": 2,
+  "batch_id": "codex-ko-KR-012",
+  "locale": "ko-KR",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 3,
+  "units": [
+    {
+      "unit_id": "moretypes/15",
+      "unit_kind": "page",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "f2fc257e7c5f118321acc3b75e946053601532d411e8540534280d7fba795289",
+      "input_path": "inputs/moretypes-15.article",
+      "input_sha256": "6088b687ef801ed9c0eb38c3537cfb2d2e57037de2160d81b0f4a9aec96b8dbe",
+      "protected_token_count": 21,
+      "previous_snapshot_id": "qc-003",
+      "previous_rating": "B",
+      "previous_finding": "第一参数 s 已正确表达为 append 的 parameter，但当前“나머지 매개변수는 ... T 값입니다”又把 source 的 the rest are T values 表达成多个剩余 parameter，仍混淆 variadic parameter 与实际追加值。Revision 应准确保持函数签名语义，自然表达 s 是第一个参数，随后提供的是要追加到 slice 的 T 值。"
+    },
+    {
+      "unit_id": "concurrency/1",
+      "unit_kind": "page",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "d0a9c45078c2255540cfffe48744a07fa04ab5c2113e8880068b5a400ae0ebdc",
+      "input_path": "inputs/concurrency-1.article",
+      "input_sha256": "65fb5cde61b6e7c767b5c43aa0eca4a4392929855e18956a8f3104aea510dd95",
+      "protected_token_count": 26,
+      "previous_snapshot_id": "qc-003",
+      "previous_rating": "B",
+      "previous_finding": "上一轮关于 sync primitives 适用范围的语义问题已经修复，但当前“새 goroutine 실행”“goroutine 실행에서 동작합니다”“Goroutines 각각은”等组合仍明显名词化、生硬，不像自然韩语教程表达。Revision 应保持 goroutine 技术术语和 current/new goroutine 语义不变，通过自然句法完整重写相关句子。"
+    },
+    {
+      "unit_id": "concurrency/2",
+      "unit_kind": "page",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "a35e3af26b51f8c2c2a6dfaf09f9c7cab0fdb4b1b56f9e4dc9b793f1dac1e295",
+      "input_path": "inputs/concurrency-2.article",
+      "input_sha256": "f88ab0b53baaa3421f19920457b2457b93328f959812169bdf2a0359a020d22e",
+      "protected_token_count": 15,
+      "previous_snapshot_id": "qc-003",
+      "previous_rating": "B",
+      "previous_finding": "当前“goroutines 실행에 각각 맡깁니다”“goroutines 실행 양쪽에서”仍明显生硬，没有自然表达 source 中把工作分给两个 goroutine、两者完成计算后再得到最终结果。Revision 应保持 goroutine 术语不变，明确且自然表达两个 goroutine 的数量、分工和完成关系。"
+    }
+  ]
+}
