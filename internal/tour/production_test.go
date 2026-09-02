@@ -108,6 +108,45 @@ func TestProductionHandlerUsesHTTPTransportAndServesTour(t *testing.T) {
 	}
 }
 
+func TestCanonicalRoutesUseCurrentLocalePublicIdentity(t *testing.T) {
+	for _, test := range []struct {
+		locale string
+		origin string
+	}{
+		{locale: "zh-CN", origin: "https://go-dev.shuijingwanwq.com"},
+		{locale: "ko-KR", origin: "https://ko-go-dev.shuijingwanwq.com"},
+	} {
+		t.Run(test.locale, func(t *testing.T) {
+			proxy := mustPlaygroundProxy(t, "http://127.0.0.1:1")
+			handler, documents, err := newTourHandler(website.TourOnly(), test.locale, proxy, false, false)
+			if err != nil {
+				t.Fatal(err)
+			}
+			for _, route := range []string{"/", "/tour/", "/tour/list"} {
+				recorder := httptest.NewRecorder()
+				handler.ServeHTTP(recorder, httptest.NewRequest(http.MethodGet, route, nil))
+				if recorder.Code != http.StatusOK {
+					t.Fatalf("GET %s: status=%d", route, recorder.Code)
+				}
+				want := test.origin + route
+				if marker := `<link rel="canonical" href="` + want + `">`; strings.Count(recorder.Body.String(), marker) != 1 {
+					t.Errorf("GET %s canonical does not equal %q", route, want)
+				}
+			}
+			var ordinary *CourseRoute
+			for i := range documents.courseRoutes {
+				if documents.courseRoutes[i].Path == "/tour/basics/1" {
+					ordinary = &documents.courseRoutes[i]
+					break
+				}
+			}
+			if ordinary == nil || ordinary.Canonical != test.origin+"/tour/basics/1" {
+				t.Fatalf("ordinary course canonical=%v, want %s/tour/basics/1", ordinary, test.origin)
+			}
+		})
+	}
+}
+
 func TestHTTPTransportRuntimeLocalizationInBrowser(t *testing.T) {
 	if os.Getenv("GO_TOUR_RUN_BROWSER_TESTS") != "1" {
 		t.Skip("set GO_TOUR_RUN_BROWSER_TESTS=1 to run the Chrome integration test")

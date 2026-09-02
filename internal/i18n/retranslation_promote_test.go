@@ -705,7 +705,7 @@ func TestRetranslationPromoteApplyUpdatesCanonicalAndPreservesAttempts(t *testin
 		t.Fatal(err)
 	}
 	for _, status := range statuses {
-		if status.State != "ready" || status.Attempts != 1 || status.SourceSHA256 == "" || status.CandidatePath != canonicalCandidatePath("zh-CN", status.UnitID) || status.UpdatedAt != "2026-08-17T19:04:05Z" || status.Note != "ChatGPT retranslation promoted from "+batch+"; passed canonical validator" {
+		if status.State != "ready" || status.Attempts != 1 || status.SourceSHA256 == "" || status.CandidatePath != canonicalCandidatePath("zh-CN", status.UnitID) || status.UpdatedAt != "2026-08-17T19:04:05Z" || status.Note != "retranslation promoted from "+batch+"; passed canonical validator" {
 			t.Fatalf("status = %+v", status)
 		}
 		candidate, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(status.CandidatePath)))
@@ -740,7 +740,7 @@ func TestRetranslationPromoteUsesCurrentSourceRevisionAndRepairsStaleStatus(t *t
 	if err != nil {
 		t.Fatal(err)
 	}
-	if statuses[0].State != "ready" || statuses[0].SourceSHA256 != catalog.Pages[0].SourceSHA256 || statuses[0].CandidatePath != canonicalCandidatePath("zh-CN", "lesson/1") || statuses[0].Note != "ChatGPT retranslation promoted from chatgpt-zh-CN-002; passed canonical validator" {
+	if statuses[0].State != "ready" || statuses[0].SourceSHA256 != catalog.Pages[0].SourceSHA256 || statuses[0].CandidatePath != canonicalCandidatePath("zh-CN", "lesson/1") || statuses[0].Note != "retranslation promoted from chatgpt-zh-CN-002; passed canonical validator" {
 		t.Fatalf("promoted stale status=%+v old_source=%s", statuses[0], oldSource)
 	}
 	if err := CheckStatus(root, "zh-CN", catalog); err != nil {

@@ -27,6 +27,7 @@ import (
 
 var (
 	uiContent      []byte
+	listContent    []byte
 	homeContent    []byte
 	footerContent  []byte
 	lessons        = make(map[string][]byte)
@@ -47,6 +48,7 @@ func useContent(content fs.FS) error {
 	}
 	contentTour = content
 	uiContent = nil
+	listContent = nil
 	homeContent = nil
 	footerContent = nil
 	lessons = make(map[string][]byte)
@@ -83,7 +85,11 @@ func initTour(mux *http.ServeMux, transport, locale, playgroundBaseURL string) (
 	if err != nil {
 		return seoDocuments{}, err
 	}
-	uiContent, err = renderIndex(catalog, metadata)
+	uiContent, err = renderIndexForPath(catalog, metadata, "/tour/")
+	if err != nil {
+		return seoDocuments{}, err
+	}
+	listContent, err = renderIndexForPath(catalog, metadata, "/tour/list")
 	if err != nil {
 		return seoDocuments{}, err
 	}
@@ -125,6 +131,7 @@ type pageTemplateData struct {
 	Languages           []LanguageLink
 	CurrentLanguage     LanguageLink
 	SEOOrigin           string
+	Canonical           string
 }
 
 func newPageTemplateData(catalog ui.Catalog, metadata SiteMetadata) (pageTemplateData, error) {
@@ -177,6 +184,10 @@ func newPageTemplateData(catalog ui.Catalog, metadata SiteMetadata) (pageTemplat
 }
 
 func renderIndex(catalog ui.Catalog, metadata SiteMetadata) ([]byte, error) {
+	return renderIndexForPath(catalog, metadata, "/tour/")
+}
+
+func renderIndexForPath(catalog ui.Catalog, metadata SiteMetadata, canonicalPath string) ([]byte, error) {
 	tmpl, err := template.New("index.tmpl").Funcs(pageTemplateFuncs(catalog, metadata)).ParseFS(contentTour, "tour/template/index.tmpl")
 	if err != nil {
 		return nil, fmt.Errorf("parse index.tmpl: %w", err)
@@ -186,6 +197,10 @@ func renderIndex(catalog ui.Catalog, metadata SiteMetadata) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
+	if canonicalPath != "/tour/" && canonicalPath != "/tour/list" {
+		return nil, fmt.Errorf("unsupported Tour shell canonical path %q", canonicalPath)
+	}
+	data.Canonical = data.SEOOrigin + canonicalPath
 	dataWithHeadHTML := struct {
 		pageTemplateData
 		AnalyticsHTML template.HTML
@@ -394,6 +409,14 @@ func renderUI(w io.Writer) error {
 		panic("renderUI called before successful initTour")
 	}
 	_, err := w.Write(uiContent)
+	return err
+}
+
+func renderList(w io.Writer) error {
+	if listContent == nil {
+		panic("renderList called before successful initTour")
+	}
+	_, err := w.Write(listContent)
 	return err
 }
 

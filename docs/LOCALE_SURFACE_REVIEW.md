@@ -102,7 +102,7 @@ language registry 是 build-time 输入，因此新增 locale 的首次 producti
 ### 5. SEO 与 production 可见身份
 
 - HTML `<title>`、description、可见 heading、Open Graph/其他已实现的 SEO 字段与审核通过的 target 及当前页面一致；
-- canonical/public host、`html lang`、首页和课程 URL 正确；
+- canonical/public host、`html lang`、首页和课程 URL 正确；`/`、`/tour/`、`/tour/list` 与每个 `/tour/<article>/<n>` 课程页均使用当前 locale production origin 下的自身正式 URL，不合并页面身份；
 - `robots.txt` 指向当前 locale 的 sitemap；sitemap 包含当前正式集合，所有 URL 使用正确 host、无重复并返回预期状态；
 - 页面不泄露 development、其他 locale hostname 或旧域名。
 

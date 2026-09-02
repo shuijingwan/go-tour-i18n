@@ -102,6 +102,12 @@ func rootHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		return
 	}
+	if r.URL.Path == "/tour/list" {
+		if err := renderList(w); err != nil {
+			log.Println(err)
+		}
+		return
+	}
 	if err := renderUI(w); err != nil {
 		log.Println(err)
 	}

@@ -352,7 +352,7 @@ func applyRetranslationPromotion(root string, catalog *Catalog, options Retransl
 		statuses[i].SourceSHA256 = item.unit.SourceSHA256
 		statuses[i].CandidatePath = item.plan.CanonicalCandidatePath
 		statuses[i].UpdatedAt = updated
-		statuses[i].Note = fmt.Sprintf("ChatGPT retranslation promoted from %s; passed canonical validator", item.plan.BatchID)
+		statuses[i].Note = fmt.Sprintf("retranslation promoted from %s; passed canonical validator", item.plan.BatchID)
 	}
 	stagedStatus := filepath.Join(staging, "status.tsv")
 	if err := writeStatuses(stagedStatus, statuses); err != nil {
