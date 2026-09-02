@@ -10,12 +10,14 @@
     {
       "index": 1,
       "unit_id": "welcome/1",
-      "rating": "B"
+      "rating": "B",
+      "finding": "当前 candidate 同时存在助词选择与 legacy present boundary 问题：Go 언어 투어 后使用了错误的宾格助词 을；PageUp、PageDown 等 inline code 后的韩语助词又因 restore 为保持字体 span 而被分开。Revision 应修正 을/를 等实际语言错误，并通过自然句法改写避免字体 span 后直接附着 Hangul，不得直接删除结构空格。"
     },
     {
       "index": 2,
       "unit_id": "welcome/2",
-      "rating": "B"
+      "rating": "B",
+      "finding": "标题 Go를 로컬에서 실행하기 将 Go local 理解成了“在本地运行 Go”，但正文实际是其他语言版本列表，标题语义与页面内容不符；正文还存在 PageDown 等 inline code 后因 legacy present boundary 产生的非自然助词分写。Revision 应先纠正标题语义，再用自然韩语句法规避字体 span 后直接附着 Hangul。"
     },
     {
       "index": 3,
@@ -25,17 +27,20 @@
     {
       "index": 4,
       "unit_id": "welcome/5",
-      "rating": "B"
+      "rating": "B",
+      "finding": "当前译文中的 Go 플레이그라운드을 使用了错误的宾格助词，플레이그라운드 后应根据韩语语法选择自然的助词形式。Revision 应在保持 glossary 正式术语 Go 플레이그라운드 不变的前提下修正整句语法。"
     },
     {
       "index": 5,
       "unit_id": "welcome/3",
-      "rating": "B"
+      "rating": "B",
+      "finding": "当前译文中的 Go 언어 투어을 使用了错误的宾格助词。Revision 应保持 glossary 正式术语 Go 언어 투어，同时根据该术语末尾音节选择正确、自然的韩语助词并重写相关句子。"
     },
     {
       "index": 6,
       "unit_id": "basics/1",
-      "rating": "B"
+      "rating": "B",
+      "finding": "当前 candidate 中 `\"fmt\"` 와、`\"math/rand\"` 인 等 inline code 与韩语助词之间出现非自然空格。该类空格来自 legacy present restore 为保持 code span 的结构边界。Revision 不应直接删除结构空格，而应自然改写句法，例如在 code span 后使用独立韩语名词或其他具有合法边界的表达。"
     },
     {
       "index": 7,
@@ -45,12 +50,14 @@
     {
       "index": 8,
       "unit_id": "basics/3",
-      "rating": "B"
+      "rating": "B",
+      "finding": "当前 candidate 有多处 inline code 后韩语助词被 legacy present boundary 分开的非自然形式；同时关于 Pi 的说明存在句子拆分、重复和翻译腔。Revision 应保持技术含义完整，整体自然重写相关句子，并避免字体 span 后直接附着 Hangul。"
     },
     {
       "index": 9,
       "unit_id": "basics/4",
-      "rating": "B"
+      "rating": "B",
+      "finding": "当前 candidate 中 `add` 는、`int` 인 等 inline code 与韩语助词之间的空格由 legacy present restore 为保持字体 span 插入，最终韩语不自然。Revision 应通过自然改写句法规避 font span 后直接附着助词，而不是简单删除结构空格。"
     },
     {
       "index": 10,
@@ -85,22 +92,26 @@
     {
       "index": 16,
       "unit_id": "basics/11",
-      "rating": "B"
+      "rating": "B",
+      "finding": "当前 candidate 中 `int` 를 等 inline code 后的韩语助词被 legacy present boundary 分开，虽然结构验证正确，但不符合自然韩语书写。Revision 应自然重构句子，使字体 span 后存在合法边界，避免直接附着 Hangul。"
     },
     {
       "index": 17,
       "unit_id": "basics/12",
-      "rating": "B"
+      "rating": "B",
+      "finding": "第一段仍保留未本地化的强调术语 zero value，没有使用 ko-KR glossary 中的正式表达 제로 값；同时存在字体 span 与韩语助词之间因 legacy present boundary 产生的非自然空格。Revision 应完成术语本地化，并通过自然句法改写解决边界问题。"
     },
     {
       "index": 18,
       "unit_id": "basics/13",
-      "rating": "B"
+      "rating": "B",
+      "finding": "当前 candidate 中 `T(v)` 는、`v` 를、`T` 로 等 inline code 后韩语助词被 legacy present restore 分开，造成系统性的非自然书写。Revision 应保持代码身份不变，通过自然句法重构避免字体 span 后直接附着 Hangul。"
     },
     {
       "index": 19,
       "unit_id": "basics/14",
-      "rating": "B"
+      "rating": "B",
+      "finding": "句子 j 변수의 타입은 int 타입입니다 表达重复、生硬；同时 `complex128` 이、`v` 의 等 inline code 后存在 legacy present boundary 造成的非自然助词分写。Revision 应精简并自然表达类型推断含义，同时用自然句法规避字体 span 后直接附着 Hangul。"
     },
     {
       "index": 20,
@@ -110,17 +121,20 @@
     {
       "index": 21,
       "unit_id": "basics/16",
-      "rating": "B"
+      "rating": "B",
+      "finding": "当前 candidate 中强调文本和 inline code 后出现 `_값_ 입니다`、`needInt(Big)` 도、`int` 는 等非自然分写；这是 legacy present 为保持字体 span 边界而产生的结果。Revision 应自然重构相关句子，使 emphasis/code span 后有合法语言边界，而不是直接删除结构空格。"
     },
     {
       "index": 22,
       "unit_id": "basics/17",
-      "rating": "B"
+      "rating": "B",
+      "finding": "结尾表达 다음 레슨을 계속 진행하세요 的宾语与动词搭配不自然，作为课程导航指令有明显翻译腔。Revision 应改为自然的韩语方向或继续学习表达，同时保持原文只是引导进入下一课的含义，不新增说明。"
     },
     {
       "index": 23,
       "unit_id": "flowcontrol/1",
-      "rating": "B"
+      "rating": "B",
+      "finding": "当前 candidate 中 `false` 로 以及相关 inline code 或字体结构后的韩语助词存在 legacy present boundary 导致的非自然分写。Revision 应保持 Go 语义和代码身份不变，通过自然句法重写，使字体 span 后不直接附着 Hangul。"
     },
     {
       "index": 24,
@@ -130,7 +144,8 @@
     {
       "index": 25,
       "unit_id": "flowcontrol/3",
-      "rating": "B"
+      "rating": "B",
+      "finding": "当前 candidate 中 `while` 은、`for` 로 等 inline code 后存在 legacy present boundary 造成的非自然助词分写；部分关于 Go for 与 while 用法的句子也略显重复、生硬。Revision 应保持原技术比较准确，整体自然化措辞，并规避字体 span 后直接附着 Hangul。"
     },
     {
       "index": 26,
@@ -140,22 +155,26 @@
     {
       "index": 27,
       "unit_id": "flowcontrol/5",
-      "rating": "B"
+      "rating": "B",
+      "finding": "当前 candidate 中 inline code、括号或其他 program-font span 后的韩语助词因 legacy present boundary 被分开，导致最终韩语书写不自然。Revision 应保持代码及结构身份不变，通过自然句法重构让字体 span 后形成合法边界。"
     },
     {
       "index": 28,
       "unit_id": "flowcontrol/6",
-      "rating": "B"
+      "rating": "B",
+      "finding": "当前 candidate 中 `for` 와、`v` 를 等 inline code 后的韩语助词被 legacy present restore 分开。Revision 不应直接删除这些用于结构安全的空格，而应自然改写句子，避免 font span 后直接附着 Hangul。"
     },
     {
       "index": 29,
       "unit_id": "flowcontrol/7",
-      "rating": "B"
+      "rating": "B",
+      "finding": "当前 candidate 中 `if` 의、`pow` 를、`main` 에서 等 inline code 后存在 legacy present boundary 造成的非自然助词分写。Revision 应保持技术语义准确，通过自然韩语句法重构，使字体 span 后具有合法边界。"
     },
     {
       "index": 30,
       "unit_id": "flowcontrol/8",
-      "rating": "B"
+      "rating": "B",
+      "finding": "当前 candidate 的技术解释整体准确，但 `func Sqrt` 等 inline code 后的韩语助词受到 legacy present boundary 限制而出现非自然分写。Revision 应保留原有技术含义，通过自然句法重构相关表达，避免字体 span closing marker 后直接附着 Hangul。"
     },
     {
       "index": 31,
@@ -165,12 +184,14 @@
     {
       "index": 32,
       "unit_id": "flowcontrol/10",
-      "rating": "B"
+      "rating": "B",
+      "finding": "当前 candidate 中 `f` 는、`i==0` 이면 等 inline code 后的韩语助词或语尾因 legacy present boundary 被 restore 分开，最终书写不自然。Revision 应保持代码身份和 defer 技术语义不变，通过自然韩语句法重构，使字体 span 后形成合法边界。"
     },
     {
       "index": 33,
       "unit_id": "flowcontrol/11",
-      "rating": "B"
+      "rating": "B",
+      "finding": "当前 candidate 对无条件 switch 的等价关系表达略显生硬，并存在 inline code 后韩语助词因 legacy present boundary 被分开的情况。Revision 应准确保留“无条件 switch 等价于 switch true”的技术含义，同时自然重写句子并避免字体 span 后直接附着 Hangul。"
     },
     {
       "index": 34,
@@ -185,17 +206,20 @@
     {
       "index": 36,
       "unit_id": "flowcontrol/14",
-      "rating": "B"
+      "rating": "B",
+      "finding": "结尾 다음 레슨을 계속 진행하세요 作为课程导航表达不自然，有明显翻译腔。Revision 应改为自然的韩语继续学习或进入下一课表达，不增加原文不存在的说明。"
     },
     {
       "index": 37,
       "unit_id": "moretypes/1",
-      "rating": "B"
+      "rating": "B",
+      "finding": "当前 candidate 中 `*T` 는、`nil` 입니다 等 inline code 后的韩语成分因 legacy present boundary 被分开；页面中的 teaching comment 表达也略显生硬。Revision 应保持 pointer 技术含义和代码身份不变，整体自然化措辞，并通过句法重构规避 font span 后直接附着 Hangul。"
     },
     {
       "index": 38,
       "unit_id": "moretypes/2",
-      "rating": "B"
+      "rating": "B",
+      "finding": "当前 candidate 中 `struct` 는 等 inline code 后的韩语助词因 legacy present boundary 被分开，造成不自然书写。Revision 应保持 struct 技术含义准确，通过自然句法改写让字体 span 后具有合法边界。"
     },
     {
       "index": 39,
@@ -205,22 +229,26 @@
     {
       "index": 40,
       "unit_id": "moretypes/4",
-      "rating": "B"
+      "rating": "B",
+      "finding": "当前 candidate 中 `X` 에、`p` 가、`(*p).X` 라고、`p.X` 라고 等多处 inline code 后韩语助词因 legacy present boundary 被分开。Revision 应完整保留 struct field 与 pointer dereference 的技术关系，通过自然韩语重构句子避免直接附着助词。"
     },
     {
       "index": 41,
       "unit_id": "moretypes/5",
-      "rating": "B"
+      "rating": "B",
+      "finding": "当前 candidate 中 `\u0026` 는 等 inline code 后的韩语助词因 legacy present boundary 被分开。Revision 应保持 address operator 的技术含义不变，通过自然句法改写，使字体 span 后不直接附着 Hangul。"
     },
     {
       "index": 42,
       "unit_id": "moretypes/6",
-      "rating": "B"
+      "rating": "B",
+      "finding": "当前 candidate 中 `a` 를 等 inline code 后存在 legacy present boundary 导致的非自然助词分写；“제약처럼 보일 수 있지만”一类表达也略显翻译腔。Revision 应保持 slice 技术含义准确，整体自然化措辞并规避字体 span 后直接附着 Hangul。"
     },
     {
       "index": 43,
       "unit_id": "moretypes/7",
-      "rating": "B"
+      "rating": "B",
+      "finding": "当前 candidate 中 `a` 의 等 inline code 后的韩语助词因 legacy present boundary 被分开。Revision 应保持 slice literal 与 array/slice 关系的原技术含义，通过自然韩语句法重构避免直接附着助词。"
     },
     {
       "index": 44,
@@ -240,17 +268,20 @@
     {
       "index": 47,
       "unit_id": "moretypes/11",
-      "rating": "B"
+      "rating": "B",
+      "finding": "当前 candidate 中 `_길이_ 와`、`_용량_ 이` 等 emphasis，以及 `s` 의、`len(s)` 와 等 inline code 后均出现 legacy present boundary 导致的非自然分写。Revision 应保持 length/capacity 概念准确，通过自然重写让 emphasis/code span 后具有合法边界。"
     },
     {
       "index": 48,
       "unit_id": "moretypes/12",
-      "rating": "B"
+      "rating": "B",
+      "finding": "当前 candidate 中 `nil` 입니다 等 inline code 后的韩语语尾因 legacy present boundary 被分开，虽然结构安全但语言不自然。Revision 应保持 nil slice 的技术含义准确，通过自然句法重构避免字体 span 后直接附着 Hangul。"
     },
     {
       "index": 49,
       "unit_id": "moretypes/13",
-      "rating": "B"
+      "rating": "B",
+      "finding": "当前 candidate 中 `make` 에 等 inline code 后的韩语助词因 legacy present boundary 被分开。Revision 应保持 make 创建 slice 的技术语义不变，通过自然句法改写，例如采用独立名词结构，使字体 span 后形成合法边界。"
     },
     {
       "index": 50,
@@ -260,7 +291,8 @@
     {
       "index": 51,
       "unit_id": "moretypes/15",
-      "rating": "B"
+      "rating": "B",
+      "finding": "当前 candidate 中 `append` 를、`s` 는、`append` 의、`s` 의 等多处 inline code 后的韩语助词因 legacy present boundary 被分开，影响整页自然度。Revision 应准确保持 append 的行为及返回值语义，并整体重构相关句子以规避直接附着 Hangul。"
     },
     {
       "index": 52,
@@ -270,17 +302,20 @@
     {
       "index": 53,
       "unit_id": "moretypes/17",
-      "rating": "B"
+      "rating": "B",
+      "finding": "当前 candidate 中强调或 program-font 内容后的韩语助词出现 legacy present boundary 导致的非自然分写，例如 `_` 에 一类结构。Revision 应保持 range 中 blank identifier 等技术身份不变，通过自然句法重新表达而不是直接删除结构空格。"
     },
     {
       "index": 54,
       "unit_id": "moretypes/18",
-      "rating": "B"
+      "rating": "B",
+      "finding": "当前 candidate 中 `Pic` 을、`dy` 인、`uint8(intValue)` 을 等 inline code 后的韩语助词或语尾因 legacy present boundary 被分开。Revision 应保持练习要求和类型转换语义准确，通过自然韩语重构句子避免字体 span 后直接附着 Hangul。"
     },
     {
       "index": 55,
       "unit_id": "moretypes/19",
-      "rating": "B"
+      "rating": "B",
+      "finding": "当前 candidate 中 `nil` 입니다 等 inline code 后的韩语语尾受到 legacy present boundary 影响而被分开。Revision 应保持 map 的 nil 状态及行为说明准确，通过自然句法改写形成合法字体边界。"
     },
     {
       "index": 56,
@@ -295,12 +330,14 @@
     {
       "index": 58,
       "unit_id": "moretypes/22",
-      "rating": "B"
+      "rating": "B",
+      "finding": "当前 candidate 中 `m` 에、`key` 가、`ok` 는 等大量 inline code 后的韩语助词因 legacy present boundary 被分开，形成系统性不自然书写。Revision 应完整保留 map 查询、存在性判断及 zero value 的技术含义，通过自然句法整体重写相关说明。"
     },
     {
       "index": 59,
       "unit_id": "moretypes/23",
-      "rating": "B"
+      "rating": "B",
+      "finding": "当前 candidate 中 `WordCount` 를、`s` 에 等 inline code 后的韩语助词因 legacy present boundary 被分开。Revision 应保持练习任务和函数身份准确，通过自然韩语句法重构，使字体 span 后具有合法边界。"
     },
     {
       "index": 60,
@@ -320,52 +357,62 @@
     {
       "index": 63,
       "unit_id": "moretypes/27",
-      "rating": "B"
+      "rating": "B",
+      "finding": "结尾 다음 레슨을 계속 진행하세요 作为课程导航表达不自然，有明显翻译腔。Revision 应改成自然的韩语继续学习或进入下一课表达，保持原文导航意图，不新增说明。"
     },
     {
       "index": 64,
       "unit_id": "methods/1",
-      "rating": "B"
+      "rating": "B",
+      "finding": "当前 candidate 中 `Vertex` 이고、`v` 인 等 inline code 后的韩语成分因 legacy present boundary 被 restore 分开，最终书写不自然。Revision 应保持 receiver、Vertex 和 v 的技术身份不变，通过自然句法重构，例如使用独立名词结构，使字体 span 后不直接附着 Hangul。"
     },
     {
       "index": 65,
       "unit_id": "methods/2",
-      "rating": "B"
+      "rating": "B",
+      "finding": "当前 candidate 中 inline code 与韩语助词或语尾之间存在 legacy present boundary 导致的非自然分写。Revision 应保持 method 与 receiver 的技术关系准确，通过自然韩语重构相关句子，使 program-font span 后形成合法边界。"
     },
     {
       "index": 66,
       "unit_id": "methods/3",
-      "rating": "B"
+      "rating": "B",
+      "finding": "当前 candidate 中技术标识符后的韩语助词受到 legacy present boundary 影响而被分开，降低语言自然度。Revision 应保持为非 struct 类型声明 method 的技术含义不变，通过自然句法规避字体 span 后直接附着 Hangul。"
     },
     {
       "index": 67,
       "unit_id": "methods/4",
-      "rating": "B"
+      "rating": "B",
+      "finding": "当前 candidate 中 `MyFloat` 와 等 inline code 后的韩语助词因 legacy present boundary 被分开。Revision 应保持自定义类型及 method 定义的技术语义准确，通过自然句法改写，使字体 span 后具有合法边界。"
     },
     {
       "index": 68,
       "unit_id": "methods/5",
-      "rating": "B"
+      "rating": "B",
+      "finding": "当前 candidate 中 inline code 后的韩语助词存在 legacy present boundary 导致的非自然分写。Revision 应保持 pointer receiver 的技术语义准确，通过自然韩语重构句子，而不是直接删除 restore 为结构安全插入的空格。"
     },
     {
       "index": 69,
       "unit_id": "methods/6",
-      "rating": "B"
+      "rating": "B",
+      "finding": "当前 candidate 中 `*T` 라는 等 inline code 与后续韩语成分之间因 legacy present boundary 出现非自然分写。Revision 应保持关于 receiver type 定义约束的技术含义不变，通过自然句法规避 font span 后直接附着 Hangul。"
     },
     {
       "index": 70,
       "unit_id": "methods/7",
-      "rating": "B"
+      "rating": "B",
+      "finding": "当前 candidate 中 `Scale` 과 等 inline code 后的韩语助词因 legacy present boundary 被分开。Revision 应保持 pointer receiver 修改原值的技术说明准确，通过自然句法重构，让字体 span 后形成合法边界。"
     },
     {
       "index": 71,
       "unit_id": "methods/8",
-      "rating": "B"
+      "rating": "B",
+      "finding": "当前 candidate 中 `p.Abs()` 는 等 inline code 后的韩语助词因 legacy present boundary 被分开，最终语言不自然。Revision 应保持 method call 与自动 dereference 的技术含义准确，通过自然韩语改写避免字体 span 后直接附着 Hangul。"
     },
     {
       "index": 72,
       "unit_id": "methods/9",
-      "rating": "B"
+      "rating": "B",
+      "finding": "当前 candidate 对 interface type 的强调表达组织不自然，出现类似 `_인터페이스_타입_` 的生硬结构，同时字体 span 与韩语成分之间受 legacy present boundary 影响。Revision 应保持 glossary 的 interface type → 인터페이스 타입，并用自然韩语重新组织强调和正文，避免错误或生硬的 emphasis 边界。"
     },
     {
       "index": 73,
@@ -390,72 +437,86 @@
     {
       "index": 77,
       "unit_id": "methods/14",
-      "rating": "B"
+      "rating": "B",
+      "finding": "当前 candidate 对 empty interface 的强调表达存在类似 `_빈_인터페이스_` 的不自然结构，并伴随字体 span boundary 问题。Revision 应准确表达空接口能够保存任意类型值的原意，使用自然韩语组织强调文本，并避免 span 后直接附着 Hangul。"
     },
     {
       "index": 78,
       "unit_id": "methods/15",
-      "rating": "B"
+      "rating": "B",
+      "finding": "当前 candidate 对 type assertion 的强调表达存在类似 `_타입_단언_` 的不自然结构，同时 inline/emphasis span 后存在 legacy present boundary 导致的非自然分写。Revision 应保持 glossary 的 type assertion → 타입 단언，整体自然重写相关说明。"
     },
     {
       "index": 79,
       "unit_id": "methods/16",
-      "rating": "B"
+      "rating": "B",
+      "finding": "当前 candidate 对 type switch 的强调表达存在类似 `_타입_스위치_` 的不自然结构，并存在字体 span 后韩语成分被分开的情况。Revision 应保持 glossary 的 type switch → 타입 스위치，准确保留 switch 语义，并自然重组句子和强调结构。"
     },
     {
       "index": 80,
       "unit_id": "methods/17",
-      "rating": "B"
+      "rating": "B",
+      "finding": "当前 candidate 中 inline code 或 emphasis 后的韩语助词受到 legacy present boundary 影响而出现非自然分写。Revision 应保持 Stringer 接口及 String 方法的技术身份准确，通过自然韩语句法重构解决字体边界问题。"
     },
     {
       "index": 81,
       "unit_id": "methods/18",
-      "rating": "B"
+      "rating": "B",
+      "finding": "当前 candidate 中 `Stringer` 는 等 inline code 后的韩语助词因 legacy present boundary 被分开。Revision 应保持 fmt 等组件如何使用 Stringer 的技术含义准确，通过自然句法改写让字体 span 后形成合法边界。"
     },
     {
       "index": 82,
       "unit_id": "methods/19",
-      "rating": "B"
+      "rating": "B",
+      "finding": "当前 candidate 中 `error` 는 等 inline code 后的韩语助词因 legacy present boundary 被分开，影响自然度。Revision 应保持 error interface 的定义和错误处理语义准确，通过自然韩语重构句子避免直接附着 Hangul。"
     },
     {
       "index": 83,
       "unit_id": "methods/20",
-      "rating": "B"
+      "rating": "B",
+      "finding": "当前 candidate 中 inline code 与后续韩语语法成分之间存在 legacy present boundary 导致的非自然分写。Revision 应保持练习中错误处理相关技术要求不变，通过自然句法改写，使字体 span 后存在合法边界。"
     },
     {
       "index": 84,
       "unit_id": "methods/21",
-      "rating": "B"
+      "rating": "B",
+      "finding": "当前 candidate 除字体 span boundary 问题外，链接附近使用 구현이 많이 있습니다 一类表达较生硬，不符合自然教程韩语。Revision 应准确保留 Reader 相关实现数量或示例的原意，自然重写链接句，同时规避 span 后直接附着 Hangul。"
     },
     {
       "index": 85,
       "unit_id": "methods/22",
-      "rating": "B"
+      "rating": "B",
+      "finding": "当前 candidate 中 `Reader` 타입 等表达及相关 inline code 边界处理整体略显生硬。Revision 应保持 io.Reader 的 Read 方法语义和技术身份准确，用自然韩语重新组织说明，并避免 program-font span 后直接附着 Hangul。"
     },
     {
       "index": 86,
       "unit_id": "methods/23",
-      "rating": "B"
+      "rating": "B",
+      "finding": "当前 candidate 中 inline code 后韩语助词受到 legacy present boundary 影响而被分开。Revision 应保持 Reader 练习的任务要求和技术身份准确，通过自然韩语句法重构解决字体 span 边界问题。"
     },
     {
       "index": 87,
       "unit_id": "methods/24",
-      "rating": "B"
+      "rating": "B",
+      "finding": "当前 candidate 中 `s` 가 等 inline code 后的韩语助词因 legacy present boundary 被分开。Revision 应保持 rot13Reader 练习的转换逻辑与技术要求准确，通过自然句法改写避免字体 span 后直接附着 Hangul。"
     },
     {
       "index": 88,
       "unit_id": "methods/25",
-      "rating": "B"
+      "rating": "B",
+      "finding": "当前 candidate 中技术标识符与韩语助词之间存在 legacy present boundary 导致的非自然分写。Revision 应保持 image.Image 相关接口、方法及图像生成任务的技术含义准确，通过自然韩语重构相关句子。"
     },
     {
       "index": 89,
       "unit_id": "methods/26",
-      "rating": "B"
+      "rating": "B",
+      "finding": "当前 candidate 中 inline code 或技术标识符后的韩语成分受到 legacy present boundary 影响而被分开。Revision 应保持练习要求及技术语义不变，通过自然句法改写让字体 span 后形成合法边界。"
     },
     {
       "index": 90,
       "unit_id": "generics/1",
-      "rating": "B"
+      "rating": "B",
+      "finding": "当前 candidate 中 `T` 의 等 inline code 后的韩语助词因 legacy present boundary 被分开，影响自然度。Revision 应保持 type parameter、constraint 等泛型概念及 glossary 正式术语准确，通过自然韩语句法重构，避免字体 span 后直接附着 Hangul。"
     },
     {
       "index": 91,
@@ -465,27 +526,32 @@
     {
       "index": 92,
       "unit_id": "generics/3",
-      "rating": "B"
+      "rating": "B",
+      "finding": "结尾 다음 레슨을 계속 진행하세요 作为课程导航表达不自然，有明显翻译腔。Revision 应改为自然的韩语继续学习或进入下一课表达，保持原文只是引导继续课程的含义，不新增说明。"
     },
     {
       "index": 93,
       "unit_id": "concurrency/1",
-      "rating": "B"
+      "rating": "B",
+      "finding": "当前 candidate 中 `_goroutine_ 은`、`z` 의、`f` 의 等 emphasis/inline code 后的韩语助词因 legacy present boundary 被 restore 分开，最终书写不自然。Revision 应保持 goroutine 等技术身份和原并发语义不变，通过自然韩语句法重构，使字体 span 后形成合法边界。"
     },
     {
       "index": 94,
       "unit_id": "concurrency/2",
-      "rating": "B"
+      "rating": "B",
+      "finding": "当前 candidate 同时存在 legacy present boundary 与 teaching comment 韩语问题：`\u003c-` 를 等字体 span 后的助词被结构性分开；注释 `v을 채널 ch로 보냅니다` 中 v 的助词表达也不自然。Revision 应保持代码、identifier 和 channel 语义不变，自然重译 teaching comment，并通过句法重构避免字体 span 后直接附着 Hangul。"
     },
     {
       "index": 95,
       "unit_id": "concurrency/3",
-      "rating": "B"
+      "rating": "B",
+      "finding": "当前 candidate 中 `_버퍼_ 를`、`make` 의 等 emphasis/inline code 后的韩语助词因 legacy present boundary 被 restore 分开，造成不自然书写。Revision 应保持 buffered channel 与 make 第二个参数的技术含义准确，通过自然句法重构，使字体 span 后具有合法边界。"
     },
     {
       "index": 96,
       "unit_id": "concurrency/4",
-      "rating": "B"
+      "rating": "B",
+      "finding": "当前 candidate 存在两类语言问题：`ok` 는、`false` 입니다 等字体 span 后的韩语成分受 legacy present boundary 影响而分开；`*추가*참고:*` 的强调和标点组织也明显不自然。Revision 应准确保留 close/range 语义，自然重组 Note/Another note 的韩语表达和强调结构，并规避字体 span 后直接附着 Hangul。"
     },
     {
       "index": 97,
@@ -495,7 +561,8 @@
     {
       "index": 98,
       "unit_id": "concurrency/6",
-      "rating": "C"
+      "rating": "C",
+      "finding": "当前 candidate 对 source teaching comment `// use i` 进行了实质性增译，改成了“블록하지 않고 송신이나 수신을 시도하려면 i을 사용합니다”，加入了原注释不存在的技术解释，并且 i을 的助词表达也不自然；正文另有 `select` 의 等 legacy present boundary 分写。Revision 必须恢复原 teaching comment 的简洁语义，不得把正文解释扩写进注释，同时自然处理 identifier 与韩语语法及字体边界。"
     },
     {
       "index": 99,
@@ -505,12 +572,14 @@
     {
       "index": 100,
       "unit_id": "concurrency/8",
-      "rating": "B"
+      "rating": "B",
+      "finding": "当前 candidate 中 `ch` 를、`t1` 과、`t2` 가、`Same(...)` 은/는 等多处 inline code 后的韩语助词因 legacy present boundary 被分开。Revision 应保持 Walk、Same、tree.New 等练习要求与技术身份准确，通过自然韩语句法整体重构相关句子，使字体 span 后形成合法边界。"
     },
     {
       "index": 101,
       "unit_id": "concurrency/9",
-      "rating": "B"
+      "rating": "B",
+      "finding": "当前 candidate 的强调结构 `_상호_배제_ 라고`、`_뮤텍스_ 라고` 不自然，同时 `Lock` 과、`defer` 를 等字体 span 后存在 legacy present boundary 分写。Revision 应自然表达 mutual exclusion 和 mutex 概念，重新组织 emphasis，并保持 sync.Mutex、Lock、Unlock、defer 的技术含义准确。"
     },
     {
       "index": 102,
@@ -520,17 +589,20 @@
     {
       "index": 103,
       "unit_id": "concurrency/11",
-      "rating": "B"
+      "rating": "B",
+      "finding": "标题 여기서부터 Go로 더 나아가기... 有明显逐字翻译腔，不像自然的韩语教程章节标题；正文整体语义基本准确。Revision 应重点自然重译 “Where to Go from here...” 的标题，同时保持正文链接目标、技术名称和原有内容不变。"
     },
     {
       "index": 104,
       "unit_id": "example:basics/numeric-constants.go",
-      "rating": "B"
+      "rating": "B",
+      "finding": "第一条 teaching comment 的 `1 비트를 왼쪽으로 100자리만큼 시프트하여` 容易把原文中的数值 1 误读成“一个 bit”，且 `100자리만큼` 表达生硬。Revision 应准确表达“将 1 左移 100 位以得到很大的数”，保持 Big、Small 和所有代码完全不变，只自然重译允许翻译的注释。"
     },
     {
       "index": 105,
       "unit_id": "example:basics/type-inference.go",
-      "rating": "B"
+      "rating": "B",
+      "finding": "teaching comment `나를 바꿔 보세요!` 是对 “change me!” 的逐字拟人化翻译，在教程代码注释中不自然。Revision 应改为自然的操作提示，例如表达“试着修改这个值”，但不得改变代码、identifier 或添加原文不存在的技术解释。"
     },
     {
       "index": 106,
@@ -545,7 +617,8 @@
     {
       "index": 108,
       "unit_id": "example:concurrency/exercise-web-crawler.go",
-      "rating": "B"
+      "rating": "B",
+      "finding": "注释 `페이지를 depth가 지정한 최대 깊이까지 재귀적으로 크롤링합니다` 中 `depth가 지정한` 搭配不自然；应自然表达“递归抓取到由 depth 指定的最大深度”。Revision 只自然重译允许翻译的注释，保持 depth、URL、Fetcher 等技术身份以及全部 Go 代码不变。"
     },
     {
       "index": 109,
