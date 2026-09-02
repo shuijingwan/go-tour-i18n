@@ -1,0 +1,95 @@
+{
+  "schema_version": 2,
+  "evidence_type": "quality_check_results",
+  "locale": "ko-KR",
+  "snapshot_id": "qc-003",
+  "snapshot_manifest_sha256": "30a3ebaa8ed6479851472b0a7109a64ccfa01b81af54b685ce590d13ddb2a366",
+  "previous_snapshot_id": "qc-002",
+  "rubric": "translation-quality/v1",
+  "result_count": 16,
+  "results": [
+    {
+      "index": 4,
+      "unit_id": "welcome/5",
+      "rating": "A"
+    },
+    {
+      "index": 5,
+      "unit_id": "welcome/3",
+      "rating": "A"
+    },
+    {
+      "index": 8,
+      "unit_id": "basics/3",
+      "rating": "A"
+    },
+    {
+      "index": 9,
+      "unit_id": "basics/4",
+      "rating": "A"
+    },
+    {
+      "index": 16,
+      "unit_id": "basics/11",
+      "rating": "A"
+    },
+    {
+      "index": 19,
+      "unit_id": "basics/14",
+      "rating": "A"
+    },
+    {
+      "index": 37,
+      "unit_id": "moretypes/1",
+      "rating": "A"
+    },
+    {
+      "index": 51,
+      "unit_id": "moretypes/15",
+      "rating": "B",
+      "finding": "第一参数 s 已正确表达为 append 的 parameter，但当前“나머지 매개변수는 ... T 값입니다”又把 source 的 the rest are T values 表达成多个剩余 parameter，仍混淆 variadic parameter 与实际追加值。Revision 应准确保持函数签名语义，自然表达 s 是第一个参数，随后提供的是要追加到 slice 的 T 值。"
+    },
+    {
+      "index": 53,
+      "unit_id": "moretypes/17",
+      "rating": "A"
+    },
+    {
+      "index": 66,
+      "unit_id": "methods/3",
+      "rating": "A"
+    },
+    {
+      "index": 86,
+      "unit_id": "methods/23",
+      "rating": "A"
+    },
+    {
+      "index": 88,
+      "unit_id": "methods/25",
+      "rating": "A"
+    },
+    {
+      "index": 93,
+      "unit_id": "concurrency/1",
+      "rating": "B",
+      "finding": "上一轮关于 sync primitives 适用范围的语义问题已经修复，但当前“새 goroutine 실행”“goroutine 실행에서 동작합니다”“Goroutines 각각은”等组合仍明显名词化、生硬，不像自然韩语教程表达。Revision 应保持 goroutine 技术术语和 current/new goroutine 语义不变，通过自然句法完整重写相关句子。"
+    },
+    {
+      "index": 94,
+      "unit_id": "concurrency/2",
+      "rating": "B",
+      "finding": "当前“goroutines 실행에 각각 맡깁니다”“goroutines 실행 양쪽에서”仍明显生硬，没有自然表达 source 中把工作分给两个 goroutine、两者完成计算后再得到最终结果。Revision 应保持 goroutine 术语不变，明确且自然表达两个 goroutine 的数量、分工和完成关系。"
+    },
+    {
+      "index": 95,
+      "unit_id": "concurrency/3",
+      "rating": "A"
+    },
+    {
+      "index": 96,
+      "unit_id": "concurrency/4",
+      "rating": "A"
+    }
+  ]
+}
