@@ -1,0 +1,131 @@
+{
+  "schema_version": 2,
+  "batch_id": "codex-ko-KR-009",
+  "locale": "ko-KR",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 10,
+  "units": [
+    {
+      "unit_id": "generics/1",
+      "unit_kind": "page",
+      "source_path": "_content/tour/generics.article",
+      "source_sha256": "01a045105dc8c12fb1709f122d363235c19a6464d5de7587d579524aec270dd6",
+      "input_path": "inputs/generics-1.article",
+      "input_sha256": "3ff19664d7491cff23bc7f49a5fdd513a6af4184e596d7fda9cbe009b9342639",
+      "protected_token_count": 19,
+      "previous_snapshot_id": "qc-001",
+      "previous_rating": "B",
+      "previous_finding": "当前 candidate 中 `T` 의 等 inline code 后的韩语助词因 legacy present boundary 被分开，影响自然度。Revision 应保持 type parameter、constraint 等泛型概念及 glossary 正式术语准确，通过自然韩语句法重构，避免字体 span 后直接附着 Hangul。"
+    },
+    {
+      "unit_id": "generics/3",
+      "unit_kind": "page",
+      "source_path": "_content/tour/generics.article",
+      "source_sha256": "f565674b974c053924bf69ef83b709dc50931526ae7fa88e71543a5cd872a190",
+      "input_path": "inputs/generics-3.article",
+      "input_sha256": "df605b3346e6854db7cca5927808b0a8d4ca7757b7c336a78d3921019da81603",
+      "protected_token_count": 2,
+      "previous_snapshot_id": "qc-001",
+      "previous_rating": "B",
+      "previous_finding": "结尾 다음 레슨을 계속 진행하세요 作为课程导航表达不自然，有明显翻译腔。Revision 应改为自然的韩语继续学习或进入下一课表达，保持原文只是引导继续课程的含义，不新增说明。"
+    },
+    {
+      "unit_id": "concurrency/1",
+      "unit_kind": "page",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "d0a9c45078c2255540cfffe48744a07fa04ab5c2113e8880068b5a400ae0ebdc",
+      "input_path": "inputs/concurrency-1.article",
+      "input_sha256": "65fb5cde61b6e7c767b5c43aa0eca4a4392929855e18956a8f3104aea510dd95",
+      "protected_token_count": 26,
+      "previous_snapshot_id": "qc-001",
+      "previous_rating": "B",
+      "previous_finding": "当前 candidate 中 `_goroutine_ 은`、`z` 의、`f` 의 等 emphasis/inline code 后的韩语助词因 legacy present boundary 被 restore 分开，最终书写不自然。Revision 应保持 goroutine 等技术身份和原并发语义不变，通过自然韩语句法重构，使字体 span 后形成合法边界。"
+    },
+    {
+      "unit_id": "concurrency/2",
+      "unit_kind": "page",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "a35e3af26b51f8c2c2a6dfaf09f9c7cab0fdb4b1b56f9e4dc9b793f1dac1e295",
+      "input_path": "inputs/concurrency-2.article",
+      "input_sha256": "f88ab0b53baaa3421f19920457b2457b93328f959812169bdf2a0359a020d22e",
+      "protected_token_count": 15,
+      "previous_snapshot_id": "qc-001",
+      "previous_rating": "B",
+      "previous_finding": "当前 candidate 同时存在 legacy present boundary 与 teaching comment 韩语问题：`\u003c-` 를 等字体 span 后的助词被结构性分开；注释 `v을 채널 ch로 보냅니다` 中 v 的助词表达也不自然。Revision 应保持代码、identifier 和 channel 语义不变，自然重译 teaching comment，并通过句法重构避免字体 span 后直接附着 Hangul。"
+    },
+    {
+      "unit_id": "concurrency/3",
+      "unit_kind": "page",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "caef0893a54c61f192be397f6b27a039d81dc007f98f2d203a5a287383c0682e",
+      "input_path": "inputs/concurrency-3.article",
+      "input_sha256": "6172e9bf00b0129958419496d93dd4b065190bffa38be16e74c87b4655185712",
+      "protected_token_count": 6,
+      "previous_snapshot_id": "qc-001",
+      "previous_rating": "B",
+      "previous_finding": "当前 candidate 中 `_버퍼_ 를`、`make` 의 等 emphasis/inline code 后的韩语助词因 legacy present boundary 被 restore 分开，造成不自然书写。Revision 应保持 buffered channel 与 make 第二个参数的技术含义准确，通过自然句法重构，使字体 span 后具有合法边界。"
+    },
+    {
+      "unit_id": "concurrency/4",
+      "unit_kind": "page",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "3e925c6745255a443c61f25cd8131d538dc8677938f1c5021ce798465020b42e",
+      "input_path": "inputs/concurrency-4.article",
+      "input_sha256": "f68dc9ef06de3cb5d48846ebe7786e6cc06b77ea5c05bc6d56b80f667f5dad10",
+      "protected_token_count": 16,
+      "previous_snapshot_id": "qc-001",
+      "previous_rating": "B",
+      "previous_finding": "当前 candidate 存在两类语言问题：`ok` 는、`false` 입니다 等字体 span 后的韩语成分受 legacy present boundary 影响而分开；`*추가*참고:*` 的强调和标点组织也明显不自然。Revision 应准确保留 close/range 语义，自然重组 Note/Another note 的韩语表达和强调结构，并规避字体 span 后直接附着 Hangul。"
+    },
+    {
+      "unit_id": "concurrency/6",
+      "unit_kind": "page",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "82e9cd932e14e6c4852fc8f865f4c45dc75845bd1a306649152ebc045f0c3b2c",
+      "input_path": "inputs/concurrency-6.article",
+      "input_sha256": "b65274e7c29910bdc6b3a294ae171def398a09355166b8a513bdbbbd3f15b672",
+      "protected_token_count": 12,
+      "previous_snapshot_id": "qc-001",
+      "previous_rating": "C",
+      "previous_finding": "当前 candidate 对 source teaching comment `// use i` 进行了实质性增译，改成了“블록하지 않고 송신이나 수신을 시도하려면 i을 사용합니다”，加入了原注释不存在的技术解释，并且 i을 的助词表达也不自然；正文另有 `select` 의 等 legacy present boundary 分写。Revision 必须恢复原 teaching comment 的简洁语义，不得把正文解释扩写进注释，同时自然处理 identifier 与韩语语法及字体边界。"
+    },
+    {
+      "unit_id": "concurrency/8",
+      "unit_kind": "page",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "b362cc15a26324acd311f7cab18a628dc1d7d9ac6d455add7d651d41acf15e9a",
+      "input_path": "inputs/concurrency-8.article",
+      "input_sha256": "8025e7d08ef87ad525c6f8480c4563fc48f129676ac19716d1e1f8d44abfb368",
+      "protected_token_count": 43,
+      "previous_snapshot_id": "qc-001",
+      "previous_rating": "B",
+      "previous_finding": "当前 candidate 中 `ch` 를、`t1` 과、`t2` 가、`Same(...)` 은/는 等多处 inline code 后的韩语助词因 legacy present boundary 被分开。Revision 应保持 Walk、Same、tree.New 等练习要求与技术身份准确，通过自然韩语句法整体重构相关句子，使字体 span 后形成合法边界。"
+    },
+    {
+      "unit_id": "concurrency/9",
+      "unit_kind": "page",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "49f727794604c2ef8a8dda9508d0f412d7015cea77754c675a02b166dd9bfc93",
+      "input_path": "inputs/concurrency-9.article",
+      "input_sha256": "8b1114653df6cbf6ce416a7fdba29dd25b086ac2c22422ca0611f3161f552e19",
+      "protected_token_count": 25,
+      "previous_snapshot_id": "qc-001",
+      "previous_rating": "B",
+      "previous_finding": "当前 candidate 的强调结构 `_상호_배제_ 라고`、`_뮤텍스_ 라고` 不自然，同时 `Lock` 과、`defer` 를 等字体 span 后存在 legacy present boundary 分写。Revision 应自然表达 mutual exclusion 和 mutex 概念，重新组织 emphasis，并保持 sync.Mutex、Lock、Unlock、defer 的技术含义准确。"
+    },
+    {
+      "unit_id": "concurrency/11",
+      "unit_kind": "page",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "45ef131ede663b1355c0a5933634d46c393f66be8a6450b184f86a62e928a64e",
+      "input_path": "inputs/concurrency-11.article",
+      "input_sha256": "2f1ab189d9f6fce66d5cd585f2b2e97637a47f7258d4730432abd81ec85ecaf0",
+      "protected_token_count": 26,
+      "previous_snapshot_id": "qc-001",
+      "previous_rating": "B",
+      "previous_finding": "标题 여기서부터 Go로 더 나아가기... 有明显逐字翻译腔，不像自然的韩语教程章节标题；正文整体语义基本准确。Revision 应重点自然重译 “Where to Go from here...” 的标题，同时保持正文链接目标、技术名称和原有内容不变。"
+    }
+  ]
+}
