@@ -1,6 +1,7 @@
 package i18n
 
 import (
+	"encoding/json"
 	"os"
 	"path/filepath"
 	"reflect"
@@ -327,7 +328,7 @@ func TestRevisionExportRequiresPreviousNonAFindingAndFreezesProvenance(t *testin
 	root, catalog, _ := makeRetranslationReviewBatchFixture(t, 2, "qc-001")
 	recordQualityCheckRatings(t, root, catalog, "qc-001", "", "A", []string{"lesson/1"})
 	recordQualityCheckRatings(t, root, catalog, "qc-001", "", "B", []string{"lesson/2"})
-	if _, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", UnitIDs: []string{"lesson/1"}, AllowReexport: true, PreviousSnapshotID: "qc-001"}); err == nil || !strings.Contains(err.Error(), "not rated B") {
+	if _, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", UnitIDs: []string{"lesson/1"}, AllowReexport: true, PreviousSnapshotID: "qc-001"}); err == nil || !strings.Contains(err.Error(), "Final Review evidence is missing") {
 		t.Fatalf("A revision error=%v", err)
 	}
 	exported, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", UnitIDs: []string{"lesson/2"}, AllowReexport: true, PreviousSnapshotID: "qc-001"})
@@ -343,7 +344,187 @@ func TestRevisionExportRequiresPreviousNonAFindingAndFreezesProvenance(t *testin
 		t.Fatal(err)
 	}
 	unit := manifest.Units[0]
-	if unit.PreviousSnapshotID != "qc-001" || unit.PreviousRating != "B" || unit.PreviousFinding != "test finding" {
+	if unit.PreviousSnapshotID != "qc-001" || unit.RevisionFeedbackSource != "quality_check" || unit.PreviousRating != "B" || unit.PreviousFinding != "test finding" {
 		t.Fatalf("revision provenance=%+v", unit)
+	}
+}
+
+func TestRevisionExportAcceptsMatchingRejectedFinalReviewAfterQualityCheckA(t *testing.T) {
+	root, catalog, batchID := makeRetranslationReviewBatchFixture(t, 1, "qc-001")
+	recordQualityCheckRatings(t, root, catalog, "qc-001", "", "A", []string{"lesson/1"})
+	if _, _, err := RecordRetranslationReview(root, catalog, RetranslationReviewRecordOptions{
+		Locale: "zh-CN", BatchID: batchID, UnitID: "lesson/1", Rating: "B", Decision: "rejected",
+		Summary: "The explanation is technically ambiguous.", Issues: []string{"Clarify the loop condition."},
+		Reviewer: "final-reviewer", Rubric: TranslationQualityRubric,
+	}); err != nil {
+		t.Fatal(err)
+	}
+	exported, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{
+		Locale: "zh-CN", UnitIDs: []string{"lesson/1"}, AllowReexport: true, PreviousSnapshotID: "qc-001",
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	manifest := readRetranslationManifest(t, root, exported.BatchID)
+	unit := manifest.Units[0]
+	if unit.PreviousSnapshotID != "qc-001" || unit.RevisionFeedbackSource != "final_review" ||
+		unit.PreviousRating != "B" || unit.PreviousReviewDecision != "rejected" ||
+		unit.PreviousReviewSummary != "The explanation is technically ambiguous." ||
+		!reflect.DeepEqual(unit.PreviousReviewIssues, []string{"Clarify the loop condition."}) ||
+		unit.PreviousReviewPath == "" || unit.PreviousReviewSHA256 == "" || unit.PreviousFinding != "" {
+		t.Fatalf("Final Review revision provenance=%+v", unit)
+	}
+	reviewData, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(unit.PreviousReviewPath)))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got := sum(reviewData); got != unit.PreviousReviewSHA256 {
+		t.Fatalf("previous_review_sha256=%s, want %s", unit.PreviousReviewSHA256, got)
+	}
+}
+
+func TestRevisionExportAcceptsCarriedForwardQualityCheckAWithCurrentRejectedFinalReview(t *testing.T) {
+	root, catalog, batchID := makeRetranslationReviewBatchFixture(t, 2, "qc-001")
+	recordQualityCheckRatings(t, root, catalog, "qc-001", "", "A", []string{"lesson/1", "lesson/2"})
+	if _, _, err := CreateQualityCheckCandidateSnapshot(root, catalog, QualityCheckSnapshotOptions{Locale: "zh-CN", SnapshotID: "qc-002"}); err != nil {
+		t.Fatal(err)
+	}
+	// Establish qc-002's lineage while leaving lesson/1 without a direct result.
+	recordQualityCheckRatings(t, root, catalog, "qc-002", "qc-001", "A", []string{"lesson/2"})
+	if _, _, err := RecordRetranslationReview(root, catalog, RetranslationReviewRecordOptions{
+		Locale: "zh-CN", BatchID: batchID, UnitID: "lesson/1", Rating: "B", Decision: "rejected",
+		Summary: "The carried-forward unit needs revision.", Issues: []string{"Correct the control-flow explanation."},
+		Reviewer: "final-reviewer", Rubric: TranslationQualityRubric,
+	}); err != nil {
+		t.Fatal(err)
+	}
+	exported, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{
+		Locale: "zh-CN", UnitIDs: []string{"lesson/1"}, AllowReexport: true, PreviousSnapshotID: "qc-002",
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	unit := readRetranslationManifest(t, root, exported.BatchID).Units[0]
+	if unit.RevisionFeedbackSource != "final_review" || unit.PreviousSnapshotID != "qc-002" ||
+		unit.PreviousRating != "B" || unit.PreviousReviewDecision != "rejected" ||
+		unit.PreviousReviewSummary != "The carried-forward unit needs revision." ||
+		!reflect.DeepEqual(unit.PreviousReviewIssues, []string{"Correct the control-flow explanation."}) ||
+		unit.PreviousReviewPath == "" || unit.PreviousReviewSHA256 == "" {
+		t.Fatalf("carried-forward Final Review provenance=%+v", unit)
+	}
+	reviewData, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(unit.PreviousReviewPath)))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got := sum(reviewData); got != unit.PreviousReviewSHA256 {
+		t.Fatalf("previous_review_sha256=%s, want %s", unit.PreviousReviewSHA256, got)
+	}
+}
+
+func TestRevisionExportRejectsStaleCarriedForwardQualityCheckIdentity(t *testing.T) {
+	root, catalog, batchID := makeRetranslationReviewBatchFixture(t, 2, "qc-001")
+	recordQualityCheckRatings(t, root, catalog, "qc-001", "", "A", []string{"lesson/1", "lesson/2"})
+	if _, _, err := RecordRetranslationReview(root, catalog, RetranslationReviewRecordOptions{
+		Locale: "zh-CN", BatchID: batchID, UnitID: "lesson/1", Rating: "B", Decision: "rejected",
+		Summary: "Old candidate feedback.", Reviewer: "final-reviewer", Rubric: TranslationQualityRubric,
+	}); err != nil {
+		t.Fatal(err)
+	}
+	addProcessedPromotionBatch(t, root, catalog, "codex-zh-CN-002", []string{"lesson/1"})
+	materializeSnapshotSources(t, root, catalog)
+	if _, _, err := CreateQualityCheckCandidateSnapshot(root, catalog, QualityCheckSnapshotOptions{Locale: "zh-CN", SnapshotID: "qc-002"}); err != nil {
+		t.Fatal(err)
+	}
+	recordQualityCheckRatings(t, root, catalog, "qc-002", "qc-001", "A", []string{"lesson/2"})
+	_, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{
+		Locale: "zh-CN", UnitIDs: []string{"lesson/1"}, AllowReexport: true, PreviousSnapshotID: "qc-002",
+	})
+	if err == nil || !strings.Contains(err.Error(), "no effective Quality Check result") {
+		t.Fatalf("stale carry-forward error=%v", err)
+	}
+}
+
+func TestRevisionExportRejectsQualityCheckAWithoutEligibleFinalReview(t *testing.T) {
+	tests := []struct {
+		name        string
+		writeReview func(t *testing.T, root string, catalog *Catalog, batchID string)
+		want        string
+	}{
+		{name: "missing", want: "Final Review evidence is missing"},
+		{name: "A approved", want: "must be rated B, C, or D with decision rejected", writeReview: func(t *testing.T, root string, catalog *Catalog, batchID string) {
+			_, _, err := RecordRetranslationReview(root, catalog, RetranslationReviewRecordOptions{
+				Locale: "zh-CN", BatchID: batchID, UnitID: "lesson/1", Rating: "A", Decision: "approved",
+				Summary: "Approved.", Reviewer: "final-reviewer", Rubric: TranslationQualityRubric,
+			})
+			if err != nil {
+				t.Fatal(err)
+			}
+		}},
+		{name: "B approved", want: "must be rated B, C, or D with decision rejected", writeReview: func(t *testing.T, root string, catalog *Catalog, batchID string) {
+			_, _, err := RecordRetranslationReview(root, catalog, RetranslationReviewRecordOptions{
+				Locale: "zh-CN", BatchID: batchID, UnitID: "lesson/1", Rating: "B", Decision: "approved",
+				Summary: "Invalid production decision.", Reviewer: "final-reviewer", Rubric: TranslationQualityRubric,
+			})
+			if err != nil {
+				t.Fatal(err)
+			}
+		}},
+		{name: "rubric mismatch", want: "Final Review rubric is not current", writeReview: func(t *testing.T, root string, catalog *Catalog, batchID string) {
+			_, path, err := RecordRetranslationReview(root, catalog, RetranslationReviewRecordOptions{
+				Locale: "zh-CN", BatchID: batchID, UnitID: "lesson/1", Rating: "B", Decision: "rejected",
+				Summary: "Needs revision.", Reviewer: "final-reviewer", Rubric: TranslationQualityRubric,
+			})
+			if err != nil {
+				t.Fatal(err)
+			}
+			data, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(path)))
+			if err != nil {
+				t.Fatal(err)
+			}
+			var review TranslationReview
+			if err := json.Unmarshal(data, &review); err != nil {
+				t.Fatal(err)
+			}
+			review.Rubric = "translation-quality/v0"
+			if err := writeTranslationJSON(filepath.Join(root, filepath.FromSlash(path)), review); err != nil {
+				t.Fatal(err)
+			}
+		}},
+		{name: "identity mismatch", want: "identity does not match Candidate Snapshot", writeReview: func(t *testing.T, root string, catalog *Catalog, batchID string) {
+			_, path, err := RecordRetranslationReview(root, catalog, RetranslationReviewRecordOptions{
+				Locale: "zh-CN", BatchID: batchID, UnitID: "lesson/1", Rating: "B", Decision: "rejected",
+				Summary: "Needs revision.", Reviewer: "final-reviewer", Rubric: TranslationQualityRubric,
+			})
+			if err != nil {
+				t.Fatal(err)
+			}
+			data, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(path)))
+			if err != nil {
+				t.Fatal(err)
+			}
+			var review TranslationReview
+			if err := json.Unmarshal(data, &review); err != nil {
+				t.Fatal(err)
+			}
+			review.Attempt++
+			if err := writeTranslationJSON(filepath.Join(root, filepath.FromSlash(path)), review); err != nil {
+				t.Fatal(err)
+			}
+		}},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			root, catalog, batchID := makeRetranslationReviewBatchFixture(t, 1, "qc-001")
+			recordQualityCheckRatings(t, root, catalog, "qc-001", "", "A", []string{"lesson/1"})
+			if test.writeReview != nil {
+				test.writeReview(t, root, catalog, batchID)
+			}
+			_, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{
+				Locale: "zh-CN", UnitIDs: []string{"lesson/1"}, AllowReexport: true, PreviousSnapshotID: "qc-001",
+			})
+			if err == nil || !strings.Contains(err.Error(), test.want) {
+				t.Fatalf("error=%v, want substring %q", err, test.want)
+			}
+		})
 	}
 }

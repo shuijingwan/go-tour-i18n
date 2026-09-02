@@ -222,6 +222,8 @@ ChatGPT Quality Check 与 Final Review 的实际审核工作集分别由 scope �
 
 Final Review 是针对最终 candidate 的正式 Translation Quality Review，会重新审核最终 candidate。只有 Final Review 生成 review evidence；该 evidence 必须对应最终 candidate 及其 validation evidence，作为 promotion 的审核依据。当前严格策略下只有 Final Review A 可以 `approved`；B、C、D 不得 promotion，必须进入新的 revision batch，修订后重新走 process、automatic validation、ChatGPT Quality Check 和 Final Review。
 
+当同一 Candidate Snapshot 的 Quality Check 已为 A、但正式 Final Review 为 B/C/D + rejected 时，revision export 仍使用该 Snapshot 的 `--previous-snapshot-id`。Exporter 必须核对 review 与 Snapshot 的 source、selected batch、candidate、validation 和最终 attempt identity，并把实际 summary/issues 与 review path/SHA-256 固化到新 batch manifest。A + approved、missing review、identity mismatch 或非 rejected evidence 均不得作为该路径的 revision evidence；原 Quality Check A 与旧 Final Review evidence 保持不变。
+
 ## 必须逐 TranslationUnit 审核
 
 每一个最终准备进入 promotion 的 TranslationUnit candidate，都必须有其 Final Review 生成、且与其字节内容绑定的独立 review evidence。不采用以下规则：

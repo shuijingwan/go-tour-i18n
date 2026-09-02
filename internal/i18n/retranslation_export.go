@@ -23,16 +23,22 @@ type RetranslationExportOptions struct {
 }
 
 type RetranslationBatchUnit struct {
-	UnitID              string   `json:"unit_id"`
-	UnitKind            UnitKind `json:"unit_kind"`
-	SourcePath          string   `json:"source_path"`
-	SourceSHA256        string   `json:"source_sha256"`
-	InputPath           string   `json:"input_path"`
-	InputSHA256         string   `json:"input_sha256"`
-	ProtectedTokenCount int      `json:"protected_token_count"`
-	PreviousSnapshotID  string   `json:"previous_snapshot_id,omitempty"`
-	PreviousRating      string   `json:"previous_rating,omitempty"`
-	PreviousFinding     string   `json:"previous_finding,omitempty"`
+	UnitID                 string   `json:"unit_id"`
+	UnitKind               UnitKind `json:"unit_kind"`
+	SourcePath             string   `json:"source_path"`
+	SourceSHA256           string   `json:"source_sha256"`
+	InputPath              string   `json:"input_path"`
+	InputSHA256            string   `json:"input_sha256"`
+	ProtectedTokenCount    int      `json:"protected_token_count"`
+	PreviousSnapshotID     string   `json:"previous_snapshot_id,omitempty"`
+	RevisionFeedbackSource string   `json:"revision_feedback_source,omitempty"`
+	PreviousRating         string   `json:"previous_rating,omitempty"`
+	PreviousFinding        string   `json:"previous_finding,omitempty"`
+	PreviousReviewDecision string   `json:"previous_review_decision,omitempty"`
+	PreviousReviewSummary  string   `json:"previous_review_summary,omitempty"`
+	PreviousReviewIssues   []string `json:"previous_review_issues,omitempty"`
+	PreviousReviewPath     string   `json:"previous_review_path,omitempty"`
+	PreviousReviewSHA256   string   `json:"previous_review_sha256,omitempty"`
 }
 
 type RetranslationBatchManifest struct {
@@ -72,6 +78,17 @@ type exportedRetranslationUnit struct {
 type retranslationStatus struct {
 	StaleSource bool
 	ReadySource bool
+}
+
+type revisionFeedback struct {
+	source       string
+	rating       string
+	finding      string
+	decision     string
+	summary      string
+	issues       []string
+	reviewPath   string
+	reviewSHA256 string
 }
 
 // ExportRetranslationBatch writes one isolated batch of Default protected
@@ -125,41 +142,51 @@ func ExportRetranslationBatch(root string, catalog *Catalog, options Retranslati
 	if len(units) == 0 {
 		return &RetranslationExportResult{Locale: options.Locale, AllExported: true}, nil
 	}
-	previousFindings := map[string]QualityCheckResult{}
+	revisionFeedbackByID := map[string]revisionFeedback{}
 	if options.PreviousSnapshotID != "" {
 		snapshot, err := readQualityCheckSnapshotForReview(root, options.Locale, options.PreviousSnapshotID)
 		if err != nil {
 			return nil, fmt.Errorf("previous Quality Check Snapshot: %w", err)
 		}
-		results, err := readQualityCheckResults(root, options.Locale, snapshot)
+		effectiveSnapshot, effectiveResults, err := loadEffectiveQualityCheckResults(root, options.Locale, options.PreviousSnapshotID, map[string]bool{})
 		if err != nil {
 			return nil, err
 		}
-		if results == nil {
-			return nil, errors.New("previous Quality Check Snapshot has no results")
+		if effectiveSnapshot.SnapshotID != snapshot.SnapshotID || effectiveSnapshot.GlossarySHA256 != snapshot.GlossarySHA256 {
+			return nil, errors.New("effective Quality Check Snapshot identity mismatch")
 		}
 		byID := map[string]QualityCheckSnapshotUnit{}
 		for _, u := range snapshot.Units {
 			byID[u.UnitID] = u
 		}
-		for _, result := range results.Results {
-			previousFindings[result.UnitID] = result
-		}
 		for _, unit := range units {
-			result, ok := previousFindings[unit.ID]
-			if !ok || result.Rating == "A" {
-				return nil, fmt.Errorf("revision unit %s is not rated B, C, or D in previous Snapshot %s", unit.ID, options.PreviousSnapshotID)
-			}
-			if strings.TrimSpace(result.Finding) == "" {
-				return nil, fmt.Errorf("revision unit %s has no finding in previous Snapshot %s; backfill it first", unit.ID, options.PreviousSnapshotID)
-			}
 			snapshotUnit, ok := byID[unit.ID]
 			if !ok {
 				return nil, fmt.Errorf("revision unit %s is absent from previous Snapshot", unit.ID)
 			}
-			if _, err := readSnapshotUnitRepositoryEvidence(root, catalog, options.Locale, snapshotUnit); err != nil {
+			evidence, err := readSnapshotUnitRepositoryEvidence(root, catalog, options.Locale, snapshotUnit)
+			if err != nil {
 				return nil, fmt.Errorf("previous Snapshot unit %s identity: %w", unit.ID, err)
 			}
+			result, ok := effectiveResults[unit.ID]
+			if !ok {
+				return nil, fmt.Errorf("revision unit %s has no effective Quality Check result in previous Snapshot %s", unit.ID, options.PreviousSnapshotID)
+			}
+			if result.rubric != TranslationQualityRubric || !qualityCheckSnapshotIdentityMatches(snapshotUnit, result.unit) {
+				return nil, fmt.Errorf("revision unit %s has no current, identity-matching effective Quality Check result in previous Snapshot %s", unit.ID, options.PreviousSnapshotID)
+			}
+			if result.rating != "A" {
+				if strings.TrimSpace(result.finding) == "" {
+					return nil, fmt.Errorf("revision unit %s has no finding in previous Snapshot %s; backfill it first", unit.ID, options.PreviousSnapshotID)
+				}
+				revisionFeedbackByID[unit.ID] = revisionFeedback{source: "quality_check", rating: result.rating, finding: result.finding}
+				continue
+			}
+			feedback, err := readFinalReviewRevisionFeedback(root, options.Locale, snapshotUnit, evidence)
+			if err != nil {
+				return nil, fmt.Errorf("revision unit %s is not eligible from previous Snapshot %s: %w", unit.ID, options.PreviousSnapshotID, err)
+			}
+			revisionFeedbackByID[unit.ID] = feedback
 		}
 	}
 
@@ -236,10 +263,16 @@ func ExportRetranslationBatch(root string, catalog *Catalog, options Retranslati
 			SourceSHA256: input.unit.SourceSHA256, InputPath: input.path,
 			InputSHA256: input.hash, ProtectedTokenCount: input.tokens,
 		}
-		if prior, ok := previousFindings[input.unit.ID]; ok {
+		if prior, ok := revisionFeedbackByID[input.unit.ID]; ok {
 			record.PreviousSnapshotID = options.PreviousSnapshotID
-			record.PreviousRating = prior.Rating
-			record.PreviousFinding = prior.Finding
+			record.RevisionFeedbackSource = prior.source
+			record.PreviousRating = prior.rating
+			record.PreviousFinding = prior.finding
+			record.PreviousReviewDecision = prior.decision
+			record.PreviousReviewSummary = prior.summary
+			record.PreviousReviewIssues = append([]string(nil), prior.issues...)
+			record.PreviousReviewPath = prior.reviewPath
+			record.PreviousReviewSHA256 = prior.reviewSHA256
 		}
 		manifest.Units = append(manifest.Units, record)
 		unitIDs = append(unitIDs, input.unit.ID)
@@ -261,6 +294,39 @@ func ExportRetranslationBatch(root string, catalog *Catalog, options Retranslati
 	return &RetranslationExportResult{
 		Locale: options.Locale, BatchID: batchID, BatchPath: batchPath,
 		UnitKind: prepared[0].unit.Kind, UnitCount: len(unitIDs), UnitIDs: unitIDs,
+	}, nil
+}
+
+func readFinalReviewRevisionFeedback(root, locale string, snapshot QualityCheckSnapshotUnit, evidence *snapshotUnitRepositoryEvidence) (revisionFeedback, error) {
+	reviewPath := filepath.Join(evidence.batchDir, "review", retranslationReviewName(evidence.unit))
+	reviewData, err := os.ReadFile(reviewPath)
+	if os.IsNotExist(err) {
+		return revisionFeedback{}, errors.New("Final Review evidence is missing")
+	}
+	if err != nil {
+		return revisionFeedback{}, fmt.Errorf("read Final Review evidence: %w", err)
+	}
+	review, err := decodeTranslationReview(reviewData)
+	if err != nil {
+		return revisionFeedback{}, fmt.Errorf("invalid Final Review evidence: %w", err)
+	}
+	if !reviewMatchesSnapshotIdentity(locale, snapshot, *review) {
+		return revisionFeedback{}, errors.New("Final Review identity does not match Candidate Snapshot")
+	}
+	if review.Rubric != TranslationQualityRubric {
+		return revisionFeedback{}, errors.New("Final Review rubric is not current")
+	}
+	if (review.Rating != "B" && review.Rating != "C" && review.Rating != "D") || review.Decision != "rejected" {
+		return revisionFeedback{}, fmt.Errorf("Final Review must be rated B, C, or D with decision rejected (got %s + %s)", review.Rating, review.Decision)
+	}
+	repositoryPath, err := repositoryRelativePath(root, reviewPath)
+	if err != nil {
+		return revisionFeedback{}, err
+	}
+	return revisionFeedback{
+		source: "final_review", rating: review.Rating, decision: review.Decision,
+		summary: review.Summary, issues: append([]string(nil), review.Issues...),
+		reviewPath: repositoryPath, reviewSHA256: sum(reviewData),
 	}, nil
 }
 

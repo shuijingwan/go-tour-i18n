@@ -160,7 +160,7 @@ Quality Check 的质量修改不得使用 retry。Revision 流程为：
 
 重复以上流程直到 Quality Check 为 A。旧 batch 及其 evidence 保持不可变。
 
-正式 revision export 必须显式给出产生 B/C/D finding 的 previous Quality Check Snapshot：
+正式 revision export 必须显式给出产生 revision evidence 的 previous Candidate Snapshot：
 
 ```bash
 go run -mod=readonly ./cmd/tour-i18n retranslation export \
@@ -169,7 +169,12 @@ go run -mod=readonly ./cmd/tour-i18n retranslation export \
   --id <unit-id> [--id <unit-id> ...]
 ```
 
-revision 模式只允许选择该 Snapshot 中已有 B/C/D 结果且 finding 非空的 Unit；每批仍最多 30 个且 Page/Example 不混合。Exporter 验证 Snapshot、Unit、result 与当前 candidate/validation identity，并在每个 manifest unit 固化 `previous_snapshot_id`、`previous_rating`、`previous_finding`。这些字段属于 revision feedback provenance，不参与 promotion，也不替代 Final Review evidence。Revision 的正式翻译输入仍是 manifest、manifest 全部 `inputs/*` 与 locale glossary 三者不可拆分。
+revision 模式只允许以下两类 Unit：
+
+- 同一 Snapshot 中 Quality Check 为 B/C/D 且 finding 非空；
+- 同一 Snapshot 中 Quality Check 为 A，但该 Snapshot 所选 candidate 的正式 Final Review 为 B/C/D + rejected。
+
+Exporter 对两类路径都验证 Snapshot、Unit、result 与当前 source/candidate/validation/attempt identity，不能用缺失、identity 不匹配、A + approved 或其他不合规的 Final Review evidence 创建 revision。Quality Check 路径继续在 manifest 固化 `previous_snapshot_id`、`revision_feedback_source=quality_check`、`previous_rating` 与 `previous_finding`。Final Review 路径固化 `revision_feedback_source=final_review`、rating/decision、实际 summary/issues，以及旧 review 的 repository path 与 SHA-256；不会修改 Quality Check A 结果，也不会删除或覆盖旧 review。所有字段只属于 revision feedback provenance，不参与 promotion，也不替代新 candidate 的后续 Final Review evidence。每批仍最多 30 个且 Page/Example 不混合；Revision 的正式翻译输入仍是 manifest、manifest 全部 `inputs/*` 与 locale glossary 三者不可拆分。
 
 ## 8. Final Review 与 promotion
 

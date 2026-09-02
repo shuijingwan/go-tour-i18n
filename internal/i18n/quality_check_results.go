@@ -124,6 +124,7 @@ type QualityCheckScope struct {
 
 type effectiveQualityCheckResult struct {
 	rating     string
+	finding    string
 	rubric     string
 	snapshotID string
 	unit       QualityCheckSnapshotUnit
@@ -496,7 +497,7 @@ func loadEffectiveQualityCheckResults(root, locale, snapshotID string, seen map[
 	}
 	for _, result := range results.Results {
 		unit := snapshot.Units[result.Index-1]
-		effective[result.UnitID] = effectiveQualityCheckResult{rating: result.Rating, rubric: results.Rubric, snapshotID: snapshotID, unit: unit}
+		effective[result.UnitID] = effectiveQualityCheckResult{rating: result.Rating, finding: result.Finding, rubric: results.Rubric, snapshotID: snapshotID, unit: unit}
 	}
 	return snapshot, effective, nil
 }
