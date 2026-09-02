@@ -30,6 +30,7 @@ IDENTITY_SPEC = importlib.util.spec_from_file_location(
 IDENTITY = importlib.util.module_from_spec(IDENTITY_SPEC)
 IDENTITY_SPEC.loader.exec_module(IDENTITY)
 RECEIPT_SCHEMA = "go-tour-i18n/first-production-receipt/v1"
+ALIYUN_ONEINSTACK_NGINX = "/usr/local/nginx/sbin/nginx"
 STAGE_ORDER = (
     "preflight", "infrastructure", "playground-origin", "deploy",
     "direct-origin", "cloudflare-dns", "public-machine", "browser",
@@ -336,9 +337,11 @@ data_root=$1; releases=$2; current=$3; lock=$4; service=$5; user=$6; port=$7
 health=$8; env_file=$9; vhost=${10}; cert=${11}; key=${12}; hostname=${13}
 secret=${14}; zone=${15}; origin_ip=${16}; expected_remote=${17}; resume_deployed=${18}
 expected_unit_sha=${19}; expected_vhost_sha=${20}
+nginx=${21}
 fail() { printf '[first-production:aliyun] ERROR: %s\n' "$*" >&2; exit 1; }
 [[ $(id -u) == 0 ]] || fail 'SSH account must be root'
-for command_name in base64 chown chmod curl dirname grep id install mv nginx openssl python3 readlink service sha256sum ss stat systemctl; do command -v "$command_name" >/dev/null || fail "missing tool: $command_name"; done
+for command_name in base64 chown chmod curl dirname grep id install mv openssl python3 readlink service sha256sum ss stat systemctl; do command -v "$command_name" >/dev/null || fail "missing tool: $command_name"; done
+[[ -x $nginx ]] || fail "missing formal OneinStack Nginx executable: $nginx"
 [[ -f $secret && ! -L $secret ]] || fail "Cloudflare secret source missing: $secret; provision root:root mode 0600 with CF_Token=<token>"
 [[ $(stat -c '%U:%G %a' "$secret") == 'root:root 600' ]] || fail "Cloudflare secret source must be root:root mode 0600: $secret"
 set -a; . "$secret"; set +a
@@ -428,6 +431,7 @@ printf 'zone_id=%s\n' "$zone_id"
             p["tls_certificate_path"], p["tls_key_path"], p["production_hostname"],
             s["cloudflare_secret_file"], s["cloudflare_zone_name"], p["origin_ip"],
             expected_remote, resume_deployed, expected_unit_sha, expected_vhost_sha,
+            ALIYUN_ONEINSTACK_NGINX,
         ), capture=True, stage="preflight")
 
     def zgocloud_preflight(self):
@@ -510,6 +514,7 @@ done
 data_root=$1; releases=$2; current=$3; service=$4; user=$5; port=$6; env_file=$7
 vhost=$8; cert=$9; key=${10}; hostname=${11}; secret=${12}
 unit_b64=${13}; vhost_b64=${14}; expected_unit_sha=${15}; expected_vhost_sha=${16}
+nginx=${17}
 fail() { printf '[first-production:infrastructure] ERROR: %s\n' "$*" >&2; exit 1; }
 install -d -o root -g root -m 0755 "$data_root" "$releases"
 unit=/etc/systemd/system/$service
@@ -545,18 +550,18 @@ else
   chown root:root "$temporary"; chmod 0644 "$temporary"; mv -T "$temporary" "$vhost"
   vhost_created=1
 fi
-if ! nginx -t; then
+if ! "$nginx" -t; then
   (( vhost_created )) && rm -f -- "$vhost"
-  nginx -t || true
+  "$nginx" -t || true
   fail 'nginx -t failed; invocation-created vhost was removed'
 fi
 if ! service nginx reload; then
-  if (( vhost_created )); then rm -f -- "$vhost"; nginx -t && service nginx reload || true; fi
+  if (( vhost_created )); then rm -f -- "$vhost"; "$nginx" -t && service nginx reload || true; fi
   fail 'Nginx reload failed; invocation-created vhost was removed'
 fi
 nginx_ready=0
 for attempt in 1 2 3 4 5; do
-  if nginx -t >/dev/null; then nginx_ready=1; break; fi
+  if "$nginx" -t >/dev/null; then nginx_ready=1; break; fi
   sleep 1
 done
 (( nginx_ready )) || fail 'Nginx did not become ready after reload'
@@ -568,7 +573,7 @@ systemctl enable "$service"
             p["service_user"], str(p["loopback_port"]), p["environment_file"],
             p["nginx_vhost_path"], p["tls_certificate_path"], p["tls_key_path"],
             p["production_hostname"], s["cloudflare_secret_file"], unit_b64,
-            vhost_b64, unit_sha, vhost_sha,
+            vhost_b64, unit_sha, vhost_sha, ALIYUN_ONEINSTACK_NGINX,
         ), stage="infrastructure", timeout=900)
         self.record("infrastructure")
 

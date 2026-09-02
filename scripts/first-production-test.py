@@ -168,6 +168,37 @@ class FirstProductionTest(unittest.TestCase):
         self.assertIn("resumed source health is not HTTP 200", source)
         self.assertIn('systemctl enable "$service"', source)
 
+    def test_aliyun_uses_formal_oneinstack_nginx_without_path_lookup(self):
+        identity = FIRST.IDENTITY.load_identity(ROOT / "production" / "identity.json")
+        instance = FIRST.Orchestrator.__new__(FIRST.Orchestrator)
+        instance.profile = next(profile for profile in identity["locales"] if profile["locale"] == "ko-KR")
+        instance.shared = identity["shared"]
+        instance.release_name = "20260902-ko-KR-test"
+        instance.stage_passed = lambda stage: False
+        instance.record = lambda stage: None
+        calls = []
+
+        def fake_ssh(host, script, args=(), **kwargs):
+            calls.append((host, script, args, kwargs))
+            return "zone_id=test"
+
+        instance.ssh = fake_ssh
+        self.assertEqual(instance.aliyun_preflight(), "zone_id=test")
+        host, preflight, args, _ = calls.pop()
+        self.assertEqual(host, identity["shared"]["aliyun_ssh_alias"])
+        self.assertEqual(args[-1], FIRST.ALIYUN_ONEINSTACK_NGINX)
+        self.assertIn("nginx=${21}", preflight)
+        self.assertIn('[[ -x $nginx ]]', preflight)
+        self.assertNotIn(" mv nginx openssl ", preflight)
+
+        instance.bootstrap_infrastructure()
+        host, infrastructure, args, _ = calls.pop()
+        self.assertEqual(host, identity["shared"]["aliyun_ssh_alias"])
+        self.assertEqual(args[-1], FIRST.ALIYUN_ONEINSTACK_NGINX)
+        self.assertIn('if ! "$nginx" -t; then', infrastructure)
+        self.assertIn('"$nginx" -t && service nginx reload', infrastructure)
+        self.assertNotIn("if ! nginx -t", infrastructure)
+
     def test_templates_are_derived_from_profile(self):
         profile = dict(FIRST.IDENTITY.load_identity(ROOT / "production" / "identity.json")["locales"][1])
         profile.update({
