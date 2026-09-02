@@ -118,3 +118,93 @@ func TestRetranslationRevalidationOutput(t *testing.T) {
 		t.Fatalf("json=%#v", document)
 	}
 }
+
+func promotionOutputPlan() *i18n.RetranslationPromotionPlan {
+	return &i18n.RetranslationPromotionPlan{
+		Locale: "ko-KR", UnitCount: 122, PageCount: 103, ExampleCount: 19,
+		ChangedCount: 2, UnchangedCount: 120, EOFNormalizedCount: 1,
+		ReviewApprovedCount: 122, CanApply: true,
+		MissingReview: []string{}, RejectedReview: []string{}, InvalidReview: []string{},
+		Units: []i18n.RetranslationPromotionUnit{{
+			UnitID: "flowcontrol/1", UnitKind: i18n.UnitKindPage, BatchID: "codex-ko-KR-001",
+			SourceCandidatePath:    "data/retranslation-runs/ko-KR/codex-ko-KR-001/candidates/flowcontrol-1.article",
+			CanonicalCandidatePath: "locales/ko-KR/candidates/flowcontrol/1.article",
+			SourceCandidateSHA256:  strings.Repeat("a", 64), CandidateSHA256: strings.Repeat("b", 64), Changed: true,
+		}},
+	}
+}
+
+func TestRetranslationPromotionDefaultReadySummaryOmitsUnitDetails(t *testing.T) {
+	var output bytes.Buffer
+	if err := writeRetranslationPromotionOutput(&output, promotionOutputPlan(), false, false); err != nil {
+		t.Fatal(err)
+	}
+	got := output.String()
+	for _, want := range []string{"重译提升：READY\n", "locale: ko-KR\n", "mode: dry-run\n", "unit_count: 122（103 Page，19 Example）", "review_approved_count: 122", "changed: 2", "unchanged: 120", "eof_normalized: 1", "can_apply: true", "--apply"} {
+		if !strings.Contains(got, want) {
+			t.Errorf("READY summary missing %q:\n%s", want, got)
+		}
+	}
+	for _, unwanted := range []string{`"units"`, "flowcontrol/1", "codex-ko-KR-001", strings.Repeat("a", 64), "candidate_path"} {
+		if strings.Contains(got, unwanted) {
+			t.Errorf("READY summary contains unit detail %q:\n%s", unwanted, got)
+		}
+	}
+}
+
+func TestRetranslationPromotionDefaultBlockedSummaryShowsOnlyActionableFailures(t *testing.T) {
+	plan := promotionOutputPlan()
+	plan.CanApply = false
+	plan.ReviewApprovedCount = 118
+	plan.MissingEvidence = []string{"basics/1"}
+	plan.MissingReview = []string{"basics/2"}
+	plan.RejectedReview = []string{"basics/3"}
+	plan.InvalidReview = []string{"basics/4"}
+	var output bytes.Buffer
+	if err := writeRetranslationPromotionOutput(&output, plan, false, false); err != nil {
+		t.Fatal(err)
+	}
+	got := output.String()
+	for _, want := range []string{"重译提升：BLOCKED", "can_apply: false", "missing_evidence (1):\n- basics/1", "missing_review (1):\n- basics/2", "rejected_review (1):\n- basics/3", "invalid_review (1):\n- basics/4"} {
+		if !strings.Contains(got, want) {
+			t.Errorf("BLOCKED summary missing %q:\n%s", want, got)
+		}
+	}
+	if strings.Contains(got, "flowcontrol/1") || strings.Contains(got, `"units"`) || strings.Contains(got, "--apply") {
+		t.Fatalf("BLOCKED summary contains normal unit details or apply hint:\n%s", got)
+	}
+}
+
+func TestRetranslationPromotionJSONKeepsFullPlan(t *testing.T) {
+	plan := promotionOutputPlan()
+	var output bytes.Buffer
+	if err := writeRetranslationPromotionOutput(&output, plan, false, true); err != nil {
+		t.Fatal(err)
+	}
+	var decoded i18n.RetranslationPromotionPlan
+	if err := json.Unmarshal(output.Bytes(), &decoded); err != nil {
+		t.Fatalf("promote --json output is not JSON: %v\n%s", err, output.String())
+	}
+	if len(decoded.Units) != 1 || decoded.Units[0].UnitID != "flowcontrol/1" || decoded.Units[0].SourceCandidateSHA256 != strings.Repeat("a", 64) {
+		t.Fatalf("promote --json lost full units: %#v", decoded.Units)
+	}
+	if strings.Contains(output.String(), "重译提升：") || strings.Contains(output.String(), "mode: dry-run") {
+		t.Fatalf("promote --json mixed human summary with JSON:\n%s", output.String())
+	}
+}
+
+func TestRetranslationPromotionApplySuccessSummary(t *testing.T) {
+	var output bytes.Buffer
+	if err := writeRetranslationPromotionOutput(&output, promotionOutputPlan(), true, false); err != nil {
+		t.Fatal(err)
+	}
+	got := output.String()
+	for _, want := range []string{"重译提升：APPLIED", "mode: apply", "applied: true", "can_apply: true"} {
+		if !strings.Contains(got, want) {
+			t.Errorf("apply summary missing %q:\n%s", want, got)
+		}
+	}
+	if strings.Contains(got, `"units"`) || strings.Contains(got, "flowcontrol/1") || strings.Contains(got, "--apply") {
+		t.Fatalf("apply summary expanded units or suggested apply again:\n%s", got)
+	}
+}

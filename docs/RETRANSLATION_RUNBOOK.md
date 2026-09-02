@@ -215,7 +215,9 @@ Promotion 默认 dry-run：
 go run -mod=readonly ./cmd/tour-i18n retranslation promote --locale <locale>
 ```
 
-只有用户明确要求应用时才使用 `--apply`。Promotion 会验证最新 batch 的 manifest/source/input、glossary 重建结果、retry provenance、candidate、validation 和 approved Final Review evidence；最新结果失败时不得回退到旧 batch。
+默认输出简洁的 human summary，包括 locale、dry-run/apply mode、Page/Example 与 review/changed/unchanged/EOF normalization 统计和 `can_apply`；blocked dry-run 只展开非空的 `missing_evidence`、`missing_review`、`rejected_review`、`invalid_review` 集合，不展开正常 Unit。机器调用方必须显式传 `--json` 获取完整且保持既有 schema 的 `RetranslationPromotionPlan` JSON（包括 `units` 数组）。
+
+只有用户明确要求应用时才使用 `--apply`。成功 apply 默认同样输出简洁 human summary 并明确标记已应用；需要完整 JSON 时可同时传 `--json`。Promotion 会验证最新 batch 的 manifest/source/input、glossary 重建结果、retry provenance、candidate、validation 和 approved Final Review evidence；最新结果失败时不得回退到旧 batch。
 
 ## 9. 阶段边界
 

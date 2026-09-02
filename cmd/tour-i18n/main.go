@@ -498,6 +498,7 @@ func run(args []string) error {
 		fs := flag.NewFlagSet("retranslation promote", flag.ContinueOnError)
 		locale := fs.String("locale", "", "target locale")
 		apply := fs.Bool("apply", false, "apply the fully validated promotion plan")
+		jsonOutput := fs.Bool("json", false, "输出包含完整 units 列表的 machine-readable JSON")
 		if err := fs.Parse(args[2:]); err != nil {
 			return err
 		}
@@ -511,7 +512,7 @@ func run(args []string) error {
 		if err != nil {
 			return err
 		}
-		return printJSON(result)
+		return writeRetranslationPromotionOutput(os.Stdout, result, *apply, *jsonOutput)
 	case "quality-check scope":
 		fs := flag.NewFlagSet("quality-check scope", flag.ContinueOnError)
 		locale := fs.String("locale", "", "target locale")
@@ -969,6 +970,46 @@ func writeRetranslationRevalidationOutput(w io.Writer, result *i18n.Retranslatio
 	if result.Error != "" {
 		fmt.Fprintf(w, "reason: %q\n", result.Error)
 	}
+	return nil
+}
+
+func writeRetranslationPromotionOutput(w io.Writer, plan *i18n.RetranslationPromotionPlan, applied, jsonOutput bool) error {
+	if jsonOutput {
+		return writeJSON(w, plan)
+	}
+	status := "READY"
+	mode := "dry-run"
+	if applied {
+		status = "APPLIED"
+		mode = "apply"
+	} else if !plan.CanApply {
+		status = "BLOCKED"
+	}
+	fmt.Fprintf(w, "重译提升：%s\n", status)
+	fmt.Fprintf(w, "locale: %s\nmode: %s\nunit_count: %d（%d Page，%d Example）\n", plan.Locale, mode, plan.UnitCount, plan.PageCount, plan.ExampleCount)
+	fmt.Fprintf(w, "review_approved_count: %d\nchanged: %d\nunchanged: %d\neof_normalized: %d\ncan_apply: %t\n",
+		plan.ReviewApprovedCount, plan.ChangedCount, plan.UnchangedCount, plan.EOFNormalizedCount, plan.CanApply)
+	if applied {
+		fmt.Fprintln(w, "applied: true")
+		return nil
+	}
+	if plan.CanApply {
+		fmt.Fprintln(w, "下一步：添加 --apply 应用此 promotion plan。")
+		return nil
+	}
+	writePromotionFailures := func(label string, values []string) {
+		if len(values) == 0 {
+			return
+		}
+		fmt.Fprintf(w, "%s (%d):\n", label, len(values))
+		for _, value := range values {
+			fmt.Fprintf(w, "- %s\n", value)
+		}
+	}
+	writePromotionFailures("missing_evidence", plan.MissingEvidence)
+	writePromotionFailures("missing_review", plan.MissingReview)
+	writePromotionFailures("rejected_review", plan.RejectedReview)
+	writePromotionFailures("invalid_review", plan.InvalidReview)
 	return nil
 }
 
