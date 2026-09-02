@@ -1,0 +1,47 @@
+{
+  "schema_version": 2,
+  "batch_id": "codex-ko-KR-010",
+  "locale": "ko-KR",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "example",
+  "unit_count": 3,
+  "units": [
+    {
+      "unit_id": "example:basics/numeric-constants.go",
+      "unit_kind": "example",
+      "source_path": "_content/tour/basics/numeric-constants.go",
+      "source_sha256": "338906e7c0e0d5e81312c97b37638442b48a621d59e69215be78eed6bd003544",
+      "input_path": "inputs/basics-numeric-constants.txt",
+      "input_sha256": "4d2c58e69c5956602f868dea6ffaca7824edc7b8af8d213494c0910aaa204b14",
+      "protected_token_count": 4,
+      "previous_snapshot_id": "qc-001",
+      "previous_rating": "B",
+      "previous_finding": "第一条 teaching comment 的 `1 비트를 왼쪽으로 100자리만큼 시프트하여` 容易把原文中的数值 1 误读成“一个 bit”，且 `100자리만큼` 表达生硬。Revision 应准确表达“将 1 左移 100 位以得到很大的数”，保持 Big、Small 和所有代码完全不变，只自然重译允许翻译的注释。"
+    },
+    {
+      "unit_id": "example:basics/type-inference.go",
+      "unit_kind": "example",
+      "source_path": "_content/tour/basics/type-inference.go",
+      "source_sha256": "fb638103bfaf5990d88398765cf801cee94cd8e199cace94740cebe562afc33d",
+      "input_path": "inputs/basics-type-inference.txt",
+      "input_sha256": "465e582bd62af3f09170901245e2b964d8231e1070a6e0e4f7825618241b173d",
+      "protected_token_count": 2,
+      "previous_snapshot_id": "qc-001",
+      "previous_rating": "B",
+      "previous_finding": "teaching comment `나를 바꿔 보세요!` 是对 “change me!” 的逐字拟人化翻译，在教程代码注释中不自然。Revision 应改为自然的操作提示，例如表达“试着修改这个值”，但不得改变代码、identifier 或添加原文不存在的技术解释。"
+    },
+    {
+      "unit_id": "example:concurrency/exercise-web-crawler.go",
+      "unit_kind": "example",
+      "source_path": "_content/tour/concurrency/exercise-web-crawler.go",
+      "source_sha256": "bd6226dcae3b663a3aa1cbf502d840357ac0efb6de46e7a66612ca2834cf5e37",
+      "input_path": "inputs/concurrency-exercise-web-crawler.txt",
+      "input_sha256": "53554a1126b74da6e3bcb93c625eff1ec44f560e2817f1875202423a7d6009ab",
+      "protected_token_count": 12,
+      "previous_snapshot_id": "qc-001",
+      "previous_rating": "B",
+      "previous_finding": "注释 `페이지를 depth가 지정한 최대 깊이까지 재귀적으로 크롤링합니다` 中 `depth가 지정한` 搭配不自然；应自然表达“递归抓取到由 depth 指定的最大深度”。Revision 只自然重译允许翻译的注释，保持 depth、URL、Fetcher 等技术身份以及全部 Go 代码不变。"
+    }
+  ]
+}
