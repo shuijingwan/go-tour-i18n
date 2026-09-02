@@ -40,6 +40,28 @@ ja-JP:  * Switch
 
 第二个标题可以保留，因为 `switch` 是 Go 关键字；第一个标题中的普通自然语言仍须翻译。
 
+### ko-KR 行内字体 span 的句法重构
+
+本节只适用于 ko-KR Page 中可翻译的自然语言。legacy `golang.org/x/tools/present` 的 inline code 和 emphasis 字体解析依赖词边界；当 closing font span 后直接附着 Hangul 助词或语尾时，restore 为保持字体 span 可能插入空格。因此，这类边界必须在翻译阶段通过自然的韩语句法重构解决。
+
+- 不得为了通过 validator 人为插入空格、零宽字符或其他字符。
+- 不得修改 inline code、emphasis 或 protected technical identity。
+- 当自然韩语原本需要在 font span 后直接附着助词或语尾时，应改用自然的独立韩语名词，或采用其他不改变原意的句法重构。
+- 同样必须注意 Hangul 紧邻 opening font span 左侧的情况，并优先自然重构句子。
+- 必须首先保证语义准确和韩语自然度；不得为了结构安全产生翻译腔，也不得新增原文不存在的技术解释。
+
+例如，可以根据具体上下文采用以下句法方向：
+
+```text
+`PageUp` 키를 사용합니다
+`Vertex` 타입이고
+`v` 식별자인
+채널은 *버퍼* 기능을 지원합니다
+`make` 함수의 두 번째 인수
+```
+
+这些只是句法重构示例，不是固定术语映射；实际译文仍须根据原文语义和上下文自然组织。
+
 ### Page preformatted 中的 teaching comment
 
 Page 的 preformatted block 不是一律禁止翻译。对于 protector 能安全识别的 Go preformatted，普通 `//` teaching comment 的自然语言 body 属于开放翻译区域，应当翻译；comment delimiter、缩进和换行等结构仍受保护。
