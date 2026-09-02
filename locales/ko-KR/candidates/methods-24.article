@@ -1,0 +1,19 @@
+* 이미지
+
+[[/pkg/image/#Image][image 패키지]]에서는 `Image` 인터페이스를 다음과 같이 정의합니다.
+
+	package image
+
+	type Image interface {
+		ColorModel() color.Model
+		Bounds() Rectangle
+		At(x, y int) color.Color
+	}
+
+*참고*: `Rectangle` 반환값은 `Bounds` 메서드에서 나오며, 실제 타입은 다음과 같습니다: [[/pkg/image/#Rectangle][`image.Rectangle`]]. 선언이 `image` 패키지 안에 있기 때문입니다.
+
+(자세한 내용은 [[/pkg/image/#Image][문서]]에서 확인하세요.)
+
+`color.Color` 타입과 `color.Model` 타입 역시 인터페이스입니다. 여기서는 미리 정의된 구현으로 `color.RGBA` 타입과 `color.RGBAModel` 타입을 사용하므로 이 사실은 무시하겠습니다. 이러한 인터페이스와 타입은 [[/pkg/image/color/][image/color 패키지]]에 정의되어 있습니다.
+
+.play methods/images.go
