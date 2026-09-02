@@ -1,0 +1,14 @@
+* 기본 선택
+
+`default` case는 `select` 문에서 다른 어떤 case도 준비되지 않았을 때 실행됩니다.
+
+블록하지 않고 송신이나 수신을 시도하려면 `default` case를 사용합니다.
+
+	select {
+	case i := <-c:
+		// i 사용
+	default:
+		// c 채널에서 수신하면 블록됨
+	}
+
+.play concurrency/default-selection.go

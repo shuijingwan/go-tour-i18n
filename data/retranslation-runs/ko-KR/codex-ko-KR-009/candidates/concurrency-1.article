@@ -1,0 +1,15 @@
+* Goroutines
+
+_goroutine_ 용어는 Go 런타임이 관리하는 경량 스레드를 뜻합니다.
+
+	go f(x, y, z)
+
+위 문은 새로운 goroutine 실행을 시작하여 다음 코드를 실행합니다.
+
+	f(x, y, z)
+
+`f` 함수와 인수 `x`, `y`, `z` 값을 평가하는 과정은 현재 goroutine 안에서 이루어지고, `f` 함수 실행은 새 goroutine 안에서 이루어집니다.
+
+Goroutines 사이에는 같은 주소 공간이 공유되므로 공유 메모리에 접근할 때는 동기화해야 합니다. [[/pkg/sync/][`sync`]] 패키지는 유용한 기본 도구를 제공합니다. 다만 Go 언어에는 다른 기본 도구도 있으므로 이 투어에서는 자주 필요하지 않습니다. (다음 페이지를 참고하세요.)
+
+.play concurrency/goroutines.go
