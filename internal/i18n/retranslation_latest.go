@@ -33,10 +33,12 @@ type validatedRetranslationCandidate struct {
 }
 
 // selectLatestRetranslationUnits is the shared selection boundary for Candidate
-// Snapshot and promotion. For each current workflow unit it selects the batch
-// with the greatest numeric batch suffix before checking source identity. A
-// newer failed or identity-mismatching result therefore remains selected and
-// callers cannot fall back to older successful evidence.
+// Snapshot and promotion. For each current workflow unit it selects the
+// processed batch with the greatest numeric batch suffix before checking source
+// identity. Export-only batches remain part of batch-number validation but do
+// not have a result to select. A newer failed or identity-mismatching result
+// therefore remains selected and callers cannot fall back to older successful
+// evidence.
 func selectLatestRetranslationUnits(root string, catalog *Catalog, locale string) (*latestRetranslationUnits, error) {
 	ordered, pageCount, exampleCount, err := localeWorkflowUnitList(catalog)
 	if err != nil {
@@ -77,6 +79,13 @@ func selectLatestRetranslationUnits(root string, catalog *Catalog, locale string
 		manifest, err := readRetranslationProcessManifest(batchDir, locale, entry.Name())
 		if err != nil {
 			return nil, err
+		}
+		resultPath := filepath.Join(batchDir, "result.json")
+		if _, err := os.Lstat(resultPath); err != nil {
+			if os.IsNotExist(err) {
+				continue
+			}
+			return nil, fmt.Errorf("inspect retranslation result for %q: %w", entry.Name(), err)
 		}
 		result, err := readPromotionResult(batchDir, locale, entry.Name(), manifest.UnitCount)
 		if err != nil {

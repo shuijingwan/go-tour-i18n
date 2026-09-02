@@ -49,6 +49,20 @@ func snapshotUnit(t *testing.T, manifest *QualityCheckSnapshotManifest, id strin
 	return QualityCheckSnapshotUnit{}
 }
 
+func addExportOnlySnapshotBatch(t *testing.T, root string, catalog *Catalog, batchID string, ids []string) {
+	t.Helper()
+	result, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{
+		Locale: "zh-CN", BatchID: batchID, UnitIDs: ids, Limit: len(ids), AllowReexport: true,
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	resultPath := filepath.Join(root, result.BatchPath, "result.json")
+	if _, err := os.Stat(resultPath); !os.IsNotExist(err) {
+		t.Fatalf("export-only batch result.json stat error = %v, want not exist", err)
+	}
+}
+
 func TestQualityCheckSnapshotFreezesCompleteWorkflowWithoutCopyingEvidence(t *testing.T) {
 	root, catalog := complete122PromotionFixture(t)
 	// Deliberately make Catalog order differ from lexical/batch order. Snapshot
@@ -124,9 +138,70 @@ func TestQualityCheckSnapshotLatestRevisionBatchWinsPerUnit(t *testing.T) {
 	}
 }
 
+func TestQualityCheckSnapshotSkipsIntermediateExportOnlyBatch(t *testing.T) {
+	root, catalog, _ := processedPromotionFixture(t, 1)
+	addExportOnlySnapshotBatch(t, root, catalog, "chatgpt-zh-CN-002", []string{"lesson/1"})
+	addProcessedPromotionBatch(t, root, catalog, "chatgpt-zh-CN-003", []string{"lesson/1"})
+	materializeSnapshotSources(t, root, catalog)
+
+	manifest, _, err := CreateQualityCheckCandidateSnapshot(root, catalog, QualityCheckSnapshotOptions{Locale: "zh-CN", SnapshotID: "export-only-history"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got := snapshotUnit(t, manifest, "lesson/1").SelectedBatchID; got != "chatgpt-zh-CN-003" {
+		t.Fatalf("selected batch = %q, want later processed batch", got)
+	}
+}
+
+func TestSelectLatestRetranslationUnitsDoesNotSelectExportOnlyBatch(t *testing.T) {
+	root, catalog, processedBatch := processedPromotionFixture(t, 1)
+	addExportOnlySnapshotBatch(t, root, catalog, "chatgpt-zh-CN-002", []string{"lesson/1"})
+
+	latest, err := selectLatestRetranslationUnits(root, catalog, "zh-CN")
+	if err != nil {
+		t.Fatal(err)
+	}
+	choice, ok := latest.selectedByID["lesson/1"]
+	if !ok {
+		t.Fatal("processed result was not selected")
+	}
+	if choice.batchID != processedBatch {
+		t.Fatalf("selected batch = %q, want processed batch %q", choice.batchID, processedBatch)
+	}
+}
+
+func TestQualityCheckSnapshotExportOnlyEvidenceIsStillMissingCandidate(t *testing.T) {
+	root, catalog, batchID := makeRetranslationProcessBatch(t, 1)
+	batchDir := filepath.Join(root, "data", "retranslation-runs", "zh-CN", batchID)
+	if err := os.RemoveAll(filepath.Join(batchDir, "raw-responses")); err != nil {
+		t.Fatal(err)
+	}
+	materializeSnapshotSources(t, root, catalog)
+
+	_, _, err := CreateQualityCheckCandidateSnapshot(root, catalog, QualityCheckSnapshotOptions{Locale: "zh-CN", SnapshotID: "export-only-missing"})
+	if err == nil || !strings.Contains(err.Error(), "lesson/1: no current-source retranslation candidate") {
+		t.Fatalf("export-only snapshot error = %v", err)
+	}
+}
+
+func TestQualityCheckSnapshotRejectsCorruptExistingResult(t *testing.T) {
+	root, catalog, _ := processedPromotionFixture(t, 1)
+	addExportOnlySnapshotBatch(t, root, catalog, "chatgpt-zh-CN-002", []string{"lesson/1"})
+	resultPath := filepath.Join(root, "data", "retranslation-runs", "zh-CN", "chatgpt-zh-CN-002", "result.json")
+	if err := os.WriteFile(resultPath, []byte("{not-json\n"), 0644); err != nil {
+		t.Fatal(err)
+	}
+	materializeSnapshotSources(t, root, catalog)
+
+	_, _, err := CreateQualityCheckCandidateSnapshot(root, catalog, QualityCheckSnapshotOptions{Locale: "zh-CN", SnapshotID: "corrupt-result"})
+	if err == nil || !strings.Contains(err.Error(), `parse retranslation result for "chatgpt-zh-CN-002"`) {
+		t.Fatalf("corrupt result error = %v", err)
+	}
+}
+
 func TestQualityCheckSnapshotRejectsCrossPrefixDuplicateBatchNumber(t *testing.T) {
 	root, catalog, _ := processedPromotionFixture(t, 1)
-	addProcessedPromotionBatch(t, root, catalog, "chatgpt-zh-CN-001", []string{"lesson/1"})
+	addExportOnlySnapshotBatch(t, root, catalog, "chatgpt-zh-CN-001", []string{"lesson/1"})
 	materializeSnapshotSources(t, root, catalog)
 
 	_, _, err := CreateQualityCheckCandidateSnapshot(root, catalog, QualityCheckSnapshotOptions{Locale: "zh-CN", SnapshotID: "ambiguous"})
