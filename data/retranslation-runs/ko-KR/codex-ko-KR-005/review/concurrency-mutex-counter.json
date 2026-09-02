@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "batch_id": "codex-ko-KR-005",
+  "locale": "ko-KR",
+  "unit_id": "example:concurrency/mutex-counter.go",
+  "unit_kind": "example",
+  "source_path": "_content/tour/concurrency/mutex-counter.go",
+  "source_sha256": "74488ecc347a123c8538069175ffeef5ea38577bb37b2c7a9ceb6bba47ab02b4",
+  "attempt": 1,
+  "candidate_path": "candidates/concurrency-mutex-counter.go",
+  "candidate_sha256": "019b49a7b36919c54fe0476f0afd0e4fcec05f5611c7e6afaa6eb1e81369c0e7",
+  "validation_path": "validation/concurrency-mutex-counter.json",
+  "validation_sha256": "481c6ea9ca0ab6e315b07f56f6cd76e248ad6dafae21045d86b1e269fee9bb0a",
+  "decision": "approved",
+  "reviewer": "chatgpt-gpt-5.6-sol",
+  "reviewed_at": "2026-09-02T09:12:10Z",
+  "rubric": "translation-quality/v1",
+  "rating": "A",
+  "summary": "Final Review 通过：技术准确、语义完整、术语正确、表达自然，达到正式发布质量。",
+  "issues": []
+}

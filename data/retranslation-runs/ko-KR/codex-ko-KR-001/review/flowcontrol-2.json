@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "batch_id": "codex-ko-KR-001",
+  "locale": "ko-KR",
+  "unit_id": "flowcontrol/2",
+  "unit_kind": "page",
+  "source_path": "_content/tour/flowcontrol.article",
+  "source_sha256": "24a97abbb6db2b6a88017bf326a5968097263d8ba637805f2cf44c9fed25f9fe",
+  "attempt": 1,
+  "candidate_path": "candidates/flowcontrol-2.article",
+  "candidate_sha256": "3ea603535696c5b55b518bfdb4bc2452802a31eface0fa11ffe8bd2ccb9564f6",
+  "validation_path": "validation/flowcontrol-2.json",
+  "validation_sha256": "984159698d4c8d0802aba40ed588a8ddb9f1d1d422a76b0616c20a83c2065972",
+  "decision": "rejected",
+  "reviewer": "chatgpt-gpt-5.6-sol",
+  "reviewed_at": "2026-09-02T08:48:26Z",
+  "rubric": "translation-quality/v1",
+  "rating": "B",
+  "summary": "Final Review 未通过：相邻页面对同一 for 语法概念的术语不一致，需要 revision。",
+  "issues": [
+    "flowcontrol/1 将 init statement / post statement 译为“초기 구문 / 사후 구문”，而 flowcontrol/2 对同一概念改为“초기화 문 / 후처리 문”。Revision 应在相邻页面保持同一术语，同时维持原有语义和技术身份。"
+  ]
+}
