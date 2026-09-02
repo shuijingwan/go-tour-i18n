@@ -1,0 +1,27 @@
+* 기본 타입
+
+Go 언어의 기본 타입은 다음과 같습니다.
+
+	bool
+
+	string
+
+	int  int8  int16  int32  int64
+	uint uint8 uint16 uint32 uint64 uintptr
+
+	byte // 별칭 대상: uint8
+
+	rune // 별칭 대상: int32
+	     // 유니코드 코드 포인트를 나타냄
+
+	float32 float64
+
+	complex64 complex128
+
+이 예제에서는 여러 타입의 변수를 보여 줍니다.
+또한 임포트 문과 마찬가지로 변수 선언도 블록으로 묶을 수 있음을 보여 줍니다.
+
+`int`, `uint`, `uintptr` 타입은 일반적으로 32비트 시스템에서 32비트, 64비트 시스템에서 64비트 너비입니다.
+크기가 정해진 정수 타입이나 부호 없는 정수 타입을 사용해야 할 특별한 이유가 없다면, 정수 값에는 `int` 타입을 사용해야 합니다.
+
+.play basics/basic-types.go
