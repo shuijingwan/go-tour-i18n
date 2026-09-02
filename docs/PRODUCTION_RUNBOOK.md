@@ -195,7 +195,7 @@ scripts/first-production.sh \
 → evidence finalize
 ```
 
-preflight 在任何 production mutation 前同时检查：正式 bundle 与 identity、TODO/unknown locale 间接由 publish/identity gate 拒绝、两台 SSH 和 root account、port/service/data-root/vhost/certificate 冲突、EnvironmentFile 与非空 `TOUR_AD_HTML`（不输出值）、Cloudflare secret 权限与变量、zone 唯一性、目标 DNS 无冲突、Playground 两个 location 的结构一致性，以及 shared-assets origin/public SHA-256 freshness。任一项失败时，不建立目录、unit、证书、vhost、DNS 或 Origin。
+preflight 在任何 production mutation 前同时检查：正式 bundle 与 identity、TODO/unknown locale 间接由 publish/identity gate 拒绝、两台 SSH 和 root account、port/service/data-root/vhost/certificate 冲突、EnvironmentFile 与非空 `TOUR_AD_HTML`（不输出值）、Cloudflare secret 权限与变量、zone 唯一性、目标 DNS 无冲突、Playground 两个 location 的结构一致性，以及 shared-assets origin/public SHA-256 freshness。它重新 export/validate 当前仓库、对照 aliyun origin，并复用正式 shared-assets public verification core（zgocloud runner、522/525 bounded retry、11/11 SHA-256 与 boundary 404），不信任历史 receipt。任一项失败时，不建立目录、unit、证书、vhost、DNS 或 Origin。
 
 基础设施阶段复用已验证的 production service hardening 与 OneinStack Nginx/TLS 结构；所有 server name、proxy port、service、current、证书和私钥路径均从目标 locale 的正式 identity 渲染，不从 fr-FR 或 locale 名称复制值。service 从精确 `current` 启动，TLS 使用 Let's Encrypt/acme.sh `dns_cf`、`ec-256`，Nginx 只有精确 loopback proxy，不生成会截获 `/tour/static/` 的静态 location。证书通过 DNS-01 签发，不要求先建立 production A record；aliyun 的非交互 SSH 调用使用 `/usr/local/nginx/sbin/nginx -t`，通过后才 reload。已存在未知或不兼容配置时停止，不覆盖。失败边界保留为可审计、可 resume 的首次创建物：已经精确写入的 data root、unit 或 ACME/TLS 现场不做不确定删除，后续 preflight 必须重新逐项验证；本次新建 vhost 若 Nginx config test 或 reload 失败则移除并恢复原 Nginx 状态。任一失败均不会记录 infrastructure PASS，service enable/start/restart 失败也不能进入后续 stage。
 

@@ -461,10 +461,6 @@ PY
         export = self.temp / "shared-assets"
         self.run(["go", "run", "-mod=readonly", "./cmd/tour-i18n", "assets", "export", "--output", export], stage="preflight", timeout=300)
         self.run(["go", "run", "-mod=readonly", "./cmd/tour-i18n", "assets", "validate", "--input", export], stage="preflight", timeout=300)
-        manifest = {}
-        for line in (export / "SHA256SUMS").read_text(encoding="utf-8").splitlines():
-            digest, path = line.split(maxsplit=1)
-            manifest[path] = digest
         origin = self.shared["shared_assets_origin_root"]
         script = r'''set -Eeuo pipefail
 root=$1
@@ -477,21 +473,7 @@ sha256sum SHA256SUMS
         local_manifest_sha = hashlib.sha256((export / "SHA256SUMS").read_bytes()).hexdigest()
         if remote.split()[0] != local_manifest_sha:
             raise FirstProductionError("preflight", "shared-assets origin matches current export", remote.split()[0], "先完成 deploy-shared-assets 与正式公网验证")
-        public = self.shared["shared_assets_public_origin"]
-        public_script = r'''set -Eeuo pipefail
-base=$1; shift
-temporary=$(mktemp -d); trap 'rm -rf "$temporary"' EXIT
-for identity in "$@"; do
-  path=${identity%%=*}; expected=${identity#*=}
-  [[ $path =~ ^[A-Za-z0-9._/-]+$ && $path != /* && $path != *..* && $expected =~ ^[0-9a-f]{64}$ ]]
-  curl -fsS --connect-timeout 5 --max-time 20 -o "$temporary/asset" "$base/$path"
-  actual=$(sha256sum "$temporary/asset"); actual=${actual%% *}
-  [[ $actual == "$expected" ]] || { printf '%s SHA-256 mismatch\n' "$path" >&2; exit 1; }
-done
-'''
-        self.ssh(self.shared["zgocloud_ssh_alias"], public_script, (
-            public, *(f"{path}={digest}" for path, digest in manifest.items()),
-        ), stage="preflight", timeout=300)
+        self.run([ROOT / "scripts" / "verify-shared-assets-public.sh", export], stage="preflight", timeout=300)
 
     def preflight(self):
         self.local_bundle_preflight()

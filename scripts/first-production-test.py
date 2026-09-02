@@ -199,6 +199,19 @@ class FirstProductionTest(unittest.TestCase):
         self.assertIn('"$nginx" -t && service nginx reload', infrastructure)
         self.assertNotIn("if ! nginx -t", infrastructure)
 
+    def test_shared_assets_freshness_reuses_public_core_after_current_export(self):
+        source = (ROOT / "scripts" / "first-production.py").read_text(encoding="utf-8")
+        start = source.index("    def shared_assets_freshness(self):")
+        end = source.index("\n    def preflight(self):", start)
+        freshness = source[start:end]
+        self.assertIn('"assets", "export", "--output", export', freshness)
+        self.assertIn('"assets", "validate", "--input", export', freshness)
+        self.assertIn('ROOT / "scripts" / "verify-shared-assets-public.sh", export', freshness)
+        self.assertIn('shared-assets origin matches current export', freshness)
+        self.assertNotIn("public_script", freshness)
+        self.assertNotIn("curl -f", freshness)
+        self.assertNotIn('self.ssh(self.shared["zgocloud_ssh_alias"]', freshness)
+
     def test_templates_are_derived_from_profile(self):
         profile = dict(FIRST.IDENTITY.load_identity(ROOT / "production" / "identity.json")["locales"][1])
         profile.update({
