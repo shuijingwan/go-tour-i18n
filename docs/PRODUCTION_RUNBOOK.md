@@ -419,6 +419,8 @@ preflight、lock、upload、staging validation 或 backup 阶段失败时，orig
 
 脚本成功后生成与当前正式 export 的绝对路径和 `SHA256SUMS` identity 绑定的 machine-readable verification receipt，并打印 `verification receipt: <path>` 与唯一后续命令 `scripts/verify-shared-assets-production.sh <receipt>`。receipt 还包含 deployment result（`NO_CHANGES` 或 `DEPLOYED`）、实际 changed logical paths、固定 production base URL 和固定 boundary 路径；不包含 secret。它按稳定顺序输出 added、modified、deleted 的实际固定 URL（`SHA256SUMS` 如发生变化也属于 changed URL）。`DEPLOYED` 时脚本仍在 Cloudflare HUMAN GATE 前结束，不调用 Cloudflare API/CLI，也不在 purge 前执行公网 MISS/HIT 验收；`NO_CHANGES` 时也生成 receipt，直接执行其验证命令。
 
+receipt verification 的全部 shared-assets 公网请求使用正式 `production/identity.json` 中 `shared.zgocloud_ssh_alias` 作为 network runner。验证脚本为单次 invocation 建立一个 SSH ControlMaster 与 SOCKS tunnel，所有 `curl` 通过 `--socks5-hostname` 复用该 tunnel，使 DNS 与 TCP 均从 zgocloud 网络出口发起；runner 无法建立即 fail closed，不回退到维护者本机网络，正常、失败和 signal 退出均清理该连接。Cloudflare 短时 HTTP `522` / `525` 仅在单个逻辑请求内最多重试三次；其他 HTTP 状态、内容 SHA-256、cache semantics、boundary 与 receipt identity 错误均立即 fail closed。该网络瞬态容忍不降低完整 11/11 freshness gate。
+
 `deploy-shared-assets.sh` 已通过本地 mock 自动化测试，并已完成首次真实 11 文件 production deployment 验证。`SHA256SUMS`、`course-ad.css` 与 `course-ad.js` 的实际 changed URLs 已完成精确 Custom Purge 与 `MISS → HIT` 验收；公网 allowlist SHA-256 为 11/11 一致，三个非 allowlist boundary 路径继续返回 404。后续发布仍以脚本输出的实际 changed URLs 为唯一 purge 清单；如果真实权限或工具基线与预检不符，立即停止，不绕过检查。
 
 origin 更新成功后，脚本已经执行文件集合、SHA-256、与 staging 一致性、无 symlink/unsupported entry 和权限验证。需要人工复核时可执行以下只读命令：
@@ -474,6 +476,14 @@ Dashboard purge 是正常 human gate，不是 deployment failure，也不是缺�
 ```
 
 任一路径意外返回共享内容，shared-assets 发布验收失败。固定 URL、Cloudflare Edge Cache TTL 与 Browser Cache TTL 策略保持不变；不引入 hash filename、version directory、query version、loader、manifest 或 assets release ID。
+
+#### 已知网络现象（2026-09-02）
+
+ko-KR 首次 production 前的 shared-assets current-state freshness verification 发现公网波动。维护者本机曾随机收到 HTTP `525`，因此正式 verifier 已固定使用 zgocloud network runner；但 zgocloud 路径仍观察到随机 HTTP `522`、`525`，以及无 HTTP response 的 curl exit `28`（15 秒、0 bytes received）timeout。
+
+对照只读测试中，zgocloud → Cloudflare public、zgocloud → Aliyun direct origin、Aliyun localhost → Nginx 各为 `20/20` HTTP 200；Nginx active、assets vhost TLS 与 direct-origin certificate verification 正常，未见持续性 Nginx/TLS 服务故障 evidence。50 次强制 Cloudflare MISS probe 有 `47` 次 HTTP 200 + `CF-Cache-Status: MISS`，均精确对应 Aliyun Nginx access log 的 `47` 个 HTTP 200；其余 `3` 次 curl HTTP `000` 未进入该 access log。30 次保留 stderr 的 transport probe 有 `18` 次 HTTP 200/MISS、`12` 次上述 timeout。
+
+这表明 zgocloud → Cloudflare / Cloudflare 回源链路存在间歇性网络波动，但不足以推定 Nginx/TLS 持续故障、真实海外用户固定失败率或共享资产架构需要重设计。shared-assets 的长 Edge Cache TTL 会减少正常用户接触回源链路的机会，但不消除此现象。当前将其作为已知 production 网络风险：保留 zgocloud runner 与仅 HTTP `522` / `525` 的三次 bounded retry，不修改 Cloudflare、Nginx/TLS 或服务器网络参数，也不放宽 receipt、11/11 SHA-256、cache 或 boundary gate；若真实用户错误、production acceptance failure 或监控 evidence 显示持续/扩大，再作为独立基础设施问题调查。已知网络现象不能替代正式 shared-assets freshness verification `PASS`。
 
 
 Google 官方 `adsbygoogle.js` 继续直接从 Google 域名加载，不下载、代理、镜像或 self-host 到 assets origin。
