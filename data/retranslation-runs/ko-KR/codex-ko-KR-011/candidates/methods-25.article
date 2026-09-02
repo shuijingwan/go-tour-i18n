@@ -1,0 +1,13 @@
+* 연습문제: 이미지
+
+앞에서 작성한 [[/tour/moretypes/18][그림 생성기]] 예제를 기억하나요? 이번에는 데이터 슬라이스 대신 `image.Image` 구현체를 반환하는 생성기를 하나 더 작성해 봅시다.
+
+직접 `Image` 타입을 정의하고 [[/pkg/image/#Image][필요한 메서드]] 전부를 구현한 다음 `pic.ShowImage` 함수를 호출하세요.
+
+`Bounds` 메서드는 `image.Rectangle` 값을 반환해야 합니다. 예를 들면 `image.Rect(0,`0,`w,`h)` 형태입니다.
+
+`ColorModel` 메서드는 `color.RGBAModel` 값을 반환해야 합니다.
+
+`At` 메서드는 색상을 반환해야 합니다. 이전 그림 생성기의 `v` 값은 이번 생성기의 `color.RGBA{v,`v,`255,`255}` 값에 해당합니다.
+
+.play methods/exercise-images.go

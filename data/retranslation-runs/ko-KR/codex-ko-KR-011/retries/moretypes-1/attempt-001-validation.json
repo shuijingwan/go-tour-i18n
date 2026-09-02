@@ -1,0 +1,14 @@
+{
+  "schema_version": 2,
+  "batch_id": "codex-ko-KR-011",
+  "locale": "ko-KR",
+  "unit_id": "moretypes/1",
+  "unit_kind": "page",
+  "source_sha256": "7706eaf0d46acc79fdad3b7953e5571bf404551d71aaefafd8ba79f5761f9806",
+  "attempt": 1,
+  "status": "validation_failed",
+  "input_path": "inputs/moretypes-1.article",
+  "raw_response_path": "raw-responses/moretypes-1.article",
+  "candidate_path": "candidates/moretypes-1.article",
+  "error": "moretypes/1: protected structure validation failed: preformatted code block mismatch at index 3: line comment mismatch at index 1: referenced Go identifier count mismatch: expected 1, actual 0; check the named directive or protected content near the first difference"
+}

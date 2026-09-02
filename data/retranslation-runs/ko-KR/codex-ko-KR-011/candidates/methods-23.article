@@ -1,0 +1,12 @@
+* 연습문제: rot13Reader
+
+흔히 쓰는 패턴 중 하나는 [[/pkg/io/#Reader][io.Reader]] 구현체가 다른 `io.Reader` 값을 감싸면서 스트림을 어떤 방식으로 수정하는 것입니다.
+
+예를 들어 [[/pkg/compress/gzip/#NewReader][gzip.NewReader]] 함수는 압축 데이터 스트림을 나타내는 `io.Reader` 값을 받고, `*gzip.Reader` 값을 반환합니다. 반환된 값은 압축 해제된 데이터 스트림을 나타내며 `io.Reader` 인터페이스도 구현합니다.
+
+`rot13Reader` 타입을 구현하세요. 이 타입은 `io.Reader` 인터페이스를 구현하고 `io.Reader` 값에서 읽은 스트림의 모든 알파벳 문자에 [[https://en.wikipedia.org/wiki/ROT13][rot13]] 치환 암호를 적용해야 합니다.
+
+`rot13Reader` 타입은 이미 제공되어 있습니다.
+이 타입이 `io.Reader` 인터페이스를 구현하도록 `Read` 메서드를 작성하세요.
+
+.play methods/exercise-rot-reader.go
