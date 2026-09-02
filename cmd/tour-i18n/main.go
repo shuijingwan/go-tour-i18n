@@ -250,6 +250,7 @@ func run(args []string) error {
 		limit := fs.Int("limit", i18n.DefaultRetranslationExportLimit, "自动批次中最多包含的独立翻译单元数（上限 30）")
 		jsonOutput := fs.Bool("json", false, "输出完整 machine-readable JSON")
 		allowReexport := fs.Bool("allow-reexport", false, "allow explicitly requested page ids to be exported again")
+		previousSnapshotID := fs.String("previous-snapshot-id", "", "previous Quality Check Snapshot id (required for revision)")
 		var pageIDs repeatedStrings
 		fs.Var(&pageIDs, "id", "optional translation unit id; repeat for multiple units")
 		if err := fs.Parse(args[2:]); err != nil {
@@ -258,8 +259,11 @@ func run(args []string) error {
 		if *locale == "" {
 			return fmt.Errorf("--locale is required")
 		}
+		if *allowReexport && *previousSnapshotID == "" {
+			return fmt.Errorf("--allow-reexport revision mode requires --previous-snapshot-id")
+		}
 		result, err := i18n.ExportRetranslationBatch(root, catalog, i18n.RetranslationExportOptions{
-			Locale: *locale, BatchID: *batchID, UnitIDs: pageIDs, UnitKind: i18n.UnitKind(*unitKind), Limit: *limit, AllowReexport: *allowReexport,
+			Locale: *locale, BatchID: *batchID, UnitIDs: pageIDs, UnitKind: i18n.UnitKind(*unitKind), Limit: *limit, AllowReexport: *allowReexport, PreviousSnapshotID: *previousSnapshotID,
 		})
 		if err != nil {
 			return err
@@ -540,6 +544,7 @@ func run(args []string) error {
 		snapshotID := fs.String("snapshot-id", "", "Candidate Snapshot id")
 		previousSnapshotID := fs.String("previous-snapshot-id", "", "previous Quality Check Snapshot id for carry-forward")
 		rating := fs.String("rating", "", "Quality Check rating: A, B, C, or D")
+		finding := fs.String("finding", "", "per-TranslationUnit finding; required for B/C/D")
 		var unitIDs repeatedStrings
 		fs.Var(&unitIDs, "unit-id", "TranslationUnit id; repeat for multiple units with the same rating")
 		if err := fs.Parse(args[2:]); err != nil {
@@ -553,7 +558,7 @@ func run(args []string) error {
 		}
 		result, err := i18n.RecordQualityCheckResults(root, catalog, i18n.QualityCheckRecordOptions{
 			Locale: *locale, SnapshotID: *snapshotID, PreviousSnapshotID: *previousSnapshotID,
-			UnitIDs: unitIDs, Rating: *rating,
+			UnitIDs: unitIDs, Rating: *rating, Finding: *finding,
 		})
 		if err != nil {
 			return err
@@ -567,6 +572,7 @@ func run(args []string) error {
 		startIndex := fs.Int("start-index", 1, "first stable Candidate Snapshot index (1-based)")
 		limit := fs.Int("limit", i18n.DefaultRetranslationReviewBatchLimit, "maximum TranslationUnits to record")
 		rating := fs.String("rating", "", "Quality Check rating: A, B, C, or D")
+		finding := fs.String("finding", "", "finding shared by this explicit unit group; required for B/C/D")
 		if err := fs.Parse(args[2:]); err != nil {
 			return err
 		}
@@ -578,8 +584,28 @@ func run(args []string) error {
 		}
 		result, err := i18n.RecordQualityCheckResultBatch(root, catalog, i18n.QualityCheckRecordBatchOptions{
 			Locale: *locale, SnapshotID: *snapshotID, PreviousSnapshotID: *previousSnapshotID,
-			StartIndex: *startIndex, Limit: *limit, Rating: *rating,
+			StartIndex: *startIndex, Limit: *limit, Rating: *rating, Finding: *finding,
 		})
+		if err != nil {
+			return err
+		}
+		return printJSON(result)
+	case "quality-check backfill-finding":
+		fs := flag.NewFlagSet("quality-check backfill-finding", flag.ContinueOnError)
+		locale := fs.String("locale", "", "target locale")
+		snapshotID := fs.String("snapshot-id", "", "Candidate Snapshot id")
+		unitID := fs.String("unit-id", "", "existing B/C/D TranslationUnit result")
+		finding := fs.String("finding", "", "finding to add")
+		if err := fs.Parse(args[2:]); err != nil {
+			return err
+		}
+		if *locale == "" || *snapshotID == "" || *unitID == "" || *finding == "" {
+			return fmt.Errorf("--locale, --snapshot-id, --unit-id, and --finding are required")
+		}
+		if fs.NArg() != 0 {
+			return fmt.Errorf("unexpected quality-check backfill-finding arguments: %s", strings.Join(fs.Args(), " "))
+		}
+		result, err := i18n.BackfillQualityCheckFinding(root, catalog, i18n.QualityCheckFindingBackfillOptions{Locale: *locale, SnapshotID: *snapshotID, UnitID: *unitID, Finding: *finding})
 		if err != nil {
 			return err
 		}

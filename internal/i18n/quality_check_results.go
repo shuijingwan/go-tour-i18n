@@ -9,15 +9,18 @@ import (
 	"os"
 	"path/filepath"
 	"sort"
+	"strings"
 )
 
-const QualityCheckResultsSchemaVersion = 1
+const QualityCheckResultsSchemaVersion = 2
+const legacyQualityCheckResultsSchemaVersion = 1
 const QualityCheckResultsEvidenceType = "quality_check_results"
 
 type QualityCheckResult struct {
-	Index  int    `json:"index"`
-	UnitID string `json:"unit_id"`
-	Rating string `json:"rating"`
+	Index   int    `json:"index"`
+	UnitID  string `json:"unit_id"`
+	Rating  string `json:"rating"`
+	Finding string `json:"finding,omitempty"`
 }
 
 // QualityCheckResults is deliberately smaller than TranslationReview. It is
@@ -41,6 +44,7 @@ type QualityCheckRecordOptions struct {
 	PreviousSnapshotID string
 	UnitIDs            []string
 	Rating             string
+	Finding            string
 }
 
 type QualityCheckRecordBatchOptions struct {
@@ -50,7 +54,10 @@ type QualityCheckRecordBatchOptions struct {
 	StartIndex         int
 	Limit              int
 	Rating             string
+	Finding            string
 }
+
+type QualityCheckFindingBackfillOptions struct{ Locale, SnapshotID, UnitID, Finding string }
 
 type QualityCheckRecordResult struct {
 	Locale             string   `json:"locale"`
@@ -146,6 +153,10 @@ func RecordQualityCheckResults(root string, catalog *Catalog, options QualityChe
 	if !validQualityRating(options.Rating) {
 		return nil, fmt.Errorf("invalid quality-check rating %q", options.Rating)
 	}
+	finding := strings.TrimSpace(options.Finding)
+	if options.Rating != "A" && finding == "" {
+		return nil, errors.New("quality-check finding is required for rating B, C, or D")
+	}
 	if len(options.UnitIDs) == 0 {
 		return nil, errors.New("at least one quality-check unit_id is required")
 	}
@@ -209,7 +220,7 @@ func RecordQualityCheckResults(root string, catalog *Catalog, options QualityChe
 		if existingByID[unit.UnitID] {
 			return nil, fmt.Errorf("quality-check result already exists for %s", unit.UnitID)
 		}
-		results.Results = append(results.Results, QualityCheckResult{Index: unit.Index, UnitID: unit.UnitID, Rating: options.Rating})
+		results.Results = append(results.Results, QualityCheckResult{Index: unit.Index, UnitID: unit.UnitID, Rating: options.Rating, Finding: finding})
 	}
 	sort.Slice(results.Results, func(i, j int) bool { return results.Results[i].Index < results.Results[j].Index })
 	results.ResultCount = len(results.Results)
@@ -276,7 +287,53 @@ func RecordQualityCheckResultBatch(root string, catalog *Catalog, options Qualit
 	return RecordQualityCheckResults(root, catalog, QualityCheckRecordOptions{
 		Locale: options.Locale, SnapshotID: options.SnapshotID, PreviousSnapshotID: options.PreviousSnapshotID,
 		UnitIDs: unitIDs, Rating: options.Rating,
+		Finding: options.Finding,
 	})
+}
+
+func BackfillQualityCheckFinding(root string, catalog *Catalog, options QualityCheckFindingBackfillOptions) (*QualityCheckRecordResult, error) {
+	finding := strings.TrimSpace(options.Finding)
+	if finding == "" {
+		return nil, errors.New("quality-check finding must be non-empty")
+	}
+	snapshot, err := readQualityCheckSnapshotForReview(root, options.Locale, options.SnapshotID)
+	if err != nil {
+		return nil, err
+	}
+	results, err := readQualityCheckResults(root, options.Locale, snapshot)
+	if err != nil {
+		return nil, err
+	}
+	if results == nil {
+		return nil, errors.New("quality-check results do not exist")
+	}
+	for i := range results.Results {
+		result := &results.Results[i]
+		if result.UnitID != options.UnitID {
+			continue
+		}
+		unit := snapshot.Units[result.Index-1]
+		if _, err := readSnapshotUnitRepositoryEvidence(root, catalog, options.Locale, unit); err != nil {
+			return nil, fmt.Errorf("snapshot index %d (%s) identity: %w", unit.Index, unit.UnitID, err)
+		}
+		if result.Rating == "A" {
+			return nil, errors.New("finding backfill is only allowed for an existing B, C, or D result")
+		}
+		if strings.TrimSpace(result.Finding) != "" {
+			return nil, fmt.Errorf("quality-check finding already exists for %s", result.UnitID)
+		}
+		result.Finding = finding
+		path := qualityCheckResultsPath(root, options.Locale, options.SnapshotID)
+		if err := writeQualityCheckResults(path, results); err != nil {
+			return nil, err
+		}
+		repoPath, err := repositoryRelativePath(root, path)
+		if err != nil {
+			return nil, err
+		}
+		return &QualityCheckRecordResult{Locale: options.Locale, SnapshotID: options.SnapshotID, Rating: result.Rating, RecordedCount: 1, ResultCount: results.ResultCount, UnitIDs: []string{result.UnitID}, Path: repoPath}, nil
+	}
+	return nil, fmt.Errorf("quality-check result does not exist for %s", options.UnitID)
 }
 
 func BuildQualityCheckScope(root string, catalog *Catalog, options QualityCheckScopeOptions) (*QualityCheckScope, error) {
@@ -466,7 +523,7 @@ func readQualityCheckResults(root, locale string, snapshot *QualityCheckSnapshot
 	if err != nil {
 		return nil, err
 	}
-	if results.SchemaVersion != QualityCheckResultsSchemaVersion || results.EvidenceType != QualityCheckResultsEvidenceType ||
+	if (results.SchemaVersion != QualityCheckResultsSchemaVersion && results.SchemaVersion != legacyQualityCheckResultsSchemaVersion) || results.EvidenceType != QualityCheckResultsEvidenceType ||
 		results.Locale != locale || results.SnapshotID != snapshot.SnapshotID || results.SnapshotManifestSHA256 != sum(manifestData) ||
 		results.Rubric == "" || results.ResultCount != len(results.Results) {
 		return nil, fmt.Errorf("quality-check results %q have incompatible identity", snapshot.SnapshotID)
@@ -485,6 +542,9 @@ func readQualityCheckResults(root, locale string, snapshot *QualityCheckSnapshot
 		unit := snapshot.Units[result.Index-1]
 		if result.UnitID != unit.UnitID || !validQualityRating(result.Rating) {
 			return nil, fmt.Errorf("quality-check results %q do not match Candidate Snapshot at index %d", snapshot.SnapshotID, result.Index)
+		}
+		if results.SchemaVersion >= QualityCheckResultsSchemaVersion && result.Rating != "A" && strings.TrimSpace(result.Finding) == "" {
+			return nil, fmt.Errorf("quality-check results %q require finding for rating %s at index %d", snapshot.SnapshotID, result.Rating, result.Index)
 		}
 		seen[result.UnitID] = true
 		lastIndex = result.Index

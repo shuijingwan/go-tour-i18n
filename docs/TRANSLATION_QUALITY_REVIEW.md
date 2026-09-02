@@ -106,15 +106,26 @@ go run -mod=readonly ./cmd/tour-i18n quality-check scope \
 ```bash
 go run -mod=readonly ./cmd/tour-i18n quality-check record \
   --locale <locale> --snapshot-id <snapshot-id> \
-  --unit-id <unit-id> --rating <A|B|C|D>
+  --unit-id <unit-id> --rating <A|B|C|D> \
+  [--finding '<specific finding>']
 
 go run -mod=readonly ./cmd/tour-i18n quality-check record-batch \
   --locale <locale> --snapshot-id <snapshot-id> \
   --start-index <1-based-snapshot-index> --limit <count> \
-  --rating <A|B|C|D>
+  --rating <A|B|C|D> [--finding '<finding shared by this group>']
 ```
 
-`record` 的 `--unit-id` 可以重复，用于一次原子记录多个同 rating Unit；`record-batch` 默认且最大 `limit=30`，按 immutable Snapshot 的稳定 index 记录连续范围。两个命令都拒绝覆盖已有 Unit 结果。
+`record` 的 `--unit-id` 可以重复，用于一次原子记录多个同 rating、同 finding Unit；结论不同必须拆开记录。`record-batch` 默认且最大 `limit=30`，按 immutable Snapshot 的稳定 index 记录连续范围。A 可以没有 finding；B/C/D 必须提供非空 `--finding`。两个命令都拒绝覆盖已有 Unit 结果。
+
+旧 evidence 中没有 finding 的 B/C/D 继续兼容读取，但在 revision export 前必须通过 CLI 补录，禁止人工编辑 JSON：
+
+```bash
+go run -mod=readonly ./cmd/tour-i18n quality-check backfill-finding \
+  --locale <locale> --snapshot-id <snapshot-id> \
+  --unit-id <unit-id> --finding '<specific finding>'
+```
+
+该命令验证 Snapshot manifest、stable index、unit id、candidate/validation repository identity 和已有 result，只允许给已有 B/C/D 的空 finding 补值，不允许改变 rating，也不静默覆盖已有 finding。
 
 轻量结果位于：
 
@@ -122,7 +133,7 @@ go run -mod=readonly ./cmd/tour-i18n quality-check record-batch \
 data/quality-check-snapshots/<locale>/<snapshot-id>/quality-check-results.json
 ```
 
-它以 `evidence_type=quality_check_results`、Snapshot manifest SHA-256、locale、snapshot、rubric、stable index、unit id 和 rating 绑定实际 Quality Check 结论。它没有 Final Review 的 `decision` 字段，不写入 batch `review/`，不是正式 Final Review evidence，promotion 永远不读取它。
+它以 `evidence_type=quality_check_results`、Snapshot manifest SHA-256、locale、snapshot、rubric、stable index、unit id、rating 和 finding 绑定实际 Quality Check 结论。它没有 Final Review 的 `decision` 字段，不写入 batch `review/`，不是正式 Final Review evidence，promotion 永远不读取它。
 
 revision 后仍创建新的 full Snapshot。新一轮 scope 显式指定上一轮：
 

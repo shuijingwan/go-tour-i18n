@@ -160,6 +160,17 @@ Quality Check 的质量修改不得使用 retry。Revision 流程为：
 
 重复以上流程直到 Quality Check 为 A。旧 batch 及其 evidence 保持不可变。
 
+正式 revision export 必须显式给出产生 B/C/D finding 的 previous Quality Check Snapshot：
+
+```bash
+go run -mod=readonly ./cmd/tour-i18n retranslation export \
+  --locale <locale> --allow-reexport \
+  --previous-snapshot-id <snapshot-id> \
+  --id <unit-id> [--id <unit-id> ...]
+```
+
+revision 模式只允许选择该 Snapshot 中已有 B/C/D 结果且 finding 非空的 Unit；每批仍最多 30 个且 Page/Example 不混合。Exporter 验证 Snapshot、Unit、result 与当前 candidate/validation identity，并在每个 manifest unit 固化 `previous_snapshot_id`、`previous_rating`、`previous_finding`。这些字段属于 revision feedback provenance，不参与 promotion，也不替代 Final Review evidence。Revision 的正式翻译输入仍是 manifest、manifest 全部 `inputs/*` 与 locale glossary 三者不可拆分。
+
 ## 8. Final Review 与 promotion
 
 只有完整语言满足以下条件，才能进入 Final Review：

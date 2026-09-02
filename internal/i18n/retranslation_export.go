@@ -13,12 +13,13 @@ import (
 const DefaultRetranslationExportLimit = 30
 
 type RetranslationExportOptions struct {
-	Locale        string
-	BatchID       string
-	UnitIDs       []string
-	UnitKind      UnitKind
-	Limit         int
-	AllowReexport bool
+	Locale             string
+	BatchID            string
+	UnitIDs            []string
+	UnitKind           UnitKind
+	Limit              int
+	AllowReexport      bool
+	PreviousSnapshotID string
 }
 
 type RetranslationBatchUnit struct {
@@ -29,6 +30,9 @@ type RetranslationBatchUnit struct {
 	InputPath           string   `json:"input_path"`
 	InputSHA256         string   `json:"input_sha256"`
 	ProtectedTokenCount int      `json:"protected_token_count"`
+	PreviousSnapshotID  string   `json:"previous_snapshot_id,omitempty"`
+	PreviousRating      string   `json:"previous_rating,omitempty"`
+	PreviousFinding     string   `json:"previous_finding,omitempty"`
 }
 
 type RetranslationBatchManifest struct {
@@ -88,6 +92,9 @@ func ExportRetranslationBatch(root string, catalog *Catalog, options Retranslati
 	if options.AllowReexport && len(options.UnitIDs) == 0 {
 		return nil, errors.New("--allow-reexport requires at least one --id")
 	}
+	if options.PreviousSnapshotID != "" && !options.AllowReexport {
+		return nil, errors.New("--previous-snapshot-id requires --allow-reexport revision mode")
+	}
 	limit := options.Limit
 	if limit == 0 {
 		limit = DefaultRetranslationExportLimit
@@ -117,6 +124,43 @@ func ExportRetranslationBatch(root string, catalog *Catalog, options Retranslati
 	}
 	if len(units) == 0 {
 		return &RetranslationExportResult{Locale: options.Locale, AllExported: true}, nil
+	}
+	previousFindings := map[string]QualityCheckResult{}
+	if options.PreviousSnapshotID != "" {
+		snapshot, err := readQualityCheckSnapshotForReview(root, options.Locale, options.PreviousSnapshotID)
+		if err != nil {
+			return nil, fmt.Errorf("previous Quality Check Snapshot: %w", err)
+		}
+		results, err := readQualityCheckResults(root, options.Locale, snapshot)
+		if err != nil {
+			return nil, err
+		}
+		if results == nil {
+			return nil, errors.New("previous Quality Check Snapshot has no results")
+		}
+		byID := map[string]QualityCheckSnapshotUnit{}
+		for _, u := range snapshot.Units {
+			byID[u.UnitID] = u
+		}
+		for _, result := range results.Results {
+			previousFindings[result.UnitID] = result
+		}
+		for _, unit := range units {
+			result, ok := previousFindings[unit.ID]
+			if !ok || result.Rating == "A" {
+				return nil, fmt.Errorf("revision unit %s is not rated B, C, or D in previous Snapshot %s", unit.ID, options.PreviousSnapshotID)
+			}
+			if strings.TrimSpace(result.Finding) == "" {
+				return nil, fmt.Errorf("revision unit %s has no finding in previous Snapshot %s; backfill it first", unit.ID, options.PreviousSnapshotID)
+			}
+			snapshotUnit, ok := byID[unit.ID]
+			if !ok {
+				return nil, fmt.Errorf("revision unit %s is absent from previous Snapshot", unit.ID)
+			}
+			if _, err := readSnapshotUnitRepositoryEvidence(root, catalog, options.Locale, snapshotUnit); err != nil {
+				return nil, fmt.Errorf("previous Snapshot unit %s identity: %w", unit.ID, err)
+			}
+		}
 	}
 
 	batchID := options.BatchID
@@ -191,6 +235,11 @@ func ExportRetranslationBatch(root string, catalog *Catalog, options Retranslati
 			UnitID: input.unit.ID, UnitKind: input.unit.Kind, SourcePath: input.unit.SourcePath,
 			SourceSHA256: input.unit.SourceSHA256, InputPath: input.path,
 			InputSHA256: input.hash, ProtectedTokenCount: input.tokens,
+		}
+		if prior, ok := previousFindings[input.unit.ID]; ok {
+			record.PreviousSnapshotID = options.PreviousSnapshotID
+			record.PreviousRating = prior.Rating
+			record.PreviousFinding = prior.Finding
 		}
 		manifest.Units = append(manifest.Units, record)
 		unitIDs = append(unitIDs, input.unit.ID)

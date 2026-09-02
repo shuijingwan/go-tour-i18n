@@ -12,7 +12,7 @@ func recordQualityCheckRatings(t *testing.T, root string, catalog *Catalog, snap
 	t.Helper()
 	if _, err := RecordQualityCheckResults(root, catalog, QualityCheckRecordOptions{
 		Locale: "zh-CN", SnapshotID: snapshotID, PreviousSnapshotID: previousSnapshotID,
-		Rating: rating, UnitIDs: unitIDs,
+		Rating: rating, UnitIDs: unitIDs, Finding: map[bool]string{true: "test finding"}[rating != "A"],
 	}); err != nil {
 		t.Fatal(err)
 	}
@@ -270,7 +270,7 @@ func TestQualityCheckResultsNeverSatisfyFinalReviewOrPromotion(t *testing.T) {
 func TestQualityCheckRecordRejectsOverwriteAndSnapshotManifestMutation(t *testing.T) {
 	root, catalog, _ := makeRetranslationReviewBatchFixture(t, 1, "qc-001")
 	recordQualityCheckRatings(t, root, catalog, "qc-001", "", "A", []string{"lesson/1"})
-	_, err := RecordQualityCheckResults(root, catalog, QualityCheckRecordOptions{Locale: "zh-CN", SnapshotID: "qc-001", UnitIDs: []string{"lesson/1"}, Rating: "B"})
+	_, err := RecordQualityCheckResults(root, catalog, QualityCheckRecordOptions{Locale: "zh-CN", SnapshotID: "qc-001", UnitIDs: []string{"lesson/1"}, Rating: "B", Finding: "new finding"})
 	if err == nil || !strings.Contains(err.Error(), "already exists") {
 		t.Fatalf("overwrite error=%v", err)
 	}
@@ -285,5 +285,65 @@ func TestQualityCheckRecordRejectsOverwriteAndSnapshotManifestMutation(t *testin
 	_, err = BuildQualityCheckScope(root, catalog, QualityCheckScopeOptions{Locale: "zh-CN", SnapshotID: "qc-001"})
 	if err == nil || !strings.Contains(err.Error(), "incompatible identity") {
 		t.Fatalf("snapshot binding error=%v", err)
+	}
+}
+
+func TestQualityCheckFindingRulesAndLegacyBackfill(t *testing.T) {
+	root, catalog, _ := makeRetranslationReviewBatchFixture(t, 2, "qc-001")
+	if _, err := RecordQualityCheckResults(root, catalog, QualityCheckRecordOptions{Locale: "zh-CN", SnapshotID: "qc-001", UnitIDs: []string{"lesson/1"}, Rating: "B"}); err == nil || !strings.Contains(err.Error(), "finding is required") {
+		t.Fatalf("missing finding error=%v", err)
+	}
+	recordQualityCheckRatings(t, root, catalog, "qc-001", "", "A", []string{"lesson/1"})
+	// Simulate an existing schema-v1 B result without finding; it must remain readable.
+	snapshot, err := readQualityCheckSnapshot(root, "zh-CN", "qc-001", false)
+	if err != nil {
+		t.Fatal(err)
+	}
+	results, err := readQualityCheckResults(root, "zh-CN", snapshot)
+	if err != nil {
+		t.Fatal(err)
+	}
+	results.Results = append(results.Results, QualityCheckResult{Index: 2, UnitID: "lesson/2", Rating: "C"})
+	results.SchemaVersion = legacyQualityCheckResultsSchemaVersion
+	results.ResultCount = 2
+	if err := writeQualityCheckResults(qualityCheckResultsPath(root, "zh-CN", "qc-001"), results); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := BuildQualityCheckScope(root, catalog, QualityCheckScopeOptions{Locale: "zh-CN", SnapshotID: "qc-001"}); err != nil {
+		t.Fatalf("legacy evidence unreadable: %v", err)
+	}
+	if _, err := BackfillQualityCheckFinding(root, catalog, QualityCheckFindingBackfillOptions{Locale: "zh-CN", SnapshotID: "qc-001", UnitID: "lesson/2", Finding: "specific defect"}); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := BackfillQualityCheckFinding(root, catalog, QualityCheckFindingBackfillOptions{Locale: "zh-CN", SnapshotID: "qc-001", UnitID: "lesson/2", Finding: "overwrite"}); err == nil || !strings.Contains(err.Error(), "already exists") {
+		t.Fatalf("overwrite error=%v", err)
+	}
+	if _, err := BackfillQualityCheckFinding(root, catalog, QualityCheckFindingBackfillOptions{Locale: "zh-CN", SnapshotID: "qc-001", UnitID: "lesson/1", Finding: "not allowed"}); err == nil || !strings.Contains(err.Error(), "only allowed") {
+		t.Fatalf("A backfill error=%v", err)
+	}
+}
+
+func TestRevisionExportRequiresPreviousNonAFindingAndFreezesProvenance(t *testing.T) {
+	root, catalog, _ := makeRetranslationReviewBatchFixture(t, 2, "qc-001")
+	recordQualityCheckRatings(t, root, catalog, "qc-001", "", "A", []string{"lesson/1"})
+	recordQualityCheckRatings(t, root, catalog, "qc-001", "", "B", []string{"lesson/2"})
+	if _, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", UnitIDs: []string{"lesson/1"}, AllowReexport: true, PreviousSnapshotID: "qc-001"}); err == nil || !strings.Contains(err.Error(), "not rated B") {
+		t.Fatalf("A revision error=%v", err)
+	}
+	exported, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", UnitIDs: []string{"lesson/2"}, AllowReexport: true, PreviousSnapshotID: "qc-001"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	data, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(exported.BatchPath), "manifest.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	manifest, err := decodeRetranslationManifest(data)
+	if err != nil {
+		t.Fatal(err)
+	}
+	unit := manifest.Units[0]
+	if unit.PreviousSnapshotID != "qc-001" || unit.PreviousRating != "B" || unit.PreviousFinding != "test finding" {
+		t.Fatalf("revision provenance=%+v", unit)
 	}
 }
