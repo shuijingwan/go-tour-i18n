@@ -149,13 +149,22 @@ class PreviewBrowserTest(unittest.TestCase):
                 self.assertTrue(all(metadata.values()))
                 self.assertEqual(metadata, CORE.locale_list_metadata(locale))
 
-    def test_rendered_list_requires_one_directory_with_all_lessons(self):
+    def test_rendered_list_requires_exact_article_and_page_routes(self):
+        page_routes = CORE.formal_course_routes()
+        article_routes = sorted({route.rsplit('/', 1)[0] for route in page_routes})
         chrome = mock.Mock()
-        chrome.evaluate.return_value = {"wrappers": 1, "heading": "Directory", "modules": 5, "lessons": 103}
-        CORE.validate_rendered_list(chrome, {"heading": "Directory"}, 103)
-        chrome.evaluate.return_value = {"wrappers": 2, "heading": "Directory", "modules": 5, "lessons": 103}
+        chrome.evaluate.return_value = {
+            "wrappers": 1, "heading": "Directory", "modules": 5,
+            "articleRoutes": article_routes, "pageRoutes": page_routes,
+        }
+        CORE.validate_rendered_list(chrome, {"heading": "Directory"}, page_routes)
+        chrome.evaluate.return_value = {
+            "wrappers": 1, "heading": "Directory", "modules": 5,
+            "articleRoutes": article_routes, "pageRoutes": page_routes[:-1],
+        }
         with self.assertRaises(CORE.BrowserFailure):
-            CORE.validate_rendered_list(chrome, {"heading": "Directory"}, 103)
+            CORE.validate_rendered_list(chrome, {"heading": "Directory"}, page_routes)
+        self.assertIn(".toc .toc-page a", chrome.evaluate.call_args.args[0])
 
     def rendered(self, path, canonical):
         return {"path": path, "href": "http://127.0.0.1:38573" + path,

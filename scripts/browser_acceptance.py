@@ -8,6 +8,7 @@ Chrome-only browser baseline and adds no browser framework dependency.
 from __future__ import annotations
 
 import base64
+import csv
 import hashlib
 import importlib.util
 import json
@@ -52,15 +53,15 @@ def locale_list_metadata(locale):
     return values
 
 
-def formal_course_route_count():
+def formal_course_routes():
     try:
-        with (ROOT / "data" / "tour-pages.tsv").open(encoding="utf-8") as source:
-            count = sum(1 for _ in source) - 1
+        with (ROOT / "data" / "tour-pages.tsv").open(encoding="utf-8", newline="") as source:
+            routes = tuple("/tour" + row["route"] for row in csv.DictReader(source, delimiter="\t"))
     except OSError as exc:
         raise BrowserFailure(f"cannot read formal course route catalog: {exc}") from exc
-    if count != 103:
-        raise BrowserFailure(f"formal course route catalog count={count}, want 103")
-    return count
+    if len(routes) != 103 or len(set(routes)) != len(routes):
+        raise BrowserFailure(f"formal course route catalog must contain 103 unique routes, got {len(routes)}")
+    return routes
 
 
 class WebSocket:
@@ -397,17 +398,24 @@ def page_identity(chrome, base, locale, requested_path, width, height, canonical
         assert_true(identity["overflow"] <= 2, f"{requested_path}: unexpected page-level horizontal overflow")
 
 
-def validate_rendered_list(chrome, list_metadata, expected_lessons):
+def validate_rendered_list(chrome, list_metadata, expected_page_routes):
     snapshot = chrome.evaluate("""(() => ({
       wrappers: document.querySelectorAll('.list-wrapper').length,
       heading: document.querySelector('.list-wrapper .page-header h1')?.textContent.trim() || '',
       modules: document.querySelectorAll('.list-wrapper .module').length,
-      lessons: document.querySelectorAll('.list-wrapper a.lesson-title[href^="/tour/"]').length
+      articleRoutes: [...document.querySelectorAll('.list-wrapper a.lesson-title[href^="/tour/"]')]
+        .map(a => new URL(a.getAttribute('href'), location.origin).pathname),
+      pageRoutes: [...document.querySelectorAll('.toc .toc-page a[href^="/tour/"]')]
+        .map(a => new URL(a.getAttribute('href'), location.origin).pathname)
     }))()""", check="inspect rendered course directory")
     assert_true(snapshot["wrappers"] == 1, f"/tour/list: duplicated or missing directory body: {snapshot}")
     assert_true(snapshot["heading"] == list_metadata["heading"], f"/tour/list: list heading mismatch: {snapshot}")
-    assert_true(snapshot["modules"] > 0 and snapshot["lessons"] == expected_lessons,
-                f"/tour/list: module or lesson directory content mismatch: {snapshot}")
+    assert_true(snapshot["modules"] == 5, f"/tour/list: module directory mismatch: {snapshot}")
+    expected_article_routes = sorted({route.rsplit('/', 1)[0] for route in expected_page_routes})
+    assert_true(sorted(snapshot["articleRoutes"]) == expected_article_routes,
+                f"/tour/list: article directory route mismatch: expected={expected_article_routes} actual={snapshot}")
+    assert_true(sorted(snapshot["pageRoutes"]) == sorted(expected_page_routes),
+                f"/tour/list: Page directory route mismatch: expected={len(expected_page_routes)} unique formal routes actual={snapshot}")
 
 
 def acceptance(base, locale, profile, shared):
@@ -420,7 +428,7 @@ def acceptance(base, locale, profile, shared):
                           expected_description=list_metadata["description"] if is_list else None,
                           expected_title=list_metadata["title"] if is_list else None)
             if is_list:
-                validate_rendered_list(chrome, list_metadata, formal_course_route_count())
+                validate_rendered_list(chrome, list_metadata, formal_course_routes())
         chrome.navigate(base, 375, 812)
         language = chrome.evaluate("""(() => ({
           count: document.querySelectorAll('.site-language-list li').length,
@@ -509,7 +517,7 @@ def preview_acceptance(base, locale, profile, shared, registry, descriptions, li
                           descriptions.get(course_route) if course_route else (list_metadata["description"] if is_list else None),
                           list_metadata["title"] if is_list else None)
             if is_list:
-                validate_rendered_list(chrome, list_metadata, formal_course_route_count())
+                validate_rendered_list(chrome, list_metadata, formal_course_routes())
             shell = chrome.evaluate("""(() => ({header:document.querySelectorAll('.top-bar').length,
               footer:document.querySelectorAll('.site-footer').length, body:(document.body?.innerText||'').trim(),
               overflow:document.documentElement.scrollWidth-document.documentElement.clientWidth}))()""")
