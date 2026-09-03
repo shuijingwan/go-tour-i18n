@@ -1,6 +1,6 @@
 # ko-KR Locale Surface Review — 2026-09-02 首次 production；2026-09-03 maintenance 更新
 
-本 evidence 同时保留 ko-KR 已完成的首次 production 验收，并记录其后发现的 `/tour/list` 缺陷、当前本地修复与 preview re-acceptance。它不把尚未发布的 maintenance 修复写成 production verification。
+本 evidence 同时保留 ko-KR 已完成的首次 production 验收，并记录其后发现的 `/tour/list` 缺陷、修复、preview re-acceptance 与已完成的 maintenance production verification。
 
 ## 审核身份与当前 implementation baseline
 
@@ -128,17 +128,84 @@ scripts/verify-preview-browser.py http://127.0.0.1:42151/ ko-KR
 PREVIEW SURFACE ACCEPTANCE: PASS
 ```
 
-该 re-acceptance 覆盖修复后的 preview implementation；它证明当前本地 `/tour/list` prerender/SEO 与目录验收断言已通过，但不替代 production verification。
+该 re-acceptance 覆盖修复后的 preview implementation；其后已由本节所记录的正式 maintenance production verification 完成 production 复核。
 
-## E. 当前 production 与待办 maintenance release
+## E. `/tour/list` maintenance release production verification
 
-production 当前仍运行修复前的旧 release。`04c7fe6` 与 `8d61b46` 尚未作为新的 maintenance release publish/deploy；本轮没有执行 publish、deploy、first-production、production verification、服务器/Cloudflare/DNS 或 `production_state` 修改。
+结果：`passed`
 
-因此：
+### Release identity
 
-- 首次 production 历史验收：`passed`；
-- 当前本地 maintenance implementation 与 preview re-acceptance：`passed`；
-- 新 `/tour/list` maintenance release 的 publish/deploy/production verification：**待执行**；不得提前声明这两个修复已通过 production verification。
+- reviewed implementation/evidence commit：`4900995f926ce69fa23d1c1ef28005841969d5c2` (`4900995`)
+- local maintenance bundle：`/tmp/go-tour-release-20260903-ko-KR-4900995f`
+- remote/current production release：`/data/go-tour-ko-KR/releases/20260903-ko-KR-4900995f`
+- published_at：`2026-09-03T02:42:12Z`
+- production public URL：`https://ko-go-dev.shuijingwanwq.com/`
+- production identity state：`live`
+
+publish result：`locale=ko-KR ready=122 pending=0 blocked=0 pages=103 articles=7`。
+
+### Maintenance deploy 与 CDN gate
+
+已实际执行：
+
+```sh
+scripts/deploy-production.sh \
+  /tmp/go-tour-release-20260903-ko-KR-4900995f
+```
+
+结果：local release preflight、remote SHA-256 与 permissions 均为 PASS；`current` 已原子切换至上述 remote release，service 为 `active`，localhost 连续 `3` 次 HTTP `200`，deployment completed，public acceptance HTTP `200`。
+
+随后已执行 `ko-go-dev.shuijingwanwq.com` 的 Cloudflare hostname purge。
+
+### Production machine acceptance
+
+已实际执行：
+
+```sh
+scripts/verify-production.sh \
+  /tmp/go-tour-release-20260903-ko-KR-4900995f
+```
+
+结果：
+
+```text
+[verify-production] release identity: PASS
+[verify-production] remote identity: PASS
+[verify-production] source routes: 7/7 PASS
+[verify-production] public routes: 7/7 PASS
+[verify-production] html identity: PASS
+sitemap URLs: 105/105
+host mismatch: 0
+HTTP failure: 0
+[verify-production] sitemap: 105/105 PASS
+[verify-production] socket boundary: PASS
+[verify-production] CDN /: MISS -> MISS -> HIT PASS
+[verify-production] CDN /tour/welcome/1: MISS -> MISS -> HIT PASS
+
+PRODUCTION MACHINE ACCEPTANCE: PASS
+```
+
+### Production browser acceptance 与 visual HUMAN gate
+
+已实际执行：
+
+```sh
+scripts/verify-production-browser.py \
+  https://ko-go-dev.shuijingwanwq.com/ \
+  ko-KR
+```
+
+结果：
+
+```text
+[production-browser] desktop routes: PASS
+[production-browser] mobile /tour/moretypes/1: PASS
+[production-browser] Run / Format / Reset / SPA / ads: PASS
+PRODUCTION BROWSER ACCEPTANCE: PASS
+```
+
+本次 browser-assertion / prerender / SEO 修复未改变页面视觉；不重新要求 visual HUMAN gate，沿用首次 production 已通过的 visual HUMAN gate：`passed`。
 
 ## Reviewer、issues 与结论
 
@@ -146,8 +213,8 @@ production 当前仍运行修复前的旧 release。`04c7fe6` 与 `8d61b46` 尚�
 - 新增 list UI/SEO language review：ChatGPT，A / passed，无 revision
 - unresolved language blocker：`none`
 - unresolved preview rendered blocker：`none`
-- unresolved maintenance release blocker：新的 maintenance release 尚未 publish/deploy/production verification
+- unresolved maintenance production blocker：`none`
 
 首次 production 的历史 final decision：`passed`。
 
-本轮不为尚未发布的 maintenance implementation 创建或覆盖 production final decision；完成新的 maintenance release 后，须按 `docs/PRODUCTION_RUNBOOK.md` 实际回填其 production verification。
+本次 `/tour/list` maintenance release production verification final decision：`passed`。
