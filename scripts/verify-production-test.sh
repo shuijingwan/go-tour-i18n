@@ -154,6 +154,20 @@ else
         status=500
     fi
 
+    if [[ -n ${FAKE_HTTP_STATUS_URL:-} && $url == "$FAKE_HTTP_STATUS_URL" ]]; then
+        counter="$FAKE_STATE_DIR/http-status"
+        count=0
+        [[ -f $counter ]] && count=$(<"$counter")
+        count=$((count + 1))
+        printf '%s' "$count" >"$counter"
+        IFS=',' read -r -a http_status_sequence <<<"${FAKE_HTTP_STATUS_SEQUENCE:-200}"
+        sequence_index=$((count - 1))
+        if (( sequence_index >= ${#http_status_sequence[@]} )); then
+            sequence_index=$((${#http_status_sequence[@]} - 1))
+        fi
+        status=${http_status_sequence[sequence_index]}
+    fi
+
     if [[ $status == 200 && ( $path == / || $path == /tour/welcome/1 ) \
         && -n ${FAKE_CACHE_HTTP_STATUS:-} ]]; then
         status=$FAKE_CACHE_HTTP_STATUS
@@ -174,6 +188,21 @@ else
         cache=${cache_sequence[sequence_index]}
         [[ $cache == MISSING ]] && cache=''
     fi
+fi
+
+transport_exit=0
+if [[ -n ${FAKE_TRANSPORT_URL:-} && $url == "$FAKE_TRANSPORT_URL" ]]; then
+    counter="$FAKE_STATE_DIR/transport"
+    count=0
+    [[ -f $counter ]] && count=$(<"$counter")
+    count=$((count + 1))
+    printf '%s' "$count" >"$counter"
+    IFS=',' read -r -a transport_sequence <<<"${FAKE_TRANSPORT_SEQUENCE:-0}"
+    sequence_index=$((count - 1))
+    if (( sequence_index >= ${#transport_sequence[@]} )); then
+        sequence_index=$((${#transport_sequence[@]} - 1))
+    fi
+    transport_exit=${transport_sequence[sequence_index]}
 fi
 
 if [[ -n $headers ]]; then
@@ -227,6 +256,12 @@ if [[ $status == 200 && $body != /dev/null ]]; then
 fi
 
 [[ -z $write_out ]] || printf '%s' "$status"
+exit "$transport_exit"
+SH
+
+cat >"$fake_bin/sleep" <<'SH'
+#!/usr/bin/env bash
+exit 0
 SH
 
 chmod 0755 -- "$fake_bin"/*
@@ -281,6 +316,8 @@ setup_case() {
     unset FAKE_SOURCE_FAIL_PATH FAKE_PUBLIC_FAIL_PATH FAKE_HTML_MODE FAKE_SITEMAP_MODE
     unset FAKE_SITEMAP_FAIL_URL FAKE_SOCKET_NORMAL_STATUS FAKE_SOCKET_UPGRADE_STATUS
     unset FAKE_CACHE_SEQUENCE FAKE_CACHE_HTTP_STATUS FAKE_SERVICE_STATE
+    unset FAKE_TRANSPORT_URL FAKE_TRANSPORT_SEQUENCE
+    unset FAKE_HTTP_STATUS_URL FAKE_HTTP_STATUS_SEQUENCE
 }
 
 run_verify() {
@@ -321,6 +358,40 @@ expect_failure 'source route failure' 'stage=source routes'
 setup_case
 export FAKE_PUBLIC_FAIL_PATH=/tour/list
 expect_failure 'public route failure' 'stage=public routes'
+
+setup_case
+export FAKE_TRANSPORT_URL=$FAKE_PUBLIC_ORIGIN/tour/list FAKE_TRANSPORT_SEQUENCE=28
+expect_failure 'HTTP 200 with curl timeout' 'actual=curl exit 28; HTTP 200'
+
+setup_case
+export FAKE_TRANSPORT_URL=$FAKE_PUBLIC_ORIGIN/tour/list FAKE_TRANSPORT_SEQUENCE=28,0
+output=$(run_verify) || fail 'transient public transport failure did not recover'
+assert_contains "$output" '[verify-production] public routes: 7/7 PASS'
+
+for transient_exit in 6 7 16 35; do
+    setup_case
+    export FAKE_TRANSPORT_URL=$FAKE_PUBLIC_ORIGIN/tour/list FAKE_TRANSPORT_SEQUENCE="$transient_exit,0"
+    output=$(run_verify) || fail "transient curl exit $transient_exit did not recover"
+    assert_contains "$output" '[verify-production] public routes: 7/7 PASS'
+done
+
+setup_case
+export FAKE_HTTP_STATUS_URL=$FAKE_PUBLIC_ORIGIN/tour/list FAKE_HTTP_STATUS_SEQUENCE=404,200
+expect_failure 'semantic HTTP failure must not retry' 'expected=HTTP 200 actual=HTTP 404'
+
+setup_case
+export FAKE_HTTP_STATUS_URL=$FAKE_PUBLIC_ORIGIN/tour/list FAKE_HTTP_STATUS_SEQUENCE=522,200
+output=$(run_verify) || fail 'transient HTTP 522 did not recover'
+assert_contains "$output" '[verify-production] public routes: 7/7 PASS'
+
+setup_case
+export FAKE_TRANSPORT_URL=$FAKE_PUBLIC_ORIGIN/tour/fake/7 FAKE_TRANSPORT_SEQUENCE=28,0
+output=$(run_verify) || fail 'transient sitemap transport failure did not recover'
+assert_contains "$output" '[verify-production] sitemap: 105/105 PASS'
+
+setup_case
+export FAKE_TRANSPORT_URL=$FAKE_PUBLIC_ORIGIN/tour/fake/7 FAKE_TRANSPORT_SEQUENCE=28
+expect_failure 'persistent sitemap transport failure' 'check=https://de-go-dev.shuijingwanwq.com/tour/fake/7'
 
 setup_case
 export FAKE_HTML_MODE=LANG

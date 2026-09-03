@@ -12,6 +12,7 @@ readonly -a SSH_OPTIONS=(
 )
 readonly CURL_CONNECT_TIMEOUT=5
 readonly CURL_MAX_TIME=15
+readonly CURL_RETRY_ATTEMPTS=3
 readonly EXPECTED_SITEMAP_URLS=105
 readonly -a ACCEPTANCE_PATHS=(
     '/'
@@ -37,6 +38,8 @@ CACHE_WELCOME_RESULT=''
 TEMP_DIR=''
 SSH_HOST=''
 CURL_NETWORK_OPTIONS=()
+HTTP_REQUEST_EXIT=0
+HTTP_REQUEST_STATUS=''
 NETWORK_SSH_HOST=${VERIFY_PRODUCTION_NETWORK_SSH:-}
 NETWORK_CONTROL_DIR=''
 NETWORK_CONTROL_PATH=''
@@ -208,10 +211,52 @@ REMOTE
 }
 
 http_request() {
-    local url=$1 body=$2 headers=$3
+    local url=$1 body=$2 headers=$3 attempt curl_exit http_status
     shift 3
-    curl -sS --connect-timeout "$CURL_CONNECT_TIMEOUT" --max-time "$CURL_MAX_TIME" \
-        "${CURL_NETWORK_OPTIONS[@]}" -D "$headers" -o "$body" -w '%{http_code}' "$@" "$url" || true
+
+    for ((attempt = 1; attempt <= CURL_RETRY_ATTEMPTS; attempt++)); do
+        set +e
+        http_status=$(curl -sS --connect-timeout "$CURL_CONNECT_TIMEOUT" --max-time "$CURL_MAX_TIME" \
+            "${CURL_NETWORK_OPTIONS[@]}" -D "$headers" -o "$body" -w '%{http_code}' "$@" "$url")
+        curl_exit=$?
+        set -e
+        HTTP_REQUEST_EXIT=$curl_exit
+        HTTP_REQUEST_STATUS=$http_status
+
+        if (( curl_exit != 0 )); then
+            case $curl_exit in
+                6|7|16|28|35)
+                    if (( attempt < CURL_RETRY_ATTEMPTS )); then
+                        sleep "$attempt"
+                        continue
+                    fi
+                    ;;
+            esac
+            return 0
+        fi
+        case $http_status in
+            522|525)
+                if (( attempt < CURL_RETRY_ATTEMPTS )); then
+                    sleep "$attempt"
+                    continue
+                fi
+                ;;
+        esac
+        return 0
+    done
+}
+
+http_result_is() {
+    local stage=$1 check=$2 expected=$3
+    if (( HTTP_REQUEST_EXIT != 0 )); then
+        fail_check "$stage" "$check" "curl exit 0 and HTTP $expected" \
+            "curl exit $HTTP_REQUEST_EXIT; HTTP ${HTTP_REQUEST_STATUS:-000}"
+        return 1
+    fi
+    [[ $HTTP_REQUEST_STATUS == "$expected" ]] || {
+        fail_check "$stage" "$check" "HTTP $expected" "HTTP ${HTTP_REQUEST_STATUS:-000}"
+        return 1
+    }
 }
 
 header_value() {
@@ -231,16 +276,13 @@ header_value() {
 }
 
 verify_cache_path() {
-    local path=$1 result_variable=$2 headers code cache_status observation=''
+    local path=$1 result_variable=$2 headers cache_status observation=''
     local attempt all_miss=1
     headers="$TEMP_DIR/cache-$(printf '%s' "$path" | tr '/.' '__').headers"
 
     for ((attempt = 1; attempt <= 3; attempt++)); do
-        code=$(http_request "$PUBLIC_ORIGIN$path" /dev/null "$headers")
-        [[ $code == 200 ]] || {
-            fail_check 'CDN cache observation' "$PUBLIC_ORIGIN$path request $attempt" 'HTTP 200' "HTTP ${code:-000}"
-            return 1
-        }
+        http_request "$PUBLIC_ORIGIN$path" /dev/null "$headers"
+        http_result_is 'CDN cache observation' "$PUBLIC_ORIGIN$path request $attempt" 200 || return 1
         cache_status=$(header_value "$headers" "$CACHE_HEADER")
         case $cache_status in
             MISS|HIT|EXPIRED|REVALIDATED|UPDATING|STALE) ;;
@@ -269,24 +311,18 @@ verify_cache_path() {
 }
 
 verify_public_routes() {
-    local path code headers="$TEMP_DIR/public.headers"
+    local path headers="$TEMP_DIR/public.headers"
     # / and /tour/welcome/1 already returned HTTP 200 during cache status observation.
     for path in '/tour/' '/tour/list' '/tour/static/js/app.js' '/robots.txt' '/sitemap.xml'; do
-        code=$(http_request "$PUBLIC_ORIGIN$path" /dev/null "$headers")
-        [[ $code == 200 ]] || {
-            fail_check 'public routes' "$PUBLIC_ORIGIN$path" 'HTTP 200' "HTTP ${code:-000}"
-            return 1
-        }
+        http_request "$PUBLIC_ORIGIN$path" /dev/null "$headers"
+        http_result_is 'public routes' "$PUBLIC_ORIGIN$path" 200 || return 1
     done
 }
 
 fetch_http_200() {
-    local stage=$1 url=$2 destination=$3 code headers="$TEMP_DIR/fetch.headers"
-    code=$(http_request "$url" "$destination" "$headers")
-    [[ $code == 200 ]] || {
-        fail_check "$stage" "$url" 'HTTP 200' "HTTP ${code:-000}"
-        return 1
-    }
+    local stage=$1 url=$2 destination=$3 headers="$TEMP_DIR/fetch.headers"
+    http_request "$url" "$destination" "$headers"
+    http_result_is "$stage" "$url" 200
 }
 
 verify_html_identity() {
@@ -338,7 +374,7 @@ PY
 }
 
 verify_sitemap() {
-    local sitemap="$TEMP_DIR/sitemap.xml" urls_file="$TEMP_DIR/sitemap.urls" path code
+    local sitemap="$TEMP_DIR/sitemap.xml" urls_file="$TEMP_DIR/sitemap.urls" path
     local failures=0
     local -a urls=()
 
@@ -403,9 +439,8 @@ PY
     fi
     mapfile -d '' -t urls <"$urls_file"
     for path in "${urls[@]}"; do
-        code=$(http_request "$path" /dev/null "$TEMP_DIR/sitemap-url.headers")
-        if [[ $code != 200 ]]; then
-            error "stage=sitemap check=$path expected=HTTP 200 actual=HTTP ${code:-000}"
+        http_request "$path" /dev/null "$TEMP_DIR/sitemap-url.headers"
+        if ! http_result_is sitemap "$path" 200; then
             failures=$((failures + 1))
         fi
     done
@@ -416,17 +451,11 @@ PY
 }
 
 verify_socket_boundary() {
-    local code headers="$TEMP_DIR/socket.headers" url="$PUBLIC_ORIGIN/socket"
-    code=$(http_request "$url" /dev/null "$headers")
-    [[ $code == 404 ]] || {
-        fail_check 'socket boundary' 'GET /socket' 'HTTP 404' "HTTP ${code:-000}"
-        return 1
-    }
-    code=$(http_request "$url" /dev/null "$headers" --http1.1 -H 'Connection: Upgrade' -H 'Upgrade: websocket')
-    [[ $code == 404 ]] || {
-        fail_check 'socket boundary' 'Upgrade /socket' 'HTTP 404' "HTTP ${code:-000}"
-        return 1
-    }
+    local headers="$TEMP_DIR/socket.headers" url="$PUBLIC_ORIGIN/socket"
+    http_request "$url" /dev/null "$headers"
+    http_result_is 'socket boundary' 'GET /socket' 404 || return 1
+    http_request "$url" /dev/null "$headers" --http1.1 -H 'Connection: Upgrade' -H 'Upgrade: websocket'
+    http_result_is 'socket boundary' 'Upgrade /socket' 404
 }
 
 main() {
