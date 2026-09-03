@@ -9,13 +9,15 @@ import (
 	"testing/fstest"
 )
 
+const expectedCatalogMessages = 92
+
 func TestLoadEmbeddedCatalogs(t *testing.T) {
 	for _, locale := range []string{"de-DE", "en", "fr-FR", "ja-JP", "ko-KR", "zh-CN"} {
 		catalog, err := Load(locale)
 		if err != nil {
 			t.Fatalf("Load(%q): %v", locale, err)
 		}
-		if got, want := len(catalog.Messages), 90; got != want {
+		if got, want := len(catalog.Messages), expectedCatalogMessages; got != want {
 			t.Fatalf("Load(%q) message count = %d, want %d", locale, got, want)
 		}
 	}
@@ -59,7 +61,7 @@ func TestFrenchCatalogMatchesEnglishSource(t *testing.T) {
 	if french.HTMLLang != "fr-FR" {
 		t.Fatalf("fr-FR HTMLLang = %q, want fr-FR", french.HTMLLang)
 	}
-	if got, want := len(french.Messages), 90; got != want {
+	if got, want := len(french.Messages), expectedCatalogMessages; got != want {
 		t.Fatalf("fr-FR message count = %d, want %d", got, want)
 	}
 	if err := validateCoverage(source, french); err != nil {
@@ -99,7 +101,7 @@ func TestGermanCatalogMatchesEnglishSource(t *testing.T) {
 	if german.HTMLLang != "de-DE" {
 		t.Fatalf("de-DE HTMLLang = %q, want de-DE", german.HTMLLang)
 	}
-	if got, want := len(german.Messages), 90; got != want {
+	if got, want := len(german.Messages), expectedCatalogMessages; got != want {
 		t.Fatalf("de-DE message count = %d, want %d", got, want)
 	}
 	if err := validateCoverage(source, german); err != nil {
@@ -140,7 +142,7 @@ func TestJapaneseCatalogMatchesEnglishSource(t *testing.T) {
 	if japanese.HTMLLang != "ja-JP" {
 		t.Fatalf("ja-JP HTMLLang = %q, want ja-JP", japanese.HTMLLang)
 	}
-	if got, want := len(japanese.Messages), 90; got != want {
+	if got, want := len(japanese.Messages), expectedCatalogMessages; got != want {
 		t.Fatalf("ja-JP message count = %d, want %d", got, want)
 	}
 	if err := validateCoverage(source, japanese); err != nil {
@@ -169,7 +171,7 @@ func TestKoreanCatalogMatchesEnglishSource(t *testing.T) {
 	if korean.HTMLLang != "ko-KR" {
 		t.Fatalf("ko-KR HTMLLang = %q, want ko-KR", korean.HTMLLang)
 	}
-	if got, want := len(korean.Messages), 90; got != want {
+	if got, want := len(korean.Messages), expectedCatalogMessages; got != want {
 		t.Fatalf("ko-KR message count = %d, want %d", got, want)
 	}
 	if err := validateCoverage(source, korean); err != nil {

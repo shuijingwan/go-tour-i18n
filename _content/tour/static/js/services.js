@@ -64,9 +64,9 @@ factory('seo', ['$document',
                 markRendered(path);
             },
             list: function() {
-                doc.title = config.siteTitle;
+                doc.title = config.listTitle;
                 canonical().setAttribute('href', config.origin + '/tour/list');
-                description().setAttribute('content', config.siteTitle);
+                description().setAttribute('content', config.listDescription);
                 markRendered('/tour/list');
             }
         };

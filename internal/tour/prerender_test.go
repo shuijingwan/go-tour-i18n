@@ -5,6 +5,7 @@
 package tour
 
 import (
+	"bytes"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -18,12 +19,16 @@ import (
 
 func TestPrerenderRoutesReuseSitemapLessonDataForEveryLocale(t *testing.T) {
 	for _, test := range []struct {
-		locale string
-		origin string
+		locale          string
+		origin          string
+		listTitle       string
+		listDescription string
 	}{
-		{"zh-CN", "https://go-dev.shuijingwanwq.com"},
-		{"ja-JP", "https://ja-go-dev.shuijingwanwq.com"},
-		{"ko-KR", "https://ko-go-dev.shuijingwanwq.com"},
+		{"zh-CN", "https://go-dev.shuijingwanwq.com", "课程目录 — Go 语言之旅", "浏览 Go 语言之旅的模块和课程：一门面向 Go 编程语言的交互式入门课程。"},
+		{"ja-JP", "https://ja-go-dev.shuijingwanwq.com", "コース一覧 — Go 言語ツアー", "Go プログラミング言語を対話的に学ぶ「Go 言語ツアー」のモジュールとレッスンを一覧できます。"},
+		{"de-DE", "https://de-go-dev.shuijingwanwq.com", "Kursübersicht — Eine Tour durch Go", "Entdecken Sie die Module und Lektionen von „Eine Tour durch Go“, einer interaktiven Einführung in die Programmiersprache Go."},
+		{"fr-FR", "https://fr-go-dev.shuijingwanwq.com", "Sommaire du cours — Un tour de Go", "Parcourez les modules et les leçons d’« Un tour de Go », une introduction interactive au langage de programmation Go."},
+		{"ko-KR", "https://ko-go-dev.shuijingwanwq.com", "강의 목록 — Go 언어 투어", "Go 프로그래밍 언어를 대화형으로 소개하는 Go 언어 투어의 모듈과 강의를 살펴보세요."},
 	} {
 		t.Run(test.locale, func(t *testing.T) {
 			source, err := NewPrerenderSource(website.TourOnly(), test.locale)
@@ -46,7 +51,46 @@ func TestPrerenderRoutesReuseSitemapLessonDataForEveryLocale(t *testing.T) {
 			if !seen["/tour/welcome/2"] || !seen["/tour/basics/1"] {
 				t.Fatalf("representative routes are missing")
 			}
+			if source.List.Path != "/tour/list" || source.List.Canonical != test.origin+"/tour/list" || source.List.PageTitle != test.listTitle || source.List.Description != test.listDescription || source.List.Heading == "" {
+				t.Fatalf("invalid localized list route: %+v", source.List)
+			}
+			if len(source.List.Modules) != len(jsModules) || len(source.List.Lessons) != 103 {
+				t.Fatalf("list route modules=%d lessons=%d, want %d and 103", len(source.List.Modules), len(source.List.Lessons), len(jsModules))
+			}
 		})
+	}
+}
+
+func TestPrerenderedListValidationAndHandlerFailClosed(t *testing.T) {
+	route := ListRoute{
+		Path: "/tour/list", Canonical: "https://example.test/tour/list", PageTitle: "Directory", Description: "Browse lessons.", Heading: "Welcome",
+		Modules: []ListModule{{Title: "Basics", Description: "<p>Start here.</p>"}},
+		Lessons: []CourseRoute{{Path: "/tour/basics/1", LessonTitle: "Packages", LessonDescription: "Learn packages."}},
+	}
+	page := []byte(`<!doctype html><html data-tour-rendered-route="/tour/list"><head>` + runtimeHeadMarker + `<title>Directory</title><link rel="canonical" href="https://example.test/tour/list"><meta name="description" content="Browse lessons."></head><body><h1>Welcome</h1><p>Basics</p><p>Start here.</p><a href="/tour/basics/1">Packages</a><p>Learn packages.</p></body></html>`)
+	if err := validatePrerenderedList(page, route); err != nil {
+		t.Fatalf("valid list prerender: %v", err)
+	}
+	if err := validatePrerenderedList(bytes.Replace(page, []byte("Learn packages."), nil, 1), route); err == nil || !strings.Contains(err.Error(), "lesson content") {
+		t.Fatalf("missing lesson content error=%v", err)
+	}
+	mux := http.NewServeMux()
+	registerPrerenderedPages(mux, []prerenderedPage{{route: route.Path, html: page}})
+	recorder := httptest.NewRecorder()
+	mux.ServeHTTP(recorder, httptest.NewRequest(http.MethodGet, route.Path, nil))
+	if recorder.Code != http.StatusOK || recorder.Body.String() != string(page) {
+		t.Fatalf("raw GET /tour/list=%d %q", recorder.Code, recorder.Body.String())
+	}
+}
+
+func TestLoadPrerenderedListFailsClosed(t *testing.T) {
+	route := ListRoute{Path: "/tour/list", Canonical: "https://example.test/tour/list", PageTitle: "Directory", Description: "Browse lessons.", Heading: "Welcome"}
+	if _, err := loadPrerenderedList(fstest.MapFS{}, route); err == nil || !strings.Contains(err.Error(), "read prerendered list") {
+		t.Fatalf("missing list error=%v", err)
+	}
+	invalid := fstest.MapFS{"tour/prerender/list.html": {Data: []byte("<!doctype html><title>same SPA shell</title>")}}
+	if _, err := loadPrerenderedList(invalid, route); err == nil || !strings.Contains(err.Error(), "missing runtime head marker") {
+		t.Fatalf("invalid list error=%v", err)
 	}
 }
 

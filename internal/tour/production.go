@@ -75,6 +75,7 @@ func NewPreviewHandler(content fs.FS, locale string) (http.Handler, error) {
 type PrerenderSource struct {
 	Handler http.Handler
 	Routes  []CourseRoute
+	List    ListRoute
 }
 
 // NewPrerenderSource creates the local-only source server used by publish.
@@ -88,7 +89,7 @@ func NewPrerenderSource(content fs.FS, locale string) (*PrerenderSource, error) 
 		return nil, err
 	}
 	routes := append([]CourseRoute(nil), documents.courseRoutes...)
-	return &PrerenderSource{Handler: handler, Routes: routes}, nil
+	return &PrerenderSource{Handler: handler, Routes: routes, List: documents.listRoute}, nil
 }
 
 func newProductionHandler(content fs.FS, locale string, proxy *playgroundProxy) (http.Handler, error) {
@@ -122,6 +123,11 @@ func newTourHandlerWithPlaygroundBase(content fs.FS, locale string, proxy *playg
 		if err != nil {
 			return nil, seoDocuments{}, err
 		}
+		list, err := loadPrerenderedList(contentTour, documents.listRoute)
+		if err != nil {
+			return nil, seoDocuments{}, err
+		}
+		pages = append(pages, list)
 		registerPrerenderedPages(mux, pages)
 	}
 

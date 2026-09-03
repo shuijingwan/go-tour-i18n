@@ -99,6 +99,43 @@ func prerenderProductionPagesChrome(contentDir, locale string, expectedPages int
 	if firstErr != nil {
 		return firstErr
 	}
+	return prerenderListWithChrome(ctx, chrome, server.URL, filepath.Join(profileRoot, "list"), contentDir, source.List)
+}
+
+func prerenderListWithChrome(parent context.Context, chrome, serverURL, profileRoot, contentDir string, route tour.ListRoute) error {
+	ctx, cancel := context.WithTimeout(parent, prerenderChromeRouteTimeout)
+	defer cancel()
+	command := exec.CommandContext(ctx, chrome,
+		"--headless=new", "--no-sandbox", "--disable-gpu", "--disable-dev-shm-usage",
+		"--disable-breakpad", "--disable-crash-reporter", "--disable-background-networking",
+		"--disable-default-apps", "--disable-extensions", "--no-first-run", "--noerrdialogs",
+		"--user-data-dir="+profileRoot,
+		"--host-resolver-rules=MAP assets-go-dev.shuijingwanwq.com ~NOTFOUND, MAP fonts.googleapis.com ~NOTFOUND, MAP pagead2.googlesyndication.com ~NOTFOUND",
+		"--run-all-compositor-stages-before-draw", "--virtual-time-budget=5000", "--dump-dom", serverURL+route.Path,
+	)
+	var stderr bytes.Buffer
+	command.Stderr = &stderr
+	output, err := command.Output()
+	if err != nil {
+		if ctx.Err() != nil {
+			return fmt.Errorf("Chrome %s: %w", route.Path, ctx.Err())
+		}
+		return fmt.Errorf("Chrome %s: %w: %s", route.Path, err, strings.TrimSpace(stderr.String()))
+	}
+	output, err = sanitizePrerenderedHTML(output)
+	if err != nil {
+		return fmt.Errorf("sanitize %s: %w", route.Path, err)
+	}
+	if err := validateRenderedListPage(output, route); err != nil {
+		return fmt.Errorf("validate %s: %w", route.Path, err)
+	}
+	outputPath := filepath.Join(contentDir, "tour", "prerender", "list.html")
+	if err := os.MkdirAll(filepath.Dir(outputPath), 0755); err != nil {
+		return fmt.Errorf("create prerender directory: %w", err)
+	}
+	if err := os.WriteFile(outputPath, output, 0644); err != nil {
+		return fmt.Errorf("write prerendered list: %w", err)
+	}
 	return nil
 }
 
@@ -387,6 +424,42 @@ func validateRenderedCoursePage(data []byte, route tour.CourseRoute) error {
 	return nil
 }
 
+func validateRenderedListPage(data []byte, route tour.ListRoute) error {
+	document, err := html.Parse(bytes.NewReader(data))
+	if err != nil {
+		return err
+	}
+	if !bytes.Contains(data, []byte(prerenderRuntimeHeadMarker)) || findElement(document, "html", "data-tour-rendered-route", route.Path) == nil {
+		return fmt.Errorf("page did not finish rendering")
+	}
+	title := findElement(document, "title", "", "")
+	if title == nil || nodeText(title) != route.PageTitle {
+		return fmt.Errorf("title=%q, want %q", nodeText(title), route.PageTitle)
+	}
+	canonical := findElement(document, "link", "rel", "canonical")
+	if canonical == nil || attrValue(canonical, "href") != route.Canonical {
+		return fmt.Errorf("canonical=%q, want %q", attrValue(canonical, "href"), route.Canonical)
+	}
+	description := findElement(document, "meta", "name", "description")
+	if description == nil || attrValue(description, "content") != route.Description {
+		return fmt.Errorf("description=%q, want %q", attrValue(description, "content"), route.Description)
+	}
+	if heading := findElement(document, "h1", "", ""); heading == nil || nodeText(heading) != route.Heading {
+		return fmt.Errorf("missing list heading %q", route.Heading)
+	}
+	for _, module := range route.Modules {
+		if !strings.Contains(nodeText(document), module.Title) || !strings.Contains(nodeText(document), richText(module.Description)) {
+			return fmt.Errorf("missing localized module %q", module.Title)
+		}
+	}
+	for _, lesson := range route.Lessons {
+		if findElement(document, "a", "href", lesson.Path) == nil || !strings.Contains(nodeText(document), lesson.LessonTitle) || !strings.Contains(nodeText(document), lesson.LessonDescription) {
+			return fmt.Errorf("missing localized lesson %q", lesson.Path)
+		}
+	}
+	return nil
+}
+
 func findElement(node *html.Node, element, attr, value string) *html.Node {
 	if node.Type == html.ElementNode && node.Data == element && (attr == "" || attrValue(node, attr) == value) {
 		return node
@@ -436,6 +509,14 @@ func attrValue(node *html.Node, key string) string {
 		}
 	}
 	return ""
+}
+
+func richText(value string) string {
+	document, err := html.Parse(strings.NewReader(value))
+	if err != nil {
+		return value
+	}
+	return nodeText(document)
 }
 
 func nodeText(node *html.Node) string {

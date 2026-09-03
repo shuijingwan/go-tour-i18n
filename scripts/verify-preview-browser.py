@@ -46,19 +46,21 @@ def request(base, route, headers=None):
 
 class CanonicalParser(HTMLParser):
     def __init__(self):
-        super().__init__(); self.canonicals = []; self.html_lang = ""; self.title_depth = 0; self.title = []
+        super().__init__(); self.canonicals = []; self.html_lang = ""; self.title_depth = 0; self.title = []; self.descriptions = []
     def handle_starttag(self, tag, attrs):
         values = dict(attrs)
         if tag.lower() == "html": self.html_lang = values.get("lang", "")
         if tag.lower() == "title": self.title_depth += 1
         if tag.lower() == "link" and values.get("rel", "").lower() == "canonical":
             self.canonicals.append(values.get("href", ""))
+        if tag.lower() == "meta" and values.get("name", "").lower() == "description":
+            self.descriptions.append(values.get("content", ""))
     def handle_endtag(self, tag):
         if tag.lower() == "title" and self.title_depth: self.title_depth -= 1
     def handle_data(self, data):
         if self.title_depth: self.title.append(data)
 
-def validate_raw_shell(body, route, canonical_path, locale, production, require_tour_shell=False):
+def validate_raw_shell(body, route, canonical_path, locale, production, require_tour_shell=False, list_metadata=None):
     parser = CanonicalParser()
     try: text = body.decode("utf-8"); parser.feed(text)
     except (UnicodeError, ValueError) as exc: fail("SEO/routes", f"raw {route} shell", "valid UTF-8 HTML", repr(exc))
@@ -66,6 +68,11 @@ def validate_raw_shell(body, route, canonical_path, locale, production, require_
     if parser.canonicals != [expected]: fail("SEO/routes", f"raw {route} canonical", expected, parser.canonicals)
     if parser.html_lang != locale: fail("SEO/routes", f"raw {route} html lang", locale, parser.html_lang)
     if not ''.join(parser.title).strip(): fail("SEO/routes", f"raw {route} title", "non-empty", parser.title)
+    if list_metadata is not None:
+        if ''.join(parser.title).strip() != list_metadata["title"]:
+            fail("SEO/routes", f"raw {route} title", list_metadata["title"], ''.join(parser.title).strip())
+        if parser.descriptions != [list_metadata["description"]]:
+            fail("SEO/routes", f"raw {route} description", list_metadata["description"], parser.descriptions)
     if "localhost" in ''.join(parser.canonicals) or "127.0.0.1" in ''.join(parser.canonicals):
         fail("SEO/routes", f"raw {route} canonical", "no localhost identity", parser.canonicals)
     if require_tour_shell and not ('ng-app="tour"' in text and '<div ng-view' in text and 'class="bar top-bar"' in text):
@@ -92,6 +99,18 @@ def formal_descriptions(locale):
     if metadata.get("locale") != locale: fail("SEO/routes", "course metadata locale", locale, metadata.get("locale"))
     return {page["route"]: page["description"] for page in metadata["pages"]}
 
+def formal_list_metadata(locale):
+    import json
+    catalog = json.loads((ROOT / "internal" / "tour" / "ui" / f"{locale}.json").read_text(encoding="utf-8"))
+    messages = catalog.get("messages", {})
+    values = {}
+    for name, key in (("title", "tour.list_title"), ("description", "tour.list_description"), ("heading", "tour.list_heading")):
+        entry = messages.get(key, {})
+        if entry.get("kind") != "plain" or not entry.get("text"):
+            fail("SEO/routes", f"list UI key {key}", "non-empty plain catalog message", entry)
+        values[name] = entry["text"]
+    return values
+
 def validate_sitemap(sitemap, production, formal_course_routes):
     try: document = ET.fromstring(sitemap)
     except ET.ParseError as exc: fail("SEO/routes", "sitemap XML", "valid XML", repr(exc))
@@ -113,12 +132,13 @@ def validate_sitemap(sitemap, production, formal_course_routes):
 def machine_acceptance(base, profile):
     production = profile["production_public_url"].rstrip('/')
     formal_course_routes = catalog_routes()
-    raw_routes = [("/", "/", False), ("/tour/", "/tour/", True), ("/tour/list", "/tour/list", True)]
-    raw_routes.extend((route, "/tour/", True) for route in formal_course_routes)
-    for route, canonical_path, require_tour_shell in raw_routes:
+    list_metadata = formal_list_metadata(profile["locale"])
+    raw_routes = [("/", "/", False, None), ("/tour/", "/tour/", True, None), ("/tour/list", "/tour/list", True, list_metadata)]
+    raw_routes.extend((route, "/tour/", True, None) for route in formal_course_routes)
+    for route, canonical_path, require_tour_shell, expected_list_metadata in raw_routes:
         status, body = request(base, route)
         if status != 200: fail("HTTP/routes", route, "HTTP 200", status)
-        validate_raw_shell(body, route, canonical_path, profile["locale"], production, require_tour_shell)
+        validate_raw_shell(body, route, canonical_path, profile["locale"], production, require_tour_shell, expected_list_metadata)
     for route in ["/robots.txt", "/sitemap.xml"]:
         status, _ = request(base, route)
         if status != 200: fail("HTTP/routes", route, "HTTP 200", status)
@@ -140,7 +160,7 @@ def main():
         identity = IDENTITY.load_identity(ROOT / "production" / "identity.json")
         profile = profile_for(identity, locale)
         machine_acceptance(base, profile)
-        CORE.preview_acceptance(base, locale, profile, identity["shared"], registry(), formal_descriptions(locale))
+        CORE.preview_acceptance(base, locale, profile, identity["shared"], registry(), formal_descriptions(locale), formal_list_metadata(locale))
     except (CORE.BrowserFailure, IDENTITY.IdentityError, OSError, KeyError, TypeError) as exc:
         detail = str(exc)
         if not detail.startswith("stage="):

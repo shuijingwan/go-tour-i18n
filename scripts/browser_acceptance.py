@@ -37,6 +37,32 @@ class BrowserFailure(RuntimeError):
     pass
 
 
+def locale_list_metadata(locale):
+    try:
+        catalog = json.loads((ROOT / "internal" / "tour" / "ui" / f"{locale}.json").read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise BrowserFailure(f"cannot load list SEO catalog for {locale}: {exc}") from exc
+    messages = catalog.get("messages", {})
+    values = {}
+    for name, key in (("title", "tour.list_title"), ("description", "tour.list_description"), ("heading", "tour.list_heading")):
+        entry = messages.get(key, {})
+        if entry.get("kind") != "plain" or not entry.get("text"):
+            raise BrowserFailure(f"list SEO catalog {locale} has invalid {key}: {entry!r}")
+        values[name] = entry["text"]
+    return values
+
+
+def formal_course_route_count():
+    try:
+        with (ROOT / "data" / "tour-pages.tsv").open(encoding="utf-8") as source:
+            count = sum(1 for _ in source) - 1
+    except OSError as exc:
+        raise BrowserFailure(f"cannot read formal course route catalog: {exc}") from exc
+    if count != 103:
+        raise BrowserFailure(f"formal course route catalog count={count}, want 103")
+    return count
+
+
 class WebSocket:
     def __init__(self, url):
         parsed = urllib.parse.urlsplit(url)
@@ -347,7 +373,7 @@ def validate_rendered_identity(identity, base, locale, requested_path, expected_
 
 
 def page_identity(chrome, base, locale, requested_path, width, height, canonical_origin=None, expected_final_path=None,
-                  expected_rendered_route=None, expected_description=None):
+                  expected_rendered_route=None, expected_description=None, expected_title=None):
     url = urllib.parse.urljoin(base, requested_path.lstrip("/"))
     chrome.navigate(url, width, height)
     identity = chrome.evaluate("""(() => ({
@@ -364,15 +390,37 @@ def page_identity(chrome, base, locale, requested_path, width, height, canonical
     }))()""", check=f"page identity snapshot requested={requested_path} expected_final={expected_final_path}")
     validate_rendered_identity(identity, base, locale, requested_path, expected_final_path, canonical_origin,
                                expected_rendered_route, expected_description)
+    if expected_title is not None:
+        assert_true(identity["title"] == expected_title,
+                    f"{requested_path}: title mismatch: expected={expected_title} actual={identity['title']}")
     if width <= 480:
         assert_true(identity["overflow"] <= 2, f"{requested_path}: unexpected page-level horizontal overflow")
 
 
+def validate_rendered_list(chrome, list_metadata, expected_lessons):
+    snapshot = chrome.evaluate("""(() => ({
+      wrappers: document.querySelectorAll('.list-wrapper').length,
+      heading: document.querySelector('.list-wrapper .page-header h1')?.textContent.trim() || '',
+      modules: document.querySelectorAll('.list-wrapper .module').length,
+      lessons: document.querySelectorAll('.list-wrapper a.lesson-title[href^="/tour/"]').length
+    }))()""", check="inspect rendered course directory")
+    assert_true(snapshot["wrappers"] == 1, f"/tour/list: duplicated or missing directory body: {snapshot}")
+    assert_true(snapshot["heading"] == list_metadata["heading"], f"/tour/list: list heading mismatch: {snapshot}")
+    assert_true(snapshot["modules"] > 0 and snapshot["lessons"] == expected_lessons,
+                f"/tour/list: module or lesson directory content mismatch: {snapshot}")
+
+
 def acceptance(base, locale, profile, shared):
+    list_metadata = locale_list_metadata(locale)
     chrome = Chrome()
     try:
         for path in ("/", "/tour/", "/tour/list", "/tour/welcome/1", "/tour/basics/11"):
-            page_identity(chrome, base, locale, path, 1280, 800)
+            is_list = path == "/tour/list"
+            page_identity(chrome, base, locale, path, 1280, 800,
+                          expected_description=list_metadata["description"] if is_list else None,
+                          expected_title=list_metadata["title"] if is_list else None)
+            if is_list:
+                validate_rendered_list(chrome, list_metadata, formal_course_route_count())
         chrome.navigate(base, 375, 812)
         language = chrome.evaluate("""(() => ({
           count: document.querySelectorAll('.site-language-list li').length,
@@ -447,7 +495,7 @@ def acceptance(base, locale, profile, shared):
         chrome.close()
 
 
-def preview_acceptance(base, locale, profile, shared, registry, descriptions):
+def preview_acceptance(base, locale, profile, shared, registry, descriptions, list_metadata):
     """Run browser checks whose preview identity intentionally differs from production."""
     canonical_origin = profile["production_public_url"].rstrip("/")
     chrome = Chrome()
@@ -456,8 +504,12 @@ def preview_acceptance(base, locale, profile, shared, registry, descriptions):
                            ("/tour/welcome/1", "/tour/welcome/1"), ("/tour/basics/11", "/tour/basics/11"))
         for path, final_path in rendered_routes:
             course_route = final_path if re.match(r"^/tour/[^/]+/[1-9][0-9]*$", final_path) else None
+            is_list = final_path == "/tour/list"
             page_identity(chrome, base, locale, path, 1280, 800, canonical_origin, final_path, course_route,
-                          descriptions.get(course_route) if course_route else None)
+                          descriptions.get(course_route) if course_route else (list_metadata["description"] if is_list else None),
+                          list_metadata["title"] if is_list else None)
+            if is_list:
+                validate_rendered_list(chrome, list_metadata, formal_course_route_count())
             shell = chrome.evaluate("""(() => ({header:document.querySelectorAll('.top-bar').length,
               footer:document.querySelectorAll('.site-footer').length, body:(document.body?.innerText||'').trim(),
               overflow:document.documentElement.scrollWidth-document.documentElement.clientWidth}))()""")
@@ -523,8 +575,10 @@ def preview_acceptance(base, locale, profile, shared, registry, descriptions):
                          ("/tour/welcome/1", "/tour/welcome/1"), ("/tour/moretypes/1", "/tour/moretypes/1"))
         for path, final_path in mobile_routes:
             course_route = final_path if re.match(r"^/tour/[^/]+/[1-9][0-9]*$", final_path) else None
+            is_list = final_path == "/tour/list"
             page_identity(chrome, base, locale, path, 375, 812, canonical_origin, final_path, course_route,
-                          descriptions.get(course_route) if course_route else None)
+                          descriptions.get(course_route) if course_route else (list_metadata["description"] if is_list else None),
+                          list_metadata["title"] if is_list else None)
     finally:
         chrome.close()
 

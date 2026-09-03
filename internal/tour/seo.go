@@ -17,6 +17,7 @@ type seoDocuments struct {
 	origin                 string
 	sitemap                []byte
 	courseRoutes           []CourseRoute
+	listRoute              ListRoute
 	descriptions           map[string]string
 	courseMetadataComplete bool
 }
@@ -24,11 +25,29 @@ type seoDocuments struct {
 // CourseRoute is one canonical lesson/page route derived from the same
 // parsed lesson data used to build sitemap.xml.
 type CourseRoute struct {
+	Path              string
+	Canonical         string
+	PageTitle         string
+	LessonTitle       string
+	LessonDescription string
+	Files             []string
+	Description       string
+}
+
+// ListRoute is the locale-level, non-TranslationUnit SEO identity for the
+// sitemap's /tour/list surface. Course metadata remains only on CourseRoute.
+type ListRoute struct {
 	Path        string
 	Canonical   string
 	PageTitle   string
-	LessonTitle string
-	Files       []string
+	Description string
+	Heading     string
+	Modules     []ListModule
+	Lessons     []CourseRoute
+}
+
+type ListModule struct {
+	Title       string
 	Description string
 }
 
@@ -77,12 +96,13 @@ func initSEO(locale string) (seoDocuments, error) {
 				files[i] = page.Files[i].Content
 			}
 			courseRoutes = append(courseRoutes, CourseRoute{
-				Path:        routePath,
-				Canonical:   canonical,
-				PageTitle:   page.Title,
-				LessonTitle: l.Title,
-				Files:       files,
-				Description: descriptions[routePath],
+				Path:              routePath,
+				Canonical:         canonical,
+				PageTitle:         page.Title,
+				LessonTitle:       l.Title,
+				LessonDescription: l.Description,
+				Files:             files,
+				Description:       descriptions[routePath],
 			})
 			seenRoutes[routePath] = true
 		}

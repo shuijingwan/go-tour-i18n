@@ -223,6 +223,30 @@ func TestPrerenderRepresentativeCoursePagesInBrowser(t *testing.T) {
 	}
 }
 
+func TestPrerenderListInBrowser(t *testing.T) {
+	chrome := browserTestChrome(t)
+	for _, locale := range []string{"zh-CN", "ja-JP"} {
+		t.Run(locale, func(t *testing.T) {
+			source := formalPrerenderSource(t, locale)
+			server := newIPv4TestServer(t, source.Handler)
+			outputRoot := t.TempDir()
+			if err := prerenderListWithChrome(t.Context(), chrome, server.URL, filepath.Join(t.TempDir(), "chrome-profile"), outputRoot, source.List); err != nil {
+				t.Fatal(err)
+			}
+			page, err := os.ReadFile(filepath.Join(outputRoot, "tour", "prerender", "list.html"))
+			if err != nil {
+				t.Fatal(err)
+			}
+			if err := validateRenderedListPage(page, source.List); err != nil {
+				t.Fatal(err)
+			}
+			if bytes.Count(page, []byte(`class="wrapper list-wrapper"`)) != 1 {
+				t.Fatalf("list wrapper count is not one")
+			}
+		})
+	}
+}
+
 func TestPrerenderedCourseHTMLIsByteDeterministicInBrowser(t *testing.T) {
 	chrome := browserTestChrome(t)
 	source := formalPrerenderSource(t, "zh-CN")

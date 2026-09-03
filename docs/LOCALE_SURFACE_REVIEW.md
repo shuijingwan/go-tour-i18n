@@ -83,7 +83,7 @@ scripts/verify-preview-browser.py http://127.0.0.1:<port>/ <locale>
 
 脚本从 `production/identity.json`、`data/tour-pages.tsv` 与 `internal/tour/languages.go` 读取权威 identity，fail closed 验证 preview loopback identity、正式 production canonical、关键 HTTP/SEO route、robots、完整 sitemap 及其全部本地映射、language selector、desktop/mobile rendered geometry、Run / Format / Reset、same-origin `/_/fmt` 与 `/_/compile`、SPA canonical/DOM 更新和 `/socket` 404。preview 不注入 production advertising 或 analytics；该入口不执行 AdSense、course-ad、production Playground Origin、CDN、TLS 或其他 production-only gate。
 
-Canonical 分为不可混淆的三层：preview 原始 HTTP `GET /tour/` 返回的 shell 必须 self-canonical 为正式 production origin 下的 `/tour/`，`GET /tour/list` 同理使用 `/tour/list`；preview 不加载 production prerender，因此原始 course route 返回 canonical 为 `/tour/` 的通用 Angular shell，不冒充 course-specific HTML。Angular 渲染后，`/tour/` 按唯一正式 route contract 跳转到 `/tour/welcome/1`，最终 pathname、`data-tour-rendered-route`、canonical、title 与正式 course description 必须精确对应该课程 route；其他受检 course route 不允许意外跳转。Production raw course HTML 仍由独立 prerender gate 要求 course self-canonical 与正式 description，本 preview 规则不降低该 gate。
+Canonical 分为不可混淆的三层：preview 原始 HTTP `GET /tour/` 返回的 shell 必须 self-canonical 为正式 production origin 下的 `/tour/`，`GET /tour/list` 同理使用 `/tour/list`，并且后者必须使用 locale UI catalog 中正式的 list title 与 description；preview 不加载 production prerender，因此原始 course route 返回 canonical 为 `/tour/` 的通用 Angular shell，不冒充 course-specific HTML。Angular 渲染后，`/tour/` 按唯一正式 route contract 跳转到 `/tour/welcome/1`，最终 pathname、`data-tour-rendered-route`、canonical、title 与正式 course description 必须精确对应该课程 route；`/tour/list` 必须保留一个、完整的 module/lesson directory，使用同一份 list title/description，且不重复正文。其他受检 course route 不允许意外跳转。Production raw course HTML 仍由独立 prerender gate 要求 course self-canonical 与正式 description；production raw `/tour/list` 同样必须由该 Chrome prerender 机制提供完整的 locale directory 正文、其自身 canonical、title 和 description，本 preview 规则不降低该 gate。
 
 只有输出 `PREVIEW SURFACE ACCEPTANCE: PASS` 后才进入极小 **visual HUMAN gate**。人工只确认桌面与移动端整体排版观感正常，以及不存在自动 geometry 难以识别的视觉异常；不得再次人工检查 canonical、sitemap 数量、Run / Format / Reset、SPA、`/socket`、language selector URL 或脚本已覆盖的 desktop/mobile overflow。自动化不能替代 A 阶段语言质量审核，visual HUMAN gate 也不能替代自动验收。
 
@@ -102,7 +102,7 @@ Canonical 分为不可混淆的三层：preview 原始 HTTP `GET /tour/` 返回�
 
 ### 3. `/tour/list`、导航与语言选择器
 
-- `/tour/list` 的 article 标题、subtitle、页面标题、列表层级和链接目标正确；
+- `/tour/list` 的 locale-level heading、独立页面标题与 description、module/lesson 标题及说明、列表层级和链接目标正确；其 title/description 的正式 source 是英文 UI catalog `tour.list_title` / `tour.list_description`，不是 `course-metadata.json`；
 - 上一页、下一页、目录/列表入口、页面计数和 footer 在首/中/末页面都正确；
 - 语言选择器显示名称、顺序、当前语言状态与 URL 正确，不把其他语言的译文混入当前 locale；
 - 键盘、鼠标和触摸操作的基本跳转可用。

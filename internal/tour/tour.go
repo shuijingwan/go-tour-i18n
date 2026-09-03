@@ -81,6 +81,10 @@ func initTour(mux *http.ServeMux, transport, locale, playgroundBaseURL string) (
 	if err != nil {
 		return seoDocuments{}, fmt.Errorf("init SEO documents: %v", err)
 	}
+	documents.listRoute, err = newListRoute(catalog, documents)
+	if err != nil {
+		return seoDocuments{}, err
+	}
 	metadata, err := loadSiteMetadata(contentTour)
 	if err != nil {
 		return seoDocuments{}, err
@@ -132,6 +136,8 @@ type pageTemplateData struct {
 	CurrentLanguage     LanguageLink
 	SEOOrigin           string
 	Canonical           string
+	Title               string
+	Description         string
 }
 
 func newPageTemplateData(catalog ui.Catalog, metadata SiteMetadata) (pageTemplateData, error) {
@@ -187,6 +193,38 @@ func renderIndex(catalog ui.Catalog, metadata SiteMetadata) ([]byte, error) {
 	return renderIndexForPath(catalog, metadata, "/tour/")
 }
 
+func newListRoute(catalog ui.Catalog, documents seoDocuments) (ListRoute, error) {
+	title, err := catalog.Plain("tour.list_title")
+	if err != nil {
+		return ListRoute{}, fmt.Errorf("read Tour list title: %w", err)
+	}
+	description, err := catalog.Plain("tour.list_description")
+	if err != nil {
+		return ListRoute{}, fmt.Errorf("read Tour list description: %w", err)
+	}
+	heading, err := catalog.Plain("tour.list_heading")
+	if err != nil {
+		return ListRoute{}, fmt.Errorf("read Tour list heading: %w", err)
+	}
+	modules := make([]ListModule, 0, len(jsModules))
+	for _, module := range jsModules {
+		moduleTitle, err := catalog.Plain(module.TitleKey)
+		if err != nil {
+			return ListRoute{}, fmt.Errorf("read Tour list module title %q: %w", module.TitleKey, err)
+		}
+		moduleDescription, err := catalog.Rich(module.DescriptionKey)
+		if err != nil {
+			return ListRoute{}, fmt.Errorf("read Tour list module description %q: %w", module.DescriptionKey, err)
+		}
+		modules = append(modules, ListModule{Title: moduleTitle, Description: moduleDescription})
+	}
+	return ListRoute{
+		Path: "/tour/list", Canonical: documents.origin + "/tour/list",
+		PageTitle: title, Description: description, Heading: heading,
+		Modules: modules, Lessons: append([]CourseRoute(nil), documents.courseRoutes...),
+	}, nil
+}
+
 func renderIndexForPath(catalog ui.Catalog, metadata SiteMetadata, canonicalPath string) ([]byte, error) {
 	tmpl, err := template.New("index.tmpl").Funcs(pageTemplateFuncs(catalog, metadata)).ParseFS(contentTour, "tour/template/index.tmpl")
 	if err != nil {
@@ -201,6 +239,21 @@ func renderIndexForPath(catalog ui.Catalog, metadata SiteMetadata, canonicalPath
 		return nil, fmt.Errorf("unsupported Tour shell canonical path %q", canonicalPath)
 	}
 	data.Canonical = data.SEOOrigin + canonicalPath
+	data.Title, err = catalog.Plain("tour.title")
+	if err != nil {
+		return nil, fmt.Errorf("read Tour title: %w", err)
+	}
+	data.Description = data.Title
+	if canonicalPath == "/tour/list" {
+		data.Title, err = catalog.Plain("tour.list_title")
+		if err != nil {
+			return nil, fmt.Errorf("read Tour list title: %w", err)
+		}
+		data.Description, err = catalog.Plain("tour.list_description")
+		if err != nil {
+			return nil, fmt.Errorf("read Tour list description: %w", err)
+		}
+	}
 	dataWithHeadHTML := struct {
 		pageTemplateData
 		AnalyticsHTML template.HTML
@@ -563,12 +616,22 @@ func jsSEOBootstrap(catalog ui.Catalog, descriptions map[string]string, courseMe
 	if err != nil {
 		return nil, fmt.Errorf("read Tour title for SEO: %w", err)
 	}
+	listTitle, err := catalog.Plain("tour.list_title")
+	if err != nil {
+		return nil, fmt.Errorf("read Tour list title for SEO: %w", err)
+	}
+	listDescription, err := catalog.Plain("tour.list_description")
+	if err != nil {
+		return nil, fmt.Errorf("read Tour list description for SEO: %w", err)
+	}
 	encoded, err := json.Marshal(struct {
 		Origin                 string            `json:"origin"`
 		SiteTitle              string            `json:"siteTitle"`
+		ListTitle              string            `json:"listTitle"`
+		ListDescription        string            `json:"listDescription"`
 		Descriptions           map[string]string `json:"descriptions"`
 		CourseMetadataRequired bool              `json:"courseMetadataRequired"`
-	}{origin, title, descriptions, courseMetadataRequired})
+	}{origin, title, listTitle, listDescription, descriptions, courseMetadataRequired})
 	if err != nil {
 		return nil, fmt.Errorf("encode Tour SEO configuration: %w", err)
 	}

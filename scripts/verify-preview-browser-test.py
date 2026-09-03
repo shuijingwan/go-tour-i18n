@@ -102,7 +102,7 @@ class PreviewBrowserTest(unittest.TestCase):
                 self.assertEqual(PREVIEW.main(), 0)
         finally: sys.argv = original
         self.assertEqual(captured[0][2]["production_public_url"], "https://ko-go-dev.shuijingwanwq.com/")
-        self.assertEqual(len(captured[0]), 6)
+        self.assertEqual(len(captured[0]), 7)
 
     def test_preview_machine_contract_uses_catalog_and_socket(self):
         source = (ROOT / "scripts" / "verify-preview-browser.py").read_text(encoding="utf-8")
@@ -131,11 +131,31 @@ class PreviewBrowserTest(unittest.TestCase):
                 "/tour/", "/tour/", "ko-KR", "https://ko-go-dev.shuijingwanwq.com", True)
 
     def test_raw_list_and_course_shell_contracts(self):
-        template = '<html lang="ko-KR" ng-app="tour"><head><title>Tour</title><link rel="canonical" href="%s"></head><body><div class="bar top-bar"></div><div ng-view></div></body></html>'
+        list_metadata = {"title": "강의 목록 — Go 언어 투어", "description": "목록 설명", "heading": "Go 언어 투어에 오신 것을 환영합니다"}
+        template = '<html lang="ko-KR" ng-app="tour"><head><title>%s</title><meta name="description" content="%s"><link rel="canonical" href="%%s"></head><body><div class="bar top-bar"></div><div ng-view></div></body></html>' % (list_metadata["title"], list_metadata["description"])
         PREVIEW.validate_raw_shell((template % "https://ko-go-dev.shuijingwanwq.com/tour/list").encode(),
-                                   "/tour/list", "/tour/list", "ko-KR", "https://ko-go-dev.shuijingwanwq.com", True)
+                                   "/tour/list", "/tour/list", "ko-KR", "https://ko-go-dev.shuijingwanwq.com", True, list_metadata)
         PREVIEW.validate_raw_shell((template % "https://ko-go-dev.shuijingwanwq.com/tour/").encode(),
                                    "/tour/welcome/1", "/tour/", "ko-KR", "https://ko-go-dev.shuijingwanwq.com", True)
+        wrong_description = (template % "https://ko-go-dev.shuijingwanwq.com/tour/list").replace("목록 설명", "Tour")
+        with self.assertRaises(CORE.BrowserFailure):
+            PREVIEW.validate_raw_shell(wrong_description.encode(), "/tour/list", "/tour/list", "ko-KR",
+                                       "https://ko-go-dev.shuijingwanwq.com", True, list_metadata)
+
+    def test_list_metadata_is_complete_for_all_formal_locales(self):
+        for locale in ("zh-CN", "ja-JP", "de-DE", "fr-FR", "ko-KR"):
+            with self.subTest(locale=locale):
+                metadata = PREVIEW.formal_list_metadata(locale)
+                self.assertTrue(all(metadata.values()))
+                self.assertEqual(metadata, CORE.locale_list_metadata(locale))
+
+    def test_rendered_list_requires_one_directory_with_all_lessons(self):
+        chrome = mock.Mock()
+        chrome.evaluate.return_value = {"wrappers": 1, "heading": "Directory", "modules": 5, "lessons": 103}
+        CORE.validate_rendered_list(chrome, {"heading": "Directory"}, 103)
+        chrome.evaluate.return_value = {"wrappers": 2, "heading": "Directory", "modules": 5, "lessons": 103}
+        with self.assertRaises(CORE.BrowserFailure):
+            CORE.validate_rendered_list(chrome, {"heading": "Directory"}, 103)
 
     def rendered(self, path, canonical):
         return {"path": path, "href": "http://127.0.0.1:38573" + path,
