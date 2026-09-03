@@ -53,6 +53,13 @@ assert_contains() {
         && $PUBLIC_ORIGIN == https://fr-go-dev.shuijingwanwq.com \
         && $PRODUCTION_HOST == fr-go-dev.shuijingwanwq.com \
         && $CACHE_HEADER == CF-Cache-Status ]]
+    select_production_profile ko-KR
+    [[ $RELEASES_DIR == /data/go-tour-ko-KR/releases && $CURRENT_LINK == /data/go-tour-ko-KR/current \
+        && $DEPLOY_LOCK == /data/go-tour-ko-KR/.deploy.lock && $SERVICE == go-tour-ko-KR.service \
+        && $LOOPBACK_ORIGIN == http://127.0.0.1:4003 \
+        && $PUBLIC_ORIGIN == https://ko-go-dev.shuijingwanwq.com \
+        && $PRODUCTION_HOST == ko-go-dev.shuijingwanwq.com \
+        && $CACHE_HEADER == CF-Cache-Status ]]
 ) || fail 'verification profiles differ from the formal production values'
 
 fake_bin=$fixture/bin

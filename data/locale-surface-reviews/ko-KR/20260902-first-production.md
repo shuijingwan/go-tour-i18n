@@ -12,7 +12,7 @@
 - configured production public identity：`https://ko-go-dev.shuijingwanwq.com/`
 - evidence update date：`2026-09-03`
 
-当前仓库的 `production/identity.json` 仍列 `ko-KR` 为 `production_state: first-production`。本轮不修改该文件；这不是重新执行首次 production 的授权或证据。
+在这份 maintenance evidence 于 2026-09-03 更新时，仓库的 `production/identity.json` 确实仍列 `ko-KR` 为 `production_state: first-production`。首次 production 的成功验收随后完成正式状态收尾；当前 identity 为 `production_state: live`。此变更不重写本记录的历史验收，也不授权再次 bootstrap。
 
 ### TranslationUnit / projection identity
 

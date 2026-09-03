@@ -37,6 +37,9 @@ assert_profile de-DE /data/go-tour-de-DE/releases /data/go-tour-de-DE/current \
 assert_profile fr-FR /data/go-tour-fr-FR/releases /data/go-tour-fr-FR/current \
     /data/go-tour-fr-FR/.deploy.lock go-tour-fr-FR.service http://127.0.0.1:4002/ \
     https://fr-go-dev.shuijingwanwq.com/
+assert_profile ko-KR /data/go-tour-ko-KR/releases /data/go-tour-ko-KR/current \
+    /data/go-tour-ko-KR/.deploy.lock go-tour-ko-KR.service http://127.0.0.1:4003/ \
+    https://ko-go-dev.shuijingwanwq.com/
 
 if select_deployment_profile it-IT 2>/dev/null; then
     fail 'unsupported locale was accepted'

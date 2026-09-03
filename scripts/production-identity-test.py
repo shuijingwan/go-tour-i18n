@@ -32,7 +32,7 @@ class ProductionIdentityTest(unittest.TestCase):
         parsed = MODULE.load_identity(self.identity_path)
         self.assertEqual([p["locale"] for p in parsed["locales"]], ["zh-CN", "ja-JP", "de-DE", "fr-FR", "ko-KR"])
         korean = parsed["locales"][-1]
-        self.assertEqual(korean["production_state"], "first-production")
+        self.assertEqual(korean["production_state"], "live")
         self.assertEqual(korean["loopback_port"], 4003)
 
     def test_unknown_or_missing_field_fails_closed(self):
