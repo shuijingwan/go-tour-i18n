@@ -689,32 +689,11 @@ PY
   created=$(curl -fsS -X POST -H "Authorization: Bearer $CF_Token" -H 'Content-Type: application/json' --data "$payload" "$api/zones/$zone_id/dns_records")
   python3 -c 'import json,sys; d=json.load(sys.stdin); assert d.get("success") is True and d.get("result",{}).get("proxied") is True' <<<"$created"
 fi
-rules=$(curl -fsS -H "Authorization: Bearer $CF_Token" -H 'Content-Type: application/json' "$api/zones/$zone_id/rulesets/phases/http_request_cache_settings/entrypoint" || true)
-RULES_JSON="$rules" python3 - "$host" <<'PY'
-import fnmatch,json,os,re,sys
-try: d=json.loads(os.environ['RULES_JSON'])
-except Exception: print('cache_rule=HUMAN_GATE'); raise SystemExit
-host=sys.argv[1]
-rules=[]
-for rule in d.get('result',{}).get('rules',[]):
-  parameters=rule.get('action_parameters',{})
-  if rule.get('enabled') is True and rule.get('action')=='set_cache_settings' and parameters.get('cache') is True:
-    rules.append(rule.get('expression',''))
-def matches(expression):
-  if re.search(r'http\.host\s+eq\s+[r]?"'+re.escape(host)+r'"', expression): return True
-  for pattern in re.findall(r'http\.host\s+wildcard\s+[r]?"([^"]+)"', expression):
-    if fnmatch.fnmatchcase(host,pattern): return True
-  for suffix in re.findall(r'ends_with\(http\.host,\s*[r]?"([^"]+)"\)', expression):
-    if host.endswith(suffix): return True
-  return False
-print('cache_rule=verified' if any(matches(e) for e in rules) else 'cache_rule=HUMAN_GATE')
-PY
 '''
-        result = self.ssh(s["aliyun_ssh_alias"], script, (
+        self.ssh(s["aliyun_ssh_alias"], script, (
             s["cloudflare_secret_file"], s["cloudflare_zone_name"],
             p["production_hostname"], p["origin_ip"],
-        ), capture=True, stage="cloudflare-dns", timeout=300)
-        self.receipt["cache_rule"] = result or "cache_rule=HUMAN_GATE"
+        ), stage="cloudflare-dns", timeout=300)
         self.record("cloudflare-dns")
 
     def public_machine(self):
@@ -796,7 +775,6 @@ if [[ $shared_policy == shared-cloudflare ]]; then curl -fsS --connect-timeout 5
         self.write_receipt("passed")
         print("\n[首次生产] READY FOR HUMAN VISUAL GATE")
         print(f"receipt: {self.receipt_path}")
-        print(f"Cache Rule: {self.receipt.get('cache_rule', 'cache_rule=HUMAN_GATE')}")
 
 
 def usage():

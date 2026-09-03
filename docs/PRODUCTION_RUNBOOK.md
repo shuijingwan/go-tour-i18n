@@ -34,16 +34,15 @@
 
 ### Production CDN 缓存策略
 
-当前 production hostname 统一采用约 1 个月的 CDN Edge Cache TTL，不主动把 Browser Cache TTL 强制设为 1 个月：
+当前 production hostname 统一采用约 1 个月的 CDN Edge Cache TTL，不主动把 Browser Cache TTL 强制设为 1 个月。Cloudflare 正式共享 Cache Rule 为 `ends_with(http.host, "-go-dev.shuijingwanwq.com")`，将匹配 hostname 标记为 Eligible for cache，Edge Cache TTL 为 1 month；`assets-go-dev`、现有非中文语言站及未来非中文 `xx-go-dev` locale 自动复用，不逐 hostname 修改 Cache Rule：
 
 - `go-dev.shuijingwanwq.com`：EdgeOne 节点缓存 TTL 为 30 天，匹配整个 hostname，强制缓存关闭；已用首页 `/` 与课程页 `/tour/welcome/1` 验证公网 `MISS → HIT`。
-- `ja-go-dev.shuijingwanwq.com`：Cloudflare Cache Rule 将整个 hostname 标记为 Eligible for cache，Edge Cache TTL 为 1 个月；该规则与 `assets-go-dev.shuijingwanwq.com` 共用。首页 `/` 与课程页 `/tour/welcome/1` 均已验证 `MISS → HIT`。
-- `de-go-dev.shuijingwanwq.com`：Cloudflare Cache Rule 将整个 hostname 标记为 Eligible for cache，Edge Cache TTL 为 1 个月；首页 `/` 与课程页 `/tour/welcome/1` 均已验证 `MISS → HIT`。
-- `assets-go-dev.shuijingwanwq.com`：Cloudflare Edge Cache TTL 为 1 个月，Browser Cache TTL 不主动覆盖；shared-assets 继续按部署脚本输出的实际 changed URLs 做精确 Custom Purge。
+- 非中文 `*-go-dev.shuijingwanwq.com`：复用上述共享 Cloudflare Cache Rule；首页 `/` 与课程页 `/tour/welcome/1` 均按正式 machine gate 验收。
+- `assets-go-dev.shuijingwanwq.com`：复用上述共享 Cloudflare Cache Rule；shared-assets 继续按部署脚本输出的实际 changed URLs 做精确 Custom Purge。
 
 language production 使用固定 URL，因此 release 更新后不能等待约 1 个月自然过期。`zh-CN` release 激活后应对 EdgeOne 执行 `go-dev.shuijingwanwq.com` Hostname 缓存刷新；`ja-JP`、`de-DE` 与 `fr-FR` release 激活后应在 Cloudflare Custom Purge 中按 Hostname 刷新各自 production hostname。不得为刷新单一 language hostname 使用会影响同 zone 其他 hostname 的 Purge Everything。shared-assets 继续使用已有的 changed-URL 精确 purge 流程，不改为整 hostname purge。
 
-hostname purge 后观察到 `MISS → HIT` 是理想结果，但真实 CDN 可能在连续多次请求中仍返回 `MISS`，因此 language production 的 machine gate 不以固定次数内出现 `HIT` 或任何固定 cache status 时序作为通过条件。正式 verification 只记录 cache status，并确认请求进入预期的 cache eligibility 路径。
+hostname purge 后观察到 `MISS → HIT` 是理想结果，但真实 CDN 可能在连续多次请求中仍返回 `MISS`，因此 language production 的 machine gate 不以固定次数内出现 `HIT` 或任何固定 cache status 时序作为通过条件。真实公网 `CF-Cache-Status` 是唯一正式 cache eligibility machine gate：`MISS`、`HIT`、`EXPIRED`、`REVALIDATED`、`UPDATING`、`STALE` 通过；`DYNAMIC`、`BYPASS`、header 缺失及未知值 fail closed。
 
 公网域名迁移不改变 `go-tour.service`、`/data/go-tour/`、仓库名或 Go module path。
 
@@ -204,7 +203,7 @@ Playground mutation 只接受当前已验证的“两处相同精确 Origin 正�
 
 FIRST_DEPLOYMENT 仍严格复用 `deploy-production.sh` 的 upload/current/health 状态机；编排器不实现第二套部署逻辑。源站连续健康后先从 zgocloud 用真实 hostname/SNI 和 `--resolve` 验收 HTTPS、HTTP redirect、关键 route、canonical、`html lang`、shared-assets 与 `/socket`。只有这一步通过才调用 Cloudflare API；已存在完全相同的 proxied A record 幂等通过，未知类型、IP、proxy 状态或重复记录一律拒绝。API failure 不回滚已健康的 origin。
 
-Cloudflare Cache Rule 只做只读、低风险判断：能证明已启用的 cache-settings rule 以精确 host、可求值 wildcard 或 `ends_with` 匹配当前 hostname 时记录 `verified`；否则保留 `HUMAN_GATE`，不猜 rule ID、不修改 account-wide rule。
+first-production 不查询或解析 Cloudflare Cache Rule expression，也不修改 account-wide rule；Cache Rule 的实际 eligibility 只由随后从 zgocloud 发起的真实公网 `CF-Cache-Status` machine gate 验证。
 
 公网 DNS 生效后，zgocloud 完成关键 route、105 URL sitemap、canonical/locale、socket、cache header、shared asset 与 Playground 验收；随后仍调用现有 `verify-production.sh` 做正式 machine acceptance。首次编排器为该命令设置内部 `VERIFY_PRODUCTION_NETWORK_SSH=zgocloud`，verification 建立 invocation-scoped SSH/SOCKS ControlMaster，使全部 public curl 的 TCP/DNS 从 zgocloud 发出；远端 identity/source 检查仍直接访问 aliyun。普通维护者调用方式不变。`verify-production-browser.py` 使用仓库既有 `google-chrome`/DevTools 基线，自动覆盖 desktop/mobile、普通与 editor course、`/tour/moretypes/1`、语言列表、Run/Format/Reset、runtime output、Playground endpoint、canonical/lang/SEO、socket、shared assets、course-ad mount/loader/request opportunity 和 SPA 下一页。广告 filled/unfilled 均可通过。
 

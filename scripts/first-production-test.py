@@ -229,6 +229,17 @@ class FirstProductionTest(unittest.TestCase):
         self.assertIn('cp -a "$backup" "$vhost"; "$nginx" -t && service nginx reload || true', mutation)
         self.assertNotIn("nginx -t", mutation.replace('"$nginx" -t', ""))
 
+    def test_public_machine_cache_eligibility_uses_real_status_without_rule_expression_parser(self):
+        source = (ROOT / "scripts" / "first-production.py").read_text(encoding="utf-8")
+        start = source.index("    def public_machine(self):")
+        end = source.index("\n    def browser(self):", start)
+        public_machine = source[start:end]
+        self.assertIn("MISS|HIT|EXPIRED|REVALIDATED|UPDATING|STALE", public_machine)
+        self.assertNotIn("DYNAMIC", public_machine)
+        self.assertNotIn("BYPASS", public_machine)
+        self.assertNotIn("rulesets/phases/http_request_cache_settings", source)
+        self.assertNotIn("cache_rule=", source)
+
     def test_aliyun_vhost_scanner_is_python36_compatible_and_separates_failures(self):
         identity = FIRST.IDENTITY.load_identity(ROOT / "production" / "identity.json")
         instance = FIRST.Orchestrator.__new__(FIRST.Orchestrator)
