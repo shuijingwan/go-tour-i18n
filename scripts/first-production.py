@@ -31,6 +31,7 @@ IDENTITY = importlib.util.module_from_spec(IDENTITY_SPEC)
 IDENTITY_SPEC.loader.exec_module(IDENTITY)
 RECEIPT_SCHEMA = "go-tour-i18n/first-production-receipt/v1"
 ALIYUN_ONEINSTACK_NGINX = "/usr/local/nginx/sbin/nginx"
+ZGOCLOUD_ONEINSTACK_NGINX = "/usr/local/nginx/sbin/nginx"
 STAGE_ORDER = (
     "preflight", "infrastructure", "playground-origin", "deploy",
     "direct-origin", "cloudflare-dns", "public-machine", "browser",
@@ -456,10 +457,12 @@ printf 'zone_id=%s\n' "$zone_id"
     def zgocloud_preflight(self):
         s = self.shared
         script = r'''set -Eeuo pipefail
-vhost=$1
-[[ $(id -u) == 0 ]]
-[[ -f $vhost && ! -L $vhost ]]
-nginx -t >/dev/null
+vhost=$1; nginx=$2
+fail() { printf '[first-production:zgocloud] ERROR: %s\n' "$*" >&2; exit 1; }
+[[ $(id -u) == 0 ]] || fail 'SSH account must be root'
+[[ -f $vhost && ! -L $vhost ]] || fail "Playground vhost is missing or invalid: $vhost"
+[[ -x $nginx ]] || fail "missing formal ZgoCloud Nginx executable: $nginx"
+"$nginx" -t >/dev/null || fail 'formal ZgoCloud Nginx config test failed'
 python3 - "$vhost" <<'PY'
 import pathlib,re,sys
 text=pathlib.Path(sys.argv[1]).read_text(encoding='utf-8')
@@ -472,7 +475,9 @@ assert text.count('location = /compile {')==1 and text.count('location = /fmt {'
 print('origins=' + ','.join(labels))
 PY
 '''
-        return self.ssh(s["zgocloud_ssh_alias"], script, (s["playground_vhost_path"],), capture=True, stage="preflight")
+        return self.ssh(s["zgocloud_ssh_alias"], script, (
+            s["playground_vhost_path"], ZGOCLOUD_ONEINSTACK_NGINX,
+        ), capture=True, stage="preflight")
 
     def shared_assets_freshness(self):
         if self.profile["shared_assets_policy"] != "shared-cloudflare":
@@ -581,8 +586,9 @@ systemctl enable "$service"
     def configure_playground(self):
         p, s = self.profile, self.shared
         script = r'''set -Eeuo pipefail
-vhost=$1; hostname=$2; origin=$3; public=$4; run_id=$5
+vhost=$1; hostname=$2; origin=$3; public=$4; run_id=$5; nginx=$6
 backup=$vhost.before-$run_id
+[[ -x $nginx ]] || { printf '[first-production:zgocloud] ERROR: missing formal ZgoCloud Nginx executable: %s\n' "$nginx" >&2; exit 1; }
 python3 - "$vhost" "$hostname" "$backup" <<'PY'
 import os,pathlib,re,shutil,sys
 path=pathlib.Path(sys.argv[1]); hostname=sys.argv[2]; backup=pathlib.Path(sys.argv[3])
@@ -603,8 +609,8 @@ temporary=path.with_name(path.name+f'.tmp-{os.getpid()}')
 with open(temporary,'x',encoding='utf-8') as target: target.write(updated)
 os.chmod(temporary,0o644); os.replace(temporary,path)
 PY
-if ! nginx -t; then [[ -f $backup ]] && cp -a "$backup" "$vhost"; nginx -t || true; exit 1; fi
-if ! service nginx reload; then [[ -f $backup ]] && cp -a "$backup" "$vhost"; nginx -t && service nginx reload || true; exit 1; fi
+if ! "$nginx" -t; then [[ -f $backup ]] && cp -a "$backup" "$vhost"; "$nginx" -t || true; exit 1; fi
+if ! service nginx reload; then [[ -f $backup ]] && cp -a "$backup" "$vhost"; "$nginx" -t && service nginx reload || true; exit 1; fi
 check() { expected=$1; shift; for attempt in 1 2 3 4 5; do code=$(curl -sS -o /dev/null -w '%{http_code}' --connect-timeout 5 --max-time 20 "$@" || true); [[ $code == "$expected" ]] && return 0; sleep 1; done; printf 'expected HTTP %s, got %s\n' "$expected" "${code:-000}" >&2; return 1; }
 for endpoint in compile fmt; do
   check 204 -X OPTIONS -H "Origin: $origin" "$public/$endpoint"
@@ -617,6 +623,7 @@ check 200 -X POST -H "Origin: $origin" --data-urlencode $'body=package main\nfun
         self.ssh(s["zgocloud_ssh_alias"], script, (
             s["playground_vhost_path"], p["production_hostname"],
             p["playground_allowed_origin"], s["playground_public_origin"], self.run_id,
+            ZGOCLOUD_ONEINSTACK_NGINX,
         ), stage="playground-origin", timeout=300)
         self.record("playground-origin")
 

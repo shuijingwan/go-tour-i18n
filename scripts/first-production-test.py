@@ -201,6 +201,34 @@ class FirstProductionTest(unittest.TestCase):
         self.assertIn('"$nginx" -t && service nginx reload', infrastructure)
         self.assertNotIn("if ! nginx -t", infrastructure)
 
+    def test_zgocloud_uses_formal_oneinstack_nginx_for_preflight_mutation_and_recovery(self):
+        identity = FIRST.IDENTITY.load_identity(ROOT / "production" / "identity.json")
+        instance = FIRST.Orchestrator.__new__(FIRST.Orchestrator)
+        instance.profile = next(profile for profile in identity["locales"] if profile["locale"] == "ko-KR")
+        instance.shared = identity["shared"]
+        instance.run_id = "test"
+        instance.record = lambda stage: None
+        calls = []
+        instance.ssh = lambda host, script, args=(), **kwargs: calls.append((host, script, args, kwargs)) or "origins=go-dev"
+
+        self.assertEqual(instance.zgocloud_preflight(), "origins=go-dev")
+        host, preflight, args, _ = calls.pop()
+        self.assertEqual(host, identity["shared"]["zgocloud_ssh_alias"])
+        self.assertEqual(args[-1], FIRST.ZGOCLOUD_ONEINSTACK_NGINX)
+        self.assertIn('[[ -x $nginx ]] || fail "missing formal ZgoCloud Nginx executable: $nginx"', preflight)
+        self.assertIn('"$nginx" -t >/dev/null', preflight)
+        self.assertNotIn("nginx -t", preflight.replace('"$nginx" -t', ""))
+
+        instance.configure_playground()
+        host, mutation, args, _ = calls.pop()
+        self.assertEqual(host, identity["shared"]["zgocloud_ssh_alias"])
+        self.assertEqual(args[-1], FIRST.ZGOCLOUD_ONEINSTACK_NGINX)
+        self.assertIn('[[ -x $nginx ]] ||', mutation)  # Missing absolute executable fails before mutation.
+        self.assertIn('if ! "$nginx" -t; then', mutation)
+        self.assertIn('cp -a "$backup" "$vhost"; "$nginx" -t || true', mutation)
+        self.assertIn('cp -a "$backup" "$vhost"; "$nginx" -t && service nginx reload || true', mutation)
+        self.assertNotIn("nginx -t", mutation.replace('"$nginx" -t', ""))
+
     def test_aliyun_vhost_scanner_is_python36_compatible_and_separates_failures(self):
         identity = FIRST.IDENTITY.load_identity(ROOT / "production" / "identity.json")
         instance = FIRST.Orchestrator.__new__(FIRST.Orchestrator)
