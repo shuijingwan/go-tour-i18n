@@ -180,6 +180,8 @@ def main():
     parser.add_argument("--identity", type=pathlib.Path, default=repository / "production" / "identity.json")
     subparsers = parser.add_subparsers(dest="command", required=True)
     subparsers.add_parser("validate", help="校验完整 identity")
+    list_parser = subparsers.add_parser("list", help="按 identity 顺序列出 production profile")
+    list_parser.add_argument("--state", choices=("first-production", "live"), help="仅列出指定 lifecycle state")
     locale_parser = subparsers.add_parser("locale", help="输出 locale 的有序字段")
     locale_parser.add_argument("locale")
     subparsers.add_parser("shared", help="输出共享 production identity 的有序字段")
@@ -190,6 +192,12 @@ def main():
             print(f"production identity: PASS ({len(identity['locales'])} locales)")
         elif args.command == "shared":
             emit(identity["shared"][field] for field in SHARED_FIELDS)
+        elif args.command == "list":
+            for profile in identity["locales"]:
+                if args.state is None or profile["production_state"] == args.state:
+                    print("\t".join(str(profile[field]) for field in (
+                        "locale", "production_state", "production_public_url", "cdn", "systemd_service"
+                    )))
         else:
             matches = [profile for profile in identity["locales"] if profile["locale"] == args.locale]
             if len(matches) != 1:

@@ -143,11 +143,20 @@ class PreviewBrowserTest(unittest.TestCase):
                                        "https://ko-go-dev.shuijingwanwq.com", True, list_metadata)
 
     def test_list_metadata_is_complete_for_all_formal_locales(self):
-        for locale in ("zh-CN", "ja-JP", "de-DE", "fr-FR", "ko-KR", "es-ES"):
+        identity = PREVIEW.IDENTITY.load_identity(ROOT / "production" / "identity.json")
+        for locale in (profile["locale"] for profile in identity["locales"]):
             with self.subTest(locale=locale):
                 metadata = PREVIEW.formal_list_metadata(locale)
                 self.assertTrue(all(metadata.values()))
                 self.assertEqual(metadata, CORE.locale_list_metadata(locale))
+
+    def test_production_identity_profiles_match_community_registry(self):
+        registry = {entry["locale"]: entry["url"] for entry in PREVIEW.registry()}
+        identity = PREVIEW.IDENTITY.load_identity(ROOT / "production" / "identity.json")
+        for profile in identity["locales"]:
+            with self.subTest(locale=profile["locale"]):
+                self.assertEqual(registry[profile["locale"]], profile["production_public_url"])
+        self.assertNotIn("en", {profile["locale"] for profile in identity["locales"]})
 
     def test_rendered_list_requires_exact_article_and_page_routes(self):
         page_routes = CORE.formal_course_routes()

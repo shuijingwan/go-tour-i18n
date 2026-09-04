@@ -12,96 +12,17 @@
 | --- | --- | --- | --- | --- |
 | `zh-CN` | 简体中文 | <https://go-dev.shuijingwanwq.com/> | EdgeOne | 当前默认社区语言站；不创建 `zh.go-dev` 或 `zh-cn.go-dev` |
 | `en` | English | <https://go.dev/tour/> | Go 官方提供 | 继续使用官方 A Tour of Go；当前不建设本项目的英文社区版本，也不规划 `en-go-dev.shuijingwanwq.com` |
-| `fr-FR` | Français | <https://fr-go-dev.shuijingwanwq.com/> | Cloudflare Free | 已正式上线的法语社区语言站；域名 language code 为 `fr` |
+| `fr-FR` | Français | <https://fr-go-dev.shuijingwanwq.com/> | Cloudflare Free | 法语社区语言站；域名 language code 为 `fr` |
 | `de-DE` | Deutsch | <https://de-go-dev.shuijingwanwq.com/> | Cloudflare Free | 德语社区语言站；域名 language code 为 `de` |
-| `ja-JP` | 日本語 | <https://ja-go-dev.shuijingwanwq.com/> | Cloudflare Free | 已正式上线的日语社区语言站 |
-| `ko-KR` | 한국어 | <https://ko-go-dev.shuijingwanwq.com/> | Cloudflare Free | 已正式上线的韩语社区语言站；域名 language code 为 `ko` |
-| `es-ES` | Español | <https://es-go-dev.shuijingwanwq.com/> | Cloudflare Free | 已正式上线的西班牙语社区语言站；域名 language code 为 `es` |
+| `ja-JP` | 日本語 | <https://ja-go-dev.shuijingwanwq.com/> | Cloudflare Free | 日语社区语言站 |
+| `ko-KR` | 한국어 | <https://ko-go-dev.shuijingwanwq.com/> | Cloudflare Free | 韩语社区语言站；域名 language code 为 `ko` |
+| `es-ES` | Español | <https://es-go-dev.shuijingwanwq.com/> | Cloudflare Free | 西班牙语社区语言站；域名 language code 为 `es` |
 
-## ko-KR production identity
+## Production identity 与历史 evidence
 
-ko-KR 使用规范 locale 与 HTML `lang` `ko-KR`，本地显示名为 `한국어`，英文名为 `Korean`，域名 language code 为 `ko`。production hostname 为 <https://ko-go-dev.shuijingwanwq.com/>，CDN 使用 Cloudflare Free；非中文共享静态资源使用 <https://assets-go-dev.shuijingwanwq.com/>。Playground 后续需要允许的精确 Origin 为 `https://ko-go-dev.shuijingwanwq.com`。
+`production/identity.json` 是 hostname、CDN、service、路径、port 与 lifecycle 的唯一可执行 authority；查看当前 profile 使用 `python3 scripts/production-identity.py list`，仅查看 live profile 使用 `python3 scripts/production-identity.py list --state live`。本表不复制 lifecycle 或 server identity。
 
-以下值是当前 production identity 的可读快照；权威、可执行来源为 `production/identity.json`。ko-KR 已完成首次 production，`production_state=live`。
-
-| 项目 | 值 |
-| --- | --- |
-| data root | `/data/go-tour-ko-KR` |
-| releases | `/data/go-tour-ko-KR/releases` |
-| current | `/data/go-tour-ko-KR/current` |
-| deploy lock | `/data/go-tour-ko-KR/.deploy.lock` |
-| systemd service | `go-tour-ko-KR.service` |
-| service user | `go-tour` |
-| loopback port | `4003` |
-| health URL | <http://127.0.0.1:4003/> |
-| Nginx vhost | `/usr/local/nginx/conf/vhost/ko-go-dev.shuijingwanwq.com.conf` |
-| TLS certificate | `/usr/local/nginx/conf/ssl/ko-go-dev.shuijingwanwq.com.crt` |
-| TLS private key | `/usr/local/nginx/conf/ssl/ko-go-dev.shuijingwanwq.com.key` |
-
-ko-KR 已完成首次 production；最终 evidence 为 `data/locale-surface-reviews/ko-KR/20260902-first-production.md`。后续 release 使用日常维护部署流程。
-
-## es-ES production identity
-
-es-ES 使用规范 locale 与 HTML `lang` `es-ES`，本地显示名为 `Español`，英文名为 `Spanish`，域名 language code 为 `es`。production hostname 为 <https://es-go-dev.shuijingwanwq.com/>，CDN 使用 Cloudflare Free；非中文共享静态资源使用 <https://assets-go-dev.shuijingwanwq.com/>。Playground 已允许精确 Origin `https://es-go-dev.shuijingwanwq.com`。
-
-以下值是当前 production identity 的可读快照；权威、可执行来源为 `production/identity.json`。es-ES 已完成首次 production，`production_state=live`。
-
-| 项目 | 值 |
-| --- | --- |
-| data root | `/data/go-tour-es-ES` |
-| releases | `/data/go-tour-es-ES/releases` |
-| current | `/data/go-tour-es-ES/current` |
-| deploy lock | `/data/go-tour-es-ES/.deploy.lock` |
-| systemd service | `go-tour-es-ES.service` |
-| service user | `go-tour` |
-| loopback port | `4004` |
-| health URL | <http://127.0.0.1:4004/> |
-| Nginx vhost | `/usr/local/nginx/conf/vhost/es-go-dev.shuijingwanwq.com.conf` |
-| TLS certificate | `/usr/local/nginx/conf/ssl/es-go-dev.shuijingwanwq.com.crt` |
-| TLS private key | `/usr/local/nginx/conf/ssl/es-go-dev.shuijingwanwq.com.key` |
-
-es-ES 已于 2026-09-04 完成首次 production；当前 release 为 `/data/go-tour-es-ES/releases/20260904-es-ES-d7994a44`，最终 evidence 为 `data/locale-surface-reviews/es-ES/20260904-first-production.md`。后续 release 使用日常维护部署流程。
-
-## fr-FR production identity
-
-fr-FR 使用规范 locale 与 HTML `lang` `fr-FR`，本地显示名为 `Français`，英文名为 `French`，域名 language code 为 `fr`。production hostname 为 <https://fr-go-dev.shuijingwanwq.com/>，CDN 使用 Cloudflare Free；非中文共享静态资源使用 <https://assets-go-dev.shuijingwanwq.com/>。Playground 精确 Origin 为 `https://fr-go-dev.shuijingwanwq.com`。
-
-以下值是当前 production identity 的可读快照；权威、可执行来源为 `production/identity.json`：
-
-| 项目 | 值 |
-| --- | --- |
-| data root | `/data/go-tour-fr-FR` |
-| releases | `/data/go-tour-fr-FR/releases` |
-| current | `/data/go-tour-fr-FR/current` |
-| deploy lock | `/data/go-tour-fr-FR/.deploy.lock` |
-| systemd service | `go-tour-fr-FR.service` |
-| service user | `go-tour` |
-| loopback port | `4002` |
-| health URL | <http://127.0.0.1:4002/> |
-| Nginx vhost | `/usr/local/nginx/conf/vhost/fr-go-dev.shuijingwanwq.com.conf` |
-| TLS certificate | `/usr/local/nginx/conf/ssl/fr-go-dev.shuijingwanwq.com.crt` |
-| TLS private key | `/usr/local/nginx/conf/ssl/fr-go-dev.shuijingwanwq.com.key` |
-
-fr-FR 已于 2026-08-30 完成首次 production、Cloudflare、Playground、machine/browser 与广告轻量验收；最终 evidence 为 `data/locale-surface-reviews/fr-FR/20260830-first-production.md`。
-
-## de-DE production identity
-
-de-DE 使用规范 locale 与 HTML `lang` `de-DE`，本地显示名为 `Deutsch`，英文名为 `German`，域名 language code 为 `de`。production hostname 为 <https://de-go-dev.shuijingwanwq.com/>，CDN 使用 Cloudflare Free；非中文共享静态资源使用 <https://assets-go-dev.shuijingwanwq.com/>。Playground 已允许精确 Origin `https://de-go-dev.shuijingwanwq.com`。
-
-以下值是当前 production identity 的可读快照；权威、可执行来源为 `production/identity.json`：
-
-| 项目 | 值 |
-| --- | --- |
-| data root | `/data/go-tour-de-DE` |
-| releases | `/data/go-tour-de-DE/releases` |
-| current | `/data/go-tour-de-DE/current` |
-| deploy lock | `/data/go-tour-de-DE/.deploy.lock` |
-| systemd service | `go-tour-de-DE.service` |
-| service user | `go-tour` |
-| loopback port | `4001` |
-| health URL | <http://127.0.0.1:4001/> |
-
-de-DE 已完成首次 production；历史最终 evidence 为 `data/locale-surface-reviews/de-DE/20260829-first-production.md`。后续 release 使用日常维护部署流程。
+locale-specific 首次 production 历史 evidence 仍保留在：`data/locale-surface-reviews/de-DE/20260829-first-production.md`、`data/locale-surface-reviews/fr-FR/20260830-first-production.md`、`data/locale-surface-reviews/ko-KR/20260902-first-production.md` 与 `data/locale-surface-reviews/es-ES/20260904-first-production.md`。
 
 后续所有非中文社区语言统一采用：
 

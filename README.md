@@ -12,7 +12,7 @@
 - 开发记录：[《A Tour of Go 多语言翻译项目》](https://www.shuijingwanwq.com/series/go-tour-chinese-edition-development-series/)
 - 问题反馈：[GitHub Issues](https://github.com/shuijingwan/go-tour-i18n/issues)
 
-正式社区语言站为简体中文 <https://go-dev.shuijingwanwq.com/> 和日本語 <https://ja-go-dev.shuijingwanwq.com/>：根路径 `/` 是项目首页，课程位于 `/tour/`。博客页面回链至正式站点和 GitHub 仍由仓库外的博客维护工作完成。
+社区语言站的当前 production lifecycle、hostname、CDN 与 service 以 [`production/identity.json`](production/identity.json) 为唯一 machine authority；根路径 `/` 是项目首页，课程位于 `/tour/`。博客页面回链至正式站点和 GitHub 仍由仓库外的博客维护工作完成。
 
 ## 当前阶段
 
@@ -170,9 +170,9 @@ go run -mod=readonly ./cmd/tour-i18n preview \
 
 ## Production runtime、publish 与正式上线
 
-production runtime 已在 zh-CN、ja-JP、de-DE、fr-FR、ko-KR 和 es-ES 正式部署。zh-CN 页面经 EdgeOne 接入，其余五个 locale 经 Cloudflare Free 接入，随后均由阿里云 Nginx 转发至各自 Go Tour 服务。正常 production Run / Format 由浏览器直接请求自建 ZgoCloud 固定代理 `https://play.go-dev.shuijingwanwq.com:8443/compile` 和 `/fmt`，再由该代理转发到官方 Playground `play.golang.org`；代理已允许六个正式 production hostname 的精确 Origin。旧服务端路径仍保留为兼容/回滚路径，并按 go.dev 要求保留 form 编码。ZgoCloud 只是本项目自建的固定反向代理，不是 Go 官方服务。production 主机不执行用户提交的 Go 程序。本地 `/socket` 不用于 production：普通请求和 WebSocket Upgrade 均返回 404，`/_/share` 当前未启用并返回 404。
+production runtime 的当前 profile 以 `production/identity.json` 为准：zh-CN 使用 EdgeOne，community profile 使用 Cloudflare Free，并均经阿里云 Nginx 转发至各自 Go Tour 服务。正常 production Run / Format 由浏览器直接请求自建 ZgoCloud 固定代理 `https://play.go-dev.shuijingwanwq.com:8443/compile` 和 `/fmt`，再由该代理转发到官方 Playground `play.golang.org`；代理使用精确 Origin allowlist。旧服务端路径仍保留为兼容/回滚路径，并按 go.dev 要求保留 form 编码。ZgoCloud 只是本项目自建的固定反向代理，不是 Go 官方服务。production 主机不执行用户提交的 Go 程序。本地 `/socket` 不用于 production：普通请求和 WebSocket Upgrade 均返回 404，`/_/share` 当前未启用并返回 404。
 
-使用以下命令生成固定 locale 的 production bundle（当前正式上线 locale 为 `zh-CN`、`ja-JP`、`de-DE`、`fr-FR`、`ko-KR` 和 `es-ES`）：
+使用以下命令生成固定 locale 的 production bundle；可执行 production locale 以 `production/identity.json` 为准：
 
 publish 主机必须安装可执行文件名为 `google-chrome` 的 Chrome。publish 在完整 locale projection、production metadata 与 binary 之后，以 `--headless=new --dump-dom` 渲染 sitemap/lesson 数据中的全部正式课程路由；Chrome 缺失、任一路由未完成 AngularJS 渲染或 metadata/正文/示例源码不完整时，整个 publish 都会失败并清理 staging；第三方广告运行时 DOM 会在写入 prerender 产物前清理，清理后仍有残留则 validation 失败。
 
@@ -228,9 +228,9 @@ go test -mod=readonly -count=1 ./...
 
 ## 实际生产部署状态
 
-zh-CN、ja-JP、de-DE、fr-FR、ko-KR 与 es-ES 均已正式上线；正式 URL 与运行身份以 [`production/identity.json`](production/identity.json) 为准。
+正式 URL、运行身份与 lifecycle 以 [`production/identity.json`](production/identity.json) 为准；可运行 `python3 scripts/production-identity.py list --state live` 查看当前 live profile。
 
-以下是当前正式 production 部署状态：
+以下保留已完成 production deployment 的架构与历史验收记录：
 
 - zh-CN 正式 release：`/data/go-tour/releases/20260824-zh-CN-7f6474b0`。
 - zh-CN Upstream commit：`645042eb697eaf69e33a9af00c6b5b3fffdead5a`。
@@ -244,12 +244,12 @@ zh-CN、ja-JP、de-DE、fr-FR、ko-KR 与 es-ES 均已正式上线；正式 URL 
 - production binary 为 Linux amd64、`CGO_ENABLED=0`、静态链接，不依赖服务器 glibc 版本。
 - ja-JP 正式 release：`/data/go-tour-ja-JP/releases/20260824-ja-JP-164fecdd`；data root 为 `/data/go-tour-ja-JP`，systemd 服务为 `go-tour-ja-JP.service`，监听 `127.0.0.1:4000`，公网使用 Cloudflare Free。
 - ja-JP sitemap 已验证 105/105，host mismatch=0、HTTP failure=0；`robots.txt` 正确指向 <https://ja-go-dev.shuijingwanwq.com/sitemap.xml>。
-- ja-JP Playground compile、fmt 和浏览器实际运行均已通过；Playground 当前允许六个已上线 locale 的精确 Origin。
+- ja-JP Playground compile、fmt 和浏览器实际运行均已通过；Playground 使用与 production profile 对应的精确 Origin allowlist。
 - es-ES 正式 release：`/data/go-tour-es-ES/releases/20260904-es-ES-d7994a44`；data root 为 `/data/go-tour-es-ES`，systemd 服务为 `go-tour-es-ES.service`，监听 `127.0.0.1:4004`，公网使用 Cloudflare Free。
 - es-ES 已完成 source/public routes、HTML identity、105/105 sitemap、socket boundary、CDN cache、production browser、轻量广告和 visual HUMAN gate 验收；最终 evidence 为 `data/locale-surface-reviews/es-ES/20260904-first-production.md`。
 - 非中文共享静态资源由 <https://assets-go-dev.shuijingwanwq.com/> 提供；旧 `assets.go-dev.shuijingwanwq.com` 已废弃并清理。
 
-部署期间已解决动态链接 glibc 兼容、OneinStack 静态资源 location 抢占、release 目录权限和 Nginx systemd 接管问题。当前 CDN 接入明确区分：zh-CN 使用 EdgeOne；ja-JP、de-DE、fr-FR、ko-KR、es-ES 使用 Cloudflare Free；`assets-go-dev.shuijingwanwq.com` 使用 Cloudflare 代理。不存在 Cloudflare 与 EdgeOne 双层代理。
+部署期间已解决动态链接 glibc 兼容、OneinStack 静态资源 location 抢占、release 目录权限和 Nginx systemd 接管问题。当前 CDN 架构明确区分：zh-CN 使用 EdgeOne；community profile 与 `assets-go-dev.shuijingwanwq.com` 使用 Cloudflare。不存在 Cloudflare 与 EdgeOne 双层代理。
 
 ## 上游来源
 

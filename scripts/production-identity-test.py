@@ -7,6 +7,7 @@ import pathlib
 import sys
 import tempfile
 import unittest
+from unittest import mock
 
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
@@ -30,10 +31,23 @@ class ProductionIdentityTest(unittest.TestCase):
 
     def test_repository_identity(self):
         parsed = MODULE.load_identity(self.identity_path)
-        self.assertEqual([p["locale"] for p in parsed["locales"]], ["zh-CN", "ja-JP", "de-DE", "fr-FR", "ko-KR", "es-ES"])
-        spanish = parsed["locales"][-1]
-        self.assertEqual(spanish["production_state"], "live")
-        self.assertEqual(spanish["loopback_port"], 4004)
+        locales = [profile["locale"] for profile in parsed["locales"]]
+        self.assertTrue(locales)
+        self.assertEqual(len(locales), len(set(locales)))
+        self.assertTrue(all(profile["production_state"] in ("first-production", "live") for profile in parsed["locales"]))
+
+    def test_list_cli_is_authority_derived_and_state_filtered(self):
+        original = sys.argv
+        try:
+            sys.argv = ["production-identity.py", "--identity", str(self.identity_path), "list", "--state", "live"]
+            with mock.patch("sys.stdout") as output:
+                self.assertEqual(MODULE.main(), 0)
+            lines = [line for call in output.write.call_args_list for line in [call.args[0].strip()] if line]
+        finally:
+            sys.argv = original
+        expected = [profile for profile in self.identity["locales"] if profile["production_state"] == "live"]
+        self.assertEqual(len(lines), len(expected))
+        self.assertEqual([line.split("\t")[0] for line in lines], [profile["locale"] for profile in expected])
 
     def test_unknown_or_missing_field_fails_closed(self):
         data = copy.deepcopy(self.identity)
