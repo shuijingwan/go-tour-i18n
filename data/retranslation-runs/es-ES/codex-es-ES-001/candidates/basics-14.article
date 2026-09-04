@@ -1,0 +1,18 @@
+* Inferencia de tipos
+
+Al declarar una variable sin especificar un tipo explícito (ya sea mediante la sintaxis `:=` o la sintaxis de expresión `var`=`), el tipo de la variable se infiere a partir del valor del lado derecho.
+
+Cuando el lado derecho de la declaración tiene tipo, la nueva variable es de ese mismo tipo:
+
+	var i int
+	j := i // j es de tipo int
+
+Sin embargo, cuando el lado derecho contiene una constante numérica sin tipo, la nueva variable puede ser un `int`, `float64` o `complex128`, dependiendo de la precisión de la constante:
+
+	i := 42           // int
+	f := 3.142        // float64
+	g := 0.867 + 0.5i // complex128
+
+Prueba a cambiar el valor inicial de `v` en el código de ejemplo y observa cómo afecta a su tipo.
+
+.play basics/type-inference.go

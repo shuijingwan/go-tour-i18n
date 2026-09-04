@@ -1,0 +1,11 @@
+* Valores de retorno con nombre
+
+Los valores de retorno de Go pueden tener nombre. En ese caso, se tratan como variables definidas al principio de la función.
+
+Estos nombres deben usarse para documentar el significado de los valores de retorno.
+
+Una sentencia `return` sin argumentos devuelve los valores de retorno con nombre. Esto se conoce como retorno «desnudo».
+
+Las sentencias de retorno desnudo solo deben utilizarse en funciones cortas, como en el ejemplo que se muestra aquí. En funciones más largas pueden perjudicar la legibilidad.
+
+.play basics/named-results.go

@@ -1,0 +1,21 @@
+* For
+
+Go solo tiene una construcción de bucle: el bucle `for`.
+
+El bucle `for` básico tiene tres componentes separados por punto y coma:
+
+- la sentencia de inicialización: se ejecuta antes de la primera iteración
+- la expresión de condición: se evalúa antes de cada iteración
+- la sentencia posterior: se ejecuta al final de cada iteración
+
+La sentencia de inicialización suele ser una declaración de variable, y las
+variables que se declaran en ella solo son visibles en el ámbito de la sentencia
+`for`.
+
+El bucle dejará de iterar cuando la condición booleana se evalúe como `false`.
+
+*Nota:* A diferencia de otros lenguajes como C, Java o JavaScript, los tres componentes
+de la sentencia `for` no se encierran entre paréntesis y las llaves `{`}` son
+siempre obligatorias.
+
+.play flowcontrol/for.go
