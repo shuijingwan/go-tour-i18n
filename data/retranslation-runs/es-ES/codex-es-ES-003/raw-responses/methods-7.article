@@ -1,0 +1,14 @@
+* Métodos e indirección de punteros (2)
+
+Lo mismo sucede en sentido inverso.
+
+Las funciones que reciben un argumento de valor deben recibir un valor de ese tipo específico:
+
+⟪GTI18N_61a9cb84_000001⟫¡Error de compilación!⟪GTI18N_61a9cb84_000002⟫mientras que los métodos con receptores de valor admiten un valor o un puntero como
+receptor cuando se invocan:
+
+⟪GTI18N_61a9cb84_000003⟫
+
+En este caso, la llamada al método ⟪GTI18N_61a9cb84_000004⟫p.Abs()⟪GTI18N_61a9cb84_000005⟫ se interpreta como ⟪GTI18N_61a9cb84_000006⟫(*p).Abs()⟪GTI18N_61a9cb84_000007⟫.
+
+⟪GTI18N_61a9cb84_000008⟫

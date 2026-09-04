@@ -1,0 +1,16 @@
+* Métodos e indirección de punteros
+
+Al comparar los dos programas anteriores, quizá observes que
+las funciones con un argumento de puntero deben recibir un puntero:
+
+⟪GTI18N_39fb725b_000001⟫¡Error de compilación!⟪GTI18N_39fb725b_000002⟫mientras que los métodos con receptores de puntero admiten un valor o un puntero como
+receptor cuando se invocan:
+
+⟪GTI18N_39fb725b_000003⟫
+
+En la sentencia ⟪GTI18N_39fb725b_000004⟫v.Scale(5)⟪GTI18N_39fb725b_000005⟫, aunque ⟪GTI18N_39fb725b_000006⟫v⟪GTI18N_39fb725b_000007⟫ es un valor y no un puntero,
+el método con receptor de puntero se invoca automáticamente.
+Es decir, para mayor comodidad, ⟪GTI18N_39fb725b_000008⟫ interpreta la sentencia ⟪GTI18N_39fb725b_000009⟫v.Scale(5)⟪GTI18N_39fb725b_000010⟫ como
+⟪GTI18N_39fb725b_000011⟫(&v).Scale(5)⟪GTI18N_39fb725b_000012⟫, ya que el método ⟪GTI18N_39fb725b_000013⟫Scale⟪GTI18N_39fb725b_000014⟫ tiene un receptor de puntero.
+
+⟪GTI18N_39fb725b_000015⟫

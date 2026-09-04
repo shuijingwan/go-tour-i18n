@@ -1,0 +1,16 @@
+* La interfaz vacía
+
+El tipo de interfaz que no especifica ningún método se conoce como ⟪GTI18N_7a09a765_000001⟫interfaz_vacía⟪GTI18N_7a09a765_000002⟫:
+
+⟪GTI18N_7a09a765_000003⟫
+
+Una interfaz vacía puede contener valores de cualquier tipo.
+(Todos los tipos implementan, como mínimo, cero métodos.)
+
+⟪GTI18N_7a09a765_000004⟫any⟪GTI18N_7a09a765_000005⟫ es un alias de ⟪GTI18N_7a09a765_000006⟫interface{}⟪GTI18N_7a09a765_000007⟫, y ambos son completamente
+equivalentes.
+
+El código que procesa valores de tipo desconocido utiliza interfaces vacías.
+Por ejemplo, ⟪GTI18N_7a09a765_000008⟫fmt.Print⟪GTI18N_7a09a765_000009⟫ acepta cualquier número de argumentos de tipo ⟪GTI18N_7a09a765_000010⟫any⟪GTI18N_7a09a765_000011⟫.
+
+⟪GTI18N_7a09a765_000012⟫

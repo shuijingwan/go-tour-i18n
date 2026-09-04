@@ -1,0 +1,25 @@
+* Aserciones de tipo
+
+Una ⟪GTI18N_c205b4eb_000001⟫aserción_de_tipo⟪GTI18N_c205b4eb_000002⟫ permite acceder al valor concreto subyacente de un valor de interfaz.
+
+⟪GTI18N_c205b4eb_000003⟫
+
+Esta sentencia afirma que el valor de interfaz ⟪GTI18N_c205b4eb_000004⟫i⟪GTI18N_c205b4eb_000005⟫ contiene un valor del tipo concreto ⟪GTI18N_c205b4eb_000006⟫T⟪GTI18N_c205b4eb_000007⟫
+y asigna el valor ⟪GTI18N_c205b4eb_000008⟫T⟪GTI18N_c205b4eb_000009⟫ subyacente a la variable ⟪GTI18N_c205b4eb_000010⟫t⟪GTI18N_c205b4eb_000011⟫.
+
+Si ⟪GTI18N_c205b4eb_000012⟫i⟪GTI18N_c205b4eb_000013⟫ no contiene un valor de tipo ⟪GTI18N_c205b4eb_000014⟫T⟪GTI18N_c205b4eb_000015⟫, la sentencia provocará un panic.
+
+Para ⟪GTI18N_c205b4eb_000016⟫comprobar⟪GTI18N_c205b4eb_000017⟫ si un valor de interfaz contiene un tipo específico,
+una aserción de tipo puede devolver dos valores: el valor subyacente
+y un valor booleano que indica si la aserción se ha realizado correctamente.
+
+⟪GTI18N_c205b4eb_000018⟫
+
+Si ⟪GTI18N_c205b4eb_000019⟫i⟪GTI18N_c205b4eb_000020⟫ contiene un valor de tipo ⟪GTI18N_c205b4eb_000021⟫T⟪GTI18N_c205b4eb_000022⟫, entonces ⟪GTI18N_c205b4eb_000023⟫t⟪GTI18N_c205b4eb_000024⟫ será el valor subyacente y ⟪GTI18N_c205b4eb_000025⟫ok⟪GTI18N_c205b4eb_000026⟫ será true.
+
+En caso contrario, ⟪GTI18N_c205b4eb_000027⟫ok⟪GTI18N_c205b4eb_000028⟫ será false y ⟪GTI18N_c205b4eb_000029⟫t⟪GTI18N_c205b4eb_000030⟫ será el valor cero del tipo ⟪GTI18N_c205b4eb_000031⟫T⟪GTI18N_c205b4eb_000032⟫,
+y no se producirá ningún panic.
+
+Observa la similitud entre esta sintaxis y la de leer de un mapa.
+
+⟪GTI18N_c205b4eb_000033⟫

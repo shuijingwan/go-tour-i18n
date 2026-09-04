@@ -1,0 +1,12 @@
+* Continuación de los métodos
+
+También puedes declarar un método para tipos que no sean estructuras.
+
+En este ejemplo vemos un tipo numérico ⟪GTI18N_31c4fd0d_000001⟫MyFloat⟪GTI18N_31c4fd0d_000002⟫ con un método ⟪GTI18N_31c4fd0d_000003⟫Abs⟪GTI18N_31c4fd0d_000004⟫.
+
+Solo puedes declarar un método con un receptor cuyo tipo esté definido en el mismo
+paquete que el método.
+No puedes declarar un método con un receptor cuyo tipo esté definido en otro
+paquete (lo que incluye tipos integrados como ⟪GTI18N_31c4fd0d_000005⟫int⟪GTI18N_31c4fd0d_000006⟫).
+
+⟪GTI18N_31c4fd0d_000007⟫

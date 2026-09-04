@@ -1,0 +1,17 @@
+* Parámetros de tipo
+
+Las funciones de ⟪GTI18N_01a04510_000001⟫ se pueden escribir para que funcionen con varios tipos mediante parámetros de tipo. Los
+parámetros de tipo de una función aparecen entre corchetes, antes de los
+argumentos de la función.
+
+⟪GTI18N_01a04510_000002⟫
+
+Esta declaración significa que ⟪GTI18N_01a04510_000003⟫s⟪GTI18N_01a04510_000004⟫ es un slice de cualquier tipo ⟪GTI18N_01a04510_000005⟫T⟪GTI18N_01a04510_000006⟫ que cumpla la
+restricción integrada ⟪GTI18N_01a04510_000007⟫comparable⟪GTI18N_01a04510_000008⟫. ⟪GTI18N_01a04510_000009⟫x⟪GTI18N_01a04510_000010⟫ también es un valor del mismo tipo.
+
+⟪GTI18N_01a04510_000011⟫comparable⟪GTI18N_01a04510_000012⟫ es una restricción útil que permite emplear los operadores ⟪GTI18N_01a04510_000013⟫==⟪GTI18N_01a04510_000014⟫ y
+⟪GTI18N_01a04510_000015⟫!=⟪GTI18N_01a04510_000016⟫ con valores de ese tipo. En este ejemplo, la usamos para comparar un
+valor con todos los elementos del slice hasta encontrar una coincidencia. Esta función ⟪GTI18N_01a04510_000017⟫Index⟪GTI18N_01a04510_000018⟫ funciona
+con cualquier tipo que admita comparaciones.
+
+⟪GTI18N_01a04510_000019⟫

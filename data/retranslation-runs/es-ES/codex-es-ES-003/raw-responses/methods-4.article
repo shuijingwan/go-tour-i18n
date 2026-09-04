@@ -1,0 +1,24 @@
+* Receptores de puntero
+
+Puedes declarar métodos con receptores de puntero.
+
+Esto significa que el tipo del receptor tiene la sintaxis literal ⟪GTI18N_99f9fa4e_000001⟫*T⟪GTI18N_99f9fa4e_000002⟫ para algún tipo ⟪GTI18N_99f9fa4e_000003⟫T⟪GTI18N_99f9fa4e_000004⟫.
+(Además, ⟪GTI18N_99f9fa4e_000005⟫T⟪GTI18N_99f9fa4e_000006⟫ no puede ser a su vez un puntero como ⟪GTI18N_99f9fa4e_000007⟫*int⟪GTI18N_99f9fa4e_000008⟫.)
+
+Por ejemplo, el método ⟪GTI18N_99f9fa4e_000009⟫Scale⟪GTI18N_99f9fa4e_000010⟫ de este ejemplo está definido para ⟪GTI18N_99f9fa4e_000011⟫*Vertex⟪GTI18N_99f9fa4e_000012⟫.
+
+Los métodos con receptores de puntero pueden modificar el valor al que apunta el receptor
+(como hace aquí ⟪GTI18N_99f9fa4e_000013⟫Scale⟪GTI18N_99f9fa4e_000014⟫).
+Como los métodos suelen necesitar modificar su receptor, los receptores de puntero son más
+comunes que los receptores de valor.
+
+Prueba a eliminar el ⟪GTI18N_99f9fa4e_000015⟫*⟪GTI18N_99f9fa4e_000016⟫ de la declaración de la función ⟪GTI18N_99f9fa4e_000017⟫Scale⟪GTI18N_99f9fa4e_000018⟫ en la línea 16
+y observa cómo cambia el comportamiento del programa.
+
+Con un receptor de valor, el método ⟪GTI18N_99f9fa4e_000019⟫Scale⟪GTI18N_99f9fa4e_000020⟫ opera sobre una copia del valor
+⟪GTI18N_99f9fa4e_000021⟫Vertex⟪GTI18N_99f9fa4e_000022⟫ original.
+(Este es el mismo comportamiento que el de cualquier otro argumento de función.)
+El método ⟪GTI18N_99f9fa4e_000023⟫Scale⟪GTI18N_99f9fa4e_000024⟫ debe tener un receptor de puntero para cambiar el valor ⟪GTI18N_99f9fa4e_000025⟫Vertex⟪GTI18N_99f9fa4e_000026⟫
+declarado en la función ⟪GTI18N_99f9fa4e_000027⟫main⟪GTI18N_99f9fa4e_000028⟫.
+
+⟪GTI18N_99f9fa4e_000029⟫

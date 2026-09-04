@@ -1,0 +1,17 @@
+* Elegir un receptor de valor o de puntero
+
+Hay dos motivos para utilizar un receptor de puntero.
+
+El primero es que así el método puede modificar el valor al que apunta su receptor.
+
+El segundo es evitar copiar el valor en cada llamada al método.
+Esto puede ser más eficiente si, por ejemplo, el receptor es una estructura grande.
+
+En este ejemplo, tanto ⟪GTI18N_357424f2_000001⟫Scale⟪GTI18N_357424f2_000002⟫ como ⟪GTI18N_357424f2_000003⟫Abs⟪GTI18N_357424f2_000004⟫ son métodos con un receptor de tipo ⟪GTI18N_357424f2_000005⟫*Vertex⟪GTI18N_357424f2_000006⟫,
+aunque el método ⟪GTI18N_357424f2_000007⟫Abs⟪GTI18N_357424f2_000008⟫ no necesita modificar su receptor.
+
+En general, todos los métodos de un tipo determinado deberían tener receptores de valor o de
+puntero, pero no una mezcla de ambos.
+(Veremos el motivo a lo largo de las próximas páginas.)
+
+⟪GTI18N_357424f2_000009⟫

@@ -1,0 +1,12 @@
+* Ejercicio: rot13Reader
+
+Un patrón habitual es un [[⟪GTI18N_11d87614_000001⟫][io.Reader]] que envuelve otro ⟪GTI18N_11d87614_000002⟫io.Reader⟪GTI18N_11d87614_000003⟫ y modifica el flujo de algún modo.
+
+Por ejemplo, la función [[⟪GTI18N_11d87614_000004⟫][gzip.NewReader]] recibe un ⟪GTI18N_11d87614_000005⟫io.Reader⟪GTI18N_11d87614_000006⟫ (un flujo de datos comprimidos) y devuelve un ⟪GTI18N_11d87614_000007⟫*gzip.Reader⟪GTI18N_11d87614_000008⟫ que también implementa ⟪GTI18N_11d87614_000009⟫io.Reader⟪GTI18N_11d87614_000010⟫ (un flujo de datos descomprimidos).
+
+Implementa un ⟪GTI18N_11d87614_000011⟫rot13Reader⟪GTI18N_11d87614_000012⟫ que implemente ⟪GTI18N_11d87614_000013⟫io.Reader⟪GTI18N_11d87614_000014⟫ y lea de un ⟪GTI18N_11d87614_000015⟫io.Reader⟪GTI18N_11d87614_000016⟫, modificando el flujo mediante la aplicación del cifrado de sustitución [[⟪GTI18N_11d87614_000017⟫][rot13]] a todos los caracteres alfabéticos.
+
+Ya se proporciona el tipo ⟪GTI18N_11d87614_000018⟫rot13Reader⟪GTI18N_11d87614_000019⟫.
+Haz que sea un ⟪GTI18N_11d87614_000020⟫io.Reader⟪GTI18N_11d87614_000021⟫ implementando su método ⟪GTI18N_11d87614_000022⟫Read⟪GTI18N_11d87614_000023⟫.
+
+⟪GTI18N_11d87614_000024⟫

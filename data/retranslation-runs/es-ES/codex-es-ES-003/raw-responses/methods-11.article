@@ -1,0 +1,13 @@
+* Valores de interfaz
+
+Internamente, los valores de interfaz se pueden considerar como una tupla formada por un valor y un
+tipo concreto:
+
+⟪GTI18N_ccb2ed70_000001⟫
+
+Un valor de interfaz contiene un valor de un tipo concreto subyacente específico.
+
+Al llamar a un método sobre un valor de interfaz, se ejecuta el método con el mismo nombre de
+su tipo subyacente.
+
+⟪GTI18N_ccb2ed70_000002⟫
