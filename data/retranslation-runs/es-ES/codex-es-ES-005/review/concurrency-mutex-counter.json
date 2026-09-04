@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "batch_id": "codex-es-ES-005",
+  "locale": "es-ES",
+  "unit_id": "example:concurrency/mutex-counter.go",
+  "unit_kind": "example",
+  "source_path": "_content/tour/concurrency/mutex-counter.go",
+  "source_sha256": "74488ecc347a123c8538069175ffeef5ea38577bb37b2c7a9ceb6bba47ab02b4",
+  "attempt": 1,
+  "candidate_path": "candidates/concurrency-mutex-counter.go",
+  "candidate_sha256": "1aa60ba852e766edf6b9b31216c99447e3aa5bfcb3380ab45f5c90b0b9b64b6c",
+  "validation_path": "validation/concurrency-mutex-counter.json",
+  "validation_sha256": "be1ae1c62ed5d21fd5140a91d4d1442ba3817ee8ab99326f3d68f9f4aca2acdd",
+  "decision": "approved",
+  "reviewer": "ChatGPT",
+  "reviewed_at": "2026-09-04T04:41:08Z",
+  "rubric": "translation-quality/v1",
+  "rating": "A",
+  "summary": "Independently reviewed source, final candidate, es-ES glossary, validation evidence, and Snapshot identity for each TranslationUnit; all are accurate, complete, natural, technically correct, glossary-consistent, and ready for production.",
+  "issues": []
+}
