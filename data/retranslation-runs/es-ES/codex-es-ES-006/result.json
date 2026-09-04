@@ -1,0 +1,33 @@
+{
+  "schema_version": 2,
+  "batch_id": "codex-es-ES-006",
+  "locale": "es-ES",
+  "unit_count": 3,
+  "restore_passed": 3,
+  "restore_failed": 0,
+  "validation_passed": 3,
+  "validation_failed": 0,
+  "units": [
+    {
+      "unit_id": "welcome/2",
+      "unit_kind": "page",
+      "status": "passed",
+      "candidate_path": "candidates/welcome-2.article",
+      "validation_path": "validation/welcome-2.json"
+    },
+    {
+      "unit_id": "basics/14",
+      "unit_kind": "page",
+      "status": "passed",
+      "candidate_path": "candidates/basics-14.article",
+      "validation_path": "validation/basics-14.json"
+    },
+    {
+      "unit_id": "concurrency/2",
+      "unit_kind": "page",
+      "status": "passed",
+      "candidate_path": "candidates/concurrency-2.article",
+      "validation_path": "validation/concurrency-2.json"
+    }
+  ]
+}
