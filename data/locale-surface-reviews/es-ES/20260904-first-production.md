@@ -1,13 +1,14 @@
-# es-ES Locale Surface Review — 2026-09-04 首次 production Stage A evidence
+# es-ES Locale Surface Review — 2026-09-04 首次 production 持续工作记录
 
-这是 es-ES 首次 production 的 Locale Surface Review 工作记录。目前仅完成并记录 A（Locale-level language quality review）。B（Rendered surface acceptance）和 production verification 尚未执行；本文件不记录最终 Locale Surface Review decision。
+这是 es-ES 首次 production 的 Locale Surface Review 持续工作记录。A（Locale-level language quality review）和 preview rendered acceptance 已完成；production 尚未发生，因此本文件不记录最终 Locale Surface Review decision。
 
 ## 审核身份
 
 - locale：`es-ES`
 - review_id：`20260904-first-production`
 - Stage A reviewed baseline commit：`eaaa133c090b632ea6aa348e45f2bab7c9e9f468` (`eaaa133`)
-- 当前 worktree `HEAD`：`eaaa133c090b632ea6aa348e45f2bab7c9e9f468` (`eaaa133`)
+- A machine gate committed at：`2341fdf2d0023c938a5fb33ae1080f64fd012806` (`2341fdf`)
+- complete locale preview reviewed commit：`2341fdf2d0023c938a5fb33ae1080f64fd012806` (`2341fdf`)
 - configured production public identity：`https://es-go-dev.shuijingwanwq.com/`
 - date：`2026-09-04`
 
@@ -127,15 +128,56 @@ Course metadata：
 
 ## B. Rendered surface acceptance
 
-结果：`not yet executed`
+结果：`passed`
 
-尚未运行 complete locale preview，尚未执行 browser acceptance，也尚未执行 visual HUMAN gate。本记录不声称任何 preview 或 rendered surface acceptance 已通过。
+### Preview identity
+
+- locale：`es-ES`
+- preview loopback URL：<http://127.0.0.1:42251/>
+- reviewed commit：`2341fdf2d0023c938a5fb33ae1080f64fd012806` (`2341fdf`)
+
+### Automated preview rendered acceptance
+
+实际执行：
+
+```sh
+scripts/verify-preview-browser.py \
+  http://127.0.0.1:42251/ \
+  es-ES
+```
+
+实际结果：
+
+```text
+[preview-browser] preview identity: PASS
+[preview-browser] SEO/routes: PASS
+[preview-browser] desktop rendered surface: PASS
+[preview-browser] editor Run / Format / Reset: PASS
+[preview-browser] SPA: PASS
+[preview-browser] mobile /tour/moretypes/1: PASS
+PREVIEW SURFACE ACCEPTANCE: PASS
+```
+
+- preview automated rendered acceptance：`passed`
+
+### Visual HUMAN gate
+
+结果：`passed`
+
+人工 visual gate 仅确认 desktop / mobile 的整体排版没有明显视觉异常。不重新声称人工检查自动脚本已覆盖的 canonical、sitemap、Run / Format / Reset、SPA、language selector URL、`/socket` 或 overflow。
+
+- visual HUMAN gate：`passed`
+- unresolved preview rendered blocker：`none`
 
 ## Production verification
 
 结果：`not yet executed`
 
-尚未 publish、部署或验收 production；本记录不声称 es-ES 已进入 production 或已完成 production verification。
+- publish：`not yet executed`
+- production deployment：`not yet executed`
+- production verification：`not yet executed`
+
+本记录不声称 es-ES 已进入 production。
 
 ## Reviewer
 
@@ -147,8 +189,10 @@ Course metadata：
 ## Issues 与当前 gate status
 
 - unresolved language blocker：`none`
-- B rendered surface acceptance：`not yet executed`
+- preview automated rendered acceptance：`passed`
+- visual HUMAN gate：`passed`
+- unresolved preview rendered blocker：`none`
 - production verification：`not yet executed`
 - overall final decision：尚未记录
 
-最终 Locale Surface Review decision 仅可在所有必需阶段完成后记录为 `passed` 或 `failed`；当前不写入 `decision`。
+首次 production 的最终 Locale Surface Review decision 仍等待 production verification；最终 decision 仅可在所有必需阶段完成后记录为 `passed` 或 `failed`，当前不写入 `decision`。
