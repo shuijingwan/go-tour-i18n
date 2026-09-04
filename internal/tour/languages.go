@@ -30,6 +30,7 @@ var languageRegistry = []LanguageLink{
 	{Locale: "de-DE", EnglishName: "German", Autonym: "Deutsch", URL: "https://de-go-dev.shuijingwanwq.com/"},
 	{Locale: "ja-JP", EnglishName: "Japanese", Autonym: "日本語", URL: "https://ja-go-dev.shuijingwanwq.com/"},
 	{Locale: "ko-KR", EnglishName: "Korean", Autonym: "한국어", URL: "https://ko-go-dev.shuijingwanwq.com/"},
+	{Locale: "es-ES", EnglishName: "Spanish", Autonym: "Español", URL: "https://es-go-dev.shuijingwanwq.com/"},
 }
 
 type localeProfile struct {

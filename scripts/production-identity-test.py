@@ -30,10 +30,10 @@ class ProductionIdentityTest(unittest.TestCase):
 
     def test_repository_identity(self):
         parsed = MODULE.load_identity(self.identity_path)
-        self.assertEqual([p["locale"] for p in parsed["locales"]], ["zh-CN", "ja-JP", "de-DE", "fr-FR", "ko-KR"])
-        korean = parsed["locales"][-1]
-        self.assertEqual(korean["production_state"], "live")
-        self.assertEqual(korean["loopback_port"], 4003)
+        self.assertEqual([p["locale"] for p in parsed["locales"]], ["zh-CN", "ja-JP", "de-DE", "fr-FR", "ko-KR", "es-ES"])
+        spanish = parsed["locales"][-1]
+        self.assertEqual(spanish["production_state"], "first-production")
+        self.assertEqual(spanish["loopback_port"], 4004)
 
     def test_unknown_or_missing_field_fails_closed(self):
         data = copy.deepcopy(self.identity)
@@ -73,7 +73,7 @@ class ProductionIdentityTest(unittest.TestCase):
     def test_unknown_locale_cli_fails_closed(self):
         original = sys.argv
         try:
-            sys.argv = ["production-identity.py", "--identity", str(self.identity_path), "locale", "es-ES"]
+            sys.argv = ["production-identity.py", "--identity", str(self.identity_path), "locale", "it-IT"]
             self.assertEqual(MODULE.main(), 1)
         finally:
             sys.argv = original

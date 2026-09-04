@@ -323,6 +323,73 @@ func TestKoKRGlossary(t *testing.T) {
 	}
 }
 
+func TestEsESGlossary(t *testing.T) {
+	glossary, err := LoadGlossary(repoRoot(t), "es-ES")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if glossary.Locale != "es-ES" {
+		t.Fatalf("glossary locale = %q, want es-ES", glossary.Locale)
+	}
+	for key, want := range map[string]string{
+		"A Tour of Go":    "Un tour por Go",
+		"Go Playground":   "Go Playground",
+		"Run":             "Ejecutar",
+		"Format":          "Formatear",
+		"Reset":           "Restablecer",
+		"slide":           "página",
+		"constraint":      "restricción",
+		"type switch":     "switch de tipo",
+		"type assertion":  "aserción de tipo",
+		"interface value": "valor de interfaz",
+		"type parameter":  "parámetro de tipo",
+	} {
+		if got := glossary.Mandatory[key]; got != want {
+			t.Errorf("mandatory[%q] = %q, want %q", key, got, want)
+		}
+	}
+	for key, want := range map[string]string{
+		"Go programming language": "lenguaje de programación Go",
+		"channel":                 "canal",
+		"interface":               "interfaz",
+		"struct":                  "estructura",
+		"array":                   "array",
+		"concurrency":             "concurrencia",
+		"generics":                "genéricos",
+		"generic programming":     "programación genérica",
+		"standard library":        "biblioteca estándar",
+		"map":                     "mapa",
+		"slice":                   "slice",
+		"zero value":              "valor cero",
+	} {
+		if got := glossary.Preferred[key]; got != want {
+			t.Errorf("preferred[%q] = %q, want %q", key, got, want)
+		}
+	}
+	for _, want := range []string{"Golang", "patio de juegos de Go", "rutina Go", "corrutina", "afirmación de tipo", "diapositiva"} {
+		if !containsString(glossary.Forbidden, want) {
+			t.Errorf("forbidden missing %q: %v", want, glossary.Forbidden)
+		}
+	}
+	for _, want := range []string{"Go", "go vet", "gofmt", "GOPATH", "URL", "API", "ASCII", "CPU", "UTC", "goroutine", "goroutines", "Goroutines"} {
+		if !containsString(glossary.Keep, want) {
+			t.Errorf("keep missing %q: %v", want, glossary.Keep)
+		}
+	}
+	rules := glossary.PromptRules("welcome/1")
+	for _, want := range []string{
+		"A Tour of Go => Un tour por Go（强制；不得保留对应的英文显示文本）",
+		"Go Playground => Go Playground（强制；不得保留对应的英文显示文本）",
+		"普通正文中的 channel => canal（上下文指导；应结合完整页面自然翻译）",
+		"goroutine（保持原样；不得翻译）",
+		"禁止使用的 es-ES 译法：Golang",
+	} {
+		if !strings.Contains(rules, want) {
+			t.Errorf("prompt rules missing %q", want)
+		}
+	}
+}
+
 func TestGlossaryKeepValidationAndLegacyTerms(t *testing.T) {
 	tests := []struct {
 		name, body, want string

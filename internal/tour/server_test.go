@@ -306,7 +306,7 @@ func TestRenderHomeDistinguishesDevelopmentAndProductionMetadata(t *testing.T) {
 }
 
 func TestHomepageLanguageRegistryAndLocaleProfiles(t *testing.T) {
-	if got, want := len(languageRegistry), 6; got != want {
+	if got, want := len(languageRegistry), 7; got != want {
 		t.Fatalf("language registry length = %d, want %d", got, want)
 	}
 	for i, want := range []LanguageLink{
@@ -316,6 +316,7 @@ func TestHomepageLanguageRegistryAndLocaleProfiles(t *testing.T) {
 		{Locale: "de-DE", EnglishName: "German", Autonym: "Deutsch", URL: "https://de-go-dev.shuijingwanwq.com/"},
 		{Locale: "ja-JP", EnglishName: "Japanese", Autonym: "日本語", URL: "https://ja-go-dev.shuijingwanwq.com/"},
 		{Locale: "ko-KR", EnglishName: "Korean", Autonym: "한국어", URL: "https://ko-go-dev.shuijingwanwq.com/"},
+		{Locale: "es-ES", EnglishName: "Spanish", Autonym: "Español", URL: "https://es-go-dev.shuijingwanwq.com/"},
 	} {
 		if got := languageRegistry[i]; got != want {
 			t.Errorf("languageRegistry[%d] = %+v, want %+v", i, got, want)
@@ -399,7 +400,7 @@ func TestHomepageLanguageRegistryAndLocaleProfiles(t *testing.T) {
 				t.Fatal(err)
 			}
 			home := string(homeBytes)
-			labels := []string{"Simplified Chinese — 简体中文", "English", "French — Français", "German — Deutsch", "Japanese — 日本語", "Korean — 한국어"}
+			labels := []string{"Simplified Chinese — 简体中文", "English", "French — Français", "German — Deutsch", "Japanese — 日本語", "Korean — 한국어", "Spanish — Español"}
 			for _, want := range append(labels, test.logURL, test.published, test.upstream, "© 2026 永夜", "蜀ICP备13001590号-1", `href="https://beian.miit.gov.cn/"`) {
 				if !strings.Contains(home, want) {
 					t.Errorf("homepage does not contain %q", want)

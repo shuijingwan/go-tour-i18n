@@ -12,7 +12,7 @@ import (
 const expectedCatalogMessages = 92
 
 func TestLoadEmbeddedCatalogs(t *testing.T) {
-	for _, locale := range []string{"de-DE", "en", "fr-FR", "ja-JP", "ko-KR", "zh-CN"} {
+	for _, locale := range []string{"de-DE", "en", "es-ES", "fr-FR", "ja-JP", "ko-KR", "zh-CN"} {
 		catalog, err := Load(locale)
 		if err != nil {
 			t.Fatalf("Load(%q): %v", locale, err)
@@ -27,6 +27,7 @@ func TestEditorToggleStatesAreLocalizedPerCatalog(t *testing.T) {
 	wants := map[string][2]string{
 		"en":    {"On", "Off"},
 		"de-DE": {"Ein", "Aus"},
+		"es-ES": {"Activado", "Desactivado"},
 		"fr-FR": {"Activé", "Désactivé"},
 		"ja-JP": {"オン", "オフ"},
 		"ko-KR": {"켜기", "끄기"},
@@ -198,6 +199,49 @@ func TestKoreanCatalogMatchesEnglishSource(t *testing.T) {
 		}
 		if strings.Contains(koreanMessage.Text, "TODO") {
 			t.Errorf("ko-KR message %q retains TODO", key)
+		}
+	}
+}
+
+func TestSpanishCatalogMatchesEnglishSource(t *testing.T) {
+	source, err := Load("en")
+	if err != nil {
+		t.Fatal(err)
+	}
+	spanish, err := Load("es-ES")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if spanish.HTMLLang != "es-ES" {
+		t.Fatalf("es-ES HTMLLang = %q, want es-ES", spanish.HTMLLang)
+	}
+	if got, want := len(spanish.Messages), expectedCatalogMessages; got != want {
+		t.Fatalf("es-ES message count = %d, want %d", got, want)
+	}
+	if err := validateCoverage(source, spanish); err != nil {
+		t.Fatalf("es-ES coverage: %v", err)
+	}
+	placeholderRE := regexp.MustCompile(`\{[a-z][a-z0-9_]*\}`)
+	markupRE := regexp.MustCompile(`<[^>]+>`)
+	allowedUntranslatedNames := map[string]bool{
+		"site.issue_feedback": true,
+		"footer.github":       true,
+	}
+	for key, sourceMessage := range source.Messages {
+		spanishMessage := spanish.Messages[key]
+		if got, want := strings.Join(placeholderRE.FindAllString(spanishMessage.Text, -1), "\x00"), strings.Join(placeholderRE.FindAllString(sourceMessage.Text, -1), "\x00"); got != want {
+			t.Errorf("es-ES message %q placeholders = %q, want %q", key, got, want)
+		}
+		if sourceMessage.Kind == "rich" {
+			if got, want := strings.Join(markupRE.FindAllString(spanishMessage.Text, -1), "\x00"), strings.Join(markupRE.FindAllString(sourceMessage.Text, -1), "\x00"); got != want {
+				t.Errorf("es-ES rich message %q markup = %q, want %q", key, got, want)
+			}
+		}
+		if spanishMessage.Text == sourceMessage.Text && !allowedUntranslatedNames[key] {
+			t.Errorf("es-ES message %q duplicates English source text", key)
+		}
+		if strings.Contains(spanishMessage.Text, "TODO") {
+			t.Errorf("es-ES message %q retains TODO", key)
 		}
 	}
 }
