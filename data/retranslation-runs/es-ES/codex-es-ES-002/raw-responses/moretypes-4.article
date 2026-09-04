@@ -1,0 +1,10 @@
+* Punteros a estructuras
+
+Se puede acceder a los campos de una estructura mediante un puntero a la estructura.
+
+Para acceder al campo ⟪GTI18N_29695d33_000001⟫X⟪GTI18N_29695d33_000002⟫ de una estructura cuando tenemos el puntero ⟪GTI18N_29695d33_000003⟫p⟪GTI18N_29695d33_000004⟫ a dicha estructura, podríamos
+escribir ⟪GTI18N_29695d33_000005⟫(*p).X⟪GTI18N_29695d33_000006⟫.
+Sin embargo, esa notación resulta engorrosa, por lo que el lenguaje permite
+escribir simplemente ⟪GTI18N_29695d33_000007⟫p.X⟪GTI18N_29695d33_000008⟫, sin la desreferenciación explícita.
+
+⟪GTI18N_29695d33_000009⟫

@@ -1,0 +1,11 @@
+* Los slices son como referencias a arrays
+
+Un slice no almacena ningún dato;
+solo describe una sección de un array subyacente.
+
+Al modificar los elementos de un slice, se modifican los
+elementos correspondientes de su array subyacente.
+
+Los demás slices que compartan el mismo array subyacente reflejarán esos cambios.
+
+⟪GTI18N_e577f9e9_000001⟫
