@@ -1,0 +1,10 @@
+* Ejercicio: rastreador web
+
+En este ejercicio usarás las funciones de concurrencia de ⟪GTI18N_bb686393_000001⟫ para paralelizar un rastreador web.
+
+Modifica la función ⟪GTI18N_bb686393_000002⟫Crawl⟪GTI18N_bb686393_000003⟫ para obtener URL en paralelo sin obtener dos veces la misma ⟪GTI18N_bb686393_000004⟫.
+
+⟪GTI18N_bb686393_000005⟫Pista⟪GTI18N_bb686393_000006⟫: puedes mantener en un mapa una caché de las URL obtenidas, pero los mapas por sí solos no son
+seguros para el uso concurrente.
+
+⟪GTI18N_bb686393_000007⟫

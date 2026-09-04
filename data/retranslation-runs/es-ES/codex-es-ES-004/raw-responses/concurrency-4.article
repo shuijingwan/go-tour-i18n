@@ -1,0 +1,15 @@
+* Range y cierre
+
+Un emisor puede ⟪GTI18N_3e925c67_000001⟫cerrar⟪GTI18N_3e925c67_000002⟫ un canal para indicar que no se enviarán más valores. Los receptores pueden comprobar si un canal se ha cerrado asignando un segundo parámetro a la expresión de recepción: después de
+
+⟪GTI18N_3e925c67_000003⟫
+
+⟪GTI18N_3e925c67_000004⟫ok⟪GTI18N_3e925c67_000005⟫ es ⟪GTI18N_3e925c67_000006⟫false⟪GTI18N_3e925c67_000007⟫ si no quedan valores por recibir y el canal está cerrado.
+
+El bucle ⟪GTI18N_3e925c67_000008⟫for`i`:=`range`c⟪GTI18N_3e925c67_000009⟫ recibe repetidamente valores del canal hasta que este se cierra.
+
+⟪GTI18N_3e925c67_000010⟫Nota:⟪GTI18N_3e925c67_000011⟫ Solo el emisor debe cerrar un canal, nunca el receptor. Enviar datos a un canal cerrado provocará un panic.
+
+⟪GTI18N_3e925c67_000012⟫Otra*nota:⟪GTI18N_3e925c67_000013⟫ Los canales no son como los archivos; por lo general, no es necesario cerrarlos. Solo hay que cerrar un canal cuando se debe indicar al receptor que no llegarán más valores, por ejemplo, para finalizar un bucle ⟪GTI18N_3e925c67_000014⟫range⟪GTI18N_3e925c67_000015⟫.
+
+⟪GTI18N_3e925c67_000016⟫
