@@ -42,6 +42,7 @@ type localeProfile struct {
 
 var (
 	berlinTime = mustLoadLocation("Europe/Berlin")
+	madridTime = mustLoadLocation("Europe/Madrid")
 	parisTime  = mustLoadLocation("Europe/Paris")
 )
 
@@ -62,6 +63,12 @@ var localeProfiles = map[string]localeProfile{
 		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",
 		TimeZone:          parisTime,
 		TimeLabel:         "heure locale",
+		TimeLabelFormat:   " (%s)",
+	},
+	"es-ES": {
+		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",
+		TimeZone:          madridTime,
+		TimeLabel:         "hora local",
 		TimeLabelFormat:   " (%s)",
 	},
 	"ja-JP": {
