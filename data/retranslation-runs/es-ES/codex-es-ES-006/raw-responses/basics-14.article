@@ -1,0 +1,13 @@
+* Inferencia de tipos
+
+Al declarar una variable sin especificar un tipo explícito —ya sea mediante la sintaxis ⟪GTI18N_21c4077c_000001⟫:=⟪GTI18N_21c4077c_000002⟫ o mediante una declaración ⟪GTI18N_21c4077c_000003⟫var`=⟪GTI18N_21c4077c_000004⟫—, el tipo de la variable se infiere a partir del valor situado a la derecha.
+
+Cuando el lado derecho de la declaración tiene un tipo, la nueva variable tiene ese mismo tipo:
+
+⟪GTI18N_21c4077c_000005⟫⟪GTI18N_21c4077c_000006⟫ es un ⟪GTI18N_21c4077c_000007⟫⟪GTI18N_21c4077c_000008⟫Pero cuando el lado derecho contiene una constante numérica sin tipo, la nueva variable puede ser un ⟪GTI18N_21c4077c_000009⟫int⟪GTI18N_21c4077c_000010⟫, un ⟪GTI18N_21c4077c_000011⟫float64⟪GTI18N_21c4077c_000012⟫ o un ⟪GTI18N_21c4077c_000013⟫complex128⟪GTI18N_21c4077c_000014⟫, según la precisión de la constante:
+
+⟪GTI18N_21c4077c_000015⟫
+
+Prueba a cambiar el valor inicial de ⟪GTI18N_21c4077c_000016⟫v⟪GTI18N_21c4077c_000017⟫ en el código de ejemplo y observa cómo cambia su tipo.
+
+⟪GTI18N_21c4077c_000018⟫
