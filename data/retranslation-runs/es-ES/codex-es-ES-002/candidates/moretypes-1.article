@@ -1,0 +1,24 @@
+* Punteros
+
+Go tiene punteros.
+Un puntero almacena la dirección de memoria de un valor.
+
+El tipo `*T` es un puntero a un valor de tipo `T`. Su valor cero es `nil`.
+
+	var p *int
+
+El operador `&` genera un puntero a su operando.
+
+	i := 42
+	p = &i
+
+El operador `*` representa el valor subyacente al que apunta el puntero.
+
+	fmt.Println(*p) // leer i mediante el puntero p
+	*p = 21         // modificar i mediante el puntero p
+
+Esto se conoce como «desreferenciación» o «indirección».
+
+A diferencia de C, Go no tiene aritmética de punteros.
+
+.play moretypes/pointers.go

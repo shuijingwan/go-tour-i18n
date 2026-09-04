@@ -1,0 +1,12 @@
+* Continuación de range
+
+Puedes omitir el índice o el valor asignándolo a `_`.
+
+    for i, _ := range pow
+    for _, value := range pow
+
+Si solo necesitas el índice, puedes omitir la segunda variable.
+
+    for i := range pow
+
+.play moretypes/range-continued.go

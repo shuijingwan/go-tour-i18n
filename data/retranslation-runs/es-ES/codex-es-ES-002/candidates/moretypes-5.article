@@ -1,0 +1,9 @@
+* Literales de estructura
+
+Un literal de estructura representa un valor de estructura recién creado mediante la enumeración de los valores de sus campos.
+
+Puedes enumerar solo un subconjunto de campos mediante la sintaxis `Name:`. (El orden de los campos con nombre es irrelevante.)
+
+El prefijo especial `&` devuelve un puntero al valor de la estructura.
+
+.play moretypes/struct-literals.go

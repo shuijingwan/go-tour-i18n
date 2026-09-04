@@ -1,0 +1,18 @@
+* Valores predeterminados de los slices
+
+Al crear un slice, puedes omitir el límite superior o el inferior para utilizar sus valores predeterminados.
+
+El valor predeterminado del límite inferior es cero, y el del superior es la longitud del slice o array subyacente.
+
+Para el array
+
+	var a [10]int
+
+estas expresiones de slice son equivalentes:
+
+	a[0:10]
+	a[:10]
+	a[0:]
+	a[:]
+
+.play moretypes/slice-bounds.go

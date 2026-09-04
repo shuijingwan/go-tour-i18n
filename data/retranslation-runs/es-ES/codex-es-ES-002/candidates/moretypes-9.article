@@ -1,0 +1,14 @@
+* Literales de slice
+
+Un literal de slice es como un literal de array sin la longitud.
+
+Esto es un literal de array:
+
+	[3]bool{true, true, false}
+
+Y esto crea el mismo array que el anterior,
+para después construir un slice que hace referencia a él:
+
+	[]bool{true, true, false}
+
+.play moretypes/slice-literals.go
