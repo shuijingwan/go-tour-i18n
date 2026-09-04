@@ -430,9 +430,31 @@ else
   for candidate in /root/.acme.sh/acme.sh /root/oneinstack/acme.sh/acme.sh; do [[ -x $candidate ]] && { acme=$candidate; break; }; done
   [[ -n $acme ]] || fail 'cannot locate the verified acme.sh installation'
 fi
-zone_json=$(curl -fsS --connect-timeout 5 --max-time 20 -H "Authorization: Bearer $CF_Token" -H 'Content-Type: application/json' --get --data-urlencode "name=$zone" --data-urlencode 'status=active' https://api.cloudflare.com/client/v4/zones) || fail 'Cloudflare zone lookup failed'
+readonly CF_CONNECT_TIMEOUT=5 CF_MAX_TIME=20 CF_RETRY_ATTEMPTS=3
+cf_get() {
+  output=$1; shift
+  for attempt in $(seq 1 "$CF_RETRY_ATTEMPTS"); do
+    set +e
+    code=$(curl -sS --connect-timeout "$CF_CONNECT_TIMEOUT" --max-time "$CF_MAX_TIME" -o "$output" -w '%{http_code}' "$@")
+    curl_exit=$?
+    set -e
+    if [[ $curl_exit == 0 && $code == 200 ]]; then return 0; fi
+    if [[ $curl_exit != 0 ]]; then
+      case $curl_exit in
+        6|7|16|28|35) [[ $attempt != "$CF_RETRY_ATTEMPTS" ]] && { sleep "$attempt"; continue; };;
+      esac
+      fail "Cloudflare API transport failed (curl exit $curl_exit)"
+    fi
+    fail "Cloudflare API returned HTTP ${code:-000}"
+  done
+  fail 'Cloudflare API read retry exhausted'
+}
+cf_tmp=$(mktemp -d); trap 'rm -rf "$cf_tmp"' EXIT
+cf_get "$cf_tmp/zone" -H "Authorization: Bearer $CF_Token" -H 'Content-Type: application/json' --get --data-urlencode "name=$zone" --data-urlencode 'status=active' https://api.cloudflare.com/client/v4/zones
+zone_json=$(<"$cf_tmp/zone")
 zone_id=$(python3 -c 'import json,sys; d=json.load(sys.stdin); r=d.get("result",[]); assert d.get("success") is True and len(r)==1; print(r[0]["id"])' <<<"$zone_json") || fail 'Cloudflare zone name did not resolve uniquely'
-dns_json=$(curl -fsS --connect-timeout 5 --max-time 20 -H "Authorization: Bearer $CF_Token" -H 'Content-Type: application/json' --get --data-urlencode "name=$hostname" "https://api.cloudflare.com/client/v4/zones/$zone_id/dns_records") || fail 'Cloudflare DNS lookup failed'
+cf_get "$cf_tmp/dns" -H "Authorization: Bearer $CF_Token" -H 'Content-Type: application/json' --get --data-urlencode "name=$hostname" "https://api.cloudflare.com/client/v4/zones/$zone_id/dns_records"
+dns_json=$(<"$cf_tmp/dns")
 DNS_JSON="$dns_json" python3 - "$hostname" "$origin_ip" <<'PY' || fail 'existing Cloudflare DNS identity conflicts'
 import json,os,sys
 host,ip=sys.argv[1:]
@@ -668,27 +690,69 @@ code=$(curl -sS --resolve "$host:80:$ip" --connect-timeout 5 --max-time 20 -o /d
 secret=$1; zone=$2; host=$3; ip=$4
 set -a; . "$secret"; set +a
 [[ -n ${CF_Token:-} ]]
+fail() { printf '[first-production:cloudflare-dns] ERROR: %s\n' "$*" >&2; exit 1; }
 api=https://api.cloudflare.com/client/v4
-zone_json=$(curl -fsS -H "Authorization: Bearer $CF_Token" -H 'Content-Type: application/json' --get --data-urlencode "name=$zone" --data-urlencode 'status=active' "$api/zones")
-zone_id=$(python3 -c 'import json,sys; d=json.load(sys.stdin); r=d.get("result",[]); assert d.get("success") is True and len(r)==1; print(r[0]["id"])' <<<"$zone_json")
-records=$(curl -fsS -H "Authorization: Bearer $CF_Token" -H 'Content-Type: application/json' --get --data-urlencode "name=$host" "$api/zones/$zone_id/dns_records")
-state=$(RECORDS_JSON="$records" python3 - "$host" "$ip" <<'PY'
+readonly CF_CONNECT_TIMEOUT=5 CF_MAX_TIME=20 CF_RETRY_ATTEMPTS=3
+cf_tmp=$(mktemp -d); trap 'rm -rf "$cf_tmp"' EXIT
+cf_get() {
+  output=$1; shift
+  for attempt in $(seq 1 "$CF_RETRY_ATTEMPTS"); do
+    set +e
+    code=$(curl -sS --connect-timeout "$CF_CONNECT_TIMEOUT" --max-time "$CF_MAX_TIME" -o "$output" -w '%{http_code}' "$@")
+    curl_exit=$?
+    set -e
+    if [[ $curl_exit == 0 && $code == 200 ]]; then return 0; fi
+    if [[ $curl_exit != 0 ]]; then
+      case $curl_exit in
+        6|7|16|28|35) [[ $attempt != "$CF_RETRY_ATTEMPTS" ]] && { sleep "$attempt"; continue; };;
+      esac
+      fail "Cloudflare API transport failed (curl exit $curl_exit)"
+    fi
+    fail "Cloudflare API returned HTTP ${code:-000}"
+  done
+  fail 'Cloudflare API read retry exhausted'
+}
+dns_state() {
+  cf_get "$cf_tmp/records" -H "Authorization: Bearer $CF_Token" -H 'Content-Type: application/json' --get --data-urlencode "name=$host" "$api/zones/$zone_id/dns_records"
+  RECORDS_JSON=$(<"$cf_tmp/records") python3 - "$host" "$ip" <<'PY'
 import json,os,sys
 h,ip=sys.argv[1:]; d=json.loads(os.environ['RECORDS_JSON']); r=d.get('result',[]); assert d.get('success') is True and len(r)<=1
 if not r: print('absent')
 else:
  x=r[0]; assert x.get('type')=='A' and x.get('name')==h and x.get('content')==ip and x.get('proxied') is True; print('exact')
 PY
-)
-if [[ $state == absent ]]; then
-  payload=$(python3 - "$host" "$ip" <<'PY'
+}
+cf_get "$cf_tmp/zone" -H "Authorization: Bearer $CF_Token" -H 'Content-Type: application/json' --get --data-urlencode "name=$zone" --data-urlencode 'status=active' "$api/zones"
+zone_json=$(<"$cf_tmp/zone")
+zone_id=$(python3 -c 'import json,sys; d=json.load(sys.stdin); r=d.get("result",[]); assert d.get("success") is True and len(r)==1; print(r[0]["id"])' <<<"$zone_json")
+payload=$(python3 - "$host" "$ip" <<'PY'
 import json,sys
 print(json.dumps({'type':'A','name':sys.argv[1],'content':sys.argv[2],'proxied':True},separators=(',',':')))
 PY
 )
-  created=$(curl -fsS -X POST -H "Authorization: Bearer $CF_Token" -H 'Content-Type: application/json' --data "$payload" "$api/zones/$zone_id/dns_records")
-  python3 -c 'import json,sys; d=json.load(sys.stdin); assert d.get("success") is True and d.get("result",{}).get("proxied") is True' <<<"$created"
-fi
+for mutation_attempt in $(seq 1 "$CF_RETRY_ATTEMPTS"); do
+  state=$(dns_state) || fail 'Cloudflare DNS identity query failed'
+  [[ $state == exact ]] && exit 0
+  [[ $state == absent ]] || fail 'Cloudflare DNS identity conflicts'
+  set +e
+  post_code=$(curl -sS --connect-timeout "$CF_CONNECT_TIMEOUT" --max-time "$CF_MAX_TIME" -o "$cf_tmp/post" -w '%{http_code}' -X POST -H "Authorization: Bearer $CF_Token" -H 'Content-Type: application/json' --data "$payload" "$api/zones/$zone_id/dns_records")
+  post_exit=$?
+  set -e
+  if [[ $post_exit == 0 && $post_code == 200 ]]; then
+    python3 -c 'import json,sys; d=json.load(sys.stdin); assert d.get("success") is True and d.get("result",{}).get("proxied") is True' <"$cf_tmp/post" || fail 'Cloudflare DNS POST semantic response failed'
+  elif [[ $post_exit == 0 ]]; then
+    fail "Cloudflare DNS POST returned HTTP ${post_code:-000}"
+  else
+    case $post_exit in
+      6|7|16|28|35) : ;; # Result unknown: re-query before any possible next POST.
+      *) fail "Cloudflare DNS POST transport failed (curl exit $post_exit)";;
+    esac
+  fi
+  state=$(dns_state) || fail 'Cloudflare DNS identity re-query failed'
+  [[ $state == exact ]] && exit 0
+  [[ $state == absent ]] || fail 'Cloudflare DNS identity conflicts'
+done
+fail 'Cloudflare DNS mutation attempts exhausted without an exact identity'
 '''
         self.ssh(s["aliyun_ssh_alias"], script, (
             s["cloudflare_secret_file"], s["cloudflare_zone_name"],

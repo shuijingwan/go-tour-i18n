@@ -118,6 +118,63 @@ printf 200
             with self.assertRaises(ValueError):
                 FIRST.cloudflare_dns_state([dict(exact[0], type=record_type)], "fr.example", "192.0.2.1")
 
+    def cloudflare_dns_script(self):
+        identity = FIRST.IDENTITY.load_identity(ROOT / "production" / "identity.json")
+        instance = FIRST.Orchestrator.__new__(FIRST.Orchestrator)
+        instance.profile = next(profile for profile in identity["locales"] if profile["locale"] == "es-ES")
+        instance.shared = identity["shared"]
+        captured = []
+        instance.ssh = lambda host, script, args=(), **kwargs: captured.append(script)
+        instance.record = lambda stage: None
+        instance.cloudflare_dns()
+        return captured[0]
+
+    def run_cloudflare_dns(self, responses, expect_success):
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            fake_bin = root / "bin"; fake_bin.mkdir()
+            response_file = root / "responses"; response_file.write_text("\n".join(responses) + "\n", encoding="utf-8")
+            counter = root / "count"; log = root / "log"; secret = root / "cloudflare.env"
+            secret.write_text("CF_Token=not-a-real-token\n", encoding="utf-8")
+            curl = '''#!/usr/bin/env bash
+set -Eeuo pipefail
+count=0; [[ -f $FAKE_CF_COUNT ]] && count=$(<$FAKE_CF_COUNT); count=$((count + 1)); printf '%s' "$count" >$FAKE_CF_COUNT
+response=$(sed -n "${count}p" "$FAKE_CF_RESPONSES"); output=''; post=0
+while (($#)); do
+  case $1 in -o) shift; output=$1 ;; -X) shift; [[ $1 == POST ]] && post=1 ;; esac
+  shift
+done
+printf '%s\n' "$post" >>$FAKE_CF_LOG
+[[ $response == exit:* ]] && exit "${response#exit:}"
+if [[ -n $output ]]; then
+  if [[ $response == exact ]]; then printf '%s' '{"success":true,"result":[{"type":"A","name":"es-go-dev.shuijingwanwq.com","content":"121.40.248.29","proxied":true}]}' >$output
+  elif [[ $response == absent ]]; then printf '%s' '{"success":true,"result":[]}' >$output
+  elif [[ $response == conflict ]]; then printf '%s' '{"success":true,"result":[{"type":"A","name":"es-go-dev.shuijingwanwq.com","content":"192.0.2.99","proxied":true}]}' >$output
+  elif [[ $response == post ]]; then printf '%s' '{"success":true,"result":{"proxied":true}}' >$output
+  else printf '%s' '{"success":true,"result":[{"id":"zone-id","proxied":true}]}' >$output; fi
+fi
+printf 200
+'''
+            (fake_bin / "curl").write_text(curl, encoding="utf-8")
+            (fake_bin / "sleep").write_text("#!/usr/bin/env bash\nexit 0\n", encoding="utf-8")
+            for executable in (fake_bin / "curl", fake_bin / "sleep"): executable.chmod(0o755)
+            env = dict(os.environ, PATH=str(fake_bin) + os.pathsep + os.environ["PATH"], FAKE_CF_RESPONSES=str(response_file), FAKE_CF_COUNT=str(counter), FAKE_CF_LOG=str(log))
+            result = subprocess.run(["bash", "-s", "--", str(secret), "example.com", "es-go-dev.shuijingwanwq.com", "121.40.248.29"], input=self.cloudflare_dns_script(), capture_output=True, text=True, env=env)
+            if expect_success: self.assertEqual(result.returncode, 0, result.stderr)
+            else: self.assertNotEqual(result.returncode, 0)
+            return log.read_text(encoding="utf-8").splitlines()
+
+    def test_cloudflare_read_only_transient_retry_and_exhaustion(self):
+        self.assertEqual(self.run_cloudflare_dns(["exit:7", "zone", "exact"], True), ["0", "0", "0"])
+        self.assertEqual(self.run_cloudflare_dns(["exit:7", "exit:7", "exit:7"], False), ["0", "0", "0"])
+
+    def test_cloudflare_dns_mutation_requeries_unknown_results(self):
+        self.assertEqual(self.run_cloudflare_dns(["zone", "exact"], True), ["0", "0"])
+        self.assertEqual(self.run_cloudflare_dns(["zone", "absent", "exit:28", "exact"], True), ["0", "0", "1", "0"])
+        self.assertEqual(self.run_cloudflare_dns(["zone", "absent", "exit:28", "absent", "absent", "post", "exact"], True), ["0", "0", "1", "0", "0", "1", "0"])
+        self.assertEqual(self.run_cloudflare_dns(["zone", "absent", "exit:28", "conflict"], False), ["0", "0", "1", "0"])
+        self.assertEqual(self.run_cloudflare_dns(["zone", "absent", "exit:28", "absent", "absent", "exit:28", "absent", "absent", "exit:28", "absent"], False), ["0", "0", "1", "0", "0", "1", "0", "0", "1", "0"])
+
     def test_playground_add_is_idempotent_and_preserves_existing(self):
         updated = FIRST.update_playground_config(PLAYGROUND, "fr-go-dev.shuijingwanwq.com")
         self.assertIn("go-dev|ja-go-dev|fr-go-dev", updated)

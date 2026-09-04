@@ -203,7 +203,7 @@ preflight 在任何 production mutation 前同时检查：正式 bundle 与 iden
 
 Playground mutation 只接受当前已验证的“两处相同精确 Origin 正则 + 唯一 compile/fmt location”结构，保留全部既有 origin、避免重复，并在 `nginx -t`/reload 失败时恢复备份。随后验证新 origin 的 OPTIONS 204、POST 200、wrong Origin 403、GET 405。
 
-FIRST_DEPLOYMENT 仍严格复用 `deploy-production.sh` 的 upload/current/health 状态机；编排器不实现第二套部署逻辑。源站连续健康后先从 zgocloud 用真实 hostname/SNI 和 `--resolve` 验收 HTTPS、HTTP redirect、关键 route、canonical、`html lang`、shared-assets 与 `/socket`。只有这一步通过才调用 Cloudflare API；已存在完全相同的 proxied A record 幂等通过，未知类型、IP、proxy 状态或重复记录一律拒绝。API failure 不回滚已健康的 origin。
+FIRST_DEPLOYMENT 仍严格复用 `deploy-production.sh` 的 upload/current/health 状态机；编排器不实现第二套部署逻辑。源站连续健康后先从 zgocloud 用真实 hostname/SNI 和 `--resolve` 验收 HTTPS、HTTP redirect、关键 route、canonical、`html lang`、shared-assets 与 `/socket`。只有这一步通过才调用 Cloudflare API；已存在完全相同的 proxied A record 幂等通过，未知类型、IP、proxy 状态或重复记录一律拒绝。Cloudflare 的只读 zone/DNS GET 对明确瞬态 curl transport exit `6`、`7`、`16`、`28`、`35` 最多重试 3 次，并使用 1s/2s backoff；每次最终仍要求 curl exit `0`、HTTP 200、Cloudflare `success=true` 以及原有唯一 identity 语义，其他 transport 或 HTTP/API semantic failure 均 fail closed。DNS POST 从不因 transport timeout/失败盲重发：每次 mutation 前先重查 identity，只有 `absent` 才 POST；POST 结果未知后必须重查，`exact` 即成功、`conflict` 立即停止、仍为 `absent` 才可在最多 3 次 mutation 内再次 POST。POST 成功后同样重查，并最终要求唯一 exact proxied A record；尝试耗尽或网络持续失败均 fail closed。API failure 不回滚已健康的 origin。
 
 first-production 不查询或解析 Cloudflare Cache Rule expression，也不修改 account-wide rule；Cache Rule 的实际 eligibility 只由随后从 zgocloud 发起的真实公网 `CF-Cache-Status` machine gate 验证。
 
