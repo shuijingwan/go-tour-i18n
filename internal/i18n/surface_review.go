@@ -10,7 +10,10 @@ import (
 	"regexp"
 )
 
-const localeSurfaceReviewASchemaVersion = 1
+const (
+	localeSurfaceReviewASchemaVersionV1 = 1
+	localeSurfaceReviewASchemaVersion   = 2
+)
 const localeSurfaceReviewAStage = "locale-level-language-quality-review"
 
 // LocaleSurfaceReviewAGate is the machine-readable receipt recorded after the
@@ -30,16 +33,37 @@ type LocaleSurfaceReviewAGate struct {
 // supplied by a reviewer. The config hashes cover the build-time language
 // registry, locale profile, public project copy, and SEO origin behavior.
 type LocaleSurfaceReviewAInputs struct {
-	UIEnglishSHA256          string `json:"ui_english_sha256"`
-	UILocaleSHA256           string `json:"ui_locale_sha256"`
-	GlossarySHA256           string `json:"glossary_sha256"`
-	ArticleMetadataSHA256    string `json:"article_metadata_sha256"`
-	CourseMetadataSHA256     string `json:"course_metadata_sha256"`
-	CatalogSourceSHA256      string `json:"catalog_source_sha256"`
-	LanguagesConfigSHA256    string `json:"languages_config_sha256"`
-	ProjectConfigSHA256      string `json:"project_config_sha256"`
-	SEOConfigSHA256          string `json:"seo_config_sha256"`
-	ProductionIdentitySHA256 string `json:"production_identity_sha256"`
+	UIEnglishSHA256       string `json:"ui_english_sha256"`
+	UILocaleSHA256        string `json:"ui_locale_sha256"`
+	GlossarySHA256        string `json:"glossary_sha256"`
+	ArticleMetadataSHA256 string `json:"article_metadata_sha256"`
+	CourseMetadataSHA256  string `json:"course_metadata_sha256"`
+	CatalogSourceSHA256   string `json:"catalog_source_sha256"`
+	LanguagesConfigSHA256 string `json:"languages_config_sha256"`
+	ProjectConfigSHA256   string `json:"project_config_sha256"`
+	SEOConfigSHA256       string `json:"seo_config_sha256"`
+	// ProductionIdentitySHA256 is the v1 whole-file identity input. It remains
+	// present so historic receipts retain their original freshness semantics.
+	ProductionIdentitySHA256 string `json:"production_identity_sha256,omitempty"`
+	// ProductionPublicIdentitySHA256 is the v2 target-locale projection of the
+	// public identity used alongside the build-time language registry.
+	ProductionPublicIdentitySHA256 string `json:"production_public_identity_sha256,omitempty"`
+}
+
+type localeSurfaceReviewProductionIdentity struct {
+	Locales []localeSurfaceReviewProductionProfile `json:"locales"`
+}
+
+type localeSurfaceReviewProductionProfile struct {
+	Locale              string `json:"locale"`
+	ProductionHostname  string `json:"production_hostname"`
+	ProductionPublicURL string `json:"production_public_url"`
+}
+
+type localeSurfaceReviewPublicIdentity struct {
+	Locale              string `json:"locale"`
+	ProductionHostname  string `json:"production_hostname"`
+	ProductionPublicURL string `json:"production_public_url"`
 }
 
 var reviewIDPattern = regexp.MustCompile(`^[A-Za-z0-9][A-Za-z0-9._-]*$`)
@@ -55,6 +79,10 @@ func LocaleSurfaceReviewAGatePath(root, locale, reviewID string) (string, error)
 }
 
 func CurrentLocaleSurfaceReviewAInputs(root, locale string, catalog *Catalog) (LocaleSurfaceReviewAInputs, error) {
+	return currentLocaleSurfaceReviewAInputs(root, locale, catalog, localeSurfaceReviewASchemaVersion)
+}
+
+func currentLocaleSurfaceReviewAInputs(root, locale string, catalog *Catalog, schemaVersion int) (LocaleSurfaceReviewAInputs, error) {
 	if catalog == nil {
 		return LocaleSurfaceReviewAInputs{}, fmt.Errorf("Locale Surface Review A requires a catalog")
 	}
@@ -100,15 +128,71 @@ func CurrentLocaleSurfaceReviewAInputs(root, locale string, catalog *Catalog) (L
 	if err != nil {
 		return LocaleSurfaceReviewAInputs{}, err
 	}
-	productionIdentity, err := hashFile("production/identity.json")
-	if err != nil {
-		return LocaleSurfaceReviewAInputs{}, err
-	}
 	encoded, err := json.Marshal(catalog)
 	if err != nil {
 		return LocaleSurfaceReviewAInputs{}, fmt.Errorf("encode current catalog/source identity: %w", err)
 	}
-	return LocaleSurfaceReviewAInputs{uiEN, uiLocale, glossary, article, course, hashBytes(encoded), languages, project, seo, productionIdentity}, nil
+	inputs := LocaleSurfaceReviewAInputs{
+		UIEnglishSHA256:       uiEN,
+		UILocaleSHA256:        uiLocale,
+		GlossarySHA256:        glossary,
+		ArticleMetadataSHA256: article,
+		CourseMetadataSHA256:  course,
+		CatalogSourceSHA256:   hashBytes(encoded),
+		LanguagesConfigSHA256: languages,
+		ProjectConfigSHA256:   project,
+		SEOConfigSHA256:       seo,
+	}
+	switch schemaVersion {
+	case localeSurfaceReviewASchemaVersionV1:
+		productionIdentity, err := hashFile("production/identity.json")
+		if err != nil {
+			return LocaleSurfaceReviewAInputs{}, err
+		}
+		inputs.ProductionIdentitySHA256 = productionIdentity
+	case localeSurfaceReviewASchemaVersion:
+		productionPublicIdentity, err := localeSurfaceReviewPublicIdentityHash(root, locale)
+		if err != nil {
+			return LocaleSurfaceReviewAInputs{}, err
+		}
+		inputs.ProductionPublicIdentitySHA256 = productionPublicIdentity
+	default:
+		return LocaleSurfaceReviewAInputs{}, fmt.Errorf("unsupported Locale Surface Review A gate schema version %d", schemaVersion)
+	}
+	return inputs, nil
+}
+
+func localeSurfaceReviewPublicIdentityHash(root, locale string) (string, error) {
+	data, err := os.ReadFile(filepath.Join(root, "production", "identity.json"))
+	if err != nil {
+		return "", fmt.Errorf("read Locale Surface Review A production identity: %w", err)
+	}
+	var identity localeSurfaceReviewProductionIdentity
+	if err := json.Unmarshal(data, &identity); err != nil {
+		return "", fmt.Errorf("parse Locale Surface Review A production identity: %w", err)
+	}
+	profiles := make([]localeSurfaceReviewProductionProfile, 0, 1)
+	for _, profile := range identity.Locales {
+		if profile.Locale == locale {
+			profiles = append(profiles, profile)
+		}
+	}
+	if len(profiles) != 1 {
+		return "", fmt.Errorf("Locale Surface Review A production identity requires exactly one profile for %s", locale)
+	}
+	profile := profiles[0]
+	if profile.Locale == "" || profile.ProductionHostname == "" || profile.ProductionPublicURL == "" {
+		return "", fmt.Errorf("Locale Surface Review A production identity profile for %s is missing public identity fields", locale)
+	}
+	encoded, err := json.Marshal(localeSurfaceReviewPublicIdentity{
+		Locale:              profile.Locale,
+		ProductionHostname:  profile.ProductionHostname,
+		ProductionPublicURL: profile.ProductionPublicURL,
+	})
+	if err != nil {
+		return "", fmt.Errorf("encode Locale Surface Review A public identity: %w", err)
+	}
+	return hashBytes(encoded), nil
 }
 
 func RecordLocaleSurfaceReviewA(root, locale, reviewID, reviewer string, catalog *Catalog) (*LocaleSurfaceReviewAGate, string, error) {
@@ -128,7 +212,7 @@ func RecordLocaleSurfaceReviewA(root, locale, reviewID, reviewer string, catalog
 	if err != nil {
 		return nil, "", err
 	}
-	gate := &LocaleSurfaceReviewAGate{localeSurfaceReviewASchemaVersion, locale, reviewID, localeSurfaceReviewAStage, "passed", reviewer, inputs}
+	gate := &LocaleSurfaceReviewAGate{SchemaVersion: localeSurfaceReviewASchemaVersion, Locale: locale, ReviewID: reviewID, Stage: localeSurfaceReviewAStage, Decision: "passed", Reviewer: reviewer, Inputs: inputs}
 	data, err := json.MarshalIndent(gate, "", "  ")
 	if err != nil {
 		return nil, "", err
@@ -172,13 +256,16 @@ func RequireCurrentLocaleSurfaceReviewA(root, locale string, catalog *Catalog) e
 	if len(gates) == 0 {
 		return fmt.Errorf("Locale Surface Review A gate missing for %s; complete Locale Surface Review A and record the current A gate", locale)
 	}
-	current, err := CurrentLocaleSurfaceReviewAInputs(root, locale, catalog)
-	if err != nil {
-		return err
-	}
 	for _, gate := range gates {
-		if gate.SchemaVersion != localeSurfaceReviewASchemaVersion || gate.Locale != locale || gate.Stage != localeSurfaceReviewAStage || gate.Decision != "passed" || gate.ReviewID == "" || gate.Reviewer == "" {
+		if gate.Locale != locale || gate.Stage != localeSurfaceReviewAStage || gate.Decision != "passed" || gate.ReviewID == "" || gate.Reviewer == "" {
 			return fmt.Errorf("language review evidence/gate stale: invalid Locale Surface Review A gate for %s", locale)
+		}
+		if gate.SchemaVersion != localeSurfaceReviewASchemaVersionV1 && gate.SchemaVersion != localeSurfaceReviewASchemaVersion {
+			return fmt.Errorf("language review evidence/gate stale: unsupported Locale Surface Review A gate schema version %d", gate.SchemaVersion)
+		}
+		current, err := currentLocaleSurfaceReviewAInputs(root, locale, catalog, gate.SchemaVersion)
+		if err != nil {
+			return err
 		}
 		if gate.Inputs != current {
 			continue

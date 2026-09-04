@@ -224,7 +224,7 @@ go run -mod=readonly ./cmd/tour-i18n first-production finalize \
   --review-id YYYYMMDD-first-production
 ```
 
-finalizer 从 release/receipt 和正式 identity 获取 locale、hostname、release，拒绝调用者重复输入 production identity。它要求 receipt schema 正确、`result=passed`、`public-machine` 和 `browser` 均为 PASS，且当前 Locale Surface Review A gate 仍有效；随后才显示 HUMAN gate 并要求维护者精确输入 `VISUAL-PASS`。非 TTY、EOF、错误输入均不修改 evidence 或 identity；没有 `--yes`、环境变量或默认 bypass。它只替换 evidence 中唯一且完整的 finalization placeholder，记录 receipt identity、machine/browser passed、`maintainer confirmation` 的 visual passed、无 blocker 和最终 decision；再原子地仅将目标 locale 的 `production_state` 从 `first-production` 改为 `live`，并重新验证 identity。任一失败会 fail closed 并回滚已写入的一侧。已 `live` locale 必须拒绝重复 finalize。可用只读 `surface-review check-a --locale <locale>` 检查当前 A gate；finalize 后 identity SHA 改变会使旧 A gate stale，这是既有接受行为。
+finalizer 从 release/receipt 和正式 identity 获取 locale、hostname、release，拒绝调用者重复输入 production identity。它要求 receipt schema 正确、`result=passed`、`public-machine` 和 `browser` 均为 PASS，且当前 Locale Surface Review A gate 仍有效；随后才显示 HUMAN gate 并要求维护者精确输入 `VISUAL-PASS`。非 TTY、EOF、错误输入均不修改 evidence 或 identity；没有 `--yes`、环境变量或默认 bypass。它只替换 evidence 中唯一且完整的 finalization placeholder，记录 receipt identity、machine/browser passed、`maintainer confirmation` 的 visual passed、无 blocker 和最终 decision；再原子地仅将目标 locale 的 `production_state` 从 `first-production` 改为 `live`，并重新验证 identity。任一失败会 fail closed 并回滚已写入的一侧。已 `live` locale 必须拒绝重复 finalize。可用只读 `surface-review check-a --locale <locale>` 检查当前 A gate；schema v2 A gate 不把 lifecycle 纳入语言质量 input，因此该 state transition 后仍 current，历史 schema v1 gate 则继续按整份 identity SHA 的旧语义 stale。
 
 成功摘要保持简洁，例如：
 

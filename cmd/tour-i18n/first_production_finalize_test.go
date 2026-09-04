@@ -16,7 +16,7 @@ func finalizeFixture(t *testing.T) (string, *i18n.Catalog, string, string, strin
 	root := t.TempDir()
 	for path, body := range map[string]string{
 		"internal/tour/ui/en.json": "en", "internal/tour/ui/zz-ZZ.json": "target", "locales/zz-ZZ/glossary.yaml": "g", "locales/zz-ZZ/article-metadata.json": "a", "locales/zz-ZZ/course-metadata.json": "c", "internal/tour/languages.go": "l", "internal/tour/project.go": "p", "internal/tour/seo.go": "s",
-		"production/identity.json": "{\n  \"locales\": [\n    {\"locale\": \"other-AA\", \"production_hostname\": \"other.example\", \"production_state\": \"live\"},\n    {\n      \"locale\": \"zz-ZZ\",\n      \"production_hostname\": \"zz.example\",\n      \"production_state\": \"first-production\"\n    }\n  ]\n}\n",
+		"production/identity.json": "{\n  \"locales\": [\n    {\"locale\": \"other-AA\", \"production_hostname\": \"other.example\", \"production_state\": \"live\"},\n    {\n      \"locale\": \"zz-ZZ\",\n      \"production_hostname\": \"zz.example\",\n      \"production_public_url\": \"https://zz.example/\",\n      \"production_state\": \"first-production\"\n    }\n  ]\n}\n",
 	} {
 		full := filepath.Join(root, path)
 		if err := os.MkdirAll(filepath.Dir(full), 0755); err != nil {
@@ -105,6 +105,9 @@ func TestFirstProductionFinalizeHumanGateAndAtomicTransition(t *testing.T) {
 	result, _ := os.ReadFile(evidence)
 	if !strings.Contains(string(result), "maintainer confirmation") || strings.Contains(string(result), "`PENDING`") {
 		t.Fatal("evidence was not finalized")
+	}
+	if err := i18n.RequireCurrentLocaleSurfaceReviewA(root, "zz-ZZ", catalog); err != nil {
+		t.Fatalf("v2 A gate became stale after lifecycle-only finalization: %v", err)
 	}
 	if err := finalizeFirstProduction(root, catalog, release, "review-1", strings.NewReader("VISUAL-PASS\n"), ioDiscard{}, true, noIdentityValidation); err == nil {
 		t.Fatal("live locale finalized twice")

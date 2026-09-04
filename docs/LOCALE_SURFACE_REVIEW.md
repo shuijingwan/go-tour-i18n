@@ -76,9 +76,13 @@ go run -mod=readonly ./cmd/tour-i18n surface-review record-a \
   --reviewer <reviewer>
 ```
 
-命令写入 `data/locale-surface-reviews/<locale>/<review-id>.a-gate.json`。其 schema 固定包含 `schema_version`、`locale`、`review_id`、`stage = locale-level-language-quality-review`、`decision = passed`、`reviewer` 和程序自动计算的 `inputs`；审核者不填写 SHA。当前实现的 inputs 覆盖英文与 locale UI catalog、locale glossary、article metadata、course metadata、完整当前 catalog/source identity，以及 `internal/tour/languages.go`、`project.go`、`seo.go` 和 `production/identity.json` 中会影响语言选择器、首页/导航项目文案和 runtime/SEO locale identity 的稳定 build-time 配置。
+命令写入 `data/locale-surface-reviews/<locale>/<review-id>.a-gate.json`。其 schema 固定包含 `schema_version`、`locale`、`review_id`、`stage = locale-level-language-quality-review`、`decision = passed`、`reviewer` 和程序自动计算的 `inputs`；审核者不填写 SHA。inputs 始终覆盖英文与 locale UI catalog、locale glossary、article metadata、course metadata、完整当前 catalog/source identity，以及 `internal/tour/languages.go`、`project.go`、`seo.go` 的稳定 build-time 输入。
 
-`preview --locale <locale>` 只接受 locale 正确、passed、schema/stage 完整且全部 inputs 与当前仓库一致的 gate。缺失、malformed、wrong-locale、non-passed 或任何 input 不一致均 fail closed；后者明确视为 stale language review evidence/gate。不要手写 JSON 或复用永久 `.passed` marker。
+新记录使用 **schema v2**。除 `languages.go`（实际 public canonical/robots/sitemap origin 的 build-time authority）外，v2 只从解析后的 `production/identity.json` 绑定目标 locale 的稳定 public identity projection：`locale`、`production_hostname`、`production_public_url`。该 projection 以固定 JSON encoding 后 hash；目标 profile 必须恰好一个，三个字段均非空，缺失、重复或 malformed identity 均 fail closed。它不绑定 `production_state`、port、service、data-root/release/current/lock、TLS/vhost、CDN/cache header、shared 配置或其他 locale profile；这些 lifecycle/基础设施变化本身不要求重新进行语言质量审核。
+
+历史 **schema v1** receipt 保持原语义：继续比较整份 `production/identity.json` 的 SHA-256，任意 identity 文件变化都会使其 stale。v1 receipt 不会按 v2 projection 重新解释、自动升级或伪造。未知 schema 同样 fail closed。
+
+`preview --locale <locale>` 只接受 locale 正确、passed、schema/stage 完整且该 schema 的全部 inputs 与当前仓库一致的 gate。缺失、malformed、wrong-locale、non-passed 或任何 input 不一致均 fail closed；后者明确视为 stale language review evidence/gate。对 v2，目标 locale 的 hostname 或 public URL 变化、`languages.go` 变化以及其他上述语言输入变化仍会 stale；仅 `first-production → live` 或其他 lifecycle/infra-only identity 变化不会 stale。不要手写 JSON 或复用永久 `.passed` marker。
 
 ## B. Rendered surface acceptance
 
