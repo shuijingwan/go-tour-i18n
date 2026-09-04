@@ -1,0 +1,7 @@
+* Clausuras de función
+
+Las funciones de Go pueden ser clausuras. Una clausura es un valor de función que hace referencia a variables externas a su cuerpo. La función puede acceder a esas variables y asignarles valores; en este sentido, la función está «vinculada» a las variables.
+
+Por ejemplo, la función `adder` devuelve una clausura. Cada clausura está vinculada a su propia variable `sum`.
+
+.play moretypes/function-closures.go

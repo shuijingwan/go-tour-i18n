@@ -1,0 +1,23 @@
+* Métodos e indirección de punteros
+
+Al comparar los dos programas anteriores, quizá observes que
+las funciones con un argumento de puntero deben recibir un puntero:
+
+	var v Vertex
+	ScaleFunc(v, 5)  // ¡Error de compilación!
+	ScaleFunc(&v, 5) // OK
+
+mientras que los métodos con receptores de puntero admiten un valor o un puntero como
+receptor cuando se invocan:
+
+	var v Vertex
+	v.Scale(5)  // OK
+	p := &v
+	p.Scale(10) // OK
+
+En la sentencia `v.Scale(5)`, aunque `v` es un valor y no un puntero,
+el método con receptor de puntero se invoca automáticamente.
+Es decir, para mayor comodidad, Go interpreta la sentencia `v.Scale(5)` como
+`(&v).Scale(5)`, ya que el método `Scale` tiene un receptor de puntero.
+
+.play methods/indirection.go
