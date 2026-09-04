@@ -190,7 +190,7 @@ scripts/first-production.sh \
 → scripts/deploy-production.sh <release-dir>
 → zgocloud --resolve direct-origin acceptance
 → Cloudflare proxied A record
-→ zgocloud public machine acceptance
+→ zgocloud minimal public readiness
 → scripts/verify-production.sh <release-dir>
 → Chrome automated browser acceptance
 → 极小 HUMAN visual gate
@@ -207,7 +207,7 @@ FIRST_DEPLOYMENT 仍严格复用 `deploy-production.sh` 的 upload/current/healt
 
 first-production 不查询或解析 Cloudflare Cache Rule expression，也不修改 account-wide rule；Cache Rule 的实际 eligibility 只由随后从 zgocloud 发起的真实公网 `CF-Cache-Status` machine gate 验证。
 
-公网 DNS 生效后，zgocloud 完成关键 route、105 URL sitemap、canonical/locale、socket、cache header、shared asset 与 Playground 验收；随后仍调用现有 `verify-production.sh` 做正式 machine acceptance。首次编排器为该命令设置内部 `VERIFY_PRODUCTION_NETWORK_SSH=zgocloud`，verification 建立 invocation-scoped SSH/SOCKS ControlMaster，使全部 public curl 的 TCP/DNS 从 zgocloud 发出；远端 identity/source 检查仍直接访问 aliyun。普通维护者调用方式不变。`verify-production-browser.py` 使用仓库既有 `google-chrome`/DevTools 基线，自动覆盖 desktop/mobile、普通与 editor course、`/tour/moretypes/1`、语言列表、Run/Format/Reset、runtime output、Playground endpoint、canonical/lang/SEO、socket、shared assets、course-ad mount/loader/request opportunity 和 SPA 下一页。广告 filled/unfilled 均可通过。
+Cloudflare DNS 创建后，first-production 只从 zgocloud 对新 hostname 做 bounded public readiness poll：正式 HTTPS 链路的首页必须为 HTTP 200 且具有目标 locale 的 `html lang`，因此不能以本地 DNS 字符串检查代替真实公网可达性。readiness 仅等待 DNS/CDN 生效，不承担第二套 production acceptance；它通过后立即且仅一次调用 `VERIFY_PRODUCTION_NETWORK_SSH=zgocloud scripts/verify-production.sh <release-dir>`。该脚本是 routes、homepage/welcome canonical 与 `html lang`、sitemap 及其 105 URL、普通/Upgrade `/socket` boundary、CDN cache header/eligibility 等通用 machine gate 的唯一正式实现；它建立 invocation-scoped SSH/SOCKS ControlMaster，使全部 public curl 的 TCP/DNS 从 zgocloud 发出，远端 identity/source 检查仍直接访问 aliyun。Playground Origin 已在其专属阶段完成接口/boundary 验收，shared-assets 已在 preflight 完成 current-state freshness/public verification；二者不在 readiness 重复请求。`verify-production-browser.py` 随后使用仓库既有 `google-chrome`/DevTools 基线，自动覆盖 desktop/mobile、普通与 editor course、`/tour/moretypes/1`、语言列表、Run/Format/Reset、runtime output、Playground endpoint、canonical/lang/SEO、socket、shared assets、course-ad mount/loader/request opportunity 和 SPA 下一页。广告 filled/unfilled 均可通过。
 
 全部自动验收 PASS 后，唯一人工 production gate 为：
 

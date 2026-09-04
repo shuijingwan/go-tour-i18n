@@ -53,7 +53,8 @@ class FirstProductionTest(unittest.TestCase):
         instance.public_machine()
         script = captured[0]
         start = script.index("readonly CURL_CONNECT_TIMEOUT=5")
-        end = script.index("for attempt in $(seq 1 30); do", start)
+        readiness = script.index("for readiness_attempt in $(seq 1 30); do", start)
+        end = script.index("\ndone", readiness) + len("\ndone")
         return script[start:end]
 
     def run_public_machine_request(self, failures, expect_success):
@@ -86,23 +87,26 @@ printf 200
             for executable in (fake_bin / "curl", fake_bin / "sleep"):
                 executable.chmod(0o755)
             runner = root / "run-request.sh"
-            outcome = "request 200 \"$temporary/body\" \"$temporary/headers\" https://example.invalid/" if expect_success else "if request 200 \"$temporary/body\" \"$temporary/headers\" https://example.invalid/; then exit 99; fi"
-            runner.write_text("#!/usr/bin/env bash\nset -Eeuo pipefail\ntemporary=$(mktemp -d)\ntrap 'rm -rf \"$temporary\"' EXIT\n" + helper + outcome + "\n", encoding="utf-8")
+            runner.write_text("#!/usr/bin/env bash\nset -Eeuo pipefail\nhost=example.invalid\nlocale=es-ES\ntemporary=$(mktemp -d)\ntrap 'rm -rf \"$temporary\"' EXIT\n" + helper + "\n", encoding="utf-8")
             runner.chmod(0o755)
             env = dict(os.environ, PATH=str(fake_bin) + os.pathsep + os.environ["PATH"], FAKE_CURL_COUNT=str(counter), FAKE_CURL_FAILURES=str(failures))
             result = subprocess.run([str(runner)], capture_output=True, text=True, env=env)
-            self.assertEqual(result.returncode, 0, result.stderr)
-            self.assertEqual(counter.read_text(encoding="utf-8"), str(failures + 1 if expect_success else 3))
+            if expect_success:
+                self.assertEqual(result.returncode, 0, result.stderr)
+            else:
+                self.assertNotEqual(result.returncode, 0)
+            self.assertEqual(counter.read_text(encoding="utf-8"), str(failures + 1 if expect_success else 90))
 
     def test_public_machine_retries_transient_curl_failure(self):
         self.run_public_machine_request(failures=1, expect_success=True)
 
     def test_public_machine_fails_closed_after_retry_exhaustion(self):
-        self.run_public_machine_request(failures=3, expect_success=False)
+        self.run_public_machine_request(failures=1000, expect_success=False)
 
     def test_stage_order_puts_origin_before_dns(self):
         self.assertLess(FIRST.STAGE_ORDER.index("direct-origin"), FIRST.STAGE_ORDER.index("cloudflare-dns"))
         self.assertLess(FIRST.STAGE_ORDER.index("cloudflare-dns"), FIRST.STAGE_ORDER.index("public-machine"))
+        self.assertLess(FIRST.STAGE_ORDER.index("public-machine"), FIRST.STAGE_ORDER.index("browser"))
 
     def test_dns_absent_exact_and_conflict(self):
         self.assertEqual(FIRST.cloudflare_dns_state([], "fr.example", "192.0.2.1"), "absent")
@@ -347,20 +351,59 @@ printf 200
         self.assertIn('cp -a "$backup" "$vhost"; "$nginx" -t && service nginx reload || true', mutation)
         self.assertNotIn("nginx -t", mutation.replace('"$nginx" -t', ""))
 
-    def test_public_machine_cache_eligibility_uses_real_status_without_rule_expression_parser(self):
+    def public_machine_instance(self, ssh_error=None, run_error=None):
+        identity = FIRST.IDENTITY.load_identity(ROOT / "production" / "identity.json")
+        instance = FIRST.Orchestrator.__new__(FIRST.Orchestrator)
+        instance.profile = next(profile for profile in identity["locales"] if profile["locale"] == "es-ES")
+        instance.shared = identity["shared"]
+        instance.release_dir = pathlib.Path("/tmp/go-tour-release-es-ES-test")
+        calls = []
+        def ssh(*args, **kwargs):
+            calls.append(("ssh", args, kwargs))
+            if ssh_error: raise ssh_error
+        def run(*args, **kwargs):
+            calls.append(("run", args, kwargs))
+            if run_error: raise run_error
+        instance.ssh = ssh
+        instance.run = run
+        instance.record = lambda stage: calls.append(("record", stage))
+        return instance, calls
+
+    def test_public_machine_readiness_then_one_formal_verifier(self):
+        instance, calls = self.public_machine_instance()
+        instance.public_machine()
+        self.assertEqual([call[0] for call in calls], ["ssh", "run", "record"])
+        _, ssh_args, ssh_kwargs = calls[0]
+        self.assertEqual(ssh_args[0], "zgocloud")
+        self.assertEqual(ssh_args[2], ("es-go-dev.shuijingwanwq.com", "es-ES"))
+        self.assertEqual(ssh_kwargs["stage"], "public-machine")
+        _, run_args, run_kwargs = calls[1]
+        self.assertEqual(run_args[0], ["env", "VERIFY_PRODUCTION_NETWORK_SSH=zgocloud", ROOT / "scripts" / "verify-production.sh", instance.release_dir])
+        self.assertEqual(run_kwargs["stage"], "public-machine")
+        self.assertEqual(calls[2], ("record", "public-machine"))
+
+    def test_public_machine_readiness_or_verifier_failure_never_records_pass(self):
+        readiness = FIRST.FirstProductionError("public-machine", "public readiness", "not ready", "wait")
+        instance, calls = self.public_machine_instance(ssh_error=readiness)
+        with self.assertRaises(FIRST.FirstProductionError): instance.public_machine()
+        self.assertEqual([call[0] for call in calls], ["ssh"])
+
+        verifier = FIRST.FirstProductionError("public-machine", "machine acceptance", "failed", "inspect")
+        instance, calls = self.public_machine_instance(run_error=verifier)
+        with self.assertRaises(FIRST.FirstProductionError): instance.public_machine()
+        self.assertEqual([call[0] for call in calls], ["ssh", "run"])
+
+    def test_public_machine_is_minimal_readiness_not_a_second_acceptance(self):
         source = (ROOT / "scripts" / "first-production.py").read_text(encoding="utf-8")
         start = source.index("    def public_machine(self):")
         end = source.index("\n    def browser(self):", start)
         public_machine = source[start:end]
-        self.assertIn("MISS|HIT|EXPIRED|REVALIDATED|UPDATING|STALE", public_machine)
         self.assertIn("readonly CURL_RETRY_ATTEMPTS=3", public_machine)
         self.assertIn("6|7|16|28|35", public_machine)
-        self.assertIn("request 200 /dev/null \"$temporary/cache\"", public_machine)
-        self.assertNotIn("DYNAMIC", public_machine)
-        self.assertNotIn("BYPASS", public_machine)
+        self.assertIn("grep -Eq", public_machine)
+        for duplicate in ("sitemap", "/socket", "cache_header", "playground", "shared_assets", "canonical", "xml.etree"):
+            self.assertNotIn(duplicate, public_machine)
         self.assertNotIn("curl -4", public_machine)
-        self.assertNotIn("rulesets/phases/http_request_cache_settings", source)
-        self.assertNotIn("cache_rule=", source)
 
     def test_aliyun_vhost_scanner_is_python36_compatible_and_separates_failures(self):
         identity = FIRST.IDENTITY.load_identity(ROOT / "production" / "identity.json")
