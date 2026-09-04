@@ -143,7 +143,7 @@ class PreviewBrowserTest(unittest.TestCase):
                                        "https://ko-go-dev.shuijingwanwq.com", True, list_metadata)
 
     def test_list_metadata_is_complete_for_all_formal_locales(self):
-        for locale in ("zh-CN", "ja-JP", "de-DE", "fr-FR", "ko-KR"):
+        for locale in ("zh-CN", "ja-JP", "de-DE", "fr-FR", "ko-KR", "es-ES"):
             with self.subTest(locale=locale):
                 metadata = PREVIEW.formal_list_metadata(locale)
                 self.assertTrue(all(metadata.values()))

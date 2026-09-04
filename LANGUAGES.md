@@ -15,14 +15,14 @@
 | `fr-FR` | Français | <https://fr-go-dev.shuijingwanwq.com/> | Cloudflare Free | 已正式上线的法语社区语言站；域名 language code 为 `fr` |
 | `de-DE` | Deutsch | <https://de-go-dev.shuijingwanwq.com/> | Cloudflare Free | 德语社区语言站；域名 language code 为 `de` |
 | `ja-JP` | 日本語 | <https://ja-go-dev.shuijingwanwq.com/> | Cloudflare Free | 已正式上线的日语社区语言站 |
-| `ko-KR` | 한국어 | <https://ko-go-dev.shuijingwanwq.com/> | Cloudflare Free | 已冻结生产身份、尚未首次上线的韩语社区语言站；域名 language code 为 `ko` |
-| `es-ES` | Español | <https://es-go-dev.shuijingwanwq.com/> | Cloudflare Free | 已冻结 production identity、尚未首次上线的西班牙语社区语言站；域名 language code 为 `es` |
+| `ko-KR` | 한국어 | <https://ko-go-dev.shuijingwanwq.com/> | Cloudflare Free | 已正式上线的韩语社区语言站；域名 language code 为 `ko` |
+| `es-ES` | Español | <https://es-go-dev.shuijingwanwq.com/> | Cloudflare Free | 已正式上线的西班牙语社区语言站；域名 language code 为 `es` |
 
 ## ko-KR production identity
 
 ko-KR 使用规范 locale 与 HTML `lang` `ko-KR`，本地显示名为 `한국어`，英文名为 `Korean`，域名 language code 为 `ko`。production hostname 为 <https://ko-go-dev.shuijingwanwq.com/>，CDN 使用 Cloudflare Free；非中文共享静态资源使用 <https://assets-go-dev.shuijingwanwq.com/>。Playground 后续需要允许的精确 Origin 为 `https://ko-go-dev.shuijingwanwq.com`。
 
-以下值是已冻结 production identity 的可读快照；权威、可执行来源为 `production/identity.json`。当前 `production_state` 使用现有首次上线生命周期值 `first-production`，只表示该 identity 将供未来首次生产编排器使用，不表示生产基础设施或部署已经完成。
+以下值是当前 production identity 的可读快照；权威、可执行来源为 `production/identity.json`。ko-KR 已完成首次 production，`production_state=live`。
 
 | 项目 | 值 |
 | --- | --- |
@@ -38,13 +38,13 @@ ko-KR 使用规范 locale 与 HTML `lang` `ko-KR`，本地显示名为 `한국�
 | TLS certificate | `/usr/local/nginx/conf/ssl/ko-go-dev.shuijingwanwq.com.crt` |
 | TLS private key | `/usr/local/nginx/conf/ssl/ko-go-dev.shuijingwanwq.com.key` |
 
-生产服务器已实际确认 `3999`、`4000`、`4001`、`4002` 正在监听，`4003` 当前未监听，因此正式采用 `4003`。本阶段不创建服务器文件，不修改 systemd、Nginx、Cloudflare 或 Playground，也不执行首次 production 部署。
+ko-KR 已完成首次 production；最终 evidence 为 `data/locale-surface-reviews/ko-KR/20260902-first-production.md`。后续 release 使用日常维护部署流程。
 
 ## es-ES production identity
 
-es-ES 使用规范 locale 与 HTML `lang` `es-ES`，本地显示名为 `Español`，英文名为 `Spanish`，域名 language code 为 `es`。production hostname 为 <https://es-go-dev.shuijingwanwq.com/>，CDN 使用 Cloudflare Free；非中文共享静态资源使用 <https://assets-go-dev.shuijingwanwq.com/>。Playground 后续需要允许的精确 Origin 为 `https://es-go-dev.shuijingwanwq.com`。
+es-ES 使用规范 locale 与 HTML `lang` `es-ES`，本地显示名为 `Español`，英文名为 `Spanish`，域名 language code 为 `es`。production hostname 为 <https://es-go-dev.shuijingwanwq.com/>，CDN 使用 Cloudflare Free；非中文共享静态资源使用 <https://assets-go-dev.shuijingwanwq.com/>。Playground 已允许精确 Origin `https://es-go-dev.shuijingwanwq.com`。
 
-以下值是已冻结 production identity 的可读快照；权威、可执行来源为 `production/identity.json`。当前 `production_state` 为 `first-production`，只表示该 identity 将供未来首次生产编排器使用，不表示生产基础设施、Cloudflare、Playground 配置或部署已经完成。
+以下值是当前 production identity 的可读快照；权威、可执行来源为 `production/identity.json`。es-ES 已完成首次 production，`production_state=live`。
 
 | 项目 | 值 |
 | --- | --- |
@@ -60,7 +60,7 @@ es-ES 使用规范 locale 与 HTML `lang` `es-ES`，本地显示名为 `Español
 | TLS certificate | `/usr/local/nginx/conf/ssl/es-go-dev.shuijingwanwq.com.crt` |
 | TLS private key | `/usr/local/nginx/conf/ssl/es-go-dev.shuijingwanwq.com.key` |
 
-生产服务器已实际确认 `3999` 至 `4003` 正在监听，`4004` 当前未监听，因此正式采用 `4004`。本阶段不创建服务器资源，不修改 systemd、Nginx、Cloudflare 或 Playground，也不执行首次 production。
+es-ES 已于 2026-09-04 完成首次 production；当前 release 为 `/data/go-tour-es-ES/releases/20260904-es-ES-d7994a44`，最终 evidence 为 `data/locale-surface-reviews/es-ES/20260904-first-production.md`。后续 release 使用日常维护部署流程。
 
 ## fr-FR production identity
 

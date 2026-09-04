@@ -1,6 +1,6 @@
 # es-ES Locale Surface Review — 2026-09-04 首次 production 持续工作记录
 
-这是 es-ES 首次 production 的 Locale Surface Review 持续工作记录。A（Locale-level language quality review）和 preview rendered acceptance 已完成；production 尚未发生，因此本文件不记录最终 Locale Surface Review decision。
+这是 es-ES 首次 production 的最终 Locale Surface Review evidence。A（Locale-level language quality review）、preview rendered acceptance、production machine/browser acceptance 与 production visual HUMAN gate 均已完成并通过。
 
 ## 审核身份
 
@@ -58,12 +58,12 @@ Course metadata：
 - `internal/tour/languages.go`：SHA-256 `23a842745781930c230d1e241a5d036b8ea5a905a3de0448e35e35217a4362c9`
 - `internal/tour/project.go`：SHA-256 `47bba2660c2fea09af377a092498aedd868dca603f9a5f14ca1ffff7500a9d0b`
 - `internal/tour/seo.go`：SHA-256 `dc09d40a9c4a0d3aa9f9699b85a684feb104cb3642b71bca1f08750220397a64`
-- `production/identity.json`：SHA-256 `1421bc6e2bcc83565e45dc55249a481505143db1d4169542645785e2ec8aecdc`
+- `production/identity.json`：Stage A 审核时 SHA-256 `1421bc6e2bcc83565e45dc55249a481505143db1d4169542645785e2ec8aecdc`
 
 当前 es-ES identity：
 
 - production hostname：`es-go-dev.shuijingwanwq.com`
-- production_state：`first-production`
+- production_state：首次 production 审核时为 `first-production`；完成首次 production 后已转换为 `live`
 - CDN：`cloudflare`
 - port：`4004`
 - shared-assets policy：`shared-cloudflare`
@@ -171,13 +171,55 @@ PREVIEW SURFACE ACCEPTANCE: PASS
 
 ## Production verification
 
-结果：`not yet executed`
+结果：`passed`
 
-- publish：`not yet executed`
-- production deployment：`not yet executed`
-- production verification：`not yet executed`
+### Release / receipt identity
 
-本记录不声称 es-ES 已进入 production。
+- production public URL：<https://es-go-dev.shuijingwanwq.com/>
+- local release：`/tmp/go-tour-release-20260904-es-ES-d7994a44`
+- remote current release：`/data/go-tour-es-ES/releases/20260904-es-ES-d7994a44`
+- first-production receipt：`/tmp/go-tour-release-20260904-es-ES-d7994a44.first-production-receipt.json`
+- receipt schema：`go-tour-i18n/first-production-receipt/v1`
+- receipt identity：locale `es-ES`、hostname `es-go-dev.shuijingwanwq.com`、release `20260904-es-ES-d7994a44`、run_id `20260904T095844Z-1378950`
+- receipt result：`passed`；completed_at：`2026-09-04T10:04:05Z`
+
+receipt 仅记录上述非 secret identity；不复制任何 credential 或 production secret。
+
+### Production machine acceptance
+
+结果：`passed`
+
+first-production public-machine 和 `PRODUCTION MACHINE ACCEPTANCE` 均为 `PASS`。实际确认：
+
+- source routes：`7/7 PASS`
+- public routes：`7/7 PASS`
+- html identity：`PASS`
+- sitemap：`105/105`；host mismatch `0`；HTTP failure `0`
+- socket boundary：`PASS`
+- CDN `/`：`HIT -> HIT -> HIT PASS`
+- CDN `/tour/welcome/1`：`HIT -> HIT -> HIT PASS`
+
+### Production browser acceptance 与 visual HUMAN gate
+
+结果：`passed`
+
+- desktop routes：`PASS`
+- mobile `/tour/moretypes/1`：`PASS`
+- Run / Format / Reset / SPA / ads：`PASS`
+- `PRODUCTION BROWSER ACCEPTANCE`：`PASS`
+- production visual HUMAN gate：`passed`
+
+visual HUMAN gate 仅确认 desktop / mobile 整体排版没有明显视觉异常；不重做自动 browser acceptance 已覆盖的检查。
+
+### Lightweight ads confirmation
+
+结果：`passed`
+
+production browser ads gate 已通过，覆盖最终 ads-enabled 形态的 loader、course-ad mount、请求机会、layout 与 SPA 行为。filled / unfilled 均不作为 gate 要求。
+
+- publish：`passed`
+- production deployment：`passed`
+- production verification：`passed`
 
 ## Reviewer
 
@@ -192,7 +234,10 @@ PREVIEW SURFACE ACCEPTANCE: PASS
 - preview automated rendered acceptance：`passed`
 - visual HUMAN gate：`passed`
 - unresolved preview rendered blocker：`none`
-- production verification：`not yet executed`
-- overall final decision：尚未记录
+- unresolved production blocker：`none`
+- production verification：`passed`
+- overall final decision：`passed`
 
-首次 production 的最终 Locale Surface Review decision 仍等待 production verification；最终 decision 仅可在所有必需阶段完成后记录为 `passed` 或 `failed`，当前不写入 `decision`。
+## Decision
+
+`decision = passed`
