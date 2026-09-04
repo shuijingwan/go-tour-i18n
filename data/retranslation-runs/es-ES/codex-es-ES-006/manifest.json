@@ -1,0 +1,50 @@
+{
+  "schema_version": 2,
+  "batch_id": "codex-es-ES-006",
+  "locale": "es-ES",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 3,
+  "units": [
+    {
+      "unit_id": "welcome/2",
+      "unit_kind": "page",
+      "source_path": "_content/tour/welcome.article",
+      "source_sha256": "c1c8c34dfe10b11b5cc72e1daae4336290d613bbbe5445012be949ab904fd3fa",
+      "input_path": "inputs/welcome-2.article",
+      "input_sha256": "060479523ea920d83f8af84c93e892ad34f99920f547d222efb72c27b50ac1fe",
+      "protected_token_count": 14,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "Heading \"Go en local\" reads as running Go locally, but this section is about localized/other-language versions of the Tour. Use a natural Spanish heading that conveys localization/languages and does not overlap semantically with the following \"Go sin conexión\" page."
+    },
+    {
+      "unit_id": "basics/14",
+      "unit_kind": "page",
+      "source_path": "_content/tour/basics.article",
+      "source_sha256": "21c4077c25629545dee0313b8b6b03e709edc4a74e1d73d9f4c9b0a49e46f6b3",
+      "input_path": "inputs/basics-14.article",
+      "input_sha256": "53dea3c51e63e646391b5de0dbd0729c96c63a0dc5c97293fb92e81f30592503",
+      "protected_token_count": 18,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "The phrase \"la sintaxis de expresión `var`=`\" is grammatically broken and unnatural Spanish. Restructure the sentence around the protected `var` and `=` identities while preserving the source meaning that type inference applies with := or var-expression syntax."
+    },
+    {
+      "unit_id": "concurrency/2",
+      "unit_kind": "page",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "a35e3af26b51f8c2c2a6dfaf09f9c7cab0fdb4b1b56f9e4dc9b793f1dac1e295",
+      "input_path": "inputs/concurrency-2.article",
+      "input_sha256": "f88ab0b53baaa3421f19920457b2457b93328f959812169bdf2a0359a020d22e",
+      "protected_token_count": 15,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "The retained Go term \"slice\" uses inconsistent grammatical gender: this page says \"las slices\" and \"una slice\", while the established es-ES usage elsewhere is \"los slices\" and \"un slice\". Normalize the grammatical gender while keeping the glossary term \"slice\" unchanged."
+    }
+  ]
+}
