@@ -701,18 +701,46 @@ fi
         script = r'''set -Eeuo pipefail
 host=$1; locale=$2; cache_header=$3; playground=$4; origin=$5; shared_policy=$6; shared_assets=$7
 temporary=$(mktemp -d); trap 'rm -rf "$temporary"' EXIT
+readonly CURL_CONNECT_TIMEOUT=5
+readonly CURL_MAX_TIME=20
+readonly CURL_RETRY_ATTEMPTS=3
+request() {
+  expected=$1; body=$2; headers=$3; shift 3
+  for attempt in $(seq 1 "$CURL_RETRY_ATTEMPTS"); do
+    set +e
+    code=$(curl -sS --connect-timeout "$CURL_CONNECT_TIMEOUT" --max-time "$CURL_MAX_TIME" -o "$body" -D "$headers" -w '%{http_code}' "$@")
+    curl_exit=$?
+    set -e
+    if [[ $curl_exit != 0 ]]; then
+      case $curl_exit in
+        6|7|16|28|35)
+          if [[ $attempt != "$CURL_RETRY_ATTEMPTS" ]]; then sleep "$attempt"; continue; fi
+          ;;
+      esac
+      printf 'curl exit %s for %s after %s attempt(s)\n' "$curl_exit" "${!#}" "$attempt" >&2
+      return 1
+    fi
+    case $code in
+      522|525)
+        if [[ $attempt != "$CURL_RETRY_ATTEMPTS" ]]; then sleep "$attempt"; continue; fi
+        ;;
+    esac
+    [[ $code == "$expected" ]] && return 0
+    printf '%s returned HTTP %s (expected %s)\n' "${!#}" "${code:-000}" "$expected" >&2
+    return 1
+  done
+  return 1
+}
 for attempt in $(seq 1 30); do
-  code=$(curl -sS --connect-timeout 5 --max-time 20 -o "$temporary/home" -w '%{http_code}' "https://$host/" || true)
-  if [[ $code == 200 ]] && grep -Eq "<html[^>]+lang=[\"']$locale[\"']" "$temporary/home"; then break; fi
+  if request 200 "$temporary/home" "$temporary/home.headers" "https://$host/" && grep -Eq "<html[^>]+lang=[\"']$locale[\"']" "$temporary/home"; then break; fi
   [[ $attempt != 30 ]] || exit 1
   sleep 2
 done
 for path in / /tour/ /tour/list /tour/welcome/1 /tour/static/js/app.js /robots.txt /sitemap.xml; do
-  code=$(curl -sS --connect-timeout 5 --max-time 20 -o "$temporary/body" -D "$temporary/headers" -w '%{http_code}' "https://$host$path" || true)
-  [[ $code == 200 ]] || { printf '%s returned HTTP %s\n' "$path" "${code:-000}" >&2; exit 1; }
+  request 200 "$temporary/body" "$temporary/headers" "https://$host$path"
 done
-curl -fsS --connect-timeout 5 --max-time 20 "https://$host/tour/welcome/1" -o "$temporary/welcome"
-curl -fsS --connect-timeout 5 --max-time 20 "https://$host/sitemap.xml" -o "$temporary/sitemap"
+request 200 "$temporary/welcome" "$temporary/welcome.headers" "https://$host/tour/welcome/1"
+request 200 "$temporary/sitemap" "$temporary/sitemap.headers" "https://$host/sitemap.xml"
 python3 - "$temporary/home" "$temporary/welcome" "$temporary/sitemap" "$locale" "$host" <<'PY'
 from html.parser import HTMLParser
 import pathlib,sys,urllib.parse,xml.etree.ElementTree as ET
@@ -730,19 +758,19 @@ urls=[(n.text or '').strip() for n in root.findall(f'{ns}url/{ns}loc')]
 assert len(urls)==105 and len(set(urls))==105 and all(urllib.parse.urlsplit(u).hostname==host for u in urls)
 pathlib.Path(sitemap+'.urls').write_text('\n'.join(urls)+'\n',encoding='utf-8')
 PY
-while IFS= read -r url; do [[ $(curl -sS -o /dev/null -w '%{http_code}' --connect-timeout 5 --max-time 20 "$url" || true) == 200 ]]; done <"$temporary/sitemap.urls"
+while IFS= read -r url; do request 200 /dev/null "$temporary/sitemap-url.headers" "$url"; done <"$temporary/sitemap.urls"
 for upgrade in normal websocket; do
   args=(); [[ $upgrade == websocket ]] && args=(--http1.1 -H 'Connection: Upgrade' -H 'Upgrade: websocket')
-  [[ $(curl -sS -o /dev/null -w '%{http_code}' --connect-timeout 5 --max-time 20 "${args[@]}" "https://$host/socket" || true) == 404 ]]
+  request 404 /dev/null "$temporary/socket.headers" "${args[@]}" "https://$host/socket"
 done
 for path in / /tour/welcome/1; do
-  curl -fsS -o /dev/null -D "$temporary/cache" --connect-timeout 5 --max-time 20 "https://$host$path"
+  request 200 /dev/null "$temporary/cache" "https://$host$path"
   status=$(awk -v h="$cache_header" 'tolower($1)==tolower(h ":") {gsub(/\r/,"",$2); value=$2} END{print value}' "$temporary/cache")
   case $status in MISS|HIT|EXPIRED|REVALIDATED|UPDATING|STALE) ;; *) printf 'invalid %s: %s\n' "$cache_header" "${status:-missing}" >&2; exit 1;; esac
 done
-[[ $(curl -sS -o /dev/null -w '%{http_code}' -X OPTIONS -H "Origin: $origin" --connect-timeout 5 --max-time 20 "$playground/compile" || true) == 204 ]]
-[[ $(curl -sS -o /dev/null -w '%{http_code}' -X OPTIONS -H "Origin: $origin" --connect-timeout 5 --max-time 20 "$playground/fmt" || true) == 204 ]]
-if [[ $shared_policy == shared-cloudflare ]]; then curl -fsS --connect-timeout 5 --max-time 20 "$shared_assets/tour/static/css/app.css" -o /dev/null; fi
+request 204 /dev/null "$temporary/playground.headers" -X OPTIONS -H "Origin: $origin" "$playground/compile"
+request 204 /dev/null "$temporary/playground.headers" -X OPTIONS -H "Origin: $origin" "$playground/fmt"
+if [[ $shared_policy == shared-cloudflare ]]; then request 200 /dev/null "$temporary/shared-assets.headers" "$shared_assets/tour/static/css/app.css"; fi
 '''
         self.ssh(s["zgocloud_ssh_alias"], script, (
             p["production_hostname"], p["locale"], p["cache_header"],

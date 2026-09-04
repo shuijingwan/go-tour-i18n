@@ -3,6 +3,7 @@
 import ast
 import importlib.util
 import json
+import os
 import pathlib
 import subprocess
 import sys
@@ -39,6 +40,66 @@ location = /fmt {
 
 
 class FirstProductionTest(unittest.TestCase):
+    def public_machine_request_helper(self):
+        identity = FIRST.IDENTITY.load_identity(ROOT / "production" / "identity.json")
+        instance = FIRST.Orchestrator.__new__(FIRST.Orchestrator)
+        instance.profile = next(profile for profile in identity["locales"] if profile["locale"] == "es-ES")
+        instance.shared = identity["shared"]
+        instance.release_dir = pathlib.Path("/tmp/go-tour-release-es-ES-test")
+        captured = []
+        instance.ssh = lambda host, script, args=(), **kwargs: captured.append(script)
+        instance.run = lambda *args, **kwargs: None
+        instance.record = lambda stage: None
+        instance.public_machine()
+        script = captured[0]
+        start = script.index("readonly CURL_CONNECT_TIMEOUT=5")
+        end = script.index("for attempt in $(seq 1 30); do", start)
+        return script[start:end]
+
+    def run_public_machine_request(self, failures, expect_success):
+        helper = self.public_machine_request_helper()
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            fake_bin = root / "bin"
+            fake_bin.mkdir()
+            counter = root / "curl-count"
+            (fake_bin / "curl").write_text("""#!/usr/bin/env bash
+set -Eeuo pipefail
+count=0
+[[ -f $FAKE_CURL_COUNT ]] && count=$(<"$FAKE_CURL_COUNT")
+count=$((count + 1))
+printf '%s' "$count" >"$FAKE_CURL_COUNT"
+headers=''
+body=''
+while (($#)); do
+  case $1 in
+    -D|-o) value=$1; shift; [[ $# -gt 0 ]] || exit 2; [[ $value == -D ]] && headers=$1 || body=$1 ;;
+  esac
+  shift
+done
+if (( count <= FAKE_CURL_FAILURES )); then exit 7; fi
+[[ -z $headers ]] || printf 'HTTP/2 200\\r\\nCF-Cache-Status: HIT\\r\\n' >"$headers"
+[[ -z $body || $body == /dev/null ]] || printf '<html lang="es-ES"></html>' >"$body"
+printf 200
+""", encoding="utf-8")
+            (fake_bin / "sleep").write_text("#!/usr/bin/env bash\nexit 0\n", encoding="utf-8")
+            for executable in (fake_bin / "curl", fake_bin / "sleep"):
+                executable.chmod(0o755)
+            runner = root / "run-request.sh"
+            outcome = "request 200 \"$temporary/body\" \"$temporary/headers\" https://example.invalid/" if expect_success else "if request 200 \"$temporary/body\" \"$temporary/headers\" https://example.invalid/; then exit 99; fi"
+            runner.write_text("#!/usr/bin/env bash\nset -Eeuo pipefail\ntemporary=$(mktemp -d)\ntrap 'rm -rf \"$temporary\"' EXIT\n" + helper + outcome + "\n", encoding="utf-8")
+            runner.chmod(0o755)
+            env = dict(os.environ, PATH=str(fake_bin) + os.pathsep + os.environ["PATH"], FAKE_CURL_COUNT=str(counter), FAKE_CURL_FAILURES=str(failures))
+            result = subprocess.run([str(runner)], capture_output=True, text=True, env=env)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertEqual(counter.read_text(encoding="utf-8"), str(failures + 1 if expect_success else 3))
+
+    def test_public_machine_retries_transient_curl_failure(self):
+        self.run_public_machine_request(failures=1, expect_success=True)
+
+    def test_public_machine_fails_closed_after_retry_exhaustion(self):
+        self.run_public_machine_request(failures=3, expect_success=False)
+
     def test_stage_order_puts_origin_before_dns(self):
         self.assertLess(FIRST.STAGE_ORDER.index("direct-origin"), FIRST.STAGE_ORDER.index("cloudflare-dns"))
         self.assertLess(FIRST.STAGE_ORDER.index("cloudflare-dns"), FIRST.STAGE_ORDER.index("public-machine"))
@@ -235,8 +296,12 @@ class FirstProductionTest(unittest.TestCase):
         end = source.index("\n    def browser(self):", start)
         public_machine = source[start:end]
         self.assertIn("MISS|HIT|EXPIRED|REVALIDATED|UPDATING|STALE", public_machine)
+        self.assertIn("readonly CURL_RETRY_ATTEMPTS=3", public_machine)
+        self.assertIn("6|7|16|28|35", public_machine)
+        self.assertIn("request 200 /dev/null \"$temporary/cache\"", public_machine)
         self.assertNotIn("DYNAMIC", public_machine)
         self.assertNotIn("BYPASS", public_machine)
+        self.assertNotIn("curl -4", public_machine)
         self.assertNotIn("rulesets/phases/http_request_cache_settings", source)
         self.assertNotIn("cache_rule=", source)
 
