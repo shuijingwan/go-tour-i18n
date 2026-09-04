@@ -1,0 +1,63 @@
+{
+  "schema_version": 2,
+  "batch_id": "codex-es-ES-007",
+  "locale": "es-ES",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "example",
+  "unit_count": 4,
+  "units": [
+    {
+      "unit_id": "example:concurrency/exercise-web-crawler.go",
+      "unit_kind": "example",
+      "source_path": "_content/tour/concurrency/exercise-web-crawler.go",
+      "source_sha256": "bd6226dcae3b663a3aa1cbf502d840357ac0efb6de46e7a66612ca2834cf5e37",
+      "input_path": "inputs/concurrency-exercise-web-crawler.txt",
+      "input_sha256": "53554a1126b74da6e3bcb93c625eff1ec44f560e2817f1875202423a7d6009ab",
+      "protected_token_count": 12,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "The retained term \"slice\" uses inconsistent grammatical gender: \"una slice\" conflicts with the established es-ES usage \"un slice\". Keep \"slice\" unchanged but normalize it to masculine grammatical gender."
+    },
+    {
+      "unit_id": "example:generics/index.go",
+      "unit_kind": "example",
+      "source_path": "_content/tour/generics/index.go",
+      "source_sha256": "398dd72a4b01efa279d571667bedbcccd1bbbceaeb77218635db48edf38fd983",
+      "input_path": "inputs/generics-index.txt",
+      "input_sha256": "7abb8fdbe4d75e4a090fd429540fbbd86cad2f221a62cee51ab8195df56e2d6d",
+      "protected_token_count": 6,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "The comments use \"una slice\", while the established es-ES usage is masculine: \"un slice\". Keep the glossary term \"slice\" unchanged and normalize grammatical gender."
+    },
+    {
+      "unit_id": "example:moretypes/append.go",
+      "unit_kind": "example",
+      "source_path": "_content/tour/moretypes/append.go",
+      "source_sha256": "655ee5085fec61bcb38c9f029741bb1a06a414f94b8b36ed0362055b0d6b10bb",
+      "input_path": "inputs/moretypes-append.txt",
+      "input_sha256": "7459987c83bae35b02ce3fccf374c305f27890cf4914c1e5bdafc64e5b19c724",
+      "protected_token_count": 4,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "The comment \"La slice crece según sea necesario\" uses feminine grammatical gender for \"slice\", inconsistent with the established es-ES usage \"el slice\". Keep \"slice\" unchanged and normalize grammatical gender."
+    },
+    {
+      "unit_id": "example:moretypes/slice-len-cap.go",
+      "unit_kind": "example",
+      "source_path": "_content/tour/moretypes/slice-len-cap.go",
+      "source_sha256": "b2e5f7a96c8a04998c150ebe6ce344bc198db8b18f4826e6a85ff75ae3033f98",
+      "input_path": "inputs/moretypes-slice-len-cap.txt",
+      "input_sha256": "c92faec8474d8d97608666881b17ead976b1b04114df32badf315dea501f5e92",
+      "protected_token_count": 4,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "The comment \"Reduce la slice\" uses feminine grammatical gender for \"slice\", inconsistent with the established es-ES usage \"el slice\". Keep \"slice\" unchanged and normalize grammatical gender."
+    }
+  ]
+}
