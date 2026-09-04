@@ -18,6 +18,8 @@ Surface Review：
 
 完整 locale preview（`tour-i18n preview --locale <locale>`）是用于本阶段的 production-style Surface Review preview：它使用 HTTP Playground transport、正式 public canonical identity、robots 与 sitemap，但不注入 production analytics 或广告。带 `--id` 的 candidate preview 保持本地 SocketTransport 开发语义，不替代完整 locale preview。
 
+完整 locale preview 在启动前会 fail closed：必须存在当前的 machine-readable A gate。它不解析人工 Markdown；缺失 gate 时先完成 A，gate 的正式输入发生变化时必须重新审核并重新记录。带 `--id` 的 candidate/development preview 不受此限制。
+
 ## 正式术语基线
 
 `locales/<locale>/glossary.yaml` 是该 locale 全站的正式术语权威来源。审核 TranslationUnit 之外的公共 UI、首页、列表、metadata、runtime message 与 SEO 文案时，同样检查 glossary 的 `mandatory`、`preferred`、`forbidden` 和 `keep` 决策。
@@ -63,9 +65,24 @@ Glossary 只回答正式术语选择，不能证明完整译文忠实、准确�
 
 Glossary 一致但忠实度、准确性或自然度不合格时，语言质量审核仍然失败。
 
+### A gate 记录与 freshness
+
+人工 A 通过后，保留正式 Markdown evidence `data/locale-surface-reviews/<locale>/<review-id>.md`，然后由命令记录同一 review identity 的 machine-readable receipt：
+
+```sh
+go run -mod=readonly ./cmd/tour-i18n surface-review record-a \
+  --locale <locale> \
+  --review-id <review-id> \
+  --reviewer <reviewer>
+```
+
+命令写入 `data/locale-surface-reviews/<locale>/<review-id>.a-gate.json`。其 schema 固定包含 `schema_version`、`locale`、`review_id`、`stage = locale-level-language-quality-review`、`decision = passed`、`reviewer` 和程序自动计算的 `inputs`；审核者不填写 SHA。当前实现的 inputs 覆盖英文与 locale UI catalog、locale glossary、article metadata、course metadata、完整当前 catalog/source identity，以及 `internal/tour/languages.go`、`project.go`、`seo.go` 和 `production/identity.json` 中会影响语言选择器、首页/导航项目文案和 runtime/SEO locale identity 的稳定 build-time 配置。
+
+`preview --locale <locale>` 只接受 locale 正确、passed、schema/stage 完整且全部 inputs 与当前仓库一致的 gate。缺失、malformed、wrong-locale、non-passed 或任何 input 不一致均 fail closed；后者明确视为 stale language review evidence/gate。不要手写 JSON 或复用永久 `.passed` marker。
+
 ## B. Rendered surface acceptance
 
-只有完整语言质量审核通过，并且 TranslationUnit promotion、locale 配置、UI catalog 与 article metadata 已组成完整 projection 后，才在 preview 上执行本阶段；部署后再在 production 复核公网相关项目。浏览器检查用于发现组合、布局、交互、runtime 和部署问题，不能替代 A 阶段对全部可翻译资产的 source ↔ target 审核。
+只有完整语言质量审核通过、已记录 current A gate，并且 TranslationUnit promotion、locale 配置、UI catalog 与 article metadata 已组成完整 projection 后，才在 preview 上执行本阶段；部署后再在 production 复核公网相关项目。浏览器检查用于发现组合、布局、交互、runtime 和部署问题，不能替代 A 阶段对全部可翻译资产的 source ↔ target 审核。
 
 广告不属于 Locale-level language quality review，也不扩展为 TranslationUnit 或语言质量 gate。preview rendered surface acceptance 不要求真实 AdSense；首次 production 的最终 rendered surface acceptance 由 production browser automation 检查 loader、course-ad mount、请求机会、layout 与 SPA，filled/unfilled 均允许，再以极小 visual HUMAN gate 确认整体观感。具体边界见[生产运维手册](PRODUCTION_RUNBOOK.md)。本规范不重复广告实现、共享回归或广告失败隔离测试细节。
 

@@ -44,7 +44,7 @@ func run(args []string) error {
 		return err
 	}
 	if len(args) == 0 {
-		return fmt.Errorf("usage: tour-i18n <assets|catalog|upstream|page|locale|status|candidate|translate|retranslation|quality-check|course-metadata|build|preview|publish> <command or flags>")
+		return fmt.Errorf("usage: tour-i18n <assets|catalog|upstream|page|locale|status|candidate|translate|retranslation|quality-check|course-metadata|surface-review|build|preview|publish> <command or flags>")
 	}
 	if args[0] == "assets" {
 		if len(args) < 2 {
@@ -92,7 +92,7 @@ func run(args []string) error {
 		return publishBundle(root, catalog, *publish)
 	}
 	if len(args) < 2 {
-		return fmt.Errorf("usage: tour-i18n <assets|catalog|upstream|page|locale|status|candidate|translate|retranslation|quality-check|course-metadata|build|preview|publish> <command or flags>")
+		return fmt.Errorf("usage: tour-i18n <assets|catalog|upstream|page|locale|status|candidate|translate|retranslation|quality-check|course-metadata|surface-review|build|preview|publish> <command or flags>")
 	}
 	switch args[0] + " " + args[1] {
 	case "locale init":
@@ -107,6 +107,8 @@ func run(args []string) error {
 		return assembleCourseMetadata(root, catalog, args[2:])
 	case "course-metadata refresh":
 		return refreshCourseMetadata(root, catalog, args[2:])
+	case "surface-review record-a":
+		return recordLocaleSurfaceReviewACommand(root, catalog, args[2:])
 	case "catalog check":
 		report, err := i18n.PreviewCatalog(catalog, current)
 		if err != nil {
@@ -754,7 +756,7 @@ func previewCandidate(root string, catalog *i18n.Catalog, args []string) error {
 	if err != nil {
 		return err
 	}
-	if options.ID != "" {
+	if !previewRequiresLocaleSurfaceReviewAGate(options) {
 		tempRoot := filepath.Join(os.TempDir(), "go-tour-i18n-preview", options.Locale, strings.ReplaceAll(options.ID, "/", "-"))
 		preview, err := i18n.BuildCandidatePreview(root, catalog, options.ID, options.Locale, tempRoot)
 		if err != nil {
@@ -769,7 +771,7 @@ func previewCandidate(root string, catalog *i18n.Catalog, args []string) error {
 		command.Stdin = os.Stdin
 		return command.Run()
 	}
-	if err := requireLocaleInitializationComplete(root, options.Locale); err != nil {
+	if err := requireFullLocalePreviewGate(root, catalog, options.Locale); err != nil {
 		return err
 	}
 
@@ -797,6 +799,15 @@ func previewCandidate(root string, catalog *i18n.Catalog, args []string) error {
 	fmt.Printf("temporary content: %s\n", projection.ContentDir)
 	return (&http.Server{Handler: handler}).Serve(listener)
 }
+
+func requireFullLocalePreviewGate(root string, catalog *i18n.Catalog, locale string) error {
+	if err := requireLocaleInitializationComplete(root, locale); err != nil {
+		return err
+	}
+	return i18n.RequireCurrentLocaleSurfaceReviewA(root, locale, catalog)
+}
+
+func previewRequiresLocaleSurfaceReviewAGate(options previewOptions) bool { return options.ID == "" }
 
 type previewOptions struct {
 	Locale   string
