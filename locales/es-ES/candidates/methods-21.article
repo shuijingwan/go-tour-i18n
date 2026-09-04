@@ -1,0 +1,20 @@
+* Lectores
+
+El paquete `io` especifica la interfaz `io.Reader`,
+que representa el extremo de lectura de un flujo de datos.
+
+La biblioteca estándar de Go contiene [[https://cs.opensource.google/search?q=Read%5C(%5Cw%2B%5Cs%5C%5B%5C%5Dbyte%5C)&ss=go%2Fgo][muchas implementaciones]] de esta interfaz, entre ellas archivos, conexiones de red, compresores, cifradores y otras.
+
+La interfaz `io.Reader` tiene un método `Read`:
+
+	func (T) Read(b []byte) (n int, err error)
+
+`Read` rellena el slice de bytes proporcionado con datos y devuelve el número de bytes
+rellenados y un valor de error. Devuelve un error `io.EOF` cuando el flujo
+termina.
+
+El código de ejemplo crea un
+[[/pkg/strings/#Reader][`strings.Reader`]]
+y consume su salida de 8 bytes en 8 bytes.
+
+.play methods/reader.go

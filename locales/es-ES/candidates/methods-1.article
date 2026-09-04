@@ -1,0 +1,13 @@
+* Métodos
+
+Go no tiene clases.
+Sin embargo, puedes definir métodos para tipos.
+
+Un método es una función con un argumento _receptor_ especial.
+
+El receptor aparece en su propia lista de argumentos, entre la palabra clave `func` y
+el nombre del método.
+
+En este ejemplo, el método `Abs` tiene un receptor de tipo `Vertex` llamado `v`.
+
+.play methods/methods.go

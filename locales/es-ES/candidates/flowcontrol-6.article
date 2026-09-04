@@ -1,0 +1,9 @@
+* If con una sentencia corta
+
+Al igual que `for`, la sentencia `if` puede comenzar con una sentencia corta que se ejecuta antes de la condición.
+
+Las variables declaradas por esa sentencia solo están en el ámbito hasta el final del `if`.
+
+(Prueba a utilizar `v` en la última sentencia `return`.)
+
+.play flowcontrol/if-with-a-short-statement.go

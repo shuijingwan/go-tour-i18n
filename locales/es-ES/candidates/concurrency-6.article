@@ -1,0 +1,14 @@
+* Selección por defecto
+
+El caso `default` de un `select` se ejecuta si ningún otro caso está listo.
+
+Usa un caso `default` para intentar enviar o recibir sin bloquear:
+
+	select {
+	case i := <-c:
+		// usa i
+	default:
+		// recibir de c se bloquearía
+	}
+
+.play concurrency/default-selection.go

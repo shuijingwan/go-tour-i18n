@@ -1,0 +1,7 @@
+* Declaraciones cortas de variables
+
+Dentro de una función, la sentencia de asignación corta `:=` puede utilizarse en lugar de una declaración `var` con tipo implícito.
+
+Fuera de una función, todas las sentencias comienzan con una palabra clave (`var`, `func`, etc.), por lo que la construcción `:=` no está disponible.
+
+.play basics/short-variable-declarations.go

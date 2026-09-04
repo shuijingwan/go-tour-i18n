@@ -1,0 +1,13 @@
+* Switch
+
+Una sentencia `switch` es una forma abreviada de escribir una secuencia de sentencias `if`-`else`.
+Ejecuta el primer caso cuyo valor sea igual al de la expresión de condición.
+
+El switch de Go es como el de C, C++, Java, JavaScript y PHP,
+salvo que Go solo ejecuta el caso seleccionado, no todos los casos posteriores.
+En la práctica, la sentencia `break` que se necesita al final de cada caso en esos
+lenguajes se proporciona automáticamente en Go.
+Otra diferencia importante es que, en Go, los casos de switch no tienen que
+ser constantes, ni los valores implicados tienen que ser enteros.
+
+.play flowcontrol/switch.go

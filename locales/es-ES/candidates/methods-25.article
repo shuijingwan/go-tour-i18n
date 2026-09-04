@@ -1,0 +1,13 @@
+* Ejercicio: imágenes
+
+¿Recuerdas el [[/tour/moretypes/18][generador de imágenes]] que escribiste antes? Vamos a escribir otro, pero esta vez devolverá una implementación de `image.Image` en lugar de un slice de datos.
+
+Define tu propio tipo `Image`, implementa [[/pkg/image/#Image][los métodos necesarios]] y llama a `pic.ShowImage`.
+
+`Bounds` debe devolver un `image.Rectangle`, como `image.Rect(0,`0,`w,`h)`.
+
+`ColorModel` debe devolver `color.RGBAModel`.
+
+`At` debe devolver un color; el valor `v` del generador de imágenes anterior corresponde a `color.RGBA{v,`v,`255,`255}` en este.
+
+.play methods/exercise-images.go

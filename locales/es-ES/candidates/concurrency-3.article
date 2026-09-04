@@ -1,0 +1,11 @@
+* Canales con búfer
+
+Los canales pueden tener _búfer_. Proporciona la longitud del búfer como segundo argumento de `make` para inicializar un canal con búfer:
+
+	ch := make(chan int, 100)
+
+Los envíos a un canal con búfer solo se bloquean cuando el búfer está lleno. Las recepciones se bloquean cuando el búfer está vacío.
+
+Modifica el ejemplo para desbordar el búfer y observa qué sucede.
+
+.play concurrency/buffered-channels.go

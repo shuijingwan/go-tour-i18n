@@ -1,0 +1,24 @@
+* Receptores de puntero
+
+Puedes declarar métodos con receptores de puntero.
+
+Esto significa que el tipo del receptor tiene la sintaxis literal `*T` para algún tipo `T`.
+(Además, `T` no puede ser a su vez un puntero como `*int`.)
+
+Por ejemplo, el método `Scale` de este ejemplo está definido para `*Vertex`.
+
+Los métodos con receptores de puntero pueden modificar el valor al que apunta el receptor
+(como hace aquí `Scale`).
+Como los métodos suelen necesitar modificar su receptor, los receptores de puntero son más
+comunes que los receptores de valor.
+
+Prueba a eliminar el `*` de la declaración de la función `Scale` en la línea 16
+y observa cómo cambia el comportamiento del programa.
+
+Con un receptor de valor, el método `Scale` opera sobre una copia del valor
+`Vertex` original.
+(Este es el mismo comportamiento que el de cualquier otro argumento de función.)
+El método `Scale` debe tener un receptor de puntero para cambiar el valor `Vertex`
+declarado en la función `main`.
+
+.play methods/methods-pointers.go

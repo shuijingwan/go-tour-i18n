@@ -1,0 +1,12 @@
+* Ejercicio: rot13Reader
+
+Un patrón habitual es un [[/pkg/io/#Reader][io.Reader]] que envuelve otro `io.Reader` y modifica el flujo de algún modo.
+
+Por ejemplo, la función [[/pkg/compress/gzip/#NewReader][gzip.NewReader]] recibe un `io.Reader` (un flujo de datos comprimidos) y devuelve un `*gzip.Reader` que también implementa `io.Reader` (un flujo de datos descomprimidos).
+
+Implementa un `rot13Reader` que implemente `io.Reader` y lea de un `io.Reader`, modificando el flujo mediante la aplicación del cifrado de sustitución [[https://en.wikipedia.org/wiki/ROT13][rot13]] a todos los caracteres alfabéticos.
+
+Ya se proporciona el tipo `rot13Reader`.
+Haz que sea un `io.Reader` implementando su método `Read`.
+
+.play methods/exercise-rot-reader.go

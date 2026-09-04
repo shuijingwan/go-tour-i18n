@@ -1,0 +1,9 @@
+* Apilamiento de defer
+
+Las llamadas a funciones diferidas se introducen en una pila. Cuando una función finaliza, sus
+llamadas diferidas se ejecutan en orden de último en entrar, primero en salir.
+
+Para obtener más información sobre las sentencias defer, lee esta
+[[/blog/defer-panic-and-recover][entrada del blog]].
+
+.play flowcontrol/defer-multi.go

@@ -1,0 +1,8 @@
+* Ejercicio: Stringers
+
+Haz que el tipo `IPAddr` implemente `fmt.Stringer` para imprimir la dirección como
+cuatro números separados por puntos.
+
+Por ejemplo, `IPAddr{1,`2,`3,`4}` debería imprimirse como `"1.2.3.4"`.
+
+.play methods/exercise-stringer.go

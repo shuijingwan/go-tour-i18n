@@ -1,0 +1,12 @@
+* Valores de interfaz con valores subyacentes nil
+
+Si el valor concreto que contiene la interfaz es nil,
+se llamará al método con un receptor nil.
+
+En algunos lenguajes, esto provocaría una excepción de puntero nulo,
+pero en Go es habitual escribir métodos que gestionen correctamente las llamadas
+con un receptor nil (como el método `M` de este ejemplo).
+
+Ten en cuenta que un valor de interfaz que contiene un valor concreto nil es, en sí mismo, distinto de nil.
+
+.play methods/interface-values-with-nil.go
