@@ -1,0 +1,11 @@
+* Valores de retorno con nombre
+
+Los valores de retorno de ⟪GTI18N_1db20ae8_000001⟫ pueden tener nombre. En ese caso, se tratan como variables definidas al principio de la función.
+
+Estos nombres deben usarse para documentar el significado de los valores de retorno.
+
+Una sentencia ⟪GTI18N_1db20ae8_000002⟫return⟪GTI18N_1db20ae8_000003⟫ sin argumentos devuelve los valores de retorno con nombre. Esto se conoce como retorno «desnudo».
+
+Las sentencias de retorno desnudo solo deben utilizarse en funciones cortas, como en el ejemplo que se muestra aquí. En funciones más largas pueden perjudicar la legibilidad.
+
+⟪GTI18N_1db20ae8_000004⟫

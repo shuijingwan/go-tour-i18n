@@ -1,0 +1,19 @@
+* ⟪GTI18N_19e6d7da_000001⟫ Playground
+
+Este tour se basa en [[⟪GTI18N_19e6d7da_000002⟫][⟪GTI18N_19e6d7da_000003⟫]], un
+servicio web que se ejecuta en los servidores de [[⟪GTI18N_19e6d7da_000004⟫][golang.org]].
+
+El servicio recibe un programa en ⟪GTI18N_19e6d7da_000005⟫, lo compila, lo enlaza y lo ejecuta en
+un entorno aislado; después, devuelve la salida.
+
+Los programas que pueden ejecutarse en Go Playground tienen algunas limitaciones:
+
+- En Go Playground, el tiempo comienza el 2009-11-10 a las 23:00:00 ⟪GTI18N_19e6d7da_000006⟫ (determinar la relevancia de esta fecha es un ejercicio para el lector). Esto facilita almacenar programas en caché al proporcionarles una salida determinista.
+
+- También hay límites para el tiempo de ejecución y el uso de ⟪GTI18N_19e6d7da_000007⟫ y memoria, y el programa no puede acceder a hosts de red externos.
+
+Go Playground utiliza la versión estable más reciente de ⟪GTI18N_19e6d7da_000008⟫.
+
+Lee «[[⟪GTI18N_19e6d7da_000009⟫][Dentro de ⟪GTI18N_19e6d7da_000010⟫ Playground]]» para obtener más información.
+
+⟪GTI18N_19e6d7da_000011⟫

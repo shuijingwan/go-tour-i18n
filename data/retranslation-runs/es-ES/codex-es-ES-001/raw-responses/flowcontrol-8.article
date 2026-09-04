@@ -1,0 +1,37 @@
+* Ejercicio: bucles y funciones
+
+Para practicar con funciones y bucles, vamos a implementar una función de raíz cuadrada: dado un número x, queremos encontrar el número z cuyo z² sea lo más próximo posible a x.
+
+Los ordenadores suelen calcular la raíz cuadrada de x mediante un bucle.
+A partir de una estimación inicial z, podemos ajustar z en función de lo cerca que esté z² de x,
+para obtener una estimación mejor:
+
+⟪GTI18N_d8bbee84_000001⟫
+
+Al repetir este ajuste, la estimación mejora progresivamente
+hasta alcanzar una respuesta tan próxima a la raíz cuadrada real como sea posible.
+
+Implementa este método en la función ⟪GTI18N_d8bbee84_000002⟫func`Sqrt⟪GTI18N_d8bbee84_000003⟫ proporcionada.
+Una estimación inicial adecuada para z es 1, independientemente del valor de entrada.
+Para empezar, repite el cálculo 10 veces e imprime cada valor de z durante el proceso.
+Comprueba cuánto te aproximas a la respuesta para distintos valores de x (1, 2, 3, ...)
+y con qué rapidez mejora la estimación.
+
+Sugerencia: para declarar e inicializar un valor de coma flotante,
+utiliza la sintaxis de coma flotante o una conversión:
+
+⟪GTI18N_d8bbee84_000004⟫
+
+A continuación, cambia la condición del bucle para que se detenga cuando el valor deje de
+cambiar (o solo cambie en una cantidad muy pequeña).
+Comprueba si se necesitan más o menos de 10 iteraciones.
+Prueba otras estimaciones iniciales para z, como x o x/2.
+¿Cuánto se aproximan los resultados de tu función a [[⟪GTI18N_d8bbee84_000005⟫][math.Sqrt]] de la biblioteca estándar?
+
+(⟪GTI18N_d8bbee84_000006⟫Nota:⟪GTI18N_d8bbee84_000007⟫ Si te interesan los detalles del algoritmo, el valor z² − x anterior
+indica a qué distancia se encuentra z² de donde debe estar (x), y la división por 2z es la derivada
+de z², que permite ajustar cuánto modificamos z en función de la rapidez con la que cambia z².
+Este enfoque general se denomina [[⟪GTI18N_d8bbee84_000008⟫][método de Newton]].
+Funciona bien para muchas funciones, pero especialmente bien para la raíz cuadrada.)
+
+⟪GTI18N_d8bbee84_000009⟫
