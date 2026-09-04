@@ -244,21 +244,18 @@ actual: expected HTTP 204, got 403
 
 ## 已有 Locale 日常维护部署
 
-本节只适用于已经完成首次生产基线、且 `scripts/deploy-production.sh` 已存在对应 profile 的 locale。日常部署不重新分析 OneinStack、Nginx、acme.sh、data root、systemd 或端口；除非预检显示配置漂移，否则使用已验证 profile 发布新 release。
+本节只适用于已经完成首次生产基线、且正式 identity 明确为 `production_state=live` 的 locale。日常部署不重新分析 OneinStack、Nginx、acme.sh、data root、systemd 或端口；除非预检显示配置漂移，否则使用已验证 profile 发布新 release。`first-production` locale 必须使用首次生产流程，maintenance 入口会 fail closed，绝不能以日常部署 bootstrap。
 
 ### Production release 自动部署
 
-先使用仓库现有的 `publish` 命令生成并验收 Linux/amd64 production bundle。publish 环境必须存在 `google-chrome`；构建会对当前 locale 的全部 103 个正式课程 URL 和 sitemap 中独立的 `/tour/list` 执行 headless Chrome prerender。课程页写入 `_content/tour/prerender/<lesson>/<page>.html`；list 写入 `_content/tour/prerender/list.html`，并必须含当前 locale 的 heading、module/lesson 标题与说明、课程链接，以及自身的 canonical、title 和 description。`course-metadata.json` 的正式范围仍严格是 103 个 Page TranslationUnit，不包含 list。Chrome 缺失、任一页面未完成渲染或产物缺少 route metadata、正文、完整示例源码（课程页）或完整目录内容（list）时均 fail closed。部署脚本不会自动构建 bundle，只接受一个已经生成的本地 release 目录。调用方式对所有语言相同：
+先使用仓库现有的 `publish` 命令生成并验收 Linux/amd64 production bundle。publish 环境必须存在 `google-chrome`；构建会对当前 locale 的全部 103 个正式课程 URL 和 sitemap 中独立的 `/tour/list` 执行 headless Chrome prerender。课程页写入 `_content/tour/prerender/<lesson>/<page>.html`；list 写入 `_content/tour/prerender/list.html`，并必须含当前 locale 的 heading、module/lesson 标题与说明、课程链接，以及自身的 canonical、title 和 description。`course-metadata.json` 的正式范围仍严格是 103 个 Page TranslationUnit，不包含 list。Chrome 缺失、任一页面未完成渲染或产物缺少 route metadata、正文、完整示例源码（课程页）或完整目录内容（list）时均 fail closed。已有 live locale 的正式推荐入口是 maintenance orchestrator：
 
 ```sh
-# zh-CN
-scripts/deploy-production.sh \
-  /tmp/go-tour-release-20260813-zh-CN-a4d4dca
-
-# ja-JP
-scripts/deploy-production.sh \
-  /tmp/go-tour-release-20260824-ja-JP-<shortsha>
+scripts/maintenance-production.sh \
+  /tmp/go-tour-release-YYYYMMDD-<locale>-<shortsha>
 ```
+
+它不替代 deployment 状态机或任何验收实现；它严格调用既有 `scripts/deploy-production.sh`、`scripts/verify-production.sh` 与 `scripts/verify-production-browser.py`。底层命令仍保留各自职责，日常正式 release 应从上述编排入口开始。
 
 脚本严格读取 `release.json` 的 `locale` 作为唯一事实来源，不接受 `--locale`，也不根据目录名猜测语言。当前正式 identity 包含 `zh-CN`、`ja-JP`、`de-DE`、`fr-FR` 和 `ko-KR`；不支持、重复、冲突或 schema 不合法的 locale 会在 SSH、上传、远端加锁及任何生产修改之前 fail closed。下表只是便于阅读的当前快照，权威来源是 `production/identity.json`：
 
@@ -303,16 +300,24 @@ localhost 连续健康后，脚本才检查对应 profile 的 public URL。正�
 
 `FIRST_DEPLOYMENT` 是例外：连续 localhost health 通过后脚本停止于源站 ready，不要求尚未启用 DNS 的 public URL，也不做无旧 release/cache 可刷新的 hostname purge。下一步必须先从外部主机使用 production hostname + `--resolve <hostname>:443:<origin-ip>` 完成 TLS/SNI、HTTP → HTTPS 和关键 route 的 direct-origin acceptance；通过后再创建/启用 `proxied=true` 的正式 DNS，并执行 public machine/browser acceptance。`EXISTING_DEPLOYMENT` 继续保持 `deploy → hostname purge → verify`。
 
-### Production machine acceptance
+### Maintenance production orchestration 与 machine acceptance
 
-已有 locale 日常部署的正式顺序固定为：
+已有 locale 日常 production 的正式顺序固定为：
 
 ```text
-scripts/deploy-production.sh <release-dir>
+scripts/maintenance-production.sh <release-dir>
+  → scripts/deploy-production.sh <release-dir>
 → EdgeOne / Cloudflare hostname purge HUMAN GATE
 → scripts/verify-production.sh <release-dir>
-→ browser acceptance HUMAN GATE
+→ scripts/verify-production-browser.py <production-public-url> <locale>
+→ 最小 visual HUMAN GATE
 ```
+
+编排器从 `release.json.locale` 取得唯一 locale，并从 `production/identity.json` 取得 hostname、CDN 与 public URL；不接受 hostname、port、service 或 CDN 参数，也不从目录名或其他 locale 推导 identity。它只接受 `production_state=live`。
+
+deployment 成功后，编排器会显示 locale、正式 hostname、CDN 类型及精确的 hostname purge 操作并停在 **HUMAN GATE**。Cloudflare 必须对当前 hostname 做 Custom Purge，严禁 Purge Everything；`zh-CN` 按当前 EdgeOne hostname 缓存刷新规则处理。编排器不读取 credential、不调用 CDN API，也不自动执行任何 CDN mutation。维护者完成操作后须输入 `PURGED`，才会启动 machine verification。
+
+每个 release 在同级写入 `<release>.maintenance-production-receipt.json`。receipt 绑定 schema、locale、hostname、CDN、public URL 和 release；任一不符、损坏或未知状态都会 fail closed，不能混用于别的 locale/release。receipt 只跳过已经成功的 deployment mutation：若在 CDN gate、machine/browser acceptance 或 visual gate 中断，重跑相同命令会复用已部署 release，不会再次调用 deployment；machine/browser acceptance 可安全重新执行。CDN HUMAN GATE 每次 invocation 都要求重新明确输入 `PURGED`，receipt 绝不会自动把它视为完成。所有自动验收和最小 visual gate 真正通过后才输出 `MAINTENANCE PRODUCTION: PASS`。
 
 `scripts/verify-production.sh` 从 release 目录的 `release.json` 读取 locale，并以与部署脚本一致的 fail-closed profile 选择 releases/current/lock、service、loopback origin、production hostname 和 CDN header；当前支持 `zh-CN`、`ja-JP`、`de-DE`、`fr-FR`、`ko-KR`。调用者不得另外传 hostname、port、service 或 remote release name：
 
@@ -325,7 +330,7 @@ scripts/verify-production.sh \
 
 脚本不调用 EdgeOne 或 Cloudflare API，不搜索 token、不执行 purge、不修改 DNS/Cache Rule。hostname purge 是运行脚本前的 **HUMAN GATE**；machine verification 只观察 purge 后实际返回的三个 cache status，不要求第一次为 `MISS`、后续为 `HIT`，也不要求固定次数内出现 `HIT`。
 
-curl machine acceptance 后可运行 `scripts/verify-production-browser.py <production-public-url> <locale>` 完成 rendered/interaction 自动验收；首次 production 已由 `first-production.sh` 自动调用。桌面/移动端、语言列表、Run / Format / Reset、runtime message、Playground endpoint、轻量广告 request opportunity、SPA 和长代码 overflow 均由 Chrome 检查。机器通过后只保留本手册“新 Locale 首次生产部署”定义的极小 visual HUMAN gate；不要人工重复机器项目。
+编排器在 curl machine acceptance 后调用 `scripts/verify-production-browser.py <production-public-url> <locale>` 完成 rendered/interaction 自动验收；首次 production 已由 `first-production.sh` 自动调用。桌面/移动端、语言列表、Run / Format / Reset、runtime message、Playground endpoint、轻量广告 request opportunity、SPA 和长代码 overflow 均由 Chrome 检查。机器通过后只保留本手册“新 Locale 首次生产部署”定义的极小 visual HUMAN gate；不要人工重复机器项目。maintenance 的最终 visual gate 同样要求 Desktop editor/广告/布局，以及 Mobile `/tour/moretypes/1` 的 overflow、广告/footer 和一次下一页视觉确认；通过后输入 `VISUAL-PASS`。
 
 ## 非中文共享静态资源第一版
 
