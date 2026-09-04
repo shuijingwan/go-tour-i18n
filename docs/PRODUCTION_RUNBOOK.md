@@ -214,7 +214,15 @@ Cloudflare DNS 创建后，first-production 只从 zgocloud 对新 hostname 做 
 1. Desktop 打开一个 editor 课程页，肉眼确认整体布局、editor 和广告区域无明显视觉异常。
 2. Mobile 打开 `/tour/moretypes/1`，确认无非预期整页横向 overflow、广告/footer 无明显异常，并点击一次“下一页”确认 SPA 视觉正常。
 
-人工记录只写 `passed` 或 `failed: <问题>`。人工不再重复 Run、Format、Reset、SEO、canonical、Network Origin 或 `/socket`。通过后，把 receipt、HUMAN visual 结果与 production URL 写回既有 Surface Review evidence，并把最终 `decision` 设为 `passed`。
+人工记录只写 `passed` 或 `failed: <问题>`。人工不再重复 Run、Format、Reset、SEO、canonical、Network Origin 或 `/socket`。通过后必须从真实 TTY 运行正式收口入口，而不是手工修改 lifecycle：
+
+```sh
+go run -mod=readonly ./cmd/tour-i18n first-production finalize \
+  --release-dir /tmp/go-tour-release-YYYYMMDD-<locale>-<shortsha> \
+  --review-id YYYYMMDD-first-production
+```
+
+finalizer 从 release/receipt 和正式 identity 获取 locale、hostname、release，拒绝调用者重复输入 production identity。它要求 receipt schema 正确、`result=passed`、`public-machine` 和 `browser` 均为 PASS，且当前 Locale Surface Review A gate 仍有效；随后才显示 HUMAN gate 并要求维护者精确输入 `VISUAL-PASS`。非 TTY、EOF、错误输入均不修改 evidence 或 identity；没有 `--yes`、环境变量或默认 bypass。它只替换 evidence 中唯一且完整的 finalization placeholder，记录 receipt identity、machine/browser passed、`maintainer confirmation` 的 visual passed、无 blocker 和最终 decision；再原子地仅将目标 locale 的 `production_state` 从 `first-production` 改为 `live`，并重新验证 identity。任一失败会 fail closed 并回滚已写入的一侧。已 `live` locale 必须拒绝重复 finalize。可用只读 `surface-review check-a --locale <locale>` 检查当前 A gate；finalize 后 identity SHA 改变会使旧 A gate stale，这是既有接受行为。
 
 成功摘要保持简洁，例如：
 

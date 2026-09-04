@@ -178,6 +178,20 @@ data/locale-surface-reviews/<locale>/<review-id>.md
 
 首次上线时，A 阶段与 preview acceptance 都通过后才可进入 publish 和首次部署；此时可以先维护同一路径的工作记录。production 复核完成后，必须在该 evidence 中写入真实 production 结果和最终 `decision`，才能宣告正式上线。最终 evidence 不得把尚未执行的 production 复核写成通过。
 
+未来 `production_state=first-production` locale 的 pre-production evidence 必须保留下面完整且唯一的 machine-finalizable placeholder；不得提前填写、复制第二份或改写 marker。正式 first-production finalize CLI 只会替换这一精确区域，不会解释或修改 Stage A 的人工语言审核内容：
+
+```text
+<!-- first-production-finalization:start -->
+- production receipt identity: `PENDING`
+- production machine acceptance: `PENDING`
+- production browser acceptance: `PENDING`
+- production visual HUMAN gate: `PENDING`
+- unresolved production blocker: `PENDING`
+- overall final decision: `PENDING`
+- decision: `pending`
+<!-- first-production-finalization:end -->
+```
+
 Surface Review 只使用 `passed` 或 `failed`，不采用 TranslationUnit 的 A/B/C/D。任一必需阶段存在未解决阻塞项时，最终 decision 必须为 `failed`。
 
 ## 缺陷回流

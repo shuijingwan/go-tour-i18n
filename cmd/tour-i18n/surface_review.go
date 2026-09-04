@@ -8,6 +8,22 @@ import (
 	"github.com/shuijingwan/go-tour-i18n/internal/i18n"
 )
 
+func checkLocaleSurfaceReviewACommand(root string, catalog *i18n.Catalog, args []string) error {
+	fs := flag.NewFlagSet("surface-review check-a", flag.ContinueOnError)
+	locale := fs.String("locale", "", "locale")
+	if err := fs.Parse(args); err != nil {
+		return err
+	}
+	if *locale == "" || fs.NArg() != 0 {
+		return fmt.Errorf("usage: surface-review check-a --locale <locale>")
+	}
+	if err := i18n.RequireCurrentLocaleSurfaceReviewA(root, *locale, catalog); err != nil {
+		return err
+	}
+	fmt.Printf("Locale Surface Review A gate: PASS (locale=%s)\n", *locale)
+	return nil
+}
+
 func recordLocaleSurfaceReviewACommand(root string, catalog *i18n.Catalog, args []string) error {
 	fs := flag.NewFlagSet("surface-review record-a", flag.ContinueOnError)
 	locale := fs.String("locale", "", "locale")

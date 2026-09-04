@@ -44,7 +44,7 @@ func run(args []string) error {
 		return err
 	}
 	if len(args) == 0 {
-		return fmt.Errorf("usage: tour-i18n <assets|catalog|upstream|page|locale|status|candidate|translate|retranslation|quality-check|course-metadata|surface-review|build|preview|publish> <command or flags>")
+		return fmt.Errorf("usage: tour-i18n <assets|catalog|upstream|page|locale|status|candidate|translate|retranslation|quality-check|course-metadata|surface-review|first-production|build|preview|publish> <command or flags>")
 	}
 	if args[0] == "assets" {
 		if len(args) < 2 {
@@ -92,7 +92,7 @@ func run(args []string) error {
 		return publishBundle(root, catalog, *publish)
 	}
 	if len(args) < 2 {
-		return fmt.Errorf("usage: tour-i18n <assets|catalog|upstream|page|locale|status|candidate|translate|retranslation|quality-check|course-metadata|surface-review|build|preview|publish> <command or flags>")
+		return fmt.Errorf("usage: tour-i18n <assets|catalog|upstream|page|locale|status|candidate|translate|retranslation|quality-check|course-metadata|surface-review|first-production|build|preview|publish> <command or flags>")
 	}
 	switch args[0] + " " + args[1] {
 	case "locale init":
@@ -109,6 +109,10 @@ func run(args []string) error {
 		return refreshCourseMetadata(root, catalog, args[2:])
 	case "surface-review record-a":
 		return recordLocaleSurfaceReviewACommand(root, catalog, args[2:])
+	case "surface-review check-a":
+		return checkLocaleSurfaceReviewACommand(root, catalog, args[2:])
+	case "first-production finalize":
+		return finalizeFirstProductionCommand(root, catalog, args[2:])
 	case "catalog check":
 		report, err := i18n.PreviewCatalog(catalog, current)
 		if err != nil {
