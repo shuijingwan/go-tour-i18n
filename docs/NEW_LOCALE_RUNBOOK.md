@@ -24,6 +24,10 @@ locale / domain / CDN 决策
 → production publish
 → 首次 production 基础设施、部署 profile 与广告接入
 → 最终源站、公网和浏览器上线验收
+→ visual HUMAN gate
+→ first-production finalize
+→ production_state=live
+→ search-engine submission closeout
 ```
 
 必须区分四类工作：
@@ -162,3 +166,24 @@ Surface Review 通过并完成其中所有修复后，使用 `assets-go-dev.shui
 - **真实浏览器层**：桌面与移动端页面、导航、语言选择器、Run / Format / Reset、runtime message，以及 Network 中真实 Playground endpoint 和允许的 Origin；并按生产运维手册对最终课程页做轻量广告确认。
 
 FIRST_DEPLOYMENT 的正式入口为 `scripts/first-production.sh <release-dir>`。执行前，该 locale 的正式 production identity 必须显式设置 `production_state=first-production`；已经上线并标记为 `live` 的 locale 即使 `current` 或 receipt 缺失也会 fail closed。它从正式 production identity 执行全量 preflight、基础设施、Playground Origin、既有 `deploy-production.sh`、zgocloud direct-origin、Cloudflare proxied DNS、zgocloud public readiness、既有 `verify-production.sh` 与 Chrome automated browser acceptance；尚无正式公网 DNS/cache 时不要求 hostname purge。全部自动 gate 通过后只保留生产手册定义的 desktop/mobile 极小视觉 HUMAN gate。维护者完成该 gate 后，必须用 `go run -mod=readonly ./cmd/tour-i18n first-production finalize --release-dir <release-dir> --review-id <review-id>` 从真实 TTY 输入精确 `VISUAL-PASS`；它校验 receipt、当前 A gate 和唯一 evidence placeholder 后，记录 machine-finalizable production conclusion，并仅将目标 locale lifecycle 转为 `live`。这次 state transition 是 current-live lifecycle 的唯一 machine mutation；不要为此同步 README、LANGUAGES、运行手册或测试中的 locale 完整列表。EXISTING_DEPLOYMENT 的正式入口为 `scripts/maintenance-production.sh <release-dir>`：它编排既有 deploy → EdgeOne/Cloudflare hostname purge **HUMAN GATE** → verify → browser automation → visual gate，并不会替代这些底层实现。首次 production 只做最终 ads-enabled 形态的一次验收，不执行“无广告完整验收 → 开广告 → 再完整验收”。
+
+## 8. Search-engine submission closeout
+
+在首次 production machine/browser acceptance、visual HUMAN gate 和正式 first-production finalize 全部通过，且目标 profile 已是 `production_state=live` 后，维护者完成以下外部运营 closeout：
+
+1. 在 Google Search Console 为该 production hostname/property 完成必要接入，并提交该站的正式 `/sitemap.xml`。
+2. 在 Bing Webmaster Tools 为该 production hostname/property 完成必要接入，并提交同一正式 `/sitemap.xml`。
+
+不要按 locale 猜测 hostname 或手写 sitemap origin。先从唯一 machine authority 查询已 live profile：
+
+```sh
+python3 scripts/production-identity.py list --state live
+```
+
+从目标 locale 对应行的 `public URL` 取得正式 origin，并将其末尾 `/` 替换为 `/sitemap.xml` 后提交；不得拼出双斜杠或按 locale 猜测 host。若 platform 已通过 DNS/domain ownership 或其他共享方式验证 property，应复用实际可用的 verification 状态，不要求每个 locale 重复固定 verification 方法。不得把 Google、Bing 或 locale-specific 平台的 token、verification secret 写入仓库、命令行或新脚本。
+
+Google Search Console 和 Bing Webmaster Tools 是所有新增 production locale 的标准 closeout。Naver 不属于全 locale 强制项；只有目标 locale/市场确实适合时，才补充 locale/market-specific search engine。当前明确例子是 `ko-KR` 的 Naver Search Advisor 与 sitemap submission。
+
+此 closeout 不属于 production availability/security gate、Locale Surface Review A、rendered surface acceptance 或广告 gate；它不阻止 first-production finalize，也不阻止 `production_state` 从 `first-production` 转为 `live`。提交后 Google/Bing/Naver 的异步 indexing、coverage 或收录状态不要求在首次上线当天成功，不能等待其完成才认定 production live。
+
+如需保留执行痕迹，可在现有 locale Surface Review evidence 或项目状态记录中轻量记录 `submitted`、日期和平台；不新增 receipt、schema 或 machine gate，也不把第三方异步状态维护为必须 current 的证据。
