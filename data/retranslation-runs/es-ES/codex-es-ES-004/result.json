@@ -1,0 +1,103 @@
+{
+  "schema_version": 2,
+  "batch_id": "codex-es-ES-004",
+  "locale": "es-ES",
+  "unit_count": 13,
+  "restore_passed": 12,
+  "restore_failed": 1,
+  "validation_passed": 12,
+  "validation_failed": 0,
+  "units": [
+    {
+      "unit_id": "generics/2",
+      "unit_kind": "page",
+      "status": "passed",
+      "candidate_path": "candidates/generics-2.article",
+      "validation_path": "validation/generics-2.json"
+    },
+    {
+      "unit_id": "generics/3",
+      "unit_kind": "page",
+      "status": "passed",
+      "candidate_path": "candidates/generics-3.article",
+      "validation_path": "validation/generics-3.json"
+    },
+    {
+      "unit_id": "concurrency/1",
+      "unit_kind": "page",
+      "status": "passed",
+      "candidate_path": "candidates/concurrency-1.article",
+      "validation_path": "validation/concurrency-1.json"
+    },
+    {
+      "unit_id": "concurrency/2",
+      "unit_kind": "page",
+      "status": "passed",
+      "candidate_path": "candidates/concurrency-2.article",
+      "validation_path": "validation/concurrency-2.json"
+    },
+    {
+      "unit_id": "concurrency/3",
+      "unit_kind": "page",
+      "status": "passed",
+      "candidate_path": "candidates/concurrency-3.article",
+      "validation_path": "validation/concurrency-3.json"
+    },
+    {
+      "unit_id": "concurrency/4",
+      "unit_kind": "page",
+      "status": "restore_failed",
+      "validation_path": "validation/concurrency-4.json",
+      "error": "inline code sentinel 1 content changed"
+    },
+    {
+      "unit_id": "concurrency/5",
+      "unit_kind": "page",
+      "status": "passed",
+      "candidate_path": "candidates/concurrency-5.article",
+      "validation_path": "validation/concurrency-5.json"
+    },
+    {
+      "unit_id": "concurrency/6",
+      "unit_kind": "page",
+      "status": "passed",
+      "candidate_path": "candidates/concurrency-6.article",
+      "validation_path": "validation/concurrency-6.json"
+    },
+    {
+      "unit_id": "concurrency/7",
+      "unit_kind": "page",
+      "status": "passed",
+      "candidate_path": "candidates/concurrency-7.article",
+      "validation_path": "validation/concurrency-7.json"
+    },
+    {
+      "unit_id": "concurrency/8",
+      "unit_kind": "page",
+      "status": "passed",
+      "candidate_path": "candidates/concurrency-8.article",
+      "validation_path": "validation/concurrency-8.json"
+    },
+    {
+      "unit_id": "concurrency/9",
+      "unit_kind": "page",
+      "status": "passed",
+      "candidate_path": "candidates/concurrency-9.article",
+      "validation_path": "validation/concurrency-9.json"
+    },
+    {
+      "unit_id": "concurrency/10",
+      "unit_kind": "page",
+      "status": "passed",
+      "candidate_path": "candidates/concurrency-10.article",
+      "validation_path": "validation/concurrency-10.json"
+    },
+    {
+      "unit_id": "concurrency/11",
+      "unit_kind": "page",
+      "status": "passed",
+      "candidate_path": "candidates/concurrency-11.article",
+      "validation_path": "validation/concurrency-11.json"
+    }
+  ]
+}

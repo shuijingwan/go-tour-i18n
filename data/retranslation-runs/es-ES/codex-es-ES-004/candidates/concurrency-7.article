@@ -1,0 +1,18 @@
+* Ejercicio: árboles binarios equivalentes
+
+Puede haber muchos árboles binarios diferentes que almacenen la misma secuencia de valores. Por ejemplo, estos dos árboles binarios almacenan la secuencia 1, 1, 2, 3, 5, 8, 13.
+
+.image /tour/static/img/tree.png
+
+En la mayoría de los lenguajes, una función que compruebe si dos árboles binarios almacenan la misma secuencia es bastante compleja. Usaremos la concurrencia y los canales de Go para escribir una solución sencilla.
+
+Este ejemplo usa el paquete `tree`, que define el tipo:
+
+	type Tree struct {
+		Left  *Tree
+		Value int
+		Right *Tree
+	}
+
+
+La descripción continúa en la [[javascript:click('.next-page')][página siguiente]].
