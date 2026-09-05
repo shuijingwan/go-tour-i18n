@@ -1,6 +1,6 @@
 # it-IT Locale Surface Review — 2026-09-05 首次 production Stage A 记录
 
-这是 it-IT 首次 production 的 Locale Surface Review 工作记录。本文件仅记录已完成的 A（Locale-level language quality review）；preview rendered acceptance、visual HUMAN gate、publish 和 production verification 尚未执行。
+这是 it-IT 首次 production 的 Locale Surface Review 工作记录。本文件记录已完成的 A（Locale-level language quality review）和 preview rendered acceptance；publish 和 production verification 尚未执行。
 
 ## 审核身份
 
@@ -118,13 +118,47 @@ Course metadata：
 - unresolved language blocker：`none`
 - Stage A result：`passed`
 
+## B. Rendered surface acceptance
+
+结果：`passed`
+
+### Preview identity
+
+- locale：`it-IT`
+- preview loopback URL：<http://127.0.0.1:43055/>
+- reviewed commit：`ffa44556d4df72aaa36f0810659303fe6e1373c6` (`ffa4455`)
+
+### Automated preview rendered acceptance
+
+实际执行结果：
+
+```text
+[preview-browser] preview identity: PASS
+[preview-browser] SEO/routes: PASS
+[preview-browser] desktop rendered surface: PASS
+[preview-browser] editor Run / Format / Reset: PASS
+[preview-browser] SPA: PASS
+[preview-browser] mobile /tour/moretypes/1: PASS
+PREVIEW SURFACE ACCEPTANCE: PASS
+```
+
+- preview automated rendered acceptance：`passed`
+
+### Visual HUMAN gate
+
+结果：`passed`
+
+维护者本人在 automated preview acceptance 通过后完成 visual HUMAN gate，仅确认桌面与移动端的整体排版观感正常、没有自动 geometry 难以识别的明显视觉异常；本项不是由 Codex 或自动化机器验收完成。
+
+- preview visual HUMAN gate：`passed`
+- unresolved preview rendered blocker：`none`
+
 ## 尚未执行的后续阶段
 
 - machine-readable A gate：尚未执行 `surface-review record-a`，因此没有 A-gate receipt。
-- preview rendered acceptance：`not executed`
-- visual HUMAN gate：`not executed`
 - publish：`not executed`
 - production deployment / machine acceptance / browser acceptance：`not executed`
+- production visual HUMAN gate：`not executed`
 - ads 与 production acceptance：`not executed`
 
 <!-- first-production-finalization:start -->
@@ -145,9 +179,9 @@ Course metadata：
 ## Issues 与当前 gate status
 
 - unresolved language blocker：`none`
-- preview automated rendered acceptance：`not executed`
-- visual HUMAN gate：`not executed`
-- unresolved preview rendered blocker：`not assessed`
+- preview automated rendered acceptance：`passed`
+- preview visual HUMAN gate（维护者本人）：`passed`
+- unresolved preview rendered blocker：`none`
 - unresolved production blocker：`not assessed`
 - production verification：`not executed`
 - overall final decision：`PENDING`
