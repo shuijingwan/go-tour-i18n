@@ -127,11 +127,11 @@ func TestValidatePrerenderedPageUsesDecodedTitleText(t *testing.T) {
 		Path: "/tour/flowcontrol/3", Canonical: "https://example.test/tour/flowcontrol/3",
 		PageTitle: `For è il "while" & Go`, Description: "the formal description",
 	}
-	page := []byte(`<!doctype html><html data-tour-rendered-route="/tour/flowcontrol/3"><head>` + runtimeHeadMarker + `<title>For è il &#34;while&#34; &amp; Go</title><link rel="canonical" href="https://example.test/tour/flowcontrol/3"><meta name="description" content="the formal description"></head><body><div id="editor-container"></div></body></html>`)
+	page := []byte(`<!doctype html><html data-tour-rendered-route="/tour/flowcontrol/3"><head>` + runtimeHeadMarker + `<title>For è il &#34;while&#34; &amp; Go — Flusso di controllo — Un tour di Go</title><link rel="canonical" href="https://example.test/tour/flowcontrol/3"><meta name="description" content="the formal description"></head><body><div id="editor-container"></div></body></html>`)
 	if err := validatePrerenderedPage(page, route); err != nil {
 		t.Fatalf("escaped formal title rejected: %v", err)
 	}
-	wrong := bytes.Replace(page, []byte(`&#34;while&#34;`), []byte(`&#34;for&#34;`), 1)
+	wrong := bytes.Replace(page, []byte(`For è il &#34;while&#34; &amp; Go`), []byte(`Senza il titolo richiesto`), 1)
 	if err := validatePrerenderedPage(wrong, route); err == nil || !strings.Contains(err.Error(), "page title") {
 		t.Fatalf("wrong decoded title error=%v", err)
 	}

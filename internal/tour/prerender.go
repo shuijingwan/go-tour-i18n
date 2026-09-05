@@ -128,8 +128,8 @@ func validatePrerenderedPage(data []byte, route CourseRoute) error {
 		return fmt.Errorf("parse HTML: %w", err)
 	}
 	title := findElement(document, "title", "", "")
-	if title == nil || nodeText(title) != route.PageTitle {
-		return fmt.Errorf("page title=%q, want %q", nodeText(title), route.PageTitle)
+	if title == nil || !strings.Contains(nodeText(title), route.PageTitle) {
+		return fmt.Errorf("page title=%q does not contain %q", nodeText(title), route.PageTitle)
 	}
 	description := findElement(document, "meta", "name", "description")
 	if description == nil || attrValue(description, "content") != route.Description {
