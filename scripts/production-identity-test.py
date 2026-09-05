@@ -87,7 +87,7 @@ class ProductionIdentityTest(unittest.TestCase):
     def test_unknown_locale_cli_fails_closed(self):
         original = sys.argv
         try:
-            sys.argv = ["production-identity.py", "--identity", str(self.identity_path), "locale", "it-IT"]
+            sys.argv = ["production-identity.py", "--identity", str(self.identity_path), "locale", "pt-BR"]
             self.assertEqual(MODULE.main(), 1)
         finally:
             sys.argv = original

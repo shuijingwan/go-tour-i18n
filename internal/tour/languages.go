@@ -24,12 +24,13 @@ type LanguageLink struct {
 
 var languageRegistry = []LanguageLink{
 	// 展示顺序按英文语言名称字母顺序排列。
-	{Locale: "zh-CN", EnglishName: "Simplified Chinese", Autonym: "简体中文", URL: "https://go-dev.shuijingwanwq.com/"},
 	{Locale: "en", EnglishName: "English", Autonym: "English", URL: "https://go.dev/tour/", Official: true},
 	{Locale: "fr-FR", EnglishName: "French", Autonym: "Français", URL: "https://fr-go-dev.shuijingwanwq.com/"},
 	{Locale: "de-DE", EnglishName: "German", Autonym: "Deutsch", URL: "https://de-go-dev.shuijingwanwq.com/"},
+	{Locale: "it-IT", EnglishName: "Italian", Autonym: "Italiano", URL: "https://it-go-dev.shuijingwanwq.com/"},
 	{Locale: "ja-JP", EnglishName: "Japanese", Autonym: "日本語", URL: "https://ja-go-dev.shuijingwanwq.com/"},
 	{Locale: "ko-KR", EnglishName: "Korean", Autonym: "한국어", URL: "https://ko-go-dev.shuijingwanwq.com/"},
+	{Locale: "zh-CN", EnglishName: "Simplified Chinese", Autonym: "简体中文", URL: "https://go-dev.shuijingwanwq.com/"},
 	{Locale: "es-ES", EnglishName: "Spanish", Autonym: "Español", URL: "https://es-go-dev.shuijingwanwq.com/"},
 }
 
@@ -44,6 +45,7 @@ var (
 	berlinTime = mustLoadLocation("Europe/Berlin")
 	madridTime = mustLoadLocation("Europe/Madrid")
 	parisTime  = mustLoadLocation("Europe/Paris")
+	romeTime   = mustLoadLocation("Europe/Rome")
 )
 
 var localeProfiles = map[string]localeProfile{
@@ -63,6 +65,12 @@ var localeProfiles = map[string]localeProfile{
 		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",
 		TimeZone:          parisTime,
 		TimeLabel:         "heure locale",
+		TimeLabelFormat:   " (%s)",
+	},
+	"it-IT": {
+		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",
+		TimeZone:          romeTime,
+		TimeLabel:         "ora locale",
 		TimeLabelFormat:   " (%s)",
 	},
 	"es-ES": {

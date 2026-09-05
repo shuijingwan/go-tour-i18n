@@ -12,7 +12,7 @@ import (
 const expectedCatalogMessages = 92
 
 func TestLoadEmbeddedCatalogs(t *testing.T) {
-	for _, locale := range []string{"de-DE", "en", "es-ES", "fr-FR", "ja-JP", "ko-KR", "zh-CN"} {
+	for _, locale := range []string{"de-DE", "en", "es-ES", "fr-FR", "it-IT", "ja-JP", "ko-KR", "zh-CN"} {
 		catalog, err := Load(locale)
 		if err != nil {
 			t.Fatalf("Load(%q): %v", locale, err)
@@ -29,6 +29,7 @@ func TestEditorToggleStatesAreLocalizedPerCatalog(t *testing.T) {
 		"de-DE": {"Ein", "Aus"},
 		"es-ES": {"Activado", "Desactivado"},
 		"fr-FR": {"Activé", "Désactivé"},
+		"it-IT": {"Attivato", "Disattivato"},
 		"ja-JP": {"オン", "オフ"},
 		"ko-KR": {"켜기", "끄기"},
 		"zh-CN": {"开启", "关闭"},
@@ -46,6 +47,31 @@ func TestEditorToggleStatesAreLocalizedPerCatalog(t *testing.T) {
 			if got != want[index] {
 				t.Errorf("%s %s = %q, want %q", locale, key, got, want[index])
 			}
+		}
+	}
+}
+
+func TestItalianCatalogMatchesEnglishSource(t *testing.T) {
+	source, err := Load("en")
+	if err != nil {
+		t.Fatal(err)
+	}
+	italian, err := Load("it-IT")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if italian.HTMLLang != "it-IT" {
+		t.Fatalf("it-IT HTMLLang = %q, want it-IT", italian.HTMLLang)
+	}
+	if got, want := len(italian.Messages), expectedCatalogMessages; got != want {
+		t.Fatalf("it-IT message count = %d, want %d", got, want)
+	}
+	if err := validateCoverage(source, italian); err != nil {
+		t.Fatalf("it-IT coverage: %v", err)
+	}
+	for key, message := range italian.Messages {
+		if strings.Contains(message.Text, "TODO") {
+			t.Errorf("it-IT message %q retains TODO", key)
 		}
 	}
 }
