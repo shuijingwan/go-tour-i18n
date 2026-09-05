@@ -253,7 +253,7 @@ func run(args []string) error {
 		locale := fs.String("locale", "", "target locale")
 		batchID := fs.String("batch-id", "", "optional explicit batch id")
 		unitKind := fs.String("unit-kind", "", "自动选批的翻译单元类型：page（默认）或 example")
-		limit := fs.Int("limit", i18n.DefaultRetranslationExportLimit, "自动批次中最多包含的独立翻译单元数（上限 30）")
+		limit := fs.Int("limit", i18n.DefaultRetranslationExportLimit, "自动批次中最多包含的独立翻译单元数（默认 30；仅自动 Page 选批受控实验可显式至 60，其他模式上限 30）")
 		jsonOutput := fs.Bool("json", false, "输出完整 machine-readable JSON")
 		allowReexport := fs.Bool("allow-reexport", false, "allow explicitly requested page ids to be exported again")
 		previousSnapshotID := fs.String("previous-snapshot-id", "", "previous Candidate Snapshot id containing eligible QC or Final Review revision evidence")

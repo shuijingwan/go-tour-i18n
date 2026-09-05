@@ -10,7 +10,13 @@ import (
 	"strings"
 )
 
-const DefaultRetranslationExportLimit = 30
+const (
+	// DefaultRetranslationExportLimit remains the production baseline for every
+	// export mode. The controlled Page experiment is opt-in below.
+	DefaultRetranslationExportLimit     = 30
+	MaxAutomaticPageExportLimit         = 60
+	ControlledAutomaticPageExportLocale = "it-IT"
+)
 
 type RetranslationExportOptions struct {
 	Locale             string
@@ -119,8 +125,17 @@ func ExportRetranslationBatch(root string, catalog *Catalog, options Retranslati
 	if limit < 1 {
 		return nil, errors.New("retranslation export limit must be greater than zero")
 	}
+	automaticPageBatch := len(options.UnitIDs) == 0 && !options.AllowReexport && (options.UnitKind == "" || options.UnitKind == UnitKindPage)
 	if limit > DefaultRetranslationExportLimit {
-		return nil, fmt.Errorf("retranslation export limit must not exceed %d", DefaultRetranslationExportLimit)
+		if !automaticPageBatch {
+			return nil, fmt.Errorf("this retranslation export mode limit must not exceed %d", DefaultRetranslationExportLimit)
+		}
+		if options.Locale != ControlledAutomaticPageExportLocale {
+			return nil, fmt.Errorf("automatic page retranslation export limit above %d is currently limited to controlled locale %s", DefaultRetranslationExportLimit, ControlledAutomaticPageExportLocale)
+		}
+		if limit > MaxAutomaticPageExportLimit {
+			return nil, fmt.Errorf("automatic page retranslation export limit must not exceed %d", MaxAutomaticPageExportLimit)
+		}
 	}
 	if len(options.UnitIDs) > DefaultRetranslationExportLimit {
 		return nil, fmt.Errorf("a retranslation batch must not contain more than %d TranslationUnits", DefaultRetranslationExportLimit)
