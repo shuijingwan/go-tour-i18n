@@ -1,0 +1,37 @@
+{
+  "schema_version": 2,
+  "batch_id": "codex-it-IT-004",
+  "locale": "it-IT",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 2,
+  "units": [
+    {
+      "unit_id": "welcome/2",
+      "unit_kind": "page",
+      "source_path": "_content/tour/welcome.article",
+      "source_sha256": "c1c8c34dfe10b11b5cc72e1daae4336290d613bbbe5445012be949ab904fd3fa",
+      "input_path": "inputs/welcome-2.article",
+      "input_sha256": "060479523ea920d83f8af84c93e892ad34f99920f547d222efb72c27b50ac1fe",
+      "protected_token_count": 14,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "The section title \"Go in locale\" is unnatural and misleading Italian for source \"Go local\"; use a natural title that clearly conveys localized/other-language versions while preserving the section structure and links."
+    },
+    {
+      "unit_id": "basics/14",
+      "unit_kind": "page",
+      "source_path": "_content/tour/basics.article",
+      "source_sha256": "21c4077c25629545dee0313b8b6b03e709edc4a74e1d73d9f4c9b0a49e46f6b3",
+      "input_path": "inputs/basics-14.article",
+      "input_sha256": "53dea3c51e63e646391b5de0dbd0729c96c63a0dc5c97293fb92e81f30592503",
+      "protected_token_count": 18,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "The phrase around the \"var = expression\" declaration syntax (\"la sintassi di espressione `var`=`\") is unnatural and obscures the intended declaration form; rephrase the surrounding Italian so the syntax is clear while preserving all protected tokens."
+    }
+  ]
+}
