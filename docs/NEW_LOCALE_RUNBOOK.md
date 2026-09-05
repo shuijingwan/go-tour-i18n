@@ -100,6 +100,8 @@ go run -mod=readonly ./cmd/tour-i18n status check --locale <locale>
 
 TranslationUnit 工作从 [多语言翻译流程](TRANSLATION_WORKFLOW.md) 进入。正式翻译前还必须读取 [翻译任务规范](TRANSLATION_TASK_SPEC.md)、[Retranslation 执行手册](RETRANSLATION_RUNBOOK.md)、[Codex 翻译执行规范](CODEX_TRANSLATION.md)、当前 batch manifest、manifest 列出的全部 inputs，以及目标 locale glossary。
 
+首次 Page batch 使用当前推荐的 60-Page 基线；Page 顺序、Examples 独立、revision/retry 边界和调整条件只以 [Codex 翻译执行规范](CODEX_TRANSLATION.md#新增-locale-的首次-page-batch) 为准，本手册不重复细则。
+
 保持既有顺序：
 
 ```text

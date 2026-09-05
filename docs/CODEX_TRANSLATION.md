@@ -17,6 +17,14 @@ retranslation export
 
 manifest、全部 inputs 与 locale glossary 是不可拆分的正式模型输入。Codex 必须在翻译前完整读取 glossary，并遵守其中的 `mandatory`、`preferred`、`forbidden` 和 `keep`；glossary 不是仅供 validator 后置检查的材料。
 
+## 新增 locale 的首次 Page batch
+
+新增 locale 的首次 Page 翻译当前推荐生产基线是：每批目标且最多 `60` 个完整 Page TranslationUnit。TranslationUnit 仍绝对不可拆分或合并；Page 必须按正式 Catalog/source 顺序连续组织。当前 A Tour of Go 有 103 个 Page 时，典型安排为：`60 Pages → 剩余 43 Pages → Examples 独立 batch`。执行首次 Page export 时显式使用 `--unit-kind page --limit 60`，不依赖命令的默认 limit。
+
+Example 必须始终独立于 Page batch，不得混合。revision batch 只包含确实需要 revision 的 TranslationUnit，不得为了凑满 60 扩大范围；retry 规则不因 Page batch 大小而改变。
+
+`60` 是当前推荐生产基线，不是已证明的理论最优值。es-ES 的实际执行显示小 batch 有明显固定执行成本；it-IT 已完成 60-Page batch，未暴露需要回退该规模的质量或 automatic validation 问题。因此为减少 batch 数量和人工操作采用此基线，但不从粗略额度数字推断其更省额度，也不要求逐 batch 记录 Codex 5 小时额度。只有未来真实 evidence 表明 60 Page 导致模型超时或执行不稳定、automatic validation failure 增加、QC B/C/D 或 revision 成本增加、或 Codex 总额度/总耗时异常时，才重新调整该基线。
+
 Page 输出为 `raw-responses/*.article`，Example 输出为 `raw-responses/*.txt`。每个文件只能包含对应 TranslationUnit 的完整翻译结果，禁止包含：
 
 - JSON wrapper；

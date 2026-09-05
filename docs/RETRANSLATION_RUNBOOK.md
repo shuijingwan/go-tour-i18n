@@ -30,9 +30,7 @@ go run -mod=readonly ./cmd/tour-i18n status check --locale <locale>
 
 使用 `retranslation export` 创建 batch。开始翻译前，Codex 必须读取当前 batch 的：
 
-自动 export 的默认生产基线仍是每批 30 个 TranslationUnit，始终先用 `--unit-kind page` 按正式 Page 顺序导出，再用 `--unit-kind example` 按 eligible Example 顺序导出；不得混合两种 kind，也不做均衡分片。Example 自动选批、显式 `--id` 选批和全部 `--allow-reexport` revision batch 始终最多 30 个。
-
-`--unit-kind page --limit 60` 是当前仅为 it-IT 开放的受控实验：仅自动首次 Page 选批可显式从默认 30 提高到最多 60。它不是正式推荐基线，不改变 TranslationUnit、manifest、process、automatic validation、Quality Check、finalization 或 promotion 的语义，也不允许为凑 60 扩大 revision。该实验的布局是 `60 Pages + 剩余 Pages + Examples 独立 batch`；是否将 60 升级为推荐基线，必须等待真实实验的 Codex 周额度、执行时间、automatic validation failure、QC A/B/C/D 与 revision 数量结果后再决定。
+新增 locale 首次 Page batch 的推荐生产基线、正式顺序、60-Page 上限、Examples 分离、revision 范围和未来调整条件，以 [Codex 翻译执行规范](CODEX_TRANSLATION.md#新增-locale-的首次-page-batch) 为唯一执行规则。首次 Page export 必须显式传 `--unit-kind page --limit 60`；不得混合 Page 与 Example，也不做均衡分片。Example 自动选批、显式 `--id` 选批和全部 `--allow-reexport` revision batch 始终最多 30 个。
 
 未传 `--batch-id` 时，新 batch 自动命名为 `codex-<locale>-NNN`。自动编号同时扫描保留的 `chatgpt-<locale>-NNN` 与 `codex-<locale>-NNN` 历史目录，取实际最大序号后递增；历史 batch 名称、manifest 和 evidence 均保持不变。
 
