@@ -94,14 +94,15 @@ func PromoteRetranslation(root string, catalog *Catalog, options RetranslationPr
 			return nil, fmt.Errorf("promotion finalization: %w", err)
 		}
 	}
-	prepared, missing, reviews, pages, examples, err := preflightUnifiedRetranslationPromotion(root, catalog, options.Locale)
+	legacyReviewGate := options.SnapshotID == ""
+	prepared, missing, reviews, pages, examples, err := preflightUnifiedRetranslationPromotion(root, catalog, options.Locale, legacyReviewGate)
 	if err != nil {
 		return nil, err
 	}
 	plan := &RetranslationPromotionPlan{
 		Locale: options.Locale, UnitCount: pages + examples, PageCount: pages, ExampleCount: examples,
 		ReviewApprovedCount: reviews.approved,
-		CanApply:            len(missing) == 0 && len(reviews.missing) == 0 && len(reviews.rejected) == 0 && len(reviews.invalid) == 0,
+		CanApply:            len(missing) == 0 && (!legacyReviewGate || (len(reviews.missing) == 0 && len(reviews.rejected) == 0 && len(reviews.invalid) == 0)),
 		MissingEvidence:     missing, MissingReview: reviews.missing, RejectedReview: reviews.rejected, InvalidReview: reviews.invalid,
 		Units: make([]RetranslationPromotionUnit, 0, len(prepared)),
 	}
@@ -153,7 +154,7 @@ func catalogMustUnit(catalog *Catalog, id string) *TranslationUnit {
 	return unit
 }
 
-func preflightUnifiedRetranslationPromotion(root string, catalog *Catalog, locale string) ([]preparedPromotion, []string, promotionReviewGate, int, int, error) {
+func preflightUnifiedRetranslationPromotion(root string, catalog *Catalog, locale string, requireLegacyReviews bool) ([]preparedPromotion, []string, promotionReviewGate, int, int, error) {
 	glossary, err := LoadGlossary(root, locale)
 	if err != nil {
 		return nil, nil, promotionReviewGate{}, 0, 0, err
@@ -184,22 +185,24 @@ func preflightUnifiedRetranslationPromotion(root string, catalog *Catalog, local
 		if err != nil {
 			return nil, nil, promotionReviewGate{}, 0, 0, err
 		}
-		reviewState, err := checkPromotionReview(choice.batchDir, choice.batchID, locale, unit, choice.manifest, choice.result, evidence.validation, evidence.candidate, evidence.attempt)
-		if err != nil {
-			return nil, nil, promotionReviewGate{}, 0, 0, err
+		if requireLegacyReviews {
+			reviewState, err := checkPromotionReview(choice.batchDir, choice.batchID, locale, unit, choice.manifest, choice.result, evidence.validation, evidence.candidate, evidence.attempt)
+			if err != nil {
+				return nil, nil, promotionReviewGate{}, 0, 0, err
+			}
+			switch reviewState {
+			case "missing":
+				reviews.missing = append(reviews.missing, id)
+				continue
+			case "rejected":
+				reviews.rejected = append(reviews.rejected, id)
+				continue
+			case "invalid":
+				reviews.invalid = append(reviews.invalid, id)
+				continue
+			}
+			reviews.approved++
 		}
-		switch reviewState {
-		case "missing":
-			reviews.missing = append(reviews.missing, id)
-			continue
-		case "rejected":
-			reviews.rejected = append(reviews.rejected, id)
-			continue
-		case "invalid":
-			reviews.invalid = append(reviews.invalid, id)
-			continue
-		}
-		reviews.approved++
 		canonicalCandidate := evidence.candidate
 		if unit.Kind == UnitKindPage {
 			canonicalCandidate = canonicalizeCandidateEOF(evidence.candidate)

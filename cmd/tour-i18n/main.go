@@ -1022,8 +1022,11 @@ func writeRetranslationPromotionOutput(w io.Writer, plan *i18n.RetranslationProm
 	}
 	fmt.Fprintf(w, "重译提升：%s\n", status)
 	fmt.Fprintf(w, "locale: %s\nmode: %s\nunit_count: %d（%d Page，%d Example）\n", plan.Locale, mode, plan.UnitCount, plan.PageCount, plan.ExampleCount)
-	fmt.Fprintf(w, "review_approved_count: %d\nchanged: %d\nunchanged: %d\neof_normalized: %d\ncan_apply: %t\n",
-		plan.ReviewApprovedCount, plan.ChangedCount, plan.UnchangedCount, plan.EOFNormalizedCount, plan.CanApply)
+	if plan.ReviewApprovedCount != 0 || len(plan.MissingReview) != 0 || len(plan.RejectedReview) != 0 || len(plan.InvalidReview) != 0 {
+		fmt.Fprintf(w, "legacy_review_approved_count: %d\n", plan.ReviewApprovedCount)
+	}
+	fmt.Fprintf(w, "changed: %d\nunchanged: %d\neof_normalized: %d\ncan_apply: %t\n",
+		plan.ChangedCount, plan.UnchangedCount, plan.EOFNormalizedCount, plan.CanApply)
 	if applied {
 		fmt.Fprintln(w, "applied: true")
 		return nil
@@ -1042,9 +1045,9 @@ func writeRetranslationPromotionOutput(w io.Writer, plan *i18n.RetranslationProm
 		}
 	}
 	writePromotionFailures("missing_evidence", plan.MissingEvidence)
-	writePromotionFailures("missing_review", plan.MissingReview)
-	writePromotionFailures("rejected_review", plan.RejectedReview)
-	writePromotionFailures("invalid_review", plan.InvalidReview)
+	writePromotionFailures("legacy_missing_review", plan.MissingReview)
+	writePromotionFailures("legacy_rejected_review", plan.RejectedReview)
+	writePromotionFailures("legacy_invalid_review", plan.InvalidReview)
 	return nil
 }
 
