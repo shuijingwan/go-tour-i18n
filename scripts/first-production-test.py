@@ -422,7 +422,7 @@ printf 200
         self.assertEqual(ssh_args[2], ("es-go-dev.shuijingwanwq.com", "es-ES"))
         self.assertEqual(ssh_kwargs["stage"], "public-machine")
         _, run_args, run_kwargs = calls[1]
-        self.assertEqual(run_args[0], ["env", "VERIFY_PRODUCTION_NETWORK_SSH=zgocloud", ROOT / "scripts" / "verify-production.sh", instance.release_dir])
+        self.assertEqual(run_args[0], [ROOT / "scripts" / "verify-production.sh", instance.release_dir])
         self.assertEqual(run_kwargs["stage"], "public-machine")
         self.assertEqual(calls[2], ("record", "public-machine"))
 

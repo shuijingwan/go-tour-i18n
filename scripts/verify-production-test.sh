@@ -14,11 +14,10 @@ fail() {
 }
 
 verify_source=$(<"$verify_script")
-[[ $verify_source == *'VERIFY_PRODUCTION_NETWORK_SSH'* \
-    && $verify_source == *'ControlMaster=yes'* \
-    && $verify_source == *'--socks5-hostname'* \
-    && $verify_source == *'cleanup_network_ssh'* ]] || \
-    fail 'zgocloud invocation-scoped public network runner is incomplete'
+[[ $verify_source == *'bash -s -- --public'* \
+    && $verify_source == *'public network runner: zgocloud (direct)'* \
+    && $verify_source == *'6|7|16|28|35|97'* ]] || \
+    fail 'zgocloud direct public network runner is incomplete'
 
 assert_contains() {
     [[ $1 == *"$2"* ]] || fail "output does not contain: $2"
@@ -80,7 +79,7 @@ cat >"$fake_bin/ssh" <<'SH'
 set -Eeuo pipefail
 printf 'called\n' >"${FAKE_SSH_MARKER:?}"
 while [[ ${1:-} == -o ]]; do shift 2; done
-[[ ${1:-} == aliyun ]] || exit 90
+[[ ${1:-} == aliyun || ${1:-} == zgocloud ]] || exit 90
 shift
 arguments=("$@")
 for index in "${!arguments[@]}"; do
@@ -141,6 +140,8 @@ while (( $# )); do
         *) url=$1; shift ;;
     esac
 done
+
+[[ -z ${FAKE_CURL_LOG:-} ]] || printf '%s\n' "$url" >>"$FAKE_CURL_LOG"
 
 status=200
 cache=''
@@ -375,7 +376,7 @@ export FAKE_TRANSPORT_URL=$FAKE_PUBLIC_ORIGIN/tour/list FAKE_TRANSPORT_SEQUENCE=
 output=$(run_verify) || fail 'transient public transport failure did not recover'
 assert_contains "$output" '[verify-production] public routes: 7/7 PASS'
 
-for transient_exit in 6 7 16 35; do
+for transient_exit in 6 7 16 35 97; do
     setup_case
     export FAKE_TRANSPORT_URL=$FAKE_PUBLIC_ORIGIN/tour/list FAKE_TRANSPORT_SEQUENCE="$transient_exit,0"
     output=$(run_verify) || fail "transient curl exit $transient_exit did not recover"
@@ -399,6 +400,12 @@ assert_contains "$output" '[verify-production] sitemap: 105/105 PASS'
 setup_case
 export FAKE_TRANSPORT_URL=$FAKE_PUBLIC_ORIGIN/tour/fake/7 FAKE_TRANSPORT_SEQUENCE=28
 expect_failure 'persistent sitemap transport failure' 'check=https://de-go-dev.shuijingwanwq.com/tour/fake/7'
+
+setup_case
+export FAKE_CURL_LOG=$fixture/curl.log FAKE_TRANSPORT_URL=$FAKE_PUBLIC_ORIGIN/tour/fake/7 FAKE_TRANSPORT_SEQUENCE=97
+expect_failure 'persistent sitemap transient failure fails fast' 'curl exit 97'
+[[ $(grep -Fc "$FAKE_PUBLIC_ORIGIN/tour/fake/7" "$FAKE_CURL_LOG") == 3 ]] || fail 'sitemap transient retry count was not bounded'
+! grep -F "$FAKE_PUBLIC_ORIGIN/tour/fake/8" "$FAKE_CURL_LOG" >/dev/null || fail 'sitemap continued after exhausted transient failure'
 
 setup_case
 export FAKE_HTML_MODE=LANG
@@ -455,9 +462,9 @@ setup_case
 export FAKE_CACHE_HTTP_STATUS=503
 expect_failure 'cache observation HTTP failure' 'expected=HTTP 200 actual=HTTP 503'
 
-unsupported=$fixture/go-tour-release-20260829-it-IT-unsupported
+unsupported=$fixture/go-tour-release-20260829-zz-ZZ-unsupported
 mkdir -p -- "$unsupported"
-printf '{"locale":"it-IT"}\n' >"$unsupported/release.json"
+printf '{"locale":"zz-ZZ"}\n' >"$unsupported/release.json"
 release_dir=$unsupported
 rm -f -- "$FAKE_SSH_MARKER"
 expect_failure 'unsupported locale' 'locale with one valid formal production identity'

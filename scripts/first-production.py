@@ -852,7 +852,7 @@ done
         self.ssh(s["zgocloud_ssh_alias"], script, (
             p["production_hostname"], p["locale"],
         ), stage="public-machine", timeout=1200)
-        self.run(["env", f"VERIFY_PRODUCTION_NETWORK_SSH={s['zgocloud_ssh_alias']}", ROOT / "scripts" / "verify-production.sh", self.release_dir], stage="public-machine", timeout=1200)
+        self.run([ROOT / "scripts" / "verify-production.sh", self.release_dir], stage="public-machine", timeout=1200)
         self.record("public-machine")
 
     def browser(self):

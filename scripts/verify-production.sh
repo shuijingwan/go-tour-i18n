@@ -40,15 +40,14 @@ SSH_HOST=''
 CURL_NETWORK_OPTIONS=()
 HTTP_REQUEST_EXIT=0
 HTTP_REQUEST_STATUS=''
-NETWORK_SSH_HOST=${VERIFY_PRODUCTION_NETWORK_SSH:-}
-NETWORK_CONTROL_DIR=''
-NETWORK_CONTROL_PATH=''
-NETWORK_PROXY_PORT=''
+NETWORK_SSH_HOST=''
 
-script_dir=$(cd -P -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)
-# shellcheck source=production-identity.sh
-source "$script_dir/production-identity.sh"
-unset script_dir
+if [[ ${1:-} != --public ]]; then
+    script_dir=$(cd -P -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)
+    # shellcheck source=production-identity.sh
+    source "$script_dir/production-identity.sh"
+    unset script_dir
+fi
 
 error() {
     printf '[verify-production] ERROR: %s\n' "$*" >&2
@@ -62,43 +61,6 @@ fail_check() {
 
 usage() {
     printf 'usage: %s <release-dir>\n' "${0##*/}" >&2
-}
-
-setup_network_ssh() {
-    [[ -n $NETWORK_SSH_HOST ]] || return 0
-    [[ $NETWORK_SSH_HOST =~ ^[A-Za-z0-9._-]+$ ]] || {
-        fail_check 'network runner' SSH-alias 'safe SSH alias' "$NETWORK_SSH_HOST"
-        return 1
-    }
-    NETWORK_CONTROL_DIR=$(mktemp -d "${TMPDIR:-/tmp}/go-tour-verify-network.XXXXXX") || return 1
-    NETWORK_CONTROL_PATH=$NETWORK_CONTROL_DIR/control
-    NETWORK_PROXY_PORT=$(python3 - <<'PY'
-import socket
-with socket.socket() as listener:
-    listener.bind(("127.0.0.1", 0))
-    print(listener.getsockname()[1])
-PY
-    ) || return 1
-    ssh -o BatchMode=yes -o ConnectTimeout=10 -o ServerAliveInterval=5 \
-        -o ServerAliveCountMax=3 -o ConnectionAttempts=3 -o ControlMaster=yes \
-        -o ControlPersist=60 -o "ControlPath=$NETWORK_CONTROL_PATH" \
-        -N -f -D "127.0.0.1:$NETWORK_PROXY_PORT" "$NETWORK_SSH_HOST" || {
-        fail_check 'network runner' SSH "$NETWORK_SSH_HOST ControlMaster + SOCKS ready" failed
-        return 1
-    }
-    CURL_NETWORK_OPTIONS=(--socks5-hostname "127.0.0.1:$NETWORK_PROXY_PORT")
-    printf '[verify-production] public network runner: %s\n' "$NETWORK_SSH_HOST"
-}
-
-cleanup_network_ssh() {
-    if [[ -n $NETWORK_CONTROL_DIR && -n $NETWORK_CONTROL_PATH && $NETWORK_CONTROL_PATH == "$NETWORK_CONTROL_DIR/control" && ${NETWORK_CONTROL_DIR##*/} == go-tour-verify-network.* ]]; then
-        if [[ -S $NETWORK_CONTROL_PATH ]]; then
-            ssh -o BatchMode=yes -o ConnectTimeout=10 -o "ControlPath=$NETWORK_CONTROL_PATH" \
-                -O exit "$NETWORK_SSH_HOST" >/dev/null 2>&1 || true
-        fi
-        rm -f -- "$NETWORK_CONTROL_PATH"
-        rmdir -- "$NETWORK_CONTROL_DIR" 2>/dev/null || true
-    fi
 }
 
 select_production_profile() {
@@ -225,7 +187,7 @@ http_request() {
 
         if (( curl_exit != 0 )); then
             case $curl_exit in
-                6|7|16|28|35)
+                6|7|16|28|35|97)
                     if (( attempt < CURL_RETRY_ATTEMPTS )); then
                         sleep "$attempt"
                         continue
@@ -375,7 +337,6 @@ PY
 
 verify_sitemap() {
     local sitemap="$TEMP_DIR/sitemap.xml" urls_file="$TEMP_DIR/sitemap.urls" path
-    local failures=0
     local -a urls=()
 
     fetch_http_200 'sitemap' "$PUBLIC_ORIGIN/sitemap.xml" "$sitemap" || return 1
@@ -440,14 +401,47 @@ PY
     mapfile -d '' -t urls <"$urls_file"
     for path in "${urls[@]}"; do
         http_request "$path" /dev/null "$TEMP_DIR/sitemap-url.headers"
-        if ! http_result_is sitemap "$path" 200; then
-            failures=$((failures + 1))
-        fi
+        # A bounded transient retry has already been exhausted.  Stop now;
+        # later URLs are unverified and must never be reported as passed.
+        http_result_is sitemap "$path" 200 || return 1
     done
     printf 'sitemap URLs: %d/%d\n' "${#urls[@]}" "$EXPECTED_SITEMAP_URLS"
     printf 'host mismatch: 0\n'
-    printf 'HTTP failure: %d\n' "$failures"
-    (( failures == 0 )) || return 1
+    printf 'HTTP failure: 0\n'
+}
+
+public_main() {
+    (( $# == 4 )) || { usage; return 2; }
+    RELEASE_LOCALE=$1; PUBLIC_ORIGIN=${2%/}; PRODUCTION_HOST=$3; CACHE_HEADER=$4
+    for command_name in awk curl mktemp python3 tr; do command -v "$command_name" >/dev/null || { fail_check 'public runner' tool "$command_name available" missing; return 1; }; done
+    TEMP_DIR=$(mktemp -d) || return 1
+    trap 'rm -rf -- "$TEMP_DIR"' EXIT
+    printf '[verify-production] public network runner: zgocloud (direct)\n'
+    verify_cache_path '/' CACHE_HOME_RESULT || return 1
+    verify_cache_path '/tour/welcome/1' CACHE_WELCOME_RESULT || return 1
+    verify_public_routes || return 1
+    printf '[verify-production] public routes: 7/7 PASS\n'
+    verify_html_identity || return 1
+    printf '[verify-production] html identity: PASS\n'
+    verify_sitemap || return 1
+    printf '[verify-production] sitemap: 105/105 PASS\n'
+    verify_socket_boundary || return 1
+    printf '[verify-production] socket boundary: PASS\n'
+    printf '[verify-production] CDN /: %s\n' "$CACHE_HOME_RESULT"
+    printf '[verify-production] CDN /tour/welcome/1: %s\n' "$CACHE_WELCOME_RESULT"
+    printf '\nPRODUCTION MACHINE ACCEPTANCE: PASS\n'
+}
+
+run_public_acceptance() {
+    local output
+    load_production_identity_shared || { fail_check 'network runner' identity 'valid shared production identity' invalid; return 1; }
+    NETWORK_SSH_HOST=$PRODUCTION_ZGOCLOUD_SSH_ALIAS
+    output=$(ssh "${SSH_OPTIONS[@]}" "$NETWORK_SSH_HOST" bash -s -- --public \
+        "$RELEASE_LOCALE" "$PUBLIC_ORIGIN" "$PRODUCTION_HOST" "$CACHE_HEADER" <"${BASH_SOURCE[0]}") || {
+        fail_check 'public runner' SSH "$NETWORK_SSH_HOST direct public acceptance" failed
+        return 1
+    }
+    printf '%s\n' "$output"
 }
 
 verify_socket_boundary() {
@@ -486,8 +480,7 @@ main() {
         fail_check 'release identity' temporary-directory created failed
         return 1
     }
-    trap 'cleanup_network_ssh; rm -rf -- "$TEMP_DIR"' EXIT
-    setup_network_ssh || return 1
+    trap 'rm -rf -- "$TEMP_DIR"' EXIT
 
     if ! verify_remote_and_source "$expected_remote"; then
         error 'stage=remote/source batch check=SSH aliyun expected=completed actual=failed'
@@ -496,25 +489,12 @@ main() {
     printf '[verify-production] remote identity: PASS\n'
     printf '[verify-production] source routes: 7/7 PASS\n'
 
-    verify_cache_path '/' CACHE_HOME_RESULT || return 1
-    verify_cache_path '/tour/welcome/1' CACHE_WELCOME_RESULT || return 1
-
-    verify_public_routes || return 1
-    printf '[verify-production] public routes: 7/7 PASS\n'
-
-    verify_html_identity || return 1
-    printf '[verify-production] html identity: PASS\n'
-
-    verify_sitemap || return 1
-    printf '[verify-production] sitemap: 105/105 PASS\n'
-
-    verify_socket_boundary || return 1
-    printf '[verify-production] socket boundary: PASS\n'
-    printf '[verify-production] CDN /: %s\n' "$CACHE_HOME_RESULT"
-    printf '[verify-production] CDN /tour/welcome/1: %s\n' "$CACHE_WELCOME_RESULT"
-    printf '\nPRODUCTION MACHINE ACCEPTANCE: PASS\n'
+    run_public_acceptance
 }
 
-if [[ ${BASH_SOURCE[0]} == "$0" ]]; then
+if [[ ${1:-} == --public ]]; then
+    shift
+    public_main "$@"
+elif [[ ${BASH_SOURCE[0]} == "$0" ]]; then
     main "$@"
 fi
