@@ -1,0 +1,1 @@
+⟪GTI18N_8c3ce858_000001⟫send sum to c⟪GTI18N_8c3ce858_000002⟫receive from c⟪GTI18N_8c3ce858_000003⟫
