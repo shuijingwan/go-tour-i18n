@@ -214,7 +214,7 @@ scripts/recover-first-production-health-failure.sh \
 
 通过全部检查后，命令原子暂存 `current` symlink、删除已验证为空的 lock，再删除暂存 symlink；若 lock 删除或 INT/TERM/HUP 期间失败则恢复 `current`。失败 release 一直保留作 evidence。恢复成功后先重新 publish 新 release，再对**新** release 运行 `scripts/first-production.sh`；旧 failed receipt 不删除、不复用，新 release 会建立新的 receipt 并从完整 preflight 重新开始。
 
-preflight 在任何 production mutation 前同时检查：正式 bundle 与 identity、TODO/unknown locale 间接由 publish/identity gate 拒绝、两台 SSH 和 root account、port/service/data-root/vhost/certificate 冲突、EnvironmentFile 与非空 `TOUR_AD_HTML`（不输出值）、Cloudflare secret 权限与变量、zone 唯一性、目标 DNS 无冲突、Playground 两个 location 的结构一致性，以及 shared-assets origin/public SHA-256 freshness。它重新 export/validate 当前仓库、对照 aliyun origin，并复用正式 shared-assets public verification core（zgocloud runner、522/525 bounded retry、11/11 SHA-256 与 boundary 404），不信任历史 receipt。任一项失败时，不建立目录、unit、证书、vhost、DNS 或 Origin。
+preflight 在任何 production mutation 前同时检查：正式 bundle 与 identity、TODO/unknown locale 间接由 publish/identity gate 拒绝、两台 SSH 和 root account、port/service/data-root/vhost/certificate 冲突、EnvironmentFile 与非空 `TOUR_AD_HTML`（不输出值）、Cloudflare secret 权限与变量、zone 唯一性、目标 DNS 无冲突、Playground 两个 location 的结构一致性，以及 shared-assets origin/public SHA-256 freshness。它重新 export/validate 当前仓库、对照 aliyun origin，并复用正式 shared-assets public verification core（zgocloud runner、HTTP 522/525 和 curl exit 28 的 bounded retry、11/11 SHA-256 与 boundary 404），不信任历史 receipt。任一项失败时，不建立目录、unit、证书、vhost、DNS 或 Origin。
 
 Cloudflare control-plane 专用网络通道也在 preflight 建立：调用机先以 invocation-scoped SSH `-D 127.0.0.1:<local-port>` 连接 zgocloud，再以 SSH `-R 127.0.0.1:<aliyun-port>:127.0.0.1:<local-port>` 连接 aliyun；两个 listener 都只绑定 loopback，且 `ExitOnForwardFailure=yes`/`GatewayPorts=no`。因此 aliyun 的 curl 经 `--socks5-hostname 127.0.0.1:<aliyun-port>` 从 zgocloud 出口完成 DNS 和 TCP，但 HTTPS/TLS 与 `Authorization: Bearer $CF_Token` 仍只在 aliyun 的 curl 进程和 Cloudflare 之间建立，调用机与 zgocloud 都看不到 token 明文。建链失败立即停止，绝不回退 aliyun 直连；正常、失败、INT、TERM、HUP 都关闭两个 ControlMaster 和转发 socket。该 endpoint、端口、token 和 tunnel 细节不写入 receipt 或日志。
 
@@ -232,7 +232,9 @@ FIRST_DEPLOYMENT 仍严格复用 `deploy-production.sh` 的 upload/current/healt
 
 first-production 不查询或解析 Cloudflare Cache Rule expression，也不修改 account-wide rule；Cache Rule 的实际 eligibility 只由随后从 zgocloud 发起的真实公网 `CF-Cache-Status` machine gate 验证。
 
-Cloudflare DNS 创建后，first-production 只从 zgocloud 对新 hostname 做 bounded public readiness poll：正式 HTTPS 链路的首页必须为 HTTP 200 且具有目标 locale 的 `html lang`，因此不能以本地 DNS 字符串检查代替真实公网可达性。readiness 仅等待 DNS/CDN 生效，不承担第二套 production acceptance；它通过后立即且仅一次调用 `scripts/verify-production.sh <release-dir>`。该脚本是 routes、homepage/welcome canonical 与 `html lang`、sitemap 及其 105 URL、普通/Upgrade `/socket` boundary、CDN cache header/eligibility 等通用 machine gate 的唯一正式实现；本机只执行 release identity 与 aliyun remote/source gate，脚本本体以 SSH stdin 的 `--public` 模式直接在正式 shared `zgocloud` runner 执行全部公网 curl，避免 105 个 sitemap URL 经维护者本机↔zgocloud 的 SOCKS 链路。runner 不可用立即 fail closed；curl exit `6`、`7`、`16`、`28`、`35`、`97` 与 HTTP `522`/`525` 只在单一逻辑请求内 bounded retry 三次，耗尽后立即停止（尤其不再继续未验证的 sitemap URL），不能将未检查 URL 记为 PASS。Playground Origin 已在其专属阶段完成接口/boundary 验收，shared-assets 已在 preflight 完成 current-state freshness/public verification；二者不在 readiness 重复请求。`verify-production-browser.py` 随后使用仓库既有 `google-chrome`/DevTools 基线，自动覆盖 desktop/mobile、普通与 editor course、`/tour/moretypes/1`、语言列表、Run/Format/Reset、runtime output、Playground endpoint、canonical/lang/SEO、socket、shared assets、course-ad mount/loader/request opportunity 和 SPA 下一页。广告 filled/unfilled 均可通过。
+Cloudflare DNS 创建后，first-production 只从 zgocloud 对新 hostname 做 bounded public readiness poll：每轮同时请求 `/` 与 `/tour/welcome/1`，两者均须为 HTTP 200 且具有目标 locale 的 `html lang`；连续三轮成功才进入 verifier。readiness 仅等待 DNS/CDN 稳定生效，不承担第二套 production acceptance；它通过后立即且仅一次调用 `scripts/verify-production.sh <release-dir>`。该脚本是 routes、homepage/welcome canonical 与 `html lang`、sitemap 及其 105 URL、普通/Upgrade `/socket` boundary、CDN cache header/eligibility 等通用 machine gate 的唯一正式实现；本机只执行 release identity 与 aliyun remote/source gate，脚本本体以 SSH stdin 的 `--public` 模式直接在正式 shared `zgocloud` runner 执行全部公网 curl，避免 105 个 sitemap URL 经维护者本机↔zgocloud 的 SOCKS 链路。runner 不可用立即 fail closed；curl exit `6`、`7`、`16`、`28`、`35`、`97` 与 HTTP `522`/`525` 只在单一逻辑请求内 bounded retry 三次，耗尽后立即停止（尤其不再继续未验证的 sitemap URL），不能将未检查 URL 记为 PASS。Playground Origin 已在其专属阶段完成接口/boundary 验收，shared-assets 已在 preflight 完成 current-state freshness/public verification；二者不在 readiness 重复请求。`verify-production-browser.py` 随后使用仓库既有 `google-chrome`/DevTools 基线，自动覆盖 desktop/mobile、普通与 editor course、`/tour/moretypes/1`、语言列表、Run/Format/Reset、runtime output、Playground endpoint、canonical/lang/SEO、socket、shared assets、course-ad mount/loader/request opportunity 和 SPA 下一页。广告 filled/unfilled 均可通过。
+
+编排器对 preflight、infrastructure、Playground Origin、deploy、direct-origin、Cloudflare DNS、public-machine 与 browser 输出 PASS/FAILED 的 wall-clock duration；receipt 仍只保存既有 identity/stage 结果。resume 仅复用 receipt 中已完成的 immutable bootstrap decision（例如同 release 的 unit/vhost baseline），但每次仍重新执行完整 preflight，并重新验证 current、service/source health、DNS identity、shared-assets public freshness 与 CDN/public state；这些 mutable state 不得由历史 PASS 代替。
 
 运营注意：首次 Production 公网验收若没有紧急需求，尽量避开北京时间晚间的跨境网络高峰。发生上述典型 transient failure 时，保留失败现场并在网络条件改善后 resume；不要在没有新的 deployment evidence 时重新 deploy，也不要将网络失败解释为已检查 URL 的 PASS。
 
@@ -284,7 +286,7 @@ actual: expected HTTP 204, got 403
 
 ### Production release 自动部署
 
-先使用仓库现有的 `publish` 命令生成并验收 Linux/amd64 production bundle。publish 环境必须存在 `google-chrome`；构建会对当前 locale 的全部 103 个正式课程 URL 和 sitemap 中独立的 `/tour/list` 执行 headless Chrome prerender。课程页写入 `_content/tour/prerender/<lesson>/<page>.html`；list 写入 `_content/tour/prerender/list.html`，并必须含当前 locale 的 heading、module/lesson 标题与说明、课程链接，以及自身的 canonical、title 和 description。`course-metadata.json` 的正式范围仍严格是 103 个 Page TranslationUnit，不包含 list。Chrome 缺失、任一页面未完成渲染或产物缺少 route metadata、正文、完整示例源码（课程页）或完整目录内容（list）时均 fail closed。已有 live locale 的正式推荐入口是 maintenance orchestrator：
+先使用仓库现有的 `publish` 命令生成并验收 Linux/amd64 production bundle。publish 输出 projection/build、production binary build、Chrome prerender、production-equivalent runtime validation、manifest/checksum 的 phase timing，便于识别瓶颈。当前稳定基线保持两个 Chrome worker；每条 route 仍独立启动 Chrome/virtual-time timeout，避免为节省启动成本引入长会话的跨 route state、timeout 或 cleanup 风险。构建会对当前 locale 的全部 103 个正式课程 URL 和 sitemap 中独立的 `/tour/list` 执行 headless Chrome prerender。课程页写入 `_content/tour/prerender/<lesson>/<page>.html`；list 写入 `_content/tour/prerender/list.html`，并必须含当前 locale 的 heading、module/lesson 标题与说明、课程链接，以及自身的 canonical、title 和 description。`course-metadata.json` 的正式范围仍严格是 103 个 Page TranslationUnit，不包含 list。Chrome 缺失、任一页面未完成渲染或产物缺少 route metadata、正文、完整示例源码（课程页）或完整目录内容（list）时均 fail closed。已有 live locale 的正式推荐入口是 maintenance orchestrator：
 
 ```sh
 scripts/maintenance-production.sh \
@@ -452,7 +454,7 @@ preflight、lock、upload、staging validation 或 backup 阶段失败时，orig
 
 脚本成功后生成与当前正式 export 的绝对路径和 `SHA256SUMS` identity 绑定的 machine-readable verification receipt，并打印 `verification receipt: <path>` 与唯一后续命令 `scripts/verify-shared-assets-production.sh <receipt>`。receipt 还包含 deployment result（`NO_CHANGES` 或 `DEPLOYED`）、实际 changed logical paths、固定 production base URL 和固定 boundary 路径；不包含 secret。它按稳定顺序输出 added、modified、deleted 的实际固定 URL（`SHA256SUMS` 如发生变化也属于 changed URL）。`DEPLOYED` 时脚本仍在 Cloudflare HUMAN GATE 前结束，不调用 Cloudflare API/CLI，也不在 purge 前执行公网 MISS/HIT 验收；`NO_CHANGES` 时也生成 receipt，直接执行其验证命令。
 
-receipt verification 的全部 shared-assets 公网请求使用正式 `production/identity.json` 中 `shared.zgocloud_ssh_alias` 作为 network runner。验证脚本为单次 invocation 建立一个 SSH ControlMaster 与 SOCKS tunnel，所有 `curl` 通过 `--socks5-hostname` 复用该 tunnel，使 DNS 与 TCP 均从 zgocloud 网络出口发起；runner 无法建立即 fail closed，不回退到维护者本机网络，正常、失败和 signal 退出均清理该连接。Cloudflare 短时 HTTP `522` / `525` 仅在单个逻辑请求内最多重试三次；其他 HTTP 状态、内容 SHA-256、cache semantics、boundary 与 receipt identity 错误均立即 fail closed。该网络瞬态容忍不降低完整 11/11 freshness gate。
+receipt verification 的全部 shared-assets 公网请求使用正式 `production/identity.json` 中 `shared.zgocloud_ssh_alias` 作为 network runner。验证脚本为单次 invocation 建立一个 SSH ControlMaster 与 SOCKS tunnel，所有 `curl` 通过 `--socks5-hostname` 复用该 tunnel，使 DNS 与 TCP 均从 zgocloud 网络出口发起；runner 无法建立即 fail closed，不回退到维护者本机网络，正常、失败和 signal 退出均清理该连接。Cloudflare 短时 HTTP `522` / `525` 及已有实证的 curl exit `28` 仅在单个逻辑请求内最多重试三次；其他 curl exit、HTTP 状态、内容 SHA-256、cache semantics、boundary 与 receipt identity 错误均立即 fail closed。成功日志汇总为 `11/11` SHA-256 与 `3/3` boundary，失败仍指明具体 logical path。该网络瞬态容忍不降低完整 11/11 freshness gate。
 
 `deploy-shared-assets.sh` 已通过本地 mock 自动化测试，并已完成首次真实 11 文件 production deployment 验证。`SHA256SUMS`、`course-ad.css` 与 `course-ad.js` 的实际 changed URLs 已完成精确 Custom Purge 与 `MISS → HIT` 验收；公网 allowlist SHA-256 为 11/11 一致，三个非 allowlist boundary 路径继续返回 404。后续发布仍以脚本输出的实际 changed URLs 为唯一 purge 清单；如果真实权限或工具基线与预检不符，立即停止，不绕过检查。
 
@@ -492,11 +494,11 @@ Dashboard purge 是正常 human gate，不是 deployment failure，也不是缺�
 
 #### 阶段 E：公网缓存验收
 
-由 receipt 指定的 `scripts/verify-shared-assets-production.sh <receipt>` 自动对阶段 C 的每个实际 changed URL 连续请求两次、要求 HTTP 200，并按当前基线验证 `CF-Cache-Status: MISS → HIT`，逐 URL 输出明确结果。Cloudflare 实际状态不符合基线时脚本 fail closed；不要手工复制 URL 或猜测、伪造 MISS/HIT 结论。`NO_CHANGES` 没有 changed URL，脚本明确输出 `SKIP CACHE PURGE VERIFICATION: NO CHANGES`，不要求 MISS → HIT。
+由 receipt 指定的 `scripts/verify-shared-assets-production.sh <receipt>` 自动对阶段 C 的每个实际 changed URL 连续请求两次、要求 HTTP 200，并按当前基线验证 `CF-Cache-Status: MISS → HIT`。Cloudflare 实际状态不符合基线时脚本 fail closed；不要手工复制 URL 或猜测、伪造 MISS/HIT 结论。`NO_CHANGES` 没有 changed URL，脚本明确输出 `SKIP CACHE PURGE VERIFICATION: NO CHANGES`，不要求 MISS → HIT。
 
 #### 阶段 F：完整性验收
 
-同一验证脚本自动请求正式 11 个 allowlist URL，要求 HTTP 成功，并逐一将公网内容 SHA-256 与 receipt 绑定的当前 export `SHA256SUMS` 对照。必须达到 11/11 内容一致；只验证本次 purge 的文件不能替代完整 allowlist 验收。receipt 与当前 export identity 不符、export 不再通过正式 `assets validate`，或任一公网 SHA-256 不符时，脚本 fail closed，必须重新走正式 shared-assets 流程。receipt 可以保留作为本次 execution evidence，但不能作为未来 current-state freshness gate 的替代。
+同一验证脚本自动请求正式 11 个 allowlist URL，要求 HTTP 成功，并逐一将公网内容 SHA-256 与 receipt 绑定的当前 export `SHA256SUMS` 对照；成功只输出汇总 `11/11`，任一失败仍输出具体 path。必须达到 11/11 内容一致；只验证本次 purge 的文件不能替代完整 allowlist 验收。receipt 与当前 export identity 不符、export 不再通过正式 `assets validate`，或任一公网 SHA-256 不符时，脚本 fail closed，必须重新走正式 shared-assets 流程。receipt 可以保留作为本次 execution evidence，但不能作为未来 current-state freshness gate 的替代。
 
 #### 阶段 G：边界验收
 
@@ -516,7 +518,7 @@ ko-KR 首次 production 前的 shared-assets current-state freshness verificatio
 
 对照只读测试中，zgocloud → Cloudflare public、zgocloud → Aliyun direct origin、Aliyun localhost → Nginx 各为 `20/20` HTTP 200；Nginx active、assets vhost TLS 与 direct-origin certificate verification 正常，未见持续性 Nginx/TLS 服务故障 evidence。50 次强制 Cloudflare MISS probe 有 `47` 次 HTTP 200 + `CF-Cache-Status: MISS`，均精确对应 Aliyun Nginx access log 的 `47` 个 HTTP 200；其余 `3` 次 curl HTTP `000` 未进入该 access log。30 次保留 stderr 的 transport probe 有 `18` 次 HTTP 200/MISS、`12` 次上述 timeout。
 
-这表明 zgocloud → Cloudflare / Cloudflare 回源链路存在间歇性网络波动，但不足以推定 Nginx/TLS 持续故障、真实海外用户固定失败率或共享资产架构需要重设计。shared-assets 的长 Edge Cache TTL 会减少正常用户接触回源链路的机会，但不消除此现象。当前将其作为已知 production 网络风险：保留 zgocloud runner 与仅 HTTP `522` / `525` 的三次 bounded retry，不修改 Cloudflare、Nginx/TLS 或服务器网络参数，也不放宽 receipt、11/11 SHA-256、cache 或 boundary gate；若真实用户错误、production acceptance failure 或监控 evidence 显示持续/扩大，再作为独立基础设施问题调查。已知网络现象不能替代正式 shared-assets freshness verification `PASS`。
+这表明 zgocloud → Cloudflare / Cloudflare 回源链路存在间歇性网络波动，但不足以推定 Nginx/TLS 持续故障、真实海外用户固定失败率或共享资产架构需要重设计。shared-assets 的长 Edge Cache TTL 会减少正常用户接触回源链路的机会，但不消除此现象。当前将其作为已知 production 网络风险：保留 zgocloud runner 与 HTTP `522` / `525`、curl exit `28` 的三次 bounded retry，不修改 Cloudflare、Nginx/TLS 或服务器网络参数，也不放宽 receipt、11/11 SHA-256、cache 或 boundary gate；不因主站 verifier 有该分类而机械加入 curl exit `97`。若真实用户错误、production acceptance failure 或监控 evidence 显示持续/扩大，再作为独立基础设施问题调查。已知网络现象不能替代正式 shared-assets freshness verification `PASS`。
 
 
 Google 官方 `adsbygoogle.js` 继续直接从 Google 域名加载，不下载、代理、镜像或 self-host 到 assets origin。

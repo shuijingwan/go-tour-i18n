@@ -93,6 +93,10 @@ func parsePublishOptions(args []string) (publishOptions, error) {
 }
 
 func publishBundle(root string, catalog *i18n.Catalog, options publishOptions) (err error) {
+	phase := func(name string) func() {
+		started := time.Now()
+		return func() { fmt.Printf("publish phase %s: %s\n", name, time.Since(started).Round(time.Millisecond)) }
+	}
 	if err := requireLocaleInitializationComplete(root, options.Locale); err != nil {
 		return err
 	}
@@ -125,7 +129,9 @@ func publishBundle(root string, catalog *i18n.Catalog, options publishOptions) (
 		}
 	}()
 
+	projectionDone := phase("projection/build")
 	projection, err := i18n.BuildLocaleProjection(root, catalog, options.Locale, staging)
+	projectionDone()
 	if err != nil {
 		return err
 	}
@@ -147,30 +153,43 @@ func publishBundle(root string, catalog *i18n.Catalog, options publishOptions) (
 	if err := tour.WriteSiteMetadata(projection.ContentDir, metadata); err != nil {
 		return err
 	}
+	buildDone := phase("production binary build")
 	binaryPath := filepath.Join(staging, "bin", "tour")
-	if err := buildProductionBinary(root, options.Locale, binaryPath); err != nil {
+	err = buildProductionBinary(root, options.Locale, binaryPath)
+	buildDone()
+	if err != nil {
 		return err
 	}
-	if err := prerenderProductionPages(projection.ContentDir, options.Locale, projection.PageCount); err != nil {
+	prerenderDone := phase("Chrome prerender")
+	err = prerenderProductionPages(projection.ContentDir, options.Locale, projection.PageCount)
+	prerenderDone()
+	if err != nil {
 		return fmt.Errorf("prerender course pages: %w", err)
 	}
 	// This is the exact load-time validation performed by the production
 	// binary.  Chrome's rendered-page checks are necessary but must not be a
 	// weaker, divergent substitute for startup validation.
-	if _, err := tour.NewProductionHandler(os.DirFS(projection.ContentDir), options.Locale); err != nil {
+	runtimeValidationDone := phase("production runtime validation")
+	_, err = tour.NewProductionHandler(os.DirFS(projection.ContentDir), options.Locale)
+	runtimeValidationDone()
+	if err != nil {
 		return fmt.Errorf("validate production prerender bundle: %w", err)
 	}
-	if err := writeReleaseManifest(staging, manifest); err != nil {
-		return err
+	manifestDone := phase("manifest/checksum")
+	err = writeReleaseManifest(staging, manifest)
+	if err == nil {
+		checksums, checksumErr := bundleChecksums(staging)
+		if checksumErr != nil {
+			err = checksumErr
+		} else {
+			err = os.WriteFile(filepath.Join(staging, "SHA256SUMS"), checksums, 0644)
+			if err == nil {
+				err = validateBundle(staging, manifest, checksums)
+			}
+		}
 	}
-	checksums, err := bundleChecksums(staging)
+	manifestDone()
 	if err != nil {
-		return err
-	}
-	if err := os.WriteFile(filepath.Join(staging, "SHA256SUMS"), checksums, 0644); err != nil {
-		return fmt.Errorf("write SHA256SUMS: %w", err)
-	}
-	if err := validateBundle(staging, manifest, checksums); err != nil {
 		return err
 	}
 	if err := os.Rename(staging, output); err != nil {
