@@ -1,0 +1,12 @@
+* Esercizio: rot13Reader
+
+Uno schema comune è un [[/pkg/io/#Reader][io.Reader]] che racchiude un altro `io.Reader`, modificando in qualche modo il flusso.
+
+Per esempio, la funzione [[/pkg/compress/gzip/#NewReader][gzip.NewReader]] accetta un `io.Reader` (un flusso di dati compressi) e restituisce un `*gzip.Reader` che implementa anch'esso `io.Reader` (un flusso di dati decompressi).
+
+Implementa un `rot13Reader` che implementi `io.Reader` e legga da un `io.Reader`, modificando il flusso mediante l'applicazione del cifrario a sostituzione [[https://en.wikipedia.org/wiki/ROT13][rot13]] a tutti i caratteri alfabetici.
+
+Il tipo `rot13Reader` è già fornito.
+Fai in modo che sia un `io.Reader` implementandone il metodo `Read`.
+
+.play methods/exercise-rot-reader.go

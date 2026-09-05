@@ -1,0 +1,28 @@
+* Tipi di base
+
+I tipi di base di Go sono
+
+	bool
+
+	string
+
+	int  int8  int16  int32  int64
+	uint uint8 uint16 uint32 uint64 uintptr
+
+	byte // alias di uint8
+
+	rune // alias di int32
+	     // rappresenta un punto di codice Unicode
+
+	float32 float64
+
+	complex64 complex128
+
+L'esempio mostra variabili di diversi tipi,
+e mostra anche che le dichiarazioni di variabili possono essere "fattorizzate" in blocchi,
+come le dichiarazioni di importazione.
+
+I tipi `int`, `uint` e `uintptr` sono generalmente larghi 32 bit sui sistemi a 32 bit e 64 bit sui sistemi a 64 bit.
+Quando ti serve un valore intero, dovresti usare `int`, a meno che tu non abbia un motivo specifico per usare un tipo intero di dimensione definita o senza segno.
+
+.play basics/basic-types.go

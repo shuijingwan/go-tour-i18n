@@ -1,0 +1,8 @@
+* Slice nil
+
+Il valore zero di una slice è `nil`.
+
+Una slice nil ha lunghezza e capacità pari a 0
+e non ha un array sottostante.
+
+.play moretypes/nil-slices.go

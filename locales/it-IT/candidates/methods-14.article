@@ -1,0 +1,16 @@
+* L'interfaccia vuota
+
+Il tipo di interfaccia che non specifica alcun metodo è detto _interfaccia_vuota_:
+
+	interface{}
+
+Un'interfaccia vuota può contenere valori di qualsiasi tipo.
+(Ogni tipo implementa almeno zero metodi.)
+
+`any` è un alias di `interface{}`, e i due sono completamente
+equivalenti.
+
+Le interfacce vuote vengono usate dal codice che gestisce valori di tipo sconosciuto.
+Per esempio, `fmt.Print` accetta un numero qualsiasi di argomenti di tipo `any`.
+
+.play methods/empty-interface.go

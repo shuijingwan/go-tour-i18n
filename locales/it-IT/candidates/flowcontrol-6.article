@@ -1,0 +1,9 @@
+* If con un'istruzione breve
+
+Come `for`, l'istruzione `if` può iniziare con un'istruzione breve, eseguita prima della condizione.
+
+Le variabili dichiarate da tale istruzione rimangono nell'ambito soltanto fino alla fine dell'`if`.
+
+(Prova a usare `v` nell'ultima istruzione `return`.)
+
+.play flowcontrol/if-with-a-short-statement.go

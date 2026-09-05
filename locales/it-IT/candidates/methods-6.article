@@ -1,0 +1,23 @@
+* Metodi e indirezione dei puntatori
+
+Confrontando i due programmi precedenti, potresti notare che
+le funzioni con un argomento puntatore devono ricevere un puntatore:
+
+	var v Vertex
+	ScaleFunc(v, 5)  // Errore di compilazione!
+	ScaleFunc(&v, 5) // OK
+
+mentre i metodi con ricevitori puntatore accettano come ricevitore sia un valore sia un puntatore
+quando vengono chiamati:
+
+	var v Vertex
+	v.Scale(5)  // OK
+	p := &v
+	p.Scale(10) // OK
+
+Nell'istruzione `v.Scale(5)`, anche se `v` è un valore e non un puntatore,
+il metodo con ricevitore puntatore viene chiamato automaticamente.
+In altre parole, per comodità, Go interpreta l'istruzione `v.Scale(5)` come
+`(&v).Scale(5)`, poiché il metodo `Scale` ha un ricevitore puntatore.
+
+.play methods/indirection.go

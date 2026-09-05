@@ -1,0 +1,21 @@
+* Metodi e indirezione dei puntatori (2)
+
+Lo stesso avviene nella direzione opposta.
+
+Le funzioni che accettano un argomento per valore devono ricevere un valore di quel tipo specifico:
+
+	var v Vertex
+	fmt.Println(AbsFunc(v))  // OK
+	fmt.Println(AbsFunc(&v)) // Errore di compilazione!
+
+mentre i metodi con ricevitori per valore accettano come ricevitore sia un valore sia un puntatore
+quando vengono chiamati:
+
+	var v Vertex
+	fmt.Println(v.Abs()) // OK
+	p := &v
+	fmt.Println(p.Abs()) // OK
+
+In questo caso, la chiamata al metodo `p.Abs()` viene interpretata come `(*p).Abs()`.
+
+.play methods/indirection-values.go

@@ -1,0 +1,38 @@
+* Esercizio: cicli e funzioni
+
+Per fare pratica con funzioni e cicli, implementiamo una funzione per la radice quadrata: dato un numero x, vogliamo trovare il numero z il cui quadrato z² sia il più vicino possibile a x.
+
+In genere, i computer calcolano la radice quadrata di x usando un ciclo.
+Partendo da una stima z, possiamo correggere z in base a quanto z² si avvicina a x,
+ottenendo una stima migliore:
+
+	z -= (z*z - x) / (2*z)
+
+Ripetendo questa correzione, la stima migliora sempre di più
+finché non otteniamo un risultato il più vicino possibile alla radice quadrata effettiva.
+
+Implementa questa procedura nella funzione `func`Sqrt` fornita.
+Una buona stima iniziale per z è 1, qualunque sia il valore di input.
+Per cominciare, ripeti il calcolo 10 volte e stampa ogni valore di z durante il procedimento.
+Osserva quanto ti avvicini al risultato per diversi valori di x (1, 2, 3, ...)
+e quanto rapidamente migliora la stima.
+
+Suggerimento: per dichiarare e inizializzare un valore in virgola mobile,
+usa la sintassi in virgola mobile oppure una conversione:
+
+	z := 1.0
+	z := float64(1)
+
+Successivamente, modifica la condizione del ciclo in modo che si interrompa quando il valore smette
+di cambiare (o cambia soltanto di una quantità molto piccola).
+Verifica se sono necessarie più o meno di 10 iterazioni.
+Prova altre stime iniziali per z, come x oppure x/2.
+Quanto si avvicinano i risultati della tua funzione a [[/pkg/math/#Sqrt][math.Sqrt]] della libreria standard?
+
+(*Nota:* se ti interessano i dettagli dell'algoritmo, l'espressione z² − x riportata sopra
+indica quanto z² dista dal valore che deve raggiungere (x), mentre la divisione per 2z è la derivata
+di z² e serve a proporzionare la correzione di z alla rapidità con cui cambia z².
+Questo approccio generale è chiamato [[https://en.wikipedia.org/wiki/Newton%27s_method][metodo di Newton]].
+Funziona bene per molte funzioni, ma particolarmente bene per la radice quadrata.)
+
+.play flowcontrol/exercise-loops-and-functions.go

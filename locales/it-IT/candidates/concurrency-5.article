@@ -1,0 +1,7 @@
+* Select
+
+L'istruzione `select` consente a una goroutine di attendere più operazioni di comunicazione.
+
+Un'istruzione `select` si blocca finché uno dei suoi casi non può essere eseguito, quindi esegue quel caso. Se più casi sono pronti, ne sceglie uno casualmente.
+
+.play concurrency/select.go

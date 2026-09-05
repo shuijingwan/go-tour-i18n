@@ -1,0 +1,24 @@
+* Ricevitori puntatore
+
+Puoi dichiarare metodi con ricevitori puntatore.
+
+Ciò significa che il tipo del ricevitore ha la sintassi letterale `*T` per un certo tipo `T`.
+(Inoltre, `T` non può essere a sua volta un puntatore come `*int`.)
+
+Per esempio, il metodo `Scale` qui è definito su `*Vertex`.
+
+I metodi con ricevitori puntatore possono modificare il valore a cui punta il ricevitore
+(come fa qui `Scale`).
+Poiché spesso i metodi devono modificare il proprio ricevitore, i ricevitori puntatore sono più
+comuni dei ricevitori per valore.
+
+Prova a rimuovere `*` dalla dichiarazione della funzione `Scale` alla riga 16
+e osserva come cambia il comportamento del programma.
+
+Con un ricevitore per valore, il metodo `Scale` opera su una copia del valore
+`Vertex` originale.
+(È lo stesso comportamento di qualsiasi altro argomento di funzione.)
+Il metodo `Scale` deve avere un ricevitore puntatore per modificare il valore `Vertex`
+dichiarato nella funzione `main`.
+
+.play methods/methods-pointers.go

@@ -1,0 +1,11 @@
+* Esercizio: slice
+
+Implementa `Pic`. Deve restituire una slice di lunghezza `dy`, ciascuno dei cui elementi è una slice di `dx` interi senza segno a 8 bit. Quando esegui il programma, verrà visualizzata la tua immagine, interpretando gli interi come valori in scala di grigi (o meglio, in scala di blu).
+
+La scelta dell'immagine spetta a te. Tra le funzioni interessanti ci sono `(x+y)/2`, `x*y` e `x^y`.
+
+(Devi usare un ciclo per allocare ogni `[]uint8` all'interno di `[][]uint8`.)
+
+(Usa `uint8(intValue)` per eseguire la conversione tra i tipi.)
+
+.play moretypes/exercise-slices.go

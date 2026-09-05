@@ -1,0 +1,17 @@
+* Scegliere un ricevitore per valore o puntatore
+
+Ci sono due motivi per usare un ricevitore puntatore.
+
+Il primo è permettere al metodo di modificare il valore a cui punta il ricevitore.
+
+Il secondo è evitare di copiare il valore a ogni chiamata del metodo.
+Ciò può essere più efficiente se, per esempio, il ricevitore è una struttura di grandi dimensioni.
+
+In questo esempio, sia `Scale` sia `Abs` sono metodi con ricevitore di tipo `*Vertex`,
+anche se il metodo `Abs` non deve modificare il proprio ricevitore.
+
+In generale, tutti i metodi di un dato tipo dovrebbero avere ricevitori per valore oppure ricevitori
+puntatore, senza mescolare le due forme.
+(Vedremo perché nelle prossime pagine.)
+
+.play methods/methods-with-pointer-receivers.go

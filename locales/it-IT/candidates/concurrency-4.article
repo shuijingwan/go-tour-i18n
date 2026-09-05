@@ -1,0 +1,15 @@
+* Range e close
+
+Un mittente può `close` un canale per indicare che non verranno inviati altri valori. I destinatari possono verificare se un canale è stato chiuso assegnando un secondo parametro all'espressione di ricezione: dopo
+
+	v, ok := <-ch
+
+`ok` è `false` se non vi sono altri valori da ricevere e il canale è chiuso.
+
+Il ciclo `for`i`:=`range`c` riceve ripetutamente valori dal canale finché questo non viene chiuso.
+
+*Nota:* soltanto il mittente deve chiudere un canale, mai il destinatario. Inviare dati su un canale chiuso provoca un panic.
+
+*Un'altra*nota:* i canali non sono come i file; in genere non è necessario chiuderli. La chiusura è necessaria soltanto quando occorre comunicare al destinatario che non arriveranno altri valori, per esempio per terminare un ciclo `range`.
+
+.play concurrency/range-and-close.go

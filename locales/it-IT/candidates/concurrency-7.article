@@ -1,0 +1,18 @@
+* Esercizio: alberi binari equivalenti
+
+Possono esistere molti alberi binari diversi che contengono la stessa sequenza di valori. Per esempio, ecco due alberi binari che contengono la sequenza 1, 1, 2, 3, 5, 8, 13.
+
+.image /tour/static/img/tree.png
+
+Nella maggior parte dei linguaggi, una funzione che verifica se due alberi binari contengono la stessa sequenza è piuttosto complessa. Useremo la concorrenza e i canali di Go per scrivere una soluzione semplice.
+
+Questo esempio usa il pacchetto `tree`, che definisce il tipo:
+
+	type Tree struct {
+		Left  *Tree
+		Value int
+		Right *Tree
+	}
+
+
+La descrizione continua nella [[javascript:click('.next-page')][pagina successiva]].
