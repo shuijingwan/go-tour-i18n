@@ -28,6 +28,12 @@ Surface Review：
 
 Glossary 只回答正式术语选择，不能证明完整译文忠实、准确或自然，也不能替代 source ↔ target 比较。审核者必须同时读取 source、target 和当前 glossary。
 
+### 生成与改写边界
+
+生成或修改 UI、首页、list、article metadata、runtime message 与 SEO 文案前，必须完整读取该资产的正式 source/context 和目标 locale 的完整 glossary，并执行 `mandatory`、`preferred`、`forbidden`、`keep` 的全部决定；不得抽样或只凭相邻 Page/module 推断当前 source 没有的上下文。目标必须是自然的目标语言，同时精确保留 Go、Go Playground、TranslationUnit、Page、Example 等项目/技术 identity，以及 `official`、`unofficial`、`affiliated`、`authorized`、`endorsed` 等身份边界。
+
+不得添加 source 未提供的背景、教程、解释、结论、保证或处方；必须保留原有逻辑、条件和顺序：possibility 不等于 requirement，hint 不等于 prescription。尤其 `Congrats` 等页面不得仅按模块主题自行补写内容。SEO description 只基于当前完整 Page，不进行跨 Page enrichment。上述规则是现有完整 source ↔ target Surface Review 的生成约束，不增加 workflow stage、evidence 或 gate。
+
 ## A. Locale-level language quality review
 
 这是对 TranslationUnit 之外全部可翻译资产的完整语言质量审核。首次新增 locale 时必须逐项覆盖正式资产集合，不允许只浏览几个页面、只搜索英文残留或只依靠浏览器抽查。
