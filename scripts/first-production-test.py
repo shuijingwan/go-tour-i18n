@@ -307,6 +307,18 @@ printf 200
         self.assertIn('installed acme.sh bypasses PATH-resolved curl', source)
         self.assertIn('setup_cloudflare_network_tunnel()', source)
 
+    def test_first_deployment_health_failure_recovery_is_narrow_and_preserves_evidence(self):
+        source = (ROOT / "scripts" / "recover-first-production-health-failure.sh").read_text(encoding="utf-8")
+        for guard in (
+            "production_state must be first-production", "receipt is not an explicit deploy failure",
+            "current does not point exactly to the receipt failed release",
+            "deployment lock is not the expected directory", "service is healthy; refusing health-failure recovery",
+            "RECOVERED_FIRST_DEPLOYMENT_HEALTH_FAILURE", "mv -T -- \"$current\" \"$recovery\"",
+            "rmdir -- \"$lock\"", "failed release preserved",
+        ):
+            self.assertIn(guard, source)
+        self.assertNotIn("force-unlock", source)
+
     def test_secret_and_nginx_fail_closed_guards_are_present(self):
         source = (ROOT / "scripts" / "first-production.py").read_text(encoding="utf-8")
         self.assertIn("root:root 600", source)

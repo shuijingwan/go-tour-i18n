@@ -158,6 +158,29 @@ func TestPublishPrerenderFailureCleansStagingAndDoesNotCreateRelease(t *testing.
 	}
 }
 
+func TestPublishLoadsRuntimePrerenderBundleBeforeCreatingRelease(t *testing.T) {
+	root, catalog := publishTestCatalog(t)
+	output := filepath.Join(t.TempDir(), "runtime-invalid-release")
+	originalBuild, originalPrerender := buildProductionBinary, prerenderProductionPages
+	t.Cleanup(func() { buildProductionBinary, prerenderProductionPages = originalBuild, originalPrerender })
+	buildProductionBinary = func(_, _, binaryPath string) error {
+		if err := os.MkdirAll(filepath.Dir(binaryPath), 0755); err != nil {
+			return err
+		}
+		return os.WriteFile(binaryPath, []byte("test binary\n"), 0755)
+	}
+	// Deliberately claim Chrome succeeded without producing pages. The publish
+	// gate must still perform the production runtime's load-time validation.
+	prerenderProductionPages = func(string, string, int) error { return nil }
+	err := publishBundle(root, catalog, publishOptions{Locale: "zh-CN", Output: output, PublishedAt: testPublishedAt})
+	if err == nil || !strings.Contains(err.Error(), "validate production prerender bundle") || !strings.Contains(err.Error(), "read prerendered page") {
+		t.Fatalf("runtime prerender validation error=%v", err)
+	}
+	if _, err := os.Lstat(output); !os.IsNotExist(err) {
+		t.Fatalf("runtime-invalid publish created output: %v", err)
+	}
+}
+
 func TestValidatePublishProjectionUsesDynamicWorkflowCounts(t *testing.T) {
 	_, catalog := publishTestCatalog(t)
 	total, pages, examples, err := i18n.LocaleWorkflowUnitCounts(catalog)

@@ -154,6 +154,12 @@ func publishBundle(root string, catalog *i18n.Catalog, options publishOptions) (
 	if err := prerenderProductionPages(projection.ContentDir, options.Locale, projection.PageCount); err != nil {
 		return fmt.Errorf("prerender course pages: %w", err)
 	}
+	// This is the exact load-time validation performed by the production
+	// binary.  Chrome's rendered-page checks are necessary but must not be a
+	// weaker, divergent substitute for startup validation.
+	if _, err := tour.NewProductionHandler(os.DirFS(projection.ContentDir), options.Locale); err != nil {
+		return fmt.Errorf("validate production prerender bundle: %w", err)
+	}
 	if err := writeReleaseManifest(staging, manifest); err != nil {
 		return err
 	}

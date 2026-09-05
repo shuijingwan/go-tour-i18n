@@ -116,8 +116,6 @@ func validatePrerenderedPage(data []byte, route CourseRoute) error {
 		{[]byte(runtimeHeadMarker), "runtime head marker"},
 		{[]byte(`data-tour-rendered-route="` + route.Path + `"`), "render completion marker"},
 		{[]byte(`<link rel="canonical" href="` + route.Canonical + `"`), "canonical"},
-		{[]byte("<title>"), "title"},
-		{[]byte(route.PageTitle), "page title"},
 		{[]byte(`id="editor-container"`), "course body"},
 	}
 	for _, check := range checks {
@@ -128,6 +126,10 @@ func validatePrerenderedPage(data []byte, route CourseRoute) error {
 	document, err := html.Parse(bytes.NewReader(data))
 	if err != nil {
 		return fmt.Errorf("parse HTML: %w", err)
+	}
+	title := findElement(document, "title", "", "")
+	if title == nil || nodeText(title) != route.PageTitle {
+		return fmt.Errorf("page title=%q, want %q", nodeText(title), route.PageTitle)
 	}
 	description := findElement(document, "meta", "name", "description")
 	if description == nil || attrValue(description, "content") != route.Description {
