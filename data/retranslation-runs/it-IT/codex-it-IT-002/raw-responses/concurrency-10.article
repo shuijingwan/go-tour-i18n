@@ -1,0 +1,10 @@
+* Esercizio: web crawler
+
+In questo esercizio userai le funzionalità di concorrenza di ⟪GTI18N_bb686393_000001⟫ per parallelizzare un web crawler.
+
+Modifica la funzione ⟪GTI18N_bb686393_000002⟫Crawl⟪GTI18N_bb686393_000003⟫ in modo che recuperi gli URL in parallelo senza recuperare due volte lo stesso URL.
+
+⟪GTI18N_bb686393_000004⟫Suggerimento⟪GTI18N_bb686393_000005⟫: puoi conservare in una mappa una cache degli URL già recuperati, ma le mappe da sole non sono
+sicure per l'uso concorrente!
+
+⟪GTI18N_bb686393_000006⟫

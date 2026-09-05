@@ -1,0 +1,24 @@
+* Ricevitori puntatore
+
+Puoi dichiarare metodi con ricevitori puntatore.
+
+Ciò significa che il tipo del ricevitore ha la sintassi letterale ⟪GTI18N_99f9fa4e_000001⟫*T⟪GTI18N_99f9fa4e_000002⟫ per un certo tipo ⟪GTI18N_99f9fa4e_000003⟫T⟪GTI18N_99f9fa4e_000004⟫.
+(Inoltre, ⟪GTI18N_99f9fa4e_000005⟫T⟪GTI18N_99f9fa4e_000006⟫ non può essere a sua volta un puntatore come ⟪GTI18N_99f9fa4e_000007⟫*int⟪GTI18N_99f9fa4e_000008⟫.)
+
+Per esempio, il metodo ⟪GTI18N_99f9fa4e_000009⟫Scale⟪GTI18N_99f9fa4e_000010⟫ qui è definito su ⟪GTI18N_99f9fa4e_000011⟫*Vertex⟪GTI18N_99f9fa4e_000012⟫.
+
+I metodi con ricevitori puntatore possono modificare il valore a cui punta il ricevitore
+(come fa qui ⟪GTI18N_99f9fa4e_000013⟫Scale⟪GTI18N_99f9fa4e_000014⟫).
+Poiché spesso i metodi devono modificare il proprio ricevitore, i ricevitori puntatore sono più
+comuni dei ricevitori per valore.
+
+Prova a rimuovere ⟪GTI18N_99f9fa4e_000015⟫*⟪GTI18N_99f9fa4e_000016⟫ dalla dichiarazione della funzione ⟪GTI18N_99f9fa4e_000017⟫Scale⟪GTI18N_99f9fa4e_000018⟫ alla riga 16
+e osserva come cambia il comportamento del programma.
+
+Con un ricevitore per valore, il metodo ⟪GTI18N_99f9fa4e_000019⟫Scale⟪GTI18N_99f9fa4e_000020⟫ opera su una copia del valore
+⟪GTI18N_99f9fa4e_000021⟫Vertex⟪GTI18N_99f9fa4e_000022⟫ originale.
+(È lo stesso comportamento di qualsiasi altro argomento di funzione.)
+Il metodo ⟪GTI18N_99f9fa4e_000023⟫Scale⟪GTI18N_99f9fa4e_000024⟫ deve avere un ricevitore puntatore per modificare il valore ⟪GTI18N_99f9fa4e_000025⟫Vertex⟪GTI18N_99f9fa4e_000026⟫
+dichiarato nella funzione ⟪GTI18N_99f9fa4e_000027⟫main⟪GTI18N_99f9fa4e_000028⟫.
+
+⟪GTI18N_99f9fa4e_000029⟫

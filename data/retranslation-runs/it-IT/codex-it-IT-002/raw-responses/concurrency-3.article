@@ -1,0 +1,11 @@
+* Canali con buffer
+
+I canali possono essere ⟪GTI18N_caef0893_000001⟫bufferizzati⟪GTI18N_caef0893_000002⟫. Fornisci la lunghezza del buffer come secondo argomento di ⟪GTI18N_caef0893_000003⟫make⟪GTI18N_caef0893_000004⟫ per inizializzare un canale con buffer:
+
+⟪GTI18N_caef0893_000005⟫
+
+Gli invii a un canale con buffer si bloccano soltanto quando il buffer è pieno. Le ricezioni si bloccano quando il buffer è vuoto.
+
+Modifica l'esempio in modo da superare la capacità del buffer e osserva cosa accade.
+
+⟪GTI18N_caef0893_000006⟫

@@ -1,0 +1,17 @@
+* Parametri di tipo
+
+Le funzioni ⟪GTI18N_01a04510_000001⟫ possono essere scritte in modo da operare su più tipi usando parametri di tipo. I
+parametri di tipo di una funzione compaiono tra parentesi quadre, prima degli
+argomenti della funzione.
+
+⟪GTI18N_01a04510_000002⟫
+
+Questa dichiarazione indica che ⟪GTI18N_01a04510_000003⟫s⟪GTI18N_01a04510_000004⟫ è una slice di un qualsiasi tipo ⟪GTI18N_01a04510_000005⟫T⟪GTI18N_01a04510_000006⟫ che soddisfa il
+vincolo predefinito ⟪GTI18N_01a04510_000007⟫comparable⟪GTI18N_01a04510_000008⟫. Anche ⟪GTI18N_01a04510_000009⟫x⟪GTI18N_01a04510_000010⟫ è un valore dello stesso tipo.
+
+⟪GTI18N_01a04510_000011⟫comparable⟪GTI18N_01a04510_000012⟫ è un utile vincolo che consente di usare gli operatori ⟪GTI18N_01a04510_000013⟫==⟪GTI18N_01a04510_000014⟫ e
+⟪GTI18N_01a04510_000015⟫!=⟪GTI18N_01a04510_000016⟫ sui valori del tipo. In questo esempio lo usiamo per confrontare un
+valore con tutti gli elementi della slice finché non viene trovata una corrispondenza. Questa funzione ⟪GTI18N_01a04510_000017⟫Index⟪GTI18N_01a04510_000018⟫ funziona
+con qualsiasi tipo che supporti il confronto.
+
+⟪GTI18N_01a04510_000019⟫

@@ -1,0 +1,25 @@
+* Asserzioni di tipo
+
+Una ⟪GTI18N_c205b4eb_000001⟫asserzione_di_tipo⟪GTI18N_c205b4eb_000002⟫ consente di accedere al valore concreto sottostante di un valore di interfaccia.
+
+⟪GTI18N_c205b4eb_000003⟫
+
+Questa istruzione asserisce che il valore di interfaccia ⟪GTI18N_c205b4eb_000004⟫i⟪GTI18N_c205b4eb_000005⟫ contiene il tipo concreto ⟪GTI18N_c205b4eb_000006⟫T⟪GTI18N_c205b4eb_000007⟫
+e assegna il valore ⟪GTI18N_c205b4eb_000008⟫T⟪GTI18N_c205b4eb_000009⟫ sottostante alla variabile ⟪GTI18N_c205b4eb_000010⟫t⟪GTI18N_c205b4eb_000011⟫.
+
+Se ⟪GTI18N_c205b4eb_000012⟫i⟪GTI18N_c205b4eb_000013⟫ non contiene un ⟪GTI18N_c205b4eb_000014⟫T⟪GTI18N_c205b4eb_000015⟫, l'istruzione provocherà un panic.
+
+Per ⟪GTI18N_c205b4eb_000016⟫verificare⟪GTI18N_c205b4eb_000017⟫ se un valore di interfaccia contiene un tipo specifico,
+un'asserzione di tipo può restituire due valori: il valore sottostante
+e un valore booleano che indica se l'asserzione è riuscita.
+
+⟪GTI18N_c205b4eb_000018⟫
+
+Se ⟪GTI18N_c205b4eb_000019⟫i⟪GTI18N_c205b4eb_000020⟫ contiene un ⟪GTI18N_c205b4eb_000021⟫T⟪GTI18N_c205b4eb_000022⟫, allora ⟪GTI18N_c205b4eb_000023⟫t⟪GTI18N_c205b4eb_000024⟫ sarà il valore sottostante e ⟪GTI18N_c205b4eb_000025⟫ok⟪GTI18N_c205b4eb_000026⟫ sarà true.
+
+Altrimenti, ⟪GTI18N_c205b4eb_000027⟫ok⟪GTI18N_c205b4eb_000028⟫ sarà false e ⟪GTI18N_c205b4eb_000029⟫t⟪GTI18N_c205b4eb_000030⟫ sarà il valore zero del tipo ⟪GTI18N_c205b4eb_000031⟫T⟪GTI18N_c205b4eb_000032⟫,
+senza che si verifichi alcun panic.
+
+Nota la somiglianza tra questa sintassi e quella usata per leggere da una mappa.
+
+⟪GTI18N_c205b4eb_000033⟫

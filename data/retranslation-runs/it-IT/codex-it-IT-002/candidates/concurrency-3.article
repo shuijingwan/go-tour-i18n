@@ -1,0 +1,11 @@
+* Canali con buffer
+
+I canali possono essere _bufferizzati_. Fornisci la lunghezza del buffer come secondo argomento di `make` per inizializzare un canale con buffer:
+
+	ch := make(chan int, 100)
+
+Gli invii a un canale con buffer si bloccano soltanto quando il buffer è pieno. Le ricezioni si bloccano quando il buffer è vuoto.
+
+Modifica l'esempio in modo da superare la capacità del buffer e osserva cosa accade.
+
+.play concurrency/buffered-channels.go

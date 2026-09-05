@@ -1,0 +1,20 @@
+* Canali
+
+I canali sono condotti tipizzati attraverso i quali puoi inviare e ricevere valori con l'operatore di canale `<-`.
+
+	ch <- v    // Invia v al canale ch.
+	v := <-ch  // Ricevi da ch e
+	           // assegna il valore a v.
+
+(I dati scorrono nella direzione della freccia.)
+
+Come le mappe e le slice, i canali devono essere creati prima dell'uso:
+
+	ch := make(chan int)
+
+Per impostazione predefinita, gli invii e le ricezioni restano bloccati finché l'altra parte non è pronta. Ciò consente alle goroutines di sincronizzarsi senza lock espliciti o variabili di condizione.
+
+Il codice di esempio somma i numeri di una slice, distribuendo il lavoro tra due goroutines.
+Una volta che entrambe le goroutines hanno completato il calcolo, determina il risultato finale.
+
+.play concurrency/channels.go

@@ -1,0 +1,12 @@
+* Stringer
+
+Una delle interfacce più diffuse è [[/pkg/fmt/#Stringer][`Stringer`]], definita dal pacchetto [[/pkg/fmt/][`fmt`]].
+
+	type Stringer interface {
+		String() string
+	}
+
+Uno `Stringer` è un tipo capace di descriversi come stringa. Il pacchetto `fmt`
+(e molti altri) cerca questa interfaccia per stampare i valori.
+
+.play methods/stringer.go

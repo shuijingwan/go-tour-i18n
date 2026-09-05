@@ -1,0 +1,14 @@
+* Selezione predefinita
+
+Il caso `default` di un'istruzione `select` viene eseguito se nessun altro caso è pronto.
+
+Usa un caso `default` per tentare un invio o una ricezione senza bloccarti:
+
+	select {
+	case i := <-c:
+		// usa i
+	default:
+		// la ricezione da c si bloccherebbe
+	}
+
+.play concurrency/default-selection.go

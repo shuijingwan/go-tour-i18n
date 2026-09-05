@@ -1,0 +1,12 @@
+* Valori di interfaccia con valori sottostanti nil
+
+Se il valore concreto all'interno dell'interfaccia è nil,
+il metodo verrà chiamato con un ricevitore nil.
+
+In alcuni linguaggi ciò provocherebbe un'eccezione per puntatore nullo,
+ma in ⟪GTI18N_9487ca3c_000001⟫ è comune scrivere metodi che gestiscano correttamente una chiamata
+con un ricevitore nil (come il metodo ⟪GTI18N_9487ca3c_000002⟫M⟪GTI18N_9487ca3c_000003⟫ in questo esempio).
+
+Nota che un valore di interfaccia che contiene un valore concreto nil non è a sua volta nil.
+
+⟪GTI18N_9487ca3c_000004⟫

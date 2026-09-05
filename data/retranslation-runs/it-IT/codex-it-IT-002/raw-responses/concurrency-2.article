@@ -1,0 +1,16 @@
+* Canali
+
+I canali sono condotti tipizzati attraverso i quali puoi inviare e ricevere valori con l'operatore di canale ⟪GTI18N_a35e3af2_000001⟫<-⟪GTI18N_a35e3af2_000002⟫.
+
+⟪GTI18N_a35e3af2_000003⟫Invia ⟪GTI18N_a35e3af2_000004⟫ al canale ⟪GTI18N_a35e3af2_000005⟫.⟪GTI18N_a35e3af2_000006⟫Ricevi da ⟪GTI18N_a35e3af2_000007⟫ e⟪GTI18N_a35e3af2_000008⟫assegna il valore a ⟪GTI18N_a35e3af2_000009⟫.⟪GTI18N_a35e3af2_000010⟫(I dati scorrono nella direzione della freccia.)
+
+Come le mappe e le slice, i canali devono essere creati prima dell'uso:
+
+⟪GTI18N_a35e3af2_000011⟫
+
+Per impostazione predefinita, gli invii e le ricezioni restano bloccati finché l'altra parte non è pronta. Ciò consente alle ⟪GTI18N_a35e3af2_000012⟫ di sincronizzarsi senza lock espliciti o variabili di condizione.
+
+Il codice di esempio somma i numeri di una slice, distribuendo il lavoro tra due ⟪GTI18N_a35e3af2_000013⟫.
+Una volta che entrambe le ⟪GTI18N_a35e3af2_000014⟫ hanno completato il calcolo, determina il risultato finale.
+
+⟪GTI18N_a35e3af2_000015⟫

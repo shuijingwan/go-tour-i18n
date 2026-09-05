@@ -1,0 +1,14 @@
+* Metodi e indirezione dei puntatori (2)
+
+Lo stesso avviene nella direzione opposta.
+
+Le funzioni che accettano un argomento per valore devono ricevere un valore di quel tipo specifico:
+
+⟪GTI18N_61a9cb84_000001⟫Errore di compilazione!⟪GTI18N_61a9cb84_000002⟫mentre i metodi con ricevitori per valore accettano come ricevitore sia un valore sia un puntatore
+quando vengono chiamati:
+
+⟪GTI18N_61a9cb84_000003⟫
+
+In questo caso, la chiamata al metodo ⟪GTI18N_61a9cb84_000004⟫p.Abs()⟪GTI18N_61a9cb84_000005⟫ viene interpretata come ⟪GTI18N_61a9cb84_000006⟫(*p).Abs()⟪GTI18N_61a9cb84_000007⟫.
+
+⟪GTI18N_61a9cb84_000008⟫

@@ -1,0 +1,15 @@
+* Range e close
+
+Un mittente può ⟪GTI18N_3e925c67_000001⟫close⟪GTI18N_3e925c67_000002⟫ un canale per indicare che non verranno inviati altri valori. I destinatari possono verificare se un canale è stato chiuso assegnando un secondo parametro all'espressione di ricezione: dopo
+
+⟪GTI18N_3e925c67_000003⟫
+
+⟪GTI18N_3e925c67_000004⟫ok⟪GTI18N_3e925c67_000005⟫ è ⟪GTI18N_3e925c67_000006⟫false⟪GTI18N_3e925c67_000007⟫ se non vi sono altri valori da ricevere e il canale è chiuso.
+
+Il ciclo ⟪GTI18N_3e925c67_000008⟫for`i`:=`range`c⟪GTI18N_3e925c67_000009⟫ riceve ripetutamente valori dal canale finché questo non viene chiuso.
+
+⟪GTI18N_3e925c67_000010⟫Nota:⟪GTI18N_3e925c67_000011⟫ soltanto il mittente deve chiudere un canale, mai il destinatario. Inviare dati su un canale chiuso provoca un panic.
+
+⟪GTI18N_3e925c67_000012⟫Un'altra*nota:⟪GTI18N_3e925c67_000013⟫ i canali non sono come i file; in genere non è necessario chiuderli. La chiusura è necessaria soltanto quando occorre comunicare al destinatario che non arriveranno altri valori, per esempio per terminare un ciclo ⟪GTI18N_3e925c67_000014⟫range⟪GTI18N_3e925c67_000015⟫.
+
+⟪GTI18N_3e925c67_000016⟫

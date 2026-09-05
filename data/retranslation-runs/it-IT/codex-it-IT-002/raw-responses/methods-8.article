@@ -1,0 +1,17 @@
+* Scegliere un ricevitore per valore o puntatore
+
+Ci sono due motivi per usare un ricevitore puntatore.
+
+Il primo è permettere al metodo di modificare il valore a cui punta il ricevitore.
+
+Il secondo è evitare di copiare il valore a ogni chiamata del metodo.
+Ciò può essere più efficiente se, per esempio, il ricevitore è una struttura di grandi dimensioni.
+
+In questo esempio, sia ⟪GTI18N_357424f2_000001⟫Scale⟪GTI18N_357424f2_000002⟫ sia ⟪GTI18N_357424f2_000003⟫Abs⟪GTI18N_357424f2_000004⟫ sono metodi con ricevitore di tipo ⟪GTI18N_357424f2_000005⟫*Vertex⟪GTI18N_357424f2_000006⟫,
+anche se il metodo ⟪GTI18N_357424f2_000007⟫Abs⟪GTI18N_357424f2_000008⟫ non deve modificare il proprio ricevitore.
+
+In generale, tutti i metodi di un dato tipo dovrebbero avere ricevitori per valore oppure ricevitori
+puntatore, senza mescolare le due forme.
+(Vedremo perché nelle prossime pagine.)
+
+⟪GTI18N_357424f2_000009⟫

@@ -1,0 +1,13 @@
+* Metodi
+
+Go non dispone di classi.
+Tuttavia, puoi definire metodi sui tipi.
+
+Un metodo è una funzione con uno speciale argomento _ricevitore_.
+
+Il ricevitore compare in un proprio elenco di argomenti tra la parola chiave `func` e
+il nome del metodo.
+
+In questo esempio, il metodo `Abs` ha un ricevitore di tipo `Vertex` chiamato `v`.
+
+.play methods/methods.go

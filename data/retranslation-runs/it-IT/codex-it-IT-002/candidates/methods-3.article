@@ -1,0 +1,12 @@
+* Metodi: continuazione
+
+Puoi dichiarare un metodo anche su tipi che non sono strutture.
+
+In questo esempio vediamo un tipo numerico `MyFloat` con un metodo `Abs`.
+
+Puoi dichiarare un metodo soltanto con un ricevitore il cui tipo sia definito nello stesso
+pacchetto del metodo.
+Non puoi dichiarare un metodo con un ricevitore il cui tipo sia definito in un altro
+pacchetto (inclusi i tipi predefiniti come `int`).
+
+.play methods/methods-continued.go

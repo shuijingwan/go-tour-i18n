@@ -1,0 +1,21 @@
+* sync.Mutex
+
+Abbiamo visto quanto siano utili i canali per la comunicazione tra le ⟪GTI18N_49f72779_000001⟫.
+
+Ma cosa succede se non abbiamo bisogno di comunicare? E se volessimo soltanto assicurarci che una sola
+⟪GTI18N_49f72779_000002⟫ alla volta possa accedere a una variabile, per evitare conflitti?
+
+Questo concetto è chiamato ⟪GTI18N_49f72779_000003⟫mutua_esclusione⟪GTI18N_49f72779_000004⟫, e il nome convenzionale della struttura dati che lo fornisce è ⟪GTI18N_49f72779_000005⟫mutex⟪GTI18N_49f72779_000006⟫.
+
+La libreria standard di ⟪GTI18N_49f72779_000007⟫ fornisce la mutua esclusione tramite
+[[⟪GTI18N_49f72779_000008⟫][⟪GTI18N_49f72779_000009⟫sync.Mutex⟪GTI18N_49f72779_000010⟫]] e i suoi due metodi:
+
+- ⟪GTI18N_49f72779_000011⟫Lock⟪GTI18N_49f72779_000012⟫
+- ⟪GTI18N_49f72779_000013⟫Unlock⟪GTI18N_49f72779_000014⟫
+
+Possiamo definire un blocco di codice da eseguire in mutua esclusione racchiudendolo
+tra una chiamata a ⟪GTI18N_49f72779_000015⟫Lock⟪GTI18N_49f72779_000016⟫ e una a ⟪GTI18N_49f72779_000017⟫Unlock⟪GTI18N_49f72779_000018⟫, come mostrato nel metodo ⟪GTI18N_49f72779_000019⟫Inc⟪GTI18N_49f72779_000020⟫.
+
+Possiamo anche usare ⟪GTI18N_49f72779_000021⟫defer⟪GTI18N_49f72779_000022⟫ per assicurarci che il mutex venga sbloccato, come nel metodo ⟪GTI18N_49f72779_000023⟫Value⟪GTI18N_49f72779_000024⟫.
+
+⟪GTI18N_49f72779_000025⟫

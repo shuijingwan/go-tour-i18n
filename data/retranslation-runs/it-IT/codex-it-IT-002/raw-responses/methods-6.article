@@ -1,0 +1,16 @@
+* Metodi e indirezione dei puntatori
+
+Confrontando i due programmi precedenti, potresti notare che
+le funzioni con un argomento puntatore devono ricevere un puntatore:
+
+⟪GTI18N_39fb725b_000001⟫Errore di compilazione!⟪GTI18N_39fb725b_000002⟫mentre i metodi con ricevitori puntatore accettano come ricevitore sia un valore sia un puntatore
+quando vengono chiamati:
+
+⟪GTI18N_39fb725b_000003⟫
+
+Nell'istruzione ⟪GTI18N_39fb725b_000004⟫v.Scale(5)⟪GTI18N_39fb725b_000005⟫, anche se ⟪GTI18N_39fb725b_000006⟫v⟪GTI18N_39fb725b_000007⟫ è un valore e non un puntatore,
+il metodo con ricevitore puntatore viene chiamato automaticamente.
+In altre parole, per comodità, ⟪GTI18N_39fb725b_000008⟫ interpreta l'istruzione ⟪GTI18N_39fb725b_000009⟫v.Scale(5)⟪GTI18N_39fb725b_000010⟫ come
+⟪GTI18N_39fb725b_000011⟫(&v).Scale(5)⟪GTI18N_39fb725b_000012⟫, poiché il metodo ⟪GTI18N_39fb725b_000013⟫Scale⟪GTI18N_39fb725b_000014⟫ ha un ricevitore puntatore.
+
+⟪GTI18N_39fb725b_000015⟫

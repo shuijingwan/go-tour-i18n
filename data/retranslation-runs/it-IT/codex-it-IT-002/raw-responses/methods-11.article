@@ -1,0 +1,13 @@
+* Valori di interfaccia
+
+Internamente, i valori di interfaccia possono essere considerati come una coppia formata da un valore e da un
+tipo concreto:
+
+⟪GTI18N_ccb2ed70_000001⟫
+
+Un valore di interfaccia contiene un valore di uno specifico tipo concreto sottostante.
+
+Chiamare un metodo su un valore di interfaccia esegue il metodo con lo stesso nome sul
+tipo sottostante.
+
+⟪GTI18N_ccb2ed70_000002⟫

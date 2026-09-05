@@ -1,0 +1,8 @@
+* Esercizio: Stringer
+
+Fai in modo che il tipo `IPAddr` implementi `fmt.Stringer` per stampare l'indirizzo nella
+notazione decimale puntata.
+
+Per esempio, `IPAddr{1,`2,`3,`4}` dovrebbe essere stampato come `"1.2.3.4"`.
+
+.play methods/exercise-stringer.go

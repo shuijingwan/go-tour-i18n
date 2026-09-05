@@ -1,0 +1,12 @@
+* Esercizio: rot13Reader
+
+Uno schema comune è un [[⟪GTI18N_11d87614_000001⟫][io.Reader]] che racchiude un altro ⟪GTI18N_11d87614_000002⟫io.Reader⟪GTI18N_11d87614_000003⟫, modificando in qualche modo il flusso.
+
+Per esempio, la funzione [[⟪GTI18N_11d87614_000004⟫][gzip.NewReader]] accetta un ⟪GTI18N_11d87614_000005⟫io.Reader⟪GTI18N_11d87614_000006⟫ (un flusso di dati compressi) e restituisce un ⟪GTI18N_11d87614_000007⟫*gzip.Reader⟪GTI18N_11d87614_000008⟫ che implementa anch'esso ⟪GTI18N_11d87614_000009⟫io.Reader⟪GTI18N_11d87614_000010⟫ (un flusso di dati decompressi).
+
+Implementa un ⟪GTI18N_11d87614_000011⟫rot13Reader⟪GTI18N_11d87614_000012⟫ che implementi ⟪GTI18N_11d87614_000013⟫io.Reader⟪GTI18N_11d87614_000014⟫ e legga da un ⟪GTI18N_11d87614_000015⟫io.Reader⟪GTI18N_11d87614_000016⟫, modificando il flusso mediante l'applicazione del cifrario a sostituzione [[⟪GTI18N_11d87614_000017⟫][rot13]] a tutti i caratteri alfabetici.
+
+Il tipo ⟪GTI18N_11d87614_000018⟫rot13Reader⟪GTI18N_11d87614_000019⟫ è già fornito.
+Fai in modo che sia un ⟪GTI18N_11d87614_000020⟫io.Reader⟪GTI18N_11d87614_000021⟫ implementandone il metodo ⟪GTI18N_11d87614_000022⟫Read⟪GTI18N_11d87614_000023⟫.
+
+⟪GTI18N_11d87614_000024⟫

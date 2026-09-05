@@ -1,0 +1,11 @@
+* Interfacce
+
+Un _tipo_di_interfaccia_ è definito come un insieme di firme di metodi.
+
+Un valore di un tipo di interfaccia può contenere qualsiasi valore che implementi tali metodi.
+
+*Nota:* nel codice di esempio è presente un errore alla riga 22.
+`Vertex` (il tipo valore) non implementa `Abser` perché
+il metodo `Abs` è definito soltanto su `*Vertex` (il tipo puntatore).
+
+.play methods/interfaces.go
