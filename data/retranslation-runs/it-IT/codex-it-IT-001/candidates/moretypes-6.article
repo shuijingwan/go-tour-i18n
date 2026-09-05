@@ -1,0 +1,15 @@
+* Array
+
+Il tipo `[n]T` è un array di `n` valori di tipo `T`.
+
+L'espressione
+
+	var a [10]int
+
+dichiara una variabile `a` come array di dieci interi.
+
+La lunghezza di un array fa parte del suo tipo, quindi gli array non possono essere ridimensionati.
+Può sembrare una limitazione, ma non preoccuparti:
+Go offre un modo pratico per lavorare con gli array.
+
+.play moretypes/array.go

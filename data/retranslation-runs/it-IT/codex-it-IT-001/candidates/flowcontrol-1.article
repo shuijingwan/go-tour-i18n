@@ -1,0 +1,21 @@
+* For
+
+Go ha un solo costrutto di iterazione: il ciclo `for`.
+
+Il ciclo `for` di base è composto da tre parti separate da punti e virgola:
+
+- l'istruzione di inizializzazione: eseguita prima della prima iterazione
+- l'espressione condizionale: valutata prima di ogni iterazione
+- l'istruzione successiva: eseguita al termine di ogni iterazione
+
+L'istruzione di inizializzazione è spesso una dichiarazione di variabile, e le
+variabili dichiarate al suo interno sono visibili soltanto nell'ambito dell'istruzione
+`for`.
+
+Il ciclo smette di iterare quando la condizione booleana restituisce `false`.
+
+*Nota:* a differenza di altri linguaggi come C, Java o JavaScript, non ci sono parentesi
+attorno alle tre parti dell'istruzione `for` e le parentesi graffe `{`}` sono
+sempre obbligatorie.
+
+.play flowcontrol/for.go

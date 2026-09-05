@@ -1,0 +1,24 @@
+* Puntatori
+
+Go dispone di puntatori.
+Un puntatore contiene l'indirizzo di memoria di un valore.
+
+Il tipo `*T` è un puntatore a un valore di tipo `T`. Il suo valore zero è `nil`.
+
+	var p *int
+
+L'operatore `&` genera un puntatore al proprio operando.
+
+	i := 42
+	p = &i
+
+L'operatore `*` indica il valore sottostante del puntatore.
+
+	fmt.Println(*p) // legge i tramite il puntatore p
+	*p = 21         // imposta i tramite il puntatore p
+
+Questa operazione è detta "dereferenziazione" o "indirezione".
+
+A differenza del C, Go non supporta l'aritmetica dei puntatori.
+
+.play moretypes/pointers.go

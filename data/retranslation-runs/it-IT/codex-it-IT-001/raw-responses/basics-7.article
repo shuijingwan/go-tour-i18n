@@ -1,0 +1,11 @@
+* Valori restituiti con nome
+
+I valori restituiti da ⟪GTI18N_1db20ae8_000001⟫ possono avere un nome. In tal caso, vengono trattati come variabili definite all'inizio della funzione.
+
+Questi nomi dovrebbero essere usati per documentare il significato dei valori restituiti.
+
+Un'istruzione ⟪GTI18N_1db20ae8_000002⟫return⟪GTI18N_1db20ae8_000003⟫ senza argomenti restituisce i valori restituiti con nome. È il cosiddetto return "nudo".
+
+I return nudi dovrebbero essere usati soltanto in funzioni brevi, come nell'esempio mostrato qui. Nelle funzioni più lunghe possono compromettere la leggibilità.
+
+⟪GTI18N_1db20ae8_000004⟫

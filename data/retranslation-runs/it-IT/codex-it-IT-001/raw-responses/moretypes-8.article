@@ -1,0 +1,11 @@
+* Le slice sono come riferimenti agli array
+
+Una slice non memorizza dati,
+ma descrive soltanto una sezione di un array sottostante.
+
+Modificare gli elementi di una slice modifica gli
+elementi corrispondenti del suo array sottostante.
+
+Le altre slice che condividono lo stesso array sottostante vedranno tali modifiche.
+
+⟪GTI18N_e577f9e9_000001⟫

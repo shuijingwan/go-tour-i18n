@@ -1,0 +1,10 @@
+* Puntatori alle strutture
+
+È possibile accedere ai campi di una struttura tramite un puntatore alla struttura.
+
+Per accedere al campo ⟪GTI18N_29695d33_000001⟫X⟪GTI18N_29695d33_000002⟫ di una struttura quando disponiamo del puntatore ⟪GTI18N_29695d33_000003⟫p⟪GTI18N_29695d33_000004⟫, potremmo
+scrivere ⟪GTI18N_29695d33_000005⟫(*p).X⟪GTI18N_29695d33_000006⟫.
+Tuttavia, questa notazione è scomoda, quindi il linguaggio ci permette di
+scrivere semplicemente ⟪GTI18N_29695d33_000007⟫p.X⟪GTI18N_29695d33_000008⟫, senza la dereferenziazione esplicita.
+
+⟪GTI18N_29695d33_000009⟫

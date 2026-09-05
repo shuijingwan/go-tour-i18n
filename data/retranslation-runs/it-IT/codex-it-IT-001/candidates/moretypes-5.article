@@ -1,0 +1,9 @@
+* Letterali di struttura
+
+Un letterale di struttura indica un valore di struttura appena allocato elencando i valori dei suoi campi.
+
+Puoi elencare soltanto un sottoinsieme dei campi usando la sintassi `Name:`. (L'ordine dei campi con nome è irrilevante.)
+
+Lo speciale prefisso `&` restituisce un puntatore al valore della struttura.
+
+.play moretypes/struct-literals.go

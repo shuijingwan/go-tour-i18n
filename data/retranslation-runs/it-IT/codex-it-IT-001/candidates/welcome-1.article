@@ -1,0 +1,37 @@
+* Ciao, 世界
+
+Benvenuto in un tour del [[/][linguaggio di programmazione Go]].
+
+Il tour è suddiviso in un elenco di moduli a cui puoi
+accedere facendo clic su
+[[javascript:highlight(".logo")][Un tour di Go]] in alto a sinistra nella pagina.
+
+Puoi anche visualizzare l'indice in qualsiasi momento facendo clic sul [[javascript:highlightAndClick(".nav")][menu]] in alto a destra nella pagina.
+
+Nel corso del tour troverai una serie di pagine ed esercizi
+da completare.
+
+Puoi spostarti tra le pagine usando
+
+- [[javascript:highlight(".prev-page")]["Precedente"]] oppure `PageUp` per andare alla pagina precedente,
+
+- [[javascript:highlight(".next-page")]["Successivo"]] oppure `PageDown` per andare alla pagina successiva.
+
+Il tour è interattivo. Fai clic ora sul pulsante
+[[javascript:highlightAndClick("#run")][Esegui]]
+(oppure premi `Shift` + `Enter`) per compilare ed eseguire il programma su
+un server remoto.
+Il risultato viene visualizzato sotto il codice.
+
+Questi programmi di esempio illustrano diversi aspetti di Go. I programmi del tour sono pensati come punti di partenza per le tue sperimentazioni.
+
+Modifica il programma ed eseguilo di nuovo.
+
+Quando fai clic su [[javascript:highlightAndClick("#format")][Formatta]]
+(scorciatoia: `Ctrl` + `Enter`), il testo nell'editor viene formattato usando lo strumento
+[[/cmd/gofmt/][gofmt]]. Puoi attivare o disattivare l'evidenziazione della sintassi
+facendo clic sul pulsante [[javascript:highlightAndClick(".syntax-checkbox")][sintassi]].
+
+Quando vuoi proseguire, fai clic sulla [[javascript:highlightAndClick(".next-page")][freccia destra]] qui sotto oppure premi il tasto `PageDown`.
+
+.play welcome/hello.go

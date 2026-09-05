@@ -1,0 +1,14 @@
+* Letterali di slice
+
+Un letterale di slice è simile a un letterale di array senza la lunghezza.
+
+Questo è un letterale di array:
+
+	[3]bool{true, true, false}
+
+Il seguente codice crea lo stesso array mostrato sopra,
+quindi costruisce una slice che vi fa riferimento:
+
+	[]bool{true, true, false}
+
+.play moretypes/slice-literals.go

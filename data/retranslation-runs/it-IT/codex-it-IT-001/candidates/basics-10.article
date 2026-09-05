@@ -1,0 +1,7 @@
+* Dichiarazioni brevi di variabili
+
+All'interno di una funzione, l'istruzione di assegnazione breve `:=` può essere usata al posto di una dichiarazione `var` con tipo implicito.
+
+Fuori da una funzione, ogni istruzione inizia con una parola chiave (`var`, `func` e così via), quindi il costrutto `:=` non è disponibile.
+
+.play basics/short-variable-declarations.go

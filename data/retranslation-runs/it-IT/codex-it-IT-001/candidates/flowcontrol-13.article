@@ -1,0 +1,9 @@
+* Impilare le chiamate defer
+
+Le chiamate di funzione rinviate vengono inserite in una pila. Quando una funzione restituisce il controllo, le sue
+chiamate rinviate vengono eseguite in ordine inverso rispetto all'inserimento.
+
+Per saperne di più sulle istruzioni defer, leggi questo
+[[/blog/defer-panic-and-recover][articolo del blog]].
+
+.play flowcontrol/defer-multi.go

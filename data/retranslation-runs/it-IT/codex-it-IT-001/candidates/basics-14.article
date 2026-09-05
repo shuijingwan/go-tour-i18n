@@ -1,0 +1,18 @@
+* Inferenza di tipo
+
+Quando si dichiara una variabile senza specificare un tipo esplicito (usando la sintassi `:=` oppure la sintassi di espressione `var`=`), il tipo della variabile viene inferito dal valore sul lato destro.
+
+Quando il lato destro della dichiarazione è tipizzato, la nuova variabile ha lo stesso tipo:
+
+	var i int
+	j := i // j è un int
+
+Quando invece il lato destro contiene una costante numerica non tipizzata, la nuova variabile può essere un `int`, un `float64` o un `complex128`, a seconda della precisione della costante:
+
+	i := 42           // int
+	f := 3.142        // float64
+	g := 0.867 + 0.5i // complex128
+
+Prova a cambiare il valore iniziale di `v` nel codice di esempio e osserva come cambia il suo tipo.
+
+.play basics/type-inference.go

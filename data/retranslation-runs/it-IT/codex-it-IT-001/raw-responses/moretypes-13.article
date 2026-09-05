@@ -1,0 +1,15 @@
+* Creare una slice con make
+
+Le slice possono essere create con la funzione predefinita ⟪GTI18N_d057e6bf_000001⟫make⟪GTI18N_d057e6bf_000002⟫;
+è così che si creano array di dimensione dinamica.
+
+La funzione ⟪GTI18N_d057e6bf_000003⟫make⟪GTI18N_d057e6bf_000004⟫ alloca un array inizializzato con valori zero
+e restituisce una slice che fa riferimento a tale array:
+
+⟪GTI18N_d057e6bf_000005⟫
+
+Per specificare una capacità, passa un terzo argomento a ⟪GTI18N_d057e6bf_000006⟫make⟪GTI18N_d057e6bf_000007⟫:
+
+⟪GTI18N_d057e6bf_000008⟫
+
+⟪GTI18N_d057e6bf_000009⟫

@@ -1,0 +1,10 @@
+* Puntatori alle strutture
+
+È possibile accedere ai campi di una struttura tramite un puntatore alla struttura.
+
+Per accedere al campo `X` di una struttura quando disponiamo del puntatore `p`, potremmo
+scrivere `(*p).X`.
+Tuttavia, questa notazione è scomoda, quindi il linguaggio ci permette di
+scrivere semplicemente `p.X`, senza la dereferenziazione esplicita.
+
+.play moretypes/struct-pointers.go

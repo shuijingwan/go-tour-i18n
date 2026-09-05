@@ -1,0 +1,23 @@
+* Slice
+
+Un array ha una dimensione fissa.
+Una slice, invece, è una vista flessibile e di dimensione dinamica
+sugli elementi di un array.
+In pratica, le slice sono molto più comuni degli array.
+
+Il tipo ⟪GTI18N_a169cf48_000001⟫[]T⟪GTI18N_a169cf48_000002⟫ è una slice con elementi di tipo ⟪GTI18N_a169cf48_000003⟫T⟪GTI18N_a169cf48_000004⟫.
+
+Una slice viene creata specificando due indici, un limite inferiore e
+uno superiore, separati da due punti:
+
+⟪GTI18N_a169cf48_000005⟫
+
+In questo modo viene selezionato un intervallo semiaperto che include il primo
+elemento, ma esclude l'ultimo.
+
+L'espressione seguente crea una slice che include
+gli elementi da 1 a 3 di ⟪GTI18N_a169cf48_000006⟫a⟪GTI18N_a169cf48_000007⟫:
+
+⟪GTI18N_a169cf48_000008⟫
+
+⟪GTI18N_a169cf48_000009⟫
