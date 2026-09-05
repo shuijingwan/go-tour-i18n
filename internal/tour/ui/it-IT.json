@@ -36,11 +36,11 @@
     },
     "error.not_found": {
       "kind": "plain",
-      "text": "Pagina 404 non trovata"
+      "text": "404 - Pagina non trovata"
     },
     "execution.build_failed": {
       "kind": "plain",
-      "text": "Go build non riuscito."
+      "text": "Compilazione Go non riuscita."
     },
     "execution.communication_error": {
       "kind": "plain",
@@ -64,7 +64,7 @@
     },
     "execution.vet_failed": {
       "kind": "plain",
-      "text": "Go vet non riuscito."
+      "text": "Controllo con go vet non riuscito."
     },
     "execution.waiting": {
       "kind": "plain",
@@ -100,7 +100,7 @@
     },
     "footer.unofficial": {
       "kind": "plain",
-      "text": "Yongye · Progetto di traduzione multilingue della comunità non ufficiale"
+      "text": "Yongye · Progetto non ufficiale di traduzione multilingue della comunità"
     },
     "module.basics.description": {
       "kind": "rich",
@@ -128,7 +128,7 @@
     },
     "module.methods.description": {
       "kind": "rich",
-      "text": "\u003cp\u003eImpara a definire metodi sui tipi, a dichiarare interfacce e a mettere insieme tutti gli elementi.\u003c/p\u003e"
+      "text": "\u003cp\u003eImpara a definire metodi sui tipi, a dichiarare interfacce e a combinare questi elementi.\u003c/p\u003e"
     },
     "module.methods.title": {
       "kind": "plain",
@@ -144,11 +144,11 @@
     },
     "site.architecture_languages": {
       "kind": "plain",
-      "text": "Server, modelli, CSS, JavaScript, immagini e font sono condivisi quando possibile. Ogni lingua gestisce in modo indipendente traduzioni del corso, testi dell'interfaccia, terminologia e stato. Il cinese semplificato è la prima lingua disponibile, con spazio per altre lingue."
+      "text": "Il server, i template, i fogli di stile CSS, il codice JavaScript, le immagini e i font sono condivisi ove possibile. Ogni lingua gestisce in modo indipendente le traduzioni del corso, i testi dell'interfaccia, la terminologia e lo stato. Il cinese semplificato è la prima lingua disponibile, con spazio per altre lingue."
     },
     "site.architecture_playground": {
       "kind": "plain",
-      "text": "Gli esempi Go nel browser vengono eseguiti tramite un proxy Playground remoto controllato; in produzione non è esposto l'endpoint locale di esecuzione del codice /socket."
+      "text": "Gli esempi Go nel browser vengono eseguiti mediante un proxy remoto controllato per il Go Playground; in produzione non viene esposto l'endpoint locale /socket per l'esecuzione del codice."
     },
     "site.architecture_title": {
       "kind": "plain",
@@ -156,7 +156,7 @@
     },
     "site.architecture_upstream": {
       "kind": "plain",
-      "text": "Il progetto registra continuamente il commit upstream ufficiale, preservando una base tracciabile per futuri aggiornamenti della sorgente."
+      "text": "Il progetto registra continuamente il commit upstream ufficiale, mantenendo un riferimento di base tracciabile per i futuri aggiornamenti della sorgente."
     },
     "site.browser_title": {
       "kind": "plain",
@@ -188,7 +188,7 @@
     },
     "site.current_projects": {
       "kind": "plain",
-      "text": "Progetto di traduzione attuale"
+      "text": "Progetto di traduzione corrente"
     },
     "site.development_environment": {
       "kind": "plain",
@@ -220,7 +220,7 @@
     },
     "site.issue_feedback": {
       "kind": "plain",
-      "text": "Segnalazioni su GitHub"
+      "text": "GitHub Issues"
     },
     "site.language_versions": {
       "kind": "plain",
@@ -232,7 +232,7 @@
     },
     "site.no_affiliation": {
       "kind": "plain",
-      "text": "Questo progetto non è affiliato, autorizzato né approvato dal progetto Go."
+      "text": "Questo progetto non è affiliato al progetto Go, né è autorizzato o avallato da quest'ultimo."
     },
     "site.official_upstream": {
       "kind": "plain",
@@ -240,7 +240,7 @@
     },
     "site.official_version": {
       "kind": "plain",
-      "text": "Un tour di Go ufficiale"
+      "text": "Versione ufficiale di Un tour di Go"
     },
     "site.open_official_tour": {
       "kind": "plain",
@@ -276,27 +276,27 @@
     },
     "site.translation_validation": {
       "kind": "plain",
-      "text": "Traduzione e convalida"
+      "text": "Traduzione e validazione"
     },
     "site.translation_validation_intro": {
       "kind": "plain",
-      "text": "Il progetto mantiene l'esperienza di apprendimento vicina alla sorgente ufficiale verificando ogni rilascio prima della pubblicazione."
+      "text": "Il progetto mantiene l'esperienza di apprendimento aderente alla sorgente ufficiale e verifica ogni rilascio prima della pubblicazione."
     },
     "site.unofficial": {
       "kind": "plain",
-      "text": "Curato da Yongye · Progetto di traduzione multilingue della comunità non ufficiale"
+      "text": "Curato da Yongye · Progetto non ufficiale di traduzione multilingue della comunità"
     },
     "site.upstream_baseline": {
       "kind": "plain",
-      "text": "Base della sorgente ufficiale"
+      "text": "Versione di riferimento della sorgente ufficiale"
     },
     "site.upstream_commit_time": {
       "kind": "plain",
-      "text": "Ora del commit upstream"
+      "text": "Data e ora del commit upstream"
     },
     "site.validation_examples": {
       "kind": "plain",
-      "text": "Anche gli esempi Go con commenti in linguaggio naturale traducibili entrano nel flusso di lavoro unificato di convalida; tutti gli altri esempi continuano a usare direttamente la sorgente ufficiale."
+      "text": "Anche gli esempi Go con commenti in linguaggio naturale traducibili entrano nel flusso di lavoro unificato di validazione; tutti gli altri esempi continuano a usare direttamente la sorgente ufficiale."
     },
     "site.validation_page_unit": {
       "kind": "plain",
@@ -316,15 +316,15 @@
     },
     "site.workflow_process": {
       "kind": "plain",
-      "text": "Ogni unità passa attraverso traduzione, convalida automatica, revisione della qualità della traduzione, promozione, stato pronto, proiezione e pubblicazione; le traduzioni generate non vengono mai pubblicate direttamente."
+      "text": "Ogni TranslationUnit passa attraverso traduzione, validazione automatica, Translation Quality Review, promotion, ready, projection e publish; le traduzioni generate non vengono mai pubblicate direttamente."
     },
     "site.workflow_publish": {
       "kind": "plain",
-      "text": "La pubblicazione crea una proiezione localizzata completa dai candidati canonici pronti, richiede che ogni TranslationUnit del flusso sia pronta, quindi genera il binario di produzione, release.json e SHA256SUMS e verifica il bundle completo."
+      "text": "La fase publish crea una projection localizzata completa a partire dai candidate canonici con stato ready, richiede che ogni TranslationUnit del workflow sia ready, quindi genera il binario di produzione, release.json e SHA256SUMS e verifica il bundle completo."
     },
     "site.workflow_review": {
       "kind": "plain",
-      "text": "I controlli automatici proteggono la struttura, analizzano i contenuti present, li confrontano con la sorgente ufficiale, convalidano il rendering e le pagine e controllano gli esempi Go. Prima della promozione è comunque richiesta una revisione indipendente della qualità della traduzione."
+      "text": "I controlli automatici proteggono la struttura, analizzano i contenuti present, li confrontano con la sorgente ufficiale, validano sia il rendering sia le Page e verificano il contenuto Go degli Example. Prima della promotion resta necessaria una Translation Quality Review indipendente."
     },
     "site.workflow_title": {
       "kind": "plain",
@@ -332,7 +332,7 @@
     },
     "site.workflow_units": {
       "kind": "plain",
-      "text": "TranslationUnit rappresenta sia Pagine complete sia Esempi idonei: una Pagina è una present.Section completa, mentre un Esempio è un file .go completo che contiene commenti in linguaggio naturale traducibili."
+      "text": "Una TranslationUnit rappresenta sia una Page completa sia un Example idoneo: una Page è una present.Section completa, mentre un Example è un file .go completo che contiene commenti in linguaggio naturale traducibili."
     },
     "theme.dark": {
       "kind": "plain",
