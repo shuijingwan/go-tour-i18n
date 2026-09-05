@@ -13,10 +13,11 @@ import (
 )
 
 type RetranslationPromoteOptions struct {
-	Locale string
-	Apply  bool
-	Now    func() time.Time
-	rename func(string, string) error
+	Locale     string
+	SnapshotID string
+	Apply      bool
+	Now        func() time.Time
+	rename     func(string, string) error
 }
 
 type RetranslationPromotionUnit struct {
@@ -78,6 +79,21 @@ func PromoteRetranslation(root string, catalog *Catalog, options RetranslationPr
 	if err := ValidateLocaleName(options.Locale); err != nil {
 		return nil, err
 	}
+	// The CLI requires SnapshotID for every new promotion. The package-level
+	// zero value remains a legacy compatibility path for historical evidence
+	// validators and their archived callers; it is not exposed as a new CLI
+	// authority.
+	if options.SnapshotID != "" {
+		if err := validateSnapshotID(options.SnapshotID); err != nil {
+			return nil, err
+		}
+		if _, err := VerifyQualityCheckFinalization(root, catalog, options.Locale, options.SnapshotID); err != nil {
+			return nil, fmt.Errorf("promotion finalization: %w", err)
+		}
+		if err := finalizationMatchesLatestPromotionCandidates(root, catalog, options.Locale, options.SnapshotID); err != nil {
+			return nil, fmt.Errorf("promotion finalization: %w", err)
+		}
+	}
 	prepared, missing, reviews, pages, examples, err := preflightUnifiedRetranslationPromotion(root, catalog, options.Locale)
 	if err != nil {
 		return nil, err
@@ -109,6 +125,32 @@ func PromoteRetranslation(root string, catalog *Catalog, options RetranslationPr
 		}
 	}
 	return plan, nil
+}
+
+func finalizationMatchesLatestPromotionCandidates(root string, catalog *Catalog, locale, snapshotID string) error {
+	snapshot, err := readQualityCheckSnapshotForReview(root, locale, snapshotID)
+	if err != nil {
+		return err
+	}
+	latest, err := selectLatestRetranslationUnits(root, catalog, locale)
+	if err != nil {
+		return err
+	}
+	if len(snapshot.Units) != len(latest.ordered) {
+		return errors.New("finalized Snapshot is not the current complete workflow")
+	}
+	for _, unit := range snapshot.Units {
+		choice, ok := latest.selectedByID[unit.UnitID]
+		if !ok || choice.batchID != unit.SelectedBatchID || !selectedRetranslationIdentityMatches(catalogMustUnit(catalog, unit.UnitID), choice) {
+			return fmt.Errorf("finalized Snapshot unit %s is no longer current", unit.UnitID)
+		}
+	}
+	return nil
+}
+
+func catalogMustUnit(catalog *Catalog, id string) *TranslationUnit {
+	unit, _ := catalog.Unit(id)
+	return unit
 }
 
 func preflightUnifiedRetranslationPromotion(root string, catalog *Catalog, locale string) ([]preparedPromotion, []string, promotionReviewGate, int, int, error) {

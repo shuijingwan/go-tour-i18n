@@ -328,7 +328,7 @@ func TestRevisionExportRequiresPreviousNonAFindingAndFreezesProvenance(t *testin
 	root, catalog, _ := makeRetranslationReviewBatchFixture(t, 2, "qc-001")
 	recordQualityCheckRatings(t, root, catalog, "qc-001", "", "A", []string{"lesson/1"})
 	recordQualityCheckRatings(t, root, catalog, "qc-001", "", "B", []string{"lesson/2"})
-	if _, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", UnitIDs: []string{"lesson/1"}, AllowReexport: true, PreviousSnapshotID: "qc-001"}); err == nil || !strings.Contains(err.Error(), "Final Review evidence is missing") {
+	if _, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", UnitIDs: []string{"lesson/1"}, AllowReexport: true, PreviousSnapshotID: "qc-001"}); err == nil || !strings.Contains(err.Error(), "Quality Check is already A") {
 		t.Fatalf("A revision error=%v", err)
 	}
 	exported, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", UnitIDs: []string{"lesson/2"}, AllowReexport: true, PreviousSnapshotID: "qc-001"})
@@ -349,7 +349,7 @@ func TestRevisionExportRequiresPreviousNonAFindingAndFreezesProvenance(t *testin
 	}
 }
 
-func TestRevisionExportAcceptsMatchingRejectedFinalReviewAfterQualityCheckA(t *testing.T) {
+func TestRevisionExportRejectsLegacyFinalReviewFeedbackAfterQualityCheckA(t *testing.T) {
 	root, catalog, batchID := makeRetranslationReviewBatchFixture(t, 1, "qc-001")
 	recordQualityCheckRatings(t, root, catalog, "qc-001", "", "A", []string{"lesson/1"})
 	if _, _, err := RecordRetranslationReview(root, catalog, RetranslationReviewRecordOptions{
@@ -359,31 +359,15 @@ func TestRevisionExportAcceptsMatchingRejectedFinalReviewAfterQualityCheckA(t *t
 	}); err != nil {
 		t.Fatal(err)
 	}
-	exported, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{
+	_, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{
 		Locale: "zh-CN", UnitIDs: []string{"lesson/1"}, AllowReexport: true, PreviousSnapshotID: "qc-001",
 	})
-	if err != nil {
-		t.Fatal(err)
-	}
-	manifest := readRetranslationManifest(t, root, exported.BatchID)
-	unit := manifest.Units[0]
-	if unit.PreviousSnapshotID != "qc-001" || unit.RevisionFeedbackSource != "final_review" ||
-		unit.PreviousRating != "B" || unit.PreviousReviewDecision != "rejected" ||
-		unit.PreviousReviewSummary != "The explanation is technically ambiguous." ||
-		!reflect.DeepEqual(unit.PreviousReviewIssues, []string{"Clarify the loop condition."}) ||
-		unit.PreviousReviewPath == "" || unit.PreviousReviewSHA256 == "" || unit.PreviousFinding != "" {
-		t.Fatalf("Final Review revision provenance=%+v", unit)
-	}
-	reviewData, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(unit.PreviousReviewPath)))
-	if err != nil {
-		t.Fatal(err)
-	}
-	if got := sum(reviewData); got != unit.PreviousReviewSHA256 {
-		t.Fatalf("previous_review_sha256=%s, want %s", unit.PreviousReviewSHA256, got)
+	if err == nil || !strings.Contains(err.Error(), "Quality Check is already A") {
+		t.Fatalf("legacy Final Review unexpectedly exported a revision: %v", err)
 	}
 }
 
-func TestRevisionExportAcceptsCarriedForwardQualityCheckAWithCurrentRejectedFinalReview(t *testing.T) {
+func TestRevisionExportRejectsCarriedForwardQualityCheckAWithLegacyFinalReview(t *testing.T) {
 	root, catalog, batchID := makeRetranslationReviewBatchFixture(t, 2, "qc-001")
 	recordQualityCheckRatings(t, root, catalog, "qc-001", "", "A", []string{"lesson/1", "lesson/2"})
 	if _, _, err := CreateQualityCheckCandidateSnapshot(root, catalog, QualityCheckSnapshotOptions{Locale: "zh-CN", SnapshotID: "qc-002"}); err != nil {
@@ -398,26 +382,11 @@ func TestRevisionExportAcceptsCarriedForwardQualityCheckAWithCurrentRejectedFina
 	}); err != nil {
 		t.Fatal(err)
 	}
-	exported, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{
+	_, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{
 		Locale: "zh-CN", UnitIDs: []string{"lesson/1"}, AllowReexport: true, PreviousSnapshotID: "qc-002",
 	})
-	if err != nil {
-		t.Fatal(err)
-	}
-	unit := readRetranslationManifest(t, root, exported.BatchID).Units[0]
-	if unit.RevisionFeedbackSource != "final_review" || unit.PreviousSnapshotID != "qc-002" ||
-		unit.PreviousRating != "B" || unit.PreviousReviewDecision != "rejected" ||
-		unit.PreviousReviewSummary != "The carried-forward unit needs revision." ||
-		!reflect.DeepEqual(unit.PreviousReviewIssues, []string{"Correct the control-flow explanation."}) ||
-		unit.PreviousReviewPath == "" || unit.PreviousReviewSHA256 == "" {
-		t.Fatalf("carried-forward Final Review provenance=%+v", unit)
-	}
-	reviewData, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(unit.PreviousReviewPath)))
-	if err != nil {
-		t.Fatal(err)
-	}
-	if got := sum(reviewData); got != unit.PreviousReviewSHA256 {
-		t.Fatalf("previous_review_sha256=%s, want %s", unit.PreviousReviewSHA256, got)
+	if err == nil || !strings.Contains(err.Error(), "Quality Check is already A") {
+		t.Fatalf("legacy carried-forward Final Review unexpectedly exported a revision: %v", err)
 	}
 }
 
@@ -444,14 +413,14 @@ func TestRevisionExportRejectsStaleCarriedForwardQualityCheckIdentity(t *testing
 	}
 }
 
-func TestRevisionExportRejectsQualityCheckAWithoutEligibleFinalReview(t *testing.T) {
+func TestRevisionExportRejectsQualityCheckAEvenWithLegacyFinalReview(t *testing.T) {
 	tests := []struct {
 		name        string
 		writeReview func(t *testing.T, root string, catalog *Catalog, batchID string)
 		want        string
 	}{
-		{name: "missing", want: "Final Review evidence is missing"},
-		{name: "A approved", want: "must be rated B, C, or D with decision rejected", writeReview: func(t *testing.T, root string, catalog *Catalog, batchID string) {
+		{name: "missing", want: "Quality Check is already A"},
+		{name: "A approved", want: "Quality Check is already A", writeReview: func(t *testing.T, root string, catalog *Catalog, batchID string) {
 			_, _, err := RecordRetranslationReview(root, catalog, RetranslationReviewRecordOptions{
 				Locale: "zh-CN", BatchID: batchID, UnitID: "lesson/1", Rating: "A", Decision: "approved",
 				Summary: "Approved.", Reviewer: "final-reviewer", Rubric: TranslationQualityRubric,
@@ -460,7 +429,7 @@ func TestRevisionExportRejectsQualityCheckAWithoutEligibleFinalReview(t *testing
 				t.Fatal(err)
 			}
 		}},
-		{name: "B approved", want: "must be rated B, C, or D with decision rejected", writeReview: func(t *testing.T, root string, catalog *Catalog, batchID string) {
+		{name: "B approved", want: "Quality Check is already A", writeReview: func(t *testing.T, root string, catalog *Catalog, batchID string) {
 			_, _, err := RecordRetranslationReview(root, catalog, RetranslationReviewRecordOptions{
 				Locale: "zh-CN", BatchID: batchID, UnitID: "lesson/1", Rating: "B", Decision: "approved",
 				Summary: "Invalid production decision.", Reviewer: "final-reviewer", Rubric: TranslationQualityRubric,
@@ -469,7 +438,7 @@ func TestRevisionExportRejectsQualityCheckAWithoutEligibleFinalReview(t *testing
 				t.Fatal(err)
 			}
 		}},
-		{name: "rubric mismatch", want: "Final Review rubric is not current", writeReview: func(t *testing.T, root string, catalog *Catalog, batchID string) {
+		{name: "rubric mismatch", want: "Quality Check is already A", writeReview: func(t *testing.T, root string, catalog *Catalog, batchID string) {
 			_, path, err := RecordRetranslationReview(root, catalog, RetranslationReviewRecordOptions{
 				Locale: "zh-CN", BatchID: batchID, UnitID: "lesson/1", Rating: "B", Decision: "rejected",
 				Summary: "Needs revision.", Reviewer: "final-reviewer", Rubric: TranslationQualityRubric,
@@ -490,7 +459,7 @@ func TestRevisionExportRejectsQualityCheckAWithoutEligibleFinalReview(t *testing
 				t.Fatal(err)
 			}
 		}},
-		{name: "identity mismatch", want: "identity does not match Candidate Snapshot", writeReview: func(t *testing.T, root string, catalog *Catalog, batchID string) {
+		{name: "identity mismatch", want: "Quality Check is already A", writeReview: func(t *testing.T, root string, catalog *Catalog, batchID string) {
 			_, path, err := RecordRetranslationReview(root, catalog, RetranslationReviewRecordOptions{
 				Locale: "zh-CN", BatchID: batchID, UnitID: "lesson/1", Rating: "B", Decision: "rejected",
 				Summary: "Needs revision.", Reviewer: "final-reviewer", Rubric: TranslationQualityRubric,

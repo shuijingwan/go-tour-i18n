@@ -1,6 +1,6 @@
 # 课程页正式 SEO Metadata 规范
 
-本文定义每个 locale 的课程页 SEO description 正式资产、生成输入、identity、stale 规则和发布质量边界。该资产不属于 TranslationUnit candidate、status、Quality Check、Final Review 或 promotion evidence。
+本文定义每个 locale 的课程页 SEO description 正式资产、生成输入、identity、stale 规则和发布质量边界。该资产不属于 TranslationUnit candidate、status、Quality Check、machine finalization 或 promotion evidence。
 
 正式资产固定为：
 
@@ -72,7 +72,7 @@ AI 只能在 promotion 完成后作为离线维护步骤生成 metadata。禁止
 
 模型不得只读取页面开头、渲染 HTML、纯文本截取或局部段落。description 必须忠实于完整页面，不得添加 source 没有支持的技术解释、保证、结论、品牌关系或其他信息。每个 locale 独立使用自己的 canonical target 与 glossary 生成目标语言 description。
 
-本规范不改变 TranslationUnit 翻译、automatic validation、Quality Check、Final Review 或 promotion。metadata 生成失败只阻止后续 locale release，不得反向伪造 TranslationUnit review evidence。
+本规范不改变 TranslationUnit 翻译、automatic validation、Quality Check、machine finalization 或 promotion。metadata 生成失败只阻止后续 locale release，不得反向伪造 TranslationUnit evidence。
 
 ### Assemble：首次或全量生成
 

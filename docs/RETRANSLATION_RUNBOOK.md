@@ -11,7 +11,7 @@ retranslation export
 → automatic validation
 → quality-check snapshot
 → ChatGPT Quality Check
-→ Final Review
+→ quality-check finalize
 → promote
 ```
 
@@ -32,7 +32,7 @@ go run -mod=readonly ./cmd/tour-i18n status check --locale <locale>
 
 自动 export 的默认生产基线仍是每批 30 个 TranslationUnit，始终先用 `--unit-kind page` 按正式 Page 顺序导出，再用 `--unit-kind example` 按 eligible Example 顺序导出；不得混合两种 kind，也不做均衡分片。Example 自动选批、显式 `--id` 选批和全部 `--allow-reexport` revision batch 始终最多 30 个。
 
-`--unit-kind page --limit 60` 是当前仅为 it-IT 开放的受控实验：仅自动首次 Page 选批可显式从默认 30 提高到最多 60。它不是正式推荐基线，不改变 TranslationUnit、manifest、process、automatic validation、Quality Check、Final Review 或 promotion 的语义，也不允许为凑 60 扩大 revision。该实验的布局是 `60 Pages + 剩余 Pages + Examples 独立 batch`；是否将 60 升级为推荐基线，必须等待真实实验的 Codex 周额度、执行时间、automatic validation failure、QC A/B/C/D 与 revision 数量结果后再决定。
+`--unit-kind page --limit 60` 是当前仅为 it-IT 开放的受控实验：仅自动首次 Page 选批可显式从默认 30 提高到最多 60。它不是正式推荐基线，不改变 TranslationUnit、manifest、process、automatic validation、Quality Check、finalization 或 promotion 的语义，也不允许为凑 60 扩大 revision。该实验的布局是 `60 Pages + 剩余 Pages + Examples 独立 batch`；是否将 60 升级为推荐基线，必须等待真实实验的 Codex 周额度、执行时间、automatic validation failure、QC A/B/C/D 与 revision 数量结果后再决定。
 
 未传 `--batch-id` 时，新 batch 自动命名为 `codex-<locale>-NNN`。自动编号同时扫描保留的 `chatgpt-<locale>-NNN` 与 `codex-<locale>-NNN` 历史目录，取实际最大序号后递增；历史 batch 名称、manifest 和 evidence 均保持不变。
 
@@ -135,16 +135,16 @@ Snapshot 按 Catalog 的 Page 顺序、再按 eligible Example inventory 顺序�
 
 Manifest 只引用仓库中已有的 glossary、source、candidate 和 validation 文件，不复制这些文件，不创建 `_content`、ZIP 或 review artifact。该命令不修改 `locales/<locale>/status.tsv`，不执行 Quality Check、Final Review 或 promotion。后续 `quality-check record` 可以在同一 Snapshot 目录新增独立的 `quality-check-results.json`，但不改写 manifest。
 
-Snapshot 后的两个 scope 必须分开执行。ChatGPT Quality Check 使用 `quality-check scope --locale <locale> --snapshot-id <snapshot-id>`；revision 后另加 `--previous-snapshot-id <previous-snapshot-id>`，只 carry-forward 上一轮 A 且 source/candidate/validation/attempt identity 完全相同的 Unit。Final Review 使用 `retranslation review scope --locale <locale> --snapshot-id <snapshot-id>`，只复用有效 A + approved Final Review evidence。两种 scope 都基于完整 Snapshot，但 evidence 与 pending 列表互不混用。glossary snapshot mismatch 是 scope 的整体 blocker，不是 unit pending。
+新流程只使用 `quality-check scope --locale <locale> --snapshot-id <snapshot-id>`；revision 后另加 `--previous-snapshot-id <previous-snapshot-id>`，只 carry-forward 上一轮 A 且 source/candidate/validation/attempt identity 完全相同的 Unit。`retranslation review scope` 仅为 legacy Final Review evidence 的读取和验证保留，不属于新流程。glossary snapshot mismatch 是 scope 的整体 blocker，不是 unit pending。
 
 ## 7. Quality Check 与 revision batch
 
-ChatGPT Quality Check 必须以同一份 Candidate Snapshot manifest 为审核范围，不得自行从各 batch 中重新挑选 candidate。首次 locale 没有历史 QC result 时，`quality-check scope` 必须返回全部 Unit pending。完成实际审核后用 `quality-check record` 或 `quality-check record-batch` 写入该 Snapshot 的 `quality-check-results.json`。该轻量结果只服务于多轮 revision carry-forward，不是 Final Review evidence，也不参与 promotion。当前严格生产策略只接受 A：
+ChatGPT Quality Check 必须以同一份 Candidate Snapshot manifest 为审核范围，不得自行从各 batch 中重新挑选 candidate。首次 locale 没有历史 QC result 时，`quality-check scope` 必须返回全部 Unit pending。完成实际审核后用 `quality-check record` 或 `quality-check record-batch` 写入该 Snapshot 的 `quality-check-results.json`。全 A 后由 `quality-check finalize` 生成唯一 promotion authority。当前严格生产策略只接受 A：
 
 - A：通过 Quality Check；
 - B、C、D：未通过质量 gate，必须进入 revision batch。
 
-Quality Check 每轮最多审核 `quality-check scope` 中 30 个 pending Unit，Page 与 Example 分开处理，但必须逐 TranslationUnit 给出判断，并在直接结果与 carry-forward 合计后覆盖同一 full Snapshot 的全部 Unit。分片不是抽样，不改变 `A = 全部 TranslationUnit` 才能进入 Final Review 的条件。revision 后按实际 pending scope 审核，剩几个就审核几个。
+Quality Check 每轮最多审核 `quality-check scope` 中 30 个 pending Unit，Page 与 Example 分开处理，但必须逐 TranslationUnit 给出判断，并在直接结果与 carry-forward 合计后覆盖同一 full Snapshot 的全部 Unit。分片不是抽样；`A = 全部 TranslationUnit` 后进入 machine finalization。revision 后按实际 pending scope 审核，剩几个就审核几个。
 
 Quality Check 的质量修改不得使用 retry。Revision 流程为：
 
@@ -171,16 +171,15 @@ go run -mod=readonly ./cmd/tour-i18n retranslation export \
   --id <unit-id> [--id <unit-id> ...]
 ```
 
-revision 模式只允许以下两类 Unit：
+新正式 revision 模式只允许以下 Unit：
 
 - 同一 Snapshot 中 Quality Check 为 B/C/D 且 finding 非空；
-- 同一 Snapshot 中 Quality Check 为 A，但该 Snapshot 所选 candidate 的正式 Final Review 为 B/C/D + rejected。
 
-Exporter 对两类路径都验证 Snapshot、Unit、result 与当前 source/candidate/validation/attempt identity，不能用缺失、identity 不匹配、A + approved 或其他不合规的 Final Review evidence 创建 revision。Quality Check 路径继续在 manifest 固化 `previous_snapshot_id`、`revision_feedback_source=quality_check`、`previous_rating` 与 `previous_finding`。Final Review 路径固化 `revision_feedback_source=final_review`、rating/decision、实际 summary/issues，以及旧 review 的 repository path 与 SHA-256；不会修改 Quality Check A 结果，也不会删除或覆盖旧 review。所有字段只属于 revision feedback provenance，不参与 promotion，也不替代新 candidate 的后续 Final Review evidence。每批仍最多 30 个且 Page/Example 不混合；Revision 的正式翻译输入仍是 manifest、manifest 全部 `inputs/*` 与 locale glossary 三者不可拆分。
+Exporter 验证 Snapshot、Unit、result 与当前 source/candidate/validation/attempt identity；Quality Check A、缺失或 identity 不匹配均不能创建新 revision。manifest 固化 `previous_snapshot_id`、`revision_feedback_source=quality_check`、`previous_rating` 与 `previous_finding`。历史 `revision_feedback_source=final_review` 字段及 parser 仅为已有 manifest/provenance 解释保留，不能创建新 batch。每批仍最多 30 个且 Page/Example 不混合；Revision 的正式翻译输入仍是 manifest、manifest 全部 `inputs/*` 与 locale glossary 三者不可拆分。
 
-## 8. Final Review 与 promotion
+## 8. Machine finalization 与 promotion
 
-只有完整语言满足以下条件，才能进入 Final Review：
+只有完整语言满足以下条件，才能 machine finalization：
 
 ```text
 A = 全部 TranslationUnit
@@ -189,11 +188,9 @@ C = 0
 D = 0
 ```
 
-Final Review 重新审核最终 candidate 并生成正式 review evidence。当前严格策略下，Final Review A 才允许 `approved`；Final Review B、C、D 不得 promotion，必须创建新的 revision batch，随后重新执行 process、automatic validation、ChatGPT Quality Check 和 Final Review。
+使用 `quality-check finalize --locale <locale> --snapshot-id <snapshot-id>`。该命令不再进行第二次语言审核；它 fail-closed 验证 full Snapshot 的 QC A-only lineage、glossary、rubric 与 source/candidate/validation/attempt identity，并写入 `finalization.json`。
 
-Quality Check carry-forward 不缩小首次 Final Review。首次 locale 没有正式 Final Review evidence 时，`retranslation review scope` 仍必须返回全部 TranslationUnit 为 `missing_review`。只有后续已有 identity 完全匹配的 Final Review A + approved evidence 时，当前 Final Review incremental scope 才能复用它。
-
-`retranslation review scope` 中 `required_action=review_required` 的 Unit 决定实际需要 Final Review 的工作集。`record-batch` 始终按 Candidate Snapshot stable index 写入固定连续范围：`--start-index` 从该 stable index 起算，`--limit` 选择最多 30 个连续 Snapshot Unit。Page 与 Example 分开审核。首次 full Final Review 可按 Page `1-30`、`31-60`、`61-90`、`91-103`，再按 Example `104-122` 分片。完成一轮后，用以下命令记录该固定范围的 evidence：
+以下 `retranslation review` 内容为 **legacy compatibility only**：它保留既有 Final Review evidence 的读取、验证与历史维护；不得用于新 locale、新 revision 或新 promotion：
 
 ```bash
 go run -mod=readonly ./cmd/tour-i18n retranslation review record-batch \
@@ -209,18 +206,18 @@ go run -mod=readonly ./cmd/tour-i18n retranslation review record-batch \
 
 `--start-index N` 始终表示 Candidate Snapshot manifest 中固定的 `index=N`，不是当前 pending/processable 列表中的位置。`--limit M` 表示从 stable index N 开始连续最多 M 个 Snapshot Unit；仅当该固定范围越过 Snapshot 尾部时才截断，绝不会因为 pending gap 自动截断或跳过 Unit。incremental Final Review 的 pending Unit 可以稀疏，例如 index 17、37、94；不得以 `--start-index 17 --limit 30` 跨过其中的 reusable Unit。应将 `review_required` Unit 按 stable index 划分为连续、同一种 Unit kind、且范围内全部可普通 record 的 range，每个 range 最多 30 个；在 reusable、supersede、revision 或 Page/Example 边界前结束。稀疏 pending 可使用多个短 range，必要时使用 `--limit 1`。已有 evidence 不会被静默跳过，范围也不会向后漂移：请求范围内任何 Unit 已有有效 review、需要 supersede/revision，或因其他状态不可由普通 record 写入时，命令都会在写文件前失败，并报告具体 Snapshot index 与 `unit_id`。这是预期的安全行为，不要求程序自动截断或跳过。`--issue` 可以重复。命令按 Candidate Snapshot 自动使用每个 unit 的 `selected_batch_id`，即使一轮跨越多个 retranslation batch，也不要求调用者人工拆分或判断 batch。它对固定范围内的全部 Unit 先完成单 unit review schema、identity、attempt 与 hash preflight，并与 Snapshot evidence 对齐；全部通过后才写 evidence。任一 Unit 失败时本轮不产生部分 evidence，已有 review 不覆盖。相同 rating/decision/summary 等参数必须真实适用于本轮每个 Unit；若审核结论不同，应按适用的 stable index 连续范围分别记录。rubric 仅过期而 identity 未变时，实际复审后必须使用 Quality Review 规范中的显式 `review supersede`；这不重新翻译 candidate，也不新建 batch。
 
-Review evidence 与 promotion gate 的完整规则见 [Translation Quality Review 规范](TRANSLATION_QUALITY_REVIEW.md)。`retranslation review record-batch` 与保留的单 unit `retranslation review record` 都只记录已完成的 Final Review，不执行审核，也不改变 promotion gate。
+Legacy Review evidence 的 schema/validation 规则见 [Translation Quality Review 规范](TRANSLATION_QUALITY_REVIEW.md)。它们不改变新 promotion gate。
 
-Promotion 默认 dry-run：
+Promotion 默认 dry-run，必须指定已 finalization 的 Snapshot：
 
 ```bash
-go run -mod=readonly ./cmd/tour-i18n retranslation promote --locale <locale>
+go run -mod=readonly ./cmd/tour-i18n retranslation promote --locale <locale> --snapshot-id <snapshot-id>
 ```
 
 默认输出简洁的 human summary，包括 locale、dry-run/apply mode、Page/Example 与 review/changed/unchanged/EOF normalization 统计和 `can_apply`；blocked dry-run 只展开非空的 `missing_evidence`、`missing_review`、`rejected_review`、`invalid_review` 集合，不展开正常 Unit。机器调用方必须显式传 `--json` 获取完整且保持既有 schema 的 `RetranslationPromotionPlan` JSON（包括 `units` 数组）。
 
-只有用户明确要求应用时才使用 `--apply`。成功 apply 默认同样输出简洁 human summary 并明确标记已应用；需要完整 JSON 时可同时传 `--json`。Promotion 会验证最新 batch 的 manifest/source/input、glossary 重建结果、retry provenance、candidate、validation 和 approved Final Review evidence；最新结果失败时不得回退到旧 batch。
+只有用户明确要求应用时才使用 `--apply`。成功 apply 默认同样输出简洁 human summary 并明确标记已应用；需要完整 JSON 时可同时传 `--json`。Promotion 会验证 finalization、最新 batch 的 manifest/source/input、glossary 重建结果、retry provenance、candidate 与 validation；最新结果失败时不得回退到旧 batch。
 
 ## 9. 阶段边界
 
-Codex 完成首次翻译或 retry 译文生成后，不自动继续执行 process、Quality Check、Final Review 或 promote，除非用户明确要求继续。UI catalog 翻译是独立流程，不属于本手册。
+Codex 完成首次翻译或 retry 译文生成后，不自动继续执行 process、Quality Check、finalize 或 promote，除非用户明确要求继续。UI catalog 翻译是独立流程，不属于本手册。

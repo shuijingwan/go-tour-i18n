@@ -11,7 +11,7 @@
 
 普通 TODO、尚未验证的怀疑、未来优化建议和架构设想不属于 deferred issue。不要主动把所有顺手发现的改进机会写入本文件，也不要凭猜测补录历史问题；历史问题只有存在可靠 evidence 时才可登记。
 
-本机制只负责避免已知问题遗忘，不改变 TranslationUnit、Quality Check、Final Review、Locale Surface Review、production 或广告流程，也不替代这些流程原有的状态、gate 和 evidence。
+本机制只负责避免已知问题遗忘，不改变 TranslationUnit、Quality Check、machine finalization、Locale Surface Review、production 或广告流程，也不替代这些流程原有的状态、gate 和 evidence。
 
 ## 维护规则
 

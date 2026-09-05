@@ -256,7 +256,7 @@ func run(args []string) error {
 		limit := fs.Int("limit", i18n.DefaultRetranslationExportLimit, "自动批次中最多包含的独立翻译单元数（默认 30；仅自动 Page 选批受控实验可显式至 60，其他模式上限 30）")
 		jsonOutput := fs.Bool("json", false, "输出完整 machine-readable JSON")
 		allowReexport := fs.Bool("allow-reexport", false, "allow explicitly requested page ids to be exported again")
-		previousSnapshotID := fs.String("previous-snapshot-id", "", "previous Candidate Snapshot id containing eligible QC or Final Review revision evidence")
+		previousSnapshotID := fs.String("previous-snapshot-id", "", "previous Candidate Snapshot containing Quality Check B/C/D revision feedback")
 		var pageIDs repeatedStrings
 		fs.Var(&pageIDs, "id", "optional translation unit id; repeat for multiple units")
 		if err := fs.Parse(args[2:]); err != nil {
@@ -503,18 +503,19 @@ func run(args []string) error {
 	case "retranslation promote":
 		fs := flag.NewFlagSet("retranslation promote", flag.ContinueOnError)
 		locale := fs.String("locale", "", "target locale")
+		snapshotID := fs.String("snapshot-id", "", "finalized full Candidate Snapshot id")
 		apply := fs.Bool("apply", false, "apply the fully validated promotion plan")
 		jsonOutput := fs.Bool("json", false, "输出包含完整 units 列表的 machine-readable JSON")
 		if err := fs.Parse(args[2:]); err != nil {
 			return err
 		}
-		if *locale == "" {
-			return fmt.Errorf("--locale is required")
+		if *locale == "" || *snapshotID == "" {
+			return fmt.Errorf("--locale and --snapshot-id are required")
 		}
 		if fs.NArg() != 0 {
 			return fmt.Errorf("unexpected retranslation promote arguments: %s", strings.Join(fs.Args(), " "))
 		}
-		result, err := i18n.PromoteRetranslation(root, catalog, i18n.RetranslationPromoteOptions{Locale: *locale, Apply: *apply})
+		result, err := i18n.PromoteRetranslation(root, catalog, i18n.RetranslationPromoteOptions{Locale: *locale, SnapshotID: *snapshotID, Apply: *apply})
 		if err != nil {
 			return err
 		}
@@ -571,6 +572,25 @@ func run(args []string) error {
 			return err
 		}
 		return printJSON(result)
+	case "quality-check finalize":
+		fs := flag.NewFlagSet("quality-check finalize", flag.ContinueOnError)
+		locale := fs.String("locale", "", "target locale")
+		snapshotID := fs.String("snapshot-id", "", "full Candidate Snapshot id")
+		if err := fs.Parse(args[2:]); err != nil {
+			return err
+		}
+		if *locale == "" || *snapshotID == "" {
+			return fmt.Errorf("--locale and --snapshot-id are required")
+		}
+		if fs.NArg() != 0 {
+			return fmt.Errorf("unexpected quality-check finalize arguments: %s", strings.Join(fs.Args(), " "))
+		}
+		_, path, err := i18n.FinalizeQualityCheck(root, catalog, i18n.QualityCheckFinalizeOptions{Locale: *locale, SnapshotID: *snapshotID})
+		if err != nil {
+			return err
+		}
+		fmt.Printf("wrote quality-check finalization: %s\n", path)
+		return nil
 	case "quality-check record-batch":
 		fs := flag.NewFlagSet("quality-check record-batch", flag.ContinueOnError)
 		locale := fs.String("locale", "", "target locale")
@@ -1029,9 +1049,9 @@ func writeRetranslationPromotionOutput(w io.Writer, plan *i18n.RetranslationProm
 }
 
 func printQualityCheckScopeSummary(scope *i18n.QualityCheckScope) {
-	fmt.Printf("Quality Check scope：locale=%s snapshot=%s total=%d current=%d carry_forward=%d pending=%d A/B/C/D=%d/%d/%d/%d ready_for_final_review=%t\n",
+	fmt.Printf("Quality Check scope：locale=%s snapshot=%s total=%d current=%d carry_forward=%d pending=%d A/B/C/D=%d/%d/%d/%d ready_for_finalization=%t\n",
 		scope.Locale, scope.SnapshotID, scope.UnitCount, scope.CurrentResultCount, scope.CarryForwardCount,
-		scope.PendingCount, scope.ACount, scope.BCount, scope.CCount, scope.DCount, scope.ReadyForFinalReview)
+		scope.PendingCount, scope.ACount, scope.BCount, scope.CCount, scope.DCount, scope.ReadyForFinalization)
 	printQualityCheckPending(scope.Pending)
 }
 

@@ -2,7 +2,7 @@
 
 Translation Quality Review 是所有语言翻译工作流在 promotion 前的正式必经步骤。这套规范面向长期维护和多语言复用，不绑定 `zh-CN`、ChatGPT、Page、Example 或任何特定模型。
 
-本规范只审核 TranslationUnit candidate。公共 UI、首页、`/tour/list`、导航、语言选择器、runtime message、article metadata、SEO 与桌面/移动端组合页面由独立的 [Locale Surface Review](LOCALE_SURFACE_REVIEW.md) 审核。Surface Review 是 promotion 后、publish / production 前的 locale release gate，不生成本规范的 review evidence，也不改变全 A、逐 TranslationUnit 和 Final Review A-only 规则。
+本规范只审核 TranslationUnit candidate。公共 UI、首页、`/tour/list`、导航、语言选择器、runtime message、article metadata、SEO 与桌面/移动端组合页面由独立的 [Locale Surface Review](LOCALE_SURFACE_REVIEW.md) 审核。Surface Review 是 promotion 后、publish / production 前的 locale release gate，不生成本规范的 QC/finalization evidence，也不改变全 A、逐 TranslationUnit规则。
 
 ## 正式流程
 
@@ -16,7 +16,7 @@ TranslationUnit
 → automatic validation
 → Candidate Snapshot
 → ChatGPT Quality Check
-→ Final Review
+→ machine finalization
 → promotion
 → ready
 → projection / publish
@@ -89,7 +89,7 @@ Snapshot manifest 顶层记录 `schema_version`、`snapshot_id`、`locale`、`gl
 
 Candidate Snapshot 始终是 **full Snapshot**：它冻结完整 locale workflow 的全部 TranslationUnit。当前 `zh-CN` 与 `ja-JP` 都是 103 Page + 19 eligible Example = 122 Unit。不得为了维护批次创建只含变化 Unit 的 Snapshot。
 
-Quality Check incremental scope 与 Final Review incremental scope 是两个独立概念，分别读取不同的结果记录。两者都只缩小本阶段 reviewer 的工作集，不缩小 full Snapshot。
+Quality Check incremental scope 是新流程唯一的语言审核 scope。下文保留的 Final Review incremental scope 仅用于读取和验证历史 evidence，不能作为新 promotion authority。
 
 ### Quality Check incremental scope 与 carry-forward
 
@@ -133,7 +133,7 @@ go run -mod=readonly ./cmd/tour-i18n quality-check backfill-finding \
 data/quality-check-snapshots/<locale>/<snapshot-id>/quality-check-results.json
 ```
 
-它以 `evidence_type=quality_check_results`、Snapshot manifest SHA-256、locale、snapshot、rubric、stable index、unit id、rating 和 finding 绑定实际 Quality Check 结论。它没有 Final Review 的 `decision` 字段，不写入 batch `review/`，不是正式 Final Review evidence，promotion 永远不读取它。
+它以 `evidence_type=quality_check_results`、Snapshot manifest SHA-256、locale、snapshot、rubric、stable index、unit id、rating 和 finding 绑定实际 Quality Check 结论。它不直接作为 promotion authority；`quality-check finalize` 读取完整 lineage 后生成唯一 authority。
 
 revision 后仍创建新的 full Snapshot。新一轮 scope 显式指定上一轮：
 
@@ -146,9 +146,9 @@ go run -mod=readonly ./cmd/tour-i18n quality-check scope \
 
 只有上一轮有效结果为 A，且 rubric、source、selected batch、candidate path/SHA-256、validation path/SHA-256 和最终 attempt 与新 Snapshot 完全相同的 Unit 才能 **QC carry-forward**。B/C/D 不得 carry-forward；没有结果、identity 变化、glossary 变化或 rubric 变化的 Unit 必须重新进入 Quality Check。identity 未变化但上一轮为 B/C/D 时，scope 输出 `non_a_quality_check/revision_required`；revision 后 identity 已变化时输出 `identity_changed/quality_check_required`。
 
-`quality-check record` 在 revision Snapshot 首次写结果时使用同一 `--previous-snapshot-id` 固化 lineage；后续 scope 可以从结果文件继续解析多轮 carry-forward。`a_count == unit_count`、B/C/D 均为 0 且 `pending_count == 0` 时，`ready_for_final_review=true`，才可以进入 Final Review。
+`quality-check record` 在 revision Snapshot 首次写结果时使用同一 `--previous-snapshot-id` 固化 lineage；后续 scope 可以从结果文件继续解析多轮 carry-forward。`a_count == unit_count`、B/C/D 均为 0 且 `pending_count == 0` 时，`ready_for_finalization=true`，才可以执行 finalization；JSON 同时保留 deprecated `ready_for_final_review` alias 供旧消费者读取。
 
-### Final Review incremental scope
+### Legacy Final Review incremental scope
 
 以下命令只读取正式 Final Review evidence：
 
@@ -188,13 +188,13 @@ Snapshot 的 glossary SHA-256 会在读取 review scope 时与当前 glossary �
 
 - 不应直接发布；
 - 存在需要修改的翻译质量问题；
-- 修订后必须重新 Final Review。
+- 修订后必须重新 automatic validation、Candidate Snapshot、Quality Check，并在全 A 后重新 finalization。
 
 ### D
 
 - 不可接受；
 - 存在严重误译、漏译、技术含义错误或明显不符合翻译要求；
-- 必须重新翻译或大幅修订，再重新 automatic validation 和 Final Review。
+- 必须重新翻译或大幅修订，再重新 automatic validation、Quality Check 和 finalization。
 
 ## Rating 与 decision 分离
 
@@ -212,21 +212,21 @@ decision = approved | rejected
 
 Promotion gate 的机器判断只接受 `decision == approved`。这种边界保留了质量评级与 workflow 决策的独立性。
 
-## Quality Check 与 Final Review
+## Quality Check 与 machine finalization
 
-Quality Check 用于发现翻译质量问题，可以在 candidate 形成后的修订过程中多轮执行。当前由 ChatGPT 统一执行，且必须通过本轮直接结果与有效 carry-forward 合计覆盖同一份 full Candidate Snapshot 中的所有 TranslationUnit。它只生成上述轻量 Quality Check result，不生成正式 Final Review evidence，也不作为 promotion 的直接依据。
+Quality Check 用于发现翻译质量问题，可以在 candidate 形成后的修订过程中多轮执行。它由 ChatGPT 逐 Unit 执行，直接结果与有效 carry-forward 必须覆盖同一份 full Candidate Snapshot。全 A 后执行 `quality-check finalize`；该命令不作语言判断，而是机械生成独立、versioned 的 finalization evidence。
 
-ChatGPT Quality Check 与 Final Review 的实际审核工作集分别由 scope 中的 pending Unit 决定：Quality Check 使用 `pending_quality_check_units`，Final Review 只使用 `required_action=review_required` 的 `pending_review_units`。列表都保持 Snapshot 的稳定 index 顺序。两阶段每次实际审核最多 30 个 TranslationUnit，并保持 Page / Example 分开。首次 full Final Review 可按 Page `1-30`、`31-60`、`61-90`、`91-103`，再按 Example `104-122` 处理；incremental Final Review 的 `review_required` Unit 可以不连续，不能把“30 个 pending Unit”解释成可以跨过中间 Snapshot Unit 或 Unit kind 边界的 record 范围。30 只是每个 `record-batch` 固定连续 Snapshot range 的最大长度，不缩小或重新生成 Candidate Snapshot，不改变该 snapshot 的完整 locale workflow 范围，也不把逐 TranslationUnit 审核改成批次级审核或抽样。
+Quality Check 的实际审核工作集由 `pending_quality_check_units` 决定，保持 Snapshot 稳定 index、最多 30 Unit、Page/Example 分开。下文 Final Review commands 和 schema 仅为历史 evidence compatibility 保留；新流程不运行它们。
 
-当前严格生产 gate 为：A 通过；B、C、D 均不通过并进入新的 revision batch。只有完整语言达到 `A = 全部 TranslationUnit，B = 0，C = 0，D = 0`，才能进入 Final Review。
+当前严格生产 gate 为：A 通过；B、C、D 均不通过并进入新的 revision batch。只有完整语言达到 `A = 全部 TranslationUnit，B = 0，C = 0，D = 0`，才能 finalization。
 
-Final Review 是针对最终 candidate 的正式 Translation Quality Review，会重新审核最终 candidate。只有 Final Review 生成 review evidence；该 evidence 必须对应最终 candidate 及其 validation evidence，作为 promotion 的审核依据。当前严格策略下只有 Final Review A 可以 `approved`；B、C、D 不得 promotion，必须进入新的 revision batch，修订后重新走 process、automatic validation、ChatGPT Quality Check 和 Final Review。
+finalization 绑定 Snapshot manifest、glossary、rubric、QC-result lineage、完整解析后的 A 结果及每个 Unit 的 source/candidate/validation/attempt identity。新 promotion 必须显式指定并验证该 finalization，且仍独立重验 manifest/input、glossary、restore、validator 与 retry provenance。
 
-当同一 Candidate Snapshot 的 Quality Check 已为 A、但正式 Final Review 为 B/C/D + rejected 时，revision export 仍使用该 Snapshot 的 `--previous-snapshot-id`。Exporter 必须核对 review 与 Snapshot 的 source、selected batch、candidate、validation 和最终 attempt identity，并把实际 summary/issues 与 review path/SHA-256 固化到新 batch manifest。A + approved、missing review、identity mismatch 或非 rejected evidence 均不得作为该路径的 revision evidence；原 Quality Check A 与旧 Final Review evidence 保持不变。
+新 revision export 只接受 Quality Check B/C/D feedback。Final Review B/C/D feedback 的 parser 与历史 manifest fields 仅为历史兼容保留，不得用于新正式流程。
 
 ## 必须逐 TranslationUnit 审核
 
-每一个最终准备进入 promotion 的 TranslationUnit candidate，都必须有其 Final Review 生成、且与其字节内容绑定的独立 review evidence。不采用以下规则：
+每一个最终准备进入 promotion 的 TranslationUnit candidate，都必须有一次与其字节内容绑定的 ChatGPT Quality Check A；machine finalization 不能替代这次语言审核。不采用以下规则：
 
 - 只审核首批，后续抽样；
 - validator 通过即免审；
@@ -247,7 +247,7 @@ Review evidence 同时绑定：
 因此，candidate 字节发生变化、retry 产生新 candidate，或 validation evidence 发生变化时，旧 review 自动失效。新的最终 candidate 必须重新经过：
 
 ```text
-automatic validation → Candidate Snapshot → ChatGPT Quality Check → Final Review
+automatic validation → Candidate Snapshot → ChatGPT Quality Check → machine finalization
 ```
 
 不得把旧 review evidence 套用到新 candidate 或新的 validation evidence 上。
@@ -256,7 +256,7 @@ automatic validation → Candidate Snapshot → ChatGPT Quality Check → Final 
 
 ## Review evidence schema v1
 
-每个 TranslationUnit 的正式 evidence 是 Final Review 的产物，位于：
+以下 `review/*.json` 是 **legacy Final Review evidence**，仅用于历史读取/验证，不是新流程的正式 evidence，位于：
 
 ```text
 data/retranslation-runs/<locale>/<batch-id>/review/<unit-name>.json
@@ -342,7 +342,7 @@ go run -mod=readonly ./cmd/tour-i18n retranslation review supersede \
 
 ## Promotion gate
 
-Promotion preflight 对 locale workflow 的全部 TranslationUnit 检查 Final Review。当前 `zh-CN` 必须具有 122/122 份与最终 candidate 匹配且有效的 Final Review evidence。`quality-check-results.json` 不在 promotion 输入范围内，不能满足任何一个 Unit 的 review gate。
+新 promotion 使用 `retranslation promote --snapshot-id <snapshot-id>`，只接受与当前完整 candidate 集合精确匹配的 `data/quality-check-snapshots/<locale>/<snapshot-id>/finalization.json`。它不直接把 `quality-check-results.json` 当 authority；finalization 解析并绑定完整 QC lineage。
 
 以下任何情况都必须令 `can_apply=false`：
 
@@ -352,7 +352,7 @@ Promotion preflight 对 locale workflow 的全部 TranslationUnit 检查 Final R
 - candidate 或 validation hash mismatch；
 - batch、locale、unit、source、attempt 或 path identity mismatch。
 
-只有 rating A 且 `decision == approved` 的有效 evidence 才允许对应 TranslationUnit 继续 promotion。promotion preflight 始终检查完整 locale workflow，而不是当前 review scope；最新 batch 的 review 缺失、非 A、rejected 或无效时，不允许回退到旧 batch 的 approved review。
+只有完整 finalization 的所有 Unit 为有效 A 才允许 promotion。promotion preflight 始终检查完整 locale workflow，并重新验证底层 evidence。
 
 ## 历史质量记录
 
@@ -365,7 +365,7 @@ Promotion preflight 对 locale workflow 的全部 TranslationUnit 检查 Final R
 Review 机制不绑定 `zh-CN`、ChatGPT、Page 或 Example。未来任何 locale、任何翻译模型、任何 TranslationUnit kind，只要产生翻译 candidate 并准备 promotion，都必须对最终 candidate 执行：
 
 ```text
-automatic validation → Candidate Snapshot → ChatGPT Quality Check → Final Review → promotion
+automatic validation → Candidate Snapshot → ChatGPT Quality Check → machine finalization → promotion
 ```
 
 新增语言无需重新决定是否审核，也无需重新定义 A/B/C/D 的基本含义。语言特定的术语和表达要求可以在同一正式 rubric 下补充，但不能取消逐 TranslationUnit review 或弱化 promotion gate。

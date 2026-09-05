@@ -48,7 +48,7 @@
 
 - 2026-08-23 起，正式 TranslationUnit 翻译流程切换为 `export → Codex GPT-5.6 Sol High → raw-responses/ → process → automatic validation`，ChatGPT 统一承担逐 TranslationUnit Quality Check。仓库根 `AGENTS.md` 是 Codex 自动导航入口，`docs/CODEX_TRANSLATION.md` 是当前 Codex 执行规范。
 - 正式模型输入由 batch `manifest.json`、manifest 列出的全部 `inputs/*` 与 `locales/<locale>/glossary.yaml` 共同构成，缺一不可；glossary 必须在生成译文前读取。
-- Retry 只用于 `restore_failed`、`validation_failed`；validation 通过后的 B/C/D 质量问题使用新的 revision batch。当前 Quality Check 与 Final Review 均采用 A-only 严格生产 gate。
+- Retry 只用于 `restore_failed`、`validation_failed`；validation 通过后的 Quality Check B/C/D 使用新的 revision batch。当前 production gate 是 QC 全 A 后的 machine finalization。
 - 历史上 zh-CN 103 页由 ChatGPT 完成、提升并发布的事实不变；本次切换只改变后续正式 Translation Engine 和执行规范，不重写历史 evidence。
 
 - GLM-5.2 单页完整 `present.Section` 翻译执行器已完成；request、response 和 validation 按 locale、page_id、source hash 与 attempt 编号保留。

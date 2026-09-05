@@ -40,7 +40,7 @@ Page 输出为 `raw-responses/*.article`，Example 输出为 `raw-responses/*.tx
 - 是否残留明显未翻译的自然语言；
 - `git status --short`。
 
-本翻译阶段不自动执行 `process`、Quality Check、Final Review 或 `promote`。只有用户明确要求继续下一阶段时，才进入相应步骤。
+本翻译阶段不自动执行 `process`、Quality Check、`quality-check finalize` 或 `promote`。只有用户明确要求继续下一阶段时，才进入相应步骤。
 
 ## Retry 与 revision
 
@@ -48,4 +48,4 @@ Page 输出为 `raw-responses/*.article`，Example 输出为 `raw-responses/*.tx
 
 若 failure 已确认只来自 validator 规则修正，且 restore 成功、原 candidate 保持有效，不得伪造 retry。使用 `retranslation revalidate --locale ... --batch-id ... --unit-id ...` 以当前 canonical validator 重验同一 candidate；命令归档旧 validation evidence，更新当前 validation/result，但保持 raw response、candidate 和 translation attempt 不变。
 
-翻译质量问题不使用 retry。Automatic validation 已通过后，Quality Check 或 Final Review 得到 B、C、D 时，必须创建 revision batch，并按 [Retranslation 执行手册](RETRANSLATION_RUNBOOK.md) 重新导出和翻译。
+翻译质量问题不使用 retry。Automatic validation 已通过后，Quality Check 得到 B、C、D 时，必须创建 revision batch，并按 [Retranslation 执行手册](RETRANSLATION_RUNBOOK.md) 重新导出和翻译。

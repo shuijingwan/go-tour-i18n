@@ -12,7 +12,7 @@ locale / domain / CDN 决策
 → locale 配置与公共 UI catalog
 → 首页、导航、语言选择器与 article metadata
 → TranslationUnit 翻译与 automatic validation
-→ Candidate Snapshot → Quality Check → Final Review
+→ Candidate Snapshot → Quality Check → machine finalization
 → promotion
 → 离线生成并验证课程页 SEO metadata
 → build
@@ -32,7 +32,7 @@ locale / domain / CDN 决策
 
 必须区分四类工作：
 
-1. **TranslationUnit 质量审核**只审核进入 translation workflow 的 Page 和 eligible Example candidate，规则见 [Translation Quality Review](TRANSLATION_QUALITY_REVIEW.md)。它保持逐 TranslationUnit、Quality Check 全 A、Final Review A-only 的既有 promotion gate。
+1. **TranslationUnit 质量审核**只审核进入 translation workflow 的 Page 和 eligible Example candidate，规则见 [Translation Quality Review](TRANSLATION_QUALITY_REVIEW.md)。它保持逐 TranslationUnit、Quality Check 全 A 与 machine finalization promotion gate。
 2. **Locale Surface Review**审核 TranslationUnit 之外及组合后页面上的语言表层，规则见 [Locale Surface Review](LOCALE_SURFACE_REVIEW.md)。它是独立的 locale release gate，不生成 TranslationUnit review evidence，也不允许替代或弱化 A-only gate。
 3. **首次生产部署**为新 locale 建立 hostname、CDN、service、port、TLS、vhost、DNS/CDN、Playground Origin、部署 profile，以及对既有 AdSense 能力的 production 接入；它不是一次普通 release 切换。课程页手动广告、Auto Ads、Angular SPA 生命周期和局部布局保护均为共享实现，第三门及后续 locale 不重新开发广告功能。
 4. **日常维护部署**只对已完成上述基线、并标记为 `production_state=live` 的 locale 执行 `scripts/maintenance-production.sh <release-dir>`，不重新探测或设计服务器环境。
@@ -50,7 +50,7 @@ locale / domain / CDN 决策
 
 这些决定应先形成明确记录，再修改 locale 资源或生产环境。不得根据其他 locale 的目录名、端口或译法自动推导新 locale。
 
-首页 language registry 是 build-time registry：新 locale 的 release 会包含构建时的完整 registry，但既有 production locale 会继续运行各自已部署 release 中的 registry，直到其下一次正常 publish/deploy。正式采用 **existing locale language list = eventual consistency**。因此，新 locale 首次 production gate 只要求验证新 locale 自己的语言选择器：current identity、当前正式 registry、指向已有 locale 的链接，以及 English 指向官方 Tour。已有 locale → 新 locale 的反向链接不属于首次上线 gate；不得仅为即时出现新语言而批量重跑旧 locale 的 Quality Check、Final Review、Surface Review、publish、deploy、CDN purge 或 production final。未来只有明确要求全部 locale 即时同步语言列表时，才重新评估 runtime registry 解耦。
+首页 language registry 是 build-time registry：新 locale 的 release 会包含构建时的完整 registry，但既有 production locale 会继续运行各自已部署 release 中的 registry，直到其下一次正常 publish/deploy。正式采用 **existing locale language list = eventual consistency**。因此，新 locale 首次 production gate 只要求验证新 locale 自己的语言选择器：current identity、当前正式 registry、指向已有 locale 的链接，以及 English 指向官方 Tour。已有 locale → 新 locale 的反向链接不属于首次上线 gate；不得仅为即时出现新语言而批量重跑旧 locale 的 Quality Check、finalization、Surface Review、publish、deploy、CDN purge 或 production final。未来只有明确要求全部 locale 即时同步语言列表时，才重新评估 runtime registry 解耦。
 
 ## 2. 建立 locale 术语权威来源
 
@@ -86,7 +86,7 @@ go run -mod=readonly ./cmd/tour-i18n locale init \
 - `locales/<locale>/course-metadata.json`：全部 TranslationUnit promotion 后，按 [课程页正式 SEO Metadata 规范](COURSE_SEO_METADATA.md) 的 schema、离线生成输入和 stale 规则正式生成全部课程页的目标语言 SEO description；
 - 首页、导航、语言选择器与语言 registry 所需的 locale 条目。
 
-UI catalog、首页和 metadata 不属于 TranslationUnit candidate、status、Quality Check、Final Review 或 promotion。它们必须在后续 Surface Review 中单独验收。
+UI catalog、首页和 metadata 不属于 TranslationUnit candidate、status、Quality Check、machine finalization 或 promotion。它们必须在后续 Surface Review 中单独验收。
 
 `status.tsv` 不是语言资产，也不得从其他 locale 复制。`locale init` 已调用与 `status init` 相同的正式 catalog 初始化逻辑；不要再次运行会因文件已存在而 fail closed 的 `status init`。第一次进入 TranslationUnit retranslation export 前立即校验：
 
@@ -109,7 +109,7 @@ export
 → automatic validation
 → Candidate Snapshot
 → ChatGPT Quality Check（全 A）
-→ Final Review（逐 unit A + approved）
+→ machine finalization（完整 QC A）
 → promotion
 → ready
 ```

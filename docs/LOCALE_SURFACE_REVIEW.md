@@ -4,17 +4,17 @@ Locale Surface Review 是 TranslationUnit 之外的 locale-level 发布质量审
 
 ## 与 Translation Quality Review 的边界
 
-Translation Quality Review 继续只对 translation workflow 中的每个 TranslationUnit 执行 automatic validation、Candidate Snapshot、ChatGPT Quality Check、Final Review 和 promotion。现有全 A、逐 TranslationUnit、Final Review A-only 与 `approved` 规则完全不变。
+Translation Quality Review 继续只对 translation workflow 中的每个 TranslationUnit 执行 automatic validation、Candidate Snapshot、ChatGPT Quality Check、machine finalization 和 promotion。现有全 A、逐 TranslationUnit规则不变。
 
 Surface Review：
 
 - 不给 TranslationUnit 评级；
-- 不生成或替代 `review/*.json`；
+- 不生成或替代 TranslationUnit QC/finalization evidence；
 - 不批准 promotion；
-- 不允许用页面抽查替代完整 TranslationUnit Quality Check 或 Final Review；
+- 不允许用页面抽查替代完整 TranslationUnit Quality Check；
 - 在 promotion 后的完整 locale 组合产物上阻止不合格 release 进入 publish 或 production。
 
-两个 gate 必须都通过。若 Surface Review 发现 candidate 本身的误译、漏译或术语问题，必须创建 revision batch，并重新走 automatic validation、Quality Check、Final Review 和 promotion；不得直接改 canonical candidate 来绕过 A-only gate。
+两个 gate 必须都通过。若 Surface Review 发现 candidate 本身的误译、漏译或术语问题，必须创建 revision batch，并重新走 automatic validation、Quality Check、finalization 和 promotion；不得直接改 canonical candidate 来绕过 A-only gate。
 
 完整 locale preview（`tour-i18n preview --locale <locale>`）是用于本阶段的 production-style Surface Review preview：它使用 HTTP Playground transport、正式 public canonical identity、robots 与 sitemap，但不注入 production analytics 或广告。带 `--id` 的 candidate preview 保持本地 SocketTransport 开发语义，不替代完整 locale preview。
 

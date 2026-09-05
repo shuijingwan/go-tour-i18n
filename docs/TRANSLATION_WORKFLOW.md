@@ -9,7 +9,7 @@
 → 翻译执行
 → automatic validation
 → Candidate Snapshot
-→ ChatGPT Quality Check 与 Final Review
+→ ChatGPT Quality Check → machine finalization
 → promotion
 → 发布部署
 → 项目状态确认
@@ -46,11 +46,11 @@ go run -mod=readonly ./cmd/tour-i18n status check --locale <locale>
 
 ## 3. 质量审核
 
-candidate 完成 automatic validation 后，先生成覆盖完整 locale workflow 的 Candidate Snapshot，再进入 ChatGPT Quality Check；promotion 前还必须完成 Final Review。阅读：
+candidate 完成 automatic validation 后，先生成覆盖完整 locale workflow 的 Candidate Snapshot，再进入 ChatGPT Quality Check；全 A 后执行 machine finalization，再 promotion。阅读：
 
 - [Translation Quality Review 规范](TRANSLATION_QUALITY_REVIEW.md)：A/B/C/D rubric、逐 TranslationUnit review evidence、`approved` 决策与 promotion gate。
 
-Candidate Snapshot 只冻结本轮审核使用的唯一完整 candidate 集合，manifest 引用现有 source、candidate 和 validation evidence，不复制文件、不修改 status，也不产生审核结果。Quality Check 使用独立的 `quality-check scope` 与轻量 `quality-check-results.json`：revision 后只 carry-forward identity 完全未变且上一轮为 A 的 Unit；该结果不是 Final Review evidence，不能用于 promotion。Final Review 继续使用 `retranslation review scope`，只复用有效 A + approved Final Review evidence；首次 locale 即使 QC 已全 A，仍须完整执行 Final Review。rubric 过期但 candidate identity 未变时，必须实际重新 Final Review 并通过显式 supersede 续审。promotion 始终要求完整 workflow 的每个 Unit 都有与当前最终 candidate 匹配的 A + approved Final Review evidence。
+Candidate Snapshot 只冻结本轮审核使用的唯一完整 candidate 集合。Quality Check 使用 `quality-check scope` 与 `quality-check-results.json`，revision 后只 carry-forward identity 完全未变的 A。全 Snapshot A 后，`quality-check finalize` 机械验证完整 lineage 与 identity 并生成独立 `finalization.json`；新 promotion 只接受匹配当前 Snapshot 的 finalization，且仍重验底层 source/input/glossary/candidate/validation/retry evidence。历史 Final Review evidence 原样保留，仅用于历史解释与验证。
 
 ## 4. 发布部署
 

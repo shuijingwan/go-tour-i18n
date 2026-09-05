@@ -105,19 +105,22 @@ type QualityCheckScopeUnit struct {
 }
 
 type QualityCheckScope struct {
-	Locale              string                  `json:"locale"`
-	SnapshotID          string                  `json:"snapshot_id"`
-	PreviousSnapshotID  string                  `json:"previous_snapshot_id,omitempty"`
-	UnitCount           int                     `json:"unit_count"`
-	CurrentResultCount  int                     `json:"current_result_count"`
-	CarryForwardCount   int                     `json:"carry_forward_count"`
-	EffectiveCount      int                     `json:"effective_result_count"`
-	ACount              int                     `json:"a_count"`
-	BCount              int                     `json:"b_count"`
-	CCount              int                     `json:"c_count"`
-	DCount              int                     `json:"d_count"`
-	PendingCount        int                     `json:"pending_count"`
-	ReadyForFinalReview bool                    `json:"ready_for_final_review"`
+	Locale               string `json:"locale"`
+	SnapshotID           string `json:"snapshot_id"`
+	PreviousSnapshotID   string `json:"previous_snapshot_id,omitempty"`
+	UnitCount            int    `json:"unit_count"`
+	CurrentResultCount   int    `json:"current_result_count"`
+	CarryForwardCount    int    `json:"carry_forward_count"`
+	EffectiveCount       int    `json:"effective_result_count"`
+	ACount               int    `json:"a_count"`
+	BCount               int    `json:"b_count"`
+	CCount               int    `json:"c_count"`
+	DCount               int    `json:"d_count"`
+	PendingCount         int    `json:"pending_count"`
+	ReadyForFinalization bool   `json:"ready_for_finalization"`
+	// ReadyForFinalReview is a deprecated JSON compatibility alias. New
+	// consumers must use ready_for_finalization.
+	ReadyForFinalReview bool                    `json:"ready_for_final_review,omitempty"`
 	CarryForward        []QualityCheckScopeUnit `json:"carry_forward_units"`
 	Pending             []QualityCheckScopeUnit `json:"pending_quality_check_units"`
 }
@@ -459,7 +462,8 @@ func BuildQualityCheckScope(root string, catalog *Catalog, options QualityCheckS
 	scope.CarryForwardCount = len(scope.CarryForward)
 	scope.PendingCount = len(scope.Pending)
 	scope.EffectiveCount = scope.ACount + scope.BCount + scope.CCount + scope.DCount
-	scope.ReadyForFinalReview = scope.ACount == scope.UnitCount && scope.PendingCount == 0
+	scope.ReadyForFinalization = scope.ACount == scope.UnitCount && scope.PendingCount == 0
+	scope.ReadyForFinalReview = scope.ReadyForFinalization
 	return scope, nil
 }
 

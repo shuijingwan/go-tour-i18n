@@ -179,8 +179,7 @@ func ExportRetranslationBatch(root string, catalog *Catalog, options Retranslati
 			if !ok {
 				return nil, fmt.Errorf("revision unit %s is absent from previous Snapshot", unit.ID)
 			}
-			evidence, err := readSnapshotUnitRepositoryEvidence(root, catalog, options.Locale, snapshotUnit)
-			if err != nil {
+			if _, err := readSnapshotUnitRepositoryEvidence(root, catalog, options.Locale, snapshotUnit); err != nil {
 				return nil, fmt.Errorf("previous Snapshot unit %s identity: %w", unit.ID, err)
 			}
 			result, ok := effectiveResults[unit.ID]
@@ -197,11 +196,7 @@ func ExportRetranslationBatch(root string, catalog *Catalog, options Retranslati
 				revisionFeedbackByID[unit.ID] = revisionFeedback{source: "quality_check", rating: result.rating, finding: result.finding}
 				continue
 			}
-			feedback, err := readFinalReviewRevisionFeedback(root, options.Locale, snapshotUnit, evidence)
-			if err != nil {
-				return nil, fmt.Errorf("revision unit %s is not eligible from previous Snapshot %s: %w", unit.ID, options.PreviousSnapshotID, err)
-			}
-			revisionFeedbackByID[unit.ID] = feedback
+			return nil, fmt.Errorf("revision unit %s is not eligible from previous Snapshot %s: Quality Check is already A; new revision export requires Quality Check B/C/D feedback", unit.ID, options.PreviousSnapshotID)
 		}
 	}
 
