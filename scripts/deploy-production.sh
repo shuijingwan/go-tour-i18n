@@ -139,7 +139,7 @@ release_name_from_path() {
 
 validate_local_release() {
     local input_path=$1
-    local release_dir entry entry_name symlink unsupported
+    local release_dir entry entry_name symlink unsupported checksum_output checksum_count
     local -a root_entries=()
 
     if [[ ! -d $input_path || -L $input_path ]]; then
@@ -259,10 +259,13 @@ PY
         return 1
     fi
 
-    if ! (cd -- "$release_dir" && sha256sum -c --strict SHA256SUMS); then
+    if ! checksum_output=$(cd -- "$release_dir" && sha256sum -c --strict SHA256SUMS); then
+        printf '%s\n' "$checksum_output" >&2
         error 'local SHA256 verification failed'
         return 1
     fi
+    checksum_count=$(awk 'END { print NR }' "$release_dir/SHA256SUMS")
+    log "SHA256 verification: PASS ($checksum_count files)"
     log "local release preflight passed: $release_dir"
 }
 
@@ -361,14 +364,18 @@ chmod 0755 -- "$staging/bin/tour"
 [[ -f $staging/release.json && -f $staging/SHA256SUMS && -d $staging/_content ]] || exit 1
 [[ -z $(find "$staging" -type l -print -quit) ]] || exit 1
 
-(cd -- "$staging" && sha256sum -c --strict SHA256SUMS)
+if ! checksum_output=$(cd -- "$staging" && sha256sum -c --strict SHA256SUMS); then
+    printf '%s\n' "$checksum_output" >&2
+    exit 1
+fi
+checksum_count=$(awk 'END { print NR }' "$staging/SHA256SUMS")
 su -s /bin/sh -c 'test -x "$1" && test -r "$2" && test -r "$3"' \
     "$service_user" sh \
     "$staging/bin/tour" \
     "$staging/release.json" \
     "$staging/_content/tour/static/css/app.css"
 
-printf '[deploy:remote] permissions and SHA256 verification passed\n'
+printf '[deploy:remote] permissions verification: PASS; SHA256 verification: PASS (%s files)\n' "$checksum_count"
 REMOTE_VALIDATE
 }
 

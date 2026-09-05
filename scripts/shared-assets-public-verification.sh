@@ -62,10 +62,25 @@ shared_assets_cleanup_network_ssh() {
 shared_assets_public_curl() { curl "${SHARED_ASSETS_CURL_NETWORK_OPTIONS[@]}" "$@"; }
 
 shared_assets_public_http_request() {
-    local url=$1 body=$2 headers=$3 attempt=1 code
+    local url=$1 body=$2 headers=$3 attempt=1 code curl_exit
     while :; do
         # Do not use curl -f: 522/525 must remain observable HTTP statuses.
-        code=$(shared_assets_public_curl -sS -D "$headers" -o "$body" -w '%{http_code}' "$url" || true)
+        if code=$(shared_assets_public_curl -sS -D "$headers" -o "$body" -w '%{http_code}' "$url"); then
+            curl_exit=0
+        else
+            curl_exit=$?
+        fi
+        if (( curl_exit != 0 )); then
+            if [[ $curl_exit == 28 && $attempt -lt 3 ]]; then
+                printf '[verify-shared-assets-production] transient curl exit 28, retry %d/2: %s\n' "$attempt" "$url" >&2
+                sleep "$attempt"
+                attempt=$((attempt + 1))
+                continue
+            fi
+            printf '[verify-shared-assets-production] curl exit %s after %d attempt(s): %s\n' "$curl_exit" "$attempt" "$url" >&2
+            printf '000\n'
+            return 0
+        fi
         case $code in
             522|525)
                 if (( attempt < 3 )); then
@@ -92,9 +107,10 @@ shared_assets_verify_public_assets() {
         if [[ $code != 200 ]]; then rm -f -- "$body"; shared_assets_public_error "public asset request failed: $path"; return 1; fi
         got=$(sha256sum -- "$body"); got=${got%% *}; rm -f -- "$body"
         [[ $got == "$checksum" ]] || { shared_assets_public_error "public asset SHA-256 mismatch: $path"; return 1; }
-        count=$((count + 1)); printf 'PUBLIC SHA-256 VERIFIED: %s\n' "$path"
+        count=$((count + 1))
     done <"$manifest"
     [[ $count == 11 ]] || { shared_assets_public_error "expected 11 public allowlist files, got $count"; return 1; }
+    printf 'PUBLIC SHA-256 verification: PASS (%d/11 files)\n' "$count"
 }
 
 shared_assets_verify_boundaries() {
@@ -104,6 +120,6 @@ shared_assets_verify_boundaries() {
         status=$(shared_assets_public_http_request "$SHARED_ASSETS_PUBLIC_BASE_URL/$path" /dev/null "$headers")
         rm -f -- "$headers"
         [[ $status == 404 ]] || { shared_assets_public_error "expected boundary HTTP 404: /$path"; return 1; }
-        printf 'BOUNDARY VERIFIED: 404 /%s\n' "$path"
     done
+    printf 'PUBLIC boundary verification: PASS (%d/3 HTTP 404)\n' "${#SHARED_ASSETS_EXPECTED_BOUNDARY_PATHS[@]}"
 }

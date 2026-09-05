@@ -96,7 +96,9 @@ printf 200
                 self.assertEqual(result.returncode, 0, result.stderr)
             else:
                 self.assertNotEqual(result.returncode, 0)
-            self.assertEqual(counter.read_text(encoding="utf-8"), str(failures + 1 if expect_success else 90))
+            # One recovered initial request, then three stable rounds of two
+            # representative routes before public-machine may proceed.
+            self.assertEqual(counter.read_text(encoding="utf-8"), str(failures + 6 if expect_success else 90))
 
     def test_public_machine_retries_transient_curl_failure(self):
         self.run_public_machine_request(failures=1, expect_success=True)
@@ -445,9 +447,19 @@ printf 200
         self.assertIn("readonly CURL_RETRY_ATTEMPTS=3", public_machine)
         self.assertIn("6|7|16|28|35", public_machine)
         self.assertIn("grep -Eq", public_machine)
+        self.assertIn("for readiness_round in 1 2 3", public_machine)
+        self.assertIn("representative /tour/welcome/1", public_machine)
         for duplicate in ("sitemap", "/socket", "cache_header", "playground", "shared_assets", "canonical", "xml.etree"):
             self.assertNotIn(duplicate, public_machine)
         self.assertNotIn("curl -4", public_machine)
+
+    def test_resume_and_failure_timing_do_not_change_receipt_schema(self):
+        source = (ROOT / "scripts" / "first-production.py").read_text(encoding="utf-8")
+        self.assertIn("def timed_stage(self, stage, action):", source)
+        self.assertIn("FAILED（{elapsed:.1f}s）", source)
+        self.assertIn("RESUME（0.0s；预检已重新验证）", source)
+        self.assertIn("RESUME（0.0s；current/source health 已重新验证）", source)
+        self.assertIn('self.receipt["stages"][stage] = {"completed_at": utc_now(), "result": result}', source)
 
     def test_aliyun_vhost_scanner_is_python36_compatible_and_separates_failures(self):
         identity = FIRST.IDENTITY.load_identity(ROOT / "production" / "identity.json")

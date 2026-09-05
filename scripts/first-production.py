@@ -234,6 +234,7 @@ class Orchestrator:
         self.cf_socks_local_port = None
         self.cf_socks_aliyun_port = None
         self._signal_handlers = {}
+        self.stage_started = {}
         self._install_signal_cleanup()
 
     @staticmethod
@@ -312,7 +313,17 @@ class Orchestrator:
     def record(self, stage, result="PASS"):
         self.receipt["stages"][stage] = {"completed_at": utc_now(), "result": result}
         self.write_receipt()
-        print(f"[首次生产] {STAGE_LABELS.get(stage, stage)}：{result}")
+        elapsed = time.monotonic() - self.stage_started.get(stage, time.monotonic())
+        print(f"[首次生产] {STAGE_LABELS.get(stage, stage)}：{result}（{elapsed:.1f}s）")
+
+    def timed_stage(self, stage, action):
+        self.stage_started[stage] = time.monotonic()
+        try:
+            return action()
+        except Exception:
+            elapsed = time.monotonic() - self.stage_started[stage]
+            print(f"[首次生产] {STAGE_LABELS.get(stage, stage)}：FAILED（{elapsed:.1f}s）", file=sys.stderr)
+            raise
 
     def stage_passed(self, stage):
         value = self.receipt.get("stages", {}).get(stage, {})
@@ -843,8 +854,17 @@ request() {
   done
   return 1
 }
+representative() {
+  path=$1; body=$2; headers=$3
+  request 200 "$body" "$headers" "https://$host$path" && grep -Eq "<html[^>]+lang=[\"']$locale[\"']" "$body"
+}
 for readiness_attempt in $(seq 1 30); do
-  if request 200 "$temporary/home" "$temporary/home.headers" "https://$host/" && grep -Eq "<html[^>]+lang=[\"']$locale[\"']" "$temporary/home"; then break; fi
+  ready=1
+  for readiness_round in 1 2 3; do
+    representative / "$temporary/home" "$temporary/home.headers" || { ready=0; break; }
+    representative /tour/welcome/1 "$temporary/welcome" "$temporary/welcome.headers" || { ready=0; break; }
+  done
+  (( ready )) && break
   [[ $readiness_attempt != 30 ]] || exit 1
   sleep 2
 done
@@ -860,21 +880,24 @@ done
         self.record("browser")
 
     def execute(self):
+        def run_stage(stage, action):
+            timed = getattr(self, "timed_stage", None)
+            return timed(stage, action) if timed else action()
         self.write_receipt()
-        self.preflight()
+        run_stage("preflight", self.preflight)
         if not self.stage_passed("infrastructure"):
-            self.bootstrap_infrastructure()
+            run_stage("infrastructure", self.bootstrap_infrastructure)
         else:
-            print("[首次生产] 基础设施：RESUME（预检已重新验证）")
-        self.configure_playground()
+            print("[首次生产] 基础设施：RESUME（0.0s；预检已重新验证）")
+        run_stage("playground-origin", self.configure_playground)
         if not self.stage_passed("deploy"):
-            self.deploy()
+            run_stage("deploy", self.deploy)
         else:
-            print("[首次生产] 首次部署：RESUME（current/source health 已重新验证）")
-        self.direct_origin()
-        self.cloudflare_dns()
-        self.public_machine()
-        self.browser()
+            print("[首次生产] 首次部署：RESUME（0.0s；current/source health 已重新验证）")
+        run_stage("direct-origin", self.direct_origin)
+        run_stage("cloudflare-dns", self.cloudflare_dns)
+        run_stage("public-machine", self.public_machine)
+        run_stage("browser", self.browser)
         self.write_receipt("passed")
         print("\n[首次生产] READY FOR HUMAN VISUAL GATE")
         print(f"receipt: {self.receipt_path}")

@@ -69,6 +69,18 @@ if [[ -n $headers ]]; then
     [[ -n $cache ]] && printf 'CF-Cache-Status: %s\r\n' "$cache" >>"$headers"
     printf '\r\n' >>"$headers"
 fi
+if [[ -n ${FAKE_CURL_EXIT_PATH:-} && $path == "$FAKE_CURL_EXIT_PATH" ]]; then
+    counter=${FAKE_STATUS_COUNTER:?}
+    count=0; [[ -f $counter ]] && count=$(<"$counter")
+    count=$((count + 1)); printf '%s' "$count" >"$counter"
+    IFS=',' read -r -a exit_sequence <<<"${FAKE_CURL_EXIT_SEQUENCE:?}"
+    sequence_index=$((count - 1))
+    if (( sequence_index >= ${#exit_sequence[@]} )); then
+        sequence_index=$((${#exit_sequence[@]} - 1))
+    fi
+    curl_exit=${exit_sequence[sequence_index]}
+    (( curl_exit == 0 )) || exit "$curl_exit"
+fi
 if [[ $status == 200 && -n $body && $body != /dev/null ]]; then cp -- "$FAKE_PUBLIC_ROOT/$path" "$body"; fi
 if (( fail_http )) && [[ $status != 200 ]]; then exit 22; fi
 [[ -z $write_out ]] || printf '%s' "$status"
@@ -133,7 +145,7 @@ run_verify() {
     rm -f -- "$fixture/curl-count" "$fixture/network.log" "$fixture/status-count"
     env PATH="$fake_bin:$PATH" FAKE_PUBLIC_ROOT="$public_root" FAKE_CURL_COUNTER="$fixture/curl-count" \
         FAKE_REQUIRE_SOCKS=1 FAKE_NETWORK_LOG="$fixture/network.log" FAKE_REAL_PYTHON="$real_python" \
-        FAKE_STATUS_PATH="${FAKE_STATUS_PATH:-}" FAKE_STATUS_SEQUENCE="${FAKE_STATUS_SEQUENCE:-}" FAKE_STATUS_COUNTER="$fixture/status-count" \
+        FAKE_STATUS_PATH="${FAKE_STATUS_PATH:-}" FAKE_STATUS_SEQUENCE="${FAKE_STATUS_SEQUENCE:-}" FAKE_CURL_EXIT_PATH="${FAKE_CURL_EXIT_PATH:-}" FAKE_CURL_EXIT_SEQUENCE="${FAKE_CURL_EXIT_SEQUENCE:-}" FAKE_STATUS_COUNTER="$fixture/status-count" \
         "$verify_script" "$receipt" 2>&1
 }
 
@@ -147,7 +159,7 @@ status_count() {
 }
 
 clear_status_sequence() {
-    unset FAKE_STATUS_PATH FAKE_STATUS_SEQUENCE
+    unset FAKE_STATUS_PATH FAKE_STATUS_SEQUENCE FAKE_CURL_EXIT_PATH FAKE_CURL_EXIT_SEQUENCE
 }
 
 set +e
@@ -185,6 +197,19 @@ export FAKE_STATUS_PATH=images/go-logo-white.svg FAKE_STATUS_SEQUENCE=525,200
 output=$(run_verify "$receipt") || fail 'asset 525 then 200 did not pass'
 assert_contains "$output" 'transient HTTP 525, retry 1/2: https://assets-go-dev.shuijingwanwq.com/images/go-logo-white.svg'
 [[ $(status_count) == 2 ]] || fail 'asset 525 then 200 did not use exactly two attempts'
+clear_status_sequence
+
+reset_public; make_receipt "$receipt" NO_CHANGES ''
+export FAKE_CURL_EXIT_PATH=images/go-logo-white.svg FAKE_CURL_EXIT_SEQUENCE=28,0
+output=$(run_verify "$receipt") || fail 'asset curl exit 28 then 200 did not pass'
+assert_contains "$output" 'transient curl exit 28, retry 1/2: https://assets-go-dev.shuijingwanwq.com/images/go-logo-white.svg'
+[[ $(status_count) == 2 ]] || fail 'asset curl exit 28 then 200 did not use exactly two attempts'
+clear_status_sequence
+
+reset_public; make_receipt "$receipt" NO_CHANGES ''
+export FAKE_CURL_EXIT_PATH=images/go-logo-white.svg FAKE_CURL_EXIT_SEQUENCE=28,28,28
+if run_verify "$receipt" >/dev/null; then fail 'three transient curl exit 28 responses accepted'; fi
+[[ $(status_count) == 3 ]] || fail 'three transient curl exit 28 responses exceeded attempt limit'
 clear_status_sequence
 
 reset_public; make_receipt "$receipt" NO_CHANGES ''

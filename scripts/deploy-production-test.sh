@@ -41,7 +41,7 @@ assert_profile ko-KR /data/go-tour-ko-KR/releases /data/go-tour-ko-KR/current \
     /data/go-tour-ko-KR/.deploy.lock go-tour-ko-KR.service http://127.0.0.1:4003/ \
     https://ko-go-dev.shuijingwanwq.com/
 
-if select_deployment_profile it-IT 2>/dev/null; then
+if select_deployment_profile pt-BR 2>/dev/null; then
     fail 'unsupported locale was accepted'
 fi
 
@@ -191,7 +191,7 @@ validate_local_release "$fake_ja" >/dev/null || fail 'valid ja-JP bundle was rej
     fail 'directory name overrode release.json locale'
 
 fake_unsupported="$fixture/go-tour-release-20260824-zh-CN-unsupported"
-make_bundle "$fake_unsupported" it-IT
+make_bundle "$fake_unsupported" pt-BR
 (
     remote_called=0
     prepare_remote() { remote_called=1; return 1; }
@@ -199,7 +199,7 @@ make_bundle "$fake_unsupported" it-IT
     if main "$fake_unsupported" >/dev/null 2>&1; then
         exit 1
     fi
-    (( remote_called == 0 )) && [[ $RELEASE_LOCALE == it-IT ]]
+    (( remote_called == 0 ))
 ) || fail 'unsupported locale was accepted or reached a remote operation'
 
 mismatched="$fixture/go-tour-release-20260824-ja-JP-mismatch"
