@@ -201,7 +201,15 @@ scripts/first-production.sh \
 
 preflight 在任何 production mutation 前同时检查：正式 bundle 与 identity、TODO/unknown locale 间接由 publish/identity gate 拒绝、两台 SSH 和 root account、port/service/data-root/vhost/certificate 冲突、EnvironmentFile 与非空 `TOUR_AD_HTML`（不输出值）、Cloudflare secret 权限与变量、zone 唯一性、目标 DNS 无冲突、Playground 两个 location 的结构一致性，以及 shared-assets origin/public SHA-256 freshness。它重新 export/validate 当前仓库、对照 aliyun origin，并复用正式 shared-assets public verification core（zgocloud runner、522/525 bounded retry、11/11 SHA-256 与 boundary 404），不信任历史 receipt。任一项失败时，不建立目录、unit、证书、vhost、DNS 或 Origin。
 
+Cloudflare control-plane 专用网络通道也在 preflight 建立：调用机先以 invocation-scoped SSH `-D 127.0.0.1:<local-port>` 连接 zgocloud，再以 SSH `-R 127.0.0.1:<aliyun-port>:127.0.0.1:<local-port>` 连接 aliyun；两个 listener 都只绑定 loopback，且 `ExitOnForwardFailure=yes`/`GatewayPorts=no`。因此 aliyun 的 curl 经 `--socks5-hostname 127.0.0.1:<aliyun-port>` 从 zgocloud 出口完成 DNS 和 TCP，但 HTTPS/TLS 与 `Authorization: Bearer $CF_Token` 仍只在 aliyun 的 curl 进程和 Cloudflare 之间建立，调用机与 zgocloud 都看不到 token 明文。建链失败立即停止，绝不回退 aliyun 直连；正常、失败、INT、TERM、HUP 都关闭两个 ControlMaster 和转发 socket。该 endpoint、端口、token 和 tunnel 细节不写入 receipt 或日志。
+
 基础设施阶段复用已验证的 production service hardening 与 OneinStack Nginx/TLS 结构；所有 server name、proxy port、service、current、证书和私钥路径均从目标 locale 的正式 identity 渲染，不从 fr-FR 或 locale 名称复制值。service 从精确 `current` 启动，TLS 使用 Let's Encrypt/acme.sh `dns_cf`、`ec-256`，Nginx 只有精确 loopback proxy，不生成会截获 `/tour/static/` 的静态 location。证书通过 DNS-01 签发，不要求先建立 production A record；aliyun 的非交互 SSH 调用使用 `/usr/local/nginx/sbin/nginx -t`，通过后才 reload。已存在未知或不兼容配置时停止，不覆盖。失败边界保留为可审计、可 resume 的首次创建物：已经精确写入的 data root、unit 或 ACME/TLS 现场不做不确定删除，后续 preflight 必须重新逐项验证；本次新建 vhost 若 Nginx config test 或 reload 失败则移除并恢复原 Nginx 状态。任一失败均不会记录 infrastructure PASS，service enable/start/restart 失败也不能进入后续 stage。
+
+不假设 acme.sh 支持任何代理环境变量。若需要签证书，preflight 读取实际已安装的 acme.sh 源码，要求其存在 PATH-resolved `curl` 调用且不以绝对 `/usr/bin/curl` 或 `/bin/curl` 绕过；否则在 mutation 前 fail closed。签发时仅为该 acme.sh 子进程创建 mode `0700` 的临时 `curl` wrapper，wrapper 向实际 curl 加入同一 `--socks5-hostname` 参数，随后删除。这样 `dns_cf` 的 Cloudflare 请求和 ACME HTTPS 均走 zgocloud 出口，CF token 仍只从 aliyun 的 root-only secret file 读取。仓库测试无法替代已安装 acme.sh 的真实执行路径；维护者可在不签发、不联网的前提下运行以下最小只读检查（仅显示匹配行，不显示 secret）：
+
+```sh
+ssh aliyun 'set -eu; a=/root/.acme.sh/acme.sh; test -x "$a" || a=/root/oneinstack/acme.sh/acme.sh; test -x "$a"; grep -nE "(^|[^[:alnum:]_])curl([^[:alnum:]_]|$)|/(usr/)?bin/curl([^[:alnum:]_]|$)" "$a"'
+```
 
 Playground mutation 只接受当前已验证的“两处相同精确 Origin 正则 + 唯一 compile/fmt location”结构，保留全部既有 origin、避免重复，并在 `nginx -t`/reload 失败时恢复备份。随后验证新 origin 的 OPTIONS 204、POST 200、wrong Origin 403、GET 405。
 

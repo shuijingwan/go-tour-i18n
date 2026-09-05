@@ -45,6 +45,7 @@ class FirstProductionTest(unittest.TestCase):
         instance = FIRST.Orchestrator.__new__(FIRST.Orchestrator)
         instance.profile = next(profile for profile in identity["locales"] if profile["locale"] == "es-ES")
         instance.shared = identity["shared"]
+        instance.cf_socks_aliyun_port = 1080
         instance.release_dir = pathlib.Path("/tmp/go-tour-release-es-ES-test")
         captured = []
         instance.ssh = lambda host, script, args=(), **kwargs: captured.append(script)
@@ -127,6 +128,7 @@ printf 200
         instance = FIRST.Orchestrator.__new__(FIRST.Orchestrator)
         instance.profile = next(profile for profile in identity["locales"] if profile["locale"] == "es-ES")
         instance.shared = identity["shared"]
+        instance.cf_socks_aliyun_port = 1080
         captured = []
         instance.ssh = lambda host, script, args=(), **kwargs: captured.append(script)
         instance.record = lambda stage: None
@@ -163,7 +165,7 @@ printf 200
             (fake_bin / "sleep").write_text("#!/usr/bin/env bash\nexit 0\n", encoding="utf-8")
             for executable in (fake_bin / "curl", fake_bin / "sleep"): executable.chmod(0o755)
             env = dict(os.environ, PATH=str(fake_bin) + os.pathsep + os.environ["PATH"], FAKE_CF_RESPONSES=str(response_file), FAKE_CF_COUNT=str(counter), FAKE_CF_LOG=str(log))
-            result = subprocess.run(["bash", "-s", "--", str(secret), "example.com", "es-go-dev.shuijingwanwq.com", "121.40.248.29"], input=self.cloudflare_dns_script(), capture_output=True, text=True, env=env)
+            result = subprocess.run(["bash", "-s", "--", str(secret), "example.com", "es-go-dev.shuijingwanwq.com", "121.40.248.29", "127.0.0.1:1080"], input=self.cloudflare_dns_script(), capture_output=True, text=True, env=env)
             if expect_success: self.assertEqual(result.returncode, 0, result.stderr)
             else: self.assertNotEqual(result.returncode, 0)
             return log.read_text(encoding="utf-8").splitlines()
@@ -278,6 +280,33 @@ printf 200
                 instance.cleanup()
             self.assertEqual(run.call_count, 2)
 
+    def test_cloudflare_tunnel_is_localhost_only_fail_closed_and_cleaned(self):
+        identity = FIRST.IDENTITY.load_identity(ROOT / "production" / "identity.json")
+        with tempfile.TemporaryDirectory() as directory:
+            instance = FIRST.Orchestrator.__new__(FIRST.Orchestrator)
+            instance.shared = identity["shared"]
+            instance.control = {identity["shared"]["aliyun_ssh_alias"]: pathlib.Path(directory) / "a", identity["shared"]["zgocloud_ssh_alias"]: pathlib.Path(directory) / "z"}
+            instance.cf_socks_aliyun_port = None
+            instance.cf_socks_local_port = None
+            instance._free_loopback_port = lambda: 18080 if instance.cf_socks_local_port is None else 18081
+            instance.ssh_options = lambda host: ["-o", f"ControlPath={instance.control[host]}"]
+            commands = []
+            instance.run = lambda command, **kwargs: commands.append(command)
+            instance.setup_cloudflare_network_tunnel()
+            rendered = " ".join(" ".join(map(str, command)) for command in commands)
+            self.assertIn("-D 127.0.0.1:18080", rendered)
+            self.assertIn("-R 127.0.0.1:18081:127.0.0.1:18080", rendered)
+            self.assertIn("ExitOnForwardFailure=yes", rendered)
+            self.assertIn("GatewayPorts=no", rendered)
+            self.assertNotIn("0.0.0.0", rendered)
+
+    def test_cloudflare_requests_and_acme_use_the_tunnel_without_secret_copy(self):
+        source = (ROOT / "scripts" / "first-production.py").read_text(encoding="utf-8")
+        self.assertGreaterEqual(source.count('--socks5-hostname "$cf_socks"'), 3)
+        self.assertIn('PATH="$proxy_bin:$PATH" "$acme" --issue --dns dns_cf', source)
+        self.assertIn('installed acme.sh bypasses PATH-resolved curl', source)
+        self.assertIn('setup_cloudflare_network_tunnel()', source)
+
     def test_secret_and_nginx_fail_closed_guards_are_present(self):
         source = (ROOT / "scripts" / "first-production.py").read_text(encoding="utf-8")
         self.assertIn("root:root 600", source)
@@ -297,6 +326,7 @@ printf 200
         instance = FIRST.Orchestrator.__new__(FIRST.Orchestrator)
         instance.profile = next(profile for profile in identity["locales"] if profile["locale"] == "ko-KR")
         instance.shared = identity["shared"]
+        instance.cf_socks_aliyun_port = 1080
         instance.release_name = "20260902-ko-KR-test"
         instance.stage_passed = lambda stage: False
         instance.record = lambda stage: None
@@ -310,7 +340,8 @@ printf 200
         self.assertEqual(instance.aliyun_preflight(), "zone_id=test")
         host, preflight, args, _ = calls.pop()
         self.assertEqual(host, identity["shared"]["aliyun_ssh_alias"])
-        self.assertEqual(args[-1], FIRST.ALIYUN_ONEINSTACK_NGINX)
+        self.assertEqual(args[-2], FIRST.ALIYUN_ONEINSTACK_NGINX)
+        self.assertTrue(args[-1].startswith("127.0.0.1:"))
         self.assertIn("nginx=${21}", preflight)
         self.assertIn('[[ -x $nginx ]]', preflight)
         self.assertNotIn(" mv nginx openssl ", preflight)
@@ -318,7 +349,7 @@ printf 200
         instance.bootstrap_infrastructure()
         host, infrastructure, args, _ = calls.pop()
         self.assertEqual(host, identity["shared"]["aliyun_ssh_alias"])
-        self.assertEqual(args[-1], FIRST.ALIYUN_ONEINSTACK_NGINX)
+        self.assertEqual(args[-2], FIRST.ALIYUN_ONEINSTACK_NGINX)
         self.assertIn('if ! "$nginx" -t; then', infrastructure)
         self.assertIn('"$nginx" -t && service nginx reload', infrastructure)
         self.assertNotIn("if ! nginx -t", infrastructure)
@@ -328,6 +359,7 @@ printf 200
         instance = FIRST.Orchestrator.__new__(FIRST.Orchestrator)
         instance.profile = next(profile for profile in identity["locales"] if profile["locale"] == "ko-KR")
         instance.shared = identity["shared"]
+        instance.cf_socks_aliyun_port = 1080
         instance.run_id = "test"
         instance.record = lambda stage: None
         calls = []
@@ -410,6 +442,7 @@ printf 200
         instance = FIRST.Orchestrator.__new__(FIRST.Orchestrator)
         instance.profile = next(profile for profile in identity["locales"] if profile["locale"] == "ko-KR")
         instance.shared = identity["shared"]
+        instance.cf_socks_aliyun_port = 1080
         instance.release_name = "20260902-ko-KR-test"
         instance.stage_passed = lambda stage: False
         calls = []

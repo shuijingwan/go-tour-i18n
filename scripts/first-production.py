@@ -17,6 +17,8 @@ import os
 import pathlib
 import re
 import shutil
+import signal
+import socket
 import subprocess
 import sys
 import tempfile
@@ -229,6 +231,38 @@ class Orchestrator:
             self.shared["aliyun_ssh_alias"]: self.temp / "aliyun.control",
             self.shared["zgocloud_ssh_alias"]: self.temp / "zgocloud.control",
         }
+        self.cf_socks_local_port = None
+        self.cf_socks_aliyun_port = None
+        self._signal_handlers = {}
+        self._install_signal_cleanup()
+
+    @staticmethod
+    def _free_loopback_port():
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as listener:
+            listener.bind(("127.0.0.1", 0))
+            return listener.getsockname()[1]
+
+    def _install_signal_cleanup(self):
+        def stop(signum, _frame):
+            raise KeyboardInterrupt(f"received signal {signum}")
+        for signum in (signal.SIGINT, signal.SIGTERM, signal.SIGHUP):
+            self._signal_handlers[signum] = signal.getsignal(signum)
+            signal.signal(signum, stop)
+
+    def setup_cloudflare_network_tunnel(self):
+        """Bind an aliyun-only SOCKS endpoint whose TCP egress is zgocloud."""
+        if self.cf_socks_aliyun_port is not None:
+            return
+        self.cf_socks_local_port = self._free_loopback_port()
+        self.cf_socks_aliyun_port = self._free_loopback_port()
+        zgocloud = self.shared["zgocloud_ssh_alias"]
+        aliyun = self.shared["aliyun_ssh_alias"]
+        self.run(["ssh", *self.ssh_options(zgocloud), "-o", "ControlMaster=yes",
+                  "-o", "ExitOnForwardFailure=yes", "-f", "-N",
+                  "-D", f"127.0.0.1:{self.cf_socks_local_port}", zgocloud], stage="preflight", timeout=30)
+        self.run(["ssh", *self.ssh_options(aliyun), "-o", "ControlMaster=yes",
+                  "-o", "ExitOnForwardFailure=yes", "-o", "GatewayPorts=no", "-f", "-N",
+                  "-R", f"127.0.0.1:{self.cf_socks_aliyun_port}:127.0.0.1:{self.cf_socks_local_port}", aliyun], stage="preflight", timeout=30)
 
     def _load_or_new_receipt(self):
         base = {
@@ -317,6 +351,8 @@ class Orchestrator:
             if path.exists() or path.is_socket():
                 subprocess.run(["ssh", *self.ssh_options(host), "-O", "exit", host], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=False)
         shutil.rmtree(self.temp, ignore_errors=True)
+        for signum, previous in getattr(self, "_signal_handlers", {}).items():
+            signal.signal(signum, previous)
 
     def local_bundle_preflight(self):
         shell = f'''set -Eeuo pipefail
@@ -338,10 +374,10 @@ data_root=$1; releases=$2; current=$3; lock=$4; service=$5; user=$6; port=$7
 health=$8; env_file=$9; vhost=${10}; cert=${11}; key=${12}; hostname=${13}
 secret=${14}; zone=${15}; origin_ip=${16}; expected_remote=${17}; resume_deployed=${18}
 expected_unit_sha=${19}; expected_vhost_sha=${20}
-nginx=${21}
+nginx=${21}; cf_socks=${22}
 fail() { printf '[first-production:aliyun] ERROR: %s\n' "$*" >&2; exit 1; }
 [[ $(id -u) == 0 ]] || fail 'SSH account must be root'
-for command_name in base64 chown chmod curl dirname grep id install mv openssl python3 readlink service sha256sum ss stat systemctl; do command -v "$command_name" >/dev/null || fail "missing tool: $command_name"; done
+for command_name in base64 chown chmod curl dirname grep id install mktemp mv openssl python3 readlink service sha256sum ss stat systemctl; do command -v "$command_name" >/dev/null || fail "missing tool: $command_name"; done
 [[ -x $nginx ]] || fail "missing formal OneinStack Nginx executable: $nginx"
 [[ -f $secret && ! -L $secret ]] || fail "Cloudflare secret source missing: $secret; provision root:root mode 0600 with CF_Token=<token>"
 [[ $(stat -c '%U:%G %a' "$secret") == 'root:root 600' ]] || fail "Cloudflare secret source must be root:root mode 0600: $secret"
@@ -429,13 +465,15 @@ else
   acme=''
   for candidate in /root/.acme.sh/acme.sh /root/oneinstack/acme.sh/acme.sh; do [[ -x $candidate ]] && { acme=$candidate; break; }; done
   [[ -n $acme ]] || fail 'cannot locate the verified acme.sh installation'
+  grep -Eq '(^|[^[:alnum:]_])curl([^[:alnum:]_]|$)' "$acme" || fail 'installed acme.sh has no verifiable curl invocation'
+  ! grep -Eq '/(usr/)?bin/curl([^[:alnum:]_]|$)' "$acme" || fail 'installed acme.sh bypasses PATH-resolved curl'
 fi
 readonly CF_CONNECT_TIMEOUT=5 CF_MAX_TIME=20 CF_RETRY_ATTEMPTS=3
 cf_get() {
   output=$1; shift
   for attempt in $(seq 1 "$CF_RETRY_ATTEMPTS"); do
     set +e
-    code=$(curl -sS --connect-timeout "$CF_CONNECT_TIMEOUT" --max-time "$CF_MAX_TIME" -o "$output" -w '%{http_code}' "$@")
+    code=$(curl --socks5-hostname "$cf_socks" -sS --connect-timeout "$CF_CONNECT_TIMEOUT" --max-time "$CF_MAX_TIME" -o "$output" -w '%{http_code}' "$@")
     curl_exit=$?
     set -e
     if [[ $curl_exit == 0 && $code == 200 ]]; then return 0; fi
@@ -473,7 +511,7 @@ printf 'zone_id=%s\n' "$zone_id"
             p["tls_certificate_path"], p["tls_key_path"], p["production_hostname"],
             s["cloudflare_secret_file"], s["cloudflare_zone_name"], p["origin_ip"],
             expected_remote, resume_deployed, expected_unit_sha, expected_vhost_sha,
-            ALIYUN_ONEINSTACK_NGINX,
+            ALIYUN_ONEINSTACK_NGINX, f"127.0.0.1:{self.cf_socks_aliyun_port}",
         ), capture=True, stage="preflight")
 
     def zgocloud_preflight(self):
@@ -524,6 +562,7 @@ sha256sum SHA256SUMS
     def preflight(self):
         self.local_bundle_preflight()
         self.shared_assets_freshness()
+        self.setup_cloudflare_network_tunnel()
         aliyun = self.aliyun_preflight()
         zgocloud = self.zgocloud_preflight()
         self.receipt["cloudflare_zone_id"] = aliyun.removeprefix("zone_id=")
@@ -542,7 +581,7 @@ sha256sum SHA256SUMS
 data_root=$1; releases=$2; current=$3; service=$4; user=$5; port=$6; env_file=$7
 vhost=$8; cert=$9; key=${10}; hostname=${11}; secret=${12}
 unit_b64=${13}; vhost_b64=${14}; expected_unit_sha=${15}; expected_vhost_sha=${16}
-nginx=${17}
+nginx=${17}; cf_socks=${18}
 fail() { printf '[first-production:infrastructure] ERROR: %s\n' "$*" >&2; exit 1; }
 install -d -o root -g root -m 0755 "$data_root" "$releases"
 unit=/etc/systemd/system/$service
@@ -562,7 +601,15 @@ if [[ ! -f $cert || ! -f $key ]]; then
   [[ -n $acme ]] || fail 'cannot locate the verified acme.sh installation'
   set -a; . "$secret"; set +a
   [[ -n ${CF_Token:-} ]] || fail 'CF_Token missing from formal secret source'
-  "$acme" --issue --dns dns_cf -d "$hostname" --keylength ec-256 --server letsencrypt
+  curl_bin=$(command -v curl)
+  proxy_bin=$(mktemp -d); trap 'rm -rf "$proxy_bin"' EXIT
+  # Do not assume acme.sh proxy-variable behavior: require its installed
+  # source to use PATH-resolved curl, then wrap that executable per invocation.
+  grep -Eq '(^|[^[:alnum:]_])curl([^[:alnum:]_]|$)' "$acme" || fail 'installed acme.sh has no verifiable curl invocation'
+  ! grep -Eq '/(usr/)?bin/curl([^[:alnum:]_]|$)' "$acme" || fail 'installed acme.sh bypasses PATH-resolved curl'
+  printf '#!/usr/bin/env bash\nexec %q --socks5-hostname %q "$@"\n' "$curl_bin" "$cf_socks" >"$proxy_bin/curl"
+  chmod 0700 "$proxy_bin/curl"
+  PATH="$proxy_bin:$PATH" "$acme" --issue --dns dns_cf -d "$hostname" --keylength ec-256 --server letsencrypt
   "$acme" --install-cert -d "$hostname" --ecc --fullchain-file "$cert" --key-file "$key"
   chown root:root "$cert" "$key"; chmod 0644 "$cert"; chmod 0600 "$key"
 fi
@@ -602,6 +649,7 @@ systemctl enable "$service"
             p["nginx_vhost_path"], p["tls_certificate_path"], p["tls_key_path"],
             p["production_hostname"], s["cloudflare_secret_file"], unit_b64,
             vhost_b64, unit_sha, vhost_sha, ALIYUN_ONEINSTACK_NGINX,
+            f"127.0.0.1:{self.cf_socks_aliyun_port}",
         ), stage="infrastructure", timeout=900)
         self.record("infrastructure")
 
@@ -687,7 +735,7 @@ code=$(curl -sS --resolve "$host:80:$ip" --connect-timeout 5 --max-time 20 -o /d
     def cloudflare_dns(self):
         p, s = self.profile, self.shared
         script = r'''set -Eeuo pipefail
-secret=$1; zone=$2; host=$3; ip=$4
+secret=$1; zone=$2; host=$3; ip=$4; cf_socks=$5
 set -a; . "$secret"; set +a
 [[ -n ${CF_Token:-} ]]
 fail() { printf '[first-production:cloudflare-dns] ERROR: %s\n' "$*" >&2; exit 1; }
@@ -698,7 +746,7 @@ cf_get() {
   output=$1; shift
   for attempt in $(seq 1 "$CF_RETRY_ATTEMPTS"); do
     set +e
-    code=$(curl -sS --connect-timeout "$CF_CONNECT_TIMEOUT" --max-time "$CF_MAX_TIME" -o "$output" -w '%{http_code}' "$@")
+    code=$(curl --socks5-hostname "$cf_socks" -sS --connect-timeout "$CF_CONNECT_TIMEOUT" --max-time "$CF_MAX_TIME" -o "$output" -w '%{http_code}' "$@")
     curl_exit=$?
     set -e
     if [[ $curl_exit == 0 && $code == 200 ]]; then return 0; fi
@@ -735,7 +783,7 @@ for mutation_attempt in $(seq 1 "$CF_RETRY_ATTEMPTS"); do
   [[ $state == exact ]] && exit 0
   [[ $state == absent ]] || fail 'Cloudflare DNS identity conflicts'
   set +e
-  post_code=$(curl -sS --connect-timeout "$CF_CONNECT_TIMEOUT" --max-time "$CF_MAX_TIME" -o "$cf_tmp/post" -w '%{http_code}' -X POST -H "Authorization: Bearer $CF_Token" -H 'Content-Type: application/json' --data "$payload" "$api/zones/$zone_id/dns_records")
+  post_code=$(curl --socks5-hostname "$cf_socks" -sS --connect-timeout "$CF_CONNECT_TIMEOUT" --max-time "$CF_MAX_TIME" -o "$cf_tmp/post" -w '%{http_code}' -X POST -H "Authorization: Bearer $CF_Token" -H 'Content-Type: application/json' --data "$payload" "$api/zones/$zone_id/dns_records")
   post_exit=$?
   set -e
   if [[ $post_exit == 0 && $post_code == 200 ]]; then
@@ -756,7 +804,7 @@ fail 'Cloudflare DNS mutation attempts exhausted without an exact identity'
 '''
         self.ssh(s["aliyun_ssh_alias"], script, (
             s["cloudflare_secret_file"], s["cloudflare_zone_name"],
-            p["production_hostname"], p["origin_ip"],
+            p["production_hostname"], p["origin_ip"], f"127.0.0.1:{self.cf_socks_aliyun_port}",
         ), stage="cloudflare-dns", timeout=300)
         self.record("cloudflare-dns")
 
