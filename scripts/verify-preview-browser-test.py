@@ -18,6 +18,49 @@ PRODUCTION = load("verify_production_browser_tested", ROOT / "scripts" / "verify
 CORE = PREVIEW.CORE
 
 class PreviewBrowserTest(unittest.TestCase):
+    def chrome_for_navigation(self, readiness):
+        chrome = CORE.Chrome.__new__(CORE.Chrome)
+        chrome.current_route = "about:blank"
+        chrome.events = []
+        chrome.render_readiness = mock.Mock(side_effect=readiness)
+        chrome.call = mock.Mock(return_value={})
+        return chrome
+
+    def test_navigation_retries_render_readiness_then_passes(self):
+        chrome = self.chrome_for_navigation([
+            (False, {"readyState": "loading", "bodyTextLength": 0, "location": "https://it.example/"}),
+            (True, {"readyState": "interactive", "bodyTextLength": 42, "location": "https://it.example/"}),
+        ])
+        with mock.patch.object(CORE.time, "sleep"):
+            chrome.navigate("https://it.example/", 1280, 800)
+        self.assertEqual([call.args[0] for call in chrome.call.call_args_list].count("Page.navigate"), 2)
+        self.assertEqual(chrome.render_readiness.call_count, 2)
+
+    def test_navigation_fails_closed_after_bounded_render_attempts(self):
+        chrome = self.chrome_for_navigation([
+            (False, {"readyState": "loading", "bodyTextLength": 0, "location": "https://it.example/"}),
+        ] * CORE.RENDER_ATTEMPTS)
+        with mock.patch.object(CORE.time, "sleep"), self.assertRaises(CORE.BrowserFailure) as caught:
+            chrome.navigate("https://it.example/", 1280, 800)
+        evidence = str(caught.exception)
+        self.assertEqual([call.args[0] for call in chrome.call.call_args_list].count("Page.navigate"), CORE.RENDER_ATTEMPTS)
+        for expected in ("url='https://it.example/'", "route='/'", "attempt=3/3", "readyState='loading'",
+                         "bodyTextLength=0", "location='https://it.example/'"):
+            self.assertIn(expected, evidence)
+
+    def test_semantic_assertion_failure_does_not_trigger_navigation_retry(self):
+        chrome = self.chrome_for_navigation([
+            (True, {"readyState": "interactive", "bodyTextLength": 42, "location": "https://it.example/tour/list"}),
+        ])
+        chrome.evaluate = mock.Mock(return_value={
+            "lang": "wrong", "href": "https://it.example/tour/list", "origin": "https://it.example",
+            "path": "/tour/list", "renderedRoute": "", "heading": "", "canonical": "https://it.example/tour/list",
+            "title": "List", "description": "Description", "overflow": 0,
+        })
+        with mock.patch.object(CORE.time, "sleep"), self.assertRaises(CORE.BrowserFailure):
+            CORE.page_identity(chrome, "https://it.example/", "it-IT", "/tour/list", 1280, 800)
+        self.assertEqual([call.args[0] for call in chrome.call.call_args_list].count("Page.navigate"), 1)
+
     def test_cdp_exception_diagnostics_include_action_route_and_stack(self):
         chrome = CORE.Chrome.__new__(CORE.Chrome)
         chrome.current_route = "/tour/welcome/1"

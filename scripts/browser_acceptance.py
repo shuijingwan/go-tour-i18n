@@ -38,6 +38,13 @@ class BrowserFailure(RuntimeError):
     pass
 
 
+# A route has 30 seconds of render-readiness budget, split across independent
+# navigations.  Retrying changes only the transport/render boundary; every
+# semantic assertion below remains a single, fail-closed assertion.
+RENDER_ATTEMPTS = 3
+RENDER_ATTEMPT_TIMEOUT = 10
+
+
 def locale_list_metadata(locale):
     try:
         catalog = json.loads((ROOT / "internal" / "tour" / "ui" / f"{locale}.json").read_text(encoding="utf-8"))
@@ -220,21 +227,61 @@ class Chrome:
             )
         return result.get("result", {}).get("value")
 
+    def render_readiness(self, timeout=RENDER_ATTEMPT_TIMEOUT):
+        """Wait only for a DOM that can be subjected to semantic acceptance.
+
+        `complete` waits for the window load event, including third-party ads
+        and analytics resources.  `interactive` plus meaningful body text is
+        sufficient to begin the strict DOM and behavior checks that follow.
+        """
+        deadline = time.monotonic() + timeout
+        latest = {"readyState": None, "bodyTextLength": None, "location": None}
+        while time.monotonic() < deadline:
+            try:
+                latest = self.evaluate("""(() => ({
+                  readyState: document.readyState,
+                  bodyTextLength: document.body ? document.body.innerText.length : 0,
+                  location: location.href
+                }))()""", check="render readiness")
+            except BrowserFailure as exc:
+                latest = {"readyState": None, "bodyTextLength": None, "location": None,
+                          "evaluateError": str(exc)}
+            else:
+                if latest["readyState"] in ("interactive", "complete") and latest["bodyTextLength"] > 20:
+                    return True, latest
+            time.sleep(0.25)
+        return False, latest
+
     def navigate(self, url, width, height):
-        self.current_route = urllib.parse.urlsplit(url).path
+        self.current_route = urllib.parse.urlsplit(url).path or "/"
         self.call("Emulation.setDeviceMetricsOverride", {
             "width": width, "height": height, "deviceScaleFactor": 1,
             "mobile": width <= 480,
         })
-        self.events.clear()
-        self.call("Page.navigate", {"url": url})
-        deadline = time.monotonic() + 30
-        while time.monotonic() < deadline:
-            if self.evaluate("document.readyState") == "complete" and self.evaluate("document.body && document.body.innerText.length > 20"):
+        last = {"readyState": None, "bodyTextLength": None, "location": None}
+        navigation = {}
+        for attempt in range(1, RENDER_ATTEMPTS + 1):
+            self.events.clear()
+            try:
+                navigation = self.call("Page.navigate", {"url": url})
+                ready, last = self.render_readiness()
+            except BrowserFailure as exc:
+                ready = False
+                last = {"readyState": None, "bodyTextLength": None, "location": None,
+                        "navigationError": str(exc)}
+            if ready:
                 time.sleep(2)
                 return
-            time.sleep(0.25)
-        raise BrowserFailure(f"page did not render: {url}")
+            last = {"attempt": attempt, **last}
+            if attempt < RENDER_ATTEMPTS:
+                time.sleep(1)
+        transport = {key: navigation.get(key) for key in ("errorText", "isDownload", "loaderId", "frameId") if key in navigation}
+        raise BrowserFailure(
+            f"page did not render: url={url!r} route={self.current_route!r} "
+            f"attempt={last['attempt']}/{RENDER_ATTEMPTS} readyState={last.get('readyState')!r} "
+            f"bodyTextLength={last.get('bodyTextLength')!r} location={last.get('location')!r} "
+            f"readinessError={last.get('evaluateError') or last.get('navigationError')!r} navigation={transport!r}"
+        )
 
     def network_urls(self):
         return [event.get("params", {}).get("request", {}).get("url", "") for event in self.events if event.get("method") == "Network.requestWillBeSent"]
