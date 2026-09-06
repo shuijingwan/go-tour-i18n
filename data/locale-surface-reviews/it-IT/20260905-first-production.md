@@ -162,13 +162,13 @@ PREVIEW SURFACE ACCEPTANCE: PASS
 - ads 与 production acceptance：`not executed`
 
 <!-- first-production-finalization:start -->
-- production receipt identity: `PENDING`
-- production machine acceptance: `PENDING`
-- production browser acceptance: `PENDING`
-- production visual HUMAN gate: `PENDING`
-- unresolved production blocker: `PENDING`
-- overall final decision: `PENDING`
-- decision: `pending`
+- production receipt identity: `locale=it-IT hostname=it-go-dev.shuijingwanwq.com release=20260905-it-IT-0f50ed15`
+- production machine acceptance: `passed`
+- production browser acceptance: `passed`
+- production visual HUMAN gate: `passed` (maintainer confirmation)
+- unresolved production blocker: `none`
+- overall final decision: `passed`
+- decision: `passed`
 <!-- first-production-finalization:end -->
 
 ## Reviewer
