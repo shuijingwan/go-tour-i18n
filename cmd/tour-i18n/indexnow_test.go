@@ -20,7 +20,7 @@ func TestBootstrapIndexNowSubmitsProbeThenRemainingSitemapURLs(t *testing.T) {
 		case "/" + key + ".txt":
 			return http.StatusOK, key
 		case "/sitemap.xml":
-			return http.StatusOK, testIndexNowSitemap("https://locale.example", 3)
+			return http.StatusOK, testIndexNowSitemap("https://locale.example/", 3)
 		case "/indexnow":
 			var submission indexNowSubmission
 			if err := json.NewDecoder(r.Body).Decode(&submission); err != nil {
@@ -37,22 +37,70 @@ func TestBootstrapIndexNowSubmitsProbeThenRemainingSitemapURLs(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if result.SitemapURLs != 3 || result.SubmittedURLs != 2 {
+	if result.SitemapURLs != 3 || result.SubmittedURLs != 3 {
 		t.Fatalf("result = %+v", result)
 	}
 	if len(submissions) != 2 {
 		t.Fatalf("submissions = %d, want 2", len(submissions))
 	}
-	if got := submissions[0].URLList; len(got) != 1 || got[0] != "https://locale.example" {
+	if got := submissions[0].URLList; len(got) != 1 || got[0] != "https://locale.example/" {
 		t.Fatalf("probe URLs = %v", got)
 	}
-	if got := submissions[1].URLList; len(got) != 2 || containsURL(got, "https://locale.example") {
-		t.Fatalf("bulk URLs = %d, probe included=%v", len(got), containsURL(got, "https://locale.example"))
+	if got := submissions[1].URLList; len(got) != 2 || containsURL(got, "https://locale.example/") {
+		t.Fatalf("bulk URLs = %d, probe included=%v", len(got), containsURL(got, "https://locale.example/"))
 	}
 	for _, submission := range submissions {
 		if submission.Host != profile.Hostname || submission.Key != key || submission.KeyLocation != "https://locale.example/"+key+".txt" {
 			t.Fatalf("submission = %+v", submission)
 		}
+	}
+}
+
+func TestBootstrapIndexNowCountsSingleProbeURLAsSubmitted(t *testing.T) {
+	key := "index-now-test-key"
+	posts := 0
+	client := indexNowTestClient(func(r *http.Request) (int, string) {
+		switch r.URL.Path {
+		case "/" + key + ".txt":
+			return http.StatusOK, key
+		case "/sitemap.xml":
+			return http.StatusOK, testIndexNowSitemap("https://locale.example/", 1)
+		case "/indexnow":
+			posts++
+			return http.StatusOK, ""
+		}
+		return http.StatusNotFound, ""
+	})
+	result, err := bootstrapIndexNow(context.Background(), client, "https://api.indexnow.org/indexnow", indexNowProfile{Locale: "zz-ZZ", State: "live", Hostname: "locale.example", PublicURL: "https://locale.example/"}, key)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if result.SitemapURLs != 1 || result.SubmittedURLs != 1 || posts != 1 {
+		t.Fatalf("result = %+v, posts = %d", result, posts)
+	}
+}
+
+func TestBootstrapIndexNowFailsWhenSitemapLacksFormalRootProbe(t *testing.T) {
+	key := "index-now-test-key"
+	posts := 0
+	client := indexNowTestClient(func(r *http.Request) (int, string) {
+		switch r.URL.Path {
+		case "/" + key + ".txt":
+			return http.StatusOK, key
+		case "/sitemap.xml":
+			return http.StatusOK, `<?xml version="1.0"?><urlset><url><loc>https://locale.example/tour/test/1</loc></url></urlset>`
+		case "/indexnow":
+			posts++
+			return http.StatusOK, ""
+		}
+		return http.StatusNotFound, ""
+	})
+	_, err := bootstrapIndexNow(context.Background(), client, "https://api.indexnow.org/indexnow", indexNowProfile{Locale: "zz-ZZ", State: "live", Hostname: "locale.example", PublicURL: "https://locale.example/"}, key)
+	if err == nil || !strings.Contains(err.Error(), "does not contain fixed probe URL https://locale.example/") {
+		t.Fatalf("err = %v", err)
+	}
+	if posts != 0 {
+		t.Fatalf("posts = %d, want 0", posts)
 	}
 }
 
@@ -64,7 +112,7 @@ func TestBootstrapIndexNowStopsWhenProbeIsPending(t *testing.T) {
 		case "/" + key + ".txt":
 			return http.StatusOK, key
 		case "/sitemap.xml":
-			return http.StatusOK, testIndexNowSitemap("https://locale.example", 3)
+			return http.StatusOK, testIndexNowSitemap("https://locale.example/", 3)
 		case "/indexnow":
 			posts++
 			return http.StatusAccepted, ""
@@ -102,7 +150,7 @@ func TestFetchIndexNowSitemapRejectsDuplicateURL(t *testing.T) {
 
 func TestFetchIndexNowSitemapRejectsMoreThanIndexNowLimit(t *testing.T) {
 	client := indexNowTestClient(func(*http.Request) (int, string) {
-		return http.StatusOK, testIndexNowSitemap("https://locale.example", indexNowMaxURLs+1)
+		return http.StatusOK, testIndexNowSitemap("https://locale.example/", indexNowMaxURLs+1)
 	})
 	_, err := fetchIndexNowSitemap(context.Background(), client, "https://locale.example/sitemap.xml", "locale.example", "https://locale.example")
 	if err == nil || !strings.Contains(err.Error(), "1..10000") {
@@ -132,6 +180,30 @@ func TestReadIndexNowKeyRequiresMatchingPublicKeyFilename(t *testing.T) {
 	}
 }
 
+func TestRequireIndexNowPublicKeyAcceptsOnlyOneOptionalLineEnding(t *testing.T) {
+	key := "index-now-test-key"
+	for _, test := range []struct {
+		name string
+		body string
+		want bool
+	}{
+		{name: "no newline", body: key, want: true},
+		{name: "LF", body: key + "\n", want: true},
+		{name: "CRLF", body: key + "\r\n", want: true},
+		{name: "extra content", body: key + "extra", want: false},
+		{name: "extra line", body: key + "\nextra", want: false},
+		{name: "two line endings", body: key + "\n\n", want: false},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			client := indexNowTestClient(func(*http.Request) (int, string) { return http.StatusOK, test.body })
+			err := requireIndexNowPublicKey(context.Background(), client, "https://locale.example/"+key+".txt", key)
+			if (err == nil) != test.want {
+				t.Fatalf("err = %v, want accepted=%v", err, test.want)
+			}
+		})
+	}
+}
+
 func testIndexNowSitemap(origin string, count int) string {
 	var b strings.Builder
 	b.WriteString(`<?xml version="1.0"?><urlset>`)
@@ -140,7 +212,7 @@ func testIndexNowSitemap(origin string, count int) string {
 			b.WriteString("<url><loc>" + origin + "</loc></url>")
 			continue
 		}
-		fmt.Fprintf(&b, "<url><loc>%s/tour/test/%d</loc></url>", origin, i)
+		fmt.Fprintf(&b, "<url><loc>%stour/test/%d</loc></url>", origin, i)
 	}
 	b.WriteString("</urlset>")
 	return b.String()

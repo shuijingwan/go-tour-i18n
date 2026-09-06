@@ -135,7 +135,9 @@ func bootstrapIndexNow(ctx context.Context, client *http.Client, endpoint string
 	if err != nil {
 		return indexNowBootstrapResult{}, err
 	}
-	probe := origin
+	// Keep the identity's validated root URL byte-for-byte for the probe. The
+	// trimmed origin is only for constructing sibling resource URLs.
+	probe := profile.PublicURL
 	if !containsURL(urls, probe) {
 		return indexNowBootstrapResult{}, fmt.Errorf("formal sitemap does not contain fixed probe URL %s", probe)
 	}
@@ -153,7 +155,7 @@ func bootstrapIndexNow(ctx context.Context, client *http.Client, endpoint string
 	if len(bulk) == 0 {
 		// The single sitemap URL was the successfully accepted probe; IndexNow
 		// has no non-empty bulk payload to receive.
-		return indexNowBootstrapResult{SitemapURLs: len(urls), SubmittedURLs: 0}, nil
+		return indexNowBootstrapResult{SitemapURLs: len(urls), SubmittedURLs: len(urls)}, nil
 	}
 	status, err := submitIndexNow(ctx, client, endpoint, profile.Hostname, key, keyLocation, bulk)
 	if err != nil {
@@ -165,7 +167,7 @@ func bootstrapIndexNow(ctx context.Context, client *http.Client, endpoint string
 	if status != http.StatusOK {
 		return indexNowBootstrapResult{}, fmt.Errorf("IndexNow bulk submission expected HTTP 200, got %d", status)
 	}
-	return indexNowBootstrapResult{SitemapURLs: len(urls), SubmittedURLs: len(bulk)}, nil
+	return indexNowBootstrapResult{SitemapURLs: len(urls), SubmittedURLs: len(urls)}, nil
 }
 
 func parseIndexNowOrigin(profile indexNowProfile) (string, error) {
@@ -190,10 +192,22 @@ func requireIndexNowPublicKey(ctx context.Context, client *http.Client, keyLocat
 	if err != nil {
 		return err
 	}
-	if response.StatusCode != http.StatusOK || string(body) != key {
+	if response.StatusCode != http.StatusOK || !matchesIndexNowPublicKey(body, key) {
 		return fmt.Errorf("public IndexNow root key verification failed (HTTP %d)", response.StatusCode)
 	}
 	return nil
+}
+
+// matchesIndexNowPublicKey permits the one line ending produced by printf,
+// while preserving the key's exact bytes and rejecting any other whitespace.
+func matchesIndexNowPublicKey(body []byte, key string) bool {
+	value := string(body)
+	if strings.HasSuffix(value, "\r\n") {
+		value = strings.TrimSuffix(value, "\r\n")
+	} else if strings.HasSuffix(value, "\n") {
+		value = strings.TrimSuffix(value, "\n")
+	}
+	return value == key
 }
 
 func fetchIndexNowSitemap(ctx context.Context, client *http.Client, sitemapURL, hostname, origin string) ([]string, error) {
