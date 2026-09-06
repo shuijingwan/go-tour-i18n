@@ -27,7 +27,7 @@ locale / domain / CDN 决策
 → visual HUMAN gate
 → first-production finalize
 → production_state=live
-→ search-engine submission closeout
+→ search-engine submission closeout（Google → Bing → locale-specific → IndexNow 全站 bootstrap）
 ```
 
 必须区分四类工作：
@@ -175,6 +175,7 @@ FIRST_DEPLOYMENT 的正式入口为 `scripts/first-production.sh <release-dir>`�
 
 1. 在 Google Search Console 为该 production hostname/property 完成必要接入，并提交该站的正式 `/sitemap.xml`。
 2. 在 Bing Webmaster Tools 为该 production hostname/property 完成必要接入，并提交同一正式 `/sitemap.xml`。
+3. 完成适用于目标 locale/市场的 locale-specific search engine 提交后，执行一次 IndexNow 全站 bootstrap；它是 closeout 的最后一步，不替代 Google、Bing 或 locale-specific search engine 的 sitemap 提交。
 
 不要按 locale 猜测 hostname 或手写 sitemap origin。先从唯一 machine authority 查询已 live profile：
 
@@ -186,6 +187,16 @@ python3 scripts/production-identity.py list --state live
 
 Google Search Console 和 Bing Webmaster Tools 是所有新增 production locale 的标准 closeout。Naver 不属于全 locale 强制项；只有目标 locale/市场确实适合时，才补充 locale/market-specific search engine。当前明确例子是 `ko-KR` 的 Naver Search Advisor 与 sitemap submission。
 
-此 closeout 不属于 production availability/security gate、Locale Surface Review A、rendered surface acceptance 或广告 gate；它不阻止 first-production finalize，也不阻止 `production_state` 从 `first-production` 转为 `live`。提交后 Google/Bing/Naver 的异步 indexing、coverage 或收录状态不要求在首次上线当天成功，不能等待其完成才认定 production live。
+IndexNow 使用正式 `production/identity.json`，且命令只接受 `production_state=live` 的目标 locale。维护者将 IndexNow key 保存在仓库外的受保护文件中（文件名必须为 `<key>.txt`），并先将完全相同的内容部署到该 production hostname 的 HTTPS root：`https://<正式 hostname>/<key>.txt`。不要把 key 写入仓库或命令行；只传入其文件路径。命令会验证公网 root key、正式 HTTPS `/sitemap.xml`、hostname、无重复 URL，以及动态 sitemap URL 数量必须在 `1..10000`（IndexNow 单请求上限）内；固定 probe URL 为正式 production origin（homepage），它先单独提交以验证 key。probe 返回 HTTP `202` 表示 key 验证仍 pending，命令明确停止，不会 bulk 提交；probe 返回 `200` 后，命令从 sitemap URL 集合排除 probe，再 bulk 提交剩余 `N-1` 个 URL。只有 bulk 最终 HTTP `200` 才输出动态 URL 数量的 PASS：
+
+```sh
+go run -mod=readonly ./cmd/tour-i18n indexnow bootstrap \
+  --locale <locale> \
+  --key-file /secure/path/<key>.txt
+```
+
+该命令固定提交到 `https://api.indexnow.org/indexnow`。Bing Webmaster Tools 的 IndexNow Dashboard 不属于 gate；不等待 indexing/coverage 状态，不新增 receipt、schema 或必须 current 的第三方 evidence。
+
+此 closeout 不属于 production availability/security gate、Locale Surface Review A、rendered surface acceptance 或广告 gate；它不阻止 first-production finalize，也不阻止 `production_state` 从 `first-production` 转为 `live`。提交后 Google/Bing/Naver/IndexNow 的异步 indexing、coverage 或收录状态不要求在首次上线当天成功，不能等待其完成才认定 production live。
 
 如需保留执行痕迹，可在现有 locale Surface Review evidence 或项目状态记录中轻量记录 `submitted`、日期和平台；不新增 receipt、schema 或 machine gate，也不把第三方异步状态维护为必须 current 的证据。
