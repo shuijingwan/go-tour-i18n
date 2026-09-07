@@ -11,11 +11,10 @@ import (
 )
 
 const (
-	// DefaultRetranslationExportLimit remains the production baseline for every
-	// export mode. The controlled Page experiment is opt-in below.
-	DefaultRetranslationExportLimit     = 30
-	MaxAutomaticPageExportLimit         = 60
-	ControlledAutomaticPageExportLocale = "it-IT"
+	// DefaultRetranslationExportLimit remains the default for every export mode.
+	// An automatic Page selection may explicitly opt into the 60-Page baseline.
+	DefaultRetranslationExportLimit = 30
+	MaxAutomaticPageExportLimit     = 60
 )
 
 type RetranslationExportOptions struct {
@@ -127,14 +126,12 @@ func ExportRetranslationBatch(root string, catalog *Catalog, options Retranslati
 	}
 	automaticPageBatch := len(options.UnitIDs) == 0 && !options.AllowReexport && (options.UnitKind == "" || options.UnitKind == UnitKindPage)
 	if limit > DefaultRetranslationExportLimit {
-		if !automaticPageBatch {
+		if automaticPageBatch {
+			if limit > MaxAutomaticPageExportLimit {
+				return nil, fmt.Errorf("automatic page retranslation export limit must not exceed %d", MaxAutomaticPageExportLimit)
+			}
+		} else {
 			return nil, fmt.Errorf("this retranslation export mode limit must not exceed %d", DefaultRetranslationExportLimit)
-		}
-		if options.Locale != ControlledAutomaticPageExportLocale {
-			return nil, fmt.Errorf("automatic page retranslation export limit above %d is currently limited to controlled locale %s", DefaultRetranslationExportLimit, ControlledAutomaticPageExportLocale)
-		}
-		if limit > MaxAutomaticPageExportLimit {
-			return nil, fmt.Errorf("automatic page retranslation export limit must not exceed %d", MaxAutomaticPageExportLimit)
 		}
 	}
 	if len(options.UnitIDs) > DefaultRetranslationExportLimit {

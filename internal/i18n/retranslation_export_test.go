@@ -226,26 +226,36 @@ func TestRetranslationExportExplicitPageKindDefaultsToThirty(t *testing.T) {
 	}
 }
 
-func TestRetranslationExportControlledAutomaticPageLimit(t *testing.T) {
+func TestRetranslationExportAutomaticPageLimit(t *testing.T) {
 	t.Run("automatic Page 60 succeeds", func(t *testing.T) {
 		root := t.TempDir()
-		writeRetranslationTestGlossaryForLocale(t, root, ControlledAutomaticPageExportLocale)
+		const locale = "nl-NL"
+		writeRetranslationTestGlossaryForLocale(t, root, locale)
 		result, err := ExportRetranslationBatch(root, retranslationTestCatalog(61), RetranslationExportOptions{
-			Locale: ControlledAutomaticPageExportLocale, UnitKind: UnitKindPage, Limit: MaxAutomaticPageExportLimit,
+			Locale: locale, UnitKind: UnitKindPage, Limit: MaxAutomaticPageExportLimit,
 		})
 		if err != nil {
 			t.Fatal(err)
 		}
-		if result.UnitCount != 60 || result.UnitIDs[0] != "lesson/1" || result.UnitIDs[59] != "lesson/60" {
+		if result.UnitCount != 60 || len(result.UnitIDs) != 60 {
 			t.Fatalf("automatic Page 60 result=%+v", result)
+		}
+		for index, unitID := range result.UnitIDs {
+			if want := "lesson/" + fmtInt(index+1); unitID != want {
+				t.Fatalf("automatic Page catalog order at index %d = %q, want %q", index, unitID, want)
+			}
+		}
+		manifest := readRetranslationManifestForLocale(t, root, locale, result.BatchID)
+		if manifest.UnitCount != 60 || len(manifest.Units) != 60 {
+			t.Fatalf("automatic Page 60 manifest=%+v", manifest)
 		}
 	})
 
 	t.Run("automatic Page over 60 is rejected", func(t *testing.T) {
 		root := t.TempDir()
-		writeRetranslationTestGlossaryForLocale(t, root, ControlledAutomaticPageExportLocale)
+		writeRetranslationTestGlossaryForLocale(t, root, "nl-NL")
 		_, err := ExportRetranslationBatch(root, retranslationTestCatalog(61), RetranslationExportOptions{
-			Locale: ControlledAutomaticPageExportLocale, UnitKind: UnitKindPage, Limit: MaxAutomaticPageExportLimit + 1,
+			Locale: "nl-NL", UnitKind: UnitKindPage, Limit: MaxAutomaticPageExportLimit + 1,
 		})
 		if err == nil || !strings.Contains(err.Error(), "automatic page retranslation export limit must not exceed 60") {
 			t.Fatalf("automatic Page >60 error=%v", err)
@@ -254,8 +264,8 @@ func TestRetranslationExportControlledAutomaticPageLimit(t *testing.T) {
 
 	t.Run("default automatic Page remains 30", func(t *testing.T) {
 		root := t.TempDir()
-		writeRetranslationTestGlossaryForLocale(t, root, ControlledAutomaticPageExportLocale)
-		result, err := ExportRetranslationBatch(root, retranslationTestCatalog(61), RetranslationExportOptions{Locale: ControlledAutomaticPageExportLocale})
+		writeRetranslationTestGlossaryForLocale(t, root, "nl-NL")
+		result, err := ExportRetranslationBatch(root, retranslationTestCatalog(61), RetranslationExportOptions{Locale: "nl-NL"})
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -362,15 +372,15 @@ func TestRetranslationExportAutomaticExampleLimitThirtySelectsCorpusNineteen(t *
 	}
 }
 
-func TestRetranslationExportRejectsThirtyOneUnits(t *testing.T) {
+func TestRetranslationExportRejectsLimitsOutsideTheirMode(t *testing.T) {
 	root := t.TempDir()
 	writeRetranslationTestGlossary(t, root)
-	catalog := retranslationTestCatalog(31)
-	if _, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", UnitKind: UnitKindPage, Limit: 31}); err == nil {
-		t.Fatal("limit 31 was accepted")
+	catalog := retranslationTestCatalog(61)
+	if _, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", UnitKind: UnitKindPage, Limit: 61}); err == nil || !strings.Contains(err.Error(), "automatic page retranslation export limit must not exceed 60") {
+		t.Fatalf("automatic Page limit 61 error=%v", err)
 	}
 	ids := make([]string, 0, 31)
-	for i := range catalog.Pages {
+	for i := range catalog.Pages[:31] {
 		ids = append(ids, catalog.Pages[i].ID)
 	}
 	if _, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: "zh-CN", UnitIDs: ids, Limit: 30}); err == nil {
