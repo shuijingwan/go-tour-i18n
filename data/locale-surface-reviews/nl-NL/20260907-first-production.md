@@ -97,12 +97,47 @@ ChatGPT GPT-5.6 Sol 对 TranslationUnit 之外的 nl-NL locale-level 语言资�
 
 ## B. Rendered surface acceptance
 
-- preview：`not executed`
-- automated preview rendered acceptance：`not executed`
-- preview visual HUMAN gate：`not executed`
-- unresolved preview rendered blocker：`not assessed`
+结果：`passed`
 
-本记录不声称任何 preview、browser acceptance 或 visual HUMAN 结果已通过。
+### Preview identity
+
+- locale：`nl-NL`
+- reviewed commit：`f9958e6e54618c8d42a615ba6ebb4b7b3e0de3ae` (`f9958e6`)
+- preview loopback URL：<http://127.0.0.1:44231/>
+- projection：`ready=122 pending=0 blocked=0 pages=103 articles=7`
+
+### Automated preview rendered acceptance
+
+实际执行：
+
+```text
+[preview-browser] preview identity: PASS
+[preview-browser] SEO/routes: PASS
+[preview-browser] desktop rendered surface: PASS
+[preview-browser] editor Run / Format / Reset: PASS
+[preview-browser] SPA: PASS
+[preview-browser] mobile /tour/moretypes/1: PASS
+PREVIEW SURFACE ACCEPTANCE: PASS
+```
+
+正式自动化验收覆盖 preview identity、HTTP / SEO routes、canonical、robots、sitemap、language selector、desktop rendered surface、编辑器 Run / Format / Reset、SPA navigation、same-origin `/_/fmt`、same-origin `/_/compile`、`/socket` HTTP `404` boundary 与 mobile rendered surface。
+
+- preview automated rendered acceptance：`passed`
+
+### Visual HUMAN gate
+
+维护者已实际确认以下整体视觉观感：
+
+- desktop `/`：正常
+- desktop `/tour/list`：正常
+- desktop `/tour/welcome/1`：正常
+- mobile `/tour/moretypes/1`：正常
+- 未发现明显视觉异常
+
+Visual HUMAN gate 仅记录整体排版与视觉观感，不重复声称检查 automated acceptance 已覆盖的 canonical、sitemap、Run / Format / Reset、SPA、language selector URL、`/socket` 或 overflow。
+
+- preview visual HUMAN gate：`passed`
+- unresolved preview rendered blocker：`none`
 
 ## Production verification
 
