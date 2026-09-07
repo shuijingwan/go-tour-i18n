@@ -245,6 +245,32 @@ func TestCandidateRejectsForbiddenTourTranslations(t *testing.T) {
 	}
 }
 
+func TestForbiddenGlossaryOnlyChecksVisibleNaturalLanguage(t *testing.T) {
+	root := repoRoot(t)
+	source := "* Root\n\n[[https://en.wikipedia.org/wiki/Newton%27s_method][Newton's method]].\n\n`dia`\n\n  value := 1 // static annotation\n"
+	catalog := &Catalog{Pages: []Page{{ID: "synthetic/nl-forbidden", Article: "basics.article", Source: []byte(source), SourceSHA256: sum([]byte(source))}}}
+
+	t.Run("link target containing dia passes", func(t *testing.T) {
+		candidate := "* Wortel\n\n[[https://en.wikipedia.org/wiki/Newton%27s_method][methode van Newton]].\n\n`dia`\n\n  value := 1 // static annotation\n"
+		if err := ValidateCandidateForLocale(root, catalog, "synthetic/nl-forbidden", "nl-NL", []byte(candidate)); err != nil {
+			t.Fatalf("candidate with protected URL substring rejected: %v", err)
+		}
+	})
+
+	for name, phrase := range map[string]string{
+		"dia":   "Dit is een dia.",
+		"dia's": "Dit zijn dia's.",
+	} {
+		t.Run("visible "+name+" fails", func(t *testing.T) {
+			candidate := "* Wortel\n\n[[https://en.wikipedia.org/wiki/Newton%27s_method][methode van Newton]].\n\n" + phrase + "\n\n`dia`\n\n  value := 1 // static annotation\n"
+			err := ValidateCandidateForLocale(root, catalog, "synthetic/nl-forbidden", "nl-NL", []byte(candidate))
+			if err == nil || !strings.Contains(err.Error(), "forbidden locale translation") {
+				t.Fatalf("visible forbidden term accepted: %v", err)
+			}
+		})
+	}
+}
+
 func TestCandidateValidationDoesNotWriteStatus(t *testing.T) {
 	path := filepath.Join(repoRoot(t), "locales", "zh-CN", "status.tsv")
 	before, err := os.ReadFile(path)

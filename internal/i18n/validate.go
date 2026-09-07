@@ -7,6 +7,8 @@ import (
 	"regexp"
 	"sort"
 	"strings"
+	"unicode"
+	"unicode/utf8"
 
 	"golang.org/x/tools/present"
 )
@@ -29,8 +31,9 @@ type linkStructure struct {
 }
 
 var (
-	directiveRE = regexp.MustCompile(`^\.([A-Za-z][A-Za-z0-9_-]*)(?:\s|$)`)
-	linkRE      = regexp.MustCompile(`\[\[([^\]]+)\]\[([^\]]*)\]\]`)
+	directiveRE  = regexp.MustCompile(`^\.([A-Za-z][A-Za-z0-9_-]*)(?:\s|$)`)
+	linkRE       = regexp.MustCompile(`\[\[([^\]]+)\]\[([^\]]*)\]\]`)
+	machineURLRE = regexp.MustCompile("(?i)\\b(?:[a-z][a-z0-9+.-]*://|www\\.)[^\\s<>\\[\\]`]+|\\b[a-z0-9](?:[a-z0-9-]{0,62}\\.)+[a-z]{2,}(?:/[^\\s<>\\[\\]`]*)?")
 )
 
 func ValidateCandidate(root string, catalog *Catalog, pageID string, candidate []byte) error {
@@ -106,7 +109,7 @@ func ValidateCandidateForLocale(root string, catalog *Catalog, pageID, locale st
 
 func validateGlossary(pageID string, source, candidate []byte, glossary *Glossary) error {
 	for _, forbidden := range glossary.Forbidden {
-		if bytes.Contains(candidate, []byte(forbidden)) {
+		if containsForbiddenVisibleText(string(source), string(candidate), forbidden) {
 			return fmt.Errorf("%s: candidate contains forbidden locale translation %q", pageID, forbidden)
 		}
 	}
@@ -135,6 +138,139 @@ func validateGlossary(pageID string, source, candidate []byte, glossary *Glossar
 		}
 	}
 	return nil
+}
+
+// containsForbiddenVisibleText searches only candidate bytes that are open to
+// translation. URLs, link targets, program-font spans, directives, and static
+// preformatted content are structural or machine identities; a glossary
+// forbidden spelling inside them is not a target-language translation. Safe Go
+// teaching-comment bodies remain visible because they are translatable prose.
+func containsForbiddenVisibleText(source, candidate, forbidden string) bool {
+	if forbidden == "" {
+		return false
+	}
+	visible := visibleCandidateTextBytes(source, candidate)
+	for offset := 0; offset < len(candidate); {
+		relative := strings.Index(candidate[offset:], forbidden)
+		if relative < 0 {
+			return false
+		}
+		start := offset + relative
+		end := start + len(forbidden)
+		if allVisible(visible, start, end) && forbiddenTermBoundaries(candidate, start, end) {
+			return true
+		}
+		offset = start + 1
+	}
+	return false
+}
+
+func visibleCandidateTextBytes(source, candidate string) []bool {
+	visible := make([]bool, len(candidate))
+	for i := range visible {
+		visible[i] = true
+	}
+	mask := func(start, end int, value bool) {
+		if start < 0 {
+			start = 0
+		}
+		if end > len(visible) {
+			end = len(visible)
+		}
+		for i := start; i < end; i++ {
+			visible[i] = value
+		}
+	}
+	for _, match := range linkRE.FindAllStringSubmatchIndex(candidate, -1) {
+		mask(match[2], match[3], false)
+	}
+	for _, match := range machineURLRE.FindAllStringIndex(candidate, -1) {
+		mask(match[0], match[1], false)
+	}
+	for _, match := range directiveLineRE.FindAllStringIndex(candidate, -1) {
+		mask(match[0], match[1], false)
+	}
+	for _, code := range append(presentInlineCodes(candidate), linkLabelInlineCodes(candidate)...) {
+		mask(code.Start, code.End, false)
+	}
+
+	sourceBlocks := preformattedBlocks(source)
+	candidateBlocks := preformattedBlocks(candidate)
+	for _, block := range candidateBlocks {
+		mask(block.Start, block.End, false)
+	}
+	if len(sourceBlocks) != len(candidateBlocks) {
+		return visible
+	}
+	for i := range sourceBlocks {
+		sourceAnalysis := analyzePreformattedGo(sourceBlocks[i].Text)
+		candidateAnalysis := analyzePreformattedGo(candidateBlocks[i].Text)
+		if sourceAnalysis.Static || candidateAnalysis.Static || len(sourceAnalysis.Comments) != len(candidateAnalysis.Comments) {
+			continue
+		}
+		for j, sourceComment := range sourceAnalysis.Comments {
+			if !sourceComment.Translatable {
+				continue
+			}
+			candidateComment := candidateAnalysis.Comments[j]
+			mask(candidateBlocks[i].Start+candidateComment.BodyStart, candidateBlocks[i].Start+candidateComment.BodyEnd, true)
+		}
+	}
+	return visible
+}
+
+func allVisible(visible []bool, start, end int) bool {
+	if start < 0 || end > len(visible) || start >= end {
+		return false
+	}
+	for _, value := range visible[start:end] {
+		if !value {
+			return false
+		}
+	}
+	return true
+}
+
+func forbiddenTermBoundaries(text string, start, end int) bool {
+	return forbiddenBoundaryBefore(text, start) && forbiddenBoundaryAfter(text, end)
+}
+
+func forbiddenBoundaryBefore(text string, start int) bool {
+	if start == 0 {
+		return true
+	}
+	r, width := utf8.DecodeLastRuneInString(text[:start])
+	if forbiddenWordRune(r) {
+		return false
+	}
+	if isWordApostrophe(r) && start > width {
+		previous, _ := utf8.DecodeLastRuneInString(text[:start-width])
+		return !forbiddenWordRune(previous)
+	}
+	return true
+}
+
+func forbiddenBoundaryAfter(text string, end int) bool {
+	if end == len(text) {
+		return true
+	}
+	r, width := utf8.DecodeRuneInString(text[end:])
+	if forbiddenWordRune(r) {
+		return false
+	}
+	if isWordApostrophe(r) && end+width < len(text) {
+		next, _ := utf8.DecodeRuneInString(text[end+width:])
+		return !forbiddenWordRune(next)
+	}
+	return true
+}
+
+func forbiddenWordRune(r rune) bool {
+	return unicode.IsLetter(r) || unicode.IsDigit(r) || r == '_'
+}
+
+func isWordApostrophe(r rune) bool {
+	return r == '\'' || r == '’'
 }
 
 func glossaryKeyForLabel(label string, mandatory map[string]string) (key, wrapper string) {
