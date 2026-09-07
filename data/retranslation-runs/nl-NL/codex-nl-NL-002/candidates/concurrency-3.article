@@ -1,0 +1,11 @@
+* Gebufferde kanalen
+
+Kanalen kunnen _gebufferd_ zijn. Geef de lengte van de buffer als tweede argument aan `make` om een gebufferd kanaal te initialiseren:
+
+	ch := make(chan int, 100)
+
+Verzendbewerkingen naar een gebufferd kanaal blokkeren alleen wanneer de buffer vol is. Ontvangstbewerkingen blokkeren wanneer de buffer leeg is.
+
+Pas het voorbeeld aan om de buffer te vol te maken en kijk wat er gebeurt.
+
+.play concurrency/buffered-channels.go

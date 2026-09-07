@@ -1,0 +1,36 @@
+* Hallo, wereld
+
+Welkom bij een rondleiding door de [[/][programmeertaal Go]].
+
+De rondleiding is onderverdeeld in een lijst met modules die je kunt
+openen door linksboven op de pagina op
+[[javascript:highlight(".logo")][Een rondleiding door Go]] te klikken.
+
+Je kunt de inhoudsopgave ook op elk moment bekijken door rechtsboven op de pagina op het [[javascript:highlightAndClick(".nav")][menu]] te klikken.
+
+Tijdens de rondleiding vind je een reeks pagina's en oefeningen om
+te voltooien.
+
+Je kunt erdoor navigeren met
+
+- [[javascript:highlight(".prev-page")]["Vorige"]] of `PageUp` om naar de vorige pagina te gaan,
+
+- [[javascript:highlight(".next-page")]["Volgende"]] of `PageDown` om naar de volgende pagina te gaan.
+
+De rondleiding is interactief. Klik nu op de knop
+[[javascript:highlightAndClick("#run")][Uitvoeren]]
+(of druk op `Shift` + `Enter`) om het programma op een externe server te compileren en uit te voeren.
+Het resultaat verschijnt onder de code.
+
+Deze voorbeeldprogramma's demonstreren verschillende aspecten van Go. De programma's in de rondleiding zijn bedoeld als uitgangspunten voor je eigen experimenten.
+
+Bewerk het programma en voer het opnieuw uit.
+
+Wanneer je op [[javascript:highlightAndClick("#format")][Formatteren]] klikt
+(sneltoets: `Ctrl` + `Enter`), wordt de tekst in de editor geformatteerd met het hulpprogramma
+[[/cmd/gofmt/][gofmt]]. Je kunt de syntaxismarkering in- en uitschakelen
+door op de knop [[javascript:highlightAndClick(".syntax-checkbox")][syntaxis]] te klikken.
+
+Wanneer je klaar bent om verder te gaan, klik je hieronder op de [[javascript:highlightAndClick(".next-page")][pijl naar rechts]] of druk je op de toets `PageDown`.
+
+.play welcome/hello.go

@@ -1,0 +1,12 @@
+* Methoden (vervolg)
+
+Je kunt ook een methode declareren op typen die geen struct zijn.
+
+In dit voorbeeld zien we een numeriek type `MyFloat` met een methode `Abs`.
+
+Je kunt alleen een methode declareren met een receiver waarvan het type in hetzelfde
+pakket is gedefinieerd als de methode.
+Je kunt geen methode declareren met een receiver waarvan het type in een ander
+pakket is gedefinieerd (dit geldt ook voor ingebouwde typen zoals `int`).
+
+.play methods/methods-continued.go

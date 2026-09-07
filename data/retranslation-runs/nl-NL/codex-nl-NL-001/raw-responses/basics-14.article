@@ -1,0 +1,13 @@
+* Type-inferentie
+
+Wanneer je een variabele declareert zonder een expliciet type op te geven (met de syntaxis ⟪GTI18N_21c4077c_000001⟫:=⟪GTI18N_21c4077c_000002⟫ of de expressiesyntaxis ⟪GTI18N_21c4077c_000003⟫var`=⟪GTI18N_21c4077c_000004⟫), wordt het type van de variabele afgeleid uit de waarde aan de rechterkant.
+
+Wanneer de rechterkant van de declaratie getypeerd is, krijgt de nieuwe variabele hetzelfde type:
+
+⟪GTI18N_21c4077c_000005⟫⟪GTI18N_21c4077c_000006⟫ is een ⟪GTI18N_21c4077c_000007⟫⟪GTI18N_21c4077c_000008⟫Maar wanneer de rechterkant een ongetypeerde numerieke constante bevat, kan de nieuwe variabele een ⟪GTI18N_21c4077c_000009⟫int⟪GTI18N_21c4077c_000010⟫, ⟪GTI18N_21c4077c_000011⟫float64⟪GTI18N_21c4077c_000012⟫ of ⟪GTI18N_21c4077c_000013⟫complex128⟪GTI18N_21c4077c_000014⟫ zijn, afhankelijk van de precisie van de constante:
+
+⟪GTI18N_21c4077c_000015⟫
+
+Probeer de beginwaarde van ⟪GTI18N_21c4077c_000016⟫v⟪GTI18N_21c4077c_000017⟫ in de voorbeeldcode te wijzigen en bekijk hoe dit het type beïnvloedt.
+
+⟪GTI18N_21c4077c_000018⟫

@@ -1,0 +1,23 @@
+* Oefening: Gelijkwaardige binaire bomen
+
+*1.* Implementeer de functie `Walk`.
+
+*2.* Test de functie `Walk`.
+
+De functie `tree.New(k)` maakt een willekeurig gestructureerde (maar altijd gesorteerde) binaire boom met de waarden `k`, `2k`, `3k`, ..., `10k`.
+
+Maak een nieuw kanaal `ch` en start de doorloper:
+
+	go Walk(tree.New(1), ch)
+
+Lees vervolgens 10 waarden uit het kanaal en druk ze af. Dit moeten de getallen 1, 2, 3, ..., 10 zijn.
+
+*3.* Implementeer de functie `Same` met behulp van `Walk` om te bepalen of `t1` en `t2` dezelfde waarden bevatten.
+
+*4.* Test de functie `Same`.
+
+`Same(tree.New(1),`tree.New(1))` moet true retourneren en `Same(tree.New(1),`tree.New(2))` moet false retourneren.
+
+De documentatie voor `Tree` vind je [[https://godoc.org/golang.org/x/tour/tree#Tree][hier]].
+
+.play concurrency/exercise-equivalent-binary-trees.go

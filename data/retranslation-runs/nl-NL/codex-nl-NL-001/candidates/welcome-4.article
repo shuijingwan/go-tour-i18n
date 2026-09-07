@@ -1,0 +1,17 @@
+* Go offline (optioneel)
+
+Deze rondleiding is ook beschikbaar als zelfstandig programma dat je
+zonder internettoegang kunt gebruiken. Het bouwt de codevoorbeelden en voert ze uit
+op je eigen computer.
+
+Om de rondleiding lokaal uit te voeren, moet je eerst
+[[/doc/install][Go installeren]] en daarna het volgende uitvoeren:
+
+  go install golang.org/x/website/tour@latest
+
+Hierdoor wordt een binair bestand `tour` in je
+[[/cmd/go/#hdr-GOPATH_and_Modules][GOPATH]], in de map `bin`, geplaatst.
+Wanneer je het rondleidingsprogramma uitvoert, wordt een webbrowser geopend die
+je lokale versie van de rondleiding weergeeft.
+
+Je kunt de rondleiding natuurlijk ook via deze website blijven volgen.

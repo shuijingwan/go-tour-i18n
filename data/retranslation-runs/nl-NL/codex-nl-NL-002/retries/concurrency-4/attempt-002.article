@@ -1,0 +1,15 @@
+* Range en Close
+
+Een zender kan een kanaal ⟪GTI18N_3e925c67_000001⟫close⟪GTI18N_3e925c67_000002⟫ aanroepen om aan te geven dat er geen waarden meer worden verzonden. Ontvangers kunnen testen of een kanaal is gesloten door een tweede parameter aan de ontvangstexpressie toe te wijzen: na
+
+⟪GTI18N_3e925c67_000003⟫
+
+is ⟪GTI18N_3e925c67_000004⟫ok⟪GTI18N_3e925c67_000005⟫ gelijk aan ⟪GTI18N_3e925c67_000006⟫false⟪GTI18N_3e925c67_000007⟫ als er geen waarden meer te ontvangen zijn en het kanaal gesloten is.
+
+De lus ⟪GTI18N_3e925c67_000008⟫for`i`:=`range`c⟪GTI18N_3e925c67_000009⟫ ontvangt herhaaldelijk waarden van het kanaal totdat het gesloten is.
+
+⟪GTI18N_3e925c67_000010⟫Opmerking:⟪GTI18N_3e925c67_000011⟫ Alleen de zender hoort een kanaal te sluiten, nooit de ontvanger. Verzenden naar een gesloten kanaal veroorzaakt een panic.
+
+⟪GTI18N_3e925c67_000012⟫Nog*een*opmerking:⟪GTI18N_3e925c67_000013⟫ Kanalen zijn niet hetzelfde als bestanden; doorgaans hoef je ze niet te sluiten. Sluiten is alleen nodig wanneer de ontvanger moet worden verteld dat er geen waarden meer komen, bijvoorbeeld om een ⟪GTI18N_3e925c67_000014⟫range⟪GTI18N_3e925c67_000015⟫-lus te beëindigen.
+
+⟪GTI18N_3e925c67_000016⟫

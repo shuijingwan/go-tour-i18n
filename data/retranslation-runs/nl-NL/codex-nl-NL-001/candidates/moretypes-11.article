@@ -1,0 +1,18 @@
+* Lengte en capaciteit van een slice
+
+Een slice heeft zowel een _lengte_ als een _capaciteit_.
+
+De lengte van een slice is het aantal elementen dat de slice bevat.
+
+De capaciteit van een slice is het aantal elementen in de onderliggende array,
+gerekend vanaf het eerste element in de slice.
+
+De lengte en capaciteit van een slice `s` kunnen worden verkregen met de expressies
+`len(s)` en `cap(s)`.
+
+Je kunt de lengte van een slice vergroten door er opnieuw een slice van te maken,
+mits de capaciteit voldoende is.
+Probeer een van de slice-bewerkingen in het voorbeeldprogramma zo te wijzigen dat de slice
+tot voorbij zijn capaciteit wordt vergroot en kijk wat er gebeurt.
+
+.play moretypes/slice-len-cap.go

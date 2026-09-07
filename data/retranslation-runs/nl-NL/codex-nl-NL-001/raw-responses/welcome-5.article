@@ -1,0 +1,19 @@
+* De ⟪GTI18N_19e6d7da_000001⟫
+
+Deze rondleiding is gebouwd op de [[⟪GTI18N_19e6d7da_000002⟫][⟪GTI18N_19e6d7da_000003⟫]], een
+webservice die op de servers van [[⟪GTI18N_19e6d7da_000004⟫][golang.org]] draait.
+
+De service ontvangt een ⟪GTI18N_19e6d7da_000005⟫-programma, compileert en linkt het en voert het uit
+in een sandbox, waarna de uitvoer wordt teruggestuurd.
+
+Er gelden beperkingen voor de programma's die in de Playground kunnen worden uitgevoerd:
+
+- In de Playground begint de tijd op 2009-11-10 23:00:00 UTC (het bepalen van de betekenis van deze datum is een oefening voor de lezer). Hierdoor kunnen programma's gemakkelijker in de cache worden opgeslagen doordat ze deterministische uitvoer hebben.
+
+- Er zijn ook limieten voor de uitvoeringstijd en het gebruik van CPU en geheugen, en het programma heeft geen toegang tot externe netwerkhosts.
+
+De Playground gebruikt de nieuwste stabiele versie van ⟪GTI18N_19e6d7da_000006⟫.
+
+Lees "[[⟪GTI18N_19e6d7da_000007⟫][Binnen de ⟪GTI18N_19e6d7da_000008⟫]]" voor meer informatie.
+
+⟪GTI18N_19e6d7da_000009⟫

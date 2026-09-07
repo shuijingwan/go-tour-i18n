@@ -1,0 +1,20 @@
+* For
+
+Go heeft maar één lusconstructie: de `for`-lus.
+
+De gewone `for`-lus heeft drie onderdelen die door puntkomma's worden gescheiden:
+
+- de initialisatie-instructie: wordt vóór de eerste iteratie uitgevoerd
+- de lusvoorwaarde: wordt vóór elke iteratie geëvalueerd
+- de vervolginstructie: wordt aan het einde van elke iteratie uitgevoerd
+
+De initialisatie-instructie is vaak een variabeledeclaratie. De daarin
+gedeclareerde variabelen zijn alleen zichtbaar binnen het bereik van de `for`-instructie.
+
+De lus stopt met itereren zodra de booleaanse lusvoorwaarde als `false` wordt geëvalueerd.
+
+*Opmerking:* Anders dan in talen zoals C, Java of JavaScript staan er geen haakjes
+om de drie onderdelen van de `for`-instructie en zijn de accolades `{`}`
+altijd verplicht.
+
+.play flowcontrol/for.go

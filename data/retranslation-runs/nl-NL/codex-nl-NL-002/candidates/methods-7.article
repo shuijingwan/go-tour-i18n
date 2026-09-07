@@ -1,0 +1,21 @@
+* Methoden en pointerindirectie (2)
+
+In omgekeerde richting gebeurt hetzelfde.
+
+Functies die een waardeargument verwachten, moeten een waarde van precies dat type krijgen:
+
+	var v Vertex
+	fmt.Println(AbsFunc(v))  // OK
+	fmt.Println(AbsFunc(&v)) // Compilatiefout!
+
+terwijl methoden met valuereceivers bij het aanroepen zowel een waarde als een pointer als
+receiver accepteren:
+
+	var v Vertex
+	fmt.Println(v.Abs()) // OK
+	p := &v
+	fmt.Println(p.Abs()) // OK
+
+In dit geval wordt de methodeaanroep `p.Abs()` geïnterpreteerd als `(*p).Abs()`.
+
+.play methods/indirection-values.go

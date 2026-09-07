@@ -1,0 +1,1 @@
+⟪GTI18N_655ee508_000001⟫append works on nil slices.⟪GTI18N_655ee508_000002⟫The slice grows as needed.⟪GTI18N_655ee508_000003⟫We can add more than one element at a time.⟪GTI18N_655ee508_000004⟫

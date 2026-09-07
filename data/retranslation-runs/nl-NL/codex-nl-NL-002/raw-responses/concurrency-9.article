@@ -1,0 +1,21 @@
+* sync.Mutex
+
+We hebben gezien dat kanalen uitstekend geschikt zijn voor communicatie tussen ⟪GTI18N_49f72779_000001⟫.
+
+Maar wat als we geen communicatie nodig hebben? Wat als we er alleen voor willen zorgen dat telkens slechts
+één ⟪GTI18N_49f72779_000002⟫ toegang tot een variabele heeft om conflicten te voorkomen?
+
+Dit concept heet ⟪GTI18N_49f72779_000003⟫wederzijdse_uitsluiting⟪GTI18N_49f72779_000004⟫ en de gebruikelijke naam voor de gegevensstructuur die dit biedt, is ⟪GTI18N_49f72779_000005⟫mutex⟪GTI18N_49f72779_000006⟫.
+
+De standaardbibliotheek van ⟪GTI18N_49f72779_000007⟫ biedt wederzijdse uitsluiting met
+[[⟪GTI18N_49f72779_000008⟫][⟪GTI18N_49f72779_000009⟫sync.Mutex⟪GTI18N_49f72779_000010⟫]] en de twee methoden daarvan:
+
+- ⟪GTI18N_49f72779_000011⟫Lock⟪GTI18N_49f72779_000012⟫
+- ⟪GTI18N_49f72779_000013⟫Unlock⟪GTI18N_49f72779_000014⟫
+
+We kunnen een codeblok definiëren dat met wederzijdse uitsluiting wordt uitgevoerd door het te omringen
+met een aanroep van ⟪GTI18N_49f72779_000015⟫Lock⟪GTI18N_49f72779_000016⟫ en ⟪GTI18N_49f72779_000017⟫Unlock⟪GTI18N_49f72779_000018⟫, zoals bij de methode ⟪GTI18N_49f72779_000019⟫Inc⟪GTI18N_49f72779_000020⟫ wordt getoond.
+
+We kunnen ook ⟪GTI18N_49f72779_000021⟫defer⟪GTI18N_49f72779_000022⟫ gebruiken om ervoor te zorgen dat de mutex wordt ontgrendeld, zoals bij de methode ⟪GTI18N_49f72779_000023⟫Value⟪GTI18N_49f72779_000024⟫.
+
+⟪GTI18N_49f72779_000025⟫

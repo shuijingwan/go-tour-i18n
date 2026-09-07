@@ -1,0 +1,21 @@
+* Oefening: Fouten
+
+Kopieer je functie ⟪GTI18N_41f1f733_000001⟫Sqrt⟪GTI18N_41f1f733_000002⟫ uit de [[⟪GTI18N_41f1f733_000003⟫][eerdere oefening]] en pas deze aan zodat ze een ⟪GTI18N_41f1f733_000004⟫error⟪GTI18N_41f1f733_000005⟫-waarde retourneert.
+
+⟪GTI18N_41f1f733_000006⟫Sqrt⟪GTI18N_41f1f733_000007⟫ moet bij een negatief getal een niet-nil-foutwaarde retourneren, omdat de functie geen complexe getallen ondersteunt.
+
+Maak een nieuw type
+
+⟪GTI18N_41f1f733_000008⟫
+
+en maak er een ⟪GTI18N_41f1f733_000009⟫error⟪GTI18N_41f1f733_000010⟫ van door het een
+
+⟪GTI18N_41f1f733_000011⟫
+
+-methode te geven, zodat ⟪GTI18N_41f1f733_000012⟫ErrNegativeSqrt(-2).Error()⟪GTI18N_41f1f733_000013⟫ de waarde ⟪GTI18N_41f1f733_000014⟫"cannot`Sqrt`negative`number:`-2"⟪GTI18N_41f1f733_000015⟫ retourneert.
+
+⟪GTI18N_41f1f733_000016⟫Opmerking:⟪GTI18N_41f1f733_000017⟫ Een aanroep van ⟪GTI18N_41f1f733_000018⟫fmt.Sprint(e)⟪GTI18N_41f1f733_000019⟫ binnen de methode ⟪GTI18N_41f1f733_000020⟫Error⟪GTI18N_41f1f733_000021⟫ brengt het programma in een oneindige lus. Je kunt dit voorkomen door ⟪GTI18N_41f1f733_000022⟫e⟪GTI18N_41f1f733_000023⟫ eerst te converteren: ⟪GTI18N_41f1f733_000024⟫fmt.Sprint(float64(e))⟪GTI18N_41f1f733_000025⟫. Waarom?
+
+Pas je functie ⟪GTI18N_41f1f733_000026⟫Sqrt⟪GTI18N_41f1f733_000027⟫ aan zodat deze bij een negatief getal een waarde ⟪GTI18N_41f1f733_000028⟫ErrNegativeSqrt⟪GTI18N_41f1f733_000029⟫ retourneert.
+
+⟪GTI18N_41f1f733_000030⟫

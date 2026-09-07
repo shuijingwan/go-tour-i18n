@@ -1,0 +1,17 @@
+* Type parameters
+
+⟪GTI18N_01a04510_000001⟫ functions can be written to work on multiple types using type parameters. The
+type parameters of a function appear between brackets, before the function's
+arguments.
+
+⟪GTI18N_01a04510_000002⟫
+
+This declaration means that ⟪GTI18N_01a04510_000003⟫s⟪GTI18N_01a04510_000004⟫ is a slice of any type ⟪GTI18N_01a04510_000005⟫T⟪GTI18N_01a04510_000006⟫ that fulfills the
+built-in constraint ⟪GTI18N_01a04510_000007⟫comparable⟪GTI18N_01a04510_000008⟫. ⟪GTI18N_01a04510_000009⟫x⟪GTI18N_01a04510_000010⟫ is also a value of the same type.
+
+⟪GTI18N_01a04510_000011⟫comparable⟪GTI18N_01a04510_000012⟫ is a useful constraint that makes it possible to use the ⟪GTI18N_01a04510_000013⟫==⟪GTI18N_01a04510_000014⟫ and
+⟪GTI18N_01a04510_000015⟫!=⟪GTI18N_01a04510_000016⟫ operators on values of the type. In this example, we use it to compare a
+value to all slice elements until a match is found. This ⟪GTI18N_01a04510_000017⟫Index⟪GTI18N_01a04510_000018⟫ function works
+for any type that supports comparison.
+
+⟪GTI18N_01a04510_000019⟫

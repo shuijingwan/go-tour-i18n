@@ -1,0 +1,16 @@
+* Methoden en pointerindirectie
+
+Als je de vorige twee programma's vergelijkt, valt je misschien op dat
+functies met een pointerargument een pointer moeten krijgen:
+
+⟪GTI18N_39fb725b_000001⟫Compilatiefout!⟪GTI18N_39fb725b_000002⟫terwijl methoden met pointerreceivers bij het aanroepen zowel een waarde als een pointer als
+receiver accepteren:
+
+⟪GTI18N_39fb725b_000003⟫
+
+Bij de instructie ⟪GTI18N_39fb725b_000004⟫v.Scale(5)⟪GTI18N_39fb725b_000005⟫ wordt, hoewel ⟪GTI18N_39fb725b_000006⟫v⟪GTI18N_39fb725b_000007⟫ een waarde en geen pointer is,
+automatisch de methode met de pointerreceiver aangeroepen.
+Voor het gemak interpreteert ⟪GTI18N_39fb725b_000008⟫ de instructie ⟪GTI18N_39fb725b_000009⟫v.Scale(5)⟪GTI18N_39fb725b_000010⟫ dus als
+⟪GTI18N_39fb725b_000011⟫(&v).Scale(5)⟪GTI18N_39fb725b_000012⟫, omdat de methode ⟪GTI18N_39fb725b_000013⟫Scale⟪GTI18N_39fb725b_000014⟫ een pointerreceiver heeft.
+
+⟪GTI18N_39fb725b_000015⟫

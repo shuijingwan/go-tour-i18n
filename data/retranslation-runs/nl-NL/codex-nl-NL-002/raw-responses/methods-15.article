@@ -1,0 +1,25 @@
+* Typeasserties
+
+Een ⟪GTI18N_c205b4eb_000001⟫typeassertie⟪GTI18N_c205b4eb_000002⟫ geeft toegang tot de onderliggende concrete waarde van een interfacewaarde.
+
+⟪GTI18N_c205b4eb_000003⟫
+
+Deze instructie stelt dat de interfacewaarde ⟪GTI18N_c205b4eb_000004⟫i⟪GTI18N_c205b4eb_000005⟫ het concrete type ⟪GTI18N_c205b4eb_000006⟫T⟪GTI18N_c205b4eb_000007⟫ bevat
+en wijst de onderliggende waarde ⟪GTI18N_c205b4eb_000008⟫T⟪GTI18N_c205b4eb_000009⟫ toe aan de variabele ⟪GTI18N_c205b4eb_000010⟫t⟪GTI18N_c205b4eb_000011⟫.
+
+Als ⟪GTI18N_c205b4eb_000012⟫i⟪GTI18N_c205b4eb_000013⟫ geen ⟪GTI18N_c205b4eb_000014⟫T⟪GTI18N_c205b4eb_000015⟫ bevat, veroorzaakt de instructie een panic.
+
+Om te ⟪GTI18N_c205b4eb_000016⟫testen⟪GTI18N_c205b4eb_000017⟫ of een interfacewaarde een specifiek type bevat,
+kan een typeassertie twee waarden retourneren: de onderliggende waarde
+en een booleaanse waarde die aangeeft of de assertie is geslaagd.
+
+⟪GTI18N_c205b4eb_000018⟫
+
+Als ⟪GTI18N_c205b4eb_000019⟫i⟪GTI18N_c205b4eb_000020⟫ een ⟪GTI18N_c205b4eb_000021⟫T⟪GTI18N_c205b4eb_000022⟫ bevat, is ⟪GTI18N_c205b4eb_000023⟫t⟪GTI18N_c205b4eb_000024⟫ de onderliggende waarde en is ⟪GTI18N_c205b4eb_000025⟫ok⟪GTI18N_c205b4eb_000026⟫ true.
+
+Anders is ⟪GTI18N_c205b4eb_000027⟫ok⟪GTI18N_c205b4eb_000028⟫ false en is ⟪GTI18N_c205b4eb_000029⟫t⟪GTI18N_c205b4eb_000030⟫ de nulwaarde van het type ⟪GTI18N_c205b4eb_000031⟫T⟪GTI18N_c205b4eb_000032⟫,
+zonder dat er een panic optreedt.
+
+Let op de overeenkomst tussen deze syntaxis en die voor het lezen uit een map.
+
+⟪GTI18N_c205b4eb_000033⟫

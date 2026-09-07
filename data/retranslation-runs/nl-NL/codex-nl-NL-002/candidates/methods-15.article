@@ -1,0 +1,25 @@
+* Typeasserties
+
+Een _typeassertie_ geeft toegang tot de onderliggende concrete waarde van een interfacewaarde.
+
+	t := i.(T)
+
+Deze instructie stelt dat de interfacewaarde `i` het concrete type `T` bevat
+en wijst de onderliggende waarde `T` toe aan de variabele `t`.
+
+Als `i` geen `T` bevat, veroorzaakt de instructie een panic.
+
+Om te _testen_ of een interfacewaarde een specifiek type bevat,
+kan een typeassertie twee waarden retourneren: de onderliggende waarde
+en een booleaanse waarde die aangeeft of de assertie is geslaagd.
+
+	t, ok := i.(T)
+
+Als `i` een `T` bevat, is `t` de onderliggende waarde en is `ok` true.
+
+Anders is `ok` false en is `t` de nulwaarde van het type `T`,
+zonder dat er een panic optreedt.
+
+Let op de overeenkomst tussen deze syntaxis en die voor het lezen uit een map.
+
+.play methods/type-assertions.go

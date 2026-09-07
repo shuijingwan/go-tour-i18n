@@ -1,0 +1,15 @@
+* Evaluatievolgorde van switch
+
+Switch-cases worden van boven naar beneden geëvalueerd en stoppen zodra een case slaagt.
+
+(Bijvoorbeeld:
+
+	switch i {
+	case 0:
+	case f():
+	}
+
+roept `f` niet aan als `i==0`.)
+
+
+.play flowcontrol/switch-evaluation-order.go

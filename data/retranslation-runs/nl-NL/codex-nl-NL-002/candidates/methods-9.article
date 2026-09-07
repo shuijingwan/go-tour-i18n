@@ -1,0 +1,11 @@
+* Interfaces
+
+Een _interfacetype_ wordt gedefinieerd als een verzameling methodesignaturen.
+
+Een waarde van een interfacetype kan elke waarde bevatten die deze methoden implementeert.
+
+*Opmerking:* De voorbeeldcode bevat een fout op regel 22.
+`Vertex` (het valuetype) implementeert `Abser` niet, omdat
+de methode `Abs` alleen op `*Vertex` (het pointertype) is gedefinieerd.
+
+.play methods/interfaces.go

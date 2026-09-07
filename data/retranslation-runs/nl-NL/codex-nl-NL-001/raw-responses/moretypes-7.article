@@ -1,0 +1,22 @@
+* Slices
+
+Een array heeft een vaste grootte.
+Een slice daarentegen is een flexibele weergave met een dynamische grootte
+van de elementen van een array.
+In de praktijk komen slices veel vaker voor dan arrays.
+
+Het type ⟪GTI18N_a169cf48_000001⟫[]T⟪GTI18N_a169cf48_000002⟫ is een slice met elementen van het type ⟪GTI18N_a169cf48_000003⟫T⟪GTI18N_a169cf48_000004⟫.
+
+Een slice wordt gevormd door twee indices op te geven, een onder- en
+bovengrens, gescheiden door een dubbele punt:
+
+⟪GTI18N_a169cf48_000005⟫
+
+Hiermee selecteer je een halfopen bereik dat het eerste
+element wel, maar het laatste element niet bevat.
+
+De volgende expressie maakt een slice die de elementen 1 tot en met 3 van ⟪GTI18N_a169cf48_000006⟫a⟪GTI18N_a169cf48_000007⟫ bevat:
+
+⟪GTI18N_a169cf48_000008⟫
+
+⟪GTI18N_a169cf48_000009⟫

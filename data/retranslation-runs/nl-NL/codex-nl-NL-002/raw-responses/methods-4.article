@@ -1,0 +1,24 @@
+* Pointerreceivers
+
+Je kunt methoden met pointerreceivers declareren.
+
+Dit betekent dat het receivertype de letterlijke syntaxis ⟪GTI18N_99f9fa4e_000001⟫*T⟪GTI18N_99f9fa4e_000002⟫ heeft voor een type ⟪GTI18N_99f9fa4e_000003⟫T⟪GTI18N_99f9fa4e_000004⟫.
+(Daarnaast kan ⟪GTI18N_99f9fa4e_000005⟫T⟪GTI18N_99f9fa4e_000006⟫ zelf geen pointer zijn, zoals ⟪GTI18N_99f9fa4e_000007⟫*int⟪GTI18N_99f9fa4e_000008⟫.)
+
+De methode ⟪GTI18N_99f9fa4e_000009⟫Scale⟪GTI18N_99f9fa4e_000010⟫ is hier bijvoorbeeld gedefinieerd op ⟪GTI18N_99f9fa4e_000011⟫*Vertex⟪GTI18N_99f9fa4e_000012⟫.
+
+Methoden met pointerreceivers kunnen de waarde wijzigen waarnaar de receiver
+wijst (zoals ⟪GTI18N_99f9fa4e_000013⟫Scale⟪GTI18N_99f9fa4e_000014⟫ hier doet).
+Omdat methoden hun receiver vaak moeten wijzigen, komen pointerreceivers vaker
+voor dan valuereceivers.
+
+Probeer de ⟪GTI18N_99f9fa4e_000015⟫*⟪GTI18N_99f9fa4e_000016⟫ uit de declaratie van de functie ⟪GTI18N_99f9fa4e_000017⟫Scale⟪GTI18N_99f9fa4e_000018⟫ op regel 16 te verwijderen
+en kijk hoe het gedrag van het programma verandert.
+
+Met een valuereceiver werkt de methode ⟪GTI18N_99f9fa4e_000019⟫Scale⟪GTI18N_99f9fa4e_000020⟫ op een kopie van de oorspronkelijke
+waarde ⟪GTI18N_99f9fa4e_000021⟫Vertex⟪GTI18N_99f9fa4e_000022⟫.
+(Dit is hetzelfde gedrag als bij elk ander functieargument.)
+De methode ⟪GTI18N_99f9fa4e_000023⟫Scale⟪GTI18N_99f9fa4e_000024⟫ moet een pointerreceiver hebben om de waarde ⟪GTI18N_99f9fa4e_000025⟫Vertex⟪GTI18N_99f9fa4e_000026⟫ te wijzigen
+die in de functie ⟪GTI18N_99f9fa4e_000027⟫main⟪GTI18N_99f9fa4e_000028⟫ is gedeclareerd.
+
+⟪GTI18N_99f9fa4e_000029⟫

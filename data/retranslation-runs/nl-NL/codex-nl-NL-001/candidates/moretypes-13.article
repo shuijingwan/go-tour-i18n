@@ -1,0 +1,18 @@
+* Een slice maken met make
+
+Slices kunnen worden gemaakt met de ingebouwde functie `make`;
+zo maak je arrays met een dynamische grootte.
+
+De functie `make` wijst een met nulwaarden gevulde array toe
+en retourneert een slice die naar die array verwijst:
+
+	a := make([]int, 5)  // len(a)=5
+
+Geef een derde argument door aan `make` om een capaciteit op te geven:
+
+	b := make([]int, 0, 5) // len(b)=0, cap(b)=5
+
+	b = b[:cap(b)] // len(b)=5, cap(b)=5
+	b = b[1:]      // len(b)=4, cap(b)=4
+
+.play moretypes/making-slices.go

@@ -1,0 +1,13 @@
+* Oefening: Afbeeldingen
+
+Herinner je je de [[⟪GTI18N_a196bc59_000001⟫][afbeeldingsgenerator]] die je eerder hebt geschreven? We gaan er nog een schrijven, maar deze keer retourneert deze een implementatie van ⟪GTI18N_a196bc59_000002⟫image.Image⟪GTI18N_a196bc59_000003⟫ in plaats van een slice met gegevens.
+
+Definieer je eigen type ⟪GTI18N_a196bc59_000004⟫Image⟪GTI18N_a196bc59_000005⟫, implementeer [[⟪GTI18N_a196bc59_000006⟫][de benodigde methoden]] en roep ⟪GTI18N_a196bc59_000007⟫pic.ShowImage⟪GTI18N_a196bc59_000008⟫ aan.
+
+⟪GTI18N_a196bc59_000009⟫Bounds⟪GTI18N_a196bc59_000010⟫ moet een ⟪GTI18N_a196bc59_000011⟫image.Rectangle⟪GTI18N_a196bc59_000012⟫ retourneren, zoals ⟪GTI18N_a196bc59_000013⟫image.Rect(0,`0,`w,`h)⟪GTI18N_a196bc59_000014⟫.
+
+⟪GTI18N_a196bc59_000015⟫ColorModel⟪GTI18N_a196bc59_000016⟫ moet ⟪GTI18N_a196bc59_000017⟫color.RGBAModel⟪GTI18N_a196bc59_000018⟫ retourneren.
+
+⟪GTI18N_a196bc59_000019⟫At⟪GTI18N_a196bc59_000020⟫ moet een kleur retourneren; de waarde ⟪GTI18N_a196bc59_000021⟫v⟪GTI18N_a196bc59_000022⟫ in de vorige afbeeldingsgenerator komt hier overeen met ⟪GTI18N_a196bc59_000023⟫color.RGBA{v,`v,`255,`255}⟪GTI18N_a196bc59_000024⟫.
+
+⟪GTI18N_a196bc59_000025⟫

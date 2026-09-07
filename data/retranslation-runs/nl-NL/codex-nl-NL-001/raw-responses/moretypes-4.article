@@ -1,0 +1,10 @@
+* Pointers naar structs
+
+Structvelden kunnen via een structpointer worden benaderd.
+
+Om het veld ⟪GTI18N_29695d33_000001⟫X⟪GTI18N_29695d33_000002⟫ van een struct te benaderen wanneer we de structpointer ⟪GTI18N_29695d33_000003⟫p⟪GTI18N_29695d33_000004⟫ hebben, kunnen we
+⟪GTI18N_29695d33_000005⟫(*p).X⟪GTI18N_29695d33_000006⟫ schrijven.
+Die notatie is echter omslachtig. Daarom staat de taal toe dat we in plaats daarvan
+gewoon ⟪GTI18N_29695d33_000007⟫p.X⟪GTI18N_29695d33_000008⟫ schrijven, zonder expliciete dereferentie.
+
+⟪GTI18N_29695d33_000009⟫

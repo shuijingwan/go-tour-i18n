@@ -1,0 +1,12 @@
+* Methoden (vervolg)
+
+Je kunt ook een methode declareren op typen die geen struct zijn.
+
+In dit voorbeeld zien we een numeriek type ⟪GTI18N_31c4fd0d_000001⟫MyFloat⟪GTI18N_31c4fd0d_000002⟫ met een methode ⟪GTI18N_31c4fd0d_000003⟫Abs⟪GTI18N_31c4fd0d_000004⟫.
+
+Je kunt alleen een methode declareren met een receiver waarvan het type in hetzelfde
+pakket is gedefinieerd als de methode.
+Je kunt geen methode declareren met een receiver waarvan het type in een ander
+pakket is gedefinieerd (dit geldt ook voor ingebouwde typen zoals ⟪GTI18N_31c4fd0d_000005⟫int⟪GTI18N_31c4fd0d_000006⟫).
+
+⟪GTI18N_31c4fd0d_000007⟫

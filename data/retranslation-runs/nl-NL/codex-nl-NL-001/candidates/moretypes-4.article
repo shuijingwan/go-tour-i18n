@@ -1,0 +1,10 @@
+* Pointers naar structs
+
+Structvelden kunnen via een structpointer worden benaderd.
+
+Om het veld `X` van een struct te benaderen wanneer we de structpointer `p` hebben, kunnen we
+`(*p).X` schrijven.
+Die notatie is echter omslachtig. Daarom staat de taal toe dat we in plaats daarvan
+gewoon `p.X` schrijven, zonder expliciete dereferentie.
+
+.play moretypes/struct-pointers.go

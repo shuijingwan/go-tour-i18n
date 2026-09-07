@@ -1,0 +1,18 @@
+* Type-inferentie
+
+Wanneer je een variabele declareert zonder een expliciet type op te geven (met de syntaxis `:=` of de expressiesyntaxis `var`=`), wordt het type van de variabele afgeleid uit de waarde aan de rechterkant.
+
+Wanneer de rechterkant van de declaratie getypeerd is, krijgt de nieuwe variabele hetzelfde type:
+
+	var i int
+	j := i // j is een int
+
+Maar wanneer de rechterkant een ongetypeerde numerieke constante bevat, kan de nieuwe variabele een `int`, `float64` of `complex128` zijn, afhankelijk van de precisie van de constante:
+
+	i := 42           // int
+	f := 3.142        // float64
+	g := 0.867 + 0.5i // complex128
+
+Probeer de beginwaarde van `v` in de voorbeeldcode te wijzigen en bekijk hoe dit het type beïnvloedt.
+
+.play basics/type-inference.go

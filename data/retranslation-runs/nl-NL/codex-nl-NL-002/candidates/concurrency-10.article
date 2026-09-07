@@ -1,0 +1,10 @@
+* Oefening: Webcrawler
+
+In deze oefening gebruik je de voorzieningen voor gelijktijdigheid van Go om een webcrawler parallel te laten werken.
+
+Pas de functie `Crawl` aan om URL's parallel op te halen zonder dezelfde URL twee keer op te halen.
+
+_Hint_: je kunt een cache van de opgehaalde URL's in een map bijhouden, maar maps alleen zijn niet
+veilig voor gelijktijdig gebruik!
+
+.play concurrency/exercise-web-crawler.go

@@ -1,0 +1,16 @@
+* De lege interface
+
+Het interfacetype dat nul methoden specificeert, staat bekend als de ⟪GTI18N_7a09a765_000001⟫lege_interface⟪GTI18N_7a09a765_000002⟫:
+
+⟪GTI18N_7a09a765_000003⟫
+
+Een lege interface kan waarden van elk type bevatten.
+(Elk type implementeert immers ten minste nul methoden.)
+
+⟪GTI18N_7a09a765_000004⟫any⟪GTI18N_7a09a765_000005⟫ is een alias voor ⟪GTI18N_7a09a765_000006⟫interface{}⟪GTI18N_7a09a765_000007⟫ en beide zijn volledig
+gelijkwaardig.
+
+Lege interfaces worden gebruikt door code die waarden met een onbekend type verwerkt.
+⟪GTI18N_7a09a765_000008⟫fmt.Print⟪GTI18N_7a09a765_000009⟫ accepteert bijvoorbeeld een willekeurig aantal argumenten van het type ⟪GTI18N_7a09a765_000010⟫any⟪GTI18N_7a09a765_000011⟫.
+
+⟪GTI18N_7a09a765_000012⟫

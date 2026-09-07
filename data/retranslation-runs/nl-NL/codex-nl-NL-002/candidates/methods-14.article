@@ -1,0 +1,16 @@
+* De lege interface
+
+Het interfacetype dat nul methoden specificeert, staat bekend als de _lege_interface_:
+
+	interface{}
+
+Een lege interface kan waarden van elk type bevatten.
+(Elk type implementeert immers ten minste nul methoden.)
+
+`any` is een alias voor `interface{}` en beide zijn volledig
+gelijkwaardig.
+
+Lege interfaces worden gebruikt door code die waarden met een onbekend type verwerkt.
+`fmt.Print` accepteert bijvoorbeeld een willekeurig aantal argumenten van het type `any`.
+
+.play methods/empty-interface.go

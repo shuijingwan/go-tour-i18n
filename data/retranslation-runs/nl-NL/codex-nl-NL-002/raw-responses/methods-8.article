@@ -1,0 +1,17 @@
+* Een value- of pointerreceiver kiezen
+
+Er zijn twee redenen om een pointerreceiver te gebruiken.
+
+De eerste is dat de methode zo de waarde kan wijzigen waarnaar de receiver wijst.
+
+De tweede is om te voorkomen dat de waarde bij elke methodeaanroep wordt gekopieerd.
+Dit kan bijvoorbeeld efficiënter zijn als de receiver een grote struct is.
+
+In dit voorbeeld zijn zowel ⟪GTI18N_357424f2_000001⟫Scale⟪GTI18N_357424f2_000002⟫ als ⟪GTI18N_357424f2_000003⟫Abs⟪GTI18N_357424f2_000004⟫ methoden met receivertype ⟪GTI18N_357424f2_000005⟫*Vertex⟪GTI18N_357424f2_000006⟫,
+hoewel de methode ⟪GTI18N_357424f2_000007⟫Abs⟪GTI18N_357424f2_000008⟫ haar receiver niet hoeft te wijzigen.
+
+In het algemeen moeten alle methoden op een bepaald type óf value- óf pointerreceivers
+hebben, en geen combinatie van beide.
+(Op de volgende paar pagina's zien we waarom.)
+
+⟪GTI18N_357424f2_000009⟫

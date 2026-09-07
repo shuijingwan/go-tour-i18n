@@ -1,0 +1,11 @@
+* Gebufferde kanalen
+
+Kanalen kunnen ⟪GTI18N_caef0893_000001⟫gebufferd⟪GTI18N_caef0893_000002⟫ zijn. Geef de lengte van de buffer als tweede argument aan ⟪GTI18N_caef0893_000003⟫make⟪GTI18N_caef0893_000004⟫ om een gebufferd kanaal te initialiseren:
+
+⟪GTI18N_caef0893_000005⟫
+
+Verzendbewerkingen naar een gebufferd kanaal blokkeren alleen wanneer de buffer vol is. Ontvangstbewerkingen blokkeren wanneer de buffer leeg is.
+
+Pas het voorbeeld aan om de buffer te vol te maken en kijk wat er gebeurt.
+
+⟪GTI18N_caef0893_000006⟫

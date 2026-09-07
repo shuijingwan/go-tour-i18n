@@ -1,0 +1,12 @@
+* Oefening: rot13Reader
+
+Een veelvoorkomend patroon is een [[/pkg/io/#Reader][io.Reader]] die een andere `io.Reader` omhult en de stroom op de een of andere manier wijzigt.
+
+De functie [[/pkg/compress/gzip/#NewReader][gzip.NewReader]] neemt bijvoorbeeld een `io.Reader` (een stroom gecomprimeerde gegevens) en retourneert een `*gzip.Reader` die ook `io.Reader` implementeert (een stroom gedecomprimeerde gegevens).
+
+Implementeer een `rot13Reader` die `io.Reader` implementeert, uit een `io.Reader` leest en de stroom wijzigt door de [[https://en.wikipedia.org/wiki/ROT13][rot13]]-substitutieversleuteling op alle letters toe te passen.
+
+Het type `rot13Reader` is al voor je gedefinieerd.
+Maak er een `io.Reader` van door de methode `Read` te implementeren.
+
+.play methods/exercise-rot-reader.go

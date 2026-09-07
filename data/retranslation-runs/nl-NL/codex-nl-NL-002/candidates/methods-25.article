@@ -1,0 +1,13 @@
+* Oefening: Afbeeldingen
+
+Herinner je je de [[/tour/moretypes/18][afbeeldingsgenerator]] die je eerder hebt geschreven? We gaan er nog een schrijven, maar deze keer retourneert deze een implementatie van `image.Image` in plaats van een slice met gegevens.
+
+Definieer je eigen type `Image`, implementeer [[/pkg/image/#Image][de benodigde methoden]] en roep `pic.ShowImage` aan.
+
+`Bounds` moet een `image.Rectangle` retourneren, zoals `image.Rect(0,`0,`w,`h)`.
+
+`ColorModel` moet `color.RGBAModel` retourneren.
+
+`At` moet een kleur retourneren; de waarde `v` in de vorige afbeeldingsgenerator komt hier overeen met `color.RGBA{v,`v,`255,`255}`.
+
+.play methods/exercise-images.go

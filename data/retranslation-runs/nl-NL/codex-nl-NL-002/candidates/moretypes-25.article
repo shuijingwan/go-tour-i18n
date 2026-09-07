@@ -1,0 +1,7 @@
+* Functieclosures
+
+Go-functies kunnen closures zijn. Een closure is een functiewaarde die verwijst naar variabelen buiten het eigen functielichaam. De functie kan de variabelen waarnaar wordt verwezen benaderen en eraan toewijzen; in die zin is de functie aan de variabelen "gebonden".
+
+De functie `adder` retourneert bijvoorbeeld een closure. Elke closure is aan zijn eigen variabele `sum` gebonden.
+
+.play moretypes/function-closures.go

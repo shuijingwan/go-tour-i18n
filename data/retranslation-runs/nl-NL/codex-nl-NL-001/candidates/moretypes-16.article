@@ -1,0 +1,8 @@
+* Range
+
+De `range`-vorm van de `for`-lus itereert over een slice of map.
+
+Bij het itereren over een slice worden voor elke iteratie twee waarden geretourneerd.
+De eerste is de index en de tweede is een kopie van het element op die index.
+
+.play moretypes/range.go

@@ -1,0 +1,16 @@
+* Kanalen
+
+Kanalen zijn getypeerde verbindingen waarmee je via de kanaaloperator ⟪GTI18N_a35e3af2_000001⟫<-⟪GTI18N_a35e3af2_000002⟫ waarden kunt verzenden en ontvangen.
+
+⟪GTI18N_a35e3af2_000003⟫Stuur ⟪GTI18N_a35e3af2_000004⟫ naar kanaal ⟪GTI18N_a35e3af2_000005⟫.⟪GTI18N_a35e3af2_000006⟫Ontvang van ⟪GTI18N_a35e3af2_000007⟫ en⟪GTI18N_a35e3af2_000008⟫wijs de waarde toe aan ⟪GTI18N_a35e3af2_000009⟫.⟪GTI18N_a35e3af2_000010⟫(De gegevens stromen in de richting van de pijl.)
+
+Net als maps en slices moeten kanalen vóór gebruik worden gemaakt:
+
+⟪GTI18N_a35e3af2_000011⟫
+
+Verzend- en ontvangstbewerkingen blokkeren standaard totdat de andere kant gereed is. Hierdoor kunnen ⟪GTI18N_a35e3af2_000012⟫ synchroniseren zonder expliciete locks of conditievariabelen.
+
+De voorbeeldcode telt de getallen in een slice op en verdeelt het werk over twee ⟪GTI18N_a35e3af2_000013⟫.
+Zodra beide ⟪GTI18N_a35e3af2_000014⟫ hun berekening hebben voltooid, wordt het eindresultaat berekend.
+
+⟪GTI18N_a35e3af2_000015⟫

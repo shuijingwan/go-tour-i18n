@@ -1,0 +1,21 @@
+* sync.Mutex
+
+We hebben gezien dat kanalen uitstekend geschikt zijn voor communicatie tussen goroutines.
+
+Maar wat als we geen communicatie nodig hebben? Wat als we er alleen voor willen zorgen dat telkens slechts
+één goroutine toegang tot een variabele heeft om conflicten te voorkomen?
+
+Dit concept heet _wederzijdse_uitsluiting_ en de gebruikelijke naam voor de gegevensstructuur die dit biedt, is _mutex_.
+
+De standaardbibliotheek van Go biedt wederzijdse uitsluiting met
+[[/pkg/sync/#Mutex][`sync.Mutex`]] en de twee methoden daarvan:
+
+- `Lock`
+- `Unlock`
+
+We kunnen een codeblok definiëren dat met wederzijdse uitsluiting wordt uitgevoerd door het te omringen
+met een aanroep van `Lock` en `Unlock`, zoals bij de methode `Inc` wordt getoond.
+
+We kunnen ook `defer` gebruiken om ervoor te zorgen dat de mutex wordt ontgrendeld, zoals bij de methode `Value`.
+
+.play concurrency/mutex-counter.go

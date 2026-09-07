@@ -1,0 +1,13 @@
+* Methoden
+
+Go heeft geen klassen.
+Je kunt echter wel methoden op typen definiëren.
+
+Een methode is een functie met een speciaal _receiver_-argument.
+
+De receiver staat in een eigen argumentenlijst tussen het sleutelwoord `func` en
+de naam van de methode.
+
+In dit voorbeeld heeft de methode `Abs` een receiver van het type `Vertex` met de naam `v`.
+
+.play methods/methods.go

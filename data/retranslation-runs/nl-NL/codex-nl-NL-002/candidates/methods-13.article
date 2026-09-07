@@ -1,0 +1,8 @@
+* Nil-interfacewaarden
+
+Een nil-interfacewaarde bevat noch een waarde, noch een concreet type.
+
+Het aanroepen van een methode op een nil-interface is een runtimefout, omdat de
+interfacetupel geen type bevat dat aangeeft welke _concrete_ methode moet worden aangeroepen.
+
+.play methods/nil-interface-values.go

@@ -1,0 +1,12 @@
+* Oefening: rot13Reader
+
+Een veelvoorkomend patroon is een [[⟪GTI18N_11d87614_000001⟫][io.Reader]] die een andere ⟪GTI18N_11d87614_000002⟫io.Reader⟪GTI18N_11d87614_000003⟫ omhult en de stroom op de een of andere manier wijzigt.
+
+De functie [[⟪GTI18N_11d87614_000004⟫][gzip.NewReader]] neemt bijvoorbeeld een ⟪GTI18N_11d87614_000005⟫io.Reader⟪GTI18N_11d87614_000006⟫ (een stroom gecomprimeerde gegevens) en retourneert een ⟪GTI18N_11d87614_000007⟫*gzip.Reader⟪GTI18N_11d87614_000008⟫ die ook ⟪GTI18N_11d87614_000009⟫io.Reader⟪GTI18N_11d87614_000010⟫ implementeert (een stroom gedecomprimeerde gegevens).
+
+Implementeer een ⟪GTI18N_11d87614_000011⟫rot13Reader⟪GTI18N_11d87614_000012⟫ die ⟪GTI18N_11d87614_000013⟫io.Reader⟪GTI18N_11d87614_000014⟫ implementeert, uit een ⟪GTI18N_11d87614_000015⟫io.Reader⟪GTI18N_11d87614_000016⟫ leest en de stroom wijzigt door de [[⟪GTI18N_11d87614_000017⟫][rot13]]-substitutieversleuteling op alle letters toe te passen.
+
+Het type ⟪GTI18N_11d87614_000018⟫rot13Reader⟪GTI18N_11d87614_000019⟫ is al voor je gedefinieerd.
+Maak er een ⟪GTI18N_11d87614_000020⟫io.Reader⟪GTI18N_11d87614_000021⟫ van door de methode ⟪GTI18N_11d87614_000022⟫Read⟪GTI18N_11d87614_000023⟫ te implementeren.
+
+⟪GTI18N_11d87614_000024⟫

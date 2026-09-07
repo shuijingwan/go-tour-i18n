@@ -1,0 +1,16 @@
+* Channels
+
+Channels are a typed conduit through which you can send and receive values with the channel operator, ⟪GTI18N_a35e3af2_000001⟫<-⟪GTI18N_a35e3af2_000002⟫.
+
+⟪GTI18N_a35e3af2_000003⟫Send ⟪GTI18N_a35e3af2_000004⟫ to channel ⟪GTI18N_a35e3af2_000005⟫.⟪GTI18N_a35e3af2_000006⟫Receive from ⟪GTI18N_a35e3af2_000007⟫, and⟪GTI18N_a35e3af2_000008⟫assign value to ⟪GTI18N_a35e3af2_000009⟫.⟪GTI18N_a35e3af2_000010⟫(The data flows in the direction of the arrow.)
+
+Like maps and slices, channels must be created before use:
+
+⟪GTI18N_a35e3af2_000011⟫
+
+By default, sends and receives block until the other side is ready. This allows ⟪GTI18N_a35e3af2_000012⟫ to synchronize without explicit locks or condition variables.
+
+The example code sums the numbers in a slice, distributing the work between two ⟪GTI18N_a35e3af2_000013⟫.
+Once both ⟪GTI18N_a35e3af2_000014⟫ have completed their computation, it calculates the final result.
+
+⟪GTI18N_a35e3af2_000015⟫

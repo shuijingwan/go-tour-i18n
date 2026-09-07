@@ -1,0 +1,17 @@
+* Een value- of pointerreceiver kiezen
+
+Er zijn twee redenen om een pointerreceiver te gebruiken.
+
+De eerste is dat de methode zo de waarde kan wijzigen waarnaar de receiver wijst.
+
+De tweede is om te voorkomen dat de waarde bij elke methodeaanroep wordt gekopieerd.
+Dit kan bijvoorbeeld efficiënter zijn als de receiver een grote struct is.
+
+In dit voorbeeld zijn zowel `Scale` als `Abs` methoden met receivertype `*Vertex`,
+hoewel de methode `Abs` haar receiver niet hoeft te wijzigen.
+
+In het algemeen moeten alle methoden op een bepaald type óf value- óf pointerreceivers
+hebben, en geen combinatie van beide.
+(Op de volgende paar pagina's zien we waarom.)
+
+.play methods/methods-with-pointer-receivers.go

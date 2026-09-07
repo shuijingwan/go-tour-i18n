@@ -1,0 +1,1 @@
+⟪GTI18N_2530ef03_000001⟫a MyFloat implements Abser⟪GTI18N_2530ef03_000002⟫a *Vertex implements Abser⟪GTI18N_2530ef03_000003⟫In the following line, v is a Vertex (not *Vertex)⟪GTI18N_2530ef03_000004⟫and does NOT implement Abser.⟪GTI18N_2530ef03_000005⟫

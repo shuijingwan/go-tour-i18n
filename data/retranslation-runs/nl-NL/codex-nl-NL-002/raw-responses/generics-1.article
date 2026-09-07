@@ -1,0 +1,17 @@
+* Typeparameters
+
+⟪GTI18N_01a04510_000001⟫-functies kunnen met typeparameters worden geschreven om met meerdere typen te werken. De
+typeparameters van een functie staan tussen vierkante haken, vóór de
+argumenten van de functie.
+
+⟪GTI18N_01a04510_000002⟫
+
+Deze declaratie betekent dat ⟪GTI18N_01a04510_000003⟫s⟪GTI18N_01a04510_000004⟫ een slice is van een willekeurig type ⟪GTI18N_01a04510_000005⟫T⟪GTI18N_01a04510_000006⟫ dat voldoet aan de
+ingebouwde beperking ⟪GTI18N_01a04510_000007⟫comparable⟪GTI18N_01a04510_000008⟫. ⟪GTI18N_01a04510_000009⟫x⟪GTI18N_01a04510_000010⟫ is ook een waarde van hetzelfde type.
+
+⟪GTI18N_01a04510_000011⟫comparable⟪GTI18N_01a04510_000012⟫ is een nuttige beperking waarmee de operatoren ⟪GTI18N_01a04510_000013⟫==⟪GTI18N_01a04510_000014⟫ en
+⟪GTI18N_01a04510_000015⟫!=⟪GTI18N_01a04510_000016⟫ op waarden van het type kunnen worden gebruikt. In dit voorbeeld gebruiken we de beperking om een
+waarde met alle elementen van de slice te vergelijken totdat er een overeenkomst wordt gevonden. Deze functie ⟪GTI18N_01a04510_000017⟫Index⟪GTI18N_01a04510_000018⟫ werkt
+voor elk type dat vergelijking ondersteunt.
+
+⟪GTI18N_01a04510_000019⟫

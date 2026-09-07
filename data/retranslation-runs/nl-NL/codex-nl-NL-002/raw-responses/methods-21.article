@@ -1,0 +1,20 @@
+* Readers
+
+Het pakket ⟪GTI18N_120c3fc9_000001⟫io⟪GTI18N_120c3fc9_000002⟫ specificeert de interface ⟪GTI18N_120c3fc9_000003⟫io.Reader⟪GTI18N_120c3fc9_000004⟫,
+die het leeseinde van een gegevensstroom vertegenwoordigt.
+
+De standaardbibliotheek van ⟪GTI18N_120c3fc9_000005⟫ bevat [[⟪GTI18N_120c3fc9_000006⟫][veel implementaties]] van deze interface, waaronder bestanden, netwerkverbindingen, compressoren, versleutelingsalgoritmen en andere implementaties.
+
+De interface ⟪GTI18N_120c3fc9_000007⟫io.Reader⟪GTI18N_120c3fc9_000008⟫ heeft een methode ⟪GTI18N_120c3fc9_000009⟫Read⟪GTI18N_120c3fc9_000010⟫:
+
+⟪GTI18N_120c3fc9_000011⟫
+
+⟪GTI18N_120c3fc9_000012⟫Read⟪GTI18N_120c3fc9_000013⟫ vult de gegeven byteslice met gegevens en retourneert het aantal
+ingevulde bytes en een foutwaarde. De methode retourneert een ⟪GTI18N_120c3fc9_000014⟫io.EOF⟪GTI18N_120c3fc9_000015⟫-fout wanneer de stroom
+eindigt.
+
+De voorbeeldcode maakt een
+[[⟪GTI18N_120c3fc9_000016⟫][⟪GTI18N_120c3fc9_000017⟫strings.Reader⟪GTI18N_120c3fc9_000018⟫]]
+en verwerkt de uitvoer daarvan telkens 8 bytes tegelijk.
+
+⟪GTI18N_120c3fc9_000019⟫

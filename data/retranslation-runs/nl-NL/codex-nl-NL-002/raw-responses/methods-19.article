@@ -1,0 +1,19 @@
+* Fouten
+
+⟪GTI18N_9eaab1fd_000001⟫-programma's drukken een foutstatus uit met ⟪GTI18N_9eaab1fd_000002⟫error⟪GTI18N_9eaab1fd_000003⟫-waarden.
+
+Het type ⟪GTI18N_9eaab1fd_000004⟫error⟪GTI18N_9eaab1fd_000005⟫ is een ingebouwde interface die lijkt op ⟪GTI18N_9eaab1fd_000006⟫fmt.Stringer⟪GTI18N_9eaab1fd_000007⟫:
+
+⟪GTI18N_9eaab1fd_000008⟫
+
+(Net als bij ⟪GTI18N_9eaab1fd_000009⟫fmt.Stringer⟪GTI18N_9eaab1fd_000010⟫ zoekt het pakket ⟪GTI18N_9eaab1fd_000011⟫fmt⟪GTI18N_9eaab1fd_000012⟫ naar de interface ⟪GTI18N_9eaab1fd_000013⟫error⟪GTI18N_9eaab1fd_000014⟫ wanneer
+het waarden afdrukt.)
+
+Functies retourneren vaak een ⟪GTI18N_9eaab1fd_000015⟫error⟪GTI18N_9eaab1fd_000016⟫-waarde en de aanroepende code moet fouten afhandelen
+door te testen of de fout gelijk is aan ⟪GTI18N_9eaab1fd_000017⟫nil⟪GTI18N_9eaab1fd_000018⟫.
+
+⟪GTI18N_9eaab1fd_000019⟫
+
+Een nil-⟪GTI18N_9eaab1fd_000020⟫error⟪GTI18N_9eaab1fd_000021⟫ duidt op succes; een niet-nil-⟪GTI18N_9eaab1fd_000022⟫error⟪GTI18N_9eaab1fd_000023⟫ duidt op een fout.
+
+⟪GTI18N_9eaab1fd_000024⟫

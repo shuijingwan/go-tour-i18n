@@ -1,0 +1,12 @@
+* Interfacewaarden met onderliggende nil-waarden
+
+Als de concrete waarde in de interface zelf nil is,
+wordt de methode aangeroepen met een nil-receiver.
+
+In sommige talen zou dit een nullpointerexceptie veroorzaken,
+maar in Go is het gebruikelijk methoden zo te schrijven dat ze een aanroep
+met een nil-receiver correct afhandelen (zoals de methode `M` in dit voorbeeld.)
+
+Merk op dat een interfacewaarde die een concrete nil-waarde bevat, zelf niet nil is.
+
+.play methods/interface-values-with-nil.go

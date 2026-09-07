@@ -1,0 +1,14 @@
+* Methoden en pointerindirectie (2)
+
+In omgekeerde richting gebeurt hetzelfde.
+
+Functies die een waardeargument verwachten, moeten een waarde van precies dat type krijgen:
+
+⟪GTI18N_61a9cb84_000001⟫Compilatiefout!⟪GTI18N_61a9cb84_000002⟫terwijl methoden met valuereceivers bij het aanroepen zowel een waarde als een pointer als
+receiver accepteren:
+
+⟪GTI18N_61a9cb84_000003⟫
+
+In dit geval wordt de methodeaanroep ⟪GTI18N_61a9cb84_000004⟫p.Abs()⟪GTI18N_61a9cb84_000005⟫ geïnterpreteerd als ⟪GTI18N_61a9cb84_000006⟫(*p).Abs()⟪GTI18N_61a9cb84_000007⟫.
+
+⟪GTI18N_61a9cb84_000008⟫
