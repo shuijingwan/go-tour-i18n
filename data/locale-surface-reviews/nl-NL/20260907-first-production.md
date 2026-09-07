@@ -157,11 +157,11 @@ Visual HUMAN gate 仅记录整体排版与视觉观感，不重复声称检查 a
 - overall first-production final decision：`PENDING`
 
 <!-- first-production-finalization:start -->
-- production receipt identity: `PENDING`
-- production machine acceptance: `PENDING`
-- production browser acceptance: `PENDING`
-- production visual HUMAN gate: `PENDING`
-- unresolved production blocker: `PENDING`
-- overall final decision: `PENDING`
-- decision: `pending`
+- production receipt identity: `locale=nl-NL hostname=nl-go-dev.shuijingwanwq.com release=20260907-nl-NL-291a0b7b`
+- production machine acceptance: `passed`
+- production browser acceptance: `passed`
+- production visual HUMAN gate: `passed` (maintainer confirmation)
+- unresolved production blocker: `none`
+- overall final decision: `passed`
+- decision: `passed`
 <!-- first-production-finalization:end -->
