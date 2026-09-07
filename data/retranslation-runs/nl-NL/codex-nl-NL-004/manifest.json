@@ -1,0 +1,102 @@
+{
+  "schema_version": 2,
+  "batch_id": "codex-nl-NL-004",
+  "locale": "nl-NL",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 7,
+  "units": [
+    {
+      "unit_id": "basics/1",
+      "unit_kind": "page",
+      "source_path": "_content/tour/basics.article",
+      "source_sha256": "f769f12c0a028b2f0cd403d89ff39dd150405e9f2e4155875321522f08619fe0",
+      "input_path": "inputs/basics-1.article",
+      "input_sha256": "63aa05352033f7eb1c4dc440783f1b827c3c43269a305925a559a4cc0aa2d12d",
+      "protected_token_count": 12,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "“Programmas beginnen met uitvoeren in pakket main.” 对 source 的 “Programs start running in package main.” 表达不自然；“beginnen met uitvoeren” 是生硬且不完整的荷兰语表达，需要改为自然荷兰语，同时保持 package main 的技术含义。"
+    },
+    {
+      "unit_id": "flowcontrol/8",
+      "unit_kind": "page",
+      "source_path": "_content/tour/flowcontrol.article",
+      "source_sha256": "d8bbee8455ff59212ef432a08312f7c7703360367325a80df3719157200316e9",
+      "input_path": "inputs/flowcontrol-8.article",
+      "input_sha256": "2b3e251ac7859b192831f012d7e6fcbbe95d108faa7ad9d95bdcf17b76e48451",
+      "protected_token_count": 9,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "提示句 “geef een zwevendekommagetal zwevendekommasyntaxis of gebruik een conversie” 是明显生硬的直译，不符合自然荷兰语；需要自然表达 source 中“使用浮点语法或转换来声明并初始化浮点值”的含义。"
+    },
+    {
+      "unit_id": "flowcontrol/10",
+      "unit_kind": "page",
+      "source_path": "_content/tour/flowcontrol.article",
+      "source_sha256": "e1479cae56a87cddb9c447fc9fd32b0ee1f983058f7ee76554965abd21975ef4",
+      "input_path": "inputs/flowcontrol-10.article",
+      "input_sha256": "4882ca813d14d385d6e3c27c1ed8137f923455c8d4cb5c0d6ca1a1ce01ee0750",
+      "protected_token_count": 6,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "“Switch-cases worden van boven naar beneden geëvalueerd en stoppen zodra een case slaagt.” laat grammaticaal de cases zelf stoppen, terwijl de source zegt dat de evaluatie stopt zodra een case slaagt. Formuleer dit natuurlijker en behoud die precieze semantische relatie."
+    },
+    {
+      "unit_id": "moretypes/7",
+      "unit_kind": "page",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "a169cf48dd659510ff7f1f8adfdbed5a247b51a1f7c3a45ae972f18921925033",
+      "input_path": "inputs/moretypes-7.article",
+      "input_sha256": "0a00fb45417105f3622f8e6b08d9003a4e99957f46d5ee189713c54655e43cd5",
+      "protected_token_count": 9,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "“een flexibele weergave met een dynamische grootte van de elementen van een array” heeft een onnatuurlijke en semantisch dubbelzinnige modifierstructuur: de dynamische grootte hoort bij de slice/weergave, niet bij de array-elementen. Vertaal naturally dat een slice een flexibel, dynamisch bemeten zicht op de elementen van een array is."
+    },
+    {
+      "unit_id": "moretypes/18",
+      "unit_kind": "page",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "9c5fd763eaedec8e8bfb60f52713417ff247bc4467aa8a94412c55ab83c781ba",
+      "input_path": "inputs/moretypes-18.article",
+      "input_sha256": "7f8a27facfda7cef8470328fbad7b6abeb6fe9991e9636ba64274bfa70cd0a65",
+      "protected_token_count": 19,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "In “elke []uint8 binnen de [][]uint8 toe te wijzen” is “toewijzen” voor source “allocate each []uint8” technisch ambigu en klinkt het als assignment. De instructie vereist dat elke innerlijke slice wordt gealloceerd/aangemaakt; gebruik daarvoor natuurlijke en technisch precieze Nederlandse formulering."
+    },
+    {
+      "unit_id": "moretypes/25",
+      "unit_kind": "page",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "570e535e9c2b2d1978534eb3b42f226102b11da36a3f9e61620dc5eafdb6be5f",
+      "input_path": "inputs/moretypes-25.article",
+      "input_sha256": "72d0fffc01145a9d015510fb3622d215fe6b15cd55d59bdaaf8c80f56629e396",
+      "protected_token_count": 6,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "In “De functie kan de variabelen waarnaar wordt verwezen benaderen en eraan toewijzen” is “eraan toewijzen” grammaticaal en technisch onvolledig: er ontbreekt wat aan de variabelen wordt toegewezen. De source bedoelt dat de closure de gerefereerde variabelen kan benaderen en eraan waarden kan toewijzen/wijzigen. Formuleer dit natuurlijk en precies in het Nederlands."
+    },
+    {
+      "unit_id": "concurrency/4",
+      "unit_kind": "page",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "3e925c6745255a443c61f25cd8131d538dc8677938f1c5021ce798465020b42e",
+      "input_path": "inputs/concurrency-4.article",
+      "input_sha256": "f68dc9ef06de3cb5d48846ebe7786e6cc06b77ea5c05bc6d56b80f667f5dad10",
+      "protected_token_count": 16,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "“Een zender kan een kanaal `close` aanroepen” is onnatuurlijk en technisch misleidend: `close` is een ingebouwde Go-functie, geen methode die op een kanaal wordt aangeroepen. Formuleer natuurlijk en precies dat een zender een kanaal met `close` kan sluiten om aan te geven dat er geen waarden meer worden verzonden."
+    }
+  ]
+}

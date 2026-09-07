@@ -1,0 +1,38 @@
+* Oefening: Lussen en functies
+
+Om met functies en lussen te oefenen, gaan we een vierkantswortelfunctie implementeren: gegeven een getal x willen we het getal z vinden waarvoor z² zo dicht mogelijk bij x ligt.
+
+Computers berekenen de vierkantswortel van x doorgaans met een lus.
+We beginnen met een schatting z en kunnen z aanpassen op basis van hoe dicht z² bij x ligt,
+zodat we een betere schatting krijgen:
+
+	z -= (z*z - x) / (2*z)
+
+Door deze aanpassing te herhalen wordt de schatting steeds beter,
+totdat we een antwoord bereiken dat zo dicht mogelijk bij de werkelijke vierkantswortel ligt.
+
+Implementeer dit in de gegeven `func`Sqrt`.
+Een goede beginschatting voor z is 1, ongeacht de invoer.
+Herhaal de berekening eerst 10 keer en druk onderweg elke waarde van z af.
+Bekijk voor verschillende waarden van x (1, 2, 3, ...) hoe dicht je bij het antwoord komt
+en hoe snel de schatting verbetert.
+
+Tip: om een drijvendekommagetal te declareren en te initialiseren,
+schrijf je de waarde in drijvendekommanotatie of gebruik je een conversie:
+
+	z := 1.0
+	z := float64(1)
+
+Pas vervolgens de lusvoorwaarde aan, zodat de lus stopt zodra de waarde niet meer verandert
+(of nog maar heel weinig verandert).
+Bekijk of dit meer of minder dan 10 iteraties kost.
+Probeer ook andere beginschattingen voor z, zoals x of x/2.
+Hoe dicht liggen de resultaten van je functie bij [[/pkg/math/#Sqrt][math.Sqrt]] uit de standaardbibliotheek?
+
+(*Opmerking:* Als je geïnteresseerd bent in de details van het algoritme: z² − x hierboven
+geeft aan hoe ver z² verwijderd is van de waarde die het moet hebben (x), en de deling door 2z is de afgeleide
+van z². Daarmee schalen we de aanpassing van z op basis van hoe snel z² verandert.
+Deze algemene aanpak heet [[https://en.wikipedia.org/wiki/Newton%27s_method][de methode van Newton]].
+De aanpak werkt goed voor veel functies, maar vooral voor de vierkantswortel.)
+
+.play flowcontrol/exercise-loops-and-functions.go

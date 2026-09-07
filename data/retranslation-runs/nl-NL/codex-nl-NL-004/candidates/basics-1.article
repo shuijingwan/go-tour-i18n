@@ -1,0 +1,11 @@
+* Pakketten
+
+Elk Go-programma bestaat uit pakketten.
+
+De uitvoering van een programma begint in pakket `main`.
+
+Dit programma gebruikt de pakketten met de importpaden `"fmt"` en `"math/rand"`.
+
+Volgens afspraak is de pakketnaam gelijk aan het laatste element van het importpad. Het pakket `"math/rand"` bestaat bijvoorbeeld uit bestanden die beginnen met de instructie `package`rand`.
+
+.play basics/packages.go
