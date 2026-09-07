@@ -189,6 +189,55 @@ func TestDeDEGlossary(t *testing.T) {
 	}
 }
 
+func TestNlNLGlossary(t *testing.T) {
+	glossary, err := LoadGlossary(repoRoot(t), "nl-NL")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if glossary.Locale != "nl-NL" {
+		t.Fatalf("glossary locale = %q, want nl-NL", glossary.Locale)
+	}
+	for key, want := range map[string]string{
+		"A Tour of Go":    "Een rondleiding door Go",
+		"Run":             "Uitvoeren",
+		"Format":          "Formatteren",
+		"Reset":           "Herstellen",
+		"slide":           "pagina",
+		"constraint":      "beperking",
+		"type switch":     "typeswitch",
+		"type assertion":  "typeassertie",
+		"interface value": "interfacewaarde",
+		"type parameter":  "typeparameter",
+	} {
+		if got := glossary.Mandatory[key]; got != want {
+			t.Errorf("mandatory[%q] = %q, want %q", key, got, want)
+		}
+	}
+	for key, want := range map[string]string{
+		"Go programming language": "programmeertaal Go",
+		"channel":                 "kanaal",
+		"concurrency":             "gelijktijdigheid",
+		"generics":                "generieke typen",
+		"package":                 "pakket",
+		"standard library":        "standaardbibliotheek",
+		"syntax highlighting":     "syntaxismarkering",
+	} {
+		if got := glossary.Preferred[key]; got != want {
+			t.Errorf("preferred[%q] = %q, want %q", key, got, want)
+		}
+	}
+	for _, want := range []string{"dia", "dia's", "Go-routine", "Golang"} {
+		if !containsString(glossary.Forbidden, want) {
+			t.Errorf("forbidden missing %q: %v", want, glossary.Forbidden)
+		}
+	}
+	for _, want := range []string{"Go", "Go Playground", "gofmt", "goroutine", "goroutines", "Goroutines"} {
+		if !containsString(glossary.Keep, want) {
+			t.Errorf("keep missing %q: %v", want, glossary.Keep)
+		}
+	}
+}
+
 func TestFrFRGlossary(t *testing.T) {
 	glossary, err := LoadGlossary(repoRoot(t), "fr-FR")
 	if err != nil {

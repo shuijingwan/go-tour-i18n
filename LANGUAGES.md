@@ -4,18 +4,20 @@
 
 新增语言统一从 [新增 Locale 执行手册](docs/NEW_LOCALE_RUNBOOK.md) 开始；不要只在 registry 中增加一行就视为完成。新 locale 必须先明确规范 locale、显示名称、domain/CDN、全站 glossary 决策和 production profile，并通过独立的 TranslationUnit Quality Review 与 Locale Surface Review。
 
-语言 registry 的正式展示顺序按语言的英文名称字母顺序排列，不按加入项目的时间排列。当前顺序为 Chinese（`zh-CN`）→ English（`en`）→ French（`fr-FR`）→ German（`de-DE`）→ Japanese（`ja-JP`）→ Korean（`ko-KR`）→ Spanish（`es-ES`）。
+语言 registry 的正式展示顺序按语言的英文名称字母顺序排列，不按加入项目的时间排列。当前顺序为 Dutch（`nl-NL`）→ English（`en`）→ French（`fr-FR`）→ German（`de-DE`）→ Italian（`it-IT`）→ Japanese（`ja-JP`）→ Korean（`ko-KR`）→ Simplified Chinese（`zh-CN`）→ Spanish（`es-ES`）。
 
 ## 语言站点与 CDN
 
 | Locale | 显示名称 | 正式入口 | CDN | 说明 |
 | --- | --- | --- | --- | --- |
-| `zh-CN` | 简体中文 | <https://go-dev.shuijingwanwq.com/> | EdgeOne | 当前默认社区语言站；不创建 `zh.go-dev` 或 `zh-cn.go-dev` |
+| `nl-NL` | Nederlands | <https://nl-go-dev.shuijingwanwq.com/> | Cloudflare Free | 荷兰语社区语言站；域名 language code 为 `nl`；首次生产准备中 |
 | `en` | English | <https://go.dev/tour/> | Go 官方提供 | 继续使用官方 A Tour of Go；当前不建设本项目的英文社区版本，也不规划 `en-go-dev.shuijingwanwq.com` |
 | `fr-FR` | Français | <https://fr-go-dev.shuijingwanwq.com/> | Cloudflare Free | 法语社区语言站；域名 language code 为 `fr` |
 | `de-DE` | Deutsch | <https://de-go-dev.shuijingwanwq.com/> | Cloudflare Free | 德语社区语言站；域名 language code 为 `de` |
+| `it-IT` | Italiano | <https://it-go-dev.shuijingwanwq.com/> | Cloudflare Free | 意大利语社区语言站；域名 language code 为 `it` |
 | `ja-JP` | 日本語 | <https://ja-go-dev.shuijingwanwq.com/> | Cloudflare Free | 日语社区语言站 |
 | `ko-KR` | 한국어 | <https://ko-go-dev.shuijingwanwq.com/> | Cloudflare Free | 韩语社区语言站；域名 language code 为 `ko` |
+| `zh-CN` | 简体中文 | <https://go-dev.shuijingwanwq.com/> | EdgeOne | 当前默认社区语言站；不创建 `zh.go-dev` 或 `zh-cn.go-dev` |
 | `es-ES` | Español | <https://es-go-dev.shuijingwanwq.com/> | Cloudflare Free | 西班牙语社区语言站；域名 language code 为 `es` |
 
 ## Production identity 与历史 evidence

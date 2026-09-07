@@ -12,13 +12,46 @@ import (
 const expectedCatalogMessages = 92
 
 func TestLoadEmbeddedCatalogs(t *testing.T) {
-	for _, locale := range []string{"de-DE", "en", "es-ES", "fr-FR", "it-IT", "ja-JP", "ko-KR", "zh-CN"} {
+	for _, locale := range []string{"de-DE", "en", "es-ES", "fr-FR", "it-IT", "ja-JP", "ko-KR", "nl-NL", "zh-CN"} {
 		catalog, err := Load(locale)
 		if err != nil {
 			t.Fatalf("Load(%q): %v", locale, err)
 		}
 		if got, want := len(catalog.Messages), expectedCatalogMessages; got != want {
 			t.Fatalf("Load(%q) message count = %d, want %d", locale, got, want)
+		}
+	}
+}
+
+func TestDutchCatalogMatchesEnglishSource(t *testing.T) {
+	source, err := Load("en")
+	if err != nil {
+		t.Fatal(err)
+	}
+	dutch, err := Load("nl-NL")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if dutch.HTMLLang != "nl-NL" {
+		t.Fatalf("nl-NL HTMLLang = %q, want nl-NL", dutch.HTMLLang)
+	}
+	if got, want := len(dutch.Messages), expectedCatalogMessages; got != want {
+		t.Fatalf("nl-NL message count = %d, want %d", got, want)
+	}
+	if err := validateCoverage(source, dutch); err != nil {
+		t.Fatalf("nl-NL coverage: %v", err)
+	}
+	for key, message := range dutch.Messages {
+		if strings.Contains(message.Text, "TODO") {
+			t.Errorf("nl-NL message %q retains TODO", key)
+		}
+	}
+	for key, want := range map[string]string{
+		"editor.run": "Uitvoeren", "editor.format": "Formatteren", "editor.reset": "Herstellen",
+		"tour.title": "Een rondleiding door Go",
+	} {
+		if got := dutch.Messages[key].Text; got != want {
+			t.Errorf("nl-NL message %q = %q, want %q", key, got, want)
 		}
 	}
 }
@@ -32,6 +65,7 @@ func TestEditorToggleStatesAreLocalizedPerCatalog(t *testing.T) {
 		"it-IT": {"Attivato", "Disattivato"},
 		"ja-JP": {"オン", "オフ"},
 		"ko-KR": {"켜기", "끄기"},
+		"nl-NL": {"Aan", "Uit"},
 		"zh-CN": {"开启", "关闭"},
 	}
 	for locale, want := range wants {

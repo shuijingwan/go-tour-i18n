@@ -24,6 +24,7 @@ type LanguageLink struct {
 
 var languageRegistry = []LanguageLink{
 	// 展示顺序按英文语言名称字母顺序排列。
+	{Locale: "nl-NL", EnglishName: "Dutch", Autonym: "Nederlands", URL: "https://nl-go-dev.shuijingwanwq.com/"},
 	{Locale: "en", EnglishName: "English", Autonym: "English", URL: "https://go.dev/tour/", Official: true},
 	{Locale: "fr-FR", EnglishName: "French", Autonym: "Français", URL: "https://fr-go-dev.shuijingwanwq.com/"},
 	{Locale: "de-DE", EnglishName: "German", Autonym: "Deutsch", URL: "https://de-go-dev.shuijingwanwq.com/"},
@@ -42,13 +43,20 @@ type localeProfile struct {
 }
 
 var (
-	berlinTime = mustLoadLocation("Europe/Berlin")
-	madridTime = mustLoadLocation("Europe/Madrid")
-	parisTime  = mustLoadLocation("Europe/Paris")
-	romeTime   = mustLoadLocation("Europe/Rome")
+	amsterdamTime = mustLoadLocation("Europe/Amsterdam")
+	berlinTime    = mustLoadLocation("Europe/Berlin")
+	madridTime    = mustLoadLocation("Europe/Madrid")
+	parisTime     = mustLoadLocation("Europe/Paris")
+	romeTime      = mustLoadLocation("Europe/Rome")
 )
 
 var localeProfiles = map[string]localeProfile{
+	"nl-NL": {
+		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",
+		TimeZone:          amsterdamTime,
+		TimeLabel:         "lokale tijd",
+		TimeLabelFormat:   " (%s)",
+	},
 	"zh-CN": {
 		DevelopmentLogURL: "https://www.shuijingwanwq.com/series/go-tour-chinese-edition-development-series/",
 		TimeZone:          time.FixedZone("UTC+8", 8*60*60),

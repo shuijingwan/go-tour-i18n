@@ -6,6 +6,40 @@ import (
 	"testing"
 )
 
+func TestDutchArticleMetadataCoversCatalog(t *testing.T) {
+	root := filepath.Clean(filepath.Join("..", ".."))
+	catalog, err := ReadCatalog(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	metadata, err := LoadArticleMetadata(root, "nl-NL", catalog)
+	if err != nil {
+		t.Fatal(err)
+	}
+	wantTitles := map[string]string{
+		"welcome.article":     "Welkom!",
+		"basics.article":      "Pakketten, variabelen en functies",
+		"flowcontrol.article": "Besturingsinstructies: for, if, else, switch en defer",
+		"moretypes.article":   "Meer typen: structs, slices en maps",
+		"methods.article":     "Methoden en interfaces",
+		"generics.article":    "Generieke typen",
+		"concurrency.article": "Gelijktijdigheid",
+	}
+	if len(metadata) != len(wantTitles) {
+		t.Fatalf("nl-NL article metadata count = %d, want %d", len(metadata), len(wantTitles))
+	}
+	for article, title := range wantTitles {
+		entry, ok := metadata[article]
+		if !ok {
+			t.Errorf("nl-NL article metadata is missing %s", article)
+			continue
+		}
+		if entry.Title != title || entry.Subtitle == "" || strings.Contains(entry.Title+entry.Subtitle, "TODO") {
+			t.Errorf("nl-NL article metadata %s = %+v, want title %q, subtitle, and no TODO", article, entry, title)
+		}
+	}
+}
+
 func TestGermanArticleMetadataCoversCatalog(t *testing.T) {
 	root := filepath.Clean(filepath.Join("..", ".."))
 	catalog, err := ReadCatalog(root)
