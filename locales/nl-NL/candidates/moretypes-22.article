@@ -1,0 +1,27 @@
+* Maps wijzigen
+
+Voeg een element in map `m` in of werk het bij:
+
+	m[key] = elem
+
+Haal een element op:
+
+	elem = m[key]
+
+Verwijder een element:
+
+	delete(m, key)
+
+Controleer met een toewijzing van twee waarden of een sleutel aanwezig is:
+
+	elem, ok = m[key]
+
+Als `key` in `m` staat, is `ok` gelijk aan `true`. Zo niet, dan is `ok` gelijk aan `false`.
+
+Als `key` niet in de map staat, is `elem` de nulwaarde voor het elementtype van de map.
+
+*Opmerking:* Als `elem` of `ok` nog niet is gedeclareerd, kun je een korte declaratievorm gebruiken:
+
+	elem, ok := m[key]
+
+.play moretypes/mutating-maps.go

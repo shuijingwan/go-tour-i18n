@@ -1,0 +1,12 @@
+* Nulwaarden
+
+Variabelen die zonder expliciete beginwaarde worden gedeclareerd, krijgen hun
+_nulwaarde_.
+
+De nulwaarde is:
+
+- `0` voor numerieke typen,
+- `false` voor het booleaanse type en
+- `""` (de lege string) voor strings.
+
+.play basics/zero.go

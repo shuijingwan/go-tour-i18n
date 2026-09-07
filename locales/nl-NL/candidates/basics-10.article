@@ -1,0 +1,7 @@
+* Korte variabeledeclaraties
+
+Binnen een functie kan de korte toewijzingsinstructie `:=` worden gebruikt in plaats van een `var`-declaratie met een impliciet type.
+
+Buiten een functie begint elke instructie met een sleutelwoord (`var`, `func` enzovoort), waardoor de constructie `:=` niet beschikbaar is.
+
+.play basics/short-variable-declarations.go

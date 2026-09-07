@@ -1,0 +1,7 @@
+* Select
+
+Met de instructie `select` kan een goroutine op meerdere communicatiebewerkingen wachten.
+
+Een `select` blokkeert totdat een van de cases kan worden uitgevoerd en voert vervolgens die case uit. Als er meerdere gereed zijn, kiest de instructie er willekeurig één.
+
+.play concurrency/select.go

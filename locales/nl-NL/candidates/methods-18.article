@@ -1,0 +1,8 @@
+* Oefening: Stringers
+
+Laat het type `IPAddr` de interface `fmt.Stringer` implementeren om het adres af te drukken als
+vier door punten gescheiden getallen.
+
+`IPAddr{1,`2,`3,`4}` moet bijvoorbeeld worden afgedrukt als `"1.2.3.4"`.
+
+.play methods/exercise-stringer.go

@@ -1,0 +1,14 @@
+* Default-selectie
+
+De `default`-case in een `select` wordt uitgevoerd als geen enkele andere case gereed is.
+
+Gebruik een `default`-case om een verzend- of ontvangstbewerking te proberen zonder te blokkeren:
+
+	select {
+	case i := <-c:
+		// gebruik i
+	default:
+		// ontvangen van c zou blokkeren
+	}
+
+.play concurrency/default-selection.go

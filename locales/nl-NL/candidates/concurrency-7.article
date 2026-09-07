@@ -1,0 +1,18 @@
+* Oefening: Gelijkwaardige binaire bomen
+
+Er kunnen veel verschillende binaire bomen bestaan waarin dezelfde reeks waarden is opgeslagen. Hier staan bijvoorbeeld twee binaire bomen waarin de reeks 1, 1, 2, 3, 5, 8, 13 is opgeslagen.
+
+.image /tour/static/img/tree.png
+
+Een functie om te controleren of twee binaire bomen dezelfde reeks opslaan, is in de meeste talen behoorlijk complex. We gebruiken de gelijktijdigheid en kanalen van Go om een eenvoudige oplossing te schrijven.
+
+Dit voorbeeld gebruikt het pakket `tree`, dat het volgende type definieert:
+
+	type Tree struct {
+		Left  *Tree
+		Value int
+		Right *Tree
+	}
+
+
+De beschrijving gaat verder op de [[javascript:click('.next-page')][volgende pagina]].

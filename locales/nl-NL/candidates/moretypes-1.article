@@ -1,0 +1,24 @@
+* Pointers
+
+Go heeft pointers.
+Een pointer bevat het geheugenadres van een waarde.
+
+Het type `*T` is een pointer naar een waarde van het type `T`. De nulwaarde ervan is `nil`.
+
+	var p *int
+
+De operator `&` genereert een pointer naar zijn operand.
+
+	i := 42
+	p = &i
+
+De operator `*` duidt de onderliggende waarde van de pointer aan.
+
+	fmt.Println(*p) // lees i via de pointer p
+	*p = 21         // stel i in via de pointer p
+
+Dit staat bekend als "derefereren" of "indirect benaderen".
+
+Anders dan C heeft Go geen pointerrekenkunde.
+
+.play moretypes/pointers.go

@@ -1,0 +1,21 @@
+* Afbeeldingen
+
+[[/pkg/image/#Image][Pakket image]] definieert de interface `Image`:
+
+	package image
+
+	type Image interface {
+		ColorModel() color.Model
+		Bounds() Rectangle
+		At(x, y int) color.Color
+	}
+
+*Opmerking*: de retourwaarde `Rectangle` van de methode `Bounds` is eigenlijk een
+[[/pkg/image/#Rectangle][`image.Rectangle`]], omdat de
+declaratie in het pakket `image` staat.
+
+(Zie [[/pkg/image/#Image][de documentatie]] voor alle details.)
+
+De typen `color.Color` en `color.Model` zijn ook interfaces, maar dat laten we buiten beschouwing door de vooraf gedefinieerde implementaties `color.RGBA` en `color.RGBAModel` te gebruiken. Deze interfaces en typen worden gespecificeerd door het [[/pkg/image/color/][pakket image/color]].
+
+.play methods/images.go

@@ -1,0 +1,15 @@
+* Arrays
+
+Het type `[n]T` is een array van `n` waarden van het type `T`.
+
+De expressie
+
+	var a [10]int
+
+declareert een variabele `a` als een array van tien gehele getallen.
+
+De lengte van een array maakt deel uit van het type, zodat de grootte van arrays niet kan worden gewijzigd.
+Dat lijkt beperkend, maar maak je geen zorgen:
+Go biedt een handige manier om met arrays te werken.
+
+.play moretypes/array.go

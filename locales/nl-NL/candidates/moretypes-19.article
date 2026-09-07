@@ -1,0 +1,11 @@
+* Maps
+
+Een map koppelt sleutels aan waarden.
+
+De nulwaarde van een map is `nil`.
+Een `nil`-map heeft geen sleutels en er kunnen ook geen sleutels aan worden toegevoegd.
+
+De functie `make` retourneert een map van het opgegeven type,
+geïnitialiseerd en klaar voor gebruik.
+
+.play moretypes/maps.go

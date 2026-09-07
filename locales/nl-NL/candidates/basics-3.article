@@ -1,0 +1,16 @@
+* Geëxporteerde namen
+
+In Go wordt een naam geëxporteerd als deze met een hoofdletter begint.
+`Pizza` is bijvoorbeeld een geëxporteerde naam, net als `Pi`, dat vanuit
+het pakket `math` wordt geëxporteerd.
+
+`pizza` en `pi` beginnen niet met een hoofdletter en worden dus niet geëxporteerd.
+
+Wanneer je een pakket importeert, kun je alleen naar de geëxporteerde namen ervan verwijzen.
+Niet-geëxporteerde namen zijn buiten het pakket niet toegankelijk.
+
+Voer de code uit. Let op de foutmelding.
+
+Wijzig `math.pi` in `math.Pi` en probeer het opnieuw om de fout te verhelpen.
+
+.play basics/exported-names.go

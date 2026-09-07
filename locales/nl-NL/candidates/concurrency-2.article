@@ -1,0 +1,20 @@
+* Kanalen
+
+Kanalen zijn getypeerde verbindingen waarmee je via de kanaaloperator `<-` waarden kunt verzenden en ontvangen.
+
+	ch <- v    // Stuur v naar kanaal ch.
+	v := <-ch  // Ontvang van ch en
+	           // wijs de waarde toe aan v.
+
+(De gegevens stromen in de richting van de pijl.)
+
+Net als maps en slices moeten kanalen vóór gebruik worden gemaakt:
+
+	ch := make(chan int)
+
+Verzend- en ontvangstbewerkingen blokkeren standaard totdat de andere kant gereed is. Hierdoor kunnen goroutines synchroniseren zonder expliciete locks of conditievariabelen.
+
+De voorbeeldcode telt de getallen in een slice op en verdeelt het werk over twee goroutines.
+Zodra beide goroutines hun berekening hebben voltooid, wordt het eindresultaat berekend.
+
+.play concurrency/channels.go

@@ -1,0 +1,11 @@
+* Oefening: Slices
+
+Implementeer `Pic`. Deze functie moet een slice met lengte `dy` retourneren, waarvan elk element een slice is met `dx` niet-ondertekende 8-bits gehele getallen. Wanneer je het programma uitvoert, wordt je afbeelding weergegeven. De gehele getallen worden daarbij geïnterpreteerd als grijswaarden (of eigenlijk blauwwaarden).
+
+Welke afbeelding je maakt, mag je zelf bepalen. Interessante functies zijn onder andere `(x+y)/2`, `x*y` en `x^y`.
+
+(Je moet een lus gebruiken om elke `[]uint8` binnen de `[][]uint8` afzonderlijk aan te maken.)
+
+(Gebruik `uint8(intValue)` om een waarde van het ene type naar het andere te converteren.)
+
+.play moretypes/exercise-slices.go

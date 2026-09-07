@@ -1,0 +1,24 @@
+* Pointerreceivers
+
+Je kunt methoden met pointerreceivers declareren.
+
+Dit betekent dat het receivertype de letterlijke syntaxis `*T` heeft voor een type `T`.
+(Daarnaast kan `T` zelf geen pointer zijn, zoals `*int`.)
+
+De methode `Scale` is hier bijvoorbeeld gedefinieerd op `*Vertex`.
+
+Methoden met pointerreceivers kunnen de waarde wijzigen waarnaar de receiver
+wijst (zoals `Scale` hier doet).
+Omdat methoden hun receiver vaak moeten wijzigen, komen pointerreceivers vaker
+voor dan valuereceivers.
+
+Probeer de `*` uit de declaratie van de functie `Scale` op regel 16 te verwijderen
+en kijk hoe het gedrag van het programma verandert.
+
+Met een valuereceiver werkt de methode `Scale` op een kopie van de oorspronkelijke
+waarde `Vertex`.
+(Dit is hetzelfde gedrag als bij elk ander functieargument.)
+De methode `Scale` moet een pointerreceiver hebben om de waarde `Vertex` te wijzigen
+die in de functie `main` is gedeclareerd.
+
+.play methods/methods-pointers.go

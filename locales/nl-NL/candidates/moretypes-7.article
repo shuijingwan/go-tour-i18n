@@ -1,0 +1,23 @@
+* Slices
+
+Een array heeft een vaste grootte.
+Een slice daarentegen is een flexibele weergave van de elementen van een array,
+waarvan de grootte dynamisch kan veranderen.
+In de praktijk komen slices veel vaker voor dan arrays.
+
+Het type `[]T` is een slice met elementen van het type `T`.
+
+Je maakt een slice door twee indices op te geven: een ondergrens en
+een bovengrens, gescheiden door een dubbele punt:
+
+	a[low : high]
+
+Hiermee selecteer je een halfopen bereik dat het eerste
+element wel en het laatste element niet bevat.
+
+De volgende expressie maakt een slice die de elementen
+1 tot en met 3 van `a` bevat:
+
+	a[1:4]
+
+.play moretypes/slices.go

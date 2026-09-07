@@ -1,0 +1,9 @@
+* If en else
+
+Variabelen die in een korte `if`-instructie worden gedeclareerd, zijn ook beschikbaar in elk
+van de `else`-blokken.
+
+(Beide aanroepen van `pow` retourneren hun resultaat voordat de aanroep van `fmt.Println`
+in `main` begint.)
+
+.play flowcontrol/if-and-else.go

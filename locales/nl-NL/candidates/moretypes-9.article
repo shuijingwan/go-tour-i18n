@@ -1,0 +1,14 @@
+* Sliceliterals
+
+Een sliceliteral lijkt op een arrayliteral zonder de lengte.
+
+Dit is een arrayliteral:
+
+	[3]bool{true, true, false}
+
+En dit maakt dezelfde array als hierboven
+en bouwt vervolgens een slice die ernaar verwijst:
+
+	[]bool{true, true, false}
+
+.play moretypes/slice-literals.go

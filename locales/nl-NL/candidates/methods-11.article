@@ -1,0 +1,13 @@
+* Interfacewaarden
+
+Onder de motorkap kun je interfacewaarden zien als een tupel van een waarde en een
+concreet type:
+
+	(value, type)
+
+Een interfacewaarde bevat een waarde van een specifiek onderliggend concreet type.
+
+Als je een methode op een interfacewaarde aanroept, wordt de gelijknamige methode op
+het onderliggende type uitgevoerd.
+
+.play methods/interface-values.go

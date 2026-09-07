@@ -1,0 +1,11 @@
+* Slices zijn als verwijzingen naar arrays
+
+Een slice slaat zelf geen gegevens op,
+maar beschrijft slechts een gedeelte van een onderliggende array.
+
+Als je de elementen van een slice wijzigt, worden de
+overeenkomstige elementen van de onderliggende array gewijzigd.
+
+Andere slices die dezelfde onderliggende array delen, zien die wijzigingen ook.
+
+.play moretypes/slices-pointers.go

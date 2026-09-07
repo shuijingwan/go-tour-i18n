@@ -1,0 +1,15 @@
+* Range en Close
+
+Een zender kan een kanaal met `close` sluiten om aan te geven dat er geen waarden meer worden verzonden. Receivers kunnen controleren of een kanaal gesloten is door een tweede variabele aan de ontvangstexpressie toe te voegen:
+
+	v, ok := <-ch
+
+`ok` is `false` als er geen waarden meer kunnen worden ontvangen en het kanaal gesloten is.
+
+De lus `for`i`:=`range`c` ontvangt herhaaldelijk waarden uit het kanaal totdat het wordt gesloten.
+
+*Opmerking:* Alleen de zender mag een kanaal sluiten, nooit de receiver. Verzenden via een gesloten kanaal veroorzaakt een panic.
+
+*Nog*een*opmerking:* Kanalen zijn niet zoals bestanden; doorgaans hoef je ze niet te sluiten. Sluiten is alleen nodig wanneer de receiver moet weten dat er geen waarden meer aankomen, bijvoorbeeld om een `range`-lus te beëindigen.
+
+.play concurrency/range-and-close.go
