@@ -876,7 +876,25 @@ done
         self.record("public-machine")
 
     def browser(self):
-        self.run([ROOT / "scripts" / "verify-production-browser.py", self.profile["production_public_url"], self.locale], stage="browser", timeout=600)
+        port = self.cf_socks_local_port
+        if type(port) is not int or not 1 <= port <= 65535:
+            raise FirstProductionError(
+                "browser", "current invocation-scoped zgocloud SOCKS port",
+                repr(port), "重新执行同一 first-production invocation 以建立本次预检网络通道",
+            )
+        try:
+            with socket.create_connection(("127.0.0.1", port), timeout=2):
+                pass
+        except OSError as exc:
+            raise FirstProductionError(
+                "browser", "reachable current invocation-scoped zgocloud SOCKS tunnel",
+                str(exc), "重新执行同一 first-production invocation；不得回退到维护者本机默认网络",
+            ) from exc
+        proxy_server = f"socks5://127.0.0.1:{port}"
+        self.run([
+            ROOT / "scripts" / "verify-production-browser.py", self.profile["production_public_url"], self.locale,
+            "--proxy-server", proxy_server,
+        ], stage="browser", timeout=600)
         self.record("browser")
 
     def execute(self):

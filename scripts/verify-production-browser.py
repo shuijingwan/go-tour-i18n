@@ -16,13 +16,35 @@ IDENTITY = load("production_identity_browser", ROOT / "scripts" / "production-id
 BrowserFailure = CORE.BrowserFailure
 browser_ad_gate = CORE.browser_ad_gate
 
-def acceptance(base, locale, profile, shared):
-    return CORE.acceptance(base, locale, profile, shared)
+def acceptance(base, locale, profile, shared, proxy_server=None):
+    return CORE.acceptance(base, locale, profile, shared, proxy_server=proxy_server)
+
+
+def parse_proxy_server(value):
+    parsed = CORE.urllib.parse.urlsplit(value)
+    try:
+        port = parsed.port
+    except ValueError as exc:
+        raise ValueError("proxy server port must be in 1..65535") from exc
+    if (parsed.scheme != "socks5" or not parsed.hostname or port is None or
+            not 1 <= port <= 65535 or parsed.username or parsed.password or
+            parsed.path or parsed.query or parsed.fragment):
+        raise ValueError("proxy server must be socks5://<host>:<port>")
+    return value
 
 def main():
-    if len(sys.argv) != 3:
-        print(f"usage: {pathlib.Path(sys.argv[0]).name} <production-public-url> <locale>", file=sys.stderr); return 2
-    base, locale = sys.argv[1:]
+    args = sys.argv[1:]
+    if len(args) == 2:
+        base, locale = args
+        proxy_server = None
+    elif len(args) == 4 and args[2] == "--proxy-server":
+        base, locale = args[:2]
+        try:
+            proxy_server = parse_proxy_server(args[3])
+        except ValueError as exc:
+            print(f"[production-browser] ERROR: {exc}", file=sys.stderr); return 2
+    else:
+        print(f"usage: {pathlib.Path(sys.argv[0]).name} <production-public-url> <locale> [--proxy-server socks5://<host>:<port>]", file=sys.stderr); return 2
     parsed = CORE.urllib.parse.urlsplit(base)
     if parsed.scheme != "https" or parsed.path != "/" or parsed.query or parsed.fragment:
         print("[production-browser] ERROR: public URL must be an HTTPS origin ending in /", file=sys.stderr); return 1
@@ -32,7 +54,7 @@ def main():
         if len(profiles) != 1: raise BrowserFailure(f"unknown formal production locale: {locale}")
         profile = profiles[0]
         if base != profile["production_public_url"]: raise BrowserFailure("public URL does not match formal production identity")
-        acceptance(base, locale, profile, identity["shared"])
+        acceptance(base, locale, profile, identity["shared"], proxy_server=proxy_server)
     except (CORE.BrowserFailure, IDENTITY.IdentityError, OSError, KeyError, TypeError) as exc:
         print(f"[production-browser] FAILED: {exc}", file=sys.stderr); return 1
     print("[production-browser] desktop routes: PASS")

@@ -155,18 +155,26 @@ class WebSocket:
         self.sock.close()
 
 
+def chrome_command(binary, temp, proxy_server=None):
+    command = [
+        binary, "--headless=new", "--no-sandbox", "--disable-gpu",
+        "--disable-dev-shm-usage", "--disable-breakpad", "--disable-crash-reporter",
+        "--noerrdialogs", "--no-first-run", "--remote-debugging-address=127.0.0.1",
+        "--remote-debugging-port=0", f"--user-data-dir={temp}",
+    ]
+    if proxy_server is not None:
+        command.append(f"--proxy-server={proxy_server}")
+    command.append("about:blank")
+    return command
+
+
 class Chrome:
-    def __init__(self):
+    def __init__(self, proxy_server=None):
         binary = shutil.which("google-chrome")
         if not binary:
             raise BrowserFailure("google-chrome is required")
         self.temp = pathlib.Path(tempfile.mkdtemp(prefix="go-tour-browser-acceptance-"))
-        self.process = subprocess.Popen([
-            binary, "--headless=new", "--no-sandbox", "--disable-gpu",
-            "--disable-dev-shm-usage", "--disable-breakpad", "--disable-crash-reporter",
-            "--noerrdialogs", "--no-first-run", "--remote-debugging-address=127.0.0.1",
-            "--remote-debugging-port=0", f"--user-data-dir={self.temp}", "about:blank",
-        ], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        self.process = subprocess.Popen(chrome_command(binary, self.temp, proxy_server), stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         active = self.temp / "DevToolsActivePort"
         for _ in range(100):
             if active.exists():
@@ -465,9 +473,9 @@ def validate_rendered_list(chrome, list_metadata, expected_page_routes):
                 f"/tour/list: Page directory route mismatch: expected={len(expected_page_routes)} unique formal routes actual={snapshot}")
 
 
-def acceptance(base, locale, profile, shared):
+def acceptance(base, locale, profile, shared, proxy_server=None):
     list_metadata = locale_list_metadata(locale)
-    chrome = Chrome()
+    chrome = Chrome(proxy_server=proxy_server)
     try:
         for path in ("/", "/tour/", "/tour/list", "/tour/welcome/1", "/tour/basics/11"):
             is_list = path == "/tour/list"

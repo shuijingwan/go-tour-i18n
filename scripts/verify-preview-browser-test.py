@@ -18,6 +18,23 @@ PRODUCTION = load("verify_production_browser_tested", ROOT / "scripts" / "verify
 CORE = PREVIEW.CORE
 
 class PreviewBrowserTest(unittest.TestCase):
+    def test_chrome_command_keeps_default_without_proxy(self):
+        command = CORE.chrome_command("google-chrome", "/tmp/chrome-profile")
+
+        self.assertEqual(command, [
+            "google-chrome", "--headless=new", "--no-sandbox", "--disable-gpu",
+            "--disable-dev-shm-usage", "--disable-breakpad", "--disable-crash-reporter",
+            "--noerrdialogs", "--no-first-run", "--remote-debugging-address=127.0.0.1",
+            "--remote-debugging-port=0", "--user-data-dir=/tmp/chrome-profile", "about:blank",
+        ])
+
+    def test_chrome_command_adds_explicit_proxy(self):
+        proxy_server = "socks5://127.0.0.1:49152"
+        command = CORE.chrome_command("google-chrome", "/tmp/chrome-profile", proxy_server)
+
+        self.assertIn(f"--proxy-server={proxy_server}", command)
+        self.assertEqual(command[-1], "about:blank")
+
     def chrome_for_navigation(self, readiness):
         chrome = CORE.Chrome.__new__(CORE.Chrome)
         chrome.current_route = "about:blank"

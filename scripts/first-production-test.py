@@ -206,12 +206,103 @@ printf 200
         original = sys.argv
         try:
             sys.argv = ["verify-production-browser.py", "https://fr-go-dev.shuijingwanwq.com/", "fr-FR"]
-            with mock.patch.object(BROWSER, "acceptance", side_effect=lambda *args: captured.append(args)):
+            with mock.patch.object(
+                BROWSER,
+                "acceptance",
+                side_effect=lambda *args, **kwargs: captured.append((args, kwargs)),
+            ):
                 self.assertEqual(BROWSER.main(), 0)
         finally:
             sys.argv = original
-        self.assertEqual(captured[0][2]["production_state"], "live")
-        self.assertEqual(captured[0][3]["playground_public_origin"], "https://play.go-dev.shuijingwanwq.com:8443")
+        self.assertEqual(captured[0][0][2]["production_state"], "live")
+        self.assertEqual(captured[0][0][3]["playground_public_origin"], "https://play.go-dev.shuijingwanwq.com:8443")
+        self.assertIsNone(captured[0][1]["proxy_server"])
+
+    def test_browser_entrypoint_passes_explicit_socks_proxy(self):
+        captured = []
+        original = sys.argv
+        try:
+            sys.argv = [
+                "verify-production-browser.py",
+                "https://fr-go-dev.shuijingwanwq.com/",
+                "fr-FR",
+                "--proxy-server",
+                "socks5://127.0.0.1:49152",
+            ]
+            with mock.patch.object(
+                BROWSER,
+                "acceptance",
+                side_effect=lambda *args, **kwargs: captured.append((args, kwargs)),
+            ):
+                self.assertEqual(BROWSER.main(), 0)
+        finally:
+            sys.argv = original
+
+        self.assertEqual(captured[0][1]["proxy_server"], "socks5://127.0.0.1:49152")
+
+    def test_browser_entrypoint_rejects_invalid_proxy_server(self):
+        for proxy_server in (
+            "http://127.0.0.1:49152",
+            "socks5://127.0.0.1",
+            "socks5://127.0.0.1:0",
+            "socks5://127.0.0.1:65536",
+            "socks5://127.0.0.1:49152/path",
+        ):
+            with self.subTest(proxy_server=proxy_server):
+                with self.assertRaises(ValueError):
+                    BROWSER.parse_proxy_server(proxy_server)
+
+    def test_first_production_browser_uses_current_socks_tunnel(self):
+        orchestrator = FIRST.Orchestrator.__new__(FIRST.Orchestrator)
+        orchestrator.cf_socks_local_port = 49152
+        orchestrator.profile = {"production_public_url": "https://fr-go-dev.shuijingwanwq.com/"}
+        orchestrator.locale = "fr-FR"
+        orchestrator.run = mock.Mock()
+        orchestrator.record = mock.Mock()
+
+        with mock.patch.object(FIRST.socket, "create_connection", return_value=mock.MagicMock()) as connection:
+            orchestrator.browser()
+
+        connection.assert_called_once_with(("127.0.0.1", 49152), timeout=2)
+        orchestrator.run.assert_called_once_with(
+            [
+                ROOT / "scripts" / "verify-production-browser.py",
+                "https://fr-go-dev.shuijingwanwq.com/",
+                "fr-FR",
+                "--proxy-server",
+                "socks5://127.0.0.1:49152",
+            ],
+            stage="browser",
+            timeout=600,
+        )
+        orchestrator.record.assert_called_once_with("browser")
+
+    def test_first_production_browser_fails_closed_without_current_socks_tunnel(self):
+        orchestrator = FIRST.Orchestrator.__new__(FIRST.Orchestrator)
+        orchestrator.cf_socks_local_port = None
+        orchestrator.run = mock.Mock()
+        orchestrator.record = mock.Mock()
+
+        with self.assertRaises(FIRST.FirstProductionError) as raised:
+            orchestrator.browser()
+
+        self.assertEqual(raised.exception.stage, "browser")
+        orchestrator.run.assert_not_called()
+        orchestrator.record.assert_not_called()
+
+    def test_first_production_browser_fails_closed_when_current_socks_listener_is_unreachable(self):
+        orchestrator = FIRST.Orchestrator.__new__(FIRST.Orchestrator)
+        orchestrator.cf_socks_local_port = 49152
+        orchestrator.run = mock.Mock()
+        orchestrator.record = mock.Mock()
+
+        with mock.patch.object(FIRST.socket, "create_connection", side_effect=OSError("connection refused")):
+            with self.assertRaises(FIRST.FirstProductionError) as raised:
+                orchestrator.browser()
+
+        self.assertEqual(raised.exception.stage, "browser")
+        orchestrator.run.assert_not_called()
+        orchestrator.record.assert_not_called()
 
     def test_browser_acceptance_checks_observable_behavior(self):
         source = (ROOT / "scripts" / "browser_acceptance.py").read_text(encoding="utf-8")
