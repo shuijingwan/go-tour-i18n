@@ -1,7 +1,6 @@
 # pt-BR Locale Surface Review — 2026-09-08 首次 production
 
-本记录当前已完成 Locale Surface Review Stage A（Locale-level language quality review）、preview automated rendered acceptance 与 preview visual HUMAN gate。
-Publish、production verification 与 production visual HUMAN gate 尚未执行。
+本记录已完成 Locale Surface Review Stage A（Locale-level language quality review）、preview automated rendered acceptance、preview visual HUMAN gate、production publish、production machine/browser acceptance 与 production visual HUMAN gate。
 
 ## 审核身份
 
@@ -163,7 +162,7 @@ Visual HUMAN gate 只确认整体排版与视觉观感，不重复声称检查�
 ## 当前决策
 
 - Locale Surface Review Stage A：`passed`
-- overall first-production final decision：`PENDING`
+- overall first-production final decision：`passed`
 
 <!-- first-production-finalization:start -->
 - production receipt identity: `locale=pt-BR hostname=pt-go-dev.shuijingwanwq.com release=20260908-pt-BR-10dc58fa`
