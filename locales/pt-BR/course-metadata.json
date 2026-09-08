@@ -1,0 +1,1449 @@
+{
+  "schema_version": 1,
+  "locale": "pt-BR",
+  "generator_contract": "course-seo-description-v1",
+  "pages": [
+    {
+      "page_id": "welcome/1",
+      "route": "/welcome/1",
+      "description": "Conheça a navegação e os recursos interativos de Um Tour por Go, incluindo a execução e a formatação dos programas de exemplo.",
+      "source_sha256": "1f581133d7fa40e6490418c6789a60a2f5e1de26c9c86d7eb6120cb58b145857",
+      "target_sha256": "a20bdc7f6d0f799f9f206863786f01fc6d2126e53c4ad640b6abb81adbbeb175",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "welcome/2",
+      "route": "/welcome/2",
+      "description": "Veja os outros idiomas em que este tour está disponível e como avançar para a próxima página.",
+      "source_sha256": "c1c8c34dfe10b11b5cc72e1daae4336290d613bbbe5445012be949ab904fd3fa",
+      "target_sha256": "04769d2adab42cf94fc00c929afdb16a4da7973d5dcd559e3635cb74f062fa92",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "welcome/4",
+      "route": "/welcome/3",
+      "description": "Saiba como instalar Go e executar este tour localmente, com os exemplos compilados em sua própria máquina e sem acesso à internet.",
+      "source_sha256": "bb517d4b577fdb446fd029c2998d2426663b94a68f4b4e494c59af421508f683",
+      "target_sha256": "a5dfa5eeb52b82b673898b0fd9d021f4b1a25be7e6b9f82ddadd56a8968a9325",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "welcome/5",
+      "route": "/welcome/4",
+      "description": "Entenda como o Go Playground compila e executa programas em um ambiente isolado, além de suas limitações de tempo, CPU, memória e rede.",
+      "source_sha256": "19e6d7da57ca1d191c485754f3dd4ac87775c651b8c0ae8e05c03cbd9b225897",
+      "target_sha256": "a20e5d841f3ed4ee79fa77990dcadd0338ad281e2ece2b42d0f0466c58bfe735",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "welcome/3",
+      "route": "/welcome/5",
+      "description": "Celebre a conclusão do primeiro módulo deste tour e escolha entre explorar outros conteúdos sobre Go ou seguir para a próxima lição.",
+      "source_sha256": "9a6983b2e50b2fa78ff4f65683210714aea1c1575418e36796c156950ec6330d",
+      "target_sha256": "63a55a2a1185557c6c953b15ae27044cac2b64d12739077208631e7c140c35f6",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "basics/1",
+      "route": "/basics/1",
+      "description": "Aprenda como programas em Go são organizados em pacotes, onde a execução começa e como nomes de pacotes se relacionam aos caminhos de importação.",
+      "source_sha256": "f769f12c0a028b2f0cd403d89ff39dd150405e9f2e4155875321522f08619fe0",
+      "target_sha256": "ee4cf2fd3e986198c46f6070e693a43d1f118c0f9607df8dec799db9d50468e1",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "basics/2",
+      "route": "/basics/2",
+      "description": "Conheça as declarações de importação fatoradas de Go e por que agrupar importações entre parênteses é considerado uma boa prática.",
+      "source_sha256": "3329c9bff5f7e2b9b1e161fdebfb3804ff57cf1fb11bd4327d228328bcfb3fd0",
+      "target_sha256": "4e9c5cf7d60ac935c7d52eda1492c567d00a863347b09cadafa24f3514fbe1e8",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "basics/3",
+      "route": "/basics/3",
+      "description": "Entenda como a inicial maiúscula determina nomes exportados em Go e quais identificadores de um pacote podem ser acessados após a importação.",
+      "source_sha256": "38b9c70e49184a24f63f6b12f8ba78e64c0b874ad2a6f9a5fe86267615fd1bf6",
+      "target_sha256": "f74fb18ca7648517465a9a0cfa8112eab638933077970ac4d8df8ff84f4fc906",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "basics/4",
+      "route": "/basics/4",
+      "description": "Veja como declarar funções com zero ou mais argumentos em Go e por que o tipo aparece depois do nome de cada parâmetro.",
+      "source_sha256": "accf0562d9b759c9735500d5df0d74e8f90142ed96fe5ab2f5eedc6fbd6cf6f2",
+      "target_sha256": "7118019605c463d5dc6fdd130078195086a14c79a98fff080b9808f96f2ee62d",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "basics/5",
+      "route": "/basics/5",
+      "description": "Aprenda a abreviar parâmetros nomeados consecutivos de uma função quando eles compartilham o mesmo tipo.",
+      "source_sha256": "02e7feb341329e18143e18d533fe45381883a6ba6425abb09a847e2f0edf228a",
+      "target_sha256": "5d65ed78cc1a15cfe9d8185095edd79b7eddedf3bae645e7dbefdec225eceb1e",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "basics/6",
+      "route": "/basics/6",
+      "description": "Descubra como uma função em Go pode retornar vários resultados, como no exemplo que devolve duas strings.",
+      "source_sha256": "b3cb4b40115066443f265e3e5ebb9fc0fd6d080784c887328fce4d6b7891ba41",
+      "target_sha256": "66ddfeb2b8efac123804eb50da9fc2702e0b6d4c8d9549d9dca6ce644cb1e9b4",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "basics/7",
+      "route": "/basics/7",
+      "description": "Entenda valores de retorno nomeados, retornos sem argumentos e por que essa forma deve ficar restrita a funções curtas.",
+      "source_sha256": "1db20ae87ce5d9d4b20f15e4638ba2a3295a7ce781c961ef618982890fc562fa",
+      "target_sha256": "e9caf2510a23d2f1607f2e9773c62f3492b27fe5f16bfba2fd34ef9e91b1fc3f",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "basics/8",
+      "route": "/basics/8",
+      "description": "Veja como a declaração var define listas de variáveis no nível do pacote ou da função, com o tipo escrito por último.",
+      "source_sha256": "bcb1b5e17ed9dff3d46a7cd8119c0d2f9c3afbb70ca94d35fadeb4f75b4a9d13",
+      "target_sha256": "c783abe865aee5990c9cf3ca3e2c2c13d6f3c0531953feb41d58728810fe7edb",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "basics/9",
+      "route": "/basics/9",
+      "description": "Aprenda a inicializar variáveis em uma declaração var e a omitir o tipo quando ele pode ser obtido do inicializador.",
+      "source_sha256": "d51c17ba355753484b96c0eefda9fcce9f6f041a8ae2bf3e96fd0ad0c44680cc",
+      "target_sha256": "c3caeecfdeb9737501418789af0b767fa296299bebe29fbeeca6d99714ead2e6",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "basics/10",
+      "route": "/basics/10",
+      "description": "Use a declaração curta de variáveis com := dentro de funções e entenda por que essa construção não está disponível fora delas.",
+      "source_sha256": "f402e8e89a186d3208df5e4d983604730e71ef6c68354755f72e4580d3d7f359",
+      "target_sha256": "0fbc7678e5c4f213833b5dac53db07684f580109a2edf3263b5765a057cae86b",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "basics/11",
+      "route": "/basics/11",
+      "description": "Conheça os tipos básicos de Go, declarações fatoradas e a orientação para escolher int em vez de inteiros com tamanho definido ou sem sinal.",
+      "source_sha256": "836ab1dd659798dcf5e90f283c4ee794aed1d2cf0766c2ccc268fa91684e9d05",
+      "target_sha256": "6c7ddb2b073bf1249f00d452286823f01162c979f8ecbdf4c4d61c2004c4d430",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "basics/12",
+      "route": "/basics/12",
+      "description": "Veja quais valores zero Go atribui a variáveis sem inicialização explícita, incluindo números, booleanos e strings.",
+      "source_sha256": "d9ad62501c05359e7b2ac445fa92d629e11d6d378c2701b767abab76012a558e",
+      "target_sha256": "52268f89dd1285e2393728ec4d0004fe5bc22e150cb2838616788c299862706b",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "basics/13",
+      "route": "/basics/13",
+      "description": "Aprenda a converter valores com a expressão T(v) e por que atribuições entre tipos diferentes exigem conversão explícita em Go.",
+      "source_sha256": "88e0e168f4c95fa4134198a32440b2d2fb1fac9aae535a9ee7148dbcda37e1b3",
+      "target_sha256": "dd76eace2d6fcffc9ecefb9d957a4a0413e6786913db0b3136e40ab2e2b10d01",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "basics/14",
+      "route": "/basics/14",
+      "description": "Entenda a inferência de tipos em declarações e como constantes numéricas sem tipo podem originar int, float64 ou complex128 conforme o valor.",
+      "source_sha256": "21c4077c25629545dee0313b8b6b03e709edc4a74e1d73d9f4c9b0a49e46f6b3",
+      "target_sha256": "ef31f7feb6d7877c4df4660163f16c8195da730be9dad735196fa7a81c558b82",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "basics/15",
+      "route": "/basics/15",
+      "description": "Conheça a declaração de constantes com const, os tipos de valores permitidos e a impossibilidade de usar := para declará-las.",
+      "source_sha256": "964ac515c0860a54b3a7780d77c7b4862ca38b744ae1f6be4b155a4386e2a229",
+      "target_sha256": "592e5325135cc2e3ffea897d1c8f96e243e50ac904059f197193c6442408a2eb",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "basics/16",
+      "route": "/basics/16",
+      "description": "Explore constantes numéricas de alta precisão e como uma constante sem tipo assume o tipo exigido pelo contexto em que é usada.",
+      "source_sha256": "0d502d48a15f7a70e257079d7db1ddafe088607110c1c06b17b4be50b362394a",
+      "target_sha256": "6d273138f11b25365159512ebdd2863d9fca5c3ae9548efc75bbe034e3c9d517",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "basics/17",
+      "route": "/basics/17",
+      "description": "Ao terminar esta lição, retorne à lista de módulos para escolher o próximo conteúdo ou continue diretamente para a lição seguinte.",
+      "source_sha256": "f565674b974c053924bf69ef83b709dc50931526ae7fa88e71543a5cd872a190",
+      "target_sha256": "0d142197301b5af5c123e8613d0b2956fa48dbff0f90b9a0ba1d681a95d6634e",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/1",
+      "route": "/flowcontrol/1",
+      "description": "Conheça o laço for de Go, suas etapas de inicialização, condição e instrução posterior, o escopo das variáveis e as regras de parênteses e chaves.",
+      "source_sha256": "c6cd458bda99bffc7b753e122c56575a59508586054180be1f8d7bb1fe2391df",
+      "target_sha256": "45152d225c3f998d1335294d02e30499f44116a1141f15e2b10f9792c8dec7e6",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/2",
+      "route": "/flowcontrol/2",
+      "description": "Veja como as instruções de inicialização e posterior do laço for podem ser omitidas em Go.",
+      "source_sha256": "24a97abbb6db2b6a88017bf326a5968097263d8ba637805f2cf44c9fed25f9fe",
+      "target_sha256": "335e36c5f34ff6704e00d5c5604f4b7ab13dbcbbb710a6ba24cb6c36841caf7b",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/3",
+      "route": "/flowcontrol/3",
+      "description": "Aprenda a escrever em Go um laço equivalente ao while de C, removendo os pontos e vírgulas do for.",
+      "source_sha256": "3ed791cc935287ba6f5da4ba41f6ad84fdcbaef108ee364f769ae5204316bbb7",
+      "target_sha256": "45c8d4c43c0397aa6f0dc708534fe31edcc081f975ff4b57800ee4dd123f9cac",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/4",
+      "route": "/flowcontrol/4",
+      "description": "Entenda como omitir a condição do laço for produz uma forma compacta de expressar um laço infinito.",
+      "source_sha256": "5456c129ef71c60b7502efde65c81020aaf1fa8b9178086e99223a21f6207dc6",
+      "target_sha256": "80996b86638ebbc9745cd784ad9517faa0c1ef9bbb1883694569748422e64dda",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/5",
+      "route": "/flowcontrol/5",
+      "description": "Conheça a sintaxe das instruções if em Go, que dispensa parênteses ao redor da expressão e exige chaves.",
+      "source_sha256": "ce49f916c1ceb7296576ec6b8ec92524b9827be168e3f5eb2040c61fee70f639",
+      "target_sha256": "f8287938dde1d4febe76564045a24351aa825849d4f7b5f20f0e0e257fee2504",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/6",
+      "route": "/flowcontrol/6",
+      "description": "Veja como um if pode começar com uma instrução curta e como o escopo das variáveis declaradas se limita ao final desse if.",
+      "source_sha256": "02e310262214f3c5ceca8bf63ecf2ec3934641a7e2638050479b739ce077031e",
+      "target_sha256": "760e113485427430fb6d1a92ce9da3b0c0fee44dd5a1a9a1771237d62b7f84b3",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/7",
+      "route": "/flowcontrol/7",
+      "description": "Entenda como variáveis declaradas na instrução curta de um if também permanecem disponíveis nos blocos else associados.",
+      "source_sha256": "8666746573ce7d0ea1c12ff24c4c8170a1961eedb0600ed73ab849b4758f797c",
+      "target_sha256": "49ac3b25527c403b0538e448310fc36c466a301e4287931d7a85c4f16f60f451",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/8",
+      "route": "/flowcontrol/8",
+      "description": "Implemente uma função de raiz quadrada com laços, refine estimativas pelo método de Newton e defina uma condição de parada baseada na convergência.",
+      "source_sha256": "d8bbee8455ff59212ef432a08312f7c7703360367325a80df3719157200316e9",
+      "target_sha256": "602dd32240abfeb8f4e29ea7d4b420cf699cf2a1e2d78410241dd518b2f2857b",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/9",
+      "route": "/flowcontrol/9",
+      "description": "Aprenda como switch escolhe o primeiro caso correspondente em Go, sem exigir break, constantes ou apenas valores inteiros.",
+      "source_sha256": "abdc4c295fa7b4aec2616acf83badbbf2b581a9f62e41d03ca2ff984ebb6f7ed",
+      "target_sha256": "499470cf5d635637d882d4e61e1b6b5ce906ce0b3f93c95030e316558a8c0b2b",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/10",
+      "route": "/flowcontrol/10",
+      "description": "Veja como os casos de um switch são avaliados de cima para baixo e deixam de ser examinados assim que um deles é satisfeito.",
+      "source_sha256": "e1479cae56a87cddb9c447fc9fd32b0ee1f983058f7ee76554965abd21975ef4",
+      "target_sha256": "5479bc1a6e37073df2e39837e9a70bee466d505bf6892c1d7f285803855489ee",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/11",
+      "route": "/flowcontrol/11",
+      "description": "Use um switch sem condição, equivalente a switch true, como forma clara de escrever cadeias longas de if-then-else.",
+      "source_sha256": "714b67f479583e47080cd0f38489f465a28c002938390c4155af6dfeebb9225b",
+      "target_sha256": "355225b1a9453fb174b30b9465bca0828d6691cccc6513d1a536013ae65af7f3",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/12",
+      "route": "/flowcontrol/12",
+      "description": "Entenda como defer adia uma chamada até o retorno da função que a contém, embora seus argumentos sejam avaliados imediatamente.",
+      "source_sha256": "fa23a1d6ebf12f11843d38fe79c413a9c19bfcaf305ae64b75c360db24a436ec",
+      "target_sha256": "a45e3bccd0daa3e75cff70df471a6d45bc1c36c247ea2ebb51b074113583cf34",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/13",
+      "route": "/flowcontrol/13",
+      "description": "Aprenda como chamadas adiadas são empilhadas e executadas na ordem do último elemento a entrar para o primeiro a sair.",
+      "source_sha256": "73a02c24eb14597b3c5f53a09fc572f1a1f0c941adfc337c79fb14b492985fc1",
+      "target_sha256": "424fdefe8af3b37d1e56e78e1665ead18cda610ab836597b0eb8406b5ccaf32d",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/14",
+      "route": "/flowcontrol/14",
+      "description": "Depois de concluir esta lição, consulte novamente a lista de módulos para decidir o que estudar ou avance para a próxima lição.",
+      "source_sha256": "f565674b974c053924bf69ef83b709dc50931526ae7fa88e71543a5cd872a190",
+      "target_sha256": "0d142197301b5af5c123e8613d0b2956fa48dbff0f90b9a0ba1d681a95d6634e",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "moretypes/1",
+      "route": "/moretypes/1",
+      "description": "Entenda ponteiros em Go, os operadores de endereço e desreferenciamento, o valor zero nil e a ausência de aritmética de ponteiros.",
+      "source_sha256": "7706eaf0d46acc79fdad3b7953e5571bf404551d71aaefafd8ba79f5761f9806",
+      "target_sha256": "070b04086a37df73226e7e1bcdf18b43da619e2d7801d665b7c38918d0de3ac5",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "moretypes/2",
+      "route": "/moretypes/2",
+      "description": "Conheça structs em Go como estruturas que reúnem uma coleção de campos.",
+      "source_sha256": "a18dfdaadb9739387cc9886b67e9bf920bf52ada62397a1812cfd302c64aed9b",
+      "target_sha256": "aea6674707c1315052a4ed5be7f7b0d89b5c7261e700a294d8b548c3975d85d0",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "moretypes/3",
+      "route": "/moretypes/3",
+      "description": "Aprenda a acessar os campos de uma struct em Go usando a notação com ponto.",
+      "source_sha256": "0be9cb4a59a0d95526c208e5d8d96ebe6a15fd84b6e3a2ff9a07963226cb7b58",
+      "target_sha256": "d865827d6a47b86833d4dfb8aa8f372b918b23b09e8245a54daaed5ed8de3f97",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "moretypes/4",
+      "route": "/moretypes/4",
+      "description": "Veja como acessar campos por um ponteiro para struct usando p.X, sem precisar escrever explicitamente o desreferenciamento (*p).X.",
+      "source_sha256": "29695d334b6ff809e84ae8caeb7b9dc493143236783c07c16a83ecc64514c310",
+      "target_sha256": "c7ef16dd24aa6c8e8f99268d0f0208ff7d93208c1b6274bad84e6b4b5e712a15",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "moretypes/5",
+      "route": "/moretypes/5",
+      "description": "Entenda literais de struct, a seleção de campos nomeados com Name: e o uso de \u0026 para obter um ponteiro para o novo valor.",
+      "source_sha256": "cf9282456e2a91274c1b135a68fce58dd1590f6a2d7153f0619c97ded8bd00d1",
+      "target_sha256": "f352cf551821790cdbfd1ba63bc3c282e70f728b144b6658b2f8f97528a088e1",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "moretypes/6",
+      "route": "/moretypes/6",
+      "description": "Conheça arrays em Go, cuja quantidade de elementos integra o tipo e impede que seu tamanho seja alterado.",
+      "source_sha256": "0ec503e46281eb8ff25ceba5b92c9f9c3b40517aeea77cf4878760ed0da9d29c",
+      "target_sha256": "9401a9fb46d92a16d0c00e161e89774e1687320a35b5ac5a7119131ad1edbd39",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "moretypes/7",
+      "route": "/moretypes/7",
+      "description": "Aprenda como slices oferecem uma visão flexível de arrays e como limites inferior e superior formam intervalos semiabertos.",
+      "source_sha256": "a169cf48dd659510ff7f1f8adfdbed5a247b51a1f7c3a45ae972f18921925033",
+      "target_sha256": "9e3c98bd5f2f21834c6dd637a33d90f550b2eaa625f938e5c78729476e72726c",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "moretypes/8",
+      "route": "/moretypes/8",
+      "description": "Entenda que um slice descreve parte de um array subjacente e que alterações ficam visíveis em outros slices que compartilham esse array.",
+      "source_sha256": "e577f9e98a9c871cdc6f39ecca1bdd0965c26da3b9ab6c2a7cab42b3b0f3a568",
+      "target_sha256": "83911eb7029c9e4ca420074baaf45ea9bbe88e1903284e7a3c911c05f3bebe2d",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "moretypes/9",
+      "route": "/moretypes/9",
+      "description": "Compare literais de array e de slice e veja como omitir o comprimento cria um slice que referencia o array correspondente.",
+      "source_sha256": "fb79cf8caed7abc7dfd92e90cf1bcc11d547b8af96d224f30fefc995f98dbb0b",
+      "target_sha256": "02bc12888b9ac6f0efbe8f6feaa6fbb40e4fc6333a00fa658cf739d832e3cd02",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "moretypes/10",
+      "route": "/moretypes/10",
+      "description": "Conheça os limites padrão de um slice ao omitir índices: zero no início e o comprimento do array ou slice subjacente no final.",
+      "source_sha256": "36d1f92fc5e51cddcd26be7f74a875e60bf24633dd7c8689672fa23a6720e2a1",
+      "target_sha256": "93603770b59e06c2f0141ac36f11bc64215721910005fb4024bcedef35acd1d0",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "moretypes/11",
+      "route": "/moretypes/11",
+      "description": "Diferencie comprimento e capacidade de um slice, consulte-os com len e cap e veja quando é possível ampliar o comprimento por novo fatiamento.",
+      "source_sha256": "e2d7d69c946e5a01d8d0eab2e07a2bf35e23453a617d5e7602ff0af5c5866d8f",
+      "target_sha256": "7161a6ec8b748319b56c8d88e8c5696f888e156eed7620a53869e7a46b5d26ca",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "moretypes/12",
+      "route": "/moretypes/12",
+      "description": "Entenda o slice nil como valor zero, com comprimento e capacidade iguais a zero e sem array subjacente.",
+      "source_sha256": "e7a4bb0d5e7928c2da06312d983eba2adb533b30299025f507df183f00fefc89",
+      "target_sha256": "d0b5b9d6ef49f3ff2e37a167e3362db2e8644458a6c53e97a5788c62d2d947c9",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "moretypes/13",
+      "route": "/moretypes/13",
+      "description": "Aprenda a criar slices com a função embutida make, definindo comprimento e, opcionalmente, capacidade sobre um array inicializado com valores zero.",
+      "source_sha256": "d057e6bf75421597d430ff52f844499b5828ab2c4b4c5148ad88b6b89326ac20",
+      "target_sha256": "626ebb3e2976fb891e142c6c5c1f01bc7fa35464063744a86854f6f88f01378c",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "moretypes/14",
+      "route": "/moretypes/14",
+      "description": "Veja como slices podem conter valores de qualquer tipo, inclusive outros slices.",
+      "source_sha256": "d8bee22c0382cf5fd5647c4d7106165d153cb15aaed8ec82e1f06e12ad0c73d1",
+      "target_sha256": "77888e895d5593296ee47308c10d6fa2efb68cf7f8719ddcaf8c0c501a1d9565",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "moretypes/15",
+      "route": "/moretypes/15",
+      "description": "Entenda como append adiciona valores a um slice e pode alocar um array subjacente maior quando não há capacidade suficiente.",
+      "source_sha256": "f2fc257e7c5f118321acc3b75e946053601532d411e8540534280d7fba795289",
+      "target_sha256": "6bd380425a019a4e6c71a422cc5ba53fcd13a63ed6fbc6dade29f554ed0b1ae8",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "moretypes/16",
+      "route": "/moretypes/16",
+      "description": "Use range em um laço for para iterar sobre slices ou maps e obter, a cada iteração do slice, o índice e uma cópia do elemento.",
+      "source_sha256": "73fc46a2e049ce2ff4a4fc0595d717ed5d6e15b7093a6014509a48f501253186",
+      "target_sha256": "6aa26ea4f06efb14ea0d415fbe801587b71210b10d94c6da2813a11d2ef2c649",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "moretypes/17",
+      "route": "/moretypes/17",
+      "description": "Aprenda a descartar o índice ou o valor produzido por range com _ e a omitir a segunda variável quando apenas o índice é necessário.",
+      "source_sha256": "b52cca070f62a3ffeab3adf20f2745e1dd9aa2644a3985c23ac295e81e2c3bc9",
+      "target_sha256": "379eeb50099913206e93085222475726e0021987126569f001fcff7edb714889",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "moretypes/18",
+      "route": "/moretypes/18",
+      "description": "Implemente Pic com um slice de slices de uint8, aloque cada linha em um laço e gere uma imagem a partir dos valores calculados.",
+      "source_sha256": "9c5fd763eaedec8e8bfb60f52713417ff247bc4467aa8a94412c55ab83c781ba",
+      "target_sha256": "119320423ec34d159ac22cf20147f9747e0e678094ffd05ec518be859b32a240",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "moretypes/19",
+      "route": "/moretypes/19",
+      "description": "Conheça maps como associações de chaves a valores, o comportamento de um map nil e a criação de um map pronto para uso com make.",
+      "source_sha256": "39107d53feaffd26d7bb13103fe6e40746e9844d9b37bbf84559f7b91db312f3",
+      "target_sha256": "d92934e0b1a4b23309dfe07b0312167f8596c0ca799ab2e8649ef71bef8566dc",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "moretypes/20",
+      "route": "/moretypes/20",
+      "description": "Veja como literais de map se parecem com literais de struct, mas exigem que cada chave seja informada.",
+      "source_sha256": "1d3caa45093f65b50d5ebcff6a57559c3fe70faba85f3a0bb41db38c5375a507",
+      "target_sha256": "cadc8ad3bdb61f533111db5c6835bd5f2dbc86c333fff4556c1cfa9d5e479bd8",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "moretypes/21",
+      "route": "/moretypes/21",
+      "description": "Aprenda quando o nome do tipo de nível superior pode ser omitido dos elementos de um literal de map.",
+      "source_sha256": "0493179c2396f2e755fa5f1e579ce6f4cc716842ef5ee77a0b1c742210c15f9f",
+      "target_sha256": "18cfa7b1818aca6938842018999219fd0f15f03542f7cd97f654bc71c095cf19",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "moretypes/22",
+      "route": "/moretypes/22",
+      "description": "Pratique inserção, atualização, leitura e exclusão em maps, além do teste de presença de chaves e do valor zero para chaves ausentes.",
+      "source_sha256": "f6963bc620184c7fbea7b04c309ccf64d508a4e835500fa7dd4188e60204019f",
+      "target_sha256": "9af66e37a503f73dc63bbca047a31b5c91813c7592401c4d08fcbb2465185f51",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "moretypes/23",
+      "route": "/moretypes/23",
+      "description": "Implemente WordCount para contar cada palavra de uma string em um map e valide o resultado com o conjunto de testes fornecido.",
+      "source_sha256": "3214968207b659c3fb6bf92ee3d1ba0858bf7d3240dfad30fada7c5d8bddea69",
+      "target_sha256": "70ae54271df87f79254395dc716a71ed007288accb8c5b5b45d700f2748a20cf",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "moretypes/24",
+      "route": "/moretypes/24",
+      "description": "Entenda funções como valores que podem ser passados entre partes do programa e usados como argumentos ou resultados de outras funções.",
+      "source_sha256": "91b508ec19d3baf6fd1b2382e54b0f4ec226e9af99d027e86d734cf081d9c897",
+      "target_sha256": "ce5b7b48e3c7e0e34805234fbf12c2364e13aa040162b4dee7de869aa73d2077",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "moretypes/25",
+      "route": "/moretypes/25",
+      "description": "Conheça closures em Go, que acessam e alteram variáveis externas ao próprio corpo, ficando vinculadas a esses valores.",
+      "source_sha256": "570e535e9c2b2d1978534eb3b42f226102b11da36a3f9e61620dc5eafdb6be5f",
+      "target_sha256": "82bd33056c961f0ab377150687c74474be94027d6a0c51304ae43f75c4d1e920",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "moretypes/26",
+      "route": "/moretypes/26",
+      "description": "Implemente uma função fibonacci que retorne uma closure capaz de produzir sucessivamente os números de Fibonacci.",
+      "source_sha256": "24f01440a7b0d638694c6cb275bf92e79e1fb2463ea2eb7d40a68cc4d6a0ed29",
+      "target_sha256": "3806e780207ea790392356482000b868b2e03cf623e4d3581b122125858e9f1c",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "moretypes/27",
+      "route": "/moretypes/27",
+      "description": "Com esta lição finalizada, você pode rever a lista de módulos em busca do próximo assunto ou prosseguir para a lição seguinte.",
+      "source_sha256": "f565674b974c053924bf69ef83b709dc50931526ae7fa88e71543a5cd872a190",
+      "target_sha256": "0d142197301b5af5c123e8613d0b2956fa48dbff0f90b9a0ba1d681a95d6634e",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "methods/1",
+      "route": "/methods/1",
+      "description": "Aprenda a definir métodos em tipos de Go por meio de uma função com um argumento receptor especial entre func e o nome do método.",
+      "source_sha256": "8a62096b755332ede134c87493abe49231a52ce60abebcdc107bb6a64434fc72",
+      "target_sha256": "ed812099702b19cca7aed216c3c05f0c0e8472993af0f5bc67aacfeb1e296136",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "methods/2",
+      "route": "/methods/2",
+      "description": "Entenda que um método é uma função com um argumento receptor e pode ser reescrito como função comum sem mudar seu funcionamento.",
+      "source_sha256": "ade066728f85cc93e75c2472b80d532b62259a7e08e42ef36e3d05c6cfa5476d",
+      "target_sha256": "ec52afe63914acea65bcfb9b8f5a4b25ef31a364547ef5381b0ae0ebb2b00aa4",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "methods/3",
+      "route": "/methods/3",
+      "description": "Veja como declarar métodos em tipos que não são structs e por que o tipo receptor precisa ser definido no mesmo pacote do método.",
+      "source_sha256": "31c4fd0d80c8f1d96cf3efb1ecc1f9d3c0d1b5b70bb5c23bf7227b7007469588",
+      "target_sha256": "8cb89ad7ef5a219be90f648b14306f145f9aff8fbc3e62ca04fb3b2e48b936d8",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "methods/4",
+      "route": "/methods/4",
+      "description": "Conheça receptores de ponteiro, que permitem modificar o valor apontado, enquanto receptores de valor trabalham com uma cópia.",
+      "source_sha256": "99f9fa4e5c4dd46d393f40b417d0430c4e27e56f40146f5f192f55ccda4e2db3",
+      "target_sha256": "4b4802e660cfac5bae375abbe8874204319a992de41f09dc1f2a88c47ee3e498",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "methods/5",
+      "route": "/methods/5",
+      "description": "Compare métodos e funções ao reescrever Abs e Scale, alterando o argumento de ponteiro e observando os efeitos no comportamento e na compilação.",
+      "source_sha256": "cac8affc7a8fd7bc1c0003d8cbf5bd7c85433faea45ea1b39f3b80c2fbc5eae9",
+      "target_sha256": "b96f136c5a5f97e2675ed304f47e8767af15a42149e7e0f1f0c95fb63448c83b",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "methods/6",
+      "route": "/methods/6",
+      "description": "Entenda como Go aceita valor ou ponteiro ao chamar um método com receptor de ponteiro e insere automaticamente o operador de endereço.",
+      "source_sha256": "39fb725b0a084ce3634dc973c215ff7a0f034c5f7b51c2ffe25934088072ebf6",
+      "target_sha256": "919c55cbeadad94796297156fe18e1e6623eefb854d91f81818cafe64ec6d2d3",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "methods/7",
+      "route": "/methods/7",
+      "description": "Veja o sentido inverso da indireção: métodos com receptor de valor aceitam valor ou ponteiro e desreferenciam este último automaticamente.",
+      "source_sha256": "61a9cb8411e6ce15dce3383a68a52c6644599e84269b3faf240129277d238f7e",
+      "target_sha256": "e908172c0fc3d3475d3d6f59b25d56e5c55b178e4a20770ef96c1fd4a7078696",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "methods/8",
+      "route": "/methods/8",
+      "description": "Avalie receptores de ponteiro para modificar valores ou evitar cópias e entenda por que os métodos de um tipo devem manter uma escolha consistente.",
+      "source_sha256": "357424f2a76613085184054178042b442331b5689d156ac9c37e09e57c436dae",
+      "target_sha256": "32966813c86aacc679007e2d3d2c9727b34e4ea20622bc06abf0d57b5bc1bc5e",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "methods/9",
+      "route": "/methods/9",
+      "description": "Conheça tipos de interface como conjuntos de assinaturas de métodos e veja por que Vertex não implementa Abser quando Abs pertence apenas a *Vertex.",
+      "source_sha256": "39efc19ed01619130489d21e421f2c0d8947b20f408580f4ceaabce6a0feb099",
+      "target_sha256": "2767b21e53e5925c9bd758079a3ab80369ccc73e88947a1014c238fed2857b6c",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "methods/10",
+      "route": "/methods/10",
+      "description": "Entenda como um tipo implementa uma interface implicitamente ao fornecer seus métodos, sem palavra-chave ou declaração explícita de intenção.",
+      "source_sha256": "11ca99e6e83d93827daf02b177156fcb6f3c94ac8c202491dfffc5840ce4e39f",
+      "target_sha256": "8247620515b035c155eff92931d1d0dea0e766e0fdec1380d560777847ffa608",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "methods/11",
+      "route": "/methods/11",
+      "description": "Veja valores de interface como pares de valor e tipo concreto e como uma chamada de método usa a implementação do tipo subjacente.",
+      "source_sha256": "ccb2ed709b887724d22fb93714702fed5de4b7a83ca976876864045ff4752270",
+      "target_sha256": "11f91a169689e75490f6187e42ff2452f72529647a1f9b87b2bbd34b5bbbcc20",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "methods/12",
+      "route": "/methods/12",
+      "description": "Entenda como um valor de interface não nil pode conter um valor concreto nil e chamar um método com receptor nil.",
+      "source_sha256": "9487ca3c9872972d42af8cfa389755678fe8a7cca110b592aac2a762332febf5",
+      "target_sha256": "95b9d6d68fbb6709f0972de3d974f0f99fe5676082fdfb36318801dc82d33ce5",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "methods/13",
+      "route": "/methods/13",
+      "description": "Entenda por que um valor de interface nil não contém valor nem tipo concreto e causa erro em tempo de execução quando um método é chamado.",
+      "source_sha256": "2897922c0b088ccd46b3e42a442aeecda0787c4162db1329d0e8f39d05735547",
+      "target_sha256": "9daf30534e11b6fe693d26daedea8636b9dd78bddc34525b5475a02be70c1525",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "methods/14",
+      "route": "/methods/14",
+      "description": "Conheça a interface vazia, capaz de conter qualquer tipo, e a equivalência completa entre interface{} e seu alias any.",
+      "source_sha256": "7a09a7654c8b6ac6d96a1a8ddaafac368782f89ec2e6e61f323d40eb01cbf750",
+      "target_sha256": "34a9ef806f883545f709e34322379df6db45d7ba5ff0ef7c2b93e2da95859b8b",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "methods/15",
+      "route": "/methods/15",
+      "description": "Use asserções de tipo para acessar o valor concreto subjacente de um valor de interface e compare a forma que causa panic com a verificação de dois resultados.",
+      "source_sha256": "c205b4eb940358edea6321cfa422c3c00a560e9a6a71b08c8b3fa3ab9e4926ae",
+      "target_sha256": "b1c7f0654615b3adcf84c0052cd07b19c529334d359d69e262b8294e897235a5",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "methods/16",
+      "route": "/methods/16",
+      "description": "Aprenda como um switch de tipo reúne várias asserções de tipo, compara tipos em seus casos e define o tipo da variável em cada ramo.",
+      "source_sha256": "26e4da09e80d30b06368691c76ee2940139b0f6fc40cad47bb6d1d2947933c27",
+      "target_sha256": "5403a100d81445ee67a2cc0ef396a1174dc8cc6fcf20f0e10ed5af81b221bc09",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "methods/17",
+      "route": "/methods/17",
+      "description": "Conheça a interface Stringer do pacote fmt e como seu método String permite que um valor descreva a si mesmo para impressão.",
+      "source_sha256": "0363038e64b6f186e1bbd55c3323a5d7770a2b728605d8e3f01ae234aff6a444",
+      "target_sha256": "0d673f89cea6b27b9fa8d8cad71a97cc5922ff2a8d2529243ec5d968cc43b994",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "methods/18",
+      "route": "/methods/18",
+      "description": "Implemente fmt.Stringer no tipo IPAddr para formatar e imprimir endereços com quatro números em notação decimal pontuada.",
+      "source_sha256": "ad118644f53755586f14409e203bccfb5ac4cff7c01734157032a45648fb06d3",
+      "target_sha256": "1c1c4d4f4d51d78fef17dc6921dab3c4935ed8689ff0bbd7907cc8b6603ba89e",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "methods/19",
+      "route": "/methods/19",
+      "description": "Entenda error como interface embutida, o método Error e a convenção de usar error nil para sucesso e não nil para falha.",
+      "source_sha256": "9eaab1fde2076c1376f78ceec0f84766c4c3b8062867436d73cef0bc77f16bd5",
+      "target_sha256": "e2334b3bbc3a7c157f11da84780ce4991bd37ccbda13059a134cd8b233d019ca",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "methods/20",
+      "route": "/methods/20",
+      "description": "Adapte Sqrt para retornar um error em entradas negativas, implemente ErrNegativeSqrt e evite a recursão infinita dentro do método Error.",
+      "source_sha256": "41f1f73320fde60ee5ff30d5927a19ff22d6da6a336bb776e15f2499e4f421d8",
+      "target_sha256": "dd722cc44c894efdec75da953153aa2d7ffe437d2e6ede7842ac67e4ed1ff013",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "methods/21",
+      "route": "/methods/21",
+      "description": "Conheça io.Reader, seu método Read, o uso de slices de bytes e o erro io.EOF que sinaliza o fim de um fluxo de dados.",
+      "source_sha256": "120c3fc9f67579cf78605cf0c9f006fc28d3569043a08079ddb645ca9c3fc3b1",
+      "target_sha256": "7ebc7136a1a68ed6967860cf70940496c687ce1a489e338005638662a9a9c827",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "methods/22",
+      "route": "/methods/22",
+      "description": "Implemente um tipo Reader que produza um fluxo infinito do caractere ASCII A.",
+      "source_sha256": "0df444d989996a06d6dd50f4b109af4ae1cb2302b8dd867bcbe9bf98e424d230",
+      "target_sha256": "1ef8a4ef10908bef14ff2d5c5f50bf8fe00b2c15ca33a8eaa01672efff61e034",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "methods/23",
+      "route": "/methods/23",
+      "description": "Crie rot13Reader como um io.Reader que envolve outro leitor e aplica a cifra de substituição rot13 aos caracteres alfabéticos do fluxo.",
+      "source_sha256": "11d876145fae980b2e283e3fac7357a950eb20f022b7da48cc58efed5b1e8e04",
+      "target_sha256": "33e0cb683080b3c33dd15ff1e9e29128e736df919b91d368b99390541f1bc91a",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "methods/24",
+      "route": "/methods/24",
+      "description": "Conheça a interface image.Image, seus métodos ColorModel, Bounds e At e os tipos de cor usados pelas implementações do exemplo.",
+      "source_sha256": "d80f0d46796ad415a7ded4d0cefdef6cdb58deb38d050a61eb64abb25caf27ee",
+      "target_sha256": "92c60eeb774472de03aa323bc3f2bd6d2dc614bc519615347fb0d085da4b8e57",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "methods/25",
+      "route": "/methods/25",
+      "description": "Implemente seu próprio tipo Image com os métodos exigidos por image.Image e produza retângulos e cores para exibir a imagem gerada.",
+      "source_sha256": "a196bc59d96602c3fe72cf765419366094a5c1e96de0d24dd140887ebd1826b5",
+      "target_sha256": "31e57dd58540b66a626174f827a3b041f4ee807f7101417dece3e886169a8ce8",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "methods/26",
+      "route": "/methods/26",
+      "description": "A lição chegou ao fim; volte à relação de módulos para encontrar outro conteúdo ou siga imediatamente para a próxima lição.",
+      "source_sha256": "f565674b974c053924bf69ef83b709dc50931526ae7fa88e71543a5cd872a190",
+      "target_sha256": "0d142197301b5af5c123e8613d0b2956fa48dbff0f90b9a0ba1d681a95d6634e",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "generics/1",
+      "route": "/generics/1",
+      "description": "Use parâmetros de tipo e a restrição embutida comparable para criar uma função genérica Index que pesquisa valores comparáveis em um slice.",
+      "source_sha256": "01a045105dc8c12fb1709f122d363235c19a6464d5de7587d579524aec270dd6",
+      "target_sha256": "1eae817a49c8c29a7a3cf5ccaf18320f4f1a18cdac9820b9ea5524d3c0ace1f8",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "generics/2",
+      "route": "/generics/2",
+      "description": "Conheça tipos genéricos e parâmetros de tipo por meio de uma lista simplesmente encadeada capaz de armazenar valores de qualquer tipo.",
+      "source_sha256": "08486351895e62792a84bc3eeab6aa85df7b1658735b7239040d219812f63277",
+      "target_sha256": "5a2dd905b6d124c6174666f793a0bede43cf9f3ba68f9956e2db5e6a60a93396",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "generics/3",
+      "route": "/generics/3",
+      "description": "Finalizada esta lição, escolha um novo módulo na lista disponível ou continue o percurso pela próxima lição.",
+      "source_sha256": "f565674b974c053924bf69ef83b709dc50931526ae7fa88e71543a5cd872a190",
+      "target_sha256": "0d142197301b5af5c123e8613d0b2956fa48dbff0f90b9a0ba1d681a95d6634e",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "concurrency/1",
+      "route": "/concurrency/1",
+      "description": "Entenda goroutines como threads leves, a avaliação da chamada na goroutine atual, a execução na nova e a necessidade de sincronizar memória compartilhada.",
+      "source_sha256": "d0a9c45078c2255540cfffe48744a07fa04ab5c2113e8880068b5a400ae0ebdc",
+      "target_sha256": "a28bda298a5f3ada4c580672593278122ebe4d8acbe80acf1e31ece48c3c86b0",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "concurrency/2",
+      "route": "/concurrency/2",
+      "description": "Aprenda a criar canais, enviar e receber valores com \u003c- e sincronizar goroutines pelo bloqueio padrão das operações de comunicação.",
+      "source_sha256": "a35e3af26b51f8c2c2a6dfaf09f9c7cab0fdb4b1b56f9e4dc9b793f1dac1e295",
+      "target_sha256": "c1da8f28f15958313567dcc8df15111e129929974711bd1ee5985f8121ccfd37",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "concurrency/3",
+      "route": "/concurrency/3",
+      "description": "Conheça canais com buffer e as condições em que envios bloqueiam por buffer cheio ou recebimentos bloqueiam por buffer vazio.",
+      "source_sha256": "caef0893a54c61f192be397f6b27a039d81dc007f98f2d203a5a287383c0682e",
+      "target_sha256": "71813fc4c948edde2e18dedc3560183f693f48c16154275f33e20c56098b4357",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "concurrency/4",
+      "route": "/concurrency/4",
+      "description": "Entenda como o remetente fecha um canal, como receptores detectam o fechamento e como range consome valores até o canal terminar.",
+      "source_sha256": "3e925c6745255a443c61f25cd8131d538dc8677938f1c5021ce798465020b42e",
+      "target_sha256": "ae7c3b1991deda54420ca7f7d2ec0935f87666e206b705b3654bd1992f9e9185",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "concurrency/5",
+      "route": "/concurrency/5",
+      "description": "Use select para aguardar várias operações de comunicação, executar um caso pronto e escolher aleatoriamente quando há mais de uma opção.",
+      "source_sha256": "8d8de56f080d4f702ac455aa60cb13b745472bedc9755000e8b5d6a2a898577d",
+      "target_sha256": "97abb9e71d95e373ad96e399905a11380192210750d1abc3693fd745d5d4258e",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "concurrency/6",
+      "route": "/concurrency/6",
+      "description": "Aprenda a usar o caso default de select para tentar enviar ou receber por um canal sem causar bloqueio.",
+      "source_sha256": "82e9cd932e14e6c4852fc8f865f4c45dc75845bd1a306649152ebc045f0c3b2c",
+      "target_sha256": "1c0913f7971d28fcc3cec4ea1f2155948f72012b62e176eb35a6c4bc20a7ef9c",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "concurrency/7",
+      "route": "/concurrency/7",
+      "description": "Compare árvores binárias diferentes que armazenam a mesma sequência e prepare uma solução com concorrência, canais e o tipo Tree.",
+      "source_sha256": "7c5d3fc7bb2540285d746242f8a1d16075639648eec8909c1df52239297d2917",
+      "target_sha256": "18190b96ba7177d7198d26f5b023f377e55cbe5ebc69d9d8f11eccc9ce3ad5c4",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "concurrency/8",
+      "route": "/concurrency/8",
+      "description": "Implemente Walk para percorrer uma árvore por um canal e Same para verificar se duas árvores binárias armazenam os mesmos valores.",
+      "source_sha256": "b362cc15a26324acd311f7cab18a628dc1d7d9ac6d455add7d651d41acf15e9a",
+      "target_sha256": "ecdf1b085351e1a5e31c3cc925e2afe32324cafafead35ab969b3b22af7d2c83",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "concurrency/9",
+      "route": "/concurrency/9",
+      "description": "Use sync.Mutex, Lock, Unlock e defer para garantir exclusão mútua e proteger o acesso concorrente a uma variável compartilhada.",
+      "source_sha256": "49f727794604c2ef8a8dda9508d0f412d7015cea77754c675a02b166dd9bfc93",
+      "target_sha256": "7e75e2db7f454567b331d1fb29e9e78f84e247e13d69112bda86928cdaca4cdf",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "concurrency/10",
+      "route": "/concurrency/10",
+      "description": "Paralelize um rastreador da web com os recursos de concorrência de Go, evite buscar a mesma URL duas vezes e considere que maps não são seguros para uso concorrente.",
+      "source_sha256": "bb686393225ef2335e627819a1664a84456f00b64af133af64920d43f0abdb94",
+      "target_sha256": "b7221bc3eb80106119e0933e5cafe77315eaf883f18ab8a9e44a1520614c402a",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    },
+    {
+      "page_id": "concurrency/11",
+      "route": "/concurrency/11",
+      "description": "Encontre referências para continuar estudando Go, incluindo documentação, biblioteca padrão, concorrência, aplicações web, funções e artigos.",
+      "source_sha256": "45ef131ede663b1355c0a5933634d46c393f66be8a6450b184f86a62e928a64e",
+      "target_sha256": "18d3aeaadb7a7decbc5a1673730d2cdcf9fc54dcb56b4d9f01fb62ddb986f8cf",
+      "glossary_sha256": "518a2350a286d40cb6f2750174d449c190bb0620b07503f771b87a5b9735a1a5",
+      "generation": {
+        "provider": "OpenAI",
+        "model": "GPT-5.6 Sol",
+        "prompt_version": "course-seo-description-v1",
+        "generated_at": "2026-09-08T12:17:39Z"
+      }
+    }
+  ]
+}
