@@ -6,8 +6,10 @@ then leaves public verification and submission to tour-i18n indexnow bootstrap.
 """
 import argparse
 import importlib.util
+import os
 import pathlib
 import re
+import secrets
 import shlex
 import stat
 import subprocess
@@ -23,6 +25,7 @@ class CloseoutError(RuntimeError): pass
 KEY_MIN_LENGTH = 8
 KEY_MAX_LENGTH = 128
 KEY_PATTERN = re.compile(r"^[A-Za-z0-9-]+$")
+LOCALE_PATTERN = re.compile(r"^[a-z]{2,3}-[A-Z]{2}$")
 
 def read_key(path):
     path = pathlib.Path(path)
@@ -41,6 +44,67 @@ def read_key(path):
         raise CloseoutError(f"IndexNow key must be {KEY_MIN_LENGTH}..{KEY_MAX_LENGTH} characters of [A-Za-z0-9-]")
     if path.name != key + ".txt": raise CloseoutError("IndexNow key file name must be <key>.txt")
     return key, raw
+
+def default_key_store_root():
+    data_home = pathlib.Path(os.environ["XDG_DATA_HOME"]) if os.environ.get("XDG_DATA_HOME") else pathlib.Path.home() / ".local" / "share"
+    if not data_home.is_absolute():
+        raise CloseoutError("XDG_DATA_HOME must be an absolute path")
+    root = data_home / "go-tour-indexnow"
+    try:
+        root.resolve().relative_to(ROOT.resolve())
+    except ValueError:
+        return root
+    raise CloseoutError("IndexNow local key store must be outside the repository")
+
+def secure_directory(path):
+    if path.exists() or path.is_symlink():
+        if path.is_symlink() or not path.is_dir():
+            raise CloseoutError("IndexNow local key directory must be a real directory")
+    else:
+        path.mkdir(mode=0o700, parents=True)
+    try:
+        path.chmod(0o700)
+    except OSError as exc:
+        raise CloseoutError("cannot secure IndexNow local key directory") from exc
+
+def default_key_file(locale, store_root=None):
+    if not LOCALE_PATTERN.fullmatch(locale):
+        raise CloseoutError("invalid locale for IndexNow local key store")
+    root = pathlib.Path(store_root) if store_root is not None else default_key_store_root()
+    if not root.is_absolute():
+        raise CloseoutError("IndexNow local key store must be an absolute path")
+    try:
+        root.resolve().relative_to(ROOT.resolve())
+    except ValueError:
+        pass
+    else:
+        raise CloseoutError("IndexNow local key store must be outside the repository")
+    secure_directory(root)
+    directory = root / locale
+    if not directory.exists() and not directory.is_symlink():
+        secure_directory(directory)
+        key = secrets.token_hex(32)
+        path = directory / (key + ".txt")
+        try:
+            descriptor = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+            with os.fdopen(descriptor, "wb") as output:
+                output.write((key + "\n").encode("ascii")); output.flush(); os.fsync(output.fileno())
+        except OSError as exc:
+            raise CloseoutError("cannot create IndexNow local key") from exc
+        return path, "generated"
+    secure_directory(directory)
+    entries = list(directory.iterdir())
+    if len(entries) != 1:
+        raise CloseoutError("IndexNow local key directory must contain exactly one key file")
+    path = entries[0]
+    if path.is_symlink() or not path.is_file():
+        raise CloseoutError("IndexNow local key entry must be a regular non-symlink file")
+    try:
+        path.chmod(0o600)
+    except OSError as exc:
+        raise CloseoutError("cannot secure IndexNow local key file") from exc
+    read_key(path)
+    return path, "reused"
 
 def profile_for_locale(identity, locale):
     matches = [p for p in identity["locales"] if p["locale"] == locale]
@@ -113,17 +177,23 @@ print("PROVISIONING PASS")
 '''
 
 class Closeout:
-    def __init__(self, locale, key_file):
-        self.locale, self.key_file = locale, pathlib.Path(key_file)
-        self.key, self.key_bytes = read_key(self.key_file)
+    def __init__(self, locale, key_file=None, key_store_root=None):
+        self.locale = locale
         identity = IDENTITY.load_identity(ROOT / "production" / "identity.json")
         self.profile, self.shared = profile_for_locale(identity, locale), identity["shared"]
+        if key_file is None:
+            self.key_file, self.key_source = default_key_file(locale, key_store_root)
+        else:
+            self.key_file, self.key_source = pathlib.Path(key_file), "explicit"
+        self.key, self.key_bytes = read_key(self.key_file)
     def provision(self):
         values=(self.profile["data_root"],self.profile["nginx_vhost_path"],self.profile["production_hostname"],self.key+".txt",self.shared["nginx_test_command"],self.shared["nginx_reload_command"])
         command="python3 -c %s %s"%(shlex.quote(REMOTE_PROVISION)," ".join(shlex.quote(v) for v in values))
         result=subprocess.run(["ssh","-o","BatchMode=yes","-o","ConnectTimeout=10",self.profile["origin_ssh_alias"],command],input=self.key_bytes,timeout=300)
         if result.returncode: raise CloseoutError("remote IndexNow provisioning failed")
     def run(self):
+        if self.key_source in ("generated", "reused"):
+            print(f"IndexNow local key: {self.key_source}")
         self.provision()
         result=subprocess.run(["go","run","-mod=readonly","./cmd/tour-i18n","indexnow","bootstrap","--locale",self.locale,"--key-file",str(self.key_file)])
         if result.returncode: raise CloseoutError("formal IndexNow bootstrap failed after provisioning")
@@ -131,7 +201,7 @@ class Closeout:
 
 def main(argv=None):
     parser=argparse.ArgumentParser(description="provision and submit IndexNow for one live locale")
-    parser.add_argument("--locale",required=True); parser.add_argument("--key-file",required=True); args=parser.parse_args(argv)
+    parser.add_argument("--locale",required=True); parser.add_argument("--key-file"); args=parser.parse_args(argv)
     try: Closeout(args.locale,args.key_file).run()
     except (CloseoutError,IDENTITY.IdentityError,OSError,subprocess.TimeoutExpired) as exc:
         print(f"indexnow closeout: FAILED: {exc}",file=sys.stderr); return 1

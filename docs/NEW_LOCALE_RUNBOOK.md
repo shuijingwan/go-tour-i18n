@@ -190,12 +190,10 @@ Google Search Console 和 Bing Webmaster Tools 是所有新增 production locale
 IndexNow 是 `first-production finalize` 之后的 search-engine closeout，不是另一种 Production deployment。它使用正式 `production/identity.json`，且只接受 `production_state=live` 的目标 locale。Google、Bing 与适用 locale-specific search engine 的 UI sitemap submission 完成后，正式入口为：
 
 ```sh
-scripts/indexnow-closeout.sh \
-  --locale <locale> \
-  --key-file /secure/path/<key>.txt
+scripts/indexnow-closeout.sh --locale <locale>
 ```
 
-key 必须保存在仓库外的受保护普通文件中，文件名为 `<key>.txt`；其内容必须是 8–128 个 `[A-Za-z0-9-]` 字符，且可选地仅带一个末尾 LF 或 CRLF。closeout 仅从唯一 production identity 取得 Aliyun origin、目标 data root、Nginx vhost 与正式 Nginx test/reload command，部署 root verification key、配置精确 Nginx location 并执行 test/reload。配置 test 或 reload 明确失败时会恢复本轮 vhost/key 变更；已存在完全一致 location 时幂等，不一致则 fail closed。本流程不声称 vhost 写入具备 crash-safe atomic transaction 语义。随后 Go primitive 使用调用机的正常直连网络验证公网 HTTPS key 并提交。没有实际 failure evidence 时，它不建立 zgocloud/SOCKS tunnel；若将来需要稳定境外公网 runner，应复用既有 first-production / verify-production 的 direct-runner 基线，而不是为 IndexNow 新建代理栈。第三方 submission 失败不回滚已成功 provisioning 的 key/vhost；重跑会幂等复用 provisioning。不要把 key 写入仓库或命令行。
+首次运行会在仓库外的 `${XDG_DATA_HOME:-$HOME/.local/share}/go-tour-indexnow/<locale>/` 生成 locale-specific key；store 和 locale directory 为 `0700`，`<key>.txt` 为 `0600`。生成的 key 是 64 个 lowercase hex 字符，符合 8–128 个 `[A-Za-z0-9-]` 字符、仅可选一个末尾 LF/CRLF 的正式 contract。重跑自动复用该目录中唯一的有效 key；多个 candidate、symlink、非 regular file、非法 key 或其他造成 identity 不明确的条目都会 fail closed，绝不生成替代 key。若维护者已有受保护 key，可显式使用 `--key-file /secure/path/<key>.txt`；此时不会访问或生成默认 store key。closeout 仅从唯一 production identity 取得 Aliyun origin、目标 data root、Nginx vhost 与正式 Nginx test/reload command，部署 root verification key、配置精确 Nginx location 并执行 test/reload。配置 test 或 reload 明确失败时会恢复本轮 vhost/key 变更；已存在完全一致 location 时幂等，不一致则 fail closed。本流程不声称 vhost 写入具备 crash-safe atomic transaction 语义。随后 Go primitive 使用调用机的正常直连网络验证公网 HTTPS key 并提交。没有实际 failure evidence 时，它不建立 zgocloud/SOCKS tunnel；若将来需要稳定境外公网 runner，应复用既有 first-production / verify-production 的 direct-runner 基线，而不是为 IndexNow 新建代理栈。第三方 submission 失败不回滚已成功 provisioning 的 key/vhost；202 或网络失败后重跑仍使用同一 key。成功后不周期性重复全站 bootstrap。不要把 key 写入 Git、production identity 或 evidence。
 
 底层 submission primitive 仍为下列 Go 命令；closeout 自动调用它，维护者不应为新增 locale 手工部署 key 或修改 vhost。该命令会验证公网 root key、正式 HTTPS `/sitemap.xml`、hostname、无重复 URL，以及动态 sitemap URL 数量必须在 `1..10000`（IndexNow 单请求上限）内；固定 probe URL 为正式 production origin（homepage），它先单独提交以验证 key。probe 返回 HTTP `202` 表示 key 验证仍 pending，命令明确停止，不会 bulk 提交；probe 返回 `200` 后，命令从 sitemap URL 集合排除 probe，再 bulk 提交剩余 `N-1` 个 URL。只有 bulk 最终 HTTP `200` 才输出动态 URL 数量的 PASS，其中 `submitted_urls=N` 包含已成功提交的 homepage probe；若 sitemap 仅含 homepage，则 probe 的 HTTP `200` 即为最终成功且 `submitted_urls=1`：
 
