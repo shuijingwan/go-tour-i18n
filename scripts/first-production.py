@@ -32,6 +32,7 @@ IDENTITY_SPEC = importlib.util.spec_from_file_location(
 IDENTITY = importlib.util.module_from_spec(IDENTITY_SPEC)
 IDENTITY_SPEC.loader.exec_module(IDENTITY)
 RECEIPT_SCHEMA = "go-tour-i18n/first-production-receipt/v1"
+INVOCATION_CONTROL_PERSIST = "yes"
 ALIYUN_ONEINSTACK_NGINX = "/usr/local/nginx/sbin/nginx"
 ZGOCLOUD_ONEINSTACK_NGINX = "/usr/local/nginx/sbin/nginx"
 STAGE_ORDER = (
@@ -330,11 +331,16 @@ class Orchestrator:
         return type(value) is dict and value.get("result") == "PASS"
 
     def ssh_options(self, host):
+        # These masters own the invocation-scoped -D/-R forwards.  A timed
+        # idle ControlPersist can close those forwards while an independent
+        # long-running stage (notably verify-production.sh) is still active.
+        # Keep them until cleanup() explicitly sends "-O exit".
         return [
             "-o", "BatchMode=yes", "-o", "ConnectTimeout=10",
             "-o", "ServerAliveInterval=5", "-o", "ServerAliveCountMax=3",
             "-o", "ConnectionAttempts=3", "-o", "ControlMaster=auto",
-            "-o", "ControlPersist=60", "-o", f"ControlPath={self.control[host]}",
+            "-o", f"ControlPersist={INVOCATION_CONTROL_PERSIST}",
+            "-o", f"ControlPath={self.control[host]}",
         ]
 
     def run(self, command, *, input_text=None, capture=False, stage="preflight", timeout=300):
@@ -880,7 +886,8 @@ done
         if type(port) is not int or not 1 <= port <= 65535:
             raise FirstProductionError(
                 "browser", "current invocation-scoped zgocloud SOCKS port",
-                repr(port), "重新执行同一 first-production invocation 以建立本次预检网络通道",
+                repr(port),
+                f"对同一 release 重新运行 scripts/first-production.sh {self.release_dir} 以 resume 并建立新的 invocation-scoped tunnel；不得回退到维护者本机默认网络",
             )
         try:
             with socket.create_connection(("127.0.0.1", port), timeout=2):
@@ -888,7 +895,8 @@ done
         except OSError as exc:
             raise FirstProductionError(
                 "browser", "reachable current invocation-scoped zgocloud SOCKS tunnel",
-                str(exc), "重新执行同一 first-production invocation；不得回退到维护者本机默认网络",
+                str(exc),
+                f"保留 failure receipt，并对同一 release 重新运行 scripts/first-production.sh {self.release_dir} 以 resume 并建立新的 invocation-scoped tunnel；不得回退到维护者本机默认网络",
             ) from exc
         proxy_server = f"socks5://127.0.0.1:{port}"
         self.run([

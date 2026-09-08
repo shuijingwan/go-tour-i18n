@@ -280,6 +280,7 @@ printf 200
     def test_first_production_browser_fails_closed_without_current_socks_tunnel(self):
         orchestrator = FIRST.Orchestrator.__new__(FIRST.Orchestrator)
         orchestrator.cf_socks_local_port = None
+        orchestrator.release_dir = pathlib.Path("/tmp/go-tour-release-fr-FR-test")
         orchestrator.run = mock.Mock()
         orchestrator.record = mock.Mock()
 
@@ -287,12 +288,16 @@ printf 200
             orchestrator.browser()
 
         self.assertEqual(raised.exception.stage, "browser")
+        self.assertIn("scripts/first-production.sh /tmp/go-tour-release-fr-FR-test", raised.exception.next_step)
+        self.assertIn("resume", raised.exception.next_step)
+        self.assertIn("不得回退到维护者本机默认网络", raised.exception.next_step)
         orchestrator.run.assert_not_called()
         orchestrator.record.assert_not_called()
 
     def test_first_production_browser_fails_closed_when_current_socks_listener_is_unreachable(self):
         orchestrator = FIRST.Orchestrator.__new__(FIRST.Orchestrator)
         orchestrator.cf_socks_local_port = 49152
+        orchestrator.release_dir = pathlib.Path("/tmp/go-tour-release-fr-FR-test")
         orchestrator.run = mock.Mock()
         orchestrator.record = mock.Mock()
 
@@ -301,6 +306,10 @@ printf 200
                 orchestrator.browser()
 
         self.assertEqual(raised.exception.stage, "browser")
+        self.assertIn("保留 failure receipt", raised.exception.next_step)
+        self.assertIn("scripts/first-production.sh /tmp/go-tour-release-fr-FR-test", raised.exception.next_step)
+        self.assertIn("resume", raised.exception.next_step)
+        self.assertIn("不得回退到维护者本机默认网络", raised.exception.next_step)
         orchestrator.run.assert_not_called()
         orchestrator.record.assert_not_called()
 
@@ -372,6 +381,83 @@ printf 200
             with mock.patch.object(pathlib.Path, "is_socket", return_value=True), mock.patch.object(FIRST.subprocess, "run") as run:
                 instance.cleanup()
             self.assertEqual(run.call_count, 2)
+            self.assertEqual({call.args[0][-1] for call in run.call_args_list}, {"aliyun", "zgocloud"})
+            self.assertTrue(all("-O" in call.args[0] and "exit" in call.args[0] for call in run.call_args_list))
+            self.assertFalse(root.exists())
+
+    def test_invocation_tunnel_has_no_idle_deadline_across_long_public_machine_stage(self):
+        identity = FIRST.IDENTITY.load_identity(ROOT / "production" / "identity.json")
+        with tempfile.TemporaryDirectory() as directory:
+            instance = FIRST.Orchestrator.__new__(FIRST.Orchestrator)
+            instance.shared = identity["shared"]
+            instance.control = {
+                identity["shared"]["aliyun_ssh_alias"]: pathlib.Path(directory) / "a",
+                identity["shared"]["zgocloud_ssh_alias"]: pathlib.Path(directory) / "z",
+            }
+            instance.cf_socks_aliyun_port = None
+            instance.cf_socks_local_port = None
+            ports = iter((18080, 18081))
+            instance._free_loopback_port = lambda: next(ports)
+            commands = []
+            instance.run = lambda command, **kwargs: commands.append(command)
+
+            instance.setup_cloudflare_network_tunnel()
+
+        self.assertEqual(len(commands), 2)
+        for command in commands:
+            rendered = " ".join(map(str, command))
+            self.assertIn("ControlMaster=yes", rendered)
+            self.assertIn("ControlPersist=yes", rendered)
+            self.assertNotIn("ControlPersist=60", rendered)
+
+        # public-machine is intentionally allowed to outlive the former
+        # 60-second idle window; no real-time sleep is needed to prove that
+        # the masters have no timer that can expire during that stage.
+        public, calls = self.public_machine_instance()
+        public.public_machine()
+        verifier = next(call for call in calls if call[0] == "run")
+        self.assertGreater(verifier[2]["timeout"], 60)
+
+    def test_main_cleanup_runs_on_pass_failure_and_signal_interrupt(self):
+        cases = (
+            (None, 0, None),
+            (FIRST.FirstProductionError("browser", "reachable tunnel", "refused", "resume"), 1, None),
+            (KeyboardInterrupt("received signal"), None, KeyboardInterrupt),
+        )
+        original = sys.argv
+        try:
+            sys.argv = ["first-production.py", "/tmp/go-tour-release-fr-FR-test"]
+            for side_effect, expected_result, raised_type in cases:
+                with self.subTest(side_effect=type(side_effect).__name__ if side_effect else "pass"):
+                    fake = mock.Mock()
+                    fake.receipt = {"stages": {}}
+                    fake.execute.side_effect = side_effect
+                    with mock.patch.object(FIRST, "Orchestrator", return_value=fake):
+                        if raised_type:
+                            with self.assertRaises(raised_type):
+                                FIRST.main()
+                        else:
+                            self.assertEqual(FIRST.main(), expected_result)
+                    fake.cleanup.assert_called_once_with()
+        finally:
+            sys.argv = original
+
+    def test_int_term_and_hup_handlers_interrupt_through_main_cleanup_path(self):
+        instance = FIRST.Orchestrator.__new__(FIRST.Orchestrator)
+        instance._signal_handlers = {}
+        installed = {}
+
+        def install(signum, handler):
+            installed[signum] = handler
+
+        with mock.patch.object(FIRST.signal, "getsignal", return_value=FIRST.signal.SIG_DFL), \
+                mock.patch.object(FIRST.signal, "signal", side_effect=install):
+            instance._install_signal_cleanup()
+
+        self.assertEqual(set(installed), {FIRST.signal.SIGINT, FIRST.signal.SIGTERM, FIRST.signal.SIGHUP})
+        for signum, handler in installed.items():
+            with self.subTest(signum=signum), self.assertRaisesRegex(KeyboardInterrupt, f"received signal {signum}"):
+                handler(signum, None)
 
     def test_cloudflare_tunnel_is_localhost_only_fail_closed_and_cleaned(self):
         identity = FIRST.IDENTITY.load_identity(ROOT / "production" / "identity.json")
