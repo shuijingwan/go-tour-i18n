@@ -1,0 +1,18 @@
+* Limites padrão de slices
+
+Ao fatiar, você pode omitir os limites superior ou inferior para usar seus valores padrão.
+
+O padrão é zero para o limite inferior e o comprimento do slice ou array subjacente para o limite superior.
+
+Para o array
+
+	var a [10]int
+
+estas expressões de slice são equivalentes:
+
+	a[0:10]
+	a[:10]
+	a[0:]
+	a[:]
+
+.play moretypes/slice-bounds.go

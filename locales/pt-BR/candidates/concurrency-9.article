@@ -1,0 +1,21 @@
+* sync.Mutex
+
+Vimos como os canais são excelentes para a comunicação entre goroutines.
+
+Mas e se não precisarmos de comunicação? E se quisermos apenas garantir que somente
+uma goroutine possa acessar uma variável por vez para evitar conflitos?
+
+Esse conceito é chamado de _exclusão_mútua_, e o nome convencional da estrutura de dados que o fornece é _mutex_.
+
+A biblioteca padrão de Go fornece exclusão mútua com
+[[/pkg/sync/#Mutex][`sync.Mutex`]] e seus dois métodos:
+
+- `Lock`
+- `Unlock`
+
+Podemos definir um bloco de código para ser executado em exclusão mútua envolvendo-o
+com uma chamada a `Lock` e outra a `Unlock`, como mostrado no método `Inc`.
+
+Também podemos usar `defer` para garantir que o mutex seja desbloqueado, como no método `Value`.
+
+.play concurrency/mutex-counter.go

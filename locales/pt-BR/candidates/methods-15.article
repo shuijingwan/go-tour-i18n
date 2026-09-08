@@ -1,0 +1,25 @@
+* Asserções de tipo
+
+Uma _asserção_de_tipo_ fornece acesso ao valor concreto subjacente de um valor de interface.
+
+	t := i.(T)
+
+Essa instrução afirma que o valor de interface `i` contém o tipo concreto `T`
+e atribui o valor `T` subjacente à variável `t`.
+
+Se `i` não contiver um `T`, a instrução causará um panic.
+
+Para _verificar_ se um valor de interface contém um tipo específico,
+uma asserção de tipo pode retornar dois valores: o valor subjacente
+e um valor booleano que informa se a asserção foi bem-sucedida.
+
+	t, ok := i.(T)
+
+Se `i` contiver um `T`, então `t` será o valor subjacente e `ok` será true.
+
+Caso contrário, `ok` será false e `t` será o valor zero do tipo `T`,
+sem que ocorra um panic.
+
+Observe a semelhança entre essa sintaxe e a sintaxe de leitura de um map.
+
+.play methods/type-assertions.go

@@ -1,0 +1,11 @@
+* Maps
+
+Um map associa chaves a valores.
+
+O valor zero de um map é `nil`.
+Um map `nil` não tem chaves, e não é possível adicionar chaves a ele.
+
+A função `make` retorna um map do tipo fornecido,
+inicializado e pronto para uso.
+
+.play moretypes/maps.go

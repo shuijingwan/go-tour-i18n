@@ -1,0 +1,18 @@
+* Comprimento e capacidade de um slice
+
+Um slice tem um _comprimento_ e uma _capacidade_.
+
+O comprimento de um slice é o número de elementos que ele contém.
+
+A capacidade de um slice é o número de elementos no array subjacente,
+contados a partir do primeiro elemento do slice.
+
+O comprimento e a capacidade de um slice `s` podem ser obtidos usando as expressões
+`len(s)` e `cap(s)`.
+
+Você pode aumentar o comprimento de um slice fatiando-o novamente,
+desde que ele tenha capacidade suficiente.
+Tente alterar uma das operações de fatiamento no programa de exemplo para estendê-lo
+além de sua capacidade e veja o que acontece.
+
+.play moretypes/slice-len-cap.go

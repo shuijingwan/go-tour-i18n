@@ -1,0 +1,21 @@
+* Exercício: erros
+
+Copie sua função `Sqrt` do [[/tour/flowcontrol/8][exercício anterior]] e modifique-a para retornar um valor `error`.
+
+`Sqrt` deve retornar um valor de erro não nil quando receber um número negativo, pois não oferece suporte a números complexos.
+
+Crie um novo tipo
+
+	type ErrNegativeSqrt float64
+
+e faça com que ele seja um `error` definindo para ele o método
+
+	func (e ErrNegativeSqrt) Error() string
+
+de modo que `ErrNegativeSqrt(-2).Error()` retorne `"cannot`Sqrt`negative`number:`-2"`.
+
+*Observação:* uma chamada a `fmt.Sprint(e)` dentro do método `Error` fará o programa entrar em um laço infinito. Você pode evitar isso convertendo `e` antes: `fmt.Sprint(float64(e))`. Por quê?
+
+Altere sua função `Sqrt` para retornar um valor `ErrNegativeSqrt` quando receber um número negativo.
+
+.play methods/exercise-errors.go

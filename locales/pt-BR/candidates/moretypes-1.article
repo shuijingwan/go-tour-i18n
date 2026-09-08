@@ -1,0 +1,24 @@
+* Ponteiros
+
+Go tem ponteiros.
+Um ponteiro armazena o endereço de memória de um valor.
+
+O tipo `*T` é um ponteiro para um valor do tipo `T`. Seu valor zero é `nil`.
+
+	var p *int
+
+O operador `&` gera um ponteiro para seu operando.
+
+	i := 42
+	p = &i
+
+O operador `*` denota o valor subjacente do ponteiro.
+
+	fmt.Println(*p) // lê i por meio do ponteiro p
+	*p = 21         // define i por meio do ponteiro p
+
+Isso é conhecido como "desreferenciamento" ou "indireção".
+
+Ao contrário de C, Go não tem aritmética de ponteiros.
+
+.play moretypes/pointers.go

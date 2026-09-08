@@ -1,0 +1,11 @@
+* Valores de retorno nomeados
+
+Em Go, os valores de retorno podem ser nomeados. Nesse caso, eles são tratados como variáveis definidas no início da função.
+
+Esses nomes devem ser usados para documentar o significado dos valores de retorno.
+
+Uma instrução `return` sem argumentos retorna os valores de retorno nomeados. Isso é conhecido como retorno "nu".
+
+Instruções de retorno nu devem ser usadas somente em funções curtas, como no exemplo mostrado aqui. Elas podem prejudicar a legibilidade em funções mais longas.
+
+.play basics/named-results.go

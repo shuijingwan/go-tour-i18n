@@ -1,0 +1,24 @@
+* Receptores de ponteiro
+
+É possível declarar métodos com receptores de ponteiro.
+
+Isso significa que o tipo do receptor tem a sintaxe literal `*T` para algum tipo `T`.
+(Além disso, o próprio `T` não pode ser um ponteiro como `*int`.)
+
+Neste exemplo, o método `Scale` é definido em `*Vertex`.
+
+Métodos com receptores de ponteiro podem modificar o valor para o qual o receptor
+aponta (como `Scale` faz aqui).
+Como os métodos frequentemente precisam modificar seu receptor, os receptores de ponteiro são mais
+comuns que os receptores de valor.
+
+Experimente remover o `*` da declaração da função `Scale` na linha 16
+e observe como o comportamento do programa muda.
+
+Com um receptor de valor, o método `Scale` opera sobre uma cópia do valor
+`Vertex` original.
+(Esse é o mesmo comportamento de qualquer outro argumento de função.)
+O método `Scale` precisa ter um receptor de ponteiro para alterar o valor `Vertex`
+declarado na função `main`.
+
+.play methods/methods-pointers.go

@@ -1,0 +1,9 @@
+* Literais de struct
+
+Um literal de struct denota um valor de struct recém-alocado listando os valores de seus campos.
+
+Você pode listar apenas um subconjunto dos campos usando a sintaxe `Name:`. (A ordem dos campos nomeados não importa.)
+
+O prefixo especial `&` retorna um ponteiro para o valor da struct.
+
+.play moretypes/struct-literals.go

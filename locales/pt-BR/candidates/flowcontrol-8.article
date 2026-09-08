@@ -1,0 +1,38 @@
+* Exercício: laços e funções
+
+Para experimentar funções e laços, vamos implementar uma função de raiz quadrada: dado um número x, queremos encontrar o número z cujo z² seja o mais próximo possível de x.
+
+Em geral, os computadores calculam a raiz quadrada de x usando um laço.
+Partindo de uma estimativa z, podemos ajustar z com base em quanto z² se aproxima de x,
+produzindo uma estimativa melhor:
+
+	z -= (z*z - x) / (2*z)
+
+Repetir esse ajuste melhora cada vez mais a estimativa,
+até chegarmos a uma resposta tão próxima quanto possível da raiz quadrada real.
+
+Implemente isso na `func`Sqrt` fornecida.
+Uma boa estimativa inicial para z é 1, independentemente da entrada.
+Para começar, repita o cálculo 10 vezes e imprima cada z ao longo do processo.
+Veja quão perto você chega da resposta para vários valores de x (1, 2, 3, ...)
+e com que rapidez a estimativa melhora.
+
+Dica: para declarar e inicializar um valor de ponto flutuante,
+use a sintaxe de ponto flutuante ou uma conversão:
+
+	z := 1.0
+	z := float64(1)
+
+Em seguida, altere a condição do laço para que ele pare quando o valor deixar de
+mudar (ou mudar apenas uma quantidade muito pequena).
+Veja se isso exige mais ou menos de 10 iterações.
+Experimente outras estimativas iniciais para z, como x ou x/2.
+Quão próximos os resultados da sua função ficam de [[/pkg/math/#Sqrt][math.Sqrt]] na biblioteca padrão?
+
+(*Observação:* se você tiver interesse nos detalhes do algoritmo, o termo z² − x acima
+indica a distância entre z² e o valor que ele precisa atingir (x), e a divisão por 2z é a derivada
+de z², usada para dimensionar o ajuste de z de acordo com a rapidez com que z² varia.
+Essa abordagem geral é chamada de [[https://en.wikipedia.org/wiki/Newton%27s_method][método de Newton]].
+Ela funciona bem para muitas funções, mas especialmente bem para a raiz quadrada.)
+
+.play flowcontrol/exercise-loops-and-functions.go

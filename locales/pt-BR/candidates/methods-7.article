@@ -1,0 +1,21 @@
+* Métodos e indireção de ponteiro (2)
+
+O equivalente acontece no sentido inverso.
+
+Funções que recebem um argumento de valor precisam receber um valor desse tipo específico:
+
+	var v Vertex
+	fmt.Println(AbsFunc(v))  // OK
+	fmt.Println(AbsFunc(&v)) // Erro de compilação!
+
+enquanto métodos com receptores de valor recebem um valor ou um ponteiro como
+receptor quando são chamados:
+
+	var v Vertex
+	fmt.Println(v.Abs()) // OK
+	p := &v
+	fmt.Println(p.Abs()) // OK
+
+Nesse caso, a chamada de método `p.Abs()` é interpretada como `(*p).Abs()`.
+
+.play methods/indirection-values.go

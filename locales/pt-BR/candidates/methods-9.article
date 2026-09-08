@@ -1,0 +1,11 @@
+* Interfaces
+
+Um _tipo_de_interface_ é definido como um conjunto de assinaturas de métodos.
+
+Um valor de tipo de interface pode conter qualquer valor que implemente esses métodos.
+
+*Observação:* há um erro no código de exemplo na linha 22.
+`Vertex` (o tipo de valor) não implementa `Abser` porque
+o método `Abs` está definido apenas em `*Vertex` (o tipo de ponteiro).
+
+.play methods/interfaces.go
