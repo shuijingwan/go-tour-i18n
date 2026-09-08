@@ -5,11 +5,13 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"net"
 	"net/http"
 	"os"
 	"path/filepath"
 	"strings"
 	"testing"
+	"time"
 )
 
 func TestBootstrapIndexNowSubmitsProbeThenRemainingSitemapURLs(t *testing.T) {
@@ -178,6 +180,107 @@ func TestReadIndexNowKeyRequiresMatchingPublicKeyFilename(t *testing.T) {
 	if err == nil || !strings.Contains(err.Error(), "<key>.txt") {
 		t.Fatalf("err = %v", err)
 	}
+}
+
+func TestReadIndexNowKeyRejectsSymlink(t *testing.T) {
+	dir := t.TempDir()
+	target := filepath.Join(dir, "target")
+	if err := os.WriteFile(target, []byte("private-key\n"), 0600); err != nil {
+		t.Fatal(err)
+	}
+	path := filepath.Join(dir, "private-key.txt")
+	if err := os.Symlink(target, path); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := readIndexNowKey(path); err == nil || !strings.Contains(err.Error(), "non-symlink") {
+		t.Fatalf("err = %v", err)
+	}
+}
+
+func TestReadIndexNowKeyRejectsBareCarriageReturn(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "private-key.txt")
+	if err := os.WriteFile(path, []byte("private-key\r"), 0600); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := readIndexNowKey(path); err == nil || !strings.Contains(err.Error(), "one non-empty line") {
+		t.Fatalf("err = %v", err)
+	}
+}
+
+func TestReadIndexNowKeyLengthAndCharacterContract(t *testing.T) {
+	for _, test := range []struct {
+		name  string
+		key   string
+		valid bool
+	}{
+		{"minimum", strings.Repeat("a", 8), true},
+		{"maximum", strings.Repeat("z", 128), true},
+		{"too short", strings.Repeat("a", 7), false},
+		{"too long", strings.Repeat("a", 129), false},
+		{"underscore", "test_key", false},
+		{"whitespace", "test key", false},
+		{"slash", "test/key", false},
+		{"punctuation", "test.key", false},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			path := filepath.Join(t.TempDir(), strings.ReplaceAll(test.key, "/", "-")+".txt")
+			if err := os.WriteFile(path, []byte(test.key+"\n"), 0600); err != nil {
+				t.Fatal(err)
+			}
+			_, err := readIndexNowKey(path)
+			if (err == nil) != test.valid {
+				t.Fatalf("readIndexNowKey(%q) err=%v, valid=%v", test.key, err, test.valid)
+			}
+		})
+	}
+}
+
+func TestIndexNowSafeGETRetriesOnlyTransientReadFailures(t *testing.T) {
+	previousSleep := indexNowRetrySleep
+	indexNowRetrySleep = func(time.Duration) {}
+	t.Cleanup(func() { indexNowRetrySleep = previousSleep })
+	t.Run("transient server", func(t *testing.T) {
+		attempts := 0
+		client := indexNowTestClient(func(*http.Request) (int, string) {
+			attempts++
+			if attempts < 3 {
+				return http.StatusServiceUnavailable, ""
+			}
+			return http.StatusOK, "ok"
+		})
+		request, _ := http.NewRequest(http.MethodGet, "https://locale.example/sitemap.xml", nil)
+		response, err := indexNowSafeGET(client, request)
+		if err != nil || response.StatusCode != http.StatusOK || attempts != 3 {
+			t.Fatalf("status=%v err=%v attempts=%d", response, err, attempts)
+		}
+		response.Body.Close()
+	})
+	t.Run("transient transport", func(t *testing.T) {
+		attempts := 0
+		client := &http.Client{Transport: roundTripFunc(func(*http.Request) (*http.Response, error) {
+			attempts++
+			if attempts < 3 {
+				return nil, &net.DNSError{IsTimeout: true}
+			}
+			return &http.Response{StatusCode: http.StatusOK, Body: io.NopCloser(strings.NewReader("ok")), Header: make(http.Header)}, nil
+		})}
+		request, _ := http.NewRequest(http.MethodGet, "https://locale.example/key.txt", nil)
+		response, err := indexNowSafeGET(client, request)
+		if err != nil || response.StatusCode != http.StatusOK || attempts != 3 {
+			t.Fatalf("status=%v err=%v attempts=%d", response, err, attempts)
+		}
+		response.Body.Close()
+	})
+	t.Run("semantic status does not retry", func(t *testing.T) {
+		attempts := 0
+		client := indexNowTestClient(func(*http.Request) (int, string) { attempts++; return http.StatusTooManyRequests, "" })
+		request, _ := http.NewRequest(http.MethodGet, "https://locale.example/sitemap.xml", nil)
+		response, err := indexNowSafeGET(client, request)
+		if err != nil || response.StatusCode != http.StatusTooManyRequests || attempts != 1 {
+			t.Fatalf("status=%v err=%v attempts=%d", response, err, attempts)
+		}
+		response.Body.Close()
+	})
 }
 
 func TestRequireIndexNowPublicKeyAcceptsOnlyOneOptionalLineEnding(t *testing.T) {

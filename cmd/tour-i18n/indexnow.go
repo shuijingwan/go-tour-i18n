@@ -4,9 +4,11 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"flag"
 	"fmt"
 	"io"
+	"net"
 	"net/http"
 	"net/url"
 	"os"
@@ -17,8 +19,11 @@ import (
 )
 
 const (
-	indexNowEndpoint = "https://api.indexnow.org/indexnow"
-	indexNowMaxURLs  = 10000
+	indexNowEndpoint     = "https://api.indexnow.org/indexnow"
+	indexNowMaxURLs      = 10000
+	indexNowKeyMinLength = 8
+	indexNowKeyMaxLength = 128
+	indexNowGETAttempts  = 3
 )
 
 type indexNowIdentity struct {
@@ -33,6 +38,8 @@ type indexNowProfile struct {
 }
 
 var sitemapLocPattern = regexp.MustCompile(`<loc>([^<]+)</loc>`)
+var indexNowKeyPattern = regexp.MustCompile(`^[A-Za-z0-9-]+$`)
+var indexNowRetrySleep = time.Sleep
 
 type indexNowSubmission struct {
 	Host        string   `json:"host"`
@@ -102,14 +109,28 @@ func readIndexNowLiveProfile(path, locale string) (indexNowProfile, error) {
 }
 
 func readIndexNowKey(path string) (string, error) {
+	info, err := os.Lstat(path)
+	if err != nil {
+		return "", fmt.Errorf("read IndexNow key file: %w", err)
+	}
+	if !info.Mode().IsRegular() || info.Mode()&os.ModeSymlink != 0 {
+		return "", fmt.Errorf("IndexNow key file must be a regular non-symlink file")
+	}
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return "", fmt.Errorf("read IndexNow key file: %w", err)
 	}
-	key := strings.TrimSuffix(string(data), "\n")
-	key = strings.TrimSuffix(key, "\r")
+	key := string(data)
+	if strings.HasSuffix(key, "\r\n") {
+		key = strings.TrimSuffix(key, "\r\n")
+	} else if strings.HasSuffix(key, "\n") {
+		key = strings.TrimSuffix(key, "\n")
+	}
 	if key == "" || strings.ContainsAny(key, "\r\n") {
 		return "", fmt.Errorf("IndexNow key file must contain one non-empty line")
+	}
+	if len(key) < indexNowKeyMinLength || len(key) > indexNowKeyMaxLength || !indexNowKeyPattern.MatchString(key) {
+		return "", fmt.Errorf("IndexNow key must be %d..%d characters of [A-Za-z0-9-]", indexNowKeyMinLength, indexNowKeyMaxLength)
 	}
 	if filepath.Base(path) != key+".txt" {
 		return "", fmt.Errorf("IndexNow key file name must be <key>.txt")
@@ -183,7 +204,7 @@ func requireIndexNowPublicKey(ctx context.Context, client *http.Client, keyLocat
 	if err != nil {
 		return err
 	}
-	response, err := client.Do(request)
+	response, err := indexNowSafeGET(client, request)
 	if err != nil {
 		return fmt.Errorf("verify public IndexNow key: %w", err)
 	}
@@ -215,7 +236,7 @@ func fetchIndexNowSitemap(ctx context.Context, client *http.Client, sitemapURL, 
 	if err != nil {
 		return nil, err
 	}
-	response, err := client.Do(request)
+	response, err := indexNowSafeGET(client, request)
 	if err != nil {
 		return nil, fmt.Errorf("fetch formal sitemap: %w", err)
 	}
@@ -249,6 +270,40 @@ func fetchIndexNowSitemap(ctx context.Context, client *http.Client, sitemapURL, 
 		urls = append(urls, location)
 	}
 	return urls, nil
+}
+
+// indexNowSafeGET retries only safe reads with the established three-attempt,
+// 1s/2s bounded backoff. POST results can be unknown and are never retried.
+func indexNowSafeGET(client *http.Client, request *http.Request) (*http.Response, error) {
+	for attempt := 1; attempt <= indexNowGETAttempts; attempt++ {
+		response, err := client.Do(request)
+		if err == nil && !indexNowTransientStatus(response.StatusCode) {
+			return response, nil
+		}
+		if err != nil && !indexNowTransientTransport(err) {
+			return nil, err
+		}
+		if attempt == indexNowGETAttempts {
+			if err != nil {
+				return nil, err
+			}
+			return response, nil
+		}
+		if err == nil {
+			response.Body.Close()
+		}
+		indexNowRetrySleep(time.Duration(attempt) * time.Second)
+	}
+	panic("unreachable")
+}
+
+func indexNowTransientStatus(status int) bool {
+	return status == http.StatusBadGateway || status == http.StatusServiceUnavailable || status == http.StatusGatewayTimeout || status == 522 || status == 525
+}
+
+func indexNowTransientTransport(err error) bool {
+	var networkError net.Error
+	return errors.As(err, &networkError) && (networkError.Timeout() || networkError.Temporary())
 }
 
 func submitIndexNow(ctx context.Context, client *http.Client, endpoint, host, key, keyLocation string, urls []string) (int, error) {
