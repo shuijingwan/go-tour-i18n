@@ -1,0 +1,15 @@
+* Ordem de avaliação do switch
+
+Os casos de um switch são avaliados de cima para baixo, parando quando um caso é satisfeito.
+
+(Por exemplo,
+
+	switch i {
+	case 0:
+	case f():
+	}
+
+não chama `f` se `i==0`.)
+
+
+.play flowcontrol/switch-evaluation-order.go

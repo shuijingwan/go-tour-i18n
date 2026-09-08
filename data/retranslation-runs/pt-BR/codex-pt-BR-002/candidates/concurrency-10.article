@@ -1,0 +1,10 @@
+* Exercício: rastreador da web
+
+Neste exercício, você usará os recursos de concorrência de Go para paralelizar um rastreador da web.
+
+Modifique a função `Crawl` para buscar URLs em paralelo sem buscar a mesma URL duas vezes.
+
+_Dica_: você pode manter um cache das URLs que foram buscadas em um map, mas maps, por si só, não são
+seguros para uso concorrente!
+
+.play concurrency/exercise-web-crawler.go

@@ -1,0 +1,10 @@
+* Exercício: rastreador da web
+
+Neste exercício, você usará os recursos de concorrência de ⟪GTI18N_bb686393_000001⟫ para paralelizar um rastreador da web.
+
+Modifique a função ⟪GTI18N_bb686393_000002⟫Crawl⟪GTI18N_bb686393_000003⟫ para buscar URLs em paralelo sem buscar a mesma ⟪GTI18N_bb686393_000004⟫ duas vezes.
+
+⟪GTI18N_bb686393_000005⟫Dica⟪GTI18N_bb686393_000006⟫: você pode manter um cache das URLs que foram buscadas em um map, mas maps, por si só, não são
+seguros para uso concorrente!
+
+⟪GTI18N_bb686393_000007⟫

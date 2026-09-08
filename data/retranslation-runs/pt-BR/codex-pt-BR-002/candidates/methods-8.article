@@ -1,0 +1,17 @@
+* Escolha entre receptor de valor e receptor de ponteiro
+
+Há dois motivos para usar um receptor de ponteiro.
+
+O primeiro é permitir que o método modifique o valor para o qual seu receptor aponta.
+
+O segundo é evitar copiar o valor a cada chamada de método.
+Isso pode ser mais eficiente se o receptor for uma struct grande, por exemplo.
+
+Neste exemplo, tanto `Scale` quanto `Abs` são métodos com o tipo de receptor `*Vertex`,
+embora o método `Abs` não precise modificar seu receptor.
+
+Em geral, todos os métodos de um determinado tipo devem ter receptores de valor ou de ponteiro,
+mas não uma mistura dos dois.
+(Veremos o motivo nas próximas páginas.)
+
+.play methods/methods-with-pointer-receivers.go

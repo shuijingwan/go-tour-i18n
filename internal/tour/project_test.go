@@ -65,6 +65,7 @@ func TestWriteSiteMetadataRejectsDevelopmentMetadata(t *testing.T) {
 func TestSiteMetadataTimesAreLocaleAware(t *testing.T) {
 	metadata := SiteMetadata{UpstreamCommitTime: "2026-08-20T05:56:11Z"}
 	for locale, want := range map[string]string{
+		"pt-BR": "2026-08-20 02:56:11 (horário local)",
 		"zh-CN": "2026-08-20 13:56:11（北京时间）",
 		"de-DE": "2026-08-20 07:56:11 (Ortszeit)",
 		"es-ES": "2026-08-20 07:56:11 (hora local)",

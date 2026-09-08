@@ -1,0 +1,16 @@
+* Métodos e indireção de ponteiro
+
+Ao comparar os dois programas anteriores, você pode notar que
+funções com um argumento de ponteiro precisam receber um ponteiro:
+
+⟪GTI18N_39fb725b_000001⟫Erro de compilação!⟪GTI18N_39fb725b_000002⟫enquanto métodos com receptores de ponteiro recebem um valor ou um ponteiro como
+receptor quando são chamados:
+
+⟪GTI18N_39fb725b_000003⟫
+
+Na instrução ⟪GTI18N_39fb725b_000004⟫v.Scale(5)⟪GTI18N_39fb725b_000005⟫, embora ⟪GTI18N_39fb725b_000006⟫v⟪GTI18N_39fb725b_000007⟫ seja um valor e não um ponteiro,
+o método com receptor de ponteiro é chamado automaticamente.
+Ou seja, por conveniência, ⟪GTI18N_39fb725b_000008⟫ interpreta a instrução ⟪GTI18N_39fb725b_000009⟫v.Scale(5)⟪GTI18N_39fb725b_000010⟫ como
+⟪GTI18N_39fb725b_000011⟫(&v).Scale(5)⟪GTI18N_39fb725b_000012⟫, pois o método ⟪GTI18N_39fb725b_000013⟫Scale⟪GTI18N_39fb725b_000014⟫ tem um receptor de ponteiro.
+
+⟪GTI18N_39fb725b_000015⟫

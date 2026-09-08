@@ -1,0 +1,16 @@
+* Nomes exportados
+
+Em ⟪GTI18N_38b9c70e_000001⟫, um nome é exportado se começar com uma letra maiúscula.
+Por exemplo, ⟪GTI18N_38b9c70e_000002⟫Pizza⟪GTI18N_38b9c70e_000003⟫ é um nome exportado, assim como ⟪GTI18N_38b9c70e_000004⟫Pi⟪GTI18N_38b9c70e_000005⟫, que é exportado pelo
+pacote ⟪GTI18N_38b9c70e_000006⟫math⟪GTI18N_38b9c70e_000007⟫.
+
+⟪GTI18N_38b9c70e_000008⟫pizza⟪GTI18N_38b9c70e_000009⟫ e ⟪GTI18N_38b9c70e_000010⟫pi⟪GTI18N_38b9c70e_000011⟫ não começam com uma letra maiúscula, portanto não são exportados.
+
+Ao importar um pacote, você só pode fazer referência aos nomes exportados dele.
+Nenhum nome "não exportado" pode ser acessado de fora do pacote.
+
+Execute o código. Observe a mensagem de erro.
+
+Para corrigir o erro, renomeie ⟪GTI18N_38b9c70e_000012⟫math.pi⟪GTI18N_38b9c70e_000013⟫ como ⟪GTI18N_38b9c70e_000014⟫math.Pi⟪GTI18N_38b9c70e_000015⟫ e tente novamente.
+
+⟪GTI18N_38b9c70e_000016⟫

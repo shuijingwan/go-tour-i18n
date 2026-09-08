@@ -1,0 +1,21 @@
+* For
+
+Go tem apenas uma construção de laço: o laço `for`.
+
+O laço `for` básico tem três componentes separados por pontos e vírgulas:
+
+- a instrução de inicialização: executada antes da primeira iteração
+- a expressão de condição: avaliada antes de cada iteração
+- a instrução posterior: executada ao final de cada iteração
+
+A instrução de inicialização costuma ser uma declaração de variável, e as
+variáveis declaradas nela são visíveis apenas no escopo da instrução
+`for`.
+
+O laço deixará de iterar quando a condição booleana for avaliada como `false`.
+
+*Observação:* Diferentemente de outras linguagens, como C, Java ou JavaScript, não há parênteses
+ao redor dos três componentes da instrução `for`, e as chaves `{`}` são
+sempre obrigatórias.
+
+.play flowcontrol/for.go

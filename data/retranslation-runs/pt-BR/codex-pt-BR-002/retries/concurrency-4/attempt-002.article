@@ -1,0 +1,15 @@
+* Range e fechamento
+
+Um remetente pode ⟪GTI18N_3e925c67_000001⟫close⟪GTI18N_3e925c67_000002⟫ um canal para indicar que nenhum outro valor será enviado. Os receptores podem verificar se um canal foi fechado atribuindo um segundo parâmetro à expressão de recebimento: depois de
+
+⟪GTI18N_3e925c67_000003⟫
+
+⟪GTI18N_3e925c67_000004⟫ok⟪GTI18N_3e925c67_000005⟫ será ⟪GTI18N_3e925c67_000006⟫false⟪GTI18N_3e925c67_000007⟫ se não houver mais valores para receber e o canal estiver fechado.
+
+O laço ⟪GTI18N_3e925c67_000008⟫for`i`:=`range`c⟪GTI18N_3e925c67_000009⟫ recebe repetidamente valores do canal até que ele seja fechado.
+
+⟪GTI18N_3e925c67_000010⟫Observação:⟪GTI18N_3e925c67_000011⟫ somente o remetente deve fechar um canal, nunca o receptor. Enviar para um canal fechado causará um panic.
+
+⟪GTI18N_3e925c67_000012⟫Outra*observação:⟪GTI18N_3e925c67_000013⟫ canais não são como arquivos; normalmente, não é necessário fechá-los. O fechamento só é necessário quando o receptor precisa ser informado de que não haverá mais valores, como para encerrar um laço ⟪GTI18N_3e925c67_000014⟫range⟪GTI18N_3e925c67_000015⟫.
+
+⟪GTI18N_3e925c67_000016⟫

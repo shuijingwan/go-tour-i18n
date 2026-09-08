@@ -1,0 +1,23 @@
+* Exercício: árvores binárias equivalentes
+
+⟪GTI18N_b362cc15_000001⟫1.⟪GTI18N_b362cc15_000002⟫ Implemente a função ⟪GTI18N_b362cc15_000003⟫Walk⟪GTI18N_b362cc15_000004⟫.
+
+⟪GTI18N_b362cc15_000005⟫2.⟪GTI18N_b362cc15_000006⟫ Teste a função ⟪GTI18N_b362cc15_000007⟫Walk⟪GTI18N_b362cc15_000008⟫.
+
+A função ⟪GTI18N_b362cc15_000009⟫tree.New(k)⟪GTI18N_b362cc15_000010⟫ constrói uma árvore binária com estrutura aleatória (mas sempre ordenada) que contém os valores ⟪GTI18N_b362cc15_000011⟫k⟪GTI18N_b362cc15_000012⟫, ⟪GTI18N_b362cc15_000013⟫2k⟪GTI18N_b362cc15_000014⟫, ⟪GTI18N_b362cc15_000015⟫3k⟪GTI18N_b362cc15_000016⟫, ..., ⟪GTI18N_b362cc15_000017⟫10k⟪GTI18N_b362cc15_000018⟫.
+
+Crie um novo canal ⟪GTI18N_b362cc15_000019⟫ch⟪GTI18N_b362cc15_000020⟫ e inicie a travessia:
+
+⟪GTI18N_b362cc15_000021⟫
+
+Em seguida, leia e imprima 10 valores do canal. Eles devem ser os números 1, 2, 3, ..., 10.
+
+⟪GTI18N_b362cc15_000022⟫3.⟪GTI18N_b362cc15_000023⟫ Implemente a função ⟪GTI18N_b362cc15_000024⟫Same⟪GTI18N_b362cc15_000025⟫ usando ⟪GTI18N_b362cc15_000026⟫Walk⟪GTI18N_b362cc15_000027⟫ para determinar se ⟪GTI18N_b362cc15_000028⟫t1⟪GTI18N_b362cc15_000029⟫ e ⟪GTI18N_b362cc15_000030⟫t2⟪GTI18N_b362cc15_000031⟫ armazenam os mesmos valores.
+
+⟪GTI18N_b362cc15_000032⟫4.⟪GTI18N_b362cc15_000033⟫ Teste a função ⟪GTI18N_b362cc15_000034⟫Same⟪GTI18N_b362cc15_000035⟫.
+
+⟪GTI18N_b362cc15_000036⟫Same(tree.New(1),`tree.New(1))⟪GTI18N_b362cc15_000037⟫ deve retornar true, e ⟪GTI18N_b362cc15_000038⟫Same(tree.New(1),`tree.New(2))⟪GTI18N_b362cc15_000039⟫ deve retornar false.
+
+A documentação de ⟪GTI18N_b362cc15_000040⟫Tree⟪GTI18N_b362cc15_000041⟫ pode ser encontrada [[⟪GTI18N_b362cc15_000042⟫][aqui]].
+
+⟪GTI18N_b362cc15_000043⟫

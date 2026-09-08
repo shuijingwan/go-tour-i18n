@@ -1,0 +1,12 @@
+* Continuação de métodos
+
+Também é possível declarar um método em tipos que não sejam structs.
+
+Neste exemplo, vemos um tipo numérico ⟪GTI18N_31c4fd0d_000001⟫MyFloat⟪GTI18N_31c4fd0d_000002⟫ com um método ⟪GTI18N_31c4fd0d_000003⟫Abs⟪GTI18N_31c4fd0d_000004⟫.
+
+Só é possível declarar um método com um receptor cujo tipo esteja definido no mesmo
+pacote que o método.
+Não é possível declarar um método com um receptor cujo tipo esteja definido em outro
+pacote (o que inclui tipos embutidos, como ⟪GTI18N_31c4fd0d_000005⟫int⟪GTI18N_31c4fd0d_000006⟫).
+
+⟪GTI18N_31c4fd0d_000007⟫

@@ -1,0 +1,23 @@
+* Métodos e indireção de ponteiro
+
+Ao comparar os dois programas anteriores, você pode notar que
+funções com um argumento de ponteiro precisam receber um ponteiro:
+
+	var v Vertex
+	ScaleFunc(v, 5)  // Erro de compilação!
+	ScaleFunc(&v, 5) // OK
+
+enquanto métodos com receptores de ponteiro recebem um valor ou um ponteiro como
+receptor quando são chamados:
+
+	var v Vertex
+	v.Scale(5)  // OK
+	p := &v
+	p.Scale(10) // OK
+
+Na instrução `v.Scale(5)`, embora `v` seja um valor e não um ponteiro,
+o método com receptor de ponteiro é chamado automaticamente.
+Ou seja, por conveniência, Go interpreta a instrução `v.Scale(5)` como
+`(&v).Scale(5)`, pois o método `Scale` tem um receptor de ponteiro.
+
+.play methods/indirection.go

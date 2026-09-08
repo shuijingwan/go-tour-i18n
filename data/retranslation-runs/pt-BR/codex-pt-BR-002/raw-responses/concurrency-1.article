@@ -1,0 +1,15 @@
+* ⟪GTI18N_d0a9c450_000001⟫
+
+Uma ⟪GTI18N_d0a9c450_000002⟫⟪GTI18N_d0a9c450_000003⟫⟪GTI18N_d0a9c450_000004⟫ é uma thread leve gerenciada pelo runtime de ⟪GTI18N_d0a9c450_000005⟫.
+
+⟪GTI18N_d0a9c450_000006⟫
+
+inicia uma nova ⟪GTI18N_d0a9c450_000007⟫ que executa
+
+⟪GTI18N_d0a9c450_000008⟫
+
+A avaliação de ⟪GTI18N_d0a9c450_000009⟫f⟪GTI18N_d0a9c450_000010⟫, ⟪GTI18N_d0a9c450_000011⟫x⟪GTI18N_d0a9c450_000012⟫, ⟪GTI18N_d0a9c450_000013⟫y⟪GTI18N_d0a9c450_000014⟫ e ⟪GTI18N_d0a9c450_000015⟫z⟪GTI18N_d0a9c450_000016⟫ ocorre na ⟪GTI18N_d0a9c450_000017⟫ atual, e a execução de ⟪GTI18N_d0a9c450_000018⟫f⟪GTI18N_d0a9c450_000019⟫ ocorre na nova ⟪GTI18N_d0a9c450_000020⟫.
+
+⟪GTI18N_d0a9c450_000021⟫ executam no mesmo espaço de endereçamento, portanto o acesso à memória compartilhada deve ser sincronizado. O pacote [[⟪GTI18N_d0a9c450_000022⟫][⟪GTI18N_d0a9c450_000023⟫sync⟪GTI18N_d0a9c450_000024⟫]] fornece primitivas úteis, embora você não precise usá-las muito em ⟪GTI18N_d0a9c450_000025⟫, pois há outras primitivas. (Veja a próxima página.)
+
+⟪GTI18N_d0a9c450_000026⟫

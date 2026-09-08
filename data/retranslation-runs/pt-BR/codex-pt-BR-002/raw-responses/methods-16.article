@@ -1,0 +1,19 @@
+* Switches de tipo
+
+Um ⟪GTI18N_26e4da09_000001⟫switch_de_tipo⟪GTI18N_26e4da09_000002⟫ é uma estrutura que permite várias asserções de tipo em sequência.
+
+Um switch de tipo é semelhante a uma instrução switch comum, mas os casos de um switch de
+tipo especificam tipos (não valores), e esses tipos são comparados com
+o tipo do valor contido no valor de interface fornecido.
+
+⟪GTI18N_26e4da09_000003⟫aqui ⟪GTI18N_26e4da09_000004⟫ tem o tipo ⟪GTI18N_26e4da09_000005⟫⟪GTI18N_26e4da09_000006⟫aqui ⟪GTI18N_26e4da09_000007⟫ tem o tipo ⟪GTI18N_26e4da09_000008⟫⟪GTI18N_26e4da09_000009⟫nenhuma correspondência; aqui ⟪GTI18N_26e4da09_000010⟫ tem o mesmo tipo que ⟪GTI18N_26e4da09_000011⟫⟪GTI18N_26e4da09_000012⟫A declaração em um switch de tipo tem a mesma sintaxe de uma asserção de tipo ⟪GTI18N_26e4da09_000013⟫i.(T)⟪GTI18N_26e4da09_000014⟫,
+mas o tipo específico ⟪GTI18N_26e4da09_000015⟫T⟪GTI18N_26e4da09_000016⟫ é substituído pela palavra-chave ⟪GTI18N_26e4da09_000017⟫type⟪GTI18N_26e4da09_000018⟫.
+
+Essa instrução switch verifica se o valor de interface ⟪GTI18N_26e4da09_000019⟫i⟪GTI18N_26e4da09_000020⟫
+contém um valor do tipo ⟪GTI18N_26e4da09_000021⟫T⟪GTI18N_26e4da09_000022⟫ ou ⟪GTI18N_26e4da09_000023⟫S⟪GTI18N_26e4da09_000024⟫.
+Em cada um dos casos ⟪GTI18N_26e4da09_000025⟫T⟪GTI18N_26e4da09_000026⟫ e ⟪GTI18N_26e4da09_000027⟫S⟪GTI18N_26e4da09_000028⟫, a variável ⟪GTI18N_26e4da09_000029⟫v⟪GTI18N_26e4da09_000030⟫ será do tipo
+⟪GTI18N_26e4da09_000031⟫T⟪GTI18N_26e4da09_000032⟫ ou ⟪GTI18N_26e4da09_000033⟫S⟪GTI18N_26e4da09_000034⟫, respectivamente, e conterá o valor contido em ⟪GTI18N_26e4da09_000035⟫i⟪GTI18N_26e4da09_000036⟫.
+No caso default (em que não há correspondência), a variável ⟪GTI18N_26e4da09_000037⟫v⟪GTI18N_26e4da09_000038⟫ tem
+o mesmo tipo de interface e o mesmo valor que ⟪GTI18N_26e4da09_000039⟫i⟪GTI18N_26e4da09_000040⟫.
+
+⟪GTI18N_26e4da09_000041⟫

@@ -189,6 +189,57 @@ func TestDeDEGlossary(t *testing.T) {
 	}
 }
 
+func TestPtBRGlossary(t *testing.T) {
+	glossary, err := LoadGlossary(repoRoot(t), "pt-BR")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if glossary.Locale != "pt-BR" {
+		t.Fatalf("glossary locale = %q, want pt-BR", glossary.Locale)
+	}
+	for key, want := range map[string]string{
+		"A Tour of Go":    "Um Tour por Go",
+		"Run":             "Executar",
+		"Format":          "Formatar",
+		"Reset":           "Redefinir",
+		"slide":           "página",
+		"constraint":      "restrição",
+		"type switch":     "switch de tipo",
+		"type assertion":  "asserção de tipo",
+		"interface value": "valor de interface",
+		"type parameter":  "parâmetro de tipo",
+	} {
+		if got := glossary.Mandatory[key]; got != want {
+			t.Errorf("mandatory[%q] = %q, want %q", key, got, want)
+		}
+	}
+	for key, want := range map[string]string{
+		"Go programming language": "linguagem de programação Go",
+		"channel":                 "canal",
+		"concurrency":             "concorrência",
+		"generics":                "genéricos",
+		"package":                 "pacote",
+		"standard library":        "biblioteca padrão",
+		"map":                     "map",
+		"slice":                   "slice",
+		"pointer":                 "ponteiro",
+	} {
+		if got := glossary.Preferred[key]; got != want {
+			t.Errorf("preferred[%q] = %q, want %q", key, got, want)
+		}
+	}
+	for _, want := range []string{"Golang", "Playground do Go", "rotina Go", "corrotina", "afirmação de tipo", "diapositiva", "ficheiro", "ecrã"} {
+		if !containsString(glossary.Forbidden, want) {
+			t.Errorf("forbidden missing %q: %v", want, glossary.Forbidden)
+		}
+	}
+	for _, want := range []string{"Go", "Go Playground", "go vet", "gofmt", "goroutine", "goroutines", "TranslationUnit", "present.Section"} {
+		if !containsString(glossary.Keep, want) {
+			t.Errorf("keep missing %q: %v", want, glossary.Keep)
+		}
+	}
+}
+
 func TestNlNLGlossary(t *testing.T) {
 	glossary, err := LoadGlossary(repoRoot(t), "nl-NL")
 	if err != nil {

@@ -1,0 +1,16 @@
+* Nomes exportados
+
+Em Go, um nome é exportado se começar com uma letra maiúscula.
+Por exemplo, `Pizza` é um nome exportado, assim como `Pi`, que é exportado pelo
+pacote `math`.
+
+`pizza` e `pi` não começam com uma letra maiúscula, portanto não são exportados.
+
+Ao importar um pacote, você só pode fazer referência aos nomes exportados dele.
+Nenhum nome "não exportado" pode ser acessado de fora do pacote.
+
+Execute o código. Observe a mensagem de erro.
+
+Para corrigir o erro, renomeie `math.pi` como `math.Pi` e tente novamente.
+
+.play basics/exported-names.go

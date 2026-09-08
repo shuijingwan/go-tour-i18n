@@ -1,0 +1,17 @@
+* Go sem conexão (opcional)
+
+Este tour também está disponível como um programa independente que você pode usar
+sem acesso à internet. Ele compila e executa os exemplos de código
+em sua própria máquina.
+
+Para executar este tour localmente, primeiro você precisará
+[[/doc/install][instalar Go]] e depois executar:
+
+  go install golang.org/x/website/tour@latest
+
+Isso colocará um binário `tour` no seu
+[[/cmd/go/#hdr-GOPATH_and_Modules][GOPATH]], especificamente no diretório `bin`.
+Quando você executar o programa do tour, ele abrirá um navegador exibindo
+sua versão local do tour.
+
+Naturalmente, você pode continuar fazendo este tour por este site.

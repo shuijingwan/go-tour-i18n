@@ -1,0 +1,10 @@
+* Ponteiros para structs
+
+Os campos de uma struct podem ser acessados por meio de um ponteiro para a struct.
+
+Para acessar o campo ⟪GTI18N_29695d33_000001⟫X⟪GTI18N_29695d33_000002⟫ de uma struct quando temos o ponteiro ⟪GTI18N_29695d33_000003⟫p⟪GTI18N_29695d33_000004⟫ para ela, poderíamos
+escrever ⟪GTI18N_29695d33_000005⟫(*p).X⟪GTI18N_29695d33_000006⟫.
+No entanto, essa notação é incômoda, então a linguagem permite escrever apenas
+⟪GTI18N_29695d33_000007⟫p.X⟪GTI18N_29695d33_000008⟫, sem o desreferenciamento explícito.
+
+⟪GTI18N_29695d33_000009⟫

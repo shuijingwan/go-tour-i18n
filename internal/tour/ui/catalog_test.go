@@ -12,13 +12,60 @@ import (
 const expectedCatalogMessages = 92
 
 func TestLoadEmbeddedCatalogs(t *testing.T) {
-	for _, locale := range []string{"de-DE", "en", "es-ES", "fr-FR", "it-IT", "ja-JP", "ko-KR", "nl-NL", "zh-CN"} {
+	for _, locale := range []string{"de-DE", "en", "es-ES", "fr-FR", "it-IT", "ja-JP", "ko-KR", "nl-NL", "pt-BR", "zh-CN"} {
 		catalog, err := Load(locale)
 		if err != nil {
 			t.Fatalf("Load(%q): %v", locale, err)
 		}
 		if got, want := len(catalog.Messages), expectedCatalogMessages; got != want {
 			t.Fatalf("Load(%q) message count = %d, want %d", locale, got, want)
+		}
+	}
+}
+
+func TestBrazilianPortugueseCatalogMatchesEnglishSource(t *testing.T) {
+	source, err := Load("en")
+	if err != nil {
+		t.Fatal(err)
+	}
+	portuguese, err := Load("pt-BR")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if portuguese.HTMLLang != "pt-BR" {
+		t.Fatalf("pt-BR HTMLLang = %q, want pt-BR", portuguese.HTMLLang)
+	}
+	if got, want := len(portuguese.Messages), expectedCatalogMessages; got != want {
+		t.Fatalf("pt-BR message count = %d, want %d", got, want)
+	}
+	if err := validateCoverage(source, portuguese); err != nil {
+		t.Fatalf("pt-BR coverage: %v", err)
+	}
+	placeholderRE := regexp.MustCompile(`\{[a-z][a-z0-9_]*\}`)
+	markupRE := regexp.MustCompile(`<[^>]+>`)
+	for key, sourceMessage := range source.Messages {
+		message := portuguese.Messages[key]
+		if got, want := strings.Join(placeholderRE.FindAllString(message.Text, -1), "\x00"), strings.Join(placeholderRE.FindAllString(sourceMessage.Text, -1), "\x00"); got != want {
+			t.Errorf("pt-BR message %q placeholders = %q, want %q", key, got, want)
+		}
+		if sourceMessage.Kind == "rich" {
+			if got, want := strings.Join(markupRE.FindAllString(message.Text, -1), "\x00"), strings.Join(markupRE.FindAllString(sourceMessage.Text, -1), "\x00"); got != want {
+				t.Errorf("pt-BR rich message %q markup = %q, want %q", key, got, want)
+			}
+		}
+		if message.Text == sourceMessage.Text && key != "footer.github" {
+			t.Errorf("pt-BR message %q duplicates English source text", key)
+		}
+		if strings.Contains(message.Text, "TODO") {
+			t.Errorf("pt-BR message %q retains TODO", key)
+		}
+	}
+	for key, want := range map[string]string{
+		"editor.run": "Executar", "editor.format": "Formatar", "editor.reset": "Redefinir",
+		"tour.title": "Um Tour por Go",
+	} {
+		if got := portuguese.Messages[key].Text; got != want {
+			t.Errorf("pt-BR message %q = %q, want %q", key, got, want)
 		}
 	}
 }
@@ -66,6 +113,7 @@ func TestEditorToggleStatesAreLocalizedPerCatalog(t *testing.T) {
 		"ja-JP": {"オン", "オフ"},
 		"ko-KR": {"켜기", "끄기"},
 		"nl-NL": {"Aan", "Uit"},
+		"pt-BR": {"Ativado", "Desativado"},
 		"zh-CN": {"开启", "关闭"},
 	}
 	for locale, want := range wants {

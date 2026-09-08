@@ -1,0 +1,11 @@
+* Canais com buffer
+
+Os canais podem ter _buffer_. Forneça o tamanho do buffer como segundo argumento de `make` para inicializar um canal com buffer:
+
+	ch := make(chan int, 100)
+
+Os envios para um canal com buffer ficam bloqueados somente quando o buffer está cheio. Os recebimentos ficam bloqueados quando o buffer está vazio.
+
+Modifique o exemplo para exceder a capacidade do buffer e veja o que acontece.
+
+.play concurrency/buffered-channels.go

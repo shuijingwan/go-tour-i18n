@@ -48,6 +48,18 @@ class ProductionIdentityTest(unittest.TestCase):
         self.assertEqual(profile["shared_assets_policy"], "shared-cloudflare")
         self.assertEqual(profile["production_public_url"], "https://nl-go-dev.shuijingwanwq.com/")
 
+    def test_brazilian_portuguese_first_production_profile_is_frozen(self):
+        parsed = MODULE.load_identity(self.identity_path)
+        profile = next(item for item in parsed["locales"] if item["locale"] == "pt-BR")
+        self.assertEqual(profile["production_state"], "first-production")
+        self.assertEqual(profile["production_hostname"], "pt-go-dev.shuijingwanwq.com")
+        self.assertEqual(profile["cdn"], "cloudflare")
+        self.assertEqual(profile["data_root"], "/data/go-tour-pt-BR")
+        self.assertEqual(profile["systemd_service"], "go-tour-pt-BR.service")
+        self.assertEqual(profile["loopback_port"], 4007)
+        self.assertEqual(profile["shared_assets_policy"], "shared-cloudflare")
+        self.assertEqual(profile["production_public_url"], "https://pt-go-dev.shuijingwanwq.com/")
+
     def test_list_cli_is_authority_derived_and_state_filtered(self):
         original = sys.argv
         try:
@@ -99,7 +111,7 @@ class ProductionIdentityTest(unittest.TestCase):
     def test_unknown_locale_cli_fails_closed(self):
         original = sys.argv
         try:
-            sys.argv = ["production-identity.py", "--identity", str(self.identity_path), "locale", "pt-BR"]
+            sys.argv = ["production-identity.py", "--identity", str(self.identity_path), "locale", "zz-ZZ"]
             self.assertEqual(MODULE.main(), 1)
         finally:
             sys.argv = original

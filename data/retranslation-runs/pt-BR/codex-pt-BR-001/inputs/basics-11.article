@@ -1,0 +1,12 @@
+* Basic types
+
+⟪GTI18N_836ab1dd_000001⟫'s basic types are
+
+⟪GTI18N_836ab1dd_000002⟫alias for ⟪GTI18N_836ab1dd_000003⟫⟪GTI18N_836ab1dd_000004⟫alias for ⟪GTI18N_836ab1dd_000005⟫⟪GTI18N_836ab1dd_000006⟫represents a Unicode code point⟪GTI18N_836ab1dd_000007⟫The example shows variables of several types,
+and also that variable declarations may be "factored" into blocks,
+as with import statements.
+
+The ⟪GTI18N_836ab1dd_000008⟫int⟪GTI18N_836ab1dd_000009⟫, ⟪GTI18N_836ab1dd_000010⟫uint⟪GTI18N_836ab1dd_000011⟫, and ⟪GTI18N_836ab1dd_000012⟫uintptr⟪GTI18N_836ab1dd_000013⟫ types are usually 32 bits wide on 32-bit systems and 64 bits wide on 64-bit systems.
+When you need an integer value you should use ⟪GTI18N_836ab1dd_000014⟫int⟪GTI18N_836ab1dd_000015⟫ unless you have a specific reason to use a sized or unsigned integer type.
+
+⟪GTI18N_836ab1dd_000016⟫

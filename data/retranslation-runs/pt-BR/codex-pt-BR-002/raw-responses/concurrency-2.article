@@ -1,0 +1,16 @@
+* Canais
+
+Um canal é um conduto tipado pelo qual é possível enviar e receber valores com o operador de canal, ⟪GTI18N_a35e3af2_000001⟫<-⟪GTI18N_a35e3af2_000002⟫.
+
+⟪GTI18N_a35e3af2_000003⟫Envie ⟪GTI18N_a35e3af2_000004⟫ para o canal ⟪GTI18N_a35e3af2_000005⟫.⟪GTI18N_a35e3af2_000006⟫Receba de ⟪GTI18N_a35e3af2_000007⟫ e⟪GTI18N_a35e3af2_000008⟫atribua o valor a ⟪GTI18N_a35e3af2_000009⟫.⟪GTI18N_a35e3af2_000010⟫(Os dados fluem na direção da seta.)
+
+Assim como maps e slices, canais precisam ser criados antes do uso:
+
+⟪GTI18N_a35e3af2_000011⟫
+
+Por padrão, envios e recebimentos ficam bloqueados até que o outro lado esteja pronto. Isso permite que ⟪GTI18N_a35e3af2_000012⟫ se sincronizem sem bloqueios explícitos nem variáveis de condição.
+
+O código de exemplo soma os números de um slice, distribuindo o trabalho entre duas ⟪GTI18N_a35e3af2_000013⟫.
+Após ambas as ⟪GTI18N_a35e3af2_000014⟫ concluírem seus cálculos, ele calcula o resultado final.
+
+⟪GTI18N_a35e3af2_000015⟫

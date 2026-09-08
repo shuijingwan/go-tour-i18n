@@ -1,0 +1,20 @@
+* Adicionando elementos a um slice
+
+É comum adicionar novos elementos a um slice, por isso Go fornece uma função embutida
+`append`. A [[/pkg/builtin/#append][documentação]]
+do pacote embutido descreve `append`.
+
+	func append(s []T, vs ...T) []T
+
+O primeiro parâmetro `s` de `append` é um slice do tipo `T`, e os demais são
+valores do tipo `T` a serem adicionados ao slice.
+
+O valor resultante de `append` é um slice que contém todos os elementos do
+slice original mais os valores fornecidos.
+
+Se o array subjacente de `s` for pequeno demais para comportar todos os valores fornecidos, um array maior
+será alocado. O slice retornado apontará para o array recém-alocado.
+
+(Para saber mais sobre slices, leia o artigo [[/blog/go-slices-usage-and-internals][Slices: uso e funcionamento interno]].)
+
+.play moretypes/append.go

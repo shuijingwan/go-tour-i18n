@@ -1,0 +1,17 @@
+* Escolha entre receptor de valor e receptor de ponteiro
+
+Há dois motivos para usar um receptor de ponteiro.
+
+O primeiro é permitir que o método modifique o valor para o qual seu receptor aponta.
+
+O segundo é evitar copiar o valor a cada chamada de método.
+Isso pode ser mais eficiente se o receptor for uma struct grande, por exemplo.
+
+Neste exemplo, tanto ⟪GTI18N_357424f2_000001⟫Scale⟪GTI18N_357424f2_000002⟫ quanto ⟪GTI18N_357424f2_000003⟫Abs⟪GTI18N_357424f2_000004⟫ são métodos com o tipo de receptor ⟪GTI18N_357424f2_000005⟫*Vertex⟪GTI18N_357424f2_000006⟫,
+embora o método ⟪GTI18N_357424f2_000007⟫Abs⟪GTI18N_357424f2_000008⟫ não precise modificar seu receptor.
+
+Em geral, todos os métodos de um determinado tipo devem ter receptores de valor ou de ponteiro,
+mas não uma mistura dos dois.
+(Veremos o motivo nas próximas páginas.)
+
+⟪GTI18N_357424f2_000009⟫

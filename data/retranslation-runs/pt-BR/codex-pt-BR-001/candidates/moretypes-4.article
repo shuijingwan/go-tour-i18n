@@ -1,0 +1,10 @@
+* Ponteiros para structs
+
+Os campos de uma struct podem ser acessados por meio de um ponteiro para a struct.
+
+Para acessar o campo `X` de uma struct quando temos o ponteiro `p` para ela, poderíamos
+escrever `(*p).X`.
+No entanto, essa notação é incômoda, então a linguagem permite escrever apenas
+`p.X`, sem o desreferenciamento explícito.
+
+.play moretypes/struct-pointers.go
