@@ -37,6 +37,10 @@ locale / domain / CDN 决策
 3. **首次生产部署**为新 locale 建立 hostname、CDN、service、port、TLS、vhost、DNS/CDN、Playground Origin、部署 profile，以及对既有 AdSense 能力的 production 接入；它不是一次普通 release 切换。课程页手动广告、Auto Ads、Angular SPA 生命周期和局部布局保护均为共享实现，第三门及后续 locale 不重新开发广告功能。
 4. **日常维护部署**只对已完成上述基线、并标记为 `production_state=live` 的 locale 执行 `scripts/maintenance-production.sh <release-dir>`，不重新探测或设计服务器环境。
 
+## 执行成本与协作
+
+新增 locale 始终以质量 gate 为先；当前运营目标是单个 Codex 5 小时额度窗口不超过 100%，但不得因此弱化任何质量 gate。确定性工作优先由本地终端执行，仓库已有正式工具与已确认事实直接复用；不为新增 locale 建立硬 wall-clock 时间目标。TranslationUnit 的具体额度观察和停止边界只以 [Codex 翻译执行规范](CODEX_TRANSLATION.md) 为准。
+
 ## 1. 冻结语言与生产身份
 
 在创建翻译资产前记录并确认：
