@@ -1,7 +1,7 @@
 # pt-BR Locale Surface Review — 2026-09-08 首次 production
 
-本记录当前仅覆盖 Locale Surface Review Stage A（Locale-level language quality review）。
-Preview rendered acceptance、preview visual HUMAN gate、publish、production verification 与 production visual HUMAN gate 尚未执行。
+本记录当前已完成 Locale Surface Review Stage A（Locale-level language quality review）、preview automated rendered acceptance 与 preview visual HUMAN gate。
+Publish、production verification 与 production visual HUMAN gate 尚未执行。
 
 ## 审核身份
 
@@ -98,9 +98,43 @@ ChatGPT GPT-5.6 Sol 已按正式英文/source、当前 pt-BR target 与完整 gl
 
 ## B. Rendered surface acceptance
 
-- preview automated rendered acceptance：`not executed`
-- preview visual HUMAN gate：`not executed`
-- unresolved preview blocker：`not assessed`
+结果：`passed`
+
+### Preview identity
+
+- locale：`pt-BR`
+- reviewed commit：`f0abf11bfe540e152156ffbf916f23515049d23d`
+- preview loopback URL：`http://127.0.0.1:39265/`
+- projection：`ready=122 pending=0 blocked=0 pages=103 articles=7`
+
+### Automated preview rendered acceptance
+
+正式 `scripts/verify-preview-browser.py` 实际结果：
+
+- preview identity：`PASS`
+- SEO/routes：`PASS`
+- desktop rendered surface：`PASS`
+- editor Run / Format / Reset：`PASS`
+- SPA：`PASS`
+- mobile `/tour/moretypes/1`：`PASS`
+- `PREVIEW SURFACE ACCEPTANCE: PASS`
+
+- preview automated rendered acceptance：`passed`
+
+### Visual HUMAN gate
+
+维护者已实际确认：
+
+- desktop `/`：正常
+- desktop `/tour/list`：正常
+- desktop `/tour/welcome/1`：正常
+- mobile `/tour/moretypes/1`：正常
+- 未发现明显整体视觉异常
+
+Visual HUMAN gate 只确认整体排版与视觉观感，不重复声称检查自动化已经覆盖的 canonical、sitemap、Run / Format / Reset、SPA、language selector URL、`/socket` 或 overflow。
+
+- preview visual HUMAN gate：`passed`
+- unresolved preview blocker：`none`
 
 ## Production verification
 
