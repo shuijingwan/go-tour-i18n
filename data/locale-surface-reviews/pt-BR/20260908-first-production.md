@@ -138,12 +138,27 @@ Visual HUMAN gate 只确认整体排版与视觉观感，不重复声称检查�
 
 ## Production verification
 
-- publish：`not executed`
-- production machine acceptance：`not executed`
-- production browser acceptance：`not executed`
-- production visual HUMAN gate：`not executed`
-- ads / production acceptance：`not executed`
-- unresolved production blocker：`not assessed`
+结果：`passed`
+
+- production release：`/tmp/go-tour-release-20260908-pt-BR-10dc58fa`
+- production public URL：`https://pt-go-dev.shuijingwanwq.com/`
+- publish：`passed`
+- source deployment / direct-origin：`passed`
+- Cloudflare DNS activation：`passed`
+- production machine acceptance：`passed`
+  - source routes：`7/7 PASS`
+  - public routes：`7/7 PASS`
+  - sitemap：`105/105 PASS`
+  - socket boundary：`PASS`
+  - CDN `/`：`MISS -> HIT -> HIT PASS`
+  - CDN `/tour/welcome/1`：`HIT -> HIT -> HIT PASS`
+- production browser acceptance：`passed`
+  - desktop routes：`PASS`
+  - mobile `/tour/moretypes/1`：`PASS`
+  - Run / Format / Reset / SPA / ads：`PASS`
+- ads / production acceptance：`passed`（production browser automated gate；filled/unfilled 均允许）
+- production visual HUMAN gate：`passed`（maintainer confirmation）
+- unresolved production blocker：`none`
 
 ## 当前决策
 
@@ -151,11 +166,11 @@ Visual HUMAN gate 只确认整体排版与视觉观感，不重复声称检查�
 - overall first-production final decision：`PENDING`
 
 <!-- first-production-finalization:start -->
-- production receipt identity: `PENDING`
-- production machine acceptance: `PENDING`
-- production browser acceptance: `PENDING`
-- production visual HUMAN gate: `PENDING`
-- unresolved production blocker: `PENDING`
-- overall final decision: `PENDING`
-- decision: `pending`
+- production receipt identity: `locale=pt-BR hostname=pt-go-dev.shuijingwanwq.com release=20260908-pt-BR-10dc58fa`
+- production machine acceptance: `passed`
+- production browser acceptance: `passed`
+- production visual HUMAN gate: `passed` (maintainer confirmation)
+- unresolved production blocker: `none`
+- overall final decision: `passed`
+- decision: `passed`
 <!-- first-production-finalization:end -->
