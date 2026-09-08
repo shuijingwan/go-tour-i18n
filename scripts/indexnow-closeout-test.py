@@ -44,10 +44,12 @@ class TestProvision(unittest.TestCase):
   instance=CLOSEOUT.Closeout.__new__(CLOSEOUT.Closeout)
   instance.key="test-key"; instance.key_bytes=b"test-key\n"
   instance.profile={"data_root":"/data/site","nginx_vhost_path":"/etc/nginx/site.conf","production_hostname":"locale.example","origin_ssh_alias":"aliyun"}
-  instance.shared={"nginx_test_command":"nginx -t","nginx_reload_command":"service nginx reload"}
+  identity=CLOSEOUT.IDENTITY.load_identity(ROOT/"production"/"identity.json")
+  instance.shared=identity["shared"]
   with mock.patch.object(CLOSEOUT.subprocess,"run",return_value=mock.Mock(returncode=0)) as run:
    instance.provision()
-  self.assertEqual(run.call_args.kwargs["timeout"],300)
+  self.assertEqual(instance.shared["nginx_test_command"],"/usr/local/nginx/sbin/nginx -t")
+  self.assertEqual(run.call_args.kwargs["timeout"],300); self.assertIn("/usr/local/nginx/sbin/nginx -t",run.call_args.args[0][-1])
  def provision(self,root,vhost,test_command,reload_command=None):
   return subprocess.run([sys.executable,"-c",CLOSEOUT.REMOTE_PROVISION,str(root),str(vhost),"locale.example","test-key.txt",test_command,reload_command or test_command],input=b"test-key\n",capture_output=True)
  def test_insert_unique_https_and_idempotence(self):
@@ -57,6 +59,18 @@ class TestProvision(unittest.TestCase):
    self.assertEqual(vhost.read_text().count("location = /test-key.txt"),1)
    self.assertEqual(self.provision(root,vhost,"/bin/true").returncode,0)
    self.assertEqual(vhost.read_text().count("location = /test-key.txt"),1)
+ def test_existing_same_key_with_missing_location_provisions(self):
+  with tempfile.TemporaryDirectory() as directory:
+   root=pathlib.Path(directory); vhost=root/"site.conf"; vhost.write_text(VHOST)
+   verification=root/"verification"; verification.mkdir(); (verification/"test-key.txt").write_bytes(b"test-key\n")
+   result=self.provision(root,vhost,"/bin/true")
+   self.assertEqual(result.returncode,0,result.stderr.decode()); self.assertEqual(vhost.read_text().count("location = /test-key.txt"),1)
+   self.assertEqual((verification/"test-key.txt").read_bytes(),b"test-key\n")
+ def test_existing_conflicting_key_fails_closed(self):
+  with tempfile.TemporaryDirectory() as directory:
+   root=pathlib.Path(directory); vhost=root/"site.conf"; vhost.write_text(VHOST)
+   verification=root/"verification"; verification.mkdir(); (verification/"test-key.txt").write_bytes(b"different-key\n")
+   self.assertNotEqual(self.provision(root,vhost,"/bin/true").returncode,0); self.assertEqual(vhost.read_text(),VHOST)
  def test_conflict_fails_closed(self):
   with tempfile.TemporaryDirectory() as directory:
    root=pathlib.Path(directory); vhost=root/"site.conf"; original=VHOST.replace("location /","location = /test-key.txt { return 404; }\n location /"); vhost.write_text(original)
@@ -69,5 +83,5 @@ class TestProvision(unittest.TestCase):
     self.assertEqual(vhost.read_text(),VHOST); self.assertFalse((root/"verification"/"test-key.txt").exists())
  def test_no_dedicated_network_stack_or_hardcoded_commands(self):
   source=(ROOT/"scripts"/"indexnow-closeout.py").read_text()
-  for value in ("zgocloud","ControlMaster","SOCKS","/usr/local/nginx/sbin/nginx","service nginx reload","nl-NL","it-IT"): self.assertNotIn(value,source)
+  for value in ("zgocloud","ControlMaster","SOCKS","/usr/local/nginx/sbin/nginx","service nginx reload","nl-NL","it-IT","missing_ok"): self.assertNotIn(value,source)
 if __name__=="__main__": unittest.main()

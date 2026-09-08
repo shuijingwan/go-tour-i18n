@@ -165,7 +165,9 @@ try:
  run(test_command); run(reload_command)
 except Exception:
  vhost.write_bytes(before_vhost)
- if before_key is None: final.unlink(missing_ok=True)
+ if before_key is None:
+  try: final.unlink()
+  except FileNotFoundError: pass
  else: final.write_bytes(before_key)
  if created_dir:
   try: verification.rmdir()

@@ -10,7 +10,7 @@
     "cloudflare_secret_file": "/etc/go-tour/cloudflare.env",
     "shared_assets_origin_root": "/data/wwwroot/assets-go-dev.shuijingwanwq.com",
     "shared_assets_public_origin": "https://assets-go-dev.shuijingwanwq.com",
-    "nginx_test_command": "nginx -t",
+    "nginx_test_command": "/usr/local/nginx/sbin/nginx -t",
     "nginx_reload_command": "service nginx reload"
   },
   "locales": [

@@ -39,7 +39,7 @@ class ProductionIdentityTest(unittest.TestCase):
     def test_dutch_first_production_profile_is_frozen(self):
         parsed = MODULE.load_identity(self.identity_path)
         profile = next(item for item in parsed["locales"] if item["locale"] == "nl-NL")
-        self.assertEqual(profile["production_state"], "first-production")
+        self.assertEqual(profile["production_state"], "live")
         self.assertEqual(profile["production_hostname"], "nl-go-dev.shuijingwanwq.com")
         self.assertEqual(profile["cdn"], "cloudflare")
         self.assertEqual(profile["data_root"], "/data/go-tour-nl-NL")
