@@ -8,7 +8,7 @@ func TestLocalePublicationPolicies(t *testing.T) {
 			t.Errorf("ForLocale(%q) = %q, want %q", locale, got, GoLocal)
 		}
 	}
-	for _, locale := range []string{"en", "pt-BR", "nl-NL", "es-ES", "it-IT", "ja-JP", "new-locale"} {
+	for _, locale := range []string{"en", "pt-BR", "nl-NL", "es-ES", "it-IT", "ja-JP", "tr-TR", "new-locale"} {
 		if got := ForLocale(locale); got != Standard {
 			t.Errorf("ForLocale(%q) = %q, want %q", locale, got, Standard)
 		}

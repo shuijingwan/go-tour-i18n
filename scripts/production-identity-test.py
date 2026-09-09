@@ -48,10 +48,10 @@ class ProductionIdentityTest(unittest.TestCase):
         self.assertEqual(profile["shared_assets_policy"], "shared-cloudflare")
         self.assertEqual(profile["production_public_url"], "https://nl-go-dev.shuijingwanwq.com/")
 
-    def test_brazilian_portuguese_first_production_profile_is_frozen(self):
+    def test_brazilian_portuguese_live_profile_is_frozen(self):
         parsed = MODULE.load_identity(self.identity_path)
         profile = next(item for item in parsed["locales"] if item["locale"] == "pt-BR")
-        self.assertEqual(profile["production_state"], "first-production")
+        self.assertEqual(profile["production_state"], "live")
         self.assertEqual(profile["production_hostname"], "pt-go-dev.shuijingwanwq.com")
         self.assertEqual(profile["cdn"], "cloudflare")
         self.assertEqual(profile["data_root"], "/data/go-tour-pt-BR")
@@ -59,6 +59,26 @@ class ProductionIdentityTest(unittest.TestCase):
         self.assertEqual(profile["loopback_port"], 4007)
         self.assertEqual(profile["shared_assets_policy"], "shared-cloudflare")
         self.assertEqual(profile["production_public_url"], "https://pt-go-dev.shuijingwanwq.com/")
+
+    def test_turkish_first_production_profile_is_frozen(self):
+        parsed = MODULE.load_identity(self.identity_path)
+        profile = next(item for item in parsed["locales"] if item["locale"] == "tr-TR")
+        self.assertEqual(profile["production_state"], "first-production")
+        self.assertEqual(profile["production_hostname"], "tr-go-dev.shuijingwanwq.com")
+        self.assertEqual(profile["cdn"], "cloudflare")
+        self.assertEqual(profile["data_root"], "/data/go-tour-tr-TR")
+        self.assertEqual(profile["releases_root"], "/data/go-tour-tr-TR/releases")
+        self.assertEqual(profile["current"], "/data/go-tour-tr-TR/current")
+        self.assertEqual(profile["deployment_lock"], "/data/go-tour-tr-TR/.deploy.lock")
+        self.assertEqual(profile["systemd_service"], "go-tour-tr-TR.service")
+        self.assertEqual(profile["loopback_port"], 4008)
+        self.assertEqual(profile["localhost_health_url"], "http://127.0.0.1:4008/")
+        self.assertEqual(profile["nginx_vhost_path"], "/usr/local/nginx/conf/vhost/tr-go-dev.shuijingwanwq.com.conf")
+        self.assertEqual(profile["tls_certificate_path"], "/usr/local/nginx/conf/ssl/tr-go-dev.shuijingwanwq.com.crt")
+        self.assertEqual(profile["tls_key_path"], "/usr/local/nginx/conf/ssl/tr-go-dev.shuijingwanwq.com.key")
+        self.assertEqual(profile["playground_allowed_origin"], "https://tr-go-dev.shuijingwanwq.com")
+        self.assertEqual(profile["shared_assets_policy"], "shared-cloudflare")
+        self.assertEqual(profile["production_public_url"], "https://tr-go-dev.shuijingwanwq.com/")
 
     def test_list_cli_is_authority_derived_and_state_filtered(self):
         original = sys.argv

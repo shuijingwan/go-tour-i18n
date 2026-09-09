@@ -31,6 +31,7 @@ func TestPrerenderRoutesReuseSitemapLessonDataForEveryLocale(t *testing.T) {
 		{"it-IT", "https://it-go-dev.shuijingwanwq.com", "Indice del corso — Un tour di Go", "Esplora i moduli e le lezioni di Un tour di Go, un'introduzione interattiva al linguaggio di programmazione Go."},
 		{"ko-KR", "https://ko-go-dev.shuijingwanwq.com", "강의 목록 — Go 언어 투어", "Go 프로그래밍 언어를 대화형으로 소개하는 Go 언어 투어의 모듈과 강의를 살펴보세요."},
 		{"pt-BR", "https://pt-go-dev.shuijingwanwq.com", "Diretório do curso — Um Tour por Go", "Explore os módulos e as lições de Um Tour por Go, uma introdução interativa à linguagem de programação Go."},
+		{"tr-TR", "https://tr-go-dev.shuijingwanwq.com", "Kurs dizini — Go Turu", "Go programlama diline etkileşimli bir giriş olan Go Turu'ndaki modüllere ve derslere göz atın."},
 	} {
 		t.Run(test.locale, func(t *testing.T) {
 			source, err := NewPrerenderSource(website.TourOnly(), test.locale)

@@ -118,6 +118,7 @@ func TestCanonicalRoutesUseCurrentLocalePublicIdentity(t *testing.T) {
 		{locale: "it-IT", origin: "https://it-go-dev.shuijingwanwq.com"},
 		{locale: "nl-NL", origin: "https://nl-go-dev.shuijingwanwq.com"},
 		{locale: "pt-BR", origin: "https://pt-go-dev.shuijingwanwq.com"},
+		{locale: "tr-TR", origin: "https://tr-go-dev.shuijingwanwq.com"},
 	} {
 		t.Run(test.locale, func(t *testing.T) {
 			proxy := mustPlaygroundProxy(t, "http://127.0.0.1:1")

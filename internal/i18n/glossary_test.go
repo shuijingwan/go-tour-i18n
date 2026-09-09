@@ -240,6 +240,58 @@ func TestPtBRGlossary(t *testing.T) {
 	}
 }
 
+func TestTrTRGlossary(t *testing.T) {
+	glossary, err := LoadGlossary(repoRoot(t), "tr-TR")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if glossary.Locale != "tr-TR" {
+		t.Fatalf("glossary locale = %q, want tr-TR", glossary.Locale)
+	}
+	for key, want := range map[string]string{
+		"A Tour of Go":    "Go Turu",
+		"Go Playground":   "Go Playground",
+		"Run":             "Çalıştır",
+		"Format":          "Biçimlendir",
+		"Reset":           "Sıfırla",
+		"slide":           "sayfa",
+		"constraint":      "kısıt",
+		"type switch":     "tür anahtarı",
+		"type assertion":  "tür doğrulaması",
+		"interface value": "arayüz değeri",
+		"type parameter":  "tür parametresi",
+	} {
+		if got := glossary.Mandatory[key]; got != want {
+			t.Errorf("mandatory[%q] = %q, want %q", key, got, want)
+		}
+	}
+	for key, want := range map[string]string{
+		"Go programming language": "Go programlama dili",
+		"channel":                 "kanal",
+		"goroutines":              "goroutine'ler",
+		"interface":               "arayüz",
+		"package":                 "paket",
+		"standard library":        "standart kütüphane",
+		"map":                     "eşleme",
+		"slice":                   "dilim",
+		"concurrency":             "eşzamanlılık",
+	} {
+		if got := glossary.Preferred[key]; got != want {
+			t.Errorf("preferred[%q] = %q, want %q", key, got, want)
+		}
+	}
+	for _, want := range []string{"Golang", "Go Oyun Alanı", "Go rutini", "korutin", "tip iddiası", "slayt"} {
+		if !containsString(glossary.Forbidden, want) {
+			t.Errorf("forbidden missing %q: %v", want, glossary.Forbidden)
+		}
+	}
+	for _, want := range []string{"Go", "Go Playground", "go vet", "gofmt", "goroutine", "TranslationUnit", "present.Section"} {
+		if !containsString(glossary.Keep, want) {
+			t.Errorf("keep missing %q: %v", want, glossary.Keep)
+		}
+	}
+}
+
 func TestNlNLGlossary(t *testing.T) {
 	glossary, err := LoadGlossary(repoRoot(t), "nl-NL")
 	if err != nil {

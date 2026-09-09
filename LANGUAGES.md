@@ -4,7 +4,7 @@
 
 新增语言统一从 [新增 Locale 执行手册](docs/NEW_LOCALE_RUNBOOK.md) 开始；不要只在 registry 中增加一行就视为完成。新 locale 必须先明确规范 locale、显示名称、domain/CDN、全站 glossary 决策和 production profile，并通过独立的 TranslationUnit Quality Review 与 Locale Surface Review。
 
-语言 registry 的正式展示顺序按语言的英文名称字母顺序排列，不按加入项目的时间排列。当前顺序为 Brazilian Portuguese（`pt-BR`）→ Dutch（`nl-NL`）→ English（`en`）→ French（`fr-FR`）→ German（`de-DE`）→ Italian（`it-IT`）→ Japanese（`ja-JP`）→ Korean（`ko-KR`）→ Simplified Chinese（`zh-CN`）→ Spanish（`es-ES`）。
+语言 registry 的正式展示顺序按语言的英文名称字母顺序排列，不按加入项目的时间排列。当前顺序为 Brazilian Portuguese（`pt-BR`）→ Dutch（`nl-NL`）→ English（`en`）→ French（`fr-FR`）→ German（`de-DE`）→ Italian（`it-IT`）→ Japanese（`ja-JP`）→ Korean（`ko-KR`）→ Simplified Chinese（`zh-CN`）→ Spanish（`es-ES`）→ Turkish（`tr-TR`）。
 
 ## 语言站点与 CDN
 
@@ -20,6 +20,7 @@
 | `ko-KR` | 한국어 | <https://ko-go-dev.shuijingwanwq.com/> | Cloudflare Free | 韩语社区语言站；域名 language code 为 `ko` |
 | `zh-CN` | 简体中文 | <https://go-dev.shuijingwanwq.com/> | EdgeOne | 当前默认社区语言站；不创建 `zh.go-dev` 或 `zh-cn.go-dev` |
 | `es-ES` | Español | <https://es-go-dev.shuijingwanwq.com/> | Cloudflare Free | 西班牙语社区语言站；域名 language code 为 `es` |
+| `tr-TR` | Türkçe | <https://tr-go-dev.shuijingwanwq.com/> | Cloudflare Free | 土耳其语社区语言站；域名 language code 为 `tr` |
 
 ## Production identity 与历史 evidence
 

@@ -309,7 +309,7 @@ func TestRenderHomeDistinguishesDevelopmentAndProductionMetadata(t *testing.T) {
 }
 
 func TestHomepageLanguageRegistryAndLocaleProfiles(t *testing.T) {
-	if got, want := len(languageRegistry), 10; got != want {
+	if got, want := len(languageRegistry), 11; got != want {
 		t.Fatalf("language registry length = %d, want %d", got, want)
 	}
 	for i, want := range []LanguageLink{
@@ -323,6 +323,7 @@ func TestHomepageLanguageRegistryAndLocaleProfiles(t *testing.T) {
 		{Locale: "ko-KR", EnglishName: "Korean", Autonym: "한국어", URL: "https://ko-go-dev.shuijingwanwq.com/"},
 		{Locale: "zh-CN", EnglishName: "Simplified Chinese", Autonym: "简体中文", URL: "https://go-dev.shuijingwanwq.com/"},
 		{Locale: "es-ES", EnglishName: "Spanish", Autonym: "Español", URL: "https://es-go-dev.shuijingwanwq.com/"},
+		{Locale: "tr-TR", EnglishName: "Turkish", Autonym: "Türkçe", URL: "https://tr-go-dev.shuijingwanwq.com/"},
 	} {
 		if got := languageRegistry[i]; got != want {
 			t.Errorf("languageRegistry[%d] = %+v, want %+v", i, got, want)
@@ -445,6 +446,20 @@ func TestHomepageLanguageRegistryAndLocaleProfiles(t *testing.T) {
 	if got, want := localeProfiles["pt-BR"].TimeZone.String(), "America/Sao_Paulo"; got != want {
 		t.Fatalf("pt-BR time zone = %q, want %q", got, want)
 	}
+	trLanguages, err := languagesFor("tr-TR")
+	if err != nil {
+		t.Fatal(err)
+	}
+	trCurrent, err := currentLanguage(trLanguages)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if trCurrent != (LanguageLink{Locale: "tr-TR", EnglishName: "Turkish", Autonym: "Türkçe", Label: "Turkish — Türkçe", URL: "https://tr-go-dev.shuijingwanwq.com/", Current: true}) {
+		t.Fatalf("tr-TR current language = %+v", trCurrent)
+	}
+	if got, want := localeProfiles["tr-TR"].TimeZone.String(), "Europe/Istanbul"; got != want {
+		t.Fatalf("tr-TR time zone = %q, want %q", got, want)
+	}
 
 	metadata := SiteMetadata{Locale: "zh-CN", PublishedAt: "2026-08-20T05:56:11Z", UpstreamCommit: FrozenUpstreamCommit, UpstreamCommitTime: FrozenUpstreamCommitTime, Pages: 122, Articles: 122}
 	tests := []struct {
@@ -459,6 +474,7 @@ func TestHomepageLanguageRegistryAndLocaleProfiles(t *testing.T) {
 		{"it-IT", "Italiano", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 07:56:11 (ora locale)", "2026-08-26 23:55:26 (ora locale)", languageRegistry[5].URL},
 		{"ja-JP", "日本語", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 14:56:11（日本時間）", "2026-08-27 06:55:26（日本時間）", languageRegistry[6].URL},
 		{"ko-KR", "한국어", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 14:56:11 (한국 표준시)", "2026-08-27 06:55:26 (한국 표준시)", languageRegistry[7].URL},
+		{"tr-TR", "Türkçe", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 08:56:11 (yerel saat)", "2026-08-27 00:55:26 (yerel saat)", languageRegistry[10].URL},
 	}
 	for _, test := range tests {
 		t.Run(test.locale, func(t *testing.T) {
@@ -480,7 +496,7 @@ func TestHomepageLanguageRegistryAndLocaleProfiles(t *testing.T) {
 				t.Fatal(err)
 			}
 			home := string(homeBytes)
-			labels := []string{"Brazilian Portuguese — Português (Brasil)", "Dutch — Nederlands", "English", "French — Français", "German — Deutsch", "Italian — Italiano", "Japanese — 日本語", "Korean — 한국어", "Simplified Chinese — 简体中文", "Spanish — Español"}
+			labels := []string{"Brazilian Portuguese — Português (Brasil)", "Dutch — Nederlands", "English", "French — Français", "German — Deutsch", "Italian — Italiano", "Japanese — 日本語", "Korean — 한국어", "Simplified Chinese — 简体中文", "Spanish — Español", "Turkish — Türkçe"}
 			for _, want := range append(labels, test.logURL, test.published, test.upstream, "© 2026 永夜", "蜀ICP备13001590号-1", `href="https://beian.miit.gov.cn/"`) {
 				if !strings.Contains(home, want) {
 					t.Errorf("homepage does not contain %q", want)
@@ -652,7 +668,7 @@ func TestTourPublicationRuntimePolicy(t *testing.T) {
 	adHTML = `<script data-test="ad"></script>`
 	hrefRE := regexp.MustCompile(`(?i)<a\b[^>]*\bhref="([^"]+)"`)
 
-	for _, locale := range []string{"zh-CN", "fr-FR", "de-DE", "ko-KR", "ja-JP"} {
+	for _, locale := range []string{"zh-CN", "fr-FR", "de-DE", "ko-KR", "ja-JP", "tr-TR"} {
 		t.Run(locale, func(t *testing.T) {
 			catalog, err := ui.Load(locale)
 			if err != nil {

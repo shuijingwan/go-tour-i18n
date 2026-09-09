@@ -12,7 +12,7 @@ import (
 const expectedCatalogMessages = 92
 
 func TestLoadEmbeddedCatalogs(t *testing.T) {
-	for _, locale := range []string{"de-DE", "en", "es-ES", "fr-FR", "it-IT", "ja-JP", "ko-KR", "nl-NL", "pt-BR", "zh-CN"} {
+	for _, locale := range []string{"de-DE", "en", "es-ES", "fr-FR", "it-IT", "ja-JP", "ko-KR", "nl-NL", "pt-BR", "tr-TR", "zh-CN"} {
 		catalog, err := Load(locale)
 		if err != nil {
 			t.Fatalf("Load(%q): %v", locale, err)
@@ -114,6 +114,7 @@ func TestEditorToggleStatesAreLocalizedPerCatalog(t *testing.T) {
 		"ko-KR": {"켜기", "끄기"},
 		"nl-NL": {"Aan", "Uit"},
 		"pt-BR": {"Ativado", "Desativado"},
+		"tr-TR": {"Açık", "Kapalı"},
 		"zh-CN": {"开启", "关闭"},
 	}
 	for locale, want := range wants {
@@ -129,6 +130,57 @@ func TestEditorToggleStatesAreLocalizedPerCatalog(t *testing.T) {
 			if got != want[index] {
 				t.Errorf("%s %s = %q, want %q", locale, key, got, want[index])
 			}
+		}
+	}
+}
+
+func TestTurkishCatalogMatchesEnglishSource(t *testing.T) {
+	source, err := Load("en")
+	if err != nil {
+		t.Fatal(err)
+	}
+	turkish, err := Load("tr-TR")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if turkish.HTMLLang != "tr-TR" {
+		t.Fatalf("tr-TR HTMLLang = %q, want tr-TR", turkish.HTMLLang)
+	}
+	if got, want := len(turkish.Messages), expectedCatalogMessages; got != want {
+		t.Fatalf("tr-TR message count = %d, want %d", got, want)
+	}
+	if err := validateCoverage(source, turkish); err != nil {
+		t.Fatalf("tr-TR coverage: %v", err)
+	}
+	placeholderRE := regexp.MustCompile(`\{[a-z][a-z0-9_]*\}`)
+	markupRE := regexp.MustCompile(`<[^>]+>`)
+	allowedUntranslatedNames := map[string]bool{
+		"footer.github":       true,
+		"site.issue_feedback": true,
+	}
+	for key, sourceMessage := range source.Messages {
+		message := turkish.Messages[key]
+		if got, want := strings.Join(placeholderRE.FindAllString(message.Text, -1), "\x00"), strings.Join(placeholderRE.FindAllString(sourceMessage.Text, -1), "\x00"); got != want {
+			t.Errorf("tr-TR message %q placeholders = %q, want %q", key, got, want)
+		}
+		if sourceMessage.Kind == "rich" {
+			if got, want := strings.Join(markupRE.FindAllString(message.Text, -1), "\x00"), strings.Join(markupRE.FindAllString(sourceMessage.Text, -1), "\x00"); got != want {
+				t.Errorf("tr-TR rich message %q markup = %q, want %q", key, got, want)
+			}
+		}
+		if strings.Contains(message.Text, "TODO") {
+			t.Errorf("tr-TR message %q retains TODO", key)
+		}
+		if message.Text == sourceMessage.Text && !allowedUntranslatedNames[key] {
+			t.Errorf("tr-TR message %q duplicates English source text", key)
+		}
+	}
+	for key, want := range map[string]string{
+		"editor.run": "Çalıştır", "editor.format": "Biçimlendir", "editor.reset": "Sıfırla",
+		"tour.title": "Go Turu",
+	} {
+		if got := turkish.Messages[key].Text; got != want {
+			t.Errorf("tr-TR message %q = %q, want %q", key, got, want)
 		}
 	}
 }

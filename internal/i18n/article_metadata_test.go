@@ -40,6 +40,40 @@ func TestBrazilianPortugueseArticleMetadataCoversCatalog(t *testing.T) {
 	}
 }
 
+func TestTurkishArticleMetadataCoversCatalog(t *testing.T) {
+	root := filepath.Clean(filepath.Join("..", ".."))
+	catalog, err := ReadCatalog(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	metadata, err := LoadArticleMetadata(root, "tr-TR", catalog)
+	if err != nil {
+		t.Fatal(err)
+	}
+	wantTitles := map[string]string{
+		"welcome.article":     "Hoş geldiniz!",
+		"basics.article":      "Paketler, değişkenler ve fonksiyonlar",
+		"flowcontrol.article": "Akış denetimi ifadeleri: for, if, else, switch ve defer",
+		"moretypes.article":   "Diğer türler: struct'lar, dilimler ve eşlemeler",
+		"methods.article":     "Metotlar ve arayüzler",
+		"generics.article":    "Jenerikler",
+		"concurrency.article": "Eşzamanlılık",
+	}
+	if len(metadata) != len(wantTitles) {
+		t.Fatalf("tr-TR article metadata count = %d, want %d", len(metadata), len(wantTitles))
+	}
+	for article, title := range wantTitles {
+		entry, ok := metadata[article]
+		if !ok {
+			t.Errorf("tr-TR article metadata is missing %s", article)
+			continue
+		}
+		if entry.Title != title || entry.Subtitle == "" || strings.Contains(entry.Title+entry.Subtitle, "TODO") {
+			t.Errorf("tr-TR article metadata %s = %+v, want title %q, subtitle, and no TODO", article, entry, title)
+		}
+	}
+}
+
 func TestDutchArticleMetadataCoversCatalog(t *testing.T) {
 	root := filepath.Clean(filepath.Join("..", ".."))
 	catalog, err := ReadCatalog(root)
