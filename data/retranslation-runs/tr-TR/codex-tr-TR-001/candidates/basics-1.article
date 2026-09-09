@@ -1,0 +1,11 @@
+* Paketler
+
+Her Go programı paketlerden oluşur.
+
+Programlar `main` paketinde çalışmaya başlar.
+
+Bu program, içe aktarma yolları `"fmt"` ve `"math/rand"` olan paketleri kullanır.
+
+Genel kabule göre paket adı, içe aktarma yolunun son öğesiyle aynıdır. Örneğin `"math/rand"` paketi, `package`rand` ifadesiyle başlayan dosyalardan oluşur.
+
+.play basics/packages.go

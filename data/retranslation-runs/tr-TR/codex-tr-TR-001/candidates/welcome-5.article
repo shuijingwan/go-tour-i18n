@@ -1,0 +1,17 @@
+* Go Playground
+
+Bu tur, [[https://play.golang.org/][Go Playground]] üzerine kurulmuştur; bu web hizmeti [[/][golang.org]] sunucularında çalışır.
+
+Hizmet bir Go programını alır; programı derleyip bağlar, korumalı bir alanda çalıştırır ve ardından çıktıyı döndürür.
+
+Playground'da çalıştırılabilecek programların bazı kısıtları vardır:
+
+- Playground'da zaman 2009-11-10 23:00:00 UTC'de başlar (bu tarihin önemini belirlemek okuyucuya bırakılmış bir alıştırmadır). Bu, programlara deterministik çıktı sağlayarak önbelleğe alınmalarını kolaylaştırır.
+
+- Ayrıca yürütme süresiyle CPU ve bellek kullanımı sınırlandırılmıştır ve program dış ağ sunucularına erişemez.
+
+Playground, Go dilinin en son kararlı sürümünü kullanır.
+
+Daha fazla bilgi edinmek için "[[/blog/playground][Go Playground'un İçinde]]" yazısını okuyun.
+
+.play welcome/sandbox.go

@@ -1,0 +1,7 @@
+* Defer
+
+Bir defer ifadesi, bir fonksiyonun yürütülmesini çevresindeki fonksiyon dönene kadar erteler.
+
+Ertelenen çağrının argümanları hemen değerlendirilir, ancak fonksiyon çağrısı çevresindeki fonksiyon dönene kadar yürütülmez.
+
+.play flowcontrol/defer.go

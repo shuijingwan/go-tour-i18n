@@ -1,0 +1,8 @@
+* Struct işaretçileri
+
+Struct alanlarına bir struct işaretçisi üzerinden erişilebilir.
+
+Struct'ın ⟪GTI18N_29695d33_000001⟫X⟪GTI18N_29695d33_000002⟫ alanına, elimizde ⟪GTI18N_29695d33_000003⟫p⟪GTI18N_29695d33_000004⟫ struct işaretçisi varken erişmek için ⟪GTI18N_29695d33_000005⟫(*p).X⟪GTI18N_29695d33_000006⟫ yazabilirdik.
+Ancak bu gösterim kullanışsız olduğundan dil, açıkça dereference etmeden yalnızca ⟪GTI18N_29695d33_000007⟫p.X⟪GTI18N_29695d33_000008⟫ yazmamıza da izin verir.
+
+⟪GTI18N_29695d33_000009⟫

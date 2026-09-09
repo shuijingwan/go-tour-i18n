@@ -1,0 +1,13 @@
+* Tür çıkarımı
+
+Açık bir tür belirtmeden bir değişken bildirirken (⟪GTI18N_21c4077c_000001⟫:=⟪GTI18N_21c4077c_000002⟫ söz dizimiyle veya ⟪GTI18N_21c4077c_000003⟫var`=⟪GTI18N_21c4077c_000004⟫ ifade söz dizimiyle) değişkenin türü sağ taraftaki değerden çıkarılır.
+
+Bildirimin sağ tarafı belirli bir türe sahipse yeni değişken de aynı türde olur:
+
+⟪GTI18N_21c4077c_000005⟫⟪GTI18N_21c4077c_000006⟫ bir ⟪GTI18N_21c4077c_000007⟫ değeridir⟪GTI18N_21c4077c_000008⟫Ancak sağ taraf türsüz bir sayısal sabit içerdiğinde, sabitin hassasiyetine bağlı olarak yeni değişken ⟪GTI18N_21c4077c_000009⟫int⟪GTI18N_21c4077c_000010⟫, ⟪GTI18N_21c4077c_000011⟫float64⟪GTI18N_21c4077c_000012⟫ veya ⟪GTI18N_21c4077c_000013⟫complex128⟪GTI18N_21c4077c_000014⟫ olabilir:
+
+⟪GTI18N_21c4077c_000015⟫
+
+Örnek koddaki ⟪GTI18N_21c4077c_000016⟫v⟪GTI18N_21c4077c_000017⟫ değişkeninin başlangıç değerini değiştirip türünün bundan nasıl etkilendiğini gözlemleyin.
+
+⟪GTI18N_21c4077c_000018⟫

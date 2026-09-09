@@ -1,0 +1,15 @@
+* Dilime öğe ekleme
+
+Bir dilime yeni öğeler eklemek yaygın bir işlemdir; bu nedenle ⟪GTI18N_f2fc257e_000001⟫, yerleşik ⟪GTI18N_f2fc257e_000002⟫append⟪GTI18N_f2fc257e_000003⟫ fonksiyonunu sağlar. Yerleşik paketin [[⟪GTI18N_f2fc257e_000004⟫][dokümantasyonu]], ⟪GTI18N_f2fc257e_000005⟫append⟪GTI18N_f2fc257e_000006⟫ fonksiyonunu açıklar.
+
+⟪GTI18N_f2fc257e_000007⟫
+
+⟪GTI18N_f2fc257e_000008⟫s⟪GTI18N_f2fc257e_000009⟫, ⟪GTI18N_f2fc257e_000010⟫append⟪GTI18N_f2fc257e_000011⟫ fonksiyonunun ilk parametresidir ve ⟪GTI18N_f2fc257e_000012⟫T⟪GTI18N_f2fc257e_000013⟫ türünde bir dilimdir; geri kalan parametreler ise dilime eklenecek ⟪GTI18N_f2fc257e_000014⟫T⟪GTI18N_f2fc257e_000015⟫ değerleridir.
+
+⟪GTI18N_f2fc257e_000016⟫append⟪GTI18N_f2fc257e_000017⟫ fonksiyonunun sonuç değeri, özgün dilimin tüm öğelerini ve verilen değerleri içeren bir dilimdir.
+
+⟪GTI18N_f2fc257e_000018⟫s⟪GTI18N_f2fc257e_000019⟫ diliminin temelindeki dizi, verilen tüm değerleri alacak kadar büyük değilse daha büyük bir dizi ayrılır. Döndürülen dilim yeni ayrılan diziyi gösterir.
+
+(Dilimler hakkında daha fazla bilgi edinmek için [[⟪GTI18N_f2fc257e_000020⟫][Dilimler: kullanım ve iç işleyiş]] yazısını okuyun.)
+
+⟪GTI18N_f2fc257e_000021⟫

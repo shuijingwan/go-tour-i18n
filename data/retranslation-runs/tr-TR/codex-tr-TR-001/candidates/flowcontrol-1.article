@@ -1,0 +1,18 @@
+* For
+
+Go dilinde yalnızca bir döngü yapısı vardır: `for` döngüsü.
+
+Temel `for` döngüsünde noktalı virgüllerle ayrılan üç bileşen bulunur:
+
+- başlangıç ifadesi: ilk yinelemeden önce yürütülür
+- koşul ifadesi: her yinelemeden önce değerlendirilir
+- son ifade: her yinelemenin sonunda yürütülür
+
+Başlangıç ifadesi çoğunlukla bir değişken bildirimidir ve burada bildirilen
+değişkenler yalnızca `for` ifadesinin kapsamında görünür.
+
+Boolean koşul `false` olarak değerlendirildiğinde döngünün yinelemesi durur.
+
+*Not:* C, Java veya JavaScript gibi diğer dillerden farklı olarak `for` ifadesinin üç bileşenini çevreleyen parantezler yoktur ve süslü parantezler `{`}` her zaman zorunludur.
+
+.play flowcontrol/for.go

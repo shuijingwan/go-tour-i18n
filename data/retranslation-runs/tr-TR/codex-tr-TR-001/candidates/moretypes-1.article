@@ -1,0 +1,24 @@
+* İşaretçiler
+
+Go dilinde işaretçiler vardır.
+Bir işaretçi, bir değerin bellek adresini tutar.
+
+`*T` türü, `T` türündeki bir değere işaret eder. Sıfır değeri `nil`'dir.
+
+	var p *int
+
+`&` operatörü, işleneni gösteren bir işaretçi üretir.
+
+	i := 42
+	p = &i
+
+`*` operatörü, işaretçinin işaret ettiği temel değeri belirtir.
+
+	fmt.Println(*p) // i değerini şu işaretçi üzerinden oku: p
+	*p = 21         // i değerini şu işaretçi üzerinden ayarla: p
+
+Bu işlem "dereference etme" veya "dolaylı erişim" olarak bilinir.
+
+C'den farklı olarak Go dilinde işaretçi aritmetiği yoktur.
+
+.play moretypes/pointers.go

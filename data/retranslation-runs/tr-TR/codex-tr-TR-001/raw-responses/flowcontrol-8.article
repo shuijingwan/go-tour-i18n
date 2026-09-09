@@ -1,0 +1,30 @@
+* Alıştırma: Döngüler ve fonksiyonlar
+
+Fonksiyonları ve döngüleri denemek için bir karekök fonksiyonu gerçekleştirelim: bir x sayısı verildiğinde, z² değeri x'e en yakın olan z sayısını bulmak istiyoruz.
+
+Bilgisayarlar x'in karekökünü genellikle bir döngü kullanarak hesaplar.
+Bir z tahminiyle başlayıp z² değerinin x'e ne kadar yakın olduğuna göre z'yi ayarlayarak daha iyi bir tahmin üretebiliriz:
+
+⟪GTI18N_d8bbee84_000001⟫
+
+Bu ayarlamayı tekrarlamak, gerçek kareköke mümkün olduğunca yakın bir yanıta ulaşana kadar tahmini giderek iyileştirir.
+
+Sağlanan ⟪GTI18N_d8bbee84_000002⟫func`Sqrt⟪GTI18N_d8bbee84_000003⟫ içinde bunu gerçekleştirin.
+Girdi ne olursa olsun z için uygun bir başlangıç tahmini 1'dir.
+Başlangıçta hesaplamayı 10 kez tekrarlayın ve her adımda z'yi yazdırın.
+Çeşitli x değerleri (1, 2, 3, ...) için sonuca ne kadar yaklaştığınıza ve tahminin ne kadar hızlı iyileştiğine bakın.
+
+İpucu: Bir kayan noktalı değeri bildirmek ve başlatmak için ona kayan nokta söz dizimi verin veya bir dönüşüm kullanın:
+
+⟪GTI18N_d8bbee84_000004⟫
+
+Ardından döngü koşulunu, değer değişmeyi bıraktığında (veya yalnızca çok küçük bir miktarda değiştiğinde) duracak şekilde değiştirin.
+Bunun 10 yinelemeden fazla mı yoksa az mı sürdüğüne bakın.
+z için x veya x/2 gibi başka başlangıç tahminleri deneyin.
+Fonksiyonunuzun sonuçları standart kütüphanedeki [[⟪GTI18N_d8bbee84_000005⟫][math.Sqrt]] sonucuna ne kadar yakın?
+
+(⟪GTI18N_d8bbee84_000006⟫Not:⟪GTI18N_d8bbee84_000007⟫ Algoritmanın ayrıntılarıyla ilgileniyorsanız yukarıdaki z² − x, z² değerinin olması gereken yerden (x) ne kadar uzakta olduğunu gösterir; 2z'ye bölme ise z²'nin türevidir ve z²'nin ne kadar hızlı değiştiğine göre z'yi ne ölçüde ayarlayacağımızı ölçeklendirir.
+Bu genel yaklaşıma [[⟪GTI18N_d8bbee84_000008⟫][Newton yöntemi]] denir.
+Birçok fonksiyonda iyi, özellikle karekök için çok iyi çalışır.)
+
+⟪GTI18N_d8bbee84_000009⟫

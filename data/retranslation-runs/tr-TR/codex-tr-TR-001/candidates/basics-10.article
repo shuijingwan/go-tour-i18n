@@ -1,0 +1,7 @@
+* Kısa değişken bildirimleri
+
+Bir fonksiyonun içinde `:=` kısa atama ifadesi, örtük tür içeren bir `var` bildiriminin yerine kullanılabilir.
+
+Fonksiyon dışında her ifade bir anahtar sözcükle (`var`, `func` vb.) başlar; bu nedenle `:=` yapısı kullanılamaz.
+
+.play basics/short-variable-declarations.go

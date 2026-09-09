@@ -1,0 +1,9 @@
+* Struct değişmezleri
+
+Bir struct değişmezi, alanlarının değerlerini listeleyerek yeni ayrılmış bir struct değerini belirtir.
+
+`Name:` söz dizimini kullanarak alanların yalnızca bir alt kümesini listeleyebilirsiniz. (Adlandırılmış alanların sırası önemli değildir.)
+
+Özel `&` ön eki, struct değerini gösteren bir işaretçi döndürür.
+
+.play moretypes/struct-literals.go

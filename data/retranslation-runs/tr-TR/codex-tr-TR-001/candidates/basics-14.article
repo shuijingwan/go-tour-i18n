@@ -1,0 +1,18 @@
+* Tür çıkarımı
+
+Açık bir tür belirtmeden bir değişken bildirirken (`:=` söz dizimiyle veya `var`=` ifade söz dizimiyle) değişkenin türü sağ taraftaki değerden çıkarılır.
+
+Bildirimin sağ tarafı belirli bir türe sahipse yeni değişken de aynı türde olur:
+
+	var i int
+	j := i // j bir int değeridir
+
+Ancak sağ taraf türsüz bir sayısal sabit içerdiğinde, sabitin hassasiyetine bağlı olarak yeni değişken `int`, `float64` veya `complex128` olabilir:
+
+	i := 42           // int
+	f := 3.142        // float64
+	g := 0.867 + 0.5i // complex128
+
+Örnek koddaki `v` değişkeninin başlangıç değerini değiştirip türünün bundan nasıl etkilendiğini gözlemleyin.
+
+.play basics/type-inference.go

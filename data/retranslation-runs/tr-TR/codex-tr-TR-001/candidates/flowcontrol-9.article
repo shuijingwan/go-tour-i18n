@@ -1,0 +1,10 @@
+* Switch
+
+Bir `switch` ifadesi, bir `if`-`else` ifadesi dizisini daha kısa yazmanın yoludur.
+Değeri koşul ifadesine eşit olan ilk case'i çalıştırır.
+
+Go dilindeki switch; C, C++, Java, JavaScript ve PHP'dekilere benzer, ancak Go yalnızca seçilen case'i çalıştırır, onu izleyen tüm case'leri değil.
+Dolayısıyla bu dillerde her case'in sonunda gerekli olan `break` ifadesi, Go dilinde otomatik olarak sağlanır.
+Bir diğer önemli fark, Go dilindeki switch case'lerinin sabit olmasının ve kullanılan değerlerin tam sayı olmasının gerekmemesidir.
+
+.play flowcontrol/switch.go

@@ -1,0 +1,15 @@
+* Dışa aktarılan adlar
+
+Go dilinde bir ad büyük harfle başlıyorsa dışa aktarılır.
+Örneğin `Pizza` dışa aktarılan bir addır; `Pi` de `math` paketinden dışa aktarılan bir addır.
+
+`pizza` ve `pi` büyük harfle başlamadıkları için dışa aktarılmazlar.
+
+Bir paketi içe aktardığınızda yalnızca dışa aktarılan adlarına başvurabilirsiniz.
+"Dışa aktarılmayan" adlara paket dışından erişilemez.
+
+Kodu çalıştırın. Hata iletisine dikkat edin.
+
+Hatayı düzeltmek için `math.pi` adını `math.Pi` olarak değiştirip yeniden deneyin.
+
+.play basics/exported-names.go

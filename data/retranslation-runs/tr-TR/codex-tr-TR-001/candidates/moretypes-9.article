@@ -1,0 +1,13 @@
+* Dilim değişmezleri
+
+Bir dilim değişmezi, uzunluğu belirtilmemiş bir dizi değişmezi gibidir.
+
+Bu bir dizi değişmezidir:
+
+	[3]bool{true, true, false}
+
+Bu da yukarıdakiyle aynı diziyi oluşturur, ardından ona başvuran bir dilim meydana getirir:
+
+	[]bool{true, true, false}
+
+.play moretypes/slice-literals.go
