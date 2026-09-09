@@ -1,6 +1,6 @@
 # tr-TR Locale Surface Review — 2026-09-09 首次 production Stage A 记录
 
-这是 tr-TR 首次 production 的 Locale Surface Review 工作记录。当前已完成 A（Locale-level language quality review）；preview rendered acceptance、visual HUMAN gate、publish 和 production verification 尚未执行。
+这是 tr-TR 首次 production 的 Locale Surface Review 工作记录。当前已完成 A（Locale-level language quality review）和 B（Rendered surface acceptance）；publish 和 production verification 尚未执行。
 
 ## 审核身份
 
@@ -180,15 +180,40 @@ Targeted tests：
 
 ## B. Rendered surface acceptance
 
-状态：`PENDING`
+结果：`passed`
 
-尚未执行：
+### Preview identity
 
-- full locale preview
-- automated rendered acceptance
-- preview visual HUMAN gate
+- locale：`tr-TR`
+- preview loopback URL：`http://127.0.0.1:34829/`
+- reviewed baseline commit：`40954fd77f435576dfbaedbf91b310cd262e1da7`
 
-这些步骤必须在 current machine-readable Stage A gate 记录后执行。
+### Automated preview rendered acceptance
+
+正式浏览器验收结果：
+
+```text
+[preview-browser] preview identity: PASS
+[preview-browser] SEO/routes: PASS
+[preview-browser] desktop rendered surface: PASS
+[preview-browser] editor Run / Format / Reset: PASS
+[preview-browser] SPA: PASS
+[preview-browser] mobile /tour/moretypes/1: PASS
+PREVIEW SURFACE ACCEPTANCE: PASS
+```
+
+- preview automated rendered acceptance：`passed`
+
+### Visual HUMAN gate
+
+结果：`passed`
+
+维护者本人在 automated preview acceptance 通过后完成桌面与移动端视觉检查，确认本次 release 无阻塞性视觉异常。
+
+维护者观察到两处既有的小型 header 对齐观感问题；本次判断为非阻塞问题，后续作为共享样式维护项独立处理，不在 tr-TR 首次 production 流程中临时修改。
+
+- preview visual HUMAN gate：`passed`
+- unresolved preview rendered blocker：`none`
 
 ## Reviewer
 
@@ -200,4 +225,6 @@ Targeted tests：
 
 Stage A：`decision = passed`
 
-首次 production 的整体最终 decision 仍为 `PENDING`，直至后续 rendered acceptance、visual HUMAN gate、publish 和 production required gates 全部完成。
+Rendered surface acceptance：`decision = passed`
+
+首次 production 的整体最终 decision 仍为 `PENDING`，直至 publish 和 production required gates 全部完成。
