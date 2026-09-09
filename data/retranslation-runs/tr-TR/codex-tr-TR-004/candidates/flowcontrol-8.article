@@ -1,0 +1,31 @@
+* Alıştırma: Döngüler ve fonksiyonlar
+
+Fonksiyonları ve döngüleri denemek için bir karekök fonksiyonu yazalım: bir x sayısı verildiğinde, z² değeri x'e olabildiğince yakın olan z sayısını bulmak istiyoruz.
+
+Bilgisayarlar x'in karekökünü genellikle bir döngü kullanarak hesaplar.
+Bir z tahminiyle başlayıp z² değerinin x'e ne kadar yakın olduğuna göre z değerini ayarlayarak daha iyi bir tahmin elde edebiliriz:
+
+	z -= (z*z - x) / (2*z)
+
+Bu ayarlamayı yineledikçe tahmin iyileşir ve gerçek kareköke olabilecek en yakın yanıta ulaşırız.
+
+Verilen `func`Sqrt` içinde bu yöntemi uygulayın.
+Girdi ne olursa olsun z için uygun bir başlangıç tahmini 1'dir.
+Önce hesaplamayı 10 kez yineleyin ve her adımda z değerini yazdırın.
+Çeşitli x değerleri (1, 2, 3, ...) için sonuca ne kadar yaklaştığınıza ve tahminin ne kadar hızlı iyileştiğine bakın.
+
+İpucu: Bir kayan noktalı değeri bildirmek ve başlatmak için kayan noktalı sayı söz dizimini ya da tür dönüşümünü kullanın:
+
+	z := 1.0
+	z := float64(1)
+
+Ardından döngü koşulunu, değer değişmeyi bıraktığında (veya yalnızca çok küçük bir miktarda değiştiğinde) duracak şekilde değiştirin.
+Kaç yineleme gerektiğine ve bunun 10'dan az mı çok mu olduğuna bakın.
+z için x veya x/2 gibi başka başlangıç tahminleri deneyin.
+Fonksiyonunuzun sonuçları standart kütüphanedeki [[/pkg/math/#Sqrt][math.Sqrt]] sonucuna ne kadar yakın?
+
+(*Not:* Algoritmanın ayrıntılarıyla ilgileniyorsanız yukarıdaki z² − x, z² değerinin olması gereken yerden (x) ne kadar uzakta olduğunu gösterir; 2z'ye bölme ise z²'nin türevidir ve z²'nin ne kadar hızlı değiştiğine göre z değerini ne ölçüde ayarlayacağımızı ölçeklendirir.
+Bu genel yaklaşıma [[https://en.wikipedia.org/wiki/Newton%27s_method][Newton yöntemi]] denir.
+Birçok fonksiyonda iyi, özellikle karekök için çok iyi çalışır.)
+
+.play flowcontrol/exercise-loops-and-functions.go

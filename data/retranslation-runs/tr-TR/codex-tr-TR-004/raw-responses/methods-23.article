@@ -1,0 +1,12 @@
+* Alıştırma: rot13Reader
+
+Yaygın bir kullanım kalıbında bir [[⟪GTI18N_11d87614_000001⟫][io.Reader]], başka bir ⟪GTI18N_11d87614_000002⟫io.Reader⟪GTI18N_11d87614_000003⟫ nesnesini sararak akışı bir şekilde değiştirir.
+
+Örneğin [[⟪GTI18N_11d87614_000004⟫][gzip.NewReader]] fonksiyonu, bir ⟪GTI18N_11d87614_000005⟫io.Reader⟪GTI18N_11d87614_000006⟫ (sıkıştırılmış veri akışı) alır ve bir ⟪GTI18N_11d87614_000007⟫*gzip.Reader⟪GTI18N_11d87614_000008⟫ (sıkıştırması açılmış veri akışı) döndürür; bu tür de ⟪GTI18N_11d87614_000009⟫io.Reader⟪GTI18N_11d87614_000010⟫ arayüzünü uygular.
+
+Bir ⟪GTI18N_11d87614_000011⟫rot13Reader⟪GTI18N_11d87614_000012⟫ türü yazın; bu tür ⟪GTI18N_11d87614_000013⟫io.Reader⟪GTI18N_11d87614_000014⟫ arayüzünü uygulamalı, bir ⟪GTI18N_11d87614_000015⟫io.Reader⟪GTI18N_11d87614_000016⟫ üzerinden okumalı ve tüm alfabetik karakterlere [[⟪GTI18N_11d87614_000017⟫][ROT13]] yerine koyma şifresini uygulayarak akışı değiştirmelidir.
+
+⟪GTI18N_11d87614_000018⟫rot13Reader⟪GTI18N_11d87614_000019⟫ türü hazır olarak verilmiştir.
+⟪GTI18N_11d87614_000020⟫io.Reader⟪GTI18N_11d87614_000021⟫ arayüzünü uygulaması için ⟪GTI18N_11d87614_000022⟫Read⟪GTI18N_11d87614_000023⟫ metodunu yazın.
+
+⟪GTI18N_11d87614_000024⟫

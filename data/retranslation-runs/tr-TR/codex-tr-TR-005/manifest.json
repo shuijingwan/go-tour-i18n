@@ -1,0 +1,24 @@
+{
+  "schema_version": 2,
+  "batch_id": "codex-tr-TR-005",
+  "locale": "tr-TR",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "example",
+  "unit_count": 1,
+  "units": [
+    {
+      "unit_id": "example:basics/numeric-constants.go",
+      "unit_kind": "example",
+      "source_path": "_content/tour/basics/numeric-constants.go",
+      "source_sha256": "338906e7c0e0d5e81312c97b37638442b48a621d59e69215be78eed6bd003544",
+      "input_path": "inputs/basics-numeric-constants.txt",
+      "input_sha256": "4d2c58e69c5956602f868dea6ffaca7824edc7b8af8d213494c0910aaa204b14",
+      "protected_token_count": 4,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "位移注释中的 “100 places / 99 places” 被译为 “100 basamak / 99 basamak”；“basamak” 更偏数字位数/数位，在二进制 bit shift 语境中不够准确自然。revision 时应明确表达向左/向右移动 100/99 个 bit position，同时保持 Big、Small、1\u003c\u003c100、Big\u003e\u003e99 和全部 Go 代码不变。"
+    }
+  ]
+}
