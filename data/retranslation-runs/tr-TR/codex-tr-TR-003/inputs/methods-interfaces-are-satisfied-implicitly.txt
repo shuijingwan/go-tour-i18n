@@ -1,0 +1,1 @@
+⟪GTI18N_44e0699a_000001⟫This method means type T implements the interface I,⟪GTI18N_44e0699a_000002⟫but we don't need to explicitly declare that it does so.⟪GTI18N_44e0699a_000003⟫

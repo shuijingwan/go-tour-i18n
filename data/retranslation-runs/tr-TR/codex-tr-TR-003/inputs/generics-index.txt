@@ -1,0 +1,1 @@
+⟪GTI18N_398dd72a_000001⟫Index returns the index of x in s, or -1 if not found.⟪GTI18N_398dd72a_000002⟫v and x are type T, which has the comparable⟪GTI18N_398dd72a_000003⟫constraint, so we can use == here.⟪GTI18N_398dd72a_000004⟫Index works on a slice of ints⟪GTI18N_398dd72a_000005⟫Index also works on a slice of strings⟪GTI18N_398dd72a_000006⟫
