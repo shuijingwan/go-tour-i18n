@@ -228,3 +228,13 @@ Stage A：`decision = passed`
 Rendered surface acceptance：`decision = passed`
 
 首次 production 的整体最终 decision 仍为 `PENDING`，直至 publish 和 production required gates 全部完成。
+
+<!-- first-production-finalization:start -->
+- production receipt identity: `locale=tr-TR hostname=tr-go-dev.shuijingwanwq.com release=20260909-tr-TR-3806beee`
+- production machine acceptance: `passed`
+- production browser acceptance: `passed`
+- production visual HUMAN gate: `passed` (maintainer confirmation)
+- unresolved production blocker: `none`
+- overall final decision: `passed`
+- decision: `passed`
+<!-- first-production-finalization:end -->
