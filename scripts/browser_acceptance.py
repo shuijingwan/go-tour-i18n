@@ -71,6 +71,26 @@ def formal_course_routes():
     return routes
 
 
+def publication_policy(locale):
+    """Read the publication decision from the Go policy authority."""
+    command = ["go", "run", "-mod=readonly", "./cmd/tour-i18n", "policy", "publication", "--locale", locale]
+    try:
+        result = subprocess.run(command, cwd=ROOT, text=True, capture_output=True, timeout=60, check=False)
+    except (OSError, subprocess.SubprocessError) as exc:
+        raise BrowserFailure(f"read publication policy for {locale}: {exc}") from exc
+    if result.returncode != 0:
+        raise BrowserFailure(f"read publication policy for {locale}: exit={result.returncode} stderr={result.stderr.strip()!r}")
+    try:
+        policy = json.loads(result.stdout)
+    except json.JSONDecodeError as exc:
+        raise BrowserFailure(f"read publication policy for {locale}: invalid JSON") from exc
+    if (not isinstance(policy, dict) or set(policy) != {"locale", "publication", "tour_ads_enabled"} or
+            policy["locale"] != locale or policy["publication"] not in ("standard", "go-local") or
+            not isinstance(policy["tour_ads_enabled"], bool)):
+        raise BrowserFailure(f"read publication policy for {locale}: invalid result {policy!r}")
+    return policy
+
+
 class WebSocket:
     def __init__(self, url):
         parsed = urllib.parse.urlsplit(url)
@@ -402,9 +422,27 @@ def wait_for_editor_reset(chrome, expected_original, timeout=5):
     raise BrowserFailure(f"Reset model/view synchronization timed out: expected={expected_original!r} actual={last!r}")
 
 
-def browser_ad_gate(snapshot):
-    """Filled and unfilled are both valid; mount, loader and slot remain mandatory."""
-    return snapshot.get("mount") == 1 and snapshot.get("ad") == 1 and bool(snapshot.get("loader"))
+def is_tour_ad_request(request):
+    host = urllib.parse.urlsplit(request.get("url", "")).hostname or ""
+    return host == "googleads.g.doubleclick.net" or host.endswith(".googlesyndication.com")
+
+
+def is_course_ad_resource(request):
+    path = urllib.parse.urlsplit(request.get("url", "")).path
+    return path.endswith("/tour/static/go-dev/course-ad.js") or path.endswith("/tour/static/go-dev/course-ad.css")
+
+
+def browser_ad_gate(snapshot, requests, tour_ads_enabled):
+    """Assert the policy-specific Tour ad contract without requiring a fill."""
+    request_opportunity = any(is_tour_ad_request(request) for request in requests)
+    helper_requested = bool(snapshot.get("helper")) or any(is_course_ad_resource(request) for request in requests)
+    present = (snapshot.get("mount") == 1 and snapshot.get("ad") == 1 and bool(snapshot.get("loader")) and
+               helper_requested and request_opportunity)
+    # A legacy/static directive host may remain in the DOM. It is harmless only
+    # when it is empty and has none of the attributes the helper adds at mount.
+    absent = (snapshot.get("mount") in (0, 1) and snapshot.get("ad") == 0 and not snapshot.get("loader") and
+              not helper_requested and not request_opportunity and bool(snapshot.get("empty_mount")))
+    return present if tour_ads_enabled else absent
 
 
 def validate_rendered_identity(identity, base, locale, requested_path, expected_final_path=None, canonical_origin=None,
@@ -475,6 +513,7 @@ def validate_rendered_list(chrome, list_metadata, expected_page_routes):
 
 def acceptance(base, locale, profile, shared, proxy_server=None):
     list_metadata = locale_list_metadata(locale)
+    policy = publication_policy(locale)
     chrome = Chrome(proxy_server=proxy_server)
     try:
         for path in ("/", "/tour/", "/tour/list", "/tour/welcome/1", "/tour/basics/11"):
@@ -501,12 +540,20 @@ def acceptance(base, locale, profile, shared, proxy_server=None):
           mount: document.querySelectorAll('[data-go-dev-course-ad]').length,
           ad: document.querySelectorAll('[data-go-dev-course-ad] ins.adsbygoogle').length,
           loader: [...document.scripts].some(s => /adsbygoogle/.test(s.src)),
+          helper: [...document.scripts].some(s => /course-ad\\.js(?:$|[?#])/.test(s.src)),
+          empty_mount: [...document.querySelectorAll('[data-go-dev-course-ad]')].every(e =>
+            e.children.length === 0 && !e.hasAttribute('role') && !e.hasAttribute('aria-label') &&
+            !e.hasAttribute('data-go-dev-course-ad-group')),
           shared: performance.getEntriesByType('resource').some(e => e.name.startsWith({shared_assets}))
         }}))()""")
-        assert_true(all(editor[key] for key in ("run", "format", "reset", "cm")) and browser_ad_gate(editor), "editor/ad browser identity failed")
+        editor_requests = chrome.network_requests()
+        assert_true(all(editor[key] for key in ("run", "format", "reset", "cm")), "editor browser identity failed")
+        assert_true(browser_ad_gate(editor, editor_requests, policy["tour_ads_enabled"]),
+                    f"editor/ad browser identity failed for publication={policy['publication']}: editor={editor}")
         if profile["shared_assets_policy"] == "shared-cloudflare":
             assert_true(editor["shared"], "shared assets were not requested")
-        # Filled and unfilled ads are both accepted: the gate is mount + loader + request opportunity.
+        # Filled and unfilled ads are both accepted: standard requires a request
+        # opportunity, while go-local requires complete absence of Tour ads.
         edit = chrome.evaluate("""(() => {
           const cm = document.querySelector('.CodeMirror').CodeMirror;
           const malformed = 'package main\\nfunc main(){println("browser acceptance")}\\n';
@@ -547,7 +594,11 @@ def acceptance(base, locale, profile, shared, proxy_server=None):
         time.sleep(3)
         after = chrome.evaluate("location.pathname")
         assert_true(after != before, "SPA next-page transition did not change route")
-        assert_true(chrome.evaluate("document.querySelectorAll('[data-go-dev-course-ad]').length") == 1, "SPA transition lost or duplicated course-ad mount")
+        final_mounts = chrome.evaluate("document.querySelectorAll('[data-go-dev-course-ad]').length")
+        if policy["tour_ads_enabled"]:
+            assert_true(final_mounts == 1, f"SPA course-ad mount count mismatch: expected=1 actual={final_mounts}")
+        else:
+            assert_true(final_mounts in (0, 1), f"SPA empty course-ad host count mismatch: actual={final_mounts}")
 
         page_identity(chrome, base, locale, "/tour/moretypes/1", 375, 812)
         before = chrome.evaluate("location.pathname")
@@ -561,6 +612,7 @@ def acceptance(base, locale, profile, shared, proxy_server=None):
 def preview_acceptance(base, locale, profile, shared, registry, descriptions, list_metadata):
     """Run browser checks whose preview identity intentionally differs from production."""
     canonical_origin = profile["production_public_url"].rstrip("/")
+    policy = publication_policy(locale)
     chrome = Chrome()
     try:
         rendered_routes = (("/", "/"), ("/tour/", "/tour/welcome/1"), ("/tour/list", "/tour/list"),
@@ -599,8 +651,15 @@ def preview_acceptance(base, locale, profile, shared, registry, descriptions, li
               reset:!!document.querySelector('#reset'),cm:!!document.querySelector('.CodeMirror')?.CodeMirror,
               mount:document.querySelectorAll('[data-go-dev-course-ad]').length,
               ad:document.querySelectorAll('[data-go-dev-course-ad] ins.adsbygoogle').length,
-              loader:[...document.scripts].some(s=>/adsbygoogle/.test(s.src))}))()""")
+              loader:[...document.scripts].some(s=>/adsbygoogle/.test(s.src)),
+              helper:[...document.scripts].some(s=>/course-ad\\.js(?:$|[?#])/.test(s.src)),
+              empty_mount:[...document.querySelectorAll('[data-go-dev-course-ad]')].every(e=>
+                e.children.length===0&&!e.hasAttribute('role')&&!e.hasAttribute('aria-label')&&
+                !e.hasAttribute('data-go-dev-course-ad-group'))}))()""")
             assert_true(all(editor[key] for key in ("run", "format", "reset", "cm")), f"editor controls missing: {editor}")
+            if not policy["tour_ads_enabled"]:
+                assert_true(browser_ad_gate(editor, chrome.network_requests(), False),
+                            f"go-local preview retains Tour ad surface: {editor}")
             chrome.evaluate("(() => {const cm=document.querySelector('.CodeMirror').CodeMirror;"
                             "window.__previewMalformed='package main\\nfunc main(){println(\"browser acceptance\")}\\n';"
                             "cm.setValue(window.__previewMalformed);return true})()",

@@ -91,22 +91,21 @@ EnvironmentFile=/etc/go-tour/go-tour.env
 
 ### 广告职责、首次接入与最终验收边界
 
-Auto Ads、课程页手动广告、Angular SPA mount/unmount 生命周期、局部 AdSense layout protection，以及覆盖这些行为的 browser tests，都是项目共享实现。新增 locale 只接入和使用这套既有能力；第三门及后续 locale 不重新设计广告位、不重复共享架构验证，也不把广告纳入 TranslationUnit 或 Locale-level language quality review。
+publication policy 的唯一 authority 是 `internal/tourpolicy`：`standard` Tour 保持广告能力；`go-local` Tour 必须无广告。Auto Ads、课程页手动广告、Angular SPA mount/unmount 生命周期、局部 AdSense layout protection，以及覆盖这些行为的 browser tests，都是项目共享实现。新增 locale 不重新设计共享架构，也不把广告纳入 TranslationUnit 或 Locale-level language quality review。
 
-新 locale 必须在**首次 production release 激活前**完成以下 production 广告接入准备：
+`standard` locale 必须在**首次 production release 激活前**完成以下 production 广告接入准备：
 
 - 确认目标 locale 的 production service 引用包含有效 `TOUR_AD_HTML` 的正确 `EnvironmentFile`；该文件可由 unit 本体或既有 drop-in 引入，无需为新 locale 额外创建 drop-in；
 - 完成 Auto Ads 所需的 production 配置；
 - 准备并验收课程广告 CSS/JS 的 production asset 来源（zh-CN 为同源；非中文 locale 按共享 assets 策略）；
 - 非中文 locale 使用 shared-assets 时，在首次上线前确认共享的 `course-ad.css` 与 `course-ad.js` 已部署，且已完成缓存验收；这项广告专项检查不能替代完整 11 文件 current-state freshness gate，后者按“非中文共享静态资源第一版”和 shared-assets 发布状态机执行。
 
-此阶段只准备 production 配置和资源，不要求证明尚未激活的 production 进程已实际读取变量、正式 HTML 已生成 Auto Ads head code，或浏览器已产生真实广告请求；这些都属于激活后的最终 production acceptance。因此首次正式部署启动后即为最终“已启用广告”形态，不允许先上线无广告版本、再以第二次上线接入广告。
+`go-local` locale 不接入上述 Tour 广告资源；其 production acceptance 改为证明 Tour 不存在广告 mount、slot、loader 或本项目广告 request opportunity。此阶段不改变首页或其他非 Tour 内容的既有策略。
 
-首次 production 激活后，只在同一次最终 production acceptance 中完成轻量广告确认，并记录在现有 `data/locale-surface-reviews/<locale>/<review-id>.md` 的 `production verification result`：
+首次 production 激活后，只在同一次最终 production acceptance 中按 publication policy 完成轻量广告确认，并记录在现有 `data/locale-surface-reviews/<locale>/<review-id>.md` 的 `production verification result`：
 
-- 实际 production HTML 已加载或生成预期的 AdSense loader / Auto Ads head 配置；
-- 课程页存在手动广告 mount；
-- 浏览器存在真实广告请求机会；广告可为 filled 或 unfilled，不以填充为通过条件；
+- `standard`：实际 production HTML 已加载或生成预期的 AdSense loader / Auto Ads head 配置，课程页存在手动广告 mount，浏览器存在真实广告请求机会；广告可为 filled 或 unfilled，不以填充为通过条件；
+- `go-local`：Tour 不存在 AdSense loader、已初始化的手动广告 mount/slot 或本项目广告 request opportunity；
 - 课程高度与 footer 没有明显布局异常；
 - SPA 跳到下一页正常。
 
@@ -244,8 +243,8 @@ Cloudflare DNS 创建后，first-production 只从 zgocloud 对新 hostname 做 
 
 全部自动验收 PASS 后，唯一人工 production gate 为：
 
-1. Desktop 打开一个 editor 课程页，肉眼确认整体布局、editor 和广告区域无明显视觉异常。
-2. Mobile 打开 `/tour/moretypes/1`，确认无非预期整页横向 overflow、广告/footer 无明显异常，并点击一次“下一页”确认 SPA 视觉正常。
+1. Desktop 打开一个 editor 课程页，肉眼确认整体布局和 editor 无明显视觉异常；`standard` 同时确认广告区域正常，`go-local` 确认没有广告区域且布局正常。
+2. Mobile 打开 `/tour/moretypes/1`，确认无非预期整页横向 overflow、footer 无明显异常；`standard` 确认广告区域正常，`go-local` 确认无广告布局异常，并点击一次“下一页”确认 SPA 视觉正常。
 
 人工记录只写 `passed` 或 `failed: <问题>`。人工不再重复 Run、Format、Reset、SEO、canonical、Network Origin 或 `/socket`。通过后必须从真实 TTY 运行正式收口入口，而不是手工修改 lifecycle：
 

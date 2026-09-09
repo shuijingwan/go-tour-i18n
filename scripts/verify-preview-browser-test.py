@@ -121,6 +121,26 @@ class PreviewBrowserTest(unittest.TestCase):
         CORE.validate_playground_endpoint(origin + "/compile?backend=", origin, "/compile", "compile")
         CORE.validate_playground_endpoint(origin + "/fmt", origin, "/fmt", "fmt")
 
+    def test_browser_ad_gate_is_policy_aware(self):
+        standard = {"mount": 1, "ad": 1, "loader": True, "helper": True, "empty_mount": False}
+        ad_request = [{"url": "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"}]
+        self.assertTrue(CORE.browser_ad_gate(standard, ad_request, True))
+        self.assertFalse(CORE.browser_ad_gate({"mount": 1, "ad": 1, "loader": False, "helper": True, "empty_mount": False}, ad_request, True))
+        empty_host = {"mount": 1, "ad": 0, "loader": False, "helper": False, "empty_mount": True}
+        self.assertTrue(CORE.browser_ad_gate(empty_host, [], False))
+        self.assertFalse(CORE.browser_ad_gate({**empty_host, "ad": 1, "empty_mount": False}, [], False))
+        self.assertFalse(CORE.browser_ad_gate({**empty_host, "loader": True}, [], False))
+        self.assertFalse(CORE.browser_ad_gate(empty_host, ad_request, False))
+        self.assertFalse(CORE.browser_ad_gate(standard, ad_request, False))
+
+    def test_browser_policy_bridge_uses_go_authority(self):
+        result = mock.Mock(returncode=0, stdout='{"locale":"example","publication":"go-local","tour_ads_enabled":false}\n', stderr="")
+        with mock.patch.object(CORE.subprocess, "run", return_value=result) as run:
+            policy = CORE.publication_policy("example")
+        self.assertEqual(policy["publication"], "go-local")
+        self.assertFalse(policy["tour_ads_enabled"])
+        self.assertEqual(run.call_args.args[0], ["go", "run", "-mod=readonly", "./cmd/tour-i18n", "policy", "publication", "--locale", "example"])
+
     def reset_state(self, original="original", displayed="original", content="original"):
         return {"displayed": displayed, "content": content, "model": content, "view": displayed,
                 "original": original, "hash": "hash", "stored": original}
@@ -283,9 +303,10 @@ class PreviewBrowserTest(unittest.TestCase):
         source = (ROOT / "scripts" / "browser_acceptance.py").read_text(encoding="utf-8")
         self.assertIn('playground_requests(requests, origin, "/_/compile", "/_/fmt")', source)
         self.assertIn('shared["playground_public_origin"]', source)
-        self.assertIn("browser_ad_gate(editor)", source)
+        self.assertIn("browser_ad_gate(editor, editor_requests, policy[\"tour_ads_enabled\"])", source)
         preview_body = source.split("def preview_acceptance", 1)[1]
-        self.assertNotIn("browser_ad_gate", preview_body)
+        self.assertIn('if not policy["tour_ads_enabled"]:', preview_body)
+        self.assertIn("browser_ad_gate(editor, chrome.network_requests(), False)", preview_body)
         self.assertIn("fetch('/socket')", preview_body)
         self.assertIn("canonical_origin + after", preview_body)
 

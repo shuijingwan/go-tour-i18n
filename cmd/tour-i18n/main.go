@@ -44,7 +44,7 @@ func run(args []string) error {
 		return err
 	}
 	if len(args) == 0 {
-		return fmt.Errorf("usage: tour-i18n <assets|catalog|upstream|page|locale|status|candidate|translate|retranslation|quality-check|course-metadata|surface-review|first-production|indexnow|build|preview|publish> <command or flags>")
+		return fmt.Errorf("usage: tour-i18n <assets|catalog|upstream|page|locale|status|candidate|translate|retranslation|quality-check|course-metadata|surface-review|first-production|indexnow|policy|build|preview|publish> <command or flags>")
 	}
 	if args[0] == "assets" {
 		if len(args) < 2 {
@@ -64,6 +64,12 @@ func run(args []string) error {
 			return fmt.Errorf("usage: tour-i18n indexnow bootstrap --locale <locale> --key-file <path>")
 		}
 		return indexNowBootstrapCommand(root, args[2:])
+	}
+	if args[0] == "policy" {
+		if len(args) < 2 || args[1] != "publication" {
+			return fmt.Errorf("usage: tour-i18n policy publication --locale <locale>")
+		}
+		return publicationPolicyCommand(args[2:])
 	}
 	var publish *publishOptions
 	if args[0] == "publish" {
@@ -98,7 +104,7 @@ func run(args []string) error {
 		return publishBundle(root, catalog, *publish)
 	}
 	if len(args) < 2 {
-		return fmt.Errorf("usage: tour-i18n <assets|catalog|upstream|page|locale|status|candidate|translate|retranslation|quality-check|course-metadata|surface-review|first-production|indexnow|build|preview|publish> <command or flags>")
+		return fmt.Errorf("usage: tour-i18n <assets|catalog|upstream|page|locale|status|candidate|translate|retranslation|quality-check|course-metadata|surface-review|first-production|indexnow|policy|build|preview|publish> <command or flags>")
 	}
 	switch args[0] + " " + args[1] {
 	case "locale init":
