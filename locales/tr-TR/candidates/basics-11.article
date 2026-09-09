@@ -1,0 +1,26 @@
+* Temel türler
+
+Go dilinin temel türleri şunlardır:
+
+	bool
+
+	string
+
+	int  int8  int16  int32  int64
+	uint uint8 uint16 uint32 uint64 uintptr
+
+	byte // takma adıdır: uint8
+
+	rune // takma adıdır: int32
+	     // bir Unicode kod noktasını temsil eder
+
+	float32 float64
+
+	complex64 complex128
+
+Örnek, çeşitli türlerdeki değişkenleri ve değişken bildirimlerinin de içe aktarma ifadeleri gibi bloklar hâlinde "gruplanabileceğini" gösterir.
+
+`int`, `uint` ve `uintptr` türleri genellikle 32 bit sistemlerde 32 bit, 64 bit sistemlerde ise 64 bit genişliğindedir.
+Bir tam sayı değerine ihtiyaç duyduğunuzda, belirli boyutlu veya işaretsiz bir tam sayı türü kullanmak için özel bir nedeniniz yoksa `int` kullanmalısınız.
+
+.play basics/basic-types.go

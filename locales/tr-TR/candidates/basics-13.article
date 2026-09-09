@@ -1,0 +1,20 @@
+* Tür dönüşümleri
+
+`T(v)` ifadesi, `v` değerini `T` türüne dönüştürür.
+
+Bazı sayısal dönüşümler:
+
+	var i int = 42
+	var f float64 = float64(i)
+	var u uint = uint(f)
+
+Ya da daha basit biçimiyle:
+
+	i := 42
+	f := float64(i)
+	u := uint(f)
+
+C'den farklı olarak Go dilinde farklı türlerdeki öğeler arasındaki atama açık bir dönüşüm gerektirir.
+Örnekteki `float64` veya `uint` dönüşümlerini kaldırıp ne olduğuna bakın.
+
+.play basics/type-conversions.go

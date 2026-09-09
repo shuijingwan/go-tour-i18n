@@ -1,0 +1,19 @@
+* Reader'lar
+
+`io` paketi, bir veri akışının okuma ucunu temsil eden
+`io.Reader` arayüzünü belirtir.
+
+Go standart kütüphanesi; dosyalar, ağ bağlantıları, sıkıştırıcılar, şifreleyiciler ve diğerleri dahil olmak üzere bu arayüzün [[https://cs.opensource.google/search?q=Read%5C(%5Cw%2B%5Cs%5C%5B%5C%5Dbyte%5C)&ss=go%2Fgo][birçok gerçekleştirimini]] içerir.
+
+`io.Reader` arayüzünün bir `Read` metodu vardır:
+
+	func (T) Read(b []byte) (n int, err error)
+
+`Read`, verilen bayt dilimini verilerle doldurur ve doldurulan bayt sayısı
+ile bir hata değeri döndürür. Akış sona erdiğinde `io.EOF` hatası döndürür.
+
+Örnek kod bir
+[[/pkg/strings/#Reader][`strings.Reader`]]
+oluşturur ve çıktısını her seferinde 8 bayt olacak şekilde tüketir.
+
+.play methods/reader.go

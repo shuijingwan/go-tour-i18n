@@ -1,0 +1,13 @@
+* Metotlar
+
+Go sınıflara sahip değildir.
+Ancak türler üzerinde metotlar tanımlayabilirsiniz.
+
+Metot, özel bir _alıcı_ argümanına sahip fonksiyondur.
+
+Alıcı, `func` anahtar sözcüğü ile
+metot adı arasındaki kendi argüman listesinde yer alır.
+
+Bu örnekte `Abs` metodu, `Vertex` türünde ve `v` adlı bir alıcıya sahiptir.
+
+.play methods/methods.go

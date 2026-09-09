@@ -1,0 +1,23 @@
+* Alıştırma: Eşdeğer ikili ağaçlar
+
+*1.* `Walk` fonksiyonunu yazın.
+
+*2.* `Walk` fonksiyonunu sınayın.
+
+`tree.New(k)` fonksiyonu, `k`, `2k`, `3k`, ..., `10k` değerlerini tutan, rastgele yapıda (ancak her zaman sıralı) bir ikili ağaç oluşturur.
+
+Yeni bir `ch` kanalı oluşturun ve geziciyi başlatın:
+
+	go Walk(tree.New(1), ch)
+
+Ardından kanaldan 10 değer okuyup yazdırın. Bunlar 1, 2, 3, ..., 10 sayıları olmalıdır.
+
+*3.* `Same` fonksiyonunu yazın; bu fonksiyon `Walk` fonksiyonunu kullanarak `t1` ve `t2` ağaçlarının aynı değerleri tutup tutmadığını belirlemelidir.
+
+*4.* `Same` fonksiyonunu sınayın.
+
+`Same(tree.New(1),`tree.New(1))` true, `Same(tree.New(1),`tree.New(2))` ise false döndürmelidir.
+
+`Tree` belgelerini [[https://godoc.org/golang.org/x/tour/tree#Tree][burada]] bulabilirsiniz.
+
+.play concurrency/exercise-equivalent-binary-trees.go

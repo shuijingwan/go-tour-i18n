@@ -1,0 +1,18 @@
+* Alıştırma: Eşdeğer ikili ağaçlar
+
+Aynı değer dizisini saklayan birçok farklı ikili ağaç olabilir. Örneğin burada 1, 1, 2, 3, 5, 8, 13 dizisini saklayan iki ikili ağaç vardır.
+
+.image /tour/static/img/tree.png
+
+İki ikili ağacın aynı diziyi saklayıp saklamadığını denetleyen bir fonksiyon çoğu dilde oldukça karmaşıktır. Basit bir çözüm yazmak için Go dilinin eşzamanlılık özelliklerini ve kanallarını kullanacağız.
+
+Bu örnek, şu türü tanımlayan `tree` paketini kullanır:
+
+	type Tree struct {
+		Left  *Tree
+		Value int
+		Right *Tree
+	}
+
+
+Açıklamanın devamı [[javascript:click('.next-page')][sonraki sayfadadır]].

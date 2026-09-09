@@ -1,0 +1,35 @@
+* Merhaba, dünya
+
+[[/][Go programlama dili]] turuna hoş geldiniz.
+
+Bu tur, sayfanın sol üst kısmındaki
+[[javascript:highlight(".logo")][Go Turu]] öğesine tıklayarak
+erişebileceğiniz bir modül listesine ayrılmıştır.
+
+Ayrıca sayfanın sağ üst kısmındaki [[javascript:highlightAndClick(".nav")][menüye]] tıklayarak içindekiler tablosunu istediğiniz zaman görüntüleyebilirsiniz.
+
+Tur boyunca tamamlamanız için çeşitli sayfalar ve alıştırmalarla
+karşılaşacaksınız.
+
+Bunlar arasında şu yollarla gezinebilirsiniz:
+
+- Önceki sayfaya gitmek için [[javascript:highlight(".prev-page")]["Önceki"]] veya `PageUp`,
+
+- Sonraki sayfaya gitmek için [[javascript:highlight(".next-page")]["Sonraki"]] veya `PageDown`.
+
+Tur etkileşimlidir. Programı uzak bir sunucuda derleyip çalıştırmak için şimdi
+[[javascript:highlightAndClick("#run")][Çalıştır]] düğmesine tıklayın
+(veya `Shift` + `Enter` tuşlarına basın).
+Sonuç, kodun altında görüntülenir.
+
+Bu örnek programlar Go dilinin farklı yönlerini gösterir. Turdaki programlar, kendi denemeleriniz için başlangıç noktası olarak tasarlanmıştır.
+
+Programı düzenleyip yeniden çalıştırın.
+
+[[javascript:highlightAndClick("#format")][Biçimlendir]] öğesine tıkladığınızda
+(kısayol: `Ctrl` + `Enter`), düzenleyicideki metin
+[[/cmd/gofmt/][gofmt]] aracı kullanılarak biçimlendirilir. [[javascript:highlightAndClick(".syntax-checkbox")][söz dizimi]] düğmesine tıklayarak söz dizimi vurgulamayı açıp kapatabilirsiniz.
+
+Devam etmeye hazır olduğunuzda aşağıdaki [[javascript:highlightAndClick(".next-page")][sağ oka]] tıklayın veya `PageDown` tuşuna basın.
+
+.play welcome/hello.go

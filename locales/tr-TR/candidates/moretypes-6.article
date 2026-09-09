@@ -1,0 +1,15 @@
+* Diziler
+
+`[n]T` türü, `n` adet `T` türünde değerden oluşan bir dizidir.
+
+Şu ifade
+
+	var a [10]int
+
+`a` değişkenini on tam sayıdan oluşan bir dizi olarak bildirir.
+
+Bir dizinin uzunluğu türünün bir parçasıdır; dolayısıyla diziler yeniden boyutlandırılamaz.
+Bu kısıtlayıcı görünebilir, ancak endişelenmeyin;
+Go, dizilerle çalışmanın kullanışlı bir yolunu sağlar.
+
+.play moretypes/array.go

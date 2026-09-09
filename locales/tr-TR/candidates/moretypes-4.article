@@ -1,0 +1,8 @@
+* Struct işaretçileri
+
+Struct alanlarına bir struct işaretçisi üzerinden erişilebilir.
+
+Struct'ın `X` alanına, elimizde `p` struct işaretçisi varken erişmek için `(*p).X` yazabilirdik.
+Ancak bu gösterim kullanışsız olduğundan dil, açıkça dereference etmeden yalnızca `p.X` yazmamıza da izin verir.
+
+.play moretypes/struct-pointers.go

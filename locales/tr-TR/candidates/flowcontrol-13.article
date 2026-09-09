@@ -1,0 +1,8 @@
+* defer çağrılarını yığma
+
+Ertelenen fonksiyon çağrıları bir yığına eklenir. Bir fonksiyon döndüğünde ertelenen çağrılar son giren ilk çıkar sırasıyla yürütülür.
+
+defer ifadeleri hakkında daha fazla bilgi edinmek için bu
+[[/blog/defer-panic-and-recover][blog yazısını]] okuyun.
+
+.play flowcontrol/defer-multi.go

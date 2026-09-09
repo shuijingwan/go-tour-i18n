@@ -1,0 +1,24 @@
+* İşaretçi alıcıları
+
+İşaretçi alıcılarına sahip metotlar bildirebilirsiniz.
+
+Bu, alıcı türünün söz diziminde doğrudan `*T` biçiminde yazıldığı anlamına gelir; burada `T` herhangi bir türdür.
+(Ayrıca, `T` türünün kendisi `*int` gibi bir işaretçi olamaz.)
+
+Örneğin, buradaki `Scale` metodu `*Vertex` üzerinde tanımlanmıştır.
+
+İşaretçi alıcılı metotlar, alıcının işaret ettiği değeri değiştirebilir
+(burada `Scale` metodunun yaptığı gibi).
+Metotların çoğu zaman alıcılarını değiştirmesi gerektiğinden işaretçi alıcıları,
+değer alıcılarından daha yaygındır.
+
+16. satırdaki `*` karakterini `Scale` fonksiyonunun bildiriminden kaldırmayı deneyin
+ve programın davranışının nasıl değiştiğini gözlemleyin.
+
+Değer alıcısıyla `Scale` metodu, özgün
+`Vertex` değerinin bir kopyası üzerinde çalışır.
+(Bu, diğer tüm fonksiyon argümanlarıyla aynı davranıştır.)
+`Scale` metodunun, `Vertex` değerini değiştirebilmesi için işaretçi alıcısına sahip olması gerekir;
+bu değer `main` fonksiyonunda bildirilmiştir.
+
+.play methods/methods-pointers.go

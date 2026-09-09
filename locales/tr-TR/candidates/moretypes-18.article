@@ -1,0 +1,11 @@
+* Alıştırma: Dilimler
+
+`Pic` fonksiyonunu yazın. Bu fonksiyon, uzunluğu `dy` olan bir dilim döndürmelidir; dilimin her öğesi de `dx` adet 8 bitlik işaretsiz tam sayıdan oluşan bir dilim olmalıdır. Programı çalıştırdığınızda tam sayıları gri tonlama (daha doğrusu mavi tonlama) değerleri olarak yorumlayıp resminizi görüntüler.
+
+Görüntü seçimi size kalmış. İlginç fonksiyonlar arasında `(x+y)/2`, `x*y` ve `x^y` bulunur.
+
+(Her `[]uint8` dilimine `[][]uint8` içinde yer ayırmak için bir döngü kullanmanız gerekir.)
+
+(Türler arasında dönüşüm yapmak için `uint8(intValue)` kullanın.)
+
+.play moretypes/exercise-slices.go

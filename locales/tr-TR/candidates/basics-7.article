@@ -1,0 +1,11 @@
+* Adlandırılmış dönüş değerleri
+
+Go dilinde dönüş değerleri adlandırılabilir. Böyle olduklarında, fonksiyonun başında tanımlanmış değişkenler gibi değerlendirilirler.
+
+Bu adlar, dönüş değerlerinin anlamını belgelemek için kullanılmalıdır.
+
+Argümansız bir `return` ifadesi, adlandırılmış dönüş değerlerini döndürür. Buna "çıplak" return denir.
+
+Çıplak return ifadeleri yalnızca burada gösterilen örnekteki gibi kısa fonksiyonlarda kullanılmalıdır. Daha uzun fonksiyonlarda okunabilirliği azaltabilirler.
+
+.play basics/named-results.go

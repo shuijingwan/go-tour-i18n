@@ -1,0 +1,15 @@
+* Dilime öğe ekleme
+
+Bir dilime yeni öğeler eklemek yaygın bir işlemdir; bu nedenle Go, yerleşik `append` fonksiyonunu sağlar. Yerleşik paketin [[/pkg/builtin/#append][dokümantasyonu]], `append` fonksiyonunu açıklar.
+
+	func append(s []T, vs ...T) []T
+
+`s`, `append` fonksiyonunun ilk parametresidir ve `T` türünde bir dilimdir; geri kalan parametreler ise dilime eklenecek `T` değerleridir.
+
+`append` fonksiyonunun sonuç değeri, özgün dilimin tüm öğelerini ve verilen değerleri içeren bir dilimdir.
+
+`s` diliminin temelindeki dizi, verilen tüm değerleri alacak kadar büyük değilse daha büyük bir dizi ayrılır. Döndürülen dilim yeni ayrılan diziyi gösterir.
+
+(Dilimler hakkında daha fazla bilgi edinmek için [[/blog/go-slices-usage-and-internals][Dilimler: kullanım ve iç işleyiş]] yazısını okuyun.)
+
+.play moretypes/append.go

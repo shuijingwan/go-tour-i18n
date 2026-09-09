@@ -1,0 +1,15 @@
+* Switch değerlendirme sırası
+
+Switch case'leri yukarıdan aşağıya değerlendirilir ve bir case başarılı olduğunda değerlendirme durur.
+
+(Örneğin,
+
+	switch i {
+	case 0:
+	case f():
+	}
+
+`f`, `i==0` ise çağrılmaz.)
+
+
+.play flowcontrol/switch-evaluation-order.go

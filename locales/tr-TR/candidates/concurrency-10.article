@@ -1,0 +1,10 @@
+* Alıştırma: Web tarama botu
+
+Bu alıştırmada bir web tarama botunu paralel çalışacak hale getirmek için Go dilinin eşzamanlılık özelliklerini kullanacaksınız.
+
+`Crawl` fonksiyonunu, aynı URL değerini iki kez getirmeden URL değerlerini paralel olarak getirecek şekilde değiştirin.
+
+_İpucu_: Getirilen URL değerlerini bir eşlemede önbelleğe alabilirsiniz; ancak eşlemeler tek başına
+eşzamanlı kullanım için güvenli değildir!
+
+.play concurrency/exercise-web-crawler.go

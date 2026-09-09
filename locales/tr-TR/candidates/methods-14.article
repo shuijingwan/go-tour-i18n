@@ -1,0 +1,16 @@
+* Boş arayüz
+
+Sıfır metot belirten arayüz türü _boş_arayüz_ olarak bilinir:
+
+	interface{}
+
+Boş bir arayüz, herhangi bir türdeki değeri tutabilir.
+(Her tür en az sıfır metodu gerçekleştirir.)
+
+`any`, `interface{}` için bir takma addır ve ikisi tamamen
+eşdeğerdir.
+
+Boş arayüzler, türü bilinmeyen değerleri işleyen kodlar tarafından kullanılır.
+Örneğin `fmt.Print`, `any` türünde herhangi bir sayıda argüman alır.
+
+.play methods/empty-interface.go

@@ -1,0 +1,11 @@
+* Arayüzler
+
+Bir _arayüz_türü_, metot imzaları kümesi olarak tanımlanır.
+
+Arayüz türündeki bir değer, bu metotları gerçekleştiren herhangi bir değeri tutabilir.
+
+*Not:* Örnek kodun 22. satırında bir hata vardır.
+`Vertex` (değer türü), `Abser` arayüzünü gerçekleştirmez; çünkü
+`Abs` metodu yalnızca `*Vertex` (işaretçi türü) üzerinde tanımlanmıştır.
+
+.play methods/interfaces.go

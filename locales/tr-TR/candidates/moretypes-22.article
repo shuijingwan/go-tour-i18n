@@ -1,0 +1,27 @@
+* Eşlemeleri değiştirme
+
+`m` eşlemesine bir öğe eklemek veya var olan öğeyi güncellemek için:
+
+	m[key] = elem
+
+Bir öğeyi almak için:
+
+	elem = m[key]
+
+Bir öğeyi silmek için:
+
+	delete(m, key)
+
+Bir anahtarın bulunup bulunmadığını iki değerli bir atamayla sınayın:
+
+	elem, ok = m[key]
+
+`key`, `m` içinde bulunuyorsa `ok` değeri `true` olur. Bulunmuyorsa `ok` değeri `false` olur.
+
+`key` eşlemede yoksa `elem`, eşlemenin öğe türünün sıfır değeri olur.
+
+*Not:* `elem` veya `ok` henüz bildirilmemişse kısa bildirim biçimini kullanabilirsiniz:
+
+	elem, ok := m[key]
+
+.play moretypes/mutating-maps.go

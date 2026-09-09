@@ -1,0 +1,18 @@
+* Dilimlerin varsayılan sınırları
+
+Dilimleme sırasında üst veya alt sınırı atlayıp yerine varsayılan değerini kullanabilirsiniz.
+
+Varsayılan değer, alt sınır için sıfır; üst sınır için temel dilimin veya dizinin uzunluğudur.
+
+Şu dizi için
+
+	var a [10]int
+
+bu dilim ifadeleri eşdeğerdir:
+
+	a[0:10]
+	a[:10]
+	a[0:]
+	a[:]
+
+.play moretypes/slice-bounds.go

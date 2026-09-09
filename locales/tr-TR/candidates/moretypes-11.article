@@ -1,0 +1,14 @@
+* Dilim uzunluğu ve kapasitesi
+
+Bir dilimin hem _uzunluğu_ hem de _kapasitesi_ vardır.
+
+Bir dilimin uzunluğu, içerdiği öğelerin sayısıdır.
+
+Bir dilimin kapasitesi, dilimdeki ilk öğeden başlayarak temel dizide bulunan öğelerin sayısıdır.
+
+`s` diliminin uzunluğu ve kapasitesi `len(s)` ve `cap(s)` ifadeleriyle elde edilebilir.
+
+Yeterli kapasitesi varsa bir dilimi yeniden dilimleyerek uzunluğunu artırabilirsiniz.
+Örnek programdaki dilim işlemlerinden birini, dilimi kapasitesinin ötesine uzatacak şekilde değiştirip ne olduğuna bakın.
+
+.play moretypes/slice-len-cap.go

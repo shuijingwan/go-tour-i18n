@@ -1,0 +1,17 @@
+* Değer veya işaretçi alıcısı seçme
+
+İşaretçi alıcısı kullanmanın iki nedeni vardır.
+
+Birincisi, metodun alıcısının işaret ettiği değeri değiştirebilmesini sağlamaktır.
+
+İkincisi, her metot çağrısında değerin kopyalanmasını önlemektir.
+Örneğin alıcı büyük bir struct ise bu daha verimli olabilir.
+
+Bu örnekte hem `Scale` hem de `Abs`, alıcı türü `*Vertex` olan metotlardır;
+oysa `Abs` metodunun alıcısını değiştirmesi gerekmez.
+
+Genel olarak, belirli bir tür üzerindeki tüm metotlar ya değer ya da işaretçi
+alıcılarına sahip olmalı, ikisinin karışımı kullanılmamalıdır.
+(Nedenini sonraki birkaç sayfada göreceğiz.)
+
+.play methods/methods-with-pointer-receivers.go

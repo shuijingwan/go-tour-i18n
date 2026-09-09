@@ -1,0 +1,25 @@
+* Tür doğrulamaları
+
+Bir _tür_doğrulaması_, arayüz değerinin altta yatan somut değerine erişim sağlar.
+
+	t := i.(T)
+
+Bu ifade, `i` arayüz değerinin `T` somut türünü tuttuğunu doğrular
+ve altta yatan `T` değerini `t` değişkenine atar.
+
+`i` bir `T` tutmuyorsa ifade panic tetikler.
+
+Bir arayüz değerinin belirli bir türü tutup tutmadığını _sınamak_ için
+bir tür doğrulaması iki değer döndürebilir: altta yatan değer
+ve doğrulamanın başarılı olup olmadığını bildiren bir boolean değer.
+
+	t, ok := i.(T)
+
+`i` bir `T` tutuyorsa `t` altta yatan değer, `ok` ise true olur.
+
+Tutmuyorsa `ok` false, `t` ise `T` türünün sıfır değeri olur
+ve panic gerçekleşmez.
+
+Bu söz dizimi ile bir eşlemeden okuma söz dizimi arasındaki benzerliğe dikkat edin.
+
+.play methods/type-assertions.go

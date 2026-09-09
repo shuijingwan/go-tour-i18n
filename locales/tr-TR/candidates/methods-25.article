@@ -1,0 +1,13 @@
+* Alıştırma: Görüntüler
+
+Daha önce yazdığınız [[/tour/moretypes/18][resim üretecini]] hatırlıyor musunuz? Bir tane daha yazalım; ancak bu kez bir veri dilimi yerine `image.Image` gerçekleştirimini döndürecek.
+
+Kendi `Image` türünüzü tanımlayın, [[/pkg/image/#Image][gerekli metotları]] gerçekleştirin ve `pic.ShowImage` fonksiyonunu çağırın.
+
+`Bounds`, bir `image.Rectangle` döndürmelidir; örneğin `image.Rect(0,`0,`w,`h)`.
+
+`ColorModel`, `color.RGBAModel` döndürmelidir.
+
+`At` bir renk döndürmelidir; son resim üretecindeki `v` değeri, buradaki `color.RGBA{v,`v,`255,`255}` değerine karşılık gelir.
+
+.play methods/exercise-images.go

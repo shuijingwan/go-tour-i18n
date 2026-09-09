@@ -1,0 +1,16 @@
+* make ile dilim oluşturma
+
+Dilimler, yerleşik `make` fonksiyonuyla oluşturulabilir; dinamik boyutlu dizileri bu şekilde oluşturursunuz.
+
+`make` fonksiyonu, sıfır değerleriyle doldurulmuş bir dizi ayırır ve bu diziye başvuran bir dilim döndürür:
+
+	a := make([]int, 5)  // len(a)=5
+
+Bir kapasite belirtmek için `make` fonksiyonuna üçüncü bir argüman geçirin:
+
+	b := make([]int, 0, 5) // len(b)=0, cap(b)=5
+
+	b = b[:cap(b)] // len(b)=5, cap(b)=5
+	b = b[1:]      // len(b)=4, cap(b)=4
+
+.play moretypes/making-slices.go

@@ -1,0 +1,12 @@
+* Altta yatan değeri nil olan arayüz değerleri
+
+Arayüzün içindeki somut değerin kendisi nil ise
+metot nil bir alıcıyla çağrılır.
+
+Bazı dillerde bu durum null işaretçi istisnasını tetiklerdi,
+ancak Go dilinde nil bir alıcıyla çağrılmayı sorunsuz biçimde işleyen metotlar yazmak
+yaygındır (bu örnekteki `M` metodu gibi).
+
+Nil bir somut değer tutan arayüz değerinin kendisinin nil olmadığına dikkat edin.
+
+.play methods/interface-values-with-nil.go

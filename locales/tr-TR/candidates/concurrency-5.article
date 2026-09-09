@@ -1,0 +1,7 @@
+* Select
+
+`select` ifadesi, bir goroutine için birden çok iletişim işlemini bekleme olanağı sağlar.
+
+Bir `select`, case'lerinden biri çalışabilecek duruma gelene kadar bloke olur ve ardından o case'i çalıştırır. Birden fazlası hazırsa rastgele birini seçer.
+
+.play concurrency/select.go

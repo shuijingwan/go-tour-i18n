@@ -1,0 +1,12 @@
+* Metotların devamı
+
+Struct olmayan türler üzerinde de metot bildirebilirsiniz.
+
+Bu örnekte, `MyFloat` adlı sayısal bir türün `Abs` metoduna sahip olduğunu görüyoruz.
+
+Yalnızca türü metotla aynı pakette tanımlanmış bir alıcıya sahip metot
+bildirebilirsiniz.
+Türü başka bir pakette tanımlanmış bir alıcıya sahip metot bildiremezsiniz
+(`int` gibi yerleşik türler de buna dahildir).
+
+.play methods/methods-continued.go

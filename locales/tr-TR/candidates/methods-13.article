@@ -1,0 +1,8 @@
+* Nil arayüz değerleri
+
+Nil bir arayüz değeri ne bir değer ne de somut bir tür tutar.
+
+Nil bir arayüzde metot çağırmak çalışma zamanı hatasıdır; çünkü arayüz ikilisinin
+içinde hangi _somut_ metodun çağrılacağını belirtecek bir tür yoktur.
+
+.play methods/nil-interface-values.go

@@ -1,0 +1,12 @@
+* Range (devam)
+
+`_` tanımlayıcısına atama yaparak indisi veya değeri atlayabilirsiniz.
+
+    for i, _ := range pow
+    for _, value := range pow
+
+Yalnızca indisi istiyorsanız ikinci değişkeni atlayabilirsiniz.
+
+    for i := range pow
+
+.play moretypes/range-continued.go

@@ -1,0 +1,11 @@
+* Arabellekli kanallar
+
+Kanallar _arabellekli_ olabilir. Arabellekli bir kanalı başlatmak için arabellek uzunluğunu `make` fonksiyonuna ikinci argüman olarak verin:
+
+	ch := make(chan int, 100)
+
+Arabellekli bir kanala gönderme yalnızca arabellek doluyken bloke olur. Alma işlemleri ise arabellek boşken bloke olur.
+
+Arabelleğin kapasitesini aşacak şekilde örneği değiştirin ve ne olduğunu görün.
+
+.play concurrency/buffered-channels.go

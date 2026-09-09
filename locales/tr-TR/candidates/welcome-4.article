@@ -1,0 +1,13 @@
+* Go Turu'nu çevrimdışı kullanma (isteğe bağlı)
+
+Bu tur, internet erişimi olmadan kullanabileceğiniz bağımsız bir program olarak da sunulmaktadır. Kod örneklerini kendi makinenizde derleyip çalıştırır.
+
+Turu yerel olarak çalıştırmak için önce
+[[/doc/install][Go dilini kurmanız]], ardından şu komutu çalıştırmanız gerekir:
+
+  go install golang.org/x/website/tour@latest
+
+Bu işlem, bir `tour` ikili dosyasını [[/cmd/go/#hdr-GOPATH_and_Modules][GOPATH]] dizininizin `bin` alt dizinine yerleştirir.
+Tur programını çalıştırdığınızda, turun yerel sürümünü gösteren bir web tarayıcısı açılır.
+
+Elbette tura bu web sitesi üzerinden devam edebilirsiniz.

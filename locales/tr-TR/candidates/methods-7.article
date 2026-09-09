@@ -1,0 +1,21 @@
+* Metotlar ve işaretçi dolaylı erişimi (2)
+
+Tersi yönde de eşdeğer bir durum gerçekleşir.
+
+Değer argümanı alan fonksiyonlara o belirli türde bir değer verilmelidir:
+
+	var v Vertex
+	fmt.Println(AbsFunc(v))  // OK
+	fmt.Println(AbsFunc(&v)) // Derleme hatası!
+
+değer alıcılı metotlar ise çağrıldıklarında alıcı olarak bir değer ya da
+işaretçi kabul eder:
+
+	var v Vertex
+	fmt.Println(v.Abs()) // OK
+	p := &v
+	fmt.Println(p.Abs()) // OK
+
+Bu durumda `p.Abs()` metot çağrısı, `(*p).Abs()` olarak yorumlanır.
+
+.play methods/indirection-values.go
