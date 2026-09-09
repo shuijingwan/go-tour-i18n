@@ -74,7 +74,7 @@ func TestPrerenderedListValidationAndHandlerFailClosed(t *testing.T) {
 	if err := validatePrerenderedList(page, route); err != nil {
 		t.Fatalf("valid list prerender: %v", err)
 	}
-	if err := validatePrerenderedList(bytes.Replace(page, []byte("Learn packages."), nil, 1), route); err == nil || !strings.Contains(err.Error(), "lesson content") {
+	if err := validatePrerenderedList(bytes.Replace(page, []byte("Learn packages."), nil, 1), route); err == nil || !strings.Contains(err.Error(), "lesson description") {
 		t.Fatalf("missing lesson content error=%v", err)
 	}
 	mux := http.NewServeMux()
@@ -83,6 +83,37 @@ func TestPrerenderedListValidationAndHandlerFailClosed(t *testing.T) {
 	mux.ServeHTTP(recorder, httptest.NewRequest(http.MethodGet, route.Path, nil))
 	if recorder.Code != http.StatusOK || recorder.Body.String() != string(page) {
 		t.Fatalf("raw GET /tour/list=%d %q", recorder.Code, recorder.Body.String())
+	}
+}
+
+func TestPrerenderedListValidationUsesDecodedDOMText(t *testing.T) {
+	const (
+		lessonTitle       = "Diğer türler: struct'lar, dilimler ve eşlemeler"
+		lessonDescription = "Mevcut türleri temel alarak yeni türler tanımlamayı öğrenin. Bu ders struct'ları, dizileri, dilimleri ve eşlemeleri ele alır."
+	)
+	route := ListRoute{
+		Path: "/tour/list", Canonical: "https://example.test/tour/list", PageTitle: "Kurs dizini", Description: "Derslere göz atın.", Heading: "Go turuna hoş geldiniz",
+		Lessons: []CourseRoute{{Path: "/tour/moretypes/1", LessonTitle: lessonTitle, LessonDescription: lessonDescription}},
+	}
+	page := []byte(`<!doctype html><html data-tour-rendered-route="/tour/list"><head><script id="tour-runtime-head"></script><title>Kurs dizini</title><link href="https://example.test/tour/list" rel="canonical"><meta content="Derslere göz atın." name="description"></head><body><h1>Go turuna hoş geldiniz</h1><a href="/tour/moretypes/1">İşaretçiler</a><p>Diğer türler: struct&#39;lar, dilimler ve eşlemeler</p><p>Mevcut türleri temel alarak yeni türler tanımlamayı öğrenin. Bu ders struct&#39;ları, dizileri, dilimleri ve eşlemeleri ele alır.</p></body></html>`)
+	if err := validatePrerenderedList(page, route); err != nil {
+		t.Fatalf("semantically complete serialized list rejected: %v", err)
+	}
+
+	for _, test := range []struct {
+		name    string
+		old     string
+		wantErr string
+	}{
+		{"title", "Diğer türler: struct&#39;lar, dilimler ve eşlemeler", "lesson title"},
+		{"description", "Mevcut türleri temel alarak yeni türler tanımlamayı öğrenin. Bu ders struct&#39;ları, dizileri, dilimleri ve eşlemeleri ele alır.", "lesson description"},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			incomplete := bytes.Replace(page, []byte(test.old), []byte("eksik"), 1)
+			if err := validatePrerenderedList(incomplete, route); err == nil || !strings.Contains(err.Error(), test.wantErr) {
+				t.Fatalf("missing %s error=%v", test.name, err)
+			}
+		})
 	}
 }
 

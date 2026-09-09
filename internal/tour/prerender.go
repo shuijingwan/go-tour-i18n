@@ -65,36 +65,50 @@ func loadPrerenderedList(content fs.FS, route ListRoute) (prerenderedPage, error
 }
 
 func validatePrerenderedList(data []byte, route ListRoute) error {
-	for _, check := range []struct {
-		value []byte
-		name  string
-	}{
-		{[]byte(runtimeHeadMarker), "runtime head marker"},
-		{[]byte(`data-tour-rendered-route="` + route.Path + `"`), "render completion marker"},
-		{[]byte(`<link rel="canonical" href="` + route.Canonical + `"`), "canonical"},
-		{[]byte(route.PageTitle), "list title"},
-		{[]byte(route.Heading), "list heading"},
-	} {
-		if !bytes.Contains(data, check.value) {
-			return fmt.Errorf("missing %s", check.name)
-		}
-	}
 	document, err := html.Parse(bytes.NewReader(data))
 	if err != nil {
 		return fmt.Errorf("parse HTML: %w", err)
+	}
+	if findElement(document, "script", "id", "tour-runtime-head") == nil {
+		return fmt.Errorf("missing runtime head marker")
+	}
+	if findElement(document, "html", "data-tour-rendered-route", route.Path) == nil {
+		return fmt.Errorf("missing render completion marker")
+	}
+	canonical := findElement(document, "link", "rel", "canonical")
+	if canonical == nil || attrValue(canonical, "href") != route.Canonical {
+		return fmt.Errorf("canonical=%q, want %q", attrValue(canonical, "href"), route.Canonical)
+	}
+	title := findElement(document, "title", "", "")
+	if title == nil || nodeText(title) != route.PageTitle {
+		return fmt.Errorf("list title=%q, want %q", nodeText(title), route.PageTitle)
 	}
 	description := findElement(document, "meta", "name", "description")
 	if description == nil || attrValue(description, "content") != route.Description {
 		return fmt.Errorf("description=%q, want formal list metadata %q", attrValue(description, "content"), route.Description)
 	}
+	heading := findElement(document, "h1", "", "")
+	if heading == nil || nodeText(heading) != route.Heading {
+		return fmt.Errorf("list heading=%q, want %q", nodeText(heading), route.Heading)
+	}
+	documentText := nodeText(document)
 	for _, module := range route.Modules {
-		if !bytes.Contains(data, []byte(module.Title)) || !strings.Contains(nodeText(document), richText(module.Description)) {
-			return fmt.Errorf("missing localized module content %q", module.Title)
+		if !strings.Contains(documentText, module.Title) {
+			return fmt.Errorf("missing localized module title %q", module.Title)
+		}
+		if !strings.Contains(documentText, richText(module.Description)) {
+			return fmt.Errorf("missing localized module description %q", module.Title)
 		}
 	}
 	for _, lesson := range route.Lessons {
-		if !bytes.Contains(data, []byte(`href="`+lesson.Path+`"`)) || !bytes.Contains(data, []byte(lesson.LessonTitle)) || !bytes.Contains(data, []byte(lesson.LessonDescription)) {
-			return fmt.Errorf("missing localized lesson content %q", lesson.Path)
+		if findElement(document, "a", "href", lesson.Path) == nil {
+			return fmt.Errorf("missing localized lesson href %q", lesson.Path)
+		}
+		if !strings.Contains(documentText, lesson.LessonTitle) {
+			return fmt.Errorf("missing localized lesson title %q", lesson.Path)
+		}
+		if !strings.Contains(documentText, lesson.LessonDescription) {
+			return fmt.Errorf("missing localized lesson description %q", lesson.Path)
 		}
 	}
 	return nil

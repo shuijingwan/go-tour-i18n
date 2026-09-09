@@ -52,3 +52,13 @@
 - 暂缓原因：本轮明确只制定 ko-KR glossary，不调整跨 locale 术语政策或实现状态文档。
 - 当前状态：`resolved`
 - 后续处理/核销证据：2026-09-02 已更新 `docs/TRANSLATION_TERMINOLOGY.md` 第 2.3、9.1、9.2 节，使 policy、loader、prompt、protector 与 Example validator 的当前边界一致；由 `go test ./...` 与 `git diff --check` 验证。
+
+### DI-20260909-001：共享 header 的两处小型垂直对齐观感问题
+
+- ID：`DI-20260909-001`
+- 发现日期：`2026-09-09`
+- 发现阶段/场景：tr-TR 首次 production 前的 preview visual HUMAN gate；问题在较长的 Turkish header 文案下更明显。
+- 问题描述：维护者实际观察到共享 header 中有两处小型垂直对齐观感问题；未造成遮挡、溢出或交互失效，preview automated acceptance 与 visual HUMAN gate 均已通过。
+- 暂缓原因：维护者明确决定不阻塞 tr-TR 上线，不在本轮对 Turkish 做局部 CSS 特例；后续作为共享样式问题统一修复。
+- 当前状态：`open`
+- 后续处理/核销证据：当前 evidence 见 `data/locale-surface-reviews/tr-TR/20260909-first-production.md` 的 Visual HUMAN gate 记录；保持 open。

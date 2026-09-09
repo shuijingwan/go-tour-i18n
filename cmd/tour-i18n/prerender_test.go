@@ -225,7 +225,7 @@ func TestPrerenderRepresentativeCoursePagesInBrowser(t *testing.T) {
 
 func TestPrerenderListInBrowser(t *testing.T) {
 	chrome := browserTestChrome(t)
-	for _, locale := range []string{"zh-CN", "ja-JP"} {
+	for _, locale := range []string{"zh-CN", "ja-JP", "tr-TR"} {
 		t.Run(locale, func(t *testing.T) {
 			source := formalPrerenderSource(t, locale)
 			server := newIPv4TestServer(t, source.Handler)
@@ -240,8 +240,28 @@ func TestPrerenderListInBrowser(t *testing.T) {
 			if err := validateRenderedListPage(page, source.List); err != nil {
 				t.Fatal(err)
 			}
-			if bytes.Count(page, []byte(`class="wrapper list-wrapper"`)) != 1 {
+			if bytes.Count(page, []byte(`class="wrapper list-wrapper`)) != 1 {
 				t.Fatalf("list wrapper count is not one")
+			}
+			if locale == "tr-TR" {
+				const (
+					lessonTitle       = "Diğer türler: struct'lar, dilimler ve eşlemeler"
+					lessonDescription = "Mevcut türleri temel alarak yeni türler tanımlamayı öğrenin. Bu ders struct'ları, dizileri, dilimleri ve eşlemeleri ele alır."
+				)
+				route, ok := courseRoute(source.List.Lessons, "/tour/moretypes/1")
+				if !ok || route.LessonTitle != lessonTitle || route.LessonDescription != lessonDescription {
+					t.Fatalf("unexpected Turkish list route: %+v", route)
+				}
+				document, err := html.Parse(bytes.NewReader(page))
+				if err != nil {
+					t.Fatal(err)
+				}
+				if findElement(document, "a", "href", route.Path) == nil || !strings.Contains(nodeText(document), route.LessonTitle) || !strings.Contains(nodeText(document), route.LessonDescription) {
+					t.Fatal("Turkish lesson href, decoded title, or decoded description is missing")
+				}
+				if bytes.Contains(page, []byte(route.LessonTitle)) || bytes.Contains(page, []byte(route.LessonDescription)) || !bytes.Contains(page, []byte("struct&#39;lar")) {
+					t.Fatal("Turkish apostrophe serialization did not exercise the production validator boundary")
+				}
 			}
 		})
 	}
