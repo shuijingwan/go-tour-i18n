@@ -1,0 +1,26 @@
+* Hatalar
+
+Go programları hata durumunu `error` değerleriyle ifade eder.
+
+`error` türü, `fmt.Stringer` arayüzüne benzeyen yerleşik bir arayüzdür:
+
+	type error interface {
+		Error() string
+	}
+
+(`fmt.Stringer` arayüzünde olduğu gibi `fmt` paketi, değerleri
+yazdırırken `error` arayüzünü arar.)
+
+Fonksiyonlar çoğunlukla bir `error` değeri döndürür; çağıran kod da hatanın
+`nil` değerine eşit olup olmadığını sınayarak hataları işlemelidir.
+
+	i, err := strconv.Atoi("42")
+	if err != nil {
+		fmt.Printf("couldn't convert number: %v\n", err)
+		return
+	}
+	fmt.Println("Converted integer:", i)
+
+Nil bir `error` başarıyı, nil olmayan bir `error` ise başarısızlığı belirtir.
+
+.play methods/errors.go

@@ -1,0 +1,16 @@
+* Kanallar
+
+Kanallar, kanal operatörü ⟪GTI18N_a35e3af2_000001⟫<-⟪GTI18N_a35e3af2_000002⟫ ile değer gönderip almanızı sağlayan türlendirilmiş iletim yollarıdır.
+
+⟪GTI18N_a35e3af2_000003⟫⟪GTI18N_a35e3af2_000004⟫ değerini ⟪GTI18N_a35e3af2_000005⟫ kanalına gönder.⟪GTI18N_a35e3af2_000006⟫⟪GTI18N_a35e3af2_000007⟫ kanalından al ve⟪GTI18N_a35e3af2_000008⟫değeri ⟪GTI18N_a35e3af2_000009⟫ değişkenine ata.⟪GTI18N_a35e3af2_000010⟫(Veri, okun gösterdiği yönde akar.)
+
+Eşlemeler ve dilimler gibi kanallar da kullanılmadan önce oluşturulmalıdır:
+
+⟪GTI18N_a35e3af2_000011⟫
+
+Varsayılan olarak gönderme ve alma işlemleri, karşı taraf hazır olana kadar bloke olur. Bu, goroutine'lerin açık kilitler veya koşul değişkenleri olmadan eşzamanlanmasını sağlar.
+
+Örnek kod, işi iki goroutine arasında dağıtarak bir dilimdeki sayıları toplar.
+Her iki goroutine de hesaplamasını tamamladıktan sonra nihai sonucu hesaplar.
+
+⟪GTI18N_a35e3af2_000012⟫

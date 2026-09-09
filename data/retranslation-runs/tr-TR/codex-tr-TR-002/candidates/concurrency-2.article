@@ -1,0 +1,20 @@
+* Kanallar
+
+Kanallar, kanal operatörü `<-` ile değer gönderip almanızı sağlayan türlendirilmiş iletim yollarıdır.
+
+	ch <- v    // v değerini ch kanalına gönder.
+	v := <-ch  // ch kanalından al ve
+	           // değeri v değişkenine ata.
+
+(Veri, okun gösterdiği yönde akar.)
+
+Eşlemeler ve dilimler gibi kanallar da kullanılmadan önce oluşturulmalıdır:
+
+	ch := make(chan int)
+
+Varsayılan olarak gönderme ve alma işlemleri, karşı taraf hazır olana kadar bloke olur. Bu, goroutine'lerin açık kilitler veya koşul değişkenleri olmadan eşzamanlanmasını sağlar.
+
+Örnek kod, işi iki goroutine arasında dağıtarak bir dilimdeki sayıları toplar.
+Her iki goroutine de hesaplamasını tamamladıktan sonra nihai sonucu hesaplar.
+
+.play concurrency/channels.go

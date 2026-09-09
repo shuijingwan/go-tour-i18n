@@ -1,0 +1,21 @@
+* Alıştırma: Hatalar
+
+`Sqrt` fonksiyonunuzu [[/tour/flowcontrol/8][önceki alıştırmadan]] kopyalayın ve bir `error` değeri döndürecek şekilde değiştirin.
+
+`Sqrt`, karmaşık sayıları desteklemediğinden negatif bir sayı verildiğinde nil olmayan bir hata değeri döndürmelidir.
+
+Yeni bir tür oluşturun:
+
+	type ErrNegativeSqrt float64
+
+Bu türe aşağıdaki metodu vererek onu bir `error` yapın:
+
+	func (e ErrNegativeSqrt) Error() string
+
+Metot, `ErrNegativeSqrt(-2).Error()` ifadesinin `"cannot`Sqrt`negative`number:`-2"` döndürmesini sağlamalıdır.
+
+*Not:* `fmt.Sprint(e)` çağrısını `Error` metodunun içinde yapmak programı sonsuz döngüye sokar. Önce `e` değerini dönüştürerek bunu önleyebilirsiniz: `fmt.Sprint(float64(e))`. Neden?
+
+`Sqrt` fonksiyonunuzu, negatif bir sayı verildiğinde `ErrNegativeSqrt` değeri döndürecek şekilde değiştirin.
+
+.play methods/exercise-errors.go

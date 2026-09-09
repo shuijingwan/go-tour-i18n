@@ -1,0 +1,15 @@
+* Goroutine'ler
+
+Bir ⟪GTI18N_d0a9c450_000001⟫⟪GTI18N_d0a9c450_000002⟫⟪GTI18N_d0a9c450_000003⟫, ⟪GTI18N_d0a9c450_000004⟫ çalışma zamanı tarafından yönetilen hafif bir iş parçacığıdır.
+
+⟪GTI18N_d0a9c450_000005⟫
+
+şunu çalıştıran yeni bir ⟪GTI18N_d0a9c450_000006⟫ başlatır:
+
+⟪GTI18N_d0a9c450_000007⟫
+
+⟪GTI18N_d0a9c450_000008⟫f⟪GTI18N_d0a9c450_000009⟫, ⟪GTI18N_d0a9c450_000010⟫x⟪GTI18N_d0a9c450_000011⟫, ⟪GTI18N_d0a9c450_000012⟫y⟪GTI18N_d0a9c450_000013⟫ ve ⟪GTI18N_d0a9c450_000014⟫z⟪GTI18N_d0a9c450_000015⟫ mevcut ⟪GTI18N_d0a9c450_000016⟫ içinde değerlendirilir; ⟪GTI18N_d0a9c450_000017⟫f⟪GTI18N_d0a9c450_000018⟫ ise yeni ⟪GTI18N_d0a9c450_000019⟫ içinde çalıştırılır.
+
+Goroutine'ler aynı adres alanında çalıştığından paylaşılan belleğe erişim eşzamanlanmalıdır. [[⟪GTI18N_d0a9c450_000020⟫][⟪GTI18N_d0a9c450_000021⟫sync⟪GTI18N_d0a9c450_000022⟫]] paketi yararlı temel araçlar sağlar; ancak başka temel araçlar bulunduğundan ⟪GTI18N_d0a9c450_000023⟫ dilinde bunlara pek ihtiyaç duymazsınız. (Sonraki sayfaya bakın.)
+
+⟪GTI18N_d0a9c450_000024⟫

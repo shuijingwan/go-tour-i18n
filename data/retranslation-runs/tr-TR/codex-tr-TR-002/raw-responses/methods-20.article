@@ -1,0 +1,21 @@
+* Alıştırma: Hatalar
+
+⟪GTI18N_41f1f733_000001⟫Sqrt⟪GTI18N_41f1f733_000002⟫ fonksiyonunuzu [[⟪GTI18N_41f1f733_000003⟫][önceki alıştırmadan]] kopyalayın ve bir ⟪GTI18N_41f1f733_000004⟫error⟪GTI18N_41f1f733_000005⟫ değeri döndürecek şekilde değiştirin.
+
+⟪GTI18N_41f1f733_000006⟫Sqrt⟪GTI18N_41f1f733_000007⟫, karmaşık sayıları desteklemediğinden negatif bir sayı verildiğinde nil olmayan bir hata değeri döndürmelidir.
+
+Yeni bir tür oluşturun:
+
+⟪GTI18N_41f1f733_000008⟫
+
+Bu türe aşağıdaki metodu vererek onu bir ⟪GTI18N_41f1f733_000009⟫error⟪GTI18N_41f1f733_000010⟫ yapın:
+
+⟪GTI18N_41f1f733_000011⟫
+
+Metot, ⟪GTI18N_41f1f733_000012⟫ErrNegativeSqrt(-2).Error()⟪GTI18N_41f1f733_000013⟫ ifadesinin ⟪GTI18N_41f1f733_000014⟫"cannot`Sqrt`negative`number:`-2"⟪GTI18N_41f1f733_000015⟫ döndürmesini sağlamalıdır.
+
+⟪GTI18N_41f1f733_000016⟫Not:⟪GTI18N_41f1f733_000017⟫ ⟪GTI18N_41f1f733_000018⟫fmt.Sprint(e)⟪GTI18N_41f1f733_000019⟫ çağrısını ⟪GTI18N_41f1f733_000020⟫Error⟪GTI18N_41f1f733_000021⟫ metodunun içinde yapmak programı sonsuz döngüye sokar. Önce ⟪GTI18N_41f1f733_000022⟫e⟪GTI18N_41f1f733_000023⟫ değerini dönüştürerek bunu önleyebilirsiniz: ⟪GTI18N_41f1f733_000024⟫fmt.Sprint(float64(e))⟪GTI18N_41f1f733_000025⟫. Neden?
+
+⟪GTI18N_41f1f733_000026⟫Sqrt⟪GTI18N_41f1f733_000027⟫ fonksiyonunuzu, negatif bir sayı verildiğinde ⟪GTI18N_41f1f733_000028⟫ErrNegativeSqrt⟪GTI18N_41f1f733_000029⟫ değeri döndürecek şekilde değiştirin.
+
+⟪GTI18N_41f1f733_000030⟫

@@ -1,0 +1,28 @@
+* Tür anahtarları
+
+Bir _tür_anahtarı_, art arda birden çok tür doğrulaması yapılmasına olanak tanıyan bir yapıdır.
+
+Tür anahtarı, sıradan bir switch ifadesine benzer; ancak tür anahtarındaki
+case'ler değerleri değil türleri belirtir ve bu türler, verilen arayüz değerinin
+tuttuğu değerin türüyle karşılaştırılır.
+
+	switch v := i.(type) {
+	case T:
+		// burada v, T türündedir
+	case S:
+		// burada v, S türündedir
+	default:
+		// eşleşme yok; burada v, i ile aynı türdedir
+	}
+
+Tür anahtarındaki bildirim, `i.(T)` tür doğrulamasıyla aynı söz dizimine sahiptir,
+ancak belirli `T` türünün yerini `type` anahtar sözcüğü alır.
+
+Bu switch ifadesi, `i` arayüz değerinin
+`T` veya `S` türünde bir değer tutup tutmadığını sınar.
+`T` ve `S` case'lerinin her birinde `v` değişkeni sırasıyla
+`T` veya `S` türünde olur ve `i` tarafından tutulan değeri tutar.
+Varsayılan durumda (eşleşme olmadığında) `v` değişkeni,
+`i` ile aynı arayüz türüne ve değere sahiptir.
+
+.play methods/type-switches.go

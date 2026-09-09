@@ -1,0 +1,17 @@
+* Değer veya işaretçi alıcısı seçme
+
+İşaretçi alıcısı kullanmanın iki nedeni vardır.
+
+Birincisi, metodun alıcısının işaret ettiği değeri değiştirebilmesini sağlamaktır.
+
+İkincisi, her metot çağrısında değerin kopyalanmasını önlemektir.
+Örneğin alıcı büyük bir struct ise bu daha verimli olabilir.
+
+Bu örnekte hem ⟪GTI18N_357424f2_000001⟫Scale⟪GTI18N_357424f2_000002⟫ hem de ⟪GTI18N_357424f2_000003⟫Abs⟪GTI18N_357424f2_000004⟫, alıcı türü ⟪GTI18N_357424f2_000005⟫*Vertex⟪GTI18N_357424f2_000006⟫ olan metotlardır;
+oysa ⟪GTI18N_357424f2_000007⟫Abs⟪GTI18N_357424f2_000008⟫ metodunun alıcısını değiştirmesi gerekmez.
+
+Genel olarak, belirli bir tür üzerindeki tüm metotlar ya değer ya da işaretçi
+alıcılarına sahip olmalı, ikisinin karışımı kullanılmamalıdır.
+(Nedenini sonraki birkaç sayfada göreceğiz.)
+
+⟪GTI18N_357424f2_000009⟫

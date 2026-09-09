@@ -1,0 +1,8 @@
+* Alıştırma: Stringer'lar
+
+Adresi noktayla ayrılmış dört sayı biçiminde yazdırmak için `IPAddr` türünün `fmt.Stringer` arayüzünü
+gerçekleştirmesini sağlayın.
+
+Örneğin `IPAddr{1,`2,`3,`4}`, `"1.2.3.4"` olarak yazdırılmalıdır.
+
+.play methods/exercise-stringer.go

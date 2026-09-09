@@ -1,0 +1,24 @@
+* İşaretçi alıcıları
+
+İşaretçi alıcılarına sahip metotlar bildirebilirsiniz.
+
+Bu, alıcı türünün söz diziminde doğrudan ⟪GTI18N_99f9fa4e_000001⟫*T⟪GTI18N_99f9fa4e_000002⟫ biçiminde yazıldığı anlamına gelir; burada ⟪GTI18N_99f9fa4e_000003⟫T⟪GTI18N_99f9fa4e_000004⟫ herhangi bir türdür.
+(Ayrıca, ⟪GTI18N_99f9fa4e_000005⟫T⟪GTI18N_99f9fa4e_000006⟫ türünün kendisi ⟪GTI18N_99f9fa4e_000007⟫*int⟪GTI18N_99f9fa4e_000008⟫ gibi bir işaretçi olamaz.)
+
+Örneğin, buradaki ⟪GTI18N_99f9fa4e_000009⟫Scale⟪GTI18N_99f9fa4e_000010⟫ metodu ⟪GTI18N_99f9fa4e_000011⟫*Vertex⟪GTI18N_99f9fa4e_000012⟫ üzerinde tanımlanmıştır.
+
+İşaretçi alıcılı metotlar, alıcının işaret ettiği değeri değiştirebilir
+(burada ⟪GTI18N_99f9fa4e_000013⟫Scale⟪GTI18N_99f9fa4e_000014⟫ metodunun yaptığı gibi).
+Metotların çoğu zaman alıcılarını değiştirmesi gerektiğinden işaretçi alıcıları,
+değer alıcılarından daha yaygındır.
+
+16. satırdaki ⟪GTI18N_99f9fa4e_000015⟫*⟪GTI18N_99f9fa4e_000016⟫ karakterini ⟪GTI18N_99f9fa4e_000017⟫Scale⟪GTI18N_99f9fa4e_000018⟫ fonksiyonunun bildiriminden kaldırmayı deneyin
+ve programın davranışının nasıl değiştiğini gözlemleyin.
+
+Değer alıcısıyla ⟪GTI18N_99f9fa4e_000019⟫Scale⟪GTI18N_99f9fa4e_000020⟫ metodu, özgün
+⟪GTI18N_99f9fa4e_000021⟫Vertex⟪GTI18N_99f9fa4e_000022⟫ değerinin bir kopyası üzerinde çalışır.
+(Bu, diğer tüm fonksiyon argümanlarıyla aynı davranıştır.)
+⟪GTI18N_99f9fa4e_000023⟫Scale⟪GTI18N_99f9fa4e_000024⟫ metodunun, ⟪GTI18N_99f9fa4e_000025⟫Vertex⟪GTI18N_99f9fa4e_000026⟫ değerini değiştirebilmesi için işaretçi alıcısına sahip olması gerekir;
+bu değer ⟪GTI18N_99f9fa4e_000027⟫main⟪GTI18N_99f9fa4e_000028⟫ fonksiyonunda bildirilmiştir.
+
+⟪GTI18N_99f9fa4e_000029⟫

@@ -1,0 +1,12 @@
+* Altta yatan değeri nil olan arayüz değerleri
+
+Arayüzün içindeki somut değerin kendisi nil ise
+metot nil bir alıcıyla çağrılır.
+
+Bazı dillerde bu durum null işaretçi istisnasını tetiklerdi,
+ancak ⟪GTI18N_9487ca3c_000001⟫ dilinde nil bir alıcıyla çağrılmayı sorunsuz biçimde işleyen metotlar yazmak
+yaygındır (bu örnekteki ⟪GTI18N_9487ca3c_000002⟫M⟪GTI18N_9487ca3c_000003⟫ metodu gibi).
+
+Nil bir somut değer tutan arayüz değerinin kendisinin nil olmadığına dikkat edin.
+
+⟪GTI18N_9487ca3c_000004⟫

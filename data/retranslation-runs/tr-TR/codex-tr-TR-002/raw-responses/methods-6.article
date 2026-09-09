@@ -1,0 +1,16 @@
+* Metotlar ve işaretçi dolaylı erişimi
+
+Önceki iki programı karşılaştırdığınızda, işaretçi argümanı alan
+fonksiyonlara bir işaretçi verilmesi gerektiğini fark edebilirsiniz:
+
+⟪GTI18N_39fb725b_000001⟫Derleme hatası!⟪GTI18N_39fb725b_000002⟫işaretçi alıcılı metotlar ise çağrıldıklarında alıcı olarak bir değer ya da
+işaretçi kabul eder:
+
+⟪GTI18N_39fb725b_000003⟫
+
+⟪GTI18N_39fb725b_000004⟫v.Scale(5)⟪GTI18N_39fb725b_000005⟫ ifadesinde ⟪GTI18N_39fb725b_000006⟫v⟪GTI18N_39fb725b_000007⟫ bir işaretçi değil, değer olmasına rağmen
+işaretçi alıcılı metot otomatik olarak çağrılır.
+Başka bir deyişle ⟪GTI18N_39fb725b_000008⟫, kolaylık sağlamak için ⟪GTI18N_39fb725b_000009⟫v.Scale(5)⟪GTI18N_39fb725b_000010⟫ ifadesini
+⟪GTI18N_39fb725b_000011⟫(&v).Scale(5)⟪GTI18N_39fb725b_000012⟫ olarak yorumlar; çünkü ⟪GTI18N_39fb725b_000013⟫Scale⟪GTI18N_39fb725b_000014⟫ metodu işaretçi alıcısına sahiptir.
+
+⟪GTI18N_39fb725b_000015⟫

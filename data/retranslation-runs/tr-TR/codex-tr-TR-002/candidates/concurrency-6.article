@@ -1,0 +1,14 @@
+* Varsayılan seçim
+
+Bir `default` case, `select` içindeki başka hiçbir case hazır değilse çalıştırılır.
+
+Bloke olmadan gönderme veya alma girişiminde bulunmak için bir `default` case kullanın:
+
+	select {
+	case i := <-c:
+		// i kullan
+	default:
+		// c kanalından alma bloke olurdu
+	}
+
+.play concurrency/default-selection.go

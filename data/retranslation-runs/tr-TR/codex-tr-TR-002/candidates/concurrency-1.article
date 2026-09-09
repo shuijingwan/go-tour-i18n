@@ -1,0 +1,15 @@
+* Goroutine'ler
+
+Bir _goroutine_, Go çalışma zamanı tarafından yönetilen hafif bir iş parçacığıdır.
+
+	go f(x, y, z)
+
+şunu çalıştıran yeni bir goroutine başlatır:
+
+	f(x, y, z)
+
+`f`, `x`, `y` ve `z` mevcut goroutine içinde değerlendirilir; `f` ise yeni goroutine içinde çalıştırılır.
+
+Goroutine'ler aynı adres alanında çalıştığından paylaşılan belleğe erişim eşzamanlanmalıdır. [[/pkg/sync/][`sync`]] paketi yararlı temel araçlar sağlar; ancak başka temel araçlar bulunduğundan Go dilinde bunlara pek ihtiyaç duymazsınız. (Sonraki sayfaya bakın.)
+
+.play concurrency/goroutines.go

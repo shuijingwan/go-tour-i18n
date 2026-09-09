@@ -1,0 +1,17 @@
+* Tür parametreleri
+
+⟪GTI18N_01a04510_000001⟫ fonksiyonları, tür parametreleri kullanılarak birden çok türle çalışacak şekilde yazılabilir. Bir
+fonksiyonun tür parametreleri, fonksiyonun argümanlarından önce köşeli parantezler
+arasında yer alır.
+
+⟪GTI18N_01a04510_000002⟫
+
+Bu bildirim, ⟪GTI18N_01a04510_000003⟫s⟪GTI18N_01a04510_000004⟫ değişkeninin herhangi bir ⟪GTI18N_01a04510_000005⟫T⟪GTI18N_01a04510_000006⟫ türünün dilimi olduğu anlamına gelir;
+bu tür yerleşik ⟪GTI18N_01a04510_000007⟫comparable⟪GTI18N_01a04510_000008⟫ kısıtını karşılamalıdır. ⟪GTI18N_01a04510_000009⟫x⟪GTI18N_01a04510_000010⟫ de aynı türde bir değerdir.
+
+⟪GTI18N_01a04510_000011⟫comparable⟪GTI18N_01a04510_000012⟫, türün değerleri üzerinde ⟪GTI18N_01a04510_000013⟫==⟪GTI18N_01a04510_000014⟫ ve
+⟪GTI18N_01a04510_000015⟫!=⟪GTI18N_01a04510_000016⟫ operatörlerini kullanmayı mümkün kılan yararlı bir kısıttır. Bu örnekte bir eşleşme bulunana kadar bir
+değeri tüm dilim elemanlarıyla karşılaştırmak için bunu kullanıyoruz. Bu ⟪GTI18N_01a04510_000017⟫Index⟪GTI18N_01a04510_000018⟫ fonksiyonu,
+karşılaştırmayı destekleyen her türle çalışır.
+
+⟪GTI18N_01a04510_000019⟫

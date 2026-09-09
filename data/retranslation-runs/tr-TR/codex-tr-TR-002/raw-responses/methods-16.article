@@ -1,0 +1,19 @@
+* Tür anahtarları
+
+Bir ⟪GTI18N_26e4da09_000001⟫tür_anahtarı⟪GTI18N_26e4da09_000002⟫, art arda birden çok tür doğrulaması yapılmasına olanak tanıyan bir yapıdır.
+
+Tür anahtarı, sıradan bir switch ifadesine benzer; ancak tür anahtarındaki
+case'ler değerleri değil türleri belirtir ve bu türler, verilen arayüz değerinin
+tuttuğu değerin türüyle karşılaştırılır.
+
+⟪GTI18N_26e4da09_000003⟫burada ⟪GTI18N_26e4da09_000004⟫, ⟪GTI18N_26e4da09_000005⟫ türündedir⟪GTI18N_26e4da09_000006⟫burada ⟪GTI18N_26e4da09_000007⟫, ⟪GTI18N_26e4da09_000008⟫ türündedir⟪GTI18N_26e4da09_000009⟫eşleşme yok; burada ⟪GTI18N_26e4da09_000010⟫, ⟪GTI18N_26e4da09_000011⟫ ile aynı türdedir⟪GTI18N_26e4da09_000012⟫Tür anahtarındaki bildirim, ⟪GTI18N_26e4da09_000013⟫i.(T)⟪GTI18N_26e4da09_000014⟫ tür doğrulamasıyla aynı söz dizimine sahiptir,
+ancak belirli ⟪GTI18N_26e4da09_000015⟫T⟪GTI18N_26e4da09_000016⟫ türünün yerini ⟪GTI18N_26e4da09_000017⟫type⟪GTI18N_26e4da09_000018⟫ anahtar sözcüğü alır.
+
+Bu switch ifadesi, ⟪GTI18N_26e4da09_000019⟫i⟪GTI18N_26e4da09_000020⟫ arayüz değerinin
+⟪GTI18N_26e4da09_000021⟫T⟪GTI18N_26e4da09_000022⟫ veya ⟪GTI18N_26e4da09_000023⟫S⟪GTI18N_26e4da09_000024⟫ türünde bir değer tutup tutmadığını sınar.
+⟪GTI18N_26e4da09_000025⟫T⟪GTI18N_26e4da09_000026⟫ ve ⟪GTI18N_26e4da09_000027⟫S⟪GTI18N_26e4da09_000028⟫ case'lerinin her birinde ⟪GTI18N_26e4da09_000029⟫v⟪GTI18N_26e4da09_000030⟫ değişkeni sırasıyla
+⟪GTI18N_26e4da09_000031⟫T⟪GTI18N_26e4da09_000032⟫ veya ⟪GTI18N_26e4da09_000033⟫S⟪GTI18N_26e4da09_000034⟫ türünde olur ve ⟪GTI18N_26e4da09_000035⟫i⟪GTI18N_26e4da09_000036⟫ tarafından tutulan değeri tutar.
+Varsayılan durumda (eşleşme olmadığında) ⟪GTI18N_26e4da09_000037⟫v⟪GTI18N_26e4da09_000038⟫ değişkeni,
+⟪GTI18N_26e4da09_000039⟫i⟪GTI18N_26e4da09_000040⟫ ile aynı arayüz türüne ve değere sahiptir.
+
+⟪GTI18N_26e4da09_000041⟫

@@ -1,0 +1,12 @@
+* Stringer'lar
+
+En yaygın arayüzlerden biri, [[/pkg/fmt/#Stringer][`Stringer`]] arayüzüdür ve [[/pkg/fmt/][`fmt`]] paketi tarafından tanımlanır.
+
+	type Stringer interface {
+		String() string
+	}
+
+Bir `Stringer`, kendisini string olarak tanımlayabilen bir türdür. `fmt` paketi
+(ve daha birçok paket), değerleri yazdırmak için bu arayüzü arar.
+
+.play methods/stringer.go

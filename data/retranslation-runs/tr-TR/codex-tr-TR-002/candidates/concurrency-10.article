@@ -1,0 +1,10 @@
+* Alıştırma: Web tarayıcısı
+
+Bu alıştırmada bir web tarayıcısını paralelleştirmek için Go dilinin eşzamanlılık özelliklerini kullanacaksınız.
+
+`Crawl` fonksiyonunu, aynı URL'yi iki kez getirmeden URL'leri paralel olarak getirecek şekilde değiştirin.
+
+_İpucu_: Getirilmiş URL'lerin önbelleğini bir eşlemede tutabilirsiniz, ancak eşlemeler tek başına
+eşzamanlı kullanım için güvenli değildir!
+
+.play concurrency/exercise-web-crawler.go

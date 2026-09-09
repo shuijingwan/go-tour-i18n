@@ -1,0 +1,14 @@
+* Metotlar ve işaretçi dolaylı erişimi (2)
+
+Tersi yönde de eşdeğer bir durum gerçekleşir.
+
+Değer argümanı alan fonksiyonlara o belirli türde bir değer verilmelidir:
+
+⟪GTI18N_61a9cb84_000001⟫Derleme hatası!⟪GTI18N_61a9cb84_000002⟫değer alıcılı metotlar ise çağrıldıklarında alıcı olarak bir değer ya da
+işaretçi kabul eder:
+
+⟪GTI18N_61a9cb84_000003⟫
+
+Bu durumda ⟪GTI18N_61a9cb84_000004⟫p.Abs()⟪GTI18N_61a9cb84_000005⟫ metot çağrısı, ⟪GTI18N_61a9cb84_000006⟫(*p).Abs()⟪GTI18N_61a9cb84_000007⟫ olarak yorumlanır.
+
+⟪GTI18N_61a9cb84_000008⟫

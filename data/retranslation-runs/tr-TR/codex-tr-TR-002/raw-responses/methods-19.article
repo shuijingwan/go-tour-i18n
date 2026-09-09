@@ -1,0 +1,19 @@
+* Hatalar
+
+⟪GTI18N_9eaab1fd_000001⟫ programları hata durumunu ⟪GTI18N_9eaab1fd_000002⟫error⟪GTI18N_9eaab1fd_000003⟫ değerleriyle ifade eder.
+
+⟪GTI18N_9eaab1fd_000004⟫error⟪GTI18N_9eaab1fd_000005⟫ türü, ⟪GTI18N_9eaab1fd_000006⟫fmt.Stringer⟪GTI18N_9eaab1fd_000007⟫ arayüzüne benzeyen yerleşik bir arayüzdür:
+
+⟪GTI18N_9eaab1fd_000008⟫
+
+(⟪GTI18N_9eaab1fd_000009⟫fmt.Stringer⟪GTI18N_9eaab1fd_000010⟫ arayüzünde olduğu gibi ⟪GTI18N_9eaab1fd_000011⟫fmt⟪GTI18N_9eaab1fd_000012⟫ paketi, değerleri
+yazdırırken ⟪GTI18N_9eaab1fd_000013⟫error⟪GTI18N_9eaab1fd_000014⟫ arayüzünü arar.)
+
+Fonksiyonlar çoğunlukla bir ⟪GTI18N_9eaab1fd_000015⟫error⟪GTI18N_9eaab1fd_000016⟫ değeri döndürür; çağıran kod da hatanın
+⟪GTI18N_9eaab1fd_000017⟫nil⟪GTI18N_9eaab1fd_000018⟫ değerine eşit olup olmadığını sınayarak hataları işlemelidir.
+
+⟪GTI18N_9eaab1fd_000019⟫
+
+Nil bir ⟪GTI18N_9eaab1fd_000020⟫error⟪GTI18N_9eaab1fd_000021⟫ başarıyı, nil olmayan bir ⟪GTI18N_9eaab1fd_000022⟫error⟪GTI18N_9eaab1fd_000023⟫ ise başarısızlığı belirtir.
+
+⟪GTI18N_9eaab1fd_000024⟫

@@ -1,0 +1,19 @@
+* Reader'lar
+
+⟪GTI18N_120c3fc9_000001⟫io⟪GTI18N_120c3fc9_000002⟫ paketi, bir veri akışının okuma ucunu temsil eden
+⟪GTI18N_120c3fc9_000003⟫io.Reader⟪GTI18N_120c3fc9_000004⟫ arayüzünü belirtir.
+
+⟪GTI18N_120c3fc9_000005⟫ standart kütüphanesi; dosyalar, ağ bağlantıları, sıkıştırıcılar, şifreleyiciler ve diğerleri dahil olmak üzere bu arayüzün [[⟪GTI18N_120c3fc9_000006⟫][birçok gerçekleştirimini]] içerir.
+
+⟪GTI18N_120c3fc9_000007⟫io.Reader⟪GTI18N_120c3fc9_000008⟫ arayüzünün bir ⟪GTI18N_120c3fc9_000009⟫Read⟪GTI18N_120c3fc9_000010⟫ metodu vardır:
+
+⟪GTI18N_120c3fc9_000011⟫
+
+⟪GTI18N_120c3fc9_000012⟫Read⟪GTI18N_120c3fc9_000013⟫, verilen bayt dilimini verilerle doldurur ve doldurulan bayt sayısı
+ile bir hata değeri döndürür. Akış sona erdiğinde ⟪GTI18N_120c3fc9_000014⟫io.EOF⟪GTI18N_120c3fc9_000015⟫ hatası döndürür.
+
+Örnek kod bir
+[[⟪GTI18N_120c3fc9_000016⟫][⟪GTI18N_120c3fc9_000017⟫strings.Reader⟪GTI18N_120c3fc9_000018⟫]]
+oluşturur ve çıktısını her seferinde 8 bayt olacak şekilde tüketir.
+
+⟪GTI18N_120c3fc9_000019⟫

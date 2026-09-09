@@ -1,0 +1,7 @@
+* Fonksiyon kapanımları
+
+Go fonksiyonları kapanım olabilir. Kapanım, gövdesinin dışındaki değişkenlere başvuran bir fonksiyon değeridir. Fonksiyon, başvurulan değişkenlere erişebilir ve değer atayabilir; bu anlamda fonksiyon değişkenlere "bağlıdır".
+
+Örneğin, `adder` fonksiyonu bir kapanım döndürür. Her kapanım kendi `sum` değişkenine bağlıdır.
+
+.play moretypes/function-closures.go

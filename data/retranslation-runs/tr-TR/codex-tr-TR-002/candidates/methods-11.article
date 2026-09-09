@@ -1,0 +1,13 @@
+* Arayüz değerleri
+
+Perde arkasında arayüz değerleri, bir değer ile bir
+somut türden oluşan ikili olarak düşünülebilir:
+
+	(value, type)
+
+Bir arayüz değeri, altta yatan belirli bir somut türün değerini tutar.
+
+Bir arayüz değeri üzerinde metot çağırmak, altta yatan türdeki aynı adlı
+metodu çalıştırır.
+
+.play methods/interface-values.go

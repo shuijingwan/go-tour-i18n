@@ -1,0 +1,21 @@
+* Görüntüler
+
+[[/pkg/image/#Image][image paketi]], `Image` arayüzünü tanımlar:
+
+	package image
+
+	type Image interface {
+		ColorModel() color.Model
+		Bounds() Rectangle
+		At(x, y int) color.Color
+	}
+
+*Not*: `Rectangle` dönüş değeri, `Bounds` metodu için aslında bir
+[[/pkg/image/#Rectangle][`image.Rectangle`]] değeridir; çünkü
+bildirim `image` paketinin içindedir.
+
+(Tüm ayrıntılar için [[/pkg/image/#Image][belgelere]] bakın.)
+
+`color.Color` ve `color.Model` türleri de arayüzdür; ancak önceden tanımlanmış `color.RGBA` ve `color.RGBAModel` gerçekleştirimlerini kullanarak bunu göz ardı edeceğiz. Bu arayüzler ve türler [[/pkg/image/color/][image/color paketi]] tarafından belirtilir.
+
+.play methods/images.go

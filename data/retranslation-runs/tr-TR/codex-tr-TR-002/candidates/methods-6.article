@@ -1,0 +1,23 @@
+* Metotlar ve işaretçi dolaylı erişimi
+
+Önceki iki programı karşılaştırdığınızda, işaretçi argümanı alan
+fonksiyonlara bir işaretçi verilmesi gerektiğini fark edebilirsiniz:
+
+	var v Vertex
+	ScaleFunc(v, 5)  // Derleme hatası!
+	ScaleFunc(&v, 5) // OK
+
+işaretçi alıcılı metotlar ise çağrıldıklarında alıcı olarak bir değer ya da
+işaretçi kabul eder:
+
+	var v Vertex
+	v.Scale(5)  // OK
+	p := &v
+	p.Scale(10) // OK
+
+`v.Scale(5)` ifadesinde `v` bir işaretçi değil, değer olmasına rağmen
+işaretçi alıcılı metot otomatik olarak çağrılır.
+Başka bir deyişle Go, kolaylık sağlamak için `v.Scale(5)` ifadesini
+`(&v).Scale(5)` olarak yorumlar; çünkü `Scale` metodu işaretçi alıcısına sahiptir.
+
+.play methods/indirection.go

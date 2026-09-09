@@ -1,0 +1,25 @@
+* Tür doğrulamaları
+
+Bir ⟪GTI18N_c205b4eb_000001⟫tür_doğrulaması⟪GTI18N_c205b4eb_000002⟫, arayüz değerinin altta yatan somut değerine erişim sağlar.
+
+⟪GTI18N_c205b4eb_000003⟫
+
+Bu ifade, ⟪GTI18N_c205b4eb_000004⟫i⟪GTI18N_c205b4eb_000005⟫ arayüz değerinin ⟪GTI18N_c205b4eb_000006⟫T⟪GTI18N_c205b4eb_000007⟫ somut türünü tuttuğunu doğrular
+ve altta yatan ⟪GTI18N_c205b4eb_000008⟫T⟪GTI18N_c205b4eb_000009⟫ değerini ⟪GTI18N_c205b4eb_000010⟫t⟪GTI18N_c205b4eb_000011⟫ değişkenine atar.
+
+⟪GTI18N_c205b4eb_000012⟫i⟪GTI18N_c205b4eb_000013⟫ bir ⟪GTI18N_c205b4eb_000014⟫T⟪GTI18N_c205b4eb_000015⟫ tutmuyorsa ifade panic tetikler.
+
+Bir arayüz değerinin belirli bir türü tutup tutmadığını ⟪GTI18N_c205b4eb_000016⟫sınamak⟪GTI18N_c205b4eb_000017⟫ için
+bir tür doğrulaması iki değer döndürebilir: altta yatan değer
+ve doğrulamanın başarılı olup olmadığını bildiren bir boolean değer.
+
+⟪GTI18N_c205b4eb_000018⟫
+
+⟪GTI18N_c205b4eb_000019⟫i⟪GTI18N_c205b4eb_000020⟫ bir ⟪GTI18N_c205b4eb_000021⟫T⟪GTI18N_c205b4eb_000022⟫ tutuyorsa ⟪GTI18N_c205b4eb_000023⟫t⟪GTI18N_c205b4eb_000024⟫ altta yatan değer, ⟪GTI18N_c205b4eb_000025⟫ok⟪GTI18N_c205b4eb_000026⟫ ise true olur.
+
+Tutmuyorsa ⟪GTI18N_c205b4eb_000027⟫ok⟪GTI18N_c205b4eb_000028⟫ false, ⟪GTI18N_c205b4eb_000029⟫t⟪GTI18N_c205b4eb_000030⟫ ise ⟪GTI18N_c205b4eb_000031⟫T⟪GTI18N_c205b4eb_000032⟫ türünün sıfır değeri olur
+ve panic gerçekleşmez.
+
+Bu söz dizimi ile bir eşlemeden okuma söz dizimi arasındaki benzerliğe dikkat edin.
+
+⟪GTI18N_c205b4eb_000033⟫

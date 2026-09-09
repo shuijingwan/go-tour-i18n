@@ -1,0 +1,15 @@
+* Range ve Close
+
+Gönderen, başka değer gönderilmeyeceğini belirtmek için bir kanalda `close` çağrısı yapabilir. Alıcılar, alma ifadesine ikinci bir parametre atayarak kanalın kapatılıp kapatılmadığını sınayabilir; şu ifadeden sonra:
+
+	v, ok := <-ch
+
+alınacak başka değer yoksa ve kanal kapalıysa `ok` değeri `false` olur.
+
+`for`i`:=`range`c` döngüsü, kanal kapatılana kadar kanaldan art arda değer alır.
+
+*Not:* Bir kanalı yalnızca gönderen kapatmalıdır, alıcı asla kapatmamalıdır. Kapalı bir kanala gönderim yapmak panic'e neden olur.
+
+*Başka*bir*not:* Kanallar dosyalar gibi değildir; genellikle onları kapatmanız gerekmez. Kapatma yalnızca alıcıya başka değer gelmeyeceğinin bildirilmesi gerektiğinde, örneğin bir `range` döngüsünü sonlandırmak için gereklidir.
+
+.play concurrency/range-and-close.go

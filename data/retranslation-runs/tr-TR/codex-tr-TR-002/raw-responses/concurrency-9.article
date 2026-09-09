@@ -1,0 +1,20 @@
+* sync.Mutex
+
+Kanalların goroutine'ler arasındaki iletişim için ne kadar kullanışlı olduğunu gördük.
+
+Peki ya iletişime ihtiyacımız yoksa? Çakışmaları önlemek için bir değişkene aynı anda yalnızca
+bir ⟪GTI18N_49f72779_000001⟫ erişebilsin istiyorsak ne olacak?
+
+Bu kavrama ⟪GTI18N_49f72779_000002⟫karşılıklı_dışlama⟪GTI18N_49f72779_000003⟫ denir ve bunu sağlayan veri yapısının geleneksel adı ⟪GTI18N_49f72779_000004⟫mutex⟪GTI18N_49f72779_000005⟫'tir.
+
+⟪GTI18N_49f72779_000006⟫ standart kütüphanesi, [[⟪GTI18N_49f72779_000007⟫][⟪GTI18N_49f72779_000008⟫sync.Mutex⟪GTI18N_49f72779_000009⟫]] ve onun iki metodu aracılığıyla
+karşılıklı dışlama sağlar:
+
+- ⟪GTI18N_49f72779_000010⟫Lock⟪GTI18N_49f72779_000011⟫
+- ⟪GTI18N_49f72779_000012⟫Unlock⟪GTI18N_49f72779_000013⟫
+
+Bir kod bloğunu ⟪GTI18N_49f72779_000014⟫Lock⟪GTI18N_49f72779_000015⟫ ve ⟪GTI18N_49f72779_000016⟫Unlock⟪GTI18N_49f72779_000017⟫ çağrılarıyla çevreleyerek, ⟪GTI18N_49f72779_000018⟫Inc⟪GTI18N_49f72779_000019⟫ metodunda gösterildiği gibi karşılıklı dışlama içinde çalıştırılacak şekilde tanımlayabiliriz.
+
+Ayrıca ⟪GTI18N_49f72779_000020⟫defer⟪GTI18N_49f72779_000021⟫ kullanarak mutex kilidinin ⟪GTI18N_49f72779_000022⟫Value⟪GTI18N_49f72779_000023⟫ metodundaki gibi mutlaka açılmasını sağlayabiliriz.
+
+⟪GTI18N_49f72779_000024⟫

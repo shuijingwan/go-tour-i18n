@@ -1,0 +1,20 @@
+* sync.Mutex
+
+Kanalların goroutine'ler arasındaki iletişim için ne kadar kullanışlı olduğunu gördük.
+
+Peki ya iletişime ihtiyacımız yoksa? Çakışmaları önlemek için bir değişkene aynı anda yalnızca
+bir goroutine erişebilsin istiyorsak ne olacak?
+
+Bu kavrama _karşılıklı_dışlama_ denir ve bunu sağlayan veri yapısının geleneksel adı _mutex_'tir.
+
+Go standart kütüphanesi, [[/pkg/sync/#Mutex][`sync.Mutex`]] ve onun iki metodu aracılığıyla
+karşılıklı dışlama sağlar:
+
+- `Lock`
+- `Unlock`
+
+Bir kod bloğunu `Lock` ve `Unlock` çağrılarıyla çevreleyerek, `Inc` metodunda gösterildiği gibi karşılıklı dışlama içinde çalıştırılacak şekilde tanımlayabiliriz.
+
+Ayrıca `defer` kullanarak mutex kilidinin `Value` metodundaki gibi mutlaka açılmasını sağlayabiliriz.
+
+.play concurrency/mutex-counter.go

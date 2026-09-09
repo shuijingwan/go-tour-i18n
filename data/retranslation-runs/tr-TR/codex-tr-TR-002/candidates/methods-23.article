@@ -1,0 +1,12 @@
+* Alıştırma: rot13Reader
+
+Yaygın bir kalıp, [[/pkg/io/#Reader][io.Reader]] arayüzünün başka bir `io.Reader` arayüzünü sarmalayıp akışı bir şekilde değiştirmesidir.
+
+Örneğin [[/pkg/compress/gzip/#NewReader][gzip.NewReader]] fonksiyonu bir `io.Reader` (sıkıştırılmış veri akışı) alır ve bir `*gzip.Reader` (açılmış veri akışı) döndürür; bu da `io.Reader` arayüzünü gerçekleştirir.
+
+Bir `rot13Reader` gerçekleştirin; bu tür `io.Reader` arayüzünü gerçekleştirmeli, bir `io.Reader` üzerinden okumalı ve tüm alfabetik karakterlere [[https://en.wikipedia.org/wiki/ROT13][rot13]] yerine koyma şifresini uygulayarak akışı değiştirmelidir.
+
+`rot13Reader` türü sizin için sağlanmıştır.
+`io.Reader` olması için `Read` metodunu gerçekleştirin.
+
+.play methods/exercise-rot-reader.go

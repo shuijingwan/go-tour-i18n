@@ -1,0 +1,15 @@
+* Range ve Close
+
+Gönderen, başka değer gönderilmeyeceğini belirtmek için bir kanalda ⟪GTI18N_3e925c67_000001⟫close⟪GTI18N_3e925c67_000002⟫ çağrısı yapabilir. Alıcılar, alma ifadesine ikinci bir parametre atayarak kanalın kapatılıp kapatılmadığını sınayabilir; şu ifadeden sonra:
+
+⟪GTI18N_3e925c67_000003⟫
+
+alınacak başka değer yoksa ve kanal kapalıysa ⟪GTI18N_3e925c67_000004⟫ok⟪GTI18N_3e925c67_000005⟫ değeri ⟪GTI18N_3e925c67_000006⟫false⟪GTI18N_3e925c67_000007⟫ olur.
+
+⟪GTI18N_3e925c67_000008⟫for`i`:=`range`c⟪GTI18N_3e925c67_000009⟫ döngüsü, kanal kapatılana kadar kanaldan art arda değer alır.
+
+⟪GTI18N_3e925c67_000010⟫Not:⟪GTI18N_3e925c67_000011⟫ Bir kanalı yalnızca gönderen kapatmalıdır, alıcı asla kapatmamalıdır. Kapalı bir kanala gönderim yapmak panic'e neden olur.
+
+⟪GTI18N_3e925c67_000012⟫Başka*bir*not:⟪GTI18N_3e925c67_000013⟫ Kanallar dosyalar gibi değildir; genellikle onları kapatmanız gerekmez. Kapatma yalnızca alıcıya başka değer gelmeyeceğinin bildirilmesi gerektiğinde, örneğin bir ⟪GTI18N_3e925c67_000014⟫range⟪GTI18N_3e925c67_000015⟫ döngüsünü sonlandırmak için gereklidir.
+
+⟪GTI18N_3e925c67_000016⟫
