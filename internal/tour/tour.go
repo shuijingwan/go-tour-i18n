@@ -22,6 +22,7 @@ import (
 	"github.com/shuijingwan/go-tour-i18n"
 	"github.com/shuijingwan/go-tour-i18n/internal/assets"
 	"github.com/shuijingwan/go-tour-i18n/internal/tour/ui"
+	"github.com/shuijingwan/go-tour-i18n/internal/tourpolicy"
 	"golang.org/x/tools/present"
 )
 
@@ -118,26 +119,28 @@ func initTour(mux *http.ServeMux, transport, locale, playgroundBaseURL string) (
 }
 
 type pageTemplateData struct {
-	HTMLLang            string
-	Metadata            SiteMetadata
-	Development         bool
-	PublishedAt         string
-	UpstreamCommitTime  string
-	ShortUpstreamCommit string
-	UpstreamCommitURL   string
-	GitHubURL           string
-	GitHubIssuesURL     string
-	DevelopmentLogURL   string
-	UpstreamURL         string
-	ICPURL              string
-	ICPNumber           string
-	CopyrightHolder     string
-	Languages           []LanguageLink
-	CurrentLanguage     LanguageLink
-	SEOOrigin           string
-	Canonical           string
-	Title               string
-	Description         string
+	HTMLLang                 string
+	Metadata                 SiteMetadata
+	Development              bool
+	PublishedAt              string
+	UpstreamCommitTime       string
+	ShortUpstreamCommit      string
+	UpstreamCommitURL        string
+	GitHubURL                string
+	GitHubIssuesURL          string
+	DevelopmentLogURL        string
+	UpstreamURL              string
+	ICPURL                   string
+	ICPNumber                string
+	CopyrightHolder          string
+	Languages                []LanguageLink
+	CurrentLanguage          LanguageLink
+	SEOOrigin                string
+	Canonical                string
+	Title                    string
+	Description              string
+	TourAdsEnabled           bool
+	OwnerContentLinksEnabled bool
 }
 
 func newPageTemplateData(catalog ui.Catalog, metadata SiteMetadata) (pageTemplateData, error) {
@@ -169,23 +172,25 @@ func newPageTemplateData(catalog ui.Catalog, metadata SiteMetadata) (pageTemplat
 		}
 	}
 	return pageTemplateData{
-		HTMLLang:            catalog.HTMLLang,
-		Metadata:            metadata,
-		Development:         metadata.Development,
-		PublishedAt:         publishedAt,
-		UpstreamCommitTime:  upstreamCommitTime,
-		ShortUpstreamCommit: metadata.UpstreamCommit[:8],
-		UpstreamCommitURL:   Project.UpstreamURL + "/commit/" + metadata.UpstreamCommit,
-		GitHubURL:           Project.GitHubURL,
-		GitHubIssuesURL:     Project.GitHubIssuesURL,
-		DevelopmentLogURL:   profile.DevelopmentLogURL,
-		UpstreamURL:         Project.UpstreamURL,
-		ICPURL:              Project.ICPURL,
-		ICPNumber:           Project.ICPNumber,
-		CopyrightHolder:     Project.CopyrightHolder,
-		Languages:           languages,
-		CurrentLanguage:     currentLanguage,
-		SEOOrigin:           seoOrigin,
+		HTMLLang:                 catalog.HTMLLang,
+		Metadata:                 metadata,
+		Development:              metadata.Development,
+		PublishedAt:              publishedAt,
+		UpstreamCommitTime:       upstreamCommitTime,
+		ShortUpstreamCommit:      metadata.UpstreamCommit[:8],
+		UpstreamCommitURL:        Project.UpstreamURL + "/commit/" + metadata.UpstreamCommit,
+		GitHubURL:                Project.GitHubURL,
+		GitHubIssuesURL:          Project.GitHubIssuesURL,
+		DevelopmentLogURL:        profile.DevelopmentLogURL,
+		UpstreamURL:              Project.UpstreamURL,
+		ICPURL:                   Project.ICPURL,
+		ICPNumber:                Project.ICPNumber,
+		CopyrightHolder:          Project.CopyrightHolder,
+		Languages:                languages,
+		CurrentLanguage:          currentLanguage,
+		SEOOrigin:                seoOrigin,
+		TourAdsEnabled:           tourpolicy.ForLocale(catalog.Locale).TourAdsEnabled(),
+		OwnerContentLinksEnabled: tourpolicy.ForLocale(catalog.Locale).OwnerContentLinksEnabled(),
 	}, nil
 }
 
@@ -258,7 +263,7 @@ func renderIndexForPath(catalog ui.Catalog, metadata SiteMetadata, canonicalPath
 		pageTemplateData
 		AnalyticsHTML template.HTML
 		AdHTML        template.HTML
-	}{data, analyticsHTML, adHTML}
+	}{data, analyticsHTML, adHTMLForLocale(catalog.Locale)}
 	if err := tmpl.Execute(buf, dataWithHeadHTML); err != nil {
 		return nil, fmt.Errorf("render index.tmpl: %w", err)
 	}
@@ -274,16 +279,27 @@ func renderHome(catalog ui.Catalog, metadata SiteMetadata) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
+	// The site homepage is an independent public entry point. The go-local
+	// restriction applies only to Tour pages, so its shared footer keeps the
+	// development-log link.
+	data.OwnerContentLinksEnabled = true
 	buf := new(bytes.Buffer)
 	dataWithHeadHTML := struct {
 		pageTemplateData
 		AnalyticsHTML template.HTML
 		AdHTML        template.HTML
-	}{data, analyticsHTML, adHTML}
+	}{data, analyticsHTML, adHTMLForLocale(catalog.Locale)}
 	if err := tmpl.ExecuteTemplate(buf, "home.tmpl", dataWithHeadHTML); err != nil {
 		return nil, fmt.Errorf("render home.tmpl: %w", err)
 	}
 	return buf.Bytes(), nil
+}
+
+func adHTMLForLocale(locale string) template.HTML {
+	if !tourpolicy.ForLocale(locale).TourAdsEnabled() {
+		return ""
+	}
+	return adHTML
 }
 
 func renderFooter(catalog ui.Catalog, metadata SiteMetadata) ([]byte, error) {
@@ -494,7 +510,7 @@ func footerHandler(w http.ResponseWriter, r *http.Request) {
 func initScript(mux *http.ServeMux, socketAddr, transport, playgroundBaseURL string, catalog ui.Catalog, descriptions map[string]string, courseMetadataRequired bool) error {
 	modTime := time.Now()
 	b := new(bytes.Buffer)
-	bootstrap, err := jsBootstrap(catalog, descriptions, courseMetadataRequired)
+	bootstrap, err := jsBootstrap(catalog, descriptions, courseMetadataRequired, tourpolicy.ForLocale(catalog.Locale))
 	if err != nil {
 		return err
 	}
@@ -590,7 +606,7 @@ var jsModules = []struct {
 	{"concurrency", "module.concurrency.title", "module.concurrency.description"},
 }
 
-func jsBootstrap(catalog ui.Catalog, descriptions map[string]string, courseMetadataRequired bool) ([]byte, error) {
+func jsBootstrap(catalog ui.Catalog, descriptions map[string]string, courseMetadataRequired bool, policy tourpolicy.Publication) ([]byte, error) {
 	i18n, err := jsI18nBootstrap(catalog)
 	if err != nil {
 		return nil, err
@@ -603,8 +619,15 @@ func jsBootstrap(catalog ui.Catalog, descriptions map[string]string, courseMetad
 	if err != nil {
 		return nil, err
 	}
+	policyJSON, err := json.Marshal(struct {
+		TourAdsEnabled bool `json:"tourAdsEnabled"`
+	}{policy.TourAdsEnabled()})
+	if err != nil {
+		return nil, fmt.Errorf("encode Tour publication policy: %w", err)
+	}
 	result := append(i18n, modules...)
-	return append(result, seo...), nil
+	result = append(result, seo...)
+	return append(result, append([]byte("window.__tourPolicy = "), append(policyJSON, ";\n"...)...)...), nil
 }
 
 func jsSEOBootstrap(catalog ui.Catalog, descriptions map[string]string, courseMetadataRequired bool) ([]byte, error) {

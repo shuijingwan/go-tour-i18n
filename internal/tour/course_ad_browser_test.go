@@ -46,7 +46,7 @@ func TestCourseAdSPALifecycleInBrowser(t *testing.T) {
     // same-window fallback used when browser privacy settings do the same.
     window.__goDevCourseAdExperimentGroup = 'B';
     window.addEventListener('error', function() { uncaught = true; });
-    angular.module('courseAdTest', ['ng', 'tour.directives']).config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
+    angular.module('courseAdTest', ['ng', 'tour.directives']).value('tourPolicy', {tourAdsEnabled: true}).config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
         $routeProvider.when('/:page', { templateUrl: 'course-page', controller: ['$scope', '$routeParams', function($scope, $routeParams) { $scope.page = $routeParams.page; }] });
         $locationProvider.hashPrefix('!');
     }]);
@@ -166,7 +166,7 @@ html, body { margin: 0; }
     'use strict';
     var requests = 0;
     window.adsbygoogle = { push: function() { requests++; } };
-    angular.module('courseAdLayoutTest', ['ng', 'tour.directives']).config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
+    angular.module('courseAdLayoutTest', ['ng', 'tour.directives']).value('tourPolicy', {tourAdsEnabled: true}).config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
         $routeProvider.when('/:page', { templateUrl: 'course-page', controller: ['$scope', '$routeParams', function($scope, $routeParams) { $scope.page = $routeParams.page; }] });
         $locationProvider.hashPrefix('!');
     }]);

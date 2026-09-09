@@ -10,7 +10,7 @@ angular.module('tour.directives', []).
 
 // course-ad is attached to the route-owned editor view. A failed AdSense
 // request is contained by the helper, so it cannot interrupt navigation.
-directive('courseAd', ['$window', function(win) {
+directive('courseAd', ['$window', 'tourPolicy', function(win, tourPolicy) {
     function report(error) {
         if (win.console && typeof win.console.warn === 'function') {
             win.console.warn('course ad lifecycle failed', error);
@@ -20,6 +20,7 @@ directive('courseAd', ['$window', function(win) {
     return {
         restrict: 'A',
         link: function(scope, elm) {
+			if (!tourPolicy.tourAdsEnabled) return;
             var lifecycle = win.goDevCourseAd;
             if (!lifecycle || typeof lifecycle.mount !== 'function') {
                 if (win.console && typeof win.console.warn === 'function') {

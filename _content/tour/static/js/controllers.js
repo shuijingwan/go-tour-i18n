@@ -17,10 +17,11 @@ controller('ListCtrl', ['$scope', 'i18n', 'seo',
 ]).
 
 // Navigation controller
-controller('EditorCtrl', ['$scope', '$routeParams', '$location', 'toc', 'lessons', 'i18n', 'run', 'fmt', 'editor', 'analytics', 'storage', 'seo',
-    function($scope, $routeParams, $location, toc, lessons, i18n, run, fmt, editor, analytics, storage, seo) {
+controller('EditorCtrl', ['$scope', '$routeParams', '$location', 'toc', 'lessons', 'i18n', 'run', 'fmt', 'editor', 'analytics', 'storage', 'seo', 'tourPolicy',
+    function($scope, $routeParams, $location, toc, lessons, i18n, run, fmt, editor, analytics, storage, seo, tourPolicy) {
 
         $scope.toc = toc;
+		$scope.tourPolicy = tourPolicy;
         $scope.lessonId = $routeParams.lessonId;
         $scope.curPage = parseInt($routeParams.pageNumber);
         $scope.curFile = 0;

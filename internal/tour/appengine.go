@@ -11,6 +11,8 @@ import (
 	"io"
 	"net/http"
 	"os"
+
+	"github.com/shuijingwan/go-tour-i18n/internal/tourpolicy"
 )
 
 func RegisterHandlers(mux *http.ServeMux) error {
@@ -35,7 +37,9 @@ func registerHandlersLocaleWithRuntimeHead(mux *http.ServeMux, locale, playgroun
 	adHTML = ""
 	if includeRuntimeHead {
 		analyticsHTML = template.HTML(os.Getenv("TOUR_ANALYTICS"))
-		adHTML = template.HTML(os.Getenv("TOUR_AD_HTML"))
+		if tourpolicy.ForLocale(locale).TourAdsEnabled() {
+			adHTML = template.HTML(os.Getenv("TOUR_AD_HTML"))
+		}
 	}
 
 	documents, err := initTour(mux, "HTTPTransport", locale, playgroundBaseURL)

@@ -254,16 +254,19 @@ func TestProductionHandlerAdHTMLConfiguration(t *testing.T) {
 	const marker = `<script data-test="ad"></script>`
 
 	for _, test := range []struct {
-		name  string
-		value string
-		count int
+		name   string
+		locale string
+		value  string
+		count  int
 	}{
-		{name: "disabled", count: 0},
-		{name: "enabled", value: marker, count: 1},
+		{name: "go-local disabled", locale: "zh-CN", count: 0},
+		{name: "go-local ignores configured HTML", locale: "zh-CN", value: marker, count: 0},
+		{name: "standard disabled", locale: "ja-JP", count: 0},
+		{name: "standard enabled", locale: "ja-JP", value: marker, count: 1},
 	} {
 		t.Run(test.name, func(t *testing.T) {
 			t.Setenv("TOUR_AD_HTML", test.value)
-			handler := productionTestHandler(t, "http://127.0.0.1:1")
+			handler := productionTestHandlerLocale(t, "http://127.0.0.1:1", test.locale)
 			for _, requestPath := range []string{"/", "/tour/list", "/tour/welcome/1"} {
 				rec := httptest.NewRecorder()
 				handler.ServeHTTP(rec, httptest.NewRequest(http.MethodGet, requestPath, nil))

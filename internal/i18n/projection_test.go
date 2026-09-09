@@ -8,6 +8,8 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
+
+	"github.com/shuijingwan/go-tour-i18n/internal/tourpolicy"
 )
 
 func TestBuildLocaleProjectionReplacesMultipleSectionsAndArticles(t *testing.T) {
@@ -160,7 +162,7 @@ func TestCourseAdMountIsIdenticalInSupportedLocaleProjections(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		mount := []byte(`<div class="go-dev-course-ad" data-go-dev-course-ad course-ad></div>`)
+		mount := []byte(`<div ng-if="tourPolicy.tourAdsEnabled" class="go-dev-course-ad" data-go-dev-course-ad course-ad></div>`)
 		if bytes.Count(data, mount) != 1 {
 			t.Fatalf("%s projected course ad mount count = %d, want 1", locale, bytes.Count(data, mount))
 		}
@@ -168,6 +170,48 @@ func TestCourseAdMountIsIdenticalInSupportedLocaleProjections(t *testing.T) {
 			projectedEditor = data
 		} else if !bytes.Equal(projectedEditor, data) {
 			t.Fatalf("%s projection has locale-specific editor/ad markup", locale)
+		}
+	}
+}
+
+func TestProjectedTourLinksFollowPublicationPolicy(t *testing.T) {
+	root := repoRoot(t)
+	current, err := BuildSourceCatalog(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	catalog, err := ReadCatalog(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := HydrateCatalogSources(catalog, current); err != nil {
+		t.Fatal(err)
+	}
+
+	for _, locale := range []string{"zh-CN", "fr-FR", "de-DE", "ko-KR", "ja-JP"} {
+		projection, err := BuildLocaleProjection(root, catalog, locale, filepath.Join(t.TempDir(), locale))
+		if err != nil {
+			t.Fatalf("build %s projection: %v", locale, err)
+		}
+		articles, err := filepath.Glob(filepath.Join(projection.ContentDir, "tour", "*.article"))
+		if err != nil {
+			t.Fatal(err)
+		}
+		for _, article := range articles {
+			data, err := os.ReadFile(article)
+			if err != nil {
+				t.Fatal(err)
+			}
+			for _, match := range linkRE.FindAllStringSubmatch(string(data), -1) {
+				target := match[1]
+				class := tourpolicy.Classify(target)
+				if tourpolicy.ForLocale(locale) == tourpolicy.GoLocal && (class == tourpolicy.SiteContent || class == tourpolicy.OwnerContent || class == tourpolicy.UnknownOwnerTarget) {
+					t.Errorf("%s %s retains unclassified same-site non-Tour target %q", locale, filepath.Base(article), target)
+				}
+				if class == tourpolicy.GoOfficial && !strings.HasPrefix(target, "https://go.dev/") {
+					t.Errorf("%s %s official target is not absolute go.dev: %q", locale, filepath.Base(article), target)
+				}
+			}
 		}
 	}
 }

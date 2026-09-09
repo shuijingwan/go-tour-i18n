@@ -10,6 +10,7 @@ import (
 	"strings"
 
 	"github.com/shuijingwan/go-tour-i18n/internal/tour/ui"
+	"github.com/shuijingwan/go-tour-i18n/internal/tourpolicy"
 	"golang.org/x/tools/present"
 )
 
@@ -206,6 +207,12 @@ func BuildLocaleProjection(root string, catalog *Catalog, locale, outputRoot str
 	if err = validateCompleteProjection(root, contentDir, catalog, locale, candidates, metadataByArticle); err != nil {
 		return nil, fmt.Errorf("validate complete projection: %w", err)
 	}
+	// Link targets are protected translation structure, so canonical candidates
+	// intentionally retain the frozen upstream form. Apply the separately
+	// audited publication correction only after candidate validation.
+	if err = projectOfficialTourLinks(contentDir, articleNames); err != nil {
+		return nil, err
+	}
 	if err = writeProjectedCourseSEO(contentDir, courseMetadata); err != nil {
 		return nil, err
 	}
@@ -217,6 +224,28 @@ func BuildLocaleProjection(root string, catalog *Catalog, locale, outputRoot str
 	result.ExampleCount = exampleCount
 	result.ArticleCount = len(pagesByArticle)
 	return result, nil
+}
+
+func projectOfficialTourLinks(contentDir string, articleNames []string) error {
+	for _, article := range articleNames {
+		path := filepath.Join(contentDir, "tour", article)
+		data, err := os.ReadFile(path)
+		if err != nil {
+			return fmt.Errorf("read projected links %s: %w", article, err)
+		}
+		projected := string(data)
+		for _, match := range linkRE.FindAllStringSubmatch(projected, -1) {
+			url, ok := tourpolicy.GoOfficialURL(string(match[1]))
+			if !ok {
+				continue
+			}
+			projected = strings.ReplaceAll(projected, "[["+string(match[1])+"]", "[["+url+"]")
+		}
+		if err := os.WriteFile(path, []byte(projected), 0644); err != nil {
+			return fmt.Errorf("write projected links %s: %w", article, err)
+		}
+	}
+	return nil
 }
 
 const projectedCourseSEOPath = "tour/course-seo.json"

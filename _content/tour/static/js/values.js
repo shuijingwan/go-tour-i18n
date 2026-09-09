@@ -10,6 +10,8 @@ var moduleMessages = window.__tourModules;
 
 angular.module('tour.values', []).
 
+value('tourPolicy', window.__tourPolicy).
+
 // List of modules with description and lessons in it.
 value('tableOfContents', [{
     'id': 'mechanics',
@@ -43,7 +45,7 @@ value('translation', window.__tourUIMessages).
 
 // Feedback destinations are deployment configuration, not locale messages.
 value('feedbackConfig', {
-    customURL: '/doc/contribute#check_tracker',
+    customURL: 'https://go.dev/doc/contribute#check_tracker',
     githubRepo: 'github.com/golang/go',
 }).
 

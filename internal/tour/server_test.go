@@ -18,6 +18,7 @@ import (
 
 	"github.com/shuijingwan/go-tour-i18n/internal/assets"
 	"github.com/shuijingwan/go-tour-i18n/internal/tour/ui"
+	"github.com/shuijingwan/go-tour-i18n/internal/tourpolicy"
 	"github.com/shuijingwan/go-tour-i18n/internal/webtest"
 )
 
@@ -215,12 +216,14 @@ func TestRenderedAssetURLsFollowLocaleAndEnvironment(t *testing.T) {
 				"tour/static/go-dev/course-ad.js",
 			} {
 				want := test.prefix + "/" + logicalPath
-				if !strings.Contains(string(index), want) {
-					t.Errorf("Tour index does not use locale-selected ad asset URL %q", want)
+				got := strings.Contains(string(index), want)
+				if test.locale == "zh-CN" {
+					if got {
+						t.Errorf("go-local Tour index unexpectedly includes ad asset URL %q", want)
+					}
+				} else if !got {
+					t.Errorf("standard Tour index does not use locale-selected ad asset URL %q", want)
 				}
-			}
-			if test.locale == "zh-CN" && strings.Contains(string(index), assets.BaseURL+"/tour/static/go-dev/course-ad") {
-				t.Error("zh-CN Tour index unexpectedly uses the shared origin for course ad assets")
 			}
 		})
 	}
@@ -595,23 +598,28 @@ func TestRenderAnalyticsHTML(t *testing.T) {
 }
 
 func TestRenderAdHTML(t *testing.T) {
-	catalog, err := ui.Load("zh-CN")
-	if err != nil {
-		t.Fatal(err)
-	}
 	metadata, err := loadSiteMetadata(contentTour)
 	if err != nil {
 		t.Fatal(err)
 	}
+	original := adHTML
+	t.Cleanup(func() { adHTML = original })
 	for _, test := range []struct {
-		name  string
-		value template.HTML
-		want  string
+		name   string
+		locale string
+		value  template.HTML
+		want   string
 	}{
-		{name: "empty", value: ""},
-		{name: "configured", value: `<script data-test="ad"></script>`, want: `data-test="ad"`},
+		{name: "go-local empty", locale: "zh-CN", value: ""},
+		{name: "go-local configured", locale: "zh-CN", value: `<script data-test="ad"></script>`},
+		{name: "standard empty", locale: "ja-JP", value: ""},
+		{name: "standard configured", locale: "ja-JP", value: `<script data-test="ad"></script>`, want: `data-test="ad"`},
 	} {
 		t.Run(test.name, func(t *testing.T) {
+			catalog, err := ui.Load(test.locale)
+			if err != nil {
+				t.Fatal(err)
+			}
 			adHTML = test.value
 			home, err := renderHome(catalog, metadata)
 			if err != nil {
@@ -631,6 +639,143 @@ func TestRenderAdHTML(t *testing.T) {
 				}
 			}
 		})
+	}
+}
+
+func TestTourPublicationRuntimePolicy(t *testing.T) {
+	metadata, err := loadSiteMetadata(contentTour)
+	if err != nil {
+		t.Fatal(err)
+	}
+	original := adHTML
+	t.Cleanup(func() { adHTML = original })
+	adHTML = `<script data-test="ad"></script>`
+	hrefRE := regexp.MustCompile(`(?i)<a\b[^>]*\bhref="([^"]+)"`)
+
+	for _, locale := range []string{"zh-CN", "fr-FR", "de-DE", "ko-KR", "ja-JP"} {
+		t.Run(locale, func(t *testing.T) {
+			catalog, err := ui.Load(locale)
+			if err != nil {
+				t.Fatal(err)
+			}
+			pageMetadata := metadata
+			pageMetadata.Locale = locale
+			home, err := renderHome(catalog, pageMetadata)
+			if err != nil {
+				t.Fatal(err)
+			}
+			index, err := renderIndex(catalog, pageMetadata)
+			if err != nil {
+				t.Fatal(err)
+			}
+			goLocal := tourpolicy.ForLocale(locale) == tourpolicy.GoLocal
+			for pageName, page := range map[string]string{"home": string(home), "tour": string(index)} {
+				if goLocal && strings.Contains(page, `data-test="ad"`) {
+					t.Errorf("%s %s includes runtime ad HTML", locale, pageName)
+				}
+				if !goLocal && !strings.Contains(page, `data-test="ad"`) {
+					t.Errorf("%s %s omits standard runtime ad HTML", locale, pageName)
+				}
+				for _, match := range hrefRE.FindAllStringSubmatch(page, -1) {
+					class := tourpolicy.Classify(match[1])
+					if pageName == "tour" && goLocal && (class == tourpolicy.OwnerContent || class == tourpolicy.UnknownOwnerTarget) {
+						t.Errorf("%s %s exposes owner-controlled or unclassified owner target %q", locale, pageName, match[1])
+					}
+				}
+			}
+			logURL := localeProfiles[locale].DevelopmentLogURL
+			if goLocal && strings.Contains(string(index), logURL) {
+				t.Errorf("%s go-local Tour retains development-log URL %q", locale, logURL)
+			}
+			if !strings.Contains(string(home), logURL) {
+				t.Errorf("%s homepage omits development-log URL %q", locale, logURL)
+			}
+			if !goLocal && !strings.Contains(string(index), logURL) {
+				t.Errorf("%s standard Tour omits development-log URL %q", locale, logURL)
+			}
+			adAsset := "tour/static/go-dev/course-ad"
+			if goLocal && strings.Contains(string(index), adAsset) {
+				t.Errorf("%s Tour includes course-ad assets", locale)
+			}
+			if !goLocal && !strings.Contains(string(index), adAsset) {
+				t.Errorf("%s standard Tour omits course-ad assets", locale)
+			}
+
+			mux := http.NewServeMux()
+			if err := initScript(mux, "", "SocketTransport", "", catalog, map[string]string{}, false); err != nil {
+				t.Fatal(err)
+			}
+			recorder := httptest.NewRecorder()
+			mux.ServeHTTP(recorder, httptest.NewRequest(http.MethodGet, "/tour/script.js", nil))
+			script := recorder.Body.String()
+			wantPolicy := `"tourAdsEnabled":false`
+			if !goLocal {
+				wantPolicy = `"tourAdsEnabled":true`
+			}
+			if !strings.Contains(script, wantPolicy) {
+				t.Errorf("%s script does not contain %s", locale, wantPolicy)
+			}
+			if !strings.Contains(script, `customURL: 'https://go.dev/doc/contribute#check_tracker'`) {
+				t.Errorf("%s script retains a same-site feedback URL", locale)
+			}
+		})
+	}
+}
+
+func TestGoLocalSharedUIRejectsUnclassifiedSameSiteContentLinks(t *testing.T) {
+	hrefRE := regexp.MustCompile(`(?i)<a\b[^>]*\bhref="([^"]+)"`)
+	paths := []string{
+		"tour/template/index.tmpl",
+		"tour/template/home.tmpl",
+		"tour/static/partials/toc.html",
+		"tour/static/partials/list.html",
+		"tour/static/partials/editor.html",
+		"tour/static/partials/lesson.html",
+	}
+	for _, path := range paths {
+		data, err := fs.ReadFile(contentTour, path)
+		if err != nil {
+			t.Fatal(err)
+		}
+		for _, match := range hrefRE.FindAllStringSubmatch(string(data), -1) {
+			if got := tourpolicy.Classify(match[1]); got == tourpolicy.SiteContent || got == tourpolicy.OwnerContent || got == tourpolicy.UnknownOwnerTarget {
+				t.Errorf("%s contains unclassified same-site non-Tour link %q", path, match[1])
+			}
+		}
+	}
+	values, err := fs.ReadFile(contentTour, "tour/static/js/values.js")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if strings.Contains(string(values), "customURL: '/") || !strings.Contains(string(values), "https://go.dev/doc/contribute#check_tracker") {
+		t.Error("feedback configuration must use the reviewed Go official URL")
+	}
+}
+
+func TestGoLocalSharedJSRejectsUnclassifiedNavigationTargets(t *testing.T) {
+	// This intentionally recognizes only obvious hard-coded navigation forms.
+	// It is a small gate for future edits, not a JavaScript parser; computed
+	// targets continue to be reviewed with the code that computes them.
+	navigationRE := regexp.MustCompile(`(?s)(?:\$location\.(?:path|url)\s*\(\s*|(?:window\.)?location(?:\.href)?\s*=\s*|(?:window\.)?location\.(?:assign|replace)\s*\(\s*|(?:window\.)?open\s*\(\s*)["']([^"']+)["']`)
+	paths := []string{
+		"tour/static/js/app.js",
+		"tour/static/js/controllers.js",
+		"tour/static/js/directives.js",
+		"tour/static/js/services.js",
+		"tour/static/js/values.js",
+	}
+	for _, path := range paths {
+		data, err := fs.ReadFile(contentTour, path)
+		if err != nil {
+			t.Fatal(err)
+		}
+		for _, match := range navigationRE.FindAllStringSubmatch(string(data), -1) {
+			target := match[1]
+			switch tourpolicy.Classify(target) {
+			case tourpolicy.SiteContent, tourpolicy.OwnerContent, tourpolicy.UnknownOwnerTarget:
+				t.Errorf("%s contains unclassified go-local navigation target %q", path, target)
+			}
+		}
 	}
 }
 
@@ -982,7 +1127,7 @@ func TestCourseAdMountFollowsModuleBar(t *testing.T) {
 		t.Fatal(err)
 	}
 	text := string(data)
-	mount := `<div class="go-dev-course-ad" data-go-dev-course-ad course-ad></div>`
+	mount := `<div ng-if="tourPolicy.tourAdsEnabled" class="go-dev-course-ad" data-go-dev-course-ad course-ad></div>`
 	if strings.Count(text, mount) != 1 {
 		t.Fatalf("course ad mount count = %d, want 1", strings.Count(text, mount))
 	}

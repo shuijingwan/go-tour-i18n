@@ -18,7 +18,7 @@
       }())
     </script>
     <link rel="stylesheet" href="{{asset "tour/static/css/app.css"}}" />
-    <link rel="stylesheet" href="{{asset "tour/static/go-dev/course-ad.css"}}">
+    {{if .TourAdsEnabled}}<link rel="stylesheet" href="{{asset "tour/static/go-dev/course-ad.css"}}">{{end}}
     <link rel="stylesheet" href="{{asset "tour/static/lib/codemirror/lib/codemirror.css"}}">
     <link href='https://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'>
     <link rel="icon" href="{{asset "images/site-logo-32.png"}}" type="image/png" sizes="32x32">
@@ -65,7 +65,7 @@
     <div ng-view ng-cloak class="ng-cloak"></div>
     {{template "footer" .}}
 
-    <script src="{{asset "tour/static/go-dev/course-ad.js"}}"></script>
+    {{if .TourAdsEnabled}}<script src="{{asset "tour/static/go-dev/course-ad.js"}}"></script>{{end}}
     <script src="/tour/script.js"></script>
 </body>
 
@@ -73,7 +73,7 @@
 
 {{define "footer"}}
 <footer class="site-footer">
-    <div>{{ui "footer.unofficial"}} · <a href="/">{{ui "footer.home"}}</a> · <a href="{{.GitHubURL}}" target="_blank" rel="noopener noreferrer">{{ui "footer.github"}}</a> · <a href="{{.DevelopmentLogURL}}" target="_blank" rel="noopener noreferrer">{{ui "footer.development_log"}}</a></div>
+    <div>{{ui "footer.unofficial"}} · <a href="/">{{ui "footer.home"}}</a> · <a href="{{.GitHubURL}}" target="_blank" rel="noopener noreferrer">{{ui "footer.github"}}</a>{{if .OwnerContentLinksEnabled}} · <a href="{{.DevelopmentLogURL}}" target="_blank" rel="noopener noreferrer">{{ui "footer.development_log"}}</a>{{end}}</div>
     <div>© 2026 {{.CopyrightHolder}} | <a href="{{.ICPURL}}" target="_blank" rel="noopener noreferrer">{{.ICPNumber}}</a></div>
 </footer>
 {{end}}
