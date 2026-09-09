@@ -181,6 +181,12 @@ func TestHTTPTransportRuntimeLocalizationInBrowser(t *testing.T) {
 			_, _ = io.WriteString(w, `{"IsTest":true,"TestsFailed":2,"Events":[]}`)
 		case strings.Contains(body, "runtime-test-pass"):
 			_, _ = io.WriteString(w, `{"IsTest":true,"TestsFailed":0,"Events":[]}`)
+		case strings.Contains(body, "runtime-normal-exit"):
+			_, _ = io.WriteString(w, `{"Events":[]}`)
+		case strings.Contains(body, "runtime-nonzero-exit"):
+			_, _ = io.WriteString(w, `{"Status":7,"Events":[]}`)
+		case strings.Contains(body, "runtime-manual-kill"):
+			_, _ = io.WriteString(w, `{"Events":[{"Message":"started\\n","Kind":"stdout","Delay":0},{"Message":"later\\n","Kind":"stdout","Delay":5000000000}]}`)
 		default:
 			http.Error(w, "unexpected program", http.StatusBadRequest)
 		}
@@ -192,7 +198,7 @@ func TestHTTPTransportRuntimeLocalizationInBrowser(t *testing.T) {
 		t.Fatal(err)
 	}
 	baseURL := "http://" + listener.Addr().String()
-	handler, _, err := newTourHandlerWithPlaygroundBase(website.TourOnly(), "zh-CN", proxy, baseURL+"/_", false, false)
+	handler, _, err := newTourHandlerWithPlaygroundBase(website.TourOnly(), "tr-TR", proxy, baseURL+"/_", false, false)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -215,17 +221,37 @@ func TestHTTPTransportRuntimeLocalizationInBrowser(t *testing.T) {
   if (document.documentElement.getAttribute('data-tour-rendered-route') !== '` + route + `' || !document.querySelector('#run') || !document.querySelector('.CodeMirror')) {
     setTimeout(waitForRuntime, 20); return;
   }
-  var cases = [['runtime-build-failure', 'Go 构建失败。'], ['runtime-vet-failure', 'Go vet 检查失败。'], ['runtime-communication-error', '与远程服务器通信时出错。'], ['runtime-test-one', '1 个测试失败。'], ['runtime-test-many', '2 个测试失败。'], ['runtime-test-pass', '所有测试均已通过。']];
+  var cases = [
+    {program: 'runtime-build-failure', want: 'Go build başarısız oldu.'},
+    {program: 'runtime-vet-failure', want: 'Go vet başarısız oldu.'},
+    {program: 'runtime-communication-error', want: 'Uzak sunucuyla iletişim kurulurken hata oluştu.'},
+    {program: 'runtime-test-one', want: '1 test başarısız oldu.'},
+    {program: 'runtime-test-many', want: '2 test başarısız oldu.'},
+    {program: 'runtime-test-pass', want: 'Tüm testler geçti.'},
+    {program: 'runtime-normal-exit', want: 'Program sonlandı.', absent: ['status', 'killed']},
+    {program: 'runtime-nonzero-exit', want: 'Program sonlandı: 7.', absent: ['status', 'killed']},
+    {program: 'runtime-manual-kill', waitBeforeKill: 'started', want: 'Program sonlandı.', preserve: 'started', absent: ['status', 'killed', 'later']}
+  ];
   var index = 0;
   function runNext() {
     if (index === cases.length) { document.documentElement.setAttribute('data-tour-runtime-i18n', 'PASS'); return; }
     var item = cases[index++];
-    document.querySelector('.CodeMirror').CodeMirror.setValue('package main\n// ' + item[0] + '\nfunc main() {}\n');
+    document.querySelector('.CodeMirror').CodeMirror.setValue('package main\n// ' + item.program + '\nfunc main() {}\n');
     setTimeout(function() {
       document.querySelector('#run').click();
+      var killSent = false;
       (function waitForOutput() {
         var output = document.querySelector('.output.active');
-        if (output && output.textContent.indexOf(item[1]) !== -1) { runNext(); return; }
+        var text = output && output.textContent || '';
+        if (item.waitBeforeKill && !killSent && text.indexOf(item.waitBeforeKill) !== -1) {
+          killSent = true;
+          document.querySelector('#kill').click();
+          text = output.textContent;
+        }
+        var absent = item.absent || [];
+        var hasUnwanted = absent.some(function(value) { return text.indexOf(value) !== -1; });
+        var preserved = !item.preserve || text.indexOf(item.preserve) !== -1;
+        if (text.indexOf(item.want) !== -1 && !hasUnwanted && preserved) { runNext(); return; }
         setTimeout(waitForOutput, 20);
       }());
     }, 20);
@@ -417,7 +443,7 @@ func TestProductionCompileProxy(t *testing.T) {
 			t.Errorf("compile form = %v", r.Form)
 		}
 		w.Header().Set("Content-Type", "application/json")
-		_, _ = io.WriteString(w, `{"Errors":"","Events":[{"Message":"ok\n","Kind":"stdout","Delay":0}],"VetErrors":""}`)
+		_, _ = io.WriteString(w, `{"Errors":"","Events":[{"Message":"ok\n","Kind":"stdout","Delay":0}],"VetErrors":"","Status":7}`)
 	}))
 	defer upstream.Close()
 
@@ -437,7 +463,7 @@ func TestProductionCompileProxy(t *testing.T) {
 	if requestID := rec.Header().Get("X-Request-ID"); requestID == "" {
 		t.Fatal("compile response is missing X-Request-ID")
 	}
-	if calls.Load() != 1 || !strings.Contains(rec.Body.String(), `"Message":"ok\n"`) {
+	if calls.Load() != 1 || !strings.Contains(rec.Body.String(), `"Message":"ok\n"`) || !strings.Contains(rec.Body.String(), `"Status":7`) {
 		t.Fatalf("compile calls=%d body=%s", calls.Load(), rec.Body.String())
 	}
 }

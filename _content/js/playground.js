@@ -82,7 +82,7 @@ function HTTPTransport(enableVet) {
           }
         } else {
           if (status > 0) {
-            output({ Kind: 'end', Body: 'status ' + status + '.' });
+            output({ Kind: 'end', Body: status + '.' });
           } else {
             if (errors !== '') {
               // errors are displayed only in the case of timeout.
@@ -157,7 +157,7 @@ function HTTPTransport(enableVet) {
       return {
         Kill: function() {
           if (playing != null) playing.Stop();
-          output({ Kind: 'end', Body: 'killed' });
+          output({ Kind: 'end' });
         },
       };
     },

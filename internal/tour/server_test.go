@@ -1004,6 +1004,16 @@ func TestPlaygroundUsesBootstrappedExitedMessage(t *testing.T) {
 		t.Fatal("playground does not contain the expected HTTPTransport boundary")
 	}
 	httpTransport := text[httpTransportStart:socketTransportStart]
+	for _, unwanted := range []string{`Body: 'status ' + status`, `Body: 'killed'`} {
+		if strings.Contains(httpTransport, unwanted) {
+			t.Errorf("HTTPTransport still generates user-visible English end reason %q", unwanted)
+		}
+	}
+	for _, want := range []string{`output({ Kind: 'end', Body: status + '.' });`, `output({ Kind: 'end' });`} {
+		if !strings.Contains(httpTransport, want) {
+			t.Errorf("HTTPTransport is missing language-neutral end event %q", want)
+		}
+	}
 	for _, key := range []string{"execution.vet_failed", "execution.build_failed", "execution.communication_error", "execution.test_failed", "execution.tests_failed", "execution.tests_passed"} {
 		if !strings.Contains(httpTransport, `window.__tourUIMessages['`+key+`']`) {
 			t.Errorf("playground does not read %q from the shared UI messages", key)

@@ -161,6 +161,7 @@ type playgroundCompileResponse struct {
 	Errors      string
 	Events      []playgroundEvent
 	VetErrors   string
+	Status      int
 	IsTest      bool
 	TestsFailed int
 }
