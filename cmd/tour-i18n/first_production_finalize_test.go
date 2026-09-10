@@ -9,6 +9,7 @@ import (
 	"testing"
 
 	"github.com/shuijingwan/go-tour-i18n/internal/i18n"
+	"github.com/shuijingwan/go-tour-i18n/internal/tour"
 )
 
 func finalizeFixture(t *testing.T) (string, *i18n.Catalog, string, string, string) {
@@ -16,8 +17,9 @@ func finalizeFixture(t *testing.T) (string, *i18n.Catalog, string, string, strin
 	root := t.TempDir()
 	for path, body := range map[string]string{
 		"internal/tour/ui/en.json": "en", "internal/tour/ui/zz-ZZ.json": "target", "locales/zz-ZZ/glossary.yaml": "g", "locales/zz-ZZ/article-metadata.json": "a", "locales/zz-ZZ/course-metadata.json": "c", "internal/tour/languages.go": "l", "internal/tour/project.go": "p", "internal/tour/seo.go": "s",
-		"production/identity.json":       "{\n  \"locales\": [\n    {\"locale\": \"other-AA\", \"production_hostname\": \"other.example\", \"production_state\": \"live\"},\n    {\n      \"locale\": \"zz-ZZ\",\n      \"production_hostname\": \"zz.example\",\n      \"production_public_url\": \"https://zz.example/\",\n      \"production_state\": \"first-production\"\n    }\n  ]\n}\n",
+		"production/identity.json":       "{\n  \"locales\": [\n    {\"locale\": \"other-AA\", \"production_hostname\": \"other.example\", \"production_public_url\": \"https://other.example/\", \"production_state\": \"first-production\"},\n    {\n      \"locale\": \"zz-ZZ\",\n      \"production_hostname\": \"zz.example\",\n      \"production_public_url\": \"https://zz.example/\",\n      \"production_state\": \"first-production\"\n    }\n  ]\n}\n",
 		"scripts/production-identity.py": "#!/usr/bin/env python3\n",
+		"README.md":                      "# README\n\n<!-- live-locales:start -->\nold\n<!-- live-locales:end -->\n",
 	} {
 		full := filepath.Join(root, path)
 		if err := os.MkdirAll(filepath.Dir(full), 0755); err != nil {
@@ -27,6 +29,15 @@ func finalizeFixture(t *testing.T) (string, *i18n.Catalog, string, string, strin
 			t.Fatal(err)
 		}
 	}
+	originalProjector := projectFinalizationREADME
+	projectFinalizationREADME = func(projectRoot string, identity []byte) ([]byte, error) {
+		readme, err := os.ReadFile(filepath.Join(projectRoot, "README.md"))
+		if err != nil {
+			return nil, err
+		}
+		return projectLiveLocales(readme, identity, []tour.LanguageLink{{Locale: "zz-ZZ", EnglishName: "Test", Autonym: "Test language", URL: "https://zz.example/"}})
+	}
+	t.Cleanup(func() { projectFinalizationREADME = originalProjector })
 	catalog := &i18n.Catalog{Pages: []i18n.Page{{ID: "lesson/1", Source: []byte("source")}}}
 	evidence := filepath.Join(root, "data", "locale-surface-reviews", "zz-ZZ", "review-1.md")
 	if err := os.MkdirAll(filepath.Dir(evidence), 0755); err != nil {
@@ -200,18 +211,101 @@ func TestFirstProductionFinalizeHumanGateAndAtomicTransition(t *testing.T) {
 		t.Fatal("missing finalization PASS summary")
 	}
 	identity, _ := os.ReadFile(filepath.Join(root, "production", "identity.json"))
-	if !strings.Contains(string(identity), `"production_state": "live"`) || !strings.Contains(string(identity), `"locale": "other-AA", "production_hostname": "other.example", "production_state": "live"`) {
+	if !strings.Contains(string(identity), `"locale": "zz-ZZ"`) || !strings.Contains(string(identity), `"production_state": "live"`) || !strings.Contains(string(identity), `"locale": "other-AA", "production_hostname": "other.example", "production_public_url": "https://other.example/", "production_state": "first-production"`) {
 		t.Fatal("identity transition was not exact")
 	}
 	result, _ := os.ReadFile(evidence)
 	if !strings.Contains(string(result), "maintainer confirmation") || strings.Contains(string(result), "`PENDING`") {
 		t.Fatal("evidence was not finalized")
 	}
+	readme, _ := os.ReadFile(filepath.Join(root, "README.md"))
+	if !strings.Contains(string(readme), "[Test — Test language](https://zz.example/)") {
+		t.Fatal("README was not projected from candidate live identity")
+	}
 	if err := i18n.RequireCurrentLocaleSurfaceReviewA(root, "zz-ZZ", catalog); err != nil {
 		t.Fatalf("v2 A gate became stale after lifecycle-only finalization: %v", err)
 	}
 	if err := finalizeFirstProduction(root, catalog, release, "review-1", strings.NewReader("VISUAL-PASS\n"), ioDiscard{}, true, noIdentityValidation); err == nil {
 		t.Fatal("live locale finalized twice")
+	}
+}
+
+func TestProjectLiveLocales(t *testing.T) {
+	const readme = "before\n<!-- live-locales:start -->\nold\n<!-- live-locales:end -->\nafter\n"
+	registry := []tour.LanguageLink{
+		{Locale: "pt-BR", EnglishName: "Brazilian Portuguese", Autonym: "Português (Brasil)", URL: "https://pt.example/"},
+		{Locale: "en", EnglishName: "English", Autonym: "English", URL: "https://go.dev/tour/", Official: true},
+		{Locale: "ja-JP", EnglishName: "Japanese", Autonym: "日本語", URL: "https://ja.example/"},
+	}
+	identity := []byte(`{"locales":[{"locale":"ja-JP","production_state":"live","production_public_url":"https://ja.example/"},{"locale":"pt-BR","production_state":"first-production","production_public_url":"https://pt.example/"}]}`)
+	got, err := projectLiveLocales([]byte(readme), identity, registry)
+	if err != nil {
+		t.Fatal(err)
+	}
+	want := "before\n<!-- live-locales:start -->\n- [Japanese — 日本語](https://ja.example/)\n<!-- live-locales:end -->\nafter\n"
+	if string(got) != want {
+		t.Fatalf("projection = %q, want %q", got, want)
+	}
+	again, err := projectLiveLocales(got, identity, registry)
+	if err != nil || !bytes.Equal(got, again) {
+		t.Fatalf("projection is not idempotent: %v", err)
+	}
+}
+
+func TestProjectLiveLocalesFailsClosed(t *testing.T) {
+	registry := []tour.LanguageLink{{Locale: "ja-JP", EnglishName: "Japanese", Autonym: "日本語", URL: "https://ja.example/"}}
+	identity := []byte(`{"locales":[{"locale":"ja-JP","production_state":"live","production_public_url":"https://wrong.example/"}]}`)
+	for name, readme := range map[string]string{
+		"missing marker":   "# README\n",
+		"duplicate marker": "<!-- live-locales:start --><!-- live-locales:start --><!-- live-locales:end -->",
+		"marker order":     "<!-- live-locales:end --><!-- live-locales:start -->",
+	} {
+		t.Run(name, func(t *testing.T) {
+			if _, err := projectLiveLocales([]byte(readme), identity, registry); err == nil {
+				t.Fatal("malformed README accepted")
+			}
+		})
+	}
+	valid := []byte("<!-- live-locales:start -->\n<!-- live-locales:end -->")
+	if _, err := projectLiveLocales(valid, identity, registry); err == nil {
+		t.Fatal("URL drift accepted")
+	}
+	missingRegistry := []byte(`{"locales":[{"locale":"ko-KR","production_state":"live","production_public_url":"https://ko.example/"}]}`)
+	if _, err := projectLiveLocales(valid, missingRegistry, registry); err == nil {
+		t.Fatal("missing registry entry accepted")
+	}
+	duplicate := []byte(`{"locales":[{"locale":"ja-JP","production_state":"live","production_public_url":"https://ja.example/"},{"locale":"ja-JP","production_state":"live","production_public_url":"https://ja.example/"}]}`)
+	if _, err := projectLiveLocales(valid, duplicate, registry); err == nil {
+		t.Fatal("duplicate identity accepted")
+	}
+	if _, err := projectLiveLocales(valid, []byte(`{`), registry); err == nil {
+		t.Fatal("malformed identity accepted")
+	}
+	official := []tour.LanguageLink{{Locale: "ja-JP", EnglishName: "Japanese", Autonym: "日本語", URL: "https://ja.example/", Official: true}}
+	if _, err := projectLiveLocales(valid, []byte(`{"locales":[{"locale":"ja-JP","production_state":"live","production_public_url":"https://ja.example/"}]}`), official); err == nil {
+		t.Fatal("Official community locale accepted")
+	}
+}
+
+func TestProjectRootREADMEMatchesCheckedInProjection(t *testing.T) {
+	root, err := filepath.Abs(filepath.Join("..", ".."))
+	if err != nil {
+		t.Fatal(err)
+	}
+	identity, err := os.ReadFile(filepath.Join(root, "production", "identity.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	got, err := projectRootREADME(root, identity)
+	if err != nil {
+		t.Fatal(err)
+	}
+	want, err := os.ReadFile(filepath.Join(root, "README.md"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !bytes.Equal(got, want) {
+		t.Fatal("checked-in README live locale projection is stale")
 	}
 }
 
@@ -226,6 +320,7 @@ func TestFirstProductionFinalizeRejectsStaleGateAndValidationRollback(t *testing
 	root, catalog, release, _, evidence = finalizeFixture(t)
 	oldEvidence, _ := os.ReadFile(evidence)
 	oldIdentity, _ := os.ReadFile(filepath.Join(root, "production", "identity.json"))
+	oldREADME, _ := os.ReadFile(filepath.Join(root, "README.md"))
 	calls := 0
 	validator := func(string, string) error {
 		calls++
@@ -239,7 +334,8 @@ func TestFirstProductionFinalizeRejectsStaleGateAndValidationRollback(t *testing
 	}
 	newEvidence, _ := os.ReadFile(evidence)
 	newIdentity, _ := os.ReadFile(filepath.Join(root, "production", "identity.json"))
-	if !bytes.Equal(oldEvidence, newEvidence) || !bytes.Equal(oldIdentity, newIdentity) {
+	newREADME, _ := os.ReadFile(filepath.Join(root, "README.md"))
+	if !bytes.Equal(oldEvidence, newEvidence) || !bytes.Equal(oldIdentity, newIdentity) || !bytes.Equal(oldREADME, newREADME) {
 		t.Fatal("validation failure left partial finalization")
 	}
 }

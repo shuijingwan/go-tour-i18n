@@ -37,6 +37,14 @@ var languageRegistry = []LanguageLink{
 	{Locale: "tr-TR", EnglishName: "Turkish", Autonym: "Türkçe", URL: "https://tr-go-dev.shuijingwanwq.com/"},
 }
 
+// LanguageRegistry returns the homepage language registry in presentation
+// order. The returned copy cannot alter the build-time authority.
+func LanguageRegistry() []LanguageLink {
+	registry := make([]LanguageLink, len(languageRegistry))
+	copy(registry, languageRegistry)
+	return registry
+}
+
 type localeProfile struct {
 	DevelopmentLogURL string
 	TimeZone          *time.Location

@@ -6,8 +6,21 @@
 
 ## 在线入口
 
-- 在线体验：[A Tour of Go 简体中文](https://go-dev.shuijingwanwq.com/)
-- 在线体验：[A Tour of Go 日本語](https://ja-go-dev.shuijingwanwq.com/)
+社区维护且已正式上线的语言版本：
+
+<!-- live-locales:start -->
+- [Brazilian Portuguese — Português (Brasil)](https://pt-go-dev.shuijingwanwq.com/)
+- [Dutch — Nederlands](https://nl-go-dev.shuijingwanwq.com/)
+- [French — Français](https://fr-go-dev.shuijingwanwq.com/)
+- [German — Deutsch](https://de-go-dev.shuijingwanwq.com/)
+- [Italian — Italiano](https://it-go-dev.shuijingwanwq.com/)
+- [Japanese — 日本語](https://ja-go-dev.shuijingwanwq.com/)
+- [Korean — 한국어](https://ko-go-dev.shuijingwanwq.com/)
+- [Simplified Chinese — 简体中文](https://go-dev.shuijingwanwq.com/)
+- [Spanish — Español](https://es-go-dev.shuijingwanwq.com/)
+- [Turkish — Türkçe](https://tr-go-dev.shuijingwanwq.com/)
+<!-- live-locales:end -->
+
 - 官方英文版：[A Tour of Go](https://go.dev/tour/)
 - 开发记录：[《A Tour of Go 多语言翻译项目》](https://www.shuijingwanwq.com/series/go-tour-chinese-edition-development-series/)
 - 问题反馈：[GitHub Issues](https://github.com/shuijingwan/go-tour-i18n/issues)

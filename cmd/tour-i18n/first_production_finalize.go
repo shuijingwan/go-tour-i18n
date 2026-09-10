@@ -17,6 +17,8 @@ import (
 
 const firstProductionReceiptSchema = "go-tour-i18n/first-production-receipt/v1"
 
+var projectFinalizationREADME = projectRootREADME
+
 const finalizationPlaceholder = "<!-- first-production-finalization:start -->\n" +
 	"- production receipt identity: `PENDING`\n" +
 	"- production machine acceptance: `PENDING`\n" +
@@ -229,7 +231,16 @@ func finalizeFirstProduction(root string, catalog *i18n.Catalog, releaseDir, rev
 	if err := validateCandidateIdentity(root, newIdentity, validate); err != nil {
 		return err
 	}
-	if err := commitFinalization(evidencePath, evidence, []byte(finalized), identityPath, identityBytes, newIdentity, root, validate); err != nil {
+	newREADME, err := projectFinalizationREADME(root, newIdentity)
+	if err != nil {
+		return err
+	}
+	readmePath := filepath.Join(root, "README.md")
+	oldREADME, err := os.ReadFile(readmePath)
+	if err != nil {
+		return fmt.Errorf("read README: %w", err)
+	}
+	if err := commitFinalization(evidencePath, evidence, []byte(finalized), identityPath, identityBytes, newIdentity, readmePath, oldREADME, newREADME, root, validate); err != nil {
 		return err
 	}
 	fmt.Fprintf(output, "FIRST PRODUCTION FINALIZATION: PASS (locale=%s review_id=%s production_state=live)\n", release, reviewID)
@@ -327,7 +338,7 @@ func atomicWrite(path string, data []byte) (string, error) {
 	}
 	return temp.Name(), nil
 }
-func commitFinalization(evidencePath string, oldEvidence, newEvidence []byte, identityPath string, oldIdentity, newIdentity []byte, root string, validate func(string, string) error) error {
+func commitFinalization(evidencePath string, oldEvidence, newEvidence []byte, identityPath string, oldIdentity, newIdentity []byte, readmePath string, oldREADME, newREADME []byte, root string, validate func(string, string) error) error {
 	evidenceTemp, err := atomicWrite(evidencePath, newEvidence)
 	if err != nil {
 		return err
@@ -338,16 +349,27 @@ func commitFinalization(evidencePath string, oldEvidence, newEvidence []byte, id
 		return err
 	}
 	defer os.Remove(identityTemp)
+	readmeTemp, err := atomicWrite(readmePath, newREADME)
+	if err != nil {
+		return err
+	}
+	defer os.Remove(readmeTemp)
 	if err = os.Rename(evidenceTemp, evidencePath); err != nil {
+		return err
+	}
+	if err = os.Rename(readmeTemp, readmePath); err != nil {
+		_ = os.WriteFile(evidencePath, oldEvidence, 0644)
 		return err
 	}
 	if err = os.Rename(identityTemp, identityPath); err != nil {
 		_ = os.WriteFile(evidencePath, oldEvidence, 0644)
+		_ = os.WriteFile(readmePath, oldREADME, 0644)
 		return err
 	}
 	if err = validate(root, identityPath); err != nil {
 		_ = os.WriteFile(identityPath, oldIdentity, 0644)
 		_ = os.WriteFile(evidencePath, oldEvidence, 0644)
+		_ = os.WriteFile(readmePath, oldREADME, 0644)
 		return err
 	}
 	return nil
