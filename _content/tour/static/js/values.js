@@ -45,8 +45,8 @@ value('translation', window.__tourUIMessages).
 
 // Feedback destinations are deployment configuration, not locale messages.
 value('feedbackConfig', {
-    customURL: 'https://go.dev/doc/contribute#check_tracker',
-    githubRepo: 'github.com/golang/go',
+    customURL: 'https://github.com/shuijingwan/go-tour-i18n/issues',
+    githubRepo: 'github.com/shuijingwan/go-tour-i18n',
 }).
 
 // Config for codemirror plugin

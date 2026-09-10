@@ -731,14 +731,24 @@ func TestTourPublicationRuntimePolicy(t *testing.T) {
 			if !strings.Contains(script, wantPolicy) {
 				t.Errorf("%s script does not contain %s", locale, wantPolicy)
 			}
-			if !strings.Contains(script, `customURL: 'https://go.dev/doc/contribute#check_tracker'`) {
-				t.Errorf("%s script retains a same-site feedback URL", locale)
+			for _, want := range []string{
+				`customURL: 'https://github.com/shuijingwan/go-tour-i18n/issues'`,
+				`githubRepo: 'github.com/shuijingwan/go-tour-i18n'`,
+			} {
+				if !strings.Contains(script, want) {
+					t.Errorf("%s script omits project feedback configuration %q", locale, want)
+				}
+			}
+			for _, obsolete := range []string{"https://go.dev/doc/contribute#check_tracker", "github.com/golang/go"} {
+				if strings.Contains(script, obsolete) {
+					t.Errorf("%s script retains obsolete feedback destination %q", locale, obsolete)
+				}
 			}
 		})
 	}
 }
 
-func TestGoLocalSharedUIRejectsUnclassifiedSameSiteContentLinks(t *testing.T) {
+func TestSharedUIRejectsUnclassifiedSameSiteContentLinks(t *testing.T) {
 	hrefRE := regexp.MustCompile(`(?i)<a\b[^>]*\bhref="([^"]+)"`)
 	paths := []string{
 		"tour/template/index.tmpl",
@@ -763,8 +773,19 @@ func TestGoLocalSharedUIRejectsUnclassifiedSameSiteContentLinks(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if strings.Contains(string(values), "customURL: '/") || !strings.Contains(string(values), "https://go.dev/doc/contribute#check_tracker") {
-		t.Error("feedback configuration must use the reviewed Go official URL")
+	text := string(values)
+	for _, want := range []string{
+		"customURL: 'https://github.com/shuijingwan/go-tour-i18n/issues'",
+		"githubRepo: 'github.com/shuijingwan/go-tour-i18n'",
+	} {
+		if !strings.Contains(text, want) {
+			t.Errorf("feedback configuration omits project tracker setting %q", want)
+		}
+	}
+	for _, obsolete := range []string{"https://go.dev/doc/contribute#check_tracker", "github.com/golang/go"} {
+		if strings.Contains(text, obsolete) {
+			t.Errorf("feedback configuration retains obsolete destination %q", obsolete)
+		}
 	}
 }
 
