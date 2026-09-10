@@ -32,6 +32,129 @@ func TestQualityCheckScopeFreshLocaleIsFullyPending(t *testing.T) {
 	}
 }
 
+func TestQualityCheckResultsFreshLineageRemainsEmpty(t *testing.T) {
+	root, catalog, _ := makeRetranslationReviewBatchFixture(t, 2, "qc-001")
+	scope, err := BuildQualityCheckScope(root, catalog, QualityCheckScopeOptions{Locale: "zh-CN", SnapshotID: "qc-001"})
+	if err != nil || scope.PendingCount != 2 || scope.PreviousSnapshotID != "" {
+		t.Fatalf("fresh scope=%+v err=%v", scope, err)
+	}
+	recordQualityCheckRatings(t, root, catalog, "qc-001", "", "A", []string{"lesson/1"})
+	recordQualityCheckRatings(t, root, catalog, "qc-001", "", "A", []string{"lesson/2"})
+	snapshot, err := readQualityCheckSnapshot(root, "zh-CN", "qc-001", false)
+	if err != nil {
+		t.Fatal(err)
+	}
+	results, err := readQualityCheckResults(root, "zh-CN", snapshot)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if results.PreviousSnapshotID != "" || results.ResultCount != 2 {
+		t.Fatalf("fresh results lineage=%q count=%d", results.PreviousSnapshotID, results.ResultCount)
+	}
+}
+
+func TestQualityCheckResultsRevisionLineagePersistsAndResumes(t *testing.T) {
+	root, catalog, _ := makeRetranslationReviewBatchFixture(t, 4, "qc-001")
+	recordQualityCheckRatings(t, root, catalog, "qc-001", "", "A", []string{"lesson/1", "lesson/2", "lesson/3", "lesson/4"})
+	addProcessedPromotionBatch(t, root, catalog, "chatgpt-zh-CN-006", []string{"lesson/2", "lesson/3", "lesson/4"})
+	if _, _, err := CreateQualityCheckCandidateSnapshot(root, catalog, QualityCheckSnapshotOptions{Locale: "zh-CN", SnapshotID: "qc-002"}); err != nil {
+		t.Fatal(err)
+	}
+	prospective, err := BuildQualityCheckScope(root, catalog, QualityCheckScopeOptions{Locale: "zh-CN", SnapshotID: "qc-002", PreviousSnapshotID: "qc-001"})
+	if err != nil || prospective.CarryForwardCount != 1 || prospective.PendingCount != 3 {
+		t.Fatalf("prospective revision scope=%+v err=%v", prospective, err)
+	}
+	recordQualityCheckRatings(t, root, catalog, "qc-002", "qc-001", "A", []string{"lesson/2"})
+
+	snapshot, err := readQualityCheckSnapshot(root, "zh-CN", "qc-002", false)
+	if err != nil {
+		t.Fatal(err)
+	}
+	results, err := readQualityCheckResults(root, "zh-CN", snapshot)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if results.PreviousSnapshotID != "qc-001" {
+		t.Fatalf("persisted previous_snapshot_id=%q", results.PreviousSnapshotID)
+	}
+
+	matching, err := BuildQualityCheckScope(root, catalog, QualityCheckScopeOptions{Locale: "zh-CN", SnapshotID: "qc-002", PreviousSnapshotID: "qc-001"})
+	if err != nil || matching.PreviousSnapshotID != "qc-001" {
+		t.Fatalf("matching explicit scope=%+v err=%v", matching, err)
+	}
+	beforeMismatch, err := os.ReadFile(qualityCheckResultsPath(root, "zh-CN", "qc-002"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := BuildQualityCheckScope(root, catalog, QualityCheckScopeOptions{Locale: "zh-CN", SnapshotID: "qc-002", PreviousSnapshotID: "qc-000"}); err == nil || !strings.Contains(err.Error(), `persisted previous_snapshot_id="qc-001", requested previous_snapshot_id="qc-000"`) {
+		t.Fatalf("scope lineage mismatch error=%v", err)
+	}
+	if _, err := RecordQualityCheckResults(root, catalog, QualityCheckRecordOptions{Locale: "zh-CN", SnapshotID: "qc-002", PreviousSnapshotID: "qc-000", UnitIDs: []string{"lesson/3"}, Rating: "A"}); err == nil || !strings.Contains(err.Error(), `persisted previous_snapshot_id="qc-001", requested previous_snapshot_id="qc-000"`) {
+		t.Fatalf("record lineage mismatch error=%v", err)
+	}
+	afterMismatch, err := os.ReadFile(qualityCheckResultsPath(root, "zh-CN", "qc-002"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !reflect.DeepEqual(beforeMismatch, afterMismatch) {
+		t.Fatal("lineage mismatch changed persisted results")
+	}
+
+	recordQualityCheckRatings(t, root, catalog, "qc-002", "qc-001", "A", []string{"lesson/3"})
+	recordQualityCheckRatings(t, root, catalog, "qc-002", "", "A", []string{"lesson/4"})
+	resumed, err := BuildQualityCheckScope(root, catalog, QualityCheckScopeOptions{Locale: "zh-CN", SnapshotID: "qc-002"})
+	if err != nil || resumed.PreviousSnapshotID != "qc-001" || resumed.CarryForwardCount != 1 || resumed.CurrentResultCount != 3 || resumed.PendingCount != 0 || !resumed.ReadyForFinalization {
+		t.Fatalf("resumed revision scope=%+v err=%v", resumed, err)
+	}
+	finalization, _, err := FinalizeQualityCheck(root, catalog, QualityCheckFinalizeOptions{Locale: "zh-CN", SnapshotID: "qc-002"})
+	if err != nil || len(finalization.QCResults) != 2 || len(finalization.Units) != 4 {
+		t.Fatalf("revision finalization=%+v err=%v", finalization, err)
+	}
+}
+
+func TestQualityCheckResultsRejectEmptyLineageRetrofitAtomically(t *testing.T) {
+	root, catalog, _ := makeRetranslationReviewBatchFixture(t, 3, "qc-001")
+	recordQualityCheckRatings(t, root, catalog, "qc-001", "", "A", []string{"lesson/1", "lesson/2", "lesson/3"})
+	if _, _, err := CreateQualityCheckCandidateSnapshot(root, catalog, QualityCheckSnapshotOptions{Locale: "zh-CN", SnapshotID: "qc-002"}); err != nil {
+		t.Fatal(err)
+	}
+	recordQualityCheckRatings(t, root, catalog, "qc-002", "", "A", []string{"lesson/1"})
+	path := qualityCheckResultsPath(root, "zh-CN", "qc-002")
+	before, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	assertRejected := func(operation string, err error) {
+		t.Helper()
+		if err == nil {
+			t.Fatalf("%s accepted empty-lineage retrofit", operation)
+		}
+		for _, want := range []string{`Snapshot "qc-002"`, `persisted previous_snapshot_id=""`, `requested previous_snapshot_id="qc-001"`, "fixed at the first results write", "do not edit quality-check-results.json"} {
+			if !strings.Contains(err.Error(), want) {
+				t.Fatalf("%s error=%q, want %q", operation, err, want)
+			}
+		}
+		after, readErr := os.ReadFile(path)
+		if readErr != nil {
+			t.Fatal(readErr)
+		}
+		if !reflect.DeepEqual(before, after) {
+			t.Fatalf("%s changed persisted results", operation)
+		}
+	}
+
+	gotScope, err := BuildQualityCheckScope(root, catalog, QualityCheckScopeOptions{Locale: "zh-CN", SnapshotID: "qc-002", PreviousSnapshotID: "qc-001"})
+	assertRejected("scope", err)
+	if gotScope != nil {
+		t.Fatalf("scope retrofit returned a usable scope: %+v", gotScope)
+	}
+	_, err = RecordQualityCheckResults(root, catalog, QualityCheckRecordOptions{Locale: "zh-CN", SnapshotID: "qc-002", PreviousSnapshotID: "qc-001", UnitIDs: []string{"lesson/2"}, Rating: "A"})
+	assertRejected("record", err)
+	_, err = RecordQualityCheckResultBatch(root, catalog, QualityCheckRecordBatchOptions{Locale: "zh-CN", SnapshotID: "qc-002", PreviousSnapshotID: "qc-001", StartIndex: 2, Limit: 1, Rating: "A"})
+	assertRejected("record-batch", err)
+}
+
 func TestQualityCheckScopeCarriesOnlyIdentityMatchingA(t *testing.T) {
 	root, catalog, _ := makeRetranslationReviewBatchFixture(t, 4, "qc-001")
 	recordQualityCheckRatings(t, root, catalog, "qc-001", "", "A", []string{"lesson/1"})
@@ -316,11 +439,50 @@ func TestQualityCheckFindingRulesAndLegacyBackfill(t *testing.T) {
 	if _, err := BackfillQualityCheckFinding(root, catalog, QualityCheckFindingBackfillOptions{Locale: "zh-CN", SnapshotID: "qc-001", UnitID: "lesson/2", Finding: "specific defect"}); err != nil {
 		t.Fatal(err)
 	}
+	updated, err := readQualityCheckResults(root, "zh-CN", snapshot)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if updated.PreviousSnapshotID != results.PreviousSnapshotID {
+		t.Fatalf("finding backfill changed previous_snapshot_id from %q to %q", results.PreviousSnapshotID, updated.PreviousSnapshotID)
+	}
 	if _, err := BackfillQualityCheckFinding(root, catalog, QualityCheckFindingBackfillOptions{Locale: "zh-CN", SnapshotID: "qc-001", UnitID: "lesson/2", Finding: "overwrite"}); err == nil || !strings.Contains(err.Error(), "already exists") {
 		t.Fatalf("overwrite error=%v", err)
 	}
 	if _, err := BackfillQualityCheckFinding(root, catalog, QualityCheckFindingBackfillOptions{Locale: "zh-CN", SnapshotID: "qc-001", UnitID: "lesson/1", Finding: "not allowed"}); err == nil || !strings.Contains(err.Error(), "only allowed") {
 		t.Fatalf("A backfill error=%v", err)
+	}
+}
+
+func TestQualityCheckFindingBackfillPreservesPersistedRevisionLineage(t *testing.T) {
+	root, catalog, _ := makeRetranslationReviewBatchFixture(t, 1, "qc-001")
+	recordQualityCheckRatings(t, root, catalog, "qc-001", "", "A", []string{"lesson/1"})
+	if _, _, err := CreateQualityCheckCandidateSnapshot(root, catalog, QualityCheckSnapshotOptions{Locale: "zh-CN", SnapshotID: "qc-002"}); err != nil {
+		t.Fatal(err)
+	}
+	recordQualityCheckRatings(t, root, catalog, "qc-002", "qc-001", "B", []string{"lesson/1"})
+	snapshot, err := readQualityCheckSnapshot(root, "zh-CN", "qc-002", false)
+	if err != nil {
+		t.Fatal(err)
+	}
+	results, err := readQualityCheckResults(root, "zh-CN", snapshot)
+	if err != nil {
+		t.Fatal(err)
+	}
+	results.SchemaVersion = legacyQualityCheckResultsSchemaVersion
+	results.Results[0].Finding = ""
+	if err := writeQualityCheckResults(qualityCheckResultsPath(root, "zh-CN", "qc-002"), results); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := BackfillQualityCheckFinding(root, catalog, QualityCheckFindingBackfillOptions{Locale: "zh-CN", SnapshotID: "qc-002", UnitID: "lesson/1", Finding: "specific revision finding"}); err != nil {
+		t.Fatal(err)
+	}
+	updated, err := readQualityCheckResults(root, "zh-CN", snapshot)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if updated.PreviousSnapshotID != "qc-001" {
+		t.Fatalf("finding backfill changed persisted previous_snapshot_id=%q", updated.PreviousSnapshotID)
 	}
 }
 

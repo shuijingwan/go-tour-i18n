@@ -150,9 +150,6 @@ func RecordQualityCheckResults(root string, catalog *Catalog, options QualityChe
 		if options.PreviousSnapshotID == options.SnapshotID {
 			return nil, errors.New("previous_snapshot_id must differ from snapshot_id")
 		}
-		if _, err := readQualityCheckSnapshot(root, options.Locale, options.PreviousSnapshotID, false); err != nil {
-			return nil, fmt.Errorf("previous quality-check snapshot: %w", err)
-		}
 	}
 	if !validQualityRating(options.Rating) {
 		return nil, fmt.Errorf("invalid quality-check rating %q", options.Rating)
@@ -172,16 +169,18 @@ func RecordQualityCheckResults(root string, catalog *Catalog, options QualityChe
 	if err != nil {
 		return nil, err
 	}
-	previousSnapshotID := options.PreviousSnapshotID
+	previousSnapshotID, err := resolveQualityCheckResultsLineage(options.SnapshotID, existing, options.PreviousSnapshotID)
+	if err != nil {
+		return nil, err
+	}
 	if existing != nil {
 		if existing.Rubric != TranslationQualityRubric {
 			return nil, fmt.Errorf("quality-check results use obsolete rubric %q; create a new full Snapshot", existing.Rubric)
 		}
-		if existing.PreviousSnapshotID != "" && previousSnapshotID != "" && previousSnapshotID != existing.PreviousSnapshotID {
-			return nil, fmt.Errorf("previous_snapshot_id %q does not match existing result lineage %q", previousSnapshotID, existing.PreviousSnapshotID)
-		}
-		if existing.PreviousSnapshotID != "" {
-			previousSnapshotID = existing.PreviousSnapshotID
+	}
+	if options.PreviousSnapshotID != "" {
+		if _, err := readQualityCheckSnapshot(root, options.Locale, options.PreviousSnapshotID, false); err != nil {
+			return nil, fmt.Errorf("previous quality-check snapshot: %w", err)
 		}
 	}
 
@@ -368,11 +367,9 @@ func BuildQualityCheckScope(root string, catalog *Catalog, options QualityCheckS
 		}
 	}
 	if currentResults != nil {
-		if currentResults.PreviousSnapshotID != "" && previousSnapshotID != "" && previousSnapshotID != currentResults.PreviousSnapshotID {
-			return nil, fmt.Errorf("previous_snapshot_id %q does not match recorded lineage %q", previousSnapshotID, currentResults.PreviousSnapshotID)
-		}
-		if currentResults.PreviousSnapshotID != "" {
-			previousSnapshotID = currentResults.PreviousSnapshotID
+		previousSnapshotID, err = resolveQualityCheckResultsLineage(options.SnapshotID, currentResults, previousSnapshotID)
+		if err != nil {
+			return nil, err
 		}
 	}
 
@@ -465,6 +462,20 @@ func BuildQualityCheckScope(root string, catalog *Catalog, options QualityCheckS
 	scope.ReadyForFinalization = scope.ACount == scope.UnitCount && scope.PendingCount == 0
 	scope.ReadyForFinalReview = scope.ReadyForFinalization
 	return scope, nil
+}
+
+func resolveQualityCheckResultsLineage(snapshotID string, existing *QualityCheckResults, requestedPreviousSnapshotID string) (string, error) {
+	if existing == nil {
+		return requestedPreviousSnapshotID, nil
+	}
+	persisted := existing.PreviousSnapshotID
+	if requestedPreviousSnapshotID == "" || requestedPreviousSnapshotID == persisted {
+		return persisted, nil
+	}
+	return "", fmt.Errorf(
+		"quality-check Snapshot %q results lineage was fixed at the first results write: persisted previous_snapshot_id=%q, requested previous_snapshot_id=%q; resume with the persisted lineage or restart Quality Check recording from the correct Snapshot workflow evidence; do not edit quality-check-results.json",
+		snapshotID, persisted, requestedPreviousSnapshotID,
+	)
 }
 
 func loadEffectiveQualityCheckResults(root, locale, snapshotID string, seen map[string]bool) (*QualityCheckSnapshotManifest, map[string]effectiveQualityCheckResult, error) {

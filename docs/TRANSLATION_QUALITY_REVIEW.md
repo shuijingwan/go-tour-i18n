@@ -146,7 +146,7 @@ go run -mod=readonly ./cmd/tour-i18n quality-check scope \
 
 只有上一轮有效结果为 A，且 rubric、source、selected batch、candidate path/SHA-256、validation path/SHA-256 和最终 attempt 与新 Snapshot 完全相同的 Unit 才能 **QC carry-forward**。B/C/D 不得 carry-forward；没有结果、identity 变化、glossary 变化或 rubric 变化的 Unit 必须重新进入 Quality Check。identity 未变化但上一轮为 B/C/D 时，scope 输出 `non_a_quality_check/revision_required`；revision 后 identity 已变化时输出 `identity_changed/quality_check_required`。
 
-`quality-check record` 在 revision Snapshot 首次写结果时使用同一 `--previous-snapshot-id` 固化 lineage；后续 scope 可以从结果文件继续解析多轮 carry-forward。`a_count == unit_count`、B/C/D 均为 0 且 `pending_count == 0` 时，`ready_for_finalization=true`，才可以执行 finalization；JSON 同时保留 deprecated `ready_for_final_review` alias 供旧消费者读取。
+`quality-check-results.json` 的 lineage identity 在该文件第一次成功写入时固定。revision Snapshot 的第一次 `quality-check record` 或 `record-batch` 必须使用与 prospective scope 相同的 `--previous-snapshot-id`；后续 record 可以省略该参数并沿用已经持久化的 predecessor。results 文件已经存在时，scope 或 record 显式传入的 `--previous-snapshot-id` 只能与 persisted `previous_snapshot_id` 做 exact-match 一致性确认，不能把 empty lineage 补成 revision lineage，也不能改为另一个 predecessor；lineage 错误应回到正确的 Snapshot/QC recording workflow evidence 处理，禁止人工编辑 JSON。后续 scope 可以从结果文件继续解析多轮 carry-forward。`a_count == unit_count`、B/C/D 均为 0 且 `pending_count == 0` 时，`ready_for_finalization=true`，才可以执行 finalization；JSON 同时保留 deprecated `ready_for_final_review` alias 供旧消费者读取。
 
 ### Legacy Final Review incremental scope
 

@@ -47,3 +47,53 @@ func TestQualityCheckFinalizationRejectsPendingAndMalformedEvidence(t *testing.T
 		t.Fatal("accepted malformed finalization")
 	}
 }
+
+func TestQualityCheckFinalizationStillRejectsCyclicResultsLineage(t *testing.T) {
+	root, catalog, _ := makeRetranslationReviewBatchFixture(t, 1, "qc-001")
+	recordQualityCheckRatings(t, root, catalog, "qc-001", "", "A", []string{"lesson/1"})
+	if _, _, err := CreateQualityCheckCandidateSnapshot(root, catalog, QualityCheckSnapshotOptions{Locale: "zh-CN", SnapshotID: "qc-002"}); err != nil {
+		t.Fatal(err)
+	}
+	recordQualityCheckRatings(t, root, catalog, "qc-002", "qc-001", "A", []string{"lesson/1"})
+	first, err := readQualityCheckSnapshot(root, "zh-CN", "qc-001", false)
+	if err != nil {
+		t.Fatal(err)
+	}
+	results, err := readQualityCheckResults(root, "zh-CN", first)
+	if err != nil {
+		t.Fatal(err)
+	}
+	results.PreviousSnapshotID = "qc-002"
+	if err := writeQualityCheckResults(qualityCheckResultsPath(root, "zh-CN", "qc-001"), results); err != nil {
+		t.Fatal(err)
+	}
+	if _, _, err := FinalizeQualityCheck(root, catalog, QualityCheckFinalizeOptions{Locale: "zh-CN", SnapshotID: "qc-002"}); err == nil || !strings.Contains(err.Error(), "lineage contains a cycle") {
+		t.Fatalf("cyclic lineage finalization error=%v", err)
+	}
+	if _, err := os.Stat(qualityCheckFinalizationPath(root, "zh-CN", "qc-002")); !os.IsNotExist(err) {
+		t.Fatalf("cyclic lineage left finalization artifact: %v", err)
+	}
+}
+
+func TestQualityCheckFinalizationStillRejectsMalformedResultsLineage(t *testing.T) {
+	root, catalog, _ := makeRetranslationReviewBatchFixture(t, 1, "qc-001")
+	recordQualityCheckRatings(t, root, catalog, "qc-001", "", "A", []string{"lesson/1"})
+	snapshot, err := readQualityCheckSnapshot(root, "zh-CN", "qc-001", false)
+	if err != nil {
+		t.Fatal(err)
+	}
+	results, err := readQualityCheckResults(root, "zh-CN", snapshot)
+	if err != nil {
+		t.Fatal(err)
+	}
+	results.PreviousSnapshotID = "qc-001"
+	if err := writeQualityCheckResults(qualityCheckResultsPath(root, "zh-CN", "qc-001"), results); err != nil {
+		t.Fatal(err)
+	}
+	if _, _, err := FinalizeQualityCheck(root, catalog, QualityCheckFinalizeOptions{Locale: "zh-CN", SnapshotID: "qc-001"}); err == nil || !strings.Contains(err.Error(), "invalid previous_snapshot_id") {
+		t.Fatalf("malformed lineage finalization error=%v", err)
+	}
+	if _, err := os.Stat(qualityCheckFinalizationPath(root, "zh-CN", "qc-001")); !os.IsNotExist(err) {
+		t.Fatalf("malformed lineage left finalization artifact: %v", err)
+	}
+}
