@@ -125,6 +125,8 @@ func run(args []string) error {
 		return checkLocaleSurfaceReviewACommand(root, catalog, args[2:])
 	case "first-production finalize":
 		return finalizeFirstProductionCommand(root, catalog, args[2:])
+	case "first-production evidence-preflight":
+		return firstProductionEvidencePreflightCommand(root, catalog, args[2:])
 	case "catalog check":
 		report, err := i18n.PreviewCatalog(catalog, current)
 		if err != nil {

@@ -230,49 +230,112 @@ func RecordLocaleSurfaceReviewA(root, locale, reviewID, reviewer string, catalog
 // RequireCurrentLocaleSurfaceReviewA fails closed before a complete locale
 // preview. It never interprets human Markdown evidence.
 func RequireCurrentLocaleSurfaceReviewA(root, locale string, catalog *Catalog) error {
+	_, err := CurrentLocaleSurfaceReviewAGate(root, locale, catalog)
+	return err
+}
+
+// CurrentLocaleSurfaceReviewAGate returns the current passed A gate. It is the
+// single freshness lookup used by consumers that also need its review identity.
+func CurrentLocaleSurfaceReviewAGate(root, locale string, catalog *Catalog) (LocaleSurfaceReviewAGate, error) {
+	gates, err := currentLocaleSurfaceReviewAGates(root, locale, catalog)
+	if err != nil {
+		return LocaleSurfaceReviewAGate{}, err
+	}
+	return gates[0], nil
+}
+
+// RequireUniqueCurrentLocaleSurfaceReviewAGate requires exactly one current A
+// gate where an operation must bind its evidence to an unambiguous review ID.
+func RequireUniqueCurrentLocaleSurfaceReviewAGate(root, locale string, catalog *Catalog) (LocaleSurfaceReviewAGate, error) {
+	gates, err := currentLocaleSurfaceReviewAGates(root, locale, catalog)
+	if err != nil {
+		return LocaleSurfaceReviewAGate{}, err
+	}
+	if len(gates) != 1 {
+		return LocaleSurfaceReviewAGate{}, fmt.Errorf("Locale Surface Review A gate is ambiguous for %s: found %d current gates; retain exactly one current review before first-production", locale, len(gates))
+	}
+	return gates[0], nil
+}
+
+// RequireCurrentLocaleSurfaceReviewAByReviewID verifies the named gate itself
+// is current; it never accepts a different current gate for the same locale.
+func RequireCurrentLocaleSurfaceReviewAByReviewID(root, locale, reviewID string, catalog *Catalog) (LocaleSurfaceReviewAGate, error) {
+	path, err := LocaleSurfaceReviewAGatePath(root, locale, reviewID)
+	if err != nil {
+		return LocaleSurfaceReviewAGate{}, err
+	}
+	data, err := os.ReadFile(path)
+	if os.IsNotExist(err) {
+		return LocaleSurfaceReviewAGate{}, fmt.Errorf("Locale Surface Review A gate missing for %s review_id=%s", locale, reviewID)
+	}
+	if err != nil {
+		return LocaleSurfaceReviewAGate{}, fmt.Errorf("read Locale Surface Review A gate %s: %w", reviewID, err)
+	}
+	var gate LocaleSurfaceReviewAGate
+	if json.Unmarshal(data, &gate) != nil {
+		return LocaleSurfaceReviewAGate{}, fmt.Errorf("language review evidence/gate stale: malformed Locale Surface Review A gate %s", filepath.Base(path))
+	}
+	if err := validateLocaleSurfaceReviewAGate(gate, locale); err != nil {
+		return LocaleSurfaceReviewAGate{}, err
+	}
+	current, err := currentLocaleSurfaceReviewAInputs(root, locale, catalog, gate.SchemaVersion)
+	if err != nil {
+		return LocaleSurfaceReviewAGate{}, err
+	}
+	if gate.Inputs != current {
+		return LocaleSurfaceReviewAGate{}, fmt.Errorf("language review evidence/gate stale for %s review_id=%s; complete Locale Surface Review A again and record the current A gate", locale, reviewID)
+	}
+	return gate, nil
+}
+
+func currentLocaleSurfaceReviewAGates(root, locale string, catalog *Catalog) ([]LocaleSurfaceReviewAGate, error) {
 	directory := filepath.Join(root, "data", "locale-surface-reviews", locale)
 	entries, err := os.ReadDir(directory)
 	if os.IsNotExist(err) {
-		return fmt.Errorf("Locale Surface Review A gate missing for %s; complete Locale Surface Review A and record the current A gate", locale)
+		return nil, fmt.Errorf("Locale Surface Review A gate missing for %s; complete Locale Surface Review A and record the current A gate", locale)
 	}
 	if err != nil {
-		return fmt.Errorf("read Locale Surface Review A gates: %w", err)
+		return nil, fmt.Errorf("read Locale Surface Review A gates: %w", err)
 	}
-	var gates []LocaleSurfaceReviewAGate
+	var currentGates []LocaleSurfaceReviewAGate
 	for _, entry := range entries {
 		if entry.IsDir() || filepath.Ext(entry.Name()) != ".json" || !regexp.MustCompile(`\.a-gate\.json$`).MatchString(entry.Name()) {
 			continue
 		}
 		data, readErr := os.ReadFile(filepath.Join(directory, entry.Name()))
 		if readErr != nil {
-			return fmt.Errorf("language review evidence/gate stale: read gate %s: %w", entry.Name(), readErr)
+			return nil, fmt.Errorf("language review evidence/gate stale: read gate %s: %w", entry.Name(), readErr)
 		}
 		var gate LocaleSurfaceReviewAGate
 		if json.Unmarshal(data, &gate) != nil {
-			return fmt.Errorf("language review evidence/gate stale: malformed Locale Surface Review A gate %s", entry.Name())
+			return nil, fmt.Errorf("language review evidence/gate stale: malformed Locale Surface Review A gate %s", entry.Name())
 		}
-		gates = append(gates, gate)
-	}
-	if len(gates) == 0 {
-		return fmt.Errorf("Locale Surface Review A gate missing for %s; complete Locale Surface Review A and record the current A gate", locale)
-	}
-	for _, gate := range gates {
-		if gate.Locale != locale || gate.Stage != localeSurfaceReviewAStage || gate.Decision != "passed" || gate.ReviewID == "" || gate.Reviewer == "" {
-			return fmt.Errorf("language review evidence/gate stale: invalid Locale Surface Review A gate for %s", locale)
-		}
-		if gate.SchemaVersion != localeSurfaceReviewASchemaVersionV1 && gate.SchemaVersion != localeSurfaceReviewASchemaVersion {
-			return fmt.Errorf("language review evidence/gate stale: unsupported Locale Surface Review A gate schema version %d", gate.SchemaVersion)
+		if err := validateLocaleSurfaceReviewAGate(gate, locale); err != nil {
+			return nil, err
 		}
 		current, err := currentLocaleSurfaceReviewAInputs(root, locale, catalog, gate.SchemaVersion)
 		if err != nil {
-			return err
+			return nil, err
 		}
 		if gate.Inputs != current {
 			continue
 		}
-		return nil
+		currentGates = append(currentGates, gate)
 	}
-	return fmt.Errorf("language review evidence/gate stale for %s; complete Locale Surface Review A again and record the current A gate", locale)
+	if len(currentGates) == 0 {
+		return nil, fmt.Errorf("language review evidence/gate stale for %s; complete Locale Surface Review A again and record the current A gate", locale)
+	}
+	return currentGates, nil
+}
+
+func validateLocaleSurfaceReviewAGate(gate LocaleSurfaceReviewAGate, locale string) error {
+	if gate.Locale != locale || gate.Stage != localeSurfaceReviewAStage || gate.Decision != "passed" || gate.ReviewID == "" || gate.Reviewer == "" {
+		return fmt.Errorf("language review evidence/gate stale: invalid Locale Surface Review A gate for %s", locale)
+	}
+	if gate.SchemaVersion != localeSurfaceReviewASchemaVersionV1 && gate.SchemaVersion != localeSurfaceReviewASchemaVersion {
+		return fmt.Errorf("language review evidence/gate stale: unsupported Locale Surface Review A gate schema version %d", gate.SchemaVersion)
+	}
+	return nil
 }
 
 func hashBytes(data []byte) string { value := sha256.Sum256(data); return hex.EncodeToString(value[:]) }

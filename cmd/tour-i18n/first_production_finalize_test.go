@@ -16,7 +16,8 @@ func finalizeFixture(t *testing.T) (string, *i18n.Catalog, string, string, strin
 	root := t.TempDir()
 	for path, body := range map[string]string{
 		"internal/tour/ui/en.json": "en", "internal/tour/ui/zz-ZZ.json": "target", "locales/zz-ZZ/glossary.yaml": "g", "locales/zz-ZZ/article-metadata.json": "a", "locales/zz-ZZ/course-metadata.json": "c", "internal/tour/languages.go": "l", "internal/tour/project.go": "p", "internal/tour/seo.go": "s",
-		"production/identity.json": "{\n  \"locales\": [\n    {\"locale\": \"other-AA\", \"production_hostname\": \"other.example\", \"production_state\": \"live\"},\n    {\n      \"locale\": \"zz-ZZ\",\n      \"production_hostname\": \"zz.example\",\n      \"production_public_url\": \"https://zz.example/\",\n      \"production_state\": \"first-production\"\n    }\n  ]\n}\n",
+		"production/identity.json":       "{\n  \"locales\": [\n    {\"locale\": \"other-AA\", \"production_hostname\": \"other.example\", \"production_state\": \"live\"},\n    {\n      \"locale\": \"zz-ZZ\",\n      \"production_hostname\": \"zz.example\",\n      \"production_public_url\": \"https://zz.example/\",\n      \"production_state\": \"first-production\"\n    }\n  ]\n}\n",
+		"scripts/production-identity.py": "#!/usr/bin/env python3\n",
 	} {
 		full := filepath.Join(root, path)
 		if err := os.MkdirAll(filepath.Dir(full), 0755); err != nil {
@@ -27,11 +28,14 @@ func finalizeFixture(t *testing.T) (string, *i18n.Catalog, string, string, strin
 		}
 	}
 	catalog := &i18n.Catalog{Pages: []i18n.Page{{ID: "lesson/1", Source: []byte("source")}}}
-	if _, _, err := i18n.RecordLocaleSurfaceReviewA(root, "zz-ZZ", "review-1", "reviewer", catalog); err != nil {
+	evidence := filepath.Join(root, "data", "locale-surface-reviews", "zz-ZZ", "review-1.md")
+	if err := os.MkdirAll(filepath.Dir(evidence), 0755); err != nil {
 		t.Fatal(err)
 	}
-	evidence := filepath.Join(root, "data", "locale-surface-reviews", "zz-ZZ", "review-1.md")
 	if err := os.WriteFile(evidence, []byte("# Evidence\n\n"+finalizationPlaceholder+"\n"), 0644); err != nil {
+		t.Fatal(err)
+	}
+	if _, _, err := i18n.RecordLocaleSurfaceReviewA(root, "zz-ZZ", "review-1", "reviewer", catalog); err != nil {
 		t.Fatal(err)
 	}
 	release := filepath.Join(root, "release-parent", "go-tour-release-20260905-zz-ZZ-a1b2c3d4")
@@ -50,6 +54,99 @@ func finalizeFixture(t *testing.T) (string, *i18n.Catalog, string, string, strin
 }
 
 func noIdentityValidation(string, string) error { return nil }
+
+func recordCurrentGate(t *testing.T, root string, catalog *i18n.Catalog, reviewID string) string {
+	t.Helper()
+	evidence := filepath.Join(root, "data", "locale-surface-reviews", "zz-ZZ", reviewID+".md")
+	if err := os.WriteFile(evidence, []byte("# Evidence\n\n"+finalizationPlaceholder+"\n"), 0644); err != nil {
+		t.Fatal(err)
+	}
+	if _, _, err := i18n.RecordLocaleSurfaceReviewA(root, "zz-ZZ", reviewID, "reviewer", catalog); err != nil {
+		t.Fatal(err)
+	}
+	return evidence
+}
+
+func TestFinalizationPlaceholderValidationFailsClosed(t *testing.T) {
+	for name, evidence := range map[string]string{
+		"valid":              finalizationPlaceholder,
+		"missing":            "# Evidence\n",
+		"duplicate complete": finalizationPlaceholder + "\n" + finalizationPlaceholder,
+		"duplicate start":    finalizationPlaceholder + "\n<!-- first-production-finalization:start -->",
+		"duplicate end":      finalizationPlaceholder + "\n<!-- first-production-finalization:end -->",
+		"modified":           strings.Replace(finalizationPlaceholder, "`PENDING`", "`pending`", 1),
+		"finalized":          renderFinalization(firstProductionReceipt{Locale: "zz-ZZ", Hostname: "zz.example", Release: "r"}),
+	} {
+		t.Run(name, func(t *testing.T) {
+			err := validateFinalizationPlaceholder([]byte(evidence))
+			if name == "valid" && err != nil {
+				t.Fatalf("valid placeholder rejected: %v", err)
+			}
+			if name != "valid" && err == nil {
+				t.Fatal("invalid placeholder accepted")
+			}
+		})
+	}
+}
+
+func TestFirstProductionEvidencePreflight(t *testing.T) {
+	root, catalog, release, _, evidence := finalizeFixture(t)
+	if err := firstProductionEvidencePreflightCommand(root, catalog, []string{"--release-dir", release}); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(evidence, []byte("# missing\n"), 0644); err != nil {
+		t.Fatal(err)
+	}
+	if err := firstProductionEvidencePreflightCommand(root, catalog, []string{"--release-dir", release}); err == nil {
+		t.Fatal("invalid evidence preflight accepted")
+	}
+}
+
+func TestFirstProductionEvidencePreflightRejectsAmbiguousCurrentGates(t *testing.T) {
+	root, catalog, release, _, _ := finalizeFixture(t)
+	recordCurrentGate(t, root, catalog, "review-2")
+	if err := i18n.RequireCurrentLocaleSurfaceReviewA(root, "zz-ZZ", catalog); err != nil {
+		t.Fatalf("ordinary current-gate requirement changed: %v", err)
+	}
+	if err := firstProductionEvidencePreflightCommand(root, catalog, []string{"--release-dir", release}); err == nil {
+		t.Fatal("ambiguous current A gates were accepted")
+	}
+}
+
+func TestFirstProductionEvidencePreflightSelectsOnlyCurrentGate(t *testing.T) {
+	root, catalog, release, _, _ := finalizeFixture(t)
+	if err := os.WriteFile(filepath.Join(root, "internal", "tour", "seo.go"), []byte("changed"), 0644); err != nil {
+		t.Fatal(err)
+	}
+	recordCurrentGate(t, root, catalog, "review-2")
+	if err := firstProductionEvidencePreflightCommand(root, catalog, []string{"--release-dir", release}); err != nil {
+		t.Fatalf("one current gate after stale historical gate was rejected: %v", err)
+	}
+}
+
+func TestRecordARequiresPlaceholderOnlyForFirstProduction(t *testing.T) {
+	root, catalog, _, _, evidence := finalizeFixture(t)
+	if err := os.Remove(filepath.Join(root, "data", "locale-surface-reviews", "zz-ZZ", "review-1.a-gate.json")); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(evidence, []byte("# missing\n"), 0644); err != nil {
+		t.Fatal(err)
+	}
+	if err := recordLocaleSurfaceReviewACommand(root, catalog, []string{"--locale", "zz-ZZ", "--review-id", "review-1", "--reviewer", "reviewer"}); err == nil {
+		t.Fatal("record-a accepted missing first-production placeholder")
+	}
+	identityPath := filepath.Join(root, "production", "identity.json")
+	identity, err := os.ReadFile(identityPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(identityPath, []byte(strings.Replace(string(identity), `"production_state": "first-production"`, `"production_state": "live"`, 1)), 0644); err != nil {
+		t.Fatal(err)
+	}
+	if err := recordLocaleSurfaceReviewACommand(root, catalog, []string{"--locale", "zz-ZZ", "--review-id", "review-1", "--reviewer", "reviewer"}); err != nil {
+		t.Fatalf("live record-a was incorrectly blocked: %v", err)
+	}
+}
 
 func TestFirstProductionFinalizeFailsClosedBeforeHumanGate(t *testing.T) {
 	for name, mutate := range map[string]func(*testing.T, string, string, string){
@@ -89,14 +186,18 @@ func TestFirstProductionFinalizeFailsClosedBeforeHumanGate(t *testing.T) {
 
 func TestFirstProductionFinalizeHumanGateAndAtomicTransition(t *testing.T) {
 	root, catalog, release, _, evidence := finalizeFixture(t)
+	var output bytes.Buffer
 	if err := finalizeFirstProduction(root, catalog, release, "review-1", strings.NewReader("wrong\n"), ioDiscard{}, true, noIdentityValidation); err == nil {
 		t.Fatal("wrong token accepted")
 	}
 	if err := finalizeFirstProduction(root, catalog, release, "review-1", strings.NewReader("VISUAL-PASS\n"), ioDiscard{}, false, noIdentityValidation); err == nil {
 		t.Fatal("non-TTY accepted")
 	}
-	if err := finalizeFirstProduction(root, catalog, release, "review-1", strings.NewReader("VISUAL-PASS\n"), ioDiscard{}, true, noIdentityValidation); err != nil {
+	if err := finalizeFirstProduction(root, catalog, release, "review-1", strings.NewReader("VISUAL-PASS\n"), &output, true, noIdentityValidation); err != nil {
 		t.Fatal(err)
+	}
+	if !strings.Contains(output.String(), "FIRST PRODUCTION FINALIZATION: PASS (locale=zz-ZZ review_id=review-1 production_state=live)") {
+		t.Fatal("missing finalization PASS summary")
 	}
 	identity, _ := os.ReadFile(filepath.Join(root, "production", "identity.json"))
 	if !strings.Contains(string(identity), `"production_state": "live"`) || !strings.Contains(string(identity), `"locale": "other-AA", "production_hostname": "other.example", "production_state": "live"`) {
@@ -140,6 +241,21 @@ func TestFirstProductionFinalizeRejectsStaleGateAndValidationRollback(t *testing
 	newIdentity, _ := os.ReadFile(filepath.Join(root, "production", "identity.json"))
 	if !bytes.Equal(oldEvidence, newEvidence) || !bytes.Equal(oldIdentity, newIdentity) {
 		t.Fatal("validation failure left partial finalization")
+	}
+}
+
+func TestFirstProductionFinalizeRequiresNamedCurrentGateBeforeHumanPrompt(t *testing.T) {
+	root, catalog, release, _, _ := finalizeFixture(t)
+	if err := os.WriteFile(filepath.Join(root, "internal", "tour", "seo.go"), []byte("changed"), 0644); err != nil {
+		t.Fatal(err)
+	}
+	recordCurrentGate(t, root, catalog, "review-2")
+	var output bytes.Buffer
+	if err := finalizeFirstProduction(root, catalog, release, "review-1", strings.NewReader("VISUAL-PASS\n"), &output, true, noIdentityValidation); err == nil {
+		t.Fatal("finalizer accepted a stale named gate because another gate was current")
+	}
+	if output.Len() != 0 {
+		t.Fatal("stale named gate reached the HUMAN prompt")
 	}
 }
 

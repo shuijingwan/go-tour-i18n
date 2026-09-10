@@ -380,6 +380,14 @@ validate_local_release "$1" >/dev/null
 '''
         self.run(["bash", "-c", shell, "first-production-local-preflight", str(self.release_dir)], stage="preflight")
 
+    def evidence_preflight(self):
+        # Placeholder semantics are owned by the Go CLI, shared with the
+        # finalizer; this orchestration layer must not parse Markdown itself.
+        self.run([
+            "go", "run", "-mod=readonly", "./cmd/tour-i18n",
+            "first-production", "evidence-preflight", "--release-dir", self.release_dir,
+        ], stage="preflight", timeout=120)
+
     def aliyun_preflight(self):
         p, s = self.profile, self.shared
         resume_deployed = "1" if self.stage_passed("deploy") else "0"
@@ -577,6 +585,7 @@ sha256sum SHA256SUMS
         self.run([ROOT / "scripts" / "verify-shared-assets-public.sh", export], stage="preflight", timeout=300)
 
     def preflight(self):
+        self.evidence_preflight()
         self.local_bundle_preflight()
         self.shared_assets_freshness()
         self.setup_cloudflare_network_tunnel()

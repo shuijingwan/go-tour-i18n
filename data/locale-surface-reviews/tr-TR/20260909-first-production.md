@@ -1,6 +1,6 @@
 # tr-TR Locale Surface Review — 2026-09-09 首次 production Stage A 记录
 
-这是 tr-TR 首次 production 的 Locale Surface Review 工作记录。当前已完成 A（Locale-level language quality review）和 B（Rendered surface acceptance）；publish 和 production verification 尚未执行。
+这是 tr-TR 首次 production 的 Locale Surface Review 工作记录。A（Locale-level language quality review）和 B（Rendered surface acceptance）已完成；production finalization 的可变正式结论仅由文末 machine-finalized block 记录。
 
 ## 审核身份
 
@@ -227,7 +227,7 @@ Stage A：`decision = passed`
 
 Rendered surface acceptance：`decision = passed`
 
-首次 production 的整体最终 decision 仍为 `PENDING`，直至 publish 和 production required gates 全部完成。
+首次 production 的整体最终结论见文末 machine-finalized block。
 
 <!-- first-production-finalization:start -->
 - production receipt identity: `locale=tr-TR hostname=tr-go-dev.shuijingwanwq.com release=20260909-tr-TR-3806beee`

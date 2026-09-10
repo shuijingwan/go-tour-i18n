@@ -186,9 +186,9 @@ data/locale-surface-reviews/<locale>/<review-id>.md
 - `decision = passed | failed`；
 - `issues`。
 
-首次上线时，A 阶段与 preview acceptance 都通过后才可进入 publish 和首次部署；此时可以先维护同一路径的工作记录。production 复核完成后，必须在该 evidence 中写入真实 production 结果和最终 `decision`，才能宣告正式上线。最终 evidence 不得把尚未执行的 production 复核写成通过。
+首次上线时，A 阶段与 preview acceptance 都通过后才可进入 publish 和首次部署；此时可以先维护同一路径的工作记录。machine-finalizable block 外的人工文本不得维护会在 finalize 后过期的 production `PENDING`、production verification 或最终 decision 状态。production machine/browser/HUMAN/final decision 的唯一可变正式区域是下述 placeholder，且仅由 finalizer replacement 管理；最终 evidence 不得把尚未执行的 production 复核写成通过。
 
-未来 `production_state=first-production` locale 的 pre-production evidence 必须保留下面完整且唯一的 machine-finalizable placeholder；不得提前填写、复制第二份或改写 marker。正式 first-production finalize CLI 只会替换这一精确区域，不会解释或修改 Stage A 的人工语言审核内容：
+未来 `production_state=first-production` locale 的 pre-production evidence 必须在 `surface-review record-a` 前保留下面完整且唯一的 machine-finalizable placeholder；首次生产的无 mutation preflight 与正式 finalize CLI 都会 fail closed 检查它。不得提前填写、复制第二份或改写 marker。正式 first-production finalize CLI 只会替换这一精确区域，不会解释或修改 Stage A 的人工语言审核内容：
 
 ```text
 <!-- first-production-finalization:start -->

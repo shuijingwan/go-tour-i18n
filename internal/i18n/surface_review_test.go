@@ -49,6 +49,34 @@ func TestLocaleSurfaceReviewAGateFailsClosedAndStales(t *testing.T) {
 	}
 }
 
+func TestLocaleSurfaceReviewAGateUniqueAndNamedCurrentQueries(t *testing.T) {
+	root, catalog := surfaceReviewTestRoot(t)
+	if _, _, err := RecordLocaleSurfaceReviewA(root, "zz-ZZ", "review-1", "reviewer", catalog); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := RequireUniqueCurrentLocaleSurfaceReviewAGate(root, "zz-ZZ", catalog); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := RequireCurrentLocaleSurfaceReviewAByReviewID(root, "zz-ZZ", "review-1", catalog); err != nil {
+		t.Fatal(err)
+	}
+	if _, _, err := RecordLocaleSurfaceReviewA(root, "zz-ZZ", "review-2", "reviewer", catalog); err != nil {
+		t.Fatal(err)
+	}
+	if err := RequireCurrentLocaleSurfaceReviewA(root, "zz-ZZ", catalog); err != nil {
+		t.Fatalf("ordinary RequireCurrentLocaleSurfaceReviewA rejected multiple current gates: %v", err)
+	}
+	if _, err := RequireUniqueCurrentLocaleSurfaceReviewAGate(root, "zz-ZZ", catalog); err == nil || !strings.Contains(err.Error(), "ambiguous") {
+		t.Fatalf("multiple current gates were not rejected as ambiguous: %v", err)
+	}
+	if err := os.WriteFile(filepath.Join(root, "internal", "tour", "seo.go"), []byte("changed"), 0644); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := RequireCurrentLocaleSurfaceReviewAByReviewID(root, "zz-ZZ", "review-1", catalog); err == nil || !strings.Contains(err.Error(), "stale") {
+		t.Fatalf("named stale gate accepted: %v", err)
+	}
+}
+
 func TestLocaleSurfaceReviewAGateV2ProductionIdentityScope(t *testing.T) {
 	root, catalog := surfaceReviewTestRoot(t)
 	if _, _, err := RecordLocaleSurfaceReviewA(root, "zz-ZZ", "review-1", "reviewer", catalog); err != nil {

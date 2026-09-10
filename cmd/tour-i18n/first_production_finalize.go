@@ -47,6 +47,79 @@ type finalizeProfile struct {
 	State    string `json:"production_state"`
 }
 
+func validateFinalizationPlaceholder(evidence []byte) error {
+	if bytes.Count(evidence, []byte("<!-- first-production-finalization:start -->")) != 1 ||
+		bytes.Count(evidence, []byte("<!-- first-production-finalization:end -->")) != 1 ||
+		bytes.Count(evidence, []byte(finalizationPlaceholder)) != 1 {
+		return fmt.Errorf("Surface Review evidence must contain exactly one untouched first-production finalization placeholder")
+	}
+	return nil
+}
+
+func firstProductionEvidencePreflightCommand(root string, catalog *i18n.Catalog, args []string) error {
+	fs := flag.NewFlagSet("first-production evidence-preflight", flag.ContinueOnError)
+	releaseDir := fs.String("release-dir", "", "formal local release directory")
+	if err := fs.Parse(args); err != nil {
+		return err
+	}
+	if *releaseDir == "" || fs.NArg() != 0 {
+		return fmt.Errorf("usage: first-production evidence-preflight --release-dir <release-dir>")
+	}
+	releasePath, err := filepath.Abs(*releaseDir)
+	if err != nil {
+		return err
+	}
+	info, err := os.Stat(releasePath)
+	if err != nil || !info.IsDir() {
+		return fmt.Errorf("formal release directory is missing: %s", *releaseDir)
+	}
+	if !strings.HasPrefix(filepath.Base(releasePath), "go-tour-release-") {
+		return fmt.Errorf("release directory must be go-tour-release-<name>")
+	}
+	locale, err := readReleaseLocale(filepath.Join(releasePath, "release.json"))
+	if err != nil {
+		return err
+	}
+	identityPath := filepath.Join(root, "production", "identity.json")
+	if err := validateProductionIdentity(root, identityPath); err != nil {
+		return err
+	}
+	identityBytes, err := os.ReadFile(identityPath)
+	if err != nil {
+		return err
+	}
+	var identity finalizeIdentity
+	if json.Unmarshal(identityBytes, &identity) != nil {
+		return fmt.Errorf("malformed production identity")
+	}
+	profiles := []finalizeProfile{}
+	for _, profile := range identity.Locales {
+		if profile.Locale == locale {
+			profiles = append(profiles, profile)
+		}
+	}
+	if len(profiles) != 1 || profiles[0].State != "first-production" {
+		return fmt.Errorf("first-production evidence preflight requires exactly one locale %s with production_state=first-production", locale)
+	}
+	gate, err := i18n.RequireUniqueCurrentLocaleSurfaceReviewAGate(root, locale, catalog)
+	if err != nil {
+		return err
+	}
+	gatePath, err := i18n.LocaleSurfaceReviewAGatePath(root, locale, gate.ReviewID)
+	if err != nil {
+		return err
+	}
+	evidence, err := os.ReadFile(strings.TrimSuffix(gatePath, ".a-gate.json") + ".md")
+	if err != nil {
+		return fmt.Errorf("read Surface Review evidence: %w", err)
+	}
+	if err := validateFinalizationPlaceholder(evidence); err != nil {
+		return err
+	}
+	fmt.Printf("FIRST PRODUCTION EVIDENCE PREFLIGHT: PASS (locale=%s review_id=%s)\n", locale, gate.ReviewID)
+	return nil
+}
+
 func finalizeFirstProductionCommand(root string, catalog *i18n.Catalog, args []string) error {
 	fs := flag.NewFlagSet("first-production finalize", flag.ContinueOnError)
 	releaseDir := fs.String("release-dir", "", "formal local release directory")
@@ -125,7 +198,7 @@ func finalizeFirstProduction(root string, catalog *i18n.Catalog, releaseDir, rev
 	if receipt.Result != "passed" || receipt.Stages["public-machine"].Result != "PASS" || receipt.Stages["browser"].Result != "PASS" {
 		return fmt.Errorf("first-production receipt requires passed public-machine and browser stages")
 	}
-	if err := i18n.RequireCurrentLocaleSurfaceReviewA(root, release, catalog); err != nil {
+	if _, err := i18n.RequireCurrentLocaleSurfaceReviewAByReviewID(root, release, reviewID, catalog); err != nil {
 		return err
 	}
 	evidencePath, err := i18n.LocaleSurfaceReviewAGatePath(root, release, reviewID)
@@ -137,8 +210,8 @@ func finalizeFirstProduction(root string, catalog *i18n.Catalog, releaseDir, rev
 	if err != nil {
 		return fmt.Errorf("read Surface Review evidence: %w", err)
 	}
-	if bytes.Count(evidence, []byte("<!-- first-production-finalization:start -->")) != 1 || bytes.Count(evidence, []byte("<!-- first-production-finalization:end -->")) != 1 || bytes.Count(evidence, []byte(finalizationPlaceholder)) != 1 {
-		return fmt.Errorf("Surface Review evidence must contain exactly one untouched first-production finalization placeholder")
+	if err := validateFinalizationPlaceholder(evidence); err != nil {
+		return err
 	}
 	fmt.Fprint(output, "Complete the formal desktop/mobile visual HUMAN gate, then type VISUAL-PASS exactly: ")
 	line, readErr := bufio.NewReader(input).ReadString('\n')
@@ -156,7 +229,11 @@ func finalizeFirstProduction(root string, catalog *i18n.Catalog, releaseDir, rev
 	if err := validateCandidateIdentity(root, newIdentity, validate); err != nil {
 		return err
 	}
-	return commitFinalization(evidencePath, evidence, []byte(finalized), identityPath, identityBytes, newIdentity, root, validate)
+	if err := commitFinalization(evidencePath, evidence, []byte(finalized), identityPath, identityBytes, newIdentity, root, validate); err != nil {
+		return err
+	}
+	fmt.Fprintf(output, "FIRST PRODUCTION FINALIZATION: PASS (locale=%s review_id=%s production_state=live)\n", release, reviewID)
+	return nil
 }
 
 func readReleaseLocale(path string) (string, error) {

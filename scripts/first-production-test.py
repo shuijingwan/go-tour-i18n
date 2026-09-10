@@ -197,9 +197,10 @@ printf 200
             FIRST.update_playground_config(malformed, "fr-go-dev.shuijingwanwq.com")
 
     def test_browser_accepts_filled_and_unfilled_ads(self):
-        self.assertTrue(BROWSER.browser_ad_gate({"mount": 1, "loader": True, "ad": 1, "filled": True}))
-        self.assertTrue(BROWSER.browser_ad_gate({"mount": 1, "loader": True, "ad": 1, "filled": False}))
-        self.assertFalse(BROWSER.browser_ad_gate({"mount": 1, "loader": True, "ad": 0, "filled": False}))
+        requests = [{"url": "https://googleads.g.doubleclick.net/pagead/ads"}]
+        self.assertTrue(BROWSER.browser_ad_gate({"mount": 1, "loader": True, "ad": 1, "helper": True, "filled": True}, requests, True))
+        self.assertTrue(BROWSER.browser_ad_gate({"mount": 1, "loader": True, "ad": 1, "helper": True, "filled": False}, requests, True))
+        self.assertFalse(BROWSER.browser_ad_gate({"mount": 1, "loader": True, "ad": 0, "helper": True, "filled": False}, requests, True))
 
     def test_browser_entrypoint_binds_urls_to_formal_identity(self):
         captured = []
@@ -369,6 +370,33 @@ printf 200
         with self.assertRaises(FIRST.FirstProductionError):
             FIRST.Orchestrator.execute(Fake())
         self.assertEqual(calls, [("receipt", None), "preflight"])
+
+    def test_invalid_evidence_stops_before_any_external_preflight_action(self):
+        calls = []
+        class Fake:
+            def evidence_preflight(self):
+                calls.append("evidence")
+                raise FIRST.FirstProductionError("preflight", "untouched placeholder", "missing", "repair evidence")
+            def local_bundle_preflight(self): calls.append("local")
+            def shared_assets_freshness(self): calls.append("assets")
+            def setup_cloudflare_network_tunnel(self): calls.append("tunnel")
+            def aliyun_preflight(self): calls.append("aliyun")
+            def zgocloud_preflight(self): calls.append("zgocloud")
+            def record(self, stage): calls.append(("record", stage))
+        with self.assertRaises(FIRST.FirstProductionError):
+            FIRST.Orchestrator.preflight(Fake())
+        self.assertEqual(calls, ["evidence"])
+
+    def test_evidence_preflight_uses_only_formal_go_primitive(self):
+        instance = FIRST.Orchestrator.__new__(FIRST.Orchestrator)
+        instance.release_dir = pathlib.Path("/tmp/go-tour-release-fr-FR-test")
+        calls = []
+        instance.run = lambda command, **kwargs: calls.append((command, kwargs))
+        instance.evidence_preflight()
+        self.assertEqual(calls, [(
+            ["go", "run", "-mod=readonly", "./cmd/tour-i18n", "first-production", "evidence-preflight", "--release-dir", instance.release_dir],
+            {"stage": "preflight", "timeout": 120},
+        )])
 
     def test_controlmaster_cleanup_covers_both_hosts(self):
         with tempfile.TemporaryDirectory() as directory:

@@ -130,7 +130,7 @@ export
 go run -mod=readonly ./cmd/tour-i18n build --locale <locale>
 ```
 
-随后执行 Locale Surface Review A；A 通过后记录当前正式输入的 machine-readable gate（Markdown evidence 仍照 [Locale Surface Review](LOCALE_SURFACE_REVIEW.md) 保留）：
+随后执行 Locale Surface Review A。目标 locale 为 `production_state=first-production` 时，先在同一 review-id 的 Markdown evidence 写入完整、未改写的 first-production finalization placeholder；`record-a` 会在写 receipt 前检查它。A 通过后记录当前正式输入的 machine-readable gate（Markdown evidence 仍照 [Locale Surface Review](LOCALE_SURFACE_REVIEW.md) 保留）：
 
 ```sh
 go run -mod=readonly ./cmd/tour-i18n surface-review record-a \
