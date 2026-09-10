@@ -121,6 +121,8 @@ func run(args []string) error {
 		return refreshCourseMetadata(root, catalog, args[2:])
 	case "surface-review record-a":
 		return recordLocaleSurfaceReviewACommand(root, catalog, args[2:])
+	case "surface-review export":
+		return exportLocaleSurfaceReviewCommand(root, catalog, args[2:])
 	case "surface-review check-a":
 		return checkLocaleSurfaceReviewACommand(root, catalog, args[2:])
 	case "first-production finalize":

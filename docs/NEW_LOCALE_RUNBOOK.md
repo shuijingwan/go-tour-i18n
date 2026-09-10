@@ -16,6 +16,7 @@ locale / domain / CDN 决策
 → promotion
 → 离线生成并验证课程页 SEO metadata
 → build
+→ surface-review export
 → Locale Surface Review A
 → record current A gate
 → 完整 locale preview
@@ -130,7 +131,14 @@ export
 go run -mod=readonly ./cmd/tour-i18n build --locale <locale>
 ```
 
-随后执行 Locale Surface Review A。目标 locale 为 `production_state=first-production` 时，先在同一 review-id 的 Markdown evidence 写入完整、未改写的 first-production finalization placeholder；`record-a` 会在写 receipt 前检查它。A 通过后记录当前正式输入的 machine-readable gate（Markdown evidence 仍照 [Locale Surface Review](LOCALE_SURFACE_REVIEW.md) 保留）：
+随后由本地终端从当前 working tree 导出完整、确定性且自包含的审核包；自包含包括实际 first-party Playground/Tour runtime JavaScript、首页/Tour shell/footer Go template 与 Tour list/editor/navigation partial 的完整 source context，并明确排除 `static/lib` vendored third-party library，而不只是包含负责加载它们的 Go 文件。该步骤不调用模型、不生成 evidence 或 gate，不能替代 ChatGPT 对完整 source ↔ target 的语言审核：
+
+```sh
+go run -mod=readonly ./cmd/tour-i18n surface-review export \
+  --locale <locale> --output /tmp/<locale>-surface-review.json
+```
+
+ChatGPT 完成 Locale Surface Review A；若审核中修复 UI、metadata 或其他表层资产，必须重新导出当前 package 并复审受影响范围。若发现 TranslationUnit candidate 问题，仍须回 revision batch、validation、QC A、finalization、promotion，再重新生成受影响 course metadata 和 package。目标 locale 为 `production_state=first-production` 时，先在同一 review-id 的 Markdown evidence 写入完整、未改写的 first-production finalization placeholder；`record-a` 会在写 receipt 前检查它。A 通过后记录当前正式输入的 machine-readable gate（Markdown evidence 仍照 [Locale Surface Review](LOCALE_SURFACE_REVIEW.md) 保留）：
 
 ```sh
 go run -mod=readonly ./cmd/tour-i18n surface-review record-a \
@@ -151,7 +159,7 @@ go run -mod=readonly ./cmd/tour-i18n preview \
 scripts/verify-preview-browser.py http://127.0.0.1:<port>/ <locale>
 ```
 
-执行 [Locale Surface Review](LOCALE_SURFACE_REVIEW.md) 时，先以英文/source、目标资产和 glossary 为正式输入，完整审核 TranslationUnit 之外的 UI catalog、article metadata、首页及其他 locale-level 文案；不得用浏览器抽查替代。严格顺序为 promotion → course metadata → build → Locale Surface Review A → record current A gate → full locale preview → automated rendered acceptance → visual HUMAN gate → publish。机器已经覆盖的 canonical、sitemap、language selector URL、Run / Format / Reset、SPA、`/socket` 和 desktop/mobile overflow 不由人工重复。
+执行 [Locale Surface Review](LOCALE_SURFACE_REVIEW.md) 时，先以 exporter 提供的英文/source、目标资产和 glossary 为正式输入，完整审核 TranslationUnit 之外的 UI catalog、article metadata、首页及其他 locale-level 文案；不得用浏览器抽查替代。严格顺序为 promotion → course metadata → build → surface-review export → ChatGPT Locale Surface Review A → 必要 revision/fix + re-export → 写 Markdown evidence → record current A gate → full locale preview → automated rendered acceptance → visual HUMAN gate → publish。机器已经覆盖的 canonical、sitemap、language selector URL、Run / Format / Reset、SPA、`/socket` 和 desktop/mobile overflow 不由人工重复。
 
 正式审核记录写入 `data/locale-surface-reviews/<locale>/<review-id>.md`。发现 TranslationUnit 内容问题时，回到新的 revision batch 和完整 A-only 审核链；发现表层资产问题时，修正对应 locale 资产并重新执行受影响的 Surface Review。语言质量审核或 preview acceptance 未通过，不得 publish production bundle。
 

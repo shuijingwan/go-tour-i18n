@@ -38,6 +38,17 @@ Glossary 只回答正式术语选择，不能证明完整译文忠实、准确�
 
 这是对 TranslationUnit 之外全部可翻译资产的完整语言质量审核。首次新增 locale 时必须逐项覆盖正式资产集合，不允许只浏览几个页面、只搜索英文残留或只依靠浏览器抽查。
 
+### Deterministic 审核包导出
+
+在 A 审核前由本地终端从当前 working tree 生成完整、自包含审核包：
+
+```sh
+go run -mod=readonly ./cmd/tour-i18n surface-review export \
+  --locale <locale> --output /tmp/<locale>-surface-review.json
+```
+
+该命令只机械读取并严格验证当前 glossary、**文件系统中**的 UI catalog、article metadata、ready canonical TranslationUnit target、course metadata、catalog 与 production public identity；它不调用模型、不作语言判断、不写 Markdown evidence 或 `.a-gate.json`，也不表示 Surface Review passed。包包含 glossary 原文、UI source/target 配对、article source/target 配对、按 Catalog 顺序的完整 Page source/canonical target/course description，以及 language registry/profile、Tour shell/runtime transport、project、SEO 的实际 source/context 文件（含 path、SHA-256 与全文）。其中 source context 还完整包含 `_content/js/playground.js`、按文件名稳定排序的 first-party `_content/tour/static/js/*.js`、正式 `_content/tour/template/*.tmpl` 与 `_content/tour/static/partials/*.html`；`_content/tour/static/lib` 的 vendored/minified third-party library 明确不进入审核包。目录扫描是 first-party source coverage authority，不另行复制 `initScript` 的 dependency list，因此新增同目录 runtime/template source 会自动进入 package。这里的“自包含”表示审核者能直接看到真正参与 runtime 和 shell/list/footer composition 的 first-party source，而不只是加载这些文件的 Go 调用。coverage reference 只能引用 package 内已经包含的实际 source/context，不能代替材料本身。若审核期间修改正式资产，必须重新导出；`record-a` 始终重新计算正式 current inputs，不读取 package 作为 receipt 或 authority。
+
 ### 正式审核输入
 
 公共 UI 至少使用以下三项不可缺少的输入：

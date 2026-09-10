@@ -11,6 +11,46 @@ import (
 	"github.com/shuijingwan/go-tour-i18n/internal/i18n"
 )
 
+func exportLocaleSurfaceReviewCommand(root string, catalog *i18n.Catalog, args []string) error {
+	fs := flag.NewFlagSet("surface-review export", flag.ContinueOnError)
+	locale := fs.String("locale", "", "locale")
+	output := fs.String("output", "", "review package JSON output")
+	if err := fs.Parse(args); err != nil {
+		return err
+	}
+	if *locale == "" || *output == "" || fs.NArg() != 0 {
+		return fmt.Errorf("usage: surface-review export --locale <locale> --output <output.json>")
+	}
+	data, coverage, err := i18n.ExportLocaleSurfaceReviewPackage(root, *locale, catalog)
+	if err != nil {
+		return err
+	}
+	path, err := filepath.Abs(*output)
+	if err != nil {
+		return err
+	}
+	temp, err := os.CreateTemp(filepath.Dir(path), ".surface-review-package-*")
+	if err != nil {
+		return err
+	}
+	name := temp.Name()
+	defer os.Remove(name)
+	if _, err = temp.Write(data); err == nil {
+		err = temp.Chmod(0644)
+	}
+	if closeErr := temp.Close(); err == nil {
+		err = closeErr
+	}
+	if err != nil {
+		return err
+	}
+	if err := os.Rename(name, path); err != nil {
+		return err
+	}
+	fmt.Printf("Locale Surface Review package exported: %s (locale=%s pages=%d ui=%d articles=%d translation_units=%d other_surfaces=%d)\n", path, *locale, coverage.Pages, coverage.UI, coverage.Articles, coverage.TranslationUnits, coverage.OtherSurfaces)
+	return nil
+}
+
 func checkLocaleSurfaceReviewACommand(root string, catalog *i18n.Catalog, args []string) error {
 	fs := flag.NewFlagSet("surface-review check-a", flag.ContinueOnError)
 	locale := fs.String("locale", "", "locale")

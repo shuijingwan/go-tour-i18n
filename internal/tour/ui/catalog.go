@@ -70,6 +70,16 @@ func Load(locale string) (Catalog, error) {
 	return load(locale, catalogFiles)
 }
 
+// LoadFromFS applies the same strict parser and English coverage validation as
+// Load, but reads catalogs from the supplied filesystem. It is intended for
+// deterministic tooling that must inspect an explicit working tree.
+func LoadFromFS(locale string, files fs.FS) (Catalog, error) {
+	if files == nil {
+		return Catalog{}, fmt.Errorf("UI catalog filesystem is required")
+	}
+	return load(locale, files)
+}
+
 func load(locale string, files fs.FS) (Catalog, error) {
 	if !localePattern.MatchString(locale) {
 		return Catalog{}, fmt.Errorf("invalid UI locale %q", locale)

@@ -23,6 +23,28 @@ func TestLoadEmbeddedCatalogs(t *testing.T) {
 	}
 }
 
+func TestLoadFromFSUsesSuppliedCatalogFiles(t *testing.T) {
+	en, err := catalogFiles.ReadFile("en.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	target, err := catalogFiles.ReadFile("tr-TR.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	target = bytes.Replace(target, []byte(`"Program sonlandı"`), []byte(`"Program tamamlandı"`), 1)
+	loaded, err := LoadFromFS("tr-TR", fstest.MapFS{"en.json": {Data: en}, "tr-TR.json": {Data: target}})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got := loaded.Messages["execution.exited"].Text; got != "Program tamamlandı" {
+		t.Fatalf("filesystem target=%q", got)
+	}
+	if _, err := LoadFromFS("tr-TR", fstest.MapFS{"en.json": {Data: en}, "tr-TR.json": {Data: []byte("{")}}); err == nil {
+		t.Fatal("malformed filesystem catalog accepted")
+	}
+}
+
 func TestBrazilianPortugueseCatalogMatchesEnglishSource(t *testing.T) {
 	source, err := Load("en")
 	if err != nil {
