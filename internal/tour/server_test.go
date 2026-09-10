@@ -1166,6 +1166,11 @@ func TestEditorToggleStateAndLessonPreUseScopedUI(t *testing.T) {
 	if strings.Contains(mobileCSS, ".slide-content pre {\n        overflow-x: auto") {
 		t.Error("mobile lesson pre still opts into horizontal scrolling")
 	}
+	for _, want := range []string{".output > pre {", "box-sizing: border-box", "max-width: 100%", "white-space: pre-wrap", "overflow-wrap: anywhere"} {
+		if !strings.Contains(css, want) {
+			t.Errorf("shared Playground output CSS is missing %q", want)
+		}
+	}
 }
 
 func TestCourseAdMountFollowsModuleBar(t *testing.T) {

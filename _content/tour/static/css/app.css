@@ -32,6 +32,7 @@ a {
     color: #F0F1F2;
 }
 .gopherlogo {
+  display: block;
   height: 2rem;
   margin-right: 2.25rem;
   width: 5.125rem
@@ -64,17 +65,14 @@ code {
     padding: 2px;
 }
 .left {
-    display: block;
-    float: left;
+    display: flex;
+    align-items: center;
     margin-right: 10px;
 }
 .right {
     display: flex;
-    float: right;
-    margin-left: 10px;
-}
-.right * {
-    vertical-align: middle;
+    align-items: center;
+    margin-left: auto;
 }
 .bar {
     display: block;
@@ -149,15 +147,17 @@ ul {
 }
 /* Navigation bars */
 .top-bar {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
     font-size: 1.4em;
     padding: 8px 24px;
     text-align: center;
     color: #fff;
     background: #007d9c;
-    height: 2rem;
+    min-height: 48px;
 }
 .top-bar a {
-    vertical-align: middle;
     font-weight: bold;
 }
 .nav {
@@ -304,9 +304,13 @@ a#run, a#kill {
     display: none;
 }
 .output > pre {
+    box-sizing: border-box;
     font-family: 'Inconsolata', monospace;
+    max-width: 100%;
     background: #fafafa;
     margin: 0;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
 }
 .output .system {
     color: #888;
@@ -660,14 +664,8 @@ a#run, a#kill {
     background: #171717;
 }
 .site-header {
-    box-sizing: border-box;
-    display: flex;
-    align-items: center;
     overflow: visible;
     text-align: left;
-}
-.site-header .gopherlogo {
-    vertical-align: middle;
 }
 .site-header .site-logo {
     display: block;
@@ -790,10 +788,6 @@ a#run, a#kill {
     color: #f0f1f2;
 }
 @media (max-width: 600px) {
-    .site-header {
-        height: auto;
-        min-height: 48px;
-    }
     .site-header .site-logo {
         margin-right: 0.75rem;
     }
@@ -873,11 +867,6 @@ a#run, a#kill {
 }
 @media (max-width: 600px) {
     .top-bar {
-        box-sizing: border-box;
-        display: flex;
-        align-items: center;
-        height: auto;
-        min-height: 48px;
         padding: 8px 16px;
         overflow: visible;
         text-align: left;

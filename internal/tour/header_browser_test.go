@@ -14,13 +14,14 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strings"
 	"testing"
 	"time"
 
 	"golang.org/x/net/websocket"
 )
 
-func TestTourHeaderTitlesFitCommonMobileViewports(t *testing.T) {
+func TestTourHeaderTitlesAreCenteredOnDesktopAndFitCommonMobileViewports(t *testing.T) {
 	if os.Getenv("GO_TOUR_RUN_BROWSER_TESTS") != "1" {
 		t.Skip("set GO_TOUR_RUN_BROWSER_TESTS=1 to run the Chrome integration test")
 	}
@@ -33,9 +34,18 @@ func TestTourHeaderTitlesFitCommonMobileViewports(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	for _, viewport := range []int{320, 375, 414} {
-		for _, title := range []string{"A Tour of Go", "Eine Tour durch Go", "Go 语言之旅", "Go のツアー"} {
-			t.Run(fmt.Sprintf("%d/%s", viewport, title), func(t *testing.T) {
+	for _, test := range []struct {
+		name     string
+		viewport int
+		mobile   bool
+	}{
+		{name: "desktop", viewport: 1280},
+		{name: "mobile-320", viewport: 320, mobile: true},
+		{name: "mobile-375", viewport: 375, mobile: true},
+		{name: "mobile-414", viewport: 414, mobile: true},
+	} {
+		for _, title := range []string{"A Tour of Go", "Go Turu", "Eine Tour durch Go", "Go 语言之旅", "Go のツアー"} {
+			t.Run(fmt.Sprintf("%s/%s", test.name, title), func(t *testing.T) {
 				document := fmt.Sprintf(`<!doctype html><html data-theme="auto"><head><meta name="viewport" content="width=device-width, initial-scale=1"><style>%s</style></head><body>
 <div class="bar top-bar"><div class="left"><a href="/"><img class="gopherlogo" alt=""></a><a class="logo" href="/tour/list">%s</a></div><div class="right"><button class="header-toggleTheme"><img data-value="auto" class="go-Icon go-Icon--inverted" height="24" width="24" alt=""></button><span class="nav"><svg viewBox="0 0 24 24" height="100%%" width="100%%"></svg></span><span class="nav"><svg viewBox="0 0 24 24" height="100%%" width="100%%"></svg></span></div></div>
 <div id="editor-container"></div>
@@ -43,6 +53,7 @@ func TestTourHeaderTitlesFitCommonMobileViewports(t *testing.T) {
 function assert(condition, message) { if (!condition) throw new Error(message); }
 try {
   var title = document.querySelector('.top-bar .logo');
+  var logo = document.querySelector('.top-bar .gopherlogo');
   var header = document.querySelector('.top-bar');
   var editor = document.querySelector('#editor-container');
   var titleBox = title.getBoundingClientRect();
@@ -53,16 +64,25 @@ try {
   assert(header.scrollWidth <= header.clientWidth, 'header has horizontal overflow');
   assert(document.documentElement.scrollWidth <= document.documentElement.clientWidth, 'page has horizontal overflow');
   assert(editor.getBoundingClientRect().top >= headerBox.bottom, 'course content overlaps header');
+  if (!%t) {
+    var center = (headerBox.top + headerBox.bottom) / 2;
+    var titleCenter = (titleBox.top + titleBox.bottom) / 2;
+    var logoBox = logo.getBoundingClientRect();
+    var logoCenter = (logoBox.top + logoBox.bottom) / 2;
+    assert(headerBox.height >= 48, 'desktop header is shorter than 48px');
+    assert(Math.abs(titleCenter - center) <= 1, 'title is not vertically centered');
+    assert(Math.abs(logoCenter - center) <= 1, 'logo is not vertically centered');
+  }
   document.body.setAttribute('data-tour-header-test', 'PASS');
 } catch (error) { document.body.setAttribute('data-tour-header-test', 'FAIL: ' + error.message); }
-</script></body></html>`, css, html.EscapeString(title), viewport, title)
+</script></body></html>`, css, html.EscapeString(title), test.viewport, title, test.mobile)
 				path := filepath.Join(t.TempDir(), "tour-header-test.html")
 				if err := os.WriteFile(path, []byte(document), 0o600); err != nil {
 					t.Fatal(err)
 				}
-				result := evaluateHeaderAtViewport(t, chrome, "file://"+path, viewport)
-				if result.Viewport != viewport {
-					t.Fatalf("CSS viewport width = %d, want %d", result.Viewport, viewport)
+				result := evaluateHeaderAtViewport(t, chrome, "file://"+path, test.viewport, test.mobile)
+				if result.Viewport != test.viewport {
+					t.Fatalf("CSS viewport width = %d, want %d", result.Viewport, test.viewport)
 				}
 				t.Logf("window.innerWidth = %d", result.Viewport)
 				if result.Status != "PASS" {
@@ -111,9 +131,102 @@ try {
 	if err := os.WriteFile(path, []byte(document), 0o600); err != nil {
 		t.Fatal(err)
 	}
-	result := evaluateHeaderAtViewport(t, chrome, "file://"+path, 375)
+	result := evaluateHeaderAtViewport(t, chrome, "file://"+path, 375, true)
 	if result.Status != "PASS" {
 		t.Fatalf("homepage language list browser test failed: %s", result.Status)
+	}
+}
+
+func TestHomepageTitlesAreGeometricallyCenteredOnDesktop(t *testing.T) {
+	if os.Getenv("GO_TOUR_RUN_BROWSER_TESTS") != "1" {
+		t.Skip("set GO_TOUR_RUN_BROWSER_TESTS=1 to run the Chrome integration test")
+	}
+	chrome, err := exec.LookPath("google-chrome")
+	if err != nil {
+		t.Skip("google-chrome is not installed")
+	}
+	css, err := fs.ReadFile(contentTour, "tour/static/css/app.css")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	for _, title := range []string{"Go Turu Çok Dilli Çeviri Projesi", "Go 语言之旅多语言翻译项目", "Mehrsprachiges Übersetzungsprojekt für A Tour of Go"} {
+		t.Run(title, func(t *testing.T) {
+			document := fmt.Sprintf(`<!doctype html><html data-theme="auto"><head><meta name="viewport" content="width=device-width, initial-scale=1"><style>%s</style></head><body class="site-home">
+<header class="bar top-bar site-header"><a href="/"><img class="site-logo" alt=""></a><a class="logo" href="/">%s</a></header>
+<script>
+function assert(condition, message) { if (!condition) throw new Error(message); }
+try {
+  var header = document.querySelector('.site-header'), logo = document.querySelector('.site-logo'), title = document.querySelector('.site-header .logo');
+  var headerBox = header.getBoundingClientRect(), logoBox = logo.getBoundingClientRect(), titleBox = title.getBoundingClientRect();
+  var center = (headerBox.top + headerBox.bottom) / 2;
+  assert(headerBox.height >= 48, 'homepage header is shorter than 48px');
+  assert(Math.abs(((logoBox.top + logoBox.bottom) / 2) - center) <= 1, 'homepage logo is not vertically centered');
+  assert(Math.abs(((titleBox.top + titleBox.bottom) / 2) - center) <= 1, 'homepage title is not vertically centered');
+  assert(document.documentElement.scrollWidth <= document.documentElement.clientWidth, 'homepage has horizontal overflow');
+  document.body.setAttribute('data-tour-header-test', 'PASS');
+} catch (error) { document.body.setAttribute('data-tour-header-test', 'FAIL: ' + error.message); }
+</script></body></html>`, css, html.EscapeString(title))
+			path := filepath.Join(t.TempDir(), "homepage-header-test.html")
+			if err := os.WriteFile(path, []byte(document), 0o600); err != nil {
+				t.Fatal(err)
+			}
+			result := evaluateHeaderAtViewport(t, chrome, "file://"+path, 1280, false)
+			if result.Status != "PASS" {
+				t.Fatalf("homepage header browser test failed: %s", result.Status)
+			}
+		})
+	}
+}
+
+func TestPlaygroundOutputWrapsWithoutHorizontalOverflowAtMobileAndDesktop(t *testing.T) {
+	if os.Getenv("GO_TOUR_RUN_BROWSER_TESTS") != "1" {
+		t.Skip("set GO_TOUR_RUN_BROWSER_TESTS=1 to run the Chrome integration test")
+	}
+	chrome, err := exec.LookPath("google-chrome")
+	if err != nil {
+		t.Skip("google-chrome is not installed")
+	}
+	css, err := fs.ReadFile(contentTour, "tour/static/css/app.css")
+	if err != nil {
+		t.Fatal(err)
+	}
+	longOutput := "first line\n  preserved spaces\n" + strings.Repeat("unbroken-program-output-", 40)
+
+	for _, test := range []struct {
+		name     string
+		viewport int
+		mobile   bool
+	}{
+		{name: "mobile", viewport: 375, mobile: true},
+		{name: "desktop", viewport: 1280},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			document := fmt.Sprintf(`<!doctype html><html data-theme="auto"><head><meta name="viewport" content="width=device-width, initial-scale=1"><style>%s</style></head><body>
+<div class="output active"><pre>%s</pre></div>
+<script>
+function assert(condition, message) { if (!condition) throw new Error(message); }
+try {
+  var output = document.querySelector('.output'), pre = output.querySelector('pre'), style = getComputedStyle(pre);
+  assert(pre.textContent === %q, 'output text changed');
+  assert(style.whiteSpace === 'pre-wrap', 'output does not preserve whitespace while wrapping');
+  assert(pre.scrollWidth <= pre.clientWidth + 2, 'output pre has horizontal overflow');
+  assert(output.scrollWidth <= output.clientWidth + 2, 'output container has horizontal overflow');
+  assert(document.documentElement.scrollWidth <= document.documentElement.clientWidth + 2, 'page has horizontal overflow');
+  assert(document.body.scrollWidth <= document.body.clientWidth + 2, 'body has horizontal overflow');
+  assert(pre.scrollHeight > parseFloat(style.lineHeight) * 3, 'long output did not wrap');
+  document.body.setAttribute('data-tour-header-test', 'PASS');
+} catch (error) { document.body.setAttribute('data-tour-header-test', 'FAIL: ' + error.message); }
+</script></body></html>`, css, longOutput, longOutput)
+			path := filepath.Join(t.TempDir(), "playground-output-test.html")
+			if err := os.WriteFile(path, []byte(document), 0o600); err != nil {
+				t.Fatal(err)
+			}
+			result := evaluateHeaderAtViewport(t, chrome, "file://"+path, test.viewport, test.mobile)
+			if result.Status != "PASS" {
+				t.Fatalf("playground output browser test failed: %s", result.Status)
+			}
+		})
 	}
 }
 
@@ -122,7 +235,7 @@ type headerViewportResult struct {
 	Viewport int    `json:"viewport"`
 }
 
-func evaluateHeaderAtViewport(t *testing.T, chrome, target string, viewport int) headerViewportResult {
+func evaluateHeaderAtViewport(t *testing.T, chrome, target string, viewport int, mobile bool) headerViewportResult {
 	t.Helper()
 	listener, err := net.Listen("tcp4", "127.0.0.1:0")
 	if err != nil {
@@ -174,7 +287,7 @@ func evaluateHeaderAtViewport(t *testing.T, chrome, target string, viewport int)
 		t.Fatal(err)
 	}
 	defer ws.Close()
-	headerCDPCall(t, ws, 1, "Emulation.setDeviceMetricsOverride", map[string]any{"width": viewport, "height": 800, "deviceScaleFactor": 1, "mobile": true})
+	headerCDPCall(t, ws, 1, "Emulation.setDeviceMetricsOverride", map[string]any{"width": viewport, "height": 800, "deviceScaleFactor": 1, "mobile": mobile})
 	headerCDPCall(t, ws, 2, "Page.navigate", map[string]any{"url": target})
 	time.Sleep(500 * time.Millisecond)
 	result := headerCDPCall(t, ws, 3, "Runtime.evaluate", map[string]any{
