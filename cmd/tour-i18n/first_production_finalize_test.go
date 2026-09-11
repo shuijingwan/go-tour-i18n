@@ -151,7 +151,11 @@ func TestRecordARequiresPlaceholderOnlyForFirstProduction(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if err := os.WriteFile(identityPath, []byte(strings.Replace(string(identity), `"production_state": "first-production"`, `"production_state": "live"`, 1)), 0644); err != nil {
+	liveIdentity, err := replaceTargetState(identity, "zz-ZZ")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(identityPath, liveIdentity, 0644); err != nil {
 		t.Fatal(err)
 	}
 	if err := recordLocaleSurfaceReviewACommand(root, catalog, []string{"--locale", "zz-ZZ", "--review-id", "review-1", "--reviewer", "reviewer"}); err != nil {

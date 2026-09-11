@@ -30,6 +30,10 @@ func TestReviewedOfficialTargetsAndFailClosedSiteContent(t *testing.T) {
 		"/tour/welcome/1":            TourLocal,
 		"/":                          SiteHome,
 		"https://go.dev/doc/install": GoOfficial,
+		"https://de-go-dev.shuijingwanwq.com/tour":                                           TourLocale,
+		"https://fr-go-dev.shuijingwanwq.com/tour":                                           TourLocale,
+		"https://go-dev.shuijingwanwq.com/tour":                                              TourLocale,
+		"https://ko-go-dev.shuijingwanwq.com/tour":                                           TourLocale,
 		"https://www.shuijingwanwq.com/series/go-tour-chinese-edition-development-series/":   OwnerContent,
 		"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/": OwnerContent,
 		"https://en.wikipedia.org/wiki/Go":                                                   External,
@@ -44,6 +48,7 @@ func TestReviewedOfficialTargetsAndFailClosedSiteContent(t *testing.T) {
 func TestUnknownOwnerTargetsRequireClassification(t *testing.T) {
 	for _, target := range []string{
 		"https://marketing.shuijingwanwq.com/offer",
+		"https://fr-go-dev.shuijingwanwq.com/tour/welcome/1",
 		"https://go-dev.shuijingwanwq.com/tour/welcome/1",
 	} {
 		if got := Classify(target); got != UnknownOwnerTarget {

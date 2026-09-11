@@ -1,0 +1,18 @@
+{
+  "schema_version": 2,
+  "evidence_type": "quality_check_results",
+  "locale": "fr-FR",
+  "snapshot_id": "qc-005",
+  "snapshot_manifest_sha256": "3e17814a665c3c6ac41a871398ae187fa5b7ff0715b24dca2c3b940f4492dde0",
+  "previous_snapshot_id": "qc-004",
+  "rubric": "translation-quality/v1",
+  "result_count": 1,
+  "results": [
+    {
+      "index": 2,
+      "unit_id": "welcome/2",
+      "rating": "B",
+      "finding": "本次 source 只新增语言链接，但候选把原已通过的“Go dans votre langue”重新改成“Go en version locale”，表达生硬且偏向“本地版本”。revision 时应完整输出 TranslationUnit，但保持未变化内容的既有正式译文，只翻译并整合新增 source。"
+    }
+  ]
+}

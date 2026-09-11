@@ -1,0 +1,37 @@
+{
+  "schema_version": 2,
+  "batch_id": "codex-zh-CN-019",
+  "locale": "zh-CN",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 2,
+  "units": [
+    {
+      "unit_id": "flowcontrol/1",
+      "unit_kind": "page",
+      "source_path": "_content/tour/flowcontrol.article",
+      "source_sha256": "c6cd458bda99bffc7b753e122c56575a59508586054180be1f8d7bb1fe2391df",
+      "input_path": "inputs/flowcontrol-1.article",
+      "input_sha256": "709132af629eb6dce4070b07dbbf6f15641f7bf3b0e92df4c344bbbb71b175cd",
+      "protected_token_count": 16,
+      "previous_snapshot_id": "qc-004",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "正文中的自然语言提示标签“*Note:*”仍保留英文；该内容不是代码、Go 标识符或 keep 项，应翻译为自然中文，例如“*注意：*”。"
+    },
+    {
+      "unit_id": "moretypes/7",
+      "unit_kind": "page",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "a169cf48dd659510ff7f1f8adfdbed5a247b51a1f7c3a45ae972f18921925033",
+      "input_path": "inputs/moretypes-7.article",
+      "input_sha256": "0a00fb45417105f3622f8e6b08d9003a4e99957f46d5ee189713c54655e43cd5",
+      "protected_token_count": 9,
+      "previous_snapshot_id": "qc-004",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "句子“而切片则是对数组中一段元素的动态大小、灵活视图”修饰结构不自然；“动态大小”不能这样与“灵活”并列修饰“视图”。应改为自然中文，例如表达为“大小动态可变的灵活视图”，同时保持原文关于 slice 是 array elements 的 dynamically-sized, flexible view 的完整含义。"
+    }
+  ]
+}

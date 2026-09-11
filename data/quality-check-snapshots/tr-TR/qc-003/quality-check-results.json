@@ -1,0 +1,18 @@
+{
+  "schema_version": 2,
+  "evidence_type": "quality_check_results",
+  "locale": "tr-TR",
+  "snapshot_id": "qc-003",
+  "snapshot_manifest_sha256": "6111c0eec9a0be69d5a6e9490f808c61b30546063f6e86f056adaad6894f6034",
+  "previous_snapshot_id": "qc-002",
+  "rubric": "translation-quality/v1",
+  "result_count": 1,
+  "results": [
+    {
+      "index": 2,
+      "unit_id": "welcome/2",
+      "rating": "B",
+      "finding": "本次 source 只新增语言链接，但候选将原已通过的“Go Turunun diğer dilleri”重新改成“Yerel Go”，更接近“本地 Go”，未准确表达其他语言版本。revision 时应完整输出 TranslationUnit，但保持未变化内容的既有正式译文，只翻译并整合新增 source。"
+    }
+  ]
+}

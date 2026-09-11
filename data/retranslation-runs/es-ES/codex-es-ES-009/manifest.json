@@ -1,0 +1,24 @@
+{
+  "schema_version": 2,
+  "batch_id": "codex-es-ES-009",
+  "locale": "es-ES",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 1,
+  "units": [
+    {
+      "unit_id": "welcome/2",
+      "unit_kind": "page",
+      "source_path": "_content/tour/welcome.article",
+      "source_sha256": "709f808ec4cdf683411f349cab7a4886fcae532d1c4e4cc66c8ed68cfb2dd2d3",
+      "input_path": "inputs/welcome-2.article",
+      "input_sha256": "1931228d38e2723294fb8d06b7a97bf4f40c3dc65025397c81123aaaff8ad365",
+      "protected_token_count": 18,
+      "previous_snapshot_id": "qc-003",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "本次 source 只新增语言链接，但候选将原已通过的“Go en otros idiomas”重新改成“Go local”，标题再次容易被理解为本地运行，未自然准确表达本节介绍其他语言版本的含义。revision 时应完整输出 TranslationUnit，但保持未变化内容的既有正式译文，只翻译并整合新增 source。"
+    }
+  ]
+}

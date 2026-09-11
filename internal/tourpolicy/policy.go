@@ -45,6 +45,7 @@ type Class string
 
 const (
 	TourLocal          Class = "tour-local"
+	TourLocale         Class = "tour-locale"
 	SiteHome           Class = "site-home"
 	GoOfficial         Class = "go-official"
 	External           Class = "external"
@@ -63,6 +64,16 @@ const ownerControlledDomain = "shuijingwanwq.com"
 var ownerContentTargets = map[string]bool{
 	"https://www.shuijingwanwq.com/series/go-tour-chinese-edition-development-series/":   true,
 	"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/": true,
+}
+
+// tourLocaleTargets contains exact, reviewed links to other published locale
+// Tours. Keeping this inventory exact prevents an owner-controlled hostname
+// from being treated as Tour content merely because it uses the project domain.
+var tourLocaleTargets = map[string]bool{
+	"https://de-go-dev.shuijingwanwq.com/tour": true,
+	"https://fr-go-dev.shuijingwanwq.com/tour": true,
+	"https://go-dev.shuijingwanwq.com/tour":    true,
+	"https://ko-go-dev.shuijingwanwq.com/tour": true,
 }
 
 // officialTargets is the reviewed inventory of legacy official links inherited
@@ -130,6 +141,9 @@ func Classify(target string) Class {
 	}
 	if _, ok := GoOfficialURL(target); ok {
 		return GoOfficial
+	}
+	if tourLocaleTargets[target] {
+		return TourLocale
 	}
 	if strings.HasPrefix(target, "/") {
 		return SiteContent
