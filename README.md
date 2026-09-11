@@ -268,8 +268,8 @@ go test -mod=readonly -count=1 ./...
 
 - 官方仓库：<https://github.com/golang/website.git>
 - 分支：`master`
-- 固定 commit：`b3fc6537086f09e88cb3c1ecd09bd47c31c54241`
-- upstream commit 时间：`2026-08-27 05:55:26`（北京时间；`2026-08-26T21:55:26Z`）
+- 固定 commit：`db076098077c07d3cef1b85a2cf56ff52777f587`
+- upstream commit 时间：`2026-09-10 22:36:53`（北京时间；`2026-09-10T14:36:53Z`）
 - 初始验证环境：`go1.26.0 linux/amd64`
 
 同步原则见 [UPSTREAM.md](UPSTREAM.md)，逐文件来源、模式和 SHA-256 见 [UPSTREAM_MANIFEST.tsv](UPSTREAM_MANIFEST.tsv)。

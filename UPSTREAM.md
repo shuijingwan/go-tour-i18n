@@ -9,7 +9,7 @@
 - 仓库 URL：<https://github.com/golang/website.git>
 - 示例本地只读目录：`$HOME/code/go-website-upstream`（可按实际环境调整）
 - 分支：`master`
-- 固定 commit：`b3fc6537086f09e88cb3c1ecd09bd47c31c54241`
+- 固定 commit：`db076098077c07d3cef1b85a2cf56ff52777f587`
 - Go 版本：`go1.26.0 linux/amd64`
 - 首次确认日期：2026-08-02
 - 首次 Tour 范围源码导入日期：2026-08-02
@@ -40,7 +40,7 @@
 - 官方上游目录保持只读和干净，不在其中开发本项目功能。
 - 原样文件按字节和 SHA-256 验证。
 - 上游发生变化时，不自动覆盖未来译文。
-- 本次导入后尚未执行第二次上游同步。
+- 每次同步只更新已经核验并纳入本项目最小 Tour 源码闭包的文件。
 
 后续每次同步必须：
 
@@ -68,6 +68,13 @@ go run -mod=readonly ./cmd/tour-i18n upstream preview \
 - preview 自动将 `flowcontrol/1` 判为 `content_changed`。`methods/14` 因保护结构变化被判为 `ambiguous`，经人工核对其 article、section、route、标题和 `.play` 引用均未变，明确映射回原持久 ID；未创建或重编号 page ID。
 - 手工复制确认的 Tour source 后已运行 `catalog write --allow-source-change`，最终 preview 为 Page `unchanged=103`、Example `unchanged=93`、conditional `unchanged=2`。
 - `flowcontrol/1` 与 `methods/14` 的既有译文 source hash 已过期。本轮未执行 TranslationUnit 翻译、状态提升或 Locale Surface Review；生产 release 仍使用旧基线，待后续 stale retranslation 完成后再发布。
+
+### 2026-09-11 同步记录
+
+- 基线从 `b3fc6537086f09e88cb3c1ecd09bd47c31c54241` 更新至 `db076098077c07d3cef1b85a2cf56ff52777f587`。Tour 范围实际变化为 `welcome.article` 新增四个社区语言链接，以及 `static/css/app.css` 新增 Playground 输出 span 换行规则；93 个 Example 与两个条件源均未变化。
+- `welcome/2` 因新增链接改变 protected structure，被 preview 保守标为 `ambiguous`。人工核对确认其 article、section、route 与标题未变，仍是同一 “Go local” Section，明确保留持久 `page_id=welcome/2`；未创建、移动或重编号 ID。
+- `welcome.article` 已逐字节同步。官方 CSS 修复的真实 DOM 是 `.output > pre > span`；本项目既有 `.output > pre` 规则通过可继承的 `white-space: pre-wrap` 与 `overflow-wrap: anywhere` 已覆盖同一溢出场景，并保留更完整的多语言布局改造，因此未机械覆盖或重复追加官方规则。浏览器回归测试直接覆盖 span DOM。
+- `catalog write --allow-source-change` 重建三个 source catalog 后，最终 preview 为 Page 103、Example 93、conditional 2 全部 `unchanged`。所有 locale 的 `welcome/2` canonical status 保留旧 source hash，因而正确进入 stale；本轮未执行重译、Quality Check、promotion、发布或部署。
 
 ## 基线验证命令
 

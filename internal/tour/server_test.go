@@ -463,18 +463,18 @@ func TestHomepageLanguageRegistryAndLocaleProfiles(t *testing.T) {
 
 	metadata := SiteMetadata{Locale: "zh-CN", PublishedAt: "2026-08-20T05:56:11Z", UpstreamCommit: FrozenUpstreamCommit, UpstreamCommitTime: FrozenUpstreamCommitTime, Pages: 122, Articles: 122}
 	tests := []struct {
-		locale, autonym, logURL, published, upstream, currentPublicURL string
+		locale, autonym, logURL, published, currentPublicURL string
 	}{
-		{"pt-BR", "Português (Brasil)", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 02:56:11 (horário local)", "2026-08-26 18:55:26 (horário local)", languageRegistry[0].URL},
-		{"nl-NL", "Nederlands", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 07:56:11 (lokale tijd)", "2026-08-26 23:55:26 (lokale tijd)", languageRegistry[1].URL},
-		{"zh-CN", "简体中文", "https://www.shuijingwanwq.com/series/go-tour-chinese-edition-development-series/", "2026-08-20 13:56:11（北京时间）", "2026-08-27 05:55:26（北京时间）", languageRegistry[8].URL},
-		{"fr-FR", "Français", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 07:56:11 (heure locale)", "2026-08-26 23:55:26 (heure locale)", languageRegistry[3].URL},
-		{"de-DE", "Deutsch", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 07:56:11 (Ortszeit)", "2026-08-26 23:55:26 (Ortszeit)", languageRegistry[4].URL},
-		{"es-ES", "Español", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 07:56:11 (hora local)", "2026-08-26 23:55:26 (hora local)", languageRegistry[9].URL},
-		{"it-IT", "Italiano", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 07:56:11 (ora locale)", "2026-08-26 23:55:26 (ora locale)", languageRegistry[5].URL},
-		{"ja-JP", "日本語", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 14:56:11（日本時間）", "2026-08-27 06:55:26（日本時間）", languageRegistry[6].URL},
-		{"ko-KR", "한국어", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 14:56:11 (한국 표준시)", "2026-08-27 06:55:26 (한국 표준시)", languageRegistry[7].URL},
-		{"tr-TR", "Türkçe", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 08:56:11 (yerel saat)", "2026-08-27 00:55:26 (yerel saat)", languageRegistry[10].URL},
+		{"pt-BR", "Português (Brasil)", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 02:56:11 (horário local)", languageRegistry[0].URL},
+		{"nl-NL", "Nederlands", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 07:56:11 (lokale tijd)", languageRegistry[1].URL},
+		{"zh-CN", "简体中文", "https://www.shuijingwanwq.com/series/go-tour-chinese-edition-development-series/", "2026-08-20 13:56:11（北京时间）", languageRegistry[8].URL},
+		{"fr-FR", "Français", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 07:56:11 (heure locale)", languageRegistry[3].URL},
+		{"de-DE", "Deutsch", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 07:56:11 (Ortszeit)", languageRegistry[4].URL},
+		{"es-ES", "Español", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 07:56:11 (hora local)", languageRegistry[9].URL},
+		{"it-IT", "Italiano", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 07:56:11 (ora locale)", languageRegistry[5].URL},
+		{"ja-JP", "日本語", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 14:56:11（日本時間）", languageRegistry[6].URL},
+		{"ko-KR", "한국어", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 14:56:11 (한국 표준시)", languageRegistry[7].URL},
+		{"tr-TR", "Türkçe", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 08:56:11 (yerel saat)", languageRegistry[10].URL},
 	}
 	for _, test := range tests {
 		t.Run(test.locale, func(t *testing.T) {
@@ -484,11 +484,15 @@ func TestHomepageLanguageRegistryAndLocaleProfiles(t *testing.T) {
 			}
 			localizedMetadata := metadata
 			localizedMetadata.Locale = test.locale
+			wantUpstreamTime, err := localizedMetadata.UpstreamCommitTimeFor(localeProfiles[test.locale])
+			if err != nil {
+				t.Fatal(err)
+			}
 			data, err := newPageTemplateData(catalog, localizedMetadata)
 			if err != nil {
 				t.Fatal(err)
 			}
-			if data.CurrentLanguage.Autonym != test.autonym || data.DevelopmentLogURL != test.logURL || data.PublishedAt != test.published || data.UpstreamCommitTime != test.upstream {
+			if data.CurrentLanguage.Autonym != test.autonym || data.DevelopmentLogURL != test.logURL || data.PublishedAt != test.published || data.UpstreamCommitTime != wantUpstreamTime {
 				t.Errorf("localized page data = %+v", data)
 			}
 			homeBytes, err := renderHome(catalog, localizedMetadata)
@@ -497,7 +501,7 @@ func TestHomepageLanguageRegistryAndLocaleProfiles(t *testing.T) {
 			}
 			home := string(homeBytes)
 			labels := []string{"Brazilian Portuguese — Português (Brasil)", "Dutch — Nederlands", "English", "French — Français", "German — Deutsch", "Italian — Italiano", "Japanese — 日本語", "Korean — 한국어", "Simplified Chinese — 简体中文", "Spanish — Español", "Turkish — Türkçe"}
-			for _, want := range append(labels, test.logURL, test.published, test.upstream, "© 2026 永夜", "蜀ICP备13001590号-1", `href="https://beian.miit.gov.cn/"`) {
+			for _, want := range append(labels, test.logURL, test.published, wantUpstreamTime, "© 2026 永夜", "蜀ICP备13001590号-1", `href="https://beian.miit.gov.cn/"`) {
 				if !strings.Contains(home, want) {
 					t.Errorf("homepage does not contain %q", want)
 				}

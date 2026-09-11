@@ -191,7 +191,9 @@ func TestPlaygroundOutputWrapsWithoutHorizontalOverflowAtMobileAndDesktop(t *tes
 	if err != nil {
 		t.Fatal(err)
 	}
-	longOutput := "first line\n  preserved spaces\n" + strings.Repeat("unbroken-program-output-", 40)
+	outputPrefix := "first line\n  preserved spaces\n"
+	longToken := strings.Repeat("unbroken-program-output-", 40)
+	longOutput := outputPrefix + longToken
 
 	for _, test := range []struct {
 		name     string
@@ -203,13 +205,16 @@ func TestPlaygroundOutputWrapsWithoutHorizontalOverflowAtMobileAndDesktop(t *tes
 	} {
 		t.Run(test.name, func(t *testing.T) {
 			document := fmt.Sprintf(`<!doctype html><html data-theme="auto"><head><meta name="viewport" content="width=device-width, initial-scale=1"><style>%s</style></head><body>
-<div class="output active"><pre>%s</pre></div>
+<div class="output active"><pre><span class="stdout">%s</span><span class="system">%s</span></pre></div>
 <script>
 function assert(condition, message) { if (!condition) throw new Error(message); }
 try {
-  var output = document.querySelector('.output'), pre = output.querySelector('pre'), style = getComputedStyle(pre);
+  var output = document.querySelector('.output'), pre = output.querySelector('pre'), spans = [...pre.children], style = getComputedStyle(pre);
+  assert(spans.length === 2 && spans.every((span) => span.tagName === 'SPAN'), 'output does not use the real PlaygroundOutput span DOM');
   assert(pre.textContent === %q, 'output text changed');
   assert(style.whiteSpace === 'pre-wrap', 'output does not preserve whitespace while wrapping');
+  assert(spans.every((span) => getComputedStyle(span).whiteSpace === 'pre-wrap'), 'output spans did not inherit whitespace wrapping');
+  assert(spans.every((span) => getComputedStyle(span).overflowWrap === 'anywhere'), 'output spans did not inherit long-token wrapping');
   assert(pre.scrollWidth <= pre.clientWidth + 2, 'output pre has horizontal overflow');
   assert(output.scrollWidth <= output.clientWidth + 2, 'output container has horizontal overflow');
   assert(document.documentElement.scrollWidth <= document.documentElement.clientWidth + 2, 'page has horizontal overflow');
@@ -217,7 +222,7 @@ try {
   assert(pre.scrollHeight > parseFloat(style.lineHeight) * 3, 'long output did not wrap');
   document.body.setAttribute('data-tour-header-test', 'PASS');
 } catch (error) { document.body.setAttribute('data-tour-header-test', 'FAIL: ' + error.message); }
-</script></body></html>`, css, longOutput, longOutput)
+</script></body></html>`, css, html.EscapeString(outputPrefix), html.EscapeString(longToken), longOutput)
 			path := filepath.Join(t.TempDir(), "playground-output-test.html")
 			if err := os.WriteFile(path, []byte(document), 0o600); err != nil {
 				t.Fatal(err)
