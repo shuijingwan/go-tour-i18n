@@ -72,7 +72,7 @@ class MaintenanceProductionTest(unittest.TestCase):
         self.assertIn("first-production.sh", raised.exception.next_step)
 
     def test_unknown_and_invalid_locale_fail_closed(self):
-        for index, locale in enumerate(("it-IT", "not a locale")):
+        for index, locale in enumerate(("zz-ZZ", "not a locale")):
             with self.subTest(locale=locale):
                 with self.assertRaises(MAINTENANCE.MaintenanceProductionError) as raised:
                     MAINTENANCE.Orchestrator(self.release(locale, f"go-tour-release-20260904-invalid-{index}"))
@@ -125,16 +125,53 @@ class MaintenanceProductionTest(unittest.TestCase):
         self.assertEqual(run.call_count, 3)
         self.assertFalse(instance.stage_passed("browser"))
 
-    def test_resume_skips_only_successful_deployment_and_requires_purge_confirmation_again(self):
+    def test_resume_revalidates_successful_deployment_without_repeating_mutation_and_requires_purge_again(self):
         instance = self.make()
         instance.receipt["stages"]["deploy"] = {"result": "PASS", "completed_at": "2026-09-04T00:00:00Z"}
         instance.write_receipt("failed")
         resumed = MAINTENANCE.Orchestrator(instance.release_dir)
-        with self.run_results(0, 0) as run, mock.patch.object(builtins, "input", side_effect=["PURGED", "VISUAL-PASS"]) as prompt:
+        with self.run_results(0, 0, 0) as run, mock.patch.object(builtins, "input", side_effect=["PURGED", "VISUAL-PASS"]) as prompt:
             resumed.execute()
-        self.assertEqual(run.call_count, 2)
+        self.assertEqual(run.call_count, 3)
+        self.assertEqual(pathlib.Path(run.call_args_list[0].args[0][0]).name, "deploy-production.sh")
         prompt.assert_any_call("完成上述 hostname purge 后输入 PURGED 继续：")
         self.assertEqual(resumed.receipt["result"], "passed")
+
+    def test_failed_deploy_receipt_reruns_deploy_then_records_pass_and_enters_purge(self):
+        instance = self.make()
+        instance.write_receipt("failed")
+        resumed = MAINTENANCE.Orchestrator(instance.release_dir)
+        with self.run_results(0, 0, 0) as run, mock.patch.object(
+            builtins, "input", side_effect=["PURGED", "VISUAL-PASS"]
+        ) as prompt:
+            resumed.execute()
+        self.assertEqual(run.call_count, 3)
+        self.assertTrue(resumed.stage_passed("deploy"))
+        prompt.assert_any_call("完成上述 hostname purge 后输入 PURGED 继续：")
+        self.assertEqual(resumed.receipt["result"], "passed")
+
+    def test_passed_deploy_receipt_cannot_bypass_remote_revalidation(self):
+        instance = self.make()
+        instance.receipt["stages"]["deploy"] = {"result": "PASS", "completed_at": "2026-09-04T00:00:00Z"}
+        instance.write_receipt("failed")
+        resumed = MAINTENANCE.Orchestrator(instance.release_dir)
+        with self.run_results(9) as run, mock.patch.object(builtins, "input") as prompt:
+            with self.assertRaisesRegex(MAINTENANCE.MaintenanceProductionError, "exit 9"):
+                resumed.execute()
+        self.assertEqual(run.call_count, 1)
+        prompt.assert_not_called()
+
+    def test_complete_passed_receipt_runs_no_commands_or_human_gates(self):
+        instance = self.make()
+        for stage in MAINTENANCE.STAGE_LABELS:
+            instance.receipt["stages"][stage] = {"result": "PASS", "completed_at": "2026-09-04T00:00:00Z"}
+        instance.receipt["cdn_purge_confirmed_at"] = "2026-09-04T00:00:00Z"
+        instance.write_receipt("passed")
+        resumed = MAINTENANCE.Orchestrator(instance.release_dir)
+        with mock.patch.object(MAINTENANCE.subprocess, "run") as run, mock.patch.object(builtins, "input") as prompt:
+            resumed.execute()
+        run.assert_not_called()
+        prompt.assert_not_called()
 
     def test_incomplete_passed_receipt_fails_closed_instead_of_printing_pass(self):
         instance = self.make()

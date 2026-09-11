@@ -311,7 +311,7 @@ scripts/maintenance-production.sh \
 一次 `deploy-production.sh` 调用会为 aliyun 建立 invocation-scoped SSH ControlMaster，后续 preflight、rsync、remote validation 与 activation 复用同一连接；使用 BatchMode、连接/keepalive/retry 边界，并在主流程退出时清理 ControlMaster。SSH 中断后状态不确定时仍保留既有 lock/evidence，不能因 multiplex 自动盲目重试 mutation。
 
 1. 本地严格检查 bundle 根结构、symlink、`bin/tour`、`release.json`、`site-metadata.json` 和 `SHA256SUMS`；manifest 必须满足 production 约束，其 locale 必须与由同一 `release.json` 选出的 profile 一致。
-2. 远端在所选 profile 的 data root 中原子创建 `.deploy.lock` 防止并发部署，并验证 `current`、当前 release、目标名称和对应 systemd service。首次 deployment 仅在 `current` 完全不存在时允许继续；已有 locale deployment 则要求其为指向 release root 内当前 release 的合法 symlink。`current` 存在但不是 symlink、或指向 release root 外时均 fail closed。同名 release 已存在时拒绝覆盖；锁已存在表示可能有正在执行或上一次未完成的部署，脚本直接停止，不分析或自动删除该锁。
+2. 远端在所选 profile 的 data root 中验证 `current`、当前 release、目标名称和对应 systemd service，再为正常新部署原子创建 `.deploy.lock` 防止并发部署。首次 deployment 仅在 `current` 完全不存在时允许继续；已有 locale deployment 则要求其为指向 release root 内当前 release 的合法 symlink。`current` 存在但不是 symlink、或指向 release root 外时均 fail closed。同名非当前 release 已存在时拒绝覆盖；锁已存在表示可能有正在执行或上一次未完成的部署，脚本直接停止，不分析或自动删除该锁。若 live locale 的目标 release 已经精确是 `current`，则只允许进入下述严格的 no-mutation resume，不创建 lock 或 staging。
 3. `rsync` 只上传到所选 profile 的 `releases/.<release>.staging-<token>`，不直接写最终 release 或 `current`，也不使用 `--delete` 覆盖 release。
 4. 上传后无条件执行权限归一化：owner/group 为 `root:root`，所有目录为 `0755`，普通文件为 `0644`，`bin/tour` 为 `0755`。随后在远端重新验证 SHA-256，以及 `go-tour` 用户对二进制和必要内容的访问权限；production manifest 已在本地严格检查，第一版不在远端重复解析。
 5. staging 在同一文件系统内原子重命名为最终 release；脚本创建临时 symlink 后以原子 `mv` 替换 profile 的 `current`，再 restart 对应 service。
@@ -327,7 +327,9 @@ ssh aliyun 'curl -sS -o /dev/null -w "%{http_code}\n" http://127.0.0.1:3999/'
 ssh aliyun 'journalctl -u go-tour.service -n 80 --no-pager'
 ```
 
-localhost 连续健康后，脚本才检查对应 profile 的 public URL。正式域名异常属于 CDN、HTTPS、Nginx 或其他外部验收问题，不会自动回滚一个已经稳定健康的源站 release。脚本不调用 CDN API，也不自动清理缓存；language release 成功后必须按“Production CDN 缓存策略”主动刷新对应 hostname，并完成后续 CDN 验收。public HTTP 200 只证明公网入口可用，不能替代 hostname purge 或证明新 release 已在全部边缘节点生效。
+live locale 的同一目标 release 已经精确是 `current` 时，可能是上次 source activation 和 localhost health 已成功、但随后 public acceptance 失败。该状态只在正式 identity 仍为 live、`current` 精确指向 release root 内的目标真实目录、无 deployment lock、远端完整文件集合与逐文件 checksum 均有效、完整 release tree identity 与本地 bundle 相同、service 为 active，且按既有规则连续 3 次 localhost HTTP 200 时才可恢复。此路径不上传、不创建 staging、不切换 `current`、不 restart；任一事实未知或不一致都在 production mutation 前 fail closed。`first-production` 不得使用该恢复路径。
+
+localhost 连续健康后，脚本才检查对应 profile 的 public URL。这个轻量 public acceptance 只对 curl transport exit `6`、`7`、`16`、`28`、`35` 以及 HTTP `522`/`525` 做最多 3 次、1s/2s backoff 的有限重试；每次保留真实 curl exit 和 HTTP status，最终仍只接受 curl exit `0` 且 HTTP `200`，确定性的其他失败立即停止。它不是第二次 `verify-production`。正式域名异常属于 CDN、HTTPS、Nginx 或其他外部验收问题，不会自动回滚一个已经稳定健康的源站 release。脚本不调用 CDN API，也不自动清理缓存；language release 成功后必须按“Production CDN 缓存策略”主动刷新对应 hostname，并完成后续 CDN 验收。public HTTP 200 只证明公网入口可用，不能替代 hostname purge 或证明新 release 已在全部边缘节点生效。
 
 `FIRST_DEPLOYMENT` 是例外：连续 localhost health 通过后脚本停止于源站 ready，不要求尚未启用 DNS 的 public URL，也不做无旧 release/cache 可刷新的 hostname purge。下一步必须先从外部主机使用 production hostname + `--resolve <hostname>:443:<origin-ip>` 完成 TLS/SNI、HTTP → HTTPS 和关键 route 的 direct-origin acceptance；通过后再创建/启用 `proxied=true` 的正式 DNS，并执行 public machine/browser acceptance。`EXISTING_DEPLOYMENT` 继续保持 `deploy → hostname purge → verify`。
 
@@ -348,7 +350,7 @@ scripts/maintenance-production.sh <release-dir>
 
 deployment 成功后，编排器会显示 locale、正式 hostname、CDN 类型及精确的 hostname purge 操作并停在 **HUMAN GATE**。Cloudflare 必须对当前 hostname 做 Custom Purge，严禁 Purge Everything；`zh-CN` 按当前 EdgeOne hostname 缓存刷新规则处理。编排器不读取 credential、不调用 CDN API，也不自动执行任何 CDN mutation。维护者完成操作后须输入 `PURGED`，才会启动 machine verification。
 
-每个 release 在同级写入 `<release>.maintenance-production-receipt.json`。receipt 绑定 schema、locale、hostname、CDN、public URL 和 release；任一不符、损坏或未知状态都会 fail closed，不能混用于别的 locale/release。receipt 只跳过已经成功的 deployment mutation：若在 CDN gate、machine/browser acceptance 或 visual gate 中断，重跑相同命令会复用已部署 release，不会再次调用 deployment；machine/browser acceptance 可安全重新执行。CDN HUMAN GATE 每次 invocation 都要求重新明确输入 `PURGED`，receipt 绝不会自动把它视为完成。所有自动验收和最小 visual gate 真正通过后才输出 `MAINTENANCE PRODUCTION: PASS`。
+每个 release 在同级写入 `<release>.maintenance-production-receipt.json`。receipt 绑定 schema、locale、hostname、CDN、public URL 和 release；任一不符、损坏或未知状态都会 fail closed，不能混用于别的 locale/release。非终态 invocation 即使已有 deployment PASS，也必须再次调用 `deploy-production.sh`：脚本只能在上述严格 already-current 证明全部通过后返回 no-mutation resume，因此 receipt 不能绕过真实远端 identity、checksum、service 或 localhost health 检查；若 release 尚未完成部署，则仍走正常 deployment。完整 PASS receipt 才直接结束且不重复任何 mutation。若 source activation 已成功但轻量 public acceptance 最终失败，receipt 会保留为 failed/deploy；重跑同一 maintenance 命令，由 deploy 的 already-current 路径无 mutation 恢复，public 成功后才记录 deployment PASS 并进入 hostname purge。machine/browser acceptance 可安全重新执行。CDN HUMAN GATE 每次非终态 invocation 都要求重新明确输入 `PURGED`，receipt 绝不会自动把它视为完成。所有自动验收和最小 visual gate 真正通过后才输出 `MAINTENANCE PRODUCTION: PASS`。
 
 `scripts/verify-production.sh` 从 release 目录的 `release.json` 读取 locale，并以与部署脚本一致的 fail-closed profile 选择 releases/current/lock、service、loopback origin、production hostname 和 CDN header；支持集合由 `production/identity.json` 动态决定。调用者不得另外传 hostname、port、service 或 remote release name：
 

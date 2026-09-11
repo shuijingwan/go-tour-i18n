@@ -3,7 +3,7 @@
 
 This deliberately owns no deployment or acceptance implementation.  It binds a
 release to its formal identity, invokes the established commands, and records
-only the successful deployment mutation needed to resume after a human gate.
+the successful deployment result needed to resume after a human gate.
 """
 
 from __future__ import annotations
@@ -218,11 +218,12 @@ class Orchestrator:
         if self.receipt.get("result") == "passed":
             self.print_summary()
             return
-        if not self.stage_passed("deploy"):
-            self.run_command("deploy", [ROOT / "scripts" / "deploy-production.sh", self.release_dir], 1800)
+        deploy_was_passed = self.stage_passed("deploy")
+        self.run_command("deploy", [ROOT / "scripts" / "deploy-production.sh", self.release_dir], 1800)
+        if not deploy_was_passed:
             self.record("deploy")
         else:
-            print("[maintenance-production] deployment: RESUME（不会重复 deployment mutation）")
+            print("[maintenance-production] deployment: RESUME（同一 release 已重新验证；未重复 deployment mutation）")
         self.confirm_purge()
         self.run_command("machine", [ROOT / "scripts" / "verify-production.sh", self.release_dir], 1800)
         self.record("machine")

@@ -72,18 +72,43 @@ cat >"$fake_bin/systemctl" <<'SH'
 #!/usr/bin/env bash
 case $1 in
     cat) exit 0 ;;
-    restart) [[ ${FAKE_RESTART_FAIL:-0} == 0 ]] && exit 0 || exit 1 ;;
-    is-active) printf 'active\n'; exit 0 ;;
+    restart)
+        [[ -z ${FAKE_RESTART_MARKER:-} ]] || : >"$FAKE_RESTART_MARKER"
+        [[ ${FAKE_RESTART_FAIL:-0} == 0 ]] && exit 0 || exit 1
+        ;;
+    is-active)
+        printf '%s\n' "${FAKE_SERVICE_STATE:-active}"
+        [[ ${FAKE_SERVICE_STATE:-active} == active ]]
+        ;;
     status|show) exit 0 ;;
 esac
 exit 1
 SH
 cat >"$fake_bin/curl" <<'SH'
 #!/usr/bin/env bash
-count_file=${FAKE_HEALTH_COUNTER:?}
+url=${!#}
+if [[ $url == https://* ]]; then
+    count_file=${FAKE_PUBLIC_COUNTER:?}
+    status_sequence=${FAKE_PUBLIC_HTTP_SEQUENCE:-200}
+    exit_sequence=${FAKE_PUBLIC_EXIT_SEQUENCE:-0}
+else
+    count_file=${FAKE_HEALTH_COUNTER:?}
+    status_sequence=${FAKE_HEALTH_HTTP_SEQUENCE:-}
+    exit_sequence=0
+fi
 count=0; [[ -f $count_file ]] && count=$(<"$count_file")
 count=$((count + 1)); printf '%s' "$count" >"$count_file"
-if (( count <= ${FAKE_HTTP_FAIL_CALLS:-0} )); then printf '500'; else printf '200'; fi
+if [[ -n $status_sequence ]]; then
+    IFS=, read -r -a statuses <<<"$status_sequence"
+    index=$((count - 1)); (( index < ${#statuses[@]} )) || index=$((${#statuses[@]} - 1))
+    status=${statuses[index]}
+else
+    if (( count <= ${FAKE_HTTP_FAIL_CALLS:-0} )); then status=500; else status=200; fi
+fi
+IFS=, read -r -a exits <<<"$exit_sequence"
+index=$((count - 1)); (( index < ${#exits[@]} )) || index=$((${#exits[@]} - 1))
+printf '%s' "$status"
+exit "${exits[index]}"
 SH
 cat >"$fake_bin/sleep" <<'SH'
 #!/usr/bin/env bash
@@ -98,15 +123,19 @@ arguments=("$@")
 for index in "${!arguments[@]}"; do
     case ${arguments[index]} in
         /data/go-tour/releases) arguments[index]=$FAKE_ZH_RELEASES ;;
+        /data/go-tour/releases/*) arguments[index]="$FAKE_ZH_RELEASES/${arguments[index]#/data/go-tour/releases/}" ;;
         /data/go-tour/current) arguments[index]=$FAKE_ZH_CURRENT ;;
         /data/go-tour/.deploy.lock) arguments[index]=$FAKE_ZH_LOCK ;;
         /data/go-tour-ja-JP/releases) arguments[index]=$FAKE_JA_RELEASES ;;
+        /data/go-tour-ja-JP/releases/*) arguments[index]="$FAKE_JA_RELEASES/${arguments[index]#/data/go-tour-ja-JP/releases/}" ;;
         /data/go-tour-ja-JP/current) arguments[index]=$FAKE_JA_CURRENT ;;
         /data/go-tour-ja-JP/.deploy.lock) arguments[index]=$FAKE_JA_LOCK ;;
         /data/go-tour-de-DE/releases) arguments[index]=$FAKE_DE_RELEASES ;;
+        /data/go-tour-de-DE/releases/*) arguments[index]="$FAKE_DE_RELEASES/${arguments[index]#/data/go-tour-de-DE/releases/}" ;;
         /data/go-tour-de-DE/current) arguments[index]=$FAKE_DE_CURRENT ;;
         /data/go-tour-de-DE/.deploy.lock) arguments[index]=$FAKE_DE_LOCK ;;
         /data/go-tour-fr-FR/releases) arguments[index]=$FAKE_FR_RELEASES ;;
+        /data/go-tour-fr-FR/releases/*) arguments[index]="$FAKE_FR_RELEASES/${arguments[index]#/data/go-tour-fr-FR/releases/}" ;;
         /data/go-tour-fr-FR/current) arguments[index]=$FAKE_FR_CURRENT ;;
         /data/go-tour-fr-FR/.deploy.lock) arguments[index]=$FAKE_FR_LOCK ;;
     esac
@@ -180,7 +209,24 @@ release = {**common, "schema_version": 2, "execution_transport": "http-playgroun
 (root / "release.json").write_text(json.dumps(release), encoding="utf-8")
 (root / "_content/tour/site-metadata.json").write_text(json.dumps(common), encoding="utf-8")
 PY
-    (cd -- "$dir" && find bin _content -type f -print0 | sort -z | xargs -0 sha256sum >SHA256SUMS)
+    (cd -- "$dir" && find bin _content release.json -type f -print0 | sort -z | xargs -0 sha256sum >SHA256SUMS)
+}
+
+setup_already_current() {
+    local locale=$1 suffix=$2
+
+    TEST_BUNDLE=$fixture/go-tour-release-$suffix
+    make_bundle "$TEST_BUNDLE" "$locale"
+    setup_remote "$locale" absent
+    TEST_FINAL=$TEST_RELEASES/$suffix
+    cp -a -- "$TEST_BUNDLE" "$TEST_FINAL"
+    ln -s -- "$TEST_FINAL" "$TEST_CURRENT"
+    export FAKE_HEALTH_COUNTER=$fixture/health-resume-$suffix
+    export FAKE_PUBLIC_COUNTER=$fixture/public-resume-$suffix
+    export FAKE_RESTART_MARKER=$fixture/restart-resume-$suffix
+    export FAKE_SERVICE_STATE=active FAKE_HTTP_FAIL_CALLS=0
+    export FAKE_PUBLIC_HTTP_SEQUENCE=200 FAKE_PUBLIC_EXIT_SEQUENCE=0
+    rm -f -- "$FAKE_HEALTH_COUNTER" "$FAKE_PUBLIC_COUNTER" "$FAKE_RESTART_MARKER"
 }
 
 # The misleading directory suffix must not influence profile selection.
@@ -272,5 +318,113 @@ if prepare_remote "$TEST_RELEASES/.staging-live-absent" "$TEST_RELEASES/new-live
     fail 'live locale with missing current was accepted as FIRST_DEPLOYMENT'
 fi
 [[ ! -e $TEST_LOCK ]] || fail 'live locale lifecycle mismatch created a lock'
+
+# Public acceptance retries only the formally transient transport/status set.
+PUBLIC_URL=https://example.test/
+PUBLIC_ACCEPTANCE_HINT='test hint'
+for transient_exit in 6 7 16 28 35; do
+    export FAKE_PUBLIC_COUNTER=$fixture/public-exit-$transient_exit
+    export FAKE_PUBLIC_HTTP_SEQUENCE=000,200 FAKE_PUBLIC_EXIT_SEQUENCE=$transient_exit,0
+    rm -f -- "$FAKE_PUBLIC_COUNTER"
+    check_public >/dev/null 2>&1 || fail "transient curl exit $transient_exit was not retried"
+    [[ $(<"$FAKE_PUBLIC_COUNTER") == 2 ]] || fail "transient curl exit $transient_exit retry count"
+done
+for transient_status in 522 525; do
+    export FAKE_PUBLIC_COUNTER=$fixture/public-http-$transient_status
+    export FAKE_PUBLIC_HTTP_SEQUENCE=$transient_status,200 FAKE_PUBLIC_EXIT_SEQUENCE=0,0
+    rm -f -- "$FAKE_PUBLIC_COUNTER"
+    check_public >/dev/null 2>&1 || fail "transient HTTP $transient_status was not retried"
+    [[ $(<"$FAKE_PUBLIC_COUNTER") == 2 ]] || fail "transient HTTP $transient_status retry count"
+done
+
+export FAKE_PUBLIC_COUNTER=$fixture/public-persistent
+export FAKE_PUBLIC_HTTP_SEQUENCE=000 FAKE_PUBLIC_EXIT_SEQUENCE=28
+rm -f -- "$FAKE_PUBLIC_COUNTER"
+if persistent_output=$(check_public 2>&1); then
+    fail 'persistent transient public failure was accepted'
+fi
+[[ $(<"$FAKE_PUBLIC_COUNTER") == 3 ]] || fail 'public retry exceeded or missed the three-attempt bound'
+[[ $persistent_output == *'curl exit 28; HTTP 000'* ]] || fail 'public failure lost curl exit/status evidence'
+
+export FAKE_PUBLIC_COUNTER=$fixture/public-semantic
+export FAKE_PUBLIC_HTTP_SEQUENCE=503,200 FAKE_PUBLIC_EXIT_SEQUENCE=0,0
+rm -f -- "$FAKE_PUBLIC_COUNTER"
+if check_public >/dev/null 2>&1; then
+    fail 'nontransient HTTP 503 was retried and accepted'
+fi
+[[ $(<"$FAKE_PUBLIC_COUNTER") == 1 ]] || fail 'nontransient HTTP failure did not fail immediately'
+
+# An exactly identical, already-current live release takes the read-only resume path.
+setup_already_current de-DE 20260911-de-DE-resume-pass
+mutation_marker=$fixture/mutation-resume-pass
+if ! resume_output=$(
+    upload_release() { : >"$mutation_marker"; return 97; }
+    validate_remote_release() { : >"$mutation_marker"; return 97; }
+    activate_release() { : >"$mutation_marker"; return 97; }
+    cleanup_before_activation() { : >"$mutation_marker"; return 97; }
+    main "$TEST_BUNDLE"
+  2>&1); then
+    printf '%s\n' "$resume_output" >&2
+    fail 'identical already-current release did not resume'
+fi
+[[ $resume_output == *'deployment already current / RESUME'* ]] || fail 'resume result was not explicit'
+[[ $(readlink -f -- "$TEST_CURRENT") == "$TEST_FINAL" ]] || fail 'resume changed current'
+[[ ! -e $mutation_marker && ! -e $FAKE_RESTART_MARKER ]] || fail 'resume invoked a production mutation'
+[[ $(<"$FAKE_HEALTH_COUNTER") -ge 3 && $(<"$FAKE_PUBLIC_COUNTER") == 1 ]] || \
+    fail 'resume skipped source health or public acceptance'
+if find "$TEST_RELEASES" -mindepth 1 -maxdepth 1 -name '.*.staging-*' -print -quit | grep -q .; then
+    fail 'resume created staging'
+fi
+
+assert_resume_fails_without_mutation() {
+    local label=$1 output mutation rc
+    mutation=$fixture/mutation-$label
+
+    if output=$(
+      (
+        upload_release() { : >"$mutation"; return 97; }
+        validate_remote_release() { : >"$mutation"; return 97; }
+        activate_release() { : >"$mutation"; return 97; }
+        cleanup_before_activation() { : >"$mutation"; return 97; }
+        if main "$TEST_BUNDLE"; then main_rc=0; else main_rc=$?; fi
+        trap - EXIT
+        exit "$main_rc"
+      ) 2>&1
+    ); then
+        rc=0
+    else
+        rc=$?
+    fi
+    (( rc != 0 )) || fail "$label unsafe resume was accepted"
+    [[ ! -e $mutation && ! -e $FAKE_RESTART_MARKER ]] || fail "$label failure invoked a production mutation"
+    if find "$TEST_RELEASES" -mindepth 1 -maxdepth 1 -name '.*.staging-*' -print -quit | grep -q .; then
+        fail "$label failure created staging"
+    fi
+}
+
+setup_already_current de-DE 20260911-de-DE-resume-checksum
+printf 'remote drift\n' >"$TEST_FINAL/_content/tour/static/css/app.css"
+assert_resume_fails_without_mutation checksum-mismatch
+
+setup_already_current de-DE 20260911-de-DE-resume-lock
+mkdir -- "$TEST_LOCK"
+assert_resume_fails_without_mutation lock-present
+
+setup_already_current de-DE 20260911-de-DE-resume-service
+export FAKE_SERVICE_STATE=inactive
+assert_resume_fails_without_mutation service-inactive
+
+setup_already_current de-DE 20260911-de-DE-resume-health
+export FAKE_HTTP_FAIL_CALLS=99
+assert_resume_fails_without_mutation localhost-non-200
+
+# FIRST_DEPLOYMENT is never eligible for the already-current live-maintenance recovery.
+setup_already_current de-DE 20260911-de-DE-first-cannot-resume
+select_deployment_profile de-DE
+EXPECTED_DEPLOYMENT_MODE=FIRST_DEPLOYMENT
+if prepare_remote "$TEST_RELEASES/.first-resume.staging" "$TEST_FINAL" >/dev/null 2>&1; then
+    fail 'FIRST_DEPLOYMENT accepted already-current recovery'
+fi
+[[ ! -e $TEST_LOCK ]] || fail 'FIRST_DEPLOYMENT lifecycle mismatch created a lock'
 
 printf '[deploy-test] PASS\n'

@@ -6,6 +6,10 @@ IFS=$'\n\t'
 readonly HEALTH_ATTEMPTS=12
 readonly HEALTH_INTERVAL=3
 readonly NO_OLD_RELEASE='NO_OLD_RELEASE'
+readonly ALREADY_CURRENT='ALREADY_CURRENT'
+readonly PUBLIC_CURL_CONNECT_TIMEOUT=5
+readonly PUBLIC_CURL_MAX_TIME=15
+readonly PUBLIC_CURL_RETRY_ATTEMPTS=3
 readonly -a SSH_BASE_OPTIONS=(
     -o BatchMode=yes
     -o ConnectTimeout=10
@@ -112,12 +116,25 @@ manual_check_hint() {
 validate_local_tools() {
     local command_name
 
-    for command_name in basename curl date find mktemp python3 rsync sha256sum ssh; do
+    for command_name in awk basename curl date find mktemp python3 rsync sha256sum sort ssh xargs; do
         command -v "$command_name" >/dev/null || {
             error "required local command is missing: $command_name"
             return 1
         }
     done
+}
+
+release_tree_sha256() {
+    local root=$1
+
+    (
+        cd -- "$root"
+        find . -type f -print0 |
+            LC_ALL=C sort -z |
+            xargs -0 sha256sum |
+            sha256sum |
+            awk '{ print $1 }'
+    )
 }
 
 release_name_from_path() {
@@ -314,7 +331,13 @@ else
 fi
 [[ $deployment_mode == "$expected_mode" ]] || fail "remote state is $deployment_mode but formal production identity requires $expected_mode"
 systemctl cat "$service" >/dev/null || fail "systemd service does not exist: $service"
-[[ $deployment_mode != EXISTING || $final != "$old" ]] || fail 'new release is already current'
+if [[ $deployment_mode == EXISTING && $final == "$old" ]]; then
+    [[ -d $releases_dir && ! -L $releases_dir ]] || fail "release root is not a real directory: $releases_dir"
+    [[ -d $final && ! -L $final ]] || fail "current release is not a real directory: $final"
+    [[ ! -e $deploy_lock && ! -L $deploy_lock ]] || fail "deployment lock exists; already-current state requires manual inspection: $deploy_lock"
+    printf 'ALREADY_CURRENT\t%s\n' "$old"
+    exit 0
+fi
 [[ ! -e $final && ! -L $final ]] || fail "remote release already exists: $final"
 [[ ! -e $staging && ! -L $staging ]] || fail "remote staging already exists: $staging"
 
@@ -328,6 +351,118 @@ fi
 
 printf '%s\t%s\n' "$deployment_mode" "$old"
 REMOTE_PREPARE
+}
+
+verify_already_current_release() {
+    local remote_final=$1
+    local expected_tree_sha256=$2
+
+    ssh "${SSH_OPTIONS[@]}" "$SSH_HOST" bash -s -- \
+        "$RELEASES_DIR" "$CURRENT_LINK" "$DEPLOY_LOCK" "$SERVICE" \
+        "$HEALTH_URL" "$HEALTH_ATTEMPTS" "$HEALTH_INTERVAL" "$remote_final" \
+        "$expected_tree_sha256" <<'REMOTE_RESUME'
+set -Eeuo pipefail
+IFS=$'\n\t'
+
+releases_dir=$1
+current_link=$2
+deploy_lock=$3
+service=$4
+health_url=$5
+health_attempts=$6
+health_interval=$7
+expected_remote=$8
+expected_tree_sha256=$9
+
+fail() {
+    printf '[deploy:remote] ERROR: already-current verification: %s\n' "$*" >&2
+    exit 1
+}
+
+tree_sha256() {
+    local root=$1
+    (
+        cd -- "$root"
+        find . -type f -print0 |
+            LC_ALL=C sort -z |
+            xargs -0 sha256sum |
+            sha256sum |
+            awk '{ print $1 }'
+    )
+}
+
+health_check() {
+    local attempt consecutive=0 service_state http_code
+
+    for ((attempt = 1; attempt <= health_attempts; attempt++)); do
+        service_state=$(systemctl is-active "$service" 2>/dev/null || true)
+        http_code=$(curl --silent --output /dev/null --write-out '%{http_code}' \
+            --connect-timeout 2 --max-time 5 "$health_url" || true)
+        if [[ $service_state == active && $http_code == 200 ]]; then
+            ((consecutive += 1))
+            printf '[deploy:remote] resume health %d/%d: active + HTTP 200 (consecutive %d/3)\n' \
+                "$attempt" "$health_attempts" "$consecutive"
+            if (( consecutive == 3 )); then
+                return 0
+            fi
+        else
+            consecutive=0
+            printf '[deploy:remote] resume health %d/%d: service=%s HTTP=%s\n' \
+                "$attempt" "$health_attempts" "${service_state:-unknown}" "${http_code:-000}" >&2
+        fi
+        (( attempt == health_attempts )) || sleep "$health_interval"
+    done
+    return 1
+}
+
+[[ $(id -u) == 0 ]] || fail 'remote SSH user must be root'
+for command_name in awk curl find sha256sum sort systemctl readlink xargs; do
+    command -v "$command_name" >/dev/null || fail "required remote command is missing: $command_name"
+done
+[[ $expected_tree_sha256 =~ ^[0-9a-f]{64}$ ]] || fail 'local release tree identity is malformed'
+[[ -d $releases_dir && ! -L $releases_dir ]] || fail "release root is not a real directory: $releases_dir"
+case $expected_remote in
+    "$releases_dir"/*) ;;
+    *) fail "expected release is outside release root: $expected_remote" ;;
+esac
+[[ -d $expected_remote && ! -L $expected_remote ]] || fail "expected release is not a real directory: $expected_remote"
+[[ -L $current_link ]] || fail "current is not a symlink: $current_link"
+actual_current=$(readlink -f -- "$current_link") || fail 'cannot resolve current release'
+[[ $actual_current == "$expected_remote" ]] || fail "current changed: ${actual_current:-unresolved}"
+[[ ! -e $deploy_lock && ! -L $deploy_lock ]] || fail "deployment lock is present: $deploy_lock"
+
+mapfile -d '' root_entries < <(find "$expected_remote" -mindepth 1 -maxdepth 1 -print0)
+(( ${#root_entries[@]} == 4 )) || fail 'release root must contain exactly bin, _content, release.json, and SHA256SUMS'
+for entry in "${root_entries[@]}"; do
+    case ${entry##*/} in
+        bin|_content|release.json|SHA256SUMS) ;;
+        *) fail "unexpected release root entry: ${entry##*/}" ;;
+    esac
+done
+[[ -d $expected_remote/bin && ! -L $expected_remote/bin ]] || fail 'bin is not a real directory'
+[[ -d $expected_remote/_content && ! -L $expected_remote/_content ]] || fail '_content is not a real directory'
+[[ -f $expected_remote/release.json && ! -L $expected_remote/release.json ]] || fail 'release.json is not a real file'
+[[ -f $expected_remote/SHA256SUMS && ! -L $expected_remote/SHA256SUMS ]] || fail 'SHA256SUMS is not a real file'
+[[ -f $expected_remote/bin/tour && -x $expected_remote/bin/tour && ! -L $expected_remote/bin/tour ]] || fail 'bin/tour is not a regular executable file'
+symlink=$(find "$expected_remote" -type l -print -quit)
+unsupported=$(find "$expected_remote" ! -type d ! -type f -print -quit)
+[[ -z $symlink && -z $unsupported ]] || fail "release contains a symlink or unsupported file: ${symlink:-$unsupported}"
+
+if ! checksum_output=$(cd -- "$expected_remote" && sha256sum -c --strict SHA256SUMS); then
+    printf '%s\n' "$checksum_output" >&2
+    fail 'remote SHA256SUMS verification failed'
+fi
+actual_tree_sha256=$(tree_sha256 "$expected_remote") || fail 'cannot compute remote release tree identity'
+[[ $actual_tree_sha256 == "$expected_tree_sha256" ]] || fail "release tree identity mismatch: got $actual_tree_sha256 want $expected_tree_sha256"
+service_state=$(systemctl is-active "$service" 2>/dev/null || true)
+[[ $service_state == active ]] || fail "service is ${service_state:-unknown}, want active"
+health_check || fail 'service did not reach three consecutive active + HTTP 200 checks'
+
+actual_current=$(readlink -f -- "$current_link") || fail 'cannot resolve current release after health verification'
+[[ $actual_current == "$expected_remote" ]] || fail "current changed during verification: ${actual_current:-unresolved}"
+[[ ! -e $deploy_lock && ! -L $deploy_lock ]] || fail "deployment lock appeared during verification: $deploy_lock"
+printf '[deploy:remote] deployment already current / RESUME: %s; release identity and source health PASS\n' "$expected_remote"
+REMOTE_RESUME
 }
 
 upload_release() {
@@ -530,23 +665,49 @@ REMOTE_ACTIVATE
 }
 
 check_public() {
-    local http_code
+    local attempt curl_exit=0 http_code='' transient=0
 
-    http_code=$(curl --silent --output /dev/null --write-out '%{http_code}' \
-        --connect-timeout 5 --max-time 15 "$PUBLIC_URL" || true)
-    if [[ $http_code != 200 ]]; then
-        error "localhost is healthy, but public acceptance returned HTTP ${http_code:-000}: $PUBLIC_URL"
-        error 'this CDN/reverse-proxy result did not roll back the healthy source release'
-        error "$PUBLIC_ACCEPTANCE_HINT"
-        return 1
+    for ((attempt = 1; attempt <= PUBLIC_CURL_RETRY_ATTEMPTS; attempt++)); do
+        set +e
+        http_code=$(curl --silent --output /dev/null --write-out '%{http_code}' \
+            --connect-timeout "$PUBLIC_CURL_CONNECT_TIMEOUT" --max-time "$PUBLIC_CURL_MAX_TIME" "$PUBLIC_URL")
+        curl_exit=$?
+        set -e
+        if (( curl_exit == 0 )) && [[ $http_code == 200 ]]; then
+            log "public acceptance passed: HTTP 200 $PUBLIC_URL"
+            log "$PUBLIC_ACCEPTANCE_HINT"
+            return 0
+        fi
+
+        transient=0
+        if (( curl_exit != 0 )); then
+            case $curl_exit in
+                6|7|16|28|35) transient=1 ;;
+            esac
+        elif [[ $http_code == 522 || $http_code == 525 ]]; then
+            transient=1
+        fi
+        if (( transient && attempt < PUBLIC_CURL_RETRY_ATTEMPTS )); then
+            log "public acceptance transient failure $attempt/$PUBLIC_CURL_RETRY_ATTEMPTS: curl exit $curl_exit; HTTP ${http_code:-000}; retrying in ${attempt}s"
+            sleep "$attempt"
+            continue
+        fi
+        break
+    done
+
+    if (( curl_exit != 0 )); then
+        error "localhost is healthy, but public acceptance failed after $attempt attempt(s): curl exit $curl_exit; HTTP ${http_code:-000}: $PUBLIC_URL"
+    else
+        error "localhost is healthy, but public acceptance failed after $attempt attempt(s): curl exit 0; HTTP ${http_code:-000}: $PUBLIC_URL"
     fi
-    log "public acceptance passed: HTTP 200 $PUBLIC_URL"
-    log "$PUBLIC_ACCEPTANCE_HINT"
+    error 'this CDN/reverse-proxy result did not roll back the healthy source release'
+    error "$PUBLIC_ACCEPTANCE_HINT"
+    return 1
 }
 
 main() {
     local release_input release_dir remote_name remote_final remote_staging old_release deployment_mode prepare_output
-    local link_suffix activation_rc activation_output
+    local link_suffix activation_rc activation_output local_tree_sha256
     local staging_ready=0 activation_started=0
 
     interrupted() {
@@ -572,6 +733,10 @@ main() {
     remote_name=$(release_name_from_path "$release_input") || return 1
     validate_local_release "$release_input" || return 1
     release_dir=$(cd -P -- "$release_input" && pwd -P)
+    local_tree_sha256=$(release_tree_sha256 "$release_dir") || {
+        error 'cannot compute local release tree identity'
+        return 1
+    }
 
     log "selected production profile from release.json: $RELEASE_LOCALE"
 
@@ -586,11 +751,25 @@ main() {
         return 1
     fi
     IFS=$'\t' read -r deployment_mode old_release <<<"$prepare_output"
-    [[ ( $deployment_mode == EXISTING && -n $old_release ) || ( $deployment_mode == FIRST_DEPLOYMENT && $old_release == "$NO_OLD_RELEASE" ) ]] || {
+    [[ ( $deployment_mode == EXISTING && -n $old_release ) || \
+        ( $deployment_mode == FIRST_DEPLOYMENT && $old_release == "$NO_OLD_RELEASE" ) || \
+        ( $deployment_mode == "$ALREADY_CURRENT" && -n $old_release ) ]] || {
         error 'remote preflight returned an invalid deployment mode'
         manual_check_hint
         return 1
     }
+    if [[ $deployment_mode == "$ALREADY_CURRENT" ]]; then
+        log "deployment already current; starting strict no-mutation resume verification: $remote_final"
+        if ! verify_already_current_release "$remote_final" "$local_tree_sha256"; then
+            error 'already-current release could not be proven identical and healthy; no deployment mutation was attempted'
+            error "inspect current, lock, SHA256SUMS, service, and localhost health for $remote_final before retrying"
+            return 1
+        fi
+        trap - INT TERM HUP
+        log "source deployment already completed: deployment already current / RESUME $remote_final"
+        check_public
+        return
+    fi
     staging_ready=1
 
     log "uploading release to staging: $remote_staging"
