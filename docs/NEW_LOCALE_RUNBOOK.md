@@ -25,7 +25,6 @@ locale / domain / CDN 决策
 → production publish
 → 首次 production 基础设施、部署 profile 与广告接入
 → 最终源站、公网和浏览器上线验收
-→ visual HUMAN gate
 → first-production finalize
 → production_state=live（同时自动更新 README 的 live locale 投影）
 → search-engine submission closeout（Google → Bing → locale-specific → IndexNow 全站 bootstrap）
@@ -179,11 +178,13 @@ Surface Review 通过并完成其中所有修复后，使用 `assets-go-dev.shui
 - **公网层**：同一 machine acceptance 命令确认 HTTPS 关键路由、首页、`/tour/`、`/tour/list`、课程页、静态资源、`robots.txt`、sitemap 全量 URL、canonical/locale identity、`/socket` 404，并记录 CDN cache status；cache observation 要求 HTTP 200、对应 header 存在且状态属于正式 allowlist，但不以固定 `MISS → HIT` 时序或固定次数内出现 `HIT` 作为上线 gate；
 - **真实浏览器层**：桌面与移动端页面、导航、语言选择器、Run / Format / Reset、runtime message，以及 Network 中真实 Playground endpoint 和允许的 Origin；并按生产运维手册对最终课程页做轻量广告确认。
 
-FIRST_DEPLOYMENT 的正式入口为 `scripts/first-production.sh <release-dir>`。执行前，该 locale 的正式 production identity 必须显式设置 `production_state=first-production`；已经上线并标记为 `live` 的 locale 即使 `current` 或 receipt 缺失也会 fail closed。它从正式 production identity 执行全量 preflight、基础设施、Playground Origin、既有 `deploy-production.sh`、zgocloud direct-origin、Cloudflare proxied DNS、zgocloud public readiness、既有 `verify-production.sh` 与 Chrome automated browser acceptance；尚无正式公网 DNS/cache 时不要求 hostname purge。全部自动 gate 通过后只保留生产手册定义的 desktop/mobile 极小视觉 HUMAN gate。维护者完成该 gate 后，必须用 `go run -mod=readonly ./cmd/tour-i18n first-production finalize --release-dir <release-dir> --review-id <review-id>` 从真实 TTY 输入精确 `VISUAL-PASS`；它校验 receipt、当前 A gate 和唯一 evidence placeholder 后，记录 machine-finalizable production conclusion，并将目标 locale lifecycle 转为 `live`。同一 machine transaction 会按 candidate identity 从首页 language registry 更新 README 的 derived live locale 投影；`production/identity.json` 仍是唯一 Production machine authority，`first-production` locale 不会提前显示，也不需要手工同步 README。EXISTING_DEPLOYMENT 的正式入口为 `scripts/maintenance-production.sh <release-dir>`：它编排既有 deploy → EdgeOne/Cloudflare hostname purge **HUMAN GATE** → verify → browser automation → visual gate，并不会替代这些底层实现。首次 production 只做最终 ads-enabled 形态的一次验收，不执行“无广告完整验收 → 开广告 → 再完整验收”。
+FIRST_DEPLOYMENT 的正式入口为 `scripts/first-production.sh <release-dir>`。执行前，该 locale 的正式 production identity 必须显式设置 `production_state=first-production`；已经上线并标记为 `live` 的 locale 即使 `current` 或 receipt 缺失也会 fail closed。它从正式 production identity 执行全量 preflight、基础设施、Playground Origin、既有 `deploy-production.sh`、zgocloud direct-origin、Cloudflare proxied DNS、zgocloud public readiness、既有 `verify-production.sh` 与 Chrome automated browser acceptance；尚无正式公网 DNS/cache 时不要求 hostname purge。全部自动 gate 通过后直接运行 `go run -mod=readonly ./cmd/tour-i18n first-production finalize --release-dir <release-dir> --review-id <review-id>`；finalizer 不读取 stdin，在校验 receipt、当前 A gate 和唯一 evidence placeholder 后记录 machine-finalizable production conclusion，并将 lifecycle 转为 `live`。EXISTING_DEPLOYMENT 使用 `scripts/maintenance-production.sh <release-dir>` 编排 deploy → automatic exact-hostname CDN purge → machine → browser → PASS；多 locale 可使用 `scripts/maintenance-production-batch.sh <release-dir>...` 严格串行执行。Production visual review 已从 blocking lifecycle 删除；preview visual HUMAN gate 保持不变。
+
+一批上线完成后的人工视觉工作仅为非阻塞 spot check：抽样中文、非中文带广告、非中文不带广告各一个站点，不写 receipt、不阻止 finalize/live，也不要求逐 locale 执行。发现问题走正常修复 → publish → maintenance deploy。
 
 ## 8. Search-engine submission closeout
 
-在首次 production machine/browser acceptance、visual HUMAN gate 和正式 first-production finalize 全部通过，且目标 profile 已是 `production_state=live` 后，维护者完成以下外部运营 closeout：
+在首次 production machine/browser acceptance 和正式 first-production finalize 全部通过，且目标 profile 已是 `production_state=live` 后，维护者完成以下外部运营 closeout：
 
 1. 在 Google Search Console 为该 production hostname/property 完成必要接入，并提交该站的正式 `/sitemap.xml`。
 2. 在 Bing Webmaster Tools 为该 production hostname/property 完成必要接入，并提交同一正式 `/sitemap.xml`。

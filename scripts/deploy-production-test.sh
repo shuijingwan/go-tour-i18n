@@ -22,7 +22,7 @@ assert_profile() {
     [[ $HEALTH_URL == "$health" ]] || fail "$locale health profile"
     [[ $PUBLIC_URL == "$public" ]] || fail "$locale public profile"
     [[ $EXPECTED_DEPLOYMENT_MODE == EXISTING ]] || fail "$locale lifecycle profile"
-    [[ $PUBLIC_ACCEPTANCE_HINT == 'inspect the CDN/reverse-proxy cache and refresh it manually if needed' ]] || fail "$locale public acceptance hint"
+    [[ $PUBLIC_ACCEPTANCE_HINT == 'continue with the maintenance orchestrator automatic exact-hostname CDN purge' ]] || fail "$locale public acceptance hint"
 }
 
 assert_profile zh-CN /data/go-tour/releases /data/go-tour/current \

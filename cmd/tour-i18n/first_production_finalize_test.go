@@ -98,6 +98,9 @@ func TestFinalizationPlaceholderValidationFailsClosed(t *testing.T) {
 			}
 		})
 	}
+	if err := validateFinalizationPlaceholder([]byte(legacyFinalizationPlaceholder)); err != nil {
+		t.Fatalf("legacy untouched placeholder rejected: %v", err)
+	}
 }
 
 func TestFirstProductionEvidencePreflight(t *testing.T) {
@@ -188,7 +191,7 @@ func TestFirstProductionFinalizeFailsClosedBeforeHumanGate(t *testing.T) {
 			root, catalog, release, receipt, evidence := finalizeFixture(t)
 			before, _ := os.ReadFile(filepath.Join(root, "production", "identity.json"))
 			mutate(t, root, receipt, evidence)
-			if err := finalizeFirstProduction(root, catalog, release, "review-1", strings.NewReader("VISUAL-PASS\n"), ioDiscard{}, true, noIdentityValidation); err == nil {
+			if err := finalizeFirstProduction(root, catalog, release, "review-1", ioDiscard{}, noIdentityValidation); err == nil {
 				t.Fatal("finalize unexpectedly passed")
 			}
 			after, _ := os.ReadFile(filepath.Join(root, "production", "identity.json"))
@@ -199,16 +202,10 @@ func TestFirstProductionFinalizeFailsClosedBeforeHumanGate(t *testing.T) {
 	}
 }
 
-func TestFirstProductionFinalizeHumanGateAndAtomicTransition(t *testing.T) {
+func TestFirstProductionFinalizeWithoutHumanGateAndAtomicTransition(t *testing.T) {
 	root, catalog, release, _, evidence := finalizeFixture(t)
 	var output bytes.Buffer
-	if err := finalizeFirstProduction(root, catalog, release, "review-1", strings.NewReader("wrong\n"), ioDiscard{}, true, noIdentityValidation); err == nil {
-		t.Fatal("wrong token accepted")
-	}
-	if err := finalizeFirstProduction(root, catalog, release, "review-1", strings.NewReader("VISUAL-PASS\n"), ioDiscard{}, false, noIdentityValidation); err == nil {
-		t.Fatal("non-TTY accepted")
-	}
-	if err := finalizeFirstProduction(root, catalog, release, "review-1", strings.NewReader("VISUAL-PASS\n"), &output, true, noIdentityValidation); err != nil {
+	if err := finalizeFirstProduction(root, catalog, release, "review-1", &output, noIdentityValidation); err != nil {
 		t.Fatal(err)
 	}
 	if !strings.Contains(output.String(), "FIRST PRODUCTION FINALIZATION: PASS (locale=zz-ZZ review_id=review-1 production_state=live)") {
@@ -219,7 +216,7 @@ func TestFirstProductionFinalizeHumanGateAndAtomicTransition(t *testing.T) {
 		t.Fatal("identity transition was not exact")
 	}
 	result, _ := os.ReadFile(evidence)
-	if !strings.Contains(string(result), "maintainer confirmation") || strings.Contains(string(result), "`PENDING`") {
+	if strings.Contains(string(result), "visual HUMAN") || strings.Contains(string(result), "`PENDING`") {
 		t.Fatal("evidence was not finalized")
 	}
 	readme, _ := os.ReadFile(filepath.Join(root, "README.md"))
@@ -229,7 +226,7 @@ func TestFirstProductionFinalizeHumanGateAndAtomicTransition(t *testing.T) {
 	if err := i18n.RequireCurrentLocaleSurfaceReviewA(root, "zz-ZZ", catalog); err != nil {
 		t.Fatalf("v2 A gate became stale after lifecycle-only finalization: %v", err)
 	}
-	if err := finalizeFirstProduction(root, catalog, release, "review-1", strings.NewReader("VISUAL-PASS\n"), ioDiscard{}, true, noIdentityValidation); err == nil {
+	if err := finalizeFirstProduction(root, catalog, release, "review-1", ioDiscard{}, noIdentityValidation); err == nil {
 		t.Fatal("live locale finalized twice")
 	}
 }
@@ -318,7 +315,7 @@ func TestFirstProductionFinalizeRejectsStaleGateAndValidationRollback(t *testing
 	if err := os.WriteFile(filepath.Join(root, "internal", "tour", "seo.go"), []byte("changed"), 0644); err != nil {
 		t.Fatal(err)
 	}
-	if err := finalizeFirstProduction(root, catalog, release, "review-1", strings.NewReader("VISUAL-PASS\n"), ioDiscard{}, true, noIdentityValidation); err == nil {
+	if err := finalizeFirstProduction(root, catalog, release, "review-1", ioDiscard{}, noIdentityValidation); err == nil {
 		t.Fatal("stale A gate accepted")
 	}
 	root, catalog, release, _, evidence = finalizeFixture(t)
@@ -333,7 +330,7 @@ func TestFirstProductionFinalizeRejectsStaleGateAndValidationRollback(t *testing
 		}
 		return nil
 	}
-	if err := finalizeFirstProduction(root, catalog, release, "review-1", strings.NewReader("VISUAL-PASS\n"), ioDiscard{}, true, validator); err == nil {
+	if err := finalizeFirstProduction(root, catalog, release, "review-1", ioDiscard{}, validator); err == nil {
 		t.Fatal("post-write validation failure accepted")
 	}
 	newEvidence, _ := os.ReadFile(evidence)
@@ -351,7 +348,7 @@ func TestFirstProductionFinalizeRequiresNamedCurrentGateBeforeHumanPrompt(t *tes
 	}
 	recordCurrentGate(t, root, catalog, "review-2")
 	var output bytes.Buffer
-	if err := finalizeFirstProduction(root, catalog, release, "review-1", strings.NewReader("VISUAL-PASS\n"), &output, true, noIdentityValidation); err == nil {
+	if err := finalizeFirstProduction(root, catalog, release, "review-1", &output, noIdentityValidation); err == nil {
 		t.Fatal("finalizer accepted a stale named gate because another gate was current")
 	}
 	if output.Len() != 0 {

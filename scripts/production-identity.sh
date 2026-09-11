@@ -45,8 +45,8 @@ load_production_identity_shared() {
     local -a values=()
     output=$("$PRODUCTION_IDENTITY_TOOL" shared) || return 1
     mapfile -t values <<<"$output"
-    if (( ${#values[@]} != 11 )); then
-        printf 'production identity error: shared field count is %d, want 11\n' "${#values[@]}" >&2
+    if (( ${#values[@]} != 13 )); then
+        printf 'production identity error: shared field count is %d, want 13\n' "${#values[@]}" >&2
         return 1
     fi
     PRODUCTION_ALIYUN_SSH_ALIAS=${values[0]}
@@ -57,7 +57,9 @@ load_production_identity_shared() {
     PRODUCTION_CLOUDFLARE_ZONE_NAME=${values[5]}
     PRODUCTION_CLOUDFLARE_SECRET_FILE=${values[6]}
     PRODUCTION_NGINX_TEST_COMMAND=${values[7]}
-    PRODUCTION_NGINX_RELOAD_COMMAND=${values[8]}
-    PRODUCTION_SHARED_ASSETS_ORIGIN_ROOT=${values[9]}
-    PRODUCTION_SHARED_ASSETS_PUBLIC_ORIGIN=${values[10]}
+    PRODUCTION_EDGEONE_ZONE_NAME=${values[8]}
+    PRODUCTION_EDGEONE_SECRET_FILE=${values[9]}
+    PRODUCTION_NGINX_RELOAD_COMMAND=${values[10]}
+    PRODUCTION_SHARED_ASSETS_ORIGIN_ROOT=${values[11]}
+    PRODUCTION_SHARED_ASSETS_PUBLIC_ORIGIN=${values[12]}
 }

@@ -60,10 +60,10 @@ class ProductionIdentityTest(unittest.TestCase):
         self.assertEqual(profile["shared_assets_policy"], "shared-cloudflare")
         self.assertEqual(profile["production_public_url"], "https://pt-go-dev.shuijingwanwq.com/")
 
-    def test_turkish_first_production_profile_is_frozen(self):
+    def test_turkish_live_profile_is_frozen(self):
         parsed = MODULE.load_identity(self.identity_path)
         profile = next(item for item in parsed["locales"] if item["locale"] == "tr-TR")
-        self.assertEqual(profile["production_state"], "first-production")
+        self.assertEqual(profile["production_state"], "live")
         self.assertEqual(profile["production_hostname"], "tr-go-dev.shuijingwanwq.com")
         self.assertEqual(profile["cdn"], "cloudflare")
         self.assertEqual(profile["data_root"], "/data/go-tour-tr-TR")
@@ -92,6 +92,16 @@ class ProductionIdentityTest(unittest.TestCase):
         expected = [profile for profile in self.identity["locales"] if profile["production_state"] == "live"]
         self.assertEqual(len(lines), len(expected))
         self.assertEqual([line.split("\t")[0] for line in lines], [profile["locale"] for profile in expected])
+
+    def test_cdn_secret_authorities_are_frozen_without_credentials(self):
+        shared = MODULE.load_identity(self.identity_path)["shared"]
+        self.assertEqual(shared["cloudflare_zone_name"], "shuijingwanwq.com")
+        self.assertEqual(shared["cloudflare_secret_file"], "/etc/go-tour/cloudflare.env")
+        self.assertEqual(shared["edgeone_zone_name"], "shuijingwanwq.com")
+        self.assertEqual(shared["edgeone_secret_file"], "/etc/go-tour/edgeone.env")
+        rendered = json.dumps(shared)
+        self.assertNotIn("TENCENTCLOUD_SECRET_ID", rendered)
+        self.assertNotIn("TENCENTCLOUD_SECRET_KEY", rendered)
 
     def test_unknown_or_missing_field_fails_closed(self):
         data = copy.deepcopy(self.identity)

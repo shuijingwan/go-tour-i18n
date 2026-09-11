@@ -934,7 +934,7 @@ done
         run_stage("public-machine", self.public_machine)
         run_stage("browser", self.browser)
         self.write_receipt("passed")
-        print("\n[首次生产] READY FOR HUMAN VISUAL GATE")
+        print("\n[首次生产] READY FOR FINALIZATION")
         print(f"receipt: {self.receipt_path}")
 
 

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-import builtins
 import copy
 import importlib.util
 import json
@@ -10,9 +9,7 @@ import tempfile
 import unittest
 from unittest import mock
 
-
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-
 
 def load(name, path):
     spec = importlib.util.spec_from_file_location(name, path)
@@ -20,9 +17,7 @@ def load(name, path):
     spec.loader.exec_module(module)
     return module
 
-
 MAINTENANCE = load("maintenance_production", ROOT / "scripts" / "maintenance-production.py")
-
 
 class MaintenanceProductionTest(unittest.TestCase):
     def setUp(self):
@@ -33,8 +28,7 @@ class MaintenanceProductionTest(unittest.TestCase):
         self.temp.cleanup()
 
     def release(self, locale="de-DE", name=None):
-        name = name or f"go-tour-release-20260904-{locale}-test"
-        release = self.parent / name
+        release = self.parent / (name or "go-tour-release-20260911-%s-test" % locale)
         release.mkdir()
         (release / "release.json").write_text(json.dumps({"locale": locale}), encoding="utf-8")
         return release
@@ -43,165 +37,126 @@ class MaintenanceProductionTest(unittest.TestCase):
         return MAINTENANCE.Orchestrator(self.release(locale, name))
 
     def run_results(self, *codes):
-        return mock.patch.object(
-            MAINTENANCE.subprocess,
-            "run",
-            side_effect=[subprocess.CompletedProcess([], code) for code in codes],
-        )
+        return mock.patch.object(MAINTENANCE.subprocess, "run", side_effect=[subprocess.CompletedProcess([], code) for code in codes])
 
-    def test_live_locale_normal_path_and_final_pass(self):
+    def test_live_locale_automatic_path_and_final_pass_without_stdin(self):
         instance = self.make()
-        with self.run_results(0, 0, 0) as run, mock.patch.object(builtins, "input", side_effect=["PURGED", "VISUAL-PASS"]):
+        with self.run_results(0, 0, 0, 0, 0) as run, mock.patch("builtins.input") as prompt:
             instance.execute()
-        self.assertEqual(run.call_count, 3)
+        self.assertEqual([pathlib.Path(call.args[0][0]).name for call in run.call_args_list], [
+            "production-cdn.py", "deploy-production.sh", "production-cdn.py", "verify-production.sh", "verify-production-browser.py"])
+        prompt.assert_not_called()
         self.assertEqual(instance.receipt["result"], "passed")
-        self.assertTrue(instance.stage_passed("deploy"))
-        self.assertTrue(instance.stage_passed("machine"))
-        self.assertTrue(instance.stage_passed("browser"))
-        self.assertTrue(instance.stage_passed("visual"))
-        self.assertIn("maintenance-production-receipt", instance.receipt_path.name)
+        self.assertEqual(set(instance.receipt["stages"]), set(MAINTENANCE.STAGE_LABELS))
+        self.assertNotIn("visual", instance.receipt["stages"])
+        self.assertNotIn("cdn_purge_confirmed_at", instance.receipt)
 
-    def test_first_production_locale_is_rejected_with_formal_flow_hint(self):
+    def test_first_production_and_unknown_locale_fail_before_commands(self):
         release = self.release()
-        identity = MAINTENANCE.IDENTITY.load_identity(ROOT / "production" / "identity.json")
-        identity = copy.deepcopy(identity)
-        identity["locales"][2]["production_state"] = "first-production"
+        identity = copy.deepcopy(MAINTENANCE.IDENTITY.load_identity(ROOT / "production" / "identity.json"))
+        next(p for p in identity["locales"] if p["locale"] == "de-DE")["production_state"] = "first-production"
         with mock.patch.object(MAINTENANCE.IDENTITY, "load_identity", return_value=identity):
-            with self.assertRaisesRegex(MAINTENANCE.MaintenanceProductionError, "production_state=first-production") as raised:
+            with self.assertRaisesRegex(MAINTENANCE.MaintenanceProductionError, "production_state=first-production"):
                 MAINTENANCE.Orchestrator(release)
-        self.assertIn("first-production.sh", raised.exception.next_step)
+        with self.assertRaises(MAINTENANCE.MaintenanceProductionError):
+            MAINTENANCE.Orchestrator(self.release("zz-ZZ", "go-tour-release-unknown"))
 
-    def test_unknown_and_invalid_locale_fail_closed(self):
-        for index, locale in enumerate(("zz-ZZ", "not a locale")):
-            with self.subTest(locale=locale):
-                with self.assertRaises(MAINTENANCE.MaintenanceProductionError) as raised:
-                    MAINTENANCE.Orchestrator(self.release(locale, f"go-tour-release-20260904-invalid-{index}"))
-                self.assertEqual(raised.exception.expected, "one formal production identity")
-
-    def test_receipt_identity_mismatch_fails_closed_for_other_release_or_hostname(self):
-        release = self.release()
-        receipt = release.parent / f"{release.name}.maintenance-production-receipt.json"
-        receipt.write_text(json.dumps({
-            "schema": MAINTENANCE.RECEIPT_SCHEMA, "locale": "fr-FR",
-            "hostname": "fr-go-dev.shuijingwanwq.com", "cdn": "cloudflare",
-            "public_url": "https://fr-go-dev.shuijingwanwq.com/", "release": "other",
-            "result": "running", "stages": {},
-        }), encoding="utf-8")
-        with self.assertRaises(MAINTENANCE.MaintenanceProductionError) as raised:
-            MAINTENANCE.Orchestrator(release)
-        self.assertIn("不要复用其他 locale", raised.exception.next_step)
-
-    def test_deploy_failure_does_not_continue(self):
+    def test_receipt_identity_and_stage_order_fail_closed(self):
         instance = self.make()
-        with self.run_results(7) as run, mock.patch.object(builtins, "input") as prompt:
+        instance.receipt["locale"] = "fr-FR"
+        instance.write_receipt("failed")
+        with self.assertRaises(MAINTENANCE.MaintenanceProductionError):
+            MAINTENANCE.Orchestrator(instance.release_dir)
+        instance.receipt_path.unlink()
+        instance = MAINTENANCE.Orchestrator(instance.release_dir)
+        instance.receipt["stages"]["purge"] = {"result": "PASS", "completed_at": "2026-09-11T00:00:00Z"}
+        instance.receipt["stages"]["browser"] = {"result": "PASS", "completed_at": "2026-09-11T00:00:00Z"}
+        instance.write_receipt("failed")
+        with self.assertRaises(MAINTENANCE.MaintenanceProductionError) as raised:
+            MAINTENANCE.Orchestrator(instance.release_dir)
+        self.assertEqual(raised.exception.expected, "ordered receipt stage prefix")
+
+    def test_cdn_preflight_failure_prevents_deploy(self):
+        instance = self.make()
+        with self.run_results(7) as run:
             with self.assertRaisesRegex(MAINTENANCE.MaintenanceProductionError, "exit 7"):
                 instance.execute()
         self.assertEqual(run.call_count, 1)
-        prompt.assert_not_called()
         self.assertFalse(instance.stage_passed("deploy"))
 
-    def test_deploy_success_enters_purge_gate_and_unconfirmed_purge_cannot_verify(self):
+    def test_deploy_or_purge_failure_stops_before_acceptance(self):
         instance = self.make()
-        with self.run_results(0) as run, mock.patch.object(builtins, "input", return_value="no"):
-            with self.assertRaises(MAINTENANCE.MaintenanceProductionError) as raised:
-                instance.execute()
-        self.assertEqual(raised.exception.expected, "explicit confirmation PURGED")
-        self.assertEqual(run.call_count, 1)
-        self.assertTrue(instance.stage_passed("deploy"))
-
-    def test_machine_failure_stops_before_browser(self):
-        instance = self.make()
-        with self.run_results(0, 3) as run, mock.patch.object(builtins, "input", return_value="PURGED"):
-            with self.assertRaisesRegex(MAINTENANCE.MaintenanceProductionError, "exit 3"):
-                instance.execute()
+        with self.run_results(0, 7) as run:
+            with self.assertRaises(MAINTENANCE.MaintenanceProductionError): instance.execute()
         self.assertEqual(run.call_count, 2)
-        self.assertFalse(instance.stage_passed("machine"))
-
-    def test_browser_failure_stops_before_visual_gate(self):
-        instance = self.make()
-        with self.run_results(0, 0, 5) as run, mock.patch.object(builtins, "input", side_effect=["PURGED"]):
-            with self.assertRaisesRegex(MAINTENANCE.MaintenanceProductionError, "exit 5"):
-                instance.execute()
+        other = self.make(name="go-tour-release-20260911-de-DE-purge")
+        with self.run_results(0, 0, 9) as run:
+            with self.assertRaises(MAINTENANCE.MaintenanceProductionError): other.execute()
         self.assertEqual(run.call_count, 3)
-        self.assertFalse(instance.stage_passed("browser"))
+        self.assertTrue(other.stage_passed("deploy"))
+        self.assertFalse(other.stage_passed("purge"))
+        self.assertFalse(other.stage_passed("machine"))
 
-    def test_resume_revalidates_successful_deployment_without_repeating_mutation_and_requires_purge_again(self):
+    def test_machine_and_browser_failure_stop_in_order(self):
+        instance = self.make(name="go-tour-release-20260911-de-DE-machine")
+        with self.run_results(0, 0, 0, 3) as run:
+            with self.assertRaises(MAINTENANCE.MaintenanceProductionError): instance.execute()
+        self.assertEqual(run.call_count, 4)
+        self.assertTrue(instance.stage_passed("purge"))
+        other = self.make(name="go-tour-release-20260911-de-DE-browser")
+        with self.run_results(0, 0, 0, 0, 5) as run:
+            with self.assertRaises(MAINTENANCE.MaintenanceProductionError): other.execute()
+        self.assertEqual(run.call_count, 5)
+        self.assertFalse(other.stage_passed("browser"))
+
+    def test_resume_revalidates_deploy_and_reuses_passed_purge(self):
         instance = self.make()
-        instance.receipt["stages"]["deploy"] = {"result": "PASS", "completed_at": "2026-09-04T00:00:00Z"}
+        for stage in ("deploy", "purge"):
+            instance.receipt["stages"][stage] = {"result": "PASS", "completed_at": "2026-09-11T00:00:00Z"}
         instance.write_receipt("failed")
         resumed = MAINTENANCE.Orchestrator(instance.release_dir)
-        with self.run_results(0, 0, 0) as run, mock.patch.object(builtins, "input", side_effect=["PURGED", "VISUAL-PASS"]) as prompt:
-            resumed.execute()
-        self.assertEqual(run.call_count, 3)
-        self.assertEqual(pathlib.Path(run.call_args_list[0].args[0][0]).name, "deploy-production.sh")
-        prompt.assert_any_call("完成上述 hostname purge 后输入 PURGED 继续：")
-        self.assertEqual(resumed.receipt["result"], "passed")
+        with self.run_results(0, 0, 0, 0) as run: resumed.execute()
+        self.assertEqual([pathlib.Path(call.args[0][0]).name for call in run.call_args_list], [
+            "production-cdn.py", "deploy-production.sh", "verify-production.sh", "verify-production-browser.py"])
 
-    def test_failed_deploy_receipt_reruns_deploy_then_records_pass_and_enters_purge(self):
-        instance = self.make()
-        instance.write_receipt("failed")
+    def test_failed_deploy_receipt_reruns_strict_deploy(self):
+        instance = self.make(); instance.write_receipt("failed")
         resumed = MAINTENANCE.Orchestrator(instance.release_dir)
-        with self.run_results(0, 0, 0) as run, mock.patch.object(
-            builtins, "input", side_effect=["PURGED", "VISUAL-PASS"]
-        ) as prompt:
-            resumed.execute()
-        self.assertEqual(run.call_count, 3)
-        self.assertTrue(resumed.stage_passed("deploy"))
-        prompt.assert_any_call("完成上述 hostname purge 后输入 PURGED 继续：")
-        self.assertEqual(resumed.receipt["result"], "passed")
+        with self.run_results(0, 0, 0, 0, 0) as run: resumed.execute()
+        self.assertEqual(pathlib.Path(run.call_args_list[1].args[0][0]).name, "deploy-production.sh")
 
-    def test_passed_deploy_receipt_cannot_bypass_remote_revalidation(self):
-        instance = self.make()
-        instance.receipt["stages"]["deploy"] = {"result": "PASS", "completed_at": "2026-09-04T00:00:00Z"}
-        instance.write_receipt("failed")
-        resumed = MAINTENANCE.Orchestrator(instance.release_dir)
-        with self.run_results(9) as run, mock.patch.object(builtins, "input") as prompt:
-            with self.assertRaisesRegex(MAINTENANCE.MaintenanceProductionError, "exit 9"):
-                resumed.execute()
-        self.assertEqual(run.call_count, 1)
-        prompt.assert_not_called()
-
-    def test_complete_passed_receipt_runs_no_commands_or_human_gates(self):
+    def test_passed_receipt_skips_everything(self):
         instance = self.make()
         for stage in MAINTENANCE.STAGE_LABELS:
-            instance.receipt["stages"][stage] = {"result": "PASS", "completed_at": "2026-09-04T00:00:00Z"}
-        instance.receipt["cdn_purge_confirmed_at"] = "2026-09-04T00:00:00Z"
+            instance.receipt["stages"][stage] = {"result": "PASS", "completed_at": "2026-09-11T00:00:00Z"}
         instance.write_receipt("passed")
         resumed = MAINTENANCE.Orchestrator(instance.release_dir)
-        with mock.patch.object(MAINTENANCE.subprocess, "run") as run, mock.patch.object(builtins, "input") as prompt:
-            resumed.execute()
+        with mock.patch.object(MAINTENANCE.subprocess, "run") as run: resumed.execute()
         run.assert_not_called()
-        prompt.assert_not_called()
 
-    def test_incomplete_passed_receipt_fails_closed_instead_of_printing_pass(self):
+    def test_historical_complete_receipt_remains_readable_and_skips(self):
         instance = self.make()
-        instance.receipt["stages"]["deploy"] = {"result": "PASS", "completed_at": "2026-09-04T00:00:00Z"}
+        instance.receipt["stages"] = {stage: {"result": "PASS", "completed_at": "2026-09-11T00:00:00Z"} for stage in ("deploy", "machine", "browser", "visual")}
+        instance.receipt["cdn_purge_confirmed_at"] = "2026-09-11T00:00:00Z"
         instance.write_receipt("passed")
-        with self.assertRaises(MAINTENANCE.MaintenanceProductionError) as raised:
-            MAINTENANCE.Orchestrator(instance.release_dir)
-        self.assertEqual(raised.exception.expected, "complete passed receipt")
+        resumed = MAINTENANCE.Orchestrator(instance.release_dir)
+        self.assertTrue(resumed.historical_pass)
+        with mock.patch.object(MAINTENANCE.subprocess, "run") as run: resumed.execute()
+        run.assert_not_called()
 
-    def test_cloudflare_and_edgeone_human_gate_messages_are_profile_specific(self):
-        identity = MAINTENANCE.IDENTITY.load_identity(ROOT / "production" / "identity.json")
-        cloudflare = next(p for p in identity["locales"] if p["locale"] == "de-DE")
-        edgeone = next(p for p in identity["locales"] if p["locale"] == "zh-CN")
-        cloudflare_text = "\n".join(MAINTENANCE.purge_instructions(cloudflare))
-        edgeone_text = "\n".join(MAINTENANCE.purge_instructions(edgeone))
-        self.assertIn(cloudflare["production_hostname"], cloudflare_text)
-        self.assertIn("Custom Purge", cloudflare_text)
-        self.assertIn("不得使用 Purge Everything", cloudflare_text)
-        self.assertIn(edgeone["production_hostname"], edgeone_text)
-        self.assertIn("EdgeOne", edgeone_text)
-
-    def test_receipt_and_source_have_no_credentials_or_secret_values(self):
+    def test_historical_in_progress_receipt_requires_automatic_purge(self):
         instance = self.make()
-        rendered = json.dumps(instance.receipt)
+        instance.receipt["stages"] = {stage: {"result": "PASS", "completed_at": "2026-09-11T00:00:00Z"} for stage in ("deploy", "machine", "browser")}
+        instance.receipt["cdn_purge_confirmed_at"] = "2026-09-11T00:00:00Z"
+        instance.write_receipt("failed")
+        resumed = MAINTENANCE.Orchestrator(instance.release_dir)
+        self.assertEqual(set(resumed.receipt["stages"]), {"deploy"})
+        with self.run_results(0, 0, 0, 0, 0) as run: resumed.execute()
+        self.assertEqual(pathlib.Path(run.call_args_list[2].args[0][0]).name, "production-cdn.py")
+
+    def test_source_has_no_human_tokens_or_secrets(self):
         source = (ROOT / "scripts" / "maintenance-production.py").read_text(encoding="utf-8")
-        self.assertNotIn("CF_Token", rendered)
-        self.assertNotIn("TOUR_AD_HTML", rendered)
-        self.assertNotIn("CF_Token", source)
-        self.assertNotIn("TOUR_AD_HTML", source)
+        for forbidden in ("input(", "PURGED", "VISUAL-PASS", "CF_Token", "TENCENTCLOUD_SECRET"):
+            self.assertNotIn(forbidden, source)
 
-
-if __name__ == "__main__":
-    unittest.main()
+if __name__ == "__main__": unittest.main()

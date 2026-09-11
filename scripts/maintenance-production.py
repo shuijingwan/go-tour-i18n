@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Resumable orchestration for an already-live production locale.
 
-This deliberately owns no deployment or acceptance implementation.  It binds a
-release to its formal identity, invokes the established commands, and records
-the successful deployment result needed to resume after a human gate.
+This deliberately owns no deployment, CDN client, or acceptance implementation.
+It binds a release to its formal identity, invokes the established commands,
+and records the successful stages needed for strict resume.
 """
 
 from __future__ import annotations
@@ -28,10 +28,11 @@ IDENTITY_SPEC.loader.exec_module(IDENTITY)
 RECEIPT_SCHEMA = "go-tour-i18n/maintenance-production-receipt/v1"
 STAGE_LABELS = {
     "deploy": "deployment",
+    "purge": "automatic hostname purge",
     "machine": "machine acceptance",
     "browser": "browser acceptance",
-    "visual": "visual HUMAN gate",
 }
+LEGACY_STAGE = "visual"
 
 
 class MaintenanceProductionError(RuntimeError):
@@ -68,27 +69,6 @@ def safe_release_name(release_dir: pathlib.Path) -> str:
     return remote
 
 
-def purge_instructions(profile: dict) -> tuple[str, ...]:
-    hostname = profile["production_hostname"]
-    common = (
-        "CDN HOSTNAME PURGE HUMAN GATE",
-        f"locale: {profile['locale']}",
-        f"production hostname: {hostname}",
-        f"CDN: {profile['cdn']}",
-    )
-    if profile["cdn"] == "cloudflare":
-        return common + (
-            f"现在在 Cloudflare 对当前 hostname 执行 Custom Purge：{hostname}",
-            "只能刷新该 hostname；不得使用 Purge Everything。",
-        )
-    if profile["cdn"] == "edgeone":
-        return common + (
-            f"现在按 EdgeOne 当前正式规则执行 hostname 缓存刷新：{hostname}",
-            "只刷新当前 hostname；不要扩大为其他 hostname 的缓存操作。",
-        )
-    raise MaintenanceProductionError("preflight", "supported formal CDN", repr(profile["cdn"]), "检查 production identity")
-
-
 class Orchestrator:
     def __init__(self, release_dir: pathlib.Path):
         if not release_dir.is_dir() or release_dir.is_symlink():
@@ -107,6 +87,7 @@ class Orchestrator:
                 "该 locale 尚属首次 production；请使用 scripts/first-production.sh <release-dir>",
             )
         self.receipt_path = self.release_dir.parent / f"{self.release_dir.name}.maintenance-production-receipt.json"
+        self.historical_pass = False
         self.receipt = self._load_or_new_receipt()
 
     def _new_receipt(self) -> dict:
@@ -119,7 +100,6 @@ class Orchestrator:
             "release": self.release_name,
             "started_at": utc_now(),
             "completed_at": None,
-            "cdn_purge_confirmed_at": None,
             "result": "running",
             "stages": {},
         }
@@ -137,20 +117,30 @@ class Orchestrator:
         if actual != expected:
             raise MaintenanceProductionError("preflight", repr(expected), repr(actual), "不要复用其他 locale、hostname 或 release 的 receipt")
         stages = previous.get("stages")
-        if type(stages) is not dict or set(stages) - set(STAGE_LABELS):
+        if type(stages) is not dict or set(stages) - (set(STAGE_LABELS) | {LEGACY_STAGE}):
             raise MaintenanceProductionError("preflight", "known receipt stages", repr(stages), "移走无效 receipt 并检查 production identity")
         for stage, value in stages.items():
             if type(value) is not dict or value.get("result") != "PASS" or type(value.get("completed_at")) is not str:
                 raise MaintenanceProductionError("preflight", "valid passed receipt stage", repr({stage: value}), "移走无效 receipt 并检查 production identity")
         if previous.get("result") == "passed":
-            if not all(stage in stages for stage in STAGE_LABELS) or type(previous.get("cdn_purge_confirmed_at")) is not str:
+            current_complete = all(stage in stages for stage in STAGE_LABELS)
+            legacy_complete = all(stage in stages for stage in ("deploy", "machine", "browser", "visual")) and type(previous.get("cdn_purge_confirmed_at")) is str
+            if not current_complete and not legacy_complete:
                 raise MaintenanceProductionError("preflight", "complete passed receipt", repr(stages), "移走无效 receipt 并检查 production identity")
-            print("[maintenance-production] 已有同一 release 的完整 PASS receipt；不会重复 deployment mutation。")
+            self.historical_pass = legacy_complete and not current_complete
+            print("[maintenance-production] 已有同一 release 的完整 PASS receipt；不会重复 deploy/purge/acceptance。")
             return previous
         if previous.get("result") not in ("running", "failed"):
             raise MaintenanceProductionError("preflight", "running or failed resumable receipt", repr(previous.get("result")), "移走无效 receipt 并检查 production identity")
         base["started_at"] = previous.get("started_at") or base["started_at"]
-        base["stages"] = previous["stages"]
+        if LEGACY_STAGE in stages or ("purge" not in stages and any(stage in stages for stage in ("machine", "browser"))):
+            stages = {"deploy": stages["deploy"]} if "deploy" in stages else {}
+            print("[maintenance-production] 旧版未完成 receipt 已安全迁移；将执行自动 purge。")
+        ordered = list(STAGE_LABELS)
+        present = [stage for stage in ordered if stage in stages]
+        if present != ordered[:len(present)]:
+            raise MaintenanceProductionError("preflight", "ordered receipt stage prefix", repr(stages), "移走无效 receipt 并检查 production identity")
+        base["stages"] = stages
         print(f"[maintenance-production] resume receipt 已识别：{self.receipt_path}")
         return base
 
@@ -181,36 +171,17 @@ class Orchestrator:
         if completed.returncode:
             raise MaintenanceProductionError(stage, "command exit 0", f"exit {completed.returncode}", "按该 stage 的输出检查后重试")
 
-    def confirm_purge(self) -> None:
-        for line in purge_instructions(self.profile):
-            print(f"[maintenance-production] {line}")
-        answer = input("完成上述 hostname purge 后输入 PURGED 继续：").strip()
-        if answer != "PURGED":
-            raise MaintenanceProductionError("cdn-purge", "explicit confirmation PURGED", repr(answer), "完成 hostname purge 后重新执行同一命令并输入 PURGED")
-        # This receipt event is audit information only.  Every invocation asks
-        # again; a receipt can never automatically satisfy a HUMAN GATE.
-        self.receipt["cdn_purge_confirmed_at"] = utc_now()
-        self.write_receipt()
-        print("[maintenance-production] CDN hostname purge: HUMAN CONFIRMED")
-
-    def confirm_visual(self) -> None:
-        print("[maintenance-production] VISUAL HUMAN GATE")
-        print("[maintenance-production] Desktop：确认 editor、广告区域和整体布局无明显异常。")
-        print("[maintenance-production] Mobile：打开 /tour/moretypes/1，确认无整页横向 overflow、广告/footer 正常，并点击一次下一页。")
-        answer = input("上述 visual acceptance 通过后输入 VISUAL-PASS：").strip()
-        if answer != "VISUAL-PASS":
-            raise MaintenanceProductionError("visual", "explicit confirmation VISUAL-PASS", repr(answer), "完成最小 visual acceptance 后重新执行同一命令")
-        self.record("visual")
-
     def print_summary(self) -> None:
         print("\nMAINTENANCE PRODUCTION: PASS")
         print(f"release: {self.release_name}")
         print(f"locale: {self.locale}")
         print(f"hostname: {self.profile['production_hostname']}")
-        print("CDN hostname purge: HUMAN CONFIRMED")
+        if self.historical_pass:
+            print("CDN hostname purge: HISTORICAL HUMAN PASS")
+        else:
+            print("CDN hostname purge: PASS")
         print("machine acceptance: PASS")
         print("browser acceptance: PASS")
-        print("visual HUMAN gate: PASS")
         print(f"receipt: {self.receipt_path}")
 
     def execute(self) -> None:
@@ -218,18 +189,24 @@ class Orchestrator:
         if self.receipt.get("result") == "passed":
             self.print_summary()
             return
+        self.run_command("preflight", [ROOT / "scripts" / "production-cdn.py", "preflight", "--locale", self.locale], 300)
         deploy_was_passed = self.stage_passed("deploy")
         self.run_command("deploy", [ROOT / "scripts" / "deploy-production.sh", self.release_dir], 1800)
         if not deploy_was_passed:
             self.record("deploy")
         else:
             print("[maintenance-production] deployment: RESUME（同一 release 已重新验证；未重复 deployment mutation）")
-        self.confirm_purge()
-        self.run_command("machine", [ROOT / "scripts" / "verify-production.sh", self.release_dir], 1800)
-        self.record("machine")
-        self.run_command("browser", [ROOT / "scripts" / "verify-production-browser.py", self.profile["production_public_url"], self.locale], 900)
-        self.record("browser")
-        self.confirm_visual()
+        if not self.stage_passed("purge"):
+            self.run_command("purge", [ROOT / "scripts" / "production-cdn.py", "purge", "--locale", self.locale], 300)
+            self.record("purge")
+        else:
+            print("[maintenance-production] automatic hostname purge: RESUME")
+        if not self.stage_passed("machine"):
+            self.run_command("machine", [ROOT / "scripts" / "verify-production.sh", self.release_dir], 1800)
+            self.record("machine")
+        if not self.stage_passed("browser"):
+            self.run_command("browser", [ROOT / "scripts" / "verify-production-browser.py", self.profile["production_public_url"], self.locale], 900)
+            self.record("browser")
         self.write_receipt("passed")
         self.print_summary()
 

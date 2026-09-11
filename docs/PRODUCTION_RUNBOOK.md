@@ -171,6 +171,16 @@ ssh -t aliyun 'editor /etc/go-tour/cloudflare.env'
 
 编排器只检查文件 identity 和变量是否存在，不输出变量值。Cloudflare zone ID 不落库：每次用正式 zone name 查询，且结果必须唯一。
 
+EdgeOne 的正式非 secret authority 同样只来自 `production/identity.json`：`shared.edgeone_zone_name` 与 `shared.edgeone_secret_file`。当前 secret 文件为 aliyun 上的 `/etc/go-tour/edgeone.env`，必须是 `root:root`、mode `0600` 的普通文件，并且恰好定义非空 `TENCENTCLOUD_SECRET_ID` 与 `TENCENTCLOUD_SECRET_KEY`。代码和日志不得读取回、打印或持久化这两个值；ZoneId 不写死，每次由 zone name 精确解析。真实 mutation 前可执行只读检查：
+
+```sh
+scripts/verify-edgeone-authority.sh zh-CN
+```
+
+该命令只检查 secret 文件安全性，并调用 `DescribeZones`、`DescribeAccelerationDomains` 证明 exact enabled zone 与 exact online hostname ownership；不会调用 `CreatePurgeTask`、刷新缓存或修改 DNS。成功输出 `EDGEONE AUTHORITY PREFLIGHT: PASS`。
+
+EdgeOne client 使用 Python stdlib 实现腾讯云 API 3.0 `TC3-HMAC-SHA256`，固定 endpoint `https://teo.tencentcloudapi.com`、service `teo`、Version `2022-09-01`，不依赖 tccli 或腾讯云 SDK。`DescribeZones` 必须只返回一个 `ZoneName` exact、非空 `ZoneId`、`ActiveStatus=active`、`Paused=false` 且 `LockStatus=enable` 的 Zone。`Type=partial`（CNAME 接入）要求 `CnameStatus=finished`，并接受表示 NS 尚未切换的 `Status=pending`；`Type=full` 要求 `Status=active`，不以 `CnameStatus` 为 gate；其它 Type fail closed。随后以动态 ZoneId 调用 `DescribeAccelerationDomains`，必须只返回一个 exact hostname、exact ZoneId 且 `DomainStatus=online` 的域名。0 个、多个、mismatch 或未知状态均 fail closed。`CreatePurgeTask` 必须返回非空 JobId 和空 FailedList；`DescribePurgeTasks` 只接受 `processing → success`，`failed`、`timeout`、`canceled`、未知状态、identity mismatch 或 polling exhausted 均失败。mutation response 未知时，以 start timestamp 前后受限窗口、exact ZoneId、`purge_host` 与 exact target 查询；唯一任务继续 polling，多个匹配立即失败，始终无法归因则失败且不盲目重发。
+
 ## 新 Locale 首次生产部署
 
 首次部署是建立新 locale 的 production 基础设施，不得直接套用日常 release 切换。开始前必须已完成 TranslationUnit promotion、完整 projection、Surface Review 的语言质量与 preview acceptance、production publish，以及 shared-assets current-state freshness gate。
@@ -196,7 +206,6 @@ scripts/first-production.sh \
 → zgocloud minimal public readiness
 → scripts/verify-production.sh <release-dir>
 → Chrome automated browser acceptance
-→ 极小 HUMAN visual gate
 → evidence finalize
 ```
 
@@ -241,12 +250,7 @@ Cloudflare DNS 创建后，first-production 只从 zgocloud 对新 hostname 做 
 
 运营注意：首次 Production 公网验收若没有紧急需求，尽量避开北京时间晚间的跨境网络高峰。发生上述典型 transient failure 时，保留失败现场并在网络条件改善后 resume；不要在没有新的 deployment evidence 时重新 deploy，也不要将网络失败解释为已检查 URL 的 PASS。
 
-全部自动验收 PASS 后，唯一人工 production gate 为：
-
-1. Desktop 打开一个 editor 课程页，肉眼确认整体布局和 editor 无明显视觉异常；`standard` 同时确认广告区域正常，`go-local` 确认没有广告区域且布局正常。
-2. Mobile 打开 `/tour/moretypes/1`，确认无非预期整页横向 overflow、footer 无明显异常；`standard` 确认广告区域正常，`go-local` 确认无广告布局异常，并点击一次“下一页”确认 SPA 视觉正常。
-
-人工记录只写 `passed` 或 `failed: <问题>`。人工不再重复 Run、Format、Reset、SEO、canonical、Network Origin 或 `/socket`。通过后必须从真实 TTY 运行正式收口入口，而不是手工修改 lifecycle：
+全部 machine/browser 验收 PASS 后直接运行正式收口入口，不读取 stdin，也不要求 Production visual confirmation：
 
 ```sh
 go run -mod=readonly ./cmd/tour-i18n first-production finalize \
@@ -254,7 +258,7 @@ go run -mod=readonly ./cmd/tour-i18n first-production finalize \
   --review-id YYYYMMDD-first-production
 ```
 
-finalizer 从 release/receipt 和正式 identity 获取 locale、hostname、release，拒绝调用者重复输入 production identity。它要求 receipt schema 正确、`result=passed`、`public-machine` 和 `browser` 均为 PASS，且当前 Locale Surface Review A gate 仍有效；随后才显示 HUMAN gate 并要求维护者精确输入 `VISUAL-PASS`。非 TTY、EOF、错误输入均不修改 evidence、identity 或 README；没有 `--yes`、环境变量或默认 bypass。它只替换 evidence 中唯一且完整的 finalization placeholder，记录 receipt identity、machine/browser passed、`maintainer confirmation` 的 visual passed、无 blocker 和最终 decision；再以 candidate identity 中目标 locale 已为 `live` 的状态，从首页 language registry 生成 README 的 community live locale block。README 是 derived projection，`production/identity.json` 仍是唯一 Production machine authority；registry URL 与 identity public URL 漂移、缺失或不唯一 join 都会 fail closed。evidence、README 与 identity 原子提交并在最终 identity validation 失败时一并恢复。已 `live` locale 必须拒绝重复 finalize。可用只读 `surface-review check-a --locale <locale>` 检查当前 A gate；schema v2 A gate 不把 lifecycle 纳入语言质量 input，因此该 state transition 后仍 current，历史 schema v1 gate 则继续按整份 identity SHA 的旧语义 stale。
+finalizer 从 release/receipt 和正式 identity 获取 locale、hostname、release，拒绝调用者重复输入 production identity。它要求 receipt schema 正确、`result=passed`、`public-machine` 和 `browser` 均为 PASS，且当前 Locale Surface Review A gate 仍有效；然后替换 evidence 中唯一且完整的 finalization placeholder，记录 receipt identity、machine/browser passed、无 blocker 和最终 decision；再以 candidate identity 中目标 locale 已为 `live` 的状态，从首页 language registry 生成 README 的 community live locale block。旧的未完成 placeholder 若仍包含 Production visual `PENDING` 字段可安全收口，但新 evidence 不再创建该字段。README 是 derived projection，`production/identity.json` 仍是唯一 Production machine authority；registry URL 与 identity public URL 漂移、缺失或不唯一 join 都会 fail closed。evidence、README 与 identity 原子提交并在最终 identity validation 失败时一并恢复。已 `live` locale 必须拒绝重复 finalize。
 
 成功摘要保持简洁，例如：
 
@@ -329,7 +333,7 @@ ssh aliyun 'journalctl -u go-tour.service -n 80 --no-pager'
 
 live locale 的同一目标 release 已经精确是 `current` 时，可能是上次 source activation 和 localhost health 已成功、但随后 public acceptance 失败。该状态只在正式 identity 仍为 live、`current` 精确指向 release root 内的目标真实目录、无 deployment lock、远端完整文件集合与逐文件 checksum 均有效、完整 release tree identity 与本地 bundle 相同、service 为 active，且按既有规则连续 3 次 localhost HTTP 200 时才可恢复。此路径不上传、不创建 staging、不切换 `current`、不 restart；任一事实未知或不一致都在 production mutation 前 fail closed。`first-production` 不得使用该恢复路径。
 
-localhost 连续健康后，脚本才检查对应 profile 的 public URL。这个轻量 public acceptance 只对 curl transport exit `6`、`7`、`16`、`28`、`35` 以及 HTTP `522`/`525` 做最多 3 次、1s/2s backoff 的有限重试；每次保留真实 curl exit 和 HTTP status，最终仍只接受 curl exit `0` 且 HTTP `200`，确定性的其他失败立即停止。它不是第二次 `verify-production`。正式域名异常属于 CDN、HTTPS、Nginx 或其他外部验收问题，不会自动回滚一个已经稳定健康的源站 release。脚本不调用 CDN API，也不自动清理缓存；language release 成功后必须按“Production CDN 缓存策略”主动刷新对应 hostname，并完成后续 CDN 验收。public HTTP 200 只证明公网入口可用，不能替代 hostname purge 或证明新 release 已在全部边缘节点生效。
+localhost 连续健康后，脚本才检查对应 profile 的 public URL。这个轻量 public acceptance 只对 curl transport exit `6`、`7`、`16`、`28`、`35` 以及 HTTP `522`/`525` 做最多 3 次、1s/2s backoff 的有限重试；每次保留真实 curl exit 和 HTTP status，最终仍只接受 curl exit `0` 且 HTTP `200`，确定性的其他失败立即停止。它不是第二次 `verify-production`。正式域名异常属于 CDN、HTTPS、Nginx 或其他外部验收问题，不会自动回滚一个已经稳定健康的源站 release。底层 deploy 脚本不调用 CDN API；正式 maintenance 编排器在 deploy PASS 后自动刷新 exact hostname，再完成后续 CDN 验收。public HTTP 200 只证明公网入口可用，不能替代 hostname purge 或证明新 release 已在全部边缘节点生效。
 
 `FIRST_DEPLOYMENT` 是例外：连续 localhost health 通过后脚本停止于源站 ready，不要求尚未启用 DNS 的 public URL，也不做无旧 release/cache 可刷新的 hostname purge。下一步必须先从外部主机使用 production hostname + `--resolve <hostname>:443:<origin-ip>` 完成 TLS/SNI、HTTP → HTTPS 和关键 route 的 direct-origin acceptance；通过后再创建/启用 `proxied=true` 的正式 DNS，并执行 public machine/browser acceptance。`EXISTING_DEPLOYMENT` 继续保持 `deploy → hostname purge → verify`。
 
@@ -340,17 +344,25 @@ localhost 连续健康后，脚本才检查对应 profile 的 public URL。这�
 ```text
 scripts/maintenance-production.sh <release-dir>
   → scripts/deploy-production.sh <release-dir>
-→ EdgeOne / Cloudflare hostname purge HUMAN GATE
+→ automatic exact-hostname EdgeOne / Cloudflare purge
 → scripts/verify-production.sh <release-dir>
 → scripts/verify-production-browser.py <production-public-url> <locale>
-→ 最小 visual HUMAN GATE
+→ MAINTENANCE PRODUCTION: PASS
 ```
 
 编排器从 `release.json.locale` 取得唯一 locale，并从 `production/identity.json` 取得 hostname、CDN 与 public URL；不接受 hostname、port、service 或 CDN 参数，也不从目录名或其他 locale 推导 identity。它只接受 `production_state=live`。
 
-deployment 成功后，编排器会显示 locale、正式 hostname、CDN 类型及精确的 hostname purge 操作并停在 **HUMAN GATE**。Cloudflare 必须对当前 hostname 做 Custom Purge，严禁 Purge Everything；`zh-CN` 按当前 EdgeOne hostname 缓存刷新规则处理。编排器不读取 credential、不调用 CDN API，也不自动执行任何 CDN mutation。维护者完成操作后须输入 `PURGED`，才会启动 machine verification。
+编排器在任何 deployment mutation 前先运行目标 provider 的 credential/read-only authority preflight。deployment 成功后自动刷新 `production/identity.json` 中当前 locale 的 exact hostname；不接受 hostname、Targets、purge method 或 zone CLI 参数。Cloudflare 固定 Custom Purge by Hostname，payload 只有一个 exact host，绝不使用 Purge Everything 或 zone-wide purge；read-only 请求最多三次 bounded retry，purge mutation 只提交一次，若 transport 或响应截断导致结果未知，由于该 API 没有正式 task query，立即 fail closed 且不重复 mutation。EdgeOne 固定 `Type=purge_host`、`Method=delete`、`Targets=[exact hostname]`，并按 JobId 查询到 terminal success；结果未知时先做 bounded time-window reconciliation，只有连续只读查询明确无对应任务时才允许至多一次新的 mutation。purge 未明确 PASS 时不会运行 machine/browser acceptance。
 
-每个 release 在同级写入 `<release>.maintenance-production-receipt.json`。receipt 绑定 schema、locale、hostname、CDN、public URL 和 release；任一不符、损坏或未知状态都会 fail closed，不能混用于别的 locale/release。非终态 invocation 即使已有 deployment PASS，也必须再次调用 `deploy-production.sh`：脚本只能在上述严格 already-current 证明全部通过后返回 no-mutation resume，因此 receipt 不能绕过真实远端 identity、checksum、service 或 localhost health 检查；若 release 尚未完成部署，则仍走正常 deployment。完整 PASS receipt 才直接结束且不重复任何 mutation。若 source activation 已成功但轻量 public acceptance 最终失败，receipt 会保留为 failed/deploy；重跑同一 maintenance 命令，由 deploy 的 already-current 路径无 mutation 恢复，public 成功后才记录 deployment PASS 并进入 hostname purge。machine/browser acceptance 可安全重新执行。CDN HUMAN GATE 每次非终态 invocation 都要求重新明确输入 `PURGED`，receipt 绝不会自动把它视为完成。所有自动验收和最小 visual gate 真正通过后才输出 `MAINTENANCE PRODUCTION: PASS`。
+每个 release 在同级写入 `<release>.maintenance-production-receipt.json`，正式 stage 顺序为 `deploy`、`purge`、`machine`、`browser`。非终态 invocation 即使已有 deploy PASS，也必须再次调用 `deploy-production.sh`，由严格 already-current 路径重新证明 remote identity、完整 checksum、service 与 localhost health；随后只复用已明确 PASS 的新式 purge/machine/browser 前缀。完整 PASS receipt 才直接结束且不重复任何 mutation。历史包含 `visual` 与人工 purge 时间的完整 PASS receipt 继续可读并安全 SKIP；历史未完成 receipt 只保留可证明的 deploy PASS，必须进入新的 automatic purge，不能用旧人工确认绕过 purge/machine/browser。
+
+多个 live release 的正式无人值守入口为：
+
+```sh
+scripts/maintenance-production-batch.sh <release-dir>...
+```
+
+batch 在第一次 Production mutation 前完成全部目录、bundle/release、locale 唯一性、lifecycle、identity、receipt 以及各 CDN credential/read-only authority preflight；随后严格串行复用 single-locale maintenance。首个 failure 后不启动后续 locale，也不回滚已 PASS locale；完整 PASS receipt 在 rerun 中显示 `SKIPPED`，未完成 locale 继续使用上述 strict resume。最终表格固定为 `locale | deploy | purge | machine | browser | result`，并汇总 PASS/FAILED/SKIPPED。正常运行不读取 stdin。
 
 `scripts/verify-production.sh` 从 release 目录的 `release.json` 读取 locale，并以与部署脚本一致的 fail-closed profile 选择 releases/current/lock、service、loopback origin、production hostname 和 CDN header；支持集合由 `production/identity.json` 动态决定。调用者不得另外传 hostname、port、service 或 remote release name：
 
@@ -361,9 +373,11 @@ scripts/verify-production.sh \
 
 脚本只执行只读、机器可确定的验收：本地 release identity；远端 `current` 精确指向目标 release、service active、deployment lock 不存在；7 条 source 与 public 关键路由严格 HTTP 200；首页和 welcome 页精确 `html lang` 与 canonical；公网 sitemap 恰好包含 105 个 HTTPS、正确 production hostname、无重复且逐 URL HTTP 200 的 URL；普通及 WebSocket Upgrade `/socket` 均为 404。公网 GET/HEAD 验收对明确短暂的 curl transport exit `6`、`7`、`16`、`28`、`35`，以及 Cloudflare HTTP `522`/`525`，最多重试 3 次并使用有限 1s/2s backoff；每次最终仍必须同时满足 curl transfer exit `0` 与正确 HTTP/cache semantics，其他 transport failure 与所有确定的非预期 HTTP status 均立即 fail closed。hostname purge 后，对首页和 welcome 页各请求 3 次并记录由 profile 指定的正式 cache header。每次都必须为 HTTP 200 且 header 存在；`MISS`、`HIT`、`EXPIRED`、`REVALIDATED`、`UPDATING`、`STALE` 均为允许的 observation，顺序不受限制，3 次全为 `MISS` 仍通过并注明 cache 尚未 warm。`BYPASS`、`DYNAMIC`、header 缺失或其他未允许状态表示请求没有进入预期 cache eligibility 路径，必须 fail closed。任一检查失败均输出 stage、URL/check、expected、actual 并以非零状态结束；全部通过时输出 `PRODUCTION MACHINE ACCEPTANCE: PASS`。
 
-脚本不调用 EdgeOne 或 Cloudflare API，不搜索 token、不执行 purge、不修改 DNS/Cache Rule。hostname purge 是运行脚本前的 **HUMAN GATE**；machine verification 只观察 purge 后实际返回的三个 cache status，不要求第一次为 `MISS`、后续为 `HIT`，也不要求固定次数内出现 `HIT`。
+`verify-production.sh` 自身仍不调用 EdgeOne 或 Cloudflare API、不搜索 token、不执行 purge、不修改 DNS/Cache Rule；它只观察 automatic purge 后的实际 cache status，不要求第一次为 `MISS`、后续为 `HIT`，也不要求固定次数内出现 `HIT`。
 
-编排器在 curl machine acceptance 后调用 `scripts/verify-production-browser.py <production-public-url> <locale>` 完成 rendered/interaction 自动验收；首次 production 已由 `first-production.sh` 自动调用。桌面/移动端、语言列表、Run / Format / Reset、runtime message、Playground endpoint、轻量广告 request opportunity、SPA 和长代码 overflow 均由 Chrome 检查。机器通过后只保留本手册“新 Locale 首次生产部署”定义的极小 visual HUMAN gate；不要人工重复机器项目。maintenance 的最终 visual gate 同样要求 Desktop editor/广告/布局，以及 Mobile `/tour/moretypes/1` 的 overflow、广告/footer 和一次下一页视觉确认；通过后输入 `VISUAL-PASS`。
+编排器在 curl machine acceptance 后调用 `scripts/verify-production-browser.py <production-public-url> <locale>` 完成 rendered/interaction 自动验收；首次 production 已由 `first-production.sh` 自动调用。桌面/移动端、语言列表、Run / Format / Reset、runtime message、Playground endpoint、轻量广告 request opportunity、SPA 和长代码 overflow 均由 Chrome 检查。Production 不再有 visual blocking stage。
+
+一批 Production 全部完成后，维护者有空时可做非阻塞 post-deploy spot check：各抽样一个中文站、非中文带广告站和非中文不带广告站。该抽样不属于 Production gate，不阻止 maintenance PASS 或 first-production finalize/live，不写 lifecycle receipt、不读取 stdin，也不要求逐 locale 检查；发现问题按正常修复 → publish → maintenance deploy 处理。
 
 ## 非中文共享静态资源第一版
 

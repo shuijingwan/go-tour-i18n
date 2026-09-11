@@ -105,7 +105,7 @@ go run -mod=readonly ./cmd/tour-i18n surface-review record-a \
 
 只有完整语言质量审核通过、已记录 current A gate，并且 TranslationUnit promotion、locale 配置、UI catalog 与 article metadata 已组成完整 projection 后，才在 preview 上执行本阶段；部署后再在 production 复核公网相关项目。浏览器检查用于发现组合、布局、交互、runtime 和部署问题，不能替代 A 阶段对全部可翻译资产的 source ↔ target 审核。
 
-广告不属于 Locale-level language quality review，也不扩展为 TranslationUnit 或语言质量 gate。preview rendered surface acceptance 不要求真实 AdSense；首次 production 的最终 rendered surface acceptance 由 production browser automation 检查 loader、course-ad mount、请求机会、layout 与 SPA，filled/unfilled 均允许，再以极小 visual HUMAN gate 确认整体观感。具体边界见[生产运维手册](PRODUCTION_RUNBOOK.md)。本规范不重复广告实现、共享回归或广告失败隔离测试细节。
+广告不属于 Locale-level language quality review，也不扩展为 TranslationUnit 或语言质量 gate。preview rendered surface acceptance 不要求真实 AdSense；首次 production 的最终 rendered surface acceptance 由 production browser automation 检查 loader、course-ad mount、请求机会、layout 与 SPA，filled/unfilled 均允许。Production visual blocking gate 已删除；非阻塞 post-deploy spot check 的边界见[生产运维手册](PRODUCTION_RUNBOOK.md)。本规范不重复广告实现、共享回归或广告失败隔离测试细节。
 
 ### Automated preview acceptance 与 visual HUMAN gate
 
@@ -197,7 +197,7 @@ data/locale-surface-reviews/<locale>/<review-id>.md
 - `decision = passed | failed`；
 - `issues`。
 
-首次上线时，A 阶段与 preview acceptance 都通过后才可进入 publish 和首次部署；此时可以先维护同一路径的工作记录。machine-finalizable block 外的人工文本不得维护会在 finalize 后过期的 production `PENDING`、production verification 或最终 decision 状态。production machine/browser/HUMAN/final decision 的唯一可变正式区域是下述 placeholder，且仅由 finalizer replacement 管理；最终 evidence 不得把尚未执行的 production 复核写成通过。
+首次上线时，A 阶段与 preview acceptance 都通过后才可进入 publish 和首次部署；此时可以先维护同一路径的工作记录。machine-finalizable block 外的人工文本不得维护会在 finalize 后过期的 production `PENDING`、production verification 或最终 decision 状态。production machine/browser/final decision 的唯一可变正式区域是下述 placeholder，且仅由 finalizer replacement 管理；最终 evidence 不得把尚未执行的 production 复核写成通过。
 
 未来 `production_state=first-production` locale 的 pre-production evidence 必须在 `surface-review record-a` 前保留下面完整且唯一的 machine-finalizable placeholder；首次生产的无 mutation preflight 与正式 finalize CLI 都会 fail closed 检查它。不得提前填写、复制第二份或改写 marker。正式 first-production finalize CLI 只会替换这一精确区域，不会解释或修改 Stage A 的人工语言审核内容：
 
@@ -206,7 +206,6 @@ data/locale-surface-reviews/<locale>/<review-id>.md
 - production receipt identity: `PENDING`
 - production machine acceptance: `PENDING`
 - production browser acceptance: `PENDING`
-- production visual HUMAN gate: `PENDING`
 - unresolved production blocker: `PENDING`
 - overall final decision: `PENDING`
 - decision: `pending`

@@ -95,7 +95,7 @@ select_deployment_profile() {
     SERVICE=$PRODUCTION_SYSTEMD_SERVICE
     HEALTH_URL=$PRODUCTION_LOCALHOST_HEALTH_URL
     PUBLIC_URL=$PRODUCTION_PUBLIC_URL
-    PUBLIC_ACCEPTANCE_HINT='inspect the CDN/reverse-proxy cache and refresh it manually if needed'
+    PUBLIC_ACCEPTANCE_HINT='continue with the maintenance orchestrator automatic exact-hostname CDN purge'
     case $PRODUCTION_STATE in
         live) EXPECTED_DEPLOYMENT_MODE=EXISTING ;;
         first-production) EXPECTED_DEPLOYMENT_MODE=FIRST_DEPLOYMENT ;;

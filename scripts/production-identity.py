@@ -27,13 +27,14 @@ SHARED_FIELDS = (
     "aliyun_ssh_alias", "zgocloud_ssh_alias", "origin_ip",
     "playground_vhost_path", "playground_public_origin",
     "cloudflare_zone_name", "cloudflare_secret_file", "nginx_test_command",
+    "edgeone_zone_name", "edgeone_secret_file",
     "nginx_reload_command", "shared_assets_origin_root",
     "shared_assets_public_origin",
 )
 ABSOLUTE_FIELDS = {
     "data_root", "releases_root", "current", "deployment_lock",
     "environment_file", "nginx_vhost_path", "tls_certificate_path",
-    "tls_key_path", "playground_vhost_path", "cloudflare_secret_file",
+    "tls_key_path", "playground_vhost_path", "cloudflare_secret_file", "edgeone_secret_file",
     "shared_assets_origin_root",
 }
 UNIQUE_FIELDS = (
@@ -109,6 +110,8 @@ def load_identity(path):
     https_url(data["shared"]["shared_assets_public_origin"], "shared.shared_assets_public_origin")
     if not re.fullmatch(r"[a-z0-9.-]+", data["shared"]["cloudflare_zone_name"]):
         fail("shared.cloudflare_zone_name is invalid")
+    if not re.fullmatch(r"[a-z0-9.-]+", data["shared"]["edgeone_zone_name"]):
+        fail("shared.edgeone_zone_name is invalid")
     if type(data["locales"]) is not list or not data["locales"]:
         fail("locales must be a non-empty array")
     for index, profile in enumerate(data["locales"]):
@@ -129,6 +132,10 @@ def load_identity(path):
             fail(f"{context}.production_state is unsupported")
         if not re.fullmatch(r"[a-z0-9.-]+", profile["production_hostname"]):
             fail(f"{context}.production_hostname is invalid")
+        zone_field = "cloudflare_zone_name" if profile["cdn"] == "cloudflare" else "edgeone_zone_name"
+        zone = data["shared"][zone_field]
+        if profile["production_hostname"] != zone and not profile["production_hostname"].endswith("." + zone):
+            fail(f"{context}.production_hostname is outside shared.{zone_field}")
         if profile["cdn"] not in ("cloudflare", "edgeone"):
             fail(f"{context}.cdn is unsupported")
         if profile["shared_assets_policy"] not in ("same-origin", "shared-cloudflare"):

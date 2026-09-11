@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bufio"
 	"bytes"
 	"encoding/json"
 	"flag"
@@ -20,6 +19,15 @@ const firstProductionReceiptSchema = "go-tour-i18n/first-production-receipt/v1"
 var projectFinalizationREADME = projectRootREADME
 
 const finalizationPlaceholder = "<!-- first-production-finalization:start -->\n" +
+	"- production receipt identity: `PENDING`\n" +
+	"- production machine acceptance: `PENDING`\n" +
+	"- production browser acceptance: `PENDING`\n" +
+	"- unresolved production blocker: `PENDING`\n" +
+	"- overall final decision: `PENDING`\n" +
+	"- decision: `pending`\n" +
+	"<!-- first-production-finalization:end -->"
+
+const legacyFinalizationPlaceholder = "<!-- first-production-finalization:start -->\n" +
 	"- production receipt identity: `PENDING`\n" +
 	"- production machine acceptance: `PENDING`\n" +
 	"- production browser acceptance: `PENDING`\n" +
@@ -51,8 +59,10 @@ type finalizeProfile struct {
 
 func validateFinalizationPlaceholder(evidence []byte) error {
 	if bytes.Count(evidence, []byte("<!-- first-production-finalization:start -->")) != 1 ||
-		bytes.Count(evidence, []byte("<!-- first-production-finalization:end -->")) != 1 ||
-		bytes.Count(evidence, []byte(finalizationPlaceholder)) != 1 {
+		bytes.Count(evidence, []byte("<!-- first-production-finalization:end -->")) != 1 {
+		return fmt.Errorf("Surface Review evidence must contain exactly one untouched first-production finalization placeholder")
+	}
+	if bytes.Count(evidence, []byte(finalizationPlaceholder))+bytes.Count(evidence, []byte(legacyFinalizationPlaceholder)) != 1 {
 		return fmt.Errorf("Surface Review evidence must contain exactly one untouched first-production finalization placeholder")
 	}
 	return nil
@@ -132,21 +142,10 @@ func finalizeFirstProductionCommand(root string, catalog *i18n.Catalog, args []s
 	if *releaseDir == "" || *reviewID == "" || fs.NArg() != 0 {
 		return fmt.Errorf("usage: first-production finalize --release-dir <release-dir> --review-id <review-id>")
 	}
-	if !stdinIsTTY() {
-		return fmt.Errorf("first-production finalize requires an interactive TTY for VISUAL-PASS")
-	}
-	return finalizeFirstProduction(root, catalog, *releaseDir, *reviewID, os.Stdin, os.Stdout, true, validateProductionIdentity)
+	return finalizeFirstProduction(root, catalog, *releaseDir, *reviewID, os.Stdout, validateProductionIdentity)
 }
 
-func stdinIsTTY() bool {
-	info, err := os.Stdin.Stat()
-	return err == nil && info.Mode()&os.ModeCharDevice != 0
-}
-
-func finalizeFirstProduction(root string, catalog *i18n.Catalog, releaseDir, reviewID string, input io.Reader, output io.Writer, tty bool, validate func(string, string) error) error {
-	if !tty {
-		return fmt.Errorf("first-production finalize requires an interactive TTY for VISUAL-PASS")
-	}
+func finalizeFirstProduction(root string, catalog *i18n.Catalog, releaseDir, reviewID string, output io.Writer, validate func(string, string) error) error {
 	releasePath, err := filepath.Abs(releaseDir)
 	if err != nil {
 		return err
@@ -215,15 +214,11 @@ func finalizeFirstProduction(root string, catalog *i18n.Catalog, releaseDir, rev
 	if err := validateFinalizationPlaceholder(evidence); err != nil {
 		return err
 	}
-	fmt.Fprint(output, "Complete the formal desktop/mobile visual HUMAN gate, then type VISUAL-PASS exactly: ")
-	line, readErr := bufio.NewReader(input).ReadString('\n')
-	if readErr != nil && len(line) == 0 {
-		return fmt.Errorf("VISUAL-PASS confirmation was not received")
+	placeholder := finalizationPlaceholder
+	if bytes.Contains(evidence, []byte(legacyFinalizationPlaceholder)) {
+		placeholder = legacyFinalizationPlaceholder
 	}
-	if strings.TrimSpace(line) != "VISUAL-PASS" {
-		return fmt.Errorf("VISUAL-PASS confirmation did not match")
-	}
-	finalized := strings.Replace(string(evidence), finalizationPlaceholder, renderFinalization(receipt), 1)
+	finalized := strings.Replace(string(evidence), placeholder, renderFinalization(receipt), 1)
 	newIdentity, err := replaceTargetState(identityBytes, release)
 	if err != nil {
 		return err
@@ -272,7 +267,7 @@ func readFinalReceipt(path string) (firstProductionReceipt, error) {
 	return receipt, nil
 }
 func renderFinalization(r firstProductionReceipt) string {
-	return fmt.Sprintf("<!-- first-production-finalization:start -->\n- production receipt identity: `locale=%s hostname=%s release=%s`\n- production machine acceptance: `passed`\n- production browser acceptance: `passed`\n- production visual HUMAN gate: `passed` (maintainer confirmation)\n- unresolved production blocker: `none`\n- overall final decision: `passed`\n- decision: `passed`\n<!-- first-production-finalization:end -->", r.Locale, r.Hostname, r.Release)
+	return fmt.Sprintf("<!-- first-production-finalization:start -->\n- production receipt identity: `locale=%s hostname=%s release=%s`\n- production machine acceptance: `passed`\n- production browser acceptance: `passed`\n- unresolved production blocker: `none`\n- overall final decision: `passed`\n- decision: `passed`\n<!-- first-production-finalization:end -->", r.Locale, r.Hostname, r.Release)
 }
 
 func replaceTargetState(data []byte, locale string) ([]byte, error) {
