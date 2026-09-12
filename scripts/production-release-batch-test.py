@@ -14,6 +14,7 @@ from unittest import mock
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 HEAD = "0123456789abcdef0123456789abcdef01234567"
+RECOVERY_HEAD = "fedcba9876543210fedcba9876543210fedcba98"
 SPEC = importlib.util.spec_from_file_location(
     "production_release_batch", ROOT / "scripts" / "production-release-batch.py")
 MODULE = importlib.util.module_from_spec(SPEC)
@@ -367,6 +368,143 @@ class ProductionReleaseBatchTest(unittest.TestCase):
                 contextlib.redirect_stdout(io.StringIO()):
             resumed.execute(resume=True)
         self.assertEqual(calls, ["resume-assets-validate", "shared-assets", "maintenance"])
+
+    def test_maintenance_recovery_allows_clean_head_mismatch_and_only_runs_maintenance(self):
+        fresh = self.workflow(["de-DE", "zh-CN"])
+        state_path = self.prepare_state(fresh)
+        self.write_shared_pass(fresh)
+        resumed = self.load_state(state_path)
+        calls = []
+
+        def run(stage, command, timeout, capture=False):
+            calls.append((stage, [str(value) for value in command]))
+            if stage == "maintenance":
+                self.write_maintenance_passes(resumed.publish_result)
+            return ""
+
+        with mock.patch.object(resumed, "_run", side_effect=run), \
+                mock.patch.object(resumed, "_repository_identity", return_value=RECOVERY_HEAD), \
+                mock.patch.object(resumed, "_maintenance_preflight", return_value=set()), \
+                contextlib.redirect_stdout(io.StringIO()):
+            resumed.execute_maintenance_recovery()
+        self.assertEqual([stage for stage, _ in calls], ["resume-assets-validate", "maintenance"])
+        self.assertEqual(calls[-1][1][1:], [item["release_dir"] for item in resumed.publish_result["releases"]])
+        self.assertEqual(MODULE.parse_args(["--resume-maintenance", str(state_path)]).resume_maintenance,
+                         str(state_path))
+
+    def test_maintenance_recovery_does_not_weaken_regular_resume_head_identity(self):
+        fresh = self.workflow(["de-DE"])
+        state_path = self.prepare_state(fresh)
+        resumed = self.load_state(state_path)
+        calls = []
+        with mock.patch.object(resumed, "_repository_identity", return_value=RECOVERY_HEAD), \
+                mock.patch.object(resumed, "_run", side_effect=lambda stage, *args, **kwargs: calls.append(stage)), \
+                self.assertRaisesRegex(MODULE.ReleaseBatchError, "HEAD does not match"):
+            resumed.execute(resume=True)
+        self.assertEqual(calls, [])
+
+    def test_maintenance_recovery_dirty_worktree_fails_before_artifact_validation(self):
+        fresh = self.workflow(["de-DE"])
+        state_path = self.prepare_state(fresh)
+        resumed = self.load_state(state_path)
+        calls = []
+
+        def run(stage, command, timeout, capture=False):
+            command = [str(value) for value in command]
+            calls.append(command)
+            if command[:3] == ["git", "rev-parse", "HEAD"]:
+                return RECOVERY_HEAD + "\n"
+            if command[:3] == ["git", "status", "--porcelain"]:
+                return " M scripts/production-release-batch.py\n"
+            raise AssertionError("unexpected command: %r" % command)
+
+        with mock.patch.object(MODULE.ReleaseBatch, "_run", side_effect=run), \
+                self.assertRaisesRegex(MODULE.ReleaseBatchError, "working tree must be clean"):
+            resumed.execute_maintenance_recovery()
+        self.assertEqual(len(calls), 2)
+
+    def test_maintenance_recovery_production_identity_mismatch_fails_closed(self):
+        fresh = self.workflow(["de-DE"])
+        state_path = self.prepare_state(fresh)
+        data = json.loads(state_path.read_text(encoding="utf-8"))
+        data["production_identity_sha256"] = "f" * 64
+        data["state_identity"] = MODULE.state_identity(data)
+        state_path.write_text(json.dumps(data), encoding="utf-8")
+        with mock.patch.object(MODULE.ReleaseBatch, "_run") as run, \
+                self.assertRaisesRegex(MODULE.ReleaseBatchError, "production identity changed"):
+            self.load_state(state_path)
+        run.assert_not_called()
+
+    def test_maintenance_recovery_release_hash_mismatch_fails_closed(self):
+        for index, filename in enumerate(("release.json", "SHA256SUMS")):
+            with self.subTest(filename=filename):
+                root = self.output_root / ("recovery-hash-%d" % index)
+                root.mkdir()
+                previous = self.output_root
+                self.output_root = root
+                fresh = self.workflow(["de-DE"])
+                state_path = self.prepare_state(fresh)
+                resumed = self.load_state(state_path)
+                artifact = pathlib.Path(fresh.publish_result["releases"][0]["release_dir"]) / filename
+                artifact.write_text("changed\n", encoding="utf-8")
+                with mock.patch.object(resumed, "_repository_identity", return_value=RECOVERY_HEAD), \
+                        mock.patch.object(resumed, "_run") as run, \
+                        self.assertRaisesRegex(MODULE.ReleaseBatchError, "release manifest identity changed"):
+                    resumed.execute_maintenance_recovery()
+                run.assert_not_called()
+                self.output_root = previous
+
+    def test_maintenance_recovery_release_path_and_order_mismatch_fail_closed(self):
+        for index, case in enumerate(("missing", "symlink", "locale-order")):
+            with self.subTest(case=case):
+                root = self.output_root / ("recovery-path-%d" % index)
+                root.mkdir()
+                previous = self.output_root
+                self.output_root = root
+                fresh = self.workflow(["de-DE", "zh-CN"])
+                state_path = self.prepare_state(fresh)
+                data = json.loads(state_path.read_text(encoding="utf-8"))
+                if case == "locale-order":
+                    data["releases"].reverse()
+                    data["state_identity"] = MODULE.state_identity(data)
+                    state_path.write_text(json.dumps(data), encoding="utf-8")
+                    with self.assertRaisesRegex(MODULE.ReleaseBatchError, "release order"):
+                        self.load_state(state_path)
+                else:
+                    resumed = self.load_state(state_path)
+                    release = pathlib.Path(data["releases"][0]["release_dir"])
+                    moved = release.with_name(release.name + "-moved")
+                    release.rename(moved)
+                    if case == "symlink":
+                        release.symlink_to(moved, target_is_directory=True)
+                    with mock.patch.object(resumed, "_repository_identity", return_value=RECOVERY_HEAD), \
+                            mock.patch.object(resumed, "_run") as run, \
+                            self.assertRaisesRegex(MODULE.ReleaseBatchError, "removed, replaced, or moved"):
+                        resumed.execute_maintenance_recovery()
+                    run.assert_not_called()
+                self.output_root = previous
+
+    def test_maintenance_recovery_command_is_printed_for_maintenance_failure(self):
+        fresh = self.workflow(["de-DE"])
+        state_path = self.prepare_state(fresh)
+        self.write_shared_pass(fresh)
+        resumed = self.load_state(state_path)
+
+        def run(stage, command, timeout, capture=False):
+            if stage == "maintenance":
+                raise MODULE.ReleaseBatchError("maintenance", "purge failed")
+            return ""
+
+        with mock.patch.object(resumed, "_run", side_effect=run), \
+                mock.patch.object(resumed, "_repository_identity", return_value=RECOVERY_HEAD), \
+                mock.patch.object(resumed, "_maintenance_preflight", return_value=set()), \
+                self.assertRaises(MODULE.ReleaseBatchError) as raised:
+            resumed.execute_maintenance_recovery()
+        failure = io.StringIO()
+        with contextlib.redirect_stderr(failure):
+            resumed.print_failure(raised.exception)
+        self.assertIn("maintenance recovery command: scripts/production-release-batch.sh --resume-maintenance %s" %
+                      state_path, failure.getvalue())
 
     def test_tampered_resume_state_and_artifacts_fail_before_production_commands(self):
         cases = ("repository", "production-identity", "locale-order", "release-deleted", "release-symlink",

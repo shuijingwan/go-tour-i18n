@@ -328,6 +328,14 @@ scripts/production-release-batch.sh --resume /tmp/go-tour-production-release-bat
 
 `--resume` 不得与 `--all-live`、`--locale` 或 `--output-root` 混用。恢复在任何新 Production mutation 前重新要求 state schema/self-identity/path 完整、当前 working tree 干净且 HEAD 完全相同、`production/identity.json` 字节 identity 未变化、locale 仍为 live 且顺序一致、release/export 均为原精确真实目录而非 symlink、release metadata 与 state 一致、两个 manifest 未变化，并重新执行正式 assets validation、每个 bundle 的完整 local validation 和全部 read-only CDN authority preflight。任一事实无法证明就 fail closed；不能为了复用旧 prerender 而在新 HEAD 或改写后的工作树上恢复。
 
+若 publish 已 PASS 且 shared-assets Production 已有完整 v2 PASS receipt，但 maintenance 因后续 tooling fix 使当前 HEAD 改变而无法普通 `--resume`，使用 failure summary 打印的显式 maintenance-only 入口：
+
+```sh
+scripts/production-release-batch.sh --resume-maintenance /tmp/go-tour-production-release-batch-<timestamp>-<pid>.state.json
+```
+
+`--resume-maintenance` 仍严格验证 state schema/self-identity/path、干净 working tree、未变的 `production/identity.json` identity、ordered live locale selection、每个真实非 symlink release directory 的 `release.json`/`SHA256SUMS` hash 与 locale/`published_at`、shared-assets export manifest 与完整 assets validation，但允许当前 HEAD 与 state 中已冻结的 publish HEAD 不同。它不重新 publish、prerender、export、生成 release bundle 或运行 shared-assets Production；只在 required shared-assets 已有与 state manifest 一致的完整 PASS receipt 时，把 state 中冻结的 release dirs 原序交给现有 `maintenance-production-batch.sh`，由每个 maintenance receipt 继续既有 strict recovery。任一 artifact、identity、order 或 receipt 无法证明时 fail closed。普通 `--resume` 的 exact HEAD contract 不变。
+
 顶层 state 只保存 post-publish 的精确输入，不另建 deployment 状态机。shared-assets 继续以同一 export sibling v2 receipt 恢复：`DEPLOYED + purge PASS + verification PENDING` 只重跑 verify，不重复 deploy/purge；purge 为 `PENDING` 且将发生新 mutation 时先重新做 shared-assets authority preflight，`ATTEMPTED` 的不确定 mutation 仍拒绝重复。locale maintenance 继续把 state 中原序 release dirs 交给既有 strict receipt：已经完整 PASS 的 locale 为 `SKIP`，未完成 locale 从原 receipt 继续，不重新 publish、不回滚已 PASS locale。顶层 failure summary 明确区分 `publish`、shared-assets 的 `deploy/purge/verify` 和 `locale maintenance: NOT_STARTED/PARTIAL/COMPLETE`，并在 state 仍可验证时打印精确 resume state 与 command。
 
 需要只生成本地 artifacts、供诊断或其他编排使用时，可直接运行正式 Go batch publish：

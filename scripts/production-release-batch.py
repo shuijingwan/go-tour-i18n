@@ -315,7 +315,7 @@ class ReleaseBatch:
         self.resume_available = True
         print("[production-release-batch] post-publish resume state: %s" % self.state_path)
 
-    def _validate_resume_state(self):
+    def _validate_resume_state(self, allow_head_mismatch=False):
         if not self.state_path.is_file() or self.state_path.is_symlink():
             raise ReleaseBatchError("resume-state", "resume state was removed or replaced")
         try:
@@ -325,7 +325,8 @@ class ReleaseBatch:
         self._validate_state_shape(current, self.state_path)
         if current != self.state_data:
             raise ReleaseBatchError("resume-state", "resume state changed after it was selected")
-        if self._repository_identity() != current["repository_head"]:
+        current_head = self._repository_identity()
+        if not allow_head_mismatch and current_head != current["repository_head"]:
             raise ReleaseBatchError("resume-state", "repository HEAD does not match published batch")
         if sha256_file(IDENTITY_PATH) != current["production_identity_sha256"]:
             raise ReleaseBatchError("resume-state", "production identity changed since publish")
@@ -475,8 +476,28 @@ class ReleaseBatch:
         self.maintenance_status = "COMPLETE"
         self.print_summary(rows)
 
+    def execute_maintenance_recovery(self):
+        self._validate_resume_state(allow_head_mismatch=True)
+        self._refresh_shared_summary()
+        if self.needs_shared_assets:
+            self._read_shared_summary()
+        self._refresh_maintenance_status()
+        already_complete = self._maintenance_preflight() or set()
+        releases = [item["release_dir"] for item in self.publish_result["releases"]]
+        self.maintenance_started = True
+        try:
+            self._run("maintenance", [ROOT / "scripts" / "maintenance-production-batch.sh"] + releases, 14400)
+        finally:
+            self._refresh_maintenance_status()
+        rows = self._maintenance_rows(already_complete)
+        self.maintenance_status = "COMPLETE"
+        self.print_summary(rows)
+
     def resume_command(self):
         return "scripts/production-release-batch.sh --resume %s" % shlex.quote(str(self.state_path))
+
+    def maintenance_recovery_command(self):
+        return "scripts/production-release-batch.sh --resume-maintenance %s" % shlex.quote(str(self.state_path))
 
     def print_failure(self, exc):
         self._refresh_shared_summary()
@@ -493,6 +514,8 @@ class ReleaseBatch:
         if self.resume_available:
             print("resume state: %s" % self.state_path, file=sys.stderr)
             print("resume command: %s" % self.resume_command(), file=sys.stderr)
+            if getattr(exc, "stage", None) in ("maintenance", "maintenance-summary"):
+                print("maintenance recovery command: %s" % self.maintenance_recovery_command(), file=sys.stderr)
         else:
             print("resume state: UNAVAILABLE", file=sys.stderr)
 
@@ -519,10 +542,13 @@ def parse_args(argv):
     parser.add_argument("--locale", action="append", default=[])
     parser.add_argument("--output-root")
     parser.add_argument("--resume")
+    parser.add_argument("--resume-maintenance")
     args = parser.parse_args(argv)
-    if args.resume:
+    if args.resume and args.resume_maintenance:
+        parser.error("--resume and --resume-maintenance are mutually exclusive")
+    if args.resume or args.resume_maintenance:
         if args.all_live or args.locale or args.output_root is not None:
-            parser.error("--resume cannot be combined with --all-live, --locale, or --output-root")
+            parser.error("resume cannot be combined with --all-live, --locale, or --output-root")
     elif args.all_live == bool(args.locale):
         parser.error("choose exactly one of --all-live or repeated --locale")
     return args
@@ -532,9 +558,12 @@ def main(argv=None):
     args = parse_args(sys.argv[1:] if argv is None else argv)
     workflow = None
     try:
-        if args.resume:
-            workflow = ReleaseBatch.from_state(args.resume)
-            workflow.execute(resume=True)
+        if args.resume or args.resume_maintenance:
+            workflow = ReleaseBatch.from_state(args.resume or args.resume_maintenance)
+            if args.resume_maintenance:
+                workflow.execute_maintenance_recovery()
+            else:
+                workflow.execute(resume=True)
         else:
             workflow = ReleaseBatch(args.output_root or "/tmp", args.all_live, args.locale)
             workflow.execute()
