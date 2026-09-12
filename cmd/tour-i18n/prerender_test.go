@@ -6,12 +6,14 @@ package main
 
 import (
 	"bytes"
+	"context"
 	"crypto/rand"
 	"crypto/rsa"
 	"crypto/tls"
 	"crypto/x509"
 	"crypto/x509/pkix"
 	"encoding/pem"
+	"errors"
 	"fmt"
 	"io"
 	"math/big"
@@ -41,6 +43,182 @@ func TestProductionPrerenderChromeDefaults(t *testing.T) {
 	if prerenderChromeRouteTimeout != 60*time.Second {
 		t.Fatalf("prerender Chrome route timeout = %s, want 60s", prerenderChromeRouteTimeout)
 	}
+	if prerenderChromeRouteAttempts != 3 {
+		t.Fatalf("prerender Chrome route attempts = %d, want 3", prerenderChromeRouteAttempts)
+	}
+	if prerenderChromeRetryBackoff != time.Second {
+		t.Fatalf("prerender Chrome retry backoff = %s, want 1s", prerenderChromeRetryBackoff)
+	}
+}
+
+func TestPrerenderCourseRouteRetriesDeadlineThenSucceeds(t *testing.T) {
+	route := testPrerenderCourseRoute()
+	attempts := 0
+	var profiles []string
+	var backoffs []time.Duration
+	var logs bytes.Buffer
+	err := prerenderRouteWithChromeAttempt(t.Context(), filepath.Join(t.TempDir(), "profiles"), t.TempDir(), route,
+		func(_ context.Context, profile string) ([]byte, error) {
+			attempts++
+			profiles = append(profiles, profile)
+			if attempts == 1 {
+				return nil, fmt.Errorf("Chrome %s: %w", route.Path, context.DeadlineExceeded)
+			}
+			return testPrerenderCourseHTML(route), nil
+		},
+		func(_ context.Context, delay time.Duration) error {
+			backoffs = append(backoffs, delay)
+			return nil
+		}, &logs)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if attempts != 2 || len(profiles) != 2 || profiles[0] == profiles[1] {
+		t.Fatalf("attempts=%d profiles=%v, want two isolated attempts", attempts, profiles)
+	}
+	if len(backoffs) != 1 || backoffs[0] != time.Second {
+		t.Fatalf("backoffs=%v, want [1s]", backoffs)
+	}
+	for _, want := range []string{route.Path, "attempt=1/3", "context deadline exceeded", "next_attempt=2/3", "backoff=1s"} {
+		if !strings.Contains(logs.String(), want) {
+			t.Errorf("retry log missing %q: %s", want, logs.String())
+		}
+	}
+}
+
+func TestPrerenderCourseRouteStopsAfterThreeDeadlineFailures(t *testing.T) {
+	route := testPrerenderCourseRoute()
+	attempts := 0
+	var profiles []string
+	var backoffs []time.Duration
+	err := prerenderRouteWithChromeAttempt(t.Context(), filepath.Join(t.TempDir(), "profiles"), t.TempDir(), route,
+		func(_ context.Context, profile string) ([]byte, error) {
+			attempts++
+			profiles = append(profiles, profile)
+			return nil, fmt.Errorf("attempt %d: %w", attempts, context.DeadlineExceeded)
+		},
+		func(_ context.Context, delay time.Duration) error {
+			backoffs = append(backoffs, delay)
+			return nil
+		}, io.Discard)
+	if err == nil || !errors.Is(err, context.DeadlineExceeded) {
+		t.Fatalf("deadline exhaustion error=%v", err)
+	}
+	if attempts != 3 {
+		t.Fatalf("attempts=%d, want 3", attempts)
+	}
+	if len(backoffs) != 2 || backoffs[0] != time.Second || backoffs[1] != 2*time.Second {
+		t.Fatalf("backoffs=%v, want [1s 2s]", backoffs)
+	}
+	seen := make(map[string]bool, len(profiles))
+	for _, profile := range profiles {
+		if seen[profile] {
+			t.Fatalf("Chrome attempt profile was reused: %v", profiles)
+		}
+		seen[profile] = true
+	}
+}
+
+func TestPrerenderCourseRouteDoesNotRetryValidationFailure(t *testing.T) {
+	route := testPrerenderCourseRoute()
+	attempts := 0
+	waits := 0
+	err := prerenderRouteWithChromeAttempt(t.Context(), filepath.Join(t.TempDir(), "profiles"), t.TempDir(), route,
+		func(context.Context, string) ([]byte, error) {
+			attempts++
+			return []byte("<!doctype html><html><body>not rendered</body></html>"), nil
+		},
+		func(context.Context, time.Duration) error {
+			waits++
+			return nil
+		}, io.Discard)
+	if err == nil || !strings.Contains(err.Error(), "validate "+route.Path) {
+		t.Fatalf("validation error=%v", err)
+	}
+	if attempts != 1 || waits != 0 {
+		t.Fatalf("validation failure attempts=%d waits=%d, want 1 and 0", attempts, waits)
+	}
+}
+
+func TestPrerenderCourseRouteDoesNotRetryParentCancellation(t *testing.T) {
+	route := testPrerenderCourseRoute()
+	parent, cancel := context.WithCancel(context.Background())
+	attempts := 0
+	waits := 0
+	err := prerenderRouteWithChromeAttempt(parent, filepath.Join(t.TempDir(), "profiles"), t.TempDir(), route,
+		func(context.Context, string) ([]byte, error) {
+			attempts++
+			cancel()
+			return nil, fmt.Errorf("Chrome %s: %w", route.Path, context.DeadlineExceeded)
+		},
+		func(context.Context, time.Duration) error {
+			waits++
+			return nil
+		}, io.Discard)
+	if err == nil || !errors.Is(err, context.Canceled) {
+		t.Fatalf("parent cancellation error=%v", err)
+	}
+	if attempts != 1 || waits != 0 {
+		t.Fatalf("parent cancellation attempts=%d waits=%d, want 1 and 0", attempts, waits)
+	}
+}
+
+func TestPrerenderListRetriesDeadlineThenSucceeds(t *testing.T) {
+	route := testPrerenderListRoute()
+	attempts := 0
+	var profiles []string
+	var backoffs []time.Duration
+	err := prerenderListWithChromeAttempt(t.Context(), filepath.Join(t.TempDir(), "profiles"), t.TempDir(), route,
+		func(_ context.Context, profile string) ([]byte, error) {
+			attempts++
+			profiles = append(profiles, profile)
+			if attempts == 1 {
+				return nil, context.DeadlineExceeded
+			}
+			return testPrerenderListHTML(route), nil
+		},
+		func(_ context.Context, delay time.Duration) error {
+			backoffs = append(backoffs, delay)
+			return nil
+		}, io.Discard)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if attempts != 2 || len(profiles) != 2 || profiles[0] == profiles[1] {
+		t.Fatalf("attempts=%d profiles=%v, want two isolated list attempts", attempts, profiles)
+	}
+	if len(backoffs) != 1 || backoffs[0] != time.Second {
+		t.Fatalf("backoffs=%v, want [1s]", backoffs)
+	}
+}
+
+func testPrerenderCourseRoute() tour.CourseRoute {
+	return tour.CourseRoute{
+		Path:        "/tour/test/1",
+		PageTitle:   "Test page",
+		Canonical:   "https://go-dev.shuijingwanwq.com/tour/test/1",
+		Description: "Test description",
+	}
+}
+
+func testPrerenderCourseHTML(route tour.CourseRoute) []byte {
+	return []byte(fmt.Sprintf(`<!doctype html><html data-tour-rendered-route=%q><head><script id="tour-runtime-head"></script><title>%s - Go Tour</title><link rel="canonical" href=%q><meta name="description" content=%q></head><body><div id="editor-container"></div><div class="slide-content"><h2>%s</h2><p>Rendered course body.</p></div></body></html>`,
+		route.Path, route.PageTitle, route.Canonical, route.Description, route.PageTitle))
+}
+
+func testPrerenderListRoute() tour.ListRoute {
+	return tour.ListRoute{
+		Path:        "/tour/list",
+		PageTitle:   "Course list",
+		Canonical:   "https://go-dev.shuijingwanwq.com/tour/list",
+		Description: "Course list description",
+		Heading:     "Course list heading",
+	}
+}
+
+func testPrerenderListHTML(route tour.ListRoute) []byte {
+	return []byte(fmt.Sprintf(`<!doctype html><html data-tour-rendered-route=%q><head><script id="tour-runtime-head"></script><title>%s</title><link rel="canonical" href=%q><meta name="description" content=%q></head><body><h1>%s</h1></body></html>`,
+		route.Path, route.PageTitle, route.Canonical, route.Description, route.Heading))
 }
 
 func TestSanitizePrerenderedHTMLRemovesThirdPartyRuntimeDOM(t *testing.T) {

@@ -7,7 +7,9 @@ package main
 import (
 	"bytes"
 	"context"
+	"errors"
 	"fmt"
+	"io"
 	"net"
 	"net/http/httptest"
 	"os"
@@ -24,10 +26,15 @@ import (
 )
 
 const (
-	prerenderRuntimeHeadMarker  = `<script id="tour-runtime-head"></script>`
-	prerenderChromeWorkerLimit  = 2
-	prerenderChromeRouteTimeout = 60 * time.Second
+	prerenderRuntimeHeadMarker   = `<script id="tour-runtime-head"></script>`
+	prerenderChromeWorkerLimit   = 2
+	prerenderChromeRouteTimeout  = 60 * time.Second
+	prerenderChromeRouteAttempts = 3
+	prerenderChromeRetryBackoff  = time.Second
 )
+
+type prerenderChromeAttempt func(context.Context, string) ([]byte, error)
+type prerenderChromeRetryWait func(context.Context, time.Duration) error
 
 func prerenderProductionPagesChrome(contentDir, locale string, expectedPages int) error {
 	chrome, err := exec.LookPath("google-chrome")
@@ -103,24 +110,15 @@ func prerenderProductionPagesChrome(contentDir, locale string, expectedPages int
 }
 
 func prerenderListWithChrome(parent context.Context, chrome, serverURL, profileRoot, contentDir string, route tour.ListRoute) error {
-	ctx, cancel := context.WithTimeout(parent, prerenderChromeRouteTimeout)
-	defer cancel()
-	command := exec.CommandContext(ctx, chrome,
-		"--headless=new", "--no-sandbox", "--disable-gpu", "--disable-dev-shm-usage",
-		"--disable-breakpad", "--disable-crash-reporter", "--disable-background-networking",
-		"--disable-default-apps", "--disable-extensions", "--no-first-run", "--noerrdialogs",
-		"--user-data-dir="+profileRoot,
-		"--host-resolver-rules=MAP assets-go-dev.shuijingwanwq.com ~NOTFOUND, MAP fonts.googleapis.com ~NOTFOUND, MAP pagead2.googlesyndication.com ~NOTFOUND",
-		"--run-all-compositor-stages-before-draw", "--virtual-time-budget=5000", "--dump-dom", serverURL+route.Path,
-	)
-	var stderr bytes.Buffer
-	command.Stderr = &stderr
-	output, err := command.Output()
+	return prerenderListWithChromeAttempt(parent, profileRoot, contentDir, route, func(ctx context.Context, profile string) ([]byte, error) {
+		return prerenderChromeDOM(ctx, chrome, serverURL, profile, route.Path)
+	}, waitForPrerenderChromeRetry, os.Stderr)
+}
+
+func prerenderListWithChromeAttempt(parent context.Context, profileRoot, contentDir string, route tour.ListRoute, chromeAttempt prerenderChromeAttempt, retryWait prerenderChromeRetryWait, logOutput io.Writer) error {
+	output, err := prerenderChromeDOMWithRetry(parent, route.Path, profileRoot, chromeAttempt, retryWait, logOutput)
 	if err != nil {
-		if ctx.Err() != nil {
-			return fmt.Errorf("Chrome %s: %w", route.Path, ctx.Err())
-		}
-		return fmt.Errorf("Chrome %s: %w: %s", route.Path, err, strings.TrimSpace(stderr.String()))
+		return err
 	}
 	output, err = sanitizePrerenderedHTML(output)
 	if err != nil {
@@ -140,35 +138,15 @@ func prerenderListWithChrome(parent context.Context, chrome, serverURL, profileR
 }
 
 func prerenderRouteWithChrome(parent context.Context, chrome, serverURL, profileRoot, contentDir string, route tour.CourseRoute) error {
-	ctx, cancel := context.WithTimeout(parent, prerenderChromeRouteTimeout)
-	defer cancel()
-	command := exec.CommandContext(ctx, chrome,
-		"--headless=new",
-		"--no-sandbox",
-		"--disable-gpu",
-		"--disable-dev-shm-usage",
-		"--disable-breakpad",
-		"--disable-crash-reporter",
-		"--disable-background-networking",
-		"--disable-default-apps",
-		"--disable-extensions",
-		"--no-first-run",
-		"--noerrdialogs",
-		"--user-data-dir="+profileRoot,
-		"--host-resolver-rules=MAP assets-go-dev.shuijingwanwq.com ~NOTFOUND, MAP fonts.googleapis.com ~NOTFOUND, MAP pagead2.googlesyndication.com ~NOTFOUND",
-		"--run-all-compositor-stages-before-draw",
-		"--virtual-time-budget=5000",
-		"--dump-dom",
-		serverURL+route.Path,
-	)
-	var stderr bytes.Buffer
-	command.Stderr = &stderr
-	output, err := command.Output()
+	return prerenderRouteWithChromeAttempt(parent, profileRoot, contentDir, route, func(ctx context.Context, profile string) ([]byte, error) {
+		return prerenderChromeDOM(ctx, chrome, serverURL, profile, route.Path)
+	}, waitForPrerenderChromeRetry, os.Stderr)
+}
+
+func prerenderRouteWithChromeAttempt(parent context.Context, profileRoot, contentDir string, route tour.CourseRoute, chromeAttempt prerenderChromeAttempt, retryWait prerenderChromeRetryWait, logOutput io.Writer) error {
+	output, err := prerenderChromeDOMWithRetry(parent, route.Path, profileRoot, chromeAttempt, retryWait, logOutput)
 	if err != nil {
-		if ctx.Err() != nil {
-			return fmt.Errorf("Chrome %s: %w", route.Path, ctx.Err())
-		}
-		return fmt.Errorf("Chrome %s: %w: %s", route.Path, err, strings.TrimSpace(stderr.String()))
+		return err
 	}
 	output, err = sanitizePrerenderedHTML(output)
 	if err != nil {
@@ -192,6 +170,73 @@ func prerenderRouteWithChrome(parent context.Context, chrome, serverURL, profile
 		return fmt.Errorf("write prerendered page: %w", err)
 	}
 	return nil
+}
+
+func prerenderChromeDOMWithRetry(parent context.Context, routePath, profileRoot string, chromeAttempt prerenderChromeAttempt, retryWait prerenderChromeRetryWait, logOutput io.Writer) ([]byte, error) {
+	if err := os.MkdirAll(profileRoot, 0700); err != nil {
+		return nil, fmt.Errorf("create Chrome profile root for %s: %w", routePath, err)
+	}
+	for attempt := 1; attempt <= prerenderChromeRouteAttempts; attempt++ {
+		if err := parent.Err(); err != nil {
+			return nil, fmt.Errorf("Chrome %s: %w", routePath, err)
+		}
+		attemptProfile, err := os.MkdirTemp(profileRoot, fmt.Sprintf("attempt-%d-", attempt))
+		if err != nil {
+			return nil, fmt.Errorf("create Chrome attempt profile for %s: %w", routePath, err)
+		}
+		output, attemptErr := chromeAttempt(parent, attemptProfile)
+		_ = os.RemoveAll(attemptProfile)
+		if attemptErr == nil {
+			return output, nil
+		}
+		if err := parent.Err(); err != nil {
+			return nil, fmt.Errorf("Chrome %s: %w", routePath, err)
+		}
+		if !errors.Is(attemptErr, context.DeadlineExceeded) || attempt == prerenderChromeRouteAttempts {
+			return nil, attemptErr
+		}
+		backoff := time.Duration(attempt) * prerenderChromeRetryBackoff
+		fmt.Fprintf(logOutput, "Chrome prerender retry: route=%s attempt=%d/%d reason=%v next_attempt=%d/%d backoff=%s\n",
+			routePath, attempt, prerenderChromeRouteAttempts, attemptErr, attempt+1, prerenderChromeRouteAttempts, backoff)
+		if err := retryWait(parent, backoff); err != nil {
+			return nil, fmt.Errorf("Chrome %s: %w", routePath, err)
+		}
+	}
+	panic("unreachable")
+}
+
+func waitForPrerenderChromeRetry(ctx context.Context, delay time.Duration) error {
+	timer := time.NewTimer(delay)
+	defer timer.Stop()
+	select {
+	case <-timer.C:
+		return nil
+	case <-ctx.Done():
+		return ctx.Err()
+	}
+}
+
+func prerenderChromeDOM(parent context.Context, chrome, serverURL, profileRoot, routePath string) ([]byte, error) {
+	ctx, cancel := context.WithTimeout(parent, prerenderChromeRouteTimeout)
+	defer cancel()
+	command := exec.CommandContext(ctx, chrome,
+		"--headless=new", "--no-sandbox", "--disable-gpu", "--disable-dev-shm-usage",
+		"--disable-breakpad", "--disable-crash-reporter", "--disable-background-networking",
+		"--disable-default-apps", "--disable-extensions", "--no-first-run", "--noerrdialogs",
+		"--user-data-dir="+profileRoot,
+		"--host-resolver-rules=MAP assets-go-dev.shuijingwanwq.com ~NOTFOUND, MAP fonts.googleapis.com ~NOTFOUND, MAP pagead2.googlesyndication.com ~NOTFOUND",
+		"--run-all-compositor-stages-before-draw", "--virtual-time-budget=5000", "--dump-dom", serverURL+routePath,
+	)
+	var stderr bytes.Buffer
+	command.Stderr = &stderr
+	output, err := command.Output()
+	if err != nil {
+		if ctx.Err() != nil {
+			return nil, fmt.Errorf("Chrome %s: %w", routePath, ctx.Err())
+		}
+		return nil, fmt.Errorf("Chrome %s: %w: %s", routePath, err, strings.TrimSpace(stderr.String()))
+	}
+	return output, nil
 }
 
 func prerenderOutputPath(contentDir, route string) (string, error) {
