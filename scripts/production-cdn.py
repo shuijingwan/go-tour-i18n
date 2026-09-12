@@ -15,6 +15,7 @@ import importlib.util
 import json
 import os
 import pathlib
+import re
 import shutil
 import socket
 import stat
@@ -36,6 +37,14 @@ READ_ATTEMPTS = 3
 POLL_ATTEMPTS = 10
 RECONCILE_ATTEMPTS = 3
 RECONCILE_WINDOW_SECONDS = 180
+SHARED_ASSETS_RECEIPT_V1 = "go-tour-i18n/shared-assets-production-receipt/v1"
+SHARED_ASSETS_RECEIPT_V2 = "go-tour-i18n/shared-assets-production-receipt/v2"
+SHARED_ASSETS_BOUNDARY_PATHS = [
+    "tour/script.js",
+    "tour/static/img/tree.png",
+    "tour/static/partials/editor.html",
+]
+SAFE_SHARED_PATH = re.compile(r"^[A-Za-z0-9._/-]+$")
 
 
 class CDNError(RuntimeError):
@@ -368,6 +377,18 @@ class CloudflareClient(object):
         if type(response.get("result")) is not dict:
             raise CDNError("Cloudflare purge response has no result object")
 
+    def purge_files(self, zone_id, urls):
+        try:
+            response = self._request("POST", "/zones/%s/purge_cache" % zone_id,
+                                     {"files": urls}, mutation=True)
+        except MutationUncertain as exc:
+            raise MutationUncertain(
+                "Cloudflare exact-URL purge result is uncertain; no duplicate mutation was attempted") from exc
+        result = response.get("result")
+        if type(result) is not dict or type(result.get("id")) is not str or not result.get("id"):
+            raise MutationUncertain(
+                "Cloudflare exact-URL purge response has no result.id; no duplicate mutation was attempted")
+
 
 class CurlTransport(object):
     def __init__(self, socks):
@@ -427,12 +448,88 @@ def read_secret(path, required, exact=False):
     return [values[name] for name in required]
 
 
+def _safe_shared_path(value):
+    return (type(value) is str and bool(value) and SAFE_SHARED_PATH.fullmatch(value) is not None and
+            not value.startswith("/") and ".." not in value and "//" not in value and "\\" not in value)
+
+
+def load_shared_assets_receipt(receipt_path, shared):
+    path = pathlib.Path(receipt_path)
+    if not path.is_file() or path.is_symlink():
+        raise CDNError("shared-assets receipt must be a real regular file")
+    try:
+        receipt = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError) as exc:
+        raise CDNError("cannot read shared-assets receipt: %s" % exc)
+    if type(receipt) is not dict:
+        raise CDNError("shared-assets receipt must be an object")
+    core = {"schema", "export_dir", "manifest_sha256", "deployment_result",
+            "production_base_url", "changed_paths", "boundary_paths"}
+    schema = receipt.get("schema")
+    expected = core if schema == SHARED_ASSETS_RECEIPT_V1 else core | {"purge_result", "verification_result"}
+    if schema not in (SHARED_ASSETS_RECEIPT_V1, SHARED_ASSETS_RECEIPT_V2) or set(receipt) != expected:
+        raise CDNError("shared-assets receipt schema or keys are invalid")
+    export_dir = pathlib.Path(receipt.get("export_dir", ""))
+    if (not export_dir.is_absolute() or not export_dir.is_dir() or export_dir.is_symlink() or
+            export_dir.resolve() != export_dir or path.resolve() != pathlib.Path(str(export_dir) + ".verification-receipt.json")):
+        raise CDNError("shared-assets receipt is not bound to a canonical export directory")
+    manifest = export_dir / "SHA256SUMS"
+    try:
+        actual_manifest = hashlib.sha256(manifest.read_bytes()).hexdigest()
+    except OSError as exc:
+        raise CDNError("cannot read shared-assets export manifest: %s" % exc)
+    if type(receipt.get("manifest_sha256")) is not str or receipt["manifest_sha256"] != actual_manifest:
+        raise CDNError("shared-assets receipt manifest identity mismatch")
+    origin = shared["shared_assets_public_origin"].rstrip("/")
+    parsed = urllib.parse.urlsplit(origin)
+    if (receipt.get("production_base_url", "").rstrip("/") != origin or parsed.scheme != "https" or
+            not parsed.hostname or parsed.path not in ("", "/") or parsed.query or parsed.fragment):
+        raise CDNError("shared-assets receipt origin does not match formal production identity")
+    if receipt.get("boundary_paths") != SHARED_ASSETS_BOUNDARY_PATHS:
+        raise CDNError("shared-assets receipt boundary policy mismatch")
+    changed = receipt.get("changed_paths")
+    deployed = receipt.get("deployment_result")
+    if (type(changed) is not list or len(changed) > 100 or len(changed) != len(set(changed)) or
+            any(not _safe_shared_path(value) for value in changed)):
+        raise CDNError("shared-assets receipt changed_paths are invalid")
+    if deployed == "DEPLOYED" and not changed:
+        raise CDNError("DEPLOYED shared-assets receipt has no changed_paths")
+    if deployed == "NO_CHANGES" and changed:
+        raise CDNError("NO_CHANGES shared-assets receipt contains changed_paths")
+    if deployed not in ("DEPLOYED", "NO_CHANGES"):
+        raise CDNError("shared-assets receipt deployment_result is invalid")
+    if schema == SHARED_ASSETS_RECEIPT_V2:
+        if receipt.get("purge_result") not in ("PENDING", "ATTEMPTED", "PASS", "SKIPPED"):
+            raise CDNError("shared-assets receipt purge_result is invalid")
+        if receipt.get("verification_result") not in ("PENDING", "PASS"):
+            raise CDNError("shared-assets receipt verification_result is invalid")
+        if ((deployed == "DEPLOYED") != (receipt["purge_result"] in ("PENDING", "ATTEMPTED", "PASS")) or
+                (deployed == "NO_CHANGES") != (receipt["purge_result"] == "SKIPPED")):
+            raise CDNError("shared-assets receipt purge state conflicts with deployment_result")
+    return receipt, [origin + "/" + value for value in changed]
+
+
+def write_shared_assets_receipt(receipt_path, receipt):
+    path = pathlib.Path(receipt_path)
+    temporary = path.with_name(path.name + ".tmp-%d" % os.getpid())
+    try:
+        temporary.write_text(json.dumps(receipt, ensure_ascii=False, sort_keys=True,
+                                        separators=(",", ":")) + "\n", encoding="utf-8")
+        os.chmod(str(temporary), 0o644)
+        os.replace(str(temporary), str(path))
+    finally:
+        try:
+            temporary.unlink()
+        except OSError:
+            pass
+
+
 def remote_main(encoded):
     config = json.loads(base64.b64decode(encoded).decode("utf-8"))
     provider = config["provider"]
     action = config["action"]
-    hostname = config["hostname"]
     if provider == "edgeone":
+        hostname = config["hostname"]
         secret_id, secret_key = read_secret(config["secret_file"],
                                             ("TENCENTCLOUD_SECRET_ID", "TENCENTCLOUD_SECRET_KEY"), exact=True)
         client = TencentClient(secret_id, secret_key)
@@ -451,6 +548,16 @@ def remote_main(encoded):
     token, = read_secret(config["secret_file"], ("CF_Token",))
     client = CloudflareClient(token, CurlTransport(config["socks"]))
     zone_id = client.resolve_zone(config["zone_name"])
+    if action == "shared-assets-preflight":
+        print("CLOUDFLARE SHARED-ASSETS AUTHORITY PREFLIGHT: PASS")
+        print("zone_name: %s" % config["zone_name"])
+        print("origin: %s" % config["origin"])
+        return 0
+    if action == "purge-shared-assets":
+        client.purge_files(zone_id, config["files"])
+        print("CLOUDFLARE SHARED-ASSETS EXACT-URL PURGE: PASS")
+        return 0
+    hostname = config["hostname"]
     if action == "preflight":
         print("CLOUDFLARE AUTHORITY PREFLIGHT: PASS")
         print("zone_name: %s" % config["zone_name"])
@@ -477,6 +584,47 @@ def _free_port():
         listener.close()
 
 
+def _run_remote_config(shared, config):
+    action = config["action"]
+    provider = config["provider"]
+    temp = pathlib.Path(tempfile.mkdtemp(prefix="go-tour-production-cdn-"))
+    controls = []
+    base = ["-o", "BatchMode=yes", "-o", "ConnectTimeout=10", "-o", "ServerAliveInterval=5",
+            "-o", "ServerAliveCountMax=3", "-o", "ConnectionAttempts=3"]
+    aliyun = shared["aliyun_ssh_alias"]
+    try:
+        aliyun_options = list(base)
+        if provider == "cloudflare":
+            local_port, aliyun_port = _free_port(), _free_port()
+            zcontrol = temp / "zgocloud.control"
+            acontrol = temp / "aliyun.control"
+            zoptions = base + ["-o", "ControlMaster=yes", "-o", "ControlPersist=yes", "-o", "ExitOnForwardFailure=yes", "-o", "ControlPath=" + str(zcontrol)]
+            aliyun_options = base + ["-o", "ControlMaster=yes", "-o", "ControlPersist=yes", "-o", "ExitOnForwardFailure=yes", "-o", "GatewayPorts=no", "-o", "ControlPath=" + str(acontrol)]
+            subprocess.run(["ssh"] + zoptions + ["-f", "-N", "-D", "127.0.0.1:%d" % local_port, shared["zgocloud_ssh_alias"]], check=True, timeout=30)
+            controls.append((shared["zgocloud_ssh_alias"], zoptions))
+            subprocess.run(["ssh"] + aliyun_options + ["-f", "-N", "-R", "127.0.0.1:%d:127.0.0.1:%d" % (aliyun_port, local_port), aliyun], check=True, timeout=30)
+            controls.append((aliyun, aliyun_options))
+            config["socks"] = "127.0.0.1:%d" % aliyun_port
+        encoded = base64.b64encode(_json_bytes(config)).decode("ascii")
+        source = pathlib.Path(__file__).read_text(encoding="utf-8")
+        try:
+            result = subprocess.run(["ssh"] + aliyun_options + [aliyun, "python3", "-", "--remote", encoded],
+                                    input=source, text=True, check=False, timeout=300)
+        except subprocess.TimeoutExpired as exc:
+            if action == "purge-shared-assets":
+                raise MutationUncertain("remote exact-URL purge timed out") from exc
+            raise
+        if result.returncode != 0:
+            if action == "purge-shared-assets" and result.returncode != 1:
+                raise MutationUncertain("remote exact-URL purge result is uncertain (exit %d)" % result.returncode)
+            raise CDNError("remote CDN %s failed (exit %d)" % (action, result.returncode))
+    finally:
+        for host, options in reversed(controls):
+            subprocess.run(["ssh"] + options + ["-O", "exit", host], stdout=subprocess.DEVNULL,
+                           stderr=subprocess.DEVNULL, check=False)
+        shutil.rmtree(str(temp), ignore_errors=True)
+
+
 def coordinator(action, locale):
     identity = _load_identity()
     profiles = [profile for profile in identity["locales"] if profile["locale"] == locale]
@@ -497,35 +645,42 @@ def coordinator(action, locale):
         config.update(zone_name=shared["cloudflare_zone_name"], secret_file=shared["cloudflare_secret_file"])
     else:
         raise CDNError("unsupported formal CDN")
-    temp = pathlib.Path(tempfile.mkdtemp(prefix="go-tour-production-cdn-"))
-    controls = []
-    base = ["-o", "BatchMode=yes", "-o", "ConnectTimeout=10", "-o", "ServerAliveInterval=5",
-            "-o", "ServerAliveCountMax=3", "-o", "ConnectionAttempts=3"]
-    aliyun = shared["aliyun_ssh_alias"]
-    try:
-        aliyun_options = list(base)
-        if profile["cdn"] == "cloudflare":
-            local_port, aliyun_port = _free_port(), _free_port()
-            zcontrol = temp / "zgocloud.control"
-            acontrol = temp / "aliyun.control"
-            zoptions = base + ["-o", "ControlMaster=yes", "-o", "ControlPersist=yes", "-o", "ExitOnForwardFailure=yes", "-o", "ControlPath=" + str(zcontrol)]
-            aliyun_options = base + ["-o", "ControlMaster=yes", "-o", "ControlPersist=yes", "-o", "ExitOnForwardFailure=yes", "-o", "GatewayPorts=no", "-o", "ControlPath=" + str(acontrol)]
-            subprocess.run(["ssh"] + zoptions + ["-f", "-N", "-D", "127.0.0.1:%d" % local_port, shared["zgocloud_ssh_alias"]], check=True, timeout=30)
-            controls.append((shared["zgocloud_ssh_alias"], zoptions))
-            subprocess.run(["ssh"] + aliyun_options + ["-f", "-N", "-R", "127.0.0.1:%d:127.0.0.1:%d" % (aliyun_port, local_port), aliyun], check=True, timeout=30)
-            controls.append((aliyun, aliyun_options))
-            config["socks"] = "127.0.0.1:%d" % aliyun_port
-        encoded = base64.b64encode(_json_bytes(config)).decode("ascii")
-        source = pathlib.Path(__file__).read_text(encoding="utf-8")
-        result = subprocess.run(["ssh"] + aliyun_options + [aliyun, "python3", "-", "--remote", encoded],
-                                input=source, text=True, check=False, timeout=300)
-        if result.returncode != 0:
-            raise CDNError("remote CDN %s failed (exit %d)" % (action, result.returncode))
-    finally:
-        for host, options in reversed(controls):
-            subprocess.run(["ssh"] + options + ["-O", "exit", host], stdout=subprocess.DEVNULL,
-                           stderr=subprocess.DEVNULL, check=False)
-        shutil.rmtree(str(temp), ignore_errors=True)
+    _run_remote_config(shared, config)
+
+
+def shared_assets_coordinator(action, receipt_path=None):
+    identity = _load_identity()
+    shared = identity["shared"]
+    config = {
+        "action": action,
+        "provider": "cloudflare",
+        "zone_name": shared["cloudflare_zone_name"],
+        "secret_file": shared["cloudflare_secret_file"],
+        "origin": shared["shared_assets_public_origin"].rstrip("/"),
+    }
+    if action == "purge-shared-assets":
+        receipt, urls = load_shared_assets_receipt(receipt_path, shared)
+        if not urls:
+            raise CDNError("shared-assets exact-URL purge requires changed_paths")
+        if receipt["schema"] != SHARED_ASSETS_RECEIPT_V2 or receipt["purge_result"] != "PENDING":
+            raise CDNError("shared-assets exact-URL purge requires a v2 PENDING receipt")
+        config["files"] = urls
+        receipt["purge_result"] = "ATTEMPTED"
+        write_shared_assets_receipt(receipt_path, receipt)
+        try:
+            _run_remote_config(shared, config)
+        except MutationUncertain:
+            # Without a reconciliation API, ATTEMPTED must remain durable so a
+            # later invocation cannot blindly duplicate the POST.
+            raise
+        except (CDNError, OSError, subprocess.SubprocessError, ValueError, KeyError):
+            receipt["purge_result"] = "PENDING"
+            write_shared_assets_receipt(receipt_path, receipt)
+            raise
+        receipt["purge_result"] = "PASS"
+        write_shared_assets_receipt(receipt_path, receipt)
+        return
+    _run_remote_config(shared, config)
 
 
 def main(argv=None):
@@ -533,16 +688,30 @@ def main(argv=None):
     if len(argv) == 2 and argv[0] == "--remote":
         try:
             return remote_main(argv[1])
+        except MutationUncertain as exc:
+            print("[production-cdn] UNCERTAIN: %s" % exc, file=sys.stderr)
+            return 3
         except (CDNError, OSError, ValueError, KeyError) as exc:
             print("[production-cdn] FAILED: %s" % exc, file=sys.stderr)
             return 1
     parser = argparse.ArgumentParser()
-    parser.add_argument("action", choices=("preflight", "purge"))
-    parser.add_argument("--locale", required=True)
+    parser.add_argument("action", choices=("preflight", "purge", "shared-assets-preflight", "purge-shared-assets"))
+    parser.add_argument("--locale")
+    parser.add_argument("--receipt")
     args = parser.parse_args(argv)
     try:
-        coordinator(args.action, args.locale)
+        if args.action in ("preflight", "purge"):
+            if not args.locale or args.receipt:
+                raise CDNError("language CDN action requires only --locale")
+            coordinator(args.action, args.locale)
+        else:
+            if args.locale or (args.action == "purge-shared-assets") != bool(args.receipt):
+                raise CDNError("shared-assets CDN action has invalid arguments")
+            shared_assets_coordinator(args.action, args.receipt)
         return 0
+    except MutationUncertain as exc:
+        print("[production-cdn] UNCERTAIN: %s" % exc, file=sys.stderr)
+        return 3
     except (CDNError, OSError, subprocess.SubprocessError, ValueError, KeyError) as exc:
         print("[production-cdn] FAILED: %s" % exc, file=sys.stderr)
         return 1

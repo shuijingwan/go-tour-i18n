@@ -155,7 +155,7 @@ PY
     chmod 0644 -- "$temporary"
     mv -f -- "$temporary" "$receipt"
     printf 'verification receipt: %s\n' "$receipt"
-    printf 'next command: scripts/verify-shared-assets-production.sh %s\n' "$receipt"
+    printf 'next command: scripts/shared-assets-production.sh %s\n' "$export_dir"
 }
 
 validate_local_export() {
@@ -579,12 +579,9 @@ main() {
 
     log 'SHARED ASSETS ORIGIN DEPLOYMENT COMPLETED'
     write_verification_receipt "$export_dir" DEPLOYED "${changed_paths[@]}"
-    printf '\nCloudflare HUMAN GATE:\n'
-    printf '请在 Cloudflare Dashboard 对以下 URL 执行 Custom Purge：\n'
     for path in "${changed_paths[@]}"; do
-        printf '%s/%s\n' "$PUBLIC_BASE_URL" "$path"
+        printf 'changed path: %s\n' "$path"
     done
-    printf '完成后运行上述 verification receipt 对应的唯一后续命令。\n'
 }
 
 if [[ ${BASH_SOURCE[0]} == "$0" ]]; then

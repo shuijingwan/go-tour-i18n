@@ -2,6 +2,7 @@
 
 import base64
 import ast
+import hashlib
 import importlib.util
 import io
 import json
@@ -66,6 +67,27 @@ class FakeTencent(object):
 
 
 class ProductionCDNTest(unittest.TestCase):
+    def shared_receipt(self, directory, changed=None, base="https://assets-go-dev.shuijingwanwq.com",
+                       schema=None, purge="PENDING", verification="PENDING"):
+        export = pathlib.Path(directory) / "shared-export"
+        export.mkdir()
+        (export / "SHA256SUMS").write_text("formal manifest\n", encoding="utf-8")
+        digest = hashlib.sha256((export / "SHA256SUMS").read_bytes()).hexdigest()
+        receipt = pathlib.Path(str(export) + ".verification-receipt.json")
+        value = {
+            "schema": schema or CDN.SHARED_ASSETS_RECEIPT_V1,
+            "export_dir": str(export),
+            "manifest_sha256": digest,
+            "deployment_result": "DEPLOYED" if changed else "NO_CHANGES",
+            "production_base_url": base,
+            "changed_paths": changed or [],
+            "boundary_paths": CDN.SHARED_ASSETS_BOUNDARY_PATHS,
+        }
+        if schema == CDN.SHARED_ASSETS_RECEIPT_V2:
+            value.update(purge_result=purge, verification_result=verification)
+        receipt.write_text(json.dumps(value), encoding="utf-8")
+        return receipt
+
     def test_remote_helper_is_python_36_parseable(self):
         source = (ROOT / "scripts" / "production-cdn.py").read_text(encoding="utf-8")
         ast.parse(source, feature_version=(3, 6))
@@ -247,6 +269,99 @@ class ProductionCDNTest(unittest.TestCase):
         with self.assertRaisesRegex(CDN.CDNError, "no duplicate"):
             CDN.CloudflareClient("TOKEN", uncertain).purge_hostname("zone", "www.example.com")
         self.assertEqual(len(uncertain.calls), 1)
+
+    def test_cloudflare_exact_url_payload_uses_official_response_shape(self):
+        official_success = {"success": True, "errors": [], "messages": [],
+                            "result": {"id": "023e105f4ecef8ad9ca31a8372d0c353"}}
+        transport = QueueTransport([official_success])
+        urls = ["https://assets-go-dev.shuijingwanwq.com/SHA256SUMS",
+                "https://assets-go-dev.shuijingwanwq.com/tour/static/css/app.css"]
+        CDN.CloudflareClient("TOKEN", transport).purge_files("zone-1", urls)
+        method, path, _, payload = transport.calls[0]
+        self.assertEqual(method, "POST")
+        self.assertTrue(path.endswith("/zones/zone-1/purge_cache"))
+        self.assertEqual(payload, {"files": urls})
+        for forbidden in ("purge_everything", "hosts", "prefixes", "tags"):
+            self.assertNotIn(forbidden, payload)
+
+    def test_cloudflare_exact_url_definite_and_uncertain_failures_do_not_retry(self):
+        definite = QueueTransport([
+            {"success": False, "errors": [{"code": 1000, "message": "denied"}], "messages": [], "result": None},
+        ])
+        with self.assertRaises(CDN.CDNError) as raised:
+            CDN.CloudflareClient("DO-NOT-LOG", definite).purge_files(
+                "zone-1", ["https://assets-go-dev.shuijingwanwq.com/SHA256SUMS"])
+        self.assertNotIsInstance(raised.exception, CDN.MutationUncertain)
+        self.assertEqual(len(definite.calls), 1)
+
+        for response_value in (CDN.TransportError("timeout"),
+                               {"success": True, "errors": [], "messages": [], "result": {}}):
+            with self.subTest(response=response_value):
+                transport = QueueTransport([response_value])
+                with self.assertRaises(CDN.MutationUncertain):
+                    CDN.CloudflareClient("DO-NOT-LOG", transport).purge_files(
+                        "zone-1", ["https://assets-go-dev.shuijingwanwq.com/SHA256SUMS"])
+                self.assertEqual(len(transport.calls), 1)
+
+    def test_shared_assets_receipt_constructs_only_formal_exact_urls(self):
+        shared = CDN._load_identity()["shared"]
+        with tempfile.TemporaryDirectory() as directory:
+            receipt = self.shared_receipt(directory, ["SHA256SUMS", "tour/static/css/app.css"])
+            _, urls = CDN.load_shared_assets_receipt(receipt, shared)
+            self.assertEqual(urls, [
+                "https://assets-go-dev.shuijingwanwq.com/SHA256SUMS",
+                "https://assets-go-dev.shuijingwanwq.com/tour/static/css/app.css",
+            ])
+
+    def test_shared_assets_receipt_rejects_arbitrary_origin_and_unsafe_paths(self):
+        shared = CDN._load_identity()["shared"]
+        with tempfile.TemporaryDirectory() as directory:
+            receipt = self.shared_receipt(directory, ["tour/static/css/app.css"], "https://evil.example")
+            with self.assertRaises(CDN.CDNError):
+                CDN.load_shared_assets_receipt(receipt, shared)
+        for unsafe in ("../outside", "/absolute", "safe.css?x=1", "https://evil.example/a.css", "a//b"):
+            with self.subTest(path=unsafe), tempfile.TemporaryDirectory() as directory:
+                receipt = self.shared_receipt(directory, [unsafe])
+                with self.assertRaises(CDN.CDNError):
+                    CDN.load_shared_assets_receipt(receipt, shared)
+
+    def test_shared_assets_definite_failure_resumes_but_uncertain_never_repeats(self):
+        with tempfile.TemporaryDirectory() as directory:
+            receipt = self.shared_receipt(directory, ["SHA256SUMS"], schema=CDN.SHARED_ASSETS_RECEIPT_V2)
+            with mock.patch.object(CDN, "_run_remote_config", side_effect=CDN.CDNError("denied")) as remote:
+                with self.assertRaisesRegex(CDN.CDNError, "denied"):
+                    CDN.shared_assets_coordinator("purge-shared-assets", receipt)
+            self.assertEqual(json.loads(receipt.read_text(encoding="utf-8"))["purge_result"], "PENDING")
+            with mock.patch.object(CDN, "_run_remote_config") as remote:
+                CDN.shared_assets_coordinator("purge-shared-assets", receipt)
+            self.assertEqual(remote.call_count, 1)
+            self.assertEqual(json.loads(receipt.read_text(encoding="utf-8"))["purge_result"], "PASS")
+
+        with tempfile.TemporaryDirectory() as directory:
+            receipt = self.shared_receipt(directory, ["SHA256SUMS"], schema=CDN.SHARED_ASSETS_RECEIPT_V2)
+            with mock.patch.object(CDN, "_run_remote_config", side_effect=CDN.MutationUncertain("timeout")) as remote:
+                with self.assertRaises(CDN.MutationUncertain):
+                    CDN.shared_assets_coordinator("purge-shared-assets", receipt)
+            self.assertEqual(remote.call_count, 1)
+            self.assertEqual(json.loads(receipt.read_text(encoding="utf-8"))["purge_result"], "ATTEMPTED")
+            with mock.patch.object(CDN, "_run_remote_config") as repeated:
+                with self.assertRaisesRegex(CDN.CDNError, "v2 PENDING"):
+                    CDN.shared_assets_coordinator("purge-shared-assets", receipt)
+            repeated.assert_not_called()
+
+    def test_shared_assets_read_only_preflight_never_purges_or_logs_token(self):
+        config = {"provider": "cloudflare", "action": "shared-assets-preflight",
+                  "zone_name": "example.com", "origin": "https://assets.example.com", "secret_file": "/secret",
+                  "socks": "127.0.0.1:1234"}
+        encoded = base64.b64encode(json.dumps(config).encode()).decode()
+        client = mock.Mock()
+        client.resolve_zone.return_value = "zone-1"
+        output = io.StringIO()
+        with mock.patch.object(CDN, "read_secret", return_value=["DO-NOT-LOG"]), \
+                mock.patch.object(CDN, "CloudflareClient", return_value=client), redirect_stdout(output):
+            self.assertEqual(CDN.remote_main(encoded), 0)
+        client.purge_files.assert_not_called()
+        self.assertNotIn("DO-NOT-LOG", output.getvalue())
 
     def test_cloudflare_read_retry_is_bounded_and_secret_not_in_error(self):
         transport = QueueTransport([CDN.TransportError("timeout")] * CDN.READ_ATTEMPTS)

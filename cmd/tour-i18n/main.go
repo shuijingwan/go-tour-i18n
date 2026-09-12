@@ -44,7 +44,7 @@ func run(args []string) error {
 		return err
 	}
 	if len(args) == 0 {
-		return fmt.Errorf("usage: tour-i18n <assets|catalog|upstream|page|locale|status|candidate|translate|retranslation|quality-check|course-metadata|surface-review|first-production|indexnow|policy|build|preview|publish> <command or flags>")
+		return fmt.Errorf("usage: tour-i18n <assets|catalog|upstream|page|locale|status|candidate|translate|retranslation|quality-check|course-metadata|surface-review|first-production|indexnow|policy|build|preview|publish|publish-batch> <command or flags>")
 	}
 	if args[0] == "assets" {
 		if len(args) < 2 {
@@ -79,6 +79,7 @@ func run(args []string) error {
 		}
 		publish = &options
 	}
+	batchPublish := args[0] == "publish-batch"
 	current, err := i18n.BuildSourceCatalog(root)
 	if err != nil {
 		return err
@@ -103,8 +104,11 @@ func run(args []string) error {
 	if publish != nil {
 		return publishBundle(root, catalog, *publish)
 	}
+	if batchPublish {
+		return publishBatchCommand(root, catalog, args[1:])
+	}
 	if len(args) < 2 {
-		return fmt.Errorf("usage: tour-i18n <assets|catalog|upstream|page|locale|status|candidate|translate|retranslation|quality-check|course-metadata|surface-review|first-production|indexnow|policy|build|preview|publish> <command or flags>")
+		return fmt.Errorf("usage: tour-i18n <assets|catalog|upstream|page|locale|status|candidate|translate|retranslation|quality-check|course-metadata|surface-review|first-production|indexnow|policy|build|preview|publish|publish-batch> <command or flags>")
 	}
 	switch args[0] + " " + args[1] {
 	case "locale init":

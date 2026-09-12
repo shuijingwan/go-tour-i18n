@@ -57,6 +57,10 @@ var buildProductionBinary = buildProductionBinaryGo
 // publishes always execute the Chrome implementation.
 var prerenderProductionPages = prerenderProductionPagesChrome
 
+// publishOutput lets publish-batch keep --json stdout machine-readable while
+// preserving the existing single-publish terminal output.
+var publishOutput io.Writer = os.Stdout
+
 func publishLocale(root string, catalog *i18n.Catalog, args []string) error {
 	options, err := parsePublishOptions(args)
 	if err != nil {
@@ -95,7 +99,9 @@ func parsePublishOptions(args []string) (publishOptions, error) {
 func publishBundle(root string, catalog *i18n.Catalog, options publishOptions) (err error) {
 	phase := func(name string) func() {
 		started := time.Now()
-		return func() { fmt.Printf("publish phase %s: %s\n", name, time.Since(started).Round(time.Millisecond)) }
+		return func() {
+			fmt.Fprintf(publishOutput, "publish phase %s: %s\n", name, time.Since(started).Round(time.Millisecond))
+		}
 	}
 	if err := requireLocaleInitializationComplete(root, options.Locale); err != nil {
 		return err
@@ -196,8 +202,8 @@ func publishBundle(root string, catalog *i18n.Catalog, options publishOptions) (
 		return fmt.Errorf("publish bundle: %w", err)
 	}
 	completed = true
-	fmt.Printf("production bundle: %s\n", output)
-	fmt.Printf("locale=%s ready=%d pending=%d blocked=%d pages=%d articles=%d\n",
+	fmt.Fprintf(publishOutput, "production bundle: %s\n", output)
+	fmt.Fprintf(publishOutput, "locale=%s ready=%d pending=%d blocked=%d pages=%d articles=%d\n",
 		projection.Locale, projection.Ready, projection.Pending, projection.Blocked, projection.PageCount, projection.ArticleCount)
 	return nil
 }

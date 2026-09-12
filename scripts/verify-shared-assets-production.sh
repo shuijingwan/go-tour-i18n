@@ -4,6 +4,7 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 readonly RECEIPT_SCHEMA='go-tour-i18n/shared-assets-production-receipt/v1'
+readonly RECEIPT_SCHEMA_V2='go-tour-i18n/shared-assets-production-receipt/v2'
 script_dir=$(cd -P -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)
 # shellcheck source=production-identity.sh
 source "$script_dir/production-identity.sh"
@@ -20,7 +21,7 @@ parse_receipt() {
 import json
 import sys
 
-required = {
+core = {
     "schema", "export_dir", "manifest_sha256", "deployment_result",
     "production_base_url", "changed_paths", "boundary_paths",
 }
@@ -29,9 +30,11 @@ try:
         receipt = json.load(source)
 except (OSError, json.JSONDecodeError) as exc:
     raise SystemExit(f"invalid JSON receipt: {exc}")
-if type(receipt) is not dict or set(receipt) != required:
+schema = receipt.get("schema") if type(receipt) is dict else None
+required = core if schema == "go-tour-i18n/shared-assets-production-receipt/v1" else core | {"purge_result", "verification_result"}
+if schema not in ("go-tour-i18n/shared-assets-production-receipt/v1", "go-tour-i18n/shared-assets-production-receipt/v2") or set(receipt) != required:
     raise SystemExit("receipt must contain exactly the required object keys")
-for key in required - {"changed_paths", "boundary_paths"}:
+for key in core - {"changed_paths", "boundary_paths"}:
     if type(receipt[key]) is not str:
         raise SystemExit(f"receipt field {key} must be a string")
 for key in ("changed_paths", "boundary_paths"):
@@ -45,6 +48,13 @@ values = [
 ]
 if any("\0" in value for value in values):
     raise SystemExit("receipt strings must not contain NUL")
+if schema == "go-tour-i18n/shared-assets-production-receipt/v2":
+    if receipt["verification_result"] not in ("PENDING", "PASS"):
+        raise SystemExit("invalid verification_result")
+    if receipt["deployment_result"] == "DEPLOYED" and receipt["purge_result"] != "PASS":
+        raise SystemExit("DEPLOYED receipt has no automatic purge PASS")
+    if receipt["deployment_result"] == "NO_CHANGES" and receipt["purge_result"] != "SKIPPED":
+        raise SystemExit("NO_CHANGES receipt has invalid purge state")
 sys.stdout.buffer.write(b"\0".join(value.encode("utf-8") for value in values) + b"\0")
 PY
 }
@@ -98,7 +108,7 @@ main() {
     [[ $boundary_count =~ ^[0-9]+$ && $boundary_count -le 10 ]] || { error 'invalid receipt boundary paths'; return 1; }
     boundary_paths=("${receipt_values[@]:index:boundary_count}"); index=$((index + boundary_count))
     [[ $index == ${#receipt_values[@]} ]] || { error 'invalid receipt schema'; return 1; }
-    [[ $schema == "$RECEIPT_SCHEMA" && $base == "$SHARED_ASSETS_PUBLIC_BASE_URL" && $manifest_sha =~ ^[0-9a-f]{64}$ ]] || { error 'receipt contains unsupported schema, base URL, or manifest SHA'; return 1; }
+    [[ ( $schema == "$RECEIPT_SCHEMA" || $schema == "$RECEIPT_SCHEMA_V2" ) && $base == "$SHARED_ASSETS_PUBLIC_BASE_URL" && $manifest_sha =~ ^[0-9a-f]{64}$ ]] || { error 'receipt contains unsupported schema, base URL, or manifest SHA'; return 1; }
     [[ $result == NO_CHANGES || $result == DEPLOYED ]] || { error 'receipt has unsupported deployment result'; return 1; }
     [[ $export_dir == /* && -d $export_dir && ! -L $export_dir && $(readlink -f -- "$export_dir") == "$export_dir" ]] || { error 'receipt export directory is not a canonical real directory'; return 1; }
     [[ $receipt == "$export_dir.verification-receipt.json" ]] || { error 'receipt path is not the formal sibling of its export directory'; return 1; }

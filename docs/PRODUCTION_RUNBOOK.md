@@ -44,9 +44,9 @@ python3 scripts/production-identity.py list --state live
 
 - `go-dev.shuijingwanwq.com`：EdgeOne 节点缓存 TTL 为 30 天，匹配整个 hostname，强制缓存关闭；已用首页 `/` 与课程页 `/tour/welcome/1` 验证公网 `MISS → HIT`。
 - 非中文 `*-go-dev.shuijingwanwq.com`：复用上述共享 Cloudflare Cache Rule；首页 `/` 与课程页 `/tour/welcome/1` 均按正式 machine gate 验收。
-- `assets-go-dev.shuijingwanwq.com`：复用上述共享 Cloudflare Cache Rule；shared-assets 继续按部署脚本输出的实际 changed URLs 做精确 Custom Purge。
+- `assets-go-dev.shuijingwanwq.com`：复用上述共享 Cloudflare Cache Rule；shared-assets 按正式 receipt 的实际 changed paths 自动做精确 URL purge。
 
-language production 使用固定 URL，因此 release 更新后不能等待约 1 个月自然过期。zh-CN profile 激活后应对 EdgeOne 执行其 hostname 缓存刷新；Cloudflare community profile 激活后应按其 formal production hostname 执行 Cloudflare Custom Purge。不得为刷新单一 language hostname 使用会影响同 zone 其他 hostname 的 Purge Everything。shared-assets 继续使用已有的 changed-URL 精确 purge 流程，不改为整 hostname purge。
+language production 使用固定 URL，因此 release 更新后不能等待约 1 个月自然过期。zh-CN profile 激活后应对 EdgeOne 执行其 hostname 缓存刷新；Cloudflare community profile 激活后应按其 formal production hostname 执行 Cloudflare Custom Purge。不得为刷新单一 language hostname 使用会影响同 zone 其他 hostname 的 Purge Everything。shared-assets 继续使用 automatic changed-URL 精确 purge 流程，不改为整 hostname purge。
 
 hostname purge 后观察到 `MISS → HIT` 是理想结果，但真实 CDN 可能在连续多次请求中仍返回 `MISS`，因此 language production 的 machine gate 不以固定次数内出现 `HIT` 或任何固定 cache status 时序作为通过条件。真实公网 `CF-Cache-Status` 是唯一正式 cache eligibility machine gate：`MISS`、`HIT`、`EXPIRED`、`REVALIDATED`、`UPDATING`、`STALE` 通过；`DYNAMIC`、`BYPASS`、header 缺失及未知值 fail closed。
 
@@ -293,14 +293,41 @@ actual: expected HTTP 204, got 403
 
 ### Production release 自动部署
 
-先使用仓库现有的 `publish` 命令生成并验收 Linux/amd64 production bundle。publish 输出 projection/build、production binary build、Chrome prerender、production-equivalent runtime validation、manifest/checksum 的 phase timing，便于识别瓶颈。当前稳定基线保持两个 Chrome worker；每条 route 仍独立启动 Chrome/virtual-time timeout，避免为节省启动成本引入长会话的跨 route state、timeout 或 cleanup 风险。构建会对当前 locale 的全部 103 个正式课程 URL 和 sitemap 中独立的 `/tour/list` 执行 headless Chrome prerender。课程页写入 `_content/tour/prerender/<lesson>/<page>.html`；list 写入 `_content/tour/prerender/list.html`，并必须含当前 locale 的 heading、module/lesson 标题与说明、课程链接，以及自身的 canonical、title 和 description。`course-metadata.json` 的正式范围仍严格是 103 个 Page TranslationUnit，不包含 list。Chrome 缺失、任一页面未完成渲染或产物缺少 route metadata、正文、完整示例源码（课程页）或完整目录内容（list）时均 fail closed。已有 live locale 的正式推荐入口是 maintenance orchestrator：
+先使用仓库现有的 `publish` 命令生成并验收 Linux/amd64 production bundle。publish 输出 projection/build、production binary build、Chrome prerender、production-equivalent runtime validation、manifest/checksum 的 phase timing，便于识别瓶颈。当前稳定基线保持两个 Chrome worker；每条 route 仍独立启动 Chrome/virtual-time timeout，避免为节省启动成本引入长会话的跨 route state、timeout 或 cleanup 风险。构建会对当前 locale 的全部 103 个正式课程 URL 和 sitemap 中独立的 `/tour/list` 执行 headless Chrome prerender。课程页写入 `_content/tour/prerender/<lesson>/<page>.html`；list 写入 `_content/tour/prerender/list.html`，并必须含当前 locale 的 heading、module/lesson 标题与说明、课程链接，以及自身的 canonical、title 和 description。`course-metadata.json` 的正式范围仍严格是 103 个 Page TranslationUnit，不包含 list。Chrome 缺失、任一页面未完成渲染或产物缺少 route metadata、正文、完整示例源码（课程页）或完整目录内容（list）时均 fail closed。
+
+普通多 locale maintenance release 的推荐顶层入口为：
+
+```sh
+scripts/production-release-batch.sh --all-live
+
+# 或只发布正式 identity 中选定的 live locale
+scripts/production-release-batch.sh \
+  --locale de-DE \
+  --locale fr-FR
+```
+
+`--all-live` 动态读取 `production/identity.json`，不维护第二份 locale 列表；显式 subset 保持参数顺序。顶层先完成输入、identity 与本地 output preflight，生成并验证当前 shared-assets export，再调用 Go `publish-batch` 严格串行生成全部 bundle。只有全部 publish PASS 后，才复用 maintenance batch 的本地与 CDN read-only authority preflight；随后仅当选中 profile 中存在 `shared_assets_policy=shared-cloudflare` 时运行 shared-assets deploy → automatic exact-URL purge → public verify，最后把 machine summary 中的精确 release dirs 原序交给 `maintenance-production-batch.sh`。任一步失败立即停止；publish failure 时 Production mutation 为零，shared-assets failure 时 locale maintenance 不开始，maintenance failure 继续沿用既有 fail-fast/resume 且不回滚已 PASS locale。该入口不执行 first-production、search closeout、IndexNow 或 Production visual gate，正常路径不读取 stdin。
+
+需要只生成本地 artifacts、供诊断或其他编排使用时，可直接运行正式 Go batch publish：
+
+```sh
+go run -mod=readonly ./cmd/tour-i18n publish-batch \
+  --output-root /tmp \
+  --locale de-DE \
+  --locale fr-FR \
+  --json
+```
+
+batch 开始只检查一次 clean working tree 并读取一次完整 HEAD；每个 locale 在调用既有 `publishBundle` 前分别取得当时的 UTC RFC3339 `published_at`。release 名称为 `go-tour-release-YYYYMMDDTHHMMSSZ-<locale>-<head前12位>`，已存在目录绝不覆盖；`--json` stdout 只输出 `repository_head` 与按输入顺序排列的 `locale`、`published_at`、`release_dir`、`result`，publish phase 日志写 stderr。batch 本身不执行任何 Production mutation。
+
+日常单 locale maintenance 的正式入口保持不变：
 
 ```sh
 scripts/maintenance-production.sh \
   /tmp/go-tour-release-YYYYMMDD-<locale>-<shortsha>
 ```
 
-它不替代 deployment 状态机或任何验收实现；它严格调用既有 `scripts/deploy-production.sh`、`scripts/verify-production.sh` 与 `scripts/verify-production-browser.py`。底层命令仍保留各自职责，日常正式 release 应从上述编排入口开始。
+它不替代 deployment 状态机或任何验收实现；它严格调用既有 `scripts/deploy-production.sh`、`scripts/verify-production.sh` 与 `scripts/verify-production-browser.py`。单 locale publish/maintenance、`publish-batch`、shared-assets workflow 与 `maintenance-production-batch.sh` 都继续保留，供诊断和安全恢复使用。
 
 脚本严格读取 `release.json` 的 `locale` 作为唯一事实来源，不接受 `--locale`，也不根据目录名猜测语言。profile 集合与全部字段由 `production/identity.json` 提供；不支持、重复、冲突或 schema 不合法的 locale 会在 SSH、上传、远端加锁及任何生产修改之前 fail closed。service user 为 `go-tour`。
 
@@ -419,11 +446,11 @@ go run -mod=readonly ./cmd/tour-i18n assets validate \
 
 `assets-go-dev.shuijingwanwq.com` 已正式部署，Cloudflare 已代理；源站为 `121.40.248.29`，origin root 为 `/data/wwwroot/assets-go-dev.shuijingwanwq.com`，Nginx vhost 为 `/usr/local/nginx/conf/vhost/assets-go-dev.shuijingwanwq.com.conf`。TLS 使用 Let's Encrypt / acme.sh / `dns_cf`，证书和私钥分别位于 `/usr/local/nginx/conf/ssl/assets-go-dev.shuijingwanwq.com.crt` 与 `/usr/local/nginx/conf/ssl/assets-go-dev.shuijingwanwq.com.key`；HTTP 80 永久跳转 HTTPS。
 
-Cloudflare Edge Cache TTL 为 1 个月。项目不主动覆盖 Browser Cache TTL，不给这些固定 URL 设置 `immutable` 或一年浏览器缓存；使用 Cloudflare/origin 默认或 Respect Existing Headers。当前正式 allowlist 是完整 11 文件，不只 `course-ad.css` 与 `course-ad.js`；后两者已包含课程页 AdSense integration。文档中“11/11 已正式部署”记录的是一次历史 production acceptance，不是当前仓库状态的永久保证。判断当前 production 是否最新，必须以当前仓库执行正式 `assets export` / `assets validate` 所代表的完整 allowlist 内容为准，并运行下述 `scripts/deploy-shared-assets.sh` 由脚本比较 current export 与 production origin；不得依赖历史记录、Git 历史、上次部署时间或人工判断文件是否变化。任一 allowlist 文件都属于此完整比较范围，包括但不限于 `app.css`、`course-ad.css` 与 `course-ad.js`。脚本输出 changed URLs 时，必须走既有 changed URL Custom Purge 与 public validation；输出 `NO CHANGES` 时不执行 Custom Purge，但仍须完成完整 11/11 公网 SHA-256 与当前 export 的对照。不引入 assets version、query version 或 content-hash URL，也不改变 shared-assets 架构。历史首次 11 文件 production acceptance 中，对实际变化的 `SHA256SUMS`、`course-ad.css`、`course-ad.js` 已完成 Custom Purge 后的 `MISS → HIT` 验收，公网内容 SHA-256 为 11/11 一致，三个非 allowlist boundary 路径继续返回 404。
+Cloudflare Edge Cache TTL 为 1 个月。项目不主动覆盖 Browser Cache TTL，不给这些固定 URL 设置 `immutable` 或一年浏览器缓存；使用 Cloudflare/origin 默认或 Respect Existing Headers。当前正式 allowlist 是完整 11 文件，不只 `course-ad.css` 与 `course-ad.js`；后两者已包含课程页 AdSense integration。文档中“11/11 已正式部署”记录的是一次历史 production acceptance，不是当前仓库状态的永久保证。判断当前 production 是否最新，必须以当前仓库执行正式 `assets export` / `assets validate` 所代表的完整 allowlist 内容为准，并运行下述 `scripts/shared-assets-production.sh` 完成 origin 比较、必要的 automatic exact-URL purge 与 public verification；不得依赖历史记录、Git 历史、上次部署时间或人工判断文件是否变化。任一 allowlist 文件都属于此完整比较范围，包括但不限于 `app.css`、`course-ad.css` 与 `course-ad.js`。`DEPLOYED` 只刷新 receipt 中真实 changed paths，`NO_CHANGES` 不执行 purge，但两者都必须完成完整 11/11 公网 SHA-256 与当前 export 的对照。不引入 assets version、query version 或 content-hash URL，也不改变 shared-assets 架构。历史首次 11 文件 production acceptance 中，对实际变化的 `SHA256SUMS`、`course-ad.css`、`course-ad.js` 已完成精确 URL purge 后的 `MISS → HIT` 验收，公网内容 SHA-256 为 11/11 一致，三个非 allowlist boundary 路径继续返回 404。
 
 ### Shared-assets production 发布状态机
 
-以下阶段 A、B、C、E、F、G 是标准终端步骤；维护者可以直接执行，也可以委托具备终端访问能力的工具执行。阶段 D 是唯一的人工 UI 门。确定 current-state freshness 时，必须依次完成阶段 A、运行阶段 B 的 `scripts/deploy-shared-assets.sh` 比较 current export 与 production origin，并完成阶段 F 的完整 11/11 公网校验；只有脚本输出 changed URLs 时才执行阶段 C、D、E 的精确 Custom Purge 与缓存验收。任一阶段不满足验收条件时停止，不跳过、不把后续阶段的结果用于掩盖当前失败。
+shared-assets Production 已是无人值守状态机，不再包含 Cloudflare Dashboard HUMAN gate。确定 current-state freshness 时，必须先完成阶段 A，再把 export 交给唯一正常入口 `scripts/shared-assets-production.sh <export-dir>`；wrapper 严格复用既有 deploy、`production-cdn.py` Cloudflare authority/client 和 verifier，不复制这些实现。任一阶段不满足验收条件时立即停止，不跳过、不把后续结果用于掩盖当前失败。
 
 #### 阶段 A：本地生成
 
@@ -446,7 +473,13 @@ test "$(find . -type f ! -name SHA256SUMS | wc -l)" -eq 11
 sha256sum -c --strict SHA256SUMS
 ```
 
-只有文件集合正确且 11/11 校验通过，才能进入阶段 B。
+只有文件集合正确且 11/11 校验通过，才能运行正式状态机：
+
+```sh
+scripts/shared-assets-production.sh /tmp/go-tour-shared-assets
+```
+
+正常流程不读取 stdin。首次 invocation 先完成 Cloudflare credential/read-only zone authority preflight，再运行既有 deploy；已有 receipt 则从其持久化状态安全恢复。完整 PASS 时输出 deploy、purge、verify 与 receipt summary。
 
 #### 阶段 B：production origin 更新
 
@@ -456,7 +489,7 @@ production 目标是完整的 shared-assets export tree：
 /data/wwwroot/assets-go-dev.shuijingwanwq.com
 ```
 
-正式部署接口为：
+底层部署接口为：
 
 ```sh
 scripts/deploy-shared-assets.sh \
@@ -467,15 +500,19 @@ scripts/deploy-shared-assets.sh \
 
 固定 production profile 为 SSH alias `aliyun`、origin `/data/wwwroot/assets-go-dev.shuijingwanwq.com`、lock `/data/wwwroot/.assets-go-dev.deploy.lock`。脚本使用唯一 token 在 `/data/wwwroot/` 建立非公开 `.assets-go-dev.staging-*`，上传后在远端重新校验文件集合、SHA-256 和权限；它从当前 origin 读取并要求统一的 owner/group、目录 mode 与普通文件 mode，不修改 `/data/wwwroot/` 中其他站点的权限。
 
-如果 staging 与 origin 逐文件相同，脚本输出 `NO CHANGES`，清理 staging/lock，不创建 backup，也不产生 purge URL；这证明 origin 已与当前 export 一致，但不替代阶段 F 的完整 11/11 公网 SHA-256 对照。如果有变化，脚本在第一次修改 origin 前创建并验证完整非公开备份 `/data/wwwroot/assets-go-dev.shuijingwanwq.com.bak.<token>`，随后才在服务器端把完整 staging tree 以受限 `rsync --delete` 同步进固定 origin。delete 只作用于该精确 origin 内，确保新增、修改、删除后 production 文件集合与正式 export 完全一致；历史 backup 不自动删除。
+如果 staging 与 origin 逐文件相同，脚本输出 `NO CHANGES`，清理 staging/lock，不创建 backup，也不产生 purge URL；这证明 origin 已与当前 export 一致，但不替代阶段 E 的完整 11/11 公网 SHA-256 对照。如果有变化，脚本在第一次修改 origin 前创建并验证完整非公开备份 `/data/wwwroot/assets-go-dev.shuijingwanwq.com.bak.<token>`，随后才在服务器端把完整 staging tree 以受限 `rsync --delete` 同步进固定 origin。delete 只作用于该精确 origin 内，确保新增、修改、删除后 production 文件集合与正式 export 完全一致；历史 backup 不自动删除。
 
 preflight、lock、upload、staging validation 或 backup 阶段失败时，origin 不变，脚本只在能确认安全时清理本次 staging/lock。production mutation 开始后若同步或严格验证失败，脚本使用刚创建的完整 backup 恢复并重新验证；回滚明确成功时报告部署失败但旧内容已恢复。如果回滚失败、SSH 中断或状态无法确认，脚本保留 lock、staging、backup 与现场，输出只读人工检查命令，禁止直接自动重试。INT、TERM、HUP 在 mutation 前按安全边界清理，mutation 后保留 evidence。
 
-脚本成功后生成与当前正式 export 的绝对路径和 `SHA256SUMS` identity 绑定的 machine-readable verification receipt，并打印 `verification receipt: <path>` 与唯一后续命令 `scripts/verify-shared-assets-production.sh <receipt>`。receipt 还包含 deployment result（`NO_CHANGES` 或 `DEPLOYED`）、实际 changed logical paths、固定 production base URL 和固定 boundary 路径；不包含 secret。它按稳定顺序输出 added、modified、deleted 的实际固定 URL（`SHA256SUMS` 如发生变化也属于 changed URL）。`DEPLOYED` 时脚本仍在 Cloudflare HUMAN GATE 前结束，不调用 Cloudflare API/CLI，也不在 purge 前执行公网 MISS/HIT 验收；`NO_CHANGES` 时也生成 receipt，直接执行其验证命令。
+脚本成功后生成与当前正式 export 的绝对路径和 `SHA256SUMS` identity 绑定的 v1 machine-readable receipt，并打印 `verification receipt: <path>` 与唯一后续命令 `scripts/shared-assets-production.sh <export-dir>`。receipt 包含 deployment result（`NO_CHANGES` 或 `DEPLOYED`）、实际 changed logical paths、固定 production base URL 和固定 boundary 路径，不包含 secret；changed paths 按稳定顺序覆盖 added、modified、deleted，`SHA256SUMS` 如发生变化也属于 changed path。正常 wrapper 随即把 v1 机械升级为 v2，增加 `purge_result` 与 `verification_result`；历史 v1 仍可由 verifier 读取，已有 v1 经 wrapper 恢复时也使用相同机械迁移。
+
+`DEPLOYED` 且 purge 为 `PENDING` 时，CDN coordinator 先原子记录 `ATTEMPTED`，再从正式 `shared_assets_public_origin` 与经过安全验证的 receipt changed paths 构造完整 HTTPS URL，并通过正式 zone name/secret authority 发出一个 Cloudflare `POST /zones/{zone_id}/purge_cache`。payload 只能是 `{"files":[...]}`；禁止 `purge_everything`、`hosts`、`prefixes`、`tags`、任意 hostname、跨 origin、query string 与 path traversal。只有 Cloudflare `success=true` 且正式 response 的 `result.id` 非空才写 `PASS`。明确 API failure 会把状态恢复为 `PENDING`，因此可沿用原 changed paths 重试；transport timeout、响应不完整、SSH 返回不确定或成功后 receipt 落盘失败会保留 `ATTEMPTED` 并 fail closed，后续 invocation 拒绝重复 mutation，必须先依据外部 evidence 处理不确定状态。Cloudflare 正式 contract 参见 [Purge Cached Content API](https://developers.cloudflare.com/api/resources/cache/methods/purge/)。
+
+`NO_CHANGES` 机械记录 `purge_result=SKIPPED`，完全不调用 Cloudflare purge，但仍进入 public verifier。`purge_result=PASS` 且 verification 失败时保留 purge PASS；重跑只重新 verification，不重复 POST。deployment 自身不确定时继续保留现有 lock/staging/backup 与人工只读证据规则，不由 wrapper 降级。
 
 receipt verification 的全部 shared-assets 公网请求使用正式 `production/identity.json` 中 `shared.zgocloud_ssh_alias` 作为 network runner。验证脚本为单次 invocation 建立一个 SSH ControlMaster 与 SOCKS tunnel，所有 `curl` 通过 `--socks5-hostname` 复用该 tunnel，使 DNS 与 TCP 均从 zgocloud 网络出口发起；runner 无法建立即 fail closed，不回退到维护者本机网络，正常、失败和 signal 退出均清理该连接。Cloudflare 短时 HTTP `522` / `525` 及已有实证的 curl exit `28` 仅在单个逻辑请求内最多重试三次；其他 curl exit、HTTP 状态、内容 SHA-256、cache semantics、boundary 与 receipt identity 错误均立即 fail closed。成功日志汇总为 `11/11` SHA-256 与 `3/3` boundary，失败仍指明具体 logical path。该网络瞬态容忍不降低完整 11/11 freshness gate。
 
-`deploy-shared-assets.sh` 已通过本地 mock 自动化测试，并已完成首次真实 11 文件 production deployment 验证。`SHA256SUMS`、`course-ad.css` 与 `course-ad.js` 的实际 changed URLs 已完成精确 Custom Purge 与 `MISS → HIT` 验收；公网 allowlist SHA-256 为 11/11 一致，三个非 allowlist boundary 路径继续返回 404。后续发布仍以脚本输出的实际 changed URLs 为唯一 purge 清单；如果真实权限或工具基线与预检不符，立即停止，不绕过检查。
+`deploy-shared-assets.sh` 已通过本地 mock 自动化测试，并已完成首次真实 11 文件 production deployment 验证。`SHA256SUMS`、`course-ad.css` 与 `course-ad.js` 的实际 changed URLs 已完成精确 purge 与 `MISS → HIT` 验收；公网 allowlist SHA-256 为 11/11 一致，三个非 allowlist boundary 路径继续返回 404。后续发布仍以 receipt 的实际 changed paths 为唯一 purge 清单；如果真实权限或工具基线与预检不符，立即停止，不绕过检查。
 
 origin 更新成功后，脚本已经执行文件集合、SHA-256、与 staging 一致性、无 symlink/unsupported entry 和权限验证。需要人工复核时可执行以下只读命令：
 
@@ -492,34 +529,26 @@ ssh aliyun '
 
 文件集合必须只有 `SHA256SUMS` 与 11 个 allowlist 文件，SHA-256 必须为 11/11，权限必须符合脚本从部署前 origin 读取并保持的模型，并且不得存在额外可公开文件。任一条件不满足都停止，不进入缓存刷新。
 
-#### 阶段 C：确定 purge URL
+#### 阶段 C：automatic exact-URL purge
 
-部署脚本比较更新前 origin 与已验证 staging，只列出内容实际新增、修改或删除的固定 URL；不要默认刷新全部 11 个 URL，也不要默认使用 Purge Everything。此前首次课程广告资源部署的 changed URLs 包括：
+部署脚本比较更新前 origin 与已验证 staging，只在 receipt 和日志中列出内容实际新增、修改或删除的 logical path；wrapper 只从这些 path 机械构造固定 URL，不默认刷新全部 11 个 URL，也不使用 Purge Everything。此前首次课程广告资源部署的 changed paths 包括：
 
 ```text
-https://assets-go-dev.shuijingwanwq.com/tour/static/go-dev/course-ad.css
-https://assets-go-dev.shuijingwanwq.com/tour/static/go-dev/course-ad.js
+tour/static/go-dev/course-ad.css
+tour/static/go-dev/course-ad.js
 ```
 
-如果脚本输出其他变化 URL，把它们一并加入清单；删除路径的旧 URL 也必须刷新。脚本输出完整清单后到达阶段 D 并结束，不继续公网缓存验收。
+如果脚本输出其他 changed path，wrapper 会把对应 URL 一并放入同一个正式 API request；删除路径的旧 URL 也必须刷新。`production-cdn.py purge-shared-assets --receipt <receipt>` 是 wrapper 使用的底层接口，只接受 v2 `PENDING` receipt，不接受 URL 或 hostname 参数。Cloudflare Dashboard 不再是本状态机的一部分。
 
-#### 阶段 D：HUMAN GATE — Cloudflare Dashboard Custom Purge
-
-维护者在 Cloudflare Dashboard 中选择 `assets-go-dev.shuijingwanwq.com` 所属 zone，进入缓存管理的 Purge Cache / Custom Purge 功能，按 URL 刷新阶段 C 的精确清单。Cloudflare UI 文案可能变化，这里只定义操作目标，不把 UI 文案当作程序接口。
-
-当前 shared-assets production 发布不要求自动化 Cloudflare purge。不得为此搜索本地或服务器上的 Cloudflare Token、要求维护者提供 API Token、把凭据写入仓库或 shell history、猜测既有凭据入口、调用 Cloudflare API、使用 Wrangler 自动刷新或安装新的 Cloudflare CLI。未来如需自动化，应作为独立受控改进处理。
-
-Dashboard purge 是正常 human gate，不是 deployment failure，也不是缺少 API 权限错误。维护者明确确认 Custom Purge 已完成后，运行 deployment 输出的唯一后续命令 `scripts/verify-shared-assets-production.sh <receipt>`；确认前不得把 MISS/HIT 不符合预期解释为新资源发布失败。
-
-#### 阶段 E：公网缓存验收
+#### 阶段 D：公网缓存验收
 
 由 receipt 指定的 `scripts/verify-shared-assets-production.sh <receipt>` 自动对阶段 C 的每个实际 changed URL 连续请求两次、要求 HTTP 200，并按当前基线验证 `CF-Cache-Status: MISS → HIT`。Cloudflare 实际状态不符合基线时脚本 fail closed；不要手工复制 URL 或猜测、伪造 MISS/HIT 结论。`NO_CHANGES` 没有 changed URL，脚本明确输出 `SKIP CACHE PURGE VERIFICATION: NO CHANGES`，不要求 MISS → HIT。
 
-#### 阶段 F：完整性验收
+#### 阶段 E：完整性验收
 
 同一验证脚本自动请求正式 11 个 allowlist URL，要求 HTTP 成功，并逐一将公网内容 SHA-256 与 receipt 绑定的当前 export `SHA256SUMS` 对照；成功只输出汇总 `11/11`，任一失败仍输出具体 path。必须达到 11/11 内容一致；只验证本次 purge 的文件不能替代完整 allowlist 验收。receipt 与当前 export identity 不符、export 不再通过正式 `assets validate`，或任一公网 SHA-256 不符时，脚本 fail closed，必须重新走正式 shared-assets 流程。receipt 可以保留作为本次 execution evidence，但不能作为未来 current-state freshness gate 的替代。
 
-#### 阶段 G：边界验收
+#### 阶段 F：边界验收
 
 同一验证脚本还自动确认以下固定非 allowlist 路径全部返回 HTTP 404：
 

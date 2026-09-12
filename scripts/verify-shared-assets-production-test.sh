@@ -135,6 +135,22 @@ make_receipt() {
         "$export_dir" "$digest" "$result" "$base" "$changed" >"$destination"
 }
 
+upgrade_receipt() {
+    python3 - "$1" "$2" "$3" <<'PY'
+import json
+import sys
+path, purge, verification = sys.argv[1:]
+with open(path, encoding="utf-8") as source:
+    receipt = json.load(source)
+receipt["schema"] = "go-tour-i18n/shared-assets-production-receipt/v2"
+receipt["purge_result"] = purge
+receipt["verification_result"] = verification
+with open(path, "w", encoding="utf-8") as target:
+    json.dump(receipt, target, sort_keys=True, separators=(",", ":"))
+    target.write("\n")
+PY
+}
+
 reset_public() {
     rm -rf -- "$public_root"; mkdir -p -- "$public_root"
     cp -a -- "$export_dir/." "$public_root/"
@@ -185,12 +201,26 @@ assert_contains "$output" 'public network runner: zgocloud'
 [[ $(network_count curl) == 18 ]] || fail 'DEPLOYED public requests did not all reuse SOCKS'
 [[ $(network_count cleanup) == 1 ]] || fail 'DEPLOYED did not clean up network ControlMaster'
 
+# Schema v2 requires an automatic exact-URL purge PASS before verification;
+# historical v1 above remains readable for compatibility.
+make_receipt "$receipt" DEPLOYED '"SHA256SUMS","tour/static/css/app.css"'
+upgrade_receipt "$receipt" PENDING PENDING
+if run_verify "$receipt" >/dev/null; then fail 'v2 DEPLOYED receipt without purge PASS was accepted'; fi
+upgrade_receipt "$receipt" PASS PENDING
+output=$(run_verify "$receipt") || fail 'v2 DEPLOYED receipt with purge PASS failed verification'
+assert_contains "$output" 'SHARED ASSETS PRODUCTION VERIFICATION: PASSED'
+
 make_receipt "$receipt" NO_CHANGES ''
 output=$(run_verify "$receipt") || fail 'NO_CHANGES verification failed'
 assert_contains "$output" 'SKIP CACHE PURGE VERIFICATION: NO CHANGES'
 [[ $(network_count setup) == 1 ]] || fail 'NO_CHANGES did not establish exactly one network ControlMaster'
 [[ $(network_count curl) == 14 ]] || fail 'NO_CHANGES public requests did not all reuse SOCKS'
 [[ $(network_count cleanup) == 1 ]] || fail 'NO_CHANGES did not clean up network ControlMaster'
+
+make_receipt "$receipt" NO_CHANGES ''
+upgrade_receipt "$receipt" SKIPPED PENDING
+output=$(run_verify "$receipt") || fail 'v2 NO_CHANGES receipt failed verification'
+assert_contains "$output" 'SKIP CACHE PURGE VERIFICATION: NO CHANGES'
 
 reset_public; make_receipt "$receipt" NO_CHANGES ''
 export FAKE_STATUS_PATH=images/go-logo-white.svg FAKE_STATUS_SEQUENCE=525,200

@@ -242,7 +242,7 @@ reset_remote
 output=$(run_deploy) || fail 'no-op deployment failed'
 assert_contains "$output" 'NO CHANGES'
 assert_contains "$output" 'verification receipt:'
-assert_contains "$output" 'verify-shared-assets-production.sh'
+assert_contains "$output" 'shared-assets-production.sh'
 assert_not_contains "$output" 'https://assets-go-dev.shuijingwanwq.com/'
 receipt=$export_dir.verification-receipt.json
 [[ -f $receipt && ! -L $receipt ]] || fail 'no-op did not write a regular verification receipt'
@@ -330,9 +330,9 @@ reset_remote
 rm -- "$origin/tour/static/go-dev/course-ad.css" "$origin/tour/static/go-dev/course-ad.js"
 rehash_tree "$origin"
 output=$(run_deploy) || fail 'added-file deployment failed'
-assert_contains "$output" '/tour/static/go-dev/course-ad.css'
-assert_contains "$output" '/tour/static/go-dev/course-ad.js'
-assert_contains "$output" '/SHA256SUMS'
+assert_contains "$output" 'changed path: tour/static/go-dev/course-ad.css'
+assert_contains "$output" 'changed path: tour/static/go-dev/course-ad.js'
+assert_contains "$output" 'changed path: SHA256SUMS'
 diff -qr -- "$export_dir" "$origin" >/dev/null || fail 'added-file deployment final tree mismatch'
 (cd -- "$origin" && sha256sum -c --strict SHA256SUMS >/dev/null) || fail 'added-file origin SHA failed'
 
@@ -340,9 +340,9 @@ diff -qr -- "$export_dir" "$origin" >/dev/null || fail 'added-file deployment fi
 reset_remote
 printf 'old app css\n' >"$origin/tour/static/css/app.css"; rehash_tree "$origin"
 output=$(run_deploy) || fail 'modified-file deployment failed'
-assert_contains "$output" '/tour/static/css/app.css'
-assert_contains "$output" '/SHA256SUMS'
-assert_contains "$output" 'Cloudflare HUMAN GATE'
+assert_contains "$output" 'changed path: tour/static/css/app.css'
+assert_contains "$output" 'changed path: SHA256SUMS'
+assert_not_contains "$output" 'Cloudflare HUMAN GATE'
 [[ $(receipt_result "$receipt") == DEPLOYED ]] || fail 'deployment receipt has wrong deployment result'
 python3 - "$receipt" <<'PY' || fail 'deployment receipt omitted modified path'
 import json
@@ -350,14 +350,14 @@ import sys
 if "tour/static/css/app.css" not in json.load(open(sys.argv[1], encoding="utf-8"))["changed_paths"]:
     raise SystemExit(1)
 PY
-assert_not_contains "$output" '/images/site-logo.png'
+assert_not_contains "$output" 'changed path: images/site-logo.png'
 diff -qr -- "$export_dir" "$origin" >/dev/null || fail 'modified-file final tree mismatch'
 
 # Deleted old public file is removed, reported for purge, and other sites are untouched.
 reset_remote
 mkdir -p -- "$origin/legacy"; printf 'legacy\n' >"$origin/legacy/old.css"; rehash_tree "$origin"; normalize_tree "$origin"
 output=$(run_deploy) || fail 'deleted-file deployment failed'
-assert_contains "$output" '/legacy/old.css'
+assert_contains "$output" 'changed path: legacy/old.css'
 [[ ! -e $origin/legacy/old.css ]] || fail 'deleted old asset remains in origin'
 [[ $(<"$wwwroot/other-site/marker") == keep ]] || fail 'deployment changed another site'
 diff -qr -- "$export_dir" "$origin" >/dev/null || fail 'deleted-file final tree mismatch'
