@@ -12,7 +12,8 @@ readonly -a SSH_OPTIONS=(
 )
 readonly CURL_CONNECT_TIMEOUT=5
 readonly CURL_MAX_TIME=15
-readonly CURL_RETRY_ATTEMPTS=3
+readonly CURL_RETRY_ATTEMPTS=5
+readonly CURL_RETRY_MAX_BACKOFF=4
 readonly EXPECTED_SITEMAP_URLS=105
 readonly -a ACCEPTANCE_PATHS=(
     '/'
@@ -173,7 +174,7 @@ REMOTE
 }
 
 http_request() {
-    local url=$1 body=$2 headers=$3 attempt curl_exit http_status
+    local url=$1 body=$2 headers=$3 attempt backoff curl_exit http_status
     shift 3
 
     for ((attempt = 1; attempt <= CURL_RETRY_ATTEMPTS; attempt++)); do
@@ -189,7 +190,9 @@ http_request() {
             case $curl_exit in
                 6|7|16|28|35|97)
                     if (( attempt < CURL_RETRY_ATTEMPTS )); then
-                        sleep "$attempt"
+                        backoff=$attempt
+                        (( backoff <= CURL_RETRY_MAX_BACKOFF )) || backoff=$CURL_RETRY_MAX_BACKOFF
+                        sleep "$backoff"
                         continue
                     fi
                     ;;
@@ -199,7 +202,9 @@ http_request() {
         case $http_status in
             522|525)
                 if (( attempt < CURL_RETRY_ATTEMPTS )); then
-                    sleep "$attempt"
+                    backoff=$attempt
+                    (( backoff <= CURL_RETRY_MAX_BACKOFF )) || backoff=$CURL_RETRY_MAX_BACKOFF
+                    sleep "$backoff"
                     continue
                 fi
                 ;;

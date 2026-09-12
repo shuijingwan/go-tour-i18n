@@ -16,7 +16,9 @@ fail() {
 verify_source=$(<"$verify_script")
 [[ $verify_source == *'bash -s -- --public'* \
     && $verify_source == *'public network runner: zgocloud (direct)'* \
-    && $verify_source == *'6|7|16|28|35|97'* ]] || \
+    && $verify_source == *'6|7|16|28|35|97'* \
+    && $verify_source == *'readonly CURL_RETRY_ATTEMPTS=5'* \
+    && $verify_source == *'readonly CURL_RETRY_MAX_BACKOFF=4'* ]] || \
     fail 'zgocloud direct public network runner is incomplete'
 
 assert_contains() {
@@ -269,6 +271,7 @@ SH
 
 cat >"$fake_bin/sleep" <<'SH'
 #!/usr/bin/env bash
+[[ -z ${FAKE_SLEEP_LOG:-} ]] || printf '%s\n' "$1" >>"$FAKE_SLEEP_LOG"
 exit 0
 SH
 
@@ -326,6 +329,7 @@ setup_case() {
     unset FAKE_CACHE_SEQUENCE FAKE_CACHE_HTTP_STATUS FAKE_SERVICE_STATE
     unset FAKE_TRANSPORT_URL FAKE_TRANSPORT_SEQUENCE
     unset FAKE_HTTP_STATUS_URL FAKE_HTTP_STATUS_SEQUENCE
+    unset FAKE_CURL_LOG FAKE_SLEEP_LOG
 }
 
 run_verify() {
@@ -372,9 +376,10 @@ export FAKE_TRANSPORT_URL=$FAKE_PUBLIC_ORIGIN/tour/list FAKE_TRANSPORT_SEQUENCE=
 expect_failure 'HTTP 200 with curl timeout' 'actual=curl exit 28; HTTP 200'
 
 setup_case
-export FAKE_TRANSPORT_URL=$FAKE_PUBLIC_ORIGIN/tour/list FAKE_TRANSPORT_SEQUENCE=28,0
+export FAKE_TRANSPORT_URL=$FAKE_PUBLIC_ORIGIN/tour/static/js/app.js FAKE_TRANSPORT_SEQUENCE=28,28,28,0
 output=$(run_verify) || fail 'transient public transport failure did not recover'
 assert_contains "$output" '[verify-production] public routes: 7/7 PASS'
+[[ $(<"$FAKE_STATE_DIR/transport") == 4 ]] || fail 'extended curl timeout retry did not use the expected attempts'
 
 for transient_exit in 6 7 16 35 97; do
     setup_case
@@ -384,13 +389,17 @@ for transient_exit in 6 7 16 35 97; do
 done
 
 setup_case
-export FAKE_HTTP_STATUS_URL=$FAKE_PUBLIC_ORIGIN/tour/list FAKE_HTTP_STATUS_SEQUENCE=404,200
+export FAKE_HTTP_STATUS_URL=$FAKE_PUBLIC_ORIGIN/tour/static/js/app.js FAKE_HTTP_STATUS_SEQUENCE=404,200
 expect_failure 'semantic HTTP failure must not retry' 'expected=HTTP 200 actual=HTTP 404'
+[[ $(<"$FAKE_STATE_DIR/http-status") == 1 ]] || fail 'HTTP 404 was retried'
 
-setup_case
-export FAKE_HTTP_STATUS_URL=$FAKE_PUBLIC_ORIGIN/tour/list FAKE_HTTP_STATUS_SEQUENCE=522,200
-output=$(run_verify) || fail 'transient HTTP 522 did not recover'
-assert_contains "$output" '[verify-production] public routes: 7/7 PASS'
+for transient_status in 522 525; do
+    setup_case
+    export FAKE_HTTP_STATUS_URL=$FAKE_PUBLIC_ORIGIN/tour/list
+    export FAKE_HTTP_STATUS_SEQUENCE="$transient_status,$transient_status,200"
+    output=$(run_verify) || fail "transient HTTP $transient_status did not recover"
+    assert_contains "$output" '[verify-production] public routes: 7/7 PASS'
+done
 
 setup_case
 export FAKE_TRANSPORT_URL=$FAKE_PUBLIC_ORIGIN/tour/fake/7 FAKE_TRANSPORT_SEQUENCE=28,0
@@ -402,9 +411,11 @@ export FAKE_TRANSPORT_URL=$FAKE_PUBLIC_ORIGIN/tour/fake/7 FAKE_TRANSPORT_SEQUENC
 expect_failure 'persistent sitemap transport failure' 'check=https://de-go-dev.shuijingwanwq.com/tour/fake/7'
 
 setup_case
-export FAKE_CURL_LOG=$fixture/curl.log FAKE_TRANSPORT_URL=$FAKE_PUBLIC_ORIGIN/tour/fake/7 FAKE_TRANSPORT_SEQUENCE=97
+export FAKE_CURL_LOG=$fixture/curl-exhaust.log FAKE_SLEEP_LOG=$fixture/sleep-exhaust.log
+export FAKE_TRANSPORT_URL=$FAKE_PUBLIC_ORIGIN/tour/fake/7 FAKE_TRANSPORT_SEQUENCE=97
 expect_failure 'persistent sitemap transient failure fails fast' 'curl exit 97'
-[[ $(grep -Fc "$FAKE_PUBLIC_ORIGIN/tour/fake/7" "$FAKE_CURL_LOG") == 3 ]] || fail 'sitemap transient retry count was not bounded'
+[[ $(grep -Fc "$FAKE_PUBLIC_ORIGIN/tour/fake/7" "$FAKE_CURL_LOG") == 5 ]] || fail 'sitemap transient retry count was not bounded'
+[[ $(<"$FAKE_SLEEP_LOG") == $'1\n2\n3\n4' ]] || fail 'transient retry backoff was not bounded at four seconds'
 ! grep -F "$FAKE_PUBLIC_ORIGIN/tour/fake/8" "$FAKE_CURL_LOG" >/dev/null || fail 'sitemap continued after exhausted transient failure'
 
 setup_case
