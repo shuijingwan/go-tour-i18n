@@ -182,13 +182,17 @@ class ProductionCDNTest(unittest.TestCase):
     def task(self, status="success", job="job-1", created="2023-11-14T22:13:20Z"):
         return {"JobId": job, "Status": status, "Target": "www.example.com", "Type": "purge_host", "CreateTime": created}
 
-    def test_edgeone_purge_exact_payload_and_processing_success(self):
+    def test_edgeone_purge_exact_payload_and_eventual_visibility_success(self):
         client = FakeTencent([
             ("CreatePurgeTask", {"JobId": "job-1", "FailedList": [], "RequestId": "create"}),
+            ("DescribePurgeTasks", {"Tasks": []}),
             ("DescribePurgeTasks", {"Tasks": [self.task("processing")]}),
             ("DescribePurgeTasks", {"Tasks": [self.task("success")], "RequestId": "done"}),
         ])
         self.assertEqual(CDN.purge_edgeone(client, "zone-1", "www.example.com"), "done")
+        self.assertEqual([action for action, _, _ in client.seen].count("CreatePurgeTask"), 1)
+        self.assertEqual([action for action, _, _ in client.seen].count("DescribePurgeTasks"), 3)
+        self.assertEqual(client.sleeps, [2, 2])
         action, payload, mutation = client.seen[0]
         self.assertEqual((action, mutation), ("CreatePurgeTask", True))
         self.assertEqual(payload, {"ZoneId": "zone-1", "Type": "purge_host", "Method": "delete", "Targets": ["www.example.com"]})
@@ -196,6 +200,36 @@ class ProductionCDNTest(unittest.TestCase):
         self.assertNotIn("purge_all", rendered)
         self.assertNotIn("*", rendered)
         self.assertNotIn("invalidate", rendered)
+
+    def test_edgeone_purge_job_visibility_polling_exhausts_without_duplicate_create(self):
+        calls = [("CreatePurgeTask", {"JobId": "job-1", "FailedList": []})]
+        calls += [("DescribePurgeTasks", {"Tasks": []})] * CDN.POLL_ATTEMPTS
+        client = FakeTencent(calls)
+        with self.assertRaisesRegex(CDN.CDNError, "did not become visible before polling exhausted"):
+            CDN.purge_edgeone(client, "zone-1", "www.example.com")
+        self.assertEqual([action for action, _, _ in client.seen].count("CreatePurgeTask"), 1)
+        self.assertEqual([action for action, _, _ in client.seen].count("DescribePurgeTasks"), CDN.POLL_ATTEMPTS)
+        self.assertEqual(client.sleeps, [2] * (CDN.POLL_ATTEMPTS - 1))
+
+    def test_edgeone_purge_job_ambiguity_fails_immediately(self):
+        client = FakeTencent([
+            ("CreatePurgeTask", {"JobId": "job-1", "FailedList": []}),
+            ("DescribePurgeTasks", {"Tasks": [self.task(), self.task()]}),
+        ])
+        with self.assertRaisesRegex(CDN.CDNError, "must resolve to exactly one result"):
+            CDN.purge_edgeone(client, "zone-1", "www.example.com")
+        self.assertEqual([action for action, _, _ in client.seen].count("DescribePurgeTasks"), 1)
+        self.assertEqual(client.sleeps, [])
+
+    def test_edgeone_purge_job_inconsistent_page_fails_immediately(self):
+        client = FakeTencent([
+            ("CreatePurgeTask", {"JobId": "job-1", "FailedList": []}),
+            ("DescribePurgeTasks", {"Tasks": [], "TotalCount": 1}),
+        ])
+        with self.assertRaisesRegex(CDN.CDNError, "incomplete or inconsistent"):
+            CDN.purge_edgeone(client, "zone-1", "www.example.com")
+        self.assertEqual([action for action, _, _ in client.seen].count("DescribePurgeTasks"), 1)
+        self.assertEqual(client.sleeps, [])
 
     def test_edgeone_create_response_failures(self):
         for result in ({"JobId": "", "FailedList": []}, {"JobId": "job", "FailedList": ["bad"]}, {"JobId": "job"}):

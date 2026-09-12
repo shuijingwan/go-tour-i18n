@@ -256,7 +256,13 @@ def poll_edgeone_task(client, zone_id, job_id, hostname):
     }
     for attempt in range(POLL_ATTEMPTS):
         response = client.call("DescribePurgeTasks", payload)
-        task = _one_exact(_complete_page(response, "Tasks", "EdgeOne purge JobId"), "EdgeOne purge JobId")
+        tasks = _complete_page(response, "Tasks", "EdgeOne purge JobId")
+        if not tasks:
+            if attempt + 1 < POLL_ATTEMPTS:
+                client.sleep(2)
+                continue
+            raise CDNError("EdgeOne purge JobId did not become visible before polling exhausted")
+        task = _one_exact(tasks, "EdgeOne purge JobId")
         status = _task_state(task, job_id, hostname)
         if status == "success":
             return response.get("RequestId")
