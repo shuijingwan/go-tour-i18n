@@ -198,7 +198,7 @@ assert_contains "$output" 'CACHE VERIFIED: MISS -> HIT'
 assert_contains "$output" 'SHARED ASSETS PRODUCTION VERIFICATION: PASSED'
 assert_contains "$output" 'public network runner: zgocloud'
 [[ $(network_count setup) == 1 ]] || fail 'DEPLOYED did not establish exactly one network ControlMaster'
-[[ $(network_count curl) == 18 ]] || fail 'DEPLOYED public requests did not all reuse SOCKS'
+[[ $(network_count curl) == 21 ]] || fail 'DEPLOYED public requests did not all reuse SOCKS'
 [[ $(network_count cleanup) == 1 ]] || fail 'DEPLOYED did not clean up network ControlMaster'
 
 # Schema v2 requires an automatic exact-URL purge PASS before verification;
@@ -214,13 +214,25 @@ make_receipt "$receipt" NO_CHANGES ''
 output=$(run_verify "$receipt") || fail 'NO_CHANGES verification failed'
 assert_contains "$output" 'SKIP CACHE PURGE VERIFICATION: NO CHANGES'
 [[ $(network_count setup) == 1 ]] || fail 'NO_CHANGES did not establish exactly one network ControlMaster'
-[[ $(network_count curl) == 14 ]] || fail 'NO_CHANGES public requests did not all reuse SOCKS'
+[[ $(network_count curl) == 17 ]] || fail 'NO_CHANGES public requests did not all reuse SOCKS'
 [[ $(network_count cleanup) == 1 ]] || fail 'NO_CHANGES did not clean up network ControlMaster'
 
 make_receipt "$receipt" NO_CHANGES ''
 upgrade_receipt "$receipt" SKIPPED PENDING
 output=$(run_verify "$receipt") || fail 'v2 NO_CHANGES receipt failed verification'
 assert_contains "$output" 'SKIP CACHE PURGE VERIFICATION: NO CHANGES'
+
+# The real failure site was the changed-path cache HTTP 200 gate. Preserve its
+# exact transport/status/attempt evidence and do not retry deterministic 404.
+reset_public; make_receipt "$receipt" DEPLOYED '"tour/static/css/app.css"'
+export FAKE_STATUS_PATH=tour/static/css/app.css FAKE_STATUS_SEQUENCE=404,200
+set +e
+output=$(run_verify "$receipt"); status=$?
+set -e
+[[ $status != 0 ]] || fail 'changed-path HTTP 404 was retried or accepted'
+[[ $(status_count) == 1 ]] || fail 'changed-path HTTP 404 was retried'
+assert_contains "$output" 'expected HTTP 200: url=https://assets-go-dev.shuijingwanwq.com/tour/static/css/app.css curl_exit=0 http_status=404 attempts=1'
+clear_status_sequence
 
 reset_public; make_receipt "$receipt" NO_CHANGES ''
 export FAKE_STATUS_PATH=images/go-logo-white.svg FAKE_STATUS_SEQUENCE=525,200
@@ -238,8 +250,12 @@ clear_status_sequence
 
 reset_public; make_receipt "$receipt" NO_CHANGES ''
 export FAKE_CURL_EXIT_PATH=images/go-logo-white.svg FAKE_CURL_EXIT_SEQUENCE=28,28,28
-if run_verify "$receipt" >/dev/null; then fail 'three transient curl exit 28 responses accepted'; fi
+set +e
+output=$(run_verify "$receipt"); status=$?
+set -e
+[[ $status != 0 ]] || fail 'three transient curl exit 28 responses accepted'
 [[ $(status_count) == 3 ]] || fail 'three transient curl exit 28 responses exceeded attempt limit'
+assert_contains "$output" 'url=https://assets-go-dev.shuijingwanwq.com/images/go-logo-white.svg curl_exit=28 http_status=000 attempts=3'
 clear_status_sequence
 
 reset_public; make_receipt "$receipt" NO_CHANGES ''
@@ -250,14 +266,22 @@ clear_status_sequence
 
 reset_public; make_receipt "$receipt" NO_CHANGES ''
 export FAKE_STATUS_PATH=images/go-logo-white.svg FAKE_STATUS_SEQUENCE=525,525,525
-if run_verify "$receipt" >/dev/null; then fail 'three transient 525 responses accepted'; fi
+set +e
+output=$(run_verify "$receipt"); status=$?
+set -e
+[[ $status != 0 ]] || fail 'three transient 525 responses accepted'
 [[ $(status_count) == 3 ]] || fail 'three transient 525 responses exceeded attempt limit'
+assert_contains "$output" 'url=https://assets-go-dev.shuijingwanwq.com/images/go-logo-white.svg curl_exit=0 http_status=525 attempts=3'
 clear_status_sequence
 
 reset_public; make_receipt "$receipt" NO_CHANGES ''
-export FAKE_STATUS_PATH=images/go-logo-white.svg FAKE_STATUS_SEQUENCE=500,200
-if run_verify "$receipt" >/dev/null; then fail 'HTTP 500 was retried or accepted'; fi
-[[ $(status_count) == 1 ]] || fail 'HTTP 500 was retried'
+export FAKE_STATUS_PATH=images/go-logo-white.svg FAKE_STATUS_SEQUENCE=404,200
+set +e
+output=$(run_verify "$receipt"); status=$?
+set -e
+[[ $status != 0 ]] || fail 'HTTP 404 was retried or accepted'
+[[ $(status_count) == 1 ]] || fail 'HTTP 404 was retried'
+assert_contains "$output" 'url=https://assets-go-dev.shuijingwanwq.com/images/go-logo-white.svg curl_exit=0 http_status=404 attempts=1'
 clear_status_sequence
 
 make_receipt "$receipt" NO_CHANGES ''

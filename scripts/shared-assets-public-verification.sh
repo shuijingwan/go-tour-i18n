@@ -15,6 +15,9 @@ SHARED_ASSETS_NETWORK_SSH_HOST=''
 SHARED_ASSETS_NETWORK_CONTROL_DIR=''
 SHARED_ASSETS_NETWORK_CONTROL_PATH=''
 SHARED_ASSETS_NETWORK_PROXY_PORT=''
+SHARED_ASSETS_LAST_CURL_EXIT=''
+SHARED_ASSETS_LAST_HTTP_STATUS=''
+SHARED_ASSETS_LAST_ATTEMPTS=''
 
 shared_assets_public_error() { printf '[verify-shared-assets-production] ERROR: %s\n' "$*" >&2; }
 
@@ -77,8 +80,9 @@ shared_assets_public_http_request() {
                 attempt=$((attempt + 1))
                 continue
             fi
-            printf '[verify-shared-assets-production] curl exit %s after %d attempt(s): %s\n' "$curl_exit" "$attempt" "$url" >&2
-            printf '000\n'
+            SHARED_ASSETS_LAST_CURL_EXIT=$curl_exit
+            SHARED_ASSETS_LAST_HTTP_STATUS=${code:-000}
+            SHARED_ASSETS_LAST_ATTEMPTS=$attempt
             return 0
         fi
         case $code in
@@ -91,35 +95,51 @@ shared_assets_public_http_request() {
                 fi
                 ;;
         esac
-        printf '%s\n' "${code:-000}"
+        SHARED_ASSETS_LAST_CURL_EXIT=$curl_exit
+        SHARED_ASSETS_LAST_HTTP_STATUS=${code:-000}
+        SHARED_ASSETS_LAST_ATTEMPTS=$attempt
         return 0
     done
 }
 
+shared_assets_public_request_error() {
+    local context=$1 url=$2
+    shared_assets_public_error "$context: url=$url curl_exit=$SHARED_ASSETS_LAST_CURL_EXIT http_status=$SHARED_ASSETS_LAST_HTTP_STATUS attempts=$SHARED_ASSETS_LAST_ATTEMPTS"
+}
+
 shared_assets_verify_public_assets() {
-    local manifest=$1 checksum path body headers code count=0 got
+    local manifest=$1 checksum path body headers count=0 got url
     while IFS=' ' read -r checksum path; do
         [[ $checksum =~ ^[0-9a-f]{64}$ ]] && shared_assets_safe_logical_path "$path" || { shared_assets_public_error 'invalid formal SHA256SUMS entry'; return 1; }
         body=$(mktemp) || return 1
         headers=$(mktemp) || { rm -f -- "$body"; return 1; }
-        code=$(shared_assets_public_http_request "$SHARED_ASSETS_PUBLIC_BASE_URL/$path" "$body" "$headers")
+        url="$SHARED_ASSETS_PUBLIC_BASE_URL/$path"
+        shared_assets_public_http_request "$url" "$body" "$headers"
         rm -f -- "$headers"
-        if [[ $code != 200 ]]; then rm -f -- "$body"; shared_assets_public_error "public asset request failed: $path"; return 1; fi
+        if [[ $SHARED_ASSETS_LAST_CURL_EXIT != 0 || $SHARED_ASSETS_LAST_HTTP_STATUS != 200 ]]; then
+            rm -f -- "$body"
+            shared_assets_public_request_error "public asset request failed: path=$path" "$url"
+            return 1
+        fi
         got=$(sha256sum -- "$body"); got=${got%% *}; rm -f -- "$body"
-        [[ $got == "$checksum" ]] || { shared_assets_public_error "public asset SHA-256 mismatch: $path"; return 1; }
+        [[ $got == "$checksum" ]] || { shared_assets_public_error "public asset SHA-256 mismatch: path=$path expected=$checksum actual=$got"; return 1; }
         count=$((count + 1))
     done <"$manifest"
-    [[ $count == 11 ]] || { shared_assets_public_error "expected 11 public allowlist files, got $count"; return 1; }
-    printf 'PUBLIC SHA-256 verification: PASS (%d/11 files)\n' "$count"
+    [[ $count == 14 ]] || { shared_assets_public_error "expected 14 public allowlist files, got $count"; return 1; }
+    printf 'PUBLIC SHA-256 verification: PASS (%d/14 files)\n' "$count"
 }
 
 shared_assets_verify_boundaries() {
-    local path headers status
+    local path headers url
     for path in "${SHARED_ASSETS_EXPECTED_BOUNDARY_PATHS[@]}"; do
         headers=$(mktemp) || return 1
-        status=$(shared_assets_public_http_request "$SHARED_ASSETS_PUBLIC_BASE_URL/$path" /dev/null "$headers")
+        url="$SHARED_ASSETS_PUBLIC_BASE_URL/$path"
+        shared_assets_public_http_request "$url" /dev/null "$headers"
         rm -f -- "$headers"
-        [[ $status == 404 ]] || { shared_assets_public_error "expected boundary HTTP 404: /$path"; return 1; }
+        if [[ $SHARED_ASSETS_LAST_CURL_EXIT != 0 || $SHARED_ASSETS_LAST_HTTP_STATUS != 404 ]]; then
+            shared_assets_public_request_error "expected boundary HTTP 404: path=/$path" "$url"
+            return 1
+        fi
     done
     printf 'PUBLIC boundary verification: PASS (%d/3 HTTP 404)\n' "${#SHARED_ASSETS_EXPECTED_BOUNDARY_PATHS[@]}"
 }

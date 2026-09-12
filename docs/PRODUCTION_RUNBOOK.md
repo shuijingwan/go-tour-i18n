@@ -308,6 +308,28 @@ scripts/production-release-batch.sh \
 
 `--all-live` 动态读取 `production/identity.json`，不维护第二份 locale 列表；显式 subset 保持参数顺序。顶层先完成输入、identity 与本地 output preflight，生成并验证当前 shared-assets export，再调用 Go `publish-batch` 严格串行生成全部 bundle。只有全部 publish PASS 后，才复用 maintenance batch 的本地与 CDN read-only authority preflight；随后仅当选中 profile 中存在 `shared_assets_policy=shared-cloudflare` 时运行 shared-assets deploy → automatic exact-URL purge → public verify，最后把 machine summary 中的精确 release dirs 原序交给 `maintenance-production-batch.sh`。任一步失败立即停止；publish failure 时 Production mutation 为零，shared-assets failure 时 locale maintenance 不开始，maintenance failure 继续沿用既有 fail-fast/resume 且不回滚已 PASS locale。该入口不执行 first-production、search closeout、IndexNow 或 Production visual gate，正常路径不读取 stdin。
 
+这里的 **local publish 不等于 Production deployment**。`publish-batch` 的 `PASS` 只表示本地 projection/build/Chrome prerender、bundle validation 与 release directory 已完成；其后的 `AUTHORITY PREFLIGHT` 也全部是只读检查。只有 `maintenance-production-batch.sh` 实际开始处理某个 locale 后，该 locale 才可能发生 Production deployment。正式 stage 顺序不可调整：
+
+```text
+shared-assets local export/validate
+→ ALL selected locale local publish PASS
+→ ALL required Production read-only authority preflight PASS
+→ shared-assets Production deploy/purge/verify PASS
+→ locale Production maintenance deployment
+```
+
+不得把 shared-assets Production mutation 提前到全部本地 publish 之前；只要 shared-assets required workflow 尚未完整 PASS，就不得开始任何 locale maintenance deployment。
+
+全部 selected locale publish PASS 后，顶层会在 `--output-root` 中原子建立不可变的 `go-tour-i18n/production-release-batch-state/v1` state，并立即打印路径。state 绑定当前完整 repository HEAD、干净工作树所对应的 production identity 摘要、selection mode 与 ordered locale set、每个 locale 的 `published_at`、精确绝对 `release_dir`、`release.json`/`SHA256SUMS` 摘要，以及精确 shared-assets export 与 manifest 摘要；它不扫描 `/tmp`，也不猜测历史 bundle。post-publish 的 shared-assets、CDN、public verification 或 maintenance transient failure 可使用失败汇总打印的唯一命令恢复：
+
+```sh
+scripts/production-release-batch.sh --resume /tmp/go-tour-production-release-batch-<timestamp>-<pid>.state.json
+```
+
+`--resume` 不得与 `--all-live`、`--locale` 或 `--output-root` 混用。恢复在任何新 Production mutation 前重新要求 state schema/self-identity/path 完整、当前 working tree 干净且 HEAD 完全相同、`production/identity.json` 字节 identity 未变化、locale 仍为 live 且顺序一致、release/export 均为原精确真实目录而非 symlink、release metadata 与 state 一致、两个 manifest 未变化，并重新执行正式 assets validation、每个 bundle 的完整 local validation 和全部 read-only CDN authority preflight。任一事实无法证明就 fail closed；不能为了复用旧 prerender 而在新 HEAD 或改写后的工作树上恢复。
+
+顶层 state 只保存 post-publish 的精确输入，不另建 deployment 状态机。shared-assets 继续以同一 export sibling v2 receipt 恢复：`DEPLOYED + purge PASS + verification PENDING` 只重跑 verify，不重复 deploy/purge；purge 为 `PENDING` 且将发生新 mutation 时先重新做 shared-assets authority preflight，`ATTEMPTED` 的不确定 mutation 仍拒绝重复。locale maintenance 继续把 state 中原序 release dirs 交给既有 strict receipt：已经完整 PASS 的 locale 为 `SKIP`，未完成 locale 从原 receipt 继续，不重新 publish、不回滚已 PASS locale。顶层 failure summary 明确区分 `publish`、shared-assets 的 `deploy/purge/verify` 和 `locale maintenance: NOT_STARTED/PARTIAL/COMPLETE`，并在 state 仍可验证时打印精确 resume state 与 command。
+
 需要只生成本地 artifacts、供诊断或其他编排使用时，可直接运行正式 Go batch publish：
 
 ```sh
@@ -521,7 +543,7 @@ preflight、lock、upload、staging validation 或 backup 阶段失败时，orig
 
 receipt verification 的全部 shared-assets 公网请求使用正式 `production/identity.json` 中 `shared.zgocloud_ssh_alias` 作为 network runner。验证脚本为单次 invocation 建立一个 SSH ControlMaster 与 SOCKS tunnel，所有 `curl` 通过 `--socks5-hostname` 复用该 tunnel，使 DNS 与 TCP 均从 zgocloud 网络出口发起；runner 无法建立即 fail closed，不回退到维护者本机网络，正常、失败和 signal 退出均清理该连接。
 
-Cloudflare 短时 HTTP `522` / `525` 及已有实证的 curl exit `28` 仅在单个逻辑请求内最多重试三次；其他 curl exit、HTTP 状态、内容 SHA-256、cache semantics、boundary 与 receipt identity 错误均立即 fail closed。成功日志汇总为 `14/14` SHA-256 与 `3/3` boundary，失败仍指明具体 logical path。该网络瞬态容忍不降低完整 14/14 freshness gate。
+Cloudflare 短时 HTTP `522` / `525` 及已有实证的 curl exit `28` 仅在单个逻辑请求内最多重试三次；其他 curl exit、HTTP 状态、内容 SHA-256、cache semantics、boundary 与 receipt identity 错误均立即 fail closed。每个 public request 的最终失败 evidence 同时打印完整 URL、curl exit、HTTP status 与实际 attempt count；因此 HTTP `404`、其他确定性 HTTP failure、transport failure 和 transient 重试耗尽可直接区分。成功日志汇总为 `14/14` SHA-256 与 `3/3` boundary，SHA mismatch 还打印 logical path 与 expected/actual digest，且不会重试 logical request。verification retry 不会倒退或重复已经 PASS 的 exact-URL purge。该网络瞬态容忍不降低完整 14/14 freshness gate。
 
 `deploy-shared-assets.sh` 已通过本地 mock 自动化测试，并已完成首次真实 11 文件 production deployment 验证。`SHA256SUMS`、`course-ad.css` 与 `course-ad.js` 的实际 changed URLs 已完成精确 purge 与 `MISS → HIT` 验收；公网 allowlist SHA-256 为 11/11 一致，三个非 allowlist boundary 路径继续返回 404。后续发布仍以 receipt 的实际 changed paths 为唯一 purge 清单；如果真实权限或工具基线与预检不符，立即停止，不绕过检查。
 

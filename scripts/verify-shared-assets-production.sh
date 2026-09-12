@@ -60,10 +60,10 @@ PY
 }
 
 require_http_200() {
-    local url=$1 headers=$2 code
-    code=$(shared_assets_public_http_request "$url" /dev/null "$headers")
-    [[ $code == 200 ]] || {
-        error "expected HTTP 200: $url"
+    local url=$1 headers=$2
+    shared_assets_public_http_request "$url" /dev/null "$headers"
+    [[ $SHARED_ASSETS_LAST_CURL_EXIT == 0 && $SHARED_ASSETS_LAST_HTTP_STATUS == 200 ]] || {
+        shared_assets_public_request_error "expected HTTP 200" "$url"
         return 1
     }
 }

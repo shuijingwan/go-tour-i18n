@@ -67,8 +67,10 @@ class Workflow:
         self._write()
 
     def execute(self):
+        preflight_complete = False
         if self.receipt is None:
             self._run("cdn-preflight", [ROOT / "scripts" / "production-cdn.py", "shared-assets-preflight"], 300)
+            preflight_complete = True
             self._run("deploy", [ROOT / "scripts" / "deploy-shared-assets.sh", self.export_dir], 1800)
             try:
                 self.receipt, _ = CDN.load_shared_assets_receipt(self.receipt_path, self.shared)
@@ -79,6 +81,8 @@ class Workflow:
             self.print_summary()
             return
         if self.receipt["purge_result"] == "PENDING":
+            if not preflight_complete:
+                self._run("cdn-preflight", [ROOT / "scripts" / "production-cdn.py", "shared-assets-preflight"], 300)
             self._run("purge", [ROOT / "scripts" / "production-cdn.py", "purge-shared-assets",
                                 "--receipt", self.receipt_path], 300)
             self.receipt, _ = CDN.load_shared_assets_receipt(self.receipt_path, self.shared)

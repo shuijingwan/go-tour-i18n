@@ -97,7 +97,7 @@ class SharedAssetsProductionTest(unittest.TestCase):
             self.successful_run(stage, command, timeout)
         with mock.patch.object(MODULE.Workflow, "_run", side_effect=resume):
             resumed.execute()
-        self.assertEqual(resumed_calls, ["purge", "verify"])
+        self.assertEqual(resumed_calls, ["cdn-preflight", "purge", "verify"])
         self.assertEqual(json.loads(self.receipt.read_text(encoding="utf-8"))["changed_paths"],
                          ["SHA256SUMS", "tour/static/css/app.css"])
 
@@ -133,7 +133,7 @@ class SharedAssetsProductionTest(unittest.TestCase):
             self.successful_run(stage, command, timeout)
         with mock.patch.object(MODULE.Workflow, "_run", side_effect=migrate):
             workflow.execute()
-        self.assertEqual(calls, ["purge", "verify"])
+        self.assertEqual(calls, ["cdn-preflight", "purge", "verify"])
 
     def test_uncertain_attempt_is_never_retried(self):
         self.write_v1("DEPLOYED", ["SHA256SUMS"])
@@ -143,6 +143,17 @@ class SharedAssetsProductionTest(unittest.TestCase):
         with mock.patch.object(MODULE.Workflow, "_run") as run, \
                 self.assertRaisesRegex(MODULE.SharedAssetsProductionError, "refusing duplicate"):
             MODULE.Workflow(self.export)
+        run.assert_not_called()
+
+    def test_complete_v2_pass_performs_no_deploy_purge_or_verify(self):
+        self.write_v1("DEPLOYED", ["SHA256SUMS"])
+        workflow = MODULE.Workflow(self.export)
+        workflow.receipt["purge_result"] = "PASS"
+        workflow.receipt["verification_result"] = "PASS"
+        workflow._write()
+        resumed = MODULE.Workflow(self.export)
+        with mock.patch.object(MODULE.Workflow, "_run") as run:
+            resumed.execute()
         run.assert_not_called()
 
     def test_real_runner_never_reads_stdin(self):
