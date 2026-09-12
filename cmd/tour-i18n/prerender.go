@@ -35,6 +35,21 @@ const (
 
 type prerenderChromeAttempt func(context.Context, string) ([]byte, error)
 type prerenderChromeRetryWait func(context.Context, time.Duration) error
+type prerenderChromeReadiness func([]byte) error
+
+var errPrerenderIncompleteRender = errors.New("incomplete render")
+
+type prerenderIncompleteRenderError struct {
+	reason string
+}
+
+func (err *prerenderIncompleteRenderError) Error() string {
+	return fmt.Sprintf("%v: %s", errPrerenderIncompleteRender, err.reason)
+}
+
+func (err *prerenderIncompleteRenderError) Unwrap() error {
+	return errPrerenderIncompleteRender
+}
 
 func prerenderProductionPagesChrome(contentDir, locale string, expectedPages int) error {
 	chrome, err := exec.LookPath("google-chrome")
@@ -116,7 +131,9 @@ func prerenderListWithChrome(parent context.Context, chrome, serverURL, profileR
 }
 
 func prerenderListWithChromeAttempt(parent context.Context, profileRoot, contentDir string, route tour.ListRoute, chromeAttempt prerenderChromeAttempt, retryWait prerenderChromeRetryWait, logOutput io.Writer) error {
-	output, err := prerenderChromeDOMWithRetry(parent, route.Path, profileRoot, chromeAttempt, retryWait, logOutput)
+	output, err := prerenderChromeDOMWithRetry(parent, route.Path, profileRoot, chromeAttempt,
+		func(output []byte) error { return validatePrerenderChromeReadiness(output, route.Path, false) },
+		retryWait, logOutput)
 	if err != nil {
 		return err
 	}
@@ -144,7 +161,11 @@ func prerenderRouteWithChrome(parent context.Context, chrome, serverURL, profile
 }
 
 func prerenderRouteWithChromeAttempt(parent context.Context, profileRoot, contentDir string, route tour.CourseRoute, chromeAttempt prerenderChromeAttempt, retryWait prerenderChromeRetryWait, logOutput io.Writer) error {
-	output, err := prerenderChromeDOMWithRetry(parent, route.Path, profileRoot, chromeAttempt, retryWait, logOutput)
+	output, err := prerenderChromeDOMWithRetry(parent, route.Path, profileRoot, chromeAttempt,
+		func(output []byte) error {
+			return validatePrerenderChromeReadiness(output, route.Path, len(route.Files) > 0)
+		},
+		retryWait, logOutput)
 	if err != nil {
 		return err
 	}
@@ -172,7 +193,7 @@ func prerenderRouteWithChromeAttempt(parent context.Context, profileRoot, conten
 	return nil
 }
 
-func prerenderChromeDOMWithRetry(parent context.Context, routePath, profileRoot string, chromeAttempt prerenderChromeAttempt, retryWait prerenderChromeRetryWait, logOutput io.Writer) ([]byte, error) {
+func prerenderChromeDOMWithRetry(parent context.Context, routePath, profileRoot string, chromeAttempt prerenderChromeAttempt, readiness prerenderChromeReadiness, retryWait prerenderChromeRetryWait, logOutput io.Writer) ([]byte, error) {
 	if err := os.MkdirAll(profileRoot, 0700); err != nil {
 		return nil, fmt.Errorf("create Chrome profile root for %s: %w", routePath, err)
 	}
@@ -186,13 +207,17 @@ func prerenderChromeDOMWithRetry(parent context.Context, routePath, profileRoot 
 		}
 		output, attemptErr := chromeAttempt(parent, attemptProfile)
 		_ = os.RemoveAll(attemptProfile)
-		if attemptErr == nil {
-			return output, nil
-		}
 		if err := parent.Err(); err != nil {
 			return nil, fmt.Errorf("Chrome %s: %w", routePath, err)
 		}
-		if !errors.Is(attemptErr, context.DeadlineExceeded) || attempt == prerenderChromeRouteAttempts {
+		if attemptErr == nil {
+			attemptErr = readiness(output)
+			if attemptErr == nil {
+				return output, nil
+			}
+		}
+		if (!errors.Is(attemptErr, context.DeadlineExceeded) &&
+			!errors.Is(attemptErr, errPrerenderIncompleteRender)) || attempt == prerenderChromeRouteAttempts {
 			return nil, attemptErr
 		}
 		backoff := time.Duration(attempt) * prerenderChromeRetryBackoff
@@ -203,6 +228,26 @@ func prerenderChromeDOMWithRetry(parent context.Context, routePath, profileRoot 
 		}
 	}
 	panic("unreachable")
+}
+
+func validatePrerenderChromeReadiness(data []byte, routePath string, requiresEditor bool) error {
+	document, err := html.Parse(bytes.NewReader(data))
+	if err != nil {
+		return fmt.Errorf("parse raw Chrome DOM readiness: %w", err)
+	}
+	incomplete := func(reason string) error {
+		return &prerenderIncompleteRenderError{reason: reason}
+	}
+	if findElement(document, "script", "id", "tour-runtime-head") == nil {
+		return incomplete("missing runtime head marker")
+	}
+	if rendered := findElement(document, "html", "", ""); rendered == nil || attrValue(rendered, "data-tour-rendered-route") != routePath {
+		return incomplete(fmt.Sprintf("rendered route=%q, want %q", attrValue(rendered, "data-tour-rendered-route"), routePath))
+	}
+	if requiresEditor && findElement(document, "textarea", "ui-codemirror", "") == nil {
+		return incomplete("missing ui-codemirror textarea")
+	}
+	return nil
 }
 
 func waitForPrerenderChromeRetry(ctx context.Context, delay time.Duration) error {

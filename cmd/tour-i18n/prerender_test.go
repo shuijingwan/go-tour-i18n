@@ -51,8 +51,8 @@ func TestProductionPrerenderChromeDefaults(t *testing.T) {
 	}
 }
 
-func TestPrerenderCourseRouteRetriesDeadlineThenSucceeds(t *testing.T) {
-	route := testPrerenderCourseRoute()
+func TestPrerenderCourseRouteRetriesDeadlineThenIncompleteThenSucceeds(t *testing.T) {
+	route := testPrerenderExampleRoute()
 	attempts := 0
 	var profiles []string
 	var backoffs []time.Duration
@@ -61,10 +61,13 @@ func TestPrerenderCourseRouteRetriesDeadlineThenSucceeds(t *testing.T) {
 		func(_ context.Context, profile string) ([]byte, error) {
 			attempts++
 			profiles = append(profiles, profile)
-			if attempts == 1 {
+			switch attempts {
+			case 1:
 				return nil, fmt.Errorf("Chrome %s: %w", route.Path, context.DeadlineExceeded)
+			case 2:
+				return testPrerenderCourseHTML(route), nil
 			}
-			return testPrerenderCourseHTML(route), nil
+			return testPrerenderExampleHTML(route), nil
 		},
 		func(_ context.Context, delay time.Duration) error {
 			backoffs = append(backoffs, delay)
@@ -73,16 +76,65 @@ func TestPrerenderCourseRouteRetriesDeadlineThenSucceeds(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if attempts != 2 || len(profiles) != 2 || profiles[0] == profiles[1] {
-		t.Fatalf("attempts=%d profiles=%v, want two isolated attempts", attempts, profiles)
+	if attempts != 3 || len(profiles) != 3 || profiles[0] == profiles[1] || profiles[1] == profiles[2] || profiles[0] == profiles[2] {
+		t.Fatalf("attempts=%d profiles=%v, want three isolated attempts", attempts, profiles)
 	}
-	if len(backoffs) != 1 || backoffs[0] != time.Second {
-		t.Fatalf("backoffs=%v, want [1s]", backoffs)
+	if len(backoffs) != 2 || backoffs[0] != time.Second || backoffs[1] != 2*time.Second {
+		t.Fatalf("backoffs=%v, want [1s 2s]", backoffs)
 	}
-	for _, want := range []string{route.Path, "attempt=1/3", "context deadline exceeded", "next_attempt=2/3", "backoff=1s"} {
+	for _, want := range []string{route.Path, "attempt=1/3", "context deadline exceeded", "next_attempt=2/3", "backoff=1s", "attempt=2/3", "incomplete render: missing ui-codemirror textarea", "next_attempt=3/3", "backoff=2s"} {
 		if !strings.Contains(logs.String(), want) {
 			t.Errorf("retry log missing %q: %s", want, logs.String())
 		}
+	}
+}
+
+func TestPrerenderCourseRouteRetriesIncompleteEditorDOM(t *testing.T) {
+	route := testPrerenderExampleRoute()
+	attempts := 0
+	waits := 0
+	var logs bytes.Buffer
+	err := prerenderRouteWithChromeAttempt(t.Context(), filepath.Join(t.TempDir(), "profiles"), t.TempDir(), route,
+		func(context.Context, string) ([]byte, error) {
+			attempts++
+			if attempts == 1 {
+				return testPrerenderCourseHTML(route), nil
+			}
+			return testPrerenderExampleHTML(route), nil
+		},
+		func(context.Context, time.Duration) error {
+			waits++
+			return nil
+		}, &logs)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if attempts != 2 || waits != 1 {
+		t.Fatalf("incomplete editor attempts=%d waits=%d, want 2 and 1", attempts, waits)
+	}
+	if !strings.Contains(logs.String(), "reason=incomplete render: missing ui-codemirror textarea") {
+		t.Fatalf("readiness retry log=%q", logs.String())
+	}
+}
+
+func TestPrerenderCourseRouteStopsAfterThreeIncompleteRenders(t *testing.T) {
+	route := testPrerenderExampleRoute()
+	attempts := 0
+	waits := 0
+	err := prerenderRouteWithChromeAttempt(t.Context(), filepath.Join(t.TempDir(), "profiles"), t.TempDir(), route,
+		func(context.Context, string) ([]byte, error) {
+			attempts++
+			return testPrerenderCourseHTML(route), nil
+		},
+		func(context.Context, time.Duration) error {
+			waits++
+			return nil
+		}, io.Discard)
+	if err == nil || !errors.Is(err, errPrerenderIncompleteRender) || !strings.Contains(err.Error(), "missing ui-codemirror textarea") {
+		t.Fatalf("incomplete render exhaustion error=%v", err)
+	}
+	if attempts != 3 || waits != 2 {
+		t.Fatalf("incomplete render attempts=%d waits=%d, want 3 and 2", attempts, waits)
 	}
 }
 
@@ -119,24 +171,39 @@ func TestPrerenderCourseRouteStopsAfterThreeDeadlineFailures(t *testing.T) {
 	}
 }
 
-func TestPrerenderCourseRouteDoesNotRetryValidationFailure(t *testing.T) {
-	route := testPrerenderCourseRoute()
-	attempts := 0
-	waits := 0
-	err := prerenderRouteWithChromeAttempt(t.Context(), filepath.Join(t.TempDir(), "profiles"), t.TempDir(), route,
-		func(context.Context, string) ([]byte, error) {
-			attempts++
-			return []byte("<!doctype html><html><body>not rendered</body></html>"), nil
-		},
-		func(context.Context, time.Duration) error {
-			waits++
-			return nil
-		}, io.Discard)
-	if err == nil || !strings.Contains(err.Error(), "validate "+route.Path) {
-		t.Fatalf("validation error=%v", err)
-	}
-	if attempts != 1 || waits != 0 {
-		t.Fatalf("validation failure attempts=%d waits=%d, want 1 and 0", attempts, waits)
+func TestPrerenderCourseRouteDoesNotRetryDeterministicValidationFailures(t *testing.T) {
+	for _, test := range []struct {
+		name string
+		html func(tour.CourseRoute) []byte
+		want string
+	}{
+		{"canonical", func(route tour.CourseRoute) []byte {
+			return bytes.Replace(testPrerenderCourseHTML(route), []byte(route.Canonical), []byte("https://invalid.example/tour/test/1"), 1)
+		}, "canonical="},
+		{"content", func(route tour.CourseRoute) []byte {
+			return bytes.Replace(testPrerenderCourseHTML(route), []byte("Rendered course body."), nil, 1)
+		}, "missing current course title and body"},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			route := testPrerenderCourseRoute()
+			attempts := 0
+			waits := 0
+			err := prerenderRouteWithChromeAttempt(t.Context(), filepath.Join(t.TempDir(), "profiles"), t.TempDir(), route,
+				func(context.Context, string) ([]byte, error) {
+					attempts++
+					return test.html(route), nil
+				},
+				func(context.Context, time.Duration) error {
+					waits++
+					return nil
+				}, io.Discard)
+			if err == nil || !strings.Contains(err.Error(), "validate "+route.Path) || !strings.Contains(err.Error(), test.want) {
+				t.Fatalf("validation error=%v", err)
+			}
+			if attempts != 1 || waits != 0 {
+				t.Fatalf("validation failure attempts=%d waits=%d, want 1 and 0", attempts, waits)
+			}
+		})
 	}
 }
 
@@ -163,7 +230,7 @@ func TestPrerenderCourseRouteDoesNotRetryParentCancellation(t *testing.T) {
 	}
 }
 
-func TestPrerenderListRetriesDeadlineThenSucceeds(t *testing.T) {
+func TestPrerenderListRetriesIncompleteRouteThenSucceeds(t *testing.T) {
 	route := testPrerenderListRoute()
 	attempts := 0
 	var profiles []string
@@ -173,7 +240,7 @@ func TestPrerenderListRetriesDeadlineThenSucceeds(t *testing.T) {
 			attempts++
 			profiles = append(profiles, profile)
 			if attempts == 1 {
-				return nil, context.DeadlineExceeded
+				return bytes.Replace(testPrerenderListHTML(route), []byte(route.Path), []byte("/tour/not-list"), 1), nil
 			}
 			return testPrerenderListHTML(route), nil
 		},
@@ -201,9 +268,20 @@ func testPrerenderCourseRoute() tour.CourseRoute {
 	}
 }
 
+func testPrerenderExampleRoute() tour.CourseRoute {
+	route := testPrerenderCourseRoute()
+	route.Files = []string{"package main\n\nfunc main() {}\n"}
+	return route
+}
+
 func testPrerenderCourseHTML(route tour.CourseRoute) []byte {
 	return []byte(fmt.Sprintf(`<!doctype html><html data-tour-rendered-route=%q><head><script id="tour-runtime-head"></script><title>%s - Go Tour</title><link rel="canonical" href=%q><meta name="description" content=%q></head><body><div id="editor-container"></div><div class="slide-content"><h2>%s</h2><p>Rendered course body.</p></div></body></html>`,
 		route.Path, route.PageTitle, route.Canonical, route.Description, route.PageTitle))
+}
+
+func testPrerenderExampleHTML(route tour.CourseRoute) []byte {
+	return bytes.Replace(testPrerenderCourseHTML(route), []byte(`<div id="editor-container"></div>`),
+		[]byte(`<div id="editor-container"><textarea ui-codemirror>runtime source</textarea></div>`), 1)
 }
 
 func testPrerenderListRoute() tour.ListRoute {
