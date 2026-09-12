@@ -27,6 +27,17 @@
 
 社区语言站的当前 production lifecycle、hostname、CDN 与 service 以 [`production/identity.json`](production/identity.json) 为唯一 machine authority；根路径 `/` 是项目首页，课程位于 `/tour/`。博客页面回链至正式站点和 GitHub 仍由仓库外的博客维护工作完成。
 
+## Support the project
+
+如愿意，可以自愿支持整个 go-dev 多语言项目的持续维护：
+
+- USDC — Network: `Base` — Address: `0x225f14d54683b1f5bc153bc8a678cad0277096d3`
+- USDT — Network: `Tron (TRC20)` — Address: `TF2bM817pLQeN1Ykt3GEecRbTjuSsWtGdK`
+
+Support reference：`go-dev-project`。如果付款服务支持 note / reference / 备注，可以使用这个值。
+
+USDC 只能通过 Base 网络发送，USDT 只能通过 Tron (TRC20) 网络发送；使用错误的资产或网络可能导致资金损失。
+
 ## 当前阶段
 
 - 已从固定官方上游导入可独立运行、测试、解析和渲染的英文 Tour 基线。

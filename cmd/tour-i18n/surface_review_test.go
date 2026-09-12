@@ -6,7 +6,8 @@ import (
 )
 
 func TestFullLocalePreviewRequiresCurrentSurfaceReviewAGate(t *testing.T) {
-	root, catalog := publishTestCatalog(t)
+	_, catalog := publishTestCatalog(t)
+	root := t.TempDir()
 	if err := requireFullLocalePreviewGate(root, catalog, "es-ES"); err == nil || (!strings.Contains(err.Error(), "gate missing") && !strings.Contains(err.Error(), "stale")) {
 		t.Fatalf("full preview gate error=%v", err)
 	}

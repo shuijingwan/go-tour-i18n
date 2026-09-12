@@ -141,6 +141,7 @@ type pageTemplateData struct {
 	Description              string
 	TourAdsEnabled           bool
 	OwnerContentLinksEnabled bool
+	Support                  supportView
 }
 
 func newPageTemplateData(catalog ui.Catalog, metadata SiteMetadata) (pageTemplateData, error) {
@@ -171,6 +172,10 @@ func newPageTemplateData(catalog ui.Catalog, metadata SiteMetadata) (pageTemplat
 			return pageTemplateData{}, err
 		}
 	}
+	support, err := supportForLocale(catalog.Locale)
+	if err != nil {
+		return pageTemplateData{}, err
+	}
 	return pageTemplateData{
 		HTMLLang:                 catalog.HTMLLang,
 		Metadata:                 metadata,
@@ -191,6 +196,7 @@ func newPageTemplateData(catalog ui.Catalog, metadata SiteMetadata) (pageTemplat
 		SEOOrigin:                seoOrigin,
 		TourAdsEnabled:           tourpolicy.ForLocale(catalog.Locale).TourAdsEnabled(),
 		OwnerContentLinksEnabled: tourpolicy.ForLocale(catalog.Locale).OwnerContentLinksEnabled(),
+		Support:                  support,
 	}, nil
 }
 

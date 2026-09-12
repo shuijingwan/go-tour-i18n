@@ -176,6 +176,7 @@ func TestExportLocaleSurfaceReviewPackageIncludesConcreteOtherSurfaces(t *testin
 		"_content/tour/static/js/directives.js",
 		"_content/tour/static/js/page.js",
 		"_content/tour/static/js/services.js",
+		"_content/tour/static/js/support.js",
 		"_content/tour/static/js/values.js",
 		"_content/tour/template/action.tmpl",
 		"_content/tour/template/home.tmpl",

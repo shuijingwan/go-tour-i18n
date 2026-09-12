@@ -80,7 +80,33 @@
                 <p>{{ui "site.architecture_playground"}}</p>
                 <p>{{ui "site.architecture_languages"}}</p>
             </div>
+        </section>
+        <section class="site-section site-support">
+            <h2>{{ui "support.section_title"}}</h2>
             <p>{{ui "site.operations_note"}}</p>
+            <h3>{{ui "support.translation_title"}}</h3>
+            <p>{{ui "support.intro"}}</p>
+            <div class="support-reference">
+                <span><strong>{{ui "support.reference_label"}}</strong> <code>{{.Support.Reference}}</code></span>
+                <button class="support-copy" type="button" data-copy-value="{{.Support.Reference}}" data-copy-label="{{ui "support.copy_reference"}}" data-copy-success="{{ui "support.copied"}}" aria-live="polite">{{ui "support.copy_reference"}}</button>
+            </div>
+            <p class="support-help">{{ui "support.reference_help"}}</p>
+            <div class="support-payment-grid">
+                {{range .Support.Methods}}<article class="site-card support-payment-card" data-payment-method="{{.Identity}}" aria-label="{{.Name}}">
+                    {{if eq .Kind "qr"}}<div class="support-qr-frame"><img class="support-qr" src="{{asset .QRAsset}}" alt="{{.Name}}"></div>{{end}}
+                    {{if eq .Kind "crypto"}}
+                    <h3>{{.Name}}</h3>
+                    <dl class="support-payment-details">
+                        <dt>{{ui "support.asset"}}</dt><dd>{{.Asset}}</dd>
+                        <dt>{{ui "support.network"}}</dt><dd>{{.Network}}</dd>
+                        <dt>{{ui "support.address"}}</dt><dd><code class="support-address">{{.Address}}</code></dd>
+                        <dt>{{ui "support.minimum_deposit"}}</dt><dd>{{.MinimumDeposit}}</dd>
+                    </dl>
+                    <button class="support-copy" type="button" data-copy-value="{{.Address}}" data-copy-label="{{ui "support.copy_address"}}" data-copy-success="{{ui "support.copied"}}" aria-live="polite">{{ui "support.copy_address"}}</button>
+                    <p class="support-warning">{{ui .NetworkWarningKey}} {{ui "support.wrong_network_warning"}}</p>
+                    {{end}}
+                </article>{{end}}
+            </div>
         </section>
         <section class="site-section">
             <h2>{{ui "site.continue_learning_title"}}</h2>
@@ -91,5 +117,6 @@
         </section>
     </main>
     {{template "footer" .}}
+    <script src="{{asset "tour/static/js/support.js"}}"></script>
 </body>
 </html>

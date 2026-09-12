@@ -11,7 +11,9 @@ import (
 	"io"
 	"io/fs"
 	"os"
+	"path"
 	"path/filepath"
+	"strings"
 	"time"
 )
 
@@ -27,6 +29,117 @@ var Project = struct {
 	ICPURL:          "https://beian.miit.gov.cn/",
 	ICPNumber:       "蜀ICP备13001590号-1",
 	CopyrightHolder: "永夜",
+}
+
+type supportAudience string
+
+const (
+	supportAudienceMainland      supportAudience = "mainland"
+	supportAudienceInternational supportAudience = "international"
+)
+
+type supportPaymentMethod struct {
+	Identity          string
+	Name              string
+	Kind              string
+	Enabled           bool
+	Audience          supportAudience
+	Asset             string
+	Network           string
+	Address           string
+	MinimumDeposit    string
+	QRAsset           string
+	NetworkWarningKey string
+}
+
+// ProjectSupport is the single project-level maintenance source for public
+// payment details. Locale catalogs contain presentation text only.
+var ProjectSupport = struct {
+	LocaleReferencePrefix string
+	Methods               []supportPaymentMethod
+}{
+	LocaleReferencePrefix: "go-dev-",
+	Methods: []supportPaymentMethod{
+		{Identity: "wechat-pay", Name: "微信支付", Kind: "qr", Enabled: true, Audience: supportAudienceMainland, QRAsset: "images/support/wechat.png"},
+		{Identity: "alipay", Name: "支付宝", Kind: "qr", Enabled: true, Audience: supportAudienceMainland, QRAsset: "images/support/alipay.png"},
+		{Identity: "unionpay", Name: "云闪付", Kind: "qr", Enabled: false, Audience: supportAudienceMainland},
+		{Identity: "usdc-base", Name: "USDC", Kind: "crypto", Enabled: true, Audience: supportAudienceInternational, Asset: "USDC", Network: "Base", Address: "0x225f14d54683b1f5bc153bc8a678cad0277096d3", MinimumDeposit: "0.01 USDC", NetworkWarningKey: "support.usdc_network_only"},
+		{Identity: "usdt-trc20", Name: "USDT", Kind: "crypto", Enabled: true, Audience: supportAudienceInternational, Asset: "USDT", Network: "Tron (TRC20)", Address: "TF2bM817pLQeN1Ykt3GEecRbTjuSsWtGdK", MinimumDeposit: "0.1 USDT", NetworkWarningKey: "support.usdt_network_only"},
+		{Identity: "wise", Name: "Wise", Kind: "link", Enabled: false, Audience: supportAudienceInternational},
+		{Identity: "patreon", Name: "Patreon", Kind: "link", Enabled: false, Audience: supportAudienceInternational},
+	},
+}
+
+type supportView struct {
+	Audience  supportAudience
+	Reference string
+	Methods   []supportPaymentMethod
+}
+
+func supportAudienceForLocale(locale string) supportAudience {
+	if locale == "zh-CN" {
+		return supportAudienceMainland
+	}
+	return supportAudienceInternational
+}
+
+func supportForLocale(locale string) (supportView, error) {
+	if err := validateProjectSupport(); err != nil {
+		return supportView{}, err
+	}
+	audience := supportAudienceForLocale(locale)
+	view := supportView{
+		Audience:  audience,
+		Reference: ProjectSupport.LocaleReferencePrefix + locale,
+	}
+	for _, method := range ProjectSupport.Methods {
+		if method.Enabled && method.Audience == audience {
+			view.Methods = append(view.Methods, method)
+		}
+	}
+	if len(view.Methods) == 0 {
+		return supportView{}, fmt.Errorf("support audience %q has no enabled payment methods", audience)
+	}
+	return view, nil
+}
+
+func validateProjectSupport() error {
+	if ProjectSupport.LocaleReferencePrefix != "go-dev-" {
+		return fmt.Errorf("invalid locale support reference prefix %q", ProjectSupport.LocaleReferencePrefix)
+	}
+	seen := make(map[string]bool, len(ProjectSupport.Methods))
+	for _, method := range ProjectSupport.Methods {
+		if method.Identity == "" || method.Name == "" || method.Kind == "" {
+			return fmt.Errorf("support payment method identity, name, and kind are required")
+		}
+		if seen[method.Identity] {
+			return fmt.Errorf("duplicate support payment method %q", method.Identity)
+		}
+		seen[method.Identity] = true
+		if method.Audience != supportAudienceMainland && method.Audience != supportAudienceInternational {
+			return fmt.Errorf("support payment method %q has invalid audience %q", method.Identity, method.Audience)
+		}
+		if !method.Enabled {
+			continue
+		}
+		switch method.Kind {
+		case "qr":
+			clean := path.Clean(method.QRAsset)
+			if method.Audience != supportAudienceMainland || clean != method.QRAsset || !strings.HasPrefix(clean, "images/support/") || path.Ext(clean) != ".png" {
+				return fmt.Errorf("enabled QR payment method %q has invalid QR asset", method.Identity)
+			}
+			if method.Asset != "" || method.Network != "" || method.Address != "" || method.MinimumDeposit != "" || method.NetworkWarningKey != "" {
+				return fmt.Errorf("enabled QR payment method %q mixes crypto fields", method.Identity)
+			}
+		case "crypto":
+			if method.Audience != supportAudienceInternational || method.Asset == "" || method.Network == "" || method.Address == "" || method.MinimumDeposit == "" || method.NetworkWarningKey == "" || method.QRAsset != "" {
+				return fmt.Errorf("enabled crypto payment method %q is incomplete", method.Identity)
+			}
+		default:
+			return fmt.Errorf("enabled support payment method %q has unsupported kind %q", method.Identity, method.Kind)
+		}
+	}
+	return nil
 }
 
 const (

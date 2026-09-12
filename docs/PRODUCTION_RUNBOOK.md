@@ -98,7 +98,7 @@ publication policy 的唯一 authority 是 `internal/tourpolicy`：`standard` To
 - 确认目标 locale 的 production service 引用包含有效 `TOUR_AD_HTML` 的正确 `EnvironmentFile`；该文件可由 unit 本体或既有 drop-in 引入，无需为新 locale 额外创建 drop-in；
 - 完成 Auto Ads 所需的 production 配置；
 - 准备并验收课程广告 CSS/JS 的 production asset 来源（zh-CN 为同源；非中文 locale 按共享 assets 策略）；
-- 非中文 locale 使用 shared-assets 时，在首次上线前确认共享的 `course-ad.css` 与 `course-ad.js` 已部署，且已完成缓存验收；这项广告专项检查不能替代完整 11 文件 current-state freshness gate，后者按“非中文共享静态资源第一版”和 shared-assets 发布状态机执行。
+- 非中文 locale 使用 shared-assets 时，在首次上线前确认共享的 `course-ad.css` 与 `course-ad.js` 已部署，且已完成缓存验收；这项广告专项检查不能替代完整 14 文件 current-state freshness gate，后者按“非中文共享静态资源第一版”和 shared-assets 发布状态机执行。
 
 `go-local` locale 不接入上述 Tour 广告资源；其 production acceptance 改为证明 Tour 不存在广告 mount、slot、loader 或本项目广告 request opportunity。此阶段不改变首页或其他非 Tour 内容的既有策略。
 
@@ -224,7 +224,7 @@ scripts/recover-first-production-health-failure.sh \
 
 通过全部检查后，命令原子暂存 `current` symlink、删除已验证为空的 lock，再删除暂存 symlink；若 lock 删除或 INT/TERM/HUP 期间失败则恢复 `current`。失败 release 一直保留作 evidence。恢复成功后先重新 publish 新 release，再对**新** release 运行 `scripts/first-production.sh`；旧 failed receipt 不删除、不复用，新 release 会建立新的 receipt 并从完整 preflight 重新开始。
 
-preflight 在任何 production mutation 前同时检查：正式 bundle 与 identity、**唯一** current Surface Review A gate 所指向的 Markdown evidence identity，以及完整唯一且未改写的 first-production finalization placeholder；多个 current A gate 不猜测“最新”而是 fail closed。TODO/unknown locale 间接由 publish/identity gate 拒绝、两台 SSH 和 root account、port/service/data-root/vhost/certificate 冲突、EnvironmentFile 与非空 `TOUR_AD_HTML`（不输出值）、Cloudflare secret 权限与变量、zone 唯一性、目标 DNS 无冲突、Playground 两个 location 的结构一致性，以及 shared-assets origin/public SHA-256 freshness。placeholder 语义由 `tour-i18n first-production evidence-preflight` 统一实现，编排器不自行解析 Markdown；finalize 还会验证其传入的 review-id 对应 gate 本身仍为 current。它重新 export/validate 当前仓库、对照 aliyun origin，并复用正式 shared-assets public verification core（zgocloud runner、HTTP 522/525 和 curl exit 28 的 bounded retry、11/11 SHA-256 与 boundary 404），不信任历史 receipt。任一项失败时，不建立目录、unit、证书、vhost、DNS 或 Origin。
+preflight 在任何 production mutation 前同时检查：正式 bundle 与 identity、**唯一** current Surface Review A gate 所指向的 Markdown evidence identity，以及完整唯一且未改写的 first-production finalization placeholder；多个 current A gate 不猜测“最新”而是 fail closed。TODO/unknown locale 间接由 publish/identity gate 拒绝、两台 SSH 和 root account、port/service/data-root/vhost/certificate 冲突、EnvironmentFile 与非空 `TOUR_AD_HTML`（不输出值）、Cloudflare secret 权限与变量、zone 唯一性、目标 DNS 无冲突、Playground 两个 location 的结构一致性，以及 shared-assets origin/public SHA-256 freshness。placeholder 语义由 `tour-i18n first-production evidence-preflight` 统一实现，编排器不自行解析 Markdown；finalize 还会验证其传入的 review-id 对应 gate 本身仍为 current。它重新 export/validate 当前仓库、对照 aliyun origin，并复用正式 shared-assets public verification core（zgocloud runner、HTTP 522/525 和 curl exit 28 的 bounded retry、14/14 SHA-256 与 boundary 404），不信任历史 receipt。任一项失败时，不建立目录、unit、证书、vhost、DNS 或 Origin。
 
 Cloudflare control-plane 专用网络通道也在 preflight 建立：调用机先以 invocation-scoped SSH `-D 127.0.0.1:<local-port>` 连接 zgocloud，再以 SSH `-R 127.0.0.1:<aliyun-port>:127.0.0.1:<local-port>` 连接 aliyun；两个 listener 都只绑定 loopback，且 `ExitOnForwardFailure=yes`/`GatewayPorts=no`。因此 aliyun 的 curl 经 `--socks5-hostname 127.0.0.1:<aliyun-port>` 从 zgocloud 出口完成 DNS 和 TCP，但 HTTPS/TLS 与 `Authorization: Bearer $CF_Token` 仍只在 aliyun 的 curl 进程和 Cloudflare 之间建立，调用机与 zgocloud 都看不到 token 明文。建链失败立即停止，绝不回退 aliyun 直连；正常、失败、INT、TERM、HUP 都关闭两个 ControlMaster 和转发 socket。该 endpoint、端口、token 和 tunnel 细节不写入 receipt 或日志。
 
@@ -428,6 +428,9 @@ images/go-logo-white.svg
 images/icons/brightness_6_gm_grey_24dp.svg
 images/icons/brightness_2_gm_grey_24dp.svg
 images/icons/light_mode_gm_grey_24dp.svg
+images/support/alipay.png
+images/support/wechat.png
+tour/static/js/support.js
 ```
 
 使用以下命令把清单导出为可直接作为普通服务器静态目录的 origin tree：
@@ -446,7 +449,13 @@ go run -mod=readonly ./cmd/tour-i18n assets validate \
 
 `assets-go-dev.shuijingwanwq.com` 已正式部署，Cloudflare 已代理；源站为 `121.40.248.29`，origin root 为 `/data/wwwroot/assets-go-dev.shuijingwanwq.com`，Nginx vhost 为 `/usr/local/nginx/conf/vhost/assets-go-dev.shuijingwanwq.com.conf`。TLS 使用 Let's Encrypt / acme.sh / `dns_cf`，证书和私钥分别位于 `/usr/local/nginx/conf/ssl/assets-go-dev.shuijingwanwq.com.crt` 与 `/usr/local/nginx/conf/ssl/assets-go-dev.shuijingwanwq.com.key`；HTTP 80 永久跳转 HTTPS。
 
-Cloudflare Edge Cache TTL 为 1 个月。项目不主动覆盖 Browser Cache TTL，不给这些固定 URL 设置 `immutable` 或一年浏览器缓存；使用 Cloudflare/origin 默认或 Respect Existing Headers。当前正式 allowlist 是完整 11 文件，不只 `course-ad.css` 与 `course-ad.js`；后两者已包含课程页 AdSense integration。文档中“11/11 已正式部署”记录的是一次历史 production acceptance，不是当前仓库状态的永久保证。判断当前 production 是否最新，必须以当前仓库执行正式 `assets export` / `assets validate` 所代表的完整 allowlist 内容为准，并运行下述 `scripts/shared-assets-production.sh` 完成 origin 比较、必要的 automatic exact-URL purge 与 public verification；不得依赖历史记录、Git 历史、上次部署时间或人工判断文件是否变化。任一 allowlist 文件都属于此完整比较范围，包括但不限于 `app.css`、`course-ad.css` 与 `course-ad.js`。`DEPLOYED` 只刷新 receipt 中真实 changed paths，`NO_CHANGES` 不执行 purge，但两者都必须完成完整 11/11 公网 SHA-256 与当前 export 的对照。不引入 assets version、query version 或 content-hash URL，也不改变 shared-assets 架构。历史首次 11 文件 production acceptance 中，对实际变化的 `SHA256SUMS`、`course-ad.css`、`course-ad.js` 已完成精确 URL purge 后的 `MISS → HIT` 验收，公网内容 SHA-256 为 11/11 一致，三个非 allowlist boundary 路径继续返回 404。
+Cloudflare Edge Cache TTL 为 1 个月。项目不主动覆盖 Browser Cache TTL，不给这些固定 URL 设置 `immutable` 或一年浏览器缓存；使用 Cloudflare/origin 默认或 Respect Existing Headers。当前正式 allowlist 是完整 14 文件，不只 `course-ad.css` 与 `course-ad.js`；后两者已包含课程页 AdSense integration。
+
+文档中“11/11 已正式部署”记录的是一次历史 production acceptance，不是当前仓库状态的永久保证。判断当前 production 是否最新，必须以当前仓库执行正式 `assets export` / `assets validate` 所代表的完整 allowlist 内容为准，并运行下述 `scripts/shared-assets-production.sh` 完成 origin 比较、必要的 automatic exact-URL purge 与 public verification；不得依赖历史记录、Git 历史、上次部署时间或人工判断文件是否变化。
+
+任一 allowlist 文件都属于此完整比较范围，包括但不限于 `app.css`、`support.js`、支付二维码、`course-ad.css` 与 `course-ad.js`。`DEPLOYED` 只刷新 receipt 中真实 changed paths，`NO_CHANGES` 不执行 purge，但两者都必须完成完整 14/14 公网 SHA-256 与当前 export 的对照。不引入 assets version、query version 或 content-hash URL，也不改变 shared-assets 架构。
+
+历史首次 11 文件 production acceptance 中，对实际变化的 `SHA256SUMS`、`course-ad.css`、`course-ad.js` 已完成精确 URL purge 后的 `MISS → HIT` 验收，公网内容 SHA-256 为 11/11 一致，三个非 allowlist boundary 路径继续返回 404。
 
 ### Shared-assets production 发布状态机
 
@@ -464,16 +473,16 @@ go run -mod=readonly ./cmd/tour-i18n assets validate \
   --input /tmp/go-tour-shared-assets
 ```
 
-核对导出恰好包含 `SHA256SUMS` 和上述 11 个 allowlist 文件，不包含完整 `_content`、symlink 或其他文件，并执行：
+核对导出恰好包含 `SHA256SUMS` 和上述 14 个 allowlist 文件，不包含完整 `_content`、symlink 或其他文件，并执行：
 
 ```sh
 cd /tmp/go-tour-shared-assets
 find . -type f -printf '%P\n' | sort
-test "$(find . -type f ! -name SHA256SUMS | wc -l)" -eq 11
+test "$(find . -type f ! -name SHA256SUMS | wc -l)" -eq 14
 sha256sum -c --strict SHA256SUMS
 ```
 
-只有文件集合正确且 11/11 校验通过，才能运行正式状态机：
+只有文件集合正确且 14/14 校验通过，才能运行正式状态机：
 
 ```sh
 scripts/shared-assets-production.sh /tmp/go-tour-shared-assets
@@ -496,11 +505,11 @@ scripts/deploy-shared-assets.sh \
   /tmp/go-tour-shared-assets
 ```
 
-脚本不运行 assets export；它只接受阶段 A 已生成的目录。脚本先调用仓库的 `assets validate` 复用唯一 Go allowlist，要求输入逐字节等于当前仓库正式资源，并验证顶层真实目录、无 symlink/unsupported entry、`SHA256SUMS` 的安全路径、文件集合与 11/11 SHA-256。用户自行制作一份 checksum 文件不能绕过正式 allowlist 与仓库 source 校验。
+脚本不运行 assets export；它只接受阶段 A 已生成的目录。脚本先调用仓库的 `assets validate` 复用唯一 Go allowlist，要求输入逐字节等于当前仓库正式资源，并验证顶层真实目录、无 symlink/unsupported entry、`SHA256SUMS` 的安全路径、文件集合与 14/14 SHA-256。用户自行制作一份 checksum 文件不能绕过正式 allowlist 与仓库 source 校验。
 
 固定 production profile 为 SSH alias `aliyun`、origin `/data/wwwroot/assets-go-dev.shuijingwanwq.com`、lock `/data/wwwroot/.assets-go-dev.deploy.lock`。脚本使用唯一 token 在 `/data/wwwroot/` 建立非公开 `.assets-go-dev.staging-*`，上传后在远端重新校验文件集合、SHA-256 和权限；它从当前 origin 读取并要求统一的 owner/group、目录 mode 与普通文件 mode，不修改 `/data/wwwroot/` 中其他站点的权限。
 
-如果 staging 与 origin 逐文件相同，脚本输出 `NO CHANGES`，清理 staging/lock，不创建 backup，也不产生 purge URL；这证明 origin 已与当前 export 一致，但不替代阶段 E 的完整 11/11 公网 SHA-256 对照。如果有变化，脚本在第一次修改 origin 前创建并验证完整非公开备份 `/data/wwwroot/assets-go-dev.shuijingwanwq.com.bak.<token>`，随后才在服务器端把完整 staging tree 以受限 `rsync --delete` 同步进固定 origin。delete 只作用于该精确 origin 内，确保新增、修改、删除后 production 文件集合与正式 export 完全一致；历史 backup 不自动删除。
+如果 staging 与 origin 逐文件相同，脚本输出 `NO CHANGES`，清理 staging/lock，不创建 backup，也不产生 purge URL；这证明 origin 已与当前 export 一致，但不替代阶段 E 的完整 14/14 公网 SHA-256 对照。如果有变化，脚本在第一次修改 origin 前创建并验证完整非公开备份 `/data/wwwroot/assets-go-dev.shuijingwanwq.com.bak.<token>`，随后才在服务器端把完整 staging tree 以受限 `rsync --delete` 同步进固定 origin。delete 只作用于该精确 origin 内，确保新增、修改、删除后 production 文件集合与正式 export 完全一致；历史 backup 不自动删除。
 
 preflight、lock、upload、staging validation 或 backup 阶段失败时，origin 不变，脚本只在能确认安全时清理本次 staging/lock。production mutation 开始后若同步或严格验证失败，脚本使用刚创建的完整 backup 恢复并重新验证；回滚明确成功时报告部署失败但旧内容已恢复。如果回滚失败、SSH 中断或状态无法确认，脚本保留 lock、staging、backup 与现场，输出只读人工检查命令，禁止直接自动重试。INT、TERM、HUP 在 mutation 前按安全边界清理，mutation 后保留 evidence。
 
@@ -510,7 +519,9 @@ preflight、lock、upload、staging validation 或 backup 阶段失败时，orig
 
 `NO_CHANGES` 机械记录 `purge_result=SKIPPED`，完全不调用 Cloudflare purge，但仍进入 public verifier。`purge_result=PASS` 且 verification 失败时保留 purge PASS；重跑只重新 verification，不重复 POST。deployment 自身不确定时继续保留现有 lock/staging/backup 与人工只读证据规则，不由 wrapper 降级。
 
-receipt verification 的全部 shared-assets 公网请求使用正式 `production/identity.json` 中 `shared.zgocloud_ssh_alias` 作为 network runner。验证脚本为单次 invocation 建立一个 SSH ControlMaster 与 SOCKS tunnel，所有 `curl` 通过 `--socks5-hostname` 复用该 tunnel，使 DNS 与 TCP 均从 zgocloud 网络出口发起；runner 无法建立即 fail closed，不回退到维护者本机网络，正常、失败和 signal 退出均清理该连接。Cloudflare 短时 HTTP `522` / `525` 及已有实证的 curl exit `28` 仅在单个逻辑请求内最多重试三次；其他 curl exit、HTTP 状态、内容 SHA-256、cache semantics、boundary 与 receipt identity 错误均立即 fail closed。成功日志汇总为 `11/11` SHA-256 与 `3/3` boundary，失败仍指明具体 logical path。该网络瞬态容忍不降低完整 11/11 freshness gate。
+receipt verification 的全部 shared-assets 公网请求使用正式 `production/identity.json` 中 `shared.zgocloud_ssh_alias` 作为 network runner。验证脚本为单次 invocation 建立一个 SSH ControlMaster 与 SOCKS tunnel，所有 `curl` 通过 `--socks5-hostname` 复用该 tunnel，使 DNS 与 TCP 均从 zgocloud 网络出口发起；runner 无法建立即 fail closed，不回退到维护者本机网络，正常、失败和 signal 退出均清理该连接。
+
+Cloudflare 短时 HTTP `522` / `525` 及已有实证的 curl exit `28` 仅在单个逻辑请求内最多重试三次；其他 curl exit、HTTP 状态、内容 SHA-256、cache semantics、boundary 与 receipt identity 错误均立即 fail closed。成功日志汇总为 `14/14` SHA-256 与 `3/3` boundary，失败仍指明具体 logical path。该网络瞬态容忍不降低完整 14/14 freshness gate。
 
 `deploy-shared-assets.sh` 已通过本地 mock 自动化测试，并已完成首次真实 11 文件 production deployment 验证。`SHA256SUMS`、`course-ad.css` 与 `course-ad.js` 的实际 changed URLs 已完成精确 purge 与 `MISS → HIT` 验收；公网 allowlist SHA-256 为 11/11 一致，三个非 allowlist boundary 路径继续返回 404。后续发布仍以 receipt 的实际 changed paths 为唯一 purge 清单；如果真实权限或工具基线与预检不符，立即停止，不绕过检查。
 
@@ -521,17 +532,17 @@ ssh aliyun '
   set -eu
   cd /data/wwwroot/assets-go-dev.shuijingwanwq.com
   find . -type f -printf "%P\n" | sort
-  test "$(find . -type f ! -name SHA256SUMS | wc -l)" -eq 11
+  test "$(find . -type f ! -name SHA256SUMS | wc -l)" -eq 14
   sha256sum -c --strict SHA256SUMS
   find . -printf "%u:%g %m %P\n" | sort
 '
 ```
 
-文件集合必须只有 `SHA256SUMS` 与 11 个 allowlist 文件，SHA-256 必须为 11/11，权限必须符合脚本从部署前 origin 读取并保持的模型，并且不得存在额外可公开文件。任一条件不满足都停止，不进入缓存刷新。
+文件集合必须只有 `SHA256SUMS` 与 14 个 allowlist 文件，SHA-256 必须为 14/14，权限必须符合脚本从部署前 origin 读取并保持的模型，并且不得存在额外可公开文件。任一条件不满足都停止，不进入缓存刷新。
 
 #### 阶段 C：automatic exact-URL purge
 
-部署脚本比较更新前 origin 与已验证 staging，只在 receipt 和日志中列出内容实际新增、修改或删除的 logical path；wrapper 只从这些 path 机械构造固定 URL，不默认刷新全部 11 个 URL，也不使用 Purge Everything。此前首次课程广告资源部署的 changed paths 包括：
+部署脚本比较更新前 origin 与已验证 staging，只在 receipt 和日志中列出内容实际新增、修改或删除的 logical path；wrapper 只从这些 path 机械构造固定 URL，不默认刷新全部 14 个 URL，也不使用 Purge Everything。此前首次课程广告资源部署的 changed paths 包括：
 
 ```text
 tour/static/go-dev/course-ad.css
@@ -546,7 +557,7 @@ tour/static/go-dev/course-ad.js
 
 #### 阶段 E：完整性验收
 
-同一验证脚本自动请求正式 11 个 allowlist URL，要求 HTTP 成功，并逐一将公网内容 SHA-256 与 receipt 绑定的当前 export `SHA256SUMS` 对照；成功只输出汇总 `11/11`，任一失败仍输出具体 path。必须达到 11/11 内容一致；只验证本次 purge 的文件不能替代完整 allowlist 验收。receipt 与当前 export identity 不符、export 不再通过正式 `assets validate`，或任一公网 SHA-256 不符时，脚本 fail closed，必须重新走正式 shared-assets 流程。receipt 可以保留作为本次 execution evidence，但不能作为未来 current-state freshness gate 的替代。
+同一验证脚本自动请求正式 14 个 allowlist URL，要求 HTTP 成功，并逐一将公网内容 SHA-256 与 receipt 绑定的当前 export `SHA256SUMS` 对照；成功只输出汇总 `14/14`，任一失败仍输出具体 path。必须达到 14/14 内容一致；只验证本次 purge 的文件不能替代完整 allowlist 验收。receipt 与当前 export identity 不符、export 不再通过正式 `assets validate`，或任一公网 SHA-256 不符时，脚本 fail closed，必须重新走正式 shared-assets 流程。receipt 可以保留作为本次 execution evidence，但不能作为未来 current-state freshness gate 的替代。
 
 #### 阶段 F：边界验收
 
@@ -566,7 +577,9 @@ ko-KR 首次 production 前的 shared-assets current-state freshness verificatio
 
 对照只读测试中，zgocloud → Cloudflare public、zgocloud → Aliyun direct origin、Aliyun localhost → Nginx 各为 `20/20` HTTP 200；Nginx active、assets vhost TLS 与 direct-origin certificate verification 正常，未见持续性 Nginx/TLS 服务故障 evidence。50 次强制 Cloudflare MISS probe 有 `47` 次 HTTP 200 + `CF-Cache-Status: MISS`，均精确对应 Aliyun Nginx access log 的 `47` 个 HTTP 200；其余 `3` 次 curl HTTP `000` 未进入该 access log。30 次保留 stderr 的 transport probe 有 `18` 次 HTTP 200/MISS、`12` 次上述 timeout。
 
-这表明 zgocloud → Cloudflare / Cloudflare 回源链路存在间歇性网络波动，但不足以推定 Nginx/TLS 持续故障、真实海外用户固定失败率或共享资产架构需要重设计。shared-assets 的长 Edge Cache TTL 会减少正常用户接触回源链路的机会，但不消除此现象。当前将其作为已知 production 网络风险：保留 zgocloud runner 与 HTTP `522` / `525`、curl exit `28` 的三次 bounded retry，不修改 Cloudflare、Nginx/TLS 或服务器网络参数，也不放宽 receipt、11/11 SHA-256、cache 或 boundary gate；不因主站 verifier 有该分类而机械加入 curl exit `97`。若真实用户错误、production acceptance failure 或监控 evidence 显示持续/扩大，再作为独立基础设施问题调查。已知网络现象不能替代正式 shared-assets freshness verification `PASS`。
+这表明 zgocloud → Cloudflare / Cloudflare 回源链路存在间歇性网络波动，但不足以推定 Nginx/TLS 持续故障、真实海外用户固定失败率或共享资产架构需要重设计。shared-assets 的长 Edge Cache TTL 会减少正常用户接触回源链路的机会，但不消除此现象。
+
+当前将其作为已知 production 网络风险：保留 zgocloud runner 与 HTTP `522` / `525`、curl exit `28` 的三次 bounded retry，不修改 Cloudflare、Nginx/TLS 或服务器网络参数，也不放宽 receipt、14/14 SHA-256、cache 或 boundary gate；不因主站 verifier 有该分类而机械加入 curl exit `97`。若真实用户错误、production acceptance failure 或监控 evidence 显示持续/扩大，再作为独立基础设施问题调查。已知网络现象不能替代正式 shared-assets freshness verification `PASS`。
 
 
 Google 官方 `adsbygoogle.js` 继续直接从 Google 域名加载，不下载、代理、镜像或 self-host 到 assets origin。

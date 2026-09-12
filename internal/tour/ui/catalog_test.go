@@ -9,7 +9,7 @@ import (
 	"testing/fstest"
 )
 
-const expectedCatalogMessages = 92
+const expectedCatalogMessages = 107
 
 func TestLoadEmbeddedCatalogs(t *testing.T) {
 	for _, locale := range []string{"de-DE", "en", "es-ES", "fr-FR", "it-IT", "ja-JP", "ko-KR", "nl-NL", "pt-BR", "tr-TR", "zh-CN"} {

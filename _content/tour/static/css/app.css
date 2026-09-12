@@ -779,6 +779,98 @@ a#run, a#kill {
 .site-links li, .site-validation-list li {
     margin: 8px 0;
 }
+.site-support > h3 {
+    margin-top: 24px;
+}
+.support-reference {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+.support-reference code,
+.support-address {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+.support-help {
+    margin-top: 8px;
+    color: #555;
+    font-size: 0.95em;
+}
+.support-payment-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 20px;
+}
+.support-payment-card {
+    min-width: 0;
+    padding: 16px;
+}
+.support-payment-card h3 {
+    text-align: center;
+}
+.support-qr-frame {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: min(100%, 240px);
+    aspect-ratio: 7 / 10;
+    margin: 0 auto;
+}
+.support-qr {
+    display: block;
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+}
+.support-payment-details {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2px;
+    margin: 12px 0 16px;
+}
+.support-payment-details dt {
+    font-weight: bold;
+}
+.support-payment-details dd + dt {
+    margin-top: 8px;
+}
+.support-payment-details dd {
+    min-width: 0;
+    margin: 0;
+}
+.support-address {
+    display: block;
+    user-select: all;
+}
+.support-copy {
+    min-height: 40px;
+    padding: 8px 12px;
+    border: 1px solid #9eb2ba;
+    border-radius: 4px;
+    color: #24434b;
+    background: #eef4f6;
+    cursor: pointer;
+    font: inherit;
+}
+.support-copy:hover,
+.support-copy:focus-visible {
+    border-color: #007d9c;
+    background: #e2f0f4;
+}
+.support-warning {
+    margin-bottom: 0;
+    color: #694c00;
+    font-size: 0.9em;
+}
+@media (min-width: 960px) {
+    .support-address {
+        font-size: 0.95em;
+    }
+}
 [data-theme='dark'] .site-card {
     border-color: #3d4a4f;
     background: #202224;
@@ -786,6 +878,24 @@ a#run, a#kill {
 [data-theme='dark'] .site-status dt, [data-theme='dark'] .site-status dd {
     border-color: #3d4a4f;
     color: #f0f1f2;
+}
+[data-theme='dark'] .support-help,
+[data-theme='dark'] .support-warning {
+    color: #d8dcde;
+}
+[data-theme='dark'] .support-payment-details dt,
+[data-theme='dark'] .support-payment-details dd {
+    color: #f0f1f2;
+}
+[data-theme='dark'] .support-copy {
+    border-color: #65747a;
+    color: #f0f1f2;
+    background: #30383b;
+}
+[data-theme='dark'] .support-copy:hover,
+[data-theme='dark'] .support-copy:focus-visible {
+    border-color: #53b4db;
+    background: #39464b;
 }
 @media (max-width: 600px) {
     .site-header .site-logo {
@@ -809,6 +919,9 @@ a#run, a#kill {
     .site-status dt {
         padding-bottom: 0;
         border-bottom: 0;
+    }
+    .support-payment-grid {
+        grid-template-columns: 1fr;
     }
 }
 [data-theme='dark'] .toc {

@@ -13,10 +13,13 @@ func TestSharedPathsAllowlist(t *testing.T) {
 		"images/icons/light_mode_gm_grey_24dp.svg",
 		"images/site-logo-32.png",
 		"images/site-logo.png",
+		"images/support/alipay.png",
+		"images/support/wechat.png",
 		"tour/static/css/app.css",
 		"tour/static/go-dev/course-ad.css",
 		"tour/static/go-dev/course-ad.js",
 		"tour/static/img/gopher.png",
+		"tour/static/js/support.js",
 		"tour/static/lib/codemirror/lib/codemirror.css",
 	}
 	if !reflect.DeepEqual(SharedPaths(), want) {
