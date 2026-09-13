@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
-"""Fail-fast serial orchestration for multiple live maintenance releases."""
+"""Fail-fast two-phase orchestration for multiple live maintenance releases."""
 
 from __future__ import annotations
 
 import importlib.util
-import json
 import pathlib
 import shlex
 import subprocess
@@ -29,6 +28,7 @@ class Batch:
         if len(locales) != len(set(locales)):
             raise BatchError("duplicate locale in batch")
         self.rows = [{"locale": item.locale, "deploy": "-", "purge": "-", "machine": "-", "browser": "-", "result": "PENDING"} for item in self.items]
+        self.complete_at_start = [item.receipt.get("result") == "passed" for item in self.items]
 
     @staticmethod
     def run(command, timeout):
@@ -52,54 +52,78 @@ class Batch:
 
     def refresh_row(self, index):
         item = self.items[index]
-        try:
-            refreshed = CORE.Orchestrator(item.release_dir)
-            receipt = refreshed.receipt
-        except Exception:
-            receipt = item.receipt
+        receipt = item.receipt
         stages = receipt.get("stages", {})
         for stage in ("deploy", "purge", "machine", "browser"):
-            self.rows[index][stage] = "PASS" if stage in stages else "-"
+            value = stages.get(stage)
+            self.rows[index][stage] = "PASS" if type(value) is dict and value.get("result") == "PASS" else "-"
         return receipt
+
+    def fail_item(self, index, phase, exc):
+        item = self.items[index]
+        item.fail(exc)
+        self.refresh_row(index)
+        self.rows[index]["result"] = "%s_FAILED" % phase
+        stage = getattr(exc, "stage", phase.lower())
+        return BatchError("locale=%s stage=%s evidence=%s (%s)" % (item.locale, stage, item.receipt_path, exc))
+
+    def block_remaining(self, start, result):
+        for index in range(start, len(self.items)):
+            self.refresh_row(index)
+            if self.complete_at_start[index]:
+                self.rows[index]["result"] = "SKIPPED"
+            elif self.rows[index]["result"] in ("PENDING", "PENDING_ACCEPTANCE"):
+                self.rows[index]["result"] = result
 
     def execute(self):
         self.preflight()
-        failed = None
+
         for index, item in enumerate(self.items):
-            if failed is not None:
+            self.refresh_row(index)
+            if self.complete_at_start[index]:
                 self.rows[index]["result"] = "SKIPPED"
                 continue
-            if item.receipt.get("result") == "passed":
-                self.refresh_row(index)
-                self.rows[index]["result"] = "SKIPPED"
-                continue
+            if not all(item.stage_passed(stage) for stage in ("deploy", "purge")):
+                item.begin()
             try:
-                self.run([ROOT / "scripts" / "maintenance-production.sh", item.release_dir], 3600)
+                item.execute_mutation()
+            except CORE.MaintenanceProductionError as exc:
+                failed = self.fail_item(index, "MUTATION", exc)
+                self.block_remaining(index + 1, "BLOCKED_PHASE_A")
+                self.print_summary()
+                raise failed
+            self.refresh_row(index)
+            self.rows[index]["result"] = "PENDING_ACCEPTANCE"
+
+        for index, item in enumerate(self.items):
+            if self.complete_at_start[index]:
+                self.rows[index]["result"] = "SKIPPED"
+                continue
+            item.begin()
+            try:
+                item.execute_acceptance()
                 receipt = self.refresh_row(index)
                 if receipt.get("result") != "passed":
-                    raise BatchError("maintenance returned without a complete PASS receipt")
+                    raise CORE.MaintenanceProductionError(
+                        "acceptance", "complete PASS receipt", repr(receipt), "检查 acceptance stage 输出后重试"
+                    )
                 self.rows[index]["result"] = "PASS"
-            except BatchError as exc:
-                self.refresh_row(index)
-                self.rows[index]["result"] = "FAILED"
-                try:
-                    raw_receipt = json.loads(item.receipt_path.read_text(encoding="utf-8"))
-                except (OSError, ValueError):
-                    raw_receipt = {}
-                failure = raw_receipt.get("failure") if type(raw_receipt) is dict else None
-                stage = failure.get("stage", "maintenance") if type(failure) is dict else "maintenance"
-                failed = (item.locale, stage, "%s (%s)" % (item.receipt_path, exc))
+            except CORE.MaintenanceProductionError as exc:
+                failed = self.fail_item(index, "ACCEPTANCE", exc)
+                self.block_remaining(index + 1, "BLOCKED_PHASE_B")
+                self.print_summary()
+                raise failed
         self.print_summary()
-        if failed is not None:
-            locale, stage, evidence = failed
-            raise BatchError("locale=%s stage=%s evidence=%s" % (locale, stage, evidence))
 
     def print_summary(self):
         print("\nlocale | deploy | purge | machine | browser | result")
         for row in self.rows:
             print("{locale} | {deploy} | {purge} | {machine} | {browser} | {result}".format(**row))
-        totals = {name: sum(row["result"] == name for row in self.rows) for name in ("PASS", "FAILED", "SKIPPED")}
-        print("PASS=%d FAILED=%d SKIPPED=%d" % (totals["PASS"], totals["FAILED"], totals["SKIPPED"]))
+        passed = sum(row["result"] == "PASS" for row in self.rows)
+        failed = sum(row["result"] in ("MUTATION_FAILED", "ACCEPTANCE_FAILED") for row in self.rows)
+        skipped = sum(row["result"] == "SKIPPED" for row in self.rows)
+        pending = len(self.rows) - passed - failed - skipped
+        print("PASS=%d FAILED=%d SKIPPED=%d PENDING=%d" % (passed, failed, skipped, pending))
 
 
 def main():

@@ -165,11 +165,75 @@ class Orchestrator:
 
     def run_command(self, stage: str, command: list[object], timeout: int) -> None:
         try:
-            completed = subprocess.run([str(value) for value in command], check=False, timeout=timeout)
+            completed = subprocess.run(
+                [str(value) for value in command], stdin=subprocess.DEVNULL, check=False, timeout=timeout
+            )
         except (OSError, subprocess.TimeoutExpired) as exc:
             raise MaintenanceProductionError(stage, "command completed", str(exc), "检查本机工具和网络后重试") from exc
         if completed.returncode:
             raise MaintenanceProductionError(stage, "command exit 0", f"exit {completed.returncode}", "按该 stage 的输出检查后重试")
+
+    def begin(self) -> bool:
+        if self.receipt.get("result") == "passed":
+            return False
+        self.receipt.pop("failure", None)
+        self.receipt["result"] = "running"
+        self.receipt["completed_at"] = None
+        self.write_receipt()
+        return True
+
+    def fail(self, exc: BaseException) -> None:
+        if self.receipt.get("result") == "passed":
+            return
+        self.receipt["failure"] = {
+            "stage": getattr(exc, "stage", "maintenance"),
+            "completed_at": utc_now(),
+            "result": "failed",
+        }
+        self.write_receipt("failed")
+
+    def execute_mutation(self, revalidate_passed_deploy: bool = False) -> None:
+        if self.receipt.get("result") == "passed":
+            return
+        if not self.stage_passed("deploy"):
+            self.run_command("deploy", [ROOT / "scripts" / "deploy-production.sh", self.release_dir], 1800)
+            self.record("deploy")
+        elif revalidate_passed_deploy:
+            self.run_command("deploy", [ROOT / "scripts" / "deploy-production.sh", self.release_dir], 1800)
+            print("[maintenance-production] deployment: RESUME（同一 release 已重新验证；未重复 deployment mutation）")
+        else:
+            print("[maintenance-production] deployment: RESUME")
+        if not self.stage_passed("purge"):
+            self.run_command("purge", [ROOT / "scripts" / "production-cdn.py", "purge", "--locale", self.locale], 300)
+            self.record("purge")
+        else:
+            print("[maintenance-production] automatic hostname purge: RESUME")
+
+    def execute_acceptance(self) -> None:
+        if self.receipt.get("result") == "passed":
+            return
+        if not all(self.stage_passed(stage) for stage in ("deploy", "purge")):
+            raise MaintenanceProductionError(
+                "acceptance",
+                "deploy PASS and purge PASS",
+                repr(self.receipt.get("stages", {})),
+                "先完成 maintenance mutation phase",
+            )
+        if not self.stage_passed("machine"):
+            self.run_command("machine", [ROOT / "scripts" / "verify-production.sh", self.release_dir], 1800)
+            self.record("machine")
+        else:
+            print("[maintenance-production] machine acceptance: RESUME")
+        if not self.stage_passed("browser"):
+            self.run_command(
+                "browser",
+                [ROOT / "scripts" / "verify-production-browser.py", self.profile["production_public_url"], self.locale],
+                900,
+            )
+            self.record("browser")
+        else:
+            print("[maintenance-production] browser acceptance: RESUME")
+        self.write_receipt("passed")
 
     def print_summary(self) -> None:
         print("\nMAINTENANCE PRODUCTION: PASS")
@@ -185,29 +249,13 @@ class Orchestrator:
         print(f"receipt: {self.receipt_path}")
 
     def execute(self) -> None:
-        self.write_receipt()
         if self.receipt.get("result") == "passed":
             self.print_summary()
             return
+        self.begin()
         self.run_command("preflight", [ROOT / "scripts" / "production-cdn.py", "preflight", "--locale", self.locale], 300)
-        deploy_was_passed = self.stage_passed("deploy")
-        self.run_command("deploy", [ROOT / "scripts" / "deploy-production.sh", self.release_dir], 1800)
-        if not deploy_was_passed:
-            self.record("deploy")
-        else:
-            print("[maintenance-production] deployment: RESUME（同一 release 已重新验证；未重复 deployment mutation）")
-        if not self.stage_passed("purge"):
-            self.run_command("purge", [ROOT / "scripts" / "production-cdn.py", "purge", "--locale", self.locale], 300)
-            self.record("purge")
-        else:
-            print("[maintenance-production] automatic hostname purge: RESUME")
-        if not self.stage_passed("machine"):
-            self.run_command("machine", [ROOT / "scripts" / "verify-production.sh", self.release_dir], 1800)
-            self.record("machine")
-        if not self.stage_passed("browser"):
-            self.run_command("browser", [ROOT / "scripts" / "verify-production-browser.py", self.profile["production_public_url"], self.locale], 900)
-            self.record("browser")
-        self.write_receipt("passed")
+        self.execute_mutation(revalidate_passed_deploy=True)
+        self.execute_acceptance()
         self.print_summary()
 
 
@@ -226,8 +274,7 @@ def main() -> int:
         return 0
     except (MaintenanceProductionError, IDENTITY.IdentityError) as exc:
         if orchestrator is not None and orchestrator.receipt.get("result") != "passed":
-            orchestrator.receipt["failure"] = {"stage": getattr(exc, "stage", "identity"), "completed_at": utc_now(), "result": "failed"}
-            orchestrator.write_receipt("failed")
+            orchestrator.fail(exc)
         print("\n[maintenance-production] FAILED", file=sys.stderr)
         print(f"stage: {getattr(exc, 'stage', 'identity')}", file=sys.stderr)
         print(f"expected: {getattr(exc, 'expected', 'valid formal identity')}", file=sys.stderr)

@@ -308,7 +308,7 @@ scripts/production-release-batch.sh \
   --locale fr-FR
 ```
 
-`--all-live` 动态读取 `production/identity.json`，不维护第二份 locale 列表；显式 subset 保持参数顺序。顶层先完成输入、identity 与本地 output preflight，生成并验证当前 shared-assets export，再调用 Go `publish-batch` 严格串行生成全部 bundle。只有全部 publish PASS 后，才复用 maintenance batch 的本地与 CDN read-only authority preflight；随后仅当选中 profile 中存在 `shared_assets_policy=shared-cloudflare` 时运行 shared-assets deploy → automatic exact-URL purge → public verify，最后把 machine summary 中的精确 release dirs 原序交给 `maintenance-production-batch.sh`。任一步失败立即停止；publish failure 时 Production mutation 为零，shared-assets failure 时 locale maintenance 不开始，maintenance failure 继续沿用既有 fail-fast/resume 且不回滚已 PASS locale。该入口不执行 first-production、search closeout、IndexNow 或 Production visual gate，正常路径不读取 stdin。
+`--all-live` 动态读取 `production/identity.json`，不维护第二份 locale 列表；显式 subset 保持参数顺序。顶层先完成输入、identity 与本地 output preflight，生成并验证当前 shared-assets export，再调用 Go `publish-batch` 严格串行生成全部 bundle。只有全部 publish PASS 后，才复用 maintenance batch 的本地与 CDN read-only authority preflight；随后仅当选中 profile 中存在 `shared_assets_policy=shared-cloudflare` 时运行 shared-assets deploy → automatic exact-URL purge → public verify，最后把 machine summary 中的精确 release dirs 原序交给 `maintenance-production-batch.sh`。maintenance batch 先对 ordered locale set 全部执行 deploy → hostname purge，全部 mutation PASS 后才从第一项重新按相同顺序执行 machine → browser。任一步失败立即停止；publish failure 时 Production mutation 为零，shared-assets failure 时 locale maintenance 不开始，maintenance failure 继续沿用既有 fail-fast/resume 且不回滚已 PASS locale。该入口不执行 first-production、search closeout、IndexNow 或 Production visual gate，正常路径不读取 stdin。
 
 这里的 **local publish 不等于 Production deployment**。`publish-batch` 的 `PASS` 只表示本地 projection/build/Chrome prerender、bundle validation 与 release directory 已完成；其后的 `AUTHORITY PREFLIGHT` 也全部是只读检查。只有 `maintenance-production-batch.sh` 实际开始处理某个 locale 后，该 locale 才可能发生 Production deployment。正式 stage 顺序不可调整：
 
@@ -317,7 +317,9 @@ shared-assets local export/validate
 → ALL selected locale local publish PASS
 → ALL required Production read-only authority preflight PASS
 → shared-assets Production deploy/purge/verify PASS
-→ locale Production maintenance deployment
+→ locale maintenance batch ALL local/CDN authority preflight PASS
+→ Phase A: ALL locale deploy/hostname purge PASS
+→ Phase B: ALL locale machine/browser PASS
 ```
 
 不得把 shared-assets Production mutation 提前到全部本地 publish 之前；只要 shared-assets required workflow 尚未完整 PASS，就不得开始任何 locale maintenance deployment。
@@ -336,7 +338,7 @@ scripts/production-release-batch.sh --resume /tmp/go-tour-production-release-bat
 scripts/production-release-batch.sh --resume-maintenance /tmp/go-tour-production-release-batch-<timestamp>-<pid>.state.json
 ```
 
-`--resume-maintenance` 仍严格验证 state schema/self-identity/path、干净 working tree、未变的 `production/identity.json` identity、ordered live locale selection、每个真实非 symlink release directory 的 `release.json`/`SHA256SUMS` hash 与 locale/`published_at`、shared-assets export manifest 与完整 assets validation，但允许当前 HEAD 与 state 中已冻结的 publish HEAD 不同。它不重新 publish、prerender、export、生成 release bundle 或运行 shared-assets Production；只在 required shared-assets 已有与 state manifest 一致的完整 PASS receipt 时，把 state 中冻结的 release dirs 原序交给现有 `maintenance-production-batch.sh`，由每个 maintenance receipt 继续既有 strict recovery。任一 artifact、identity、order 或 receipt 无法证明时 fail closed。普通 `--resume` 的 exact HEAD contract 不变。
+`--resume-maintenance` 仍严格验证 state schema/self-identity/path、干净 working tree、未变的 `production/identity.json` identity、ordered live locale selection、每个真实非 symlink release directory 的 `release.json`/`SHA256SUMS` hash 与 locale/`published_at`、shared-assets export manifest 与完整 assets validation，但允许当前 HEAD 与 state 中已冻结的 publish HEAD 不同。它不重新 publish、prerender、export、生成 release bundle 或运行 shared-assets Production；只在 required shared-assets 已有与 state manifest 一致的完整 PASS receipt 时，把 state 中冻结的 release dirs 原序交给现有 `maintenance-production-batch.sh`，由每个 maintenance receipt 在两阶段 batch 中继续既有 strict recovery。任一 artifact、identity、order 或 receipt 无法证明时 fail closed。普通 `--resume` 的 exact HEAD contract 不变。
 
 顶层 state 只保存 post-publish 的精确输入，不另建 deployment 状态机。shared-assets 继续以同一 export sibling v2 receipt 恢复：`DEPLOYED + purge PASS + verification PENDING` 只重跑 verify，不重复 deploy/purge；purge 为 `PENDING` 且将发生新 mutation 时先重新做 shared-assets authority preflight，`ATTEMPTED` 的不确定 mutation 仍拒绝重复。locale maintenance 继续把 state 中原序 release dirs 交给既有 strict receipt：已经完整 PASS 的 locale 为 `SKIP`，未完成 locale 从原 receipt 继续，不重新 publish、不回滚已 PASS locale。顶层 failure summary 明确区分 `publish`、shared-assets 的 `deploy/purge/verify` 和 `locale maintenance: NOT_STARTED/PARTIAL/COMPLETE`，并在 state 仍可验证时打印精确 resume state 与 command。
 
@@ -421,7 +423,9 @@ scripts/maintenance-production.sh <release-dir>
 scripts/maintenance-production-batch.sh <release-dir>...
 ```
 
-batch 在第一次 Production mutation 前完成全部目录、bundle/release、locale 唯一性、lifecycle、identity、receipt 以及各 CDN credential/read-only authority preflight；随后严格串行复用 single-locale maintenance。首个 failure 后不启动后续 locale，也不回滚已 PASS locale；完整 PASS receipt 在 rerun 中显示 `SKIPPED`，未完成 locale 继续使用上述 strict resume。最终表格固定为 `locale | deploy | purge | machine | browser | result`，并汇总 PASS/FAILED/SKIPPED。正常运行不读取 stdin。
+batch 在第一次 Production mutation 前完成全部目录、bundle/release、locale 唯一性、lifecycle、identity、receipt 以及各 CDN credential/read-only authority preflight，不得边 preflight 边 mutation。随后采用严格的两阶段串行模型：Phase A 按 ordered locale set 逐项执行或从 receipt 复用 `deploy → hostname purge`，只有全部 locale 均达到 deploy PASS + purge PASS 后，Phase B 才从 ordered set 第一项重新开始并逐项执行或复用 `machine → browser`。Phase A 的首个 failure 会停止后续 mutation，且不会启动任何 Phase B；Phase B 的首个 failure 会停止后续 acceptance。两种 failure 都保留已有 receipt evidence，不回滚其它已健康且正式 PASS 的 locale；完整 PASS receipt 在两阶段中均显示 `SKIPPED`，未完成 locale 继续使用同一 receipt strict resume，不建立第二份 batch state。
+
+该顺序让较早 purge 的 locale 在后续 locale mutation 期间自然获得间隔，也让较晚 purge 的 locale 在前序 acceptance 期间获得间隔，从而减少 hostname purge 后立即执行 exhaustive cold-MISS acceptance 的压力；它不是 CDN 预热保证，也不增加固定 sleep。等待时间本身不证明缓存已经 `HIT`，Phase B 的 bounded machine/browser verifier 仍是最终 gate；resume 只用于真实 failure recovery，不是正常发布步骤。最终表格固定为 `locale | deploy | purge | machine | browser | result`，其中 result 会区分完整历史 `SKIPPED`、Phase A 已完成但 acceptance 尚未开始、mutation failure、acceptance failure 与后续被阻断项。正常运行不读取 stdin。
 
 `scripts/verify-production.sh` 从 release 目录的 `release.json` 读取 locale，并以与部署脚本一致的 fail-closed profile 选择 releases/current/lock、service、loopback origin、production hostname 和 CDN header；支持集合由 `production/identity.json` 动态决定。调用者不得另外传 hostname、port、service 或 remote release name：
 
