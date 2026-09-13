@@ -840,7 +840,7 @@ fail 'Cloudflare DNS mutation attempts exhausted without an exact identity'
 host=$1; locale=$2
 temporary=$(mktemp -d); trap 'rm -rf "$temporary"' EXIT
 readonly CURL_CONNECT_TIMEOUT=5
-readonly CURL_MAX_TIME=20
+readonly CURL_MAX_TIME=25
 readonly CURL_RETRY_ATTEMPTS=3
 request() {
   expected=$1; body=$2; headers=$3; shift 3

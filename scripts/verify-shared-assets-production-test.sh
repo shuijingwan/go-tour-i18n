@@ -24,17 +24,22 @@ mkdir -p -- "$fake_bin" "$public_root"
 cat >"$fake_bin/curl" <<'SH'
 #!/usr/bin/env bash
 set -Eeuo pipefail
-headers='' body='' fail_http=0 url='' socks='' write_out=''
+headers='' body='' fail_http=0 url='' socks='' write_out='' connect_timeout='' max_time=''
 while (( $# )); do
     case $1 in
         -f|-sS) [[ $1 == -f ]] && fail_http=1; shift ;;
         --socks5-hostname) socks=$2; shift 2 ;;
+        --connect-timeout) connect_timeout=$2; shift 2 ;;
+        --max-time) max_time=$2; shift 2 ;;
         -D) headers=$2; shift 2 ;;
         -o) body=$2; shift 2 ;;
         -w) write_out=$2; shift 2 ;;
         *) url=$1; shift ;;
     esac
 done
+if [[ ${FAKE_REQUIRE_TIMEOUTS:-0} == 1 ]]; then
+    [[ $connect_timeout == 5 && $max_time == 15 ]] || exit 90
+fi
 if [[ ${FAKE_REQUIRE_SOCKS:-0} == 1 ]]; then
     [[ $socks == 127.0.0.1:* ]] || exit 91
     printf 'curl %s\n' "$socks" >>"${FAKE_NETWORK_LOG:?}"
@@ -160,7 +165,7 @@ run_verify() {
     local receipt=$1
     rm -f -- "$fixture/curl-count" "$fixture/network.log" "$fixture/status-count"
     env PATH="$fake_bin:$PATH" FAKE_PUBLIC_ROOT="$public_root" FAKE_CURL_COUNTER="$fixture/curl-count" \
-        FAKE_REQUIRE_SOCKS=1 FAKE_NETWORK_LOG="$fixture/network.log" FAKE_REAL_PYTHON="$real_python" \
+        FAKE_REQUIRE_SOCKS=1 FAKE_REQUIRE_TIMEOUTS=1 FAKE_NETWORK_LOG="$fixture/network.log" FAKE_REAL_PYTHON="$real_python" \
         FAKE_STATUS_PATH="${FAKE_STATUS_PATH:-}" FAKE_STATUS_SEQUENCE="${FAKE_STATUS_SEQUENCE:-}" FAKE_CURL_EXIT_PATH="${FAKE_CURL_EXIT_PATH:-}" FAKE_CURL_EXIT_SEQUENCE="${FAKE_CURL_EXIT_SEQUENCE:-}" FAKE_STATUS_COUNTER="$fixture/status-count" \
         "$verify_script" "$receipt" 2>&1
 }

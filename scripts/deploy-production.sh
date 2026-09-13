@@ -9,7 +9,8 @@ readonly NO_OLD_RELEASE='NO_OLD_RELEASE'
 readonly ALREADY_CURRENT='ALREADY_CURRENT'
 readonly PUBLIC_CURL_CONNECT_TIMEOUT=5
 readonly PUBLIC_CURL_MAX_TIME=15
-readonly PUBLIC_CURL_RETRY_ATTEMPTS=3
+readonly PUBLIC_CURL_RETRY_ATTEMPTS=5
+readonly PUBLIC_CURL_RETRY_MAX_BACKOFF=4
 readonly -a SSH_BASE_OPTIONS=(
     -o BatchMode=yes
     -o ConnectTimeout=10
@@ -665,7 +666,7 @@ REMOTE_ACTIVATE
 }
 
 check_public() {
-    local attempt curl_exit=0 http_code='' transient=0
+    local attempt backoff curl_exit=0 http_code='' transient=0
 
     for ((attempt = 1; attempt <= PUBLIC_CURL_RETRY_ATTEMPTS; attempt++)); do
         set +e
@@ -682,14 +683,16 @@ check_public() {
         transient=0
         if (( curl_exit != 0 )); then
             case $curl_exit in
-                6|7|16|28|35) transient=1 ;;
+                6|7|16|28|35|97) transient=1 ;;
             esac
         elif [[ $http_code == 522 || $http_code == 525 ]]; then
             transient=1
         fi
         if (( transient && attempt < PUBLIC_CURL_RETRY_ATTEMPTS )); then
-            log "public acceptance transient failure $attempt/$PUBLIC_CURL_RETRY_ATTEMPTS: curl exit $curl_exit; HTTP ${http_code:-000}; retrying in ${attempt}s"
-            sleep "$attempt"
+            backoff=$attempt
+            (( backoff <= PUBLIC_CURL_RETRY_MAX_BACKOFF )) || backoff=$PUBLIC_CURL_RETRY_MAX_BACKOFF
+            log "public acceptance transient failure $attempt/$PUBLIC_CURL_RETRY_ATTEMPTS: curl exit $curl_exit; HTTP ${http_code:-000}; retrying in ${backoff}s"
+            sleep "$backoff"
             continue
         fi
         break

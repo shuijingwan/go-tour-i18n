@@ -53,6 +53,37 @@ class PreviewBrowserTest(unittest.TestCase):
         self.assertEqual([call.args[0] for call in chrome.call.call_args_list].count("Page.navigate"), 2)
         self.assertEqual(chrome.render_readiness.call_count, 2)
 
+    def test_navigation_retries_devtools_navigation_timeout_then_passes(self):
+        chrome = self.chrome_for_navigation([
+            (True, {"readyState": "interactive", "bodyTextLength": 42, "location": "https://it.example/"}),
+        ])
+        page_calls = 0
+
+        def call(method, *args, **kwargs):
+            nonlocal page_calls
+            if method == "Page.navigate":
+                page_calls += 1
+                if page_calls == 1:
+                    raise CORE.BrowserFailure("DevTools Page.navigate timed out")
+            return {}
+
+        chrome.call = mock.Mock(side_effect=call)
+        with mock.patch.object(CORE.time, "sleep"):
+            chrome.navigate("https://it.example/", 1280, 800)
+        self.assertEqual(page_calls, 2)
+        self.assertEqual(chrome.render_readiness.call_count, 1)
+
+    def test_cdp_socket_timeout_becomes_bounded_call_timeout_state(self):
+        chrome = CORE.Chrome.__new__(CORE.Chrome)
+        chrome.next_id = 1
+        chrome.session_id = None
+        chrome.events = []
+        chrome.ws = mock.Mock()
+        chrome.ws.receive.side_effect = [CORE.socket.timeout(), {"id": 1, "result": {"ok": True}}]
+        with mock.patch.object(CORE.time, "monotonic", return_value=0):
+            self.assertEqual(chrome.call("Page.navigate", {"url": "https://it.example/"}, timeout=30), {"ok": True})
+        self.assertEqual(chrome.ws.receive.call_count, 2)
+
     def test_navigation_fails_closed_after_bounded_render_attempts(self):
         chrome = self.chrome_for_navigation([
             (False, {"readyState": "loading", "bodyTextLength": 0, "location": "https://it.example/"}),
@@ -77,6 +108,52 @@ class PreviewBrowserTest(unittest.TestCase):
         with mock.patch.object(CORE.time, "sleep"), self.assertRaises(CORE.BrowserFailure):
             CORE.page_identity(chrome, "https://it.example/", "it-IT", "/tour/list", 1280, 800)
         self.assertEqual([call.args[0] for call in chrome.call.call_args_list].count("Page.navigate"), 1)
+
+    def test_project_network_transients_are_narrow_and_ignore_third_party(self):
+        chrome = CORE.Chrome.__new__(CORE.Chrome)
+        chrome.events = [
+            {"method": "Network.requestWillBeSent", "params": {"requestId": "lesson", "type": "XHR",
+                "request": {"url": "https://ja.example/tour/lesson/"}}},
+            {"method": "Network.responseReceived", "params": {"requestId": "lesson", "type": "XHR",
+                "response": {"url": "https://ja.example/tour/lesson/", "status": 522}}},
+            {"method": "Network.requestWillBeSent", "params": {"requestId": "ad", "type": "Script",
+                "request": {"url": "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"}}},
+            {"method": "Network.loadingFailed", "params": {"requestId": "ad", "type": "Script",
+                "errorText": "net::ERR_TIMED_OUT"}},
+            {"method": "Network.requestWillBeSent", "params": {"requestId": "missing", "type": "XHR",
+                "request": {"url": "https://ja.example/tour/static/partials/editor.html"}}},
+            {"method": "Network.requestWillBeSent", "params": {"requestId": "script", "type": "Script",
+                "request": {"url": "https://ja.example/tour/script.js"}}},
+            {"method": "Network.loadingFailed", "params": {"requestId": "script", "type": "Script",
+                "errorText": "net::ERR_TIMED_OUT"}},
+            {"method": "Network.requestWillBeSent", "params": {"requestId": "server", "type": "XHR",
+                "request": {"url": "https://ja.example/tour/server-error"}}},
+            {"method": "Network.responseReceived", "params": {"requestId": "server", "type": "XHR",
+                "response": {"url": "https://ja.example/tour/server-error", "status": 500}}},
+        ]
+        evidence = chrome.project_network_transients(("https://ja.example/", "https://assets.example/"))
+        self.assertEqual(evidence, [
+            "HTTP 522 XHR https://ja.example/tour/lesson/",
+            "net::ERR_TIMED_OUT Script https://ja.example/tour/script.js",
+            "pending XHR https://ja.example/tour/static/partials/editor.html",
+        ])
+
+    def test_project_page_retry_requires_transport_evidence(self):
+        chrome = mock.Mock()
+        chrome.project_network_transients.side_effect = [["HTTP 525 Script https://ja.example/tour/script.js"]]
+        check = mock.Mock(side_effect=[CORE.BrowserFailure("editor not hydrated"), "PASS"])
+        with mock.patch.object(CORE.time, "sleep"):
+            self.assertEqual(CORE.run_project_page_check(
+                chrome, "https://ja.example/tour/", 1280, 800, ("https://ja.example/",), check), "PASS")
+        self.assertEqual(chrome.navigate.call_count, 2)
+
+        chrome.reset_mock()
+        chrome.project_network_transients = mock.Mock(return_value=[])
+        with self.assertRaisesRegex(CORE.BrowserFailure, "canonical mismatch"):
+            CORE.run_project_page_check(
+                chrome, "https://ja.example/tour/", 1280, 800, ("https://ja.example/",),
+                mock.Mock(side_effect=CORE.BrowserFailure("canonical mismatch")))
+        self.assertEqual(chrome.navigate.call_count, 1)
 
     def test_cdp_exception_diagnostics_include_action_route_and_stack(self):
         chrome = CORE.Chrome.__new__(CORE.Chrome)
@@ -261,6 +338,63 @@ class PreviewBrowserTest(unittest.TestCase):
                 "canonical": canonical, "title": "Lesson — Tour", "description": "description",
                 "renderedRoute": path, "heading": "Lesson"}
 
+    def test_tour_redirect_semantics_converge_without_another_navigation(self):
+        stale = self.rendered("/tour/welcome/1", "https://ko-go-dev.shuijingwanwq.com/tour/")
+        stale["renderedRoute"] = "/tour/"
+        converged = self.rendered(
+            "/tour/welcome/1", "https://ko-go-dev.shuijingwanwq.com/tour/welcome/1")
+        chrome = mock.Mock()
+        chrome.evaluate.side_effect = [stale, converged]
+        with mock.patch.object(CORE.time, "sleep"):
+            result = CORE.wait_for_rendered_identity(
+                chrome, "http://127.0.0.1:38573/", "ko-KR", "/tour/",
+                "https://ko-go-dev.shuijingwanwq.com", "/tour/welcome/1", "/tour/welcome/1", timeout=1)
+        self.assertEqual(result, converged)
+        chrome.navigate.assert_not_called()
+
+    def test_permanent_canonical_mismatch_fails_after_bounded_convergence(self):
+        stale = self.rendered("/tour/welcome/1", "https://ko-go-dev.shuijingwanwq.com/tour/")
+        chrome = mock.Mock()
+        chrome.evaluate.return_value = stale
+        with self.assertRaises(CORE.BrowserFailure) as caught:
+            CORE.wait_for_rendered_identity(
+                chrome, "http://127.0.0.1:38573/", "ko-KR", "/tour/",
+                "https://ko-go-dev.shuijingwanwq.com", "/tour/welcome/1", "/tour/welcome/1", timeout=0)
+        self.assertIn("semantic convergence timed out after 0s", str(caught.exception))
+        self.assertIn("canonical mismatch", str(caught.exception))
+        self.assertEqual(chrome.evaluate.call_count, 1)
+
+    def test_wrong_lang_and_origin_fail_without_convergence_retry(self):
+        for field, value in (("lang", "wrong"), ("origin", "https://wrong.example")):
+            with self.subTest(field=field):
+                identity = self.rendered(
+                    "/tour/welcome/1", "https://ko-go-dev.shuijingwanwq.com/tour/welcome/1")
+                identity[field] = value
+                chrome = mock.Mock()
+                chrome.evaluate.return_value = identity
+                with self.assertRaises(CORE.PermanentBrowserFailure):
+                    CORE.wait_for_rendered_identity(
+                        chrome, "http://127.0.0.1:38573/", "ko-KR", "/tour/welcome/1",
+                        "https://ko-go-dev.shuijingwanwq.com", "/tour/welcome/1",
+                        "/tour/welcome/1", timeout=100)
+                self.assertEqual(chrome.evaluate.call_count, 1)
+
+    def test_spa_transition_waits_for_route_and_canonical_together(self):
+        stale = {"lang": "ko-KR", "origin": "http://127.0.0.1:38573",
+                 "path": "/tour/basics/12", "canonical": "https://ko.example/tour/basics/11",
+                 "renderedRoute": "/tour/basics/11", "header": 1, "footer": 1,
+                 "next": True, "body": "x" * 30, "mounts": 1}
+        converged = dict(stale, canonical="https://ko.example/tour/basics/12",
+                         renderedRoute="/tour/basics/12")
+        chrome = mock.Mock()
+        chrome.evaluate.side_effect = [stale, converged]
+        with mock.patch.object(CORE.time, "sleep"):
+            result = CORE.wait_for_spa_transition(
+                chrome, "/tour/basics/11", "http://127.0.0.1:38573/", "ko-KR",
+                "https://ko.example", timeout=1)
+        self.assertEqual(result, converged)
+        chrome.navigate.assert_not_called()
+
     def test_rendered_tour_redirect_is_exact(self):
         CORE.validate_rendered_identity(
             self.rendered("/tour/welcome/1", "https://ko-go-dev.shuijingwanwq.com/tour/welcome/1"),
@@ -303,12 +437,12 @@ class PreviewBrowserTest(unittest.TestCase):
         source = (ROOT / "scripts" / "browser_acceptance.py").read_text(encoding="utf-8")
         self.assertIn('playground_requests(requests, origin, "/_/compile", "/_/fmt")', source)
         self.assertIn('shared["playground_public_origin"]', source)
-        self.assertIn("browser_ad_gate(editor, editor_requests, policy[\"tour_ads_enabled\"])", source)
+        self.assertIn("browser_ad_gate(snapshot, chrome.network_requests(), policy[\"tour_ads_enabled\"])", source)
         preview_body = source.split("def preview_acceptance", 1)[1]
         self.assertIn('if not policy["tour_ads_enabled"]:', preview_body)
         self.assertIn("browser_ad_gate(editor, chrome.network_requests(), False)", preview_body)
         self.assertIn("fetch('/socket')", preview_body)
-        self.assertIn("canonical_origin + after", preview_body)
+        self.assertIn("wait_for_spa_transition(chrome, before, base, locale, canonical_origin)", preview_body)
 
     def test_production_still_requires_https_formal_identity(self):
         original = sys.argv

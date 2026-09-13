@@ -112,6 +112,7 @@ exit "${exits[index]}"
 SH
 cat >"$fake_bin/sleep" <<'SH'
 #!/usr/bin/env bash
+[[ -z ${FAKE_SLEEP_LOG:-} ]] || printf '%s\n' "$1" >>"$FAKE_SLEEP_LOG"
 exit 0
 SH
 cat >"$fake_bin/ssh" <<'SH'
@@ -322,7 +323,7 @@ fi
 # Public acceptance retries only the formally transient transport/status set.
 PUBLIC_URL=https://example.test/
 PUBLIC_ACCEPTANCE_HINT='test hint'
-for transient_exit in 6 7 16 28 35; do
+for transient_exit in 6 7 16 28 35 97; do
     export FAKE_PUBLIC_COUNTER=$fixture/public-exit-$transient_exit
     export FAKE_PUBLIC_HTTP_SEQUENCE=000,200 FAKE_PUBLIC_EXIT_SEQUENCE=$transient_exit,0
     rm -f -- "$FAKE_PUBLIC_COUNTER"
@@ -338,21 +339,28 @@ for transient_status in 522 525; do
 done
 
 export FAKE_PUBLIC_COUNTER=$fixture/public-persistent
+export FAKE_SLEEP_LOG=$fixture/public-persistent-sleep
 export FAKE_PUBLIC_HTTP_SEQUENCE=000 FAKE_PUBLIC_EXIT_SEQUENCE=28
-rm -f -- "$FAKE_PUBLIC_COUNTER"
+rm -f -- "$FAKE_PUBLIC_COUNTER" "$FAKE_SLEEP_LOG"
 if persistent_output=$(check_public 2>&1); then
     fail 'persistent transient public failure was accepted'
 fi
-[[ $(<"$FAKE_PUBLIC_COUNTER") == 3 ]] || fail 'public retry exceeded or missed the three-attempt bound'
+[[ $(<"$FAKE_PUBLIC_COUNTER") == 5 ]] || fail 'public retry exceeded or missed the five-attempt bound'
+[[ $(<"$FAKE_SLEEP_LOG") == $'1\n2\n3\n4' ]] || fail 'public retry backoff was not bounded'
 [[ $persistent_output == *'curl exit 28; HTTP 000'* ]] || fail 'public failure lost curl exit/status evidence'
+[[ $persistent_output == *'did not roll back the healthy source release'* ]] || \
+    fail 'public transient failure lost the no-rollback safety contract'
 
-export FAKE_PUBLIC_COUNTER=$fixture/public-semantic
-export FAKE_PUBLIC_HTTP_SEQUENCE=503,200 FAKE_PUBLIC_EXIT_SEQUENCE=0,0
-rm -f -- "$FAKE_PUBLIC_COUNTER"
-if check_public >/dev/null 2>&1; then
-    fail 'nontransient HTTP 503 was retried and accepted'
-fi
-[[ $(<"$FAKE_PUBLIC_COUNTER") == 1 ]] || fail 'nontransient HTTP failure did not fail immediately'
+unset FAKE_SLEEP_LOG
+for nontransient_status in 404 500 503; do
+    export FAKE_PUBLIC_COUNTER=$fixture/public-semantic-$nontransient_status
+    export FAKE_PUBLIC_HTTP_SEQUENCE=$nontransient_status,200 FAKE_PUBLIC_EXIT_SEQUENCE=0,0
+    rm -f -- "$FAKE_PUBLIC_COUNTER"
+    if check_public >/dev/null 2>&1; then
+        fail "nontransient HTTP $nontransient_status was retried and accepted"
+    fi
+    [[ $(<"$FAKE_PUBLIC_COUNTER") == 1 ]] || fail "nontransient HTTP $nontransient_status did not fail immediately"
+done
 
 # An exactly identical, already-current live release takes the read-only resume path.
 setup_already_current de-DE 20260911-de-DE-resume-pass

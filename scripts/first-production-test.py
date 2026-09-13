@@ -650,6 +650,7 @@ printf 200
         end = source.index("\n    def browser(self):", start)
         public_machine = source[start:end]
         self.assertIn("readonly CURL_RETRY_ATTEMPTS=3", public_machine)
+        self.assertIn("readonly CURL_MAX_TIME=25", public_machine)
         self.assertIn("6|7|16|28|35", public_machine)
         self.assertIn("grep -Eq", public_machine)
         self.assertIn("for readiness_round in 1 2 3", public_machine)

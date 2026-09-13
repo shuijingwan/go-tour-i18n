@@ -8,6 +8,9 @@ readonly -a SHARED_ASSETS_EXPECTED_BOUNDARY_PATHS=(
     'tour/static/img/tree.png'
     'tour/static/partials/editor.html'
 )
+readonly SHARED_ASSETS_CURL_CONNECT_TIMEOUT=5
+readonly SHARED_ASSETS_CURL_MAX_TIME=15
+readonly SHARED_ASSETS_CURL_RETRY_ATTEMPTS=3
 
 SHARED_ASSETS_PUBLIC_BASE_URL=''
 SHARED_ASSETS_CURL_NETWORK_OPTIONS=()
@@ -62,7 +65,11 @@ shared_assets_cleanup_network_ssh() {
     fi
 }
 
-shared_assets_public_curl() { curl "${SHARED_ASSETS_CURL_NETWORK_OPTIONS[@]}" "$@"; }
+shared_assets_public_curl() {
+    curl --connect-timeout "$SHARED_ASSETS_CURL_CONNECT_TIMEOUT" \
+        --max-time "$SHARED_ASSETS_CURL_MAX_TIME" \
+        "${SHARED_ASSETS_CURL_NETWORK_OPTIONS[@]}" "$@"
+}
 
 shared_assets_public_http_request() {
     local url=$1 body=$2 headers=$3 attempt=1 code curl_exit
@@ -74,8 +81,9 @@ shared_assets_public_http_request() {
             curl_exit=$?
         fi
         if (( curl_exit != 0 )); then
-            if [[ $curl_exit == 28 && $attempt -lt 3 ]]; then
-                printf '[verify-shared-assets-production] transient curl exit 28, retry %d/2: %s\n' "$attempt" "$url" >&2
+            if [[ $curl_exit == 28 && $attempt -lt $SHARED_ASSETS_CURL_RETRY_ATTEMPTS ]]; then
+                printf '[verify-shared-assets-production] transient curl exit 28, retry %d/%d: %s\n' \
+                    "$attempt" "$((SHARED_ASSETS_CURL_RETRY_ATTEMPTS - 1))" "$url" >&2
                 sleep "$attempt"
                 attempt=$((attempt + 1))
                 continue
@@ -87,8 +95,9 @@ shared_assets_public_http_request() {
         fi
         case $code in
             522|525)
-                if (( attempt < 3 )); then
-                    printf '[verify-shared-assets-production] transient HTTP %s, retry %d/2: %s\n' "$code" "$attempt" "$url" >&2
+                if (( attempt < SHARED_ASSETS_CURL_RETRY_ATTEMPTS )); then
+                    printf '[verify-shared-assets-production] transient HTTP %s, retry %d/%d: %s\n' \
+                        "$code" "$attempt" "$((SHARED_ASSETS_CURL_RETRY_ATTEMPTS - 1))" "$url" >&2
                     sleep "$attempt"
                     attempt=$((attempt + 1))
                     continue

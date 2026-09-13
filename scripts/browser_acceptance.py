@@ -38,11 +38,38 @@ class BrowserFailure(RuntimeError):
     pass
 
 
-# A route has 30 seconds of render-readiness budget, split across independent
-# navigations.  Retrying changes only the transport/render boundary; every
-# semantic assertion below remains a single, fail-closed assertion.
+class PermanentBrowserFailure(BrowserFailure):
+    """A shell identity error that must not become a navigation retry."""
+
+
+# Initial navigation may be repeated only while the document has not reached a
+# minimally inspectable DOM.  A single command may wait long enough for the
+# observed 20+ second cold MISS, while attempts and post-commit readiness stay
+# independently bounded.
 RENDER_ATTEMPTS = 3
 RENDER_ATTEMPT_TIMEOUT = 10
+NAVIGATION_COMMAND_TIMEOUT = 30
+SEMANTIC_CONVERGENCE_TIMEOUT = 25
+PROJECT_PAGE_ATTEMPTS = 3
+PROJECT_TRANSIENT_HTTP_STATUSES = {522, 525}
+PROJECT_TRANSIENT_NETWORK_ERRORS = {
+    "net::ERR_NAME_NOT_RESOLVED",
+    "net::ERR_CONNECTION_FAILED",
+    "net::ERR_CONNECTION_RESET",
+    "net::ERR_CONNECTION_CLOSED",
+    "net::ERR_CONNECTION_TIMED_OUT",
+    "net::ERR_TIMED_OUT",
+    "net::ERR_NETWORK_CHANGED",
+    "net::ERR_INTERNET_DISCONNECTED",
+    "net::ERR_EMPTY_RESPONSE",
+    "net::ERR_SSL_PROTOCOL_ERROR",
+    "net::ERR_SSL_VERSION_OR_CIPHER_MISMATCH",
+    "net::ERR_PROXY_CONNECTION_FAILED",
+    "net::ERR_TUNNEL_CONNECTION_FAILED",
+    "net::ERR_HTTP2_PROTOCOL_ERROR",
+    "net::ERR_QUIC_PROTOCOL_ERROR",
+}
+PROJECT_REQUIRED_RESOURCE_TYPES = {"Document", "Script", "Stylesheet", "XHR", "Fetch"}
 
 
 def locale_list_metadata(locale):
@@ -226,7 +253,10 @@ class Chrome:
         deadline = time.monotonic() + timeout
         while time.monotonic() < deadline:
             self.ws.sock.settimeout(max(0.1, deadline - time.monotonic()))
-            message = self.ws.receive()
+            try:
+                message = self.ws.receive()
+            except socket.timeout:
+                continue
             if message.get("id") == identifier:
                 if "error" in message:
                     raise BrowserFailure(f"DevTools {method}: {message['error']}")
@@ -291,14 +321,13 @@ class Chrome:
         for attempt in range(1, RENDER_ATTEMPTS + 1):
             self.events.clear()
             try:
-                navigation = self.call("Page.navigate", {"url": url})
+                navigation = self.call("Page.navigate", {"url": url}, timeout=NAVIGATION_COMMAND_TIMEOUT)
                 ready, last = self.render_readiness()
             except BrowserFailure as exc:
                 ready = False
                 last = {"readyState": None, "bodyTextLength": None, "location": None,
                         "navigationError": str(exc)}
             if ready:
-                time.sleep(2)
                 return
             last = {"attempt": attempt, **last}
             if attempt < RENDER_ATTEMPTS:
@@ -327,6 +356,63 @@ class Chrome:
             if request_id in requests:
                 requests[request_id]["headers"] = {**requests[request_id].get("headers", {}), **headers}
         return list(requests.values())
+
+    def project_network_transients(self, origins):
+        """Return required project-resource transport evidence for this page.
+
+        Third-party ads/fonts/analytics are deliberately outside this set.
+        Deterministic HTTP failures are also excluded, so they cannot trigger
+        a reload that might hide an application or publication error.
+        """
+        expected = {
+            (parsed.scheme, parsed.netloc)
+            for parsed in (urllib.parse.urlsplit(value.rstrip("/")) for value in origins)
+        }
+        requests = {}
+        finished = set()
+        responses = set()
+        failures = []
+        for event in self.events:
+            method = event.get("method")
+            params = event.get("params", {})
+            request_id = params.get("requestId")
+            if method == "Network.requestWillBeSent":
+                requests[request_id] = {
+                    "url": params.get("request", {}).get("url", ""),
+                    "type": params.get("type", ""),
+                }
+            elif method == "Network.responseReceived":
+                responses.add(request_id)
+                response = params.get("response", {})
+                request = requests.get(request_id, {})
+                url = response.get("url") or request.get("url", "")
+                resource_type = params.get("type") or request.get("type", "")
+                parsed = urllib.parse.urlsplit(url)
+                status = response.get("status")
+                if ((parsed.scheme, parsed.netloc) in expected and
+                        resource_type in PROJECT_REQUIRED_RESOURCE_TYPES and
+                        status in PROJECT_TRANSIENT_HTTP_STATUSES):
+                    failures.append(f"HTTP {int(status)} {resource_type} {url}")
+            elif method == "Network.loadingFinished":
+                finished.add(request_id)
+            elif method == "Network.loadingFailed":
+                finished.add(request_id)
+                request = requests.get(request_id, {})
+                url = request.get("url", "")
+                resource_type = params.get("type") or request.get("type", "")
+                error_text = params.get("errorText", "")
+                parsed = urllib.parse.urlsplit(url)
+                if ((parsed.scheme, parsed.netloc) in expected and
+                        resource_type in PROJECT_REQUIRED_RESOURCE_TYPES and
+                        error_text in PROJECT_TRANSIENT_NETWORK_ERRORS):
+                    failures.append(f"{error_text} {resource_type} {url}")
+        for request_id, request in requests.items():
+            parsed = urllib.parse.urlsplit(request["url"])
+            if ((parsed.scheme, parsed.netloc) in expected and
+                    request["type"] in PROJECT_REQUIRED_RESOURCE_TYPES and
+                    request_id not in finished and request_id not in responses):
+                failures.append(f"pending {request['type']} {request['url']}")
+        return failures
 
     def close(self):
         try:
@@ -459,36 +545,168 @@ def validate_rendered_identity(identity, base, locale, requested_path, expected_
     if expected_rendered_route is not None:
         assert_true(identity["renderedRoute"] == expected_rendered_route,
                     f"{requested_path}: data-tour-rendered-route mismatch: expected={expected_rendered_route} actual={identity['renderedRoute']}")
-        assert_true(identity["heading"] and identity["heading"] in identity["title"],
-                    f"{requested_path}: title is not route-specific: title={identity['title']} heading={identity['heading']}")
+        if re.match(r"^/tour/[^/]+/[1-9][0-9]*$", expected_rendered_route):
+            assert_true(identity["heading"] and identity["heading"] in identity["title"],
+                        f"{requested_path}: title is not route-specific: title={identity['title']} heading={identity['heading']}")
     if expected_description is not None:
         assert_true(identity["description"] == expected_description,
                     f"{requested_path}: description mismatch: expected={expected_description} actual={identity['description']}")
 
 
+PAGE_IDENTITY_EXPRESSION = """(() => ({
+  lang: document.documentElement.lang,
+  href: location.href,
+  origin: location.origin,
+  path: location.pathname,
+  renderedRoute: document.documentElement.getAttribute('data-tour-rendered-route') || '',
+  heading: document.querySelector('.slide-content h2,h2')?.textContent.trim() || '',
+  canonical: document.querySelector('link[rel="canonical"]')?.href || '',
+  title: document.title,
+  description: document.querySelector('meta[name="description"]')?.content || '',
+  overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth
+}))()"""
+
+
+def validate_identity_invariants(identity, base, locale, requested_path):
+    if not isinstance(identity, dict):
+        raise PermanentBrowserFailure(f"{requested_path}: page identity snapshot is not an object: {identity!r}")
+    if identity.get("lang") != locale:
+        raise PermanentBrowserFailure(
+            f"{requested_path}: html lang mismatch: expected={locale} actual={identity.get('lang')}"
+        )
+    if identity.get("origin") != base.rstrip("/"):
+        raise PermanentBrowserFailure(
+            f"{requested_path}: production hostname mismatch: expected={base.rstrip('/')} "
+            f"actual={identity.get('origin')}"
+        )
+
+
+def wait_for_rendered_identity(chrome, base, locale, requested_path, canonical_origin=None, expected_final_path=None,
+                               expected_rendered_route=None, expected_description=None, expected_title=None,
+                               width=1280, timeout=SEMANTIC_CONVERGENCE_TIMEOUT, post_identity_check=None):
+    """Wait for Angular route metadata to converge without reloading the page."""
+    deadline = time.monotonic() + timeout
+    last = None
+    last_failure = "no identity snapshot"
+    while True:
+        try:
+            last = chrome.evaluate(
+                PAGE_IDENTITY_EXPRESSION,
+                check=f"page identity convergence requested={requested_path} expected_final={expected_final_path}",
+            )
+        except BrowserFailure as exc:
+            last_failure = str(exc)
+        else:
+            # lang/origin are shell identity, not route-hydration state.  They
+            # must never become reload/retry candidates.
+            validate_identity_invariants(last, base, locale, requested_path)
+            try:
+                validate_rendered_identity(last, base, locale, requested_path, expected_final_path,
+                                           canonical_origin, expected_rendered_route, expected_description)
+                if expected_title is not None:
+                    assert_true(last["title"] == expected_title,
+                                f"{requested_path}: title mismatch: expected={expected_title} actual={last['title']}")
+                if width <= 480:
+                    assert_true(last["overflow"] <= 2,
+                                f"{requested_path}: unexpected page-level horizontal overflow")
+                if post_identity_check is not None:
+                    post_identity_check()
+            except BrowserFailure as exc:
+                last_failure = str(exc)
+            else:
+                return last
+        if time.monotonic() >= deadline:
+            break
+        time.sleep(0.1)
+    raise BrowserFailure(
+        f"{requested_path}: semantic convergence timed out after {timeout}s: "
+        f"lastFailure={last_failure}; lastIdentity={last!r}"
+    )
+
+
+def run_project_page_check(chrome, url, width, height, network_retry_origins, check):
+    """Retry a page only when its failed check has project transport evidence."""
+    last_failure = None
+    last_transients = []
+    for attempt in range(1, PROJECT_PAGE_ATTEMPTS + 1):
+        chrome.navigate(url, width, height)
+        try:
+            return check()
+        except PermanentBrowserFailure:
+            raise
+        except BrowserFailure as exc:
+            last_failure = exc
+            last_transients = chrome.project_network_transients(network_retry_origins)
+            if not last_transients or attempt == PROJECT_PAGE_ATTEMPTS:
+                if last_transients:
+                    raise BrowserFailure(
+                        f"project page transport retry exhausted: url={url!r} "
+                        f"attempt={attempt}/{PROJECT_PAGE_ATTEMPTS} transients={last_transients!r} "
+                        f"lastFailure={str(exc)!r}"
+                    ) from exc
+                raise
+            time.sleep(min(attempt, 2))
+    raise BrowserFailure(
+        f"project page transport retry exhausted: url={url!r} "
+        f"transients={last_transients!r} lastFailure={str(last_failure)!r}"
+    )
+
+
 def page_identity(chrome, base, locale, requested_path, width, height, canonical_origin=None, expected_final_path=None,
-                  expected_rendered_route=None, expected_description=None, expected_title=None):
+                  expected_rendered_route=None, expected_description=None, expected_title=None,
+                  network_retry_origins=(), post_identity_check=None):
     url = urllib.parse.urljoin(base, requested_path.lstrip("/"))
+    check = lambda: wait_for_rendered_identity(
+        chrome, base, locale, requested_path, canonical_origin, expected_final_path,
+        expected_rendered_route, expected_description, expected_title, width,
+        post_identity_check=post_identity_check,
+    )
+    if network_retry_origins:
+        return run_project_page_check(chrome, url, width, height, network_retry_origins, check)
     chrome.navigate(url, width, height)
-    identity = chrome.evaluate("""(() => ({
-      lang: document.documentElement.lang,
-      href: location.href,
-      origin: location.origin,
-      path: location.pathname,
-      renderedRoute: document.documentElement.getAttribute('data-tour-rendered-route') || '',
-      heading: document.querySelector('.slide-content h2,h2')?.textContent.trim() || '',
-      canonical: document.querySelector('link[rel="canonical"]')?.href || '',
-      title: document.title,
-      description: document.querySelector('meta[name="description"]')?.content || '',
-      overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth
-    }))()""", check=f"page identity snapshot requested={requested_path} expected_final={expected_final_path}")
-    validate_rendered_identity(identity, base, locale, requested_path, expected_final_path, canonical_origin,
-                               expected_rendered_route, expected_description)
-    if expected_title is not None:
-        assert_true(identity["title"] == expected_title,
-                    f"{requested_path}: title mismatch: expected={expected_title} actual={identity['title']}")
-    if width <= 480:
-        assert_true(identity["overflow"] <= 2, f"{requested_path}: unexpected page-level horizontal overflow")
+    return check()
+
+
+def wait_for_condition(check, label, timeout=SEMANTIC_CONVERGENCE_TIMEOUT):
+    deadline = time.monotonic() + timeout
+    last_failure = "condition was not evaluated"
+    while True:
+        try:
+            return check()
+        except PermanentBrowserFailure:
+            raise
+        except BrowserFailure as exc:
+            last_failure = str(exc)
+        if time.monotonic() >= deadline:
+            break
+        time.sleep(0.1)
+    raise BrowserFailure(f"{label} timed out after {timeout}s: lastFailure={last_failure}")
+
+
+def wait_for_spa_transition(chrome, before, base, locale, canonical_origin, timeout=SEMANTIC_CONVERGENCE_TIMEOUT):
+    """Wait for path, SEO metadata, rendered marker, and route shell together."""
+    def check():
+        snapshot = chrome.evaluate("""(() => ({
+          lang: document.documentElement.lang, origin: location.origin, path: location.pathname,
+          canonical: document.querySelector('link[rel="canonical"]')?.href || '',
+          renderedRoute: document.documentElement.getAttribute('data-tour-rendered-route') || '',
+          header: document.querySelectorAll('.top-bar').length,
+          footer: document.querySelectorAll('.site-footer').length,
+          next: !!document.querySelector('.next-page'),
+          body: (document.body?.innerText || '').trim(),
+          mounts: document.querySelectorAll('[data-go-dev-course-ad]').length
+        }))()""", check=f"SPA semantic convergence from {before}")
+        validate_identity_invariants(snapshot, base, locale, before)
+        assert_true(snapshot["path"] != before, f"SPA route did not change from {before}: {snapshot}")
+        assert_true(snapshot["canonical"] == canonical_origin + snapshot["path"],
+                    f"SPA canonical mismatch: {snapshot}")
+        assert_true(snapshot["renderedRoute"] == snapshot["path"],
+                    f"SPA rendered route mismatch: {snapshot}")
+        assert_true(snapshot["header"] == 1 and snapshot["footer"] == 1 and snapshot["next"] and
+                    len(snapshot["body"]) > 20, f"SPA DOM/shell failed: {snapshot}")
+        return snapshot
+
+    return wait_for_condition(check, f"SPA semantic convergence from {before}", timeout)
 
 
 def validate_rendered_list(chrome, list_metadata, expected_page_routes):
@@ -509,49 +727,74 @@ def validate_rendered_list(chrome, list_metadata, expected_page_routes):
                 f"/tour/list: article directory route mismatch: expected={expected_article_routes} actual={snapshot}")
     assert_true(sorted(snapshot["pageRoutes"]) == sorted(expected_page_routes),
                 f"/tour/list: Page directory route mismatch: expected={len(expected_page_routes)} unique formal routes actual={snapshot}")
+    return snapshot
 
 
 def acceptance(base, locale, profile, shared, proxy_server=None):
     list_metadata = locale_list_metadata(locale)
     policy = publication_policy(locale)
+    network_retry_origins = (base, shared["shared_assets_public_origin"])
     chrome = Chrome(proxy_server=proxy_server)
     try:
-        for path in ("/", "/tour/", "/tour/list", "/tour/welcome/1", "/tour/basics/11"):
-            is_list = path == "/tour/list"
-            page_identity(chrome, base, locale, path, 1280, 800,
+        rendered_routes = (("/", "/", None), ("/tour/", "/tour/welcome/1", "/tour/welcome/1"),
+                           ("/tour/list", "/tour/list", None),
+                           ("/tour/welcome/1", "/tour/welcome/1", "/tour/welcome/1"),
+                           ("/tour/basics/11", "/tour/basics/11", "/tour/basics/11"))
+        for path, final_path, rendered_route in rendered_routes:
+            is_list = final_path == "/tour/list"
+            list_check = (lambda: validate_rendered_list(chrome, list_metadata, formal_course_routes())) if is_list else None
+            page_identity(chrome, base, locale, path, 1280, 800, base.rstrip("/"), final_path, rendered_route,
                           expected_description=list_metadata["description"] if is_list else None,
-                          expected_title=list_metadata["title"] if is_list else None)
-            if is_list:
-                validate_rendered_list(chrome, list_metadata, formal_course_routes())
-        chrome.navigate(base, 375, 812)
-        language = chrome.evaluate("""(() => ({
-          count: document.querySelectorAll('.site-language-list li').length,
-          current: document.querySelectorAll('.site-language-list [aria-current="page"]').length,
-          links: document.querySelectorAll('.site-language-list a[href]').length
-        }))()""")
-        assert_true(language["count"] >= 2 and language["current"] == 1 and language["links"] >= 1, "language selector identity failed")
+                          expected_title=list_metadata["title"] if is_list else None,
+                          network_retry_origins=network_retry_origins, post_identity_check=list_check)
+        def language_ready():
+            def check():
+                language = chrome.evaluate("""(() => ({
+                  lang: document.documentElement.lang,
+                  origin: location.origin,
+                  count: document.querySelectorAll('.site-language-list li').length,
+                  current: document.querySelectorAll('.site-language-list [aria-current="page"]').length,
+                  links: document.querySelectorAll('.site-language-list a[href]').length
+                }))()""", check="production language selector convergence")
+                validate_identity_invariants(language, base, locale, "/")
+                assert_true(language["count"] >= 2 and language["current"] == 1 and language["links"] >= 1,
+                            f"language selector identity failed: {language}")
+                return language
+
+            return wait_for_condition(check, "production language selector convergence")
+
+        run_project_page_check(chrome, base, 375, 812, network_retry_origins, language_ready)
 
         editor_url = urllib.parse.urljoin(base, "tour/basics/11")
-        chrome.navigate(editor_url, 1280, 800)
         shared_assets = json.dumps(shared["shared_assets_public_origin"].rstrip("/") + "/")
-        editor = chrome.evaluate(f"""(() => ({{
-          run: !!document.querySelector('#run'), format: !!document.querySelector('#format'),
-          reset: !!document.querySelector('#reset'), cm: !!document.querySelector('.CodeMirror')?.CodeMirror,
-          mount: document.querySelectorAll('[data-go-dev-course-ad]').length,
-          ad: document.querySelectorAll('[data-go-dev-course-ad] ins.adsbygoogle').length,
-          loader: [...document.scripts].some(s => /adsbygoogle/.test(s.src)),
-          helper: [...document.scripts].some(s => /course-ad\\.js(?:$|[?#])/.test(s.src)),
-          empty_mount: [...document.querySelectorAll('[data-go-dev-course-ad]')].every(e =>
-            e.children.length === 0 && !e.hasAttribute('role') && !e.hasAttribute('aria-label') &&
-            !e.hasAttribute('data-go-dev-course-ad-group')),
-          shared: performance.getEntriesByType('resource').some(e => e.name.startsWith({shared_assets}))
-        }}))()""")
-        editor_requests = chrome.network_requests()
-        assert_true(all(editor[key] for key in ("run", "format", "reset", "cm")), "editor browser identity failed")
-        assert_true(browser_ad_gate(editor, editor_requests, policy["tour_ads_enabled"]),
-                    f"editor/ad browser identity failed for publication={policy['publication']}: editor={editor}")
-        if profile["shared_assets_policy"] == "shared-cloudflare":
-            assert_true(editor["shared"], "shared assets were not requested")
+
+        def editor_ready():
+            def check():
+                snapshot = chrome.evaluate(f"""(() => ({{
+                  run: !!document.querySelector('#run'), format: !!document.querySelector('#format'),
+                  reset: !!document.querySelector('#reset'), cm: !!document.querySelector('.CodeMirror')?.CodeMirror,
+                  mount: document.querySelectorAll('[data-go-dev-course-ad]').length,
+                  ad: document.querySelectorAll('[data-go-dev-course-ad] ins.adsbygoogle').length,
+                  loader: [...document.scripts].some(s => /adsbygoogle/.test(s.src)),
+                  helper: [...document.scripts].some(s => /course-ad\\.js(?:$|[?#])/.test(s.src)),
+                  empty_mount: [...document.querySelectorAll('[data-go-dev-course-ad]')].every(e =>
+                    e.children.length === 0 && !e.hasAttribute('role') && !e.hasAttribute('aria-label') &&
+                    !e.hasAttribute('data-go-dev-course-ad-group')),
+                  shared: performance.getEntriesByType('resource').some(e => e.name.startsWith({shared_assets}))
+                }}))()""", check="production editor dependency convergence")
+                assert_true(all(snapshot[key] for key in ("run", "format", "reset", "cm")),
+                            f"editor browser identity failed: {snapshot}")
+                assert_true(browser_ad_gate(snapshot, chrome.network_requests(), policy["tour_ads_enabled"]),
+                            f"editor/ad browser identity failed for publication={policy['publication']}: editor={snapshot}")
+                if profile["shared_assets_policy"] == "shared-cloudflare":
+                    assert_true(snapshot["shared"], "shared assets were not requested")
+                return snapshot
+
+            return wait_for_condition(check, "production editor dependency convergence")
+
+        run_project_page_check(
+            chrome, editor_url, 1280, 800, network_retry_origins, editor_ready,
+        )
         # Filled and unfilled ads are both accepted: standard requires a request
         # opportunity, while go-local requires complete absence of Tour ads.
         edit = chrome.evaluate("""(() => {
@@ -566,21 +809,33 @@ def acceptance(base, locale, profile, shared, proxy_server=None):
         original = initial["original"]
         validate_editor_modified(initial, chrome.evaluate("window.__productionAcceptanceMalformed"))
         chrome.evaluate("document.querySelector('#format').click(); true")
-        time.sleep(3)
-        formatted = chrome.evaluate("document.querySelector('.CodeMirror').CodeMirror.getValue()")
-        assert_true(formatted != chrome.evaluate("window.__productionAcceptanceMalformed") and "func main() {" in formatted, "Format did not update source")
+        malformed = chrome.evaluate("window.__productionAcceptanceMalformed")
+
+        def formatted_source():
+            formatted = chrome.evaluate("document.querySelector('.CodeMirror').CodeMirror.getValue()",
+                                        check="production Format result convergence")
+            assert_true(formatted != malformed and "func main() {" in formatted,
+                        f"Format did not update source: {formatted!r}")
+            return formatted
+
+        wait_for_condition(formatted_source, "production Format result convergence")
         chrome.evaluate("document.querySelector('#reset').click(); true")
         wait_for_editor_reset(chrome, original)
         chrome.evaluate("document.querySelector('.CodeMirror').CodeMirror.setValue('package main\\nfunc main(){println(\\\"BROWSER_ACCEPTANCE_OK\\\")}\\n'); true")
         chrome.evaluate("document.querySelector('#run').click(); true")
-        time.sleep(8)
-        runtime = chrome.evaluate("""(() => ({
-          output: [...document.querySelectorAll('.output')].map(x => x.innerText).join('\\n'),
-          mount: document.querySelectorAll('[data-go-dev-course-ad]').length,
-          path: location.pathname
-        }))()""")
+
+        def runtime_output():
+            runtime = chrome.evaluate("""(() => ({
+              output: [...document.querySelectorAll('.output')].map(x => x.innerText).join('\\n'),
+              mount: document.querySelectorAll('[data-go-dev-course-ad]').length,
+              path: location.pathname
+            }))()""", check="production Run result convergence")
+            assert_true("BROWSER_ACCEPTANCE_OK" in runtime["output"],
+                        f"Run produced no browser-visible expected result: {runtime}")
+            return runtime
+
+        runtime = wait_for_condition(runtime_output, "production Run result convergence")
         requests = chrome.network_requests()
-        assert_true("BROWSER_ACCEPTANCE_OK" in runtime["output"], "Run produced no browser-visible expected result")
         playground = shared["playground_public_origin"].rstrip("/")
         playground_posts = playground_requests(requests, playground, "/compile", "/fmt")
         expected_origin = base.rstrip("/")
@@ -591,20 +846,19 @@ def acceptance(base, locale, profile, shared, proxy_server=None):
 
         before = chrome.evaluate("location.pathname")
         chrome.evaluate("document.querySelector('.next-page').click(); true")
-        time.sleep(3)
-        after = chrome.evaluate("location.pathname")
-        assert_true(after != before, "SPA next-page transition did not change route")
-        final_mounts = chrome.evaluate("document.querySelectorAll('[data-go-dev-course-ad]').length")
+        spa = wait_for_spa_transition(chrome, before, base, locale, base.rstrip("/"))
+        final_mounts = spa["mounts"]
         if policy["tour_ads_enabled"]:
             assert_true(final_mounts == 1, f"SPA course-ad mount count mismatch: expected=1 actual={final_mounts}")
         else:
             assert_true(final_mounts in (0, 1), f"SPA empty course-ad host count mismatch: actual={final_mounts}")
 
-        page_identity(chrome, base, locale, "/tour/moretypes/1", 375, 812)
+        page_identity(chrome, base, locale, "/tour/moretypes/1", 375, 812, base.rstrip("/"),
+                      "/tour/moretypes/1", "/tour/moretypes/1",
+                      network_retry_origins=network_retry_origins)
         before = chrome.evaluate("location.pathname")
         chrome.evaluate("document.querySelector('.next-page').click(); true")
-        time.sleep(2)
-        assert_true(chrome.evaluate("location.pathname") != before, "mobile SPA transition failed")
+        wait_for_spa_transition(chrome, before, base, locale, base.rstrip("/"))
     finally:
         chrome.close()
 
@@ -620,11 +874,10 @@ def preview_acceptance(base, locale, profile, shared, registry, descriptions, li
         for path, final_path in rendered_routes:
             course_route = final_path if re.match(r"^/tour/[^/]+/[1-9][0-9]*$", final_path) else None
             is_list = final_path == "/tour/list"
+            list_check = (lambda: validate_rendered_list(chrome, list_metadata, formal_course_routes())) if is_list else None
             page_identity(chrome, base, locale, path, 1280, 800, canonical_origin, final_path, course_route,
                           descriptions.get(course_route) if course_route else (list_metadata["description"] if is_list else None),
-                          list_metadata["title"] if is_list else None)
-            if is_list:
-                validate_rendered_list(chrome, list_metadata, formal_course_routes())
+                          list_metadata["title"] if is_list else None, post_identity_check=list_check)
             shell = chrome.evaluate("""(() => ({header:document.querySelectorAll('.top-bar').length,
               footer:document.querySelectorAll('.site-footer').length, body:(document.body?.innerText||'').trim(),
               overflow:document.documentElement.scrollWidth-document.documentElement.clientWidth}))()""")
@@ -647,19 +900,25 @@ def preview_acceptance(base, locale, profile, shared, registry, descriptions, li
 
         for mobile in (False, True):
             chrome.navigate(urllib.parse.urljoin(base, "tour/basics/11"), 375 if mobile else 1280, 812 if mobile else 800)
-            editor = chrome.evaluate("""(() => ({run:!!document.querySelector('#run'),format:!!document.querySelector('#format'),
-              reset:!!document.querySelector('#reset'),cm:!!document.querySelector('.CodeMirror')?.CodeMirror,
-              mount:document.querySelectorAll('[data-go-dev-course-ad]').length,
-              ad:document.querySelectorAll('[data-go-dev-course-ad] ins.adsbygoogle').length,
-              loader:[...document.scripts].some(s=>/adsbygoogle/.test(s.src)),
-              helper:[...document.scripts].some(s=>/course-ad\\.js(?:$|[?#])/.test(s.src)),
-              empty_mount:[...document.querySelectorAll('[data-go-dev-course-ad]')].every(e=>
-                e.children.length===0&&!e.hasAttribute('role')&&!e.hasAttribute('aria-label')&&
-                !e.hasAttribute('data-go-dev-course-ad-group'))}))()""")
-            assert_true(all(editor[key] for key in ("run", "format", "reset", "cm")), f"editor controls missing: {editor}")
-            if not policy["tour_ads_enabled"]:
-                assert_true(browser_ad_gate(editor, chrome.network_requests(), False),
-                            f"go-local preview retains Tour ad surface: {editor}")
+            def preview_editor_ready():
+                editor = chrome.evaluate("""(() => ({run:!!document.querySelector('#run'),format:!!document.querySelector('#format'),
+                  reset:!!document.querySelector('#reset'),cm:!!document.querySelector('.CodeMirror')?.CodeMirror,
+                  mount:document.querySelectorAll('[data-go-dev-course-ad]').length,
+                  ad:document.querySelectorAll('[data-go-dev-course-ad] ins.adsbygoogle').length,
+                  loader:[...document.scripts].some(s=>/adsbygoogle/.test(s.src)),
+                  helper:[...document.scripts].some(s=>/course-ad\\.js(?:$|[?#])/.test(s.src)),
+                  empty_mount:[...document.querySelectorAll('[data-go-dev-course-ad]')].every(e=>
+                    e.children.length===0&&!e.hasAttribute('role')&&!e.hasAttribute('aria-label')&&
+                    !e.hasAttribute('data-go-dev-course-ad-group'))}))()""",
+                    check="preview editor dependency convergence")
+                assert_true(all(editor[key] for key in ("run", "format", "reset", "cm")),
+                            f"editor controls missing: {editor}")
+                if not policy["tour_ads_enabled"]:
+                    assert_true(browser_ad_gate(editor, chrome.network_requests(), False),
+                                f"go-local preview retains Tour ad surface: {editor}")
+                return editor
+
+            wait_for_condition(preview_editor_ready, "preview editor dependency convergence")
             chrome.evaluate("(() => {const cm=document.querySelector('.CodeMirror').CodeMirror;"
                             "window.__previewMalformed='package main\\nfunc main(){println(\"browser acceptance\")}\\n';"
                             "cm.setValue(window.__previewMalformed);return true})()",
@@ -683,15 +942,8 @@ def preview_acceptance(base, locale, profile, shared, registry, descriptions, li
             assert_true(not any(urllib.parse.urlsplit(url).path.startswith('/socket') for url in urls), "editor used /socket")
             assert_true(chrome.evaluate("fetch('/socket').then(r=>r.status)", await_promise=True) == 404, "/socket browser boundary failed")
             before = chrome.evaluate("location.pathname")
-            chrome.evaluate("document.querySelector('.next-page').click();true"); time.sleep(3)
-            after = chrome.evaluate("location.pathname")
-            assert_true(after != before, "SPA next-page transition did not change route")
-            spa = chrome.evaluate("""(() => ({canonical:document.querySelector('link[rel="canonical"]')?.href||'',
-              header:document.querySelectorAll('.top-bar').length,footer:document.querySelectorAll('.site-footer').length,
-              next:!!document.querySelector('.next-page'),body:(document.body?.innerText||'').trim()}))()""")
-            assert_true(spa["canonical"] == canonical_origin + after, f"SPA canonical mismatch: {spa}")
-            assert_true(spa["header"] == 1 and spa["footer"] == 1 and spa["next"] and len(spa["body"]) > 20,
-                        f"SPA DOM/shell failed: {spa}")
+            chrome.evaluate("document.querySelector('.next-page').click();true")
+            wait_for_spa_transition(chrome, before, base, locale, canonical_origin)
 
         mobile_routes = (("/", "/"), ("/tour/", "/tour/welcome/1"), ("/tour/list", "/tour/list"),
                          ("/tour/welcome/1", "/tour/welcome/1"), ("/tour/moretypes/1", "/tour/moretypes/1"))
