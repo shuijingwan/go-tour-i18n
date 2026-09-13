@@ -37,6 +37,8 @@ READ_ATTEMPTS = 3
 POLL_ATTEMPTS = 10
 RECONCILE_ATTEMPTS = 3
 RECONCILE_WINDOW_SECONDS = 180
+REMOTE_FORWARD_ATTEMPTS = 3
+REMOTE_FORWARD_COLLISION = "remote port forwarding failed for listen port"
 SHARED_ASSETS_RECEIPT_V1 = "go-tour-i18n/shared-assets-production-receipt/v1"
 SHARED_ASSETS_RECEIPT_V2 = "go-tour-i18n/shared-assets-production-receipt/v2"
 SHARED_ASSETS_BOUNDARY_PATHS = [
@@ -590,6 +592,60 @@ def _free_port():
         listener.close()
 
 
+def _close_ssh_control(host, options):
+    try:
+        subprocess.run(["ssh"] + options + ["-O", "exit", host], stdout=subprocess.DEVNULL,
+                       stderr=subprocess.DEVNULL, check=False, timeout=10)
+    except (OSError, subprocess.SubprocessError):
+        pass
+
+
+def _new_remote_port(used):
+    for _ in range(REMOTE_FORWARD_ATTEMPTS):
+        candidate = _free_port()
+        if candidate not in used:
+            return candidate
+    raise CDNError("could not select a new reverse-forward candidate port")
+
+
+def _open_aliyun_reverse_forward(base, temp, aliyun, local_port):
+    used = set()
+    for attempt in range(REMOTE_FORWARD_ATTEMPTS):
+        aliyun_port = _new_remote_port(used)
+        used.add(aliyun_port)
+        control = temp / ("aliyun-%d.control" % (attempt + 1))
+        options = base + ["-o", "ControlMaster=yes", "-o", "ControlPersist=yes",
+                          "-o", "ExitOnForwardFailure=yes", "-o", "GatewayPorts=no",
+                          "-o", "ControlPath=" + str(control)]
+        command = (["ssh"] + options + ["-f", "-N", "-R",
+                   "127.0.0.1:%d:127.0.0.1:%d" % (aliyun_port, local_port), aliyun])
+        try:
+            completed = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                                       text=True, check=False, timeout=30)
+        except (OSError, subprocess.SubprocessError):
+            _close_ssh_control(aliyun, options)
+            raise
+        if completed.returncode == 0:
+            return options, aliyun_port
+        _close_ssh_control(aliyun, options)
+        stderr = completed.stderr or ""
+        collision = (completed.returncode == 255 and
+                     (REMOTE_FORWARD_COLLISION + " %d" % aliyun_port) in stderr)
+        if collision and attempt + 1 < REMOTE_FORWARD_ATTEMPTS:
+            print("[production-cdn] remote reverse-forward port collision; retrying with a new candidate (%d/%d)" %
+                  (attempt + 1, REMOTE_FORWARD_ATTEMPTS), file=sys.stderr)
+            continue
+        if collision:
+            raise CDNError("remote reverse-forward port collision retry exhausted after %d attempts" %
+                           REMOTE_FORWARD_ATTEMPTS)
+        if stderr:
+            sys.stderr.write(stderr)
+            if not stderr.endswith("\n"):
+                sys.stderr.write("\n")
+        raise CDNError("remote reverse forwarding failed (exit %d)" % completed.returncode)
+    raise CDNError("remote reverse-forward setup did not complete")
+
+
 def _run_remote_config(shared, config):
     action = config["action"]
     provider = config["provider"]
@@ -601,14 +657,12 @@ def _run_remote_config(shared, config):
     try:
         aliyun_options = list(base)
         if provider == "cloudflare":
-            local_port, aliyun_port = _free_port(), _free_port()
+            local_port = _free_port()
             zcontrol = temp / "zgocloud.control"
-            acontrol = temp / "aliyun.control"
             zoptions = base + ["-o", "ControlMaster=yes", "-o", "ControlPersist=yes", "-o", "ExitOnForwardFailure=yes", "-o", "ControlPath=" + str(zcontrol)]
-            aliyun_options = base + ["-o", "ControlMaster=yes", "-o", "ControlPersist=yes", "-o", "ExitOnForwardFailure=yes", "-o", "GatewayPorts=no", "-o", "ControlPath=" + str(acontrol)]
             subprocess.run(["ssh"] + zoptions + ["-f", "-N", "-D", "127.0.0.1:%d" % local_port, shared["zgocloud_ssh_alias"]], check=True, timeout=30)
             controls.append((shared["zgocloud_ssh_alias"], zoptions))
-            subprocess.run(["ssh"] + aliyun_options + ["-f", "-N", "-R", "127.0.0.1:%d:127.0.0.1:%d" % (aliyun_port, local_port), aliyun], check=True, timeout=30)
+            aliyun_options, aliyun_port = _open_aliyun_reverse_forward(base, temp, aliyun, local_port)
             controls.append((aliyun, aliyun_options))
             config["socks"] = "127.0.0.1:%d" % aliyun_port
         encoded = base64.b64encode(_json_bytes(config)).decode("ascii")
@@ -626,8 +680,7 @@ def _run_remote_config(shared, config):
             raise CDNError("remote CDN %s failed (exit %d)" % (action, result.returncode))
     finally:
         for host, options in reversed(controls):
-            subprocess.run(["ssh"] + options + ["-O", "exit", host], stdout=subprocess.DEVNULL,
-                           stderr=subprocess.DEVNULL, check=False)
+            _close_ssh_control(host, options)
         shutil.rmtree(str(temp), ignore_errors=True)
 
 

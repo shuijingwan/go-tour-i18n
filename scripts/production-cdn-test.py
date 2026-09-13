@@ -9,6 +9,7 @@ import json
 import os
 import pathlib
 import stat
+import subprocess
 import tempfile
 import unittest
 from contextlib import redirect_stdout
@@ -404,6 +405,69 @@ class ProductionCDNTest(unittest.TestCase):
             client.resolve_zone("example.com")
         self.assertEqual(len(transport.calls), CDN.READ_ATTEMPTS)
         self.assertNotIn("DO-NOT-LOG", str(raised.exception))
+
+    def test_reverse_forward_retries_explicit_port_collision_then_succeeds(self):
+        calls = []
+        results = [
+            subprocess.CompletedProcess([], 255, stdout="", stderr=
+                                        "Error: remote port forwarding failed for listen port 39809\n"),
+            subprocess.CompletedProcess([], 0, stdout="", stderr=""),
+        ]
+
+        def run(command, **kwargs):
+            calls.append((command, kwargs))
+            if "-O" in command:
+                return subprocess.CompletedProcess(command, 0)
+            return results.pop(0)
+
+        with tempfile.TemporaryDirectory() as directory, \
+                mock.patch.object(CDN, "_free_port", side_effect=[39809, 39810]), \
+                mock.patch.object(CDN.subprocess, "run", side_effect=run):
+            options, port = CDN._open_aliyun_reverse_forward([], pathlib.Path(directory), "aliyun", 1080)
+        forwards = [command for command, _ in calls if "-R" in command]
+        cleanup = [command for command, _ in calls if "-O" in command]
+        self.assertEqual(port, 39810)
+        self.assertEqual(len(forwards), 2)
+        self.assertIn("127.0.0.1:39809:127.0.0.1:1080", forwards[0])
+        self.assertIn("127.0.0.1:39810:127.0.0.1:1080", forwards[1])
+        self.assertEqual(len(cleanup), 1)
+        self.assertIn("ControlPath=" + str(pathlib.Path(directory) / "aliyun-2.control"), options)
+
+    def test_reverse_forward_collision_retry_is_bounded_and_fails_closed(self):
+        calls = []
+
+        def run(command, **kwargs):
+            calls.append((command, kwargs))
+            if "-O" in command:
+                return subprocess.CompletedProcess(command, 0)
+            port = next(value for value in command if value.startswith("127.0.0.1:")).split(":", 2)[1]
+            return subprocess.CompletedProcess(command, 255, stdout="", stderr=
+                                               "Error: remote port forwarding failed for listen port %s\n" % port)
+
+        with tempfile.TemporaryDirectory() as directory, \
+                mock.patch.object(CDN, "_free_port", side_effect=[39809, 39810, 39811]), \
+                mock.patch.object(CDN.subprocess, "run", side_effect=run), \
+                self.assertRaisesRegex(CDN.CDNError, "retry exhausted after 3 attempts"):
+            CDN._open_aliyun_reverse_forward([], pathlib.Path(directory), "aliyun", 1080)
+        self.assertEqual(sum("-R" in command for command, _ in calls), CDN.REMOTE_FORWARD_ATTEMPTS)
+        self.assertEqual(sum("-O" in command for command, _ in calls), CDN.REMOTE_FORWARD_ATTEMPTS)
+
+    def test_reverse_forward_non_collision_ssh_failure_does_not_retry(self):
+        calls = []
+
+        def run(command, **kwargs):
+            calls.append((command, kwargs))
+            if "-O" in command:
+                return subprocess.CompletedProcess(command, 0)
+            return subprocess.CompletedProcess(command, 255, stdout="", stderr="Permission denied (publickey).\n")
+
+        with tempfile.TemporaryDirectory() as directory, \
+                mock.patch.object(CDN, "_free_port", return_value=39809), \
+                mock.patch.object(CDN.subprocess, "run", side_effect=run), \
+                self.assertRaisesRegex(CDN.CDNError, r"remote reverse forwarding failed \(exit 255\)"):
+            CDN._open_aliyun_reverse_forward([], pathlib.Path(directory), "aliyun", 1080)
+        self.assertEqual(sum("-R" in command for command, _ in calls), 1)
+        self.assertEqual(sum("-O" in command for command, _ in calls), 1)
 
     def test_edgeone_read_only_preflight_never_creates_task_and_prints_no_secret(self):
         config = {"provider": "edgeone", "action": "preflight", "hostname": "www.example.com",

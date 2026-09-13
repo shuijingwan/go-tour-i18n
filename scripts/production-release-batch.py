@@ -418,6 +418,15 @@ class ReleaseBatch:
             raise ReleaseBatchError("maintenance-preflight", str(exc)) from exc
         return {str(item.release_dir) for item in batch.items if item.receipt.get("result") == "passed"}
 
+    def _maintenance_complete_snapshot(self):
+        releases = [item["release_dir"] for item in self.publish_result["releases"]]
+        try:
+            batch = MAINTENANCE.Batch(releases)
+        except (MAINTENANCE.BatchError, MAINTENANCE.CORE.MaintenanceProductionError,
+                MAINTENANCE.CORE.IDENTITY.IdentityError) as exc:
+            raise ReleaseBatchError("maintenance-preflight", str(exc)) from exc
+        return {str(item.release_dir) for item in batch.items if item.receipt.get("result") == "passed"}
+
     def _refresh_maintenance_status(self):
         complete = 0
         seen = 0
@@ -482,7 +491,10 @@ class ReleaseBatch:
         if self.needs_shared_assets:
             self._read_shared_summary()
         self._refresh_maintenance_status()
-        already_complete = self._maintenance_preflight() or set()
+        # No Production mutation occurs between this local receipt snapshot and
+        # the standalone batch. The batch remains the sole full authority gate
+        # for maintenance-only recovery and always runs its own preflight.
+        already_complete = self._maintenance_complete_snapshot() or set()
         releases = [item["release_dir"] for item in self.publish_result["releases"]]
         self.maintenance_started = True
         try:

@@ -167,6 +167,22 @@ class ProductionReleaseBatchTest(unittest.TestCase):
         batch.assert_called_once_with(expected)
         batch.return_value.preflight.assert_called_once_with()
 
+    def test_maintenance_complete_snapshot_never_runs_authority_preflight(self):
+        workflow = self.workflow(["de-DE", "zh-CN"])
+        workflow.publish_result = self.create_publish_result(workflow)
+        expected = [item["release_dir"] for item in workflow.publish_result["releases"]]
+        complete = mock.Mock()
+        complete.release_dir = pathlib.Path(expected[0])
+        complete.receipt = {"result": "passed"}
+        incomplete = mock.Mock()
+        incomplete.release_dir = pathlib.Path(expected[1])
+        incomplete.receipt = {"result": "failed"}
+        with mock.patch.object(MODULE.MAINTENANCE, "Batch") as batch:
+            batch.return_value.items = [complete, incomplete]
+            self.assertEqual(workflow._maintenance_complete_snapshot(), {expected[0]})
+        batch.assert_called_once_with(expected)
+        batch.return_value.preflight.assert_not_called()
+
     def test_publish_failure_stops_all_production_work(self):
         workflow = self.workflow(["de-DE"])
         calls = []
@@ -384,10 +400,13 @@ class ProductionReleaseBatchTest(unittest.TestCase):
 
         with mock.patch.object(resumed, "_run", side_effect=run), \
                 mock.patch.object(resumed, "_repository_identity", return_value=RECOVERY_HEAD), \
-                mock.patch.object(resumed, "_maintenance_preflight", return_value=set()), \
+                mock.patch.object(resumed, "_maintenance_complete_snapshot", return_value=set()) as snapshot, \
+                mock.patch.object(resumed, "_maintenance_preflight") as duplicate_preflight, \
                 contextlib.redirect_stdout(io.StringIO()):
             resumed.execute_maintenance_recovery()
         self.assertEqual([stage for stage, _ in calls], ["resume-assets-validate", "maintenance"])
+        snapshot.assert_called_once_with()
+        duplicate_preflight.assert_not_called()
         self.assertEqual(calls[-1][1][1:], [item["release_dir"] for item in resumed.publish_result["releases"]])
         self.assertEqual(MODULE.parse_args(["--resume-maintenance", str(state_path)]).resume_maintenance,
                          str(state_path))
@@ -497,7 +516,7 @@ class ProductionReleaseBatchTest(unittest.TestCase):
 
         with mock.patch.object(resumed, "_run", side_effect=run), \
                 mock.patch.object(resumed, "_repository_identity", return_value=RECOVERY_HEAD), \
-                mock.patch.object(resumed, "_maintenance_preflight", return_value=set()), \
+                mock.patch.object(resumed, "_maintenance_complete_snapshot", return_value=set()), \
                 self.assertRaises(MODULE.ReleaseBatchError) as raised:
             resumed.execute_maintenance_recovery()
         failure = io.StringIO()
