@@ -46,6 +46,10 @@ python3 scripts/production-identity.py list --state live
 - 非中文 `*-go-dev.shuijingwanwq.com`：复用上述共享 Cloudflare Cache Rule；首页 `/` 与课程页 `/tour/welcome/1` 均按正式 machine gate 验收。
 - `assets-go-dev.shuijingwanwq.com`：复用上述共享 Cloudflare Cache Rule；shared-assets 按正式 receipt 的实际 changed paths 自动做精确 URL purge。
 
+截至 2026-09-13，Cloudflare community locale 已启用 Smart Tiered Cache，Zone 的 Tiered Cache Topology 为 `Active`；这是当前已验证的 Production baseline。其目的在于减少不同 edge 的 cold MISS 各自直接建立到中国内地阿里云源站的回源连接，改善 Cloudflare → 阿里云内地源站路径的稳定性。当前使用 Smart Tiered Cache，不配置 Alibaba Cloud 的 cloud region hint，也不使用 Enterprise-only custom topology；这不改变既有共享 Cache Rule、language hostname purge、shared-assets changed-URL 精确 purge 或 verifier gate。
+
+Smart Tiered Cache 不是 cache warm-up 保证，也不能替代正式 machine/browser acceptance。language hostname purge 后仍须通过当前正式 verifier gate；等待一段时间本身不证明缓存已经 `HIT`。2026-09-13 启用后，针对此前失败的 Angular partial fresh MISS 只读复测为 10/10 HTTP 200、单次约 0.3–0.4 秒，后续正式 production maintenance 的全部 locale 最终通过 machine/browser acceptance；这些是当次 Production evidence，不构成永久的延迟、命中率或可用性保证。
+
 language production 使用固定 URL，因此 release 更新后不能等待约 1 个月自然过期。zh-CN profile 激活后应对 EdgeOne 执行其 hostname 缓存刷新；Cloudflare community profile 激活后应按其 formal production hostname 执行 Cloudflare Custom Purge。不得为刷新单一 language hostname 使用会影响同 zone 其他 hostname 的 Purge Everything。shared-assets 继续使用 automatic changed-URL 精确 purge 流程，不改为整 hostname purge。
 
 hostname purge 后观察到 `MISS → HIT` 是理想结果，但真实 CDN 可能在连续多次请求中仍返回 `MISS`，因此 language production 的 machine gate 不以固定次数内出现 `HIT` 或任何固定 cache status 时序作为通过条件。真实公网 `CF-Cache-Status` 是唯一正式 cache eligibility machine gate：`MISS`、`HIT`、`EXPIRED`、`REVALIDATED`、`UPDATING`、`STALE` 通过；`DYNAMIC`、`BYPASS`、header 缺失及未知值 fail closed。
