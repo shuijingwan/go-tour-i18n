@@ -70,6 +70,7 @@ PROJECT_TRANSIENT_NETWORK_ERRORS = {
     "net::ERR_QUIC_PROTOCOL_ERROR",
 }
 PROJECT_REQUIRED_RESOURCE_TYPES = {"Document", "Script", "Stylesheet", "XHR", "Fetch"}
+DOCUMENT_RESPONSE_HEADERS = {"cf-cache-status", "age", "cf-ray", "content-type", "cache-control"}
 
 
 def locale_list_metadata(locale):
@@ -238,6 +239,7 @@ class Chrome:
         self.events = []
         self.session_id = None
         self.current_route = "about:blank"
+        self.current_navigation = {"requested_url": "about:blank"}
         target = self.call("Target.createTarget", {"url": "about:blank"})["targetId"]
         self.session_id = self.call("Target.attachToTarget", {"targetId": target, "flatten": True})["sessionId"]
         self.call("Page.enable")
@@ -320,8 +322,12 @@ class Chrome:
         navigation = {}
         for attempt in range(1, RENDER_ATTEMPTS + 1):
             self.events.clear()
+            self.current_navigation = {"requested_url": url, "attempt": attempt}
             try:
                 navigation = self.call("Page.navigate", {"url": url}, timeout=NAVIGATION_COMMAND_TIMEOUT)
+                self.current_navigation.update({
+                    key: navigation[key] for key in ("loaderId", "frameId") if key in navigation
+                })
                 ready, last = self.render_readiness()
             except BrowserFailure as exc:
                 ready = False
@@ -356,6 +362,56 @@ class Chrome:
             if request_id in requests:
                 requests[request_id]["headers"] = {**requests[request_id].get("headers", {}), **headers}
         return list(requests.values())
+
+    def main_document_response_evidence(self):
+        """Return bounded, allowlisted evidence from the current main Document events."""
+        navigation = dict(getattr(self, "current_navigation", {}) or {})
+        loader_id = navigation.get("loaderId")
+        frame_id = navigation.get("frameId")
+        requests = {}
+        responses = []
+        for event in self.events:
+            method = event.get("method")
+            params = event.get("params", {})
+            if params.get("type") != "Document":
+                continue
+            if method == "Network.requestWillBeSent":
+                requests[params.get("requestId")] = params
+            elif method == "Network.responseReceived":
+                responses.append(params)
+        if loader_id:
+            responses = [params for params in responses if params.get("loaderId") == loader_id]
+        elif frame_id:
+            responses = [params for params in responses if params.get("frameId") == frame_id]
+        elif len(responses) != 1:
+            responses = []
+        evidence = {
+            "requested_url": navigation.get("requested_url"),
+            "loader_id": loader_id,
+            "frame_id": frame_id,
+        }
+        if not responses:
+            evidence["response_event"] = "missing"
+            return evidence
+        params = responses[-1]
+        response = params.get("response", {})
+        request_id = params.get("requestId")
+        request = requests.get(request_id, {}).get("request", {})
+        headers = {}
+        for name, value in response.get("headers", {}).items():
+            normalized = str(name).lower()
+            if normalized in DOCUMENT_RESPONSE_HEADERS:
+                headers[normalized] = str(value)[:512]
+        evidence.update({
+            "request_id": request_id,
+            "loader_id": params.get("loaderId") or loader_id,
+            "frame_id": params.get("frameId") or frame_id,
+            "request_url": request.get("url"),
+            "final_response_url": response.get("url"),
+            "http_status": response.get("status"),
+            "response_headers": headers,
+        })
+        return evidence
 
     def project_network_transients(self, origins):
         """Return required project-resource transport evidence for this page.
@@ -567,17 +623,39 @@ PAGE_IDENTITY_EXPRESSION = """(() => ({
 }))()"""
 
 
-def validate_identity_invariants(identity, base, locale, requested_path):
+def identity_failure_evidence(chrome, identity):
+    document = {}
+    if isinstance(identity, dict):
+        for key in ("lang", "href", "origin", "path", "canonical", "title", "description",
+                    "renderedRoute", "heading"):
+            if key in identity:
+                value = identity[key]
+                document[key] = value[:512] if isinstance(value, str) else value
+    network = {"response_event": "unavailable"}
+    collector = getattr(chrome, "main_document_response_evidence", None) if chrome is not None else None
+    if callable(collector):
+        try:
+            candidate = collector()
+        except Exception as exc:
+            network = {"collection_error": str(exc)[:512]}
+        else:
+            if isinstance(candidate, dict):
+                network = candidate
+    return {"network": network, "document": document}
+
+
+def validate_identity_invariants(identity, base, locale, requested_path, chrome=None):
     if not isinstance(identity, dict):
         raise PermanentBrowserFailure(f"{requested_path}: page identity snapshot is not an object: {identity!r}")
     if identity.get("lang") != locale:
         raise PermanentBrowserFailure(
-            f"{requested_path}: html lang mismatch: expected={locale} actual={identity.get('lang')}"
+            f"{requested_path}: html lang mismatch: expected={locale} actual={identity.get('lang')}; "
+            f"mainDocument={identity_failure_evidence(chrome, identity)!r}"
         )
     if identity.get("origin") != base.rstrip("/"):
         raise PermanentBrowserFailure(
             f"{requested_path}: production hostname mismatch: expected={base.rstrip('/')} "
-            f"actual={identity.get('origin')}"
+            f"actual={identity.get('origin')}; mainDocument={identity_failure_evidence(chrome, identity)!r}"
         )
 
 
@@ -599,7 +677,7 @@ def wait_for_rendered_identity(chrome, base, locale, requested_path, canonical_o
         else:
             # lang/origin are shell identity, not route-hydration state.  They
             # must never become reload/retry candidates.
-            validate_identity_invariants(last, base, locale, requested_path)
+            validate_identity_invariants(last, base, locale, requested_path, chrome)
             try:
                 validate_rendered_identity(last, base, locale, requested_path, expected_final_path,
                                            canonical_origin, expected_rendered_route, expected_description)
@@ -696,7 +774,7 @@ def wait_for_spa_transition(chrome, before, base, locale, canonical_origin, time
           body: (document.body?.innerText || '').trim(),
           mounts: document.querySelectorAll('[data-go-dev-course-ad]').length
         }))()""", check=f"SPA semantic convergence from {before}")
-        validate_identity_invariants(snapshot, base, locale, before)
+        validate_identity_invariants(snapshot, base, locale, before, chrome)
         assert_true(snapshot["path"] != before, f"SPA route did not change from {before}: {snapshot}")
         assert_true(snapshot["canonical"] == canonical_origin + snapshot["path"],
                     f"SPA canonical mismatch: {snapshot}")
@@ -756,7 +834,7 @@ def acceptance(base, locale, profile, shared, proxy_server=None):
                   current: document.querySelectorAll('.site-language-list [aria-current="page"]').length,
                   links: document.querySelectorAll('.site-language-list a[href]').length
                 }))()""", check="production language selector convergence")
-                validate_identity_invariants(language, base, locale, "/")
+                validate_identity_invariants(language, base, locale, "/", chrome)
                 assert_true(language["count"] >= 2 and language["current"] == 1 and language["links"] >= 1,
                             f"language selector identity failed: {language}")
                 return language

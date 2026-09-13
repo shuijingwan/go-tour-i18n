@@ -379,6 +379,69 @@ class PreviewBrowserTest(unittest.TestCase):
                         "/tour/welcome/1", timeout=100)
                 self.assertEqual(chrome.evaluate.call_count, 1)
 
+    def test_identity_mismatch_includes_sanitized_main_document_evidence(self):
+        for field, value, label in (("lang", "zh", "html lang mismatch"),
+                                    ("origin", "https://wrong.example", "production hostname mismatch")):
+            with self.subTest(field=field):
+                identity = {
+                    "lang": "it-IT", "href": "https://it.example/tour/welcome/1",
+                    "origin": "https://it.example", "path": "/tour/welcome/1",
+                    "canonical": "https://it.example/tour/welcome/1", "title": "Tour italiano",
+                    "description": "Descrizione", "renderedRoute": "/tour/welcome/1",
+                    "heading": "Benvenuti",
+                }
+                identity[field] = value
+                chrome = CORE.Chrome.__new__(CORE.Chrome)
+                chrome.current_navigation = {
+                    "requested_url": "https://it.example/tour/welcome/1",
+                    "attempt": 1, "loaderId": "loader-main", "frameId": "frame-main",
+                }
+                chrome.events = [
+                    {"method": "Network.requestWillBeSent", "params": {
+                        "requestId": "document-main", "loaderId": "loader-main", "frameId": "frame-main",
+                        "type": "Document", "request": {
+                            "url": "https://it.example/tour/welcome/1",
+                            "headers": {"Cookie": "request-secret", "Authorization": "Bearer request-secret"},
+                        },
+                    }},
+                    {"method": "Network.responseReceived", "params": {
+                        "requestId": "document-main", "loaderId": "loader-main", "frameId": "frame-main",
+                        "type": "Document", "response": {
+                            "url": "https://it.example/tour/welcome/1", "status": 200,
+                            "headers": {
+                                "CF-Cache-Status": "HIT", "Age": "42", "CF-Ray": "ray-test",
+                                "Content-Type": "text/html; charset=utf-8", "Cache-Control": "public, max-age=60",
+                                "Set-Cookie": "response-secret", "Authorization": "Bearer response-secret",
+                                "Cookie": "response-cookie-secret",
+                            },
+                        },
+                    }},
+                ]
+                chrome.evaluate = mock.Mock(return_value=identity)
+                with self.assertRaises(CORE.PermanentBrowserFailure) as caught:
+                    CORE.wait_for_rendered_identity(
+                        chrome, "https://it.example/", "it-IT", "/tour/welcome/1",
+                        "https://it.example", "/tour/welcome/1", "/tour/welcome/1", timeout=100)
+                self.assertEqual(chrome.evaluate.call_count, 1)
+                evidence = str(caught.exception)
+                for expected in (
+                        label, "requested_url", "https://it.example/tour/welcome/1", "final_response_url",
+                        "http_status': 200", "request_id': 'document-main", "loader_id': 'loader-main",
+                        "cf-cache-status': 'HIT", "age': '42", "cf-ray': 'ray-test",
+                        "content-type': 'text/html; charset=utf-8", "cache-control': 'public, max-age=60",
+                        "canonical': 'https://it.example/tour/welcome/1", "title': 'Tour italiano'",
+                        "description': 'Descrizione'", "heading': 'Benvenuti'"):
+                    self.assertIn(expected, evidence)
+                for forbidden in ("Cookie", "Authorization", "Set-Cookie", "request-secret",
+                                  "response-secret", "response-cookie-secret"):
+                    self.assertNotIn(forbidden, evidence)
+
+    def test_matching_identity_does_not_collect_failure_evidence(self):
+        chrome = mock.Mock()
+        identity = {"lang": "it-IT", "origin": "https://it.example"}
+        CORE.validate_identity_invariants(identity, "https://it.example/", "it-IT", "/", chrome)
+        chrome.main_document_response_evidence.assert_not_called()
+
     def test_spa_transition_waits_for_route_and_canonical_together(self):
         stale = {"lang": "ko-KR", "origin": "http://127.0.0.1:38573",
                  "path": "/tour/basics/12", "canonical": "https://ko.example/tour/basics/11",

@@ -319,7 +319,7 @@ printf 200
         for evidence in (
             "formatted !=", "Reset did not restore Angular model", "Reset did not restore CodeMirror view",
             "Run produced no browser-visible expected result",
-            "Playground POST Origin mismatch", "SPA next-page transition did not change route",
+            "Playground POST Origin mismatch", "SPA route did not change from",
             "unexpected page-level horizontal overflow", 'identity["canonical"] == expected_canonical',
             'identity["origin"] == base.rstrip("/")',
         ):
