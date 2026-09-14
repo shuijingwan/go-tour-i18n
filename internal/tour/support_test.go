@@ -340,25 +340,27 @@ func TestSupportCopyStylesKeepIconAndLongValuesAccessible(t *testing.T) {
 	}
 }
 
-func TestREADMEContainsCompleteProjectSupportMethods(t *testing.T) {
-	data, err := os.ReadFile(filepath.Join("..", "..", "README.md"))
-	if err != nil {
-		t.Fatal(err)
-	}
-	readme := string(data)
-	for _, want := range []string{
-		"微信支付", "支付宝", "_content/images/support/wechat.png", "_content/images/support/alipay.png",
-		"USDC", "Base", "0x225f14d54683b1f5bc153bc8a678cad0277096d3", "0.01 USDC",
-		"USDT", "Tron (TRC20)", "TF2bM817pLQeN1Ykt3GEecRbTjuSsWtGdK", "0.1 USDT",
-		"Binance", "1055351242", "OKX", "231321605530361856", "go-dev-project",
-	} {
-		if !strings.Contains(readme, want) {
-			t.Errorf("README support section does not contain %q", want)
+func TestREADMEsContainCompleteProjectSupportMethods(t *testing.T) {
+	for _, name := range []string{"README.md", "README.en.md"} {
+		data, err := os.ReadFile(filepath.Join("..", "..", name))
+		if err != nil {
+			t.Fatal(err)
 		}
-	}
-	for _, forbidden := range []string{"Binance Pay", "云闪付", "Wise", "Patreon"} {
-		if strings.Contains(readme, forbidden) {
-			t.Errorf("README unexpectedly contains %q", forbidden)
+		readme := string(data)
+		for _, want := range []string{
+			"_content/images/support/wechat.png", "_content/images/support/alipay.png", `width="300"`,
+			"USDC", "Base", "0x225f14d54683b1f5bc153bc8a678cad0277096d3", "0.01 USDC",
+			"USDT", "Tron (TRC20)", "TF2bM817pLQeN1Ykt3GEecRbTjuSsWtGdK", "0.1 USDT",
+			"Binance", "1055351242", "OKX", "231321605530361856", "go-dev-project",
+		} {
+			if !strings.Contains(readme, want) {
+				t.Errorf("%s support section does not contain %q", name, want)
+			}
+		}
+		for _, forbidden := range []string{"Binance Pay", "云闪付", "Wise", "Patreon"} {
+			if strings.Contains(readme, forbidden) {
+				t.Errorf("%s unexpectedly contains %q", name, forbidden)
+			}
 		}
 	}
 }

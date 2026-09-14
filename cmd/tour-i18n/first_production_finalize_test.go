@@ -20,6 +20,7 @@ func finalizeFixture(t *testing.T) (string, *i18n.Catalog, string, string, strin
 		"production/identity.json":       "{\n  \"locales\": [\n    {\"locale\": \"other-AA\", \"production_hostname\": \"other.example\", \"production_public_url\": \"https://other.example/\", \"production_state\": \"first-production\"},\n    {\n      \"locale\": \"zz-ZZ\",\n      \"production_hostname\": \"zz.example\",\n      \"production_public_url\": \"https://zz.example/\",\n      \"production_state\": \"first-production\"\n    }\n  ]\n}\n",
 		"scripts/production-identity.py": "#!/usr/bin/env python3\n",
 		"README.md":                      "# README\n\n<!-- live-locales:start -->\nold\n<!-- live-locales:end -->\n",
+		"README.en.md":                   "# English README\n\n<!-- live-locales:start -->\nold\n<!-- live-locales:end -->\n",
 	} {
 		full := filepath.Join(root, path)
 		if err := os.MkdirAll(filepath.Dir(full), 0755); err != nil {
@@ -29,15 +30,24 @@ func finalizeFixture(t *testing.T) (string, *i18n.Catalog, string, string, strin
 			t.Fatal(err)
 		}
 	}
-	originalProjector := projectFinalizationREADME
-	projectFinalizationREADME = func(projectRoot string, identity []byte) ([]byte, error) {
-		readme, err := os.ReadFile(filepath.Join(projectRoot, "README.md"))
-		if err != nil {
-			return nil, err
+	originalProjector := projectFinalizationREADMEs
+	projectFinalizationREADMEs = func(projectRoot string, identity []byte) ([]readmeProjection, error) {
+		var projections []readmeProjection
+		for _, name := range []string{"README.md", "README.en.md"} {
+			path := filepath.Join(projectRoot, name)
+			readme, err := os.ReadFile(path)
+			if err != nil {
+				return nil, err
+			}
+			projected, err := projectLiveLocales(readme, identity, []tour.LanguageLink{{Locale: "zz-ZZ", EnglishName: "Test", Autonym: "Test language", URL: "https://zz.example/"}})
+			if err != nil {
+				return nil, err
+			}
+			projections = append(projections, readmeProjection{Path: path, Old: readme, New: projected})
 		}
-		return projectLiveLocales(readme, identity, []tour.LanguageLink{{Locale: "zz-ZZ", EnglishName: "Test", Autonym: "Test language", URL: "https://zz.example/"}})
+		return projections, nil
 	}
-	t.Cleanup(func() { projectFinalizationREADME = originalProjector })
+	t.Cleanup(func() { projectFinalizationREADMEs = originalProjector })
 	catalog := &i18n.Catalog{Pages: []i18n.Page{{ID: "lesson/1", Source: []byte("source")}}}
 	evidence := filepath.Join(root, "data", "locale-surface-reviews", "zz-ZZ", "review-1.md")
 	if err := os.MkdirAll(filepath.Dir(evidence), 0755); err != nil {
@@ -219,9 +229,11 @@ func TestFirstProductionFinalizeWithoutHumanGateAndAtomicTransition(t *testing.T
 	if strings.Contains(string(result), "visual HUMAN") || strings.Contains(string(result), "`PENDING`") {
 		t.Fatal("evidence was not finalized")
 	}
-	readme, _ := os.ReadFile(filepath.Join(root, "README.md"))
-	if !strings.Contains(string(readme), "[Test — Test language](https://zz.example/)") {
-		t.Fatal("README was not projected from candidate live identity")
+	for _, name := range []string{"README.md", "README.en.md"} {
+		readme, _ := os.ReadFile(filepath.Join(root, name))
+		if !strings.Contains(string(readme), "[Test — Test language](https://zz.example/)") {
+			t.Fatalf("%s was not projected from candidate live identity", name)
+		}
 	}
 	if err := i18n.RequireCurrentLocaleSurfaceReviewA(root, "zz-ZZ", catalog); err != nil {
 		t.Fatalf("v2 A gate became stale after lifecycle-only finalization: %v", err)
@@ -288,7 +300,7 @@ func TestProjectLiveLocalesFailsClosed(t *testing.T) {
 	}
 }
 
-func TestProjectRootREADMEMatchesCheckedInProjection(t *testing.T) {
+func TestProjectRootREADMEsMatchCheckedInProjection(t *testing.T) {
 	root, err := filepath.Abs(filepath.Join("..", ".."))
 	if err != nil {
 		t.Fatal(err)
@@ -297,16 +309,17 @@ func TestProjectRootREADMEMatchesCheckedInProjection(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	got, err := projectRootREADME(root, identity)
+	got, err := projectRootREADMEs(root, identity)
 	if err != nil {
 		t.Fatal(err)
 	}
-	want, err := os.ReadFile(filepath.Join(root, "README.md"))
-	if err != nil {
-		t.Fatal(err)
+	if len(got) != 2 {
+		t.Fatalf("README projections = %d, want 2", len(got))
 	}
-	if !bytes.Equal(got, want) {
-		t.Fatal("checked-in README live locale projection is stale")
+	for _, projection := range got {
+		if !bytes.Equal(projection.New, projection.Old) {
+			t.Fatalf("checked-in %s live locale projection is stale", filepath.Base(projection.Path))
+		}
 	}
 }
 
@@ -321,7 +334,10 @@ func TestFirstProductionFinalizeRejectsStaleGateAndValidationRollback(t *testing
 	root, catalog, release, _, evidence = finalizeFixture(t)
 	oldEvidence, _ := os.ReadFile(evidence)
 	oldIdentity, _ := os.ReadFile(filepath.Join(root, "production", "identity.json"))
-	oldREADME, _ := os.ReadFile(filepath.Join(root, "README.md"))
+	oldREADMEs := map[string][]byte{}
+	for _, name := range []string{"README.md", "README.en.md"} {
+		oldREADMEs[name], _ = os.ReadFile(filepath.Join(root, name))
+	}
 	calls := 0
 	validator := func(string, string) error {
 		calls++
@@ -335,9 +351,14 @@ func TestFirstProductionFinalizeRejectsStaleGateAndValidationRollback(t *testing
 	}
 	newEvidence, _ := os.ReadFile(evidence)
 	newIdentity, _ := os.ReadFile(filepath.Join(root, "production", "identity.json"))
-	newREADME, _ := os.ReadFile(filepath.Join(root, "README.md"))
-	if !bytes.Equal(oldEvidence, newEvidence) || !bytes.Equal(oldIdentity, newIdentity) || !bytes.Equal(oldREADME, newREADME) {
+	if !bytes.Equal(oldEvidence, newEvidence) || !bytes.Equal(oldIdentity, newIdentity) {
 		t.Fatal("validation failure left partial finalization")
+	}
+	for name, oldREADME := range oldREADMEs {
+		newREADME, _ := os.ReadFile(filepath.Join(root, name))
+		if !bytes.Equal(oldREADME, newREADME) {
+			t.Fatalf("validation failure left partial finalization in %s", name)
+		}
 	}
 }
 

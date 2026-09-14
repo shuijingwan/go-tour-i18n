@@ -26,7 +26,7 @@ locale / domain / CDN 决策
 → 首次 production 基础设施、部署 profile 与广告接入
 → 最终源站、公网和浏览器上线验收
 → first-production finalize
-→ production_state=live（同时自动更新 README 的 live locale 投影）
+→ production_state=live（同时自动更新中英文 README 的 live locale 投影）
 → search-engine submission closeout（Google → Bing → locale-specific → IndexNow 全站 bootstrap）
 ```
 

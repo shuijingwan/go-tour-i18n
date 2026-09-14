@@ -23,6 +23,12 @@ type readmeProfile struct {
 	URL    string `json:"production_public_url"`
 }
 
+type readmeProjection struct {
+	Path string
+	Old  []byte
+	New  []byte
+}
+
 // projectLiveLocales derives README's community list from the candidate
 // identity and the homepage registry; neither authority is duplicated here.
 func projectLiveLocales(readme, identity []byte, registry []tour.LanguageLink) ([]byte, error) {
@@ -93,10 +99,19 @@ func projectLiveLocales(readme, identity []byte, registry []tour.LanguageLink) (
 	return append(result, readme[end+len(liveLocalesEnd):]...), nil
 }
 
-func projectRootREADME(root string, identity []byte) ([]byte, error) {
-	readme, err := os.ReadFile(filepath.Join(root, "README.md"))
-	if err != nil {
-		return nil, fmt.Errorf("read README: %w", err)
+func projectRootREADMEs(root string, identity []byte) ([]readmeProjection, error) {
+	var projections []readmeProjection
+	for _, name := range []string{"README.md", "README.en.md"} {
+		path := filepath.Join(root, name)
+		old, err := os.ReadFile(path)
+		if err != nil {
+			return nil, fmt.Errorf("read %s: %w", name, err)
+		}
+		projected, err := projectLiveLocales(old, identity, tour.LanguageRegistry())
+		if err != nil {
+			return nil, fmt.Errorf("project %s: %w", name, err)
+		}
+		projections = append(projections, readmeProjection{Path: path, Old: old, New: projected})
 	}
-	return projectLiveLocales(readme, identity, tour.LanguageRegistry())
+	return projections, nil
 }

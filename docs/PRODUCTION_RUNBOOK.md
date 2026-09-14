@@ -264,7 +264,7 @@ go run -mod=readonly ./cmd/tour-i18n first-production finalize \
   --review-id YYYYMMDD-first-production
 ```
 
-finalizer 从 release/receipt 和正式 identity 获取 locale、hostname、release，拒绝调用者重复输入 production identity。它要求 receipt schema 正确、`result=passed`、`public-machine` 和 `browser` 均为 PASS，且当前 Locale Surface Review A gate 仍有效；然后替换 evidence 中唯一且完整的 finalization placeholder，记录 receipt identity、machine/browser passed、无 blocker 和最终 decision；再以 candidate identity 中目标 locale 已为 `live` 的状态，从首页 language registry 生成 README 的 community live locale block。旧的未完成 placeholder 若仍包含 Production visual `PENDING` 字段可安全收口，但新 evidence 不再创建该字段。README 是 derived projection，`production/identity.json` 仍是唯一 Production machine authority；registry URL 与 identity public URL 漂移、缺失或不唯一 join 都会 fail closed。evidence、README 与 identity 原子提交并在最终 identity validation 失败时一并恢复。已 `live` locale 必须拒绝重复 finalize。
+finalizer 从 release/receipt 和正式 identity 获取 locale、hostname、release，拒绝调用者重复输入 production identity。它要求 receipt schema 正确、`result=passed`、`public-machine` 和 `browser` 均为 PASS，且当前 Locale Surface Review A gate 仍有效；然后替换 evidence 中唯一且完整的 finalization placeholder，记录 receipt identity、machine/browser passed、无 blocker 和最终 decision；再以 candidate identity 中目标 locale 已为 `live` 的状态，从首页 language registry 同步生成 `README.md` 与 `README.en.md` 的 community live locale block。旧的未完成 placeholder 若仍包含 Production visual `PENDING` 字段可安全收口，但新 evidence 不再创建该字段。两份 README 都是 derived projection，`production/identity.json` 仍是唯一 Production machine authority；registry URL 与 identity public URL 漂移、缺失或不唯一 join 都会 fail closed。evidence、两份 README 与 identity 原子提交并在最终 identity validation 失败时一并恢复。已 `live` locale 必须拒绝重复 finalize。
 
 成功摘要保持简洁，例如：
 

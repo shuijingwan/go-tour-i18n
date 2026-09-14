@@ -1,5 +1,7 @@
 # go-tour-i18n
 
+**简体中文** | [English](README.en.md)
+
 `go-tour-i18n` 是一个面向多语言扩展的 A Tour of Go 翻译、校验、同步和发布项目。
 
 本项目是社区维护的非官方项目，不由 Google、Go 团队或 go.dev 官方维护，也不表示与官方项目存在隶属、认可或背书关系。原始 A Tour of Go 内容和源码来自 Go 官方上游仓库。
@@ -26,41 +28,6 @@
 - 问题反馈：[GitHub Issues](https://github.com/shuijingwan/go-tour-i18n/issues)
 
 社区语言站的当前 production lifecycle、hostname、CDN 与 service 以 [`production/identity.json`](production/identity.json) 为唯一 machine authority；根路径 `/` 是项目首页，课程位于 `/tour/`。博客页面回链至正式站点和 GitHub 仍由仓库外的博客维护工作完成。
-
-## Support the project
-
-如果你愿意，可以自愿支持整个 go-dev 多语言项目的持续维护和运营成本。
-
-### 微信支付
-
-![微信支付二维码](_content/images/support/wechat.png)
-
-### 支付宝
-
-![支付宝二维码](_content/images/support/alipay.png)
-
-### USDC
-
-- Network: `Base`
-- Address: `0x225f14d54683b1f5bc153bc8a678cad0277096d3`
-- 最低充值：`0.01 USDC`
-
-### USDT
-
-- Network: `Tron (TRC20)`
-- Address: `TF2bM817pLQeN1Ykt3GEecRbTjuSsWtGdK`
-- 最低充值：`0.1 USDT`
-
-USDC 只能通过 Base 网络发送，USDT 只能通过 Tron (TRC20) 网络发送；使用错误的资产或网络可能导致资金损失。
-
-### 平台内转账（可选）
-
-- Binance — UID: `1055351242`
-- OKX — UID: `231321605530361856`
-
-同平台用户可优先使用 UID 站内转账，无需通过链上地址发送；具体可用方式和费用以平台显示为准。
-
-Support reference：`go-dev-project`。如果付款服务支持 note / reference / 备注，可以使用这个值。
 
 ## 当前阶段
 
@@ -317,13 +284,44 @@ go test -mod=readonly -count=1 ./...
 
 - zh-CN 第一阶段已经正式上线；后续工作属于发布后的运维和其他语言扩展，不属于本次上线冻结内容。
 
+## Support the project
+
+如果你愿意，可以自愿支持整个 go-dev 多语言项目的持续维护和运营成本。
+
+### 微信支付
+
+<img src="_content/images/support/wechat.png" alt="微信支付二维码" width="300">
+
+### 支付宝
+
+<img src="_content/images/support/alipay.png" alt="支付宝二维码" width="300">
+
+### USDC
+
+- Network: `Base`
+- Address: `0x225f14d54683b1f5bc153bc8a678cad0277096d3`
+- 最低充值：`0.01 USDC`
+
+### USDT
+
+- Network: `Tron (TRC20)`
+- Address: `TF2bM817pLQeN1Ykt3GEecRbTjuSsWtGdK`
+- 最低充值：`0.1 USDT`
+
+USDC 只能通过 Base 网络发送，USDT 只能通过 Tron (TRC20) 网络发送；使用错误的资产或网络可能导致资金损失。
+
+### 平台内转账（可选）
+
+- Binance — UID: `1055351242`
+- OKX — UID: `231321605530361856`
+
+同平台用户可优先使用 UID 站内转账，无需通过链上地址发送；具体可用方式和费用以平台显示为准。
+
+Support reference：`go-dev-project`。如果付款服务支持 note / reference / 备注，可以使用这个值。
+
 ## 许可证
 
 - 上游原始源码和内容遵循本仓库中的 BSD 风格 [LICENSE](LICENSE)。
 - 本项目自行编写的翻译、工具和文档，除另有说明外，也按照该许可证提供。
 - [PATENTS](PATENTS) 是上游附带的附加知识产权声明，其适用范围以原文为准。
 - 第三方代码和资源适用其各自声明的许可证，不因位于本仓库中而自动适用根 LICENSE。
-
-## English Summary
-
-`go-tour-i18n` is a community-maintained, unofficial multilingual A Tour of Go translation project. The official English Tour baseline has been imported; Simplified Chinese (`zh-CN`) is the first completed locale, with all 103 projected pages ready, 7/7 article metadata entries localized, completed public UI localization, and a successful final browser acceptance pass. The HTTPTransport-based production runtime and deterministic production publish bundle are implemented and deployed at <https://go-dev.shuijingwanwq.com/>.
