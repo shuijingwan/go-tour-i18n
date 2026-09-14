@@ -29,14 +29,38 @@
 
 ## Support the project
 
-如愿意，可以自愿支持整个 go-dev 多语言项目的持续维护：
+如果你愿意，可以自愿支持整个 go-dev 多语言项目的持续维护和运营成本。
 
-- USDC — Network: `Base` — Address: `0x225f14d54683b1f5bc153bc8a678cad0277096d3`
-- USDT — Network: `Tron (TRC20)` — Address: `TF2bM817pLQeN1Ykt3GEecRbTjuSsWtGdK`
+### 微信支付
 
-Support reference：`go-dev-project`。如果付款服务支持 note / reference / 备注，可以使用这个值。
+![微信支付二维码](_content/images/support/wechat.png)
+
+### 支付宝
+
+![支付宝二维码](_content/images/support/alipay.png)
+
+### USDC
+
+- Network: `Base`
+- Address: `0x225f14d54683b1f5bc153bc8a678cad0277096d3`
+- 最低充值：`0.01 USDC`
+
+### USDT
+
+- Network: `Tron (TRC20)`
+- Address: `TF2bM817pLQeN1Ykt3GEecRbTjuSsWtGdK`
+- 最低充值：`0.1 USDT`
 
 USDC 只能通过 Base 网络发送，USDT 只能通过 Tron (TRC20) 网络发送；使用错误的资产或网络可能导致资金损失。
+
+### 平台内转账（可选）
+
+- Binance — UID: `1055351242`
+- OKX — UID: `231321605530361856`
+
+同平台用户可优先使用 UID 站内转账，无需通过链上地址发送；具体可用方式和费用以平台显示为准。
+
+Support reference：`go-dev-project`。如果付款服务支持 note / reference / 备注，可以使用这个值。
 
 ## 当前阶段
 

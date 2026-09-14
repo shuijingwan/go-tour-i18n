@@ -686,7 +686,7 @@ a#run, a#kill {
 }
 .site-main {
     box-sizing: border-box;
-    max-width: 960px;
+    max-width: 1008px;
     margin: 0 auto;
     padding: 40px 24px;
 }
@@ -786,12 +786,24 @@ a#run, a#kill {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    gap: 12px;
+    gap: 4px 12px;
 }
-.support-reference code,
-.support-address {
+.support-value-row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    min-width: 0;
+    width: 100%;
+}
+.support-value-row code {
+    flex: 1 1 auto;
+    min-width: 0;
     overflow-wrap: anywhere;
     word-break: break-word;
+}
+.support-reference .support-value-row {
+    flex: 1 1 240px;
+    width: auto;
 }
 .support-help {
     margin-top: 8px;
@@ -810,6 +822,22 @@ a#run, a#kill {
 }
 .support-payment-card h3 {
     text-align: center;
+}
+.support-platform {
+    margin-top: 28px;
+}
+.support-platform-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+}
+.support-platform-card {
+    min-width: 0;
+    padding: 16px;
+}
+.support-platform-card h4 {
+    margin: 0 0 8px;
 }
 .support-qr-frame {
     display: flex;
@@ -846,20 +874,56 @@ a#run, a#kill {
     display: block;
     user-select: all;
 }
-.support-copy {
-    min-height: 40px;
-    padding: 8px 12px;
-    border: 1px solid #9eb2ba;
-    border-radius: 4px;
-    color: #24434b;
-    background: #eef4f6;
-    cursor: pointer;
-    font: inherit;
+.support-uid {
+    user-select: all;
 }
-.support-copy:hover,
+.support-copy {
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 44px;
+    width: 44px;
+    height: 44px;
+    padding: 10px;
+    border: 0;
+    border-radius: 6px;
+    color: #315663;
+    background: transparent;
+    cursor: pointer;
+}
+.support-copy:hover {
+    color: #007d9c;
+    background: rgba(0, 125, 156, 0.08);
+}
 .support-copy:focus-visible {
-    border-color: #007d9c;
-    background: #e2f0f4;
+    outline: 3px solid #007d9c;
+    outline-offset: 1px;
+}
+.support-copy-icon {
+    display: block;
+    width: 22px;
+    height: 22px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+}
+.support-copy-toast {
+    position: fixed;
+    z-index: 300;
+    left: 50%;
+    bottom: calc(24px + env(safe-area-inset-bottom));
+    max-width: calc(100vw - 32px);
+    padding: 8px 16px;
+    border-radius: 20px;
+    color: #fff;
+    background: #24434b;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.22);
+    transform: translateX(-50%);
+    pointer-events: none;
+}
+.support-copy-toast[hidden] {
+    display: none;
 }
 .support-warning {
     margin-bottom: 0;
@@ -867,6 +931,17 @@ a#run, a#kill {
     font-size: 0.9em;
 }
 @media (min-width: 960px) {
+    .support-payment-grid,
+    .support-platform-grid {
+        gap: 12px;
+    }
+    .support-payment-card {
+        padding-right: 14px;
+        padding-left: 14px;
+    }
+    .support-payment-card .support-value-row {
+        gap: 2px;
+    }
     .support-address {
         font-size: 0.95em;
     }
@@ -888,16 +963,26 @@ a#run, a#kill {
     color: #f0f1f2;
 }
 [data-theme='dark'] .support-copy {
-    border-color: #65747a;
-    color: #f0f1f2;
-    background: #30383b;
+    color: #d8dcde;
+    background: transparent;
 }
-[data-theme='dark'] .support-copy:hover,
+[data-theme='dark'] .support-copy:hover {
+    color: #53b4db;
+    background: rgba(83, 180, 219, 0.12);
+}
 [data-theme='dark'] .support-copy:focus-visible {
-    border-color: #53b4db;
-    background: #39464b;
+    outline-color: #53b4db;
+}
+[data-theme='dark'] .support-copy-toast {
+    color: #171717;
+    background: #f0f1f2;
 }
 @media (max-width: 600px) {
+    .support-copy-toast {
+        top: 50%;
+        bottom: auto;
+        transform: translate(-50%, -50%);
+    }
     .site-header .site-logo {
         margin-right: 0.75rem;
     }
@@ -921,6 +1006,9 @@ a#run, a#kill {
         border-bottom: 0;
     }
     .support-payment-grid {
+        grid-template-columns: 1fr;
+    }
+    .support-platform-grid {
         grid-template-columns: 1fr;
     }
 }

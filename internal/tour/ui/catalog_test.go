@@ -9,7 +9,7 @@ import (
 	"testing/fstest"
 )
 
-const expectedCatalogMessages = 107
+const expectedCatalogMessages = 112
 
 func TestLoadEmbeddedCatalogs(t *testing.T) {
 	for _, locale := range []string{"de-DE", "en", "es-ES", "fr-FR", "it-IT", "ja-JP", "ko-KR", "nl-NL", "pt-BR", "tr-TR", "zh-CN"} {
@@ -75,7 +75,7 @@ func TestBrazilianPortugueseCatalogMatchesEnglishSource(t *testing.T) {
 				t.Errorf("pt-BR rich message %q markup = %q, want %q", key, got, want)
 			}
 		}
-		if message.Text == sourceMessage.Text && key != "footer.github" {
+		if message.Text == sourceMessage.Text && key != "footer.github" && key != "support.uid" {
 			t.Errorf("pt-BR message %q duplicates English source text", key)
 		}
 		if strings.Contains(message.Text, "TODO") {
@@ -179,6 +179,7 @@ func TestTurkishCatalogMatchesEnglishSource(t *testing.T) {
 	allowedUntranslatedNames := map[string]bool{
 		"footer.github":       true,
 		"site.issue_feedback": true,
+		"support.uid":         true,
 	}
 	for key, sourceMessage := range source.Messages {
 		message := turkish.Messages[key]
@@ -255,6 +256,7 @@ func TestFrenchCatalogMatchesEnglishSource(t *testing.T) {
 	allowedUntranslatedNames := map[string]bool{
 		"site.issue_feedback": true,
 		"footer.github":       true,
+		"support.uid":         true,
 	}
 	for key, sourceMessage := range source.Messages {
 		frenchMessage := french.Messages[key]
@@ -296,6 +298,7 @@ func TestGermanCatalogMatchesEnglishSource(t *testing.T) {
 		"module.generics.title": true,
 		"site.issue_feedback":   true,
 		"footer.github":         true,
+		"support.uid":           true,
 	}
 	for key, sourceMessage := range source.Messages {
 		germanMessage := german.Messages[key]
@@ -334,6 +337,7 @@ func TestJapaneseCatalogMatchesEnglishSource(t *testing.T) {
 	allowedUntranslatedNames := map[string]bool{
 		"site.issue_feedback": true,
 		"footer.github":       true,
+		"support.uid":         true,
 	}
 	for key, sourceMessage := range source.Messages {
 		if japanese.Messages[key].Text == sourceMessage.Text && !allowedUntranslatedNames[key] {
@@ -365,6 +369,7 @@ func TestKoreanCatalogMatchesEnglishSource(t *testing.T) {
 	allowedUntranslatedNames := map[string]bool{
 		"site.issue_feedback": true,
 		"footer.github":       true,
+		"support.uid":         true,
 	}
 	for key, sourceMessage := range source.Messages {
 		koreanMessage := korean.Messages[key]
@@ -408,6 +413,7 @@ func TestSpanishCatalogMatchesEnglishSource(t *testing.T) {
 	allowedUntranslatedNames := map[string]bool{
 		"site.issue_feedback": true,
 		"footer.github":       true,
+		"support.uid":         true,
 	}
 	for key, sourceMessage := range source.Messages {
 		spanishMessage := spanish.Messages[key]

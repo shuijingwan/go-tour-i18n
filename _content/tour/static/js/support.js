@@ -34,19 +34,32 @@
     });
   }
 
+  var toast = document.querySelector('[data-copy-toast]');
+  var toastTimer;
+
+  function hideToast() {
+    if (!toast) return;
+    window.clearTimeout(toastTimer);
+    toastTimer = undefined;
+    toast.hidden = true;
+    toast.textContent = '';
+  }
+
+  function showToast(message) {
+    if (!toast) return;
+    window.clearTimeout(toastTimer);
+    toast.textContent = message;
+    toast.hidden = false;
+    toastTimer = window.setTimeout(hideToast, 1600);
+  }
+
   document.addEventListener('click', function(event) {
     var button = event.target.closest && event.target.closest('[data-copy-value]');
     if (!button) return;
-    var label = button.getAttribute('data-copy-label');
     var success = button.getAttribute('data-copy-success');
+    hideToast();
     copyText(button.getAttribute('data-copy-value')).then(function() {
-      button.textContent = success;
-      window.clearTimeout(button.copyResetTimer);
-      button.copyResetTimer = window.setTimeout(function() {
-        button.textContent = label;
-      }, 1600);
-    }).catch(function() {
-      button.textContent = label;
-    });
+      showToast(success);
+    }).catch(function() {});
   });
 }());

@@ -83,30 +83,48 @@
         </section>
         <section class="site-section site-support">
             <h2>{{ui "support.section_title"}}</h2>
+            <h3>{{ui "support.advertising_title"}}</h3>
             <p>{{ui "site.operations_note"}}</p>
             <h3>{{ui "support.translation_title"}}</h3>
             <p>{{ui "support.intro"}}</p>
             <div class="support-reference">
-                <span><strong>{{ui "support.reference_label"}}</strong> <code>{{.Support.Reference}}</code></span>
-                <button class="support-copy" type="button" data-copy-value="{{.Support.Reference}}" data-copy-label="{{ui "support.copy_reference"}}" data-copy-success="{{ui "support.copied"}}" aria-live="polite">{{ui "support.copy_reference"}}</button>
+                <strong>{{ui "support.reference_label"}}</strong>
+                <div class="support-value-row">
+                    <code>{{.Support.Reference}}</code>
+                    <button class="support-copy" type="button" data-copy-value="{{.Support.Reference}}" data-copy-success="{{ui "support.copied"}}" aria-label="{{ui "support.copy_reference"}}" title="{{ui "support.copy_reference"}}">
+                        <svg class="support-copy-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="8" y="8" width="11" height="11" rx="1.5"></rect><path d="M16 8V6.5A1.5 1.5 0 0 0 14.5 5h-9A1.5 1.5 0 0 0 4 6.5v9A1.5 1.5 0 0 0 5.5 17H8"></path></svg>
+                    </button>
+                </div>
             </div>
             <p class="support-help">{{ui "support.reference_help"}}</p>
             <div class="support-payment-grid">
-                {{range .Support.Methods}}<article class="site-card support-payment-card" data-payment-method="{{.Identity}}" aria-label="{{.Name}}">
+                {{range .Support.Methods}}{{if or (eq .Kind "qr") (eq .Kind "crypto")}}<article class="site-card support-payment-card" data-payment-method="{{.Identity}}" aria-label="{{.Name}}">
                     {{if eq .Kind "qr"}}<div class="support-qr-frame"><img class="support-qr" src="{{asset .QRAsset}}" alt="{{.Name}}"></div>{{end}}
                     {{if eq .Kind "crypto"}}
                     <h3>{{.Name}}</h3>
                     <dl class="support-payment-details">
                         <dt>{{ui "support.asset"}}</dt><dd>{{.Asset}}</dd>
                         <dt>{{ui "support.network"}}</dt><dd>{{.Network}}</dd>
-                        <dt>{{ui "support.address"}}</dt><dd><code class="support-address">{{.Address}}</code></dd>
+                        <dt>{{ui "support.address"}}</dt><dd><div class="support-value-row"><code class="support-address">{{.Address}}</code><button class="support-copy" type="button" data-copy-value="{{.Address}}" data-copy-success="{{ui "support.copied"}}" aria-label="{{ui "support.copy_address"}}" title="{{ui "support.copy_address"}}"><svg class="support-copy-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="8" y="8" width="11" height="11" rx="1.5"></rect><path d="M16 8V6.5A1.5 1.5 0 0 0 14.5 5h-9A1.5 1.5 0 0 0 4 6.5v9A1.5 1.5 0 0 0 5.5 17H8"></path></svg></button></div></dd>
                         <dt>{{ui "support.minimum_deposit"}}</dt><dd>{{.MinimumDeposit}}</dd>
                     </dl>
-                    <button class="support-copy" type="button" data-copy-value="{{.Address}}" data-copy-label="{{ui "support.copy_address"}}" data-copy-success="{{ui "support.copied"}}" aria-live="polite">{{ui "support.copy_address"}}</button>
                     <p class="support-warning">{{ui .NetworkWarningKey}} {{ui "support.wrong_network_warning"}}</p>
                     {{end}}
-                </article>{{end}}
+                </article>{{end}}{{end}}
             </div>
+            {{if eq .Support.Audience "international"}}<div class="support-platform">
+                <h3>{{ui "support.platform_title"}}</h3>
+                <p>{{ui "support.platform_help"}}</p>
+                <div class="support-platform-grid">
+                    {{range .Support.Methods}}{{if eq .Kind "platform"}}<article class="site-card support-platform-card" data-payment-method="{{.Identity}}">
+                        <h4>{{.Name}}</h4>
+                        <dl class="support-payment-details">
+                            <dt>{{ui "support.uid"}}</dt><dd><div class="support-value-row"><code class="support-uid">{{.UID}}</code><button class="support-copy" type="button" data-copy-value="{{.UID}}" data-copy-success="{{ui "support.copied"}}" aria-label="{{ui "support.copy_uid"}}" title="{{ui "support.copy_uid"}}"><svg class="support-copy-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="8" y="8" width="11" height="11" rx="1.5"></rect><path d="M16 8V6.5A1.5 1.5 0 0 0 14.5 5h-9A1.5 1.5 0 0 0 4 6.5v9A1.5 1.5 0 0 0 5.5 17H8"></path></svg></button></div></dd>
+                        </dl>
+                    </article>{{end}}{{end}}
+                </div>
+            </div>{{end}}
+            <div class="support-copy-toast" data-copy-toast aria-live="polite" aria-atomic="true" hidden></div>
         </section>
         <section class="site-section">
             <h2>{{ui "site.continue_learning_title"}}</h2>

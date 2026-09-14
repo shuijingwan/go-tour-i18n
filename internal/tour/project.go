@@ -48,6 +48,7 @@ type supportPaymentMethod struct {
 	Network           string
 	Address           string
 	MinimumDeposit    string
+	UID               string
 	QRAsset           string
 	NetworkWarningKey string
 }
@@ -65,6 +66,8 @@ var ProjectSupport = struct {
 		{Identity: "unionpay", Name: "云闪付", Kind: "qr", Enabled: false, Audience: supportAudienceMainland},
 		{Identity: "usdc-base", Name: "USDC", Kind: "crypto", Enabled: true, Audience: supportAudienceInternational, Asset: "USDC", Network: "Base", Address: "0x225f14d54683b1f5bc153bc8a678cad0277096d3", MinimumDeposit: "0.01 USDC", NetworkWarningKey: "support.usdc_network_only"},
 		{Identity: "usdt-trc20", Name: "USDT", Kind: "crypto", Enabled: true, Audience: supportAudienceInternational, Asset: "USDT", Network: "Tron (TRC20)", Address: "TF2bM817pLQeN1Ykt3GEecRbTjuSsWtGdK", MinimumDeposit: "0.1 USDT", NetworkWarningKey: "support.usdt_network_only"},
+		{Identity: "binance-uid", Name: "Binance", Kind: "platform", Enabled: true, Audience: supportAudienceInternational, UID: "1055351242"},
+		{Identity: "okx-uid", Name: "OKX", Kind: "platform", Enabled: true, Audience: supportAudienceInternational, UID: "231321605530361856"},
 		{Identity: "wise", Name: "Wise", Kind: "link", Enabled: false, Audience: supportAudienceInternational},
 		{Identity: "patreon", Name: "Patreon", Kind: "link", Enabled: false, Audience: supportAudienceInternational},
 	},
@@ -128,12 +131,16 @@ func validateProjectSupport() error {
 			if method.Audience != supportAudienceMainland || clean != method.QRAsset || !strings.HasPrefix(clean, "images/support/") || path.Ext(clean) != ".png" {
 				return fmt.Errorf("enabled QR payment method %q has invalid QR asset", method.Identity)
 			}
-			if method.Asset != "" || method.Network != "" || method.Address != "" || method.MinimumDeposit != "" || method.NetworkWarningKey != "" {
-				return fmt.Errorf("enabled QR payment method %q mixes crypto fields", method.Identity)
+			if method.Asset != "" || method.Network != "" || method.Address != "" || method.MinimumDeposit != "" || method.UID != "" || method.NetworkWarningKey != "" {
+				return fmt.Errorf("enabled QR payment method %q mixes non-QR fields", method.Identity)
 			}
 		case "crypto":
-			if method.Audience != supportAudienceInternational || method.Asset == "" || method.Network == "" || method.Address == "" || method.MinimumDeposit == "" || method.NetworkWarningKey == "" || method.QRAsset != "" {
+			if method.Audience != supportAudienceInternational || method.Asset == "" || method.Network == "" || method.Address == "" || method.MinimumDeposit == "" || method.UID != "" || method.NetworkWarningKey == "" || method.QRAsset != "" {
 				return fmt.Errorf("enabled crypto payment method %q is incomplete", method.Identity)
+			}
+		case "platform":
+			if method.Audience != supportAudienceInternational || method.UID == "" || method.Asset != "" || method.Network != "" || method.Address != "" || method.MinimumDeposit != "" || method.QRAsset != "" || method.NetworkWarningKey != "" {
+				return fmt.Errorf("enabled platform payment method %q is incomplete", method.Identity)
 			}
 		default:
 			return fmt.Errorf("enabled support payment method %q has unsupported kind %q", method.Identity, method.Kind)
