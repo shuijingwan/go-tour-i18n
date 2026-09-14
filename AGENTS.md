@@ -27,6 +27,21 @@ Codex 用于正式 TranslationUnit translation / revision、需要重新生成�
 
 本地终端用于确定性执行：build、不会调用模型的 retranslation process / revalidate、status、validation、publish、deploy、verifier、checksum、curl、Git、assets，以及已有正式 CLI/script 已覆盖的其他机械步骤。当前 docs/code/production identity 已确认的 machine fact 应直接复用；没有新的 failure evidence 时，不重新探测服务器、不重新设计 Production、广告、IndexNow、shared assets 或 verifier。只有真实 evidence 显示基线变化时，才重新调查并更新正式 docs，避免为了“再确认一次”消耗 Codex reasoning quota。
 
+### 测试额度与执行边界（fail-closed）
+
+Codex 默认只能运行与本次实际修改直接相关、足以证明改动正确的最小 targeted tests。未经用户明确授权，Codex 不得将 targeted tests 自行升级为 package-wide、repository-wide 或 lifecycle-wide regression，包括但不限于 `go test ./...`、多 package 的广泛 `go test`、repository-wide regression、全量 browser regression、publish、deploy、verifier、`--all-live`、完整 Production lifecycle、完整 TranslationUnit lifecycle，以及已有正式 CLI/script 可由本地终端确定性完成的其他长时间机械流程。
+
+targeted tests 已足以证明当前改动正确时，不得为了“更保险”“顺便确认”或“完整覆盖”追加全面测试。Codex 如认为确有必要扩大范围，不得直接执行；应先在最终总结中说明现有 targeted tests 为何不足、建议补跑什么，并明确该测试由用户本地终端执行。只有用户随后明确授权，Codex 才可执行更大范围测试。
+
+测试边界按以下规则确定：
+
+- docs / README / config 任务默认只运行 `git diff --check`，以及与修改内容直接相关的 parser、validator 或 focused unit test；不得因为涉及共享 package 就自动运行整个 package 或 repository 测试。
+- 代码任务优先测试直接修改的函数或模块、与改动行为直接相关的既有 targeted test；必要时新增 focused regression test。不得机械运行整个 package test suite，除非该 package 本身很小、这是唯一合理的 targeted boundary，且执行成本明显低。
+- targeted test 意外暴露 scope 外问题时，只保存最小真实 failure evidence，不继续扩大调查或追加测试；仅当用户明确决定暂缓该问题时，才按 Deferred Issue 规则记录。
+- `go test ./...`、全量 publish、10-locale `--all-live`、browser regression、checksum / curl / verifier、build / deploy / assets verification 等确定性但耗时的测试与验证，优先交给用户本地终端执行。
+
+额度优化不得降低正式质量门槛：TranslationUnit 正式翻译仍使用 GPT-5.6 Sol + High，QC 仍为 A-only，revision、validation、Production machine gate 与 HUMAN gate 均不得削弱。应节省的是不必要的 reasoning、重复检查、全面测试和机械执行。
+
 新增正式 CLI、validator、manifest/lifecycle logic 或可复用 machine workflow 时，优先使用 Go，并优先集成现有 `cmd/tour-i18n`。Shell/Python 主要用于薄的 OS、SSH、browser 或已有成熟 orchestration；已有稳定 sh/python 不因“统一语言”重写。不得用临时 Python/sed 代替需要 repository context 的正式实现。
 
 ## 维护协作输出
