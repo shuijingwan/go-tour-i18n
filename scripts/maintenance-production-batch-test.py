@@ -89,6 +89,13 @@ class BatchTest(unittest.TestCase):
             ("machine", "fr-FR"), ("browser", "fr-FR"),
         ])
         self.assertTrue(all(call[1]["stdin"] is subprocess.DEVNULL for call in calls))
+        rendered = output.getvalue()
+        self.assertIn("[phase A] locale=de-DE 1/2 stage=deploy START", rendered)
+        self.assertIn("[phase A] locale=fr-FR 2/2 stage=purge PASS elapsed=", rendered)
+        self.assertIn("[batch] phase=A completed=2/2 remaining=0", rendered)
+        self.assertIn("[phase B] locale=de-DE 1/2 stage=machine START", rendered)
+        self.assertIn("[phase B] locale=fr-FR 2/2 stage=browser PASS elapsed=", rendered)
+        self.assertIn("[batch] phase=B completed=2/2 remaining=0", rendered)
         self.assertIn("locale | deploy | purge | machine | browser | result", output.getvalue())
         self.assertIn("PASS=2 FAILED=0 SKIPPED=0 PENDING=0", output.getvalue())
 
@@ -165,12 +172,13 @@ class BatchTest(unittest.TestCase):
     def test_phase_b_browser_failure_is_fail_fast_without_repeating_mutation(self):
         batch = BATCH.Batch([self.release("de-DE"), self.release("fr-FR"), self.release("it-IT")])
         calls = []
+        output = io.StringIO()
         def run(command, **kwargs):
             calls.append((command, kwargs))
             if pathlib.Path(command[0]).name == "verify-production-browser.py" and command[-1] == "fr-FR":
                 return subprocess.CompletedProcess(command, 7)
             return subprocess.CompletedProcess(command, 0)
-        with mock.patch.object(BATCH.subprocess, "run", side_effect=run), \
+        with mock.patch.object(BATCH.subprocess, "run", side_effect=run), redirect_stdout(output), \
                 self.assertRaisesRegex(BATCH.BatchError, "locale=fr-FR stage=browser evidence="):
             batch.execute()
         self.assertEqual(self.stage_calls(calls), [
@@ -185,6 +193,11 @@ class BatchTest(unittest.TestCase):
         for item in batch.items:
             self.assertTrue(item.stage_passed("deploy"))
             self.assertTrue(item.stage_passed("purge"))
+        rendered = output.getvalue()
+        self.assertIn("[phase B] locale=de-DE 1/3 stage=browser PASS elapsed=", rendered)
+        self.assertIn("[phase B] locale=fr-FR 2/3 stage=browser FAILED elapsed=", rendered)
+        self.assertIn("de-DE | PASS | PASS | PASS | PASS | PASS", rendered)
+        self.assertIn("fr-FR | PASS | PASS | PASS | - | ACCEPTANCE_FAILED", rendered)
 
     def test_partial_receipt_resume_matches_live_zh_ja_de_fr_shape(self):
         releases = [self.release(locale) for locale in ("zh-CN", "ja-JP", "de-DE", "fr-FR")]

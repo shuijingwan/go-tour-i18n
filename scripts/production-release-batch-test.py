@@ -7,6 +7,7 @@ import io
 import json
 import pathlib
 import subprocess
+import sys
 import tempfile
 import unittest
 from unittest import mock
@@ -254,6 +255,40 @@ class ProductionReleaseBatchTest(unittest.TestCase):
         with mock.patch.object(MODULE.subprocess, "run", return_value=subprocess.CompletedProcess([], 0)) as run:
             MODULE.ReleaseBatch._run("test", ["true"], 1)
         self.assertIs(run.call_args.kwargs["stdin"], subprocess.DEVNULL)
+
+        completed = subprocess.CompletedProcess([], 0, stdout='{"result":"PASS"}\n')
+        with mock.patch.object(MODULE.subprocess, "run", return_value=completed) as run:
+            self.assertEqual(MODULE.ReleaseBatch._run("publish", ["publish-batch"], 1, capture=True),
+                             '{"result":"PASS"}\n')
+        self.assertIs(run.call_args.kwargs["stdout"], subprocess.PIPE)
+        self.assertIsNone(run.call_args.kwargs["stderr"])
+
+    def test_publish_json_stdout_is_captured_while_stderr_streams(self):
+        driver = """
+import importlib.util
+import pathlib
+import sys
+
+path = pathlib.Path(%r)
+spec = importlib.util.spec_from_file_location("streaming_release_batch", path)
+module = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(module)
+child = [sys.executable, "-c", "import sys,time; print('json-result', flush=True); print('chunk-one', file=sys.stderr, flush=True); time.sleep(1); print('chunk-two', file=sys.stderr, flush=True)"]
+captured = module.ReleaseBatch._run("publish", child, 5, capture=True)
+print("captured=" + captured.strip(), flush=True)
+""" % str(ROOT / "scripts" / "production-release-batch.py")
+        process = subprocess.Popen(
+            [sys.executable, "-c", driver], cwd=ROOT, text=True,
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+        )
+        first = process.stderr.readline().strip()
+        self.assertEqual(first, "chunk-one")
+        self.assertIsNone(process.poll(), "parent waited for child completion before streaming stderr")
+        stdout, stderr = process.communicate(timeout=5)
+        self.assertEqual(stderr.strip(), "chunk-two")
+        self.assertIn("captured=json-result", stdout)
+        self.assertIn("[production-release-batch] stage=publish START", stdout)
+        self.assertIn("[production-release-batch] stage=publish PASS elapsed=", stdout)
 
     def test_final_summary_preserves_existing_maintenance_skip(self):
         workflow = self.workflow(["de-DE"])

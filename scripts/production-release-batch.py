@@ -14,6 +14,7 @@ import re
 import shlex
 import subprocess
 import sys
+import time
 
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
@@ -219,17 +220,33 @@ class ReleaseBatch:
 
     @staticmethod
     def _run(stage, command, timeout, capture=False):
+        operator_stage = stage in {
+            "assets-export", "assets-validate", "publish", "resume-assets-validate",
+            "shared-assets", "maintenance",
+        }
+        started = time.monotonic()
+        if operator_stage:
+            print("[production-release-batch] stage=%s START" % stage, flush=True)
         try:
             completed = subprocess.run([str(value) for value in command], stdin=subprocess.DEVNULL,
                                        stdout=subprocess.PIPE if capture else None,
-                                       stderr=subprocess.PIPE if capture else None,
+                                       # JSON stdout remains private to the caller, while the
+                                       # publish phase log on stderr stays visible in real time.
+                                       stderr=None,
                                        text=capture, check=False, timeout=timeout)
         except (OSError, subprocess.SubprocessError) as exc:
+            if operator_stage:
+                print("[production-release-batch] stage=%s FAILED elapsed=%.1fs error=%s" %
+                      (stage, time.monotonic() - started, exc), flush=True)
             raise ReleaseBatchError(stage, str(exc)) from exc
         if completed.returncode:
-            detail = completed.stderr.strip() if capture and completed.stderr else ""
-            raise ReleaseBatchError(stage, "command failed with exit %d%s" %
-                                    (completed.returncode, ": " + detail if detail else ""))
+            if operator_stage:
+                print("[production-release-batch] stage=%s FAILED elapsed=%.1fs exit=%d" %
+                      (stage, time.monotonic() - started, completed.returncode), flush=True)
+            raise ReleaseBatchError(stage, "command failed with exit %d" % completed.returncode)
+        if operator_stage:
+            print("[production-release-batch] stage=%s PASS elapsed=%.1fs" %
+                  (stage, time.monotonic() - started), flush=True)
         return completed.stdout if capture else ""
 
     @classmethod

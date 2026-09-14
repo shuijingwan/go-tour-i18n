@@ -266,6 +266,9 @@ if [[ $status == 200 && $body != /dev/null ]]; then
 fi
 
 [[ -z $write_out ]] || printf '%s' "$status"
+if (( transport_exit != 0 )); then
+    printf 'curl: fake transport failure exit=%s url=%s\n' "$transport_exit" "$url" >&2
+fi
 exit "$transport_exit"
 SH
 
@@ -336,14 +339,15 @@ run_verify() {
     env PATH="$fake_bin:$PATH" "$verify_script" "$release_dir" 2>&1
 }
 
+FAILURE_OUTPUT=''
 expect_failure() {
-    local description=$1 expected=$2 output status
+    local description=$1 expected=$2 status
     set +e
-    output=$(run_verify)
+    FAILURE_OUTPUT=$(run_verify)
     status=$?
     set -e
     (( status != 0 )) || fail "$description was accepted"
-    assert_contains "$output" "$expected"
+    assert_contains "$FAILURE_OUTPUT" "$expected"
 }
 
 setup_case
@@ -379,6 +383,9 @@ setup_case
 export FAKE_TRANSPORT_URL=$FAKE_PUBLIC_ORIGIN/tour/static/js/app.js FAKE_TRANSPORT_SEQUENCE=28,28,28,0
 output=$(run_verify) || fail 'transient public transport failure did not recover'
 assert_contains "$output" '[verify-production] public routes: 7/7 PASS'
+assert_contains "$output" '[verify-production] retry locale=de-DE stage=public routes check=https://de-go-dev.shuijingwanwq.com/tour/static/js/app.js attempt=1/5 reason=curl-exit-28 HTTP-200 next=retry backoff=1s'
+assert_contains "$output" '[verify-production] recovered locale=de-DE stage=public routes check=https://de-go-dev.shuijingwanwq.com/tour/static/js/app.js attempt=4/5 PASS'
+[[ $output != *'curl: fake transport failure'* ]] || fail 'intermediate transient stderr was repeated'
 [[ $(<"$FAKE_STATE_DIR/transport") == 4 ]] || fail 'extended curl timeout retry did not use the expected attempts'
 
 for transient_exit in 6 7 16 35 97; do
@@ -417,6 +424,10 @@ expect_failure 'persistent sitemap transient failure fails fast' 'curl exit 97'
 [[ $(grep -Fc "$FAKE_PUBLIC_ORIGIN/tour/fake/7" "$FAKE_CURL_LOG") == 5 ]] || fail 'sitemap transient retry count was not bounded'
 [[ $(<"$FAKE_SLEEP_LOG") == $'1\n2\n3\n4' ]] || fail 'transient retry backoff was not bounded at four seconds'
 ! grep -F "$FAKE_PUBLIC_ORIGIN/tour/fake/8" "$FAKE_CURL_LOG" >/dev/null || fail 'sitemap continued after exhausted transient failure'
+[[ $(grep -Fc 'curl: fake transport failure exit=97' <<<"$FAILURE_OUTPUT") == 1 ]] || \
+    fail 'final exhausted failure did not preserve exactly one final curl stderr'
+assert_contains "$FAILURE_OUTPUT" 'attempts 5/5'
+assert_contains "$FAILURE_OUTPUT" '[verify-production] ERROR: locale=de-DE stage=sitemap check=https://de-go-dev.shuijingwanwq.com/tour/fake/7'
 
 setup_case
 export FAKE_HTML_MODE=LANG

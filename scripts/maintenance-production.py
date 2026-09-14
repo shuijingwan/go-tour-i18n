@@ -16,6 +16,7 @@ import pathlib
 import re
 import subprocess
 import sys
+import time
 
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
@@ -88,7 +89,24 @@ class Orchestrator:
             )
         self.receipt_path = self.release_dir.parent / f"{self.release_dir.name}.maintenance-production-receipt.json"
         self.historical_pass = False
+        self.progress_context = None
         self.receipt = self._load_or_new_receipt()
+
+    def set_progress_context(self, phase: str, ordinal: int, total: int) -> None:
+        self.progress_context = (phase, ordinal, total)
+
+    def progress(self, stage: str, result: str, elapsed: float | None = None, detail: str | None = None) -> None:
+        if self.progress_context is None:
+            prefix = f"[maintenance-production] locale={self.locale}"
+        else:
+            phase, ordinal, total = self.progress_context
+            prefix = f"[phase {phase}] locale={self.locale} {ordinal}/{total}"
+        fields = [prefix, f"stage={stage}", result]
+        if elapsed is not None:
+            fields.append(f"elapsed={elapsed:.1f}s")
+        if detail:
+            fields.append(detail)
+        print(" ".join(fields), flush=True)
 
     def _new_receipt(self) -> dict:
         return {
@@ -161,17 +179,21 @@ class Orchestrator:
     def record(self, stage: str) -> None:
         self.receipt["stages"][stage] = {"completed_at": utc_now(), "result": "PASS"}
         self.write_receipt()
-        print(f"[maintenance-production] {STAGE_LABELS[stage]}: PASS")
 
     def run_command(self, stage: str, command: list[object], timeout: int) -> None:
+        self.progress(stage, "START")
+        started = time.monotonic()
         try:
             completed = subprocess.run(
                 [str(value) for value in command], stdin=subprocess.DEVNULL, check=False, timeout=timeout
             )
         except (OSError, subprocess.TimeoutExpired) as exc:
+            self.progress(stage, "FAILED", time.monotonic() - started, str(exc))
             raise MaintenanceProductionError(stage, "command completed", str(exc), "检查本机工具和网络后重试") from exc
         if completed.returncode:
+            self.progress(stage, "FAILED", time.monotonic() - started, f"exit={completed.returncode}")
             raise MaintenanceProductionError(stage, "command exit 0", f"exit {completed.returncode}", "按该 stage 的输出检查后重试")
+        self.progress(stage, "PASS", time.monotonic() - started)
 
     def begin(self) -> bool:
         if self.receipt.get("result") == "passed":
@@ -200,14 +222,14 @@ class Orchestrator:
             self.record("deploy")
         elif revalidate_passed_deploy:
             self.run_command("deploy", [ROOT / "scripts" / "deploy-production.sh", self.release_dir], 1800)
-            print("[maintenance-production] deployment: RESUME（同一 release 已重新验证；未重复 deployment mutation）")
+            self.progress("deploy", "RESUME", detail="同一 release 已重新验证；未重复 deployment mutation")
         else:
-            print("[maintenance-production] deployment: RESUME")
+            self.progress("deploy", "RESUME")
         if not self.stage_passed("purge"):
             self.run_command("purge", [ROOT / "scripts" / "production-cdn.py", "purge", "--locale", self.locale], 300)
             self.record("purge")
         else:
-            print("[maintenance-production] automatic hostname purge: RESUME")
+            self.progress("purge", "RESUME")
 
     def execute_acceptance(self) -> None:
         if self.receipt.get("result") == "passed":
@@ -223,7 +245,7 @@ class Orchestrator:
             self.run_command("machine", [ROOT / "scripts" / "verify-production.sh", self.release_dir], 1800)
             self.record("machine")
         else:
-            print("[maintenance-production] machine acceptance: RESUME")
+            self.progress("machine", "RESUME")
         if not self.stage_passed("browser"):
             self.run_command(
                 "browser",
@@ -232,7 +254,7 @@ class Orchestrator:
             )
             self.record("browser")
         else:
-            print("[maintenance-production] browser acceptance: RESUME")
+            self.progress("browser", "RESUME")
         self.write_receipt("passed")
 
     def print_summary(self) -> None:

@@ -8,6 +8,7 @@ import pathlib
 import shlex
 import subprocess
 import sys
+import time
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 SPEC = importlib.util.spec_from_file_location("maintenance_production_batch_core", ROOT / "scripts" / "maintenance-production.py")
@@ -31,24 +32,51 @@ class Batch:
         self.complete_at_start = [item.receipt.get("result") == "passed" for item in self.items]
 
     @staticmethod
-    def run(command, timeout):
+    def run(command, timeout, progress=None):
+        started = time.monotonic()
+        if progress is not None:
+            progress("START")
         try:
             completed = subprocess.run([str(value) for value in command], stdin=subprocess.DEVNULL,
                                        check=False, timeout=timeout)
         except (OSError, subprocess.TimeoutExpired) as exc:
+            if progress is not None:
+                progress("FAILED", time.monotonic() - started, str(exc))
             raise BatchError(str(exc)) from exc
         if completed.returncode:
+            if progress is not None:
+                progress("FAILED", time.monotonic() - started, "exit=%d" % completed.returncode)
             raise BatchError("command failed with exit %d" % completed.returncode)
+        if progress is not None:
+            progress("PASS", time.monotonic() - started)
+
+    def progress(self, phase, index, stage, result, elapsed=None, detail=None):
+        item = self.items[index]
+        fields = ["[phase %s]" % phase, "locale=%s" % item.locale,
+                  "%d/%d" % (index + 1, len(self.items)), "stage=%s" % stage, result]
+        if elapsed is not None:
+            fields.append("elapsed=%.1fs" % elapsed)
+        if detail:
+            fields.append(detail)
+        print(" ".join(fields), flush=True)
+
+    def phase_progress(self, phase, completed):
+        print("[batch] phase=%s completed=%d/%d remaining=%d" %
+              (phase, completed, len(self.items), len(self.items) - completed), flush=True)
 
     def preflight(self):
         # Every local receipt/identity/release check above and every remote CDN
         # authority check below completes before the first deploy/purge mutation.
-        for item in self.items:
+        for index, item in enumerate(self.items):
             deploy = shlex.quote(str(ROOT / "scripts" / "deploy-production.sh"))
             shell = "source %s; validate_local_tools; release_name_from_path \"$1\" >/dev/null; validate_local_release \"$1\" >/dev/null" % deploy
-            self.run(["bash", "-c", shell, "maintenance-batch-preflight", item.release_dir], 120)
-        for item in self.items:
-            self.run([ROOT / "scripts" / "production-cdn.py", "preflight", "--locale", item.locale], 300)
+            callback = lambda result, elapsed=None, detail=None, i=index: self.progress(
+                "preflight", i, "local", result, elapsed, detail)
+            self.run(["bash", "-c", shell, "maintenance-batch-preflight", item.release_dir], 120, callback)
+        for index, item in enumerate(self.items):
+            callback = lambda result, elapsed=None, detail=None, i=index: self.progress(
+                "preflight", i, "cdn-authority", result, elapsed, detail)
+            self.run([ROOT / "scripts" / "production-cdn.py", "preflight", "--locale", item.locale], 300, callback)
 
     def refresh_row(self, index):
         item = self.items[index]
@@ -79,9 +107,12 @@ class Batch:
         self.preflight()
 
         for index, item in enumerate(self.items):
+            item.set_progress_context("A", index + 1, len(self.items))
             self.refresh_row(index)
             if self.complete_at_start[index]:
                 self.rows[index]["result"] = "SKIPPED"
+                self.progress("A", index, "mutation", "SKIPPED")
+                self.phase_progress("A", index + 1)
                 continue
             if not all(item.stage_passed(stage) for stage in ("deploy", "purge")):
                 item.begin()
@@ -94,10 +125,14 @@ class Batch:
                 raise failed
             self.refresh_row(index)
             self.rows[index]["result"] = "PENDING_ACCEPTANCE"
+            self.phase_progress("A", index + 1)
 
         for index, item in enumerate(self.items):
+            item.set_progress_context("B", index + 1, len(self.items))
             if self.complete_at_start[index]:
                 self.rows[index]["result"] = "SKIPPED"
+                self.progress("B", index, "acceptance", "SKIPPED")
+                self.phase_progress("B", index + 1)
                 continue
             item.begin()
             try:
@@ -108,6 +143,7 @@ class Batch:
                         "acceptance", "complete PASS receipt", repr(receipt), "检查 acceptance stage 输出后重试"
                     )
                 self.rows[index]["result"] = "PASS"
+                self.phase_progress("B", index + 1)
             except CORE.MaintenanceProductionError as exc:
                 failed = self.fail_item(index, "ACCEPTANCE", exc)
                 self.block_remaining(index + 1, "BLOCKED_PHASE_B")
@@ -116,14 +152,14 @@ class Batch:
         self.print_summary()
 
     def print_summary(self):
-        print("\nlocale | deploy | purge | machine | browser | result")
+        print("\nlocale | deploy | purge | machine | browser | result", flush=True)
         for row in self.rows:
-            print("{locale} | {deploy} | {purge} | {machine} | {browser} | {result}".format(**row))
+            print("{locale} | {deploy} | {purge} | {machine} | {browser} | {result}".format(**row), flush=True)
         passed = sum(row["result"] == "PASS" for row in self.rows)
         failed = sum(row["result"] in ("MUTATION_FAILED", "ACCEPTANCE_FAILED") for row in self.rows)
         skipped = sum(row["result"] == "SKIPPED" for row in self.rows)
         pending = len(self.rows) - passed - failed - skipped
-        print("PASS=%d FAILED=%d SKIPPED=%d PENDING=%d" % (passed, failed, skipped, pending))
+        print("PASS=%d FAILED=%d SKIPPED=%d PENDING=%d" % (passed, failed, skipped, pending), flush=True)
 
 
 def main():

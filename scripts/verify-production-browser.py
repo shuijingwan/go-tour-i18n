@@ -56,7 +56,7 @@ def main():
         if base != profile["production_public_url"]: raise BrowserFailure("public URL does not match formal production identity")
         acceptance(base, locale, profile, identity["shared"], proxy_server=proxy_server)
     except (CORE.BrowserFailure, IDENTITY.IdentityError, OSError, KeyError, TypeError) as exc:
-        print(f"[production-browser] FAILED: {exc}", file=sys.stderr); return 1
+        print(f"[production-browser] FAILED: locale={locale} stage=browser evidence={exc}", file=sys.stderr); return 1
     print("[production-browser] desktop routes: PASS")
     print("[production-browser] mobile /tour/moretypes/1: PASS")
     print("[production-browser] Run / Format / Reset / SPA / ads: PASS")

@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
+import contextlib
 import importlib.util
+import io
 import pathlib
 import sys
 import unittest
@@ -142,10 +144,14 @@ class PreviewBrowserTest(unittest.TestCase):
         chrome = mock.Mock()
         chrome.project_network_transients.side_effect = [["HTTP 525 Script https://ja.example/tour/script.js"]]
         check = mock.Mock(side_effect=[CORE.BrowserFailure("editor not hydrated"), "PASS"])
-        with mock.patch.object(CORE.time, "sleep"):
+        output = io.StringIO()
+        with mock.patch.object(CORE.time, "sleep"), contextlib.redirect_stderr(output):
             self.assertEqual(CORE.run_project_page_check(
                 chrome, "https://ja.example/tour/", 1280, 800, ("https://ja.example/",), check), "PASS")
         self.assertEqual(chrome.navigate.call_count, 2)
+        self.assertIn("attempt=1/3", output.getvalue())
+        self.assertIn("next=retry backoff=1s", output.getvalue())
+        self.assertIn("attempt=2/3 PASS", output.getvalue())
 
         chrome.reset_mock()
         chrome.project_network_transients = mock.Mock(return_value=[])

@@ -41,6 +41,8 @@ SSH_HOST=''
 CURL_NETWORK_OPTIONS=()
 HTTP_REQUEST_EXIT=0
 HTTP_REQUEST_STATUS=''
+HTTP_REQUEST_ATTEMPTS=0
+HTTP_REQUEST_STDERR=''
 NETWORK_SSH_HOST=''
 
 if [[ ${1:-} != --public ]]; then
@@ -56,7 +58,7 @@ error() {
 
 fail_check() {
     local stage=$1 check=$2 expected=$3 actual=$4
-    error "stage=$stage check=$check expected=$expected actual=$actual"
+    error "locale=${RELEASE_LOCALE:-unknown} stage=$stage check=$check expected=$expected actual=$actual"
     return 1
 }
 
@@ -84,7 +86,7 @@ select_production_profile() {
 
 validate_local_tools() {
     local command_name
-    for command_name in awk basename curl mktemp python3 readlink ssh tr; do
+    for command_name in awk basename cat curl mktemp python3 readlink ssh tr; do
         command -v "$command_name" >/dev/null || {
             fail_check 'release identity' tool "$command_name available" missing
             return 1
@@ -128,23 +130,24 @@ remote_release_name() {
 verify_remote_and_source() {
     local expected_remote=$1
     ssh "${SSH_OPTIONS[@]}" "$SSH_HOST" bash -s -- \
-        "$RELEASES_DIR" "$CURRENT_LINK" "$DEPLOY_LOCK" "$SERVICE" \
+        "$RELEASE_LOCALE" "$RELEASES_DIR" "$CURRENT_LINK" "$DEPLOY_LOCK" "$SERVICE" \
         "$LOOPBACK_ORIGIN" "$expected_remote" "${ACCEPTANCE_PATHS[@]}" <<'REMOTE'
 set -Eeuo pipefail
 IFS=$'\n\t'
 
-releases_dir=$1
-current_link=$2
-deploy_lock=$3
-service=$4
-loopback_origin=$5
-expected_remote=$6
-shift 6
+locale=$1
+releases_dir=$2
+current_link=$3
+deploy_lock=$4
+service=$5
+loopback_origin=$6
+expected_remote=$7
+shift 7
 paths=("$@")
 
 fail_check() {
-    printf '[verify-production] ERROR: stage=%s check=%s expected=%s actual=%s\n' \
-        "$1" "$2" "$3" "$4" >&2
+    printf '[verify-production] ERROR: locale=%s stage=%s check=%s expected=%s actual=%s\n' \
+        "$locale" "$1" "$2" "$3" "$4" >&2
     exit 1
 }
 
@@ -174,17 +177,22 @@ REMOTE
 }
 
 http_request() {
-    local url=$1 body=$2 headers=$3 attempt backoff curl_exit http_status
-    shift 3
+    local stage=$1 check=$2 url=$3 body=$4 headers=$5
+    local attempt backoff curl_exit http_status reason curl_stderr="$TEMP_DIR/curl.stderr"
+    shift 5
 
     for ((attempt = 1; attempt <= CURL_RETRY_ATTEMPTS; attempt++)); do
+        : >"$curl_stderr"
         set +e
         http_status=$(curl -sS --connect-timeout "$CURL_CONNECT_TIMEOUT" --max-time "$CURL_MAX_TIME" \
-            "${CURL_NETWORK_OPTIONS[@]}" -D "$headers" -o "$body" -w '%{http_code}' "$@" "$url")
+            "${CURL_NETWORK_OPTIONS[@]}" -D "$headers" -o "$body" -w '%{http_code}' "$@" "$url" \
+            2>"$curl_stderr")
         curl_exit=$?
         set -e
         HTTP_REQUEST_EXIT=$curl_exit
         HTTP_REQUEST_STATUS=$http_status
+        HTTP_REQUEST_ATTEMPTS=$attempt
+        HTTP_REQUEST_STDERR=$curl_stderr
 
         if (( curl_exit != 0 )); then
             case $curl_exit in
@@ -192,6 +200,9 @@ http_request() {
                     if (( attempt < CURL_RETRY_ATTEMPTS )); then
                         backoff=$attempt
                         (( backoff <= CURL_RETRY_MAX_BACKOFF )) || backoff=$CURL_RETRY_MAX_BACKOFF
+                        reason="curl-exit-$curl_exit HTTP-${http_status:-000}"
+                        printf '[verify-production] retry locale=%s stage=%s check=%s attempt=%d/%d reason=%s next=retry backoff=%ss\n' \
+                            "$RELEASE_LOCALE" "$stage" "$check" "$attempt" "$CURL_RETRY_ATTEMPTS" "$reason" "$backoff"
                         sleep "$backoff"
                         continue
                     fi
@@ -204,9 +215,12 @@ http_request() {
                 if (( attempt < CURL_RETRY_ATTEMPTS )); then
                     backoff=$attempt
                     (( backoff <= CURL_RETRY_MAX_BACKOFF )) || backoff=$CURL_RETRY_MAX_BACKOFF
+                    printf '[verify-production] retry locale=%s stage=%s check=%s attempt=%d/%d reason=HTTP-%s next=retry backoff=%ss\n' \
+                        "$RELEASE_LOCALE" "$stage" "$check" "$attempt" "$CURL_RETRY_ATTEMPTS" "$http_status" "$backoff"
                     sleep "$backoff"
                     continue
                 fi
+                return 0
                 ;;
         esac
         return 0
@@ -216,14 +230,24 @@ http_request() {
 http_result_is() {
     local stage=$1 check=$2 expected=$3
     if (( HTTP_REQUEST_EXIT != 0 )); then
+        if [[ -n $HTTP_REQUEST_STDERR && -s $HTTP_REQUEST_STDERR ]]; then
+            printf '[verify-production] final curl stderr (locale=%s stage=%s check=%s attempt=%d/%d):\n' \
+                "$RELEASE_LOCALE" "$stage" "$check" "$HTTP_REQUEST_ATTEMPTS" "$CURL_RETRY_ATTEMPTS" >&2
+            cat -- "$HTTP_REQUEST_STDERR" >&2
+        fi
         fail_check "$stage" "$check" "curl exit 0 and HTTP $expected" \
-            "curl exit $HTTP_REQUEST_EXIT; HTTP ${HTTP_REQUEST_STATUS:-000}"
+            "curl exit $HTTP_REQUEST_EXIT; HTTP ${HTTP_REQUEST_STATUS:-000}; attempts $HTTP_REQUEST_ATTEMPTS/$CURL_RETRY_ATTEMPTS"
         return 1
     fi
     [[ $HTTP_REQUEST_STATUS == "$expected" ]] || {
-        fail_check "$stage" "$check" "HTTP $expected" "HTTP ${HTTP_REQUEST_STATUS:-000}"
+        fail_check "$stage" "$check" "HTTP $expected" \
+            "HTTP ${HTTP_REQUEST_STATUS:-000}; attempts $HTTP_REQUEST_ATTEMPTS/$CURL_RETRY_ATTEMPTS"
         return 1
     }
+    if (( HTTP_REQUEST_ATTEMPTS > 1 )); then
+        printf '[verify-production] recovered locale=%s stage=%s check=%s attempt=%d/%d PASS\n' \
+            "$RELEASE_LOCALE" "$stage" "$check" "$HTTP_REQUEST_ATTEMPTS" "$CURL_RETRY_ATTEMPTS"
+    fi
 }
 
 header_value() {
@@ -248,7 +272,8 @@ verify_cache_path() {
     headers="$TEMP_DIR/cache-$(printf '%s' "$path" | tr '/.' '__').headers"
 
     for ((attempt = 1; attempt <= 3; attempt++)); do
-        http_request "$PUBLIC_ORIGIN$path" /dev/null "$headers"
+        http_request 'CDN cache observation' "$PUBLIC_ORIGIN$path request $attempt" \
+            "$PUBLIC_ORIGIN$path" /dev/null "$headers"
         http_result_is 'CDN cache observation' "$PUBLIC_ORIGIN$path request $attempt" 200 || return 1
         cache_status=$(header_value "$headers" "$CACHE_HEADER")
         case $cache_status in
@@ -281,14 +306,14 @@ verify_public_routes() {
     local path headers="$TEMP_DIR/public.headers"
     # / and /tour/welcome/1 already returned HTTP 200 during cache status observation.
     for path in '/tour/' '/tour/list' '/tour/static/js/app.js' '/robots.txt' '/sitemap.xml'; do
-        http_request "$PUBLIC_ORIGIN$path" /dev/null "$headers"
+        http_request 'public routes' "$PUBLIC_ORIGIN$path" "$PUBLIC_ORIGIN$path" /dev/null "$headers"
         http_result_is 'public routes' "$PUBLIC_ORIGIN$path" 200 || return 1
     done
 }
 
 fetch_http_200() {
     local stage=$1 url=$2 destination=$3 headers="$TEMP_DIR/fetch.headers"
-    http_request "$url" "$destination" "$headers"
+    http_request "$stage" "$url" "$url" "$destination" "$headers"
     http_result_is "$stage" "$url" 200
 }
 
@@ -316,16 +341,18 @@ class IdentityParser(HTMLParser):
             self.canonicals.append(values.get("href"))
 
 
+locale = sys.argv[1]
+
+
 def fail(check, expected, actual):
     print(
-        f"[verify-production] ERROR: stage=html identity check={check} "
+        f"[verify-production] ERROR: locale={locale} stage=html identity check={check} "
         f"expected={expected} actual={actual}",
         file=sys.stderr,
     )
     raise SystemExit(1)
 
 
-locale = sys.argv[1]
 for path, expected_canonical in ((sys.argv[2], sys.argv[3]), (sys.argv[4], sys.argv[5])):
     parser = IdentityParser()
     try:
@@ -345,21 +372,24 @@ verify_sitemap() {
     local -a urls=()
 
     fetch_http_200 'sitemap' "$PUBLIC_ORIGIN/sitemap.xml" "$sitemap" || return 1
-    if ! python3 - "$sitemap" "$PRODUCTION_HOST" "$EXPECTED_SITEMAP_URLS" >"$urls_file" <<'PY'
+    if ! python3 - "$RELEASE_LOCALE" "$sitemap" "$PRODUCTION_HOST" "$EXPECTED_SITEMAP_URLS" >"$urls_file" <<'PY'
 import sys
 import re
 import urllib.parse
 import xml.etree.ElementTree as ET
 
 
+locale = sys.argv[1]
+
+
 def error(check, expected, actual):
     print(
-        f"[verify-production] ERROR: stage=sitemap check={check} expected={expected} actual={actual}",
+        f"[verify-production] ERROR: locale={locale} stage=sitemap check={check} expected={expected} actual={actual}",
         file=sys.stderr,
     )
 
 
-path, expected_host, expected_count = sys.argv[1], sys.argv[2], int(sys.argv[3])
+path, expected_host, expected_count = sys.argv[2], sys.argv[3], int(sys.argv[4])
 try:
     root = ET.parse(path).getroot()
 except (OSError, ET.ParseError) as exc:
@@ -405,7 +435,7 @@ PY
     fi
     mapfile -d '' -t urls <"$urls_file"
     for path in "${urls[@]}"; do
-        http_request "$path" /dev/null "$TEMP_DIR/sitemap-url.headers"
+        http_request sitemap "$path" "$path" /dev/null "$TEMP_DIR/sitemap-url.headers"
         # A bounded transient retry has already been exhausted.  Stop now;
         # later URLs are unverified and must never be reported as passed.
         http_result_is sitemap "$path" 200 || return 1
@@ -418,42 +448,51 @@ PY
 public_main() {
     (( $# == 4 )) || { usage; return 2; }
     RELEASE_LOCALE=$1; PUBLIC_ORIGIN=${2%/}; PRODUCTION_HOST=$3; CACHE_HEADER=$4
-    for command_name in awk curl mktemp python3 tr; do command -v "$command_name" >/dev/null || { fail_check 'public runner' tool "$command_name available" missing; return 1; }; done
+    for command_name in awk cat curl mktemp python3 tr; do command -v "$command_name" >/dev/null || { fail_check 'public runner' tool "$command_name available" missing; return 1; }; done
     TEMP_DIR=$(mktemp -d) || return 1
     trap 'rm -rf -- "$TEMP_DIR"' EXIT
     printf '[verify-production] public network runner: zgocloud (direct)\n'
+    printf '[verify-production] progress locale=%s stage=CDN-cache-observation START probes=2x3\n' "$RELEASE_LOCALE"
     verify_cache_path '/' CACHE_HOME_RESULT || return 1
     verify_cache_path '/tour/welcome/1' CACHE_WELCOME_RESULT || return 1
+    printf '[verify-production] progress locale=%s stage=CDN-cache-observation PASS\n' "$RELEASE_LOCALE"
+    printf '[verify-production] progress locale=%s stage=public-routes START probes=5\n' "$RELEASE_LOCALE"
     verify_public_routes || return 1
     printf '[verify-production] public routes: 7/7 PASS\n'
+    printf '[verify-production] progress locale=%s stage=public-routes PASS\n' "$RELEASE_LOCALE"
+    printf '[verify-production] progress locale=%s stage=html-identity START probes=2\n' "$RELEASE_LOCALE"
     verify_html_identity || return 1
     printf '[verify-production] html identity: PASS\n'
+    printf '[verify-production] progress locale=%s stage=html-identity PASS\n' "$RELEASE_LOCALE"
+    printf '[verify-production] progress locale=%s stage=sitemap START URLs=%d\n' "$RELEASE_LOCALE" "$EXPECTED_SITEMAP_URLS"
     verify_sitemap || return 1
     printf '[verify-production] sitemap: 105/105 PASS\n'
+    printf '[verify-production] progress locale=%s stage=sitemap PASS\n' "$RELEASE_LOCALE"
+    printf '[verify-production] progress locale=%s stage=socket-boundary START probes=2\n' "$RELEASE_LOCALE"
     verify_socket_boundary || return 1
     printf '[verify-production] socket boundary: PASS\n'
+    printf '[verify-production] progress locale=%s stage=socket-boundary PASS\n' "$RELEASE_LOCALE"
     printf '[verify-production] CDN /: %s\n' "$CACHE_HOME_RESULT"
     printf '[verify-production] CDN /tour/welcome/1: %s\n' "$CACHE_WELCOME_RESULT"
     printf '\nPRODUCTION MACHINE ACCEPTANCE: PASS\n'
 }
 
 run_public_acceptance() {
-    local output
     load_production_identity_shared || { fail_check 'network runner' identity 'valid shared production identity' invalid; return 1; }
     NETWORK_SSH_HOST=$PRODUCTION_ZGOCLOUD_SSH_ALIAS
-    output=$(ssh "${SSH_OPTIONS[@]}" "$NETWORK_SSH_HOST" bash -s -- --public \
-        "$RELEASE_LOCALE" "$PUBLIC_ORIGIN" "$PRODUCTION_HOST" "$CACHE_HEADER" <"${BASH_SOURCE[0]}") || {
+    ssh "${SSH_OPTIONS[@]}" "$NETWORK_SSH_HOST" bash -s -- --public \
+        "$RELEASE_LOCALE" "$PUBLIC_ORIGIN" "$PRODUCTION_HOST" "$CACHE_HEADER" <"${BASH_SOURCE[0]}" || {
         fail_check 'public runner' SSH "$NETWORK_SSH_HOST direct public acceptance" failed
         return 1
     }
-    printf '%s\n' "$output"
 }
 
 verify_socket_boundary() {
     local headers="$TEMP_DIR/socket.headers" url="$PUBLIC_ORIGIN/socket"
-    http_request "$url" /dev/null "$headers"
+    http_request 'socket boundary' 'GET /socket' "$url" /dev/null "$headers"
     http_result_is 'socket boundary' 'GET /socket' 404 || return 1
-    http_request "$url" /dev/null "$headers" --http1.1 -H 'Connection: Upgrade' -H 'Upgrade: websocket'
+    http_request 'socket boundary' 'Upgrade /socket' "$url" /dev/null "$headers" \
+        --http1.1 -H 'Connection: Upgrade' -H 'Upgrade: websocket'
     http_result_is 'socket boundary' 'Upgrade /socket' 404
 }
 

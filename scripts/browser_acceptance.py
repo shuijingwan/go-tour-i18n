@@ -709,7 +709,7 @@ def run_project_page_check(chrome, url, width, height, network_retry_origins, ch
     for attempt in range(1, PROJECT_PAGE_ATTEMPTS + 1):
         chrome.navigate(url, width, height)
         try:
-            return check()
+            result = check()
         except PermanentBrowserFailure:
             raise
         except BrowserFailure as exc:
@@ -723,7 +723,27 @@ def run_project_page_check(chrome, url, width, height, network_retry_origins, ch
                         f"lastFailure={str(exc)!r}"
                     ) from exc
                 raise
-            time.sleep(min(attempt, 2))
+            backoff = min(attempt, 2)
+            summary = last_transients[0]
+            if len(last_transients) > 1:
+                summary += f" (+{len(last_transients) - 1} more)"
+            print(
+                f"[production-browser] retry stage=page-transport url={url} "
+                f"attempt={attempt}/{PROJECT_PAGE_ATTEMPTS} reason={summary!r} "
+                f"next=retry backoff={backoff}s",
+                file=sys.stderr,
+                flush=True,
+            )
+            time.sleep(backoff)
+        else:
+            if attempt > 1:
+                print(
+                    f"[production-browser] recovered stage=page-transport url={url} "
+                    f"attempt={attempt}/{PROJECT_PAGE_ATTEMPTS} PASS",
+                    file=sys.stderr,
+                    flush=True,
+                )
+            return result
     raise BrowserFailure(
         f"project page transport retry exhausted: url={url!r} "
         f"transients={last_transients!r} lastFailure={str(last_failure)!r}"
