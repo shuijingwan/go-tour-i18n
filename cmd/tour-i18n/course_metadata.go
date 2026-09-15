@@ -17,6 +17,7 @@ func assembleCourseMetadata(root string, catalog *i18n.Catalog, args []string) e
 	provider := fs.String("provider", "", "generation provider provenance")
 	model := fs.String("model", "", "generation model provenance")
 	generatedAt := fs.String("generated-at", "", "generation time (RFC 3339 UTC)")
+	schemaVersion := fs.Int("schema-version", i18n.CourseMetadataSchemaVersion, "formal course metadata schema version")
 	output := fs.String("output", "", "assembled formal metadata output path")
 	if err := fs.Parse(args); err != nil {
 		return err
@@ -32,7 +33,7 @@ func assembleCourseMetadata(root string, catalog *i18n.Catalog, args []string) e
 		return fmt.Errorf("read course descriptions: %w", err)
 	}
 	assembled, err := i18n.AssembleCourseMetadata(root, catalog, i18n.CourseMetadataAssemblyOptions{
-		Locale: *locale, Provider: *provider, Model: *model, GeneratedAt: *generatedAt, Descriptions: descriptions,
+		SchemaVersion: *schemaVersion, Locale: *locale, Provider: *provider, Model: *model, GeneratedAt: *generatedAt, Descriptions: descriptions,
 	})
 	if err != nil {
 		return err
@@ -40,7 +41,7 @@ func assembleCourseMetadata(root string, catalog *i18n.Catalog, args []string) e
 	if err := writeCourseMetadataAtomic(*output, assembled); err != nil {
 		return err
 	}
-	fmt.Printf("assembled course metadata: %s (locale=%s pages=%d)\n", *output, *locale, len(catalog.Pages))
+	fmt.Printf("assembled course metadata: %s (locale=%s schema_version=%d pages=%d)\n", *output, *locale, *schemaVersion, len(catalog.Pages))
 	return nil
 }
 
@@ -51,6 +52,7 @@ func refreshCourseMetadata(root string, catalog *i18n.Catalog, args []string) er
 	provider := fs.String("provider", "", "generation provider provenance for stale Pages")
 	model := fs.String("model", "", "generation model provenance for stale Pages")
 	generatedAt := fs.String("generated-at", "", "generation time for stale Pages (RFC 3339 UTC)")
+	schemaVersion := fs.Int("schema-version", 0, "required base schema version (defaults to the base asset version)")
 	output := fs.String("output", "", "refreshed formal metadata output path")
 	if err := fs.Parse(args); err != nil {
 		return err
@@ -66,7 +68,7 @@ func refreshCourseMetadata(root string, catalog *i18n.Catalog, args []string) er
 		return fmt.Errorf("read course refresh descriptions: %w", err)
 	}
 	refreshed, stale, err := i18n.RefreshCourseMetadata(root, catalog, i18n.CourseMetadataRefreshOptions{
-		Locale: *locale, Provider: *provider, Model: *model, GeneratedAt: *generatedAt, Descriptions: descriptions,
+		SchemaVersion: *schemaVersion, Locale: *locale, Provider: *provider, Model: *model, GeneratedAt: *generatedAt, Descriptions: descriptions,
 	})
 	if err != nil {
 		return err
@@ -76,6 +78,87 @@ func refreshCourseMetadata(root string, catalog *i18n.Catalog, args []string) er
 	}
 	fmt.Printf("refreshed course metadata: %s (locale=%s stale_pages=%d: %s)\n", *output, *locale, len(stale), strings.Join(stale, ", "))
 	return nil
+}
+
+func courseMetadataSourceCommand(root string, catalog *i18n.Catalog, args []string) error {
+	if len(args) == 0 {
+		return fmt.Errorf("usage: course-metadata source <assemble|check|review-record|review-check> [flags]")
+	}
+	switch args[0] {
+	case "assemble":
+		fs := flag.NewFlagSet("course-metadata source assemble", flag.ContinueOnError)
+		descriptionsPath := fs.String("descriptions", "", "strict page_id and canonical English description JSON input")
+		provider := fs.String("provider", "", "generation provider provenance")
+		model := fs.String("model", "", "generation model provenance")
+		generatedAt := fs.String("generated-at", "", "generation time (RFC 3339 UTC)")
+		output := fs.String("output", "", "canonical source-description output path")
+		if err := fs.Parse(args[1:]); err != nil {
+			return err
+		}
+		if *descriptionsPath == "" || *provider == "" || *model == "" || *generatedAt == "" || *output == "" || fs.NArg() != 0 {
+			return fmt.Errorf("usage: course-metadata source assemble --descriptions <descriptions.json> --provider <provider> --model <model> --generated-at <RFC3339-UTC> --output <output>")
+		}
+		descriptions, err := os.ReadFile(*descriptionsPath)
+		if err != nil {
+			return fmt.Errorf("read course source descriptions: %w", err)
+		}
+		data, err := i18n.AssembleCourseSourceDescriptions(catalog, i18n.CourseSourceDescriptionAssemblyOptions{Provider: *provider, Model: *model, GeneratedAt: *generatedAt, Descriptions: descriptions})
+		if err != nil {
+			return err
+		}
+		if err := os.MkdirAll(filepath.Dir(*output), 0755); err != nil {
+			return fmt.Errorf("create course source-description output directory: %w", err)
+		}
+		if err := writeCourseMetadataAtomic(*output, data); err != nil {
+			return err
+		}
+		fmt.Printf("assembled canonical English course source descriptions: %s (pages=%d)\n", *output, len(catalog.Pages))
+		return nil
+	case "check":
+		if len(args) != 1 {
+			return fmt.Errorf("usage: course-metadata source check")
+		}
+		asset, err := i18n.LoadCourseSourceDescriptions(root, catalog)
+		if err != nil {
+			return err
+		}
+		fmt.Printf("canonical English course source descriptions: PASS (pages=%d)\n", len(asset.Pages))
+		return nil
+	case "review-record":
+		fs := flag.NewFlagSet("course-metadata source review-record", flag.ContinueOnError)
+		reviewID := fs.String("review-id", "", "review identity")
+		reviewer := fs.String("reviewer", "", "human reviewer")
+		if err := fs.Parse(args[1:]); err != nil {
+			return err
+		}
+		if *reviewID == "" || *reviewer == "" || fs.NArg() != 0 {
+			return fmt.Errorf("usage: course-metadata source review-record --review-id <review-id> --reviewer <reviewer>")
+		}
+		data, path, err := i18n.BuildCourseSourceDescriptionReviewGate(root, *reviewID, *reviewer, catalog)
+		if err != nil {
+			return err
+		}
+		if err := os.MkdirAll(filepath.Dir(path), 0755); err != nil {
+			return fmt.Errorf("create course source-description review directory: %w", err)
+		}
+		if err := writeCourseMetadataAtomic(path, data); err != nil {
+			return err
+		}
+		fmt.Printf("canonical English course source-description review gate recorded: review_id=%s reviewer=%s path=%s\n", *reviewID, *reviewer, path)
+		return nil
+	case "review-check":
+		if len(args) != 1 {
+			return fmt.Errorf("usage: course-metadata source review-check")
+		}
+		identity, err := i18n.RequireCurrentCourseSourceDescriptionReview(root, catalog)
+		if err != nil {
+			return err
+		}
+		fmt.Printf("canonical English course source-description review gate: PASS (authority_sha256=%s)\n", identity)
+		return nil
+	default:
+		return fmt.Errorf("usage: course-metadata source <assemble|check|review-record|review-check> [flags]")
+	}
 }
 
 func writeCourseMetadataAtomic(output string, data []byte) (err error) {

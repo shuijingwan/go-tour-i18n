@@ -66,7 +66,7 @@ func TestWriteCourseMetadataAtomicRejectsInvalidParent(t *testing.T) {
 func TestAssembleCourseMetadataValidationFailurePreservesOutput(t *testing.T) {
 	root := t.TempDir()
 	descriptions := filepath.Join(root, "descriptions.json")
-	if err := os.WriteFile(descriptions, []byte(`{"pages":[]}`), 0644); err != nil {
+	if err := os.WriteFile(descriptions, []byte(`{"pages":[],"unknown":true}`), 0644); err != nil {
 		t.Fatal(err)
 	}
 	output := filepath.Join(root, "course-metadata.json")
@@ -85,6 +85,28 @@ func TestAssembleCourseMetadataValidationFailurePreservesOutput(t *testing.T) {
 	})
 	if err == nil {
 		t.Fatal("assemble with incomplete descriptions succeeded")
+	}
+	assertCourseMetadataOutput(t, output, old)
+	assertNoCourseMetadataStaging(t, root, filepath.Base(output))
+}
+
+func TestCourseMetadataSourceAssembleValidationFailurePreservesOutput(t *testing.T) {
+	root := t.TempDir()
+	descriptions := filepath.Join(root, "source-descriptions.json")
+	if err := os.WriteFile(descriptions, []byte(`{"pages":[]}`), 0644); err != nil {
+		t.Fatal(err)
+	}
+	output := filepath.Join(root, "canonical-source-descriptions.json")
+	old := []byte("existing complete source-description asset\n")
+	if err := os.WriteFile(output, old, 0644); err != nil {
+		t.Fatal(err)
+	}
+	catalog := &i18n.Catalog{Pages: []i18n.Page{{ID: "lesson/1", Route: "/lesson/1"}}}
+	err := courseMetadataSourceCommand(root, catalog, []string{
+		"assemble", "--descriptions", descriptions, "--provider", "codex", "--model", "fixture-model", "--generated-at", "2026-09-15T01:02:03Z", "--output", output,
+	})
+	if err == nil {
+		t.Fatal("source assemble with malformed descriptions succeeded")
 	}
 	assertCourseMetadataOutput(t, output, old)
 	assertNoCourseMetadataStaging(t, root, filepath.Base(output))

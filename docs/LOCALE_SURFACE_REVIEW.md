@@ -30,9 +30,9 @@ Glossary 只回答正式术语选择，不能证明完整译文忠实、准确�
 
 ### 生成与改写边界
 
-生成或修改 UI、首页、list、article metadata、runtime message 与 SEO 文案前，必须完整读取该资产的正式 source/context 和目标 locale 的完整 glossary，并执行 `mandatory`、`preferred`、`forbidden`、`keep` 的全部决定；不得抽样或只凭相邻 Page/module 推断当前 source 没有的上下文。目标必须是自然的目标语言，同时精确保留 Go、Go Playground、TranslationUnit、Page、Example 等项目/技术 identity，以及 `official`、`unofficial`、`affiliated`、`authorized`、`endorsed` 等身份边界。
+生成或修改 UI、首页、list、article metadata、runtime message 与其他 SEO 文案前，必须完整读取该资产的正式 source/context 和目标 locale 的完整 glossary，并执行 `mandatory`、`preferred`、`forbidden`、`keep` 的全部决定；不得抽样或只凭相邻 Page/module 推断当前 source 没有的上下文。目标必须是自然的目标语言，同时精确保留 Go、Go Playground、TranslationUnit、Page、Example 等项目/技术 identity，以及 `official`、`unofficial`、`affiliated`、`authorized`、`endorsed` 等身份边界。
 
-不得添加 source 未提供的背景、教程、解释、结论、保证或处方；必须保留原有逻辑、条件和顺序：possibility 不等于 requirement，hint 不等于 prescription。尤其 `Congrats` 等页面不得仅按模块主题自行补写内容。SEO description 只基于当前完整 Page，不进行跨 Page enrichment。上述规则是现有完整 source ↔ target Surface Review 的生成约束，不增加 workflow stage、evidence 或 gate。
+不得添加 source 未提供的背景、教程、解释、结论、保证或处方；必须保留原有逻辑、条件和顺序：possibility 不等于 requirement，hint 不等于 prescription。尤其 `Congrats` 等页面不得仅按模块主题自行补写内容。课程页 schema v2 description 的生成边界单独以 [课程页正式 SEO Metadata 规范](COURSE_SEO_METADATA.md) 为准：canonical English 阶段完整读取 Page source 做一次 semantic extraction；locale 阶段只读取该 canonical description、完整 locale glossary、locale identity 与 v2 contract，不再读取 source/target body，也不重新选择摘要重点。最终 Surface Review 仍恢复完整 source/target 上下文。
 
 ## A. Locale-level language quality review
 
@@ -47,7 +47,7 @@ go run -mod=readonly ./cmd/tour-i18n surface-review export \
   --locale <locale> --output /tmp/<locale>-surface-review.json
 ```
 
-该命令只机械读取并严格验证当前 glossary、**文件系统中**的 UI catalog、article metadata、ready canonical TranslationUnit target、course metadata、catalog 与 production public identity；它不调用模型、不作语言判断、不写 Markdown evidence 或 `.a-gate.json`，也不表示 Surface Review passed。包包含 glossary 原文、UI source/target 配对、article source/target 配对、按 Catalog 顺序的完整 Page source/canonical target/course description，以及 language registry/profile、Tour shell/runtime transport、project、SEO 的实际 source/context 文件（含 path、SHA-256 与全文）。其中 source context 还完整包含 `_content/js/playground.js`、按文件名稳定排序的 first-party `_content/tour/static/js/*.js`、正式 `_content/tour/template/*.tmpl` 与 `_content/tour/static/partials/*.html`；`_content/tour/static/lib` 的 vendored/minified third-party library 明确不进入审核包。目录扫描是 first-party source coverage authority，不另行复制 `initScript` 的 dependency list，因此新增同目录 runtime/template source 会自动进入 package。这里的“自包含”表示审核者能直接看到真正参与 runtime 和 shell/list/footer composition 的 first-party source，而不只是加载这些文件的 Go 调用。coverage reference 只能引用 package 内已经包含的实际 source/context，不能代替材料本身。若审核期间修改正式资产，必须重新导出；`record-a` 始终重新计算正式 current inputs，不读取 package 作为 receipt 或 authority。
+该命令只机械读取并严格验证当前 glossary、**文件系统中**的 UI catalog、article metadata、ready canonical TranslationUnit target、course metadata、catalog 与 production public identity；它不调用模型、不作语言判断、不写 Markdown evidence 或 `.a-gate.json`，也不表示 Surface Review passed。包包含 glossary 原文、UI source/target 配对、article source/target 配对，以及按 Catalog 顺序的课程页完整材料。schema v1 Page 包含完整 source、完整 canonical target 和 localized description；schema v2 Page 额外包含 canonical English description、`source_description_sha256` 与 glossary identity，因此审核者同时看到完整 source、canonical description、完整 target、完整 glossary 和 localized description。包还包含 language registry/profile、Tour shell/runtime transport、project、SEO 的实际 source/context 文件（含 path、SHA-256 与全文）。其中 source context 还完整包含 `_content/js/playground.js`、按文件名稳定排序的 first-party `_content/tour/static/js/*.js`、正式 `_content/tour/template/*.tmpl` 与 `_content/tour/static/partials/*.html`；`_content/tour/static/lib` 的 vendored/minified third-party library 明确不进入审核包。目录扫描是 first-party source coverage authority，不另行复制 `initScript` 的 dependency list，因此新增同目录 runtime/template source 会自动进入 package。这里的“自包含”表示审核者能直接看到真正参与 runtime 和 shell/list/footer composition 的 first-party source，而不只是加载这些文件的 Go 调用。coverage reference 只能引用 package 内已经包含的实际 source/context，不能代替材料本身。若审核期间修改正式资产，必须重新导出；`record-a` 始终重新计算正式 current inputs，不读取 package 作为 receipt 或 authority。
 
 ### 正式审核输入
 
@@ -62,7 +62,7 @@ go run -mod=readonly ./cmd/tour-i18n surface-review export \
 其他 locale-level 资产也必须结合其对应英文或 source identity 审核：
 
 - `locales/<locale>/article-metadata.json` 对照当前正式 article 集合及各 article 的英文根级 `title`、`subtitle`；
-- `locales/<locale>/course-metadata.json` 按 [课程页正式 SEO Metadata 规范](COURSE_SEO_METADATA.md) 对照当前 catalog 的每个完整 Page source、完整最终 canonical target 与当前 glossary，逐页审核 description；
+- `locales/<locale>/course-metadata.json` 按 [课程页正式 SEO Metadata 规范](COURSE_SEO_METADATA.md) 逐页审核：schema v1 继续比较完整 Page source、完整最终 canonical target、当前 glossary 与 description；schema v2 同时比较完整 Page source、canonical English description、完整最终 canonical target、当前 glossary 与 localized description；
 - 首页、导航、语言选择器、`/tour/list` 和 runtime message 对照其英文 catalog key、模板或稳定项目配置中的 source identity；
 - SEO 可见文案对照生成它的英文/source 字段，并核对 locale、hostname 与页面身份。
 
@@ -80,6 +80,8 @@ go run -mod=readonly ./cmd/tour-i18n surface-review export \
 - 不加入 source 没有支持的承诺、解释、品牌关系或其他无依据扩写；
 - 富文本、变量、链接 label 和相邻文案组合后语义完整。
 
+schema v2 课程页还必须逐页判断：localized description 是否忠实保持 canonical English description 的 semantic scope；canonical description 是否确实与当前完整 source identity 对齐；localized description 是否与完整 target 的实际内容一致；术语是否遵守 glossary；表达是否自然；是否存在 unsupported expansion、generic/duplicate 或 route identity 错配。generation optimization 不能用来省略任何 Page 或降低这一 full-context gate。
+
 Glossary 一致但忠实度、准确性或自然度不合格时，语言质量审核仍然失败。
 
 ### A gate 记录与 freshness
@@ -94,6 +96,8 @@ go run -mod=readonly ./cmd/tour-i18n surface-review record-a \
 ```
 
 命令写入 `data/locale-surface-reviews/<locale>/<review-id>.a-gate.json`。其 schema 固定包含 `schema_version`、`locale`、`review_id`、`stage = locale-level-language-quality-review`、`decision = passed`、`reviewer` 和程序自动计算的 `inputs`；审核者不填写 SHA。inputs 始终覆盖英文与 locale UI catalog、locale glossary、article metadata、course metadata、完整当前 catalog/source identity，以及 `internal/tour/languages.go`、`project.go`、`seo.go` 的稳定 build-time 输入。
+
+course metadata 为 schema v2 时，inputs 还绑定完整 canonical English source-description asset SHA 与当前 passed source-description review authority identity。因此 canonical asset 或其 current review authority 变化会使 locale A gate stale。course metadata 为 schema v1 时，这两个输入保持不存在；仅仅新增或修改全局 source-description asset/gate 不会使历史或新记录的 v1 locale A gate stale。
 
 新记录使用 **schema v2**。除 `languages.go`（实际 public canonical/robots/sitemap origin 的 build-time authority）外，v2 只从解析后的 `production/identity.json` 绑定目标 locale 的稳定 public identity projection：`locale`、`production_hostname`、`production_public_url`。该 projection 以固定 JSON encoding 后 hash；目标 profile 必须恰好一个，三个字段均非空，缺失、重复或 malformed identity 均 fail closed。它不绑定 `production_state`、port、service、data-root/release/current/lock、TLS/vhost、CDN/cache header、shared 配置或其他 locale profile；这些 lifecycle/基础设施变化本身不要求重新进行语言质量审核。
 

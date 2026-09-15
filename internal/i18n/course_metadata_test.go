@@ -24,7 +24,7 @@ func TestValidateCourseMetadataCompleteSet(t *testing.T) {
 	}
 }
 
-func TestCourseMetadataCurrentProductionBaselineIs103Pages(t *testing.T) {
+func TestCommittedCourseMetadataAssetsLoadAgainst103PageCatalog(t *testing.T) {
 	root := filepath.Clean(filepath.Join("..", ".."))
 	current, err := BuildSourceCatalog(root)
 	if err != nil {
@@ -40,13 +40,21 @@ func TestCourseMetadataCurrentProductionBaselineIs103Pages(t *testing.T) {
 	if err := HydrateCatalogSources(catalog, current); err != nil {
 		t.Fatal(err)
 	}
-	for _, locale := range []string{"zh-CN", "ja-JP"} {
+	paths, err := filepath.Glob(filepath.Join(root, "locales", "*", "course-metadata.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(paths) == 0 {
+		t.Fatal("no committed course-metadata.json assets found")
+	}
+	for _, path := range paths {
+		locale := filepath.Base(filepath.Dir(path))
 		metadata, err := LoadCourseMetadata(root, locale, catalog)
 		if err != nil {
-			t.Fatalf("load current %s formal course metadata: %v", locale, err)
+			t.Fatalf("load committed %s course metadata: %v", locale, err)
 		}
 		if len(metadata.Pages) != len(catalog.Pages) {
-			t.Fatalf("%s formal pages=%d, catalog=%d", locale, len(metadata.Pages), len(catalog.Pages))
+			t.Fatalf("%s committed pages=%d, catalog=%d", locale, len(metadata.Pages), len(catalog.Pages))
 		}
 	}
 }
@@ -517,6 +525,149 @@ func TestRefreshCourseMetadataFailsClosedOnCatalogPageSetChange(t *testing.T) {
 	})
 	if err == nil || !strings.Contains(err.Error(), "base has extra page_id") {
 		t.Fatalf("error=%v", err)
+	}
+}
+
+func TestAssembleCourseMetadataV2RequiresCurrentSourceReviewAndValidatesLineage(t *testing.T) {
+	root, catalog, _ := writeCourseMetadataRefreshFixture(t, 3)
+	writeCourseSourceDescriptionAsset(t, root, catalog, nil)
+	options := CourseMetadataAssemblyOptions{
+		SchemaVersion: CourseMetadataSchemaVersionV2, Locale: "test-LOCALE", Provider: "provider", Model: "model", GeneratedAt: "2026-09-15T02:03:04Z", Descriptions: marshalCourseDescriptions(t, catalog),
+	}
+	if _, err := AssembleCourseMetadata(root, catalog, options); err == nil || !strings.Contains(err.Error(), "review gate") {
+		t.Fatalf("v2 assembly without current source review error=%v", err)
+	}
+	writeCourseSourceDescriptionReview(t, root, catalog, "review-1")
+	data, err := AssembleCourseMetadata(root, catalog, options)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var metadata CourseMetadata
+	if err := json.Unmarshal(data, &metadata); err != nil {
+		t.Fatal(err)
+	}
+	if metadata.SchemaVersion != CourseMetadataSchemaVersionV2 || metadata.GeneratorContract != CourseMetadataGeneratorContractV2 {
+		t.Fatalf("unexpected v2 identity: %+v", metadata)
+	}
+	source, err := LoadCourseSourceDescriptions(root, catalog)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for i, entry := range metadata.Pages {
+		if entry.Generation.PromptVersion != CourseMetadataPromptVersionV2 || entry.SourceDescriptionSHA256 != sum([]byte(source.Pages[i].Description)) {
+			t.Fatalf("page %s lacks v2 lineage: %+v", entry.PageID, entry)
+		}
+	}
+	targets, glossary, err := loadReadyCourseMetadataInputs(root, "test-LOCALE", catalog)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, test := range []struct {
+		name string
+		edit func(*CourseMetadata)
+		want string
+	}{
+		{"source description", func(m *CourseMetadata) { m.Pages[0].SourceDescriptionSHA256 = strings.Repeat("0", 64) }, "source_description_sha256 is stale"},
+		{"target", func(m *CourseMetadata) { m.Pages[0].TargetSHA256 = strings.Repeat("0", 64) }, "target_sha256 is stale"},
+		{"glossary", func(m *CourseMetadata) { m.Pages[0].GlossarySHA256 = strings.Repeat("0", 64) }, "glossary_sha256 is stale"},
+		{"contract", func(m *CourseMetadata) { m.GeneratorContract = "unknown" }, "generator_contract"},
+		{"prompt", func(m *CourseMetadata) { m.Pages[0].Generation.PromptVersion = "unknown" }, "prompt_version"},
+		{"order", func(m *CourseMetadata) { m.Pages[0], m.Pages[1] = m.Pages[1], m.Pages[0] }, "catalog page_id"},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			cloneData := marshalCourseMetadata(t, &metadata)
+			var clone CourseMetadata
+			if err := json.Unmarshal(cloneData, &clone); err != nil {
+				t.Fatal(err)
+			}
+			test.edit(&clone)
+			if _, err := validateCourseMetadataWithSourceDescriptions(marshalCourseMetadata(t, &clone), "test-LOCALE", catalog, targets, glossary, source); err == nil || !strings.Contains(err.Error(), test.want) {
+				t.Fatalf("invalid v2 %s accepted: %v", test.name, err)
+			}
+		})
+	}
+	writeCourseMetadataFixture(t, root, "test-LOCALE", &metadata)
+	writeCourseSourceDescriptionAsset(t, root, catalog, map[string]string{catalog.Pages[0].ID: "changed"})
+	if _, err := LoadCourseMetadata(root, "test-LOCALE", catalog); err == nil || !strings.Contains(err.Error(), "review gate is stale") {
+		t.Fatalf("dependent v2 metadata remained current with stale source review gate: %v", err)
+	}
+	writeCourseSourceDescriptionReview(t, root, catalog, "review-2")
+	if _, err := LoadCourseMetadata(root, "test-LOCALE", catalog); err == nil || !strings.Contains(err.Error(), "source_description_sha256 is stale") {
+		t.Fatalf("dependent v2 metadata remained current after canonical description changed: %v", err)
+	}
+}
+
+func TestRefreshCourseMetadataV2RegeneratesExactStaleSubset(t *testing.T) {
+	root, catalog, _ := writeCourseMetadataRefreshFixture(t, 3)
+	writeCourseSourceDescriptionAsset(t, root, catalog, nil)
+	writeCourseSourceDescriptionReview(t, root, catalog, "review-1")
+	baseData, err := AssembleCourseMetadata(root, catalog, CourseMetadataAssemblyOptions{
+		SchemaVersion: CourseMetadataSchemaVersionV2, Locale: "test-LOCALE", Provider: "old-provider", Model: "old-model", GeneratedAt: "2026-09-15T02:03:04Z", Descriptions: marshalCourseDescriptions(t, catalog),
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	var base CourseMetadata
+	if err := json.Unmarshal(baseData, &base); err != nil {
+		t.Fatal(err)
+	}
+	writeCourseMetadataFixture(t, root, "test-LOCALE", &base)
+
+	firstTarget := canonicalCandidatePath("test-LOCALE", catalog.Pages[0].ID)
+	if err := os.WriteFile(filepath.Join(root, filepath.FromSlash(firstTarget)), []byte("* Changed target\n\nA changed complete canonical target.\n"), 0644); err != nil {
+		t.Fatal(err)
+	}
+	writeCourseSourceDescriptionAsset(t, root, catalog, map[string]string{catalog.Pages[1].ID: "revised"})
+	writeCourseSourceDescriptionReview(t, root, catalog, "review-2")
+	staleIDs := []string{catalog.Pages[0].ID, catalog.Pages[1].ID}
+	data, stale, err := RefreshCourseMetadata(root, catalog, CourseMetadataRefreshOptions{
+		SchemaVersion: CourseMetadataSchemaVersionV2, Locale: "test-LOCALE", Provider: "new-provider", Model: "new-model", GeneratedAt: "2026-09-15T03:04:05Z", Descriptions: marshalCourseRefreshDescriptions(t, staleIDs),
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !reflect.DeepEqual(stale, staleIDs) {
+		t.Fatalf("stale=%v, want %v", stale, staleIDs)
+	}
+	var refreshed CourseMetadata
+	if err := json.Unmarshal(data, &refreshed); err != nil {
+		t.Fatal(err)
+	}
+	if refreshed.Pages[2].Description != base.Pages[2].Description || !reflect.DeepEqual(refreshed.Pages[2].Generation, base.Pages[2].Generation) {
+		t.Fatalf("non-stale provenance changed: got=%+v want=%+v", refreshed.Pages[2], base.Pages[2])
+	}
+	for _, index := range []int{0, 1} {
+		if refreshed.Pages[index].Generation.Provider != "new-provider" || refreshed.Pages[index].Generation.PromptVersion != CourseMetadataPromptVersionV2 {
+			t.Fatalf("stale page was not refreshed: %+v", refreshed.Pages[index])
+		}
+	}
+	writeCourseMetadataFixture(t, root, "test-LOCALE", &refreshed)
+	if _, err := LoadCourseMetadata(root, "test-LOCALE", catalog); err != nil {
+		t.Fatalf("refreshed v2 metadata rejected: %v", err)
+	}
+}
+
+func TestRefreshCourseMetadataV2GlossaryChangeMakesAllPagesStale(t *testing.T) {
+	root, catalog, _ := writeCourseMetadataRefreshFixture(t, 3)
+	writeCourseSourceDescriptionAsset(t, root, catalog, nil)
+	writeCourseSourceDescriptionReview(t, root, catalog, "review-1")
+	data, err := AssembleCourseMetadata(root, catalog, CourseMetadataAssemblyOptions{SchemaVersion: CourseMetadataSchemaVersionV2, Locale: "test-LOCALE", Provider: "old", Model: "old", GeneratedAt: "2026-09-15T02:03:04Z", Descriptions: marshalCourseDescriptions(t, catalog)})
+	if err != nil {
+		t.Fatal(err)
+	}
+	var base CourseMetadata
+	if err := json.Unmarshal(data, &base); err != nil {
+		t.Fatal(err)
+	}
+	writeCourseMetadataFixture(t, root, "test-LOCALE", &base)
+	glossaryPath := filepath.Join(root, "locales", "test-LOCALE", "glossary.yaml")
+	glossary, _ := os.ReadFile(glossaryPath)
+	if err := os.WriteFile(glossaryPath, append(glossary, []byte("preferred:\n  course: tour\n")...), 0644); err != nil {
+		t.Fatal(err)
+	}
+	ids := []string{catalog.Pages[0].ID, catalog.Pages[1].ID, catalog.Pages[2].ID}
+	if _, stale, err := RefreshCourseMetadata(root, catalog, CourseMetadataRefreshOptions{SchemaVersion: CourseMetadataSchemaVersionV2, Locale: "test-LOCALE", Provider: "new", Model: "new", GeneratedAt: "2026-09-15T03:04:05Z", Descriptions: marshalCourseRefreshDescriptions(t, ids)}); err != nil || !reflect.DeepEqual(stale, ids) {
+		t.Fatalf("glossary stale=%v err=%v", stale, err)
 	}
 }
 

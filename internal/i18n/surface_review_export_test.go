@@ -132,6 +132,54 @@ func TestExportLocaleSurfaceReviewPackageUsesFilesystemUIAndFailsClosed(t *testi
 	}
 }
 
+func TestExportLocaleSurfaceReviewPackageV2IncludesCanonicalDescriptionAndFullContext(t *testing.T) {
+	root := copySurfaceReviewExportTree(t)
+	catalog := hydratedSurfaceReviewExportCatalog(t, root)
+	metadataPath := filepath.Join(root, "locales", "tr-TR", "course-metadata.json")
+	legacyData, err := os.ReadFile(metadataPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	legacy, err := decodeCourseMetadata(legacyData)
+	if err != nil {
+		t.Fatal(err)
+	}
+	localized := courseDescriptionsFile{Pages: make([]courseDescriptionEntry, 0, len(legacy.Pages))}
+	for _, entry := range legacy.Pages {
+		localized.Pages = append(localized.Pages, courseDescriptionEntry{PageID: entry.PageID, Description: entry.Description})
+	}
+	localizedData, err := json.Marshal(localized)
+	if err != nil {
+		t.Fatal(err)
+	}
+	writeCourseSourceDescriptionAsset(t, root, catalog, nil)
+	writeCourseSourceDescriptionReview(t, root, catalog, "review-1")
+	v2, err := AssembleCourseMetadata(root, catalog, CourseMetadataAssemblyOptions{SchemaVersion: CourseMetadataSchemaVersionV2, Locale: "tr-TR", Provider: "fixture", Model: "fixture-model", GeneratedAt: "2026-09-15T04:05:06Z", Descriptions: localizedData})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(metadataPath, v2, 0644); err != nil {
+		t.Fatal(err)
+	}
+
+	data, _, err := ExportLocaleSurfaceReviewPackage(root, "tr-TR", catalog)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var pkg LocaleSurfaceReviewPackage
+	if err := json.Unmarshal(data, &pkg); err != nil {
+		t.Fatal(err)
+	}
+	if pkg.CourseMetadataSchemaVersion != CourseMetadataSchemaVersionV2 || pkg.Inputs.CourseSourceDescriptionsSHA256 == "" || pkg.Inputs.CourseSourceDescriptionReviewSHA256 == "" {
+		t.Fatalf("v2 source-description authority is missing: %+v", pkg.Inputs)
+	}
+	for i, page := range pkg.CoursePages {
+		if page.Source != string(catalog.Pages[i].Source) || page.Target == "" || page.CanonicalDescription == "" || page.Description == "" || page.SourceDescriptionSHA256 != sum([]byte(page.CanonicalDescription)) || page.GlossarySHA256 != pkg.Glossary.SHA256 {
+			t.Fatalf("v2 review page %d lacks full context or identity: %+v", i, page)
+		}
+	}
+}
+
 func TestExportLocaleSurfaceReviewPackageIncludesConcreteOtherSurfaces(t *testing.T) {
 	root := surfaceReviewExportRoot(t)
 	catalog := hydratedSurfaceReviewExportCatalog(t, root)

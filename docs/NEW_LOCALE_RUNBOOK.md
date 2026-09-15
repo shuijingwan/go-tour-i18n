@@ -14,7 +14,9 @@ locale / domain / CDN 决策
 → TranslationUnit 翻译与 automatic validation
 → Candidate Snapshot → Quality Check → machine finalization
 → promotion
-→ 离线生成并验证课程页 SEO metadata
+→ 确认 canonical English source-description asset 与人工 review gate current
+→ 根据 canonical English description + 完整 locale glossary 离线生成 schema v2 description
+→ assemble 并验证课程页 SEO metadata
 → build
 → surface-review export
 → Locale Surface Review A
@@ -87,7 +89,7 @@ go run -mod=readonly ./cmd/tour-i18n locale init \
 - `internal/tour/ui/<locale>.json`：完整公共 UI catalog，key 与 `plain` / `rich` kind 必须匹配英文 source `internal/tour/ui/en.json`，正式 locale 不使用英文 fallback；
 - `locales/<locale>/article-metadata.json`：全部正式 article 的本地化 `title` 与 `subtitle`；
 - `locales/<locale>/course-metadata.todo.json`：初始化阶段的 Page inventory，不是正式 SEO metadata；
-- `locales/<locale>/course-metadata.json`：全部 TranslationUnit promotion 后，按 [课程页正式 SEO Metadata 规范](COURSE_SEO_METADATA.md) 的 schema、离线生成输入和 stale 规则正式生成全部课程页的目标语言 SEO description；
+- `locales/<locale>/course-metadata.json`：全部 TranslationUnit promotion 后，先确认 [课程页正式 SEO Metadata 规范](COURSE_SEO_METADATA.md) 定义的 canonical English source-description asset 与人工 review gate current，再仅根据每页 canonical English description、完整 locale glossary、目标 locale identity 和 v2 contract 生成目标语言 description；由 `course-metadata assemble --schema-version 2` 自动绑定完整 English source、canonical description、ready target 与 glossary identity；
 - 首页、导航、语言选择器与语言 registry 所需的 locale 条目。
 
 UI catalog、首页和 metadata 不属于 TranslationUnit candidate、status、Quality Check、machine finalization 或 promotion。它们必须在后续 Surface Review 中单独验收。
@@ -124,7 +126,27 @@ export
 
 ## 5. 完整投影、预览与 Surface Review
 
-只有 promotion 完成、全部 workflow TranslationUnit 为 canonical `ready`，并且 locale 配置、UI catalog、article metadata 与正式 `course-metadata.json` 完整后，才删除 `.locale-init-incomplete`，并先构建完整 projection。不得仅为绕过 gate 提前删除标记：
+promotion 完成后，先执行 canonical English source-description 的 current 检查与人工 review gate 检查：
+
+```sh
+go run -mod=readonly ./cmd/tour-i18n course-metadata source check
+go run -mod=readonly ./cmd/tour-i18n course-metadata source review-check
+```
+
+然后让模型只读取每页 canonical English description、完整 locale glossary、目标 locale identity 和 `course-seo-localization-v2` contract，输出完整 `page_id → localized description`；完整 English/target Page body 不进入此本地化模型输入。使用正式离线命令组装 v2 asset；target body 仍由命令机械读取，只计算 `target_sha256` freshness：
+
+```sh
+go run -mod=readonly ./cmd/tour-i18n course-metadata assemble \
+  --schema-version 2 \
+  --locale <locale> \
+  --descriptions <localized-descriptions.json> \
+  --provider <provider> \
+  --model <model> \
+  --generated-at <RFC3339-UTC> \
+  --output locales/<locale>/course-metadata.json
+```
+
+只有全部 workflow TranslationUnit 为 canonical `ready`，并且 locale 配置、UI catalog、article metadata 与 strict-valid schema v2 `course-metadata.json` 完整后，才删除 `.locale-init-incomplete`，并先构建完整 projection。不得仅为绕过 gate 提前删除标记：
 
 ```sh
 go run -mod=readonly ./cmd/tour-i18n build --locale <locale>
@@ -137,7 +159,7 @@ go run -mod=readonly ./cmd/tour-i18n surface-review export \
   --locale <locale> --output /tmp/<locale>-surface-review.json
 ```
 
-ChatGPT 完成 Locale Surface Review A；若审核中修复 UI、metadata 或其他表层资产，必须重新导出当前 package 并复审受影响范围。若发现 TranslationUnit candidate 问题，仍须回 revision batch、validation、QC A、finalization、promotion，再重新生成受影响 course metadata 和 package。目标 locale 为 `production_state=first-production` 时，先在同一 review-id 的 Markdown evidence 写入完整、未改写的 first-production finalization placeholder；`record-a` 会在写 receipt 前检查它。A 通过后记录当前正式输入的 machine-readable gate（Markdown evidence 仍照 [Locale Surface Review](LOCALE_SURFACE_REVIEW.md) 保留）：
+ChatGPT 完成 Locale Surface Review A；schema v2 package 会让审核者逐页同时看到完整 English source、canonical English description、完整最终 target、完整 glossary、localized description 和对应 identity。此 full-context review 不因生成阶段减少模型输入而缩减。若审核中修复 UI、metadata 或其他表层资产，必须重新导出当前 package 并复审受影响范围。若发现 TranslationUnit candidate 问题，仍须回 revision batch、validation、QC A、finalization、promotion，再刷新受影响 course metadata 和 package。目标 locale 为 `production_state=first-production` 时，先在同一 review-id 的 Markdown evidence 写入完整、未改写的 first-production finalization placeholder；`record-a` 会在写 receipt 前检查它。A 通过后记录当前正式输入的 machine-readable gate（Markdown evidence 仍照 [Locale Surface Review](LOCALE_SURFACE_REVIEW.md) 保留）：
 
 ```sh
 go run -mod=readonly ./cmd/tour-i18n surface-review record-a \

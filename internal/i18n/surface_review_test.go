@@ -211,11 +211,47 @@ func TestLocaleSurfaceReviewAGateRejectsMalformedWrongLocaleAndDecision(t *testi
 	}
 }
 
+func TestLocaleSurfaceReviewV1DoesNotBindCourseSourceDescriptionAuthority(t *testing.T) {
+	root, catalog := surfaceReviewTestRoot(t)
+	if _, _, err := RecordLocaleSurfaceReviewA(root, "zz-ZZ", "review-1", "reviewer", catalog); err != nil {
+		t.Fatal(err)
+	}
+	writeCourseSourceDescriptionAsset(t, root, catalog, nil)
+	writeCourseSourceDescriptionReview(t, root, catalog, "source-review-1")
+	if err := RequireCurrentLocaleSurfaceReviewA(root, "zz-ZZ", catalog); err != nil {
+		t.Fatalf("schema v1 Surface Review gate was staled by new global source-description authority: %v", err)
+	}
+	writeCourseSourceDescriptionAsset(t, root, catalog, map[string]string{catalog.Pages[0].ID: "changed"})
+	if err := RequireCurrentLocaleSurfaceReviewA(root, "zz-ZZ", catalog); err != nil {
+		t.Fatalf("schema v1 Surface Review gate was staled by changed global source-description asset: %v", err)
+	}
+}
+
+func TestLocaleSurfaceReviewV2BindsCourseSourceDescriptionAuthority(t *testing.T) {
+	root, catalog := surfaceReviewTestRoot(t)
+	if err := os.WriteFile(filepath.Join(root, "locales", "zz-ZZ", "course-metadata.json"), []byte(`{"schema_version":2}`), 0644); err != nil {
+		t.Fatal(err)
+	}
+	writeCourseSourceDescriptionAsset(t, root, catalog, nil)
+	writeCourseSourceDescriptionReview(t, root, catalog, "source-review-1")
+	if _, _, err := RecordLocaleSurfaceReviewA(root, "zz-ZZ", "review-1", "reviewer", catalog); err != nil {
+		t.Fatal(err)
+	}
+	if err := RequireCurrentLocaleSurfaceReviewA(root, "zz-ZZ", catalog); err != nil {
+		t.Fatalf("current schema v2 Surface Review gate rejected: %v", err)
+	}
+	writeCourseSourceDescriptionAsset(t, root, catalog, map[string]string{catalog.Pages[0].ID: "changed"})
+	writeCourseSourceDescriptionReview(t, root, catalog, "source-review-2")
+	if err := RequireCurrentLocaleSurfaceReviewA(root, "zz-ZZ", catalog); err == nil || !strings.Contains(err.Error(), "stale") {
+		t.Fatalf("schema v2 Surface Review gate did not stale after source-description authority changed: %v", err)
+	}
+}
+
 func surfaceReviewTestRoot(t *testing.T) (string, *Catalog) {
 	t.Helper()
 	root := t.TempDir()
 	files := map[string]string{
-		"internal/tour/ui/en.json": "en", "internal/tour/ui/zz-ZZ.json": "target", "locales/zz-ZZ/glossary.yaml": "glossary", "locales/zz-ZZ/article-metadata.json": "article", "locales/zz-ZZ/course-metadata.json": "course", "internal/tour/languages.go": "languages", "internal/tour/project.go": "project", "internal/tour/seo.go": "seo", "production/identity.json": `{"locales":[{"locale":"other-AA","production_hostname":"other.example","production_public_url":"https://other.example/","production_state":"live","loopback_port":4200},{"locale":"zz-ZZ","production_hostname":"zz.example","production_public_url":"https://zz.example/","production_state":"first-production","loopback_port":4100,"systemd_service":"go-tour-zz.service","cdn":"cloudflare"}]}`,
+		"internal/tour/ui/en.json": "en", "internal/tour/ui/zz-ZZ.json": "target", "locales/zz-ZZ/glossary.yaml": "glossary", "locales/zz-ZZ/article-metadata.json": "article", "locales/zz-ZZ/course-metadata.json": `{"schema_version":1}`, "internal/tour/languages.go": "languages", "internal/tour/project.go": "project", "internal/tour/seo.go": "seo", "production/identity.json": `{"locales":[{"locale":"other-AA","production_hostname":"other.example","production_public_url":"https://other.example/","production_state":"live","loopback_port":4200},{"locale":"zz-ZZ","production_hostname":"zz.example","production_public_url":"https://zz.example/","production_state":"first-production","loopback_port":4100,"systemd_service":"go-tour-zz.service","cdn":"cloudflare"}]}`,
 	}
 	for path, text := range files {
 		full := filepath.Join(root, path)

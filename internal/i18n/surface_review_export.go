@@ -15,17 +15,18 @@ import (
 // LocaleSurfaceReviewPackage is deterministic review input, not review
 // evidence or a gate. All content is read from the current working tree.
 type LocaleSurfaceReviewPackage struct {
-	SchemaVersion            int                                `json:"schema_version"`
-	Kind                     string                             `json:"kind"`
-	Locale                   string                             `json:"locale"`
-	Inputs                   LocaleSurfaceReviewAInputs         `json:"inputs"`
-	ProductionPublicIdentity SurfaceReviewPublicIdentity        `json:"production_public_identity"`
-	Coverage                 LocaleSurfaceReviewPackageCoverage `json:"coverage"`
-	Glossary                 LocaleSurfaceReviewGlossary        `json:"glossary"`
-	UI                       []LocaleSurfaceReviewUIMessage     `json:"ui"`
-	Articles                 []LocaleSurfaceReviewArticle       `json:"articles"`
-	CoursePages              []LocaleSurfaceReviewCoursePage    `json:"course_pages"`
-	OtherSurfaces            []LocaleSurfaceReviewOtherSurface  `json:"other_surfaces"`
+	SchemaVersion               int                                `json:"schema_version"`
+	Kind                        string                             `json:"kind"`
+	Locale                      string                             `json:"locale"`
+	CourseMetadataSchemaVersion int                                `json:"course_metadata_schema_version"`
+	Inputs                      LocaleSurfaceReviewAInputs         `json:"inputs"`
+	ProductionPublicIdentity    SurfaceReviewPublicIdentity        `json:"production_public_identity"`
+	Coverage                    LocaleSurfaceReviewPackageCoverage `json:"coverage"`
+	Glossary                    LocaleSurfaceReviewGlossary        `json:"glossary"`
+	UI                          []LocaleSurfaceReviewUIMessage     `json:"ui"`
+	Articles                    []LocaleSurfaceReviewArticle       `json:"articles"`
+	CoursePages                 []LocaleSurfaceReviewCoursePage    `json:"course_pages"`
+	OtherSurfaces               []LocaleSurfaceReviewOtherSurface  `json:"other_surfaces"`
 }
 
 type SurfaceReviewPublicIdentity struct {
@@ -60,13 +61,16 @@ type LocaleSurfaceReviewArticle struct {
 	TargetSubtitle string `json:"target_subtitle"`
 }
 type LocaleSurfaceReviewCoursePage struct {
-	PageID       string `json:"page_id"`
-	Route        string `json:"route"`
-	Source       string `json:"source"`
-	Target       string `json:"target"`
-	Description  string `json:"description"`
-	SourceSHA256 string `json:"source_sha256"`
-	TargetSHA256 string `json:"target_sha256"`
+	PageID                  string `json:"page_id"`
+	Route                   string `json:"route"`
+	Source                  string `json:"source"`
+	CanonicalDescription    string `json:"canonical_english_description,omitempty"`
+	Target                  string `json:"target"`
+	Description             string `json:"description"`
+	SourceSHA256            string `json:"source_sha256"`
+	SourceDescriptionSHA256 string `json:"source_description_sha256,omitempty"`
+	TargetSHA256            string `json:"target_sha256"`
+	GlossarySHA256          string `json:"glossary_sha256"`
 }
 type LocaleSurfaceReviewOtherSurface struct {
 	ID           string   `json:"id"`
@@ -178,6 +182,14 @@ func ExportLocaleSurfaceReviewPackage(root, locale string, catalog *Catalog) ([]
 	for _, entry := range course.Pages {
 		courseByID[entry.PageID] = entry
 	}
+	var sourceByID map[string]CourseSourceDescriptionPage
+	if course.SchemaVersion == CourseMetadataSchemaVersionV2 {
+		sourceDescriptions, err := LoadCourseSourceDescriptions(root, catalog)
+		if err != nil {
+			return nil, LocaleSurfaceReviewPackageCoverage{}, err
+		}
+		sourceByID = courseSourceDescriptionsByID(sourceDescriptions)
+	}
 	pages := make([]LocaleSurfaceReviewCoursePage, 0, len(catalog.Pages))
 	for _, page := range catalog.Pages {
 		target, err := loadReadyCandidate(root, catalog, page.ID, locale, statusByID[page.ID])
@@ -188,14 +200,19 @@ func ExportLocaleSurfaceReviewPackage(root, locale string, catalog *Catalog) ([]
 		if !ok {
 			return nil, LocaleSurfaceReviewPackageCoverage{}, fmt.Errorf("course metadata is missing page %s", page.ID)
 		}
-		pages = append(pages, LocaleSurfaceReviewCoursePage{PageID: page.ID, Route: page.Route, Source: string(page.Source), Target: string(target), Description: entry.Description, SourceSHA256: page.SourceSHA256, TargetSHA256: entry.TargetSHA256})
+		reviewPage := LocaleSurfaceReviewCoursePage{PageID: page.ID, Route: page.Route, Source: string(page.Source), Target: string(target), Description: entry.Description, SourceSHA256: page.SourceSHA256, TargetSHA256: entry.TargetSHA256, GlossarySHA256: entry.GlossarySHA256}
+		if course.SchemaVersion == CourseMetadataSchemaVersionV2 {
+			reviewPage.CanonicalDescription = sourceByID[page.ID].Description
+			reviewPage.SourceDescriptionSHA256 = entry.SourceDescriptionSHA256
+		}
+		pages = append(pages, reviewPage)
 	}
 	others, err := exportOtherLocaleSurfaces(root, uiKeys)
 	if err != nil {
 		return nil, LocaleSurfaceReviewPackageCoverage{}, err
 	}
 	coverage := LocaleSurfaceReviewPackageCoverage{Pages: len(pages), UI: len(uiEntries), Articles: len(articles), TranslationUnits: len(workflow), OtherSurfaces: len(others)}
-	pkg := LocaleSurfaceReviewPackage{SchemaVersion: 1, Kind: "go-tour-i18n/locale-surface-review-package", Locale: locale, Inputs: inputs, ProductionPublicIdentity: public, Coverage: coverage, Glossary: LocaleSurfaceReviewGlossary{Path: filepath.ToSlash(filepath.Join("locales", locale, "glossary.yaml")), SHA256: sum(glossary), Text: string(glossary)}, UI: uiEntries, Articles: articles, CoursePages: pages, OtherSurfaces: others}
+	pkg := LocaleSurfaceReviewPackage{SchemaVersion: 1, Kind: "go-tour-i18n/locale-surface-review-package", Locale: locale, CourseMetadataSchemaVersion: course.SchemaVersion, Inputs: inputs, ProductionPublicIdentity: public, Coverage: coverage, Glossary: LocaleSurfaceReviewGlossary{Path: filepath.ToSlash(filepath.Join("locales", locale, "glossary.yaml")), SHA256: sum(glossary), Text: string(glossary)}, UI: uiEntries, Articles: articles, CoursePages: pages, OtherSurfaces: others}
 	data, err := json.MarshalIndent(pkg, "", "  ")
 	if err != nil {
 		return nil, LocaleSurfaceReviewPackageCoverage{}, err

@@ -10,17 +10,19 @@ import (
 	"regexp"
 	"sort"
 	"strings"
-	"time"
 	"unicode"
 	"unicode/utf8"
 )
 
 const (
-	CourseMetadataSchemaVersion     = 1
-	CourseMetadataGeneratorContract = "course-seo-description-v1"
-	CourseMetadataPromptVersion     = "course-seo-description-v1"
-	CourseDescriptionMinRunes       = 30
-	CourseDescriptionMaxRunes       = 200
+	CourseMetadataSchemaVersion       = 1
+	CourseMetadataGeneratorContract   = "course-seo-description-v1"
+	CourseMetadataPromptVersion       = "course-seo-description-v1"
+	CourseMetadataSchemaVersionV2     = 2
+	CourseMetadataGeneratorContractV2 = "course-seo-localization-v2"
+	CourseMetadataPromptVersionV2     = "course-seo-localization-v2"
+	CourseDescriptionMinRunes         = 30
+	CourseDescriptionMaxRunes         = 200
 )
 
 var (
@@ -43,13 +45,14 @@ type CourseMetadata struct {
 // CoursePageMetadata binds one generated description to the persistent Page
 // identity and every input whose change makes the description stale.
 type CoursePageMetadata struct {
-	PageID         string                   `json:"page_id"`
-	Route          string                   `json:"route"`
-	Description    string                   `json:"description"`
-	SourceSHA256   string                   `json:"source_sha256"`
-	TargetSHA256   string                   `json:"target_sha256"`
-	GlossarySHA256 string                   `json:"glossary_sha256"`
-	Generation     CourseMetadataGeneration `json:"generation"`
+	PageID                  string                   `json:"page_id"`
+	Route                   string                   `json:"route"`
+	Description             string                   `json:"description"`
+	SourceSHA256            string                   `json:"source_sha256"`
+	SourceDescriptionSHA256 string                   `json:"source_description_sha256,omitempty"`
+	TargetSHA256            string                   `json:"target_sha256"`
+	GlossarySHA256          string                   `json:"glossary_sha256"`
+	Generation              CourseMetadataGeneration `json:"generation"`
 }
 
 type CourseMetadataGeneration struct {
@@ -62,22 +65,24 @@ type CourseMetadataGeneration struct {
 // CourseMetadataAssemblyOptions contains generation provenance supplied by the
 // offline caller. All content identities are derived from the repository.
 type CourseMetadataAssemblyOptions struct {
-	Locale       string
-	Provider     string
-	Model        string
-	GeneratedAt  string
-	Descriptions []byte
+	SchemaVersion int
+	Locale        string
+	Provider      string
+	Model         string
+	GeneratedAt   string
+	Descriptions  []byte
 }
 
 // CourseMetadataRefreshOptions supplies only descriptions that must be
 // regenerated. The existing formal metadata asset is the immutable base for
 // every non-stale Page entry.
 type CourseMetadataRefreshOptions struct {
-	Locale       string
-	Provider     string
-	Model        string
-	GeneratedAt  string
-	Descriptions []byte
+	SchemaVersion int
+	Locale        string
+	Provider      string
+	Model         string
+	GeneratedAt   string
+	Descriptions  []byte
 }
 
 type courseDescriptionsFile struct {
@@ -99,11 +104,25 @@ func LoadCourseMetadata(root, locale string, catalog *Catalog) (*CourseMetadata,
 	if err != nil {
 		return nil, fmt.Errorf("read course metadata: %w", err)
 	}
+	decoded, err := decodeCourseMetadata(data)
+	if err != nil {
+		return nil, fmt.Errorf("parse course metadata: %w", err)
+	}
 	targets, glossary, err := loadReadyCourseMetadataInputs(root, locale, catalog)
 	if err != nil {
 		return nil, err
 	}
-	return validateCourseMetadata(data, locale, catalog, targets, glossary)
+	var sourceDescriptions *CourseSourceDescriptions
+	if decoded.SchemaVersion == CourseMetadataSchemaVersionV2 {
+		sourceDescriptions, err = LoadCourseSourceDescriptions(root, catalog)
+		if err != nil {
+			return nil, err
+		}
+		if _, err := RequireCurrentCourseSourceDescriptionReview(root, catalog); err != nil {
+			return nil, err
+		}
+	}
+	return validateCourseMetadataWithSourceDescriptions(data, locale, catalog, targets, glossary, sourceDescriptions)
 }
 
 func loadReadyCourseMetadataInputs(root, locale string, catalog *Catalog) (map[string][]byte, []byte, error) {
@@ -144,53 +163,60 @@ func AssembleCourseMetadata(root string, catalog *Catalog, options CourseMetadat
 	if catalog == nil {
 		return nil, fmt.Errorf("catalog is required")
 	}
+	if options.SchemaVersion == 0 {
+		options.SchemaVersion = CourseMetadataSchemaVersion
+	}
+	contract, prompt, err := courseMetadataContract(options.SchemaVersion)
+	if err != nil {
+		return nil, err
+	}
 	descriptionByID, err := parseCourseDescriptions(options.Descriptions)
 	if err != nil {
 		return nil, err
 	}
-	expected := make(map[string]struct{}, len(catalog.Pages))
-	for _, page := range catalog.Pages {
-		expected[page.ID] = struct{}{}
-	}
-	for pageID := range descriptionByID {
-		if _, ok := expected[pageID]; !ok {
-			return nil, fmt.Errorf("course descriptions has extra page_id %q", pageID)
-		}
-	}
-	var missing []string
-	for _, page := range catalog.Pages {
-		if _, ok := descriptionByID[page.ID]; !ok {
-			missing = append(missing, page.ID)
-		}
-	}
-	if len(missing) > 0 {
-		sort.Strings(missing)
-		return nil, fmt.Errorf("course descriptions is missing page(s): %s", strings.Join(missing, ", "))
+	if err := requireExactCourseDescriptionSet(descriptionByID, catalog, "course descriptions"); err != nil {
+		return nil, err
 	}
 
 	targets, glossary, err := loadReadyCourseMetadataInputs(root, options.Locale, catalog)
 	if err != nil {
 		return nil, err
 	}
+	var sourceDescriptions *CourseSourceDescriptions
+	var sourceByID map[string]CourseSourceDescriptionPage
+	if options.SchemaVersion == CourseMetadataSchemaVersionV2 {
+		sourceDescriptions, err = LoadCourseSourceDescriptions(root, catalog)
+		if err != nil {
+			return nil, err
+		}
+		if _, err := RequireCurrentCourseSourceDescriptionReview(root, catalog); err != nil {
+			return nil, err
+		}
+		sourceByID = courseSourceDescriptionsByID(sourceDescriptions)
+	}
 	metadata := CourseMetadata{
-		SchemaVersion: CourseMetadataSchemaVersion, Locale: options.Locale, GeneratorContract: CourseMetadataGeneratorContract,
+		SchemaVersion: options.SchemaVersion, Locale: options.Locale, GeneratorContract: contract,
 		Pages: make([]CoursePageMetadata, 0, len(catalog.Pages)),
 	}
 	for _, page := range catalog.Pages {
-		metadata.Pages = append(metadata.Pages, CoursePageMetadata{
+		entry := CoursePageMetadata{
 			PageID: page.ID, Route: page.Route, Description: descriptionByID[page.ID],
 			SourceSHA256: page.SourceSHA256, TargetSHA256: sum(targets[page.ID]), GlossarySHA256: sum(glossary),
 			Generation: CourseMetadataGeneration{
-				Provider: options.Provider, Model: options.Model, PromptVersion: CourseMetadataPromptVersion, GeneratedAt: options.GeneratedAt,
+				Provider: options.Provider, Model: options.Model, PromptVersion: prompt, GeneratedAt: options.GeneratedAt,
 			},
-		})
+		}
+		if options.SchemaVersion == CourseMetadataSchemaVersionV2 {
+			entry.SourceDescriptionSHA256 = sum([]byte(sourceByID[page.ID].Description))
+		}
+		metadata.Pages = append(metadata.Pages, entry)
 	}
 	data, err := json.MarshalIndent(metadata, "", "  ")
 	if err != nil {
 		return nil, fmt.Errorf("encode course metadata: %w", err)
 	}
 	data = append(data, '\n')
-	if _, err := validateCourseMetadata(data, options.Locale, catalog, targets, glossary); err != nil {
+	if _, err := validateCourseMetadataWithSourceDescriptions(data, options.Locale, catalog, targets, glossary, sourceDescriptions); err != nil {
 		return nil, fmt.Errorf("validate assembled course metadata: %w", err)
 	}
 	return data, nil
@@ -212,8 +238,11 @@ func RefreshCourseMetadata(root string, catalog *Catalog, options CourseMetadata
 	if err != nil {
 		return nil, nil, fmt.Errorf("parse course metadata refresh base: %w", err)
 	}
-	if base.SchemaVersion != CourseMetadataSchemaVersion {
-		return nil, nil, fmt.Errorf("course metadata refresh base schema_version=%d, want %d", base.SchemaVersion, CourseMetadataSchemaVersion)
+	if _, _, err := courseMetadataContract(base.SchemaVersion); err != nil {
+		return nil, nil, fmt.Errorf("course metadata refresh base: %w", err)
+	}
+	if options.SchemaVersion != 0 && base.SchemaVersion != options.SchemaVersion {
+		return nil, nil, fmt.Errorf("course metadata refresh base schema_version=%d, requested %d", base.SchemaVersion, options.SchemaVersion)
 	}
 	if base.Locale != options.Locale {
 		return nil, nil, fmt.Errorf("course metadata refresh base locale %q does not match requested locale %q", base.Locale, options.Locale)
@@ -227,11 +256,24 @@ func RefreshCourseMetadata(root string, catalog *Catalog, options CourseMetadata
 		return nil, nil, err
 	}
 	glossaryHash := sum(glossary)
+	contract, prompt, _ := courseMetadataContract(base.SchemaVersion)
+	var sourceDescriptions *CourseSourceDescriptions
+	var sourceByID map[string]CourseSourceDescriptionPage
+	if base.SchemaVersion == CourseMetadataSchemaVersionV2 {
+		sourceDescriptions, err = LoadCourseSourceDescriptions(root, catalog)
+		if err != nil {
+			return nil, nil, err
+		}
+		if _, err := RequireCurrentCourseSourceDescriptionReview(root, catalog); err != nil {
+			return nil, nil, err
+		}
+		sourceByID = courseSourceDescriptionsByID(sourceDescriptions)
+	}
 	stale := make([]string, 0)
 	staleByID := make(map[string]bool, len(catalog.Pages))
 	for _, page := range catalog.Pages {
 		entry := baseByID[page.ID]
-		if courseMetadataEntryIsStale(base, entry, page, targets[page.ID], glossaryHash) {
+		if courseMetadataEntryIsStale(base, entry, page, targets[page.ID], glossaryHash, sourceByID) {
 			stale = append(stale, page.ID)
 			staleByID[page.ID] = true
 		}
@@ -253,7 +295,7 @@ func RefreshCourseMetadata(root string, catalog *Catalog, options CourseMetadata
 	}
 
 	metadata := CourseMetadata{
-		SchemaVersion: CourseMetadataSchemaVersion, Locale: options.Locale, GeneratorContract: CourseMetadataGeneratorContract,
+		SchemaVersion: base.SchemaVersion, Locale: options.Locale, GeneratorContract: contract,
 		Pages: make([]CoursePageMetadata, 0, len(catalog.Pages)),
 	}
 	for _, page := range catalog.Pages {
@@ -262,7 +304,10 @@ func RefreshCourseMetadata(root string, catalog *Catalog, options CourseMetadata
 			entry = CoursePageMetadata{
 				PageID: page.ID, Route: page.Route, Description: descriptionByID[page.ID],
 				SourceSHA256: page.SourceSHA256, TargetSHA256: sum(targets[page.ID]), GlossarySHA256: glossaryHash,
-				Generation: CourseMetadataGeneration{Provider: options.Provider, Model: options.Model, PromptVersion: CourseMetadataPromptVersion, GeneratedAt: options.GeneratedAt},
+				Generation: CourseMetadataGeneration{Provider: options.Provider, Model: options.Model, PromptVersion: prompt, GeneratedAt: options.GeneratedAt},
+			}
+			if base.SchemaVersion == CourseMetadataSchemaVersionV2 {
+				entry.SourceDescriptionSHA256 = sum([]byte(sourceByID[page.ID].Description))
 			}
 		}
 		metadata.Pages = append(metadata.Pages, entry)
@@ -272,7 +317,7 @@ func RefreshCourseMetadata(root string, catalog *Catalog, options CourseMetadata
 		return nil, nil, fmt.Errorf("encode refreshed course metadata: %w", err)
 	}
 	data = append(data, '\n')
-	if _, err := validateCourseMetadata(data, options.Locale, catalog, targets, glossary); err != nil {
+	if _, err := validateCourseMetadataWithSourceDescriptions(data, options.Locale, catalog, targets, glossary, sourceDescriptions); err != nil {
 		return nil, nil, fmt.Errorf("validate refreshed course metadata: %w", err)
 	}
 	return data, stale, nil
@@ -302,19 +347,30 @@ func parseCourseDescriptions(data []byte) (map[string]string, error) {
 }
 
 func decodeCourseMetadata(data []byte) (*CourseMetadata, error) {
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
 	var metadata CourseMetadata
-	if err := decoder.Decode(&metadata); err != nil {
-		return nil, err
-	}
-	if err := decoder.Decode(&struct{}{}); err != io.EOF {
-		if err == nil {
-			return nil, fmt.Errorf("multiple JSON values")
-		}
+	if err := decodeStrictJSON(data, &metadata); err != nil {
 		return nil, err
 	}
 	return &metadata, nil
+}
+
+func courseMetadataContract(schemaVersion int) (string, string, error) {
+	switch schemaVersion {
+	case CourseMetadataSchemaVersion:
+		return CourseMetadataGeneratorContract, CourseMetadataPromptVersion, nil
+	case CourseMetadataSchemaVersionV2:
+		return CourseMetadataGeneratorContractV2, CourseMetadataPromptVersionV2, nil
+	default:
+		return "", "", fmt.Errorf("course metadata schema_version=%d is unsupported", schemaVersion)
+	}
+}
+
+func courseSourceDescriptionsByID(source *CourseSourceDescriptions) map[string]CourseSourceDescriptionPage {
+	byID := make(map[string]CourseSourceDescriptionPage, len(source.Pages))
+	for _, page := range source.Pages {
+		byID[page.PageID] = page
+	}
+	return byID
 }
 
 func courseMetadataBaseIndex(metadata *CourseMetadata, catalog *Catalog) (map[string]CoursePageMetadata, error) {
@@ -323,7 +379,10 @@ func courseMetadataBaseIndex(metadata *CourseMetadata, catalog *Catalog) (map[st
 		expected[page.ID] = struct{}{}
 	}
 	entries := make(map[string]CoursePageMetadata, len(metadata.Pages))
-	for _, entry := range metadata.Pages {
+	for i, entry := range metadata.Pages {
+		if metadata.SchemaVersion == CourseMetadataSchemaVersionV2 && i < len(catalog.Pages) && entry.PageID != catalog.Pages[i].ID {
+			return nil, fmt.Errorf("course metadata refresh base page %d has page_id %q, want catalog page_id %q", i, entry.PageID, catalog.Pages[i].ID)
+		}
 		if _, ok := expected[entry.PageID]; !ok {
 			return nil, fmt.Errorf("course metadata refresh base has extra page_id %q", entry.PageID)
 		}
@@ -345,10 +404,19 @@ func courseMetadataBaseIndex(metadata *CourseMetadata, catalog *Catalog) (map[st
 	return entries, nil
 }
 
-func courseMetadataEntryIsStale(metadata *CourseMetadata, entry CoursePageMetadata, page Page, target []byte, glossaryHash string) bool {
-	return metadata.GeneratorContract != CourseMetadataGeneratorContract || entry.Route != page.Route ||
+func courseMetadataEntryIsStale(metadata *CourseMetadata, entry CoursePageMetadata, page Page, target []byte, glossaryHash string, sourceByID map[string]CourseSourceDescriptionPage) bool {
+	contract, prompt, err := courseMetadataContract(metadata.SchemaVersion)
+	if err != nil {
+		return true
+	}
+	stale := metadata.GeneratorContract != contract || entry.Route != page.Route ||
 		entry.SourceSHA256 != page.SourceSHA256 || entry.TargetSHA256 != sum(target) ||
-		entry.GlossarySHA256 != glossaryHash || entry.Generation.PromptVersion != CourseMetadataPromptVersion
+		entry.GlossarySHA256 != glossaryHash || entry.Generation.PromptVersion != prompt
+	if metadata.SchemaVersion == CourseMetadataSchemaVersionV2 {
+		source, ok := sourceByID[page.ID]
+		stale = stale || !ok || entry.SourceDescriptionSHA256 != sum([]byte(source.Description))
+	}
+	return stale
 }
 
 func missingCourseDescriptionIDs(stale []string, descriptions map[string]string) []string {
@@ -362,26 +430,33 @@ func missingCourseDescriptionIDs(stale []string, descriptions map[string]string)
 }
 
 func validateCourseMetadata(data []byte, locale string, catalog *Catalog, targets map[string][]byte, glossary []byte) (*CourseMetadata, error) {
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
+	return validateCourseMetadataWithSourceDescriptions(data, locale, catalog, targets, glossary, nil)
+}
+
+func validateCourseMetadataWithSourceDescriptions(data []byte, locale string, catalog *Catalog, targets map[string][]byte, glossary []byte, sourceDescriptions *CourseSourceDescriptions) (*CourseMetadata, error) {
 	var metadata CourseMetadata
-	if err := decoder.Decode(&metadata); err != nil {
+	if err := decodeStrictJSON(data, &metadata); err != nil {
 		return nil, fmt.Errorf("parse course metadata: %w", err)
 	}
-	if err := decoder.Decode(&struct{}{}); err != io.EOF {
-		if err == nil {
-			return nil, fmt.Errorf("parse course metadata: multiple JSON values")
-		}
-		return nil, fmt.Errorf("parse course metadata: %w", err)
-	}
-	if metadata.SchemaVersion != CourseMetadataSchemaVersion {
-		return nil, fmt.Errorf("course metadata schema_version=%d, want %d", metadata.SchemaVersion, CourseMetadataSchemaVersion)
+	contract, prompt, err := courseMetadataContract(metadata.SchemaVersion)
+	if err != nil {
+		return nil, err
 	}
 	if metadata.Locale != locale {
 		return nil, fmt.Errorf("course metadata locale %q does not match requested locale %q", metadata.Locale, locale)
 	}
-	if metadata.GeneratorContract != CourseMetadataGeneratorContract {
-		return nil, fmt.Errorf("course metadata generator_contract %q is stale; want %q", metadata.GeneratorContract, CourseMetadataGeneratorContract)
+	if metadata.GeneratorContract != contract {
+		return nil, fmt.Errorf("course metadata generator_contract %q is stale; want %q", metadata.GeneratorContract, contract)
+	}
+	var sourceByID map[string]CourseSourceDescriptionPage
+	if metadata.SchemaVersion == CourseMetadataSchemaVersionV2 {
+		if sourceDescriptions == nil {
+			return nil, fmt.Errorf("course metadata schema v2 requires current canonical English source descriptions")
+		}
+		sourceByID = courseSourceDescriptionsByID(sourceDescriptions)
+	}
+	if metadata.SchemaVersion == CourseMetadataSchemaVersionV2 && len(metadata.Pages) != len(catalog.Pages) {
+		return nil, fmt.Errorf("course metadata pages=%d, catalog pages=%d", len(metadata.Pages), len(catalog.Pages))
 	}
 
 	expected := make(map[string]Page, len(catalog.Pages))
@@ -393,7 +468,7 @@ func validateCourseMetadata(data []byte, locale string, catalog *Catalog, target
 	seenDescriptions := make(map[string]string, len(metadata.Pages))
 	seenNormalized := make(map[string]string, len(metadata.Pages))
 	glossaryHash := sum(glossary)
-	for _, entry := range metadata.Pages {
+	for i, entry := range metadata.Pages {
 		if _, ok := seenPages[entry.PageID]; ok {
 			return nil, fmt.Errorf("course metadata has duplicate page_id %q", entry.PageID)
 		}
@@ -401,6 +476,9 @@ func validateCourseMetadata(data []byte, locale string, catalog *Catalog, target
 		page, ok := expected[entry.PageID]
 		if !ok {
 			return nil, fmt.Errorf("course metadata has extra page_id %q", entry.PageID)
+		}
+		if metadata.SchemaVersion == CourseMetadataSchemaVersionV2 && entry.PageID != catalog.Pages[i].ID {
+			return nil, fmt.Errorf("course metadata page %d has page_id %q, want catalog page_id %q", i, entry.PageID, catalog.Pages[i].ID)
 		}
 		if prior := seenRoutes[entry.Route]; prior != "" {
 			return nil, fmt.Errorf("course metadata pages %q and %q have duplicate route %q", prior, entry.PageID, entry.Route)
@@ -412,6 +490,16 @@ func validateCourseMetadata(data []byte, locale string, catalog *Catalog, target
 		if entry.SourceSHA256 != page.SourceSHA256 {
 			return nil, fmt.Errorf("%s: source_sha256 is stale", entry.PageID)
 		}
+		if metadata.SchemaVersion == CourseMetadataSchemaVersion {
+			if entry.SourceDescriptionSHA256 != "" {
+				return nil, fmt.Errorf("%s: source_description_sha256 is not valid in schema v1", entry.PageID)
+			}
+		} else {
+			source, ok := sourceByID[entry.PageID]
+			if !ok || entry.SourceDescriptionSHA256 != sum([]byte(source.Description)) {
+				return nil, fmt.Errorf("%s: source_description_sha256 is stale", entry.PageID)
+			}
+		}
 		target, ok := targets[entry.PageID]
 		if !ok {
 			return nil, fmt.Errorf("%s: canonical Page target is missing", entry.PageID)
@@ -422,15 +510,11 @@ func validateCourseMetadata(data []byte, locale string, catalog *Catalog, target
 		if entry.GlossarySHA256 != glossaryHash {
 			return nil, fmt.Errorf("%s: glossary_sha256 is stale", entry.PageID)
 		}
-		if entry.Generation.PromptVersion != CourseMetadataPromptVersion {
-			return nil, fmt.Errorf("%s: prompt_version %q is stale; want %q", entry.PageID, entry.Generation.PromptVersion, CourseMetadataPromptVersion)
+		if entry.Generation.PromptVersion != prompt {
+			return nil, fmt.Errorf("%s: prompt_version %q is stale; want %q", entry.PageID, entry.Generation.PromptVersion, prompt)
 		}
-		if strings.TrimSpace(entry.Generation.Provider) == "" || strings.TrimSpace(entry.Generation.Model) == "" {
-			return nil, fmt.Errorf("%s: generation provider and model are required", entry.PageID)
-		}
-		generatedAt, err := time.Parse(time.RFC3339, entry.Generation.GeneratedAt)
-		if err != nil || generatedAt.Location() != time.UTC {
-			return nil, fmt.Errorf("%s: generated_at must be RFC 3339 UTC", entry.PageID)
+		if err := validateCourseGeneration(entry.PageID, entry.Generation); err != nil {
+			return nil, err
 		}
 		if err := validateCourseDescription(entry.Description); err != nil {
 			return nil, fmt.Errorf("%s: %w", entry.PageID, err)

@@ -33,15 +33,17 @@ type LocaleSurfaceReviewAGate struct {
 // supplied by a reviewer. The config hashes cover the build-time language
 // registry, locale profile, public project copy, and SEO origin behavior.
 type LocaleSurfaceReviewAInputs struct {
-	UIEnglishSHA256       string `json:"ui_english_sha256"`
-	UILocaleSHA256        string `json:"ui_locale_sha256"`
-	GlossarySHA256        string `json:"glossary_sha256"`
-	ArticleMetadataSHA256 string `json:"article_metadata_sha256"`
-	CourseMetadataSHA256  string `json:"course_metadata_sha256"`
-	CatalogSourceSHA256   string `json:"catalog_source_sha256"`
-	LanguagesConfigSHA256 string `json:"languages_config_sha256"`
-	ProjectConfigSHA256   string `json:"project_config_sha256"`
-	SEOConfigSHA256       string `json:"seo_config_sha256"`
+	UIEnglishSHA256                     string `json:"ui_english_sha256"`
+	UILocaleSHA256                      string `json:"ui_locale_sha256"`
+	GlossarySHA256                      string `json:"glossary_sha256"`
+	ArticleMetadataSHA256               string `json:"article_metadata_sha256"`
+	CourseMetadataSHA256                string `json:"course_metadata_sha256"`
+	CourseSourceDescriptionsSHA256      string `json:"course_source_descriptions_sha256,omitempty"`
+	CourseSourceDescriptionReviewSHA256 string `json:"course_source_description_review_sha256,omitempty"`
+	CatalogSourceSHA256                 string `json:"catalog_source_sha256"`
+	LanguagesConfigSHA256               string `json:"languages_config_sha256"`
+	ProjectConfigSHA256                 string `json:"project_config_sha256"`
+	SEOConfigSHA256                     string `json:"seo_config_sha256"`
 	// ProductionIdentitySHA256 is the v1 whole-file identity input. It remains
 	// present so historic receipts retain their original freshness semantics.
 	ProductionIdentitySHA256 string `json:"production_identity_sha256,omitempty"`
@@ -142,6 +144,32 @@ func currentLocaleSurfaceReviewAInputs(root, locale string, catalog *Catalog, sc
 		LanguagesConfigSHA256: languages,
 		ProjectConfigSHA256:   project,
 		SEOConfigSHA256:       seo,
+	}
+	courseData, err := os.ReadFile(filepath.Join(root, "locales", locale, "course-metadata.json"))
+	if err != nil {
+		return LocaleSurfaceReviewAInputs{}, fmt.Errorf("read Locale Surface Review A course metadata: %w", err)
+	}
+	courseMetadata, err := decodeCourseMetadata(courseData)
+	if err != nil {
+		return LocaleSurfaceReviewAInputs{}, fmt.Errorf("language review evidence/gate stale: parse Locale Surface Review A course metadata: %w", err)
+	}
+	if _, _, err := courseMetadataContract(courseMetadata.SchemaVersion); err != nil {
+		return LocaleSurfaceReviewAInputs{}, err
+	}
+	if courseMetadata.SchemaVersion == CourseMetadataSchemaVersionV2 {
+		sourceData, err := os.ReadFile(CourseSourceDescriptionsPath(root))
+		if err != nil {
+			return LocaleSurfaceReviewAInputs{}, fmt.Errorf("read Locale Surface Review A course source descriptions: %w", err)
+		}
+		if _, err := validateCourseSourceDescriptions(sourceData, catalog); err != nil {
+			return LocaleSurfaceReviewAInputs{}, err
+		}
+		authority, err := RequireCurrentCourseSourceDescriptionReview(root, catalog)
+		if err != nil {
+			return LocaleSurfaceReviewAInputs{}, err
+		}
+		inputs.CourseSourceDescriptionsSHA256 = hashBytes(sourceData)
+		inputs.CourseSourceDescriptionReviewSHA256 = authority
 	}
 	switch schemaVersion {
 	case localeSurfaceReviewASchemaVersionV1:

@@ -16,7 +16,7 @@ func finalizeFixture(t *testing.T) (string, *i18n.Catalog, string, string, strin
 	t.Helper()
 	root := t.TempDir()
 	for path, body := range map[string]string{
-		"internal/tour/ui/en.json": "en", "internal/tour/ui/zz-ZZ.json": "target", "locales/zz-ZZ/glossary.yaml": "g", "locales/zz-ZZ/article-metadata.json": "a", "locales/zz-ZZ/course-metadata.json": "c", "internal/tour/languages.go": "l", "internal/tour/project.go": "p", "internal/tour/seo.go": "s",
+		"internal/tour/ui/en.json": "en", "internal/tour/ui/zz-ZZ.json": "target", "locales/zz-ZZ/glossary.yaml": "g", "locales/zz-ZZ/article-metadata.json": "a", "locales/zz-ZZ/course-metadata.json": `{"schema_version":1}`, "internal/tour/languages.go": "l", "internal/tour/project.go": "p", "internal/tour/seo.go": "s",
 		"production/identity.json":       "{\n  \"locales\": [\n    {\"locale\": \"other-AA\", \"production_hostname\": \"other.example\", \"production_public_url\": \"https://other.example/\", \"production_state\": \"first-production\"},\n    {\n      \"locale\": \"zz-ZZ\",\n      \"production_hostname\": \"zz.example\",\n      \"production_public_url\": \"https://zz.example/\",\n      \"production_state\": \"first-production\"\n    }\n  ]\n}\n",
 		"scripts/production-identity.py": "#!/usr/bin/env python3\n",
 		"README.md":                      "# README\n\n<!-- live-locales:start -->\nold\n<!-- live-locales:end -->\n",

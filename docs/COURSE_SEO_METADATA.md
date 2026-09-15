@@ -1,177 +1,267 @@
 # 课程页正式 SEO Metadata 规范
 
-本文定义每个 locale 的课程页 SEO description 正式资产、生成输入、identity、stale 规则和发布质量边界。该资产不属于 TranslationUnit candidate、status、Quality Check、machine finalization 或 promotion evidence。
+本文定义课程页 SEO description 的两阶段正式架构、identity、人工审核 authority、stale 传播和发布边界。相关资产不属于 TranslationUnit candidate、status、Quality Check、machine finalization 或 promotion evidence。
 
-正式资产固定为：
+## 两阶段架构
+
+正式数据流为：
+
+```text
+完整 English Page source
+→ 每页一次 canonical English semantic extraction
+→ ChatGPT 对全部 Page 做 source ↔ canonical description 人工审核
+→ canonical source-description review gate
+→ canonical English description + 完整 locale glossary
+→ schema v2 localized description
+→ metadata validation / build
+→ 完整 source + canonical description + target + glossary 的 Locale Surface Review
+→ preview / publish / production
+```
+
+第一阶段只做一次英文语义抽取；第二阶段忠实本地化同一语义范围，不重新摘要或选择重点。生成优化不减少最终 Locale Surface Review 的完整上下文。
+
+AI 只能作为离线维护步骤产生 `page_id → description` 文本。浏览器 runtime、HTTP 请求、服务启动、projection、build、preview、publish、prerender 和 production 均不得调用模型，也不得自动生成、补齐或刷新 description。禁止 `plainText`、正文截取、标题、其他 locale 或旧 description fallback。
+
+## Stage 1：canonical English source descriptions
+
+正式 Git 资产固定为：
+
+```text
+data/course-seo/source-descriptions.json
+```
+
+schema 与 prompt contract 均为 `course-seo-source-description-v1`。顶层为：
+
+```json
+{
+  "schema_version": 1,
+  "generator_contract": "course-seo-source-description-v1",
+  "pages": []
+}
+```
+
+每个 Page 按正式 Catalog 顺序记录：
+
+```json
+{
+  "page_id": "welcome/4",
+  "route": "/welcome/3",
+  "description": "Canonical English description.",
+  "source_sha256": "<完整 English Page source SHA-256>",
+  "generation": {
+    "provider": "<provider>",
+    "model": "<model>",
+    "prompt_version": "course-seo-source-description-v1",
+    "generated_at": "<RFC3339 UTC>"
+  }
+}
+```
+
+模型必须逐 Page 读取完整 English Page TranslationUnit source，只输出该页的 `page_id → description`。不得读取其他 Page 后跨页补充，也不得加入 source 不支持的信息。本命令只组装调用者已经生成的完整文本集合，不调用模型、不接受 route、hash、schema 或 provenance：
+
+```sh
+go run -mod=readonly ./cmd/tour-i18n course-metadata source assemble \
+  --descriptions <canonical-english-descriptions.json> \
+  --provider <provider> \
+  --model <model> \
+  --generated-at <RFC3339-UTC> \
+  --output data/course-seo/source-descriptions.json
+
+go run -mod=readonly ./cmd/tour-i18n course-metadata source check
+```
+
+`assemble` 从当前 Catalog 自动派生顺序、route、source SHA 与 generation contract，在内存中通过正式 validator 后原子写入。当前能力刻意只提供完整 assemble；English source 改变时，先重新生成并审核完整 canonical asset，不把 partial 文件当正式资产。
+
+### Strict validation
+
+source-description validator 拒绝未知字段与额外 JSON value，并要求：
+
+- Page set、顺序、`page_id`、route 与当前 Catalog 精确一致；
+- `source_sha256` 与完整当前 English Page source 精确一致；
+- schema、generator contract、prompt version 精确受支持；
+- provider/model 非空，`generated_at` 为 RFC 3339 UTC；
+- description trim 后不变、单行、plain text、无 control character、HTML、Markdown fence 或 URL；
+- Unicode code point 长度为 30–200；
+- exact duplicate 和移除 Unicode whitespace/punctuation/symbol、统一大小写后的 normalized duplicate 均为 0。
+
+完整性不硬编码页数，而是与当前 Catalog exact-set 比较；当前正式 Catalog 因此必须得到 `103/103`。English Page source、route、Page set/order 或 contract 改变都会使旧 asset stale 并 fail closed。
+
+## Canonical source-description 人工审核 authority
+
+canonical English descriptions 是全部 schema v2 locale 的共同语义来源，machine validation 不能替代语言与语义审核。ChatGPT 必须对 Catalog 全部 Page 逐页读取完整 English source 与 canonical description，检查忠实度、完整性、技术准确性、unsupported expansion、generic/duplicate 表达和 route identity；不允许 sampling。
+
+该审核不属于 TranslationUnit Quality Check，不使用 A/B/C/D，不生成 TranslationUnit QC/finalization evidence。人工 evidence 固定为：
+
+```text
+data/course-seo/source-description-reviews/<review-id>.md
+```
+
+Markdown prose 可自由记录逐页全量审核范围、日期与 issues，但必须且只能包含一个下列 machine-readable identity block；block 使用 strict JSON，未知字段、任意层级重复的 JSON object member name、额外 JSON value、缺字段、重复/缺失 marker 或 malformed JSON 均 fail closed：
+
+```markdown
+<!-- course-source-description-review:start -->
+{
+  "review_id": "<review-id>",
+  "artifact_sha256": "<source-descriptions.json 原始字节 SHA-256>",
+  "catalog_source_sha256": "<当前完整 English Page Catalog/source identity>",
+  "source_description_schema_version": 1,
+  "generator_contract": "course-seo-source-description-v1",
+  "prompt_version": "course-seo-source-description-v1",
+  "page_count": 103,
+  "reviewer": "<reviewer>",
+  "decision": "passed"
+}
+<!-- course-source-description-review:end -->
+```
+
+`review_id`、`reviewer` 必须分别与 `review-record --review-id`、`--reviewer` 精确一致；artifact、Catalog/source、schema、contract、prompt 和 Page count 必须与命令读取的当前正式输入精确一致。`decision` 只有精确为 `passed` 才能生成 passed gate；任一 Page 未通过时 evidence 必须记录 `failed`，且 `review-record` 必须拒绝生成 gate。
+
+完成全量审核并明确通过后，才由维护者记录 machine-readable receipt：
+
+```sh
+go run -mod=readonly ./cmd/tour-i18n course-metadata source review-record \
+  --review-id <review-id> \
+  --reviewer <reviewer>
+
+go run -mod=readonly ./cmd/tour-i18n course-metadata source review-check
+```
+
+receipt 写入同目录的 `<review-id>.gate.json`。`review-record` 严格解析并核对上述 block 后，固定记录 `decision = passed`、reviewer、stage、程序计算的完整 source-description artifact SHA、English Page Catalog/source identity、schema、generator contract、prompt version，以及 Markdown evidence 原始字节的 `evidence_sha256`。Gate JSON 顶层及嵌套 `inputs` 同样拒绝重复的 object member name。不得仅凭 Markdown 非空生成 passed receipt。
+
+`review-check` 对候选 current gate 重新读取 `<review-id>.md`，核对 `evidence_sha256`，再次严格解析 block，并验证 block、gate 与当前正式输入三者一致。当前 evidence 缺失、被修改、malformed、non-passed 或 stale 时均 fail closed；任何绑定输入改变后旧 gate stale，missing、unknown、malformed、non-passed 或没有 current gate 也均 fail closed。命令不会自行进行审核，也不会自动声称审核通过。本架构任务不生成实际 asset、人工 evidence 或 passed receipt。
+
+## Locale course metadata
+
+正式路径保持不变：
 
 ```text
 locales/<locale>/course-metadata.json
 ```
 
-## 生命周期与边界
+### Schema v1：兼容边界
 
-正式顺序为：
-
-```text
-TranslationUnit promotion
-→ offline AI metadata generation
-→ metadata validation
-→ projection / preview
-→ Locale Surface Review
-→ publish / prerender
-→ production
-```
-
-AI 只能在 promotion 完成后作为离线维护步骤生成 metadata。禁止在浏览器 runtime、production HTTP 请求、服务启动、projection、publish 或 prerender 期间调用模型；publish 也不得自动生成、补齐或刷新 description。生成结果必须持久化到正式 locale 资产并进入 Git，随后所有构建和运行阶段只消费已经验证的确定性内容。
-
-不得使用 `plainText`、正文机械截取、标题、其他语言或旧 description 作为缺失时的 fallback。正式 production 最终必须要求当前 catalog 全部课程页 metadata 完整；任一课程页缺失、额外或 stale 时必须 fail closed。基础设施分阶段接入期间，loader/validator 可以先存在而不改变当前 runtime，但最终发布 gate 不得保留例外。
-
-## Schema version 1
-
-顶层结构：
+schema v1 的 `course-seo-description-v1` contract、字段、strict validation、stale 语义和 runtime 消费保持原样。它继续绑定完整 English Page source、完整 canonical locale target、完整 locale glossary 和 v1 provenance；旧 v1 asset 不读取或绑定新的 canonical source-description asset/review gate。
 
 ```json
 {
   "schema_version": 1,
   "locale": "<locale>",
   "generator_contract": "course-seo-description-v1",
+  "pages": [{
+    "page_id": "welcome/4",
+    "route": "/welcome/3",
+    "description": "目标语言 description",
+    "source_sha256": "<完整 English Page source SHA-256>",
+    "target_sha256": "<完整 canonical locale Page target SHA-256>",
+    "glossary_sha256": "<完整 glossary SHA-256>",
+    "generation": {
+      "provider": "<provider>",
+      "model": "<model>",
+      "prompt_version": "course-seo-description-v1",
+      "generated_at": "<RFC3339 UTC>"
+    }
+  }]
+}
+```
+
+v1 模型生成输入仍是每页完整 English source、完整最终 canonical locale target 与完整 locale glossary；v1 validator 仍拒绝未知字段、错误 page set/route/source/target/glossary identity、错误 contract/provenance，以及不满足同一 30–200 code point、plain-text、无重复约束的 description。原 `course-metadata assemble` 默认仍生成 v1，原 `refresh` 对 v1 base 仍按旧 identity 精确刷新 stale subset。
+
+因此现有 live locale 不迁移、不重写、不重新生成，也不会仅因仓库出现或改变新的全局 asset/gate 而使 course metadata 或 Locale Surface Review A gate stale。以后迁移某个旧 locale 是独立任务。
+
+### Schema v2：faithful localization
+
+顶层为：
+
+```json
+{
+  "schema_version": 2,
+  "locale": "<locale>",
+  "generator_contract": "course-seo-localization-v2",
   "pages": []
 }
 ```
 
-每个 `pages` entry 包含：
+每页为：
 
 ```json
 {
   "page_id": "welcome/4",
   "route": "/welcome/3",
-  "description": "目标语言的单段纯文本摘要",
-  "source_sha256": "<完整英文 Page TranslationUnit source SHA-256>",
+  "description": "目标语言 description",
+  "source_sha256": "<完整 English Page source SHA-256>",
+  "source_description_sha256": "<canonical English description 精确文本 SHA-256>",
   "target_sha256": "<完整最终 canonical locale Page target SHA-256>",
-  "glossary_sha256": "<完整 locales/<locale>/glossary.yaml SHA-256>",
+  "glossary_sha256": "<完整 locale glossary 文件 SHA-256>",
   "generation": {
     "provider": "<provider>",
     "model": "<model>",
-    "prompt_version": "course-seo-description-v1",
+    "prompt_version": "course-seo-localization-v2",
     "generated_at": "<RFC3339 UTC>"
   }
 }
 ```
 
-`page_id` 是唯一正式主键，来自 committed catalog 的持久 Page identity。`route` 是必须与 catalog 当前映射一致的派生 identity，不得作为主键；例如 `page_id = welcome/4` 当前对应 `route = /welcome/3`，两者不能根据字符串相同来推导。
+v2 模型输入只有：当前 Page 的 canonical English description、完整 `locales/<locale>/glossary.yaml`、目标 locale identity 和 `course-seo-localization-v2` contract/constraints。不得把完整 English body、完整 target body、其他 locale description 或其他 Page description 交给本地化模型。
 
-`provider`、`model` 和 `generated_at` 记录 provenance。`source_sha256`、`target_sha256`、`glossary_sha256`、`generator_contract` 和 `prompt_version` 共同决定结果是否仍然 current。
+本地化可调整语序、句法、必要形态和 glossary 术语，但必须保持 canonical description 的 semantic scope：不删除关键语义、不增加信息、不 keyword stuffing、不根据 Page body 重新选重点。`target_sha256` 仍由工具读取完整 ready canonical target 自动计算，只负责 identity/freshness，target body 不是模型输入。
 
-## 生成契约
+v2 同样使用唯一 strict loader：拒绝未知字段与额外 JSON value，要求 exact Page set、Catalog order、route、source/source-description/target/glossary identity、受支持 contract/provenance，以及相同的 description 文本安全、长度和 duplicate 约束。
 
-每一页的正式 AI 生成输入不可缺少：
+### Assemble 与 refresh
 
-1. 完整英文 Page TranslationUnit source；
-2. 完整最终 canonical locale Page target；
-3. 完整 `locales/<locale>/glossary.yaml`。
-
-模型不得只读取页面开头、渲染 HTML、纯文本截取或局部段落。description 必须忠实于完整页面，不得添加 source 没有支持的技术解释、保证、结论、品牌关系或其他信息。每个 locale 独立使用自己的 canonical target 与 glossary 生成目标语言 description。
-
-本规范不改变 TranslationUnit 翻译、automatic validation、Quality Check、machine finalization 或 promotion。metadata 生成失败只阻止后续 locale release，不得反向伪造 TranslationUnit evidence。
-
-### Assemble：首次或全量生成
-
-`assemble` 用于首次生成，或明确重新生成整个 locale。AI 必须提供完整 catalog 的 `page_id → description` 集合，严格输入格式为：
-
-```json
-{
-  "pages": [
-    {"page_id": "welcome/1", "description": "目标语言摘要"}
-  ]
-}
-```
-
-输入不得携带 route、hash、schema 或 generation provenance。使用离线命令组装正式文件：
+首次生成 schema v2：
 
 ```sh
 go run -mod=readonly ./cmd/tour-i18n course-metadata assemble \
+  --schema-version 2 \
   --locale <locale> \
-  --descriptions <descriptions.json> \
+  --descriptions <localized-descriptions.json> \
   --provider <provider> \
   --model <model> \
   --generated-at <RFC3339-UTC> \
   --output <output>
 ```
 
-工具从当前 catalog、完整 glossary、正式 ready status 和通过 candidate validation 的 canonical Page target 自动生成全部 identity 与 provenance 字段，按 catalog Page 顺序固定缩进和结尾换行。因为所有 description 都是本轮生成，所有 entry 的 generation provenance 都记录本轮真实 provider、model 与 generated_at。
-组装结果先在内存中通过同一正式 validator，再原子写入 output；输入集合不完整、identity stale 或 description 不合法时不留下半成品。
-该命令不调用模型，也不从页面内容生成或补齐 description。
-
-### Refresh：日常增量维护
-
-`refresh` 用于 upstream、canonical candidate、glossary 或 metadata 生成契约变化后的日常维护。它以已提交的 `locales/<locale>/course-metadata.json` 为 base，并只接受自动判定为 stale 的 Page 的新 description：
+增量维护 schema v2：
 
 ```sh
 go run -mod=readonly ./cmd/tour-i18n course-metadata refresh \
+  --schema-version 2 \
   --locale <locale> \
-  --descriptions <stale-descriptions.json> \
+  --descriptions <stale-localized-descriptions.json> \
   --provider <provider> \
   --model <model> \
   --generated-at <RFC3339-UTC> \
   --output <output>
 ```
 
-`stale-descriptions.json` 使用与 assemble 相同的输入 schema，但 `pages` 必须精确等于本次 stale Page 集合。工具使用正式 ready canonical target loader 和同一个 strict identity validator 计算 stale；调用者不得手工提供 hash。缺少任一 stale Page、提供 non-stale 或 extra `page_id` 都会 fail closed。
+两者都要求 current canonical source-description asset 与 current passed source review gate。模型输出严格仍为：
 
-非 stale entry 的 description 和整个 generation provenance 均按 base 原样保留，不得把旧 description 伪装成本轮生成；stale entry 才写入新的 description、当前 identity 和本轮真实 provenance。输出始终是完整的 current catalog Page 集合，并且在原子写入前通过与 assemble、loader 相同的 strict validator。catalog Page set 与 base 不一致时 refresh fail closed；glossary 任意字节变化会使整个 locale 全量 stale。因此 refresh 不等于 partial metadata 文件，也不代表重新生成或重新审核所有 Page。
+```json
+{"pages":[{"page_id":"welcome/1","description":"目标语言 description"}]}
+```
 
-## Strict validation
+调用者不得填写 hash、route、schema 或 provenance。工具从 Catalog、canonical source descriptions、ready canonical target 和 glossary 自动派生全部 identity，正式验证后原子写入。`assemble` 要求完整 Page set；`refresh` 从 base schema 推断版本，并在显式 `--schema-version 2` 时核对一致，只接受精确 stale subset。
 
-唯一 loader/validator 必须严格解析 JSON，拒绝未知字段和额外 JSON value，并验证：
+refresh 对 non-stale entry 原样保留 description 与真实 generation provenance；只对 stale entry 写入新 description、当前 identity 和本轮 provenance。catalog Page set/order 与 base 不一致时 fail closed，不把 partial output 当正式资产。v1 的原命令保持可用：`assemble` 未指定 schema 时仍为 v1，`refresh` 未指定时沿用 base schema。
 
-- `schema_version`、`locale`、`generator_contract` 与受支持版本完全一致；
-- page set 与当前 catalog Page set 精确相等，无缺失、额外或重复 `page_id`；
-- route 无重复，且每个 `page_id` 的 route 等于 catalog 当前 route；
-- `source_sha256` 等于 catalog 当前 Page source identity；
-- `target_sha256` 等于通过正式 ready status、canonical path 与 candidate validation 后加载的当前 locale 完整 canonical Page target 的实际原始字节 SHA-256；
-- 每条 `glossary_sha256` 等于当前完整 glossary 文件的实际字节 SHA-256；
-- `prompt_version` 受支持，generation provider/model 非空，时间为 RFC 3339 UTC；
-- description Unicode trim 后非空，没有首尾空白，是不含换行或控制字符的单段纯文本；
-- description 不含 HTML tag、Markdown code fence 或 URL；
-- 第一版长度按 Unicode code point 计算，硬范围为 30–200；
-- 不存在字节完全相同的 description；
-- 不存在移除 Unicode whitespace/punctuation/symbol 并统一大小写后相同的 description。
+## v2 stale graph
 
-长期完整性规则是 metadata page set 与 catalog Page set 精确相等，不能只硬编码页数。当前 production catalog 为 103 页，因此对当前正式资产执行该规则必须明确得到 `103/103`；未来 catalog 经正式流程增加或删除页面时，exact-set gate 会立即使旧 metadata 失效。
+v2 只有全部 identity 当前时才合法：
 
-自动 validator 只负责可确定的结构、identity、staleness 和最低文本安全约束。它不能证明 description 忠实、自然、技术准确或没有无依据扩写。
+- English Page source 改变 → canonical source description stale → source review gate stale → dependent v2 metadata 不得 current；
+- canonical English description 改变 → 对应 `source_description_sha256` 改变 → 对应 locale Page stale；
+- canonical locale target 改变 → 对应 `target_sha256` stale；
+- locale glossary 任意字节改变 → 该 locale 全部 `glossary_sha256` stale；
+- Page set/order、route 或 catalog identity 不一致 → fail closed；
+- schema、generator contract 或 prompt version 不受支持 → fail closed。
 
-## Stale 规则
+source review gate 过期时不能执行 v2 assemble/refresh，且任何 v2 loader/consumer 都会 fail closed。工具不伪造 generation provenance。
 
-一条 metadata 只有以下 identity 全部匹配时才合法：
+## Locale Surface Review 与 runtime
 
-- `page_id`；
-- `route`；
-- `source_sha256`；
-- `target_sha256`；
-- `glossary_sha256`；
-- `generator_contract` 与 `prompt_version`。
+schema v2 审核包按 Catalog 顺序为每页包含：完整 English Page source、canonical English description、完整最终 canonical locale target、完整 glossary、localized description，以及 source/source-description/target/glossary identity。审核者必须判断本地化是否忠实于 canonical description、canonical description 是否与完整 source 对齐、localized description 是否与实际 target 一致、术语是否正确、表达是否自然，以及是否存在 unsupported expansion、generic/duplicate 或 route 错配。
 
-任一 identity 改变都视为 stale：target、source 或 route 改变使对应 page stale；catalog 新增或删除页面使 exact-set validation 失败；generator contract 或 prompt version 升级必须通过修改受支持版本显式失效。第一版中 glossary 任意字节改变都会使该 locale 每一条记录的 `glossary_sha256` 失配，因此整个 locale 全量 stale，不做术语影响范围猜测。
+schema v2 的 Locale Surface Review A freshness 额外绑定 canonical source-description artifact 与当前 source-review authority；任一改变都会 stale。schema v1 的 Surface Review input/freshness 不绑定这些新全局输入。
 
-允许离线 `refresh` 只重新生成 stale page，但写入并准备发布的正式文件始终必须是完整集合，不能把 partial metadata 当作正式资产。首次 locale 或显式全量重写使用 `assemble`；两条命令都产生同一个完整正式 `course-metadata.json`。
-
-## Locale Surface Review
-
-`course-metadata.json` 属于 Locale Surface Review 的正式 locale-level 输入。审核者必须对当前 catalog 每一页同时读取完整英文 Page source、完整最终 canonical target、当前 glossary 和 description，逐页检查：
-
-- 忠实覆盖页面主题且没有无依据扩写；
-- 技术含义准确并遵守 glossary；
-- 目标语言表达自然、完整，适合搜索摘要语境；
-- 不是正文截断、代码片段或其他页面的泛化重复摘要；
-- `page_id`、route、locale 与实际 rendered page 一致。
-
-Surface Review evidence 应记录 catalog、course metadata、glossary 和 target identity，以及完整 page count 和 validation 结果。自动 validation 通过不能替代逐页语言质量审核；任一页未通过时不得 publish。
-
-## 当前实现状态
-
-schema、严格 loader/validator、离线 assemble/refresh 与自动测试均已完成，zh-CN 和 ja-JP 的完整正式资产已经进入 Git。projection 与 preview 统一通过 `LoadCourseMetadata` 验证资产，并只把 runtime 所需的课程 route 与 description 注入投影内容和 `window.__tourSEO`；publish、prerender 与 production runtime 均消费该确定性结果。课程页的 `plainText` 机械摘要 fallback 已删除，缺失、不完整、route 不匹配、stale 或 description 不合法都会使正式构建和发布 fail closed，prerender 也会逐页验证最终 description 与正式 metadata 精确相等。
-
-后续 release 仍须完成 Locale Surface Review 和 production rendered acceptance。本接入不改变 TranslationUnit workflow，也不替代这些上线验收步骤。
-
-正式 projected preview、publish 与 production 使用严格课程 metadata；普通 upstream/source development Tour 不属于正式 locale SEO surface，也不生成课程 description。
+所有正式消费者继续只通过 strict `LoadCourseMetadata` 取得相同 runtime semantic surface：course route → 目标语言 description。projection、preview、publish、prerender 和 production 不需要知道模型过程；v1/v2 malformed、incomplete 或 stale 均 fail closed，不新增 English、正文截取或 runtime fallback。
