@@ -18,6 +18,7 @@
 - [Italian — Italiano](https://it-go-dev.shuijingwanwq.com/)
 - [Japanese — 日本語](https://ja-go-dev.shuijingwanwq.com/)
 - [Korean — 한국어](https://ko-go-dev.shuijingwanwq.com/)
+- [Polish — Polski](https://pl-go-dev.shuijingwanwq.com/)
 - [Simplified Chinese — 简体中文](https://go-dev.shuijingwanwq.com/)
 - [Spanish — Español](https://es-go-dev.shuijingwanwq.com/)
 - [Swedish — Svenska](https://sv-go-dev.shuijingwanwq.com/)

@@ -75,10 +75,10 @@
 Visual HUMAN gate: `passed`
 
 <!-- first-production-finalization:start -->
-- production receipt identity: `PENDING`
-- production machine acceptance: `PENDING`
-- production browser acceptance: `PENDING`
-- unresolved production blocker: `PENDING`
-- overall final decision: `PENDING`
-- decision: `pending`
+- production receipt identity: `locale=pl-PL hostname=pl-go-dev.shuijingwanwq.com release=20260915T130636Z-pl-PL-7437628a8537`
+- production machine acceptance: `passed`
+- production browser acceptance: `passed`
+- unresolved production blocker: `none`
+- overall final decision: `passed`
+- decision: `passed`
 <!-- first-production-finalization:end -->
