@@ -1,0 +1,1242 @@
+{
+  "schema_version": 1,
+  "generator_contract": "course-seo-source-description-v1",
+  "pages": [
+    {
+      "page_id": "welcome/1",
+      "route": "/welcome/1",
+      "description": "Learn how to navigate A Tour of Go, run and edit example programs, format code, and use keyboard shortcuts while experimenting interactively.",
+      "source_sha256": "1f581133d7fa40e6490418c6789a60a2f5e1de26c9c86d7eb6120cb58b145857",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "welcome/2",
+      "route": "/welcome/2",
+      "description": "Find available translations of A Tour of Go and learn how to continue through the tour using its navigation controls.",
+      "source_sha256": "709f808ec4cdf683411f349cab7a4886fcae532d1c4e4cc66c8ed68cfb2dd2d3",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "welcome/4",
+      "route": "/welcome/3",
+      "description": "Install and run the standalone Go tour on your own computer for offline access to its lessons and code samples.",
+      "source_sha256": "bb517d4b577fdb446fd029c2998d2426663b94a68f4b4e494c59af421508f683",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "welcome/5",
+      "route": "/welcome/4",
+      "description": "Understand how the Go Playground compiles and runs programs in a sandbox, including its deterministic time and resource restrictions.",
+      "source_sha256": "19e6d7da57ca1d191c485754f3dd4ac87775c651b8c0ae8e05c03cbd9b225897",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "welcome/3",
+      "route": "/welcome/5",
+      "description": "Complete the first tour module and choose another module from the lesson list or proceed directly to the next lesson.",
+      "source_sha256": "9a6983b2e50b2fa78ff4f65683210714aea1c1575418e36796c156950ec6330d",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "basics/1",
+      "route": "/basics/1",
+      "description": "Learn how Go programs are organized into packages, why execution begins in package main, and how package names relate to import paths.",
+      "source_sha256": "f769f12c0a028b2f0cd403d89ff39dd150405e9f2e4155875321522f08619fe0",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "basics/2",
+      "route": "/basics/2",
+      "description": "Group multiple Go imports in a parenthesized factored import statement, the preferred alternative to separate import declarations.",
+      "source_sha256": "3329c9bff5f7e2b9b1e161fdebfb3804ff57cf1fb11bd4327d228328bcfb3fd0",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "basics/3",
+      "route": "/basics/3",
+      "description": "Understand how capitalization exports Go names and why code outside a package can access only that package's exported identifiers.",
+      "source_sha256": "38b9c70e49184a24f63f6b12f8ba78e64c0b874ad2a6f9a5fe86267615fd1bf6",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "basics/4",
+      "route": "/basics/4",
+      "description": "Define Go functions with zero or more arguments and place each parameter's type after its variable name.",
+      "source_sha256": "accf0562d9b759c9735500d5df0d74e8f90142ed96fe5ab2f5eedc6fbd6cf6f2",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "basics/5",
+      "route": "/basics/5",
+      "description": "Shorten consecutive Go function parameters that share a type by writing the type only after the final parameter name.",
+      "source_sha256": "02e7feb341329e18143e18d533fe45381883a6ba6425abb09a847e2f0edf228a",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "basics/6",
+      "route": "/basics/6",
+      "description": "Return multiple results from a Go function, illustrated by a function that exchanges and returns two string values.",
+      "source_sha256": "b3cb4b40115066443f265e3e5ebb9fc0fd6d080784c887328fce4d6b7891ba41",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "basics/7",
+      "route": "/basics/7",
+      "description": "Use named return values to document result meanings and understand when a naked return helps or harms readability.",
+      "source_sha256": "1db20ae87ce5d9d4b20f15e4638ba2a3295a7ce781c961ef618982890fc562fa",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "basics/8",
+      "route": "/basics/8",
+      "description": "Declare typed variables with var at either package or function scope, following Go's name-before-type syntax.",
+      "source_sha256": "bcb1b5e17ed9dff3d46a7cd8119c0d2f9c3afbb70ca94d35fadeb4f75b4a9d13",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "basics/9",
+      "route": "/basics/9",
+      "description": "Initialize variables in a var declaration and let Go infer each omitted type from its corresponding initializer.",
+      "source_sha256": "d51c17ba355753484b96c0eefda9fcce9f6f041a8ae2bf3e96fd0ad0c44680cc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "basics/10",
+      "route": "/basics/10",
+      "description": "Use short variable declarations with the colon-equals syntax inside functions, where implicit var declarations are permitted.",
+      "source_sha256": "f402e8e89a186d3208df5e4d983604730e71ef6c68354755f72e4580d3d7f359",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "basics/11",
+      "route": "/basics/11",
+      "description": "Survey Go's boolean, string, integer, floating-point, complex, byte, and rune types, including integer size guidance.",
+      "source_sha256": "836ab1dd659798dcf5e90f283c4ee794aed1d2cf0766c2ccc268fa91684e9d05",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "basics/12",
+      "route": "/basics/12",
+      "description": "Learn the default zero values assigned to uninitialized Go variables: zero for numbers, false for booleans, and empty text for strings.",
+      "source_sha256": "d9ad62501c05359e7b2ac445fa92d629e11d6d378c2701b767abab76012a558e",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "basics/13",
+      "route": "/basics/13",
+      "description": "Convert values explicitly with type conversion expressions, as Go does not permit implicit assignment between different numeric types.",
+      "source_sha256": "88e0e168f4c95fa4134198a32440b2d2fb1fac9aae535a9ee7148dbcda37e1b3",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "basics/14",
+      "route": "/basics/14",
+      "description": "See how Go infers variable types from typed values and chooses default types for untyped numeric constants according to their precision.",
+      "source_sha256": "21c4077c25629545dee0313b8b6b03e709edc4a74e1d73d9f4c9b0a49e46f6b3",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "basics/15",
+      "route": "/basics/15",
+      "description": "Declare character, string, boolean, and numeric constants with const, noting that short declaration syntax cannot define constants.",
+      "source_sha256": "964ac515c0860a54b3a7780d77c7b4862ca38b744ae1f6be4b155a4386e2a229",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "basics/16",
+      "route": "/basics/16",
+      "description": "Explore high-precision numeric constants and how an untyped constant assumes the type required by its surrounding context.",
+      "source_sha256": "0d502d48a15f7a70e257079d7db1ddafe088607110c1c06b17b4be50b362394a",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "basics/17",
+      "route": "/basics/17",
+      "description": "Mark the end of the current lesson, then return to the module list to select another topic or continue onward.",
+      "source_sha256": "f565674b974c053924bf69ef83b709dc50931526ae7fa88e71543a5cd872a190",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/1",
+      "route": "/flowcontrol/1",
+      "description": "Learn Go's single looping construct, including the for loop's initialization, condition, post statement, scope, and required braces.",
+      "source_sha256": "c6cd458bda99bffc7b753e122c56575a59508586054180be1f8d7bb1fe2391df",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/2",
+      "route": "/flowcontrol/2",
+      "description": "Simplify a Go for loop by omitting its optional initialization and post statements while retaining the loop condition.",
+      "source_sha256": "24a97abbb6db2b6a88017bf326a5968097263d8ba637805f2cf44c9fed25f9fe",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/3",
+      "route": "/flowcontrol/3",
+      "description": "Express a while-style loop in Go by omitting the initialization and post statements along with their semicolons.",
+      "source_sha256": "3ed791cc935287ba6f5da4ba41f6ad84fdcbaef108ee364f769ae5204316bbb7",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/4",
+      "route": "/flowcontrol/4",
+      "description": "Create a compact infinite loop in Go by writing a for statement without any loop condition.",
+      "source_sha256": "5456c129ef71c60b7502efde65c81020aaf1fa8b9178086e99223a21f6207dc6",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/5",
+      "route": "/flowcontrol/5",
+      "description": "Write Go if statements without parentheses around the condition while retaining the language's required braces.",
+      "source_sha256": "ce49f916c1ceb7296576ec6b8ec92524b9827be168e3f5eb2040c61fee70f639",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/6",
+      "route": "/flowcontrol/6",
+      "description": "Begin an if statement with a short statement and keep variables declared there scoped through the end of the conditional.",
+      "source_sha256": "02e310262214f3c5ceca8bf63ecf2ec3934641a7e2638050479b739ce077031e",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/7",
+      "route": "/flowcontrol/7",
+      "description": "Use values declared by an if short statement throughout its associated if and else branches.",
+      "source_sha256": "8666746573ce7d0ea1c12ff24c4c8170a1961eedb0600ed73ab849b4758f797c",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/8",
+      "route": "/flowcontrol/8",
+      "description": "Implement a square-root function with an iterative approximation loop, then refine its stopping condition and compare different initial guesses.",
+      "source_sha256": "d8bbee8455ff59212ef432a08312f7c7703360367325a80df3719157200316e9",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/9",
+      "route": "/flowcontrol/9",
+      "description": "Use Go switch statements as concise conditional chains with automatic case termination and cases that need not be constants or integers.",
+      "source_sha256": "abdc4c295fa7b4aec2616acf83badbbf2b581a9f62e41d03ca2ff984ebb6f7ed",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/10",
+      "route": "/flowcontrol/10",
+      "description": "Understand that switch cases are evaluated from top to bottom and evaluation stops as soon as one case succeeds.",
+      "source_sha256": "e1479cae56a87cddb9c447fc9fd32b0ee1f983058f7ee76554965abd21975ef4",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/11",
+      "route": "/flowcontrol/11",
+      "description": "Write a switch without a condition as a clean alternative to a long if-then-else chain, equivalent to switching on true.",
+      "source_sha256": "714b67f479583e47080cd0f38489f465a28c002938390c4155af6dfeebb9225b",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/12",
+      "route": "/flowcontrol/12",
+      "description": "Defer a function call until its surrounding function returns while evaluating the deferred call's arguments immediately.",
+      "source_sha256": "fa23a1d6ebf12f11843d38fe79c413a9c19bfcaf305ae64b75c360db24a436ec",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/13",
+      "route": "/flowcontrol/13",
+      "description": "Stack multiple deferred calls and observe their last-in-first-out execution order when the surrounding function returns.",
+      "source_sha256": "73a02c24eb14597b3c5f53a09fc572f1a1f0c941adfc337c79fb14b492985fc1",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/14",
+      "route": "/flowcontrol/14",
+      "description": "Finish the lesson and either browse the available modules for a new subject or advance to the following lesson.",
+      "source_sha256": "f565674b974c053924bf69ef83b709dc50931526ae7fa88e71543a5cd872a190",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "moretypes/1",
+      "route": "/moretypes/1",
+      "description": "Work with Go pointers by taking addresses and dereferencing values, while noting nil as the zero value and the absence of pointer arithmetic.",
+      "source_sha256": "7706eaf0d46acc79fdad3b7953e5571bf404551d71aaefafd8ba79f5761f9806",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "moretypes/2",
+      "route": "/moretypes/2",
+      "description": "Define a Go struct as a single value composed of a collection of fields.",
+      "source_sha256": "a18dfdaadb9739387cc9886b67e9bf920bf52ada62397a1812cfd302c64aed9b",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "moretypes/3",
+      "route": "/moretypes/3",
+      "description": "Access the individual fields of a Go struct using dot notation.",
+      "source_sha256": "0be9cb4a59a0d95526c208e5d8d96ebe6a15fd84b6e3a2ff9a07963226cb7b58",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "moretypes/4",
+      "route": "/moretypes/4",
+      "description": "Access fields through a pointer to a struct using convenient dot notation without writing an explicit dereference.",
+      "source_sha256": "29695d334b6ff809e84ae8caeb7b9dc493143236783c07c16a83ecc64514c310",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "moretypes/5",
+      "route": "/moretypes/5",
+      "description": "Create struct values with literals, initialize selected fields by name in any order, and use \u0026 to obtain a pointer to a struct value.",
+      "source_sha256": "cf9282456e2a91274c1b135a68fce58dd1590f6a2d7153f0619c97ded8bd00d1",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "moretypes/6",
+      "route": "/moretypes/6",
+      "description": "Declare fixed-length Go arrays whose element count forms part of the array type and cannot be resized.",
+      "source_sha256": "0ec503e46281eb8ff25ceba5b92c9f9c3b40517aeea77cf4878760ed0da9d29c",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "moretypes/7",
+      "route": "/moretypes/7",
+      "description": "Create dynamically sized slice views over arrays and select half-open element ranges with low and high bounds.",
+      "source_sha256": "a169cf48dd659510ff7f1f8adfdbed5a247b51a1f7c3a45ae972f18921925033",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "moretypes/8",
+      "route": "/moretypes/8",
+      "description": "Understand that slices reference underlying arrays, so element changes are visible through other slices sharing the same storage.",
+      "source_sha256": "e577f9e98a9c871cdc6f39ecca1bdd0965c26da3b9ab6c2a7cab42b3b0f3a568",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "moretypes/9",
+      "route": "/moretypes/9",
+      "description": "Construct a slice literal using array-literal syntax without specifying a fixed array length.",
+      "source_sha256": "fb79cf8caed7abc7dfd92e90cf1bcc11d547b8af96d224f30fefc995f98dbb0b",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "moretypes/10",
+      "route": "/moretypes/10",
+      "description": "Omit low or high slice bounds to use zero and the underlying sequence length as their respective defaults.",
+      "source_sha256": "36d1f92fc5e51cddcd26be7f74a875e60bf24633dd7c8689672fa23a6720e2a1",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "moretypes/11",
+      "route": "/moretypes/11",
+      "description": "Distinguish slice length from capacity, inspect both with built-in functions, and reslice only within available capacity.",
+      "source_sha256": "e2d7d69c946e5a01d8d0eab2e07a2bf35e23453a617d5e7602ff0af5c5866d8f",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "moretypes/12",
+      "route": "/moretypes/12",
+      "description": "Recognize nil as a slice's zero value, with no underlying array and both length and capacity equal to zero.",
+      "source_sha256": "e7a4bb0d5e7928c2da06312d983eba2adb533b30299025f507df183f00fefc89",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "moretypes/13",
+      "route": "/moretypes/13",
+      "description": "Allocate zeroed arrays and obtain dynamically sized slices with make, optionally specifying a separate capacity.",
+      "source_sha256": "d057e6bf75421597d430ff52f844499b5828ab2c4b4c5148ad88b6b89326ac20",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "moretypes/14",
+      "route": "/moretypes/14",
+      "description": "Build multidimensional data structures by using slices whose elements are themselves slices.",
+      "source_sha256": "d8bee22c0382cf5fd5647c4d7106165d153cb15aaed8ec82e1f06e12ad0c73d1",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "moretypes/15",
+      "route": "/moretypes/15",
+      "description": "Append elements to a slice and understand when insufficient backing-array space causes allocation of a larger array.",
+      "source_sha256": "f2fc257e7c5f118321acc3b75e946053601532d411e8540534280d7fba795289",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "moretypes/16",
+      "route": "/moretypes/16",
+      "description": "Iterate over slices or maps with range and receive each slice element's index together with a copied value.",
+      "source_sha256": "73fc46a2e049ce2ff4a4fc0595d717ed5d6e15b7093a6014509a48f501253186",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "moretypes/17",
+      "route": "/moretypes/17",
+      "description": "Ignore an unwanted range index or value with the blank identifier, or omit the second variable when only the index is needed.",
+      "source_sha256": "b52cca070f62a3ffeab3adf20f2745e1dd9aa2644a3985c23ac295e81e2c3bc9",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "moretypes/18",
+      "route": "/moretypes/18",
+      "description": "Implement a picture generator that allocates a two-dimensional slice of unsigned bytes and computes values for a displayed image.",
+      "source_sha256": "9c5fd763eaedec8e8bfb60f52713417ff247bc4467aa8a94412c55ab83c781ba",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "moretypes/19",
+      "route": "/moretypes/19",
+      "description": "Create maps from keys to values with make and understand why a nil map has no keys and cannot accept new entries.",
+      "source_sha256": "39107d53feaffd26d7bb13103fe6e40746e9844d9b37bbf84559f7b91db312f3",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "moretypes/20",
+      "route": "/moretypes/20",
+      "description": "Initialize Go maps with map literals that provide a required key for every value.",
+      "source_sha256": "1d3caa45093f65b50d5ebcff6a57559c3fe70faba85f3a0bb41db38c5375a507",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "moretypes/21",
+      "route": "/moretypes/21",
+      "description": "Shorten map literals by omitting repeated element types when the top-level element type is a named type.",
+      "source_sha256": "0493179c2396f2e755fa5f1e579ce6f4cc716842ef5ee77a0b1c742210c15f9f",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "moretypes/22",
+      "route": "/moretypes/22",
+      "description": "Insert, update, retrieve, and delete map entries, then use a two-value lookup to distinguish missing keys from zero values.",
+      "source_sha256": "f6963bc620184c7fbea7b04c309ccf64d508a4e835500fa7dd4188e60204019f",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "moretypes/23",
+      "route": "/moretypes/23",
+      "description": "Implement a word-count function that returns a map recording how many times each word occurs in an input string.",
+      "source_sha256": "3214968207b659c3fb6bf92ee3d1ba0858bf7d3240dfad30fada7c5d8bddea69",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "moretypes/24",
+      "route": "/moretypes/24",
+      "description": "Treat functions as values that can be assigned, passed as function arguments, and returned as results.",
+      "source_sha256": "91b508ec19d3baf6fd1b2382e54b0f4ec226e9af99d027e86d734cf081d9c897",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "moretypes/25",
+      "route": "/moretypes/25",
+      "description": "Create closures that reference and modify variables outside their bodies, with each returned closure bound to its own state.",
+      "source_sha256": "570e535e9c2b2d1978534eb3b42f226102b11da36a3f9e61620dc5eafdb6be5f",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "moretypes/26",
+      "route": "/moretypes/26",
+      "description": "Implement a function that returns a closure producing successive numbers in the Fibonacci sequence.",
+      "source_sha256": "24f01440a7b0d638694c6cb275bf92e79e1fb2463ea2eb7d40a68cc4d6a0ed29",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "moretypes/27",
+      "route": "/moretypes/27",
+      "description": "Conclude the completed lesson by choosing a different module from the list or moving forward to the next lesson.",
+      "source_sha256": "f565674b974c053924bf69ef83b709dc50931526ae7fa88e71543a5cd872a190",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "methods/1",
+      "route": "/methods/1",
+      "description": "Define methods on Go types using a special receiver argument, providing behavior without a class system.",
+      "source_sha256": "8a62096b755332ede134c87493abe49231a52ce60abebcdc107bb6a64434fc72",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "methods/2",
+      "route": "/methods/2",
+      "description": "See that a Go method is equivalent in behavior to a regular function whose receiver is written as an ordinary argument.",
+      "source_sha256": "ade066728f85cc93e75c2472b80d532b62259a7e08e42ef36e3d05c6cfa5476d",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "methods/3",
+      "route": "/methods/3",
+      "description": "Declare methods on locally defined non-struct types while respecting the rule that receiver types belong to the same package.",
+      "source_sha256": "31c4fd0d80c8f1d96cf3efb1ecc1f9d3c0d1b5b70bb5c23bf7227b7007469588",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "methods/4",
+      "route": "/methods/4",
+      "description": "Use pointer receivers when a method must modify its receiver, unlike value receivers that operate on copies.",
+      "source_sha256": "99f9fa4e5c4dd46d393f40b417d0430c4e27e56f40146f5f192f55ccda4e2db3",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "methods/5",
+      "route": "/methods/5",
+      "description": "Rewrite the Abs and Scale methods as ordinary functions, then observe how changing the pointer parameter affects behavior and what must change for the example to compile.",
+      "source_sha256": "cac8affc7a8fd7bc1c0003d8cbf5bd7c85433faea45ea1b39f3b80c2fbc5eae9",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "methods/6",
+      "route": "/methods/6",
+      "description": "Call pointer-receiver methods on either values or pointers, with Go interpreting a call on a value such as v.Scale(5) as (\u0026v).Scale(5).",
+      "source_sha256": "39fb725b0a084ce3634dc973c215ff7a0f034c5f7b51c2ffe25934088072ebf6",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "methods/7",
+      "route": "/methods/7",
+      "description": "Call value-receiver methods through values or pointers as Go automatically dereferences the pointer for the method invocation.",
+      "source_sha256": "61a9cb8411e6ce15dce3383a68a52c6644599e84269b3faf240129277d238f7e",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "methods/8",
+      "route": "/methods/8",
+      "description": "Choose pointer receivers to permit mutation or avoid copying large values, and use a consistent receiver kind across a type's methods.",
+      "source_sha256": "357424f2a76613085184054178042b442331b5689d156ac9c37e09e57c436dae",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "methods/9",
+      "route": "/methods/9",
+      "description": "Define interfaces as sets of method signatures and see how receiver choice determines whether a value or pointer implements one.",
+      "source_sha256": "39efc19ed01619130489d21e421f2c0d8947b20f408580f4ceaabce6a0feb099",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "methods/10",
+      "route": "/methods/10",
+      "description": "Implement interfaces implicitly by defining their methods, decoupling interface declarations from implementations across packages.",
+      "source_sha256": "11ca99e6e83d93827daf02b177156fcb6f3c94ac8c202491dfffc5840ce4e39f",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "methods/11",
+      "route": "/methods/11",
+      "description": "Model an interface value as an underlying concrete value and type, with method calls dispatched to that concrete type.",
+      "source_sha256": "ccb2ed709b887724d22fb93714702fed5de4b7a83ca976876864045ff4752270",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "methods/12",
+      "route": "/methods/12",
+      "description": "Distinguish a non-nil interface holding a nil concrete value and design methods that can handle a nil receiver gracefully.",
+      "source_sha256": "9487ca3c9872972d42af8cfa389755678fe8a7cca110b592aac2a762332febf5",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "methods/13",
+      "route": "/methods/13",
+      "description": "Understand that a nil interface contains neither a value nor a concrete type, making method calls on it a run-time error.",
+      "source_sha256": "2897922c0b088ccd46b3e42a442aeecda0787c4162db1329d0e8f39d05735547",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "methods/14",
+      "route": "/methods/14",
+      "description": "Use the empty interface, or its equivalent any alias, to hold values of arbitrary types in general-purpose code.",
+      "source_sha256": "7a09a7654c8b6ac6d96a1a8ddaafac368782f89ec2e6e61f323d40eb01cbf750",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "methods/15",
+      "route": "/methods/15",
+      "description": "Extract an interface's underlying concrete value with a type assertion and use the two-result form to avoid a panic on mismatch.",
+      "source_sha256": "c205b4eb940358edea6321cfa422c3c00a560e9a6a71b08c8b3fa3ab9e4926ae",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "methods/16",
+      "route": "/methods/16",
+      "description": "Use a type switch to test an interface value against several concrete types and bind a correctly typed value in each case.",
+      "source_sha256": "26e4da09e80d30b06368691c76ee2940139b0f6fc40cad47bb6d1d2947933c27",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "methods/17",
+      "route": "/methods/17",
+      "description": "Implement the Stringer interface so a value can describe itself as text for formatting and printing.",
+      "source_sha256": "0363038e64b6f186e1bbd55c3323a5d7770a2b728605d8e3f01ae234aff6a444",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "methods/18",
+      "route": "/methods/18",
+      "description": "Make an IP address type implement the Stringer interface and format its four components as a dotted-quad address.",
+      "source_sha256": "ad118644f53755586f14409e203bccfb5ac4cff7c01734157032a45648fb06d3",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "methods/19",
+      "route": "/methods/19",
+      "description": "Represent failures with Go's built-in error interface, return error values from functions, and test them against nil.",
+      "source_sha256": "9eaab1fde2076c1376f78ceec0f84766c4c3b8062867436d73cef0bc77f16bd5",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "methods/20",
+      "route": "/methods/20",
+      "description": "Extend a square-root function to return a custom error for negative inputs and avoid an infinite loop when formatting that error.",
+      "source_sha256": "41f1f73320fde60ee5ff30d5927a19ff22d6da6a336bb776e15f2499e4f421d8",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "methods/21",
+      "route": "/methods/21",
+      "description": "Read streams through the Reader interface by filling byte slices and handling the returned byte count, errors, and end-of-stream signal.",
+      "source_sha256": "120c3fc9f67579cf78605cf0c9f006fc28d3569043a08079ddb645ca9c3fc3b1",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "methods/22",
+      "route": "/methods/22",
+      "description": "Implement a Reader type whose Read method supplies an infinite stream of the ASCII character A.",
+      "source_sha256": "0df444d989996a06d6dd50f4b109af4ae1cb2302b8dd867bcbe9bf98e424d230",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "methods/23",
+      "route": "/methods/23",
+      "description": "Wrap another Reader with a custom implementation that transforms alphabetical characters using the ROT13 substitution cipher.",
+      "source_sha256": "11d876145fae980b2e283e3fac7357a950eb20f022b7da48cc58efed5b1e8e04",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "methods/24",
+      "route": "/methods/24",
+      "description": "Understand the Image interface through its color model, bounds, and pixel lookup methods and their associated color types.",
+      "source_sha256": "d80f0d46796ad415a7ded4d0cefdef6cdb58deb38d050a61eb64abb25caf27ee",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "methods/25",
+      "route": "/methods/25",
+      "description": "Define a custom image type that implements color model, rectangular bounds, and pixel color lookup for generated pictures.",
+      "source_sha256": "a196bc59d96602c3fe72cf765419366094a5c1e96de0d24dd140887ebd1826b5",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "methods/26",
+      "route": "/methods/26",
+      "description": "Close out the lesson and decide whether to revisit the module directory or continue directly into the next lesson.",
+      "source_sha256": "f565674b974c053924bf69ef83b709dc50931526ae7fa88e71543a5cd872a190",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "generics/1",
+      "route": "/generics/1",
+      "description": "Write generic Go functions with bracketed type parameters and use the comparable constraint for equality-based slice searches.",
+      "source_sha256": "01a045105dc8c12fb1709f122d363235c19a6464d5de7587d579524aec270dd6",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "generics/2",
+      "route": "/generics/2",
+      "description": "Define generic types with type parameters, illustrated by a singly linked list capable of storing values of any type.",
+      "source_sha256": "08486351895e62792a84bc3eeab6aa85df7b1658735b7239040d219812f63277",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "generics/3",
+      "route": "/generics/3",
+      "description": "Acknowledge completion of the lesson before returning to the module catalog or progressing to the lesson that follows.",
+      "source_sha256": "f565674b974c053924bf69ef83b709dc50931526ae7fa88e71543a5cd872a190",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "concurrency/1",
+      "route": "/concurrency/1",
+      "description": "Start lightweight goroutines, understand where call arguments are evaluated, and synchronize access to shared memory used by concurrent goroutines.",
+      "source_sha256": "d0a9c45078c2255540cfffe48744a07fa04ab5c2113e8880068b5a400ae0ebdc",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "concurrency/2",
+      "route": "/concurrency/2",
+      "description": "Send and receive typed values through channels, using their default blocking behavior to synchronize work between goroutines.",
+      "source_sha256": "a35e3af26b51f8c2c2a6dfaf09f9c7cab0fdb4b1b56f9e4dc9b793f1dac1e295",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "concurrency/3",
+      "route": "/concurrency/3",
+      "description": "Create buffered channels with a fixed capacity and observe sends blocking when full and receives blocking when empty.",
+      "source_sha256": "caef0893a54c61f192be397f6b27a039d81dc007f98f2d203a5a287383c0682e",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "concurrency/4",
+      "route": "/concurrency/4",
+      "description": "Close channels from the sending side, detect closure during receives, and range until all transmitted values are consumed.",
+      "source_sha256": "3e925c6745255a443c61f25cd8131d538dc8677938f1c5021ce798465020b42e",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "concurrency/5",
+      "route": "/concurrency/5",
+      "description": "Use select to wait for several channel operations, proceeding with a ready case and choosing randomly when multiple cases can run.",
+      "source_sha256": "8d8de56f080d4f702ac455aa60cb13b745472bedc9755000e8b5d6a2a898577d",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "concurrency/6",
+      "route": "/concurrency/6",
+      "description": "Add a default case to select when a channel send or receive should be attempted without blocking.",
+      "source_sha256": "82e9cd932e14e6c4852fc8f865f4c45dc75845bd1a306649152ebc045f0c3b2c",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "concurrency/7",
+      "route": "/concurrency/7",
+      "description": "Frame the problem of comparing differently shaped binary trees that contain the same ordered values using Go channels and concurrency.",
+      "source_sha256": "7c5d3fc7bb2540285d746242f8a1d16075639648eec8909c1df52239297d2917",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "concurrency/8",
+      "route": "/concurrency/8",
+      "description": "Implement a concurrent tree walker and use its channel output to determine whether two binary trees store identical value sequences.",
+      "source_sha256": "b362cc15a26324acd311f7cab18a628dc1d7d9ac6d455add7d651d41acf15e9a",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "concurrency/9",
+      "route": "/concurrency/9",
+      "description": "Protect shared state with mutual exclusion by locking and unlocking a mutex, including deferred unlocking for reliable release.",
+      "source_sha256": "49f727794604c2ef8a8dda9508d0f412d7015cea77754c675a02b166dd9bfc93",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "concurrency/10",
+      "route": "/concurrency/10",
+      "description": "Parallelize a web crawler with Go concurrency while ensuring that no address is fetched twice and shared map access remains safe.",
+      "source_sha256": "bb686393225ef2335e627819a1664a84456f00b64af133af64920d43f0abdb94",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    },
+    {
+      "page_id": "concurrency/11",
+      "route": "/concurrency/11",
+      "description": "Continue learning Go through documentation, tutorials, references, talks, codewalks, articles, and resources on concurrency and web applications.",
+      "source_sha256": "45ef131ede663b1355c0a5933634d46c393f66be8a6450b184f86a62e928a64e",
+      "generation": {
+        "provider": "codex",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-source-description-v1",
+        "generated_at": "2026-09-15T07:25:52Z"
+      }
+    }
+  ]
+}
