@@ -1,0 +1,10 @@
+* Wskaźniki do struktur
+
+Dostęp do pól struktury można uzyskać przez wskaźnik do struktury.
+
+Aby uzyskać dostęp do pola ⟪GTI18N_29695d33_000001⟫X⟪GTI18N_29695d33_000002⟫ struktury, mając wskaźnik ⟪GTI18N_29695d33_000003⟫p⟪GTI18N_29695d33_000004⟫ do tej struktury, moglibyśmy
+zapisać ⟪GTI18N_29695d33_000005⟫(*p).X⟪GTI18N_29695d33_000006⟫.
+Taka notacja jest jednak niewygodna, dlatego język pozwala zamiast niej
+zapisać po prostu ⟪GTI18N_29695d33_000007⟫p.X⟪GTI18N_29695d33_000008⟫, bez jawnej dereferencji.
+
+⟪GTI18N_29695d33_000009⟫

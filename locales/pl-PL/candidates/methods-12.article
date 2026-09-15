@@ -1,0 +1,12 @@
+* Wartości interfejsu z bazowymi wartościami nil
+
+Jeśli wartość konkretna wewnątrz interfejsu sama ma wartość nil,
+metoda zostanie wywołana z odbiornikiem nil.
+
+W niektórych językach spowodowałoby to wyjątek pustego wskaźnika,
+ale w języku Go często pisze się metody, które poprawnie obsługują wywołanie
+z odbiornikiem nil (tak jak metoda `M` w tym przykładzie).
+
+Zauważ, że wartość interfejsu przechowująca konkretną wartość nil sama nie jest nil.
+
+.play methods/interface-values-with-nil.go

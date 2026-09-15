@@ -1,0 +1,21 @@
+* Dołączanie elementów do wycinka
+
+Do wycinka często dołącza się nowe elementy, dlatego język ⟪GTI18N_f2fc257e_000001⟫ udostępnia wbudowaną
+funkcję ⟪GTI18N_f2fc257e_000002⟫append⟪GTI18N_f2fc257e_000003⟫. [[⟪GTI18N_f2fc257e_000004⟫][Dokumentacja]]
+wbudowanego pakietu opisuje ⟪GTI18N_f2fc257e_000005⟫append⟪GTI18N_f2fc257e_000006⟫.
+
+⟪GTI18N_f2fc257e_000007⟫
+
+Pierwszy parametr ⟪GTI18N_f2fc257e_000008⟫s⟪GTI18N_f2fc257e_000009⟫ funkcji ⟪GTI18N_f2fc257e_000010⟫append⟪GTI18N_f2fc257e_000011⟫ jest wycinkiem typu ⟪GTI18N_f2fc257e_000012⟫T⟪GTI18N_f2fc257e_000013⟫, a pozostałe parametry to
+wartości typu ⟪GTI18N_f2fc257e_000014⟫T⟪GTI18N_f2fc257e_000015⟫, które mają zostać dołączone do wycinka.
+
+Wartością wynikową ⟪GTI18N_f2fc257e_000016⟫append⟪GTI18N_f2fc257e_000017⟫ jest wycinek zawierający wszystkie elementy
+pierwotnego wycinka oraz podane wartości.
+
+Jeśli tablica bazowa wycinka ⟪GTI18N_f2fc257e_000018⟫s⟪GTI18N_f2fc257e_000019⟫ jest zbyt mała, aby pomieścić wszystkie podane wartości, zostanie przydzielona większa
+tablica. Zwrócony wycinek będzie wskazywał na nowo przydzieloną
+tablicę.
+
+(Więcej informacji o wycinkach znajdziesz w artykule [[⟪GTI18N_f2fc257e_000020⟫][Wycinki: użycie i mechanizm działania]].)
+
+⟪GTI18N_f2fc257e_000021⟫

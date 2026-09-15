@@ -1,0 +1,23 @@
+* Ćwiczenie: równoważne drzewa binarne
+
+⟪GTI18N_b362cc15_000001⟫1.⟪GTI18N_b362cc15_000002⟫ Zaimplementuj funkcję ⟪GTI18N_b362cc15_000003⟫Walk⟪GTI18N_b362cc15_000004⟫.
+
+⟪GTI18N_b362cc15_000005⟫2.⟪GTI18N_b362cc15_000006⟫ Przetestuj funkcję ⟪GTI18N_b362cc15_000007⟫Walk⟪GTI18N_b362cc15_000008⟫.
+
+Funkcja ⟪GTI18N_b362cc15_000009⟫tree.New(k)⟪GTI18N_b362cc15_000010⟫ tworzy drzewo binarne o losowej strukturze (ale zawsze uporządkowane), przechowujące wartości ⟪GTI18N_b362cc15_000011⟫k⟪GTI18N_b362cc15_000012⟫, ⟪GTI18N_b362cc15_000013⟫2k⟪GTI18N_b362cc15_000014⟫, ⟪GTI18N_b362cc15_000015⟫3k⟪GTI18N_b362cc15_000016⟫, ..., ⟪GTI18N_b362cc15_000017⟫10k⟪GTI18N_b362cc15_000018⟫.
+
+Utwórz nowy kanał ⟪GTI18N_b362cc15_000019⟫ch⟪GTI18N_b362cc15_000020⟫ i uruchom przechodzenie drzewa:
+
+⟪GTI18N_b362cc15_000021⟫
+
+Następnie odczytaj z kanału i wyświetl 10 wartości. Powinny to być liczby 1, 2, 3, ..., 10.
+
+⟪GTI18N_b362cc15_000022⟫3.⟪GTI18N_b362cc15_000023⟫ Zaimplementuj funkcję ⟪GTI18N_b362cc15_000024⟫Same⟪GTI18N_b362cc15_000025⟫, używając ⟪GTI18N_b362cc15_000026⟫Walk⟪GTI18N_b362cc15_000027⟫ do ustalenia, czy ⟪GTI18N_b362cc15_000028⟫t1⟪GTI18N_b362cc15_000029⟫ i ⟪GTI18N_b362cc15_000030⟫t2⟪GTI18N_b362cc15_000031⟫ przechowują te same wartości.
+
+⟪GTI18N_b362cc15_000032⟫4.⟪GTI18N_b362cc15_000033⟫ Przetestuj funkcję ⟪GTI18N_b362cc15_000034⟫Same⟪GTI18N_b362cc15_000035⟫.
+
+⟪GTI18N_b362cc15_000036⟫Same(tree.New(1),`tree.New(1))⟪GTI18N_b362cc15_000037⟫ powinno zwrócić true, a ⟪GTI18N_b362cc15_000038⟫Same(tree.New(1),`tree.New(2))⟪GTI18N_b362cc15_000039⟫ — false.
+
+Dokumentację typu ⟪GTI18N_b362cc15_000040⟫Tree⟪GTI18N_b362cc15_000041⟫ znajdziesz [[⟪GTI18N_b362cc15_000042⟫][tutaj]].
+
+⟪GTI18N_b362cc15_000043⟫

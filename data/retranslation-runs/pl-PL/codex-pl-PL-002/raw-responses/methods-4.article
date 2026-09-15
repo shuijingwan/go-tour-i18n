@@ -1,0 +1,24 @@
+* Odbiorniki wskaźnikowe
+
+Można deklarować metody z odbiornikami wskaźnikowymi.
+
+Oznacza to, że typ odbiornika ma składnię literału ⟪GTI18N_99f9fa4e_000001⟫*T⟪GTI18N_99f9fa4e_000002⟫ dla pewnego typu ⟪GTI18N_99f9fa4e_000003⟫T⟪GTI18N_99f9fa4e_000004⟫.
+(Ponadto sam ⟪GTI18N_99f9fa4e_000005⟫T⟪GTI18N_99f9fa4e_000006⟫ nie może być wskaźnikiem, takim jak ⟪GTI18N_99f9fa4e_000007⟫*int⟪GTI18N_99f9fa4e_000008⟫.)
+
+Na przykład zdefiniowana tutaj metoda ⟪GTI18N_99f9fa4e_000009⟫Scale⟪GTI18N_99f9fa4e_000010⟫ ma odbiornik typu ⟪GTI18N_99f9fa4e_000011⟫*Vertex⟪GTI18N_99f9fa4e_000012⟫.
+
+Metody z odbiornikami wskaźnikowymi mogą modyfikować wartość wskazywaną przez odbiornik
+(tak jak robi tutaj ⟪GTI18N_99f9fa4e_000013⟫Scale⟪GTI18N_99f9fa4e_000014⟫).
+Ponieważ metody często muszą modyfikować swój odbiornik, odbiorniki wskaźnikowe występują
+częściej niż odbiorniki wartościowe.
+
+Spróbuj usunąć ⟪GTI18N_99f9fa4e_000015⟫*⟪GTI18N_99f9fa4e_000016⟫ z deklaracji funkcji ⟪GTI18N_99f9fa4e_000017⟫Scale⟪GTI18N_99f9fa4e_000018⟫ w wierszu 16
+i zaobserwuj, jak zmieni się działanie programu.
+
+W przypadku odbiornika wartościowego metoda ⟪GTI18N_99f9fa4e_000019⟫Scale⟪GTI18N_99f9fa4e_000020⟫ działa na kopii pierwotnej
+wartości ⟪GTI18N_99f9fa4e_000021⟫Vertex⟪GTI18N_99f9fa4e_000022⟫.
+(Tak samo zachowuje się każdy inny argument funkcji.)
+Metoda ⟪GTI18N_99f9fa4e_000023⟫Scale⟪GTI18N_99f9fa4e_000024⟫ musi mieć odbiornik wskaźnikowy, aby zmienić wartość ⟪GTI18N_99f9fa4e_000025⟫Vertex⟪GTI18N_99f9fa4e_000026⟫
+zadeklarowaną w funkcji ⟪GTI18N_99f9fa4e_000027⟫main⟪GTI18N_99f9fa4e_000028⟫.
+
+⟪GTI18N_99f9fa4e_000029⟫

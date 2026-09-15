@@ -1,0 +1,9 @@
+* Stos wywołań defer
+
+Odłożone wywołania funkcji są umieszczane na stosie. Gdy funkcja kończy działanie, jej
+odłożone wywołania są wykonywane w kolejności „ostatnie weszło, pierwsze wyszło”.
+
+Więcej informacji o instrukcjach defer znajdziesz w tym
+[[/blog/defer-panic-and-recover][wpisie na blogu]].
+
+.play flowcontrol/defer-multi.go

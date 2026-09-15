@@ -1,0 +1,20 @@
+* Kanały
+
+Kanały są typowanym mechanizmem komunikacji, za którego pośrednictwem można wysyłać i odbierać wartości za pomocą operatora kanału `<-`.
+
+	ch <- v    // Wyślij v do kanału ch.
+	v := <-ch  // Odbierz z ch i
+	           // przypisz wartość do v.
+
+(Dane przepływają w kierunku wskazanym przez strzałkę.)
+
+Podobnie jak mapy i wycinki, kanały trzeba utworzyć przed użyciem:
+
+	ch := make(chan int)
+
+Domyślnie operacje wysyłania i odbierania są blokowane, dopóki druga strona nie będzie gotowa. Pozwala to goroutines synchronizować się bez jawnych blokad ani zmiennych warunkowych.
+
+Przykładowy kod sumuje liczby w wycinku, rozdzielając pracę między dwie goroutines.
+Po zakończeniu obliczeń przez obie goroutines oblicza wynik końcowy.
+
+.play concurrency/channels.go

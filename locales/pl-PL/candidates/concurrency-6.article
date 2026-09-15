@@ -1,0 +1,14 @@
+* Przypadek default
+
+Przypadek `default` w instrukcji `select` jest wykonywany, jeśli żaden inny przypadek nie jest gotowy.
+
+Użyj przypadku `default`, aby podjąć próbę wysłania lub odebrania bez blokowania:
+
+	select {
+	case i := <-c:
+		// użyj i
+	default:
+		// odbieranie z c spowodowałoby blokadę
+	}
+
+.play concurrency/default-selection.go

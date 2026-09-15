@@ -1,0 +1,23 @@
+* Metody i adresowanie pośrednie wskaźników
+
+Porównując dwa poprzednie programy, można zauważyć, że
+funkcje z argumentem wskaźnikowym muszą otrzymać wskaźnik:
+
+	var v Vertex
+	ScaleFunc(v, 5)  // Błąd kompilacji!
+	ScaleFunc(&v, 5) // OK
+
+natomiast podczas wywołania metody z odbiornikiem wskaźnikowym mogą otrzymać jako
+odbiornik zarówno wartość, jak i wskaźnik:
+
+	var v Vertex
+	v.Scale(5)  // OK
+	p := &v
+	p.Scale(10) // OK
+
+W instrukcji `v.Scale(5)`, mimo że `v` jest wartością, a nie wskaźnikiem,
+metoda z odbiornikiem wskaźnikowym jest wywoływana automatycznie.
+Dla wygody język Go interpretuje więc instrukcję `v.Scale(5)` jako
+`(&v).Scale(5)`, ponieważ metoda `Scale` ma odbiornik wskaźnikowy.
+
+.play methods/indirection.go

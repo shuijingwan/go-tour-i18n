@@ -1,0 +1,16 @@
+* Pusty interfejs
+
+Typ interfejsowy, który nie określa żadnych metod, nazywa się ⟪GTI18N_7a09a765_000001⟫pustym_interfejsem⟪GTI18N_7a09a765_000002⟫:
+
+⟪GTI18N_7a09a765_000003⟫
+
+Pusty interfejs może przechowywać wartości dowolnego typu.
+(Każdy typ implementuje co najmniej zero metod.)
+
+⟪GTI18N_7a09a765_000004⟫any⟪GTI18N_7a09a765_000005⟫ jest aliasem ⟪GTI18N_7a09a765_000006⟫interface{}⟪GTI18N_7a09a765_000007⟫ i oba zapisy są całkowicie
+równoważne.
+
+Puste interfejsy są używane przez kod obsługujący wartości nieznanego typu.
+Na przykład ⟪GTI18N_7a09a765_000008⟫fmt.Print⟪GTI18N_7a09a765_000009⟫ przyjmuje dowolną liczbę argumentów typu ⟪GTI18N_7a09a765_000010⟫any⟪GTI18N_7a09a765_000011⟫.
+
+⟪GTI18N_7a09a765_000012⟫

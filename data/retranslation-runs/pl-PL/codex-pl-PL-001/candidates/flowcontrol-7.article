@@ -1,0 +1,9 @@
+* Instrukcje if i else
+
+Zmienne zadeklarowane w krótkiej instrukcji `if` są dostępne również we wszystkich
+blokach `else`.
+
+(Oba wywołania `pow` zwracają wyniki przed rozpoczęciem wywołania `fmt.Println`
+w funkcji `main`.)
+
+.play flowcontrol/if-and-else.go

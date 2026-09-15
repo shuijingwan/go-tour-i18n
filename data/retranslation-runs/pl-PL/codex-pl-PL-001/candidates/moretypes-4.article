@@ -1,0 +1,10 @@
+* Wskaźniki do struktur
+
+Dostęp do pól struktury można uzyskać przez wskaźnik do struktury.
+
+Aby uzyskać dostęp do pola `X` struktury, mając wskaźnik `p` do tej struktury, moglibyśmy
+zapisać `(*p).X`.
+Taka notacja jest jednak niewygodna, dlatego język pozwala zamiast niej
+zapisać po prostu `p.X`, bez jawnej dereferencji.
+
+.play moretypes/struct-pointers.go

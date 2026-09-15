@@ -1,0 +1,18 @@
+* Ćwiczenie: równoważne drzewa binarne
+
+Istnieje wiele różnych drzew binarnych przechowujących ten sam ciąg wartości. Oto na przykład dwa drzewa binarne przechowujące ciąg 1, 1, 2, 3, 5, 8, 13.
+
+.image /tour/static/img/tree.png
+
+W większości języków funkcja sprawdzająca, czy dwa drzewa binarne przechowują ten sam ciąg, jest dość złożona. Wykorzystamy współbieżność i kanały języka Go, aby napisać proste rozwiązanie.
+
+Ten przykład korzysta z pakietu `tree`, który definiuje typ:
+
+	type Tree struct {
+		Left  *Tree
+		Value int
+		Right *Tree
+	}
+
+
+Ciąg dalszy opisu znajduje się na [[javascript:click('.next-page')][następnej stronie]].

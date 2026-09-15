@@ -1,0 +1,14 @@
+* Metody i adresowanie pośrednie wskaźników (2)
+
+W przeciwnym kierunku zachodzi analogiczne zjawisko.
+
+Funkcje przyjmujące argument wartościowy muszą otrzymać wartość tego konkretnego typu:
+
+⟪GTI18N_61a9cb84_000001⟫Błąd kompilacji!⟪GTI18N_61a9cb84_000002⟫natomiast podczas wywołania metody z odbiornikiem wartościowym mogą otrzymać jako
+odbiornik zarówno wartość, jak i wskaźnik:
+
+⟪GTI18N_61a9cb84_000003⟫
+
+W tym przypadku wywołanie metody ⟪GTI18N_61a9cb84_000004⟫p.Abs()⟪GTI18N_61a9cb84_000005⟫ jest interpretowane jako ⟪GTI18N_61a9cb84_000006⟫(*p).Abs()⟪GTI18N_61a9cb84_000007⟫.
+
+⟪GTI18N_61a9cb84_000008⟫

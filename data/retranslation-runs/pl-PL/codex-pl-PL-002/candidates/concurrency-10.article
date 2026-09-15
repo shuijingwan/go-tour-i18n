@@ -1,0 +1,10 @@
+* Ćwiczenie: robot indeksujący
+
+W tym ćwiczeniu wykorzystasz mechanizmy współbieżności języka Go do zrównoleglenia robota indeksującego.
+
+Zmodyfikuj funkcję `Crawl` tak, aby pobierała adresy URL równolegle, bez dwukrotnego pobierania tego samego URL.
+
+_Wskazówka_: pamięć podręczną pobranych adresów URL można przechowywać w mapie, ale same mapy nie są
+bezpieczne do użytku współbieżnego!
+
+.play concurrency/exercise-web-crawler.go

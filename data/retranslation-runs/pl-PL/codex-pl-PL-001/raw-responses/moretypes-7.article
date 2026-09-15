@@ -1,0 +1,23 @@
+* Wycinki
+
+Tablica ma stały rozmiar.
+Wycinek jest natomiast elastycznym widokiem na elementy tablicy,
+którego rozmiar można dynamicznie zmieniać.
+W praktyce wycinki są używane znacznie częściej niż tablice.
+
+Typ ⟪GTI18N_a169cf48_000001⟫[]T⟪GTI18N_a169cf48_000002⟫ jest wycinkiem o elementach typu ⟪GTI18N_a169cf48_000003⟫T⟪GTI18N_a169cf48_000004⟫.
+
+Wycinek tworzy się przez podanie dwóch indeksów — dolnej i
+górnej granicy — oddzielonych dwukropkiem:
+
+⟪GTI18N_a169cf48_000005⟫
+
+Wybiera to przedział domknięty z lewej strony i otwarty z prawej,
+który obejmuje pierwszy element, ale nie obejmuje ostatniego.
+
+Poniższe wyrażenie tworzy wycinek obejmujący
+elementy od 1 do 3 tablicy ⟪GTI18N_a169cf48_000006⟫a⟪GTI18N_a169cf48_000007⟫:
+
+⟪GTI18N_a169cf48_000008⟫
+
+⟪GTI18N_a169cf48_000009⟫

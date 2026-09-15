@@ -1,0 +1,11 @@
+* Kanały buforowane
+
+Kanały mogą być _buforowane_. Aby zainicjować kanał buforowany, podaj długość bufora jako drugi argument funkcji `make`:
+
+	ch := make(chan int, 100)
+
+Wysyłanie do kanału buforowanego jest blokowane tylko wtedy, gdy bufor jest pełny. Odbieranie jest blokowane, gdy bufor jest pusty.
+
+Zmodyfikuj przykład tak, aby przepełnić bufor, i zobacz, co się stanie.
+
+.play concurrency/buffered-channels.go

@@ -1,0 +1,15 @@
+* range i close
+
+Nadawca może zamknąć kanał za pomocą `close`, aby wskazać, że nie zostaną wysłane żadne kolejne wartości. Odbiorcy mogą sprawdzić, czy kanał został zamknięty, przypisując drugi parametr w wyrażeniu odbierającym: po
+
+	v, ok := <-ch
+
+`ok` ma wartość `false`, jeśli nie ma już żadnych wartości do odebrania, a kanał jest zamknięty.
+
+Pętla `for`i`:=`range`c` wielokrotnie odbiera wartości z kanału, dopóki nie zostanie on zamknięty.
+
+*Uwaga:* Kanał powinien zamykać wyłącznie nadawca, nigdy odbiorca. Wysłanie wartości do zamkniętego kanału spowoduje panikę.
+
+*Kolejna*uwaga:* Kanały nie przypominają plików; zwykle nie trzeba ich zamykać. Zamknięcie jest konieczne tylko wtedy, gdy odbiorca musi otrzymać informację, że nie nadejdą już żadne wartości, na przykład w celu zakończenia pętli `range`.
+
+.play concurrency/range-and-close.go

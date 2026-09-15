@@ -1,0 +1,9 @@
+* Instrukcja defer
+
+Instrukcja defer odkłada wykonanie funkcji do chwili, gdy funkcja otaczająca
+zakończy działanie.
+
+Argumenty odłożonego wywołania są obliczane natychmiast, ale samo wywołanie funkcji
+następuje dopiero po zakończeniu funkcji otaczającej.
+
+.play flowcontrol/defer.go

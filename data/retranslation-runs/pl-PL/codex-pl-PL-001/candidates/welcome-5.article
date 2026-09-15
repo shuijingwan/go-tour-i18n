@@ -1,0 +1,19 @@
+* Go Playground
+
+Ten przewodnik opiera się na [[https://play.golang.org/][Go Playground]],
+usłudze internetowej działającej na serwerach [[/][golang.org]].
+
+Usługa odbiera program w języku Go, kompiluje go, konsoliduje i uruchamia
+w piaskownicy, a następnie zwraca wynik.
+
+Programy uruchamiane w tej usłudze podlegają pewnym ograniczeniom:
+
+- Czas zaczyna się w niej od 2009-11-10 23:00:00 UTC (ustalenie znaczenia tej daty pozostawiamy czytelnikowi jako ćwiczenie). Ułatwia to buforowanie programów, ponieważ ich wynik jest deterministyczny.
+
+- Obowiązują również ograniczenia czasu wykonywania oraz użycia CPU i pamięci, a program nie może uzyskiwać dostępu do zewnętrznych hostów sieciowych.
+
+Usługa korzysta z najnowszego stabilnego wydania języka Go.
+
+Więcej informacji znajdziesz w artykule „[[/blog/playground][Wewnątrz Go Playground]]”.
+
+.play welcome/sandbox.go

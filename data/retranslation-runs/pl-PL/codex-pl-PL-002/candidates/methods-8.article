@@ -1,0 +1,17 @@
+* Wybór odbiornika wartościowego lub wskaźnikowego
+
+Istnieją dwa powody, dla których warto użyć odbiornika wskaźnikowego.
+
+Pierwszy: metoda może modyfikować wartość wskazywaną przez odbiornik.
+
+Drugi: pozwala uniknąć kopiowania wartości przy każdym wywołaniu metody.
+Może to być wydajniejsze, na przykład gdy odbiornikiem jest duża struktura.
+
+W tym przykładzie zarówno `Scale`, jak i `Abs` są metodami z odbiornikiem typu `*Vertex`,
+mimo że metoda `Abs` nie musi modyfikować odbiornika.
+
+Ogólnie wszystkie metody danego typu powinny mieć odbiorniki wartościowe albo wskaźnikowe,
+ale nie oba rodzaje jednocześnie.
+(Na kilku następnych stronach zobaczymy dlaczego.)
+
+.play methods/methods-with-pointer-receivers.go

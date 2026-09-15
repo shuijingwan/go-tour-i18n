@@ -1,0 +1,12 @@
+* Metody — ciąg dalszy
+
+Metodę można zadeklarować także dla typu, który nie jest strukturą.
+
+W tym przykładzie widzimy typ liczbowy `MyFloat` z metodą `Abs`.
+
+Metodę można zadeklarować tylko z odbiornikiem, którego typ jest zdefiniowany w tym samym
+pakiecie co metoda.
+Nie można zadeklarować metody z odbiornikiem, którego typ jest zdefiniowany w innym
+pakiecie (dotyczy to również typów wbudowanych, takich jak `int`).
+
+.play methods/methods-continued.go

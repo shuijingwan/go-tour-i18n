@@ -1,0 +1,11 @@
+* Ćwiczenie: wycinki
+
+Zaimplementuj `Pic`. Funkcja powinna zwracać wycinek o długości `dy`, którego każdy element jest wycinkiem złożonym z `dx` 8-bitowych liczb całkowitych bez znaku. Po uruchomieniu programu obraz zostanie wyświetlony przez zinterpretowanie tych liczb jako wartości w skali szarości (a właściwie błękitu).
+
+Wybór obrazu należy do Ciebie. Ciekawe funkcje to między innymi `(x+y)/2`, `x*y` oraz `x^y`.
+
+(Musisz użyć pętli, aby przydzielić każdy `[]uint8` wewnątrz `[][]uint8`.)
+
+(Do konwersji między typami użyj `uint8(intValue)`.)
+
+.play moretypes/exercise-slices.go

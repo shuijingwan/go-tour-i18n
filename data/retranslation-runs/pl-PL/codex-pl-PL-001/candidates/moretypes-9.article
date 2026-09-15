@@ -1,0 +1,14 @@
+* Literały wycinków
+
+Literał wycinka przypomina literał tablicy bez długości.
+
+Oto literał tablicy:
+
+	[3]bool{true, true, false}
+
+Poniższy zapis tworzy taką samą tablicę jak wyżej,
+a następnie wycinek, który się do niej odwołuje:
+
+	[]bool{true, true, false}
+
+.play moretypes/slice-literals.go

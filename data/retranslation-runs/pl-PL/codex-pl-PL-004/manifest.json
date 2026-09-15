@@ -1,0 +1,50 @@
+{
+  "schema_version": 2,
+  "batch_id": "codex-pl-PL-004",
+  "locale": "pl-PL",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 3,
+  "units": [
+    {
+      "unit_id": "welcome/2",
+      "unit_kind": "page",
+      "source_path": "_content/tour/welcome.article",
+      "source_sha256": "709f808ec4cdf683411f349cab7a4886fcae532d1c4e4cc66c8ed68cfb2dd2d3",
+      "input_path": "inputs/welcome-2.article",
+      "input_sha256": "1931228d38e2723294fb8d06b7a97bf4f40c3dc65025397c81123aaaff8ad365",
+      "protected_token_count": 18,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "标题译为「Go lokalnie」会自然地被理解为本机/本地运行，但该页面实际介绍 Tour 的其他语言版本，且后续另有真正的 offline/local 页面；应改成明确表达其他语言版本的自然波兰语标题，例如「Go w innych językach」。正文无需修改。"
+    },
+    {
+      "unit_id": "flowcontrol/3",
+      "unit_kind": "page",
+      "source_path": "_content/tour/flowcontrol.article",
+      "source_sha256": "3ed791cc935287ba6f5da4ba41f6ad84fdcbaef108ee364f769ae5204316bbb7",
+      "input_path": "inputs/flowcontrol-3.article",
+      "input_sha256": "41043c9ed33b0e2c4cc0fabd0766c411f0bee97a7f3c0bacd37e57332db2066a",
+      "protected_token_count": 7,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "标题「Pętla for jest odpowiednikiem „while” z języka Go」容易表达成 Go 语言中存在 while，但 Go 没有 while；应明确表达 for 在 Go 中承担 while 的作用，例如「W Go pętla for pełni rolę „while”」。正文已经准确，无需修改。"
+    },
+    {
+      "unit_id": "flowcontrol/10",
+      "unit_kind": "page",
+      "source_path": "_content/tour/flowcontrol.article",
+      "source_sha256": "e1479cae56a87cddb9c447fc9fd32b0ee1f983058f7ee76554965abd21975ef4",
+      "input_path": "inputs/flowcontrol-10.article",
+      "input_sha256": "4882ca813d14d385d6e3c27c1ed8137f923455c8d4cb5c0d6ca1a1ce01ee0750",
+      "protected_token_count": 6,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "标题「Kolejność obliczania przypadków switch」在波兰语中较生硬且技术表达不够准确，容易理解为“计算 case”，没有自然表达原文 Switch evaluation order。应改为明确表示按顺序检查/求值 case 的自然波兰语，例如「Kolejność sprawdzania przypadków w instrukcji switch」。正文准确，无需修改。"
+    }
+  ]
+}

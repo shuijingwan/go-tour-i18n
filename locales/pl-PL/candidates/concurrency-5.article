@@ -1,0 +1,7 @@
+* Instrukcja select
+
+Instrukcja `select` pozwala goroutine czekać na wiele operacji komunikacyjnych.
+
+Instrukcja `select` blokuje się, dopóki jeden z jej przypadków nie będzie mógł zostać wykonany, a następnie wykonuje ten przypadek. Jeśli gotowych jest kilka przypadków, wybiera losowo jeden z nich.
+
+.play concurrency/select.go

@@ -1,0 +1,20 @@
+* Pętla for
+
+Język Go ma tylko jedną konstrukcję pętli: pętlę `for`.
+
+Podstawowa pętla `for` ma trzy części oddzielone średnikami:
+
+- instrukcję inicjalizującą: wykonywaną przed pierwszą iteracją
+- wyrażenie warunkowe: obliczane przed każdą iteracją
+- instrukcję końcową: wykonywaną na końcu każdej iteracji
+
+Instrukcja inicjalizująca jest często deklaracją zmiennej, a zadeklarowane w niej
+zmienne są widoczne tylko w zakresie instrukcji `for`.
+
+Pętla zakończy iterowanie, gdy wartością warunku logicznego stanie się `false`.
+
+*Uwaga:* W odróżnieniu od języków takich jak C, Java czy JavaScript trzy części instrukcji
+`for` nie są ujęte w nawiasy, natomiast nawiasy klamrowe `{`}` są
+zawsze wymagane.
+
+.play flowcontrol/for.go

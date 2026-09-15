@@ -1,0 +1,12 @@
+* Iterowanie za pomocą range — ciąg dalszy
+
+Indeks lub wartość można pominąć, przypisując je do `_`.
+
+    for i, _ := range pow
+    for _, value := range pow
+
+Jeśli potrzebujesz tylko indeksu, możesz pominąć drugą zmienną.
+
+    for i := range pow
+
+.play moretypes/range-continued.go

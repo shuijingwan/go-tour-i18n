@@ -1,0 +1,11 @@
+* Nazwane wartości zwracane
+
+Wartości zwracane przez Go mogą mieć nazwy. Są wtedy traktowane jak zmienne zdefiniowane na początku funkcji.
+
+Nazwy te powinny objaśniać znaczenie zwracanych wartości.
+
+Instrukcja `return` bez argumentów zwraca nazwane wartości zwracane. Nazywa się to „nagim” powrotem.
+
+Nagich instrukcji powrotu należy używać tylko w krótkich funkcjach, tak jak w pokazanym tu przykładzie. W dłuższych funkcjach mogą pogarszać czytelność.
+
+.play basics/named-results.go

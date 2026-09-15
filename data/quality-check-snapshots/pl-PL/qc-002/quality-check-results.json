@@ -1,0 +1,42 @@
+{
+  "schema_version": 2,
+  "evidence_type": "quality_check_results",
+  "locale": "pl-PL",
+  "snapshot_id": "qc-002",
+  "snapshot_manifest_sha256": "1e228d8415f92bd0d75f83e734f945fa599937a3a038f1cb33205b8889abd737",
+  "previous_snapshot_id": "qc-001",
+  "rubric": "translation-quality/v1",
+  "result_count": 6,
+  "results": [
+    {
+      "index": 2,
+      "unit_id": "welcome/2",
+      "rating": "A"
+    },
+    {
+      "index": 25,
+      "unit_id": "flowcontrol/3",
+      "rating": "A"
+    },
+    {
+      "index": 32,
+      "unit_id": "flowcontrol/10",
+      "rating": "A"
+    },
+    {
+      "index": 108,
+      "unit_id": "example:concurrency/exercise-web-crawler.go",
+      "rating": "A"
+    },
+    {
+      "index": 116,
+      "unit_id": "example:methods/interfaces.go",
+      "rating": "A"
+    },
+    {
+      "index": 119,
+      "unit_id": "example:moretypes/pointers.go",
+      "rating": "A"
+    }
+  ]
+}

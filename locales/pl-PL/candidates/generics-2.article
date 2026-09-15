@@ -1,0 +1,12 @@
+* Typy generyczne
+
+Oprócz funkcji generycznych język Go obsługuje również typy generyczne. Typ można
+sparametryzować parametrem typu, co bywa przydatne przy implementowaniu
+generycznych struktur danych.
+
+Ten przykład przedstawia prostą deklarację typu dla listy jednokierunkowej
+przechowującej wartości dowolnego typu.
+
+W ramach ćwiczenia dodaj nieco funkcjonalności do tej implementacji listy.
+
+.play generics/list.go

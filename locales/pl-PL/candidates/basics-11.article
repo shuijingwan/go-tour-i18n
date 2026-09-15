@@ -1,0 +1,28 @@
+* Typy podstawowe
+
+Podstawowe typy w języku Go to
+
+	bool
+
+	string
+
+	int  int8  int16  int32  int64
+	uint uint8 uint16 uint32 uint64 uintptr
+
+	byte // alias typu uint8
+
+	rune // alias typu int32
+	     // reprezentuje punkt kodowy Unicode
+
+	float32 float64
+
+	complex64 complex128
+
+Przykład przedstawia zmienne kilku typów,
+a także pokazuje, że deklaracje zmiennych można „grupować” w bloki,
+podobnie jak instrukcje importu.
+
+Typy `int`, `uint` i `uintptr` mają zwykle szerokość 32 bitów w systemach 32-bitowych i 64 bitów w systemach 64-bitowych.
+Gdy potrzebujesz wartości całkowitej, używaj typu `int`, chyba że masz konkretny powód, aby zastosować typ całkowity o określonym rozmiarze lub typ bez znaku.
+
+.play basics/basic-types.go

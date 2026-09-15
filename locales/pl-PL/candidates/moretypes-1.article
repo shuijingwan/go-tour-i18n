@@ -1,0 +1,24 @@
+* Wskaźniki
+
+Język Go obsługuje wskaźniki.
+Wskaźnik przechowuje adres wartości w pamięci.
+
+Typ `*T` jest wskaźnikiem do wartości typu `T`. Jego wartością zerową jest `nil`.
+
+	var p *int
+
+Operator `&` tworzy wskaźnik do swojego operandu.
+
+	i := 42
+	p = &i
+
+Operator `*` oznacza wartość wskazywaną przez wskaźnik.
+
+	fmt.Println(*p) // odczytaj i przez wskaźnik p
+	*p = 21         // ustaw i przez wskaźnik p
+
+Operację tę nazywa się „dereferencją” lub „adresowaniem pośrednim”.
+
+W odróżnieniu od C język Go nie obsługuje arytmetyki wskaźników.
+
+.play moretypes/pointers.go

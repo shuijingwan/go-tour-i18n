@@ -1,0 +1,23 @@
+* Ćwiczenie: równoważne drzewa binarne
+
+*1.* Zaimplementuj funkcję `Walk`.
+
+*2.* Przetestuj funkcję `Walk`.
+
+Funkcja `tree.New(k)` tworzy drzewo binarne o losowej strukturze (ale zawsze uporządkowane), przechowujące wartości `k`, `2k`, `3k`, ..., `10k`.
+
+Utwórz nowy kanał `ch` i uruchom przechodzenie drzewa:
+
+	go Walk(tree.New(1), ch)
+
+Następnie odczytaj z kanału i wyświetl 10 wartości. Powinny to być liczby 1, 2, 3, ..., 10.
+
+*3.* Zaimplementuj funkcję `Same`, używając `Walk` do ustalenia, czy `t1` i `t2` przechowują te same wartości.
+
+*4.* Przetestuj funkcję `Same`.
+
+`Same(tree.New(1),`tree.New(1))` powinno zwrócić true, a `Same(tree.New(1),`tree.New(2))` — false.
+
+Dokumentację typu `Tree` znajdziesz [[https://godoc.org/golang.org/x/tour/tree#Tree][tutaj]].
+
+.play concurrency/exercise-equivalent-binary-trees.go

@@ -1,0 +1,28 @@
+* Instrukcje switch typu
+
+_Instrukcja_switch_typu_ jest konstrukcją umożliwiającą wykonanie szeregu asercji typu.
+
+Instrukcja switch typu przypomina zwykłą instrukcję switch, lecz jej przypadki
+określają typy (a nie wartości), które są porównywane z typem wartości
+przechowywanej przez daną wartość interfejsu.
+
+	switch v := i.(type) {
+	case T:
+		// tutaj v ma typ T
+	case S:
+		// tutaj v ma typ S
+	default:
+		// brak dopasowania; tutaj v ma ten sam typ co i
+	}
+
+Deklaracja w instrukcji switch typu ma taką samą składnię jak asercja typu `i.(T)`,
+ale konkretny typ `T` zastępuje się słowem kluczowym `type`.
+
+Ta instrukcja switch sprawdza, czy wartość interfejsu `i`
+przechowuje wartość typu `T` lub `S`.
+W przypadkach `T` i `S` zmienna `v` będzie mieć odpowiednio typ
+`T` lub `S` i zawierać wartość znajdującą się w `i`.
+W przypadku domyślnym (gdy nie ma dopasowania) zmienna `v` ma
+ten sam typ interfejsowy i tę samą wartość co `i`.
+
+.play methods/type-switches.go

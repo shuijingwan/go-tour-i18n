@@ -1,0 +1,11 @@
+* Kanały buforowane
+
+Kanały mogą być ⟪GTI18N_caef0893_000001⟫buforowane⟪GTI18N_caef0893_000002⟫. Aby zainicjować kanał buforowany, podaj długość bufora jako drugi argument funkcji ⟪GTI18N_caef0893_000003⟫make⟪GTI18N_caef0893_000004⟫:
+
+⟪GTI18N_caef0893_000005⟫
+
+Wysyłanie do kanału buforowanego jest blokowane tylko wtedy, gdy bufor jest pełny. Odbieranie jest blokowane, gdy bufor jest pusty.
+
+Zmodyfikuj przykład tak, aby przepełnić bufor, i zobacz, co się stanie.
+
+⟪GTI18N_caef0893_000006⟫

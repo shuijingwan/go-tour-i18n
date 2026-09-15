@@ -1,0 +1,16 @@
+* Exported names
+
+In ⟪GTI18N_38b9c70e_000001⟫, a name is exported if it begins with a capital letter.
+For example, ⟪GTI18N_38b9c70e_000002⟫Pizza⟪GTI18N_38b9c70e_000003⟫ is an exported name, as is ⟪GTI18N_38b9c70e_000004⟫Pi⟪GTI18N_38b9c70e_000005⟫, which is exported from
+the ⟪GTI18N_38b9c70e_000006⟫math⟪GTI18N_38b9c70e_000007⟫ package.
+
+⟪GTI18N_38b9c70e_000008⟫pizza⟪GTI18N_38b9c70e_000009⟫ and ⟪GTI18N_38b9c70e_000010⟫pi⟪GTI18N_38b9c70e_000011⟫ do not start with a capital letter, so they are not exported.
+
+When importing a package, you can refer only to its exported names.
+Any "unexported" names are not accessible from outside the package.
+
+Run the code. Notice the error message.
+
+To fix the error, rename ⟪GTI18N_38b9c70e_000012⟫math.pi⟪GTI18N_38b9c70e_000013⟫ to ⟪GTI18N_38b9c70e_000014⟫math.Pi⟪GTI18N_38b9c70e_000015⟫ and try it again.
+
+⟪GTI18N_38b9c70e_000016⟫

@@ -1,0 +1,15 @@
+* Goroutines
+
+_goroutine_ to lekki wątek zarządzany przez środowisko wykonawcze języka Go.
+
+	go f(x, y, z)
+
+uruchamia nową goroutine wykonującą
+
+	f(x, y, z)
+
+Obliczenie `f`, `x`, `y` i `z` odbywa się w bieżącej goroutine, a wykonanie `f` — w nowej goroutine.
+
+Goroutines działają w tej samej przestrzeni adresowej, dlatego dostęp do pamięci współdzielonej musi być synchronizowany. Pakiet [[/pkg/sync/][`sync`]] udostępnia przydatne mechanizmy, choć w języku Go nie będą często potrzebne, ponieważ istnieją inne mechanizmy. (Zobacz następną stronę.)
+
+.play concurrency/goroutines.go

@@ -1,0 +1,19 @@
+* Czytniki
+
+Pakiet ⟪GTI18N_120c3fc9_000001⟫io⟪GTI18N_120c3fc9_000002⟫ definiuje interfejs ⟪GTI18N_120c3fc9_000003⟫io.Reader⟪GTI18N_120c3fc9_000004⟫,
+który reprezentuje końcówkę odczytującą strumienia danych.
+
+Biblioteka standardowa języka ⟪GTI18N_120c3fc9_000005⟫ zawiera [[⟪GTI18N_120c3fc9_000006⟫][wiele implementacji]] tego interfejsu, między innymi pliki, połączenia sieciowe, kompresory i szyfry.
+
+Interfejs ⟪GTI18N_120c3fc9_000007⟫io.Reader⟪GTI18N_120c3fc9_000008⟫ ma metodę ⟪GTI18N_120c3fc9_000009⟫Read⟪GTI18N_120c3fc9_000010⟫:
+
+⟪GTI18N_120c3fc9_000011⟫
+
+⟪GTI18N_120c3fc9_000012⟫Read⟪GTI18N_120c3fc9_000013⟫ wypełnia dany wycinek bajtów danymi i zwraca liczbę zapisanych bajtów
+oraz wartość błędu. Gdy strumień się kończy, zwraca błąd ⟪GTI18N_120c3fc9_000014⟫io.EOF⟪GTI18N_120c3fc9_000015⟫.
+
+Przykładowy kod tworzy
+[[⟪GTI18N_120c3fc9_000016⟫][⟪GTI18N_120c3fc9_000017⟫strings.Reader⟪GTI18N_120c3fc9_000018⟫]]
+i odczytuje jego dane wyjściowe po 8 bajtów.
+
+⟪GTI18N_120c3fc9_000019⟫

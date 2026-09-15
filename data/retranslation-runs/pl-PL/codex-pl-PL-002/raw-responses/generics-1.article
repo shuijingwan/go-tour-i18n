@@ -1,0 +1,17 @@
+* Parametry typu
+
+Funkcje języka ⟪GTI18N_01a04510_000001⟫ można za pomocą parametrów typu zapisać tak, aby działały na wielu typach. Parametry
+typu funkcji znajdują się w nawiasach kwadratowych, przed jej
+argumentami.
+
+⟪GTI18N_01a04510_000002⟫
+
+Ta deklaracja oznacza, że ⟪GTI18N_01a04510_000003⟫s⟪GTI18N_01a04510_000004⟫ jest wycinkiem dowolnego typu ⟪GTI18N_01a04510_000005⟫T⟪GTI18N_01a04510_000006⟫ spełniającego
+wbudowane ograniczenie typu ⟪GTI18N_01a04510_000007⟫comparable⟪GTI18N_01a04510_000008⟫. ⟪GTI18N_01a04510_000009⟫x⟪GTI18N_01a04510_000010⟫ również jest wartością tego samego typu.
+
+⟪GTI18N_01a04510_000011⟫comparable⟪GTI18N_01a04510_000012⟫ jest użytecznym ograniczeniem typu, które pozwala stosować operatory ⟪GTI18N_01a04510_000013⟫==⟪GTI18N_01a04510_000014⟫ i
+⟪GTI18N_01a04510_000015⟫!=⟪GTI18N_01a04510_000016⟫ do wartości danego typu. W tym przykładzie używamy go do porównania
+wartości ze wszystkimi elementami wycinka aż do znalezienia dopasowania. Ta funkcja ⟪GTI18N_01a04510_000017⟫Index⟪GTI18N_01a04510_000018⟫ działa
+dla każdego typu obsługującego porównywanie.
+
+⟪GTI18N_01a04510_000019⟫

@@ -1,0 +1,10 @@
+* Ćwiczenie: robot indeksujący
+
+W tym ćwiczeniu wykorzystasz mechanizmy współbieżności języka ⟪GTI18N_bb686393_000001⟫ do zrównoleglenia robota indeksującego.
+
+Zmodyfikuj funkcję ⟪GTI18N_bb686393_000002⟫Crawl⟪GTI18N_bb686393_000003⟫ tak, aby pobierała adresy URL równolegle, bez dwukrotnego pobierania tego samego ⟪GTI18N_bb686393_000004⟫.
+
+⟪GTI18N_bb686393_000005⟫Wskazówka⟪GTI18N_bb686393_000006⟫: pamięć podręczną pobranych adresów URL można przechowywać w mapie, ale same mapy nie są
+bezpieczne do użytku współbieżnego!
+
+⟪GTI18N_bb686393_000007⟫

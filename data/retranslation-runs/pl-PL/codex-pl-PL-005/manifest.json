@@ -1,0 +1,50 @@
+{
+  "schema_version": 2,
+  "batch_id": "codex-pl-PL-005",
+  "locale": "pl-PL",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "example",
+  "unit_count": 3,
+  "units": [
+    {
+      "unit_id": "example:concurrency/exercise-web-crawler.go",
+      "unit_kind": "example",
+      "source_path": "_content/tour/concurrency/exercise-web-crawler.go",
+      "source_sha256": "bd6226dcae3b663a3aa1cbf502d840357ac0efb6de46e7a66612ca2834cf5e37",
+      "input_path": "inputs/concurrency-exercise-web-crawler.txt",
+      "input_sha256": "53554a1126b74da6e3bcb93c625eff1ec44f560e2817f1875202423a7d6009ab",
+      "protected_token_count": 12,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "注释中的「Fetch zwraca treść URL」在波兰语技术表达中把 URL 本身说成具有内容，不够准确自然，应表达为返回该 URL 所指页面/资源的内容；「fetcher jest wypełnioną danymi wartością fakeFetcher」也明显生硬，应改成自然的波兰语，同时保持 Fetcher/fakeFetcher/fetcher 等代码身份不变。"
+    },
+    {
+      "unit_id": "example:methods/interfaces.go",
+      "unit_kind": "example",
+      "source_path": "_content/tour/methods/interfaces.go",
+      "source_sha256": "2530ef039212284377a46fe1063db6206d8db3a42a8138c6eed44275bb7eb10b",
+      "input_path": "inputs/methods-interfaces.txt",
+      "input_sha256": "901cbe2c6b0f1a210b4b4fd856e5e9ecbacba07758f9160c20ff84b2450e96a9",
+      "protected_token_count": 5,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "注释「wartość MyFloat implementuje Abser」和「wartość *Vertex implementuje Abser」混淆了 Go 中类型实现接口与具体值的概念，且「wartość *Vertex」不自然。应准确表达 MyFloat 与 *Vertex 类型实现 Abser，例如「MyFloat implementuje Abser」和「*Vertex implementuje Abser」。"
+    },
+    {
+      "unit_id": "example:moretypes/pointers.go",
+      "unit_kind": "example",
+      "source_path": "_content/tour/moretypes/pointers.go",
+      "source_sha256": "bbc4a25d868979e959aa383f0de7894135e7f8ae4b2d766e653a033178a9a378",
+      "input_path": "inputs/moretypes-pointers.txt",
+      "input_sha256": "d907add850aff00fb35329d480aa49bc4aa20ef926226715ab790262ca734c90",
+      "protected_token_count": 8,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "注释「podziel j przez wskaźnik」在波兰语中会自然理解为“用指针作为除数来除 j”，没有准确表达原文 divide j through the pointer。应改为明确表示通过/借助指针修改 j，例如「podziel j, korzystając ze wskaźnika」，并保持代码身份不变。"
+    }
+  ]
+}

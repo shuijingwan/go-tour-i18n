@@ -1,0 +1,13 @@
+* Metody
+
+Język Go nie ma klas.
+Można jednak definiować metody dla typów.
+
+Metoda jest funkcją ze specjalnym argumentem nazywanym _odbiornikiem_.
+
+Odbiornik znajduje się na osobnej liście argumentów między słowem kluczowym `func`
+a nazwą metody.
+
+W tym przykładzie metoda `Abs` ma odbiornik typu `Vertex` o nazwie `v`.
+
+.play methods/methods.go

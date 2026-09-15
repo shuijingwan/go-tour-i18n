@@ -1,0 +1,37 @@
+* Witaj, 世界
+
+Witamy w przewodniku po [[/][języku programowania Go]].
+
+Przewodnik jest podzielony na listę modułów, do których można
+przejść, klikając
+[[javascript:highlight(".logo")][Przewodnik po Go]] w lewym górnym rogu strony.
+
+Spis treści można też w każdej chwili wyświetlić, klikając [[javascript:highlightAndClick(".nav")][menu]] w prawym górnym rogu strony.
+
+W całym przewodniku znajdziesz serię stron i ćwiczeń
+do wykonania.
+
+Możesz poruszać się między nimi za pomocą
+
+- [[javascript:highlight(".prev-page")]["Poprzednia"]] lub `PageUp`, aby przejść do poprzedniej strony,
+
+- [[javascript:highlight(".next-page")]["Następna"]] lub `PageDown`, aby przejść do następnej strony.
+
+Przewodnik jest interaktywny. Kliknij teraz przycisk
+[[javascript:highlightAndClick("#run")][Uruchom]]
+(lub naciśnij `Shift` + `Enter`), aby skompilować i uruchomić program na
+zdalnym serwerze.
+Wynik zostanie wyświetlony pod kodem.
+
+Te przykładowe programy pokazują różne aspekty języka Go. Programy w przewodniku mają być punktem wyjścia do własnych eksperymentów.
+
+Zmodyfikuj program i uruchom go ponownie.
+
+Po kliknięciu [[javascript:highlightAndClick("#format")][Formatuj]]
+(skrót: `Ctrl` + `Enter`) tekst w edytorze zostanie sformatowany za pomocą narzędzia
+[[/cmd/gofmt/][gofmt]]. Podświetlanie składni można włączać i wyłączać,
+klikając przycisk [[javascript:highlightAndClick(".syntax-checkbox")][składnia]].
+
+Gdy zechcesz przejść dalej, kliknij [[javascript:highlightAndClick(".next-page")][strzałkę w prawo]] poniżej lub naciśnij klawisz `PageDown`.
+
+.play welcome/hello.go

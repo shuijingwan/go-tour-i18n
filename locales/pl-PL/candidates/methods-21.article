@@ -1,0 +1,19 @@
+* Czytniki
+
+Pakiet `io` definiuje interfejs `io.Reader`,
+który reprezentuje końcówkę odczytującą strumienia danych.
+
+Biblioteka standardowa języka Go zawiera [[https://cs.opensource.google/search?q=Read%5C(%5Cw%2B%5Cs%5C%5B%5C%5Dbyte%5C)&ss=go%2Fgo][wiele implementacji]] tego interfejsu, między innymi pliki, połączenia sieciowe, kompresory i szyfry.
+
+Interfejs `io.Reader` ma metodę `Read`:
+
+	func (T) Read(b []byte) (n int, err error)
+
+`Read` wypełnia dany wycinek bajtów danymi i zwraca liczbę zapisanych bajtów
+oraz wartość błędu. Gdy strumień się kończy, zwraca błąd `io.EOF`.
+
+Przykładowy kod tworzy
+[[/pkg/strings/#Reader][`strings.Reader`]]
+i odczytuje jego dane wyjściowe po 8 bajtów.
+
+.play methods/reader.go

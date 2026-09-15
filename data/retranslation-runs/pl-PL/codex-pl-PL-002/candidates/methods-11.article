@@ -1,0 +1,13 @@
+* Wartości interfejsu
+
+Wewnętrznie wartość interfejsu można traktować jako parę złożoną z wartości i
+typu konkretnego:
+
+	(value, type)
+
+Wartość interfejsu przechowuje wartość określonego bazowego typu konkretnego.
+
+Wywołanie metody na wartości interfejsu powoduje wykonanie metody o tej samej nazwie
+dla jej typu bazowego.
+
+.play methods/interface-values.go

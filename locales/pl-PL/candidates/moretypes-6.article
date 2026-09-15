@@ -1,0 +1,15 @@
+* Tablice
+
+Typ `[n]T` jest tablicą złożoną z `n` wartości typu `T`.
+
+Wyrażenie
+
+	var a [10]int
+
+deklaruje zmienną `a` jako tablicę dziesięciu liczb całkowitych.
+
+Długość tablicy jest częścią jej typu, dlatego rozmiaru tablic nie można zmieniać.
+Może się to wydawać ograniczające, ale bez obaw —
+Go udostępnia wygodny sposób pracy z tablicami.
+
+.play moretypes/array.go

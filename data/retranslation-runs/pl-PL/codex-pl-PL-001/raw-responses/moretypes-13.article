@@ -1,0 +1,15 @@
+* Tworzenie wycinka za pomocą make
+
+Wycinki można tworzyć za pomocą wbudowanej funkcji ⟪GTI18N_d057e6bf_000001⟫make⟪GTI18N_d057e6bf_000002⟫;
+w ten sposób tworzy się tablice o dynamicznie określanym rozmiarze.
+
+Funkcja ⟪GTI18N_d057e6bf_000003⟫make⟪GTI18N_d057e6bf_000004⟫ przydziela tablicę wypełnioną wartościami zerowymi
+i zwraca wycinek odwołujący się do tej tablicy:
+
+⟪GTI18N_d057e6bf_000005⟫
+
+Aby określić pojemność, przekaż trzeci argument do ⟪GTI18N_d057e6bf_000006⟫make⟪GTI18N_d057e6bf_000007⟫:
+
+⟪GTI18N_d057e6bf_000008⟫
+
+⟪GTI18N_d057e6bf_000009⟫

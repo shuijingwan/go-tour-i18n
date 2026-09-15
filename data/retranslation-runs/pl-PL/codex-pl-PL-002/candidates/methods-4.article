@@ -1,0 +1,24 @@
+* Odbiorniki wskaźnikowe
+
+Można deklarować metody z odbiornikami wskaźnikowymi.
+
+Oznacza to, że typ odbiornika ma składnię literału `*T` dla pewnego typu `T`.
+(Ponadto sam `T` nie może być wskaźnikiem, takim jak `*int`.)
+
+Na przykład zdefiniowana tutaj metoda `Scale` ma odbiornik typu `*Vertex`.
+
+Metody z odbiornikami wskaźnikowymi mogą modyfikować wartość wskazywaną przez odbiornik
+(tak jak robi tutaj `Scale`).
+Ponieważ metody często muszą modyfikować swój odbiornik, odbiorniki wskaźnikowe występują
+częściej niż odbiorniki wartościowe.
+
+Spróbuj usunąć `*` z deklaracji funkcji `Scale` w wierszu 16
+i zaobserwuj, jak zmieni się działanie programu.
+
+W przypadku odbiornika wartościowego metoda `Scale` działa na kopii pierwotnej
+wartości `Vertex`.
+(Tak samo zachowuje się każdy inny argument funkcji.)
+Metoda `Scale` musi mieć odbiornik wskaźnikowy, aby zmienić wartość `Vertex`
+zadeklarowaną w funkcji `main`.
+
+.play methods/methods-pointers.go

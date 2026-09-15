@@ -1,0 +1,11 @@
+* Interfejsy
+
+_Typ_interfejsowy_ definiuje się jako zbiór sygnatur metod.
+
+Wartość typu interfejsowego może przechowywać dowolną wartość implementującą te metody.
+
+*Uwaga:* W przykładowym kodzie w wierszu 22 znajduje się błąd.
+`Vertex` (typ wartościowy) nie implementuje `Abser`, ponieważ
+metoda `Abs` jest zdefiniowana tylko dla `*Vertex` (typu wskaźnikowego).
+
+.play methods/interfaces.go

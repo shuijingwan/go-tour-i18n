@@ -1,0 +1,21 @@
+* Dołączanie elementów do wycinka
+
+Do wycinka często dołącza się nowe elementy, dlatego język Go udostępnia wbudowaną
+funkcję `append`. [[/pkg/builtin/#append][Dokumentacja]]
+wbudowanego pakietu opisuje `append`.
+
+	func append(s []T, vs ...T) []T
+
+Pierwszy parametr `s` funkcji `append` jest wycinkiem typu `T`, a pozostałe parametry to
+wartości typu `T`, które mają zostać dołączone do wycinka.
+
+Wartością wynikową `append` jest wycinek zawierający wszystkie elementy
+pierwotnego wycinka oraz podane wartości.
+
+Jeśli tablica bazowa wycinka `s` jest zbyt mała, aby pomieścić wszystkie podane wartości, zostanie przydzielona większa
+tablica. Zwrócony wycinek będzie wskazywał na nowo przydzieloną
+tablicę.
+
+(Więcej informacji o wycinkach znajdziesz w artykule [[/blog/go-slices-usage-and-internals][Wycinki: użycie i mechanizm działania]].)
+
+.play moretypes/append.go

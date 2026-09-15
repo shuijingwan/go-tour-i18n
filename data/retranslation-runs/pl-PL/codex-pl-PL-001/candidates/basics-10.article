@@ -1,0 +1,7 @@
+* Krótkie deklaracje zmiennych
+
+Wewnątrz funkcji krótkiej instrukcji przypisania `:=` można użyć zamiast deklaracji `var` z niejawnym typem.
+
+Poza funkcją każda instrukcja rozpoczyna się słowem kluczowym (`var`, `func` itd.), dlatego konstrukcja `:=` nie jest tam dostępna.
+
+.play basics/short-variable-declarations.go

@@ -1,0 +1,33 @@
+{
+  "schema_version": 2,
+  "batch_id": "codex-pl-PL-004",
+  "locale": "pl-PL",
+  "unit_count": 3,
+  "restore_passed": 3,
+  "restore_failed": 0,
+  "validation_passed": 3,
+  "validation_failed": 0,
+  "units": [
+    {
+      "unit_id": "welcome/2",
+      "unit_kind": "page",
+      "status": "passed",
+      "candidate_path": "candidates/welcome-2.article",
+      "validation_path": "validation/welcome-2.json"
+    },
+    {
+      "unit_id": "flowcontrol/3",
+      "unit_kind": "page",
+      "status": "passed",
+      "candidate_path": "candidates/flowcontrol-3.article",
+      "validation_path": "validation/flowcontrol-3.json"
+    },
+    {
+      "unit_id": "flowcontrol/10",
+      "unit_kind": "page",
+      "status": "passed",
+      "candidate_path": "candidates/flowcontrol-10.article",
+      "validation_path": "validation/flowcontrol-10.json"
+    }
+  ]
+}

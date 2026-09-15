@@ -1,0 +1,9 @@
+* Interfejsy są implementowane niejawnie
+
+Typ implementuje interfejs przez zaimplementowanie jego metod.
+Nie ma jawnej deklaracji zamiaru ani słowa kluczowego „implements”.
+
+Niejawne interfejsy oddzielają definicję interfejsu od jego
+implementacji, która może pojawić się w dowolnym pakiecie bez wcześniejszych uzgodnień.
+
+.play methods/interfaces-are-satisfied-implicitly.go

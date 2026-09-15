@@ -1,0 +1,16 @@
+* Kanały
+
+Kanały są typowanym mechanizmem komunikacji, za którego pośrednictwem można wysyłać i odbierać wartości za pomocą operatora kanału ⟪GTI18N_a35e3af2_000001⟫<-⟪GTI18N_a35e3af2_000002⟫.
+
+⟪GTI18N_a35e3af2_000003⟫Wyślij ⟪GTI18N_a35e3af2_000004⟫ do kanału ⟪GTI18N_a35e3af2_000005⟫.⟪GTI18N_a35e3af2_000006⟫Odbierz z ⟪GTI18N_a35e3af2_000007⟫ i⟪GTI18N_a35e3af2_000008⟫przypisz wartość do ⟪GTI18N_a35e3af2_000009⟫.⟪GTI18N_a35e3af2_000010⟫(Dane przepływają w kierunku wskazanym przez strzałkę.)
+
+Podobnie jak mapy i wycinki, kanały trzeba utworzyć przed użyciem:
+
+⟪GTI18N_a35e3af2_000011⟫
+
+Domyślnie operacje wysyłania i odbierania są blokowane, dopóki druga strona nie będzie gotowa. Pozwala to ⟪GTI18N_a35e3af2_000012⟫ synchronizować się bez jawnych blokad ani zmiennych warunkowych.
+
+Przykładowy kod sumuje liczby w wycinku, rozdzielając pracę między dwie ⟪GTI18N_a35e3af2_000013⟫.
+Po zakończeniu obliczeń przez obie ⟪GTI18N_a35e3af2_000014⟫ oblicza wynik końcowy.
+
+⟪GTI18N_a35e3af2_000015⟫

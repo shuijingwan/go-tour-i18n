@@ -1,0 +1,13 @@
+* Funkcje — ciąg dalszy
+
+Gdy co najmniej dwa kolejne nazwane parametry funkcji mają ten sam typ, można pominąć typ przy wszystkich oprócz ostatniego.
+
+W tym przykładzie skróciliśmy
+
+	x int, y int
+
+do
+
+	x, y int
+
+.play basics/functions-continued.go

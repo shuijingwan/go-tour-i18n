@@ -1,0 +1,15 @@
+* Kolejność obliczania przypadków switch
+
+Przypadki instrukcji switch są sprawdzane od góry do dołu aż do znalezienia pasującego przypadku.
+
+(Na przykład
+
+	switch i {
+	case 0:
+	case f():
+	}
+
+nie wywoła `f`, jeśli `i==0`.)
+
+
+.play flowcontrol/switch-evaluation-order.go

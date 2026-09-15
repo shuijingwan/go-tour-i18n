@@ -1,0 +1,11 @@
+* Pakiety
+
+Każdy program w języku Go składa się z pakietów.
+
+Wykonywanie programu rozpoczyna się w pakiecie `main`.
+
+Ten program korzysta z pakietów o ścieżkach importu `"fmt"` oraz `"math/rand"`.
+
+Zgodnie z konwencją nazwa pakietu jest taka sama jak ostatni element ścieżki importu. Na przykład pakiet `"math/rand"` zawiera pliki rozpoczynające się instrukcją `package`rand`.
+
+.play basics/packages.go

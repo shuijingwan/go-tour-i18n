@@ -1,0 +1,8 @@
+* Wartości interfejsu nil
+
+Wartość interfejsu nil nie przechowuje ani wartości, ani typu konkretnego.
+
+Wywołanie metody na interfejsie nil powoduje błąd w czasie wykonywania, ponieważ para
+interfejsu nie zawiera typu wskazującego, którą _konkretną_ metodę należy wywołać.
+
+.play methods/nil-interface-values.go

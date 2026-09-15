@@ -1,0 +1,9 @@
+* Literały struktur
+
+Literał struktury oznacza nowo przydzieloną wartość struktury i zawiera listę wartości jej pól.
+
+Za pomocą składni `Name:` można podać tylko wybrane pola. (Kolejność nazwanych pól nie ma znaczenia.)
+
+Specjalny prefiks `&` zwraca wskaźnik do wartości struktury.
+
+.play moretypes/struct-literals.go

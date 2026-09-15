@@ -32,6 +32,7 @@ var languageRegistry = []LanguageLink{
 	{Locale: "it-IT", EnglishName: "Italian", Autonym: "Italiano", URL: "https://it-go-dev.shuijingwanwq.com/"},
 	{Locale: "ja-JP", EnglishName: "Japanese", Autonym: "日本語", URL: "https://ja-go-dev.shuijingwanwq.com/"},
 	{Locale: "ko-KR", EnglishName: "Korean", Autonym: "한국어", URL: "https://ko-go-dev.shuijingwanwq.com/"},
+	{Locale: "pl-PL", EnglishName: "Polish", Autonym: "Polski", URL: "https://pl-go-dev.shuijingwanwq.com/"},
 	{Locale: "zh-CN", EnglishName: "Simplified Chinese", Autonym: "简体中文", URL: "https://go-dev.shuijingwanwq.com/"},
 	{Locale: "es-ES", EnglishName: "Spanish", Autonym: "Español", URL: "https://es-go-dev.shuijingwanwq.com/"},
 	{Locale: "sv-SE", EnglishName: "Swedish", Autonym: "Svenska", URL: "https://sv-go-dev.shuijingwanwq.com/"},
@@ -58,6 +59,7 @@ var (
 	berlinTime    = mustLoadLocation("Europe/Berlin")
 	madridTime    = mustLoadLocation("Europe/Madrid")
 	parisTime     = mustLoadLocation("Europe/Paris")
+	warsawTime    = mustLoadLocation("Europe/Warsaw")
 	romeTime      = mustLoadLocation("Europe/Rome")
 	saoPauloTime  = mustLoadLocation("America/Sao_Paulo")
 	stockholmTime = mustLoadLocation("Europe/Stockholm")
@@ -105,6 +107,12 @@ var localeProfiles = map[string]localeProfile{
 		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",
 		TimeZone:          madridTime,
 		TimeLabel:         "hora local",
+		TimeLabelFormat:   " (%s)",
+	},
+	"pl-PL": {
+		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",
+		TimeZone:          warsawTime,
+		TimeLabel:         "czas lokalny",
 		TimeLabelFormat:   " (%s)",
 	},
 	"sv-SE": {

@@ -1,0 +1,16 @@
+* Nazwy eksportowane
+
+W języku Go nazwa jest eksportowana, jeśli zaczyna się wielką literą.
+Na przykład `Pizza` jest nazwą eksportowaną, podobnie jak `Pi`, eksportowana z
+pakietu `math`.
+
+Nazwy `pizza` i `pi` nie zaczynają się wielką literą, więc nie są eksportowane.
+
+Po zaimportowaniu pakietu można odwoływać się tylko do jego nazw eksportowanych.
+Nazwy „nieeksportowane” nie są dostępne spoza pakietu.
+
+Uruchom kod. Zwróć uwagę na komunikat o błędzie.
+
+Aby naprawić błąd, zmień nazwę `math.pi` na `math.Pi` i spróbuj ponownie.
+
+.play basics/exported-names.go

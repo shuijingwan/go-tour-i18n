@@ -1,0 +1,21 @@
+* sync.Mutex
+
+Widzieliśmy już, że kanały doskonale nadają się do komunikacji między ⟪GTI18N_49f72779_000001⟫.
+
+Co jednak, jeśli nie potrzebujemy komunikacji? Co, jeśli chcemy jedynie zagwarantować, że
+tylko jedna ⟪GTI18N_49f72779_000002⟫ naraz uzyska dostęp do zmiennej, aby uniknąć konfliktów?
+
+Koncepcję tę nazywa się ⟪GTI18N_49f72779_000003⟫wzajemnym_wykluczaniem⟪GTI18N_49f72779_000004⟫, a konwencjonalna nazwa zapewniającej je struktury danych to ⟪GTI18N_49f72779_000005⟫muteks⟪GTI18N_49f72779_000006⟫.
+
+Biblioteka standardowa języka ⟪GTI18N_49f72779_000007⟫ zapewnia wzajemne wykluczanie za pomocą
+[[⟪GTI18N_49f72779_000008⟫][⟪GTI18N_49f72779_000009⟫sync.Mutex⟪GTI18N_49f72779_000010⟫]] i jego dwóch metod:
+
+- ⟪GTI18N_49f72779_000011⟫Lock⟪GTI18N_49f72779_000012⟫
+- ⟪GTI18N_49f72779_000013⟫Unlock⟪GTI18N_49f72779_000014⟫
+
+Blok kodu wykonywany ze wzajemnym wykluczaniem można zdefiniować, otaczając go
+wywołaniami ⟪GTI18N_49f72779_000015⟫Lock⟪GTI18N_49f72779_000016⟫ i ⟪GTI18N_49f72779_000017⟫Unlock⟪GTI18N_49f72779_000018⟫, jak pokazano w metodzie ⟪GTI18N_49f72779_000019⟫Inc⟪GTI18N_49f72779_000020⟫.
+
+Można też użyć ⟪GTI18N_49f72779_000021⟫defer⟪GTI18N_49f72779_000022⟫, aby zagwarantować odblokowanie muteksu, tak jak w metodzie ⟪GTI18N_49f72779_000023⟫Value⟪GTI18N_49f72779_000024⟫.
+
+⟪GTI18N_49f72779_000025⟫

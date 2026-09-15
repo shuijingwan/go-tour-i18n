@@ -1,0 +1,21 @@
+* sync.Mutex
+
+Widzieliśmy już, że kanały doskonale nadają się do komunikacji między goroutines.
+
+Co jednak, jeśli nie potrzebujemy komunikacji? Co, jeśli chcemy jedynie zagwarantować, że
+tylko jedna goroutine naraz uzyska dostęp do zmiennej, aby uniknąć konfliktów?
+
+Koncepcję tę nazywa się _wzajemnym_wykluczaniem_, a konwencjonalna nazwa zapewniającej je struktury danych to _muteks_.
+
+Biblioteka standardowa języka Go zapewnia wzajemne wykluczanie za pomocą
+[[/pkg/sync/#Mutex][`sync.Mutex`]] i jego dwóch metod:
+
+- `Lock`
+- `Unlock`
+
+Blok kodu wykonywany ze wzajemnym wykluczaniem można zdefiniować, otaczając go
+wywołaniami `Lock` i `Unlock`, jak pokazano w metodzie `Inc`.
+
+Można też użyć `defer`, aby zagwarantować odblokowanie muteksu, tak jak w metodzie `Value`.
+
+.play concurrency/mutex-counter.go

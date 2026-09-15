@@ -1,0 +1,18 @@
+* Długość i pojemność wycinka
+
+Wycinek ma zarówno _długość_, jak i _pojemność_.
+
+Długość wycinka to liczba zawartych w nim elementów.
+
+Pojemność wycinka to liczba elementów w tablicy bazowej,
+licząc od pierwszego elementu wycinka.
+
+Długość i pojemność wycinka `s` można uzyskać za pomocą wyrażeń
+`len(s)` oraz `cap(s)`.
+
+Długość wycinka można zwiększyć przez ponowne utworzenie z niego wycinka,
+o ile jego pojemność jest wystarczająca.
+Spróbuj zmienić jedną z operacji tworzenia wycinka w przykładowym programie tak, aby rozszerzyć go
+poza jego pojemność, i zobacz, co się stanie.
+
+.play moretypes/slice-len-cap.go

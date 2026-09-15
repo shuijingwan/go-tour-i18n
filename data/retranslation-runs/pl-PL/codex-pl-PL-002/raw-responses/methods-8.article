@@ -1,0 +1,17 @@
+* Wybór odbiornika wartościowego lub wskaźnikowego
+
+Istnieją dwa powody, dla których warto użyć odbiornika wskaźnikowego.
+
+Pierwszy: metoda może modyfikować wartość wskazywaną przez odbiornik.
+
+Drugi: pozwala uniknąć kopiowania wartości przy każdym wywołaniu metody.
+Może to być wydajniejsze, na przykład gdy odbiornikiem jest duża struktura.
+
+W tym przykładzie zarówno ⟪GTI18N_357424f2_000001⟫Scale⟪GTI18N_357424f2_000002⟫, jak i ⟪GTI18N_357424f2_000003⟫Abs⟪GTI18N_357424f2_000004⟫ są metodami z odbiornikiem typu ⟪GTI18N_357424f2_000005⟫*Vertex⟪GTI18N_357424f2_000006⟫,
+mimo że metoda ⟪GTI18N_357424f2_000007⟫Abs⟪GTI18N_357424f2_000008⟫ nie musi modyfikować odbiornika.
+
+Ogólnie wszystkie metody danego typu powinny mieć odbiorniki wartościowe albo wskaźnikowe,
+ale nie oba rodzaje jednocześnie.
+(Na kilku następnych stronach zobaczymy dlaczego.)
+
+⟪GTI18N_357424f2_000009⟫

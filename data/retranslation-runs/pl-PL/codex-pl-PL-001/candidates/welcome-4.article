@@ -1,0 +1,17 @@
+* Go bez dostępu do sieci (opcjonalnie)
+
+Ten przewodnik jest również dostępny jako samodzielny program, z którego można korzystać
+bez dostępu do internetu. Buduje on i uruchamia przykładowy kod
+na Twoim komputerze.
+
+Aby uruchomić przewodnik lokalnie, najpierw trzeba
+[[/doc/install][zainstalować Go]], a następnie wykonać:
+
+  go install golang.org/x/website/tour@latest
+
+Spowoduje to umieszczenie pliku wykonywalnego `tour` w należącym do
+[[/cmd/go/#hdr-GOPATH_and_Modules][GOPATH]] katalogu `bin`.
+Po uruchomieniu programu przewodnika otworzy się przeglądarka internetowa
+wyświetlająca jego lokalną wersję.
+
+Możesz oczywiście nadal korzystać z przewodnika w tej witrynie.

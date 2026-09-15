@@ -1,0 +1,19 @@
+* Instrukcje switch typu
+
+⟪GTI18N_26e4da09_000001⟫Instrukcja_switch_typu⟪GTI18N_26e4da09_000002⟫ jest konstrukcją umożliwiającą wykonanie szeregu asercji typu.
+
+Instrukcja switch typu przypomina zwykłą instrukcję switch, lecz jej przypadki
+określają typy (a nie wartości), które są porównywane z typem wartości
+przechowywanej przez daną wartość interfejsu.
+
+⟪GTI18N_26e4da09_000003⟫tutaj ⟪GTI18N_26e4da09_000004⟫ ma typ ⟪GTI18N_26e4da09_000005⟫⟪GTI18N_26e4da09_000006⟫tutaj ⟪GTI18N_26e4da09_000007⟫ ma typ ⟪GTI18N_26e4da09_000008⟫⟪GTI18N_26e4da09_000009⟫brak dopasowania; tutaj ⟪GTI18N_26e4da09_000010⟫ ma ten sam typ co ⟪GTI18N_26e4da09_000011⟫⟪GTI18N_26e4da09_000012⟫Deklaracja w instrukcji switch typu ma taką samą składnię jak asercja typu ⟪GTI18N_26e4da09_000013⟫i.(T)⟪GTI18N_26e4da09_000014⟫,
+ale konkretny typ ⟪GTI18N_26e4da09_000015⟫T⟪GTI18N_26e4da09_000016⟫ zastępuje się słowem kluczowym ⟪GTI18N_26e4da09_000017⟫type⟪GTI18N_26e4da09_000018⟫.
+
+Ta instrukcja switch sprawdza, czy wartość interfejsu ⟪GTI18N_26e4da09_000019⟫i⟪GTI18N_26e4da09_000020⟫
+przechowuje wartość typu ⟪GTI18N_26e4da09_000021⟫T⟪GTI18N_26e4da09_000022⟫ lub ⟪GTI18N_26e4da09_000023⟫S⟪GTI18N_26e4da09_000024⟫.
+W przypadkach ⟪GTI18N_26e4da09_000025⟫T⟪GTI18N_26e4da09_000026⟫ i ⟪GTI18N_26e4da09_000027⟫S⟪GTI18N_26e4da09_000028⟫ zmienna ⟪GTI18N_26e4da09_000029⟫v⟪GTI18N_26e4da09_000030⟫ będzie mieć odpowiednio typ
+⟪GTI18N_26e4da09_000031⟫T⟪GTI18N_26e4da09_000032⟫ lub ⟪GTI18N_26e4da09_000033⟫S⟪GTI18N_26e4da09_000034⟫ i zawierać wartość znajdującą się w ⟪GTI18N_26e4da09_000035⟫i⟪GTI18N_26e4da09_000036⟫.
+W przypadku domyślnym (gdy nie ma dopasowania) zmienna ⟪GTI18N_26e4da09_000037⟫v⟪GTI18N_26e4da09_000038⟫ ma
+ten sam typ interfejsowy i tę samą wartość co ⟪GTI18N_26e4da09_000039⟫i⟪GTI18N_26e4da09_000040⟫.
+
+⟪GTI18N_26e4da09_000041⟫

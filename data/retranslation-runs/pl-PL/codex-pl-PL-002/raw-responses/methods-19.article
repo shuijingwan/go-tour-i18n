@@ -1,0 +1,19 @@
+* Błędy
+
+Programy w języku ⟪GTI18N_9eaab1fd_000001⟫ wyrażają stan błędu za pomocą wartości ⟪GTI18N_9eaab1fd_000002⟫error⟪GTI18N_9eaab1fd_000003⟫.
+
+Typ ⟪GTI18N_9eaab1fd_000004⟫error⟪GTI18N_9eaab1fd_000005⟫ jest wbudowanym interfejsem podobnym do ⟪GTI18N_9eaab1fd_000006⟫fmt.Stringer⟪GTI18N_9eaab1fd_000007⟫:
+
+⟪GTI18N_9eaab1fd_000008⟫
+
+(Podobnie jak w przypadku ⟪GTI18N_9eaab1fd_000009⟫fmt.Stringer⟪GTI18N_9eaab1fd_000010⟫, pakiet ⟪GTI18N_9eaab1fd_000011⟫fmt⟪GTI18N_9eaab1fd_000012⟫ wyszukuje interfejs ⟪GTI18N_9eaab1fd_000013⟫error⟪GTI18N_9eaab1fd_000014⟫ podczas
+wyświetlania wartości.)
+
+Funkcje często zwracają wartość ⟪GTI18N_9eaab1fd_000015⟫error⟪GTI18N_9eaab1fd_000016⟫, a kod wywołujący powinien obsługiwać błędy,
+sprawdzając, czy błąd jest równy ⟪GTI18N_9eaab1fd_000017⟫nil⟪GTI18N_9eaab1fd_000018⟫.
+
+⟪GTI18N_9eaab1fd_000019⟫
+
+Wartość nil typu ⟪GTI18N_9eaab1fd_000020⟫error⟪GTI18N_9eaab1fd_000021⟫ oznacza powodzenie, a wartość inna niż nil typu ⟪GTI18N_9eaab1fd_000022⟫error⟪GTI18N_9eaab1fd_000023⟫ — niepowodzenie.
+
+⟪GTI18N_9eaab1fd_000024⟫

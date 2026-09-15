@@ -1,0 +1,13 @@
+* Instrukcja switch
+
+Instrukcja `switch` pozwala krócej zapisać ciąg instrukcji `if`-`else`.
+Wykonuje pierwszy przypadek, którego wartość jest równa wartości wyrażenia warunkowego.
+
+Instrukcja switch w języku Go przypomina tę z C, C++, Javy, JavaScriptu i PHP,
+ale Go wykonuje tylko wybrany przypadek, a nie wszystkie następne.
+W praktyce instrukcja `break`, wymagana na końcu każdego przypadku w tamtych
+językach, jest w Go dodawana automatycznie.
+Kolejna istotna różnica polega na tym, że przypadki switch w języku Go nie muszą
+być stałymi, a używane wartości nie muszą być liczbami całkowitymi.
+
+.play flowcontrol/switch.go

@@ -1,0 +1,25 @@
+* Asercje typu
+
+_Asercja_typu_ zapewnia dostęp do bazowej wartości konkretnej przechowywanej przez wartość interfejsu.
+
+	t := i.(T)
+
+Ta instrukcja stwierdza, że wartość interfejsu `i` przechowuje typ konkretny `T`,
+i przypisuje bazową wartość typu `T` do zmiennej `t`.
+
+Jeśli `i` nie przechowuje wartości typu `T`, instrukcja wywoła panikę.
+
+Aby _sprawdzić_, czy wartość interfejsu przechowuje określony typ,
+asercja typu może zwrócić dwie wartości: wartość bazową
+oraz wartość logiczną informującą, czy asercja się powiodła.
+
+	t, ok := i.(T)
+
+Jeśli `i` przechowuje wartość typu `T`, wówczas `t` będzie wartością bazową, a `ok` będzie mieć wartość true.
+
+W przeciwnym razie `ok` będzie mieć wartość false, a `t` — wartość zerową typu `T`,
+bez wywoływania paniki.
+
+Zwróć uwagę na podobieństwo tej składni do odczytu z mapy.
+
+.play methods/type-assertions.go

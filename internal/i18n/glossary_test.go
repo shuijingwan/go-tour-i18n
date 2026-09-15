@@ -610,6 +610,40 @@ func TestSvSEGlossary(t *testing.T) {
 	}
 }
 
+func TestPlPLGlossary(t *testing.T) {
+	glossary, err := LoadGlossary(repoRoot(t), "pl-PL")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if glossary.Locale != "pl-PL" {
+		t.Fatalf("glossary locale = %q, want pl-PL", glossary.Locale)
+	}
+	for key, want := range map[string]string{
+		"A Tour of Go": "Przewodnik po Go", "Go Playground": "Go Playground", "Run": "Uruchom", "Format": "Formatuj", "Reset": "Resetuj", "slide": "strona", "constraint": "ograniczenie typu", "type switch": "instrukcja switch typu", "type assertion": "asercja typu", "interface value": "wartość interfejsu", "type parameter": "parametr typu",
+	} {
+		if got := glossary.Mandatory[key]; got != want {
+			t.Errorf("mandatory[%q] = %q, want %q", key, got, want)
+		}
+	}
+	for key, want := range map[string]string{
+		"Go programming language": "język programowania Go", "channel": "kanał", "interface": "interfejs", "struct": "struktura", "array": "tablica", "concurrency": "współbieżność", "generics": "typy generyczne", "generic": "generyczny", "generic programming": "programowanie generyczne", "package": "pakiet", "standard library": "biblioteka standardowa", "map": "mapa", "slice": "wycinek", "pointer": "wskaźnik", "method": "metoda",
+	} {
+		if got := glossary.Preferred[key]; got != want {
+			t.Errorf("preferred[%q] = %q, want %q", key, got, want)
+		}
+	}
+	for _, want := range []string{"Golang", "Plac zabaw Go", "gorutyna", "korutyna", "slajd"} {
+		if !containsString(glossary.Forbidden, want) {
+			t.Errorf("forbidden missing %q: %v", want, glossary.Forbidden)
+		}
+	}
+	for _, want := range []string{"Go", "Go Playground", "Go vet", "gofmt", "GOPATH", "URL", "API", "ASCII", "CPU", "UTC", "goroutine", "TranslationUnit", "present.Section"} {
+		if !containsString(glossary.Keep, want) {
+			t.Errorf("keep missing %q: %v", want, glossary.Keep)
+		}
+	}
+}
+
 func TestGlossaryKeepValidationAndLegacyTerms(t *testing.T) {
 	tests := []struct {
 		name, body, want string

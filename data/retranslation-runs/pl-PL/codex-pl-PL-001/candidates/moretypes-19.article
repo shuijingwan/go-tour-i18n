@@ -1,0 +1,11 @@
+* Mapy
+
+Mapa odwzorowuje klucze na wartości.
+
+Wartością zerową mapy jest `nil`.
+Mapa o wartości `nil` nie zawiera żadnych kluczy i nie można do niej dodawać kluczy.
+
+Funkcja `make` zwraca zainicjowaną i gotową do użycia mapę
+podanego typu.
+
+.play moretypes/maps.go

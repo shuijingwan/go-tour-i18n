@@ -1,0 +1,21 @@
+* Metody i adresowanie pośrednie wskaźników (2)
+
+W przeciwnym kierunku zachodzi analogiczne zjawisko.
+
+Funkcje przyjmujące argument wartościowy muszą otrzymać wartość tego konkretnego typu:
+
+	var v Vertex
+	fmt.Println(AbsFunc(v))  // OK
+	fmt.Println(AbsFunc(&v)) // Błąd kompilacji!
+
+natomiast podczas wywołania metody z odbiornikiem wartościowym mogą otrzymać jako
+odbiornik zarówno wartość, jak i wskaźnik:
+
+	var v Vertex
+	fmt.Println(v.Abs()) // OK
+	p := &v
+	fmt.Println(p.Abs()) // OK
+
+W tym przypadku wywołanie metody `p.Abs()` jest interpretowane jako `(*p).Abs()`.
+
+.play methods/indirection-values.go

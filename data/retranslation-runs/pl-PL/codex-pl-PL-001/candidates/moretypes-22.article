@@ -1,0 +1,27 @@
+* Modyfikowanie map
+
+Aby wstawić lub zaktualizować element w mapie `m`:
+
+	m[key] = elem
+
+Aby pobrać element:
+
+	elem = m[key]
+
+Aby usunąć element:
+
+	delete(m, key)
+
+Obecność klucza można sprawdzić za pomocą przypisania dwóch wartości:
+
+	elem, ok = m[key]
+
+Jeśli `key` znajduje się w `m`, `ok` ma wartość `true`. W przeciwnym razie `ok` ma wartość `false`.
+
+Jeśli `key` nie znajduje się w mapie, `elem` otrzymuje wartość zerową typu elementu mapy.
+
+*Uwaga:* Jeśli `elem` lub `ok` nie zostały jeszcze zadeklarowane, można użyć krótkiej formy deklaracji:
+
+	elem, ok := m[key]
+
+.play moretypes/mutating-maps.go

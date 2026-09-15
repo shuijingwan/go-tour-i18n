@@ -1,0 +1,25 @@
+* Asercje typu
+
+⟪GTI18N_c205b4eb_000001⟫Asercja_typu⟪GTI18N_c205b4eb_000002⟫ zapewnia dostęp do bazowej wartości konkretnej przechowywanej przez wartość interfejsu.
+
+⟪GTI18N_c205b4eb_000003⟫
+
+Ta instrukcja stwierdza, że wartość interfejsu ⟪GTI18N_c205b4eb_000004⟫i⟪GTI18N_c205b4eb_000005⟫ przechowuje typ konkretny ⟪GTI18N_c205b4eb_000006⟫T⟪GTI18N_c205b4eb_000007⟫,
+i przypisuje bazową wartość typu ⟪GTI18N_c205b4eb_000008⟫T⟪GTI18N_c205b4eb_000009⟫ do zmiennej ⟪GTI18N_c205b4eb_000010⟫t⟪GTI18N_c205b4eb_000011⟫.
+
+Jeśli ⟪GTI18N_c205b4eb_000012⟫i⟪GTI18N_c205b4eb_000013⟫ nie przechowuje wartości typu ⟪GTI18N_c205b4eb_000014⟫T⟪GTI18N_c205b4eb_000015⟫, instrukcja wywoła panikę.
+
+Aby ⟪GTI18N_c205b4eb_000016⟫sprawdzić⟪GTI18N_c205b4eb_000017⟫, czy wartość interfejsu przechowuje określony typ,
+asercja typu może zwrócić dwie wartości: wartość bazową
+oraz wartość logiczną informującą, czy asercja się powiodła.
+
+⟪GTI18N_c205b4eb_000018⟫
+
+Jeśli ⟪GTI18N_c205b4eb_000019⟫i⟪GTI18N_c205b4eb_000020⟫ przechowuje wartość typu ⟪GTI18N_c205b4eb_000021⟫T⟪GTI18N_c205b4eb_000022⟫, wówczas ⟪GTI18N_c205b4eb_000023⟫t⟪GTI18N_c205b4eb_000024⟫ będzie wartością bazową, a ⟪GTI18N_c205b4eb_000025⟫ok⟪GTI18N_c205b4eb_000026⟫ będzie mieć wartość true.
+
+W przeciwnym razie ⟪GTI18N_c205b4eb_000027⟫ok⟪GTI18N_c205b4eb_000028⟫ będzie mieć wartość false, a ⟪GTI18N_c205b4eb_000029⟫t⟪GTI18N_c205b4eb_000030⟫ — wartość zerową typu ⟪GTI18N_c205b4eb_000031⟫T⟪GTI18N_c205b4eb_000032⟫,
+bez wywoływania paniki.
+
+Zwróć uwagę na podobieństwo tej składni do odczytu z mapy.
+
+⟪GTI18N_c205b4eb_000033⟫

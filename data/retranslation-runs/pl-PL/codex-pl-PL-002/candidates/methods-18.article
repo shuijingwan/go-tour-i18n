@@ -1,0 +1,8 @@
+* Ćwiczenie: interfejs Stringer
+
+Spraw, aby typ `IPAddr` implementował `fmt.Stringer` i wyświetlał adres jako
+cztery liczby oddzielone kropkami.
+
+Na przykład `IPAddr{1,`2,`3,`4}` powinien zostać wyświetlony jako `"1.2.3.4"`.
+
+.play methods/exercise-stringer.go

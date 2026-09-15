@@ -1,0 +1,12 @@
+* Kolejność obliczania przypadków switch
+
+Przypadki instrukcji switch są sprawdzane od góry do dołu aż do znalezienia pasującego przypadku.
+
+(Na przykład
+
+⟪GTI18N_e1479cae_000001⟫
+
+nie wywoła ⟪GTI18N_e1479cae_000002⟫f⟪GTI18N_e1479cae_000003⟫, jeśli ⟪GTI18N_e1479cae_000004⟫i==0⟪GTI18N_e1479cae_000005⟫.)
+
+
+⟪GTI18N_e1479cae_000006⟫

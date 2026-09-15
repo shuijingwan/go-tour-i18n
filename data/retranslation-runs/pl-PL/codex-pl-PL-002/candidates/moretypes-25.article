@@ -1,0 +1,7 @@
+* Domknięcia funkcji
+
+Funkcje języka Go mogą być domknięciami. Domknięcie to wartość funkcyjna odwołująca się do zmiennych spoza swojego ciała. Funkcja może odczytywać i przypisywać wartości tym zmiennym; w tym sensie jest z nimi „związana”.
+
+Na przykład funkcja `adder` zwraca domknięcie. Każde domknięcie jest związane z własną zmienną `sum`.
+
+.play moretypes/function-closures.go

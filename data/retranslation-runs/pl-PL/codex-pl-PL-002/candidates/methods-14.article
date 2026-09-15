@@ -1,0 +1,16 @@
+* Pusty interfejs
+
+Typ interfejsowy, który nie określa żadnych metod, nazywa się _pustym_interfejsem_:
+
+	interface{}
+
+Pusty interfejs może przechowywać wartości dowolnego typu.
+(Każdy typ implementuje co najmniej zero metod.)
+
+`any` jest aliasem `interface{}` i oba zapisy są całkowicie
+równoważne.
+
+Puste interfejsy są używane przez kod obsługujący wartości nieznanego typu.
+Na przykład `fmt.Print` przyjmuje dowolną liczbę argumentów typu `any`.
+
+.play methods/empty-interface.go

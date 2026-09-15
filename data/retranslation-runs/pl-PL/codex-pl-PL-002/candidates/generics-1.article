@@ -1,0 +1,17 @@
+* Parametry typu
+
+Funkcje języka Go można za pomocą parametrów typu zapisać tak, aby działały na wielu typach. Parametry
+typu funkcji znajdują się w nawiasach kwadratowych, przed jej
+argumentami.
+
+  func Index[T comparable](s []T, x T) int
+
+Ta deklaracja oznacza, że `s` jest wycinkiem dowolnego typu `T` spełniającego
+wbudowane ograniczenie typu `comparable`. `x` również jest wartością tego samego typu.
+
+`comparable` jest użytecznym ograniczeniem typu, które pozwala stosować operatory `==` i
+`!=` do wartości danego typu. W tym przykładzie używamy go do porównania
+wartości ze wszystkimi elementami wycinka aż do znalezienia dopasowania. Ta funkcja `Index` działa
+dla każdego typu obsługującego porównywanie.
+
+.play generics/index.go

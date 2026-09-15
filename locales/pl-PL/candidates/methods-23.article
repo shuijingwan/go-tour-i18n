@@ -1,0 +1,12 @@
+* Ćwiczenie: rot13Reader
+
+Często stosowanym wzorcem jest [[/pkg/io/#Reader][io.Reader]], który opakowuje inny `io.Reader`, modyfikując w pewien sposób strumień.
+
+Na przykład funkcja [[/pkg/compress/gzip/#NewReader][gzip.NewReader]] przyjmuje `io.Reader` (strumień skompresowanych danych) i zwraca `*gzip.Reader`, który również implementuje `io.Reader` (strumień zdekompresowanych danych).
+
+Zaimplementuj `rot13Reader`, który implementuje `io.Reader` i odczytuje dane z `io.Reader`, modyfikując strumień przez zastosowanie [[https://en.wikipedia.org/wiki/ROT13][szyfru podstawieniowego rot13]] do wszystkich znaków alfabetycznych.
+
+Typ `rot13Reader` został już przygotowany.
+Spraw, aby implementował `io.Reader`, definiując jego metodę `Read`.
+
+.play methods/exercise-rot-reader.go

@@ -1,0 +1,13 @@
+* Ćwiczenie: obrazy
+
+Pamiętasz [[⟪GTI18N_a196bc59_000001⟫][generator obrazów]] napisany we wcześniejszym ćwiczeniu? Napiszmy kolejny, ale tym razem zamiast wycinka danych będzie zwracać implementację ⟪GTI18N_a196bc59_000002⟫image.Image⟪GTI18N_a196bc59_000003⟫.
+
+Zdefiniuj własny typ ⟪GTI18N_a196bc59_000004⟫Image⟪GTI18N_a196bc59_000005⟫, zaimplementuj [[⟪GTI18N_a196bc59_000006⟫][wymagane metody]] i wywołaj ⟪GTI18N_a196bc59_000007⟫pic.ShowImage⟪GTI18N_a196bc59_000008⟫.
+
+⟪GTI18N_a196bc59_000009⟫Bounds⟪GTI18N_a196bc59_000010⟫ powinien zwracać ⟪GTI18N_a196bc59_000011⟫image.Rectangle⟪GTI18N_a196bc59_000012⟫, na przykład ⟪GTI18N_a196bc59_000013⟫image.Rect(0,`0,`w,`h)⟪GTI18N_a196bc59_000014⟫.
+
+⟪GTI18N_a196bc59_000015⟫ColorModel⟪GTI18N_a196bc59_000016⟫ powinien zwracać ⟪GTI18N_a196bc59_000017⟫color.RGBAModel⟪GTI18N_a196bc59_000018⟫.
+
+⟪GTI18N_a196bc59_000019⟫At⟪GTI18N_a196bc59_000020⟫ powinien zwracać kolor; wartość ⟪GTI18N_a196bc59_000021⟫v⟪GTI18N_a196bc59_000022⟫ w poprzednim generatorze obrazów odpowiada w tym generatorze wartości ⟪GTI18N_a196bc59_000023⟫color.RGBA{v,`v,`255,`255}⟪GTI18N_a196bc59_000024⟫.
+
+⟪GTI18N_a196bc59_000025⟫

@@ -309,7 +309,7 @@ func TestRenderHomeDistinguishesDevelopmentAndProductionMetadata(t *testing.T) {
 }
 
 func TestHomepageLanguageRegistryAndLocaleProfiles(t *testing.T) {
-	if got, want := len(languageRegistry), 12; got != want {
+	if got, want := len(languageRegistry), 13; got != want {
 		t.Fatalf("language registry length = %d, want %d", got, want)
 	}
 	for i, want := range []LanguageLink{
@@ -321,6 +321,7 @@ func TestHomepageLanguageRegistryAndLocaleProfiles(t *testing.T) {
 		{Locale: "it-IT", EnglishName: "Italian", Autonym: "Italiano", URL: "https://it-go-dev.shuijingwanwq.com/"},
 		{Locale: "ja-JP", EnglishName: "Japanese", Autonym: "日本語", URL: "https://ja-go-dev.shuijingwanwq.com/"},
 		{Locale: "ko-KR", EnglishName: "Korean", Autonym: "한국어", URL: "https://ko-go-dev.shuijingwanwq.com/"},
+		{Locale: "pl-PL", EnglishName: "Polish", Autonym: "Polski", URL: "https://pl-go-dev.shuijingwanwq.com/"},
 		{Locale: "zh-CN", EnglishName: "Simplified Chinese", Autonym: "简体中文", URL: "https://go-dev.shuijingwanwq.com/"},
 		{Locale: "es-ES", EnglishName: "Spanish", Autonym: "Español", URL: "https://es-go-dev.shuijingwanwq.com/"},
 		{Locale: "sv-SE", EnglishName: "Swedish", Autonym: "Svenska", URL: "https://sv-go-dev.shuijingwanwq.com/"},
@@ -475,6 +476,20 @@ func TestHomepageLanguageRegistryAndLocaleProfiles(t *testing.T) {
 	if got, want := localeProfiles["tr-TR"].TimeZone.String(), "Europe/Istanbul"; got != want {
 		t.Fatalf("tr-TR time zone = %q, want %q", got, want)
 	}
+	plLanguages, err := languagesFor("pl-PL")
+	if err != nil {
+		t.Fatal(err)
+	}
+	plCurrent, err := currentLanguage(plLanguages)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if plCurrent != (LanguageLink{Locale: "pl-PL", EnglishName: "Polish", Autonym: "Polski", Label: "Polish — Polski", URL: "https://pl-go-dev.shuijingwanwq.com/", Current: true}) {
+		t.Fatalf("pl-PL current language = %+v", plCurrent)
+	}
+	if got, want := localeProfiles["pl-PL"].TimeZone.String(), "Europe/Warsaw"; got != want {
+		t.Fatalf("pl-PL time zone = %q, want %q", got, want)
+	}
 
 	metadata := SiteMetadata{Locale: "zh-CN", PublishedAt: "2026-08-20T05:56:11Z", UpstreamCommit: FrozenUpstreamCommit, UpstreamCommitTime: FrozenUpstreamCommitTime, Pages: 122, Articles: 122}
 	tests := []struct {
@@ -482,15 +497,16 @@ func TestHomepageLanguageRegistryAndLocaleProfiles(t *testing.T) {
 	}{
 		{"pt-BR", "Português (Brasil)", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 02:56:11 (horário local)", languageRegistry[0].URL},
 		{"nl-NL", "Nederlands", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 07:56:11 (lokale tijd)", languageRegistry[1].URL},
-		{"zh-CN", "简体中文", "https://www.shuijingwanwq.com/series/go-tour-chinese-edition-development-series/", "2026-08-20 13:56:11（北京时间）", languageRegistry[8].URL},
+		{"zh-CN", "简体中文", "https://www.shuijingwanwq.com/series/go-tour-chinese-edition-development-series/", "2026-08-20 13:56:11（北京时间）", languageRegistry[9].URL},
 		{"fr-FR", "Français", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 07:56:11 (heure locale)", languageRegistry[3].URL},
 		{"de-DE", "Deutsch", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 07:56:11 (Ortszeit)", languageRegistry[4].URL},
-		{"es-ES", "Español", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 07:56:11 (hora local)", languageRegistry[9].URL},
+		{"es-ES", "Español", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 07:56:11 (hora local)", languageRegistry[10].URL},
 		{"it-IT", "Italiano", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 07:56:11 (ora locale)", languageRegistry[5].URL},
 		{"ja-JP", "日本語", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 14:56:11（日本時間）", languageRegistry[6].URL},
 		{"ko-KR", "한국어", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 14:56:11 (한국 표준시)", languageRegistry[7].URL},
-		{"sv-SE", "Svenska", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 07:56:11 (lokal tid)", languageRegistry[10].URL},
-		{"tr-TR", "Türkçe", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 08:56:11 (yerel saat)", languageRegistry[11].URL},
+		{"pl-PL", "Polski", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 07:56:11 (czas lokalny)", languageRegistry[8].URL},
+		{"sv-SE", "Svenska", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 07:56:11 (lokal tid)", languageRegistry[11].URL},
+		{"tr-TR", "Türkçe", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 08:56:11 (yerel saat)", languageRegistry[12].URL},
 	}
 	for _, test := range tests {
 		t.Run(test.locale, func(t *testing.T) {
@@ -516,7 +532,7 @@ func TestHomepageLanguageRegistryAndLocaleProfiles(t *testing.T) {
 				t.Fatal(err)
 			}
 			home := string(homeBytes)
-			labels := []string{"Brazilian Portuguese — Português (Brasil)", "Dutch — Nederlands", "English", "French — Français", "German — Deutsch", "Italian — Italiano", "Japanese — 日本語", "Korean — 한국어", "Simplified Chinese — 简体中文", "Spanish — Español", "Swedish — Svenska", "Turkish — Türkçe"}
+			labels := []string{"Brazilian Portuguese — Português (Brasil)", "Dutch — Nederlands", "English", "French — Français", "German — Deutsch", "Italian — Italiano", "Japanese — 日本語", "Korean — 한국어", "Polish — Polski", "Simplified Chinese — 简体中文", "Spanish — Español", "Swedish — Svenska", "Turkish — Türkçe"}
 			for _, want := range append(labels, test.logURL, test.published, wantUpstreamTime, "© 2026 永夜", "蜀ICP备13001590号-1", `href="https://beian.miit.gov.cn/"`) {
 				if !strings.Contains(home, want) {
 					t.Errorf("homepage does not contain %q", want)

@@ -1,0 +1,15 @@
+* range i close
+
+Nadawca może zamknąć kanał za pomocą ⟪GTI18N_3e925c67_000001⟫close⟪GTI18N_3e925c67_000002⟫, aby wskazać, że nie zostaną wysłane żadne kolejne wartości. Odbiorcy mogą sprawdzić, czy kanał został zamknięty, przypisując drugi parametr w wyrażeniu odbierającym: po
+
+⟪GTI18N_3e925c67_000003⟫
+
+⟪GTI18N_3e925c67_000004⟫ok⟪GTI18N_3e925c67_000005⟫ ma wartość ⟪GTI18N_3e925c67_000006⟫false⟪GTI18N_3e925c67_000007⟫, jeśli nie ma już żadnych wartości do odebrania, a kanał jest zamknięty.
+
+Pętla ⟪GTI18N_3e925c67_000008⟫for`i`:=`range`c⟪GTI18N_3e925c67_000009⟫ wielokrotnie odbiera wartości z kanału, dopóki nie zostanie on zamknięty.
+
+⟪GTI18N_3e925c67_000010⟫Uwaga:⟪GTI18N_3e925c67_000011⟫ Kanał powinien zamykać wyłącznie nadawca, nigdy odbiorca. Wysłanie wartości do zamkniętego kanału spowoduje panikę.
+
+⟪GTI18N_3e925c67_000012⟫Kolejna*uwaga:⟪GTI18N_3e925c67_000013⟫ Kanały nie przypominają plików; zwykle nie trzeba ich zamykać. Zamknięcie jest konieczne tylko wtedy, gdy odbiorca musi otrzymać informację, że nie nadejdą już żadne wartości, na przykład w celu zakończenia pętli ⟪GTI18N_3e925c67_000014⟫range⟪GTI18N_3e925c67_000015⟫.
+
+⟪GTI18N_3e925c67_000016⟫

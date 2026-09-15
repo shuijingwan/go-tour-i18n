@@ -1,0 +1,12 @@
+* Wartości zerowe
+
+Zmienne zadeklarowane bez jawnej wartości początkowej otrzymują swoją
+_wartość_zerową_.
+
+Wartością zerową jest:
+
+- `0` dla typów liczbowych,
+- `false` dla typu logicznego oraz
+- `""` (pusty ciąg znaków) dla ciągów znaków.
+
+.play basics/zero.go
