@@ -1,0 +1,28 @@
+* Typväxlar
+
+En _typväxel_ är en konstruktion som möjliggör flera typassertioner i följd.
+
+En typväxel liknar en vanlig switch-sats, men case-grenarna i en
+typväxel anger typer (inte värden), och dessa typer jämförs med
+typen för värdet som det angivna gränssnittsvärdet innehåller.
+
+	switch v := i.(type) {
+	case T:
+		// här har v typen T
+	case S:
+		// här har v typen S
+	default:
+		// ingen matchning; här har v samma typ som i
+	}
+
+Deklarationen i en typväxel har samma syntax som en typassertion `i.(T)`,
+men den specifika typen `T` ersätts med nyckelordet `type`.
+
+Den här switch-satsen kontrollerar om gränssnittsvärdet `i`
+innehåller ett värde av typen `T` eller `S`.
+I var och en av case-grenarna `T` och `S` får variabeln `v` typen
+`T` respektive `S` och innehåller värdet som finns i `i`.
+I default-grenen (där ingen matchning finns) har variabeln `v`
+samma gränssnittstyp och värde som `i`.
+
+.play methods/type-switches.go

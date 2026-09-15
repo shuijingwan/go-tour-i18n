@@ -1,0 +1,12 @@
+* Nollvärden
+
+Variabler som deklareras utan ett explicit initialvärde tilldelas sitt
+_nollvärde_.
+
+Nollvärdet är:
+
+- `0` för numeriska typer,
+- `false` för den booleska typen, och
+- `""` (den tomma strängen) för strängar.
+
+.play basics/zero.go

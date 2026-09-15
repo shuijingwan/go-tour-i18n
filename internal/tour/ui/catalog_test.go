@@ -12,7 +12,7 @@ import (
 const expectedCatalogMessages = 112
 
 func TestLoadEmbeddedCatalogs(t *testing.T) {
-	for _, locale := range []string{"de-DE", "en", "es-ES", "fr-FR", "it-IT", "ja-JP", "ko-KR", "nl-NL", "pt-BR", "tr-TR", "zh-CN"} {
+	for _, locale := range []string{"de-DE", "en", "es-ES", "fr-FR", "it-IT", "ja-JP", "ko-KR", "nl-NL", "pt-BR", "sv-SE", "tr-TR", "zh-CN"} {
 		catalog, err := Load(locale)
 		if err != nil {
 			t.Fatalf("Load(%q): %v", locale, err)
@@ -136,6 +136,7 @@ func TestEditorToggleStatesAreLocalizedPerCatalog(t *testing.T) {
 		"ko-KR": {"켜기", "끄기"},
 		"nl-NL": {"Aan", "Uit"},
 		"pt-BR": {"Ativado", "Desativado"},
+		"sv-SE": {"På", "Av"},
 		"tr-TR": {"Açık", "Kapalı"},
 		"zh-CN": {"开启", "关闭"},
 	}
@@ -152,6 +153,59 @@ func TestEditorToggleStatesAreLocalizedPerCatalog(t *testing.T) {
 			if got != want[index] {
 				t.Errorf("%s %s = %q, want %q", locale, key, got, want[index])
 			}
+		}
+	}
+}
+
+func TestSwedishCatalogMatchesEnglishSource(t *testing.T) {
+	source, err := Load("en")
+	if err != nil {
+		t.Fatal(err)
+	}
+	swedish, err := Load("sv-SE")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if swedish.HTMLLang != "sv-SE" {
+		t.Fatalf("sv-SE HTMLLang = %q, want sv-SE", swedish.HTMLLang)
+	}
+	if got, want := len(swedish.Messages), expectedCatalogMessages; got != want {
+		t.Fatalf("sv-SE message count = %d, want %d", got, want)
+	}
+	if err := validateCoverage(source, swedish); err != nil {
+		t.Fatalf("sv-SE coverage: %v", err)
+	}
+	placeholderRE := regexp.MustCompile(`\{[a-z][a-z0-9_]*\}`)
+	markupRE := regexp.MustCompile(`<[^>]+>`)
+	allowedUntranslatedNames := map[string]bool{
+		"editor.syntax":       true,
+		"footer.github":       true,
+		"site.issue_feedback": true,
+		"support.uid":         true,
+	}
+	for key, sourceMessage := range source.Messages {
+		message := swedish.Messages[key]
+		if got, want := strings.Join(placeholderRE.FindAllString(message.Text, -1), "\x00"), strings.Join(placeholderRE.FindAllString(sourceMessage.Text, -1), "\x00"); got != want {
+			t.Errorf("sv-SE message %q placeholders = %q, want %q", key, got, want)
+		}
+		if sourceMessage.Kind == "rich" {
+			if got, want := strings.Join(markupRE.FindAllString(message.Text, -1), "\x00"), strings.Join(markupRE.FindAllString(sourceMessage.Text, -1), "\x00"); got != want {
+				t.Errorf("sv-SE rich message %q markup = %q, want %q", key, got, want)
+			}
+		}
+		if strings.Contains(message.Text, "TODO") {
+			t.Errorf("sv-SE message %q retains TODO", key)
+		}
+		if message.Text == sourceMessage.Text && !allowedUntranslatedNames[key] {
+			t.Errorf("sv-SE message %q duplicates English source text", key)
+		}
+	}
+	for key, want := range map[string]string{
+		"editor.run": "Kör", "editor.format": "Formatera", "editor.reset": "Återställ",
+		"tour.title": "En rundtur i Go",
+	} {
+		if got := swedish.Messages[key].Text; got != want {
+			t.Errorf("sv-SE message %q = %q, want %q", key, got, want)
 		}
 	}
 }

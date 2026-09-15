@@ -1,0 +1,12 @@
+* Gränssnittsvärden med underliggande nil-värden
+
+Om det konkreta värdet inuti gränssnittet är nil
+anropas metoden med en nil-mottagare.
+
+I vissa språk skulle detta utlösa ett nullpekarundantag,
+men i ⟪GTI18N_9487ca3c_000001⟫ är det vanligt att skriva metoder som hanterar anrop
+med en nil-mottagare utan problem (som metoden ⟪GTI18N_9487ca3c_000002⟫M⟪GTI18N_9487ca3c_000003⟫ i det här exemplet).
+
+Observera att ett gränssnittsvärde som innehåller ett konkret nil-värde inte självt är nil.
+
+⟪GTI18N_9487ca3c_000004⟫

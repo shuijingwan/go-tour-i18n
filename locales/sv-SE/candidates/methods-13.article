@@ -1,0 +1,8 @@
+* Nil-gränssnittsvärden
+
+Ett nil-gränssnittsvärde innehåller varken något värde eller någon konkret typ.
+
+Att anropa en metod på ett nil-gränssnitt är ett körningsfel eftersom det inte finns någon
+typ i gränssnittsparet som anger vilken _konkret_ metod som ska anropas.
+
+.play methods/nil-interface-values.go

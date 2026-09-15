@@ -1,0 +1,7 @@
+* Stapla defer-anrop
+
+Uppskjutna funktionsanrop läggs på en stack. När en funktion returnerar körs dess uppskjutna anrop i ordningen sist in, först ut.
+
+Läs det här [[/blog/defer-panic-and-recover][blogginlägget]] om du vill veta mer om defer-satser.
+
+.play flowcontrol/defer-multi.go

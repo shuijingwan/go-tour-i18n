@@ -1,0 +1,21 @@
+* sync.Mutex
+
+Vi har sett hur användbara kanaler är för kommunikation mellan gorutiner.
+
+Men vad händer om vi inte behöver kommunikation? Om vi bara vill se till att endast
+en goroutine åt gången kan komma åt en variabel för att undvika konflikter?
+
+Det här konceptet kallas _ömsesidig_uteslutning_, och det vedertagna namnet på datastrukturen som tillhandahåller det är _mutex_.
+
+Standardbiblioteket i Go tillhandahåller ömsesidig uteslutning med
+[[/pkg/sync/#Mutex][`sync.Mutex`]] och dess två metoder:
+
+- `Lock`
+- `Unlock`
+
+Vi kan definiera ett kodblock som ska köras med ömsesidig uteslutning genom att omge det
+med anrop till `Lock` och `Unlock`, som visas i metoden `Inc`.
+
+Vi kan också använda `defer` för att säkerställa att mutexen låses upp, som i metoden `Value`.
+
+.play concurrency/mutex-counter.go

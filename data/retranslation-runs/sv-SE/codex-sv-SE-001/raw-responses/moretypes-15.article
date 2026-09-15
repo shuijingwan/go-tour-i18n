@@ -1,0 +1,15 @@
+* Lägga till element i en slice
+
+Det är vanligt att lägga till nya element i en slice, och därför tillhandahåller ⟪GTI18N_f2fc257e_000001⟫ den inbyggda funktionen ⟪GTI18N_f2fc257e_000002⟫append⟪GTI18N_f2fc257e_000003⟫. [[⟪GTI18N_f2fc257e_000004⟫][Dokumentationen]] för det inbyggda paketet beskriver ⟪GTI18N_f2fc257e_000005⟫append⟪GTI18N_f2fc257e_000006⟫.
+
+⟪GTI18N_f2fc257e_000007⟫
+
+Den första parametern ⟪GTI18N_f2fc257e_000008⟫s⟪GTI18N_f2fc257e_000009⟫ till ⟪GTI18N_f2fc257e_000010⟫append⟪GTI18N_f2fc257e_000011⟫ är en slice av typen ⟪GTI18N_f2fc257e_000012⟫T⟪GTI18N_f2fc257e_000013⟫, och resten är värden av typen ⟪GTI18N_f2fc257e_000014⟫T⟪GTI18N_f2fc257e_000015⟫ som ska läggas till i slicen.
+
+Resultatet från ⟪GTI18N_f2fc257e_000016⟫append⟪GTI18N_f2fc257e_000017⟫ är en slice som innehåller alla element från den ursprungliga slicen samt de angivna värdena.
+
+Om den bakomliggande arrayen för ⟪GTI18N_f2fc257e_000018⟫s⟪GTI18N_f2fc257e_000019⟫ är för liten för alla angivna värden allokeras en större array. Den returnerade slicen pekar på den nyallokerade arrayen.
+
+(Läs artikeln [[⟪GTI18N_f2fc257e_000020⟫][Slices: användning och intern funktion]] om du vill veta mer om slices.)
+
+⟪GTI18N_f2fc257e_000021⟫

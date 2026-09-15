@@ -1,0 +1,11 @@
+* Paket
+
+Alla program skrivna i Go består av paket.
+
+Program börjar köras i paketet `main`.
+
+Det här programmet använder paketen med importsökvägarna `"fmt"` och `"math/rand"`.
+
+Enligt konventionen är paketnamnet detsamma som det sista elementet i importsökvägen. Paketet `"math/rand"` består till exempel av filer som börjar med satsen `package`rand`.
+
+.play basics/packages.go

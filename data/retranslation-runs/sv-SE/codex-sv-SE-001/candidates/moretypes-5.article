@@ -1,0 +1,9 @@
+* Structlitteraler
+
+En structlitteral betecknar ett nyallokerat structvärde genom att räkna upp värdena för dess fält.
+
+Du kan ange bara en delmängd av fälten med syntaxen `Name:`. (Ordningen på namngivna fält saknar betydelse.)
+
+Det särskilda prefixet `&` returnerar en pekare till structvärdet.
+
+.play moretypes/struct-literals.go

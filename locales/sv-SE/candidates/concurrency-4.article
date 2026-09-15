@@ -1,0 +1,15 @@
+* Range och Close
+
+En avsändare kan stänga en kanal med `close` för att ange att inga fler värden kommer att skickas. Mottagare kan kontrollera om en kanal har stängts genom att tilldela en andra parameter i mottagningsuttrycket: efter
+
+	v, ok := <-ch
+
+är `ok` `false` om det inte finns fler värden att ta emot och kanalen är stängd.
+
+Loopen `for`i`:=`range`c` tar upprepade gånger emot värden från kanalen tills den stängs.
+
+*Observera:* Bara avsändaren ska stänga en kanal, aldrig mottagaren. En sändning till en stängd kanal utlöser panic.
+
+*En*annan*anmärkning:* Kanaler är inte som filer; vanligtvis behöver du inte stänga dem. Det är bara nödvändigt att stänga en kanal när mottagaren måste informeras om att inga fler värden kommer, till exempel för att avsluta en loop med `range`.
+
+.play concurrency/range-and-close.go

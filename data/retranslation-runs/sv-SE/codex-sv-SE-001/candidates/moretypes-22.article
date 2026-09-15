@@ -1,0 +1,27 @@
+* Ändra mappar
+
+Infoga eller uppdatera ett element i mappen `m`:
+
+	m[key] = elem
+
+Hämta ett element:
+
+	elem = m[key]
+
+Ta bort ett element:
+
+	delete(m, key)
+
+Kontrollera med en tilldelning av två värden att en nyckel finns:
+
+	elem, ok = m[key]
+
+Om `key` finns i `m` är `ok` `true`. Annars är `ok` `false`.
+
+Om `key` inte finns i mappen får `elem` nollvärdet för mappens elementtyp.
+
+*Observera:* Om `elem` eller `ok` ännu inte har deklarerats kan du använda en kort deklaration:
+
+	elem, ok := m[key]
+
+.play moretypes/mutating-maps.go

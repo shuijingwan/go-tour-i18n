@@ -15,6 +15,7 @@ func TestPublicationPolicyCommandUsesTourPolicyAuthority(t *testing.T) {
 	}{
 		{locale: "zh-CN", want: false},
 		{locale: "ja-JP", want: true},
+		{locale: "sv-SE", want: true},
 		{locale: "tr-TR", want: true},
 	} {
 		t.Run(test.locale, func(t *testing.T) {

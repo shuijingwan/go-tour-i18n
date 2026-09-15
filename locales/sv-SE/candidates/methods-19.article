@@ -1,0 +1,26 @@
+* Fel
+
+Program skrivna i Go uttrycker feltillstånd med värden av typen `error`.
+
+Typen `error` är ett inbyggt gränssnitt som liknar `fmt.Stringer`:
+
+	type error interface {
+		Error() string
+	}
+
+(Precis som med `fmt.Stringer` söker paketet `fmt` efter gränssnittet `error` när
+värden ska skrivas ut.)
+
+Funktioner returnerar ofta ett värde av typen `error`, och anropande kod bör hantera fel
+genom att kontrollera om felet är lika med `nil`.
+
+	i, err := strconv.Atoi("42")
+	if err != nil {
+		fmt.Printf("couldn't convert number: %v\n", err)
+		return
+	}
+	fmt.Println("Converted integer:", i)
+
+Ett nil-värde av typen `error` betecknar framgång; ett värde av typen `error` som inte är nil betecknar ett misslyckande.
+
+.play methods/errors.go

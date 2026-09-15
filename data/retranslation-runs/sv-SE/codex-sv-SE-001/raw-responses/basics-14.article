@@ -1,0 +1,13 @@
+* Typinferens
+
+När du deklarerar en variabel utan att ange en explicit typ (antingen med syntaxen ⟪GTI18N_21c4077c_000001⟫:=⟪GTI18N_21c4077c_000002⟫ eller med uttryckssyntaxen ⟪GTI18N_21c4077c_000003⟫var`=⟪GTI18N_21c4077c_000004⟫) härleds variabelns typ från värdet på höger sida.
+
+När deklarationens högra sida har en typ får den nya variabeln samma typ:
+
+⟪GTI18N_21c4077c_000005⟫⟪GTI18N_21c4077c_000006⟫ är av typen ⟪GTI18N_21c4077c_000007⟫⟪GTI18N_21c4077c_000008⟫Men när den högra sidan innehåller en otypad numerisk konstant kan den nya variabeln vara en ⟪GTI18N_21c4077c_000009⟫int⟪GTI18N_21c4077c_000010⟫, ⟪GTI18N_21c4077c_000011⟫float64⟪GTI18N_21c4077c_000012⟫ eller ⟪GTI18N_21c4077c_000013⟫complex128⟪GTI18N_21c4077c_000014⟫, beroende på konstantens precision:
+
+⟪GTI18N_21c4077c_000015⟫
+
+Prova att ändra initialvärdet för ⟪GTI18N_21c4077c_000016⟫v⟪GTI18N_21c4077c_000017⟫ i exempelkoden och se hur dess typ påverkas.
+
+⟪GTI18N_21c4077c_000018⟫

@@ -1,0 +1,9 @@
+* Gränssnitt implementeras implicit
+
+En typ implementerar ett gränssnitt genom att implementera dess metoder.
+Det finns ingen explicit avsiktsdeklaration och inget nyckelord ”implements”.
+
+Implicita gränssnitt frikopplar definitionen av ett gränssnitt från dess
+implementation, som därmed kan finnas i vilket paket som helst utan föregående samordning.
+
+.play methods/interfaces-are-satisfied-implicitly.go

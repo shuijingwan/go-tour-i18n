@@ -1,0 +1,15 @@
+* Gorutiner
+
+En _goroutine_ är en lättviktig tråd som hanteras av körmiljön i Go.
+
+	go f(x, y, z)
+
+startar en ny goroutine som kör
+
+	f(x, y, z)
+
+Utvärderingen av `f`, `x`, `y` och `z` sker i aktuell goroutine, medan körningen av `f` sker i en ny goroutine.
+
+Gorutiner körs i samma adressrymd, så åtkomst till delat minne måste synkroniseras. Paketet [[/pkg/sync/][`sync`]] tillhandahåller användbara primitiver, även om du inte behöver dem särskilt ofta i Go eftersom det finns andra primitiver. (Se nästa sida.)
+
+.play concurrency/goroutines.go

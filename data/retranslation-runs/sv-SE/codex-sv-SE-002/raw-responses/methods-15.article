@@ -1,0 +1,25 @@
+* Typassertioner
+
+En ⟪GTI18N_c205b4eb_000001⟫typassertion⟪GTI18N_c205b4eb_000002⟫ ger åtkomst till det underliggande konkreta värdet i ett gränssnittsvärde.
+
+⟪GTI18N_c205b4eb_000003⟫
+
+Den här satsen hävdar att gränssnittsvärdet ⟪GTI18N_c205b4eb_000004⟫i⟪GTI18N_c205b4eb_000005⟫ innehåller den konkreta typen ⟪GTI18N_c205b4eb_000006⟫T⟪GTI18N_c205b4eb_000007⟫
+och tilldelar det underliggande värdet av typen ⟪GTI18N_c205b4eb_000008⟫T⟪GTI18N_c205b4eb_000009⟫ till variabeln ⟪GTI18N_c205b4eb_000010⟫t⟪GTI18N_c205b4eb_000011⟫.
+
+Om ⟪GTI18N_c205b4eb_000012⟫i⟪GTI18N_c205b4eb_000013⟫ inte innehåller en ⟪GTI18N_c205b4eb_000014⟫T⟪GTI18N_c205b4eb_000015⟫ utlöser satsen en panic.
+
+För att ⟪GTI18N_c205b4eb_000016⟫kontrollera⟪GTI18N_c205b4eb_000017⟫ om ett gränssnittsvärde innehåller en viss typ
+kan en typassertion returnera två värden: det underliggande värdet
+och ett booleskt värde som anger om typassertionen lyckades.
+
+⟪GTI18N_c205b4eb_000018⟫
+
+Om ⟪GTI18N_c205b4eb_000019⟫i⟪GTI18N_c205b4eb_000020⟫ innehåller en ⟪GTI18N_c205b4eb_000021⟫T⟪GTI18N_c205b4eb_000022⟫ blir ⟪GTI18N_c205b4eb_000023⟫t⟪GTI18N_c205b4eb_000024⟫ det underliggande värdet och ⟪GTI18N_c205b4eb_000025⟫ok⟪GTI18N_c205b4eb_000026⟫ blir true.
+
+Annars blir ⟪GTI18N_c205b4eb_000027⟫ok⟪GTI18N_c205b4eb_000028⟫ false och ⟪GTI18N_c205b4eb_000029⟫t⟪GTI18N_c205b4eb_000030⟫ blir nollvärdet för typen ⟪GTI18N_c205b4eb_000031⟫T⟪GTI18N_c205b4eb_000032⟫,
+och ingen panic inträffar.
+
+Observera likheten mellan den här syntaxen och syntaxen för att läsa från en map.
+
+⟪GTI18N_c205b4eb_000033⟫

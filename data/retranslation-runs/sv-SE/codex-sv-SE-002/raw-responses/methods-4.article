@@ -1,0 +1,24 @@
+* Pekarmottagare
+
+Du kan deklarera metoder med pekarmottagare.
+
+Det innebär att mottagartypen har den bokstavliga syntaxen ⟪GTI18N_99f9fa4e_000001⟫*T⟪GTI18N_99f9fa4e_000002⟫ för någon typ ⟪GTI18N_99f9fa4e_000003⟫T⟪GTI18N_99f9fa4e_000004⟫.
+(Dessutom kan ⟪GTI18N_99f9fa4e_000005⟫T⟪GTI18N_99f9fa4e_000006⟫ inte själv vara en pekare som ⟪GTI18N_99f9fa4e_000007⟫*int⟪GTI18N_99f9fa4e_000008⟫.)
+
+Metoden ⟪GTI18N_99f9fa4e_000009⟫Scale⟪GTI18N_99f9fa4e_000010⟫ i det här exemplet är till exempel definierad på ⟪GTI18N_99f9fa4e_000011⟫*Vertex⟪GTI18N_99f9fa4e_000012⟫.
+
+Metoder med pekarmottagare kan ändra värdet som mottagaren
+pekar på (vilket ⟪GTI18N_99f9fa4e_000013⟫Scale⟪GTI18N_99f9fa4e_000014⟫ gör här).
+Eftersom metoder ofta behöver ändra sina mottagare är pekarmottagare
+vanligare än värdemottagare.
+
+Prova att ta bort ⟪GTI18N_99f9fa4e_000015⟫*⟪GTI18N_99f9fa4e_000016⟫ från deklarationen av funktionen ⟪GTI18N_99f9fa4e_000017⟫Scale⟪GTI18N_99f9fa4e_000018⟫ på rad 16
+och observera hur programmets beteende förändras.
+
+Med en värdemottagare arbetar metoden ⟪GTI18N_99f9fa4e_000019⟫Scale⟪GTI18N_99f9fa4e_000020⟫ med en kopia av det ursprungliga
+värdet ⟪GTI18N_99f9fa4e_000021⟫Vertex⟪GTI18N_99f9fa4e_000022⟫.
+(Det är samma beteende som för alla andra funktionsargument.)
+Metoden ⟪GTI18N_99f9fa4e_000023⟫Scale⟪GTI18N_99f9fa4e_000024⟫ måste ha en pekarmottagare för att kunna ändra värdet ⟪GTI18N_99f9fa4e_000025⟫Vertex⟪GTI18N_99f9fa4e_000026⟫
+som deklareras i funktionen ⟪GTI18N_99f9fa4e_000027⟫main⟪GTI18N_99f9fa4e_000028⟫.
+
+⟪GTI18N_99f9fa4e_000029⟫

@@ -1,0 +1,21 @@
+* Metoder och pekarindirektion (2)
+
+Motsvarande sak händer i motsatt riktning.
+
+Funktioner som tar ett värdeargument måste ta emot ett värde av just den typen:
+
+	var v Vertex
+	fmt.Println(AbsFunc(v))  // OK
+	fmt.Println(AbsFunc(&v)) // Kompileringsfel!
+
+medan metoder med värdemottagare kan ta emot antingen ett värde eller en pekare som
+mottagare när de anropas:
+
+	var v Vertex
+	fmt.Println(v.Abs()) // OK
+	p := &v
+	fmt.Println(p.Abs()) // OK
+
+I det här fallet tolkas metodanropet `p.Abs()` som `(*p).Abs()`.
+
+.play methods/indirection-values.go

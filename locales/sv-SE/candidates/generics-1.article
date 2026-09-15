@@ -1,0 +1,17 @@
+* Typparametrar
+
+Funktioner i Go kan skrivas så att de fungerar med flera typer genom att använda typparametrar. En funktions
+typparametrar står inom hakparenteser före funktionens
+argument.
+
+  func Index[T comparable](s []T, x T) int
+
+Den här deklarationen innebär att `s` är en slice av en valfri typ `T` som uppfyller den
+inbyggda typbegränsningen `comparable`. `x` är också ett värde av samma typ.
+
+`comparable` är en användbar typbegränsning som gör det möjligt att använda operatorerna `==` och
+`!=` på värden av typen. I det här exemplet använder vi den för att jämföra ett
+värde med alla element i slicen tills en matchning hittas. Funktionen `Index` fungerar
+för alla typer som stöder jämförelser.
+
+.play generics/index.go

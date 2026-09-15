@@ -1,0 +1,12 @@
+* Övning: rot13Reader
+
+Ett vanligt mönster är en [[/pkg/io/#Reader][io.Reader]] som omsluter en annan `io.Reader` och ändrar strömmen på något sätt.
+
+Funktionen [[/pkg/compress/gzip/#NewReader][gzip.NewReader]] tar till exempel emot en `io.Reader` (en ström med komprimerade data) och returnerar en `*gzip.Reader` som också implementerar `io.Reader` (en ström med de dekomprimerade data).
+
+Implementera en `rot13Reader` som implementerar `io.Reader` och läser från en `io.Reader`, samtidigt som strömmen ändras genom att substitutionschiffret [[https://en.wikipedia.org/wiki/ROT13][rot13]] tillämpas på alla alfabetiska tecken.
+
+Typen `rot13Reader` är redan tillhandahållen.
+Gör den till en `io.Reader` genom att implementera dess metod `Read`.
+
+.play methods/exercise-rot-reader.go

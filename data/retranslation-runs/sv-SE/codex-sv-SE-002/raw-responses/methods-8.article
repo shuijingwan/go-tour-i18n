@@ -1,0 +1,17 @@
+* Välja värde- eller pekarmottagare
+
+Det finns två skäl att använda en pekarmottagare.
+
+Det första är att metoden då kan ändra värdet som mottagaren pekar på.
+
+Det andra är att undvika att värdet kopieras vid varje metodanrop.
+Det kan till exempel vara effektivare om mottagaren är en stor struct.
+
+I det här exemplet är både ⟪GTI18N_357424f2_000001⟫Scale⟪GTI18N_357424f2_000002⟫ och ⟪GTI18N_357424f2_000003⟫Abs⟪GTI18N_357424f2_000004⟫ metoder med mottagartypen ⟪GTI18N_357424f2_000005⟫*Vertex⟪GTI18N_357424f2_000006⟫,
+trots att metoden ⟪GTI18N_357424f2_000007⟫Abs⟪GTI18N_357424f2_000008⟫ inte behöver ändra sin mottagare.
+
+I allmänhet bör alla metoder på en viss typ ha antingen värde- eller
+pekarmottagare, men inte en blandning av båda.
+(Vi kommer att se varför på de närmaste sidorna.)
+
+⟪GTI18N_357424f2_000009⟫

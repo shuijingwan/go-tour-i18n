@@ -1,0 +1,16 @@
+* Metoder och pekarindirektion
+
+När du jämför de två föregående programmen kanske du märker att
+funktioner med ett pekarargument måste ta emot en pekare:
+
+⟪GTI18N_39fb725b_000001⟫Kompileringsfel!⟪GTI18N_39fb725b_000002⟫medan metoder med pekarmottagare kan ta emot antingen ett värde eller en pekare som
+mottagare när de anropas:
+
+⟪GTI18N_39fb725b_000003⟫
+
+För satsen ⟪GTI18N_39fb725b_000004⟫v.Scale(5)⟪GTI18N_39fb725b_000005⟫ anropas metoden med pekarmottagare automatiskt,
+trots att ⟪GTI18N_39fb725b_000006⟫v⟪GTI18N_39fb725b_000007⟫ är ett värde och inte en pekare.
+För enkelhets skull tolkar alltså ⟪GTI18N_39fb725b_000008⟫ satsen ⟪GTI18N_39fb725b_000009⟫v.Scale(5)⟪GTI18N_39fb725b_000010⟫ som
+⟪GTI18N_39fb725b_000011⟫(&v).Scale(5)⟪GTI18N_39fb725b_000012⟫ eftersom metoden ⟪GTI18N_39fb725b_000013⟫Scale⟪GTI18N_39fb725b_000014⟫ har en pekarmottagare.
+
+⟪GTI18N_39fb725b_000015⟫

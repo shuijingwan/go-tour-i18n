@@ -1,0 +1,19 @@
+* Fel
+
+Program skrivna i ⟪GTI18N_9eaab1fd_000001⟫ uttrycker feltillstånd med värden av typen ⟪GTI18N_9eaab1fd_000002⟫error⟪GTI18N_9eaab1fd_000003⟫.
+
+Typen ⟪GTI18N_9eaab1fd_000004⟫error⟪GTI18N_9eaab1fd_000005⟫ är ett inbyggt gränssnitt som liknar ⟪GTI18N_9eaab1fd_000006⟫fmt.Stringer⟪GTI18N_9eaab1fd_000007⟫:
+
+⟪GTI18N_9eaab1fd_000008⟫
+
+(Precis som med ⟪GTI18N_9eaab1fd_000009⟫fmt.Stringer⟪GTI18N_9eaab1fd_000010⟫ söker paketet ⟪GTI18N_9eaab1fd_000011⟫fmt⟪GTI18N_9eaab1fd_000012⟫ efter gränssnittet ⟪GTI18N_9eaab1fd_000013⟫error⟪GTI18N_9eaab1fd_000014⟫ när
+värden ska skrivas ut.)
+
+Funktioner returnerar ofta ett värde av typen ⟪GTI18N_9eaab1fd_000015⟫error⟪GTI18N_9eaab1fd_000016⟫, och anropande kod bör hantera fel
+genom att kontrollera om felet är lika med ⟪GTI18N_9eaab1fd_000017⟫nil⟪GTI18N_9eaab1fd_000018⟫.
+
+⟪GTI18N_9eaab1fd_000019⟫
+
+Ett nil-värde av typen ⟪GTI18N_9eaab1fd_000020⟫error⟪GTI18N_9eaab1fd_000021⟫ betecknar framgång; ett värde av typen ⟪GTI18N_9eaab1fd_000022⟫error⟪GTI18N_9eaab1fd_000023⟫ som inte är nil betecknar ett misslyckande.
+
+⟪GTI18N_9eaab1fd_000024⟫

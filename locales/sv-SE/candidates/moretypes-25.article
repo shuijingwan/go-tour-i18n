@@ -1,0 +1,7 @@
+* Funktionsclosures
+
+Funktioner i Go kan vara closures. En closure är ett funktionsvärde som refererar till variabler utanför sin egen kropp. Funktionen kan komma åt de refererade variablerna och tilldela dem värden; på så sätt är funktionen ”bunden” till variablerna.
+
+Funktionen `adder` returnerar till exempel en closure. Varje closure är bunden till sin egen variabel `sum`.
+
+.play moretypes/function-closures.go

@@ -1,0 +1,13 @@
+* Slicelitteraler
+
+En slicelitteral är som en arraylitteral utan längden.
+
+Detta är en arraylitteral:
+
+	[3]bool{true, true, false}
+
+Detta skapar samma array som ovan och bygger sedan en slice som refererar till den:
+
+	[]bool{true, true, false}
+
+.play moretypes/slice-literals.go

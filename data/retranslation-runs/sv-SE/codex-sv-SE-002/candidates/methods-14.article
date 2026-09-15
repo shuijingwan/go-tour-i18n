@@ -1,0 +1,16 @@
+* Det tomma gränssnittet
+
+Gränssnittstypen som inte anger några metoder kallas det _tomma_gränssnittet_:
+
+	interface{}
+
+Ett tomt gränssnitt kan innehålla värden av vilken typ som helst.
+(Varje typ implementerar åtminstone noll metoder.)
+
+`any` är ett alias för `interface{}`, och de två är helt
+likvärdiga.
+
+Tomma gränssnitt används av kod som hanterar värden av okänd typ.
+Till exempel tar `fmt.Print` emot valfritt antal argument av typen `any`.
+
+.play methods/empty-interface.go

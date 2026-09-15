@@ -1,0 +1,12 @@
+* Generiska typer
+
+Utöver generiska funktioner stöder Go även generiska typer. En typ kan
+parameteriseras med en typparameter, vilket kan vara användbart när man implementerar
+generiska datastrukturer.
+
+Det här exemplet visar en enkel typdeklaration för en enkellänkad lista
+som kan innehålla värden av valfri typ.
+
+Lägg som övning till funktionalitet i den här listimplementationen.
+
+.play generics/list.go

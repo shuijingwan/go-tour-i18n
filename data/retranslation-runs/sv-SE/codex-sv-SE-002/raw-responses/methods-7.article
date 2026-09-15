@@ -1,0 +1,14 @@
+* Metoder och pekarindirektion (2)
+
+Motsvarande sak händer i motsatt riktning.
+
+Funktioner som tar ett värdeargument måste ta emot ett värde av just den typen:
+
+⟪GTI18N_61a9cb84_000001⟫Kompileringsfel!⟪GTI18N_61a9cb84_000002⟫medan metoder med värdemottagare kan ta emot antingen ett värde eller en pekare som
+mottagare när de anropas:
+
+⟪GTI18N_61a9cb84_000003⟫
+
+I det här fallet tolkas metodanropet ⟪GTI18N_61a9cb84_000004⟫p.Abs()⟪GTI18N_61a9cb84_000005⟫ som ⟪GTI18N_61a9cb84_000006⟫(*p).Abs()⟪GTI18N_61a9cb84_000007⟫.
+
+⟪GTI18N_61a9cb84_000008⟫

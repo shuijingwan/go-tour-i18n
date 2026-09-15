@@ -1,0 +1,31 @@
+* Övning: loopar och funktioner
+
+För att experimentera med funktioner och loopar ska vi implementera en kvadratrotsfunktion: för ett givet tal x vill vi hitta det tal z vars z² ligger så nära x som möjligt.
+
+Datorer beräknar vanligtvis kvadratroten ur x med hjälp av en loop.
+Vi börjar med en gissning z och kan justera z utifrån hur nära z² ligger x, vilket ger en bättre gissning:
+
+	z -= (z*z - x) / (2*z)
+
+Genom att upprepa justeringen blir gissningen allt bättre tills vi får ett svar som ligger så nära den verkliga kvadratroten som möjligt.
+
+Implementera detta i den givna funktionen `func`Sqrt`.
+En bra första gissning för z är 1, oavsett indata.
+Börja med att upprepa beräkningen 10 gånger och skriv ut varje z under tiden.
+Se hur nära svaret du kommer för olika värden på x (1, 2, 3, ...) och hur snabbt gissningen förbättras.
+
+Tips: Om du vill deklarera och initiera ett flyttalsvärde kan du använda flyttalssyntax eller en konvertering:
+
+	z := 1.0
+	z := float64(1)
+
+Ändra sedan loopvillkoret så att loopen stannar när värdet inte längre förändras (eller bara förändras mycket lite).
+Se om det krävs fler eller färre än 10 iterationer.
+Prova andra initiala gissningar för z, till exempel x eller x/2.
+Hur nära resultatet från [[/pkg/math/#Sqrt][math.Sqrt]] i standardbiblioteket ligger resultaten från din funktion?
+
+(*Observera:* Om du är intresserad av algoritmens detaljer anger z² − x ovan hur långt z² ligger från sitt önskade värde (x), och divisionen med 2z är derivatan av z², vilket skalar justeringen av z efter hur snabbt z² förändras.
+Denna allmänna metod kallas [[https://en.wikipedia.org/wiki/Newton%27s_method][Newtons metod]].
+Den fungerar bra för många funktioner, men särskilt bra för kvadratrötter.)
+
+.play flowcontrol/exercise-loops-and-functions.go

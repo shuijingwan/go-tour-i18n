@@ -1,0 +1,17 @@
+* Välja värde- eller pekarmottagare
+
+Det finns två skäl att använda en pekarmottagare.
+
+Det första är att metoden då kan ändra värdet som mottagaren pekar på.
+
+Det andra är att undvika att värdet kopieras vid varje metodanrop.
+Det kan till exempel vara effektivare om mottagaren är en stor struct.
+
+I det här exemplet är både `Scale` och `Abs` metoder med mottagartypen `*Vertex`,
+trots att metoden `Abs` inte behöver ändra sin mottagare.
+
+I allmänhet bör alla metoder på en viss typ ha antingen värde- eller
+pekarmottagare, men inte en blandning av båda.
+(Vi kommer att se varför på de närmaste sidorna.)
+
+.play methods/methods-with-pointer-receivers.go

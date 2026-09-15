@@ -1,0 +1,37 @@
+{
+  "schema_version": 2,
+  "batch_id": "codex-sv-SE-004",
+  "locale": "sv-SE",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 2,
+  "units": [
+    {
+      "unit_id": "generics/2",
+      "unit_kind": "page",
+      "source_path": "_content/tour/generics.article",
+      "source_sha256": "08486351895e62792a84bc3eeab6aa85df7b1658735b7239040d219812f63277",
+      "input_path": "inputs/generics-2.article",
+      "input_sha256": "a2ba5f9fbfe2bf80ffcfcb4ac41d7e10eeed6f93b7a2250aed92c8952918f52c",
+      "protected_token_count": 2,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "Den avslutande meningen \"Lägg som övning till funktionalitet ...\" har onaturlig svensk ordföljd. Formulera om den till naturlig svenska utan att ändra betydelsen."
+    },
+    {
+      "unit_id": "concurrency/1",
+      "unit_kind": "page",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "d0a9c45078c2255540cfffe48744a07fa04ab5c2113e8880068b5a400ae0ebdc",
+      "input_path": "inputs/concurrency-1.article",
+      "input_sha256": "a676e3c5e8f83962d8900d2e8df1fa0b96f3097568aef63557077a029996938c",
+      "protected_token_count": 24,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "Fraserna \"i den aktuella goroutine\" och \"i den nya goroutine\" är grammatiskt onaturliga på svenska. Formulera om meningen så att termen \"goroutine\" kan behållas oförändrad men nominalfraserna blir idiomatiska."
+    }
+  ]
+}

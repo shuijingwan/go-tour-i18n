@@ -1,0 +1,11 @@
+* Övning: slices
+
+Implementera `Pic`. Funktionen ska returnera en slice med längden `dy`, där varje element är en slice med `dx` 8-bitars heltal utan tecken. När du kör programmet visas din bild genom att heltalen tolkas som gråskalevärden (nåja, blåskalevärden).
+
+Du väljer själv vilken bild som ska visas. Några intressanta funktioner är `(x+y)/2`, `x*y` och `x^y`.
+
+(Du måste använda en loop för att allokera varje `[]uint8` inuti `[][]uint8`.)
+
+(Använd `uint8(intValue)` för att konvertera mellan typer.)
+
+.play moretypes/exercise-slices.go

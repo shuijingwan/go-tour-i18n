@@ -1,0 +1,11 @@
+* Namngivna returvärden
+
+Returvärden i Go kan namnges. I så fall behandlas de som variabler som definierats högst upp i funktionen.
+
+Dessa namn bör användas för att dokumentera returvärdenas betydelse.
+
+En `return`-sats utan argument returnerar de namngivna returvärdena. Detta kallas en ”naken” return-sats.
+
+Nakna return-satser bör bara användas i korta funktioner, som i exemplet här. I längre funktioner kan de försämra läsbarheten.
+
+.play basics/named-results.go

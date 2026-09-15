@@ -1,0 +1,16 @@
+* Exporterade namn
+
+I Go är ett namn exporterat om det börjar med en versal.
+Till exempel är `Pizza` ett exporterat namn, liksom `Pi`, som exporteras från
+paketet `math`.
+
+`pizza` och `pi` börjar inte med en versal och exporteras därför inte.
+
+När du importerar ett paket kan du bara referera till dess exporterade namn.
+Oexporterade namn är inte tillgängliga utanför paketet.
+
+Kör koden. Lägg märke till felmeddelandet.
+
+Åtgärda felet genom att byta namn på `math.pi` till `math.Pi` och försök igen.
+
+.play basics/exported-names.go

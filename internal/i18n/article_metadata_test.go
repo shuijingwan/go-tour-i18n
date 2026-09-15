@@ -278,3 +278,40 @@ func TestSpanishArticleMetadataCoversCatalog(t *testing.T) {
 		}
 	}
 }
+
+func TestSwedishArticleMetadataCoversCatalog(t *testing.T) {
+	root := filepath.Clean(filepath.Join("..", ".."))
+	catalog, err := ReadCatalog(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	metadata, err := LoadArticleMetadata(root, "sv-SE", catalog)
+	if err != nil {
+		t.Fatal(err)
+	}
+	wantTitles := map[string]string{
+		"welcome.article":     "Välkommen!",
+		"basics.article":      "Paket, variabler och funktioner",
+		"flowcontrol.article": "Styrsatser: for, if, else, switch och defer",
+		"moretypes.article":   "Fler typer: structar, slices och mappar",
+		"methods.article":     "Metoder och gränssnitt",
+		"generics.article":    "Generik",
+		"concurrency.article": "Samtidighet",
+	}
+	if len(metadata) != len(wantTitles) {
+		t.Fatalf("sv-SE article metadata count = %d, want %d", len(metadata), len(wantTitles))
+	}
+	for article, title := range wantTitles {
+		entry, ok := metadata[article]
+		if !ok {
+			t.Errorf("sv-SE article metadata is missing %s", article)
+			continue
+		}
+		if entry.Title != title || entry.Subtitle == "" {
+			t.Errorf("sv-SE article metadata %s = %+v, want title %q and a subtitle", article, entry, title)
+		}
+		if strings.Contains(entry.Title, "TODO") || strings.Contains(entry.Subtitle, "TODO") {
+			t.Errorf("sv-SE article metadata %s retains TODO", article)
+		}
+	}
+}

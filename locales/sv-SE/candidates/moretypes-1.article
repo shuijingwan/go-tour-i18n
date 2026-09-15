@@ -1,0 +1,24 @@
+* Pekare
+
+Go har pekare.
+En pekare innehåller minnesadressen till ett värde.
+
+Typen `*T` är en pekare till ett värde av typen `T`. Dess nollvärde är `nil`.
+
+	var p *int
+
+Operatorn `&` skapar en pekare till sin operand.
+
+	i := 42
+	p = &i
+
+Operatorn `*` betecknar pekarens underliggande värde.
+
+	fmt.Println(*p) // läs i via pekaren p
+	*p = 21         // tilldela i via pekaren p
+
+Detta kallas ”dereferering” eller ”indirektion”.
+
+Till skillnad från C har Go ingen pekararitmetik.
+
+.play moretypes/pointers.go

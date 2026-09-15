@@ -1,0 +1,23 @@
+* Metoder och pekarindirektion
+
+När du jämför de två föregående programmen kanske du märker att
+funktioner med ett pekarargument måste ta emot en pekare:
+
+	var v Vertex
+	ScaleFunc(v, 5)  // Kompileringsfel!
+	ScaleFunc(&v, 5) // OK
+
+medan metoder med pekarmottagare kan ta emot antingen ett värde eller en pekare som
+mottagare när de anropas:
+
+	var v Vertex
+	v.Scale(5)  // OK
+	p := &v
+	p.Scale(10) // OK
+
+För satsen `v.Scale(5)` anropas metoden med pekarmottagare automatiskt,
+trots att `v` är ett värde och inte en pekare.
+För enkelhets skull tolkar alltså Go satsen `v.Scale(5)` som
+`(&v).Scale(5)` eftersom metoden `Scale` har en pekarmottagare.
+
+.play methods/indirection.go

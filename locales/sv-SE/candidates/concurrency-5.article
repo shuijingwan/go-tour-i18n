@@ -1,0 +1,7 @@
+* Select
+
+Satsen `select` låter en goroutine vänta på flera kommunikationsoperationer.
+
+En `select` blockeras tills en av dess case-grenar kan köras och kör sedan den grenen. Om flera är redo väljer den en slumpmässigt.
+
+.play concurrency/select.go

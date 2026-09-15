@@ -1,0 +1,19 @@
+* Slices
+
+En array har en fast storlek.
+En slice är däremot en flexibel vy med dynamisk storlek över elementen i en array.
+I praktiken är slices mycket vanligare än arrayer.
+
+Typen `[]T` är en slice med element av typen `T`.
+
+En slice skapas genom att ange två index, en nedre och en övre gräns, avgränsade med ett kolon:
+
+	a[low : high]
+
+Detta väljer ett halvöppet intervall som inkluderar det första elementet men utesluter det sista.
+
+Följande uttryck skapar en slice som innehåller element 1 till och med 3 i `a`:
+
+	a[1:4]
+
+.play moretypes/slices.go

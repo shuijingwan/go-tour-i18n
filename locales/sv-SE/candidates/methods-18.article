@@ -1,0 +1,8 @@
+* Övning: Stringers
+
+Låt typen `IPAddr` implementera `fmt.Stringer` så att adressen skrivs ut som
+fyra punktavgränsade tal.
+
+Till exempel ska `IPAddr{1,`2,`3,`4}` skrivas ut som `"1.2.3.4"`.
+
+.play methods/exercise-stringer.go

@@ -1,0 +1,14 @@
+* Default-val
+
+`default`-grenen i en `select` körs om ingen annan gren är redo.
+
+Använd en `default`-gren för att försöka skicka eller ta emot utan att blockera:
+
+	select {
+	case i := <-c:
+		// använd i
+	default:
+		// mottagning från c skulle blockeras
+	}
+
+.play concurrency/default-selection.go

@@ -1,0 +1,15 @@
+* Utvärderingsordning för switch
+
+En switch-sats utvärderar sina case-grenar uppifrån och ned och stannar när en case-gren lyckas.
+
+(Till exempel anropar
+
+	switch i {
+	case 0:
+	case f():
+	}
+
+inte `f` om `i==0`.)
+
+
+.play flowcontrol/switch-evaluation-order.go

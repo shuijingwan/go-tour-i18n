@@ -1,0 +1,8 @@
+* Pekare till structar
+
+Du kan komma åt structfält genom en structpekare.
+
+För att komma åt fältet `X` i en struct när vi har structpekaren `p` skulle vi kunna skriva `(*p).X`.
+Den notationen är dock omständlig, så språket låter oss i stället skriva `p.X` utan explicit dereferering.
+
+.play moretypes/struct-pointers.go

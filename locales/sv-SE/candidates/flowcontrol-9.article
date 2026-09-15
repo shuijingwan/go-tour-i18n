@@ -1,0 +1,10 @@
+* Switch
+
+En `switch`-sats är ett kortare sätt att skriva en följd av `if`-`else`-satser.
+Den kör den första case-gren vars värde är lika med villkorsuttrycket.
+
+En switch i Go liknar motsvarigheten i C, C++, Java, JavaScript och PHP, med undantaget att Go bara kör den valda case-grenen, inte alla efterföljande grenar.
+I praktiken tillhandahålls den `break`-sats som krävs i slutet av varje case-gren i dessa språk automatiskt i Go.
+En annan viktig skillnad är att case-värdena i en switch i Go inte behöver vara konstanter och att värdena inte behöver vara heltal.
+
+.play flowcontrol/switch.go

@@ -1,0 +1,20 @@
+* Läsare
+
+Paketet `io` anger gränssnittet `io.Reader`,
+som representerar läsänden av en dataström.
+
+Standardbiblioteket i Go innehåller [[https://cs.opensource.google/search?q=Read%5C(%5Cw%2B%5Cs%5C%5B%5C%5Dbyte%5C)&ss=go%2Fgo][många implementationer]] av det här gränssnittet, däribland filer, nätverksanslutningar, komprimerare, chiffer och andra.
+
+Gränssnittet `io.Reader` har en metod `Read`:
+
+	func (T) Read(b []byte) (n int, err error)
+
+`Read` fyller den angivna byteslicen med data och returnerar antalet byte
+som fylldes samt ett felvärde. Den returnerar felet `io.EOF` när strömmen
+tar slut.
+
+Exempelkoden skapar en
+[[/pkg/strings/#Reader][`strings.Reader`]]
+och förbrukar dess utdata 8 byte åt gången.
+
+.play methods/reader.go

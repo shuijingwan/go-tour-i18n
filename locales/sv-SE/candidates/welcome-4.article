@@ -1,0 +1,17 @@
+* Go utan internet (valfritt)
+
+Rundturen finns också som ett fristående program som du kan använda
+utan internetanslutning. Det bygger och kör kodexemplen på
+din egen dator.
+
+För att köra rundturen lokalt måste du först
+[[/doc/install][installera Go]] och sedan köra:
+
+  go install golang.org/x/website/tour@latest
+
+Detta placerar binärfilen `tour` i
+[[/cmd/go/#hdr-GOPATH_and_Modules][GOPATH]]s `bin`-katalog.
+När du kör programmet tour öppnas en webbläsare som visar
+din lokala version av rundturen.
+
+Du kan naturligtvis fortsätta följa rundturen på den här webbplatsen.

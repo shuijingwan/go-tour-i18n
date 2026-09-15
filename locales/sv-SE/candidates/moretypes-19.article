@@ -1,0 +1,11 @@
+* Mappar
+
+En map kopplar nycklar till värden.
+
+Nollvärdet för en map är `nil`.
+En `nil`-map har inga nycklar, och det går inte heller att lägga till några.
+
+Funktionen `make` returnerar en map av den angivna typen,
+initierad och klar att använda.
+
+.play moretypes/maps.go

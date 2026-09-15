@@ -1,0 +1,16 @@
+* Kanaler
+
+Kanaler är typade förbindelser som du kan skicka och ta emot värden genom med kanaloperatorn ⟪GTI18N_a35e3af2_000001⟫<-⟪GTI18N_a35e3af2_000002⟫.
+
+⟪GTI18N_a35e3af2_000003⟫Skicka ⟪GTI18N_a35e3af2_000004⟫ till kanalen ⟪GTI18N_a35e3af2_000005⟫.⟪GTI18N_a35e3af2_000006⟫Ta emot från ⟪GTI18N_a35e3af2_000007⟫ och⟪GTI18N_a35e3af2_000008⟫tilldela värdet till ⟪GTI18N_a35e3af2_000009⟫.⟪GTI18N_a35e3af2_000010⟫(Data flödar i pilens riktning.)
+
+Precis som mappar och slices måste kanaler skapas innan de används:
+
+⟪GTI18N_a35e3af2_000011⟫
+
+Som standard blockeras sändningar och mottagningar tills den andra sidan är redo. På så sätt kan gorutiner synkroniseras utan explicita lås eller villkorsvariabler.
+
+Exempelkoden summerar talen i en slice och fördelar arbetet mellan två gorutiner.
+När båda gorutinerna har slutfört sin beräkning räknar den ut slutresultatet.
+
+⟪GTI18N_a35e3af2_000012⟫

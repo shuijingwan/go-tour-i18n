@@ -1,0 +1,7 @@
+* Nil-slices
+
+Nollvärdet för en slice är `nil`.
+
+En nil-slice har längden och kapaciteten 0 och saknar en underliggande array.
+
+.play moretypes/nil-slices.go

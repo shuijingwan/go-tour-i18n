@@ -1,0 +1,8 @@
+* Pekare till structar
+
+Du kan komma åt structfält genom en structpekare.
+
+För att komma åt fältet ⟪GTI18N_29695d33_000001⟫X⟪GTI18N_29695d33_000002⟫ i en struct när vi har structpekaren ⟪GTI18N_29695d33_000003⟫p⟪GTI18N_29695d33_000004⟫ skulle vi kunna skriva ⟪GTI18N_29695d33_000005⟫(*p).X⟪GTI18N_29695d33_000006⟫.
+Den notationen är dock omständlig, så språket låter oss i stället skriva ⟪GTI18N_29695d33_000007⟫p.X⟪GTI18N_29695d33_000008⟫ utan explicit dereferering.
+
+⟪GTI18N_29695d33_000009⟫

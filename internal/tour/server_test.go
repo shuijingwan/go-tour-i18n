@@ -309,7 +309,7 @@ func TestRenderHomeDistinguishesDevelopmentAndProductionMetadata(t *testing.T) {
 }
 
 func TestHomepageLanguageRegistryAndLocaleProfiles(t *testing.T) {
-	if got, want := len(languageRegistry), 11; got != want {
+	if got, want := len(languageRegistry), 12; got != want {
 		t.Fatalf("language registry length = %d, want %d", got, want)
 	}
 	for i, want := range []LanguageLink{
@@ -323,6 +323,7 @@ func TestHomepageLanguageRegistryAndLocaleProfiles(t *testing.T) {
 		{Locale: "ko-KR", EnglishName: "Korean", Autonym: "한국어", URL: "https://ko-go-dev.shuijingwanwq.com/"},
 		{Locale: "zh-CN", EnglishName: "Simplified Chinese", Autonym: "简体中文", URL: "https://go-dev.shuijingwanwq.com/"},
 		{Locale: "es-ES", EnglishName: "Spanish", Autonym: "Español", URL: "https://es-go-dev.shuijingwanwq.com/"},
+		{Locale: "sv-SE", EnglishName: "Swedish", Autonym: "Svenska", URL: "https://sv-go-dev.shuijingwanwq.com/"},
 		{Locale: "tr-TR", EnglishName: "Turkish", Autonym: "Türkçe", URL: "https://tr-go-dev.shuijingwanwq.com/"},
 	} {
 		if got := languageRegistry[i]; got != want {
@@ -446,6 +447,20 @@ func TestHomepageLanguageRegistryAndLocaleProfiles(t *testing.T) {
 	if got, want := localeProfiles["pt-BR"].TimeZone.String(), "America/Sao_Paulo"; got != want {
 		t.Fatalf("pt-BR time zone = %q, want %q", got, want)
 	}
+	svLanguages, err := languagesFor("sv-SE")
+	if err != nil {
+		t.Fatal(err)
+	}
+	svCurrent, err := currentLanguage(svLanguages)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if svCurrent != (LanguageLink{Locale: "sv-SE", EnglishName: "Swedish", Autonym: "Svenska", Label: "Swedish — Svenska", URL: "https://sv-go-dev.shuijingwanwq.com/", Current: true}) {
+		t.Fatalf("sv-SE current language = %+v", svCurrent)
+	}
+	if got, want := localeProfiles["sv-SE"].TimeZone.String(), "Europe/Stockholm"; got != want {
+		t.Fatalf("sv-SE time zone = %q, want %q", got, want)
+	}
 	trLanguages, err := languagesFor("tr-TR")
 	if err != nil {
 		t.Fatal(err)
@@ -474,7 +489,8 @@ func TestHomepageLanguageRegistryAndLocaleProfiles(t *testing.T) {
 		{"it-IT", "Italiano", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 07:56:11 (ora locale)", languageRegistry[5].URL},
 		{"ja-JP", "日本語", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 14:56:11（日本時間）", languageRegistry[6].URL},
 		{"ko-KR", "한국어", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 14:56:11 (한국 표준시)", languageRegistry[7].URL},
-		{"tr-TR", "Türkçe", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 08:56:11 (yerel saat)", languageRegistry[10].URL},
+		{"sv-SE", "Svenska", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 07:56:11 (lokal tid)", languageRegistry[10].URL},
+		{"tr-TR", "Türkçe", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 08:56:11 (yerel saat)", languageRegistry[11].URL},
 	}
 	for _, test := range tests {
 		t.Run(test.locale, func(t *testing.T) {
@@ -500,7 +516,7 @@ func TestHomepageLanguageRegistryAndLocaleProfiles(t *testing.T) {
 				t.Fatal(err)
 			}
 			home := string(homeBytes)
-			labels := []string{"Brazilian Portuguese — Português (Brasil)", "Dutch — Nederlands", "English", "French — Français", "German — Deutsch", "Italian — Italiano", "Japanese — 日本語", "Korean — 한국어", "Simplified Chinese — 简体中文", "Spanish — Español", "Turkish — Türkçe"}
+			labels := []string{"Brazilian Portuguese — Português (Brasil)", "Dutch — Nederlands", "English", "French — Français", "German — Deutsch", "Italian — Italiano", "Japanese — 日本語", "Korean — 한국어", "Simplified Chinese — 简体中文", "Spanish — Español", "Swedish — Svenska", "Turkish — Türkçe"}
 			for _, want := range append(labels, test.logURL, test.published, wantUpstreamTime, "© 2026 永夜", "蜀ICP备13001590号-1", `href="https://beian.miit.gov.cn/"`) {
 				if !strings.Contains(home, want) {
 					t.Errorf("homepage does not contain %q", want)
@@ -672,7 +688,7 @@ func TestTourPublicationRuntimePolicy(t *testing.T) {
 	adHTML = `<script data-test="ad"></script>`
 	hrefRE := regexp.MustCompile(`(?i)<a\b[^>]*\bhref="([^"]+)"`)
 
-	for _, locale := range []string{"zh-CN", "fr-FR", "de-DE", "ko-KR", "ja-JP", "tr-TR"} {
+	for _, locale := range []string{"zh-CN", "fr-FR", "de-DE", "ko-KR", "ja-JP", "sv-SE", "tr-TR"} {
 		t.Run(locale, func(t *testing.T) {
 			catalog, err := ui.Load(locale)
 			if err != nil {

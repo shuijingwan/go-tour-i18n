@@ -1,0 +1,21 @@
+* Övning: fel
+
+Kopiera funktionen `Sqrt` från den [[/tour/flowcontrol/8][tidigare övningen]] och ändra den så att den returnerar ett värde av typen `error`.
+
+`Sqrt` ska returnera ett felvärde som inte är nil när den får ett negativt tal, eftersom den inte har stöd för komplexa tal.
+
+Skapa en ny typ
+
+	type ErrNegativeSqrt float64
+
+och gör den till en `error` genom att ge den en
+
+	func (e ErrNegativeSqrt) Error() string
+
+metod, så att `ErrNegativeSqrt(-2).Error()` returnerar `"cannot`Sqrt`negative`number:`-2"`.
+
+*Observera:* Ett anrop till `fmt.Sprint(e)` inuti metoden `Error` försätter programmet i en oändlig loop. Du kan undvika detta genom att först konvertera `e`: `fmt.Sprint(float64(e))`. Varför?
+
+Ändra funktionen `Sqrt` så att den returnerar ett värde av typen `ErrNegativeSqrt` när den får ett negativt tal.
+
+.play methods/exercise-errors.go

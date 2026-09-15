@@ -1,0 +1,24 @@
+* Pekarmottagare
+
+Du kan deklarera metoder med pekarmottagare.
+
+Det innebär att mottagartypen har den bokstavliga syntaxen `*T` för någon typ `T`.
+(Dessutom kan `T` inte själv vara en pekare som `*int`.)
+
+Metoden `Scale` i det här exemplet är till exempel definierad på `*Vertex`.
+
+Metoder med pekarmottagare kan ändra värdet som mottagaren
+pekar på (vilket `Scale` gör här).
+Eftersom metoder ofta behöver ändra sina mottagare är pekarmottagare
+vanligare än värdemottagare.
+
+Prova att ta bort `*` från deklarationen av funktionen `Scale` på rad 16
+och observera hur programmets beteende förändras.
+
+Med en värdemottagare arbetar metoden `Scale` med en kopia av det ursprungliga
+värdet `Vertex`.
+(Det är samma beteende som för alla andra funktionsargument.)
+Metoden `Scale` måste ha en pekarmottagare för att kunna ändra värdet `Vertex`
+som deklareras i funktionen `main`.
+
+.play methods/methods-pointers.go

@@ -1,0 +1,13 @@
+* Funktioner, fortsättning
+
+När två eller flera namngivna funktionsparametrar i följd har samma typ kan du utelämna typen för alla utom den sista.
+
+I det här exemplet förkortade vi
+
+	x int, y int
+
+till
+
+	x, y int
+
+.play basics/functions-continued.go

@@ -1,0 +1,25 @@
+* Typassertioner
+
+En _typassertion_ ger åtkomst till det underliggande konkreta värdet i ett gränssnittsvärde.
+
+	t := i.(T)
+
+Den här satsen hävdar att gränssnittsvärdet `i` innehåller den konkreta typen `T`
+och tilldelar det underliggande värdet av typen `T` till variabeln `t`.
+
+Om `i` inte innehåller en `T` utlöser satsen en panic.
+
+För att _kontrollera_ om ett gränssnittsvärde innehåller en viss typ
+kan en typassertion returnera två värden: det underliggande värdet
+och ett booleskt värde som anger om typassertionen lyckades.
+
+	t, ok := i.(T)
+
+Om `i` innehåller en `T` blir `t` det underliggande värdet och `ok` blir true.
+
+Annars blir `ok` false och `t` blir nollvärdet för typen `T`,
+och ingen panic inträffar.
+
+Observera likheten mellan den här syntaxen och syntaxen för att läsa från en map.
+
+.play methods/type-assertions.go

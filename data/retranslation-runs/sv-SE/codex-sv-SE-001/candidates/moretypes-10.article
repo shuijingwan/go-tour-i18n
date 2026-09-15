@@ -1,0 +1,18 @@
+* Standardgränser för slices
+
+När du skapar en slice kan du utelämna den övre eller nedre gränsen för att använda dess standardvärde.
+
+Standardvärdet är noll för den nedre gränsen och längden på den underliggande slicen eller arrayen för den övre gränsen.
+
+För arrayen
+
+	var a [10]int
+
+är följande slice-uttryck likvärdiga:
+
+	a[0:10]
+	a[:10]
+	a[0:]
+	a[:]
+
+.play moretypes/slice-bounds.go

@@ -1,0 +1,37 @@
+* Hej, 世界
+
+Välkommen till en rundtur i [[/][programmeringsspråket Go]].
+
+Rundturen är indelad i en lista med moduler som du kommer åt genom att
+klicka på
+[[javascript:highlight(".logo")][En rundtur i Go]] längst upp till vänster på sidan.
+
+Du kan också när som helst visa innehållsförteckningen genom att klicka på [[javascript:highlightAndClick(".nav")][menyn]] längst upp till höger på sidan.
+
+Under rundturen hittar du en serie sidor och övningar som du
+kan göra.
+
+Du kan navigera mellan dem med
+
+- [[javascript:highlight(".prev-page")]["Föregående"]] eller `PageUp` för att gå till föregående sida,
+
+- [[javascript:highlight(".next-page")]["Nästa"]] eller `PageDown` för att gå till nästa sida.
+
+Rundturen är interaktiv. Klicka nu på knappen
+[[javascript:highlightAndClick("#run")][Kör]]
+(eller tryck på `Shift` + `Enter`) för att kompilera och köra programmet på
+en fjärrserver.
+Resultatet visas under koden.
+
+De här exempelprogrammen visar olika aspekter av Go. Programmen i rundturen är tänkta som utgångspunkter för dina egna experiment.
+
+Redigera programmet och kör det igen.
+
+När du klickar på [[javascript:highlightAndClick("#format")][Formatera]]
+(kortkommando: `Ctrl` + `Enter`) formateras texten i editorn med verktyget
+[[/cmd/gofmt/][gofmt]]. Du kan slå på och av syntaxmarkeringen
+genom att klicka på knappen [[javascript:highlightAndClick(".syntax-checkbox")][syntax]].
+
+När du är redo att gå vidare klickar du på [[javascript:highlightAndClick(".next-page")][högerpilen]] nedan eller trycker på tangenten `PageDown`.
+
+.play welcome/hello.go

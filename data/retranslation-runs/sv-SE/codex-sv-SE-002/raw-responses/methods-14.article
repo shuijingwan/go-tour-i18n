@@ -1,0 +1,16 @@
+* Det tomma gränssnittet
+
+Gränssnittstypen som inte anger några metoder kallas det ⟪GTI18N_7a09a765_000001⟫tomma_gränssnittet⟪GTI18N_7a09a765_000002⟫:
+
+⟪GTI18N_7a09a765_000003⟫
+
+Ett tomt gränssnitt kan innehålla värden av vilken typ som helst.
+(Varje typ implementerar åtminstone noll metoder.)
+
+⟪GTI18N_7a09a765_000004⟫any⟪GTI18N_7a09a765_000005⟫ är ett alias för ⟪GTI18N_7a09a765_000006⟫interface{}⟪GTI18N_7a09a765_000007⟫, och de två är helt
+likvärdiga.
+
+Tomma gränssnitt används av kod som hanterar värden av okänd typ.
+Till exempel tar ⟪GTI18N_7a09a765_000008⟫fmt.Print⟪GTI18N_7a09a765_000009⟫ emot valfritt antal argument av typen ⟪GTI18N_7a09a765_000010⟫any⟪GTI18N_7a09a765_000011⟫.
+
+⟪GTI18N_7a09a765_000012⟫

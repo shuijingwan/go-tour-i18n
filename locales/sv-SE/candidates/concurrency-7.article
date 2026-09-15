@@ -1,0 +1,18 @@
+* Övning: ekvivalenta binärträd
+
+Det kan finnas många olika binärträd som lagrar samma värdeföljd. Här är till exempel två binärträd som lagrar följden 1, 1, 2, 3, 5, 8, 13.
+
+.image /tour/static/img/tree.png
+
+I de flesta språk är en funktion som kontrollerar om två binärträd lagrar samma följd ganska komplicerad. Vi ska använda samtidigheten och kanalerna i Go för att skriva en enkel lösning.
+
+I det här exemplet används paketet `tree`, som definierar typen:
+
+	type Tree struct {
+		Left  *Tree
+		Value int
+		Right *Tree
+	}
+
+
+Beskrivningen fortsätter på [[javascript:click('.next-page')][nästa sida]].

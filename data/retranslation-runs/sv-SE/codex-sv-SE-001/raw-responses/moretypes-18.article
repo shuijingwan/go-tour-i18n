@@ -1,0 +1,11 @@
+* Övning: slices
+
+Implementera ⟪GTI18N_9c5fd763_000001⟫Pic⟪GTI18N_9c5fd763_000002⟫. Funktionen ska returnera en slice med längden ⟪GTI18N_9c5fd763_000003⟫dy⟪GTI18N_9c5fd763_000004⟫, där varje element är en slice med ⟪GTI18N_9c5fd763_000005⟫dx⟪GTI18N_9c5fd763_000006⟫ 8-bitars heltal utan tecken. När du kör programmet visas din bild genom att heltalen tolkas som gråskalevärden (nåja, blåskalevärden).
+
+Du väljer själv vilken bild som ska visas. Några intressanta funktioner är ⟪GTI18N_9c5fd763_000007⟫(x+y)/2⟪GTI18N_9c5fd763_000008⟫, ⟪GTI18N_9c5fd763_000009⟫x*y⟪GTI18N_9c5fd763_000010⟫ och ⟪GTI18N_9c5fd763_000011⟫x^y⟪GTI18N_9c5fd763_000012⟫.
+
+(Du måste använda en loop för att allokera varje ⟪GTI18N_9c5fd763_000013⟫[]uint8⟪GTI18N_9c5fd763_000014⟫ inuti ⟪GTI18N_9c5fd763_000015⟫[][]uint8⟪GTI18N_9c5fd763_000016⟫.)
+
+(Använd ⟪GTI18N_9c5fd763_000017⟫uint8(intValue)⟪GTI18N_9c5fd763_000018⟫ för att konvertera mellan typer.)
+
+⟪GTI18N_9c5fd763_000019⟫

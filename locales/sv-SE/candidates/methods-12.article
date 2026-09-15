@@ -1,0 +1,12 @@
+* Gränssnittsvärden med underliggande nil-värden
+
+Om det konkreta värdet inuti gränssnittet är nil
+anropas metoden med en nil-mottagare.
+
+I vissa språk skulle detta utlösa ett nullpekarundantag,
+men i Go är det vanligt att skriva metoder som hanterar anrop
+med en nil-mottagare utan problem (som metoden `M` i det här exemplet).
+
+Observera att ett gränssnittsvärde som innehåller ett konkret nil-värde inte självt är nil.
+
+.play methods/interface-values-with-nil.go

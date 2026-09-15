@@ -1,0 +1,17 @@
+* For
+
+Go har bara en loopkonstruktion: `for`-loopen.
+
+Den grundläggande `for`-loopen har tre delar som avgränsas med semikolon:
+
+- initieringssatsen: körs före den första iterationen
+- villkorsuttrycket: utvärderas före varje iteration
+- eftersatsen: körs i slutet av varje iteration
+
+Initieringssatsen är ofta en variabeldeklaration, och variablerna som deklareras där är bara synliga inom `for`-satsens räckvidd.
+
+Loopen slutar iterera när det booleska villkoret utvärderas till `false`.
+
+*Observera:* Till skillnad från språk som C, Java och JavaScript omges de tre delarna i `for`-satsen inte av parenteser, och klammerparenteserna `{`}` är alltid obligatoriska.
+
+.play flowcontrol/for.go

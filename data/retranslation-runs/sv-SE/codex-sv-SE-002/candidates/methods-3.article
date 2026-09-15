@@ -1,0 +1,12 @@
+* Metoder, fortsättning
+
+Du kan även deklarera en metod på typer som inte är structar.
+
+I det här exemplet ser vi en numerisk typ `MyFloat` med en metod `Abs`.
+
+Du kan bara deklarera en metod med en mottagare vars typ är definierad i samma
+paket som metoden.
+Du kan inte deklarera en metod med en mottagare vars typ är definierad i ett annat
+paket (vilket även omfattar inbyggda typer som `int`).
+
+.play methods/methods-continued.go
