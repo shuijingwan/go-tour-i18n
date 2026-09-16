@@ -12,7 +12,7 @@ import (
 const expectedCatalogMessages = 113
 
 func TestLoadEmbeddedCatalogs(t *testing.T) {
-	for _, locale := range []string{"de-DE", "en", "es-ES", "fr-FR", "it-IT", "ja-JP", "ko-KR", "nl-NL", "pl-PL", "pt-BR", "sv-SE", "tr-TR", "zh-CN"} {
+	for _, locale := range []string{"de-DE", "en", "es-ES", "fr-FR", "it-IT", "ja-JP", "ko-KR", "nl-NL", "pl-PL", "pt-BR", "sv-SE", "tr-TR", "zh-CN", "zh-TW"} {
 		catalog, err := Load(locale)
 		if err != nil {
 			t.Fatalf("Load(%q): %v", locale, err)
@@ -38,6 +38,7 @@ func TestHeaderAboutProjectMessages(t *testing.T) {
 		"sv-SE": "Om projektet",
 		"tr-TR": "Bu proje hakkında",
 		"zh-CN": "关于此项目",
+		"zh-TW": "關於此專案",
 	}
 	for locale, want := range wants {
 		catalog, err := Load(locale)
@@ -171,6 +172,7 @@ func TestEditorToggleStatesAreLocalizedPerCatalog(t *testing.T) {
 		"sv-SE": {"På", "Av"},
 		"tr-TR": {"Açık", "Kapalı"},
 		"zh-CN": {"开启", "关闭"},
+		"zh-TW": {"開", "關"},
 	}
 	for locale, want := range wants {
 		catalog, err := Load(locale)
@@ -185,6 +187,50 @@ func TestEditorToggleStatesAreLocalizedPerCatalog(t *testing.T) {
 			if got != want[index] {
 				t.Errorf("%s %s = %q, want %q", locale, key, got, want[index])
 			}
+		}
+	}
+}
+
+func TestTraditionalChineseCatalogMatchesEnglishSource(t *testing.T) {
+	source, err := Load("en")
+	if err != nil {
+		t.Fatal(err)
+	}
+	traditionalChinese, err := Load("zh-TW")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if traditionalChinese.Locale != "zh-TW" || traditionalChinese.HTMLLang != "zh-TW" {
+		t.Fatalf("zh-TW identity = locale %q, html_lang %q", traditionalChinese.Locale, traditionalChinese.HTMLLang)
+	}
+	if got, want := len(traditionalChinese.Messages), expectedCatalogMessages; got != want {
+		t.Fatalf("zh-TW message count = %d, want %d", got, want)
+	}
+	if err := validateCoverage(source, traditionalChinese); err != nil {
+		t.Fatalf("zh-TW coverage: %v", err)
+	}
+	placeholderRE := regexp.MustCompile(`\{[a-z][a-z0-9_]*\}`)
+	markupRE := regexp.MustCompile(`<[^>]+>`)
+	for key, sourceMessage := range source.Messages {
+		message := traditionalChinese.Messages[key]
+		if got, want := strings.Join(placeholderRE.FindAllString(message.Text, -1), "\x00"), strings.Join(placeholderRE.FindAllString(sourceMessage.Text, -1), "\x00"); got != want {
+			t.Errorf("zh-TW message %q placeholders = %q, want %q", key, got, want)
+		}
+		if sourceMessage.Kind == "rich" {
+			if got, want := strings.Join(markupRE.FindAllString(message.Text, -1), "\x00"), strings.Join(markupRE.FindAllString(sourceMessage.Text, -1), "\x00"); got != want {
+				t.Errorf("zh-TW rich message %q markup = %q, want %q", key, got, want)
+			}
+		}
+		if strings.Contains(message.Text, "TODO") {
+			t.Errorf("zh-TW message %q retains TODO", key)
+		}
+	}
+	for key, want := range map[string]string{
+		"editor.run": "執行", "editor.format": "格式化", "editor.reset": "重設",
+		"tour.title": "Go 指南",
+	} {
+		if got := traditionalChinese.Messages[key].Text; got != want {
+			t.Errorf("zh-TW message %q = %q, want %q", key, got, want)
 		}
 	}
 }

@@ -11,7 +11,7 @@ func TestLocalePublicationPolicies(t *testing.T) {
 			t.Errorf("ForLocale(%q) = %q, want %q", locale, got, GoLocal)
 		}
 	}
-	for _, locale := range []string{"en", "pt-BR", "nl-NL", "es-ES", "it-IT", "ja-JP", "sv-SE", "tr-TR", "new-locale"} {
+	for _, locale := range []string{"en", "pt-BR", "nl-NL", "es-ES", "it-IT", "ja-JP", "sv-SE", "tr-TR", "zh-TW", "new-locale"} {
 		if got := ForLocale(locale); got != Standard {
 			t.Errorf("ForLocale(%q) = %q, want %q", locale, got, Standard)
 		}
@@ -112,6 +112,7 @@ func TestReviewedLocaleHomeTargetsAreExact(t *testing.T) {
 		"https://es-go-dev.shuijingwanwq.com/",
 		"https://sv-go-dev.shuijingwanwq.com/",
 		"https://tr-go-dev.shuijingwanwq.com/",
+		"https://zh-tw-go-dev.shuijingwanwq.com/",
 	}
 	if len(siteHomeTargets) != len(targets) {
 		t.Fatalf("reviewed locale homepage count = %d, want %d", len(siteHomeTargets), len(targets))
@@ -179,6 +180,7 @@ func TestReviewedLocaleTourTargetsAreExact(t *testing.T) {
 		"https://es-go-dev.shuijingwanwq.com/tour/",
 		"https://sv-go-dev.shuijingwanwq.com/tour/",
 		"https://tr-go-dev.shuijingwanwq.com/tour/",
+		"https://zh-tw-go-dev.shuijingwanwq.com/tour/",
 	} {
 		if got := Classify(target); got != UnknownOwnerTarget {
 			t.Errorf("Classify(%q) = %q, want %q", target, got, UnknownOwnerTarget)

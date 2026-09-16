@@ -6,6 +6,40 @@ import (
 	"testing"
 )
 
+func TestTraditionalChineseArticleMetadataCoversCatalog(t *testing.T) {
+	root := filepath.Clean(filepath.Join("..", ".."))
+	catalog, err := ReadCatalog(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	metadata, err := LoadArticleMetadata(root, "zh-TW", catalog)
+	if err != nil {
+		t.Fatal(err)
+	}
+	wantTitles := map[string]string{
+		"welcome.article":     "歡迎！",
+		"basics.article":      "套件、變數與函式",
+		"flowcontrol.article": "流程控制陳述式：for、if、else、switch 與 defer",
+		"moretypes.article":   "更多型別：結構、切片與映射",
+		"methods.article":     "方法與介面",
+		"generics.article":    "泛型",
+		"concurrency.article": "並行處理",
+	}
+	if len(metadata) != len(wantTitles) {
+		t.Fatalf("zh-TW article metadata count = %d, want %d", len(metadata), len(wantTitles))
+	}
+	for article, title := range wantTitles {
+		entry, ok := metadata[article]
+		if !ok {
+			t.Errorf("zh-TW article metadata is missing %s", article)
+			continue
+		}
+		if entry.Title != title || entry.Subtitle == "" || strings.Contains(entry.Title+entry.Subtitle, "TODO") {
+			t.Errorf("zh-TW article metadata %s = %+v, want title %q, subtitle, and no TODO", article, entry, title)
+		}
+	}
+}
+
 func TestBrazilianPortugueseArticleMetadataCoversCatalog(t *testing.T) {
 	root := filepath.Clean(filepath.Join("..", ".."))
 	catalog, err := ReadCatalog(root)

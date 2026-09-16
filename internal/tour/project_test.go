@@ -77,6 +77,7 @@ func TestSiteMetadataTimesAreLocaleAware(t *testing.T) {
 		"pl-PL": "2026-08-20 07:56:11 (czas lokalny)",
 		"sv-SE": "2026-08-20 07:56:11 (lokal tid)",
 		"tr-TR": "2026-08-20 08:56:11 (yerel saat)",
+		"zh-TW": "2026-08-20 13:56:11（台灣時間）",
 	} {
 		got, err := metadata.UpstreamCommitTimeFor(localeProfiles[locale])
 		if err != nil {

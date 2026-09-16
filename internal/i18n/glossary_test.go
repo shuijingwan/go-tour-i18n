@@ -136,6 +136,47 @@ func TestZhCNMandatoryGlossary(t *testing.T) {
 	}
 }
 
+func TestZhTWGlossary(t *testing.T) {
+	glossary, err := LoadGlossary(repoRoot(t), "zh-TW")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if glossary.Locale != "zh-TW" {
+		t.Fatalf("glossary locale = %q, want zh-TW", glossary.Locale)
+	}
+	for key, want := range map[string]string{
+		"A Tour of Go":   "Go 指南",
+		"Go Playground":  "Go Playground",
+		"type assertion": "型別斷言",
+		"type parameter": "型別參數",
+	} {
+		if got := glossary.Mandatory[key]; got != want {
+			t.Errorf("mandatory[%q] = %q, want %q", key, got, want)
+		}
+	}
+	for key, want := range map[string]string{
+		"package":   "套件",
+		"interface": "介面",
+		"function":  "函式",
+		"channel":   "通道",
+		"slice":     "切片",
+	} {
+		if got := glossary.Preferred[key]; got != want {
+			t.Errorf("preferred[%q] = %q, want %q", key, got, want)
+		}
+	}
+	for _, want := range []string{"goroutine", "Go Playground"} {
+		if !containsString(glossary.Keep, want) {
+			t.Errorf("keep missing %q: %v", want, glossary.Keep)
+		}
+	}
+	for _, want := range []string{"类型", "接口", "函数", "变量", "Go 遊樂場"} {
+		if !containsString(glossary.Forbidden, want) {
+			t.Errorf("forbidden missing %q: %v", want, glossary.Forbidden)
+		}
+	}
+}
+
 func TestDeDEGlossary(t *testing.T) {
 	glossary, err := LoadGlossary(repoRoot(t), "de-DE")
 	if err != nil {
