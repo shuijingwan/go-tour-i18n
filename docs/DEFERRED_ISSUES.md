@@ -62,3 +62,23 @@
 - 暂缓原因：维护者明确决定不阻塞 tr-TR 上线，不在本轮对 Turkish 做局部 CSS 特例；后续作为共享样式问题统一修复。
 - 当前状态：`open`
 - 后续处理/核销证据：当前 evidence 见 `data/locale-surface-reviews/tr-TR/20260909-first-production.md` 的 Visual HUMAN gate 记录；保持 open。
+
+### DI-20260916-001：Go upstream 的四个社区 Tour 链接未使用 canonical `/tour/`
+
+- ID：`DI-20260916-001`
+- 发现日期：`2026-09-16`
+- 发现阶段/场景：共享课程 Header 语言导航与 publication policy 收尾；完整 `go test ./...` 的 `TestProjectedTourLinksFollowPublicationPolicy` 暴露正式 English `welcome.article` 中现有 Go local 链接仍使用无尾斜杠 `/tour`。
+- 问题描述：当前 upstream `welcome.article` 中指向本项目的 French、German、Korean、Simplified Chinese 四个社区 Tour URL 分别使用 `https://fr-go-dev.shuijingwanwq.com/tour`、`https://de-go-dev.shuijingwanwq.com/tour`、`https://ko-go-dev.shuijingwanwq.com/tour`、`https://go-dev.shuijingwanwq.com/tour`；本站 canonical Tour 根入口实际为 `/tour/`，无尾斜杠形式会产生一次 `/tour` → `/tour/` 重定向。commit `58638ea` 已在 candidate validation 之后的 publication correction 层通过 audited source→canonical mapping 将正式 projection 规范化为 `/tour/`，未修改 TranslationUnit protected link target、upstream source 或 candidate identity。
+- 暂缓原因：不为消除一次 upstream URL canonicalization 差异而直接修改冻结的 English source identity。维护者明确决定等后续再次向 Go 官方申请新增语言链接时，一并请求将现有四个社区链接更新为 canonical `/tour/`；在此之前继续使用本地 publication correction。
+- 当前状态：`open`
+- 后续处理/核销证据：当前本地修正见 commit `58638ea` 的 `internal/tourpolicy` publication correction 与 `internal/i18n` projection regression tests；待 upstream 链接改为 `/tour/` 并完成下一次 upstream sync 后，重新验证并评估删除本地 correction。当前保持 open。
+
+### DI-20260916-002：未知或非 canonical Tour 路径在 Production 回退为 200 Tour shell
+
+- ID：`DI-20260916-002`
+- 发现日期：`2026-09-16`
+- 发现阶段/场景：共享 Header HUMAN visual check 后进一步核对 Tour URL trailing-slash 与 canonical 行为，并分别对本地 server 和 `https://go-dev.shuijingwanwq.com` Production 进行 curl 验证。
+- 问题描述：Production 对未精确命中正式 Tour route 的部分 `/tour/...` 路径仍会进入 SPA fallback 并返回 HTTP 200。例如 `/tour/list/` 返回 200 且 canonical 为 `/tour/`，`/tour/welcome/1/` 返回 200 且 canonical 为 `/tour/`，不存在的 `/tour/does-not-exist-20260916` 也返回 200 且 canonical 为 `/tour/`；相比之下正式 `/tour/list` 与 `/tour/welcome/1` 均返回 200 并具有各自正确 canonical。该现象与 Go upstream 已报告的 `golang/go#81482`（`x/website/tour: unknown paths return 200 instead of 404`）属于同类 Tour fallback 问题。
+- 暂缓原因：维护者明确决定先等待 upstream Issue `golang/go#81482` 的调查和修复，随后按正式 upstream-sync 流程同步并重新验证本站行为，避免在 upstream 即将可能修改相同路由语义时提前维护一套 fork-specific routing implementation。若 upstream sync 后本站仍存在该问题，再实施最小本地修复。
+- 当前状态：`open`
+- 后续处理/核销证据：2026-09-16 公网验证结果为 `/tour` → 307 `/tour/`、`/tour/` → 200、`/tour/list` → 200 + canonical `/tour/list`、`/tour/list/` → 200 + canonical `/tour/`、`/tour/welcome/1` → 200 + canonical `/tour/welcome/1`、`/tour/welcome/1/` → 200 + canonical `/tour/`、`/tour/does-not-exist-20260916` → 200 + canonical `/tour/`。上游跟踪：https://github.com/golang/go/issues/81482 。当前保持 open，等待 upstream resolution 后同步复验。
