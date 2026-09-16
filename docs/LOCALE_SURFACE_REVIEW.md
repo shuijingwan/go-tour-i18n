@@ -32,6 +32,8 @@ Glossary 只回答正式术语选择，不能证明完整译文忠实、准确�
 
 生成或修改 UI、首页、list、article metadata、runtime message 与其他 SEO 文案前，必须完整读取该资产的正式 source/context 和目标 locale 的完整 glossary，并执行 `mandatory`、`preferred`、`forbidden`、`keep` 的全部决定；不得抽样或只凭相邻 Page/module 推断当前 source 没有的上下文。目标必须是自然的目标语言，同时精确保留 Go、Go Playground、TranslationUnit、Page、Example 等项目/技术 identity，以及 `official`、`unofficial`、`affiliated`、`authorized`、`endorsed` 等身份边界。
 
+普通 ChatGPT 可以生成这些 locale-level 语言资产，但正式 Locale Surface Review 必须由不同 conversation/session 执行；生成 session 不得审核并批准自己的本轮输出。具体职责与执行边界见 [ChatGPT 正式语言生成执行规范](CHATGPT_LANGUAGE_GENERATION.md)。
+
 不得添加 source 未提供的背景、教程、解释、结论、保证或处方；必须保留原有逻辑、条件和顺序：possibility 不等于 requirement，hint 不等于 prescription。尤其 `Congrats` 等页面不得仅按模块主题自行补写内容。课程页 schema v2 description 的生成边界单独以 [课程页正式 SEO Metadata 规范](COURSE_SEO_METADATA.md) 为准：canonical English 阶段完整读取 Page source 做一次 semantic extraction；locale 阶段只读取该 canonical description、完整 locale glossary、locale identity 与 v2 contract，不再读取 source/target body，也不重新选择摘要重点。最终 Surface Review 仍恢复完整 source/target 上下文。
 
 ## A. Locale-level language quality review

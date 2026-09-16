@@ -134,7 +134,7 @@ go run -mod=readonly ./cmd/tour-i18n translate recover-network \
 
 ### 正式 TranslationUnit 翻译流程
 
-当前默认生产 Translation Engine 为 **Codex GPT-5.6 Sol + High**，ChatGPT 统一承担 Quality Check。Codex 直接读取仓库中的 batch 输入并写入 `raw-responses/`，不经过 ZIP、JSON wrapper 或本地导入环节。
+正式语言生成支持两种并存环境：推荐使用普通 **ChatGPT GPT-5.6 Sol + High + Remote Desktop Commander**，**Codex GPT-5.6 Sol + High** 保留为 fallback。两者共用同一 TranslationUnit、automatic validation、Candidate Snapshot、Quality Check、machine finalization 与 promotion gate，不新增 Translation Engine 或 provider provenance schema。
 
 正式模型输入由当前 batch 的 `manifest.json`、manifest 列出的全部 `inputs/*` 与 `locales/<locale>/glossary.yaml` 共同构成，三者不可拆分。Glossary 必须在翻译前读取并完整遵守，不只是 validator 的后置检查材料。
 
@@ -142,18 +142,20 @@ go run -mod=readonly ./cmd/tour-i18n translate recover-network \
 
 ```text
 export
-→ Codex High 翻译
+→ ChatGPT staged generation 或 Codex fallback
 → raw-responses/
 → process
 → automatic validation
-→ ChatGPT Quality Check
-→ Final Review
+→ 独立 ChatGPT session Quality Check（全 A）
+→ machine finalization
 → promotion
 ```
 
-Retry 只处理 `restore_failed` 与 `validation_failed`，且 `retranslation retry` 本身不调用模型、不生成译文。Automatic validation 通过后的 B/C/D 质量问题必须进入新的 revision batch，不得使用 retry。所有 TranslationUnit 的 ChatGPT Quality Check 均为 A 后才能进入 Final Review；Final Review 也只有 A 才允许 promotion。
+ChatGPT export 必须显式使用 `--generator chatgpt`；默认 `codex` 保持兼容。`chatgpt-<locale>-NNN` 与 `codex-<locale>-NNN` 共享 numeric namespace，并按数字后缀选择 latest batch。ChatGPT 先将完整 batch 写入 batch 内隐藏 staging directory，完成文件集合、protected token、glossary、未翻译文本、输出格式与 single-LF 检查后，才整体 rename 为 `raw-responses/`，避免中断留下 partial formal output。
 
-完整导航见 [多语言翻译流程](docs/TRANSLATION_WORKFLOW.md)，输入/输出契约见 [翻译任务规范](docs/TRANSLATION_TASK_SPEC.md)，Codex 规则见 [Codex TranslationUnit 翻译执行规范](docs/CODEX_TRANSLATION.md)，执行顺序见 [Retranslation 执行手册](docs/RETRANSLATION_RUNBOOK.md)。历史上 zh-CN 103 页由 ChatGPT 完成并提升为 canonical 的事实继续保留。
+Retry 只处理 `restore_failed` 与 `validation_failed`，且 `retranslation retry` 本身不调用模型、不生成译文。Automatic validation 通过后的 B/C/D 质量问题必须进入新的 revision batch，不得使用 retry。生成与正式审核使用不同 ChatGPT conversation/session；所有 TranslationUnit 的 Quality Check 均为 A 后，machine finalization 才允许 promotion。
+
+完整导航见 [多语言翻译流程](docs/TRANSLATION_WORKFLOW.md)，输入/输出契约见 [翻译任务规范](docs/TRANSLATION_TASK_SPEC.md)，ChatGPT 规则见 [ChatGPT 正式语言生成执行规范](docs/CHATGPT_LANGUAGE_GENERATION.md)，Codex fallback 见 [Codex TranslationUnit 翻译执行规范](docs/CODEX_TRANSLATION.md)，执行顺序见 [Retranslation 执行手册](docs/RETRANSLATION_RUNBOOK.md)。历史上 zh-CN 103 页由 ChatGPT 完成并提升为 canonical 的事实继续保留。
 
 ## 正式投影与本地预览
 

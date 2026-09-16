@@ -85,6 +85,66 @@ func TestRetranslationExportSupportsLocaleAwareBatchPath(t *testing.T) {
 	}
 }
 
+func TestRetranslationExportGeneratorSelectsAutomaticBatchPrefix(t *testing.T) {
+	const locale = "de-DE"
+	t.Run("chatgpt", func(t *testing.T) {
+		root := t.TempDir()
+		writeRetranslationTestGlossaryForLocale(t, root, locale)
+		result, err := ExportRetranslationBatch(root, retranslationTestCatalog(1), RetranslationExportOptions{
+			Locale: locale, Generator: RetranslationGeneratorChatGPT,
+		})
+		if err != nil {
+			t.Fatal(err)
+		}
+		if result.BatchID != "chatgpt-de-DE-001" {
+			t.Fatalf("batch ID = %q, want chatgpt-de-DE-001", result.BatchID)
+		}
+	})
+
+	t.Run("chatgpt continues shared numeric namespace", func(t *testing.T) {
+		root := t.TempDir()
+		writeRetranslationTestGlossaryForLocale(t, root, locale)
+		writeRetranslationHistoryManifest(t, root, locale, "codex-de-DE-019")
+		result, err := ExportRetranslationBatch(root, retranslationTestCatalog(2), RetranslationExportOptions{
+			Locale: locale, Generator: RetranslationGeneratorChatGPT,
+		})
+		if err != nil {
+			t.Fatal(err)
+		}
+		if result.BatchID != "chatgpt-de-DE-020" || !reflect.DeepEqual(result.UnitIDs, []string{"lesson/2"}) {
+			t.Fatalf("result = %+v, want chatgpt-de-DE-020 with lesson/2", result)
+		}
+	})
+
+	t.Run("explicit batch id remains authoritative", func(t *testing.T) {
+		root := t.TempDir()
+		writeRetranslationTestGlossaryForLocale(t, root, locale)
+		result, err := ExportRetranslationBatch(root, retranslationTestCatalog(1), RetranslationExportOptions{
+			Locale: locale, Generator: RetranslationGeneratorChatGPT, BatchID: "manual-compatible-batch",
+		})
+		if err != nil {
+			t.Fatal(err)
+		}
+		if result.BatchID != "manual-compatible-batch" {
+			t.Fatalf("batch ID = %q, want explicit ID", result.BatchID)
+		}
+	})
+}
+
+func TestRetranslationExportRejectsUnsupportedGenerator(t *testing.T) {
+	root := t.TempDir()
+	writeRetranslationTestGlossary(t, root)
+	_, err := ExportRetranslationBatch(root, retranslationTestCatalog(1), RetranslationExportOptions{
+		Locale: "zh-CN", Generator: RetranslationGenerator("other"),
+	})
+	if err == nil || !strings.Contains(err.Error(), "use codex or chatgpt") {
+		t.Fatalf("unsupported generator error = %v", err)
+	}
+	if _, statErr := os.Stat(filepath.Join(root, "data", "retranslation-runs")); !os.IsNotExist(statErr) {
+		t.Fatalf("invalid generator created batch data: %v", statErr)
+	}
+}
+
 func TestRetranslationExportAutomaticBatchProgression(t *testing.T) {
 	root := t.TempDir()
 	writeRetranslationTestGlossary(t, root)
@@ -185,6 +245,10 @@ func TestRetranslationExportDefaultBatchIDScansCompatibleHistory(t *testing.T) {
 }
 
 func writeRetranslationHistoryManifest(t *testing.T, root, locale, batchID string) {
+	writeRetranslationHistoryManifestWithSource(t, root, locale, batchID, "")
+}
+
+func writeRetranslationHistoryManifestWithSource(t *testing.T, root, locale, batchID, sourceSHA256 string) {
 	t.Helper()
 	dir := filepath.Join(root, "data", "retranslation-runs", locale, batchID)
 	if err := os.MkdirAll(dir, 0755); err != nil {
@@ -193,10 +257,45 @@ func writeRetranslationHistoryManifest(t *testing.T, root, locale, batchID strin
 	manifest := RetranslationBatchManifest{
 		SchemaVersion: 2, BatchID: batchID, Locale: locale, ProtectionMode: "default",
 		UnitKind: UnitKindPage, UnitCount: 1,
-		Units: []RetranslationBatchUnit{{UnitID: "lesson/1", UnitKind: UnitKindPage}},
+		Units: []RetranslationBatchUnit{{UnitID: "lesson/1", UnitKind: UnitKindPage, SourceSHA256: sourceSHA256}},
 	}
 	if err := writeTranslationJSON(filepath.Join(dir, "manifest.json"), manifest); err != nil {
 		t.Fatal(err)
+	}
+}
+
+func TestScanRetranslationBatchesUsesNumericOrderAcrossGenerators(t *testing.T) {
+	root := t.TempDir()
+	const locale = "de-DE"
+	catalog := retranslationTestCatalog(1)
+	writeRetranslationHistoryManifestWithSource(t, root, locale, "codex-de-DE-019", "older-source")
+	writeRetranslationHistoryManifestWithSource(t, root, locale, "chatgpt-de-DE-020", catalog.Pages[0].SourceSHA256)
+
+	exported, nextNumber, err := scanRetranslationBatches(
+		filepath.Join(root, "data", "retranslation-runs", locale), locale, catalog,
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
+	latest := exported["lesson/1"]
+	if latest.BatchID != "chatgpt-de-DE-020" || latest.SourceSHA256 != catalog.Pages[0].SourceSHA256 {
+		t.Fatalf("latest export = %+v, want chatgpt-de-DE-020 current source", latest)
+	}
+	if nextNumber != 21 {
+		t.Fatalf("next batch number = %d, want 21", nextNumber)
+	}
+}
+
+func TestScanRetranslationBatchesRejectsDuplicateNumberAcrossGenerators(t *testing.T) {
+	root := t.TempDir()
+	const locale = "de-DE"
+	catalog := retranslationTestCatalog(1)
+	writeRetranslationHistoryManifest(t, root, locale, "codex-de-DE-019")
+	writeRetranslationHistoryManifest(t, root, locale, "chatgpt-de-DE-019")
+
+	_, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{Locale: locale})
+	if err == nil || !strings.Contains(err.Error(), "ambiguous or invalid retranslation batch number 019") {
+		t.Fatalf("duplicate numeric batch error = %v", err)
 	}
 }
 

@@ -27,10 +27,11 @@
 
 ## 2. 翻译执行
 
-`AGENTS.md` 是 Codex 自动导航入口。执行 Page 或 Example 翻译、导出重译批次、处理模型返回和重试时，阅读：
+`AGENTS.md` 是自动执行者进入仓库流程的导航入口，不替代各 stage-specific authority。执行 Page 或 Example 翻译、导出重译批次、处理模型返回和重试时，阅读：
 
 - [翻译任务规范](TRANSLATION_TASK_SPEC.md)：TranslationUnit、模型输入/输出契约及结构约束。
-- [Codex 翻译执行规范](CODEX_TRANSLATION.md)：当前默认 Codex TranslationUnit 翻译、首次 Page batch 与直接写入规则。
+- [ChatGPT 正式语言生成执行规范](CHATGPT_LANGUAGE_GENERATION.md)：普通 ChatGPT + Remote Desktop Commander 的支持范围、原子 staging 写入和生成/审核隔离。
+- [Codex 翻译执行规范](CODEX_TRANSLATION.md)：Codex TranslationUnit 翻译 fallback、首次 Page batch 与直接写入规则。
 - [Retranslation 执行手册](RETRANSLATION_RUNBOOK.md)：export/retry/revision、质量检查与提升的执行顺序。
 
 新 locale 在第一次 `retranslation export` 前，必须从当前正式 TranslationUnit catalog 初始化统一状态表并通过完整性检查：
@@ -67,4 +68,4 @@ promotion 后构建 production bundle、部署和验收时，阅读：
 
 ## 文档优先级
 
-发生冲突时，以阶段对应的正式规范为准：术语以 `TRANSLATION_TERMINOLOGY.md` 为准；模型无关输入/输出契约以 `TRANSLATION_TASK_SPEC.md` 为准；当前默认 Codex 执行规则与新增 locale 首次 Page batch 以 `CODEX_TRANSLATION.md` 为准；export、retry 与 revision 顺序以 `RETRANSLATION_RUNBOOK.md` 为准；质量审核和 promotion gate 以 `TRANSLATION_QUALITY_REVIEW.md` 为准；发布部署以 `PRODUCTION_RUNBOOK.md` 为准。`AGENTS.md` 只提供 Codex 自动导航，`PROJECT_STATE.md` 与 `TRANSLATION_QUALITY_EXPERIMENTS.md` 只记录状态和历史。
+发生冲突时，以阶段对应的正式规范为准：术语以 `TRANSLATION_TERMINOLOGY.md` 为准；模型无关输入/输出契约以 `TRANSLATION_TASK_SPEC.md` 为准；ChatGPT 执行与安全 staging 以 `CHATGPT_LANGUAGE_GENERATION.md` 为准；Codex fallback 与新增 locale 首次 Page batch 以 `CODEX_TRANSLATION.md` 为准；export、retry 与 revision 顺序以 `RETRANSLATION_RUNBOOK.md` 为准；质量审核和 promotion gate 以 `TRANSLATION_QUALITY_REVIEW.md` 为准；发布部署以 `PRODUCTION_RUNBOOK.md` 为准。`AGENTS.md` 只提供自动导航，`PROJECT_STATE.md` 与 `TRANSLATION_QUALITY_EXPERIMENTS.md` 只记录状态和历史。

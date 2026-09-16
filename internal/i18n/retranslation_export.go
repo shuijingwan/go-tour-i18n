@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"regexp"
 	"sort"
+	"strconv"
 	"strings"
 )
 
@@ -17,9 +17,17 @@ const (
 	MaxAutomaticPageExportLimit     = 60
 )
 
+type RetranslationGenerator string
+
+const (
+	RetranslationGeneratorCodex   RetranslationGenerator = "codex"
+	RetranslationGeneratorChatGPT RetranslationGenerator = "chatgpt"
+)
+
 type RetranslationExportOptions struct {
 	Locale             string
 	BatchID            string
+	Generator          RetranslationGenerator
 	UnitIDs            []string
 	UnitKind           UnitKind
 	Limit              int
@@ -78,6 +86,8 @@ type preparedRetranslationInput struct {
 type exportedRetranslationUnit struct {
 	BatchID      string
 	SourceSHA256 string
+	batchNumber  int
+	numbered     bool
 }
 
 type retranslationStatus struct {
@@ -106,6 +116,13 @@ func ExportRetranslationBatch(root string, catalog *Catalog, options Retranslati
 		return nil, errors.New("retranslation locale is required")
 	}
 	if err := ValidateLocaleName(options.Locale); err != nil {
+		return nil, err
+	}
+	generator := options.Generator
+	if generator == "" {
+		generator = RetranslationGeneratorCodex
+	}
+	if err := ValidateRetranslationGenerator(generator); err != nil {
 		return nil, err
 	}
 	if options.UnitKind != "" && options.UnitKind != UnitKindPage && options.UnitKind != UnitKindExample {
@@ -199,7 +216,7 @@ func ExportRetranslationBatch(root string, catalog *Catalog, options Retranslati
 
 	batchID := options.BatchID
 	if batchID == "" {
-		batchID = fmt.Sprintf("codex-%s-%03d", options.Locale, nextNumber)
+		batchID = fmt.Sprintf("%s-%s-%03d", generator, options.Locale, nextNumber)
 	}
 	if err := validateBatchID(batchID); err != nil {
 		return nil, err
@@ -475,18 +492,24 @@ func scanRetranslationBatches(base, locale string, catalog *Catalog) (map[string
 	for _, example := range catalog.Examples {
 		known[example.ID] = UnitKindExample
 	}
-	batchPattern := regexp.MustCompile(`^(?:chatgpt|codex)-` + regexp.QuoteMeta(locale) + `-([0-9]+)$`)
 	nextNumber := 1
+	seenNumbers := map[int]string{}
 	sort.Slice(entries, func(i, j int) bool { return entries[i].Name() < entries[j].Name() })
 	for _, entry := range entries {
 		if !entry.IsDir() || strings.HasPrefix(entry.Name(), ".") {
 			continue
 		}
-		match := batchPattern.FindStringSubmatch(entry.Name())
+		match := promotionBatchRE(locale).FindStringSubmatch(entry.Name())
+		batchNumber := 0
 		if match != nil {
-			var number int
-			if _, err := fmt.Sscanf(match[1], "%d", &number); err == nil && number >= nextNumber {
-				nextNumber = number + 1
+			var err error
+			batchNumber, err = strconv.Atoi(match[2])
+			if err != nil || batchNumber < 1 || seenNumbers[batchNumber] != "" {
+				return nil, 0, fmt.Errorf("ambiguous or invalid retranslation batch number %03d", batchNumber)
+			}
+			seenNumbers[batchNumber] = entry.Name()
+			if batchNumber >= nextNumber {
+				nextNumber = batchNumber + 1
 			}
 		}
 		manifestPath := filepath.Join(base, entry.Name(), "manifest.json")
@@ -525,13 +548,30 @@ func scanRetranslationBatches(base, locale string, catalog *Catalog) (map[string
 			if unitKind != wantKind || manifest.UnitKind != unitKind {
 				return nil, 0, fmt.Errorf("retranslation batch %q translation unit metadata mismatch for %q", entry.Name(), unitID)
 			}
-			// Entries are sorted by batch ID, so retain the latest export for a
-			// unit. Its source hash decides whether a stale formal status still
-			// needs a fresh batch.
-			exported[unitID] = exportedRetranslationUnit{BatchID: entry.Name(), SourceSHA256: record.SourceSHA256}
+			current, exists := exported[unitID]
+			// Formal chatgpt/codex batches share one numeric namespace. Their
+			// numeric suffix, not provider-prefix lexical order, decides which
+			// export is latest. Preserve the historical lexical behavior when
+			// an explicitly named non-formal batch is involved.
+			if exists && current.numbered && match != nil && batchNumber < current.batchNumber {
+				continue
+			}
+			exported[unitID] = exportedRetranslationUnit{
+				BatchID: entry.Name(), SourceSHA256: record.SourceSHA256,
+				batchNumber: batchNumber, numbered: match != nil,
+			}
 		}
 	}
 	return exported, nextNumber, nil
+}
+
+func ValidateRetranslationGenerator(generator RetranslationGenerator) error {
+	switch generator {
+	case RetranslationGeneratorCodex, RetranslationGeneratorChatGPT:
+		return nil
+	default:
+		return fmt.Errorf("unsupported retranslation generator %q; use codex or chatgpt", generator)
+	}
 }
 
 func validateBatchID(batchID string) error {

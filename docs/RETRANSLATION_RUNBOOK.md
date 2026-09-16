@@ -1,21 +1,22 @@
 # Retranslation 执行手册
 
-## 1. 当前默认生产流程
+## 1. 当前正式生产流程
 
-当前唯一默认的正式 TranslationUnit 翻译流程是：
+当前正式 TranslationUnit 翻译流程支持两个语言生成执行环境：普通 ChatGPT GPT-5.6 Sol + High 配合 Remote Desktop Commander 为推荐路径，Codex GPT-5.6 Sol + High 为 fallback。两者共用同一 TranslationUnit workflow 与全部质量 gate：
 
 ```text
 retranslation export
-→ Codex（High）翻译并直接写入 raw-responses/
+→ ChatGPT staged write 或 Codex direct write
+→ 完整 raw-responses/
 → retranslation process
 → automatic validation
 → quality-check snapshot
-→ ChatGPT Quality Check
+→ 独立 ChatGPT Quality Check session
 → quality-check finalize
 → promote
 ```
 
-模型与 reasoning 由用户在 Codex UI 中选择；当前推荐生产配置为 GPT-5.6 Sol + High。翻译输入、输出和 Codex 写入规则分别见 [翻译任务规范](TRANSLATION_TASK_SPEC.md) 与 [Codex 翻译执行规范](CODEX_TRANSLATION.md)。
+模型与 reasoning 由用户在对应 UI 中选择，正式语言生成不得低于 GPT-5.6 Sol + High。provider-independent 输入/输出见 [翻译任务规范](TRANSLATION_TASK_SPEC.md)；ChatGPT staging 与会话隔离见 [ChatGPT 正式语言生成执行规范](CHATGPT_LANGUAGE_GENERATION.md)；Codex fallback 见 [Codex 翻译执行规范](CODEX_TRANSLATION.md)。
 
 ## 2. Export 与首次翻译
 
@@ -28,17 +29,25 @@ go run -mod=readonly ./cmd/tour-i18n status check --locale <locale>
 
 只有 `status check` 通过后，才进入首次 `retranslation export`。`status init` 只创建缺失的初始 `status.tsv`，不得用于重置或同步已有 locale；已有 locale 的 source 更新与状态迁移继续走现有正式流程。
 
-使用 `retranslation export` 创建 batch。开始翻译前，Codex 必须读取当前 batch 的：
+使用 `retranslation export` 创建 batch。ChatGPT 正式路径必须显式传 `--generator chatgpt`；未指定 generator 时为向后兼容的 `codex`：
+
+```bash
+go run -mod=readonly ./cmd/tour-i18n retranslation export \
+  --locale <locale> --generator chatgpt \
+  --unit-kind page --limit 60
+```
+
+开始翻译前，当前生成执行者必须读取当前 batch 的：
 
 新增 locale 首次 Page batch 的推荐生产基线、正式顺序、60-Page 上限、Examples 分离、revision 范围和未来调整条件，以 [Codex 翻译执行规范](CODEX_TRANSLATION.md#新增-locale-的首次-page-batch) 为唯一执行规则。首次 Page export 必须显式传 `--unit-kind page --limit 60`；不得混合 Page 与 Example，也不做均衡分片。Example 自动选批、显式 `--id` 选批和全部 `--allow-reexport` revision batch 始终最多 30 个。
 
-未传 `--batch-id` 时，新 batch 自动命名为 `codex-<locale>-NNN`。自动编号同时扫描保留的 `chatgpt-<locale>-NNN` 与 `codex-<locale>-NNN` 历史目录，取实际最大序号后递增；历史 batch 名称、manifest 和 evidence 均保持不变。
+未传 `--batch-id` 时，batch 根据 generator 自动命名为 `codex-<locale>-NNN` 或 `chatgpt-<locale>-NNN`。两种 prefix 共享同一 numeric namespace；自动编号取实际最大序号后递增，重复 numeric suffix fail closed。同一 TranslationUnit 的 latest export/source revision 也按 numeric suffix 选择，不依赖 prefix 字典序。显式 `--batch-id` 的既有兼容行为、历史 batch 名称、manifest 和 evidence 均保持不变；manifest 不新增 provider/model/reasoning provenance。
 
 1. `manifest.json`；
 2. manifest 列出的全部 `inputs/*`；
 3. `locales/<locale>/glossary.yaml`。
 
-这三部分不可拆分。每个 TranslationUnit 独立翻译：Page 从 `inputs/*.article` 写入 `raw-responses/*.article`；Example 从 `inputs/*.txt` 写入 `raw-responses/*.txt`。TranslationUnit 是翻译、validation 和 review 的最小单位，batch 只是执行与归档容器。
+这三部分不可拆分。每个 TranslationUnit 独立翻译：Page 从 `inputs/*.article` 生成 `raw-responses/*.article`；Example 从 `inputs/*.txt` 生成 `raw-responses/*.txt`。ChatGPT 必须先在 batch 内隐藏 staging directory 完成全批次并核对后，再把目录原子 rename/move 为正式 `raw-responses/`；Codex fallback 继续按其执行规范直接写入。TranslationUnit 是翻译、validation 和 review 的最小单位，batch 只是执行与归档容器。
 
 ## 3. Process 与 automatic validation
 
@@ -61,7 +70,7 @@ Automatic validation 只负责结构、保护 token、代码、链接、source i
 新导出的 batch 在 manifest 中声明 `artifact_eof: single_lf`，并按以下边界执行：
 
 - exporter 在写入 Page `.article` 和 Example `.txt` input 前规范化 EOF；`source_sha256` 仍绑定原始 TranslationUnit source 字节，`input_sha256` 绑定规范化后的 protected input；
-- Codex 生成的 `raw-responses/*` 与 `retries/*/attempt-NNN.*` 必须以恰好一个 LF 结束；
+- ChatGPT 或 Codex 生成的 `raw-responses/*` 与 `retries/*/attempt-NNN.*` 必须以恰好一个 LF 结束；
 - `retranslation process` 和 `retranslation retry` 在 restore 前检查对应 raw artifact；EOF 不合规时直接失败，不自动改写 raw response，也不产生部分 candidate 或 validation evidence；
 - restore 成功后，process/retry 在 validation 与写入前将 Page `.article` 和 Example `.go` candidate 规范化为恰好一个结尾 LF。
 
@@ -91,14 +100,14 @@ Retry 只用于：
 - `restore_failed`；
 - `validation_failed`。
 
-它不用于翻译质量修改。Codex 读取失败 evidence 和原正式输入，生成下一份连续编号的原始译文：
+它不用于翻译质量修改。ChatGPT 或 Codex 读取失败 evidence 和原正式输入，生成下一份连续编号的原始译文：
 
 ```text
 retries/<flattened-unit-id>/attempt-NNN.article
 retries/<flattened-unit-id>/attempt-NNN.txt
 ```
 
-`raw-responses/<unit>.*` 是正式 attempt 1，其初始 validation evidence 也记录 `attempt: 1`。因此首次 retry 必须写入 `attempt-002.*`，不得创建 `attempt-001.*`；之后从当前 validation 的 attempt 依次加一，且不得覆盖已有 attempt。`attempt-001-validation.json` 是 retry 命令归档的初始 validation evidence，不是需要 Codex 生成的 retry raw response。
+`raw-responses/<unit>.*` 是正式 attempt 1，其初始 validation evidence 也记录 `attempt: 1`。因此首次 retry 必须写入 `attempt-002.*`，不得创建 `attempt-001.*`；之后从当前 validation 的 attempt 依次加一，且不得覆盖已有 attempt。`attempt-001-validation.json` 是 retry 命令归档的初始 validation evidence，不是需要模型生成的 retry raw response。ChatGPT retry 先写同目录隐藏 staging file，完整核对后再原子 rename 为正式 attempt 文件。
 
 文件已存在后再执行：
 
@@ -149,7 +158,7 @@ Quality Check 的质量修改不得使用 retry。Revision 流程为：
 ```text
 创建新的 revision batch
 → re-export 对应 TranslationUnit
-→ Codex 重新读取完整正式输入并重新翻译
+→ 选定的生成执行者重新读取完整正式输入并重新翻译
 → process
 → automatic validation
 → 生成新的完整 locale Candidate Snapshot
@@ -164,10 +173,12 @@ Quality Check 的质量修改不得使用 retry。Revision 流程为：
 
 ```bash
 go run -mod=readonly ./cmd/tour-i18n retranslation export \
-  --locale <locale> --allow-reexport \
+  --locale <locale> --generator chatgpt --allow-reexport \
   --previous-snapshot-id <snapshot-id> \
   --id <unit-id> [--id <unit-id> ...]
 ```
+
+上例是推荐的 ChatGPT revision 路径；Codex fallback 使用默认 `codex` 或显式 `--generator codex`。两种路径的 revision eligibility 与 manifest feedback 字段完全相同。
 
 新正式 revision 模式只允许以下 Unit：
 
@@ -218,4 +229,4 @@ go run -mod=readonly ./cmd/tour-i18n retranslation promote --locale <locale> --s
 
 ## 9. 阶段边界
 
-Codex 完成首次翻译或 retry 译文生成后，不自动继续执行 process、Quality Check、finalize 或 promote，除非用户明确要求继续。UI catalog 翻译是独立流程，不属于本手册。
+ChatGPT 或 Codex 完成首次翻译或 retry 译文生成后，不自动继续执行 process、Quality Check、finalize 或 promote，除非用户明确要求继续。维护者本地终端负责确定性 lifecycle。正式 Quality Check 必须使用独立于本轮生成的 ChatGPT conversation/session。UI catalog 翻译是独立流程，不属于本手册。

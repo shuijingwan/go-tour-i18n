@@ -1,5 +1,7 @@
 # 翻译质量实验
 
+本文只记录当时实验与阶段性决策，不是当前执行规范；当前正式路径以 [多语言翻译流程](TRANSLATION_WORKFLOW.md) 及其链接的执行文档为准。
+
 ## 目的与边界
 
 项目的自动 candidate validator 负责检查 present 解析、页面结构、链接、代码、directive、render 等安全性。validator 通过表示候选满足项目的结构与发布约束，但不等于中文译文一定达到最优质量。

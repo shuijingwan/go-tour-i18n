@@ -7,23 +7,23 @@
 
 新增 locale 的 TranslationUnit 翻译仍须继续遵守下列不可拆分输入规则；上述入口不能代替具体翻译规范。
 
-当用户要求执行 retranslation 正式翻译、retranslation retry 的译文生成、revision batch 翻译或任何 TranslationUnit 翻译时，Codex 在写文件前必须读取：
+当用户要求执行 retranslation 正式翻译、retranslation retry 的译文生成、revision batch 翻译或任何 TranslationUnit 翻译时，执行者在写文件前必须读取：
 
 1. `docs/TRANSLATION_WORKFLOW.md`
 2. `docs/TRANSLATION_TASK_SPEC.md`
 3. `docs/RETRANSLATION_RUNBOOK.md`
-4. `docs/CODEX_TRANSLATION.md`
+4. 当前执行环境规范：Codex 读取 `docs/CODEX_TRANSLATION.md`；普通 ChatGPT + Remote Desktop Commander 读取 `docs/CHATGPT_LANGUAGE_GENERATION.md`
 5. 当前 batch 的 `manifest.json`
 6. manifest 列出的全部 `inputs/*`
 7. `locales/<locale>/glossary.yaml`
 
 manifest、全部 inputs 与 locale glossary 是不可拆分的正式翻译输入。不得因用户 Prompt 未再次提醒 glossary 而跳过它，也不得以聊天上下文代替仓库中的当前正式规则。
 
-模型与 reasoning 由用户在 Codex UI 中选择；当前推荐生产配置为 **GPT-5.6 Sol + High**。本文件不负责切换模型或 reasoning。
+模型与 reasoning 由用户在对应 UI 中选择；Codex 与普通 ChatGPT 的当前正式语言生成配置均为 **GPT-5.6 Sol + High**。本文件不负责切换模型或 reasoning。
 
 ## 执行职责与正式自动化
 
-Codex 用于正式 TranslationUnit translation / revision、需要重新生成译文的 retry、需要完整 repository context 的代码理解与修改、测试修复、docs/config 修改，以及复杂 failure evidence 分析。Codex 修改代码后可以运行证明修改正确所必需的最小 targeted tests，但不充当普通终端重复执行整个正式生命周期。
+普通 ChatGPT 优先用于 locale glossary、UI catalog、article metadata、TranslationUnit translation / revision、需要重新生成译文的 retry、schema v2 Course SEO localization、独立逐 Unit Quality Check、必要的 canonical review 与 Locale Surface Review。生成与正式审核必须使用不同 conversation/session。Codex 主要用于需要完整 repository context 的代码理解与修改、测试修复、docs/config 修改和复杂 failure evidence 分析，并保留为正式语言生成 fallback。Codex 修改代码后可以运行证明修改正确所必需的最小 targeted tests，但不充当普通终端重复执行整个正式生命周期。
 
 本地终端用于确定性执行：build、不会调用模型的 retranslation process / revalidate、status、validation、publish、deploy、verifier、checksum、curl、Git、assets，以及已有正式 CLI/script 已覆盖的其他机械步骤。当前 docs/code/production identity 已确认的 machine fact 应直接复用；没有新的 failure evidence 时，不重新探测服务器、不重新设计 Production、广告、IndexNow、shared assets 或 verifier。只有真实 evidence 显示基线变化时，才重新调查并更新正式 docs，避免为了“再确认一次”消耗 Codex reasoning quota。
 

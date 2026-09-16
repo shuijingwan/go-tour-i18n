@@ -1,10 +1,10 @@
 # Codex TranslationUnit 翻译执行规范
 
-本文档是 Codex 执行正式 TranslationUnit 翻译时的仓库内规范，不是需要用户在每次会话中复制的 Prompt 模板。TranslationUnit 的定义和结构规则以 [翻译任务规范](TRANSLATION_TASK_SPEC.md) 为准。
+本文档是 Codex 作为正式语言生成 fallback 执行 TranslationUnit 翻译时的仓库内规范，不是需要用户在每次会话中复制的 Prompt 模板。普通 ChatGPT + Remote Desktop Commander 的并列执行规范见 [ChatGPT 正式语言生成执行规范](CHATGPT_LANGUAGE_GENERATION.md)。TranslationUnit 的定义和结构规则以 [翻译任务规范](TRANSLATION_TASK_SPEC.md) 为准。
 
 ## 首次正式翻译
 
-当前默认生产流程的翻译阶段为：
+Codex 支持的正式翻译阶段为：
 
 ```text
 retranslation export
@@ -17,11 +17,11 @@ retranslation export
 
 manifest、全部 inputs 与 locale glossary 是不可拆分的正式模型输入。Codex 必须在翻译前完整读取 glossary，并遵守其中的 `mandatory`、`preferred`、`forbidden` 和 `keep`；glossary 不是仅供 validator 后置检查的材料。
 
-## Codex 5 小时额度与执行分工
+## Codex 5 小时额度与 fallback 分工
 
 新增 locale 的运营目标是单个 Codex 5 小时额度窗口使用不超过 100%。这是成本/运营目标，不是 TranslationUnit quality gate：不得为此降低 A-only Quality Check、跳过 QC、减少必要 revision，或将正式翻译模型从 **GPT-5.6 Sol + High** 自动降级。暂时不设置新增 locale 的硬 wall-clock 时间目标。
 
-在主要 model-intensive 阶段（TranslationUnit translation / revision、需重新生成译文的 retry、较大的代码理解任务）前后观察当前 5 小时额度。当前窗口已使用约 80% 时，不再启动新的非必要 Codex 重任务；对新的大型 translation、revision 或 code-understanding 任务，若剩余额度明显不足，应留到下一额度窗口，而不是硬顶到超过 100%。build、不会调用模型的 process / revalidate、status、validation、publish、deploy、verifier、checksum、curl、Git、assets 等确定性终端工作可以继续，不因 Codex quota 停止。
+普通 ChatGPT 是语言生成的推荐执行环境；Codex 保留为 fallback。在主要 model-intensive Codex 阶段（TranslationUnit translation / revision、需重新生成译文的 retry、较大的代码理解任务）前后观察当前 5 小时额度。当前窗口已使用约 80% 时，不再启动新的非必要 Codex 重任务；对新的大型 translation、revision 或 code-understanding 任务，若剩余额度明显不足，应留到下一额度窗口，而不是硬顶到超过 100%。build、不会调用模型的 process / revalidate、status、validation、publish、deploy、verifier、checksum、curl、Git、assets 等确定性终端工作可以继续，不因 Codex quota 停止。
 
 ## 新增 locale 的首次 Page batch
 
@@ -55,6 +55,8 @@ Page 输出为 `raw-responses/*.article`，Example 输出为 `raw-responses/*.tx
 - `git status --short`。
 
 本翻译阶段不自动执行 `process`、Quality Check、`quality-check finalize` 或 `promote`。只有用户明确要求继续下一阶段时，才进入相应步骤。
+
+Codex 生成本轮 TranslationUnit 时，后续正式 Quality Check 必须由独立 ChatGPT conversation/session 执行；生成上下文不得同时充当正式 reviewer。
 
 ## Retry 与 revision
 

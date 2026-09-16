@@ -1,8 +1,16 @@
 # 项目状态
 
-更新时间：2026-09-11（北京时间）
+更新时间：2026-09-16（北京时间）
 
 ## 基线与架构
+
+### 2026-09-16 ChatGPT 正式语言生成执行路径
+
+- 普通 ChatGPT GPT-5.6 Sol + High + Remote Desktop Commander 现为正式支持且推荐的语言生成环境，覆盖 locale glossary、UI catalog、article metadata、TranslationUnit initial/revision/真实 retry 和 schema v2 Course SEO localization；Codex GPT-5.6 Sol + High 保留为语言生成 fallback，并主要用于 repository code/docs/config 修改与复杂诊断。
+- TranslationUnit workflow、manifest schema、validation、Candidate Snapshot、逐 Unit Quality Check A-only、machine finalization、promotion、Locale Surface Review 与 Production gate 均未改变。生成与正式 ChatGPT review 使用不同 conversation/session。
+- `retranslation export --generator codex|chatgpt` 只在未显式给出 `--batch-id` 时选择自动 prefix；默认仍为 `codex`。`chatgpt-<locale>-NNN` 与 `codex-<locale>-NNN` 共享 numeric namespace，latest export 与 next number 按 numeric suffix 决定，跨 prefix 重复 suffix fail closed。
+- ChatGPT TranslationUnit 执行先在 batch 内隐藏 staging directory 完成整批 raw responses 和格式/术语/token 检查，再整体原子 rename 为 `raw-responses/`；现有 process/retry 继续承担正式 restore、validation 与 attempt provenance。未新增 importer，也未修改任何历史 batch/evidence 或正式语言资产。
+- schema v2 Course SEO 结构不变；普通 ChatGPT localization 记录 `provider=chatgpt`、`model=gpt-5.6-sol-high`，正式 `course-metadata.json` 仍仅由 assemble/refresh CLI 机械生成。
 
 ### 2026-09-11 upstream source 同步
 
@@ -52,10 +60,10 @@
 
 ## 翻译执行与校验
 
-- 2026-08-23 起，正式 TranslationUnit 翻译流程切换为 `export → Codex GPT-5.6 Sol High → raw-responses/ → process → automatic validation`，ChatGPT 统一承担逐 TranslationUnit Quality Check。仓库根 `AGENTS.md` 是 Codex 自动导航入口，`docs/CODEX_TRANSLATION.md` 是当前 Codex 执行规范。
+- 2026-09-16 起，正式 TranslationUnit 翻译支持 `export → ChatGPT GPT-5.6 Sol High staged generation → raw-responses/ → process → automatic validation`，Codex GPT-5.6 Sol High 保留为 fallback；逐 TranslationUnit Quality Check 由独立 ChatGPT session 执行。仓库根 `AGENTS.md` 是自动导航入口，`docs/CHATGPT_LANGUAGE_GENERATION.md` 与 `docs/CODEX_TRANSLATION.md` 分别定义两种执行环境。
 - 正式模型输入由 batch `manifest.json`、manifest 列出的全部 `inputs/*` 与 `locales/<locale>/glossary.yaml` 共同构成，缺一不可；glossary 必须在生成译文前读取。
 - Retry 只用于 `restore_failed`、`validation_failed`；validation 通过后的 Quality Check B/C/D 使用新的 revision batch。当前 production gate 是 QC 全 A 后的 machine finalization。
-- 历史上 zh-CN 103 页由 ChatGPT 完成、提升并发布的事实不变；本次切换只改变后续正式 Translation Engine 和执行规范，不重写历史 evidence。
+- 历史上 zh-CN 103 页由 ChatGPT 完成、提升并发布的事实不变；本次调整只增加后续正式生成执行路径，不重写历史 evidence。
 
 - GLM-5.2 单页完整 `present.Section` 翻译执行器已完成；request、response 和 validation 按 locale、page_id、source hash 与 attempt 编号保留。
 - 正式模式对一个 source 最多执行 3 次完整页面 attempt；失败后进入 `blocked`，blocked 页面不能继续正式重试。

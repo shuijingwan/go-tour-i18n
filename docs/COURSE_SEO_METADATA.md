@@ -203,6 +203,8 @@ v1 模型生成输入仍是每页完整 English source、完整最终 canonical 
 
 v2 模型输入只有：当前 Page 的 canonical English description、完整 `locales/<locale>/glossary.yaml`、目标 locale identity 和 `course-seo-localization-v2` contract/constraints。不得把完整 English body、完整 target body、其他 locale description 或其他 Page description 交给本地化模型。
 
+普通 ChatGPT GPT-5.6 Sol + High 是 schema v2 localized description 的推荐正式生成环境；Codex GPT-5.6 Sol + High 仍是正式 fallback。两者都必须遵守完全相同的 `course-seo-localization-v2` 输入边界。实际使用哪个环境生成，就记录对应的真实 provider/model provenance：普通 ChatGPT 使用 `provider=chatgpt`、`model=gpt-5.6-sol-high`，Codex fallback 使用 `provider=codex`、`model=gpt-5.6-sol-high`，并使用真实 RFC 3339 UTC `generated_at`。生成环境只产出 description 输入，不得直接修改正式 `course-metadata.json`；正式资产仍只能由下述 assemble/refresh CLI 机械生成。生成 session 与最终 Locale Surface Review session 必须分离。本项不改变 schema、canonical source-description review authority 或 Locale Surface Review gate。
+
 本地化可调整语序、句法、必要形态和 glossary 术语，但必须保持 canonical description 的 semantic scope：不删除关键语义、不增加信息、不 keyword stuffing、不根据 Page body 重新选重点。`target_sha256` 仍由工具读取完整 ready canonical target 自动计算，只负责 identity/freshness，target body 不是模型输入。
 
 v2 同样使用唯一 strict loader：拒绝未知字段与额外 JSON value，要求 exact Page set、Catalog order、route、source/source-description/target/glossary identity、受支持 contract/provenance，以及相同的 description 文本安全、长度和 duplicate 约束。

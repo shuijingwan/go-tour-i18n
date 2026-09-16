@@ -83,6 +83,37 @@ func TestParsePreviewOptionsSupportsSingleAndCompletePreview(t *testing.T) {
 	}
 }
 
+func TestParseRetranslationExportOptionsGenerator(t *testing.T) {
+	t.Run("default codex", func(t *testing.T) {
+		options, jsonOutput, err := parseRetranslationExportOptions([]string{"--locale", "de-DE"})
+		if err != nil {
+			t.Fatal(err)
+		}
+		if options.Generator != i18n.RetranslationGeneratorCodex || jsonOutput {
+			t.Fatalf("options=%+v json=%t", options, jsonOutput)
+		}
+	})
+
+	t.Run("explicit chatgpt", func(t *testing.T) {
+		options, jsonOutput, err := parseRetranslationExportOptions([]string{
+			"--locale", "de-DE", "--generator", "chatgpt", "--json",
+		})
+		if err != nil {
+			t.Fatal(err)
+		}
+		if options.Generator != i18n.RetranslationGeneratorChatGPT || !jsonOutput {
+			t.Fatalf("options=%+v json=%t", options, jsonOutput)
+		}
+	})
+
+	t.Run("invalid", func(t *testing.T) {
+		_, _, err := parseRetranslationExportOptions([]string{"--locale", "de-DE", "--generator", "other"})
+		if err == nil || !strings.Contains(err.Error(), "use codex or chatgpt") {
+			t.Fatalf("invalid generator error=%v", err)
+		}
+	})
+}
+
 func TestBuildLocaleCommandRequiresCompleteWorkflow(t *testing.T) {
 	root, catalog, pendingUnit := incompletePublishTestCatalog(t)
 	output := filepath.Join(t.TempDir(), "cli-projection")

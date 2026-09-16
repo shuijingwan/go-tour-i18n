@@ -271,43 +271,26 @@ func run(args []string) error {
 		fmt.Printf("candidate OK: locale=%s page_id=%s\n", *locale, *id)
 		return nil
 	case "retranslation export":
-		fs := flag.NewFlagSet("retranslation export", flag.ContinueOnError)
-		locale := fs.String("locale", "", "target locale")
-		batchID := fs.String("batch-id", "", "optional explicit batch id")
-		unitKind := fs.String("unit-kind", "", "自动选批的翻译单元类型：page（默认）或 example")
-		limit := fs.Int("limit", i18n.DefaultRetranslationExportLimit, "自动批次中最多包含的独立翻译单元数（默认 30；自动 Page 选批可显式至 60，Example、显式 --id 与 revision 模式上限 30）")
-		jsonOutput := fs.Bool("json", false, "输出完整 machine-readable JSON")
-		allowReexport := fs.Bool("allow-reexport", false, "allow explicitly requested page ids to be exported again")
-		previousSnapshotID := fs.String("previous-snapshot-id", "", "previous Candidate Snapshot containing Quality Check B/C/D revision feedback")
-		var pageIDs repeatedStrings
-		fs.Var(&pageIDs, "id", "optional translation unit id; repeat for multiple units")
-		if err := fs.Parse(args[2:]); err != nil {
+		exportOptions, jsonOutput, err := parseRetranslationExportOptions(args[2:])
+		if err != nil {
 			return err
 		}
-		if *locale == "" {
-			return fmt.Errorf("--locale is required")
-		}
-		if *allowReexport && *previousSnapshotID == "" {
-			return fmt.Errorf("--allow-reexport revision mode requires --previous-snapshot-id")
-		}
-		result, err := i18n.ExportRetranslationBatch(root, catalog, i18n.RetranslationExportOptions{
-			Locale: *locale, BatchID: *batchID, UnitIDs: pageIDs, UnitKind: i18n.UnitKind(*unitKind), Limit: *limit, AllowReexport: *allowReexport, PreviousSnapshotID: *previousSnapshotID,
-		})
+		result, err := i18n.ExportRetranslationBatch(root, catalog, exportOptions)
 		if err != nil {
 			return err
 		}
 		if result.AllExported {
-			if *jsonOutput {
+			if jsonOutput {
 				return printJSON(result)
 			}
-			completedKind := i18n.UnitKind(*unitKind)
+			completedKind := exportOptions.UnitKind
 			if completedKind == "" {
 				completedKind = i18n.UnitKindPage
 			}
-			fmt.Printf("没有需要导出的翻译单元：%s 的 %s 已全部完成重译输入导出。\n", *locale, completedKind)
+			fmt.Printf("没有需要导出的翻译单元：%s 的 %s 已全部完成重译输入导出。\n", exportOptions.Locale, completedKind)
 			return nil
 		}
-		if *jsonOutput {
+		if jsonOutput {
 			return printJSON(result)
 		}
 		printRetranslationExportSummary(result)
@@ -776,6 +759,38 @@ func run(args []string) error {
 	default:
 		return fmt.Errorf("unknown command %q", args[0]+" "+args[1])
 	}
+}
+
+func parseRetranslationExportOptions(args []string) (i18n.RetranslationExportOptions, bool, error) {
+	fs := flag.NewFlagSet("retranslation export", flag.ContinueOnError)
+	locale := fs.String("locale", "", "target locale")
+	batchID := fs.String("batch-id", "", "optional explicit batch id")
+	generator := fs.String("generator", string(i18n.RetranslationGeneratorCodex), "automatic batch generator: codex (default) or chatgpt")
+	unitKind := fs.String("unit-kind", "", "自动选批的翻译单元类型：page（默认）或 example")
+	limit := fs.Int("limit", i18n.DefaultRetranslationExportLimit, "自动批次中最多包含的独立翻译单元数（默认 30；自动 Page 选批可显式至 60，Example、显式 --id 与 revision 模式上限 30）")
+	jsonOutput := fs.Bool("json", false, "输出完整 machine-readable JSON")
+	allowReexport := fs.Bool("allow-reexport", false, "allow explicitly requested page ids to be exported again")
+	previousSnapshotID := fs.String("previous-snapshot-id", "", "previous Candidate Snapshot containing Quality Check B/C/D revision feedback")
+	var unitIDs repeatedStrings
+	fs.Var(&unitIDs, "id", "optional translation unit id; repeat for multiple units")
+	if err := fs.Parse(args); err != nil {
+		return i18n.RetranslationExportOptions{}, false, err
+	}
+	if *locale == "" {
+		return i18n.RetranslationExportOptions{}, false, fmt.Errorf("--locale is required")
+	}
+	selectedGenerator := i18n.RetranslationGenerator(*generator)
+	if err := i18n.ValidateRetranslationGenerator(selectedGenerator); err != nil {
+		return i18n.RetranslationExportOptions{}, false, err
+	}
+	if *allowReexport && *previousSnapshotID == "" {
+		return i18n.RetranslationExportOptions{}, false, fmt.Errorf("--allow-reexport revision mode requires --previous-snapshot-id")
+	}
+	return i18n.RetranslationExportOptions{
+		Locale: *locale, BatchID: *batchID, Generator: selectedGenerator,
+		UnitIDs: unitIDs, UnitKind: i18n.UnitKind(*unitKind), Limit: *limit,
+		AllowReexport: *allowReexport, PreviousSnapshotID: *previousSnapshotID,
+	}, *jsonOutput, nil
 }
 
 func initializeLocaleStatusCommand(root string, catalog *i18n.Catalog, args []string) (string, *i18n.StatusInitializationResult, error) {

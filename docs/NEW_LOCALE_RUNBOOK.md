@@ -41,7 +41,7 @@ locale / domain / CDN 决策
 
 ## 执行成本与协作
 
-新增 locale 始终以质量 gate 为先；当前运营目标是单个 Codex 5 小时额度窗口不超过 100%，但不得因此弱化任何质量 gate。确定性工作优先由本地终端执行，仓库已有正式工具与已确认事实直接复用；不为新增 locale 建立硬 wall-clock 时间目标。TranslationUnit 的具体额度观察和停止边界只以 [Codex 翻译执行规范](CODEX_TRANSLATION.md) 为准。
+新增 locale 始终以质量 gate 为先。语言生成优先使用普通 ChatGPT GPT-5.6 Sol + High + Remote Desktop Commander，Codex GPT-5.6 Sol + High 保留为 fallback；不得因额度或执行环境弱化任何 gate。确定性工作优先由本地终端执行，仓库已有正式工具与已确认事实直接复用；不为新增 locale 建立硬 wall-clock 时间目标。ChatGPT 执行边界见 [ChatGPT 正式语言生成执行规范](CHATGPT_LANGUAGE_GENERATION.md)，Codex fallback 的额度观察和停止边界见 [Codex 翻译执行规范](CODEX_TRANSLATION.md)。
 
 ## 1. 冻结语言与生产身份
 
@@ -83,7 +83,7 @@ go run -mod=readonly ./cmd/tour-i18n locale init \
 
 命令生成 `locale.json`、显式 TODO glossary、保持英文 source 的 UI key/kind/占位符/markup identity 的 TODO catalog、article metadata、`course-metadata.todo.json` Page inventory，以及按 Page 后 Example 正式顺序初始化的 `status.tsv`。同时创建 `.locale-init-incomplete`；该标记存在时，完整 build、完整 preview 和 publish 均 fail closed。TODO 只是不可发布的工作标记，不是译文；进入 export 前必须完成 glossary，进入 Surface Review 前必须完成全部 UI 与 metadata 语言内容。
 
-生成后按以下边界补充语言内容，不复制其他 locale 的语言内容：
+生成后按以下边界补充语言内容，不复制其他 locale 的语言内容。普通 ChatGPT 可以承担 glossary、UI catalog 与 article metadata 的语言制定/生成，但正式 Locale Surface Review 必须由不同 conversation/session 完成：
 
 - `locales/<locale>/locale.json`：locale 身份；
 - `internal/tour/ui/<locale>.json`：完整公共 UI catalog，key 与 `plain` / `rich` kind 必须匹配英文 source `internal/tour/ui/en.json`，正式 locale 不使用英文 fallback；
@@ -104,19 +104,19 @@ go run -mod=readonly ./cmd/tour-i18n status check --locale <locale>
 
 ## 4. 执行 TranslationUnit workflow
 
-TranslationUnit 工作从 [多语言翻译流程](TRANSLATION_WORKFLOW.md) 进入。正式翻译前还必须读取 [翻译任务规范](TRANSLATION_TASK_SPEC.md)、[Retranslation 执行手册](RETRANSLATION_RUNBOOK.md)、[Codex 翻译执行规范](CODEX_TRANSLATION.md)、当前 batch manifest、manifest 列出的全部 inputs，以及目标 locale glossary。
+TranslationUnit 工作从 [多语言翻译流程](TRANSLATION_WORKFLOW.md) 进入。正式翻译前还必须读取 [翻译任务规范](TRANSLATION_TASK_SPEC.md)、[Retranslation 执行手册](RETRANSLATION_RUNBOOK.md)、当前执行环境规范（[ChatGPT 正式语言生成执行规范](CHATGPT_LANGUAGE_GENERATION.md) 或 [Codex 翻译执行规范](CODEX_TRANSLATION.md)）、当前 batch manifest、manifest 列出的全部 inputs，以及目标 locale glossary。
 
-首次 Page batch 使用当前推荐的 60-Page 基线；Page 顺序、Examples 独立、revision/retry 边界和调整条件只以 [Codex 翻译执行规范](CODEX_TRANSLATION.md#新增-locale-的首次-page-batch) 为准，本手册不重复细则。
+首次 Page batch 使用当前推荐的 60-Page 基线；Page 顺序、Examples 独立、revision/retry 边界和调整条件只以 [Codex 翻译执行规范](CODEX_TRANSLATION.md#新增-locale-的首次-page-batch) 为准，本手册不重复细则。ChatGPT 路径 export 必须显式使用 `--generator chatgpt`。
 
 保持既有顺序：
 
 ```text
 export
-→ model translation
+→ ChatGPT generation 或 Codex fallback
 → process
 → automatic validation
 → Candidate Snapshot
-→ ChatGPT Quality Check（全 A）
+→ 独立 ChatGPT session Quality Check（全 A）
 → machine finalization（完整 QC A）
 → promotion
 → ready
@@ -133,7 +133,7 @@ go run -mod=readonly ./cmd/tour-i18n course-metadata source check
 go run -mod=readonly ./cmd/tour-i18n course-metadata source review-check
 ```
 
-然后让模型只读取每页 canonical English description、完整 locale glossary、目标 locale identity 和 `course-seo-localization-v2` contract，输出完整 `page_id → localized description`；完整 English/target Page body 不进入此本地化模型输入。使用正式离线命令组装 v2 asset；target body 仍由命令机械读取，只计算 `target_sha256` freshness：
+然后让普通 ChatGPT GPT-5.6 Sol + High 只读取每页 canonical English description、完整 locale glossary、目标 locale identity 和 `course-seo-localization-v2` contract，输出完整 `page_id → localized description`；完整 English/target Page body 不进入此本地化模型输入。使用正式离线命令组装 v2 asset；target body 仍由命令机械读取，只计算 `target_sha256` freshness。普通 ChatGPT provenance 使用 `--provider chatgpt --model gpt-5.6-sol-high`：
 
 ```sh
 go run -mod=readonly ./cmd/tour-i18n course-metadata assemble \
