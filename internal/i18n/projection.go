@@ -210,7 +210,7 @@ func BuildLocaleProjection(root string, catalog *Catalog, locale, outputRoot str
 	// Link targets are protected translation structure, so canonical candidates
 	// intentionally retain the frozen upstream form. Apply the separately
 	// audited publication correction only after candidate validation.
-	if err = projectOfficialTourLinks(contentDir, articleNames); err != nil {
+	if err = projectPublicationTourLinks(contentDir, articleNames); err != nil {
 		return nil, err
 	}
 	if err = writeProjectedCourseSEO(contentDir, courseMetadata); err != nil {
@@ -226,7 +226,7 @@ func BuildLocaleProjection(root string, catalog *Catalog, locale, outputRoot str
 	return result, nil
 }
 
-func projectOfficialTourLinks(contentDir string, articleNames []string) error {
+func projectPublicationTourLinks(contentDir string, articleNames []string) error {
 	for _, article := range articleNames {
 		path := filepath.Join(contentDir, "tour", article)
 		data, err := os.ReadFile(path)
@@ -235,7 +235,7 @@ func projectOfficialTourLinks(contentDir string, articleNames []string) error {
 		}
 		projected := string(data)
 		for _, match := range linkRE.FindAllStringSubmatch(projected, -1) {
-			url, ok := tourpolicy.GoOfficialURL(string(match[1]))
+			url, ok := tourpolicy.CorrectedPublicationURL(string(match[1]))
 			if !ok {
 				continue
 			}

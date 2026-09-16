@@ -290,11 +290,13 @@ func renderHome(catalog ui.Catalog, metadata SiteMetadata) ([]byte, error) {
 	// development-log link.
 	data.OwnerContentLinksEnabled = true
 	buf := new(bytes.Buffer)
+	// Locale homepages are the no-ad landing surface for cross-locale
+	// navigation. Tour pages retain their publication-specific ad policy.
 	dataWithHeadHTML := struct {
 		pageTemplateData
 		AnalyticsHTML template.HTML
 		AdHTML        template.HTML
-	}{data, analyticsHTML, adHTMLForLocale(catalog.Locale)}
+	}{data, analyticsHTML, ""}
 	if err := tmpl.ExecuteTemplate(buf, "home.tmpl", dataWithHeadHTML); err != nil {
 		return nil, fmt.Errorf("render home.tmpl: %w", err)
 	}

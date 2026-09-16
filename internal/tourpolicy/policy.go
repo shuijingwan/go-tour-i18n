@@ -66,14 +66,44 @@ var ownerContentTargets = map[string]bool{
 	"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/": true,
 }
 
+// siteHomeTargets contains the exact, reviewed no-ad project homepages used by
+// the language registry. A shared owner-controlled hostname is not sufficient
+// to make any other path or URL variant a site homepage.
+var siteHomeTargets = map[string]bool{
+	"https://pt-go-dev.shuijingwanwq.com/": true,
+	"https://nl-go-dev.shuijingwanwq.com/": true,
+	"https://de-go-dev.shuijingwanwq.com/": true,
+	"https://fr-go-dev.shuijingwanwq.com/": true,
+	"https://go-dev.shuijingwanwq.com/":    true,
+	"https://it-go-dev.shuijingwanwq.com/": true,
+	"https://ja-go-dev.shuijingwanwq.com/": true,
+	"https://ko-go-dev.shuijingwanwq.com/": true,
+	"https://pl-go-dev.shuijingwanwq.com/": true,
+	"https://es-go-dev.shuijingwanwq.com/": true,
+	"https://sv-go-dev.shuijingwanwq.com/": true,
+	"https://tr-go-dev.shuijingwanwq.com/": true,
+}
+
 // tourLocaleTargets contains exact, reviewed links to other published locale
-// Tours. Keeping this inventory exact prevents an owner-controlled hostname
-// from being treated as Tour content merely because it uses the project domain.
+// Tours that share the go-local no-ad publication policy. Keeping this
+// inventory exact prevents an owner-controlled hostname or an ad-enabled
+// standard Tour from being treated as a reviewed go-local destination.
 var tourLocaleTargets = map[string]bool{
-	"https://de-go-dev.shuijingwanwq.com/tour": true,
-	"https://fr-go-dev.shuijingwanwq.com/tour": true,
-	"https://go-dev.shuijingwanwq.com/tour":    true,
-	"https://ko-go-dev.shuijingwanwq.com/tour": true,
+	"https://de-go-dev.shuijingwanwq.com/tour/": true,
+	"https://fr-go-dev.shuijingwanwq.com/tour/": true,
+	"https://go-dev.shuijingwanwq.com/tour/":    true,
+	"https://ko-go-dev.shuijingwanwq.com/tour/": true,
+}
+
+// tourLocaleLinkCorrections maps the exact protected targets retained from the
+// formal English source to their reviewed canonical publication URLs. These
+// corrections are applied only after candidate validation; their presence
+// does not make the noncanonical source targets safe in Classify.
+var tourLocaleLinkCorrections = map[string]string{
+	"https://de-go-dev.shuijingwanwq.com/tour": "https://de-go-dev.shuijingwanwq.com/tour/",
+	"https://fr-go-dev.shuijingwanwq.com/tour": "https://fr-go-dev.shuijingwanwq.com/tour/",
+	"https://go-dev.shuijingwanwq.com/tour":    "https://go-dev.shuijingwanwq.com/tour/",
+	"https://ko-go-dev.shuijingwanwq.com/tour": "https://ko-go-dev.shuijingwanwq.com/tour/",
 }
 
 // officialTargets is the reviewed inventory of legacy official links inherited
@@ -124,6 +154,17 @@ func GoOfficialURL(target string) (string, bool) {
 	return url, ok
 }
 
+// CorrectedPublicationURL returns the audited publication replacement for a
+// protected Tour source link. It is intentionally separate from Classify so a
+// noncanonical source target remains fail-closed outside projection.
+func CorrectedPublicationURL(target string) (string, bool) {
+	if url, ok := GoOfficialURL(target); ok {
+		return url, true
+	}
+	url, ok := tourLocaleLinkCorrections[target]
+	return url, ok
+}
+
 // Classify classifies the current target. Root-relative targets deliberately
 // remain SiteContent unless their reviewed meaning is known.
 func Classify(target string) Class {
@@ -134,6 +175,9 @@ func Classify(target string) Class {
 		return GoOfficial
 	}
 	if target == "/" {
+		return SiteHome
+	}
+	if siteHomeTargets[target] {
 		return SiteHome
 	}
 	if strings.HasPrefix(target, "/tour/") || target == "/tour" {

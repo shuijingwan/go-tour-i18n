@@ -32,6 +32,24 @@
         <a class="logo" href="/tour/list">{{ui "tour.title"}}</a>
         </div>
         <div class="right">
+            <div class="header-project-nav">
+              <a class="header-control header-about" href="/" aria-label="{{ui "header.about_project"}}" title="{{ui "header.about_project"}}">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M11 17h2v-6h-2v6zm1-15a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16zm-1-11h2V7h-2v2z"></path></svg>
+                <span class="header-control-label">{{ui "header.about_project"}}</span>
+              </a>
+              <details class="header-language">
+                <summary class="header-control" aria-label="{{ui "site.current_language"}}: {{.CurrentLanguage.Autonym}}" title="{{ui "site.language_versions"}}">
+                  <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm6.92 6h-2.95a15.7 15.7 0 0 0-1.38-3.56A8.06 8.06 0 0 1 18.92 8zM12 4c.83 1.2 1.46 2.54 1.86 4h-3.72A13.7 13.7 0 0 1 12 4zM4.26 14a7.8 7.8 0 0 1 0-4h3.4a16.5 16.5 0 0 0 0 4h-3.4zm.82 2h2.95c.3 1.25.76 2.44 1.38 3.56A8.06 8.06 0 0 1 5.08 16zM8.03 8H5.08a8.06 8.06 0 0 1 4.33-3.56A15.7 15.7 0 0 0 8.03 8zM12 20a13.7 13.7 0 0 1-1.86-4h3.72A13.7 13.7 0 0 1 12 20zm2.28-6H9.72a14.3 14.3 0 0 1 0-4h4.56a14.3 14.3 0 0 1 0 4zm.31 5.56A15.7 15.7 0 0 0 15.97 16h2.95a8.06 8.06 0 0 1-4.33 3.56zM16.34 14a16.5 16.5 0 0 0 0-4h3.4a7.8 7.8 0 0 1 0 4h-3.4z"></path></svg>
+                  <span class="header-language-current">{{.CurrentLanguage.Autonym}}</span>
+                </summary>
+                <div class="header-language-menu">
+                  <div class="header-language-heading">{{ui "site.language_versions"}}</div>
+                  <ul>
+                    {{range .Languages}}<li>{{if .Current}}<span aria-current="page">{{.Label}}</span>{{else}}<a href="{{.URL}}"{{if .Official}} target="_blank" rel="noopener noreferrer"{{end}}>{{.Label}}</a>{{end}}</li>{{end}}
+                  </ul>
+                </div>
+              </details>
+            </div>
             <button class="header-toggleTheme js-toggleTheme" aria-label="{{ui "theme.toggle"}}">
               <img
                 data-value="auto"

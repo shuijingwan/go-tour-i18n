@@ -9,7 +9,7 @@ import (
 	"testing/fstest"
 )
 
-const expectedCatalogMessages = 112
+const expectedCatalogMessages = 113
 
 func TestLoadEmbeddedCatalogs(t *testing.T) {
 	for _, locale := range []string{"de-DE", "en", "es-ES", "fr-FR", "it-IT", "ja-JP", "ko-KR", "nl-NL", "pl-PL", "pt-BR", "sv-SE", "tr-TR", "zh-CN"} {
@@ -19,6 +19,37 @@ func TestLoadEmbeddedCatalogs(t *testing.T) {
 		}
 		if got, want := len(catalog.Messages), expectedCatalogMessages; got != want {
 			t.Fatalf("Load(%q) message count = %d, want %d", locale, got, want)
+		}
+	}
+}
+
+func TestHeaderAboutProjectMessages(t *testing.T) {
+	wants := map[string]string{
+		"de-DE": "Über dieses Projekt",
+		"en":    "About this project",
+		"es-ES": "Acerca de este proyecto",
+		"fr-FR": "À propos de ce projet",
+		"it-IT": "Informazioni sul progetto",
+		"ja-JP": "このプロジェクトについて",
+		"ko-KR": "이 프로젝트 소개",
+		"nl-NL": "Over dit project",
+		"pl-PL": "O tym projekcie",
+		"pt-BR": "Sobre este projeto",
+		"sv-SE": "Om projektet",
+		"tr-TR": "Bu proje hakkında",
+		"zh-CN": "关于此项目",
+	}
+	for locale, want := range wants {
+		catalog, err := Load(locale)
+		if err != nil {
+			t.Fatal(err)
+		}
+		got, err := catalog.Plain("header.about_project")
+		if err != nil {
+			t.Fatal(err)
+		}
+		if got != want {
+			t.Errorf("%s header.about_project = %q, want %q", locale, got, want)
 		}
 	}
 }

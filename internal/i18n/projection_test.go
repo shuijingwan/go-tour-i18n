@@ -187,6 +187,17 @@ func TestProjectedTourLinksFollowPublicationPolicy(t *testing.T) {
 	if err := HydrateCatalogSources(catalog, current); err != nil {
 		t.Fatal(err)
 	}
+	localeCorrections := map[string]string{
+		"https://de-go-dev.shuijingwanwq.com/tour": "https://de-go-dev.shuijingwanwq.com/tour/",
+		"https://fr-go-dev.shuijingwanwq.com/tour": "https://fr-go-dev.shuijingwanwq.com/tour/",
+		"https://go-dev.shuijingwanwq.com/tour":    "https://go-dev.shuijingwanwq.com/tour/",
+		"https://ko-go-dev.shuijingwanwq.com/tour": "https://ko-go-dev.shuijingwanwq.com/tour/",
+	}
+	const officialSource = "/cmd/gofmt/"
+	officialTarget, ok := tourpolicy.CorrectedPublicationURL(officialSource)
+	if !ok {
+		t.Fatalf("official source %q has no publication correction", officialSource)
+	}
 
 	for _, locale := range []string{"zh-CN", "fr-FR", "de-DE", "ko-KR", "ja-JP"} {
 		projection, err := BuildLocaleProjection(root, catalog, locale, filepath.Join(t.TempDir(), locale))
@@ -197,6 +208,7 @@ func TestProjectedTourLinksFollowPublicationPolicy(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
+		projectedTargets := make(map[string]bool)
 		for _, article := range articles {
 			data, err := os.ReadFile(article)
 			if err != nil {
@@ -204,6 +216,7 @@ func TestProjectedTourLinksFollowPublicationPolicy(t *testing.T) {
 			}
 			for _, match := range linkRE.FindAllStringSubmatch(string(data), -1) {
 				target := match[1]
+				projectedTargets[target] = true
 				class := tourpolicy.Classify(target)
 				if tourpolicy.ForLocale(locale) == tourpolicy.GoLocal && (class == tourpolicy.SiteContent || class == tourpolicy.OwnerContent || class == tourpolicy.UnknownOwnerTarget) {
 					t.Errorf("%s %s retains unclassified same-site non-Tour target %q", locale, filepath.Base(article), target)
@@ -212,6 +225,20 @@ func TestProjectedTourLinksFollowPublicationPolicy(t *testing.T) {
 					t.Errorf("%s %s official target is not absolute go.dev: %q", locale, filepath.Base(article), target)
 				}
 			}
+		}
+		for source, canonical := range localeCorrections {
+			if projectedTargets[source] {
+				t.Errorf("%s projection retains noncanonical locale target %q", locale, source)
+			}
+			if !projectedTargets[canonical] {
+				t.Errorf("%s projection omits canonical locale target %q", locale, canonical)
+			}
+		}
+		if projectedTargets[officialSource] {
+			t.Errorf("%s projection retains official source target %q", locale, officialSource)
+		}
+		if !projectedTargets[officialTarget] {
+			t.Errorf("%s projection omits corrected official target %q", locale, officialTarget)
 		}
 	}
 }

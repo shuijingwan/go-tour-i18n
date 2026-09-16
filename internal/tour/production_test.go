@@ -282,15 +282,15 @@ func TestProductionHandlerAdHTMLConfiguration(t *testing.T) {
 	const marker = `<script data-test="ad"></script>`
 
 	for _, test := range []struct {
-		name   string
-		locale string
-		value  string
-		count  int
+		name      string
+		locale    string
+		value     string
+		tourCount int
 	}{
-		{name: "go-local disabled", locale: "zh-CN", count: 0},
-		{name: "go-local ignores configured HTML", locale: "zh-CN", value: marker, count: 0},
-		{name: "standard disabled", locale: "ja-JP", count: 0},
-		{name: "standard enabled", locale: "ja-JP", value: marker, count: 1},
+		{name: "go-local disabled", locale: "zh-CN", tourCount: 0},
+		{name: "go-local ignores configured HTML", locale: "zh-CN", value: marker, tourCount: 0},
+		{name: "standard disabled", locale: "ja-JP", tourCount: 0},
+		{name: "standard enabled", locale: "ja-JP", value: marker, tourCount: 1},
 	} {
 		t.Run(test.name, func(t *testing.T) {
 			t.Setenv("TOUR_AD_HTML", test.value)
@@ -301,8 +301,12 @@ func TestProductionHandlerAdHTMLConfiguration(t *testing.T) {
 				if rec.Code != http.StatusOK {
 					t.Fatalf("GET %s: status %d", requestPath, rec.Code)
 				}
-				if got := strings.Count(rec.Body.String(), marker); got != test.count {
-					t.Errorf("GET %s contains ad HTML %d times, want %d", requestPath, got, test.count)
+				want := test.tourCount
+				if requestPath == "/" {
+					want = 0
+				}
+				if got := strings.Count(rec.Body.String(), marker); got != want {
+					t.Errorf("GET %s contains ad HTML %d times, want %d", requestPath, got, want)
 				}
 			}
 		})

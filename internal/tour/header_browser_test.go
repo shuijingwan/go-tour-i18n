@@ -33,22 +33,32 @@ func TestTourHeaderTitlesAreCenteredOnDesktopAndFitCommonMobileViewports(t *test
 	if err != nil {
 		t.Fatal(err)
 	}
+	pageJS, err := fs.ReadFile(contentTour, "tour/static/js/page.js")
+	if err != nil {
+		t.Fatal(err)
+	}
+	pageScript := strings.ReplaceAll(string(pageJS), "{{.Transport}}", "function () { return {}; }")
+	pageScript = strings.ReplaceAll(pageScript, "{{.SocketAddr}}", "")
+	pageScript = strings.ReplaceAll(pageScript, "{{.PlaygroundBaseURL}}", `""`)
 
 	for _, test := range []struct {
 		name     string
 		viewport int
 		mobile   bool
+		theme    string
 	}{
-		{name: "desktop", viewport: 1280},
-		{name: "mobile-320", viewport: 320, mobile: true},
-		{name: "mobile-375", viewport: 375, mobile: true},
-		{name: "mobile-414", viewport: 414, mobile: true},
+		{name: "desktop", viewport: 1280, theme: "light"},
+		{name: "mobile-320", viewport: 320, mobile: true, theme: "dark"},
+		{name: "mobile-375", viewport: 375, mobile: true, theme: "light"},
+		{name: "mobile-414", viewport: 414, mobile: true, theme: "dark"},
 	} {
 		for _, title := range []string{"A Tour of Go", "Go Turu", "Eine Tour durch Go", "Go 语言之旅", "Go のツアー"} {
 			t.Run(fmt.Sprintf("%s/%s", test.name, title), func(t *testing.T) {
-				document := fmt.Sprintf(`<!doctype html><html data-theme="auto"><head><meta name="viewport" content="width=device-width, initial-scale=1"><style>%s</style></head><body>
-<div class="bar top-bar"><div class="left"><a href="/"><img class="gopherlogo" alt=""></a><a class="logo" href="/tour/list">%s</a></div><div class="right"><button class="header-toggleTheme"><img data-value="auto" class="go-Icon go-Icon--inverted" height="24" width="24" alt=""></button><span class="nav"><svg viewBox="0 0 24 24" height="100%%" width="100%%"></svg></span><span class="nav"><svg viewBox="0 0 24 24" height="100%%" width="100%%"></svg></span></div></div>
-<div id="editor-container"></div>
+				languageItems := `<li><span aria-current="page">Simplified Chinese — 简体中文</span></li>` + strings.Repeat(`<li><a href="https://example.com/">Future language — Long autonym</a></li>`, 29)
+				document := fmt.Sprintf(`<!doctype html><html data-theme="%s"><head><meta name="viewport" content="width=device-width, initial-scale=1"><style>%s</style><style>.test-course-overlay { position: fixed; z-index: 200; top: 48px; right: 0; bottom: 0; left: 0; background: #fff; }</style></head><body>
+<div class="bar top-bar"><div class="left"><a href="/"><img class="gopherlogo" alt=""></a><a class="logo" href="/tour/list">%s</a></div><div class="right"><div class="header-project-nav"><a class="header-control header-about" href="/" aria-label="About this project" title="About this project"><svg viewBox="0 0 24 24"><path d="M11 17h2v-6h-2v6z"></path></svg><span class="header-control-label">About this project</span></a><details class="header-language" open><summary class="header-control" aria-label="Current language: 简体中文" title="Language versions"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20z"></path></svg><span class="header-language-current">简体中文</span></summary><div class="header-language-menu"><div class="header-language-heading">Language versions</div><ul>%s</ul></div></details></div><button class="header-toggleTheme"><img data-value="%s" class="go-Icon go-Icon--inverted" height="24" width="24" alt=""></button><div><span class="nav"><svg viewBox="0 0 24 24" height="100%%" width="100%%"></svg></span></div><div><span class="nav"><svg viewBox="0 0 24 24" height="100%%" width="100%%"></svg></span></div></div></div>
+<div id="editor-container" class="test-course-overlay"></div>
+<script>%s</script>
 <script>
 function assert(condition, message) { if (!condition) throw new Error(message); }
 try {
@@ -56,14 +66,54 @@ try {
   var logo = document.querySelector('.top-bar .gopherlogo');
   var header = document.querySelector('.top-bar');
   var editor = document.querySelector('#editor-container');
+  var about = document.querySelector('.header-about');
+  var language = document.querySelector('.header-language');
+  var languageSummary = language.querySelector('summary');
+  var languageMenu = language.querySelector('.header-language-menu');
+  var currentLanguage = languageMenu.querySelector('[aria-current="page"]');
+  var visibleMenuLink = languageMenu.querySelector('a');
   var titleBox = title.getBoundingClientRect();
   var headerBox = header.getBoundingClientRect();
+  var menuBox = languageMenu.getBoundingClientRect();
   assert(window.innerWidth === %d, 'CSS viewport width is ' + window.innerWidth);
   assert(title.textContent === %q, 'title text changed');
-  assert(titleBox.left >= 0 && titleBox.right <= window.innerWidth, 'title is clipped');
+  assert(titleBox.width > 0 && titleBox.left >= 0 && titleBox.right <= window.innerWidth, 'title is clipped');
   assert(header.scrollWidth <= header.clientWidth, 'header has horizontal overflow');
   assert(document.documentElement.scrollWidth <= document.documentElement.clientWidth, 'page has horizontal overflow');
   assert(editor.getBoundingClientRect().top >= headerBox.bottom, 'course content overlaps header');
+  assert(Math.abs(headerBox.height - 48) <= 1, 'header height changed from the 48px baseline: ' + headerBox.height);
+  assert(about.getAttribute('href') === '/', 'about link does not target the locale homepage');
+  assert(about.getAttribute('aria-label') === 'About this project', 'about link has no clear accessible name');
+  about.focus();
+  assert(document.activeElement === about, 'about link is not keyboard focusable');
+  languageSummary.focus();
+  assert(document.activeElement === languageSummary, 'language control is not keyboard focusable');
+  assert(languageSummary.getAttribute('aria-label').includes('简体中文'), 'language control does not name the current language');
+  assert(currentLanguage.getAttribute('aria-current') === 'page', 'current language is not identified');
+  assert(menuBox.left >= 0 && menuBox.right <= window.innerWidth, 'language menu is outside the viewport');
+  var linkBox = visibleMenuLink.getBoundingClientRect();
+  var paintedElement = document.elementFromPoint((linkBox.left + linkBox.right) / 2, (linkBox.top + linkBox.bottom) / 2);
+  assert(languageMenu.contains(paintedElement), 'language menu is clipped or covered by course content; hit ' + (paintedElement && paintedElement.id || paintedElement && paintedElement.className || paintedElement));
+  assert(getComputedStyle(languageMenu).overflowY === 'auto', 'language menu is not scrollable');
+  assert(languageMenu.scrollHeight > languageMenu.clientHeight, '30-language menu does not constrain its height');
+  if (document.documentElement.dataset.theme === 'dark') {
+    assert(getComputedStyle(languageMenu).backgroundColor !== 'rgb(255, 255, 255)', 'dark theme language menu remains light');
+  }
+  visibleMenuLink.addEventListener('click', function(event) { event.preventDefault(); }, { once: true });
+  visibleMenuLink.click();
+  assert(language.open, 'inside click closed the language menu');
+  document.body.click();
+  assert(!language.open, 'outside click did not close the language menu');
+  languageSummary.click();
+  assert(language.open, 'summary native toggle did not open the language menu');
+  visibleMenuLink.focus();
+  document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+  assert(!language.open, 'Escape did not close the language menu');
+  assert(document.activeElement === languageSummary, 'Escape did not return focus to the summary');
+  languageSummary.click();
+  assert(language.open, 'summary native toggle did not reopen the language menu');
+  languageSummary.click();
+  assert(!language.open, 'summary native toggle did not close the language menu');
   if (!%t) {
     var center = (headerBox.top + headerBox.bottom) / 2;
     var titleCenter = (titleBox.top + titleBox.bottom) / 2;
@@ -75,7 +125,7 @@ try {
   }
   document.body.setAttribute('data-tour-header-test', 'PASS');
 } catch (error) { document.body.setAttribute('data-tour-header-test', 'FAIL: ' + error.message); }
-</script></body></html>`, css, html.EscapeString(title), test.viewport, title, test.mobile)
+</script></body></html>`, test.theme, css, html.EscapeString(title), languageItems, test.theme, pageScript, test.viewport, title, test.mobile)
 				path := filepath.Join(t.TempDir(), "tour-header-test.html")
 				if err := os.WriteFile(path, []byte(document), 0o600); err != nil {
 					t.Fatal(err)

@@ -155,6 +155,107 @@ func TestRenderIndexLocales(t *testing.T) {
 	}
 }
 
+func TestTourHeaderProjectNavigationUsesLanguageRegistry(t *testing.T) {
+	metadata, err := loadSiteMetadata(contentTour)
+	if err != nil {
+		t.Fatal(err)
+	}
+	itemRE := regexp.MustCompile(`<li>(?:<span aria-current="page">([^<]+)</span>|<a href="([^"]+)"(?: target="_blank" rel="noopener noreferrer")?>([^<]+)</a>)</li>`)
+	renderedLabels := make(map[string][]string)
+	for _, test := range []struct {
+		locale      string
+		about       string
+		currentARIA string
+	}{
+		{locale: "zh-CN", about: "关于此项目", currentARIA: "当前语言: 简体中文"},
+		{locale: "ja-JP", about: "このプロジェクトについて", currentARIA: "現在の言語: 日本語"},
+	} {
+		t.Run(test.locale, func(t *testing.T) {
+			catalog, err := ui.Load(test.locale)
+			if err != nil {
+				t.Fatal(err)
+			}
+			pageMetadata := metadata
+			pageMetadata.Locale = test.locale
+			pageBytes, err := renderIndex(catalog, pageMetadata)
+			if err != nil {
+				t.Fatal(err)
+			}
+			page := string(pageBytes)
+			about := `<a class="header-control header-about" href="/" aria-label="` + test.about + `" title="` + test.about + `">`
+			if !strings.Contains(page, about) {
+				t.Error("Tour header does not expose the localized project homepage link")
+			}
+			if !strings.Contains(page, `aria-label="`+test.currentARIA+`"`) {
+				t.Error("Tour header language control does not identify the current language")
+			}
+
+			menuStart := strings.Index(page, `<div class="header-language-menu">`)
+			if menuStart < 0 {
+				t.Fatal("Tour header language menu is missing")
+			}
+			menuEnd := strings.Index(page[menuStart:], `</ul>`)
+			if menuEnd < 0 {
+				t.Fatal("Tour header language menu list is not closed")
+			}
+			items := itemRE.FindAllStringSubmatch(page[menuStart:menuStart+menuEnd], -1)
+			languages, err := languagesFor(catalog.Locale)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if len(items) != len(languages) {
+				t.Fatalf("Tour header language item count = %d, want %d", len(items), len(languages))
+			}
+			labels := make([]string, 0, len(items))
+			for i, item := range items {
+				language := languages[i]
+				label := item[1]
+				href := ""
+				if label == "" {
+					href = item[2]
+					label = item[3]
+				}
+				labels = append(labels, label)
+				if label != language.Label {
+					t.Errorf("language item %d label = %q, want %q", i, label, language.Label)
+				}
+				if language.Current {
+					if item[1] == "" || href != "" {
+						t.Errorf("current language %q is clickable or lacks aria-current", language.Label)
+					}
+					continue
+				}
+				if item[1] != "" {
+					t.Errorf("non-current language %q is not a link", language.Label)
+				}
+				if href != language.URL {
+					t.Errorf("language %q href = %q, want registry URL %q", language.Label, href, language.URL)
+				}
+				wantClass := tourpolicy.SiteHome
+				if language.Official {
+					wantClass = tourpolicy.GoOfficial
+					if href != "https://go.dev/tour/" {
+						t.Errorf("English href = %q, want official Tour", href)
+					}
+				}
+				if got := tourpolicy.Classify(href); got != wantClass {
+					t.Errorf("language target %q has policy class %q, want %q", href, got, wantClass)
+				}
+			}
+			renderedLabels[test.locale] = labels
+		})
+	}
+	zhLabels, jaLabels := renderedLabels["zh-CN"], renderedLabels["ja-JP"]
+	if len(zhLabels) != len(jaLabels) {
+		t.Fatalf("zh-CN language count = %d, ja-JP = %d", len(zhLabels), len(jaLabels))
+	}
+	for i := range zhLabels {
+		if zhLabels[i] != jaLabels[i] {
+			t.Errorf("language item %d differs: zh-CN %q, ja-JP %q", i, zhLabels[i], jaLabels[i])
+		}
+	}
+}
+
 func TestRenderedAssetURLsFollowLocaleAndEnvironment(t *testing.T) {
 	development, err := loadSiteMetadata(contentTour)
 	if err != nil {
@@ -657,15 +758,15 @@ func TestRenderAdHTML(t *testing.T) {
 	original := adHTML
 	t.Cleanup(func() { adHTML = original })
 	for _, test := range []struct {
-		name   string
-		locale string
-		value  template.HTML
-		want   string
+		name     string
+		locale   string
+		value    template.HTML
+		wantTour bool
 	}{
 		{name: "go-local empty", locale: "zh-CN", value: ""},
 		{name: "go-local configured", locale: "zh-CN", value: `<script data-test="ad"></script>`},
 		{name: "standard empty", locale: "ja-JP", value: ""},
-		{name: "standard configured", locale: "ja-JP", value: `<script data-test="ad"></script>`, want: `data-test="ad"`},
+		{name: "standard configured", locale: "ja-JP", value: `<script data-test="ad"></script>`, wantTour: true},
 	} {
 		t.Run(test.name, func(t *testing.T) {
 			catalog, err := ui.Load(test.locale)
@@ -681,14 +782,16 @@ func TestRenderAdHTML(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-			for name, content := range map[string][]byte{"home": home, "tour": tour} {
-				page := string(content)
-				if test.want == "" && strings.Contains(page, `data-test="ad"`) {
-					t.Errorf("%s contains ad when unconfigured", name)
-				}
-				if test.want != "" && strings.Count(page, test.want) != 1 {
-					t.Errorf("%s does not contain exactly one configured ad", name)
-				}
+			if strings.Contains(string(home), `data-test="ad"`) {
+				t.Error("homepage contains configured ad HTML")
+			}
+			gotTour := strings.Count(string(tour), `data-test="ad"`)
+			wantTour := 0
+			if test.wantTour {
+				wantTour = 1
+			}
+			if gotTour != wantTour {
+				t.Errorf("Tour contains configured ad HTML %d times, want %d", gotTour, wantTour)
 			}
 		})
 	}
@@ -722,11 +825,9 @@ func TestTourPublicationRuntimePolicy(t *testing.T) {
 			}
 			goLocal := tourpolicy.ForLocale(locale) == tourpolicy.GoLocal
 			for pageName, page := range map[string]string{"home": string(home), "tour": string(index)} {
-				if goLocal && strings.Contains(page, `data-test="ad"`) {
-					t.Errorf("%s %s includes runtime ad HTML", locale, pageName)
-				}
-				if !goLocal && !strings.Contains(page, `data-test="ad"`) {
-					t.Errorf("%s %s omits standard runtime ad HTML", locale, pageName)
+				wantAd := pageName == "tour" && !goLocal
+				if gotAd := strings.Contains(page, `data-test="ad"`); gotAd != wantAd {
+					t.Errorf("%s %s ad presence = %t, want %t", locale, pageName, gotAd, wantAd)
 				}
 				for _, match := range hrefRE.FindAllStringSubmatch(page, -1) {
 					class := tourpolicy.Classify(match[1])

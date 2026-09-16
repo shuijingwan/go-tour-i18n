@@ -53,4 +53,34 @@ function setThemeButtons() {
     }
 }
 
+function setLanguageMenuDismiss() {
+    const languageMenus = document.querySelectorAll('.header-language');
+    if (languageMenus.length === 0) {
+      return;
+    }
+    document.addEventListener('click', (event) => {
+      for (const menu of languageMenus) {
+        if (menu.open && !menu.contains(event.target)) {
+          menu.open = false;
+        }
+      }
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key !== 'Escape') {
+        return;
+      }
+      for (const menu of languageMenus) {
+        if (!menu.open) {
+          continue;
+        }
+        menu.open = false;
+        const summary = menu.querySelector('summary');
+        if (summary) {
+          summary.focus();
+        }
+      }
+    });
+}
+
 setThemeButtons();
+setLanguageMenuDismiss();
