@@ -75,7 +75,13 @@ As supplemental mechanical checks, UI placeholder mismatches were `0`, rich-mark
 
 ## Rendered surface acceptance
 
-Not executed in this Stage A review. This evidence does **not** claim preview acceptance or the Preview HUMAN visual gate passed.
+- preview URL: `http://127.0.0.1:39491/`
+- preview repository HEAD: `9ab70a1` (`docs: 记录波兰语课程 SEO 修订审核`)
+- automated preview acceptance: **passed (`PREVIEW SURFACE ACCEPTANCE: PASS`)**
+- Preview HUMAN visual gate: **passed**
+- unresolved preview blockers: `none`
+
+Automated acceptance passed preview identity, SEO/routes, desktop rendered surface, editor Run / Format / Reset, SPA behavior, and the mobile `/tour/moretypes/1` regression surface. The HUMAN visual gate confirmed the desktop/mobile overall presentation had no blocking visual anomaly. This section does not claim Production verification passed.
 
 ## Production verification
 
