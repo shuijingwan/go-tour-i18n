@@ -85,4 +85,24 @@ Automated acceptance passed preview identity, SEO/routes, desktop rendered surfa
 
 ## Production verification
 
-Not executed in this Stage A review. This evidence does **not** claim publish, deploy, production verification, Production mutation, or search-engine closeout passed.
+- production release repository HEAD: `1d66296078de16df9136bb321eb6ac06fe801516`
+- release: `20260917T044813Z-pl-PL-1d66296078de`
+- production URL: `https://pl-go-dev.shuijingwanwq.com/`
+- CDN: `cloudflare`
+- maintenance production receipt result: **passed**
+- deploy: **PASS**
+- exact-hostname purge: **PASS**
+- production machine acceptance: **PASS**
+- production browser acceptance: **PASS**
+- sitemap: **105/105 PASS**
+- socket boundary: **PASS**
+- production browser desktop routes: **PASS**
+- production browser mobile `/tour/moretypes/1`: **PASS**
+- production browser Run / Format / Reset / SPA / ads: **PASS**
+- unresolved production blockers: `none`
+
+The sitemap verifier observed one transient `curl-exit-28` for `/tour/concurrency/1`; the bounded retry recovered on attempt 2/5 and the complete 105/105 sitemap verification passed.
+
+The same production release workflow also updated the shared non-Chinese assets required by the current repository. `SHA256SUMS`, `tour/static/css/app.css`, and `tour/static/js/support.js` were the changed paths; exact-URL Cloudflare purge passed, changed-path cache verification passed, public SHA-256 verification passed for all `14/14` shared assets, and all `3/3` non-allowlist boundary paths remained HTTP 404.
+
+`PRODUCTION RELEASE BATCH: PASS`.
