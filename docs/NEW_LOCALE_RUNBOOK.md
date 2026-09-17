@@ -4,6 +4,8 @@
 
 本文适用于新增 locale；已有 locale 的 TranslationUnit 修订仍从 [多语言翻译流程](TRANSLATION_WORKFLOW.md) 开始，日常生产发布直接使用 [生产运维手册](PRODUCTION_RUNBOOK.md) 的维护部署流程。
 
+如果用户没有明确指定 locale，先从 [Locale 长期路线图](LOCALE_ROADMAP.md) 选择排名最高且尚未完成的 Standard locale。路线图只确定商业优先级与 candidate identity，不替代本手册要求的正式 identity freeze。
+
 ## 总体顺序与四条边界
 
 ```text
