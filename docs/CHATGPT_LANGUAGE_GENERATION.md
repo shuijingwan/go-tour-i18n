@@ -14,7 +14,7 @@ ChatGPT 可以承担以下正式语言工作：
 
 Codex GPT-5.6 Sol + High 继续作为正式语言生成 fallback，并主要负责 repository-level code/docs/config 修改、需要完整仓库理解的变更和复杂 failure evidence 诊断。维护者本地终端负责 export、process、revalidate、status、validation、assemble、check、refresh、finalize、promote、build、publish、deploy、verifier 与 Git 等确定性生命周期。
 
-生成与正式审核必须分离。同一 ChatGPT conversation/session 不得同时生成本轮译文并充当其正式 Quality Check reviewer；locale-level 语言资产生成与 Locale Surface Review 也必须使用独立审核 session。分离上下文不改变现有逐 TranslationUnit A-only、carry-forward、machine finalization 或 Surface Review gate。
+生成与正式审核必须分离。同一 ChatGPT conversation/session 不得同时生成本轮译文并充当其正式 Quality Check reviewer；locale-level 语言资产生成与 Locale Surface Review 也必须使用独立审核 session；发现缺陷的 reviewer session 不得生成 replacement 后再批准自己的输出。独立性依据是 generation/review 职责，不是 generation session 是否曾读取 Page body；同一 locale generation session 可以依次承担 TranslationUnit initial/revision 和 Course SEO localization/refresh/revision。这一调整不改变现有逐 TranslationUnit A-only、carry-forward、machine finalization 或 Surface Review gate。
 
 ## TranslationUnit 正式输入与 export
 
@@ -64,11 +64,13 @@ Retry 使用同一原子提交思想：先将完整内容写入目标 Unit retry
 
 所有资产仍须保持现有 key、kind、placeholder、markup、schema 和技术 identity。不得给 `glossary.yaml`、`internal/tour/ui/<locale>.json` 或 `article-metadata.json` 增加 provider/model/generation 字段。Glossary 继续是该 locale 的正式术语 authority，这些资产也继续由现有 validator 与 Locale Surface Review 审核实际内容。
 
-schema v2 Course SEO localization 只把当前 canonical English description、完整 locale glossary、locale identity 与 `course-seo-localization-v2` constraints 交给生成 session；不得提供完整 English/target Page body。普通 ChatGPT 的真实 provenance 固定记录为：
+schema v2 Course SEO localization 允许并推荐为每个当前 Page 提供 canonical English description、完整 English source、完整最终 ready canonical locale target、完整 locale glossary、locale identity 与 `course-seo-localization-v2` constraints。canonical description 是唯一 semantic-scope authority；source/target 只用于技术语义核对、正文术语一致性、自然表达和实际内容对齐，不授权重新摘要、增删语义或重选重点。同一 session/batch 可处理多个 Page，但每页必须只用自己的 canonical description 决定 semantic scope，不得跨页补充、混合或推断语义。普通 ChatGPT 的真实 provenance 固定记录为：
 
 ```text
 provider=chatgpt
 model=gpt-5.6-sol-high
 ```
 
-生成 session 只产出 `page_id → localized description` 输入；正式 `course-metadata.json` 必须由现有 `course-metadata assemble` / `refresh` CLI 机械生成并通过现有 gate，不得由 ChatGPT 直接编辑。canonical English source-description 使用当前共享 authority；普通 locale 生成不重新生成它，也不改变其 review gate。
+生成 session 只产出 `page_id → localized description` 输入；正式 `course-metadata.json` 必须由现有 `course-metadata assemble` / `refresh` / `revise` CLI 机械生成并通过现有 gate，不得由 ChatGPT 直接编辑。canonical English source-description 使用当前共享 authority；普通 locale 生成不重新生成它，也不改变其 review gate。
+
+Course SEO revise 对明确 subset 可额外向 generation session 提供 current localized description 与独立 reviewer finding，两者只用于定位和修复语言质量问题，不能取代 canonical description 的 semantic scope，也不得把 finding 当作增加新语义的依据。生成 replacement 后仍由 `course-metadata revise` 机械更新正式资产与真实 provenance，并由独立 Locale Surface Review session 复审。

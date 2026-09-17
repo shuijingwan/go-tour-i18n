@@ -34,7 +34,7 @@ Glossary 只回答正式术语选择，不能证明完整译文忠实、准确�
 
 普通 ChatGPT 可以生成这些 locale-level 语言资产，但正式 Locale Surface Review 必须由不同 conversation/session 执行；生成 session 不得审核并批准自己的本轮输出。具体职责与执行边界见 [ChatGPT 正式语言生成执行规范](CHATGPT_LANGUAGE_GENERATION.md)。
 
-不得添加 source 未提供的背景、教程、解释、结论、保证或处方；必须保留原有逻辑、条件和顺序：possibility 不等于 requirement，hint 不等于 prescription。尤其 `Congrats` 等页面不得仅按模块主题自行补写内容。课程页 schema v2 description 的生成边界单独以 [课程页正式 SEO Metadata 规范](COURSE_SEO_METADATA.md) 为准：canonical English 阶段完整读取 Page source 做一次 semantic extraction；locale 阶段只读取该 canonical description、完整 locale glossary、locale identity 与 v2 contract，不再读取 source/target body，也不重新选择摘要重点。最终 Surface Review 仍恢复完整 source/target 上下文。
+不得添加 source 未提供的背景、教程、解释、结论、保证或处方；必须保留原有逻辑、条件和顺序：possibility 不等于 requirement，hint 不等于 prescription。尤其 `Congrats` 等页面不得仅按模块主题自行补写内容。课程页 schema v2 description 的生成边界单独以 [课程页正式 SEO Metadata 规范](COURSE_SEO_METADATA.md) 为准：canonical English 阶段完整读取 Page source 做一次 semantic extraction；locale 阶段以该 canonical description 作为唯一 semantic-scope authority，并可利用当前 Page 完整 source/ready target、完整 locale glossary、locale identity 与 v2 contract 核对技术语义、正文术语与自然度，但不得重新选择摘要重点或增删 canonical description 的语义。最终 Surface Review 仍使用完整 source + canonical description + target + glossary + localized description 上下文，并由独立 session 完成。
 
 ## A. Locale-level language quality review
 
