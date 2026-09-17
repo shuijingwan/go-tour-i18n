@@ -671,6 +671,170 @@ func TestRefreshCourseMetadataV2GlossaryChangeMakesAllPagesStale(t *testing.T) {
 	}
 }
 
+func TestReviseCourseMetadataV2ReplacesOnlySelectedDescriptionsAndProvenance(t *testing.T) {
+	root, catalog, base := writeCurrentCourseMetadataV2RevisionFixture(t)
+	selectedID := catalog.Pages[1].ID
+	data, revised, err := ReviseCourseMetadata(root, catalog, CourseMetadataRevisionOptions{
+		SchemaVersion: CourseMetadataSchemaVersionV2,
+		Locale:        "test-LOCALE",
+		Provider:      "chatgpt",
+		Model:         "gpt-5.6-sol-high",
+		GeneratedAt:   "2026-09-17T03:04:05Z",
+		Descriptions:  marshalCourseRevisionDescriptions(t, []string{selectedID}),
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !reflect.DeepEqual(revised, []string{selectedID}) {
+		t.Fatalf("revised=%v, want [%s]", revised, selectedID)
+	}
+	var got CourseMetadata
+	if err := json.Unmarshal(data, &got); err != nil {
+		t.Fatal(err)
+	}
+	for i := range got.Pages {
+		if got.Pages[i].PageID != selectedID {
+			if !reflect.DeepEqual(got.Pages[i], base.Pages[i]) {
+				t.Fatalf("unselected page %s changed: got=%+v want=%+v", got.Pages[i].PageID, got.Pages[i], base.Pages[i])
+			}
+			continue
+		}
+		if got.Pages[i].Description != courseDescription("revision "+selectedID) {
+			t.Fatalf("selected description=%q", got.Pages[i].Description)
+		}
+		if got.Pages[i].Route != base.Pages[i].Route || got.Pages[i].SourceSHA256 != base.Pages[i].SourceSHA256 ||
+			got.Pages[i].SourceDescriptionSHA256 != base.Pages[i].SourceDescriptionSHA256 || got.Pages[i].TargetSHA256 != base.Pages[i].TargetSHA256 ||
+			got.Pages[i].GlossarySHA256 != base.Pages[i].GlossarySHA256 {
+			t.Fatalf("selected current identity changed unexpectedly: got=%+v want=%+v", got.Pages[i], base.Pages[i])
+		}
+		wantGeneration := CourseMetadataGeneration{Provider: "chatgpt", Model: "gpt-5.6-sol-high", PromptVersion: CourseMetadataPromptVersionV2, GeneratedAt: "2026-09-17T03:04:05Z"}
+		if !reflect.DeepEqual(got.Pages[i].Generation, wantGeneration) {
+			t.Fatalf("selected generation=%+v, want=%+v", got.Pages[i].Generation, wantGeneration)
+		}
+	}
+	writeCourseMetadataFixture(t, root, "test-LOCALE", &got)
+	if _, err := LoadCourseMetadata(root, "test-LOCALE", catalog); err != nil {
+		t.Fatalf("revised v2 metadata rejected by strict loader: %v", err)
+	}
+}
+
+func TestReviseCourseMetadataV1PreservesSchemaAndUnselectedEntries(t *testing.T) {
+	root, catalog, base := writeCourseMetadataRefreshFixture(t, 3)
+	selectedID := catalog.Pages[0].ID
+	data, revised, err := ReviseCourseMetadata(root, catalog, CourseMetadataRevisionOptions{
+		SchemaVersion: CourseMetadataSchemaVersion,
+		Locale:        "test-LOCALE",
+		Provider:      "chatgpt",
+		Model:         "gpt-5.6-sol-high",
+		GeneratedAt:   "2026-09-17T03:04:05Z",
+		Descriptions:  marshalCourseRevisionDescriptions(t, []string{selectedID}),
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !reflect.DeepEqual(revised, []string{selectedID}) {
+		t.Fatalf("revised=%v, want [%s]", revised, selectedID)
+	}
+	var got CourseMetadata
+	if err := json.Unmarshal(data, &got); err != nil {
+		t.Fatal(err)
+	}
+	if got.SchemaVersion != CourseMetadataSchemaVersion || got.GeneratorContract != CourseMetadataGeneratorContract || got.Pages[0].SourceDescriptionSHA256 != "" {
+		t.Fatalf("v1 revision changed schema identity: %+v", got)
+	}
+	if got.Pages[0].Generation.PromptVersion != CourseMetadataPromptVersion || got.Pages[0].Description != courseDescription("revision "+selectedID) {
+		t.Fatalf("selected v1 page was not revised: %+v", got.Pages[0])
+	}
+	for i := 1; i < len(got.Pages); i++ {
+		if !reflect.DeepEqual(got.Pages[i], base.Pages[i]) {
+			t.Fatalf("unselected v1 page %s changed: got=%+v want=%+v", got.Pages[i].PageID, got.Pages[i], base.Pages[i])
+		}
+	}
+}
+
+func TestReviseCourseMetadataV2RequiresCurrentSourceReview(t *testing.T) {
+	root, catalog, _ := writeCurrentCourseMetadataV2RevisionFixture(t)
+	writeCourseSourceDescriptionAsset(t, root, catalog, map[string]string{catalog.Pages[0].ID: "changed"})
+	_, _, err := ReviseCourseMetadata(root, catalog, CourseMetadataRevisionOptions{
+		SchemaVersion: CourseMetadataSchemaVersionV2,
+		Locale:        "test-LOCALE",
+		Provider:      "chatgpt",
+		Model:         "gpt-5.6-sol-high",
+		GeneratedAt:   "2026-09-17T03:04:05Z",
+		Descriptions:  marshalCourseRevisionDescriptions(t, []string{catalog.Pages[1].ID}),
+	})
+	if err == nil || !strings.Contains(err.Error(), "review gate is stale") {
+		t.Fatalf("v2 revision with stale source review error=%v", err)
+	}
+}
+
+func TestReviseCourseMetadataFailsClosedOnStaleBase(t *testing.T) {
+	root, catalog, base := writeCurrentCourseMetadataV2RevisionFixture(t)
+	base.Pages[0].TargetSHA256 = strings.Repeat("0", 64)
+	writeCourseMetadataFixture(t, root, "test-LOCALE", base)
+	_, _, err := ReviseCourseMetadata(root, catalog, CourseMetadataRevisionOptions{
+		SchemaVersion: CourseMetadataSchemaVersionV2,
+		Locale:        "test-LOCALE",
+		Provider:      "chatgpt",
+		Model:         "gpt-5.6-sol-high",
+		GeneratedAt:   "2026-09-17T03:04:05Z",
+		Descriptions:  marshalCourseRevisionDescriptions(t, []string{catalog.Pages[1].ID}),
+	})
+	if err == nil || !strings.Contains(err.Error(), "use course-metadata refresh for stale identity") || !strings.Contains(err.Error(), "target_sha256 is stale") {
+		t.Fatalf("stale revision base error=%v", err)
+	}
+}
+
+func TestReviseCourseMetadataDescriptionInputGuards(t *testing.T) {
+	tests := []struct {
+		name  string
+		input []byte
+		want  string
+	}{
+		{"empty subset", []byte(`{"pages":[]}`), "select at least one page"},
+		{"unknown page", []byte(`{"pages":[{"page_id":"unknown/1","description":"A complete and distinct revision description for an unknown course page identity."}]}`), "unknown page_id"},
+		{"extra field", []byte(`{"pages":[{"page_id":"lesson/001","description":"A complete and distinct revision description for the first course page."}],"extra":true}`), "unknown field"},
+		{"duplicate page", []byte(`{"pages":[{"page_id":"lesson/001","description":"A complete and distinct revision description for the first course page."},{"page_id":"lesson/001","description":"A second complete and distinct revision description for the first course page."}]}`), "duplicate page_id"},
+		{"duplicate JSON member", []byte(`{"pages":[],"pages":[]}`), "duplicate JSON object member"},
+		{"malformed", []byte(`{"pages":[`), "parse course descriptions"},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			root, catalog, _ := writeCourseMetadataRefreshFixture(t, 3)
+			_, _, err := ReviseCourseMetadata(root, catalog, CourseMetadataRevisionOptions{
+				Locale: "test-LOCALE", Provider: "provider", Model: "model", GeneratedAt: "2026-09-17T03:04:05Z", Descriptions: test.input,
+			})
+			if err == nil || !strings.Contains(err.Error(), test.want) {
+				t.Fatalf("error=%v, want substring %q", err, test.want)
+			}
+		})
+	}
+}
+
+func writeCurrentCourseMetadataV2RevisionFixture(t *testing.T) (string, *Catalog, *CourseMetadata) {
+	t.Helper()
+	root, catalog, _ := writeCourseMetadataRefreshFixture(t, 3)
+	writeCourseSourceDescriptionAsset(t, root, catalog, nil)
+	writeCourseSourceDescriptionReview(t, root, catalog, "review-1")
+	data, err := AssembleCourseMetadata(root, catalog, CourseMetadataAssemblyOptions{
+		SchemaVersion: CourseMetadataSchemaVersionV2,
+		Locale:        "test-LOCALE",
+		Provider:      "old-provider",
+		Model:         "old-model",
+		GeneratedAt:   "2026-09-15T02:03:04Z",
+		Descriptions:  marshalCourseDescriptions(t, catalog),
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	var base CourseMetadata
+	if err := json.Unmarshal(data, &base); err != nil {
+		t.Fatal(err)
+	}
+	writeCourseMetadataFixture(t, root, "test-LOCALE", &base)
+	return root, catalog, &base
+}
+
 func writeCourseMetadataRefreshFixture(t *testing.T, count int) (string, *Catalog, *CourseMetadata) {
 	t.Helper()
 	root := t.TempDir()
@@ -722,6 +886,19 @@ func marshalCourseRefreshDescriptions(t *testing.T, ids []string) []byte {
 	input := courseDescriptionsFile{Pages: make([]courseDescriptionEntry, 0, len(ids))}
 	for _, id := range ids {
 		input.Pages = append(input.Pages, courseDescriptionEntry{PageID: id, Description: courseDescription("refresh " + id)})
+	}
+	data, err := json.Marshal(input)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return data
+}
+
+func marshalCourseRevisionDescriptions(t *testing.T, ids []string) []byte {
+	t.Helper()
+	input := courseDescriptionsFile{Pages: make([]courseDescriptionEntry, 0, len(ids))}
+	for _, id := range ids {
+		input.Pages = append(input.Pages, courseDescriptionEntry{PageID: id, Description: courseDescription("revision " + id)})
 	}
 	data, err := json.Marshal(input)
 	if err != nil {

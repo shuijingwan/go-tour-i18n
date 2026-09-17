@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 
 	"github.com/shuijingwan/go-tour-i18n/internal/i18n"
@@ -107,6 +108,33 @@ func TestCourseMetadataSourceAssembleValidationFailurePreservesOutput(t *testing
 	})
 	if err == nil {
 		t.Fatal("source assemble with malformed descriptions succeeded")
+	}
+	assertCourseMetadataOutput(t, output, old)
+	assertNoCourseMetadataStaging(t, root, filepath.Base(output))
+}
+
+func TestReviseCourseMetadataValidationFailurePreservesOutput(t *testing.T) {
+	root := t.TempDir()
+	descriptions := filepath.Join(root, "revision-descriptions.json")
+	if err := os.WriteFile(descriptions, []byte(`{"pages":[]}`), 0644); err != nil {
+		t.Fatal(err)
+	}
+	output := filepath.Join(root, "course-metadata.json")
+	old := []byte("existing complete metadata\n")
+	if err := os.WriteFile(output, old, 0644); err != nil {
+		t.Fatal(err)
+	}
+	catalog := &i18n.Catalog{Pages: []i18n.Page{{ID: "lesson/1", Route: "/lesson/1"}}}
+	err := reviseCourseMetadata(root, catalog, []string{
+		"--locale", "test-LOCALE",
+		"--descriptions", descriptions,
+		"--provider", "chatgpt",
+		"--model", "gpt-5.6-sol-high",
+		"--generated-at", "2026-09-17T03:04:05Z",
+		"--output", output,
+	})
+	if err == nil || !strings.Contains(err.Error(), "select at least one page") {
+		t.Fatalf("revision with empty subset error=%v", err)
 	}
 	assertCourseMetadataOutput(t, output, old)
 	assertNoCourseMetadataStaging(t, root, filepath.Base(output))

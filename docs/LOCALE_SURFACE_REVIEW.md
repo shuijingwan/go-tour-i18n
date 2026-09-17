@@ -224,6 +224,7 @@ Surface Review 只使用 `passed` 或 `failed`，不采用 TranslationUnit 的 A
 
 - TranslationUnit candidate 缺陷：回到 revision batch，完成全套 A-only 链后重新 projection 和 Surface Review。
 - glossary 决策缺失或冲突：先更新该 locale glossary，再同步受影响表层并重审。
+- Course SEO localized description 语言质量缺陷：它不属于 TranslationUnit 缺陷；identity stale 时按 Course SEO workflow 执行 `course-metadata refresh`，identity current 时由独立生成 session 产生明确 subset，再用 `course-metadata revise` 机械更新所选 description 与真实 provenance，最后由独立 Surface Review session 重审。
 - UI、首页、list、metadata 或 SEO 缺陷：修改相应 locale 资产，重建完整 preview，重审受影响范围。
 - production-only 的 CDN、TLS、Origin、缓存或响应问题：按 [生产运维手册](PRODUCTION_RUNBOOK.md) 修复并在公网复核，不改写 TranslationUnit 审核结果。
 

@@ -85,6 +85,18 @@ type CourseMetadataRefreshOptions struct {
 	Descriptions  []byte
 }
 
+// CourseMetadataRevisionOptions supplies an explicit subset of descriptions
+// that failed language review. The existing formal metadata asset must already
+// be current; revision never repairs stale identity.
+type CourseMetadataRevisionOptions struct {
+	SchemaVersion int
+	Locale        string
+	Provider      string
+	Model         string
+	GeneratedAt   string
+	Descriptions  []byte
+}
+
 type courseDescriptionsFile struct {
 	Pages []courseDescriptionEntry `json:"pages"`
 }
@@ -323,7 +335,106 @@ func RefreshCourseMetadata(root string, catalog *Catalog, options CourseMetadata
 	return data, stale, nil
 }
 
+// ReviseCourseMetadata replaces descriptions and generation provenance for an
+// explicit language-quality revision subset. The base asset must pass current
+// strict validation so stale identity remains the exclusive domain of refresh.
+func ReviseCourseMetadata(root string, catalog *Catalog, options CourseMetadataRevisionOptions) ([]byte, []string, error) {
+	if catalog == nil {
+		return nil, nil, fmt.Errorf("catalog is required")
+	}
+	descriptionByID, err := parseCourseDescriptions(options.Descriptions)
+	if err != nil {
+		return nil, nil, err
+	}
+	if len(descriptionByID) == 0 {
+		return nil, nil, fmt.Errorf("course revision descriptions must select at least one page")
+	}
+	basePath := filepath.Join(root, "locales", options.Locale, "course-metadata.json")
+	baseData, err := os.ReadFile(basePath)
+	if err != nil {
+		return nil, nil, fmt.Errorf("read course metadata revision base: %w", err)
+	}
+	base, err := decodeCourseMetadata(baseData)
+	if err != nil {
+		return nil, nil, fmt.Errorf("parse course metadata revision base: %w", err)
+	}
+	contract, prompt, err := courseMetadataContract(base.SchemaVersion)
+	if err != nil {
+		return nil, nil, fmt.Errorf("course metadata revision base: %w", err)
+	}
+	if options.SchemaVersion != 0 && base.SchemaVersion != options.SchemaVersion {
+		return nil, nil, fmt.Errorf("course metadata revision base schema_version=%d, requested %d", base.SchemaVersion, options.SchemaVersion)
+	}
+	if base.Locale != options.Locale {
+		return nil, nil, fmt.Errorf("course metadata revision base locale %q does not match requested locale %q", base.Locale, options.Locale)
+	}
+	targets, glossary, err := loadReadyCourseMetadataInputs(root, options.Locale, catalog)
+	if err != nil {
+		return nil, nil, err
+	}
+	var sourceDescriptions *CourseSourceDescriptions
+	var sourceByID map[string]CourseSourceDescriptionPage
+	if base.SchemaVersion == CourseMetadataSchemaVersionV2 {
+		sourceDescriptions, err = LoadCourseSourceDescriptions(root, catalog)
+		if err != nil {
+			return nil, nil, err
+		}
+		if _, err := RequireCurrentCourseSourceDescriptionReview(root, catalog); err != nil {
+			return nil, nil, err
+		}
+		sourceByID = courseSourceDescriptionsByID(sourceDescriptions)
+	}
+	validatedBase, err := validateCourseMetadataWithSourceDescriptions(baseData, options.Locale, catalog, targets, glossary, sourceDescriptions)
+	if err != nil {
+		return nil, nil, fmt.Errorf("course metadata revision base is not current and valid; use course-metadata refresh for stale identity: %w", err)
+	}
+	baseByID := make(map[string]CoursePageMetadata, len(validatedBase.Pages))
+	for _, entry := range validatedBase.Pages {
+		baseByID[entry.PageID] = entry
+	}
+	for pageID := range descriptionByID {
+		if _, ok := baseByID[pageID]; !ok {
+			return nil, nil, fmt.Errorf("course revision descriptions has unknown page_id %q", pageID)
+		}
+	}
+
+	glossaryHash := sum(glossary)
+	revised := make([]string, 0, len(descriptionByID))
+	metadata := CourseMetadata{
+		SchemaVersion: base.SchemaVersion, Locale: options.Locale, GeneratorContract: contract,
+		Pages: make([]CoursePageMetadata, 0, len(catalog.Pages)),
+	}
+	for _, page := range catalog.Pages {
+		entry := baseByID[page.ID]
+		description, selected := descriptionByID[page.ID]
+		if selected {
+			entry = CoursePageMetadata{
+				PageID: page.ID, Route: page.Route, Description: description,
+				SourceSHA256: page.SourceSHA256, TargetSHA256: sum(targets[page.ID]), GlossarySHA256: glossaryHash,
+				Generation: CourseMetadataGeneration{Provider: options.Provider, Model: options.Model, PromptVersion: prompt, GeneratedAt: options.GeneratedAt},
+			}
+			if base.SchemaVersion == CourseMetadataSchemaVersionV2 {
+				entry.SourceDescriptionSHA256 = sum([]byte(sourceByID[page.ID].Description))
+			}
+			revised = append(revised, page.ID)
+		}
+		metadata.Pages = append(metadata.Pages, entry)
+	}
+	data, err := json.MarshalIndent(metadata, "", "  ")
+	if err != nil {
+		return nil, nil, fmt.Errorf("encode revised course metadata: %w", err)
+	}
+	data = append(data, '\n')
+	if _, err := validateCourseMetadataWithSourceDescriptions(data, options.Locale, catalog, targets, glossary, sourceDescriptions); err != nil {
+		return nil, nil, fmt.Errorf("validate revised course metadata: %w", err)
+	}
+	return data, revised, nil
+}
+
 func parseCourseDescriptions(data []byte) (map[string]string, error) {
+	if err := rejectDuplicateCourseSourceDescriptionReviewJSONMembers(data); err != nil {
+		return nil, fmt.Errorf("parse course descriptions: %w", err)
+	}
 	decoder := json.NewDecoder(bytes.NewReader(data))
 	decoder.DisallowUnknownFields()
 	var descriptions courseDescriptionsFile

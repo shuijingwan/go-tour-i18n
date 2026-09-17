@@ -80,6 +80,41 @@ func refreshCourseMetadata(root string, catalog *i18n.Catalog, args []string) er
 	return nil
 }
 
+func reviseCourseMetadata(root string, catalog *i18n.Catalog, args []string) error {
+	fs := flag.NewFlagSet("course-metadata revise", flag.ContinueOnError)
+	locale := fs.String("locale", "", "target locale")
+	descriptionsPath := fs.String("descriptions", "", "strict revised page_id and description JSON input")
+	provider := fs.String("provider", "", "generation provider provenance for revised Pages")
+	model := fs.String("model", "", "generation model provenance for revised Pages")
+	generatedAt := fs.String("generated-at", "", "generation time for revised Pages (RFC 3339 UTC)")
+	schemaVersion := fs.Int("schema-version", 0, "required base schema version (defaults to the base asset version)")
+	output := fs.String("output", "", "revised formal metadata output path")
+	if err := fs.Parse(args); err != nil {
+		return err
+	}
+	if *locale == "" || *descriptionsPath == "" || *provider == "" || *model == "" || *generatedAt == "" || *output == "" {
+		return fmt.Errorf("--locale, --descriptions, --provider, --model, --generated-at, and --output are required")
+	}
+	if fs.NArg() != 0 {
+		return fmt.Errorf("unexpected course-metadata revise arguments: %s", strings.Join(fs.Args(), " "))
+	}
+	descriptions, err := os.ReadFile(*descriptionsPath)
+	if err != nil {
+		return fmt.Errorf("read course revision descriptions: %w", err)
+	}
+	revisedData, revised, err := i18n.ReviseCourseMetadata(root, catalog, i18n.CourseMetadataRevisionOptions{
+		SchemaVersion: *schemaVersion, Locale: *locale, Provider: *provider, Model: *model, GeneratedAt: *generatedAt, Descriptions: descriptions,
+	})
+	if err != nil {
+		return err
+	}
+	if err := writeCourseMetadataAtomic(*output, revisedData); err != nil {
+		return err
+	}
+	fmt.Printf("revised course metadata: %s (locale=%s revised_pages=%d: %s)\n", *output, *locale, len(revised), strings.Join(revised, ", "))
+	return nil
+}
+
 func courseMetadataSourceCommand(root string, catalog *i18n.Catalog, args []string) error {
 	if len(args) == 0 {
 		return fmt.Errorf("usage: course-metadata source <assemble|check|review-record|review-check> [flags]")

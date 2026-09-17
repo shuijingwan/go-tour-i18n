@@ -164,7 +164,7 @@ schema v1 的 `course-seo-description-v1` contract、字段、strict validation�
 }
 ```
 
-v1 模型生成输入仍是每页完整 English source、完整最终 canonical locale target 与完整 locale glossary；v1 validator 仍拒绝未知字段、错误 page set/route/source/target/glossary identity、错误 contract/provenance，以及不满足同一 30–200 code point、plain-text、无重复约束的 description。原 `course-metadata assemble` 默认仍生成 v1，原 `refresh` 对 v1 base 仍按旧 identity 精确刷新 stale subset。
+v1 模型生成输入仍是每页完整 English source、完整最终 canonical locale target 与完整 locale glossary；v1 validator 仍拒绝未知字段、错误 page set/route/source/target/glossary identity、错误 contract/provenance，以及不满足同一 30–200 code point、plain-text、无重复约束的 description。原 `course-metadata assemble` 默认仍生成 v1，原 `refresh` 对 v1 base 仍按旧 identity 精确刷新 stale subset；`revise` 也可在整个 v1 base identity current 且通过 strict validation 时只修订明确 subset，不改变 schema 或 v1 输入边界。
 
 因此现有 live locale 不迁移、不重写、不重新生成，也不会仅因仓库出现或改变新的全局 asset/gate 而使 course metadata 或 Locale Surface Review A gate stale。以后迁移某个旧 locale 是独立任务。
 
@@ -203,13 +203,13 @@ v1 模型生成输入仍是每页完整 English source、完整最终 canonical 
 
 v2 模型输入只有：当前 Page 的 canonical English description、完整 `locales/<locale>/glossary.yaml`、目标 locale identity 和 `course-seo-localization-v2` contract/constraints。不得把完整 English body、完整 target body、其他 locale description 或其他 Page description 交给本地化模型。
 
-普通 ChatGPT GPT-5.6 Sol + High 是 schema v2 localized description 的推荐正式生成环境；Codex GPT-5.6 Sol + High 仍是正式 fallback。两者都必须遵守完全相同的 `course-seo-localization-v2` 输入边界。实际使用哪个环境生成，就记录对应的真实 provider/model provenance：普通 ChatGPT 使用 `provider=chatgpt`、`model=gpt-5.6-sol-high`，Codex fallback 使用 `provider=codex`、`model=gpt-5.6-sol-high`，并使用真实 RFC 3339 UTC `generated_at`。生成环境只产出 description 输入，不得直接修改正式 `course-metadata.json`；正式资产仍只能由下述 assemble/refresh CLI 机械生成。生成 session 与最终 Locale Surface Review session 必须分离。本项不改变 schema、canonical source-description review authority 或 Locale Surface Review gate。
+普通 ChatGPT GPT-5.6 Sol + High 是 schema v2 localized description 的推荐正式生成环境；Codex GPT-5.6 Sol + High 仍是正式 fallback。两者都必须遵守完全相同的 `course-seo-localization-v2` 输入边界。实际使用哪个环境生成，就记录对应的真实 provider/model provenance：普通 ChatGPT 使用 `provider=chatgpt`、`model=gpt-5.6-sol-high`，Codex fallback 使用 `provider=codex`、`model=gpt-5.6-sol-high`，并使用真实 RFC 3339 UTC `generated_at`。生成环境只产出 description 输入，不得直接修改正式 `course-metadata.json`；正式资产仍只能由下述 assemble/refresh/revise CLI 机械生成。生成 session 与最终 Locale Surface Review session 必须分离，包括语言质量 revision：发现缺陷的审核 session 不得同时生成替换译文并批准自己的输出。本项不改变 schema、canonical source-description review authority 或 Locale Surface Review gate。
 
 本地化可调整语序、句法、必要形态和 glossary 术语，但必须保持 canonical description 的 semantic scope：不删除关键语义、不增加信息、不 keyword stuffing、不根据 Page body 重新选重点。`target_sha256` 仍由工具读取完整 ready canonical target 自动计算，只负责 identity/freshness，target body 不是模型输入。
 
 v2 同样使用唯一 strict loader：拒绝未知字段与额外 JSON value，要求 exact Page set、Catalog order、route、source/source-description/target/glossary identity、受支持 contract/provenance，以及相同的 description 文本安全、长度和 duplicate 约束。
 
-### Assemble 与 refresh
+### Assemble、refresh 与 revise
 
 首次生成 schema v2：
 
@@ -237,15 +237,32 @@ go run -mod=readonly ./cmd/tour-i18n course-metadata refresh \
   --output <output>
 ```
 
-两者都要求 current canonical source-description asset 与 current passed source review gate。模型输出严格仍为：
+当 Locale Surface Review 判定某些 localized description 语言质量不合格、但整个正式 metadata asset 的 identity 仍 current 时，只修订明确 subset：
+
+```sh
+go run -mod=readonly ./cmd/tour-i18n course-metadata revise \
+  --schema-version 2 \
+  --locale <locale> \
+  --descriptions <revised-localized-descriptions.json> \
+  --provider <provider> \
+  --model <model> \
+  --generated-at <RFC3339-UTC> \
+  --output <output>
+```
+
+schema v2 的三个入口都要求 current canonical source-description asset 与 current passed source review gate。模型输出严格仍为：
 
 ```json
 {"pages":[{"page_id":"welcome/1","description":"目标语言 description"}]}
 ```
 
-调用者不得填写 hash、route、schema 或 provenance。工具从 Catalog、canonical source descriptions、ready canonical target 和 glossary 自动派生全部 identity，正式验证后原子写入。`assemble` 要求完整 Page set；`refresh` 从 base schema 推断版本，并在显式 `--schema-version 2` 时核对一致，只接受精确 stale subset。
+调用者不得填写 hash、route、schema 或 provenance。输入顶层只能有 `pages`，每项只能有 `page_id` 与 `description`；unknown field、duplicate `page_id`、unknown `page_id`、malformed/额外 JSON value 和空 revision subset 均 fail closed。工具从 Catalog、canonical source descriptions、ready canonical target 和 glossary 自动派生全部 identity，正式验证后原子写入。`assemble` 要求完整 Page set；`refresh` 从 base schema 推断版本，并在显式 `--schema-version 2` 时核对一致，只接受精确 stale subset。
 
 refresh 对 non-stale entry 原样保留 description 与真实 generation provenance；只对 stale entry 写入新 description、当前 identity 和本轮 provenance。catalog Page set/order 与 base 不一致时 fail closed，不把 partial output 当正式资产。v1 的原命令保持可用：`assemble` 未指定 schema 时仍为 v1，`refresh` 未指定时沿用 base schema。
+
+`revise` 与 `refresh` 的语义不可互换：identity stale 时必须使用 `refresh`；只有人工语言审核判定 description 需要改写、且 base 全部 identity current 时才使用 `revise`。`revise` 在任何 Page identity stale、base malformed/incomplete 或 schema v2 source-description/review authority non-current 时整体 fail closed，不顺带刷新 identity。它只替换输入中所选 Page 的 description，按当前正式输入重新派生该 Page identity，并写入本轮真实 generation provenance；未选 Page 的 description、identity 与原 generation provenance 原样保留。命令沿用 base schema，显式 `--schema-version` 只做一致性核对，不自动迁移 v1/v2；最终完整 asset 必须通过同一 strict validator。
+
+revision 的模型输入边界不因它是局部修订而改变：schema v2 每个被选 Page 仍只向生成 session 提供该 Page 的 canonical English description、完整 locale glossary、目标 locale identity 与 `course-seo-localization-v2` contract/constraints，不提供 Page body、target body、其他 Page description 或未选 Page 文本。生成 session 只写上述 strict description 输入，正式 JSON 仍只由 CLI 机械写入；之后由独立 Locale Surface Review session 重审受影响范围。
 
 ## v2 stale graph
 
@@ -258,7 +275,7 @@ v2 只有全部 identity 当前时才合法：
 - Page set/order、route 或 catalog identity 不一致 → fail closed；
 - schema、generator contract 或 prompt version 不受支持 → fail closed。
 
-source review gate 过期时不能执行 v2 assemble/refresh，且任何 v2 loader/consumer 都会 fail closed。工具不伪造 generation provenance。
+source review gate 过期时不能执行 v2 assemble/refresh/revise，且任何 v2 loader/consumer 都会 fail closed。工具不伪造 generation provenance。
 
 ## Locale Surface Review 与 runtime
 

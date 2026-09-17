@@ -123,6 +123,8 @@ func run(args []string) error {
 		return assembleCourseMetadata(root, catalog, args[2:])
 	case "course-metadata refresh":
 		return refreshCourseMetadata(root, catalog, args[2:])
+	case "course-metadata revise":
+		return reviseCourseMetadata(root, catalog, args[2:])
 	case "course-metadata source":
 		return courseMetadataSourceCommand(root, catalog, args[2:])
 	case "surface-review record-a":
