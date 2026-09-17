@@ -1,0 +1,1552 @@
+{
+  "schema_version": 2,
+  "locale": "zh-TW",
+  "generator_contract": "course-seo-localization-v2",
+  "pages": [
+    {
+      "page_id": "welcome/1",
+      "route": "/welcome/1",
+      "description": "了解如何瀏覽 Go 指南、執行與編輯範例程式、格式化程式碼，並在互動實驗時使用鍵盤快速鍵。",
+      "source_sha256": "1f581133d7fa40e6490418c6789a60a2f5e1de26c9c86d7eb6120cb58b145857",
+      "source_description_sha256": "3d937a528fff6a119ce7ece2579edec8b0895514ae2a0fe8f255b9e3cbf288b2",
+      "target_sha256": "e4b46a318d314e1689c73707bf644f9670387bd9a32871ac5376575a1b46c25c",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "welcome/2",
+      "route": "/welcome/2",
+      "description": "尋找 Go 指南目前提供的其他語言版本，並了解如何使用導覽控制項繼續瀏覽本指南。",
+      "source_sha256": "709f808ec4cdf683411f349cab7a4886fcae532d1c4e4cc66c8ed68cfb2dd2d3",
+      "source_description_sha256": "39c14471d1d721e97c09e0023a883f66f729a8be753bdb8a3445bd6027be8bd3",
+      "target_sha256": "cb809164e25c71329b6d5d3aee38712bdb43a36eaef1304c1213ceaf5632fb79",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "welcome/4",
+      "route": "/welcome/3",
+      "description": "在自己的電腦上安裝並執行獨立版 Go 指南，以離線存取課程與程式碼範例。",
+      "source_sha256": "bb517d4b577fdb446fd029c2998d2426663b94a68f4b4e494c59af421508f683",
+      "source_description_sha256": "d13d1d18ed0fb4eb16e5348b14dbea7c4d22dfd134bb900c8d8a3736a4cbe362",
+      "target_sha256": "6b0ec0ffa7e01c9dc5416b6116c321f8431a5a21541fe56750bf27d96ad19996",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "welcome/5",
+      "route": "/welcome/4",
+      "description": "了解 Go Playground 如何在沙盒中編譯與執行程式，以及其確定性時間與資源限制。",
+      "source_sha256": "19e6d7da57ca1d191c485754f3dd4ac87775c651b8c0ae8e05c03cbd9b225897",
+      "source_description_sha256": "30f78795b3923c7eb444a1ed4873e36d136030ec9c27c27e73099de6fd6aed4d",
+      "target_sha256": "f30a21bc4f2ef8e5eb034458568c0c9af43a60a3bb90aa8fa17622f48440c6d6",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "welcome/3",
+      "route": "/welcome/5",
+      "description": "完成指南的第一個模組後，可從課程清單選擇其他模組，或直接前往下一課。",
+      "source_sha256": "9a6983b2e50b2fa78ff4f65683210714aea1c1575418e36796c156950ec6330d",
+      "source_description_sha256": "3db60db277b939a3039b29c11e0c3d810c3bdea9017ea7e771d87819cf3c9275",
+      "target_sha256": "9a5df0564b24cab14a697cefc32e01a890bd7071523db7d2d2370dd38b23fe6a",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "basics/1",
+      "route": "/basics/1",
+      "description": "了解 Go 程式如何由套件組成、為何從 main 套件開始執行，以及套件名稱與匯入路徑的關係。",
+      "source_sha256": "f769f12c0a028b2f0cd403d89ff39dd150405e9f2e4155875321522f08619fe0",
+      "source_description_sha256": "1b3378aa355b5676dee5d0fcb248509b5dce2570e0ad196cb725343b61ccc25b",
+      "target_sha256": "ce14d3265ede40d9bdfac230c790aac1575d87d9a5079e6018998c25d900f720",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "basics/2",
+      "route": "/basics/2",
+      "description": "使用加上括號的分組匯入陳述式一次匯入多個 Go 套件，這是比多個獨立 import 宣告更建議的寫法。",
+      "source_sha256": "3329c9bff5f7e2b9b1e161fdebfb3804ff57cf1fb11bd4327d228328bcfb3fd0",
+      "source_description_sha256": "fdc97dfa6245b07c45ee1cf51eeaa7571b637f1d2f6c101e4ea2e77f35678fdb",
+      "target_sha256": "12fe37a0aac2c5f93c184b064ac0a78cc15ef429bd0f9a2ba9671e83741c1ecd",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "basics/3",
+      "route": "/basics/3",
+      "description": "了解 Go 如何以名稱首字母大寫來匯出名稱，以及為何套件外部程式碼只能存取該套件的匯出識別符。",
+      "source_sha256": "38b9c70e49184a24f63f6b12f8ba78e64c0b874ad2a6f9a5fe86267615fd1bf6",
+      "source_description_sha256": "b823e75c9decbef08bf4556fc7d2c242d0e68dfa4633c7793cf2d1d043efe6d1",
+      "target_sha256": "83058f6dd0ac7f415db897716bfab72955c81419f4e8cedfeb8fe39eb66a9a1f",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "basics/4",
+      "route": "/basics/4",
+      "description": "定義具有零個或多個引數的 Go 函式，並將每個參數的型別寫在變數名稱之後。",
+      "source_sha256": "accf0562d9b759c9735500d5df0d74e8f90142ed96fe5ab2f5eedc6fbd6cf6f2",
+      "source_description_sha256": "f38ebeb7c0cc84b0cba3a3836eda79d8fd5c3372f34e39aa69547bfa68ec785b",
+      "target_sha256": "0908f9f11a36f5af8e5e26ecb654d47fdb99ba9a4ba1b08f02ab0a80ca2441bf",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "basics/5",
+      "route": "/basics/5",
+      "description": "當連續的 Go 函式參數具有相同型別時，只在最後一個參數名稱後寫出型別，以縮短宣告。",
+      "source_sha256": "02e7feb341329e18143e18d533fe45381883a6ba6425abb09a847e2f0edf228a",
+      "source_description_sha256": "4e6a3c46e988fbcd7357306955a0951e44e0e4ea0b62a7c05a4c95d6d3a9e84f",
+      "target_sha256": "757bbf9c88dbc05d0980ce5afe23f545ee667516f27560e9576621a6c2dee4ac",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "basics/6",
+      "route": "/basics/6",
+      "description": "讓 Go 函式回傳多個結果，並透過交換後回傳兩個字串值的函式了解其用法。",
+      "source_sha256": "b3cb4b40115066443f265e3e5ebb9fc0fd6d080784c887328fce4d6b7891ba41",
+      "source_description_sha256": "013f1d728ddcef926d38d223ca9d6a69c658dd4a9b659f72f04816f227aae020",
+      "target_sha256": "6c2de9c0cf7acbb7b4018b1316693aa2a359809b42e0c8b8d842aa7ac7bf841d",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "basics/7",
+      "route": "/basics/7",
+      "description": "使用具名回傳值說明各結果的意義，並了解裸 return 在何種情況下有助或有損可讀性。",
+      "source_sha256": "1db20ae87ce5d9d4b20f15e4638ba2a3295a7ce781c961ef618982890fc562fa",
+      "source_description_sha256": "6c4c2ac14a37bd8b24a7cf6dc970e2ec2671ef13b301ce00d2f287cb98596512",
+      "target_sha256": "fa702f25b067e84f3b5600dcbb182cfae2421ab63767c0f19bbe1d2e541ba614",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "basics/8",
+      "route": "/basics/8",
+      "description": "使用 var 在套件或函式作用域宣告有型別的變數，並遵循 Go 名稱在前、型別在後的語法。",
+      "source_sha256": "bcb1b5e17ed9dff3d46a7cd8119c0d2f9c3afbb70ca94d35fadeb4f75b4a9d13",
+      "source_description_sha256": "72da0fb9d95da65fcaaea5fbdd2c1c9ea9df4bf06793275bff4e46b1b0a97d51",
+      "target_sha256": "b15affe9276a120fff044fce286a936b469ff7fe02daeba5428eed551f879abd",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "basics/9",
+      "route": "/basics/9",
+      "description": "在 var 宣告中初始化變數，並讓 Go 從各自的初始值推論省略的型別。",
+      "source_sha256": "d51c17ba355753484b96c0eefda9fcce9f6f041a8ae2bf3e96fd0ad0c44680cc",
+      "source_description_sha256": "6d26f7a1a4f12a8438d0b7f4a4805e764a7e6852bbb561de361434032eb84e0a",
+      "target_sha256": "ff084d1a8c1e0c3acb6f81c4fcb9580bca5746946af75437ad5c27b15e529cc5",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "basics/10",
+      "route": "/basics/10",
+      "description": "在函式內使用 := 語法進行短變數宣告，此處允許省略明確的 var 宣告。",
+      "source_sha256": "f402e8e89a186d3208df5e4d983604730e71ef6c68354755f72e4580d3d7f359",
+      "source_description_sha256": "2ed42cad59a09602b3683e8051e76785ca3cb0581db8e84d0c91df15ea7f6055",
+      "target_sha256": "4fddbe83ff891f5a718b22e7144ab0b246d7436d4b1aaea6b9ba829ff27a1b9b",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "basics/11",
+      "route": "/basics/11",
+      "description": "概覽 Go 的布林、字串、整數、浮點數、複數、byte 與 rune 型別，並了解整數大小的選用建議。",
+      "source_sha256": "836ab1dd659798dcf5e90f283c4ee794aed1d2cf0766c2ccc268fa91684e9d05",
+      "source_description_sha256": "7729889458a4d34cd6abb380c6b528035b4e9ae93dc785e99b12660c0e3f5a4e",
+      "target_sha256": "def3cde0c93fe2681f04c806247dd5ff66cad19b7cb9b115a5152e77ff30d445",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "basics/12",
+      "route": "/basics/12",
+      "description": "了解未初始化 Go 變數的預設零值：數值為 0、布林值為 false、字串為空字串。",
+      "source_sha256": "d9ad62501c05359e7b2ac445fa92d629e11d6d378c2701b767abab76012a558e",
+      "source_description_sha256": "6ed8204794cae90282978dbae2413c8ae9e1feceba59ae10736065ad00165ca7",
+      "target_sha256": "30c323e865fbac68b456a0e4694ce3248c4a6cdf1edcaa30555dcff3b882ab75",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "basics/13",
+      "route": "/basics/13",
+      "description": "使用型別轉換運算式明確轉換值，因為 Go 不允許在不同數值型別之間進行隱含指定。",
+      "source_sha256": "88e0e168f4c95fa4134198a32440b2d2fb1fac9aae535a9ee7148dbcda37e1b3",
+      "source_description_sha256": "9213231bcd5269a4d402ed83117584521f51191b04e30301599ce3aaedef9afe",
+      "target_sha256": "3bacd57a15ba427914c7627462205c6e2913731cb80ed2132cf53715e29032f6",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "basics/14",
+      "route": "/basics/14",
+      "description": "了解 Go 如何從有型別的值推論變數型別，並依無型別數值常數的精度選擇其預設型別。",
+      "source_sha256": "21c4077c25629545dee0313b8b6b03e709edc4a74e1d73d9f4c9b0a49e46f6b3",
+      "source_description_sha256": "22bd9a429fe4882f0595c270aa52ac22f984d89afc93e5287829125188937dad",
+      "target_sha256": "568d386fc6c1866e1ca5b1a84f9da6918440379947de6b849f4cfb726cd9e9f5",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "basics/15",
+      "route": "/basics/15",
+      "description": "使用 const 宣告字元、字串、布林與數值常數，並注意短變數宣告語法不能用來定義常數。",
+      "source_sha256": "964ac515c0860a54b3a7780d77c7b4862ca38b744ae1f6be4b155a4386e2a229",
+      "source_description_sha256": "9a5d122d06495fa1838331e095ca3a72b47b645a7e19bb28fc127ce13c1fbe8c",
+      "target_sha256": "f6fd52ae2bfcfaa8c934e03c7524f0602001e8ac31f0c002b9d0ed174f4842d8",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "basics/16",
+      "route": "/basics/16",
+      "description": "探索高精度數值常數，以及無型別常數如何採用周遭上下文所要求的型別。",
+      "source_sha256": "0d502d48a15f7a70e257079d7db1ddafe088607110c1c06b17b4be50b362394a",
+      "source_description_sha256": "1b42764b78e1a1ca531d208244f285164d53e9cb6320ea1b5fb5b6464b1de1e3",
+      "target_sha256": "41d37995dfbed471882c6110a42f8d9c2d08ff621f5f99396a761312d419b060",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "basics/17",
+      "route": "/basics/17",
+      "description": "完成目前這一課後，可回到模組清單選擇其他主題，或繼續前往下一課。",
+      "source_sha256": "f565674b974c053924bf69ef83b709dc50931526ae7fa88e71543a5cd872a190",
+      "source_description_sha256": "afff9e2c9367a5554aa90fd0f9427a37fc7420a1c93d4596668bdb3fd3ae7e5d",
+      "target_sha256": "69f977870174739909355e8f8062c848a89abe81587c183b4bc57e85c486caf4",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/1",
+      "route": "/flowcontrol/1",
+      "description": "了解 Go 唯一的迴圈結構，包括 for 迴圈的初始化、條件、後置陳述式、作用域與必要的大括號。",
+      "source_sha256": "c6cd458bda99bffc7b753e122c56575a59508586054180be1f8d7bb1fe2391df",
+      "source_description_sha256": "b88b64bb1e63b5ebb863972f8c24e8cc545a83c115c64f401ef8fd3b114d61f5",
+      "target_sha256": "a80020d6514af8812279fe8c9d9aaddcf275c6682fb44d40e2511bf743e4be5d",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/2",
+      "route": "/flowcontrol/2",
+      "description": "保留迴圈條件，同時省略 Go for 迴圈中可選的初始化與後置陳述式，簡化迴圈寫法。",
+      "source_sha256": "24a97abbb6db2b6a88017bf326a5968097263d8ba637805f2cf44c9fed25f9fe",
+      "source_description_sha256": "dd466b8b04c3284a0f1a48dc9748a434b7a7e8c8c54797785c9aec102cc04055",
+      "target_sha256": "2163dd37d8911142d41802ce11bc70f84672886ae5fe493e87a0f29c8931f29f",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/3",
+      "route": "/flowcontrol/3",
+      "description": "在 Go 中省略初始化、後置陳述式及其分號，以 for 表達類似 while 的迴圈。",
+      "source_sha256": "3ed791cc935287ba6f5da4ba41f6ad84fdcbaef108ee364f769ae5204316bbb7",
+      "source_description_sha256": "917a1d2bce0a711d7aa187f22916986ec204539d59aca1aeee2686ea5692963e",
+      "target_sha256": "0b8a7e694aa62fe084a507be593fcdd893081176ee511ef1c4000ab5184d2ef6",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/4",
+      "route": "/flowcontrol/4",
+      "description": "在 Go 中使用不帶任何迴圈條件的 for 陳述式，建立精簡的無限迴圈。",
+      "source_sha256": "5456c129ef71c60b7502efde65c81020aaf1fa8b9178086e99223a21f6207dc6",
+      "source_description_sha256": "0b2cfd67b2c51f9ab0edbe920ad1a703701ff723f9d22673a4cde7e914eec4a9",
+      "target_sha256": "cebe5bd85cc9ef740598c85f3b59bf80b6963656775a47d14b5344ff366c345c",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/5",
+      "route": "/flowcontrol/5",
+      "description": "撰寫 Go if 陳述式時，條件不需加括號，但仍必須保留語言要求的大括號。",
+      "source_sha256": "ce49f916c1ceb7296576ec6b8ec92524b9827be168e3f5eb2040c61fee70f639",
+      "source_description_sha256": "d49445fcd341a4fb747cb7c3e25c0f40849456c8b7be876f62a999fe2591972b",
+      "target_sha256": "6b16a5ff379d9951b46fb7e9442c0241ba2036d67e4e22844dbc3186142fa4a5",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/6",
+      "route": "/flowcontrol/6",
+      "description": "在 if 陳述式開頭加入短陳述式，並讓其中宣告的變數作用域持續到整個條件判斷結束。",
+      "source_sha256": "02e310262214f3c5ceca8bf63ecf2ec3934641a7e2638050479b739ce077031e",
+      "source_description_sha256": "c1de9378770e7df962ac8f2962918b78a6e2e80c3305b35ab584555902c36085",
+      "target_sha256": "710281f0e2a6e72e5f3441bee4dff66d2217ad032a68f50ec9592b31e61a7280",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/7",
+      "route": "/flowcontrol/7",
+      "description": "在 if 的短陳述式中宣告的值，可在其對應的 if 與 else 分支中使用。",
+      "source_sha256": "8666746573ce7d0ea1c12ff24c4c8170a1961eedb0600ed73ab849b4758f797c",
+      "source_description_sha256": "0a195d6914891c06915e6d43fce1ddd71c0e7d387373e53500cc56783f385e88",
+      "target_sha256": "bc81da398f18cf733b6c003a4dca5fe40256d10b9ed118f58c608097aa20dd2c",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/8",
+      "route": "/flowcontrol/8",
+      "description": "以迭代近似迴圈實作平方根函式，再改進停止條件並比較不同初始猜測值。",
+      "source_sha256": "d8bbee8455ff59212ef432a08312f7c7703360367325a80df3719157200316e9",
+      "source_description_sha256": "ebf228ed982779e279412f9e840bd06503969b4fe1acec70b088c10df6076e0d",
+      "target_sha256": "0ddc9849b96b31d3354e9ba9f70cad3f2195faadb2bcc73140bf5df80f98d4e2",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/9",
+      "route": "/flowcontrol/9",
+      "description": "使用 Go switch 作為精簡的條件鏈；case 會自動結束，且不必是常數或整數。",
+      "source_sha256": "abdc4c295fa7b4aec2616acf83badbbf2b581a9f62e41d03ca2ff984ebb6f7ed",
+      "source_description_sha256": "fd71acf123c49872a02285878fa1caf6bb3e6f27d8b2b63976e6cba5b717c50a",
+      "target_sha256": "393570aa2536d33ac84d5f863522af6e19e62f3bdab109db8eb4760af36bd18a",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/10",
+      "route": "/flowcontrol/10",
+      "description": "了解 switch 的 case 會由上而下求值，並在第一個符合條件的 case 成功後停止。",
+      "source_sha256": "e1479cae56a87cddb9c447fc9fd32b0ee1f983058f7ee76554965abd21975ef4",
+      "source_description_sha256": "1a06cd6f5c9aecb29e4d0fdec7cf4d11daaa7edc05631cffcecac25ad4e2e5c6",
+      "target_sha256": "8234289e449d2fbb340588e31cffcea45621b3399052f520f641db4b81e22ec9",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/11",
+      "route": "/flowcontrol/11",
+      "description": "使用不帶條件的 switch 取代冗長的 if-then-else 鏈，其效果等同對 true 執行 switch。",
+      "source_sha256": "714b67f479583e47080cd0f38489f465a28c002938390c4155af6dfeebb9225b",
+      "source_description_sha256": "7258dc7db21d6d08ba2df8e15f0ae6222c4fc77310073dcfb5c287c172313176",
+      "target_sha256": "8a4b16df075adf7060dbbebedabdf4d5239701aa6ed809b19ffe7edb7d23c517",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/12",
+      "route": "/flowcontrol/12",
+      "description": "將函式呼叫延後到外層函式回傳時執行，但延後呼叫的引數會在當下立即求值。",
+      "source_sha256": "fa23a1d6ebf12f11843d38fe79c413a9c19bfcaf305ae64b75c360db24a436ec",
+      "source_description_sha256": "b0519f626762261cab62e224d08a2a1736e3a237ce8f4a8b48709c90ad8fbcec",
+      "target_sha256": "42b4e2e8bdb519b0828bda2994fba4f00562e03251b06fb1d18b3a283f67b269",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/13",
+      "route": "/flowcontrol/13",
+      "description": "疊加多個延後呼叫，並觀察外層函式回傳時它們依後進先出的順序執行。",
+      "source_sha256": "73a02c24eb14597b3c5f53a09fc572f1a1f0c941adfc337c79fb14b492985fc1",
+      "source_description_sha256": "4f2d10438473b7ee08d85ca67a6fecebfe634eb93ce4d7cffd9fa2b269a15aa0",
+      "target_sha256": "14ae7958148036a71f899a66f8ff0100f7ecc6a3cd9e12a9c3bb9229fdefc89e",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/14",
+      "route": "/flowcontrol/14",
+      "description": "完成目前這一課後，可瀏覽可用的模組清單選擇新主題，或繼續前往下一課。",
+      "source_sha256": "f565674b974c053924bf69ef83b709dc50931526ae7fa88e71543a5cd872a190",
+      "source_description_sha256": "e4aa7053180e81ac52e524fec926796e1e27bb573e7d2ef9498fe68cab34978d",
+      "target_sha256": "69f977870174739909355e8f8062c848a89abe81587c183b4bc57e85c486caf4",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "moretypes/1",
+      "route": "/moretypes/1",
+      "description": "使用 Go 指標取得位址與解參照值，並了解 nil 是零值且 Go 不支援指標算術。",
+      "source_sha256": "7706eaf0d46acc79fdad3b7953e5571bf404551d71aaefafd8ba79f5761f9806",
+      "source_description_sha256": "e83399f3a2f0f13e4ce844d458d32ad97bbfe0c4eb292c2247b1a1f741adb9e3",
+      "target_sha256": "c11171adae9bbd3245ddf6b3243bf51545ab0334fe7dd557ad1b1f85500e76c1",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "moretypes/2",
+      "route": "/moretypes/2",
+      "description": "了解在 Go 中，結構本身是一個單一值，其內容由一組欄位共同構成。",
+      "source_sha256": "a18dfdaadb9739387cc9886b67e9bf920bf52ada62397a1812cfd302c64aed9b",
+      "source_description_sha256": "5a71c404683c8346f40fb4a2ce1d1d0a2136f49eae43da95f413673da1c567f2",
+      "target_sha256": "85519ed6834b363180336d2afe5ff830c3370c62086959f5cdaba6be99db7f14",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "moretypes/3",
+      "route": "/moretypes/3",
+      "description": "使用點號語法存取 Go 結構中的個別欄位，藉由欄位名稱取得結構內對應的值。",
+      "source_sha256": "0be9cb4a59a0d95526c208e5d8d96ebe6a15fd84b6e3a2ff9a07963226cb7b58",
+      "source_description_sha256": "3e367121c5953b979a016ce011d4ff223de69eb66185edd7df099115d7d631a0",
+      "target_sha256": "e5ae8f45f9880a7263866d7ac0defa1d9883c075ac9dc15812f7eda40479bf61",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "moretypes/4",
+      "route": "/moretypes/4",
+      "description": "透過指向結構的指標使用便利的點號語法存取欄位，而不必明確寫出解參照運算。",
+      "source_sha256": "29695d334b6ff809e84ae8caeb7b9dc493143236783c07c16a83ecc64514c310",
+      "source_description_sha256": "a1925946cf90f972783ebf3472729761307da90cc30c5cfdf2310eaf91b391b3",
+      "target_sha256": "aaed44327819401866abae4a659ededf4448f76f1c0fb031eabbbb5e2fa56b51",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "moretypes/5",
+      "route": "/moretypes/5",
+      "description": "以結構常值建立結構值，可依名稱以任意順序初始化指定欄位，並使用 \u0026 取得指向結構值的指標。",
+      "source_sha256": "cf9282456e2a91274c1b135a68fce58dd1590f6a2d7153f0619c97ded8bd00d1",
+      "source_description_sha256": "566428b986d24aff9e14f50ed6728a9cd31ec8de1461064cecdd73e34deac89c",
+      "target_sha256": "9ea06f8bc8bae375d7be29dad0c3090e6f224cf08c07605a5ca27cb3250d4f67",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "moretypes/6",
+      "route": "/moretypes/6",
+      "description": "宣告固定長度的 Go 陣列；元素數量是陣列型別的一部分，因此陣列建立後不能調整大小。",
+      "source_sha256": "0ec503e46281eb8ff25ceba5b92c9f9c3b40517aeea77cf4878760ed0da9d29c",
+      "source_description_sha256": "3b15294f0e004adb588a19d958ebd8674ace65225f2390ff91b37d81d214feef",
+      "target_sha256": "1fec4466bc1f4a6f95bce2bbfbefa337775e9782332e61bb0069e803011c67fb",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "moretypes/7",
+      "route": "/moretypes/7",
+      "description": "在陣列上建立可動態設定長度的切片檢視，並以低界與高界選取半開區間的元素範圍。",
+      "source_sha256": "a169cf48dd659510ff7f1f8adfdbed5a247b51a1f7c3a45ae972f18921925033",
+      "source_description_sha256": "71c152fddf296a9d7a40e99b79e941cda0c04867f7344b3fb46c6cfac813cd81",
+      "target_sha256": "7bef5222e2a30160437fd8dea66121febd8a6a724268a565917dbc42144c54df",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "moretypes/8",
+      "route": "/moretypes/8",
+      "description": "了解切片會參照底層陣列，因此修改元素後，共用同一儲存空間的其他切片也能看見變化。",
+      "source_sha256": "e577f9e98a9c871cdc6f39ecca1bdd0965c26da3b9ab6c2a7cab42b3b0f3a568",
+      "source_description_sha256": "618088a9c7bea851e2362ee4ce74f750fe9b05c65bf0ded5ce01001710015812",
+      "target_sha256": "f24efb0456e5be07d23088530af4c3cf30d1b9c5b3c862482e8da9fd0d318a07",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "moretypes/9",
+      "route": "/moretypes/9",
+      "description": "使用陣列常值的語法建立切片常值，但不需要指定固定的陣列長度。",
+      "source_sha256": "fb79cf8caed7abc7dfd92e90cf1bcc11d547b8af96d224f30fefc995f98dbb0b",
+      "source_description_sha256": "cfa2da2eea5f06155f696c35cd43bc84d2f7c1ca2dff42f756c5fd27791f3489",
+      "target_sha256": "39032bdceaebcd85a10f763e70b11d2960d4c14f867f803b5c5b11e15df44521",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "moretypes/10",
+      "route": "/moretypes/10",
+      "description": "省略切片的低界或高界時，分別使用 0 與底層序列長度作為預設界限。",
+      "source_sha256": "36d1f92fc5e51cddcd26be7f74a875e60bf24633dd7c8689672fa23a6720e2a1",
+      "source_description_sha256": "00c286e8ccea7f8b05a8c475819b6077a9fbb24729e0dc4cb4d2e7145e795b87",
+      "target_sha256": "4c9b7c33f079c1cc7cc7f20fc84b1659651d9d59e9ccd07f6f711cd9054a8558",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "moretypes/11",
+      "route": "/moretypes/11",
+      "description": "區分切片的長度與容量，使用內建函式檢查兩者，並只在可用容量範圍內重新切片。",
+      "source_sha256": "e2d7d69c946e5a01d8d0eab2e07a2bf35e23453a617d5e7602ff0af5c5866d8f",
+      "source_description_sha256": "0f6094f4c28fae60bb70bd2616205d35bcfdea8d477b997d9ac0e7ae45b41654",
+      "target_sha256": "2bc426ca3eac2132274f1293e2ceb907102140f53aaec08bb327bf8c6120b48c",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "moretypes/12",
+      "route": "/moretypes/12",
+      "description": "了解 nil 是切片的零值；它沒有底層陣列，長度與容量都等於 0。",
+      "source_sha256": "e7a4bb0d5e7928c2da06312d983eba2adb533b30299025f507df183f00fefc89",
+      "source_description_sha256": "606962e7091f32e866981de754dc51784b725847cfa49f35284ceb8fe05ec9e0",
+      "target_sha256": "fcd7d4c793cf193ce9d988d5bc38d35c008c2ae2a86cb7547ceb2396fdf85bcb",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "moretypes/13",
+      "route": "/moretypes/13",
+      "description": "使用 make 配置已清零的陣列並取得動態大小的切片，也可以另外指定不同的容量。",
+      "source_sha256": "d057e6bf75421597d430ff52f844499b5828ab2c4b4c5148ad88b6b89326ac20",
+      "source_description_sha256": "a0d0187091a138008eb18442ae1f499aa8d2fe942ecf6e524eb273d97dfb67f8",
+      "target_sha256": "0fc8cffea2ff226d74ecef5b952ef67948395439bad49b8d84c817252cea4b96",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "moretypes/14",
+      "route": "/moretypes/14",
+      "description": "使用元素本身也是切片的切片，建立由多層切片構成的多維資料結構。",
+      "source_sha256": "d8bee22c0382cf5fd5647c4d7106165d153cb15aaed8ec82e1f06e12ad0c73d1",
+      "source_description_sha256": "2a66202c8fdba235e0c78234d01daef6898cd69c0d446f8a21a67979a1bef043",
+      "target_sha256": "61795339033ffb29183d22efa53e699910191a0423541cdd0c0c3190608c3d87",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "moretypes/15",
+      "route": "/moretypes/15",
+      "description": "將元素附加到切片，並了解底層陣列空間不足時，何時會配置更大的新陣列。",
+      "source_sha256": "f2fc257e7c5f118321acc3b75e946053601532d411e8540534280d7fba795289",
+      "source_description_sha256": "5b4f57f1d1e59e6ee5cac92794e618501132356ae3710d7c3c8bf12f32041553",
+      "target_sha256": "9ed4da3e4c3cb8945c75ed6b8a98f732ca57b7b66bb8d706ca58bbfd9c0e3351",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "moretypes/16",
+      "route": "/moretypes/16",
+      "description": "使用 range 迭代切片或映射，並在每次切片迭代時取得元素索引與該值的副本。",
+      "source_sha256": "73fc46a2e049ce2ff4a4fc0595d717ed5d6e15b7093a6014509a48f501253186",
+      "source_description_sha256": "9fb6dada42add61186c2e79dc091c3dce567895431ef25fd18220abac6f5b215",
+      "target_sha256": "0c6da33c672a2c7856494c19f4f32f1d629ca5d469408764d6162ece8973babd",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "moretypes/17",
+      "route": "/moretypes/17",
+      "description": "使用空白識別符忽略不需要的 range 索引或值；若只需要索引，也可省略第二個變數。",
+      "source_sha256": "b52cca070f62a3ffeab3adf20f2745e1dd9aa2644a3985c23ac295e81e2c3bc9",
+      "source_description_sha256": "8c0f2bdd2a6f92dc681fa22f729da6d836747b0c4dce0f9947c019f8886c229d",
+      "target_sha256": "883848ec32a485493d290b7384a8bf97476c0e30bb445965d63ca830c955cef6",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "moretypes/18",
+      "route": "/moretypes/18",
+      "description": "實作圖片產生器，配置二維無符號位元組切片，並計算要顯示之影像所需的數值。",
+      "source_sha256": "9c5fd763eaedec8e8bfb60f52713417ff247bc4467aa8a94412c55ab83c781ba",
+      "source_description_sha256": "50c352bd8a0fa28b3eb713c3691438364c9116f66e92457d0c6ee385fc2a3c44",
+      "target_sha256": "b172b068189464292f4e0f3ec65bebf5202c6a10a1fa11f49b3b8db949393540",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "moretypes/19",
+      "route": "/moretypes/19",
+      "description": "使用 make 建立從鍵到值的映射，並了解 nil 映射沒有鍵且無法新增項目。",
+      "source_sha256": "39107d53feaffd26d7bb13103fe6e40746e9844d9b37bbf84559f7b91db312f3",
+      "source_description_sha256": "3bca4e1884f5843283b2ab833dec533c36fe7550097d1ce696ebd927fba24f29",
+      "target_sha256": "d12189f7fafbc3ce4417de12c8da934c359d4b8408758e57b63b34d02f1a2317",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "moretypes/20",
+      "route": "/moretypes/20",
+      "description": "使用映射常值初始化 Go 映射，並為其中每個值提供必要的對應鍵。",
+      "source_sha256": "1d3caa45093f65b50d5ebcff6a57559c3fe70faba85f3a0bb41db38c5375a507",
+      "source_description_sha256": "64b042ea9448b757f3249adcd03128e281423a7a30ac994669961db1114a4024",
+      "target_sha256": "94d2f95b380f4dc43c46747b9cfdcfdf817226f9983ef9536212f506cd0a082f",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "moretypes/21",
+      "route": "/moretypes/21",
+      "description": "當最外層元素型別是具名型別時，可省略重複的元素型別以縮短映射常值。",
+      "source_sha256": "0493179c2396f2e755fa5f1e579ce6f4cc716842ef5ee77a0b1c742210c15f9f",
+      "source_description_sha256": "c730c99a0322ec952dc3b0babf1aae15538fb08e7bf4b9d41b3580c524b4cf4c",
+      "target_sha256": "a9fa90f7a3e43660fdb1044df3d3b88681ce31e0a5b2559f8334fd72691755bb",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "moretypes/22",
+      "route": "/moretypes/22",
+      "description": "新增、更新、取得與刪除映射項目，再用雙值查詢區分不存在的鍵與零值。",
+      "source_sha256": "f6963bc620184c7fbea7b04c309ccf64d508a4e835500fa7dd4188e60204019f",
+      "source_description_sha256": "071308970b93a12a3ab3561c0ce18d0073cb4edd7fef6381380777864c8f6685",
+      "target_sha256": "2754838b8e6421619adf560fecfec51cd4a05ec3556f2cbf59c770a9e280ddcb",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "moretypes/23",
+      "route": "/moretypes/23",
+      "description": "實作字數統計函式，回傳一個映射，記錄輸入字串中每個單字出現的次數。",
+      "source_sha256": "3214968207b659c3fb6bf92ee3d1ba0858bf7d3240dfad30fada7c5d8bddea69",
+      "source_description_sha256": "980a77135ab84953b0e8c2200b54f1ecdc0f2f7255ac497aeee281ca30b03e11",
+      "target_sha256": "9fb3648bd82731c4f0f484267d49a81d95f98128476141ac98a0225a145dbba1",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "moretypes/24",
+      "route": "/moretypes/24",
+      "description": "將函式視為值，可指定給變數、作為函式引數傳入，也可作為結果回傳。",
+      "source_sha256": "91b508ec19d3baf6fd1b2382e54b0f4ec226e9af99d027e86d734cf081d9c897",
+      "source_description_sha256": "7071f87634550cbb36233a6ae15e5910f3b6dc71e3a4d4db8d669f30168094ef",
+      "target_sha256": "a2a399d931640325ccd47efdb726187109729f0fd76ba0213d7b2057ff3504e9",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "moretypes/25",
+      "route": "/moretypes/25",
+      "description": "建立會參照並修改函式本體外部變數的閉包，且每個回傳的閉包都綁定自己的狀態。",
+      "source_sha256": "570e535e9c2b2d1978534eb3b42f226102b11da36a3f9e61620dc5eafdb6be5f",
+      "source_description_sha256": "46ca9eb3fb315877fb7ecde2e10d046d4c3acbd71f62b37982d5e47644e3b63c",
+      "target_sha256": "fceba3d4105b1e74d21f63853e7dbfff0a13a2dde68d05eda740811b8124fb90",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "moretypes/26",
+      "route": "/moretypes/26",
+      "description": "實作一個回傳閉包的函式，讓該閉包依序產生費波那契數列中的連續數字。",
+      "source_sha256": "24f01440a7b0d638694c6cb275bf92e79e1fb2463ea2eb7d40a68cc4d6a0ed29",
+      "source_description_sha256": "e64e0a59ac166352e290c6051c98df95c58de5eea297a98fd1e648b3dbfa0517",
+      "target_sha256": "48f252f55f72e0407be5ddf68932e4044d27d93e885f1be5aba289e15493bc18",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "moretypes/27",
+      "route": "/moretypes/27",
+      "description": "完成目前這一課後，可從模組清單選擇不同主題，或繼續前往下一課。",
+      "source_sha256": "f565674b974c053924bf69ef83b709dc50931526ae7fa88e71543a5cd872a190",
+      "source_description_sha256": "60d1bf20d7741180f02b9b4c6c077d6515d15097cdd8b3513427f8cce749c249",
+      "target_sha256": "fb6e58137f977bc740b15d0e75cc13ab7a120851084bbbe96a0203c1abe4eb5f",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "methods/1",
+      "route": "/methods/1",
+      "description": "使用特殊的接收者引數在 Go 型別上定義方法，讓型別在沒有類別系統的情況下也能具有行為。",
+      "source_sha256": "8a62096b755332ede134c87493abe49231a52ce60abebcdc107bb6a64434fc72",
+      "source_description_sha256": "fb223db6446f747e780768d2e0bb40d143d440772710e6b2d978b464d0125b06",
+      "target_sha256": "1d0eacc42bdc32486b76a903fa4f3d45fc0acd732dc3ae56152fe261749c5362",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "methods/2",
+      "route": "/methods/2",
+      "description": "了解 Go 方法在行為上等同一般函式，只是接收者改以普通引數的形式寫入函式。",
+      "source_sha256": "ade066728f85cc93e75c2472b80d532b62259a7e08e42ef36e3d05c6cfa5476d",
+      "source_description_sha256": "ce86f31a028ef9ab542bf3b70e30f4ced404ea86da994eb0055ce1530c287861",
+      "target_sha256": "189600b381d41491f6d2a609f81829fd9e0fca7dab7dd586f5b8db16ba2b0706",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "methods/3",
+      "route": "/methods/3",
+      "description": "在本地定義的非結構型別上宣告方法，並遵守接收者型別必須與方法位於同一套件的規則。",
+      "source_sha256": "31c4fd0d80c8f1d96cf3efb1ecc1f9d3c0d1b5b70bb5c23bf7227b7007469588",
+      "source_description_sha256": "ac9c16d673aa0a6c164fde59b24ee32cb330a5104806181181c08599ec916cbc",
+      "target_sha256": "01d77118b7afa02cc1cd9e7ffe120246865a94be392550614dbf3e2665f73c2f",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "methods/4",
+      "route": "/methods/4",
+      "description": "當方法需要修改接收者時使用指標接收者；值接收者則只會操作原始值的副本。",
+      "source_sha256": "99f9fa4e5c4dd46d393f40b417d0430c4e27e56f40146f5f192f55ccda4e2db3",
+      "source_description_sha256": "51681653ead1e8e1cd79df9b64aa2cc8b156fa7ea457af6483ed06598fd7af1d",
+      "target_sha256": "2d9524f881430e53152878d78825216c0056b6812b9779e38ebf6f09273db346",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "methods/5",
+      "route": "/methods/5",
+      "description": "將 Abs 與 Scale 方法改寫成一般函式，再觀察修改指標參數如何影響行為，以及範例要如何調整才能編譯。",
+      "source_sha256": "cac8affc7a8fd7bc1c0003d8cbf5bd7c85433faea45ea1b39f3b80c2fbc5eae9",
+      "source_description_sha256": "175f241b33ef8229537e3ddd12f24f527ee8b9b13b5ef816d0a89df25fde9b86",
+      "target_sha256": "4a5967b1f7fdd900c844ec46ec793d8c74c02cd28656d65c1920ce54379fcd8b",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "methods/6",
+      "route": "/methods/6",
+      "description": "可透過值或指標呼叫指標接收者方法；例如 Go 會把值上的 v.Scale(5) 解讀為 (\u0026v).Scale(5)。",
+      "source_sha256": "39fb725b0a084ce3634dc973c215ff7a0f034c5f7b51c2ffe25934088072ebf6",
+      "source_description_sha256": "c4d49e8004cabb2c1640bd29ab1de2ace735f70c575f2b32c636c1a587d314ce",
+      "target_sha256": "0bd67df32759fdda419967726c5da5fd8c9d7a8f73517b3434e856ddb7e70866",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "methods/7",
+      "route": "/methods/7",
+      "description": "可透過值或指標呼叫值接收者方法，Go 會自動解參照指標來完成方法呼叫。",
+      "source_sha256": "61a9cb8411e6ce15dce3383a68a52c6644599e84269b3faf240129277d238f7e",
+      "source_description_sha256": "ab14363b476d06458eda3434ed9e990c715ddddc11863cdcb2c7ae3b1d0fe936",
+      "target_sha256": "df02dbb18332fdf3dc3770a42789f18e4a9434834820ff0acd95d62e32532acc",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "methods/8",
+      "route": "/methods/8",
+      "description": "為了允許修改或避免複製大型值，可選擇指標接收者，並讓同一型別的方法一致使用同一種接收者。",
+      "source_sha256": "357424f2a76613085184054178042b442331b5689d156ac9c37e09e57c436dae",
+      "source_description_sha256": "923ca14660ea330bf1790cee51d4e1bc7bcc760ce29b54054e2ce4ee45c4f262",
+      "target_sha256": "5937bc486e2762409d378537afe5ca8d0e5f0a9dca64f2986c4ab180821de680",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "methods/9",
+      "route": "/methods/9",
+      "description": "將介面定義為一組方法簽章，並了解接收者的選擇如何決定值或指標是否實作該介面。",
+      "source_sha256": "39efc19ed01619130489d21e421f2c0d8947b20f408580f4ceaabce6a0feb099",
+      "source_description_sha256": "6ee25d295ab6b3a2b4e7e26502652ed739467c62bc70835860cfd77bafb8903c",
+      "target_sha256": "0efec1479044ce5c48eaf6d2bdec1ea7d84f9f7ecfca644e4382c59713d01f78",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "methods/10",
+      "route": "/methods/10",
+      "description": "透過定義介面要求的方法隱式實作介面，使介面宣告與各套件中的實作彼此解耦。",
+      "source_sha256": "11ca99e6e83d93827daf02b177156fcb6f3c94ac8c202491dfffc5840ce4e39f",
+      "source_description_sha256": "6cf08662aae9ca82ce2cd6cd0a15e78992b0473cafa1149663a37fb9e2a7c7c2",
+      "target_sha256": "9e992fbd67af0db19bedf8936857efc73541c7ab98580590c5f311cf4db9487f",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "methods/11",
+      "route": "/methods/11",
+      "description": "將介面值理解為底層的具體值與型別，方法呼叫會分派到該具體型別上的同名方法。",
+      "source_sha256": "ccb2ed709b887724d22fb93714702fed5de4b7a83ca976876864045ff4752270",
+      "source_description_sha256": "cd6a134e49b4453e54c30c9686447f807f2a1e050246e4d6aee73514bb2179dc",
+      "target_sha256": "e40a14b657405a1644d8fa6249c89d3d4133949a657da4c8dd5a41964f4bb062",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "methods/12",
+      "route": "/methods/12",
+      "description": "區分保存 nil 具體值的非 nil 介面，並設計能妥善處理 nil 接收者的方法。",
+      "source_sha256": "9487ca3c9872972d42af8cfa389755678fe8a7cca110b592aac2a762332febf5",
+      "source_description_sha256": "fa0e9391d2ece71351113b5ecc38a4c43baa6e6bfa6bbf4929f8154a5d39bc09",
+      "target_sha256": "347131607707d7f04d302be217dc86a13507ed5c8357422285f65356a0418ac5",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "methods/13",
+      "route": "/methods/13",
+      "description": "了解 nil 介面既不包含值也不包含具體型別，因此對它呼叫方法會造成執行階段錯誤。",
+      "source_sha256": "2897922c0b088ccd46b3e42a442aeecda0787c4162db1329d0e8f39d05735547",
+      "source_description_sha256": "b4dfe6e93b9056119ee683f0c66c47a4d57c4da2ab646e1d5aaa2f7ff5193695",
+      "target_sha256": "32f1c9f3bd89a088ea7b586574b33bda3da435e399190e860f7ac8e87d20777c",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "methods/14",
+      "route": "/methods/14",
+      "description": "使用空介面或等價的 any 別名，在通用程式碼中保存任意型別的值。",
+      "source_sha256": "7a09a7654c8b6ac6d96a1a8ddaafac368782f89ec2e6e61f323d40eb01cbf750",
+      "source_description_sha256": "1abc921a534e41046d73ca5924ad534b905486f3528eff469b8816a3a94ad269",
+      "target_sha256": "753d7708a6be0785035750f8c9d1fbb942cb7d5a70411a2407bd4f73a5d377d5",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "methods/15",
+      "route": "/methods/15",
+      "description": "使用型別斷言取出介面底層的具體值，並以雙結果形式在型別不符時避免 panic。",
+      "source_sha256": "c205b4eb940358edea6321cfa422c3c00a560e9a6a71b08c8b3fa3ab9e4926ae",
+      "source_description_sha256": "2d146c65bc4f8cb9e2129fffc886ebe5e057615fea1b640106d6671ef8c431b1",
+      "target_sha256": "61eb76fa737f1bf28a207fea00ca82155fdf72ad3e2147ef13e6b96a32c44c95",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "methods/16",
+      "route": "/methods/16",
+      "description": "使用型別選擇測試介面值是否符合多個具體型別，並在各 case 中取得具有正確型別的值。",
+      "source_sha256": "26e4da09e80d30b06368691c76ee2940139b0f6fc40cad47bb6d1d2947933c27",
+      "source_description_sha256": "d33eb15901d822bc5a23f381c6d61ac484c844a004c4bf34b699dff7de6cd24f",
+      "target_sha256": "5482619473fee8e932486c08ce64df93ad658e25eb22a455ac5f05a5d28eabb6",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "methods/17",
+      "route": "/methods/17",
+      "description": "實作 Stringer 介面，讓值能以文字描述自身，供格式化與列印時使用。",
+      "source_sha256": "0363038e64b6f186e1bbd55c3323a5d7770a2b728605d8e3f01ae234aff6a444",
+      "source_description_sha256": "c446522cd9230076fbeae5d023a4d73f6473469102b840b6dc474e0f33d3cd38",
+      "target_sha256": "65a4f0ef66b0a485e927586254a356ac48f84285722b52f067ca656c9735fa79",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "methods/18",
+      "route": "/methods/18",
+      "description": "讓 IP 位址型別實作 Stringer 介面，並將四個組成部分格式化為點分四段位址。",
+      "source_sha256": "ad118644f53755586f14409e203bccfb5ac4cff7c01734157032a45648fb06d3",
+      "source_description_sha256": "7fca48e6f4206cd8d1dcaee960b79026d1c7ed9a6522f5b5c7182e7db036058b",
+      "target_sha256": "3367cc9681cc27ce5742271473eb7282e86248124ca0d80aa1ac67f33b0c5614",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "methods/19",
+      "route": "/methods/19",
+      "description": "使用 Go 內建的 error 介面表示失敗，讓函式回傳 error 值並與 nil 比較以判斷結果。",
+      "source_sha256": "9eaab1fde2076c1376f78ceec0f84766c4c3b8062867436d73cef0bc77f16bd5",
+      "source_description_sha256": "b997133bc34918b752e49098ee7c596089a1a25f93d62bf29a1ed496c0a68d17",
+      "target_sha256": "86a3320d16105952e74224c22a7a33258e29ecd97c18d06c47d0c6efdcb7fc58",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "methods/20",
+      "route": "/methods/20",
+      "description": "擴充平方根函式，使負數輸入回傳自訂錯誤，並避免格式化該錯誤時產生無限迴圈。",
+      "source_sha256": "41f1f73320fde60ee5ff30d5927a19ff22d6da6a336bb776e15f2499e4f421d8",
+      "source_description_sha256": "4af48585b9125cd7437caf7d571c969ec8ae224916d9b674015446d6878f553c",
+      "target_sha256": "a458abbb8d38f16eaa12b8c373180e7b0b18872f3589eb138b3738407cc7ed55",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "methods/21",
+      "route": "/methods/21",
+      "description": "透過 Reader 介面讀取資料流，將資料填入位元組切片，並處理回傳的位元組數、錯誤與資料流結束訊號。",
+      "source_sha256": "120c3fc9f67579cf78605cf0c9f006fc28d3569043a08079ddb645ca9c3fc3b1",
+      "source_description_sha256": "3d143859fa8cf818fcf69f355ec785aeaa9ee25613b9fb1b1f8750b88d649ba3",
+      "target_sha256": "fe362b5712db12d86bb7152c37a09e9acf8467972899772ddec73e581e261128",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "methods/22",
+      "route": "/methods/22",
+      "description": "實作 Reader 型別，讓其 Read 方法持續提供 ASCII 字元 A 的無限資料流。",
+      "source_sha256": "0df444d989996a06d6dd50f4b109af4ae1cb2302b8dd867bcbe9bf98e424d230",
+      "source_description_sha256": "b1bb526c762d827e97448d79c00210d1bb286b0a0f11f6e4c607b6ddd5f156c5",
+      "target_sha256": "82f5c015cd76080344fa7a3b2efb4cae4bae3900947c822595a9ee275c2c6180",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "methods/23",
+      "route": "/methods/23",
+      "description": "以自訂 Reader 包裝另一個 Reader，並使用 ROT13 替換式密碼轉換其中的英文字母。",
+      "source_sha256": "11d876145fae980b2e283e3fac7357a950eb20f022b7da48cc58efed5b1e8e04",
+      "source_description_sha256": "55b462b45c3316b40047228bfce6b04a7009e8d2772bf5ff3dcbd1ce7197d638",
+      "target_sha256": "665b03d7e27b3e18d5775d5292b5bb5db44b4ad5fb6eb5bf94d036d2f46b2dbc",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "methods/24",
+      "route": "/methods/24",
+      "description": "透過色彩模型、邊界與像素查詢方法及其相關色彩型別，了解 Image 介面的組成。",
+      "source_sha256": "d80f0d46796ad415a7ded4d0cefdef6cdb58deb38d050a61eb64abb25caf27ee",
+      "source_description_sha256": "0a30974c745ec5adef7da2417dcc5308e2e69627488c5a2c9e880870c6da5c41",
+      "target_sha256": "8bd4977d2da853b04477f5bdda71ce6698b6c1a960d01e90af790b46a61b64f7",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "methods/25",
+      "route": "/methods/25",
+      "description": "定義自訂影像型別，實作色彩模型、矩形邊界與像素色彩查詢，以產生圖片。",
+      "source_sha256": "a196bc59d96602c3fe72cf765419366094a5c1e96de0d24dd140887ebd1826b5",
+      "source_description_sha256": "47aa41f6a229ac42781cb3536c72a700c3617131893b661be47fa26bcd55da91",
+      "target_sha256": "7532451512f42b58fbf8b9d753b14b7aa0eeb39bd44f22e8cd86d4ea00a7fc4d",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "methods/26",
+      "route": "/methods/26",
+      "description": "結束目前這一課後，可選擇回到模組目錄瀏覽其他主題，或直接繼續前往下一課。",
+      "source_sha256": "f565674b974c053924bf69ef83b709dc50931526ae7fa88e71543a5cd872a190",
+      "source_description_sha256": "fb9dc0de6022cba642b0d023e060400ec0eea65f5e479a0b6586e8457a3a6e1c",
+      "target_sha256": "fb6e58137f977bc740b15d0e75cc13ab7a120851084bbbe96a0203c1abe4eb5f",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "generics/1",
+      "route": "/generics/1",
+      "description": "撰寫帶有方括號型別參數的泛型 Go 函式，並使用 comparable 型別約束進行基於相等比較的切片搜尋。",
+      "source_sha256": "01a045105dc8c12fb1709f122d363235c19a6464d5de7587d579524aec270dd6",
+      "source_description_sha256": "b1a9a022272688b86d0572b7ce4dd9d725f2721d2bc9e3e37c196d2ce20b6573",
+      "target_sha256": "451605f2a1f89475d4a174b64d67a8e5e70e06f81f3027ab57d7c994ac5f4e59",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "generics/2",
+      "route": "/generics/2",
+      "description": "使用型別參數定義泛型型別，並以可保存任意型別值的單向鏈結串列作為範例。",
+      "source_sha256": "08486351895e62792a84bc3eeab6aa85df7b1658735b7239040d219812f63277",
+      "source_description_sha256": "7b1a0ed87733ae57b018fd8b291ceb880f9b20f8b11e3a3744afe5c5237dfa0d",
+      "target_sha256": "6edb2fc77b4b72602d1eeeb70449e77946ff1077682a81e4818a83e4ae92ff4a",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "generics/3",
+      "route": "/generics/3",
+      "description": "完成目前這一課後，可回到模組目錄選擇其他內容，或繼續前往下一課。",
+      "source_sha256": "f565674b974c053924bf69ef83b709dc50931526ae7fa88e71543a5cd872a190",
+      "source_description_sha256": "65816f922f9107347efd8286904bad00224481b7d9efb4ff5c998e2b8983729e",
+      "target_sha256": "fb6e58137f977bc740b15d0e75cc13ab7a120851084bbbe96a0203c1abe4eb5f",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "concurrency/1",
+      "route": "/concurrency/1",
+      "description": "啟動輕量的 goroutine，了解呼叫引數在何處求值，並同步多個 goroutine 對共享記憶體的存取。",
+      "source_sha256": "d0a9c45078c2255540cfffe48744a07fa04ab5c2113e8880068b5a400ae0ebdc",
+      "source_description_sha256": "d2b2b18b050a6f45dea879d72a29023649e8ce7d55822315cb11cdc5d8330796",
+      "target_sha256": "ac3ec151c4e566bca41bd884326c1868cb07495c624151df61e4dc128ff24298",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "concurrency/2",
+      "route": "/concurrency/2",
+      "description": "透過通道傳送與接收有型別的值，利用預設的阻塞行為同步 goroutine 之間的工作。",
+      "source_sha256": "a35e3af26b51f8c2c2a6dfaf09f9c7cab0fdb4b1b56f9e4dc9b793f1dac1e295",
+      "source_description_sha256": "1025cf5ae195d6ddacba6eba015df931afc7d88d4fb1f045e89374a0ce269218",
+      "target_sha256": "9bfca3794147a39204723ce82f8163a25afe9ae5238120f43fdf8b3948f1beb0",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "concurrency/3",
+      "route": "/concurrency/3",
+      "description": "建立具有固定容量的緩衝通道，並觀察緩衝區滿時傳送會阻塞、空時接收會阻塞。",
+      "source_sha256": "caef0893a54c61f192be397f6b27a039d81dc007f98f2d203a5a287383c0682e",
+      "source_description_sha256": "841cd97624869908df1823647fdf34b37e1ad3be60d94232ea68d29df3791d3e",
+      "target_sha256": "e425796ea36513a07bcf93d361523d8f599ee2958891723099718398c898f117",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "concurrency/4",
+      "route": "/concurrency/4",
+      "description": "由傳送端關閉通道，在接收時偵測關閉狀態，並使用 range 直到所有傳送的值都被接收。",
+      "source_sha256": "3e925c6745255a443c61f25cd8131d538dc8677938f1c5021ce798465020b42e",
+      "source_description_sha256": "052b32bc75a99f8e63d851b090201f2d860fe3e0df54d1c36dfe898d791300aa",
+      "target_sha256": "b387cef75603dc5dfa6c151860d48b70c31621da297994ca94ddacf433f766fa",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "concurrency/5",
+      "route": "/concurrency/5",
+      "description": "使用 select 等待多個通道操作，執行已就緒的 case；若多個 case 同時可執行，則隨機選擇其一。",
+      "source_sha256": "8d8de56f080d4f702ac455aa60cb13b745472bedc9755000e8b5d6a2a898577d",
+      "source_description_sha256": "ff560a3c278c4608f677eb25977282a92605545470d352b501cb020944f5c19b",
+      "target_sha256": "82d83fa8a5bec8f882060f2dba580a6a994aea878e98bea3c411ee5fd3c54909",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "concurrency/6",
+      "route": "/concurrency/6",
+      "description": "在 select 中加入 default case，於不阻塞的情況下嘗試進行通道傳送或接收。",
+      "source_sha256": "82e9cd932e14e6c4852fc8f865f4c45dc75845bd1a306649152ebc045f0c3b2c",
+      "source_description_sha256": "62b930aa676592e83be591ce640338cad3d4a28f8031b70020c125cae407288f",
+      "target_sha256": "bf25939435eb61b08456ead6f9510674ddd948f1d488f648a9b3ccd5bdce8bde",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "concurrency/7",
+      "route": "/concurrency/7",
+      "description": "使用 Go 的通道與並行處理，建立比較不同形狀二元樹是否包含相同有序值的問題情境。",
+      "source_sha256": "7c5d3fc7bb2540285d746242f8a1d16075639648eec8909c1df52239297d2917",
+      "source_description_sha256": "1788be855428fdadd5d5755548f4a1c678aa4db359821c7a553ffecdf5e4de7c",
+      "target_sha256": "f8fe0940623057c3c8fbac7c1507bcdce83383a30524bd8b02fec67fdfc2cdf6",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "concurrency/8",
+      "route": "/concurrency/8",
+      "description": "實作並行的樹走訪器，並利用其通道輸出判斷兩棵二元樹是否保存相同的值序列。",
+      "source_sha256": "b362cc15a26324acd311f7cab18a628dc1d7d9ac6d455add7d651d41acf15e9a",
+      "source_description_sha256": "5fcc3f084dff1ef87b86f2a0714ed2b130301ff803ea2c298f1be3baccf48959",
+      "target_sha256": "dd84c5625d72fa5d49f312a05a7446255e5374498bda8496272d37595b0587cd",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "concurrency/9",
+      "route": "/concurrency/9",
+      "description": "使用互斥保護共享狀態，透過互斥鎖的加鎖與解鎖控制存取，並可延後解鎖以確保釋放。",
+      "source_sha256": "49f727794604c2ef8a8dda9508d0f412d7015cea77754c675a02b166dd9bfc93",
+      "source_description_sha256": "45500a9f438a556dd61ab13ebbd255f4da67469a93c8f12a510ac0883531cbb2",
+      "target_sha256": "ee5693e93242cad943b9109556e8230d4ba99aaac73f8bd079b52c32c149ef5c",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "concurrency/10",
+      "route": "/concurrency/10",
+      "description": "使用 Go 並行處理平行化網頁爬蟲，同時確保同一 URL 不會重複擷取，且共享映射的存取安全。",
+      "source_sha256": "bb686393225ef2335e627819a1664a84456f00b64af133af64920d43f0abdb94",
+      "source_description_sha256": "9f5eaf228169f96b0df33e42107f5e232500256bfbd275f7f9eecc516af7e7a9",
+      "target_sha256": "17d1994bee59959e6a1fd41618be3cd83a9b52037e2f31d6e80eb4362ef7d8e9",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    },
+    {
+      "page_id": "concurrency/11",
+      "route": "/concurrency/11",
+      "description": "透過文件、教學、參考資料、演講、codewalk、文章，以及並行處理與 Web 應用程式資源繼續學習 Go。",
+      "source_sha256": "45ef131ede663b1355c0a5933634d46c393f66be8a6450b184f86a62e928a64e",
+      "source_description_sha256": "4ed88e1ec54c490baa161dd4be091fd7d22aa45b5f8855f73b8cdabc678feb44",
+      "target_sha256": "470c0d69ef72cb0d475fb307a4dfdf4b97012dfe1dfe37385a9b311703478f6b",
+      "glossary_sha256": "5bdb74d440f3c128a2f7b2e8e69fdbe46d99936608da9b65931df7a3884dd08d",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-16T15:48:54Z"
+      }
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+* 練習：等價二元樹
+
+*1.* 實作 `Walk` 函式。
+
+*2.* 測試 `Walk` 函式。
+
+函式 `tree.New(k)` 會建立一棵結構隨機（但始終排序）的二元樹，其中保存值 `k`、 `2k`、 `3k`、……、 `10k`。
+
+建立一個新的通道 `ch`，並啟動走訪：
+
+	go Walk(tree.New(1), ch)
+
+接著從通道讀取並列印 10 個值。結果應該是數字 1、2、3、……、10。
+
+*3.* 實作 `Same` 函式，並使用 `Walk` 來判斷 `t1` 與 `t2` 是否保存相同的值。
+
+*4.* 測試 `Same` 函式。
+
+`Same(tree.New(1),`tree.New(1))` 應回傳 true，而 `Same(tree.New(1),`tree.New(2))` 應回傳 false。
+
+`Tree` 的文件可以在 [[https://godoc.org/golang.org/x/tour/tree#Tree][這裡]] 找到。
+
+.play concurrency/exercise-equivalent-binary-trees.go

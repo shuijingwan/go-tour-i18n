@@ -1,0 +1,76 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-zh-TW-004",
+  "locale": "zh-TW",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 5,
+  "units": [
+    {
+      "unit_id": "welcome/2",
+      "unit_kind": "page",
+      "source_path": "_content/tour/welcome.article",
+      "source_sha256": "709f808ec4cdf683411f349cab7a4886fcae532d1c4e4cc66c8ed68cfb2dd2d3",
+      "input_path": "inputs/welcome-2.article",
+      "input_sha256": "1931228d38e2723294fb8d06b7a97bf4f40c3dc65025397c81123aaaff8ad365",
+      "protected_token_count": 18,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "C",
+      "previous_finding": "標題將「Go local」譯為「Go 本機版」，但本頁內容是其他語言／本地化版本，且後續另有「Go offline」頁面；目前標題會誤導為本機安裝或離線版本，需改為表達本地化／在地語言版本的自然標題。"
+    },
+    {
+      "unit_id": "flowcontrol/3",
+      "unit_kind": "page",
+      "source_path": "_content/tour/flowcontrol.article",
+      "source_sha256": "3ed791cc935287ba6f5da4ba41f6ad84fdcbaef108ee364f769ae5204316bbb7",
+      "input_path": "inputs/flowcontrol-3.article",
+      "input_sha256": "41043c9ed33b0e2c4cc0fabd0766c411f0bee97a7f3c0bacd37e57332db2066a",
+      "protected_token_count": 7,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "C",
+      "previous_finding": "正文將 C 的 while 在 Go 中寫作 for 的關係譯成「C 的 while，在 for 於 Go 中的寫法裡就是如此」，語義關係錯亂且不自然，沒有清楚傳達原文的技術含義。"
+    },
+    {
+      "unit_id": "methods/3",
+      "unit_kind": "page",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "31c4fd0d80c8f1d96cf3efb1ecc1f9d3c0d1b5b70bb5c23bf7227b7007469588",
+      "input_path": "inputs/methods-3.article",
+      "input_sha256": "fbb300ac3eced02920b3c88f13388f189cd99dd85fa0a3640c4a08b1fd09be32",
+      "protected_token_count": 7,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "關於方法接收者型別的兩句使用「為……情況宣告方法」等生硬語序；技術含義基本正確，但未達自然且無需修改的發布品質。應自然表達為只能為與方法位於同一套件中定義的接收者型別宣告方法，不能為其他套件中定義的型別宣告方法。"
+    },
+    {
+      "unit_id": "methods/21",
+      "unit_kind": "page",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "120c3fc9f67579cf78605cf0c9f006fc28d3569043a08079ddb645ca9c3fc3b1",
+      "input_path": "inputs/methods-21.article",
+      "input_sha256": "1fc015e0b7b29b6c011f3c9362617feadf3b6e7c9c308fe678f9d4917369fb3d",
+      "protected_token_count": 19,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "末句「每次讀取 8 個位元組來消耗它的輸出」對 consume 的翻譯過於直譯，中文資料流語境不自然。應改為自然表達每次讀取或處理 8 個位元組的輸出，同時保留逐次消費資料流的含義。"
+    },
+    {
+      "unit_id": "generics/2",
+      "unit_kind": "page",
+      "source_path": "_content/tour/generics.article",
+      "source_sha256": "08486351895e62792a84bc3eeab6aa85df7b1658735b7239040d219812f63277",
+      "input_path": "inputs/generics-2.article",
+      "input_sha256": "a2ba5f9fbfe2bf80ffcfcb4ac41d7e10eeed6f93b7a2250aed92c8952918f52c",
+      "protected_token_count": 2,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "最後一句「請把為這個串列實作加入一些功能」有明顯語法錯誤「把為」。應改為「請為這個串列實作加入一些功能」或其他等價且自然的表達。"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+* 指標
+
+Go 有指標。
+指標會保存一個值的記憶體位址。
+
+型別 `*T` 是指向 `T` 值的指標。它的零值是 `nil`。
+
+	var p *int
+
+`&` 運算子會產生指向其運算元的指標。
+
+	i := 42
+	p = &i
+
+`*` 運算子表示指標所指向的底層值。
+
+	fmt.Println(*p) // 透過指標 p 讀取 i
+	*p = 21         // 透過指標 p 設定 i
+
+這稱為「解參照」（dereferencing）或「間接取值」（indirecting）。
+
+與 C 不同，Go 沒有指標算術。
+
+.play moretypes/pointers.go

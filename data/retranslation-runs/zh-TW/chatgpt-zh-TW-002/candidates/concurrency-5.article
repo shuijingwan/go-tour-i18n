@@ -1,0 +1,7 @@
+* Select
+
+`select` 陳述式讓 goroutine 可以等待多個通訊操作。
+
+`select` 會阻塞，直到其中一個 case 可以執行，接著執行該 case。如果同時有多個 case 已就緒，它會隨機選擇其中一個。
+
+.play concurrency/select.go

@@ -1,0 +1,11 @@
+* 套件
+
+每個 Go 程式都由套件組成。
+
+程式從 `main` 套件開始執行。
+
+這個程式使用匯入路徑為 `"fmt"` 與 `"math/rand"` 的套件。
+
+依照慣例，套件名稱與匯入路徑的最後一個元素相同。例如， `"math/rand"` 套件由以 `package`rand` 陳述式開頭的檔案組成。
+
+.play basics/packages.go

@@ -1,0 +1,7 @@
+* If 與 else
+
+在 `if` 短陳述式中宣告的變數，也可以在任何 `else` 區塊中使用。
+
+（兩次呼叫 `pow` 都會在呼叫 `fmt.Println`（位於 `main` 中）開始之前回傳結果。）
+
+.play flowcontrol/if-and-else.go

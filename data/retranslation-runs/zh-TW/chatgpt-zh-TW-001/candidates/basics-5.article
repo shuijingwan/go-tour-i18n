@@ -1,0 +1,13 @@
+* 函式（續）
+
+當兩個或更多連續的具名函式參數具有相同型別時，除了最後一個之外，其餘參數都可以省略型別。
+
+在這個範例中，我們將
+
+	x int, y int
+
+縮寫為
+
+	x, y int
+
+.play basics/functions-continued.go

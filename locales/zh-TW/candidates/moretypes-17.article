@@ -1,0 +1,12 @@
+* Range（續）
+
+你可以將索引或值指派給 `_` 來略過它。
+
+    for i, _ := range pow
+    for _, value := range pow
+
+如果只需要索引，可以省略第二個變數。
+
+    for i := range pow
+
+.play moretypes/range-continued.go

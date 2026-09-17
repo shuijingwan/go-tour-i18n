@@ -1,0 +1,26 @@
+* 基本型別
+
+Go 的基本型別有：
+
+	bool
+
+	string
+
+	int  int8  int16  int32  int64
+	uint uint8 uint16 uint32 uint64 uintptr
+
+	byte // 是 uint8 的別名
+
+	rune // 是 int32 的別名
+	     // 表示一個 Unicode 碼位
+
+	float32 float64
+
+	complex64 complex128
+
+此範例顯示數種型別的變數，也顯示變數宣告可以像匯入陳述式一樣「分組」成區塊。
+
+`int`、 `uint` 與 `uintptr` 型別在 32 位元系統上通常為 32 位元寬，在 64 位元系統上通常為 64 位元寬。
+需要整數值時，除非有特定理由必須使用指定大小或無號整數型別，否則應使用 `int`。
+
+.play basics/basic-types.go

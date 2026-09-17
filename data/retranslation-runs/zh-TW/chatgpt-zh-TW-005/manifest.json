@@ -1,0 +1,24 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-zh-TW-005",
+  "locale": "zh-TW",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "example",
+  "unit_count": 1,
+  "units": [
+    {
+      "unit_id": "example:moretypes/pointers.go",
+      "unit_kind": "example",
+      "source_path": "_content/tour/moretypes/pointers.go",
+      "source_sha256": "bbc4a25d868979e959aa383f0de7894135e7f8ae4b2d766e653a033178a9a378",
+      "input_path": "inputs/moretypes-pointers.txt",
+      "input_sha256": "d907add850aff00fb35329d480aa49bc4aa20ef926226715ab790262ca734c90",
+      "protected_token_count": 8,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "教學註解「透過指標將 j 相除」用語不完整且不自然，沒有清楚傳達 divide j through the pointer。應改為「透過指標將 j 除以 37」或其他等價自然表達。"
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+* Range
+
+`range` 形式的 `for` 迴圈會迭代切片或映射。
+
+對切片使用 range 時，每次迭代都會回傳兩個值。
+第一個是索引，第二個是該索引位置元素的副本。
+
+.play moretypes/range.go

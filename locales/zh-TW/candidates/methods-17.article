@@ -1,0 +1,12 @@
+* Stringer
+
+最常見的介面之一是 [[/pkg/fmt/#Stringer][`Stringer`]]，它由 [[/pkg/fmt/][`fmt`]] 套件定義。
+
+	type Stringer interface {
+		String() string
+	}
+
+`Stringer` 是一種能以字串描述自身的型別。 `fmt` 套件
+（以及許多其他套件）會尋找這個介面來列印值。
+
+.play methods/stringer.go

@@ -1,0 +1,17 @@
+* 錯誤
+
+⟪GTI18N_9eaab1fd_000001⟫ 程式使用 ⟪GTI18N_9eaab1fd_000002⟫error⟪GTI18N_9eaab1fd_000003⟫ 值表示錯誤狀態。
+
+⟪GTI18N_9eaab1fd_000004⟫error⟪GTI18N_9eaab1fd_000005⟫ 型別是一個與 ⟪GTI18N_9eaab1fd_000006⟫fmt.Stringer⟪GTI18N_9eaab1fd_000007⟫ 類似的內建介面：
+
+⟪GTI18N_9eaab1fd_000008⟫
+
+（與 ⟪GTI18N_9eaab1fd_000009⟫fmt.Stringer⟪GTI18N_9eaab1fd_000010⟫ 一樣，⟪GTI18N_9eaab1fd_000011⟫fmt⟪GTI18N_9eaab1fd_000012⟫ 套件在列印值時會尋找 ⟪GTI18N_9eaab1fd_000013⟫error⟪GTI18N_9eaab1fd_000014⟫ 介面。）
+
+函式經常回傳 ⟪GTI18N_9eaab1fd_000015⟫error⟪GTI18N_9eaab1fd_000016⟫ 值，而呼叫端程式碼應透過測試錯誤是否等於 ⟪GTI18N_9eaab1fd_000017⟫nil⟪GTI18N_9eaab1fd_000018⟫ 來處理錯誤。
+
+⟪GTI18N_9eaab1fd_000019⟫
+
+nil 的 ⟪GTI18N_9eaab1fd_000020⟫error⟪GTI18N_9eaab1fd_000021⟫ 表示成功；非 nil 的 ⟪GTI18N_9eaab1fd_000022⟫error⟪GTI18N_9eaab1fd_000023⟫ 表示失敗。
+
+⟪GTI18N_9eaab1fd_000024⟫

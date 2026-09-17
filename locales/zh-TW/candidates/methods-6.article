@@ -1,0 +1,22 @@
+* 方法與指標間接取值
+
+比較前兩個程式，你可能會注意到，
+帶有指標引數的函式必須接收指標：
+
+	var v Vertex
+	ScaleFunc(v, 5)  // 編譯錯誤！
+	ScaleFunc(&v, 5) // OK
+
+而具有指標接收者的方法在呼叫時，接收者可以是值，也可以是指標：
+
+	var v Vertex
+	v.Scale(5)  // OK
+	p := &v
+	p.Scale(10) // OK
+
+對於陳述式 `v.Scale(5)`，即使 `v` 是值而不是指標，
+仍會自動呼叫具有指標接收者的方法。
+也就是說，為了方便起見，Go 會把陳述式 `v.Scale(5)` 解讀為
+`(&v).Scale(5)`，因為 `Scale` 方法具有指標接收者。
+
+.play methods/indirection.go

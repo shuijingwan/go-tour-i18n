@@ -1,0 +1,18 @@
+* 使用 make 建立切片
+
+可以使用內建的 `make` 函式建立切片；
+這就是建立動態大小陣列的方式。
+
+`make` 函式會配置一個元素皆為零值的陣列，
+並回傳參照該陣列的切片：
+
+	a := make([]int, 5)  // len(a)=5
+
+若要指定容量，請將第三個引數傳給 `make`：
+
+	b := make([]int, 0, 5) // len(b)=0, cap(b)=5
+
+	b = b[:cap(b)] // len(b)=5, cap(b)=5
+	b = b[1:]      // len(b)=4, cap(b)=4
+
+.play moretypes/making-slices.go

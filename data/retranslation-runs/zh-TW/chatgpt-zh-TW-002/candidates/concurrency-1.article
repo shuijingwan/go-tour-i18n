@@ -1,0 +1,15 @@
+* Goroutines
+
+一個 _goroutine_ 是由 Go 執行階段管理的輕量級執行緒。
+
+	go f(x, y, z)
+
+會啟動一個新的 goroutine 來執行
+
+	f(x, y, z)
+
+`f`、 `x`、 `y` 和 `z` 的求值發生在目前的 goroutine 中，而 `f` 的執行則發生在新的 goroutine 中。
+
+Goroutines 在相同的位址空間中執行，因此對共享記憶體的存取必須同步。[[/pkg/sync/][`sync`]] 套件提供了實用的原語，不過在 Go 中還有其他原語，因此你不會太常需要它們。（請看下一頁。）
+
+.play concurrency/goroutines.go

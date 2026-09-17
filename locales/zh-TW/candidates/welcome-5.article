@@ -1,0 +1,17 @@
+* Go Playground
+
+本指南建構於 [[https://play.golang.org/][Go Playground]] 之上，它是一項在 [[/][golang.org]] 伺服器上執行的網路服務。
+
+此服務接收一個 Go 程式，在沙盒中編譯、連結並執行該程式，然後回傳輸出。
+
+可在 Playground 中執行的程式有以下限制：
+
+- 在 Playground 中，時間從 2009-11-10 23:00:00 UTC 開始（這個日期的意義留給讀者當作練習）。這讓程式具有確定性輸出，因此更容易快取。
+
+- 執行時間、CPU 與記憶體使用量也有限制，而且程式無法存取外部網路主機。
+
+Playground 使用最新的 Go 穩定版本。
+
+若要進一步了解，請閱讀「[[/blog/playground][深入了解 Go Playground]]」。
+
+.play welcome/sandbox.go

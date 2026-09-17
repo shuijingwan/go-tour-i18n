@@ -1,0 +1,20 @@
+* 型別轉換
+
+運算式 `T(v)` 會將值 `v` 轉換為型別 `T`。
+
+以下是一些數值轉換：
+
+	var i int = 42
+	var f float64 = float64(i)
+	var u uint = uint(f)
+
+或者，更簡潔地寫：
+
+	i := 42
+	f := float64(i)
+	u := uint(f)
+
+與 C 不同，在 Go 中，不同型別的項目之間賦值需要明確轉換。
+試著移除範例中的 `float64` 或 `uint` 轉換，看看會發生什麼事。
+
+.play basics/type-conversions.go

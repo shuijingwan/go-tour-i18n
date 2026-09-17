@@ -1,0 +1,9 @@
+* 介面是隱式實作的
+
+一個型別只要實作介面的方法，就實作了該介面。
+不需要明確宣告意圖，也沒有「implements」關鍵字。
+
+隱式介面讓介面的定義與其實作彼此解耦，
+因此實作可以出現在任何套件中，而不需要事先協調。
+
+.play methods/interfaces-are-satisfied-implicitly.go

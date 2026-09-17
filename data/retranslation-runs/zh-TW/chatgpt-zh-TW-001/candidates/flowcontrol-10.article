@@ -1,0 +1,15 @@
+* Switch 求值順序
+
+Switch 的 case 會由上到下依序求值，在某個 case 成功時停止。
+
+（例如，
+
+	switch i {
+	case 0:
+	case f():
+	}
+
+不會呼叫 `f`；當 `i==0` 時就是如此。）
+
+
+.play flowcontrol/switch-evaluation-order.go

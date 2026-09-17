@@ -1,0 +1,19 @@
+* 讀取器
+
+`io` 套件定義了 `io.Reader` 介面，
+用來表示資料流的讀取端。
+
+Go 標準函式庫包含這個介面的 [[https://cs.opensource.google/search?q=Read%5C(%5Cw%2B%5Cs%5C%5B%5C%5Dbyte%5C)&ss=go%2Fgo][許多實作]]，包括檔案、網路連線、壓縮器、加密器等。
+
+`io.Reader` 介面有一個 `Read` 方法：
+
+	func (T) Read(b []byte) (n int, err error)
+
+`Read` 會將資料讀入給定的位元組切片，並回傳已填入的位元組數與錯誤值。資料流
+結束時，它會回傳 `io.EOF` 錯誤。
+
+範例程式碼會建立一個
+[[/pkg/strings/#Reader][`strings.Reader`]]，
+並且每次讀取 8 個位元組，逐步處理其輸出。
+
+.play methods/reader.go
