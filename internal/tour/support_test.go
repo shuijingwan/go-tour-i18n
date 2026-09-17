@@ -297,13 +297,13 @@ func TestSupportScriptUsesClipboardAPIWithFallback(t *testing.T) {
 	for _, want := range []string{
 		"navigator.clipboard.writeText(value)", "document.execCommand('copy')", "data-copy-value", "data-copy-success",
 		"data-copy-toast", "toast.hidden = false", "window.clearTimeout(toastTimer)", "window.setTimeout(hideToast, 1600)",
+		"syncToastToVisualViewport", "window.visualViewport", "viewport.offsetLeft + viewport.width / 2",
+		"viewport.offsetTop + viewport.height / 2", "window.visualViewport.addEventListener('resize', syncToastToVisualViewport)",
+		"window.visualViewport.addEventListener('scroll', syncToastToVisualViewport)",
 	} {
 		if !strings.Contains(script, want) {
 			t.Errorf("support copy script does not contain %q", want)
 		}
-	}
-	if strings.Contains(script, "visualViewport") {
-		t.Fatal("support copy script still contains visualViewport compensation")
 	}
 	if strings.Contains(script, "button.textContent") {
 		t.Fatal("support copy script still replaces the icon button content")
@@ -325,7 +325,9 @@ func TestSupportCopyStylesKeepIconAndLongValuesAccessible(t *testing.T) {
 		"overflow-wrap: anywhere", ".support-copy:focus-visible", "width: 44px", "height: 44px",
 		"width: 22px", "height: 22px", "position: fixed", "left: 50%",
 		"bottom: calc(24px + env(safe-area-inset-bottom))", ".support-copy-toast[hidden]",
-		"top: 50%", "bottom: auto", "transform: translate(-50%, -50%)", "max-width: 1008px",
+		"top: var(--support-copy-toast-center-y, 50%)", "left: var(--support-copy-toast-center-x, 50%)",
+		"max-width: calc(var(--support-copy-toast-viewport-width, 100vw) - 32px)",
+		"bottom: auto", "transform: translate(-50%, -50%)", "max-width: 1008px",
 		".support-payment-grid,\n    .support-platform-grid {\n        gap: 12px;",
 		"[data-theme='dark'] .support-copy", "[data-theme='dark'] .support-copy-toast",
 	} {
@@ -333,7 +335,7 @@ func TestSupportCopyStylesKeepIconAndLongValuesAccessible(t *testing.T) {
 			t.Errorf("support CSS does not contain %q", want)
 		}
 	}
-	for _, stale := range []string{"--support-visual-viewport-", "margin-right: -24px", "margin-left: -24px"} {
+	for _, stale := range []string{"margin-right: -24px", "margin-left: -24px"} {
 		if strings.Contains(css, stale) {
 			t.Errorf("support CSS still contains stale layout rule %q", stale)
 		}

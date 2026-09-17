@@ -1049,6 +1049,7 @@ a#run, a#kill {
     stroke-width: 1.8;
 }
 .support-copy-toast {
+    box-sizing: border-box;
     position: fixed;
     z-index: 300;
     left: 50%;
@@ -1119,8 +1120,10 @@ a#run, a#kill {
 }
 @media (max-width: 600px) {
     .support-copy-toast {
-        top: 50%;
+        top: var(--support-copy-toast-center-y, 50%);
+        left: var(--support-copy-toast-center-x, 50%);
         bottom: auto;
+        max-width: calc(var(--support-copy-toast-viewport-width, 100vw) - 32px);
         transform: translate(-50%, -50%);
     }
     .site-header .site-logo {

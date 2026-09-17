@@ -60,8 +60,8 @@
 - 发现阶段/场景：tr-TR 首次 production 前的 preview visual HUMAN gate；问题在较长的 Turkish header 文案下更明显。
 - 问题描述：维护者实际观察到共享 header 中有两处小型垂直对齐观感问题；未造成遮挡、溢出或交互失效，preview automated acceptance 与 visual HUMAN gate 均已通过。
 - 暂缓原因：维护者明确决定不阻塞 tr-TR 上线，不在本轮对 Turkish 做局部 CSS 特例；后续作为共享样式问题统一修复。
-- 当前状态：`open`
-- 后续处理/核销证据：当前 evidence 见 `data/locale-surface-reviews/tr-TR/20260909-first-production.md` 的 Visual HUMAN gate 记录；保持 open。
+- 当前状态：`resolved`
+- 后续处理/核销证据：原始 evidence 见 `data/locale-surface-reviews/tr-TR/20260909-first-production.md` 的 Visual HUMAN gate 记录。2026-09-10 commit `d018ee6babb56fc28b985802da104dac898b764b`（`fix: 修复多语言页面视觉对齐与输出换行`）将共享 top-bar/left/right 改为 flex + `align-items: center`，并在 `internal/tour/header_browser_test.go` 增加了与原问题精确对应的 `TestTourHeaderTitlesAreCenteredOnDesktopAndFitCommonMobileViewports`（包含 Go Turu）和 `TestHomepageTitlesAreGeometricallyCenteredOnDesktop`（包含 Go Turu Çok Dilli Çeviri Projesi）几何居中回归。2026-09-17，维护者在当前工作区重新执行 `GO_TOUR_RUN_BROWSER_TESTS=1 go test ./internal/tour -run '^(TestTourHeaderTitlesAreCenteredOnDesktopAndFitCommonMobileViewports|TestHomepageTitlesAreGeometricallyCenteredOnDesktop)$' -count=1`，结果 PASS；据此核销为 resolved。
 
 ### DI-20260916-001：Go upstream 的四个社区 Tour 链接未使用 canonical `/tour/`
 
@@ -82,3 +82,13 @@
 - 暂缓原因：维护者明确决定先等待 upstream Issue `golang/go#81482` 的调查和修复，随后按正式 upstream-sync 流程同步并重新验证本站行为，避免在 upstream 即将可能修改相同路由语义时提前维护一套 fork-specific routing implementation。若 upstream sync 后本站仍存在该问题，再实施最小本地修复。
 - 当前状态：`open`
 - 后续处理/核销证据：2026-09-16 公网验证结果为 `/tour` → 307 `/tour/`、`/tour/` → 200、`/tour/list` → 200 + canonical `/tour/list`、`/tour/list/` → 200 + canonical `/tour/`、`/tour/welcome/1` → 200 + canonical `/tour/welcome/1`、`/tour/welcome/1/` → 200 + canonical `/tour/`、`/tour/does-not-exist-20260916` → 200 + canonical `/tour/`。上游跟踪：https://github.com/golang/go/issues/81482 。当前保持 open，等待 upstream resolution 后同步复验。
+
+### DI-20260916-003：mobile support copy toast 未按 visual viewport 水平居中
+
+- ID：`DI-20260916-003`
+- 发现日期：`2026-09-16`
+- 发现阶段/场景：全量 browser regression；唯一失败为 `TestHomepageSupportCopyAndResponsiveLayoutInBrowser/ja-JP-mobile`。当时 working tree 与 clean HEAD 均以相同 evidence 失败，确认问题不是当日 Header 新改动引入。
+- 问题描述：在 mobile `visualViewport` fixture 下，support copy toast 仍按 layout viewport 的 50% 定位，水平中心约为 242.5px；但 `visualViewport.offsetLeft=0`、`width=375`，其水平中心应为 187.5px，导致测试失败。
+- 暂缓原因：维护者于 2026-09-16 明确决定本轮暂不处理，留到 2026-09-17 实施共享修复，不增加 ja-JP 特例。
+- 当前状态：`resolved`
+- 后续处理/核销证据：2026-09-17 已完成共享修复：`_content/tour/static/js/support.js` 将 `visualViewport` 的 offset/size 同步至 CSS variables，并监听 `resize` 和 `scroll`；`_content/tour/static/css/app.css` 的 mobile toast 改用这些变量；`internal/tour/support_test.go` 将旧的“禁止 visualViewport compensation”静态断言更新为正向约束。验证结果：精确的 `ja-JP-mobile` subtest PASS；`GO_TOUR_RUN_BROWSER_TESTS=1 go test ./internal/tour -count=1` PASS（56.538s）；`go test ./...` PASS；`node --check _content/tour/static/js/support.js` PASS；`git diff --check` PASS。据此核销为 resolved。

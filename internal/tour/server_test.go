@@ -1564,7 +1564,7 @@ func TestChineseModuleDescriptionsAreRich(t *testing.T) {
 		"module.basics.description":      `<p>从这里开始，学习这门语言的基础知识。</p><p>声明变量、调用函数，以及进入下一课前需要了解的一切。</p>`,
 		"module.methods.description":     `<p>学习如何为类型定义方法、如何声明接口，以及如何将它们组合起来。</p>`,
 		"module.generics.description":    `<p>学习如何在 Go 函数和结构体中使用类型参数。</p>`,
-		"module.concurrency.description": `<p>Go 在语言层面提供了并发支持。</p><p>本模块介绍 goroutine 和通道，以及如何使用它们实现不同的并发模式。</p>`,
+		"module.concurrency.description": `<p>Go 在语言层面提供了并发支持。</p><p>本模块介绍 goroutines 和通道，以及如何使用它们实现不同的并发模式。</p>`,
 	}
 	for key, text := range want {
 		message, ok := catalog.Messages[key]
