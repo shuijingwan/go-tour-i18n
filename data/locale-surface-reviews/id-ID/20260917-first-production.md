@@ -40,10 +40,30 @@ Supplemental mechanical checks found unique UI/article/page/other-surface identi
 
 - language quality review result: `passed`
 - issues: `none`
-- Preview/rendered surface acceptance: **not executed in this Stage A review**
-- Production verification: **not executed in this Stage A review**
 
-Stage A passed does not imply preview acceptance or Production acceptance. Those remain separate later gates.
+## B. Rendered surface acceptance
+
+### Automated preview acceptance
+
+- formal entry: `scripts/verify-preview-browser.py`
+- preview URL: `http://127.0.0.1:44745/`
+- preview identity: PASS
+- SEO/routes: PASS
+- desktop rendered surface: PASS
+- editor Run / Format / Reset: PASS
+- SPA: PASS
+- mobile `/tour/moretypes/1`: PASS
+- overall: `PREVIEW SURFACE ACCEPTANCE: PASS`
+- issues: `none`
+
+### Visual HUMAN gate
+
+- maintainer confirmation: passed
+- overall: `passed`
+
+- Production verification: **not executed**
+
+Preview acceptance is complete. Production machine/browser acceptance remains a separate later gate.
 
 <!-- first-production-finalization:start -->
 - production receipt identity: `PENDING`
