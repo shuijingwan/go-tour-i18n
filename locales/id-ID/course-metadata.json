@@ -261,7 +261,7 @@
     {
       "page_id": "basics/13",
       "route": "/basics/13",
-      "description": "Konversikan nilai secara eksplisit dengan ekspresi konversi tipe karena Go tidak mengizinkan penetapan implisit antara tipe numerik yang berbeda.",
+      "description": "Konversikan nilai secara eksplisit dengan ekspresi konversi tipe karena Go tidak mengizinkan penugasan implisit antara tipe numerik yang berbeda.",
       "source_sha256": "88e0e168f4c95fa4134198a32440b2d2fb1fac9aae535a9ee7148dbcda37e1b3",
       "source_description_sha256": "9213231bcd5269a4d402ed83117584521f51191b04e30301599ce3aaedef9afe",
       "target_sha256": "416b1cc7b125f2fd3c3622a766fabd5a495291a59e22f95d20cf94a1a4009c1e",
@@ -270,7 +270,7 @@
         "provider": "chatgpt",
         "model": "gpt-5.6-sol-high",
         "prompt_version": "course-seo-localization-v2",
-        "generated_at": "2026-09-17T12:02:46Z"
+        "generated_at": "2026-09-17T12:51:01Z"
       }
     },
     {
@@ -336,7 +336,7 @@
     {
       "page_id": "flowcontrol/1",
       "route": "/flowcontrol/1",
-      "description": "Pelajari satu-satunya konstruksi perulangan di Go, termasuk inisialisasi, kondisi, pernyataan pasca, lingkup, dan kurung kurawal wajib pada perulangan for.",
+      "description": "Pelajari satu-satunya konstruksi perulangan di Go, termasuk pernyataan inisialisasi, kondisi, pernyataan setelah iterasi, cakupan, dan kurung kurawal yang wajib pada perulangan for.",
       "source_sha256": "c6cd458bda99bffc7b753e122c56575a59508586054180be1f8d7bb1fe2391df",
       "source_description_sha256": "b88b64bb1e63b5ebb863972f8c24e8cc545a83c115c64f401ef8fd3b114d61f5",
       "target_sha256": "1dfb9d1fad949882dda3797793b07126cddb389c9d6ae2dcff87e57263b94e4d",
@@ -345,13 +345,13 @@
         "provider": "chatgpt",
         "model": "gpt-5.6-sol-high",
         "prompt_version": "course-seo-localization-v2",
-        "generated_at": "2026-09-17T12:02:46Z"
+        "generated_at": "2026-09-17T12:51:01Z"
       }
     },
     {
       "page_id": "flowcontrol/2",
       "route": "/flowcontrol/2",
-      "description": "Sederhanakan perulangan for Go dengan menghilangkan inisialisasi dan pernyataan pasca opsional, sambil mempertahankan kondisi perulangan.",
+      "description": "Sederhanakan perulangan for di Go dengan menghilangkan pernyataan inisialisasi dan pernyataan setelah iterasi yang bersifat opsional, sambil mempertahankan kondisi perulangan.",
       "source_sha256": "24a97abbb6db2b6a88017bf326a5968097263d8ba637805f2cf44c9fed25f9fe",
       "source_description_sha256": "dd466b8b04c3284a0f1a48dc9748a434b7a7e8c8c54797785c9aec102cc04055",
       "target_sha256": "8c816850d6ea44c37b18b4e06587ea4fa0a18337e32a0119f5e2a21300409a81",
@@ -360,13 +360,13 @@
         "provider": "chatgpt",
         "model": "gpt-5.6-sol-high",
         "prompt_version": "course-seo-localization-v2",
-        "generated_at": "2026-09-17T12:02:46Z"
+        "generated_at": "2026-09-17T12:51:01Z"
       }
     },
     {
       "page_id": "flowcontrol/3",
       "route": "/flowcontrol/3",
-      "description": "Nyatakan perulangan bergaya while di Go dengan menghilangkan inisialisasi, pernyataan pasca, dan tanda titik koma terkait.",
+      "description": "Nyatakan perulangan bergaya while di Go dengan menghilangkan pernyataan inisialisasi dan pernyataan setelah iterasi beserta titik koma yang menyertainya.",
       "source_sha256": "3ed791cc935287ba6f5da4ba41f6ad84fdcbaef108ee364f769ae5204316bbb7",
       "source_description_sha256": "917a1d2bce0a711d7aa187f22916986ec204539d59aca1aeee2686ea5692963e",
       "target_sha256": "514cb76129e9a1298b3b1f90dd1703fa5bc511d11a18e3e2aa2b1b7172b747ca",
@@ -375,7 +375,7 @@
         "provider": "chatgpt",
         "model": "gpt-5.6-sol-high",
         "prompt_version": "course-seo-localization-v2",
-        "generated_at": "2026-09-17T12:02:46Z"
+        "generated_at": "2026-09-17T12:51:01Z"
       }
     },
     {
