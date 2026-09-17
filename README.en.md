@@ -17,6 +17,7 @@ Community-maintained translations currently in production:
 - [Dutch — Nederlands](https://nl-go-dev.shuijingwanwq.com/)
 - [French — Français](https://fr-go-dev.shuijingwanwq.com/)
 - [German — Deutsch](https://de-go-dev.shuijingwanwq.com/)
+- [Indonesian — Bahasa Indonesia](https://id-go-dev.shuijingwanwq.com/)
 - [Italian — Italiano](https://it-go-dev.shuijingwanwq.com/)
 - [Japanese — 日本語](https://ja-go-dev.shuijingwanwq.com/)
 - [Korean — 한국어](https://ko-go-dev.shuijingwanwq.com/)

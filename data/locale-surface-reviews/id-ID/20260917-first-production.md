@@ -66,10 +66,10 @@ Supplemental mechanical checks found unique UI/article/page/other-surface identi
 Preview acceptance is complete. Production machine/browser acceptance remains a separate later gate.
 
 <!-- first-production-finalization:start -->
-- production receipt identity: `PENDING`
-- production machine acceptance: `PENDING`
-- production browser acceptance: `PENDING`
-- unresolved production blocker: `PENDING`
-- overall final decision: `PENDING`
-- decision: `pending`
+- production receipt identity: `locale=id-ID hostname=id-go-dev.shuijingwanwq.com release=20260917T131300Z-id-ID-f5191a478f29`
+- production machine acceptance: `passed`
+- production browser acceptance: `passed`
+- unresolved production blocker: `none`
+- overall final decision: `passed`
+- decision: `passed`
 <!-- first-production-finalization:end -->
