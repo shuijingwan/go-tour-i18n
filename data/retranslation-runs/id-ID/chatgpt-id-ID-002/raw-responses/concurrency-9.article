@@ -1,0 +1,21 @@
+* sync.Mutex
+
+Kita telah melihat bahwa kanal sangat cocok untuk komunikasi antar ⟪GTI18N_49f72779_000001⟫.
+
+Namun, bagaimana jika kita tidak membutuhkan komunikasi? Bagaimana jika kita hanya ingin memastikan bahwa hanya
+satu ⟪GTI18N_49f72779_000002⟫ yang dapat mengakses sebuah variabel pada satu waktu untuk menghindari konflik?
+
+Konsep ini disebut ⟪GTI18N_49f72779_000003⟫eksklusi mutual⟪GTI18N_49f72779_000004⟫, dan nama konvensional untuk struktur data yang menyediakannya adalah ⟪GTI18N_49f72779_000005⟫mutex⟪GTI18N_49f72779_000006⟫.
+
+Pustaka standar ⟪GTI18N_49f72779_000007⟫ menyediakan eksklusi mutual dengan
+[[⟪GTI18N_49f72779_000008⟫][⟪GTI18N_49f72779_000009⟫sync.Mutex⟪GTI18N_49f72779_000010⟫]] dan dua method-nya:
+
+- ⟪GTI18N_49f72779_000011⟫Lock⟪GTI18N_49f72779_000012⟫
+- ⟪GTI18N_49f72779_000013⟫Unlock⟪GTI18N_49f72779_000014⟫
+
+Kita dapat mendefinisikan blok kode yang dijalankan dalam eksklusi mutual dengan mengapitnya
+dengan pemanggilan ⟪GTI18N_49f72779_000015⟫Lock⟪GTI18N_49f72779_000016⟫ dan ⟪GTI18N_49f72779_000017⟫Unlock⟪GTI18N_49f72779_000018⟫ seperti yang ditunjukkan pada method ⟪GTI18N_49f72779_000019⟫Inc⟪GTI18N_49f72779_000020⟫.
+
+Kita juga dapat menggunakan ⟪GTI18N_49f72779_000021⟫defer⟪GTI18N_49f72779_000022⟫ untuk memastikan mutex dibuka kuncinya seperti pada method ⟪GTI18N_49f72779_000023⟫Value⟪GTI18N_49f72779_000024⟫.
+
+⟪GTI18N_49f72779_000025⟫

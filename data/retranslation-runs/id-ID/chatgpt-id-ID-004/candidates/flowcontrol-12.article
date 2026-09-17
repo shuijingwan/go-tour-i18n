@@ -1,0 +1,9 @@
+* Defer
+
+Pernyataan defer menunda eksekusi suatu fungsi sampai fungsi tempat pernyataan
+defer tersebut berada selesai dieksekusi.
+
+Argumen pemanggilan yang ditunda dievaluasi segera, tetapi pemanggilan fungsi
+baru dijalankan setelah fungsi tempat defer tersebut berada selesai dieksekusi.
+
+.play flowcontrol/defer.go

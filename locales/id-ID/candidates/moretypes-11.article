@@ -1,0 +1,18 @@
+* Panjang dan kapasitas slice
+
+Sebuah slice memiliki _panjang_ dan _kapasitas_.
+
+Panjang slice adalah jumlah elemen yang dikandungnya.
+
+Kapasitas slice adalah jumlah elemen pada array yang mendasarinya,
+dihitung mulai dari elemen pertama dalam slice.
+
+Panjang dan kapasitas slice `s` dapat diperoleh menggunakan ekspresi
+`len(s)` dan `cap(s)`.
+
+Anda dapat memperpanjang slice dengan melakukan re-slicing,
+asalkan kapasitasnya mencukupi.
+Coba ubah salah satu operasi slice dalam program contoh untuk memperpanjangnya
+melampaui kapasitas dan lihat apa yang terjadi.
+
+.play moretypes/slice-len-cap.go

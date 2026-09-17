@@ -1,0 +1,18 @@
+* Panjang dan kapasitas slice
+
+Sebuah slice memiliki ⟪GTI18N_e2d7d69c_000001⟫panjang⟪GTI18N_e2d7d69c_000002⟫ dan ⟪GTI18N_e2d7d69c_000003⟫kapasitas⟪GTI18N_e2d7d69c_000004⟫.
+
+Panjang slice adalah jumlah elemen yang dikandungnya.
+
+Kapasitas slice adalah jumlah elemen pada array yang mendasarinya,
+dihitung mulai dari elemen pertama dalam slice.
+
+Panjang dan kapasitas slice ⟪GTI18N_e2d7d69c_000005⟫s⟪GTI18N_e2d7d69c_000006⟫ dapat diperoleh menggunakan ekspresi
+⟪GTI18N_e2d7d69c_000007⟫len(s)⟪GTI18N_e2d7d69c_000008⟫ dan ⟪GTI18N_e2d7d69c_000009⟫cap(s)⟪GTI18N_e2d7d69c_000010⟫.
+
+Anda dapat memperpanjang slice dengan melakukan re-slicing,
+asalkan kapasitasnya mencukupi.
+Coba ubah salah satu operasi slice dalam program contoh untuk memperpanjangnya
+melampaui kapasitas dan lihat apa yang terjadi.
+
+⟪GTI18N_e2d7d69c_000011⟫

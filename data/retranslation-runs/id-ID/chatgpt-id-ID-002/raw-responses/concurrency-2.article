@@ -1,0 +1,16 @@
+* Kanal
+
+Kanal adalah saluran bertipe yang memungkinkan Anda mengirim dan menerima nilai dengan operator kanal, ⟪GTI18N_a35e3af2_000001⟫<-⟪GTI18N_a35e3af2_000002⟫.
+
+⟪GTI18N_a35e3af2_000003⟫Kirim ⟪GTI18N_a35e3af2_000004⟫ ke kanal ⟪GTI18N_a35e3af2_000005⟫.⟪GTI18N_a35e3af2_000006⟫Terima dari ⟪GTI18N_a35e3af2_000007⟫, lalu⟪GTI18N_a35e3af2_000008⟫tetapkan nilai ke ⟪GTI18N_a35e3af2_000009⟫.⟪GTI18N_a35e3af2_000010⟫(Data mengalir mengikuti arah panah.)
+
+Seperti map dan slice, kanal harus dibuat sebelum digunakan:
+
+⟪GTI18N_a35e3af2_000011⟫
+
+Secara bawaan, operasi kirim dan terima akan memblokir hingga sisi lainnya siap. Hal ini memungkinkan ⟪GTI18N_a35e3af2_000012⟫ melakukan sinkronisasi tanpa lock eksplisit atau variabel kondisi.
+
+Kode contoh menjumlahkan angka dalam sebuah slice dengan membagi pekerjaan di antara dua ⟪GTI18N_a35e3af2_000013⟫.
+Setelah kedua ⟪GTI18N_a35e3af2_000014⟫ menyelesaikan komputasinya, program menghitung hasil akhir.
+
+⟪GTI18N_a35e3af2_000015⟫

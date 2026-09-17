@@ -1,0 +1,25 @@
+* Penegasan tipe
+
+Sebuah ⟪GTI18N_c205b4eb_000001⟫penegasan tipe⟪GTI18N_c205b4eb_000002⟫ memberikan akses ke nilai konkret yang mendasari sebuah nilai interface.
+
+⟪GTI18N_c205b4eb_000003⟫
+
+Pernyataan ini menegaskan bahwa nilai interface ⟪GTI18N_c205b4eb_000004⟫i⟪GTI18N_c205b4eb_000005⟫ menyimpan tipe konkret ⟪GTI18N_c205b4eb_000006⟫T⟪GTI18N_c205b4eb_000007⟫
+dan menugaskan nilai ⟪GTI18N_c205b4eb_000008⟫T⟪GTI18N_c205b4eb_000009⟫ yang mendasarinya ke variabel ⟪GTI18N_c205b4eb_000010⟫t⟪GTI18N_c205b4eb_000011⟫.
+
+Jika ⟪GTI18N_c205b4eb_000012⟫i⟪GTI18N_c205b4eb_000013⟫ tidak menyimpan ⟪GTI18N_c205b4eb_000014⟫T⟪GTI18N_c205b4eb_000015⟫, pernyataan tersebut akan memicu panic.
+
+Untuk ⟪GTI18N_c205b4eb_000016⟫menguji⟪GTI18N_c205b4eb_000017⟫ apakah nilai interface menyimpan tipe tertentu,
+penegasan tipe dapat mengembalikan dua nilai: nilai yang mendasarinya
+dan nilai boolean yang melaporkan apakah penegasan berhasil.
+
+⟪GTI18N_c205b4eb_000018⟫
+
+Jika ⟪GTI18N_c205b4eb_000019⟫i⟪GTI18N_c205b4eb_000020⟫ menyimpan ⟪GTI18N_c205b4eb_000021⟫T⟪GTI18N_c205b4eb_000022⟫, maka ⟪GTI18N_c205b4eb_000023⟫t⟪GTI18N_c205b4eb_000024⟫ akan menjadi nilai yang mendasarinya dan ⟪GTI18N_c205b4eb_000025⟫ok⟪GTI18N_c205b4eb_000026⟫ akan bernilai true.
+
+Jika tidak, ⟪GTI18N_c205b4eb_000027⟫ok⟪GTI18N_c205b4eb_000028⟫ akan bernilai false dan ⟪GTI18N_c205b4eb_000029⟫t⟪GTI18N_c205b4eb_000030⟫ akan menjadi nilai kosong bertipe ⟪GTI18N_c205b4eb_000031⟫T⟪GTI18N_c205b4eb_000032⟫,
+dan tidak terjadi panic.
+
+Perhatikan kemiripan antara sintaks ini dan sintaks untuk membaca dari map.
+
+⟪GTI18N_c205b4eb_000033⟫

@@ -1,0 +1,11 @@
+* Latihan: Slice
+
+Implementasikan `Pic`. Fungsi ini harus mengembalikan slice dengan panjang `dy`, yang setiap elemennya berupa slice berisi `dx` bilangan bulat tak bertanda 8-bit. Saat program dijalankan, gambar Anda akan ditampilkan dengan menafsirkan bilangan bulat sebagai nilai grayscale (atau, tepatnya, bluescale).
+
+Pilihan gambar terserah Anda. Fungsi yang menarik antara lain `(x+y)/2`, `x*y`, dan `x^y`.
+
+(Anda perlu menggunakan perulangan untuk mengalokasikan setiap `[]uint8` di dalam `[][]uint8`.)
+
+(Gunakan `uint8(intValue)` untuk mengonversi antar tipe.)
+
+.play moretypes/exercise-slices.go

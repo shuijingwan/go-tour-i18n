@@ -1,0 +1,19 @@
+* Go Playground
+
+Tur ini dibangun di atas [[https://play.golang.org/][Go Playground]], sebuah
+layanan web yang berjalan di server [[/][golang.org]].
+
+Layanan ini menerima program Go, mengompilasi, menautkan, dan menjalankan program tersebut di dalam
+sandbox, lalu mengembalikan keluarannya.
+
+Ada beberapa batasan pada program yang dapat dijalankan di playground:
+
+- Di playground, waktu dimulai pada 2009-11-10 23:00:00 UTC (menentukan arti penting tanggal ini merupakan latihan bagi pembaca). Hal ini memudahkan penyimpanan program dalam cache dengan membuat keluarannya deterministik.
+
+- Ada juga batasan pada waktu eksekusi serta penggunaan CPU dan memori, dan program tidak dapat mengakses host jaringan eksternal.
+
+Playground menggunakan rilis stabil terbaru Go.
+
+Baca "[[/blog/playground][Di dalam Go Playground]]" untuk mempelajari lebih lanjut.
+
+.play welcome/sandbox.go

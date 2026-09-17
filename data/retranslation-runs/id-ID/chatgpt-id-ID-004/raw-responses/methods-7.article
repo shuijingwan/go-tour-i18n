@@ -1,0 +1,14 @@
+* Method dan indireksi pointer (2)
+
+Hal yang setara terjadi pada arah sebaliknya.
+
+Fungsi yang menerima argumen nilai harus menerima nilai dengan tipe tersebut secara spesifik:
+
+⟪GTI18N_61a9cb84_000001⟫Compile error!⟪GTI18N_61a9cb84_000002⟫sedangkan method dengan receiver nilai menerima nilai atau pointer sebagai
+receiver saat dipanggil:
+
+⟪GTI18N_61a9cb84_000003⟫
+
+Dalam kasus ini, pemanggilan method ⟪GTI18N_61a9cb84_000004⟫p.Abs()⟪GTI18N_61a9cb84_000005⟫ ditafsirkan sebagai ⟪GTI18N_61a9cb84_000006⟫(*p).Abs()⟪GTI18N_61a9cb84_000007⟫.
+
+⟪GTI18N_61a9cb84_000008⟫

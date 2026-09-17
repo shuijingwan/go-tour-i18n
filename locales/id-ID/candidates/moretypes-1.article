@@ -1,0 +1,24 @@
+* Pointer
+
+Go memiliki pointer.
+Sebuah pointer menyimpan alamat memori suatu nilai.
+
+Tipe `*T` adalah pointer ke nilai `T`. Nilai kosongnya adalah `nil`.
+
+	var p *int
+
+Operator `&` menghasilkan pointer ke operandnya.
+
+	i := 42
+	p = &i
+
+Operator `*` menunjukkan nilai yang mendasari pointer.
+
+	fmt.Println(*p) // baca i melalui pointer p
+	*p = 21         // atur i melalui pointer p
+
+Hal ini dikenal sebagai "dereferencing" atau "indirecting".
+
+Berbeda dengan C, Go tidak memiliki aritmetika pointer.
+
+.play moretypes/pointers.go

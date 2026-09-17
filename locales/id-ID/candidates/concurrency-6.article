@@ -1,0 +1,14 @@
+* Pilihan Default
+
+Case `default` dalam sebuah `select` dijalankan jika tidak ada case lain yang siap.
+
+Gunakan case `default` untuk mencoba operasi kirim atau terima tanpa memblokir:
+
+	select {
+	case i := <-c:
+		// gunakan i
+	default:
+		// menerima dari c akan memblokir
+	}
+
+.play concurrency/default-selection.go

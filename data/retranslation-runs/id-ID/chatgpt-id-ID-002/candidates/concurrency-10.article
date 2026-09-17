@@ -1,0 +1,10 @@
+* Latihan: Web Crawler
+
+Dalam latihan ini Anda akan menggunakan fitur konkurensi milik Go untuk menjalankan web crawler secara paralel.
+
+Ubah fungsi `Crawl` agar mengambil beberapa URL secara paralel tanpa mengambil URL yang sama dua kali.
+
+_Petunjuk_: Anda dapat menyimpan cache URL yang telah diambil dalam sebuah map, tetapi map saja tidak
+aman untuk penggunaan konkuren!
+
+.play concurrency/exercise-web-crawler.go

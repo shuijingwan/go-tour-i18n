@@ -1,0 +1,16 @@
+* Method dan indirect pointer
+
+Dengan membandingkan dua program sebelumnya, Anda mungkin memperhatikan bahwa
+fungsi dengan argumen pointer harus menerima pointer:
+
+⟪GTI18N_39fb725b_000001⟫Kesalahan kompilasi!⟪GTI18N_39fb725b_000002⟫sedangkan method dengan receiver pointer menerima nilai atau pointer sebagai
+receiver saat dipanggil:
+
+⟪GTI18N_39fb725b_000003⟫
+
+Untuk pernyataan ⟪GTI18N_39fb725b_000004⟫v.Scale(5)⟪GTI18N_39fb725b_000005⟫, meskipun ⟪GTI18N_39fb725b_000006⟫v⟪GTI18N_39fb725b_000007⟫ adalah nilai dan bukan pointer,
+method dengan receiver pointer dipanggil secara otomatis.
+Dengan kata lain, demi kemudahan, ⟪GTI18N_39fb725b_000008⟫ menafsirkan pernyataan ⟪GTI18N_39fb725b_000009⟫v.Scale(5)⟪GTI18N_39fb725b_000010⟫ sebagai
+⟪GTI18N_39fb725b_000011⟫(&v).Scale(5)⟪GTI18N_39fb725b_000012⟫ karena method ⟪GTI18N_39fb725b_000013⟫Scale⟪GTI18N_39fb725b_000014⟫ memiliki receiver pointer.
+
+⟪GTI18N_39fb725b_000015⟫

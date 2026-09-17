@@ -1,0 +1,13 @@
+* Latihan: Gambar
+
+Ingat [[/tour/moretypes/18][generator gambar]] yang Anda tulis sebelumnya? Mari kita tulis satu lagi, tetapi kali ini fungsi tersebut akan mengembalikan implementasi `image.Image` alih-alih slice data.
+
+Definisikan tipe `Image` Anda sendiri, implementasikan [[/pkg/image/#Image][method yang diperlukan]], lalu panggil `pic.ShowImage`.
+
+`Bounds` harus mengembalikan `image.Rectangle`, seperti `image.Rect(0,`0,`w,`h)`.
+
+`ColorModel` harus mengembalikan `color.RGBAModel`.
+
+`At` harus mengembalikan sebuah warna; nilai `v` pada generator gambar sebelumnya bersesuaian dengan `color.RGBA{v,`v,`255,`255}` pada yang ini.
+
+.play methods/exercise-images.go

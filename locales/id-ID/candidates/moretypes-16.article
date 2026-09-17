@@ -1,0 +1,8 @@
+* Range
+
+Bentuk `range` pada perulangan `for` melakukan iterasi atas slice atau map.
+
+Saat melakukan range atas slice, dua nilai dikembalikan untuk setiap iterasi.
+Nilai pertama adalah indeks, dan nilai kedua adalah salinan elemen pada indeks tersebut.
+
+.play moretypes/range.go

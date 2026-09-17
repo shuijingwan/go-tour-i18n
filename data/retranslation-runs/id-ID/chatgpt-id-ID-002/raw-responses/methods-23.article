@@ -1,0 +1,12 @@
+* Latihan: rot13Reader
+
+Pola yang umum adalah [[⟪GTI18N_11d87614_000001⟫][io.Reader]] yang membungkus ⟪GTI18N_11d87614_000002⟫io.Reader⟪GTI18N_11d87614_000003⟫ lain dan mengubah aliran dengan suatu cara.
+
+Sebagai contoh, fungsi [[⟪GTI18N_11d87614_000004⟫][gzip.NewReader]] menerima sebuah ⟪GTI18N_11d87614_000005⟫io.Reader⟪GTI18N_11d87614_000006⟫ (aliran data terkompresi) dan mengembalikan ⟪GTI18N_11d87614_000007⟫*gzip.Reader⟪GTI18N_11d87614_000008⟫ yang juga mengimplementasikan ⟪GTI18N_11d87614_000009⟫io.Reader⟪GTI18N_11d87614_000010⟫ (aliran data yang telah didekompresi).
+
+Implementasikan ⟪GTI18N_11d87614_000011⟫rot13Reader⟪GTI18N_11d87614_000012⟫ yang mengimplementasikan ⟪GTI18N_11d87614_000013⟫io.Reader⟪GTI18N_11d87614_000014⟫ dan membaca dari sebuah ⟪GTI18N_11d87614_000015⟫io.Reader⟪GTI18N_11d87614_000016⟫, lalu mengubah aliran dengan menerapkan cipher substitusi [[⟪GTI18N_11d87614_000017⟫][rot13]] pada semua karakter alfabet.
+
+Tipe ⟪GTI18N_11d87614_000018⟫rot13Reader⟪GTI18N_11d87614_000019⟫ telah disediakan untuk Anda.
+Jadikan sebagai ⟪GTI18N_11d87614_000020⟫io.Reader⟪GTI18N_11d87614_000021⟫ dengan mengimplementasikan method ⟪GTI18N_11d87614_000022⟫Read⟪GTI18N_11d87614_000023⟫.
+
+⟪GTI18N_11d87614_000024⟫

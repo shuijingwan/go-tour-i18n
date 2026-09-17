@@ -1,0 +1,23 @@
+* Method dan indireksi pointer
+
+Dengan membandingkan dua program sebelumnya, Anda mungkin memperhatikan bahwa
+fungsi dengan argumen pointer harus menerima pointer:
+
+	var v Vertex
+	ScaleFunc(v, 5)  // Compile error!
+	ScaleFunc(&v, 5) // OK
+
+sedangkan method dengan receiver pointer menerima nilai atau pointer sebagai
+receiver saat dipanggil:
+
+	var v Vertex
+	v.Scale(5)  // OK
+	p := &v
+	p.Scale(10) // OK
+
+Untuk pernyataan `v.Scale(5)`, meskipun `v` adalah nilai dan bukan pointer,
+method dengan receiver pointer dipanggil secara otomatis.
+Artinya, demi kemudahan, Go menafsirkan pernyataan `v.Scale(5)` sebagai
+`(&v).Scale(5)` karena method `Scale` memiliki receiver pointer.
+
+.play methods/indirection.go

@@ -1,0 +1,10 @@
+* Pointer ke struct
+
+Field struct dapat diakses melalui pointer struct.
+
+Untuk mengakses field ⟪GTI18N_29695d33_000001⟫X⟪GTI18N_29695d33_000002⟫ dari sebuah struct saat kita memiliki pointer struct ⟪GTI18N_29695d33_000003⟫p⟪GTI18N_29695d33_000004⟫, kita dapat
+menulis ⟪GTI18N_29695d33_000005⟫(*p).X⟪GTI18N_29695d33_000006⟫.
+Namun, notasi itu merepotkan, sehingga bahasa ini memungkinkan kita
+menulis cukup ⟪GTI18N_29695d33_000007⟫p.X⟪GTI18N_29695d33_000008⟫, tanpa dereference eksplisit.
+
+⟪GTI18N_29695d33_000009⟫

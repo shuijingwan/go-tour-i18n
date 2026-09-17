@@ -1,0 +1,7 @@
+* Closure fungsi
+
+Fungsi Go dapat berupa closure. Closure adalah nilai fungsi yang merujuk ke variabel dari luar body-nya. Fungsi tersebut dapat mengakses dan memberikan nilai kepada variabel yang dirujuk; dalam pengertian ini, fungsi "terikat" pada variabel tersebut.
+
+Sebagai contoh, fungsi `adder` mengembalikan closure. Setiap closure terikat pada variabel `sum` miliknya sendiri.
+
+.play moretypes/function-closures.go

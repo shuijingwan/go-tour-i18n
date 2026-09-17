@@ -1,0 +1,27 @@
+* Mengubah Map
+
+Masukkan atau perbarui elemen dalam map `m`:
+
+	m[key] = elem
+
+Ambil sebuah elemen:
+
+	elem = m[key]
+
+Hapus sebuah elemen:
+
+	delete(m, key)
+
+Uji keberadaan sebuah key dengan penugasan dua nilai:
+
+	elem, ok = m[key]
+
+Jika `key` ada dalam `m`, `ok` bernilai `true`. Jika tidak, `ok` bernilai `false`.
+
+Jika `key` tidak ada dalam map, maka `elem` adalah nilai kosong untuk tipe elemen map tersebut.
+
+*Catatan:* Jika `elem` atau `ok` belum dideklarasikan, Anda dapat menggunakan bentuk deklarasi singkat:
+
+	elem, ok := m[key]
+
+.play moretypes/mutating-maps.go

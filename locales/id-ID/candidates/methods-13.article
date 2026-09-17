@@ -1,0 +1,8 @@
+* Nilai interface nil
+
+Nilai interface nil tidak menyimpan nilai maupun tipe konkret.
+
+Memanggil method pada interface nil merupakan kesalahan runtime karena tidak ada
+tipe di dalam tuple interface yang menunjukkan method _konkret_ mana yang harus dipanggil.
+
+.play methods/nil-interface-values.go

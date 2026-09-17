@@ -1,0 +1,12 @@
+* Method, lanjutan
+
+Anda juga dapat mendeklarasikan method pada tipe non-struct.
+
+Dalam contoh ini kita melihat tipe numerik `MyFloat` dengan method `Abs`.
+
+Anda hanya dapat mendeklarasikan method dengan receiver yang tipenya didefinisikan dalam
+paket yang sama dengan method tersebut.
+Anda tidak dapat mendeklarasikan method dengan receiver yang tipenya didefinisikan dalam
+paket lain (termasuk tipe bawaan seperti `int`).
+
+.play methods/methods-continued.go

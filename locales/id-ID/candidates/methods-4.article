@@ -1,0 +1,24 @@
+* Receiver pointer
+
+Anda dapat mendeklarasikan method dengan receiver pointer.
+
+Artinya, tipe receiver memiliki sintaks literal `*T` untuk suatu tipe `T`.
+(Selain itu, `T` tidak boleh berupa pointer seperti `*int`.)
+
+Sebagai contoh, method `Scale` di sini didefinisikan pada `*Vertex`.
+
+Method dengan receiver pointer dapat mengubah nilai yang ditunjuk oleh receiver
+(seperti yang dilakukan `Scale` di sini).
+Karena method sering perlu mengubah receiver-nya, receiver pointer lebih
+umum daripada receiver nilai.
+
+Coba hapus `*` dari deklarasi fungsi `Scale` pada baris 16
+dan amati perubahan perilaku program.
+
+Dengan receiver nilai, method `Scale` bekerja pada salinan nilai
+`Vertex` asli.
+(Perilakunya sama seperti argumen fungsi lainnya.)
+Method `Scale` harus memiliki receiver pointer agar dapat mengubah nilai `Vertex`
+yang dideklarasikan dalam fungsi `main`.
+
+.play methods/methods-pointers.go

@@ -1,0 +1,15 @@
+* Urutan evaluasi switch
+
+Case switch dievaluasi dari atas ke bawah dan berhenti saat sebuah case berhasil.
+
+(Sebagai contoh,
+
+	switch i {
+	case 0:
+	case f():
+	}
+
+tidak memanggil `f` jika `i==0`.)
+
+
+.play flowcontrol/switch-evaluation-order.go

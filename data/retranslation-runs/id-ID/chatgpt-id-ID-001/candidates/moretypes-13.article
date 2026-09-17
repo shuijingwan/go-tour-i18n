@@ -1,0 +1,18 @@
+* Membuat slice dengan make
+
+Slice dapat dibuat dengan fungsi bawaan `make`;
+inilah cara membuat array berukuran dinamis.
+
+Fungsi `make` mengalokasikan array yang diisi nilai kosong
+dan mengembalikan slice yang merujuk ke array tersebut:
+
+	a := make([]int, 5)  // len(a)=5
+
+Untuk menentukan kapasitas, berikan argumen ketiga ke `make`:
+
+	b := make([]int, 0, 5) // len(b)=0, cap(b)=5
+
+	b = b[:cap(b)] // len(b)=5, cap(b)=5
+	b = b[1:]      // len(b)=4, cap(b)=4
+
+.play moretypes/making-slices.go

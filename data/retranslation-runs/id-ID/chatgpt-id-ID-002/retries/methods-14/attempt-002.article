@@ -1,0 +1,16 @@
+* Interface kosong
+
+Tipe interface yang menentukan nol method dikenal sebagai ⟪GTI18N_7a09a765_000001⟫interface_kosong⟪GTI18N_7a09a765_000002⟫:
+
+⟪GTI18N_7a09a765_000003⟫
+
+Interface kosong dapat menyimpan nilai dari tipe apa pun.
+(Setiap tipe setidaknya mengimplementasikan nol method.)
+
+⟪GTI18N_7a09a765_000004⟫any⟪GTI18N_7a09a765_000005⟫ adalah alias untuk ⟪GTI18N_7a09a765_000006⟫interface{}⟪GTI18N_7a09a765_000007⟫, dan keduanya sepenuhnya
+setara.
+
+Interface kosong digunakan oleh kode yang menangani nilai dengan tipe yang tidak diketahui.
+Sebagai contoh, ⟪GTI18N_7a09a765_000008⟫fmt.Print⟪GTI18N_7a09a765_000009⟫ menerima berapa pun jumlah argumen bertipe ⟪GTI18N_7a09a765_000010⟫any⟪GTI18N_7a09a765_000011⟫.
+
+⟪GTI18N_7a09a765_000012⟫

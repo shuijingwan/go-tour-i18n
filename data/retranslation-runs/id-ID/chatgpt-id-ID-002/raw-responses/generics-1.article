@@ -1,0 +1,17 @@
+* Parameter tipe
+
+Fungsi ⟪GTI18N_01a04510_000001⟫ dapat ditulis agar bekerja pada beberapa tipe menggunakan parameter tipe. Parameter
+tipe sebuah fungsi muncul di antara tanda kurung siku, sebelum
+argumen fungsi.
+
+⟪GTI18N_01a04510_000002⟫
+
+Deklarasi ini berarti bahwa ⟪GTI18N_01a04510_000003⟫s⟪GTI18N_01a04510_000004⟫ adalah slice dari tipe ⟪GTI18N_01a04510_000005⟫T⟪GTI18N_01a04510_000006⟫ apa pun yang memenuhi
+batasan tipe bawaan ⟪GTI18N_01a04510_000007⟫comparable⟪GTI18N_01a04510_000008⟫. ⟪GTI18N_01a04510_000009⟫x⟪GTI18N_01a04510_000010⟫ juga merupakan nilai dengan tipe yang sama.
+
+⟪GTI18N_01a04510_000011⟫comparable⟪GTI18N_01a04510_000012⟫ adalah batasan tipe berguna yang memungkinkan penggunaan operator ⟪GTI18N_01a04510_000013⟫==⟪GTI18N_01a04510_000014⟫ dan
+⟪GTI18N_01a04510_000015⟫!=⟪GTI18N_01a04510_000016⟫ pada nilai tipe tersebut. Dalam contoh ini, kita menggunakannya untuk membandingkan sebuah
+nilai dengan semua elemen slice hingga ditemukan kecocokan. Fungsi ⟪GTI18N_01a04510_000017⟫Index⟪GTI18N_01a04510_000018⟫ ini bekerja
+untuk tipe apa pun yang mendukung perbandingan.
+
+⟪GTI18N_01a04510_000019⟫

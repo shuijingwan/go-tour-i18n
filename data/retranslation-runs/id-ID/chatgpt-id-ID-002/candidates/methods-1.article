@@ -1,0 +1,13 @@
+* Method
+
+Go tidak memiliki class.
+Namun, Anda dapat mendefinisikan method pada tipe.
+
+Method adalah fungsi dengan argumen _receiver_ khusus.
+
+Receiver muncul dalam daftar argumennya sendiri, di antara kata kunci `func` dan
+nama method.
+
+Dalam contoh ini, method `Abs` memiliki receiver bertipe `Vertex` bernama `v`.
+
+.play methods/methods.go

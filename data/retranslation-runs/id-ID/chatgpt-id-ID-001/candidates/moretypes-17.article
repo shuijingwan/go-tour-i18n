@@ -1,0 +1,12 @@
+* Range, lanjutan
+
+Anda dapat melewati indeks atau nilai dengan menugaskannya ke `_`.
+
+    for i, _ := range pow
+    for _, value := range pow
+
+Jika hanya menginginkan indeks, Anda dapat menghilangkan variabel kedua.
+
+    for i := range pow
+
+.play moretypes/range-continued.go

@@ -1,0 +1,9 @@
+* Defer
+
+Pernyataan defer menunda eksekusi suatu fungsi hingga fungsi yang mengelilinginya
+mengembalikan nilai.
+
+Argumen pemanggilan yang ditunda dievaluasi segera, tetapi pemanggilan fungsi tersebut
+tidak dijalankan sampai fungsi yang mengelilinginya mengembalikan nilai.
+
+.play flowcontrol/defer.go

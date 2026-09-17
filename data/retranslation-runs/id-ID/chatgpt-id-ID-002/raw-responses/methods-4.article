@@ -1,0 +1,24 @@
+* Receiver pointer
+
+Anda dapat mendeklarasikan method dengan receiver pointer.
+
+Artinya, tipe receiver memiliki sintaks literal ⟪GTI18N_99f9fa4e_000001⟫*T⟪GTI18N_99f9fa4e_000002⟫ untuk suatu tipe ⟪GTI18N_99f9fa4e_000003⟫T⟪GTI18N_99f9fa4e_000004⟫.
+(Selain itu, ⟪GTI18N_99f9fa4e_000005⟫T⟪GTI18N_99f9fa4e_000006⟫ tidak boleh berupa pointer seperti ⟪GTI18N_99f9fa4e_000007⟫*int⟪GTI18N_99f9fa4e_000008⟫.)
+
+Sebagai contoh, method ⟪GTI18N_99f9fa4e_000009⟫Scale⟪GTI18N_99f9fa4e_000010⟫ di sini didefinisikan pada ⟪GTI18N_99f9fa4e_000011⟫*Vertex⟪GTI18N_99f9fa4e_000012⟫.
+
+Method dengan receiver pointer dapat mengubah nilai yang ditunjuk oleh receiver
+(seperti yang dilakukan ⟪GTI18N_99f9fa4e_000013⟫Scale⟪GTI18N_99f9fa4e_000014⟫ di sini).
+Karena method sering perlu mengubah receiver-nya, receiver pointer lebih
+umum daripada receiver nilai.
+
+Coba hapus ⟪GTI18N_99f9fa4e_000015⟫*⟪GTI18N_99f9fa4e_000016⟫ dari deklarasi fungsi ⟪GTI18N_99f9fa4e_000017⟫Scale⟪GTI18N_99f9fa4e_000018⟫ pada baris 16
+dan amati perubahan perilaku program.
+
+Dengan receiver nilai, method ⟪GTI18N_99f9fa4e_000019⟫Scale⟪GTI18N_99f9fa4e_000020⟫ bekerja pada salinan nilai
+⟪GTI18N_99f9fa4e_000021⟫Vertex⟪GTI18N_99f9fa4e_000022⟫ asli.
+(Perilakunya sama seperti argumen fungsi lainnya.)
+Method ⟪GTI18N_99f9fa4e_000023⟫Scale⟪GTI18N_99f9fa4e_000024⟫ harus memiliki receiver pointer agar dapat mengubah nilai ⟪GTI18N_99f9fa4e_000025⟫Vertex⟪GTI18N_99f9fa4e_000026⟫
+yang dideklarasikan dalam fungsi ⟪GTI18N_99f9fa4e_000027⟫main⟪GTI18N_99f9fa4e_000028⟫.
+
+⟪GTI18N_99f9fa4e_000029⟫

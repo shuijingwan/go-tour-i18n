@@ -1,0 +1,15 @@
+* Membuat slice dengan make
+
+Slice dapat dibuat dengan fungsi bawaan ⟪GTI18N_d057e6bf_000001⟫make⟪GTI18N_d057e6bf_000002⟫;
+inilah cara membuat array berukuran dinamis.
+
+Fungsi ⟪GTI18N_d057e6bf_000003⟫make⟪GTI18N_d057e6bf_000004⟫ mengalokasikan array yang diisi nilai kosong
+dan mengembalikan slice yang merujuk ke array tersebut:
+
+⟪GTI18N_d057e6bf_000005⟫
+
+Untuk menentukan kapasitas, berikan argumen ketiga ke ⟪GTI18N_d057e6bf_000006⟫make⟪GTI18N_d057e6bf_000007⟫:
+
+⟪GTI18N_d057e6bf_000008⟫
+
+⟪GTI18N_d057e6bf_000009⟫

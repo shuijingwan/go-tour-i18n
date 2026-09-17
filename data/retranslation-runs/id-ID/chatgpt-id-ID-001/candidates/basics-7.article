@@ -1,0 +1,11 @@
+* Nilai kembalian bernama
+
+Nilai kembalian Go dapat diberi nama. Jika demikian, nilai tersebut diperlakukan sebagai variabel yang didefinisikan di bagian atas fungsi.
+
+Nama-nama ini sebaiknya digunakan untuk mendokumentasikan arti nilai kembalian.
+
+Pernyataan `return` tanpa argumen mengembalikan nilai kembalian bernama. Ini dikenal sebagai return "telanjang".
+
+Pernyataan return telanjang sebaiknya hanya digunakan dalam fungsi pendek, seperti pada contoh ini. Penggunaannya dapat mengurangi keterbacaan pada fungsi yang lebih panjang.
+
+.play basics/named-results.go

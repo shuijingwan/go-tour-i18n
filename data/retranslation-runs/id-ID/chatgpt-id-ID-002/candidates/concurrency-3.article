@@ -1,0 +1,11 @@
+* Kanal dengan Buffer
+
+Kanal dapat _memiliki_buffer_. Berikan panjang buffer sebagai argumen kedua ke `make` untuk menginisialisasi kanal dengan buffer:
+
+	ch := make(chan int, 100)
+
+Pengiriman ke kanal dengan buffer hanya memblokir saat buffer penuh. Penerimaan memblokir saat buffer kosong.
+
+Ubah contoh agar buffer terisi melebihi kapasitasnya dan lihat apa yang terjadi.
+
+.play concurrency/buffered-channels.go

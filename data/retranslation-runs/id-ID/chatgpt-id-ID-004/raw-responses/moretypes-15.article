@@ -1,0 +1,21 @@
+* Menambahkan ke slice
+
+Menambahkan elemen baru ke slice adalah hal yang umum, sehingga ⟪GTI18N_f2fc257e_000001⟫ menyediakan fungsi bawaan
+⟪GTI18N_f2fc257e_000002⟫append⟪GTI18N_f2fc257e_000003⟫. [[⟪GTI18N_f2fc257e_000004⟫][Dokumentasi]]
+paket bawaan menjelaskan ⟪GTI18N_f2fc257e_000005⟫append⟪GTI18N_f2fc257e_000006⟫.
+
+⟪GTI18N_f2fc257e_000007⟫
+
+Parameter pertama ⟪GTI18N_f2fc257e_000008⟫s⟪GTI18N_f2fc257e_000009⟫ dari ⟪GTI18N_f2fc257e_000010⟫append⟪GTI18N_f2fc257e_000011⟫ adalah slice bertipe ⟪GTI18N_f2fc257e_000012⟫T⟪GTI18N_f2fc257e_000013⟫, sedangkan sisanya adalah
+nilai ⟪GTI18N_f2fc257e_000014⟫T⟪GTI18N_f2fc257e_000015⟫ yang akan ditambahkan ke slice.
+
+Nilai yang dihasilkan ⟪GTI18N_f2fc257e_000016⟫append⟪GTI18N_f2fc257e_000017⟫ adalah slice yang berisi semua elemen dari
+slice semula ditambah nilai-nilai yang diberikan.
+
+Jika array yang mendasari ⟪GTI18N_f2fc257e_000018⟫s⟪GTI18N_f2fc257e_000019⟫ terlalu kecil untuk menampung semua nilai yang diberikan, sebuah
+array yang lebih besar akan dialokasikan. Slice yang dikembalikan akan menunjuk ke array
+yang baru dialokasikan tersebut.
+
+(Untuk mempelajari slice lebih lanjut, baca artikel [[⟪GTI18N_f2fc257e_000020⟫][Slice: penggunaan dan cara kerja internal]].)
+
+⟪GTI18N_f2fc257e_000021⟫

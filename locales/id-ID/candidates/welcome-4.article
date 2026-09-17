@@ -1,0 +1,17 @@
+* Go offline (opsional)
+
+Tur ini juga tersedia sebagai program mandiri yang dapat Anda gunakan
+tanpa akses internet. Program tersebut membangun dan menjalankan contoh kode di
+komputer Anda sendiri.
+
+Untuk menjalankan tur secara lokal, pertama-tama Anda perlu
+[[/doc/install][menginstal Go]], lalu jalankan:
+
+  go install golang.org/x/website/tour@latest
+
+Perintah ini akan menempatkan berkas biner `tour` di dalam
+[[/cmd/go/#hdr-GOPATH_and_Modules][GOPATH]], tepatnya pada direktori `bin`.
+Saat Anda menjalankan program tur, program tersebut akan membuka peramban web yang menampilkan
+versi lokal tur Anda.
+
+Tentu saja, Anda tetap dapat mengikuti tur melalui situs web ini.

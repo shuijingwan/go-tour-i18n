@@ -1,0 +1,638 @@
+{
+  "schema_version": 2,
+  "evidence_type": "quality_check_results",
+  "locale": "id-ID",
+  "snapshot_id": "qc-001",
+  "snapshot_manifest_sha256": "cd7c01e062e4c432a2e57ebc8d32c939c5d0478ce4f663dc1720fdc0ea46bf7c",
+  "rubric": "translation-quality/v1",
+  "result_count": 122,
+  "results": [
+    {
+      "index": 1,
+      "unit_id": "welcome/1",
+      "rating": "A"
+    },
+    {
+      "index": 2,
+      "unit_id": "welcome/2",
+      "rating": "B",
+      "finding": "语言列表中的 “Brazilian Portuguese” 被译为 “Portuguese Brasil”，其中 “Portuguese” 残留为英文，且不是自然的印尼语语言名称表达；应将这一语言名称改为自然的印尼语表达，同时保持原有 native label “Português do Brasil” 及链接 identity 不变。"
+    },
+    {
+      "index": 3,
+      "unit_id": "welcome/4",
+      "rating": "B",
+      "finding": "正文中的 “binary `tour`” 在普通可翻译自然语言中保留了不必要的英文 “binary”，且该词不属于 glossary keep；应使用自然的印尼语技术表达（如 biner/berkas biner 的语义），同时保持 `tour`、GOPATH、`bin` 等技术 identity 不变。"
+    },
+    {
+      "index": 4,
+      "unit_id": "welcome/5",
+      "rating": "B",
+      "finding": "正文出现 “melakukan linking” 和 “caching program” 两处不必要的英文残留/混合表达；它们属于普通可翻译的技术说明，不在 glossary keep 中。应改为自然、完整的印尼语技术表达，同时保持 Go Playground、sandbox、UTC、CPU 等规定 identity 不变。"
+    },
+    {
+      "index": 5,
+      "unit_id": "welcome/3",
+      "rating": "A"
+    },
+    {
+      "index": 6,
+      "unit_id": "basics/1",
+      "rating": "A"
+    },
+    {
+      "index": 7,
+      "unit_id": "basics/2",
+      "rating": "A"
+    },
+    {
+      "index": 8,
+      "unit_id": "basics/3",
+      "rating": "A"
+    },
+    {
+      "index": 9,
+      "unit_id": "basics/4",
+      "rating": "A"
+    },
+    {
+      "index": 10,
+      "unit_id": "basics/5",
+      "rating": "A"
+    },
+    {
+      "index": 11,
+      "unit_id": "basics/6",
+      "rating": "A"
+    },
+    {
+      "index": 12,
+      "unit_id": "basics/7",
+      "rating": "B",
+      "finding": "“naked return” 被处理成 “return \\\"telanjang\\\"” 以及后文 “Pernyataan return telanjang”，属于生硬的逐字翻译，不符合自然的印尼语技术教程表达。应保留 `return` 的 Go 技术含义，但用自然且前后一致的印尼语说明“无参数的 return / naked return”这一概念，不改变原有语义。"
+    },
+    {
+      "index": 13,
+      "unit_id": "basics/8",
+      "rating": "A"
+    },
+    {
+      "index": 14,
+      "unit_id": "basics/9",
+      "rating": "A"
+    },
+    {
+      "index": 15,
+      "unit_id": "basics/10",
+      "rating": "A"
+    },
+    {
+      "index": 16,
+      "unit_id": "basics/11",
+      "rating": "A"
+    },
+    {
+      "index": 17,
+      "unit_id": "basics/12",
+      "rating": "B",
+      "finding": "首段可见术语 `_zero_value_` 仍保持英文，而当前 glossary preferred 明确规定 “zero value” → “nilai kosong”，且本 Unit 下一段已经使用 “Nilai kosong”。应翻译该强调文本并与 glossary 及本页后文保持一致。"
+    },
+    {
+      "index": 18,
+      "unit_id": "basics/13",
+      "rating": "A"
+    },
+    {
+      "index": 19,
+      "unit_id": "basics/14",
+      "rating": "A"
+    },
+    {
+      "index": 20,
+      "unit_id": "basics/15",
+      "rating": "A"
+    },
+    {
+      "index": 21,
+      "unit_id": "basics/16",
+      "rating": "A"
+    },
+    {
+      "index": 22,
+      "unit_id": "basics/17",
+      "rating": "A"
+    },
+    {
+      "index": 23,
+      "unit_id": "flowcontrol/1",
+      "rating": "A"
+    },
+    {
+      "index": 24,
+      "unit_id": "flowcontrol/2",
+      "rating": "A"
+    },
+    {
+      "index": 25,
+      "unit_id": "flowcontrol/3",
+      "rating": "A"
+    },
+    {
+      "index": 26,
+      "unit_id": "flowcontrol/4",
+      "rating": "B",
+      "finding": "正文使用 “loop tak hingga”，但当前 glossary preferred 明确规定 “loop” → “perulangan”，而同一句前半部分也已经使用 “perulangan”。这里没有需要偏离 preferred 的语境，应统一采用 glossary 的 “perulangan” 术语。"
+    },
+    {
+      "index": 27,
+      "unit_id": "flowcontrol/5",
+      "rating": "A"
+    },
+    {
+      "index": 28,
+      "unit_id": "flowcontrol/6",
+      "rating": "A"
+    },
+    {
+      "index": 29,
+      "unit_id": "flowcontrol/7",
+      "rating": "A"
+    },
+    {
+      "index": 30,
+      "unit_id": "flowcontrol/8",
+      "rating": "A"
+    },
+    {
+      "index": 31,
+      "unit_id": "flowcontrol/9",
+      "rating": "A"
+    },
+    {
+      "index": 32,
+      "unit_id": "flowcontrol/10",
+      "rating": "A"
+    },
+    {
+      "index": 33,
+      "unit_id": "flowcontrol/11",
+      "rating": "A"
+    },
+    {
+      "index": 34,
+      "unit_id": "flowcontrol/12",
+      "rating": "C",
+      "finding": "原文两处 “the surrounding function returns” 表示外围函数返回/结束执行，并不要求该函数返回一个值；candidate 两处都译为 “fungsi yang mengelilinginya mengembalikan nilai”，错误增加了“返回值”的含义，可能使读者误以为 defer 只与有返回值的函数相关。应改为表达外围函数返回或结束执行，而不能加入必须返回某个值的含义。"
+    },
+    {
+      "index": 35,
+      "unit_id": "flowcontrol/13",
+      "rating": "A"
+    },
+    {
+      "index": 36,
+      "unit_id": "flowcontrol/14",
+      "rating": "A"
+    },
+    {
+      "index": 37,
+      "unit_id": "moretypes/1",
+      "rating": "A"
+    },
+    {
+      "index": 38,
+      "unit_id": "moretypes/2",
+      "rating": "A"
+    },
+    {
+      "index": 39,
+      "unit_id": "moretypes/3",
+      "rating": "A"
+    },
+    {
+      "index": 40,
+      "unit_id": "moretypes/4",
+      "rating": "A"
+    },
+    {
+      "index": 41,
+      "unit_id": "moretypes/5",
+      "rating": "A"
+    },
+    {
+      "index": 42,
+      "unit_id": "moretypes/6",
+      "rating": "A"
+    },
+    {
+      "index": 43,
+      "unit_id": "moretypes/7",
+      "rating": "A"
+    },
+    {
+      "index": 44,
+      "unit_id": "moretypes/8",
+      "rating": "A"
+    },
+    {
+      "index": 45,
+      "unit_id": "moretypes/9",
+      "rating": "A"
+    },
+    {
+      "index": 46,
+      "unit_id": "moretypes/10",
+      "rating": "A"
+    },
+    {
+      "index": 47,
+      "unit_id": "moretypes/11",
+      "rating": "A"
+    },
+    {
+      "index": 48,
+      "unit_id": "moretypes/12",
+      "rating": "A"
+    },
+    {
+      "index": 49,
+      "unit_id": "moretypes/13",
+      "rating": "A"
+    },
+    {
+      "index": 50,
+      "unit_id": "moretypes/14",
+      "rating": "A"
+    },
+    {
+      "index": 51,
+      "unit_id": "moretypes/15",
+      "rating": "B",
+      "finding": "原文 “the backing array of `s`” 被译为 “array backing milik `s`”，形成不自然的英语/印尼语混合短语；“backing” 不属于 glossary keep。应使用自然、清楚的印尼语表达说明该 slice 所依赖/作为底层存储的 array，同时保持 `s`、slice、array 等技术含义不变。"
+    },
+    {
+      "index": 52,
+      "unit_id": "moretypes/16",
+      "rating": "A"
+    },
+    {
+      "index": 53,
+      "unit_id": "moretypes/17",
+      "rating": "A"
+    },
+    {
+      "index": 54,
+      "unit_id": "moretypes/18",
+      "rating": "A"
+    },
+    {
+      "index": 55,
+      "unit_id": "moretypes/19",
+      "rating": "A"
+    },
+    {
+      "index": 56,
+      "unit_id": "moretypes/20",
+      "rating": "A"
+    },
+    {
+      "index": 57,
+      "unit_id": "moretypes/21",
+      "rating": "A"
+    },
+    {
+      "index": 58,
+      "unit_id": "moretypes/22",
+      "rating": "A"
+    },
+    {
+      "index": 59,
+      "unit_id": "moretypes/23",
+      "rating": "A"
+    },
+    {
+      "index": 60,
+      "unit_id": "moretypes/24",
+      "rating": "A"
+    },
+    {
+      "index": 61,
+      "unit_id": "moretypes/25",
+      "rating": "B",
+      "finding": "原文 “variables from outside its body” 中的普通技术说明 body 在 candidate 中写成 “dari luar body-nya”，形成英语词与印尼语后缀混合的表达；body 不属于 glossary keep。应改为自然、正式的印尼语表达函数/closure 的主体范围，同时保持原意不变。"
+    },
+    {
+      "index": 62,
+      "unit_id": "moretypes/26",
+      "rating": "A"
+    },
+    {
+      "index": 63,
+      "unit_id": "moretypes/27",
+      "rating": "A"
+    },
+    {
+      "index": 64,
+      "unit_id": "methods/1",
+      "rating": "A"
+    },
+    {
+      "index": 65,
+      "unit_id": "methods/2",
+      "rating": "B",
+      "finding": "原文 “with no change in functionality” 被译为 “tanpa perubahan fungsi kerjanya”；“fungsi kerjanya” 在此处表达生硬且重复，不是自然的印尼语技术表述。应明确表达把 method 改写成普通函数后功能/行为没有改变，例如使用自然的“fungsionalitas tidak berubah”等等价表达。"
+    },
+    {
+      "index": 66,
+      "unit_id": "methods/3",
+      "rating": "A"
+    },
+    {
+      "index": 67,
+      "unit_id": "methods/4",
+      "rating": "A"
+    },
+    {
+      "index": 68,
+      "unit_id": "methods/5",
+      "rating": "A"
+    },
+    {
+      "index": 69,
+      "unit_id": "methods/6",
+      "rating": "B",
+      "finding": "标题原文 “Methods and pointer indirection” 被译为 “Method dan indirect pointer”，把技术概念 “pointer indirection” 错置为英语短语 “indirect pointer”，既不自然，也可能被理解成另一种 pointer 描述。应将标题改为准确表达 pointer indirection/indireksi pointer 的自然印尼语技术表述。"
+    },
+    {
+      "index": 70,
+      "unit_id": "methods/7",
+      "rating": "B",
+      "finding": "标题原文 “Methods and pointer indirection (2)” 被译为 “Method dan indirect pointer (2)”，把技术概念 “pointer indirection” 错置为英语短语 “indirect pointer”，既不自然，也可能被理解成另一种 pointer 描述。应将标题改为准确表达 pointer indirection/indireksi pointer 的自然印尼语技术表述。"
+    },
+    {
+      "index": 71,
+      "unit_id": "methods/8",
+      "rating": "A"
+    },
+    {
+      "index": 72,
+      "unit_id": "methods/9",
+      "rating": "A"
+    },
+    {
+      "index": 73,
+      "unit_id": "methods/10",
+      "rating": "A"
+    },
+    {
+      "index": 74,
+      "unit_id": "methods/11",
+      "rating": "A"
+    },
+    {
+      "index": 75,
+      "unit_id": "methods/12",
+      "rating": "A"
+    },
+    {
+      "index": 76,
+      "unit_id": "methods/13",
+      "rating": "B",
+      "finding": "原文 “run-time error” 被译为 “kesalahan run-time”。当前 id-ID glossary preferred 明确规定 runtime → “runtime”；这里应使用该正式术语并形成自然的印尼语表达，例如 “kesalahan runtime”，而不是保留带连字符的英语 “run-time”。"
+    },
+    {
+      "index": 77,
+      "unit_id": "methods/14",
+      "rating": "A"
+    },
+    {
+      "index": 78,
+      "unit_id": "methods/15",
+      "rating": "A"
+    },
+    {
+      "index": 79,
+      "unit_id": "methods/16",
+      "rating": "A"
+    },
+    {
+      "index": 80,
+      "unit_id": "methods/17",
+      "rating": "A"
+    },
+    {
+      "index": 81,
+      "unit_id": "methods/18",
+      "rating": "A"
+    },
+    {
+      "index": 82,
+      "unit_id": "methods/19",
+      "rating": "A"
+    },
+    {
+      "index": 83,
+      "unit_id": "methods/20",
+      "rating": "A"
+    },
+    {
+      "index": 84,
+      "unit_id": "methods/21",
+      "rating": "B",
+      "finding": "原文说明示例会 “consume its output 8 bytes at a time”，强调按每次 8 字节读取/消费 strings.Reader 的输出；candidate 的 “menggunakan keluarannya 8 byte setiap kali” 只表达泛泛的“使用输出”，弱化了读取/消费数据流的技术含义。应明确表达每次读取/消费 8 字节的数据流语义。"
+    },
+    {
+      "index": 85,
+      "unit_id": "methods/22",
+      "rating": "A"
+    },
+    {
+      "index": 86,
+      "unit_id": "methods/23",
+      "rating": "A"
+    },
+    {
+      "index": 87,
+      "unit_id": "methods/24",
+      "rating": "A"
+    },
+    {
+      "index": 88,
+      "unit_id": "methods/25",
+      "rating": "A"
+    },
+    {
+      "index": 89,
+      "unit_id": "methods/26",
+      "rating": "A"
+    },
+    {
+      "index": 90,
+      "unit_id": "generics/1",
+      "rating": "A"
+    },
+    {
+      "index": 91,
+      "unit_id": "generics/2",
+      "rating": "B",
+      "finding": "原文的 “singly-linked list” 在 candidate 中直接保留为英语短语，同时 “add some functionality to this list implementation” 被译为 “tambahkan beberapa fungsi ke implementasi list ini”，把较广义的“增加一些功能/功能性”收窄成了“增加几个函数”。应使用自然的印尼语技术表达描述 singly-linked list，并忠实表达增加功能/功能性，而不要无依据限定为函数。"
+    },
+    {
+      "index": 92,
+      "unit_id": "generics/3",
+      "rating": "A"
+    },
+    {
+      "index": 93,
+      "unit_id": "concurrency/1",
+      "rating": "B",
+      "finding": "正文两次直接使用英语 “primitive”：“menyediakan primitive yang berguna” / “tersedia primitive lain”。这里是普通可翻译的同步技术说明，且 primitive 不属于 glossary keep；应改为自然的印尼语技术表达（例如表达同步原语/primitif 的语义），同时保持 `sync`、goroutine、runtime 等规定技术 identity 不变。"
+    },
+    {
+      "index": 94,
+      "unit_id": "concurrency/2",
+      "rating": "A"
+    },
+    {
+      "index": 95,
+      "unit_id": "concurrency/3",
+      "rating": "A"
+    },
+    {
+      "index": 96,
+      "unit_id": "concurrency/4",
+      "rating": "A"
+    },
+    {
+      "index": 97,
+      "unit_id": "concurrency/5",
+      "rating": "A"
+    },
+    {
+      "index": 98,
+      "unit_id": "concurrency/6",
+      "rating": "A"
+    },
+    {
+      "index": 99,
+      "unit_id": "concurrency/7",
+      "rating": "A"
+    },
+    {
+      "index": 100,
+      "unit_id": "concurrency/8",
+      "rating": "B",
+      "finding": "原文 “kick off the walker” 中的 walker 是对遍历过程/执行者的普通自然语言描述，不是受保护的 Go 标识符；candidate 写成 “mulai walker”，形成不自然的英语残留。应使用自然的印尼语表达启动由 `Walk` 执行的遍历，同时保持 `Walk`、`ch` 等代码 identity 不变。"
+    },
+    {
+      "index": 101,
+      "unit_id": "concurrency/9",
+      "rating": "A"
+    },
+    {
+      "index": 102,
+      "unit_id": "concurrency/10",
+      "rating": "A"
+    },
+    {
+      "index": 103,
+      "unit_id": "concurrency/11",
+      "rating": "A"
+    },
+    {
+      "index": 104,
+      "unit_id": "example:basics/numeric-constants.go",
+      "rating": "A"
+    },
+    {
+      "index": 105,
+      "unit_id": "example:basics/type-inference.go",
+      "rating": "A"
+    },
+    {
+      "index": 106,
+      "unit_id": "example:concurrency/channels.go",
+      "rating": "A"
+    },
+    {
+      "index": 107,
+      "unit_id": "example:concurrency/exercise-equivalent-binary-trees.go",
+      "rating": "A"
+    },
+    {
+      "index": 108,
+      "unit_id": "example:concurrency/exercise-web-crawler.go",
+      "rating": "A"
+    },
+    {
+      "index": 109,
+      "unit_id": "example:concurrency/mutex-counter.go",
+      "rating": "A"
+    },
+    {
+      "index": 110,
+      "unit_id": "example:flowcontrol/if-and-else.go",
+      "rating": "A"
+    },
+    {
+      "index": 111,
+      "unit_id": "example:generics/index.go",
+      "rating": "A"
+    },
+    {
+      "index": 112,
+      "unit_id": "example:generics/list.go",
+      "rating": "A"
+    },
+    {
+      "index": 113,
+      "unit_id": "example:methods/exercise-reader.go",
+      "rating": "A"
+    },
+    {
+      "index": 114,
+      "unit_id": "example:methods/exercise-stringer.go",
+      "rating": "A"
+    },
+    {
+      "index": 115,
+      "unit_id": "example:methods/interfaces-are-satisfied-implicitly.go",
+      "rating": "A"
+    },
+    {
+      "index": 116,
+      "unit_id": "example:methods/interfaces.go",
+      "rating": "A"
+    },
+    {
+      "index": 117,
+      "unit_id": "example:moretypes/append.go",
+      "rating": "A"
+    },
+    {
+      "index": 118,
+      "unit_id": "example:moretypes/exercise-fibonacci-closure.go",
+      "rating": "A"
+    },
+    {
+      "index": 119,
+      "unit_id": "example:moretypes/pointers.go",
+      "rating": "A"
+    },
+    {
+      "index": 120,
+      "unit_id": "example:moretypes/slice-len-cap.go",
+      "rating": "A"
+    },
+    {
+      "index": 121,
+      "unit_id": "example:moretypes/slices-of-slice.go",
+      "rating": "A"
+    },
+    {
+      "index": 122,
+      "unit_id": "example:moretypes/struct-literals.go",
+      "rating": "A"
+    }
+  ]
+}

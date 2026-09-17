@@ -1,0 +1,19 @@
+* ⟪GTI18N_19e6d7da_000001⟫
+
+Tur ini dibangun di atas [[⟪GTI18N_19e6d7da_000002⟫][⟪GTI18N_19e6d7da_000003⟫]], sebuah
+layanan web yang berjalan di server [[⟪GTI18N_19e6d7da_000004⟫][golang.org]].
+
+Layanan ini menerima program ⟪GTI18N_19e6d7da_000005⟫, mengompilasi, melakukan linking, dan menjalankan program di dalam
+sandbox, lalu mengembalikan keluarannya.
+
+Ada beberapa batasan pada program yang dapat dijalankan di playground:
+
+- Di playground, waktu dimulai pada 2009-11-10 23:00:00 ⟪GTI18N_19e6d7da_000006⟫ (menentukan arti penting tanggal ini merupakan latihan bagi pembaca). Hal ini memudahkan caching program dengan memberikan keluaran deterministik.
+
+- Ada pula batasan waktu eksekusi serta penggunaan ⟪GTI18N_19e6d7da_000007⟫ dan memori, dan program tidak dapat mengakses host jaringan eksternal.
+
+Playground menggunakan rilis stabil terbaru ⟪GTI18N_19e6d7da_000008⟫.
+
+Baca "[[⟪GTI18N_19e6d7da_000009⟫][Di Balik ⟪GTI18N_19e6d7da_000010⟫]]" untuk mempelajari lebih lanjut.
+
+⟪GTI18N_19e6d7da_000011⟫

@@ -1,0 +1,17 @@
+* Go secara luring (opsional)
+
+Tur ini juga tersedia sebagai program mandiri yang dapat Anda gunakan
+tanpa akses internet. Program tersebut membangun dan menjalankan contoh kode di
+komputer Anda sendiri.
+
+Untuk menjalankan tur secara lokal, Anda perlu terlebih dahulu
+[[/doc/install][menginstal Go]] lalu menjalankan:
+
+  go install golang.org/x/website/tour@latest
+
+Perintah ini akan menempatkan binary `tour` di
+[[/cmd/go/#hdr-GOPATH_and_Modules][GOPATH]] Anda, dalam direktori `bin`.
+Saat menjalankan program tur, browser web akan terbuka dan menampilkan
+versi lokal tur Anda.
+
+Tentu saja, Anda tetap dapat mengikuti tur melalui situs web ini.

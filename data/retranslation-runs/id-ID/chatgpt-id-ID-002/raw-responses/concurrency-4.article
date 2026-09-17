@@ -1,0 +1,15 @@
+* Range dan Close
+
+Pengirim dapat melakukan ⟪GTI18N_3e925c67_000001⟫close⟪GTI18N_3e925c67_000002⟫ pada kanal untuk menunjukkan bahwa tidak ada lagi nilai yang akan dikirim. Penerima dapat menguji apakah kanal telah ditutup dengan menugaskan parameter kedua pada ekspresi penerimaan: setelah
+
+⟪GTI18N_3e925c67_000003⟫
+
+⟪GTI18N_3e925c67_000004⟫ok⟪GTI18N_3e925c67_000005⟫ bernilai ⟪GTI18N_3e925c67_000006⟫false⟪GTI18N_3e925c67_000007⟫ jika tidak ada lagi nilai yang dapat diterima dan kanal telah ditutup.
+
+Perulangan ⟪GTI18N_3e925c67_000008⟫for`i`:=`range`c⟪GTI18N_3e925c67_000009⟫ menerima nilai dari kanal berulang kali hingga kanal ditutup.
+
+⟪GTI18N_3e925c67_000010⟫Catatan:⟪GTI18N_3e925c67_000011⟫ Hanya pengirim yang seharusnya menutup kanal, bukan penerima. Mengirim ke kanal yang sudah ditutup akan menyebabkan panic.
+
+⟪GTI18N_3e925c67_000012⟫Catatan*lain:⟪GTI18N_3e925c67_000013⟫ Kanal tidak seperti berkas; biasanya Anda tidak perlu menutupnya. Penutupan hanya diperlukan ketika penerima harus diberi tahu bahwa tidak ada lagi nilai yang akan datang, misalnya untuk menghentikan perulangan ⟪GTI18N_3e925c67_000014⟫range⟪GTI18N_3e925c67_000015⟫.
+
+⟪GTI18N_3e925c67_000016⟫

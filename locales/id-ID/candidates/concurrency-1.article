@@ -1,0 +1,15 @@
+* Goroutines
+
+Sebuah _goroutine_ adalah thread ringan yang dikelola oleh runtime Go.
+
+	go f(x, y, z)
+
+memulai goroutine baru yang menjalankan
+
+	f(x, y, z)
+
+Evaluasi `f`, `x`, `y`, dan `z` terjadi di goroutine saat ini, sedangkan eksekusi `f` terjadi di goroutine yang baru.
+
+Goroutines berjalan dalam ruang alamat yang sama, sehingga akses ke memori bersama harus disinkronkan. Paket [[/pkg/sync/][`sync`]] menyediakan primitif sinkronisasi yang berguna, meskipun Anda tidak akan banyak membutuhkannya dalam Go karena tersedia primitif lain. (Lihat halaman berikutnya.)
+
+.play concurrency/goroutines.go

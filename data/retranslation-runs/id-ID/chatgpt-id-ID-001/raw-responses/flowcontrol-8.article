@@ -1,0 +1,37 @@
+* Latihan: Perulangan dan Fungsi
+
+Sebagai latihan menggunakan fungsi dan perulangan, mari kita implementasikan fungsi akar kuadrat: jika diberikan sebuah angka x, kita ingin mencari angka z yang z²-nya paling mendekati x.
+
+Komputer biasanya menghitung akar kuadrat x menggunakan perulangan.
+Dimulai dari suatu tebakan z, kita dapat menyesuaikan z berdasarkan seberapa dekat z² dengan x,
+sehingga menghasilkan tebakan yang lebih baik:
+
+⟪GTI18N_d8bbee84_000001⟫
+
+Mengulangi penyesuaian ini membuat tebakan semakin baik
+hingga kita memperoleh jawaban yang sedekat mungkin dengan akar kuadrat sebenarnya.
+
+Implementasikan ini dalam ⟪GTI18N_d8bbee84_000002⟫func`Sqrt⟪GTI18N_d8bbee84_000003⟫ yang telah disediakan.
+Tebakan awal yang cukup baik untuk z adalah 1, apa pun masukannya.
+Sebagai permulaan, ulangi perhitungan 10 kali dan cetak setiap nilai z sepanjang proses.
+Lihat seberapa dekat hasilnya dengan jawaban untuk berbagai nilai x (1, 2, 3, ...)
+dan seberapa cepat tebakannya membaik.
+
+Petunjuk: Untuk mendeklarasikan dan menginisialisasi nilai floating point,
+gunakan sintaks floating point atau lakukan konversi:
+
+⟪GTI18N_d8bbee84_000004⟫
+
+Selanjutnya, ubah kondisi perulangan agar berhenti setelah nilainya tidak lagi
+berubah (atau hanya berubah sangat sedikit).
+Lihat apakah diperlukan lebih atau kurang dari 10 iterasi.
+Coba tebakan awal lain untuk z, seperti x atau x/2.
+Seberapa dekat hasil fungsi Anda dengan [[⟪GTI18N_d8bbee84_000005⟫][math.Sqrt]] di pustaka standar?
+
+(⟪GTI18N_d8bbee84_000006⟫Catatan:⟪GTI18N_d8bbee84_000007⟫ Jika Anda tertarik dengan detail algoritmanya, z² − x di atas
+menunjukkan seberapa jauh z² dari nilai yang seharusnya (x), dan pembagian dengan 2z adalah turunan
+dari z², untuk menyesuaikan besar perubahan z berdasarkan seberapa cepat z² berubah.
+Pendekatan umum ini disebut [[⟪GTI18N_d8bbee84_000008⟫][metode Newton]].
+Pendekatan ini bekerja baik untuk banyak fungsi, dan terutama sangat baik untuk akar kuadrat.)
+
+⟪GTI18N_d8bbee84_000009⟫

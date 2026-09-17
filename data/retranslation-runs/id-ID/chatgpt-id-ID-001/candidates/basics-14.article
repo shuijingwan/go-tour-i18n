@@ -1,0 +1,18 @@
+* Inferensi tipe
+
+Saat mendeklarasikan variabel tanpa menentukan tipe secara eksplisit (baik menggunakan sintaks `:=` maupun sintaks ekspresi `var`=`), tipe variabel diinferensikan dari nilai di sisi kanan.
+
+Jika sisi kanan deklarasi sudah memiliki tipe, variabel baru akan memiliki tipe yang sama:
+
+	var i int
+	j := i // j adalah sebuah int
+
+Namun, jika sisi kanan berisi konstanta numerik tanpa tipe, variabel baru dapat berupa `int`, `float64`, atau `complex128` tergantung pada presisi konstantanya:
+
+	i := 42           // int
+	f := 3.142        // float64
+	g := 0.867 + 0.5i // complex128
+
+Coba ubah nilai awal `v` dalam kode contoh dan amati bagaimana tipenya terpengaruh.
+
+.play basics/type-inference.go

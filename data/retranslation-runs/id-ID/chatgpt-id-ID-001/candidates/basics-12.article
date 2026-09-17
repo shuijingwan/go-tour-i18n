@@ -1,0 +1,12 @@
+* Nilai kosong
+
+Variabel yang dideklarasikan tanpa nilai awal eksplisit akan diberi
+_zero_value_.
+
+Nilai kosong tersebut adalah:
+
+- `0` untuk tipe numerik,
+- `false` untuk tipe boolean, dan
+- `""` (string kosong) untuk string.
+
+.play basics/zero.go

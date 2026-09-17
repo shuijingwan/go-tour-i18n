@@ -1,0 +1,16 @@
+* Methods and pointer indirection
+
+Comparing the previous two programs, you might notice that
+functions with a pointer argument must take a pointer:
+
+⟪GTI18N_39fb725b_000001⟫Compile error!⟪GTI18N_39fb725b_000002⟫while methods with pointer receivers take either a value or a pointer as the
+receiver when they are called:
+
+⟪GTI18N_39fb725b_000003⟫
+
+For the statement ⟪GTI18N_39fb725b_000004⟫v.Scale(5)⟪GTI18N_39fb725b_000005⟫, even though ⟪GTI18N_39fb725b_000006⟫v⟪GTI18N_39fb725b_000007⟫ is a value and not a pointer,
+the method with the pointer receiver is called automatically.
+That is, as a convenience, ⟪GTI18N_39fb725b_000008⟫ interprets the statement ⟪GTI18N_39fb725b_000009⟫v.Scale(5)⟪GTI18N_39fb725b_000010⟫ as
+⟪GTI18N_39fb725b_000011⟫(&v).Scale(5)⟪GTI18N_39fb725b_000012⟫ since the ⟪GTI18N_39fb725b_000013⟫Scale⟪GTI18N_39fb725b_000014⟫ method has a pointer receiver.
+
+⟪GTI18N_39fb725b_000015⟫

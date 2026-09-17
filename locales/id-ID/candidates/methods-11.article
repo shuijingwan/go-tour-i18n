@@ -1,0 +1,13 @@
+* Nilai interface
+
+Di balik layar, nilai interface dapat dianggap sebagai tuple yang terdiri dari sebuah nilai dan
+tipe konkret:
+
+	(value, type)
+
+Nilai interface menyimpan nilai dari tipe konkret tertentu yang mendasarinya.
+
+Memanggil sebuah method pada nilai interface akan menjalankan method dengan nama yang sama pada
+tipe yang mendasarinya.
+
+.play methods/interface-values.go

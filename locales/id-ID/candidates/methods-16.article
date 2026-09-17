@@ -1,0 +1,28 @@
+* Switch tipe
+
+Sebuah _switch_tipe_ adalah konstruksi yang memungkinkan beberapa penegasan tipe secara berurutan.
+
+Switch tipe mirip dengan pernyataan switch biasa, tetapi case dalam switch
+tipe menentukan tipe (bukan nilai), dan nilai tersebut dibandingkan dengan
+tipe dari nilai yang disimpan oleh nilai interface yang diberikan.
+
+	switch v := i.(type) {
+	case T:
+		// di sini v bertipe T
+	case S:
+		// di sini v bertipe S
+	default:
+		// tidak cocok; di sini v memiliki tipe yang sama dengan i
+	}
+
+Deklarasi dalam switch tipe memiliki sintaks yang sama dengan penegasan tipe `i.(T)`,
+tetapi tipe tertentu `T` digantikan oleh kata kunci `type`.
+
+Pernyataan switch ini menguji apakah nilai interface `i`
+menyimpan nilai bertipe `T` atau `S`.
+Pada masing-masing case `T` dan `S`, variabel `v` akan bertipe
+`T` atau `S` secara berurutan dan menyimpan nilai yang disimpan oleh `i`.
+Dalam case default (saat tidak ada kecocokan), variabel `v`
+memiliki tipe interface dan nilai yang sama dengan `i`.
+
+.play methods/type-switches.go

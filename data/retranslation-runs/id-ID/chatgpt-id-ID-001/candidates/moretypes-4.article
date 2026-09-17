@@ -1,0 +1,10 @@
+* Pointer ke struct
+
+Field struct dapat diakses melalui pointer struct.
+
+Untuk mengakses field `X` dari sebuah struct saat kita memiliki pointer struct `p`, kita dapat
+menulis `(*p).X`.
+Namun, notasi itu merepotkan, sehingga bahasa ini memungkinkan kita
+menulis cukup `p.X`, tanpa dereference eksplisit.
+
+.play moretypes/struct-pointers.go

@@ -1,0 +1,19 @@
+* Switch tipe
+
+Sebuah ⟪GTI18N_26e4da09_000001⟫switch tipe⟪GTI18N_26e4da09_000002⟫ adalah konstruksi yang memungkinkan beberapa penegasan tipe secara berurutan.
+
+Switch tipe mirip dengan pernyataan switch biasa, tetapi case dalam switch
+tipe menentukan tipe (bukan nilai), dan nilai tersebut dibandingkan dengan
+tipe dari nilai yang disimpan oleh nilai interface yang diberikan.
+
+⟪GTI18N_26e4da09_000003⟫di sini ⟪GTI18N_26e4da09_000004⟫ bertipe ⟪GTI18N_26e4da09_000005⟫⟪GTI18N_26e4da09_000006⟫di sini ⟪GTI18N_26e4da09_000007⟫ bertipe ⟪GTI18N_26e4da09_000008⟫⟪GTI18N_26e4da09_000009⟫tidak cocok; di sini ⟪GTI18N_26e4da09_000010⟫ memiliki tipe yang sama dengan ⟪GTI18N_26e4da09_000011⟫⟪GTI18N_26e4da09_000012⟫Deklarasi dalam switch tipe memiliki sintaks yang sama dengan penegasan tipe ⟪GTI18N_26e4da09_000013⟫i.(T)⟪GTI18N_26e4da09_000014⟫,
+tetapi tipe tertentu ⟪GTI18N_26e4da09_000015⟫T⟪GTI18N_26e4da09_000016⟫ digantikan oleh kata kunci ⟪GTI18N_26e4da09_000017⟫type⟪GTI18N_26e4da09_000018⟫.
+
+Pernyataan switch ini menguji apakah nilai interface ⟪GTI18N_26e4da09_000019⟫i⟪GTI18N_26e4da09_000020⟫
+menyimpan nilai bertipe ⟪GTI18N_26e4da09_000021⟫T⟪GTI18N_26e4da09_000022⟫ atau ⟪GTI18N_26e4da09_000023⟫S⟪GTI18N_26e4da09_000024⟫.
+Pada masing-masing case ⟪GTI18N_26e4da09_000025⟫T⟪GTI18N_26e4da09_000026⟫ dan ⟪GTI18N_26e4da09_000027⟫S⟪GTI18N_26e4da09_000028⟫, variabel ⟪GTI18N_26e4da09_000029⟫v⟪GTI18N_26e4da09_000030⟫ akan bertipe
+⟪GTI18N_26e4da09_000031⟫T⟪GTI18N_26e4da09_000032⟫ atau ⟪GTI18N_26e4da09_000033⟫S⟪GTI18N_26e4da09_000034⟫ secara berurutan dan menyimpan nilai yang disimpan oleh ⟪GTI18N_26e4da09_000035⟫i⟪GTI18N_26e4da09_000036⟫.
+Dalam case default (saat tidak ada kecocokan), variabel ⟪GTI18N_26e4da09_000037⟫v⟪GTI18N_26e4da09_000038⟫
+memiliki tipe interface dan nilai yang sama dengan ⟪GTI18N_26e4da09_000039⟫i⟪GTI18N_26e4da09_000040⟫.
+
+⟪GTI18N_26e4da09_000041⟫

@@ -1,0 +1,11 @@
+* Interface
+
+Sebuah _tipe_interface_ didefinisikan sebagai sekumpulan signature method.
+
+Nilai bertipe interface dapat menyimpan nilai apa pun yang mengimplementasikan method-method tersebut.
+
+*Catatan:* Ada kesalahan pada kode contoh di baris 22.
+`Vertex` (tipe nilai) tidak mengimplementasikan `Abser` karena
+method `Abs` hanya didefinisikan pada `*Vertex` (tipe pointer).
+
+.play methods/interfaces.go

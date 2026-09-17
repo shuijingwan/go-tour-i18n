@@ -1,0 +1,17 @@
+* Memilih receiver nilai atau pointer
+
+Ada dua alasan untuk menggunakan receiver pointer.
+
+Pertama, agar method dapat mengubah nilai yang ditunjuk oleh receiver-nya.
+
+Kedua, untuk menghindari penyalinan nilai pada setiap pemanggilan method.
+Hal ini dapat lebih efisien jika receiver berupa struct besar, misalnya.
+
+Dalam contoh ini, baik `Scale` maupun `Abs` adalah method dengan tipe receiver `*Vertex`,
+meskipun method `Abs` tidak perlu mengubah receiver-nya.
+
+Secara umum, semua method pada suatu tipe sebaiknya menggunakan receiver nilai atau receiver pointer,
+bukan campuran keduanya.
+(Kita akan melihat alasannya dalam beberapa halaman berikutnya.)
+
+.play methods/methods-with-pointer-receivers.go

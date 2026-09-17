@@ -1,0 +1,11 @@
+* Paket
+
+Setiap program Go tersusun dari paket-paket.
+
+Program mulai dijalankan dari paket `main`.
+
+Program ini menggunakan paket dengan jalur impor `"fmt"` dan `"math/rand"`.
+
+Secara konvensi, nama paket sama dengan elemen terakhir jalur impor. Misalnya, paket `"math/rand"` terdiri atas berkas yang diawali dengan pernyataan `package`rand`.
+
+.play basics/packages.go

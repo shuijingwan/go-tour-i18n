@@ -1,0 +1,12 @@
+* Nilai interface dengan nilai dasar nil
+
+Jika nilai konkret di dalam interface itu sendiri adalah nil,
+method akan dipanggil dengan receiver nil.
+
+Dalam beberapa bahasa hal ini akan memicu null pointer exception,
+namun di Go lazim untuk menulis method yang menangani pemanggilan dengan receiver nil secara baik
+(seperti method `M` dalam contoh ini.)
+
+Perhatikan bahwa nilai interface yang menyimpan nilai konkret nil itu sendiri tetap non-nil.
+
+.play methods/interface-values-with-nil.go

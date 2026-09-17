@@ -1,0 +1,11 @@
+* Nilai kembalian bernama
+
+Nilai kembalian Go dapat diberi nama. Jika diberi nama, nilai tersebut diperlakukan sebagai variabel yang didefinisikan di bagian awal fungsi.
+
+Nama-nama ini sebaiknya digunakan untuk mendokumentasikan arti nilai kembalian.
+
+Pernyataan `return` tanpa argumen mengembalikan nilai kembalian yang diberi nama. Ini dikenal sebagai return tanpa argumen ("naked return").
+
+Pernyataan return tanpa argumen sebaiknya hanya digunakan dalam fungsi pendek, seperti pada contoh di sini. Pada fungsi yang lebih panjang, bentuk ini dapat mengurangi keterbacaan.
+
+.play basics/named-results.go

@@ -1,0 +1,25 @@
+* Penegasan tipe
+
+Sebuah _penegasan_tipe_ memberikan akses ke nilai konkret yang mendasari sebuah nilai interface.
+
+	t := i.(T)
+
+Pernyataan ini menegaskan bahwa nilai interface `i` menyimpan tipe konkret `T`
+dan menugaskan nilai `T` yang mendasarinya ke variabel `t`.
+
+Jika `i` tidak menyimpan `T`, pernyataan tersebut akan memicu panic.
+
+Untuk _menguji_ apakah nilai interface menyimpan tipe tertentu,
+penegasan tipe dapat mengembalikan dua nilai: nilai yang mendasarinya
+dan nilai boolean yang melaporkan apakah penegasan berhasil.
+
+	t, ok := i.(T)
+
+Jika `i` menyimpan `T`, maka `t` akan menjadi nilai yang mendasarinya dan `ok` akan bernilai true.
+
+Jika tidak, `ok` akan bernilai false dan `t` akan menjadi nilai kosong bertipe `T`,
+dan tidak terjadi panic.
+
+Perhatikan kemiripan antara sintaks ini dan sintaks untuk membaca dari map.
+
+.play methods/type-assertions.go

@@ -1,0 +1,11 @@
+* Kanal dengan Buffer
+
+Kanal dapat ⟪GTI18N_caef0893_000001⟫memiliki_buffer⟪GTI18N_caef0893_000002⟫. Berikan panjang buffer sebagai argumen kedua ke ⟪GTI18N_caef0893_000003⟫make⟪GTI18N_caef0893_000004⟫ untuk menginisialisasi kanal dengan buffer:
+
+⟪GTI18N_caef0893_000005⟫
+
+Pengiriman ke kanal dengan buffer hanya memblokir saat buffer penuh. Penerimaan memblokir saat buffer kosong.
+
+Ubah contoh agar buffer terisi melebihi kapasitasnya dan lihat apa yang terjadi.
+
+⟪GTI18N_caef0893_000006⟫

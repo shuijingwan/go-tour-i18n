@@ -1,0 +1,16 @@
+* Nama yang diekspor
+
+Di Go, sebuah nama diekspor jika diawali huruf kapital.
+Sebagai contoh, `Pizza` adalah nama yang diekspor, demikian pula `Pi`, yang diekspor dari
+paket `math`.
+
+`pizza` dan `pi` tidak diawali huruf kapital, sehingga keduanya tidak diekspor.
+
+Saat mengimpor sebuah paket, Anda hanya dapat merujuk ke nama-nama yang diekspor.
+Nama yang "tidak diekspor" tidak dapat diakses dari luar paket.
+
+Jalankan kode. Perhatikan pesan kesalahannya.
+
+Untuk memperbaiki kesalahan tersebut, ubah nama `math.pi` menjadi `math.Pi` lalu coba lagi.
+
+.play basics/exported-names.go

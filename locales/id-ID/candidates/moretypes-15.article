@@ -1,0 +1,21 @@
+* Menambahkan ke slice
+
+Menambahkan elemen baru ke slice adalah hal yang umum, sehingga Go menyediakan fungsi bawaan
+`append`. [[/pkg/builtin/#append][Dokumentasi]]
+paket bawaan menjelaskan `append`.
+
+	func append(s []T, vs ...T) []T
+
+Parameter pertama `s` dari `append` adalah slice bertipe `T`, sedangkan sisanya adalah
+nilai `T` yang akan ditambahkan ke slice.
+
+Nilai yang dihasilkan `append` adalah slice yang berisi semua elemen dari
+slice semula ditambah nilai-nilai yang diberikan.
+
+Jika array yang mendasari `s` terlalu kecil untuk menampung semua nilai yang diberikan, sebuah
+array yang lebih besar akan dialokasikan. Slice yang dikembalikan akan menunjuk ke array
+yang baru dialokasikan tersebut.
+
+(Untuk mempelajari slice lebih lanjut, baca artikel [[/blog/go-slices-usage-and-internals][Slice: penggunaan dan cara kerja internal]].)
+
+.play moretypes/append.go

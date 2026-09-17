@@ -1,0 +1,21 @@
+* sync.Mutex
+
+Kita telah melihat bahwa kanal sangat cocok untuk komunikasi antar goroutines.
+
+Namun, bagaimana jika kita tidak membutuhkan komunikasi? Bagaimana jika kita hanya ingin memastikan bahwa hanya
+satu goroutine yang dapat mengakses sebuah variabel pada satu waktu untuk menghindari konflik?
+
+Konsep ini disebut _eksklusi_mutual_, dan nama konvensional untuk struktur data yang menyediakannya adalah _mutex_.
+
+Pustaka standar Go menyediakan eksklusi mutual dengan
+[[/pkg/sync/#Mutex][`sync.Mutex`]] dan dua method-nya:
+
+- `Lock`
+- `Unlock`
+
+Kita dapat mendefinisikan blok kode yang dijalankan dalam eksklusi mutual dengan mengapitnya
+dengan pemanggilan `Lock` dan `Unlock` seperti yang ditunjukkan pada method `Inc`.
+
+Kita juga dapat menggunakan `defer` untuk memastikan mutex dibuka kuncinya seperti pada method `Value`.
+
+.play concurrency/mutex-counter.go

@@ -1,0 +1,18 @@
+* Latihan: Pohon Biner Ekuivalen
+
+Ada banyak pohon biner berbeda yang dapat menyimpan urutan nilai yang sama. Sebagai contoh, berikut dua pohon biner yang menyimpan urutan 1, 1, 2, 3, 5, 8, 13.
+
+.image /tour/static/img/tree.png
+
+Fungsi untuk memeriksa apakah dua pohon biner menyimpan urutan yang sama cukup rumit dalam kebanyakan bahasa. Kita akan menggunakan konkurensi dan kanal milik Go untuk menulis solusi sederhana.
+
+Contoh ini menggunakan paket `tree`, yang mendefinisikan tipe:
+
+	type Tree struct {
+		Left  *Tree
+		Value int
+		Right *Tree
+	}
+
+
+Lanjutkan deskripsi di [[javascript:click('.next-page')][halaman selanjutnya]].

@@ -1,0 +1,7 @@
+* Select
+
+Pernyataan `select` memungkinkan sebuah goroutine menunggu beberapa operasi komunikasi.
+
+Sebuah `select` memblokir hingga salah satu case dapat dijalankan, lalu menjalankan case tersebut. Jika beberapa case siap, salah satunya dipilih secara acak.
+
+.play concurrency/select.go

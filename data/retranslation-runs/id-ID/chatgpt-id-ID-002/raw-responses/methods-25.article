@@ -1,0 +1,13 @@
+* Latihan: Gambar
+
+Ingat [[⟪GTI18N_a196bc59_000001⟫][generator gambar]] yang Anda tulis sebelumnya? Mari kita tulis satu lagi, tetapi kali ini fungsi tersebut akan mengembalikan implementasi ⟪GTI18N_a196bc59_000002⟫image.Image⟪GTI18N_a196bc59_000003⟫ alih-alih slice data.
+
+Definisikan tipe ⟪GTI18N_a196bc59_000004⟫Image⟪GTI18N_a196bc59_000005⟫ Anda sendiri, implementasikan [[⟪GTI18N_a196bc59_000006⟫][method yang diperlukan]], lalu panggil ⟪GTI18N_a196bc59_000007⟫pic.ShowImage⟪GTI18N_a196bc59_000008⟫.
+
+⟪GTI18N_a196bc59_000009⟫Bounds⟪GTI18N_a196bc59_000010⟫ harus mengembalikan ⟪GTI18N_a196bc59_000011⟫image.Rectangle⟪GTI18N_a196bc59_000012⟫, seperti ⟪GTI18N_a196bc59_000013⟫image.Rect(0,`0,`w,`h)⟪GTI18N_a196bc59_000014⟫.
+
+⟪GTI18N_a196bc59_000015⟫ColorModel⟪GTI18N_a196bc59_000016⟫ harus mengembalikan ⟪GTI18N_a196bc59_000017⟫color.RGBAModel⟪GTI18N_a196bc59_000018⟫.
+
+⟪GTI18N_a196bc59_000019⟫At⟪GTI18N_a196bc59_000020⟫ harus mengembalikan sebuah warna; nilai ⟪GTI18N_a196bc59_000021⟫v⟪GTI18N_a196bc59_000022⟫ pada generator gambar sebelumnya bersesuaian dengan ⟪GTI18N_a196bc59_000023⟫color.RGBA{v,`v,`255,`255}⟪GTI18N_a196bc59_000024⟫ pada yang ini.
+
+⟪GTI18N_a196bc59_000025⟫

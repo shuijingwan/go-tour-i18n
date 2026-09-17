@@ -1,0 +1,20 @@
+* Kanal
+
+Kanal adalah saluran bertipe yang memungkinkan Anda mengirim dan menerima nilai dengan operator kanal, `<-`.
+
+	ch <- v    // Kirim v ke kanal ch.
+	v := <-ch  // Terima dari ch, lalu
+	           // tetapkan nilai ke v.
+
+(Data mengalir mengikuti arah panah.)
+
+Seperti map dan slice, kanal harus dibuat sebelum digunakan:
+
+	ch := make(chan int)
+
+Secara bawaan, operasi kirim dan terima akan memblokir hingga sisi lainnya siap. Hal ini memungkinkan goroutines melakukan sinkronisasi tanpa lock eksplisit atau variabel kondisi.
+
+Kode contoh menjumlahkan angka dalam sebuah slice dengan membagi pekerjaan di antara dua goroutines.
+Setelah kedua goroutines menyelesaikan komputasinya, program menghitung hasil akhir.
+
+.play concurrency/channels.go

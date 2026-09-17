@@ -1,0 +1,12 @@
+* Tipe generik
+
+Selain fungsi generik, Go juga mendukung tipe generik. Sebuah tipe dapat
+diberi parameter berupa parameter tipe, yang dapat berguna untuk mengimplementasikan
+struktur data generik.
+
+Contoh ini menunjukkan deklarasi tipe sederhana untuk singly-linked list
+yang dapat menyimpan nilai dengan tipe apa pun.
+
+Sebagai latihan, tambahkan beberapa fungsi ke implementasi list ini.
+
+.play generics/list.go

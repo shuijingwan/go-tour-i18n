@@ -1,0 +1,21 @@
+* Latihan: Error
+
+Salin fungsi ⟪GTI18N_41f1f733_000001⟫Sqrt⟪GTI18N_41f1f733_000002⟫ Anda dari [[⟪GTI18N_41f1f733_000003⟫][latihan sebelumnya]] dan ubah agar mengembalikan nilai ⟪GTI18N_41f1f733_000004⟫error⟪GTI18N_41f1f733_000005⟫.
+
+⟪GTI18N_41f1f733_000006⟫Sqrt⟪GTI18N_41f1f733_000007⟫ harus mengembalikan nilai error non-nil jika diberi angka negatif, karena fungsi tersebut tidak mendukung bilangan kompleks.
+
+Buat tipe baru
+
+⟪GTI18N_41f1f733_000008⟫
+
+dan jadikan sebagai ⟪GTI18N_41f1f733_000009⟫error⟪GTI18N_41f1f733_000010⟫ dengan memberinya
+
+⟪GTI18N_41f1f733_000011⟫
+
+method sedemikian sehingga ⟪GTI18N_41f1f733_000012⟫ErrNegativeSqrt(-2).Error()⟪GTI18N_41f1f733_000013⟫ mengembalikan ⟪GTI18N_41f1f733_000014⟫"cannot`Sqrt`negative`number:`-2"⟪GTI18N_41f1f733_000015⟫.
+
+⟪GTI18N_41f1f733_000016⟫Catatan:⟪GTI18N_41f1f733_000017⟫ Pemanggilan ⟪GTI18N_41f1f733_000018⟫fmt.Sprint(e)⟪GTI18N_41f1f733_000019⟫ di dalam method ⟪GTI18N_41f1f733_000020⟫Error⟪GTI18N_41f1f733_000021⟫ akan membuat program masuk ke perulangan tak hingga. Anda dapat menghindarinya dengan terlebih dahulu mengonversi ⟪GTI18N_41f1f733_000022⟫e⟪GTI18N_41f1f733_000023⟫: ⟪GTI18N_41f1f733_000024⟫fmt.Sprint(float64(e))⟪GTI18N_41f1f733_000025⟫. Mengapa?
+
+Ubah fungsi ⟪GTI18N_41f1f733_000026⟫Sqrt⟪GTI18N_41f1f733_000027⟫ agar mengembalikan nilai ⟪GTI18N_41f1f733_000028⟫ErrNegativeSqrt⟪GTI18N_41f1f733_000029⟫ ketika diberi angka negatif.
+
+⟪GTI18N_41f1f733_000030⟫

@@ -1,0 +1,9 @@
+* Menumpuk defer
+
+Pemanggilan fungsi yang ditunda didorong ke sebuah stack. Saat sebuah fungsi mengembalikan nilai,
+pemanggilan yang ditundanya dijalankan dalam urutan terakhir masuk, pertama keluar.
+
+Untuk mempelajari lebih lanjut tentang pernyataan defer, baca
+[[/blog/defer-panic-and-recover][postingan blog ini]].
+
+.play flowcontrol/defer-multi.go

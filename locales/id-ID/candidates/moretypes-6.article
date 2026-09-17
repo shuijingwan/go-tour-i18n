@@ -1,0 +1,15 @@
+* Array
+
+Tipe `[n]T` adalah array berisi `n` nilai bertipe `T`.
+
+Ekspresi
+
+	var a [10]int
+
+mendeklarasikan variabel `a` sebagai array berisi sepuluh bilangan bulat.
+
+Panjang array merupakan bagian dari tipenya, sehingga ukuran array tidak dapat diubah.
+Hal ini tampak membatasi, tetapi jangan khawatir;
+Go menyediakan cara yang praktis untuk bekerja dengan array.
+
+.play moretypes/array.go

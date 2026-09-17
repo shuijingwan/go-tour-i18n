@@ -1,0 +1,20 @@
+* Reader
+
+Paket ⟪GTI18N_120c3fc9_000001⟫io⟪GTI18N_120c3fc9_000002⟫ mendefinisikan interface ⟪GTI18N_120c3fc9_000003⟫io.Reader⟪GTI18N_120c3fc9_000004⟫,
+yang merepresentasikan ujung pembacaan dari suatu aliran data.
+
+Pustaka standar ⟪GTI18N_120c3fc9_000005⟫ berisi [[⟪GTI18N_120c3fc9_000006⟫][banyak implementasi]] interface ini, termasuk berkas, koneksi jaringan, kompresor, cipher, dan lainnya.
+
+Interface ⟪GTI18N_120c3fc9_000007⟫io.Reader⟪GTI18N_120c3fc9_000008⟫ memiliki method ⟪GTI18N_120c3fc9_000009⟫Read⟪GTI18N_120c3fc9_000010⟫:
+
+⟪GTI18N_120c3fc9_000011⟫
+
+⟪GTI18N_120c3fc9_000012⟫Read⟪GTI18N_120c3fc9_000013⟫ mengisi slice byte yang diberikan dengan data dan mengembalikan jumlah byte
+yang diisi serta sebuah nilai error. Method ini mengembalikan error ⟪GTI18N_120c3fc9_000014⟫io.EOF⟪GTI18N_120c3fc9_000015⟫ ketika aliran
+berakhir.
+
+Kode contoh membuat sebuah
+[[⟪GTI18N_120c3fc9_000016⟫][⟪GTI18N_120c3fc9_000017⟫strings.Reader⟪GTI18N_120c3fc9_000018⟫]]
+dan membaca keluarannya sebanyak 8 byte setiap kali.
+
+⟪GTI18N_120c3fc9_000019⟫

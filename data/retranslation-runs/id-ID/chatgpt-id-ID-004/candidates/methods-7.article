@@ -1,0 +1,21 @@
+* Method dan indireksi pointer (2)
+
+Hal yang setara terjadi pada arah sebaliknya.
+
+Fungsi yang menerima argumen nilai harus menerima nilai dengan tipe tersebut secara spesifik:
+
+	var v Vertex
+	fmt.Println(AbsFunc(v))  // OK
+	fmt.Println(AbsFunc(&v)) // Compile error!
+
+sedangkan method dengan receiver nilai menerima nilai atau pointer sebagai
+receiver saat dipanggil:
+
+	var v Vertex
+	fmt.Println(v.Abs()) // OK
+	p := &v
+	fmt.Println(p.Abs()) // OK
+
+Dalam kasus ini, pemanggilan method `p.Abs()` ditafsirkan sebagai `(*p).Abs()`.
+
+.play methods/indirection-values.go

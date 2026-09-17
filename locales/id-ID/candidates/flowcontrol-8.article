@@ -1,0 +1,38 @@
+* Latihan: Perulangan dan Fungsi
+
+Sebagai latihan menggunakan fungsi dan perulangan, mari kita implementasikan fungsi akar kuadrat: jika diberikan sebuah angka x, kita ingin mencari angka z yang z²-nya paling mendekati x.
+
+Komputer biasanya menghitung akar kuadrat x menggunakan perulangan.
+Dimulai dari suatu tebakan z, kita dapat menyesuaikan z berdasarkan seberapa dekat z² dengan x,
+sehingga menghasilkan tebakan yang lebih baik:
+
+	z -= (z*z - x) / (2*z)
+
+Mengulangi penyesuaian ini membuat tebakan semakin baik
+hingga kita memperoleh jawaban yang sedekat mungkin dengan akar kuadrat sebenarnya.
+
+Implementasikan ini dalam `func`Sqrt` yang telah disediakan.
+Tebakan awal yang cukup baik untuk z adalah 1, apa pun masukannya.
+Sebagai permulaan, ulangi perhitungan 10 kali dan cetak setiap nilai z sepanjang proses.
+Lihat seberapa dekat hasilnya dengan jawaban untuk berbagai nilai x (1, 2, 3, ...)
+dan seberapa cepat tebakannya membaik.
+
+Petunjuk: Untuk mendeklarasikan dan menginisialisasi nilai floating point,
+gunakan sintaks floating point atau lakukan konversi:
+
+	z := 1.0
+	z := float64(1)
+
+Selanjutnya, ubah kondisi perulangan agar berhenti setelah nilainya tidak lagi
+berubah (atau hanya berubah sangat sedikit).
+Lihat apakah diperlukan lebih atau kurang dari 10 iterasi.
+Coba tebakan awal lain untuk z, seperti x atau x/2.
+Seberapa dekat hasil fungsi Anda dengan [[/pkg/math/#Sqrt][math.Sqrt]] di pustaka standar?
+
+(*Catatan:* Jika Anda tertarik dengan detail algoritmanya, z² − x di atas
+menunjukkan seberapa jauh z² dari nilai yang seharusnya (x), dan pembagian dengan 2z adalah turunan
+dari z², untuk menyesuaikan besar perubahan z berdasarkan seberapa cepat z² berubah.
+Pendekatan umum ini disebut [[https://en.wikipedia.org/wiki/Newton%27s_method][metode Newton]].
+Pendekatan ini bekerja baik untuk banyak fungsi, dan terutama sangat baik untuk akar kuadrat.)
+
+.play flowcontrol/exercise-loops-and-functions.go

@@ -1,0 +1,14 @@
+* Literal slice
+
+Literal slice seperti literal array tanpa panjang.
+
+Ini adalah literal array:
+
+	[3]bool{true, true, false}
+
+Dan ini membuat array yang sama seperti di atas,
+lalu membuat slice yang mereferensikannya:
+
+	[]bool{true, true, false}
+
+.play moretypes/slice-literals.go

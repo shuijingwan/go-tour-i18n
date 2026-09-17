@@ -1,0 +1,15 @@
+* Range dan Close
+
+Pengirim dapat melakukan `close` pada kanal untuk menunjukkan bahwa tidak ada lagi nilai yang akan dikirim. Penerima dapat menguji apakah kanal telah ditutup dengan menugaskan parameter kedua pada ekspresi penerimaan: setelah
+
+	v, ok := <-ch
+
+`ok` bernilai `false` jika tidak ada lagi nilai yang dapat diterima dan kanal telah ditutup.
+
+Perulangan `for`i`:=`range`c` menerima nilai dari kanal berulang kali hingga kanal ditutup.
+
+*Catatan:* Hanya pengirim yang seharusnya menutup kanal, bukan penerima. Mengirim ke kanal yang sudah ditutup akan menyebabkan panic.
+
+*Catatan*lain:* Kanal tidak seperti berkas; biasanya Anda tidak perlu menutupnya. Penutupan hanya diperlukan ketika penerima harus diberi tahu bahwa tidak ada lagi nilai yang akan datang, misalnya untuk menghentikan perulangan `range`.
+
+.play concurrency/range-and-close.go

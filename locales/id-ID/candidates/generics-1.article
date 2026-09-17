@@ -1,0 +1,17 @@
+* Parameter tipe
+
+Fungsi Go dapat ditulis agar bekerja pada beberapa tipe menggunakan parameter tipe. Parameter
+tipe sebuah fungsi muncul di antara tanda kurung siku, sebelum
+argumen fungsi.
+
+  func Index[T comparable](s []T, x T) int
+
+Deklarasi ini berarti bahwa `s` adalah slice dari tipe `T` apa pun yang memenuhi
+batasan tipe bawaan `comparable`. `x` juga merupakan nilai dengan tipe yang sama.
+
+`comparable` adalah batasan tipe berguna yang memungkinkan penggunaan operator `==` dan
+`!=` pada nilai tipe tersebut. Dalam contoh ini, kita menggunakannya untuk membandingkan sebuah
+nilai dengan semua elemen slice hingga ditemukan kecocokan. Fungsi `Index` ini bekerja
+untuk tipe apa pun yang mendukung perbandingan.
+
+.play generics/index.go

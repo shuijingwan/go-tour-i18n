@@ -1,0 +1,7 @@
+* Deklarasi variabel singkat
+
+Di dalam fungsi, pernyataan penugasan singkat `:=` dapat digunakan sebagai pengganti deklarasi `var` dengan tipe implisit.
+
+Di luar fungsi, setiap pernyataan diawali dengan kata kunci (`var`, `func`, dan seterusnya), sehingga konstruksi `:=` tidak tersedia.
+
+.play basics/short-variable-declarations.go

@@ -1,0 +1,13 @@
+* Inferensi tipe
+
+Saat mendeklarasikan variabel tanpa menentukan tipe secara eksplisit (baik menggunakan sintaks ⟪GTI18N_21c4077c_000001⟫:=⟪GTI18N_21c4077c_000002⟫ maupun sintaks ekspresi ⟪GTI18N_21c4077c_000003⟫var`=⟪GTI18N_21c4077c_000004⟫), tipe variabel diinferensikan dari nilai di sisi kanan.
+
+Jika sisi kanan deklarasi sudah memiliki tipe, variabel baru akan memiliki tipe yang sama:
+
+⟪GTI18N_21c4077c_000005⟫⟪GTI18N_21c4077c_000006⟫ adalah sebuah ⟪GTI18N_21c4077c_000007⟫⟪GTI18N_21c4077c_000008⟫Namun, jika sisi kanan berisi konstanta numerik tanpa tipe, variabel baru dapat berupa ⟪GTI18N_21c4077c_000009⟫int⟪GTI18N_21c4077c_000010⟫, ⟪GTI18N_21c4077c_000011⟫float64⟪GTI18N_21c4077c_000012⟫, atau ⟪GTI18N_21c4077c_000013⟫complex128⟪GTI18N_21c4077c_000014⟫ tergantung pada presisi konstantanya:
+
+⟪GTI18N_21c4077c_000015⟫
+
+Coba ubah nilai awal ⟪GTI18N_21c4077c_000016⟫v⟪GTI18N_21c4077c_000017⟫ dalam kode contoh dan amati bagaimana tipenya terpengaruh.
+
+⟪GTI18N_21c4077c_000018⟫

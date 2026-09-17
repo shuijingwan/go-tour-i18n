@@ -1,0 +1,11 @@
+* Slice seperti referensi ke array
+
+Slice tidak menyimpan data apa pun,
+melainkan hanya menjelaskan bagian dari array yang mendasarinya.
+
+Mengubah elemen sebuah slice akan mengubah
+elemen terkait pada array yang mendasarinya.
+
+Slice lain yang berbagi array dasar yang sama akan melihat perubahan tersebut.
+
+.play moretypes/slices-pointers.go

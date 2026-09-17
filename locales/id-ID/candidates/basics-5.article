@@ -1,0 +1,13 @@
+* Fungsi, lanjutan
+
+Jika dua atau lebih parameter fungsi bernama yang berurutan memiliki tipe yang sama, Anda dapat menghilangkan tipe dari semuanya kecuali parameter terakhir.
+
+Dalam contoh ini, kita menyingkat
+
+	x int, y int
+
+menjadi
+
+	x, y int
+
+.play basics/functions-continued.go

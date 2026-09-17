@@ -1,0 +1,8 @@
+* Latihan: Stringer
+
+Buat tipe `IPAddr` mengimplementasikan `fmt.Stringer` agar alamat dicetak sebagai
+empat angka yang dipisahkan titik.
+
+Sebagai contoh, `IPAddr{1,`2,`3,`4}` harus tercetak sebagai `"1.2.3.4"`.
+
+.play methods/exercise-stringer.go

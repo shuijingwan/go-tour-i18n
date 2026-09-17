@@ -1,0 +1,9 @@
+* Literal struct
+
+Literal struct menunjukkan nilai struct yang baru dialokasikan dengan mencantumkan nilai field-nya.
+
+Anda dapat mencantumkan hanya sebagian field dengan menggunakan sintaks `Name:`. (Urutan field bernama tidak berpengaruh.)
+
+Prefiks khusus `&` mengembalikan pointer ke nilai struct tersebut.
+
+.play moretypes/struct-literals.go

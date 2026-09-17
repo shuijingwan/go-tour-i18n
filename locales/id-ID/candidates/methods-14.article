@@ -1,0 +1,16 @@
+* Interface kosong
+
+Tipe interface yang menentukan nol method dikenal sebagai _interface_kosong_:
+
+	interface{}
+
+Interface kosong dapat menyimpan nilai dari tipe apa pun.
+(Setiap tipe setidaknya mengimplementasikan nol method.)
+
+`any` adalah alias untuk `interface{}`, dan keduanya sepenuhnya
+setara.
+
+Interface kosong digunakan oleh kode yang menangani nilai dengan tipe yang tidak diketahui.
+Sebagai contoh, `fmt.Print` menerima berapa pun jumlah argumen bertipe `any`.
+
+.play methods/empty-interface.go

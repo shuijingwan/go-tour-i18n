@@ -1,0 +1,23 @@
+* Slice
+
+Array memiliki ukuran tetap.
+Sebaliknya, slice adalah tampilan fleksibel berukuran dinamis
+terhadap elemen-elemen sebuah array.
+Dalam praktiknya, slice jauh lebih umum digunakan daripada array.
+
+Tipe ⟪GTI18N_a169cf48_000001⟫[]T⟪GTI18N_a169cf48_000002⟫ adalah slice dengan elemen bertipe ⟪GTI18N_a169cf48_000003⟫T⟪GTI18N_a169cf48_000004⟫.
+
+Slice dibentuk dengan menentukan dua indeks, batas bawah dan
+batas atas, yang dipisahkan oleh titik dua:
+
+⟪GTI18N_a169cf48_000005⟫
+
+Ini memilih rentang setengah terbuka yang menyertakan elemen pertama,
+tetapi tidak menyertakan elemen terakhir.
+
+Ekspresi berikut membuat slice yang mencakup
+elemen 1 hingga 3 dari ⟪GTI18N_a169cf48_000006⟫a⟪GTI18N_a169cf48_000007⟫:
+
+⟪GTI18N_a169cf48_000008⟫
+
+⟪GTI18N_a169cf48_000009⟫

@@ -1,0 +1,12 @@
+* Latihan: rot13Reader
+
+Pola yang umum adalah [[/pkg/io/#Reader][io.Reader]] yang membungkus `io.Reader` lain dan mengubah aliran dengan suatu cara.
+
+Sebagai contoh, fungsi [[/pkg/compress/gzip/#NewReader][gzip.NewReader]] menerima sebuah `io.Reader` (aliran data terkompresi) dan mengembalikan `*gzip.Reader` yang juga mengimplementasikan `io.Reader` (aliran data yang telah didekompresi).
+
+Implementasikan `rot13Reader` yang mengimplementasikan `io.Reader` dan membaca dari sebuah `io.Reader`, lalu mengubah aliran dengan menerapkan cipher substitusi [[https://en.wikipedia.org/wiki/ROT13][rot13]] pada semua karakter alfabet.
+
+Tipe `rot13Reader` telah disediakan untuk Anda.
+Jadikan sebagai `io.Reader` dengan mengimplementasikan method `Read`.
+
+.play methods/exercise-rot-reader.go
