@@ -105,10 +105,10 @@
 Preview 自动验收与人工视觉 gate 均已通过。Production machine/browser acceptance 尚未执行，最终 production decision 仍由 first-production finalizer 管理。
 
 <!-- first-production-finalization:start -->
-- production receipt identity: `PENDING`
-- production machine acceptance: `PENDING`
-- production browser acceptance: `PENDING`
-- unresolved production blocker: `PENDING`
-- overall final decision: `PENDING`
-- decision: `pending`
+- production receipt identity: `locale=zh-TW hostname=zh-tw-go-dev.shuijingwanwq.com release=20260917T030149Z-zh-TW-143d3f949ad5`
+- production machine acceptance: `passed`
+- production browser acceptance: `passed`
+- unresolved production blocker: `none`
+- overall final decision: `passed`
+- decision: `passed`
 <!-- first-production-finalization:end -->
