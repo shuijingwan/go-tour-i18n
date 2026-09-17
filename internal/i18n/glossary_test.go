@@ -685,6 +685,59 @@ func TestPlPLGlossary(t *testing.T) {
 	}
 }
 
+func TestIdIDGlossary(t *testing.T) {
+	glossary, err := LoadGlossary(repoRoot(t), "id-ID")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if glossary.Locale != "id-ID" {
+		t.Fatalf("glossary locale = %q, want id-ID", glossary.Locale)
+	}
+	for key, want := range map[string]string{
+		"A Tour of Go":    "Tur Bahasa Go",
+		"Go Playground":   "Go Playground",
+		"Run":             "Jalankan",
+		"Format":          "Format",
+		"Reset":           "Atur ulang",
+		"slide":           "halaman",
+		"constraint":      "batasan tipe",
+		"type switch":     "switch tipe",
+		"type assertion":  "penegasan tipe",
+		"interface value": "nilai interface",
+		"type parameter":  "parameter tipe",
+	} {
+		if got := glossary.Mandatory[key]; got != want {
+			t.Errorf("mandatory[%q] = %q, want %q", key, got, want)
+		}
+	}
+	for key, want := range map[string]string{
+		"Go programming language": "bahasa pemrograman Go",
+		"channel":                 "kanal",
+		"package":                 "paket",
+		"standard library":        "pustaka standar",
+		"concurrency":             "konkurensi",
+		"generics":                "generik",
+		"map":                     "map",
+		"slice":                   "slice",
+		"pointer":                 "pointer",
+		"function":                "fungsi",
+	} {
+		if got := glossary.Preferred[key]; got != want {
+			t.Errorf("preferred[%q] = %q, want %q", key, got, want)
+		}
+	}
+	for _, want := range []string{"Golang", "gorutin", "korutin"} {
+		if !containsString(glossary.Forbidden, want) {
+			t.Errorf("forbidden missing %q: %v", want, glossary.Forbidden)
+		}
+	}
+	for _, want := range []string{"Go", "Go Playground", "go vet", "gofmt", "GOPATH", "URL", "API", "goroutine", "goroutines", "TranslationUnit", "Page", "Example", "present.Section"} {
+		if !containsString(glossary.Keep, want) {
+			t.Errorf("keep missing %q: %v", want, glossary.Keep)
+		}
+	}
+}
+
 func TestGlossaryKeepValidationAndLegacyTerms(t *testing.T) {
 	tests := []struct {
 		name, body, want string

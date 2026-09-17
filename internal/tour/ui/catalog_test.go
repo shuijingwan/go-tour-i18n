@@ -12,7 +12,7 @@ import (
 const expectedCatalogMessages = 113
 
 func TestLoadEmbeddedCatalogs(t *testing.T) {
-	for _, locale := range []string{"de-DE", "en", "es-ES", "fr-FR", "it-IT", "ja-JP", "ko-KR", "nl-NL", "pl-PL", "pt-BR", "sv-SE", "tr-TR", "zh-CN", "zh-TW"} {
+	for _, locale := range []string{"de-DE", "en", "es-ES", "fr-FR", "id-ID", "it-IT", "ja-JP", "ko-KR", "nl-NL", "pl-PL", "pt-BR", "sv-SE", "tr-TR", "zh-CN", "zh-TW"} {
 		catalog, err := Load(locale)
 		if err != nil {
 			t.Fatalf("Load(%q): %v", locale, err)
@@ -29,6 +29,7 @@ func TestHeaderAboutProjectMessages(t *testing.T) {
 		"en":    "About this project",
 		"es-ES": "Acerca de este proyecto",
 		"fr-FR": "À propos de ce projet",
+		"id-ID": "Tentang proyek ini",
 		"it-IT": "Informazioni sul progetto",
 		"ja-JP": "このプロジェクトについて",
 		"ko-KR": "이 프로젝트 소개",
@@ -163,6 +164,7 @@ func TestEditorToggleStatesAreLocalizedPerCatalog(t *testing.T) {
 		"de-DE": {"Ein", "Aus"},
 		"es-ES": {"Activado", "Desactivado"},
 		"fr-FR": {"Activé", "Désactivé"},
+		"id-ID": {"Aktif", "Nonaktif"},
 		"it-IT": {"Attivato", "Disattivato"},
 		"ja-JP": {"オン", "オフ"},
 		"ko-KR": {"켜기", "끄기"},
@@ -231,6 +233,65 @@ func TestTraditionalChineseCatalogMatchesEnglishSource(t *testing.T) {
 	} {
 		if got := traditionalChinese.Messages[key].Text; got != want {
 			t.Errorf("zh-TW message %q = %q, want %q", key, got, want)
+		}
+	}
+}
+
+func TestIndonesianCatalogMatchesEnglishSource(t *testing.T) {
+	source, err := Load("en")
+	if err != nil {
+		t.Fatal(err)
+	}
+	indonesian, err := Load("id-ID")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if indonesian.Locale != "id-ID" || indonesian.HTMLLang != "id-ID" {
+		t.Fatalf("id-ID identity = locale %q, html_lang %q", indonesian.Locale, indonesian.HTMLLang)
+	}
+	if got, want := len(indonesian.Messages), expectedCatalogMessages; got != want {
+		t.Fatalf("id-ID message count = %d, want %d", got, want)
+	}
+	if err := validateCoverage(source, indonesian); err != nil {
+		t.Fatalf("id-ID coverage: %v", err)
+	}
+	placeholderRE := regexp.MustCompile(`\{[a-z][a-z0-9_]*\}`)
+	markupRE := regexp.MustCompile(`<[^>]+>`)
+	allowedUntranslatedNames := map[string]bool{
+		"editor.format":       true,
+		"footer.github":       true,
+		"site.issue_feedback": true,
+		"support.uid":         true,
+	}
+	for key, sourceMessage := range source.Messages {
+		message := indonesian.Messages[key]
+		if got, want := strings.Join(placeholderRE.FindAllString(message.Text, -1), "\x00"), strings.Join(placeholderRE.FindAllString(sourceMessage.Text, -1), "\x00"); got != want {
+			t.Errorf("id-ID message %q placeholders = %q, want %q", key, got, want)
+		}
+		if sourceMessage.Kind == "rich" {
+			if got, want := strings.Join(markupRE.FindAllString(message.Text, -1), "\x00"), strings.Join(markupRE.FindAllString(sourceMessage.Text, -1), "\x00"); got != want {
+				t.Errorf("id-ID rich message %q markup = %q, want %q", key, got, want)
+			}
+		}
+		if strings.Contains(message.Text, "TODO") {
+			t.Errorf("id-ID message %q retains TODO", key)
+		}
+		if message.Text == sourceMessage.Text && !allowedUntranslatedNames[key] {
+			t.Errorf("id-ID message %q duplicates English source text", key)
+		}
+	}
+	for key, want := range map[string]string{
+		"header.about_project":      "Tentang proyek ini",
+		"editor.run":                "Jalankan",
+		"editor.format":             "Format",
+		"editor.reset":              "Atur ulang",
+		"tour.title":                "Tur Bahasa Go",
+		"tour.list_title":           "Daftar kursus — Tur Bahasa Go",
+		"module.concurrency.title":  "Konkurensi",
+		"support.translation_title": "Dukung versi Bahasa Indonesia",
+	} {
+		if got := indonesian.Messages[key].Text; got != want {
+			t.Errorf("id-ID message %q = %q, want %q", key, got, want)
 		}
 	}
 }

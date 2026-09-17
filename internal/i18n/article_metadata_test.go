@@ -383,3 +383,37 @@ func TestPolishArticleMetadataCoversCatalog(t *testing.T) {
 		}
 	}
 }
+
+func TestIndonesianArticleMetadataCoversCatalog(t *testing.T) {
+	root := filepath.Clean(filepath.Join("..", ".."))
+	catalog, err := ReadCatalog(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	metadata, err := LoadArticleMetadata(root, "id-ID", catalog)
+	if err != nil {
+		t.Fatal(err)
+	}
+	wantTitles := map[string]string{
+		"welcome.article":     "Selamat datang!",
+		"basics.article":      "Paket, variabel, dan fungsi.",
+		"flowcontrol.article": "Pernyataan kontrol alur: for, if, else, switch, dan defer",
+		"moretypes.article":   "Tipe lainnya: struct, slice, dan map.",
+		"methods.article":     "Method dan interface",
+		"generics.article":    "Generik",
+		"concurrency.article": "Konkurensi",
+	}
+	if len(metadata) != len(wantTitles) {
+		t.Fatalf("id-ID article metadata count = %d, want %d", len(metadata), len(wantTitles))
+	}
+	for article, title := range wantTitles {
+		entry, ok := metadata[article]
+		if !ok {
+			t.Errorf("id-ID article metadata is missing %s", article)
+			continue
+		}
+		if entry.Title != title || entry.Subtitle == "" || strings.Contains(entry.Title+entry.Subtitle, "TODO") {
+			t.Errorf("id-ID article metadata %s = %+v, want title %q, subtitle, and no TODO", article, entry, title)
+		}
+	}
+}
