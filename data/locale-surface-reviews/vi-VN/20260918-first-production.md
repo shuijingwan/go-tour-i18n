@@ -49,11 +49,27 @@ The 22 other-surface entries were reviewed across the language registry and loca
 
 ## B. Rendered surface acceptance
 
-- Automated preview acceptance: not executed
-- Visual HUMAN gate: not executed
-- Production verification: not executed
+### Automated preview acceptance
 
-This evidence records Stage A language quality only. Preview acceptance, the Preview HUMAN visual gate, publish, deployment, and Production acceptance remain separate later stages.
+- formal entry: `scripts/verify-preview-browser.py`
+- preview URL: `http://127.0.0.1:38189/`
+- preview identity: PASS
+- SEO/routes: PASS
+- desktop rendered surface: PASS
+- editor Run / Format / Reset: PASS
+- SPA: PASS
+- mobile `/tour/moretypes/1`: PASS
+- overall: `PREVIEW SURFACE ACCEPTANCE: PASS`
+- issues: `none`
+
+### Visual HUMAN gate
+
+- maintainer confirmation: passed
+- overall: `passed`
+
+- Production verification: **not executed**
+
+Preview acceptance is complete. Production machine/browser acceptance remains a separate later gate.
 
 <!-- first-production-finalization:start -->
 - production receipt identity: `PENDING`
