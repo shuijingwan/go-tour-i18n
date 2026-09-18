@@ -72,10 +72,10 @@ The 22 other-surface entries were reviewed across the language registry and loca
 Preview acceptance is complete. Production machine/browser acceptance remains a separate later gate.
 
 <!-- first-production-finalization:start -->
-- production receipt identity: `PENDING`
-- production machine acceptance: `PENDING`
-- production browser acceptance: `PENDING`
-- unresolved production blocker: `PENDING`
-- overall final decision: `PENDING`
-- decision: `pending`
+- production receipt identity: `locale=vi-VN hostname=vi-go-dev.shuijingwanwq.com release=20260918T091717Z-vi-VN-4461c4485a3c`
+- production machine acceptance: `passed`
+- production browser acceptance: `passed`
+- unresolved production blocker: `none`
+- overall final decision: `passed`
+- decision: `passed`
 <!-- first-production-finalization:end -->

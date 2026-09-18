@@ -27,6 +27,7 @@ Community-maintained translations currently in production:
 - [Swedish — Svenska](https://sv-go-dev.shuijingwanwq.com/)
 - [Traditional Chinese — 繁體中文（台灣）](https://zh-tw-go-dev.shuijingwanwq.com/)
 - [Turkish — Türkçe](https://tr-go-dev.shuijingwanwq.com/)
+- [Vietnamese — Tiếng Việt](https://vi-go-dev.shuijingwanwq.com/)
 <!-- live-locales:end -->
 
 - Official English version: [A Tour of Go](https://go.dev/tour/)
