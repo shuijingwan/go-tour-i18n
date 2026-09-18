@@ -1,0 +1,15 @@
+* ترتيب تقييم switch
+
+تُقيَّم حالات switch من الأعلى إلى الأسفل، ويتوقف التقييم عندما تنجح إحدى الحالات.
+
+(فعلى سبيل المثال،
+
+	switch i {
+	case 0:
+	case f():
+	}
+
+لا يستدعي `f` إذا كان `i==0`.)
+
+
+.play flowcontrol/switch-evaluation-order.go

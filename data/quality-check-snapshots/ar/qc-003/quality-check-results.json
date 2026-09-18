@@ -1,0 +1,17 @@
+{
+  "schema_version": 2,
+  "evidence_type": "quality_check_results",
+  "locale": "ar",
+  "snapshot_id": "qc-003",
+  "snapshot_manifest_sha256": "5e0ab636cc942c95d973a11269609991087dd15b1e6f09c4450ef2ecf44b2ea4",
+  "rubric": "translation-quality/v1",
+  "result_count": 1,
+  "results": [
+    {
+      "index": 1,
+      "unit_id": "welcome/1",
+      "rating": "C",
+      "finding": "RTL Preview 已证明当前 Arabic candidate 的三处 UI 方位说明与正式 RTL 界面不一致：جولة في Go 被描述为位于 في أعلى يسار الصفحة，实际位于右上角；table-of-contents 菜单被描述为位于 في أعلى يمين الصفحة，实际位于左上角；.next-page 被称为 السهم الأيمن，但当前 RTL navigation 中“下一页”位于左侧并对应左箭头。这些说明会直接误导用户寻找和使用导航控件，因此当前 candidate 不应直接发布。需按正式 Arabic RTL UI 的实际方位修订这三处指引，同时保持链接 target、快捷键及其他 protected identity 不变。"
+    }
+  ]
+}

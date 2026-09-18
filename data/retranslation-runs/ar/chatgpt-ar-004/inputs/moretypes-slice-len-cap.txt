@@ -1,0 +1,1 @@
+⟪GTI18N_b2e5f7a9_000001⟫Slice the slice to give it zero length.⟪GTI18N_b2e5f7a9_000002⟫Extend its length.⟪GTI18N_b2e5f7a9_000003⟫Drop its first two values.⟪GTI18N_b2e5f7a9_000004⟫

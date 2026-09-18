@@ -1,0 +1,37 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-ar-006",
+  "locale": "ar",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 2,
+  "units": [
+    {
+      "unit_id": "methods/23",
+      "unit_kind": "page",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "11d876145fae980b2e283e3fac7357a950eb20f022b7da48cc58efed5b1e8e04",
+      "input_path": "inputs/methods-23.article",
+      "input_sha256": "1e60df051586f32c0a706d0ef86bf50fad4e87762ecd0ed66263d8b1c6a0752a",
+      "protected_token_count": 24,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "句子 “نفّذ rot13Reader ينفّذ io.Reader ويقرأ من io.Reader...” 缺少连接结构，阿拉伯语句法不自然；应使用类似 “نفّذ rot13Reader بحيث ينفّذ io.Reader ويقرأ من io.Reader...” 的表达。技术含义基本正确，但需要语言修订。"
+    },
+    {
+      "unit_id": "concurrency/4",
+      "unit_kind": "page",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "3e925c6745255a443c61f25cd8131d538dc8677938f1c5021ce798465020b42e",
+      "input_path": "inputs/concurrency-4.article",
+      "input_sha256": "f68dc9ef06de3cb5d48846ebe7786e6cc06b77ea5c05bc6d56b80f667f5dad10",
+      "protected_token_count": 16,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "第二个 “Another note:” 被译成 “*ملاحظة*أخرى:*”，强调标记、空格和标点组合断裂，阿拉伯语呈现不自然；应改为完整自然的 “ملاحظة أخرى:” 等表达，同时保持后续技术语义不变。"
+    }
+  ]
+}

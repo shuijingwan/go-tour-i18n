@@ -1,0 +1,1 @@
+⟪GTI18N_ab72fc4f_000001⟫List represents a singly-linked list that holds⟪GTI18N_ab72fc4f_000002⟫values of any type.⟪GTI18N_ab72fc4f_000003⟫

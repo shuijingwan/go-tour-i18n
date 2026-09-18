@@ -138,9 +138,36 @@ func TestRTLLayoutKeepsProgrammingSurfacesLTR(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if got := strings.Count(string(directives), "document.documentElement.dir === 'rtl' ? 'left' : 'right'"); got != 2 {
+	directiveSource := string(directives)
+	if got := strings.Count(directiveSource, "document.documentElement.dir === 'rtl' ? 'left' : 'right'"); got != 2 {
 		t.Fatalf("RTL-aware TOC slide direction occurrences = %d, want 2", got)
 	}
+	for _, fragment := range []string{
+		"directive('verticalSlide'",
+		"'inset-inline-start': size",
+		"? bounds.right - event.clientX",
+		": event.clientX - bounds.left",
+	} {
+		if !strings.Contains(directiveSource, fragment) {
+			t.Errorf("vertical splitter is missing logical pane geometry %q", fragment)
+		}
+	}
+	if strings.Contains(directiveSource, "$(attrs.right).offset({\n                    left:") {
+		t.Error("vertical splitter still positions the editor with a physical left offset")
+	}
+	if strings.Contains(directiveSource, "directive('vertical-slide'") {
+		t.Error("vertical splitter uses a dashed registration name that Angular does not link")
+	}
+
+	lessonPane := mustCSSDeclarations(t, styles, "#left-side")
+	assertCSSDeclaration(t, "#left-side", lessonPane, "margin-inline-start", "0")
+	assertCSSDeclaration(t, "#left-side", lessonPane, "margin-inline-end", "auto")
+	editorPane := mustCSSDeclarations(t, styles, "#right-side")
+	assertCSSDeclaration(t, "#right-side", editorPane, "inset-inline-start", "50%")
+	assertCSSDeclaration(t, "#right-side", editorPane, "inset-inline-end", "0")
+	divider := mustCSSDeclarations(t, styles, "div[vertical-slide]")
+	assertCSSDeclaration(t, "div[vertical-slide]", divider, "inset-inline-start", "50%")
+	assertCSSDeclaration(t, "div[vertical-slide]", divider, "inset-inline-end", "auto")
 
 	editor, err := fs.ReadFile(contentTour, "tour/static/partials/editor.html")
 	if err != nil {

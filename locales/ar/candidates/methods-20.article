@@ -1,0 +1,21 @@
+* تمرين: الأخطاء
+
+انسخ دالة `Sqrt` من [[/tour/flowcontrol/8][التمرين السابق]] وعدّلها لتعيد قيمة `error`.
+
+ينبغي أن تعيد `Sqrt` قيمة خطأ غير nil عندما تُعطى عددًا سالبًا، لأنها لا تدعم الأعداد المركبة.
+
+أنشئ نوعًا جديدًا
+
+	type ErrNegativeSqrt float64
+
+واجعله `error` بإعطائه تابعًا
+
+	func (e ErrNegativeSqrt) Error() string
+
+بحيث تعيد `ErrNegativeSqrt(-2).Error()` القيمة `"cannot`Sqrt`negative`number:`-2"`.
+
+*ملاحظة:* يؤدي استدعاء `fmt.Sprint(e)` داخل التابع `Error` إلى إدخال البرنامج في حلقة لا نهائية. ويمكن تجنب ذلك بتحويل `e` أولًا: `fmt.Sprint(float64(e))`. لماذا؟
+
+غيّر دالة `Sqrt` لتعيد قيمة `ErrNegativeSqrt` عندما تُعطى عددًا سالبًا.
+
+.play methods/exercise-errors.go

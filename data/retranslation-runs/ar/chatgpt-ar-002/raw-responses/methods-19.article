@@ -1,0 +1,19 @@
+* الأخطاء
+
+تعبّر برامج ⟪GTI18N_9eaab1fd_000001⟫ عن حالة الخطأ باستخدام قيم ⟪GTI18N_9eaab1fd_000002⟫error⟪GTI18N_9eaab1fd_000003⟫.
+
+النوع ⟪GTI18N_9eaab1fd_000004⟫error⟪GTI18N_9eaab1fd_000005⟫ هو واجهة مضمّنة تشبه ⟪GTI18N_9eaab1fd_000006⟫fmt.Stringer⟪GTI18N_9eaab1fd_000007⟫:
+
+⟪GTI18N_9eaab1fd_000008⟫
+
+(كما هو الحال مع ⟪GTI18N_9eaab1fd_000009⟫fmt.Stringer⟪GTI18N_9eaab1fd_000010⟫، تبحث الحزمة ⟪GTI18N_9eaab1fd_000011⟫fmt⟪GTI18N_9eaab1fd_000012⟫ عن واجهة ⟪GTI18N_9eaab1fd_000013⟫error⟪GTI18N_9eaab1fd_000014⟫ عند
+طباعة القيم.)
+
+غالبًا ما تعيد الدوال قيمة ⟪GTI18N_9eaab1fd_000015⟫error⟪GTI18N_9eaab1fd_000016⟫، وينبغي للشيفرة المستدعية معالجة الأخطاء
+باختبار ما إذا كان الخطأ يساوي ⟪GTI18N_9eaab1fd_000017⟫nil⟪GTI18N_9eaab1fd_000018⟫.
+
+⟪GTI18N_9eaab1fd_000019⟫
+
+تشير قيمة ⟪GTI18N_9eaab1fd_000020⟫error⟪GTI18N_9eaab1fd_000021⟫ التي تساوي nil إلى النجاح؛ وتشير قيمة ⟪GTI18N_9eaab1fd_000022⟫error⟪GTI18N_9eaab1fd_000023⟫ غير nil إلى الفشل.
+
+⟪GTI18N_9eaab1fd_000024⟫

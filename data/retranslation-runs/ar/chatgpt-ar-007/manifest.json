@@ -1,0 +1,24 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-ar-007",
+  "locale": "ar",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 1,
+  "units": [
+    {
+      "unit_id": "welcome/1",
+      "unit_kind": "page",
+      "source_path": "_content/tour/welcome.article",
+      "source_sha256": "1f581133d7fa40e6490418c6789a60a2f5e1de26c9c86d7eb6120cb58b145857",
+      "input_path": "inputs/welcome-1.article",
+      "input_sha256": "574f66f94373afe33a9c49f97cf1912aa5d3b9b309c7e79b985857abd2ecd83a",
+      "protected_token_count": 33,
+      "previous_snapshot_id": "qc-003",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "C",
+      "previous_finding": "RTL Preview 已证明当前 Arabic candidate 的三处 UI 方位说明与正式 RTL 界面不一致：جولة في Go 被描述为位于 في أعلى يسار الصفحة，实际位于右上角；table-of-contents 菜单被描述为位于 في أعلى يمين الصفحة，实际位于左上角；.next-page 被称为 السهم الأيمن，但当前 RTL navigation 中“下一页”位于左侧并对应左箭头。这些说明会直接误导用户寻找和使用导航控件，因此当前 candidate 不应直接发布。需按正式 Arabic RTL UI 的实际方位修订这三处指引，同时保持链接 target、快捷键及其他 protected identity 不变。"
+    }
+  ]
+}

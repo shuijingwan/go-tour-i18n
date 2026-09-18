@@ -338,6 +338,111 @@ class PreviewBrowserTest(unittest.TestCase):
             CORE.validate_rendered_list(chrome, {"heading": "Directory"}, page_routes)
         self.assertIn(".toc .toc-page a", chrome.evaluate.call_args.args[0])
 
+    def course_layout(self, direction="ltr"):
+        if direction == "rtl":
+            lesson = {"left": 640, "right": 1280, "top": 48, "bottom": 800,
+                      "width": 640, "height": 752, "visibleWidth": 640, "visibleHeight": 752}
+            editor = {"left": 0, "right": 640, "top": 48, "bottom": 800,
+                      "width": 640, "height": 752, "visibleWidth": 640, "visibleHeight": 752}
+            divider = {"left": 635, "right": 640}
+        else:
+            lesson = {"left": 0, "right": 640, "top": 48, "bottom": 800,
+                      "width": 640, "height": 752, "visibleWidth": 640, "visibleHeight": 752}
+            editor = {"left": 640, "right": 1280, "top": 48, "bottom": 800,
+                      "width": 640, "height": 752, "visibleWidth": 640, "visibleHeight": 752}
+            divider = {"left": 640, "right": 645}
+        return {
+            "missing": [], "direction": direction, "viewportWidth": 1280,
+            "container": {"left": 0, "right": 1280, "width": 1280},
+            "lesson": lesson, "editor": editor, "divider": divider,
+            "overlapWidth": 0, "gapWidth": 0, "lessonText": "Visible lesson",
+            "lessonTextRect": {"visibleWidth": 180, "visibleHeight": 32},
+            "lessonTextHit": True, "editorHit": True, "splitterReady": True, "codeDirection": "ltr",
+        }
+
+    def test_desktop_course_layout_accepts_rtl_and_ltr_logical_panes(self):
+        for direction in ("rtl", "ltr"):
+            with self.subTest(direction=direction):
+                chrome = mock.Mock()
+                chrome.evaluate.return_value = self.course_layout(direction)
+                self.assertEqual(CORE.validate_desktop_course_layout(chrome)["direction"], direction)
+                self.assertIn("elementFromPoint", chrome.evaluate.call_args.args[0])
+
+    def test_desktop_course_layout_rejects_human_gate_failure_geometry(self):
+        for failure in ("overlap", "covered_text", "offscreen_editor"):
+            with self.subTest(failure=failure):
+                snapshot = self.course_layout("rtl")
+                if failure == "overlap":
+                    snapshot["lesson"] = dict(snapshot["editor"])
+                    snapshot["overlapWidth"] = snapshot["lesson"]["width"]
+                elif failure == "covered_text":
+                    snapshot["lessonTextHit"] = False
+                else:
+                    snapshot["editor"].update(left=-640, right=0, visibleWidth=0)
+                chrome = mock.Mock()
+                chrome.evaluate.return_value = snapshot
+                with self.assertRaises(CORE.BrowserFailure):
+                    CORE.validate_desktop_course_layout(chrome)
+
+    def mobile_course_editor_layout(self, direction="ltr"):
+        return {
+            "missing": [], "direction": direction, "viewportWidth": 375, "documentOverflow": 0,
+            "pane": {"left": 0, "right": 375, "width": 375, "visibleWidth": 375},
+            "explorer": {"left": 0, "right": 375, "top": 657, "bottom": 745,
+                         "width": 375, "visibleWidth": 375},
+            "parent": {"left": 1, "right": 374, "top": 748, "bottom": 1025,
+                       "width": 373, "visibleWidth": 373},
+            "parentClientWidth": 373,
+            "controls": [
+                {"left": 275, "right": 343, "top": 657, "bottom": 685,
+                 "width": 68, "visibleWidth": 68, "float": "none"},
+                {"left": 221, "right": 343, "top": 687, "bottom": 715,
+                 "width": 122, "visibleWidth": 122, "float": "none"},
+                {"left": 242, "right": 343, "top": 717, "bottom": 745,
+                 "width": 101, "visibleWidth": 101, "float": "none"},
+            ],
+            "syntaxFloat": "none", "importsFloat": "none",
+            "file": {"left": 1, "right": 374, "width": 373, "visibleWidth": 373},
+            "code": {"left": 1, "right": 374, "width": 373, "visibleWidth": 373},
+            "fileDirection": "ltr", "codeDirection": "ltr",
+        }
+
+    def test_mobile_course_editor_layout_accepts_rtl_and_ltr_full_width(self):
+        for direction in ("rtl", "ltr"):
+            with self.subTest(direction=direction):
+                chrome = mock.Mock()
+                chrome.evaluate.return_value = self.mobile_course_editor_layout(direction)
+                self.assertEqual(CORE.validate_mobile_course_editor_layout(chrome)["direction"], direction)
+                self.assertIn("#top-part > .relative-content", chrome.evaluate.call_args.args[0])
+
+    def test_mobile_course_editor_layout_rejects_narrow_or_offscreen_surfaces(self):
+        for failure in ("narrow_file", "narrow_code", "offscreen_code", "overflow", "code_rtl",
+                        "floating_toggle", "short_explorer", "same_row", "editor_intrusion"):
+            with self.subTest(failure=failure):
+                snapshot = self.mobile_course_editor_layout("rtl")
+                if failure == "narrow_file":
+                    snapshot["file"].update(left=231, width=143, visibleWidth=143)
+                elif failure == "narrow_code":
+                    snapshot["code"].update(left=231, width=143, visibleWidth=143)
+                elif failure == "offscreen_code":
+                    snapshot["code"].update(left=-200, right=173, visibleWidth=173)
+                elif failure == "overflow":
+                    snapshot["documentOverflow"] = 30
+                elif failure == "code_rtl":
+                    snapshot["codeDirection"] = "rtl"
+                elif failure == "floating_toggle":
+                    snapshot["syntaxFloat"] = "left"
+                elif failure == "short_explorer":
+                    snapshot["explorer"]["bottom"] = 685
+                elif failure == "same_row":
+                    snapshot["controls"][1].update(top=657, bottom=685)
+                else:
+                    snapshot["parent"]["top"] = 700
+                chrome = mock.Mock()
+                chrome.evaluate.return_value = snapshot
+                with self.assertRaises(CORE.BrowserFailure):
+                    CORE.validate_mobile_course_editor_layout(chrome)
+
     def rendered(self, path, canonical):
         return {"path": path, "href": "http://127.0.0.1:38573" + path,
                 "origin": "http://127.0.0.1:38573", "lang": "ko-KR",
@@ -512,6 +617,9 @@ class PreviewBrowserTest(unittest.TestCase):
         self.assertIn("browser_ad_gate(editor, chrome.network_requests(), False)", preview_body)
         self.assertIn("fetch('/socket')", preview_body)
         self.assertIn("wait_for_spa_transition(chrome, before, base, locale, canonical_origin)", preview_body)
+        self.assertIn("validate_mobile_course_editor_layout(chrome)", preview_body)
+        production_body = source.split("def acceptance", 1)[1].split("def preview_acceptance", 1)[0]
+        self.assertIn("post_identity_check=lambda: validate_mobile_course_editor_layout(chrome)", production_body)
 
     def test_production_still_requires_https_formal_identity(self):
         original = sys.argv

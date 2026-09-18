@@ -115,28 +115,40 @@ directive('syntaxCheckbox', ['editor',
 // <div id="header">Some content</div>
 // <div vertical-slide top="#header" bottom="#footer"></div>
 // <div id="footer">Some footer</div>
-directive('vertical-slide', ['editor',
+directive('verticalSlide', ['editor',
     function(editor) {
         return function(scope, elm, attrs) {
-            var moveTo = function(x) {
-                if (x < 0) {
-                    x = 0;
+            // The lesson is the inline-start pane and the editor is the
+            // inline-end pane. Store and apply the lesson's logical width so
+            // the same splitter contract works in both LTR and RTL layouts.
+            var moveTo = function(size) {
+                var max = elm.parent()[0].getBoundingClientRect().width;
+                if (size < 0) {
+                    size = 0;
                 }
-                if (x > $(window).width()) {
-                    x = $(window).width();
+                if (size > max) {
+                    size = max;
                 }
-                elm.css('left', x);
-                $(attrs.left).width(x);
-                $(attrs.right).offset({
-                    left: x
+                elm.css({
+                    'inset-inline-start': size,
+                    'inset-inline-end': 'auto'
                 });
-                editor.x = x;
+                $(attrs.left).width(size);
+                $(attrs.right).css({
+                    'inset-inline-start': size,
+                    'inset-inline-end': 0
+                });
+                editor.x = size;
             };
 
             elm.draggable({
                 axis: 'x',
                 drag: function(event) {
-                    moveTo(event.clientX);
+                    var bounds = elm.parent()[0].getBoundingClientRect();
+                    var size = document.documentElement.dir === 'rtl'
+                        ? bounds.right - event.clientX
+                        : event.clientX - bounds.left;
+                    moveTo(size);
                     return true;
                 },
                 containment: 'parent',

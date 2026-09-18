@@ -1,0 +1,12 @@
+* تمرين: rot13Reader
+
+من الأنماط الشائعة [[/pkg/io/#Reader][io.Reader]] يغلّف `io.Reader` آخر، مع تعديل التدفق بطريقة ما.
+
+فعلى سبيل المثال، تأخذ الدالة [[/pkg/compress/gzip/#NewReader][gzip.NewReader]] قيمة `io.Reader` (تدفقًا من بيانات مضغوطة) وتعيد `*gzip.Reader` ينفّذ أيضًا `io.Reader` (تدفقًا من البيانات بعد فك ضغطها).
+
+نفّذ `rot13Reader` ينفّذ `io.Reader` ويقرأ من `io.Reader`، مع تعديل التدفق بتطبيق شيفرة الاستبدال [[https://en.wikipedia.org/wiki/ROT13][rot13]] على جميع المحارف الأبجدية.
+
+النوع `rot13Reader` متاح لك.
+اجعله `io.Reader` بتنفيذ التابع `Read` الخاص به.
+
+.play methods/exercise-rot-reader.go

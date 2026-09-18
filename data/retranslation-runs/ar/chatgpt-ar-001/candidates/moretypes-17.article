@@ -1,0 +1,12 @@
+* متابعة range
+
+يمكنك تخطي الفهرس أو القيمة بإسنادها إلى `_`.
+
+    for i, _ := range pow
+    for _, value := range pow
+
+إذا كنت تريد الفهرس فقط، فيمكنك حذف المتغير الثاني.
+
+    for i := range pow
+
+.play moretypes/range-continued.go

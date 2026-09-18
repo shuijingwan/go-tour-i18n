@@ -581,7 +581,8 @@ a#run, a#kill {
     }
     #left-side {
         position: relative;
-        left: 0;
+        margin-inline-start: 0;
+        margin-inline-end: auto;
         width: 50%;
         min-height: calc(100vh - 48px);
         overflow: visible;
@@ -606,8 +607,8 @@ a#run, a#kill {
         bottom: 0;
         width: 5px;
         background: #e0ebf5;
-        left: 50%;
-        right: 50%;
+        inset-inline-start: 50%;
+        inset-inline-end: auto;
         z-index: 100;
         cursor: move;
     }
@@ -616,10 +617,10 @@ a#run, a#kill {
     }
     #right-side {
         position: absolute;
-        top: 0;
-        bottom: 0;
-        right: 0;
-        left: 50%;
+        inset-block-start: 0;
+        inset-block-end: 0;
+        inset-inline-start: 50%;
+        inset-inline-end: 0;
         background: #fff;
     }
     [data-theme='dark'] #right-side {
@@ -1415,10 +1416,14 @@ a#run, a#kill {
     padding-right: 0;
     padding-left: 48px;
 }
-[dir='rtl'] #file-menu .menu-button,
-[dir='rtl'] #explorer .imports-checkbox,
-[dir='rtl'] #explorer .syntax-checkbox {
+[dir='rtl'] #file-menu .menu-button {
     float: left;
+}
+@media (min-width: 601px) {
+    [dir='rtl'] #explorer .imports-checkbox,
+    [dir='rtl'] #explorer .syntax-checkbox {
+        float: left;
+    }
 }
 [dir='rtl'] .output-menu .menu-button {
     float: right;

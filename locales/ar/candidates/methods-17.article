@@ -1,0 +1,12 @@
+* أنواع Stringer
+
+إحدى أكثر الواجهات انتشارًا هي [[/pkg/fmt/#Stringer][`Stringer`]] التي تعرّفها الحزمة [[/pkg/fmt/][`fmt`]].
+
+	type Stringer interface {
+		String() string
+	}
+
+`Stringer` هو نوع يمكنه وصف نفسه كسلسلة نصية. تبحث الحزمة `fmt`
+(وكثير من الحزم الأخرى) عن هذه الواجهة لطباعة القيم.
+
+.play methods/stringer.go

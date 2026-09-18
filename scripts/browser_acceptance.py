@@ -828,6 +828,177 @@ def validate_rendered_list(chrome, list_metadata, expected_page_routes):
     return snapshot
 
 
+DESKTOP_COURSE_LAYOUT_EXPRESSION = """(() => {
+  const selectors = {
+    container: '#editor-container', lesson: '#left-side', content: '.slide-content',
+    editor: '#right-side', code: '#right-side .CodeMirror', divider: '[vertical-slide]'
+  };
+  const elements = Object.fromEntries(Object.entries(selectors).map(([name, selector]) =>
+    [name, document.querySelector(selector)]));
+  const missing = Object.entries(elements).filter(([, element]) => !element).map(([name]) => name);
+  if (missing.length) return {missing};
+  const rect = element => {
+    const box = element.getBoundingClientRect();
+    const visibleLeft = Math.max(0, box.left), visibleTop = Math.max(0, box.top);
+    const visibleRight = Math.min(innerWidth, box.right), visibleBottom = Math.min(innerHeight, box.bottom);
+    return {
+      left: box.left, right: box.right, top: box.top, bottom: box.bottom,
+      width: box.width, height: box.height,
+      visibleWidth: Math.max(0, visibleRight - visibleLeft),
+      visibleHeight: Math.max(0, visibleBottom - visibleTop)
+    };
+  };
+  const lesson = rect(elements.lesson), editor = rect(elements.editor);
+  const container = rect(elements.container), divider = rect(elements.divider);
+  const overlapWidth = Math.max(0, Math.min(lesson.right, editor.right) - Math.max(lesson.left, editor.left));
+  const gapWidth = Math.max(0, Math.max(lesson.left, editor.left) - Math.min(lesson.right, editor.right));
+  const hitWithin = (element, box) => {
+    const left = Math.max(0, box.left), right = Math.min(innerWidth, box.right);
+    const top = Math.max(0, box.top), bottom = Math.min(innerHeight, box.bottom);
+    if (right <= left || bottom <= top) return false;
+    return element.contains(document.elementFromPoint((left + right) / 2, (top + bottom) / 2));
+  };
+  const walker = document.createTreeWalker(elements.content, NodeFilter.SHOW_TEXT);
+  let textNode = null;
+  while ((textNode = walker.nextNode()) && !textNode.nodeValue.trim()) {}
+  let lessonText = '', lessonTextRect = null, lessonTextHit = false;
+  if (textNode) {
+    lessonText = textNode.nodeValue.trim();
+    const range = document.createRange();
+    range.selectNodeContents(textNode);
+    lessonTextRect = rect(range);
+    lessonTextHit = hitWithin(elements.lesson, lessonTextRect);
+  }
+  return {
+    missing, direction: document.documentElement.dir, viewportWidth: innerWidth,
+    container, lesson, editor, divider, overlapWidth, gapWidth,
+    lessonText, lessonTextRect, lessonTextHit,
+    editorHit: hitWithin(elements.editor, editor),
+    splitterReady: !!$(elements.divider).data('ui-draggable'),
+    codeDirection: getComputedStyle(elements.code).direction
+  };
+})()"""
+
+
+def validate_desktop_course_layout(chrome):
+    """Require both desktop course panes and real lesson text to be visibly painted."""
+    snapshot = chrome.evaluate(DESKTOP_COURSE_LAYOUT_EXPRESSION, check="inspect desktop course pane geometry")
+    assert_true(not snapshot.get("missing"), f"desktop course layout elements missing: {snapshot}")
+    direction = snapshot.get("direction")
+    assert_true(direction in ("ltr", "rtl"), f"desktop course writing direction invalid: {snapshot}")
+    container = snapshot["container"]
+    lesson, editor = snapshot["lesson"], snapshot["editor"]
+    minimum_width = container["width"] * 0.25
+    for name, pane in (("lesson", lesson), ("editor", editor)):
+        assert_true(pane["visibleWidth"] >= minimum_width and pane["visibleHeight"] >= 100,
+                    f"desktop {name} pane has insufficient visible area: {snapshot}")
+        assert_true(pane["left"] >= container["left"] - 2 and pane["right"] <= container["right"] + 2,
+                    f"desktop {name} pane is outside the course viewport: {snapshot}")
+    assert_true(snapshot["overlapWidth"] <= 2, f"desktop course panes overlap: {snapshot}")
+    assert_true(snapshot["gapWidth"] <= 8, f"desktop course panes leave an unexpected gap: {snapshot}")
+    if direction == "rtl":
+        assert_true(editor["right"] <= lesson["left"] + 2,
+                    f"RTL lesson/editor logical order is wrong: {snapshot}")
+        boundary = (editor["right"] + lesson["left"]) / 2
+    else:
+        assert_true(lesson["right"] <= editor["left"] + 2,
+                    f"LTR lesson/editor logical order is wrong: {snapshot}")
+        boundary = (lesson["right"] + editor["left"]) / 2
+    divider_center = (snapshot["divider"]["left"] + snapshot["divider"]["right"]) / 2
+    assert_true(abs(divider_center - boundary) <= 8, f"desktop course divider is detached from pane boundary: {snapshot}")
+    text_rect = snapshot.get("lessonTextRect") or {}
+    assert_true(bool(snapshot.get("lessonText", "").strip()) and
+                text_rect.get("visibleWidth", 0) > 0 and text_rect.get("visibleHeight", 0) > 0 and
+                snapshot.get("lessonTextHit"), f"desktop lesson text is not visibly painted: {snapshot}")
+    assert_true(snapshot.get("editorHit"), f"desktop editor is covered or outside the viewport: {snapshot}")
+    assert_true(snapshot.get("splitterReady"), f"desktop course splitter is not draggable: {snapshot}")
+    assert_true(snapshot.get("codeDirection") == "ltr", f"desktop code editor is not LTR: {snapshot}")
+    return snapshot
+
+
+MOBILE_COURSE_EDITOR_LAYOUT_EXPRESSION = """(() => {
+  const selectors = {
+    pane: '#right-side', explorer: '#explorer', parent: '#top-part > .relative-content',
+    syntax: '#explorer .syntax-checkbox', imports: '#explorer .imports-checkbox',
+    file: '#file-editor', code: '#file-editor .CodeMirror'
+  };
+  const elements = Object.fromEntries(Object.entries(selectors).map(([name, selector]) =>
+    [name, document.querySelector(selector)]));
+  const missing = Object.entries(elements).filter(([, element]) => !element).map(([name]) => name);
+  if (missing.length) return {missing};
+  const rect = element => {
+    const box = element.getBoundingClientRect();
+    const visibleLeft = Math.max(0, box.left), visibleRight = Math.min(innerWidth, box.right);
+    return {
+      left: box.left, right: box.right, top: box.top, bottom: box.bottom,
+      width: box.width, height: box.height,
+      visibleWidth: Math.max(0, visibleRight - visibleLeft)
+    };
+  };
+  const controls = [...elements.explorer.children]
+    .filter(element => element.classList.contains('menu-button'))
+    .map(element => ({...rect(element), float: getComputedStyle(element).cssFloat}));
+  return {
+    missing, direction: document.documentElement.dir,
+    viewportWidth: innerWidth,
+    documentOverflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+    pane: rect(elements.pane), explorer: rect(elements.explorer), parent: rect(elements.parent),
+    parentClientWidth: elements.parent.clientWidth,
+    controls,
+    syntaxFloat: getComputedStyle(elements.syntax).cssFloat,
+    importsFloat: getComputedStyle(elements.imports).cssFloat,
+    file: rect(elements.file), code: rect(elements.code),
+    fileDirection: getComputedStyle(elements.file).direction,
+    codeDirection: getComputedStyle(elements.code).direction
+  };
+})()"""
+
+
+def validate_mobile_course_editor_layout(chrome):
+    """Require the mobile CodeMirror surface to fill its available course width."""
+    snapshot = chrome.evaluate(MOBILE_COURSE_EDITOR_LAYOUT_EXPRESSION,
+                               check="inspect mobile course editor geometry")
+    assert_true(not snapshot.get("missing"), f"mobile course editor elements missing: {snapshot}")
+    assert_true(snapshot.get("direction") in ("ltr", "rtl"),
+                f"mobile course writing direction invalid: {snapshot}")
+    viewport_width = snapshot["viewportWidth"]
+    assert_true(viewport_width <= 600, f"mobile course editor check used a desktop viewport: {snapshot}")
+    pane, parent = snapshot["pane"], snapshot["parent"]
+    assert_true(pane["visibleWidth"] >= viewport_width * 0.95,
+                f"mobile editor pane does not fill the viewport: {snapshot}")
+    assert_true(parent["visibleWidth"] >= pane["visibleWidth"] * 0.95,
+                f"mobile editor parent has insufficient visible width: {snapshot}")
+    assert_true(snapshot["syntaxFloat"] == "none" and snapshot["importsFloat"] == "none",
+                f"mobile explorer toggles must not float: {snapshot}")
+    explorer, controls = snapshot["explorer"], snapshot["controls"]
+    assert_true(len(controls) >= 3, f"mobile explorer controls are incomplete: {snapshot}")
+    for control in controls:
+        assert_true(control["top"] >= explorer["top"] - 2 and control["bottom"] <= explorer["bottom"] + 2,
+                    f"mobile explorer height does not contain its controls: {snapshot}")
+    for previous, current in zip(controls, controls[1:]):
+        assert_true(current["top"] >= previous["bottom"] - 2,
+                    f"mobile explorer controls are not one per line: {snapshot}")
+    assert_true(max(control["bottom"] for control in controls) <= parent["top"] + 2,
+                f"mobile explorer controls intrude into the editor: {snapshot}")
+    parent_width = snapshot["parentClientWidth"]
+    tolerance = max(2, parent_width * 0.01)
+    file_box, code_box = snapshot["file"], snapshot["code"]
+    assert_true(file_box["width"] >= parent_width * 0.95 and
+                abs(file_box["width"] - parent_width) <= tolerance,
+                f"mobile file editor shrank below its available parent width: {snapshot}")
+    assert_true(abs(code_box["width"] - file_box["width"]) <= tolerance,
+                f"mobile CodeMirror width does not follow the file editor: {snapshot}")
+    for name, box in (("file editor", file_box), ("CodeMirror", code_box)):
+        assert_true(box["left"] >= -tolerance and box["right"] <= viewport_width + tolerance and
+                    box["visibleWidth"] >= box["width"] - tolerance,
+                    f"mobile {name} is outside the viewport: {snapshot}")
+    assert_true(snapshot["documentOverflow"] <= 2,
+                f"mobile course editor causes document horizontal overflow: {snapshot}")
+    assert_true(snapshot["fileDirection"] == "ltr" and snapshot["codeDirection"] == "ltr",
+                f"mobile code editor is not LTR: {snapshot}")
+    return snapshot
+
+
 def acceptance(base, locale, profile, shared, proxy_server=None):
     list_metadata = locale_list_metadata(locale)
     policy = publication_policy(locale)
@@ -882,6 +1053,7 @@ def acceptance(base, locale, profile, shared, proxy_server=None):
                 }}))()""", check="production editor dependency convergence")
                 assert_true(all(snapshot[key] for key in ("run", "format", "reset", "cm")),
                             f"editor browser identity failed: {snapshot}")
+                validate_desktop_course_layout(chrome)
                 assert_true(browser_ad_gate(snapshot, chrome.network_requests(), policy["tour_ads_enabled"]),
                             f"editor/ad browser identity failed for publication={policy['publication']}: editor={snapshot}")
                 if profile["shared_assets_policy"] == "shared-cloudflare":
@@ -953,7 +1125,8 @@ def acceptance(base, locale, profile, shared, proxy_server=None):
 
         page_identity(chrome, base, locale, "/tour/moretypes/1", 375, 812, base.rstrip("/"),
                       "/tour/moretypes/1", "/tour/moretypes/1",
-                      network_retry_origins=network_retry_origins)
+                      network_retry_origins=network_retry_origins,
+                      post_identity_check=lambda: validate_mobile_course_editor_layout(chrome))
         before = chrome.evaluate("location.pathname")
         chrome.evaluate("document.querySelector('.next-page').click(); true")
         wait_for_spa_transition(chrome, before, base, locale, base.rstrip("/"))
@@ -1011,6 +1184,10 @@ def preview_acceptance(base, locale, profile, shared, registry, descriptions, li
                     check="preview editor dependency convergence")
                 assert_true(all(editor[key] for key in ("run", "format", "reset", "cm")),
                             f"editor controls missing: {editor}")
+                if not mobile:
+                    validate_desktop_course_layout(chrome)
+                else:
+                    validate_mobile_course_editor_layout(chrome)
                 if not policy["tour_ads_enabled"]:
                     assert_true(browser_ad_gate(editor, chrome.network_requests(), False),
                                 f"go-local preview retains Tour ad surface: {editor}")
