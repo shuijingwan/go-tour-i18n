@@ -1,0 +1,637 @@
+{
+  "schema_version": 2,
+  "evidence_type": "quality_check_results",
+  "locale": "vi-VN",
+  "snapshot_id": "qc-001",
+  "snapshot_manifest_sha256": "4285582c31e20ff06dd76934807172d41279867027814bfec16b14dffa5eee7a",
+  "rubric": "translation-quality/v1",
+  "result_count": 122,
+  "results": [
+    {
+      "index": 1,
+      "unit_id": "welcome/1",
+      "rating": "A"
+    },
+    {
+      "index": 2,
+      "unit_id": "welcome/2",
+      "rating": "B",
+      "finding": "标题 Go cục bộ 在当前语言版本列表语境中不够自然且容易被理解为局部或本地运行含义，没有清楚传达 source Go local 的语言本地化语境；正文正确，需只修正标题，使其自然对应本页介绍其他语言版本的含义，同时保留 Go。"
+    },
+    {
+      "index": 3,
+      "unit_id": "welcome/4",
+      "rating": "B",
+      "finding": "source code samples 被译为 các mẫu mã；mẫu mã 通常表示样式、款式或外观，并不自然表示代码示例，造成轻微术语语义偏差。需改成明确表示代码示例或示例代码的自然越南语，其余内容不要扩写。"
+    },
+    {
+      "index": 4,
+      "unit_id": "welcome/5",
+      "rating": "A"
+    },
+    {
+      "index": 5,
+      "unit_id": "welcome/3",
+      "rating": "A"
+    },
+    {
+      "index": 6,
+      "unit_id": "basics/1",
+      "rating": "A"
+    },
+    {
+      "index": 7,
+      "unit_id": "basics/2",
+      "rating": "A"
+    },
+    {
+      "index": 8,
+      "unit_id": "basics/3",
+      "rating": "A"
+    },
+    {
+      "index": 9,
+      "unit_id": "basics/4",
+      "rating": "B",
+      "finding": "source zero or more arguments 被译为 không hoặc nhiều đối số，字面上容易理解成零个或多个很多个，没有准确表达从 0 开始的任意数量并明确包含恰好一个参数的情况。需准确保留 zero or more 的技术数量语义。"
+    },
+    {
+      "index": 10,
+      "unit_id": "basics/5",
+      "rating": "A"
+    },
+    {
+      "index": 11,
+      "unit_id": "basics/6",
+      "rating": "A"
+    },
+    {
+      "index": 12,
+      "unit_id": "basics/7",
+      "rating": "A"
+    },
+    {
+      "index": 13,
+      "unit_id": "basics/8",
+      "rating": "A"
+    },
+    {
+      "index": 14,
+      "unit_id": "basics/9",
+      "rating": "A"
+    },
+    {
+      "index": 15,
+      "unit_id": "basics/10",
+      "rating": "A"
+    },
+    {
+      "index": 16,
+      "unit_id": "basics/11",
+      "rating": "A"
+    },
+    {
+      "index": 17,
+      "unit_id": "basics/12",
+      "rating": "A"
+    },
+    {
+      "index": 18,
+      "unit_id": "basics/13",
+      "rating": "A"
+    },
+    {
+      "index": 19,
+      "unit_id": "basics/14",
+      "rating": "A"
+    },
+    {
+      "index": 20,
+      "unit_id": "basics/15",
+      "rating": "A"
+    },
+    {
+      "index": 21,
+      "unit_id": "basics/16",
+      "rating": "A"
+    },
+    {
+      "index": 22,
+      "unit_id": "basics/17",
+      "rating": "A"
+    },
+    {
+      "index": 23,
+      "unit_id": "flowcontrol/1",
+      "rating": "B",
+      "finding": "source 的完整强调标签 Note: 在当前译文中只把 Lưu 放在原强调 span 内，restore 后形成 *Lưu* ý:，导致完整越南语提示标签的强调范围与 source 不一致。需让完整提示标签保持在原强调 span 内，同时保持 protected token identity；正文语义本身无需因此扩写。"
+    },
+    {
+      "index": 24,
+      "unit_id": "flowcontrol/2",
+      "rating": "A"
+    },
+    {
+      "index": 25,
+      "unit_id": "flowcontrol/3",
+      "rating": "A"
+    },
+    {
+      "index": 26,
+      "unit_id": "flowcontrol/4",
+      "rating": "A"
+    },
+    {
+      "index": 27,
+      "unit_id": "flowcontrol/5",
+      "rating": "A"
+    },
+    {
+      "index": 28,
+      "unit_id": "flowcontrol/6",
+      "rating": "A"
+    },
+    {
+      "index": 29,
+      "unit_id": "flowcontrol/7",
+      "rating": "A"
+    },
+    {
+      "index": 30,
+      "unit_id": "flowcontrol/8",
+      "rating": "B",
+      "finding": "source 的完整强调标签 Note: 在当前译文中只把 Lưu 放在原强调 span 内，restore 后形成 *Lưu* ý:，导致完整越南语提示标签的强调范围与 source 不一致。需让完整提示标签保持在原强调 span 内，同时保持 protected token identity；正文语义本身无需因此扩写。"
+    },
+    {
+      "index": 31,
+      "unit_id": "flowcontrol/9",
+      "rating": "A"
+    },
+    {
+      "index": 32,
+      "unit_id": "flowcontrol/10",
+      "rating": "A"
+    },
+    {
+      "index": 33,
+      "unit_id": "flowcontrol/11",
+      "rating": "A"
+    },
+    {
+      "index": 34,
+      "unit_id": "flowcontrol/12",
+      "rating": "A"
+    },
+    {
+      "index": 35,
+      "unit_id": "flowcontrol/13",
+      "rating": "A"
+    },
+    {
+      "index": 36,
+      "unit_id": "flowcontrol/14",
+      "rating": "A"
+    },
+    {
+      "index": 37,
+      "unit_id": "moretypes/1",
+      "rating": "A"
+    },
+    {
+      "index": 38,
+      "unit_id": "moretypes/2",
+      "rating": "A"
+    },
+    {
+      "index": 39,
+      "unit_id": "moretypes/3",
+      "rating": "A"
+    },
+    {
+      "index": 40,
+      "unit_id": "moretypes/4",
+      "rating": "A"
+    },
+    {
+      "index": 41,
+      "unit_id": "moretypes/5",
+      "rating": "A"
+    },
+    {
+      "index": 42,
+      "unit_id": "moretypes/6",
+      "rating": "A"
+    },
+    {
+      "index": 43,
+      "unit_id": "moretypes/7",
+      "rating": "A"
+    },
+    {
+      "index": 44,
+      "unit_id": "moretypes/8",
+      "rating": "A"
+    },
+    {
+      "index": 45,
+      "unit_id": "moretypes/9",
+      "rating": "A"
+    },
+    {
+      "index": 46,
+      "unit_id": "moretypes/10",
+      "rating": "A"
+    },
+    {
+      "index": 47,
+      "unit_id": "moretypes/11",
+      "rating": "A"
+    },
+    {
+      "index": 48,
+      "unit_id": "moretypes/12",
+      "rating": "A"
+    },
+    {
+      "index": 49,
+      "unit_id": "moretypes/13",
+      "rating": "A"
+    },
+    {
+      "index": 50,
+      "unit_id": "moretypes/14",
+      "rating": "A"
+    },
+    {
+      "index": 51,
+      "unit_id": "moretypes/15",
+      "rating": "A"
+    },
+    {
+      "index": 52,
+      "unit_id": "moretypes/16",
+      "rating": "A"
+    },
+    {
+      "index": 53,
+      "unit_id": "moretypes/17",
+      "rating": "A"
+    },
+    {
+      "index": 54,
+      "unit_id": "moretypes/18",
+      "rating": "A"
+    },
+    {
+      "index": 55,
+      "unit_id": "moretypes/19",
+      "rating": "A"
+    },
+    {
+      "index": 56,
+      "unit_id": "moretypes/20",
+      "rating": "A"
+    },
+    {
+      "index": 57,
+      "unit_id": "moretypes/21",
+      "rating": "A"
+    },
+    {
+      "index": 58,
+      "unit_id": "moretypes/22",
+      "rating": "B",
+      "finding": "source 强调的 Note 提示标签在越南语中应由完整的 Lưu ý 表达，但当前 protected span 只包含 Lưu，ý 位于 span 外，restore 后形成 *Lưu* ý:。需让完整越南语提示标签位于原强调 span 内，同时保持 protected token identity；正文技术语义无需因此扩写。"
+    },
+    {
+      "index": 59,
+      "unit_id": "moretypes/23",
+      "rating": "A"
+    },
+    {
+      "index": 60,
+      "unit_id": "moretypes/24",
+      "rating": "A"
+    },
+    {
+      "index": 61,
+      "unit_id": "moretypes/25",
+      "rating": "A"
+    },
+    {
+      "index": 62,
+      "unit_id": "moretypes/26",
+      "rating": "A"
+    },
+    {
+      "index": 63,
+      "unit_id": "moretypes/27",
+      "rating": "A"
+    },
+    {
+      "index": 64,
+      "unit_id": "methods/1",
+      "rating": "A"
+    },
+    {
+      "index": 65,
+      "unit_id": "methods/2",
+      "rating": "A"
+    },
+    {
+      "index": 66,
+      "unit_id": "methods/3",
+      "rating": "A"
+    },
+    {
+      "index": 67,
+      "unit_id": "methods/4",
+      "rating": "A"
+    },
+    {
+      "index": 68,
+      "unit_id": "methods/5",
+      "rating": "A"
+    },
+    {
+      "index": 69,
+      "unit_id": "methods/6",
+      "rating": "A"
+    },
+    {
+      "index": 70,
+      "unit_id": "methods/7",
+      "rating": "A"
+    },
+    {
+      "index": 71,
+      "unit_id": "methods/8",
+      "rating": "A"
+    },
+    {
+      "index": 72,
+      "unit_id": "methods/9",
+      "rating": "B",
+      "finding": "source 强调的 Note 提示标签在越南语中应由完整的 Lưu ý 表达，但当前 protected span 只包含 Lưu，ý 位于 span 外，restore 后形成 *Lưu* ý:。需让完整越南语提示标签位于原强调 span 内，同时保持 protected token identity；正文技术语义无需因此扩写。"
+    },
+    {
+      "index": 73,
+      "unit_id": "methods/10",
+      "rating": "A"
+    },
+    {
+      "index": 74,
+      "unit_id": "methods/11",
+      "rating": "A"
+    },
+    {
+      "index": 75,
+      "unit_id": "methods/12",
+      "rating": "A"
+    },
+    {
+      "index": 76,
+      "unit_id": "methods/13",
+      "rating": "A"
+    },
+    {
+      "index": 77,
+      "unit_id": "methods/14",
+      "rating": "B",
+      "finding": "source 强调的是完整术语 empty interface，glossary preferred 对应 interface rỗng；当前 raw response 仅将 interface 放在原强调 span 内，rỗng 位于 span 外，restore 为 _interface_ rỗng。同时 Mọi kiểu đều triển khai ít nhất là không phương thức nào 对 at least zero methods 的表达生硬。需保持完整 interface rỗng 的强调范围，并自然准确表达该说明。"
+    },
+    {
+      "index": 78,
+      "unit_id": "methods/15",
+      "rating": "B",
+      "finding": "source 强调的是完整术语 type assertion，glossary mandatory 为 khẳng định kiểu；当前 protected span 仅包含 khẳng định，kiểu 位于 span 外，restore 为 _khẳng_ định kiểu。需让完整 mandatory term khẳng định kiểu 保持在原强调 span 内。"
+    },
+    {
+      "index": 79,
+      "unit_id": "methods/16",
+      "rating": "B",
+      "finding": "source 强调的是完整术语 type switch，glossary mandatory 为 switch kiểu；当前 protected span 仅包含 switch，kiểu 位于 span 外，restore 为 _switch_ kiểu。需让完整 mandatory term switch kiểu 保持在原强调 span 内。"
+    },
+    {
+      "index": 80,
+      "unit_id": "methods/17",
+      "rating": "A"
+    },
+    {
+      "index": 81,
+      "unit_id": "methods/18",
+      "rating": "A"
+    },
+    {
+      "index": 82,
+      "unit_id": "methods/19",
+      "rating": "A"
+    },
+    {
+      "index": 83,
+      "unit_id": "methods/20",
+      "rating": "B",
+      "finding": "source 强调的 Note 提示标签在越南语中应由完整的 Lưu ý 表达，但当前 protected span 只包含 Lưu，ý 位于 span 外，restore 后形成 *Lưu* ý:。需让完整越南语提示标签位于原强调 span 内，同时保持 protected token identity；正文技术语义无需因此扩写。"
+    },
+    {
+      "index": 84,
+      "unit_id": "methods/21",
+      "rating": "A"
+    },
+    {
+      "index": 85,
+      "unit_id": "methods/22",
+      "rating": "A"
+    },
+    {
+      "index": 86,
+      "unit_id": "methods/23",
+      "rating": "A"
+    },
+    {
+      "index": 87,
+      "unit_id": "methods/24",
+      "rating": "B",
+      "finding": "source 强调的 Note 提示标签在越南语中应由完整的 Lưu ý 表达，但当前 protected span 只包含 Lưu，ý 位于 span 外，restore 后形成 *Lưu* ý:。需让完整越南语提示标签位于原强调 span 内，同时保持 protected token identity；正文技术语义无需因此扩写。"
+    },
+    {
+      "index": 88,
+      "unit_id": "methods/25",
+      "rating": "A"
+    },
+    {
+      "index": 89,
+      "unit_id": "methods/26",
+      "rating": "A"
+    },
+    {
+      "index": 90,
+      "unit_id": "generics/1",
+      "rating": "A"
+    },
+    {
+      "index": 91,
+      "unit_id": "generics/2",
+      "rating": "A"
+    },
+    {
+      "index": 92,
+      "unit_id": "generics/3",
+      "rating": "A"
+    },
+    {
+      "index": 93,
+      "unit_id": "concurrency/1",
+      "rating": "A"
+    },
+    {
+      "index": 94,
+      "unit_id": "concurrency/2",
+      "rating": "A"
+    },
+    {
+      "index": 95,
+      "unit_id": "concurrency/3",
+      "rating": "B",
+      "finding": "source 强调 buffered；当前越南语通过 có bộ đệm 表达该含义，但 protected span 只包住 đệm，restore 后只有 đệm 被强调。需调整句法或 token 周边文本，使 source 的强调自然覆盖完整对应表达，同时保持 protected token identity。"
+    },
+    {
+      "index": 96,
+      "unit_id": "concurrency/4",
+      "rating": "B",
+      "finding": "两个提示标签的强调和词序均未忠实恢复：第一个 Note: 成为 *Lưu* ý:；第二个 Another note: 被组织成 *Lưu*ý:* Ngoài ra，Ngoài ra 被移出原提示标签且强调边界异常。正文关于关闭 channel 的技术含义正确；需只重构两个提示标签，使完整越南语标签对应原强调结构并保持 protected token identity。"
+    },
+    {
+      "index": 97,
+      "unit_id": "concurrency/5",
+      "rating": "A"
+    },
+    {
+      "index": 98,
+      "unit_id": "concurrency/6",
+      "rating": "A"
+    },
+    {
+      "index": 99,
+      "unit_id": "concurrency/7",
+      "rating": "A"
+    },
+    {
+      "index": 100,
+      "unit_id": "concurrency/8",
+      "rating": "A"
+    },
+    {
+      "index": 101,
+      "unit_id": "concurrency/9",
+      "rating": "B",
+      "finding": "source 强调完整术语 mutual exclusion；当前越南语为 loại trừ lẫn nhau，但 raw response 只将 loại 放在原强调 span 内，restore 为 _loại_ trừ lẫn nhau。需让完整越南语术语保持 source 的强调范围，同时保持 protected token identity。"
+    },
+    {
+      "index": 102,
+      "unit_id": "concurrency/10",
+      "rating": "B",
+      "finding": "source 强调完整标签 Hint，对应越南语 Gợi ý；当前 protected span 只包含 Gợi，ý 位于 span 外，restore 为 _Gợi_ ý:。需让完整 Gợi ý 位于原强调 span 内，同时保持 protected token identity；正文并发技术含义正确。"
+    },
+    {
+      "index": 103,
+      "unit_id": "concurrency/11",
+      "rating": "A"
+    },
+    {
+      "index": 104,
+      "unit_id": "example:basics/numeric-constants.go",
+      "rating": "A"
+    },
+    {
+      "index": 105,
+      "unit_id": "example:basics/type-inference.go",
+      "rating": "A"
+    },
+    {
+      "index": 106,
+      "unit_id": "example:concurrency/channels.go",
+      "rating": "A"
+    },
+    {
+      "index": 107,
+      "unit_id": "example:concurrency/exercise-equivalent-binary-trees.go",
+      "rating": "A"
+    },
+    {
+      "index": 108,
+      "unit_id": "example:concurrency/exercise-web-crawler.go",
+      "rating": "A"
+    },
+    {
+      "index": 109,
+      "unit_id": "example:concurrency/mutex-counter.go",
+      "rating": "A"
+    },
+    {
+      "index": 110,
+      "unit_id": "example:flowcontrol/if-and-else.go",
+      "rating": "A"
+    },
+    {
+      "index": 111,
+      "unit_id": "example:generics/index.go",
+      "rating": "A"
+    },
+    {
+      "index": 112,
+      "unit_id": "example:generics/list.go",
+      "rating": "A"
+    },
+    {
+      "index": 113,
+      "unit_id": "example:methods/exercise-reader.go",
+      "rating": "A"
+    },
+    {
+      "index": 114,
+      "unit_id": "example:methods/exercise-stringer.go",
+      "rating": "A"
+    },
+    {
+      "index": 115,
+      "unit_id": "example:methods/interfaces-are-satisfied-implicitly.go",
+      "rating": "A"
+    },
+    {
+      "index": 116,
+      "unit_id": "example:methods/interfaces.go",
+      "rating": "A"
+    },
+    {
+      "index": 117,
+      "unit_id": "example:moretypes/append.go",
+      "rating": "A"
+    },
+    {
+      "index": 118,
+      "unit_id": "example:moretypes/exercise-fibonacci-closure.go",
+      "rating": "A"
+    },
+    {
+      "index": 119,
+      "unit_id": "example:moretypes/pointers.go",
+      "rating": "A"
+    },
+    {
+      "index": 120,
+      "unit_id": "example:moretypes/slice-len-cap.go",
+      "rating": "A"
+    },
+    {
+      "index": 121,
+      "unit_id": "example:moretypes/slices-of-slice.go",
+      "rating": "A"
+    },
+    {
+      "index": 122,
+      "unit_id": "example:moretypes/struct-literals.go",
+      "rating": "A"
+    }
+  ]
+}
