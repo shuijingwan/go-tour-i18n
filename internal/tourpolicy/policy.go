@@ -70,11 +70,13 @@ var ownerContentTargets = map[string]bool{
 // the language registry. A shared owner-controlled hostname is not sufficient
 // to make any other path or URL variant a site homepage.
 var siteHomeTargets = map[string]bool{
+	"https://ar-go-dev.shuijingwanwq.com/":    true,
 	"https://pt-go-dev.shuijingwanwq.com/":    true,
 	"https://nl-go-dev.shuijingwanwq.com/":    true,
 	"https://de-go-dev.shuijingwanwq.com/":    true,
 	"https://fr-go-dev.shuijingwanwq.com/":    true,
 	"https://go-dev.shuijingwanwq.com/":       true,
+	"https://id-go-dev.shuijingwanwq.com/":    true,
 	"https://it-go-dev.shuijingwanwq.com/":    true,
 	"https://ja-go-dev.shuijingwanwq.com/":    true,
 	"https://ko-go-dev.shuijingwanwq.com/":    true,
@@ -82,6 +84,7 @@ var siteHomeTargets = map[string]bool{
 	"https://es-go-dev.shuijingwanwq.com/":    true,
 	"https://sv-go-dev.shuijingwanwq.com/":    true,
 	"https://tr-go-dev.shuijingwanwq.com/":    true,
+	"https://vi-go-dev.shuijingwanwq.com/":    true,
 	"https://zh-tw-go-dev.shuijingwanwq.com/": true,
 }
 

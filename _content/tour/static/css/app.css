@@ -54,6 +54,19 @@ pre, code {
     color: #333;
     background-color: #fafafa;
 }
+pre,
+code,
+#file-editor,
+#file-editor > textarea,
+#file-editor .CodeMirror,
+#file-editor .CodeMirror-scroll,
+#file-editor .CodeMirror-lines,
+#file-editor .CodeMirror-gutters,
+.output > pre {
+    direction: ltr;
+    text-align: left;
+    unicode-bidi: isolate;
+}
 [data-theme='dark'] code, [data-theme='dark'] .info {
     background-color: #2B2D2F !important;
     color: #BABABA;
@@ -1359,4 +1372,133 @@ a#run, a#kill {
 .go-Icon--inverted {
     filter: brightness(0) saturate(100%) invert(100%) sepia(97%) saturate(13%)
     hue-rotate(245deg) brightness(103%) contrast(107%);
+}
+
+/* RTL locale layout. Source code and editor surfaces remain explicitly LTR
+   in the shared rule near the generic pre/code styles. */
+[dir='rtl'] .gopherlogo {
+    margin-right: 0;
+    margin-left: 2.25rem;
+}
+[dir='rtl'] .left {
+    margin-right: 0;
+    margin-left: 10px;
+}
+[dir='rtl'] .right {
+    margin-right: auto;
+    margin-left: 0;
+}
+[dir='rtl'] .container ul,
+[dir='rtl'] .slide-content ul {
+    padding-right: 32px;
+    padding-left: 0;
+}
+[dir='rtl'] .nav {
+    float: left;
+    margin-right: 10px;
+    margin-left: 0;
+}
+[dir='rtl'] .header-project-nav {
+    margin-right: 0;
+    margin-left: 10px;
+}
+[dir='rtl'] .header-language > summary::after {
+    margin-right: 2px;
+    margin-left: 0;
+}
+[dir='rtl'] .header-language-menu {
+    right: auto;
+    left: 0;
+    text-align: right;
+}
+[dir='rtl'] .lesson-title {
+    padding-right: 0;
+    padding-left: 48px;
+}
+[dir='rtl'] #file-menu .menu-button,
+[dir='rtl'] #explorer .imports-checkbox,
+[dir='rtl'] #explorer .syntax-checkbox {
+    float: left;
+}
+[dir='rtl'] .output-menu .menu-button {
+    float: right;
+}
+[dir='rtl'] #explorer {
+    padding-right: 30px;
+    padding-left: 0;
+}
+[dir='rtl'] .output .system {
+    display: block;
+    direction: rtl;
+    text-align: right;
+    unicode-bidi: isolate;
+}
+[dir='rtl'] .toc {
+    right: auto;
+    left: 0;
+    border-right: 4px solid #e0ebf5;
+    border-left: 0;
+}
+[dir='rtl'][data-theme='dark'] .toc {
+    border-right-color: #171717;
+    border-left: 0;
+}
+[dir='rtl'] .click-catcher {
+    right: 0;
+    left: 10px;
+}
+[dir='rtl'] .site-header {
+    text-align: right;
+}
+[dir='rtl'] .site-header .site-logo {
+    margin-right: 0;
+    margin-left: 2.25rem;
+}
+[dir='rtl'] .site-links,
+[dir='rtl'] .site-validation-list {
+    padding-right: 20px;
+    padding-left: 0;
+}
+[dir='rtl'] .toc-page {
+    padding-right: 4px;
+    padding-left: 0;
+}
+
+@media (max-width: 600px) {
+    [dir='rtl'] .top-bar {
+        text-align: right;
+    }
+    [dir='rtl'] .top-bar .left {
+        margin-right: 0;
+        margin-left: 0;
+    }
+    [dir='rtl'] .top-bar .right {
+        margin-right: 6px;
+        margin-left: 0;
+    }
+    [dir='rtl'] .top-bar .gopherlogo {
+        margin-right: 0;
+        margin-left: 0.5rem;
+    }
+    [dir='rtl'] .header-project-nav {
+        margin-right: 0;
+        margin-left: 2px;
+    }
+    [dir='rtl'] .header-language-menu {
+        right: auto;
+        left: 8px;
+    }
+    [dir='rtl'] .top-bar .nav {
+        margin-right: 2px;
+        margin-left: 0;
+    }
+    [dir='rtl'] .site-header .site-logo {
+        margin-right: 0;
+        margin-left: 0.75rem;
+    }
+    [dir='rtl'] .toc {
+        right: 0;
+        left: 0;
+        border: none;
+    }
 }

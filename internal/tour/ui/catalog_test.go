@@ -79,6 +79,22 @@ func TestLoadFromFSUsesSuppliedCatalogFiles(t *testing.T) {
 	}
 }
 
+func TestLoadFromFSAcceptsArabicLanguageIdentity(t *testing.T) {
+	en, err := catalogFiles.ReadFile("en.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	arabic := bytes.Replace(en, []byte(`"locale": "en"`), []byte(`"locale": "ar"`), 1)
+	arabic = bytes.Replace(arabic, []byte(`"html_lang": "en"`), []byte(`"html_lang": "ar"`), 1)
+	catalog, err := LoadFromFS("ar", fstest.MapFS{"en.json": {Data: en}, "ar.json": {Data: arabic}})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if catalog.Locale != "ar" || catalog.HTMLLang != "ar" {
+		t.Fatalf("Arabic catalog identity = locale %q, html_lang %q", catalog.Locale, catalog.HTMLLang)
+	}
+}
+
 func TestBrazilianPortugueseCatalogMatchesEnglishSource(t *testing.T) {
 	source, err := Load("en")
 	if err != nil {

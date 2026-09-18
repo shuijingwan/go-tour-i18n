@@ -126,7 +126,7 @@ def load_identity(path):
                 safe_text(value, f"{context}.{field}")
             if field in ABSOLUTE_FIELDS:
                 validate_path(value, f"{context}.{field}")
-        if not re.fullmatch(r"[a-z]{2,3}-[A-Z]{2}", profile["locale"]):
+        if not re.fullmatch(r"[a-z]{2,3}(?:-[A-Z]{2})?", profile["locale"]):
             fail(f"{context}.locale is not canonical")
         if profile["production_state"] not in ("first-production", "live"):
             fail(f"{context}.production_state is unsupported")

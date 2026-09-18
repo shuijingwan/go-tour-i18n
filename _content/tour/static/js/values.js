@@ -53,6 +53,7 @@ value('feedbackConfig', {
 value('ui.config', {
     codemirror: {
         mode: 'text/x-go',
+        direction: 'ltr',
         matchBrackets: true,
         lineNumbers: true,
         autofocus: true,

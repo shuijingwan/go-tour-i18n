@@ -120,6 +120,7 @@ func initTour(mux *http.ServeMux, transport, locale, playgroundBaseURL string) (
 
 type pageTemplateData struct {
 	HTMLLang                 string
+	Direction                string
 	Metadata                 SiteMetadata
 	Development              bool
 	PublishedAt              string
@@ -148,6 +149,9 @@ func newPageTemplateData(catalog ui.Catalog, metadata SiteMetadata) (pageTemplat
 	profile, ok := localeProfiles[catalog.Locale]
 	if !ok {
 		return pageTemplateData{}, fmt.Errorf("unsupported site locale %q", catalog.Locale)
+	}
+	if profile.Direction != "ltr" && profile.Direction != "rtl" {
+		return pageTemplateData{}, fmt.Errorf("unsupported writing direction %q for locale %q", profile.Direction, catalog.Locale)
 	}
 	languages, err := languagesFor(catalog.Locale)
 	if err != nil {
@@ -178,6 +182,7 @@ func newPageTemplateData(catalog ui.Catalog, metadata SiteMetadata) (pageTemplat
 	}
 	return pageTemplateData{
 		HTMLLang:                 catalog.HTMLLang,
+		Direction:                profile.Direction,
 		Metadata:                 metadata,
 		Development:              metadata.Development,
 		PublishedAt:              publishedAt,

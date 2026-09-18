@@ -25,7 +25,7 @@ class CloseoutError(RuntimeError): pass
 KEY_MIN_LENGTH = 8
 KEY_MAX_LENGTH = 128
 KEY_PATTERN = re.compile(r"^[A-Za-z0-9-]+$")
-LOCALE_PATTERN = re.compile(r"^[a-z]{2,3}-[A-Z]{2}$")
+LOCALE_PATTERN = re.compile(r"^[a-z]{2,3}(?:-[A-Z]{2})?$")
 
 def read_key(path):
     path = pathlib.Path(path)

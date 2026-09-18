@@ -39,7 +39,7 @@
 
 以下候选有额外的 identity 或商业前提：
 
-- `ar` 是语言级 roadmap identity；正式实施时必须决定合适的 canonical locale 与 `html_lang` 策略，并纳入 RTL 成本。
+- `ar` 是语言级 roadmap identity；已冻结 canonical locale 与 `html_lang` 均为 `ar`，书写方向为 RTL，不改为 `ar-SA`、`ar-EG` 或其他区域 locale。
 - `pa-IN` 正式实施前必须明确目标书写体系和最终 locale identity。
 - `es-419` 必须先确认现有项目 locale/schema 能力可以表达冻结后的 canonical identity；不得因为本表使用该标签就假设 CLI 已支持。
 - `fil-PH` 使用 Filipino 项目 identity；不得仅因外部 UI language list 使用 Tagalog 名称就自动改成 `tl-PH`。

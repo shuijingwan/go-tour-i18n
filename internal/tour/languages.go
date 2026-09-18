@@ -24,6 +24,7 @@ type LanguageLink struct {
 
 var languageRegistry = []LanguageLink{
 	// 展示顺序按英文语言名称字母顺序排列。
+	{Locale: "ar", EnglishName: "Arabic", Autonym: "العربية", URL: "https://ar-go-dev.shuijingwanwq.com/"},
 	{Locale: "pt-BR", EnglishName: "Brazilian Portuguese", Autonym: "Português (Brasil)", URL: "https://pt-go-dev.shuijingwanwq.com/"},
 	{Locale: "nl-NL", EnglishName: "Dutch", Autonym: "Nederlands", URL: "https://nl-go-dev.shuijingwanwq.com/"},
 	{Locale: "en", EnglishName: "English", Autonym: "English", URL: "https://go.dev/tour/", Official: true},
@@ -55,6 +56,7 @@ type localeProfile struct {
 	TimeZone          *time.Location
 	TimeLabel         string
 	TimeLabelFormat   string
+	Direction         string
 }
 
 var (
@@ -73,95 +75,117 @@ var (
 )
 
 var localeProfiles = map[string]localeProfile{
+	"ar": {
+		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",
+		TimeZone:          time.UTC,
+		TimeLabel:         "UTC",
+		TimeLabelFormat:   " (%s)",
+		Direction:         "rtl",
+	},
 	"pt-BR": {
 		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",
 		TimeZone:          saoPauloTime,
 		TimeLabel:         "horário local",
 		TimeLabelFormat:   " (%s)",
+		Direction:         "ltr",
 	},
 	"nl-NL": {
 		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",
 		TimeZone:          amsterdamTime,
 		TimeLabel:         "lokale tijd",
 		TimeLabelFormat:   " (%s)",
+		Direction:         "ltr",
 	},
 	"zh-CN": {
 		DevelopmentLogURL: "https://www.shuijingwanwq.com/series/go-tour-chinese-edition-development-series/",
 		TimeZone:          time.FixedZone("UTC+8", 8*60*60),
 		TimeLabel:         "北京时间",
 		TimeLabelFormat:   "（%s）",
+		Direction:         "ltr",
 	},
 	"de-DE": {
 		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",
 		TimeZone:          berlinTime,
 		TimeLabel:         "Ortszeit",
 		TimeLabelFormat:   " (%s)",
+		Direction:         "ltr",
 	},
 	"fr-FR": {
 		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",
 		TimeZone:          parisTime,
 		TimeLabel:         "heure locale",
 		TimeLabelFormat:   " (%s)",
+		Direction:         "ltr",
 	},
 	"id-ID": {
 		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",
 		TimeZone:          jakartaTime,
 		TimeLabel:         "waktu setempat",
 		TimeLabelFormat:   " (%s)",
+		Direction:         "ltr",
 	},
 	"vi-VN": {
 		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",
 		TimeZone:          hoChiMinhTime,
 		TimeLabel:         "giờ địa phương",
 		TimeLabelFormat:   " (%s)",
+		Direction:         "ltr",
 	},
 	"it-IT": {
 		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",
 		TimeZone:          romeTime,
 		TimeLabel:         "ora locale",
 		TimeLabelFormat:   " (%s)",
+		Direction:         "ltr",
 	},
 	"es-ES": {
 		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",
 		TimeZone:          madridTime,
 		TimeLabel:         "hora local",
 		TimeLabelFormat:   " (%s)",
+		Direction:         "ltr",
 	},
 	"pl-PL": {
 		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",
 		TimeZone:          warsawTime,
 		TimeLabel:         "czas lokalny",
 		TimeLabelFormat:   " (%s)",
+		Direction:         "ltr",
 	},
 	"sv-SE": {
 		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",
 		TimeZone:          stockholmTime,
 		TimeLabel:         "lokal tid",
 		TimeLabelFormat:   " (%s)",
+		Direction:         "ltr",
 	},
 	"zh-TW": {
 		DevelopmentLogURL: "https://www.shuijingwanwq.com/series/go-tour-chinese-edition-development-series/",
 		TimeZone:          taipeiTime,
 		TimeLabel:         "台灣時間",
 		TimeLabelFormat:   "（%s）",
+		Direction:         "ltr",
 	},
 	"tr-TR": {
 		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",
 		TimeZone:          istanbulTime,
 		TimeLabel:         "yerel saat",
 		TimeLabelFormat:   " (%s)",
+		Direction:         "ltr",
 	},
 	"ja-JP": {
 		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",
 		TimeZone:          time.FixedZone("UTC+9", 9*60*60),
 		TimeLabel:         "日本時間",
 		TimeLabelFormat:   "（%s）",
+		Direction:         "ltr",
 	},
 	"ko-KR": {
 		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",
 		TimeZone:          time.FixedZone("UTC+9", 9*60*60),
 		TimeLabel:         "한국 표준시",
 		TimeLabelFormat:   " (%s)",
+		Direction:         "ltr",
 	},
 	// English is the catalog source and remains renderable for development,
 	// although the English language entry points to the official Tour.
@@ -170,6 +194,7 @@ var localeProfiles = map[string]localeProfile{
 		TimeZone:          time.UTC,
 		TimeLabel:         "UTC",
 		TimeLabelFormat:   "（%s）",
+		Direction:         "ltr",
 	},
 }
 

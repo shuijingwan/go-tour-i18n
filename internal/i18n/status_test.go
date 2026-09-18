@@ -11,6 +11,12 @@ import (
 	"testing"
 )
 
+func TestValidateLocaleNameAcceptsArabicLanguageIdentity(t *testing.T) {
+	if err := ValidateLocaleName("ar"); err != nil {
+		t.Fatalf("ValidateLocaleName(ar): %v", err)
+	}
+}
+
 func TestDeDELocaleIdentity(t *testing.T) {
 	data, err := os.ReadFile(filepath.Join(repoRoot(t), "locales", "de-DE", "locale.json"))
 	if err != nil {

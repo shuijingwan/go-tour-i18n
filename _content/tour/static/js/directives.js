@@ -201,7 +201,7 @@ directive('tableOfContentsButton', ['i18n', function(i18n) {
                     toc.find('.toc-lesson.active .toc-page').show();
                 }
                 toc.toggle('slide', {
-                    direction: 'right'
+                    direction: document.documentElement.dir === 'rtl' ? 'left' : 'right'
                 }, speed);
 
                 // if fullscreen hide the rest of the content when showing the atoc.
@@ -240,7 +240,7 @@ directive('tableOfContents', ['$routeParams', 'toc',
                         return;
                     }
                     $('.toc').toggle('slide', {
-                        direction: 'right'
+                        direction: document.documentElement.dir === 'rtl' ? 'left' : 'right'
                     }, speed);
                     $('#editor-container').show();
                 };

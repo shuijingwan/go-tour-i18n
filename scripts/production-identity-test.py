@@ -180,10 +180,10 @@ class ProductionIdentityTest(unittest.TestCase):
         self.assertEqual(profile["production_public_url"], "https://id-go-dev.shuijingwanwq.com/")
         self.assertEqual(profile["cache_header"], "CF-Cache-Status")
 
-    def test_vietnamese_first_production_profile_is_frozen(self):
+    def test_vietnamese_live_profile_is_frozen(self):
         parsed = MODULE.load_identity(self.identity_path)
         profile = next(item for item in parsed["locales"] if item["locale"] == "vi-VN")
-        self.assertEqual(profile["production_state"], "first-production")
+        self.assertEqual(profile["production_state"], "live")
         self.assertEqual(profile["production_hostname"], "vi-go-dev.shuijingwanwq.com")
         self.assertEqual(profile["cdn"], "cloudflare")
         self.assertEqual(profile["origin_ssh_alias"], "aliyun")
@@ -203,6 +203,24 @@ class ProductionIdentityTest(unittest.TestCase):
         self.assertEqual(profile["playground_allowed_origin"], "https://vi-go-dev.shuijingwanwq.com")
         self.assertEqual(profile["shared_assets_policy"], "shared-cloudflare")
         self.assertEqual(profile["production_public_url"], "https://vi-go-dev.shuijingwanwq.com/")
+        self.assertEqual(profile["cache_header"], "CF-Cache-Status")
+
+    def test_arabic_first_production_profile_is_frozen(self):
+        parsed = MODULE.load_identity(self.identity_path)
+        profile = next(item for item in parsed["locales"] if item["locale"] == "ar")
+        self.assertEqual(profile["production_state"], "first-production")
+        self.assertEqual(profile["production_hostname"], "ar-go-dev.shuijingwanwq.com")
+        self.assertEqual(profile["cdn"], "cloudflare")
+        self.assertEqual(profile["data_root"], "/data/go-tour-ar")
+        self.assertEqual(profile["releases_root"], "/data/go-tour-ar/releases")
+        self.assertEqual(profile["current"], "/data/go-tour-ar/current")
+        self.assertEqual(profile["deployment_lock"], "/data/go-tour-ar/.deploy.lock")
+        self.assertEqual(profile["systemd_service"], "go-tour-ar.service")
+        self.assertEqual(profile["loopback_port"], 4014)
+        self.assertEqual(profile["localhost_health_url"], "http://127.0.0.1:4014/")
+        self.assertEqual(profile["playground_allowed_origin"], "https://ar-go-dev.shuijingwanwq.com")
+        self.assertEqual(profile["shared_assets_policy"], "shared-cloudflare")
+        self.assertEqual(profile["production_public_url"], "https://ar-go-dev.shuijingwanwq.com/")
         self.assertEqual(profile["cache_header"], "CF-Cache-Status")
 
     def test_list_cli_is_authority_derived_and_state_filtered(self):

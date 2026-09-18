@@ -6,6 +6,11 @@ spec=importlib.util.spec_from_file_location("tested",ROOT/"scripts"/"indexnow-cl
 VHOST='''server { listen 80; server_name other.example; }
 server {\n listen 443 ssl;\n server_name locale.example;\n location / { proxy_pass http://127.0.0.1:4000; }\n}\n'''
 class TestProvision(unittest.TestCase):
+ def test_language_only_locale_key_store_identity(self):
+  with tempfile.TemporaryDirectory() as directory:
+   root=pathlib.Path(directory)/"store"
+   path,action=CLOSEOUT.default_key_file("ar",root)
+   self.assertEqual(action,"generated"); self.assertEqual(path.parent.name,"ar")
  def test_default_key_first_run_generates_secure_key_and_second_run_reuses_it(self):
   with tempfile.TemporaryDirectory() as directory:
    root=pathlib.Path(directory)/"store"
