@@ -1,0 +1,21 @@
+* Bài tập: Lỗi
+
+Sao chép hàm ⟪GTI18N_41f1f733_000001⟫Sqrt⟪GTI18N_41f1f733_000002⟫ của bạn từ [[⟪GTI18N_41f1f733_000003⟫][bài tập trước]] và sửa nó để trả về một giá trị ⟪GTI18N_41f1f733_000004⟫error⟪GTI18N_41f1f733_000005⟫.
+
+⟪GTI18N_41f1f733_000006⟫Sqrt⟪GTI18N_41f1f733_000007⟫ phải trả về một giá trị lỗi không nil khi nhận số âm, vì nó không hỗ trợ số phức.
+
+Tạo một kiểu mới
+
+⟪GTI18N_41f1f733_000008⟫
+
+và làm cho nó trở thành một ⟪GTI18N_41f1f733_000009⟫error⟪GTI18N_41f1f733_000010⟫ bằng cách cung cấp cho nó một
+
+⟪GTI18N_41f1f733_000011⟫
+
+phương thức sao cho ⟪GTI18N_41f1f733_000012⟫ErrNegativeSqrt(-2).Error()⟪GTI18N_41f1f733_000013⟫ trả về ⟪GTI18N_41f1f733_000014⟫"cannot`Sqrt`negative`number:`-2"⟪GTI18N_41f1f733_000015⟫.
+
+⟪GTI18N_41f1f733_000016⟫Lưu*ý:⟪GTI18N_41f1f733_000017⟫ Một lời gọi ⟪GTI18N_41f1f733_000018⟫fmt.Sprint(e)⟪GTI18N_41f1f733_000019⟫ bên trong phương thức ⟪GTI18N_41f1f733_000020⟫Error⟪GTI18N_41f1f733_000021⟫ sẽ khiến chương trình rơi vào vòng lặp vô hạn. Bạn có thể tránh điều này bằng cách chuyển đổi ⟪GTI18N_41f1f733_000022⟫e⟪GTI18N_41f1f733_000023⟫ trước: ⟪GTI18N_41f1f733_000024⟫fmt.Sprint(float64(e))⟪GTI18N_41f1f733_000025⟫. Tại sao?
+
+Hãy sửa hàm ⟪GTI18N_41f1f733_000026⟫Sqrt⟪GTI18N_41f1f733_000027⟫ để trả về một giá trị ⟪GTI18N_41f1f733_000028⟫ErrNegativeSqrt⟪GTI18N_41f1f733_000029⟫ khi nhận số âm.
+
+⟪GTI18N_41f1f733_000030⟫

@@ -1,0 +1,21 @@
+* sync.Mutex
+
+Chúng ta đã thấy channel rất phù hợp để giao tiếp giữa các ⟪GTI18N_49f72779_000001⟫.
+
+Nhưng nếu không cần giao tiếp thì sao? Nếu ta chỉ muốn bảo đảm rằng mỗi lần chỉ có
+một ⟪GTI18N_49f72779_000002⟫ có thể truy cập một biến để tránh xung đột thì sao?
+
+Khái niệm này được gọi là ⟪GTI18N_49f72779_000003⟫loại_trừ_lẫn_nhau⟪GTI18N_49f72779_000004⟫, và tên thông dụng của cấu trúc dữ liệu cung cấp cơ chế này là ⟪GTI18N_49f72779_000005⟫mutex⟪GTI18N_49f72779_000006⟫.
+
+Thư viện chuẩn của ⟪GTI18N_49f72779_000007⟫ cung cấp cơ chế loại trừ lẫn nhau bằng
+[[⟪GTI18N_49f72779_000008⟫][⟪GTI18N_49f72779_000009⟫sync.Mutex⟪GTI18N_49f72779_000010⟫]] và hai phương thức của nó:
+
+- ⟪GTI18N_49f72779_000011⟫Lock⟪GTI18N_49f72779_000012⟫
+- ⟪GTI18N_49f72779_000013⟫Unlock⟪GTI18N_49f72779_000014⟫
+
+Ta có thể định nghĩa một khối mã được thực thi trong trạng thái loại trừ lẫn nhau bằng cách bao quanh nó
+bởi lời gọi ⟪GTI18N_49f72779_000015⟫Lock⟪GTI18N_49f72779_000016⟫ và ⟪GTI18N_49f72779_000017⟫Unlock⟪GTI18N_49f72779_000018⟫ như được minh họa trong phương thức ⟪GTI18N_49f72779_000019⟫Inc⟪GTI18N_49f72779_000020⟫.
+
+Ta cũng có thể dùng ⟪GTI18N_49f72779_000021⟫defer⟪GTI18N_49f72779_000022⟫ để bảo đảm mutex sẽ được mở khóa như trong phương thức ⟪GTI18N_49f72779_000023⟫Value⟪GTI18N_49f72779_000024⟫.
+
+⟪GTI18N_49f72779_000025⟫

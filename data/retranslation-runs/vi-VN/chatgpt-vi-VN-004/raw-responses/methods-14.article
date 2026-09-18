@@ -1,0 +1,16 @@
+* Interface rỗng
+
+Kiểu interface không chỉ định phương thức nào được gọi là ⟪GTI18N_7a09a765_000001⟫interface_rỗng⟪GTI18N_7a09a765_000002⟫:
+
+⟪GTI18N_7a09a765_000003⟫
+
+Một interface rỗng có thể chứa giá trị thuộc bất kỳ kiểu nào.
+(Mọi kiểu đều triển khai ít nhất 0 phương thức.)
+
+⟪GTI18N_7a09a765_000004⟫any⟪GTI18N_7a09a765_000005⟫ là bí danh của ⟪GTI18N_7a09a765_000006⟫interface{}⟪GTI18N_7a09a765_000007⟫, và hai kiểu này hoàn toàn
+tương đương.
+
+Interface rỗng được dùng trong mã xử lý các giá trị có kiểu chưa biết.
+Ví dụ, ⟪GTI18N_7a09a765_000008⟫fmt.Print⟪GTI18N_7a09a765_000009⟫ nhận số lượng đối số bất kỳ có kiểu ⟪GTI18N_7a09a765_000010⟫any⟪GTI18N_7a09a765_000011⟫.
+
+⟪GTI18N_7a09a765_000012⟫

@@ -1,0 +1,28 @@
+* Switch kiểu
+
+Một _switch_kiểu_ là cấu trúc cho phép thực hiện liên tiếp nhiều khẳng định kiểu.
+
+Switch kiểu giống câu lệnh switch thông thường, nhưng các case trong
+switch kiểu chỉ định kiểu (không phải giá trị), và các kiểu đó được so sánh với
+kiểu của giá trị được giữ trong giá trị interface đã cho.
+
+	switch v := i.(type) {
+	case T:
+		// ở đây v có kiểu T
+	case S:
+		// ở đây v có kiểu S
+	default:
+		// không khớp; ở đây v có cùng kiểu với i
+	}
+
+Khai báo trong switch kiểu có cùng cú pháp với một khẳng định kiểu `i.(T)`,
+nhưng kiểu cụ thể `T` được thay bằng từ khóa `type`.
+
+Câu lệnh switch này kiểm tra xem giá trị interface `i`
+có chứa một giá trị kiểu `T` hoặc `S` hay không.
+Trong mỗi case `T` và `S`, biến `v` sẽ có kiểu
+tương ứng là `T` hoặc `S` và giữ giá trị mà `i` đang giữ.
+Trong case default (khi không có gì khớp), biến `v` có
+cùng kiểu interface và giá trị như `i`.
+
+.play methods/type-switches.go

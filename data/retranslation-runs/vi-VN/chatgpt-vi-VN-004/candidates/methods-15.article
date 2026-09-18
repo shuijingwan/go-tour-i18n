@@ -1,0 +1,25 @@
+* Khẳng định kiểu
+
+Một _khẳng_định_kiểu_ cho phép truy cập giá trị cụ thể cơ sở của một giá trị interface.
+
+	t := i.(T)
+
+Câu lệnh này khẳng định rằng giá trị interface `i` chứa kiểu cụ thể `T`
+và gán giá trị `T` cơ sở cho biến `t`.
+
+Nếu `i` không chứa một `T`, câu lệnh sẽ gây panic.
+
+Để _kiểm_tra_ một giá trị interface có chứa một kiểu cụ thể hay không,
+một khẳng định kiểu có thể trả về hai giá trị: giá trị cơ sở
+và một giá trị boolean cho biết khẳng định có thành công hay không.
+
+	t, ok := i.(T)
+
+Nếu `i` chứa một `T`, thì `t` sẽ là giá trị cơ sở và `ok` sẽ là true.
+
+Nếu không, `ok` sẽ là false và `t` sẽ là giá trị zero của kiểu `T`,
+và không xảy ra panic.
+
+Hãy lưu ý sự tương đồng giữa cú pháp này và cú pháp đọc từ map.
+
+.play methods/type-assertions.go
