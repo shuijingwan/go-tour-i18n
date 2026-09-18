@@ -738,6 +738,59 @@ func TestIdIDGlossary(t *testing.T) {
 	}
 }
 
+func TestViVNGlossary(t *testing.T) {
+	glossary, err := LoadGlossary(repoRoot(t), "vi-VN")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if glossary.Locale != "vi-VN" {
+		t.Fatalf("glossary locale = %q, want vi-VN", glossary.Locale)
+	}
+	for key, want := range map[string]string{
+		"A Tour of Go":   "Khám phá Go",
+		"Go Playground":  "Go Playground",
+		"Run":            "Chạy",
+		"Format":         "Định dạng",
+		"Reset":          "Đặt lại",
+		"slide":          "trang",
+		"slides":         "trang",
+		"constraint":     "ràng buộc kiểu",
+		"type switch":    "switch kiểu",
+		"type assertion": "khẳng định kiểu",
+		"type parameter": "tham số kiểu",
+	} {
+		if got := glossary.Mandatory[key]; got != want {
+			t.Errorf("mandatory[%q] = %q, want %q", key, got, want)
+		}
+	}
+	for key, want := range map[string]string{
+		"Go programming language": "ngôn ngữ lập trình Go",
+		"channel":                 "channel",
+		"package":                 "gói",
+		"standard library":        "thư viện chuẩn",
+		"concurrency":             "tính đồng thời",
+		"generics":                "generics",
+		"map":                     "map",
+		"slice":                   "slice",
+		"pointer":                 "con trỏ",
+		"function":                "hàm",
+	} {
+		if got := glossary.Preferred[key]; got != want {
+			t.Errorf("preferred[%q] = %q, want %q", key, got, want)
+		}
+	}
+	for _, want := range []string{"Golang"} {
+		if !containsString(glossary.Forbidden, want) {
+			t.Errorf("forbidden missing %q: %v", want, glossary.Forbidden)
+		}
+	}
+	for _, want := range []string{"Go", "Go Playground", "go vet", "gofmt", "GOPATH", "URL", "API", "goroutine", "goroutines", "TranslationUnit", "Page", "Example", "present.Section"} {
+		if !containsString(glossary.Keep, want) {
+			t.Errorf("keep missing %q: %v", want, glossary.Keep)
+		}
+	}
+}
+
 func TestGlossaryKeepValidationAndLegacyTerms(t *testing.T) {
 	tests := []struct {
 		name, body, want string

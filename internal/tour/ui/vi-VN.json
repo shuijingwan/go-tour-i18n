@@ -1,0 +1,458 @@
+{
+  "locale": "vi-VN",
+  "html_lang": "vi-VN",
+  "messages": {
+    "tour.title": {
+      "kind": "plain",
+      "text": "Khám phá Go"
+    },
+    "header.about_project": {
+      "kind": "plain",
+      "text": "Giới thiệu dự án"
+    },
+    "tour.list_heading": {
+      "kind": "plain",
+      "text": "Chào mừng bạn đến với hành trình khám phá Go"
+    },
+    "tour.list_title": {
+      "kind": "plain",
+      "text": "Danh mục khóa học — Khám phá Go"
+    },
+    "tour.list_description": {
+      "kind": "plain",
+      "text": "Duyệt các mô-đun và bài học trong Khám phá Go, phần giới thiệu tương tác về ngôn ngữ lập trình Go."
+    },
+    "theme.toggle": {
+      "kind": "plain",
+      "text": "Chuyển chủ đề"
+    },
+    "theme.system": {
+      "kind": "plain",
+      "text": "Chủ đề hệ thống"
+    },
+    "theme.dark": {
+      "kind": "plain",
+      "text": "Chủ đề tối"
+    },
+    "theme.light": {
+      "kind": "plain",
+      "text": "Chủ đề sáng"
+    },
+    "editor.syntax": {
+      "kind": "plain",
+      "text": "Cú pháp"
+    },
+    "editor.imports": {
+      "kind": "plain",
+      "text": "Import"
+    },
+    "editor.on": {
+      "kind": "plain",
+      "text": "Bật"
+    },
+    "editor.off": {
+      "kind": "plain",
+      "text": "Tắt"
+    },
+    "editor.run": {
+      "kind": "plain",
+      "text": "Chạy"
+    },
+    "editor.kill": {
+      "kind": "plain",
+      "text": "Dừng"
+    },
+    "editor.format": {
+      "kind": "plain",
+      "text": "Định dạng"
+    },
+    "editor.reset": {
+      "kind": "plain",
+      "text": "Đặt lại"
+    },
+    "toc.title": {
+      "kind": "plain",
+      "text": "Mục lục"
+    },
+    "execution.waiting": {
+      "kind": "plain",
+      "text": "Đang chờ máy chủ từ xa..."
+    },
+    "execution.exited": {
+      "kind": "plain",
+      "text": "Chương trình đã kết thúc"
+    },
+    "execution.vet_failed": {
+      "kind": "plain",
+      "text": "Go vet thất bại."
+    },
+    "execution.build_failed": {
+      "kind": "plain",
+      "text": "Go build thất bại."
+    },
+    "execution.communication_error": {
+      "kind": "plain",
+      "text": "Lỗi khi giao tiếp với máy chủ từ xa."
+    },
+    "execution.test_failed": {
+      "kind": "plain",
+      "text": "{count} bài kiểm thử thất bại."
+    },
+    "execution.tests_failed": {
+      "kind": "plain",
+      "text": "{count} bài kiểm thử thất bại."
+    },
+    "execution.tests_passed": {
+      "kind": "plain",
+      "text": "Tất cả bài kiểm thử đều đạt."
+    },
+    "feedback.open": {
+      "kind": "plain",
+      "text": "Gửi phản hồi về trang này"
+    },
+    "feedback.issue_title": {
+      "kind": "plain",
+      "text": "x/website/_content/tour: [THAY BẰNG MÔ TẢ NGẮN]"
+    },
+    "feedback.issue_body": {
+      "kind": "plain",
+      "text": "Hãy sửa tiêu đề ở trên để mô tả vấn đề của bạn và thêm phản hồi tại đây, bao gồm mã nếu cần."
+    },
+    "feedback.context": {
+      "kind": "plain",
+      "text": "Ngữ cảnh"
+    },
+    "module.using_tour.title": {
+      "kind": "plain",
+      "text": "Sử dụng hành trình"
+    },
+    "module.using_tour.description": {
+      "kind": "rich",
+      "text": "<p>Chào mừng bạn đến với hành trình khám phá <a href=\"https://go.dev\">ngôn ngữ lập trình Go</a>. Hành trình này giới thiệu những tính năng quan trọng nhất của ngôn ngữ, chủ yếu gồm:</p>"
+    },
+    "module.basics.title": {
+      "kind": "plain",
+      "text": "Cơ bản"
+    },
+    "module.basics.description": {
+      "kind": "rich",
+      "text": "<p>Điểm khởi đầu: tìm hiểu tất cả kiến thức cơ bản của ngôn ngữ.</p><p>Khai báo biến, gọi hàm và mọi điều bạn cần biết trước khi chuyển sang các bài học tiếp theo.</p>"
+    },
+    "module.methods.title": {
+      "kind": "plain",
+      "text": "Phương thức và interface"
+    },
+    "module.methods.description": {
+      "kind": "rich",
+      "text": "<p>Tìm hiểu cách định nghĩa phương thức trên các kiểu, cách khai báo interface và cách kết hợp tất cả lại với nhau.</p>"
+    },
+    "module.generics.title": {
+      "kind": "plain",
+      "text": "Generics"
+    },
+    "module.generics.description": {
+      "kind": "rich",
+      "text": "<p>Tìm hiểu cách sử dụng tham số kiểu trong các hàm và struct của Go.</p>"
+    },
+    "module.concurrency.title": {
+      "kind": "plain",
+      "text": "Tính đồng thời"
+    },
+    "module.concurrency.description": {
+      "kind": "rich",
+      "text": "<p>Go cung cấp các tính năng đồng thời như một phần của ngôn ngữ cốt lõi.</p><p>Mô-đun này trình bày goroutine và channel, cùng cách chúng được dùng để triển khai các mẫu đồng thời khác nhau.</p>"
+    },
+    "error.not_found": {
+      "kind": "plain",
+      "text": "404 không tìm thấy trang"
+    },
+    "site.title": {
+      "kind": "plain",
+      "text": "Dự án dịch đa ngôn ngữ Khám phá Go"
+    },
+    "site.browser_title": {
+      "kind": "plain",
+      "text": "Yongye · Dự án dịch đa ngôn ngữ Khám phá Go"
+    },
+    "site.unofficial": {
+      "kind": "plain",
+      "text": "Được Yongye duy trì · Dự án dịch đa ngôn ngữ cộng đồng không chính thức"
+    },
+    "site.intro": {
+      "kind": "plain",
+      "text": "Dự án dịch do cộng đồng duy trì dành cho nội dung học Go chính thức. Tiếng Trung Giản thể là ngôn ngữ đầu tiên được cung cấp, và cấu trúc có thể mở rộng để hỗ trợ thêm ngôn ngữ và nội dung Go."
+    },
+    "site.no_affiliation": {
+      "kind": "plain",
+      "text": "Dự án này không liên kết với, không được ủy quyền bởi hoặc chứng thực bởi dự án Go."
+    },
+    "site.start_learning": {
+      "kind": "plain",
+      "text": "Bắt đầu học"
+    },
+    "site.current_projects": {
+      "kind": "plain",
+      "text": "Dự án dịch hiện tại"
+    },
+    "site.tour_description": {
+      "kind": "plain",
+      "text": "Phần giới thiệu tương tác về ngôn ngữ lập trình Go."
+    },
+    "site.current_language": {
+      "kind": "plain",
+      "text": "Ngôn ngữ hiện tại"
+    },
+    "site.enter_tour": {
+      "kind": "plain",
+      "text": "Bắt đầu hành trình"
+    },
+    "site.project_status": {
+      "kind": "plain",
+      "text": "Trạng thái dự án"
+    },
+    "site.course_pages": {
+      "kind": "plain",
+      "text": "Trang khóa học"
+    },
+    "site.latest_release": {
+      "kind": "plain",
+      "text": "Bản phát hành mới nhất"
+    },
+    "site.environment": {
+      "kind": "plain",
+      "text": "Môi trường"
+    },
+    "site.development_environment": {
+      "kind": "plain",
+      "text": "Môi trường phát triển"
+    },
+    "site.upstream_baseline": {
+      "kind": "plain",
+      "text": "Mốc nguồn chính thức"
+    },
+    "site.upstream_commit_time": {
+      "kind": "plain",
+      "text": "Thời điểm commit upstream"
+    },
+    "site.language_versions": {
+      "kind": "plain",
+      "text": "Các phiên bản ngôn ngữ"
+    },
+    "site.official_version": {
+      "kind": "plain",
+      "text": "Khám phá Go chính thức"
+    },
+    "site.community_version": {
+      "kind": "plain",
+      "text": "Bản dịch cộng đồng"
+    },
+    "site.open_official_tour": {
+      "kind": "plain",
+      "text": "Mở Khám phá Go chính thức"
+    },
+    "site.project_links": {
+      "kind": "plain",
+      "text": "Liên kết dự án"
+    },
+    "site.source_code": {
+      "kind": "plain",
+      "text": "Mã nguồn GitHub"
+    },
+    "site.issue_feedback": {
+      "kind": "plain",
+      "text": "GitHub Issues"
+    },
+    "site.development_log": {
+      "kind": "plain",
+      "text": "Nhật ký phát triển: Dự án dịch đa ngôn ngữ Khám phá Go"
+    },
+    "site.official_upstream": {
+      "kind": "plain",
+      "text": "Upstream chính thức"
+    },
+    "site.translation_validation": {
+      "kind": "plain",
+      "text": "Dịch thuật và xác thực"
+    },
+    "site.translation_validation_intro": {
+      "kind": "plain",
+      "text": "Dự án giữ trải nghiệm học tập gần với nguồn chính thức đồng thời kiểm tra từng bản phát hành trước khi công bố."
+    },
+    "site.validation_page_unit": {
+      "kind": "plain",
+      "text": "Bản dịch sử dụng toàn bộ trang khóa học làm đơn vị."
+    },
+    "site.validation_present": {
+      "kind": "plain",
+      "text": "Mỗi bản phát hành được phân tích bằng present."
+    },
+    "site.validation_structure": {
+      "kind": "plain",
+      "text": "Cấu trúc trang được so sánh với nguồn chính thức."
+    },
+    "site.validation_render": {
+      "kind": "plain",
+      "text": "Các trang sau khi render được kiểm tra trước khi phát hành."
+    },
+    "site.validation_examples": {
+      "kind": "plain",
+      "text": "Các Example Go có chú thích ngôn ngữ tự nhiên có thể dịch cũng đi vào quy trình xác thực thống nhất; mọi Example khác tiếp tục dùng trực tiếp nguồn chính thức."
+    },
+    "site.how_it_works": {
+      "kind": "plain",
+      "text": "Cách dự án hoạt động"
+    },
+    "site.how_it_works_intro": {
+      "kind": "plain",
+      "text": "Bản địa hóa khóa học không phải là thay thế từng câu. Đây là quy trình được xây dựng quanh các đơn vị nội dung hoàn chỉnh, trạng thái đánh giá có thể truy vết và sản phẩm phát hành có thể xác minh."
+    },
+    "site.workflow_title": {
+      "kind": "plain",
+      "text": "Từ TranslationUnit đến production"
+    },
+    "site.workflow_units": {
+      "kind": "plain",
+      "text": "TranslationUnit đại diện cho cả Page hoàn chỉnh và Example đủ điều kiện: Page là một present.Section hoàn chỉnh, còn Example là một tệp .go hoàn chỉnh chứa các chú thích ngôn ngữ tự nhiên có thể dịch."
+    },
+    "site.workflow_process": {
+      "kind": "plain",
+      "text": "Mỗi đơn vị lần lượt trải qua dịch thuật, xác thực tự động, Translation Quality Review, promotion, ready, projection và publish; bản dịch được tạo ra không bao giờ được publish trực tiếp."
+    },
+    "site.workflow_review": {
+      "kind": "plain",
+      "text": "Các kiểm tra tự động bảo vệ cấu trúc, phân tích nội dung present, so sánh với nguồn chính thức, xác thực render và trang, đồng thời kiểm tra nội dung Go trong Example. Vẫn bắt buộc có đánh giá độc lập về chất lượng bản dịch trước promotion."
+    },
+    "site.workflow_publish": {
+      "kind": "plain",
+      "text": "Quá trình publish xây dựng projection bản địa hóa hoàn chỉnh từ các candidate canonical ở trạng thái ready, yêu cầu mọi TranslationUnit trong workflow đều ready, sau đó tạo binary production, release.json và SHA256SUMS rồi xác minh toàn bộ bundle."
+    },
+    "site.architecture_title": {
+      "kind": "plain",
+      "text": "Kiến trúc có thể truy vết, kiểm soát và mở rộng"
+    },
+    "site.architecture_upstream": {
+      "kind": "plain",
+      "text": "Dự án liên tục ghi lại commit upstream chính thức, duy trì một mốc có thể truy vết cho các lần cập nhật nguồn sau này."
+    },
+    "site.architecture_playground": {
+      "kind": "plain",
+      "text": "Các Example Go trong trình duyệt chạy qua proxy từ xa được kiểm soát tới Go Playground; môi trường production không để lộ endpoint thực thi mã cục bộ /socket."
+    },
+    "site.architecture_languages": {
+      "kind": "plain",
+      "text": "Máy chủ, template, CSS, JavaScript, hình ảnh và phông chữ được dùng chung khi phù hợp. Mỗi ngôn ngữ tự duy trì bản dịch khóa học, văn bản UI, thuật ngữ và trạng thái. Tiếng Trung Giản thể là ngôn ngữ đầu tiên được phát hành, và còn có thể mở rộng thêm."
+    },
+    "site.operations_note": {
+      "kind": "plain",
+      "text": "Trang này có thể hiển thị quảng cáo để giúp chi trả các chi phí hạ tầng như máy chủ, băng thông và dịch vụ CDN, cũng như chi phí duy trì dự án. Mã nguồn vẫn được công khai, và các bản triển khai tự lưu trữ mặc định không bật cấu hình quảng cáo của trang này."
+    },
+    "support.section_title": {
+      "kind": "plain",
+      "text": "Ủng hộ & chi phí vận hành"
+    },
+    "support.advertising_title": {
+      "kind": "plain",
+      "text": "Thông báo quảng cáo"
+    },
+    "support.translation_title": {
+      "kind": "plain",
+      "text": "Ủng hộ phiên bản tiếng Việt"
+    },
+    "support.intro": {
+      "kind": "plain",
+      "text": "Bạn cũng có thể tự nguyện ủng hộ việc tiếp tục duy trì phiên bản tiếng Việt. Sự ủng hộ của bạn giúp phiên bản ngôn ngữ này tiếp tục được duy trì và phát triển."
+    },
+    "support.reference_label": {
+      "kind": "plain",
+      "text": "Mã tham chiếu ủng hộ"
+    },
+    "support.reference_help": {
+      "kind": "plain",
+      "text": "Nếu dịch vụ thanh toán của bạn hỗ trợ ghi chú hoặc mã tham chiếu, bạn có thể dùng giá trị này."
+    },
+    "support.copy_reference": {
+      "kind": "plain",
+      "text": "Sao chép mã tham chiếu"
+    },
+    "support.copy_address": {
+      "kind": "plain",
+      "text": "Sao chép địa chỉ"
+    },
+    "support.copy_uid": {
+      "kind": "plain",
+      "text": "Sao chép UID"
+    },
+    "support.copied": {
+      "kind": "plain",
+      "text": "Đã sao chép"
+    },
+    "support.asset": {
+      "kind": "plain",
+      "text": "Tài sản"
+    },
+    "support.network": {
+      "kind": "plain",
+      "text": "Mạng"
+    },
+    "support.address": {
+      "kind": "plain",
+      "text": "Địa chỉ"
+    },
+    "support.minimum_deposit": {
+      "kind": "plain",
+      "text": "Mức tối thiểu phía nhận"
+    },
+    "support.platform_title": {
+      "kind": "plain",
+      "text": "Chuyển nội bộ trên nền tảng (tùy chọn)"
+    },
+    "support.uid": {
+      "kind": "plain",
+      "text": "UID"
+    },
+    "support.platform_help": {
+      "kind": "plain",
+      "text": "Người dùng cùng nền tảng có thể chuyển nội bộ bằng UID. Xem chi tiết trên nền tảng."
+    },
+    "support.usdc_network_only": {
+      "kind": "plain",
+      "text": "Chỉ gửi USDC qua mạng Base."
+    },
+    "support.usdt_network_only": {
+      "kind": "plain",
+      "text": "Chỉ gửi USDT qua mạng Tron (TRC20)."
+    },
+    "support.wrong_network_warning": {
+      "kind": "plain",
+      "text": "Sử dụng sai tài sản hoặc mạng có thể dẫn đến mất tiền."
+    },
+    "site.continue_learning_title": {
+      "kind": "plain",
+      "text": "Tiếp tục học Go"
+    },
+    "site.continue_learning_description": {
+      "kind": "plain",
+      "text": "Khám phá Go mới chỉ là bước khởi đầu. Sau khi hoàn thành, hãy truy cập go.dev để xem tài liệu chính thức, hướng dẫn, tài liệu tham khảo thư viện chuẩn, đặc tả ngôn ngữ và nhiều tài nguyên học Go khác."
+    },
+    "site.continue_learning": {
+      "kind": "plain",
+      "text": "Tiếp tục học tại go.dev"
+    },
+    "footer.unofficial": {
+      "kind": "plain",
+      "text": "Yongye · Dự án dịch đa ngôn ngữ cộng đồng không chính thức"
+    },
+    "footer.home": {
+      "kind": "plain",
+      "text": "Trang chủ"
+    },
+    "footer.github": {
+      "kind": "plain",
+      "text": "GitHub"
+    },
+    "footer.development_log": {
+      "kind": "plain",
+      "text": "Nhật ký phát triển"
+    }
+  }
+}

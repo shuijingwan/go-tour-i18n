@@ -417,3 +417,37 @@ func TestIndonesianArticleMetadataCoversCatalog(t *testing.T) {
 		}
 	}
 }
+
+func TestVietnameseArticleMetadataCoversCatalog(t *testing.T) {
+	root := filepath.Clean(filepath.Join("..", ".."))
+	catalog, err := ReadCatalog(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	metadata, err := LoadArticleMetadata(root, "vi-VN", catalog)
+	if err != nil {
+		t.Fatal(err)
+	}
+	wantTitles := map[string]string{
+		"welcome.article":     "Chào mừng!",
+		"basics.article":      "Gói, biến và hàm.",
+		"flowcontrol.article": "Các câu lệnh điều khiển luồng: for, if, else, switch và defer",
+		"moretypes.article":   "Các kiểu khác: struct, slice và map.",
+		"methods.article":     "Phương thức và interface",
+		"generics.article":    "Generics",
+		"concurrency.article": "Tính đồng thời",
+	}
+	if len(metadata) != len(wantTitles) {
+		t.Fatalf("vi-VN article metadata count = %d, want %d", len(metadata), len(wantTitles))
+	}
+	for article, title := range wantTitles {
+		entry, ok := metadata[article]
+		if !ok {
+			t.Errorf("vi-VN article metadata is missing %s", article)
+			continue
+		}
+		if entry.Title != title || entry.Subtitle == "" || strings.Contains(entry.Title+entry.Subtitle, "TODO") {
+			t.Errorf("vi-VN article metadata %s = %+v, want title %q, subtitle, and no TODO", article, entry, title)
+		}
+	}
+}
