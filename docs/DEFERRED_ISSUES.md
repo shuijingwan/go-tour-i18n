@@ -92,3 +92,13 @@
 - 暂缓原因：维护者于 2026-09-16 明确决定本轮暂不处理，留到 2026-09-17 实施共享修复，不增加 ja-JP 特例。
 - 当前状态：`resolved`
 - 后续处理/核销证据：2026-09-17 已完成共享修复：`_content/tour/static/js/support.js` 将 `visualViewport` 的 offset/size 同步至 CSS variables，并监听 `resize` 和 `scroll`；`_content/tour/static/css/app.css` 的 mobile toast 改用这些变量；`internal/tour/support_test.go` 将旧的“禁止 visualViewport compensation”静态断言更新为正向约束。验证结果：精确的 `ja-JP-mobile` subtest PASS；`GO_TOUR_RUN_BROWSER_TESTS=1 go test ./internal/tour -count=1` PASS（56.538s）；`go test ./...` PASS；`node --check _content/tour/static/js/support.js` PASS；`git diff --check` PASS。据此核销为 resolved。
+
+### DI-20260919-001：A Tour of Go 的 PageUp/PageDown 导航依赖焦点位于课程容器
+
+- ID：`DI-20260919-001`
+- 发现日期：`2026-09-19`
+- 发现阶段/场景：ar 首次 Production 前的 Preview HUMAN 验收结束后，为确认共享 RTL 修改是否影响既有 LTR locale，使用 fr-FR 做真实 LTR 回归时进一步比较 PageUp/PageDown 导航体验；随后在当前官方 `https://go.dev/tour/welcome/1` 上独立复现。
+- 问题描述：A Tour of Go 的 PageUp/PageDown 导航事件当前绑定在 `#editor-container` 上。当焦点位于 CodeMirror editor 或课程区域内时，PageDown 可正常从 `/tour/welcome/1` 导航至 `/tour/welcome/2`；当焦点移动到 `#editor-container` 外的可聚焦 Header 控件时，例如官方站点的 `Toggle theme` 按钮或 `A Tour of Go` Logo，PageDown 不再发生导航，PageUp 存在同类行为。fr-FR 与 ar 在相同课程焦点状态下的连续 PageDown 压力测试均稳定通过，因此该现象不是 RTL 或 Arabic 特有回归，而是当前 upstream Tour 的通用焦点依赖。
+- 暂缓原因：维护者明确决定本轮不为该 upstream 通用 UX 问题维护 fork-specific `directives.js` 修复，先等待 Go upstream 调查和处理；已提交 `golang/go#81596`。Arabic first-production 不因此阻塞。待 upstream 修复后按正式 upstream-sync 流程同步并重新验证；若长期未处理且实际用户影响需要本地解决，再评估最小 shared fix。
+- 当前状态：`open`
+- 后续处理/核销证据：上游跟踪：https://github.com/golang/go/issues/81596 。2026-09-19 对当前官方 `go.dev/tour/welcome/1` 的实测结果为：CodeMirror textarea 获得焦点时 PageDown 可从 `/tour/welcome/1` 导航到 `/tour/welcome/2`；`Toggle theme` 按钮或 `A Tour of Go` Logo 获得焦点时，PageDown 后 route 保持 `/tour/welcome/1`。当前保持 open，等待 upstream resolution 后同步复验。
