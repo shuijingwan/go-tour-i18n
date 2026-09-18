@@ -1,0 +1,18 @@
+* Độ dài và dung lượng của slice
+
+Một slice có cả ⟪GTI18N_e2d7d69c_000001⟫độ_dài⟪GTI18N_e2d7d69c_000002⟫ và ⟪GTI18N_e2d7d69c_000003⟫dung_lượng⟪GTI18N_e2d7d69c_000004⟫.
+
+Độ dài của slice là số phần tử mà nó chứa.
+
+Dung lượng của slice là số phần tử trong mảng cơ sở,
+tính từ phần tử đầu tiên của slice.
+
+Có thể lấy độ dài và dung lượng của slice ⟪GTI18N_e2d7d69c_000005⟫s⟪GTI18N_e2d7d69c_000006⟫ bằng các biểu thức
+⟪GTI18N_e2d7d69c_000007⟫len(s)⟪GTI18N_e2d7d69c_000008⟫ và ⟪GTI18N_e2d7d69c_000009⟫cap(s)⟪GTI18N_e2d7d69c_000010⟫.
+
+Bạn có thể tăng độ dài của slice bằng cách tạo lại slice từ nó,
+miễn là slice có đủ dung lượng.
+Hãy thử thay đổi một thao tác với slice trong chương trình ví dụ để mở rộng nó
+vượt quá dung lượng và xem điều gì xảy ra.
+
+⟪GTI18N_e2d7d69c_000011⟫

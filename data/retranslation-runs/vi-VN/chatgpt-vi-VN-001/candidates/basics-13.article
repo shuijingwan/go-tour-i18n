@@ -1,0 +1,21 @@
+* Chuyển đổi kiểu
+
+Biểu thức `T(v)` chuyển đổi giá trị `v` sang kiểu `T`.
+
+Một số phép chuyển đổi số:
+
+	var i int = 42
+	var f float64 = float64(i)
+	var u uint = uint(f)
+
+Hoặc viết đơn giản hơn:
+
+	i := 42
+	f := float64(i)
+	u := uint(f)
+
+Khác với C, trong Go, việc gán giữa các phần tử có kiểu khác nhau yêu cầu
+chuyển đổi tường minh.
+Hãy thử bỏ các phép chuyển đổi `float64` hoặc `uint` trong ví dụ và xem điều gì xảy ra.
+
+.play basics/type-conversions.go

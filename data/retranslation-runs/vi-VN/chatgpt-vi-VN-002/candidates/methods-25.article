@@ -1,0 +1,13 @@
+* Bài tập: Hình ảnh
+
+Bạn còn nhớ [[/tour/moretypes/18][trình tạo hình ảnh]] đã viết trước đó không? Hãy viết một phiên bản khác, nhưng lần này nó sẽ trả về một phần triển khai của `image.Image` thay vì một slice dữ liệu.
+
+Hãy định nghĩa kiểu `Image` của riêng bạn, triển khai [[/pkg/image/#Image][các phương thức cần thiết]], rồi gọi `pic.ShowImage`.
+
+`Bounds` phải trả về một `image.Rectangle`, chẳng hạn `image.Rect(0,`0,`w,`h)`.
+
+`ColorModel` phải trả về `color.RGBAModel`.
+
+`At` phải trả về một màu; giá trị `v` trong trình tạo hình ảnh trước tương ứng với `color.RGBA{v,`v,`255,`255}` trong phiên bản này.
+
+.play methods/exercise-images.go

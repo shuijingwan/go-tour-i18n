@@ -1,0 +1,11 @@
+* Map
+
+Một map ánh xạ khóa tới giá trị.
+
+Giá trị zero của một map là `nil`.
+Một map `nil` không có khóa và cũng không thể thêm khóa.
+
+Hàm `make` trả về một map có kiểu đã cho,
+được khởi tạo và sẵn sàng để sử dụng.
+
+.play moretypes/maps.go

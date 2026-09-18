@@ -1,0 +1,23 @@
+* Phương thức và gián tiếp qua con trỏ
+
+Khi so sánh hai chương trình trước, bạn có thể nhận thấy rằng
+các hàm có đối số là con trỏ phải nhận một con trỏ:
+
+	var v Vertex
+	ScaleFunc(v, 5)  // Lỗi biên dịch!
+	ScaleFunc(&v, 5) // OK
+
+trong khi các phương thức có receiver con trỏ có thể nhận một giá trị hoặc một con trỏ làm
+receiver khi được gọi:
+
+	var v Vertex
+	v.Scale(5)  // OK
+	p := &v
+	p.Scale(10) // OK
+
+Với câu lệnh `v.Scale(5)`, mặc dù `v` là một giá trị chứ không phải con trỏ,
+phương thức có receiver con trỏ vẫn được gọi tự động.
+Nói cách khác, để thuận tiện, Go diễn giải câu lệnh `v.Scale(5)` thành
+`(&v).Scale(5)` vì phương thức `Scale` có receiver con trỏ.
+
+.play methods/indirection.go

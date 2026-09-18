@@ -1,0 +1,12 @@
+* Tiếp tục về range
+
+Bạn có thể bỏ qua chỉ số hoặc giá trị bằng cách gán cho `_`.
+
+    for i, _ := range pow
+    for _, value := range pow
+
+Nếu chỉ cần chỉ số, bạn có thể bỏ biến thứ hai.
+
+    for i := range pow
+
+.play moretypes/range-continued.go

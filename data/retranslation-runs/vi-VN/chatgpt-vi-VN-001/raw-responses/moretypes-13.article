@@ -1,0 +1,15 @@
+* Tạo slice bằng make
+
+Có thể tạo slice bằng hàm ⟪GTI18N_d057e6bf_000001⟫make⟪GTI18N_d057e6bf_000002⟫ tích hợp sẵn;
+đây là cách bạn tạo các mảng có kích thước động.
+
+Hàm ⟪GTI18N_d057e6bf_000003⟫make⟪GTI18N_d057e6bf_000004⟫ cấp phát một mảng đã được đưa về giá trị zero
+và trả về một slice tham chiếu đến mảng đó:
+
+⟪GTI18N_d057e6bf_000005⟫
+
+Để chỉ định dung lượng, hãy truyền đối số thứ ba cho ⟪GTI18N_d057e6bf_000006⟫make⟪GTI18N_d057e6bf_000007⟫:
+
+⟪GTI18N_d057e6bf_000008⟫
+
+⟪GTI18N_d057e6bf_000009⟫

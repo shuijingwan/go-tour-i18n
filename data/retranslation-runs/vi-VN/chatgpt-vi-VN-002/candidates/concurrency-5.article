@@ -1,0 +1,7 @@
+* Select
+
+Câu lệnh `select` cho phép một goroutine chờ nhiều thao tác giao tiếp.
+
+Một `select` sẽ chặn cho đến khi một trong các case có thể chạy, rồi thực thi case đó. Nếu có nhiều case cùng sẵn sàng, nó sẽ chọn ngẫu nhiên một case.
+
+.play concurrency/select.go

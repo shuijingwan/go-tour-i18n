@@ -1,0 +1,21 @@
+* For
+
+Go chỉ có một cấu trúc lặp: vòng lặp `for`.
+
+Vòng lặp `for` cơ bản có ba thành phần, được phân tách bằng dấu chấm phẩy:
+
+- câu lệnh khởi tạo: được thực thi trước lần lặp đầu tiên
+- biểu thức điều kiện: được đánh giá trước mỗi lần lặp
+- câu lệnh sau: được thực thi ở cuối mỗi lần lặp
+
+Câu lệnh khởi tạo thường là một khai báo biến, và các
+biến được khai báo tại đó chỉ có thể thấy trong phạm vi của câu lệnh
+`for`.
+
+Vòng lặp sẽ dừng lặp khi điều kiện boolean được đánh giá là `false`.
+
+*Lưu* ý: Không giống các ngôn ngữ như C, Java hay JavaScript, ba thành phần
+của câu lệnh `for` không được bao quanh bởi dấu ngoặc đơn và dấu ngoặc nhọn `{`}`
+luôn bắt buộc.
+
+.play flowcontrol/for.go

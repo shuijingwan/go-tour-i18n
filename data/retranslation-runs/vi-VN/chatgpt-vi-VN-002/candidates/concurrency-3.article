@@ -1,0 +1,11 @@
+* Channel có bộ đệm
+
+Channel có thể có bộ _đệm_. Hãy cung cấp độ dài bộ đệm làm đối số thứ hai cho `make` để khởi tạo một channel có bộ đệm:
+
+	ch := make(chan int, 100)
+
+Thao tác gửi tới channel có bộ đệm chỉ chặn khi bộ đệm đầy. Thao tác nhận chặn khi bộ đệm rỗng.
+
+Hãy sửa ví dụ để làm bộ đệm bị quá đầy và xem điều gì xảy ra.
+
+.play concurrency/buffered-channels.go

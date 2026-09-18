@@ -1,0 +1,24 @@
+* Receiver con trỏ
+
+Bạn có thể khai báo các phương thức với receiver con trỏ.
+
+Điều này có nghĩa là kiểu của receiver có cú pháp literal `*T` với một kiểu `T` nào đó.
+(Ngoài ra, bản thân `T` không thể là một con trỏ như `*int`.)
+
+Ví dụ, phương thức `Scale` ở đây được định nghĩa trên `*Vertex`.
+
+Các phương thức có receiver con trỏ có thể thay đổi giá trị mà receiver
+trỏ tới (như `Scale` thực hiện ở đây).
+Vì các phương thức thường cần thay đổi receiver của chúng, receiver con trỏ
+phổ biến hơn receiver giá trị.
+
+Hãy thử bỏ `*` khỏi khai báo của hàm `Scale` ở dòng 16
+và quan sát hành vi của chương trình thay đổi như thế nào.
+
+Với receiver giá trị, phương thức `Scale` thao tác trên một bản sao của giá trị
+`Vertex` ban đầu.
+(Đây cũng là hành vi của mọi đối số hàm khác.)
+Phương thức `Scale` phải có receiver con trỏ để thay đổi giá trị `Vertex`
+được khai báo trong hàm `main`.
+
+.play methods/methods-pointers.go

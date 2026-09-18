@@ -1,0 +1,21 @@
+* Bài tập: Lỗi
+
+Sao chép hàm `Sqrt` của bạn từ [[/tour/flowcontrol/8][bài tập trước]] và sửa nó để trả về một giá trị `error`.
+
+`Sqrt` phải trả về một giá trị lỗi không nil khi nhận số âm, vì nó không hỗ trợ số phức.
+
+Tạo một kiểu mới
+
+	type ErrNegativeSqrt float64
+
+và làm cho nó trở thành một `error` bằng cách cung cấp cho nó một
+
+	func (e ErrNegativeSqrt) Error() string
+
+phương thức sao cho `ErrNegativeSqrt(-2).Error()` trả về `"cannot`Sqrt`negative`number:`-2"`.
+
+*Lưu* ý: Một lời gọi `fmt.Sprint(e)` bên trong phương thức `Error` sẽ khiến chương trình rơi vào vòng lặp vô hạn. Bạn có thể tránh điều này bằng cách chuyển đổi `e` trước: `fmt.Sprint(float64(e))`. Tại sao?
+
+Hãy sửa hàm `Sqrt` để trả về một giá trị `ErrNegativeSqrt` khi nhận số âm.
+
+.play methods/exercise-errors.go

@@ -1,0 +1,7 @@
+* Closure của hàm
+
+Các hàm của Go có thể là closure. Closure là một giá trị hàm tham chiếu đến các biến bên ngoài phần thân của nó. Hàm có thể truy cập và gán cho các biến được tham chiếu; theo nghĩa này, hàm được "gắn" với các biến đó.
+
+Ví dụ, hàm `adder` trả về một closure. Mỗi closure được gắn với biến `sum` riêng của nó.
+
+.play moretypes/function-closures.go

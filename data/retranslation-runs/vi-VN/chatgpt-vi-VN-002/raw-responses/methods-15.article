@@ -1,0 +1,25 @@
+* Khẳng định kiểu
+
+Một ⟪GTI18N_c205b4eb_000001⟫khẳng định⟪GTI18N_c205b4eb_000002⟫ kiểu cho phép truy cập giá trị cụ thể cơ sở của một giá trị interface.
+
+⟪GTI18N_c205b4eb_000003⟫
+
+Câu lệnh này khẳng định rằng giá trị interface ⟪GTI18N_c205b4eb_000004⟫i⟪GTI18N_c205b4eb_000005⟫ chứa kiểu cụ thể ⟪GTI18N_c205b4eb_000006⟫T⟪GTI18N_c205b4eb_000007⟫
+và gán giá trị ⟪GTI18N_c205b4eb_000008⟫T⟪GTI18N_c205b4eb_000009⟫ cơ sở cho biến ⟪GTI18N_c205b4eb_000010⟫t⟪GTI18N_c205b4eb_000011⟫.
+
+Nếu ⟪GTI18N_c205b4eb_000012⟫i⟪GTI18N_c205b4eb_000013⟫ không chứa một ⟪GTI18N_c205b4eb_000014⟫T⟪GTI18N_c205b4eb_000015⟫, câu lệnh sẽ gây panic.
+
+Để ⟪GTI18N_c205b4eb_000016⟫kiểm tra⟪GTI18N_c205b4eb_000017⟫ một giá trị interface có chứa một kiểu cụ thể hay không,
+một khẳng định kiểu có thể trả về hai giá trị: giá trị cơ sở
+và một giá trị boolean cho biết khẳng định có thành công hay không.
+
+⟪GTI18N_c205b4eb_000018⟫
+
+Nếu ⟪GTI18N_c205b4eb_000019⟫i⟪GTI18N_c205b4eb_000020⟫ chứa một ⟪GTI18N_c205b4eb_000021⟫T⟪GTI18N_c205b4eb_000022⟫, thì ⟪GTI18N_c205b4eb_000023⟫t⟪GTI18N_c205b4eb_000024⟫ sẽ là giá trị cơ sở và ⟪GTI18N_c205b4eb_000025⟫ok⟪GTI18N_c205b4eb_000026⟫ sẽ là true.
+
+Nếu không, ⟪GTI18N_c205b4eb_000027⟫ok⟪GTI18N_c205b4eb_000028⟫ sẽ là false và ⟪GTI18N_c205b4eb_000029⟫t⟪GTI18N_c205b4eb_000030⟫ sẽ là giá trị zero của kiểu ⟪GTI18N_c205b4eb_000031⟫T⟪GTI18N_c205b4eb_000032⟫,
+và không xảy ra panic.
+
+Hãy lưu ý sự tương đồng giữa cú pháp này và cú pháp đọc từ map.
+
+⟪GTI18N_c205b4eb_000033⟫

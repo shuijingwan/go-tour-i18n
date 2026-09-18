@@ -1,0 +1,17 @@
+* Chọn receiver giá trị hay receiver con trỏ
+
+Có hai lý do để dùng receiver con trỏ.
+
+Thứ nhất, phương thức có thể thay đổi giá trị mà receiver của nó trỏ tới.
+
+Thứ hai, tránh phải sao chép giá trị mỗi khi gọi phương thức.
+Điều này có thể hiệu quả hơn, chẳng hạn khi receiver là một struct lớn.
+
+Trong ví dụ này, cả ⟪GTI18N_357424f2_000001⟫Scale⟪GTI18N_357424f2_000002⟫ và ⟪GTI18N_357424f2_000003⟫Abs⟪GTI18N_357424f2_000004⟫ đều là các phương thức có kiểu receiver ⟪GTI18N_357424f2_000005⟫*Vertex⟪GTI18N_357424f2_000006⟫,
+mặc dù phương thức ⟪GTI18N_357424f2_000007⟫Abs⟪GTI18N_357424f2_000008⟫ không cần thay đổi receiver của nó.
+
+Nói chung, tất cả phương thức trên một kiểu nhất định nên dùng receiver giá trị hoặc receiver con trỏ,
+không nên trộn cả hai.
+(Chúng ta sẽ thấy lý do trong vài trang tiếp theo.)
+
+⟪GTI18N_357424f2_000009⟫

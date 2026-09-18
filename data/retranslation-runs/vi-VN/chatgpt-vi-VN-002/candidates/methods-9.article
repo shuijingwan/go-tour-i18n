@@ -1,0 +1,11 @@
+* Interface
+
+Một _kiểu_interface_ được định nghĩa là một tập các chữ ký phương thức.
+
+Một giá trị có kiểu interface có thể chứa bất kỳ giá trị nào triển khai các phương thức đó.
+
+*Lưu* ý: Có một lỗi trong mã ví dụ ở dòng 22.
+`Vertex` (kiểu giá trị) không triển khai `Abser` vì
+phương thức `Abs` chỉ được định nghĩa trên `*Vertex` (kiểu con trỏ).
+
+.play methods/interfaces.go

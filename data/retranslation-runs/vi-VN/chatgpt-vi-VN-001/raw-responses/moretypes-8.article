@@ -1,0 +1,11 @@
+* Slice giống như tham chiếu tới mảng
+
+Một slice không tự lưu dữ liệu,
+nó chỉ mô tả một phần của mảng cơ sở.
+
+Thay đổi các phần tử của một slice sẽ làm thay đổi
+các phần tử tương ứng trong mảng cơ sở của nó.
+
+Các slice khác dùng chung mảng cơ sở cũng sẽ thấy những thay đổi đó.
+
+⟪GTI18N_e577f9e9_000001⟫

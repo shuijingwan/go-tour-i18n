@@ -1,0 +1,15 @@
+* Mảng
+
+Kiểu `[n]T` là một mảng gồm `n` giá trị có kiểu `T`.
+
+Biểu thức
+
+	var a [10]int
+
+khai báo biến `a` là một mảng gồm mười số nguyên.
+
+Độ dài của mảng là một phần của kiểu mảng, vì vậy không thể thay đổi kích thước mảng.
+Điều này có vẻ hạn chế, nhưng đừng lo;
+Go cung cấp một cách thuận tiện để làm việc với mảng.
+
+.play moretypes/array.go

@@ -1,0 +1,16 @@
+* Channel
+
+Channel là một đường dẫn có kiểu mà qua đó bạn có thể gửi và nhận giá trị bằng toán tử channel, ⟪GTI18N_a35e3af2_000001⟫<-⟪GTI18N_a35e3af2_000002⟫.
+
+⟪GTI18N_a35e3af2_000003⟫Gửi ⟪GTI18N_a35e3af2_000004⟫ tới channel ⟪GTI18N_a35e3af2_000005⟫.⟪GTI18N_a35e3af2_000006⟫Nhận từ ⟪GTI18N_a35e3af2_000007⟫, rồi⟪GTI18N_a35e3af2_000008⟫gán giá trị cho ⟪GTI18N_a35e3af2_000009⟫.⟪GTI18N_a35e3af2_000010⟫(Dữ liệu di chuyển theo hướng của mũi tên.)
+
+Giống như map và slice, channel phải được tạo trước khi sử dụng:
+
+⟪GTI18N_a35e3af2_000011⟫
+
+Theo mặc định, thao tác gửi và nhận sẽ chặn cho đến khi phía còn lại sẵn sàng. Điều này cho phép các ⟪GTI18N_a35e3af2_000012⟫ đồng bộ hóa mà không cần khóa tường minh hay biến điều kiện.
+
+Mã ví dụ tính tổng các số trong một slice, phân chia công việc giữa hai ⟪GTI18N_a35e3af2_000013⟫.
+Sau khi cả hai ⟪GTI18N_a35e3af2_000014⟫ hoàn thành phép tính, chương trình tính kết quả cuối cùng.
+
+⟪GTI18N_a35e3af2_000015⟫

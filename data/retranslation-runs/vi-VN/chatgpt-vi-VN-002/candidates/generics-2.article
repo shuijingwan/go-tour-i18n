@@ -1,0 +1,12 @@
+* Kiểu generic
+
+Ngoài các hàm generic, Go cũng hỗ trợ các kiểu generic. Một kiểu có thể
+được tham số hóa bằng một tham số kiểu, điều này có thể hữu ích khi triển khai
+các cấu trúc dữ liệu generic.
+
+Ví dụ này minh họa một khai báo kiểu đơn giản cho danh sách liên kết đơn
+có thể chứa giá trị thuộc bất kỳ kiểu nào.
+
+Như một bài tập, hãy bổ sung một số chức năng cho phần triển khai danh sách này.
+
+.play generics/list.go

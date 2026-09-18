@@ -1,0 +1,27 @@
+* Thay đổi map
+
+Chèn hoặc cập nhật một phần tử trong map `m`:
+
+	m[key] = elem
+
+Lấy một phần tử:
+
+	elem = m[key]
+
+Xóa một phần tử:
+
+	delete(m, key)
+
+Kiểm tra một khóa có tồn tại bằng phép gán hai giá trị:
+
+	elem, ok = m[key]
+
+Nếu `key` có trong `m`, `ok` là `true`. Nếu không, `ok` là `false`.
+
+Nếu `key` không có trong map, thì `elem` là giá trị zero của kiểu phần tử trong map.
+
+*Lưu* ý: Nếu `elem` hoặc `ok` chưa được khai báo, bạn có thể dùng dạng khai báo ngắn:
+
+	elem, ok := m[key]
+
+.play moretypes/mutating-maps.go

@@ -1,0 +1,14 @@
+* Phương thức và gián tiếp qua con trỏ (2)
+
+Điều tương tự xảy ra theo chiều ngược lại.
+
+Các hàm nhận đối số giá trị phải nhận một giá trị đúng kiểu cụ thể đó:
+
+⟪GTI18N_61a9cb84_000001⟫Lỗi biên dịch!⟪GTI18N_61a9cb84_000002⟫trong khi các phương thức có receiver giá trị có thể nhận một giá trị hoặc một con trỏ làm
+receiver khi được gọi:
+
+⟪GTI18N_61a9cb84_000003⟫
+
+Trong trường hợp này, lời gọi phương thức ⟪GTI18N_61a9cb84_000004⟫p.Abs()⟪GTI18N_61a9cb84_000005⟫ được diễn giải thành ⟪GTI18N_61a9cb84_000006⟫(*p).Abs()⟪GTI18N_61a9cb84_000007⟫.
+
+⟪GTI18N_61a9cb84_000008⟫

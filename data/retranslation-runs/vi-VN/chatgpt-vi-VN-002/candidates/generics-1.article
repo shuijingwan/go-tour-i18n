@@ -1,0 +1,17 @@
+* Tham số kiểu
+
+Các hàm Go có thể được viết để làm việc với nhiều kiểu bằng cách sử dụng tham số kiểu. Các
+tham số kiểu của một hàm xuất hiện giữa dấu ngoặc vuông, trước các
+đối số của hàm.
+
+  func Index[T comparable](s []T, x T) int
+
+Khai báo này có nghĩa là `s` là một slice thuộc bất kỳ kiểu `T` nào thỏa mãn
+ràng buộc kiểu `comparable` tích hợp sẵn. `x` cũng là một giá trị cùng kiểu.
+
+`comparable` là một ràng buộc kiểu hữu ích cho phép dùng các toán tử `==` và
+`!=` trên các giá trị của kiểu đó. Trong ví dụ này, ta dùng nó để so sánh một
+giá trị với tất cả phần tử của slice cho đến khi tìm thấy giá trị khớp. Hàm `Index` này hoạt động
+với bất kỳ kiểu nào hỗ trợ phép so sánh.
+
+.play generics/index.go

@@ -1,0 +1,12 @@
+* Tiếp tục về phương thức
+
+Bạn cũng có thể khai báo phương thức trên các kiểu không phải struct.
+
+Trong ví dụ này, ta có kiểu số ⟪GTI18N_31c4fd0d_000001⟫MyFloat⟪GTI18N_31c4fd0d_000002⟫ với phương thức ⟪GTI18N_31c4fd0d_000003⟫Abs⟪GTI18N_31c4fd0d_000004⟫.
+
+Bạn chỉ có thể khai báo một phương thức với receiver có kiểu được định nghĩa trong cùng
+gói với phương thức đó.
+Bạn không thể khai báo một phương thức với receiver có kiểu được định nghĩa trong một
+gói khác (bao gồm cả các kiểu tích hợp sẵn như ⟪GTI18N_31c4fd0d_000005⟫int⟪GTI18N_31c4fd0d_000006⟫).
+
+⟪GTI18N_31c4fd0d_000007⟫

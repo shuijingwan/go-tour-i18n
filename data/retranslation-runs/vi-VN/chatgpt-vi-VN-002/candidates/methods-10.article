@@ -1,0 +1,9 @@
+* Interface được triển khai ngầm định
+
+Một kiểu triển khai một interface bằng cách triển khai các phương thức của interface đó.
+Không có khai báo ý định tường minh, cũng không có từ khóa "implements".
+
+Interface ngầm định tách rời định nghĩa interface khỏi phần
+triển khai của nó, nhờ đó phần triển khai có thể xuất hiện trong bất kỳ gói nào mà không cần sắp đặt trước.
+
+.play methods/interfaces-are-satisfied-implicitly.go

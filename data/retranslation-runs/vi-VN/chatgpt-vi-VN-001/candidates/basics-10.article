@@ -1,0 +1,7 @@
+* Khai báo biến ngắn
+
+Bên trong một hàm, câu lệnh gán ngắn `:=` có thể được dùng thay cho khai báo `var` với kiểu ngầm định.
+
+Bên ngoài một hàm, mọi câu lệnh đều bắt đầu bằng một từ khóa (`var`, `func`, v.v.), vì vậy không thể dùng cú pháp `:=`.
+
+.play basics/short-variable-declarations.go

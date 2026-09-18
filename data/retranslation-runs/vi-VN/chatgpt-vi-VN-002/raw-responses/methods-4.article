@@ -1,0 +1,24 @@
+* Receiver con trỏ
+
+Bạn có thể khai báo các phương thức với receiver con trỏ.
+
+Điều này có nghĩa là kiểu của receiver có cú pháp literal ⟪GTI18N_99f9fa4e_000001⟫*T⟪GTI18N_99f9fa4e_000002⟫ với một kiểu ⟪GTI18N_99f9fa4e_000003⟫T⟪GTI18N_99f9fa4e_000004⟫ nào đó.
+(Ngoài ra, bản thân ⟪GTI18N_99f9fa4e_000005⟫T⟪GTI18N_99f9fa4e_000006⟫ không thể là một con trỏ như ⟪GTI18N_99f9fa4e_000007⟫*int⟪GTI18N_99f9fa4e_000008⟫.)
+
+Ví dụ, phương thức ⟪GTI18N_99f9fa4e_000009⟫Scale⟪GTI18N_99f9fa4e_000010⟫ ở đây được định nghĩa trên ⟪GTI18N_99f9fa4e_000011⟫*Vertex⟪GTI18N_99f9fa4e_000012⟫.
+
+Các phương thức có receiver con trỏ có thể thay đổi giá trị mà receiver
+trỏ tới (như ⟪GTI18N_99f9fa4e_000013⟫Scale⟪GTI18N_99f9fa4e_000014⟫ thực hiện ở đây).
+Vì các phương thức thường cần thay đổi receiver của chúng, receiver con trỏ
+phổ biến hơn receiver giá trị.
+
+Hãy thử bỏ ⟪GTI18N_99f9fa4e_000015⟫*⟪GTI18N_99f9fa4e_000016⟫ khỏi khai báo của hàm ⟪GTI18N_99f9fa4e_000017⟫Scale⟪GTI18N_99f9fa4e_000018⟫ ở dòng 16
+và quan sát hành vi của chương trình thay đổi như thế nào.
+
+Với receiver giá trị, phương thức ⟪GTI18N_99f9fa4e_000019⟫Scale⟪GTI18N_99f9fa4e_000020⟫ thao tác trên một bản sao của giá trị
+⟪GTI18N_99f9fa4e_000021⟫Vertex⟪GTI18N_99f9fa4e_000022⟫ ban đầu.
+(Đây cũng là hành vi của mọi đối số hàm khác.)
+Phương thức ⟪GTI18N_99f9fa4e_000023⟫Scale⟪GTI18N_99f9fa4e_000024⟫ phải có receiver con trỏ để thay đổi giá trị ⟪GTI18N_99f9fa4e_000025⟫Vertex⟪GTI18N_99f9fa4e_000026⟫
+được khai báo trong hàm ⟪GTI18N_99f9fa4e_000027⟫main⟪GTI18N_99f9fa4e_000028⟫.
+
+⟪GTI18N_99f9fa4e_000029⟫

@@ -1,0 +1,20 @@
+* Reader
+
+Gói `io` định nghĩa interface `io.Reader`,
+đại diện cho đầu đọc của một luồng dữ liệu.
+
+Thư viện chuẩn của Go chứa [[https://cs.opensource.google/search?q=Read%5C(%5Cw%2B%5Cs%5C%5B%5C%5Dbyte%5C)&ss=go%2Fgo][nhiều phần triển khai]] của interface này, bao gồm tệp, kết nối mạng, bộ nén, bộ mã hóa và các loại khác.
+
+Interface `io.Reader` có phương thức `Read`:
+
+	func (T) Read(b []byte) (n int, err error)
+
+`Read` điền dữ liệu vào byte slice đã cho và trả về số byte
+đã được điền cùng một giá trị lỗi. Nó trả về lỗi `io.EOF` khi luồng
+kết thúc.
+
+Mã ví dụ tạo một
+[[/pkg/strings/#Reader][`strings.Reader`]]
+và đọc đầu ra của nó theo từng nhóm 8 byte.
+
+.play methods/reader.go

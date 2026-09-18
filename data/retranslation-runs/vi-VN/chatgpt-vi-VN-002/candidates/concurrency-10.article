@@ -1,0 +1,10 @@
+* Bài tập: Trình thu thập dữ liệu web
+
+Trong bài tập này, bạn sẽ dùng các tính năng đồng thời của Go để chạy trình thu thập dữ liệu web song song.
+
+Hãy sửa hàm `Crawl` để lấy các URL song song mà không lấy cùng một URL hai lần.
+
+_Gợi_ ý: bạn có thể lưu cache các URL đã được lấy trong một map, nhưng chỉ riêng map thì không
+an toàn khi sử dụng đồng thời!
+
+.play concurrency/exercise-web-crawler.go

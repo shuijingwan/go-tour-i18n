@@ -1,0 +1,10 @@
+* Con trỏ tới struct
+
+Có thể truy cập các trường của struct thông qua một con trỏ tới struct.
+
+Để truy cập trường ⟪GTI18N_29695d33_000001⟫X⟪GTI18N_29695d33_000002⟫ của một struct khi có con trỏ struct ⟪GTI18N_29695d33_000003⟫p⟪GTI18N_29695d33_000004⟫, ta có thể
+viết ⟪GTI18N_29695d33_000005⟫(*p).X⟪GTI18N_29695d33_000006⟫.
+Tuy nhiên, cách viết đó khá rườm rà, nên ngôn ngữ cho phép ta
+chỉ viết ⟪GTI18N_29695d33_000007⟫p.X⟪GTI18N_29695d33_000008⟫ mà không cần giải tham chiếu tường minh.
+
+⟪GTI18N_29695d33_000009⟫

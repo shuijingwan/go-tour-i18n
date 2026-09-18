@@ -1,0 +1,12 @@
+* Tiếp tục về phương thức
+
+Bạn cũng có thể khai báo phương thức trên các kiểu không phải struct.
+
+Trong ví dụ này, ta có kiểu số `MyFloat` với phương thức `Abs`.
+
+Bạn chỉ có thể khai báo một phương thức với receiver có kiểu được định nghĩa trong cùng
+gói với phương thức đó.
+Bạn không thể khai báo một phương thức với receiver có kiểu được định nghĩa trong một
+gói khác (bao gồm cả các kiểu tích hợp sẵn như `int`).
+
+.play methods/methods-continued.go

@@ -1,0 +1,19 @@
+* Switch kiểu
+
+Một ⟪GTI18N_26e4da09_000001⟫switch⟪GTI18N_26e4da09_000002⟫ kiểu là cấu trúc cho phép thực hiện liên tiếp nhiều khẳng định kiểu.
+
+Switch kiểu giống câu lệnh switch thông thường, nhưng các case trong
+switch kiểu chỉ định kiểu (không phải giá trị), và các kiểu đó được so sánh với
+kiểu của giá trị được giữ trong giá trị interface đã cho.
+
+⟪GTI18N_26e4da09_000003⟫ở đây ⟪GTI18N_26e4da09_000004⟫ có kiểu ⟪GTI18N_26e4da09_000005⟫⟪GTI18N_26e4da09_000006⟫ở đây ⟪GTI18N_26e4da09_000007⟫ có kiểu ⟪GTI18N_26e4da09_000008⟫⟪GTI18N_26e4da09_000009⟫không khớp; ở đây ⟪GTI18N_26e4da09_000010⟫ có cùng kiểu với ⟪GTI18N_26e4da09_000011⟫⟪GTI18N_26e4da09_000012⟫Khai báo trong switch kiểu có cùng cú pháp với một khẳng định kiểu ⟪GTI18N_26e4da09_000013⟫i.(T)⟪GTI18N_26e4da09_000014⟫,
+nhưng kiểu cụ thể ⟪GTI18N_26e4da09_000015⟫T⟪GTI18N_26e4da09_000016⟫ được thay bằng từ khóa ⟪GTI18N_26e4da09_000017⟫type⟪GTI18N_26e4da09_000018⟫.
+
+Câu lệnh switch này kiểm tra xem giá trị interface ⟪GTI18N_26e4da09_000019⟫i⟪GTI18N_26e4da09_000020⟫
+có chứa một giá trị kiểu ⟪GTI18N_26e4da09_000021⟫T⟪GTI18N_26e4da09_000022⟫ hoặc ⟪GTI18N_26e4da09_000023⟫S⟪GTI18N_26e4da09_000024⟫ hay không.
+Trong mỗi case ⟪GTI18N_26e4da09_000025⟫T⟪GTI18N_26e4da09_000026⟫ và ⟪GTI18N_26e4da09_000027⟫S⟪GTI18N_26e4da09_000028⟫, biến ⟪GTI18N_26e4da09_000029⟫v⟪GTI18N_26e4da09_000030⟫ sẽ có kiểu
+tương ứng là ⟪GTI18N_26e4da09_000031⟫T⟪GTI18N_26e4da09_000032⟫ hoặc ⟪GTI18N_26e4da09_000033⟫S⟪GTI18N_26e4da09_000034⟫ và giữ giá trị mà ⟪GTI18N_26e4da09_000035⟫i⟪GTI18N_26e4da09_000036⟫ đang giữ.
+Trong case default (khi không có gì khớp), biến ⟪GTI18N_26e4da09_000037⟫v⟪GTI18N_26e4da09_000038⟫ có
+cùng kiểu interface và giá trị như ⟪GTI18N_26e4da09_000039⟫i⟪GTI18N_26e4da09_000040⟫.
+
+⟪GTI18N_26e4da09_000041⟫

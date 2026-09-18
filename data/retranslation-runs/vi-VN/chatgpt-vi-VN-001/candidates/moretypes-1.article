@@ -1,0 +1,24 @@
+* Con trỏ
+
+Go có con trỏ.
+Một con trỏ lưu địa chỉ bộ nhớ của một giá trị.
+
+Kiểu `*T` là con trỏ tới một giá trị `T`. Giá trị zero của nó là `nil`.
+
+	var p *int
+
+Toán tử `&` tạo một con trỏ tới toán hạng của nó.
+
+	i := 42
+	p = &i
+
+Toán tử `*` biểu thị giá trị mà con trỏ trỏ tới.
+
+	fmt.Println(*p) // đọc i thông qua con trỏ p
+	*p = 21         // gán i thông qua con trỏ p
+
+Thao tác này được gọi là "giải tham chiếu" hoặc "truy cập gián tiếp".
+
+Không giống C, Go không có số học con trỏ.
+
+.play moretypes/pointers.go

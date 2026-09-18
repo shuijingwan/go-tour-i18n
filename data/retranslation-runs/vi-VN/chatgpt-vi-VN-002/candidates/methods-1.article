@@ -1,0 +1,13 @@
+* Phương thức
+
+Go không có lớp.
+Tuy nhiên, bạn có thể định nghĩa phương thức trên các kiểu.
+
+Phương thức là một hàm có đối số _receiver_ đặc biệt.
+
+Receiver xuất hiện trong danh sách đối số riêng, nằm giữa từ khóa `func` và
+tên phương thức.
+
+Trong ví dụ này, phương thức `Abs` có một receiver kiểu `Vertex` tên là `v`.
+
+.play methods/methods.go

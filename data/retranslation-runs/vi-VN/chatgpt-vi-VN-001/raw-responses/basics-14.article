@@ -1,0 +1,13 @@
+* Suy luận kiểu
+
+Khi khai báo một biến mà không chỉ định kiểu tường minh (bằng cú pháp ⟪GTI18N_21c4077c_000001⟫:=⟪GTI18N_21c4077c_000002⟫ hoặc cú pháp biểu thức ⟪GTI18N_21c4077c_000003⟫var`=⟪GTI18N_21c4077c_000004⟫), kiểu của biến được suy luận từ giá trị ở vế phải.
+
+Khi vế phải của khai báo đã có kiểu, biến mới sẽ có cùng kiểu đó:
+
+⟪GTI18N_21c4077c_000005⟫⟪GTI18N_21c4077c_000006⟫ là một ⟪GTI18N_21c4077c_000007⟫⟪GTI18N_21c4077c_000008⟫Nhưng khi vế phải chứa một hằng số dạng số không định kiểu, biến mới có thể là ⟪GTI18N_21c4077c_000009⟫int⟪GTI18N_21c4077c_000010⟫, ⟪GTI18N_21c4077c_000011⟫float64⟪GTI18N_21c4077c_000012⟫ hoặc ⟪GTI18N_21c4077c_000013⟫complex128⟪GTI18N_21c4077c_000014⟫ tùy theo độ chính xác của hằng số:
+
+⟪GTI18N_21c4077c_000015⟫
+
+Hãy thử thay đổi giá trị khởi tạo của ⟪GTI18N_21c4077c_000016⟫v⟪GTI18N_21c4077c_000017⟫ trong mã ví dụ và quan sát kiểu của nó thay đổi như thế nào.
+
+⟪GTI18N_21c4077c_000018⟫

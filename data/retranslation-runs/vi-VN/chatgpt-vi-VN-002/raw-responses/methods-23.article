@@ -1,0 +1,12 @@
+* Bài tập: rot13Reader
+
+Một mẫu phổ biến là một [[⟪GTI18N_11d87614_000001⟫][io.Reader]] bao bọc một ⟪GTI18N_11d87614_000002⟫io.Reader⟪GTI18N_11d87614_000003⟫ khác và thay đổi luồng theo một cách nào đó.
+
+Ví dụ, hàm [[⟪GTI18N_11d87614_000004⟫][gzip.NewReader]] nhận một ⟪GTI18N_11d87614_000005⟫io.Reader⟪GTI18N_11d87614_000006⟫ (một luồng dữ liệu đã nén) và trả về một ⟪GTI18N_11d87614_000007⟫*gzip.Reader⟪GTI18N_11d87614_000008⟫ cũng triển khai ⟪GTI18N_11d87614_000009⟫io.Reader⟪GTI18N_11d87614_000010⟫ (một luồng dữ liệu đã giải nén).
+
+Hãy triển khai một ⟪GTI18N_11d87614_000011⟫rot13Reader⟪GTI18N_11d87614_000012⟫ triển khai ⟪GTI18N_11d87614_000013⟫io.Reader⟪GTI18N_11d87614_000014⟫ và đọc từ một ⟪GTI18N_11d87614_000015⟫io.Reader⟪GTI18N_11d87614_000016⟫, đồng thời thay đổi luồng bằng cách áp dụng mật mã thay thế [[⟪GTI18N_11d87614_000017⟫][rot13]] cho mọi ký tự chữ cái.
+
+Kiểu ⟪GTI18N_11d87614_000018⟫rot13Reader⟪GTI18N_11d87614_000019⟫ đã được cung cấp.
+Hãy làm cho nó trở thành một ⟪GTI18N_11d87614_000020⟫io.Reader⟪GTI18N_11d87614_000021⟫ bằng cách triển khai phương thức ⟪GTI18N_11d87614_000022⟫Read⟪GTI18N_11d87614_000023⟫.
+
+⟪GTI18N_11d87614_000024⟫

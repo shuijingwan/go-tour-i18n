@@ -1,0 +1,10 @@
+* Con trỏ tới struct
+
+Có thể truy cập các trường của struct thông qua một con trỏ tới struct.
+
+Để truy cập trường `X` của một struct khi có con trỏ struct `p`, ta có thể
+viết `(*p).X`.
+Tuy nhiên, cách viết đó khá rườm rà, nên ngôn ngữ cho phép ta
+chỉ viết `p.X` mà không cần giải tham chiếu tường minh.
+
+.play moretypes/struct-pointers.go

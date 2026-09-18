@@ -1,0 +1,23 @@
+* Bài tập: Cây nhị phân tương đương
+
+*1.* Triển khai hàm `Walk`.
+
+*2.* Kiểm thử hàm `Walk`.
+
+Hàm `tree.New(k)` tạo một cây nhị phân có cấu trúc ngẫu nhiên (nhưng luôn được sắp xếp) chứa các giá trị `k`, `2k`, `3k`, ..., `10k`.
+
+Tạo một channel mới `ch` và khởi chạy hàm duyệt cây:
+
+	go Walk(tree.New(1), ch)
+
+Sau đó đọc và in 10 giá trị từ channel. Kết quả phải là các số 1, 2, 3, ..., 10.
+
+*3.* Triển khai hàm `Same` bằng `Walk` để xác định `t1` và `t2` có lưu cùng các giá trị hay không.
+
+*4.* Kiểm thử hàm `Same`.
+
+`Same(tree.New(1),`tree.New(1))` phải trả về true, còn `Same(tree.New(1),`tree.New(2))` phải trả về false.
+
+Bạn có thể tìm tài liệu về `Tree` [[https://godoc.org/golang.org/x/tour/tree#Tree][tại đây]].
+
+.play concurrency/exercise-equivalent-binary-trees.go

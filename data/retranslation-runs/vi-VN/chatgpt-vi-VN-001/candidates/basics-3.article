@@ -1,0 +1,16 @@
+* Tên được export
+
+Trong Go, một tên được export nếu bắt đầu bằng chữ cái viết hoa.
+Ví dụ, `Pizza` là một tên được export, cũng như `Pi`, được export từ
+gói `math`.
+
+`pizza` và `pi` không bắt đầu bằng chữ cái viết hoa nên chúng không được export.
+
+Khi import một gói, bạn chỉ có thể tham chiếu đến các tên được export của gói đó.
+Mọi tên "không được export" đều không thể truy cập từ bên ngoài gói.
+
+Chạy mã. Hãy chú ý thông báo lỗi.
+
+Để sửa lỗi, hãy đổi tên `math.pi` thành `math.Pi` rồi thử lại.
+
+.play basics/exported-names.go

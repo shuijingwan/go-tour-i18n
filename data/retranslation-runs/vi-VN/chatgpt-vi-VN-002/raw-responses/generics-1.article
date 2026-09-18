@@ -1,0 +1,17 @@
+* Tham số kiểu
+
+Các hàm ⟪GTI18N_01a04510_000001⟫ có thể được viết để làm việc với nhiều kiểu bằng cách sử dụng tham số kiểu. Các
+tham số kiểu của một hàm xuất hiện giữa dấu ngoặc vuông, trước các
+đối số của hàm.
+
+⟪GTI18N_01a04510_000002⟫
+
+Khai báo này có nghĩa là ⟪GTI18N_01a04510_000003⟫s⟪GTI18N_01a04510_000004⟫ là một slice thuộc bất kỳ kiểu ⟪GTI18N_01a04510_000005⟫T⟪GTI18N_01a04510_000006⟫ nào thỏa mãn
+ràng buộc kiểu ⟪GTI18N_01a04510_000007⟫comparable⟪GTI18N_01a04510_000008⟫ tích hợp sẵn. ⟪GTI18N_01a04510_000009⟫x⟪GTI18N_01a04510_000010⟫ cũng là một giá trị cùng kiểu.
+
+⟪GTI18N_01a04510_000011⟫comparable⟪GTI18N_01a04510_000012⟫ là một ràng buộc kiểu hữu ích cho phép dùng các toán tử ⟪GTI18N_01a04510_000013⟫==⟪GTI18N_01a04510_000014⟫ và
+⟪GTI18N_01a04510_000015⟫!=⟪GTI18N_01a04510_000016⟫ trên các giá trị của kiểu đó. Trong ví dụ này, ta dùng nó để so sánh một
+giá trị với tất cả phần tử của slice cho đến khi tìm thấy giá trị khớp. Hàm ⟪GTI18N_01a04510_000017⟫Index⟪GTI18N_01a04510_000018⟫ này hoạt động
+với bất kỳ kiểu nào hỗ trợ phép so sánh.
+
+⟪GTI18N_01a04510_000019⟫

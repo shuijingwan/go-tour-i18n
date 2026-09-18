@@ -1,0 +1,20 @@
+* Thêm phần tử vào slice
+
+Việc thêm phần tử mới vào slice rất phổ biến, vì vậy ⟪GTI18N_f2fc257e_000001⟫ cung cấp hàm
+⟪GTI18N_f2fc257e_000002⟫append⟪GTI18N_f2fc257e_000003⟫ tích hợp sẵn. [[⟪GTI18N_f2fc257e_000004⟫][Tài liệu]]
+của gói tích hợp sẵn mô tả ⟪GTI18N_f2fc257e_000005⟫append⟪GTI18N_f2fc257e_000006⟫.
+
+⟪GTI18N_f2fc257e_000007⟫
+
+Tham số đầu tiên ⟪GTI18N_f2fc257e_000008⟫s⟪GTI18N_f2fc257e_000009⟫ của ⟪GTI18N_f2fc257e_000010⟫append⟪GTI18N_f2fc257e_000011⟫ là một slice có kiểu ⟪GTI18N_f2fc257e_000012⟫T⟪GTI18N_f2fc257e_000013⟫, còn các tham số còn lại là
+các giá trị ⟪GTI18N_f2fc257e_000014⟫T⟪GTI18N_f2fc257e_000015⟫ cần thêm vào slice.
+
+Giá trị trả về của ⟪GTI18N_f2fc257e_000016⟫append⟪GTI18N_f2fc257e_000017⟫ là một slice chứa tất cả phần tử của
+slice ban đầu cùng các giá trị được cung cấp.
+
+Nếu mảng nền của ⟪GTI18N_f2fc257e_000018⟫s⟪GTI18N_f2fc257e_000019⟫ quá nhỏ để chứa tất cả các giá trị đã cho, một
+mảng lớn hơn sẽ được cấp phát. Slice được trả về sẽ trỏ tới mảng mới được cấp phát.
+
+(Để tìm hiểu thêm về slice, hãy đọc bài viết [[⟪GTI18N_f2fc257e_000020⟫][Slice: cách sử dụng và cơ chế bên trong]].)
+
+⟪GTI18N_f2fc257e_000021⟫

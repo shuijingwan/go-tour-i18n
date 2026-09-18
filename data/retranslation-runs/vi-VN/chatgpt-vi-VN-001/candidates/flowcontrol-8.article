@@ -1,0 +1,38 @@
+* Bài tập: Vòng lặp và hàm
+
+Để thực hành với hàm và vòng lặp, hãy triển khai một hàm căn bậc hai: với một số x, chúng ta muốn tìm số z sao cho z² gần x nhất.
+
+Máy tính thường tính căn bậc hai của x bằng một vòng lặp.
+Bắt đầu với một giá trị phỏng đoán z, ta có thể điều chỉnh z dựa trên mức độ gần nhau giữa z² và x,
+tạo ra một giá trị phỏng đoán tốt hơn:
+
+	z -= (z*z - x) / (2*z)
+
+Lặp lại phép điều chỉnh này sẽ làm giá trị phỏng đoán ngày càng chính xác
+cho đến khi đạt được một đáp án gần căn bậc hai thực tế nhất có thể.
+
+Hãy triển khai điều này trong `func`Sqrt` được cung cấp.
+Một giá trị phỏng đoán ban đầu hợp lý cho z là 1, bất kể đầu vào là gì.
+Trước tiên, hãy lặp phép tính 10 lần và in từng giá trị z trong quá trình đó.
+Quan sát xem bạn tiến gần đáp án đến mức nào với các giá trị x khác nhau (1, 2, 3, ...)
+và giá trị phỏng đoán cải thiện nhanh đến đâu.
+
+Gợi ý: Để khai báo và khởi tạo một giá trị dấu phẩy động,
+hãy dùng cú pháp dấu phẩy động hoặc dùng phép chuyển đổi:
+
+	z := 1.0
+	z := float64(1)
+
+Tiếp theo, hãy thay đổi điều kiện vòng lặp để dừng khi giá trị không còn
+thay đổi (hoặc chỉ thay đổi một lượng rất nhỏ).
+Xem số lần lặp khi đó nhiều hơn hay ít hơn 10.
+Hãy thử các giá trị phỏng đoán ban đầu khác cho z, chẳng hạn x hoặc x/2.
+Kết quả của hàm bạn viết gần với [[/pkg/math/#Sqrt][math.Sqrt]] trong thư viện chuẩn đến mức nào?
+
+(*Lưu* ý: Nếu bạn quan tâm đến chi tiết của thuật toán, z² − x ở trên
+cho biết z² cách giá trị cần đạt (x) bao xa, còn phép chia cho 2z là đạo hàm
+của z², dùng để điều chỉnh mức thay đổi của z theo tốc độ thay đổi của z².
+Cách tiếp cận tổng quát này được gọi là [[https://en.wikipedia.org/wiki/Newton%27s_method][phương pháp Newton]].
+Nó hiệu quả với nhiều hàm, đặc biệt hiệu quả với căn bậc hai.)
+
+.play flowcontrol/exercise-loops-and-functions.go

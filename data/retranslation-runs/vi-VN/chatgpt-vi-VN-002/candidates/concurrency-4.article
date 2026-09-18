@@ -1,0 +1,15 @@
+* Range và Close
+
+Bên gửi có thể `close` một channel để cho biết sẽ không còn giá trị nào được gửi nữa. Bên nhận có thể kiểm tra channel đã được đóng hay chưa bằng cách gán tham số thứ hai cho biểu thức nhận: sau
+
+	v, ok := <-ch
+
+`ok` là `false` nếu không còn giá trị nào để nhận và channel đã đóng.
+
+Vòng lặp `for`i`:=`range`c` liên tục nhận các giá trị từ channel cho đến khi channel đóng.
+
+*Lưu* ý: Chỉ bên gửi mới nên đóng channel, không bao giờ là bên nhận. Gửi vào một channel đã đóng sẽ gây panic.
+
+*Lưu*ý:* Ngoài ra, channel không giống tệp; thông thường bạn không cần đóng chúng. Chỉ cần đóng khi phải báo cho bên nhận rằng sẽ không còn giá trị nào được gửi nữa, chẳng hạn để kết thúc vòng lặp `range`.
+
+.play concurrency/range-and-close.go

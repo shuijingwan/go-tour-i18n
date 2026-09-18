@@ -1,0 +1,14 @@
+* Lựa chọn mặc định
+
+Case `default` trong một `select` được chạy nếu không có case nào khác sẵn sàng.
+
+Dùng case `default` để thử gửi hoặc nhận mà không bị chặn:
+
+	select {
+	case i := <-c:
+		// sử dụng i
+	default:
+		// nhận từ c sẽ bị chặn
+	}
+
+.play concurrency/default-selection.go

@@ -1,0 +1,11 @@
+* Gói
+
+Mọi chương trình Go đều được tạo nên từ các gói.
+
+Chương trình bắt đầu chạy trong gói `main`.
+
+Chương trình này sử dụng các gói có đường dẫn import `"fmt"` và `"math/rand"`.
+
+Theo quy ước, tên gói giống với phần tử cuối cùng của đường dẫn import. Ví dụ, gói `"math/rand"` gồm các tệp bắt đầu bằng câu lệnh `package`rand`.
+
+.play basics/packages.go
