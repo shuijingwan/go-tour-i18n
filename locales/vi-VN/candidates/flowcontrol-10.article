@@ -1,0 +1,15 @@
+* Thứ tự đánh giá của switch
+
+Các case của switch được đánh giá từ trên xuống dưới và dừng khi một case khớp.
+
+(Ví dụ,
+
+	switch i {
+	case 0:
+	case f():
+	}
+
+sẽ không gọi `f` nếu `i==0`.)
+
+
+.play flowcontrol/switch-evaluation-order.go

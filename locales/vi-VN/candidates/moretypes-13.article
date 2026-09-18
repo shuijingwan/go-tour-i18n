@@ -1,0 +1,18 @@
+* Tạo slice bằng make
+
+Có thể tạo slice bằng hàm `make` tích hợp sẵn;
+đây là cách bạn tạo các mảng có kích thước động.
+
+Hàm `make` cấp phát một mảng đã được đưa về giá trị zero
+và trả về một slice tham chiếu đến mảng đó:
+
+	a := make([]int, 5)  // len(a)=5
+
+Để chỉ định dung lượng, hãy truyền đối số thứ ba cho `make`:
+
+	b := make([]int, 0, 5) // len(b)=0, cap(b)=5
+
+	b = b[:cap(b)] // len(b)=5, cap(b)=5
+	b = b[1:]      // len(b)=4, cap(b)=4
+
+.play moretypes/making-slices.go

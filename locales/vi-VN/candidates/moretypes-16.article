@@ -1,0 +1,8 @@
+* Range
+
+Dạng `range` của vòng lặp `for` lặp qua một slice hoặc map.
+
+Khi duyệt một slice bằng range, mỗi lần lặp trả về hai giá trị.
+Giá trị đầu tiên là chỉ số, còn giá trị thứ hai là bản sao của phần tử tại chỉ số đó.
+
+.play moretypes/range.go

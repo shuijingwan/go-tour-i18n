@@ -1,0 +1,13 @@
+* Switch
+
+Câu lệnh `switch` là cách viết ngắn gọn hơn cho một chuỗi câu lệnh `if`-`else`.
+Nó chạy case đầu tiên có giá trị bằng với biểu thức điều kiện.
+
+Switch của Go tương tự switch trong C, C++, Java, JavaScript và PHP,
+ngoại trừ việc Go chỉ chạy case được chọn, không chạy tất cả các case theo sau.
+Trên thực tế, câu lệnh `break` cần đặt ở cuối mỗi case trong các
+ngôn ngữ đó được Go cung cấp tự động.
+Một điểm khác biệt quan trọng nữa là các case của switch trong Go không nhất thiết
+phải là hằng số, và các giá trị liên quan cũng không nhất thiết phải là số nguyên.
+
+.play flowcontrol/switch.go

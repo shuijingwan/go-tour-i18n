@@ -1,0 +1,11 @@
+* Giá trị trả về có tên
+
+Các giá trị trả về của Go có thể được đặt tên. Khi đó, chúng được xem như các biến được định nghĩa ở đầu hàm.
+
+Các tên này nên được dùng để mô tả ý nghĩa của các giá trị trả về.
+
+Một câu lệnh `return` không có đối số sẽ trả về các giá trị trả về có tên. Cách này được gọi là "naked return".
+
+Chỉ nên dùng naked return trong các hàm ngắn, như ví dụ ở đây. Trong các hàm dài hơn, chúng có thể làm giảm khả năng đọc mã.
+
+.play basics/named-results.go

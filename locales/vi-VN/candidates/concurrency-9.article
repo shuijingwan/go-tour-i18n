@@ -1,0 +1,21 @@
+* sync.Mutex
+
+Chúng ta đã thấy channel rất phù hợp để giao tiếp giữa các goroutines.
+
+Nhưng nếu không cần giao tiếp thì sao? Nếu ta chỉ muốn bảo đảm rằng mỗi lần chỉ có
+một goroutine có thể truy cập một biến để tránh xung đột thì sao?
+
+Khái niệm này được gọi là _loại_trừ_lẫn_nhau_, và tên thông dụng của cấu trúc dữ liệu cung cấp cơ chế này là _mutex_.
+
+Thư viện chuẩn của Go cung cấp cơ chế loại trừ lẫn nhau bằng
+[[/pkg/sync/#Mutex][`sync.Mutex`]] và hai phương thức của nó:
+
+- `Lock`
+- `Unlock`
+
+Ta có thể định nghĩa một khối mã được thực thi trong trạng thái loại trừ lẫn nhau bằng cách bao quanh nó
+bởi lời gọi `Lock` và `Unlock` như được minh họa trong phương thức `Inc`.
+
+Ta cũng có thể dùng `defer` để bảo đảm mutex sẽ được mở khóa như trong phương thức `Value`.
+
+.play concurrency/mutex-counter.go

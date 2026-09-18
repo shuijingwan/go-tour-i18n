@@ -1,0 +1,12 @@
+* Giá trị zero
+
+Các biến được khai báo mà không có giá trị khởi tạo tường minh sẽ nhận
+_giá_trị_zero_ của chúng.
+
+Giá trị zero là:
+
+- `0` đối với các kiểu số,
+- `false` đối với kiểu boolean, và
+- `""` (chuỗi rỗng) đối với chuỗi.
+
+.play basics/zero.go

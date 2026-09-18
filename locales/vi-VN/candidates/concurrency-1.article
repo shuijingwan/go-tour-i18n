@@ -1,0 +1,15 @@
+* Goroutines
+
+Một _goroutine_ là một luồng nhẹ do runtime của Go quản lý.
+
+	go f(x, y, z)
+
+khởi động một goroutine mới chạy
+
+	f(x, y, z)
+
+Việc đánh giá `f`, `x`, `y` và `z` diễn ra trong goroutine hiện tại, còn việc thực thi `f` diễn ra trong goroutine mới.
+
+Goroutines chạy trong cùng một không gian địa chỉ, vì vậy việc truy cập bộ nhớ dùng chung phải được đồng bộ hóa. Gói [[/pkg/sync/][`sync`]] cung cấp các primitive hữu ích, mặc dù bạn sẽ không cần dùng chúng nhiều trong Go vì còn có các primitive khác. (Xem trang tiếp theo.)
+
+.play concurrency/goroutines.go

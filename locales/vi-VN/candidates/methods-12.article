@@ -1,0 +1,12 @@
+* Giá trị interface với giá trị cơ sở nil
+
+Nếu bản thân giá trị cụ thể bên trong interface là nil,
+phương thức sẽ được gọi với receiver nil.
+
+Trong một số ngôn ngữ, điều này sẽ gây ra ngoại lệ con trỏ null,
+nhưng trong Go, việc viết các phương thức xử lý an toàn khi được gọi
+với receiver nil là điều phổ biến (như phương thức `M` trong ví dụ này.)
+
+Lưu ý rằng một giá trị interface chứa giá trị cụ thể nil thì bản thân nó vẫn không phải nil.
+
+.play methods/interface-values-with-nil.go

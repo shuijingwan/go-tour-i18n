@@ -1,0 +1,20 @@
+* Thêm phần tử vào slice
+
+Việc thêm phần tử mới vào slice rất phổ biến, vì vậy Go cung cấp hàm
+`append` tích hợp sẵn. [[/pkg/builtin/#append][Tài liệu]]
+của gói tích hợp sẵn mô tả `append`.
+
+	func append(s []T, vs ...T) []T
+
+Tham số đầu tiên `s` của `append` là một slice có kiểu `T`, còn các tham số còn lại là
+các giá trị `T` cần thêm vào slice.
+
+Giá trị trả về của `append` là một slice chứa tất cả phần tử của
+slice ban đầu cùng các giá trị được cung cấp.
+
+Nếu mảng nền của `s` quá nhỏ để chứa tất cả các giá trị đã cho, một
+mảng lớn hơn sẽ được cấp phát. Slice được trả về sẽ trỏ tới mảng mới được cấp phát.
+
+(Để tìm hiểu thêm về slice, hãy đọc bài viết [[/blog/go-slices-usage-and-internals][Slice: cách sử dụng và cơ chế bên trong]].)
+
+.play moretypes/append.go

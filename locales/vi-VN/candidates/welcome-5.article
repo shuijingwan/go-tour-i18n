@@ -1,0 +1,19 @@
+* Go Playground
+
+Hành trình này được xây dựng trên [[https://play.golang.org/][Go Playground]], một
+dịch vụ web chạy trên các máy chủ của [[/][golang.org]].
+
+Dịch vụ nhận một chương trình Go, biên dịch, liên kết và chạy chương trình bên trong
+sandbox, sau đó trả về đầu ra.
+
+Các chương trình có thể chạy trong playground chịu một số giới hạn:
+
+- Trong playground, thời gian bắt đầu từ 2009-11-10 23:00:00 UTC (việc xác định ý nghĩa của ngày này là một bài tập dành cho người đọc). Điều này giúp việc cache chương trình dễ dàng hơn nhờ tạo ra đầu ra xác định.
+
+- Thời gian thực thi, mức sử dụng CPU và bộ nhớ cũng bị giới hạn, đồng thời chương trình không thể truy cập các máy chủ mạng bên ngoài.
+
+Playground sử dụng bản phát hành ổn định mới nhất của Go.
+
+Đọc "[[/blog/playground][Bên trong Go Playground]]" để tìm hiểu thêm.
+
+.play welcome/sandbox.go

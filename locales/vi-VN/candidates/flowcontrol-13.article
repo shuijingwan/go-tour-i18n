@@ -1,0 +1,9 @@
+* Xếp chồng các defer
+
+Các lời gọi hàm bị trì hoãn được đẩy vào một stack. Khi một hàm trả về, các lời gọi
+bị trì hoãn của nó được thực thi theo thứ tự vào sau ra trước.
+
+Để tìm hiểu thêm về câu lệnh defer, hãy đọc
+[[/blog/defer-panic-and-recover][bài viết blog này]].
+
+.play flowcontrol/defer-multi.go

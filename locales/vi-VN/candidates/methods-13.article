@@ -1,0 +1,8 @@
+* Giá trị interface nil
+
+Một giá trị interface nil không chứa giá trị cũng không chứa kiểu cụ thể.
+
+Gọi một phương thức trên interface nil là lỗi khi chạy vì không có
+kiểu nào bên trong bộ đôi interface để xác định phương thức _cụ_ thể nào cần gọi.
+
+.play methods/nil-interface-values.go

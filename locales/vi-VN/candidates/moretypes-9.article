@@ -1,0 +1,14 @@
+* Literal của slice
+
+Một literal của slice giống literal của mảng nhưng không có độ dài.
+
+Đây là một literal của mảng:
+
+	[3]bool{true, true, false}
+
+Còn biểu thức này tạo cùng mảng như trên,
+sau đó tạo một slice tham chiếu đến mảng đó:
+
+	[]bool{true, true, false}
+
+.play moretypes/slice-literals.go

@@ -1,0 +1,11 @@
+* Bài tập: Slice
+
+Hãy triển khai `Pic`. Hàm này phải trả về một slice có độ dài `dy`, trong đó mỗi phần tử là một slice gồm `dx` số nguyên không dấu 8 bit. Khi chạy chương trình, nó sẽ hiển thị hình ảnh của bạn, diễn giải các số nguyên thành giá trị thang xám (chính xác hơn là thang xanh).
+
+Bạn có thể tùy ý chọn hình ảnh. Một số hàm thú vị gồm `(x+y)/2`, `x*y` và `x^y`.
+
+(Bạn cần dùng một vòng lặp để cấp phát từng `[]uint8` bên trong `[][]uint8`.)
+
+(Dùng `uint8(intValue)` để chuyển đổi giữa các kiểu.)
+
+.play moretypes/exercise-slices.go

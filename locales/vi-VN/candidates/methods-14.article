@@ -1,0 +1,16 @@
+* Interface rỗng
+
+Kiểu interface không chỉ định phương thức nào được gọi là _interface_rỗng_:
+
+	interface{}
+
+Một interface rỗng có thể chứa giá trị thuộc bất kỳ kiểu nào.
+(Mọi kiểu đều triển khai ít nhất 0 phương thức.)
+
+`any` là bí danh của `interface{}`, và hai kiểu này hoàn toàn
+tương đương.
+
+Interface rỗng được dùng trong mã xử lý các giá trị có kiểu chưa biết.
+Ví dụ, `fmt.Print` nhận số lượng đối số bất kỳ có kiểu `any`.
+
+.play methods/empty-interface.go

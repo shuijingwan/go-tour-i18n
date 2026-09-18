@@ -1,0 +1,17 @@
+* Go ngoại tuyến (tùy chọn)
+
+Hành trình này cũng có sẵn dưới dạng một chương trình độc lập mà bạn có thể sử dụng
+khi không có kết nối internet. Chương trình sẽ biên dịch và chạy các đoạn mã mẫu trên
+chính máy của bạn.
+
+Để chạy hành trình cục bộ, trước tiên bạn cần
+[[/doc/install][cài đặt Go]] rồi chạy:
+
+  go install golang.org/x/website/tour@latest
+
+Lệnh này sẽ đặt binary `tour` vào
+[[/cmd/go/#hdr-GOPATH_and_Modules][GOPATH]] của bạn, trong thư mục `bin`.
+Khi bạn chạy chương trình tour, nó sẽ mở trình duyệt web hiển thị
+phiên bản cục bộ của hành trình.
+
+Tất nhiên, bạn vẫn có thể tiếp tục hành trình qua trang web này.

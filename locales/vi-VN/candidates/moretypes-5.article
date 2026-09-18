@@ -1,0 +1,9 @@
+* Literal struct
+
+Một literal struct biểu thị một giá trị struct mới được cấp phát bằng cách liệt kê giá trị của các trường.
+
+Bạn có thể chỉ liệt kê một tập con các trường bằng cú pháp `Name:`. (Thứ tự của các trường có tên không quan trọng.)
+
+Tiền tố đặc biệt `&` trả về một con trỏ tới giá trị struct.
+
+.play moretypes/struct-literals.go

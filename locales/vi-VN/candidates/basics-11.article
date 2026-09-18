@@ -1,0 +1,28 @@
+* Các kiểu cơ bản
+
+Các kiểu cơ bản của Go là
+
+	bool
+
+	string
+
+	int  int8  int16  int32  int64
+	uint uint8 uint16 uint32 uint64 uintptr
+
+	byte // bí danh của uint8
+
+	rune // bí danh của int32
+	     // biểu diễn một điểm mã Unicode
+
+	float32 float64
+
+	complex64 complex128
+
+Ví dụ cho thấy các biến thuộc nhiều kiểu khác nhau,
+đồng thời cho thấy các khai báo biến có thể được "nhóm" thành các khối,
+tương tự như câu lệnh import.
+
+Các kiểu `int`, `uint` và `uintptr` thường có độ rộng 32 bit trên hệ thống 32 bit và 64 bit trên hệ thống 64 bit.
+Khi cần một giá trị số nguyên, bạn nên dùng `int` trừ khi có lý do cụ thể để dùng kiểu số nguyên có kích thước xác định hoặc không dấu.
+
+.play basics/basic-types.go

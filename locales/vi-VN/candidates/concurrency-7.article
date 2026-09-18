@@ -1,0 +1,18 @@
+* Bài tập: Cây nhị phân tương đương
+
+Có thể có nhiều cây nhị phân khác nhau lưu cùng một chuỗi giá trị. Ví dụ, dưới đây là hai cây nhị phân cùng lưu chuỗi 1, 1, 2, 3, 5, 8, 13.
+
+.image /tour/static/img/tree.png
+
+Trong hầu hết ngôn ngữ, một hàm kiểm tra hai cây nhị phân có lưu cùng một chuỗi hay không khá phức tạp. Chúng ta sẽ dùng tính đồng thời và channel của Go để viết một giải pháp đơn giản.
+
+Ví dụ này sử dụng gói `tree`, gói này định nghĩa kiểu:
+
+	type Tree struct {
+		Left  *Tree
+		Value int
+		Right *Tree
+	}
+
+
+Phần mô tả tiếp tục ở [[javascript:click('.next-page')][trang tiếp theo]].

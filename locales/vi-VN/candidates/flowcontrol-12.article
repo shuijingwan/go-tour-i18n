@@ -1,0 +1,9 @@
+* Defer
+
+Một câu lệnh defer trì hoãn việc thực thi một hàm cho đến khi hàm bao quanh
+trả về.
+
+Các đối số của lời gọi bị trì hoãn được đánh giá ngay lập tức, nhưng lời gọi hàm
+không được thực thi cho đến khi hàm bao quanh trả về.
+
+.play flowcontrol/defer.go

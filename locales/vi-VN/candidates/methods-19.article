@@ -1,0 +1,26 @@
+* Lỗi
+
+Các chương trình Go biểu diễn trạng thái lỗi bằng các giá trị `error`.
+
+Kiểu `error` là một interface tích hợp sẵn tương tự `fmt.Stringer`:
+
+	type error interface {
+		Error() string
+	}
+
+(Giống như với `fmt.Stringer`, gói `fmt` tìm interface `error` khi
+in các giá trị.)
+
+Các hàm thường trả về một giá trị `error`, và mã gọi hàm nên xử lý lỗi
+bằng cách kiểm tra lỗi có bằng `nil` hay không.
+
+	i, err := strconv.Atoi("42")
+	if err != nil {
+		fmt.Printf("couldn't convert number: %v\n", err)
+		return
+	}
+	fmt.Println("Converted integer:", i)
+
+Một `error` nil biểu thị thành công; một `error` không nil biểu thị thất bại.
+
+.play methods/errors.go

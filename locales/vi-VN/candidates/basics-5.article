@@ -1,0 +1,13 @@
+* Tiếp tục về hàm
+
+Khi hai hoặc nhiều tham số hàm có tên liên tiếp cùng kiểu, bạn có thể lược bỏ kiểu ở tất cả các tham số trừ tham số cuối cùng.
+
+Trong ví dụ này, chúng ta rút gọn
+
+	x int, y int
+
+thành
+
+	x, y int
+
+.play basics/functions-continued.go

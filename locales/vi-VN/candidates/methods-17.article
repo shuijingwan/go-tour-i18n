@@ -1,0 +1,12 @@
+* Stringer
+
+Một trong những interface phổ biến nhất là [[/pkg/fmt/#Stringer][`Stringer`]] được định nghĩa bởi gói [[/pkg/fmt/][`fmt`]].
+
+	type Stringer interface {
+		String() string
+	}
+
+Một `Stringer` là một kiểu có thể tự mô tả dưới dạng chuỗi. Gói `fmt`
+(và nhiều gói khác) tìm interface này để in các giá trị.
+
+.play methods/stringer.go

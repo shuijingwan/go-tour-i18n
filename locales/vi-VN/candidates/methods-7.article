@@ -1,0 +1,21 @@
+* Phương thức và gián tiếp qua con trỏ (2)
+
+Điều tương tự xảy ra theo chiều ngược lại.
+
+Các hàm nhận đối số giá trị phải nhận một giá trị đúng kiểu cụ thể đó:
+
+	var v Vertex
+	fmt.Println(AbsFunc(v))  // OK
+	fmt.Println(AbsFunc(&v)) // Lỗi biên dịch!
+
+trong khi các phương thức có receiver giá trị có thể nhận một giá trị hoặc một con trỏ làm
+receiver khi được gọi:
+
+	var v Vertex
+	fmt.Println(v.Abs()) // OK
+	p := &v
+	fmt.Println(p.Abs()) // OK
+
+Trong trường hợp này, lời gọi phương thức `p.Abs()` được diễn giải thành `(*p).Abs()`.
+
+.play methods/indirection-values.go

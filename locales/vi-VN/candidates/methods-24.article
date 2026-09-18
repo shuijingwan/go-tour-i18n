@@ -1,0 +1,21 @@
+* Hình ảnh
+
+[[/pkg/image/#Image][Gói image]] định nghĩa interface `Image`:
+
+	package image
+
+	type Image interface {
+		ColorModel() color.Model
+		Bounds() Rectangle
+		At(x, y int) color.Color
+	}
+
+*Lưu*ý*: giá trị trả về `Rectangle` của phương thức `Bounds` thực ra là một
+[[/pkg/image/#Rectangle][`image.Rectangle`]], vì
+khai báo nằm bên trong gói `image`.
+
+(Xem [[/pkg/image/#Image][tài liệu]] để biết đầy đủ chi tiết.)
+
+Các kiểu `color.Color` và `color.Model` cũng là các interface, nhưng ta sẽ bỏ qua điều đó bằng cách dùng các phần triển khai định nghĩa sẵn `color.RGBA` và `color.RGBAModel`. Các interface và kiểu này được định nghĩa bởi [[/pkg/image/color/][gói image/color]].
+
+.play methods/images.go

@@ -1,0 +1,12 @@
+* Bài tập: rot13Reader
+
+Một mẫu phổ biến là một [[/pkg/io/#Reader][io.Reader]] bao bọc một `io.Reader` khác và thay đổi luồng theo một cách nào đó.
+
+Ví dụ, hàm [[/pkg/compress/gzip/#NewReader][gzip.NewReader]] nhận một `io.Reader` (một luồng dữ liệu đã nén) và trả về một `*gzip.Reader` cũng triển khai `io.Reader` (một luồng dữ liệu đã giải nén).
+
+Hãy triển khai một `rot13Reader` triển khai `io.Reader` và đọc từ một `io.Reader`, đồng thời thay đổi luồng bằng cách áp dụng mật mã thay thế [[https://en.wikipedia.org/wiki/ROT13][rot13]] cho mọi ký tự chữ cái.
+
+Kiểu `rot13Reader` đã được cung cấp.
+Hãy làm cho nó trở thành một `io.Reader` bằng cách triển khai phương thức `Read`.
+
+.play methods/exercise-rot-reader.go

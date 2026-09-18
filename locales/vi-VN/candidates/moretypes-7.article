@@ -1,0 +1,23 @@
+* Slice
+
+Mảng có kích thước cố định.
+Ngược lại, slice có kích thước động và cung cấp một cách linh hoạt
+để xem các phần tử của mảng.
+Trong thực tế, slice phổ biến hơn mảng rất nhiều.
+
+Kiểu `[]T` là một slice có các phần tử thuộc kiểu `T`.
+
+Một slice được tạo bằng cách chỉ định hai chỉ số, cận dưới và
+cận trên, phân tách bằng dấu hai chấm:
+
+	a[low : high]
+
+Thao tác này chọn một khoảng nửa mở, bao gồm phần tử đầu tiên
+nhưng không bao gồm phần tử cuối cùng.
+
+Biểu thức sau tạo một slice bao gồm
+các phần tử từ 1 đến 3 của `a`:
+
+	a[1:4]
+
+.play moretypes/slices.go

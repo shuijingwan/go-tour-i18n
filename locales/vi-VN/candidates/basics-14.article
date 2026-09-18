@@ -1,0 +1,18 @@
+* Suy luận kiểu
+
+Khi khai báo một biến mà không chỉ định kiểu tường minh (bằng cú pháp `:=` hoặc cú pháp biểu thức `var`=`), kiểu của biến được suy luận từ giá trị ở vế phải.
+
+Khi vế phải của khai báo đã có kiểu, biến mới sẽ có cùng kiểu đó:
+
+	var i int
+	j := i // j là một int
+
+Nhưng khi vế phải chứa một hằng số dạng số không định kiểu, biến mới có thể là `int`, `float64` hoặc `complex128` tùy theo độ chính xác của hằng số:
+
+	i := 42           // int
+	f := 3.142        // float64
+	g := 0.867 + 0.5i // complex128
+
+Hãy thử thay đổi giá trị khởi tạo của `v` trong mã ví dụ và quan sát kiểu của nó thay đổi như thế nào.
+
+.play basics/type-inference.go

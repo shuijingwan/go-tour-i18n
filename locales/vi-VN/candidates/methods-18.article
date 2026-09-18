@@ -1,0 +1,8 @@
+* Bài tập: Stringer
+
+Hãy làm cho kiểu `IPAddr` triển khai `fmt.Stringer` để in địa chỉ dưới dạng
+bốn số thập phân phân tách bằng dấu chấm.
+
+Ví dụ, `IPAddr{1,`2,`3,`4}` phải được in thành `"1.2.3.4"`.
+
+.play methods/exercise-stringer.go
