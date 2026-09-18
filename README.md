@@ -11,6 +11,7 @@
 社区维护且已正式上线的语言版本：
 
 <!-- live-locales:start -->
+- [Arabic — العربية](https://ar-go-dev.shuijingwanwq.com/)
 - [Brazilian Portuguese — Português (Brasil)](https://pt-go-dev.shuijingwanwq.com/)
 - [Dutch — Nederlands](https://nl-go-dev.shuijingwanwq.com/)
 - [French — Français](https://fr-go-dev.shuijingwanwq.com/)

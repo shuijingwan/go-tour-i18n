@@ -179,10 +179,10 @@ r2 Stage A gate 记录后第一次重新启动完整 locale preview，并执行�
 维护者已在最终 preview 上人工确认桌面与移动端整体排版正常；移动端 explorer controls 恢复逐行排列，editor 完整占用可用宽度，未见新的明显视觉异常。至此 Preview rendered surface acceptance 已完成，允许进入 publish 前的 deterministic/Git/Production 准备阶段。
 
 <!-- first-production-finalization:start -->
-- production receipt identity: `PENDING`
-- production machine acceptance: `PENDING`
-- production browser acceptance: `PENDING`
-- unresolved production blocker: `PENDING`
-- overall final decision: `PENDING`
-- decision: `pending`
+- production receipt identity: `locale=ar hostname=ar-go-dev.shuijingwanwq.com release=20260918T163333Z-ar-92e47622a371`
+- production machine acceptance: `passed`
+- production browser acceptance: `passed`
+- unresolved production blocker: `none`
+- overall final decision: `passed`
+- decision: `passed`
 <!-- first-production-finalization:end -->
