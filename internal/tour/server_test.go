@@ -410,7 +410,7 @@ func TestRenderHomeDistinguishesDevelopmentAndProductionMetadata(t *testing.T) {
 }
 
 func TestHomepageLanguageRegistryAndLocaleProfiles(t *testing.T) {
-	if got, want := len(languageRegistry), 15; got != want {
+	if got, want := len(languageRegistry), 16; got != want {
 		t.Fatalf("language registry length = %d, want %d", got, want)
 	}
 	for i, want := range []LanguageLink{
@@ -429,6 +429,7 @@ func TestHomepageLanguageRegistryAndLocaleProfiles(t *testing.T) {
 		{Locale: "sv-SE", EnglishName: "Swedish", Autonym: "Svenska", URL: "https://sv-go-dev.shuijingwanwq.com/"},
 		{Locale: "zh-TW", EnglishName: "Traditional Chinese", Autonym: "繁體中文（台灣）", URL: "https://zh-tw-go-dev.shuijingwanwq.com/"},
 		{Locale: "tr-TR", EnglishName: "Turkish", Autonym: "Türkçe", URL: "https://tr-go-dev.shuijingwanwq.com/"},
+		{Locale: "vi-VN", EnglishName: "Vietnamese", Autonym: "Tiếng Việt", URL: "https://vi-go-dev.shuijingwanwq.com/"},
 	} {
 		if got := languageRegistry[i]; got != want {
 			t.Errorf("languageRegistry[%d] = %+v, want %+v", i, got, want)
@@ -641,6 +642,30 @@ func TestHomepageLanguageRegistryAndLocaleProfiles(t *testing.T) {
 	if got, want := localeProfiles["pl-PL"].TimeZone.String(), "Europe/Warsaw"; got != want {
 		t.Fatalf("pl-PL time zone = %q, want %q", got, want)
 	}
+	viLanguages, err := languagesFor("vi-VN")
+	if err != nil {
+		t.Fatal(err)
+	}
+	viCurrent, err := currentLanguage(viLanguages)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if viCurrent != (LanguageLink{Locale: "vi-VN", EnglishName: "Vietnamese", Autonym: "Tiếng Việt", Label: "Vietnamese — Tiếng Việt", URL: "https://vi-go-dev.shuijingwanwq.com/", Current: true}) {
+		t.Fatalf("vi-VN current language = %+v", viCurrent)
+	}
+	viProfile := localeProfiles["vi-VN"]
+	if got, want := viProfile.TimeZone.String(), "Asia/Ho_Chi_Minh"; got != want {
+		t.Fatalf("vi-VN time zone = %q, want %q", got, want)
+	}
+	if got, want := viProfile.TimeLabel, "giờ địa phương"; got != want {
+		t.Fatalf("vi-VN time label = %q, want %q", got, want)
+	}
+	if got, want := viProfile.TimeLabelFormat, " (%s)"; got != want {
+		t.Fatalf("vi-VN time label format = %q, want %q", got, want)
+	}
+	if got, want := viProfile.DevelopmentLogURL, "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/"; got != want {
+		t.Fatalf("vi-VN development log URL = %q, want %q", got, want)
+	}
 
 	metadata := SiteMetadata{Locale: "zh-CN", PublishedAt: "2026-08-20T05:56:11Z", UpstreamCommit: FrozenUpstreamCommit, UpstreamCommitTime: FrozenUpstreamCommitTime, Pages: 122, Articles: 122}
 	tests := []struct {
@@ -684,7 +709,7 @@ func TestHomepageLanguageRegistryAndLocaleProfiles(t *testing.T) {
 				t.Fatal(err)
 			}
 			home := string(homeBytes)
-			labels := []string{"Brazilian Portuguese — Português (Brasil)", "Dutch — Nederlands", "English", "French — Français", "German — Deutsch", "Indonesian — Bahasa Indonesia", "Italian — Italiano", "Japanese — 日本語", "Korean — 한국어", "Polish — Polski", "Simplified Chinese — 简体中文", "Spanish — Español", "Swedish — Svenska", "Traditional Chinese — 繁體中文（台灣）", "Turkish — Türkçe"}
+			labels := []string{"Brazilian Portuguese — Português (Brasil)", "Dutch — Nederlands", "English", "French — Français", "German — Deutsch", "Indonesian — Bahasa Indonesia", "Italian — Italiano", "Japanese — 日本語", "Korean — 한국어", "Polish — Polski", "Simplified Chinese — 简体中文", "Spanish — Español", "Swedish — Svenska", "Traditional Chinese — 繁體中文（台灣）", "Turkish — Türkçe", "Vietnamese — Tiếng Việt"}
 			for _, want := range append(labels, test.logURL, test.published, wantUpstreamTime, "© 2026 永夜", "蜀ICP备13001590号-1", `href="https://beian.miit.gov.cn/"`) {
 				if !strings.Contains(home, want) {
 					t.Errorf("homepage does not contain %q", want)

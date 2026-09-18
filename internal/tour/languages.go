@@ -39,6 +39,7 @@ var languageRegistry = []LanguageLink{
 	{Locale: "sv-SE", EnglishName: "Swedish", Autonym: "Svenska", URL: "https://sv-go-dev.shuijingwanwq.com/"},
 	{Locale: "zh-TW", EnglishName: "Traditional Chinese", Autonym: "繁體中文（台灣）", URL: "https://zh-tw-go-dev.shuijingwanwq.com/"},
 	{Locale: "tr-TR", EnglishName: "Turkish", Autonym: "Türkçe", URL: "https://tr-go-dev.shuijingwanwq.com/"},
+	{Locale: "vi-VN", EnglishName: "Vietnamese", Autonym: "Tiếng Việt", URL: "https://vi-go-dev.shuijingwanwq.com/"},
 }
 
 // LanguageRegistry returns the homepage language registry in presentation
@@ -68,6 +69,7 @@ var (
 	taipeiTime    = mustLoadLocation("Asia/Taipei")
 	istanbulTime  = mustLoadLocation("Europe/Istanbul")
 	jakartaTime   = mustLoadLocation("Asia/Jakarta")
+	hoChiMinhTime = mustLoadLocation("Asia/Ho_Chi_Minh")
 )
 
 var localeProfiles = map[string]localeProfile{
@@ -105,6 +107,12 @@ var localeProfiles = map[string]localeProfile{
 		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",
 		TimeZone:          jakartaTime,
 		TimeLabel:         "waktu setempat",
+		TimeLabelFormat:   " (%s)",
+	},
+	"vi-VN": {
+		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",
+		TimeZone:          hoChiMinhTime,
+		TimeLabel:         "giờ địa phương",
 		TimeLabelFormat:   " (%s)",
 	},
 	"it-IT": {
