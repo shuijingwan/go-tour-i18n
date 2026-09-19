@@ -24,6 +24,7 @@
 - [Simplified Chinese — 简体中文](https://go-dev.shuijingwanwq.com/)
 - [Spanish — Español](https://es-go-dev.shuijingwanwq.com/)
 - [Swedish — Svenska](https://sv-go-dev.shuijingwanwq.com/)
+- [Thai — ไทย](https://th-go-dev.shuijingwanwq.com/)
 - [Traditional Chinese — 繁體中文（台灣）](https://zh-tw-go-dev.shuijingwanwq.com/)
 - [Turkish — Türkçe](https://tr-go-dev.shuijingwanwq.com/)
 - [Vietnamese — Tiếng Việt](https://vi-go-dev.shuijingwanwq.com/)

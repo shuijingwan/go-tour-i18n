@@ -87,10 +87,10 @@ Defect summary:
 Preview acceptance is complete. Production machine/browser acceptance remains a separate later gate.
 
 <!-- first-production-finalization:start -->
-- production receipt identity: `PENDING`
-- production machine acceptance: `PENDING`
-- production browser acceptance: `PENDING`
-- unresolved production blocker: `PENDING`
-- overall final decision: `PENDING`
-- decision: `pending`
+- production receipt identity: `locale=th-TH hostname=th-go-dev.shuijingwanwq.com release=20260919-th-TH-ae75efc131c7`
+- production machine acceptance: `passed`
+- production browser acceptance: `passed`
+- unresolved production blocker: `none`
+- overall final decision: `passed`
+- decision: `passed`
 <!-- first-production-finalization:end -->
