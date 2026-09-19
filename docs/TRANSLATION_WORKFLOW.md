@@ -6,6 +6,7 @@
 
 ```text
 术语准备
+→ 独立 Glossary Review
 → 翻译执行
 → automatic validation
 → Candidate Snapshot
@@ -21,7 +22,13 @@
 
 ```text
 Generation session
-  glossary / UI / metadata / TranslationUnit generation
+  glossary generation
+        ↓
+Reviewer session
+  Glossary Review
+        ↓ PASS
+Generation session
+  UI / metadata / TranslationUnit generation
         ↓
 Local terminal
   export / process / validation / Candidate Snapshot
@@ -54,7 +61,7 @@ language defect → Generation session
 PASS → Local terminal preview / publish / Production
 ```
 
-Generation session 与 Reviewer session 不得是同一 conversation/session；同一个未参与该 locale 语言 generation 的 Reviewer session 可以连续承担 TranslationUnit Quality Check、revision 后 re-QC 与 Locale Surface Review。详细角色边界见 [ChatGPT 正式语言生成执行规范](CHATGPT_LANGUAGE_GENERATION.md)。canonical English source-description extraction / review 是跨 locale 共享 authority，不属于这个单 locale 固定配对，仍以 [课程页正式 SEO Metadata 规范](COURSE_SEO_METADATA.md) 为准。
+Generation session 与 Reviewer session 不得是同一 conversation/session；同一个未参与该 locale 语言 generation 的 Reviewer session 可以连续承担 Glossary Review、TranslationUnit Quality Check、revision 后 re-QC 与 Locale Surface Review。详细角色边界见 [ChatGPT 正式语言生成执行规范](CHATGPT_LANGUAGE_GENERATION.md)。canonical English source-description extraction / review 是跨 locale 共享 authority，不属于这个单 locale 固定配对，仍以 [课程页正式 SEO Metadata 规范](COURSE_SEO_METADATA.md) 为准。
 
 ## 1. 术语准备
 
@@ -65,6 +72,8 @@ Generation session 与 Reviewer session 不得是同一 conversation/session；�
 - [ja-JP 术语草案](ja-JP-TERMINOLOGY-DRAFT.md)：仅在准备 ja-JP glossary 时阅读。
 
 产物为目标 locale 的 `locales/<locale>/glossary.yaml`；不要将一个 locale 的 glossary 机器翻译为另一个 locale 的 glossary。
+
+完整 glossary 必须继续按 [Glossary Review 规范](GLOSSARY_REVIEW.md) 由 generation-independent Reviewer session 全量审核并取得 current passed machine gate，之后才正式生成 UI / article metadata 或进入 TranslationUnit generation。
 
 ## 2. 翻译执行
 
@@ -83,6 +92,8 @@ go run -mod=readonly ./cmd/tour-i18n status check --locale <locale>
 ```
 
 初始化只允许在 `locales/<locale>/status.tsv` 尚不存在时执行；它不会覆盖、修复或同步已有状态。已有 locale 的 source 更新与状态迁移继续使用对应正式流程，不得通过重新初始化清除 candidate、ready 或 published 状态。
+
+每次正式 `retranslation export` 还会 fail closed 要求 current Glossary Review coverage。既有 live locale 只使用 [Glossary Review 规范](GLOSSARY_REVIEW.md) 定义的固定一次性 migration；未来 locale 不能以任意 matching Surface Review 绕过该 gate。
 
 翻译任务输出为 raw response；新 retranslation batch 的 input、raw response、retry raw response 与 candidate 统一使用恰好一个结尾 LF，详细生成与拒绝边界见对应执行规范。后续 restore、validation、review 与 promotion 由下一阶段规范约束。
 
@@ -109,4 +120,4 @@ promotion 后构建 production bundle、部署和验收时，阅读：
 
 ## 文档优先级
 
-发生冲突时，以阶段对应的正式规范为准：术语以 `TRANSLATION_TERMINOLOGY.md` 为准；模型无关输入/输出契约以 `TRANSLATION_TASK_SPEC.md` 为准；ChatGPT 执行与安全 staging 以 `CHATGPT_LANGUAGE_GENERATION.md` 为准；Codex fallback 与新增 locale 首次 Page batch 以 `CODEX_TRANSLATION.md` 为准；export、retry 与 revision 顺序以 `RETRANSLATION_RUNBOOK.md` 为准；质量审核和 promotion gate 以 `TRANSLATION_QUALITY_REVIEW.md` 为准；发布部署以 `PRODUCTION_RUNBOOK.md` 为准。`AGENTS.md` 只提供自动导航，`PROJECT_STATE.md` 与 `TRANSLATION_QUALITY_EXPERIMENTS.md` 只记录状态和历史。
+发生冲突时，以阶段对应的正式规范为准：术语政策以 `TRANSLATION_TERMINOLOGY.md` 为准，术语独立审核与 machine gate 以 `GLOSSARY_REVIEW.md` 为准；模型无关输入/输出契约以 `TRANSLATION_TASK_SPEC.md` 为准；ChatGPT 执行与安全 staging 以 `CHATGPT_LANGUAGE_GENERATION.md` 为准；Codex fallback 与新增 locale 首次 Page batch 以 `CODEX_TRANSLATION.md` 为准；export、retry 与 revision 顺序以 `RETRANSLATION_RUNBOOK.md` 为准；质量审核和 promotion gate 以 `TRANSLATION_QUALITY_REVIEW.md` 为准；发布部署以 `PRODUCTION_RUNBOOK.md` 为准。`AGENTS.md` 只提供自动导航，`PROJECT_STATE.md` 与 `TRANSLATION_QUALITY_EXPERIMENTS.md` 只记录状态和历史。

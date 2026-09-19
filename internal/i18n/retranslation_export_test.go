@@ -43,6 +43,9 @@ func writeRetranslationTestGlossaryForLocale(t *testing.T, root, locale string) 
 	if err := os.WriteFile(filepath.Join(dir, "glossary.yaml"), []byte("mandatory:\n  Go: Go\nkeep:\n  - Go\n  - gofmt\n"), 0644); err != nil {
 		t.Fatal(err)
 	}
+	if _, _, err := RecordGlossaryReview(root, locale, "test-review", "independent-reviewer", "passed", nil); err != nil {
+		t.Fatal(err)
+	}
 }
 
 func retranslationTestExample(id, path, source string) Example {

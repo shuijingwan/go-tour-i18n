@@ -154,6 +154,9 @@ func ExportRetranslationBatch(root string, catalog *Catalog, options Retranslati
 	if len(options.UnitIDs) > DefaultRetranslationExportLimit {
 		return nil, fmt.Errorf("a retranslation batch must not contain more than %d TranslationUnits", DefaultRetranslationExportLimit)
 	}
+	if err := RequireCurrentGlossaryReview(root, options.Locale); err != nil {
+		return nil, fmt.Errorf("retranslation export requires current Glossary Review coverage: %w", err)
+	}
 
 	base := filepath.Join(root, "data", "retranslation-runs", options.Locale)
 	exported, nextNumber, err := scanRetranslationBatches(base, options.Locale, catalog)

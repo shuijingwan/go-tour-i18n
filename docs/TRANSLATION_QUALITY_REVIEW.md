@@ -4,6 +4,8 @@ Translation Quality Review 是所有语言翻译工作流在 promotion 前的正
 
 本规范只审核 TranslationUnit candidate。公共 UI、首页、`/tour/list`、导航、语言选择器、runtime message、article metadata、SEO 与桌面/移动端组合页面由独立的 [Locale Surface Review](LOCALE_SURFACE_REVIEW.md) 审核。Surface Review 是 promotion 后、publish / production 前的 locale release gate，不生成本规范的 QC/finalization evidence，也不改变全 A、逐 TranslationUnit规则。
 
+前置 [Glossary Review](GLOSSARY_REVIEW.md) 只审核 glossary 的术语决策本身，同样不替代本规范。Glossary 任意字节变化后，旧 Snapshot / QC carry-forward 仍按现有 glossary identity 规则 stale；新的 Glossary Review PASS 不会恢复旧 A。
+
 ## 正式流程
 
 所有进入 locale translation workflow 并产生翻译结果的 TranslationUnit 必须遵循：
@@ -334,7 +336,7 @@ go run -mod=readonly ./cmd/tour-i18n retranslation review supersede \
 
 `reviewer` 是审核主体标识，不是账号或权限系统。当前语言生成可以由普通 ChatGPT GPT-5.6 Sol + High 执行，Codex GPT-5.6 Sol + High 保留为 fallback；ChatGPT 统一承担 Quality Check。Quality Check 必须来自与该 locale Generation session 独立的 Reviewer session：该 session 不得参与该 locale 的 glossary、UI / metadata、TranslationUnit initial / revision / retry 或 Course SEO language generation。Legacy Final Review 的审核主体同样必须独立重新读取 source、candidate 和相关 evidence 后执行审核。
 
-同一个 generation-independent Reviewer session 可以在完成 TranslationUnit Quality Check 后继续承担同一 locale 的 revision re-QC 与 [Locale Surface Review](LOCALE_SURFACE_REVIEW.md)；两个 gate 仍各自使用自己的范围和 evidence，不要求再建立第二个 reviewer session。B/C/D finding 必须回到 Generation session 产生 replacement，再由本地终端完成 revision、process、validation 与新 Snapshot。只要 Reviewer session 没有参与 replacement generation，它可以继续 re-QC；不得直接修改 candidate、生成 replacement 后批准自己的结果，或因为上一轮已经审核过就自动批准 revision。
+同一个 generation-independent Reviewer session 可以先完成 [Glossary Review](GLOSSARY_REVIEW.md)，再承担 TranslationUnit Quality Check、revision re-QC 与 [Locale Surface Review](LOCALE_SURFACE_REVIEW.md)；三个 gate 仍各自使用自己的范围和 evidence，不要求再建立其他 reviewer session。B/C/D finding 必须回到 Generation session 产生 replacement，再由本地终端完成 revision、process、validation 与新 Snapshot。只要 Reviewer session 没有参与 replacement generation，它可以继续 re-QC；不得直接修改 candidate、生成 replacement 后批准自己的结果，或因为上一轮已经审核过就自动批准 revision。
 
 审核必须重新判断译文质量，不得用 validation passed、旧 A、Surface Review 结论、reviewer 身份或模型历史表现自动批准。未来可以使用其他模型或人工 reviewer，但都必须遵循同一正式 rubric 和 evidence schema。本项目当前不构建 reviewer 账号系统；完整会话职责见 [ChatGPT 正式语言生成执行规范](CHATGPT_LANGUAGE_GENERATION.md)。
 

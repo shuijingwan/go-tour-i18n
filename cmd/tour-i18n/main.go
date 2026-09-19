@@ -44,7 +44,7 @@ func run(args []string) error {
 		return err
 	}
 	if len(args) == 0 {
-		return fmt.Errorf("usage: tour-i18n <assets|catalog|upstream|page|locale|status|candidate|translate|retranslation|quality-check|course-metadata|surface-review|first-production|indexnow|policy|build|preview|publish|publish-batch> <command or flags>")
+		return fmt.Errorf("usage: tour-i18n <assets|catalog|upstream|page|locale|status|candidate|translate|glossary-review|retranslation|quality-check|course-metadata|surface-review|first-production|indexnow|policy|build|preview|publish|publish-batch> <command or flags>")
 	}
 	if args[0] == "assets" {
 		if len(args) < 2 {
@@ -108,7 +108,7 @@ func run(args []string) error {
 		return publishBatchCommand(root, catalog, args[1:])
 	}
 	if len(args) < 2 {
-		return fmt.Errorf("usage: tour-i18n <assets|catalog|upstream|page|locale|status|candidate|translate|retranslation|quality-check|course-metadata|surface-review|first-production|indexnow|policy|build|preview|publish|publish-batch> <command or flags>")
+		return fmt.Errorf("usage: tour-i18n <assets|catalog|upstream|page|locale|status|candidate|translate|glossary-review|retranslation|quality-check|course-metadata|surface-review|first-production|indexnow|policy|build|preview|publish|publish-batch> <command or flags>")
 	}
 	switch args[0] + " " + args[1] {
 	case "locale init":
@@ -116,9 +116,13 @@ func run(args []string) error {
 		if err != nil {
 			return err
 		}
-		fmt.Printf("Locale 骨架初始化：PASS\nlocale: %s\nlocale_dir: %s\nui_catalog: %s\nstatus: %d TranslationUnits（%d Page，%d Example）\n下一步：完成人工 glossary、UI 与 metadata；promotion 后生成正式 course metadata，全部完成后删除 %s。\n",
+		fmt.Printf("Locale 骨架初始化：PASS\nlocale: %s\nlocale_dir: %s\nui_catalog: %s\nstatus: %d TranslationUnits（%d Page，%d Example）\n下一步：完成 glossary 与独立 Glossary Review；PASS 后生成 UI 与 metadata。promotion 后生成正式 course metadata，全部完成后删除 %s。\n",
 			result.Locale, result.LocaleDir, result.UICatalog, result.UnitCount, result.PageCount, result.ExampleCount, localeInitIncompleteMarker)
 		return nil
+	case "glossary-review record":
+		return recordGlossaryReviewCommand(root, args[2:])
+	case "glossary-review check":
+		return checkGlossaryReviewCommand(root, args[2:])
 	case "course-metadata assemble":
 		return assembleCourseMetadata(root, catalog, args[2:])
 	case "course-metadata refresh":

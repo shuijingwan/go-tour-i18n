@@ -28,11 +28,13 @@ Surface Review：
 
 Glossary 只回答正式术语选择，不能证明完整译文忠实、准确或自然，也不能替代 source ↔ target 比较。审核者必须同时读取 source、target 和当前 glossary。
 
+前置 [Glossary Review](GLOSSARY_REVIEW.md) 判断 glossary 决策本身是否适合作为 authority；本阶段不能替代它。反过来，Glossary Review PASS 也不能替代最终 Surface Review：本阶段仍完整检查当前 glossary 在 UI、metadata、TranslationUnit context、Course SEO 与其他 surfaces 中的实际一致性，并判断完整 source ↔ target 质量。
+
 ### 生成与改写边界
 
 生成或修改 UI、首页、list、article metadata、runtime message 与其他 SEO 文案前，必须完整读取该资产的正式 source/context 和目标 locale 的完整 glossary，并执行 `mandatory`、`preferred`、`forbidden`、`keep` 的全部决定；不得抽样或只凭相邻 Page/module 推断当前 source 没有的上下文。目标必须是自然的目标语言，同时精确保留 Go、Go Playground、TranslationUnit、Page、Example 等项目/技术 identity，以及 `official`、`unofficial`、`affiliated`、`authorized`、`endorsed` 等身份边界。
 
-普通 ChatGPT 可以生成这些 locale-level 语言资产，但正式 Locale Surface Review 必须由与该 locale Generation session 独立的 Reviewer session 执行；生成 session 不得审核并批准自己的本轮输出。Locale Surface Review 不必与 TranslationUnit Quality Check 使用不同 reviewer session：同一个从未参与该 locale glossary、UI / metadata、TranslationUnit 或 Course SEO language generation 的 Reviewer session，可以先做 TranslationUnit Quality Check 与 revision re-QC，再继续做 Locale Surface Review。若 reviewer 发现缺陷，必须把 finding 回流到 Generation session；reviewer 不得自行生成 replacement language content 后再正式批准。Generation session 修订、本地终端完成对应 deterministic lifecycle 并重新导出审核材料后，只要原 Reviewer session 没参与 replacement generation，它可以继续 re-review。具体职责与执行边界见 [ChatGPT 正式语言生成执行规范](CHATGPT_LANGUAGE_GENERATION.md)。
+普通 ChatGPT 可以生成这些 locale-level 语言资产，但正式 Locale Surface Review 必须由与该 locale Generation session 独立的 Reviewer session 执行；生成 session 不得审核并批准自己的本轮输出。Locale Surface Review 不必与 Glossary Review 或 TranslationUnit Quality Check 使用不同 reviewer session：同一个从未参与该 locale glossary、UI / metadata、TranslationUnit 或 Course SEO language generation 的 Reviewer session，可以先做 Glossary Review、TranslationUnit Quality Check 与 revision re-QC，再继续做 Locale Surface Review。若 reviewer 发现缺陷，必须把 finding 回流到 Generation session；reviewer 不得自行生成 replacement language content 后再正式批准。Generation session 修订、本地终端完成对应 deterministic lifecycle 并重新导出审核材料后，只要原 Reviewer session 没参与 replacement generation，它可以继续 re-review。具体职责与执行边界见 [ChatGPT 正式语言生成执行规范](CHATGPT_LANGUAGE_GENERATION.md)。
 
 不得添加 source 未提供的背景、教程、解释、结论、保证或处方；必须保留原有逻辑、条件和顺序：possibility 不等于 requirement，hint 不等于 prescription。尤其 `Congrats` 等页面不得仅按模块主题自行补写内容。课程页 schema v2 description 的生成边界单独以 [课程页正式 SEO Metadata 规范](COURSE_SEO_METADATA.md) 为准：canonical English 阶段完整读取 Page source 做一次 semantic extraction；locale 阶段以该 canonical description 作为唯一 semantic-scope authority，并可利用当前 Page 完整 source/ready target、完整 locale glossary、locale identity 与 v2 contract 核对技术语义、正文术语与自然度，但不得重新选择摘要重点或增删 canonical description 的语义。最终 Surface Review 仍使用完整 source + canonical description + target + glossary + localized description 上下文，并由独立 session 完成。
 
@@ -223,7 +225,7 @@ Surface Review 只使用 `passed` 或 `failed`，不采用 TranslationUnit 的 A
 ## 缺陷回流
 
 - TranslationUnit candidate 缺陷：回到 revision batch，完成全套 A-only 链后重新 projection 和 Surface Review。
-- glossary 决策缺失或冲突：先更新该 locale glossary，再同步受影响表层并重审。
+- glossary 决策缺失或冲突：Generation session 更新该 locale glossary，重新通过 current Glossary Review gate；既有 TU Snapshot / QC carry-forward 按原规则 stale，并同步修订、重审受影响表层。
 - Course SEO localized description 语言质量缺陷：它不属于 TranslationUnit 缺陷；identity stale 时按 Course SEO workflow 由 Generation session 产生 refresh 所需的新 description，identity current 时由 Generation session 产生明确 revise subset，再由本地终端执行 `course-metadata refresh` / `revise` 机械更新所选 description 与真实 provenance，最后回到未参与 replacement generation 的 Reviewer session 重审。
 - UI、首页、list、metadata 或其他 SEO 缺陷：由 Generation session 产生修订语言内容，本地终端完成对应资产与 lifecycle 更新，再由未参与 replacement generation 的 Reviewer session 重审受影响范围。
 - production-only 的 CDN、TLS、Origin、缓存或响应问题：按 [生产运维手册](PRODUCTION_RUNBOOK.md) 修复并在公网复核，不改写 TranslationUnit 审核结果。

@@ -7,7 +7,7 @@
 Codex 支持的正式翻译阶段为：
 
 ```text
-retranslation export
+retranslation export（先验证 current Glossary Review coverage）
 → Codex 读取 manifest.json
 → Codex 读取 manifest 列出的全部 inputs/*
 → Codex 读取 locales/<locale>/glossary.yaml
@@ -16,6 +16,8 @@ retranslation export
 ```
 
 manifest、全部 inputs 与 locale glossary 是不可拆分的正式模型输入。Codex 必须在翻译前完整读取 glossary，并遵守其中的 `mandatory`、`preferred`、`forbidden` 和 `keep`；glossary 不是仅供 validator 后置检查的材料。
+
+Glossary 的制定、独立审核与 machine gate 以 [Glossary Review 规范](GLOSSARY_REVIEW.md) 为准。Codex fallback 不得用自己的 generation 上下文审核并批准同一 glossary。
 
 ## Codex 5 小时额度与 fallback 分工
 

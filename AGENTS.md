@@ -5,7 +5,8 @@
 当用户要求新增一门语言、建立新 locale、准备新语言首次上线或评估新 locale 完成度时，Codex 必须先读取：
 
 1. `docs/NEW_LOCALE_RUNBOOK.md`
-2. `docs/LOCALE_SURFACE_REVIEW.md`
+2. `docs/GLOSSARY_REVIEW.md`
+3. `docs/LOCALE_SURFACE_REVIEW.md`
 
 新增 locale 的 TranslationUnit 翻译仍须继续遵守下列不可拆分输入规则；上述入口不能代替具体翻译规范。
 
@@ -25,9 +26,9 @@ manifest、全部 inputs 与 locale glossary 是不可拆分的正式翻译输�
 
 ## 执行职责与正式自动化
 
-普通 ChatGPT 的 locale 工作分为两个不得混用的长期角色：**Generation session** 负责 glossary、UI catalog、article metadata、其他 locale-level 文案、TranslationUnit initial / revision / retry generation，以及 schema v2 Course SEO localization / revision；与之独立的 **Reviewer session** 负责逐 Unit Quality Check、revision 后 re-QC 与 Locale Surface Review。同一个未参与该 locale 语言 generation 的 Reviewer session 可以先做 TranslationUnit Quality Check，再继续做该 locale 的 Locale Surface Review；reviewer finding 必须回到 Generation session 产生 replacement，Reviewer session 不得自行生成 replacement 后批准。详细职责以 [ChatGPT 正式语言生成执行规范](docs/CHATGPT_LANGUAGE_GENERATION.md) 为准。canonical English source-description review 是跨 locale 共享 authority，不默认归入单个 locale 的 Reviewer session，仍以 [课程页正式 SEO Metadata 规范](docs/COURSE_SEO_METADATA.md) 为准。
+普通 ChatGPT 的 locale 工作分为两个不得混用的长期角色：**Generation session** 负责 glossary、UI catalog、article metadata、其他 locale-level 文案、TranslationUnit initial / revision / retry generation，以及 schema v2 Course SEO localization / revision；与之独立的 **Reviewer session** 负责 Glossary Review、逐 Unit Quality Check、revision 后 re-QC 与 Locale Surface Review。同一个未参与该 locale 语言 generation 的 Reviewer session 可以连续承担这三类正式审核；各 gate 范围和 evidence 独立，reviewer finding 必须回到 Generation session 产生 replacement，Reviewer session 不得自行生成 replacement 后批准。Glossary Review 以 [Glossary Review 规范](docs/GLOSSARY_REVIEW.md) 为准，完整职责以 [ChatGPT 正式语言生成执行规范](docs/CHATGPT_LANGUAGE_GENERATION.md) 为准。canonical English source-description review 是跨 locale 共享 authority，不默认归入单个 locale 的 Reviewer session，仍以 [课程页正式 SEO Metadata 规范](docs/COURSE_SEO_METADATA.md) 为准。
 
-本地终端负责 deterministic lifecycle：locale init、retranslation export / process / retry process / revalidate、status / validation、Candidate Snapshot、quality-check scope / record / record-batch / finalize、promotion、Course SEO assemble / refresh / revise 的机械 CLI、canonical/source/current checks、build、surface-review export / record-a、preview、browser verifier、publish、Production、deploy、verifier、checksum / curl、Git、assets、search closeout，以及已有正式 CLI/script 已覆盖的其他机械步骤。Generation session 产生 Course SEO refresh / revise 所需的新 description 文本，本地终端才执行对应 CLI mutation。当前 docs/code/production identity 已确认的 machine fact 应直接复用；没有新的 failure evidence 时，不重新探测服务器、不重新设计 Production、广告、IndexNow、shared assets 或 verifier。只有真实 evidence 显示基线变化时，才重新调查并更新正式 docs，避免为了“再确认一次”消耗 Codex reasoning quota。
+本地终端负责 deterministic lifecycle：locale init、glossary-review record / check、retranslation export / process / retry process / revalidate、status / validation、Candidate Snapshot、quality-check scope / record / record-batch / finalize、promotion、Course SEO assemble / refresh / revise 的机械 CLI、canonical/source/current checks、build、surface-review export / record-a、preview、browser verifier、publish、Production、deploy、verifier、checksum / curl、Git、assets、search closeout，以及已有正式 CLI/script 已覆盖的其他机械步骤。Generation session 产生 Course SEO refresh / revise 所需的新 description 文本，本地终端才执行对应 CLI mutation。当前 docs/code/production identity 已确认的 machine fact 应直接复用；没有新的 failure evidence 时，不重新探测服务器、不重新设计 Production、广告、IndexNow、shared assets 或 verifier。只有真实 evidence 显示基线变化时，才重新调查并更新正式 docs，避免为了“再确认一次”消耗 Codex reasoning quota。
 
 ### 测试额度与执行边界（fail-closed）
 

@@ -58,11 +58,13 @@
 ```text
 目标语言社区资料
         ↓
-Terminology review
-        ↓
 TERMINOLOGY_GUIDE
         ↓
+Generation session 制定完整 glossary
+        ↓
 locales/<locale>/glossary.yaml
+        ↓
+独立 Glossary Review
 ```
 
 禁止采用以下方式：
@@ -76,6 +78,8 @@ ja-JP glossary
 ```
 
 不同语言社区可能存在不同的技术习惯、借词传统、读写方式和教学表达。将一个 locale 的术语表机器翻译为另一个 locale 的术语表，会丢失这些语言特有的判断，也可能制造看似一致但不自然或不准确的术语。
+
+完整审核范围、passed / failed 结论、Reviewer 与 Generation session 的职责隔离，以及 current machine gate 以 [Glossary Review 规范](GLOSSARY_REVIEW.md) 为准。
 
 ## 5. Updating terminology
 

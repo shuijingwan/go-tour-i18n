@@ -114,6 +114,8 @@ manifest 是任务身份的权威来源，记录 locale、batch、Translation Un
 
 `manifest.json`、manifest 列出的全部 `inputs/*` 与 `locales/<locale>/glossary.yaml` 是不可拆分的正式输入。任何一部分缺失，都不属于合规的正式 TranslationUnit 翻译执行。Glossary 必须在模型开始翻译前读取并用于生成译文，不是仅供 validator 在输出后检查的材料；不得因用户 Prompt 未重复提醒而省略，也不得用聊天上下文中的旧规则代替仓库当前内容。
 
+正式 batch 还必须由 `retranslation export` 在创建前确认 current Glossary Review coverage。该前置 gate 只证明 glossary 本身已独立审核，不改变上述三部分输入契约，也不证明本 batch candidate 已通过 automatic validation 或 TranslationUnit Quality Check。
+
 曾有翻译实验漏读 glossary，导致全部候选都产生 forbidden 译法；因此输入完整性本身是正式执行契约的一部分。
 
 ## 5. 输出契约

@@ -6,11 +6,13 @@
 
 如果用户没有明确指定 locale，先从 [Locale 长期路线图](LOCALE_ROADMAP.md) 选择排名最高且尚未完成的 Standard locale。路线图只确定商业优先级与 candidate identity，不替代本手册要求的正式 identity freeze。
 
-## 总体顺序与四条边界
+## 总体顺序与五条边界
 
 ```text
 locale / domain / CDN 决策
+→ locale init
 → locale glossary
+→ 独立 Glossary Review → current passed gate
 → locale 配置与公共 UI catalog
 → 首页、导航、语言选择器与 article metadata
 → TranslationUnit 翻译与 automatic validation
@@ -34,16 +36,17 @@ locale / domain / CDN 决策
 → search-engine submission closeout（Google → Bing → locale-specific → IndexNow 全站 bootstrap）
 ```
 
-必须区分四类工作：
+必须区分五类工作：
 
-1. **TranslationUnit 质量审核**只审核进入 translation workflow 的 Page 和 eligible Example candidate，规则见 [Translation Quality Review](TRANSLATION_QUALITY_REVIEW.md)。它保持逐 TranslationUnit、Quality Check 全 A 与 machine finalization promotion gate。
-2. **Locale Surface Review**审核 TranslationUnit 之外及组合后页面上的语言表层，规则见 [Locale Surface Review](LOCALE_SURFACE_REVIEW.md)。它是独立的 locale release gate，不生成 TranslationUnit review evidence，也不允许替代或弱化 A-only gate。
-3. **首次生产部署**为新 locale 建立 hostname、CDN、service、port、TLS、vhost、DNS/CDN、Playground Origin、部署 profile，以及对既有 AdSense 能力的 production 接入；它不是一次普通 release 切换。课程页手动广告、Auto Ads、Angular SPA 生命周期和局部布局保护均为共享实现，第三门及后续 locale 不重新开发广告功能。
-4. **日常维护部署**只对已完成上述基线、并标记为 `production_state=live` 的 locale 执行 `scripts/maintenance-production.sh <release-dir>`，不重新探测或设计服务器环境。
+1. **Glossary Review**完整审核术语决策本身，规则见 [Glossary Review 规范](GLOSSARY_REVIEW.md)。它是下游 generation 的独立前置 gate，不审核 TranslationUnit candidate 或组合后的页面。
+2. **TranslationUnit 质量审核**只审核进入 translation workflow 的 Page 和 eligible Example candidate，规则见 [Translation Quality Review](TRANSLATION_QUALITY_REVIEW.md)。它保持逐 TranslationUnit、Quality Check 全 A 与 machine finalization promotion gate。
+3. **Locale Surface Review**审核 TranslationUnit 之外及组合后页面上的语言表层，规则见 [Locale Surface Review](LOCALE_SURFACE_REVIEW.md)。它是独立的 locale release gate，不生成 TranslationUnit review evidence，也不允许替代或弱化 A-only gate。
+4. **首次生产部署**为新 locale 建立 hostname、CDN、service、port、TLS、vhost、DNS/CDN、Playground Origin、部署 profile，以及对既有 AdSense 能力的 production 接入；它不是一次普通 release 切换。课程页手动广告、Auto Ads、Angular SPA 生命周期和局部布局保护均为共享实现，第三门及后续 locale 不重新开发广告功能。
+5. **日常维护部署**只对已完成上述基线、并标记为 `production_state=live` 的 locale 执行 `scripts/maintenance-production.sh <release-dir>`，不重新探测或设计服务器环境。
 
 ## 执行成本与协作
 
-新增 locale 始终以质量 gate 为先。每个 locale 默认维护 **1 个长期 Generation session + 1 个独立长期 Reviewer session + 本地终端**：Generation session 只产生或修订语言内容；Reviewer session 执行 TranslationUnit Quality Check、revision re-QC 与 Locale Surface Review；本地终端执行全部 deterministic lifecycle。同一个未参与该 locale 语言 generation 的 Reviewer session 可以连续承担 TU QC 与 Surface Review，不要求为两个 gate 再拆两个 reviewer conversation/session；reviewer finding 必须回到 Generation session 产生 replacement，再经本地终端处理后返回 Reviewer session 复审。
+新增 locale 始终以质量 gate 为先。每个 locale 默认维护 **1 个长期 Generation session + 1 个独立长期 Reviewer session + 本地终端**：Generation session 只产生或修订语言内容；Reviewer session 执行 Glossary Review、TranslationUnit Quality Check、revision re-QC 与 Locale Surface Review；本地终端执行全部 deterministic lifecycle。同一个未参与该 locale 语言 generation 的 Reviewer session 可以连续承担三类审核，不要求拆分更多 reviewer conversation/session；各 gate 范围和 evidence 独立，reviewer finding 必须回到 Generation session 产生 replacement，再经本地终端处理后返回 Reviewer session 复审。
 
 语言生成优先使用普通 ChatGPT GPT-5.6 Sol + High + Remote Desktop Commander，Codex GPT-5.6 Sol + High 保留为 fallback；不得因额度或执行环境弱化任何 gate。仓库已有正式工具与已确认事实直接复用，不为新增 locale 建立硬 wall-clock 时间目标。详细会话职责以 [ChatGPT 正式语言生成执行规范](CHATGPT_LANGUAGE_GENERATION.md) 为准，Codex fallback 的额度观察和停止边界见 [Codex 翻译执行规范](CODEX_TRANSLATION.md)。canonical English source-description extraction / review 是跨 locale 共享 authority，不属于上述单 locale 固定配对；其 current/stale 规则仍只按 [课程页正式 SEO Metadata 规范](COURSE_SEO_METADATA.md) 执行，不因每个新增 locale 默认重做。
 
@@ -64,17 +67,6 @@ locale / domain / CDN 决策
 
 ## 2. 建立 locale 术语权威来源
 
-先阅读 [术语治理政策](TRANSLATION_TERMINOLOGY.md) 和 [术语制定指南](TERMINOLOGY_GUIDE.md)，再建立 `locales/<locale>/glossary.yaml`。不得机器翻译 zh-CN、ja-JP 或其他 locale 的 glossary。
-
-Glossary 同时承担两项正式职责：
-
-- 它是 TranslationUnit 模型执行时与 manifest、全部 inputs 不可拆分的正式输入；
-- 它是该 locale 全站的正式术语权威来源，公共 UI、首页、`/tour/`、`/tour/list`、导航、语言选择器、编辑器、runtime message、article metadata 和 SEO 可见文案均必须遵守。
-
-对 `Go Playground` 这类可能翻译、部分本地化或 keep 的名称，必须在该 locale 的 glossary 中形成显式决定。不同 locale 可以做不同决定，但同一 locale 不得在不同表层混用。此步骤只建立新 locale 的规则，不顺带修改 zh-CN 或 ja-JP 的现有译文。
-
-## 3. 建立非 TranslationUnit 语言资产
-
 先运行正式初始化命令生成机械骨架；locale 目录或 UI catalog 已存在时命令 fail closed，绝不覆盖：
 
 ```sh
@@ -85,9 +77,33 @@ go run -mod=readonly ./cmd/tour-i18n locale init \
   --html-lang <html-lang>
 ```
 
-命令生成 `locale.json`、显式 TODO glossary、保持英文 source 的 UI key/kind/占位符/markup identity 的 TODO catalog、article metadata、`course-metadata.todo.json` Page inventory，以及按 Page 后 Example 正式顺序初始化的 `status.tsv`。同时创建 `.locale-init-incomplete`；该标记存在时，完整 build、完整 preview 和 publish 均 fail closed。TODO 只是不可发布的工作标记，不是译文；进入 export 前必须完成 glossary，进入 Surface Review 前必须完成全部 UI 与 metadata 语言内容。
+命令生成 `locale.json`、显式 TODO glossary、保持英文 source 的 UI key/kind/占位符/markup identity 的 TODO catalog、article metadata、`course-metadata.todo.json` Page inventory，以及按 Page 后 Example 正式顺序初始化的 `status.tsv`。同时创建 `.locale-init-incomplete`；该标记存在时，完整 build、完整 preview 和 publish 均 fail closed。
 
-生成后按以下边界补充语言内容，不复制其他 locale 的语言内容。普通 ChatGPT 可以承担 glossary、UI catalog 与 article metadata 的语言制定/生成，但正式 Locale Surface Review 必须由不同 conversation/session 完成：
+随后阅读 [术语治理政策](TRANSLATION_TERMINOLOGY.md) 和 [术语制定指南](TERMINOLOGY_GUIDE.md)，由 Generation session 建立完整 `locales/<locale>/glossary.yaml`。不得机器翻译 zh-CN、ja-JP 或其他 locale 的 glossary。
+
+Glossary 同时承担两项正式职责：
+
+- 它是 TranslationUnit 模型执行时与 manifest、全部 inputs 不可拆分的正式输入；
+- 它是该 locale 全站的正式术语权威来源，公共 UI、首页、`/tour/`、`/tour/list`、导航、语言选择器、编辑器、runtime message、article metadata 和 SEO 可见文案均必须遵守。
+
+对 `Go Playground` 这类可能翻译、部分本地化或 keep 的名称，必须在该 locale 的 glossary 中形成显式决定。不同 locale 可以做不同决定，但同一 locale 不得在不同表层混用。此步骤只建立新 locale 的规则，不顺带修改 zh-CN 或 ja-JP 的现有译文。
+
+完整 glossary 制定后，必须按 [Glossary Review 规范](GLOSSARY_REVIEW.md) 由未参与该 locale generation 的 Reviewer session 完整审核，并由本地终端记录、检查 current passed receipt：
+
+```sh
+go run -mod=readonly ./cmd/tour-i18n glossary-review record \
+  --locale <locale> --review-id <review-id> \
+  --reviewer <reviewer> --decision passed
+go run -mod=readonly ./cmd/tour-i18n glossary-review check --locale <locale>
+```
+
+只有 PASS 后，Generation session 才正式生成 UI catalog 与 article metadata，并继续 TranslationUnit generation。Reviewer 若返回 failed finding，只由 Generation session 修订 glossary；修订后重新完整审核。Glossary Review 不替代最终 Locale Surface Review。
+
+## 3. 建立非 TranslationUnit 语言资产
+
+初始化生成的 TODO 只是不可发布的工作标记，不是译文；进入 export 前必须完成并通过 glossary review，进入 Surface Review 前必须完成全部 UI 与 metadata 语言内容。
+
+生成后按以下边界补充语言内容，不复制其他 locale 的语言内容。普通 ChatGPT Generation session 先制定 glossary；Glossary Review PASS 后才生成 UI catalog 与 article metadata。正式 Glossary Review 和 Locale Surface Review 均必须由不同于 Generation session 的 Reviewer session 完成：
 
 - `locales/<locale>/locale.json`：locale 身份；
 - `internal/tour/ui/<locale>.json`：完整公共 UI catalog，key 与 `plain` / `rich` kind 必须匹配英文 source `internal/tour/ui/en.json`，正式 locale 不使用英文 fallback；
@@ -104,7 +120,7 @@ UI catalog、首页和 metadata 不属于 TranslationUnit candidate、status、Q
 go run -mod=readonly ./cmd/tour-i18n status check --locale <locale>
 ```
 
-底层正式初始化逻辑只负责首次创建缺失的 `locales/<locale>/status.tsv`：按 Catalog Page 顺序、再按 eligible Example inventory 顺序写入当前 workflow 的全部 TranslationUnit，初始状态均为 `pending`。它不写当前时间、不覆盖已有文件，也不承担已有状态的修复、同步或 source 更新迁移。只有 `status check` 通过后，才能执行首次 retranslation export。
+底层正式初始化逻辑只负责首次创建缺失的 `locales/<locale>/status.tsv`：按 Catalog Page 顺序、再按 eligible Example inventory 顺序写入当前 workflow 的全部 TranslationUnit，初始状态均为 `pending`。它不写当前时间、不覆盖已有文件，也不承担已有状态的修复、同步或 source 更新迁移。只有 `status check` 与 current Glossary Review gate 都通过后，才能执行首次 retranslation export。正式 export path 会机械执行 Glossary Review check；missing、failed 或 stale 时不会创建 batch。
 
 ## 4. 执行 TranslationUnit workflow
 

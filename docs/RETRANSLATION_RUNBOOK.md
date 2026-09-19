@@ -5,7 +5,8 @@
 当前正式 TranslationUnit 翻译流程支持两个语言生成执行环境：普通 ChatGPT GPT-5.6 Sol + High 配合 Remote Desktop Commander 为推荐路径，Codex GPT-5.6 Sol + High 为 fallback。两者共用同一 TranslationUnit workflow 与全部质量 gate：
 
 ```text
-retranslation export
+current Glossary Review coverage
+→ retranslation export
 → ChatGPT staged write 或 Codex direct write
 → 完整 raw-responses/
 → retranslation process
@@ -20,16 +21,19 @@ retranslation export
 
 ## 2. Export 与首次翻译
 
-新 locale 第一次 export 前必须已经完成统一状态表初始化：
+新 locale 第一次 export 前必须已经完成统一状态表初始化，并按 [Glossary Review 规范](GLOSSARY_REVIEW.md) 取得 current passed gate：
 
 ```bash
 go run -mod=readonly ./cmd/tour-i18n status init --locale <locale>
 go run -mod=readonly ./cmd/tour-i18n status check --locale <locale>
+go run -mod=readonly ./cmd/tour-i18n glossary-review check --locale <locale>
 ```
 
-只有 `status check` 通过后，才进入首次 `retranslation export`。`status init` 只创建缺失的初始 `status.tsv`，不得用于重置或同步已有 locale；已有 locale 的 source 更新与状态迁移继续走现有正式流程。
+只有 `status check` 与 Glossary Review check 都通过后，才进入首次 `retranslation export`。`status init` 只创建缺失的初始 `status.tsv`，不得用于重置或同步已有 locale；已有 locale 的 source 更新与状态迁移继续走现有正式流程。
 
 使用 `retranslation export` 创建 batch。ChatGPT 正式路径必须显式传 `--generator chatgpt`；未指定 generator 时为向后兼容的 `codex`：
+
+Exporter 对第一次及后续正式 export 都执行同一个 current Glossary Review gate，并在创建 batch 前 fail closed。既有 live locale 仅通过固定、SHA-bound 的一次性 legacy migration coverage 保持兼容；未来 locale 不能凭任意 matching Locale Surface Review A-gate 动态绕过。
 
 ```bash
 go run -mod=readonly ./cmd/tour-i18n retranslation export \
