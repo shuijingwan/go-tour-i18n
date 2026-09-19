@@ -25,13 +25,45 @@ func exportLocaleSurfaceReviewCommand(root string, catalog *i18n.Catalog, args [
 	if err != nil {
 		return err
 	}
-	path, err := filepath.Abs(*output)
+	path, err := writeLocaleSurfaceReviewOutput(*output, data)
 	if err != nil {
 		return err
 	}
-	temp, err := os.CreateTemp(filepath.Dir(path), ".surface-review-package-*")
+	fmt.Printf("Locale Surface Review package exported: %s (locale=%s pages=%d ui=%d articles=%d translation_units=%d other_surfaces=%d)\n", path, *locale, coverage.Pages, coverage.UI, coverage.Articles, coverage.TranslationUnits, coverage.OtherSurfaces)
+	return nil
+}
+
+func exportLocaleSurfaceReviewReviewerBundleCommand(root string, catalog *i18n.Catalog, args []string) error {
+	fs := flag.NewFlagSet("surface-review reviewer-bundle", flag.ContinueOnError)
+	locale := fs.String("locale", "", "locale")
+	output := fs.String("output", "", "reviewer upload ZIP output")
+	if err := fs.Parse(args); err != nil {
+		return err
+	}
+	if *locale == "" || *output == "" || fs.NArg() != 0 {
+		return fmt.Errorf("usage: surface-review reviewer-bundle --locale <locale> --output <output.zip>")
+	}
+	data, manifest, err := i18n.ExportLocaleSurfaceReviewReviewerBundle(root, *locale, catalog)
 	if err != nil {
 		return err
+	}
+	path, err := writeLocaleSurfaceReviewOutput(*output, data)
+	if err != nil {
+		return err
+	}
+	coverage := manifest.Coverage
+	fmt.Printf("Locale Surface Review reviewer bundle exported: %s (locale=%s package_sha256=%s pages=%d ui=%d articles=%d translation_units=%d other_surfaces=%d authority=%d)\n", path, *locale, manifest.ReviewPackage.SHA256, coverage.Pages, coverage.UI, coverage.Articles, coverage.TranslationUnits, coverage.OtherSurfaces, len(manifest.Authority))
+	return nil
+}
+
+func writeLocaleSurfaceReviewOutput(output string, data []byte) (string, error) {
+	path, err := filepath.Abs(output)
+	if err != nil {
+		return "", err
+	}
+	temp, err := os.CreateTemp(filepath.Dir(path), ".surface-review-output-*")
+	if err != nil {
+		return "", err
 	}
 	name := temp.Name()
 	defer os.Remove(name)
@@ -42,13 +74,12 @@ func exportLocaleSurfaceReviewCommand(root string, catalog *i18n.Catalog, args [
 		err = closeErr
 	}
 	if err != nil {
-		return err
+		return "", err
 	}
 	if err := os.Rename(name, path); err != nil {
-		return err
+		return "", err
 	}
-	fmt.Printf("Locale Surface Review package exported: %s (locale=%s pages=%d ui=%d articles=%d translation_units=%d other_surfaces=%d)\n", path, *locale, coverage.Pages, coverage.UI, coverage.Articles, coverage.TranslationUnits, coverage.OtherSurfaces)
-	return nil
+	return path, nil
 }
 
 func checkLocaleSurfaceReviewACommand(root string, catalog *i18n.Catalog, args []string) error {

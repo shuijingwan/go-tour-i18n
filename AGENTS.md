@@ -30,7 +30,7 @@ manifest、全部 inputs 与 locale glossary 是不可拆分的正式翻译输�
 
 新 Quality Check 的单次 Reviewer model invocation / response 最多审核 60 TranslationUnits，Page / Example 分开；60 是实际审核质量边界，不得在同一次 response 内串联多个 `<=60` working set 绕过。下一组必须使用新的用户请求和新的 model invocation。legacy Final Review、revision batch、Example export 与 explicit `--id` export 的既有 30 上限不变。
 
-本地终端负责 deterministic lifecycle：locale init、glossary-review record / check、retranslation export / process / retry process / revalidate、status / validation、Candidate Snapshot、quality-check scope / record / record-batch / finalize、promotion、Course SEO assemble / refresh / revise 的机械 CLI、canonical/source/current checks、build、surface-review export / record-a、preview、browser verifier、publish、Production、deploy、verifier、checksum / curl、Git、assets、search closeout，以及已有正式 CLI/script 已覆盖的其他机械步骤。Generation session 产生 Course SEO refresh / revise 所需的新 description 文本，本地终端才执行对应 CLI mutation。当前 docs/code/production identity 已确认的 machine fact 应直接复用；没有新的 failure evidence 时，不重新探测服务器、不重新设计 Production、广告、IndexNow、shared assets 或 verifier。只有真实 evidence 显示基线变化时，才重新调查并更新正式 docs，避免为了“再确认一次”消耗 Codex reasoning quota。
+本地终端负责 deterministic lifecycle：locale init、glossary-review record / check、retranslation export / process / retry process / revalidate、status / validation、Candidate Snapshot、quality-check scope / record / record-batch / finalize、promotion、Course SEO assemble / refresh / revise 的机械 CLI、canonical/source/current checks、build、surface-review export / reviewer-bundle / record-a、preview、browser verifier、publish、Production、deploy、verifier、checksum / curl、Git、assets、search closeout，以及已有正式 CLI/script 已覆盖的其他机械步骤。Generation session 产生 Course SEO refresh / revise 所需的新 description 文本，本地终端才执行对应 CLI mutation。当前 docs/code/production identity 已确认的 machine fact 应直接复用；没有新的 failure evidence 时，不重新探测服务器、不重新设计 Production、广告、IndexNow、shared assets 或 verifier。只有真实 evidence 显示基线变化时，才重新调查并更新正式 docs，避免为了“再确认一次”消耗 Codex reasoning quota。
 
 ### 测试额度与执行边界（fail-closed）
 
@@ -45,7 +45,7 @@ targeted tests 已足以证明当前改动正确时，不得为了“更保险�
 - targeted test 意外暴露 scope 外问题时，只保存最小真实 failure evidence，不继续扩大调查或追加测试；仅当用户明确决定暂缓该问题时，才按 Deferred Issue 规则记录。
 - `go test ./...`、全量 publish、10-locale `--all-live`、browser regression、checksum / curl / verifier、build / deploy / assets verification 等确定性但耗时的测试与验证，优先交给用户本地终端执行。
 
-额度优化不得降低正式质量门槛：TranslationUnit 正式翻译仍使用 GPT-5.6 Sol + High，QC 仍为 A-only，revision、validation、Production machine gate 与 HUMAN gate 均不得削弱。应节省的是不必要的 reasoning、重复检查、全面测试和机械执行。
+额度优化不得降低正式质量门槛：TranslationUnit 正式翻译仍使用 GPT-5.6 Sol + High，QC 仍为 A-only，revision、validation、Production machine gate 与 HUMAN gate 均不得削弱。应节省的是不必要的 reasoning、重复检查、全面测试和机械执行。Locale Surface Review 优先使用本地 deterministic `surface-review reviewer-bundle` 生成的上传 ZIP；当 bundle 由未变化的正式 working tree 导出且 manifest/hash 完整时，Reviewer 直接读取附件内 package 与 authority，不再通过 Remote Desktop Commander 重复搜索/读取同一仓库输入。ZIP 只是传输容器，不改变完整审核 coverage、独立 Reviewer、finding 回流或 `record-a` freshness 规则。
 
 新增正式 CLI、validator、manifest/lifecycle logic 或可复用 machine workflow 时，优先使用 Go，并优先集成现有 `cmd/tour-i18n`。Shell/Python 主要用于薄的 OS、SSH、browser 或已有成熟 orchestration；已有稳定 sh/python 不因“统一语言”重写。不得用临时 Python/sed 代替需要 repository context 的正式实现。
 

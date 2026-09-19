@@ -135,6 +135,8 @@ func run(args []string) error {
 		return recordLocaleSurfaceReviewACommand(root, catalog, args[2:])
 	case "surface-review export":
 		return exportLocaleSurfaceReviewCommand(root, catalog, args[2:])
+	case "surface-review reviewer-bundle":
+		return exportLocaleSurfaceReviewReviewerBundleCommand(root, catalog, args[2:])
 	case "surface-review check-a":
 		return checkLocaleSurfaceReviewACommand(root, catalog, args[2:])
 	case "first-production finalize":

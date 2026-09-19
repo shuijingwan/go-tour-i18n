@@ -48,9 +48,11 @@ TranslationUnit Quality Check 与 revision re-QC 的单次 Reviewer model invoca
 
 ### Local terminal
 
-维护者本地终端负责所有确定性步骤，包括 locale init；glossary-review record / check；retranslation export、process、retry process、revalidate；status / validation；Candidate Snapshot；quality-check scope、record / record-batch、finalize；promotion；Course SEO assemble，以及 refresh / revise 的机械 CLI；canonical/source/current checks；build；surface-review export 与 record-a；preview、browser verifier、publish、Production、deploy、verifier、checksum / curl、Git、assets、search closeout，以及现有 CLI/script 覆盖的其他机械步骤。 ChatGPT 给维护者提供可直接粘贴的终端命令时，不得在当前交互 shell 顶层启用 `set -e` / `set -u` / `set -o pipefail` 或组合形式；需要 fail-fast 时必须用独立 subshell 或独立脚本进程，避免失败退出或改变维护者当前 shell。
+维护者本地终端负责所有确定性步骤，包括 locale init；glossary-review record / check；retranslation export、process、retry process、revalidate；status / validation；Candidate Snapshot；quality-check scope、record / record-batch、finalize；promotion；Course SEO assemble，以及 refresh / revise 的机械 CLI；canonical/source/current checks；build；surface-review export、reviewer-bundle 与 record-a；preview、browser verifier、publish、Production、deploy、verifier、checksum / curl、Git、assets、search closeout，以及现有 CLI/script 覆盖的其他机械步骤。 ChatGPT 给维护者提供可直接粘贴的终端命令时，不得在当前交互 shell 顶层启用 `set -e` / `set -u` / `set -o pipefail` 或组合形式；需要 fail-fast 时必须用独立 subshell 或独立脚本进程，避免失败退出或改变维护者当前 shell。
 
 Generation session 只产生 Course SEO refresh / revise 所需的新 description 文本；正式 `course-metadata.json` 的 mutation 由 Local terminal 执行 `course-metadata refresh` / `revise`。ChatGPT 即使能操作本地终端，也不默认接管这些确定性步骤，除非维护者明确扩大当前操作范围。
+
+Locale Surface Review 的 Reviewer 输入优先由 Local terminal 使用 `surface-review reviewer-bundle` 生成并作为 ZIP 附件上传。只要该 bundle 来自未变化的正式输入且 `manifest.json` hash 校验成立，Reviewer 对附件内 `surface-review.json` 与 `authority/` 的完整读取即满足本轮正式输入读取，不应再通过 Remote Desktop Commander 重复扫描这些仓库文件。任何正式输入或 bundle 内 authority 发生变化，都必须重新导出 bundle；附件模式不允许抽样、跳过 Course SEO full-context coverage，亦不改变独立 Reviewer 与 finding → Generation 回流边界。
 
 canonical English source-description extraction / review 是所有 locale 共享的 authority，不属于单个 locale 固定的 Generation / Reviewer 配对。只有其 authority 确实 stale 时才按 [课程页正式 SEO Metadata 规范](COURSE_SEO_METADATA.md) 执行，不因新增每个 locale 重复，也不默认交给该 locale 的 Reviewer session。
 

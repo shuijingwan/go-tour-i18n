@@ -53,6 +53,32 @@ go run -mod=readonly ./cmd/tour-i18n surface-review export \
 
 该命令只机械读取并严格验证当前 glossary、**文件系统中**的 UI catalog、article metadata、ready canonical TranslationUnit target、course metadata、catalog 与 production public identity；它不调用模型、不作语言判断、不写 Markdown evidence 或 `.a-gate.json`，也不表示 Surface Review passed。包包含 glossary 原文、UI source/target 配对、article source/target 配对，以及按 Catalog 顺序的课程页完整材料。schema v1 Page 包含完整 source、完整 canonical target 和 localized description；schema v2 Page 额外包含 canonical English description、`source_description_sha256` 与 glossary identity，因此审核者同时看到完整 source、canonical description、完整 target、完整 glossary 和 localized description。包还包含 language registry/profile、Tour shell/runtime transport、project、SEO 的实际 source/context 文件（含 path、SHA-256 与全文）。其中 source context 还完整包含 `_content/js/playground.js`、按文件名稳定排序的 first-party `_content/tour/static/js/*.js`、正式 `_content/tour/template/*.tmpl` 与 `_content/tour/static/partials/*.html`；`_content/tour/static/lib` 的 vendored/minified third-party library 明确不进入审核包。目录扫描是 first-party source coverage authority，不另行复制 `initScript` 的 dependency list，因此新增同目录 runtime/template source 会自动进入 package。这里的“自包含”表示审核者能直接看到真正参与 runtime 和 shell/list/footer composition 的 first-party source，而不只是加载这些文件的 Go 调用。coverage reference 只能引用 package 内已经包含的实际 source/context，不能代替材料本身。若审核期间修改正式资产，必须重新导出；`record-a` 始终重新计算正式 current inputs，不读取 package 作为 receipt 或 authority。
 
+### Reviewer 上传 ZIP（推荐传输方式）
+
+普通 ChatGPT Reviewer 不需要把 Remote Desktop Commander 当作大体量只读传输通道。Local terminal 可以从同一 current working tree 直接生成 deterministic Reviewer ZIP：
+
+```sh
+go run -mod=readonly ./cmd/tour-i18n surface-review reviewer-bundle \
+  --locale <locale> --output /tmp/<locale>-surface-review-reviewer.zip
+```
+
+该 ZIP 是**传输容器，不是新的 review authority 或 gate**。它内部固定包含：
+
+- `surface-review.json`：与 `surface-review export` 同一函数生成的完整自包含正式 package；
+- `manifest.json`：bundle schema、locale、package SHA-256、正式 coverage，以及每份 authority 文档的 repository path / bundle path / SHA-256；
+- `authority/AGENTS.md`；
+- `authority/docs/CHATGPT_LANGUAGE_GENERATION.md`；
+- `authority/docs/COURSE_SEO_METADATA.md`；
+- `authority/docs/GLOSSARY_REVIEW.md`；
+- `authority/docs/LOCALE_SURFACE_REVIEW.md`；
+- `authority/docs/TRANSLATION_QUALITY_REVIEW.md`。
+
+同一 working-tree 输入必须产生 byte-stable ZIP；ZIP entry 使用固定顺序、固定 metadata 与未压缩 payload，便于直接比较 SHA-256。bundle 不包含 secret、EnvironmentFile、IndexNow key、Cloudflare credential 或其他 Production secret。
+
+维护者把 ZIP 直接上传到独立 Reviewer session。Reviewer 必须先读取 `manifest.json`，再完整读取 bundle 内 authority 与 `surface-review.json`；当 bundle 完整且维护者确认导出后正式输入未变化时，不再通过 Remote Desktop Commander 重复搜索、读取或重建已经封装的仓库材料。附件不可读、hash 不一致、authority 缺失或正式输入已变化时 fail closed，重新由 Local terminal 生成新 bundle，不以聊天记忆或旧附件补齐。
+
+`coverage.translation_units` 表示 exporter 在生成 package 前已机械加载并验证的完整 ready TranslationUnit set；Stage A 不重新给这些 Unit 做 A/B/C/D Quality Check。当前 package 为 Course SEO full-context 目的序列化完整 Page source/ready target；Example 不为重复 TU language re-QC 而额外复制为独立 Surface Review 对象。Reviewer 仍必须使用 package 实际提供的完整 Page context 检查 glossary、UI/metadata/Course SEO 与 ready target 的组合一致性，并按 package 的正式 coverage 给出最终 Stage A coverage。
+
 ### 正式审核输入
 
 公共 UI 至少使用以下三项不可缺少的输入：

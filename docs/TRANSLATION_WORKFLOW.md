@@ -52,7 +52,7 @@ Generation session
   schema v2 Course SEO localization
         ↓
 Local terminal
-  assemble / build / surface-review export
+  assemble / build / surface-review reviewer-bundle
         ↓
 Reviewer session
   Locale Surface Review
