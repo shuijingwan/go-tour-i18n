@@ -131,10 +131,10 @@ The policy fix only completed the exact reviewed `siteHomeTargets` inventory for
 Stage A language-quality review、automated preview acceptance 与 Preview HUMAN visual gate 均已完成并通过。Production machine/browser acceptance 仍是后续独立 gate，本 evidence 不提前声明 Production 结果。
 
 <!-- first-production-finalization:start -->
-- production receipt identity: `PENDING`
-- production machine acceptance: `PENDING`
-- production browser acceptance: `PENDING`
-- unresolved production blocker: `PENDING`
-- overall final decision: `PENDING`
-- decision: `pending`
+- production receipt identity: `locale=hi-IN hostname=hi-go-dev.shuijingwanwq.com release=20260919-hi-IN-b76d009`
+- production machine acceptance: `passed`
+- production browser acceptance: `passed`
+- unresolved production blocker: `none`
+- overall final decision: `passed`
+- decision: `passed`
 <!-- first-production-finalization:end -->
