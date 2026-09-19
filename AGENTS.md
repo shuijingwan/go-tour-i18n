@@ -52,6 +52,8 @@ targeted tests 已足以证明当前改动正确时，不得为了“更保险�
 
 Codex 已读取仓库当前 AGENTS/docs/code 后，不要求用户再次复制仓库已有正式规则。完成一次代码/docs 任务后，final response 默认简洁地只返回：实际修改文件、关键行为/决定、执行的测试及结果、未解决的真实 failure evidence（如有）、`git diff --stat`、`git status --short`。除非用户明确要求，不粘贴完整 git diff 或完整文件，不重述整个 Runbook，也不返回长篇“接下来让 ChatGPT 做什么”的 Prompt。
 
+向维护者提供可直接粘贴到当前交互 shell 的命令时，不得在顶层修改可能持续污染或终止该 shell 的 shell options，包括 `set -e`、`set -u`、`set -o pipefail` 及 `set -euo pipefail` 等组合，也不得包含 `exit`、`logout`、`kill $$`。如确需 fail-fast 或临时 shell options，必须放入独立 subshell（例如 `( set -euo pipefail; ... )`）或独立脚本进程，使失败只结束子进程，不关闭或改变维护者当前交互 shell。
+
 ## Git 提交说明
 
 仓库提交说明默认使用中文，并沿用现有 Conventional Commit 风格，例如：
