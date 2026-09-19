@@ -1,0 +1,12 @@
+* แบบฝึกหัด: rot13Reader
+
+รูปแบบที่พบได้บ่อยคือ [[/pkg/io/#Reader][io.Reader]] ที่ครอบ `io.Reader` อีกตัวหนึ่งไว้ แล้วปรับเปลี่ยนสตรีมในบางลักษณะ
+
+ตัวอย่างเช่น ฟังก์ชัน [[/pkg/compress/gzip/#NewReader][gzip.NewReader]] รับ `io.Reader` (สตรีมข้อมูลที่ถูกบีบอัด) และคืน `*gzip.Reader` ที่เป็นไปตามอินเทอร์เฟซ `io.Reader` เช่นกัน (สตรีมข้อมูลที่คลายการบีบอัดแล้ว)
+
+จงสร้าง `rot13Reader` ที่เป็นไปตามอินเทอร์เฟซ `io.Reader` และอ่านจาก `io.Reader` โดยปรับเปลี่ยนสตรีมด้วยรหัสแทนที่ [[https://en.wikipedia.org/wiki/ROT13][rot13]] กับอักขระตัวอักษรทั้งหมด
+
+ชนิด `rot13Reader` เตรียมไว้ให้แล้ว
+ทำให้มันเป็น `io.Reader` ด้วยการกำหนดเมธอด `Read`
+
+.play methods/exercise-rot-reader.go

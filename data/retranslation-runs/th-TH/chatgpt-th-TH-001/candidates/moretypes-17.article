@@ -1,0 +1,12 @@
+* range (ต่อ)
+
+คุณสามารถข้ามดัชนีหรือค่าได้โดยกำหนดให้กับ `_`
+
+    for i, _ := range pow
+    for _, value := range pow
+
+หากต้องการเพียงดัชนี คุณสามารถละตัวแปรตัวที่สองได้
+
+    for i := range pow
+
+.play moretypes/range-continued.go

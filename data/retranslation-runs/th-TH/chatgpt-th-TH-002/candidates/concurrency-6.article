@@ -1,0 +1,14 @@
+* การเลือก default
+
+case `default` ใน `select` จะทำงานเมื่อไม่มี case อื่นพร้อม
+
+ใช้ case `default` เพื่อลองส่งหรือรับโดยไม่บล็อก:
+
+	select {
+	case i := <-c:
+		// ใช้ i
+	default:
+		// การรับจาก c จะบล็อก
+	}
+
+.play concurrency/default-selection.go

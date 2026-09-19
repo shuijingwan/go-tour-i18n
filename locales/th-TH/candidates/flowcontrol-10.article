@@ -1,0 +1,15 @@
+* ลำดับการประเมินของ switch
+
+case ของ switch จะถูกประเมินจากบนลงล่าง และหยุดเมื่อพบ case ที่ตรงเงื่อนไข
+
+(ตัวอย่างเช่น
+
+	switch i {
+	case 0:
+	case f():
+	}
+
+จะไม่เรียก `f` หาก `i==0`)
+
+
+.play flowcontrol/switch-evaluation-order.go

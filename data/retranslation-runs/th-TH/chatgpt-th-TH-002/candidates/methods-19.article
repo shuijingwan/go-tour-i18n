@@ -1,0 +1,26 @@
+* ข้อผิดพลาด
+
+โปรแกรม Go แสดงสถานะข้อผิดพลาดด้วยค่า `error`
+
+ชนิด `error` เป็นอินเทอร์เฟซในตัวที่คล้ายกับ `fmt.Stringer`:
+
+	type error interface {
+		Error() string
+	}
+
+(เช่นเดียวกับ `fmt.Stringer` แพ็กเกจ `fmt` จะตรวจหาอินเทอร์เฟซ `error` เมื่อ
+พิมพ์ค่า)
+
+ฟังก์ชันมักคืนค่า `error` และโค้ดที่เรียกใช้ควรจัดการข้อผิดพลาด
+โดยตรวจว่าข้อผิดพลาดเท่ากับ `nil` หรือไม่
+
+	i, err := strconv.Atoi("42")
+	if err != nil {
+		fmt.Printf("couldn't convert number: %v\n", err)
+		return
+	}
+	fmt.Println("Converted integer:", i)
+
+ค่า `error` ที่เป็น nil หมายถึงสำเร็จ ส่วนค่า `error` ที่ไม่เป็น nil หมายถึงล้มเหลว
+
+.play methods/errors.go

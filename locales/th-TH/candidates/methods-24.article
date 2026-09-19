@@ -1,0 +1,21 @@
+* รูปภาพ
+
+[[/pkg/image/#Image][แพ็กเกจ image]] กำหนดอินเทอร์เฟซ `Image`:
+
+	package image
+
+	type Image interface {
+		ColorModel() color.Model
+		Bounds() Rectangle
+		At(x, y int) color.Color
+	}
+
+*หมายเหตุ*: ค่าที่คืนเป็น `Rectangle` ของเมธอด `Bounds` ที่จริงแล้วคือ
+[[/pkg/image/#Rectangle][`image.Rectangle`]] เนื่องจาก
+การประกาศอยู่ภายในแพ็กเกจ `image`
+
+(ดูรายละเอียดทั้งหมดได้จาก [[/pkg/image/#Image][เอกสารประกอบ]])
+
+ชนิด `color.Color` และ `color.Model` ก็เป็นอินเทอร์เฟซเช่นกัน แต่เราจะไม่สนใจประเด็นนั้นโดยใช้การนำไปใช้ที่กำหนดไว้แล้ว ได้แก่ `color.RGBA` และ `color.RGBAModel` อินเทอร์เฟซและชนิดเหล่านี้กำหนดโดย [[/pkg/image/color/][แพ็กเกจ image/color]]
+
+.play methods/images.go

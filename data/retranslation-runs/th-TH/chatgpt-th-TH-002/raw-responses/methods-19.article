@@ -1,0 +1,19 @@
+* ข้อผิดพลาด
+
+โปรแกรม ⟪GTI18N_9eaab1fd_000001⟫ แสดงสถานะข้อผิดพลาดด้วยค่า ⟪GTI18N_9eaab1fd_000002⟫error⟪GTI18N_9eaab1fd_000003⟫
+
+ชนิด ⟪GTI18N_9eaab1fd_000004⟫error⟪GTI18N_9eaab1fd_000005⟫ เป็นอินเทอร์เฟซในตัวที่คล้ายกับ ⟪GTI18N_9eaab1fd_000006⟫fmt.Stringer⟪GTI18N_9eaab1fd_000007⟫:
+
+⟪GTI18N_9eaab1fd_000008⟫
+
+(เช่นเดียวกับ ⟪GTI18N_9eaab1fd_000009⟫fmt.Stringer⟪GTI18N_9eaab1fd_000010⟫ แพ็กเกจ ⟪GTI18N_9eaab1fd_000011⟫fmt⟪GTI18N_9eaab1fd_000012⟫ จะตรวจหาอินเทอร์เฟซ ⟪GTI18N_9eaab1fd_000013⟫error⟪GTI18N_9eaab1fd_000014⟫ เมื่อ
+พิมพ์ค่า)
+
+ฟังก์ชันมักคืนค่า ⟪GTI18N_9eaab1fd_000015⟫error⟪GTI18N_9eaab1fd_000016⟫ และโค้ดที่เรียกใช้ควรจัดการข้อผิดพลาด
+โดยตรวจว่าข้อผิดพลาดเท่ากับ ⟪GTI18N_9eaab1fd_000017⟫nil⟪GTI18N_9eaab1fd_000018⟫ หรือไม่
+
+⟪GTI18N_9eaab1fd_000019⟫
+
+ค่า ⟪GTI18N_9eaab1fd_000020⟫error⟪GTI18N_9eaab1fd_000021⟫ ที่เป็น nil หมายถึงสำเร็จ ส่วนค่า ⟪GTI18N_9eaab1fd_000022⟫error⟪GTI18N_9eaab1fd_000023⟫ ที่ไม่เป็น nil หมายถึงล้มเหลว
+
+⟪GTI18N_9eaab1fd_000024⟫

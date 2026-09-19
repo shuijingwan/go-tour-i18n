@@ -1,0 +1,50 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-th-TH-004",
+  "locale": "th-TH",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 3,
+  "units": [
+    {
+      "unit_id": "basics/14",
+      "unit_kind": "page",
+      "source_path": "_content/tour/basics.article",
+      "source_sha256": "21c4077c25629545dee0313b8b6b03e709edc4a74e1d73d9f4c9b0a49e46f6b3",
+      "input_path": "inputs/basics-14.article",
+      "input_sha256": "53dea3c51e63e646391b5de0dbd0729c96c63a0dc5c97293fb92e81f30592503",
+      "protected_token_count": 18,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "Target “ไม่ว่าจะใช้ไวยากรณ์ := หรือไวยากรณ์นิพจน์ var=” ทำให้รูปแบบ var = expression ไม่ชัดเจนและลำดับคำภาษาไทยไม่เป็นธรรมชาติ แม้ความหมายหลักยังพอเข้าใจได้ Revision ต้องทำให้ความสัมพันธ์ของรูปแบบประกาศ var = expression ชัดเจนและเป็นธรรมชาติ โดยคง protected syntax identity และไม่เพิ่มคำอธิบายที่ source ไม่มี"
+    },
+    {
+      "unit_id": "methods/18",
+      "unit_kind": "page",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "ad118644f53755586f14409e203bccfb5ac4cff7c01734157032a45648fb06d3",
+      "input_path": "inputs/methods-18.article",
+      "input_sha256": "1d9a7b939838ea17bf52f3e7ce559099cef240fe776af6291f56da4e0f60fc1e",
+      "protected_token_count": 9,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "Target “เลขฐานสิบสี่ส่วนคั่นด้วยจุด” สำหรับ source “a dotted quad” มีความกำกวมทางเทคนิค เพราะ “ฐานสิบสี่” อาจอ่านเป็นเลขฐาน 14 ทั้งที่ source หมายถึงค่าฐานสิบสี่ส่วนที่คั่นด้วยจุดตามตัวอย่าง 1.2.3.4 Revision ต้องสื่อความหมายว่าสี่ส่วนของเลขฐานสิบคั่นด้วยจุดอย่างชัดเจน โดยไม่เพิ่มความรู้เครือข่ายที่ source ไม่มี"
+    },
+    {
+      "unit_id": "generics/2",
+      "unit_kind": "page",
+      "source_path": "_content/tour/generics.article",
+      "source_sha256": "08486351895e62792a84bc3eeab6aa85df7b1658735b7239040d219812f63277",
+      "input_path": "inputs/generics-2.article",
+      "input_sha256": "a2ba5f9fbfe2bf80ffcfcb4ac41d7e10eeed6f93b7a2250aed92c8952918f52c",
+      "protected_token_count": 2,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "Target “ตัวอย่างนี้แสดงการประกาศชนิดอย่างง่ายสำหรับ ลิงก์ลิสต์แบบทางเดียว” มีช่องว่างที่ไม่เป็นธรรมชาติระหว่าง “สำหรับ” กับคำนามถัดไป ทำให้การจัดวางและจังหวะภาษาไทยสะดุด Revision ต้องแก้เฉพาะความลื่นไหล/การเว้นวรรคนี้ โดยคงความหมาย singly-linked list เดิมและไม่ขยายเนื้อหา"
+    }
+  ]
+}
