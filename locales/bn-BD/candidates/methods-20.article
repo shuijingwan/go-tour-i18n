@@ -1,0 +1,21 @@
+* অনুশীলনী: ত্রুটি
+
+আপনার `Sqrt` ফাংশনটি [[/tour/flowcontrol/8][আগের অনুশীলনী]] থেকে কপি করে একটি `error` মান রিটার্ন করার মতো করে পরিবর্তন করুন।
+
+ঋণাত্মক সংখ্যা দিলে `Sqrt`-এর nil নয় এমন একটি ত্রুটি মান রিটার্ন করা উচিত, কারণ এটি জটিল সংখ্যা সমর্থন করে না।
+
+একটি নতুন টাইপ তৈরি করুন
+
+	type ErrNegativeSqrt float64
+
+এবং এটিকে একটি `error` বানাতে এটিকে একটি
+
+	func (e ErrNegativeSqrt) Error() string
+
+মেথড দিন, যাতে `ErrNegativeSqrt(-2).Error()` থেকে `"cannot`Sqrt`negative`number:`-2"` রিটার্ন হয়।
+
+*Note:* `fmt.Sprint(e)` কলটি `Error` মেথডের ভেতরে করলে প্রোগ্রামটি অসীম লুপে চলে যাবে। আগে `e`-কে রূপান্তর করে এটি এড়াতে পারেন: `fmt.Sprint(float64(e))`। কেন?
+
+ঋণাত্মক সংখ্যা দিলে `Sqrt` ফাংশনটি যেন একটি `ErrNegativeSqrt` মান রিটার্ন করে, সেভাবে পরিবর্তন করুন।
+
+.play methods/exercise-errors.go

@@ -1,0 +1,15 @@
+* switch মূল্যায়নের ক্রম
+
+switch case-গুলো ওপর থেকে নিচে মূল্যায়ন করা হয় এবং প্রথম যে case মেলে সেখানেই থামে।
+
+(উদাহরণস্বরূপ,
+
+	switch i {
+	case 0:
+	case f():
+	}
+
+`f`-কে কল করে না, যদি `i==0` হয়।)
+
+
+.play flowcontrol/switch-evaluation-order.go

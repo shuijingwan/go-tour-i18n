@@ -1,0 +1,63 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-bn-BD-004",
+  "locale": "bn-BD",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 4,
+  "units": [
+    {
+      "unit_id": "moretypes/1",
+      "unit_kind": "page",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "7706eaf0d46acc79fdad3b7953e5571bf404551d71aaefafd8ba79f5761f9806",
+      "input_path": "inputs/moretypes-1.article",
+      "input_sha256": "b6b916daff7c87dfb9553a2c0e739f4ce3004aa40023a62d15e19ad5a693e67c",
+      "protected_token_count": 20,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "Source 的两条 teaching comment 分别表达通过 pointer p 读取 i，以及通过 pointer p 设置 i。当前 candidate 中受保护标识符 p 被悬置在 Bengali 祈使句末尾，使 p 与 pointer 之间的修饰关系不自然且略显含混。技术意图仍可推断，但正式教程文本存在明显句法和自然度问题。Revision direction：仅修订这两条可翻译自然语言 comment；保持 p、i、所有代码 identity、comment delimiter 和程序结构不变；用自然 Bengali 明确表达通过 pointer p 读取或设置 i；不要新增 source 没有的解释。"
+    },
+    {
+      "unit_id": "methods/8",
+      "unit_kind": "page",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "357424f2a76613085184054178042b442331b5689d156ac9c37e09e57c436dae",
+      "input_path": "inputs/methods-8.article",
+      "input_sha256": "89004e9da5175d3843f5919dc65da2307e84dca99dc842bb19ee54c3b0cda344",
+      "protected_token_count": 9,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "Source 解释 pointer receiver 的第二个理由是避免每次 method call 都复制 receiver，并指出 receiver 是大型 struct 时这样可能更高效。当前 candidate 的 Bengali 措辞更接近更有效或更管用，弱化了 computational efficiency 和避免复制所带来的效率含义。Revision direction：保持避免每次 method call 复制 receiver，以及大型 struct 时可能更高效的因果关系；准确体现 efficiency 含义；保持 receiver、struct、method 等术语一致；不要增加 source 未说明的性能机制或 benchmark 结论。"
+    },
+    {
+      "unit_id": "methods/14",
+      "unit_kind": "page",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "7a09a7654c8b6ac6d96a1a8ddaafac368782f89ec2e6e61f323d40eb01cbf750",
+      "input_path": "inputs/methods-14.article",
+      "input_sha256": "4a12643efcc9fd5a77a573ef5187e80c1828696c6b1036d6425aae740c165af7",
+      "protected_token_count": 12,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "Source 将 empty interface 定义为不指定任何 method 的 interface type。当前 candidate 中 শূন্যটি মেথড 属于明显逐词式数量表达，在 Bengali 教程语境中生硬、不自然。语义仍可理解，但未达到自然可直接发布的 A 级质量。Revision direction：自然表达不指定任何 method 或没有指定 method 的 interface type；保持 empty interface、interface type、method 等既有术语一致，并保留后文 interface{} 与 any 的技术关系；不要添加额外解释。"
+    },
+    {
+      "unit_id": "concurrency/6",
+      "unit_kind": "page",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "82e9cd932e14e6c4852fc8f865f4c45dc75845bd1a306649152ebc045f0c3b2c",
+      "input_path": "inputs/concurrency-6.article",
+      "input_sha256": "b65274e7c29910bdc6b3a294ae171def398a09355166b8a513bdbbbd3f15b672",
+      "protected_token_count": 12,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "Source 的 preformatted teaching comment 是 use i。当前 candidate 为 ব্যবহার করুন i，受保护标识符 i 被放在 Bengali 祈使表达末尾，形成明显生硬的语序。代码 identity 和技术含义未损坏，但语言自然度未达到正式 A 级。Revision direction：只修订这条 teaching comment 的 Bengali 语序，使其自然表达使用 i；保持标识符 i、comment delimiter、周围 select 示例代码及所有 protected identity 不变；不得增加额外说明。"
+    }
+  ]
+}

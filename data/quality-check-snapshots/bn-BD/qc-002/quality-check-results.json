@@ -1,0 +1,38 @@
+{
+  "schema_version": 2,
+  "evidence_type": "quality_check_results",
+  "locale": "bn-BD",
+  "snapshot_id": "qc-002",
+  "snapshot_manifest_sha256": "396f94f359382a2f29a9aeb8cdc9d935306276b440974973138d9c954dd1f429",
+  "previous_snapshot_id": "qc-001",
+  "rubric": "translation-quality/v1",
+  "result_count": 5,
+  "results": [
+    {
+      "index": 37,
+      "unit_id": "moretypes/1",
+      "rating": "A"
+    },
+    {
+      "index": 71,
+      "unit_id": "methods/8",
+      "rating": "A"
+    },
+    {
+      "index": 77,
+      "unit_id": "methods/14",
+      "rating": "A"
+    },
+    {
+      "index": 98,
+      "unit_id": "concurrency/6",
+      "rating": "A"
+    },
+    {
+      "index": 108,
+      "unit_id": "example:concurrency/exercise-web-crawler.go",
+      "rating": "B",
+      "finding": "qc-001 中的旧句序问题已经修复；当前 পৃষ্ঠাগুলো ক্রল করে 的 Bengali 语序自然。但完整 re-QC 发现 source 的 recursively crawl 明确描述 Crawl 的递归行为，而 candidate 使用 পুনরাবৃত্তভাবে ... ক্রল করে，更接近反复或迭代地 crawl；当前 glossary 又将 iteration 对应为 পুনরাবৃত্তি，因此会弱化甚至混淆 recursion 与 iteration 的技术区别，不能评为 A。Revision direction：只修正该 comment 中 recursively crawl 的表达，使其明确表示递归 crawl，而不是一般重复或迭代；保持 Crawl、fetcher、url、depth、starting URL、maximum depth 以及全部代码 identity 不变，不增加 source 没有的解释。"
+    }
+  ]
+}

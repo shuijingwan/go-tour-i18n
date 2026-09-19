@@ -1,0 +1,12 @@
+* range — পরবর্তী অংশ
+
+`_`-এ অ্যাসাইন করে ইনডেক্স অথবা মান বাদ দিতে পারেন।
+
+    for i, _ := range pow
+    for _, value := range pow
+
+শুধু ইনডেক্স দরকার হলে দ্বিতীয় ভেরিয়েবলটি বাদ দিতে পারেন।
+
+    for i := range pow
+
+.play moretypes/range-continued.go

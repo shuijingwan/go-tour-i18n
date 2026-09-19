@@ -1,0 +1,19 @@
+* ত্রুটি
+
+⟪GTI18N_9eaab1fd_000001⟫ প্রোগ্রাম ⟪GTI18N_9eaab1fd_000002⟫error⟪GTI18N_9eaab1fd_000003⟫ মান দিয়ে ত্রুটির অবস্থা প্রকাশ করে।
+
+⟪GTI18N_9eaab1fd_000004⟫error⟪GTI18N_9eaab1fd_000005⟫ টাইপটি ⟪GTI18N_9eaab1fd_000006⟫fmt.Stringer⟪GTI18N_9eaab1fd_000007⟫-এর মতো একটি বিল্ট-ইন ইন্টারফেস:
+
+⟪GTI18N_9eaab1fd_000008⟫
+
+(⟪GTI18N_9eaab1fd_000009⟫fmt.Stringer⟪GTI18N_9eaab1fd_000010⟫-এর মতোই, ⟪GTI18N_9eaab1fd_000011⟫fmt⟪GTI18N_9eaab1fd_000012⟫ প্যাকেজ মান
+প্রিন্ট করার সময় ⟪GTI18N_9eaab1fd_000013⟫error⟪GTI18N_9eaab1fd_000014⟫ ইন্টারফেস খোঁজে।)
+
+ফাংশন প্রায়ই একটি ⟪GTI18N_9eaab1fd_000015⟫error⟪GTI18N_9eaab1fd_000016⟫ মান রিটার্ন করে, এবং কল করা কোডের উচিত ত্রুটিটি
+⟪GTI18N_9eaab1fd_000017⟫nil⟪GTI18N_9eaab1fd_000018⟫-এর সমান কি না পরীক্ষা করে ত্রুটি সামলানো।
+
+⟪GTI18N_9eaab1fd_000019⟫
+
+nil ⟪GTI18N_9eaab1fd_000020⟫error⟪GTI18N_9eaab1fd_000021⟫ সাফল্য বোঝায়; nil নয় এমন ⟪GTI18N_9eaab1fd_000022⟫error⟪GTI18N_9eaab1fd_000023⟫ ব্যর্থতা বোঝায়।
+
+⟪GTI18N_9eaab1fd_000024⟫
