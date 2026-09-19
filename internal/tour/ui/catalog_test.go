@@ -12,7 +12,7 @@ import (
 const expectedCatalogMessages = 113
 
 func TestLoadEmbeddedCatalogs(t *testing.T) {
-	for _, locale := range []string{"de-DE", "en", "es-ES", "fr-FR", "id-ID", "it-IT", "ja-JP", "ko-KR", "nl-NL", "pl-PL", "pt-BR", "sv-SE", "tr-TR", "vi-VN", "zh-CN", "zh-TW"} {
+	for _, locale := range []string{"de-DE", "en", "es-ES", "fr-FR", "id-ID", "it-IT", "ja-JP", "ko-KR", "nl-NL", "pl-PL", "pt-BR", "sv-SE", "th-TH", "tr-TR", "vi-VN", "zh-CN", "zh-TW"} {
 		catalog, err := Load(locale)
 		if err != nil {
 			t.Fatalf("Load(%q): %v", locale, err)
@@ -37,6 +37,7 @@ func TestHeaderAboutProjectMessages(t *testing.T) {
 		"pl-PL": "O tym projekcie",
 		"pt-BR": "Sobre este projeto",
 		"sv-SE": "Om projektet",
+		"th-TH": "เกี่ยวกับโครงการนี้",
 		"tr-TR": "Bu proje hakkında",
 		"vi-VN": "Giới thiệu dự án",
 		"zh-CN": "关于此项目",
@@ -189,6 +190,7 @@ func TestEditorToggleStatesAreLocalizedPerCatalog(t *testing.T) {
 		"pl-PL": {"Włączone", "Wyłączone"},
 		"pt-BR": {"Ativado", "Desativado"},
 		"sv-SE": {"På", "Av"},
+		"th-TH": {"เปิด", "ปิด"},
 		"tr-TR": {"Açık", "Kapalı"},
 		"vi-VN": {"Bật", "Tắt"},
 		"zh-CN": {"开启", "关闭"},
@@ -368,6 +370,63 @@ func TestVietnameseCatalogMatchesEnglishSource(t *testing.T) {
 	} {
 		if got := vietnamese.Messages[key].Text; got != want {
 			t.Errorf("vi-VN message %q = %q, want %q", key, got, want)
+		}
+	}
+}
+
+func TestThaiCatalogMatchesEnglishSource(t *testing.T) {
+	source, err := Load("en")
+	if err != nil {
+		t.Fatal(err)
+	}
+	thai, err := Load("th-TH")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if thai.Locale != "th-TH" || thai.HTMLLang != "th-TH" {
+		t.Fatalf("th-TH identity = locale %q, html_lang %q", thai.Locale, thai.HTMLLang)
+	}
+	if got, want := len(thai.Messages), expectedCatalogMessages; got != want {
+		t.Fatalf("th-TH message count = %d, want %d", got, want)
+	}
+	if err := validateCoverage(source, thai); err != nil {
+		t.Fatalf("th-TH coverage: %v", err)
+	}
+	placeholderRE := regexp.MustCompile(`\{[a-z][a-z0-9_]*\}`)
+	markupRE := regexp.MustCompile(`<[^>]+>`)
+	allowedUntranslatedNames := map[string]bool{
+		"footer.github":       true,
+		"site.issue_feedback": true,
+		"support.uid":         true,
+	}
+	for key, sourceMessage := range source.Messages {
+		message := thai.Messages[key]
+		if got, want := strings.Join(placeholderRE.FindAllString(message.Text, -1), "\x00"), strings.Join(placeholderRE.FindAllString(sourceMessage.Text, -1), "\x00"); got != want {
+			t.Errorf("th-TH message %q placeholders = %q, want %q", key, got, want)
+		}
+		if sourceMessage.Kind == "rich" {
+			if got, want := strings.Join(markupRE.FindAllString(message.Text, -1), "\x00"), strings.Join(markupRE.FindAllString(sourceMessage.Text, -1), "\x00"); got != want {
+				t.Errorf("th-TH rich message %q markup = %q, want %q", key, got, want)
+			}
+		}
+		if strings.Contains(message.Text, "TODO") {
+			t.Errorf("th-TH message %q retains TODO", key)
+		}
+		if message.Text == sourceMessage.Text && !allowedUntranslatedNames[key] {
+			t.Errorf("th-TH message %q duplicates English source text", key)
+		}
+	}
+	for key, want := range map[string]string{
+		"header.about_project":      "เกี่ยวกับโครงการนี้",
+		"editor.run":                "รัน",
+		"editor.format":             "จัดรูปแบบ",
+		"editor.reset":              "รีเซ็ต",
+		"tour.title":                "ทัวร์ภาษา Go",
+		"site.title":                "โครงการแปลหลายภาษา ทัวร์ภาษา Go",
+		"support.translation_title": "สนับสนุนเวอร์ชันภาษาไทย",
+	} {
+		if got := thai.Messages[key].Text; got != want {
+			t.Errorf("th-TH message %q = %q, want %q", key, got, want)
 		}
 	}
 }

@@ -791,6 +791,60 @@ func TestViVNGlossary(t *testing.T) {
 	}
 }
 
+func TestThTHGlossary(t *testing.T) {
+	glossary, err := LoadGlossary(repoRoot(t), "th-TH")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if glossary.Locale != "th-TH" {
+		t.Fatalf("glossary locale = %q, want th-TH", glossary.Locale)
+	}
+	for key, want := range map[string]string{
+		"A Tour of Go":    "ทัวร์ภาษา Go",
+		"Go Playground":   "Go Playground",
+		"Run":             "รัน",
+		"Format":          "จัดรูปแบบ",
+		"Reset":           "รีเซ็ต",
+		"slide":           "หน้า",
+		"slides":          "หน้า",
+		"constraint":      "ข้อจำกัดของชนิด",
+		"type switch":     "สวิตช์ตามชนิด",
+		"type assertion":  "การยืนยันชนิด",
+		"interface value": "ค่าอินเทอร์เฟซ",
+		"type parameter":  "พารามิเตอร์ชนิด",
+	} {
+		if got := glossary.Mandatory[key]; got != want {
+			t.Errorf("mandatory[%q] = %q, want %q", key, got, want)
+		}
+	}
+	for key, want := range map[string]string{
+		"Go programming language": "ภาษาโปรแกรม Go",
+		"channel":                 "แชนเนล",
+		"package":                 "แพ็กเกจ",
+		"standard library":        "ไลบรารีมาตรฐาน",
+		"concurrency":             "การทำงานพร้อมกัน",
+		"generics":                "เจเนอริก",
+		"map":                     "แมป",
+		"slice":                   "สไลซ์",
+		"pointer":                 "พอยน์เตอร์",
+		"function":                "ฟังก์ชัน",
+	} {
+		if got := glossary.Preferred[key]; got != want {
+			t.Errorf("preferred[%q] = %q, want %q", key, got, want)
+		}
+	}
+	for _, want := range []string{"Golang"} {
+		if !containsString(glossary.Forbidden, want) {
+			t.Errorf("forbidden missing %q: %v", want, glossary.Forbidden)
+		}
+	}
+	for _, want := range []string{"Go", "Go Playground", "go vet", "gofmt", "GOPATH", "URL", "API", "ASCII", "CPU", "UTC", "goroutine", "goroutines", "TranslationUnit", "Page", "Example", "present.Section"} {
+		if !containsString(glossary.Keep, want) {
+			t.Errorf("keep missing %q: %v", want, glossary.Keep)
+		}
+	}
+}
+
 func TestGlossaryKeepValidationAndLegacyTerms(t *testing.T) {
 	tests := []struct {
 		name, body, want string

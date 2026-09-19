@@ -1,0 +1,141 @@
+locale: th-TH
+mandatory:
+  A Tour of Go: ทัวร์ภาษา Go
+  previous: ก่อนหน้า
+  next: ถัดไป
+  Run: รัน
+  Format: จัดรูปแบบ
+  Reset: รีเซ็ต
+  slide: หน้า
+  slides: หน้า
+  Go Playground: Go Playground
+  constraint: ข้อจำกัดของชนิด
+  constraints: ข้อจำกัดของชนิด
+  type switch: สวิตช์ตามชนิด
+  type switches: สวิตช์ตามชนิด
+  type assertion: การยืนยันชนิด
+  type assertions: การยืนยันชนิด
+  interface value: ค่าอินเทอร์เฟซ
+  interface values: ค่าอินเทอร์เฟซ
+  interface type: ชนิดอินเทอร์เฟซ
+  interface types: ชนิดอินเทอร์เฟซ
+  concrete type: ชนิดคอนกรีต
+  concrete types: ชนิดคอนกรีต
+  type parameter: พารามิเตอร์ชนิด
+  type parameters: พารามิเตอร์ชนิด
+preferred:
+  Go programming language: ภาษาโปรแกรม Go
+  built-in: ในตัว
+  type: ชนิด
+  types: ชนิด
+  channel: แชนเนล
+  channels: แชนเนล
+  buffered channel: แชนเนลแบบมีบัฟเฟอร์
+  unbuffered channel: แชนเนลแบบไม่มีบัฟเฟอร์
+  interface: อินเทอร์เฟซ
+  interfaces: อินเทอร์เฟซ
+  empty interface: อินเทอร์เฟซว่าง
+  nil interface: อินเทอร์เฟซ nil
+  struct: สตรักต์
+  structs: สตรักต์
+  field: ฟิลด์
+  fields: ฟิลด์
+  array: อาร์เรย์
+  arrays: อาร์เรย์
+  concurrency: การทำงานพร้อมกัน
+  generics: เจเนอริก
+  generic: เจเนอริก
+  generic programming: การเขียนโปรแกรมแบบเจเนอริก
+  generic function: ฟังก์ชันเจเนอริก
+  generic type: ชนิดเจเนอริก
+  type argument: อาร์กิวเมนต์ชนิด
+  type arguments: อาร์กิวเมนต์ชนิด
+  type set: เซตของชนิด
+  underlying type: ชนิดที่อยู่เบื้องหลัง
+  named type: ชนิดที่มีชื่อ
+  defined type: ชนิดที่กำหนดขึ้น
+  method set: ชุดเมธอด
+  tour: ทัวร์
+  the tour: ทัวร์นี้
+  sandbox: แซนด์บ็อกซ์
+  deterministic output: เอาต์พุตที่กำหนดได้แน่นอน
+  package: แพ็กเกจ
+  packages: แพ็กเกจ
+  import path: พาธการอิมพอร์ต
+  package name: ชื่อแพ็กเกจ
+  import statement: คำสั่งอิมพอร์ต
+  exported name: ชื่อที่ส่งออก
+  exported names: ชื่อที่ส่งออก
+  unexported name: ชื่อที่ไม่ได้ส่งออก
+  unexported names: ชื่อที่ไม่ได้ส่งออก
+  standard library: ไลบรารีมาตรฐาน
+  iteration: รอบการวนซ้ำ
+  loop condition: เงื่อนไขลูป
+  type inference: การอนุมานชนิด
+  untyped constant: ค่าคงที่ที่ไม่มีชนิด
+  untyped numeric constant: ค่าคงที่ตัวเลขที่ไม่มีชนิด
+  module: โมดูล
+  exercise: แบบฝึกหัด
+  syntax highlighting: การเน้นไวยากรณ์
+  map: แมป
+  maps: แมป
+  slice: สไลซ์
+  slices: สไลซ์
+  pointer: พอยน์เตอร์
+  pointers: พอยน์เตอร์
+  pointer receiver: รีซีฟเวอร์แบบพอยน์เตอร์
+  value receiver: รีซีฟเวอร์แบบค่า
+  receiver: รีซีฟเวอร์
+  method: เมธอด
+  methods: เมธอด
+  function: ฟังก์ชัน
+  functions: ฟังก์ชัน
+  argument: อาร์กิวเมนต์
+  arguments: อาร์กิวเมนต์
+  parameter: พารามิเตอร์
+  parameters: พารามิเตอร์
+  variable: ตัวแปร
+  variables: ตัวแปร
+  statement: คำสั่ง
+  expression: นิพจน์
+  declaration: การประกาศ
+  loop: ลูป
+  constant: ค่าคงที่
+  zero value: ค่าศูนย์
+  mutex: มิวเท็กซ์
+  mutual exclusion: การกีดกันซึ่งกันและกัน
+  pipeline: ไปป์ไลน์
+  closure: คลอเชอร์
+  deadlock: เดดล็อก
+  runtime: รันไทม์
+  file: ไฟล์
+  files: ไฟล์
+  screen: หน้าจอ
+forbidden:
+  - Golang
+keep:
+  - Go
+  - Go Playground
+  - Go vet
+  - go vet
+  - gofmt
+  - GOPATH
+  - URL
+  - API
+  - ASCII
+  - CPU
+  - UTC
+  - PageUp
+  - PageDown
+  - Shift
+  - Enter
+  - Ctrl
+  - goroutine
+  - goroutines
+  - Goroutines
+  - TranslationUnit
+  - Page
+  - Pages
+  - Example
+  - Examples
+  - present.Section

@@ -1,0 +1,458 @@
+{
+  "locale": "th-TH",
+  "html_lang": "th-TH",
+  "messages": {
+    "tour.title": {
+      "kind": "plain",
+      "text": "ทัวร์ภาษา Go"
+    },
+    "header.about_project": {
+      "kind": "plain",
+      "text": "เกี่ยวกับโครงการนี้"
+    },
+    "tour.list_heading": {
+      "kind": "plain",
+      "text": "ยินดีต้อนรับสู่ทัวร์ภาษา Go"
+    },
+    "tour.list_title": {
+      "kind": "plain",
+      "text": "สารบัญบทเรียน — ทัวร์ภาษา Go"
+    },
+    "tour.list_description": {
+      "kind": "plain",
+      "text": "เรียกดูโมดูลและบทเรียนต่าง ๆ ในทัวร์ภาษา Go ซึ่งเป็นบทนำแบบโต้ตอบสู่ภาษาโปรแกรม Go"
+    },
+    "theme.toggle": {
+      "kind": "plain",
+      "text": "สลับธีม"
+    },
+    "theme.system": {
+      "kind": "plain",
+      "text": "ธีมระบบ"
+    },
+    "theme.dark": {
+      "kind": "plain",
+      "text": "ธีมมืด"
+    },
+    "theme.light": {
+      "kind": "plain",
+      "text": "ธีมสว่าง"
+    },
+    "editor.syntax": {
+      "kind": "plain",
+      "text": "ไวยากรณ์"
+    },
+    "editor.imports": {
+      "kind": "plain",
+      "text": "อิมพอร์ต"
+    },
+    "editor.on": {
+      "kind": "plain",
+      "text": "เปิด"
+    },
+    "editor.off": {
+      "kind": "plain",
+      "text": "ปิด"
+    },
+    "editor.run": {
+      "kind": "plain",
+      "text": "รัน"
+    },
+    "editor.kill": {
+      "kind": "plain",
+      "text": "หยุด"
+    },
+    "editor.format": {
+      "kind": "plain",
+      "text": "จัดรูปแบบ"
+    },
+    "editor.reset": {
+      "kind": "plain",
+      "text": "รีเซ็ต"
+    },
+    "toc.title": {
+      "kind": "plain",
+      "text": "สารบัญ"
+    },
+    "execution.waiting": {
+      "kind": "plain",
+      "text": "กำลังรอเซิร์ฟเวอร์ระยะไกล..."
+    },
+    "execution.exited": {
+      "kind": "plain",
+      "text": "โปรแกรมสิ้นสุดการทำงานแล้ว"
+    },
+    "execution.vet_failed": {
+      "kind": "plain",
+      "text": "Go vet ล้มเหลว."
+    },
+    "execution.build_failed": {
+      "kind": "plain",
+      "text": "Go build ล้มเหลว."
+    },
+    "execution.communication_error": {
+      "kind": "plain",
+      "text": "เกิดข้อผิดพลาดในการสื่อสารกับเซิร์ฟเวอร์ระยะไกล."
+    },
+    "execution.test_failed": {
+      "kind": "plain",
+      "text": "การทดสอบ {count} รายการล้มเหลว."
+    },
+    "execution.tests_failed": {
+      "kind": "plain",
+      "text": "การทดสอบ {count} รายการล้มเหลว."
+    },
+    "execution.tests_passed": {
+      "kind": "plain",
+      "text": "การทดสอบทั้งหมดผ่านแล้ว."
+    },
+    "feedback.open": {
+      "kind": "plain",
+      "text": "ส่งความคิดเห็นเกี่ยวกับหน้านี้"
+    },
+    "feedback.issue_title": {
+      "kind": "plain",
+      "text": "x/website/_content/tour: [แทนที่ด้วยคำอธิบายสั้น ๆ]"
+    },
+    "feedback.issue_body": {
+      "kind": "plain",
+      "text": "เปลี่ยนชื่อเรื่องด้านบนให้บรรยายปัญหาของคุณ แล้วเพิ่มความคิดเห็นที่นี่ รวมถึงโค้ดหากจำเป็น"
+    },
+    "feedback.context": {
+      "kind": "plain",
+      "text": "บริบท"
+    },
+    "module.using_tour.title": {
+      "kind": "plain",
+      "text": "การใช้งานทัวร์"
+    },
+    "module.using_tour.description": {
+      "kind": "rich",
+      "text": "<p>ยินดีต้อนรับสู่ทัวร์ของ <a href=\"https://go.dev\">ภาษาโปรแกรม Go</a> ทัวร์นี้ครอบคลุมคุณสมบัติที่สำคัญที่สุดของภาษา โดยหลัก ๆ ได้แก่:</p>"
+    },
+    "module.basics.title": {
+      "kind": "plain",
+      "text": "พื้นฐาน"
+    },
+    "module.basics.description": {
+      "kind": "rich",
+      "text": "<p>เริ่มต้นจากตรงนี้เพื่อเรียนรู้พื้นฐานทั้งหมดของภาษา</p><p>การประกาศตัวแปร การเรียกฟังก์ชัน และทุกสิ่งที่คุณต้องรู้ก่อนเข้าสู่บทเรียนถัดไป</p>"
+    },
+    "module.methods.title": {
+      "kind": "plain",
+      "text": "เมธอดและอินเทอร์เฟซ"
+    },
+    "module.methods.description": {
+      "kind": "rich",
+      "text": "<p>เรียนรู้วิธีกำหนดเมธอดให้กับชนิด วิธีประกาศอินเทอร์เฟซ และวิธีนำทั้งหมดมาทำงานร่วมกัน</p>"
+    },
+    "module.generics.title": {
+      "kind": "plain",
+      "text": "เจเนอริก"
+    },
+    "module.generics.description": {
+      "kind": "rich",
+      "text": "<p>เรียนรู้วิธีใช้พารามิเตอร์ชนิดในฟังก์ชันและสตรักต์ของ Go</p>"
+    },
+    "module.concurrency.title": {
+      "kind": "plain",
+      "text": "การทำงานพร้อมกัน"
+    },
+    "module.concurrency.description": {
+      "kind": "rich",
+      "text": "<p>Go มีคุณสมบัติสำหรับการทำงานพร้อมกันเป็นส่วนหนึ่งของภาษาหลัก</p><p>โมดูลนี้อธิบาย goroutine และแชนเนล รวมถึงวิธีใช้เพื่อสร้างรูปแบบการทำงานพร้อมกันแบบต่าง ๆ</p>"
+    },
+    "error.not_found": {
+      "kind": "plain",
+      "text": "404 ไม่พบหน้า"
+    },
+    "site.title": {
+      "kind": "plain",
+      "text": "โครงการแปลหลายภาษา ทัวร์ภาษา Go"
+    },
+    "site.browser_title": {
+      "kind": "plain",
+      "text": "Yongye · โครงการแปลหลายภาษา ทัวร์ภาษา Go"
+    },
+    "site.unofficial": {
+      "kind": "plain",
+      "text": "ดูแลโดย Yongye · โครงการแปลหลายภาษาของชุมชนอย่างไม่เป็นทางการ"
+    },
+    "site.intro": {
+      "kind": "plain",
+      "text": "โครงการแปลเนื้อหาการเรียนรู้ Go อย่างเป็นทางการที่ดูแลโดยชุมชน ภาษาจีนตัวย่อเป็นภาษาแรกที่เปิดให้ใช้งาน และโครงสร้างนี้สามารถขยายเพื่อรองรับภาษาและเนื้อหา Go เพิ่มเติมได้"
+    },
+    "site.no_affiliation": {
+      "kind": "plain",
+      "text": "โครงการนี้ไม่ได้มีส่วนเกี่ยวข้องกับ ไม่ได้รับอนุญาตจาก และไม่ได้รับการรับรองโดยโครงการ Go"
+    },
+    "site.start_learning": {
+      "kind": "plain",
+      "text": "เริ่มเรียน"
+    },
+    "site.current_projects": {
+      "kind": "plain",
+      "text": "โครงการแปลปัจจุบัน"
+    },
+    "site.tour_description": {
+      "kind": "plain",
+      "text": "บทนำแบบโต้ตอบสู่ภาษาโปรแกรม Go"
+    },
+    "site.current_language": {
+      "kind": "plain",
+      "text": "ภาษาปัจจุบัน"
+    },
+    "site.enter_tour": {
+      "kind": "plain",
+      "text": "เข้าสู่ทัวร์"
+    },
+    "site.project_status": {
+      "kind": "plain",
+      "text": "สถานะโครงการ"
+    },
+    "site.course_pages": {
+      "kind": "plain",
+      "text": "หน้าบทเรียน"
+    },
+    "site.latest_release": {
+      "kind": "plain",
+      "text": "รุ่นล่าสุด"
+    },
+    "site.environment": {
+      "kind": "plain",
+      "text": "สภาพแวดล้อม"
+    },
+    "site.development_environment": {
+      "kind": "plain",
+      "text": "สภาพแวดล้อมการพัฒนา"
+    },
+    "site.upstream_baseline": {
+      "kind": "plain",
+      "text": "ฐานอ้างอิงจากต้นทางอย่างเป็นทางการ"
+    },
+    "site.upstream_commit_time": {
+      "kind": "plain",
+      "text": "เวลาคอมมิตของต้นทาง"
+    },
+    "site.language_versions": {
+      "kind": "plain",
+      "text": "เวอร์ชันภาษา"
+    },
+    "site.official_version": {
+      "kind": "plain",
+      "text": "ทัวร์ภาษา Go อย่างเป็นทางการ"
+    },
+    "site.community_version": {
+      "kind": "plain",
+      "text": "คำแปลโดยชุมชน"
+    },
+    "site.open_official_tour": {
+      "kind": "plain",
+      "text": "เปิดทัวร์อย่างเป็นทางการ"
+    },
+    "site.project_links": {
+      "kind": "plain",
+      "text": "ลิงก์โครงการ"
+    },
+    "site.source_code": {
+      "kind": "plain",
+      "text": "ซอร์สโค้ดบน GitHub"
+    },
+    "site.issue_feedback": {
+      "kind": "plain",
+      "text": "GitHub Issues"
+    },
+    "site.development_log": {
+      "kind": "plain",
+      "text": "บันทึกการพัฒนา: โครงการแปลหลายภาษา ทัวร์ภาษา Go"
+    },
+    "site.official_upstream": {
+      "kind": "plain",
+      "text": "ต้นทางอย่างเป็นทางการ"
+    },
+    "site.translation_validation": {
+      "kind": "plain",
+      "text": "การแปลและการตรวจสอบ"
+    },
+    "site.translation_validation_intro": {
+      "kind": "plain",
+      "text": "โครงการรักษาประสบการณ์การเรียนรู้ให้ใกล้เคียงกับต้นฉบับอย่างเป็นทางการ พร้อมตรวจสอบทุกรีลีสก่อนเผยแพร่"
+    },
+    "site.validation_page_unit": {
+      "kind": "plain",
+      "text": "การแปลใช้หน้าบทเรียนที่สมบูรณ์เป็นหน่วย"
+    },
+    "site.validation_present": {
+      "kind": "plain",
+      "text": "แต่ละรีลีสจะถูกพาร์สด้วย present"
+    },
+    "site.validation_structure": {
+      "kind": "plain",
+      "text": "โครงสร้างหน้าจะถูกเปรียบเทียบกับต้นฉบับอย่างเป็นทางการ"
+    },
+    "site.validation_render": {
+      "kind": "plain",
+      "text": "หน้าที่เรนเดอร์แล้วจะถูกตรวจสอบก่อนเผยแพร่"
+    },
+    "site.validation_examples": {
+      "kind": "plain",
+      "text": "Example ของ Go ที่มีความคิดเห็นภาษาธรรมชาติซึ่งแปลได้จะเข้าสู่เวิร์กโฟลว์การตรวจสอบแบบรวมด้วย ส่วน Example อื่น ๆ ทั้งหมดยังคงใช้ต้นฉบับอย่างเป็นทางการโดยตรง"
+    },
+    "site.how_it_works": {
+      "kind": "plain",
+      "text": "โครงการทำงานอย่างไร"
+    },
+    "site.how_it_works_intro": {
+      "kind": "plain",
+      "text": "การแปลบทเรียนเป็นภาษาท้องถิ่นไม่ใช่การแทนที่ทีละประโยค แต่เป็นเวิร์กโฟลว์ที่สร้างขึ้นรอบหน่วยเนื้อหาที่สมบูรณ์ สถานะการตรวจสอบที่ติดตามได้ และอาร์ติแฟกต์รีลีสที่ตรวจสอบได้"
+    },
+    "site.workflow_title": {
+      "kind": "plain",
+      "text": "จาก TranslationUnit สู่ production"
+    },
+    "site.workflow_units": {
+      "kind": "plain",
+      "text": "TranslationUnit ครอบคลุมทั้ง Page ที่สมบูรณ์และ Example ที่เข้าเกณฑ์: Page คือ present.Section ที่สมบูรณ์ ส่วน Example คือไฟล์ .go ที่สมบูรณ์ซึ่งมีความคิดเห็นภาษาธรรมชาติที่แปลได้"
+    },
+    "site.workflow_process": {
+      "kind": "plain",
+      "text": "แต่ละหน่วยจะผ่านการแปล การตรวจสอบอัตโนมัติ Translation Quality Review, promotion, ready, projection และ publish; คำแปลที่สร้างขึ้นจะไม่ถูกเผยแพร่โดยตรง"
+    },
+    "site.workflow_review": {
+      "kind": "plain",
+      "text": "การตรวจสอบอัตโนมัติปกป้องโครงสร้าง พาร์สเนื้อหา present เปรียบเทียบกับต้นฉบับอย่างเป็นทางการ ตรวจสอบการเรนเดอร์และหน้า และตรวจสอบเนื้อหา Example ของ Go ก่อน promotion ยังคงต้องมีการตรวจสอบคุณภาพคำแปลโดยผู้ตรวจอิสระ"
+    },
+    "site.workflow_publish": {
+      "kind": "plain",
+      "text": "กระบวนการ publish สร้าง projection ที่แปลครบถ้วนจาก canonical ready candidate กำหนดให้ TranslationUnit ทุกหน่วยในเวิร์กโฟลว์อยู่ในสถานะ ready จากนั้นสร้างไบนารี production, release.json และ SHA256SUMS พร้อมตรวจสอบ bundle ทั้งหมด"
+    },
+    "site.architecture_title": {
+      "kind": "plain",
+      "text": "สถาปัตยกรรมที่ติดตามได้ ควบคุมได้ และขยายได้"
+    },
+    "site.architecture_upstream": {
+      "kind": "plain",
+      "text": "โครงการบันทึกคอมมิตต้นทางอย่างเป็นทางการอย่างต่อเนื่อง เพื่อรักษาฐานอ้างอิงที่ติดตามได้สำหรับการอัปเดตต้นฉบับในอนาคต"
+    },
+    "site.architecture_playground": {
+      "kind": "plain",
+      "text": "ตัวอย่าง Go ในเบราว์เซอร์ทำงานผ่านพร็อกซี Playground ระยะไกลที่ควบคุมไว้; ระบบ production จะไม่เปิดเผย endpoint รันโค้ด /socket ภายในเครื่อง"
+    },
+    "site.architecture_languages": {
+      "kind": "plain",
+      "text": "เซิร์ฟเวอร์ เทมเพลต CSS, JavaScript, รูปภาพ และฟอนต์ใช้ร่วมกันเมื่อเหมาะสม แต่ละภาษาดูแลคำแปลบทเรียน ข้อความ UI คำศัพท์ และสถานะของตนเองโดยอิสระ ภาษาจีนตัวย่อเป็นภาษาแรกที่เปิดให้ใช้งาน และยังรองรับการเพิ่มภาษาอื่น ๆ ได้"
+    },
+    "site.operations_note": {
+      "kind": "plain",
+      "text": "ไซต์นี้อาจแสดงโฆษณาเพื่อช่วยครอบคลุมค่าใช้จ่ายโครงสร้างพื้นฐาน เช่น เซิร์ฟเวอร์ แบนด์วิดท์ และบริการ CDN รวมถึงค่าใช้จ่ายต่อเนื่องในการดูแลโครงการ ซอร์สโค้ดยังคงเปิดเผยต่อสาธารณะ และการติดตั้งแบบ self-hosted จะไม่เปิดใช้การตั้งค่าโฆษณาของไซต์นี้โดยค่าเริ่มต้น"
+    },
+    "support.section_title": {
+      "kind": "plain",
+      "text": "การสนับสนุนและค่าใช้จ่ายในการดำเนินงาน"
+    },
+    "support.advertising_title": {
+      "kind": "plain",
+      "text": "ประกาศเกี่ยวกับโฆษณา"
+    },
+    "support.translation_title": {
+      "kind": "plain",
+      "text": "สนับสนุนเวอร์ชันภาษาไทย"
+    },
+    "support.intro": {
+      "kind": "plain",
+      "text": "คุณสามารถสนับสนุนการดูแลเวอร์ชันภาษาไทยอย่างต่อเนื่องได้โดยสมัครใจ การสนับสนุนของคุณช่วยให้เวอร์ชันภาษานี้ได้รับการดูแลและพัฒนาต่อไป"
+    },
+    "support.reference_label": {
+      "kind": "plain",
+      "text": "รหัสอ้างอิงการสนับสนุน"
+    },
+    "support.reference_help": {
+      "kind": "plain",
+      "text": "หากบริการชำระเงินของคุณรองรับหมายเหตุหรือรหัสอ้างอิง คุณสามารถใช้ค่านี้ได้"
+    },
+    "support.copy_reference": {
+      "kind": "plain",
+      "text": "คัดลอกรหัสอ้างอิง"
+    },
+    "support.copy_address": {
+      "kind": "plain",
+      "text": "คัดลอกที่อยู่"
+    },
+    "support.copy_uid": {
+      "kind": "plain",
+      "text": "คัดลอก UID"
+    },
+    "support.copied": {
+      "kind": "plain",
+      "text": "คัดลอกแล้ว"
+    },
+    "support.asset": {
+      "kind": "plain",
+      "text": "สินทรัพย์"
+    },
+    "support.network": {
+      "kind": "plain",
+      "text": "เครือข่าย"
+    },
+    "support.address": {
+      "kind": "plain",
+      "text": "ที่อยู่"
+    },
+    "support.minimum_deposit": {
+      "kind": "plain",
+      "text": "ยอดขั้นต่ำฝั่งผู้รับ"
+    },
+    "support.platform_title": {
+      "kind": "plain",
+      "text": "การโอนภายในแพลตฟอร์ม (ไม่บังคับ)"
+    },
+    "support.uid": {
+      "kind": "plain",
+      "text": "UID"
+    },
+    "support.platform_help": {
+      "kind": "plain",
+      "text": "ผู้ใช้แพลตฟอร์มเดียวกันสามารถโอนภายในด้วย UID ได้ โปรดตรวจสอบรายละเอียดบนแพลตฟอร์ม"
+    },
+    "support.usdc_network_only": {
+      "kind": "plain",
+      "text": "ส่ง USDC ผ่านเครือข่าย Base เท่านั้น"
+    },
+    "support.usdt_network_only": {
+      "kind": "plain",
+      "text": "ส่ง USDT ผ่านเครือข่าย Tron (TRC20) เท่านั้น"
+    },
+    "support.wrong_network_warning": {
+      "kind": "plain",
+      "text": "การใช้สินทรัพย์หรือเครือข่ายที่ไม่ถูกต้องอาจทำให้สูญเสียเงิน"
+    },
+    "site.continue_learning_title": {
+      "kind": "plain",
+      "text": "เรียนรู้ Go ต่อ"
+    },
+    "site.continue_learning_description": {
+      "kind": "plain",
+      "text": "ทัวร์ภาษา Go เป็นเพียงจุดเริ่มต้น หลังจากเรียนจบแล้ว ไปที่ go.dev เพื่อดูเอกสารอย่างเป็นทางการ บทช่วยสอน เอกสารอ้างอิงไลบรารีมาตรฐาน ข้อกำหนดภาษา และทรัพยากรการเรียนรู้ Go เพิ่มเติม"
+    },
+    "site.continue_learning": {
+      "kind": "plain",
+      "text": "เรียนรู้ต่อที่ go.dev"
+    },
+    "footer.unofficial": {
+      "kind": "plain",
+      "text": "Yongye · โครงการแปลหลายภาษาของชุมชนอย่างไม่เป็นทางการ"
+    },
+    "footer.home": {
+      "kind": "plain",
+      "text": "หน้าแรก"
+    },
+    "footer.github": {
+      "kind": "plain",
+      "text": "GitHub"
+    },
+    "footer.development_log": {
+      "kind": "plain",
+      "text": "บันทึกการพัฒนา"
+    }
+  }
+}

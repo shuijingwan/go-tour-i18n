@@ -451,3 +451,37 @@ func TestVietnameseArticleMetadataCoversCatalog(t *testing.T) {
 		}
 	}
 }
+
+func TestThaiArticleMetadataCoversCatalog(t *testing.T) {
+	root := filepath.Clean(filepath.Join("..", ".."))
+	catalog, err := ReadCatalog(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	metadata, err := LoadArticleMetadata(root, "th-TH", catalog)
+	if err != nil {
+		t.Fatal(err)
+	}
+	wantTitles := map[string]string{
+		"welcome.article":     "ยินดีต้อนรับ!",
+		"basics.article":      "แพ็กเกจ ตัวแปร และฟังก์ชัน",
+		"flowcontrol.article": "คำสั่งควบคุมการไหล: for, if, else, switch และ defer",
+		"moretypes.article":   "ชนิดเพิ่มเติม: สตรักต์ สไลซ์ และแมป",
+		"methods.article":     "เมธอดและอินเทอร์เฟซ",
+		"generics.article":    "เจเนอริก",
+		"concurrency.article": "การทำงานพร้อมกัน",
+	}
+	if len(metadata) != len(wantTitles) {
+		t.Fatalf("th-TH article metadata count = %d, want %d", len(metadata), len(wantTitles))
+	}
+	for article, title := range wantTitles {
+		entry, ok := metadata[article]
+		if !ok {
+			t.Errorf("th-TH article metadata is missing %s", article)
+			continue
+		}
+		if entry.Title != title || entry.Subtitle == "" || strings.Contains(entry.Title+entry.Subtitle, "TODO") {
+			t.Errorf("th-TH article metadata %s = %+v, want title %q, subtitle, and no TODO", article, entry, title)
+		}
+	}
+}
