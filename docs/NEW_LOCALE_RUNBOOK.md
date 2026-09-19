@@ -43,7 +43,9 @@ locale / domain / CDN 决策
 
 ## 执行成本与协作
 
-新增 locale 始终以质量 gate 为先。语言生成优先使用普通 ChatGPT GPT-5.6 Sol + High + Remote Desktop Commander，Codex GPT-5.6 Sol + High 保留为 fallback；不得因额度或执行环境弱化任何 gate。确定性工作优先由本地终端执行，仓库已有正式工具与已确认事实直接复用；不为新增 locale 建立硬 wall-clock 时间目标。ChatGPT 执行边界见 [ChatGPT 正式语言生成执行规范](CHATGPT_LANGUAGE_GENERATION.md)，Codex fallback 的额度观察和停止边界见 [Codex 翻译执行规范](CODEX_TRANSLATION.md)。
+新增 locale 始终以质量 gate 为先。每个 locale 默认维护 **1 个长期 Generation session + 1 个独立长期 Reviewer session + 本地终端**：Generation session 只产生或修订语言内容；Reviewer session 执行 TranslationUnit Quality Check、revision re-QC 与 Locale Surface Review；本地终端执行全部 deterministic lifecycle。同一个未参与该 locale 语言 generation 的 Reviewer session 可以连续承担 TU QC 与 Surface Review，不要求为两个 gate 再拆两个 reviewer conversation/session；reviewer finding 必须回到 Generation session 产生 replacement，再经本地终端处理后返回 Reviewer session 复审。
+
+语言生成优先使用普通 ChatGPT GPT-5.6 Sol + High + Remote Desktop Commander，Codex GPT-5.6 Sol + High 保留为 fallback；不得因额度或执行环境弱化任何 gate。仓库已有正式工具与已确认事实直接复用，不为新增 locale 建立硬 wall-clock 时间目标。详细会话职责以 [ChatGPT 正式语言生成执行规范](CHATGPT_LANGUAGE_GENERATION.md) 为准，Codex fallback 的额度观察和停止边界见 [Codex 翻译执行规范](CODEX_TRANSLATION.md)。canonical English source-description extraction / review 是跨 locale 共享 authority，不属于上述单 locale 固定配对；其 current/stale 规则仍只按 [课程页正式 SEO Metadata 规范](COURSE_SEO_METADATA.md) 执行，不因每个新增 locale 默认重做。
 
 ## 1. 冻结语言与生产身份
 

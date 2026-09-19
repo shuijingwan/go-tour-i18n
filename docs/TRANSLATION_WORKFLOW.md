@@ -15,6 +15,47 @@
 → 项目状态确认
 ```
 
+## 单 locale 协作职责
+
+一个 locale 默认由一个长期 Generation session、一个与之独立的长期 Reviewer session，加上维护者 Local terminal 协作。下图只说明职责流，不改变任何 stage-specific authority 规定的 CLI 顺序：
+
+```text
+Generation session
+  glossary / UI / metadata / TranslationUnit generation
+        ↓
+Local terminal
+  export / process / validation / Candidate Snapshot
+        ↓
+Reviewer session
+  TranslationUnit Quality Check
+        ↓ B/C/D finding
+Generation session
+  revision generation
+        ↓
+Local terminal
+  process / new Candidate Snapshot
+        ↓
+Reviewer session
+  re-QC
+        ↓
+Local terminal
+  finalize / promotion
+        ↓
+Generation session
+  schema v2 Course SEO localization
+        ↓
+Local terminal
+  assemble / build / surface-review export
+        ↓
+Reviewer session
+  Locale Surface Review
+        ↓
+language defect → Generation session
+PASS → Local terminal preview / publish / Production
+```
+
+Generation session 与 Reviewer session 不得是同一 conversation/session；同一个未参与该 locale 语言 generation 的 Reviewer session 可以连续承担 TranslationUnit Quality Check、revision 后 re-QC 与 Locale Surface Review。详细角色边界见 [ChatGPT 正式语言生成执行规范](CHATGPT_LANGUAGE_GENERATION.md)。canonical English source-description extraction / review 是跨 locale 共享 authority，不属于这个单 locale 固定配对，仍以 [课程页正式 SEO Metadata 规范](COURSE_SEO_METADATA.md) 为准。
+
 ## 1. 术语准备
 
 开始某个 locale 的翻译或调整术语前，阅读：

@@ -2,19 +2,54 @@
 
 本文定义普通 ChatGPT **GPT-5.6 Sol + High** 配合 Remote Desktop Commander 执行正式语言生成时的仓库边界。它与 [Codex TranslationUnit 翻译执行规范](CODEX_TRANSLATION.md) 并列；不新增 Translation Engine，也不改变任何 validation、Quality Check、Locale Surface Review 或 Production gate。
 
-## 职责范围
+## 单 locale 固定会话角色
 
-ChatGPT 可以承担以下正式语言工作：
+一个 locale 默认维护一个长期 **Generation session**、一个与之独立的长期 **Reviewer session**，再由维护者 **Local terminal** 执行 deterministic lifecycle。这是协作职责规则，不是机器身份系统；不得为此新增 session 字段、receipt、schema、CLI flag 或 machine gate。
+
+### Generation session
+
+Generation session 负责所有产生或修订该 locale 语言内容的模型工作：
 
 - locale glossary 的语言判断与制定；
-- 公共 UI catalog 与 article metadata 的生成或修改；
+- 公共 UI catalog、article metadata 与其他 locale-level 文案的生成或修改；
 - TranslationUnit initial translation、revision，以及确实需要新译文的 `restore_failed` / `validation_failed` retry；
-- schema v2 Course SEO localized description；
-- 与生成会话分离的逐 TranslationUnit Quality Check、canonical English description review（仅在其正式 authority 确实 stale 时）和 Locale Surface Review。
+- schema v2 Course SEO localization，以及 Surface Review finding 所需的 refresh / revise description；
+- TranslationUnit Quality Check 或 Locale Surface Review finding 回流后的 replacement generation。
 
-Codex GPT-5.6 Sol + High 继续作为正式语言生成 fallback，并主要负责 repository-level code/docs/config 修改、需要完整仓库理解的变更和复杂 failure evidence 诊断。维护者本地终端负责 export、process、revalidate、status、validation、assemble、check、refresh、finalize、promote、build、publish、deploy、verifier 与 Git 等确定性生命周期。
+同一个 Generation session 可以按 `glossary / UI / metadata → TranslationUnit initial / revision → Course SEO localization → 后续 replacement generation` 长期连续工作，只要它始终承担 generation。它可以读取完整 source、target、glossary 与 reviewer finding；Course SEO generation 可以读取当前完整 Page source 与 ready target。读取这些材料不会破坏 generation 独立性，真正禁止的是同一 conversation/session 同时承担 generation 与 formal review。
 
-生成与正式审核必须分离。同一 ChatGPT conversation/session 不得同时生成本轮译文并充当其正式 Quality Check reviewer；locale-level 语言资产生成与 Locale Surface Review 也必须使用独立审核 session；发现缺陷的 reviewer session 不得生成 replacement 后再批准自己的输出。独立性依据是 generation/review 职责，不是 generation session 是否曾读取 Page body；同一 locale generation session 可以依次承担 TranslationUnit initial/revision 和 Course SEO localization/refresh/revision。这一调整不改变现有逐 TranslationUnit A-only、carry-forward、machine finalization 或 Surface Review gate。
+Generation session 不得执行正式 TranslationUnit Quality Check、revision 后正式 re-QC、Locale Surface Review，或批准自己生成的输出。
+
+### Reviewer session
+
+Reviewer session 负责该 locale 的正式语言审核：
+
+- TranslationUnit Quality Check；
+- revision 后 re-QC；
+- Locale Surface Review。
+
+同一个 Reviewer session 可以先承担 TranslationUnit Quality Check，之后继续承担同一 locale 的 Locale Surface Review。这两个 gate 的范围和 evidence 保持独立，但仓库不要求它们使用两个不同 reviewer conversation/session。前提是该 Reviewer session 从未参与该 locale 的 glossary、UI catalog、article metadata 或其他 locale-level language generation，从未参与 TranslationUnit initial / revision / retry generation，也从未参与 schema v2 Course SEO localization / revision generation。
+
+Reviewer 发现问题时必须遵循：
+
+```text
+reviewer finding
+→ Generation session 产生 replacement
+→ Local terminal 执行 deterministic lifecycle
+→ Reviewer session re-review
+```
+
+Reviewer session 不得直接修改 candidate、生成 replacement translation 或 Course SEO replacement description 后再批准自己的结果，也不得因为自己审核过上一轮而自动批准 revision。只要它没有参与 replacement generation，就可以继续审核 Generation session 修订后的新输出。Validation passed、旧 A、Surface Review 结论或模型历史表现都不能替代当前正式审核。
+
+### Local terminal
+
+维护者本地终端负责所有确定性步骤，包括 locale init；retranslation export、process、retry process、revalidate；status / validation；Candidate Snapshot；quality-check scope、record / record-batch、finalize；promotion；Course SEO assemble，以及 refresh / revise 的机械 CLI；canonical/source/current checks；build；surface-review export 与 record-a；preview、browser verifier、publish、Production、deploy、verifier、checksum / curl、Git、assets、search closeout，以及现有 CLI/script 覆盖的其他机械步骤。
+
+Generation session 只产生 Course SEO refresh / revise 所需的新 description 文本；正式 `course-metadata.json` 的 mutation 由 Local terminal 执行 `course-metadata refresh` / `revise`。ChatGPT 即使能操作本地终端，也不默认接管这些确定性步骤，除非维护者明确扩大当前操作范围。
+
+canonical English source-description extraction / review 是所有 locale 共享的 authority，不属于单个 locale 固定的 Generation / Reviewer 配对。只有其 authority 确实 stale 时才按 [课程页正式 SEO Metadata 规范](COURSE_SEO_METADATA.md) 执行，不因新增每个 locale 重复，也不默认交给该 locale 的 Reviewer session。
+
+Codex GPT-5.6 Sol + High 继续作为正式语言生成 fallback，并主要负责 repository-level code/docs/config 修改、需要完整仓库理解的变更和复杂 failure evidence 诊断。无论使用普通 ChatGPT 还是 Codex fallback，generation 与 formal review 的会话隔离规则不变。
 
 ## TranslationUnit 正式输入与 export
 
@@ -52,7 +87,7 @@ go run -mod=readonly ./cmd/tour-i18n retranslation export \
 
 Retry 使用同一原子提交思想：先将完整内容写入目标 Unit retry 目录内的隐藏 staging file，核对它满足当前连续 attempt 编号、文件名、protected token、glossary 和 single-LF contract，再 rename 为正式 `attempt-NNN.article` 或 `attempt-NNN.txt`。不得覆盖既有 attempt、跳号或伪造 provenance。
 
-不新增 importer。`retranslation process` / `retranslation retry` 继续是 restore、validation 与 attempt provenance 的正式 fail-closed authority。ChatGPT 即使能操作本地终端，也不默认继续执行 process、finalize、promote 或其他确定性生命周期；这些步骤由维护者本地终端执行，除非维护者明确要求扩大当前操作范围。
+不新增 importer。`retranslation process` / `retranslation retry` 继续是 restore、validation 与 attempt provenance 的正式 fail-closed authority。
 
 ## 非 TranslationUnit 语言资产
 

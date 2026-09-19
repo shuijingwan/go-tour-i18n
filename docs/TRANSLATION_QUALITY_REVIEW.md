@@ -332,9 +332,11 @@ go run -mod=readonly ./cmd/tour-i18n retranslation review supersede \
 
 ## Reviewer
 
-`reviewer` 是审核主体标识，不是账号或权限系统。当前语言生成可以由普通 ChatGPT GPT-5.6 Sol + High 执行，Codex GPT-5.6 Sol + High 保留为 fallback；ChatGPT 统一承担 Quality Check。若本轮 candidate 由 ChatGPT 生成，Quality Check 必须使用不同 conversation/session。Legacy Final Review 的审核主体同样必须独立重新读取 source、candidate 和相关 evidence 后执行审核。
+`reviewer` 是审核主体标识，不是账号或权限系统。当前语言生成可以由普通 ChatGPT GPT-5.6 Sol + High 执行，Codex GPT-5.6 Sol + High 保留为 fallback；ChatGPT 统一承担 Quality Check。Quality Check 必须来自与该 locale Generation session 独立的 Reviewer session：该 session 不得参与该 locale 的 glossary、UI / metadata、TranslationUnit initial / revision / retry 或 Course SEO language generation。Legacy Final Review 的审核主体同样必须独立重新读取 source、candidate 和相关 evidence 后执行审核。
 
-审核必须重新判断译文质量，不得仅因为 reviewer 或同一模型生成了译文就自动批准。未来可以使用其他模型或人工 reviewer，但都必须遵循同一正式 rubric 和 evidence schema。本项目当前不构建 reviewer 账号系统。
+同一个 generation-independent Reviewer session 可以在完成 TranslationUnit Quality Check 后继续承担同一 locale 的 revision re-QC 与 [Locale Surface Review](LOCALE_SURFACE_REVIEW.md)；两个 gate 仍各自使用自己的范围和 evidence，不要求再建立第二个 reviewer session。B/C/D finding 必须回到 Generation session 产生 replacement，再由本地终端完成 revision、process、validation 与新 Snapshot。只要 Reviewer session 没有参与 replacement generation，它可以继续 re-QC；不得直接修改 candidate、生成 replacement 后批准自己的结果，或因为上一轮已经审核过就自动批准 revision。
+
+审核必须重新判断译文质量，不得用 validation passed、旧 A、Surface Review 结论、reviewer 身份或模型历史表现自动批准。未来可以使用其他模型或人工 reviewer，但都必须遵循同一正式 rubric 和 evidence schema。本项目当前不构建 reviewer 账号系统；完整会话职责见 [ChatGPT 正式语言生成执行规范](CHATGPT_LANGUAGE_GENERATION.md)。
 
 ## Issues
 
