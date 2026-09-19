@@ -350,24 +350,65 @@ func TestQualityCheckScopeRevisionCarries119AndRequiresExactlyThree(t *testing.T
 	}
 }
 
-func TestReviewRecordBatchesRejectThirtyOneAndPageExampleMix(t *testing.T) {
+func TestQualityCheckRecordBatchUsesIndependentSixtyUnitLimit(t *testing.T) {
 	root, catalog := complete122PromotionFixture(t)
 	materializeSnapshotSources(t, root, catalog)
 	if _, _, err := CreateQualityCheckCandidateSnapshot(root, catalog, QualityCheckSnapshotOptions{Locale: "zh-CN", SnapshotID: "batch-boundaries"}); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := RecordQualityCheckResultBatch(root, catalog, QualityCheckRecordBatchOptions{
-		Locale: "zh-CN", SnapshotID: "batch-boundaries", StartIndex: 1, Limit: 31, Rating: "A",
-	}); err == nil {
-		t.Fatal("Quality Check limit 31 was accepted")
+	result, err := RecordQualityCheckResultBatch(root, catalog, QualityCheckRecordBatchOptions{
+		Locale: "zh-CN", SnapshotID: "batch-boundaries", StartIndex: 1, Limit: 60, Rating: "A",
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if result.RecordedCount != 60 || len(result.UnitIDs) != 60 || result.UnitIDs[0] != "lesson/1" || result.UnitIDs[59] != "lesson/60" {
+		t.Fatalf("Quality Check 60-unit result=%+v", result)
 	}
 	if _, err := RecordQualityCheckResultBatch(root, catalog, QualityCheckRecordBatchOptions{
-		Locale: "zh-CN", SnapshotID: "batch-boundaries", StartIndex: 103, Limit: 2, Rating: "A",
+		Locale: "zh-CN", SnapshotID: "batch-boundaries", StartIndex: 61, Limit: 61, Rating: "A",
+	}); err == nil || !strings.Contains(err.Error(), "must not exceed 60") {
+		t.Fatalf("Quality Check limit 61 error=%v", err)
+	}
+	if _, err := RecordQualityCheckResultBatch(root, catalog, QualityCheckRecordBatchOptions{
+		Locale: "zh-CN", SnapshotID: "batch-boundaries", StartIndex: 60, Limit: 60, Rating: "A",
 	}); err == nil || !strings.Contains(err.Error(), "must not mix") {
-		t.Fatalf("Quality Check Page/Example mixed range error=%v", err)
+		t.Fatalf("Quality Check 60-unit Page/Example mixed range error=%v", err)
+	}
+
+	if _, _, err := CreateQualityCheckCandidateSnapshot(root, catalog, QualityCheckSnapshotOptions{Locale: "zh-CN", SnapshotID: "batch-default"}); err != nil {
+		t.Fatal(err)
+	}
+	result, err = RecordQualityCheckResultBatch(root, catalog, QualityCheckRecordBatchOptions{
+		Locale: "zh-CN", SnapshotID: "batch-default", StartIndex: 1, Rating: "A",
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if result.RecordedCount != DefaultQualityCheckBatchLimit {
+		t.Fatalf("default Quality Check batch recorded %d units, want %d", result.RecordedCount, DefaultQualityCheckBatchLimit)
+	}
+}
+
+func TestLegacyFinalReviewBatchLimitRemainsThirty(t *testing.T) {
+	if DefaultRetranslationReviewBatchLimit != 30 {
+		t.Fatalf("legacy Final Review batch limit=%d, want 30", DefaultRetranslationReviewBatchLimit)
+	}
+	root, catalog, _ := makeRetranslationReviewBatchFixture(t, 31, "legacy-thirty")
+	if _, err := RecordRetranslationReviewBatch(root, catalog, RetranslationReviewBatchRecordOptions{
+		Locale: "zh-CN", SnapshotID: "legacy-thirty", StartIndex: 1, Limit: 31,
+		Rating: "A", Decision: "approved", Summary: "reviewed", Reviewer: "test", Rubric: TranslationQualityRubric,
+	}); err == nil || !strings.Contains(err.Error(), "must not exceed 30") {
+		t.Fatalf("legacy Final Review limit 31 error=%v", err)
+	}
+
+	root, catalog = complete122PromotionFixture(t)
+	materializeSnapshotSources(t, root, catalog)
+	if _, _, err := CreateQualityCheckCandidateSnapshot(root, catalog, QualityCheckSnapshotOptions{Locale: "zh-CN", SnapshotID: "legacy-kind-boundary"}); err != nil {
+		t.Fatal(err)
 	}
 	if _, err := RecordRetranslationReviewBatch(root, catalog, RetranslationReviewBatchRecordOptions{
-		Locale: "zh-CN", SnapshotID: "batch-boundaries", StartIndex: 103, Limit: 2,
+		Locale: "zh-CN", SnapshotID: "legacy-kind-boundary", StartIndex: 103, Limit: 2,
 		Rating: "A", Decision: "approved", Summary: "reviewed", Reviewer: "test", Rubric: TranslationQualityRubric,
 	}); err == nil || !strings.Contains(err.Error(), "must not mix") {
 		t.Fatalf("Final Review Page/Example mixed range error=%v", err)

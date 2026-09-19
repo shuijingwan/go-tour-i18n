@@ -15,6 +15,7 @@ import (
 const QualityCheckResultsSchemaVersion = 2
 const legacyQualityCheckResultsSchemaVersion = 1
 const QualityCheckResultsEvidenceType = "quality_check_results"
+const DefaultQualityCheckBatchLimit = 60
 
 type QualityCheckResult struct {
 	Index   int    `json:"index"`
@@ -258,13 +259,13 @@ func RecordQualityCheckResultBatch(root string, catalog *Catalog, options Qualit
 	}
 	limit := options.Limit
 	if limit == 0 {
-		limit = DefaultRetranslationReviewBatchLimit
+		limit = DefaultQualityCheckBatchLimit
 	}
 	if start < 1 || limit < 1 {
 		return nil, errors.New("quality-check start_index and limit must be at least 1")
 	}
-	if limit > DefaultRetranslationReviewBatchLimit {
-		return nil, fmt.Errorf("quality-check limit must not exceed %d", DefaultRetranslationReviewBatchLimit)
+	if limit > DefaultQualityCheckBatchLimit {
+		return nil, fmt.Errorf("quality-check limit must not exceed %d", DefaultQualityCheckBatchLimit)
 	}
 	snapshot, err := readQualityCheckSnapshotForReview(root, options.Locale, options.SnapshotID)
 	if err != nil {

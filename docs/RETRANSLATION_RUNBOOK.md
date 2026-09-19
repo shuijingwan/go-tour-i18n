@@ -65,7 +65,7 @@ go run -mod=readonly ./cmd/tour-i18n retranslation process --locale <locale>
 
 Automatic validation 只负责结构、保护 token、代码、链接、source identity 等机器安全性，不能替代翻译质量检查。
 
-`retranslation export`、`retranslation process`、`retranslation revalidate`、`retranslation retry`、`quality-check scope` 与 `retranslation review scope` 默认输出适合复制的人类摘要；成功 Unit、reusable Unit 和 carry-forward Unit 不逐条展开，失败 Unit 保留原因与 evidence path，scope 最多显示本轮 30 个 pending Unit。已有机器调用方应显式传 `--json` 获取完整稳定 JSON；JSON 写 stdout，错误与诊断写 stderr。
+`retranslation export`、`retranslation process`、`retranslation revalidate`、`retranslation retry`、`quality-check scope` 与 `retranslation review scope` 默认输出适合复制的人类摘要；成功 Unit、reusable Unit 和 carry-forward Unit 不逐条展开，失败 Unit 保留原因与 evidence path。`quality-check scope` 的 human summary 最多显示本轮 60 个 pending Unit，并在 Page / Example 边界截断；legacy `retranslation review scope` 仍最多显示 30 个。已有机器调用方应显式传 `--json` 获取完整稳定 JSON；scope 的 JSON 始终包含完整 pending 列表，JSON 写 stdout，错误与诊断写 stderr。
 
 ### 提交前 whitespace 检查与 EOF 契约
 
@@ -155,7 +155,7 @@ ChatGPT Quality Check 必须以同一份 Candidate Snapshot manifest 为审核�
 - A：通过 Quality Check；
 - B、C、D：未通过质量 gate，必须进入 revision batch。
 
-Quality Check 每轮最多审核 `quality-check scope` 中 30 个 pending Unit，Page 与 Example 分开处理，但必须逐 TranslationUnit 给出判断，并在直接结果与 carry-forward 合计后覆盖同一 full Snapshot 的全部 Unit。分片不是抽样；`A = 全部 TranslationUnit` 后进入 machine finalization。revision 后按实际 pending scope 审核，剩几个就审核几个。
+单次 Reviewer model invocation / response 最多审核 `quality-check scope` 中 60 个 pending TranslationUnits；Page / Example 分开。60 是实际审核质量边界，不得通过在同一次 response 内串联多个 `<=60` working set 绕过；下一组需要新的用户请求和新的 model invocation。每组必须逐 TranslationUnit 给出判断，分片不是抽样，并在直接结果与 carry-forward 合计后覆盖同一 full Snapshot 的全部 Unit。首次 122-Unit locale 的 full QC 推荐拆为 Page stable index `1-60`、Page stable index `61-103`、Example stable index `104-122`，最多三次独立 Reviewer 请求。revision re-QC 按实际 pending scope 审核，每次最多仍为 60，且 Page / Example 分开；`A = 全部 TranslationUnit` 后进入 machine finalization。
 
 Quality Check 的质量修改不得使用 retry。Revision 流程为：
 

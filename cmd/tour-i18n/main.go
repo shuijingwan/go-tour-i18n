@@ -608,7 +608,7 @@ func run(args []string) error {
 		snapshotID := fs.String("snapshot-id", "", "Candidate Snapshot id")
 		previousSnapshotID := fs.String("previous-snapshot-id", "", "previous Quality Check Snapshot id for carry-forward")
 		startIndex := fs.Int("start-index", 1, "first stable Candidate Snapshot index (1-based)")
-		limit := fs.Int("limit", i18n.DefaultRetranslationReviewBatchLimit, "maximum TranslationUnits to record")
+		limit := fs.Int("limit", i18n.DefaultQualityCheckBatchLimit, "maximum TranslationUnits to record")
 		rating := fs.String("rating", "", "Quality Check rating: A, B, C, or D")
 		finding := fs.String("finding", "", "finding shared by this explicit unit group; required for B/C/D")
 		if err := fs.Parse(args[2:]); err != nil {
@@ -1102,7 +1102,7 @@ func printQualityCheckScopeSummary(scope *i18n.QualityCheckScope) {
 }
 
 func printQualityCheckPending(units []i18n.QualityCheckScopeUnit) {
-	limit := i18n.DefaultRetranslationReviewBatchLimit
+	limit := i18n.DefaultQualityCheckBatchLimit
 	if len(units) < limit {
 		limit = len(units)
 	}

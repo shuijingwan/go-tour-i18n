@@ -3,11 +3,79 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"strings"
 	"testing"
 
 	"github.com/shuijingwan/go-tour-i18n/internal/i18n"
 )
+
+func qualityCheckPendingFixture() []i18n.QualityCheckScopeUnit {
+	units := make([]i18n.QualityCheckScopeUnit, 0, 122)
+	for index := 1; index <= 122; index++ {
+		kind := i18n.UnitKindPage
+		if index > 103 {
+			kind = i18n.UnitKindExample
+		}
+		units = append(units, i18n.QualityCheckScopeUnit{
+			Index: index, UnitID: fmt.Sprintf("unit/%d", index), UnitKind: kind,
+			BatchID: "chatgpt-test-001", Reason: i18n.QualityCheckScopeReasonMissing,
+			RequiredAction: i18n.QualityCheckActionRequired,
+		})
+	}
+	return units
+}
+
+func TestQualityCheckHumanScopeUsesSixtyUnitKindBoundedWindow(t *testing.T) {
+	units := qualityCheckPendingFixture()
+	output := string(captureStdout(t, func() error {
+		printQualityCheckPending(units)
+		return nil
+	}))
+	if got := strings.Count(output, "pending: index="); got != 60 {
+		t.Fatalf("initial Quality Check human scope printed %d units, want 60\n%s", got, output)
+	}
+	for _, want := range []string{"pending: index=60 ", "其余 pending Unit：62"} {
+		if !strings.Contains(output, want) {
+			t.Fatalf("initial Quality Check human scope missing %q\n%s", want, output)
+		}
+	}
+	if strings.Contains(output, "pending: index=61 ") {
+		t.Fatalf("initial Quality Check human scope exceeded 60 units\n%s", output)
+	}
+
+	output = string(captureStdout(t, func() error {
+		printQualityCheckPending(units[60:])
+		return nil
+	}))
+	if got := strings.Count(output, "pending: index="); got != 43 {
+		t.Fatalf("second Page Quality Check human scope printed %d units, want 43\n%s", got, output)
+	}
+	for _, want := range []string{"pending: index=103 ", "其余 pending Unit：19"} {
+		if !strings.Contains(output, want) {
+			t.Fatalf("kind-bounded Quality Check human scope missing %q\n%s", want, output)
+		}
+	}
+	if strings.Contains(output, "pending: index=104 ") {
+		t.Fatalf("Quality Check human scope crossed the Page/Example boundary\n%s", output)
+	}
+}
+
+func TestQualityCheckScopeJSONKeepsCompletePendingList(t *testing.T) {
+	units := qualityCheckPendingFixture()
+	scope := &i18n.QualityCheckScope{PendingCount: len(units), Pending: units}
+	var output bytes.Buffer
+	if err := writeJSON(&output, scope); err != nil {
+		t.Fatal(err)
+	}
+	var decoded i18n.QualityCheckScope
+	if err := json.Unmarshal(output.Bytes(), &decoded); err != nil {
+		t.Fatal(err)
+	}
+	if len(decoded.Pending) != 122 || decoded.Pending[103].UnitKind != i18n.UnitKindExample {
+		t.Fatalf("Quality Check JSON pending list was truncated: count=%d", len(decoded.Pending))
+	}
+}
 
 func retryOutputResult(status, failure string) *i18n.RetranslationProcessResult {
 	result := &i18n.RetranslationProcessResult{

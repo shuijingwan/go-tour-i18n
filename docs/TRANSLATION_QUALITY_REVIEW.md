@@ -117,7 +117,9 @@ go run -mod=readonly ./cmd/tour-i18n quality-check record-batch \
   --rating <A|B|C|D> [--finding '<finding shared by this group>']
 ```
 
-`record` 的 `--unit-id` 可以重复，用于一次原子记录多个同 rating、同 finding Unit；结论不同必须拆开记录。`record-batch` 默认且最大 `limit=30`，按 immutable Snapshot 的稳定 index 记录连续范围。A 可以没有 finding；B/C/D 必须提供非空 `--finding`。两个命令都拒绝覆盖已有 Unit 结果。
+`record` 的 `--unit-id` 可以重复，用于一次原子记录多个同 rating、同 finding Unit；结论不同必须拆开记录。`record-batch` 默认且最大 `limit=60`，按 immutable Snapshot 的稳定 index 记录连续范围。A 可以没有 finding；B/C/D 必须提供非空 `--finding`。两个命令都拒绝覆盖已有 Unit 结果。
+
+单次 Reviewer model invocation / response 最多审核 60 TranslationUnits；Page / Example 分开。60 是实际审核质量边界，不得通过在同一次 response 内串联多个 `<=60` working set 绕过。下一组必须由新的用户请求触发新的 model invocation；每组仍须逐 TranslationUnit 审核，不得抽样。当前首次 122-Unit locale 的 full QC 推荐依次审核 Page stable index `1-60`、Page stable index `61-103`、Example stable index `104-122`，最多三次独立 Reviewer 请求。revision re-QC 按实际 pending scope 分组，每次仍最多 60，且 Page / Example 分开。
 
 旧 evidence 中没有 finding 的 B/C/D 继续兼容读取，但在 revision export 前必须通过 CLI 补录，禁止人工编辑 JSON：
 
@@ -218,7 +220,7 @@ Promotion gate 的机器判断只接受 `decision == approved`。这种边界保
 
 Quality Check 用于发现翻译质量问题，可以在 candidate 形成后的修订过程中多轮执行。它由 ChatGPT 逐 Unit 执行，直接结果与有效 carry-forward 必须覆盖同一份 full Candidate Snapshot。全 A 后执行 `quality-check finalize`；该命令不作语言判断，而是机械生成独立、versioned 的 finalization evidence。
 
-Quality Check 的实际审核工作集由 `pending_quality_check_units` 决定，保持 Snapshot 稳定 index、最多 30 Unit、Page/Example 分开。下文 Final Review commands 和 schema 仅为历史 evidence compatibility 保留；新流程不运行它们。
+Quality Check 的实际审核工作集由 `pending_quality_check_units` 决定，保持 Snapshot 稳定 index、每次最多 60 Unit、Page/Example 分开，并遵守上述单次 model invocation / response 质量边界。下文 Final Review commands 和 schema 仅为历史 evidence compatibility 保留；新流程不运行它们。
 
 当前严格生产 gate 为：A 通过；B、C、D 均不通过并进入新的 revision batch。只有完整语言达到 `A = 全部 TranslationUnit，B = 0，C = 0，D = 0`，才能 finalization。
 
