@@ -77,6 +77,7 @@ func TestSiteMetadataTimesAreLocaleAware(t *testing.T) {
 		"nl-NL": "2026-08-20 07:56:11 (lokale tijd)",
 		"pl-PL": "2026-08-20 07:56:11 (czas lokalny)",
 		"sv-SE": "2026-08-20 07:56:11 (lokal tid)",
+		"th-TH": "2026-08-20 12:56:11 (เวลาท้องถิ่น)",
 		"tr-TR": "2026-08-20 08:56:11 (yerel saat)",
 		"vi-VN": "2026-08-20 12:56:11 (giờ địa phương)",
 		"zh-TW": "2026-08-20 13:56:11（台灣時間）",
