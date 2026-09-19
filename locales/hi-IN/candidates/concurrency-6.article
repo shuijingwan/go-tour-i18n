@@ -1,0 +1,14 @@
+* डिफ़ॉल्ट चयन
+
+यदि कोई दूसरा case तैयार नहीं है, तो `default` case `select` में चलाया जाता है।
+
+बिना ब्लॉक हुए भेजना या प्राप्त करना आज़माने के लिए `default` case का उपयोग करें:
+
+	select {
+	case i := <-c:
+		// i का उपयोग करें
+	default:
+		// c से प्राप्त करना ब्लॉक करेगा
+	}
+
+.play concurrency/default-selection.go

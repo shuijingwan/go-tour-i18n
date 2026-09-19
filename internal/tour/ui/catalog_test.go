@@ -182,6 +182,7 @@ func TestEditorToggleStatesAreLocalizedPerCatalog(t *testing.T) {
 		"de-DE": {"Ein", "Aus"},
 		"es-ES": {"Activado", "Desactivado"},
 		"fr-FR": {"Activé", "Désactivé"},
+		"hi-IN": {"चालू", "बंद"},
 		"id-ID": {"Aktif", "Nonaktif"},
 		"it-IT": {"Attivato", "Disattivato"},
 		"ja-JP": {"オン", "オフ"},
@@ -427,6 +428,63 @@ func TestThaiCatalogMatchesEnglishSource(t *testing.T) {
 	} {
 		if got := thai.Messages[key].Text; got != want {
 			t.Errorf("th-TH message %q = %q, want %q", key, got, want)
+		}
+	}
+}
+
+func TestHindiCatalogMatchesEnglishSource(t *testing.T) {
+	source, err := Load("en")
+	if err != nil {
+		t.Fatal(err)
+	}
+	hindi, err := Load("hi-IN")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if hindi.Locale != "hi-IN" || hindi.HTMLLang != "hi-IN" {
+		t.Fatalf("hi-IN identity = locale %q, html_lang %q", hindi.Locale, hindi.HTMLLang)
+	}
+	if got, want := len(hindi.Messages), expectedCatalogMessages; got != want {
+		t.Fatalf("hi-IN message count = %d, want %d", got, want)
+	}
+	if err := validateCoverage(source, hindi); err != nil {
+		t.Fatalf("hi-IN coverage: %v", err)
+	}
+	placeholderRE := regexp.MustCompile(`\{[a-z][a-z0-9_]*\}`)
+	markupRE := regexp.MustCompile(`<[^>]+>`)
+	allowedUntranslatedNames := map[string]bool{
+		"footer.github":       true,
+		"site.issue_feedback": true,
+		"support.uid":         true,
+	}
+	for key, sourceMessage := range source.Messages {
+		message := hindi.Messages[key]
+		if got, want := strings.Join(placeholderRE.FindAllString(message.Text, -1), "\x00"), strings.Join(placeholderRE.FindAllString(sourceMessage.Text, -1), "\x00"); got != want {
+			t.Errorf("hi-IN message %q placeholders = %q, want %q", key, got, want)
+		}
+		if sourceMessage.Kind == "rich" {
+			if got, want := strings.Join(markupRE.FindAllString(message.Text, -1), "\x00"), strings.Join(markupRE.FindAllString(sourceMessage.Text, -1), "\x00"); got != want {
+				t.Errorf("hi-IN rich message %q markup = %q, want %q", key, got, want)
+			}
+		}
+		if strings.Contains(message.Text, "TODO") {
+			t.Errorf("hi-IN message %q retains TODO", key)
+		}
+		if message.Text == sourceMessage.Text && !allowedUntranslatedNames[key] {
+			t.Errorf("hi-IN message %q duplicates English source text", key)
+		}
+	}
+	for key, want := range map[string]string{
+		"header.about_project":      "इस परियोजना के बारे में",
+		"editor.run":                "चलाएँ",
+		"editor.format":             "फ़ॉर्मैट करें",
+		"editor.reset":              "रीसेट करें",
+		"tour.title":                "Go का टूर",
+		"site.title":                "Go का टूर — बहुभाषी अनुवाद परियोजना",
+		"support.translation_title": "अंग्रेज़ी संस्करण का समर्थन करें",
+	} {
+		if got := hindi.Messages[key].Text; got != want {
+			t.Errorf("hi-IN message %q = %q, want %q", key, got, want)
 		}
 	}
 }

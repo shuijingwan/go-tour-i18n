@@ -1,0 +1,21 @@
+* इमेज
+
+[[/pkg/image/#Image][image पैकेज]] `Image` इंटरफ़ेस परिभाषित करता है:
+
+	package image
+
+	type Image interface {
+		ColorModel() color.Model
+		Bounds() Rectangle
+		At(x, y int) color.Color
+	}
+
+*नोट*: `Rectangle` रिटर्न वैल्यू, जो `Bounds` मेथड से मिलती है, वास्तव में एक
+[[/pkg/image/#Rectangle][`image.Rectangle`]] है, क्योंकि
+घोषणा `image` पैकेज के भीतर है।
+
+(सभी विवरणों के लिए [[/pkg/image/#Image][डॉक्यूमेंटेशन]] देखें।)
+
+`color.Color` और `color.Model` टाइप भी इंटरफ़ेस हैं, लेकिन पहले से परिभाषित इम्प्लीमेंटेशन `color.RGBA` और `color.RGBAModel` का उपयोग करके हम इसे अभी नज़रअंदाज़ करेंगे। ये इंटरफ़ेस और टाइप [[/pkg/image/color/][image/color पैकेज]] द्वारा निर्दिष्ट हैं।
+
+.play methods/images.go

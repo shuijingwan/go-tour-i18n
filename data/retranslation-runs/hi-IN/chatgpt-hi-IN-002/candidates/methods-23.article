@@ -1,0 +1,12 @@
+* अभ्यास: rot13Reader
+
+एक सामान्य पैटर्न ऐसा [[/pkg/io/#Reader][io.Reader]] है जो दूसरे `io.Reader` को लपेटकर स्ट्रीम को किसी तरह बदलता है।
+
+उदाहरण के लिए, [[/pkg/compress/gzip/#NewReader][gzip.NewReader]] फ़ंक्शन एक `io.Reader` (संपीड़ित डेटा की स्ट्रीम) लेता है और एक `*gzip.Reader` लौटाता है, जो `io.Reader` को भी लागू करता है (डीकम्प्रेस्ड डेटा की स्ट्रीम)।
+
+ऐसा `rot13Reader` लागू करें जो `io.Reader` को लागू करे और एक `io.Reader` से पढ़ते हुए सभी अक्षर वाले कैरेक्टर पर [[https://en.wikipedia.org/wiki/ROT13][rot13]] प्रतिस्थापन साइफ़र लगाकर स्ट्रीम को बदले।
+
+`rot13Reader` टाइप आपके लिए दिया गया है।
+इसे `io.Reader` बनाने के लिए इसका `Read` मेथड लागू करें।
+
+.play methods/exercise-rot-reader.go

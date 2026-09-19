@@ -70,6 +70,7 @@ func TestSiteMetadataTimesAreLocaleAware(t *testing.T) {
 		"de-DE": "2026-08-20 07:56:11 (Ortszeit)",
 		"es-ES": "2026-08-20 07:56:11 (hora local)",
 		"fr-FR": "2026-08-20 07:56:11 (heure locale)",
+		"hi-IN": "2026-08-20 11:26:11 (स्थानीय समय)",
 		"id-ID": "2026-08-20 12:56:11 (waktu setempat)",
 		"it-IT": "2026-08-20 07:56:11 (ora locale)",
 		"ja-JP": "2026-08-20 14:56:11（日本時間）",

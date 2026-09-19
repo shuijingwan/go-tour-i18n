@@ -1,0 +1,15 @@
+* Switch के इवैल्यूएशन का क्रम
+
+Switch case ऊपर से नीचे तक इवैल्यूएट किए जाते हैं और कोई case सफल होते ही रुक जाते हैं।
+
+(उदाहरण के लिए,
+
+	switch i {
+	case 0:
+	case f():
+	}
+
+`f` को कॉल नहीं किया जाता यदि `i==0` हो।)
+
+
+.play flowcontrol/switch-evaluation-order.go

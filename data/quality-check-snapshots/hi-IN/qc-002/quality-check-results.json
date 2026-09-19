@@ -1,0 +1,62 @@
+{
+  "schema_version": 2,
+  "evidence_type": "quality_check_results",
+  "locale": "hi-IN",
+  "snapshot_id": "qc-002",
+  "snapshot_manifest_sha256": "d11e1319119cad1096d5295ba43e433cc184c614c2b394069a90d69927407cc3",
+  "rubric": "translation-quality/v1",
+  "result_count": 10,
+  "results": [
+    {
+      "index": 10,
+      "unit_id": "basics/5",
+      "rating": "A"
+    },
+    {
+      "index": 17,
+      "unit_id": "basics/12",
+      "rating": "A"
+    },
+    {
+      "index": 26,
+      "unit_id": "flowcontrol/4",
+      "rating": "A"
+    },
+    {
+      "index": 37,
+      "unit_id": "moretypes/1",
+      "rating": "A"
+    },
+    {
+      "index": 69,
+      "unit_id": "methods/6",
+      "rating": "A"
+    },
+    {
+      "index": 73,
+      "unit_id": "methods/10",
+      "rating": "A"
+    },
+    {
+      "index": 81,
+      "unit_id": "methods/18",
+      "rating": "A"
+    },
+    {
+      "index": 98,
+      "unit_id": "concurrency/6",
+      "rating": "A"
+    },
+    {
+      "index": 108,
+      "unit_id": "example:concurrency/exercise-web-crawler.go",
+      "rating": "B",
+      "finding": "The previous return-value semantic error is fixed, but the phrase \"URL का बॉडी\" is still grammatically unnatural Hindi because \"बॉडी\" requires a natural possessive construction here. Revise the Fetch documentation comment to use natural Hindi, such as expressing \"the URL body\" with correct agreement, while preserving URL/URLs, Fetch, identifiers, code, and the corrected return-value relationship."
+    },
+    {
+      "index": 118,
+      "unit_id": "example:moretypes/exercise-fibonacci-closure.go",
+      "rating": "A"
+    }
+  ]
+}

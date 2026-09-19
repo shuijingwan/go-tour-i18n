@@ -1,0 +1,458 @@
+{
+  "locale": "hi-IN",
+  "html_lang": "hi-IN",
+  "messages": {
+    "tour.title": {
+      "kind": "plain",
+      "text": "Go का टूर"
+    },
+    "header.about_project": {
+      "kind": "plain",
+      "text": "इस परियोजना के बारे में"
+    },
+    "tour.list_heading": {
+      "kind": "plain",
+      "text": "Go के टूर में आपका स्वागत है"
+    },
+    "tour.list_title": {
+      "kind": "plain",
+      "text": "कोर्स निर्देशिका — Go का टूर"
+    },
+    "tour.list_description": {
+      "kind": "plain",
+      "text": "Go प्रोग्रामिंग भाषा के इंटरैक्टिव परिचय “Go का टूर” के मॉड्यूल और पाठ देखें।"
+    },
+    "theme.toggle": {
+      "kind": "plain",
+      "text": "थीम बदलें"
+    },
+    "theme.system": {
+      "kind": "plain",
+      "text": "सिस्टम थीम"
+    },
+    "theme.dark": {
+      "kind": "plain",
+      "text": "डार्क थीम"
+    },
+    "theme.light": {
+      "kind": "plain",
+      "text": "लाइट थीम"
+    },
+    "editor.syntax": {
+      "kind": "plain",
+      "text": "सिंटैक्स"
+    },
+    "editor.imports": {
+      "kind": "plain",
+      "text": "इम्पोर्ट्स"
+    },
+    "editor.on": {
+      "kind": "plain",
+      "text": "चालू"
+    },
+    "editor.off": {
+      "kind": "plain",
+      "text": "बंद"
+    },
+    "editor.run": {
+      "kind": "plain",
+      "text": "चलाएँ"
+    },
+    "editor.kill": {
+      "kind": "plain",
+      "text": "रोकें"
+    },
+    "editor.format": {
+      "kind": "plain",
+      "text": "फ़ॉर्मैट करें"
+    },
+    "editor.reset": {
+      "kind": "plain",
+      "text": "रीसेट करें"
+    },
+    "toc.title": {
+      "kind": "plain",
+      "text": "विषय-सूची"
+    },
+    "execution.waiting": {
+      "kind": "plain",
+      "text": "रिमोट सर्वर की प्रतीक्षा की जा रही है..."
+    },
+    "execution.exited": {
+      "kind": "plain",
+      "text": "प्रोग्राम समाप्त हो गया"
+    },
+    "execution.vet_failed": {
+      "kind": "plain",
+      "text": "Go vet विफल रहा।"
+    },
+    "execution.build_failed": {
+      "kind": "plain",
+      "text": "Go build विफल रहा।"
+    },
+    "execution.communication_error": {
+      "kind": "plain",
+      "text": "रिमोट सर्वर से संचार में त्रुटि हुई।"
+    },
+    "execution.test_failed": {
+      "kind": "plain",
+      "text": "{count} टेस्ट विफल हुआ।"
+    },
+    "execution.tests_failed": {
+      "kind": "plain",
+      "text": "{count} टेस्ट विफल हुए।"
+    },
+    "execution.tests_passed": {
+      "kind": "plain",
+      "text": "सभी टेस्ट पास हुए।"
+    },
+    "feedback.open": {
+      "kind": "plain",
+      "text": "इस पेज के बारे में प्रतिक्रिया भेजें"
+    },
+    "feedback.issue_title": {
+      "kind": "plain",
+      "text": "x/website/_content/tour: [संक्षिप्त विवरण लिखें]"
+    },
+    "feedback.issue_body": {
+      "kind": "plain",
+      "text": "अपनी समस्या बताने के लिए ऊपर का शीर्षक बदलें और यहाँ अपनी प्रतिक्रिया जोड़ें; आवश्यकता हो तो कोड भी शामिल करें"
+    },
+    "feedback.context": {
+      "kind": "plain",
+      "text": "संदर्भ"
+    },
+    "module.using_tour.title": {
+      "kind": "plain",
+      "text": "टूर का उपयोग"
+    },
+    "module.using_tour.description": {
+      "kind": "rich",
+      "text": "<p><a href=\"https://go.dev\">Go प्रोग्रामिंग भाषा</a> के टूर में आपका स्वागत है। यह टूर भाषा की सबसे महत्वपूर्ण विशेषताओं को शामिल करता है, मुख्य रूप से:</p>"
+    },
+    "module.basics.title": {
+      "kind": "plain",
+      "text": "बुनियादी बातें"
+    },
+    "module.basics.description": {
+      "kind": "rich",
+      "text": "<p>शुरुआत यहीं से करें और भाषा की सभी बुनियादी बातें सीखें।</p><p>वेरिएबल घोषित करना, फ़ंक्शन कॉल करना और अगले पाठों पर जाने से पहले जानने योग्य सभी बातें।</p>"
+    },
+    "module.methods.title": {
+      "kind": "plain",
+      "text": "मेथड और इंटरफ़ेस"
+    },
+    "module.methods.description": {
+      "kind": "rich",
+      "text": "<p>टाइप पर मेथड परिभाषित करना, इंटरफ़ेस घोषित करना और इन सबको साथ उपयोग करना सीखें।</p>"
+    },
+    "module.generics.title": {
+      "kind": "plain",
+      "text": "जेनेरिक्स"
+    },
+    "module.generics.description": {
+      "kind": "rich",
+      "text": "<p>Go फ़ंक्शन और स्ट्रक्ट में टाइप पैरामीटर का उपयोग करना सीखें।</p>"
+    },
+    "module.concurrency.title": {
+      "kind": "plain",
+      "text": "कनकरेंसी"
+    },
+    "module.concurrency.description": {
+      "kind": "rich",
+      "text": "<p>Go मुख्य भाषा के हिस्से के रूप में कनकरेंसी सुविधाएँ प्रदान करता है।</p><p>इस मॉड्यूल में goroutine और चैनल तथा अलग-अलग कनकरेंसी पैटर्न लागू करने में उनके उपयोग को समझाया गया है।</p>"
+    },
+    "error.not_found": {
+      "kind": "plain",
+      "text": "404 पेज नहीं मिला"
+    },
+    "site.title": {
+      "kind": "plain",
+      "text": "Go का टूर — बहुभाषी अनुवाद परियोजना"
+    },
+    "site.browser_title": {
+      "kind": "plain",
+      "text": "Yongye · Go का टूर — बहुभाषी अनुवाद परियोजना"
+    },
+    "site.unofficial": {
+      "kind": "plain",
+      "text": "Yongye द्वारा अनुरक्षित · अनौपचारिक सामुदायिक बहुभाषी अनुवाद परियोजना"
+    },
+    "site.intro": {
+      "kind": "plain",
+      "text": "आधिकारिक Go सीखने की सामग्री के लिए समुदाय द्वारा अनुरक्षित अनुवाद परियोजना। सरलीकृत चीनी पहली उपलब्ध भाषा है, और इसकी संरचना अधिक भाषाओं तथा Go सामग्री का समर्थन करने के लिए विस्तार योग्य है।"
+    },
+    "site.no_affiliation": {
+      "kind": "plain",
+      "text": "यह परियोजना Go परियोजना से संबद्ध नहीं है और न ही Go परियोजना द्वारा अधिकृत या अनुमोदित है।"
+    },
+    "site.start_learning": {
+      "kind": "plain",
+      "text": "सीखना शुरू करें"
+    },
+    "site.current_projects": {
+      "kind": "plain",
+      "text": "वर्तमान अनुवाद परियोजना"
+    },
+    "site.tour_description": {
+      "kind": "plain",
+      "text": "Go प्रोग्रामिंग भाषा का इंटरैक्टिव परिचय।"
+    },
+    "site.current_language": {
+      "kind": "plain",
+      "text": "वर्तमान भाषा"
+    },
+    "site.enter_tour": {
+      "kind": "plain",
+      "text": "टूर खोलें"
+    },
+    "site.project_status": {
+      "kind": "plain",
+      "text": "परियोजना की स्थिति"
+    },
+    "site.course_pages": {
+      "kind": "plain",
+      "text": "कोर्स पेज"
+    },
+    "site.latest_release": {
+      "kind": "plain",
+      "text": "नवीनतम रिलीज़"
+    },
+    "site.environment": {
+      "kind": "plain",
+      "text": "एनवायरनमेंट"
+    },
+    "site.development_environment": {
+      "kind": "plain",
+      "text": "डेवलपमेंट एनवायरनमेंट"
+    },
+    "site.upstream_baseline": {
+      "kind": "plain",
+      "text": "आधिकारिक सोर्स बेसलाइन"
+    },
+    "site.upstream_commit_time": {
+      "kind": "plain",
+      "text": "अपस्ट्रीम कमिट का समय"
+    },
+    "site.language_versions": {
+      "kind": "plain",
+      "text": "भाषा संस्करण"
+    },
+    "site.official_version": {
+      "kind": "plain",
+      "text": "आधिकारिक Go का टूर"
+    },
+    "site.community_version": {
+      "kind": "plain",
+      "text": "सामुदायिक अनुवाद"
+    },
+    "site.open_official_tour": {
+      "kind": "plain",
+      "text": "आधिकारिक टूर खोलें"
+    },
+    "site.project_links": {
+      "kind": "plain",
+      "text": "परियोजना लिंक"
+    },
+    "site.source_code": {
+      "kind": "plain",
+      "text": "GitHub सोर्स कोड"
+    },
+    "site.issue_feedback": {
+      "kind": "plain",
+      "text": "GitHub Issues"
+    },
+    "site.development_log": {
+      "kind": "plain",
+      "text": "डेवलपमेंट लॉग: Go का टूर — बहुभाषी अनुवाद परियोजना"
+    },
+    "site.official_upstream": {
+      "kind": "plain",
+      "text": "आधिकारिक अपस्ट्रीम"
+    },
+    "site.translation_validation": {
+      "kind": "plain",
+      "text": "अनुवाद और वैलिडेशन"
+    },
+    "site.translation_validation_intro": {
+      "kind": "plain",
+      "text": "परियोजना सीखने के अनुभव को आधिकारिक सोर्स के करीब रखती है और प्रकाशन से पहले हर रिलीज़ की जाँच करती है।"
+    },
+    "site.validation_page_unit": {
+      "kind": "plain",
+      "text": "अनुवाद में पूरे कोर्स पेज को इकाई के रूप में उपयोग किया जाता है।"
+    },
+    "site.validation_present": {
+      "kind": "plain",
+      "text": "हर रिलीज़ को present से पार्स किया जाता है।"
+    },
+    "site.validation_structure": {
+      "kind": "plain",
+      "text": "पेज की संरचना की तुलना आधिकारिक सोर्स से की जाती है।"
+    },
+    "site.validation_render": {
+      "kind": "plain",
+      "text": "रिलीज़ से पहले रेंडर किए गए पेज जाँचे जाते हैं।"
+    },
+    "site.validation_examples": {
+      "kind": "plain",
+      "text": "अनुवाद योग्य प्राकृतिक-भाषा टिप्पणियों वाले Go उदाहरण भी एकीकृत वैलिडेशन वर्कफ़्लो में शामिल होते हैं; अन्य सभी उदाहरण सीधे आधिकारिक सोर्स का उपयोग करते रहते हैं।"
+    },
+    "site.how_it_works": {
+      "kind": "plain",
+      "text": "परियोजना कैसे काम करती है"
+    },
+    "site.how_it_works_intro": {
+      "kind": "plain",
+      "text": "कोर्स का स्थानीयकरण वाक्य-दर-वाक्य प्रतिस्थापन नहीं है। यह पूरी सामग्री इकाइयों, ट्रेस करने योग्य समीक्षा स्थितियों और सत्यापित किए जा सकने वाले रिलीज़ आर्टिफ़ैक्ट पर आधारित वर्कफ़्लो है।"
+    },
+    "site.workflow_title": {
+      "kind": "plain",
+      "text": "TranslationUnit से प्रोडक्शन तक"
+    },
+    "site.workflow_units": {
+      "kind": "plain",
+      "text": "TranslationUnit पूरे Page और योग्य Example दोनों का प्रतिनिधित्व करता है: Page एक पूरा present.Section है, जबकि Example एक पूरी .go फ़ाइल है जिसमें अनुवाद योग्य प्राकृतिक-भाषा टिप्पणियाँ होती हैं।"
+    },
+    "site.workflow_process": {
+      "kind": "plain",
+      "text": "हर यूनिट अनुवाद, ऑटोमैटिक वैलिडेशन, Translation Quality Review, promotion, ready, projection और publish से गुजरती है; जनरेट किए गए अनुवाद कभी सीधे प्रकाशित नहीं किए जाते।"
+    },
+    "site.workflow_review": {
+      "kind": "plain",
+      "text": "ऑटोमैटिक जाँच संरचना को सुरक्षित रखती हैं, present सामग्री को पार्स करती हैं, उसकी तुलना आधिकारिक सोर्स से करती हैं, रेंडरिंग और पेजों को वैलिडेट करती हैं और Example की Go सामग्री की जाँच करती हैं। promotion से पहले एक स्वतंत्र अनुवाद गुणवत्ता समीक्षा फिर भी आवश्यक है।"
+    },
+    "site.workflow_publish": {
+      "kind": "plain",
+      "text": "प्रकाशन canonical ready candidates से पूरा स्थानीयकृत projection बनाता है और इसके लिए वर्कफ़्लो की हर TranslationUnit का ready होना अनिवार्य है। इसके बाद यह प्रोडक्शन बाइनरी, release.json और SHA256SUMS बनाता है और पूरे बंडल को सत्यापित करता है।"
+    },
+    "site.architecture_title": {
+      "kind": "plain",
+      "text": "ट्रेस करने योग्य, नियंत्रित और विस्तार योग्य आर्किटेक्चर"
+    },
+    "site.architecture_upstream": {
+      "kind": "plain",
+      "text": "परियोजना आधिकारिक upstream commit को लगातार रिकॉर्ड करती है और भविष्य के सोर्स अपडेट के लिए ट्रेस करने योग्य बेसलाइन सुरक्षित रखती है।"
+    },
+    "site.architecture_playground": {
+      "kind": "plain",
+      "text": "ब्राउज़र में Go उदाहरण नियंत्रित रिमोट Playground प्रॉक्सी के माध्यम से चलते हैं; प्रोडक्शन स्थानीय /socket कोड-एक्ज़ीक्यूशन एंडपॉइंट को एक्सपोज़ नहीं करता।"
+    },
+    "site.architecture_languages": {
+      "kind": "plain",
+      "text": "सर्वर, टेम्पलेट, CSS, JavaScript, इमेज और फ़ॉन्ट जहाँ व्यावहारिक हो साझा किए जाते हैं। हर भाषा अपने कोर्स अनुवाद, UI टेक्स्ट, शब्दावली और स्थिति को स्वतंत्र रूप से बनाए रखती है। सरलीकृत चीनी परियोजना में सबसे पहले उपलब्ध कराई गई भाषा है, और आगे अन्य भाषाओं के लिए भी जगह है।"
+    },
+    "site.operations_note": {
+      "kind": "plain",
+      "text": "यह साइट सर्वर, बैंडविड्थ और CDN सेवाओं जैसी इन्फ्रास्ट्रक्चर लागत तथा परियोजना के निरंतर रखरखाव की लागत में मदद के लिए विज्ञापन दिखा सकती है। सोर्स कोड सार्वजनिक रहता है, और स्वयं होस्ट किए गए डिप्लॉयमेंट डिफ़ॉल्ट रूप से इस साइट की विज्ञापन कॉन्फ़िगरेशन सक्षम नहीं करते।"
+    },
+    "support.section_title": {
+      "kind": "plain",
+      "text": "समर्थन और परिचालन लागत"
+    },
+    "support.advertising_title": {
+      "kind": "plain",
+      "text": "विज्ञापन सूचना"
+    },
+    "support.translation_title": {
+      "kind": "plain",
+      "text": "अंग्रेज़ी संस्करण का समर्थन करें"
+    },
+    "support.intro": {
+      "kind": "plain",
+      "text": "आप अंग्रेज़ी संस्करण के निरंतर रखरखाव का स्वेच्छा से समर्थन भी कर सकते हैं। आपका समर्थन इस भाषा संस्करण के रखरखाव और विकास को जारी रखने में मदद करता है।"
+    },
+    "support.reference_label": {
+      "kind": "plain",
+      "text": "समर्थन रेफ़रेंस"
+    },
+    "support.reference_help": {
+      "kind": "plain",
+      "text": "यदि आपकी भुगतान सेवा नोट या रेफ़रेंस की सुविधा देती है, तो आप इस मान का उपयोग कर सकते हैं।"
+    },
+    "support.copy_reference": {
+      "kind": "plain",
+      "text": "रेफ़रेंस कॉपी करें"
+    },
+    "support.copy_address": {
+      "kind": "plain",
+      "text": "पता कॉपी करें"
+    },
+    "support.copy_uid": {
+      "kind": "plain",
+      "text": "UID कॉपी करें"
+    },
+    "support.copied": {
+      "kind": "plain",
+      "text": "कॉपी हो गया"
+    },
+    "support.asset": {
+      "kind": "plain",
+      "text": "एसेट"
+    },
+    "support.network": {
+      "kind": "plain",
+      "text": "नेटवर्क"
+    },
+    "support.address": {
+      "kind": "plain",
+      "text": "पता"
+    },
+    "support.minimum_deposit": {
+      "kind": "plain",
+      "text": "प्राप्ति-पक्ष की न्यूनतम राशि"
+    },
+    "support.platform_title": {
+      "kind": "plain",
+      "text": "प्लेटफ़ॉर्म आंतरिक ट्रांसफ़र (वैकल्पिक)"
+    },
+    "support.uid": {
+      "kind": "plain",
+      "text": "UID"
+    },
+    "support.platform_help": {
+      "kind": "plain",
+      "text": "उसी प्लेटफ़ॉर्म के उपयोगकर्ता आंतरिक UID ट्रांसफ़र का उपयोग कर सकते हैं। विवरण के लिए प्लेटफ़ॉर्म देखें।"
+    },
+    "support.usdc_network_only": {
+      "kind": "plain",
+      "text": "USDC केवल Base नेटवर्क के माध्यम से भेजें।"
+    },
+    "support.usdt_network_only": {
+      "kind": "plain",
+      "text": "USDT केवल Tron (TRC20) नेटवर्क के माध्यम से भेजें।"
+    },
+    "support.wrong_network_warning": {
+      "kind": "plain",
+      "text": "गलत एसेट या नेटवर्क का उपयोग करने से धन की हानि हो सकती है।"
+    },
+    "site.continue_learning_title": {
+      "kind": "plain",
+      "text": "Go सीखना जारी रखें"
+    },
+    "site.continue_learning_description": {
+      "kind": "plain",
+      "text": "Go का टूर केवल शुरुआत है। इसे पूरा करने के बाद आधिकारिक दस्तावेज़, ट्यूटोरियल, स्टैंडर्ड लाइब्रेरी रेफ़रेंस, भाषा स्पेसिफिकेशन और Go सीखने के अन्य संसाधनों के लिए go.dev पर जाएँ।"
+    },
+    "site.continue_learning": {
+      "kind": "plain",
+      "text": "go.dev पर सीखना जारी रखें"
+    },
+    "footer.unofficial": {
+      "kind": "plain",
+      "text": "Yongye · अनौपचारिक सामुदायिक बहुभाषी अनुवाद परियोजना"
+    },
+    "footer.home": {
+      "kind": "plain",
+      "text": "मुखपृष्ठ"
+    },
+    "footer.github": {
+      "kind": "plain",
+      "text": "GitHub"
+    },
+    "footer.development_log": {
+      "kind": "plain",
+      "text": "डेवलपमेंट लॉग"
+    }
+  }
+}

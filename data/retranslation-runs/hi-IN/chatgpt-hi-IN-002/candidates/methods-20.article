@@ -1,0 +1,21 @@
+* अभ्यास: त्रुटियाँ
+
+अपना `Sqrt` फ़ंक्शन [[/tour/flowcontrol/8][पिछले अभ्यास]] से कॉपी करें और उसे `error` वैल्यू लौटाने के लिए बदलें।
+
+ऋणात्मक संख्या देने पर `Sqrt` को non-nil error वैल्यू लौटानी चाहिए, क्योंकि यह सम्मिश्र संख्याओं को सपोर्ट नहीं करता।
+
+एक नया टाइप बनाएँ
+
+	type ErrNegativeSqrt float64
+
+और इसे `error` बनाने के लिए यह मेथड दें:
+
+	func (e ErrNegativeSqrt) Error() string
+
+ताकि `ErrNegativeSqrt(-2).Error()`, `"cannot`Sqrt`negative`number:`-2"` लौटाए।
+
+*नोट:* `fmt.Sprint(e)` को `Error` मेथड के भीतर कॉल करने से प्रोग्राम अनंत लूप में चला जाएगा। इससे बचने के लिए पहले `e` को कन्वर्ट कर सकते हैं: `fmt.Sprint(float64(e))`। क्यों?
+
+ऋणात्मक संख्या मिलने पर `Sqrt` फ़ंक्शन को `ErrNegativeSqrt` वैल्यू लौटाने के लिए बदलें।
+
+.play methods/exercise-errors.go

@@ -30,6 +30,7 @@ var languageRegistry = []LanguageLink{
 	{Locale: "en", EnglishName: "English", Autonym: "English", URL: "https://go.dev/tour/", Official: true},
 	{Locale: "fr-FR", EnglishName: "French", Autonym: "Français", URL: "https://fr-go-dev.shuijingwanwq.com/"},
 	{Locale: "de-DE", EnglishName: "German", Autonym: "Deutsch", URL: "https://de-go-dev.shuijingwanwq.com/"},
+	{Locale: "hi-IN", EnglishName: "Hindi", Autonym: "हिन्दी", URL: "https://hi-go-dev.shuijingwanwq.com/"},
 	{Locale: "id-ID", EnglishName: "Indonesian", Autonym: "Bahasa Indonesia", URL: "https://id-go-dev.shuijingwanwq.com/"},
 	{Locale: "it-IT", EnglishName: "Italian", Autonym: "Italiano", URL: "https://it-go-dev.shuijingwanwq.com/"},
 	{Locale: "ja-JP", EnglishName: "Japanese", Autonym: "日本語", URL: "https://ja-go-dev.shuijingwanwq.com/"},
@@ -72,6 +73,7 @@ var (
 	taipeiTime    = mustLoadLocation("Asia/Taipei")
 	istanbulTime  = mustLoadLocation("Europe/Istanbul")
 	jakartaTime   = mustLoadLocation("Asia/Jakarta")
+	kolkataTime   = mustLoadLocation("Asia/Kolkata")
 	hoChiMinhTime = mustLoadLocation("Asia/Ho_Chi_Minh")
 	bangkokTime   = mustLoadLocation("Asia/Bangkok")
 )
@@ -116,6 +118,13 @@ var localeProfiles = map[string]localeProfile{
 		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",
 		TimeZone:          parisTime,
 		TimeLabel:         "heure locale",
+		TimeLabelFormat:   " (%s)",
+		Direction:         "ltr",
+	},
+	"hi-IN": {
+		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",
+		TimeZone:          kolkataTime,
+		TimeLabel:         "स्थानीय समय",
 		TimeLabelFormat:   " (%s)",
 		Direction:         "ltr",
 	},

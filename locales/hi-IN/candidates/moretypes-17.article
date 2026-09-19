@@ -1,0 +1,12 @@
+* Range — आगे
+
+`_` को असाइन करके आप इंडेक्स या मान को छोड़ सकते हैं।
+
+    for i, _ := range pow
+    for _, value := range pow
+
+यदि आपको केवल इंडेक्स चाहिए, तो दूसरा वेरिएबल छोड़ा जा सकता है।
+
+    for i := range pow
+
+.play moretypes/range-continued.go

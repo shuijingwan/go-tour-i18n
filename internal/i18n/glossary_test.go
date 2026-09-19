@@ -845,6 +845,54 @@ func TestThTHGlossary(t *testing.T) {
 	}
 }
 
+func TestHiINGlossary(t *testing.T) {
+	glossary, err := LoadGlossary(repoRoot(t), "hi-IN")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if glossary.Locale != "hi-IN" {
+		t.Fatalf("glossary locale = %q, want hi-IN", glossary.Locale)
+	}
+	for key, want := range map[string]string{
+		"A Tour of Go":    "Go का टूर",
+		"Run":             "चलाएँ",
+		"Format":          "फ़ॉर्मैट करें",
+		"slide":           "स्लाइड",
+		"slides":          "स्लाइडें",
+		"constraint":      "कंस्ट्रेंट",
+		"type switch":     "टाइप स्विच",
+		"type assertion":  "टाइप असर्शन",
+		"interface value": "इंटरफ़ेस वैल्यू",
+		"type parameter":  "टाइप पैरामीटर",
+		"channel":         "चैनल",
+		"package":         "पैकेज",
+	} {
+		if got := glossary.Mandatory[key]; got != want {
+			t.Errorf("mandatory[%q] = %q, want %q", key, got, want)
+		}
+	}
+	for key, want := range map[string]string{
+		"argument":     "आर्ग्युमेंट",
+		"flow control": "फ्लो कंट्रोल",
+		"generic":      "जेनेरिक",
+		"loop":         "लूप",
+	} {
+		if got := glossary.Preferred[key]; got != want {
+			t.Errorf("preferred[%q] = %q, want %q", key, got, want)
+		}
+	}
+	for _, want := range []string{"गोरूटीन", "गो रूटीन", "गो प्लेग्राउंड"} {
+		if !containsString(glossary.Forbidden, want) {
+			t.Errorf("forbidden missing %q: %v", want, glossary.Forbidden)
+		}
+	}
+	for _, want := range []string{"Go", "goroutine", "Go Playground", "gofmt", "TranslationUnit", "Page", "Example", "present.Section", "GitHub", "URL", "UID", "USDC", "USDT", "Base", "Tron", "TRC20", "PageUp", "PageDown", "ASCII", "CPU", "UTC"} {
+		if !containsString(glossary.Keep, want) {
+			t.Errorf("keep missing %q: %v", want, glossary.Keep)
+		}
+	}
+}
+
 func TestGlossaryKeepValidationAndLegacyTerms(t *testing.T) {
 	tests := []struct {
 		name, body, want string

@@ -485,3 +485,37 @@ func TestThaiArticleMetadataCoversCatalog(t *testing.T) {
 		}
 	}
 }
+
+func TestHindiArticleMetadataCoversCatalog(t *testing.T) {
+	root := filepath.Clean(filepath.Join("..", ".."))
+	catalog, err := ReadCatalog(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	metadata, err := LoadArticleMetadata(root, "hi-IN", catalog)
+	if err != nil {
+		t.Fatal(err)
+	}
+	wantTitles := map[string]string{
+		"welcome.article":     "स्वागत है!",
+		"basics.article":      "पैकेज, वेरिएबल और फ़ंक्शन",
+		"flowcontrol.article": "फ्लो कंट्रोल स्टेटमेंट: for, if, else, switch और defer",
+		"moretypes.article":   "और टाइप: स्ट्रक्ट, स्लाइस और मैप",
+		"methods.article":     "मेथड और इंटरफ़ेस",
+		"generics.article":    "जेनेरिक्स",
+		"concurrency.article": "कनकरेंसी",
+	}
+	if len(metadata) != len(wantTitles) {
+		t.Fatalf("hi-IN article metadata count = %d, want %d", len(metadata), len(wantTitles))
+	}
+	for article, title := range wantTitles {
+		entry, ok := metadata[article]
+		if !ok {
+			t.Errorf("hi-IN article metadata is missing %s", article)
+			continue
+		}
+		if entry.Title != title || entry.Subtitle == "" || strings.Contains(entry.Title+entry.Subtitle, "TODO") {
+			t.Errorf("hi-IN article metadata %s = %+v, want title %q, subtitle, and no TODO", article, entry, title)
+		}
+	}
+}

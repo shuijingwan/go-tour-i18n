@@ -1,0 +1,19 @@
+* त्रुटियाँ
+
+⟪GTI18N_9eaab1fd_000001⟫ प्रोग्राम त्रुटि की स्थिति को ⟪GTI18N_9eaab1fd_000002⟫error⟪GTI18N_9eaab1fd_000003⟫ वैल्यू से व्यक्त करते हैं।
+
+⟪GTI18N_9eaab1fd_000004⟫error⟪GTI18N_9eaab1fd_000005⟫ टाइप, ⟪GTI18N_9eaab1fd_000006⟫fmt.Stringer⟪GTI18N_9eaab1fd_000007⟫ जैसा एक बिल्ट-इन इंटरफ़ेस है:
+
+⟪GTI18N_9eaab1fd_000008⟫
+
+(⟪GTI18N_9eaab1fd_000009⟫fmt.Stringer⟪GTI18N_9eaab1fd_000010⟫ की तरह, ⟪GTI18N_9eaab1fd_000011⟫fmt⟪GTI18N_9eaab1fd_000012⟫ पैकेज वैल्यू
+प्रिंट करते समय ⟪GTI18N_9eaab1fd_000013⟫error⟪GTI18N_9eaab1fd_000014⟫ इंटरफ़ेस खोजता है।)
+
+फ़ंक्शन अक्सर ⟪GTI18N_9eaab1fd_000015⟫error⟪GTI18N_9eaab1fd_000016⟫ वैल्यू लौटाते हैं, और कॉल करने वाले को यह जाँचकर त्रुटि संभालनी चाहिए
+कि error, ⟪GTI18N_9eaab1fd_000017⟫nil⟪GTI18N_9eaab1fd_000018⟫ के बराबर है या नहीं।
+
+⟪GTI18N_9eaab1fd_000019⟫
+
+nil ⟪GTI18N_9eaab1fd_000020⟫error⟪GTI18N_9eaab1fd_000021⟫ सफलता दर्शाता है; non-nil ⟪GTI18N_9eaab1fd_000022⟫error⟪GTI18N_9eaab1fd_000023⟫ विफलता दर्शाता है।
+
+⟪GTI18N_9eaab1fd_000024⟫
