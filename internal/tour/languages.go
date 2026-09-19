@@ -25,6 +25,7 @@ type LanguageLink struct {
 var languageRegistry = []LanguageLink{
 	// 展示顺序按英文语言名称字母顺序排列。
 	{Locale: "ar", EnglishName: "Arabic", Autonym: "العربية", URL: "https://ar-go-dev.shuijingwanwq.com/"},
+	{Locale: "bn-BD", EnglishName: "Bengali", Autonym: "বাংলা", URL: "https://bn-go-dev.shuijingwanwq.com/"},
 	{Locale: "pt-BR", EnglishName: "Brazilian Portuguese", Autonym: "Português (Brasil)", URL: "https://pt-go-dev.shuijingwanwq.com/"},
 	{Locale: "nl-NL", EnglishName: "Dutch", Autonym: "Nederlands", URL: "https://nl-go-dev.shuijingwanwq.com/"},
 	{Locale: "en", EnglishName: "English", Autonym: "English", URL: "https://go.dev/tour/", Official: true},
@@ -76,6 +77,7 @@ var (
 	kolkataTime   = mustLoadLocation("Asia/Kolkata")
 	hoChiMinhTime = mustLoadLocation("Asia/Ho_Chi_Minh")
 	bangkokTime   = mustLoadLocation("Asia/Bangkok")
+	dhakaTime     = mustLoadLocation("Asia/Dhaka")
 )
 
 var localeProfiles = map[string]localeProfile{
@@ -85,6 +87,13 @@ var localeProfiles = map[string]localeProfile{
 		TimeLabel:         "UTC",
 		TimeLabelFormat:   " (%s)",
 		Direction:         "rtl",
+	},
+	"bn-BD": {
+		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",
+		TimeZone:          dhakaTime,
+		TimeLabel:         "স্থানীয় সময়",
+		TimeLabelFormat:   " (%s)",
+		Direction:         "ltr",
 	},
 	"pt-BR": {
 		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",

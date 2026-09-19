@@ -248,10 +248,10 @@ class ProductionIdentityTest(unittest.TestCase):
         self.assertEqual(profile["production_public_url"], "https://th-go-dev.shuijingwanwq.com/")
         self.assertEqual(profile["cache_header"], "CF-Cache-Status")
 
-    def test_hindi_first_production_profile_is_frozen(self):
+    def test_hindi_live_profile_is_frozen(self):
         parsed = MODULE.load_identity(self.identity_path)
         profile = next(item for item in parsed["locales"] if item["locale"] == "hi-IN")
-        self.assertEqual(profile["production_state"], "first-production")
+        self.assertEqual(profile["production_state"], "live")
         self.assertEqual(profile["production_hostname"], "hi-go-dev.shuijingwanwq.com")
         self.assertEqual(profile["cdn"], "cloudflare")
         self.assertEqual(profile["origin_ssh_alias"], "aliyun")
@@ -271,6 +271,31 @@ class ProductionIdentityTest(unittest.TestCase):
         self.assertEqual(profile["playground_allowed_origin"], "https://hi-go-dev.shuijingwanwq.com")
         self.assertEqual(profile["shared_assets_policy"], "shared-cloudflare")
         self.assertEqual(profile["production_public_url"], "https://hi-go-dev.shuijingwanwq.com/")
+        self.assertEqual(profile["cache_header"], "CF-Cache-Status")
+
+    def test_bengali_first_production_profile_is_frozen(self):
+        parsed = MODULE.load_identity(self.identity_path)
+        profile = next(item for item in parsed["locales"] if item["locale"] == "bn-BD")
+        self.assertEqual(profile["production_state"], "first-production")
+        self.assertEqual(profile["production_hostname"], "bn-go-dev.shuijingwanwq.com")
+        self.assertEqual(profile["cdn"], "cloudflare")
+        self.assertEqual(profile["origin_ssh_alias"], "aliyun")
+        self.assertEqual(profile["origin_ip"], "121.40.248.29")
+        self.assertEqual(profile["data_root"], "/data/go-tour-bn-BD")
+        self.assertEqual(profile["releases_root"], "/data/go-tour-bn-BD/releases")
+        self.assertEqual(profile["current"], "/data/go-tour-bn-BD/current")
+        self.assertEqual(profile["deployment_lock"], "/data/go-tour-bn-BD/.deploy.lock")
+        self.assertEqual(profile["systemd_service"], "go-tour-bn-BD.service")
+        self.assertEqual(profile["service_user"], "go-tour")
+        self.assertEqual(profile["loopback_port"], 4017)
+        self.assertEqual(profile["localhost_health_url"], "http://127.0.0.1:4017/")
+        self.assertEqual(profile["environment_file"], "/etc/go-tour/go-tour.env")
+        self.assertEqual(profile["nginx_vhost_path"], "/usr/local/nginx/conf/vhost/bn-go-dev.shuijingwanwq.com.conf")
+        self.assertEqual(profile["tls_certificate_path"], "/usr/local/nginx/conf/ssl/bn-go-dev.shuijingwanwq.com.crt")
+        self.assertEqual(profile["tls_key_path"], "/usr/local/nginx/conf/ssl/bn-go-dev.shuijingwanwq.com.key")
+        self.assertEqual(profile["playground_allowed_origin"], "https://bn-go-dev.shuijingwanwq.com")
+        self.assertEqual(profile["shared_assets_policy"], "shared-cloudflare")
+        self.assertEqual(profile["production_public_url"], "https://bn-go-dev.shuijingwanwq.com/")
         self.assertEqual(profile["cache_header"], "CF-Cache-Status")
 
     def test_list_cli_is_authority_derived_and_state_filtered(self):

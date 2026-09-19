@@ -2,15 +2,16 @@
 
 `go-tour-i18n` 采用构建时单语言站点：每个社区语言独立构建和部署，不实现运行时 locale switching。首页语言入口共享一份有序 registry，并链接到各语言的正式站点或官方来源。
 
-新增语言统一从 [新增 Locale 执行手册](docs/NEW_LOCALE_RUNBOOK.md) 开始；不要只在 registry 中增加一行就视为完成。新 locale 必须先明确规范 locale、显示名称、domain/CDN、全站 glossary 决策和 production profile，并通过独立的 TranslationUnit Quality Review 与 Locale Surface Review。
+新增语言统一从 [新增 Locale 执行手册](docs/NEW_LOCALE_RUNBOOK.md) 开始；不要只在 registry 中增加一行就视为完成。新 locale 必须先明确规范 locale、显示名称、domain/CDN、全站 glossary 决策和 production profile，并通过独立的 Glossary Review、TranslationUnit Quality Review 与 Locale Surface Review。
 
-语言 registry 的正式展示顺序按语言的英文名称字母顺序排列，不按加入项目的时间排列。当前顺序为 Arabic（`ar`）→ Brazilian Portuguese（`pt-BR`）→ Dutch（`nl-NL`）→ English（`en`）→ French（`fr-FR`）→ German（`de-DE`）→ Hindi（`hi-IN`）→ Indonesian（`id-ID`）→ Italian（`it-IT`）→ Japanese（`ja-JP`）→ Korean（`ko-KR`）→ Polish（`pl-PL`）→ Simplified Chinese（`zh-CN`）→ Spanish（`es-ES`）→ Swedish（`sv-SE`）→ Thai（`th-TH`）→ Traditional Chinese（`zh-TW`）→ Turkish（`tr-TR`）→ Vietnamese（`vi-VN`）。
+语言 registry 的正式展示顺序按语言的英文名称字母顺序排列，不按加入项目的时间排列。当前顺序为 Arabic（`ar`）→ Bengali（`bn-BD`）→ Brazilian Portuguese（`pt-BR`）→ Dutch（`nl-NL`）→ English（`en`）→ French（`fr-FR`）→ German（`de-DE`）→ Hindi（`hi-IN`）→ Indonesian（`id-ID`）→ Italian（`it-IT`）→ Japanese（`ja-JP`）→ Korean（`ko-KR`）→ Polish（`pl-PL`）→ Simplified Chinese（`zh-CN`）→ Spanish（`es-ES`）→ Swedish（`sv-SE`）→ Thai（`th-TH`）→ Traditional Chinese（`zh-TW`）→ Turkish（`tr-TR`）→ Vietnamese（`vi-VN`）。
 
 ## 语言站点与 CDN
 
 | Locale | 显示名称 | 正式入口 | CDN | 说明 |
 | --- | --- | --- | --- | --- |
 | `ar` | العربية | <https://ar-go-dev.shuijingwanwq.com/> | Cloudflare Free | Arabic 语言级社区语言站；`html lang=ar`；书写方向为 RTL；域名 language code 为 `ar`；首次生产准备中 |
+| `bn-BD` | বাংলা | <https://bn-go-dev.shuijingwanwq.com/> | Cloudflare Free | 孟加拉语社区语言站；`html lang=bn-BD`；域名 language code 为 `bn`；首次生产准备中 |
 | `pt-BR` | Português (Brasil) | <https://pt-go-dev.shuijingwanwq.com/> | Cloudflare Free | 巴西葡萄牙语社区语言站；域名 language code 为 `pt` |
 | `nl-NL` | Nederlands | <https://nl-go-dev.shuijingwanwq.com/> | Cloudflare Free | 荷兰语社区语言站；域名 language code 为 `nl` |
 | `en` | English | <https://go.dev/tour/> | Go 官方提供 | 继续使用官方 A Tour of Go；当前不建设本项目的英文社区版本，也不规划 `en-go-dev.shuijingwanwq.com` |
