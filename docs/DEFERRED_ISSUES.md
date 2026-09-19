@@ -102,3 +102,13 @@
 - 暂缓原因：维护者明确决定本轮不为该 upstream 通用 UX 问题维护 fork-specific `directives.js` 修复，先等待 Go upstream 调查和处理；已提交 `golang/go#81596`。Arabic first-production 不因此阻塞。待 upstream 修复后按正式 upstream-sync 流程同步并重新验证；若长期未处理且实际用户影响需要本地解决，再评估最小 shared fix。
 - 当前状态：`open`
 - 后续处理/核销证据：上游跟踪：https://github.com/golang/go/issues/81596 。2026-09-19 对当前官方 `go.dev/tour/welcome/1` 的实测结果为：CodeMirror textarea 获得焦点时 PageDown 可从 `/tour/welcome/1` 导航到 `/tour/welcome/2`；`Toggle theme` 按钮或 `A Tour of Go` Logo 获得焦点时，PageDown 后 route 保持 `/tour/welcome/1`。当前保持 open，等待 upstream resolution 后同步复验。
+
+### DI-20260919-002：hi-IN IndexNow closeout 受维护者本机 Mihomo DNS 状态影响
+
+- ID：`DI-20260919-002`
+- 发现日期：`2026-09-19`
+- 发现阶段/场景：hi-IN 首次 Production 已完成 machine/browser acceptance、first-production finalize 并进入 `production_state=live` 后执行 Search-engine closeout；Google Search Console 与 Bing Webmaster Tools sitemap submission 已完成，随后运行 `scripts/indexnow-closeout.sh --locale hi-IN`。
+- 问题描述：hi-IN IndexNow 首次执行已完成本地 key 生成与 Aliyun `PROVISIONING PASS`，但正式 Go bootstrap 在从维护者本机验证公网 root key 时以 `EOF` 失败；随后本机对 `https://hi-go-dev.shuijingwanwq.com/`、`/sitemap.xml` 和 `/<key>.txt` 的只读 curl 均返回 `curl (35) Send failure: Broken pipe` / HTTP `000`。同机对照中，`th-go-dev.shuijingwanwq.com` 在相同 Clash Verge Rev / Mihomo TUN 环境下可通过 fake-IP 正常完成 TLS 1.3 与 HTTP 200，而 `hi-go-dev.shuijingwanwq.com` 的 Mihomo service log 持续记录 `dns resolve failed: couldn't find ip`。与此同时，zgocloud 对 hi-IN 正式 hostname 可解析到 Cloudflare 公网地址并返回 HTTP 200，且该站此前正式 Production machine acceptance（含 sitemap 105/105）与 browser acceptance 均已 PASS，因此当前 evidence 不支持将问题归因于 hi-IN Production deployment 本身。
+- 暂缓原因：维护者明确决定本轮不调整 Clash、本机 DNS/代理环境，也不修改现有 IndexNow/Production 部署方案；IndexNow 属于 first-production finalize 后的非阻塞 Search-engine closeout，Google 与 Bing 已完成，hi-IN 已正式 live，因此不为该问题阻塞上线或扩大实现 scope。
+- 当前状态：`open`
+- 后续处理/核销证据：2026-09-19 当前 evidence 包括：hi-IN IndexNow `PROVISIONING PASS` 后公网 key 验证 `EOF`；维护者本机首页、sitemap、key URL 均为 curl exit 35 / HTTP 000；同机 th-TH hostname 为 HTTP 200 且 TLS 1.3 正常；Mihomo 日志对 hi-IN 明确记录 `dns resolve failed: couldn't find ip`；zgocloud 对 hi-IN 返回 HTTP 200；hi-IN Production machine/browser acceptance 与 first-production finalization 已 PASS。保留现有 locale-specific IndexNow key 与服务器 provisioning，不重复生成 key；后续若维护者决定继续处理，可在不改变已 live 状态的前提下重新验证本机网络状态或重新评估正式 IndexNow network-runner 方案。
