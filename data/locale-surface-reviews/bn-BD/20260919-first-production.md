@@ -69,10 +69,10 @@ Forbidden terms `Golang`, `গোরুটিন`, `গো রুটিন`, and
 Stage A language-quality review, automated preview acceptance, and Preview HUMAN visual gate are complete and passed. Production machine/browser acceptance remains a later independent gate.
 
 <!-- first-production-finalization:start -->
-- production receipt identity: `PENDING`
-- production machine acceptance: `PENDING`
-- production browser acceptance: `PENDING`
-- unresolved production blocker: `PENDING`
-- overall final decision: `PENDING`
-- decision: `pending`
+- production receipt identity: `locale=bn-BD hostname=bn-go-dev.shuijingwanwq.com release=20260919-bn-BD-ab8bc41`
+- production machine acceptance: `passed`
+- production browser acceptance: `passed`
+- unresolved production blocker: `none`
+- overall final decision: `passed`
+- decision: `passed`
 <!-- first-production-finalization:end -->

@@ -12,6 +12,7 @@
 
 <!-- live-locales:start -->
 - [Arabic — العربية](https://ar-go-dev.shuijingwanwq.com/)
+- [Bengali — বাংলা](https://bn-go-dev.shuijingwanwq.com/)
 - [Brazilian Portuguese — Português (Brasil)](https://pt-go-dev.shuijingwanwq.com/)
 - [Dutch — Nederlands](https://nl-go-dev.shuijingwanwq.com/)
 - [French — Français](https://fr-go-dev.shuijingwanwq.com/)
