@@ -52,6 +52,8 @@ TranslationUnit Quality Check 与 revision re-QC 的单次 Reviewer model invoca
 
 Generation session 只产生 Course SEO refresh / revise 所需的新 description 文本；正式 `course-metadata.json` 的 mutation 由 Local terminal 执行 `course-metadata refresh` / `revise`。ChatGPT 即使能操作本地终端，也不默认接管这些确定性步骤，除非维护者明确扩大当前操作范围。
 
+对 `preview` + browser verifier、`publish`、`shared-assets-production.sh`、`first-production.sh`、`indexnow-closeout.sh` 等可能持续数十秒到数分钟的确定性命令，普通 ChatGPT + Remote Desktop Commander 默认只给出一条完整可粘贴命令，由维护者在本地终端执行并把终态输出回传；不要为了等待完成而反复调用远程 process-output 轮询。只有维护者明确要求代执行，或终端已经给出真实 failure evidence 需要诊断/恢复时，才切回 Remote Desktop Commander。脚本内部的 machine gate、receipt、bounded retry 和 HUMAN gate 均保持不变。
+
 Locale Surface Review 的 Reviewer 输入优先由 Local terminal 使用 `surface-review reviewer-bundle` 生成并作为 ZIP 附件上传。只要该 bundle 来自未变化的正式输入且 `manifest.json` hash 校验成立，Reviewer 对附件内 `surface-review.json` 与 `authority/` 的完整读取即满足本轮正式输入读取，不应再通过 Remote Desktop Commander 重复扫描这些仓库文件。任何正式输入或 bundle 内 authority 发生变化，都必须重新导出 bundle；附件模式不允许抽样、跳过 Course SEO full-context coverage，亦不改变独立 Reviewer 与 finding → Generation 回流边界。
 
 canonical English source-description extraction / review 是所有 locale 共享的 authority，不属于单个 locale 固定的 Generation / Reviewer 配对。只有其 authority 确实 stale 时才按 [课程页正式 SEO Metadata 规范](COURSE_SEO_METADATA.md) 执行，不因新增每个 locale 重复，也不默认交给该 locale 的 Reviewer session。
@@ -107,6 +109,16 @@ Retry 使用同一原子提交思想：先将完整内容写入目标 Unit retry
 首次 glossary 制定或任何使当前 Glossary Review coverage stale 的修改，都必须按 [Glossary Review 规范](GLOSSARY_REVIEW.md) 由 Reviewer session 完整审核。UI / article metadata 的正式 generation 排在 PASS 之后；Glossary Review 不因这些资产已经存在而自动批准。
 
 所有资产仍须保持现有 key、kind、placeholder、markup、schema 和技术 identity。不得给 `glossary.yaml`、`internal/tour/ui/<locale>.json` 或 `article-metadata.json` 增加 provider/model/generation 字段。Glossary 继续是该 locale 的正式术语 authority，这些资产也继续由现有 validator 与 Locale Surface Review 审核实际内容。
+
+首次 schema v2 Course SEO localization 优先由 Local terminal 从当前正式 working tree 生成 deterministic 上传 ZIP：
+
+```sh
+go run -mod=readonly ./cmd/tour-i18n course-metadata localization-bundle \
+  --locale <locale> \
+  --output /tmp/<locale>-course-seo-localization-generation.zip
+```
+
+ZIP 的 `course-seo-localization.json` 对 Catalog 全部当前 Page 逐页序列化 canonical English description、完整 English Page source、完整最终 ready target、source/source-description/target identity，并绑定 current canonical source-review authority、完整 glossary 与 `locale.json` identity；`formal/source-descriptions.json` 同时保留 canonical asset 的原始正式字节，`formal/` 还包含 glossary 与 locale identity；`authority/` 封装本规范、Course SEO 规范与 `AGENTS.md`。`manifest.json` 为全部文件提供 SHA-256。只要 bundle 来自未变化的正式 working tree 且 manifest/hash 完整，Generation session 直接完整读取附件，不再通过 Remote Desktop Commander 分批读取同一 103-Page context。ZIP 只优化传输，不新增 Course SEO schema、receipt 或 stale identity，也不允许跳过任一 Page。
 
 schema v2 Course SEO localization 允许并推荐为每个当前 Page 提供 canonical English description、完整 English source、完整最终 ready canonical locale target、完整 locale glossary、locale identity 与 `course-seo-localization-v2` constraints。canonical description 是唯一 semantic-scope authority；source/target 只用于技术语义核对、正文术语一致性、自然表达和实际内容对齐，不授权重新摘要、增删语义或重选重点。同一 session/batch 可处理多个 Page，但每页必须只用自己的 canonical description 决定 semantic scope，不得跨页补充、混合或推断语义。普通 ChatGPT 的真实 provenance 固定记录为：
 

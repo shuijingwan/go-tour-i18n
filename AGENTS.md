@@ -45,7 +45,9 @@ targeted tests 已足以证明当前改动正确时，不得为了“更保险�
 - targeted test 意外暴露 scope 外问题时，只保存最小真实 failure evidence，不继续扩大调查或追加测试；仅当用户明确决定暂缓该问题时，才按 Deferred Issue 规则记录。
 - `go test ./...`、全量 publish、10-locale `--all-live`、browser regression、checksum / curl / verifier、build / deploy / assets verification 等确定性但耗时的测试与验证，优先交给用户本地终端执行。
 
-额度优化不得降低正式质量门槛：TranslationUnit 正式翻译仍使用 GPT-5.6 Sol + High，QC 仍为 A-only，revision、validation、Production machine gate 与 HUMAN gate 均不得削弱。应节省的是不必要的 reasoning、重复检查、全面测试和机械执行。Locale Surface Review 优先使用本地 deterministic `surface-review reviewer-bundle` 生成的上传 ZIP；当 bundle 由未变化的正式 working tree 导出且 manifest/hash 完整时，Reviewer 直接读取附件内 package 与 authority，不再通过 Remote Desktop Commander 重复搜索/读取同一仓库输入。ZIP 只是传输容器，不改变完整审核 coverage、独立 Reviewer、finding 回流或 `record-a` freshness 规则。
+额度优化不得降低正式质量门槛：TranslationUnit 正式翻译仍使用 GPT-5.6 Sol + High，QC 仍为 A-only，revision、validation、Production machine gate 与 HUMAN gate 均不得削弱。应节省的是不必要的 reasoning、重复检查、全面测试和机械执行。Locale Surface Review 优先使用本地 deterministic `surface-review reviewer-bundle` 生成的上传 ZIP；schema v2 Course SEO 首次 localization 优先使用本地 deterministic `course-metadata localization-bundle` 生成的上传 ZIP。只要 bundle 来自未变化的正式 working tree 且 manifest/hash 完整，Generation/Reviewer 直接完整读取附件内正式 context 与 authority，不再通过 Remote Desktop Commander 重复扫描同一仓库输入。ZIP 只是传输容器，不改变 semantic-scope、完整审核 coverage、会话独立、finding 回流或任何 freshness/gate 规则。
+
+`preview` + browser verifier、`publish`、`shared-assets-production.sh`、`first-production.sh`、`indexnow-closeout.sh` 等可能持续数十秒到数分钟的确定性长任务，普通 ChatGPT + Remote Desktop Commander 默认不通过反复 `read_process_output` 轮询等待。优先给维护者一条完整、可直接粘贴的正式终端命令，由维护者本地执行并回传 terminal 终态；只有维护者明确要求代执行，或出现真实 failure evidence 需要诊断/恢复时，才由 Remote Desktop Commander 接管。此协作优化不得跳过任何脚本内部 gate、receipt、bounded retry 或 HUMAN gate。
 
 新增正式 CLI、validator、manifest/lifecycle logic 或可复用 machine workflow 时，优先使用 Go，并优先集成现有 `cmd/tour-i18n`。Shell/Python 主要用于薄的 OS、SSH、browser 或已有成熟 orchestration；已有稳定 sh/python 不因“统一语言”重写。不得用临时 Python/sed 代替需要 repository context 的正式实现。
 

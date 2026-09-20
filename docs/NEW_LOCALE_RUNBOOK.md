@@ -151,7 +151,13 @@ promotion 完成后，先执行 canonical English source-description 的 current
 ```sh
 go run -mod=readonly ./cmd/tour-i18n course-metadata source check
 go run -mod=readonly ./cmd/tour-i18n course-metadata source review-check
+
+go run -mod=readonly ./cmd/tour-i18n course-metadata localization-bundle \
+  --locale <locale> \
+  --output /tmp/<locale>-course-seo-localization-generation.zip
 ```
+
+把该 ZIP 直接上传到长期 Generation session。只要它来自未变化的正式 working tree 且 `manifest.json`/SHA-256 完整，Generation session 直接读取附件内 103/103 Page full context、完整 glossary、locale identity 与当前 authority，不再通过 Remote Desktop Commander 分批读取同一批输入；正式输入变化后必须重新导出 ZIP。
 
 然后让普通 ChatGPT GPT-5.6 Sol + High 为每个 Page 读取 canonical English description、完整 English source、完整最终 ready canonical locale target、完整 locale glossary、目标 locale identity 和 `course-seo-localization-v2` contract，输出完整 `page_id → localized description`。canonical description 仍是唯一 semantic-scope authority；source/target 只用于技术语义、正文术语、自然度与实际内容对齐，不授权重新摘要。同一 generation session/batch 可处理多页，但不得跨 Page 补充、混合或推断语义。使用正式离线命令组装 v2 asset；target body 由命令机械读取并计算 `target_sha256` freshness，与其作为生成上下文的职责互不替代。普通 ChatGPT provenance 使用 `--provider chatgpt --model gpt-5.6-sol-high`：
 
@@ -206,6 +212,8 @@ go run -mod=readonly ./cmd/tour-i18n preview \
 ```sh
 scripts/verify-preview-browser.py http://127.0.0.1:<port>/ <locale>
 ```
+
+对于上述 browser verifier，以及后续 `publish`、shared-assets Production、`first-production.sh`、IndexNow closeout 等可能持续数十秒到数分钟的确定性长任务，普通 ChatGPT + Remote Desktop Commander 默认只提供一条完整可粘贴命令，由维护者在本地终端执行并回传终态；不要仅为等待完成而反复远程轮询。只有维护者明确要求代执行，或真实 failure evidence 出现后需要诊断/恢复时，才切回 Remote Desktop Commander。该协作规则不改变脚本内部任何 gate、receipt、retry 或 HUMAN gate。
 
 执行 [Locale Surface Review](LOCALE_SURFACE_REVIEW.md) 时，先以 exporter 提供的英文/source、目标资产和 glossary 为正式输入，完整审核 TranslationUnit 之外的 UI catalog、article metadata、首页及其他 locale-level 文案；不得用浏览器抽查替代。严格顺序为 promotion → course metadata → build → surface-review reviewer-bundle（standalone export 仅用于诊断）→ ChatGPT Locale Surface Review A → 必要 revision/fix + 重新生成 reviewer bundle → 写 Markdown evidence → record current A gate → full locale preview → automated rendered acceptance → visual HUMAN gate → publish。机器已经覆盖的 canonical、sitemap、language selector URL、Run / Format / Reset、SPA、`/socket` 和 desktop/mobile overflow 不由人工重复。
 
