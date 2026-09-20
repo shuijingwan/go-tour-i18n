@@ -1,0 +1,11 @@
+* انٹرفیسز
+
+ایک _interface_type_ میتھڈ signatures کے مجموعے کے طور پر define ہوتی ہے۔
+
+انٹرفیس ٹائپ کی قدر کوئی بھی ایسی قدر رکھ سکتی ہے جو ان میتھڈز کو implement کرتی ہو۔
+
+*نوٹ:* example کوڈ کی لائن 22 میں ایک غلطی ہے۔
+`Vertex` (value ٹائپ) `Abser` کو implement نہیں کرتی، کیونکہ
+`Abs` میتھڈ صرف `*Vertex` (پوائنٹر ٹائپ) پر define ہے۔
+
+.play methods/interfaces.go

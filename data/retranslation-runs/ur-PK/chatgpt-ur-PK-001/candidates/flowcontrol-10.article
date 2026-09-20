@@ -1,0 +1,15 @@
+* switch کی evaluation ترتیب
+
+Switch cases اوپر سے نیچے evaluate ہوتے ہیں اور کسی case کے کامیاب ہوتے ہی رک جاتے ہیں۔
+
+(مثال کے طور پر،
+
+	switch i {
+	case 0:
+	case f():
+	}
+
+یہ `f` کو call نہیں کرتا اگر `i==0` ہو۔)
+
+
+.play flowcontrol/switch-evaluation-order.go

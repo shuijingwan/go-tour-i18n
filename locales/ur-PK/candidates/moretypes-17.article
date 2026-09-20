@@ -1,0 +1,12 @@
+* range، جاری
+
+index یا قدر کو `_` assign کر کے چھوڑا جا سکتا ہے۔
+
+    for i, _ := range pow
+    for _, value := range pow
+
+اگر صرف index درکار ہو تو دوسرا متغیر حذف کیا جا سکتا ہے۔
+
+    for i := range pow
+
+.play moretypes/range-continued.go

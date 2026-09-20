@@ -43,6 +43,7 @@ var languageRegistry = []LanguageLink{
 	{Locale: "th-TH", EnglishName: "Thai", Autonym: "ไทย", URL: "https://th-go-dev.shuijingwanwq.com/"},
 	{Locale: "zh-TW", EnglishName: "Traditional Chinese", Autonym: "繁體中文（台灣）", URL: "https://zh-tw-go-dev.shuijingwanwq.com/"},
 	{Locale: "tr-TR", EnglishName: "Turkish", Autonym: "Türkçe", URL: "https://tr-go-dev.shuijingwanwq.com/"},
+	{Locale: "ur-PK", EnglishName: "Urdu", Autonym: "اردو", URL: "https://ur-go-dev.shuijingwanwq.com/"},
 	{Locale: "vi-VN", EnglishName: "Vietnamese", Autonym: "Tiếng Việt", URL: "https://vi-go-dev.shuijingwanwq.com/"},
 }
 
@@ -73,6 +74,7 @@ var (
 	stockholmTime = mustLoadLocation("Europe/Stockholm")
 	taipeiTime    = mustLoadLocation("Asia/Taipei")
 	istanbulTime  = mustLoadLocation("Europe/Istanbul")
+	karachiTime   = mustLoadLocation("Asia/Karachi")
 	jakartaTime   = mustLoadLocation("Asia/Jakarta")
 	kolkataTime   = mustLoadLocation("Asia/Kolkata")
 	hoChiMinhTime = mustLoadLocation("Asia/Ho_Chi_Minh")
@@ -199,6 +201,13 @@ var localeProfiles = map[string]localeProfile{
 		TimeLabel:         "yerel saat",
 		TimeLabelFormat:   " (%s)",
 		Direction:         "ltr",
+	},
+	"ur-PK": {
+		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",
+		TimeZone:          karachiTime,
+		TimeLabel:         "مقامی وقت",
+		TimeLabelFormat:   " (%s)",
+		Direction:         "rtl",
 	},
 	"ja-JP": {
 		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",

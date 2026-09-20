@@ -1,0 +1,136 @@
+{
+  "schema_version": 2,
+  "evidence_type": "quality_check_results",
+  "locale": "ur-PK",
+  "snapshot_id": "qc-002",
+  "snapshot_manifest_sha256": "cb45d2655115f6c62fac847722161faebe87542c2ed948ac9810bd81770aa8c9",
+  "previous_snapshot_id": "qc-001",
+  "rubric": "translation-quality/v1",
+  "result_count": 24,
+  "results": [
+    {
+      "index": 2,
+      "unit_id": "welcome/2",
+      "rating": "B",
+      "finding": "旧 finding 仅部分修复。新标题 Go دیگر زبانوں میں Go کی سیر 仍不自然且重复 Go；正文已经可发布。只需重新自然化标题，使其清楚表达 Go Tour 的其他语言版本，同时保持 Go / Go کی سیر glossary identity。"
+    },
+    {
+      "index": 17,
+      "unit_id": "basics/12",
+      "rating": "A"
+    },
+    {
+      "index": 25,
+      "unit_id": "flowcontrol/3",
+      "rating": "A"
+    },
+    {
+      "index": 37,
+      "unit_id": "moretypes/1",
+      "rating": "A"
+    },
+    {
+      "index": 46,
+      "unit_id": "moretypes/10",
+      "rating": "A"
+    },
+    {
+      "index": 47,
+      "unit_id": "moretypes/11",
+      "rating": "A"
+    },
+    {
+      "index": 67,
+      "unit_id": "methods/4",
+      "rating": "A"
+    },
+    {
+      "index": 70,
+      "unit_id": "methods/7",
+      "rating": "A"
+    },
+    {
+      "index": 71,
+      "unit_id": "methods/8",
+      "rating": "A"
+    },
+    {
+      "index": 72,
+      "unit_id": "methods/9",
+      "rating": "A"
+    },
+    {
+      "index": 76,
+      "unit_id": "methods/13",
+      "rating": "A"
+    },
+    {
+      "index": 77,
+      "unit_id": "methods/14",
+      "rating": "A"
+    },
+    {
+      "index": 78,
+      "unit_id": "methods/15",
+      "rating": "A"
+    },
+    {
+      "index": 79,
+      "unit_id": "methods/16",
+      "rating": "A"
+    },
+    {
+      "index": 87,
+      "unit_id": "methods/24",
+      "rating": "A"
+    },
+    {
+      "index": 94,
+      "unit_id": "concurrency/2",
+      "rating": "A"
+    },
+    {
+      "index": 95,
+      "unit_id": "concurrency/3",
+      "rating": "A"
+    },
+    {
+      "index": 101,
+      "unit_id": "concurrency/9",
+      "rating": "A"
+    },
+    {
+      "index": 103,
+      "unit_id": "concurrency/11",
+      "rating": "C",
+      "finding": "旧 C finding 仅部分修复。页面仍保留多处不必要的开放英文自然语言或半翻译链接标签，包括 پیکیج reference、زبان کی specification、Go کنکرنسی patterns、Advanced Go کنکرنسی patterns、Communication کے ذریعے memory share کریں、ایک سادہ programming environment、Web applications لکھنا、First-class functions in Go、Go کا home page。需要完整统一这些开放自然语言 link labels / titles 后再次 re-QC。"
+    },
+    {
+      "index": 107,
+      "unit_id": "example:concurrency/exercise-equivalent-binary-trees.go",
+      "rating": "B",
+      "finding": "旧 finding 中 channel → چینل 已修复，但教学注释整体仍不够自然。当前 tree سے چینل ch کو 被悬置在谓语之后，仍有明显翻译腔。保持 Walk、t、ch 等 identifier 不变，用自然 Urdu 语序表达从 tree t 把所有值发送到 channel ch。"
+    },
+    {
+      "index": 108,
+      "unit_id": "example:concurrency/exercise-web-crawler.go",
+      "rating": "B",
+      "finding": "旧 finding 中 canned、populated 等问题已修复，但新版 Crawl 注释新增了 source 不存在的限定 بار بار اندرونی روابط کی پیروی کرتے ہوئے，表达成反复跟随内部链接；source 只说 recursively crawl，并未限定 internal links。同时 crawl کرتا ہے 仍可自然化。保持 Crawl、fetcher、url、depth 等 identifier，去掉未经 source 授权的内部含义并自然表达 recursive crawling。"
+    },
+    {
+      "index": 109,
+      "unit_id": "example:concurrency/mutex-counter.go",
+      "rating": "A"
+    },
+    {
+      "index": 118,
+      "unit_id": "example:moretypes/exercise-fibonacci-closure.go",
+      "rating": "A"
+    },
+    {
+      "index": 120,
+      "unit_id": "example:moretypes/slice-len-cap.go",
+      "rating": "A"
+    }
+  ]
+}

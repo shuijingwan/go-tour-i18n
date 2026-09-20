@@ -1,0 +1,19 @@
+* Readers
+
+⟪GTI18N_120c3fc9_000001⟫io⟪GTI18N_120c3fc9_000002⟫ پیکیج ⟪GTI18N_120c3fc9_000003⟫io.Reader⟪GTI18N_120c3fc9_000004⟫ انٹرفیس specify کرتا ہے،
+جو data stream کے read end کی نمائندگی کرتا ہے۔
+
+⟪GTI18N_120c3fc9_000005⟫ معیاری لائبریری میں اس انٹرفیس کی [[⟪GTI18N_120c3fc9_000006⟫][بہت سی implementations]] شامل ہیں، جن میں files، network connections، compressors، ciphers اور دیگر شامل ہیں۔
+
+⟪GTI18N_120c3fc9_000007⟫io.Reader⟪GTI18N_120c3fc9_000008⟫ انٹرفیس کا ایک ⟪GTI18N_120c3fc9_000009⟫Read⟪GTI18N_120c3fc9_000010⟫ میتھڈ ہے:
+
+⟪GTI18N_120c3fc9_000011⟫
+
+⟪GTI18N_120c3fc9_000012⟫Read⟪GTI18N_120c3fc9_000013⟫ دی گئی byte سلائس میں data بھرتا ہے اور بھرے گئے bytes کی تعداد
+اور ایک error قدر واپس کرتا ہے۔ stream ختم ہونے پر یہ ⟪GTI18N_120c3fc9_000014⟫io.EOF⟪GTI18N_120c3fc9_000015⟫ error واپس کرتا ہے۔
+
+example کوڈ ایک
+[[⟪GTI18N_120c3fc9_000016⟫][⟪GTI18N_120c3fc9_000017⟫strings.Reader⟪GTI18N_120c3fc9_000018⟫]]
+بناتا ہے اور اس کا output ایک وقت میں 8 bytes consume کرتا ہے۔
+
+⟪GTI18N_120c3fc9_000019⟫

@@ -1,0 +1,27 @@
+* بنیادی ٹائپس
+
+Go کی بنیادی ٹائپس یہ ہیں:
+
+	bool
+
+	string
+
+	int  int8  int16  int32  int64
+	uint uint8 uint16 uint32 uint64 uintptr
+
+	byte // اس کا alias ہے: uint8
+
+	rune // اس کا alias ہے: int32
+	     // ایک Unicode code point کی نمائندگی کرتا ہے
+
+	float32 float64
+
+	complex64 complex128
+
+یہ مثال کئی ٹائپس کے متغیرات دکھاتی ہے،
+اور یہ بھی کہ متغیر ڈیکلریشنز کو import اسٹیٹمنٹس کی طرح blocks میں "factored" کیا جا سکتا ہے۔
+
+`int`، `uint` اور `uintptr` ٹائپس عموماً 32-bit systems پر 32 bits اور 64-bit systems پر 64 bits چوڑی ہوتی ہیں۔
+جب آپ کو integer قدر درکار ہو تو، کسی مخصوص وجہ کے بغیر sized یا unsigned integer ٹائپ کے بجائے `int` استعمال کرنا چاہیے۔
+
+.play basics/basic-types.go

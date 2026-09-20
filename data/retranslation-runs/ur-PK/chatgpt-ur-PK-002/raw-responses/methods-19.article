@@ -1,0 +1,18 @@
+* غلطیاں
+
+⟪GTI18N_9eaab1fd_000001⟫ پروگرام غلطی کی حالت کو ⟪GTI18N_9eaab1fd_000002⟫error⟪GTI18N_9eaab1fd_000003⟫ قدروں سے ظاہر کرتے ہیں۔
+
+⟪GTI18N_9eaab1fd_000004⟫error⟪GTI18N_9eaab1fd_000005⟫ ٹائپ ایک built-in انٹرفیس ہے جو ⟪GTI18N_9eaab1fd_000006⟫fmt.Stringer⟪GTI18N_9eaab1fd_000007⟫ سے ملتی جلتی ہے:
+
+⟪GTI18N_9eaab1fd_000008⟫
+
+(⟪GTI18N_9eaab1fd_000009⟫fmt.Stringer⟪GTI18N_9eaab1fd_000010⟫ کی طرح، ⟪GTI18N_9eaab1fd_000011⟫fmt⟪GTI18N_9eaab1fd_000012⟫ پیکیج قدریں print کرتے وقت ⟪GTI18N_9eaab1fd_000013⟫error⟪GTI18N_9eaab1fd_000014⟫ انٹرفیس تلاش کرتا ہے۔)
+
+فنکشنز اکثر ⟪GTI18N_9eaab1fd_000015⟫error⟪GTI18N_9eaab1fd_000016⟫ قدر واپس کرتے ہیں، اور calling کوڈ کو غلطیوں کو
+یہ جانچ کر handle کرنا چاہیے کہ error، ⟪GTI18N_9eaab1fd_000017⟫nil⟪GTI18N_9eaab1fd_000018⟫ کے برابر ہے یا نہیں۔
+
+⟪GTI18N_9eaab1fd_000019⟫
+
+ایک ⟪GTI18N_9eaab1fd_000020⟫ ⟪GTI18N_9eaab1fd_000021⟫error⟪GTI18N_9eaab1fd_000022⟫ کامیابی کو ظاہر کرتا ہے؛ non-⟪GTI18N_9eaab1fd_000023⟫ ⟪GTI18N_9eaab1fd_000024⟫error⟪GTI18N_9eaab1fd_000025⟫ ناکامی کو ظاہر کرتا ہے۔
+
+⟪GTI18N_9eaab1fd_000026⟫

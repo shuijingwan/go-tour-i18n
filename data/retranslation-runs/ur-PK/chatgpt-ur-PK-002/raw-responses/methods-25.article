@@ -1,0 +1,13 @@
+* مشق: Images
+
+وہ [[⟪GTI18N_a196bc59_000001⟫][picture generator]] یاد ہے جو آپ نے پہلے لکھا تھا؟ ایک اور لکھتے ہیں، مگر اس بار یہ data کی سلائس کے بجائے ⟪GTI18N_a196bc59_000002⟫image.Image⟪GTI18N_a196bc59_000003⟫ کی implementation واپس کرے گا۔
+
+اپنی ⟪GTI18N_a196bc59_000004⟫Image⟪GTI18N_a196bc59_000005⟫ ٹائپ define کریں، [[⟪GTI18N_a196bc59_000006⟫][ضروری میتھڈز]] implement کریں، اور ⟪GTI18N_a196bc59_000007⟫pic.ShowImage⟪GTI18N_a196bc59_000008⟫ call کریں۔
+
+⟪GTI18N_a196bc59_000009⟫Bounds⟪GTI18N_a196bc59_000010⟫ کو ⟪GTI18N_a196bc59_000011⟫image.Rectangle⟪GTI18N_a196bc59_000012⟫ واپس کرنا چاہیے، مثلاً ⟪GTI18N_a196bc59_000013⟫image.Rect(0,`0,`w,`h)⟪GTI18N_a196bc59_000014⟫۔
+
+⟪GTI18N_a196bc59_000015⟫ColorModel⟪GTI18N_a196bc59_000016⟫ کو ⟪GTI18N_a196bc59_000017⟫color.RGBAModel⟪GTI18N_a196bc59_000018⟫ واپس کرنا چاہیے۔
+
+⟪GTI18N_a196bc59_000019⟫At⟪GTI18N_a196bc59_000020⟫ کو color واپس کرنا چاہیے؛ پچھلے picture generator میں قدر ⟪GTI18N_a196bc59_000021⟫v⟪GTI18N_a196bc59_000022⟫ اس میں ⟪GTI18N_a196bc59_000023⟫color.RGBA{v,`v,`255,`255}⟪GTI18N_a196bc59_000024⟫ کے مطابق ہے۔
+
+⟪GTI18N_a196bc59_000025⟫

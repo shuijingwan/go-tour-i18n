@@ -1,0 +1,12 @@
+* امپورٹس
+
+یہ کوڈ امپورٹس کو قوسین والے، "factored" import اسٹیٹمنٹ میں گروپ کرتا ہے۔
+
+آپ متعدد import اسٹیٹمنٹس بھی لکھ سکتے ہیں، مثلاً:
+
+	import "fmt"
+	import "math"
+
+لیکن factored import اسٹیٹمنٹ استعمال کرنا اچھی طرزِ تحریر ہے۔
+
+.play basics/imports.go

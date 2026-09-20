@@ -1,0 +1,26 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-ur-PK-007",
+  "locale": "ur-PK",
+  "unit_count": 2,
+  "restore_passed": 2,
+  "restore_failed": 0,
+  "validation_passed": 2,
+  "validation_failed": 0,
+  "units": [
+    {
+      "unit_id": "example:concurrency/exercise-equivalent-binary-trees.go",
+      "unit_kind": "example",
+      "status": "passed",
+      "candidate_path": "candidates/concurrency-exercise-equivalent-binary-trees.go",
+      "validation_path": "validation/concurrency-exercise-equivalent-binary-trees.json"
+    },
+    {
+      "unit_id": "example:concurrency/exercise-web-crawler.go",
+      "unit_kind": "example",
+      "status": "passed",
+      "candidate_path": "candidates/concurrency-exercise-web-crawler.go",
+      "validation_path": "validation/concurrency-exercise-web-crawler.json"
+    }
+  ]
+}

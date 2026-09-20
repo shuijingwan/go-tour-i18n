@@ -1,0 +1,21 @@
+* ٹائپ conversions
+
+ایکسپریشن `T(v)`، قدر `v` کو ٹائپ `T` میں تبدیل کرتا ہے۔
+
+کچھ numeric conversions:
+
+	var i int = 42
+	var f float64 = float64(i)
+	var u uint = uint(f)
+
+یا زیادہ سادہ انداز میں:
+
+	i := 42
+	f := float64(i)
+	u := uint(f)
+
+C کے برعکس، Go میں مختلف ٹائپس کی اشیا کے درمیان assignment کے لیے
+explicit conversion درکار ہوتی ہے۔
+مثال سے `float64` یا `uint` conversions ہٹا کر دیکھیں کہ کیا ہوتا ہے۔
+
+.play basics/type-conversions.go

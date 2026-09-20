@@ -1,0 +1,23 @@
+* مشق: برابر Binary Trees
+
+*1.* `Walk` فنکشن نافذ کریں۔
+
+*2.* `Walk` فنکشن test کریں۔
+
+فنکشن `tree.New(k)` ایک randomly-structured (لیکن ہمیشہ sorted) binary tree بناتا ہے جس میں قدریں `k`، `2k`، `3k`، ...، `10k` ہوتی ہیں۔
+
+ایک نیا چینل `ch` بنائیں اور walker شروع کریں:
+
+	go Walk(tree.New(1), ch)
+
+پھر چینل سے 10 قدریں پڑھیں اور print کریں۔ یہ اعداد 1, 2, 3, ..., 10 ہونے چاہئیں۔
+
+*3.* `Same` فنکشن کو `Walk` کے ذریعے نافذ کریں تاکہ معلوم ہو سکے کہ `t1` اور `t2` ایک ہی قدریں رکھتے ہیں یا نہیں۔
+
+*4.* `Same` فنکشن test کریں۔
+
+`Same(tree.New(1),`tree.New(1))` کو true واپس کرنا چاہیے، اور `Same(tree.New(1),`tree.New(2))` کو false واپس کرنا چاہیے۔
+
+`Tree` کی documentation [[https://godoc.org/golang.org/x/tour/tree#Tree][یہاں]] مل سکتی ہے۔
+
+.play concurrency/exercise-equivalent-binary-trees.go

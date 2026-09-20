@@ -1,0 +1,12 @@
+* مشق: rot13Reader
+
+ایک عام pattern ایسا [[/pkg/io/#Reader][io.Reader]] ہے جو کسی دوسرے `io.Reader` کو wrap کر کے stream کو کسی طرح تبدیل کرتا ہے۔
+
+مثال کے طور پر، [[/pkg/compress/gzip/#NewReader][gzip.NewReader]] فنکشن ایک `io.Reader` (compressed data کا stream) لیتا ہے اور ایک `*gzip.Reader` واپس کرتا ہے جو `io.Reader` بھی implement کرتا ہے (decompressed data کا stream)۔
+
+ایک `rot13Reader` نافذ کریں جو `io.Reader` implement کرے اور ایک `io.Reader` سے پڑھتے ہوئے تمام حروف پر [[https://en.wikipedia.org/wiki/ROT13][rot13]] substitution cipher لاگو کر کے stream بدل دے۔
+
+`rot13Reader` ٹائپ آپ کے لیے دی گئی ہے۔
+اسے `io.Reader` بنانے کے لیے اس کا `Read` میتھڈ implement کریں۔
+
+.play methods/exercise-rot-reader.go

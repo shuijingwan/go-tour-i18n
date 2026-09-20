@@ -1,0 +1,10 @@
+* مشق: ویب کرالر
+
+اس مشق میں آپ Go کی کنکرنسی خصوصیات استعمال کر کے ویب کرالر کو parallelize کریں گے۔
+
+`Crawl` فنکشن کو بدلیں تاکہ URLs کو parallel طور پر fetch کرے اور ایک ہی URL کو دو بار fetch نہ کرے۔
+
+_اشارہ_: fetch کیے گئے URLs کا cache میپ میں رکھا جا سکتا ہے، مگر صرف میپس
+concurrent استعمال کے لیے محفوظ نہیں ہیں!
+
+.play concurrency/exercise-web-crawler.go

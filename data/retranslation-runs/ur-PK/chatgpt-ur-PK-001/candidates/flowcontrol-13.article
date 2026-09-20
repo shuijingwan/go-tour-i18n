@@ -1,0 +1,9 @@
+* defers کو stack کرنا
+
+Deferred فنکشن calls کو stack پر push کیا جاتا ہے۔ جب کوئی فنکشن return کرتا ہے تو اس کی
+deferred calls last-in-first-out ترتیب میں execute ہوتی ہیں۔
+
+defer اسٹیٹمنٹس کے بارے میں مزید جاننے کے لیے یہ
+[[/blog/defer-panic-and-recover][بلاگ پوسٹ]] پڑھیں۔
+
+.play flowcontrol/defer-multi.go

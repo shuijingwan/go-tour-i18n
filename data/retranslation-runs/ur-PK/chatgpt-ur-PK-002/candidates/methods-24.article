@@ -1,0 +1,21 @@
+* Images
+
+[[/pkg/image/#Image][Package image]]، `Image` انٹرفیس define کرتا ہے:
+
+	package image
+
+	type Image interface {
+		ColorModel() color.Model
+		Bounds() Rectangle
+		At(x, y int) color.Color
+	}
+
+*نوٹ*: `Rectangle` return قدر، `Bounds` میتھڈ کی، دراصل
+[[/pkg/image/#Rectangle][`image.Rectangle`]] ہے، کیونکہ
+ڈیکلریشن پیکیج `image` کے اندر ہے۔
+
+(تمام تفصیلات کے لیے [[/pkg/image/#Image][documentation]] دیکھیں۔)
+
+`color.Color` اور `color.Model` ٹائپس بھی انٹرفیسز ہیں، مگر ہم predefined implementations `color.RGBA` اور `color.RGBAModel` استعمال کر کے اسے نظرانداز کریں گے۔ یہ انٹرفیسز اور ٹائپس [[/pkg/image/color/][image/color پیکیج]] specify کرتا ہے۔
+
+.play methods/images.go

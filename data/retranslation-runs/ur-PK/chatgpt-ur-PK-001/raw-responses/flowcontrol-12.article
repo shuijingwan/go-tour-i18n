@@ -1,0 +1,9 @@
+* defer
+
+defer اسٹیٹمنٹ کسی فنکشن کے execution کو اس وقت تک مؤخر کرتا ہے جب تک surrounding
+فنکشن return نہ کرے۔
+
+deferred call کے آرگیومنٹس فوراً evaluate ہو جاتے ہیں، لیکن فنکشن call
+اس وقت تک execute نہیں ہوتی جب تک surrounding فنکشن return نہ کرے۔
+
+⟪GTI18N_fa23a1d6_000001⟫

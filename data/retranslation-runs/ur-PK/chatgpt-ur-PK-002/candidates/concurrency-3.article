@@ -1,0 +1,11 @@
+* بفرڈ چینلز
+
+چینلز _buffered_ ہو سکتے ہیں۔ بفرڈ چینل initialize کرنے کے لیے buffer کی لمبائی کو `make` کے دوسرے آرگیومنٹ کے طور پر دیں:
+
+	ch := make(chan int, 100)
+
+بفرڈ چینل کو send صرف اس وقت block ہوتا ہے جب buffer بھر جائے۔ receive اس وقت block ہوتا ہے جب buffer خالی ہو۔
+
+example کو بدل کر buffer کو اس کی گنجائش سے زیادہ بھرنے کی کوشش کریں اور دیکھیں کیا ہوتا ہے۔
+
+.play concurrency/buffered-channels.go

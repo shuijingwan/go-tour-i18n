@@ -1,0 +1,24 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-ur-PK-008",
+  "locale": "ur-PK",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "example",
+  "unit_count": 1,
+  "units": [
+    {
+      "unit_id": "example:concurrency/exercise-web-crawler.go",
+      "unit_kind": "example",
+      "source_path": "_content/tour/concurrency/exercise-web-crawler.go",
+      "source_sha256": "bd6226dcae3b663a3aa1cbf502d840357ac0efb6de46e7a66612ca2834cf5e37",
+      "input_path": "inputs/concurrency-exercise-web-crawler.txt",
+      "input_sha256": "53554a1126b74da6e3bcb93c625eff1ec44f560e2817f1875202423a7d6009ab",
+      "protected_token_count": 12,
+      "previous_snapshot_id": "qc-003",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "上一轮 source 外“内部链接”限定已经删除，canned、populated 等旧问题也保持修复；但当前核心教学注释仍保留不必要的英文 recursive 和 crawl，且谓语先于 url سے شروع ہونے والے صفحات کو，整体仍有明显英语式翻译结构。应保持 Crawl、fetcher、url、depth 等 identifier 不变，用自然 Urdu 完整表达使用 fetcher、从 url 开始递归抓取页面、最多达到 depth 指定的深度，不得新增 source 没有的限定。"
+    }
+  ]
+}

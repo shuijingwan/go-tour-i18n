@@ -1,0 +1,645 @@
+{
+  "schema_version": 2,
+  "evidence_type": "quality_check_results",
+  "locale": "ur-PK",
+  "snapshot_id": "qc-001",
+  "snapshot_manifest_sha256": "b3cf0056a574e0c68a2445ae60c2aad0fa63e2df2b279e499b4e4ce1ea4ce91d",
+  "rubric": "translation-quality/v1",
+  "result_count": 122,
+  "results": [
+    {
+      "index": 1,
+      "unit_id": "welcome/1",
+      "rating": "A"
+    },
+    {
+      "index": 2,
+      "unit_id": "welcome/2",
+      "rating": "B",
+      "finding": "عنوان Go مقامی اردو میں غیر فطری اور مبہم ہے؛ یہ واضح طور پر یہ نہیں بتاتا کہ اس صفحے پر Tour کے دیگر زبانوں کے ورژن دستیاب ہیں۔ عنوان کو قدرتی اردو میں اس مفہوم کے مطابق revise کریں۔"
+    },
+    {
+      "index": 3,
+      "unit_id": "welcome/4",
+      "rating": "A"
+    },
+    {
+      "index": 4,
+      "unit_id": "welcome/5",
+      "rating": "A"
+    },
+    {
+      "index": 5,
+      "unit_id": "welcome/3",
+      "rating": "A"
+    },
+    {
+      "index": 6,
+      "unit_id": "basics/1",
+      "rating": "A"
+    },
+    {
+      "index": 7,
+      "unit_id": "basics/2",
+      "rating": "A"
+    },
+    {
+      "index": 8,
+      "unit_id": "basics/3",
+      "rating": "A"
+    },
+    {
+      "index": 9,
+      "unit_id": "basics/4",
+      "rating": "A"
+    },
+    {
+      "index": 10,
+      "unit_id": "basics/5",
+      "rating": "A"
+    },
+    {
+      "index": 11,
+      "unit_id": "basics/6",
+      "rating": "A"
+    },
+    {
+      "index": 12,
+      "unit_id": "basics/7",
+      "rating": "A"
+    },
+    {
+      "index": 13,
+      "unit_id": "basics/8",
+      "rating": "A"
+    },
+    {
+      "index": 14,
+      "unit_id": "basics/9",
+      "rating": "A"
+    },
+    {
+      "index": 15,
+      "unit_id": "basics/10",
+      "rating": "A"
+    },
+    {
+      "index": 16,
+      "unit_id": "basics/11",
+      "rating": "A"
+    },
+    {
+      "index": 17,
+      "unit_id": "basics/12",
+      "rating": "B",
+      "finding": "ابتدائی پیراگراف میں zero value کا بنیادی اصطلاحی ذکر _zero_value_ کے طور پر رہ گیا ہے، جبکہ glossary mandatory zero value → صفر قدر ہے۔ emphasis structure برقرار رکھتے ہوئے اسے صفر قدر کے مطابق localize کریں۔"
+    },
+    {
+      "index": 18,
+      "unit_id": "basics/13",
+      "rating": "A"
+    },
+    {
+      "index": 19,
+      "unit_id": "basics/14",
+      "rating": "A"
+    },
+    {
+      "index": 20,
+      "unit_id": "basics/15",
+      "rating": "A"
+    },
+    {
+      "index": 21,
+      "unit_id": "basics/16",
+      "rating": "A"
+    },
+    {
+      "index": 22,
+      "unit_id": "basics/17",
+      "rating": "A"
+    },
+    {
+      "index": 23,
+      "unit_id": "flowcontrol/1",
+      "rating": "A"
+    },
+    {
+      "index": 24,
+      "unit_id": "flowcontrol/2",
+      "rating": "A"
+    },
+    {
+      "index": 25,
+      "unit_id": "flowcontrol/3",
+      "rating": "B",
+      "finding": "جملہ C کا while، for لکھا جاتا ہے Go میں اردو میں غیر فطری ترتیب رکھتا ہے؛ Go میں کو predicate کے بعد لانے سے واضح ترجمہ نما پن پیدا ہوتا ہے۔ تکنیکی معنی برقرار رکھتے ہوئے قدرتی اردو ترتیب میں revise کریں۔"
+    },
+    {
+      "index": 26,
+      "unit_id": "flowcontrol/4",
+      "rating": "A"
+    },
+    {
+      "index": 27,
+      "unit_id": "flowcontrol/5",
+      "rating": "A"
+    },
+    {
+      "index": 28,
+      "unit_id": "flowcontrol/6",
+      "rating": "A"
+    },
+    {
+      "index": 29,
+      "unit_id": "flowcontrol/7",
+      "rating": "A"
+    },
+    {
+      "index": 30,
+      "unit_id": "flowcontrol/8",
+      "rating": "A"
+    },
+    {
+      "index": 31,
+      "unit_id": "flowcontrol/9",
+      "rating": "A"
+    },
+    {
+      "index": 32,
+      "unit_id": "flowcontrol/10",
+      "rating": "A"
+    },
+    {
+      "index": 33,
+      "unit_id": "flowcontrol/11",
+      "rating": "A"
+    },
+    {
+      "index": 34,
+      "unit_id": "flowcontrol/12",
+      "rating": "A"
+    },
+    {
+      "index": 35,
+      "unit_id": "flowcontrol/13",
+      "rating": "A"
+    },
+    {
+      "index": 36,
+      "unit_id": "flowcontrol/14",
+      "rating": "A"
+    },
+    {
+      "index": 37,
+      "unit_id": "moretypes/1",
+      "rating": "B",
+      "finding": "preformatted teaching comments میں پوائنٹر کے ذریعے i پڑھیں p اور پوائنٹر کے ذریعے i مقرر کریں p کے اندر identifier p جملے کے آخر میں معلق ہے اور اردو ترتیب غیر فطری ہے۔ identifier identity برقرار رکھتے ہوئے دونوں comments کو قدرتی اردو میں revise کریں۔"
+    },
+    {
+      "index": 38,
+      "unit_id": "moretypes/2",
+      "rating": "A"
+    },
+    {
+      "index": 39,
+      "unit_id": "moretypes/3",
+      "rating": "A"
+    },
+    {
+      "index": 40,
+      "unit_id": "moretypes/4",
+      "rating": "A"
+    },
+    {
+      "index": 41,
+      "unit_id": "moretypes/5",
+      "rating": "A"
+    },
+    {
+      "index": 42,
+      "unit_id": "moretypes/6",
+      "rating": "A"
+    },
+    {
+      "index": 43,
+      "unit_id": "moretypes/7",
+      "rating": "A"
+    },
+    {
+      "index": 44,
+      "unit_id": "moretypes/8",
+      "rating": "A"
+    },
+    {
+      "index": 45,
+      "unit_id": "moretypes/9",
+      "rating": "A"
+    },
+    {
+      "index": 46,
+      "unit_id": "moretypes/10",
+      "rating": "B",
+      "finding": "آخری حصے میں slice ایکسپریشنز استعمال ہوا ہے، جو glossary mandatory slice → سلائس کی خلاف ورزی ہے۔ اس natural-language concept کو سلائس کے طور پر consistent کریں۔"
+    },
+    {
+      "index": 47,
+      "unit_id": "moretypes/11",
+      "rating": "B",
+      "finding": "آخری حصے میں کسی slice operation استعمال ہوا ہے، جو glossary mandatory slice → سلائس کی خلاف ورزی ہے اور اسی صفحے کی terminology سے بھی inconsistent ہے۔ اسے سلائس کے مطابق revise کریں۔"
+    },
+    {
+      "index": 48,
+      "unit_id": "moretypes/12",
+      "rating": "A"
+    },
+    {
+      "index": 49,
+      "unit_id": "moretypes/13",
+      "rating": "A"
+    },
+    {
+      "index": 50,
+      "unit_id": "moretypes/14",
+      "rating": "A"
+    },
+    {
+      "index": 51,
+      "unit_id": "moretypes/15",
+      "rating": "A"
+    },
+    {
+      "index": 52,
+      "unit_id": "moretypes/16",
+      "rating": "A"
+    },
+    {
+      "index": 53,
+      "unit_id": "moretypes/17",
+      "rating": "A"
+    },
+    {
+      "index": 54,
+      "unit_id": "moretypes/18",
+      "rating": "A"
+    },
+    {
+      "index": 55,
+      "unit_id": "moretypes/19",
+      "rating": "A"
+    },
+    {
+      "index": 56,
+      "unit_id": "moretypes/20",
+      "rating": "A"
+    },
+    {
+      "index": 57,
+      "unit_id": "moretypes/21",
+      "rating": "A"
+    },
+    {
+      "index": 58,
+      "unit_id": "moretypes/22",
+      "rating": "A"
+    },
+    {
+      "index": 59,
+      "unit_id": "moretypes/23",
+      "rating": "A"
+    },
+    {
+      "index": 60,
+      "unit_id": "moretypes/24",
+      "rating": "A"
+    },
+    {
+      "index": 61,
+      "unit_id": "moretypes/25",
+      "rating": "A"
+    },
+    {
+      "index": 62,
+      "unit_id": "moretypes/26",
+      "rating": "A"
+    },
+    {
+      "index": 63,
+      "unit_id": "moretypes/27",
+      "rating": "A"
+    },
+    {
+      "index": 64,
+      "unit_id": "methods/1",
+      "rating": "A"
+    },
+    {
+      "index": 65,
+      "unit_id": "methods/2",
+      "rating": "A"
+    },
+    {
+      "index": 66,
+      "unit_id": "methods/3",
+      "rating": "A"
+    },
+    {
+      "index": 67,
+      "unit_id": "methods/4",
+      "rating": "B",
+      "finding": "正文使用 value receivers / value receiver，而同页 pointer receiver 已译为 پوائنٹر ریسیور；与 glossary mandatory value → قدر、receiver → ریسیور 不一致，需要统一为当前 Urdu terminology。"
+    },
+    {
+      "index": 68,
+      "unit_id": "methods/5",
+      "rating": "A"
+    },
+    {
+      "index": 69,
+      "unit_id": "methods/6",
+      "rating": "A"
+    },
+    {
+      "index": 70,
+      "unit_id": "methods/7",
+      "rating": "B",
+      "finding": "value آرگیومنٹ 和 value receiver 中的 value、receiver 保持英文，与 mandatory value → قدر、receiver → ریسیور 不一致。"
+    },
+    {
+      "index": 71,
+      "unit_id": "methods/8",
+      "rating": "B",
+      "finding": "标题及正文保留英文 value，与 mandatory value → قدر 不一致；需要统一术语并保持自然 Urdu。"
+    },
+    {
+      "index": 72,
+      "unit_id": "methods/9",
+      "rating": "B",
+      "finding": "核心术语仍显示为 _interface_type_；这是可翻译的自然语言强调术语，应遵守 interface → انٹرفیس、type → ٹائپ，并保留 emphasis 结构。"
+    },
+    {
+      "index": 73,
+      "unit_id": "methods/10",
+      "rating": "A"
+    },
+    {
+      "index": 74,
+      "unit_id": "methods/11",
+      "rating": "A"
+    },
+    {
+      "index": 75,
+      "unit_id": "methods/12",
+      "rating": "A"
+    },
+    {
+      "index": 76,
+      "unit_id": "methods/13",
+      "rating": "B",
+      "finding": "کون سا _concrete_ میتھڈ 中强调词 _concrete_ 未本地化；相邻上下文已使用 کانکریٹ ٹائپ，当前形成明显未翻译自然语言与术语不一致。"
+    },
+    {
+      "index": 77,
+      "unit_id": "methods/14",
+      "rating": "B",
+      "finding": "首次定义空接口时仍为 _empty_interface_，而 glossary preferred 为 empty interface → خالی انٹرفیس，同页后文也已使用 خالی انٹرفیس，需要统一。"
+    },
+    {
+      "index": 78,
+      "unit_id": "methods/15",
+      "rating": "B",
+      "finding": "首次核心定义仍为 _type_assertion_，违反 mandatory type assertion → ٹائپ اسرشن；同页后文已正确本地化。"
+    },
+    {
+      "index": 79,
+      "unit_id": "methods/16",
+      "rating": "B",
+      "finding": "首次核心定义仍为 _type_switch_，与 mandatory type switch → ٹائپ سوئچ 不一致；后文已正确本地化。"
+    },
+    {
+      "index": 80,
+      "unit_id": "methods/17",
+      "rating": "A"
+    },
+    {
+      "index": 81,
+      "unit_id": "methods/18",
+      "rating": "A"
+    },
+    {
+      "index": 82,
+      "unit_id": "methods/19",
+      "rating": "A"
+    },
+    {
+      "index": 83,
+      "unit_id": "methods/20",
+      "rating": "A"
+    },
+    {
+      "index": 84,
+      "unit_id": "methods/21",
+      "rating": "A"
+    },
+    {
+      "index": 85,
+      "unit_id": "methods/22",
+      "rating": "A"
+    },
+    {
+      "index": 86,
+      "unit_id": "methods/23",
+      "rating": "A"
+    },
+    {
+      "index": 87,
+      "unit_id": "methods/24",
+      "rating": "B",
+      "finding": "链接标签 Package image 中普通自然语言 Package 未本地化，违反 mandatory package → پیکیج；另外 Rectangle return قدر، Bounds میتھڈ کی، دراصل... 语序明显生硬，需同时自然化 Urdu。"
+    },
+    {
+      "index": 88,
+      "unit_id": "methods/25",
+      "rating": "A"
+    },
+    {
+      "index": 89,
+      "unit_id": "methods/26",
+      "rating": "A"
+    },
+    {
+      "index": 90,
+      "unit_id": "generics/1",
+      "rating": "A"
+    },
+    {
+      "index": 91,
+      "unit_id": "generics/2",
+      "rating": "A"
+    },
+    {
+      "index": 92,
+      "unit_id": "generics/3",
+      "rating": "A"
+    },
+    {
+      "index": 93,
+      "unit_id": "concurrency/1",
+      "rating": "A"
+    },
+    {
+      "index": 94,
+      "unit_id": "concurrency/2",
+      "rating": "B",
+      "finding": "首句使用 channel آپریٹر，与 mandatory channel → چینل 不一致；同页其他位置已使用 چینل/چینلز，属于同页术语不一致。"
+    },
+    {
+      "index": 95,
+      "unit_id": "concurrency/3",
+      "rating": "B",
+      "finding": "首句 چینلز _buffered_ ہو سکتے ہیں 中强调词 _buffered_ 保留英文，而标题及后文已使用 glossary preferred 的 بفرڈ چینل，需要统一并保留 emphasis。"
+    },
+    {
+      "index": 96,
+      "unit_id": "concurrency/4",
+      "rating": "A"
+    },
+    {
+      "index": 97,
+      "unit_id": "concurrency/5",
+      "rating": "A"
+    },
+    {
+      "index": 98,
+      "unit_id": "concurrency/6",
+      "rating": "A"
+    },
+    {
+      "index": 99,
+      "unit_id": "concurrency/7",
+      "rating": "A"
+    },
+    {
+      "index": 100,
+      "unit_id": "concurrency/8",
+      "rating": "A"
+    },
+    {
+      "index": 101,
+      "unit_id": "concurrency/9",
+      "rating": "B",
+      "finding": "首次定义仍使用 _mutual_exclusion_ 和 _mutex_，而 glossary 为 mutual exclusion → باہمی اخراج、mutex → میوٹیکس；同页后文已正确使用 Urdu 术语，形成明显不一致。"
+    },
+    {
+      "index": 102,
+      "unit_id": "concurrency/10",
+      "rating": "A"
+    },
+    {
+      "index": 103,
+      "unit_id": "concurrency/11",
+      "rating": "C",
+      "finding": "页面存在成片未本地化的开放自然语言链接标签，包括 Go Documentation、How to Write Go Code、package reference、Language Spec、slides、Go home page 等；至少 package reference 还违反 mandatory package → پیکیج。需要完整检查并本地化这些 link labels 后重新 QC。"
+    },
+    {
+      "index": 104,
+      "unit_id": "example:basics/numeric-constants.go",
+      "rating": "A"
+    },
+    {
+      "index": 105,
+      "unit_id": "example:basics/type-inference.go",
+      "rating": "A"
+    },
+    {
+      "index": 106,
+      "unit_id": "example:concurrency/channels.go",
+      "rating": "A"
+    },
+    {
+      "index": 107,
+      "unit_id": "example:concurrency/exercise-equivalent-binary-trees.go",
+      "rating": "B",
+      "finding": "注释 tree سے channel ch کو 中自然语言 concept channel 未遵守 mandatory channel → چینل；同时 Walk، tree t میں چلتا ہے... 表达明显生硬。保持 Walk、t、ch 等 identifier 不变，将教学注释调整为自然 Urdu，并使用 چینل。"
+    },
+    {
+      "index": 108,
+      "unit_id": "example:concurrency/exercise-web-crawler.go",
+      "rating": "B",
+      "finding": "多条教学注释存在明显不自然的英文/Urdu 混排，例如 Crawl ... recursively crawl کرتا ہے ...、canned نتائج、populated fakeFetcher。identifier Crawl、Fetcher、fakeFetcher 等必须保持，但普通自然语言应重写为自然 Urdu。"
+    },
+    {
+      "index": 109,
+      "unit_id": "example:concurrency/mutex-counter.go",
+      "rating": "B",
+      "finding": "两处注释使用 map c.v，其中 c.v 是必须保持的 identifier，但自然语言 concept map 应遵守 mandatory map → میپ。修订时保持 c.v 原样。"
+    },
+    {
+      "index": 110,
+      "unit_id": "example:flowcontrol/if-and-else.go",
+      "rating": "A"
+    },
+    {
+      "index": 111,
+      "unit_id": "example:generics/index.go",
+      "rating": "A"
+    },
+    {
+      "index": 112,
+      "unit_id": "example:generics/list.go",
+      "rating": "A"
+    },
+    {
+      "index": 113,
+      "unit_id": "example:methods/exercise-reader.go",
+      "rating": "A"
+    },
+    {
+      "index": 114,
+      "unit_id": "example:methods/exercise-stringer.go",
+      "rating": "A"
+    },
+    {
+      "index": 115,
+      "unit_id": "example:methods/interfaces-are-satisfied-implicitly.go",
+      "rating": "A"
+    },
+    {
+      "index": 116,
+      "unit_id": "example:methods/interfaces.go",
+      "rating": "A"
+    },
+    {
+      "index": 117,
+      "unit_id": "example:moretypes/append.go",
+      "rating": "A"
+    },
+    {
+      "index": 118,
+      "unit_id": "example:moretypes/exercise-fibonacci-closure.go",
+      "rating": "B",
+      "finding": "注释 fibonacci ایک ایسا فنکشن ہے جو واپس کرتا ہے / ایک فنکشن... 使用明显英语式语序，在 Urdu 中不自然。技术语义正确，但需调整为自然的“返回一个函数，而该函数返回 int”语序，同时保持 fibonacci、int identity。"
+    },
+    {
+      "index": 119,
+      "unit_id": "example:moretypes/pointers.go",
+      "rating": "A"
+    },
+    {
+      "index": 120,
+      "unit_id": "example:moretypes/slice-len-cap.go",
+      "rating": "B",
+      "finding": "注释 سلائس کو slice کر کے... 中第二个自然语言 slice 仍为英文，与 mandatory slice → سلائس 以及同一句术语使用不一致。应本地化该操作表达，同时保持代码不变。"
+    },
+    {
+      "index": 121,
+      "unit_id": "example:moretypes/slices-of-slice.go",
+      "rating": "A"
+    },
+    {
+      "index": 122,
+      "unit_id": "example:moretypes/struct-literals.go",
+      "rating": "A"
+    }
+  ]
+}

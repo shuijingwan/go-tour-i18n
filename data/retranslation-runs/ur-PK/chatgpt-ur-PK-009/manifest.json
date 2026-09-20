@@ -1,0 +1,37 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-ur-PK-009",
+  "locale": "ur-PK",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 2,
+  "units": [
+    {
+      "unit_id": "moretypes/1",
+      "unit_kind": "page",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "7706eaf0d46acc79fdad3b7953e5571bf404551d71aaefafd8ba79f5761f9806",
+      "input_path": "inputs/moretypes-1.article",
+      "input_sha256": "b6b916daff7c87dfb9553a2c0e739f4ce3004aa40023a62d15e19ad5a693e67c",
+      "protected_token_count": 20,
+      "previous_snapshot_id": "qc-005",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "TranslationUnit overall technical meaning, structure, and teaching content are intact, but the final natural-language phrase \"pointer arithmetic\" leaves the ordinary technical concept \"pointer\" in English, violating mandatory glossary pointer -\u003e پوائنٹر. Revision must fix that terminology while preserving C, Go, and the exact meaning that Go does not support pointer arithmetic, without adding explanation."
+    },
+    {
+      "unit_id": "methods/3",
+      "unit_kind": "page",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "31c4fd0d80c8f1d96cf3efb1ecc1f9d3c0d1b5b70bb5c23bf7227b7007469588",
+      "input_path": "inputs/methods-3.article",
+      "input_sha256": "fbb300ac3eced02920b3c88f13388f189cd99dd85fa0a3640c4a08b1fd09be32",
+      "protected_token_count": 7,
+      "previous_snapshot_id": "qc-005",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "TranslationUnit overall technical meaning and package/receiver/method constraints are intact, but \"struct\" inside \"non-struct\" remains English ordinary technical language, violating mandatory glossary struct -\u003e اسٹرکٹ. Revision must fix the mandatory terminology while preserving the source negation: methods can also be declared on non-struct types, without changing method/type/receiver/package relationships."
+    }
+  ]
+}

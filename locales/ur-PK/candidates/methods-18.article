@@ -1,0 +1,8 @@
+* مشق: Stringers
+
+`IPAddr` ٹائپ سے `fmt.Stringer` implement کروائیں تاکہ address
+dotted quad کے طور پر print ہو۔
+
+مثلاً، `IPAddr{1,`2,`3,`4}` کو `"1.2.3.4"` کے طور پر print ہونا چاہیے۔
+
+.play methods/exercise-stringer.go

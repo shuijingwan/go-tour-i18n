@@ -1,0 +1,18 @@
+* مشق: برابر Binary Trees
+
+ایک ہی sequence کی قدریں رکھنے والے بہت سے مختلف binary trees ہو سکتے ہیں۔ مثال کے طور پر، یہاں دو binary trees ہیں جو sequence 1, 1, 2, 3, 5, 8, 13 رکھتے ہیں۔
+
+.image /tour/static/img/tree.png
+
+یہ جانچنے کا فنکشن کہ دو binary trees ایک ہی sequence رکھتے ہیں، زیادہ تر زبانوں میں کافی پیچیدہ ہے۔ ہم سادہ حل لکھنے کے لیے Go کی کنکرنسی اور چینلز استعمال کریں گے۔
+
+یہ مثال `tree` پیکیج استعمال کرتی ہے، جو یہ ٹائپ define کرتا ہے:
+
+	type Tree struct {
+		Left  *Tree
+		Value int
+		Right *Tree
+	}
+
+
+وضاحت [[javascript:click('.next-page')][اگلے صفحے]] پر جاری ہے۔

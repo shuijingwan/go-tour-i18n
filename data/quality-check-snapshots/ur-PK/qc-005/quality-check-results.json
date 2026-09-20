@@ -1,0 +1,23 @@
+{
+  "schema_version": 2,
+  "evidence_type": "quality_check_results",
+  "locale": "ur-PK",
+  "snapshot_id": "qc-005",
+  "snapshot_manifest_sha256": "294c3aaffc18e71640995b5dff415a69427e5761082890fe4c746d24ac6cb217",
+  "rubric": "translation-quality/v1",
+  "result_count": 2,
+  "results": [
+    {
+      "index": 37,
+      "unit_id": "moretypes/1",
+      "rating": "B",
+      "finding": "TranslationUnit overall technical meaning, structure, and teaching content are intact, but the final natural-language phrase \"pointer arithmetic\" leaves the ordinary technical concept \"pointer\" in English, violating mandatory glossary pointer -\u003e پوائنٹر. Revision must fix that terminology while preserving C, Go, and the exact meaning that Go does not support pointer arithmetic, without adding explanation."
+    },
+    {
+      "index": 66,
+      "unit_id": "methods/3",
+      "rating": "B",
+      "finding": "TranslationUnit overall technical meaning and package/receiver/method constraints are intact, but \"struct\" inside \"non-struct\" remains English ordinary technical language, violating mandatory glossary struct -\u003e اسٹرکٹ. Revision must fix the mandatory terminology while preserving the source negation: methods can also be declared on non-struct types, without changing method/type/receiver/package relationships."
+    }
+  ]
+}

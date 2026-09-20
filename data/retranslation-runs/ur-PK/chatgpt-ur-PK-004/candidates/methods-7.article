@@ -1,0 +1,21 @@
+* میتھڈز اور پوائنٹر indirection (2)
+
+الٹی سمت میں بھی یہی عمل ہوتا ہے۔
+
+قدر آرگیومنٹ لینے والے فنکشنز کو اسی مخصوص ٹائپ کی قدر لینا ہوتی ہے:
+
+	var v Vertex
+	fmt.Println(AbsFunc(v))  // OK
+	fmt.Println(AbsFunc(&v)) // Compile error!
+
+جبکہ قدر ریسیور والے میتھڈز کو call کرتے وقت ریسیور کے طور پر قدر یا پوائنٹر
+دونوں دیے جا سکتے ہیں:
+
+	var v Vertex
+	fmt.Println(v.Abs()) // OK
+	p := &v
+	fmt.Println(p.Abs()) // OK
+
+اس صورت میں، میتھڈ call `p.Abs()` کو `(*p).Abs()` سمجھا جاتا ہے۔
+
+.play methods/indirection-values.go

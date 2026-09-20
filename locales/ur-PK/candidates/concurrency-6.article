@@ -1,0 +1,14 @@
+* Default انتخاب
+
+`default` case، `select` میں اس وقت چلتا ہے جب کوئی دوسرا case تیار نہ ہو۔
+
+بغیر block ہوئے send یا receive آزمانے کے لیے `default` case استعمال کریں:
+
+	select {
+	case i := <-c:
+		// استعمال کریں i
+	default:
+		// c سے وصول کرنا block کرے گا
+	}
+
+.play concurrency/default-selection.go

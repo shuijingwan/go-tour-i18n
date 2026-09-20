@@ -1,0 +1,33 @@
+{
+  "schema_version": 2,
+  "evidence_type": "quality_check_results",
+  "locale": "ur-PK",
+  "snapshot_id": "qc-003",
+  "snapshot_manifest_sha256": "63456c0b3ddfa51a13069645ddebb4af728fd1b3e9bdce5e4807f86a620e4cdc",
+  "previous_snapshot_id": "qc-002",
+  "rubric": "translation-quality/v1",
+  "result_count": 4,
+  "results": [
+    {
+      "index": 2,
+      "unit_id": "welcome/2",
+      "rating": "A"
+    },
+    {
+      "index": 103,
+      "unit_id": "concurrency/11",
+      "rating": "A"
+    },
+    {
+      "index": 107,
+      "unit_id": "example:concurrency/exercise-equivalent-binary-trees.go",
+      "rating": "A"
+    },
+    {
+      "index": 108,
+      "unit_id": "example:concurrency/exercise-web-crawler.go",
+      "rating": "B",
+      "finding": "上一轮 source 外“内部链接”限定已经删除，canned、populated 等旧问题也保持修复；但当前核心教学注释仍保留不必要的英文 recursive 和 crawl，且谓语先于 url سے شروع ہونے والے صفحات کو，整体仍有明显英语式翻译结构。应保持 Crawl、fetcher、url、depth 等 identifier 不变，用自然 Urdu 完整表达使用 fetcher、从 url 开始递归抓取页面、最多达到 depth 指定的深度，不得新增 source 没有的限定。"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+* Readers
+
+`io` پیکیج `io.Reader` انٹرفیس specify کرتا ہے،
+جو data stream کے read end کی نمائندگی کرتا ہے۔
+
+Go معیاری لائبریری میں اس انٹرفیس کی [[https://cs.opensource.google/search?q=Read%5C(%5Cw%2B%5Cs%5C%5B%5C%5Dbyte%5C)&ss=go%2Fgo][بہت سی implementations]] شامل ہیں، جن میں files، network connections، compressors، ciphers اور دیگر شامل ہیں۔
+
+`io.Reader` انٹرفیس کا ایک `Read` میتھڈ ہے:
+
+	func (T) Read(b []byte) (n int, err error)
+
+`Read` دی گئی byte سلائس میں data بھرتا ہے اور بھرے گئے bytes کی تعداد
+اور ایک error قدر واپس کرتا ہے۔ stream ختم ہونے پر یہ `io.EOF` error واپس کرتا ہے۔
+
+example کوڈ ایک
+[[/pkg/strings/#Reader][`strings.Reader`]]
+بناتا ہے اور اس کا output ایک وقت میں 8 bytes consume کرتا ہے۔
+
+.play methods/reader.go

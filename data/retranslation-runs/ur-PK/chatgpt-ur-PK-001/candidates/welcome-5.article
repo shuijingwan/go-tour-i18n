@@ -1,0 +1,17 @@
+* Go Playground
+
+یہ سیر [[https://play.golang.org/][Go Playground]] پر بنائی گئی ہے، جو [[/][golang.org]] کے سرورز پر چلنے والی ویب سروس ہے۔
+
+یہ سروس ایک Go پروگرام وصول کرتی ہے، اسے کمپائل اور لنک کرتی ہے، sandbox کے اندر پروگرام چلاتی ہے، پھر output واپس کرتی ہے۔
+
+Playground میں چلائے جانے والے پروگراموں پر کچھ حدود ہیں:
+
+- Playground میں وقت 2009-11-10 23:00:00 UTC سے شروع ہوتا ہے (اس تاریخ کی اہمیت معلوم کرنا قاری کے لیے ایک مشق ہے)۔ deterministic output دینے کی وجہ سے پروگرام cache کرنا آسان ہو جاتا ہے۔
+
+- execution time، CPU اور memory usage پر بھی حدود ہیں، اور پروگرام بیرونی network hosts تک رسائی حاصل نہیں کر سکتا۔
+
+Playground Go کی تازہ ترین stable release استعمال کرتا ہے۔
+
+مزید جاننے کے لیے "[[/blog/playground][Go Playground کے اندر]]" پڑھیں۔
+
+.play welcome/sandbox.go

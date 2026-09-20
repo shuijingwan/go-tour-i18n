@@ -1,0 +1,47 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-ur-PK-005",
+  "locale": "ur-PK",
+  "unit_count": 5,
+  "restore_passed": 5,
+  "restore_failed": 0,
+  "validation_passed": 5,
+  "validation_failed": 0,
+  "units": [
+    {
+      "unit_id": "example:concurrency/exercise-equivalent-binary-trees.go",
+      "unit_kind": "example",
+      "status": "passed",
+      "candidate_path": "candidates/concurrency-exercise-equivalent-binary-trees.go",
+      "validation_path": "validation/concurrency-exercise-equivalent-binary-trees.json"
+    },
+    {
+      "unit_id": "example:concurrency/exercise-web-crawler.go",
+      "unit_kind": "example",
+      "status": "passed",
+      "candidate_path": "candidates/concurrency-exercise-web-crawler.go",
+      "validation_path": "validation/concurrency-exercise-web-crawler.json"
+    },
+    {
+      "unit_id": "example:concurrency/mutex-counter.go",
+      "unit_kind": "example",
+      "status": "passed",
+      "candidate_path": "candidates/concurrency-mutex-counter.go",
+      "validation_path": "validation/concurrency-mutex-counter.json"
+    },
+    {
+      "unit_id": "example:moretypes/exercise-fibonacci-closure.go",
+      "unit_kind": "example",
+      "status": "passed",
+      "candidate_path": "candidates/moretypes-exercise-fibonacci-closure.go",
+      "validation_path": "validation/moretypes-exercise-fibonacci-closure.json"
+    },
+    {
+      "unit_id": "example:moretypes/slice-len-cap.go",
+      "unit_kind": "example",
+      "status": "passed",
+      "candidate_path": "candidates/moretypes-slice-len-cap.go",
+      "validation_path": "validation/moretypes-slice-len-cap.json"
+    }
+  ]
+}

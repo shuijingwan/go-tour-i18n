@@ -1,0 +1,7 @@
+* select
+
+`select` اسٹیٹمنٹ ایک goroutine کو متعدد communication operations کا انتظار کرنے دیتا ہے۔
+
+ایک `select` اس وقت تک block رہتا ہے جب تک اس کے cases میں سے کوئی چلنے کے قابل نہ ہو، پھر وہ اس case کو execute کرتا ہے۔ اگر ایک سے زیادہ تیار ہوں تو ایک کو random طور پر منتخب کرتا ہے۔
+
+.play concurrency/select.go

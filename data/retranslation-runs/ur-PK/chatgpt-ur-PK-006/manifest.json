@@ -1,0 +1,37 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-ur-PK-006",
+  "locale": "ur-PK",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 2,
+  "units": [
+    {
+      "unit_id": "welcome/2",
+      "unit_kind": "page",
+      "source_path": "_content/tour/welcome.article",
+      "source_sha256": "709f808ec4cdf683411f349cab7a4886fcae532d1c4e4cc66c8ed68cfb2dd2d3",
+      "input_path": "inputs/welcome-2.article",
+      "input_sha256": "327861965423bc2754b304ecf6c3dc8db5e84ef5c009f2b4f99f276f712e5fff",
+      "protected_token_count": 17,
+      "previous_snapshot_id": "qc-002",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "旧 finding 仅部分修复。新标题 Go دیگر زبانوں میں Go کی سیر 仍不自然且重复 Go；正文已经可发布。只需重新自然化标题，使其清楚表达 Go Tour 的其他语言版本，同时保持 Go / Go کی سیر glossary identity。"
+    },
+    {
+      "unit_id": "concurrency/11",
+      "unit_kind": "page",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "45ef131ede663b1355c0a5933634d46c393f66be8a6450b184f86a62e928a64e",
+      "input_path": "inputs/concurrency-11.article",
+      "input_sha256": "2f1ab189d9f6fce66d5cd585f2b2e97637a47f7258d4730432abd81ec85ecaf0",
+      "protected_token_count": 26,
+      "previous_snapshot_id": "qc-002",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "C",
+      "previous_finding": "旧 C finding 仅部分修复。页面仍保留多处不必要的开放英文自然语言或半翻译链接标签，包括 پیکیج reference、زبان کی specification、Go کنکرنسی patterns、Advanced Go کنکرنسی patterns、Communication کے ذریعے memory share کریں、ایک سادہ programming environment、Web applications لکھنا、First-class functions in Go、Go کا home page。需要完整统一这些开放自然语言 link labels / titles 后再次 re-QC。"
+    }
+  ]
+}

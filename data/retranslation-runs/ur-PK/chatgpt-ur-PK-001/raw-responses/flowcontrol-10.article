@@ -1,0 +1,12 @@
+* switch کی evaluation ترتیب
+
+Switch cases اوپر سے نیچے evaluate ہوتے ہیں اور کسی case کے کامیاب ہوتے ہی رک جاتے ہیں۔
+
+(مثال کے طور پر،
+
+⟪GTI18N_e1479cae_000001⟫
+
+یہ ⟪GTI18N_e1479cae_000002⟫f⟪GTI18N_e1479cae_000003⟫ کو call نہیں کرتا اگر ⟪GTI18N_e1479cae_000004⟫i==0⟪GTI18N_e1479cae_000005⟫ ہو۔)
+
+
+⟪GTI18N_e1479cae_000006⟫

@@ -1,0 +1,21 @@
+* سلائس میں append کرنا
+
+سلائس میں نئے عناصر append کرنا عام ہے، اسی لیے Go built-in
+`append` فنکشن فراہم کرتا ہے۔ built-in پیکیج کی [[/pkg/builtin/#append][documentation]]
+`append` کی وضاحت کرتی ہے۔
+
+	func append(s []T, vs ...T) []T
+
+`s`، `append` کا پہلا پیرامیٹر، ٹائپ `T` کی سلائس ہے، اور باقی
+`T` قدریں ہیں جنہیں سلائس میں append کیا جانا ہے۔
+
+`append` کی حاصل شدہ قدر ایک ایسی سلائس ہے جس میں
+اصل سلائس کے تمام عناصر کے ساتھ دی گئی قدریں بھی شامل ہوتی ہیں۔
+
+اگر `s` کا backing ارے تمام دی گئی قدروں کے لیے بہت چھوٹا ہو تو ایک بڑا
+ارے allocate کیا جائے گا۔ واپس آنے والی سلائس نئے allocate کیے گئے
+ارے کی طرف اشارہ کرے گی۔
+
+(سلائسز کے بارے میں مزید جاننے کے لیے [[/blog/go-slices-usage-and-internals][Slices: usage and internals]] مضمون پڑھیں۔)
+
+.play moretypes/append.go

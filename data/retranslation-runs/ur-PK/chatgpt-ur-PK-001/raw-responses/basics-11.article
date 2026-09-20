@@ -1,0 +1,11 @@
+* بنیادی ٹائپس
+
+⟪GTI18N_836ab1dd_000001⟫ کی بنیادی ٹائپس یہ ہیں:
+
+⟪GTI18N_836ab1dd_000002⟫کا alias⟪GTI18N_836ab1dd_000003⟫⟪GTI18N_836ab1dd_000004⟫کا alias⟪GTI18N_836ab1dd_000005⟫⟪GTI18N_836ab1dd_000006⟫ایک Unicode code point کی نمائندگی کرتا ہے⟪GTI18N_836ab1dd_000007⟫یہ مثال کئی ٹائپس کے متغیرات دکھاتی ہے،
+اور یہ بھی کہ متغیر ڈیکلریشنز کو import اسٹیٹمنٹس کی طرح blocks میں "factored" کیا جا سکتا ہے۔
+
+⟪GTI18N_836ab1dd_000008⟫int⟪GTI18N_836ab1dd_000009⟫، ⟪GTI18N_836ab1dd_000010⟫uint⟪GTI18N_836ab1dd_000011⟫ اور ⟪GTI18N_836ab1dd_000012⟫uintptr⟪GTI18N_836ab1dd_000013⟫ ٹائپس عموماً 32-bit systems پر 32 bits اور 64-bit systems پر 64 bits چوڑی ہوتی ہیں۔
+جب آپ کو integer قدر درکار ہو تو، کسی مخصوص وجہ کے بغیر sized یا unsigned integer ٹائپ کے بجائے ⟪GTI18N_836ab1dd_000014⟫int⟪GTI18N_836ab1dd_000015⟫ استعمال کرنا چاہیے۔
+
+⟪GTI18N_836ab1dd_000016⟫

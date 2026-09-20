@@ -101,6 +101,7 @@ func TestUnknownOwnerTargetsRequireClassification(t *testing.T) {
 func TestReviewedLocaleHomeTargetsAreExact(t *testing.T) {
 	targets := []string{
 		"https://ar-go-dev.shuijingwanwq.com/",
+		"https://bn-go-dev.shuijingwanwq.com/",
 		"https://pt-go-dev.shuijingwanwq.com/",
 		"https://nl-go-dev.shuijingwanwq.com/",
 		"https://de-go-dev.shuijingwanwq.com/",
@@ -116,6 +117,7 @@ func TestReviewedLocaleHomeTargetsAreExact(t *testing.T) {
 		"https://sv-go-dev.shuijingwanwq.com/",
 		"https://th-go-dev.shuijingwanwq.com/",
 		"https://tr-go-dev.shuijingwanwq.com/",
+		"https://ur-go-dev.shuijingwanwq.com/",
 		"https://vi-go-dev.shuijingwanwq.com/",
 		"https://zh-tw-go-dev.shuijingwanwq.com/",
 	}

@@ -1,0 +1,20 @@
+* چینلز
+
+چینلز typed conduit ہیں جن کے ذریعے چینل آپریٹر `<-` کے ساتھ قدریں بھیجی اور وصول کی جا سکتی ہیں۔
+
+	ch <- v    // v کو چینل ch پر بھیجیں۔
+	v := <-ch  // ch سے وصول کریں، اور
+	           // قدر کو v میں assign کریں۔
+
+(Data تیر کی سمت میں بہتا ہے۔)
+
+میپس اور سلائسز کی طرح، چینلز کو استعمال سے پہلے بنانا ضروری ہے:
+
+	ch := make(chan int)
+
+بطور default، send اور receive اس وقت تک block رہتے ہیں جب تک دوسری طرف تیار نہ ہو۔ اس سے goroutines explicit locks یا condition variables کے بغیر synchronize کر سکتی ہیں۔
+
+example کوڈ ایک سلائس کے اعداد کا مجموعہ نکالتا ہے، کام کو دو goroutines میں تقسیم کرتے ہوئے۔
+دونوں goroutines کی computation مکمل ہونے کے بعد یہ آخری نتیجہ calculate کرتا ہے۔
+
+.play concurrency/channels.go

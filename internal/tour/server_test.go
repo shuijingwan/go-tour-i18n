@@ -410,7 +410,7 @@ func TestRenderHomeDistinguishesDevelopmentAndProductionMetadata(t *testing.T) {
 }
 
 func TestHomepageLanguageRegistryAndLocaleProfiles(t *testing.T) {
-	if got, want := len(languageRegistry), 20; got != want {
+	if got, want := len(languageRegistry), 21; got != want {
 		t.Fatalf("language registry length = %d, want %d", got, want)
 	}
 	for i, want := range []LanguageLink{
@@ -433,6 +433,7 @@ func TestHomepageLanguageRegistryAndLocaleProfiles(t *testing.T) {
 		{Locale: "th-TH", EnglishName: "Thai", Autonym: "ไทย", URL: "https://th-go-dev.shuijingwanwq.com/"},
 		{Locale: "zh-TW", EnglishName: "Traditional Chinese", Autonym: "繁體中文（台灣）", URL: "https://zh-tw-go-dev.shuijingwanwq.com/"},
 		{Locale: "tr-TR", EnglishName: "Turkish", Autonym: "Türkçe", URL: "https://tr-go-dev.shuijingwanwq.com/"},
+		{Locale: "ur-PK", EnglishName: "Urdu", Autonym: "اردو", URL: "https://ur-go-dev.shuijingwanwq.com/"},
 		{Locale: "vi-VN", EnglishName: "Vietnamese", Autonym: "Tiếng Việt", URL: "https://vi-go-dev.shuijingwanwq.com/"},
 	} {
 		if got := languageRegistry[i]; got != want {
@@ -731,6 +732,30 @@ func TestHomepageLanguageRegistryAndLocaleProfiles(t *testing.T) {
 	if got, want := localeProfiles["tr-TR"].TimeZone.String(), "Europe/Istanbul"; got != want {
 		t.Fatalf("tr-TR time zone = %q, want %q", got, want)
 	}
+	urLanguages, err := languagesFor("ur-PK")
+	if err != nil {
+		t.Fatal(err)
+	}
+	urCurrent, err := currentLanguage(urLanguages)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if urCurrent != (LanguageLink{Locale: "ur-PK", EnglishName: "Urdu", Autonym: "اردو", Label: "Urdu — اردو", URL: "https://ur-go-dev.shuijingwanwq.com/", Current: true}) {
+		t.Fatalf("ur-PK current language = %+v", urCurrent)
+	}
+	urProfile := localeProfiles["ur-PK"]
+	if got, want := urProfile.TimeZone.String(), "Asia/Karachi"; got != want {
+		t.Fatalf("ur-PK time zone = %q, want %q", got, want)
+	}
+	if got, want := urProfile.TimeLabel, "مقامی وقت"; got != want {
+		t.Fatalf("ur-PK time label = %q, want %q", got, want)
+	}
+	if got, want := urProfile.TimeLabelFormat, " (%s)"; got != want {
+		t.Fatalf("ur-PK time label format = %q, want %q", got, want)
+	}
+	if got, want := urProfile.Direction, "rtl"; got != want {
+		t.Fatalf("ur-PK direction = %q, want %q", got, want)
+	}
 	plLanguages, err := languagesFor("pl-PL")
 	if err != nil {
 		t.Fatal(err)
@@ -788,6 +813,7 @@ func TestHomepageLanguageRegistryAndLocaleProfiles(t *testing.T) {
 		{"sv-SE", "Svenska", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 07:56:11 (lokal tid)", languageRegistry[15].URL},
 		{"zh-TW", "繁體中文（台灣）", "https://www.shuijingwanwq.com/series/go-tour-chinese-edition-development-series/", "2026-08-20 13:56:11（台灣時間）", languageRegistry[17].URL},
 		{"tr-TR", "Türkçe", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 08:56:11 (yerel saat)", languageRegistry[18].URL},
+		{"ur-PK", "اردو", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 10:56:11 (مقامی وقت)", languageRegistry[19].URL},
 	}
 	for _, test := range tests {
 		t.Run(test.locale, func(t *testing.T) {
@@ -813,7 +839,7 @@ func TestHomepageLanguageRegistryAndLocaleProfiles(t *testing.T) {
 				t.Fatal(err)
 			}
 			home := string(homeBytes)
-			labels := []string{"Arabic — العربية", "Bengali — বাংলা", "Brazilian Portuguese — Português (Brasil)", "Dutch — Nederlands", "English", "French — Français", "German — Deutsch", "Hindi — हिन्दी", "Indonesian — Bahasa Indonesia", "Italian — Italiano", "Japanese — 日本語", "Korean — 한국어", "Polish — Polski", "Simplified Chinese — 简体中文", "Spanish — Español", "Swedish — Svenska", "Thai — ไทย", "Traditional Chinese — 繁體中文（台灣）", "Turkish — Türkçe", "Vietnamese — Tiếng Việt"}
+			labels := []string{"Arabic — العربية", "Bengali — বাংলা", "Brazilian Portuguese — Português (Brasil)", "Dutch — Nederlands", "English", "French — Français", "German — Deutsch", "Hindi — हिन्दी", "Indonesian — Bahasa Indonesia", "Italian — Italiano", "Japanese — 日本語", "Korean — 한국어", "Polish — Polski", "Simplified Chinese — 简体中文", "Spanish — Español", "Swedish — Svenska", "Thai — ไทย", "Traditional Chinese — 繁體中文（台灣）", "Turkish — Türkçe", "Urdu — اردو", "Vietnamese — Tiếng Việt"}
 			for _, want := range append(labels, test.logURL, test.published, wantUpstreamTime, "© 2026 永夜", "蜀ICP备13001590号-1", `href="https://beian.miit.gov.cn/"`) {
 				if !strings.Contains(home, want) {
 					t.Errorf("homepage does not contain %q", want)

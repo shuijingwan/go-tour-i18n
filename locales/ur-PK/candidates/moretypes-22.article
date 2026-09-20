@@ -1,0 +1,27 @@
+* میپس میں تبدیلی
+
+میپ `m` میں عنصر شامل یا update کریں:
+
+	m[key] = elem
+
+عنصر حاصل کریں:
+
+	elem = m[key]
+
+عنصر delete کریں:
+
+	delete(m, key)
+
+دو قدروں والی assignment سے جانچیں کہ key موجود ہے:
+
+	elem, ok = m[key]
+
+اگر `key`، `m` میں ہو تو `ok`، `true` ہوتا ہے۔ نہ ہو تو `ok`، `false` ہوتا ہے۔
+
+اگر `key` میپ میں نہ ہو تو `elem`، میپ کی element ٹائپ کی صفر قدر ہوتا ہے۔
+
+*نوٹ:* اگر `elem` یا `ok` ابھی declare نہ ہوئے ہوں تو مختصر declaration form استعمال کی جا سکتی ہے:
+
+	elem, ok := m[key]
+
+.play moretypes/mutating-maps.go

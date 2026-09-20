@@ -1,0 +1,12 @@
+* مشق: rot13Reader
+
+ایک عام pattern ایسا [[⟪GTI18N_11d87614_000001⟫][io.Reader]] ہے جو کسی دوسرے ⟪GTI18N_11d87614_000002⟫io.Reader⟪GTI18N_11d87614_000003⟫ کو wrap کر کے stream کو کسی طرح تبدیل کرتا ہے۔
+
+مثال کے طور پر، [[⟪GTI18N_11d87614_000004⟫][gzip.NewReader]] فنکشن ایک ⟪GTI18N_11d87614_000005⟫io.Reader⟪GTI18N_11d87614_000006⟫ (compressed data کا stream) لیتا ہے اور ایک ⟪GTI18N_11d87614_000007⟫*gzip.Reader⟪GTI18N_11d87614_000008⟫ واپس کرتا ہے جو ⟪GTI18N_11d87614_000009⟫io.Reader⟪GTI18N_11d87614_000010⟫ بھی implement کرتا ہے (decompressed data کا stream)۔
+
+ایک ⟪GTI18N_11d87614_000011⟫rot13Reader⟪GTI18N_11d87614_000012⟫ نافذ کریں جو ⟪GTI18N_11d87614_000013⟫io.Reader⟪GTI18N_11d87614_000014⟫ implement کرے اور ایک ⟪GTI18N_11d87614_000015⟫io.Reader⟪GTI18N_11d87614_000016⟫ سے پڑھتے ہوئے تمام حروف پر [[⟪GTI18N_11d87614_000017⟫][rot13]] substitution cipher لاگو کر کے stream بدل دے۔
+
+⟪GTI18N_11d87614_000018⟫rot13Reader⟪GTI18N_11d87614_000019⟫ ٹائپ آپ کے لیے دی گئی ہے۔
+اسے ⟪GTI18N_11d87614_000020⟫io.Reader⟪GTI18N_11d87614_000021⟫ بنانے کے لیے اس کا ⟪GTI18N_11d87614_000022⟫Read⟪GTI18N_11d87614_000023⟫ میتھڈ implement کریں۔
+
+⟪GTI18N_11d87614_000024⟫

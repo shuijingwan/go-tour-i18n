@@ -1,0 +1,18 @@
+* سلائس کی default حدود
+
+سلائس بناتے وقت high یا low bounds کو چھوڑ کر ان کی default قدریں استعمال کی جا سکتی ہیں۔
+
+low bound کی default قدر صفر اور high bound کی default قدر underlying سلائس یا ارے کی لمبائی ہے۔
+
+ارے
+
+	var a [10]int
+
+کے لیے یہ slice ایکسپریشنز ایک دوسرے کے برابر ہیں:
+
+	a[0:10]
+	a[:10]
+	a[0:]
+	a[:]
+
+.play moretypes/slice-bounds.go

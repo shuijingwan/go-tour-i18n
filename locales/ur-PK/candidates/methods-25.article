@@ -1,0 +1,13 @@
+* مشق: Images
+
+وہ [[/tour/moretypes/18][picture generator]] یاد ہے جو آپ نے پہلے لکھا تھا؟ ایک اور لکھتے ہیں، مگر اس بار یہ data کی سلائس کے بجائے `image.Image` کی implementation واپس کرے گا۔
+
+اپنی `Image` ٹائپ define کریں، [[/pkg/image/#Image][ضروری میتھڈز]] implement کریں، اور `pic.ShowImage` call کریں۔
+
+`Bounds` کو `image.Rectangle` واپس کرنا چاہیے، مثلاً `image.Rect(0,`0,`w,`h)`۔
+
+`ColorModel` کو `color.RGBAModel` واپس کرنا چاہیے۔
+
+`At` کو color واپس کرنا چاہیے؛ پچھلے picture generator میں قدر `v` اس میں `color.RGBA{v,`v,`255,`255}` کے مطابق ہے۔
+
+.play methods/exercise-images.go

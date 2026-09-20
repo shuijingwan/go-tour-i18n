@@ -71,6 +71,7 @@ var ownerContentTargets = map[string]bool{
 // to make any other path or URL variant a site homepage.
 var siteHomeTargets = map[string]bool{
 	"https://ar-go-dev.shuijingwanwq.com/":    true,
+	"https://bn-go-dev.shuijingwanwq.com/":    true,
 	"https://pt-go-dev.shuijingwanwq.com/":    true,
 	"https://nl-go-dev.shuijingwanwq.com/":    true,
 	"https://de-go-dev.shuijingwanwq.com/":    true,
@@ -86,6 +87,7 @@ var siteHomeTargets = map[string]bool{
 	"https://sv-go-dev.shuijingwanwq.com/":    true,
 	"https://th-go-dev.shuijingwanwq.com/":    true,
 	"https://tr-go-dev.shuijingwanwq.com/":    true,
+	"https://ur-go-dev.shuijingwanwq.com/":    true,
 	"https://vi-go-dev.shuijingwanwq.com/":    true,
 	"https://zh-tw-go-dev.shuijingwanwq.com/": true,
 }
