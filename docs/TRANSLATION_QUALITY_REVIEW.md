@@ -336,7 +336,7 @@ go run -mod=readonly ./cmd/tour-i18n retranslation review supersede \
 
 ## Reviewer
 
-`reviewer` 是审核主体标识，不是账号或权限系统。当前语言生成可以由普通 ChatGPT GPT-5.6 Sol + High 执行，Codex GPT-5.6 Sol + High 保留为 fallback；ChatGPT 统一承担 Quality Check。Quality Check 必须来自与该 locale Generation session 独立的 Reviewer session：该 session 不得参与该 locale 的 glossary、UI / metadata、TranslationUnit initial / revision / retry 或 Course SEO language generation。Legacy Final Review 的审核主体同样必须独立重新读取 source、candidate 和相关 evidence 后执行审核。
+`reviewer` 是审核主体标识，不是账号或权限系统。每个 locale 的 Generation provider 可以在正式 generation 开始前选为普通 ChatGPT 或 Codex，均使用 GPT-5.6 Sol + High；独立 ChatGPT GPT-5.6 Sol + High Reviewer session 统一承担 Quality Check。Quality Check 必须来自与该 locale Generation session 独立的 Reviewer session：该 session 不得参与该 locale 的 glossary、UI / metadata、TranslationUnit initial / revision / retry、Course SEO language generation 或任何 replacement generation。Legacy Final Review 的审核主体同样必须独立重新读取 source、candidate 和相关 evidence 后执行审核。
 
 同一个 generation-independent Reviewer session 可以先完成 [Glossary Review](GLOSSARY_REVIEW.md)，再承担 TranslationUnit Quality Check、revision re-QC 与 [Locale Surface Review](LOCALE_SURFACE_REVIEW.md)；三个 gate 仍各自使用自己的范围和 evidence，不要求再建立其他 reviewer session。B/C/D finding 必须回到 Generation session 产生 replacement，再由本地终端完成 revision、process、validation 与新 Snapshot。只要 Reviewer session 没有参与 replacement generation，它可以继续 re-QC；不得直接修改 candidate、生成 replacement 后批准自己的结果，或因为上一轮已经审核过就自动批准 revision。
 

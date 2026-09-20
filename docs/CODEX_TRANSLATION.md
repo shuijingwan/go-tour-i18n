@@ -1,6 +1,14 @@
-# Codex TranslationUnit 翻译执行规范
+# Codex 正式语言生成执行规范
 
-本文档是 Codex 作为正式语言生成 fallback 执行 TranslationUnit 翻译时的仓库内规范，不是需要用户在每次会话中复制的 Prompt 模板。普通 ChatGPT + Remote Desktop Commander 的并列执行规范见 [ChatGPT 正式语言生成执行规范](CHATGPT_LANGUAGE_GENERATION.md)。TranslationUnit 的定义和结构规则以 [翻译任务规范](TRANSLATION_TASK_SPEC.md) 为准。
+本文档定义某个 locale 在开始正式 generation 前选定 `provider=codex` 后，Codex **GPT-5.6 Sol + High** 执行正式语言生成时的仓库内规范，不是需要用户在每次会话中复制的 Prompt 模板。普通 ChatGPT + Remote Desktop Commander 的并列执行规范见 [ChatGPT 正式语言生成执行规范](CHATGPT_LANGUAGE_GENERATION.md)。两种 provider 共用相同的 TranslationUnit contract、validation、Quality Check、revision、A-only、promotion、Course SEO semantic scope 和 Production gate；TranslationUnit 的定义和结构规则以 [翻译任务规范](TRANSLATION_TASK_SPEC.md) 为准。
+
+## Generation role 与职责边界
+
+Codex 被选为某个 locale 的 Generation provider 后，同一个长期 Generation role/session 负责该 locale 的 glossary generation / revision、UI catalog、article metadata、其他 locale-level 文案、TranslationUnit initial / revision / 需要新译文的 retry、schema v2 Course SEO localization / refresh / revise replacement，以及 Locale Surface Review finding replacement generation。原则上整个 locale 持续使用 Codex；只有真实额度耗尽、provider/tool failure 或正式文档明确支持的恢复条件出现时才改变执行环境。不得仅为临时节省额度随意切换，不得新增虚假 generation 记录，Course SEO 必须记录真实 provenance，也不得新增 provider selection schema、receipt、machine gate 或 locale state 字段。
+
+Codex 另有独立的 repository-level code/docs/config/schema/workflow/tooling 与复杂 failure diagnosis 职责；该职责不等于任何 locale 自动选择 Codex 作为 Generation provider。provider-neutral 的选择规则见 [多语言翻译流程](TRANSLATION_WORKFLOW.md) 与 [新增 Locale 执行手册](NEW_LOCALE_RUNBOOK.md)。
+
+正式 Reviewer 路径继续使用从未参与该 locale language generation 的独立 ChatGPT **GPT-5.6 Sol + High** session。它可以连续承担 Glossary Review、TranslationUnit Quality Check、revision re-QC 与 Locale Surface Review；Codex Generation role 不得审核并批准自己的 glossary、candidate 或 replacement，Reviewer 也不得生成 replacement 后批准自己的输出。
 
 ## 首次正式翻译
 
@@ -17,13 +25,19 @@ retranslation export（先验证 current Glossary Review coverage）
 
 manifest、全部 inputs 与 locale glossary 是不可拆分的正式模型输入。Codex 必须在翻译前完整读取 glossary，并遵守其中的 `mandatory`、`preferred`、`forbidden` 和 `keep`；glossary 不是仅供 validator 后置检查的材料。
 
-Glossary 的制定、独立审核与 machine gate 以 [Glossary Review 规范](GLOSSARY_REVIEW.md) 为准。Codex fallback 不得用自己的 generation 上下文审核并批准同一 glossary。
+Glossary 的制定、独立审核与 machine gate 以 [Glossary Review 规范](GLOSSARY_REVIEW.md) 为准。Codex Generation role 不得用自己的 generation 上下文审核并批准同一 glossary。
 
-## Codex 5 小时额度与 fallback 分工
+## Codex 额度边界
 
-新增 locale 的运营目标是单个 Codex 5 小时额度窗口使用不超过 100%。这是成本/运营目标，不是 TranslationUnit quality gate：不得为此降低 A-only Quality Check、跳过 QC、减少必要 revision，或将正式翻译模型从 **GPT-5.6 Sol + High** 自动降级。暂时不设置新增 locale 的硬 wall-clock 时间目标。
+新增 locale 的运营目标是单个 Codex 5 小时额度窗口使用不超过 100%。开始正式 generation 前，应把当前 5 小时额度、周额度、历史实测成本和并发计划纳入 provider selection。这些只是成本/运营约束，不是 TranslationUnit quality gate：不得为此降低 A-only Quality Check、跳过 QC、减少必要 revision，或将正式翻译模型从 **GPT-5.6 Sol + High** 自动降级。暂时不设置新增 locale 的硬 wall-clock 时间目标。
 
-普通 ChatGPT 是语言生成的推荐执行环境；Codex 保留为 fallback。在主要 model-intensive Codex 阶段（TranslationUnit translation / revision、需重新生成译文的 retry、较大的代码理解任务）前后观察当前 5 小时额度。当前窗口已使用约 80% 时，不再启动新的非必要 Codex 重任务；对新的大型 translation、revision 或 code-understanding 任务，若剩余额度明显不足，应留到下一额度窗口，而不是硬顶到超过 100%。build、不会调用模型的 process / revalidate、status、validation、publish、deploy、verifier、checksum、curl、Git、assets 等确定性终端工作可以继续，不因 Codex quota 停止。
+在主要 model-intensive Codex 阶段（TranslationUnit translation / revision、需重新生成译文的 retry、较大的代码理解任务）前后观察当前 5 小时额度与周额度。当前 5 小时窗口已使用约 80% 时，不再启动新的非必要 Codex 重任务；对新的大型 translation、revision 或 code-understanding 任务，若剩余额度明显不足，应留到下一额度窗口，而不是硬顶到超过 100%。额度真正耗尽时可以依 provider-neutral 恢复规则改变执行环境，但必须保留真实 provenance 与全部质量 gate。build、不会调用模型的 process / revalidate、status、validation、publish、deploy、verifier、checksum、curl、Git、assets 等确定性终端工作由维护者 Local terminal 执行，不因 Codex quota 停止。
+
+## 非 TranslationUnit 与 Course SEO generation
+
+Codex 生成或修订 glossary、UI catalog、article metadata 和其他 locale-level 文案时，必须读取对应完整 source/context 与当前完整 locale glossary，并遵守 [Glossary Review 规范](GLOSSARY_REVIEW.md) 和 [Locale Surface Review](LOCALE_SURFACE_REVIEW.md) 的独立审核边界。
+
+首次 schema v2 Course SEO localization 以及后续 refresh / revise replacement 时，Codex 已直接工作在当前 repository 中，必须完整读取当前 canonical source descriptions、每个 Page 的完整 English source、完整 ready canonical target、完整 locale glossary、locale identity 和 current authority。Codex 不需要为了 Course SEO 生成或读取面向 ChatGPT transport 的 `course-metadata localization-bundle` ZIP。canonical English description 仍是唯一 semantic-scope authority；正式 `course-metadata.json` 仍只由 Local terminal 通过 assemble / refresh / revise CLI 机械写入，并记录真实 `provider=codex`、`model=gpt-5.6-sol-high` provenance。
 
 ## 新增 locale 的首次 Page batch
 

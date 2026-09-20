@@ -46,9 +46,11 @@ locale / domain / CDN 决策
 
 ## 执行成本与协作
 
-新增 locale 始终以质量 gate 为先。每个 locale 默认维护 **1 个长期 Generation session + 1 个独立长期 Reviewer session + 本地终端**：Generation session 只产生或修订语言内容；Reviewer session 执行 Glossary Review、TranslationUnit Quality Check、revision re-QC 与 Locale Surface Review；本地终端执行全部 deterministic lifecycle。同一个未参与该 locale 语言 generation 的 Reviewer session 可以连续承担三类审核，不要求拆分更多 reviewer conversation/session；各 gate 范围和 evidence 独立，reviewer finding 必须回到 Generation session 产生 replacement，再经本地终端处理后返回 Reviewer session 复审。
+新增 locale 始终以质量 gate 为先。每个 locale 固定维护 **1 个长期 Generation role/session + 1 个独立长期 Reviewer role/session + 维护者 Local terminal**：Generation session 只产生或修订语言内容；Reviewer session 执行 Glossary Review、TranslationUnit Quality Check、revision re-QC 与 Locale Surface Review；Local terminal 执行全部 deterministic lifecycle。同一个从未参与该 locale 语言 generation 的 Reviewer session 可以连续承担这些审核，不要求拆分更多 reviewer conversation/session；各 gate 范围和 evidence 独立，reviewer finding 必须回到 Generation session 产生 replacement，再经 Local terminal 处理后返回 Reviewer session 复审。
 
-语言生成优先使用普通 ChatGPT GPT-5.6 Sol + High + Remote Desktop Commander，Codex GPT-5.6 Sol + High 保留为 fallback；不得因额度或执行环境弱化任何 gate。仓库已有正式工具与已确认事实直接复用，不为新增 locale 建立硬 wall-clock 时间目标。详细会话职责以 [ChatGPT 正式语言生成执行规范](CHATGPT_LANGUAGE_GENERATION.md) 为准，Codex fallback 的额度观察和停止边界见 [Codex 翻译执行规范](CODEX_TRANSLATION.md)。canonical English source-description extraction / review 是跨 locale 共享 authority，不属于上述单 locale 固定配对；其 current/stale 规则仍只按 [课程页正式 SEO Metadata 规范](COURSE_SEO_METADATA.md) 执行，不因每个新增 locale 默认重做。
+在开始该 locale 的正式 generation 前，根据当时真实的 ChatGPT 可用额度、Codex 5 小时额度与周额度、Remote Desktop Commander 月额度、历史实测成本和并发计划，选择 `chatgpt` 或 `codex` 作为 Generation provider；两者都使用 **GPT-5.6 Sol + High**。一旦开始正式 generation，原则上 glossary generation / revision、UI catalog、article metadata、其他 locale-level 文案、TranslationUnit initial / revision / 需要新译文的 retry、schema v2 Course SEO localization / refresh / revise replacement，以及 Locale Surface Review finding replacement generation 全程沿用同一 provider。不得仅为临时节省额度随意切换；只有真实额度耗尽、provider/tool failure 或仓库明确支持的恢复条件出现时才允许改变执行环境，并必须保留真实 provenance，不新增虚假 generation 记录，不弱化任何 gate。该选择是协作决定，不新增 schema、receipt、machine gate 或 locale state 字段。
+
+正式 Reviewer 路径继续使用独立的普通 ChatGPT **GPT-5.6 Sol + High** session；Reviewer 从未参与该 locale language generation 时才可连续承担上述审核，且不得生成 replacement 后批准自己的输出。provider 为 `chatgpt` 时的执行规范见 [ChatGPT 正式语言生成执行规范](CHATGPT_LANGUAGE_GENERATION.md)，provider 为 `codex` 时见 [Codex 正式语言生成执行规范](CODEX_TRANSLATION.md)。仓库已有正式工具与已确认事实直接复用，不为新增 locale 建立硬 wall-clock 时间目标。canonical English source-description extraction / review 是跨 locale 共享 authority，不属于上述单 locale 固定配对；其 current/stale 规则仍只按 [课程页正式 SEO Metadata 规范](COURSE_SEO_METADATA.md) 执行，不因每个新增 locale 默认重做。
 
 ## 1. 冻结语言与生产身份
 
@@ -103,7 +105,7 @@ go run -mod=readonly ./cmd/tour-i18n glossary-review check --locale <locale>
 
 初始化生成的 TODO 只是不可发布的工作标记，不是译文；进入 export 前必须完成并通过 glossary review，进入 Surface Review 前必须完成全部 UI 与 metadata 语言内容。
 
-生成后按以下边界补充语言内容，不复制其他 locale 的语言内容。普通 ChatGPT Generation session 先制定 glossary；Glossary Review PASS 后才生成 UI catalog 与 article metadata。正式 Glossary Review 和 Locale Surface Review 均必须由不同于 Generation session 的 Reviewer session 完成：
+生成后按以下边界补充语言内容，不复制其他 locale 的语言内容。选定的 Generation session 先制定 glossary；Glossary Review PASS 后才生成 UI catalog 与 article metadata。正式 Glossary Review 和 Locale Surface Review 均必须由不同于 Generation session 的独立 ChatGPT Reviewer session 完成：
 
 - `locales/<locale>/locale.json`：locale 身份；
 - `internal/tour/ui/<locale>.json`：完整公共 UI catalog，key 与 `plain` / `rich` kind 必须匹配英文 source `internal/tour/ui/en.json`，正式 locale 不使用英文 fallback；
@@ -124,15 +126,15 @@ go run -mod=readonly ./cmd/tour-i18n status check --locale <locale>
 
 ## 4. 执行 TranslationUnit workflow
 
-TranslationUnit 工作从 [多语言翻译流程](TRANSLATION_WORKFLOW.md) 进入。正式翻译前还必须读取 [翻译任务规范](TRANSLATION_TASK_SPEC.md)、[Retranslation 执行手册](RETRANSLATION_RUNBOOK.md)、当前执行环境规范（[ChatGPT 正式语言生成执行规范](CHATGPT_LANGUAGE_GENERATION.md) 或 [Codex 翻译执行规范](CODEX_TRANSLATION.md)）、当前 batch manifest、manifest 列出的全部 inputs，以及目标 locale glossary。
+TranslationUnit 工作从 [多语言翻译流程](TRANSLATION_WORKFLOW.md) 进入。正式翻译前还必须读取 [翻译任务规范](TRANSLATION_TASK_SPEC.md)、[Retranslation 执行手册](RETRANSLATION_RUNBOOK.md)、当前执行环境规范（[ChatGPT 正式语言生成执行规范](CHATGPT_LANGUAGE_GENERATION.md) 或 [Codex 正式语言生成执行规范](CODEX_TRANSLATION.md)）、当前 batch manifest、manifest 列出的全部 inputs，以及目标 locale glossary。
 
-首次 Page batch 使用当前推荐的 60-Page 基线；Page 顺序、Examples 独立、revision/retry 边界和调整条件只以 [Codex 翻译执行规范](CODEX_TRANSLATION.md#新增-locale-的首次-page-batch) 为准，本手册不重复细则。ChatGPT 路径 export 必须显式使用 `--generator chatgpt`。
+首次 Page batch 使用当前推荐的 60-Page 基线；Page 顺序、Examples 独立、revision/retry 边界和调整条件只以 [Codex 正式语言生成执行规范](CODEX_TRANSLATION.md#新增-locale-的首次-page-batch) 为准，本手册不重复细则。ChatGPT 路径 export 必须显式使用 `--generator chatgpt`；Codex 路径可使用兼容默认值或显式 `--generator codex`。batch prefix 只是现有执行路径与归档命名，不新增 provider provenance 字段。
 
 保持既有顺序：
 
 ```text
 export
-→ ChatGPT generation 或 Codex fallback
+→ 选定的 ChatGPT 或 Codex Generation provider
 → process
 → automatic validation
 → Candidate Snapshot
@@ -151,15 +153,21 @@ promotion 完成后，先执行 canonical English source-description 的 current
 ```sh
 go run -mod=readonly ./cmd/tour-i18n course-metadata source check
 go run -mod=readonly ./cmd/tour-i18n course-metadata source review-check
+```
 
+当 Generation provider 为 `chatgpt` 时，再由 Local terminal 生成面向 ChatGPT transport 的 deterministic ZIP：
+
+```sh
 go run -mod=readonly ./cmd/tour-i18n course-metadata localization-bundle \
   --locale <locale> \
   --output /tmp/<locale>-course-seo-localization-generation.zip
 ```
 
-把该 ZIP 直接上传到长期 Generation session。只要它来自未变化的正式 working tree 且 `manifest.json`/SHA-256 完整，Generation session 直接读取附件内 103/103 Page full context、完整 glossary、locale identity 与当前 authority，不再通过 Remote Desktop Commander 分批读取同一批输入；正式输入变化后必须重新导出 ZIP。
+把该 ZIP 直接上传到长期 ChatGPT Generation session。只要它来自未变化的正式 working tree 且 `manifest.json`/SHA-256 完整，Generation session 直接读取附件内 103/103 Page full context、完整 glossary、locale identity 与当前 authority，不再通过 Remote Desktop Commander 分批读取同一批输入；正式输入变化后必须重新导出 ZIP。该 ZIP 只是 ChatGPT transport optimization。
 
-然后让普通 ChatGPT GPT-5.6 Sol + High 为每个 Page 读取 canonical English description、完整 English source、完整最终 ready canonical locale target、完整 locale glossary、目标 locale identity 和 `course-seo-localization-v2` contract，输出完整 `page_id → localized description`。canonical description 仍是唯一 semantic-scope authority；source/target 只用于技术语义、正文术语、自然度与实际内容对齐，不授权重新摘要。同一 generation session/batch 可处理多页，但不得跨 Page 补充、混合或推断语义。使用正式离线命令组装 v2 asset；target body 由命令机械读取并计算 `target_sha256` freshness，与其作为生成上下文的职责互不替代。普通 ChatGPT provenance 使用 `--provider chatgpt --model gpt-5.6-sol-high`：
+当 Generation provider 为 `codex` 时，不生成或读取上述 ZIP。Codex 已直接工作在当前 repository 中，必须完整读取当前 canonical source descriptions、全部 English Page source、全部 ready canonical target、完整 locale glossary、locale identity 和 current authority。
+
+随后由选定的 **GPT-5.6 Sol + High** Generation provider 为每个 Page 输出完整 `page_id → localized description`。canonical description 仍是唯一 semantic-scope authority；source/target 只用于技术语义、正文术语、自然度与实际内容对齐，不授权重新摘要。同一 generation session/batch 可处理多页，但不得跨 Page 补充、混合或推断语义。使用正式离线命令组装 v2 asset；target body 由命令机械读取并计算 `target_sha256` freshness，与其作为生成上下文的职责互不替代。真实 provenance 必须与本 locale 实际 Generation provider 一致：ChatGPT 使用 `--provider chatgpt --model gpt-5.6-sol-high`，Codex 使用 `--provider codex --model gpt-5.6-sol-high`：
 
 ```sh
 go run -mod=readonly ./cmd/tour-i18n course-metadata assemble \
@@ -213,7 +221,7 @@ go run -mod=readonly ./cmd/tour-i18n preview \
 scripts/verify-preview-browser.py http://127.0.0.1:<port>/ <locale>
 ```
 
-对于上述 browser verifier，以及后续 `publish`、shared-assets Production、`first-production.sh`、IndexNow closeout 等可能持续数十秒到数分钟的确定性长任务，普通 ChatGPT + Remote Desktop Commander 默认只提供一条完整可粘贴命令，由维护者在本地终端执行并回传终态；不要仅为等待完成而反复远程轮询。只有维护者明确要求代执行，或真实 failure evidence 出现后需要诊断/恢复时，才切回 Remote Desktop Commander。该协作规则不改变脚本内部任何 gate、receipt、retry 或 HUMAN gate。
+Remote Desktop Commander 只作为 ChatGPT 的辅助 transport、短机械操作和 failure diagnosis 工具，不表示 ChatGPT 默认接管 Local terminal 或 Codex 工作。对于上述 browser verifier，以及后续 `publish`、shared-assets Production、`first-production.sh`、IndexNow closeout 等可能持续数十秒到数分钟的确定性长任务，普通 ChatGPT + Remote Desktop Commander 默认只提供一条完整可粘贴命令，由维护者在本地终端执行并回传终态；不要仅为等待完成而反复远程轮询。只有维护者明确要求代执行，或真实 failure evidence / mutation-unknown 出现后需要诊断恢复时，才切回 Remote Desktop Commander。该协作规则不改变脚本内部任何 gate、receipt、retry 或 HUMAN gate。
 
 执行 [Locale Surface Review](LOCALE_SURFACE_REVIEW.md) 时，先以 exporter 提供的英文/source、目标资产和 glossary 为正式输入，完整审核 TranslationUnit 之外的 UI catalog、article metadata、首页及其他 locale-level 文案；不得用浏览器抽查替代。严格顺序为 promotion → course metadata → build → surface-review reviewer-bundle（standalone export 仅用于诊断）→ ChatGPT Locale Surface Review A → 必要 revision/fix + 重新生成 reviewer bundle → 写 Markdown evidence → record current A gate → full locale preview → automated rendered acceptance → visual HUMAN gate → publish。机器已经覆盖的 canonical、sitemap、language selector URL、Run / Format / Reset、SPA、`/socket` 和 desktop/mobile overflow 不由人工重复。
 

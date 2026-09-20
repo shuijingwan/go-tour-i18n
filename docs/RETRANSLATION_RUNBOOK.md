@@ -2,7 +2,7 @@
 
 ## 1. 当前正式生产流程
 
-当前正式 TranslationUnit 翻译流程支持两个语言生成执行环境：普通 ChatGPT GPT-5.6 Sol + High 配合 Remote Desktop Commander 为推荐路径，Codex GPT-5.6 Sol + High 为 fallback。两者共用同一 TranslationUnit workflow 与全部质量 gate：
+当前正式 TranslationUnit 翻译流程支持两个语言生成执行环境：普通 ChatGPT 与 Codex，均使用 GPT-5.6 Sol + High。每个 locale 在开始正式 generation 前依 [多语言翻译流程](TRANSLATION_WORKFLOW.md) 选择并原则上持续使用其中一个 Generation provider；两者共用同一 TranslationUnit workflow 与全部质量 gate：
 
 ```text
 current Glossary Review coverage
@@ -17,7 +17,7 @@ current Glossary Review coverage
 → promote
 ```
 
-模型与 reasoning 由用户在对应 UI 中选择，正式语言生成不得低于 GPT-5.6 Sol + High。provider-independent 输入/输出见 [翻译任务规范](TRANSLATION_TASK_SPEC.md)；ChatGPT staging 与会话隔离见 [ChatGPT 正式语言生成执行规范](CHATGPT_LANGUAGE_GENERATION.md)；Codex fallback 见 [Codex 翻译执行规范](CODEX_TRANSLATION.md)。
+模型与 reasoning 由用户在对应 UI 中选择，正式语言生成不得低于 GPT-5.6 Sol + High。provider-independent 输入/输出见 [翻译任务规范](TRANSLATION_TASK_SPEC.md)；provider 为 `chatgpt` 时的 staging 与会话隔离见 [ChatGPT 正式语言生成执行规范](CHATGPT_LANGUAGE_GENERATION.md)；provider 为 `codex` 时见 [Codex 正式语言生成执行规范](CODEX_TRANSLATION.md)。
 
 ## 2. Export 与首次翻译
 
@@ -31,7 +31,7 @@ go run -mod=readonly ./cmd/tour-i18n glossary-review check --locale <locale>
 
 只有 `status check` 与 Glossary Review check 都通过后，才进入首次 `retranslation export`。`status init` 只创建缺失的初始 `status.tsv`，不得用于重置或同步已有 locale；已有 locale 的 source 更新与状态迁移继续走现有正式流程。
 
-使用 `retranslation export` 创建 batch。ChatGPT 正式路径必须显式传 `--generator chatgpt`；未指定 generator 时为向后兼容的 `codex`：
+使用 `retranslation export` 创建 batch。provider 为 ChatGPT 时必须显式传 `--generator chatgpt`；provider 为 Codex 时可显式传 `--generator codex`，未指定 generator 仍是向后兼容的 `codex`。下例展示 ChatGPT 路径：
 
 Exporter 对第一次及后续正式 export 都执行同一个 current Glossary Review gate，并在创建 batch 前 fail closed。既有 live locale 仅通过固定、SHA-bound 的一次性 legacy migration coverage 保持兼容；未来 locale 不能凭任意 matching Locale Surface Review A-gate 动态绕过。
 
@@ -43,7 +43,7 @@ go run -mod=readonly ./cmd/tour-i18n retranslation export \
 
 开始翻译前，当前生成执行者必须读取当前 batch 的：
 
-新增 locale 首次 Page batch 的推荐生产基线、正式顺序、60-Page 上限、Examples 分离、revision 范围和未来调整条件，以 [Codex 翻译执行规范](CODEX_TRANSLATION.md#新增-locale-的首次-page-batch) 为唯一执行规则。首次 Page export 必须显式传 `--unit-kind page --limit 60`；不得混合 Page 与 Example，也不做均衡分片。Example 自动选批、显式 `--id` 选批和全部 `--allow-reexport` revision batch 始终最多 30 个。
+新增 locale 首次 Page batch 的推荐生产基线、正式顺序、60-Page 上限、Examples 分离、revision 范围和未来调整条件，以 [Codex 正式语言生成执行规范](CODEX_TRANSLATION.md#新增-locale-的首次-page-batch) 为唯一执行规则。首次 Page export 必须显式传 `--unit-kind page --limit 60`；不得混合 Page 与 Example，也不做均衡分片。Example 自动选批、显式 `--id` 选批和全部 `--allow-reexport` revision batch 始终最多 30 个。
 
 未传 `--batch-id` 时，batch 根据 generator 自动命名为 `codex-<locale>-NNN` 或 `chatgpt-<locale>-NNN`。两种 prefix 共享同一 numeric namespace；自动编号取实际最大序号后递增，重复 numeric suffix fail closed。同一 TranslationUnit 的 latest export/source revision 也按 numeric suffix 选择，不依赖 prefix 字典序。显式 `--batch-id` 的既有兼容行为、历史 batch 名称、manifest 和 evidence 均保持不变；manifest 不新增 provider/model/reasoning provenance。
 
@@ -51,7 +51,7 @@ go run -mod=readonly ./cmd/tour-i18n retranslation export \
 2. manifest 列出的全部 `inputs/*`；
 3. `locales/<locale>/glossary.yaml`。
 
-这三部分不可拆分。每个 TranslationUnit 独立翻译：Page 从 `inputs/*.article` 生成 `raw-responses/*.article`；Example 从 `inputs/*.txt` 生成 `raw-responses/*.txt`。ChatGPT 必须先在 batch 内隐藏 staging directory 完成全批次并核对后，再把目录原子 rename/move 为正式 `raw-responses/`；Codex fallback 继续按其执行规范直接写入。TranslationUnit 是翻译、validation 和 review 的最小单位，batch 只是执行与归档容器。
+这三部分不可拆分。每个 TranslationUnit 独立翻译：Page 从 `inputs/*.article` 生成 `raw-responses/*.article`；Example 从 `inputs/*.txt` 生成 `raw-responses/*.txt`。ChatGPT provider 必须先在 batch 内隐藏 staging directory 完成全批次并核对后，再把目录原子 rename/move 为正式 `raw-responses/`；Codex provider 按其执行规范直接写入。TranslationUnit 是翻译、validation 和 review 的最小单位，batch 只是执行与归档容器。
 
 ## 3. Process 与 automatic validation
 
@@ -177,12 +177,12 @@ Quality Check 的质量修改不得使用 retry。Revision 流程为：
 
 ```bash
 go run -mod=readonly ./cmd/tour-i18n retranslation export \
-  --locale <locale> --generator chatgpt --allow-reexport \
+  --locale <locale> --generator <chatgpt|codex> --allow-reexport \
   --previous-snapshot-id <snapshot-id> \
   --id <unit-id> [--id <unit-id> ...]
 ```
 
-上例是推荐的 ChatGPT revision 路径；Codex fallback 使用默认 `codex` 或显式 `--generator codex`。两种路径的 revision eligibility 与 manifest feedback 字段完全相同。
+命令使用该 locale 当前选定的 Generation provider；ChatGPT 必须显式使用 `chatgpt`，Codex 使用 `codex`。两种路径的 revision eligibility 与 manifest feedback 字段完全相同。
 
 新正式 revision 模式只允许以下 Unit：
 

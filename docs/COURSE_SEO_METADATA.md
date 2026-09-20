@@ -215,7 +215,7 @@ canonical English description 是 localized description 唯一的 semantic-scope
 
 同一 generation session 或 batch 可以处理多个 Page；每个 Page 必须独立使用自己的 canonical description 决定 semantic scope，不得从同 batch 的其他 Page 补充、混合或推断语义，也不得混淆 Page identity。
 
-为避免普通 ChatGPT 通过 Remote Desktop Commander 分批重复读取 103 Page full context，首次 schema v2 localization 提供 deterministic transport：
+当 Generation provider 为 `chatgpt` 时，为避免普通 ChatGPT 通过 Remote Desktop Commander 分批重复读取 103 Page full context，首次 schema v2 localization 提供 deterministic transport：
 
 ```sh
 go run -mod=readonly ./cmd/tour-i18n course-metadata localization-bundle \
@@ -225,11 +225,11 @@ go run -mod=readonly ./cmd/tour-i18n course-metadata localization-bundle \
 
 命令只读当前正式输入，不调用模型、不生成 localized description、不修改 `course-metadata.json`，也不新增 gate。它要求 current canonical source-description review authority、完整 ready Page set、当前 glossary 与 locale identity 均可验证，然后生成 deterministic ZIP：`manifest.json` 绑定所有成员 SHA-256；`course-seo-localization.json` 逐 Page 包含 canonical description、完整 English source、完整 ready target 与对应 identity；`formal/source-descriptions.json` 保留 canonical asset 原始正式字节，`formal/` 还包含完整 glossary 和 `locale.json`；`authority/` 包含当前 `AGENTS.md`、ChatGPT generation 规范与本规范。输入变化后必须重新导出，不得复用旧 ZIP。
 
-当 ZIP 来自未变化的正式 working tree 且 manifest/hash 完整时，Generation session 对附件的完整读取即满足这批首次 localization context 的传输要求，不再通过 Remote Desktop Commander 重复读取相同 Page/source/target/glossary。该优化只改变 transport；canonical description 仍是唯一 semantic-scope authority，103/103 Page coverage、正式 provenance、assemble validator 和后续 Locale Surface Review 均不变。
+当 ZIP 来自未变化的正式 working tree 且 manifest/hash 完整时，ChatGPT Generation session 对附件的完整读取即满足这批首次 localization context 的传输要求，不再通过 Remote Desktop Commander 重复读取相同 Page/source/target/glossary。该 ZIP 是 ChatGPT transport optimization，只改变传输；canonical description 仍是唯一 semantic-scope authority，103/103 Page coverage、正式 provenance、assemble validator 和后续 Locale Surface Review 均不变。
 
-普通 ChatGPT GPT-5.6 Sol + High 是 schema v2 localized description 的推荐正式生成环境；Codex GPT-5.6 Sol + High 仍是正式 fallback。两者都必须遵守相同的 `course-seo-localization-v2` semantic-scope 与上下文使用边界。实际使用哪个环境生成，就记录对应的真实 provider/model provenance：普通 ChatGPT 使用 `provider=chatgpt`、`model=gpt-5.6-sol-high`，Codex fallback 使用 `provider=codex`、`model=gpt-5.6-sol-high`，并使用真实 RFC 3339 UTC `generated_at`。生成环境只产出 description 输入，不得直接修改正式 `course-metadata.json`；正式资产仍只能由下述 assemble/refresh/revise CLI 机械生成。
+普通 ChatGPT 与 Codex **GPT-5.6 Sol + High** 都是 schema v2 localized description 的正式生成环境，实际使用该 locale 开始正式 generation 前选定并原则上持续使用的 provider。两者都必须遵守相同的 `course-seo-localization-v2` semantic-scope 与上下文使用边界。ChatGPT 使用 `provider=chatgpt`、`model=gpt-5.6-sol-high`；Codex 使用 `provider=codex`、`model=gpt-5.6-sol-high`，并都使用真实 RFC 3339 UTC `generated_at`。Codex 已直接工作在当前 repository 中，必须完整读取当前 canonical source descriptions、完整 English Page source、完整 ready target、完整 locale glossary、locale identity 与 current authority，不需要生成或读取上述 ChatGPT localization ZIP。生成环境只产出 description 输入，不得直接修改正式 `course-metadata.json`；正式资产仍只能由下述 assemble/refresh/revise CLI 机械生成。
 
-生成 session 与最终 Locale Surface Review session 必须分离，包括语言质量 revision：发现缺陷的审核 session 不得同时生成替换译文并批准自己的输出。这一独立性要求不要求 Course SEO generation session 是从未读取过 Page source/target 的新 conversation；同一 locale generation session 可在 TranslationUnit generation/revision 后继续执行 Course SEO localization/refresh/revision。本项不改变 schema、canonical source-description review authority 或 Locale Surface Review gate。
+生成 session 与最终独立 ChatGPT Locale Surface Review session 必须分离，包括语言质量 revision：发现缺陷的审核 session 不得同时生成替换译文并批准自己的输出。这一独立性要求不要求 Course SEO generation session 是从未读取过 Page source/target 的新 conversation；同一 locale generation session 可在 TranslationUnit generation/revision 后继续执行 Course SEO localization/refresh/revision。本项不改变 schema、canonical source-description review authority 或 Locale Surface Review gate。
 
 本地化可调整语序、句法、必要形态和 glossary 术语，但必须保持 canonical description 的 semantic scope：不删除关键语义、不增加信息、不 keyword stuffing、不根据 Page body 重新选重点。`target_sha256` 仍由工具读取完整 ready canonical target 自动计算，只负责正式资产的 identity/freshness；target body 作为生成上下文的作用与该 hash 绑定职责互不替代。
 

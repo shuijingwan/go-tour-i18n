@@ -1,6 +1,6 @@
 # ChatGPT 正式语言生成执行规范
 
-本文定义普通 ChatGPT **GPT-5.6 Sol + High** 配合 Remote Desktop Commander 执行正式语言生成时的仓库边界。它与 [Codex TranslationUnit 翻译执行规范](CODEX_TRANSLATION.md) 并列；不新增 Translation Engine，也不改变任何 validation、Quality Check、Locale Surface Review 或 Production gate。
+本文定义某个 locale 在开始正式 generation 前选定 `provider=chatgpt` 后，普通 ChatGPT **GPT-5.6 Sol + High** 配合 Remote Desktop Commander 执行正式语言生成时的仓库边界。它与 [Codex 正式语言生成执行规范](CODEX_TRANSLATION.md) 并列；不新增 Translation Engine，也不改变任何 validation、Quality Check、Locale Surface Review 或 Production gate。
 
 ## 单 locale 固定会话角色
 
@@ -58,7 +58,7 @@ Locale Surface Review 的 Reviewer 输入优先由 Local terminal 使用 `surfac
 
 canonical English source-description extraction / review 是所有 locale 共享的 authority，不属于单个 locale 固定的 Generation / Reviewer 配对。只有其 authority 确实 stale 时才按 [课程页正式 SEO Metadata 规范](COURSE_SEO_METADATA.md) 执行，不因新增每个 locale 重复，也不默认交给该 locale 的 Reviewer session。
 
-Codex GPT-5.6 Sol + High 继续作为正式语言生成 fallback，并主要负责 repository-level code/docs/config 修改、需要完整仓库理解的变更和复杂 failure evidence 诊断。无论使用普通 ChatGPT 还是 Codex fallback，generation 与 formal review 的会话隔离规则不变。
+本规范只适用于已经选定 ChatGPT 的 locale Generation role。provider-neutral 的选择、持续使用和例外切换规则由 [多语言翻译流程](TRANSLATION_WORKFLOW.md) 与 [新增 Locale 执行手册](NEW_LOCALE_RUNBOOK.md) 规定；ChatGPT 不因 Remote Desktop Commander 可用而默认接管维护者 Local terminal 或 Codex 的 repository-level code/docs/config、tooling 与复杂诊断职责。无论 Generation provider 为 ChatGPT 还是 Codex，generation 与 formal review 的会话隔离规则不变，Reviewer 继续使用独立 ChatGPT GPT-5.6 Sol + High session。
 
 ## TranslationUnit 正式输入与 export
 
@@ -110,7 +110,7 @@ Retry 使用同一原子提交思想：先将完整内容写入目标 Unit retry
 
 所有资产仍须保持现有 key、kind、placeholder、markup、schema 和技术 identity。不得给 `glossary.yaml`、`internal/tour/ui/<locale>.json` 或 `article-metadata.json` 增加 provider/model/generation 字段。Glossary 继续是该 locale 的正式术语 authority，这些资产也继续由现有 validator 与 Locale Surface Review 审核实际内容。
 
-首次 schema v2 Course SEO localization 优先由 Local terminal 从当前正式 working tree 生成 deterministic 上传 ZIP：
+当 Generation provider 为 `chatgpt` 时，首次 schema v2 Course SEO localization 优先由 Local terminal 从当前正式 working tree 生成 deterministic 上传 ZIP：
 
 ```sh
 go run -mod=readonly ./cmd/tour-i18n course-metadata localization-bundle \
@@ -118,7 +118,7 @@ go run -mod=readonly ./cmd/tour-i18n course-metadata localization-bundle \
   --output /tmp/<locale>-course-seo-localization-generation.zip
 ```
 
-ZIP 的 `course-seo-localization.json` 对 Catalog 全部当前 Page 逐页序列化 canonical English description、完整 English Page source、完整最终 ready target、source/source-description/target identity，并绑定 current canonical source-review authority、完整 glossary 与 `locale.json` identity；`formal/source-descriptions.json` 同时保留 canonical asset 的原始正式字节，`formal/` 还包含 glossary 与 locale identity；`authority/` 封装本规范、Course SEO 规范与 `AGENTS.md`。`manifest.json` 为全部文件提供 SHA-256。只要 bundle 来自未变化的正式 working tree 且 manifest/hash 完整，Generation session 直接完整读取附件，不再通过 Remote Desktop Commander 分批读取同一 103-Page context。ZIP 只优化传输，不新增 Course SEO schema、receipt 或 stale identity，也不允许跳过任一 Page。
+ZIP 的 `course-seo-localization.json` 对 Catalog 全部当前 Page 逐页序列化 canonical English description、完整 English Page source、完整最终 ready target、source/source-description/target identity，并绑定 current canonical source-review authority、完整 glossary 与 `locale.json` identity；`formal/source-descriptions.json` 同时保留 canonical asset 的原始正式字节，`formal/` 还包含 glossary 与 locale identity；`authority/` 封装本规范、Course SEO 规范与 `AGENTS.md`。`manifest.json` 为全部文件提供 SHA-256。只要 bundle 来自未变化的正式 working tree 且 manifest/hash 完整，Generation session 直接完整读取附件，不再通过 Remote Desktop Commander 分批读取同一 103-Page context。ZIP 是 ChatGPT 的 transport optimization，只优化传输，不新增 Course SEO schema、receipt 或 stale identity，也不允许跳过任一 Page；Codex provider 使用其 repository-direct 输入路径，不需要该 ZIP。
 
 schema v2 Course SEO localization 允许并推荐为每个当前 Page 提供 canonical English description、完整 English source、完整最终 ready canonical locale target、完整 locale glossary、locale identity 与 `course-seo-localization-v2` constraints。canonical description 是唯一 semantic-scope authority；source/target 只用于技术语义核对、正文术语一致性、自然表达和实际内容对齐，不授权重新摘要、增删语义或重选重点。同一 session/batch 可处理多个 Page，但每页必须只用自己的 canonical description 决定 semantic scope，不得跨页补充、混合或推断语义。普通 ChatGPT 的真实 provenance 固定记录为：
 

@@ -1,12 +1,18 @@
 # 项目状态
 
-更新时间：2026-09-16（北京时间）
+更新时间：2026-09-20（北京时间）
 
 ## 基线与架构
 
+### 2026-09-20 动态选择语言生成提供方
+
+- 每个新 locale 在正式 generation 开始前，根据当时真实资源状况选择普通 ChatGPT 或 Codex 作为 Generation provider，两者均使用 GPT-5.6 Sol + High，并原则上在整个 locale generation 中保持不变；Codex 同时继续承担 repository code/docs/config/schema/workflow/tooling 与复杂诊断职责。
+- 独立 ChatGPT GPT-5.6 Sol + High Reviewer session 继续负责 Glossary Review、TranslationUnit QC / re-QC 与 Locale Surface Review。provider selection 不新增 schema、receipt、machine gate 或 locale state 字段，现有全部质量与 Production gate 保持不变。
+- schema v2 Course SEO 按实际 provider 记录 `provider=chatgpt|codex` 与 `model=gpt-5.6-sol-high`；`course-metadata localization-bundle` 只作为 ChatGPT transport optimization，Codex 直接读取当前 repository 的完整正式输入。
+
 ### 2026-09-16 ChatGPT 正式语言生成执行路径
 
-- 普通 ChatGPT GPT-5.6 Sol + High + Remote Desktop Commander 现为正式支持且推荐的语言生成环境，覆盖 locale glossary、UI catalog、article metadata、TranslationUnit initial/revision/真实 retry 和 schema v2 Course SEO localization；Codex GPT-5.6 Sol + High 保留为语言生成 fallback，并主要用于 repository code/docs/config 修改与复杂诊断。
+- 普通 ChatGPT GPT-5.6 Sol + High + Remote Desktop Commander 当时成为正式支持且推荐的语言生成环境，覆盖 locale glossary、UI catalog、article metadata、TranslationUnit initial/revision/真实 retry 和 schema v2 Course SEO localization；Codex GPT-5.6 Sol + High 当时保留为语言生成 fallback，并主要用于 repository code/docs/config 修改与复杂诊断。
 - TranslationUnit workflow、manifest schema、validation、Candidate Snapshot、逐 Unit Quality Check A-only、machine finalization、promotion、Locale Surface Review 与 Production gate 均未改变。生成与正式 ChatGPT review 使用不同 conversation/session。
 - `retranslation export --generator codex|chatgpt` 只在未显式给出 `--batch-id` 时选择自动 prefix；默认仍为 `codex`。`chatgpt-<locale>-NNN` 与 `codex-<locale>-NNN` 共享 numeric namespace，latest export 与 next number 按 numeric suffix 决定，跨 prefix 重复 suffix fail closed。
 - ChatGPT TranslationUnit 执行先在 batch 内隐藏 staging directory 完成整批 raw responses 和格式/术语/token 检查，再整体原子 rename 为 `raw-responses/`；现有 process/retry 继续承担正式 restore、validation 与 attempt provenance。未新增 importer，也未修改任何历史 batch/evidence 或正式语言资产。
