@@ -1,0 +1,37 @@
+{
+  "schema_version": 2,
+  "batch_id": "codex-uk-UA-004",
+  "locale": "uk-UA",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 2,
+  "units": [
+    {
+      "unit_id": "moretypes/25",
+      "unit_kind": "page",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "570e535e9c2b2d1978534eb3b42f226102b11da36a3f9e61620dc5eafdb6be5f",
+      "input_path": "inputs/moretypes-25.article",
+      "input_sha256": "72d0fffc01145a9d015510fb3622d215fe6b15cd55d59bdaaf8c80f56629e396",
+      "protected_token_count": 6,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "function value у реченні про closure передано як значення-функція. Це зрозуміло за змістом, але конструкція звучить як штучна калька й не є достатньо природною українською технічною прозою для A. Потрібно переформулювати саме поняття “function as a value” природною українською, не змінюючи семантику closure та зв’язування із зовнішніми змінними."
+    },
+    {
+      "unit_id": "concurrency/10",
+      "unit_kind": "page",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "bb686393225ef2335e627819a1664a84456f00b64af133af64920d43f0abdb94",
+      "input_path": "inputs/concurrency-10.article",
+      "input_sha256": "e4a368341386575c282bdd3363b1fcdb49ff382d31bceb8d740959b5cd562b8a",
+      "protected_token_count": 7,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "C",
+      "previous_finding": "核心练习要求的 fetch URLs / URLs that have been fetched 被译为 отримувала URL / отриманих URL，在乌克兰语中更像“取得/收到 URL 字符串”，而原文指 web crawler 对这些 URL 对应的资源执行抓取，并避免重复抓取同一 URL。这里改变了练习的技术操作含义。需要同时修订正文和 hint 中这两处，使其明确表达“抓取/请求 URL 对应资源”的动作，同时保留并发、去重、URL cache 的原意。"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+* Порядок обчислення switch
+
+Варіанти switch обчислюються згори вниз до першого, умова якого виконується.
+
+(Наприклад,
+
+	switch i {
+	case 0:
+	case f():
+	}
+
+не викликає `f`, якщо `i==0`.)
+
+
+.play flowcontrol/switch-evaluation-order.go

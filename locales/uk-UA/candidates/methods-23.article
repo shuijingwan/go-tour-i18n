@@ -1,0 +1,12 @@
+* Вправа: rot13Reader
+
+Поширений шаблон — [[/pkg/io/#Reader][io.Reader]], який обгортає інший `io.Reader`, певним чином змінюючи потік.
+
+Наприклад, функція [[/pkg/compress/gzip/#NewReader][gzip.NewReader]] приймає `io.Reader` (потік стиснених даних) і повертає `*gzip.Reader`, який також реалізує `io.Reader` (потік розпакованих даних).
+
+Реалізуйте `rot13Reader`, який реалізує `io.Reader`, читає з `io.Reader` і змінює потік, застосовуючи шифр підстановки [[https://en.wikipedia.org/wiki/ROT13][rot13]] до всіх літер.
+
+Тип `rot13Reader` уже надано.
+Зробіть його `io.Reader`, реалізувавши метод `Read`.
+
+.play methods/exercise-rot-reader.go

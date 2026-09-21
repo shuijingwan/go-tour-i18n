@@ -1,0 +1,27 @@
+{
+  "schema_version": 2,
+  "evidence_type": "quality_check_results",
+  "locale": "uk-UA",
+  "snapshot_id": "qc-002",
+  "snapshot_manifest_sha256": "2e95ef0779bfcad90850f5f5ca089b8b684b02fa1d595afbdf1e96de1d820d02",
+  "previous_snapshot_id": "qc-001",
+  "rubric": "translation-quality/v1",
+  "result_count": 3,
+  "results": [
+    {
+      "index": 61,
+      "unit_id": "moretypes/25",
+      "rating": "A"
+    },
+    {
+      "index": 102,
+      "unit_id": "concurrency/10",
+      "rating": "A"
+    },
+    {
+      "index": 108,
+      "unit_id": "example:concurrency/exercise-web-crawler.go",
+      "rating": "A"
+    }
+  ]
+}

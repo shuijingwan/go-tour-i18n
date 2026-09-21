@@ -1,0 +1,12 @@
+* Інтерфейс Stringer
+
+Один із найпоширеніших інтерфейсів — [[/pkg/fmt/#Stringer][`Stringer`]], визначений пакетом [[/pkg/fmt/][`fmt`]].
+
+	type Stringer interface {
+		String() string
+	}
+
+`Stringer` — це тип, який може описати себе як рядок. Пакет `fmt`
+(і багато інших) шукає цей інтерфейс, щоб виводити значення.
+
+.play methods/stringer.go

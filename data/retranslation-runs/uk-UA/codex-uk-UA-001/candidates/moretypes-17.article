@@ -1,0 +1,12 @@
+* Перебір за допомогою range: продовження
+
+Індекс або значення можна пропустити, присвоївши його `_`.
+
+    for i, _ := range pow
+    for _, value := range pow
+
+Якщо потрібен лише індекс, другу змінну можна опустити.
+
+    for i := range pow
+
+.play moretypes/range-continued.go

@@ -893,6 +893,75 @@ func TestHiINGlossary(t *testing.T) {
 	}
 }
 
+func TestUkUAGlossary(t *testing.T) {
+	glossary, err := LoadGlossary(repoRoot(t), "uk-UA")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if glossary.Locale != "uk-UA" {
+		t.Fatalf("glossary locale = %q, want uk-UA", glossary.Locale)
+	}
+	for key, want := range map[string]string{
+		"A Tour of Go":   "Тур із Go",
+		"Run":            "Запустити",
+		"Format":         "Форматувати",
+		"Reset":          "Скинути",
+		"package":        "пакет",
+		"function":       "функція",
+		"method":         "метод",
+		"interface":      "інтерфейс",
+		"struct":         "структура",
+		"pointer":        "вказівник",
+		"slice":          "зріз",
+		"map":            "мапа",
+		"channel":        "канал",
+		"type parameter": "параметр типу",
+		"generics":       "узагальнення",
+		"constant":       "константа",
+		"variable":       "змінна",
+		"concurrency":    "конкурентність",
+	} {
+		if got := glossary.Mandatory[key]; got != want {
+			t.Errorf("mandatory[%q] = %q, want %q", key, got, want)
+		}
+	}
+	for key, want := range map[string]string{
+		"slide (Tour page)":     "сторінка",
+		"slides (Tour pages)":   "сторінки",
+		"slide (presentation)":  "слайд",
+		"slides (presentation)": "слайди",
+		"basic type":            "основний тип",
+		"underlying type":       "базовий тип",
+		"receiver":              "отримувач",
+		"type inference":        "виведення типу",
+		"standard library":      "стандартна бібліотека",
+		"mutex":                 "м'ютекс",
+		"closure":               "замикання",
+	} {
+		if got := glossary.Preferred[key]; got != want {
+			t.Errorf("preferred[%q] = %q, want %q", key, got, want)
+		}
+	}
+	for _, key := range []string{"slide", "slides"} {
+		if got, ok := glossary.Mandatory[key]; ok {
+			t.Errorf("ambiguous mandatory[%q] = %q; want contextual preferred decisions", key, got)
+		}
+	}
+	if glossary.Preferred["basic type"] == glossary.Preferred["underlying type"] {
+		t.Errorf("basic type and underlying type must remain distinct: %q", glossary.Preferred["basic type"])
+	}
+	for _, want := range []string{"Golang", "срез", "корутина", "горутина", "Go Плейграунд"} {
+		if !containsString(glossary.Forbidden, want) {
+			t.Errorf("forbidden missing %q: %v", want, glossary.Forbidden)
+		}
+	}
+	for _, want := range []string{"Go", "Go Playground", "goroutine", "gofmt", "GOPATH", "URL", "ASCII", "CPU", "UTC", "TranslationUnit", "Page", "Example", "present.Section"} {
+		if !containsString(glossary.Keep, want) {
+			t.Errorf("keep missing %q: %v", want, glossary.Keep)
+		}
+	}
+}
+
 func TestGlossaryKeepValidationAndLegacyTerms(t *testing.T) {
 	tests := []struct {
 		name, body, want string

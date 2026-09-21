@@ -4,7 +4,7 @@
 
 新增语言统一从 [新增 Locale 执行手册](docs/NEW_LOCALE_RUNBOOK.md) 开始；不要只在 registry 中增加一行就视为完成。新 locale 必须先明确规范 locale、显示名称、domain/CDN、全站 glossary 决策和 production profile，并通过独立的 Glossary Review、TranslationUnit Quality Review 与 Locale Surface Review。
 
-语言 registry 的正式展示顺序按语言的英文名称字母顺序排列，不按加入项目的时间排列。当前顺序为 Arabic（`ar`）→ Bengali（`bn-BD`）→ Brazilian Portuguese（`pt-BR`）→ Dutch（`nl-NL`）→ English（`en`）→ French（`fr-FR`）→ German（`de-DE`）→ Hindi（`hi-IN`）→ Indonesian（`id-ID`）→ Italian（`it-IT`）→ Japanese（`ja-JP`）→ Korean（`ko-KR`）→ Polish（`pl-PL`）→ Simplified Chinese（`zh-CN`）→ Spanish（`es-ES`）→ Swedish（`sv-SE`）→ Thai（`th-TH`）→ Traditional Chinese（`zh-TW`）→ Turkish（`tr-TR`）→ Urdu（`ur-PK`）→ Vietnamese（`vi-VN`）。
+语言 registry 的正式展示顺序按语言的英文名称字母顺序排列，不按加入项目的时间排列。当前顺序为 Arabic（`ar`）→ Bengali（`bn-BD`）→ Brazilian Portuguese（`pt-BR`）→ Dutch（`nl-NL`）→ English（`en`）→ French（`fr-FR`）→ German（`de-DE`）→ Hindi（`hi-IN`）→ Indonesian（`id-ID`）→ Italian（`it-IT`）→ Japanese（`ja-JP`）→ Korean（`ko-KR`）→ Polish（`pl-PL`）→ Simplified Chinese（`zh-CN`）→ Spanish（`es-ES`）→ Swedish（`sv-SE`）→ Thai（`th-TH`）→ Traditional Chinese（`zh-TW`）→ Turkish（`tr-TR`）→ Ukrainian（`uk-UA`）→ Urdu（`ur-PK`）→ Vietnamese（`vi-VN`）。
 
 ## 语言站点与 CDN
 
@@ -29,6 +29,7 @@
 | `th-TH` | ไทย | <https://th-go-dev.shuijingwanwq.com/> | Cloudflare Free | 泰语社区语言站；域名 language code 为 `th`；首次生产准备中 |
 | `zh-TW` | 繁體中文（台灣） | <https://zh-tw-go-dev.shuijingwanwq.com/> | Cloudflare Free | 台灣繁體中文社區語言站；域名使用 `zh-tw` 以與現有 `zh-CN` 特殊主站區分 |
 | `tr-TR` | Türkçe | <https://tr-go-dev.shuijingwanwq.com/> | Cloudflare Free | 土耳其语社区语言站；域名 language code 为 `tr` |
+| `uk-UA` | Українська | <https://uk-go-dev.shuijingwanwq.com/> | Cloudflare Free | 乌克兰语社区语言站；`html lang=uk-UA`；域名 language code 为 `uk`；首次生产准备中 |
 | `ur-PK` | اردو | <https://ur-go-dev.shuijingwanwq.com/> | Cloudflare Free | 乌尔都语社区语言站；`html lang=ur-PK`；书写方向为 RTL；域名 language code 为 `ur`；首次生产准备中 |
 | `vi-VN` | Tiếng Việt | <https://vi-go-dev.shuijingwanwq.com/> | Cloudflare Free | 越南语社区语言站；域名 language code 为 `vi`；首次生产准备中 |
 

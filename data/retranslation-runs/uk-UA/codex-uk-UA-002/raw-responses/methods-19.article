@@ -1,0 +1,19 @@
+* Помилки
+
+Програми ⟪GTI18N_9eaab1fd_000001⟫ виражають стан помилки значеннями ⟪GTI18N_9eaab1fd_000002⟫error⟪GTI18N_9eaab1fd_000003⟫.
+
+Тип ⟪GTI18N_9eaab1fd_000004⟫error⟪GTI18N_9eaab1fd_000005⟫ — це вбудований інтерфейс, подібний до ⟪GTI18N_9eaab1fd_000006⟫fmt.Stringer⟪GTI18N_9eaab1fd_000007⟫:
+
+⟪GTI18N_9eaab1fd_000008⟫
+
+(Як і з ⟪GTI18N_9eaab1fd_000009⟫fmt.Stringer⟪GTI18N_9eaab1fd_000010⟫, пакет ⟪GTI18N_9eaab1fd_000011⟫fmt⟪GTI18N_9eaab1fd_000012⟫ шукає інтерфейс ⟪GTI18N_9eaab1fd_000013⟫error⟪GTI18N_9eaab1fd_000014⟫ під час
+виведення значень.)
+
+Функції часто повертають значення ⟪GTI18N_9eaab1fd_000015⟫error⟪GTI18N_9eaab1fd_000016⟫, а код, що їх викликає, повинен обробляти помилки,
+перевіряючи, чи дорівнює помилка ⟪GTI18N_9eaab1fd_000017⟫nil⟪GTI18N_9eaab1fd_000018⟫.
+
+⟪GTI18N_9eaab1fd_000019⟫
+
+Значення ⟪GTI18N_9eaab1fd_000020⟫ для ⟪GTI18N_9eaab1fd_000021⟫error⟪GTI18N_9eaab1fd_000022⟫ означає успіх; відмінне від ⟪GTI18N_9eaab1fd_000023⟫ значення ⟪GTI18N_9eaab1fd_000024⟫error⟪GTI18N_9eaab1fd_000025⟫ означає невдачу.
+
+⟪GTI18N_9eaab1fd_000026⟫
