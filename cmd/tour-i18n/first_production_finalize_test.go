@@ -90,13 +90,14 @@ func recordCurrentGate(t *testing.T, root string, catalog *i18n.Catalog, reviewI
 
 func TestFinalizationPlaceholderValidationFailsClosed(t *testing.T) {
 	for name, evidence := range map[string]string{
-		"valid":              finalizationPlaceholder,
-		"missing":            "# Evidence\n",
-		"duplicate complete": finalizationPlaceholder + "\n" + finalizationPlaceholder,
-		"duplicate start":    finalizationPlaceholder + "\n<!-- first-production-finalization:start -->",
-		"duplicate end":      finalizationPlaceholder + "\n<!-- first-production-finalization:end -->",
-		"modified":           strings.Replace(finalizationPlaceholder, "`PENDING`", "`pending`", 1),
-		"finalized":          renderFinalization(firstProductionReceipt{Locale: "zz-ZZ", Hostname: "zz.example", Release: "r"}),
+		"valid":                 finalizationPlaceholder,
+		"missing":               "# Evidence\n",
+		"duplicate complete":    finalizationPlaceholder + "\n" + finalizationPlaceholder,
+		"duplicate start":       finalizationPlaceholder + "\n<!-- first-production-finalization:start -->",
+		"duplicate end":         finalizationPlaceholder + "\n<!-- first-production-finalization:end -->",
+		"modified":              strings.Replace(finalizationPlaceholder, "`PENDING`", "`pending`", 1),
+		"finalized":             renderFinalization(firstProductionReceipt{Locale: "zz-ZZ", Hostname: "zz.example", Release: "r"}),
+		"stale lifecycle prose": "Production machine/browser acceptance remains a later independent gate.\n\n" + finalizationPlaceholder,
 	} {
 		t.Run(name, func(t *testing.T) {
 			err := validateFinalizationPlaceholder([]byte(evidence))

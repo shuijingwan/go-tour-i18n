@@ -52,9 +52,10 @@ type finalizeIdentity struct {
 	Locales []finalizeProfile `json:"locales"`
 }
 type finalizeProfile struct {
-	Locale   string `json:"locale"`
-	Hostname string `json:"production_hostname"`
-	State    string `json:"production_state"`
+	Locale    string `json:"locale"`
+	Hostname  string `json:"production_hostname"`
+	PublicURL string `json:"production_public_url"`
+	State     string `json:"production_state"`
 }
 
 func validateFinalizationPlaceholder(evidence []byte) error {
@@ -65,12 +66,19 @@ func validateFinalizationPlaceholder(evidence []byte) error {
 	if bytes.Count(evidence, []byte(finalizationPlaceholder))+bytes.Count(evidence, []byte(legacyFinalizationPlaceholder)) != 1 {
 		return fmt.Errorf("Surface Review evidence must contain exactly one untouched first-production finalization placeholder")
 	}
+	withoutBlock := bytes.Replace(evidence, []byte(finalizationPlaceholder), nil, 1)
+	withoutBlock = bytes.Replace(withoutBlock, []byte(legacyFinalizationPlaceholder), nil, 1)
+	lower := strings.ToLower(string(withoutBlock))
+	if strings.Contains(string(withoutBlock), "`PENDING`") || strings.Contains(lower, "production machine/browser acceptance remains a later independent gate") {
+		return fmt.Errorf("Surface Review evidence contains production lifecycle wording outside the machine-finalizable block that would become stale after finalize")
+	}
 	return nil
 }
 
 func firstProductionEvidencePreflightCommand(root string, catalog *i18n.Catalog, args []string) error {
 	fs := flag.NewFlagSet("first-production evidence-preflight", flag.ContinueOnError)
 	releaseDir := fs.String("release-dir", "", "formal local release directory")
+	jsonOutput := fs.Bool("json", false, "output machine-readable preflight identity")
 	if err := fs.Parse(args); err != nil {
 		return err
 	}
@@ -127,6 +135,13 @@ func firstProductionEvidencePreflightCommand(root string, catalog *i18n.Catalog,
 	}
 	if err := validateFinalizationPlaceholder(evidence); err != nil {
 		return err
+	}
+	if *jsonOutput {
+		return printJSON(struct {
+			Locale   string `json:"locale"`
+			ReviewID string `json:"review_id"`
+			Result   string `json:"result"`
+		}{Locale: locale, ReviewID: gate.ReviewID, Result: "PASS"})
 	}
 	fmt.Printf("FIRST PRODUCTION EVIDENCE PREFLIGHT: PASS (locale=%s review_id=%s)\n", locale, gate.ReviewID)
 	return nil

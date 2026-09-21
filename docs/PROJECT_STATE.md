@@ -8,7 +8,7 @@
 
 - 每个新 locale 在正式 generation 开始前，根据当时真实资源状况选择普通 ChatGPT 或 Codex 作为 Generation provider，两者均使用 GPT-5.6 Sol + High，并原则上在整个 locale generation 中保持不变；Codex 同时继续承担 repository code/docs/config/schema/workflow/tooling 与复杂诊断职责。
 - 独立 ChatGPT GPT-5.6 Sol + High Reviewer session 继续负责 Glossary Review、TranslationUnit QC / re-QC 与 Locale Surface Review。provider selection 不新增 schema、receipt、machine gate 或 locale state 字段，现有全部质量与 Production gate 保持不变。
-- schema v2 Course SEO 按实际 provider 记录 `provider=chatgpt|codex` 与 `model=gpt-5.6-sol-high`；`course-metadata localization-bundle` 只作为 ChatGPT transport optimization，Codex 直接读取当前 repository 的完整正式输入。
+- schema v2 Course SEO 按实际 provider 记录 `provider=chatgpt|codex` 与 `model=gpt-5.6-sol-high`；`course-metadata localization-bundle` 是两种 Generation provider 共用的 deterministic transport，semantic authority 与正式 mutation 仍属于现有 Course SEO workflow。
 
 ### 2026-09-16 ChatGPT 正式语言生成执行路径
 

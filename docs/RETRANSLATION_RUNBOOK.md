@@ -7,7 +7,7 @@
 ```text
 current Glossary Review coverage
 → retranslation export
-→ ChatGPT staged write 或 Codex direct write
+→ provider-neutral Generation Bundle → Result Bundle → deterministic import
 → 完整 raw-responses/
 → retranslation process
 → automatic validation
@@ -51,7 +51,7 @@ go run -mod=readonly ./cmd/tour-i18n retranslation export \
 2. manifest 列出的全部 `inputs/*`；
 3. `locales/<locale>/glossary.yaml`。
 
-这三部分不可拆分。每个 TranslationUnit 独立翻译：Page 从 `inputs/*.article` 生成 `raw-responses/*.article`；Example 从 `inputs/*.txt` 生成 `raw-responses/*.txt`。ChatGPT provider 必须先在 batch 内隐藏 staging directory 完成全批次并核对后，再把目录原子 rename/move 为正式 `raw-responses/`；Codex provider 按其执行规范直接写入。TranslationUnit 是翻译、validation 和 review 的最小单位，batch 只是执行与归档容器。
+这三部分不可拆分。正式 transport 默认由 Local terminal 执行 `generation-bundle export`，ChatGPT 与 Codex 都读取同一 ZIP contract；生成者只产出 exact expected output set。Local terminal 用 `generation-bundle result-pack` 验证隐藏/独立 staging 目录并形成 result ZIP，再以 `generation-bundle import` 原子安装到 `raw-responses/` 或连续 retry attempt。完整命令、stale/路径/exact-set/no-overwrite 规则见 [翻译任务规范](TRANSLATION_TASK_SPEC.md)。TranslationUnit 是翻译、validation 和 review 的最小单位，batch 只是执行与归档容器；bundle 只是 transport，不是新的 batch authority 或审核 evidence。
 
 ## 3. Process 与 automatic validation
 
@@ -64,6 +64,8 @@ go run -mod=readonly ./cmd/tour-i18n retranslation process --locale <locale>
 `process` 重新生成受保护输入、执行 restore、写入 batch candidate，并运行正式 automatic validation。结果保存在该 batch 的 `candidates/`、`validation/` 和 `result.json`，不会自动修改 canonical candidate 或 status。
 
 Automatic validation 只负责结构、保护 token、代码、链接、source identity 等机器安全性，不能替代翻译质量检查。
+
+只要任一 Unit 为 `restore_failed` 或 `validation_failed`，`retranslation process` 在完整写出合法的 partial candidates、validation evidence 和 `result.json` 后返回 non-zero；human summary 仍显示 `FAILED`，`--json` 仍先输出完整结果再以 non-zero 结束。调用方必须同时保留输出 evidence 并按 shell status 判定失败，不得把已保存的 partial evidence 当成整批 PASS。
 
 `retranslation export`、`retranslation process`、`retranslation revalidate`、`retranslation retry`、`quality-check scope` 与 `retranslation review scope` 默认输出适合复制的人类摘要；成功 Unit、reusable Unit 和 carry-forward Unit 不逐条展开，失败 Unit 保留原因与 evidence path。`quality-check scope` 的 human summary 最多显示本轮 60 个 pending Unit，并在 Page / Example 边界截断；legacy `retranslation review scope` 仍最多显示 30 个。已有机器调用方应显式传 `--json` 获取完整稳定 JSON；scope 的 JSON 始终包含完整 pending 列表，JSON 写 stdout，错误与诊断写 stderr。
 
@@ -147,6 +149,21 @@ Snapshot 按 Catalog 的 Page 顺序、再按 eligible Example inventory 顺序�
 Manifest 只引用仓库中已有的 glossary、source、candidate 和 validation 文件，不复制这些文件，不创建 `_content`、ZIP 或 review artifact。该命令不修改 `locales/<locale>/status.tsv`，不执行 Quality Check、Final Review 或 promotion。后续 `quality-check record` 可以在同一 Snapshot 目录新增独立的 `quality-check-results.json`，但不改写 manifest。
 
 新流程只使用 `quality-check scope --locale <locale> --snapshot-id <snapshot-id>`；revision 后另加 `--previous-snapshot-id <previous-snapshot-id>`，只 carry-forward 上一轮 A 且 source/candidate/validation/attempt identity 完全相同的 Unit。`retranslation review scope` 仅为 legacy Final Review evidence 的读取和验证保留，不属于新流程。glossary snapshot mismatch 是 scope 的整体 blocker，不是 unit pending。
+
+实际 Reviewer 输入优先由同一 scope 导出 deterministic ZIP；首次 122 Unit 的三次独立请求分别导出 `1/60`、`61/60`（在 Page 边界得到 43）与 `104/60`（在 Example 尾部得到 19）：
+
+```sh
+go run -mod=readonly ./cmd/tour-i18n quality-check reviewer-bundle \
+  --locale <locale> --snapshot-id <snapshot-id> \
+  [--previous-snapshot-id <snapshot-id>] \
+  --start-index <stable-index> --limit 60 \
+  --output /tmp/<locale>-<snapshot-id>-qc-<stable-index>.zip
+
+go run -mod=readonly ./cmd/tour-i18n quality-check reviewer-bundle-check \
+  --bundle /tmp/<locale>-<snapshot-id>-qc-<stable-index>.zip
+```
+
+bundle 完整包含该 working set 的 source/current target、完整 glossary、relevant manifest/input、validation、Snapshot、carry-forward/pending scope、rubric/authority 与 hashes。`reviewer-bundle-check` 必须在记录结论前确认 ZIP 与当前 working tree 逐字节一致。Reviewer 仍只返回 A/B/C/D + findings；现有 `quality-check record` / `record-batch` 是唯一记录入口，不新增第二套结果 import 或 QC state machine。
 
 ## 7. Quality Check 与 revision batch
 

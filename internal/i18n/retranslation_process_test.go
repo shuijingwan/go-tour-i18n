@@ -124,6 +124,9 @@ func makeRetranslationExampleProcessBatch(t *testing.T) (string, *Catalog, strin
 	t.Helper()
 	root := t.TempDir()
 	writeGoExampleValidationGlossary(t, root)
+	if _, _, err := RecordGlossaryReview(root, "zh-CN", "test-review", "independent-reviewer", "passed", nil); err != nil {
+		t.Fatal(err)
+	}
 	source := []byte("package main\n\n// A goroutine sends the value through the channel.\nfunc main() { println(1) }\n")
 	example := Example{
 		ID: "example:basics/channel.go", SourcePath: "_content/tour/basics/channel.go",

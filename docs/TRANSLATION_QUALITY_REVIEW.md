@@ -105,6 +105,21 @@ go run -mod=readonly ./cmd/tour-i18n quality-check scope \
 
 没有历史 Quality Check 结果时，`pending_count` 必须等于 full Snapshot 的 `unit_count`。实际逐 TranslationUnit 完成 Quality Check 后，用独立命名空间记录结果：
 
+独立 Reviewer 的正式输入优先按本轮 stable working set 导出：
+
+```bash
+go run -mod=readonly ./cmd/tour-i18n quality-check reviewer-bundle \
+  --locale <locale> --snapshot-id <snapshot-id> \
+  [--previous-snapshot-id <previous-snapshot-id>] \
+  --start-index <stable-index> --limit <1..60> \
+  --output /tmp/<locale>-<snapshot-id>-qc-<stable-index>.zip
+
+go run -mod=readonly ./cmd/tour-i18n quality-check reviewer-bundle-check \
+  --bundle /tmp/<locale>-<snapshot-id>-qc-<stable-index>.zip
+```
+
+ZIP 绑定 full scope/carry-forward/pending context，并完整包含本 working set 的 stable index、Unit id/kind、source/current target、完整 glossary、Snapshot、relevant manifest/input、validation、rubric/authority 与 exact hashes。export 会在 Page/Example 边界停止，`--limit` 最大 60；每份 ZIP 仍必须由一次新的用户请求/model invocation 独立审核，不能把多份 ZIP 放入一次 response 绕过限制。Reviewer 只给 A/B/C/D 与 findings；`reviewer-bundle-check` 在记录前要求旧 ZIP 与 current working tree 逐字节一致。bundle 不生成结果、不改变 Snapshot，也不替代 validation；以下既有 record 入口仍是唯一 QC state machine：
+
 ```bash
 go run -mod=readonly ./cmd/tour-i18n quality-check record \
   --locale <locale> --snapshot-id <snapshot-id> \

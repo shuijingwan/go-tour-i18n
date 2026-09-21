@@ -292,6 +292,7 @@ func TestScanRetranslationBatchesUsesNumericOrderAcrossGenerators(t *testing.T) 
 func TestScanRetranslationBatchesRejectsDuplicateNumberAcrossGenerators(t *testing.T) {
 	root := t.TempDir()
 	const locale = "de-DE"
+	writeRetranslationTestGlossaryForLocale(t, root, locale)
 	catalog := retranslationTestCatalog(1)
 	writeRetranslationHistoryManifest(t, root, locale, "codex-de-DE-019")
 	writeRetranslationHistoryManifest(t, root, locale, "chatgpt-de-DE-019")

@@ -77,6 +77,8 @@ go run -mod=readonly ./cmd/tour-i18n surface-review reviewer-bundle \
 
 维护者把 ZIP 直接上传到独立 Reviewer session。Reviewer 必须先读取 `manifest.json`，再完整读取 bundle 内 authority 与 `surface-review.json`；当 bundle 完整且维护者确认导出后正式输入未变化时，不再通过 Remote Desktop Commander 重复搜索、读取或重建已经封装的仓库材料。附件不可读、hash 不一致、authority 缺失或正式输入已变化时 fail closed，重新由 Local terminal 生成新 bundle，不以聊天记忆或旧附件补齐。
 
+Surface、Glossary、Quality Check 与 Generation ZIP 共用同一个 deterministic ZIP/path/inventory primitive；现有 Surface bundle schema 与 CLI 保持兼容，历史 evidence 不迁移。所有 bundle 都只是 transport container，不是 semantic authority、receipt 或质量 gate。
+
 `coverage.translation_units` 表示 exporter 在生成 package 前已机械加载并验证的完整 ready TranslationUnit set；Stage A 不重新给这些 Unit 做 A/B/C/D Quality Check。当前 package 为 Course SEO full-context 目的序列化完整 Page source/ready target；Example 不为重复 TU language re-QC 而额外复制为独立 Surface Review 对象。Reviewer 仍必须使用 package 实际提供的完整 Page context 检查 glossary、UI/metadata/Course SEO 与 ready target 的组合一致性，并按 package 的正式 coverage 给出最终 Stage A coverage。
 
 ### 正式审核输入
@@ -117,6 +119,17 @@ Glossary 一致但忠实度、准确性或自然度不合格时，语言质量�
 ### A gate 记录与 freshness
 
 人工 A 通过后，保留正式 Markdown evidence `data/locale-surface-reviews/<locale>/<review-id>.md`，然后由命令记录同一 review identity 的 machine-readable receipt：
+
+可先从刚刚上传且仍 current 的 Reviewer ZIP 生成仅含机械事实的 Markdown scaffold：
+
+```sh
+go run -mod=readonly ./cmd/tour-i18n surface-review evidence-scaffold \
+  --locale <locale> --review-id <review-id> \
+  --reviewer <reviewer> --date <YYYY-MM-DD> \
+  --bundle /tmp/<locale>-surface-review-reviewer.zip
+```
+
+命令要求 ZIP 与当前 working tree 的 canonical export 逐字节一致，只填写 locale/review/reviewer/date、bundle/package hash、coverage、production state/public identity，并在 `first-production` 状态写入唯一标准 finalization placeholder。Reviewer 结论、findings、preview acceptance 仍保留显式待填写项；命令不会推导 `passed`、不会写 `.a-gate.json`、不会替代 `record-a`。生命周期结论只位于 machine-finalizable block，block 外不得出现 finalize 后会失真的 production `PENDING` 或“稍后验收”叙述。
 
 ```sh
 go run -mod=readonly ./cmd/tour-i18n surface-review record-a \
@@ -254,6 +267,18 @@ Surface Review 只使用 `passed` 或 `failed`，不采用 TranslationUnit 的 A
 - glossary 决策缺失或冲突：Generation session 更新该 locale glossary，重新通过 current Glossary Review gate；既有 TU Snapshot / QC carry-forward 按原规则 stale，并同步修订、重审受影响表层。
 - Course SEO localized description 语言质量缺陷：它不属于 TranslationUnit 缺陷；identity stale 时按 Course SEO workflow 由 Generation session 产生 refresh 所需的新 description，identity current 时由 Generation session 产生明确 revise subset，再由本地终端执行 `course-metadata refresh` / `revise` 机械更新所选 description 与真实 provenance，最后回到未参与 replacement generation 的 Reviewer session 重审。
 - UI、首页、list、metadata 或其他 SEO 缺陷：由 Generation session 产生修订语言内容，本地终端完成对应资产与 lifecycle 更新，再由未参与 replacement generation 的 Reviewer session 重审受影响范围。
+
+Surface finding 回流可用 provider-neutral transport，避免 Generation session 重新扫描仓库：
+
+```sh
+go run -mod=readonly ./cmd/tour-i18n generation-bundle locale-export \
+  --locale <locale> --task surface-replacement --review-id <review-id> \
+  --output /tmp/<locale>-surface-replacement-<review-id>.zip
+go run -mod=readonly ./cmd/tour-i18n generation-bundle locale-check \
+  --bundle /tmp/<locale>-surface-replacement-<review-id>.zip
+```
+
+它绑定指定 evidence 与 current full Surface package，只用于生成 replacement；不允许 Generation session 批准 finding，也不自动修改任何正式 asset。修订后必须重新导出 Reviewer bundle 并由原独立 Reviewer re-review。
 - production-only 的 CDN、TLS、Origin、缓存或响应问题：按 [生产运维手册](PRODUCTION_RUNBOOK.md) 修复并在公网复核，不改写 TranslationUnit 审核结果。
 
 只有 A 阶段与 preview acceptance 均通过时，首次 release 才能进入 publish / production；只有 production 复核也通过、最终 evidence 为 `decision = passed` 时，才能宣告 locale 正式上线。

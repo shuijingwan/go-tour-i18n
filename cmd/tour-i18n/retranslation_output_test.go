@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"strings"
 	"testing"
@@ -94,6 +95,27 @@ func retryOutputResult(status, failure string) *i18n.RetranslationProcessResult 
 		result.ValidationFailed = 1
 	}
 	return result
+}
+
+func TestRetranslationProcessFailedSummaryReturnsErrorAfterWritingEvidence(t *testing.T) {
+	var output bytes.Buffer
+	result := retryOutputResult("validation_failed", "current validation failure")
+	err := writeRetranslationProcessOutput(&output, result, false)
+	if !errors.Is(err, errRetranslationProcessFailed) {
+		t.Fatalf("error = %v, want failed process status", err)
+	}
+	if !strings.Contains(output.String(), "重译处理：FAILED") || !strings.Contains(output.String(), "validation_failed: 1") {
+		t.Fatalf("failure evidence was not written before non-zero status:\n%s", output.String())
+	}
+	output.Reset()
+	err = writeRetranslationProcessOutput(&output, result, true)
+	if !errors.Is(err, errRetranslationProcessFailed) {
+		t.Fatalf("JSON error = %v, want failed process status", err)
+	}
+	var decoded i18n.RetranslationProcessResult
+	if json.Unmarshal(output.Bytes(), &decoded) != nil || decoded.ValidationFailed != 1 {
+		t.Fatalf("JSON failure evidence missing: %s", output.String())
+	}
 }
 
 func TestRetranslationRetryDefaultPassSummaryOmitsUnitsJSON(t *testing.T) {

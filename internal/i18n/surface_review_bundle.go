@@ -1,13 +1,10 @@
 package i18n
 
 import (
-	"archive/zip"
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"os"
 	"path/filepath"
-	"time"
 )
 
 const localeSurfaceReviewReviewerBundleSchemaVersion = 1
@@ -21,11 +18,7 @@ var localeSurfaceReviewReviewerAuthorityPaths = []string{
 	"docs/TRANSLATION_QUALITY_REVIEW.md",
 }
 
-type LocaleSurfaceReviewReviewerBundleFile struct {
-	BundlePath     string `json:"bundle_path"`
-	RepositoryPath string `json:"repository_path,omitempty"`
-	SHA256         string `json:"sha256"`
-}
+type LocaleSurfaceReviewReviewerBundleFile = TransportBundleFile
 
 type LocaleSurfaceReviewReviewerBundleManifest struct {
 	SchemaVersion int                                     `json:"schema_version"`
@@ -47,11 +40,7 @@ func ExportLocaleSurfaceReviewReviewerBundle(root, locale string, catalog *Catal
 		return nil, LocaleSurfaceReviewReviewerBundleManifest{}, err
 	}
 
-	type bundleEntry struct {
-		path string
-		data []byte
-	}
-	entries := []bundleEntry{{path: "surface-review.json", data: packageData}}
+	entries := []TransportBundleEntry{{Path: "surface-review.json", Data: packageData}}
 	authority := make([]LocaleSurfaceReviewReviewerBundleFile, 0, len(localeSurfaceReviewReviewerAuthorityPaths))
 	for _, repositoryPath := range localeSurfaceReviewReviewerAuthorityPaths {
 		path := filepath.Join(root, filepath.FromSlash(repositoryPath))
@@ -70,7 +59,7 @@ func ExportLocaleSurfaceReviewReviewerBundle(root, locale string, catalog *Catal
 		authority = append(authority, LocaleSurfaceReviewReviewerBundleFile{
 			BundlePath: bundlePath, RepositoryPath: repositoryPath, SHA256: sum(data),
 		})
-		entries = append(entries, bundleEntry{path: bundlePath, data: data})
+		entries = append(entries, TransportBundleEntry{Path: bundlePath, Data: data})
 	}
 
 	manifest := LocaleSurfaceReviewReviewerBundleManifest{
@@ -87,30 +76,9 @@ func ExportLocaleSurfaceReviewReviewerBundle(root, locale string, catalog *Catal
 	}
 	manifestData = append(manifestData, '\n')
 
-	var buffer bytes.Buffer
-	writer := zip.NewWriter(&buffer)
-	if err := writeLocaleSurfaceReviewReviewerBundleEntry(writer, "manifest.json", manifestData); err != nil {
-		return nil, LocaleSurfaceReviewReviewerBundleManifest{}, err
-	}
-	for _, entry := range entries {
-		if err := writeLocaleSurfaceReviewReviewerBundleEntry(writer, entry.path, entry.data); err != nil {
-			return nil, LocaleSurfaceReviewReviewerBundleManifest{}, err
-		}
-	}
-	if err := writer.Close(); err != nil {
-		return nil, LocaleSurfaceReviewReviewerBundleManifest{}, err
-	}
-	return buffer.Bytes(), manifest, nil
-}
-
-func writeLocaleSurfaceReviewReviewerBundleEntry(writer *zip.Writer, name string, data []byte) error {
-	header := &zip.FileHeader{Name: filepath.ToSlash(name), Method: zip.Store}
-	header.SetMode(0644)
-	header.Modified = time.Date(1980, time.January, 1, 0, 0, 0, 0, time.UTC)
-	entry, err := writer.CreateHeader(header)
+	bundle, err := WriteDeterministicTransportBundle(manifestData, entries)
 	if err != nil {
-		return err
+		return nil, LocaleSurfaceReviewReviewerBundleManifest{}, err
 	}
-	_, err = entry.Write(data)
-	return err
+	return bundle, manifest, nil
 }

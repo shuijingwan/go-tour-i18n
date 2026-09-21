@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"flag"
 	"fmt"
 	"io"
@@ -44,7 +45,7 @@ func run(args []string) error {
 		return err
 	}
 	if len(args) == 0 {
-		return fmt.Errorf("usage: tour-i18n <assets|catalog|upstream|page|locale|status|candidate|translate|glossary-review|retranslation|quality-check|course-metadata|surface-review|first-production|indexnow|policy|build|preview|publish|publish-batch> <command or flags>")
+		return fmt.Errorf("usage: tour-i18n <assets|catalog|upstream|page|locale|status|candidate|translate|glossary-review|generation-bundle|retranslation|quality-check|course-metadata|surface-review|first-production|indexnow|policy|build|preview|publish|publish-batch> <command or flags>")
 	}
 	if args[0] == "assets" {
 		if len(args) < 2 {
@@ -108,7 +109,7 @@ func run(args []string) error {
 		return publishBatchCommand(root, catalog, args[1:])
 	}
 	if len(args) < 2 {
-		return fmt.Errorf("usage: tour-i18n <assets|catalog|upstream|page|locale|status|candidate|translate|glossary-review|retranslation|quality-check|course-metadata|surface-review|first-production|indexnow|policy|build|preview|publish|publish-batch> <command or flags>")
+		return fmt.Errorf("usage: tour-i18n <assets|catalog|upstream|page|locale|status|candidate|translate|glossary-review|generation-bundle|retranslation|quality-check|course-metadata|surface-review|first-production|indexnow|policy|build|preview|publish|publish-batch> <command or flags>")
 	}
 	switch args[0] + " " + args[1] {
 	case "locale init":
@@ -123,6 +124,20 @@ func run(args []string) error {
 		return recordGlossaryReviewCommand(root, args[2:])
 	case "glossary-review check":
 		return checkGlossaryReviewCommand(root, args[2:])
+	case "glossary-review reviewer-bundle":
+		return exportGlossaryReviewerBundleCommand(root, catalog, args[2:])
+	case "glossary-review reviewer-bundle-check":
+		return checkGlossaryReviewerBundleCommand(root, catalog, args[2:])
+	case "generation-bundle export":
+		return exportGenerationBundleCommand(root, catalog, args[2:])
+	case "generation-bundle locale-export":
+		return exportLocaleGenerationBundleCommand(root, catalog, args[2:])
+	case "generation-bundle locale-check":
+		return checkLocaleGenerationBundleCommand(root, catalog, args[2:])
+	case "generation-bundle result-pack":
+		return packGenerationResultBundleCommand(root, catalog, args[2:])
+	case "generation-bundle import":
+		return importGenerationResultBundleCommand(root, catalog, args[2:])
 	case "course-metadata assemble":
 		return assembleCourseMetadata(root, catalog, args[2:])
 	case "course-metadata refresh":
@@ -131,6 +146,12 @@ func run(args []string) error {
 		return reviseCourseMetadata(root, catalog, args[2:])
 	case "course-metadata localization-bundle":
 		return exportCourseLocalizationGenerationBundleCommand(root, catalog, args[2:])
+	case "course-metadata localization-bundle-check":
+		return checkCourseLocalizationGenerationBundleCommand(root, catalog, args[2:])
+	case "course-metadata generation-bundle":
+		return exportCourseMaintenanceGenerationBundleCommand(root, catalog, args[2:])
+	case "course-metadata generation-bundle-check":
+		return checkCourseMaintenanceGenerationBundleCommand(root, catalog, args[2:])
 	case "course-metadata source":
 		return courseMetadataSourceCommand(root, catalog, args[2:])
 	case "surface-review record-a":
@@ -139,6 +160,8 @@ func run(args []string) error {
 		return exportLocaleSurfaceReviewCommand(root, catalog, args[2:])
 	case "surface-review reviewer-bundle":
 		return exportLocaleSurfaceReviewReviewerBundleCommand(root, catalog, args[2:])
+	case "surface-review evidence-scaffold":
+		return scaffoldLocaleSurfaceReviewEvidenceCommand(root, catalog, args[2:])
 	case "surface-review check-a":
 		return checkLocaleSurfaceReviewACommand(root, catalog, args[2:])
 	case "first-production finalize":
@@ -327,11 +350,7 @@ func run(args []string) error {
 			fmt.Printf("没有待处理的重译批次：%s。\n", *locale)
 			return nil
 		}
-		if *jsonOutput {
-			return printJSON(result)
-		}
-		printRetranslationProcessSummary(result)
-		return nil
+		return writeRetranslationProcessOutput(os.Stdout, result, *jsonOutput)
 	case "retranslation retry":
 		fs := flag.NewFlagSet("retranslation retry", flag.ContinueOnError)
 		locale := fs.String("locale", "", "target locale")
@@ -560,6 +579,54 @@ func run(args []string) error {
 			return printJSON(scope)
 		}
 		printQualityCheckScopeSummary(scope)
+		return nil
+	case "quality-check reviewer-bundle":
+		fs := flag.NewFlagSet("quality-check reviewer-bundle", flag.ContinueOnError)
+		locale := fs.String("locale", "", "target locale")
+		snapshotID := fs.String("snapshot-id", "", "current Candidate Snapshot id")
+		previousSnapshotID := fs.String("previous-snapshot-id", "", "previous Quality Check Snapshot id for carry-forward")
+		startIndex := fs.Int("start-index", 0, "first pending stable Candidate Snapshot index; defaults to first reviewable pending unit")
+		limit := fs.Int("limit", i18n.DefaultQualityCheckBatchLimit, "maximum same-kind pending TranslationUnits; maximum 60")
+		output := fs.String("output", "", "reviewer upload ZIP output")
+		if err := fs.Parse(args[2:]); err != nil {
+			return err
+		}
+		if *locale == "" || *snapshotID == "" || *output == "" || fs.NArg() != 0 {
+			return fmt.Errorf("usage: quality-check reviewer-bundle --locale <locale> --snapshot-id <snapshot-id> [--previous-snapshot-id <snapshot-id>] [--start-index <stable-index>] [--limit <=60] --output <output.zip>")
+		}
+		data, manifest, err := i18n.ExportQualityCheckReviewerBundle(root, catalog, i18n.QualityCheckReviewerBundleOptions{
+			Locale: *locale, SnapshotID: *snapshotID, PreviousSnapshotID: *previousSnapshotID,
+			StartIndex: *startIndex, Limit: *limit,
+		})
+		if err != nil {
+			return err
+		}
+		path, err := writeNewTransportOutput(*output, data)
+		if err != nil {
+			return err
+		}
+		fmt.Printf("Quality Check reviewer bundle exported: %s (locale=%s snapshot=%s kind=%s indexes=%d-%d units=%d identity=%s)\n",
+			path, manifest.Locale, manifest.SnapshotID, manifest.WorkingSetKind, manifest.StartIndex, manifest.EndIndex, manifest.UnitCount, manifest.InputIdentitySHA256)
+		return nil
+	case "quality-check reviewer-bundle-check":
+		fs := flag.NewFlagSet("quality-check reviewer-bundle-check", flag.ContinueOnError)
+		bundlePath := fs.String("bundle", "", "reviewer ZIP to verify against the current working tree")
+		if err := fs.Parse(args[2:]); err != nil {
+			return err
+		}
+		if *bundlePath == "" || fs.NArg() != 0 {
+			return fmt.Errorf("usage: quality-check reviewer-bundle-check --bundle <reviewer.zip>")
+		}
+		bundle, err := readRegularBundleFile(*bundlePath)
+		if err != nil {
+			return err
+		}
+		manifest, err := i18n.VerifyCurrentQualityCheckReviewerBundle(root, catalog, bundle)
+		if err != nil {
+			return err
+		}
+		fmt.Printf("Quality Check reviewer bundle: CURRENT (locale=%s snapshot=%s kind=%s indexes=%d-%d units=%d identity=%s)\n",
+			manifest.Locale, manifest.SnapshotID, manifest.WorkingSetKind, manifest.StartIndex, manifest.EndIndex, manifest.UnitCount, manifest.InputIdentitySHA256)
 		return nil
 	case "quality-check record":
 		fs := flag.NewFlagSet("quality-check record", flag.ContinueOnError)
@@ -979,27 +1046,43 @@ func printRetranslationExportSummary(result *i18n.RetranslationExportResult) {
 		result.BatchID, result.Locale, result.UnitKind, result.UnitCount, result.BatchPath)
 }
 
-func printRetranslationProcessSummary(result *i18n.RetranslationProcessResult) {
+var errRetranslationProcessFailed = errors.New("retranslation process completed with restore or validation failures")
+
+func writeRetranslationProcessOutput(w io.Writer, result *i18n.RetranslationProcessResult, jsonOutput bool) error {
+	failed := result.RestoreFailed != 0 || result.ValidationFailed != 0
+	if jsonOutput {
+		if err := writeJSON(w, result); err != nil {
+			return err
+		}
+		if failed {
+			return errRetranslationProcessFailed
+		}
+		return nil
+	}
 	overall := "PASS"
-	if result.RestoreFailed != 0 || result.ValidationFailed != 0 {
+	if failed {
 		overall = "FAILED"
 	}
-	fmt.Printf("重译处理：%s\n", overall)
-	fmt.Printf("batch_id: %s\nlocale: %s\nunit_count: %d\nrestore_passed: %d\nrestore_failed: %d\nvalidation_passed: %d\nvalidation_failed: %d\n",
+	fmt.Fprintf(w, "重译处理：%s\n", overall)
+	fmt.Fprintf(w, "batch_id: %s\nlocale: %s\nunit_count: %d\nrestore_passed: %d\nrestore_failed: %d\nvalidation_passed: %d\nvalidation_failed: %d\n",
 		result.BatchID, result.Locale, result.UnitCount, result.RestorePassed, result.RestoreFailed, result.ValidationPassed, result.ValidationFailed)
 	for _, unit := range result.Units {
 		if unit.Status == "passed" {
 			continue
 		}
-		fmt.Printf("失败 Unit：unit_id=%s status=%s validation_path=%s", unit.UnitID, unit.Status, unit.ValidationPath)
+		fmt.Fprintf(w, "失败 Unit：unit_id=%s status=%s validation_path=%s", unit.UnitID, unit.Status, unit.ValidationPath)
 		if unit.CandidatePath != "" {
-			fmt.Printf(" candidate_path=%s", unit.CandidatePath)
+			fmt.Fprintf(w, " candidate_path=%s", unit.CandidatePath)
 		}
 		if unit.Error != "" {
-			fmt.Printf(" reason=%q", unit.Error)
+			fmt.Fprintf(w, " reason=%q", unit.Error)
 		}
-		fmt.Println()
+		fmt.Fprintln(w)
 	}
+	if failed {
+		return errRetranslationProcessFailed
+	}
+	return nil
 }
 
 func writeRetranslationRetryOutput(w io.Writer, result *i18n.RetranslationProcessResult, unitID string, jsonOutput bool) error {

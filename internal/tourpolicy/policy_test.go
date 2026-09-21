@@ -118,6 +118,7 @@ func TestReviewedLocaleHomeTargetsAreExact(t *testing.T) {
 		"https://th-go-dev.shuijingwanwq.com/",
 		"https://tr-go-dev.shuijingwanwq.com/",
 		"https://ur-go-dev.shuijingwanwq.com/",
+		"https://uk-go-dev.shuijingwanwq.com/",
 		"https://vi-go-dev.shuijingwanwq.com/",
 		"https://zh-tw-go-dev.shuijingwanwq.com/",
 	}

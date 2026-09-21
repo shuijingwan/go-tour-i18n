@@ -95,4 +95,7 @@ func TestExportCourseLocalizationGenerationBundleDeterministicAndComplete(t *tes
 	if context.CanonicalSourceDescriptionsSHA256 != manifest.SourceDescriptions.SHA256 {
 		t.Fatal("context canonical source-descriptions identity mismatch")
 	}
+	if _, err := VerifyCurrentCourseLocalizationGenerationBundle(root, "ur-PK", catalog, first); err != nil {
+		t.Fatalf("current localization bundle rejected: %v", err)
+	}
 }

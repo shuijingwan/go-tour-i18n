@@ -65,6 +65,8 @@ PASS → Local terminal preview / publish / Production
 
 Generation session 与 Reviewer session 不得是同一 conversation/session；正式 Reviewer 路径继续使用独立 ChatGPT GPT-5.6 Sol + High session。同一个从未参与该 locale 语言 generation 的 Reviewer session 可以连续承担 Glossary Review、TranslationUnit Quality Check、revision 后 re-QC 与 Locale Surface Review，但不得生成 replacement 后批准自己的输出。provider 为 `chatgpt` 时的执行边界见 [ChatGPT 正式语言生成执行规范](CHATGPT_LANGUAGE_GENERATION.md)，provider 为 `codex` 时见 [Codex 正式语言生成执行规范](CODEX_TRANSLATION.md)。canonical English source-description extraction / review 是跨 locale 共享 authority，不属于这个单 locale 固定配对，仍以 [课程页正式 SEO Metadata 规范](COURSE_SEO_METADATA.md) 为准。
 
+正式大体量输入优先由 Local terminal 导出 deterministic ZIP：TranslationUnit 使用 `generation-bundle export`，glossary/UI/article/Surface finding replacement 使用 `generation-bundle locale-export`，Course SEO 使用对应 `course-metadata ...-bundle`；Glossary、Quality Check 与 Locale Surface Review 使用各自 `reviewer-bundle`。这些 ZIP 对 ChatGPT 与 Codex 使用相同语义合同，按 `locale + task/batch/snapshot/review` 隔离，并绑定 exact inventory 与 SHA-256；它们只是 transport container，不是 authority、receipt、provenance 或语言质量 gate。输入变化后必须重新导出并通过 current-check，不能用旧附件或聊天上下文补齐。TranslationUnit 下载结果经 `generation-bundle result-pack` / `import` 后仍必须进入既有 process、validation、QC、finalization 与 promotion。
+
 ## 1. 术语准备
 
 开始某个 locale 的翻译或调整术语前，阅读：
@@ -83,7 +85,7 @@ Generation session 与 Reviewer session 不得是同一 conversation/session；�
 
 - [翻译任务规范](TRANSLATION_TASK_SPEC.md)：TranslationUnit、模型输入/输出契约及结构约束。
 - [ChatGPT 正式语言生成执行规范](CHATGPT_LANGUAGE_GENERATION.md)：普通 ChatGPT + Remote Desktop Commander 的支持范围、原子 staging 写入和生成/审核隔离。
-- [Codex 正式语言生成执行规范](CODEX_TRANSLATION.md)：provider 为 `codex` 时的职责、额度边界、Course SEO repository-direct 输入、首次 Page batch 与直接写入规则。
+- [Codex 正式语言生成执行规范](CODEX_TRANSLATION.md)：provider 为 `codex` 时的职责、额度边界、provider-neutral bundle、首次 Page batch 与输出规则。
 - [Retranslation 执行手册](RETRANSLATION_RUNBOOK.md)：export/retry/revision、质量检查与提升的执行顺序。
 
 新 locale 在第一次 `retranslation export` 前，必须从当前正式 TranslationUnit catalog 初始化统一状态表并通过完整性检查：

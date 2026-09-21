@@ -118,6 +118,34 @@ manifest 是任务身份的权威来源，记录 locale、batch、Translation Un
 
 曾有翻译实验漏读 glossary，导致全部候选都产生 forbidden 译法；因此输入完整性本身是正式执行契约的一部分。
 
+### Deterministic Generation Bundle transport
+
+Local terminal 可把上述不可拆分输入导出为 provider-neutral ZIP：
+
+```sh
+go run -mod=readonly ./cmd/tour-i18n generation-bundle export \
+  --locale <locale> --batch-id <batch-id> \
+  --output /tmp/<locale>-<batch-id>-generation.zip
+```
+
+retry 仅对当前 `restore_failed` / `validation_failed` Unit 增加 `--unit-id <unit-id>`；bundle 自动绑定下一连续 attempt、当前 validation/result 和完整原 batch 输入。`manifest.json` 声明 schema、task kind、locale、batch、Unit kind、attempt、exact expected outputs、全部成员 inventory/hash 与聚合 input identity。ZIP 内仍包含原始 batch manifest、manifest 列出的全部 inputs、完整 glossary 和当前 authority；ZIP 不替代这些 semantic authority。ChatGPT 与 Codex 都读取同一 contract，不因 provider 改变内容边界。
+
+生成结果先放在独立目录并由 Local terminal 形成 result ZIP，再导入：
+
+```sh
+go run -mod=readonly ./cmd/tour-i18n generation-bundle result-pack \
+  --bundle /tmp/<locale>-<batch-id>-generation.zip \
+  --provider <chatgpt|codex> --model gpt-5.6-sol-high \
+  --input-dir <exact-output-directory> \
+  --output /tmp/<locale>-<batch-id>-result.zip
+
+go run -mod=readonly ./cmd/tour-i18n generation-bundle import \
+  --bundle /tmp/<locale>-<batch-id>-generation.zip \
+  --result /tmp/<locale>-<batch-id>-result.zip
+```
+
+`result-pack` / `import` 均重新确认 current canonical bundle、locale/batch/attempt、exact file set、路径、UTF-8/no-BOM/single-LF、protected restore 与现有 machine candidate validator；额外文件、symlink/path escape、stale authority/input、provider/batch provenance 不一致或已有正式 attempt 均 fail closed。initial/revision 全目录 staging 后一次 rename；retry 单文件 no-overwrite install。该步骤只执行机器安全检查，不判断翻译质量；导入后仍由 `retranslation process` / `retry` 生成正式 candidate/validation evidence，并继续独立 A-only QC。
+
 ## 5. 输出契约
 
 每个 workflow unit 必须有一个独立 raw response 文件。raw response 必须：

@@ -4,6 +4,8 @@
 
 本文档中的标准终端步骤不绑定执行主体。维护者可以直接执行，也可以在明确要求且具备相应终端访问能力时交由工具执行；两种方式使用相同命令、前置条件、验收标准和停止规则。只有明确标为 **HUMAN GATE** 的 UI 操作必须由维护者完成。标准化流程应能在没有工具持续参与的情况下按文档独立完成。
 
+`preview` browser verifier、shared-assets Production、`publish` / prerender、`first-production`、maintenance Production 与 IndexNow closeout 等确定性长任务默认由维护者本地终端执行。ChatGPT / Remote Desktop Commander 提供一条完整可粘贴命令并读取终态；不得仅为等待任务完成持续轮询。只有维护者明确要求代执行，或已出现真实 failure evidence / mutation-unknown 需要诊断恢复时才接管。该协作边界不省略任何脚本内部 gate、receipt、bounded retry 或 HUMAN gate。
+
 正式脚本执行失败必须返回非零 exit status，不得关闭、替换或持续污染维护者的交互 shell；本文提供给维护者直接复制的命令不得在当前交互 shell 顶层执行 `set -e`、`set -u`、`set -o pipefail`、`set -euo pipefail` 等会影响后续交互行为的 shell options，也不得包含 `exit`、`logout`、`kill $$`。如需 fail-fast 或临时 shell options，必须放入独立 subshell（例如 `( set -euo pipefail; ... )`）或独立脚本进程，使失败只结束子进程。此规则不禁止脚本自身正常结束，也不禁止 shell wrapper 在自身进程中以正常 `exec` 调用正式子程序。正式脚本应作为独立程序执行，不要求维护者 `source` 一个可能调用 `exit` 的脚本。
 
 ## 已验证服务器基线
@@ -210,7 +212,8 @@ scripts/first-production.sh \
 → zgocloud minimal public readiness
 → scripts/verify-production.sh <release-dir>
 → Chrome automated browser acceptance
-→ evidence finalize
+→ passed receipt + READY FOR FINALIZATION
+→ 维护者显式执行 first-production finalize
 ```
 
 ### FIRST_DEPLOYMENT health failure recovery
@@ -250,13 +253,13 @@ Cloudflare DNS 创建后，first-production 只从 zgocloud 对新 hostname 做 
 
 first-production 的前置 public readiness 每个逻辑请求保持最多 3 次，但单次上限为 25 秒，以覆盖已观察到约 21.8 秒才成功的 cold MISS；外层 readiness 次数和 stage timeout 继续限制总预算。它仍只是 DNS/CDN readiness，不替代随后复用的正式 machine/browser correctness gate。
 
-首次 production finalize 后的 Search-engine closeout 不属于 first-production lifecycle 或第三种 deployment。维护者完成 Google、Bing 和适用 locale-specific Dashboard sitemap submission 后，使用 `scripts/indexnow-closeout.sh --locale <locale>` 作为唯一正式 IndexNow 入口。首次运行会在仓库外的 `${XDG_DATA_HOME:-$HOME/.local/share}/go-tour-indexnow/<locale>/` 生成并保存 locale-specific key，后续重跑只复用同一个有效 key；store/locale directory 为 `0700`，key file 为 `0600`。多个 candidate、symlink、非 regular file、非法 key 或任何造成 identity 不明确的额外条目均 fail closed。已有受保护 key 时可显式传入 `--key-file /secure/path/<key>.txt`，且不会创建默认 key。它从 production identity 取得 Aliyun origin、data root、Nginx vhost 和正式 Nginx command，provision root key/exact location 并 test/reload；config-test 或 reload 明确失败时恢复本轮 vhost/key 修改。该简单单维护者流程不声称 vhost mutation 是 atomic 或 crash-safe transaction。公网验证与 IndexNow submission 由本机直接运行的 Go primitive 执行。IndexNow 没有独立 zgocloud、SOCKS、ControlMaster 或 retry/network lifecycle；没有 failure evidence 不引入代理。若未来需要境外公网 runner，复用 first-production/verify-production 已验证的 zgocloud direct-runner，不创建本机→SOCKS 的专用架构。IndexNow submission 是第三方 closeout，不修改 production lifecycle，submission failure、202 或网络 failure 不回滚已通过 provisioning 的 key/vhost；重跑继续使用同一 key。成功后不周期性重复全站 bootstrap。
+首次 production finalize 后的 Search-engine closeout 不属于 first-production lifecycle 或第三种 deployment。维护者完成 Google、Bing 和适用 locale-specific Dashboard sitemap submission 后，使用 `scripts/indexnow-closeout.sh --locale <locale>` 作为唯一正式 IndexNow 入口。首次运行会在仓库外的 `${XDG_DATA_HOME:-$HOME/.local/share}/go-tour-indexnow/<locale>/` 生成并保存 locale-specific key，后续重跑只复用同一个有效 key；store/locale directory 为 `0700`，key file 为 `0600`。多个 candidate、symlink、非 regular file、非法 key 或任何造成 identity 不明确的额外条目均 fail closed。已有受保护 key 时可显式传入 `--key-file /secure/path/<key>.txt`，且不会创建默认 key。它从 production identity 取得 Aliyun origin、data root、Nginx vhost 和正式 Nginx command，provision root key/exact location 并 test/reload；config-test 或 reload 明确失败时恢复本轮 vhost/key 修改。该简单单维护者流程不声称 vhost mutation 是 atomic 或 crash-safe transaction。公网验证与 IndexNow submission 由本机直接运行的 Go primitive 执行；没有 failure evidence 不引入代理。probe 只有明确 HTTP 202 才以相同已 provisioned key 和 byte-identical 单 URL payload 最多执行 3 次，backoff 为 1 秒、2 秒；不重新 provisioning，不重试 transport failure 或其他 HTTP semantic failure，耗尽仍 non-zero。bulk HTTP 202 不自动重试。若未来需要境外公网 runner，复用 first-production/verify-production 已验证的 zgocloud direct-runner，不创建本机→SOCKS 的专用架构。IndexNow submission 是第三方 closeout，不修改 production lifecycle，submission failure 不回滚已通过 provisioning 的 key/vhost；明确失败后重跑继续使用同一 key。成功后不周期性重复全站 bootstrap。
 
 编排器对 preflight、infrastructure、Playground Origin、deploy、direct-origin、Cloudflare DNS、public-machine 与 browser 输出 PASS/FAILED 的 wall-clock duration；receipt 仍只保存既有 identity/stage 结果。resume 仅复用 receipt 中已完成的 immutable bootstrap decision（例如同 release 的 unit/vhost baseline），但每次仍重新执行完整 preflight，并重新验证 current、service/source health、DNS identity、shared-assets public freshness 与 CDN/public state；这些 mutable state 不得由历史 PASS 代替。
 
 运营注意：首次 Production 公网验收若没有紧急需求，尽量避开北京时间晚间的跨境网络高峰。发生上述典型 transient failure 时，保留失败现场并在网络条件改善后 resume；不要在没有新的 deployment evidence 时重新 deploy，也不要将网络失败解释为已检查 URL 的 PASS。
 
-全部 machine/browser 验收 PASS 后直接运行正式收口入口，不读取 stdin，也不要求 Production visual confirmation：
+`first-production.sh` 在全部 machine/browser 验收 PASS 后写入 passed receipt，并正常停止于 `READY FOR FINALIZATION`；它不会自动改变 lifecycle。脚本打印下面唯一下一条正式命令，其中 release 与 review-id 来自本次已验证 identity。维护者显式执行它；finalizer 不读取 stdin，也不要求新的 Production visual confirmation：
 
 ```sh
 go run -mod=readonly ./cmd/tour-i18n first-production finalize \
@@ -275,6 +278,9 @@ finalizer 从 release/receipt 和正式 identity 获取 locale、hostname、rele
 [首次生产] Cloudflare DNS：PASS
 [首次生产] 公网验收：PASS
 [首次生产] 浏览器验收：PASS
+[首次生产] READY FOR FINALIZATION
+receipt: /tmp/go-tour-release-....first-production-receipt.json
+next: go run -mod=readonly ./cmd/tour-i18n first-production finalize --release-dir ... --review-id ...
 ```
 
 失败固定给出 stage、expected、actual 与下一步，不输出 secret，例如：

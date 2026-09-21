@@ -1,7 +1,6 @@
 package i18n
 
 import (
-	"archive/zip"
 	"bytes"
 	"encoding/json"
 	"fmt"
@@ -14,14 +13,50 @@ const CourseLocalizationGenerationBundleSchemaVersion = 1
 var courseLocalizationGenerationAuthorityPaths = []string{
 	"AGENTS.md",
 	"docs/CHATGPT_LANGUAGE_GENERATION.md",
+	"docs/CODEX_TRANSLATION.md",
 	"docs/COURSE_SEO_METADATA.md",
+	"docs/TRANSLATION_WORKFLOW.md",
 }
 
-type CourseLocalizationGenerationBundleFile struct {
-	BundlePath     string `json:"bundle_path"`
-	RepositoryPath string `json:"repository_path,omitempty"`
-	SHA256         string `json:"sha256"`
+func VerifyCurrentCourseLocalizationGenerationBundle(root, locale string, catalog *Catalog, bundle []byte) (CourseLocalizationGenerationBundleManifest, error) {
+	files, err := ReadTransportBundle(bundle, 512, 256<<20)
+	if err != nil {
+		return CourseLocalizationGenerationBundleManifest{}, err
+	}
+	var manifest CourseLocalizationGenerationBundleManifest
+	if err := decodeStrictBundleJSON(files["manifest.json"], &manifest); err != nil {
+		return manifest, fmt.Errorf("parse Course SEO localization bundle manifest: %w", err)
+	}
+	if manifest.SchemaVersion != CourseLocalizationGenerationBundleSchemaVersion || manifest.Kind != "go-tour-i18n/course-seo-localization-generation-bundle" || manifest.Locale != locale {
+		return manifest, fmt.Errorf("Course SEO localization bundle identity mismatch")
+	}
+	inventory := []CourseLocalizationGenerationBundleFile{manifest.Context, manifest.SourceDescriptions, manifest.Glossary, manifest.LocaleIdentity}
+	inventory = append(inventory, manifest.Authority...)
+	if len(files) != len(inventory)+1 {
+		return manifest, fmt.Errorf("Course SEO localization bundle file set mismatch")
+	}
+	seen := map[string]bool{"manifest.json": true}
+	for _, item := range inventory {
+		if err := validateTransportBundlePath(item.BundlePath); err != nil {
+			return manifest, err
+		}
+		data, ok := files[item.BundlePath]
+		if seen[item.BundlePath] || !ok || sum(data) != item.SHA256 {
+			return manifest, fmt.Errorf("Course SEO localization bundle member identity mismatch: %s", item.BundlePath)
+		}
+		seen[item.BundlePath] = true
+	}
+	current, currentManifest, err := ExportCourseLocalizationGenerationBundle(root, locale, catalog)
+	if err != nil {
+		return manifest, err
+	}
+	if !bytes.Equal(current, bundle) {
+		return manifest, fmt.Errorf("Course SEO localization bundle is stale or non-canonical")
+	}
+	return currentManifest, nil
 }
+
+type CourseLocalizationGenerationBundleFile = TransportBundleFile
 
 type CourseLocalizationGenerationPage struct {
 	Index                   int    `json:"index"`
@@ -162,15 +197,11 @@ func ExportCourseLocalizationGenerationBundle(root, locale string, catalog *Cata
 		Authority:          make([]CourseLocalizationGenerationBundleFile, 0, len(courseLocalizationGenerationAuthorityPaths)),
 	}
 
-	type entry struct {
-		path string
-		data []byte
-	}
-	entries := []entry{
-		{path: "course-seo-localization.json", data: contextData},
-		{path: "formal/source-descriptions.json", data: sourceDescriptionsData},
-		{path: "formal/glossary.yaml", data: glossaryData},
-		{path: "formal/locale.json", data: localeData},
+	entries := []TransportBundleEntry{
+		{Path: "course-seo-localization.json", Data: contextData},
+		{Path: "formal/source-descriptions.json", Data: sourceDescriptionsData},
+		{Path: "formal/glossary.yaml", Data: glossaryData},
+		{Path: "formal/locale.json", Data: localeData},
 	}
 	for _, repoPath := range courseLocalizationGenerationAuthorityPaths {
 		data, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(repoPath)))
@@ -183,7 +214,7 @@ func ExportCourseLocalizationGenerationBundle(root, locale string, catalog *Cata
 			RepositoryPath: repoPath,
 			SHA256:         sum(data),
 		})
-		entries = append(entries, entry{path: bundlePath, data: data})
+		entries = append(entries, TransportBundleEntry{Path: bundlePath, Data: data})
 	}
 
 	manifestData, err := json.MarshalIndent(manifest, "", "  ")
@@ -192,18 +223,9 @@ func ExportCourseLocalizationGenerationBundle(root, locale string, catalog *Cata
 	}
 	manifestData = append(manifestData, '\n')
 
-	var buffer bytes.Buffer
-	writer := zip.NewWriter(&buffer)
-	if err := writeLocaleSurfaceReviewReviewerBundleEntry(writer, "manifest.json", manifestData); err != nil {
+	bundle, err := WriteDeterministicTransportBundle(manifestData, entries)
+	if err != nil {
 		return nil, CourseLocalizationGenerationBundleManifest{}, err
 	}
-	for _, item := range entries {
-		if err := writeLocaleSurfaceReviewReviewerBundleEntry(writer, item.path, item.data); err != nil {
-			return nil, CourseLocalizationGenerationBundleManifest{}, err
-		}
-	}
-	if err := writer.Close(); err != nil {
-		return nil, CourseLocalizationGenerationBundleManifest{}, err
-	}
-	return buffer.Bytes(), manifest, nil
+	return bundle, manifest, nil
 }

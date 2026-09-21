@@ -107,6 +107,9 @@ func TestBootstrapIndexNowFailsWhenSitemapLacksFormalRootProbe(t *testing.T) {
 }
 
 func TestBootstrapIndexNowStopsWhenProbeIsPending(t *testing.T) {
+	previousSleep := indexNowRetrySleep
+	indexNowRetrySleep = func(time.Duration) {}
+	t.Cleanup(func() { indexNowRetrySleep = previousSleep })
 	key := "index-now-test-key"
 	posts := 0
 	client := indexNowTestClient(func(r *http.Request) (int, string) {
@@ -122,11 +125,54 @@ func TestBootstrapIndexNowStopsWhenProbeIsPending(t *testing.T) {
 		return http.StatusNotFound, ""
 	})
 	_, err := bootstrapIndexNow(context.Background(), client, "https://api.indexnow.org/indexnow", indexNowProfile{Locale: "zz-ZZ", State: "live", Hostname: "locale.example", PublicURL: "https://locale.example/"}, key)
-	if err == nil || !strings.Contains(err.Error(), "probe is pending") {
+	if err == nil || !strings.Contains(err.Error(), "remained pending") {
 		t.Fatalf("err = %v", err)
 	}
-	if posts != 1 {
-		t.Fatalf("posts = %d, want 1", posts)
+	if posts != indexNowProbeAttempts {
+		t.Fatalf("posts = %d, want %d", posts, indexNowProbeAttempts)
+	}
+}
+
+func TestBootstrapIndexNowProbeRecoversFromPendingWithSamePayload(t *testing.T) {
+	previousSleep := indexNowRetrySleep
+	indexNowRetrySleep = func(time.Duration) {}
+	t.Cleanup(func() { indexNowRetrySleep = previousSleep })
+	key := "index-now-test-key"
+	posts := 0
+	var probes []indexNowSubmission
+	client := indexNowTestClient(func(r *http.Request) (int, string) {
+		switch r.URL.Path {
+		case "/" + key + ".txt":
+			return http.StatusOK, key
+		case "/sitemap.xml":
+			return http.StatusOK, testIndexNowSitemap("https://locale.example/", 3)
+		case "/indexnow":
+			posts++
+			var submission indexNowSubmission
+			if err := json.NewDecoder(r.Body).Decode(&submission); err != nil {
+				t.Fatal(err)
+			}
+			if len(submission.URLList) == 1 {
+				probes = append(probes, submission)
+				if len(probes) < 3 {
+					return http.StatusAccepted, ""
+				}
+			}
+			return http.StatusOK, ""
+		}
+		return http.StatusNotFound, ""
+	})
+	result, err := bootstrapIndexNow(context.Background(), client, "https://api.indexnow.org/indexnow", indexNowProfile{Locale: "zz-ZZ", State: "live", Hostname: "locale.example", PublicURL: "https://locale.example/"}, key)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if result.SubmittedURLs != 3 || posts != 4 || len(probes) != 3 {
+		t.Fatalf("result=%+v posts=%d probes=%d", result, posts, len(probes))
+	}
+	for _, probe := range probes {
+		if probe.Key != key || len(probe.URLList) != 1 || probe.URLList[0] != "https://locale.example/" {
+			t.Fatalf("probe identity changed: %+v", probe)
+		}
 	}
 }
 

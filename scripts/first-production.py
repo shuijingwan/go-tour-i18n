@@ -17,6 +17,7 @@ import os
 import pathlib
 import re
 import shutil
+import shlex
 import signal
 import socket
 import subprocess
@@ -383,10 +384,18 @@ validate_local_release "$1" >/dev/null
     def evidence_preflight(self):
         # Placeholder semantics are owned by the Go CLI, shared with the
         # finalizer; this orchestration layer must not parse Markdown itself.
-        self.run([
+        output = self.run([
             "go", "run", "-mod=readonly", "./cmd/tour-i18n",
-            "first-production", "evidence-preflight", "--release-dir", self.release_dir,
-        ], stage="preflight", timeout=120)
+            "first-production", "evidence-preflight", "--release-dir", self.release_dir, "--json",
+        ], capture=True, stage="preflight", timeout=120)
+        try:
+            identity = json.loads(output)
+            if identity.get("result") != "PASS" or not identity.get("review_id") or not identity.get("locale"):
+                raise ValueError("incomplete preflight identity")
+        except (TypeError, ValueError, json.JSONDecodeError) as exc:
+            raise FirstProductionError("preflight", "valid evidence preflight JSON", str(exc), "重新运行正式 evidence preflight 并检查当前 A gate") from exc
+        self.review_id = identity["review_id"]
+        print(f"FIRST PRODUCTION EVIDENCE PREFLIGHT: PASS (locale={identity['locale']} review_id={self.review_id})")
 
     def aliyun_preflight(self):
         p, s = self.profile, self.shared
@@ -936,6 +945,10 @@ done
         self.write_receipt("passed")
         print("\n[首次生产] READY FOR FINALIZATION")
         print(f"receipt: {self.receipt_path}")
+        release = shlex.quote(str(self.release_dir))
+        review = shlex.quote(self.review_id)
+        print("next: go run -mod=readonly ./cmd/tour-i18n first-production finalize "
+              f"--release-dir {release} --review-id {review}")
 
 
 def usage():

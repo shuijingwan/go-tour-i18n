@@ -391,12 +391,41 @@ printf 200
         instance = FIRST.Orchestrator.__new__(FIRST.Orchestrator)
         instance.release_dir = pathlib.Path("/tmp/go-tour-release-fr-FR-test")
         calls = []
-        instance.run = lambda command, **kwargs: calls.append((command, kwargs))
+        def run(command, **kwargs):
+            calls.append((command, kwargs))
+            return json.dumps({"result": "PASS", "locale": "fr-FR", "review_id": "review-1"})
+        instance.run = run
         instance.evidence_preflight()
         self.assertEqual(calls, [(
-            ["go", "run", "-mod=readonly", "./cmd/tour-i18n", "first-production", "evidence-preflight", "--release-dir", instance.release_dir],
-            {"stage": "preflight", "timeout": 120},
+            ["go", "run", "-mod=readonly", "./cmd/tour-i18n", "first-production", "evidence-preflight", "--release-dir", instance.release_dir, "--json"],
+            {"capture": True, "stage": "preflight", "timeout": 120},
         )])
+        self.assertEqual(instance.review_id, "review-1")
+
+    def test_success_stops_ready_and_prints_unique_finalize_command(self):
+        calls = []
+        class Fake:
+            receipt = {"stages": {}}
+            receipt_path = pathlib.Path("/tmp/receipt.json")
+            release_dir = pathlib.Path("/tmp/go tour release")
+            review_id = "review-1"
+            def write_receipt(self, result=None): calls.append(("receipt", result))
+            def stage_passed(self, stage): return False
+            def preflight(self): calls.append("preflight")
+            def bootstrap_infrastructure(self): calls.append("infrastructure")
+            def configure_playground(self): calls.append("playground")
+            def deploy(self): calls.append("deploy")
+            def direct_origin(self): calls.append("direct-origin")
+            def cloudflare_dns(self): calls.append("dns")
+            def public_machine(self): calls.append("public")
+            def browser(self): calls.append("browser")
+        with mock.patch("builtins.print") as printer:
+            FIRST.Orchestrator.execute(Fake())
+        rendered = "\n".join(" ".join(map(str, call.args)) for call in printer.call_args_list)
+        self.assertIn("READY FOR FINALIZATION", rendered)
+        self.assertIn("next: go run -mod=readonly ./cmd/tour-i18n first-production finalize --release-dir '/tmp/go tour release' --review-id review-1", rendered)
+        self.assertEqual(rendered.count("first-production finalize"), 1)
+        self.assertEqual(calls[-1], ("receipt", "passed"))
 
     def test_controlmaster_cleanup_covers_both_hosts(self):
         with tempfile.TemporaryDirectory() as directory:

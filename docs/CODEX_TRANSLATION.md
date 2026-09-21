@@ -16,14 +16,15 @@ Codex 支持的正式翻译阶段为：
 
 ```text
 retranslation export（先验证 current Glossary Review coverage）
-→ Codex 读取 manifest.json
-→ Codex 读取 manifest 列出的全部 inputs/*
-→ Codex 读取 locales/<locale>/glossary.yaml
+→ Local terminal 导出 provider-neutral Generation Bundle
+→ Codex 完整读取 ZIP 内 manifest、全部 inputs、glossary 与 authority
 → Codex 完整翻译每个 TranslationUnit
-→ Codex 直接写入 raw-responses/
+→ result-pack → deterministic import
 ```
 
 manifest、全部 inputs 与 locale glossary 是不可拆分的正式模型输入。Codex 必须在翻译前完整读取 glossary，并遵守其中的 `mandatory`、`preferred`、`forbidden` 和 `keep`；glossary 不是仅供 validator 后置检查的材料。
+
+正式 transport 与 ChatGPT 完全相同：`generation-bundle export` 生成 batch ZIP；Codex 将 exact expected outputs 写入独立 staging 目录；Local terminal 用 `generation-bundle result-pack --provider codex --model gpt-5.6-sol-high` 及 `generation-bundle import` 重验 current identity、路径、exact set、protected restore、single-LF 和 no-overwrite 后原子安装。bundle 不改变 TranslationUnit 边界，不是 authority、provenance receipt 或质量 gate；导入后仍执行 existing process/validation 与独立 A-only QC。Codex 已在仓库内时也优先消费该完整 bundle，避免重复探索并保证与 ChatGPT 使用同一输入 contract。
 
 Glossary 的制定、独立审核与 machine gate 以 [Glossary Review 规范](GLOSSARY_REVIEW.md) 为准。Codex Generation role 不得用自己的 generation 上下文审核并批准同一 glossary。
 
@@ -35,9 +36,9 @@ Glossary 的制定、独立审核与 machine gate 以 [Glossary Review 规范](G
 
 ## 非 TranslationUnit 与 Course SEO generation
 
-Codex 生成或修订 glossary、UI catalog、article metadata 和其他 locale-level 文案时，必须读取对应完整 source/context 与当前完整 locale glossary，并遵守 [Glossary Review 规范](GLOSSARY_REVIEW.md) 和 [Locale Surface Review](LOCALE_SURFACE_REVIEW.md) 的独立审核边界。
+Codex 生成或修订 glossary、UI catalog、article metadata 和其他 locale-level 文案时，必须读取对应完整 source/context 与当前完整 locale glossary，并遵守 [Glossary Review 规范](GLOSSARY_REVIEW.md) 和 [Locale Surface Review](LOCALE_SURFACE_REVIEW.md) 的独立审核边界。正式输入优先使用 `generation-bundle locale-export --task glossary|locale-assets|surface-replacement`，并在使用前以 `generation-bundle locale-check` 确认 current；该 ZIP 只运输上下文，不直接写正式资产。
 
-首次 schema v2 Course SEO localization 以及后续 refresh / revise replacement 时，Codex 已直接工作在当前 repository 中，必须完整读取当前 canonical source descriptions、每个 Page 的完整 English source、完整 ready canonical target、完整 locale glossary、locale identity 和 current authority。Codex 不需要为了 Course SEO 生成或读取面向 ChatGPT transport 的 `course-metadata localization-bundle` ZIP。canonical English description 仍是唯一 semantic-scope authority；正式 `course-metadata.json` 仍只由 Local terminal 通过 assemble / refresh / revise CLI 机械写入，并记录真实 `provider=codex`、`model=gpt-5.6-sol-high` provenance。
+首次 schema v2 Course SEO localization 使用与 ChatGPT 相同的 `course-metadata localization-bundle`；后续 refresh / revise replacement 使用 `course-metadata generation-bundle --task refresh|revise`。bundle 必须完整包含 canonical source descriptions、每个 Page 的完整 English source、完整 ready canonical target、完整 locale glossary、locale identity 和 current authority。canonical English description 仍是唯一 semantic-scope authority；正式 `course-metadata.json` 仍只由 Local terminal 通过 assemble / refresh / revise CLI 机械写入，并记录真实 `provider=codex`、`model=gpt-5.6-sol-high` provenance。
 
 ## 新增 locale 的首次 Page batch
 
@@ -47,7 +48,7 @@ Example 必须始终独立于 Page batch，不得混合。revision batch 只包�
 
 `60` 是当前推荐生产基线，不是已证明的理论最优值。es-ES 的实际执行显示小 batch 有明显固定执行成本；it-IT 已完成 60-Page batch，未暴露需要回退该规模的质量或 automatic validation 问题。因此为减少 batch 数量和人工操作采用此基线，但不从粗略额度数字推断其更省额度。新增 locale 应按本文件的窗口观察规则将 Codex 总额度作为显式运营约束；只有未来真实 evidence 表明 60 Page 导致模型超时或执行不稳定、automatic validation failure 增加、QC B/C/D 或 revision 成本增加、或 Codex 总额度/总耗时异常时，才重新调整该基线。
 
-Page 输出为 `raw-responses/*.article`，Example 输出为 `raw-responses/*.txt`。每个文件只能包含对应 TranslationUnit 的完整翻译结果，禁止包含：
+Page staging 输出为与 bundle `expected_outputs` 对应的 `.article`，Example 为 `.txt`；正式路径只由 deterministic import 安装。每个文件只能包含对应 TranslationUnit 的完整翻译结果，禁止包含：
 
 - JSON wrapper；
 - ZIP；
@@ -59,7 +60,7 @@ Page 输出为 `raw-responses/*.article`，Example 输出为 `raw-responses/*.tx
 
 ## 完成翻译后的检查
 
-每次写完 raw responses 后，Codex 必须检查：
+每次写完 staging outputs 后，Codex 必须检查：
 
 - manifest 中的 unit 数量；
 - raw response 数量；
@@ -68,7 +69,7 @@ Page 输出为 `raw-responses/*.article`，Example 输出为 `raw-responses/*.tx
 - 每个 raw response 是否以恰好一个 LF 结束且 EOF 无额外空行；
 - glossary 的 `mandatory`、`forbidden` 和 `keep` 是否满足；
 - 是否残留明显未翻译的自然语言；
-- `git status --short`。
+- exact output file set。
 
 本翻译阶段不自动执行 `process`、Quality Check、`quality-check finalize` 或 `promote`。只有用户明确要求继续下一阶段时，才进入相应步骤。
 
@@ -76,7 +77,7 @@ Codex 生成本轮 TranslationUnit 时，后续正式 Quality Check 必须由独
 
 ## Retry 与 revision
 
-首次 raw response 写入 `raw-responses/`，并被记为 attempt 1。若 `process` 得到 `restore_failed` 或 `validation_failed`，Codex 根据失败 evidence 生成下一份连续编号的 `retries/<unit>/attempt-NNN.*`；因此首次 retry 必须是 `attempt-002.*`，不得写 `attempt-001.*`。Retry raw response 同样必须以恰好一个 LF 结束且 EOF 无额外空行。现有 `retranslation retry` 命令只处理该文件，不调用模型、不生成或自动改写译文。
+首次 result 由 deterministic import 安装到 `raw-responses/`，并被记为 attempt 1。若 `process` 得到 `restore_failed` 或 `validation_failed`，Codex 根据 retry Generation Bundle 与失败 evidence 生成下一份连续编号输出；import 将其安装到 `retries/<unit>/attempt-NNN.*`，因此首次 retry 必须是 `attempt-002.*`，不得创建 `attempt-001.*`。Retry raw response 同样必须以恰好一个 LF 结束且 EOF 无额外空行。现有 `retranslation retry` 命令只处理已导入文件，不调用模型、不生成或自动改写译文。
 
 若 failure 已确认只来自 validator 规则修正，且 restore 成功、原 candidate 保持有效，不得伪造 retry。使用 `retranslation revalidate --locale ... --batch-id ... --unit-id ...` 以当前 canonical validator 重验同一 candidate；命令归档旧 validation evidence，更新当前 validation/result，但保持 raw response、candidate 和 translation attempt 不变。
 

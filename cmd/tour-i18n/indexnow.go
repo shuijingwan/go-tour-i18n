@@ -19,11 +19,12 @@ import (
 )
 
 const (
-	indexNowEndpoint     = "https://api.indexnow.org/indexnow"
-	indexNowMaxURLs      = 10000
-	indexNowKeyMinLength = 8
-	indexNowKeyMaxLength = 128
-	indexNowGETAttempts  = 3
+	indexNowEndpoint      = "https://api.indexnow.org/indexnow"
+	indexNowMaxURLs       = 10000
+	indexNowKeyMinLength  = 8
+	indexNowKeyMaxLength  = 128
+	indexNowGETAttempts   = 3
+	indexNowProbeAttempts = 3
 )
 
 type indexNowIdentity struct {
@@ -162,12 +163,9 @@ func bootstrapIndexNow(ctx context.Context, client *http.Client, endpoint string
 	if !containsURL(urls, probe) {
 		return indexNowBootstrapResult{}, fmt.Errorf("formal sitemap does not contain fixed probe URL %s", probe)
 	}
-	probeStatus, err := submitIndexNow(ctx, client, endpoint, profile.Hostname, key, keyLocation, []string{probe})
+	probeStatus, err := submitIndexNowProbe(ctx, client, endpoint, profile.Hostname, key, keyLocation, probe)
 	if err != nil {
 		return indexNowBootstrapResult{}, err
-	}
-	if probeStatus == http.StatusAccepted {
-		return indexNowBootstrapResult{}, fmt.Errorf("IndexNow probe is pending (HTTP 202); stop and retry after the key is available")
 	}
 	if probeStatus != http.StatusOK {
 		return indexNowBootstrapResult{}, fmt.Errorf("IndexNow probe expected HTTP 200, got %d", probeStatus)
@@ -189,6 +187,28 @@ func bootstrapIndexNow(ctx context.Context, client *http.Client, endpoint string
 		return indexNowBootstrapResult{}, fmt.Errorf("IndexNow bulk submission expected HTTP 200, got %d", status)
 	}
 	return indexNowBootstrapResult{SitemapURLs: len(urls), SubmittedURLs: len(urls)}, nil
+}
+
+// submitIndexNowProbe retries only the explicitly pending HTTP 202 response.
+// It reuses the same provisioned key and byte-identical one-URL payload; all
+// transport failures and other HTTP statuses remain fail-closed because their
+// mutation result cannot be safely inferred.
+func submitIndexNowProbe(ctx context.Context, client *http.Client, endpoint, host, key, keyLocation, probe string) (int, error) {
+	for attempt := 1; attempt <= indexNowProbeAttempts; attempt++ {
+		status, err := submitIndexNow(ctx, client, endpoint, host, key, keyLocation, []string{probe})
+		if err != nil {
+			return 0, err
+		}
+		if status != http.StatusAccepted {
+			return status, nil
+		}
+		if attempt == indexNowProbeAttempts {
+			return 0, fmt.Errorf("IndexNow probe remained pending (HTTP 202) after %d attempts", indexNowProbeAttempts)
+		}
+		fmt.Fprintf(os.Stderr, "IndexNow probe pending: HTTP 202 attempt %d/%d; retrying same key and payload after %ds\n", attempt, indexNowProbeAttempts, attempt)
+		indexNowRetrySleep(time.Duration(attempt) * time.Second)
+	}
+	panic("unreachable")
 }
 
 func parseIndexNowOrigin(profile indexNowProfile) (string, error) {

@@ -83,6 +83,16 @@ go run -mod=readonly ./cmd/tour-i18n retranslation export \
 
 新增 locale 的首次 Page batch 仍使用 60-Page 基线，Examples 独立；revision 与 retry 范围不变。
 
+export 后由 Local terminal 生成 provider-neutral input ZIP；ChatGPT 完整读取一个附件即可取得 manifest、全部 inputs、完整 glossary 与当前 authority，无需再通过 Remote Desktop Commander 逐文件读取：
+
+```sh
+go run -mod=readonly ./cmd/tour-i18n generation-bundle export \
+  --locale <locale> --batch-id <batch-id> \
+  --output /tmp/<locale>-<batch-id>-generation.zip
+```
+
+ChatGPT 仍在 hidden staging 中生成 exact expected files，并自行完成 protected token、glossary、明显未翻译文本、无解释/fence 与 single-LF 检查。Local terminal 再运行 `generation-bundle result-pack --provider chatgpt --model gpt-5.6-sol-high` 和 `generation-bundle import`；两步会重验 current bundle、exact set、机器安全与 no-overwrite 后原子安装。result ZIP 保存真实 provider/model，但不成为语言质量 evidence；existing process/validation/QC 不变。
+
 ## Remote Desktop Commander 安全写入
 
 首次翻译或 revision 不得逐个文件直接建立正式 `raw-responses/`。在同一 batch filesystem 内执行以下顺序：
@@ -96,7 +106,7 @@ go run -mod=readonly ./cmd/tour-i18n retranslation export \
 
 Retry 使用同一原子提交思想：先将完整内容写入目标 Unit retry 目录内的隐藏 staging file，核对它满足当前连续 attempt 编号、文件名、protected token、glossary 和 single-LF contract，再 rename 为正式 `attempt-NNN.article` 或 `attempt-NNN.txt`。不得覆盖既有 attempt、跳号或伪造 provenance。
 
-不新增 importer。`retranslation process` / `retranslation retry` 继续是 restore、validation 与 attempt provenance 的正式 fail-closed authority。
+手工 Remote Desktop Commander staging 路径只作为 bundle transport 不可用时的兼容恢复路径；不得与同一 attempt 的 `generation-bundle import` 混用或覆盖既有文件。无论哪种 transport，`retranslation process` / `retranslation retry` 继续是 candidate、validation evidence 与 attempt lifecycle 的正式 fail-closed authority。
 
 ## 非 TranslationUnit 语言资产
 
@@ -110,15 +120,52 @@ Retry 使用同一原子提交思想：先将完整内容写入目标 Unit retry
 
 所有资产仍须保持现有 key、kind、placeholder、markup、schema 和技术 identity。不得给 `glossary.yaml`、`internal/tour/ui/<locale>.json` 或 `article-metadata.json` 增加 provider/model/generation 字段。Glossary 继续是该 locale 的正式术语 authority，这些资产也继续由现有 validator 与 Locale Surface Review 审核实际内容。
 
-当 Generation provider 为 `chatgpt` 时，首次 schema v2 Course SEO localization 优先由 Local terminal 从当前正式 working tree 生成 deterministic 上传 ZIP：
+这些 generation 输入优先一次性导出：
+
+```sh
+go run -mod=readonly ./cmd/tour-i18n generation-bundle locale-export \
+  --locale <locale> --task glossary \
+  --output /tmp/<locale>-glossary-generation.zip
+
+go run -mod=readonly ./cmd/tour-i18n generation-bundle locale-export \
+  --locale <locale> --task locale-assets \
+  --output /tmp/<locale>-locale-assets-generation.zip
+
+go run -mod=readonly ./cmd/tour-i18n generation-bundle locale-export \
+  --locale <locale> --task surface-replacement --review-id <review-id> \
+  --output /tmp/<locale>-surface-replacement-<review-id>.zip
+```
+
+`glossary` 包含完整 locale identity、English/source corpus 与 terminology authority；`locale-assets` 在 current Glossary Review 后包含完整 UI/article source、当前 target 与 glossary；`surface-replacement` 还绑定指定 reviewer evidence 和 current full Surface Review package。开始或记录结果前用 `generation-bundle locale-check --bundle <zip>` 确认 current。此 contract 只运输生成上下文和预期 deliverable，不直接覆盖正式 locale 资产；维护者仍按现有 validator/lifecycle 落盘，Reviewer finding 仍须返回 Generation session 后再独立复审。
+
+首次 schema v2 Course SEO localization 由 Local terminal 从当前正式 working tree 生成 provider-neutral deterministic 上传 ZIP：
 
 ```sh
 go run -mod=readonly ./cmd/tour-i18n course-metadata localization-bundle \
   --locale <locale> \
   --output /tmp/<locale>-course-seo-localization-generation.zip
+go run -mod=readonly ./cmd/tour-i18n course-metadata localization-bundle-check \
+  --locale <locale> \
+  --bundle /tmp/<locale>-course-seo-localization-generation.zip
 ```
 
-ZIP 的 `course-seo-localization.json` 对 Catalog 全部当前 Page 逐页序列化 canonical English description、完整 English Page source、完整最终 ready target、source/source-description/target identity，并绑定 current canonical source-review authority、完整 glossary 与 `locale.json` identity；`formal/source-descriptions.json` 同时保留 canonical asset 的原始正式字节，`formal/` 还包含 glossary 与 locale identity；`authority/` 封装本规范、Course SEO 规范与 `AGENTS.md`。`manifest.json` 为全部文件提供 SHA-256。只要 bundle 来自未变化的正式 working tree 且 manifest/hash 完整，Generation session 直接完整读取附件，不再通过 Remote Desktop Commander 分批读取同一 103-Page context。ZIP 是 ChatGPT 的 transport optimization，只优化传输，不新增 Course SEO schema、receipt 或 stale identity，也不允许跳过任一 Page；Codex provider 使用其 repository-direct 输入路径，不需要该 ZIP。
+ZIP 的 `course-seo-localization.json` 对 Catalog 全部当前 Page 逐页序列化 canonical English description、完整 English Page source、完整最终 ready target、source/source-description/target identity，并绑定 current canonical source-review authority、完整 glossary 与 `locale.json` identity；`formal/source-descriptions.json` 同时保留 canonical asset 的原始正式字节，`formal/` 还包含 glossary 与 locale identity；`authority/` 封装 ChatGPT/Codex generation、Course SEO、workflow 与 `AGENTS.md`。`manifest.json` 为全部文件提供 SHA-256。只要 bundle 来自未变化的正式 working tree 且 manifest/hash 完整，Generation session 直接完整读取附件，不再通过 Remote Desktop Commander 分批读取同一 103-Page context。ZIP 只优化传输，不新增 Course SEO schema、receipt 或 stale identity，也不允许跳过任一 Page；Codex 使用完全相同的 bundle contract。
+
+schema v2 refresh/revise 使用独立 maintenance bundle，仍由既有 CLI 写正式 asset：
+
+```sh
+go run -mod=readonly ./cmd/tour-i18n course-metadata generation-bundle \
+  --locale <locale> --task refresh \
+  --output /tmp/<locale>-course-seo-refresh.zip
+
+go run -mod=readonly ./cmd/tour-i18n course-metadata generation-bundle \
+  --locale <locale> --task revise \
+  --page-id <page-id> [--page-id <page-id> ...] \
+  --finding data/locale-surface-reviews/<locale>/<review-id>.md \
+  --output /tmp/<locale>-course-seo-revise-<review-id>.zip
+```
+
+refresh 自动选择 exact stale subset；revise 要求 current schema-v2 base、显式 Page subset 与 repository 内 reviewer finding。下载的 strict `page_id`/`description` JSON 仍交给 `course-metadata refresh` / `revise`，真实 provenance 由调用者明确记录。
 
 schema v2 Course SEO localization 允许并推荐为每个当前 Page 提供 canonical English description、完整 English source、完整最终 ready canonical locale target、完整 locale glossary、locale identity 与 `course-seo-localization-v2` constraints。canonical description 是唯一 semantic-scope authority；source/target 只用于技术语义核对、正文术语一致性、自然表达和实际内容对齐，不授权重新摘要、增删语义或重选重点。同一 session/batch 可处理多个 Page，但每页必须只用自己的 canonical description 决定 semantic scope，不得跨页补充、混合或推断语义。普通 ChatGPT 的真实 provenance 固定记录为：
 

@@ -37,6 +37,22 @@ UI / article metadata 目前没有文件写入级 machine block，但正式生�
 
 正式结论只有 `passed` / `failed`，不使用 TranslationUnit 的 A/B/C/D。`failed` 必须给出至少一条 finding；finding 回到 Generation session 产生 replacement。
 
+Generation session 的完整输入可由 Local terminal 用 `generation-bundle locale-export --task glossary` 一次性导出；修订前用 `generation-bundle locale-check --bundle <zip>` 验证 current。该 generation ZIP 与 Reviewer ZIP 不得混用：前者允许生成 glossary，后者明确只允许 findings / passed/failed。
+
+独立 Reviewer 优先读取 deterministic、自包含 ZIP：
+
+```sh
+go run -mod=readonly ./cmd/tour-i18n glossary-review reviewer-bundle \
+  --locale <locale> \
+  --output /tmp/<locale>-glossary-reviewer.zip
+
+go run -mod=readonly ./cmd/tour-i18n glossary-review reviewer-bundle-check \
+  --locale <locale> \
+  --bundle /tmp/<locale>-glossary-reviewer.zip
+```
+
+ZIP 包含完整 glossary、locale identity、122 TranslationUnit 的完整 English/source context、English UI、正式 catalog TSV、术语与审核 authority，以及 exact inventory/hash。相同 working tree 重复导出必须 byte-stable；记录结论前必须运行 current-check，任何 glossary、source 或 authority 变化都使旧 ZIP fail closed。bundle 只是 transport，不是 receipt 或 review decision，Reviewer 不得在审核 session 生成 replacement。
+
 ## Receipt 与 current gate
 
 审核完成后由 Local terminal 记录机器 receipt；reviewer 不填写 glossary SHA：
