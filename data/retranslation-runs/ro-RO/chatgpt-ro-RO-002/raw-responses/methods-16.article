@@ -1,0 +1,19 @@
+* Switch-uri de tip
+
+Un ⟪GTI18N_26e4da09_000001⟫switch_de_tip⟪GTI18N_26e4da09_000002⟫ este o construcție care permite mai multe aserțiuni de tip în serie.
+
+Un switch de tip seamănă cu o instrucțiune switch obișnuită, dar cazurile dintr-un
+switch de tip specifică tipuri (nu valori), iar acele tipuri sunt comparate cu
+tipul valorii conținute de valoarea de interfață dată.
+
+⟪GTI18N_26e4da09_000003⟫aici ⟪GTI18N_26e4da09_000004⟫ are tipul ⟪GTI18N_26e4da09_000005⟫⟪GTI18N_26e4da09_000006⟫aici ⟪GTI18N_26e4da09_000007⟫ are tipul ⟪GTI18N_26e4da09_000008⟫⟪GTI18N_26e4da09_000009⟫nicio potrivire; aici ⟪GTI18N_26e4da09_000010⟫ are același tip ca ⟪GTI18N_26e4da09_000011⟫⟪GTI18N_26e4da09_000012⟫Declarația dintr-un switch de tip are aceeași sintaxă ca o aserțiune de tip ⟪GTI18N_26e4da09_000013⟫i.(T)⟪GTI18N_26e4da09_000014⟫,
+dar tipul specific ⟪GTI18N_26e4da09_000015⟫T⟪GTI18N_26e4da09_000016⟫ este înlocuit cu cuvântul-cheie ⟪GTI18N_26e4da09_000017⟫type⟪GTI18N_26e4da09_000018⟫.
+
+Această instrucțiune switch verifică dacă valoarea de interfață ⟪GTI18N_26e4da09_000019⟫i⟪GTI18N_26e4da09_000020⟫
+conține o valoare de tip ⟪GTI18N_26e4da09_000021⟫T⟪GTI18N_26e4da09_000022⟫ sau ⟪GTI18N_26e4da09_000023⟫S⟪GTI18N_26e4da09_000024⟫.
+În cazurile ⟪GTI18N_26e4da09_000025⟫T⟪GTI18N_26e4da09_000026⟫ și ⟪GTI18N_26e4da09_000027⟫S⟪GTI18N_26e4da09_000028⟫, variabila ⟪GTI18N_26e4da09_000029⟫v⟪GTI18N_26e4da09_000030⟫ va avea tipul
+⟪GTI18N_26e4da09_000031⟫T⟪GTI18N_26e4da09_000032⟫, respectiv ⟪GTI18N_26e4da09_000033⟫S⟪GTI18N_26e4da09_000034⟫, și va conține valoarea păstrată de ⟪GTI18N_26e4da09_000035⟫i⟪GTI18N_26e4da09_000036⟫.
+În cazul default (în care nu există potrivire), variabila ⟪GTI18N_26e4da09_000037⟫v⟪GTI18N_26e4da09_000038⟫ are
+același tip interfață și aceeași valoare ca ⟪GTI18N_26e4da09_000039⟫i⟪GTI18N_26e4da09_000040⟫.
+
+⟪GTI18N_26e4da09_000041⟫

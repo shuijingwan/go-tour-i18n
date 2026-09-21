@@ -1,0 +1,20 @@
+* Canale
+
+Canalele sunt conducte tipizate prin care puteți trimite și primi valori folosind operatorul de canal `<-`.
+
+	ch <- v    // Trimite v către canalul ch.
+	v := <-ch  // Primește din ch și
+	           // atribuie valoarea lui v.
+
+(Datele circulă în direcția săgeții.)
+
+La fel ca map-urile și slice-urile, canalele trebuie create înainte de utilizare:
+
+	ch := make(chan int)
+
+În mod implicit, trimiterile și primirile se blochează până când cealaltă parte este pregătită. Acest lucru permite instanțelor goroutine să se sincronizeze fără blocări explicite sau variabile de condiție.
+
+Codul exemplului însumează numerele dintr-un slice, distribuind munca între două instanțe goroutine.
+După ce ambele instanțe goroutine și-au încheiat calculele, este calculat rezultatul final.
+
+.play concurrency/channels.go

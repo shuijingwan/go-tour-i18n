@@ -1,0 +1,15 @@
+* Range și Close
+
+Un expeditor poate apela ⟪GTI18N_3e925c67_000001⟫close⟪GTI18N_3e925c67_000002⟫ pe un canal pentru a indica faptul că nu vor mai fi trimise valori. Receptorii pot verifica dacă un canal a fost închis atribuind un al doilea parametru expresiei de primire: după
+
+⟪GTI18N_3e925c67_000003⟫
+
+⟪GTI18N_3e925c67_000004⟫ok⟪GTI18N_3e925c67_000005⟫ este ⟪GTI18N_3e925c67_000006⟫false⟪GTI18N_3e925c67_000007⟫ dacă nu mai există valori de primit și canalul este închis.
+
+Bucla ⟪GTI18N_3e925c67_000008⟫for`i`:=`range`c⟪GTI18N_3e925c67_000009⟫ primește în mod repetat valori din canal până când acesta este închis.
+
+⟪GTI18N_3e925c67_000010⟫Notă:⟪GTI18N_3e925c67_000011⟫ Numai expeditorul ar trebui să închidă un canal, niciodată receptorul. Trimiterea pe un canal închis va provoca un ⟪GTI18N_3e925c67_000012⟫.
+
+⟪GTI18N_3e925c67_000013⟫Altă*notă:⟪GTI18N_3e925c67_000014⟫ Canalele nu sunt ca fișierele; de obicei nu trebuie să le închideți. Închiderea este necesară numai atunci când receptorul trebuie informat că nu mai urmează alte valori, de exemplu pentru a încheia o buclă ⟪GTI18N_3e925c67_000015⟫range⟪GTI18N_3e925c67_000016⟫.
+
+⟪GTI18N_3e925c67_000017⟫

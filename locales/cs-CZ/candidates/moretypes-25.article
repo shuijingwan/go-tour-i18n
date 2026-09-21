@@ -1,0 +1,7 @@
+* Uzávěry funkcí
+
+Funkce Go mohou být uzávěry. Uzávěr je funkční hodnota, která odkazuje na proměnné mimo své tělo. Funkce může k odkazovaným proměnným přistupovat a přiřazovat jim hodnoty; v tomto smyslu je funkce na tyto proměnné „navázána“.
+
+Například funkce `adder` vrací uzávěr. Každý uzávěr je navázán na vlastní proměnnou `sum`.
+
+.play moretypes/function-closures.go

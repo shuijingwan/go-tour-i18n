@@ -1,0 +1,26 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-cs-CZ-006",
+  "locale": "cs-CZ",
+  "unit_count": 2,
+  "restore_passed": 2,
+  "restore_failed": 0,
+  "validation_passed": 2,
+  "validation_failed": 0,
+  "units": [
+    {
+      "unit_id": "example:methods/interfaces.go",
+      "unit_kind": "example",
+      "status": "passed",
+      "candidate_path": "candidates/methods-interfaces.go",
+      "validation_path": "validation/methods-interfaces.json"
+    },
+    {
+      "unit_id": "example:moretypes/append.go",
+      "unit_kind": "example",
+      "status": "passed",
+      "candidate_path": "candidates/moretypes-append.go",
+      "validation_path": "validation/moretypes-append.json"
+    }
+  ]
+}

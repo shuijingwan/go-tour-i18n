@@ -1,0 +1,21 @@
+* Exercise: Errors
+
+Copy your ⟪GTI18N_41f1f733_000001⟫Sqrt⟪GTI18N_41f1f733_000002⟫ function from the [[⟪GTI18N_41f1f733_000003⟫][earlier exercise]] and modify it to return an ⟪GTI18N_41f1f733_000004⟫error⟪GTI18N_41f1f733_000005⟫ value.
+
+⟪GTI18N_41f1f733_000006⟫Sqrt⟪GTI18N_41f1f733_000007⟫ should return a non-⟪GTI18N_41f1f733_000008⟫ error value when given a negative number, as it doesn't support complex numbers.
+
+Create a new type
+
+⟪GTI18N_41f1f733_000009⟫
+
+and make it an ⟪GTI18N_41f1f733_000010⟫error⟪GTI18N_41f1f733_000011⟫ by giving it a
+
+⟪GTI18N_41f1f733_000012⟫
+
+method such that ⟪GTI18N_41f1f733_000013⟫ErrNegativeSqrt(-2).Error()⟪GTI18N_41f1f733_000014⟫ returns ⟪GTI18N_41f1f733_000015⟫"cannot`Sqrt`negative`number:`-2"⟪GTI18N_41f1f733_000016⟫.
+
+⟪GTI18N_41f1f733_000017⟫Note:⟪GTI18N_41f1f733_000018⟫ A call to ⟪GTI18N_41f1f733_000019⟫fmt.Sprint(e)⟪GTI18N_41f1f733_000020⟫ inside the ⟪GTI18N_41f1f733_000021⟫Error⟪GTI18N_41f1f733_000022⟫ method will send the program into an infinite loop. You can avoid this by converting ⟪GTI18N_41f1f733_000023⟫e⟪GTI18N_41f1f733_000024⟫ first: ⟪GTI18N_41f1f733_000025⟫fmt.Sprint(float64(e))⟪GTI18N_41f1f733_000026⟫. Why?
+
+Change your ⟪GTI18N_41f1f733_000027⟫Sqrt⟪GTI18N_41f1f733_000028⟫ function to return an ⟪GTI18N_41f1f733_000029⟫ErrNegativeSqrt⟪GTI18N_41f1f733_000030⟫ value when given a negative number.
+
+⟪GTI18N_41f1f733_000031⟫

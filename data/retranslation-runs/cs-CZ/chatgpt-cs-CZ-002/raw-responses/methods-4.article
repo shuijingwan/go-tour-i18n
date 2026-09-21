@@ -1,0 +1,24 @@
+* Ukazateloví příjemci
+
+Můžete deklarovat metody s ukazatelovými příjemci.
+
+To znamená, že typ příjemce má doslovnou syntaxi ⟪GTI18N_99f9fa4e_000001⟫*T⟪GTI18N_99f9fa4e_000002⟫ pro nějaký typ ⟪GTI18N_99f9fa4e_000003⟫T⟪GTI18N_99f9fa4e_000004⟫.
+(Také ⟪GTI18N_99f9fa4e_000005⟫T⟪GTI18N_99f9fa4e_000006⟫ samo nesmí být ukazatel, například ⟪GTI18N_99f9fa4e_000007⟫*int⟪GTI18N_99f9fa4e_000008⟫.)
+
+Například zde je metoda ⟪GTI18N_99f9fa4e_000009⟫Scale⟪GTI18N_99f9fa4e_000010⟫ definována na ⟪GTI18N_99f9fa4e_000011⟫*Vertex⟪GTI18N_99f9fa4e_000012⟫.
+
+Metody s ukazatelovými příjemci mohou měnit hodnotu, na kterou příjemce
+ukazuje (jako zde ⟪GTI18N_99f9fa4e_000013⟫Scale⟪GTI18N_99f9fa4e_000014⟫).
+Protože metody často potřebují příjemce měnit, jsou ukazateloví příjemci
+běžnější než hodnotoví.
+
+Zkuste z deklarace funkce odstranit ⟪GTI18N_99f9fa4e_000015⟫*⟪GTI18N_99f9fa4e_000016⟫ před ⟪GTI18N_99f9fa4e_000017⟫Scale⟪GTI18N_99f9fa4e_000018⟫ na řádku 16
+a sledujte, jak se změní chování programu.
+
+S hodnotovým příjemcem pracuje metoda ⟪GTI18N_99f9fa4e_000019⟫Scale⟪GTI18N_99f9fa4e_000020⟫ s kopií původní
+hodnoty ⟪GTI18N_99f9fa4e_000021⟫Vertex⟪GTI18N_99f9fa4e_000022⟫.
+(Jde o stejné chování jako u libovolného jiného argumentu funkce.)
+Metoda ⟪GTI18N_99f9fa4e_000023⟫Scale⟪GTI18N_99f9fa4e_000024⟫ musí mít ukazatelového příjemce, aby mohla změnit hodnotu ⟪GTI18N_99f9fa4e_000025⟫Vertex⟪GTI18N_99f9fa4e_000026⟫
+deklarovanou ve funkci ⟪GTI18N_99f9fa4e_000027⟫main⟪GTI18N_99f9fa4e_000028⟫.
+
+⟪GTI18N_99f9fa4e_000029⟫

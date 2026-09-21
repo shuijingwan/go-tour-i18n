@@ -1,0 +1,8 @@
+* Nil hodnoty rozhraní
+
+Hodnota rozhraní nil neobsahuje ani hodnotu, ani konkrétní typ.
+
+Volání metody na rozhraní nil je chyba za běhu, protože uvnitř dvojice rozhraní není
+typ, který by určoval, kterou _konkrétní_ metodu zavolat.
+
+.play methods/nil-interface-values.go

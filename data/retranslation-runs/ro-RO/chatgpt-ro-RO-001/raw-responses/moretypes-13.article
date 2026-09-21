@@ -1,0 +1,15 @@
+* Crearea unui slice cu make
+
+Slice-urile pot fi create cu funcția încorporată ⟪GTI18N_d057e6bf_000001⟫make⟪GTI18N_d057e6bf_000002⟫;
+astfel se creează tablouri cu dimensiune dinamică.
+
+Funcția ⟪GTI18N_d057e6bf_000003⟫make⟪GTI18N_d057e6bf_000004⟫ alocă un tablou inițializat cu valori zero
+și returnează un slice care face referire la acel tablou:
+
+⟪GTI18N_d057e6bf_000005⟫
+
+Pentru a specifica o capacitate, transmiteți un al treilea argument către ⟪GTI18N_d057e6bf_000006⟫make⟪GTI18N_d057e6bf_000007⟫:
+
+⟪GTI18N_d057e6bf_000008⟫
+
+⟪GTI18N_d057e6bf_000009⟫

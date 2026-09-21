@@ -1,0 +1,16 @@
+* Interfața goală
+
+Tipul interfață care specifică zero metode este cunoscut drept ⟪GTI18N_7a09a765_000001⟫interfață_goală⟪GTI18N_7a09a765_000002⟫:
+
+⟪GTI18N_7a09a765_000003⟫
+
+O interfață goală poate conține valori de orice tip.
+(Fiecare tip implementează cel puțin zero metode.)
+
+⟪GTI18N_7a09a765_000004⟫any⟪GTI18N_7a09a765_000005⟫ este un alias pentru ⟪GTI18N_7a09a765_000006⟫interface{}⟪GTI18N_7a09a765_000007⟫, iar cele două sunt complet
+echivalente.
+
+Interfețele goale sunt folosite de codul care gestionează valori de tip necunoscut.
+De exemplu, ⟪GTI18N_7a09a765_000008⟫fmt.Print⟪GTI18N_7a09a765_000009⟫ primește oricâte argumente de tip ⟪GTI18N_7a09a765_000010⟫any⟪GTI18N_7a09a765_000011⟫.
+
+⟪GTI18N_7a09a765_000012⟫

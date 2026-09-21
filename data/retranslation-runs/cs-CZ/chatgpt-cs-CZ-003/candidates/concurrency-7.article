@@ -1,0 +1,18 @@
+* Cvičení: Ekvivalentní binární stromy
+
+Může existovat mnoho různých binárních stromů se stejnou posloupností uložených hodnot. Například zde jsou dva binární stromy ukládající posloupnost 1, 1, 2, 3, 5, 8, 13.
+
+.image /tour/static/img/tree.png
+
+Funkce pro ověření, zda dva binární stromy ukládají stejnou posloupnost, je ve většině jazyků poměrně složitá. Použijeme souběžnost a kanály Go a napíšeme jednoduché řešení.
+
+Tento příklad používá balíček `tree`, který definuje typ:
+
+	type Tree struct {
+		Left  *Tree
+		Value int
+		Right *Tree
+	}
+
+
+Popis pokračuje na [[javascript:click('.next-page')][další stránce]].

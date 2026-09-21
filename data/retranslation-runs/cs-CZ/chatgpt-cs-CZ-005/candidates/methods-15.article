@@ -1,0 +1,25 @@
+* Typové aserce
+
+_type_assertion_ poskytuje přístup k podkladové konkrétní hodnotě hodnoty rozhraní.
+
+	t := i.(T)
+
+Tento příkaz tvrdí, že hodnota rozhraní `i` obsahuje konkrétní typ `T`
+a přiřadí podkladovou hodnotu `T` do proměnné `t`.
+
+Pokud `i` neobsahuje `T`, příkaz vyvolá panic.
+
+Chcete-li _test_, zda hodnota rozhraní obsahuje určitý typ,
+může typová aserce vrátit dvě hodnoty: podkladovou hodnotu
+a booleovskou hodnotu, která udává, zda aserce uspěla.
+
+	t, ok := i.(T)
+
+Pokud `i` obsahuje `T`, pak `t` bude podkladová hodnota a `ok` bude true.
+
+V opačném případě bude `ok` false a `t` bude nulová hodnota typu `T`,
+a panic se nevyvolá.
+
+Všimněte si podobnosti této syntaxe se čtením z mapy.
+
+.play methods/type-assertions.go

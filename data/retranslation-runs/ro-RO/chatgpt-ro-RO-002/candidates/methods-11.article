@@ -1,0 +1,13 @@
+* Valori de interfață
+
+În interior, valorile de interfață pot fi privite ca un tuplu format dintr-o valoare și un
+tip concret:
+
+	(value, type)
+
+O valoare de interfață conține o valoare a unui anumit tip concret subiacent.
+
+Apelarea unei metode pe o valoare de interfață execută metoda cu același nume a
+tipului său subiacent.
+
+.play methods/interface-values.go

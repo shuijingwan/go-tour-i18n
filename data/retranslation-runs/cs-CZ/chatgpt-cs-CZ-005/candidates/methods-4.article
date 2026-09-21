@@ -1,0 +1,24 @@
+* Ukazateloví příjemci
+
+Můžete deklarovat metody s ukazatelovými příjemci.
+
+To znamená, že typ příjemce má doslovnou syntaxi `*T` pro nějaký typ `T`.
+(Také `T` samo nemůže být ukazatelem, například `*int`.)
+
+Například zde je metoda `Scale` definována na `*Vertex`.
+
+Metody s ukazatelovými příjemci mohou měnit hodnotu, na kterou příjemce
+ukazuje (jako zde `Scale`).
+Protože metody často potřebují svého příjemce měnit, jsou ukazateloví příjemci
+běžnější než hodnotoví příjemci.
+
+Zkuste odstranit `*` z deklarace funkce `Scale` na řádku 16
+a sledujte, jak se změní chování programu.
+
+S hodnotovým příjemcem pracuje metoda `Scale` s kopií původní
+hodnoty `Vertex`.
+(Jde o stejné chování jako u jakéhokoli jiného argumentu funkce.)
+Metoda `Scale` musí mít ukazatelového příjemce, aby mohla změnit hodnotu `Vertex`
+deklarovanou ve funkci `main`.
+
+.play methods/methods-pointers.go

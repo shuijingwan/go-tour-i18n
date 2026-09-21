@@ -1,0 +1,14 @@
+* Literály řezů
+
+Literál řezu se podobá literálu pole bez délky.
+
+Toto je literál pole:
+
+	[3]bool{true, true, false}
+
+A následující zápis vytvoří stejné pole jako výše
+a poté sestaví řez, který na něj odkazuje:
+
+	[]bool{true, true, false}
+
+.play moretypes/slice-literals.go

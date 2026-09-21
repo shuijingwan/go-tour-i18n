@@ -1,0 +1,20 @@
+* Adăugarea elementelor la un slice
+
+Adăugarea de elemente noi la un slice este o operație obișnuită, așa că Go oferă funcția încorporată
+`append`. [[/pkg/builtin/#append][Documentația]]
+pachetului încorporat descrie `append`.
+
+	func append(s []T, vs ...T) []T
+
+Primul parametru `s` al lui `append` este un slice de tip `T`, iar restul sunt
+valori `T` care trebuie adăugate la slice.
+
+Valoarea rezultată din `append` este un slice care conține toate elementele
+slice-ului original plus valorile furnizate.
+
+Dacă tabloul suport al lui `s` este prea mic pentru toate valorile date, va fi alocat un
+tablou mai mare. Slice-ul returnat va indica spre tabloul nou alocat.
+
+(Pentru a afla mai multe despre slice-uri, citiți articolul [[/blog/go-slices-usage-and-internals][Slice-uri: utilizare și mecanisme interne]].)
+
+.play moretypes/append.go

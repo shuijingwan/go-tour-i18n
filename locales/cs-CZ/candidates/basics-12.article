@@ -1,0 +1,12 @@
+* Nulové hodnoty
+
+Proměnné deklarované bez explicitní počáteční hodnoty dostanou svou
+_nulovou_hodnotu_.
+
+Nulová hodnota je:
+
+- `0` pro číselné typy,
+- `false` pro booleovský typ a
+- `""` (prázdný řetězec) pro řetězce.
+
+.play basics/zero.go

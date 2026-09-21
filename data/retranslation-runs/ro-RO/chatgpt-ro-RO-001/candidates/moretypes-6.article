@@ -1,0 +1,15 @@
+* Tablouri
+
+Tipul `[n]T` este un tablou cu `n` valori de tip `T`.
+
+Expresia
+
+	var a [10]int
+
+declară variabila `a` drept un tablou cu zece numere întregi.
+
+Lungimea unui tablou face parte din tipul său, astfel încât tablourile nu pot fi redimensionate.
+Acest lucru poate părea limitativ, dar nu vă faceți griji;
+Go oferă o modalitate comodă de a lucra cu tablouri.
+
+.play moretypes/array.go

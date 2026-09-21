@@ -1,0 +1,83 @@
+{
+  "schema_version": 2,
+  "evidence_type": "quality_check_results",
+  "locale": "cs-CZ",
+  "snapshot_id": "qc-002",
+  "snapshot_manifest_sha256": "82e25fcdce8ef0f4ece63caa14948da8f1ec52a4fb851ce6449d3df14df8888b",
+  "previous_snapshot_id": "qc-001",
+  "rubric": "translation-quality/v1",
+  "result_count": 14,
+  "results": [
+    {
+      "index": 1,
+      "unit_id": "welcome/1",
+      "rating": "A"
+    },
+    {
+      "index": 32,
+      "unit_id": "flowcontrol/10",
+      "rating": "A"
+    },
+    {
+      "index": 43,
+      "unit_id": "moretypes/7",
+      "rating": "A"
+    },
+    {
+      "index": 47,
+      "unit_id": "moretypes/11",
+      "rating": "A"
+    },
+    {
+      "index": 49,
+      "unit_id": "moretypes/13",
+      "rating": "A"
+    },
+    {
+      "index": 61,
+      "unit_id": "moretypes/25",
+      "rating": "A"
+    },
+    {
+      "index": 67,
+      "unit_id": "methods/4",
+      "rating": "A"
+    },
+    {
+      "index": 75,
+      "unit_id": "methods/12",
+      "rating": "A"
+    },
+    {
+      "index": 78,
+      "unit_id": "methods/15",
+      "rating": "B",
+      "finding": "上一轮关于 panic 的捷克语表达问题已经修复，但当前完整 candidate 仍留下两个可翻译的英语自然语言片段：开头 type_assertion poskytuje... 没有使用 mandatory type assertion → typová aserce，后文 Chcete-li test, zda... 也保留了英语 test。两者都不是 protected technical identity，需要 revision。"
+    },
+    {
+      "index": 82,
+      "unit_id": "methods/19",
+      "rating": "A"
+    },
+    {
+      "index": 83,
+      "unit_id": "methods/20",
+      "rating": "A"
+    },
+    {
+      "index": 96,
+      "unit_id": "concurrency/4",
+      "rating": "A"
+    },
+    {
+      "index": 116,
+      "unit_id": "example:methods/interfaces.go",
+      "rating": "A"
+    },
+    {
+      "index": 117,
+      "unit_id": "example:moretypes/append.go",
+      "rating": "A"
+    }
+  ]
+}

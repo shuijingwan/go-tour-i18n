@@ -1,0 +1,16 @@
+* Kanály
+
+Kanály jsou typované prostředky, kterými lze posílat a přijímat hodnoty pomocí operátoru kanálu ⟪GTI18N_a35e3af2_000001⟫<-⟪GTI18N_a35e3af2_000002⟫.
+
+⟪GTI18N_a35e3af2_000003⟫Odeslat ⟪GTI18N_a35e3af2_000004⟫ do kanálu ⟪GTI18N_a35e3af2_000005⟫.⟪GTI18N_a35e3af2_000006⟫Přijmout z ⟪GTI18N_a35e3af2_000007⟫ a⟪GTI18N_a35e3af2_000008⟫přiřadit hodnotu do ⟪GTI18N_a35e3af2_000009⟫.⟪GTI18N_a35e3af2_000010⟫(Data proudí ve směru šipky.)
+
+Stejně jako mapy a řezy je nutné kanály před použitím vytvořit:
+
+⟪GTI18N_a35e3af2_000011⟫
+
+Ve výchozím nastavení se operace odeslání a přijetí blokují, dokud není připravena druhá strana. To umožňuje ⟪GTI18N_a35e3af2_000012⟫ synchronizovat se bez explicitních zámků nebo podmínkových proměnných.
+
+Ukázkový kód sčítá čísla v řezu a rozděluje práci mezi dvě ⟪GTI18N_a35e3af2_000013⟫.
+Jakmile obě ⟪GTI18N_a35e3af2_000014⟫ dokončí svůj výpočet, vypočítá konečný výsledek.
+
+⟪GTI18N_a35e3af2_000015⟫

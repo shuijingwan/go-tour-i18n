@@ -1,0 +1,15 @@
+* Goroutine
+
+O _goroutine_ este un fir de execuție ușor gestionat de mediul de execuție Go.
+
+	go f(x, y, z)
+
+pornește o nouă goroutine care rulează
+
+	f(x, y, z)
+
+Evaluarea lui `f`, `x`, `y` și `z` are loc în instanța goroutine curentă, iar execuția lui `f` are loc în noua goroutine.
+
+Instanțele goroutine rulează în același spațiu de adrese, astfel încât accesul la memoria partajată trebuie sincronizat. Pachetul [[/pkg/sync/][`sync`]] oferă primitive utile, deși nu veți avea nevoie prea des de ele în Go, deoarece există și alte primitive. (Consultați pagina următoare.)
+
+.play concurrency/goroutines.go

@@ -1,0 +1,13 @@
+* Odvození typu
+
+Při deklaraci proměnné bez explicitního určení typu (ať už pomocí syntaxe ⟪GTI18N_21c4077c_000001⟫:=⟪GTI18N_21c4077c_000002⟫ nebo syntaxe výrazu ⟪GTI18N_21c4077c_000003⟫var`=⟪GTI18N_21c4077c_000004⟫) se typ proměnné odvodí z hodnoty na pravé straně.
+
+Pokud má pravá strana deklarace určený typ, bude mít nová proměnná stejný typ:
+
+⟪GTI18N_21c4077c_000005⟫⟪GTI18N_21c4077c_000006⟫ je typu ⟪GTI18N_21c4077c_000007⟫⟪GTI18N_21c4077c_000008⟫Pokud však pravá strana obsahuje netypovanou číselnou konstantu, může být nová proměnná typu ⟪GTI18N_21c4077c_000009⟫int⟪GTI18N_21c4077c_000010⟫, ⟪GTI18N_21c4077c_000011⟫float64⟪GTI18N_21c4077c_000012⟫ nebo ⟪GTI18N_21c4077c_000013⟫complex128⟪GTI18N_21c4077c_000014⟫ podle přesnosti konstanty:
+
+⟪GTI18N_21c4077c_000015⟫
+
+Zkuste v ukázkovém kódu změnit počáteční hodnotu ⟪GTI18N_21c4077c_000016⟫v⟪GTI18N_21c4077c_000017⟫ a sledujte, jak se změní její typ.
+
+⟪GTI18N_21c4077c_000018⟫

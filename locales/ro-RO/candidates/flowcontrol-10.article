@@ -1,0 +1,15 @@
+* Ordinea evaluării switch-ului
+
+Cazurile unui switch sunt evaluate de sus în jos, oprindu-se la primul caz care se potrivește.
+
+(De exemplu,
+
+	switch i {
+	case 0:
+	case f():
+	}
+
+nu apelează `f` dacă `i==0`.)
+
+
+.play flowcontrol/switch-evaluation-order.go

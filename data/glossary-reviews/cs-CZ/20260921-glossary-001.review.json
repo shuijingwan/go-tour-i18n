@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "evidence_type": "glossary-review-receipt",
+  "locale": "cs-CZ",
+  "review_id": "20260921-glossary-001",
+  "stage": "locale-glossary-review",
+  "decision": "failed",
+  "reviewer": "ChatGPT GPT-5.6 Sol High",
+  "rubric": "glossary-review/v1",
+  "glossary_path": "locales/cs-CZ/glossary.yaml",
+  "glossary_sha256": "90f0728f0eaa8e81de425bcd3ce38ab15832d8c1166ca7a9cc08b4df9dedf293",
+  "findings": [
+    "keep: Shift, Enter, Ctrl, PageUp, and PageDown are keyboard identities already protected in inline-code contexts; global keep would collide with ordinary natural-language Shift/Enter usage, so remove these blanket keep entries.",
+    "mandatory/preferred: slide/slides lacks a Czech terminology decision. Add explicit context-sensitive policy distinguishing Tour page usage from presentation-slide usage so later generation cannot vary or mechanically translate the term."
+  ]
+}

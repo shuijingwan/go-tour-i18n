@@ -1,0 +1,28 @@
+* Tipuri de bază
+
+Tipurile de bază ale limbajului Go sunt
+
+	bool
+
+	string
+
+	int  int8  int16  int32  int64
+	uint uint8 uint16 uint32 uint64 uintptr
+
+	byte // alias pentru uint8
+
+	rune // alias pentru int32
+	     // reprezintă un punct de cod Unicode
+
+	float32 float64
+
+	complex64 complex128
+
+Exemplul prezintă variabile de mai multe tipuri
+și arată, de asemenea, că declarațiile de variabile pot fi „factorizate” în blocuri,
+la fel ca instrucțiunile de import.
+
+Tipurile `int`, `uint` și `uintptr` au de obicei 32 de biți pe sistemele pe 32 de biți și 64 de biți pe sistemele pe 64 de biți.
+Când aveți nevoie de o valoare întreagă, ar trebui să folosiți `int`, cu excepția cazului în care aveți un motiv anume să folosiți un tip întreg cu dimensiune specifică sau fără semn.
+
+.play basics/basic-types.go

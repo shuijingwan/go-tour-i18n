@@ -1,0 +1,24 @@
+* Pointeri
+
+Go are pointeri.
+Un pointer conține adresa din memorie a unei valori.
+
+Tipul `*T` este un pointer către o valoare de tip `T`. Valoarea sa zero este `nil`.
+
+	var p *int
+
+Operatorul `&` generează un pointer către operandul său.
+
+	i := 42
+	p = &i
+
+Operatorul `*` indică valoarea subiacentă a pointerului.
+
+	fmt.Println(*p) // citește i prin pointerul p
+	*p = 21         // setează i prin pointerul p
+
+Aceasta este cunoscută drept „dereferențiere” sau „indirecționare”.
+
+Spre deosebire de C, Go nu are aritmetica pointerilor.
+
+.play moretypes/pointers.go

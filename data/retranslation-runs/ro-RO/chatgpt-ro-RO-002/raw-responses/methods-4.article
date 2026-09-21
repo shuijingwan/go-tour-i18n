@@ -1,0 +1,24 @@
+* Receptori pointer
+
+Puteți declara metode cu receptori pointer.
+
+Aceasta înseamnă că tipul receptorului are sintaxa literală ⟪GTI18N_99f9fa4e_000001⟫*T⟪GTI18N_99f9fa4e_000002⟫ pentru un anumit tip ⟪GTI18N_99f9fa4e_000003⟫T⟪GTI18N_99f9fa4e_000004⟫.
+(De asemenea, ⟪GTI18N_99f9fa4e_000005⟫T⟪GTI18N_99f9fa4e_000006⟫ nu poate fi el însuși un pointer, cum ar fi ⟪GTI18N_99f9fa4e_000007⟫*int⟪GTI18N_99f9fa4e_000008⟫.)
+
+De exemplu, metoda ⟪GTI18N_99f9fa4e_000009⟫Scale⟪GTI18N_99f9fa4e_000010⟫ de aici este definită pentru ⟪GTI18N_99f9fa4e_000011⟫*Vertex⟪GTI18N_99f9fa4e_000012⟫.
+
+Metodele cu receptori pointer pot modifica valoarea către care indică receptorul
+(așa cum face ⟪GTI18N_99f9fa4e_000013⟫Scale⟪GTI18N_99f9fa4e_000014⟫ aici).
+Deoarece metodele trebuie adesea să își modifice receptorul, receptorii pointer sunt mai
+frecvenți decât receptorii prin valoare.
+
+Încercați să eliminați ⟪GTI18N_99f9fa4e_000015⟫*⟪GTI18N_99f9fa4e_000016⟫ din declarația funcției ⟪GTI18N_99f9fa4e_000017⟫Scale⟪GTI18N_99f9fa4e_000018⟫ de la linia 16
+și observați cum se schimbă comportamentul programului.
+
+Cu un receptor prin valoare, metoda ⟪GTI18N_99f9fa4e_000019⟫Scale⟪GTI18N_99f9fa4e_000020⟫ operează pe o copie a valorii originale
+⟪GTI18N_99f9fa4e_000021⟫Vertex⟪GTI18N_99f9fa4e_000022⟫.
+(Acesta este același comportament ca pentru orice alt argument al unei funcții.)
+Metoda ⟪GTI18N_99f9fa4e_000023⟫Scale⟪GTI18N_99f9fa4e_000024⟫ trebuie să aibă un receptor pointer pentru a modifica valoarea ⟪GTI18N_99f9fa4e_000025⟫Vertex⟪GTI18N_99f9fa4e_000026⟫
+declarată în funcția ⟪GTI18N_99f9fa4e_000027⟫main⟪GTI18N_99f9fa4e_000028⟫.
+
+⟪GTI18N_99f9fa4e_000029⟫

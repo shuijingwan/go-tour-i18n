@@ -1,0 +1,9 @@
+* Skládání deferů
+
+Odložená volání funkcí se ukládají na zásobník. Když se funkce vrací, její
+odložená volání se provedou v pořadí poslední dovnitř, první ven.
+
+Více o příkazech defer najdete v tomto
+[[/blog/defer-panic-and-recover][příspěvku na blogu]].
+
+.play flowcontrol/defer-multi.go

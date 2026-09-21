@@ -1,0 +1,18 @@
+* Lungimea și capacitatea unui slice
+
+Un slice are atât o ⟪GTI18N_e2d7d69c_000001⟫lungime⟪GTI18N_e2d7d69c_000002⟫, cât și o ⟪GTI18N_e2d7d69c_000003⟫capacitate⟪GTI18N_e2d7d69c_000004⟫.
+
+Lungimea unui slice este numărul de elemente pe care le conține.
+
+Capacitatea unui slice este numărul de elemente din tabloul subiacent,
+numărând de la primul element al slice-ului.
+
+Lungimea și capacitatea unui slice ⟪GTI18N_e2d7d69c_000005⟫s⟪GTI18N_e2d7d69c_000006⟫ pot fi obținute folosind expresiile
+⟪GTI18N_e2d7d69c_000007⟫len(s)⟪GTI18N_e2d7d69c_000008⟫ și ⟪GTI18N_e2d7d69c_000009⟫cap(s)⟪GTI18N_e2d7d69c_000010⟫.
+
+Puteți extinde lungimea unui slice refăcând operația de slicing,
+cu condiția să aibă o capacitate suficientă.
+Încercați să modificați una dintre operațiile de slicing din programul exemplu pentru a-l extinde
+dincolo de capacitatea sa și vedeți ce se întâmplă.
+
+⟪GTI18N_e2d7d69c_000011⟫

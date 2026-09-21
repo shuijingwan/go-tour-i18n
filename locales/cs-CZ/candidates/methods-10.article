@@ -1,0 +1,9 @@
+* Rozhraní se implementují implicitně
+
+Typ implementuje rozhraní tím, že implementuje jeho metody.
+Neexistuje žádná explicitní deklarace záměru ani klíčové slovo „implements“.
+
+Implicitní rozhraní oddělují definici rozhraní od jeho
+implementace, která se pak může objevit v libovolném balíčku bez předchozí dohody.
+
+.play methods/interfaces-are-satisfied-implicitly.go

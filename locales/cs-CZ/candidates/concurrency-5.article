@@ -1,0 +1,7 @@
+* Select
+
+Příkaz `select` umožňuje goroutine čekat na více komunikačních operací.
+
+`select` se blokuje, dokud nelze provést jeden z jeho případů, a pak tento případ provede. Pokud je připraveno více případů, náhodně jeden vybere.
+
+.play concurrency/select.go

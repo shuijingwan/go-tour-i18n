@@ -1,0 +1,7 @@
+* Krátké deklarace proměnných
+
+Uvnitř funkce lze krátký přiřazovací příkaz `:=` použít místo deklarace `var` s implicitním typem.
+
+Mimo funkci začíná každý příkaz klíčovým slovem (`var`, `func` a podobně), takže konstrukci `:=` nelze použít.
+
+.play basics/short-variable-declarations.go

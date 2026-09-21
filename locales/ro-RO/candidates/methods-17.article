@@ -1,0 +1,12 @@
+* Stringer
+
+Una dintre cele mai răspândite interfețe este [[/pkg/fmt/#Stringer][`Stringer`]], definită de pachetul [[/pkg/fmt/][`fmt`]].
+
+	type Stringer interface {
+		String() string
+	}
+
+Un `Stringer` este un tip care se poate descrie pe sine ca șir de caractere. Pachetul `fmt`
+(și multe altele) caută această interfață pentru a afișa valori.
+
+.play methods/stringer.go

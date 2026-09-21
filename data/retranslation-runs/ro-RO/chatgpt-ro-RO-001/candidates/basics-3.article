@@ -1,0 +1,16 @@
+* Nume exportate
+
+În Go, un nume este exportat dacă începe cu literă mare.
+De exemplu, `Pizza` este un nume exportat, la fel ca `Pi`, care este exportat din
+pachetul `math`.
+
+`pizza` și `pi` nu încep cu literă mare, deci nu sunt exportate.
+
+Când importați un pachet, puteți face referire numai la numele sale exportate.
+Numele „neexportate” nu sunt accesibile din afara pachetului.
+
+Rulați codul. Observați mesajul de eroare.
+
+Pentru a remedia eroarea, redenumiți `math.pi` în `math.Pi` și încercați din nou.
+
+.play basics/exported-names.go

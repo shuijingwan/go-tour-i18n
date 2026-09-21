@@ -1,0 +1,11 @@
+* Pojmenované návratové hodnoty
+
+Návratové hodnoty v Go mohou být pojmenované. V takovém případě se s nimi zachází jako s proměnnými definovanými na začátku funkce.
+
+Tyto názvy by se měly používat k dokumentování významu návratových hodnot.
+
+Příkaz `return` bez argumentů vrátí pojmenované návratové hodnoty. Tomu se říká „prázdný“ return.
+
+Prázdné příkazy return by se měly používat jen v krátkých funkcích, jako v tomto příkladu. V delších funkcích mohou zhoršit čitelnost.
+
+.play basics/named-results.go

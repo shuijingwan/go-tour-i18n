@@ -1,0 +1,12 @@
+* Valori de interfață cu valori subiacente nil
+
+Dacă valoarea concretă din interiorul interfeței este ea însăși nil,
+metoda va fi apelată cu un receptor nil.
+
+În unele limbaje, acest lucru ar declanșa o excepție de pointer nul,
+dar în Go este obișnuit să se scrie metode care gestionează elegant apelarea
+cu un receptor nil (ca metoda `M` din acest exemplu).
+
+Rețineți că o valoare de interfață care conține o valoare concretă nil este ea însăși non-nil.
+
+.play methods/interface-values-with-nil.go

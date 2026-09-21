@@ -1,0 +1,11 @@
+* Slice-urile sunt asemănătoare referințelor către tablouri
+
+Un slice nu stochează date;
+el descrie doar o porțiune dintr-un tablou subiacent.
+
+Modificarea elementelor unui slice modifică
+elementele corespunzătoare din tabloul său subiacent.
+
+Alte slice-uri care partajează același tablou subiacent vor vedea aceste modificări.
+
+⟪GTI18N_e577f9e9_000001⟫

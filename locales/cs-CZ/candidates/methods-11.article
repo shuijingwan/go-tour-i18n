@@ -1,0 +1,13 @@
+* Hodnoty rozhraní
+
+Uvnitř si lze hodnotu rozhraní představit jako dvojici hodnoty a
+konkrétního typu:
+
+	(value, type)
+
+Hodnota rozhraní obsahuje hodnotu určitého podkladového konkrétního typu.
+
+Volání metody na hodnotě rozhraní spustí stejnojmennou metodu
+jejího podkladového typu.
+
+.play methods/interface-values.go

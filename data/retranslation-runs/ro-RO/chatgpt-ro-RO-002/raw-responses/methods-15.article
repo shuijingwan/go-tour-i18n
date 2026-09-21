@@ -1,0 +1,25 @@
+* Aserțiuni de tip
+
+O ⟪GTI18N_c205b4eb_000001⟫aserțiune_de_tip⟪GTI18N_c205b4eb_000002⟫ oferă acces la valoarea concretă subiacentă a unei valori de interfață.
+
+⟪GTI18N_c205b4eb_000003⟫
+
+Această instrucțiune afirmă că valoarea de interfață ⟪GTI18N_c205b4eb_000004⟫i⟪GTI18N_c205b4eb_000005⟫ conține tipul concret ⟪GTI18N_c205b4eb_000006⟫T⟪GTI18N_c205b4eb_000007⟫
+și atribuie valoarea subiacentă ⟪GTI18N_c205b4eb_000008⟫T⟪GTI18N_c205b4eb_000009⟫ variabilei ⟪GTI18N_c205b4eb_000010⟫t⟪GTI18N_c205b4eb_000011⟫.
+
+Dacă ⟪GTI18N_c205b4eb_000012⟫i⟪GTI18N_c205b4eb_000013⟫ nu conține un ⟪GTI18N_c205b4eb_000014⟫T⟪GTI18N_c205b4eb_000015⟫, instrucțiunea va declanșa un ⟪GTI18N_c205b4eb_000016⟫.
+
+Pentru a ⟪GTI18N_c205b4eb_000017⟫testa⟪GTI18N_c205b4eb_000018⟫ dacă o valoare de interfață conține un anumit tip,
+o aserțiune de tip poate returna două valori: valoarea subiacentă
+și o valoare booleană care indică dacă aserțiunea a reușit.
+
+⟪GTI18N_c205b4eb_000019⟫
+
+Dacă ⟪GTI18N_c205b4eb_000020⟫i⟪GTI18N_c205b4eb_000021⟫ conține un ⟪GTI18N_c205b4eb_000022⟫T⟪GTI18N_c205b4eb_000023⟫, atunci ⟪GTI18N_c205b4eb_000024⟫t⟪GTI18N_c205b4eb_000025⟫ va fi valoarea subiacentă, iar ⟪GTI18N_c205b4eb_000026⟫ok⟪GTI18N_c205b4eb_000027⟫ va fi true.
+
+În caz contrar, ⟪GTI18N_c205b4eb_000028⟫ok⟪GTI18N_c205b4eb_000029⟫ va fi false, iar ⟪GTI18N_c205b4eb_000030⟫t⟪GTI18N_c205b4eb_000031⟫ va fi valoarea zero a tipului ⟪GTI18N_c205b4eb_000032⟫T⟪GTI18N_c205b4eb_000033⟫
+și nu se produce niciun ⟪GTI18N_c205b4eb_000034⟫.
+
+Observați asemănarea dintre această sintaxă și cea pentru citirea dintr-un map.
+
+⟪GTI18N_c205b4eb_000035⟫

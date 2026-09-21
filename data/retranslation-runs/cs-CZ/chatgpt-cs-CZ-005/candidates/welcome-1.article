@@ -1,0 +1,34 @@
+* Hello, 世界
+
+Vítejte v průvodci [[/][programovacím jazykem Go]].
+
+Průvodce je rozdělen do seznamu modulů, ke kterým se dostanete kliknutím na
+[[javascript:highlight(".logo")][Průvodce Go]] v levém horním rohu stránky.
+
+Obsah si můžete kdykoli zobrazit také kliknutím na [[javascript:highlightAndClick(".nav")][nabídku]] v pravém horním rohu stránky.
+
+V celém průvodci najdete řadu stránek a cvičení, která můžete dokončit.
+
+Můžete mezi nimi přecházet pomocí
+
+- [[javascript:highlight(".prev-page")]["předchozí"]] nebo klávesy `PageUp` pro přechod na předchozí stránku,
+
+- [[javascript:highlight(".next-page")]["další"]] nebo klávesy `PageDown` pro přechod na další stránku.
+
+Průvodce je interaktivní. Klikněte nyní na tlačítko
+[[javascript:highlightAndClick("#run")][Spustit]]
+(nebo stiskněte `Shift` + `Enter`), aby se program zkompiloval a spustil na
+vzdáleném serveru.
+Výsledek se zobrazí pod kódem.
+
+Tyto ukázkové programy představují různé aspekty Go. Programy v průvodci mají sloužit jako výchozí body pro vaše vlastní experimentování.
+
+Upravte program a znovu jej spusťte.
+Když kliknete na [[javascript:highlightAndClick("#format")][Formátovat]]
+(klávesová zkratka: `Ctrl` + `Enter`), text v editoru se naformátuje pomocí
+nástroje [[/cmd/gofmt/][gofmt]]. Zvýrazňování syntaxe můžete zapnout nebo vypnout
+kliknutím na tlačítko [[javascript:highlightAndClick(".syntax-checkbox")][syntax]].
+
+Až budete chtít pokračovat, klikněte na [[javascript:highlightAndClick(".next-page")][šipku doprava]] dole nebo stiskněte klávesu `PageDown`.
+
+.play welcome/hello.go

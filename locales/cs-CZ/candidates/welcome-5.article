@@ -1,0 +1,19 @@
+* Go Playground
+
+Tento průvodce je postaven nad [[https://play.golang.org/][Go Playground]], webovou
+službou běžící na serverech [[/][golang.org]].
+
+Služba přijme program v Go, zkompiluje jej, slinkuje a spustí
+v sandboxu a poté vrátí výstup.
+
+Programy, které lze v playgroundu spustit, mají určitá omezení:
+
+- V playgroundu začíná čas 2009-11-10 23:00:00 UTC (určení významu tohoto data je cvičením pro čtenáře). Díky deterministickému výstupu lze programy snáze ukládat do cache.
+
+- Omezená je také doba běhu a využití CPU a paměti a program nemůže přistupovat k externím síťovým hostitelům.
+
+Playground používá nejnovější stabilní vydání Go.
+
+Více se dozvíte v článku „[[/blog/playground][Uvnitř Go Playground]]“.
+
+.play welcome/sandbox.go

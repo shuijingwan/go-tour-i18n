@@ -1,0 +1,18 @@
+* Lungimea și capacitatea unui slice
+
+Un slice are atât o _lungime_, cât și o _capacitate_.
+
+Lungimea unui slice este numărul de elemente pe care le conține.
+
+Capacitatea unui slice este numărul de elemente din tabloul subiacent,
+numărând de la primul element al slice-ului.
+
+Lungimea și capacitatea unui slice `s` pot fi obținute folosind expresiile
+`len(s)` și `cap(s)`.
+
+Puteți extinde lungimea unui slice refăcând operația de slicing,
+cu condiția să aibă o capacitate suficientă.
+Încercați să modificați una dintre operațiile de slicing din programul exemplu pentru a-l extinde
+dincolo de capacitatea sa și vedeți ce se întâmplă.
+
+.play moretypes/slice-len-cap.go

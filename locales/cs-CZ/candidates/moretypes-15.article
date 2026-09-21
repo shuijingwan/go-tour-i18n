@@ -1,0 +1,21 @@
+* Přidávání do řezu
+
+Přidávání nových prvků do řezu je běžné, a proto Go poskytuje vestavěnou
+funkci `append`. [[/pkg/builtin/#append][Dokumentace]]
+vestavěného balíčku popisuje `append`.
+
+	func append(s []T, vs ...T) []T
+
+První parametr `s` funkce `append` je řez typu `T` a zbývající parametry jsou
+hodnoty typu `T`, které se mají do řezu přidat.
+
+Výsledkem `append` je řez obsahující všechny prvky
+původního řezu a navíc zadané hodnoty.
+
+Pokud je podkladové pole `s` příliš malé pro všechny zadané hodnoty,
+alokuje se větší pole. Vrácený řez bude odkazovat na nově alokované
+pole.
+
+(Více o řezech najdete v článku [[/blog/go-slices-usage-and-internals][Řezy: použití a vnitřní fungování]].)
+
+.play moretypes/append.go

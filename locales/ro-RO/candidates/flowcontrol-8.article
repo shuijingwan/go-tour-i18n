@@ -1,0 +1,38 @@
+* Exercițiu: Bucle și funcții
+
+Pentru a experimenta cu funcții și bucle, să implementăm o funcție pentru rădăcina pătrată: dat fiind un număr x, vrem să găsim numărul z pentru care z² este cât mai apropiat de x.
+
+Calculatoarele determină de obicei rădăcina pătrată a lui x folosind o buclă.
+Pornind de la o valoare estimată z, putem ajusta z în funcție de cât de apropiat este z² de x,
+obținând o estimare mai bună:
+
+	z -= (z*z - x) / (2*z)
+
+Repetarea acestei ajustări îmbunătățește tot mai mult estimarea,
+până când obținem un răspuns cât mai apropiat posibil de rădăcina pătrată reală.
+
+Implementați aceasta în `func`Sqrt` furnizată.
+O estimare inițială rezonabilă pentru z este 1, indiferent de intrare.
+Pentru început, repetați calculul de 10 ori și afișați fiecare z pe parcurs.
+Observați cât de aproape ajungeți de răspuns pentru diverse valori ale lui x (1, 2, 3, ...)
+și cât de repede se îmbunătățește estimarea.
+
+Sugestie: Pentru a declara și inițializa o valoare în virgulă mobilă,
+folosiți o sintaxă de număr în virgulă mobilă sau o conversie:
+
+	z := 1.0
+	z := float64(1)
+
+Apoi modificați condiția buclei astfel încât să se oprească atunci când valoarea nu se mai
+schimbă (sau se schimbă doar cu o cantitate foarte mică).
+Vedeți dacă sunt necesare mai multe sau mai puține de 10 iterații.
+Încercați și alte estimări inițiale pentru z, precum x sau x/2.
+Cât de apropiate sunt rezultatele funcției voastre de [[/pkg/math/#Sqrt][math.Sqrt]] din biblioteca standard?
+
+(*Notă:* Dacă vă interesează detaliile algoritmului, expresia z² − x de mai sus
+arată cât de departe este z² de valoarea la care trebuie să ajungă (x), iar împărțirea la 2z este derivata
+lui z², pentru a scala ajustarea lui z în funcție de viteza cu care se schimbă z².
+Această abordare generală se numește [[https://en.wikipedia.org/wiki/Newton%27s_method][metoda lui Newton]].
+Funcționează bine pentru multe funcții, dar este deosebit de eficientă pentru rădăcina pătrată.)
+
+.play flowcontrol/exercise-loops-and-functions.go

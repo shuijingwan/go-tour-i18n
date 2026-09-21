@@ -1,0 +1,7 @@
+* Select
+
+Instrucțiunea `select` permite unei goroutine să aștepte mai multe operații de comunicare.
+
+Un `select` se blochează până când unul dintre cazurile sale poate rula, apoi execută acel caz. Dacă sunt pregătite mai multe, alege unul aleatoriu.
+
+.play concurrency/select.go

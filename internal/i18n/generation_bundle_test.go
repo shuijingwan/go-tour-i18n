@@ -83,6 +83,40 @@ func TestGenerationBundleResultImportIsDeterministicAtomicAndNoOverwrite(t *test
 	}
 }
 
+func TestGenerationBundleResultPackCanonicalizesExampleCandidateEOF(t *testing.T) {
+	root := t.TempDir()
+	copyBundleAuthority(t, root, translationUnitGenerationAuthorityPaths)
+	writeRetranslationTestGlossaryForLocale(t, root, "zh-CN")
+	example := retranslationTestExample(
+		"example:demo/main.go",
+		"_content/tour/demo/main.go",
+		"package main\n\n// Translate this ordinary comment.\nfunc main() {}\n",
+	)
+	catalog := &Catalog{Examples: []Example{example}}
+	exported, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{
+		Locale: "zh-CN", Generator: RetranslationGeneratorChatGPT, UnitIDs: []string{example.ID},
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	bundle, manifest, err := ExportTranslationUnitGenerationBundle(root, catalog, GenerationBundleOptions{Locale: "zh-CN", BatchID: exported.BatchID})
+	if err != nil {
+		t.Fatal(err)
+	}
+	batchManifest := readRetranslationManifest(t, root, exported.BatchID)
+	input, err := os.ReadFile(filepath.Join(root, exported.BatchPath, filepath.FromSlash(batchManifest.Units[0].InputPath)))
+	if err != nil {
+		t.Fatal(err)
+	}
+	outputDir := t.TempDir()
+	if err := os.WriteFile(filepath.Join(outputDir, filepath.Base(manifest.ExpectedOutputs[0].BundlePath)), input, 0644); err != nil {
+		t.Fatal(err)
+	}
+	if _, _, err := PackGenerationResultBundle(root, catalog, bundle, "chatgpt", FormalGenerationModel, outputDir); err != nil {
+		t.Fatal(err)
+	}
+}
+
 func TestGenerationBundleRejectsStaleAuthorityBeforeInstall(t *testing.T) {
 	root, catalog, batchID := generationBundleFixture(t, "zh-CN", RetranslationGeneratorCodex)
 	bundle, manifest, err := ExportTranslationUnitGenerationBundle(root, catalog, GenerationBundleOptions{Locale: "zh-CN", BatchID: batchID})

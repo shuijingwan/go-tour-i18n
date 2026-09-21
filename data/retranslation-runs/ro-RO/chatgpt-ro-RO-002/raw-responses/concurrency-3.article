@@ -1,0 +1,11 @@
+* Canale cu buffer
+
+Canalele pot fi ⟪GTI18N_caef0893_000001⟫bufferate⟪GTI18N_caef0893_000002⟫. Furnizați lungimea bufferului ca al doilea argument pentru ⟪GTI18N_caef0893_000003⟫make⟪GTI18N_caef0893_000004⟫ pentru a inițializa un canal cu buffer:
+
+⟪GTI18N_caef0893_000005⟫
+
+Trimiterile către un canal cu buffer se blochează numai când bufferul este plin. Primirile se blochează când bufferul este gol.
+
+Modificați exemplul astfel încât să depășiți capacitatea bufferului și vedeți ce se întâmplă.
+
+⟪GTI18N_caef0893_000006⟫

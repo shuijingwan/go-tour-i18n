@@ -1,0 +1,17 @@
+* Go offline (volitelné)
+
+Tento průvodce je dostupný také jako samostatný program, který můžete používat
+bez přístupu k internetu. Ukázkový kód sestavuje a spouští
+na vašem vlastním počítači.
+
+Chcete-li průvodce spustit lokálně, nejprve
+[[/doc/install][nainstalujte Go]] a poté spusťte:
+
+  go install golang.org/x/website/tour@latest
+
+Tím se binární soubor `tour` umístí v rámci vašeho
+[[/cmd/go/#hdr-GOPATH_and_Modules][GOPATH]] do adresáře `bin`.
+Po spuštění programu tour se otevře webový prohlížeč s
+lokální verzí průvodce.
+
+Průvodce samozřejmě můžete dál procházet i na tomto webu.

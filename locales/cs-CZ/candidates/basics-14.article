@@ -1,0 +1,18 @@
+* Odvození typu
+
+Při deklaraci proměnné bez explicitního určení typu (ať už pomocí syntaxe `:=` nebo syntaxe výrazu `var`=`) se typ proměnné odvodí z hodnoty na pravé straně.
+
+Pokud má pravá strana deklarace určený typ, bude mít nová proměnná stejný typ:
+
+	var i int
+	j := i // j je typu int
+
+Pokud však pravá strana obsahuje netypovanou číselnou konstantu, může být nová proměnná typu `int`, `float64` nebo `complex128` podle přesnosti konstanty:
+
+	i := 42           // int
+	f := 3.142        // float64
+	g := 0.867 + 0.5i // complex128
+
+Zkuste v ukázkovém kódu změnit počáteční hodnotu `v` a sledujte, jak se změní její typ.
+
+.play basics/type-inference.go

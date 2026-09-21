@@ -1,0 +1,27 @@
+* Modificarea map-urilor
+
+Introduceți sau actualizați un element în map-ul `m`:
+
+	m[key] = elem
+
+Preluați un element:
+
+	elem = m[key]
+
+Ștergeți un element:
+
+	delete(m, key)
+
+Verificați prezența unei chei printr-o atribuire cu două valori:
+
+	elem, ok = m[key]
+
+Dacă `key` se află în `m`, `ok` este `true`. În caz contrar, `ok` este `false`.
+
+Dacă `key` nu se află în map, atunci `elem` este valoarea zero pentru tipul elementelor map-ului.
+
+*Notă:* Dacă `elem` sau `ok` nu au fost încă declarate, puteți folosi forma scurtă de declarare:
+
+	elem, ok := m[key]
+
+.play moretypes/mutating-maps.go

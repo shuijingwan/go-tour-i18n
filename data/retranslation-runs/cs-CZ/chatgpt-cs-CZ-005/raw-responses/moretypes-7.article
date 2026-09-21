@@ -1,0 +1,23 @@
+* Řezy
+
+Pole má pevnou velikost.
+Řez má naproti tomu dynamickou velikost a představuje flexibilní pohled
+na prvky pole.
+V praxi jsou řezy mnohem běžnější než pole.
+
+Typ ⟪GTI18N_a169cf48_000001⟫[]T⟪GTI18N_a169cf48_000002⟫ je řez s prvky typu ⟪GTI18N_a169cf48_000003⟫T⟪GTI18N_a169cf48_000004⟫.
+
+Řez se vytvoří zadáním dvou indexů, dolní a
+horní meze, oddělených dvojtečkou:
+
+⟪GTI18N_a169cf48_000005⟫
+
+Tím se vybere polouzavřený interval, který zahrnuje první
+prvek, ale poslední prvek nezahrnuje.
+
+Následující výraz vytvoří řez, který zahrnuje
+prvky 1 až 3 z ⟪GTI18N_a169cf48_000006⟫a⟪GTI18N_a169cf48_000007⟫:
+
+⟪GTI18N_a169cf48_000008⟫
+
+⟪GTI18N_a169cf48_000009⟫

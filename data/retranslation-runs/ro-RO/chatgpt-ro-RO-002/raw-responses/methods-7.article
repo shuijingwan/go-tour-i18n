@@ -1,0 +1,14 @@
+* Metode și indirectarea pointerilor (2)
+
+Lucrul echivalent se întâmplă și în direcția opusă.
+
+Funcțiile care primesc un argument prin valoare trebuie să primească o valoare de acel tip specific:
+
+⟪GTI18N_61a9cb84_000001⟫Eroare de compilare!⟪GTI18N_61a9cb84_000002⟫în timp ce metodele cu receptori prin valoare acceptă fie o valoare, fie un pointer drept
+receptor atunci când sunt apelate:
+
+⟪GTI18N_61a9cb84_000003⟫
+
+În acest caz, apelul metodei ⟪GTI18N_61a9cb84_000004⟫p.Abs()⟪GTI18N_61a9cb84_000005⟫ este interpretat ca ⟪GTI18N_61a9cb84_000006⟫(*p).Abs()⟪GTI18N_61a9cb84_000007⟫.
+
+⟪GTI18N_61a9cb84_000008⟫

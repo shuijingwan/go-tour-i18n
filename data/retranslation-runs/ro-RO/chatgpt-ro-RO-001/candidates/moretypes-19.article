@@ -1,0 +1,11 @@
+* Map-uri
+
+Un map asociază chei cu valori.
+
+Valoarea zero a unui map este `nil`.
+Un map `nil` nu are chei și nici nu i se pot adăuga chei.
+
+Funcția `make` returnează un map de tipul dat,
+inițializat și gata de utilizare.
+
+.play moretypes/maps.go

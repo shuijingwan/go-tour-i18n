@@ -1,0 +1,12 @@
+* Metode — continuare
+
+Puteți declara o metodă și pentru tipuri care nu sunt structuri.
+
+În acest exemplu vedem un tip numeric `MyFloat` cu o metodă `Abs`.
+
+Puteți declara o metodă numai cu un receptor al cărui tip este definit în același
+pachet ca metoda.
+Nu puteți declara o metodă cu un receptor al cărui tip este definit într-un alt
+pachet (inclusiv tipurile încorporate precum `int`).
+
+.play methods/methods-continued.go

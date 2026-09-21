@@ -1,0 +1,16 @@
+* Interfața goală
+
+Tipul interfață care specifică zero metode este cunoscut drept _interfață_goală_:
+
+	interface{}
+
+O interfață goală poate conține valori de orice tip.
+(Fiecare tip implementează cel puțin zero metode.)
+
+`any` este un alias pentru `interface{}`, iar cele două sunt complet
+echivalente.
+
+Interfețele goale sunt folosite de codul care gestionează valori de tip necunoscut.
+De exemplu, `fmt.Print` primește oricâte argumente de tip `any`.
+
+.play methods/empty-interface.go

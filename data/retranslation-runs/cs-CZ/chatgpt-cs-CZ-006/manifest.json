@@ -1,0 +1,37 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-cs-CZ-006",
+  "locale": "cs-CZ",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "example",
+  "unit_count": 2,
+  "units": [
+    {
+      "unit_id": "example:methods/interfaces.go",
+      "unit_kind": "example",
+      "source_path": "_content/tour/methods/interfaces.go",
+      "source_sha256": "2530ef039212284377a46fe1063db6206d8db3a42a8138c6eed44275bb7eb10b",
+      "input_path": "inputs/methods-interfaces.txt",
+      "input_sha256": "901cbe2c6b0f1a210b4b4fd856e5e9ecbacba07758f9160c20ff84b2450e96a9",
+      "protected_token_count": 5,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "Na následujícím řádku je v typu Vertex... je gramaticky a významově neobratné: proměnná v není v typu Vertex, nýbrž je hodnotou / je typu Vertex. Technický záměr komentáře lze pochopit, ale formulace potřebuje opravu, aby byla přirozená a jednoznačná."
+    },
+    {
+      "unit_id": "example:moretypes/append.go",
+      "unit_kind": "example",
+      "source_path": "_content/tour/moretypes/append.go",
+      "source_sha256": "655ee5085fec61bcb38c9f029741bb1a06a414f94b8b36ed0362055b0d6b10bb",
+      "input_path": "inputs/moretypes-append.txt",
+      "input_sha256": "6327e4534f0bf9a10fe34f499c6c5c2886fc6555db634c69974a6a3ded918ed5",
+      "protected_token_count": 5,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "append funguje s řezy nil je v češtině nepřirozené a může působit, jako by nil určovalo obsah řezů místo jejich hodnoty/stavu. nil má zůstat zachováno jako technická identity, ale okolní české vyjádření nil slices potřebuje přirozenější formulaci."
+    }
+  ]
+}

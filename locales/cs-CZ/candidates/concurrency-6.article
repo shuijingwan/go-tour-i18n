@@ -1,0 +1,14 @@
+* Výchozí větev
+
+Větev `default` v `select` se provede, pokud není připravena žádná jiná větev.
+
+Větev `default` použijte k pokusu o odeslání nebo přijetí bez blokování:
+
+	select {
+	case i := <-c:
+		// použít i
+	default:
+		// přijetí z c by se zablokovalo
+	}
+
+.play concurrency/default-selection.go

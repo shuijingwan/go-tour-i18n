@@ -1,0 +1,13 @@
+* Metode
+
+Go nu are clase.
+Totuși, puteți defini metode pentru tipuri.
+
+O metodă este o funcție cu un argument special numit _receptor_.
+
+Receptorul apare în propria listă de argumente între cuvântul-cheie `func` și
+numele metodei.
+
+În acest exemplu, metoda `Abs` are un receptor de tip `Vertex` numit `v`.
+
+.play methods/methods.go

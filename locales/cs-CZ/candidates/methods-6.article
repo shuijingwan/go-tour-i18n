@@ -1,0 +1,23 @@
+* Metody a nepřímý přístup přes ukazatele
+
+Při porovnání předchozích dvou programů si můžete všimnout, že
+funkce s argumentem ukazatele musí přijmout ukazatel:
+
+	var v Vertex
+	ScaleFunc(v, 5)  // Compile error!
+	ScaleFunc(&v, 5) // OK
+
+zatímco metody s ukazatelovými příjemci při volání přijímají jako
+příjemce hodnotu i ukazatel:
+
+	var v Vertex
+	v.Scale(5)  // OK
+	p := &v
+	p.Scale(10) // OK
+
+U příkazu `v.Scale(5)` se metoda s ukazatelovým příjemcem zavolá automaticky,
+přestože `v` je hodnota, nikoli ukazatel.
+Pro pohodlí tedy Go interpretuje příkaz `v.Scale(5)` jako
+`(&v).Scale(5)`, protože metoda `Scale` má ukazatelového příjemce.
+
+.play methods/indirection.go

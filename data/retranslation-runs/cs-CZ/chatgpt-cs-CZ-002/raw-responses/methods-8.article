@@ -1,0 +1,17 @@
+* Volba hodnotového nebo ukazatelového příjemce
+
+Ukazatelový příjemce se používá ze dvou důvodů.
+
+Prvním je, aby metoda mohla měnit hodnotu, na kterou její příjemce ukazuje.
+
+Druhým je zabránit kopírování hodnoty při každém volání metody.
+To může být efektivnější například tehdy, když je příjemcem velká struktura.
+
+V tomto příkladu jsou ⟪GTI18N_357424f2_000001⟫Scale⟪GTI18N_357424f2_000002⟫ i ⟪GTI18N_357424f2_000003⟫Abs⟪GTI18N_357424f2_000004⟫ metody s typem příjemce ⟪GTI18N_357424f2_000005⟫*Vertex⟪GTI18N_357424f2_000006⟫,
+přestože metoda ⟪GTI18N_357424f2_000007⟫Abs⟪GTI18N_357424f2_000008⟫ svého příjemce měnit nemusí.
+
+Obecně by všechny metody daného typu měly mít buď hodnotové, nebo ukazatelové
+příjemce, nikoli směs obou.
+(Proč tomu tak je, uvidíme na několika dalších stránkách.)
+
+⟪GTI18N_357424f2_000009⟫

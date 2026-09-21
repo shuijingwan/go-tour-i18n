@@ -1,0 +1,10 @@
+* Ukazatele na struktury
+
+K položkám struktury lze přistupovat přes ukazatel na strukturu.
+
+Chceme-li přistoupit k položce ⟪GTI18N_29695d33_000001⟫X⟪GTI18N_29695d33_000002⟫ struktury, když máme ukazatel na strukturu ⟪GTI18N_29695d33_000003⟫p⟪GTI18N_29695d33_000004⟫, mohli bychom
+zapsat ⟪GTI18N_29695d33_000005⟫(*p).X⟪GTI18N_29695d33_000006⟫.
+Tento zápis je však těžkopádný, proto jazyk umožňuje místo něj
+zapsat pouze ⟪GTI18N_29695d33_000007⟫p.X⟪GTI18N_29695d33_000008⟫ bez explicitní dereference.
+
+⟪GTI18N_29695d33_000009⟫

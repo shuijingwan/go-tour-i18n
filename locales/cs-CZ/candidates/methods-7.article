@@ -1,0 +1,21 @@
+* Metody a nepřímý přístup přes ukazatele (2)
+
+Totéž platí i opačným směrem.
+
+Funkce, které přijímají hodnotový argument, musí dostat hodnotu daného typu:
+
+	var v Vertex
+	fmt.Println(AbsFunc(v))  // OK
+	fmt.Println(AbsFunc(&v)) // Compile error!
+
+zatímco metody s hodnotovými příjemci při volání přijímají jako
+příjemce hodnotu i ukazatel:
+
+	var v Vertex
+	fmt.Println(v.Abs()) // OK
+	p := &v
+	fmt.Println(p.Abs()) // OK
+
+V tomto případě se volání metody `p.Abs()` interpretuje jako `(*p).Abs()`.
+
+.play methods/indirection-values.go

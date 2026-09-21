@@ -1,0 +1,23 @@
+* Cvičení: Ekvivalentní binární stromy
+
+*1.* Implementujte funkci `Walk`.
+
+*2.* Otestujte funkci `Walk`.
+
+Funkce `tree.New(k)` vytvoří náhodně strukturovaný (ale vždy seřazený) binární strom obsahující hodnoty `k`, `2k`, `3k`, ..., `10k`.
+
+Vytvořte nový kanál `ch` a spusťte procházení stromu:
+
+	go Walk(tree.New(1), ch)
+
+Potom z kanálu přečtěte a vypište 10 hodnot. Měla by to být čísla 1, 2, 3, ..., 10.
+
+*3.* Implementujte funkci `Same` pomocí `Walk` a určete, zda `t1` a `t2` obsahují stejné hodnoty.
+
+*4.* Otestujte funkci `Same`.
+
+`Same(tree.New(1),`tree.New(1))` má vrátit true a `Same(tree.New(1),`tree.New(2))` má vrátit false.
+
+Dokumentaci k `Tree` najdete [[https://godoc.org/golang.org/x/tour/tree#Tree][zde]].
+
+.play concurrency/exercise-equivalent-binary-trees.go

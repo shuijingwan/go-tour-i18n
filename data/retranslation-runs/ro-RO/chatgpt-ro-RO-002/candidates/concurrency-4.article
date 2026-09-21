@@ -1,0 +1,15 @@
+* Range și Close
+
+Un expeditor poate apela `close` pe un canal pentru a indica faptul că nu vor mai fi trimise valori. Receptorii pot verifica dacă un canal a fost închis atribuind un al doilea parametru expresiei de primire: după
+
+	v, ok := <-ch
+
+`ok` este `false` dacă nu mai există valori de primit și canalul este închis.
+
+Bucla `for`i`:=`range`c` primește în mod repetat valori din canal până când acesta este închis.
+
+*Notă:* Numai expeditorul ar trebui să închidă un canal, niciodată receptorul. Trimiterea pe un canal închis va provoca un panic.
+
+*Altă*notă:* Canalele nu sunt ca fișierele; de obicei nu trebuie să le închideți. Închiderea este necesară numai atunci când receptorul trebuie informat că nu mai urmează alte valori, de exemplu pentru a încheia o buclă `range`.
+
+.play concurrency/range-and-close.go

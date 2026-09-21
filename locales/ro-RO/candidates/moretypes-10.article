@@ -1,0 +1,18 @@
+* Valorile implicite ale unui slice
+
+La realizarea unui slice, puteți omite limita superioară sau inferioară pentru a folosi în schimb valorile lor implicite.
+
+Valoarea implicită este zero pentru limita inferioară și lungimea slice-ului sau a tabloului subiacent pentru limita superioară.
+
+Pentru tabloul
+
+	var a [10]int
+
+următoarele expresii de slice sunt echivalente:
+
+	a[0:10]
+	a[:10]
+	a[0:]
+	a[:]
+
+.play moretypes/slice-bounds.go

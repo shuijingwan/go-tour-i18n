@@ -1,0 +1,13 @@
+* Exercițiu: Imagini
+
+Vă amintiți [[/tour/moretypes/18][generatorul de imagini]] scris mai devreme? Să scriem altul, dar de data aceasta va returna o implementare a `image.Image` în locul unui slice de date.
+
+Definiți propriul tip `Image`, implementați [[/pkg/image/#Image][metodele necesare]] și apelați `pic.ShowImage`.
+
+`Bounds` ar trebui să returneze un `image.Rectangle`, precum `image.Rect(0,`0,`w,`h)`.
+
+`ColorModel` ar trebui să returneze `color.RGBAModel`.
+
+`At` ar trebui să returneze o culoare; valoarea `v` din generatorul de imagini anterior corespunde lui `color.RGBA{v,`v,`255,`255}` în acesta.
+
+.play methods/exercise-images.go

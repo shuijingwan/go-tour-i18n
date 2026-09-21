@@ -1,0 +1,20 @@
+* Adăugarea elementelor la un slice
+
+Adăugarea de elemente noi la un slice este o operație obișnuită, așa că ⟪GTI18N_f2fc257e_000001⟫ oferă funcția încorporată
+⟪GTI18N_f2fc257e_000002⟫append⟪GTI18N_f2fc257e_000003⟫. [[⟪GTI18N_f2fc257e_000004⟫][Documentația]]
+pachetului încorporat descrie ⟪GTI18N_f2fc257e_000005⟫append⟪GTI18N_f2fc257e_000006⟫.
+
+⟪GTI18N_f2fc257e_000007⟫
+
+Primul parametru ⟪GTI18N_f2fc257e_000008⟫s⟪GTI18N_f2fc257e_000009⟫ al lui ⟪GTI18N_f2fc257e_000010⟫append⟪GTI18N_f2fc257e_000011⟫ este un slice de tip ⟪GTI18N_f2fc257e_000012⟫T⟪GTI18N_f2fc257e_000013⟫, iar restul sunt
+valori ⟪GTI18N_f2fc257e_000014⟫T⟪GTI18N_f2fc257e_000015⟫ care trebuie adăugate la slice.
+
+Valoarea rezultată din ⟪GTI18N_f2fc257e_000016⟫append⟪GTI18N_f2fc257e_000017⟫ este un slice care conține toate elementele
+slice-ului original plus valorile furnizate.
+
+Dacă tabloul suport al lui ⟪GTI18N_f2fc257e_000018⟫s⟪GTI18N_f2fc257e_000019⟫ este prea mic pentru toate valorile date, va fi alocat un
+tablou mai mare. Slice-ul returnat va indica spre tabloul nou alocat.
+
+(Pentru a afla mai multe despre slice-uri, citiți articolul [[⟪GTI18N_f2fc257e_000020⟫][Slice-uri: utilizare și mecanisme interne]].)
+
+⟪GTI18N_f2fc257e_000021⟫

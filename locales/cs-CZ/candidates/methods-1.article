@@ -1,0 +1,13 @@
+* Metody
+
+Go nemá třídy.
+Na typech však můžete definovat metody.
+
+Metoda je funkce se zvláštním argumentem _příjemce_.
+
+Příjemce se uvádí ve vlastním seznamu argumentů mezi klíčovým slovem `func` a
+názvem metody.
+
+V tomto příkladu má metoda `Abs` příjemce typu `Vertex` pojmenovaného `v`.
+
+.play methods/methods.go

@@ -1,0 +1,23 @@
+* Metode și indirectarea pointerilor
+
+Comparând cele două programe anterioare, puteți observa că
+funcțiile cu un argument pointer trebuie să primească un pointer:
+
+	var v Vertex
+	ScaleFunc(v, 5)  // Eroare de compilare!
+	ScaleFunc(&v, 5) // OK
+
+în timp ce metodele cu receptori pointer acceptă fie o valoare, fie un pointer drept
+receptor atunci când sunt apelate:
+
+	var v Vertex
+	v.Scale(5)  // OK
+	p := &v
+	p.Scale(10) // OK
+
+Pentru instrucțiunea `v.Scale(5)`, chiar dacă `v` este o valoare, nu un pointer,
+metoda cu receptor pointer este apelată automat.
+Cu alte cuvinte, pentru comoditate, Go interpretează instrucțiunea `v.Scale(5)` drept
+`(&v).Scale(5)` deoarece metoda `Scale` are un receptor pointer.
+
+.play methods/indirection.go

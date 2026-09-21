@@ -1,0 +1,18 @@
+* Vytvoření řezu pomocí make
+
+Řezy lze vytvářet pomocí vestavěné funkce `make`;
+takto lze vytvářet pole s dynamickou velikostí.
+
+Funkce `make` alokuje pole vyplněné nulovými hodnotami
+a vrátí řez, který na toto pole odkazuje:
+
+	a := make([]int, 5)  // len(a)=5
+
+Chcete-li zadat kapacitu, předejte funkci `make` třetí argument:
+
+	b := make([]int, 0, 5) // len(b)=0, cap(b)=5
+
+	b = b[:cap(b)] // len(b)=5, cap(b)=5
+	b = b[1:]      // len(b)=4, cap(b)=4
+
+.play moretypes/making-slices.go

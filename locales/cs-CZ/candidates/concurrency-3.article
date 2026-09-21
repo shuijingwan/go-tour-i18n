@@ -1,0 +1,11 @@
+* Bufferované kanály
+
+Kanály mohou být _bufferované_. Délku bufferu zadejte jako druhý argument funkce `make` při inicializaci bufferovaného kanálu:
+
+	ch := make(chan int, 100)
+
+Odesílání do bufferovaného kanálu se blokuje pouze tehdy, když je buffer plný. Přijímání se blokuje, když je buffer prázdný.
+
+Upravte příklad tak, aby buffer přeplnil, a sledujte, co se stane.
+
+.play concurrency/buffered-channels.go

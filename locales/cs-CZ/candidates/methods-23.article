@@ -1,0 +1,12 @@
+* Cvičení: rot13Reader
+
+Běžným vzorem je [[/pkg/io/#Reader][io.Reader]], který obaluje jiný `io.Reader` a určitým způsobem mění proud.
+
+Například funkce [[/pkg/compress/gzip/#NewReader][gzip.NewReader]] přijímá `io.Reader` (proud komprimovaných dat) a vrací `*gzip.Reader`, který také implementuje `io.Reader` (proud dekomprimovaných dat).
+
+Implementujte `rot13Reader`, který implementuje `io.Reader` a čte z `io.Reader`, přičemž proud mění použitím substituční šifry [[https://en.wikipedia.org/wiki/ROT13][rot13]] na všechny abecední znaky.
+
+Typ `rot13Reader` je již připraven.
+Udělejte z něj `io.Reader` implementací jeho metody `Read`.
+
+.play methods/exercise-rot-reader.go

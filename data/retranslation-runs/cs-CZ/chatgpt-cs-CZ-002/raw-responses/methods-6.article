@@ -1,0 +1,16 @@
+* Metody a nepřímý přístup přes ukazatele
+
+Při porovnání předchozích dvou programů si můžete všimnout, že
+funkce s argumentem ukazatele musí přijmout ukazatel:
+
+⟪GTI18N_39fb725b_000001⟫Compile error!⟪GTI18N_39fb725b_000002⟫zatímco metody s ukazatelovými příjemci při volání přijímají jako
+příjemce hodnotu i ukazatel:
+
+⟪GTI18N_39fb725b_000003⟫
+
+U příkazu ⟪GTI18N_39fb725b_000004⟫v.Scale(5)⟪GTI18N_39fb725b_000005⟫ se metoda s ukazatelovým příjemcem zavolá automaticky,
+přestože ⟪GTI18N_39fb725b_000006⟫v⟪GTI18N_39fb725b_000007⟫ je hodnota, nikoli ukazatel.
+Pro pohodlí tedy ⟪GTI18N_39fb725b_000008⟫ interpretuje příkaz ⟪GTI18N_39fb725b_000009⟫v.Scale(5)⟪GTI18N_39fb725b_000010⟫ jako
+⟪GTI18N_39fb725b_000011⟫(&v).Scale(5)⟪GTI18N_39fb725b_000012⟫, protože metoda ⟪GTI18N_39fb725b_000013⟫Scale⟪GTI18N_39fb725b_000014⟫ má ukazatelového příjemce.
+
+⟪GTI18N_39fb725b_000015⟫

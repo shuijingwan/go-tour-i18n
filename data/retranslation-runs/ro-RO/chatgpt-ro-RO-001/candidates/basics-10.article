@@ -1,0 +1,7 @@
+* Declarații scurte de variabile
+
+În interiorul unei funcții, instrucțiunea scurtă de atribuire `:=` poate fi folosită în locul unei declarații `var` cu tip implicit.
+
+În afara unei funcții, fiecare instrucțiune începe cu un cuvânt-cheie (`var`, `func` și așa mai departe), astfel încât construcția `:=` nu este disponibilă.
+
+.play basics/short-variable-declarations.go

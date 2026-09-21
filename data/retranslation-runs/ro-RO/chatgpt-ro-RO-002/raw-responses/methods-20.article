@@ -1,0 +1,21 @@
+* Exercițiu: Erori
+
+Copiați funcția ⟪GTI18N_41f1f733_000001⟫Sqrt⟪GTI18N_41f1f733_000002⟫ din [[⟪GTI18N_41f1f733_000003⟫][exercițiul anterior]] și modificați-o astfel încât să returneze o valoare ⟪GTI18N_41f1f733_000004⟫error⟪GTI18N_41f1f733_000005⟫.
+
+⟪GTI18N_41f1f733_000006⟫Sqrt⟪GTI18N_41f1f733_000007⟫ ar trebui să returneze o valoare de eroare non-⟪GTI18N_41f1f733_000008⟫ când primește un număr negativ, deoarece nu acceptă numere complexe.
+
+Creați un tip nou
+
+⟪GTI18N_41f1f733_000009⟫
+
+și faceți-l un ⟪GTI18N_41f1f733_000010⟫error⟪GTI18N_41f1f733_000011⟫ oferindu-i o
+
+⟪GTI18N_41f1f733_000012⟫
+
+metodă astfel încât ⟪GTI18N_41f1f733_000013⟫ErrNegativeSqrt(-2).Error()⟪GTI18N_41f1f733_000014⟫ să returneze ⟪GTI18N_41f1f733_000015⟫"cannot`Sqrt`negative`number:`-2"⟪GTI18N_41f1f733_000016⟫.
+
+⟪GTI18N_41f1f733_000017⟫Notă:⟪GTI18N_41f1f733_000018⟫ Un apel către ⟪GTI18N_41f1f733_000019⟫fmt.Sprint(e)⟪GTI18N_41f1f733_000020⟫ în interiorul metodei ⟪GTI18N_41f1f733_000021⟫Error⟪GTI18N_41f1f733_000022⟫ va trimite programul într-o buclă infinită. Puteți evita acest lucru convertind mai întâi ⟪GTI18N_41f1f733_000023⟫e⟪GTI18N_41f1f733_000024⟫: ⟪GTI18N_41f1f733_000025⟫fmt.Sprint(float64(e))⟪GTI18N_41f1f733_000026⟫. De ce?
+
+Modificați funcția ⟪GTI18N_41f1f733_000027⟫Sqrt⟪GTI18N_41f1f733_000028⟫ astfel încât să returneze o valoare ⟪GTI18N_41f1f733_000029⟫ErrNegativeSqrt⟪GTI18N_41f1f733_000030⟫ atunci când primește un număr negativ.
+
+⟪GTI18N_41f1f733_000031⟫

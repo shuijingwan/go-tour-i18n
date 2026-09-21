@@ -1,0 +1,16 @@
+* Metode și indirectarea pointerilor
+
+Comparând cele două programe anterioare, puteți observa că
+funcțiile cu un argument pointer trebuie să primească un pointer:
+
+⟪GTI18N_39fb725b_000001⟫Eroare de compilare!⟪GTI18N_39fb725b_000002⟫în timp ce metodele cu receptori pointer acceptă fie o valoare, fie un pointer drept
+receptor atunci când sunt apelate:
+
+⟪GTI18N_39fb725b_000003⟫
+
+Pentru instrucțiunea ⟪GTI18N_39fb725b_000004⟫v.Scale(5)⟪GTI18N_39fb725b_000005⟫, chiar dacă ⟪GTI18N_39fb725b_000006⟫v⟪GTI18N_39fb725b_000007⟫ este o valoare, nu un pointer,
+metoda cu receptor pointer este apelată automat.
+Cu alte cuvinte, pentru comoditate, ⟪GTI18N_39fb725b_000008⟫ interpretează instrucțiunea ⟪GTI18N_39fb725b_000009⟫v.Scale(5)⟪GTI18N_39fb725b_000010⟫ drept
+⟪GTI18N_39fb725b_000011⟫(&v).Scale(5)⟪GTI18N_39fb725b_000012⟫ deoarece metoda ⟪GTI18N_39fb725b_000013⟫Scale⟪GTI18N_39fb725b_000014⟫ are un receptor pointer.
+
+⟪GTI18N_39fb725b_000015⟫

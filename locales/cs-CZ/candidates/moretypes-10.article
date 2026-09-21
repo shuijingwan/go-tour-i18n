@@ -1,0 +1,18 @@
+* Výchozí meze řezu
+
+Při vytváření řezu můžete vynechat horní nebo dolní mez a použít místo ní výchozí hodnotu.
+
+Výchozí dolní mez je nula a výchozí horní mez je délka podkladového řezu nebo pole.
+
+Pro pole
+
+	var a [10]int
+
+jsou následující výrazy řezu ekvivalentní:
+
+	a[0:10]
+	a[:10]
+	a[0:]
+	a[:]
+
+.play moretypes/slice-bounds.go

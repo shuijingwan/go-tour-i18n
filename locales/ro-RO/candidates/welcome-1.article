@@ -1,0 +1,37 @@
+* Salut, 世界
+
+Bun venit la un tur al [[/][limbajului de programare Go]].
+
+Turul este împărțit într-o listă de module pe care le puteți
+accesa făcând clic pe
+[[javascript:highlight(".logo")][Turul limbajului Go]] în partea din stânga sus a paginii.
+
+De asemenea, puteți vedea cuprinsul în orice moment făcând clic pe [[javascript:highlightAndClick(".nav")][meniu]] în partea din dreapta sus a paginii.
+
+De-a lungul turului veți găsi o serie de pagini și exerciții pe care
+să le parcurgeți.
+
+Puteți naviga prin ele folosind
+
+- [[javascript:highlight(".prev-page")]["Precedent"]] sau `PageUp` pentru a merge la pagina precedentă,
+
+- [[javascript:highlight(".next-page")]["Următor"]] sau `PageDown` pentru a merge la pagina următoare.
+
+Turul este interactiv. Faceți clic acum pe butonul
+[[javascript:highlightAndClick("#run")][Rulează]]
+(sau apăsați `Shift` + `Enter`) pentru a compila și rula programul pe
+un server la distanță.
+Rezultatul este afișat sub cod.
+
+Aceste programe exemplu demonstrează diferite aspecte ale limbajului Go. Programele din tur sunt concepute ca puncte de plecare pentru propriile experimente.
+
+Editați programul și rulați-l din nou.
+
+Când faceți clic pe [[javascript:highlightAndClick("#format")][Formatează]]
+(scurtătură: `Ctrl` + `Enter`), textul din editor este formatat folosind
+instrumentul [[/cmd/gofmt/][gofmt]]. Puteți activa sau dezactiva evidențierea sintaxei
+făcând clic pe butonul [[javascript:highlightAndClick(".syntax-checkbox")][sintaxă]].
+
+Când sunteți gata să continuați, faceți clic pe [[javascript:highlightAndClick(".next-page")][săgeata spre dreapta]] de mai jos sau apăsați tasta `PageDown`.
+
+.play welcome/hello.go

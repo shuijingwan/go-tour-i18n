@@ -1,0 +1,10 @@
+* Pointeri către structuri
+
+Câmpurile unei structuri pot fi accesate printr-un pointer către structură.
+
+Pentru a accesa câmpul ⟪GTI18N_29695d33_000001⟫X⟪GTI18N_29695d33_000002⟫ al unei structuri atunci când avem pointerul către structură ⟪GTI18N_29695d33_000003⟫p⟪GTI18N_29695d33_000004⟫, am putea
+scrie ⟪GTI18N_29695d33_000005⟫(*p).X⟪GTI18N_29695d33_000006⟫.
+Totuși, această notație este greoaie, așa că limbajul ne permite să
+scriem pur și simplu ⟪GTI18N_29695d33_000007⟫p.X⟪GTI18N_29695d33_000008⟫, fără dereferențiere explicită.
+
+⟪GTI18N_29695d33_000009⟫

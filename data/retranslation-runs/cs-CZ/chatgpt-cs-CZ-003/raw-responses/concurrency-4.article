@@ -1,0 +1,15 @@
+* Range a zavírání kanálů
+
+Odesílatel může kanál ⟪GTI18N_3e925c67_000001⟫close⟪GTI18N_3e925c67_000002⟫ a tím oznámit, že už nebudou odesílány žádné další hodnoty. Příjemci mohou otestovat, zda byl kanál zavřen, přiřazením druhého parametru z přijímacího výrazu: po
+
+⟪GTI18N_3e925c67_000003⟫
+
+je ⟪GTI18N_3e925c67_000004⟫ok⟪GTI18N_3e925c67_000005⟫ rovno ⟪GTI18N_3e925c67_000006⟫false⟪GTI18N_3e925c67_000007⟫, pokud už nejsou žádné další hodnoty k přijetí a kanál je zavřený.
+
+Cyklus ⟪GTI18N_3e925c67_000008⟫for`i`:=`range`c⟪GTI18N_3e925c67_000009⟫ opakovaně přijímá hodnoty z kanálu, dokud není zavřen.
+
+⟪GTI18N_3e925c67_000010⟫Poznámka:⟪GTI18N_3e925c67_000011⟫ Kanál by měl zavírat pouze odesílatel, nikdy příjemce. Odeslání do zavřeného kanálu způsobí ⟪GTI18N_3e925c67_000012⟫.
+
+⟪GTI18N_3e925c67_000013⟫Další*poznámka:⟪GTI18N_3e925c67_000014⟫ Kanály nejsou jako soubory; obvykle je není třeba zavírat. Zavření je nutné pouze tehdy, když musí příjemce dostat informaci, že už žádné další hodnoty nepřijdou, například pro ukončení cyklu ⟪GTI18N_3e925c67_000015⟫range⟪GTI18N_3e925c67_000016⟫.
+
+⟪GTI18N_3e925c67_000017⟫

@@ -1,0 +1,20 @@
+* Kanály
+
+Kanály jsou typované prostředky, kterými lze posílat a přijímat hodnoty pomocí operátoru kanálu `<-`.
+
+	ch <- v    // Odeslat v do kanálu ch.
+	v := <-ch  // Přijmout z ch a
+	           // přiřadit hodnotu do v.
+
+(Data proudí ve směru šipky.)
+
+Stejně jako mapy a řezy je nutné kanály před použitím vytvořit:
+
+	ch := make(chan int)
+
+Ve výchozím nastavení se operace odeslání a přijetí blokují, dokud není připravena druhá strana. To umožňuje goroutines synchronizovat se bez explicitních zámků nebo podmínkových proměnných.
+
+Ukázkový kód sčítá čísla v řezu a rozděluje práci mezi dvě goroutines.
+Jakmile obě goroutines dokončí svůj výpočet, vypočítá konečný výsledek.
+
+.play concurrency/channels.go

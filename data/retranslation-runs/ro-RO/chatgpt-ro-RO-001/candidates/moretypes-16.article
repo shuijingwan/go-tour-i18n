@@ -1,0 +1,8 @@
+* Range
+
+Forma `range` a buclei `for` iterează peste un slice sau un map.
+
+La iterarea peste un slice, pentru fiecare iterație sunt returnate două valori.
+Prima este indicele, iar a doua este o copie a elementului de la acel indice.
+
+.play moretypes/range.go

@@ -1,0 +1,14 @@
+* Selecția implicită
+
+Cazul `default` dintr-un `select` este executat dacă niciun alt caz nu este pregătit.
+
+Folosiți un caz `default` pentru a încerca o trimitere sau o primire fără blocare:
+
+	select {
+	case i := <-c:
+		// folosește i
+	default:
+		// primirea din c s-ar bloca
+	}
+
+.play concurrency/default-selection.go

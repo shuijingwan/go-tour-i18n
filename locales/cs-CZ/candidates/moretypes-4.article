@@ -1,0 +1,10 @@
+* Ukazatele na struktury
+
+K položkám struktury lze přistupovat přes ukazatel na strukturu.
+
+Chceme-li přistoupit k položce `X` struktury, když máme ukazatel na strukturu `p`, mohli bychom
+zapsat `(*p).X`.
+Tento zápis je však těžkopádný, proto jazyk umožňuje místo něj
+zapsat pouze `p.X` bez explicitní dereference.
+
+.play moretypes/struct-pointers.go

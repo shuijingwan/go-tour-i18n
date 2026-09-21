@@ -1,0 +1,11 @@
+* Řezy jsou jako odkazy na pole
+
+Řez sám neukládá žádná data,
+pouze popisuje část podkladového pole.
+
+Změna prvků řezu změní
+odpovídající prvky jeho podkladového pole.
+
+Tyto změny uvidí i ostatní řezy, které sdílejí stejné podkladové pole.
+
+.play moretypes/slices-pointers.go

@@ -1,0 +1,16 @@
+* Prázdné rozhraní
+
+Typ rozhraní, který neurčuje žádné metody, se nazývá ⟪GTI18N_7a09a765_000001⟫prázdné_rozhraní⟪GTI18N_7a09a765_000002⟫:
+
+⟪GTI18N_7a09a765_000003⟫
+
+Prázdné rozhraní může obsahovat hodnoty libovolného typu.
+(Každý typ implementuje alespoň nula metod.)
+
+⟪GTI18N_7a09a765_000004⟫any⟪GTI18N_7a09a765_000005⟫ je alias pro ⟪GTI18N_7a09a765_000006⟫interface{}⟪GTI18N_7a09a765_000007⟫ a oba zápisy jsou zcela
+ekvivalentní.
+
+Prázdná rozhraní používá kód, který pracuje s hodnotami neznámého typu.
+Například ⟪GTI18N_7a09a765_000008⟫fmt.Print⟪GTI18N_7a09a765_000009⟫ přijímá libovolný počet argumentů typu ⟪GTI18N_7a09a765_000010⟫any⟪GTI18N_7a09a765_000011⟫.
+
+⟪GTI18N_7a09a765_000012⟫

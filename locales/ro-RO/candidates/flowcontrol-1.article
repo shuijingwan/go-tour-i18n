@@ -1,0 +1,20 @@
+* For
+
+Go are o singură construcție pentru bucle: bucla `for`.
+
+Bucla de bază `for` are trei componente separate prin punct și virgulă:
+
+- instrucțiunea de inițializare: executată înainte de prima iterație
+- expresia condițională: evaluată înainte de fiecare iterație
+- instrucțiunea de după iterație: executată la sfârșitul fiecărei iterații
+
+Instrucțiunea de inițializare va fi adesea o declarație de variabilă, iar
+variabilele declarate acolo sunt vizibile numai în domeniul de vizibilitate al instrucțiunii `for`.
+
+Bucla se oprește din iterare când condiția booleană este evaluată la `false`.
+
+*Notă:* Spre deosebire de alte limbaje precum C, Java sau JavaScript, cele trei componente ale instrucțiunii `for` nu sunt
+înconjurate de paranteze, iar acoladele `{`}` sunt
+întotdeauna obligatorii.
+
+.play flowcontrol/for.go

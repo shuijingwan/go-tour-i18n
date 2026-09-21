@@ -1,0 +1,8 @@
+* Exercițiu: Stringer
+
+Faceți ca tipul `IPAddr` să implementeze `fmt.Stringer` pentru a afișa adresa în
+notație zecimală cu puncte.
+
+De exemplu, `IPAddr{1,`2,`3,`4}` ar trebui să fie afișat ca `"1.2.3.4"`.
+
+.play methods/exercise-stringer.go

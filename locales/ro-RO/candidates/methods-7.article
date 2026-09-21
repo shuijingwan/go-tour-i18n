@@ -1,0 +1,21 @@
+* Metode și indirectarea pointerilor (2)
+
+Lucrul echivalent se întâmplă și în direcția opusă.
+
+Funcțiile care primesc un argument prin valoare trebuie să primească o valoare de acel tip specific:
+
+	var v Vertex
+	fmt.Println(AbsFunc(v))  // OK
+	fmt.Println(AbsFunc(&v)) // Eroare de compilare!
+
+în timp ce metodele cu receptori prin valoare acceptă fie o valoare, fie un pointer drept
+receptor atunci când sunt apelate:
+
+	var v Vertex
+	fmt.Println(v.Abs()) // OK
+	p := &v
+	fmt.Println(p.Abs()) // OK
+
+În acest caz, apelul metodei `p.Abs()` este interpretat ca `(*p).Abs()`.
+
+.play methods/indirection-values.go

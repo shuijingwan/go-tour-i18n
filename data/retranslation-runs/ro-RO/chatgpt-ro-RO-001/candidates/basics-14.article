@@ -1,0 +1,18 @@
+* Inferența de tip
+
+Când declarați o variabilă fără a specifica un tip explicit (fie folosind sintaxa `:=`, fie sintaxa expresiei `var`=`), tipul variabilei este dedus din valoarea din partea dreaptă.
+
+Când partea dreaptă a declarației are un tip, noua variabilă are același tip:
+
+	var i int
+	j := i // j este un int
+
+Însă, când partea dreaptă conține o constantă numerică netipizată, noua variabilă poate fi un `int`, `float64` sau `complex128`, în funcție de precizia constantei:
+
+	i := 42           // int
+	f := 3.142        // float64
+	g := 0.867 + 0.5i // complex128
+
+Încercați să schimbați valoarea inițială a lui `v` în codul exemplului și observați cum îi este afectat tipul.
+
+.play basics/type-inference.go

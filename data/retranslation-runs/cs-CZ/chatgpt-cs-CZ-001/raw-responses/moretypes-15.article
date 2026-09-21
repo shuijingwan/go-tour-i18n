@@ -1,0 +1,21 @@
+* Přidávání do řezu
+
+Přidávání nových prvků do řezu je běžné, a proto ⟪GTI18N_f2fc257e_000001⟫ poskytuje vestavěnou
+funkci ⟪GTI18N_f2fc257e_000002⟫append⟪GTI18N_f2fc257e_000003⟫. [[⟪GTI18N_f2fc257e_000004⟫][Dokumentace]]
+vestavěného balíčku popisuje ⟪GTI18N_f2fc257e_000005⟫append⟪GTI18N_f2fc257e_000006⟫.
+
+⟪GTI18N_f2fc257e_000007⟫
+
+První parametr ⟪GTI18N_f2fc257e_000008⟫s⟪GTI18N_f2fc257e_000009⟫ funkce ⟪GTI18N_f2fc257e_000010⟫append⟪GTI18N_f2fc257e_000011⟫ je řez typu ⟪GTI18N_f2fc257e_000012⟫T⟪GTI18N_f2fc257e_000013⟫ a zbývající parametry jsou
+hodnoty typu ⟪GTI18N_f2fc257e_000014⟫T⟪GTI18N_f2fc257e_000015⟫, které se mají do řezu přidat.
+
+Výsledkem ⟪GTI18N_f2fc257e_000016⟫append⟪GTI18N_f2fc257e_000017⟫ je řez obsahující všechny prvky
+původního řezu a navíc zadané hodnoty.
+
+Pokud je podkladové pole ⟪GTI18N_f2fc257e_000018⟫s⟪GTI18N_f2fc257e_000019⟫ příliš malé pro všechny zadané hodnoty,
+alokuje se větší pole. Vrácený řez bude odkazovat na nově alokované
+pole.
+
+(Více o řezech najdete v článku [[⟪GTI18N_f2fc257e_000020⟫][Řezy: použití a vnitřní fungování]].)
+
+⟪GTI18N_f2fc257e_000021⟫

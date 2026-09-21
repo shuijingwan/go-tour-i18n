@@ -1,0 +1,13 @@
+* Switch
+
+Příkaz `switch` je kratší způsob zápisu posloupnosti příkazů `if`-`else`.
+Provede první případ, jehož hodnota se rovná podmínkovému výrazu.
+
+Switch v Go se podobá switchi v C, C++, Javě, JavaScriptu a PHP,
+s tím rozdílem, že Go provede pouze vybraný případ, nikoli všechny následující.
+Příkaz `break`, který je v těchto jazycích potřeba na konci každého případu,
+je tedy v Go doplněn automaticky.
+Dalším důležitým rozdílem je, že případy switch v Go nemusí
+být konstanty a použité hodnoty nemusí být celá čísla.
+
+.play flowcontrol/switch.go

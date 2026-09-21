@@ -1,0 +1,18 @@
+* Crearea unui slice cu make
+
+Slice-urile pot fi create cu funcția încorporată `make`;
+astfel se creează tablouri cu dimensiune dinamică.
+
+Funcția `make` alocă un tablou inițializat cu valori zero
+și returnează un slice care face referire la acel tablou:
+
+	a := make([]int, 5)  // len(a)=5
+
+Pentru a specifica o capacitate, transmiteți un al treilea argument către `make`:
+
+	b := make([]int, 0, 5) // len(b)=0, cap(b)=5
+
+	b = b[:cap(b)] // len(b)=5, cap(b)=5
+	b = b[1:]      // len(b)=4, cap(b)=4
+
+.play moretypes/making-slices.go

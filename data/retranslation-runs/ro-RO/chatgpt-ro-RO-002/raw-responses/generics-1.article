@@ -1,0 +1,17 @@
+* Parametri de tip
+
+Funcțiile ⟪GTI18N_01a04510_000001⟫ pot fi scrise astfel încât să funcționeze cu mai multe tipuri folosind parametri de tip. Parametrii
+de tip ai unei funcții apar între paranteze drepte, înaintea
+argumentelor funcției.
+
+⟪GTI18N_01a04510_000002⟫
+
+Această declarație înseamnă că ⟪GTI18N_01a04510_000003⟫s⟪GTI18N_01a04510_000004⟫ este un slice de orice tip ⟪GTI18N_01a04510_000005⟫T⟪GTI18N_01a04510_000006⟫ care satisface
+constrângerea încorporată ⟪GTI18N_01a04510_000007⟫comparable⟪GTI18N_01a04510_000008⟫. ⟪GTI18N_01a04510_000009⟫x⟪GTI18N_01a04510_000010⟫ este de asemenea o valoare de același tip.
+
+⟪GTI18N_01a04510_000011⟫comparable⟪GTI18N_01a04510_000012⟫ este o constrângere utilă care permite folosirea operatorilor ⟪GTI18N_01a04510_000013⟫==⟪GTI18N_01a04510_000014⟫ și
+⟪GTI18N_01a04510_000015⟫!=⟪GTI18N_01a04510_000016⟫ pe valorile tipului. În acest exemplu, o folosim pentru a compara o
+valoare cu toate elementele slice-ului până când găsim o potrivire. Această funcție ⟪GTI18N_01a04510_000017⟫Index⟪GTI18N_01a04510_000018⟫ funcționează
+pentru orice tip care permite comparația.
+
+⟪GTI18N_01a04510_000019⟫

@@ -1,0 +1,63 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-ro-RO-004",
+  "locale": "ro-RO",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 4,
+  "units": [
+    {
+      "unit_id": "flowcontrol/10",
+      "unit_kind": "page",
+      "source_path": "_content/tour/flowcontrol.article",
+      "source_sha256": "e1479cae56a87cddb9c447fc9fd32b0ee1f983058f7ee76554965abd21975ef4",
+      "input_path": "inputs/flowcontrol-10.article",
+      "input_sha256": "4882ca813d14d385d6e3c27c1ed8137f923455c8d4cb5c0d6ca1a1ce01ee0750",
+      "protected_token_count": 6,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "„un caz reușește” este o traducere prea literală pentru stopping when a case succeeds; reformulați natural în română pentru a exprima clar că evaluarea switch se oprește la primul case care se potrivește / a cărui condiție este îndeplinită, fără a schimba semantica Go."
+    },
+    {
+      "unit_id": "moretypes/17",
+      "unit_kind": "page",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "b52cca070f62a3ffeab3adf20f2745e1dd9aa2644a3985c23ac295e81e2c3bc9",
+      "input_path": "inputs/moretypes-17.article",
+      "input_sha256": "bc4a9f2b041ee6b78bc8be319d32e3cc5dbd5a3725cc2164b1f7bc42f29dc7ac",
+      "protected_token_count": 5,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "În „Puteți omite indicele sau valoarea atribuind-o lui _.”, pronumele „-o” se acordă doar cu „valoarea” și nu poate trimite natural și la „indicele”; reformulați astfel încât ambele obiecte care pot fi omise să fie clare gramatical, păstrând neschimbată semantica Go pentru _."
+    },
+    {
+      "unit_id": "methods/9",
+      "unit_kind": "page",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "39efc19ed01619130489d21e421f2c0d8947b20f408580f4ceaabce6a0feb099",
+      "input_path": "inputs/methods-9.article",
+      "input_sha256": "d9eda098e85d67929359c7ca4ddb87022ceb1a3ad947a85d8da47a22e84a679a",
+      "protected_token_count": 13,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "În explicația despre implementarea Abser, formularea „Vertex (tipul prin valoare)” este ambiguă și poate fi confundată cu pass-by-value sau value receiver; reformulați natural și tehnic precis contrastul dintre tipul ne-pointer Vertex și tipul pointer *Vertex, fără a confunda noțiunea cu „receptor prin valoare”."
+    },
+    {
+      "unit_id": "methods/19",
+      "unit_kind": "page",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "9eaab1fde2076c1376f78ceec0f84766c4c3b8062867436d73cef0bc77f16bd5",
+      "input_path": "inputs/methods-19.article",
+      "input_sha256": "d0e83c233a107cd035d349873238de6711313568f907672121591d19cc7e0d9c",
+      "protected_token_count": 26,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "Finalul „Un nil error indică succesul; un non-nil error indică eșecul.” păstrează sensul, dar folosește o construcție adjectivală engleză nenaturală în română. Păstrați identity-ul tehnic nil și reformulați natural relația: o valoare error egală cu nil indică succesul, iar una diferită de nil indică eșecul."
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+* Pachete
+
+Fiecare program Go este alcătuit din pachete.
+
+Programele încep să ruleze în pachetul `main`.
+
+Acest program folosește pachetele cu căile de import `"fmt"` și `"math/rand"`.
+
+Prin convenție, numele pachetului este același cu ultimul element al căii de import. De exemplu, pachetul `"math/rand"` conține fișiere care încep cu instrucțiunea `package`rand`.
+
+.play basics/packages.go

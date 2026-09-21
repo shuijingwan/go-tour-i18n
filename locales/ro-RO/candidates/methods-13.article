@@ -1,0 +1,8 @@
+* Valori de interfață nil
+
+O valoare de interfață nil nu conține nici valoare, nici tip concret.
+
+Apelarea unei metode pe o interfață nil produce o eroare la execuție deoarece nu există niciun
+tip în tuplul interfeței care să indice ce metodă _concretă_ trebuie apelată.
+
+.play methods/nil-interface-values.go

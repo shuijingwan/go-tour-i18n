@@ -1,0 +1,11 @@
+* Cvičení: Řezy
+
+Implementujte `Pic`. Funkce má vrátit řez délky `dy`, jehož každý prvek je řez `dx` osmibitových celých čísel bez znaménka. Po spuštění program zobrazí váš obrázek a bude celá čísla interpretovat jako odstíny šedi (vlastně modři).
+
+Volba obrázku je na vás. Mezi zajímavé funkce patří `(x+y)/2`, `x*y` a `x^y`.
+
+(Pro alokaci každého `[]uint8` uvnitř `[][]uint8` musíte použít cyklus.)
+
+(Pro převod mezi typy použijte `uint8(intValue)`.)
+
+.play moretypes/exercise-slices.go

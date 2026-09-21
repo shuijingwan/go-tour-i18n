@@ -1,0 +1,12 @@
+* Ordinea evaluării switch-ului
+
+Cazurile unui switch sunt evaluate de sus în jos, oprindu-se la primul caz care se potrivește.
+
+(De exemplu,
+
+⟪GTI18N_e1479cae_000001⟫
+
+nu apelează ⟪GTI18N_e1479cae_000002⟫f⟪GTI18N_e1479cae_000003⟫ dacă ⟪GTI18N_e1479cae_000004⟫i==0⟪GTI18N_e1479cae_000005⟫.)
+
+
+⟪GTI18N_e1479cae_000006⟫

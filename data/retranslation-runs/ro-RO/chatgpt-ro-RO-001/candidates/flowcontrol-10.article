@@ -1,0 +1,15 @@
+* Ordinea de evaluare în switch
+
+Cazurile dintr-un switch sunt evaluate de sus în jos, oprindu-se când un caz reușește.
+
+(De exemplu,
+
+	switch i {
+	case 0:
+	case f():
+	}
+
+nu apelează `f` dacă `i==0`.)
+
+
+.play flowcontrol/switch-evaluation-order.go

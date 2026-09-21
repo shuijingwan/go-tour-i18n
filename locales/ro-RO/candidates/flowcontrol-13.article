@@ -1,0 +1,9 @@
+* Stivuirea apelurilor defer
+
+Apelurile de funcții amânate sunt introduse într-o stivă. Când o funcție returnează,
+apelurile sale amânate sunt executate în ordinea ultimul intrat, primul ieșit.
+
+Pentru a afla mai multe despre instrucțiunile defer, citiți această
+[[/blog/defer-panic-and-recover][postare de blog]].
+
+.play flowcontrol/defer-multi.go

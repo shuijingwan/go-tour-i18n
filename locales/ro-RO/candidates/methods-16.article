@@ -1,0 +1,28 @@
+* Switch-uri de tip
+
+Un _switch_de_tip_ este o construcție care permite mai multe aserțiuni de tip în serie.
+
+Un switch de tip seamănă cu o instrucțiune switch obișnuită, dar cazurile dintr-un
+switch de tip specifică tipuri (nu valori), iar acele tipuri sunt comparate cu
+tipul valorii conținute de valoarea de interfață dată.
+
+	switch v := i.(type) {
+	case T:
+		// aici v are tipul T
+	case S:
+		// aici v are tipul S
+	default:
+		// nicio potrivire; aici v are același tip ca i
+	}
+
+Declarația dintr-un switch de tip are aceeași sintaxă ca o aserțiune de tip `i.(T)`,
+dar tipul specific `T` este înlocuit cu cuvântul-cheie `type`.
+
+Această instrucțiune switch verifică dacă valoarea de interfață `i`
+conține o valoare de tip `T` sau `S`.
+În cazurile `T` și `S`, variabila `v` va avea tipul
+`T`, respectiv `S`, și va conține valoarea păstrată de `i`.
+În cazul default (în care nu există potrivire), variabila `v` are
+același tip interfață și aceeași valoare ca `i`.
+
+.play methods/type-switches.go

@@ -1,0 +1,18 @@
+* Délka a kapacita řezu
+
+Řez má _délku_ i _kapacitu_.
+
+Délka řezu je počet prvků, které obsahuje.
+
+Kapacita řezu je počet prvků v podkladovém poli,
+počítaný od prvního prvku řezu.
+
+Délku a kapacitu řezu `s` lze získat pomocí výrazů
+`len(s)` a `cap(s)`.
+
+Délku řezu můžete zvětšit jeho opětovným nařezáním,
+pokud má dostatečnou kapacitu.
+Zkuste v ukázkovém programu změnit jednu z operací s řezem tak, aby jeho délka
+překročila jeho kapacitu, a sledujte, co se stane.
+
+.play moretypes/slice-len-cap.go

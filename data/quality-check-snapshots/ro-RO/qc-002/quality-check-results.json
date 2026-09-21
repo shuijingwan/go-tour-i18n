@@ -1,0 +1,48 @@
+{
+  "schema_version": 2,
+  "evidence_type": "quality_check_results",
+  "locale": "ro-RO",
+  "snapshot_id": "qc-002",
+  "snapshot_manifest_sha256": "9a45bd51dd2dc47a3ff8d0b519ad9148a42fb3910e683ef2de39908cdcaf9611",
+  "previous_snapshot_id": "qc-001",
+  "rubric": "translation-quality/v1",
+  "result_count": 7,
+  "results": [
+    {
+      "index": 32,
+      "unit_id": "flowcontrol/10",
+      "rating": "A"
+    },
+    {
+      "index": 53,
+      "unit_id": "moretypes/17",
+      "rating": "A"
+    },
+    {
+      "index": 72,
+      "unit_id": "methods/9",
+      "rating": "A"
+    },
+    {
+      "index": 82,
+      "unit_id": "methods/19",
+      "rating": "A"
+    },
+    {
+      "index": 108,
+      "unit_id": "example:concurrency/exercise-web-crawler.go",
+      "rating": "B",
+      "finding": "Expresia „conținutul paginii corespunzătoare lui URL” rămâne nenaturală în română din cauza construcției „lui URL”. Păstrați identity-ul protejat URL, dar reformulați natural împrejurimile pentru a exprima clar că Fetch returnează body-ul/conținutul paginii asociate acelui URL; păstrați neschimbate Fetch, URL, url, depth și codul. Formularea pentru depth din această revizie este deja acceptată."
+    },
+    {
+      "index": 109,
+      "unit_id": "example:concurrency/mutex-counter.go",
+      "rating": "A"
+    },
+    {
+      "index": 117,
+      "unit_id": "example:moretypes/append.go",
+      "rating": "A"
+    }
+  ]
+}

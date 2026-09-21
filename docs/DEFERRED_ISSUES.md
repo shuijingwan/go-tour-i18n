@@ -112,3 +112,13 @@
 - 暂缓原因：维护者明确决定本轮不调整 Clash、本机 DNS/代理环境，也不修改现有 IndexNow/Production 部署方案；IndexNow 属于 first-production finalize 后的非阻塞 Search-engine closeout，Google 与 Bing 已完成，hi-IN 已正式 live，因此不为该问题阻塞上线或扩大实现 scope。
 - 当前状态：`resolved`
 - 后续处理/核销证据：2026-09-19 稍后重新运行 `scripts/indexnow-closeout.sh --locale hi-IN`。现有 locale-specific key 被正确复用，Aliyun provisioning 幂等通过；第一次重试仅返回正式允许的 IndexNow probe `HTTP 202` pending，未执行 bulk submission。随后再次运行同一正式入口，继续复用同一 key，输出 `IndexNow bootstrap: PASS (locale=hi-IN sitemap_urls=105 submitted_urls=105)` 与 `IndexNow closeout: PASS (locale=hi-IN)`。期间未修改 Clash/Mihomo、本机 DNS/代理环境、IndexNow network-runner 或 Production 部署方案，也未重新生成 key；因此此前问题按正式重试路径自行恢复，hi-IN Search-engine closeout 已完整完成，据此核销为 resolved。
+
+### DI-20260921-001：桌面语言下拉中较长语言名称会换行
+
+- ID：`DI-20260921-001`
+- 发现日期：`2026-09-21`
+- 发现阶段/场景：cs-CZ 首次 production 前的 preview visual HUMAN gate；维护者在真实桌面浏览器打开语言下拉列表时观察到 `Brazilian Portuguese — Português (Brasil)` 在当前菜单宽度下换为两行，同次 360 px mobile 检查中该条目保持一行。
+- 问题描述：桌面语言选择器对较长语言名称允许换行，导致单个条目高度增加、列表视觉节奏不一致。当前 evidence 未显示文字截断、元素重叠、横向溢出或交互失效；正式 `scripts/verify-preview-browser.py http://127.0.0.1:41867/ cs-CZ` 同次输出 `PREVIEW SURFACE ACCEPTANCE: PASS`。该现象更适合作为共享 dropdown 宽度/换行策略的后续 UI polish 处理，具体实现方案待后续确认。
+- 暂缓原因：维护者于 2026-09-21 明确决定当前可以暂缓修复，不阻塞 cs-CZ 上线；后续统一评估共享语言下拉的单行展示、可用宽度与响应式行为，不增加 cs-CZ 局部特例。
+- 当前状态：`open`
+- 后续处理/核销证据：原始 preview/HUMAN gate 记录见 `data/locale-surface-reviews/cs-CZ/20260921-stage-a-002.md`；当前保持 open。

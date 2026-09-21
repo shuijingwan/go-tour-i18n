@@ -1,0 +1,15 @@
+* Pole
+
+Typ `[n]T` je pole `n` hodnot typu `T`.
+
+Výraz
+
+	var a [10]int
+
+deklaruje proměnnou `a` jako pole deseti celých čísel.
+
+Délka pole je součástí jeho typu, takže velikost pole nelze měnit.
+Může to působit omezujícím dojmem, ale není třeba se obávat;
+Go nabízí pohodlný způsob práce s poli.
+
+.play moretypes/array.go

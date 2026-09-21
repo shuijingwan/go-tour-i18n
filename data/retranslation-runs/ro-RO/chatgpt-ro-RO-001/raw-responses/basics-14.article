@@ -1,0 +1,13 @@
+* Inferența de tip
+
+Când declarați o variabilă fără a specifica un tip explicit (fie folosind sintaxa ⟪GTI18N_21c4077c_000001⟫:=⟪GTI18N_21c4077c_000002⟫, fie sintaxa expresiei ⟪GTI18N_21c4077c_000003⟫var`=⟪GTI18N_21c4077c_000004⟫), tipul variabilei este dedus din valoarea din partea dreaptă.
+
+Când partea dreaptă a declarației are un tip, noua variabilă are același tip:
+
+⟪GTI18N_21c4077c_000005⟫⟪GTI18N_21c4077c_000006⟫ este un ⟪GTI18N_21c4077c_000007⟫⟪GTI18N_21c4077c_000008⟫Însă, când partea dreaptă conține o constantă numerică netipizată, noua variabilă poate fi un ⟪GTI18N_21c4077c_000009⟫int⟪GTI18N_21c4077c_000010⟫, ⟪GTI18N_21c4077c_000011⟫float64⟪GTI18N_21c4077c_000012⟫ sau ⟪GTI18N_21c4077c_000013⟫complex128⟪GTI18N_21c4077c_000014⟫, în funcție de precizia constantei:
+
+⟪GTI18N_21c4077c_000015⟫
+
+Încercați să schimbați valoarea inițială a lui ⟪GTI18N_21c4077c_000016⟫v⟪GTI18N_21c4077c_000017⟫ în codul exemplului și observați cum îi este afectat tipul.
+
+⟪GTI18N_21c4077c_000018⟫

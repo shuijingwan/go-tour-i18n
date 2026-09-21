@@ -1,0 +1,13 @@
+* Exercițiu: Imagini
+
+Vă amintiți [[⟪GTI18N_a196bc59_000001⟫][generatorul de imagini]] scris mai devreme? Să scriem altul, dar de data aceasta va returna o implementare a ⟪GTI18N_a196bc59_000002⟫image.Image⟪GTI18N_a196bc59_000003⟫ în locul unui slice de date.
+
+Definiți propriul tip ⟪GTI18N_a196bc59_000004⟫Image⟪GTI18N_a196bc59_000005⟫, implementați [[⟪GTI18N_a196bc59_000006⟫][metodele necesare]] și apelați ⟪GTI18N_a196bc59_000007⟫pic.ShowImage⟪GTI18N_a196bc59_000008⟫.
+
+⟪GTI18N_a196bc59_000009⟫Bounds⟪GTI18N_a196bc59_000010⟫ ar trebui să returneze un ⟪GTI18N_a196bc59_000011⟫image.Rectangle⟪GTI18N_a196bc59_000012⟫, precum ⟪GTI18N_a196bc59_000013⟫image.Rect(0,`0,`w,`h)⟪GTI18N_a196bc59_000014⟫.
+
+⟪GTI18N_a196bc59_000015⟫ColorModel⟪GTI18N_a196bc59_000016⟫ ar trebui să returneze ⟪GTI18N_a196bc59_000017⟫color.RGBAModel⟪GTI18N_a196bc59_000018⟫.
+
+⟪GTI18N_a196bc59_000019⟫At⟪GTI18N_a196bc59_000020⟫ ar trebui să returneze o culoare; valoarea ⟪GTI18N_a196bc59_000021⟫v⟪GTI18N_a196bc59_000022⟫ din generatorul de imagini anterior corespunde lui ⟪GTI18N_a196bc59_000023⟫color.RGBA{v,`v,`255,`255}⟪GTI18N_a196bc59_000024⟫ în acesta.
+
+⟪GTI18N_a196bc59_000025⟫

@@ -1,0 +1,16 @@
+* Prázdné rozhraní
+
+Typ rozhraní, který neurčuje žádné metody, se nazývá _prázdné_rozhraní_:
+
+	interface{}
+
+Prázdné rozhraní může obsahovat hodnoty libovolného typu.
+(Každý typ implementuje alespoň nula metod.)
+
+`any` je alias pro `interface{}` a oba zápisy jsou zcela
+ekvivalentní.
+
+Prázdná rozhraní používá kód, který pracuje s hodnotami neznámého typu.
+Například `fmt.Print` přijímá libovolný počet argumentů typu `any`.
+
+.play methods/empty-interface.go

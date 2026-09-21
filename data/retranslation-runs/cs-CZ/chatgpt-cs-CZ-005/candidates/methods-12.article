@@ -1,0 +1,12 @@
+* Hodnoty rozhraní s podkladovými hodnotami nil
+
+Pokud je konkrétní hodnota uvnitř rozhraní sama nil,
+metoda bude zavolána s příjemcem nil.
+
+V některých jazycích by to vyvolalo výjimku nulového ukazatele,
+ale v Go je běžné psát metody, které si dokážou elegantně poradit s voláním
+s příjemcem nil (jako metoda `M` v tomto příkladu).
+
+Všimněte si, že hodnota rozhraní, která obsahuje konkrétní hodnotu nil, sama není nil.
+
+.play methods/interface-values-with-nil.go

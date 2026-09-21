@@ -1,0 +1,25 @@
+* Aserțiuni de tip
+
+O _aserțiune_de_tip_ oferă acces la valoarea concretă subiacentă a unei valori de interfață.
+
+	t := i.(T)
+
+Această instrucțiune afirmă că valoarea de interfață `i` conține tipul concret `T`
+și atribuie valoarea subiacentă `T` variabilei `t`.
+
+Dacă `i` nu conține un `T`, instrucțiunea va declanșa un panic.
+
+Pentru a _testa_ dacă o valoare de interfață conține un anumit tip,
+o aserțiune de tip poate returna două valori: valoarea subiacentă
+și o valoare booleană care indică dacă aserțiunea a reușit.
+
+	t, ok := i.(T)
+
+Dacă `i` conține un `T`, atunci `t` va fi valoarea subiacentă, iar `ok` va fi true.
+
+În caz contrar, `ok` va fi false, iar `t` va fi valoarea zero a tipului `T`
+și nu se produce niciun panic.
+
+Observați asemănarea dintre această sintaxă și cea pentru citirea dintr-un map.
+
+.play methods/type-assertions.go

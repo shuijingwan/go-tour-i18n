@@ -1,0 +1,24 @@
+* Receptori pointer
+
+Puteți declara metode cu receptori pointer.
+
+Aceasta înseamnă că tipul receptorului are sintaxa literală `*T` pentru un anumit tip `T`.
+(De asemenea, `T` nu poate fi el însuși un pointer, cum ar fi `*int`.)
+
+De exemplu, metoda `Scale` de aici este definită pentru `*Vertex`.
+
+Metodele cu receptori pointer pot modifica valoarea către care indică receptorul
+(așa cum face `Scale` aici).
+Deoarece metodele trebuie adesea să își modifice receptorul, receptorii pointer sunt mai
+frecvenți decât receptorii prin valoare.
+
+Încercați să eliminați `*` din declarația funcției `Scale` de la linia 16
+și observați cum se schimbă comportamentul programului.
+
+Cu un receptor prin valoare, metoda `Scale` operează pe o copie a valorii originale
+`Vertex`.
+(Acesta este același comportament ca pentru orice alt argument al unei funcții.)
+Metoda `Scale` trebuie să aibă un receptor pointer pentru a modifica valoarea `Vertex`
+declarată în funcția `main`.
+
+.play methods/methods-pointers.go

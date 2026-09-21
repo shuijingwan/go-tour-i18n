@@ -1,0 +1,17 @@
+* Alegerea unui receptor prin valoare sau pointer
+
+Există două motive pentru a folosi un receptor pointer.
+
+Primul este ca metoda să poată modifica valoarea către care indică receptorul.
+
+Al doilea este evitarea copierii valorii la fiecare apel al metodei.
+De exemplu, acest lucru poate fi mai eficient dacă receptorul este o structură mare.
+
+În acest exemplu, atât `Scale`, cât și `Abs` sunt metode cu receptor de tip `*Vertex`,
+chiar dacă metoda `Abs` nu trebuie să își modifice receptorul.
+
+În general, toate metodele unui anumit tip ar trebui să aibă fie receptori prin valoare, fie receptori
+pointer, nu un amestec din ambele.
+(Vom vedea de ce în următoarele câteva pagini.)
+
+.play methods/methods-with-pointer-receivers.go

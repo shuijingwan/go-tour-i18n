@@ -1,0 +1,17 @@
+* Alegerea unui receptor prin valoare sau pointer
+
+Există două motive pentru a folosi un receptor pointer.
+
+Primul este ca metoda să poată modifica valoarea către care indică receptorul.
+
+Al doilea este evitarea copierii valorii la fiecare apel al metodei.
+De exemplu, acest lucru poate fi mai eficient dacă receptorul este o structură mare.
+
+În acest exemplu, atât ⟪GTI18N_357424f2_000001⟫Scale⟪GTI18N_357424f2_000002⟫, cât și ⟪GTI18N_357424f2_000003⟫Abs⟪GTI18N_357424f2_000004⟫ sunt metode cu receptor de tip ⟪GTI18N_357424f2_000005⟫*Vertex⟪GTI18N_357424f2_000006⟫,
+chiar dacă metoda ⟪GTI18N_357424f2_000007⟫Abs⟪GTI18N_357424f2_000008⟫ nu trebuie să își modifice receptorul.
+
+În general, toate metodele unui anumit tip ar trebui să aibă fie receptori prin valoare, fie receptori
+pointer, nu un amestec din ambele.
+(Vom vedea de ce în următoarele câteva pagini.)
+
+⟪GTI18N_357424f2_000009⟫

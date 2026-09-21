@@ -1,0 +1,9 @@
+* Interfețele sunt implementate implicit
+
+Un tip implementează o interfață prin implementarea metodelor acesteia.
+Nu există o declarație explicită a intenției și niciun cuvânt-cheie „implements”.
+
+Interfețele implicite separă definiția unei interfețe de
+implementarea sa, care poate apărea apoi în orice pachet fără o înțelegere prealabilă.
+
+.play methods/interfaces-are-satisfied-implicitly.go

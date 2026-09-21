@@ -1,0 +1,17 @@
+* Typové parametry
+
+Funkce v Go lze psát tak, aby pracovaly s více typy pomocí typových parametrů. Typové
+parametry funkce se uvádějí v hranatých závorkách před
+argumenty funkce.
+
+  func Index[T comparable](s []T, x T) int
+
+Tato deklarace znamená, že `s` je řez libovolného typu `T`, který splňuje
+vestavěné omezení `comparable`. `x` je také hodnota stejného typu.
+
+`comparable` je užitečné omezení, které umožňuje používat operátory `==` a
+`!=` s hodnotami daného typu. V tomto příkladu jej používáme k porovnání
+hodnoty se všemi prvky řezu, dokud nenajdeme shodu. Funkce `Index` funguje
+pro každý typ, který podporuje porovnávání.
+
+.play generics/index.go

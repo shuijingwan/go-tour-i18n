@@ -1,0 +1,11 @@
+* Valori de retur denumite
+
+Valorile returnate de Go pot fi denumite. În acest caz, ele sunt tratate ca variabile definite la începutul funcției.
+
+Aceste nume ar trebui folosite pentru a documenta semnificația valorilor returnate.
+
+O instrucțiune `return` fără argumente returnează valorile de retur denumite. Aceasta este cunoscută drept „return fără argumente”.
+
+Instrucțiunile return fără argumente ar trebui folosite numai în funcții scurte, ca în exemplul de aici. În funcțiile mai lungi pot reduce lizibilitatea.
+
+.play basics/named-results.go

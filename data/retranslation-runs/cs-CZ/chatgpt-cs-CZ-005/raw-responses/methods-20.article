@@ -1,0 +1,21 @@
+* Cvičení: Chyby
+
+Zkopírujte svou funkci ⟪GTI18N_41f1f733_000001⟫Sqrt⟪GTI18N_41f1f733_000002⟫ z [[⟪GTI18N_41f1f733_000003⟫][předchozího cvičení]] a upravte ji tak, aby vracela hodnotu ⟪GTI18N_41f1f733_000004⟫error⟪GTI18N_41f1f733_000005⟫.
+
+Pokud funkce ⟪GTI18N_41f1f733_000006⟫Sqrt⟪GTI18N_41f1f733_000007⟫ dostane záporné číslo, má vrátit chybovou hodnotu, která není ⟪GTI18N_41f1f733_000008⟫, protože komplexní čísla nepodporuje.
+
+Vytvořte nový typ
+
+⟪GTI18N_41f1f733_000009⟫
+
+a vytvořte z něj ⟪GTI18N_41f1f733_000010⟫error⟪GTI18N_41f1f733_000011⟫ tím, že mu přidáte
+
+⟪GTI18N_41f1f733_000012⟫
+
+metodu tak, aby ⟪GTI18N_41f1f733_000013⟫ErrNegativeSqrt(-2).Error()⟪GTI18N_41f1f733_000014⟫ vracelo ⟪GTI18N_41f1f733_000015⟫"cannot`Sqrt`negative`number:`-2"⟪GTI18N_41f1f733_000016⟫.
+
+⟪GTI18N_41f1f733_000017⟫Poznámka:⟪GTI18N_41f1f733_000018⟫ Volání ⟪GTI18N_41f1f733_000019⟫fmt.Sprint(e)⟪GTI18N_41f1f733_000020⟫ uvnitř metody ⟪GTI18N_41f1f733_000021⟫Error⟪GTI18N_41f1f733_000022⟫ způsobí, že program uvízne v nekonečném cyklu. Tomu se můžete vyhnout tak, že nejprve převedete ⟪GTI18N_41f1f733_000023⟫e⟪GTI18N_41f1f733_000024⟫: ⟪GTI18N_41f1f733_000025⟫fmt.Sprint(float64(e))⟪GTI18N_41f1f733_000026⟫. Proč?
+
+Upravte svou funkci ⟪GTI18N_41f1f733_000027⟫Sqrt⟪GTI18N_41f1f733_000028⟫ tak, aby při záporném čísle vracela hodnotu ⟪GTI18N_41f1f733_000029⟫ErrNegativeSqrt⟪GTI18N_41f1f733_000030⟫.
+
+⟪GTI18N_41f1f733_000031⟫

@@ -1,0 +1,12 @@
+* Pořadí vyhodnocování switch
+
+Případy ve switch se vyhodnocují shora dolů a skončí se u prvního případu, který uspěje.
+
+(Například
+
+⟪GTI18N_e1479cae_000001⟫
+
+se ⟪GTI18N_e1479cae_000002⟫f⟪GTI18N_e1479cae_000003⟫ nezavolá, pokud platí ⟪GTI18N_e1479cae_000004⟫i==0⟪GTI18N_e1479cae_000005⟫.)
+
+
+⟪GTI18N_e1479cae_000006⟫

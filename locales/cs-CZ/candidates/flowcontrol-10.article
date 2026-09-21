@@ -1,0 +1,14 @@
+* Pořadí vyhodnocování příkazu switch
+
+Jednotlivé větve příkazu switch se vyhodnocují shora dolů a vyhodnocování se zastaví, jakmile některá větev uspěje.
+
+(Například
+
+	switch i {
+	case 0:
+	case f():
+	}
+
+nezavolá `f`, pokud platí `i==0`.)
+
+.play flowcontrol/switch-evaluation-order.go

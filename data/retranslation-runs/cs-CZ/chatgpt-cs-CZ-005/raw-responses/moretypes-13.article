@@ -1,0 +1,15 @@
+* Vytvoření řezu pomocí make
+
+Řezy lze vytvářet pomocí vestavěné funkce ⟪GTI18N_d057e6bf_000001⟫make⟪GTI18N_d057e6bf_000002⟫;
+takto lze vytvářet pole s dynamickou velikostí.
+
+Funkce ⟪GTI18N_d057e6bf_000003⟫make⟪GTI18N_d057e6bf_000004⟫ alokuje pole vyplněné nulovými hodnotami
+a vrátí řez, který na toto pole odkazuje:
+
+⟪GTI18N_d057e6bf_000005⟫
+
+Chcete-li zadat kapacitu, předejte funkci ⟪GTI18N_d057e6bf_000006⟫make⟪GTI18N_d057e6bf_000007⟫ třetí argument:
+
+⟪GTI18N_d057e6bf_000008⟫
+
+⟪GTI18N_d057e6bf_000009⟫

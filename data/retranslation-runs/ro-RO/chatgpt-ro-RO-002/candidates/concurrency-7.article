@@ -1,0 +1,18 @@
+* Exercițiu: Arbori binari echivalenți
+
+Pot exista mulți arbori binari diferiți care stochează aceeași succesiune de valori. De exemplu, iată doi arbori binari care stochează succesiunea 1, 1, 2, 3, 5, 8, 13.
+
+.image /tour/static/img/tree.png
+
+O funcție care verifică dacă doi arbori binari stochează aceeași succesiune este destul de complexă în majoritatea limbajelor. Vom folosi concurența și canalele din Go pentru a scrie o soluție simplă.
+
+Acest exemplu folosește pachetul `tree`, care definește tipul:
+
+	type Tree struct {
+		Left  *Tree
+		Value int
+		Right *Tree
+	}
+
+
+Descrierea continuă pe [[javascript:click('.next-page')][pagina următoare]].

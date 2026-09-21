@@ -1,0 +1,24 @@
+* Ukazatele
+
+Go má ukazatele.
+Ukazatel uchovává paměťovou adresu hodnoty.
+
+Typ `*T` je ukazatel na hodnotu typu `T`. Jeho nulová hodnota je `nil`.
+
+	var p *int
+
+Operátor `&` vytvoří ukazatel na svůj operand.
+
+	i := 42
+	p = &i
+
+Operátor `*` označuje podkladovou hodnotu ukazatele.
+
+	fmt.Println(*p) // read i through the pointer p
+	*p = 21         // set i through the pointer p
+
+Tomu se říká „dereference“ nebo „nepřímý přístup“.
+
+Na rozdíl od C nemá Go aritmetiku ukazatelů.
+
+.play moretypes/pointers.go

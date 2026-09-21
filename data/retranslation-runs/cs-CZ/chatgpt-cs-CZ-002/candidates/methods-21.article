@@ -1,0 +1,19 @@
+* Readery
+
+Balíček `io` definuje rozhraní `io.Reader`,
+které představuje čtecí konec datového proudu.
+
+Standardní knihovna Go obsahuje [[https://cs.opensource.google/search?q=Read%5C(%5Cw%2B%5Cs%5C%5B%5C%5Dbyte%5C)&ss=go%2Fgo][mnoho implementací]] tohoto rozhraní, včetně souborů, síťových spojení, kompresorů, šifer a dalších.
+
+Rozhraní `io.Reader` má metodu `Read`:
+
+	func (T) Read(b []byte) (n int, err error)
+
+`Read` naplní zadaný řez bajtů daty a vrátí počet
+naplněných bajtů a chybovou hodnotu. Při konci proudu vrací chybu `io.EOF`.
+
+Ukázkový kód vytvoří
+[[/pkg/strings/#Reader][`strings.Reader`]]
+a čte jeho výstup po 8 bajtech.
+
+.play methods/reader.go

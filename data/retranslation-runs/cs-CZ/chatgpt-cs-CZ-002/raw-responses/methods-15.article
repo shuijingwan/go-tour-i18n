@@ -1,0 +1,25 @@
+* Typové aserce
+
+⟪GTI18N_c205b4eb_000001⟫typová_aserce⟪GTI18N_c205b4eb_000002⟫ poskytuje přístup k podkladové konkrétní hodnotě hodnoty rozhraní.
+
+⟪GTI18N_c205b4eb_000003⟫
+
+Tento příkaz tvrdí, že hodnota rozhraní ⟪GTI18N_c205b4eb_000004⟫i⟪GTI18N_c205b4eb_000005⟫ obsahuje konkrétní typ ⟪GTI18N_c205b4eb_000006⟫T⟪GTI18N_c205b4eb_000007⟫
+a přiřadí podkladovou hodnotu ⟪GTI18N_c205b4eb_000008⟫T⟪GTI18N_c205b4eb_000009⟫ do proměnné ⟪GTI18N_c205b4eb_000010⟫t⟪GTI18N_c205b4eb_000011⟫.
+
+Pokud ⟪GTI18N_c205b4eb_000012⟫i⟪GTI18N_c205b4eb_000013⟫ neobsahuje ⟪GTI18N_c205b4eb_000014⟫T⟪GTI18N_c205b4eb_000015⟫, příkaz vyvolá ⟪GTI18N_c205b4eb_000016⟫.
+
+Chcete-li ⟪GTI18N_c205b4eb_000017⟫otestovat⟪GTI18N_c205b4eb_000018⟫, zda hodnota rozhraní obsahuje určitý typ,
+může typová aserce vrátit dvě hodnoty: podkladovou hodnotu
+a booleovskou hodnotu udávající, zda aserce uspěla.
+
+⟪GTI18N_c205b4eb_000019⟫
+
+Pokud ⟪GTI18N_c205b4eb_000020⟫i⟪GTI18N_c205b4eb_000021⟫ obsahuje ⟪GTI18N_c205b4eb_000022⟫T⟪GTI18N_c205b4eb_000023⟫, pak ⟪GTI18N_c205b4eb_000024⟫t⟪GTI18N_c205b4eb_000025⟫ bude podkladová hodnota a ⟪GTI18N_c205b4eb_000026⟫ok⟪GTI18N_c205b4eb_000027⟫ bude true.
+
+Jinak bude ⟪GTI18N_c205b4eb_000028⟫ok⟪GTI18N_c205b4eb_000029⟫ false a ⟪GTI18N_c205b4eb_000030⟫t⟪GTI18N_c205b4eb_000031⟫ bude nulová hodnota typu ⟪GTI18N_c205b4eb_000032⟫T⟪GTI18N_c205b4eb_000033⟫
+a nedojde k žádnému ⟪GTI18N_c205b4eb_000034⟫.
+
+Všimněte si podobnosti této syntaxe se čtením z mapy.
+
+⟪GTI18N_c205b4eb_000035⟫

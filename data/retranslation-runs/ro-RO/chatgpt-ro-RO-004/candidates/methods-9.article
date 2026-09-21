@@ -1,0 +1,11 @@
+* Interfețe
+
+Un _interface_type_ este definit ca un set de semnături de metode.
+
+O valoare de tip interfață poate conține orice valoare care implementează acele metode.
+
+*Notă:* Există o eroare în codul exemplului la linia 22.
+`Vertex` (tipul ne-pointer) nu implementează `Abser` deoarece
+metoda `Abs` este definită doar pentru `*Vertex` (tipul pointer).
+
+.play methods/interfaces.go

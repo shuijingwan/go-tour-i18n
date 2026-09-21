@@ -1,0 +1,9 @@
+* If s krátkým příkazem
+
+Stejně jako `for` může příkaz `if` začínat krátkým příkazem, který se provede před podmínkou.
+
+Proměnné deklarované tímto příkazem jsou v oboru platnosti pouze do konce `if`.
+
+(Zkuste použít `v` v posledním příkazu `return`.)
+
+.play flowcontrol/if-with-a-short-statement.go

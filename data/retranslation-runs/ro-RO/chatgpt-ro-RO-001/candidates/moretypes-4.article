@@ -1,0 +1,10 @@
+* Pointeri către structuri
+
+Câmpurile unei structuri pot fi accesate printr-un pointer către structură.
+
+Pentru a accesa câmpul `X` al unei structuri atunci când avem pointerul către structură `p`, am putea
+scrie `(*p).X`.
+Totuși, această notație este greoaie, așa că limbajul ne permite să
+scriem pur și simplu `p.X`, fără dereferențiere explicită.
+
+.play moretypes/struct-pointers.go

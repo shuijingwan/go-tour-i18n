@@ -1,0 +1,24 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-cs-CZ-007",
+  "locale": "cs-CZ",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 1,
+  "units": [
+    {
+      "unit_id": "methods/15",
+      "unit_kind": "page",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "c205b4eb940358edea6321cfa422c3c00a560e9a6a71b08c8b3fa3ab9e4926ae",
+      "input_path": "inputs/methods-15.article",
+      "input_sha256": "24e65f498a8f93e18f462a78b6cbbba4147639a314a5dad8c242aa46d7ee2372",
+      "protected_token_count": 35,
+      "previous_snapshot_id": "qc-002",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "上一轮关于 panic 的捷克语表达问题已经修复，但当前完整 candidate 仍留下两个可翻译的英语自然语言片段：开头 type_assertion poskytuje... 没有使用 mandatory type assertion → typová aserce，后文 Chcete-li test, zda... 也保留了英语 test。两者都不是 protected technical identity，需要 revision。"
+    }
+  ]
+}

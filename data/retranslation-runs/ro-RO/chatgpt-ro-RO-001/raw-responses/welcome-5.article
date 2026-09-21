@@ -1,0 +1,19 @@
+* ⟪GTI18N_19e6d7da_000001⟫
+
+Acest tur este construit pe baza [[⟪GTI18N_19e6d7da_000002⟫][⟪GTI18N_19e6d7da_000003⟫]], un
+serviciu web care rulează pe serverele [[⟪GTI18N_19e6d7da_000004⟫][golang.org]].
+
+Serviciul primește un program ⟪GTI18N_19e6d7da_000005⟫, îl compilează, îl leagă și îl rulează într-un
+mediu izolat, apoi returnează ieșirea.
+
+Programele care pot fi rulate în playground au anumite limitări:
+
+- În playground, timpul începe la 2009-11-10 23:00:00 ⟪GTI18N_19e6d7da_000006⟫ (determinarea semnificației acestei date este un exercițiu pentru cititor). Acest lucru facilitează stocarea în cache a programelor, oferindu-le o ieșire deterministă.
+
+- Există și limite privind timpul de execuție și utilizarea ⟪GTI18N_19e6d7da_000007⟫ și a memoriei, iar programul nu poate accesa gazde externe din rețea.
+
+Playground-ul folosește cea mai recentă versiune stabilă de ⟪GTI18N_19e6d7da_000008⟫.
+
+Citiți „[[⟪GTI18N_19e6d7da_000009⟫][În interiorul ⟪GTI18N_19e6d7da_000010⟫]]” pentru a afla mai multe.
+
+⟪GTI18N_19e6d7da_000011⟫

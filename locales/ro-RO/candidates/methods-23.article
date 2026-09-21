@@ -1,0 +1,12 @@
+* Exercițiu: rot13Reader
+
+Un model obișnuit este un [[/pkg/io/#Reader][io.Reader]] care învelește un alt `io.Reader`, modificând fluxul într-un anumit fel.
+
+De exemplu, funcția [[/pkg/compress/gzip/#NewReader][gzip.NewReader]] primește un `io.Reader` (un flux de date comprimate) și returnează un `*gzip.Reader` care implementează de asemenea `io.Reader` (un flux de date decomprimate).
+
+Implementați un `rot13Reader` care implementează `io.Reader` și citește dintr-un `io.Reader`, modificând fluxul prin aplicarea cifrului de substituție [[https://en.wikipedia.org/wiki/ROT13][rot13]] tuturor caracterelor alfabetice.
+
+Tipul `rot13Reader` vă este furnizat.
+Faceți-l un `io.Reader` implementând metoda sa `Read`.
+
+.play methods/exercise-rot-reader.go

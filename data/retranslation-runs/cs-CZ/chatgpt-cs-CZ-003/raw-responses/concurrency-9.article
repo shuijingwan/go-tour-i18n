@@ -1,0 +1,21 @@
+* sync.Mutex
+
+Už jsme viděli, že kanály se výborně hodí ke komunikaci mezi ⟪GTI18N_49f72779_000001⟫.
+
+Co když ale komunikaci nepotřebujeme? Co když chceme jen zajistit, aby
+k proměnné přistupovala v jednom okamžiku pouze jedna ⟪GTI18N_49f72779_000002⟫, a předejít tak konfliktům?
+
+Tento koncept se nazývá ⟪GTI18N_49f72779_000003⟫vzájemné_vyloučení⟪GTI18N_49f72779_000004⟫ a běžný název datové struktury, která jej zajišťuje, je ⟪GTI18N_49f72779_000005⟫mutex⟪GTI18N_49f72779_000006⟫.
+
+Standardní knihovna ⟪GTI18N_49f72779_000007⟫ poskytuje vzájemné vyloučení pomocí
+[[⟪GTI18N_49f72779_000008⟫][⟪GTI18N_49f72779_000009⟫sync.Mutex⟪GTI18N_49f72779_000010⟫]] a jeho dvou metod:
+
+- ⟪GTI18N_49f72779_000011⟫Lock⟪GTI18N_49f72779_000012⟫
+- ⟪GTI18N_49f72779_000013⟫Unlock⟪GTI18N_49f72779_000014⟫
+
+Blok kódu, který se má provést ve vzájemném vyloučení, můžeme vymezit voláním
+⟪GTI18N_49f72779_000015⟫Lock⟪GTI18N_49f72779_000016⟫ a ⟪GTI18N_49f72779_000017⟫Unlock⟪GTI18N_49f72779_000018⟫, jak ukazuje metoda ⟪GTI18N_49f72779_000019⟫Inc⟪GTI18N_49f72779_000020⟫.
+
+Můžeme také použít ⟪GTI18N_49f72779_000021⟫defer⟪GTI18N_49f72779_000022⟫, abychom zajistili odemknutí mutexu, jako v metodě ⟪GTI18N_49f72779_000023⟫Value⟪GTI18N_49f72779_000024⟫.
+
+⟪GTI18N_49f72779_000025⟫

@@ -1,0 +1,38 @@
+* Cvičení: Cykly a funkce
+
+Abychom si procvičili funkce a cykly, implementujme funkci pro výpočet druhé odmocniny: pro dané číslo x chceme najít číslo z, jehož z² je co nejblíže x.
+
+Počítače obvykle počítají druhou odmocninu x pomocí cyklu.
+Začneme nějakým odhadem z a budeme jej upravovat podle toho, jak blízko je z² hodnotě x,
+čímž získáme lepší odhad:
+
+	z -= (z*z - x) / (2*z)
+
+Opakováním této úpravy se odhad stále zlepšuje,
+dokud nedosáhneme výsledku, který je skutečné druhé odmocnině tak blízko, jak je možné.
+
+Implementujte tento postup v poskytnuté `func`Sqrt`.
+Dobrým počátečním odhadem z je 1 bez ohledu na vstup.
+Nejprve výpočet zopakujte desetkrát a průběžně vypisujte každé z.
+Sledujte, jak blízko se dostanete k výsledku pro různé hodnoty x (1, 2, 3, ...)
+a jak rychle se odhad zlepšuje.
+
+Tip: Chcete-li deklarovat a inicializovat hodnotu s plovoucí desetinnou čárkou,
+použijte zápis s desetinnou tečkou nebo konverzi:
+
+	z := 1.0
+	z := float64(1)
+
+Potom změňte podmínku cyklu tak, aby se zastavil, jakmile se hodnota přestane
+měnit (nebo se mění už jen o velmi malé množství).
+Zjistěte, zda je k tomu potřeba více, nebo méně než deset iterací.
+Vyzkoušejte i jiné počáteční odhady z, například x nebo x/2.
+Jak blízko jsou výsledky vaší funkce k [[/pkg/math/#Sqrt][math.Sqrt]] ze standardní knihovny?
+
+(*Poznámka:* Pokud vás zajímají podrobnosti algoritmu, výraz z² − x výše
+udává, jak daleko je z² od požadované hodnoty (x), a dělení 2z je derivace
+z², která škáluje velikost úpravy z podle rychlosti změny z².
+Tento obecný postup se nazývá [[https://en.wikipedia.org/wiki/Newton%27s_method][Newtonova metoda]].
+Funguje dobře pro mnoho funkcí a zvlášť dobře pro druhou odmocninu.)
+
+.play flowcontrol/exercise-loops-and-functions.go

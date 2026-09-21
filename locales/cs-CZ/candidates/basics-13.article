@@ -1,0 +1,20 @@
+* Konverze typů
+
+Výraz `T(v)` převede hodnotu `v` na typ `T`.
+
+Několik číselných konverzí:
+
+	var i int = 42
+	var f float64 = float64(i)
+	var u uint = uint(f)
+
+Nebo jednodušeji:
+
+	i := 42
+	f := float64(i)
+	u := uint(f)
+
+Na rozdíl od C vyžaduje přiřazení mezi položkami různých typů v Go explicitní konverzi.
+Zkuste z příkladu odstranit konverzi `float64` nebo `uint` a podívejte se, co se stane.
+
+.play basics/type-conversions.go

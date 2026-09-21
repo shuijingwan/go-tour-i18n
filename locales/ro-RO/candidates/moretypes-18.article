@@ -1,0 +1,11 @@
+* Exercițiu: Slice-uri
+
+Implementați `Pic`. Funcția trebuie să returneze un slice de lungime `dy`, în care fiecare element este un slice de `dx` întregi fără semn pe 8 biți. Când rulați programul, acesta va afișa imaginea, interpretând întregii ca valori în tonuri de gri (mai exact, de albastru).
+
+Alegerea imaginii vă aparține. Printre funcțiile interesante se numără `(x+y)/2`, `x*y` și `x^y`.
+
+(Trebuie să folosiți o buclă pentru a aloca fiecare `[]uint8` din interiorul lui `[][]uint8`.)
+
+(Folosiți `uint8(intValue)` pentru a converti între tipuri.)
+
+.play moretypes/exercise-slices.go

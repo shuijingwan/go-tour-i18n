@@ -1,0 +1,15 @@
+* Pořadí vyhodnocování switch
+
+Případy ve switch se vyhodnocují shora dolů a skončí se u prvního případu, který uspěje.
+
+(Například
+
+	switch i {
+	case 0:
+	case f():
+	}
+
+se `f` nezavolá, pokud platí `i==0`.)
+
+
+.play flowcontrol/switch-evaluation-order.go

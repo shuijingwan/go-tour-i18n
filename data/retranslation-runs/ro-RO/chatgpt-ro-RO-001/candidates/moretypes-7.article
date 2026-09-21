@@ -1,0 +1,23 @@
+* Slice-uri
+
+Un tablou are o dimensiune fixă.
+Un slice, în schimb, este o vedere flexibilă, cu dimensiune dinamică,
+asupra elementelor unui tablou.
+În practică, slice-urile sunt mult mai frecvente decât tablourile.
+
+Tipul `[]T` este un slice cu elemente de tip `T`.
+
+Un slice se formează specificând doi indici, o limită inferioară și
+una superioară, separate prin două puncte:
+
+	a[low : high]
+
+Aceasta selectează un interval semi-deschis care include primul
+element, dar îl exclude pe ultimul.
+
+Expresia următoare creează un slice care include
+elementele de la 1 la 3 din `a`:
+
+	a[1:4]
+
+.play moretypes/slices.go

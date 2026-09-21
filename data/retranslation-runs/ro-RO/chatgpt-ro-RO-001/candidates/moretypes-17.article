@@ -1,0 +1,12 @@
+* Range — continuare
+
+Puteți omite indicele sau valoarea atribuind-o lui `_`.
+
+    for i, _ := range pow
+    for _, value := range pow
+
+Dacă doriți doar indicele, puteți omite a doua variabilă.
+
+    for i := range pow
+
+.play moretypes/range-continued.go

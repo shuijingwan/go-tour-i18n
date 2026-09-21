@@ -1,0 +1,19 @@
+* Chyby
+
+Programy v ⟪GTI18N_9eaab1fd_000001⟫ vyjadřují chybový stav pomocí hodnot ⟪GTI18N_9eaab1fd_000002⟫error⟪GTI18N_9eaab1fd_000003⟫.
+
+Typ ⟪GTI18N_9eaab1fd_000004⟫error⟪GTI18N_9eaab1fd_000005⟫ je vestavěné rozhraní podobné ⟪GTI18N_9eaab1fd_000006⟫fmt.Stringer⟪GTI18N_9eaab1fd_000007⟫:
+
+⟪GTI18N_9eaab1fd_000008⟫
+
+(Stejně jako u ⟪GTI18N_9eaab1fd_000009⟫fmt.Stringer⟪GTI18N_9eaab1fd_000010⟫ hledá balíček ⟪GTI18N_9eaab1fd_000011⟫fmt⟪GTI18N_9eaab1fd_000012⟫ při
+výpisu hodnot rozhraní ⟪GTI18N_9eaab1fd_000013⟫error⟪GTI18N_9eaab1fd_000014⟫.)
+
+Funkce často vracejí hodnotu ⟪GTI18N_9eaab1fd_000015⟫error⟪GTI18N_9eaab1fd_000016⟫ a volající kód by měl chyby zpracovat
+ověřením, zda se chyba rovná ⟪GTI18N_9eaab1fd_000017⟫nil⟪GTI18N_9eaab1fd_000018⟫.
+
+⟪GTI18N_9eaab1fd_000019⟫
+
+⟪GTI18N_9eaab1fd_000020⟫ u hodnoty ⟪GTI18N_9eaab1fd_000021⟫error⟪GTI18N_9eaab1fd_000022⟫ znamená úspěch; cokoli jiného než ⟪GTI18N_9eaab1fd_000023⟫ u hodnoty ⟪GTI18N_9eaab1fd_000024⟫error⟪GTI18N_9eaab1fd_000025⟫ znamená selhání.
+
+⟪GTI18N_9eaab1fd_000026⟫

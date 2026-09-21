@@ -1,0 +1,13 @@
+* Cvičení: Obrázky
+
+Pamatujete si [[⟪GTI18N_a196bc59_000001⟫][generátor obrázků]], který jste napsali dříve? Napišme další, ale tentokrát bude místo řezu dat vracet implementaci ⟪GTI18N_a196bc59_000002⟫image.Image⟪GTI18N_a196bc59_000003⟫.
+
+Definujte vlastní typ ⟪GTI18N_a196bc59_000004⟫Image⟪GTI18N_a196bc59_000005⟫, implementujte [[⟪GTI18N_a196bc59_000006⟫][potřebné metody]] a zavolejte ⟪GTI18N_a196bc59_000007⟫pic.ShowImage⟪GTI18N_a196bc59_000008⟫.
+
+⟪GTI18N_a196bc59_000009⟫Bounds⟪GTI18N_a196bc59_000010⟫ má vracet ⟪GTI18N_a196bc59_000011⟫image.Rectangle⟪GTI18N_a196bc59_000012⟫, například ⟪GTI18N_a196bc59_000013⟫image.Rect(0,`0,`w,`h)⟪GTI18N_a196bc59_000014⟫.
+
+⟪GTI18N_a196bc59_000015⟫ColorModel⟪GTI18N_a196bc59_000016⟫ má vracet ⟪GTI18N_a196bc59_000017⟫color.RGBAModel⟪GTI18N_a196bc59_000018⟫.
+
+⟪GTI18N_a196bc59_000019⟫At⟪GTI18N_a196bc59_000020⟫ má vracet barvu; hodnota ⟪GTI18N_a196bc59_000021⟫v⟪GTI18N_a196bc59_000022⟫ z předchozího generátoru obrázků odpovídá v tomto případě ⟪GTI18N_a196bc59_000023⟫color.RGBA{v,`v,`255,`255}⟪GTI18N_a196bc59_000024⟫.
+
+⟪GTI18N_a196bc59_000025⟫

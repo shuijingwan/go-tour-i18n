@@ -1,0 +1,19 @@
+* Go Playground
+
+Acest tur este construit pe baza [[https://play.golang.org/][Go Playground]], un
+serviciu web care rulează pe serverele [[/][golang.org]].
+
+Serviciul primește un program Go, îl compilează, îl leagă și îl rulează într-un
+mediu izolat, apoi returnează ieșirea.
+
+Programele care pot fi rulate în playground au anumite limitări:
+
+- În playground, timpul începe la 2009-11-10 23:00:00 UTC (determinarea semnificației acestei date este un exercițiu pentru cititor). Acest lucru facilitează stocarea în cache a programelor, oferindu-le o ieșire deterministă.
+
+- Există și limite privind timpul de execuție și utilizarea CPU și a memoriei, iar programul nu poate accesa gazde externe din rețea.
+
+Playground-ul folosește cea mai recentă versiune stabilă de Go.
+
+Citiți „[[/blog/playground][În interiorul Go Playground]]” pentru a afla mai multe.
+
+.play welcome/sandbox.go

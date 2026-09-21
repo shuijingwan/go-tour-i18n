@@ -1,0 +1,28 @@
+* Přepínače typů
+
+_přepínač_typů_ je konstrukce umožňující provést několik typových asercí za sebou.
+
+Přepínač typů se podobá běžnému příkazu switch, ale případy v přepínači
+typů určují typy (nikoli hodnoty) a tyto typy se porovnávají
+s typem hodnoty uložené v dané hodnotě rozhraní.
+
+	switch v := i.(type) {
+	case T:
+		// zde má v typ T
+	case S:
+		// zde má v typ S
+	default:
+		// žádná shoda; zde má v stejný typ jako i
+	}
+
+Deklarace v přepínači typů má stejnou syntaxi jako typová aserce `i.(T)`,
+ale konkrétní typ `T` je nahrazen klíčovým slovem `type`.
+
+Tento příkaz switch testuje, zda hodnota rozhraní `i`
+obsahuje hodnotu typu `T` nebo `S`.
+V případech `T` a `S` bude proměnná `v` typu
+`T`, respektive `S`, a bude obsahovat hodnotu uloženou v `i`.
+Ve výchozím případě (kde není shoda) bude proměnná `v`
+stejného typu rozhraní a se stejnou hodnotou jako `i`.
+
+.play methods/type-switches.go

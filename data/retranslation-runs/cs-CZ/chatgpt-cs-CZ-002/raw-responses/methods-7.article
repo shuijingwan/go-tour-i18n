@@ -1,0 +1,14 @@
+* Metody a nepřímý přístup přes ukazatele (2)
+
+Totéž platí i opačným směrem.
+
+Funkce, které přijímají hodnotový argument, musí dostat hodnotu daného typu:
+
+⟪GTI18N_61a9cb84_000001⟫Compile error!⟪GTI18N_61a9cb84_000002⟫zatímco metody s hodnotovými příjemci při volání přijímají jako
+příjemce hodnotu i ukazatel:
+
+⟪GTI18N_61a9cb84_000003⟫
+
+V tomto případě se volání metody ⟪GTI18N_61a9cb84_000004⟫p.Abs()⟪GTI18N_61a9cb84_000005⟫ interpretuje jako ⟪GTI18N_61a9cb84_000006⟫(*p).Abs()⟪GTI18N_61a9cb84_000007⟫.
+
+⟪GTI18N_61a9cb84_000008⟫

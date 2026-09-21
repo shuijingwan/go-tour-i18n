@@ -1,0 +1,8 @@
+* Cvičení: Stringery
+
+Zařiďte, aby typ `IPAddr` implementoval `fmt.Stringer` a vypisoval adresu jako
+čtyři čísla oddělená tečkami.
+
+Například `IPAddr{1,`2,`3,`4}` by se měl vypsat jako `"1.2.3.4"`.
+
+.play methods/exercise-stringer.go

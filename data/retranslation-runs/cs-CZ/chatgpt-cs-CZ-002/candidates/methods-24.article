@@ -1,0 +1,20 @@
+* Obrázky
+
+[[/pkg/image/#Image][Balíček image]] definuje rozhraní `Image`:
+
+	package image
+
+	type Image interface {
+		ColorModel() color.Model
+		Bounds() Rectangle
+		At(x, y int) color.Color
+	}
+
+*Poznámka*: návratová hodnota `Rectangle` metody `Bounds` je ve skutečnosti
+[[/pkg/image/#Rectangle][`image.Rectangle`]], protože deklarace se nachází uvnitř balíčku `image`.
+
+(Všechny podrobnosti najdete v [[/pkg/image/#Image][dokumentaci]].)
+
+Typy `color.Color` a `color.Model` jsou také rozhraní, ale to zde pomineme použitím předdefinovaných implementací `color.RGBA` a `color.RGBAModel`. Tato rozhraní a typy jsou definovány v [[/pkg/image/color/][balíčku image/color]].
+
+.play methods/images.go

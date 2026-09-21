@@ -1,0 +1,9 @@
+* If a else
+
+Proměnné deklarované v krátkém příkazu `if` jsou dostupné také uvnitř všech
+bloků `else`.
+
+(Obě volání `pow` vrátí své výsledky dříve, než začne volání `fmt.Println`
+v `main`.)
+
+.play flowcontrol/if-and-else.go

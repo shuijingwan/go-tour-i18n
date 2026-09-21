@@ -1,0 +1,11 @@
+* Rozhraní
+
+_typ_rozhraní_ je definován jako množina signatur metod.
+
+Hodnota typu rozhraní může obsahovat libovolnou hodnotu, která tyto metody implementuje.
+
+*Poznámka:* V ukázkovém kódu je na řádku 22 chyba.
+`Vertex` (hodnotový typ) neimplementuje `Abser`, protože
+metoda `Abs` je definována pouze na `*Vertex` (ukazatelovém typu).
+
+.play methods/interfaces.go

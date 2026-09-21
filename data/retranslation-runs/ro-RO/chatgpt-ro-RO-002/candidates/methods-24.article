@@ -1,0 +1,21 @@
+* Imagini
+
+[[/pkg/image/#Image][Pachetul image]] definește interfața `Image`:
+
+	package image
+
+	type Image interface {
+		ColorModel() color.Model
+		Bounds() Rectangle
+		At(x, y int) color.Color
+	}
+
+*Notă*: valoarea returnată `Rectangle` de metoda `Bounds` este de fapt un
+[[/pkg/image/#Rectangle][`image.Rectangle`]], deoarece
+declarația se află în pachetul `image`.
+
+(Consultați [[/pkg/image/#Image][documentația]] pentru toate detaliile.)
+
+Tipurile `color.Color` și `color.Model` sunt de asemenea interfețe, dar vom ignora acest lucru folosind implementările predefinite `color.RGBA` și `color.RGBAModel`. Aceste interfețe și tipuri sunt specificate de [[/pkg/image/color/][pachetul image/color]].
+
+.play methods/images.go

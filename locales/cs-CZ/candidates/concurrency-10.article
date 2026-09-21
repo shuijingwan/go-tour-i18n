@@ -1,0 +1,10 @@
+* Cvičení: Webový crawler
+
+V tomto cvičení použijete prvky souběžnosti Go k paralelizaci webového crawleru.
+
+Upravte funkci `Crawl` tak, aby načítala URL paralelně a přitom stejné URL nenačetla dvakrát.
+
+_Tip_: cache již načtených URL můžete uchovávat v mapě, ale samotné mapy
+nejsou bezpečné pro souběžné použití!
+
+.play concurrency/exercise-web-crawler.go

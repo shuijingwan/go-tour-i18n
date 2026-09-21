@@ -1,0 +1,9 @@
+* Literály struktur
+
+Literál struktury označuje nově alokovanou hodnotu struktury vyjmenováním hodnot jejích položek.
+
+Pomocí syntaxe `Name:` můžete uvést jen podmnožinu položek. (Pořadí pojmenovaných položek není důležité.)
+
+Speciální prefix `&` vrátí ukazatel na hodnotu struktury.
+
+.play moretypes/struct-literals.go

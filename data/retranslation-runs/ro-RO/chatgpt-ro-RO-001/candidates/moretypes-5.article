@@ -1,0 +1,9 @@
+* Literali de structură
+
+Un literal de structură indică o valoare de structură nou alocată, enumerând valorile câmpurilor sale.
+
+Puteți enumera doar un subset al câmpurilor folosind sintaxa `Name:`. (Iar ordinea câmpurilor denumite este irelevantă.)
+
+Prefixul special `&` returnează un pointer către valoarea structurii.
+
+.play moretypes/struct-literals.go

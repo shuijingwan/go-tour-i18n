@@ -1,0 +1,11 @@
+* Canale cu buffer
+
+Canalele pot fi _bufferate_. Furnizați lungimea bufferului ca al doilea argument pentru `make` pentru a inițializa un canal cu buffer:
+
+	ch := make(chan int, 100)
+
+Trimiterile către un canal cu buffer se blochează numai când bufferul este plin. Primirile se blochează când bufferul este gol.
+
+Modificați exemplul astfel încât să depășiți capacitatea bufferului și vedeți ce se întâmplă.
+
+.play concurrency/buffered-channels.go

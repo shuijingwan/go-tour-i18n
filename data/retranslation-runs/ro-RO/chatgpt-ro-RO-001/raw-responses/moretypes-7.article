@@ -1,0 +1,23 @@
+* Slice-uri
+
+Un tablou are o dimensiune fixă.
+Un slice, în schimb, este o vedere flexibilă, cu dimensiune dinamică,
+asupra elementelor unui tablou.
+În practică, slice-urile sunt mult mai frecvente decât tablourile.
+
+Tipul ⟪GTI18N_a169cf48_000001⟫[]T⟪GTI18N_a169cf48_000002⟫ este un slice cu elemente de tip ⟪GTI18N_a169cf48_000003⟫T⟪GTI18N_a169cf48_000004⟫.
+
+Un slice se formează specificând doi indici, o limită inferioară și
+una superioară, separate prin două puncte:
+
+⟪GTI18N_a169cf48_000005⟫
+
+Aceasta selectează un interval semi-deschis care include primul
+element, dar îl exclude pe ultimul.
+
+Expresia următoare creează un slice care include
+elementele de la 1 la 3 din ⟪GTI18N_a169cf48_000006⟫a⟪GTI18N_a169cf48_000007⟫:
+
+⟪GTI18N_a169cf48_000008⟫
+
+⟪GTI18N_a169cf48_000009⟫

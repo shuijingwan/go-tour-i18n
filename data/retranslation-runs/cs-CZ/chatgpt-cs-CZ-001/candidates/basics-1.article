@@ -1,0 +1,11 @@
+* Balíčky
+
+Každý Go program se skládá z balíčků.
+
+Programy se začínají spouštět v balíčku `main`.
+
+Tento program používá balíčky s cestami importu `"fmt"` a `"math/rand"`.
+
+Podle konvence je název balíčku stejný jako poslední prvek cesty importu. Například balíček `"math/rand"` obsahuje soubory, které začínají příkazem `package`rand`.
+
+.play basics/packages.go

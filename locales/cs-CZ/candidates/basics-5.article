@@ -1,0 +1,13 @@
+* Funkce – pokračování
+
+Pokud dva nebo více po sobě jdoucích pojmenovaných parametrů funkce sdílí stejný typ, můžete typ vynechat u všech kromě posledního.
+
+V tomto příkladu jsme zápis
+
+	x int, y int
+
+zkrátili na
+
+	x, y int
+
+.play basics/functions-continued.go

@@ -363,7 +363,7 @@ func PackGenerationResultBundle(root string, catalog *Catalog, generationBundleD
 		if err := validateGenerationOutputBytes(data); err != nil {
 			return nil, GenerationResultBundleManifest{}, fmt.Errorf("%s: %w", dirEntry.Name(), err)
 		}
-		if err := validateTranslationUnitGenerationOutput(root, catalog, glossary, manifest.Locale, expected.UnitID, data); err != nil {
+		if err := validateTranslationUnitGenerationOutput(root, catalog, glossary, manifest.Locale, manifest.BatchID, expected.UnitID, data); err != nil {
 			return nil, GenerationResultBundleManifest{}, fmt.Errorf("%s: %w", dirEntry.Name(), err)
 		}
 		file := NewTransportBundleFile(expected.BundlePath, "", data)
@@ -449,7 +449,7 @@ func ImportGenerationResultBundle(root string, catalog *Catalog, generationBundl
 		if err := validateGenerationOutputBytes(data); err != nil {
 			return nil, fmt.Errorf("%s: %w", expected.BundlePath, err)
 		}
-		if err := validateTranslationUnitGenerationOutput(root, catalog, glossary, manifest.Locale, expected.UnitID, data); err != nil {
+		if err := validateTranslationUnitGenerationOutput(root, catalog, glossary, manifest.Locale, manifest.BatchID, expected.UnitID, data); err != nil {
 			return nil, fmt.Errorf("%s: %w", expected.BundlePath, err)
 		}
 		destination := filepath.Join(batchDir, filepath.FromSlash(expected.InstallPath))
@@ -551,7 +551,7 @@ func validateGenerationOutputBytes(data []byte) error {
 	return nil
 }
 
-func validateTranslationUnitGenerationOutput(root string, catalog *Catalog, glossary *Glossary, locale, unitID string, data []byte) error {
+func validateTranslationUnitGenerationOutput(root string, catalog *Catalog, glossary *Glossary, locale, batchID, unitID string, data []byte) error {
 	unit, err := catalog.Unit(unitID)
 	if err != nil {
 		return err
@@ -564,7 +564,16 @@ func validateTranslationUnitGenerationOutput(root string, catalog *Catalog, glos
 	if len(failures) != 0 {
 		return fmt.Errorf("protected output validation failed: %s", strings.Join(failures, "; "))
 	}
-	if err := ValidateTranslationUnitCandidate(root, catalog, unitID, locale, []byte(restored)); err != nil {
+	batchDir := filepath.Join(root, "data", "retranslation-runs", locale, batchID)
+	batchManifest, err := readRetranslationProcessManifest(batchDir, locale, batchID)
+	if err != nil {
+		return err
+	}
+	candidate := []byte(restored)
+	if batchManifest.ArtifactEOF == retranslationArtifactEOFSingleLF {
+		candidate = canonicalizeRetranslationArtifactEOF(candidate)
+	}
+	if err := ValidateTranslationUnitCandidate(root, catalog, unitID, locale, candidate); err != nil {
 		return fmt.Errorf("staged output machine validation failed: %w", err)
 	}
 	return nil
