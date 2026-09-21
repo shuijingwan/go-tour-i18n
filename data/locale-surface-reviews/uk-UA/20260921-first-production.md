@@ -75,10 +75,10 @@ Current complete coverage remains:
 Preview automated acceptance and the Preview HUMAN visual gate are complete and passed. Production machine/browser acceptance remains a later independent gate. This evidence does not claim Production success before those gates are actually executed.
 
 <!-- first-production-finalization:start -->
-- production receipt identity: `PENDING`
-- production machine acceptance: `PENDING`
-- production browser acceptance: `PENDING`
-- unresolved production blocker: `PENDING`
-- overall final decision: `PENDING`
-- decision: `pending`
+- production receipt identity: `locale=uk-UA hostname=uk-go-dev.shuijingwanwq.com release=20260921T034956Z-uk-UA-31c140cb4333`
+- production machine acceptance: `passed`
+- production browser acceptance: `passed`
+- unresolved production blocker: `none`
+- overall final decision: `passed`
+- decision: `passed`
 <!-- first-production-finalization:end -->

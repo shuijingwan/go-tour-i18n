@@ -29,6 +29,7 @@
 - [Thai — ไทย](https://th-go-dev.shuijingwanwq.com/)
 - [Traditional Chinese — 繁體中文（台灣）](https://zh-tw-go-dev.shuijingwanwq.com/)
 - [Turkish — Türkçe](https://tr-go-dev.shuijingwanwq.com/)
+- [Ukrainian — Українська](https://uk-go-dev.shuijingwanwq.com/)
 - [Urdu — اردو](https://ur-go-dev.shuijingwanwq.com/)
 - [Vietnamese — Tiếng Việt](https://vi-go-dev.shuijingwanwq.com/)
 <!-- live-locales:end -->
