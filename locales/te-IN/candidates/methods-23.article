@@ -1,0 +1,12 @@
+* అభ్యాసం: rot13Reader
+
+[[/pkg/io/#Reader][io.Reader]] మరో `io.Reader` ను చుట్టి, స్ట్రీమ్‌ను ఏదో విధంగా మార్చడం ఒక సాధారణ నమూనా.
+
+ఉదాహరణకు, [[/pkg/compress/gzip/#NewReader][gzip.NewReader]] ఫంక్షన్ ఒక `io.Reader` ను (కంప్రెస్ చేసిన డేటా స్ట్రీమ్) తీసుకుని, `*gzip.Reader` ను రిటర్న్ చేస్తుంది; అది కూడా `io.Reader` ను అమలు చేస్తుంది (డీకంప్రెస్ చేసిన డేటా స్ట్రీమ్).
+
+`rot13Reader` ను అమలు చేయండి; అది `io.Reader` ను అమలు చేసి, `io.Reader` నుంచి చదువుతూ, అన్ని అక్షరాలపై [[https://en.wikipedia.org/wiki/ROT13][rot13]] ప్రత్యామ్నాయ సైఫర్‌ను వర్తింపజేసి స్ట్రీమ్‌ను మార్చాలి.
+
+`rot13Reader` టైప్ మీకు అందించబడింది.
+దాన్ని `io.Reader` గా చేయడానికి దాని `Read` మెథడ్‌ను అమలు చేయండి.
+
+.play methods/exercise-rot-reader.go

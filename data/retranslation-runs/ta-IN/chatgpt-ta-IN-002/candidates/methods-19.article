@@ -1,0 +1,26 @@
+* பிழைகள்
+
+Go நிரல்கள் பிழை நிலையை `error` மதிப்புகளால் வெளிப்படுத்துகின்றன.
+
+`error` வகை, `fmt.Stringer` ஐப் போன்ற ஓர் உள்ளமைந்த இடைமுகம்:
+
+	type error interface {
+		Error() string
+	}
+
+(`fmt.Stringer` போலவே, மதிப்புகளை அச்சிடும்போது
+`fmt` தொகுப்பு `error` இடைமுகத்தைத் தேடுகிறது.)
+
+செயற்கூறுகள் பெரும்பாலும் ஒரு `error` மதிப்பைத் திருப்புகின்றன; அழைக்கும் குறிமுறை, அந்தப் பிழை `nil` க்கு சமமா என்று சோதித்து
+பிழைகளைக் கையாள வேண்டும்.
+
+	i, err := strconv.Atoi("42")
+	if err != nil {
+		fmt.Printf("couldn't convert number: %v\n", err)
+		return
+	}
+	fmt.Println("Converted integer:", i)
+
+ஒரு nil `error` வெற்றியைக் குறிக்கிறது; non-nil `error` தோல்வியைக் குறிக்கிறது.
+
+.play methods/errors.go

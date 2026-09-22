@@ -1,0 +1,458 @@
+{
+  "locale": "te-IN",
+  "html_lang": "te-IN",
+  "messages": {
+    "editor.format": {
+      "kind": "plain",
+      "text": "ఫార్మాట్"
+    },
+    "editor.imports": {
+      "kind": "plain",
+      "text": "ఇంపోర్ట్‌లు"
+    },
+    "editor.kill": {
+      "kind": "plain",
+      "text": "ఆపు"
+    },
+    "editor.off": {
+      "kind": "plain",
+      "text": "ఆఫ్"
+    },
+    "editor.on": {
+      "kind": "plain",
+      "text": "ఆన్"
+    },
+    "editor.reset": {
+      "kind": "plain",
+      "text": "రీసెట్"
+    },
+    "editor.run": {
+      "kind": "plain",
+      "text": "రన్"
+    },
+    "editor.syntax": {
+      "kind": "plain",
+      "text": "సింటాక్స్"
+    },
+    "error.not_found": {
+      "kind": "plain",
+      "text": "404 పేజీ కనబడలేదు"
+    },
+    "execution.build_failed": {
+      "kind": "plain",
+      "text": "Go build విఫలమైంది."
+    },
+    "execution.communication_error": {
+      "kind": "plain",
+      "text": "రిమోట్ సర్వర్‌తో కమ్యూనికేట్ చేయడంలో ఎరర్."
+    },
+    "execution.exited": {
+      "kind": "plain",
+      "text": "ప్రోగ్రామ్ ముగిసింది"
+    },
+    "execution.test_failed": {
+      "kind": "plain",
+      "text": "{count} టెస్ట్ విఫలమైంది."
+    },
+    "execution.tests_failed": {
+      "kind": "plain",
+      "text": "{count} టెస్ట్‌లు విఫలమయ్యాయి."
+    },
+    "execution.tests_passed": {
+      "kind": "plain",
+      "text": "అన్ని టెస్ట్‌లు పాస్ అయ్యాయి."
+    },
+    "execution.vet_failed": {
+      "kind": "plain",
+      "text": "Go vet విఫలమైంది."
+    },
+    "execution.waiting": {
+      "kind": "plain",
+      "text": "రిమోట్ సర్వర్ కోసం వేచి ఉంది..."
+    },
+    "feedback.context": {
+      "kind": "plain",
+      "text": "సందర్భం"
+    },
+    "feedback.issue_body": {
+      "kind": "plain",
+      "text": "మీ సమస్యను వివరించేలా పై శీర్షికను మార్చి, అవసరమైతే కోడ్‌తో సహా మీ ఫీడ్‌బ్యాక్‌ను ఇక్కడ జోడించండి"
+    },
+    "feedback.issue_title": {
+      "kind": "plain",
+      "text": "x/website/_content/tour: [చిన్న వివరణతో భర్తీ చేయండి]"
+    },
+    "feedback.open": {
+      "kind": "plain",
+      "text": "ఈ పేజీ గురించి ఫీడ్‌బ్యాక్ పంపండి"
+    },
+    "footer.development_log": {
+      "kind": "plain",
+      "text": "డెవలప్‌మెంట్ లాగ్"
+    },
+    "footer.github": {
+      "kind": "plain",
+      "text": "GitHub"
+    },
+    "footer.home": {
+      "kind": "plain",
+      "text": "హోమ్"
+    },
+    "footer.unofficial": {
+      "kind": "plain",
+      "text": "Yongye · అనధికారిక కమ్యూనిటీ బహుభాషా అనువాద ప్రాజెక్ట్"
+    },
+    "header.about_project": {
+      "kind": "plain",
+      "text": "ఈ ప్రాజెక్ట్ గురించి"
+    },
+    "module.basics.description": {
+      "kind": "rich",
+      "text": "<p>ప్రారంభ బిందువు—భాషకు సంబంధించిన అన్ని ప్రాథమికాలను నేర్చుకోండి.</p><p>వేరియబుల్‌లను డిక్లేర్ చేయడం, ఫంక్షన్‌లను కాల్ చేయడం, తదుపరి పాఠాలకు వెళ్లే ముందు తెలుసుకోవాల్సిన అన్ని విషయాలు.</p>"
+    },
+    "module.basics.title": {
+      "kind": "plain",
+      "text": "ప్రాథమికాలు"
+    },
+    "module.concurrency.description": {
+      "kind": "rich",
+      "text": "<p>Go ప్రధాన భాషలో భాగంగానే కాంకరెన్సీ లక్షణాలను అందిస్తుంది.</p><p>ఈ మాడ్యూల్ goroutine‌లు మరియు చానల్‌లను, అలాగే వివిధ కాంకరెన్సీ నమూనాలను అమలు చేయడానికి అవి ఎలా ఉపయోగించబడతాయో వివరిస్తుంది.</p>"
+    },
+    "module.concurrency.title": {
+      "kind": "plain",
+      "text": "కాంకరెన్సీ"
+    },
+    "module.generics.description": {
+      "kind": "rich",
+      "text": "<p>Go ఫంక్షన్‌లు మరియు స్ట్రక్ట్‌లలో టైప్ పారామీటర్‌లను ఎలా ఉపయోగించాలో నేర్చుకోండి.</p>"
+    },
+    "module.generics.title": {
+      "kind": "plain",
+      "text": "జెనరిక్స్"
+    },
+    "module.methods.description": {
+      "kind": "rich",
+      "text": "<p>టైప్‌లపై మెథడ్‌లను ఎలా నిర్వచించాలి, ఇంటర్‌ఫేస్‌లను ఎలా డిక్లేర్ చేయాలి, అన్నింటినీ ఎలా కలిపి ఉపయోగించాలి అనేది నేర్చుకోండి.</p>"
+    },
+    "module.methods.title": {
+      "kind": "plain",
+      "text": "మెథడ్‌లు మరియు ఇంటర్‌ఫేస్‌లు"
+    },
+    "module.using_tour.description": {
+      "kind": "rich",
+      "text": "<p><a href=\"https://go.dev\">Go ప్రోగ్రామింగ్ భాష</a> పర్యటనకు స్వాగతం. ఈ టూర్ భాషలోని అత్యంత ముఖ్యమైన లక్షణాలను ప్రధానంగా కవర్ చేస్తుంది:</p>"
+    },
+    "module.using_tour.title": {
+      "kind": "plain",
+      "text": "టూర్‌ను ఉపయోగించడం"
+    },
+    "site.architecture_languages": {
+      "kind": "plain",
+      "text": "సర్వర్, టెంప్లేట్‌లు, CSS, JavaScript, ఇమేజ్‌లు మరియు ఫాంట్‌లు సాధ్యమైన చోట పంచుకుంటారు. ప్రతి భాష తన కోర్సు అనువాదాలు, UI టెక్స్ట్, టర్మినాలజీ మరియు స్థితిని స్వతంత్రంగా నిర్వహిస్తుంది. సరళీకృత చైనీస్ మొదట అందించిన భాష; మరిన్ని భాషలకు విస్తరించే అవకాశం ఉంది."
+    },
+    "site.architecture_playground": {
+      "kind": "plain",
+      "text": "బ్రౌజర్‌లోని Go Example‌లు నియంత్రిత రిమోట్ Go Playground ప్రాక్సీ ద్వారా నడుస్తాయి; ప్రొడక్షన్ స్థానిక /socket కోడ్-ఎగ్జిక్యూషన్ ఎండ్‌పాయింట్‌ను బహిర్గతం చేయదు."
+    },
+    "site.architecture_title": {
+      "kind": "plain",
+      "text": "ట్రేస్ చేయగల, నియంత్రిత మరియు విస్తరించగల ఆర్కిటెక్చర్"
+    },
+    "site.architecture_upstream": {
+      "kind": "plain",
+      "text": "భవిష్యత్ సోర్స్ అప్‌డేట్‌ల కోసం ట్రేస్ చేయగల బేస్‌లైన్‌ను నిలుపుతూ, ప్రాజెక్ట్ అధికారిక అప్‌స్ట్రీమ్ commit‌ను నిరంతరం నమోదు చేస్తుంది."
+    },
+    "site.browser_title": {
+      "kind": "plain",
+      "text": "Yongye · A Tour of Go బహుభాషా అనువాద ప్రాజెక్ట్"
+    },
+    "site.community_version": {
+      "kind": "plain",
+      "text": "కమ్యూనిటీ అనువాదం"
+    },
+    "site.continue_learning": {
+      "kind": "plain",
+      "text": "go.dev లో నేర్చుకోవడం కొనసాగించండి"
+    },
+    "site.continue_learning_description": {
+      "kind": "plain",
+      "text": "A Tour of Go కేవలం ప్రారంభం మాత్రమే. దీన్ని పూర్తి చేసిన తర్వాత అధికారిక డాక్యుమెంటేషన్, ట్యుటోరియల్‌లు, స్టాండర్డ్ లైబ్రరీ రిఫరెన్స్, భాషా స్పెసిఫికేషన్ మరియు మరిన్ని Go అభ్యాస వనరుల కోసం go.dev ను సందర్శించండి."
+    },
+    "site.continue_learning_title": {
+      "kind": "plain",
+      "text": "Go నేర్చుకోవడం కొనసాగించండి"
+    },
+    "site.course_pages": {
+      "kind": "plain",
+      "text": "కోర్సు పేజీలు"
+    },
+    "site.current_language": {
+      "kind": "plain",
+      "text": "ప్రస్తుత భాష"
+    },
+    "site.current_projects": {
+      "kind": "plain",
+      "text": "ప్రస్తుత అనువాద ప్రాజెక్ట్"
+    },
+    "site.development_environment": {
+      "kind": "plain",
+      "text": "డెవలప్‌మెంట్ ఎన్విరాన్‌మెంట్"
+    },
+    "site.development_log": {
+      "kind": "plain",
+      "text": "డెవలప్‌మెంట్ లాగ్: A Tour of Go బహుభాషా అనువాద ప్రాజెక్ట్"
+    },
+    "site.enter_tour": {
+      "kind": "plain",
+      "text": "టూర్‌లోకి ప్రవేశించండి"
+    },
+    "site.environment": {
+      "kind": "plain",
+      "text": "ఎన్విరాన్‌మెంట్"
+    },
+    "site.how_it_works": {
+      "kind": "plain",
+      "text": "ప్రాజెక్ట్ ఎలా పనిచేస్తుంది"
+    },
+    "site.how_it_works_intro": {
+      "kind": "plain",
+      "text": "కోర్సు స్థానికీకరణ వాక్యం-వాక్యంగా చేసే భర్తీ కాదు. ఇది పూర్తి కంటెంట్ యూనిట్‌లు, ట్రేస్ చేయగల సమీక్ష స్థితులు మరియు ధృవీకరించగల రిలీజ్ ఆర్టిఫాక్ట్‌ల చుట్టూ నిర్మించిన వర్క్‌ఫ్లో."
+    },
+    "site.intro": {
+      "kind": "plain",
+      "text": "అధికారిక Go అభ్యాస కంటెంట్ కోసం కమ్యూనిటీ నిర్వహించే అనువాద ప్రాజెక్ట్. సరళీకృత చైనీస్ అందుబాటులో ఉన్న మొదటి భాష; మరిన్ని భాషలు మరియు Go కంటెంట్‌కు మద్దతు ఇవ్వడానికి ఈ నిర్మాణాన్ని విస్తరించవచ్చు."
+    },
+    "site.issue_feedback": {
+      "kind": "plain",
+      "text": "GitHub Issues"
+    },
+    "site.language_versions": {
+      "kind": "plain",
+      "text": "భాషా వెర్షన్‌లు"
+    },
+    "site.latest_release": {
+      "kind": "plain",
+      "text": "తాజా రిలీజ్"
+    },
+    "site.no_affiliation": {
+      "kind": "plain",
+      "text": "ఈ ప్రాజెక్ట్‌కు Go ప్రాజెక్ట్‌తో అనుబంధం లేదు; Go ప్రాజెక్ట్ దీన్ని అధికారపూర్వకంగా అనుమతించలేదు లేదా సమర్థించలేదు."
+    },
+    "site.official_upstream": {
+      "kind": "plain",
+      "text": "అధికారిక అప్‌స్ట్రీమ్"
+    },
+    "site.official_version": {
+      "kind": "plain",
+      "text": "అధికారిక A Tour of Go"
+    },
+    "site.open_official_tour": {
+      "kind": "plain",
+      "text": "అధికారిక టూర్‌ను తెరవండి"
+    },
+    "site.operations_note": {
+      "kind": "plain",
+      "text": "సర్వర్‌లు, బ్యాండ్‌విడ్త్, CDN సేవలు వంటి ఇన్‌ఫ్రాస్ట్రక్చర్ ఖర్చులు మరియు ప్రాజెక్ట్ నిర్వహణకు కొనసాగుతున్న ఖర్చులను భరించడంలో సహాయపడేందుకు ఈ సైట్ ప్రకటనలను చూపవచ్చు. సోర్స్ కోడ్ పబ్లిక్‌గానే ఉంటుంది; స్వయంగా హోస్ట్ చేసిన డిప్లాయ్‌మెంట్‌లలో ఈ సైట్ ప్రకటనల కాన్ఫిగరేషన్ డిఫాల్ట్‌గా ప్రారంభించబడదు."
+    },
+    "site.project_links": {
+      "kind": "plain",
+      "text": "ప్రాజెక్ట్ లింక్‌లు"
+    },
+    "site.project_status": {
+      "kind": "plain",
+      "text": "ప్రాజెక్ట్ స్థితి"
+    },
+    "site.source_code": {
+      "kind": "plain",
+      "text": "GitHub సోర్స్ కోడ్"
+    },
+    "site.start_learning": {
+      "kind": "plain",
+      "text": "నేర్చుకోవడం ప్రారంభించండి"
+    },
+    "site.title": {
+      "kind": "plain",
+      "text": "A Tour of Go బహుభాషా అనువాద ప్రాజెక్ట్"
+    },
+    "site.tour_description": {
+      "kind": "plain",
+      "text": "Go ప్రోగ్రామింగ్ భాషకు ఇంటరాక్టివ్ పరిచయం."
+    },
+    "site.translation_validation": {
+      "kind": "plain",
+      "text": "అనువాదం మరియు వాలిడేషన్"
+    },
+    "site.translation_validation_intro": {
+      "kind": "plain",
+      "text": "ప్రతి రిలీజ్‌ను పబ్లిష్ చేయడానికి ముందు తనిఖీ చేస్తూ, ఈ ప్రాజెక్ట్ అభ్యాస అనుభవాన్ని అధికారిక సోర్స్‌కు దగ్గరగా ఉంచుతుంది."
+    },
+    "site.unofficial": {
+      "kind": "plain",
+      "text": "Yongye నిర్వహణ · అనధికారిక కమ్యూనిటీ బహుభాషా అనువాద ప్రాజెక్ట్"
+    },
+    "site.upstream_baseline": {
+      "kind": "plain",
+      "text": "అధికారిక సోర్స్ బేస్‌లైన్"
+    },
+    "site.upstream_commit_time": {
+      "kind": "plain",
+      "text": "అప్‌స్ట్రీమ్ commit సమయం"
+    },
+    "site.validation_examples": {
+      "kind": "plain",
+      "text": "అనువదించగల సహజ-భాష వ్యాఖ్యలున్న Go Example‌లు కూడా ఏకీకృత వాలిడేషన్ వర్క్‌ఫ్లోలోకి వస్తాయి; మిగతా Example‌లు అధికారిక సోర్స్‌ను నేరుగా ఉపయోగిస్తూనే ఉంటాయి."
+    },
+    "site.validation_page_unit": {
+      "kind": "plain",
+      "text": "అనువాదాలు పూర్తి కోర్సు పేజీలను తమ యూనిట్‌గా ఉపయోగిస్తాయి."
+    },
+    "site.validation_present": {
+      "kind": "plain",
+      "text": "ప్రతి రిలీజ్‌ను present తో పార్స్ చేస్తారు."
+    },
+    "site.validation_render": {
+      "kind": "plain",
+      "text": "పబ్లిష్ చేసే ముందు రెండర్ చేసిన పేజీలను తనిఖీ చేస్తారు."
+    },
+    "site.validation_structure": {
+      "kind": "plain",
+      "text": "పేజీ నిర్మాణాన్ని అధికారిక సోర్స్‌తో పోలుస్తారు."
+    },
+    "site.workflow_process": {
+      "kind": "plain",
+      "text": "ప్రతి యూనిట్ అనువాదం, ఆటోమేటిక్ వాలిడేషన్, అనువాద నాణ్యత సమీక్ష, ప్రమోషన్ దశ, ready స్థితి, ప్రొజెక్షన్ మరియు పబ్లిష్ చేయడం దశల ద్వారా సాగుతుంది; జనరేట్ చేసిన అనువాదాలు ఎప్పుడూ నేరుగా పబ్లిష్ కావు."
+    },
+    "site.workflow_publish": {
+      "kind": "plain",
+      "text": "పబ్లిష్ చేయడం ప్రామాణిక ready క్యాండిడేట్‌ల నుండి పూర్తి స్థానికీకరించిన ప్రొజెక్షన్‌ను నిర్మిస్తుంది; వర్క్‌ఫ్లోలోని ప్రతి TranslationUnit ready స్థితిలో ఉండాలి. అనంతరం ప్రొడక్షన్ బైనరీ, release.json మరియు SHA256SUMS సృష్టించి, పూర్తి బండిల్‌ను ధృవీకరిస్తుంది."
+    },
+    "site.workflow_review": {
+      "kind": "plain",
+      "text": "ఆటోమేటిక్ తనిఖీలు నిర్మాణాన్ని కాపాడతాయి, present కంటెంట్‌ను పార్స్ చేస్తాయి, అధికారిక సోర్స్‌తో పోలుస్తాయి, రెండరింగ్ మరియు పేజీలను వాలిడేట్ చేస్తాయి, అలాగే Example Go కంటెంట్‌ను తనిఖీ చేస్తాయి. ప్రమోషన్ దశకు ముందు స్వతంత్ర అనువాద నాణ్యత సమీక్ష ఇంకా తప్పనిసరి."
+    },
+    "site.workflow_title": {
+      "kind": "plain",
+      "text": "TranslationUnit నుండి ప్రొడక్షన్ వరకు"
+    },
+    "site.workflow_units": {
+      "kind": "plain",
+      "text": "TranslationUnit పూర్తి Page‌లను మరియు అర్హతగల Example‌లను రెండింటినీ సూచిస్తుంది: Page అనేది పూర్తి present.Section; Example అనేది అనువదించగల సహజ-భాష వ్యాఖ్యలను కలిగిన పూర్తి .go ఫైల్."
+    },
+    "support.address": {
+      "kind": "plain",
+      "text": "అడ్రెస్"
+    },
+    "support.advertising_title": {
+      "kind": "plain",
+      "text": "ప్రకటనల గమనిక"
+    },
+    "support.asset": {
+      "kind": "plain",
+      "text": "అసెట్"
+    },
+    "support.copied": {
+      "kind": "plain",
+      "text": "కాపీ అయింది"
+    },
+    "support.copy_address": {
+      "kind": "plain",
+      "text": "అడ్రెస్‌ను కాపీ చేయండి"
+    },
+    "support.copy_reference": {
+      "kind": "plain",
+      "text": "రిఫరెన్స్‌ను కాపీ చేయండి"
+    },
+    "support.copy_uid": {
+      "kind": "plain",
+      "text": "UID ను కాపీ చేయండి"
+    },
+    "support.intro": {
+      "kind": "plain",
+      "text": "ఆంగ్ల వెర్షన్ యొక్క కొనసాగుతున్న నిర్వహణకు మీరు స్వచ్ఛందంగా మద్దతు ఇవ్వవచ్చు. మీ మద్దతు ఈ భాషా వెర్షన్‌ను నిరంతరం నిర్వహించి అభివృద్ధి చేయడానికి సహాయపడుతుంది."
+    },
+    "support.minimum_deposit": {
+      "kind": "plain",
+      "text": "స్వీకరణ వైపు కనిష్ఠ మొత్తం"
+    },
+    "support.network": {
+      "kind": "plain",
+      "text": "నెట్‌వర్క్"
+    },
+    "support.platform_help": {
+      "kind": "plain",
+      "text": "అదే ప్లాట్‌ఫారమ్ వినియోగదారులు అంతర్గత UID ట్రాన్స్‌ఫర్‌ను ఉపయోగించవచ్చు. వివరాల కోసం ప్లాట్‌ఫారమ్‌ను చూడండి."
+    },
+    "support.platform_title": {
+      "kind": "plain",
+      "text": "ప్లాట్‌ఫారమ్ అంతర్గత ట్రాన్స్‌ఫర్ (ఐచ్ఛికం)"
+    },
+    "support.reference_help": {
+      "kind": "plain",
+      "text": "మీ చెల్లింపు సేవ గమనిక లేదా రిఫరెన్స్‌కు మద్దతు ఇస్తే, ఈ విలువను ఉపయోగించవచ్చు."
+    },
+    "support.reference_label": {
+      "kind": "plain",
+      "text": "మద్దతు రిఫరెన్స్"
+    },
+    "support.section_title": {
+      "kind": "plain",
+      "text": "మద్దతు & నిర్వహణ ఖర్చులు"
+    },
+    "support.translation_title": {
+      "kind": "plain",
+      "text": "ఆంగ్ల వెర్షన్‌కు మద్దతు ఇవ్వండి"
+    },
+    "support.uid": {
+      "kind": "plain",
+      "text": "UID"
+    },
+    "support.usdc_network_only": {
+      "kind": "plain",
+      "text": "USDC ను Base నెట్‌వర్క్ ద్వారా మాత్రమే పంపండి."
+    },
+    "support.usdt_network_only": {
+      "kind": "plain",
+      "text": "USDT ను Tron (TRC20) నెట్‌వర్క్ ద్వారా మాత్రమే పంపండి."
+    },
+    "support.wrong_network_warning": {
+      "kind": "plain",
+      "text": "తప్పు అసెట్ లేదా నెట్‌వర్క్ ఉపయోగిస్తే నిధులు కోల్పోయే అవకాశం ఉంది."
+    },
+    "theme.dark": {
+      "kind": "plain",
+      "text": "డార్క్ థీమ్"
+    },
+    "theme.light": {
+      "kind": "plain",
+      "text": "లైట్ థీమ్"
+    },
+    "theme.system": {
+      "kind": "plain",
+      "text": "సిస్టమ్ థీమ్"
+    },
+    "theme.toggle": {
+      "kind": "plain",
+      "text": "థీమ్ మార్చండి"
+    },
+    "toc.title": {
+      "kind": "plain",
+      "text": "విషయ సూచిక"
+    },
+    "tour.list_description": {
+      "kind": "plain",
+      "text": "Go ప్రోగ్రామింగ్ భాషకు ఇంటరాక్టివ్ పరిచయమైన A Tour of Go లోని మాడ్యూల్‌లు మరియు పాఠాలను చూడండి."
+    },
+    "tour.list_heading": {
+      "kind": "plain",
+      "text": "Go టూర్‌కు స్వాగతం"
+    },
+    "tour.list_title": {
+      "kind": "plain",
+      "text": "కోర్సు డైరెక్టరీ — A Tour of Go"
+    },
+    "tour.title": {
+      "kind": "plain",
+      "text": "A Tour of Go"
+    }
+  }
+}

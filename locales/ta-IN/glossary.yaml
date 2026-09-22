@@ -1,0 +1,156 @@
+locale: ta-IN
+mandatory:
+  A Tour of Go: Go சுற்றுலா
+  previous (navigation label): முந்தையது
+  next (navigation label): அடுத்தது
+  Run: இயக்கு
+  Format: வடிவமை
+  Reset: மீட்டமை
+  programming language: நிரலாக்க மொழி
+  package: தொகுப்பு
+  function: செயற்கூறு
+  method: வழிமுறை
+  interface: இடைமுகம்
+  struct: கட்டமைப்பு
+  pointer: சுட்டி
+  slice: துண்டம்
+  map: இணைபடம்
+  channel: தடம்
+  type parameter: வகை அளபுரு
+  constraint: கட்டுப்பாடு
+  generics: பொதுமை நிரலாக்கம்
+  type assertion: வகை உறுதிப்படுத்தல்
+  type switch: வகைத் தேர்வு
+  variable: மாறி
+  constant: மாறிலி
+  concurrency: உடன்நிகழ்வு
+preferred:
+  # Tour page and presentation slide are intentionally distinguished.
+  slide (Tour page): பக்கம்
+  slides (Tour pages): பக்கங்கள்
+  slide (presentation): காட்சி வில்லை
+  slides (presentation): காட்சி வில்லைகள்
+  previous: முந்தைய
+  next: அடுத்த
+  Go programming language: Go நிரலாக்க மொழி
+  tour: சுற்றுலா
+  the tour: இந்தச் சுற்றுலா
+  module: தொகுதி
+  lesson: பாடம்
+  exercise: பயிற்சி
+  syntax highlighting: தொடரியல் சிறப்பித்தல்
+  sandbox: தனிமைப்படுத்தப்பட்ட சூழல்
+  deterministic output: நிர்ணயமான வெளியீடு
+  program: நிரல்
+  code: குறிமுறை
+  compile: நிரல்பெயர்த்தல்
+  compiler: நிரல்பெயர்ப்பி
+  import: இறக்குமதி
+  import path: இறக்குமதிப் பாதை
+  package name: தொகுப்புப் பெயர்
+  import statement: இறக்குமதிக் கூற்று
+  exported name: ஏற்றுமதி செய்யப்பட்ட பெயர்
+  exported names: ஏற்றுமதி செய்யப்பட்ட பெயர்கள்
+  unexported name: ஏற்றுமதி செய்யப்படாத பெயர்
+  unexported names: ஏற்றுமதி செய்யப்படாத பெயர்கள்
+  declaration: அறிவிப்பு
+  statement: கூற்று
+  expression: கோவை
+  operator: செயற்குறி
+  return value: திரும்பும் மதிப்பு
+  argument: செயலுருபு
+  parameter: அளபுரு
+  value: மதிப்பு
+  type: வகை
+  basic type: அடிப்படை வகை
+  type conversion: வகை மாற்றம்
+  type inference: வகை அனுமானம்
+  untyped constant: வகையிடப்படாத மாறிலி
+  untyped numeric constant: வகையிடப்படாத எண் மாறிலி
+  zero value: சுழிய மதிப்பு
+  field: புலம்
+  array: அணி
+  literal: மதிப்புரு
+  length: நீளம்
+  capacity: கொள்ளளவு
+  underlying array: அடிநிலை அணி
+  dereferencing: சுட்டியிலுள்ள மதிப்பை அணுகுதல்
+  pointer arithmetic: சுட்டிக் கணிதம்
+  receiver: பெறுநர்
+  pointer receiver: சுட்டிப் பெறுநர்
+  value receiver: மதிப்புப் பெறுநர்
+  interface value: இடைமுக மதிப்பு
+  interface type: இடைமுக வகை
+  concrete type: கான்கிரீட் வகை
+  empty interface: வெற்று இடைமுகம்
+  nil interface: nil இடைமுகம்
+  generic: பொதுமையான
+  generic programming: பொதுமை நிரலாக்கம்
+  generic function: பொதுமை செயற்கூறு
+  generic type: பொதுமை வகை
+  type argument: வகை செயலுருபு
+  type set: வகைக் கணம்
+  underlying type: அடிநிலை வகை
+  named type: பெயரிடப்பட்ட வகை
+  defined type: வரையறுக்கப்பட்ட வகை
+  method set: வழிமுறைக் கணம்
+  iteration: சுழற்சி
+  loop: மடக்கு
+  loop condition: மடக்கு நிபந்தனை
+  closure: செயற்கூறு அடைப்பு
+  error: பிழை
+  runtime: இயக்கநேரம்
+  buffered channel: இடையகமுள்ள தடம்
+  unbuffered channel: இடையகமற்ற தடம்
+  buffer: இடையகம்
+  mutex: பரஸ்பர விலக்குப் பூட்டு
+  mutual exclusion: பரஸ்பர விலக்கம்
+  standard library: தரநிலை நூலகம்
+  built-in: உள்ளமைந்த
+  web crawler: வலை ஊர்வி
+forbidden:
+  - Golang
+  - கோலாங்
+  - கோரூட்டீன்
+  - கோருடீன்
+  - Go பிளேகிரவுண்ட்
+  - Go விளையாட்டரங்கம்
+  - கால்வாய்
+keep:
+  - Go
+  - Go Playground
+  - Playground
+  - playground
+  - goroutine
+  - goroutines
+  - Goroutines
+  - gofmt
+  - GOPATH
+  - go.dev
+  - GitHub
+  - URL
+  - API
+  - ASCII
+  - CPU
+  - UTC
+  - PageUp
+  - PageDown
+  - Shift
+  - Enter
+  - Ctrl
+  - TranslationUnit
+  - Page
+  - Pages
+  - Example
+  - Examples
+  - present.Section
+  - nil
+  - panic
+  - Go vet
+  - Go build
+  - release.json
+  - SHA256SUMS
+  - USDC
+  - USDT
+  - Base
+  - Tron (TRC20)

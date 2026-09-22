@@ -1,0 +1,14 @@
+* switch మూల్యాంకన క్రమం
+
+switch case‌లు పై నుంచి కిందికి మూల్యాంకనం అవుతాయి; ఒక case విజయవంతమైనప్పుడు ఆగిపోతాయి.
+
+(ఉదాహరణకు,
+
+	switch i {
+	case 0:
+	case f():
+	}
+
+`f` ను `i==0` అయితే కాల్ చేయదు.)
+
+.play flowcontrol/switch-evaluation-order.go

@@ -1,0 +1,21 @@
+* படங்கள்
+
+[[/pkg/image/#Image][image தொகுப்பு]] `Image` இடைமுகத்தை வரையறுக்கிறது:
+
+	package image
+
+	type Image interface {
+		ColorModel() color.Model
+		Bounds() Rectangle
+		At(x, y int) color.Color
+	}
+
+*குறிப்பு*: `Rectangle` என்ற `Bounds` வழிமுறையின் திரும்பும் மதிப்பு உண்மையில்
+[[/pkg/image/#Rectangle][`image.Rectangle`]] ஆகும்; ஏனெனில்
+அறிவிப்பு `image` தொகுப்பின் உள்ளே உள்ளது.
+
+(முழு விவரங்களுக்கும் [[/pkg/image/#Image][ஆவணத்தைப்]] பார்க்கவும்.)
+
+`color.Color` மற்றும் `color.Model` வகைகளும் இடைமுகங்களே; ஆனால் முன் வரையறுக்கப்பட்ட `color.RGBA` மற்றும் `color.RGBAModel` செயல்படுத்தல்களைப் பயன்படுத்தி அதை இங்கு புறக்கணிப்போம். இந்த இடைமுகங்களும் வகைகளும் [[/pkg/image/color/][image/color தொகுப்பால்]] குறிப்பிடப்படுகின்றன.
+
+.play methods/images.go

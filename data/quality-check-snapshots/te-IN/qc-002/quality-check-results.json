@@ -1,0 +1,52 @@
+{
+  "schema_version": 2,
+  "evidence_type": "quality_check_results",
+  "locale": "te-IN",
+  "snapshot_id": "qc-002",
+  "snapshot_manifest_sha256": "919839d67d421a852dd49becddd20a5756e0b0936e92a50010fd1195d73f1442",
+  "previous_snapshot_id": "qc-001",
+  "rubric": "translation-quality/v1",
+  "result_count": 8,
+  "results": [
+    {
+      "index": 30,
+      "unit_id": "flowcontrol/8",
+      "rating": "A"
+    },
+    {
+      "index": 37,
+      "unit_id": "moretypes/1",
+      "rating": "A"
+    },
+    {
+      "index": 67,
+      "unit_id": "methods/4",
+      "rating": "A"
+    },
+    {
+      "index": 93,
+      "unit_id": "concurrency/1",
+      "rating": "A"
+    },
+    {
+      "index": 94,
+      "unit_id": "concurrency/2",
+      "rating": "A"
+    },
+    {
+      "index": 96,
+      "unit_id": "concurrency/4",
+      "rating": "A"
+    },
+    {
+      "index": 102,
+      "unit_id": "concurrency/10",
+      "rating": "A"
+    },
+    {
+      "index": 107,
+      "unit_id": "example:concurrency/exercise-equivalent-binary-trees.go",
+      "rating": "A"
+    }
+  ]
+}

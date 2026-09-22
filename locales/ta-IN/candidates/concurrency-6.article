@@ -1,0 +1,14 @@
+* Default தேர்வு
+
+`default` case, ஒரு `select` இல் வேறு எந்த case-உம் தயாராக இல்லாவிட்டால் இயக்கப்படும்.
+
+தடுக்காமல் அனுப்பவோ பெறவோ முயற்சிக்க `default` case-ஐப் பயன்படுத்துங்கள்:
+
+	select {
+	case i := <-c:
+		// i ஐப் பயன்படுத்துங்கள்
+	default:
+		// c இலிருந்து பெறுவது தடுக்கப்படும்
+	}
+
+.play concurrency/default-selection.go

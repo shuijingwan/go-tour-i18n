@@ -1,0 +1,21 @@
+* ఇమేజ్‌లు
+
+[[/pkg/image/#Image][image ప్యాకేజ్]] `Image` ఇంటర్‌ఫేస్‌ను నిర్వచిస్తుంది:
+
+	package image
+
+	type Image interface {
+		ColorModel() color.Model
+		Bounds() Rectangle
+		At(x, y int) color.Color
+	}
+
+*గమనిక*: `Rectangle` అనేది `Bounds` మెథడ్ రిటర్న్ విలువ; నిజానికి అది
+[[/pkg/image/#Rectangle][`image.Rectangle`]], ఎందుకంటే
+డిక్లరేషన్ `image` ప్యాకేజ్ లోపల ఉంది.
+
+(అన్ని వివరాల కోసం [[/pkg/image/#Image][డాక్యుమెంటేషన్]] చూడండి.)
+
+`color.Color` మరియు `color.Model` టైప్‌లు కూడా ఇంటర్‌ఫేస్‌లే, కానీ ముందే నిర్వచించిన `color.RGBA` మరియు `color.RGBAModel` అమలు రూపాలను ఉపయోగించి దాన్ని ఇక్కడ పక్కన పెడతాం. ఈ ఇంటర్‌ఫేస్‌లు మరియు టైప్‌లను [[/pkg/image/color/][image/color ప్యాకేజ్]] పేర్కొంటుంది.
+
+.play methods/images.go

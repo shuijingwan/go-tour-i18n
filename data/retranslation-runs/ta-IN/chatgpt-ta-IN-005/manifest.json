@@ -1,0 +1,24 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-ta-IN-005",
+  "locale": "ta-IN",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "example",
+  "unit_count": 1,
+  "units": [
+    {
+      "unit_id": "example:concurrency/exercise-equivalent-binary-trees.go",
+      "unit_kind": "example",
+      "source_path": "_content/tour/concurrency/exercise-equivalent-binary-trees.go",
+      "source_sha256": "184cbbd1e662b64de6e6928d4af6f2469c7bccdbc9a8b5f477c1b694b9ab02b1",
+      "input_path": "inputs/concurrency-exercise-equivalent-binary-trees.txt",
+      "input_sha256": "7a7b9604ab994ccecd30d445793424bc7db50ec6b4b77d9d082d42f1e9cc5685",
+      "protected_token_count": 5,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "Walk walks the tree t 被表达为 Walk, t மரத்தில் நடந்து...，把数据结构语境中的 walk / traverse a tree 机械处理成接近“在树中走”的字面表达。结合后文仍能理解其意图，因此没有造成严重技术误义，但作为二叉树遍历的正式教学注释不够自然、专业，需要 revision。"
+    }
+  ]
+}

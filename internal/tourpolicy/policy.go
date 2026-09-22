@@ -87,6 +87,8 @@ var siteHomeTargets = map[string]bool{
 	"https://ro-go-dev.shuijingwanwq.com/":    true,
 	"https://es-go-dev.shuijingwanwq.com/":    true,
 	"https://sv-go-dev.shuijingwanwq.com/":    true,
+	"https://ta-go-dev.shuijingwanwq.com/":    true,
+	"https://te-go-dev.shuijingwanwq.com/":    true,
 	"https://th-go-dev.shuijingwanwq.com/":    true,
 	"https://tr-go-dev.shuijingwanwq.com/":    true,
 	"https://ur-go-dev.shuijingwanwq.com/":    true,

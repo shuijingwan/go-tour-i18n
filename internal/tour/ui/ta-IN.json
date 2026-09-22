@@ -1,0 +1,458 @@
+{
+  "locale": "ta-IN",
+  "html_lang": "ta-IN",
+  "messages": {
+    "editor.format": {
+      "kind": "plain",
+      "text": "வடிவமை"
+    },
+    "editor.imports": {
+      "kind": "plain",
+      "text": "இறக்குமதிகள்"
+    },
+    "editor.kill": {
+      "kind": "plain",
+      "text": "நிறுத்து"
+    },
+    "editor.off": {
+      "kind": "plain",
+      "text": "செயலற்றது"
+    },
+    "editor.on": {
+      "kind": "plain",
+      "text": "செயலில்"
+    },
+    "editor.reset": {
+      "kind": "plain",
+      "text": "மீட்டமை"
+    },
+    "editor.run": {
+      "kind": "plain",
+      "text": "இயக்கு"
+    },
+    "editor.syntax": {
+      "kind": "plain",
+      "text": "தொடரியல்"
+    },
+    "error.not_found": {
+      "kind": "plain",
+      "text": "404 பக்கம் கிடைக்கவில்லை"
+    },
+    "execution.build_failed": {
+      "kind": "plain",
+      "text": "Go build தோல்வியடைந்தது."
+    },
+    "execution.communication_error": {
+      "kind": "plain",
+      "text": "தொலை சேவையகத்துடன் தொடர்புகொள்வதில் பிழை."
+    },
+    "execution.exited": {
+      "kind": "plain",
+      "text": "நிரல் முடிவடைந்தது"
+    },
+    "execution.test_failed": {
+      "kind": "plain",
+      "text": "{count} சோதனை தோல்வியடைந்தது."
+    },
+    "execution.tests_failed": {
+      "kind": "plain",
+      "text": "{count} சோதனைகள் தோல்வியடைந்தன."
+    },
+    "execution.tests_passed": {
+      "kind": "plain",
+      "text": "அனைத்து சோதனைகளும் வெற்றியடைந்தன."
+    },
+    "execution.vet_failed": {
+      "kind": "plain",
+      "text": "Go vet தோல்வியடைந்தது."
+    },
+    "execution.waiting": {
+      "kind": "plain",
+      "text": "தொலை சேவையகத்திற்காகக் காத்திருக்கிறது..."
+    },
+    "feedback.context": {
+      "kind": "plain",
+      "text": "சூழல்"
+    },
+    "feedback.issue_body": {
+      "kind": "plain",
+      "text": "உங்கள் சிக்கலை விவரிக்கும் வகையில் மேலுள்ள தலைப்பை மாற்றி, தேவையானால் குறிமுறையையும் சேர்த்து உங்கள் கருத்தை இங்கே பதிவு செய்யவும்"
+    },
+    "feedback.issue_title": {
+      "kind": "plain",
+      "text": "x/website/_content/tour: [சுருக்கமான விளக்கத்தால் மாற்றவும்]"
+    },
+    "feedback.open": {
+      "kind": "plain",
+      "text": "இந்தப் பக்கத்தைப் பற்றிய கருத்தை அனுப்பு"
+    },
+    "footer.development_log": {
+      "kind": "plain",
+      "text": "உருவாக்கப் பதிவு"
+    },
+    "footer.github": {
+      "kind": "plain",
+      "text": "GitHub"
+    },
+    "footer.home": {
+      "kind": "plain",
+      "text": "முகப்பு"
+    },
+    "footer.unofficial": {
+      "kind": "plain",
+      "text": "Yongye · அதிகாரப்பூர்வமற்ற சமூக பன்மொழி மொழிபெயர்ப்பு திட்டம்"
+    },
+    "header.about_project": {
+      "kind": "plain",
+      "text": "இந்தத் திட்டம் பற்றி"
+    },
+    "module.basics.description": {
+      "kind": "rich",
+      "text": "<p>இது தொடக்கப் புள்ளி; மொழியின் அனைத்து அடிப்படைகளையும் அறிக.</p><p>மாறிகளை அறிவித்தல், செயற்கூறுகளை அழைத்தல், அடுத்த பாடங்களுக்குச் செல்வதற்கு முன் நீங்கள் அறிந்திருக்க வேண்டிய அனைத்தையும் அறிக.</p>"
+    },
+    "module.basics.title": {
+      "kind": "plain",
+      "text": "அடிப்படைகள்"
+    },
+    "module.concurrency.description": {
+      "kind": "rich",
+      "text": "<p>Go, உடன்நிகழ்வு அம்சங்களை மொழியின் மையப் பகுதியாக வழங்குகிறது.</p><p>இந்தத் தொகுதி goroutines மற்றும் தடங்கள் பற்றியும், பல்வேறு உடன்நிகழ்வு வடிவங்களைச் செயல்படுத்த அவை எவ்வாறு பயன்படுத்தப்படுகின்றன என்பதையும் விளக்குகிறது.</p>"
+    },
+    "module.concurrency.title": {
+      "kind": "plain",
+      "text": "உடன்நிகழ்வு"
+    },
+    "module.generics.description": {
+      "kind": "rich",
+      "text": "<p>Go செயற்கூறுகள் மற்றும் கட்டமைப்புகளில் வகை அளபுருக்களை எவ்வாறு பயன்படுத்துவது என்பதை அறிக.</p>"
+    },
+    "module.generics.title": {
+      "kind": "plain",
+      "text": "பொதுமை நிரலாக்கம்"
+    },
+    "module.methods.description": {
+      "kind": "rich",
+      "text": "<p>வகைகளில் வழிமுறைகளை எவ்வாறு வரையறுப்பது, இடைமுகங்களை எவ்வாறு அறிவிப்பது, அனைத்தையும் எவ்வாறு ஒன்றிணைப்பது என்பவற்றை அறிக.</p>"
+    },
+    "module.methods.title": {
+      "kind": "plain",
+      "text": "வழிமுறைகளும் இடைமுகங்களும்"
+    },
+    "module.using_tour.description": {
+      "kind": "rich",
+      "text": "<p><a href=\"https://go.dev\">Go நிரலாக்க மொழி</a> சுற்றுலாவிற்கு வரவேற்கிறோம். இந்தச் சுற்றுலா மொழியின் மிக முக்கிய அம்சங்களை, குறிப்பாக பின்வருவனவற்றை அறிமுகப்படுத்துகிறது:</p>"
+    },
+    "module.using_tour.title": {
+      "kind": "plain",
+      "text": "சுற்றுலாவைப் பயன்படுத்துதல்"
+    },
+    "site.architecture_languages": {
+      "kind": "plain",
+      "text": "நடைமுறைக்கு ஏற்ற இடங்களில் சேவையகம், வார்ப்புருக்கள், CSS, JavaScript, படங்கள் மற்றும் எழுத்துருக்கள் பகிரப்படுகின்றன. ஒவ்வொரு மொழியும் பாடநெறி மொழிபெயர்ப்புகள், UI உரை, சொற்களஞ்சியம் மற்றும் நிலையை தனித்தனியாகப் பராமரிக்கிறது. எளிமைப்படுத்தப்பட்ட சீனம் முதலில் வழங்கப்பட்ட மொழியாகும்; மேலும் மொழிகளுக்கு இடமுள்ளது."
+    },
+    "site.architecture_playground": {
+      "kind": "plain",
+      "text": "உலாவியில் உள்ள Go எடுத்துக்காட்டுகள் கட்டுப்படுத்தப்பட்ட தொலைநிலை Playground பதிலாளி வழியாக இயங்குகின்றன; production சூழல் உள்ளூர் /socket குறிமுறை-இயக்க முனைப்புள்ளியை வெளிப்படுத்தாது."
+    },
+    "site.architecture_title": {
+      "kind": "plain",
+      "text": "தடமறியக்கூடிய, கட்டுப்படுத்தப்பட்ட மற்றும் விரிவாக்கக்கூடிய கட்டமைப்பு"
+    },
+    "site.architecture_upstream": {
+      "kind": "plain",
+      "text": "திட்டம் அதிகாரப்பூர்வ மேல்நிலை commit-ஐ தொடர்ந்து பதிவு செய்து, எதிர்கால மூலப் புதுப்பிப்புகளுக்கான தடமறியக்கூடிய அடிப்படையைப் பாதுகாக்கிறது."
+    },
+    "site.browser_title": {
+      "kind": "plain",
+      "text": "Yongye · Go சுற்றுலா பன்மொழி மொழிபெயர்ப்பு திட்டம்"
+    },
+    "site.community_version": {
+      "kind": "plain",
+      "text": "சமூக மொழிபெயர்ப்பு"
+    },
+    "site.continue_learning": {
+      "kind": "plain",
+      "text": "go.dev-இல் கற்றலைத் தொடருங்கள்"
+    },
+    "site.continue_learning_description": {
+      "kind": "plain",
+      "text": "Go சுற்றுலா தொடக்கம் மட்டுமே. அதை முடித்த பிறகு, அதிகாரப்பூர்வ ஆவணங்கள், பயிற்சிகள், தரநிலை நூலகக் குறிப்பு, மொழி விவரக்குறிப்பு மற்றும் மேலும் Go கற்றல் வளங்களுக்கு go.dev-ஐப் பார்வையிடுங்கள்."
+    },
+    "site.continue_learning_title": {
+      "kind": "plain",
+      "text": "Go கற்றலைத் தொடருங்கள்"
+    },
+    "site.course_pages": {
+      "kind": "plain",
+      "text": "பாடநெறி பக்கங்கள்"
+    },
+    "site.current_language": {
+      "kind": "plain",
+      "text": "தற்போதைய மொழி"
+    },
+    "site.current_projects": {
+      "kind": "plain",
+      "text": "தற்போதைய மொழிபெயர்ப்பு திட்டம்"
+    },
+    "site.development_environment": {
+      "kind": "plain",
+      "text": "உருவாக்கச் சூழல்"
+    },
+    "site.development_log": {
+      "kind": "plain",
+      "text": "உருவாக்கப் பதிவு: Go சுற்றுலா பன்மொழி மொழிபெயர்ப்பு திட்டம்"
+    },
+    "site.enter_tour": {
+      "kind": "plain",
+      "text": "சுற்றுலாவிற்குச் செல்"
+    },
+    "site.environment": {
+      "kind": "plain",
+      "text": "சூழல்"
+    },
+    "site.how_it_works": {
+      "kind": "plain",
+      "text": "திட்டம் எவ்வாறு செயல்படுகிறது"
+    },
+    "site.how_it_works_intro": {
+      "kind": "plain",
+      "text": "பாடநெறி உள்ளூர்மயமாக்கல் என்பது வாக்கியம்-வாக்கியமாக மாற்றுவது அல்ல. இது முழுமையான உள்ளடக்க அலகுகள், தடமறியக்கூடிய மதிப்பாய்வு நிலைகள் மற்றும் சரிபார்க்கக்கூடிய வெளியீட்டு உருவாக்கங்களை மையமாகக் கொண்ட பணிப்பாய்வு."
+    },
+    "site.intro": {
+      "kind": "plain",
+      "text": "அதிகாரப்பூர்வ Go கற்றல் உள்ளடக்கத்திற்கான, சமூகத்தால் பராமரிக்கப்படும் மொழிபெயர்ப்பு திட்டம். எளிமைப்படுத்தப்பட்ட சீனம் முதலில் கிடைக்கும் மொழியாகும்; மேலும் மொழிகளையும் Go உள்ளடக்கத்தையும் ஆதரிக்க இந்த அமைப்பு விரிவடைய முடியும்."
+    },
+    "site.issue_feedback": {
+      "kind": "plain",
+      "text": "GitHub Issues"
+    },
+    "site.language_versions": {
+      "kind": "plain",
+      "text": "மொழிப் பதிப்புகள்"
+    },
+    "site.latest_release": {
+      "kind": "plain",
+      "text": "சமீபத்திய வெளியீடு"
+    },
+    "site.no_affiliation": {
+      "kind": "plain",
+      "text": "இந்தத் திட்டம் Go திட்டத்துடன் இணைக்கப்பட்டதல்ல; Go திட்டத்தால் அதிகாரமளிக்கப்பட்டதோ அல்லது ஒப்புதல் அளிக்கப்பட்டதோ அல்ல."
+    },
+    "site.official_upstream": {
+      "kind": "plain",
+      "text": "அதிகாரப்பூர்வ மேல்நிலை மூலம்"
+    },
+    "site.official_version": {
+      "kind": "plain",
+      "text": "அதிகாரப்பூர்வ Go சுற்றுலா"
+    },
+    "site.open_official_tour": {
+      "kind": "plain",
+      "text": "அதிகாரப்பூர்வ சுற்றுலாவைத் திற"
+    },
+    "site.operations_note": {
+      "kind": "plain",
+      "text": "சேவையகங்கள், அலைவரிசை மற்றும் CDN சேவைகள் போன்ற உள்கட்டமைப்புச் செலவுகளையும், திட்டத்தைத் தொடர்ந்து பராமரிக்கும் செலவையும் ஈடுசெய்ய இந்தத் தளம் விளம்பரங்களைக் காட்டலாம். மூலக் குறிமுறை தொடர்ந்து பொதுவாகக் கிடைக்கும்; தாங்களே ஹோஸ்ட் செய்யும் நிறுவல்கள் இயல்பாக இந்தத் தளத்தின் விளம்பர அமைப்பை இயக்காது."
+    },
+    "site.project_links": {
+      "kind": "plain",
+      "text": "திட்ட இணைப்புகள்"
+    },
+    "site.project_status": {
+      "kind": "plain",
+      "text": "திட்ட நிலை"
+    },
+    "site.source_code": {
+      "kind": "plain",
+      "text": "GitHub மூலக் குறிமுறை"
+    },
+    "site.start_learning": {
+      "kind": "plain",
+      "text": "கற்றலைத் தொடங்கு"
+    },
+    "site.title": {
+      "kind": "plain",
+      "text": "Go சுற்றுலா பன்மொழி மொழிபெயர்ப்பு திட்டம்"
+    },
+    "site.tour_description": {
+      "kind": "plain",
+      "text": "Go நிரலாக்க மொழிக்கான ஊடாடும் அறிமுகம்."
+    },
+    "site.translation_validation": {
+      "kind": "plain",
+      "text": "மொழிபெயர்ப்பும் சரிபார்ப்பும்"
+    },
+    "site.translation_validation_intro": {
+      "kind": "plain",
+      "text": "கற்றல் அனுபவத்தை அதிகாரப்பூர்வ மூலத்துடன் நெருக்கமாக வைத்துக்கொண்டு, வெளியிடுவதற்கு முன் ஒவ்வொரு வெளியீட்டையும் திட்டம் சரிபார்க்கிறது."
+    },
+    "site.unofficial": {
+      "kind": "plain",
+      "text": "Yongye பராமரிப்பு · அதிகாரப்பூர்வமற்ற சமூக பன்மொழி மொழிபெயர்ப்பு திட்டம்"
+    },
+    "site.upstream_baseline": {
+      "kind": "plain",
+      "text": "அதிகாரப்பூர்வ மூல அடிப்படை"
+    },
+    "site.upstream_commit_time": {
+      "kind": "plain",
+      "text": "மேல்நிலை commit நேரம்"
+    },
+    "site.validation_examples": {
+      "kind": "plain",
+      "text": "மொழிபெயர்க்கக்கூடிய இயல்மொழிக் கருத்துகளைக் கொண்ட Go எடுத்துக்காட்டுகளும் ஒருங்கிணைந்த சரிபார்ப்பு பணிப்பாய்வில் சேர்கின்றன; மற்ற அனைத்து எடுத்துக்காட்டுகளும் தொடர்ந்து அதிகாரப்பூர்வ மூலத்தை நேரடியாகப் பயன்படுத்துகின்றன."
+    },
+    "site.validation_page_unit": {
+      "kind": "plain",
+      "text": "மொழிபெயர்ப்புகள் முழுமையான பாடநெறி பக்கங்களைத் தங்கள் அலகாகப் பயன்படுத்துகின்றன."
+    },
+    "site.validation_present": {
+      "kind": "plain",
+      "text": "ஒவ்வொரு வெளியீடும் present மூலம் பகுக்கப்படுகிறது."
+    },
+    "site.validation_render": {
+      "kind": "plain",
+      "text": "காட்சியளிக்கப்பட்ட பக்கங்கள் வெளியீட்டுக்கு முன் சரிபார்க்கப்படுகின்றன."
+    },
+    "site.validation_structure": {
+      "kind": "plain",
+      "text": "பக்க அமைப்பு அதிகாரப்பூர்வ மூலத்துடன் ஒப்பிடப்படுகிறது."
+    },
+    "site.workflow_process": {
+      "kind": "plain",
+      "text": "ஒவ்வொரு அலகும் மொழிபெயர்ப்பு, தானியங்கி சரிபார்ப்பு, மொழிபெயர்ப்பு தர மதிப்பாய்வு, promotion, ready, projection மற்றும் publish ஆகிய நிலைகளைத் தொடர்ச்சியாகக் கடக்கிறது; உருவாக்கப்பட்ட மொழிபெயர்ப்புகள் ஒருபோதும் நேரடியாக வெளியிடப்படாது."
+    },
+    "site.workflow_publish": {
+      "kind": "plain",
+      "text": "வெளியிடுதல், canonical ready candidate-களிலிருந்து முழுமையான உள்ளூர்மய projection-ஐ உருவாக்குகிறது; பணிப்பாய்விலுள்ள ஒவ்வொரு TranslationUnit-மும் ready நிலையில் இருக்க வேண்டும்; பின்னர் production binary, release.json மற்றும் SHA256SUMS உருவாக்கப்பட்டு முழு bundle சரிபார்க்கப்படுகிறது."
+    },
+    "site.workflow_review": {
+      "kind": "plain",
+      "text": "தானியங்கி சோதனைகள் அமைப்பைப் பாதுகாக்கின்றன, present உள்ளடக்கத்தைப் பகுக்கின்றன, அதை அதிகாரப்பூர்வ மூலத்துடன் ஒப்பிடுகின்றன, காட்சியளிப்பையும் பக்கங்களையும் சரிபார்க்கின்றன, மேலும் Example Go உள்ளடக்கத்தையும் சோதிக்கின்றன. promotion-க்கு முன் சுயாதீன மொழிபெயர்ப்பு தர மதிப்பாய்வு இன்னும் கட்டாயம்."
+    },
+    "site.workflow_title": {
+      "kind": "plain",
+      "text": "TranslationUnit இலிருந்து production வரை"
+    },
+    "site.workflow_units": {
+      "kind": "plain",
+      "text": "TranslationUnit என்பது முழுமையான Pages மற்றும் தகுதியுள்ள Examples இரண்டையும் குறிக்கிறது: ஒரு Page என்பது முழுமையான present.Section; ஒரு Example என்பது மொழிபெயர்க்கக்கூடிய இயல்மொழிக் கருத்துகளைக் கொண்ட முழுமையான .go கோப்பு."
+    },
+    "support.address": {
+      "kind": "plain",
+      "text": "முகவரி"
+    },
+    "support.advertising_title": {
+      "kind": "plain",
+      "text": "விளம்பர அறிவிப்பு"
+    },
+    "support.asset": {
+      "kind": "plain",
+      "text": "சொத்து"
+    },
+    "support.copied": {
+      "kind": "plain",
+      "text": "நகலெடுக்கப்பட்டது"
+    },
+    "support.copy_address": {
+      "kind": "plain",
+      "text": "முகவரியை நகலெடு"
+    },
+    "support.copy_reference": {
+      "kind": "plain",
+      "text": "குறிப்பை நகலெடு"
+    },
+    "support.copy_uid": {
+      "kind": "plain",
+      "text": "UID-ஐ நகலெடு"
+    },
+    "support.intro": {
+      "kind": "plain",
+      "text": "ஆங்கிலப் பதிப்பின் தொடர்ந்த பராமரிப்பை நீங்கள் விருப்பத்துடன் ஆதரிக்கலாம். உங்கள் ஆதரவு இந்த மொழிப் பதிப்பு தொடர்ந்து பராமரிக்கப்பட்டு மேம்படுத்தப்பட உதவுகிறது."
+    },
+    "support.minimum_deposit": {
+      "kind": "plain",
+      "text": "பெறுநர் பக்க குறைந்தபட்சம்"
+    },
+    "support.network": {
+      "kind": "plain",
+      "text": "வலைப்பின்னல்"
+    },
+    "support.platform_help": {
+      "kind": "plain",
+      "text": "அதே தளத்தைப் பயன்படுத்துவோர் உள் UID பரிமாற்றத்தைப் பயன்படுத்தலாம். விவரங்களுக்கு அந்தத் தளத்தைப் பார்க்கவும்."
+    },
+    "support.platform_title": {
+      "kind": "plain",
+      "text": "தளத்தின் உள் பரிமாற்றம் (விருப்பம்)"
+    },
+    "support.reference_help": {
+      "kind": "plain",
+      "text": "உங்கள் கட்டண சேவை குறிப்பு அல்லது அடையாள உரையை ஆதரித்தால், இந்த மதிப்பைப் பயன்படுத்தலாம்."
+    },
+    "support.reference_label": {
+      "kind": "plain",
+      "text": "ஆதரவு குறிப்பு"
+    },
+    "support.section_title": {
+      "kind": "plain",
+      "text": "ஆதரவும் இயக்கச் செலவுகளும்"
+    },
+    "support.translation_title": {
+      "kind": "plain",
+      "text": "ஆங்கிலப் பதிப்பை ஆதரிக்கவும்"
+    },
+    "support.uid": {
+      "kind": "plain",
+      "text": "UID"
+    },
+    "support.usdc_network_only": {
+      "kind": "plain",
+      "text": "USDC-ஐ Base வலைப்பின்னல் வழியாக மட்டும் அனுப்பவும்."
+    },
+    "support.usdt_network_only": {
+      "kind": "plain",
+      "text": "USDT-ஐ Tron (TRC20) வலைப்பின்னல் வழியாக மட்டும் அனுப்பவும்."
+    },
+    "support.wrong_network_warning": {
+      "kind": "plain",
+      "text": "தவறான சொத்து அல்லது வலைப்பின்னலைப் பயன்படுத்தினால் நிதி இழப்பு ஏற்படலாம்."
+    },
+    "theme.dark": {
+      "kind": "plain",
+      "text": "இருண்ட தோற்றப் பாணி"
+    },
+    "theme.light": {
+      "kind": "plain",
+      "text": "வெளிர் தோற்றப் பாணி"
+    },
+    "theme.system": {
+      "kind": "plain",
+      "text": "கணினி தோற்றப் பாணி"
+    },
+    "theme.toggle": {
+      "kind": "plain",
+      "text": "தோற்றப் பாணியை மாற்று"
+    },
+    "toc.title": {
+      "kind": "plain",
+      "text": "உள்ளடக்க அட்டவணை"
+    },
+    "tour.list_description": {
+      "kind": "plain",
+      "text": "Go நிரலாக்க மொழிக்கான ஊடாடும் அறிமுகமான Go சுற்றுலாவில் உள்ள தொகுதிகளையும் பாடங்களையும் உலாவுங்கள்."
+    },
+    "tour.list_heading": {
+      "kind": "plain",
+      "text": "Go சுற்றுலாவிற்கு வரவேற்கிறோம்"
+    },
+    "tour.list_title": {
+      "kind": "plain",
+      "text": "பாடநெறி அடைவு — Go சுற்றுலா"
+    },
+    "tour.title": {
+      "kind": "plain",
+      "text": "Go சுற்றுலா"
+    }
+  }
+}

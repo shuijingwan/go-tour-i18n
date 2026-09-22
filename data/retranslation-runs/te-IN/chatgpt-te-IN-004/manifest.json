@@ -1,0 +1,102 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-te-IN-004",
+  "locale": "te-IN",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 7,
+  "units": [
+    {
+      "unit_id": "flowcontrol/8",
+      "unit_kind": "page",
+      "source_path": "_content/tour/flowcontrol.article",
+      "source_sha256": "d8bbee8455ff59212ef432a08312f7c7703360367325a80df3719157200316e9",
+      "input_path": "inputs/flowcontrol-8.article",
+      "input_sha256": "2b3e251ac7859b192831f012d7e6fcbbe95d108faa7ad9d95bdcf17b76e48451",
+      "protected_token_count": 9,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "వర్గమూలం 接 Telugu 格助词时多次使用不自然的 ZWNJ 直接拼接，例如当前文本中的 వర్గమూలం‌ను、వర్గమూలం‌కు。核心算法语义正确，但这些形式不符合自然、正式 Telugu 的名词格变化，且同一 Unit 重复出现。修订时应保持 “square root” 的原有技术语义，只纠正相应宾格/与格的自然 Telugu 形态。"
+    },
+    {
+      "unit_id": "moretypes/1",
+      "unit_kind": "page",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "7706eaf0d46acc79fdad3b7953e5571bf404551d71aaefafd8ba79f5761f9806",
+      "input_path": "inputs/moretypes-1.article",
+      "input_sha256": "b6b916daff7c87dfb9553a2c0e739f4ce3004aa40023a62d15e19ad5a693e67c",
+      "protected_token_count": 20,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "两条代码注释中受保护标识符 p 被恢复到句尾，形成 … iని చదవండి p / … iని సెట్ చేయండి p 这样的明显不自然 Telugu 语序。技术意图仍可辨认，所以不是 C；修订时必须保持 p identity，同时让它在 Telugu 句法中明确修饰“pointer”，准确表达 “through the pointer p”。"
+    },
+    {
+      "unit_id": "methods/4",
+      "unit_kind": "page",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "99f9fa4e5c4dd46d393f40b417d0430c4e27e56f40146f5f192f55ccda4e2db3",
+      "input_path": "inputs/methods-4.article",
+      "input_sha256": "b0406d8f47643b6ebf6a8cf6f8abac464b980781260c3f1f2bc4fbbb60859588",
+      "protected_token_count": 29,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "“pointer receivers are more common than value receivers” 当前写成 పాయింటర్ రిసీవర్‌లు ... ఎక్కువగా ఉపయోగిస్తారు，主语是“pointer receivers”却使用主动式“使用”，形成明显不自然的 Telugu 语法。技术含义仍可理解，因此评 B；修订时保持 pointer receiver / value receiver 的既定术语，只需恢复自然、准确的比较关系。"
+    },
+    {
+      "unit_id": "concurrency/1",
+      "unit_kind": "page",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "d0a9c45078c2255540cfffe48744a07fa04ab5c2113e8880068b5a400ae0ebdc",
+      "input_path": "inputs/concurrency-1.article",
+      "input_sha256": "a676e3c5e8f83962d8900d2e8df1fa0b96f3097568aef63557077a029996938c",
+      "protected_token_count": 24,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "最后一段 “you won’t need them much in Go” 当前为 Go లో వాటిని ఎక్కువగా అవసరం ఉండదు。这里 వాటిని 的格与 అవసరం ఉండదు 不搭配，形成明显生硬/不合语法的 Telugu；原意仍清楚，因此评 B。修订时只需自然表达“在 Go 中通常不太需要这些 primitives”，不要改变 goroutine、Go、sync 等 technical identity。"
+    },
+    {
+      "unit_id": "concurrency/2",
+      "unit_kind": "page",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "a35e3af26b51f8c2c2a6dfaf09f9c7cab0fdb4b1b56f9e4dc9b793f1dac1e295",
+      "input_path": "inputs/concurrency-2.article",
+      "input_sha256": "1a1001c042dcd888da4db2f0055fd5a6b964cbf6519053ed42286147567fef60",
+      "protected_token_count": 12,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "开头 “Channels are a typed conduit” 被译为 చానల్‌లు టైప్ చేసిన మార్గాలు。టైప్ చేసిన 在 Telugu 中容易理解为“被打字/键入的”，作为 typed conduit 的技术定义生硬且含义不够明确，没有自然表达“channel 是传递特定类型值的通信通道”这一核心概念。后续 send/receive 语义正确，因此评 B。"
+    },
+    {
+      "unit_id": "concurrency/4",
+      "unit_kind": "page",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "3e925c6745255a443c61f25cd8131d538dc8677938f1c5021ce798465020b42e",
+      "input_path": "inputs/concurrency-4.article",
+      "input_sha256": "f68dc9ef06de3cb5d48846ebe7786e6cc06b77ea5c05bc6d56b80f667f5dad10",
+      "protected_token_count": 16,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "开放自然语言中的 receive expression 被原样保留为 English：receive expression‌కు రెండవ పారామీటర్‌ను...。该短语不属于 protected identifier，也不是必须 keep 的 technical identity；同一 glossary 已为 expression 提供 Telugu technical form。整体语义仍完整，因此评 B；修订时需使这一自然语言片段与周围 Telugu 技术表达一致。"
+    },
+    {
+      "unit_id": "concurrency/10",
+      "unit_kind": "page",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "bb686393225ef2335e627819a1664a84456f00b64af133af64920d43f0abdb94",
+      "input_path": "inputs/concurrency-10.article",
+      "input_sha256": "e4a368341386575c282bdd3363b1fcdb49ff382d31bceb8d740959b5cd562b8a",
+      "protected_token_count": 7,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "Hint 中 “maps alone are not safe for concurrent use” 当前为 మ్యాప్‌లు మాత్రమే కాంకరెంట్ ఉపయోగానికి సురక్షితం కావు。మ్యాప్‌లు మాత్రమే 通常表示“只有 maps”，会把 source 的 “maps by themselves / without synchronization” 错转成“只有 maps 不安全”的范围含义。核心警告“map 并发使用不安全”仍在，因此评 B 而非 C；修订时需恢复 alone 的原始限定语义，不新增同步机制解释。"
+    }
+  ]
+}

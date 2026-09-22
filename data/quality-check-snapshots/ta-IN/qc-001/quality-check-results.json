@@ -1,0 +1,632 @@
+{
+  "schema_version": 2,
+  "evidence_type": "quality_check_results",
+  "locale": "ta-IN",
+  "snapshot_id": "qc-001",
+  "snapshot_manifest_sha256": "b0b6c9d9ad8b200c908fde5336d54b98e3167efa6732c56ed469e28a4e83b8db",
+  "rubric": "translation-quality/v1",
+  "result_count": 122,
+  "results": [
+    {
+      "index": 1,
+      "unit_id": "welcome/1",
+      "rating": "A"
+    },
+    {
+      "index": 2,
+      "unit_id": "welcome/2",
+      "rating": "A"
+    },
+    {
+      "index": 3,
+      "unit_id": "welcome/4",
+      "rating": "A"
+    },
+    {
+      "index": 4,
+      "unit_id": "welcome/5",
+      "rating": "A"
+    },
+    {
+      "index": 5,
+      "unit_id": "welcome/3",
+      "rating": "A"
+    },
+    {
+      "index": 6,
+      "unit_id": "basics/1",
+      "rating": "A"
+    },
+    {
+      "index": 7,
+      "unit_id": "basics/2",
+      "rating": "A"
+    },
+    {
+      "index": 8,
+      "unit_id": "basics/3",
+      "rating": "A"
+    },
+    {
+      "index": 9,
+      "unit_id": "basics/4",
+      "rating": "A"
+    },
+    {
+      "index": 10,
+      "unit_id": "basics/5",
+      "rating": "A"
+    },
+    {
+      "index": 11,
+      "unit_id": "basics/6",
+      "rating": "A"
+    },
+    {
+      "index": 12,
+      "unit_id": "basics/7",
+      "rating": "A"
+    },
+    {
+      "index": 13,
+      "unit_id": "basics/8",
+      "rating": "A"
+    },
+    {
+      "index": 14,
+      "unit_id": "basics/9",
+      "rating": "A"
+    },
+    {
+      "index": 15,
+      "unit_id": "basics/10",
+      "rating": "A"
+    },
+    {
+      "index": 16,
+      "unit_id": "basics/11",
+      "rating": "A"
+    },
+    {
+      "index": 17,
+      "unit_id": "basics/12",
+      "rating": "A"
+    },
+    {
+      "index": 18,
+      "unit_id": "basics/13",
+      "rating": "A"
+    },
+    {
+      "index": 19,
+      "unit_id": "basics/14",
+      "rating": "A"
+    },
+    {
+      "index": 20,
+      "unit_id": "basics/15",
+      "rating": "C",
+      "finding": "Source 中的 “character” 被译为 எழுத்துரு，该词表示 font/typeface，而不是 character value；因此把 Go constant 可表示的值类别之一译错，属于明确语义错误。"
+    },
+    {
+      "index": 21,
+      "unit_id": "basics/16",
+      "rating": "A"
+    },
+    {
+      "index": 22,
+      "unit_id": "basics/17",
+      "rating": "A"
+    },
+    {
+      "index": 23,
+      "unit_id": "flowcontrol/1",
+      "rating": "A"
+    },
+    {
+      "index": 24,
+      "unit_id": "flowcontrol/2",
+      "rating": "A"
+    },
+    {
+      "index": 25,
+      "unit_id": "flowcontrol/3",
+      "rating": "A"
+    },
+    {
+      "index": 26,
+      "unit_id": "flowcontrol/4",
+      "rating": "A"
+    },
+    {
+      "index": 27,
+      "unit_id": "flowcontrol/5",
+      "rating": "A"
+    },
+    {
+      "index": 28,
+      "unit_id": "flowcontrol/6",
+      "rating": "A"
+    },
+    {
+      "index": 29,
+      "unit_id": "flowcontrol/7",
+      "rating": "A"
+    },
+    {
+      "index": 30,
+      "unit_id": "flowcontrol/8",
+      "rating": "A"
+    },
+    {
+      "index": 31,
+      "unit_id": "flowcontrol/9",
+      "rating": "A"
+    },
+    {
+      "index": 32,
+      "unit_id": "flowcontrol/10",
+      "rating": "A"
+    },
+    {
+      "index": 33,
+      "unit_id": "flowcontrol/11",
+      "rating": "A"
+    },
+    {
+      "index": 34,
+      "unit_id": "flowcontrol/12",
+      "rating": "A"
+    },
+    {
+      "index": 35,
+      "unit_id": "flowcontrol/13",
+      "rating": "A"
+    },
+    {
+      "index": 36,
+      "unit_id": "flowcontrol/14",
+      "rating": "A"
+    },
+    {
+      "index": 37,
+      "unit_id": "moretypes/1",
+      "rating": "B",
+      "finding": "两条已翻译代码注释把 p 悬置在句末：…வாசிக்கவும் p、…அமைக்கவும் p。Tamil 语序明显不自然，也削弱了“通过 pointer p 读取/设置 i”这一关系的清晰度。"
+    },
+    {
+      "index": 38,
+      "unit_id": "moretypes/2",
+      "rating": "A"
+    },
+    {
+      "index": 39,
+      "unit_id": "moretypes/3",
+      "rating": "A"
+    },
+    {
+      "index": 40,
+      "unit_id": "moretypes/4",
+      "rating": "A"
+    },
+    {
+      "index": 41,
+      "unit_id": "moretypes/5",
+      "rating": "A"
+    },
+    {
+      "index": 42,
+      "unit_id": "moretypes/6",
+      "rating": "A"
+    },
+    {
+      "index": 43,
+      "unit_id": "moretypes/7",
+      "rating": "A"
+    },
+    {
+      "index": 44,
+      "unit_id": "moretypes/8",
+      "rating": "A"
+    },
+    {
+      "index": 45,
+      "unit_id": "moretypes/9",
+      "rating": "A"
+    },
+    {
+      "index": 46,
+      "unit_id": "moretypes/10",
+      "rating": "A"
+    },
+    {
+      "index": 47,
+      "unit_id": "moretypes/11",
+      "rating": "A"
+    },
+    {
+      "index": 48,
+      "unit_id": "moretypes/12",
+      "rating": "A"
+    },
+    {
+      "index": 49,
+      "unit_id": "moretypes/13",
+      "rating": "A"
+    },
+    {
+      "index": 50,
+      "unit_id": "moretypes/14",
+      "rating": "A"
+    },
+    {
+      "index": 51,
+      "unit_id": "moretypes/15",
+      "rating": "C",
+      "finding": "append 的 backing-array 条件发生语义错误。Source 是 backing array too small to fit 所有新增值时才分配更大的数组；当前 …ஏற்கும் அளவுக்கு சிறியதாக இருந்தால் 可读成“small enough to accommodate”，缺失“无法容纳”的关键否定关系，使重新分配条件反转或至少产生严重歧义。"
+    },
+    {
+      "index": 52,
+      "unit_id": "moretypes/16",
+      "rating": "A"
+    },
+    {
+      "index": 53,
+      "unit_id": "moretypes/17",
+      "rating": "A"
+    },
+    {
+      "index": 54,
+      "unit_id": "moretypes/18",
+      "rating": "A"
+    },
+    {
+      "index": 55,
+      "unit_id": "moretypes/19",
+      "rating": "A"
+    },
+    {
+      "index": 56,
+      "unit_id": "moretypes/20",
+      "rating": "A"
+    },
+    {
+      "index": 57,
+      "unit_id": "moretypes/21",
+      "rating": "A"
+    },
+    {
+      "index": 58,
+      "unit_id": "moretypes/22",
+      "rating": "A"
+    },
+    {
+      "index": 59,
+      "unit_id": "moretypes/23",
+      "rating": "A"
+    },
+    {
+      "index": 60,
+      "unit_id": "moretypes/24",
+      "rating": "A"
+    },
+    {
+      "index": 61,
+      "unit_id": "moretypes/25",
+      "rating": "A"
+    },
+    {
+      "index": 62,
+      "unit_id": "moretypes/26",
+      "rating": "A"
+    },
+    {
+      "index": 63,
+      "unit_id": "moretypes/27",
+      "rating": "A"
+    },
+    {
+      "index": 64,
+      "unit_id": "methods/1",
+      "rating": "B",
+      "finding": "Opening definition leaves emphasized _receiver_ in English (சிறப்பு _receiver_ செயலுருபு), while the same concept is subsequently rendered as பெறுநர் and the current glossary prefers receiver → பெறுநர். This creates unnecessary mixed-language terminology and inconsistency in the core method definition."
+    },
+    {
+      "index": 65,
+      "unit_id": "methods/2",
+      "rating": "A"
+    },
+    {
+      "index": 66,
+      "unit_id": "methods/3",
+      "rating": "A"
+    },
+    {
+      "index": 67,
+      "unit_id": "methods/4",
+      "rating": "A"
+    },
+    {
+      "index": 68,
+      "unit_id": "methods/5",
+      "rating": "A"
+    },
+    {
+      "index": 69,
+      "unit_id": "methods/6",
+      "rating": "A"
+    },
+    {
+      "index": 70,
+      "unit_id": "methods/7",
+      "rating": "A"
+    },
+    {
+      "index": 71,
+      "unit_id": "methods/8",
+      "rating": "A"
+    },
+    {
+      "index": 72,
+      "unit_id": "methods/9",
+      "rating": "B",
+      "finding": "The defining occurrence _interface_type_ remains untranslated, although the very next sentence correctly uses இடைமுக வகை and the glossary prefers interface type → இடைமுக வகை. The opening definition is therefore terminologically inconsistent and unnecessarily mixed-language."
+    },
+    {
+      "index": 73,
+      "unit_id": "methods/10",
+      "rating": "A"
+    },
+    {
+      "index": 74,
+      "unit_id": "methods/11",
+      "rating": "A"
+    },
+    {
+      "index": 75,
+      "unit_id": "methods/12",
+      "rating": "A"
+    },
+    {
+      "index": 76,
+      "unit_id": "methods/13",
+      "rating": "B",
+      "finding": "The phrase எந்த _concrete_ வழிமுறையை leaves the ordinary technical adjective concrete in English inside an otherwise Tamil sentence. Given the locale established handling of the same concrete/underlying-type concept, this is noticeably unnatural and inconsistent terminology."
+    },
+    {
+      "index": 77,
+      "unit_id": "methods/14",
+      "rating": "B",
+      "finding": "The defining term _empty_interface_ remains English even though the same Unit subsequently uses வெற்று இடைமுகம் and the glossary explicitly prefers empty interface → வெற்று இடைமுகம். The definition should not switch terminology for the same concept."
+    },
+    {
+      "index": 78,
+      "unit_id": "methods/15",
+      "rating": "C",
+      "finding": "The opening core term _type_assertion_ is left in English, directly conflicting with the glossary mandatory type assertion → வகை உறுதிப்படுத்தல். The title and later occurrences already follow the mandatory terminology, making the defining sentence internally inconsistent as well."
+    },
+    {
+      "index": 79,
+      "unit_id": "methods/16",
+      "rating": "C",
+      "finding": "The opening core term _type_switch_ is left in English, directly conflicting with the glossary mandatory type switch → வகைத் தேர்வு. Later occurrences use the required Tamil term, so the TranslationUnit does not consistently obey the mandatory glossary rule."
+    },
+    {
+      "index": 80,
+      "unit_id": "methods/17",
+      "rating": "A"
+    },
+    {
+      "index": 81,
+      "unit_id": "methods/18",
+      "rating": "A"
+    },
+    {
+      "index": 82,
+      "unit_id": "methods/19",
+      "rating": "A"
+    },
+    {
+      "index": 83,
+      "unit_id": "methods/20",
+      "rating": "A"
+    },
+    {
+      "index": 84,
+      "unit_id": "methods/21",
+      "rating": "A"
+    },
+    {
+      "index": 85,
+      "unit_id": "methods/22",
+      "rating": "A"
+    },
+    {
+      "index": 86,
+      "unit_id": "methods/23",
+      "rating": "A"
+    },
+    {
+      "index": 87,
+      "unit_id": "methods/24",
+      "rating": "A"
+    },
+    {
+      "index": 88,
+      "unit_id": "methods/25",
+      "rating": "A"
+    },
+    {
+      "index": 89,
+      "unit_id": "methods/26",
+      "rating": "A"
+    },
+    {
+      "index": 90,
+      "unit_id": "generics/1",
+      "rating": "A"
+    },
+    {
+      "index": 91,
+      "unit_id": "generics/2",
+      "rating": "A"
+    },
+    {
+      "index": 92,
+      "unit_id": "generics/3",
+      "rating": "A"
+    },
+    {
+      "index": 93,
+      "unit_id": "concurrency/1",
+      "rating": "A"
+    },
+    {
+      "index": 94,
+      "unit_id": "concurrency/2",
+      "rating": "A"
+    },
+    {
+      "index": 95,
+      "unit_id": "concurrency/3",
+      "rating": "A"
+    },
+    {
+      "index": 96,
+      "unit_id": "concurrency/4",
+      "rating": "A"
+    },
+    {
+      "index": 97,
+      "unit_id": "concurrency/5",
+      "rating": "A"
+    },
+    {
+      "index": 98,
+      "unit_id": "concurrency/6",
+      "rating": "A"
+    },
+    {
+      "index": 99,
+      "unit_id": "concurrency/7",
+      "rating": "A"
+    },
+    {
+      "index": 100,
+      "unit_id": "concurrency/8",
+      "rating": "A"
+    },
+    {
+      "index": 101,
+      "unit_id": "concurrency/9",
+      "rating": "B",
+      "finding": "The defining sentence retains _mutual_exclusion_ and _mutex_ in English despite current preferred glossary entries for both concepts; later in the same Unit mutual exclusion is translated, while mutex remains English again. Meaning remains understandable, but terminology is internally inconsistent and does not follow the locale established preferred strategy."
+    },
+    {
+      "index": 102,
+      "unit_id": "concurrency/10",
+      "rating": "A"
+    },
+    {
+      "index": 103,
+      "unit_id": "concurrency/11",
+      "rating": "A"
+    },
+    {
+      "index": 104,
+      "unit_id": "example:basics/numeric-constants.go",
+      "rating": "A"
+    },
+    {
+      "index": 105,
+      "unit_id": "example:basics/type-inference.go",
+      "rating": "A"
+    },
+    {
+      "index": 106,
+      "unit_id": "example:concurrency/channels.go",
+      "rating": "A"
+    },
+    {
+      "index": 107,
+      "unit_id": "example:concurrency/exercise-equivalent-binary-trees.go",
+      "rating": "B",
+      "finding": "Walk walks the tree t 被表达为 Walk, t மரத்தில் நடந்து...，把数据结构语境中的 walk / traverse a tree 机械处理成接近“在树中走”的字面表达。结合后文仍能理解其意图，因此没有造成严重技术误义，但作为二叉树遍历的正式教学注释不够自然、专业，需要 revision。"
+    },
+    {
+      "index": 108,
+      "unit_id": "example:concurrency/exercise-web-crawler.go",
+      "rating": "A"
+    },
+    {
+      "index": 109,
+      "unit_id": "example:concurrency/mutex-counter.go",
+      "rating": "A"
+    },
+    {
+      "index": 110,
+      "unit_id": "example:flowcontrol/if-and-else.go",
+      "rating": "A"
+    },
+    {
+      "index": 111,
+      "unit_id": "example:generics/index.go",
+      "rating": "A"
+    },
+    {
+      "index": 112,
+      "unit_id": "example:generics/list.go",
+      "rating": "A"
+    },
+    {
+      "index": 113,
+      "unit_id": "example:methods/exercise-reader.go",
+      "rating": "A"
+    },
+    {
+      "index": 114,
+      "unit_id": "example:methods/exercise-stringer.go",
+      "rating": "A"
+    },
+    {
+      "index": 115,
+      "unit_id": "example:methods/interfaces-are-satisfied-implicitly.go",
+      "rating": "A"
+    },
+    {
+      "index": 116,
+      "unit_id": "example:methods/interfaces.go",
+      "rating": "A"
+    },
+    {
+      "index": 117,
+      "unit_id": "example:moretypes/append.go",
+      "rating": "A"
+    },
+    {
+      "index": 118,
+      "unit_id": "example:moretypes/exercise-fibonacci-closure.go",
+      "rating": "A"
+    },
+    {
+      "index": 119,
+      "unit_id": "example:moretypes/pointers.go",
+      "rating": "A"
+    },
+    {
+      "index": 120,
+      "unit_id": "example:moretypes/slice-len-cap.go",
+      "rating": "A"
+    },
+    {
+      "index": 121,
+      "unit_id": "example:moretypes/slices-of-slice.go",
+      "rating": "A"
+    },
+    {
+      "index": 122,
+      "unit_id": "example:moretypes/struct-literals.go",
+      "rating": "A"
+    }
+  ]
+}

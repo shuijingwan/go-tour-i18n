@@ -1,0 +1,12 @@
+* Range — தொடர்ச்சி
+
+`_` க்கு ஒதுக்குவதன் மூலம் சுட்டெண் அல்லது மதிப்பைத் தவிர்க்கலாம்.
+
+    for i, _ := range pow
+    for _, value := range pow
+
+சுட்டெண் மட்டும் வேண்டும் என்றால், இரண்டாவது மாறியை விடலாம்.
+
+    for i := range pow
+
+.play moretypes/range-continued.go

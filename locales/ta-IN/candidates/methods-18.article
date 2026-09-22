@@ -1,0 +1,7 @@
+* பயிற்சி: Stringers
+
+முகவரியை dotted quad வடிவில் அச்சிட, `IPAddr` வகை `fmt.Stringer` ஐச் செயல்படுத்துமாறு செய்யுங்கள்.
+
+எடுத்துக்காட்டாக, `IPAddr{1,`2,`3,`4}` ஆனது `"1.2.3.4"` என அச்சிடப்பட வேண்டும்.
+
+.play methods/exercise-stringer.go

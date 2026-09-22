@@ -1,0 +1,19 @@
+* ఎరర్‌లు
+
+⟪GTI18N_9eaab1fd_000001⟫ ప్రోగ్రామ్‌లు ఎరర్ స్థితిని ⟪GTI18N_9eaab1fd_000002⟫error⟪GTI18N_9eaab1fd_000003⟫ విలువలతో వ్యక్తం చేస్తాయి.
+
+⟪GTI18N_9eaab1fd_000004⟫error⟪GTI18N_9eaab1fd_000005⟫ టైప్ అనేది ⟪GTI18N_9eaab1fd_000006⟫fmt.Stringer⟪GTI18N_9eaab1fd_000007⟫ ను పోలిన బిల్ట్-ఇన్ ఇంటర్‌ఫేస్:
+
+⟪GTI18N_9eaab1fd_000008⟫
+
+(⟪GTI18N_9eaab1fd_000009⟫fmt.Stringer⟪GTI18N_9eaab1fd_000010⟫ మాదిరిగానే, విలువలను
+ప్రింట్ చేసేటప్పుడు ⟪GTI18N_9eaab1fd_000011⟫fmt⟪GTI18N_9eaab1fd_000012⟫ ప్యాకేజ్ ⟪GTI18N_9eaab1fd_000013⟫error⟪GTI18N_9eaab1fd_000014⟫ ఇంటర్‌ఫేస్ కోసం చూస్తుంది.)
+
+ఫంక్షన్‌లు తరచుగా ⟪GTI18N_9eaab1fd_000015⟫error⟪GTI18N_9eaab1fd_000016⟫ విలువను రిటర్న్ చేస్తాయి, మరియు కాల్ చేసే కోడ్ ఎరర్
+⟪GTI18N_9eaab1fd_000017⟫nil⟪GTI18N_9eaab1fd_000018⟫ కు సమానమా అని పరీక్షించి ఎరర్‌లను నిర్వహించాలి.
+
+⟪GTI18N_9eaab1fd_000019⟫
+
+nil ⟪GTI18N_9eaab1fd_000020⟫error⟪GTI18N_9eaab1fd_000021⟫ విజయం అని సూచిస్తుంది; non-nil ⟪GTI18N_9eaab1fd_000022⟫error⟪GTI18N_9eaab1fd_000023⟫ వైఫల్యాన్ని సూచిస్తుంది.
+
+⟪GTI18N_9eaab1fd_000024⟫

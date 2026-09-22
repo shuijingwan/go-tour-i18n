@@ -410,7 +410,7 @@ func TestRenderHomeDistinguishesDevelopmentAndProductionMetadata(t *testing.T) {
 }
 
 func TestHomepageLanguageRegistryAndLocaleProfiles(t *testing.T) {
-	if got, want := len(languageRegistry), 24; got != want {
+	if got, want := len(languageRegistry), 26; got != want {
 		t.Fatalf("language registry length = %d, want %d", got, want)
 	}
 	for i, want := range []LanguageLink{
@@ -432,6 +432,8 @@ func TestHomepageLanguageRegistryAndLocaleProfiles(t *testing.T) {
 		{Locale: "zh-CN", EnglishName: "Simplified Chinese", Autonym: "简体中文", URL: "https://go-dev.shuijingwanwq.com/"},
 		{Locale: "es-ES", EnglishName: "Spanish", Autonym: "Español", URL: "https://es-go-dev.shuijingwanwq.com/"},
 		{Locale: "sv-SE", EnglishName: "Swedish", Autonym: "Svenska", URL: "https://sv-go-dev.shuijingwanwq.com/"},
+		{Locale: "ta-IN", EnglishName: "Tamil", Autonym: "தமிழ்", URL: "https://ta-go-dev.shuijingwanwq.com/"},
+		{Locale: "te-IN", EnglishName: "Telugu", Autonym: "తెలుగు", URL: "https://te-go-dev.shuijingwanwq.com/"},
 		{Locale: "th-TH", EnglishName: "Thai", Autonym: "ไทย", URL: "https://th-go-dev.shuijingwanwq.com/"},
 		{Locale: "zh-TW", EnglishName: "Traditional Chinese", Autonym: "繁體中文（台灣）", URL: "https://zh-tw-go-dev.shuijingwanwq.com/"},
 		{Locale: "tr-TR", EnglishName: "Turkish", Autonym: "Türkçe", URL: "https://tr-go-dev.shuijingwanwq.com/"},
@@ -897,10 +899,12 @@ func TestHomepageLanguageRegistryAndLocaleProfiles(t *testing.T) {
 		{"pl-PL", "Polski", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 07:56:11 (czas lokalny)", languageRegistry[13].URL},
 		{"ro-RO", "Română", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 08:56:11 (ora locală)", languageRegistry[14].URL},
 		{"sv-SE", "Svenska", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 07:56:11 (lokal tid)", languageRegistry[17].URL},
-		{"zh-TW", "繁體中文（台灣）", "https://www.shuijingwanwq.com/series/go-tour-chinese-edition-development-series/", "2026-08-20 13:56:11（台灣時間）", languageRegistry[19].URL},
-		{"tr-TR", "Türkçe", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 08:56:11 (yerel saat)", languageRegistry[20].URL},
-		{"uk-UA", "Українська", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 08:56:11 (місцевий час)", languageRegistry[21].URL},
-		{"ur-PK", "اردو", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 10:56:11 (مقامی وقت)", languageRegistry[22].URL},
+		{"ta-IN", "தமிழ்", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 11:26:11 (உள்ளூர் நேரம்)", languageRegistry[18].URL},
+		{"te-IN", "తెలుగు", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 11:26:11 (స్థానిక సమయం)", languageRegistry[19].URL},
+		{"zh-TW", "繁體中文（台灣）", "https://www.shuijingwanwq.com/series/go-tour-chinese-edition-development-series/", "2026-08-20 13:56:11（台灣時間）", languageRegistry[21].URL},
+		{"tr-TR", "Türkçe", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 08:56:11 (yerel saat)", languageRegistry[22].URL},
+		{"uk-UA", "Українська", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 08:56:11 (місцевий час)", languageRegistry[23].URL},
+		{"ur-PK", "اردو", "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/", "2026-08-20 10:56:11 (مقامی وقت)", languageRegistry[24].URL},
 	}
 	for _, test := range tests {
 		t.Run(test.locale, func(t *testing.T) {
@@ -926,7 +930,7 @@ func TestHomepageLanguageRegistryAndLocaleProfiles(t *testing.T) {
 				t.Fatal(err)
 			}
 			home := string(homeBytes)
-			labels := []string{"Arabic — العربية", "Bengali — বাংলা", "Brazilian Portuguese — Português (Brasil)", "Czech — Čeština", "Dutch — Nederlands", "English", "French — Français", "German — Deutsch", "Hindi — हिन्दी", "Indonesian — Bahasa Indonesia", "Italian — Italiano", "Japanese — 日本語", "Korean — 한국어", "Polish — Polski", "Romanian — Română", "Simplified Chinese — 简体中文", "Spanish — Español", "Swedish — Svenska", "Thai — ไทย", "Traditional Chinese — 繁體中文（台灣）", "Turkish — Türkçe", "Ukrainian — Українська", "Urdu — اردو", "Vietnamese — Tiếng Việt"}
+			labels := []string{"Arabic — العربية", "Bengali — বাংলা", "Brazilian Portuguese — Português (Brasil)", "Czech — Čeština", "Dutch — Nederlands", "English", "French — Français", "German — Deutsch", "Hindi — हिन्दी", "Indonesian — Bahasa Indonesia", "Italian — Italiano", "Japanese — 日本語", "Korean — 한국어", "Polish — Polski", "Romanian — Română", "Simplified Chinese — 简体中文", "Spanish — Español", "Swedish — Svenska", "Tamil — தமிழ்", "Telugu — తెలుగు", "Thai — ไทย", "Traditional Chinese — 繁體中文（台灣）", "Turkish — Türkçe", "Ukrainian — Українська", "Urdu — اردو", "Vietnamese — Tiếng Việt"}
 			for _, want := range append(labels, test.logURL, test.published, wantUpstreamTime, "© 2026 永夜", "蜀ICP备13001590号-1", `href="https://beian.miit.gov.cn/"`) {
 				if !strings.Contains(home, want) {
 					t.Errorf("homepage does not contain %q", want)

@@ -1,0 +1,12 @@
+* range — కొనసాగింపు
+
+`_` కు కేటాయించి సూచిక లేదా విలువను వదిలివేయవచ్చు.
+
+    for i, _ := range pow
+    for _, value := range pow
+
+సూచిక మాత్రమే కావాలంటే రెండవ వేరియబుల్‌ను వదిలివేయవచ్చు.
+
+    for i := range pow
+
+.play moretypes/range-continued.go

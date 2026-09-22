@@ -1,0 +1,24 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-te-IN-005",
+  "locale": "te-IN",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "example",
+  "unit_count": 1,
+  "units": [
+    {
+      "unit_id": "example:concurrency/exercise-equivalent-binary-trees.go",
+      "unit_kind": "example",
+      "source_path": "_content/tour/concurrency/exercise-equivalent-binary-trees.go",
+      "source_sha256": "184cbbd1e662b64de6e6928d4af6f2469c7bccdbc9a8b5f477c1b694b9ab02b1",
+      "input_path": "inputs/concurrency-exercise-equivalent-binary-trees.txt",
+      "input_sha256": "7a7b9604ab994ccecd30d445793424bc7db50ec6b4b77d9d082d42f1e9cc5685",
+      "protected_token_count": 5,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "Same 的两行注释当前形成 Same ఈ రెండు ట్రీల్లో ... నిర్ధారిస్తుంది:，下一行仅为 t1 మరియు t2.。原义仍能恢复，但把真正被比较的两个标识符拆到冒号后的独立残句，Telugu 指代与句法明显不够自然，不达到无需修改的正式发布质量。修订时保持 Same、t1、t2 identity，并自然明确表达“Same 判断 t1 和 t2 两棵树是否包含相同的值”；不要改变代码。"
+    }
+  ]
+}
