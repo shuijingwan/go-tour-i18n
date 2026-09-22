@@ -121,4 +121,4 @@
 - 问题描述：桌面语言选择器对较长语言名称允许换行，导致单个条目高度增加、列表视觉节奏不一致。当前 evidence 未显示文字截断、元素重叠、横向溢出或交互失效；正式 `scripts/verify-preview-browser.py http://127.0.0.1:41867/ cs-CZ` 同次输出 `PREVIEW SURFACE ACCEPTANCE: PASS`。该现象更适合作为共享 dropdown 宽度/换行策略的后续 UI polish 处理，具体实现方案待后续确认。
 - 暂缓原因：维护者于 2026-09-21 明确决定当前可以暂缓修复，不阻塞 cs-CZ 上线；后续统一评估共享语言下拉的单行展示、可用宽度与响应式行为，不增加 cs-CZ 局部特例。
 - 当前状态：`open`
-- 后续处理/核销证据：原始 preview/HUMAN gate 记录见 `data/locale-surface-reviews/cs-CZ/20260921-stage-a-002.md`；当前保持 open。
+- 后续处理/核销证据：原始 preview/HUMAN gate 记录见 `data/locale-surface-reviews/cs-CZ/20260921-stage-a-002.md`。2026-09-22 已决定通过现有共享 `app.css` 修复：已上线非中文站点的既有 production HTML 使用固定 shared-assets URL，待 shared-assets 正式更新后无需重新 publish 或 deploy locale；`zh-CN` 使用同源静态资源，本轮作为已确认例外暂不升级，待下次正常上游同步和部署时获得修复。本地 `TestTourHeaderTitlesAreCenteredOnDesktopAndFitCommonMobileViewports` targeted browser regression PASS，`git diff --check` PASS；shared-assets 正式部署及实际验收尚未完成，当前保持 open。

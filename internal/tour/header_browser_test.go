@@ -42,20 +42,21 @@ func TestTourHeaderTitlesAreCenteredOnDesktopAndFitCommonMobileViewports(t *test
 	pageScript = strings.ReplaceAll(pageScript, "{{.PlaygroundBaseURL}}", `""`)
 
 	for _, test := range []struct {
-		name     string
-		viewport int
-		mobile   bool
-		theme    string
+		name      string
+		viewport  int
+		mobile    bool
+		theme     string
+		direction string
 	}{
-		{name: "desktop", viewport: 1280, theme: "light"},
-		{name: "mobile-320", viewport: 320, mobile: true, theme: "dark"},
-		{name: "mobile-375", viewport: 375, mobile: true, theme: "light"},
-		{name: "mobile-414", viewport: 414, mobile: true, theme: "dark"},
+		{name: "desktop", viewport: 1280, theme: "light", direction: "ltr"},
+		{name: "mobile-320", viewport: 320, mobile: true, theme: "dark", direction: "ltr"},
+		{name: "mobile-360", viewport: 360, mobile: true, theme: "light", direction: "ltr"},
+		{name: "mobile-414-rtl", viewport: 414, mobile: true, theme: "dark", direction: "rtl"},
 	} {
 		for _, title := range []string{"A Tour of Go", "Go Turu", "Eine Tour durch Go", "Go 语言之旅", "Go のツアー"} {
 			t.Run(fmt.Sprintf("%s/%s", test.name, title), func(t *testing.T) {
-				languageItems := `<li><span aria-current="page">Simplified Chinese — 简体中文</span></li>` + strings.Repeat(`<li><a href="https://example.com/">Future language — Long autonym</a></li>`, 29)
-				document := fmt.Sprintf(`<!doctype html><html data-theme="%s"><head><meta name="viewport" content="width=device-width, initial-scale=1"><style>%s</style><style>.test-course-overlay { position: fixed; z-index: 200; top: 48px; right: 0; bottom: 0; left: 0; background: #fff; }</style></head><body>
+				languageItems := `<li><span aria-current="page">Simplified Chinese — 简体中文</span></li><li><a class="test-portuguese" href="https://example.com/pt-BR/">Brazilian Portuguese — Português (Brasil)</a></li>` + strings.Repeat(`<li><a href="https://example.com/">Future language — Long autonym</a></li>`, 28)
+				document := fmt.Sprintf(`<!doctype html><html data-theme="%s" dir="%s"><head><meta name="viewport" content="width=device-width, initial-scale=1"><style>%s</style><style>.test-course-overlay { position: fixed; z-index: 200; top: 48px; right: 0; bottom: 0; left: 0; background: #fff; }</style></head><body>
 <div class="bar top-bar"><div class="left"><a href="/"><img class="gopherlogo" alt=""></a><a class="logo" href="/tour/list">%s</a></div><div class="right"><div class="header-project-nav"><a class="header-control header-about" href="/" aria-label="About this project" title="About this project"><svg viewBox="0 0 24 24"><path d="M11 17h2v-6h-2v6z"></path></svg><span class="header-control-label">About this project</span></a><details class="header-language" open><summary class="header-control" aria-label="Current language: 简体中文" title="Language versions"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20z"></path></svg><span class="header-language-current">简体中文</span></summary><div class="header-language-menu"><div class="header-language-heading">Language versions</div><ul>%s</ul></div></details></div><button class="header-toggleTheme"><img data-value="%s" class="go-Icon go-Icon--inverted" height="24" width="24" alt=""></button><div><span class="nav"><svg viewBox="0 0 24 24" height="100%%" width="100%%"></svg></span></div><div><span class="nav"><svg viewBox="0 0 24 24" height="100%%" width="100%%"></svg></span></div></div></div>
 <div id="editor-container" class="test-course-overlay"></div>
 <script>%s</script>
@@ -72,6 +73,7 @@ try {
   var languageMenu = language.querySelector('.header-language-menu');
   var currentLanguage = languageMenu.querySelector('[aria-current="page"]');
   var visibleMenuLink = languageMenu.querySelector('a');
+  var portugueseLanguage = languageMenu.querySelector('.test-portuguese');
   var titleBox = title.getBoundingClientRect();
   var headerBox = header.getBoundingClientRect();
   var menuBox = languageMenu.getBoundingClientRect();
@@ -91,6 +93,17 @@ try {
   assert(languageSummary.getAttribute('aria-label').includes('简体中文'), 'language control does not name the current language');
   assert(currentLanguage.getAttribute('aria-current') === 'page', 'current language is not identified');
   assert(menuBox.left >= 0 && menuBox.right <= window.innerWidth, 'language menu is outside the viewport');
+  assert(portugueseLanguage.textContent === 'Brazilian Portuguese — Português (Brasil)', 'Portuguese language label changed');
+  var portugueseBox = portugueseLanguage.getBoundingClientRect();
+  assert(portugueseBox.left >= menuBox.left && portugueseBox.right <= menuBox.right, 'Portuguese language label escapes the menu');
+  assert(portugueseLanguage.scrollWidth <= portugueseLanguage.clientWidth, 'Portuguese language label has horizontal overflow');
+  assert(languageMenu.scrollWidth <= languageMenu.clientWidth, 'language menu has horizontal overflow');
+  assert(getComputedStyle(portugueseLanguage).whiteSpace === 'normal', 'language label cannot wrap on narrow screens');
+  if (!%t) {
+    var portugueseRange = document.createRange();
+    portugueseRange.selectNodeContents(portugueseLanguage);
+    assert(portugueseRange.getClientRects().length === 1, 'Portuguese language label wraps on desktop');
+  }
   var linkBox = visibleMenuLink.getBoundingClientRect();
   var paintedElement = document.elementFromPoint((linkBox.left + linkBox.right) / 2, (linkBox.top + linkBox.bottom) / 2);
   assert(languageMenu.contains(paintedElement), 'language menu is clipped or covered by course content; hit ' + (paintedElement && paintedElement.id || paintedElement && paintedElement.className || paintedElement));
@@ -98,6 +111,9 @@ try {
   assert(languageMenu.scrollHeight > languageMenu.clientHeight, '30-language menu does not constrain its height');
   if (document.documentElement.dataset.theme === 'dark') {
     assert(getComputedStyle(languageMenu).backgroundColor !== 'rgb(255, 255, 255)', 'dark theme language menu remains light');
+  }
+  if (document.documentElement.dir === 'rtl') {
+    assert(getComputedStyle(languageMenu).textAlign === 'right', 'RTL language menu is not right-aligned');
   }
   visibleMenuLink.addEventListener('click', function(event) { event.preventDefault(); }, { once: true });
   visibleMenuLink.click();
@@ -125,7 +141,7 @@ try {
   }
   document.body.setAttribute('data-tour-header-test', 'PASS');
 } catch (error) { document.body.setAttribute('data-tour-header-test', 'FAIL: ' + error.message); }
-</script></body></html>`, test.theme, css, html.EscapeString(title), languageItems, test.theme, pageScript, test.viewport, title, test.mobile)
+</script></body></html>`, test.theme, test.direction, css, html.EscapeString(title), languageItems, test.theme, pageScript, test.viewport, title, test.mobile, test.mobile)
 				path := filepath.Join(t.TempDir(), "tour-header-test.html")
 				if err := os.WriteFile(path, []byte(document), 0o600); err != nil {
 					t.Fatal(err)

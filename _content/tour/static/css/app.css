@@ -257,6 +257,7 @@ ul {
     top: calc(100% + 8px);
     right: 0;
     box-sizing: border-box;
+    width: max-content;
     min-width: 280px;
     max-width: calc(100vw - 32px);
     max-height: min(70vh, 22rem);
