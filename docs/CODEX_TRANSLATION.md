@@ -16,7 +16,7 @@ Codex 支持的正式翻译阶段为：
 
 ```text
 retranslation export（先验证 current Glossary Review coverage）
-→ Local terminal 导出 provider-neutral Generation Bundle
+→ Local terminal 导出 provider-neutral Generation Bundle 并完成 ZIP handoff
 → Codex 完整读取 ZIP 内 manifest、全部 inputs、glossary 与 authority
 → Codex 完整翻译每个 TranslationUnit
 → result-pack → deterministic import
@@ -24,7 +24,7 @@ retranslation export（先验证 current Glossary Review coverage）
 
 manifest、全部 inputs 与 locale glossary 是不可拆分的正式模型输入。Codex 必须在翻译前完整读取 glossary，并遵守其中的 `mandatory`、`preferred`、`forbidden` 和 `keep`；glossary 不是仅供 validator 后置检查的材料。
 
-正式 transport 与 ChatGPT 完全相同：`generation-bundle export` 生成 batch ZIP；Codex 将 exact expected outputs 写入独立 staging 目录；Local terminal 用 `generation-bundle result-pack --provider codex --model gpt-5.6-sol-high` 及 `generation-bundle import` 重验 current identity、路径、exact set、protected restore、single-LF 和 no-overwrite 后原子安装。bundle 不改变 TranslationUnit 边界，不是 authority、provenance receipt 或质量 gate；导入后仍执行 existing process/validation 与独立 A-only QC。Codex 已在仓库内时也优先消费该完整 bundle，避免重复探索并保证与 ChatGPT 使用同一输入 contract。
+正式 transport 与 ChatGPT 完全相同：新增 locale 的 initial Page / Example bulk batch 必须由维护者 Local terminal 执行 `generation-bundle export` 并把 ZIP handoff 给 Codex；Codex 不以直接扫描工作树代替这次 handoff。Codex 将 exact expected outputs 写入独立 staging 目录；首次 bulk 的返回结果继续按 handoff 约定执行 `generation-bundle result-pack --provider codex --model gpt-5.6-sol-high` 与 `generation-bundle import`。后续小批 revision / retry 则由 Codex 默认自动完成 bundle、result-pack / import、process / validation、Snapshot / scope 等闭环机械步骤。所有路径都重验 current identity、路径、exact set、protected restore、single-LF 和 no-overwrite；bundle 不改变 TranslationUnit 边界，不是 authority、provenance receipt 或质量 gate，导入后仍执行 existing process/validation 与独立 A-only QC。
 
 Glossary 的制定、独立审核与 machine gate 以 [Glossary Review 规范](GLOSSARY_REVIEW.md) 为准。Codex Generation role 不得用自己的 generation 上下文审核并批准同一 glossary。
 
@@ -32,13 +32,13 @@ Glossary 的制定、独立审核与 machine gate 以 [Glossary Review 规范](G
 
 新增 locale 的运营目标是单个 Codex 5 小时额度窗口使用不超过 100%。开始正式 generation 前，应把当前 5 小时额度、周额度、历史实测成本和并发计划纳入 provider selection。这些只是成本/运营约束，不是 TranslationUnit quality gate：不得为此降低 A-only Quality Check、跳过 QC、减少必要 revision，或将正式翻译模型从 **GPT-5.6 Sol + High** 自动降级。暂时不设置新增 locale 的硬 wall-clock 时间目标。
 
-在主要 model-intensive Codex 阶段（TranslationUnit translation / revision、需重新生成译文的 retry、较大的代码理解任务）前后观察当前 5 小时额度与周额度。当前 5 小时窗口已使用约 80% 时，不再启动新的非必要 Codex 重任务；对新的大型 translation、revision 或 code-understanding 任务，若剩余额度明显不足，应留到下一额度窗口，而不是硬顶到超过 100%。额度真正耗尽时可以依 provider-neutral 恢复规则改变执行环境，但必须保留真实 provenance 与全部质量 gate。build、不会调用模型的 process / revalidate、status、validation、publish、deploy、verifier、checksum、curl、Git、assets 等确定性终端工作由维护者 Local terminal 执行，不因 Codex quota 停止。
+在主要 model-intensive Codex 阶段（TranslationUnit translation / revision、需重新生成译文的 retry、较大的代码理解任务）前后观察当前 5 小时额度与周额度。当前 5 小时窗口已使用约 80% 时，不再启动新的非必要 Codex 重任务；对新的大型 translation、revision 或 code-understanding 任务，若剩余额度明显不足，应留到下一额度窗口，而不是硬顶到超过 100%。额度真正耗尽时可以依 provider-neutral 恢复规则改变执行环境，但必须保留真实 provenance 与全部质量 gate。闭环内不会调用模型的短机械步骤不因 Codex quota 停止，默认由 Codex 连续完成；闭环收口后的 promotion、build、preview / publish、Production / deploy / verifier、checksum / curl、assets，以及最终 Git commit / push 由维护者 Local terminal 成组执行。
 
 ## 非 TranslationUnit 与 Course SEO generation
 
 Codex 生成或修订 glossary、UI catalog、article metadata 和其他 locale-level 文案时，必须读取对应完整 source/context 与当前完整 locale glossary，并遵守 [Glossary Review 规范](GLOSSARY_REVIEW.md) 和 [Locale Surface Review](LOCALE_SURFACE_REVIEW.md) 的独立审核边界。正式输入优先使用 `generation-bundle locale-export --task glossary|locale-assets|surface-replacement`，并在使用前以 `generation-bundle locale-check` 确认 current；该 ZIP 只运输上下文，不直接写正式资产。
 
-首次 schema v2 Course SEO localization 使用与 ChatGPT 相同的 `course-metadata localization-bundle`；后续 refresh / revise replacement 使用 `course-metadata generation-bundle --task refresh|revise`。bundle 必须完整包含 canonical source descriptions、每个 Page 的完整 English source、完整 ready canonical target、完整 locale glossary、locale identity 和 current authority。canonical English description 仍是唯一 semantic-scope authority；正式 `course-metadata.json` 仍只由 Local terminal 通过 assemble / refresh / revise CLI 机械写入，并记录真实 `provider=codex`、`model=gpt-5.6-sol-high` provenance。
+首次 schema v2 Course SEO localization 使用与 ChatGPT 相同的 `course-metadata localization-bundle`；后续 refresh / revise replacement 使用 `course-metadata generation-bundle --task refresh|revise`。bundle 必须完整包含 canonical source descriptions、每个 Page 的完整 English source、完整 ready canonical target、完整 locale glossary、locale identity 和 current authority。canonical English description 仍是唯一 semantic-scope authority；Codex 不直接手写正式 `course-metadata.json`，而是默认把 strict descriptions JSON 落盘并立即通过 assemble / refresh / revise CLI 机械写入正式资产，记录真实 `provider=codex`、`model=gpt-5.6-sol-high` provenance。
 
 ## 新增 locale 的首次 Page batch
 
@@ -71,7 +71,7 @@ Page staging 输出为与 bundle `expected_outputs` 对应的 `.article`，Examp
 - 是否残留明显未翻译的自然语言；
 - exact output file set。
 
-本翻译阶段不自动执行 `process`、Quality Check、`quality-check finalize` 或 `promote`。只有用户明确要求继续下一阶段时，才进入相应步骤。
+initial bulk ZIP handoff 不自行跨越到后续语言审核。进入 Generation / Reviewer 闭环后，Codex 默认自动执行当前小批工作所需的 `process`、validation、Snapshot / scope、reviewer-bundle 和审核结果落盘 / `quality-check finalize`；正式 Quality Check 仍必须由独立 ChatGPT conversation/session 完成。`promote` 属于闭环收口后的维护者 Local terminal 操作，Codex 不自动执行。
 
 Codex 生成本轮 TranslationUnit 时，后续正式 Quality Check 必须由独立 ChatGPT conversation/session 执行；生成上下文不得同时充当正式 reviewer。
 

@@ -46,7 +46,9 @@ locale / domain / CDN 决策
 
 ## 执行成本与协作
 
-新增 locale 始终以质量 gate 为先。每个 locale 固定维护 **1 个长期 Generation role/session + 1 个独立长期 Reviewer role/session + 维护者 Local terminal**：Generation session 只产生或修订语言内容；Reviewer session 执行 Glossary Review、TranslationUnit Quality Check、revision re-QC 与 Locale Surface Review；Local terminal 执行全部 deterministic lifecycle。同一个从未参与该 locale 语言 generation 的 Reviewer session 可以连续承担这些审核，不要求拆分更多 reviewer conversation/session；各 gate 范围和 evidence 独立，reviewer finding 必须回到 Generation session 产生 replacement，再经 Local terminal 处理后返回 Reviewer session 复审。
+新增 locale 始终以质量 gate 为先。每个 locale 固定维护 **1 个长期 Generation role/session + 1 个独立长期 Reviewer role/session + 维护者 Local terminal**：Generation session 只产生或修订语言内容；Reviewer session 执行 Glossary Review、TranslationUnit Quality Check、revision re-QC 与 Locale Surface Review。同一个从未参与该 locale 语言 generation 的 Reviewer session 可以连续承担这些审核，不要求拆分更多 reviewer conversation/session；各 gate 范围和 evidence 独立，reviewer finding 必须回到 Generation session 产生 replacement。
+
+新增 locale 的 initial Page / Example 大批量 TranslationUnit Generation 一律使用维护者 Local terminal 导出的 provider-neutral ZIP handoff。进入 Generation / Reviewer 往返后，具备仓库终端能力的当前 AI execution environment 默认自动完成闭环所需的短机械步骤，包括小批 revision lifecycle、审核结果 current-check / record / finalize、locale-level replacement 落盘、Surface Reviewer bundle / record-a，以及 Course SEO 结果落盘和正式 assemble / refresh / revise；然后把新材料交给独立 Reviewer 复审。闭环结束后的 promotion、build、preview / publish / Production、search closeout 与最终 Git commit / push 由维护者 Local terminal 成组执行。该分工只改变操作主体，不改变任何现有 gate、角色隔离或 provenance。
 
 在开始该 locale 的正式 generation 前，根据当时真实的 ChatGPT 可用额度、Codex 5 小时额度与周额度、Remote Desktop Commander 月额度、历史实测成本和并发计划，选择 `chatgpt` 或 `codex` 作为 Generation provider；两者都使用 **GPT-5.6 Sol + High**。一旦开始正式 generation，原则上 glossary generation / revision、UI catalog、article metadata、其他 locale-level 文案、TranslationUnit initial / revision / 需要新译文的 retry、schema v2 Course SEO localization / refresh / revise replacement，以及 Locale Surface Review finding replacement generation 全程沿用同一 provider。不得仅为临时节省额度随意切换；只有真实额度耗尽、provider/tool failure 或仓库明确支持的恢复条件出现时才允许改变执行环境，并必须保留真实 provenance，不新增虚假 generation 记录，不弱化任何 gate。该选择是协作决定，不新增 schema、receipt、machine gate 或 locale state 字段。
 
@@ -83,7 +85,7 @@ go run -mod=readonly ./cmd/tour-i18n locale init \
 
 随后阅读 [术语治理政策](TRANSLATION_TERMINOLOGY.md) 和 [术语制定指南](TERMINOLOGY_GUIDE.md)，由 Generation session 建立完整 `locales/<locale>/glossary.yaml`。不得机器翻译 zh-CN、ja-JP 或其他 locale 的 glossary。
 
-Local terminal 先导出 provider-neutral generation ZIP，ChatGPT 或 Codex 完整读取同一 contract；修订前以 `locale-check` 确认 current：
+当前 AI execution environment 默认先导出 provider-neutral generation ZIP，ChatGPT 或 Codex 完整读取同一 contract；修订前以 `locale-check` 确认 current。产品界面需要人工附件上传时，只把实际 ZIP handoff 留给维护者：
 
 ```sh
 go run -mod=readonly ./cmd/tour-i18n generation-bundle locale-export \
@@ -100,7 +102,7 @@ Glossary 同时承担两项正式职责：
 
 对 `Go Playground` 这类可能翻译、部分本地化或 keep 的名称，必须在该 locale 的 glossary 中形成显式决定。不同 locale 可以做不同决定，但同一 locale 不得在不同表层混用。此步骤只建立新 locale 的规则，不顺带修改 zh-CN 或 ja-JP 的现有译文。
 
-完整 glossary 制定后，必须按 [Glossary Review 规范](GLOSSARY_REVIEW.md) 由未参与该 locale generation 的 Reviewer session 完整审核，并由本地终端记录、检查 current passed receipt：
+完整 glossary 制定后，必须按 [Glossary Review 规范](GLOSSARY_REVIEW.md) 由未参与该 locale generation 的 Reviewer session 完整审核，并由当前 AI execution environment 默认记录、检查 current passed receipt：
 
 ```sh
 go run -mod=readonly ./cmd/tour-i18n glossary-review reviewer-bundle \
@@ -130,7 +132,7 @@ go run -mod=readonly ./cmd/tour-i18n glossary-review check --locale <locale>
 
 UI catalog、首页和 metadata 不属于 TranslationUnit candidate、status、Quality Check、machine finalization 或 promotion。它们必须在后续 Surface Review 中单独验收。
 
-Glossary Review PASS 后，UI/article generation 使用 `generation-bundle locale-export --task locale-assets`，并在使用结果前执行 `generation-bundle locale-check`。bundle 完整绑定 English UI/article source、当前 target、reviewed glossary、locale identity 与 authority，但不直接覆盖 skeleton 文件；Local terminal 仍负责结构校验与正式落盘。
+Glossary Review PASS 后，UI/article generation 使用 `generation-bundle locale-export --task locale-assets`，并在使用结果前执行 `generation-bundle locale-check`。bundle 完整绑定 English UI/article source、当前 target、reviewed glossary、locale identity 与 authority，但不直接覆盖 skeleton 文件；Generation / Reviewer 闭环中的当前 AI execution environment 默认完成结构校验与正式落盘。
 
 `status.tsv` 不是语言资产，也不得从其他 locale 复制。`locale init` 已调用与 `status init` 相同的正式 catalog 初始化逻辑；不要再次运行会因文件已存在而 fail closed 的 `status init`。第一次进入 TranslationUnit retranslation export 前立即校验：
 
@@ -144,7 +146,7 @@ go run -mod=readonly ./cmd/tour-i18n status check --locale <locale>
 
 TranslationUnit 工作从 [多语言翻译流程](TRANSLATION_WORKFLOW.md) 进入。正式翻译前还必须读取 [翻译任务规范](TRANSLATION_TASK_SPEC.md)、[Retranslation 执行手册](RETRANSLATION_RUNBOOK.md)、当前执行环境规范（[ChatGPT 正式语言生成执行规范](CHATGPT_LANGUAGE_GENERATION.md) 或 [Codex 正式语言生成执行规范](CODEX_TRANSLATION.md)）、当前 batch manifest、manifest 列出的全部 inputs，以及目标 locale glossary。
 
-首次 Page batch 使用当前推荐的 60-Page 基线；Page 顺序、Examples 独立、revision/retry 边界和调整条件只以 [Codex 正式语言生成执行规范](CODEX_TRANSLATION.md#新增-locale-的首次-page-batch) 为准，本手册不重复细则。ChatGPT 路径 export 必须显式使用 `--generator chatgpt`；Codex 路径可使用兼容默认值或显式 `--generator codex`。batch prefix 只是现有执行路径与归档命名，不新增 provider provenance 字段。
+首次 Page batch 使用当前推荐的 60-Page 基线；Page 顺序、Examples 独立、revision/retry 边界和调整条件只以 [Codex 正式语言生成执行规范](CODEX_TRANSLATION.md#新增-locale-的首次-page-batch) 为准，本手册不重复细则。ChatGPT 路径 export 必须显式使用 `--generator chatgpt`；Codex 路径可使用兼容默认值或显式 `--generator codex`。initial Page 与 Example bulk batch 的 Generation input 必须由维护者 Local terminal 生成 ZIP 并 handoff 给 Generation session，不使用逐文件 transport。batch prefix 只是现有执行路径与归档命名，不新增 provider provenance 字段。
 
 保持既有顺序：
 
@@ -175,7 +177,7 @@ go run -mod=readonly ./cmd/tour-i18n course-metadata source check
 go run -mod=readonly ./cmd/tour-i18n course-metadata source review-check
 ```
 
-再由 Local terminal 生成 ChatGPT 与 Codex 共用的 provider-neutral deterministic ZIP：
+再生成 ChatGPT 与 Codex 共用的 provider-neutral deterministic ZIP；该准备步骤可由当前 AI execution environment 自动完成，产品界面需要附件上传时只把实际 ZIP handoff 留给维护者：
 
 ```sh
 go run -mod=readonly ./cmd/tour-i18n course-metadata localization-bundle \
@@ -188,7 +190,7 @@ go run -mod=readonly ./cmd/tour-i18n course-metadata localization-bundle-check \
 
 把该 ZIP 交给长期 Generation session。只要它来自未变化的正式 working tree 且 `manifest.json`/SHA-256 完整，ChatGPT 或 Codex 都直接读取附件内 103/103 Page full context、完整 glossary、locale identity 与当前 authority，不再重复扫描同一批输入；正式输入变化后必须重新导出 ZIP。ZIP 只是 transport container，不是 Course SEO authority 或 gate。
 
-随后由选定的 **GPT-5.6 Sol + High** Generation provider 为每个 Page 输出完整 `page_id → localized description`。canonical description 仍是唯一 semantic-scope authority；source/target 只用于技术语义、正文术语、自然度与实际内容对齐，不授权重新摘要。同一 generation session/batch 可处理多页，但不得跨 Page 补充、混合或推断语义。使用正式离线命令组装 v2 asset；target body 由命令机械读取并计算 `target_sha256` freshness，与其作为生成上下文的职责互不替代。真实 provenance 必须与本 locale 实际 Generation provider 一致：ChatGPT 使用 `--provider chatgpt --model gpt-5.6-sol-high`，Codex 使用 `--provider codex --model gpt-5.6-sol-high`：
+随后由选定的 **GPT-5.6 Sol + High** Generation provider 为每个 Page 输出完整 `page_id → localized description`。canonical description 仍是唯一 semantic-scope authority；source/target 只用于技术语义、正文术语、自然度与实际内容对齐，不授权重新摘要。同一 generation session/batch 可处理多页，但不得跨 Page 补充、混合或推断语义。Generation 结果由具备仓库终端能力的当前 AI execution environment 默认正式落盘，并立即使用离线命令组装 v2 asset；target body 由命令机械读取并计算 `target_sha256` freshness，与其作为生成上下文的职责互不替代。真实 provenance 必须与本 locale 实际 Generation provider 一致：ChatGPT 使用 `--provider chatgpt --model gpt-5.6-sol-high`，Codex 使用 `--provider codex --model gpt-5.6-sol-high`：
 
 ```sh
 go run -mod=readonly ./cmd/tour-i18n course-metadata assemble \
@@ -207,7 +209,7 @@ go run -mod=readonly ./cmd/tour-i18n course-metadata assemble \
 go run -mod=readonly ./cmd/tour-i18n build --locale <locale>
 ```
 
-随后由本地终端从当前 working tree 导出完整、确定性且自包含的审核输入；自包含包括实际 first-party Playground/Tour runtime JavaScript、首页/Tour shell/footer Go template 与 Tour list/editor/navigation partial 的完整 source context，并明确排除 `static/lib` vendored third-party library，而不只是包含负责加载它们的 Go 文件。该步骤不调用模型、不生成 evidence 或 gate，不能替代 ChatGPT 对完整 source ↔ target 的语言审核。普通 ChatGPT Reviewer 优先使用可直接上传的 deterministic ZIP：
+随后由当前 AI execution environment 默认从 working tree 导出完整、确定性且自包含的审核输入；自包含包括实际 first-party Playground/Tour runtime JavaScript、首页/Tour shell/footer Go template 与 Tour list/editor/navigation partial 的完整 source context，并明确排除 `static/lib` vendored third-party library，而不只是包含负责加载它们的 Go 文件。该步骤不调用模型、不生成 evidence 或 gate，不能替代 ChatGPT 对完整 source ↔ target 的语言审核。普通 ChatGPT Reviewer 优先使用可直接上传的 deterministic ZIP；产品界面需要人工附件上传时，只把实际 ZIP handoff 留给维护者：
 
 ```sh
 go run -mod=readonly ./cmd/tour-i18n surface-review reviewer-bundle \
@@ -246,7 +248,7 @@ go run -mod=readonly ./cmd/tour-i18n preview \
 scripts/verify-preview-browser.py http://127.0.0.1:<port>/ <locale>
 ```
 
-Remote Desktop Commander 只作为 ChatGPT 的辅助 transport、短机械操作和 failure diagnosis 工具，不表示 ChatGPT 默认接管 Local terminal 或 Codex 工作。对于上述 browser verifier，以及后续 `publish`、shared-assets Production、`first-production.sh`、IndexNow closeout 等可能持续数十秒到数分钟的确定性长任务，普通 ChatGPT + Remote Desktop Commander 默认只提供一条完整可粘贴命令，由维护者在本地终端执行并回传终态；不要仅为等待完成而反复远程轮询。只有维护者明确要求代执行，或真实 failure evidence / mutation-unknown 出现后需要诊断恢复时，才切回 Remote Desktop Commander。该协作规则不改变脚本内部任何 gate、receipt、retry 或 HUMAN gate。
+Remote Desktop Commander 是 ChatGPT 自动完成闭环内短机械操作和 failure diagnosis 的正式辅助工具，但不接管闭环后的维护者批量操作。对于上述 browser verifier，以及后续 `publish`、shared-assets Production、`first-production.sh`、IndexNow closeout 等可能持续数十秒到数分钟的确定性长任务，普通 ChatGPT + Remote Desktop Commander 只提供一条完整可粘贴命令，由维护者在本地终端执行并回传终态；不要仅为等待完成而反复远程轮询，也不要自行执行最终 Git commit / push。该协作规则不改变脚本内部任何 gate、receipt、retry 或 HUMAN gate。
 
 执行 [Locale Surface Review](LOCALE_SURFACE_REVIEW.md) 时，先以 exporter 提供的英文/source、目标资产和 glossary 为正式输入，完整审核 TranslationUnit 之外的 UI catalog、article metadata、首页及其他 locale-level 文案；不得用浏览器抽查替代。严格顺序为 promotion → course metadata → build → surface-review reviewer-bundle（standalone export 仅用于诊断）→ ChatGPT Locale Surface Review A → 必要 revision/fix + 重新生成 reviewer bundle → 写 Markdown evidence → record current A gate → full locale preview → automated rendered acceptance → visual HUMAN gate → publish。机器已经覆盖的 canonical、sitemap、language selector URL、Run / Format / Reset、SPA、`/socket` 和 desktop/mobile overflow 不由人工重复。
 

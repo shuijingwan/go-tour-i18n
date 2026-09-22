@@ -51,7 +51,7 @@ go run -mod=readonly ./cmd/tour-i18n retranslation export \
 2. manifest 列出的全部 `inputs/*`；
 3. `locales/<locale>/glossary.yaml`。
 
-这三部分不可拆分。正式 transport 默认由 Local terminal 执行 `generation-bundle export`，ChatGPT 与 Codex 都读取同一 ZIP contract；生成者只产出 exact expected output set。Local terminal 用 `generation-bundle result-pack` 验证隐藏/独立 staging 目录并形成 result ZIP，再以 `generation-bundle import` 原子安装到 `raw-responses/` 或连续 retry attempt。完整命令、stale/路径/exact-set/no-overwrite 规则见 [翻译任务规范](TRANSLATION_TASK_SPEC.md)。TranslationUnit 是翻译、validation 和 review 的最小单位，batch 只是执行与归档容器；bundle 只是 transport，不是新的 batch authority 或审核 evidence。
+这三部分不可拆分。新增 locale 的 initial Page / Example bulk Generation 必须由维护者 Local terminal 执行 `generation-bundle export` 并以 ZIP handoff 给 ChatGPT 或 Codex；不得改用逐文件 transport 或模型自行扫描工作树。生成者只产出 exact expected output set，首次 bulk 的返回结果继续经 `generation-bundle result-pack` 验证并形成 result ZIP，再由 `generation-bundle import` 原子安装到 `raw-responses/`。后续小批 revision / retry 中，这些 bundle、result landing / import 以及紧随其后的 process / validation 默认由具备仓库终端能力的当前 AI execution environment 自动完成。完整命令、stale/路径/exact-set/no-overwrite 规则见 [翻译任务规范](TRANSLATION_TASK_SPEC.md)。TranslationUnit 是翻译、validation 和 review 的最小单位，batch 只是执行与归档容器；bundle 只是 transport，不是新的 batch authority 或审核 evidence。
 
 ## 3. Process 与 automatic validation
 
@@ -250,4 +250,4 @@ go run -mod=readonly ./cmd/tour-i18n retranslation promote --locale <locale> --s
 
 ## 9. 阶段边界
 
-ChatGPT 或 Codex 完成首次翻译或 retry 译文生成后，不自动继续执行 process、Quality Check、finalize 或 promote，除非用户明确要求继续。维护者本地终端负责确定性 lifecycle。正式 Quality Check 必须使用独立于本轮生成的 ChatGPT conversation/session。UI catalog 翻译是独立流程，不属于本手册。
+首次 bulk TranslationUnit Generation 以 ZIP handoff 为阶段边界，不自动越过到语言审核。进入 Generation / Reviewer 闭环后，小批 revision / retry 的 export、bundle、result landing / import、process / validation、Snapshot / scope / reviewer-bundle，以及 Reviewer 结论的 current-check / record / finalize，默认由具备仓库终端能力的当前 AI execution environment 连续完成；正式 Quality Check 仍必须使用独立于本轮生成的 ChatGPT conversation/session，所有 A-only 与 identity gate 保持不变。`promote` 是闭环收口后的维护者 Local terminal 操作，不由 AI 自动执行。UI catalog 翻译是独立流程，不属于本手册。

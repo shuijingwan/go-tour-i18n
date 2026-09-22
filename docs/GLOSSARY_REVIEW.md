@@ -10,7 +10,7 @@ Glossary Review 是新 locale 在正式语言生成前对完整 `locales/<locale
 locale init
 → Generation session 制定完整 glossary
 → generation-independent Reviewer session 完整 Glossary Review
-→ Local terminal 记录并检查 current passed receipt
+→ AI execution environment 记录并检查 current passed receipt
 → Generation session 生成 UI / article metadata
 → TranslationUnit generation
 → TranslationUnit Quality Check / promotion / Course SEO
@@ -18,6 +18,8 @@ locale init
 ```
 
 Reviewer session 必须从未参与该 locale 的 language generation。同一个符合此条件的长期 Reviewer session 可以依次承担 Glossary Review、TranslationUnit Quality Check / re-QC 与 Locale Surface Review；三个 gate 的范围和 evidence 始终独立。Reviewer 发现问题时只返回 finding，不自行修改 glossary 或生成 replacement；Generation session 修订后，原 Reviewer session 可以重新完整审核当前 glossary。
+
+Reviewer 给出正式结论后，具备仓库终端能力的当前 AI execution environment 默认连续完成 reviewer bundle current-check、receipt record / check，以及 failed finding 回流后 glossary replacement 的必要落盘与再次导出。这里自动化的只是既有机械步骤；Reviewer 仍不得生成 replacement，Generation session 仍不得批准自己的 glossary，所有完整覆盖与 current gate 保持不变。locale init 与首次 bulk TranslationUnit ZIP handoff 仍由维护者 Local terminal 执行。
 
 UI / article metadata 目前没有文件写入级 machine block，但正式生成必须发生在 Glossary Review PASS 后。若在途 locale 已提前生成这些资产，Glossary Review 直接 PASS 时可继续使用；若 glossary revision，Generation session 必须同步检查和修订受影响的 UI / metadata 后再继续。
 
@@ -37,7 +39,7 @@ UI / article metadata 目前没有文件写入级 machine block，但正式生�
 
 正式结论只有 `passed` / `failed`，不使用 TranslationUnit 的 A/B/C/D。`failed` 必须给出至少一条 finding；finding 回到 Generation session 产生 replacement。
 
-Generation session 的完整输入可由 Local terminal 用 `generation-bundle locale-export --task glossary` 一次性导出；修订前用 `generation-bundle locale-check --bundle <zip>` 验证 current。该 generation ZIP 与 Reviewer ZIP 不得混用：前者允许生成 glossary，后者明确只允许 findings / passed/failed。
+Generation session 的完整输入默认由当前 AI execution environment 用 `generation-bundle locale-export --task glossary` 一次性导出；修订前用 `generation-bundle locale-check --bundle <zip>` 验证 current。产品界面需要人工附件上传时，只把实际 ZIP handoff 留给维护者。该 generation ZIP 与 Reviewer ZIP 不得混用：前者允许生成 glossary，后者明确只允许 findings / passed/failed。
 
 独立 Reviewer 优先读取 deterministic、自包含 ZIP：
 
@@ -55,7 +57,7 @@ ZIP 包含完整 glossary、locale identity、122 TranslationUnit 的完整 Engl
 
 ## Receipt 与 current gate
 
-审核完成后由 Local terminal 记录机器 receipt；reviewer 不填写 glossary SHA：
+审核完成后由当前 AI execution environment 默认记录机器 receipt；reviewer 不填写 glossary SHA：
 
 ```sh
 go run -mod=readonly ./cmd/tour-i18n glossary-review record \

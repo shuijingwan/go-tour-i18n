@@ -33,7 +33,10 @@ Generation session
   UI / metadata / TranslationUnit generation
         ↓
 Local terminal
-  export / process / validation / Candidate Snapshot
+  initial bulk export + ZIP handoff
+        ↓
+AI execution environment
+  result landing / process / validation / Candidate Snapshot
         ↓
 Reviewer session
   TranslationUnit Quality Check
@@ -41,31 +44,42 @@ Reviewer session
 Generation session
   revision generation
         ↓
-Local terminal
-  process / new Candidate Snapshot
+AI execution environment
+  small revision lifecycle / new Candidate Snapshot
         ↓
 Reviewer session
   re-QC
         ↓
+AI execution environment
+  record / finalize
+        ↓
 Local terminal
-  finalize / promotion
+  promotion
         ↓
 Generation session
   schema v2 Course SEO localization
         ↓
+AI execution environment
+  result landing / assemble
+        ↓
 Local terminal
-  assemble / build / surface-review reviewer-bundle
+  build
+        ↓
+AI execution environment
+  surface-review reviewer-bundle / record-a
         ↓
 Reviewer session
   Locale Surface Review
         ↓
 language defect → Generation session
-PASS → Local terminal preview / publish / Production
+PASS → Local terminal grouped preview / publish / Production / Git operations
 ```
 
 Generation session 与 Reviewer session 不得是同一 conversation/session；正式 Reviewer 路径继续使用独立 ChatGPT GPT-5.6 Sol + High session。同一个从未参与该 locale 语言 generation 的 Reviewer session 可以连续承担 Glossary Review、TranslationUnit Quality Check、revision 后 re-QC 与 Locale Surface Review，但不得生成 replacement 后批准自己的输出。provider 为 `chatgpt` 时的执行边界见 [ChatGPT 正式语言生成执行规范](CHATGPT_LANGUAGE_GENERATION.md)，provider 为 `codex` 时见 [Codex 正式语言生成执行规范](CODEX_TRANSLATION.md)。canonical English source-description extraction / review 是跨 locale 共享 authority，不属于这个单 locale 固定配对，仍以 [课程页正式 SEO Metadata 规范](COURSE_SEO_METADATA.md) 为准。
 
-正式大体量输入优先由 Local terminal 导出 deterministic ZIP：TranslationUnit 使用 `generation-bundle export`，glossary/UI/article/Surface finding replacement 使用 `generation-bundle locale-export`，Course SEO 使用对应 `course-metadata ...-bundle`；Glossary、Quality Check 与 Locale Surface Review 使用各自 `reviewer-bundle`。这些 ZIP 对 ChatGPT 与 Codex 使用相同语义合同，按 `locale + task/batch/snapshot/review` 隔离，并绑定 exact inventory 与 SHA-256；它们只是 transport container，不是 authority、receipt、provenance 或语言质量 gate。输入变化后必须重新导出并通过 current-check，不能用旧附件或聊天上下文补齐。TranslationUnit 下载结果经 `generation-bundle result-pack` / `import` 后仍必须进入既有 process、validation、QC、finalization 与 promotion。
+首次大批量 TranslationUnit Generation 必须由维护者 Local terminal 导出 deterministic `generation-bundle export` ZIP 并 handoff 给 Generation session；initial Page 与 Example bulk batch 都不得用逐文件传输或重复仓库扫描代替。glossary/UI/article/Surface finding replacement 使用 `generation-bundle locale-export`，Course SEO 使用对应 `course-metadata ...-bundle`；Glossary、Quality Check 与 Locale Surface Review 使用各自 `reviewer-bundle`。这些 ZIP 对 ChatGPT 与 Codex 使用相同语义合同，按 `locale + task/batch/snapshot/review` 隔离，并绑定 exact inventory 与 SHA-256；它们只是 transport container，不是 authority、receipt、provenance 或语言质量 gate。输入变化后必须重新导出并通过 current-check，不能用旧附件或聊天上下文补齐。TranslationUnit 下载结果经 `generation-bundle result-pack` / `import` 后仍必须进入既有 process、validation、QC、finalization 与 promotion。
+
+首次 bulk handoff 之后，Generation / Reviewer 往返中的小批 revision、retry、result landing、process / validation、Snapshot / scope、review result current-check / record / finalize、Surface Reviewer bundle / record-a，以及 Course SEO description 结果落盘和正式 assemble / refresh / revise，默认由具备仓库终端能力的当前 AI execution environment 连续执行。这里只自动化既有机械步骤；Generation / Reviewer 仍是独立 session，任何语言结论仍由对应角色产生，全部 current、schema、A-only 与 provenance gate 保持不变。每轮闭环收口后的 promotion、build、preview / publish / Production，以及按正式顺序需要的最终 Git commit / push 由维护者 Local terminal 成组执行。
 
 ## 1. 术语准备
 

@@ -120,7 +120,7 @@ manifest 是任务身份的权威来源，记录 locale、batch、Translation Un
 
 ### Deterministic Generation Bundle transport
 
-Local terminal 可把上述不可拆分输入导出为 provider-neutral ZIP：
+首次大批量 TranslationUnit Generation 必须由维护者 Local terminal 把上述不可拆分输入导出为 provider-neutral ZIP 并 handoff 给 Generation session；不得以逐文件传输或模型重新扫描工作树代替。后续小批 revision / retry 继续使用同一 bundle contract，但默认由具备仓库终端能力的当前 AI execution environment 完成机械导出：
 
 ```sh
 go run -mod=readonly ./cmd/tour-i18n generation-bundle export \
@@ -130,7 +130,7 @@ go run -mod=readonly ./cmd/tour-i18n generation-bundle export \
 
 retry 仅对当前 `restore_failed` / `validation_failed` Unit 增加 `--unit-id <unit-id>`；bundle 自动绑定下一连续 attempt、当前 validation/result 和完整原 batch 输入。`manifest.json` 声明 schema、task kind、locale、batch、Unit kind、attempt、exact expected outputs、全部成员 inventory/hash 与聚合 input identity。ZIP 内仍包含原始 batch manifest、manifest 列出的全部 inputs、完整 glossary 和当前 authority；ZIP 不替代这些 semantic authority。ChatGPT 与 Codex 都读取同一 contract，不因 provider 改变内容边界。
 
-生成结果先放在独立目录并由 Local terminal 形成 result ZIP，再导入：
+生成结果先放在独立目录并形成 result ZIP，再导入。首次 bulk 返回结果沿用 ZIP handoff；后续小批 revision / retry 的 result-pack / import 默认由当前 AI execution environment 连续执行：
 
 ```sh
 go run -mod=readonly ./cmd/tour-i18n generation-bundle result-pack \

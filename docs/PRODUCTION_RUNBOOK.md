@@ -2,9 +2,9 @@
 
 本文档记录当前已验证的 production 基线，并严格区分“新 locale 首次生产部署”和“已有 locale 日常维护部署”。项目进度和部署历史见 [PROJECT_STATE.md](PROJECT_STATE.md)；新增语言的完整阶段导航见 [新增 Locale 执行手册](NEW_LOCALE_RUNBOOK.md)。
 
-本文档中的标准终端步骤不绑定执行主体。维护者可以直接执行，也可以在明确要求且具备相应终端访问能力时交由工具执行；两种方式使用相同命令、前置条件、验收标准和停止规则。只有明确标为 **HUMAN GATE** 的 UI 操作必须由维护者完成。标准化流程应能在没有工具持续参与的情况下按文档独立完成。
+本文档中的标准 Production 终端步骤由维护者 Local terminal 执行，并使用相同命令、前置条件、验收标准和停止规则。AI execution environment 可以准备命令、读取维护者回传的终态并诊断 failure evidence，但不把语言 Generation / Reviewer 闭环中的短机械操作自动化扩展到 Production mutation。只有明确标为 **HUMAN GATE** 的 UI 操作仍必须由维护者人工完成；其他步骤虽是 deterministic，也不因此改由 AI 自动运行。
 
-`preview` browser verifier、shared-assets Production、`publish` / prerender、`first-production`、maintenance Production 与 IndexNow closeout 等确定性长任务默认由维护者本地终端执行。ChatGPT / Remote Desktop Commander 提供一条完整可粘贴命令并读取终态；不得仅为等待任务完成持续轮询。只有维护者明确要求代执行，或已出现真实 failure evidence / mutation-unknown 需要诊断恢复时才接管。该协作边界不省略任何脚本内部 gate、receipt、bounded retry 或 HUMAN gate。
+`preview` browser verifier、shared-assets Production、`publish` / prerender、`first-production`、maintenance Production 与 IndexNow closeout 等成组确定性长任务由维护者本地终端执行。ChatGPT / Remote Desktop Commander 提供一条完整可粘贴命令并读取终态，不自行运行，也不得仅为等待任务完成持续轮询。该协作边界不省略任何脚本内部 gate、receipt、bounded retry 或 HUMAN gate；按正式发布顺序需要的最终 Git commit / push 同样由维护者执行。
 
 正式脚本执行失败必须返回非零 exit status，不得关闭、替换或持续污染维护者的交互 shell；本文提供给维护者直接复制的命令不得在当前交互 shell 顶层执行 `set -e`、`set -u`、`set -o pipefail`、`set -euo pipefail` 等会影响后续交互行为的 shell options，也不得包含 `exit`、`logout`、`kill $$`。如需 fail-fast 或临时 shell options，必须放入独立 subshell（例如 `( set -euo pipefail; ... )`）或独立脚本进程，使失败只结束子进程。此规则不禁止脚本自身正常结束，也不禁止 shell wrapper 在自身进程中以正常 `exec` 调用正式子程序。正式脚本应作为独立程序执行，不要求维护者 `source` 一个可能调用 `exit` 的脚本。
 
