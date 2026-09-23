@@ -136,6 +136,8 @@ go run -mod=readonly ./cmd/tour-i18n quality-check record-batch \
 
 单次 Reviewer model invocation / response 最多审核 60 TranslationUnits；Page / Example 分开。60 是实际审核质量边界，不得通过在同一次 response 内串联多个 `<=60` working set 绕过。下一组必须由新的用户请求触发新的 model invocation；每组仍须逐 TranslationUnit 审核，不得抽样。当前首次 122-Unit locale 的 full QC 推荐依次审核 Page stable index `1-60`、Page stable index `61-103`、Example stable index `104-122`，最多三次独立 Reviewer 请求。revision re-QC 按实际 pending scope 分组，每次仍最多 60，且 Page / Example 分开。
 
+新增 locale 的效率优先默认调度以[新增 Locale 执行手册](NEW_LOCALE_RUNBOOK.md#新增-locale-默认调度路径效率优先)为唯一高层入口：不得提前导出后续两组 Reviewer ZIP；每组完成 `reviewer-bundle-check`、独立审核与 record 后才导出下一组，并默认先完成三组首审、汇总 B/C/D，再集中 revision。record 会改变同一 Snapshot 的 current scope，使先前预导出的后续 ZIP stale；中途 revision 又必须切换到新的 full Snapshot，旧 Snapshot 的预导出 ZIP 不再是当前审核目标。CLI 仍允许已有执行在中途 revision；恢复时不倒退或改写历史结果，而是从新的 full Snapshot、`--previous-snapshot-id` 与 current pending scope 继续，旧 A 只按下述 exact identity 规则 carry-forward。
+
 旧 evidence 中没有 finding 的 B/C/D 继续兼容读取，但在 revision export 前必须通过 CLI 补录，禁止人工编辑 JSON：
 
 ```bash

@@ -54,6 +54,22 @@ locale / domain / CDN 决策
 
 正式 Reviewer 路径继续使用独立的普通 ChatGPT **GPT-5.6 Sol + High** session；Reviewer 从未参与该 locale language generation 时才可连续承担上述审核，且不得生成 replacement 后批准自己的输出。provider 为 `chatgpt` 时的执行规范见 [ChatGPT 正式语言生成执行规范](CHATGPT_LANGUAGE_GENERATION.md)，provider 为 `codex` 时见 [Codex 正式语言生成执行规范](CODEX_TRANSLATION.md)。仓库已有正式工具与已确认事实直接复用，不为新增 locale 建立硬 wall-clock 时间目标。canonical English source-description extraction / review 是跨 locale 共享 authority，不属于上述单 locale 固定配对；其 current/stale 规则仍只按 [课程页正式 SEO Metadata 规范](COURSE_SEO_METADATA.md) 执行，不因每个新增 locale 默认重做。
 
+### 新增 locale 默认调度路径（效率优先）
+
+下表是首次上线的唯一默认调度路径。各阶段 CLI 仍保留 retry、中途 revision、stale bundle 与已有 evidence 的合法恢复能力；这些能力用于恢复已经发生的状态，不表示默认应提前导包、逐组立即 revision 或重放已完成步骤。
+
+| 阶段 | 默认动作与停止点 |
+| --- | --- |
+| 并行启动 | 在任何正式 generation 前，一次确认本轮全部 locale 的 locale identity、hostname、CDN、loopback port、service、data/release/current/lock path、public URL、registry 顺序与 URL，以及 Generation / Reviewer session；冻结每个 locale 的 Production identity 唯一值，缺失或歧义时不开始翻译。核对拟公开链接与各目标的实际 `production_state`、可达时点和上线顺序兼容；不得为通过计划检查提前把 `first-production` 改成 `live`。 |
+| 共享输入落定 | 完成 init、glossary gate、locale assets，并在**任一并行 locale 首次导出 Surface Reviewer Bundle 前**完成本轮双方需要的 `internal/tour/languages.go` 与 `production/identity.json` 修改。进入任一 Stage A 后保持共享输入稳定；若正式输入变化，依 current-check / receipt schema fail closed，只重导、重审受影响的 current package，不把旧 ZIP 或聊天记忆继续当输入。 |
+| 初始 TranslationUnit Generation | 全部 provider 都按 stable 顺序执行 `60 Page → 43 Page → 19 Example`，分别对应三个 initial batch。一次 model invocation 只处理一个 batch；该批正式落地并取得 automatic validation evidence 后停下，只有维护者明确“继续”才开始下一次 invocation。首次 122 Unit 仍逐批使用 provider-neutral Generation ZIP handoff。 |
+| 结果落地 | 模型/UI 返回的只是**尚待 `result-pack` 的原始输出传输包**时，先取得 exact output directory，再恰好执行一次 `generation-bundle result-pack` 生成正式 **Result ZIP**，随后 `import`、`process` / `retry`。若下载物已经是 `kind=go-tour-i18n/generation-result-bundle` 的正式 Result ZIP，直接交给 `import` 的 current / identity preflight，不重复打包。bundle inventory/hash/current 检查与正式 automatic validation evidence 是不同层次，不得混称。恢复执行前先核对 `raw-responses/` 或 retry attempt、`result.json`、`validation/`、Snapshot/QC evidence；已导入或已验证的步骤不得覆盖或盲目重放。 |
+| 首次 QC | 122 Unit 都有 passed automatic validation 后创建一个 full Snapshot。只导出当前下一组 Reviewer ZIP：`1-60` Page → current-check / 独立 Reviewer invocation / record；完成后才导出 `61-103` Page；完成后才导出 `104-122` Example。三组各用新的用户请求/model invocation。默认先完成三组首审并汇总全部 B/C/D，不在第一组后立即 revision。 |
+| 集中 revision / re-QC | 按 Page / Example 分开、每个 revision batch 最多 30 Unit，集中处理汇总的 B/C/D。生成新的 full Snapshot；只有旧 A 且 rubric、source、selected batch、candidate、validation、attempt 与 glossary lineage 完全符合现有规则时才 carry-forward，其余只按 pending scope re-QC，直到全 A 后 finalization。 |
+| 闭环收口与上线 | `promote`、build、preview / browser verifier、publish、Production / deploy / verifier、search closeout、最终 commit / push 继续由维护者 Local terminal 成组执行；`first-production` / `live`、Production HUMAN gate 与 visual HUMAN gate 的现有规则不变。 |
+
+若历史或当前执行已经在首审中途合法 revision，不倒退状态、不删除或伪造 evidence，也不强行补完旧 Snapshot 的三组。应从当前 full Snapshot / scope 和已有结果恢复：重新导出下一份 current Reviewer ZIP，按 identity 规则 carry-forward 旧 A，并只审核当前 pending Unit。只有真实缺少 terminal 能力、确需跨 ChatGPT / Ubuntu 或跨 session 上传附件，或发生真实 failure / mutation-unknown 时才交回维护者；不能要求维护者把已下载 ZIP 手工 `cp` 到 `/tmp`，也不能声称当前 ChatGPT / Remote Desktop Commander 已有无需人工附件传递的跨环境通道。
+
 ## 1. 冻结语言与生产身份
 
 在创建翻译资产前记录并确认：
@@ -166,7 +182,7 @@ export
 
 不要把 UI catalog 或 metadata 塞入 TranslationUnit batch；不要用 Surface Review 结论生成 review evidence；不要在 promotion 前用完整站点观感替代逐 TranslationUnit 审核。
 
-首次 QC 的独立 Reviewer input 依次用 `quality-check reviewer-bundle` 导出 Page stable index `1-60`、Page `61-103`、Example `104-122`，每份由新的用户请求/model invocation 审核；记录前运行 `quality-check reviewer-bundle-check`。Reviewer 只返回逐 Unit A/B/C/D 与 findings，现有 `record` / `record-batch` / `finalize` state machine 不变。
+首次 QC 的独立 Reviewer input 依次用 `quality-check reviewer-bundle` 导出 Page stable index `1-60`、Page `61-103`、Example `104-122`，每份由新的用户请求/model invocation 审核；默认调度、集中 revision 与中途 revision 的兼容恢复边界见[新增 locale 默认调度路径](#新增-locale-默认调度路径效率优先)。只在上一组 current-check、审核与 record 完成后导出下一组，记录前运行 `quality-check reviewer-bundle-check`。Reviewer 只返回逐 Unit A/B/C/D 与 findings，现有 `record` / `record-batch` / `finalize` state machine 不变。
 
 ## 5. 完整投影、预览与 Surface Review
 
@@ -209,7 +225,7 @@ go run -mod=readonly ./cmd/tour-i18n course-metadata assemble \
 go run -mod=readonly ./cmd/tour-i18n build --locale <locale>
 ```
 
-随后由当前 AI execution environment 默认从 working tree 导出完整、确定性且自包含的审核输入；自包含包括实际 first-party Playground/Tour runtime JavaScript、首页/Tour shell/footer Go template 与 Tour list/editor/navigation partial 的完整 source context，并明确排除 `static/lib` vendored third-party library，而不只是包含负责加载它们的 Go 文件。该步骤不调用模型、不生成 evidence 或 gate，不能替代 ChatGPT 对完整 source ↔ target 的语言审核。普通 ChatGPT Reviewer 优先使用可直接上传的 deterministic ZIP；产品界面需要人工附件上传时，只把实际 ZIP handoff 留给维护者：
+并行 locale 必须先完成[默认调度路径](#新增-locale-默认调度路径效率优先)中的共享输入落定检查。随后由当前 AI execution environment 默认从 working tree 导出完整、确定性且自包含的审核输入；自包含包括实际 first-party Playground/Tour runtime JavaScript、首页/Tour shell/footer Go template 与 Tour list/editor/navigation partial 的完整 source context，并明确排除 `static/lib` vendored third-party library，而不只是包含负责加载它们的 Go 文件。该步骤不调用模型、不生成 evidence 或 gate，不能替代 ChatGPT 对完整 source ↔ target 的语言审核。普通 ChatGPT Reviewer 优先使用可直接上传的 deterministic ZIP；产品界面需要人工附件上传时，只把实际 ZIP handoff 留给维护者：
 
 ```sh
 go run -mod=readonly ./cmd/tour-i18n surface-review reviewer-bundle \

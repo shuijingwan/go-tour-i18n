@@ -50,7 +50,7 @@ TranslationUnit Quality Check 与 revision re-QC 的单次 Reviewer model invoca
 
 新增 locale 的首次大批量 TranslationUnit Generation 固定使用 ZIP handoff：维护者 Local terminal 完成 initial Page / Example batch export、生成 current provider-neutral Generation Bundle，并把 ZIP 上传到 Generation session。ChatGPT 不通过 Remote Desktop Commander 逐文件读取这批输入，也不以重新扫描仓库替代附件。生成结果继续使用正式 Result Bundle / deterministic import contract。
 
-首次 bulk handoff 后，Generation / Reviewer 闭环内部的短 deterministic 操作默认由具备仓库访问能力的 ChatGPT + Remote Desktop Commander 自动连续完成，包括小批 revision / retry 的 export、bundle、result-pack / import、process / validation、Snapshot / scope / reviewer-bundle、审核结果 current-check / record / finalize、locale-level replacement 落盘、Surface Reviewer bundle / record-a，以及 Course SEO description 结果落盘和正式 assemble / refresh / revise。机械执行不得让 Generation session 承担 Reviewer 的语言判断，也不得让 Reviewer 生成 replacement；每个 current-check、exact-set、A-only、schema 与 provenance gate 都照常执行。终端能力不可用、需要新的附件 handoff 或出现真实 failure / mutation-unknown 时才停下交回维护者。
+首次 bulk handoff 后，Generation / Reviewer 闭环内部的短 deterministic 操作默认由具备仓库访问能力的 ChatGPT + Remote Desktop Commander 自动连续完成，包括首次 bulk 原始输出附件的定位 / hash 核对 / result-pack / import / process / validation，小批 revision / retry 的 export、bundle、result-pack / import、process / validation、Snapshot / scope / reviewer-bundle、审核结果 current-check / record / finalize、locale-level replacement 落盘、Surface Reviewer bundle / record-a，以及 Course SEO description 结果落盘和正式 assemble / refresh / revise。机械执行不得让 Generation session 承担 Reviewer 的语言判断，也不得让 Reviewer 生成 replacement；每个 current-check、exact-set、A-only、schema 与 provenance gate 都照常执行。终端能力不可用、需要新的附件 handoff 或出现真实 failure / mutation-unknown 时才停下交回维护者。
 
 维护者 Local terminal 负责闭环外或闭环收口后的成组步骤：locale init、首次 bulk export / ZIP handoff、promotion、build、preview、browser verifier、publish、shared assets、Production、deploy、verifier、checksum / curl、search closeout，以及按正式顺序需要的最终 Git commit / push。ChatGPT 给维护者提供可直接粘贴的终端命令时，不得在当前交互 shell 顶层启用 `set -e` / `set -u` / `set -o pipefail` 或组合形式；需要 fail-fast 时必须用独立 subshell 或独立脚本进程，避免失败退出或改变维护者当前 shell。
 
@@ -93,7 +93,18 @@ go run -mod=readonly ./cmd/tour-i18n generation-bundle export \
   --output /tmp/<locale>-<batch-id>-generation.zip
 ```
 
-ChatGPT 仍在 hidden staging 中生成 exact expected files，并自行完成 protected token、glossary、明显未翻译文本、无解释/fence 与 single-LF 检查。首次 bulk handoff 的返回结果继续按 handoff 约定运行 `generation-bundle result-pack --provider chatgpt --model gpt-5.6-sol-high` 和 `generation-bundle import`；后续小批 revision / retry 则由当前 AI execution environment 默认直接完成这两步及紧随其后的 process / validation。两步会重验 current bundle、exact set、机器安全与 no-overwrite 后原子安装。result ZIP 保存真实 provider/model，但不成为语言质量 evidence；existing process/validation/QC 不变。
+首次 122 Unit 的默认调度固定为 60 Page、43 Page、19 Example 三个 initial batch；每个 batch 使用一次 model invocation，正式落地并取得 automatic validation evidence 后停止，等待维护者明确“继续”。不得在一次 response 串联多个 initial batch。完整顺序与合法恢复边界见[新增 Locale 执行手册](NEW_LOCALE_RUNBOOK.md#新增-locale-默认调度路径效率优先)。
+
+ChatGPT 仍在 hidden staging 中生成 exact expected files，并自行完成 protected token、glossary、明显未翻译文本、无解释/fence 与 single-LF 检查。必须区分两种 ZIP：
+
+- ChatGPT/UI 为跨会话或跨 Ubuntu 边界返回的 outputs ZIP 是**原始输出传输包**，尚未经过 `generation-bundle result-pack`，不是正式 Result ZIP；
+- `generation-bundle result-pack` 以 original Generation ZIP、exact output directory 与真实 provider/model 生成 `kind=go-tour-i18n/generation-result-bundle` 的正式 **Result ZIP**。正式 Result ZIP 直接交给 `generation-bundle import` 的 current / identity preflight，不得再次 `result-pack`。
+
+首次 bulk handoff 的返回结果按上述边界恰好执行一次 `result-pack` 和一次 `import`；后续小批 revision / retry 默认由当前 AI execution environment 直接完成这两步及紧随其后的 `process` / `retry`。`result-pack` / `import` 会重验 current bundle、exact set、路径/encoding/EOF、受保护内容、candidate preflight 与 no-overwrite，但这些 transport / preflight 检查不等于 `retranslation process` / `retry` 写出的正式 automatic validation evidence，更不等于 Quality Check。Result ZIP 保存真实 provider/model，但不成为语言质量 evidence。
+
+产品界面下载附件后，ChatGPT + Remote Desktop Commander 应先在该环境的默认下载目录中定位本轮唯一候选，计算 SHA-256 并与交接值核对，再自动解包到临时目录并完成短机械步骤；不得要求维护者手工 `cp` 到 `/tmp`。候选不唯一、hash 不符、附件不可读、terminal 不可用或 mutation-unknown 时才停下交回维护者。当前仍没有无需用户操作即可跨 ChatGPT / Ubuntu 或跨 session 传递 ZIP 的正式通道，维护者只承担这些确实必要的附件上传/下载。
+
+恢复执行前先核对 `raw-responses/` 或 retry attempt、`result.json`、`validation/`、Snapshot 与 QC evidence。若正式输出已经 import，直接从缺失的 process / retry 或后续 evidence 继续；若 automatic validation evidence 已 current，则不得覆盖输出、重复 import 或重放 validation。CLI 的 stale、exact-set 与 no-overwrite failure 是保护信号，不是要求清空既有状态后重来。
 
 ## Remote Desktop Commander 安全写入
 
