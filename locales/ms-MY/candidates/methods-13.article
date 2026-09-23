@@ -1,0 +1,8 @@
+* Nilai antara muka nil
+
+Nilai antara muka nil tidak menyimpan nilai mahupun jenis konkrit.
+
+Memanggil kaedah pada antara muka nil ialah ralat masa jalan kerana tiada
+jenis dalam tupel antara muka untuk menunjukkan kaedah _konkrit_ yang perlu dipanggil.
+
+.play methods/nil-interface-values.go

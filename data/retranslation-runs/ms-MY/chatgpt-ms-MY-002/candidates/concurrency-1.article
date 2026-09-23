@@ -1,0 +1,15 @@
+* Goroutine
+
+_goroutine_ ialah bebenang ringan yang diurus oleh runtime Go.
+
+	go f(x, y, z)
+
+memulakan goroutine baharu yang menjalankan
+
+	f(x, y, z)
+
+Penilaian bagi `f`, `x`, `y` dan `z` berlaku dalam goroutine semasa, manakala pelaksanaan `f` berlaku dalam goroutine baharu.
+
+Goroutine berjalan dalam ruang alamat yang sama, jadi akses kepada ingatan dikongsi mesti disegerakkan. Pakej [[/pkg/sync/][`sync`]] menyediakan primitif yang berguna, walaupun anda tidak akan banyak memerlukannya dalam Go kerana terdapat primitif lain. (Lihat halaman seterusnya.)
+
+.play concurrency/goroutines.go

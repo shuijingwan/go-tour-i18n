@@ -1,0 +1,19 @@
+* Ralat
+
+Atur cara ⟪GTI18N_9eaab1fd_000001⟫ menyatakan keadaan ralat dengan nilai ⟪GTI18N_9eaab1fd_000002⟫error⟪GTI18N_9eaab1fd_000003⟫.
+
+Jenis ⟪GTI18N_9eaab1fd_000004⟫error⟪GTI18N_9eaab1fd_000005⟫ ialah antara muka terbina dalam yang serupa dengan ⟪GTI18N_9eaab1fd_000006⟫fmt.Stringer⟪GTI18N_9eaab1fd_000007⟫:
+
+⟪GTI18N_9eaab1fd_000008⟫
+
+(Seperti ⟪GTI18N_9eaab1fd_000009⟫fmt.Stringer⟪GTI18N_9eaab1fd_000010⟫, pakej ⟪GTI18N_9eaab1fd_000011⟫fmt⟪GTI18N_9eaab1fd_000012⟫ mencari antara muka ⟪GTI18N_9eaab1fd_000013⟫error⟪GTI18N_9eaab1fd_000014⟫ apabila
+mencetak nilai.)
+
+Fungsi sering mengembalikan nilai ⟪GTI18N_9eaab1fd_000015⟫error⟪GTI18N_9eaab1fd_000016⟫, dan kod yang memanggilnya patut mengendalikan ralat
+dengan menguji sama ada ralat itu sama dengan ⟪GTI18N_9eaab1fd_000017⟫nil⟪GTI18N_9eaab1fd_000018⟫.
+
+⟪GTI18N_9eaab1fd_000019⟫
+
+⟪GTI18N_9eaab1fd_000020⟫ ⟪GTI18N_9eaab1fd_000021⟫error⟪GTI18N_9eaab1fd_000022⟫ menandakan kejayaan; ⟪GTI18N_9eaab1fd_000023⟫ ⟪GTI18N_9eaab1fd_000024⟫error⟪GTI18N_9eaab1fd_000025⟫ yang bukan nil menandakan kegagalan.
+
+⟪GTI18N_9eaab1fd_000026⟫

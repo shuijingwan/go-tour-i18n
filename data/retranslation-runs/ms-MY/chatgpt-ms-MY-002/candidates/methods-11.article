@@ -1,0 +1,13 @@
+* Nilai antara muka
+
+Secara dalaman, nilai antara muka boleh dianggap sebagai tupel yang terdiri daripada satu nilai dan satu
+jenis konkrit:
+
+	(value, type)
+
+Nilai antara muka menyimpan nilai daripada jenis konkrit dasar tertentu.
+
+Memanggil kaedah pada nilai antara muka akan melaksanakan kaedah dengan nama yang sama pada
+jenis dasarnya.
+
+.play methods/interface-values.go

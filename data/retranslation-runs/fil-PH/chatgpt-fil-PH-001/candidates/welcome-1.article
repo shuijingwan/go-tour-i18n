@@ -1,0 +1,28 @@
+* Kumusta, 世界
+
+Maligayang pagdating sa tour ng [[/][wikang pamprogramang Go]].
+
+Nahahati ang tour sa mga modyul na maaari mong buksan sa pamamagitan ng pag-click sa [[javascript:highlight(".logo")][A Tour of Go]] sa kaliwang itaas ng pahina.
+
+Maaari mo ring tingnan ang talaan ng nilalaman anumang oras sa pamamagitan ng pag-click sa [[javascript:highlightAndClick(".nav")][menu]] sa kanang itaas ng pahina.
+
+Sa buong tour, may mga pahina ng aralin at pagsasanay na kailangan mong tapusin.
+
+Maaari kang lumipat sa pagitan ng mga ito gamit ang:
+
+- [[javascript:highlight(".prev-page")]["nakaraan"]] o `PageUp` upang bumalik sa nakaraang pahina,
+
+- [[javascript:highlight(".next-page")]["susunod"]] o `PageDown` upang pumunta sa susunod na pahina.
+
+Interaktibo ang tour. I-click ngayon ang button na [[javascript:highlightAndClick("#run")][Patakbuhin]] (o pindutin ang `Shift` + `Enter`) upang i-compile at patakbuhin ang programa sa isang remote server.
+Ipapakita ang resulta sa ibaba ng code.
+
+Ipinapakita ng mga halimbawang programa na ito ang iba't ibang aspeto ng Go. Nilalayon ang mga programa sa tour na maging panimulang punto para sa sarili mong pag-eeksperimento.
+
+Baguhin ang programa at patakbuhin itong muli.
+
+Kapag na-click mo ang [[javascript:highlightAndClick("#format")][I-format]] (shortcut: `Ctrl` + `Enter`), ipo-format ang teksto sa editor gamit ang tool na [[/cmd/gofmt/][gofmt]]. Maaari mong i-on o i-off ang pag-highlight ng syntax sa pamamagitan ng pag-click sa button na [[javascript:highlightAndClick(".syntax-checkbox")][syntax]].
+
+Kapag handa ka nang magpatuloy, i-click ang [[javascript:highlightAndClick(".next-page")][kanang arrow]] sa ibaba o pindutin ang key na `PageDown`.
+
+.play welcome/hello.go

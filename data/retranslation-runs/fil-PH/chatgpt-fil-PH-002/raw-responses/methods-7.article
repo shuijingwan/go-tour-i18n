@@ -1,0 +1,14 @@
+* Mga method at di-tuwirang paggamit ng pointer (2)
+
+Ganito rin ang nangyayari sa kabaligtarang direksiyon.
+
+Kailangang value ng mismong tinukoy na type ang ipasa sa mga function na may value argument:
+
+⟪GTI18N_61a9cb84_000001⟫Error sa pag-compile!⟪GTI18N_61a9cb84_000002⟫samantalang maaaring value o pointer ang receiver na ginagamit sa pagtawag
+sa mga method na may value receiver:
+
+⟪GTI18N_61a9cb84_000003⟫
+
+Sa kasong ito, itinuturing ang pagtawag sa method na ⟪GTI18N_61a9cb84_000004⟫p.Abs()⟪GTI18N_61a9cb84_000005⟫ bilang ⟪GTI18N_61a9cb84_000006⟫(*p).Abs()⟪GTI18N_61a9cb84_000007⟫.
+
+⟪GTI18N_61a9cb84_000008⟫

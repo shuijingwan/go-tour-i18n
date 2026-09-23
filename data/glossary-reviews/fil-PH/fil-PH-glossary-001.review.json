@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "evidence_type": "glossary-review-receipt",
+  "locale": "fil-PH",
+  "review_id": "fil-PH-glossary-001",
+  "stage": "locale-glossary-review",
+  "decision": "failed",
+  "reviewer": "chatgpt-fil-PH-independent-reviewer",
+  "rubric": "glossary-review/v1",
+  "glossary_path": "locales/fil-PH/glossary.yaml",
+  "glossary_sha256": "01663b208784ef2c51d0f1505c247e67e15085b8540085be0b91a04770271289",
+  "findings": [
+    "preferred.pointer indirection: awtomatikong pag-dereference ng pointer narrows the term to implicit dereferencing. In the English source, methods/6 describes implicit address-taking (v.Scale(5) interpreted as (\u0026v).Scale(5)), whereas methods/7 describes implicit dereferencing (p.Abs() interpreted as (*p).Abs()). The same glossary term must cover both directions without a false technical claim. Return to the original Generation session for glossary revision; no reviewer replacement."
+  ]
+}

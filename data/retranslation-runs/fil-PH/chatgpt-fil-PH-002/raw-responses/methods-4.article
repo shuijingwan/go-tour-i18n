@@ -1,0 +1,24 @@
+* Mga pointer receiver
+
+Maaari kang magdeklara ng mga method na may pointer receiver.
+
+Ibig sabihin, gumagamit ang type ng receiver ng literal na syntax na ⟪GTI18N_99f9fa4e_000001⟫*T⟪GTI18N_99f9fa4e_000002⟫ para sa isang type na ⟪GTI18N_99f9fa4e_000003⟫T⟪GTI18N_99f9fa4e_000004⟫.
+(Hindi rin maaaring pointer mismo ang ⟪GTI18N_99f9fa4e_000005⟫T⟪GTI18N_99f9fa4e_000006⟫, gaya ng ⟪GTI18N_99f9fa4e_000007⟫*int⟪GTI18N_99f9fa4e_000008⟫.)
+
+Halimbawa, ang method na ⟪GTI18N_99f9fa4e_000009⟫Scale⟪GTI18N_99f9fa4e_000010⟫ dito ay nakatakda sa ⟪GTI18N_99f9fa4e_000011⟫*Vertex⟪GTI18N_99f9fa4e_000012⟫.
+
+Maaaring baguhin ng mga method na may pointer receiver ang value na tinuturo ng receiver
+(gaya ng ginagawa ng ⟪GTI18N_99f9fa4e_000013⟫Scale⟪GTI18N_99f9fa4e_000014⟫ dito).
+Dahil madalas kailangang baguhin ng mga method ang receiver nila, mas karaniwan ang
+mga pointer receiver kaysa mga value receiver.
+
+Subukang alisin ang ⟪GTI18N_99f9fa4e_000015⟫*⟪GTI18N_99f9fa4e_000016⟫ sa deklarasyon ng function na ⟪GTI18N_99f9fa4e_000017⟫Scale⟪GTI18N_99f9fa4e_000018⟫ sa linya 16
+at obserbahan kung paano nagbabago ang kilos ng programa.
+
+Kapag value receiver ang ginamit, kumikilos ang method na ⟪GTI18N_99f9fa4e_000019⟫Scale⟪GTI18N_99f9fa4e_000020⟫ sa isang kopya ng
+orihinal na value na ⟪GTI18N_99f9fa4e_000021⟫Vertex⟪GTI18N_99f9fa4e_000022⟫.
+(Gayundin ang nangyayari sa alinmang ibang function argument.)
+Kailangang may pointer receiver ang method na ⟪GTI18N_99f9fa4e_000023⟫Scale⟪GTI18N_99f9fa4e_000024⟫ upang mabago ang value na ⟪GTI18N_99f9fa4e_000025⟫Vertex⟪GTI18N_99f9fa4e_000026⟫
+na idineklara sa function na ⟪GTI18N_99f9fa4e_000027⟫main⟪GTI18N_99f9fa4e_000028⟫.
+
+⟪GTI18N_99f9fa4e_000029⟫

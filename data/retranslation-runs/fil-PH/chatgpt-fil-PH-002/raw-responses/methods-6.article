@@ -1,0 +1,16 @@
+* Mga method at di-tuwirang paggamit ng pointer
+
+Kung ihahambing ang dalawang naunang programa, mapapansin mong
+kailangang pointer ang ipasa sa mga function na may pointer argument:
+
+⟪GTI18N_39fb725b_000001⟫Error sa pag-compile!⟪GTI18N_39fb725b_000002⟫samantalang maaaring value o pointer ang receiver na ginagamit sa pagtawag
+sa mga method na may pointer receiver:
+
+⟪GTI18N_39fb725b_000003⟫
+
+Para sa statement na ⟪GTI18N_39fb725b_000004⟫v.Scale(5)⟪GTI18N_39fb725b_000005⟫, kahit value at hindi pointer ang ⟪GTI18N_39fb725b_000006⟫v⟪GTI18N_39fb725b_000007⟫,
+awtomatikong natatawag ang method na may pointer receiver.
+Ibig sabihin, para sa kaginhawahan, itinuturing ng Go ang statement na ⟪GTI18N_39fb725b_000008⟫v.Scale(5)⟪GTI18N_39fb725b_000009⟫ na
+⟪GTI18N_39fb725b_000010⟫(&v).Scale(5)⟪GTI18N_39fb725b_000011⟫ dahil may pointer receiver ang method na ⟪GTI18N_39fb725b_000012⟫Scale⟪GTI18N_39fb725b_000013⟫.
+
+⟪GTI18N_39fb725b_000014⟫

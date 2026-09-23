@@ -1,0 +1,14 @@
+* Pemilihan Lalai
+
+Kes `default` dalam `select` dijalankan jika tiada kes lain yang bersedia.
+
+Gunakan kes `default` untuk mencuba operasi hantar atau terima tanpa menyekat:
+
+	select {
+	case i := <-c:
+		// gunakan i
+	default:
+		// penerimaan daripada c akan menyekat
+	}
+
+.play concurrency/default-selection.go

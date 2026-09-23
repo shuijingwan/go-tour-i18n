@@ -1,0 +1,13 @@
+* Latihan: Imej
+
+Ingat [[/tour/moretypes/18][penjana gambar]] yang anda tulis sebelum ini? Mari tulis satu lagi, tetapi kali ini ia akan mengembalikan pelaksanaan `image.Image` dan bukannya hirisan data.
+
+Takrifkan jenis `Image` anda sendiri, laksanakan [[/pkg/image/#Image][kaedah yang diperlukan]], dan panggil `pic.ShowImage`.
+
+`Bounds` sepatutnya mengembalikan `image.Rectangle`, seperti `image.Rect(0,`0,`w,`h)`.
+
+`ColorModel` sepatutnya mengembalikan `color.RGBAModel`.
+
+`At` sepatutnya mengembalikan warna; nilai `v` dalam penjana gambar terdahulu bersamaan dengan `color.RGBA{v,`v,`255,`255}` dalam penjana ini.
+
+.play methods/exercise-images.go

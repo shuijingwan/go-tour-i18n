@@ -1,0 +1,14 @@
+* Literal hirisan
+
+Literal hirisan menyerupai literal tatasusunan, tetapi tanpa menyatakan panjang.
+
+Ini ialah literal tatasusunan:
+
+	[3]bool{true, true, false}
+
+Kod berikut menghasilkan tatasusunan yang sama seperti di atas,
+kemudian membina hirisan yang merujuk kepadanya:
+
+	[]bool{true, true, false}
+
+.play moretypes/slice-literals.go

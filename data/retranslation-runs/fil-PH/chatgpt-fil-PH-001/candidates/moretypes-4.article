@@ -1,0 +1,8 @@
+* Mga pointer sa struct
+
+Maaaring i-access ang mga field ng struct sa pamamagitan ng pointer sa struct.
+
+Upang i-access ang field na `X` ng isang struct kung mayroon tayong pointer na `p` sa struct, maaari nating isulat ang `(*p).X`.
+Gayunman, masalimuot ang notasyong iyon, kaya pinapayagan ng wika na isulat na lamang ang `p.X`, nang walang tahasang pag-dereference.
+
+.play moretypes/struct-pointers.go

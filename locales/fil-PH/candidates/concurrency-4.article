@@ -1,0 +1,15 @@
+* Range at Close
+
+Maaaring `close` ng nagpadala ang isang channel upang ipahiwatig na wala nang ipapadalang value. Maaaring suriin ng tatanggap kung naisara na ang channel sa pamamagitan ng pagtatalaga ng pangalawang parameter sa receive expression: pagkatapos ng
+
+	v, ok := <-ch
+
+ang `ok` ay magiging `false` kung wala nang value na matatanggap at nakasara na ang channel.
+
+Paulit-ulit na tumatanggap ng mga value mula sa channel ang loop na `for`i`:=`range`c` hanggang maisara ito.
+
+*Tandaan:* Ang nagpadala lamang ang dapat magsara ng channel, hindi ang tatanggap. Magdudulot ng panic ang pagpapadala sa isang nakasarang channel.
+
+*Isa* pang tala:* Hindi katulad ng mga file ang mga channel; karaniwan ay hindi kailangang isara ang mga ito. Kailangan lamang itong isara kung dapat ipaalam sa tatanggap na wala nang darating na value, halimbawa upang tapusin ang loop na `range`.
+
+.play concurrency/range-and-close.go

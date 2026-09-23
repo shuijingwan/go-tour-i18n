@@ -1,0 +1,12 @@
+* Sambungan range
+
+Anda boleh mengabaikan indeks atau nilainya dengan mengumpukkannya kepada `_`.
+
+    for i, _ := range pow
+    for _, value := range pow
+
+Jika anda hanya memerlukan indeks, anda boleh menggugurkan pemboleh ubah kedua.
+
+    for i := range pow
+
+.play moretypes/range-continued.go

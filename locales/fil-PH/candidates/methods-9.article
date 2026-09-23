@@ -1,0 +1,11 @@
+* Mga interface
+
+Ang _interface_type_ ay tinutukoy bilang isang hanay ng mga signature ng method.
+
+Maaaring maglaman ang isang value na may interface type ng anumang value na nag-iimplement ng mga method na iyon.
+
+*Tandaan:* May error sa halimbawang code sa linya 22.
+Hindi ini-implement ng `Vertex` (ang value type) ang `Abser` dahil
+ang method na `Abs` ay nakatakda lamang sa `*Vertex` (ang pointer type).
+
+.play methods/interfaces.go

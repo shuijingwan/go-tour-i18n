@@ -1,0 +1,11 @@
+* Nilai pulangan bernama
+
+Nilai pulangan Go boleh diberi nama. Jika diberi nama, nilai tersebut dianggap sebagai pemboleh ubah yang ditakrifkan pada permulaan fungsi.
+
+Nama ini sepatutnya digunakan untuk mendokumenkan maksud nilai pulangan.
+
+Pernyataan `return` tanpa argumen memulangkan nilai pulangan bernama tersebut. Ini dikenali sebagai pulangan tanpa argumen ("naked return").
+
+Pernyataan pulangan tanpa argumen hanya patut digunakan dalam fungsi yang pendek, seperti dalam contoh ini. Dalam fungsi yang panjang, penggunaannya boleh menjejaskan kebolehbacaan.
+
+.play basics/named-results.go

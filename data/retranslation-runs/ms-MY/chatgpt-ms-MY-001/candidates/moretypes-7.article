@@ -1,0 +1,23 @@
+* Hirisan
+
+Tatasusunan mempunyai saiz yang tetap.
+Sebaliknya, hirisan merupakan paparan fleksibel kepada elemen tatasusunan
+yang saiznya boleh berubah secara dinamik.
+Dalam amalan, hirisan jauh lebih kerap digunakan berbanding tatasusunan.
+
+Jenis `[]T` ialah hirisan dengan elemen berjenis `T`.
+
+Hirisan dibentuk dengan menentukan dua indeks, iaitu had bawah dan
+had atas, yang dipisahkan oleh titik bertindih:
+
+	a[low : high]
+
+Ini memilih julat separuh terbuka yang merangkumi elemen pertama
+tetapi tidak merangkumi elemen terakhir.
+
+Ungkapan berikut menghasilkan hirisan yang merangkumi
+elemen 1 hingga 3 dalam `a`:
+
+	a[1:4]
+
+.play moretypes/slices.go

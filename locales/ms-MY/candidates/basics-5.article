@@ -1,0 +1,13 @@
+* Sambungan fungsi
+
+Apabila dua atau lebih parameter fungsi bernama yang berturutan mempunyai jenis yang sama, anda boleh menggugurkan jenis bagi semua parameter kecuali yang terakhir.
+
+Dalam contoh ini, kami meringkaskan
+
+	x int, y int
+
+kepada
+
+	x, y int
+
+.play basics/functions-continued.go

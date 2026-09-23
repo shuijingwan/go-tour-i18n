@@ -1,0 +1,24 @@
+* Penerima penunjuk
+
+Anda boleh mengisytiharkan kaedah dengan penerima penunjuk.
+
+Ini bermaksud jenis penerima mempunyai sintaks literal ⟪GTI18N_99f9fa4e_000001⟫*T⟪GTI18N_99f9fa4e_000002⟫ bagi suatu jenis ⟪GTI18N_99f9fa4e_000003⟫T⟪GTI18N_99f9fa4e_000004⟫.
+(Selain itu, ⟪GTI18N_99f9fa4e_000005⟫T⟪GTI18N_99f9fa4e_000006⟫ itu sendiri tidak boleh menjadi penunjuk seperti ⟪GTI18N_99f9fa4e_000007⟫*int⟪GTI18N_99f9fa4e_000008⟫.)
+
+Contohnya, kaedah ⟪GTI18N_99f9fa4e_000009⟫Scale⟪GTI18N_99f9fa4e_000010⟫ di sini ditakrifkan pada ⟪GTI18N_99f9fa4e_000011⟫*Vertex⟪GTI18N_99f9fa4e_000012⟫.
+
+Kaedah dengan penerima penunjuk boleh mengubah nilai yang ditunjuk oleh penerima
+(seperti yang dilakukan oleh ⟪GTI18N_99f9fa4e_000013⟫Scale⟪GTI18N_99f9fa4e_000014⟫ di sini).
+Oleh sebab kaedah sering perlu mengubah penerimanya, penerima penunjuk lebih
+lazim berbanding penerima nilai.
+
+Cuba buang ⟪GTI18N_99f9fa4e_000015⟫*⟪GTI18N_99f9fa4e_000016⟫ daripada pengisytiharan fungsi ⟪GTI18N_99f9fa4e_000017⟫Scale⟪GTI18N_99f9fa4e_000018⟫ pada baris 16
+dan perhatikan perubahan tingkah laku atur cara.
+
+Dengan penerima nilai, kaedah ⟪GTI18N_99f9fa4e_000019⟫Scale⟪GTI18N_99f9fa4e_000020⟫ beroperasi pada salinan nilai
+⟪GTI18N_99f9fa4e_000021⟫Vertex⟪GTI18N_99f9fa4e_000022⟫ asal.
+(Ini ialah tingkah laku yang sama seperti bagi argumen fungsi lain.)
+Kaedah ⟪GTI18N_99f9fa4e_000023⟫Scale⟪GTI18N_99f9fa4e_000024⟫ mesti mempunyai penerima penunjuk untuk mengubah nilai ⟪GTI18N_99f9fa4e_000025⟫Vertex⟪GTI18N_99f9fa4e_000026⟫
+yang diisytiharkan dalam fungsi ⟪GTI18N_99f9fa4e_000027⟫main⟪GTI18N_99f9fa4e_000028⟫.
+
+⟪GTI18N_99f9fa4e_000029⟫

@@ -1,0 +1,14 @@
+* Turutan penilaian switch
+
+Kes dalam switch dinilai dari atas ke bawah dan penilaian berhenti sebaik sahaja sesuatu kes sepadan.
+
+(Contohnya,
+
+	switch i {
+	case 0:
+	case f():
+	}
+
+tidak memanggil `f` jika `i==0`.)
+
+.play flowcontrol/switch-evaluation-order.go

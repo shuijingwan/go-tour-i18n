@@ -1,0 +1,40 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-ms-MY-004",
+  "locale": "ms-MY",
+  "unit_count": 4,
+  "restore_passed": 4,
+  "restore_failed": 0,
+  "validation_passed": 4,
+  "validation_failed": 0,
+  "units": [
+    {
+      "unit_id": "welcome/4",
+      "unit_kind": "page",
+      "status": "passed",
+      "candidate_path": "candidates/welcome-4.article",
+      "validation_path": "validation/welcome-4.json"
+    },
+    {
+      "unit_id": "welcome/5",
+      "unit_kind": "page",
+      "status": "passed",
+      "candidate_path": "candidates/welcome-5.article",
+      "validation_path": "validation/welcome-5.json"
+    },
+    {
+      "unit_id": "moretypes/8",
+      "unit_kind": "page",
+      "status": "passed",
+      "candidate_path": "candidates/moretypes-8.article",
+      "validation_path": "validation/moretypes-8.json"
+    },
+    {
+      "unit_id": "moretypes/12",
+      "unit_kind": "page",
+      "status": "passed",
+      "candidate_path": "candidates/moretypes-12.article",
+      "validation_path": "validation/moretypes-12.json"
+    }
+  ]
+}

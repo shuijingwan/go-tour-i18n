@@ -1,0 +1,12 @@
+* Karagdagang kaalaman sa mga method
+
+Maaari ka ring magdeklara ng method sa mga type na hindi struct.
+
+Sa halimbawang ito, makikita ang numeric type na `MyFloat` na may method na `Abs`.
+
+Maaari ka lamang magdeklara ng method na ang type ng receiver ay tinukoy sa parehong
+package kung saan nakapaloob ang method.
+Hindi ka maaaring magdeklara ng method na ang type ng receiver ay tinukoy sa ibang
+package (kabilang dito ang mga built-in na type gaya ng `int`).
+
+.play methods/methods-continued.go

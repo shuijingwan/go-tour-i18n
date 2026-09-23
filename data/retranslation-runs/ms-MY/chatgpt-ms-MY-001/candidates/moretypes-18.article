@@ -1,0 +1,11 @@
+* Latihan: Hirisan
+
+Laksanakan `Pic`. Fungsi ini sepatutnya memulangkan hirisan dengan panjang `dy`, yang setiap elemennya ialah hirisan integer tanpa tanda 8 bit sepanjang `dx`. Apabila anda menjalankan atur cara, gambar anda akan dipaparkan dengan mentafsir integer tersebut sebagai nilai skala kelabu (sebenarnya, skala biru).
+
+Anda bebas menentukan imej yang hendak dihasilkan. Antara fungsi yang menarik ialah `(x+y)/2`, `x*y` dan `x^y`.
+
+(Anda perlu menggunakan gelung untuk memperuntukkan setiap `[]uint8` di dalam `[][]uint8`.)
+
+(Gunakan `uint8(intValue)` untuk menukar antara jenis.)
+
+.play moretypes/exercise-slices.go

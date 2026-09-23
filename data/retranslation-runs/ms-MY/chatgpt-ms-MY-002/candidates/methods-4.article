@@ -1,0 +1,24 @@
+* Penerima penunjuk
+
+Anda boleh mengisytiharkan kaedah dengan penerima penunjuk.
+
+Ini bermaksud jenis penerima mempunyai sintaks literal `*T` bagi suatu jenis `T`.
+(Selain itu, `T` itu sendiri tidak boleh menjadi penunjuk seperti `*int`.)
+
+Contohnya, kaedah `Scale` di sini ditakrifkan pada `*Vertex`.
+
+Kaedah dengan penerima penunjuk boleh mengubah nilai yang ditunjuk oleh penerima
+(seperti yang dilakukan oleh `Scale` di sini).
+Oleh sebab kaedah sering perlu mengubah penerimanya, penerima penunjuk lebih
+lazim berbanding penerima nilai.
+
+Cuba buang `*` daripada pengisytiharan fungsi `Scale` pada baris 16
+dan perhatikan perubahan tingkah laku atur cara.
+
+Dengan penerima nilai, kaedah `Scale` beroperasi pada salinan nilai
+`Vertex` asal.
+(Ini ialah tingkah laku yang sama seperti bagi argumen fungsi lain.)
+Kaedah `Scale` mesti mempunyai penerima penunjuk untuk mengubah nilai `Vertex`
+yang diisytiharkan dalam fungsi `main`.
+
+.play methods/methods-pointers.go

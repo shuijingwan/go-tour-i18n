@@ -1,0 +1,21 @@
+* sync.Mutex
+
+Nakita na natin kung gaano kahusay ang mga channel para sa komunikasyon sa pagitan ng mga goroutine.
+
+Pero paano kung hindi natin kailangan ng komunikasyon? Paano kung nais lamang nating tiyaking
+iisa lang na goroutine ang maaaring mag-access ng isang variable sa bawat pagkakataon upang maiwasan ang salungatan?
+
+Ang konseptong ito ay tinatawag na _pag-iwas_sa_sabayang_pag-access_, at ang karaniwang pangalan ng istruktura ng data na nagbibigay nito ay _mutex_.
+
+Nagbibigay ang Go standard library ng mutual exclusion sa pamamagitan ng
+[[/pkg/sync/#Mutex][`sync.Mutex`]] at ng dalawang method nito:
+
+- `Lock`
+- `Unlock`
+
+Maaari nating tukuyin ang isang block ng code na isasagawa nang walang kasabay na pag-access sa pamamagitan ng
+paglalagay ng mga tawag sa `Lock` at `Unlock` sa magkabilang dulo nito, gaya ng ipinapakita sa method na `Inc`.
+
+Maaari rin nating gamitin ang `defer` upang tiyaking maa-unlock ang mutex, gaya ng nasa method na `Value`.
+
+.play concurrency/mutex-counter.go

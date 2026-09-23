@@ -1,0 +1,16 @@
+* Nama yang dieksport
+
+Dalam Go, sesuatu nama dieksport jika bermula dengan huruf besar.
+Contohnya, `Pizza` ialah nama yang dieksport, begitu juga `Pi`, yang dieksport daripada
+pakej `math`.
+
+Nama `pizza` dan `pi` tidak bermula dengan huruf besar, jadi kedua-duanya tidak dieksport.
+
+Apabila mengimport pakej, anda hanya boleh merujuk kepada nama yang dieksport daripadanya.
+Nama yang tidak dieksport tidak boleh diakses dari luar pakej.
+
+Jalankan kod ini. Perhatikan mesej ralat yang dipaparkan.
+
+Untuk membetulkan ralat tersebut, tukar nama `math.pi` kepada `math.Pi` dan cuba lagi.
+
+.play basics/exported-names.go

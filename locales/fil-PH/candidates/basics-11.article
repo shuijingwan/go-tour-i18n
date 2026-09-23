@@ -1,0 +1,27 @@
+* Mga batayang type
+
+Ang mga batayang type ng Go ay:
+
+	bool
+
+	string
+
+	int  int8  int16  int32  int64
+	uint uint8 uint16 uint32 uint64 uintptr
+
+	byte // alias para sa uint8
+
+	rune // alias para sa int32
+	     // kumakatawan sa isang Unicode code point
+
+	float32 float64
+
+	complex64 complex128
+
+Ipinapakita sa halimbawa ang mga variable na may iba't ibang type,
+at ipinapakita rin na maaaring pagsama-samahin sa mga block ang mga deklarasyon ng variable, tulad ng mga pahayag ng pag-import.
+
+Ang mga type na `int`, `uint`, at `uintptr` ay karaniwang may lapad na 32 bit sa mga 32-bit system at 64 bit sa mga 64-bit system.
+Kapag kailangan mo ng integer value, dapat gamitin ang `int` maliban kung may partikular kang dahilan upang gumamit ng integer type na may takdang laki o walang sign.
+
+.play basics/basic-types.go

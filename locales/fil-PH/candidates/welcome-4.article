@@ -1,0 +1,12 @@
+* Go nang offline (opsyonal)
+
+Available rin ang tour bilang hiwalay na programa na magagamit mo kahit walang koneksyon sa internet. Binu-build at pinapatakbo nito ang mga halimbawang code sa sarili mong computer.
+
+Upang patakbuhin ang tour nang lokal, kailangan mo munang [[/doc/install][i-install ang Go]] at pagkatapos ay patakbuhin ang:
+
+  go install golang.org/x/website/tour@latest
+
+Maglalagay ito ng binary na `tour` sa iyong [[/cmd/go/#hdr-GOPATH_and_Modules][GOPATH]], sa loob ng direktoryong `bin`.
+Kapag pinatakbo mo ang programa ng tour, magbubukas ito ng web browser na nagpapakita ng lokal mong bersyon ng tour.
+
+Siyempre, maaari mo pa ring ipagpatuloy ang tour sa website na ito.

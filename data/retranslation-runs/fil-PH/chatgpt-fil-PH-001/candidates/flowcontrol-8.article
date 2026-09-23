@@ -1,0 +1,31 @@
+* Pagsasanay: Mga loop at function
+
+Upang makapag-eksperimento sa mga function at loop, gumawa tayo ng function para sa square root: kung bibigyan ng numerong x, gusto nating mahanap ang numerong z na ang z² ay pinakamalapit sa x.
+
+Karaniwang gumagamit ang mga computer ng loop upang kalkulahin ang square root ng x.
+Magsimula tayo sa isang tantiyang z, pagkatapos ay baguhin ang z batay sa kung gaano kalapit ang z² sa x upang makakuha ng mas mahusay na tantiya:
+
+	z -= (z*z - x) / (2*z)
+
+Sa paulit-ulit na pagsasaayos na ito, unti-unting bumubuti ang tantiya hanggang sa makakuha tayo ng sagot na pinakamalapit hangga't maaari sa aktuwal na square root.
+
+Ipatupad ito sa ibinigay na `func`Sqrt`.
+Ang 1 ay isang maayos na panimulang tantiya para sa z, anuman ang input.
+Sa simula, ulitin ang kalkulasyon nang 10 beses at i-print ang bawat value ng z habang nagpapatuloy.
+Tingnan kung gaano kalapit ang nakukuha mong sagot para sa iba't ibang value ng x (1, 2, 3, ...) at kung gaano kabilis bumubuti ang tantiya.
+
+Pahiwatig: Upang magdeklara at mag-initialize ng floating-point value, gumamit ng floating-point syntax o conversion:
+
+	z := 1.0
+	z := float64(1)
+
+Pagkatapos, baguhin ang condition ng loop upang huminto kapag hindi na nagbabago ang value (o napakaliit na lamang ng pagbabago).
+Tingnan kung mas marami o mas kaunti ito sa 10 iterasyon.
+Subukan ang iba pang panimulang tantiya para sa z, gaya ng x o x/2.
+Gaano kalapit ang resulta ng iyong function sa [[/pkg/math/#Sqrt][math.Sqrt]] sa standard library?
+
+(*Tandaan:* Kung interesado ka sa mga detalye ng algorithm, ang z² − x sa itaas ay ang layo ng z² mula sa target nitong x, at ang paghahati sa 2z ay gumagamit ng derivative ng z² upang maitugma ang laki ng pagbabago sa z sa bilis ng pagbabago ng z².
+Tinatawag na [[https://en.wikipedia.org/wiki/Newton%27s_method][Newton's method]] ang pangkalahatang paraang ito.
+Mabisa ito para sa maraming function, lalo na para sa square root.)
+
+.play flowcontrol/exercise-loops-and-functions.go

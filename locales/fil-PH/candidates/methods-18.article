@@ -1,0 +1,8 @@
+* Pagsasanay: Mga Stringer
+
+Gawing nag-iimplement ang type na `IPAddr` ng `fmt.Stringer` upang mai-print ang address
+bilang apat na numerong pinaghihiwalay ng mga tuldok.
+
+Halimbawa, dapat i-print ang `IPAddr{1,`2,`3,`4}` bilang `"1.2.3.4"`.
+
+.play methods/exercise-stringer.go

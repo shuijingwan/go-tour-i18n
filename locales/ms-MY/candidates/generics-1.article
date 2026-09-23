@@ -1,0 +1,17 @@
+* Parameter jenis
+
+Fungsi Go boleh ditulis untuk berfungsi dengan berbilang jenis menggunakan parameter jenis. Parameter
+jenis sesuatu fungsi muncul di antara kurungan siku, sebelum
+argumen fungsi.
+
+  func Index[T comparable](s []T, x T) int
+
+Pengisytiharan ini bermaksud bahawa `s` ialah hirisan bagi sebarang jenis `T` yang memenuhi
+kekangan terbina dalam `comparable`. `x` juga merupakan nilai daripada jenis yang sama.
+
+`comparable` ialah kekangan berguna yang membolehkan operator `==` dan
+`!=` digunakan pada nilai jenis tersebut. Dalam contoh ini, kita menggunakannya untuk membandingkan satu
+nilai dengan semua elemen hirisan sehingga padanan ditemui. Fungsi `Index` ini berfungsi
+untuk sebarang jenis yang menyokong perbandingan.
+
+.play generics/index.go

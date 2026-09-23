@@ -1,0 +1,26 @@
+* Mga error
+
+Ipinapahayag ng mga Go program ang estado ng error gamit ang mga value na `error`.
+
+Ang type na `error` ay isang built-in na interface na katulad ng `fmt.Stringer`:
+
+	type error interface {
+		Error() string
+	}
+
+(Gaya ng `fmt.Stringer`, hinahanap ng package na `fmt` ang interface na `error` kapag
+nagpi-print ng mga value.)
+
+Madalas na nagbabalik ang mga function ng value na `error`, at dapat pangasiwaan ng tumatawag na code
+ang mga error sa pamamagitan ng pagsuri kung katumbas ng `nil` ang error.
+
+	i, err := strconv.Atoi("42")
+	if err != nil {
+		fmt.Printf("couldn't convert number: %v\n", err)
+		return
+	}
+	fmt.Println("Converted integer:", i)
+
+Ang nil na `error` ay nangangahulugang tagumpay; ang hindi nil na `error` ay nangangahulugang pagkabigo.
+
+.play methods/errors.go

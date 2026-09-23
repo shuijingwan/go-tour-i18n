@@ -1,0 +1,12 @@
+* Pagsasanay: rot13Reader
+
+Karaniwang pattern ang isang [[/pkg/io/#Reader][io.Reader]] na bumabalot sa isa pang `io.Reader` at binabago ang daloy ng data sa ilang paraan.
+
+Halimbawa, tumatanggap ang function na [[/pkg/compress/gzip/#NewReader][gzip.NewReader]] ng `io.Reader` (isang daloy ng naka-compress na data) at nagbabalik ng `*gzip.Reader` na nag-iimplement din ng `io.Reader` (isang daloy ng na-decompress na data).
+
+Gumawa ng `rot13Reader` na nag-iimplement ng `io.Reader` at nagbabasa mula sa isang `io.Reader`, habang binabago ang daloy ng data sa pamamagitan ng paglalapat ng [[https://en.wikipedia.org/wiki/ROT13][rot13]] substitution cipher sa lahat ng titik.
+
+Ibinigay na para sa iyo ang type na `rot13Reader`.
+Gawin itong `io.Reader` sa pamamagitan ng pag-implement sa method nitong `Read`.
+
+.play methods/exercise-rot-reader.go

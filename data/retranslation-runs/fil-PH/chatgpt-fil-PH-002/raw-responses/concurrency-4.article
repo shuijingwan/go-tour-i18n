@@ -1,0 +1,15 @@
+* Range at Close
+
+Maaaring ⟪GTI18N_3e925c67_000001⟫close⟪GTI18N_3e925c67_000002⟫ ng nagpadala ang isang channel upang ipahiwatig na wala nang ipapadalang value. Maaaring suriin ng tatanggap kung naisara na ang channel sa pamamagitan ng pagtatalaga ng pangalawang parameter sa receive expression: pagkatapos ng
+
+⟪GTI18N_3e925c67_000003⟫
+
+ang ⟪GTI18N_3e925c67_000004⟫ok⟪GTI18N_3e925c67_000005⟫ ay magiging ⟪GTI18N_3e925c67_000006⟫false⟪GTI18N_3e925c67_000007⟫ kung wala nang value na matatanggap at nakasara na ang channel.
+
+Paulit-ulit na tumatanggap ng mga value mula sa channel ang loop na ⟪GTI18N_3e925c67_000008⟫for`i`:=`range`c⟪GTI18N_3e925c67_000009⟫ hanggang maisara ito.
+
+⟪GTI18N_3e925c67_000010⟫Tandaan:⟪GTI18N_3e925c67_000011⟫ Ang nagpadala lamang ang dapat magsara ng channel, hindi ang tatanggap. Magdudulot ng panic ang pagpapadala sa isang nakasarang channel.
+
+⟪GTI18N_3e925c67_000012⟫Isa* pang tala:⟪GTI18N_3e925c67_000013⟫ Hindi katulad ng mga file ang mga channel; karaniwan ay hindi kailangang isara ang mga ito. Kailangan lamang itong isara kung dapat ipaalam sa tatanggap na wala nang darating na value, halimbawa upang tapusin ang loop na ⟪GTI18N_3e925c67_000014⟫range⟪GTI18N_3e925c67_000015⟫.
+
+⟪GTI18N_3e925c67_000016⟫

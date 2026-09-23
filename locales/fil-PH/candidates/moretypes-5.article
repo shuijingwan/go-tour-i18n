@@ -1,0 +1,9 @@
+* Mga struct literal
+
+Tinutukoy ng struct literal ang isang bagong inilaan na struct value sa pamamagitan ng paglilista ng mga value ng mga field nito.
+
+Maaari mong ilista ang ilan lamang sa mga field gamit ang syntax na `Name:`. (Hindi mahalaga ang pagkakasunod-sunod ng mga pinangalanang field.)
+
+Nagbabalik ang espesyal na prefix na `&` ng pointer sa struct value.
+
+.play moretypes/struct-literals.go

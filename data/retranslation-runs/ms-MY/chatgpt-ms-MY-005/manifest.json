@@ -1,0 +1,37 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-ms-MY-005",
+  "locale": "ms-MY",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 2,
+  "units": [
+    {
+      "unit_id": "methods/12",
+      "unit_kind": "page",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "9487ca3c9872972d42af8cfa389755678fe8a7cca110b592aac2a762332febf5",
+      "input_path": "inputs/methods-12.article",
+      "input_sha256": "5f61c63b091ec7f8eb222ffa05f4d61660d3a44fad97f530d73f3355fc32f094",
+      "protected_token_count": 10,
+      "previous_snapshot_id": "ms-MY-qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "English methods that gracefully handle being called with a nil receiver is rendered awkwardly as kaedah yang dapat menangani panggilan dengan penerima nil dengan baik, with repeated dengan and less natural Malaysian Malay. Revise the sentence for natural expression while preserving that Go methods can gracefully handle a call with a nil receiver; retain nil and the exact technical meaning."
+    },
+    {
+      "unit_id": "methods/19",
+      "unit_kind": "page",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "9eaab1fde2076c1376f78ceec0f84766c4c3b8062867436d73cef0bc77f16bd5",
+      "input_path": "inputs/methods-19.article",
+      "input_sha256": "d0e83c233a107cd035d349873238de6711313568f907672121591d19cc7e0d9c",
+      "protected_token_count": 26,
+      "previous_snapshot_id": "ms-MY-qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "C",
+      "previous_finding": "Source A nil error denotes success; a non-nil error denotes failure. Target nil `error` menandakan kejayaan; nil `error` yang bukan nil menandakan kegagalan improperly repeats nil before the non-nil error and makes the second clause self-contradictory. Distinguish nil error meaning success from non-nil error meaning failure clearly in natural Malay, preserving protected nil and error tokens."
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+* Pemilihan jenis
+
+_pemilihan_jenis_ ialah binaan yang membolehkan beberapa penegasan jenis dibuat secara berturutan.
+
+Pemilihan jenis menyerupai pernyataan switch biasa, tetapi kes dalam pemilihan
+jenis menetapkan jenis (bukan nilai), dan jenis tersebut dibandingkan dengan
+jenis nilai yang disimpan oleh nilai antara muka yang diberikan.
+
+	switch v := i.(type) {
+	case T:
+		// di sini v berjenis T
+	case S:
+		// di sini v berjenis S
+	default:
+		// tiada padanan; di sini v mempunyai jenis yang sama seperti i
+	}
+
+Pengisytiharan dalam pemilihan jenis mempunyai sintaks yang sama seperti penegasan jenis `i.(T)`,
+tetapi jenis tertentu `T` digantikan dengan kata kunci `type`.
+
+Pernyataan switch ini menguji sama ada nilai antara muka `i`
+menyimpan nilai berjenis `T` atau `S`.
+Dalam setiap kes `T` dan `S`, pemboleh ubah `v` masing-masing akan berjenis
+`T` atau `S` dan menyimpan nilai yang disimpan oleh `i`.
+Dalam kes default (apabila tiada padanan), pemboleh ubah `v` mempunyai
+jenis antara muka dan nilai yang sama seperti `i`.
+
+.play methods/type-switches.go

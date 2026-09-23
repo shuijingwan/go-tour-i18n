@@ -1,0 +1,13 @@
+* Switch
+
+Pernyataan `switch` ialah cara yang lebih ringkas untuk menulis rangkaian pernyataan `if`-`else`.
+Ia melaksanakan kes pertama yang nilainya sama dengan ungkapan syarat.
+
+Switch dalam Go menyerupai switch dalam C, C++, Java, JavaScript dan PHP,
+kecuali Go hanya melaksanakan kes yang dipilih, bukan semua kes selepasnya.
+Dengan kata lain, pernyataan `break` yang diperlukan pada penghujung setiap kes
+dalam bahasa tersebut disediakan secara automatik dalam Go.
+Satu lagi perbezaan penting ialah kes switch dalam Go
+tidak semestinya pemalar, dan nilai yang terlibat tidak semestinya integer.
+
+.play flowcontrol/switch.go

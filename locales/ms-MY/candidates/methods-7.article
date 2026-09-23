@@ -1,0 +1,21 @@
+* Kaedah dan capaian tidak langsung melalui penunjuk (2)
+
+Perkara yang setara berlaku dalam arah sebaliknya.
+
+Fungsi yang menerima argumen nilai mesti menerima nilai daripada jenis tertentu itu:
+
+	var v Vertex
+	fmt.Println(AbsFunc(v))  // OK
+	fmt.Println(AbsFunc(&v)) // Ralat kompilasi!
+
+manakala kaedah dengan penerima nilai menerima sama ada nilai atau penunjuk sebagai
+penerima apabila dipanggil:
+
+	var v Vertex
+	fmt.Println(v.Abs()) // OK
+	p := &v
+	fmt.Println(p.Abs()) // OK
+
+Dalam kes ini, panggilan kaedah `p.Abs()` ditafsirkan sebagai `(*p).Abs()`.
+
+.play methods/indirection-values.go

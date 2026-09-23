@@ -1,0 +1,17 @@
+* Memilih penerima nilai atau penerima penunjuk
+
+Terdapat dua sebab untuk menggunakan penerima penunjuk.
+
+Pertama, supaya kaedah boleh mengubah nilai yang ditunjuk oleh penerimanya.
+
+Kedua, untuk mengelakkan penyalinan nilai pada setiap panggilan kaedah.
+Ini boleh menjadi lebih cekap jika penerima ialah struktur yang besar, contohnya.
+
+Dalam contoh ini, kedua-dua ⟪GTI18N_357424f2_000001⟫Scale⟪GTI18N_357424f2_000002⟫ dan ⟪GTI18N_357424f2_000003⟫Abs⟪GTI18N_357424f2_000004⟫ ialah kaedah dengan jenis penerima ⟪GTI18N_357424f2_000005⟫*Vertex⟪GTI18N_357424f2_000006⟫,
+walaupun kaedah ⟪GTI18N_357424f2_000007⟫Abs⟪GTI18N_357424f2_000008⟫ tidak perlu mengubah penerimanya.
+
+Secara umum, semua kaedah pada sesuatu jenis sepatutnya menggunakan sama ada penerima nilai atau penerima penunjuk,
+bukan campuran kedua-duanya.
+(Kita akan melihat sebabnya dalam beberapa halaman seterusnya.)
+
+⟪GTI18N_357424f2_000009⟫

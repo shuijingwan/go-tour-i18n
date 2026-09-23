@@ -1,0 +1,17 @@
+* Pagpili ng value o pointer receiver
+
+May dalawang dahilan upang gumamit ng pointer receiver.
+
+Una, upang mabago ng method ang value na tinuturo ng receiver nito.
+
+Ikalawa, upang maiwasan ang pagkopya ng value sa bawat pagtawag sa method.
+Halimbawa, maaaring mas mahusay ito kung isang malaking struct ang receiver.
+
+Sa halimbawang ito, ang `Scale` at `Abs` ay parehong method na may receiver type na `*Vertex`,
+kahit hindi kailangang baguhin ng method na `Abs` ang receiver nito.
+
+Sa pangkalahatan, dapat pare-parehong value receiver o pare-parehong pointer receiver
+ang gamitin ng lahat ng method sa isang type, sa halip na paghaluin ang dalawa.
+(Makikita natin kung bakit sa mga susunod na pahina.)
+
+.play methods/methods-with-pointer-receivers.go

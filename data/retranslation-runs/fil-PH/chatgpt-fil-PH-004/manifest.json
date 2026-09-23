@@ -1,0 +1,37 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-fil-PH-004",
+  "locale": "fil-PH",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 2,
+  "units": [
+    {
+      "unit_id": "basics/4",
+      "unit_kind": "page",
+      "source_path": "_content/tour/basics.article",
+      "source_sha256": "accf0562d9b759c9735500d5df0d74e8f90142ed96fe5ab2f5eedc6fbd6cf6f2",
+      "input_path": "inputs/basics-4.article",
+      "input_sha256": "b6bc6fda2a9bf178218b6f5f26642d6bda3e3f4c3550685d0b5331ea7043cb50",
+      "protected_token_count": 8,
+      "previous_snapshot_id": "fil-PH-qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "Source: Notice that the type comes after the variable name. Candidate: Pansinin na ang type ay nasa _pagkatapos_ ng pangalan ng variable. The phrase nasa pagkatapos is unnatural Filipino locative grammar. Preserve the emphasis and technical meaning that a Go parameter type follows the variable name; revise to natural Filipino word order without changing protected structure."
+    },
+    {
+      "unit_id": "moretypes/7",
+      "unit_kind": "page",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "a169cf48dd659510ff7f1f8adfdbed5a247b51a1f7c3a45ae972f18921925033",
+      "input_path": "inputs/moretypes-7.article",
+      "input_sha256": "0a00fb45417105f3622f8e6b08d9003a4e99957f46d5ee189713c54655e43cd5",
+      "protected_token_count": 9,
+      "previous_snapshot_id": "fil-PH-qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "C",
+      "previous_finding": "Source: A slice, on the other hand, is a dynamically-sized, flexible view into the elements of an array. Candidate: Samantala, ang slice ay isang flexible na view sa mga elemento ng array na maaaring magbago ang laki. The immediately adjacent relative clause na maaaring magbago ang laki can modify array, incorrectly implying that arrays may change size, contradicting the preceding sentence that arrays have fixed size. Explicitly attribute dynamic size to slice while preserving its view onto an underlying fixed-size array; do not add content or alter protected syntax."
+    }
+  ]
+}

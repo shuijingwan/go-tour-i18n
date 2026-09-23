@@ -1,0 +1,18 @@
+* Inferens jenis
+
+Apabila mengisytiharkan pemboleh ubah tanpa menyatakan jenis secara jelas (sama ada menggunakan sintaks `:=` atau sintaks ungkapan `var`=`), jenis pemboleh ubah tersebut diinferens daripada nilai di sebelah kanan.
+
+Apabila sebelah kanan pengisytiharan sudah mempunyai jenis, pemboleh ubah baharu menggunakan jenis yang sama:
+
+	var i int
+	j := i // j ialah int
+
+Namun, apabila sebelah kanan mengandungi pemalar angka tanpa jenis, pemboleh ubah baharu boleh menjadi `int`, `float64` atau `complex128` bergantung pada ketepatan pemalar tersebut:
+
+	i := 42           // int
+	f := 3.142        // float64
+	g := 0.867 + 0.5i // complex128
+
+Cuba ubah nilai permulaan `v` dalam kod contoh dan perhatikan kesannya terhadap jenis pemboleh ubah itu.
+
+.play basics/type-inference.go

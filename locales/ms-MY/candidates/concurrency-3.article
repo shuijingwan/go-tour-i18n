@@ -1,0 +1,11 @@
+* Saluran Berpenimbal
+
+Saluran boleh _berpenimbal_. Berikan panjang penimbal sebagai argumen kedua kepada `make` untuk memulakan saluran berpenimbal:
+
+	ch := make(chan int, 100)
+
+Penghantaran ke saluran berpenimbal hanya menyekat apabila penimbal penuh. Penerimaan menyekat apabila penimbal kosong.
+
+Ubah suai contoh supaya penimbal diisi melebihi kapasitinya dan lihat apa yang berlaku.
+
+.play concurrency/buffered-channels.go

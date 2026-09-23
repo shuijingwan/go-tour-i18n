@@ -1,0 +1,13 @@
+* Mga method
+
+Walang mga class sa Go.
+Gayunman, maaari kang magtakda ng mga method sa mga type.
+
+Ang method ay isang function na may espesyal na argument na _receiver_.
+
+Nasa sarili nitong listahan ng mga argument ang receiver, sa pagitan ng keyword na `func` at
+ng pangalan ng method.
+
+Sa halimbawang ito, ang method na `Abs` ay may receiver na may type na `Vertex` at pangalang `v`.
+
+.play methods/methods.go

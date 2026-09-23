@@ -1,0 +1,14 @@
+* Haba at kapasidad ng slice
+
+May parehong _haba_ at _kapasidad_ ang isang slice.
+
+Ang haba ng slice ay ang bilang ng mga elementong nilalaman nito.
+
+Ang kapasidad ng slice ay ang bilang ng mga elemento sa pinagbabatayang array, simula sa unang elemento ng slice.
+
+Makukuha ang haba at kapasidad ng slice na `s` gamit ang mga expression na `len(s)` at `cap(s)`.
+
+Maaari mong pahabain ang slice sa pamamagitan ng muling pag-slice rito, kung sapat ang kapasidad nito.
+Subukang baguhin ang isa sa mga operasyon sa slice sa halimbawang programa upang lumampas ito sa kapasidad at tingnan kung ano ang mangyayari.
+
+.play moretypes/slice-len-cap.go

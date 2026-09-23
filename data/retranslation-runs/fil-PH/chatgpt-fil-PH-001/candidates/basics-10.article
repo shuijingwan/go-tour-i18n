@@ -1,0 +1,7 @@
+* Maiikling deklarasyon ng variable
+
+Sa loob ng isang function, maaaring gamitin ang maikling pahayag ng pagtatalaga na `:=` sa halip ng deklarasyong `var` na hindi tahasang tinukoy ang type.
+
+Sa labas ng isang function, nagsisimula ang bawat pahayag sa isang keyword (`var`, `func`, at iba pa), kaya hindi maaaring gamitin doon ang konstruksiyong `:=`.
+
+.play basics/short-variable-declarations.go

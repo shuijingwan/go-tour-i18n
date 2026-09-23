@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "evidence_type": "glossary-review-receipt",
+  "locale": "ms-MY",
+  "review_id": "ms-MY-glossary-20260923-01",
+  "stage": "locale-glossary-review",
+  "decision": "failed",
+  "reviewer": "chatgpt-gpt-5.6-sol-high-independent-ms-MY",
+  "rubric": "glossary-review/v1",
+  "glossary_path": "locales/ms-MY/glossary.yaml",
+  "glossary_sha256": "dbd940bd1b8a47ad56b56b70411268df5c0a42bac1bcdfc2b2c3a63816632113",
+  "findings": [
+    "mandatory slide/slides=halaman and global forbidden slaid conflate course pages (welcome/1) with actual presentation slides linked in concurrency/11 (Go Concurrency Patterns and other talk slides). The latter are legitimately slaid in Malay; the global ban suppresses a valid context and the unconditional mandatory term would mistranslate actual slide decks. Reassess these glossary decisions contextually without changing link targets or the course-page terminology."
+  ]
+}

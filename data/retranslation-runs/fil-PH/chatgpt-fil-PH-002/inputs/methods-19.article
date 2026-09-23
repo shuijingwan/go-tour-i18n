@@ -1,0 +1,19 @@
+* Errors
+
+Go programs express error state with ⟪GTI18N_9eaab1fd_000001⟫error⟪GTI18N_9eaab1fd_000002⟫ values.
+
+The ⟪GTI18N_9eaab1fd_000003⟫error⟪GTI18N_9eaab1fd_000004⟫ type is a built-in interface similar to ⟪GTI18N_9eaab1fd_000005⟫fmt.Stringer⟪GTI18N_9eaab1fd_000006⟫:
+
+⟪GTI18N_9eaab1fd_000007⟫
+
+(As with ⟪GTI18N_9eaab1fd_000008⟫fmt.Stringer⟪GTI18N_9eaab1fd_000009⟫, the ⟪GTI18N_9eaab1fd_000010⟫fmt⟪GTI18N_9eaab1fd_000011⟫ package looks for the ⟪GTI18N_9eaab1fd_000012⟫error⟪GTI18N_9eaab1fd_000013⟫ interface when
+printing values.)
+
+Functions often return an ⟪GTI18N_9eaab1fd_000014⟫error⟪GTI18N_9eaab1fd_000015⟫ value, and calling code should handle errors
+by testing whether the error equals ⟪GTI18N_9eaab1fd_000016⟫nil⟪GTI18N_9eaab1fd_000017⟫.
+
+⟪GTI18N_9eaab1fd_000018⟫
+
+A nil ⟪GTI18N_9eaab1fd_000019⟫error⟪GTI18N_9eaab1fd_000020⟫ denotes success; a non-nil ⟪GTI18N_9eaab1fd_000021⟫error⟪GTI18N_9eaab1fd_000022⟫ denotes failure.
+
+⟪GTI18N_9eaab1fd_000023⟫

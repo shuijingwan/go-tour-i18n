@@ -1,0 +1,13 @@
+* Mga slice literal
+
+Katulad ng array literal ang slice literal, ngunit walang haba.
+
+Ito ay isang array literal:
+
+	[3]bool{true, true, false}
+
+At nililikha nito ang parehong array gaya ng nasa itaas, pagkatapos ay bumubuo ng slice na may reference rito:
+
+	[]bool{true, true, false}
+
+.play moretypes/slice-literals.go

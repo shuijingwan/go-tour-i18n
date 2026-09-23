@@ -1,0 +1,12 @@
+* Nilai antara muka dengan nilai dasar nil
+
+Jika nilai konkrit di dalam antara muka itu sendiri ialah nil,
+kaedah akan dipanggil dengan penerima nil.
+
+Dalam sesetengah bahasa, keadaan ini akan mencetuskan pengecualian penunjuk null,
+tetapi dalam Go, lazimnya kaedah ditulis supaya dapat mengendalikan panggilan
+apabila penerimanya nil tanpa masalah (seperti kaedah `M` dalam contoh ini).
+
+Perhatikan bahawa nilai antara muka yang menyimpan nilai konkrit nil itu sendiri bukan nil.
+
+.play methods/interface-values-with-nil.go

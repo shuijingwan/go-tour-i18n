@@ -1,0 +1,21 @@
+* Mga method at di-tuwirang paggamit ng pointer (2)
+
+Ganito rin ang nangyayari sa kabaligtarang direksiyon.
+
+Kailangang value ng mismong tinukoy na type ang ipasa sa mga function na may value argument:
+
+	var v Vertex
+	fmt.Println(AbsFunc(v))  // OK
+	fmt.Println(AbsFunc(&v)) // Error sa pag-compile!
+
+samantalang maaaring value o pointer ang receiver na ginagamit sa pagtawag
+sa mga method na may value receiver:
+
+	var v Vertex
+	fmt.Println(v.Abs()) // OK
+	p := &v
+	fmt.Println(p.Abs()) // OK
+
+Sa kasong ito, itinuturing ang pagtawag sa method na `p.Abs()` bilang `(*p).Abs()`.
+
+.play methods/indirection-values.go

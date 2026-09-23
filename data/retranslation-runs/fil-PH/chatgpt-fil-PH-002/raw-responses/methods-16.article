@@ -1,0 +1,19 @@
+* Mga type switch
+
+Ang ⟪GTI18N_26e4da09_000001⟫type_switch⟪GTI18N_26e4da09_000002⟫ ay isang construct na nagpapahintulot ng magkakasunod na type assertion.
+
+Katulad ito ng karaniwang pahayag na switch, ngunit mga type (hindi mga value)
+ang tinutukoy ng mga case sa type switch, at inihahambing ang mga type na iyon
+sa type ng value na hawak ng ibinigay na interface value.
+
+⟪GTI18N_26e4da09_000003⟫dito ⟪GTI18N_26e4da09_000004⟫ ay may type na ⟪GTI18N_26e4da09_000005⟫⟪GTI18N_26e4da09_000006⟫dito ⟪GTI18N_26e4da09_000007⟫ ay may type na ⟪GTI18N_26e4da09_000008⟫⟪GTI18N_26e4da09_000009⟫walang tugma; dito, kapareho ang type ng ⟪GTI18N_26e4da09_000010⟫ at ⟪GTI18N_26e4da09_000011⟫⟪GTI18N_26e4da09_000012⟫Ang deklarasyon sa type switch ay may kaparehong syntax ng type assertion na ⟪GTI18N_26e4da09_000013⟫i.(T)⟪GTI18N_26e4da09_000014⟫,
+ngunit ang partikular na type na ⟪GTI18N_26e4da09_000015⟫T⟪GTI18N_26e4da09_000016⟫ ay pinapalitan ng keyword na ⟪GTI18N_26e4da09_000017⟫type⟪GTI18N_26e4da09_000018⟫.
+
+Sinusuri ng pahayag na switch na ito kung may hawak ang interface value na ⟪GTI18N_26e4da09_000019⟫i⟪GTI18N_26e4da09_000020⟫
+na value na may type na ⟪GTI18N_26e4da09_000021⟫T⟪GTI18N_26e4da09_000022⟫ o ⟪GTI18N_26e4da09_000023⟫S⟪GTI18N_26e4da09_000024⟫.
+Sa mga case na ⟪GTI18N_26e4da09_000025⟫T⟪GTI18N_26e4da09_000026⟫ at ⟪GTI18N_26e4da09_000027⟫S⟪GTI18N_26e4da09_000028⟫, ang variable na ⟪GTI18N_26e4da09_000029⟫v⟪GTI18N_26e4da09_000030⟫ ay magkakaroon ng type na
+⟪GTI18N_26e4da09_000031⟫T⟪GTI18N_26e4da09_000032⟫ o ⟪GTI18N_26e4da09_000033⟫S⟪GTI18N_26e4da09_000034⟫, ayon sa pagkakasunod, at hahawak sa value na hawak ng ⟪GTI18N_26e4da09_000035⟫i⟪GTI18N_26e4da09_000036⟫.
+Sa default case (kung walang tugma), ang variable na ⟪GTI18N_26e4da09_000037⟫v⟪GTI18N_26e4da09_000038⟫ ay
+magkakaroon ng kaparehong interface type at value gaya ng ⟪GTI18N_26e4da09_000039⟫i⟪GTI18N_26e4da09_000040⟫.
+
+⟪GTI18N_26e4da09_000041⟫

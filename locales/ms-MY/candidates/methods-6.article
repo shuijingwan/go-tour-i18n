@@ -1,0 +1,23 @@
+* Kaedah dan capaian tidak langsung melalui penunjuk
+
+Dengan membandingkan dua atur cara sebelumnya, anda mungkin mendapati bahawa
+fungsi dengan argumen penunjuk mesti menerima penunjuk:
+
+	var v Vertex
+	ScaleFunc(v, 5)  // Ralat kompilasi!
+	ScaleFunc(&v, 5) // OK
+
+manakala kaedah dengan penerima penunjuk menerima sama ada nilai atau penunjuk sebagai
+penerima apabila dipanggil:
+
+	var v Vertex
+	v.Scale(5)  // OK
+	p := &v
+	p.Scale(10) // OK
+
+Bagi pernyataan `v.Scale(5)`, walaupun `v` ialah nilai dan bukan penunjuk,
+kaedah dengan penerima penunjuk dipanggil secara automatik.
+Dengan kata lain, untuk kemudahan, Go mentafsir pernyataan `v.Scale(5)` sebagai
+`(&v).Scale(5)` kerana kaedah `Scale` mempunyai penerima penunjuk.
+
+.play methods/indirection.go

@@ -1,0 +1,15 @@
+* Mga na-export na pangalan
+
+Sa Go, na-export ang isang pangalan kung nagsisimula ito sa malaking titik.
+Halimbawa, ang `Pizza` ay isang na-export na pangalan, gayundin ang `Pi` na na-export mula sa package na `math`.
+
+Hindi nagsisimula sa malaking titik ang `pizza` at `pi`, kaya hindi na-export ang mga ito.
+
+Kapag nag-import ka ng package, ang mga na-export na pangalan lamang nito ang maaari mong gamitin.
+Hindi maa-access mula sa labas ng package ang anumang pangalang hindi na-export.
+
+Patakbuhin ang code. Pansinin ang mensahe ng error.
+
+Upang ayusin ang error, palitan ang pangalan na `math.pi` ng `math.Pi` at subukan itong muli.
+
+.play basics/exported-names.go

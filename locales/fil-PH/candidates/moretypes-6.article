@@ -1,0 +1,14 @@
+* Mga array
+
+Ang type na `[n]T` ay isang array ng `n` value na may type na `T`.
+
+Ang expression na
+
+	var a [10]int
+
+ay nagdedeklara sa variable na `a` bilang isang array ng sampung integer.
+
+Bahagi ng type ng array ang haba nito, kaya hindi maaaring baguhin ang laki ng mga array.
+Maaaring mukhang limitado ito, ngunit huwag mag-alala; may maginhawang paraan ang Go para gumamit ng mga array.
+
+.play moretypes/array.go

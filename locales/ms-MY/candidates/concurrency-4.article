@@ -1,0 +1,15 @@
+* Range dan Close
+
+Penghantar boleh `close` saluran untuk menunjukkan bahawa tiada lagi nilai akan dihantar. Penerima boleh menguji sama ada saluran telah ditutup dengan mengumpukkan parameter kedua kepada ungkapan penerimaan: selepas
+
+	v, ok := <-ch
+
+`ok` bernilai `false` jika tiada lagi nilai untuk diterima dan saluran telah ditutup.
+
+Gelung `for`i`:=`range`c` menerima nilai daripada saluran berulang kali sehingga saluran itu ditutup.
+
+*Nota:* Hanya penghantar patut menutup saluran, bukan penerima. Menghantar ke saluran yang telah ditutup akan menyebabkan panic.
+
+*Nota*lain:* Saluran tidak seperti fail; biasanya anda tidak perlu menutupnya. Penutupan hanya diperlukan apabila penerima mesti dimaklumkan bahawa tiada lagi nilai akan datang, contohnya untuk menamatkan gelung `range`.
+
+.play concurrency/range-and-close.go

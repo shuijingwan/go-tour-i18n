@@ -1,0 +1,14 @@
+* Default na pagpili
+
+Isinasagawa ang case na `default` sa isang `select` kung walang ibang case na handa.
+
+Gumamit ng case na `default` upang subukang magpadala o tumanggap nang hindi naka-block:
+
+	select {
+	case i := <-c:
+		// gamitin ang i
+	default:
+		// mababarahan ang pagtanggap mula sa c
+	}
+
+.play concurrency/default-selection.go

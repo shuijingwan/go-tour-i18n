@@ -1,0 +1,11 @@
+* Mga channel na may buffer
+
+Maaaring _magkaroon_ng_buffer_ ang mga channel. Ibigay ang haba ng buffer bilang pangalawang argument sa `make` upang makapagsimula ng channel na may buffer:
+
+	ch := make(chan int, 100)
+
+Naka-block lamang ang pagpapadala sa channel na may buffer kapag puno ang buffer. Naka-block naman ang pagtanggap kapag walang laman ang buffer.
+
+Baguhin ang halimbawa upang lumampas sa kapasidad ng buffer at tingnan kung ano ang mangyayari.
+
+.play concurrency/buffered-channels.go

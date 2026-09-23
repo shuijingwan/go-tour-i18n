@@ -1,0 +1,23 @@
+* Pagsasanay: Magkatumbas na binary tree
+
+⟪GTI18N_b362cc15_000001⟫1.⟪GTI18N_b362cc15_000002⟫ I-implement ang function na ⟪GTI18N_b362cc15_000003⟫Walk⟪GTI18N_b362cc15_000004⟫.
+
+⟪GTI18N_b362cc15_000005⟫2.⟪GTI18N_b362cc15_000006⟫ Subukan ang function na ⟪GTI18N_b362cc15_000007⟫Walk⟪GTI18N_b362cc15_000008⟫.
+
+Gumagawa ang function na ⟪GTI18N_b362cc15_000009⟫tree.New(k)⟪GTI18N_b362cc15_000010⟫ ng binary tree na random ang istruktura (ngunit palaging nakaayos) at naglalaman ng mga value na ⟪GTI18N_b362cc15_000011⟫k⟪GTI18N_b362cc15_000012⟫, ⟪GTI18N_b362cc15_000013⟫2k⟪GTI18N_b362cc15_000014⟫, ⟪GTI18N_b362cc15_000015⟫3k⟪GTI18N_b362cc15_000016⟫, ..., ⟪GTI18N_b362cc15_000017⟫10k⟪GTI18N_b362cc15_000018⟫.
+
+Gumawa ng bagong channel na ⟪GTI18N_b362cc15_000019⟫ch⟪GTI18N_b362cc15_000020⟫ at simulan ang walker:
+
+⟪GTI18N_b362cc15_000021⟫
+
+Pagkatapos, basahin at i-print ang 10 value mula sa channel. Dapat ang mga ito ay ang mga numerong 1, 2, 3, ..., 10.
+
+⟪GTI18N_b362cc15_000022⟫3.⟪GTI18N_b362cc15_000023⟫ I-implement ang function na ⟪GTI18N_b362cc15_000024⟫Same⟪GTI18N_b362cc15_000025⟫ gamit ang ⟪GTI18N_b362cc15_000026⟫Walk⟪GTI18N_b362cc15_000027⟫ upang matukoy kung naglalaman ng parehong mga value ang ⟪GTI18N_b362cc15_000028⟫t1⟪GTI18N_b362cc15_000029⟫ at ⟪GTI18N_b362cc15_000030⟫t2⟪GTI18N_b362cc15_000031⟫.
+
+⟪GTI18N_b362cc15_000032⟫4.⟪GTI18N_b362cc15_000033⟫ Subukan ang function na ⟪GTI18N_b362cc15_000034⟫Same⟪GTI18N_b362cc15_000035⟫.
+
+Dapat magbalik ng true ang ⟪GTI18N_b362cc15_000036⟫Same(tree.New(1),`tree.New(1))⟪GTI18N_b362cc15_000037⟫, at false naman ang ⟪GTI18N_b362cc15_000038⟫Same(tree.New(1),`tree.New(2))⟪GTI18N_b362cc15_000039⟫.
+
+Matatagpuan ang dokumentasyon para sa ⟪GTI18N_b362cc15_000040⟫Tree⟪GTI18N_b362cc15_000041⟫ [[⟪GTI18N_b362cc15_000042⟫][dito]].
+
+⟪GTI18N_b362cc15_000043⟫

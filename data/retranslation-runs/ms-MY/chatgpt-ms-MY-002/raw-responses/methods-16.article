@@ -1,0 +1,19 @@
+* Pemilihan jenis
+
+⟪GTI18N_26e4da09_000001⟫pemilihan_jenis⟪GTI18N_26e4da09_000002⟫ ialah binaan yang membolehkan beberapa penegasan jenis dibuat secara berturutan.
+
+Pemilihan jenis menyerupai pernyataan switch biasa, tetapi kes dalam pemilihan
+jenis menetapkan jenis (bukan nilai), dan jenis tersebut dibandingkan dengan
+jenis nilai yang disimpan oleh nilai antara muka yang diberikan.
+
+⟪GTI18N_26e4da09_000003⟫di sini ⟪GTI18N_26e4da09_000004⟫ berjenis ⟪GTI18N_26e4da09_000005⟫⟪GTI18N_26e4da09_000006⟫di sini ⟪GTI18N_26e4da09_000007⟫ berjenis ⟪GTI18N_26e4da09_000008⟫⟪GTI18N_26e4da09_000009⟫tiada padanan; di sini ⟪GTI18N_26e4da09_000010⟫ mempunyai jenis yang sama seperti ⟪GTI18N_26e4da09_000011⟫⟪GTI18N_26e4da09_000012⟫Pengisytiharan dalam pemilihan jenis mempunyai sintaks yang sama seperti penegasan jenis ⟪GTI18N_26e4da09_000013⟫i.(T)⟪GTI18N_26e4da09_000014⟫,
+tetapi jenis tertentu ⟪GTI18N_26e4da09_000015⟫T⟪GTI18N_26e4da09_000016⟫ digantikan dengan kata kunci ⟪GTI18N_26e4da09_000017⟫type⟪GTI18N_26e4da09_000018⟫.
+
+Pernyataan switch ini menguji sama ada nilai antara muka ⟪GTI18N_26e4da09_000019⟫i⟪GTI18N_26e4da09_000020⟫
+menyimpan nilai berjenis ⟪GTI18N_26e4da09_000021⟫T⟪GTI18N_26e4da09_000022⟫ atau ⟪GTI18N_26e4da09_000023⟫S⟪GTI18N_26e4da09_000024⟫.
+Dalam setiap kes ⟪GTI18N_26e4da09_000025⟫T⟪GTI18N_26e4da09_000026⟫ dan ⟪GTI18N_26e4da09_000027⟫S⟪GTI18N_26e4da09_000028⟫, pemboleh ubah ⟪GTI18N_26e4da09_000029⟫v⟪GTI18N_26e4da09_000030⟫ masing-masing akan berjenis
+⟪GTI18N_26e4da09_000031⟫T⟪GTI18N_26e4da09_000032⟫ atau ⟪GTI18N_26e4da09_000033⟫S⟪GTI18N_26e4da09_000034⟫ dan menyimpan nilai yang disimpan oleh ⟪GTI18N_26e4da09_000035⟫i⟪GTI18N_26e4da09_000036⟫.
+Dalam kes default (apabila tiada padanan), pemboleh ubah ⟪GTI18N_26e4da09_000037⟫v⟪GTI18N_26e4da09_000038⟫ mempunyai
+jenis antara muka dan nilai yang sama seperti ⟪GTI18N_26e4da09_000039⟫i⟪GTI18N_26e4da09_000040⟫.
+
+⟪GTI18N_26e4da09_000041⟫

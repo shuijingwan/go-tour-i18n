@@ -1,0 +1,23 @@
+* Latihan: Pokok Binari Setara
+
+*1.* Laksanakan fungsi `Walk`.
+
+*2.* Uji fungsi `Walk`.
+
+Fungsi `tree.New(k)` membina pokok binari berstruktur rawak (tetapi sentiasa tersusun) yang mengandungi nilai `k`, `2k`, `3k`, ..., `10k`.
+
+Cipta saluran baharu `ch` dan mulakan penjelajahan pokok:
+
+	go Walk(tree.New(1), ch)
+
+Kemudian baca dan cetak 10 nilai daripada saluran. Nilainya sepatutnya 1, 2, 3, ..., 10.
+
+*3.* Laksanakan fungsi `Same` menggunakan `Walk` untuk menentukan sama ada `t1` dan `t2` menyimpan nilai yang sama.
+
+*4.* Uji fungsi `Same`.
+
+`Same(tree.New(1),`tree.New(1))` sepatutnya mengembalikan true, manakala `Same(tree.New(1),`tree.New(2))` sepatutnya mengembalikan false.
+
+Dokumentasi untuk `Tree` boleh didapati [[https://godoc.org/golang.org/x/tour/tree#Tree][di sini]].
+
+.play concurrency/exercise-equivalent-binary-trees.go

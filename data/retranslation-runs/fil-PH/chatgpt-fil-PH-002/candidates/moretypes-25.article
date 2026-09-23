@@ -1,0 +1,7 @@
+* Mga closure ng function
+
+Maaaring maging closure ang mga function sa Go. Ang closure ay isang function value na tumutukoy sa mga variable sa labas ng sarili nitong body. Maaaring basahin at baguhin ng function ang mga variable na tinutukoy nito; sa ganitong diwa, nakaugnay ang function sa mga variable na iyon.
+
+Halimbawa, nagbabalik ng closure ang function na `adder`. Nakaugnay ang bawat closure sa sarili nitong variable na `sum`.
+
+.play moretypes/function-closures.go

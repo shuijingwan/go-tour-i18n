@@ -1,0 +1,18 @@
+* Had lalai hirisan
+
+Semasa menghiris, anda boleh menggugurkan had atas atau had bawah untuk menggunakan nilai lalainya.
+
+Had bawah lalai ialah sifar, manakala had atas lalai ialah panjang hirisan atau tatasusunan yang mendasarinya.
+
+Bagi tatasusunan
+
+	var a [10]int
+
+ungkapan hirisan berikut adalah setara:
+
+	a[0:10]
+	a[:10]
+	a[0:]
+	a[:]
+
+.play moretypes/slice-bounds.go

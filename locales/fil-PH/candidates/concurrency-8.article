@@ -1,0 +1,23 @@
+* Pagsasanay: Magkatumbas na binary tree
+
+*1.* I-implement ang function na `Walk`.
+
+*2.* Subukan ang function na `Walk`.
+
+Gumagawa ang function na `tree.New(k)` ng binary tree na random ang istruktura (ngunit palaging nakaayos) at naglalaman ng mga value na `k`, `2k`, `3k`, ..., `10k`.
+
+Gumawa ng bagong channel na `ch` at simulan ang walker:
+
+	go Walk(tree.New(1), ch)
+
+Pagkatapos, basahin at i-print ang 10 value mula sa channel. Dapat ang mga ito ay ang mga numerong 1, 2, 3, ..., 10.
+
+*3.* I-implement ang function na `Same` gamit ang `Walk` upang matukoy kung naglalaman ng parehong mga value ang `t1` at `t2`.
+
+*4.* Subukan ang function na `Same`.
+
+Dapat magbalik ng true ang `Same(tree.New(1),`tree.New(1))`, at false naman ang `Same(tree.New(1),`tree.New(2))`.
+
+Matatagpuan ang dokumentasyon para sa `Tree` [[https://godoc.org/golang.org/x/tour/tree#Tree][dito]].
+
+.play concurrency/exercise-equivalent-binary-trees.go

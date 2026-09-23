@@ -1,0 +1,17 @@
+* Mga type parameter
+
+Maaaring magsulat ng mga Go function na gumagana sa maraming type gamit ang mga type parameter.
+Ang mga type parameter ng isang function ay nakalagay sa pagitan ng mga bracket, bago ang
+mga argument ng function.
+
+  func Index[T comparable](s []T, x T) int
+
+Ibig sabihin ng deklarasyong ito, ang `s` ay isang slice ng alinmang type na `T` na tumutupad sa
+built-in na constraint na `comparable`. Ang `x` ay isa ring value ng parehong type.
+
+Ang `comparable` ay isang kapaki-pakinabang na constraint na nagpapahintulot gamitin ang mga operator na `==` at
+`!=` sa mga value ng type. Sa halimbawang ito, ginagamit natin ito upang ihambing ang isang
+value sa lahat ng elemento ng slice hanggang makahanap ng katugma. Gumagana ang function na `Index`
+sa alinmang type na sumusuporta sa paghahambing.
+
+.play generics/index.go

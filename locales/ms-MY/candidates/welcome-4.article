@@ -1,0 +1,18 @@
+* Go luar talian (pilihan)
+
+Jelajah ini juga tersedia sebagai atur cara tersendiri yang boleh digunakan
+tanpa sambungan Internet. Atur cara ini membina dan menjalankan contoh kod pada
+komputer anda sendiri.
+
+Untuk menjalankan jelajah ini secara setempat, anda perlu terlebih dahulu
+[[/doc/install][memasang Go]], kemudian jalankan:
+
+  go install golang.org/x/website/tour@latest
+
+Ini akan meletakkan fail binari `tour` dalam
+[[/cmd/go/#hdr-GOPATH_and_Modules][GOPATH]] anda, khususnya di dalam subdirektori `bin`
+yang terletak di bawahnya.
+Apabila anda menjalankan atur cara jelajah ini, pelayar web akan dibuka untuk memaparkan
+versi setempat jelajah tersebut.
+
+Sudah tentu, anda juga boleh meneruskan jelajah melalui laman web ini.

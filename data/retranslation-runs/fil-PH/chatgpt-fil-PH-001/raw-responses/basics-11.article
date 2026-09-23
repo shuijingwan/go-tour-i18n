@@ -1,0 +1,11 @@
+* Mga batayang type
+
+Ang mga batayang type ng Go ay:
+
+⟪GTI18N_836ab1dd_000001⟫alias para sa ⟪GTI18N_836ab1dd_000002⟫⟪GTI18N_836ab1dd_000003⟫alias para sa ⟪GTI18N_836ab1dd_000004⟫⟪GTI18N_836ab1dd_000005⟫kumakatawan sa isang Unicode code point⟪GTI18N_836ab1dd_000006⟫Ipinapakita sa halimbawa ang mga variable na may iba't ibang type,
+at ipinapakita rin na maaaring pagsama-samahin sa mga block ang mga deklarasyon ng variable, tulad ng mga pahayag ng pag-import.
+
+Ang mga type na ⟪GTI18N_836ab1dd_000007⟫int⟪GTI18N_836ab1dd_000008⟫, ⟪GTI18N_836ab1dd_000009⟫uint⟪GTI18N_836ab1dd_000010⟫, at ⟪GTI18N_836ab1dd_000011⟫uintptr⟪GTI18N_836ab1dd_000012⟫ ay karaniwang may lapad na 32 bit sa mga 32-bit system at 64 bit sa mga 64-bit system.
+Kapag kailangan mo ng integer value, dapat gamitin ang ⟪GTI18N_836ab1dd_000013⟫int⟪GTI18N_836ab1dd_000014⟫ maliban kung may partikular kang dahilan upang gumamit ng integer type na may takdang laki o walang sign.
+
+⟪GTI18N_836ab1dd_000015⟫

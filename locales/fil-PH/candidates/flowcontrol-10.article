@@ -1,0 +1,14 @@
+* Pagkakasunod-sunod ng pagsusuri sa switch
+
+Sinusuri ng switch ang mga case mula sa itaas pababa at humihinto kapag may tumugmang case.
+
+(Halimbawa,
+
+	switch i {
+	case 0:
+	case f():
+	}
+
+hindi tatawag sa `f` kung `i==0`.)
+
+.play flowcontrol/switch-evaluation-order.go

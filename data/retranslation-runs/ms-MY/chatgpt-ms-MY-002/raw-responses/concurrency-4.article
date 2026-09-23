@@ -1,0 +1,15 @@
+* Range dan Close
+
+Penghantar boleh ⟪GTI18N_3e925c67_000001⟫close⟪GTI18N_3e925c67_000002⟫ saluran untuk menunjukkan bahawa tiada lagi nilai akan dihantar. Penerima boleh menguji sama ada saluran telah ditutup dengan mengumpukkan parameter kedua kepada ungkapan penerimaan: selepas
+
+⟪GTI18N_3e925c67_000003⟫
+
+⟪GTI18N_3e925c67_000004⟫ok⟪GTI18N_3e925c67_000005⟫ bernilai ⟪GTI18N_3e925c67_000006⟫false⟪GTI18N_3e925c67_000007⟫ jika tiada lagi nilai untuk diterima dan saluran telah ditutup.
+
+Gelung ⟪GTI18N_3e925c67_000008⟫for`i`:=`range`c⟪GTI18N_3e925c67_000009⟫ menerima nilai daripada saluran berulang kali sehingga saluran itu ditutup.
+
+⟪GTI18N_3e925c67_000010⟫Nota:⟪GTI18N_3e925c67_000011⟫ Hanya penghantar patut menutup saluran, bukan penerima. Menghantar ke saluran yang telah ditutup akan menyebabkan ⟪GTI18N_3e925c67_000012⟫.
+
+⟪GTI18N_3e925c67_000013⟫Nota*lain:⟪GTI18N_3e925c67_000014⟫ Saluran tidak seperti fail; biasanya anda tidak perlu menutupnya. Penutupan hanya diperlukan apabila penerima mesti dimaklumkan bahawa tiada lagi nilai akan datang, contohnya untuk menamatkan gelung ⟪GTI18N_3e925c67_000015⟫range⟪GTI18N_3e925c67_000016⟫.
+
+⟪GTI18N_3e925c67_000017⟫

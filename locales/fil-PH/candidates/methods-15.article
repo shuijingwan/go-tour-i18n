@@ -1,0 +1,25 @@
+* Mga type assertion
+
+Ang _type_assertion_ ay nagbibigay ng access sa pinagbabatayang kongkretong value ng isang interface value.
+
+	t := i.(T)
+
+Iginigiit ng statement na ito na ang interface value na `i` ay may hawak na kongkretong type na `T`,
+at itinatalaga ang pinagbabatayang value na `T` sa variable na `t`.
+
+Kung ang `i` ay walang hawak na `T`, magdudulot ng panic ang statement.
+
+Upang _subukan_ kung may hawak na partikular na type ang isang interface value,
+maaaring magbalik ng dalawang value ang type assertion: ang pinagbabatayang value
+at isang boolean value na nagpapakita kung nagtagumpay ang assertion.
+
+	t, ok := i.(T)
+
+Kung ang `i` ay may hawak na `T`, ang `t` ay magiging pinagbabatayang value at magiging true ang `ok`.
+
+Kung hindi, magiging false ang `ok` at ang `t` ay magiging zero value ng type na `T`,
+at walang magaganap na panic.
+
+Pansinin ang pagkakatulad ng syntax na ito sa pagbasa mula sa isang map.
+
+.play methods/type-assertions.go

@@ -1,0 +1,21 @@
+* Imej
+
+[[/pkg/image/#Image][Pakej image]] mentakrifkan antara muka `Image`:
+
+	package image
+
+	type Image interface {
+		ColorModel() color.Model
+		Bounds() Rectangle
+		At(x, y int) color.Color
+	}
+
+*Nota*: nilai pulangan `Rectangle` bagi kaedah `Bounds` sebenarnya ialah
+[[/pkg/image/#Rectangle][`image.Rectangle`]], kerana
+pengisytiharan itu berada dalam pakej `image`.
+
+(Lihat [[/pkg/image/#Image][dokumentasi]] untuk butiran lengkap.)
+
+Jenis `color.Color` dan `color.Model` juga ialah antara muka, tetapi kita akan mengabaikan hal itu dengan menggunakan pelaksanaan yang telah ditetapkan `color.RGBA` dan `color.RGBAModel`. Antara muka dan jenis ini ditetapkan oleh [[/pkg/image/color/][pakej image/color]].
+
+.play methods/images.go

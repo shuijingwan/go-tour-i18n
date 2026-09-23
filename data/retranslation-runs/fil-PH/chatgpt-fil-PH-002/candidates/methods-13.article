@@ -1,0 +1,8 @@
+* Mga nil na interface value
+
+Ang nil na interface value ay walang hawak na value o kongkretong type.
+
+Magdudulot ng run-time error ang pagtawag ng method sa nil na interface dahil walang
+type sa pares na nasa interface upang matukoy kung aling _kongkretong_ method ang tatawagin.
+
+.play methods/nil-interface-values.go

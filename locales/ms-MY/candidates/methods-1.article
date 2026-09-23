@@ -1,0 +1,13 @@
+* Kaedah
+
+Go tidak mempunyai kelas.
+Walau bagaimanapun, anda boleh mentakrifkan kaedah pada jenis.
+
+Kaedah ialah fungsi dengan argumen _penerima_ khas.
+
+Penerima muncul dalam senarai argumennya sendiri di antara kata kunci `func` dan
+nama kaedah.
+
+Dalam contoh ini, kaedah `Abs` mempunyai penerima berjenis `Vertex` yang dinamakan `v`.
+
+.play methods/methods.go

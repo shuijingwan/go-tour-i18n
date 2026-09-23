@@ -1,0 +1,13 @@
+* Latihan: Imej
+
+Ingat [[⟪GTI18N_a196bc59_000001⟫][penjana gambar]] yang anda tulis sebelum ini? Mari tulis satu lagi, tetapi kali ini ia akan mengembalikan pelaksanaan ⟪GTI18N_a196bc59_000002⟫image.Image⟪GTI18N_a196bc59_000003⟫ dan bukannya hirisan data.
+
+Takrifkan jenis ⟪GTI18N_a196bc59_000004⟫Image⟪GTI18N_a196bc59_000005⟫ anda sendiri, laksanakan [[⟪GTI18N_a196bc59_000006⟫][kaedah yang diperlukan]], dan panggil ⟪GTI18N_a196bc59_000007⟫pic.ShowImage⟪GTI18N_a196bc59_000008⟫.
+
+⟪GTI18N_a196bc59_000009⟫Bounds⟪GTI18N_a196bc59_000010⟫ sepatutnya mengembalikan ⟪GTI18N_a196bc59_000011⟫image.Rectangle⟪GTI18N_a196bc59_000012⟫, seperti ⟪GTI18N_a196bc59_000013⟫image.Rect(0,`0,`w,`h)⟪GTI18N_a196bc59_000014⟫.
+
+⟪GTI18N_a196bc59_000015⟫ColorModel⟪GTI18N_a196bc59_000016⟫ sepatutnya mengembalikan ⟪GTI18N_a196bc59_000017⟫color.RGBAModel⟪GTI18N_a196bc59_000018⟫.
+
+⟪GTI18N_a196bc59_000019⟫At⟪GTI18N_a196bc59_000020⟫ sepatutnya mengembalikan warna; nilai ⟪GTI18N_a196bc59_000021⟫v⟪GTI18N_a196bc59_000022⟫ dalam penjana gambar terdahulu bersamaan dengan ⟪GTI18N_a196bc59_000023⟫color.RGBA{v,`v,`255,`255}⟪GTI18N_a196bc59_000024⟫ dalam penjana ini.
+
+⟪GTI18N_a196bc59_000025⟫

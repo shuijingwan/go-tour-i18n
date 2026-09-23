@@ -1,0 +1,12 @@
+* Latihan: rot13Reader
+
+Corak lazim ialah [[/pkg/io/#Reader][io.Reader]] yang membalut `io.Reader` lain dan mengubah suai aliran dengan cara tertentu.
+
+Contohnya, fungsi [[/pkg/compress/gzip/#NewReader][gzip.NewReader]] menerima `io.Reader` (aliran data termampat) dan mengembalikan `*gzip.Reader` yang turut melaksanakan `io.Reader` (aliran data yang telah dinyahmampat).
+
+Laksanakan `rot13Reader` yang melaksanakan `io.Reader` dan membaca daripada `io.Reader`, sambil mengubah suai aliran dengan menggunakan sifir penggantian [[https://en.wikipedia.org/wiki/ROT13][rot13]] pada semua aksara abjad.
+
+Jenis `rot13Reader` telah disediakan untuk anda.
+Jadikannya `io.Reader` dengan melaksanakan kaedah `Read`.
+
+.play methods/exercise-rot-reader.go

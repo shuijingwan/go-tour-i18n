@@ -1,0 +1,11 @@
+* Mga package
+
+Binubuo ang bawat Go program ng mga package.
+
+Nagsisimula ang pagpapatakbo ng mga programa sa package na `main`.
+
+Ginagamit ng programang ito ang mga package na may import path na `"fmt"` at `"math/rand"`.
+
+Ayon sa nakagawiang tuntunin, kapareho ng huling bahagi ng import path ang pangalan ng package. Halimbawa, binubuo ang package na `"math/rand"` ng mga file na nagsisimula sa pahayag na `package`rand`.
+
+.play basics/packages.go

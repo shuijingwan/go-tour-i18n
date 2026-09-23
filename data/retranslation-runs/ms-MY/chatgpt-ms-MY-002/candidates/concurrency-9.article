@@ -1,0 +1,21 @@
+* sync.Mutex
+
+Kita telah melihat bahawa saluran sangat sesuai untuk komunikasi antara goroutine.
+
+Tetapi bagaimana jika kita tidak memerlukan komunikasi? Bagaimana jika kita hanya mahu memastikan bahawa hanya
+satu goroutine boleh mengakses pemboleh ubah pada satu-satu masa untuk mengelakkan konflik?
+
+Konsep ini dipanggil _pengecualian_bersama_, dan nama lazim bagi struktur data yang menyediakannya ialah _mutex_.
+
+Pustaka piawai Go menyediakan pengecualian bersama dengan
+[[/pkg/sync/#Mutex][`sync.Mutex`]] dan dua kaedahnya:
+
+- `Lock`
+- `Unlock`
+
+Kita boleh mentakrifkan blok kod supaya dilaksanakan dalam pengecualian bersama dengan mengapitnya
+antara panggilan kepada `Lock` dan `Unlock` seperti yang ditunjukkan dalam kaedah `Inc`.
+
+Kita juga boleh menggunakan `defer` untuk memastikan mutex dibuka kuncinya seperti dalam kaedah `Value`.
+
+.play concurrency/mutex-counter.go

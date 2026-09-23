@@ -1,0 +1,11 @@
+* Pagsasanay: Mga slice
+
+Ipatupad ang `Pic`. Dapat itong magbalik ng slice na may habang `dy`, na ang bawat elemento ay isa ring slice ng `dx` na 8-bit unsigned integer. Kapag pinatakbo mo ang programa, ipapakita nito ang iyong larawan at ituturing ang mga integer bilang mga grayscale (o mas tamang sabihing bluescale) value.
+
+Ikaw ang bahala kung anong larawan ang gagawin. Kabilang sa mga kawili-wiling function ang `(x+y)/2`, `x*y`, at `x^y`.
+
+(Kailangan mong gumamit ng loop upang maglaan ng bawat `[]uint8` sa loob ng `[][]uint8`.)
+
+(Gamitin ang `uint8(intValue)` upang mag-convert sa pagitan ng mga type.)
+
+.play moretypes/exercise-slices.go

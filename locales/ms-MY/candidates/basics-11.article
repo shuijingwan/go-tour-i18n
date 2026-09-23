@@ -1,0 +1,28 @@
+* Jenis asas
+
+Jenis asas Go ialah
+
+	bool
+
+	string
+
+	int  int8  int16  int32  int64
+	uint uint8 uint16 uint32 uint64 uintptr
+
+	byte // alias untuk uint8
+
+	rune // alias untuk int32
+	     // mewakili titik kod Unicode
+
+	float32 float64
+
+	complex64 complex128
+
+Contoh ini menunjukkan pemboleh ubah daripada beberapa jenis,
+serta bagaimana pengisytiharan pemboleh ubah boleh dikumpulkan ke dalam blok,
+sama seperti pernyataan import.
+
+Jenis `int`, `uint` dan `uintptr` biasanya berlebar 32 bit pada sistem 32 bit dan 64 bit pada sistem 64 bit.
+Apabila anda memerlukan nilai integer, gunakan `int` melainkan anda mempunyai sebab khusus untuk menggunakan jenis integer yang berlebar tertentu atau jenis integer tanpa tanda.
+
+.play basics/basic-types.go

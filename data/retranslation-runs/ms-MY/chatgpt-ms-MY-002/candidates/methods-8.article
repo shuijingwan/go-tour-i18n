@@ -1,0 +1,17 @@
+* Memilih penerima nilai atau penerima penunjuk
+
+Terdapat dua sebab untuk menggunakan penerima penunjuk.
+
+Pertama, supaya kaedah boleh mengubah nilai yang ditunjuk oleh penerimanya.
+
+Kedua, untuk mengelakkan penyalinan nilai pada setiap panggilan kaedah.
+Ini boleh menjadi lebih cekap jika penerima ialah struktur yang besar, contohnya.
+
+Dalam contoh ini, kedua-dua `Scale` dan `Abs` ialah kaedah dengan jenis penerima `*Vertex`,
+walaupun kaedah `Abs` tidak perlu mengubah penerimanya.
+
+Secara umum, semua kaedah pada sesuatu jenis sepatutnya menggunakan sama ada penerima nilai atau penerima penunjuk,
+bukan campuran kedua-duanya.
+(Kita akan melihat sebabnya dalam beberapa halaman seterusnya.)
+
+.play methods/methods-with-pointer-receivers.go

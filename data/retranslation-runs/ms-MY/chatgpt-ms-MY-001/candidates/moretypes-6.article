@@ -1,0 +1,15 @@
+* Tatasusunan
+
+Jenis `[n]T` ialah tatasusunan yang mengandungi `n` nilai berjenis `T`.
+
+Ungkapan
+
+	var a [10]int
+
+mengisytiharkan pemboleh ubah `a` sebagai tatasusunan yang mengandungi sepuluh integer.
+
+Panjang tatasusunan merupakan sebahagian daripada jenisnya, jadi saiz tatasusunan tidak boleh diubah.
+Hal ini mungkin kelihatan membataskan, tetapi jangan bimbang;
+Go menyediakan cara yang mudah untuk bekerja dengan tatasusunan.
+
+.play moretypes/array.go

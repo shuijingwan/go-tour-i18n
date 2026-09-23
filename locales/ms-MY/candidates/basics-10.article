@@ -1,0 +1,7 @@
+* Pengisytiharan ringkas pemboleh ubah
+
+Di dalam fungsi, pernyataan pengumpukan ringkas `:=` boleh digunakan sebagai ganti pengisytiharan `var` yang jenisnya ditentukan secara tersirat.
+
+Di luar fungsi, setiap pernyataan bermula dengan kata kunci (`var`, `func` dan sebagainya), maka binaan `:=` tidak boleh digunakan.
+
+.play basics/short-variable-declarations.go

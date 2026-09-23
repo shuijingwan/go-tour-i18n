@@ -1,0 +1,12 @@
+* Kaedah diteruskan
+
+Anda juga boleh mengisytiharkan kaedah pada jenis bukan struktur.
+
+Dalam contoh ini, kita melihat jenis angka `MyFloat` dengan kaedah `Abs`.
+
+Anda hanya boleh mengisytiharkan kaedah dengan penerima yang jenisnya ditakrifkan dalam
+pakej yang sama dengan kaedah tersebut.
+Anda tidak boleh mengisytiharkan kaedah dengan penerima yang jenisnya ditakrifkan dalam
+pakej lain (termasuk jenis terbina dalam seperti `int`).
+
+.play methods/methods-continued.go

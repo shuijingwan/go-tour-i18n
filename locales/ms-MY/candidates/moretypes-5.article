@@ -1,0 +1,9 @@
+* Literal struktur
+
+Literal struktur mewakili nilai struktur yang baru diperuntukkan dengan menyenaraikan nilai medan-medannya.
+
+Anda boleh menyenaraikan sebahagian medan sahaja menggunakan sintaks `Name:`. (Susunan medan bernama tidak penting.)
+
+Awalan khas `&` memulangkan penunjuk kepada nilai struktur tersebut.
+
+.play moretypes/struct-literals.go

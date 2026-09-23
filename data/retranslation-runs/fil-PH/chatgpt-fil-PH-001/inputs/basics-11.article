@@ -1,0 +1,12 @@
+* Basic types
+
+Go's basic types are
+
+⟪GTI18N_836ab1dd_000001⟫alias for ⟪GTI18N_836ab1dd_000002⟫⟪GTI18N_836ab1dd_000003⟫alias for ⟪GTI18N_836ab1dd_000004⟫⟪GTI18N_836ab1dd_000005⟫represents a Unicode code point⟪GTI18N_836ab1dd_000006⟫The example shows variables of several types,
+and also that variable declarations may be "factored" into blocks,
+as with import statements.
+
+The ⟪GTI18N_836ab1dd_000007⟫int⟪GTI18N_836ab1dd_000008⟫, ⟪GTI18N_836ab1dd_000009⟫uint⟪GTI18N_836ab1dd_000010⟫, and ⟪GTI18N_836ab1dd_000011⟫uintptr⟪GTI18N_836ab1dd_000012⟫ types are usually 32 bits wide on 32-bit systems and 64 bits wide on 64-bit systems.
+When you need an integer value you should use ⟪GTI18N_836ab1dd_000013⟫int⟪GTI18N_836ab1dd_000014⟫ unless you have a specific reason to use a sized or unsigned integer type.
+
+⟪GTI18N_836ab1dd_000015⟫

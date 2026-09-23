@@ -1,0 +1,21 @@
+* Penukaran jenis
+
+Ungkapan `T(v)` menukar nilai `v` kepada jenis `T`.
+
+Beberapa contoh penukaran angka:
+
+	var i int = 42
+	var f float64 = float64(i)
+	var u uint = uint(f)
+
+Atau, dalam bentuk yang lebih ringkas:
+
+	i := 42
+	f := float64(i)
+	u := uint(f)
+
+Tidak seperti C, dalam Go, pengumpukan antara nilai daripada jenis yang berbeza memerlukan
+penukaran jenis secara jelas.
+Cuba buang penukaran `float64` atau `uint` dalam contoh ini dan lihat apa yang berlaku.
+
+.play basics/type-conversions.go

@@ -1,0 +1,12 @@
+* Mga generic na type
+
+Bukod sa mga generic na function, sinusuportahan din ng Go ang mga generic na type. Maaaring
+lagyan ng type parameter ang isang type, na kapaki-pakinabang sa paggawa
+ng mga generic na istruktura ng data.
+
+Ipinapakita ng halimbawang ito ang isang simpleng deklarasyon ng type para sa singly-linked list
+na maaaring maglaman ng value ng anumang type.
+
+Bilang pagsasanay, magdagdag ng ilang functionality sa implementation ng listahang ito.
+
+.play generics/list.go

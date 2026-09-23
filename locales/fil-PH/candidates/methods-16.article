@@ -1,0 +1,28 @@
+* Mga type switch
+
+Ang _type_switch_ ay isang construct na nagpapahintulot ng magkakasunod na type assertion.
+
+Katulad ito ng karaniwang pahayag na switch, ngunit mga type (hindi mga value)
+ang tinutukoy ng mga case sa type switch, at inihahambing ang mga type na iyon
+sa type ng value na hawak ng ibinigay na interface value.
+
+	switch v := i.(type) {
+	case T:
+		// dito v ay may type na T
+	case S:
+		// dito v ay may type na S
+	default:
+		// walang tugma; dito, kapareho ang type ng v at i
+	}
+
+Ang deklarasyon sa type switch ay may kaparehong syntax ng type assertion na `i.(T)`,
+ngunit ang partikular na type na `T` ay pinapalitan ng keyword na `type`.
+
+Sinusuri ng pahayag na switch na ito kung may hawak ang interface value na `i`
+na value na may type na `T` o `S`.
+Sa mga case na `T` at `S`, ang variable na `v` ay magkakaroon ng type na
+`T` o `S`, ayon sa pagkakasunod, at hahawak sa value na hawak ng `i`.
+Sa default case (kung walang tugma), ang variable na `v` ay
+magkakaroon ng kaparehong interface type at value gaya ng `i`.
+
+.play methods/type-switches.go

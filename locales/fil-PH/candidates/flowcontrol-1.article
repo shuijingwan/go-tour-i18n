@@ -1,0 +1,17 @@
+* For
+
+Iisa lamang ang looping construct sa Go: ang loop na `for`.
+
+May tatlong bahagi ang batayang loop na `for`, na pinaghihiwalay ng mga semicolon:
+
+- ang init statement: isinasagawa bago ang unang iterasyon
+- ang condition expression: sinusuri bago ang bawat iterasyon
+- ang post statement: isinasagawa sa katapusan ng bawat iterasyon
+
+Kadalasan, deklarasyon ng variable ang init statement, at makikita lamang ang mga variable na idineklara rito sa loob ng scope ng pahayag na `for`.
+
+Hihinto ang pag-ulit ng loop kapag naging `false` ang boolean condition.
+
+*Tandaan:* Hindi tulad sa ibang wikang gaya ng C, Java, o JavaScript, walang mga panaklong sa paligid ng tatlong bahagi ng pahayag na `for`, at palaging kailangan ang mga brace na `{`}`.
+
+.play flowcontrol/for.go

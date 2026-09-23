@@ -1,0 +1,13 @@
+* Pagsasanay: Mga image
+
+Naaalala mo ba ang [[/tour/moretypes/18][generator ng larawan]] na ginawa mo kanina? Gumawa tayo ng isa pa, ngunit sa pagkakataong ito ay magbabalik ito ng implementation ng `image.Image` sa halip na slice ng data.
+
+Tukuyin ang sarili mong type na `Image`, i-implement ang [[/pkg/image/#Image][mga kinakailangang method]], at tawagin ang `pic.ShowImage`.
+
+Dapat magbalik ang `Bounds` ng `image.Rectangle`, gaya ng `image.Rect(0,`0,`w,`h)`.
+
+Dapat magbalik ang `ColorModel` ng `color.RGBAModel`.
+
+Dapat magbalik ng kulay ang `At`; ang value na `v` sa huling generator ng larawan ay tumutugma sa `color.RGBA{v,`v,`255,`255}` sa isang ito.
+
+.play methods/exercise-images.go

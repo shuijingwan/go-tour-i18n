@@ -1,0 +1,15 @@
+* Mga na-export na pangalan
+
+Sa Go, na-export ang isang pangalan kung nagsisimula ito sa malaking titik.
+Halimbawa, ang ⟪GTI18N_38b9c70e_000001⟫Pizza⟪GTI18N_38b9c70e_000002⟫ ay isang na-export na pangalan, gayundin ang ⟪GTI18N_38b9c70e_000003⟫Pi⟪GTI18N_38b9c70e_000004⟫ na na-export mula sa package na ⟪GTI18N_38b9c70e_000005⟫math⟪GTI18N_38b9c70e_000006⟫.
+
+Hindi nagsisimula sa malaking titik ang ⟪GTI18N_38b9c70e_000007⟫pizza⟪GTI18N_38b9c70e_000008⟫ at ⟪GTI18N_38b9c70e_000009⟫pi⟪GTI18N_38b9c70e_000010⟫, kaya hindi na-export ang mga ito.
+
+Kapag nag-import ka ng package, ang mga na-export na pangalan lamang nito ang maaari mong gamitin.
+Hindi maa-access mula sa labas ng package ang anumang pangalang hindi na-export.
+
+Patakbuhin ang code. Pansinin ang mensahe ng error.
+
+Upang ayusin ang error, palitan ang pangalan na ⟪GTI18N_38b9c70e_000011⟫math.pi⟪GTI18N_38b9c70e_000012⟫ ng ⟪GTI18N_38b9c70e_000013⟫math.Pi⟪GTI18N_38b9c70e_000014⟫ at subukan itong muli.
+
+⟪GTI18N_38b9c70e_000015⟫

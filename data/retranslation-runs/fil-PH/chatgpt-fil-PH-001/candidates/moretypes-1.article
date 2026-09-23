@@ -1,0 +1,24 @@
+* Mga pointer
+
+May mga pointer ang Go.
+Iniimbak ng pointer ang memory address ng isang value.
+
+Ang type na `*T` ay pointer sa isang value na may type na `T`. Ang zero value nito ay `nil`.
+
+	var p *int
+
+Lumilikha ang operator na `&` ng pointer sa operand nito.
+
+	i := 42
+	p = &i
+
+Tinutukoy ng operator na `*` ang pinagbabatayang value ng pointer.
+
+	fmt.Println(*p) // basahin ang i gamit ang pointer na p
+	*p = 21         // itakda ang i gamit ang pointer na p
+
+Tinatawag itong "pag-dereference" o "di-tuwirang pag-access".
+
+Hindi tulad ng C, walang pointer arithmetic sa Go.
+
+.play moretypes/pointers.go

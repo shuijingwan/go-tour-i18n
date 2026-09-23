@@ -1,0 +1,15 @@
+* Ang empty interface
+
+Ang interface type na walang tinutukoy na method ay tinatawag na _empty_interface_:
+
+	interface{}
+
+Maaaring maglaman ang empty interface ng mga value ng anumang type.
+(Ang bawat type ay nag-iimplement ng hindi bababa sa serong method.)
+
+Ang `any` ay alias ng `interface{}`, at ganap na magkatumbas ang dalawa.
+
+Ginagamit ang mga empty interface sa code na humahawak ng mga value na hindi alam ang type.
+Halimbawa, tumatanggap ang `fmt.Print` ng anumang dami ng argument na may type na `any`.
+
+.play methods/empty-interface.go

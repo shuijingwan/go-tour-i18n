@@ -1,0 +1,16 @@
+* Antara muka kosong
+
+Jenis antara muka yang tidak menetapkan sebarang kaedah dikenali sebagai _antara_muka_kosong_:
+
+	interface{}
+
+Antara muka kosong boleh menyimpan nilai daripada sebarang jenis.
+(Setiap jenis melaksanakan sekurang-kurangnya sifar kaedah.)
+
+`any` ialah alias untuk `interface{}`, dan kedua-duanya
+setara sepenuhnya.
+
+Antara muka kosong digunakan oleh kod yang mengendalikan nilai daripada jenis yang tidak diketahui.
+Contohnya, `fmt.Print` menerima sebarang bilangan argumen berjenis `any`.
+
+.play methods/empty-interface.go

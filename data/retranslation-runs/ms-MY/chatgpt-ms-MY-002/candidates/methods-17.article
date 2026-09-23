@@ -1,0 +1,12 @@
+* Stringer
+
+Salah satu antara muka yang paling banyak digunakan ialah [[/pkg/fmt/#Stringer][`Stringer`]] yang ditakrifkan oleh pakej [[/pkg/fmt/][`fmt`]].
+
+	type Stringer interface {
+		String() string
+	}
+
+`Stringer` ialah jenis yang boleh menerangkan dirinya sendiri sebagai rentetan. Pakej `fmt`
+(dan banyak pakej lain) mencari antara muka ini untuk mencetak nilai.
+
+.play methods/stringer.go

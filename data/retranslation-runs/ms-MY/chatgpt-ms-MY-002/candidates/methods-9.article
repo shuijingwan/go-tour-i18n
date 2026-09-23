@@ -1,0 +1,11 @@
+* Antara muka
+
+_jenis_antara_muka_ ditakrifkan sebagai satu set tandatangan kaedah.
+
+Nilai berjenis antara muka boleh menyimpan sebarang nilai yang melaksanakan kaedah-kaedah tersebut.
+
+*Nota:* Terdapat ralat dalam kod contoh pada baris 22.
+`Vertex` (jenis nilai) tidak melaksanakan `Abser` kerana
+kaedah `Abs` hanya ditakrifkan pada `*Vertex` (jenis penunjuk).
+
+.play methods/interfaces.go

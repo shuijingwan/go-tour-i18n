@@ -1,0 +1,19 @@
+* Mengenali Go Playground
+
+Jelajah ini dibina berasaskan [[https://play.golang.org/][Go Playground]], sebuah
+perkhidmatan web yang berjalan pada pelayan [[/][golang.org]].
+
+Perkhidmatan ini menerima atur cara Go, mengkompil, memaut dan menjalankan atur cara itu di dalam
+persekitaran terasing, kemudian memulangkan outputnya.
+
+Terdapat beberapa batasan bagi atur cara yang boleh dijalankan dalam Go Playground:
+
+- Dalam Go Playground, masa bermula pada 2009-11-10 23:00:00 UTC (memahami kepentingan tarikh ini merupakan latihan untuk pembaca). Ini memudahkan caching atur cara kerana outputnya bersifat deterministik.
+
+- Terdapat juga had masa pelaksanaan serta penggunaan CPU dan ingatan, dan atur cara tidak boleh mengakses hos rangkaian luaran.
+
+Go Playground menggunakan keluaran stabil terkini Go.
+
+Baca "[[/blog/playground][Di sebalik Go Playground]]" untuk mengetahui lebih lanjut.
+
+.play welcome/sandbox.go

@@ -1,0 +1,24 @@
+* Penunjuk
+
+Go mempunyai penunjuk.
+Penunjuk menyimpan alamat ingatan sesuatu nilai.
+
+Jenis `*T` ialah penunjuk kepada nilai berjenis `T`. Nilai sifarnya ialah `nil`.
+
+	var p *int
+
+Operator `&` menghasilkan penunjuk kepada operandnya.
+
+	i := 42
+	p = &i
+
+Operator `*` mewakili nilai yang dirujuk oleh penunjuk.
+
+	fmt.Println(*p) // baca i melalui penunjuk p
+	*p = 21         // tetapkan i melalui penunjuk p
+
+Operasi ini dikenali sebagai "nyahrujukan" atau "capaian tidak langsung".
+
+Tidak seperti C, Go tidak menyokong aritmetik penunjuk.
+
+.play moretypes/pointers.go

@@ -1,0 +1,20 @@
+* Pembaca
+
+Pakej `io` menetapkan antara muka `io.Reader`,
+yang mewakili bahagian pembacaan bagi aliran data.
+
+Pustaka piawai Go mengandungi [[https://cs.opensource.google/search?q=Read%5C(%5Cw%2B%5Cs%5C%5B%5C%5Dbyte%5C)&ss=go%2Fgo][banyak pelaksanaan]] antara muka ini, termasuk fail, sambungan rangkaian, pemampat, sifir dan lain-lain.
+
+Antara muka `io.Reader` mempunyai kaedah `Read`:
+
+	func (T) Read(b []byte) (n int, err error)
+
+`Read` mengisi hirisan bait yang diberikan dengan data dan mengembalikan bilangan bait
+yang diisi serta nilai ralat. Ia mengembalikan ralat `io.EOF` apabila aliran
+berakhir.
+
+Kod contoh mencipta
+[[/pkg/strings/#Reader][`strings.Reader`]]
+dan menggunakan outputnya sebanyak 8 bait pada satu-satu masa.
+
+.play methods/reader.go

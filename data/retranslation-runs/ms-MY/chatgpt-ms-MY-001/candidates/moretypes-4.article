@@ -1,0 +1,10 @@
+* Penunjuk kepada struktur
+
+Medan struktur boleh diakses melalui penunjuk struktur.
+
+Untuk mengakses medan `X` pada sesuatu struktur apabila kita mempunyai penunjuk struktur `p`, kita boleh
+menulis `(*p).X`.
+Walau bagaimanapun, notasi tersebut agak rumit, jadi bahasa ini membenarkan kita
+menulis hanya `p.X` tanpa nyahrujukan secara jelas.
+
+.play moretypes/struct-pointers.go

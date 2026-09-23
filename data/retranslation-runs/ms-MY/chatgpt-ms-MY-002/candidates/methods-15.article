@@ -1,0 +1,25 @@
+* Penegasan jenis
+
+_penegasan_jenis_ memberikan akses kepada nilai konkrit dasar sesuatu nilai antara muka.
+
+	t := i.(T)
+
+Pernyataan ini menegaskan bahawa nilai antara muka `i` menyimpan jenis konkrit `T`
+dan mengumpukkan nilai `T` dasar kepada pemboleh ubah `t`.
+
+Jika `i` tidak menyimpan `T`, pernyataan itu akan mencetuskan panic.
+
+Untuk _menguji_ sama ada nilai antara muka menyimpan jenis tertentu,
+penegasan jenis boleh mengembalikan dua nilai: nilai dasar
+dan nilai Boolean yang melaporkan sama ada penegasan itu berjaya.
+
+	t, ok := i.(T)
+
+Jika `i` menyimpan `T`, maka `t` ialah nilai dasar dan `ok` bernilai true.
+
+Jika tidak, `ok` bernilai false dan `t` ialah nilai sifar bagi jenis `T`,
+dan tiada panic berlaku.
+
+Perhatikan persamaan antara sintaks ini dengan sintaks membaca daripada peta.
+
+.play methods/type-assertions.go

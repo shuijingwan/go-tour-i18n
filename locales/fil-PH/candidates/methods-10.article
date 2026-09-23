@@ -1,0 +1,9 @@
+* Implicit na ini-implement ang mga interface
+
+Ini-implement ng isang type ang interface sa pamamagitan ng pag-implement sa mga method nito.
+Hindi kailangan ng tahasang deklarasyon ng layunin, at walang keyword na "implements".
+
+Dahil sa implicit na pag-implement ng mga interface, magkahiwalay ang depinisyon ng
+interface at ang implementation nito, na maaaring ilagay sa alinmang package nang walang paunang kasunduan.
+
+.play methods/interfaces-are-satisfied-implicitly.go

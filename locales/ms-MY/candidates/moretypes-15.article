@@ -1,0 +1,21 @@
+* Menambahkan elemen pada hirisan
+
+Penambahan elemen baharu pada hirisan merupakan operasi yang lazim, maka Go menyediakan fungsi terbina dalam
+`append`. [[/pkg/builtin/#append][Dokumentasi]]
+pakej terbina dalam menerangkan `append`.
+
+	func append(s []T, vs ...T) []T
+
+Parameter pertama `s` bagi `append` ialah hirisan berjenis `T`, manakala parameter selebihnya ialah
+nilai berjenis `T` yang akan ditambahkan pada hirisan.
+
+Nilai yang dihasilkan oleh `append` ialah hirisan yang mengandungi semua elemen
+hirisan asal bersama nilai-nilai yang diberikan.
+
+Jika tatasusunan sokongan bagi `s` terlalu kecil untuk menampung semua nilai yang diberikan,
+tatasusunan yang lebih besar akan diperuntukkan. Hirisan yang dipulangkan akan merujuk kepada
+tatasusunan yang baru diperuntukkan itu.
+
+(Untuk mengetahui lebih lanjut tentang hirisan, baca artikel [[/blog/go-slices-usage-and-internals][Hirisan: penggunaan dan mekanisme dalaman]].)
+
+.play moretypes/append.go

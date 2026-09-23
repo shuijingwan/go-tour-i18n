@@ -1,0 +1,19 @@
+* Mga Reader
+
+Tinutukoy ng package na ⟪GTI18N_120c3fc9_000001⟫io⟪GTI18N_120c3fc9_000002⟫ ang interface na ⟪GTI18N_120c3fc9_000003⟫io.Reader⟪GTI18N_120c3fc9_000004⟫,
+na kumakatawan sa bahaging nagbabasa ng isang daloy ng data.
+
+Maraming [[⟪GTI18N_120c3fc9_000005⟫][implementation]] ng interface na ito sa Go standard library, kabilang ang mga file, network connection, compressor, cipher, at iba pa.
+
+Ang interface na ⟪GTI18N_120c3fc9_000006⟫io.Reader⟪GTI18N_120c3fc9_000007⟫ ay may method na ⟪GTI18N_120c3fc9_000008⟫Read⟪GTI18N_120c3fc9_000009⟫:
+
+⟪GTI18N_120c3fc9_000010⟫
+
+Pinupunan ng ⟪GTI18N_120c3fc9_000011⟫Read⟪GTI18N_120c3fc9_000012⟫ ng data ang ibinigay na byte slice at ibinabalik ang bilang ng mga byte
+na napunan at isang error value. Nagbabalik ito ng error na ⟪GTI18N_120c3fc9_000013⟫io.EOF⟪GTI18N_120c3fc9_000014⟫ kapag natapos ang daloy ng data.
+
+Gumagawa ang halimbawang code ng isang
+[[⟪GTI18N_120c3fc9_000015⟫][⟪GTI18N_120c3fc9_000016⟫strings.Reader⟪GTI18N_120c3fc9_000017⟫]]
+at binabasa ang output nito nang tig-8 byte.
+
+⟪GTI18N_120c3fc9_000018⟫

@@ -1,0 +1,16 @@
+* Saluran
+
+Saluran ialah medium berjenis yang membolehkan anda menghantar dan menerima nilai menggunakan operator saluran, ⟪GTI18N_a35e3af2_000001⟫<-⟪GTI18N_a35e3af2_000002⟫.
+
+⟪GTI18N_a35e3af2_000003⟫Hantar ⟪GTI18N_a35e3af2_000004⟫ ke saluran ⟪GTI18N_a35e3af2_000005⟫.⟪GTI18N_a35e3af2_000006⟫Terima daripada ⟪GTI18N_a35e3af2_000007⟫, dan⟪GTI18N_a35e3af2_000008⟫umpukkan nilai kepada ⟪GTI18N_a35e3af2_000009⟫.⟪GTI18N_a35e3af2_000010⟫(Data mengalir mengikut arah anak panah.)
+
+Seperti peta dan hirisan, saluran mesti dicipta sebelum digunakan:
+
+⟪GTI18N_a35e3af2_000011⟫
+
+Secara lalai, operasi hantar dan terima akan menyekat sehingga pihak satu lagi bersedia. Ini membolehkan goroutine disegerakkan tanpa kunci atau pemboleh ubah syarat yang dinyatakan secara eksplisit.
+
+Kod contoh menjumlahkan nombor dalam satu hirisan dengan membahagikan kerja antara dua goroutine.
+Setelah kedua-dua goroutine selesai membuat pengiraan, kod itu mengira hasil akhir.
+
+⟪GTI18N_a35e3af2_000012⟫

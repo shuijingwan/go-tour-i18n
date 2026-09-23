@@ -1,0 +1,63 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-ms-MY-004",
+  "locale": "ms-MY",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 4,
+  "units": [
+    {
+      "unit_id": "welcome/4",
+      "unit_kind": "page",
+      "source_path": "_content/tour/welcome.article",
+      "source_sha256": "bb517d4b577fdb446fd029c2998d2426663b94a68f4b4e494c59af421508f683",
+      "input_path": "inputs/welcome-4.article",
+      "input_sha256": "5717fa182b39ca9e42890537f01e011775b33dc32d6302166ec2ca540a67ac75",
+      "protected_token_count": 10,
+      "previous_snapshot_id": "ms-MY-qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "C",
+      "previous_finding": "ms-MY text implies GOPATH itself is the bin directory: dalam GOPATH anda, iaitu direktori bin. English specifies GOPATH bin subdirectory. Clarify the parent/subdirectory relationship without altering code or link."
+    },
+    {
+      "unit_id": "welcome/5",
+      "unit_kind": "page",
+      "source_path": "_content/tour/welcome.article",
+      "source_sha256": "19e6d7da57ca1d191c485754f3dd4ac87775c651b8c0ae8e05c03cbd9b225897",
+      "input_path": "inputs/welcome-5.article",
+      "input_sha256": "53832a1faaf573696cc0e0e7573a339c7dcd40c7864ca8100d5468279e0a18cf",
+      "protected_token_count": 11,
+      "previous_snapshot_id": "ms-MY-qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "The English gerund caching remains untranslated within the Malay sentence Ini memudahkan caching atur cara. Use natural Malaysian Malay for the caching operation while retaining the causal point about deterministic output."
+    },
+    {
+      "unit_id": "moretypes/8",
+      "unit_kind": "page",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "e577f9e98a9c871cdc6f39ecca1bdd0965c26da3b9ab6c2a7cab42b3b0f3a568",
+      "input_path": "inputs/moretypes-8.article",
+      "input_sha256": "5f2cc2f3b779caaf76b144662e3f02f16f6b873d986e14254c5b92324190b49a",
+      "protected_token_count": 1,
+      "previous_snapshot_id": "ms-MY-qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "Last paragraph uses tatasusunan dasar for underlying array, inconsistent with mandatory glossary tatasusunan yang mendasari and two earlier occurrences in the same Page. Align the last occurrence to the mandatory term while retaining shared-array semantics."
+    },
+    {
+      "unit_id": "moretypes/12",
+      "unit_kind": "page",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "e7a4bb0d5e7928c2da06312d983eba2adb533b30299025f507df183f00fefc89",
+      "input_path": "inputs/moretypes-12.article",
+      "input_sha256": "b9227a23d74bf97c792ee54b6008daee6726085f9e896a1b3bf5346cf53cbe1c",
+      "protected_token_count": 4,
+      "previous_snapshot_id": "ms-MY-qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "Uses tatasusunan dasar for underlying array instead of glossary mandatory tatasusunan yang mendasari. Align terminology; retain nil slice length=0, capacity=0, and no underlying array."
+    }
+  ]
+}

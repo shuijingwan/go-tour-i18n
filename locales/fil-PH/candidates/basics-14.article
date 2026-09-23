@@ -1,0 +1,18 @@
+* Awtomatikong pagtukoy sa type
+
+Kapag nagdedeklara ng variable nang hindi tahasang tinutukoy ang type (gamit ang syntax na `:=` o ang expression syntax na `var`=`), awtomatikong tinutukoy ang type ng variable batay sa value sa kanang bahagi.
+
+Kapag may type ang expression sa kanang bahagi ng deklarasyon, iyon din ang magiging type ng bagong variable:
+
+	var i int
+	j := i // j ay isang int
+
+Ngunit kapag may numeric constant na walang nakatalagang type sa kanang bahagi, maaaring maging `int`, `float64`, o `complex128` ang type ng bagong variable, depende sa precision ng constant:
+
+	i := 42           // int
+	f := 3.142        // float64
+	g := 0.867 + 0.5i // complex128
+
+Subukang palitan ang paunang value ng `v` sa halimbawang code at obserbahan kung paano naaapektuhan ang type nito.
+
+.play basics/type-inference.go

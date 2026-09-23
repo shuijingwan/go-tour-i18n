@@ -1,0 +1,11 @@
+* Pakej
+
+Setiap atur cara Go terdiri daripada beberapa pakej.
+
+Pelaksanaan atur cara bermula dalam pakej `main`.
+
+Atur cara ini menggunakan pakej dengan laluan import `"fmt"` dan `"math/rand"`.
+
+Mengikut kelaziman, nama pakej sama dengan komponen terakhir laluan import. Contohnya, pakej `"math/rand"` terdiri daripada fail yang bermula dengan pernyataan `package`rand`.
+
+.play basics/packages.go

@@ -1,0 +1,10 @@
+* Pagsasanay: Web Crawler
+
+Sa pagsasanay na ito, gagamitin mo ang mga feature ng concurrency ng Go upang mapatakbo nang magkakasabay ang isang web crawler.
+
+Baguhin ang function na ⟪GTI18N_bb686393_000001⟫Crawl⟪GTI18N_bb686393_000002⟫ upang kunin ang mga URL nang magkakasabay, nang hindi kinukuha nang dalawang beses ang parehong URL.
+
+⟪GTI18N_bb686393_000003⟫Pahiwatig⟪GTI18N_bb686393_000004⟫: maaari kang magtago ng cache ng mga nakuhang URL sa isang map, ngunit hindi ligtas
+gamitin ang mga map nang mag-isa sa magkakasabay na operasyon!
+
+⟪GTI18N_bb686393_000005⟫

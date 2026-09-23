@@ -1,0 +1,19 @@
+* Mga slice
+
+May nakapirming laki ang array.
+Samantala, ang slice ay may laki na maaaring magbago at nagsisilbing flexible na view sa mga elemento ng isang array.
+Sa praktika, mas karaniwang ginagamit ang mga slice kaysa sa mga array.
+
+Ang type na `[]T` ay isang slice na may mga elementong may type na `T`.
+
+Nabubuo ang slice sa pamamagitan ng pagtukoy ng dalawang index, ang mababa at mataas na hangganan, na pinaghihiwalay ng colon:
+
+	a[low : high]
+
+Pumipili ito ng half-open range na kasama ang unang elemento ngunit hindi kasama ang huli.
+
+Lumilikha ang sumusunod na expression ng slice na kinabibilangan ng mga elemento 1 hanggang 3 ng `a`:
+
+	a[1:4]
+
+.play moretypes/slices.go

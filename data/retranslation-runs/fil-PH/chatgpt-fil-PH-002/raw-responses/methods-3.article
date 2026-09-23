@@ -1,0 +1,12 @@
+* Karagdagang kaalaman sa mga method
+
+Maaari ka ring magdeklara ng method sa mga type na hindi struct.
+
+Sa halimbawang ito, makikita ang numeric type na ⟪GTI18N_31c4fd0d_000001⟫MyFloat⟪GTI18N_31c4fd0d_000002⟫ na may method na ⟪GTI18N_31c4fd0d_000003⟫Abs⟪GTI18N_31c4fd0d_000004⟫.
+
+Maaari ka lamang magdeklara ng method na ang type ng receiver ay tinukoy sa parehong
+package kung saan nakapaloob ang method.
+Hindi ka maaaring magdeklara ng method na ang type ng receiver ay tinukoy sa ibang
+package (kabilang dito ang mga built-in na type gaya ng ⟪GTI18N_31c4fd0d_000005⟫int⟪GTI18N_31c4fd0d_000006⟫).
+
+⟪GTI18N_31c4fd0d_000007⟫

@@ -1,0 +1,13 @@
+* Awtomatikong pagtukoy sa type
+
+Kapag nagdedeklara ng variable nang hindi tahasang tinutukoy ang type (gamit ang syntax na ⟪GTI18N_21c4077c_000001⟫:=⟪GTI18N_21c4077c_000002⟫ o ang expression syntax na ⟪GTI18N_21c4077c_000003⟫var`=⟪GTI18N_21c4077c_000004⟫), awtomatikong tinutukoy ang type ng variable batay sa value sa kanang bahagi.
+
+Kapag may type ang expression sa kanang bahagi ng deklarasyon, iyon din ang magiging type ng bagong variable:
+
+⟪GTI18N_21c4077c_000005⟫⟪GTI18N_21c4077c_000006⟫ ay isang ⟪GTI18N_21c4077c_000007⟫⟪GTI18N_21c4077c_000008⟫Ngunit kapag may numeric constant na walang nakatalagang type sa kanang bahagi, maaaring maging ⟪GTI18N_21c4077c_000009⟫int⟪GTI18N_21c4077c_000010⟫, ⟪GTI18N_21c4077c_000011⟫float64⟪GTI18N_21c4077c_000012⟫, o ⟪GTI18N_21c4077c_000013⟫complex128⟪GTI18N_21c4077c_000014⟫ ang type ng bagong variable, depende sa precision ng constant:
+
+⟪GTI18N_21c4077c_000015⟫
+
+Subukang palitan ang paunang value ng ⟪GTI18N_21c4077c_000016⟫v⟪GTI18N_21c4077c_000017⟫ sa halimbawang code at obserbahan kung paano naaapektuhan ang type nito.
+
+⟪GTI18N_21c4077c_000018⟫

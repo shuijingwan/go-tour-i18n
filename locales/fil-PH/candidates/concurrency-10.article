@@ -1,0 +1,10 @@
+* Pagsasanay: Web Crawler
+
+Sa pagsasanay na ito, gagamitin mo ang mga feature ng concurrency ng Go upang mapatakbo nang magkakasabay ang isang web crawler.
+
+Baguhin ang function na `Crawl` upang kunin ang mga URL nang magkakasabay, nang hindi kinukuha nang dalawang beses ang parehong URL.
+
+_Pahiwatig_: maaari kang magtago ng cache ng mga nakuhang URL sa isang map, ngunit hindi ligtas
+gamitin ang mga map nang mag-isa sa magkakasabay na operasyon!
+
+.play concurrency/exercise-web-crawler.go

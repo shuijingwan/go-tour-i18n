@@ -1,0 +1,18 @@
+* Latihan: Pokok Binari Setara
+
+Terdapat banyak pokok binari berbeza yang boleh menyimpan jujukan nilai yang sama. Contohnya, berikut ialah dua pokok binari yang menyimpan jujukan 1, 1, 2, 3, 5, 8, 13.
+
+.image /tour/static/img/tree.png
+
+Dalam kebanyakan bahasa, fungsi untuk memeriksa sama ada dua pokok binari menyimpan jujukan yang sama agak rumit. Kita akan menggunakan keserentakan dan saluran Go untuk menulis penyelesaian yang ringkas.
+
+Contoh ini menggunakan pakej `tree`, yang mentakrifkan jenis:
+
+	type Tree struct {
+		Left  *Tree
+		Value int
+		Right *Tree
+	}
+
+
+Teruskan penerangan pada [[javascript:click('.next-page')][halaman seterusnya]].

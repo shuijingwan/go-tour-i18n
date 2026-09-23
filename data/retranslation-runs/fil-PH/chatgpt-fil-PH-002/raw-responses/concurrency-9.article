@@ -1,0 +1,21 @@
+* sync.Mutex
+
+Nakita na natin kung gaano kahusay ang mga channel para sa komunikasyon sa pagitan ng mga goroutine.
+
+Pero paano kung hindi natin kailangan ng komunikasyon? Paano kung nais lamang nating tiyaking
+iisa lang na goroutine ang maaaring mag-access ng isang variable sa bawat pagkakataon upang maiwasan ang salungatan?
+
+Ang konseptong ito ay tinatawag na ⟪GTI18N_49f72779_000001⟫pag-iwas_sa_sabayang_pag-access⟪GTI18N_49f72779_000002⟫, at ang karaniwang pangalan ng istruktura ng data na nagbibigay nito ay ⟪GTI18N_49f72779_000003⟫mutex⟪GTI18N_49f72779_000004⟫.
+
+Nagbibigay ang Go standard library ng mutual exclusion sa pamamagitan ng
+[[⟪GTI18N_49f72779_000005⟫][⟪GTI18N_49f72779_000006⟫sync.Mutex⟪GTI18N_49f72779_000007⟫]] at ng dalawang method nito:
+
+- ⟪GTI18N_49f72779_000008⟫Lock⟪GTI18N_49f72779_000009⟫
+- ⟪GTI18N_49f72779_000010⟫Unlock⟪GTI18N_49f72779_000011⟫
+
+Maaari nating tukuyin ang isang block ng code na isasagawa nang walang kasabay na pag-access sa pamamagitan ng
+paglalagay ng mga tawag sa ⟪GTI18N_49f72779_000012⟫Lock⟪GTI18N_49f72779_000013⟫ at ⟪GTI18N_49f72779_000014⟫Unlock⟪GTI18N_49f72779_000015⟫ sa magkabilang dulo nito, gaya ng ipinapakita sa method na ⟪GTI18N_49f72779_000016⟫Inc⟪GTI18N_49f72779_000017⟫.
+
+Maaari rin nating gamitin ang ⟪GTI18N_49f72779_000018⟫defer⟪GTI18N_49f72779_000019⟫ upang tiyaking maa-unlock ang mutex, gaya ng nasa method na ⟪GTI18N_49f72779_000020⟫Value⟪GTI18N_49f72779_000021⟫.
+
+⟪GTI18N_49f72779_000022⟫

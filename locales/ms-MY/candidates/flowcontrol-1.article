@@ -1,0 +1,18 @@
+* For
+
+Go hanya mempunyai satu binaan gelung, iaitu gelung `for`.
+
+Gelung asas `for` mempunyai tiga komponen yang dipisahkan oleh koma bertitik:
+
+- pernyataan pemulaan: dilaksanakan sebelum lelaran pertama
+- ungkapan syarat: dinilai sebelum setiap lelaran
+- pernyataan pasca: dilaksanakan pada akhir setiap lelaran
+
+Pernyataan pemulaan selalunya merupakan pengisytiharan pemboleh ubah, dan
+pemboleh ubah yang diisytiharkan di situ hanya kelihatan dalam skop pernyataan `for`.
+
+Gelung akan berhenti berulang apabila syarat Boolean dinilai sebagai `false`.
+
+*Nota:* Tidak seperti bahasa lain seperti C, Java atau JavaScript, tiga komponen pernyataan `for` tidak dikelilingi tanda kurung dan kurungan berombak `{`}` sentiasa diperlukan.
+
+.play flowcontrol/for.go

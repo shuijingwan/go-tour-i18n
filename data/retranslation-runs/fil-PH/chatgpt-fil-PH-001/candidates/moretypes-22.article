@@ -1,0 +1,27 @@
+* Pagbabago ng mga map
+
+Upang magpasok o mag-update ng elemento sa map na `m`:
+
+	m[key] = elem
+
+Upang kunin ang isang elemento:
+
+	elem = m[key]
+
+Upang magtanggal ng isang elemento:
+
+	delete(m, key)
+
+Upang tingnan kung naroroon ang isang key gamit ang pagtatalagang may dalawang value:
+
+	elem, ok = m[key]
+
+Kung ang `key` ay nasa `m`, ang `ok` ay `true`. Kung wala naman, ang `ok` ay `false`.
+
+Kung wala sa map ang `key`, ang `elem` ay ang zero value para sa type ng elemento ng map.
+
+*Tandaan:* Kung hindi pa nadeklara ang `elem` o `ok`, maaari kang gumamit ng anyong maikling deklarasyon:
+
+	elem, ok := m[key]
+
+.play moretypes/mutating-maps.go

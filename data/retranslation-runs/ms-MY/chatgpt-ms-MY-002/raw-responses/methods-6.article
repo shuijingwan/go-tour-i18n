@@ -1,0 +1,16 @@
+* Kaedah dan capaian tidak langsung melalui penunjuk
+
+Dengan membandingkan dua atur cara sebelumnya, anda mungkin mendapati bahawa
+fungsi dengan argumen penunjuk mesti menerima penunjuk:
+
+⟪GTI18N_39fb725b_000001⟫Ralat kompilasi!⟪GTI18N_39fb725b_000002⟫manakala kaedah dengan penerima penunjuk menerima sama ada nilai atau penunjuk sebagai
+penerima apabila dipanggil:
+
+⟪GTI18N_39fb725b_000003⟫
+
+Bagi pernyataan ⟪GTI18N_39fb725b_000004⟫v.Scale(5)⟪GTI18N_39fb725b_000005⟫, walaupun ⟪GTI18N_39fb725b_000006⟫v⟪GTI18N_39fb725b_000007⟫ ialah nilai dan bukan penunjuk,
+kaedah dengan penerima penunjuk dipanggil secara automatik.
+Dengan kata lain, untuk kemudahan, ⟪GTI18N_39fb725b_000008⟫ mentafsir pernyataan ⟪GTI18N_39fb725b_000009⟫v.Scale(5)⟪GTI18N_39fb725b_000010⟫ sebagai
+⟪GTI18N_39fb725b_000011⟫(&v).Scale(5)⟪GTI18N_39fb725b_000012⟫ kerana kaedah ⟪GTI18N_39fb725b_000013⟫Scale⟪GTI18N_39fb725b_000014⟫ mempunyai penerima penunjuk.
+
+⟪GTI18N_39fb725b_000015⟫

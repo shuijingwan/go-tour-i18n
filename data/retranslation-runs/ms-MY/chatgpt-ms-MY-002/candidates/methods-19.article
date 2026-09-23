@@ -1,0 +1,26 @@
+* Ralat
+
+Atur cara Go menyatakan keadaan ralat dengan nilai `error`.
+
+Jenis `error` ialah antara muka terbina dalam yang serupa dengan `fmt.Stringer`:
+
+	type error interface {
+		Error() string
+	}
+
+(Seperti `fmt.Stringer`, pakej `fmt` mencari antara muka `error` apabila
+mencetak nilai.)
+
+Fungsi sering mengembalikan nilai `error`, dan kod yang memanggilnya patut mengendalikan ralat
+dengan menguji sama ada ralat itu sama dengan `nil`.
+
+	i, err := strconv.Atoi("42")
+	if err != nil {
+		fmt.Printf("couldn't convert number: %v\n", err)
+		return
+	}
+	fmt.Println("Converted integer:", i)
+
+nil `error` menandakan kejayaan; nil `error` yang bukan nil menandakan kegagalan.
+
+.play methods/errors.go

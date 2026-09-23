@@ -1,0 +1,17 @@
+* Mga type parameter
+
+Maaaring magsulat ng mga Go function na gumagana sa maraming type gamit ang mga type parameter.
+Ang mga type parameter ng isang function ay nakalagay sa pagitan ng mga bracket, bago ang
+mga argument ng function.
+
+⟪GTI18N_01a04510_000001⟫
+
+Ibig sabihin ng deklarasyong ito, ang ⟪GTI18N_01a04510_000002⟫s⟪GTI18N_01a04510_000003⟫ ay isang slice ng alinmang type na ⟪GTI18N_01a04510_000004⟫T⟪GTI18N_01a04510_000005⟫ na tumutupad sa
+built-in na constraint na ⟪GTI18N_01a04510_000006⟫comparable⟪GTI18N_01a04510_000007⟫. Ang ⟪GTI18N_01a04510_000008⟫x⟪GTI18N_01a04510_000009⟫ ay isa ring value ng parehong type.
+
+Ang ⟪GTI18N_01a04510_000010⟫comparable⟪GTI18N_01a04510_000011⟫ ay isang kapaki-pakinabang na constraint na nagpapahintulot gamitin ang mga operator na ⟪GTI18N_01a04510_000012⟫==⟪GTI18N_01a04510_000013⟫ at
+⟪GTI18N_01a04510_000014⟫!=⟪GTI18N_01a04510_000015⟫ sa mga value ng type. Sa halimbawang ito, ginagamit natin ito upang ihambing ang isang
+value sa lahat ng elemento ng slice hanggang makahanap ng katugma. Gumagana ang function na ⟪GTI18N_01a04510_000016⟫Index⟪GTI18N_01a04510_000017⟫
+sa alinmang type na sumusuporta sa paghahambing.
+
+⟪GTI18N_01a04510_000018⟫

@@ -1,0 +1,13 @@
+* Inferens jenis
+
+Apabila mengisytiharkan pemboleh ubah tanpa menyatakan jenis secara jelas (sama ada menggunakan sintaks ⟪GTI18N_21c4077c_000001⟫:=⟪GTI18N_21c4077c_000002⟫ atau sintaks ungkapan ⟪GTI18N_21c4077c_000003⟫var`=⟪GTI18N_21c4077c_000004⟫), jenis pemboleh ubah tersebut diinferens daripada nilai di sebelah kanan.
+
+Apabila sebelah kanan pengisytiharan sudah mempunyai jenis, pemboleh ubah baharu menggunakan jenis yang sama:
+
+⟪GTI18N_21c4077c_000005⟫⟪GTI18N_21c4077c_000006⟫ ialah ⟪GTI18N_21c4077c_000007⟫⟪GTI18N_21c4077c_000008⟫Namun, apabila sebelah kanan mengandungi pemalar angka tanpa jenis, pemboleh ubah baharu boleh menjadi ⟪GTI18N_21c4077c_000009⟫int⟪GTI18N_21c4077c_000010⟫, ⟪GTI18N_21c4077c_000011⟫float64⟪GTI18N_21c4077c_000012⟫ atau ⟪GTI18N_21c4077c_000013⟫complex128⟪GTI18N_21c4077c_000014⟫ bergantung pada ketepatan pemalar tersebut:
+
+⟪GTI18N_21c4077c_000015⟫
+
+Cuba ubah nilai permulaan ⟪GTI18N_21c4077c_000016⟫v⟪GTI18N_21c4077c_000017⟫ dalam kod contoh dan perhatikan kesannya terhadap jenis pemboleh ubah itu.
+
+⟪GTI18N_21c4077c_000018⟫

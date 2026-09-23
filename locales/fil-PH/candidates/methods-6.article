@@ -1,0 +1,23 @@
+* Mga method at di-tuwirang paggamit ng pointer
+
+Kung ihahambing ang dalawang naunang programa, mapapansin mong
+kailangang pointer ang ipasa sa mga function na may pointer argument:
+
+	var v Vertex
+	ScaleFunc(v, 5)  // Error sa pag-compile!
+	ScaleFunc(&v, 5) // OK
+
+samantalang maaaring value o pointer ang receiver na ginagamit sa pagtawag
+sa mga method na may pointer receiver:
+
+	var v Vertex
+	v.Scale(5)  // OK
+	p := &v
+	p.Scale(10) // OK
+
+Para sa statement na `v.Scale(5)`, kahit value at hindi pointer ang `v`,
+awtomatikong natatawag ang method na may pointer receiver.
+Ibig sabihin, para sa kaginhawahan, itinuturing ng Go ang statement na `v.Scale(5)` na
+`(&v).Scale(5)` dahil may pointer receiver ang method na `Scale`.
+
+.play methods/indirection.go

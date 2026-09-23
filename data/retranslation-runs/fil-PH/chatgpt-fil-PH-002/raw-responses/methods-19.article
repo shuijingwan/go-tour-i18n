@@ -1,0 +1,19 @@
+* Mga error
+
+Ipinapahayag ng mga Go program ang estado ng error gamit ang mga value na ⟪GTI18N_9eaab1fd_000001⟫error⟪GTI18N_9eaab1fd_000002⟫.
+
+Ang type na ⟪GTI18N_9eaab1fd_000003⟫error⟪GTI18N_9eaab1fd_000004⟫ ay isang built-in na interface na katulad ng ⟪GTI18N_9eaab1fd_000005⟫fmt.Stringer⟪GTI18N_9eaab1fd_000006⟫:
+
+⟪GTI18N_9eaab1fd_000007⟫
+
+(Gaya ng ⟪GTI18N_9eaab1fd_000008⟫fmt.Stringer⟪GTI18N_9eaab1fd_000009⟫, hinahanap ng package na ⟪GTI18N_9eaab1fd_000010⟫fmt⟪GTI18N_9eaab1fd_000011⟫ ang interface na ⟪GTI18N_9eaab1fd_000012⟫error⟪GTI18N_9eaab1fd_000013⟫ kapag
+nagpi-print ng mga value.)
+
+Madalas na nagbabalik ang mga function ng value na ⟪GTI18N_9eaab1fd_000014⟫error⟪GTI18N_9eaab1fd_000015⟫, at dapat pangasiwaan ng tumatawag na code
+ang mga error sa pamamagitan ng pagsuri kung katumbas ng ⟪GTI18N_9eaab1fd_000016⟫nil⟪GTI18N_9eaab1fd_000017⟫ ang error.
+
+⟪GTI18N_9eaab1fd_000018⟫
+
+Ang nil na ⟪GTI18N_9eaab1fd_000019⟫error⟪GTI18N_9eaab1fd_000020⟫ ay nangangahulugang tagumpay; ang hindi nil na ⟪GTI18N_9eaab1fd_000021⟫error⟪GTI18N_9eaab1fd_000022⟫ ay nangangahulugang pagkabigo.
+
+⟪GTI18N_9eaab1fd_000023⟫

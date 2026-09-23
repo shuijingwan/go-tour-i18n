@@ -1,0 +1,16 @@
+* Paglikha ng slice gamit ang make
+
+Maaaring gumawa ng mga slice gamit ang built-in na function na `make`; ganito ka makakalikha ng mga array na pabago-bago ang laki.
+
+Naglalaan ang function na `make` ng array na may mga naka-zero na value at nagbabalik ng slice na tumutukoy sa array na iyon:
+
+	a := make([]int, 5)  // len(a)=5
+
+Upang tukuyin ang kapasidad, magpasa ng ikatlong argument sa `make`:
+
+	b := make([]int, 0, 5) // len(b)=0, cap(b)=5
+
+	b = b[:cap(b)] // len(b)=5, cap(b)=5
+	b = b[1:]      // len(b)=4, cap(b)=4
+
+.play moretypes/making-slices.go

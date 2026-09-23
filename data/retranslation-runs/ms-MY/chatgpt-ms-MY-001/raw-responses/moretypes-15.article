@@ -1,0 +1,21 @@
+* Menambahkan elemen pada hirisan
+
+Penambahan elemen baharu pada hirisan merupakan operasi yang lazim, maka ⟪GTI18N_f2fc257e_000001⟫ menyediakan fungsi terbina dalam
+⟪GTI18N_f2fc257e_000002⟫append⟪GTI18N_f2fc257e_000003⟫. [[⟪GTI18N_f2fc257e_000004⟫][Dokumentasi]]
+pakej terbina dalam menerangkan ⟪GTI18N_f2fc257e_000005⟫append⟪GTI18N_f2fc257e_000006⟫.
+
+⟪GTI18N_f2fc257e_000007⟫
+
+Parameter pertama ⟪GTI18N_f2fc257e_000008⟫s⟪GTI18N_f2fc257e_000009⟫ bagi ⟪GTI18N_f2fc257e_000010⟫append⟪GTI18N_f2fc257e_000011⟫ ialah hirisan berjenis ⟪GTI18N_f2fc257e_000012⟫T⟪GTI18N_f2fc257e_000013⟫, manakala parameter selebihnya ialah
+nilai berjenis ⟪GTI18N_f2fc257e_000014⟫T⟪GTI18N_f2fc257e_000015⟫ yang akan ditambahkan pada hirisan.
+
+Nilai yang dihasilkan oleh ⟪GTI18N_f2fc257e_000016⟫append⟪GTI18N_f2fc257e_000017⟫ ialah hirisan yang mengandungi semua elemen
+hirisan asal bersama nilai-nilai yang diberikan.
+
+Jika tatasusunan sokongan bagi ⟪GTI18N_f2fc257e_000018⟫s⟪GTI18N_f2fc257e_000019⟫ terlalu kecil untuk menampung semua nilai yang diberikan,
+tatasusunan yang lebih besar akan diperuntukkan. Hirisan yang dipulangkan akan merujuk kepada
+tatasusunan yang baru diperuntukkan itu.
+
+(Untuk mengetahui lebih lanjut tentang hirisan, baca artikel [[⟪GTI18N_f2fc257e_000020⟫][Hirisan: penggunaan dan mekanisme dalaman]].)
+
+⟪GTI18N_f2fc257e_000021⟫

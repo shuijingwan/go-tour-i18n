@@ -1,0 +1,13 @@
+* Mga interface value
+
+Sa likod ng mga ito, maaaring ituring ang mga interface value na isang pares ng value at
+kongkretong type:
+
+	(value, type)
+
+May hawak ang isang interface value na value ng isang partikular na pinagbabatayang kongkretong type.
+
+Kapag tumawag ng method sa isang interface value, isinasagawa ang method na may kaparehong
+pangalan sa pinagbabatayang type nito.
+
+.play methods/interface-values.go

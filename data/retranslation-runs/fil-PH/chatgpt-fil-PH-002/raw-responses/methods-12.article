@@ -1,0 +1,12 @@
+* Mga interface value na may nil na pinagbabatayang value
+
+Kung nil ang kongkretong value sa loob mismo ng interface,
+tatawagin ang method gamit ang nil na receiver.
+
+Sa ilang wika, magdudulot ito ng null pointer exception,
+ngunit sa Go, karaniwang gumagawa ng mga method na kayang maayos na tumugon
+kahit nil ang receiver (gaya ng method na ⟪GTI18N_9487ca3c_000001⟫M⟪GTI18N_9487ca3c_000002⟫ sa halimbawang ito).
+
+Tandaang hindi nil ang mismong interface value kahit nil ang kongkretong value na hawak nito.
+
+⟪GTI18N_9487ca3c_000003⟫

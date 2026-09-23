@@ -1,0 +1,20 @@
+* Mga pag-convert ng type
+
+Kino-convert ng expression na `T(v)` ang value na `v` sa type na `T`.
+
+Ilang numeric conversion:
+
+	var i int = 42
+	var f float64 = float64(i)
+	var u uint = uint(f)
+
+O, sa mas simpleng anyo:
+
+	i := 42
+	f := float64(i)
+	u := uint(f)
+
+Hindi tulad ng sa C, sa Go ay kailangan ng tahasang conversion kapag nagtatalaga ng mga item na magkakaiba ang type.
+Subukang alisin ang mga conversion na `float64` o `uint` sa halimbawa at tingnan kung ano ang mangyayari.
+
+.play basics/type-conversions.go

@@ -1,0 +1,8 @@
+* Mga pointer sa struct
+
+Maaaring i-access ang mga field ng struct sa pamamagitan ng pointer sa struct.
+
+Upang i-access ang field na ⟪GTI18N_29695d33_000001⟫X⟪GTI18N_29695d33_000002⟫ ng isang struct kung mayroon tayong pointer na ⟪GTI18N_29695d33_000003⟫p⟪GTI18N_29695d33_000004⟫ sa struct, maaari nating isulat ang ⟪GTI18N_29695d33_000005⟫(*p).X⟪GTI18N_29695d33_000006⟫.
+Gayunman, masalimuot ang notasyong iyon, kaya pinapayagan ng wika na isulat na lamang ang ⟪GTI18N_29695d33_000007⟫p.X⟪GTI18N_29695d33_000008⟫, nang walang tahasang pag-dereference.
+
+⟪GTI18N_29695d33_000009⟫

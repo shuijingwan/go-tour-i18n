@@ -1,0 +1,38 @@
+* Latihan: Gelung dan fungsi
+
+Untuk berlatih menggunakan fungsi dan gelung, mari laksanakan fungsi punca kuasa dua: apabila diberi nombor x, kita mahu mencari nombor z yang nilai z²-nya paling hampir dengan x.
+
+Komputer biasanya mengira punca kuasa dua x menggunakan gelung.
+Bermula dengan suatu anggaran z, kita boleh melaraskan z berdasarkan sejauh mana z² menghampiri x,
+lalu memperoleh anggaran yang lebih baik:
+
+	z -= (z*z - x) / (2*z)
+
+Dengan mengulangi pelarasan ini, anggaran akan menjadi semakin tepat
+sehingga kita mendapat jawapan yang sedekat mungkin dengan punca kuasa dua sebenar.
+
+Laksanakan kaedah ini dalam `func`Sqrt` yang disediakan.
+Anggaran awal z yang munasabah ialah 1, tanpa mengira inputnya.
+Sebagai permulaan, ulangi pengiraan sebanyak 10 kali dan cetak setiap nilai z.
+Perhatikan sejauh mana jawapan anda menghampiri hasil bagi pelbagai nilai x (1, 2, 3, ...)
+dan seberapa cepat anggaran itu bertambah baik.
+
+Petunjuk: Untuk mengisytiharkan dan memulakan nilai titik terapung,
+gunakan sintaks titik terapung atau penukaran jenis:
+
+	z := 1.0
+	z := float64(1)
+
+Seterusnya, ubah syarat gelung supaya berhenti apabila nilainya tidak lagi
+berubah (atau hanya berubah dalam jumlah yang sangat kecil).
+Perhatikan sama ada bilangan lelarannya lebih atau kurang daripada 10.
+Cuba anggaran awal z yang lain, seperti x atau x/2.
+Sejauh manakah hasil fungsi anda menghampiri [[/pkg/math/#Sqrt][math.Sqrt]] dalam pustaka piawai?
+
+(*Nota:* Jika anda berminat dengan perincian algoritma ini, z² − x di atas
+ialah jarak antara z² dengan nilai yang dikehendaki (x), manakala pembahagian dengan 2z ialah terbitan
+z², yang menentukan skala pelarasan z mengikut kadar perubahan z².
+Pendekatan umum ini dipanggil [[https://en.wikipedia.org/wiki/Newton%27s_method][kaedah Newton]].
+Kaedah ini berkesan untuk banyak fungsi, khususnya untuk punca kuasa dua.)
+
+.play flowcontrol/exercise-loops-and-functions.go

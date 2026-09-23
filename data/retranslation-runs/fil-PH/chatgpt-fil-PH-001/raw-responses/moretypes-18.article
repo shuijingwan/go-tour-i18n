@@ -1,0 +1,11 @@
+* Pagsasanay: Mga slice
+
+Ipatupad ang ⟪GTI18N_9c5fd763_000001⟫Pic⟪GTI18N_9c5fd763_000002⟫. Dapat itong magbalik ng slice na may habang ⟪GTI18N_9c5fd763_000003⟫dy⟪GTI18N_9c5fd763_000004⟫, na ang bawat elemento ay isa ring slice ng ⟪GTI18N_9c5fd763_000005⟫dx⟪GTI18N_9c5fd763_000006⟫ na 8-bit unsigned integer. Kapag pinatakbo mo ang programa, ipapakita nito ang iyong larawan at ituturing ang mga integer bilang mga grayscale (o mas tamang sabihing bluescale) value.
+
+Ikaw ang bahala kung anong larawan ang gagawin. Kabilang sa mga kawili-wiling function ang ⟪GTI18N_9c5fd763_000007⟫(x+y)/2⟪GTI18N_9c5fd763_000008⟫, ⟪GTI18N_9c5fd763_000009⟫x*y⟪GTI18N_9c5fd763_000010⟫, at ⟪GTI18N_9c5fd763_000011⟫x^y⟪GTI18N_9c5fd763_000012⟫.
+
+(Kailangan mong gumamit ng loop upang maglaan ng bawat ⟪GTI18N_9c5fd763_000013⟫[]uint8⟪GTI18N_9c5fd763_000014⟫ sa loob ng ⟪GTI18N_9c5fd763_000015⟫[][]uint8⟪GTI18N_9c5fd763_000016⟫.)
+
+(Gamitin ang ⟪GTI18N_9c5fd763_000017⟫uint8(intValue)⟪GTI18N_9c5fd763_000018⟫ upang mag-convert sa pagitan ng mga type.)
+
+⟪GTI18N_9c5fd763_000019⟫

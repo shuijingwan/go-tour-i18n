@@ -1,0 +1,18 @@
+* Panjang dan kapasiti hirisan
+
+Hirisan mempunyai _panjang_ dan _kapasiti_.
+
+Panjang hirisan ialah bilangan elemen yang terkandung di dalamnya.
+
+Kapasiti hirisan ialah bilangan elemen dalam tatasusunan yang mendasarinya,
+dikira bermula daripada elemen pertama hirisan tersebut.
+
+Panjang dan kapasiti hirisan `s` boleh diperoleh menggunakan ungkapan
+`len(s)` dan `cap(s)`.
+
+Anda boleh memanjangkan hirisan dengan menghirisnya semula,
+selagi kapasiti yang mencukupi masih tersedia.
+Cuba ubah salah satu operasi hirisan dalam contoh atur cara supaya panjangnya
+melebihi kapasiti, kemudian lihat apa yang berlaku.
+
+.play moretypes/slice-len-cap.go

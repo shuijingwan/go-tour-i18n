@@ -1,0 +1,24 @@
+* Mga pointer receiver
+
+Maaari kang magdeklara ng mga method na may pointer receiver.
+
+Ibig sabihin, gumagamit ang type ng receiver ng literal na syntax na `*T` para sa isang type na `T`.
+(Hindi rin maaaring pointer mismo ang `T`, gaya ng `*int`.)
+
+Halimbawa, ang method na `Scale` dito ay nakatakda sa `*Vertex`.
+
+Maaaring baguhin ng mga method na may pointer receiver ang value na tinuturo ng receiver
+(gaya ng ginagawa ng `Scale` dito).
+Dahil madalas kailangang baguhin ng mga method ang receiver nila, mas karaniwan ang
+mga pointer receiver kaysa mga value receiver.
+
+Subukang alisin ang `*` sa deklarasyon ng function na `Scale` sa linya 16
+at obserbahan kung paano nagbabago ang kilos ng programa.
+
+Kapag value receiver ang ginamit, kumikilos ang method na `Scale` sa isang kopya ng
+orihinal na value na `Vertex`.
+(Gayundin ang nangyayari sa alinmang ibang function argument.)
+Kailangang may pointer receiver ang method na `Scale` upang mabago ang value na `Vertex`
+na idineklara sa function na `main`.
+
+.play methods/methods-pointers.go

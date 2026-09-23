@@ -1,0 +1,7 @@
+* Select
+
+Pinahihintulutan ng pahayag na `select` ang isang goroutine na maghintay sa maraming operasyong pangkomunikasyon.
+
+Naka-block ang `select` hanggang maging handang tumakbo ang isa sa mga case nito, at saka isinasagawa ang case na iyon. Kung maraming case ang handa, pumipili ito ng isa nang random.
+
+.play concurrency/select.go

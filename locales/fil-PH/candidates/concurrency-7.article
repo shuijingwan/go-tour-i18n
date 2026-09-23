@@ -1,0 +1,18 @@
+* Pagsasanay: Magkatumbas na binary tree
+
+Maaaring maraming magkaibang binary tree ang naglalaman ng parehong pagkakasunod-sunod ng mga value. Halimbawa, narito ang dalawang binary tree na naglalaman ng pagkakasunod-sunod na 1, 1, 2, 3, 5, 8, 13.
+
+.image /tour/static/img/tree.png
+
+Sa karamihan ng wika, medyo masalimuot ang function na sumusuri kung naglalaman ng parehong pagkakasunod-sunod ang dalawang binary tree. Gagamitin natin ang concurrency at mga channel ng Go upang makabuo ng simpleng solusyon.
+
+Ginagamit ng halimbawang ito ang package na `tree`, na tumutukoy sa type na:
+
+	type Tree struct {
+		Left  *Tree
+		Value int
+		Right *Tree
+	}
+
+
+Ipagpatuloy ang paglalarawan sa [[javascript:click('.next-page')][susunod na pahina]].

@@ -1,0 +1,16 @@
+* Mga channel
+
+Ang mga channel ay mga conduit na may type, na ginagamit upang magpadala at tumanggap ng mga value sa pamamagitan ng channel operator na ⟪GTI18N_a35e3af2_000001⟫<-⟪GTI18N_a35e3af2_000002⟫.
+
+⟪GTI18N_a35e3af2_000003⟫Ipadala ang ⟪GTI18N_a35e3af2_000004⟫ sa channel na ⟪GTI18N_a35e3af2_000005⟫.⟪GTI18N_a35e3af2_000006⟫Tumanggap mula sa ⟪GTI18N_a35e3af2_000007⟫, at⟪GTI18N_a35e3af2_000008⟫italaga ang value sa ⟪GTI18N_a35e3af2_000009⟫.⟪GTI18N_a35e3af2_000010⟫(Dumadaloy ang data sa direksiyon ng arrow.)
+
+Gaya ng mga map at slice, kailangang gawin muna ang mga channel bago gamitin:
+
+⟪GTI18N_a35e3af2_000011⟫
+
+Bilang default, naka-block ang pagpapadala at pagtanggap hanggang maging handa ang kabilang panig. Dahil dito, maaaring mag-synchronize ang mga goroutine nang walang tahasang lock o condition variable.
+
+Kinukuha ng halimbawang code ang suma ng mga numero sa isang slice, habang ipinapamahagi ang trabaho sa dalawang goroutine.
+Pagkatapos makumpleto ng dalawang goroutine ang kanilang pagkukuwenta, kinakalkula nito ang huling resulta.
+
+⟪GTI18N_a35e3af2_000012⟫

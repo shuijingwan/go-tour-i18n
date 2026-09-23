@@ -1,0 +1,15 @@
+* Pagdaragdag ng mga elemento sa slice
+
+Karaniwang nagdaragdag ng mga bagong elemento sa slice, kaya may built-in na function na ⟪GTI18N_f2fc257e_000001⟫append⟪GTI18N_f2fc257e_000002⟫ ang Go. Nasa [[⟪GTI18N_f2fc257e_000003⟫][dokumentasyon]] ng built-in na package ang paglalarawan sa ⟪GTI18N_f2fc257e_000004⟫append⟪GTI18N_f2fc257e_000005⟫.
+
+⟪GTI18N_f2fc257e_000006⟫
+
+Ang unang parameter na ⟪GTI18N_f2fc257e_000007⟫s⟪GTI18N_f2fc257e_000008⟫ ng ⟪GTI18N_f2fc257e_000009⟫append⟪GTI18N_f2fc257e_000010⟫ ay isang slice na may type na ⟪GTI18N_f2fc257e_000011⟫T⟪GTI18N_f2fc257e_000012⟫, at ang natitira ay mga value na may type na ⟪GTI18N_f2fc257e_000013⟫T⟪GTI18N_f2fc257e_000014⟫ na idaragdag sa slice.
+
+Ang ibinabalik na value ng ⟪GTI18N_f2fc257e_000015⟫append⟪GTI18N_f2fc257e_000016⟫ ay isang slice na naglalaman ng lahat ng elemento ng orihinal na slice kasama ang mga ibinigay na value.
+
+Kung masyadong maliit ang backing array ng ⟪GTI18N_f2fc257e_000017⟫s⟪GTI18N_f2fc257e_000018⟫ upang magkasya ang lahat ng ibinigay na value, maglalaan ng mas malaking array. Ang ibabalik na slice ay tutukoy sa bagong inilaan na array.
+
+(Para sa higit pang impormasyon tungkol sa mga slice, basahin ang artikulong [[⟪GTI18N_f2fc257e_000019⟫][Slices: usage and internals]].)
+
+⟪GTI18N_f2fc257e_000020⟫

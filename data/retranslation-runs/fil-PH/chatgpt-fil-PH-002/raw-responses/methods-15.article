@@ -1,0 +1,25 @@
+* Mga type assertion
+
+Ang ⟪GTI18N_c205b4eb_000001⟫type_assertion⟪GTI18N_c205b4eb_000002⟫ ay nagbibigay ng access sa pinagbabatayang kongkretong value ng isang interface value.
+
+⟪GTI18N_c205b4eb_000003⟫
+
+Iginigiit ng statement na ito na ang interface value na ⟪GTI18N_c205b4eb_000004⟫i⟪GTI18N_c205b4eb_000005⟫ ay may hawak na kongkretong type na ⟪GTI18N_c205b4eb_000006⟫T⟪GTI18N_c205b4eb_000007⟫,
+at itinatalaga ang pinagbabatayang value na ⟪GTI18N_c205b4eb_000008⟫T⟪GTI18N_c205b4eb_000009⟫ sa variable na ⟪GTI18N_c205b4eb_000010⟫t⟪GTI18N_c205b4eb_000011⟫.
+
+Kung ang ⟪GTI18N_c205b4eb_000012⟫i⟪GTI18N_c205b4eb_000013⟫ ay walang hawak na ⟪GTI18N_c205b4eb_000014⟫T⟪GTI18N_c205b4eb_000015⟫, magdudulot ng panic ang statement.
+
+Upang ⟪GTI18N_c205b4eb_000016⟫subukan⟪GTI18N_c205b4eb_000017⟫ kung may hawak na partikular na type ang isang interface value,
+maaaring magbalik ng dalawang value ang type assertion: ang pinagbabatayang value
+at isang boolean value na nagpapakita kung nagtagumpay ang assertion.
+
+⟪GTI18N_c205b4eb_000018⟫
+
+Kung ang ⟪GTI18N_c205b4eb_000019⟫i⟪GTI18N_c205b4eb_000020⟫ ay may hawak na ⟪GTI18N_c205b4eb_000021⟫T⟪GTI18N_c205b4eb_000022⟫, ang ⟪GTI18N_c205b4eb_000023⟫t⟪GTI18N_c205b4eb_000024⟫ ay magiging pinagbabatayang value at magiging true ang ⟪GTI18N_c205b4eb_000025⟫ok⟪GTI18N_c205b4eb_000026⟫.
+
+Kung hindi, magiging false ang ⟪GTI18N_c205b4eb_000027⟫ok⟪GTI18N_c205b4eb_000028⟫ at ang ⟪GTI18N_c205b4eb_000029⟫t⟪GTI18N_c205b4eb_000030⟫ ay magiging zero value ng type na ⟪GTI18N_c205b4eb_000031⟫T⟪GTI18N_c205b4eb_000032⟫,
+at walang magaganap na panic.
+
+Pansinin ang pagkakatulad ng syntax na ito sa pagbasa mula sa isang map.
+
+⟪GTI18N_c205b4eb_000033⟫

@@ -1,0 +1,12 @@
+* Pagpapatuloy ng range
+
+Maaari mong laktawan ang index o value sa pamamagitan ng pagtatalaga rito sa `_`.
+
+    for i, _ := range pow
+    for _, value := range pow
+
+Kung index lamang ang kailangan mo, maaari mong alisin ang ikalawang variable.
+
+    for i := range pow
+
+.play moretypes/range-continued.go
