@@ -18,13 +18,21 @@ Codex 支持的正式翻译阶段为：
 retranslation export（先验证 current Glossary Review coverage）
 → Local terminal 导出 provider-neutral Generation Bundle 并完成 ZIP handoff
 → Codex 完整读取 ZIP 内 manifest、全部 inputs、glossary 与 authority
-→ Codex 完整翻译每个 TranslationUnit
-→ result-pack → deterministic import
+→ Codex 将完整 TranslationUnit 写入隔离本地 staging
+→ 目录 import（跨环境回退时 result-pack → Result ZIP import）
 ```
 
 manifest、全部 inputs 与 locale glossary 是不可拆分的正式模型输入。Codex 必须在翻译前完整读取 glossary，并遵守其中的 `mandatory`、`preferred`、`forbidden` 和 `keep`；glossary 不是仅供 validator 后置检查的材料。
 
-正式 transport 与 ChatGPT 完全相同：新增 locale 的 initial Page / Example bulk batch 必须由维护者 Local terminal 执行 `generation-bundle export` 并把 ZIP handoff 给 Codex；Codex 不以直接扫描工作树代替这次 handoff。Codex 将 exact expected outputs 写入独立 staging 目录；首次 bulk 的返回结果继续按 handoff 约定执行 `generation-bundle result-pack --provider codex --model gpt-5.6-sol-high` 与 `generation-bundle import`。后续小批 revision / retry 则由 Codex 默认自动完成 bundle、result-pack / import、process / validation、Snapshot / scope 等闭环机械步骤。所有路径都重验 current identity、路径、exact set、protected restore、single-LF 和 no-overwrite；bundle 不改变 TranslationUnit 边界，不是 authority、provenance receipt 或质量 gate，导入后仍执行 existing process/validation 与独立 A-only QC。
+正式输入 transport 与 ChatGPT 完全相同：新增 locale 的 initial Page / Example bulk batch 必须由维护者 Local terminal 执行 `generation-bundle export` 并把 ZIP handoff 给 Codex；Codex 不以重新扫描工作树代替这次 handoff。Codex 将 exact expected outputs 写入按 locale + batch 隔离的本地隐藏 staging，默认用 `generation-bundle import --input-dir` 直接导入；跨环境传输或目录不可用时才使用 `result-pack` / Result ZIP import。revision / retry 同样复用目录 import。Codex 先将每个完整 TranslationUnit 写入临时文件，再 rename 成 staging 成品；导入及正式 process / automatic validation 通过后，每批停下等待维护者明确“继续”。命令示例：
+
+```sh
+go run -mod=readonly ./cmd/tour-i18n generation-bundle import \
+  --bundle /tmp/<locale>-<batch-id>-generation.zip \
+  --input-dir /tmp/.go-tour-i18n-generation/<locale>/<batch-id> \
+  --provider codex --model gpt-5.6-sol-high
+```
+所有路径都重验 current identity、路径、exact set、UTF-8/no-BOM/single-LF、protected restore、glossary、machine candidate 与 no-overwrite；导入持久保存既有 Result Bundle manifest 作为 provenance 记录，不新增 schema；记录真实 provider/model、Generation Bundle SHA-256、input identity、attempt 与输出 hashes。bundle 不改变 TranslationUnit 边界，也不是 authority 或质量 gate；导入后仍执行正式 process/validation 与独立 A-only QC。
 
 Glossary 的制定、独立审核与 machine gate 以 [Glossary Review 规范](GLOSSARY_REVIEW.md) 为准。Codex Generation role 不得用自己的 generation 上下文审核并批准同一 glossary。
 
@@ -77,7 +85,7 @@ Codex 生成本轮 TranslationUnit 时，后续正式 Quality Check 必须由独
 
 ## Retry 与 revision
 
-首次 result 由 deterministic import 安装到 `raw-responses/`，并被记为 attempt 1。若 `process` 得到 `restore_failed` 或 `validation_failed`，Codex 根据 retry Generation Bundle 与失败 evidence 生成下一份连续编号输出；import 将其安装到 `retries/<unit>/attempt-NNN.*`，因此首次 retry 必须是 `attempt-002.*`，不得创建 `attempt-001.*`。Retry raw response 同样必须以恰好一个 LF 结束且 EOF 无额外空行。现有 `retranslation retry` 命令只处理已导入文件，不调用模型、不生成或自动改写译文。
+首次 output 由 deterministic import 安装到 `raw-responses/`，同一目录下持久化的 Result Bundle manifest 绑定 attempt 1 与 generation provenance。若 `process` 得到 `restore_failed` 或 `validation_failed`，Codex 根据 retry Generation Bundle 与失败 evidence 生成下一份连续编号输出；import 将其安装到 `retries/<unit>/attempt-NNN.*`，因此首次 retry 必须是 `attempt-002.*`，不得创建 `attempt-001.*`。Retry raw response 同样必须以恰好一个 LF 结束且 EOF 无额外空行。现有 `retranslation retry` 命令只处理已导入文件，不调用模型、不生成或自动改写译文。
 
 若 failure 已确认只来自 validator 规则修正，且 restore 成功、原 candidate 保持有效，不得伪造 retry。使用 `retranslation revalidate --locale ... --batch-id ... --unit-id ...` 以当前 canonical validator 重验同一 candidate；命令归档旧 validation evidence，更新当前 validation/result，但保持 raw response、candidate 和 translation attempt 不变。
 

@@ -130,7 +130,16 @@ go run -mod=readonly ./cmd/tour-i18n generation-bundle export \
 
 retry 仅对当前 `restore_failed` / `validation_failed` Unit 增加 `--unit-id <unit-id>`；bundle 自动绑定下一连续 attempt、当前 validation/result 和完整原 batch 输入。`manifest.json` 声明 schema、task kind、locale、batch、Unit kind、attempt、exact expected outputs、全部成员 inventory/hash 与聚合 input identity。ZIP 内仍包含原始 batch manifest、manifest 列出的全部 inputs、完整 glossary 和当前 authority；ZIP 不替代这些 semantic authority。ChatGPT 与 Codex 都读取同一 contract，不因 provider 改变内容边界。
 
-生成结果先放在独立目录并形成 result ZIP，再导入。首次 bulk 返回结果沿用 ZIP handoff；后续小批 revision / retry 的 result-pack / import 默认由当前 AI execution environment 连续执行：
+将完整生成结果先放入按 locale + batch 隔离的本地隐藏 staging。具备同一本地文件访问能力时，initial、revision 与 retry 默认直接目录 import，不制作临时 Result ZIP：
+
+```sh
+go run -mod=readonly ./cmd/tour-i18n generation-bundle import \
+  --bundle /tmp/<locale>-<batch-id>-generation.zip \
+  --input-dir /tmp/.go-tour-i18n-generation/<locale>/<batch-id> \
+  --provider <chatgpt|codex> --model gpt-5.6-sol-high
+```
+
+直接导入会在本地完整读取并冻结 exact expected output set；正式安装使用的就是已经验证过的字节。跨环境传输、RDC 不可用或目录导入不适用时，保留 outputs ZIP → `result-pack` → 正式 Result ZIP → `import --result` 回退。旧 Result ZIP 仍兼容：
 
 ```sh
 go run -mod=readonly ./cmd/tour-i18n generation-bundle result-pack \
@@ -144,7 +153,7 @@ go run -mod=readonly ./cmd/tour-i18n generation-bundle import \
   --result /tmp/<locale>-<batch-id>-result.zip
 ```
 
-`result-pack` / `import` 均重新确认 current canonical bundle、locale/batch/attempt、exact file set、路径、UTF-8/no-BOM/single-LF、protected restore 与现有 machine candidate validator；额外文件、symlink/path escape、stale authority/input、provider/batch provenance 不一致或已有正式 attempt 均 fail closed。initial/revision 全目录 staging 后一次 rename；retry 单文件 no-overwrite install。该步骤只执行机器安全检查，不判断翻译质量；导入后仍由 `retranslation process` / `retry` 生成正式 candidate/validation evidence，并继续独立 A-only QC。
+目录 import 与 Result ZIP import 共用 current canonical bundle、原 ZIP 完整性与全部 authority/input identity、locale/batch/task/attempt、expected outputs、真实 provider/model、exact file set、路径、UTF-8/no-BOM/single-LF、protected restore、glossary 与 machine candidate 检查。目录 symlink、额外目录/FIFO/非普通文件、缺失或额外文件、stale 输入、身份不符及已有正式输出均 fail closed。initial/revision 完整 staging 后原子安装且 no-replace；当前整批目录安装要求 Linux amd64 内核支持 `renameat2(RENAME_NOREPLACE)`，其他平台 fail closed。retry 保持单文件 no-overwrite。目录 import 将既有 `GenerationResultBundleManifest` 持久保存在 `data/retranslation-runs/<locale>/<batch-id>/generation-imports/initial-manifest.json`，retry manifest 按 unit 与 attempt 命名；记录 provider/model、Generation Bundle SHA-256、input identity、attempt 与输出 hashes；检查过程中若状态不确定，pending marker 会阻止 import 重放及 `process` / `retry`，必须先核实实际文件。目录与 Result ZIP 两种导入都只完成机器安全检查，不判断语言质量；随后仍由 `retranslation process` / `retry` 生成正式 automatic validation evidence，并继续独立 A-only QC。
 
 ## 5. 输出契约
 

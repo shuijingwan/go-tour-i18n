@@ -69,14 +69,15 @@ type GenerationResultBundleManifest struct {
 }
 
 type GenerationImportResult struct {
-	Locale              string   `json:"locale"`
-	BatchID             string   `json:"batch_id"`
-	TaskKind            string   `json:"task_kind"`
-	Attempt             int      `json:"attempt"`
-	Provider            string   `json:"provider"`
-	Model               string   `json:"model"`
-	InstalledPaths      []string `json:"installed_paths"`
-	InputIdentitySHA256 string   `json:"input_identity_sha256"`
+	Locale                 string   `json:"locale"`
+	BatchID                string   `json:"batch_id"`
+	TaskKind               string   `json:"task_kind"`
+	Attempt                int      `json:"attempt"`
+	Provider               string   `json:"provider"`
+	Model                  string   `json:"model"`
+	InstalledPaths         []string `json:"installed_paths"`
+	InputIdentitySHA256    string   `json:"input_identity_sha256"`
+	GenerationBundleSHA256 string   `json:"generation_bundle_sha256"`
 }
 
 type generationContext struct {
@@ -391,16 +392,9 @@ func PackGenerationResultBundle(root string, catalog *Catalog, generationBundleD
 }
 
 func ImportGenerationResultBundle(root string, catalog *Catalog, generationBundleData, resultBundleData []byte) (*GenerationImportResult, error) {
-	manifest, generationFiles, err := readGenerationBundle(generationBundleData)
+	manifest, generationFiles, err := currentGenerationBundle(root, catalog, generationBundleData)
 	if err != nil {
 		return nil, err
-	}
-	current, _, err := ExportTranslationUnitGenerationBundle(root, catalog, GenerationBundleOptions{Locale: manifest.Locale, BatchID: manifest.BatchID, UnitID: retryUnitID(manifest)})
-	if err != nil || !bytes.Equal(current, generationBundleData) {
-		if err != nil {
-			return nil, fmt.Errorf("generation bundle is stale: %w", err)
-		}
-		return nil, errors.New("generation bundle is stale or non-canonical")
 	}
 	resultFiles, err := ReadTransportBundle(resultBundleData, 256, 64<<20)
 	if err != nil {
@@ -410,6 +404,57 @@ func ImportGenerationResultBundle(root string, catalog *Catalog, generationBundl
 	if err := decodeStrictBundleJSON(resultFiles["manifest.json"], &resultManifest); err != nil {
 		return nil, fmt.Errorf("parse generation result manifest: %w", err)
 	}
+	outputs, err := validateGenerationResult(root, catalog, generationBundleData, manifest, generationFiles, resultFiles, resultManifest)
+	if err != nil {
+		return nil, err
+	}
+	return installGenerationOutputs(root, manifest, generationBundleData, generationFiles["manifest.json"], resultManifest.Provider, resultManifest.Model, outputs)
+}
+
+// ImportGenerationOutputDirectory validates and installs local generation
+// outputs without creating an intermediate Result Bundle ZIP.
+func ImportGenerationOutputDirectory(root string, catalog *Catalog, generationBundleData []byte, provider, model, inputDir string) (*GenerationImportResult, error) {
+	manifest, generationFiles, err := currentGenerationBundle(root, catalog, generationBundleData)
+	if err != nil {
+		return nil, err
+	}
+	if err := requireFormalGenerationIdentity(provider, model, manifest.BatchID); err != nil {
+		return nil, err
+	}
+	outputBytes, err := readExactGenerationOutputDirectory(inputDir, manifest.ExpectedOutputs)
+	if err != nil {
+		return nil, err
+	}
+	outputs := make(map[string][]byte, len(outputBytes))
+	for _, expected := range manifest.ExpectedOutputs {
+		outputs[expected.BundlePath] = outputBytes[filepath.Base(expected.BundlePath)]
+	}
+	if err := validateGenerationOutputSet(root, catalog, manifest, outputs); err != nil {
+		return nil, err
+	}
+	result, err := installGenerationOutputs(root, manifest, generationBundleData, generationFiles["manifest.json"], provider, model, outputs)
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
+}
+
+func currentGenerationBundle(root string, catalog *Catalog, generationBundleData []byte) (GenerationBundleManifest, map[string][]byte, error) {
+	manifest, files, err := readGenerationBundle(generationBundleData)
+	if err != nil {
+		return manifest, nil, err
+	}
+	current, _, err := ExportTranslationUnitGenerationBundle(root, catalog, GenerationBundleOptions{Locale: manifest.Locale, BatchID: manifest.BatchID, UnitID: retryUnitID(manifest)})
+	if err != nil {
+		return manifest, nil, fmt.Errorf("generation bundle is stale: %w", err)
+	}
+	if !bytes.Equal(current, generationBundleData) {
+		return manifest, nil, errors.New("generation bundle is stale or non-canonical")
+	}
+	return manifest, files, nil
+}
+
+func validateGenerationResult(root string, catalog *Catalog, generationBundleData []byte, manifest GenerationBundleManifest, generationFiles, resultFiles map[string][]byte, resultManifest GenerationResultBundleManifest) (map[string][]byte, error) {
 	if resultManifest.SchemaVersion != GenerationResultBundleSchemaVersion || resultManifest.Kind != "go-tour-i18n/generation-result-bundle" ||
 		resultManifest.TaskKind != manifest.TaskKind || resultManifest.Locale != manifest.Locale || resultManifest.BatchID != manifest.BatchID || resultManifest.Attempt != manifest.Attempt ||
 		resultManifest.GenerationBundleSHA256 != sum(generationBundleData) || resultManifest.InputIdentitySHA256 != manifest.InputIdentitySHA256 {
@@ -428,68 +473,234 @@ func ImportGenerationResultBundle(root string, catalog *Catalog, generationBundl
 	if !bytes.Equal(resultFiles["generation-manifest.json"], generationFiles["manifest.json"]) {
 		return nil, errors.New("generation result bundle embeds a different generation manifest")
 	}
-	outputByPath := map[string]TransportBundleFile{}
+	outputByPath := make(map[string][]byte, len(resultManifest.Outputs))
 	for _, output := range resultManifest.Outputs {
-		outputByPath[output.BundlePath] = output
+		outputByPath[output.BundlePath] = resultFiles[output.BundlePath]
 	}
-	if len(outputByPath) != len(manifest.ExpectedOutputs) {
-		return nil, errors.New("generation result bundle output set mismatch")
+	if err := validateGenerationOutputSet(root, catalog, manifest, outputByPath); err != nil {
+		return nil, err
+	}
+	return outputByPath, nil
+}
+
+func validateGenerationOutputSet(root string, catalog *Catalog, manifest GenerationBundleManifest, outputs map[string][]byte) error {
+	if len(outputs) != len(manifest.ExpectedOutputs) {
+		return errors.New("generation result bundle output set mismatch")
 	}
 	glossary, err := LoadGlossary(root, manifest.Locale)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	batchDir := filepath.Join(root, "data", "retranslation-runs", manifest.Locale, manifest.BatchID)
-	installed := make([]string, 0, len(manifest.ExpectedOutputs))
 	for _, expected := range manifest.ExpectedOutputs {
-		if _, ok := outputByPath[expected.BundlePath]; !ok {
-			return nil, fmt.Errorf("generation result bundle is missing %s", expected.BundlePath)
+		data, ok := outputs[expected.BundlePath]
+		if !ok {
+			return fmt.Errorf("generation result is missing %s", expected.BundlePath)
 		}
-		data := resultFiles[expected.BundlePath]
 		if err := validateGenerationOutputBytes(data); err != nil {
-			return nil, fmt.Errorf("%s: %w", expected.BundlePath, err)
+			return fmt.Errorf("%s: %w", expected.BundlePath, err)
 		}
 		if err := validateTranslationUnitGenerationOutput(root, catalog, glossary, manifest.Locale, manifest.BatchID, expected.UnitID, data); err != nil {
-			return nil, fmt.Errorf("%s: %w", expected.BundlePath, err)
+			return fmt.Errorf("%s: %w", expected.BundlePath, err)
+		}
+		if err := validateGenerationInstallPath(expected.InstallPath); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func readExactGenerationOutputDirectory(inputDir string, expected []GenerationBundleExpectedOutput) (map[string][]byte, error) {
+	info, err := os.Lstat(inputDir)
+	if err != nil || !info.IsDir() || info.Mode()&os.ModeSymlink != 0 {
+		return nil, errors.New("generation input must be a real directory")
+	}
+	entries, err := os.ReadDir(inputDir)
+	if err != nil {
+		return nil, err
+	}
+	want := make(map[string]bool, len(expected))
+	for _, item := range expected {
+		name := filepath.Base(item.BundlePath)
+		if name == "." || name == string(filepath.Separator) || want[name] {
+			return nil, errors.New("generation bundle has invalid expected output names")
+		}
+		want[name] = true
+	}
+	if len(entries) != len(want) {
+		return nil, fmt.Errorf("generation output file set mismatch: got %d entries, want %d", len(entries), len(want))
+	}
+	outputs := make(map[string][]byte, len(want))
+	for _, entry := range entries {
+		name := entry.Name()
+		if !want[name] || entry.IsDir() || entry.Type()&os.ModeSymlink != 0 {
+			return nil, fmt.Errorf("unexpected or non-regular generation output entry %q", name)
+		}
+		path := filepath.Join(inputDir, name)
+		before, err := os.Lstat(path)
+		if err != nil || !before.Mode().IsRegular() || before.Mode()&os.ModeSymlink != 0 {
+			return nil, fmt.Errorf("generation output %q is not a regular non-symlink file", name)
+		}
+		file, err := os.Open(path)
+		if err != nil {
+			return nil, err
+		}
+		opened, statErr := file.Stat()
+		if statErr != nil || !opened.Mode().IsRegular() || !os.SameFile(before, opened) {
+			file.Close()
+			return nil, fmt.Errorf("generation output %q changed while opening", name)
+		}
+		data, readErr := io.ReadAll(file)
+		after, afterErr := file.Stat()
+		closeErr := file.Close()
+		if readErr != nil {
+			return nil, readErr
+		}
+		if afterErr != nil || closeErr != nil || !os.SameFile(opened, after) || after.Size() != int64(len(data)) {
+			return nil, fmt.Errorf("generation output %q changed while reading", name)
+		}
+		outputs[name] = data
+	}
+	return outputs, nil
+}
+
+func validateGenerationInstallPath(path string) error {
+	if path == "" || filepath.IsAbs(filepath.FromSlash(path)) || filepath.ToSlash(filepath.Clean(filepath.FromSlash(path))) != path || strings.Contains(path, "\\") {
+		return fmt.Errorf("unsafe install path %q", path)
+	}
+	for _, part := range strings.Split(path, "/") {
+		if part == "" || part == "." || part == ".." {
+			return fmt.Errorf("unsafe install path %q", path)
+		}
+	}
+	return nil
+}
+
+func installGenerationOutputs(root string, manifest GenerationBundleManifest, generationBundleData, generationManifestData []byte, provider, model string, outputs map[string][]byte) (*GenerationImportResult, error) {
+	batchDir := filepath.Join(root, "data", "retranslation-runs", manifest.Locale, manifest.BatchID)
+	if err := ensureNoGenerationImportPending(batchDir); err != nil {
+		return nil, err
+	}
+	batchInfo, err := os.Lstat(batchDir)
+	if err != nil || !batchInfo.IsDir() || batchInfo.Mode()&os.ModeSymlink != 0 {
+		return nil, errors.New("generation batch install root must be a real directory")
+	}
+	if manifest.TaskKind != "translation-unit-retry" {
+		for _, name := range []string{"raw-responses", "candidates", "validation", "result.json"} {
+			path := filepath.Join(batchDir, name)
+			if _, err := os.Lstat(path); err == nil {
+				return nil, fmt.Errorf("formal generation batch state %q already exists; refusing import", name)
+			} else if !os.IsNotExist(err) {
+				return nil, err
+			}
+		}
+	}
+	for _, expected := range manifest.ExpectedOutputs {
+		if err := validateGenerationInstallPath(expected.InstallPath); err != nil {
+			return nil, err
+		}
+		if err := checkGenerationInstallParents(batchDir, expected.InstallPath); err != nil {
+			return nil, err
 		}
 		destination := filepath.Join(batchDir, filepath.FromSlash(expected.InstallPath))
-		if !pathWithinRoot(batchDir, destination) {
-			return nil, fmt.Errorf("unsafe install path %q", expected.InstallPath)
-		}
 		if _, err := os.Lstat(destination); err == nil {
 			return nil, fmt.Errorf("formal generation output already exists: %s", expected.InstallPath)
 		} else if !os.IsNotExist(err) {
 			return nil, err
 		}
 	}
+	receipt := GenerationResultBundleManifest{
+		SchemaVersion: GenerationResultBundleSchemaVersion, Kind: "go-tour-i18n/generation-result-bundle", TaskKind: manifest.TaskKind,
+		Locale: manifest.Locale, BatchID: manifest.BatchID, Attempt: manifest.Attempt,
+		GenerationBundleSHA256: sum(generationBundleData), InputIdentitySHA256: manifest.InputIdentitySHA256,
+		Provider: provider, Model: model,
+		GenerationManifest: NewTransportBundleFile("generation-manifest.json", "", generationManifestData),
+	}
+	for _, expected := range manifest.ExpectedOutputs {
+		receipt.Outputs = append(receipt.Outputs, NewTransportBundleFile(expected.BundlePath, "", outputs[expected.BundlePath]))
+	}
+	sort.Slice(receipt.Outputs, func(i, j int) bool { return receipt.Outputs[i].BundlePath < receipt.Outputs[j].BundlePath })
+	receiptData, err := json.MarshalIndent(receipt, "", "  ")
+	if err != nil {
+		return nil, err
+	}
+	receiptData = append(receiptData, '\n')
+	receiptPath := generationImportReceiptPath(batchDir, manifest)
+	if _, err := os.Lstat(receiptPath); err == nil {
+		return nil, fmt.Errorf("generation import provenance already exists: %s; inspect batch state before retrying", filepath.Base(receiptPath))
+	} else if !os.IsNotExist(err) {
+		return nil, err
+	}
+	var installed []string
+	var installedRawInfo os.FileInfo
+	if err := ensureGenerationImportDirectory(batchDir); err != nil {
+		return nil, err
+	}
+	pendingPath := filepath.Join(batchDir, "generation-imports", "import.pending")
+	if err := writeNewGenerationFile(pendingPath, receiptData); err != nil {
+		return nil, fmt.Errorf("another generation import may be in progress; inspect batch state: %w", err)
+	}
+	keepPending := false
+	defer func() {
+		if !keepPending {
+			_ = os.Remove(pendingPath)
+		}
+	}()
+	rollback := func() error {
+		if manifest.TaskKind != "translation-unit-retry" {
+			finalDir := filepath.Join(batchDir, "raw-responses")
+			info, err := os.Lstat(finalDir)
+			if os.IsNotExist(err) {
+				return nil
+			}
+			if err != nil || installedRawInfo == nil || !os.SameFile(installedRawInfo, info) || !info.IsDir() || info.Mode()&os.ModeSymlink != 0 {
+				return errors.New("formal raw-responses changed after install; refusing unsafe rollback")
+			}
+			entries, err := os.ReadDir(finalDir)
+			if err != nil || len(entries) != len(manifest.ExpectedOutputs) {
+				return errors.New("formal raw-responses inventory changed after install; refusing unsafe rollback")
+			}
+			for _, expected := range manifest.ExpectedOutputs {
+				name := filepath.Base(expected.InstallPath)
+				fileInfo, err := os.Lstat(filepath.Join(finalDir, name))
+				if err != nil || !fileInfo.Mode().IsRegular() || fileInfo.Mode()&os.ModeSymlink != 0 {
+					return errors.New("formal raw-response file changed after install; refusing unsafe rollback")
+				}
+				data, err := os.ReadFile(filepath.Join(finalDir, name))
+				if err != nil || !bytes.Equal(data, outputs[expected.BundlePath]) {
+					return errors.New("formal raw-response bytes changed after install; refusing unsafe rollback")
+				}
+			}
+			return os.RemoveAll(finalDir)
+		}
+		for _, path := range installed {
+			fullPath := filepath.Join(batchDir, filepath.FromSlash(path))
+			info, err := os.Lstat(fullPath)
+			if os.IsNotExist(err) {
+				continue
+			}
+			if err != nil || !info.Mode().IsRegular() || info.Mode()&os.ModeSymlink != 0 {
+				return fmt.Errorf("retry output %s changed after install; refusing unsafe rollback", path)
+			}
+			data, err := os.ReadFile(fullPath)
+			if err != nil || !bytes.Equal(data, outputs[manifest.ExpectedOutputs[0].BundlePath]) {
+				return fmt.Errorf("retry output %s bytes changed after install; refusing unsafe rollback", path)
+			}
+			if err := os.Remove(fullPath); err != nil {
+				return err
+			}
+		}
+		return nil
+	}
 	if manifest.TaskKind == "translation-unit-retry" {
 		expected := manifest.ExpectedOutputs[0]
 		destination := filepath.Join(batchDir, filepath.FromSlash(expected.InstallPath))
-		if err := os.MkdirAll(filepath.Dir(destination), 0755); err != nil {
+		if err := createGenerationInstallParents(batchDir, expected.InstallPath); err != nil {
 			return nil, err
 		}
-		temporary, err := os.CreateTemp(filepath.Dir(destination), ".generation-import-*")
-		if err != nil {
+		if err := writeNewGenerationFile(destination, outputs[expected.BundlePath]); err != nil {
 			return nil, err
 		}
-		temporaryPath := temporary.Name()
-		defer os.Remove(temporaryPath)
-		if _, err = temporary.Write(resultFiles[expected.BundlePath]); err == nil {
-			err = temporary.Chmod(0644)
-		}
-		if closeErr := temporary.Close(); err == nil {
-			err = closeErr
-		}
-		if err != nil {
-			return nil, err
-		}
-		if err := os.Link(temporaryPath, destination); err != nil {
-			if os.IsExist(err) {
-				return nil, fmt.Errorf("formal generation output already exists: %s", expected.InstallPath)
-			}
-			return nil, err
-		}
-		installed = append(installed, filepath.ToSlash(filepath.Join("data", "retranslation-runs", manifest.Locale, manifest.BatchID, expected.InstallPath)))
+		installed = append(installed, expected.InstallPath)
 	} else {
 		finalDir := filepath.Join(batchDir, "raw-responses")
 		staging, err := os.MkdirTemp(batchDir, ".raw-responses.import-*")
@@ -499,23 +710,151 @@ func ImportGenerationResultBundle(root string, catalog *Catalog, generationBundl
 		defer os.RemoveAll(staging)
 		for _, expected := range manifest.ExpectedOutputs {
 			name := filepath.Base(expected.InstallPath)
-			if err := os.WriteFile(filepath.Join(staging, name), resultFiles[expected.BundlePath], 0644); err != nil {
+			if err := writeNewGenerationFile(filepath.Join(staging, name), outputs[expected.BundlePath]); err != nil {
 				return nil, err
 			}
-			installed = append(installed, filepath.ToSlash(filepath.Join("data", "retranslation-runs", manifest.Locale, manifest.BatchID, expected.InstallPath)))
+			installed = append(installed, expected.InstallPath)
 		}
-		if err := os.Rename(staging, finalDir); err != nil {
+		installed = installed[:0]
+		if _, err := os.Lstat(finalDir); err == nil {
+			return nil, fmt.Errorf("formal raw-responses already exists for batch %s", manifest.BatchID)
+		} else if !os.IsNotExist(err) {
+			return nil, err
+		}
+		if err := renameGenerationDirNoReplace(staging, finalDir); err != nil {
 			if os.IsExist(err) {
 				return nil, fmt.Errorf("formal raw-responses already exists for batch %s", manifest.BatchID)
 			}
 			return nil, err
 		}
+		installedRawInfo, err = os.Lstat(finalDir)
+		if err != nil {
+			keepPending = true
+			return nil, fmt.Errorf("raw-responses installed but its state could not be confirmed; inspect before retrying: %w", err)
+		}
+		for _, expected := range manifest.ExpectedOutputs {
+			installed = append(installed, expected.InstallPath)
+		}
 	}
-	sort.Strings(installed)
+	if err := writeNewGenerationFile(receiptPath, receiptData); err != nil {
+		if rollbackErr := rollback(); rollbackErr != nil {
+			keepPending = true
+			return nil, fmt.Errorf("install provenance failed (%v); formal output rollback is incomplete; inspect pending import state: %w", err, rollbackErr)
+		}
+		return nil, fmt.Errorf("install generation provenance: %w", err)
+	}
+	if err := os.Remove(pendingPath); err != nil {
+		keepPending = true
+		return nil, fmt.Errorf("generation outputs and provenance were installed but pending marker remains; inspect actual batch state before retrying: %w", err)
+	}
+	keepPending = true // already removed; suppress deferred cleanup.
+	installedPaths := make([]string, 0, len(installed))
+	for _, path := range installed {
+		installedPaths = append(installedPaths, filepath.ToSlash(filepath.Join("data", "retranslation-runs", manifest.Locale, manifest.BatchID, path)))
+	}
+	sort.Strings(installedPaths)
 	return &GenerationImportResult{
 		Locale: manifest.Locale, BatchID: manifest.BatchID, TaskKind: manifest.TaskKind, Attempt: manifest.Attempt,
-		Provider: resultManifest.Provider, Model: resultManifest.Model, InstalledPaths: installed, InputIdentitySHA256: manifest.InputIdentitySHA256,
+		Provider: provider, Model: model, InstalledPaths: installedPaths, InputIdentitySHA256: manifest.InputIdentitySHA256, GenerationBundleSHA256: sum(generationBundleData),
 	}, nil
+}
+
+func ensureNoGenerationImportPending(batchDir string) error {
+	pending := filepath.Join(batchDir, "generation-imports", "import.pending")
+	if _, err := os.Lstat(pending); err == nil {
+		return errors.New("generation import has pending or unknown mutation state; inspect raw responses, retries, and provenance before continuing")
+	} else if !os.IsNotExist(err) {
+		return err
+	}
+	return nil
+}
+
+func ensureGenerationImportDirectory(batchDir string) error {
+	directory := filepath.Join(batchDir, "generation-imports")
+	if err := os.Mkdir(directory, 0755); err != nil && !os.IsExist(err) {
+		return err
+	}
+	info, err := os.Lstat(directory)
+	if err != nil || !info.IsDir() || info.Mode()&os.ModeSymlink != 0 {
+		return errors.New("generation import provenance path must be a real directory")
+	}
+	return nil
+}
+
+func generationImportReceiptPath(batchDir string, manifest GenerationBundleManifest) string {
+	if manifest.TaskKind == "translation-unit-retry" {
+		expected := manifest.ExpectedOutputs[0]
+		name := filepath.Base(filepath.FromSlash(expected.BundlePath))
+		flatID := strings.TrimSuffix(name, filepath.Ext(name))
+		return filepath.Join(batchDir, "generation-imports", fmt.Sprintf("%s-attempt-%03d-manifest.json", flatID, manifest.Attempt))
+	}
+	return filepath.Join(batchDir, "generation-imports", "initial-manifest.json")
+}
+
+func checkGenerationInstallParents(batchDir, relative string) error {
+	parts := strings.Split(filepath.ToSlash(filepath.Dir(filepath.FromSlash(relative))), "/")
+	current := batchDir
+	for _, part := range parts {
+		if part == "." || part == "" {
+			continue
+		}
+		current = filepath.Join(current, part)
+		info, err := os.Lstat(current)
+		if os.IsNotExist(err) {
+			continue
+		}
+		if err != nil || !info.IsDir() || info.Mode()&os.ModeSymlink != 0 {
+			return fmt.Errorf("unsafe install parent %q", current)
+		}
+	}
+	return nil
+}
+
+func createGenerationInstallParents(batchDir, relative string) error {
+	parts := strings.Split(filepath.ToSlash(filepath.Dir(filepath.FromSlash(relative))), "/")
+	current := batchDir
+	for _, part := range parts {
+		if part == "." || part == "" {
+			continue
+		}
+		current = filepath.Join(current, part)
+		if err := os.Mkdir(current, 0755); err != nil && !os.IsExist(err) {
+			return err
+		}
+		info, err := os.Lstat(current)
+		if err != nil || !info.IsDir() || info.Mode()&os.ModeSymlink != 0 {
+			return fmt.Errorf("unsafe install parent %q", current)
+		}
+	}
+	return nil
+}
+
+func writeNewGenerationFile(destination string, data []byte) error {
+	if err := os.MkdirAll(filepath.Dir(destination), 0755); err != nil {
+		return err
+	}
+	temporary, err := os.CreateTemp(filepath.Dir(destination), ".generation-import-*")
+	if err != nil {
+		return err
+	}
+	temporaryPath := temporary.Name()
+	defer os.Remove(temporaryPath)
+	if _, err = temporary.Write(data); err == nil {
+		err = temporary.Chmod(0644)
+	}
+	if closeErr := temporary.Close(); err == nil {
+		err = closeErr
+	}
+	if err != nil {
+		return err
+	}
+	if err := os.Link(temporaryPath, destination); err != nil {
+		if os.IsExist(err) {
+			return fmt.Errorf("formal generation output already exists: %s", destination)
+		}
+		return err
+	}
+	return nil
 }
 
 func retryUnitID(manifest GenerationBundleManifest) string {

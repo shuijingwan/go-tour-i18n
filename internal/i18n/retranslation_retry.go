@@ -34,6 +34,9 @@ func ProcessRetranslationRetry(root string, catalog *Catalog, options Retranslat
 		return nil, err
 	}
 	batchDir := filepath.Join(root, "data", "retranslation-runs", options.Locale, options.BatchID)
+	if err := ensureNoGenerationImportPending(batchDir); err != nil {
+		return nil, err
+	}
 	manifest, err := readRetranslationProcessManifest(batchDir, options.Locale, options.BatchID)
 	if err != nil {
 		return nil, err

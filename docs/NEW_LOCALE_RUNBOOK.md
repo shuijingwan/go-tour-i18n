@@ -48,7 +48,7 @@ locale / domain / CDN 决策
 
 新增 locale 始终以质量 gate 为先。每个 locale 固定维护 **1 个长期 Generation role/session + 1 个独立长期 Reviewer role/session + 维护者 Local terminal**：Generation session 只产生或修订语言内容；Reviewer session 执行 Glossary Review、TranslationUnit Quality Check、revision re-QC 与 Locale Surface Review。同一个从未参与该 locale 语言 generation 的 Reviewer session 可以连续承担这些审核，不要求拆分更多 reviewer conversation/session；各 gate 范围和 evidence 独立，reviewer finding 必须回到 Generation session 产生 replacement。
 
-新增 locale 的 initial Page / Example 大批量 TranslationUnit Generation 一律使用维护者 Local terminal 导出的 provider-neutral ZIP handoff。进入 Generation / Reviewer 往返后，具备仓库终端能力的当前 AI execution environment 默认自动完成闭环所需的短机械步骤，包括小批 revision lifecycle、审核结果 current-check / record / finalize、locale-level replacement 落盘、Surface Reviewer bundle / record-a，以及 Course SEO 结果落盘和正式 assemble / refresh / revise；然后把新材料交给独立 Reviewer 复审。闭环结束后的 promotion、build、preview / publish / Production、search closeout 与最终 Git commit / push 由维护者 Local terminal 成组执行。该分工只改变操作主体，不改变任何现有 gate、角色隔离或 provenance。
+新增 locale 的 initial Page / Example 大批量 TranslationUnit Generation 仍由维护者 Local terminal 导出 provider-neutral Generation ZIP 并交给 Generation session。具备仓库终端访问能力时，生成者将完整输出保存在按 locale + batch 隔离的隐藏 staging，随后默认以目录 import 直接落地，不生成或下载 outputs ZIP；跨环境传输或目录不可用时保留 outputs ZIP → `result-pack` → `import` 回退。Reviewer ZIP 仍由维护者上传给独立 Reviewer。进入 Generation / Reviewer 往返后，当前 AI execution environment 默认自动完成短机械步骤，包括小批 revision/retry、审核结果 current-check / record / finalize、locale-level replacement、Surface Reviewer bundle / record-a，以及 Course SEO 结果落盘和正式 assemble / refresh / revise。promotion、build、preview / publish / Production、search closeout 与最终 Git commit / push 仍由维护者 Local terminal 成组执行。该分工不改变 gate、身份隔离或 provenance。
 
 在开始该 locale 的正式 generation 前，根据当时真实的 ChatGPT 可用额度、Codex 5 小时额度与周额度、Remote Desktop Commander 月额度、历史实测成本和并发计划，选择 `chatgpt` 或 `codex` 作为 Generation provider；两者都使用 **GPT-5.6 Sol + High**。一旦开始正式 generation，原则上 glossary generation / revision、UI catalog、article metadata、其他 locale-level 文案、TranslationUnit initial / revision / 需要新译文的 retry、schema v2 Course SEO localization / refresh / revise replacement，以及 Locale Surface Review finding replacement generation 全程沿用同一 provider。不得仅为临时节省额度随意切换；只有真实额度耗尽、provider/tool failure 或仓库明确支持的恢复条件出现时才允许改变执行环境，并必须保留真实 provenance，不新增虚假 generation 记录，不弱化任何 gate。该选择是协作决定，不新增 schema、receipt、machine gate 或 locale state 字段。
 
@@ -62,8 +62,8 @@ locale / domain / CDN 决策
 | --- | --- |
 | 并行启动 | 在任何正式 generation 前，一次确认本轮全部 locale 的 locale identity、hostname、CDN、loopback port、service、data/release/current/lock path、public URL、registry 顺序与 URL，以及 Generation / Reviewer session；冻结每个 locale 的 Production identity 唯一值，缺失或歧义时不开始翻译。核对拟公开链接与各目标的实际 `production_state`、可达时点和上线顺序兼容；不得为通过计划检查提前把 `first-production` 改成 `live`。 |
 | 共享输入落定 | 完成 init、glossary gate、locale assets，并在**任一并行 locale 首次导出 Surface Reviewer Bundle 前**完成本轮双方需要的 `internal/tour/languages.go` 与 `production/identity.json` 修改。进入任一 Stage A 后保持共享输入稳定；若正式输入变化，依 current-check / receipt schema fail closed，只重导、重审受影响的 current package，不把旧 ZIP 或聊天记忆继续当输入。 |
-| 初始 TranslationUnit Generation | 全部 provider 都按 stable 顺序执行 `60 Page → 43 Page → 19 Example`，分别对应三个 initial batch。一次 model invocation 只处理一个 batch；该批正式落地并取得 automatic validation evidence 后停下，只有维护者明确“继续”才开始下一次 invocation。首次 122 Unit 仍逐批使用 provider-neutral Generation ZIP handoff。 |
-| 结果落地 | 模型/UI 返回的只是**尚待 `result-pack` 的原始输出传输包**时，先取得 exact output directory，再恰好执行一次 `generation-bundle result-pack` 生成正式 **Result ZIP**，随后 `import`、`process` / `retry`。若下载物已经是 `kind=go-tour-i18n/generation-result-bundle` 的正式 Result ZIP，直接交给 `import` 的 current / identity preflight，不重复打包。bundle inventory/hash/current 检查与正式 automatic validation evidence 是不同层次，不得混称。恢复执行前先核对 `raw-responses/` 或 retry attempt、`result.json`、`validation/`、Snapshot/QC evidence；已导入或已验证的步骤不得覆盖或盲目重放。 |
+| 初始 TranslationUnit Generation | 全部 provider 都按 stable 顺序执行 `60 Page → 43 Page → 19 Example`，分别对应三个 initial batch。一次 model invocation 只处理一个 batch；该批正式落地并取得 automatic validation evidence 后停下，只有维护者明确“继续”才开始下一次 invocation。每批首次输入仍使用 provider-neutral Generation ZIP handoff；具备本地访问能力时，生成结果用隐藏 staging 目录直接 import。 |
+| 结果落地 | 具备本地文件访问能力时，从按 locale + batch 隔离的完整输出 staging 执行 `generation-bundle import --input-dir`，随后执行 `process` / `retry` 与 automatic validation。只有跨环境传输、RDC 不可用或目录导入不适用时，才使用 outputs ZIP → `result-pack` → `import`；历史正式 Result ZIP 仍可直接 import。current / exact-set / provenance 检查与 automatic validation evidence 是不同层次。恢复前先核对 staging、已有 Result ZIP、raw responses/retry、`result.json`、`validation/` 与 Snapshot/QC；不覆盖或盲目重放已完成步骤。 |
 | 首次 QC | 122 Unit 都有 passed automatic validation 后创建一个 full Snapshot。只导出当前下一组 Reviewer ZIP：`1-60` Page → current-check / 独立 Reviewer invocation / record；完成后才导出 `61-103` Page；完成后才导出 `104-122` Example。三组各用新的用户请求/model invocation。默认先完成三组首审并汇总全部 B/C/D，不在第一组后立即 revision。 |
 | 集中 revision / re-QC | 按 Page / Example 分开、每个 revision batch 最多 30 Unit，集中处理汇总的 B/C/D。生成新的 full Snapshot；只有旧 A 且 rubric、source、selected batch、candidate、validation、attempt 与 glossary lineage 完全符合现有规则时才 carry-forward，其余只按 pending scope re-QC，直到全 A 后 finalization。 |
 | 闭环收口与上线 | `promote`、build、preview / browser verifier、publish、Production / deploy / verifier、search closeout、最终 commit / push 继续由维护者 Local terminal 成组执行；`first-production` / `live`、Production HUMAN gate 与 visual HUMAN gate 的现有规则不变。 |
@@ -162,7 +162,7 @@ go run -mod=readonly ./cmd/tour-i18n status check --locale <locale>
 
 TranslationUnit 工作从 [多语言翻译流程](TRANSLATION_WORKFLOW.md) 进入。正式翻译前还必须读取 [翻译任务规范](TRANSLATION_TASK_SPEC.md)、[Retranslation 执行手册](RETRANSLATION_RUNBOOK.md)、当前执行环境规范（[ChatGPT 正式语言生成执行规范](CHATGPT_LANGUAGE_GENERATION.md) 或 [Codex 正式语言生成执行规范](CODEX_TRANSLATION.md)）、当前 batch manifest、manifest 列出的全部 inputs，以及目标 locale glossary。
 
-首次 Page batch 使用当前推荐的 60-Page 基线；Page 顺序、Examples 独立、revision/retry 边界和调整条件只以 [Codex 正式语言生成执行规范](CODEX_TRANSLATION.md#新增-locale-的首次-page-batch) 为准，本手册不重复细则。ChatGPT 路径 export 必须显式使用 `--generator chatgpt`；Codex 路径可使用兼容默认值或显式 `--generator codex`。initial Page 与 Example bulk batch 的 Generation input 必须由维护者 Local terminal 生成 ZIP 并 handoff 给 Generation session，不使用逐文件 transport。batch prefix 只是现有执行路径与归档命名，不新增 provider provenance 字段。
+首次 Page batch 使用当前推荐的 60-Page 基线；Page 顺序、Examples 独立、revision/retry 边界和调整条件只以 [Codex 正式语言生成执行规范](CODEX_TRANSLATION.md#新增-locale-的首次-page-batch) 为准，本手册不重复细则。ChatGPT 路径 export 必须显式使用 `--generator chatgpt`；Codex 路径可使用兼容默认值或显式 `--generator codex`。initial Page 与 Example bulk batch 的 Generation input 必须由维护者 Local terminal 生成 ZIP 并 handoff 给 Generation session，不使用逐文件输入 transport。Generation 输出在本地默认写入隐藏 staging 并目录 import；跨环境或目录导入不适用时使用 Result ZIP 回退。batch prefix 只是现有执行路径与归档命名，不新增 provider selection 字段。
 
 保持既有顺序：
 
@@ -170,7 +170,7 @@ TranslationUnit 工作从 [多语言翻译流程](TRANSLATION_WORKFLOW.md) 进�
 export
 → generation-bundle export
 → 选定的 ChatGPT 或 Codex Generation provider
-→ result-pack / import
+→ 本地目录 import（跨环境时 result-pack / Result ZIP import）
 → process
 → automatic validation
 → Candidate Snapshot

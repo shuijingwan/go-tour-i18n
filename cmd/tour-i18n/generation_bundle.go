@@ -90,7 +90,7 @@ func packGenerationResultBundleCommand(root string, catalog *i18n.Catalog, args 
 		return err
 	}
 	if *bundlePath == "" || *provider == "" || *inputDir == "" || *output == "" || fs.NArg() != 0 {
-		return fmt.Errorf("usage: generation-bundle result-pack --bundle <generation.zip> --provider <chatgpt|codex> [--model gpt-5.6-sol-high] --input-dir <outputs> --output <result.zip>")
+		return fmt.Errorf("usage: generation-bundle result-pack --bundle <generation.zip> --provider <chatgpt|codex> --model gpt-5.6-sol-high --input-dir <outputs> --output <result.zip>")
 	}
 	bundle, err := readRegularBundleFile(*bundlePath)
 	if err != nil {
@@ -112,27 +112,41 @@ func packGenerationResultBundleCommand(root string, catalog *i18n.Catalog, args 
 func importGenerationResultBundleCommand(root string, catalog *i18n.Catalog, args []string) error {
 	fs := flag.NewFlagSet("generation-bundle import", flag.ContinueOnError)
 	bundlePath := fs.String("bundle", "", "original generation ZIP")
-	resultPath := fs.String("result", "", "generation result ZIP")
+	resultPath := fs.String("result", "", "generation result ZIP (transport fallback)")
+	inputDir := fs.String("input-dir", "", "local directory containing the exact generated output file set")
+	provider := fs.String("provider", "", "actual generation provider for --input-dir: chatgpt or codex")
+	model := fs.String("model", "", "actual formal generation model for --input-dir")
 	if err := fs.Parse(args); err != nil {
 		return err
 	}
-	if *bundlePath == "" || *resultPath == "" || fs.NArg() != 0 {
-		return fmt.Errorf("usage: generation-bundle import --bundle <generation.zip> --result <result.zip>")
+	if *bundlePath == "" || fs.NArg() != 0 || (*resultPath == "") == (*inputDir == "") {
+		return fmt.Errorf("usage: generation-bundle import --bundle <generation.zip> (--result <result.zip> | --input-dir <staging-dir> --provider <chatgpt|codex> [--model gpt-5.6-sol-high])")
 	}
 	bundle, err := readRegularBundleFile(*bundlePath)
 	if err != nil {
 		return err
 	}
-	result, err := readRegularBundleFile(*resultPath)
+	var imported *i18n.GenerationImportResult
+	if *inputDir != "" {
+		if *provider == "" || *model == "" {
+			return fmt.Errorf("--provider and --model are required with --input-dir")
+		}
+		imported, err = i18n.ImportGenerationOutputDirectory(root, catalog, bundle, *provider, *model, *inputDir)
+	} else {
+		if *provider != "" || *model != "" {
+			return fmt.Errorf("--provider and --model are only valid with --input-dir")
+		}
+		result, readErr := readRegularBundleFile(*resultPath)
+		if readErr != nil {
+			return readErr
+		}
+		imported, err = i18n.ImportGenerationResultBundle(root, catalog, bundle, result)
+	}
 	if err != nil {
 		return err
 	}
-	imported, err := i18n.ImportGenerationResultBundle(root, catalog, bundle, result)
-	if err != nil {
-		return err
-	}
-	fmt.Printf("Generation result imported: locale=%s batch=%s task=%s attempt=%d provider=%s model=%s outputs=%d identity=%s\n",
-		imported.Locale, imported.BatchID, imported.TaskKind, imported.Attempt, imported.Provider, imported.Model, len(imported.InstalledPaths), imported.InputIdentitySHA256)
+	fmt.Printf("Generation result imported: locale=%s batch=%s task=%s attempt=%d provider=%s model=%s outputs=%d identity=%s generation_bundle_sha256=%s\n",
+		imported.Locale, imported.BatchID, imported.TaskKind, imported.Attempt, imported.Provider, imported.Model, len(imported.InstalledPaths), imported.InputIdentitySHA256, imported.GenerationBundleSHA256)
 	for _, path := range imported.InstalledPaths {
 		fmt.Printf("installed: %s\n", path)
 	}

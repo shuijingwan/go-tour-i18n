@@ -108,6 +108,9 @@ func ProcessRetranslationBatch(root string, catalog *Catalog, options Retranslat
 		return &RetranslationProcessResult{Locale: options.Locale, NoPendingBatches: true}, nil
 	}
 	batchDir := filepath.Join(base, batchID)
+	if err := ensureNoGenerationImportPending(batchDir); err != nil {
+		return nil, err
+	}
 	manifest, err := readRetranslationProcessManifest(batchDir, options.Locale, batchID)
 	if err != nil {
 		return nil, err
