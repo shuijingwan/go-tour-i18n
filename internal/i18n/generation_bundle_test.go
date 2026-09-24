@@ -69,14 +69,14 @@ func TestGenerationBundleResultImportIsDeterministicAtomicAndNoOverwrite(t *test
 	if err != nil {
 		t.Fatal(err)
 	}
-	if resultManifest.Provider != "codex" || len(resultManifest.Outputs) != 2 {
+	if resultManifest.Provider != "codex" || resultManifest.Model != FormalGenerationModel || len(resultManifest.Outputs) != 2 {
 		t.Fatalf("result manifest=%+v", resultManifest)
 	}
 	imported, err := ImportGenerationResultBundle(root, catalog, bundle, resultBundle)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(imported.InstalledPaths) != 2 {
+	if imported.Model != FormalGenerationModel || len(imported.InstalledPaths) != 2 {
 		t.Fatalf("import=%+v", imported)
 	}
 	if _, err := ImportGenerationResultBundle(root, catalog, bundle, resultBundle); err == nil || !strings.Contains(err.Error(), "already exists") {
@@ -113,7 +113,7 @@ func TestGenerationBundleResultPackCanonicalizesExampleCandidateEOF(t *testing.T
 	if err := os.WriteFile(filepath.Join(outputDir, filepath.Base(manifest.ExpectedOutputs[0].BundlePath)), input, 0644); err != nil {
 		t.Fatal(err)
 	}
-	if _, _, err := PackGenerationResultBundle(root, catalog, bundle, "chatgpt", FormalGenerationModel, outputDir); err != nil {
+	if _, _, err := PackGenerationResultBundle(root, catalog, bundle, "chatgpt", FormalChatGPTGenerationModel, outputDir); err != nil {
 		t.Fatal(err)
 	}
 }
@@ -322,7 +322,7 @@ func TestGenerationBundleDirectoryImportSupportsExampleRevisionAndRetry(t *testi
 		}
 		outputs := t.TempDir()
 		writeGenerationFixtureOutputs(t, root, exported.BatchID, outputs, manifest)
-		if _, err := ImportGenerationOutputDirectory(root, catalog, bundle, "chatgpt", FormalGenerationModel, outputs); err != nil {
+		if _, err := ImportGenerationOutputDirectory(root, catalog, bundle, "chatgpt", FormalChatGPTGenerationModel, outputs); err != nil {
 			t.Fatal(err)
 		}
 	})
@@ -667,5 +667,38 @@ func TestGenerationBundleZIPImportRejectsAttemptMismatch(t *testing.T) {
 	}
 	if _, err := os.Lstat(filepath.Join(root, "data", "retranslation-runs", "zh-CN", batchID, "raw-responses")); !os.IsNotExist(err) {
 		t.Fatalf("attempt mismatch left formal output: %v", err)
+	}
+}
+
+func TestFormalGenerationIdentitySupportsProviderSpecificAndHistoricalModels(t *testing.T) {
+	for provider, want := range map[string]string{
+		"codex":   FormalGenerationModel,
+		"chatgpt": FormalChatGPTGenerationModel,
+	} {
+		got, err := DefaultGenerationModelForProvider(provider)
+		if err != nil || got != want {
+			t.Fatalf("DefaultGenerationModelForProvider(%q) = %q, %v; want %q", provider, got, err, want)
+		}
+	}
+	if _, err := DefaultGenerationModelForProvider("unknown"); err == nil {
+		t.Fatal("unknown provider returned a default model")
+	}
+	tests := []struct {
+		name, provider, model, batchID string
+		wantErr                        bool
+	}{
+		{name: "codex luna high", provider: "codex", model: FormalGenerationModel, batchID: "codex-locale-001"},
+		{name: "codex historical sol high", provider: "codex", model: LegacyCodexGenerationModel, batchID: "codex-locale-002"},
+		{name: "chatgpt sol high", provider: "chatgpt", model: FormalChatGPTGenerationModel, batchID: "chatgpt-locale-001"},
+		{name: "chatgpt rejects codex model", provider: "chatgpt", model: FormalGenerationModel, batchID: "chatgpt-locale-002", wantErr: true},
+		{name: "codex rejects unknown model", provider: "codex", model: "other-model", batchID: "codex-locale-003", wantErr: true},
+	}
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			err := requireFormalGenerationIdentity(tc.provider, tc.model, tc.batchID)
+			if (err != nil) != tc.wantErr {
+				t.Fatalf("requireFormalGenerationIdentity() error = %v, wantErr %v", err, tc.wantErr)
+			}
+		})
 	}
 }

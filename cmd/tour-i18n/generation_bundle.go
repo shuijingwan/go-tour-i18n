@@ -83,20 +83,27 @@ func packGenerationResultBundleCommand(root string, catalog *i18n.Catalog, args 
 	fs := flag.NewFlagSet("generation-bundle result-pack", flag.ContinueOnError)
 	bundlePath := fs.String("bundle", "", "original generation ZIP")
 	provider := fs.String("provider", "", "actual generation provider: chatgpt or codex")
-	model := fs.String("model", i18n.FormalGenerationModel, "actual formal generation model")
+	model := fs.String("model", "", "actual formal generation model (defaults by provider)")
 	inputDir := fs.String("input-dir", "", "directory containing the exact generated output file set")
 	output := fs.String("output", "", "generation result ZIP output")
 	if err := fs.Parse(args); err != nil {
 		return err
 	}
 	if *bundlePath == "" || *provider == "" || *inputDir == "" || *output == "" || fs.NArg() != 0 {
-		return fmt.Errorf("usage: generation-bundle result-pack --bundle <generation.zip> --provider <chatgpt|codex> --model gpt-5.6-sol-high --input-dir <outputs> --output <result.zip>")
+		return fmt.Errorf("usage: generation-bundle result-pack --bundle <generation.zip> --provider <chatgpt|codex> [--model <provider-specific-formal-model>] --input-dir <outputs> --output <result.zip>")
 	}
 	bundle, err := readRegularBundleFile(*bundlePath)
 	if err != nil {
 		return err
 	}
-	data, manifest, err := i18n.PackGenerationResultBundle(root, catalog, bundle, *provider, *model, *inputDir)
+	actualModel := *model
+	if actualModel == "" {
+		actualModel, err = i18n.DefaultGenerationModelForProvider(*provider)
+		if err != nil {
+			return err
+		}
+	}
+	data, manifest, err := i18n.PackGenerationResultBundle(root, catalog, bundle, *provider, actualModel, *inputDir)
 	if err != nil {
 		return err
 	}
@@ -120,7 +127,7 @@ func importGenerationResultBundleCommand(root string, catalog *i18n.Catalog, arg
 		return err
 	}
 	if *bundlePath == "" || fs.NArg() != 0 || (*resultPath == "") == (*inputDir == "") {
-		return fmt.Errorf("usage: generation-bundle import --bundle <generation.zip> (--result <result.zip> | --input-dir <staging-dir> --provider <chatgpt|codex> [--model gpt-5.6-sol-high])")
+		return fmt.Errorf("usage: generation-bundle import --bundle <generation.zip> (--result <result.zip> | --input-dir <staging-dir> --provider <chatgpt|codex> --model <provider-specific-formal-model>)")
 	}
 	bundle, err := readRegularBundleFile(*bundlePath)
 	if err != nil {

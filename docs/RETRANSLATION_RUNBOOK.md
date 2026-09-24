@@ -2,7 +2,7 @@
 
 ## 1. 当前正式生产流程
 
-当前正式 TranslationUnit 翻译流程支持两个语言生成执行环境：普通 ChatGPT 与 Codex，均使用 GPT-5.6 Sol + High。每个 locale 在开始正式 generation 前依 [多语言翻译流程](TRANSLATION_WORKFLOW.md) 选择并原则上持续使用其中一个 Generation provider；两者共用同一 TranslationUnit workflow 与全部质量 gate：
+当前正式 TranslationUnit 翻译流程支持两个语言生成执行环境：普通 ChatGPT 使用 GPT-5.6 Sol + High；Codex 新启动的正式 Generation 默认使用 GPT-6 Luna + High。每个 locale 在开始正式 generation 前依 [多语言翻译流程](TRANSLATION_WORKFLOW.md) 选择并原则上持续使用其中一个 Generation provider；两者共用同一 TranslationUnit workflow 与全部质量 gate：
 
 ```text
 current Glossary Review coverage
@@ -17,7 +17,7 @@ current Glossary Review coverage
 → promote
 ```
 
-模型与 reasoning 由用户在对应 UI 中选择，正式语言生成不得低于 GPT-5.6 Sol + High。provider-independent 输入/输出见 [翻译任务规范](TRANSLATION_TASK_SPEC.md)；provider 为 `chatgpt` 时的 staging 与会话隔离见 [ChatGPT 正式语言生成执行规范](CHATGPT_LANGUAGE_GENERATION.md)；provider 为 `codex` 时见 [Codex 正式语言生成执行规范](CODEX_TRANSLATION.md)。
+模型与 reasoning 由用户在对应 UI 中选择；ChatGPT Generation 使用 GPT-5.6 Sol + High，Codex 新启动的正式 Generation 默认使用 GPT-6 Luna + High。provider-independent 输入/输出见 [翻译任务规范](TRANSLATION_TASK_SPEC.md)；provider 为 `chatgpt` 时的 staging 与会话隔离见 [ChatGPT 正式语言生成执行规范](CHATGPT_LANGUAGE_GENERATION.md)；provider 为 `codex` 时见 [Codex 正式语言生成执行规范](CODEX_TRANSLATION.md)。
 
 ## 2. Export 与首次翻译
 

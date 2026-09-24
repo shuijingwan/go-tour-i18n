@@ -136,7 +136,7 @@ retry 仅对当前 `restore_failed` / `validation_failed` Unit 增加 `--unit-id
 go run -mod=readonly ./cmd/tour-i18n generation-bundle import \
   --bundle /tmp/<locale>-<batch-id>-generation.zip \
   --input-dir /tmp/.go-tour-i18n-generation/<locale>/<batch-id> \
-  --provider <chatgpt|codex> --model gpt-5.6-sol-high
+  --provider <chatgpt|codex> --model <provider-specific-formal-model>
 ```
 
 直接导入会在本地完整读取并冻结 exact expected output set；正式安装使用的就是已经验证过的字节。跨环境传输、RDC 不可用或目录导入不适用时，保留 outputs ZIP → `result-pack` → 正式 Result ZIP → `import --result` 回退。旧 Result ZIP 仍兼容：
@@ -144,7 +144,7 @@ go run -mod=readonly ./cmd/tour-i18n generation-bundle import \
 ```sh
 go run -mod=readonly ./cmd/tour-i18n generation-bundle result-pack \
   --bundle /tmp/<locale>-<batch-id>-generation.zip \
-  --provider <chatgpt|codex> --model gpt-5.6-sol-high \
+  --provider <chatgpt|codex> --model <provider-specific-formal-model> \
   --input-dir <exact-output-directory> \
   --output /tmp/<locale>-<batch-id>-result.zip
 

@@ -16,8 +16,21 @@ import (
 const (
 	GenerationBundleSchemaVersion       = 1
 	GenerationResultBundleSchemaVersion = 1
-	FormalGenerationModel               = "gpt-5.6-sol-high"
+	FormalGenerationModel               = "gpt-6-luna-high"
+	FormalChatGPTGenerationModel        = "gpt-5.6-sol-high"
+	LegacyCodexGenerationModel          = "gpt-5.6-sol-high"
 )
+
+func DefaultGenerationModelForProvider(provider string) (string, error) {
+	switch provider {
+	case string(RetranslationGeneratorChatGPT):
+		return FormalChatGPTGenerationModel, nil
+	case string(RetranslationGeneratorCodex):
+		return FormalGenerationModel, nil
+	default:
+		return "", fmt.Errorf("provider must be chatgpt or codex")
+	}
+}
 
 var translationUnitGenerationAuthorityPaths = []string{
 	"AGENTS.md",
@@ -868,8 +881,15 @@ func requireFormalGenerationIdentity(provider, model, batchID string) error {
 	if provider != string(RetranslationGeneratorChatGPT) && provider != string(RetranslationGeneratorCodex) {
 		return fmt.Errorf("provider must be chatgpt or codex")
 	}
-	if model != FormalGenerationModel {
-		return fmt.Errorf("formal generation model must be %s", FormalGenerationModel)
+	modelAccepted := false
+	switch provider {
+	case string(RetranslationGeneratorChatGPT):
+		modelAccepted = model == FormalChatGPTGenerationModel
+	case string(RetranslationGeneratorCodex):
+		modelAccepted = model == FormalGenerationModel || model == LegacyCodexGenerationModel
+	}
+	if !modelAccepted {
+		return fmt.Errorf("model %s is not an accepted formal model for provider %s", model, provider)
 	}
 	if strings.HasPrefix(batchID, "chatgpt-") && provider != "chatgpt" || strings.HasPrefix(batchID, "codex-") && provider != "codex" {
 		return fmt.Errorf("provider %s does not match batch provenance %s", provider, batchID)
