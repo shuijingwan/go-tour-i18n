@@ -1,0 +1,21 @@
+* Metódusok és közvetett hivatkozás mutatón keresztül (2)
+
+Fordított irányban is hasonló történik.
+
+Az értékargumentumot váró függvényeknek az adott típusú értéket kell átadni:
+
+	var v Vertex
+	fmt.Println(AbsFunc(v))  // OK
+	fmt.Println(AbsFunc(&v)) // Fordítási hiba!
+
+Az érték típusú fogadóval rendelkező metódusokat viszont értékkel és mutatóval is
+meg lehet hívni:
+
+	var v Vertex
+	fmt.Println(v.Abs()) // OK
+	p := &v
+	fmt.Println(p.Abs()) // OK
+
+Ebben az esetben a `p.Abs()` metódushívást a rendszer `(*p).Abs()` alakban értelmezi.
+
+.play methods/indirection-values.go

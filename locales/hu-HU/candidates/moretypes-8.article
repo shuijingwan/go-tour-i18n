@@ -1,0 +1,9 @@
+* A szeletek tömbökre hivatkozó nézetek
+
+A szelet önmagában nem tárol adatokat, csak a mögöttes tömb egy részét írja le.
+
+Ha módosítod egy szelet elemeit, a mögöttes tömb megfelelő elemei is megváltoznak.
+
+A módosítások a többi olyan szeletben is láthatók lesznek, amelyek ugyanazt a mögöttes tömböt használják.
+
+.play moretypes/slices-pointers.go

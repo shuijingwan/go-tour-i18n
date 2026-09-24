@@ -33,7 +33,9 @@ var languageRegistry = []LanguageLink{
 	{Locale: "fil-PH", EnglishName: "Filipino", Autonym: "Filipino", URL: "https://fil-go-dev.shuijingwanwq.com/"},
 	{Locale: "fr-FR", EnglishName: "French", Autonym: "Français", URL: "https://fr-go-dev.shuijingwanwq.com/"},
 	{Locale: "de-DE", EnglishName: "German", Autonym: "Deutsch", URL: "https://de-go-dev.shuijingwanwq.com/"},
+	{Locale: "el-GR", EnglishName: "Greek", Autonym: "Ελληνικά", URL: "https://el-go-dev.shuijingwanwq.com/"},
 	{Locale: "hi-IN", EnglishName: "Hindi", Autonym: "हिन्दी", URL: "https://hi-go-dev.shuijingwanwq.com/"},
+	{Locale: "hu-HU", EnglishName: "Hungarian", Autonym: "Magyar", URL: "https://hu-go-dev.shuijingwanwq.com/"},
 	{Locale: "id-ID", EnglishName: "Indonesian", Autonym: "Bahasa Indonesia", URL: "https://id-go-dev.shuijingwanwq.com/"},
 	{Locale: "it-IT", EnglishName: "Italian", Autonym: "Italiano", URL: "https://it-go-dev.shuijingwanwq.com/"},
 	{Locale: "ja-JP", EnglishName: "Japanese", Autonym: "日本語", URL: "https://ja-go-dev.shuijingwanwq.com/"},
@@ -71,6 +73,8 @@ type localeProfile struct {
 }
 
 var (
+	athensTime      = mustLoadLocation("Europe/Athens")
+	budapestTime    = mustLoadLocation("Europe/Budapest")
 	amsterdamTime   = mustLoadLocation("Europe/Amsterdam")
 	berlinTime      = mustLoadLocation("Europe/Berlin")
 	madridTime      = mustLoadLocation("Europe/Madrid")
@@ -144,6 +148,13 @@ var localeProfiles = map[string]localeProfile{
 		TimeLabelFormat:   " (%s)",
 		Direction:         "ltr",
 	},
+	"el-GR": {
+		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",
+		TimeZone:          athensTime,
+		TimeLabel:         "τοπική ώρα",
+		TimeLabelFormat:   " (%s)",
+		Direction:         "ltr",
+	},
 	"fil-PH": {
 		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",
 		TimeZone:          manilaTime,
@@ -162,6 +173,13 @@ var localeProfiles = map[string]localeProfile{
 		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",
 		TimeZone:          kolkataTime,
 		TimeLabel:         "स्थानीय समय",
+		TimeLabelFormat:   " (%s)",
+		Direction:         "ltr",
+	},
+	"hu-HU": {
+		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",
+		TimeZone:          budapestTime,
+		TimeLabel:         "helyi idő",
 		TimeLabelFormat:   " (%s)",
 		Direction:         "ltr",
 	},

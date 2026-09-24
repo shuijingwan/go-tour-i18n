@@ -1,0 +1,11 @@
+* Nullaértékek
+
+A kifejezett kezdőérték nélkül deklarált változók a saját _nullaértéküket_ kapják.
+
+A nullaérték:
+
+- numerikus típusoknál `0`,
+- logikai típusnál `false`,
+- karakterláncoknál `""` (üres karakterlánc).
+
+.play basics/zero.go

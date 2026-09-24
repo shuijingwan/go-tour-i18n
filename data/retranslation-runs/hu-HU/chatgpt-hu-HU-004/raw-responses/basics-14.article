@@ -1,0 +1,13 @@
+* Típuskövetkeztetés
+
+Ha egy változót a típusának kifejezett megadása nélkül deklarálsz (akár a ⟪GTI18N_21c4077c_000001⟫:=⟪GTI18N_21c4077c_000002⟫ szintaxissal, akár a ⟪GTI18N_21c4077c_000003⟫var`=⟪GTI18N_21c4077c_000004⟫ kifejezéses formával), a fordító a jobb oldalon szereplő érték alapján következteti ki a változó típusát.
+
+Ha a deklaráció jobb oldalán álló kifejezésnek már van típusa, az új változó ugyanazt a típust kapja:
+
+⟪GTI18N_21c4077c_000005⟫⟪GTI18N_21c4077c_000006⟫ egy ⟪GTI18N_21c4077c_000007⟫⟪GTI18N_21c4077c_000008⟫Ha viszont a jobb oldalon típus nélküli számkonstans áll, a konstans pontosságától függően az új változó típusa ⟪GTI18N_21c4077c_000009⟫int⟪GTI18N_21c4077c_000010⟫, ⟪GTI18N_21c4077c_000011⟫float64⟪GTI18N_21c4077c_000012⟫ vagy ⟪GTI18N_21c4077c_000013⟫complex128⟪GTI18N_21c4077c_000014⟫ lehet:
+
+⟪GTI18N_21c4077c_000015⟫
+
+Próbáld meg módosítani a példakódban a ⟪GTI18N_21c4077c_000016⟫v⟪GTI18N_21c4077c_000017⟫ kezdőértékét, és figyeld meg, hogyan változik a típusa.
+
+⟪GTI18N_21c4077c_000018⟫

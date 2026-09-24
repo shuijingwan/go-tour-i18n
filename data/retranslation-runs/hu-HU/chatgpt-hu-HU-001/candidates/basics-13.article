@@ -1,0 +1,20 @@
+* Típuskonverziók
+
+A `T(v)` kifejezés a `v` értéket `T` típusúvá alakítja.
+
+Néhány numerikus konverzió:
+
+	var i int = 42
+	var f float64 = float64(i)
+	var u uint = uint(f)
+
+Vagy egyszerűbben:
+
+	i := 42
+	f := float64(i)
+	u := uint(f)
+
+A C nyelvvel ellentétben a Go nyelvben a különböző típusú értékek közötti értékadáshoz kifejezett típuskonverzió szükséges.
+Próbáld meg eltávolítani a példából a `float64` vagy `uint` konverziókat, és figyeld meg, mi történik.
+
+.play basics/type-conversions.go

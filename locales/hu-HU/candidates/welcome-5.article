@@ -1,0 +1,17 @@
+* A Go Playground
+
+Ez a kalauz a [[https://play.golang.org/][Go Playground]] szolgáltatásra épül. Ez egy webes szolgáltatás, amely a [[/][golang.org]] kiszolgálóin fut.
+
+A szolgáltatás fogad egy Go programot, lefordítja, összeszerkeszti és elkülönített futtatókörnyezetben futtatja, majd visszaküldi a kimenetet.
+
+A Playgroundban futtatható programokra bizonyos korlátozások vonatkoznak:
+
+- A Playgroundban az idő 2009-11-10 23:00:00 UTC időpontban kezdődik (a dátum jelentőségének megfejtését az olvasóra bízzuk). Ez megkönnyíti a programok gyorsítótárazását, mert a kimenetük determinisztikus.
+
+- A futási idő, valamint a CPU- és memóriahasználat is korlátozott, és a program nem érhet el külső hálózati gépeket.
+
+A Playground a Go legfrissebb stabil kiadását használja.
+
+További részleteket az „[[/blog/playground][A Go Playground belülről]]” című írásban olvashatsz.
+
+.play welcome/sandbox.go

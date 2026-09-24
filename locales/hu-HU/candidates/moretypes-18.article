@@ -1,0 +1,11 @@
+* Feladat: szeletek
+
+Valósítsd meg a `Pic` függvényt. Olyan `dy` hosszúságú szeletet kell visszaadnia, amelynek minden eleme egy `dx` darab 8 bites, előjel nélküli egész számot tartalmazó szelet. A program futtatásakor megjelenik a képed: a számokat szürkeárnyalatos (pontosabban kékárnyalatos) értékekként értelmezi.
+
+Szabadon eldöntheted, milyen képet állítasz elő. Érdekes képletek például a `(x+y)/2`, az `x*y` és az `x^y`.
+
+(Egy ciklus segítségével külön-külön kell lefoglalnod minden `[]uint8` szeletet a `[][]uint8` belsejében.)
+
+(A típusok közötti konverzióhoz használd a `uint8(intValue)` alakot.)
+
+.play moretypes/exercise-slices.go

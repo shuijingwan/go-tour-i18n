@@ -1,0 +1,11 @@
+* Csomagok
+
+Minden Go program csomagokból épül fel.
+
+A programok futása a `main` csomagban kezdődik.
+
+Ez a program a `"fmt"` és a `"math/rand"` importálási útvonalú csomagokat használja.
+
+A szokás szerint a csomag neve megegyezik az importálási útvonal utolsó elemével. A `"math/rand"` csomag például olyan fájlokból áll, amelyek a `package`rand` utasítással kezdődnek.
+
+.play basics/packages.go

@@ -1,0 +1,19 @@
+* Szeletek
+
+A tömbök mérete rögzített.
+Ezzel szemben a szelet egy tömb elemeire nyíló, dinamikusan méretezhető és rugalmas nézet.
+A gyakorlatban a szeleteket sokkal gyakrabban használjuk, mint a tömböket.
+
+A ⟪GTI18N_a169cf48_000001⟫[]T⟪GTI18N_a169cf48_000002⟫ típus olyan szeletet jelöl, amelynek elemei ⟪GTI18N_a169cf48_000003⟫T⟪GTI18N_a169cf48_000004⟫ típusúak.
+
+Szeletet két index, egy alsó és egy felső határ megadásával hozhatunk létre. A két határt kettőspont választja el:
+
+⟪GTI18N_a169cf48_000005⟫
+
+Ez egy balról zárt, jobbról nyitott tartományt jelöl: az első elemet tartalmazza, az utolsót viszont nem.
+
+A következő kifejezés az ⟪GTI18N_a169cf48_000006⟫a⟪GTI18N_a169cf48_000007⟫ tömb 1-től 3-ig terjedő indexű elemeit tartalmazó szeletet hozza létre:
+
+⟪GTI18N_a169cf48_000008⟫
+
+⟪GTI18N_a169cf48_000009⟫

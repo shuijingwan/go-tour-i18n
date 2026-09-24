@@ -1,0 +1,16 @@
+* Feladat: Képek
+
+Emlékszel a korábban írt [[/tour/moretypes/18][képgenerátorra]]? Írjunk még egyet, amely ezúttal adatszelet helyett
+az `image.Image` interfész egy megvalósítását adja vissza.
+
+Definiálj egy saját `Image` típust, valósítsd meg [[/pkg/image/#Image][a szükséges metódusokat]],
+majd hívd meg a `pic.ShowImage` függvényt.
+
+A `Bounds` metódusnak `image.Rectangle` értéket kell visszaadnia, például `image.Rect(0,`0,`w,`h)`.
+
+A `ColorModel` metódusnak `color.RGBAModel` értéket kell visszaadnia.
+
+Az `At` metódusnak egy színt kell visszaadnia; az előző képgenerátor `v` értékének
+itt a `color.RGBA{v,`v,`255,`255}` felel meg.
+
+.play methods/exercise-images.go

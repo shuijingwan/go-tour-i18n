@@ -1,0 +1,20 @@
+* sync.Mutex
+
+Láttuk, hogy a csatornák kiválóan alkalmasak a goroutine-ok közötti kommunikációra.
+
+De mi történik, ha nincs szükség kommunikációra? Ha csupán azt szeretnénk biztosítani, hogy
+egyszerre csak egy ⟪GTI18N_49f72779_000001⟫ férjen hozzá egy változóhoz, elkerülve az ütközéseket?
+
+Ezt a fogalmat ⟪GTI18N_49f72779_000002⟫kölcsönös_kizárásnak⟪GTI18N_49f72779_000003⟫ nevezzük, az ezt biztosító adatszerkezet szokásos neve pedig ⟪GTI18N_49f72779_000004⟫mutex⟪GTI18N_49f72779_000005⟫.
+
+A ⟪GTI18N_49f72779_000006⟫ szabványos könyvtára a kölcsönös kizárást a
+[[⟪GTI18N_49f72779_000007⟫][⟪GTI18N_49f72779_000008⟫sync.Mutex⟪GTI18N_49f72779_000009⟫]] típussal és annak két metódusával biztosítja:
+
+- ⟪GTI18N_49f72779_000010⟫Lock⟪GTI18N_49f72779_000011⟫
+- ⟪GTI18N_49f72779_000012⟫Unlock⟪GTI18N_49f72779_000013⟫
+
+A ⟪GTI18N_49f72779_000014⟫Lock⟪GTI18N_49f72779_000015⟫ és az ⟪GTI18N_49f72779_000016⟫Unlock⟪GTI18N_49f72779_000017⟫ hívások közé zárt kódblokkot kölcsönös kizárással hajthatjuk végre, ahogyan azt az ⟪GTI18N_49f72779_000018⟫Inc⟪GTI18N_49f72779_000019⟫ metódus mutatja.
+
+A ⟪GTI18N_49f72779_000020⟫defer⟪GTI18N_49f72779_000021⟫ segítségével azt is biztosíthatjuk, hogy a mutex feloldása mindenképpen megtörténjen, mint a ⟪GTI18N_49f72779_000022⟫Value⟪GTI18N_49f72779_000023⟫ metódusban.
+
+⟪GTI18N_49f72779_000024⟫

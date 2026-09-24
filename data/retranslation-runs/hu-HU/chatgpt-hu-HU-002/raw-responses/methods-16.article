@@ -1,0 +1,19 @@
+* Típus szerinti switch
+
+A ⟪GTI18N_26e4da09_000001⟫típus_szerinti_switch⟪GTI18N_26e4da09_000002⟫ olyan szerkezet, amely több típusállítás egymás utáni vizsgálatát teszi lehetővé.
+
+A típus szerinti switch hasonlít a szokásos switch utasításhoz, de az ágai
+értékek helyett típusokat adnak meg; ezeket a rendszer az adott
+interfészértékben tárolt érték típusával hasonlítja össze.
+
+⟪GTI18N_26e4da09_000003⟫itt ⟪GTI18N_26e4da09_000004⟫ típusa ⟪GTI18N_26e4da09_000005⟫⟪GTI18N_26e4da09_000006⟫itt ⟪GTI18N_26e4da09_000007⟫ típusa ⟪GTI18N_26e4da09_000008⟫⟪GTI18N_26e4da09_000009⟫nincs egyezés; itt ⟪GTI18N_26e4da09_000010⟫ típusa megegyezik ⟪GTI18N_26e4da09_000011⟫ típusával⟪GTI18N_26e4da09_000012⟫A típus szerinti switch deklarációjának szintaxisa megegyezik a ⟪GTI18N_26e4da09_000013⟫i.(T)⟪GTI18N_26e4da09_000014⟫ típusállításéval,
+de a konkrét ⟪GTI18N_26e4da09_000015⟫T⟪GTI18N_26e4da09_000016⟫ típust a ⟪GTI18N_26e4da09_000017⟫type⟪GTI18N_26e4da09_000018⟫ kulcsszó helyettesíti.
+
+Ez a switch utasítás azt vizsgálja, hogy az ⟪GTI18N_26e4da09_000019⟫i⟪GTI18N_26e4da09_000020⟫ interfészérték
+⟪GTI18N_26e4da09_000021⟫T⟪GTI18N_26e4da09_000022⟫ vagy ⟪GTI18N_26e4da09_000023⟫S⟪GTI18N_26e4da09_000024⟫ típusú értéket tartalmaz-e.
+A ⟪GTI18N_26e4da09_000025⟫T⟪GTI18N_26e4da09_000026⟫ és ⟪GTI18N_26e4da09_000027⟫S⟪GTI18N_26e4da09_000028⟫ ágban a ⟪GTI18N_26e4da09_000029⟫v⟪GTI18N_26e4da09_000030⟫ változó típusa rendre
+⟪GTI18N_26e4da09_000031⟫T⟪GTI18N_26e4da09_000032⟫ vagy ⟪GTI18N_26e4da09_000033⟫S⟪GTI18N_26e4da09_000034⟫ lesz, értéke pedig az ⟪GTI18N_26e4da09_000035⟫i⟪GTI18N_26e4da09_000036⟫ által tárolt érték.
+Az alapértelmezett ágban (ha nincs egyezés) a ⟪GTI18N_26e4da09_000037⟫v⟪GTI18N_26e4da09_000038⟫ változó típusa
+és értéke megegyezik az ⟪GTI18N_26e4da09_000039⟫i⟪GTI18N_26e4da09_000040⟫ interfészértékével.
+
+⟪GTI18N_26e4da09_000041⟫

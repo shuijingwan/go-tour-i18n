@@ -1,0 +1,11 @@
+* Pufferelt csatornák
+
+A csatornák lehetnek _puffereltek_. Pufferelt csatorna inicializálásához add meg a puffer hosszát a `make` második argumentumaként:
+
+	ch := make(chan int, 100)
+
+Pufferelt csatornára küldés csak akkor blokkol, ha a puffer megtelt. A fogadás akkor blokkol, ha a puffer üres.
+
+Módosítsd a példát úgy, hogy a puffer kapacitásánál több értéket küldj, és figyeld meg, mi történik.
+
+.play concurrency/buffered-channels.go

@@ -1,0 +1,17 @@
+* Feladat: rot13Reader
+
+Gyakori minta az olyan [[/pkg/io/#Reader][io.Reader]], amely egy másik `io.Reader` interfészt megvalósító olvasót burkol be,
+és valamilyen módon módosítja az adatfolyamot.
+
+Például a [[/pkg/compress/gzip/#NewReader][gzip.NewReader]] függvény egy `io.Reader` értéket
+(tömörített adatfolyamot) kap, és egy olyan `*gzip.Reader` értéket ad vissza,
+amely szintén megvalósítja az `io.Reader` interfészt (ez már a kitömörített adatfolyamot szolgáltatja).
+
+Valósíts meg egy `rot13Reader` típust, amely megvalósítja az `io.Reader` interfészt,
+egy `io.Reader` értékből olvas, és az adatfolyam minden betűjére
+alkalmazza a [[https://en.wikipedia.org/wiki/ROT13][rot13]] helyettesítéses titkosítást.
+
+Az `rot13Reader` típust már megadtuk.
+Az `io.Reader` interfész megvalósításához készítsd el a `Read` metódusát.
+
+.play methods/exercise-rot-reader.go

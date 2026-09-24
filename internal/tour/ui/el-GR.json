@@ -1,0 +1,458 @@
+{
+  "locale": "el-GR",
+  "html_lang": "el-GR",
+  "messages": {
+    "tour.title": {
+      "kind": "plain",
+      "text": "A Tour of Go"
+    },
+    "header.about_project": {
+      "kind": "plain",
+      "text": "Σχετικά με το έργο"
+    },
+    "tour.list_heading": {
+      "kind": "plain",
+      "text": "Καλώς ήρθατε στο A Tour of Go"
+    },
+    "tour.list_title": {
+      "kind": "plain",
+      "text": "Κατάλογος μαθημάτων — A Tour of Go"
+    },
+    "tour.list_description": {
+      "kind": "plain",
+      "text": "Περιηγηθείτε στις ενότητες και στα μαθήματα του A Tour of Go, μιας διαδραστικής εισαγωγής στη γλώσσα προγραμματισμού Go."
+    },
+    "theme.toggle": {
+      "kind": "plain",
+      "text": "Εναλλαγή θέματος"
+    },
+    "theme.system": {
+      "kind": "plain",
+      "text": "Θέμα συστήματος"
+    },
+    "theme.dark": {
+      "kind": "plain",
+      "text": "Σκούρο θέμα"
+    },
+    "theme.light": {
+      "kind": "plain",
+      "text": "Ανοιχτό θέμα"
+    },
+    "editor.syntax": {
+      "kind": "plain",
+      "text": "Σύνταξη"
+    },
+    "editor.imports": {
+      "kind": "plain",
+      "text": "Εισαγωγές"
+    },
+    "editor.on": {
+      "kind": "plain",
+      "text": "Ενεργό"
+    },
+    "editor.off": {
+      "kind": "plain",
+      "text": "Ανενεργό"
+    },
+    "editor.run": {
+      "kind": "plain",
+      "text": "Εκτέλεση"
+    },
+    "editor.kill": {
+      "kind": "plain",
+      "text": "Διακοπή"
+    },
+    "editor.format": {
+      "kind": "plain",
+      "text": "Μορφοποίηση"
+    },
+    "editor.reset": {
+      "kind": "plain",
+      "text": "Επαναφορά"
+    },
+    "toc.title": {
+      "kind": "plain",
+      "text": "Πίνακας περιεχομένων"
+    },
+    "execution.waiting": {
+      "kind": "plain",
+      "text": "Αναμονή από τον απομακρυσμένο διακομιστή..."
+    },
+    "execution.exited": {
+      "kind": "plain",
+      "text": "Το πρόγραμμα τερματίστηκε"
+    },
+    "execution.vet_failed": {
+      "kind": "plain",
+      "text": "Ο έλεγχος go vet απέτυχε."
+    },
+    "execution.build_failed": {
+      "kind": "plain",
+      "text": "Η κατασκευή με go build απέτυχε."
+    },
+    "execution.communication_error": {
+      "kind": "plain",
+      "text": "Σφάλμα επικοινωνίας με τον απομακρυσμένο διακομιστή."
+    },
+    "execution.test_failed": {
+      "kind": "plain",
+      "text": "Απέτυχε {count} δοκιμή."
+    },
+    "execution.tests_failed": {
+      "kind": "plain",
+      "text": "Απέτυχαν {count} δοκιμές."
+    },
+    "execution.tests_passed": {
+      "kind": "plain",
+      "text": "Όλες οι δοκιμές ολοκληρώθηκαν με επιτυχία."
+    },
+    "feedback.open": {
+      "kind": "plain",
+      "text": "Αποστολή σχολίων για αυτή τη σελίδα"
+    },
+    "feedback.issue_title": {
+      "kind": "plain",
+      "text": "x/website/_content/tour: [ΑΝΤΙΚΑΤΑΣΤΗΣΤΕ ΜΕ ΣΥΝΤΟΜΗ ΠΕΡΙΓΡΑΦΗ]"
+    },
+    "feedback.issue_body": {
+      "kind": "plain",
+      "text": "Αλλάξτε τον παραπάνω τίτλο ώστε να περιγράφει το πρόβλημα και προσθέστε εδώ τα σχόλιά σας, μαζί με κώδικα αν χρειάζεται."
+    },
+    "feedback.context": {
+      "kind": "plain",
+      "text": "Πλαίσιο"
+    },
+    "module.using_tour.title": {
+      "kind": "plain",
+      "text": "Χρήση της περιήγησης"
+    },
+    "module.using_tour.description": {
+      "kind": "rich",
+      "text": "<p>Καλώς ήρθατε σε μια περιήγηση στη <a href=\"https://go.dev\">γλώσσα προγραμματισμού Go</a>. Η περιήγηση καλύπτει κυρίως τα σημαντικότερα χαρακτηριστικά της γλώσσας:</p>"
+    },
+    "module.basics.title": {
+      "kind": "plain",
+      "text": "Βασικές έννοιες"
+    },
+    "module.basics.description": {
+      "kind": "rich",
+      "text": "<p>Ξεκινήστε μαθαίνοντας όλες τις βασικές έννοιες της γλώσσας.</p><p>Δηλώστε μεταβλητές, καλέστε συναρτήσεις και μάθετε όσα χρειάζεστε πριν προχωρήσετε στα επόμενα μαθήματα.</p>"
+    },
+    "module.methods.title": {
+      "kind": "plain",
+      "text": "Μέθοδοι και διεπαφές"
+    },
+    "module.methods.description": {
+      "kind": "rich",
+      "text": "<p>Μάθετε πώς να ορίζετε μεθόδους σε τύπους, πώς να δηλώνετε διεπαφές και πώς να συνδυάζετε όλα αυτά.</p>"
+    },
+    "module.generics.title": {
+      "kind": "plain",
+      "text": "Γενικευμένος προγραμματισμός"
+    },
+    "module.generics.description": {
+      "kind": "rich",
+      "text": "<p>Μάθετε πώς να χρησιμοποιείτε παραμέτρους τύπου σε συναρτήσεις και δομές της Go.</p>"
+    },
+    "module.concurrency.title": {
+      "kind": "plain",
+      "text": "Ταυτοχρονία"
+    },
+    "module.concurrency.description": {
+      "kind": "rich",
+      "text": "<p>Η Go διαθέτει δυνατότητες ταυτοχρονίας στον πυρήνα της γλώσσας.</p><p>Αυτή η ενότητα παρουσιάζει τις goroutine και τα κανάλια, καθώς και τον τρόπο χρήσης τους για την υλοποίηση διαφορετικών προτύπων ταυτοχρονίας.</p>"
+    },
+    "error.not_found": {
+      "kind": "plain",
+      "text": "404 — Η σελίδα δεν βρέθηκε"
+    },
+    "site.title": {
+      "kind": "plain",
+      "text": "A Tour of Go — Έργο πολυγλωσσικής μετάφρασης"
+    },
+    "site.browser_title": {
+      "kind": "plain",
+      "text": "Yongye · A Tour of Go — Έργο πολυγλωσσικής μετάφρασης"
+    },
+    "site.unofficial": {
+      "kind": "plain",
+      "text": "Συντήρηση από τον Yongye · Ανεπίσημο κοινοτικό έργο πολυγλωσσικής μετάφρασης"
+    },
+    "site.intro": {
+      "kind": "plain",
+      "text": "Ένα έργο μετάφρασης της κοινότητας για το επίσημο εκπαιδευτικό περιεχόμενο της Go. Τα απλοποιημένα κινεζικά είναι η πρώτη διαθέσιμη γλώσσα και η υποδομή μπορεί να επεκταθεί σε περισσότερες γλώσσες και περισσότερο περιεχόμενο Go."
+    },
+    "site.no_affiliation": {
+      "kind": "plain",
+      "text": "Το έργο αυτό δεν συνδέεται με το έργο Go και δεν έχει λάβει εξουσιοδότηση ή έγκρισή του."
+    },
+    "site.start_learning": {
+      "kind": "plain",
+      "text": "Ξεκινήστε να μαθαίνετε"
+    },
+    "site.current_projects": {
+      "kind": "plain",
+      "text": "Τρέχον έργο μετάφρασης"
+    },
+    "site.tour_description": {
+      "kind": "plain",
+      "text": "Μια διαδραστική εισαγωγή στη γλώσσα προγραμματισμού Go."
+    },
+    "site.current_language": {
+      "kind": "plain",
+      "text": "Τρέχουσα γλώσσα"
+    },
+    "site.enter_tour": {
+      "kind": "plain",
+      "text": "Είσοδος στην περιήγηση"
+    },
+    "site.project_status": {
+      "kind": "plain",
+      "text": "Κατάσταση έργου"
+    },
+    "site.course_pages": {
+      "kind": "plain",
+      "text": "Σελίδες μαθημάτων"
+    },
+    "site.latest_release": {
+      "kind": "plain",
+      "text": "Τελευταία έκδοση"
+    },
+    "site.environment": {
+      "kind": "plain",
+      "text": "Περιβάλλον"
+    },
+    "site.development_environment": {
+      "kind": "plain",
+      "text": "Περιβάλλον ανάπτυξης"
+    },
+    "site.upstream_baseline": {
+      "kind": "plain",
+      "text": "Έκδοση αναφοράς του επίσημου πηγαίου περιεχομένου"
+    },
+    "site.upstream_commit_time": {
+      "kind": "plain",
+      "text": "Χρόνος καταχώρισης της αλλαγής στο επίσημο έργο προέλευσης"
+    },
+    "site.language_versions": {
+      "kind": "plain",
+      "text": "Γλωσσικές εκδόσεις"
+    },
+    "site.official_version": {
+      "kind": "plain",
+      "text": "Επίσημο A Tour of Go"
+    },
+    "site.community_version": {
+      "kind": "plain",
+      "text": "Μετάφραση της κοινότητας"
+    },
+    "site.open_official_tour": {
+      "kind": "plain",
+      "text": "Άνοιγμα της επίσημης περιήγησης"
+    },
+    "site.project_links": {
+      "kind": "plain",
+      "text": "Σύνδεσμοι έργου"
+    },
+    "site.source_code": {
+      "kind": "plain",
+      "text": "Πηγαίος κώδικας στο GitHub"
+    },
+    "site.issue_feedback": {
+      "kind": "plain",
+      "text": "GitHub Issues"
+    },
+    "site.development_log": {
+      "kind": "plain",
+      "text": "Ημερολόγιο ανάπτυξης: A Tour of Go — Έργο πολυγλωσσικής μετάφρασης"
+    },
+    "site.official_upstream": {
+      "kind": "plain",
+      "text": "Επίσημο έργο προέλευσης"
+    },
+    "site.translation_validation": {
+      "kind": "plain",
+      "text": "Μετάφραση και επικύρωση"
+    },
+    "site.translation_validation_intro": {
+      "kind": "plain",
+      "text": "Το έργο διατηρεί τη μαθησιακή εμπειρία κοντά στο επίσημο περιεχόμενο και ελέγχει κάθε έκδοση πριν από τη δημοσίευσή της."
+    },
+    "site.validation_page_unit": {
+      "kind": "plain",
+      "text": "Κάθε μετάφραση χρησιμοποιεί ως μονάδα μια ολόκληρη σελίδα μαθήματος."
+    },
+    "site.validation_present": {
+      "kind": "plain",
+      "text": "Κάθε έκδοση αναλύεται με το present."
+    },
+    "site.validation_structure": {
+      "kind": "plain",
+      "text": "Η δομή κάθε σελίδας συγκρίνεται με την επίσημη πηγή."
+    },
+    "site.validation_render": {
+      "kind": "plain",
+      "text": "Οι αποδιδόμενες σελίδες ελέγχονται πριν από τη δημοσίευση."
+    },
+    "site.validation_examples": {
+      "kind": "plain",
+      "text": "Τα παραδείγματα Go που περιέχουν μεταφράσιμα σχόλια σε φυσική γλώσσα εντάσσονται επίσης στην ενιαία διαδικασία επικύρωσης· όλα τα υπόλοιπα παραδείγματα εξακολουθούν να χρησιμοποιούν απευθείας την επίσημη πηγή."
+    },
+    "site.how_it_works": {
+      "kind": "plain",
+      "text": "Πώς λειτουργεί το έργο"
+    },
+    "site.how_it_works_intro": {
+      "kind": "plain",
+      "text": "Η τοπικοποίηση των μαθημάτων δεν είναι αντικατάσταση πρότασης προς πρόταση. Είναι μια διαδικασία που βασίζεται σε ολοκληρωμένες μονάδες περιεχομένου, ανιχνεύσιμες καταστάσεις ελέγχου και επαληθεύσιμα τεχνουργήματα έκδοσης."
+    },
+    "site.workflow_title": {
+      "kind": "plain",
+      "text": "Από το TranslationUnit στην παραγωγή"
+    },
+    "site.workflow_units": {
+      "kind": "plain",
+      "text": "Το TranslationUnit αναπαριστά τόσο ολόκληρες σελίδες όσο και κατάλληλα παραδείγματα: μια σελίδα είναι μια πλήρης present.Section, ενώ ένα παράδειγμα είναι ένα πλήρες αρχείο .go που περιέχει μεταφράσιμα σχόλια σε φυσική γλώσσα."
+    },
+    "site.workflow_process": {
+      "kind": "plain",
+      "text": "Κάθε μονάδα περνά από μετάφραση, αυτόματη επικύρωση, έλεγχο ποιότητας μετάφρασης, προαγωγή, κατάσταση ετοιμότητας, δημιουργία προβολής και δημοσίευση· οι παραγόμενες μεταφράσεις δεν δημοσιεύονται ποτέ απευθείας."
+    },
+    "site.workflow_review": {
+      "kind": "plain",
+      "text": "Οι αυτόματοι έλεγχοι προστατεύουν τη δομή, αναλύουν το περιεχόμενο present, το συγκρίνουν με την επίσημη πηγή, επικυρώνουν την απόδοση των σελίδων και ελέγχουν τον κώδικα των παραδειγμάτων Go. Πριν από την προαγωγή απαιτείται πάντοτε ανεξάρτητος έλεγχος ποιότητας μετάφρασης."
+    },
+    "site.workflow_publish": {
+      "kind": "plain",
+      "text": "Η δημοσίευση δημιουργεί μια πλήρη τοπικοποιημένη προβολή από τις κανονικές έτοιμες υποψήφιες μεταφράσεις, απαιτεί κάθε TranslationUnit της διαδικασίας να είναι έτοιμο και στη συνέχεια δημιουργεί το εκτελέσιμο αρχείο παραγωγής, τα release.json και SHA256SUMS και επαληθεύει ολόκληρο το πακέτο."
+    },
+    "site.architecture_title": {
+      "kind": "plain",
+      "text": "Ανιχνεύσιμη, ελεγχόμενη και επεκτάσιμη αρχιτεκτονική"
+    },
+    "site.architecture_upstream": {
+      "kind": "plain",
+      "text": "Το έργο καταγράφει συνεχώς την επίσημη καταχώριση αλλαγών του έργου προέλευσης, διατηρώντας μια ανιχνεύσιμη έκδοση αναφοράς για μελλοντικές ενημερώσεις του αρχικού περιεχομένου."
+    },
+    "site.architecture_playground": {
+      "kind": "plain",
+      "text": "Τα παραδείγματα Go εκτελούνται στο πρόγραμμα περιήγησης μέσω ενός ελεγχόμενου απομακρυσμένου διαμεσολαβητή Go Playground· το περιβάλλον παραγωγής δεν εκθέτει το τοπικό τελικό σημείο εκτέλεσης κώδικα /socket."
+    },
+    "site.architecture_languages": {
+      "kind": "plain",
+      "text": "Ο διακομιστής, τα πρότυπα, τα CSS, η JavaScript, οι εικόνες και οι γραμματοσειρές χρησιμοποιούνται από κοινού όπου είναι πρακτικό. Κάθε γλώσσα διατηρεί ανεξάρτητα τις μεταφράσεις μαθημάτων, τα κείμενα διεπαφής, την ορολογία και την κατάστασή της. Τα απλοποιημένα κινεζικά είναι η πρώτη γλώσσα που παραδόθηκε, ενώ υπάρχει δυνατότητα προσθήκης περισσότερων."
+    },
+    "site.operations_note": {
+      "kind": "plain",
+      "text": "Αυτός ο ιστότοπος ενδέχεται να εμφανίζει διαφημίσεις για την κάλυψη λειτουργικών εξόδων, όπως διακομιστές, εύρος ζώνης και υπηρεσίες CDN, καθώς και του συνεχιζόμενου κόστους συντήρησης του έργου. Ο πηγαίος κώδικας παραμένει δημόσιος και οι αυτοφιλοξενούμενες εγκαταστάσεις δεν ενεργοποιούν εξ ορισμού τη διαφημιστική διαμόρφωση αυτού του ιστοτόπου."
+    },
+    "support.section_title": {
+      "kind": "plain",
+      "text": "Υποστήριξη και λειτουργικά έξοδα"
+    },
+    "support.advertising_title": {
+      "kind": "plain",
+      "text": "Ενημέρωση για τις διαφημίσεις"
+    },
+    "support.translation_title": {
+      "kind": "plain",
+      "text": "Υποστηρίξτε αυτή τη γλωσσική έκδοση"
+    },
+    "support.intro": {
+      "kind": "plain",
+      "text": "Μπορείτε επίσης να υποστηρίξετε εθελοντικά τη συνεχή συντήρηση αυτής της γλωσσικής έκδοσης. Η υποστήριξή σας βοηθά ώστε αυτή η έκδοση να συνεχίσει να συντηρείται και να αναπτύσσεται."
+    },
+    "support.reference_label": {
+      "kind": "plain",
+      "text": "Κωδικός αναφοράς υποστήριξης"
+    },
+    "support.reference_help": {
+      "kind": "plain",
+      "text": "Αν η υπηρεσία πληρωμών σας υποστηρίζει σημείωση ή κωδικό αναφοράς, μπορείτε να χρησιμοποιήσετε αυτή την τιμή."
+    },
+    "support.copy_reference": {
+      "kind": "plain",
+      "text": "Αντιγραφή κωδικού αναφοράς"
+    },
+    "support.copy_address": {
+      "kind": "plain",
+      "text": "Αντιγραφή διεύθυνσης"
+    },
+    "support.copy_uid": {
+      "kind": "plain",
+      "text": "Αντιγραφή UID"
+    },
+    "support.copied": {
+      "kind": "plain",
+      "text": "Αντιγράφηκε"
+    },
+    "support.asset": {
+      "kind": "plain",
+      "text": "Περιουσιακό στοιχείο"
+    },
+    "support.network": {
+      "kind": "plain",
+      "text": "Δίκτυο"
+    },
+    "support.address": {
+      "kind": "plain",
+      "text": "Διεύθυνση"
+    },
+    "support.minimum_deposit": {
+      "kind": "plain",
+      "text": "Ελάχιστο ποσό παραλαβής"
+    },
+    "support.platform_title": {
+      "kind": "plain",
+      "text": "Εσωτερική μεταφορά στην ίδια πλατφόρμα (προαιρετικά)"
+    },
+    "support.uid": {
+      "kind": "plain",
+      "text": "UID"
+    },
+    "support.platform_help": {
+      "kind": "plain",
+      "text": "Οι χρήστες της ίδιας πλατφόρμας μπορούν να πραγματοποιήσουν εσωτερική μεταφορά μέσω UID. Ελέγξτε την πλατφόρμα για λεπτομέρειες."
+    },
+    "support.usdc_network_only": {
+      "kind": "plain",
+      "text": "Στείλτε USDC μόνο μέσω του δικτύου Base."
+    },
+    "support.usdt_network_only": {
+      "kind": "plain",
+      "text": "Στείλτε USDT μόνο μέσω του δικτύου Tron (TRC20)."
+    },
+    "support.wrong_network_warning": {
+      "kind": "plain",
+      "text": "Η χρήση λανθασμένου περιουσιακού στοιχείου ή δικτύου μπορεί να οδηγήσει σε απώλεια χρημάτων."
+    },
+    "site.continue_learning_title": {
+      "kind": "plain",
+      "text": "Συνεχίστε να μαθαίνετε Go"
+    },
+    "site.continue_learning_description": {
+      "kind": "plain",
+      "text": "Το A Tour of Go είναι μόνο η αρχή. Αφού το ολοκληρώσετε, επισκεφθείτε το go.dev για επίσημη τεκμηρίωση, οδηγούς εκμάθησης, την αναφορά της τυπικής βιβλιοθήκης, την προδιαγραφή της γλώσσας και επιπλέον πόρους εκμάθησης Go."
+    },
+    "site.continue_learning": {
+      "kind": "plain",
+      "text": "Συνεχίστε την εκμάθηση στο go.dev"
+    },
+    "footer.unofficial": {
+      "kind": "plain",
+      "text": "Yongye · Ανεπίσημο κοινοτικό έργο πολυγλωσσικής μετάφρασης"
+    },
+    "footer.home": {
+      "kind": "plain",
+      "text": "Αρχική"
+    },
+    "footer.github": {
+      "kind": "plain",
+      "text": "GitHub"
+    },
+    "footer.development_log": {
+      "kind": "plain",
+      "text": "Ημερολόγιο ανάπτυξης"
+    }
+  }
+}

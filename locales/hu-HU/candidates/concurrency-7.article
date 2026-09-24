@@ -1,0 +1,18 @@
+* Feladat: Egyenértékű bináris fák
+
+Különböző bináris fák is tárolhatják ugyanazt az értéksorozatot. Például az alábbi két bináris fa egyaránt az 1, 1, 2, 3, 5, 8, 13 sorozatot tárolja.
+
+.image /tour/static/img/tree.png
+
+Annak ellenőrzése, hogy két bináris fában ugyanaz az értéksorozat található-e, a legtöbb nyelven meglehetősen bonyolult. A Go konkurenciáját és csatornáit használva egyszerű megoldást írhatunk.
+
+A példa a `tree` csomagot használja, amely a következő típust definiálja:
+
+	type Tree struct {
+		Left  *Tree
+		Value int
+		Right *Tree
+	}
+
+
+A leírás a [[javascript:click('.next-page')][következő oldalon]] folytatódik.

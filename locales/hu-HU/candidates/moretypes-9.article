@@ -1,0 +1,13 @@
+* Szeletliterálok
+
+A szeletliterál a tömbliterálhoz hasonlít, de nem tartalmazza a hosszát.
+
+Ez egy tömbliterál:
+
+	[3]bool{true, true, false}
+
+A következő kifejezés ugyanazt a tömböt hozza létre, mint az előző, majd egy rá hivatkozó szeletet állít elő:
+
+	[]bool{true, true, false}
+
+.play moretypes/slice-literals.go

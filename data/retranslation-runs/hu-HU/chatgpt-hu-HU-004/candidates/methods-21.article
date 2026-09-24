@@ -1,0 +1,20 @@
+* Olvasók
+
+Az `io` csomag határozza meg az `io.Reader` interfészt,
+amely egy adatfolyam olvasási oldalát képviseli.
+
+A Go szabványos könyvtára [[https://cs.opensource.google/search?q=Read%5C(%5Cw%2B%5Cs%5C%5B%5C%5Dbyte%5C)&ss=go%2Fgo][számos megvalósítást]] tartalmaz ehhez az interfészhez,
+többek között fájlokhoz, hálózati kapcsolatokhoz, tömörítőkhöz és titkosító eljárásokhoz.
+
+Az `io.Reader` interfésznek van egy `Read` metódusa:
+
+	func (T) Read(b []byte) (n int, err error)
+
+A `Read` feltölti a megadott bájtszeletet adatokkal, majd visszaadja
+a feltöltött bájtok számát és egy hibaértéket. Az adatfolyam végén `io.EOF` hibát ad vissza.
+
+A példakód létrehoz egy
+[[/pkg/strings/#Reader][`strings.Reader`]] értéket,
+és a kimenetét 8 bájtos részletekben olvassa.
+
+.play methods/reader.go

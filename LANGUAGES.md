@@ -4,7 +4,7 @@
 
 新增语言统一从 [新增 Locale 执行手册](docs/NEW_LOCALE_RUNBOOK.md) 开始；不要只在 registry 中增加一行就视为完成。新 locale 必须先明确规范 locale、显示名称、domain/CDN、全站 glossary 决策和 production profile，并通过独立的 Glossary Review、TranslationUnit Quality Review 与 Locale Surface Review。
 
-语言 registry 的正式展示顺序按语言的英文名称字母顺序排列，不按加入项目的时间排列。当前顺序为 Arabic（`ar`）→ Bengali（`bn-BD`）→ Brazilian Portuguese（`pt-BR`）→ Czech（`cs-CZ`）→ Dutch（`nl-NL`）→ English（`en`）→ Filipino（`fil-PH`）→ French（`fr-FR`）→ German（`de-DE`）→ Hindi（`hi-IN`）→ Indonesian（`id-ID`）→ Italian（`it-IT`）→ Japanese（`ja-JP`）→ Korean（`ko-KR`）→ Malay（`ms-MY`）→ Polish（`pl-PL`）→ Romanian（`ro-RO`）→ Simplified Chinese（`zh-CN`）→ Spanish（`es-ES`）→ Swedish（`sv-SE`）→ Thai（`th-TH`）→ Traditional Chinese（`zh-TW`）→ Turkish（`tr-TR`）→ Ukrainian（`uk-UA`）→ Urdu（`ur-PK`）→ Vietnamese（`vi-VN`）。
+语言 registry 的正式展示顺序按语言的英文名称字母顺序排列，不按加入项目的时间排列。当前顺序为 Arabic（`ar`）→ Bengali（`bn-BD`）→ Brazilian Portuguese（`pt-BR`）→ Czech（`cs-CZ`）→ Dutch（`nl-NL`）→ English（`en`）→ Filipino（`fil-PH`）→ French（`fr-FR`）→ German（`de-DE`）→ Greek（`el-GR`）→ Hindi（`hi-IN`）→ Indonesian（`id-ID`）→ Italian（`it-IT`）→ Japanese（`ja-JP`）→ Korean（`ko-KR`）→ Malay（`ms-MY`）→ Polish（`pl-PL`）→ Romanian（`ro-RO`）→ Simplified Chinese（`zh-CN`）→ Spanish（`es-ES`）→ Swedish（`sv-SE`）→ Thai（`th-TH`）→ Traditional Chinese（`zh-TW`）→ Turkish（`tr-TR`）→ Ukrainian（`uk-UA`）→ Urdu（`ur-PK`）→ Vietnamese（`vi-VN`）。
 
 ## 语言站点与 CDN
 
@@ -19,6 +19,7 @@
 | `fil-PH` | Filipino | <https://fil-go-dev.shuijingwanwq.com/> | Cloudflare Free | 菲律宾语社区语言站；`html lang=fil-PH`；域名 language code 为 `fil`；首次生产准备中 |
 | `fr-FR` | Français | <https://fr-go-dev.shuijingwanwq.com/> | Cloudflare Free | 法语社区语言站；域名 language code 为 `fr` |
 | `de-DE` | Deutsch | <https://de-go-dev.shuijingwanwq.com/> | Cloudflare Free | 德语社区语言站；域名 language code 为 `de` |
+| `el-GR` | Ελληνικά | <https://el-go-dev.shuijingwanwq.com/> | Cloudflare Free | 希腊语社区语言站；`html lang=el-GR`；域名 language code 为 `el`；首次生产准备中 |
 | `hi-IN` | हिन्दी | <https://hi-go-dev.shuijingwanwq.com/> | Cloudflare Free | 印地语社区语言站；`html lang=hi-IN`；域名 language code 为 `hi`；首次生产准备中 |
 | `id-ID` | Bahasa Indonesia | <https://id-go-dev.shuijingwanwq.com/> | Cloudflare Free | 印度尼西亚语社区语言站；域名 language code 为 `id`；首次生产准备中 |
 | `it-IT` | Italiano | <https://it-go-dev.shuijingwanwq.com/> | Cloudflare Free | 意大利语社区语言站；域名 language code 为 `it` |

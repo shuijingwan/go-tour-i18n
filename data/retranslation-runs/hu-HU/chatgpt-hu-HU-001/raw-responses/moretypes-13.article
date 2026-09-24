@@ -1,0 +1,13 @@
+* Szelet létrehozása a make függvénnyel
+
+A szeletek a beépített ⟪GTI18N_d057e6bf_000001⟫make⟪GTI18N_d057e6bf_000002⟫ függvénnyel is létrehozhatók; így hozhatunk létre dinamikus méretű tömböket.
+
+A ⟪GTI18N_d057e6bf_000003⟫make⟪GTI18N_d057e6bf_000004⟫ függvény egy nullákkal inicializált tömb számára foglal helyet, és az arra hivatkozó szeletet adja vissza:
+
+⟪GTI18N_d057e6bf_000005⟫
+
+A kapacitás megadásához adj át egy harmadik argumentumot a ⟪GTI18N_d057e6bf_000006⟫make⟪GTI18N_d057e6bf_000007⟫ függvénynek:
+
+⟪GTI18N_d057e6bf_000008⟫
+
+⟪GTI18N_d057e6bf_000009⟫

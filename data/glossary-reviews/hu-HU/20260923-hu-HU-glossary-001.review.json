@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "evidence_type": "glossary-review-receipt",
+  "locale": "hu-HU",
+  "review_id": "20260923-hu-HU-glossary-001",
+  "stage": "locale-glossary-review",
+  "decision": "failed",
+  "reviewer": "chatgpt-gpt-5.6-sol-high-independent",
+  "rubric": "glossary-review/v1",
+  "glossary_path": "locales/hu-HU/glossary.yaml",
+  "glossary_sha256": "132196aba3b92ee75d0befde43c7d9c614863afab8e1025f4151ecb054322387",
+  "findings": [
+    "F1 [mandatory/concurrency]: concurrency=konkurens végrehajtás is identical to preferred concurrent execution=konkurens végrehajtás. Official Go distinguishes the concurrency design/composition concept from concurrent execution (goroutines). Source/UI concurrency module and concurrency/1-11 cover channels, select and sync as well as execution. Reassess a context-sound glossary distinction; avoid equating the module-wide concept with execution alone.",
+    "F2 [preferred/closure]: closure=függvénylezárás lacks support in the reviewed Hungarian technical usage and lexically suggests closing a function, whereas moretypes/25-26 explicitly teach an environment-capturing function value. University of Szeged material uses zárvány for the same lexical-capture concept. Reassess the preferred term with documented Hungarian programming usage; distinguish it from ordinary function termination."
+  ]
+}

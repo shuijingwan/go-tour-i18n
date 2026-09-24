@@ -1,0 +1,12 @@
+* A Go használata internetkapcsolat nélkül (opcionális)
+
+A kalauz önálló programként is elérhető, így internetkapcsolat nélkül is használhatod. Ilyenkor a kódpéldákat a saját számítógépeden fordítja le és futtatja.
+
+A kalauz helyi futtatásához először [[/doc/install][telepítsd a Go programot]], majd futtasd a következő parancsot:
+
+  go install golang.org/x/website/tour@latest
+
+Ezzel egy `tour` bináris fájl kerül a [[/cmd/go/#hdr-GOPATH_and_Modules][GOPATH]] `bin` könyvtárába.
+A kalauz program elindításakor megnyílik egy böngésző, amely a kalauz helyi változatát jeleníti meg.
+
+Természetesen továbbra is használhatod a kalauzt ezen a webhelyen keresztül is.

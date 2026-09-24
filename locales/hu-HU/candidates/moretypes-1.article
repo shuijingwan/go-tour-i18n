@@ -1,0 +1,24 @@
+* Mutatók
+
+A Go nyelvben is vannak mutatók.
+A mutató egy érték memóriacímét tárolja.
+
+A `*T` típus egy `T` típusú értékre mutató mutatót jelöl. Nullaértéke `nil`.
+
+	var p *int
+
+A `&` operátor az operandusára mutató mutatót állít elő.
+
+	i := 42
+	p = &i
+
+A `*` operátor a mutató által hivatkozott értéket jelöli.
+
+	fmt.Println(*p) // az i értékének kiolvasása a p mutatón keresztül
+	*p = 21         // az i értékének módosítása a p mutatón keresztül
+
+Ezt dereferálásnak vagy közvetett hivatkozásnak nevezzük.
+
+A C nyelvvel ellentétben a Go nem támogatja a mutatóaritmetikát.
+
+.play moretypes/pointers.go

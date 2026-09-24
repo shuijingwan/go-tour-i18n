@@ -1,0 +1,11 @@
+* Pufferelt csatornák
+
+A csatornák lehetnek ⟪GTI18N_caef0893_000001⟫puffereltek⟪GTI18N_caef0893_000002⟫. Pufferelt csatorna inicializálásához add meg a puffer hosszát a ⟪GTI18N_caef0893_000003⟫make⟪GTI18N_caef0893_000004⟫ második argumentumaként:
+
+⟪GTI18N_caef0893_000005⟫
+
+Pufferelt csatornára küldés csak akkor blokkol, ha a puffer megtelt. A fogadás akkor blokkol, ha a puffer üres.
+
+Módosítsd a példát úgy, hogy a puffer kapacitásánál több értéket küldj, és figyeld meg, mi történik.
+
+⟪GTI18N_caef0893_000006⟫

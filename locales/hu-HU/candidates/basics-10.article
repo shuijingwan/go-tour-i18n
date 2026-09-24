@@ -1,0 +1,7 @@
+* Rövid változódeklarációk
+
+Függvényen belül a `:=` rövid értékadó utasítás használható az implicit típusú `var` deklaráció helyett.
+
+Függvényen kívül minden utasítás kulcsszóval kezdődik (`var`, `func` és így tovább), ezért a `:=` szerkezet ott nem használható.
+
+.play basics/short-variable-declarations.go

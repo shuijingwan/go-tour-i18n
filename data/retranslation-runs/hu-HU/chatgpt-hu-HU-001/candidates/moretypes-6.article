@@ -1,0 +1,14 @@
+* Tömbök
+
+A `[n]T` típus egy `n` darab `T` típusú értéket tartalmazó tömböt jelöl.
+
+A következő kifejezés:
+
+	var a [10]int
+
+az `a` változót tíz egész számot tartalmazó tömbként deklarálja.
+
+A tömb hossza a típusának része, ezért a tömbök mérete nem változtatható meg.
+Ez korlátozónak tűnhet, de ne aggódj: a Go kényelmes megoldást kínál a tömbök használatára.
+
+.play moretypes/array.go

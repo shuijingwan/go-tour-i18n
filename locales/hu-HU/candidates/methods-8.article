@@ -1,0 +1,17 @@
+* Érték vagy mutató típusú fogadó választása
+
+Két oka lehet annak, hogy mutató típusú fogadót használj.
+
+Az első, hogy a metódus így módosíthatja azt az értéket, amelyre a fogadó mutat.
+
+A második, hogy minden metódushívásnál elkerülhető az érték másolása.
+Ez például akkor lehet hatékonyabb, ha a fogadó egy nagy struktúra.
+
+Ebben a példában a `Scale` és az `Abs` metódus fogadótípusa egyaránt `*Vertex`,
+noha az `Abs` metódusnak nem kell módosítania a fogadóját.
+
+Általában egy adott típus összes metódusának vagy érték típusú, vagy mutató
+típusú fogadót célszerű használnia, nem pedig a kettő keverékét.
+(A következő néhány oldalon meglátjuk, miért.)
+
+.play methods/methods-with-pointer-receivers.go

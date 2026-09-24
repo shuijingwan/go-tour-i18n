@@ -1,0 +1,7 @@
+* Halasztott hívások verembe helyezése
+
+A halasztott függvényhívások egy verembe kerülnek. Amikor egy függvény visszatér, a halasztott hívásai fordított sorrendben, az utoljára betett elemtől az első felé hajtódnak végre.
+
+A defer utasításokról ebben a [[/blog/defer-panic-and-recover][blogbejegyzésben]] olvashatsz bővebben.
+
+.play flowcontrol/defer-multi.go

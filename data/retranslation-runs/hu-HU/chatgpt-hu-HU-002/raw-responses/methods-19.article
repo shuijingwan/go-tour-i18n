@@ -1,0 +1,19 @@
+* Hibák
+
+A ⟪GTI18N_9eaab1fd_000001⟫-programok a hibaállapotot ⟪GTI18N_9eaab1fd_000002⟫error⟪GTI18N_9eaab1fd_000003⟫ értékekkel fejezik ki.
+
+Az ⟪GTI18N_9eaab1fd_000004⟫error⟪GTI18N_9eaab1fd_000005⟫ típus egy beépített interfész, amely hasonlít az ⟪GTI18N_9eaab1fd_000006⟫fmt.Stringer⟪GTI18N_9eaab1fd_000007⟫ interfészhez:
+
+⟪GTI18N_9eaab1fd_000008⟫
+
+(Az ⟪GTI18N_9eaab1fd_000009⟫fmt.Stringer⟪GTI18N_9eaab1fd_000010⟫ interfészhez hasonlóan az ⟪GTI18N_9eaab1fd_000011⟫fmt⟪GTI18N_9eaab1fd_000012⟫ csomag az értékek
+kiírásakor az ⟪GTI18N_9eaab1fd_000013⟫error⟪GTI18N_9eaab1fd_000014⟫ interfészt is keresi.)
+
+A függvények gyakran ⟪GTI18N_9eaab1fd_000015⟫error⟪GTI18N_9eaab1fd_000016⟫ értéket adnak vissza; a hívó kódnak pedig
+úgy kell kezelnie a hibákat, hogy megvizsgálja, az érték egyenlő-e ⟪GTI18N_9eaab1fd_000017⟫nil⟪GTI18N_9eaab1fd_000018⟫ értékkel.
+
+⟪GTI18N_9eaab1fd_000019⟫
+
+A ⟪GTI18N_9eaab1fd_000020⟫ ⟪GTI18N_9eaab1fd_000021⟫error⟪GTI18N_9eaab1fd_000022⟫ sikeres működést jelez; a nem ⟪GTI18N_9eaab1fd_000023⟫ ⟪GTI18N_9eaab1fd_000024⟫error⟪GTI18N_9eaab1fd_000025⟫ hibát jelent.
+
+⟪GTI18N_9eaab1fd_000026⟫

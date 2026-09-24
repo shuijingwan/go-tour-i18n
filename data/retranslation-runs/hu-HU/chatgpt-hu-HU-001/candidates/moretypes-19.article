@@ -1,0 +1,10 @@
+* Leképezések
+
+A leképezés kulcsokhoz rendel értékeket.
+
+A leképezés nullaértéke `nil`.
+Egy `nil` leképezésnek nincsenek kulcsai, és új kulcsokat sem lehet hozzáadni.
+
+A `make` függvény a megadott típusú, inicializált és használatra kész leképezést ad vissza.
+
+.play moretypes/maps.go

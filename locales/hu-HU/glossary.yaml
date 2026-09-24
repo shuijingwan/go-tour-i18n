@@ -1,0 +1,154 @@
+locale: hu-HU
+mandatory:
+  A Tour of Go: Go-kalauz
+  Run: Futtatás
+  Format: Formázás
+  Reset: Visszaállítás
+  programming language: programozási nyelv
+  package: csomag
+  function: függvény
+  method: metódus
+  interface: interfész
+  struct: struktúra
+  pointer: mutató
+  slice: szelet
+  map: leképezés
+  channel: csatorna
+  type parameter: típusparaméter
+  constraint: típuskorlát
+  generics: generikus programozás
+  type assertion: típusállítás
+  type switch: típus szerinti switch
+  variable: változó
+  constant: konstans
+  concurrency: konkurencia
+  zero value: nullaérték
+  receiver: fogadó
+  underlying type: alapul szolgáló típus
+preferred:
+  Go programming language: Go programozási nyelv
+  tour: kalauz
+  module: modul
+  lesson: lecke
+  exercise: feladat
+  slide (Tour page): oldal
+  slides (Tour pages): oldalak
+  slide (presentation): dia
+  slides (presentation): diák
+  previous: előző
+  next: következő
+  Kill: Leállítás
+  Syntax: Szintaxis
+  Imports: Importok
+  syntax highlighting: szintaxiskiemelés
+  sandbox: elkülönített futtatókörnyezet
+  deterministic output: determinisztikus kimenet
+  program: program
+  code: kód
+  compile: lefordítás
+  compiler: fordítóprogram
+  import: importálás
+  import path: importálási útvonal
+  package name: csomagnév
+  import statement: import utasítás
+  exported name: exportált név
+  unexported name: nem exportált név
+  declaration: deklaráció
+  statement: utasítás
+  expression: kifejezés
+  operator: operátor
+  return value: visszatérési érték
+  named return value: nevesített visszatérési érték
+  naked return: argumentum nélküli return
+  argument: argumentum
+  parameter: paraméter
+  value: érték
+  type: típus
+  basic type: alaptípus
+  type conversion: típuskonverzió
+  type inference: típuskövetkeztetés
+  untyped constant: típus nélküli konstans
+  untyped numeric constant: típus nélküli számkonstans
+  field: mező
+  struct field: struktúramező
+  array: tömb
+  literal: literál
+  struct literal: struktúraliterál
+  slice literal: szeletliterál
+  map literal: leképezésliterál
+  length: hossz
+  capacity: kapacitás
+  underlying array: mögöttes tömb
+  backing array: mögöttes tömb
+  dereferencing: dereferálás
+  pointer arithmetic: mutatóaritmetika
+  pointer receiver: mutató típusú fogadó
+  value receiver: érték típusú fogadó
+  interface value: interfészérték
+  interface type: interfésztípus
+  concrete type: konkrét típus
+  empty interface: üres interfész
+  interface value with nil underlying value: nil konkrét értéket tartalmazó interfészérték
+  nil interface value: nil interfészérték
+  generic: generikus
+  generic function: generikus függvény
+  generic type: generikus típus
+  type argument: típusargumentum
+  type constraint: típuskorlát
+  named type: nevesített típus
+  defined type: definiált típus
+  method set: metóduskészlet
+  iteration: iteráció
+  loop: ciklus
+  loop condition: ciklusfeltétel
+  infinite loop: végtelen ciklus
+  closure: zárvány
+  error: hiba
+  error handling: hibakezelés
+  runtime: futtatókörnyezet
+  buffered channel: pufferelt csatorna
+  unbuffered channel: puffer nélküli csatorna
+  mutual exclusion: kölcsönös kizárás
+  mutex: mutex
+  standard library: szabványos könyvtár
+  built-in: beépített
+  web crawler: webes feltérképező
+  pipeline: feldolgozási lánc
+  parallelism: párhuzamosság
+  concurrent programming: konkurens programozás
+  concurrent execution: konkurens végrehajtás
+  parallel execution: párhuzamos végrehajtás
+  hash table: hasítótábla
+  synchronization: szinkronizáció
+  shared memory: megosztott memória
+  select statement: select utasítás
+  switch statement: switch utasítás
+  short variable declaration: rövid változódeklaráció
+  constant expression: konstans kifejezés
+  function value: függvényérték
+  function signature: függvényszignatúra
+  method signature: metódusszignatúra
+  binary tree: bináris fa
+  singly-linked list: egyszeresen láncolt lista
+  hexadecimal: hexadecimális
+  pointer indirection: közvetett hivatkozás mutatón keresztül
+  Go Playground service: Go Playground
+forbidden:
+  - Golang
+  - gorutin
+  - górutin
+keep:
+  - Go
+  - Go Playground
+  - goroutine
+  - gofmt
+  - GOPATH
+  - go.dev
+  - GitHub
+  - URL
+  - API
+  - ASCII
+  - CPU
+  - UTC
+  - nil
+  - panic

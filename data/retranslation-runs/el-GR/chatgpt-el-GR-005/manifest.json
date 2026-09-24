@@ -1,0 +1,37 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-el-GR-005",
+  "locale": "el-GR",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "example",
+  "unit_count": 2,
+  "units": [
+    {
+      "unit_id": "example:generics/index.go",
+      "unit_kind": "example",
+      "source_path": "_content/tour/generics/index.go",
+      "source_sha256": "398dd72a4b01efa279d571667bedbcccd1bbbceaeb77218635db48edf38fd983",
+      "input_path": "inputs/generics-index.txt",
+      "input_sha256": "7abb8fdbe4d75e4a090fd429540fbbd86cad2f221a62cee51ab8195df56e2d6d",
+      "protected_token_count": 6,
+      "previous_snapshot_id": "20260924-el-GR-qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "At the explanatory comment about comparable, the two consecutive Greek comment lines read ο οποίος ικανοποιεί τον περιορισμό comparable / επομένως μπορούμε να χρησιμοποιήσουμε εδώ τον τελεστή ==. There is no punctuation between comparable and επομένως, forming an awkward run-on sentence at a central explanation of the constraint. Repair the sentence boundary while preserving comparable, T, v, x and == and the original technical meaning."
+    },
+    {
+      "unit_id": "example:moretypes/append.go",
+      "unit_kind": "example",
+      "source_path": "_content/tour/moretypes/append.go",
+      "source_sha256": "655ee5085fec61bcb38c9f029741bb1a06a414f94b8b36ed0362055b0d6b10bb",
+      "input_path": "inputs/moretypes-append.txt",
+      "input_sha256": "7459987c83bae35b02ce3fccf374c305f27890cf4914c1e5bdafc64e5b19c724",
+      "protected_token_count": 4,
+      "previous_snapshot_id": "20260924-el-GR-qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "The comment Η append λειτουργεί και με τμήματα πινάκων nil is an unnatural and potentially misleading rendering of nil slices: the trailing nil does not clearly qualify the slice value and could be read as modifying underlying arrays. Clarify that append accepts a nil slice, not a nil array; retain append and nil as protected Go terms and do not alter any code."
+    }
+  ]
+}

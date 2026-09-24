@@ -1,0 +1,12 @@
+* Range – folytatás
+
+Az indexet vagy az értéket a `_` változóhoz rendelve hagyhatod figyelmen kívül.
+
+    for i, _ := range pow
+    for _, value := range pow
+
+Ha csak az indexre van szükséged, a második változót el is hagyhatod.
+
+    for i := range pow
+
+.play moretypes/range-continued.go

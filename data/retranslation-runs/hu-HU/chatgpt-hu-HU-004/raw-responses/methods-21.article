@@ -1,0 +1,20 @@
+* Olvasók
+
+Az ⟪GTI18N_120c3fc9_000001⟫io⟪GTI18N_120c3fc9_000002⟫ csomag határozza meg az ⟪GTI18N_120c3fc9_000003⟫io.Reader⟪GTI18N_120c3fc9_000004⟫ interfészt,
+amely egy adatfolyam olvasási oldalát képviseli.
+
+A ⟪GTI18N_120c3fc9_000005⟫ szabványos könyvtára [[⟪GTI18N_120c3fc9_000006⟫][számos megvalósítást]] tartalmaz ehhez az interfészhez,
+többek között fájlokhoz, hálózati kapcsolatokhoz, tömörítőkhöz és titkosító eljárásokhoz.
+
+Az ⟪GTI18N_120c3fc9_000007⟫io.Reader⟪GTI18N_120c3fc9_000008⟫ interfésznek van egy ⟪GTI18N_120c3fc9_000009⟫Read⟪GTI18N_120c3fc9_000010⟫ metódusa:
+
+⟪GTI18N_120c3fc9_000011⟫
+
+A ⟪GTI18N_120c3fc9_000012⟫Read⟪GTI18N_120c3fc9_000013⟫ feltölti a megadott bájtszeletet adatokkal, majd visszaadja
+a feltöltött bájtok számát és egy hibaértéket. Az adatfolyam végén ⟪GTI18N_120c3fc9_000014⟫io.EOF⟪GTI18N_120c3fc9_000015⟫ hibát ad vissza.
+
+A példakód létrehoz egy
+[[⟪GTI18N_120c3fc9_000016⟫][⟪GTI18N_120c3fc9_000017⟫strings.Reader⟪GTI18N_120c3fc9_000018⟫]] értéket,
+és a kimenetét 8 bájtos részletekben olvassa.
+
+⟪GTI18N_120c3fc9_000019⟫

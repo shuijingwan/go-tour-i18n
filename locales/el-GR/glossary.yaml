@@ -1,0 +1,192 @@
+locale: el-GR
+
+# Core source meanings follow the current 103 English Tour Pages, 19 eligible
+# Example files, and English UI catalog. Greek prose inflects surrounding words
+# naturally; Go identifiers, syntax, link targets, and directives remain unchanged.
+# These are this locale's decisions, not claims of exclusive community usage.
+#
+# Distinctions: array != slice; basic != underlying type; interface value
+# containing nil != a nil interface; channel != processing pipeline; Go's
+# type assertion may panic, whereas its two-result form can test a type.
+# "A Tour of Go" and "Go Playground" remain canonical named products.
+mandatory:
+  Go programming language: γλώσσα προγραμματισμού Go
+  package: πακέτο
+  function: συνάρτηση
+  method: μέθοδος
+  variable: μεταβλητή
+  type: τύπος
+  basic type: βασικός τύπος
+  underlying type: υποκείμενος τύπος
+  concrete type: συγκεκριμένος τύπος
+  interface type: τύπος διεπαφής
+  interface value: τιμή διεπαφής
+  underlying concrete value: υποκείμενη τιμή συγκεκριμένου τύπου
+  pointer: δείκτης
+  pointer receiver: δέκτης δείκτη
+  value receiver: δέκτης τιμής
+  receiver: δέκτης
+  interface: διεπαφή
+  type assertion: ισχυρισμός τύπου
+  type switch: διακλάδωση βάσει τύπου
+  type parameter: παράμετρος τύπου
+  constraint: περιορισμός
+  type inference: συναγωγή τύπου
+  type conversion: μετατροπή τύπου
+  zero value: μηδενική τιμή
+  array: πίνακας
+  slice: τμήμα πίνακα
+  map: πίνακας αντιστοίχισης
+  channel: κανάλι
+  buffered channel: κανάλι με ενδιάμεση μνήμη
+  concurrency: ταυτοχρονία
+  parallelism: παραλληλισμός
+  mutual exclusion: αμοιβαίος αποκλεισμός
+  mutex: κλειδαριά αμοιβαίου αποκλεισμού
+  generic type: γενικευμένος τύπος
+  generic function: γενικευμένη συνάρτηση
+  exported name: εξαγόμενο όνομα
+  unexported name: μη εξαγόμενο όνομα
+  slide: σελίδα μαθήματος
+  exercise: άσκηση
+  Run: Εκτέλεση
+  Format: Μορφοποίηση
+  Reset: Επαναφορά
+  Kill: Διακοπή
+  Translation Quality Review: ανεξάρτητος έλεγχος ποιότητας μετάφρασης
+
+# Context-sensitive choices are guidance, not word-for-word replacement rules.
+# The lexical meaning of "map" here is an associative data structure, never a
+# geographical map. A slice is a flexible view into an underlying array; prose
+# can use "τμήμα πίνακα" and explicitly explain its variable length/capacity.
+# Code uses literal map, chan, struct, select, etc., as protected Go tokens.
+preferred:
+  programming language: γλώσσα προγραμματισμού
+  program: πρόγραμμα
+  source code: πηγαίος κώδικας
+  code sample: παράδειγμα κώδικα
+  module: ενότητα
+  lesson: μάθημα
+  course: σειρά μαθημάτων
+  course page: σελίδα μαθήματος
+  table of contents: πίνακας περιεχομένων
+  interactive: διαδραστικός
+  editor: επεξεργαστής κώδικα
+  syntax highlighting: επισήμανση σύνταξης
+  import: εισαγωγή
+  import path: διαδρομή εισαγωγής
+  declaration: δήλωση
+  variable declaration: δήλωση μεταβλητής
+  short variable declaration: σύντομη δήλωση μεταβλητής
+  assignment: ανάθεση
+  short assignment statement: σύντομη εντολή ανάθεσης
+  initial value: αρχική τιμή
+  initializer: αρχικοποιητής
+  parameter: παράμετρος
+  argument: όρισμα
+  return value: επιστρεφόμενη τιμή
+  named return value: ονομασμένη επιστρεφόμενη τιμή
+  naked return: επιστροφή χωρίς ορίσματα
+  value: τιμή
+  constant: σταθερά
+  numeric constant: αριθμητική σταθερά
+  untyped numeric constant: αριθμητική σταθερά χωρίς ρητό τύπο
+  built-in: ενσωματωμένος
+  standard library: τυπική βιβλιοθήκη
+  runtime: περιβάλλον εκτέλεσης
+  compile: μεταγλώττιση
+  compiler: μεταγλωττιστής
+  loop: βρόχος
+  iteration: επανάληψη
+  flow control: έλεγχος ροής
+  switch statement: εντολή switch
+  select statement: εντολή select
+  deferred call: αναβεβλημένη κλήση
+  struct: δομή
+  struct field: πεδίο δομής
+  composite literal: σύνθετη κυριολεκτική έκφραση
+  struct literal: κυριολεκτική έκφραση δομής
+  slice literal: κυριολεκτική έκφραση τμήματος πίνακα
+  map literal: κυριολεκτική έκφραση πίνακα αντιστοίχισης
+  underlying array: υποκείμενος πίνακας
+  slice length: μήκος τμήματος πίνακα
+  slice capacity: χωρητικότητα τμήματος πίνακα
+  length: μήκος
+  capacity: χωρητικότητα
+  element: στοιχείο
+  index: δείκτης θέσης
+  key: κλειδί
+  reference: αναφορά
+  function value: τιμή συνάρτησης
+  closure: κλειστότητα
+  pointer indirection: έμμεση πρόσβαση μέσω δείκτη
+  method signature: υπογραφή μεθόδου
+  implicit implementation: έμμεση υλοποίηση
+  empty interface: κενή διεπαφή
+  nil interface value: τιμή nil διεπαφής
+  nil concrete value: τιμή nil συγκεκριμένου τύπου
+  error value: τιμή σφάλματος
+  reader: αναγνώστης
+  data stream: ροή δεδομένων
+  pipeline: αλυσίδα επεξεργασίας
+  synchronization: συγχρονισμός
+  shared memory: κοινόχρηστη μνήμη
+  lightweight thread: ελαφρύ νήμα
+  send to a channel: αποστολή σε κανάλι
+  receive from a channel: λήψη από κανάλι
+  close a channel: κλείσιμο καναλιού
+  closed channel: κλειστό κανάλι
+  unbuffered channel: κανάλι χωρίς ενδιάμεση μνήμη
+  buffer: ενδιάμεση μνήμη
+  condition variable: μεταβλητή συνθήκης
+  binary tree: δυαδικό δέντρο
+  equivalent binary trees: ισοδύναμα δυαδικά δέντρα
+  web crawler: ανιχνευτής ιστού
+  type set: σύνολο τύπων
+  comparable: συγκρίσιμος
+  generic programming: γενικευμένος προγραμματισμός
+  anonymous function: ανώνυμη συνάρτηση
+  recursion: αναδρομή
+  Fibonacci closure: κλειστότητα Fibonacci
+  Go Playground proxy: διαμεσολαβητής Go Playground
+  automatic validation: αυτόματη επικύρωση
+  independent review: ανεξάρτητος έλεγχος
+  community translation: μετάφραση της κοινότητας
+  official upstream: επίσημο έργο προέλευσης
+  promotion: προαγωγή
+  source baseline: έκδοση αναφοράς του αρχικού κώδικα
+  production: παραγωγή
+  release: έκδοση προς δημοσίευση
+
+# Only established misleading terms or misspelled brand/name variants are
+# forbidden. Ordinary Greek words remain valid in unrelated contexts.
+forbidden:
+  - γκορουτίνα
+  - γκο ρουτίνα
+  - Go ρουτίνα
+  - παιδική χαρά της Go
+  - Παιδική Χαρά της Go
+  - γλώσσα προγραμματισμού Golang
+  - μηδενικός τύπος διεπαφής
+
+# Canonical names in otherwise translatable prose. Do not mirror the Go keyword,
+# builtin, identifier, package, or path inventory already protected structurally.
+keep:
+  - Go
+  - A Tour of Go
+  - Go Playground
+  - goroutine
+  - gofmt
+  - GOPATH
+  - GitHub
+  - Yongye
+  - TranslationUnit
+  - present.Section
+  - Stringer
+  - URL
+  - API
+  - USDC
+  - USDT
+  - Base
+  - Tron
+  - TRC20

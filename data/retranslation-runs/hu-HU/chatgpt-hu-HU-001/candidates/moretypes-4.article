@@ -1,0 +1,8 @@
+* Struktúrákra mutató mutatók
+
+A struktúra mezői a struktúrára mutató mutatón keresztül is elérhetők.
+
+Ha a struktúra `X` mezőjét egy, a struktúrára mutató `p` mutatón keresztül szeretnénk elérni, azt így írhatjuk: `(*p).X`.
+Ez a jelölés azonban körülményes, ezért a nyelv megengedi a rövidebb `p.X` alakot is, kifejezett dereferálás nélkül.
+
+.play moretypes/struct-pointers.go

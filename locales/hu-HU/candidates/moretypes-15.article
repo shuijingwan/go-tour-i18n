@@ -1,0 +1,15 @@
+* Elemek hozzáfűzése szelethez
+
+Gyakran kell új elemeket hozzáfűzni egy szelethez, ezért a Go beépített `append` függvényt biztosít erre a célra. A beépített csomag [[/pkg/builtin/#append][dokumentációja]] ismerteti az `append` működését.
+
+	func append(s []T, vs ...T) []T
+
+Az `s` az `append` első paramétere; ez egy `T` típusú elemeket tartalmazó szelet. A többi paraméter a hozzáfűzendő `T` típusú érték.
+
+Az `append` visszatérési értéke olyan szelet, amely az eredeti szelet összes elemét és a megadott új értékeket is tartalmazza.
+
+Ha az `s` mögöttes tömbje túl kicsi az összes megadott érték befogadásához, a függvény nagyobb tömböt foglal le. A visszaadott szelet az újonnan lefoglalt tömbre fog hivatkozni.
+
+(Ha többet szeretnél megtudni a szeletekről, olvasd el a [[/blog/go-slices-usage-and-internals][Szeletek: használat és belső működés]] című cikket.)
+
+.play moretypes/append.go

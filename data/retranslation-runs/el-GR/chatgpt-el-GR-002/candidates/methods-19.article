@@ -1,0 +1,24 @@
+* Σφάλματα
+
+Τα προγράμματα της Go εκφράζουν την κατάσταση σφάλματος με τιμές `error`.
+
+Ο τύπος `error` είναι μια ενσωματωμένη διεπαφή, παρόμοια με την `fmt.Stringer`:
+
+	type error interface {
+		Error() string
+	}
+
+(Όπως και με τη `fmt.Stringer`, το πακέτο `fmt` αναζητά τη διεπαφή `error` όταν εκτυπώνει τιμές.)
+
+Οι συναρτήσεις επιστρέφουν συχνά μια τιμή `error` και ο κώδικας που τις καλεί πρέπει να χειρίζεται τα σφάλματα ελέγχοντας αν η τιμή σφάλματος ισούται με `nil`.
+
+	i, err := strconv.Atoi("42")
+	if err != nil {
+		fmt.Printf("couldn't convert number: %v\n", err)
+		return
+	}
+	fmt.Println("Converted integer:", i)
+
+Μια τιμή `error` που είναι nil δηλώνει επιτυχία· μια τιμή `error` που δεν είναι nil δηλώνει αποτυχία.
+
+.play methods/errors.go

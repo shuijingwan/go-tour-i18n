@@ -1,0 +1,26 @@
+* Alaptípusok
+
+A Go nyelv alaptípusai:
+
+	bool
+
+	string
+
+	int  int8  int16  int32  int64
+	uint uint8 uint16 uint32 uint64 uintptr
+
+	byte // a következő típus álneve: uint8
+
+	rune // a következő típus álneve: int32
+	     // Unicode-kódpontot jelöl
+
+	float32 float64
+
+	complex64 complex128
+
+A példa többféle típusú változót mutat be, és azt is, hogy a változódeklarációk az import utasításokhoz hasonlóan blokkokba csoportosíthatók.
+
+Az `int`, `uint` és `uintptr` típusok 32 bites rendszereken általában 32 bitesek, 64 bites rendszereken pedig 64 bitesek.
+Ha egész számra van szükséged, az `int` típust használd, kivéve, ha kifejezetten indokolt rögzített méretű vagy előjel nélküli egész típust választani.
+
+.play basics/basic-types.go

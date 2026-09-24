@@ -1,0 +1,28 @@
+* Típus szerinti switch
+
+A _típus_szerinti_switch_ olyan szerkezet, amely több típusállítás egymás utáni vizsgálatát teszi lehetővé.
+
+A típus szerinti switch hasonlít a szokásos switch utasításhoz, de az ágai
+értékek helyett típusokat adnak meg; ezeket a rendszer az adott
+interfészértékben tárolt érték típusával hasonlítja össze.
+
+	switch v := i.(type) {
+	case T:
+		// itt v típusa T
+	case S:
+		// itt v típusa S
+	default:
+		// nincs egyezés; itt v típusa megegyezik i típusával
+	}
+
+A típus szerinti switch deklarációjának szintaxisa megegyezik a `i.(T)` típusállításéval,
+de a konkrét `T` típust a `type` kulcsszó helyettesíti.
+
+Ez a switch utasítás azt vizsgálja, hogy az `i` interfészérték
+`T` vagy `S` típusú értéket tartalmaz-e.
+A `T` és `S` ágban a `v` változó típusa rendre
+`T` vagy `S` lesz, értéke pedig az `i` által tárolt érték.
+Az alapértelmezett ágban (ha nincs egyezés) a `v` változó típusa
+és értéke megegyezik az `i` interfészértékével.
+
+.play methods/type-switches.go

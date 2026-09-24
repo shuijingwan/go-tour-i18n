@@ -1,0 +1,15 @@
+* Range és lezárás
+
+A küldő a ⟪GTI18N_3e925c67_000001⟫close⟪GTI18N_3e925c67_000002⟫ segítségével lezárhat egy csatornát, jelezve, hogy több értéket már nem fog küldeni. A fogadó a fogadási kifejezés második visszatérési értékével ellenőrizheti, hogy a csatorna lezárult-e. Például:
+
+⟪GTI18N_3e925c67_000003⟫
+
+Az ⟪GTI18N_3e925c67_000004⟫ok⟪GTI18N_3e925c67_000005⟫ értéke ⟪GTI18N_3e925c67_000006⟫false⟪GTI18N_3e925c67_000007⟫, ha nincs több fogadható érték, és a csatorna lezárult.
+
+A ⟪GTI18N_3e925c67_000008⟫for`i`:=`range`c⟪GTI18N_3e925c67_000009⟫ ciklus ismételten fogad értékeket a csatornáról, amíg az le nem zárul.
+
+⟪GTI18N_3e925c67_000010⟫Megjegyzés:⟪GTI18N_3e925c67_000011⟫ Csatornát csak a küldő zárjon le, a fogadó soha. Lezárt csatornára történő küldés ⟪GTI18N_3e925c67_000012⟫ eseményt vált ki.
+
+⟪GTI18N_3e925c67_000013⟫További* megjegyzés:⟪GTI18N_3e925c67_000014⟫ A csatornák nem olyanok, mint a fájlok: általában nem kell lezárnod őket. A lezárás csak akkor szükséges, ha a fogadónak tudnia kell, hogy nem érkezik több érték, például egy ⟪GTI18N_3e925c67_000015⟫range⟪GTI18N_3e925c67_000016⟫ ciklus befejezéséhez.
+
+⟪GTI18N_3e925c67_000017⟫

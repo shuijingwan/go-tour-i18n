@@ -1,0 +1,11 @@
+* A switch kiértékelési sorrendje
+
+A switch az eseteket felülről lefelé értékeli ki, és az első megfelelő esetnél megáll.
+
+(Például:
+
+⟪GTI18N_e1479cae_000001⟫
+
+nem hívja meg az ⟪GTI18N_e1479cae_000002⟫f⟪GTI18N_e1479cae_000003⟫ függvényt, ha ⟪GTI18N_e1479cae_000004⟫i==0⟪GTI18N_e1479cae_000005⟫.)
+
+⟪GTI18N_e1479cae_000006⟫

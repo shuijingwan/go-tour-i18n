@@ -1,0 +1,27 @@
+* Leképezések módosítása
+
+Az `m` leképezés egy elemének beszúrása vagy frissítése:
+
+	m[key] = elem
+
+Egy elem lekérése:
+
+	elem = m[key]
+
+Egy elem törlése:
+
+	delete(m, key)
+
+A kulcs létezését két értéket adó értékadással ellenőrizheted:
+
+	elem, ok = m[key]
+
+Ha a `key` kulcs szerepel az `m` leképezésben, az `ok` értéke `true`. Ellenkező esetben az `ok` értéke `false`.
+
+Ha a `key` nincs a leképezésben, az `elem` a leképezés elemtípusának nullaértékét kapja.
+
+*Megjegyzés:* Ha az `elem` vagy az `ok` még nincs deklarálva, használhatod a rövid változódeklarációt:
+
+	elem, ok := m[key]
+
+.play moretypes/mutating-maps.go

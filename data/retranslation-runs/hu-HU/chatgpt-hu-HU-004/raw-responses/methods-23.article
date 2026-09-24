@@ -1,0 +1,17 @@
+* Feladat: rot13Reader
+
+Gyakori minta az olyan [[⟪GTI18N_11d87614_000001⟫][io.Reader]], amely egy másik ⟪GTI18N_11d87614_000002⟫io.Reader⟪GTI18N_11d87614_000003⟫ interfészt megvalósító olvasót burkol be,
+és valamilyen módon módosítja az adatfolyamot.
+
+Például a [[⟪GTI18N_11d87614_000004⟫][gzip.NewReader]] függvény egy ⟪GTI18N_11d87614_000005⟫io.Reader⟪GTI18N_11d87614_000006⟫ értéket
+(tömörített adatfolyamot) kap, és egy olyan ⟪GTI18N_11d87614_000007⟫*gzip.Reader⟪GTI18N_11d87614_000008⟫ értéket ad vissza,
+amely szintén megvalósítja az ⟪GTI18N_11d87614_000009⟫io.Reader⟪GTI18N_11d87614_000010⟫ interfészt (ez már a kitömörített adatfolyamot szolgáltatja).
+
+Valósíts meg egy ⟪GTI18N_11d87614_000011⟫rot13Reader⟪GTI18N_11d87614_000012⟫ típust, amely megvalósítja az ⟪GTI18N_11d87614_000013⟫io.Reader⟪GTI18N_11d87614_000014⟫ interfészt,
+egy ⟪GTI18N_11d87614_000015⟫io.Reader⟪GTI18N_11d87614_000016⟫ értékből olvas, és az adatfolyam minden betűjére
+alkalmazza a [[⟪GTI18N_11d87614_000017⟫][rot13]] helyettesítéses titkosítást.
+
+A ⟪GTI18N_11d87614_000018⟫rot13Reader⟪GTI18N_11d87614_000019⟫ típust már megadtuk.
+Az ⟪GTI18N_11d87614_000020⟫io.Reader⟪GTI18N_11d87614_000021⟫ interfész megvalósításához készítsd el a ⟪GTI18N_11d87614_000022⟫Read⟪GTI18N_11d87614_000023⟫ metódusát.
+
+⟪GTI18N_11d87614_000024⟫

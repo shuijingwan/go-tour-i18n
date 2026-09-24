@@ -1,0 +1,15 @@
+* Goroutine-ok
+
+A _goroutine_ a Go futtatókörnyezete által kezelt könnyűsúlyú végrehajtási szál.
+
+	go f(x, y, z)
+
+egy új goroutine indít el, amely a következőt futtatja:
+
+	f(x, y, z)
+
+Az `f`, `x`, `y` és `z` kiértékelése a jelenlegi goroutine során történik, míg az `f` függvény végrehajtása az új goroutine során megy végbe.
+
+A goroutine-ok ugyanazt a címteret használják, ezért a megosztott memóriához való hozzáférést szinkronizálni kell. A [[/pkg/sync/][`sync`]] csomag hasznos eszközöket biztosít ehhez, bár a Go más eszközöket is kínál, így többnyire nincs szükség rájuk. (Lásd a következő oldalt.)
+
+.play concurrency/goroutines.go

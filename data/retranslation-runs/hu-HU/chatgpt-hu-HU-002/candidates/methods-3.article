@@ -1,0 +1,12 @@
+* További tudnivalók a metódusokról
+
+Nemcsak struktúratípusokhoz deklarálhatsz metódusokat.
+
+Ebben a példában egy `MyFloat` nevű numerikus típust láthatsz, amelynek van egy `Abs` metódusa.
+
+Csak olyan fogadótípushoz deklarálhatsz metódust, amely ugyanabban a
+csomagban van definiálva, mint maga a metódus.
+Nem deklarálhatsz metódust olyan fogadótípushoz, amelyet egy másik
+csomagban definiáltak (ideértve az olyan beépített típusokat is, mint az `int`).
+
+.play methods/methods-continued.go

@@ -1,0 +1,18 @@
+* A szeletelés alapértelmezett határai
+
+Szeleteléskor az alsó és a felső határt is elhagyhatod: ilyenkor az alapértelmezett értékük érvényesül.
+
+Az alsó határ alapértelmezett értéke nulla, a felső határé pedig a mögöttes szelet vagy tömb hossza.
+
+A következő tömb esetén:
+
+	var a [10]int
+
+ezek a szeletkifejezések egyenértékűek:
+
+	a[0:10]
+	a[:10]
+	a[0:]
+	a[:]
+
+.play moretypes/slice-bounds.go

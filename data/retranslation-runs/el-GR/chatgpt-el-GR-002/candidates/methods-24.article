@@ -1,0 +1,19 @@
+* Εικόνες
+
+Το [[/pkg/image/#Image][πακέτο image]] ορίζει τη διεπαφή `Image`:
+
+	package image
+
+	type Image interface {
+		ColorModel() color.Model
+		Bounds() Rectangle
+		At(x, y int) color.Color
+	}
+
+*Σημείωση*: η επιστρεφόμενη τιμή `Rectangle` της μεθόδου `Bounds` είναι στην πραγματικότητα μια [[/pkg/image/#Rectangle][`image.Rectangle`]], καθώς η δήλωση βρίσκεται μέσα στο πακέτο `image`.
+
+(Δείτε [[/pkg/image/#Image][την τεκμηρίωση]] για όλες τις λεπτομέρειες.)
+
+Οι τύποι `color.Color` και `color.Model` είναι επίσης διεπαφές, αλλά εδώ θα το παρακάμψουμε χρησιμοποιώντας τις προκαθορισμένες υλοποιήσεις `color.RGBA` και `color.RGBAModel`. Αυτές οι διεπαφές και οι τύποι ορίζονται από το [[/pkg/image/color/][πακέτο image/color]].
+
+.play methods/images.go

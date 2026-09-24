@@ -1,0 +1,15 @@
+* Exportált nevek
+
+A ⟪GTI18N_38b9c70e_000001⟫ nyelvben egy név akkor exportált, ha nagybetűvel kezdődik.
+Például a ⟪GTI18N_38b9c70e_000002⟫Pizza⟪GTI18N_38b9c70e_000003⟫ exportált név, ahogyan a ⟪GTI18N_38b9c70e_000004⟫Pi⟪GTI18N_38b9c70e_000005⟫ is, amelyet a ⟪GTI18N_38b9c70e_000006⟫math⟪GTI18N_38b9c70e_000007⟫ csomag exportál.
+
+A ⟪GTI18N_38b9c70e_000008⟫pizza⟪GTI18N_38b9c70e_000009⟫ és a ⟪GTI18N_38b9c70e_000010⟫pi⟪GTI18N_38b9c70e_000011⟫ nem nagybetűvel kezdődik, ezért nem exportált nevek.
+
+Egy csomag importálásakor csak annak exportált neveire hivatkozhatsz.
+A nem exportált nevek a csomagon kívülről nem érhetők el.
+
+Futtasd a kódot, és figyeld meg a hibaüzenetet.
+
+A hiba kijavításához nevezd át a ⟪GTI18N_38b9c70e_000012⟫math.pi⟪GTI18N_38b9c70e_000013⟫ nevet ⟪GTI18N_38b9c70e_000014⟫math.Pi⟪GTI18N_38b9c70e_000015⟫ névre, majd próbáld újra.
+
+⟪GTI18N_38b9c70e_000016⟫

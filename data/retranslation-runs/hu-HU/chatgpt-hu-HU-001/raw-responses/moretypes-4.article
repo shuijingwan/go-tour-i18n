@@ -1,0 +1,8 @@
+* Struktúrákra mutató mutatók
+
+A struktúra mezői a struktúrára mutató mutatón keresztül is elérhetők.
+
+Ha a struktúra ⟪GTI18N_29695d33_000001⟫X⟪GTI18N_29695d33_000002⟫ mezőjét egy, a struktúrára mutató ⟪GTI18N_29695d33_000003⟫p⟪GTI18N_29695d33_000004⟫ mutatón keresztül szeretnénk elérni, azt így írhatjuk: ⟪GTI18N_29695d33_000005⟫(*p).X⟪GTI18N_29695d33_000006⟫.
+Ez a jelölés azonban körülményes, ezért a nyelv megengedi a rövidebb ⟪GTI18N_29695d33_000007⟫p.X⟪GTI18N_29695d33_000008⟫ alakot is, kifejezett dereferálás nélkül.
+
+⟪GTI18N_29695d33_000009⟫

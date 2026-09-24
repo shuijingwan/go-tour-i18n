@@ -1,0 +1,7 @@
+* Függvényzárványok
+
+A Go függvényei lehetnek zárványok. A zárvány olyan függvényérték, amely a saját törzsén kívül deklarált változókra hivatkozik. A függvény hozzáférhet ezekhez a változókhoz, és módosíthatja is őket; ebben az értelemben a függvény „kötődik” a változókhoz.
+
+Például az `adder` függvény egy zárványt ad vissza. Minden zárvány a saját `sum` változójához kötődik.
+
+.play moretypes/function-closures.go

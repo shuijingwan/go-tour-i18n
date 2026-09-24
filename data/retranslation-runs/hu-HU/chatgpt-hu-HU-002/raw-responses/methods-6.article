@@ -1,0 +1,16 @@
+* Metódusok és közvetett hivatkozás mutatón keresztül
+
+Az előző két programot összehasonlítva észreveheted, hogy
+a mutatóargumentumot váró függvényeknek mutatót kell átadni:
+
+⟪GTI18N_39fb725b_000001⟫Fordítási hiba!⟪GTI18N_39fb725b_000002⟫A mutató típusú fogadóval rendelkező metódusokat viszont értékkel és mutatóval is
+meg lehet hívni:
+
+⟪GTI18N_39fb725b_000003⟫
+
+A ⟪GTI18N_39fb725b_000004⟫v.Scale(5)⟪GTI18N_39fb725b_000005⟫ utasítás esetén a mutató típusú fogadóval rendelkező metódus
+akkor is automatikusan meghívódik, ha ⟪GTI18N_39fb725b_000006⟫v⟪GTI18N_39fb725b_000007⟫ érték, nem pedig mutató.
+A ⟪GTI18N_39fb725b_000008⟫ a kényelmesebb használat érdekében a ⟪GTI18N_39fb725b_000009⟫v.Scale(5)⟪GTI18N_39fb725b_000010⟫ utasítást
+⟪GTI18N_39fb725b_000011⟫(&v).Scale(5)⟪GTI18N_39fb725b_000012⟫ alakban értelmezi, mivel a ⟪GTI18N_39fb725b_000013⟫Scale⟪GTI18N_39fb725b_000014⟫ metódusnak mutató típusú fogadója van.
+
+⟪GTI18N_39fb725b_000015⟫

@@ -1,0 +1,11 @@
+* Feladat: szeletek
+
+Valósítsd meg a ⟪GTI18N_9c5fd763_000001⟫Pic⟪GTI18N_9c5fd763_000002⟫ függvényt. Olyan ⟪GTI18N_9c5fd763_000003⟫dy⟪GTI18N_9c5fd763_000004⟫ hosszúságú szeletet kell visszaadnia, amelynek minden eleme egy ⟪GTI18N_9c5fd763_000005⟫dx⟪GTI18N_9c5fd763_000006⟫ darab 8 bites, előjel nélküli egész számot tartalmazó szelet. A program futtatásakor megjelenik a képed: a számokat szürkeárnyalatos (pontosabban kékárnyalatos) értékekként értelmezi.
+
+Szabadon eldöntheted, milyen képet állítasz elő. Érdekes képletek például a ⟪GTI18N_9c5fd763_000007⟫(x+y)/2⟪GTI18N_9c5fd763_000008⟫, az ⟪GTI18N_9c5fd763_000009⟫x*y⟪GTI18N_9c5fd763_000010⟫ és az ⟪GTI18N_9c5fd763_000011⟫x^y⟪GTI18N_9c5fd763_000012⟫.
+
+(Egy ciklus segítségével külön-külön kell lefoglalnod minden ⟪GTI18N_9c5fd763_000013⟫[]uint8⟪GTI18N_9c5fd763_000014⟫ szeletet a ⟪GTI18N_9c5fd763_000015⟫[][]uint8⟪GTI18N_9c5fd763_000016⟫ belsejében.)
+
+(A típusok közötti konverzióhoz használd a ⟪GTI18N_9c5fd763_000017⟫uint8(intValue)⟪GTI18N_9c5fd763_000018⟫ alakot.)
+
+⟪GTI18N_9c5fd763_000019⟫

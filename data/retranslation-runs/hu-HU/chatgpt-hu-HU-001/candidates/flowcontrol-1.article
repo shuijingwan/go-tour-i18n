@@ -1,0 +1,17 @@
+* A for ciklus
+
+A Go nyelvben egyetlen ciklusszerkezet van: a `for` ciklus.
+
+Az alapvető `for` ciklus három, pontosvesszővel elválasztott részből áll:
+
+- inicializáló utasítás: az első iteráció előtt hajtódik végre;
+- feltételkifejezés: minden iteráció előtt kiértékelődik;
+- utólagos utasítás: minden iteráció végén hajtódik végre.
+
+Az inicializáló utasítás gyakran változódeklaráció. Az ott deklarált változók kizárólag a `for` utasítás hatókörében láthatók.
+
+A ciklus akkor ér véget, amikor a logikai feltétel értéke `false` lesz.
+
+*Megjegyzés:* A C, a Java és a JavaScript nyelvvel ellentétben a `for` utasítás három részét nem kell zárójelbe tenni, a `{`}` kapcsos zárójelek viszont mindig kötelezők.
+
+.play flowcontrol/for.go

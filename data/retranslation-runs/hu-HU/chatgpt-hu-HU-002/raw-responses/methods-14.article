@@ -1,0 +1,16 @@
+* Az üres interfész
+
+A nulla metódust előíró interfésztípust ⟪GTI18N_7a09a765_000001⟫üres_interfésznek⟪GTI18N_7a09a765_000002⟫ nevezzük:
+
+⟪GTI18N_7a09a765_000003⟫
+
+Az üres interfész bármilyen típusú értéket tartalmazhat.
+(Minden típus legalább nulla metódust megvalósít.)
+
+Az ⟪GTI18N_7a09a765_000004⟫any⟪GTI18N_7a09a765_000005⟫ az ⟪GTI18N_7a09a765_000006⟫interface{}⟪GTI18N_7a09a765_000007⟫ álneve; a kettő teljesen
+egyenértékű.
+
+Az üres interfészeket olyan kód használja, amely ismeretlen típusú értékeket kezel.
+Például az ⟪GTI18N_7a09a765_000008⟫fmt.Print⟪GTI18N_7a09a765_000009⟫ tetszőleges számú, ⟪GTI18N_7a09a765_000010⟫any⟪GTI18N_7a09a765_000011⟫ típusú argumentumot fogad el.
+
+⟪GTI18N_7a09a765_000012⟫

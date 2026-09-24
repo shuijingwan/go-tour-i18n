@@ -1,0 +1,16 @@
+* Az üres interfész
+
+A nulla metódust előíró interfésztípust _üres_interfésznek_ nevezzük:
+
+	interface{}
+
+Az üres interfész bármilyen típusú értéket tartalmazhat.
+(Minden típus legalább nulla metódust megvalósít.)
+
+Az `any` az `interface{}` álneve; a kettő teljesen
+egyenértékű.
+
+Az üres interfészeket olyan kód használja, amely ismeretlen típusú értékeket kezel.
+Például az `fmt.Print` tetszőleges számú, `any` típusú argumentumot fogad el.
+
+.play methods/empty-interface.go

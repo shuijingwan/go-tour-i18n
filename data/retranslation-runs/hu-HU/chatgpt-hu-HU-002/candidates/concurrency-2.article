@@ -1,0 +1,20 @@
+* Csatornák
+
+A csatornák típusos adatátviteli útvonalak, amelyeken keresztül a `<-` csatornaoperátorral értékeket küldhetsz és fogadhatsz.
+
+	ch <- v    // A v értéket elküldi a ch csatornára.
+	v := <-ch  // Értéket fogad a ch csatornáról, majd
+	           // hozzárendeli a v változóhoz.
+
+(Az adat a nyíl irányában halad.)
+
+A leképezésekhez és a szeletekhez hasonlóan a csatornákat is létre kell hozni a használatuk előtt:
+
+	ch := make(chan int)
+
+Alapértelmezés szerint a küldés és a fogadás addig blokkol, amíg a másik fél készen nem áll. Ez lehetővé teszi a goroutine-ok szinkronizálását explicit zárolások vagy feltételváltozók nélkül.
+
+A példakód összeadja egy szelet számait, és két goroutine között osztja fel a munkát.
+Miután mindkét goroutine befejezte a számítást, kiszámítja a végeredményt.
+
+.play concurrency/channels.go

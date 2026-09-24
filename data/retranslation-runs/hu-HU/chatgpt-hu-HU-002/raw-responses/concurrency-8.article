@@ -1,0 +1,23 @@
+* Feladat: Egyenértékű bináris fák
+
+⟪GTI18N_b362cc15_000001⟫1.⟪GTI18N_b362cc15_000002⟫ Valósítsd meg a ⟪GTI18N_b362cc15_000003⟫Walk⟪GTI18N_b362cc15_000004⟫ függvényt.
+
+⟪GTI18N_b362cc15_000005⟫2.⟪GTI18N_b362cc15_000006⟫ Teszteld a ⟪GTI18N_b362cc15_000007⟫Walk⟪GTI18N_b362cc15_000008⟫ függvényt.
+
+A ⟪GTI18N_b362cc15_000009⟫tree.New(k)⟪GTI18N_b362cc15_000010⟫ függvény egy véletlenszerű szerkezetű (de mindig rendezett) bináris fát hoz létre, amely az ⟪GTI18N_b362cc15_000011⟫k⟪GTI18N_b362cc15_000012⟫, ⟪GTI18N_b362cc15_000013⟫2k⟪GTI18N_b362cc15_000014⟫, ⟪GTI18N_b362cc15_000015⟫3k⟪GTI18N_b362cc15_000016⟫, ..., ⟪GTI18N_b362cc15_000017⟫10k⟪GTI18N_b362cc15_000018⟫ értékeket tartalmazza.
+
+Hozz létre egy új ⟪GTI18N_b362cc15_000019⟫ch⟪GTI18N_b362cc15_000020⟫ csatornát, majd indítsd el a fa bejárását:
+
+⟪GTI18N_b362cc15_000021⟫
+
+Ezután olvass ki és írj ki 10 értéket a csatornából. Az eredménynek az 1, 2, 3, ..., 10 számokból kell állnia.
+
+⟪GTI18N_b362cc15_000022⟫3.⟪GTI18N_b362cc15_000023⟫ A ⟪GTI18N_b362cc15_000024⟫Same⟪GTI18N_b362cc15_000025⟫ függvényt a ⟪GTI18N_b362cc15_000026⟫Walk⟪GTI18N_b362cc15_000027⟫ segítségével valósítsd meg: állapítsa meg, hogy a ⟪GTI18N_b362cc15_000028⟫t1⟪GTI18N_b362cc15_000029⟫ és ⟪GTI18N_b362cc15_000030⟫t2⟪GTI18N_b362cc15_000031⟫ ugyanazokat az értékeket tárolják-e.
+
+⟪GTI18N_b362cc15_000032⟫4.⟪GTI18N_b362cc15_000033⟫ Teszteld a ⟪GTI18N_b362cc15_000034⟫Same⟪GTI18N_b362cc15_000035⟫ függvényt.
+
+A ⟪GTI18N_b362cc15_000036⟫Same(tree.New(1),`tree.New(1))⟪GTI18N_b362cc15_000037⟫ hívásnak true értéket, a ⟪GTI18N_b362cc15_000038⟫Same(tree.New(1),`tree.New(2))⟪GTI18N_b362cc15_000039⟫ hívásnak pedig false értéket kell visszaadnia.
+
+A ⟪GTI18N_b362cc15_000040⟫Tree⟪GTI18N_b362cc15_000041⟫ típus dokumentációját [[⟪GTI18N_b362cc15_000042⟫][itt]] találod.
+
+⟪GTI18N_b362cc15_000043⟫

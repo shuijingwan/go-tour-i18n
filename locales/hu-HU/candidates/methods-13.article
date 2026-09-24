@@ -1,0 +1,9 @@
+* Nil interfészértékek
+
+A nil interfészérték sem értéket, sem konkrét típust nem tartalmaz.
+
+Egy nil interfészen végzett metódushívás futásidejű hibát okoz, mert
+az interfészérték párjában nincs olyan típus, amely megadná, hogy melyik
+_konkrét_ metódust kell meghívni.
+
+.play methods/nil-interface-values.go

@@ -1,0 +1,11 @@
+* Nevesített visszatérési értékek
+
+A Go visszatérési értékei nevet is kaphatnak. Ilyenkor a függvény elején definiált változókként viselkednek.
+
+Ezeknek a neveknek a visszatérési értékek jelentését kell dokumentálniuk.
+
+Az argumentum nélküli `return` utasítás a nevesített visszatérési értékeket adja vissza. Ezt argumentum nélküli returnnek nevezzük.
+
+Az ilyen return utasításokat csak rövid függvényekben érdemes használni, mint ebben a példában, mert hosszabb függvényekben ronthatják az olvashatóságot.
+
+.play basics/named-results.go

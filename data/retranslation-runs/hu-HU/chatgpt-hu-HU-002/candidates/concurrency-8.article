@@ -1,0 +1,23 @@
+* Feladat: Egyenértékű bináris fák
+
+*1.* Valósítsd meg a `Walk` függvényt.
+
+*2.* Teszteld a `Walk` függvényt.
+
+A `tree.New(k)` függvény egy véletlenszerű szerkezetű (de mindig rendezett) bináris fát hoz létre, amely az `k`, `2k`, `3k`, ..., `10k` értékeket tartalmazza.
+
+Hozz létre egy új `ch` csatornát, majd indítsd el a fa bejárását:
+
+	go Walk(tree.New(1), ch)
+
+Ezután olvass ki és írj ki 10 értéket a csatornából. Az eredménynek az 1, 2, 3, ..., 10 számokból kell állnia.
+
+*3.* A `Same` függvényt a `Walk` segítségével valósítsd meg: állapítsa meg, hogy a `t1` és `t2` ugyanazokat az értékeket tárolják-e.
+
+*4.* Teszteld a `Same` függvényt.
+
+A `Same(tree.New(1),`tree.New(1))` hívásnak true értéket, a `Same(tree.New(1),`tree.New(2))` hívásnak pedig false értéket kell visszaadnia.
+
+A `Tree` típus dokumentációját [[https://godoc.org/golang.org/x/tour/tree#Tree][itt]] találod.
+
+.play concurrency/exercise-equivalent-binary-trees.go

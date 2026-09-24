@@ -1,0 +1,18 @@
+* Típuskövetkeztetés
+
+Ha egy változót a típusának kifejezett megadása nélkül deklarálsz (akár a `:=` szintaxissal, akár a `var`=` kifejezéses formával), a fordító a jobb oldalon szereplő érték alapján következteti ki a változó típusát.
+
+Ha a deklaráció jobb oldalán álló kifejezésnek már van típusa, az új változó ugyanazt a típust kapja:
+
+	var i int
+	j := i // j egy int
+
+Ha viszont a jobb oldalon típus nélküli számkonstans áll, a konstans pontosságától függően az új változó típusa `int`, `float64` vagy `complex128` lehet:
+
+	i := 42           // int
+	f := 3.142        // float64
+	g := 0.867 + 0.5i // complex128
+
+Próbáld meg módosítani a példakódban a `v` kezdőértékét, és figyeld meg, hogyan változik a típusa.
+
+.play basics/type-inference.go

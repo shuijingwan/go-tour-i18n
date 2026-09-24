@@ -1,0 +1,8 @@
+* Feladat: Stringer-interfészek
+
+Valósítsd meg az `IPAddr` típuson az `fmt.Stringer` interfészt, hogy a címet
+pontokkal elválasztott négy számból álló alakban írhassa ki.
+
+Például az `IPAddr{1,`2,`3,`4}` értéknek `"1.2.3.4"` alakban kell megjelennie.
+
+.play methods/exercise-stringer.go

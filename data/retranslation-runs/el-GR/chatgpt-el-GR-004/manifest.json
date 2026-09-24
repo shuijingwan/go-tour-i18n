@@ -1,0 +1,89 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-el-GR-004",
+  "locale": "el-GR",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 6,
+  "units": [
+    {
+      "unit_id": "welcome/2",
+      "unit_kind": "page",
+      "source_path": "_content/tour/welcome.article",
+      "source_sha256": "709f808ec4cdf683411f349cab7a4886fcae532d1c4e4cc66c8ed68cfb2dd2d3",
+      "input_path": "inputs/welcome-2.article",
+      "input_sha256": "327861965423bc2754b304ecf6c3dc8db5e84ef5c009f2b4f99f276f712e5fff",
+      "protected_token_count": 17,
+      "previous_snapshot_id": "20260924-el-GR-qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "The language-versions page heading Go τοπικά primarily suggests running Go locally/offline, although the actual lesson lists translated language editions; the heading should communicate localization without confusion with the separate offline page."
+    },
+    {
+      "unit_id": "basics/12",
+      "unit_kind": "page",
+      "source_path": "_content/tour/basics.article",
+      "source_sha256": "d9ad62501c05359e7b2ac445fa92d629e11d6d378c2701b767abab76012a558e",
+      "input_path": "inputs/basics-12.article",
+      "input_sha256": "1ea463ab789d88cad33a6c7adf44fb524ea1f7e2574059f723a345f3c097faa7",
+      "protected_token_count": 9,
+      "previous_snapshot_id": "20260924-el-GR-qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "The zero-value phrase _μηδενική_τιμή_ wrongly joins two Greek words with an underscore rather than a space, causing incorrect typography and potentially broken emphasis markup; correct the word separation and emphasis span."
+    },
+    {
+      "unit_id": "flowcontrol/14",
+      "unit_kind": "page",
+      "source_path": "_content/tour/flowcontrol.article",
+      "source_sha256": "f565674b974c053924bf69ef83b709dc50931526ae7fa88e71543a5cd872a190",
+      "input_path": "inputs/flowcontrol-14.article",
+      "input_sha256": "df605b3346e6854db7cca5927808b0a8d4ca7757b7c336a78d3921019da81603",
+      "protected_token_count": 2,
+      "previous_snapshot_id": "20260924-el-GR-qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "The congratulation sentence contains the spelling error μάθήμα (invalid extra accent); correct the Greek spelling of lesson."
+    },
+    {
+      "unit_id": "moretypes/15",
+      "unit_kind": "page",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "f2fc257e7c5f118321acc3b75e946053601532d411e8540534280d7fba795289",
+      "input_path": "inputs/moretypes-15.article",
+      "input_sha256": "6088b687ef801ed9c0eb38c3537cfb2d2e57037de2160d81b0f4a9aec96b8dbe",
+      "protected_token_count": 21,
+      "previous_snapshot_id": "20260924-el-GR-qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "In περιγράφει τη append, the article before the vowel-initial function name lacks the expected Greek final nu, making the phrase unnatural; correct its written form while preserving the function identifier."
+    },
+    {
+      "unit_id": "generics/1",
+      "unit_kind": "page",
+      "source_path": "_content/tour/generics.article",
+      "source_sha256": "01a045105dc8c12fb1709f122d363235c19a6464d5de7587d579524aec270dd6",
+      "input_path": "inputs/generics-1.article",
+      "input_sha256": "3ff19664d7491cff23bc7f49a5fdd513a6af4184e596d7fda9cbe009b9342639",
+      "protected_token_count": 19,
+      "previous_snapshot_id": "20260924-el-GR-qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "The phrase οποιουδήποτε τύπου T ικανοποιεί τον ενσωματωμένο περιορισμό comparable lacks the required Greek relative connector before ικανοποιεί; the clause is grammatically incomplete at the explanation that T must satisfy the comparable constraint. Repair the syntax while preserving the protected identifiers and technical meaning."
+    },
+    {
+      "unit_id": "concurrency/10",
+      "unit_kind": "page",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "bb686393225ef2335e627819a1664a84456f00b64af133af64920d43f0abdb94",
+      "input_path": "inputs/concurrency-10.article",
+      "input_sha256": "e4a368341386575c282bdd3363b1fcdb49ff382d31bceb8d740959b5cd562b8a",
+      "protected_token_count": 7,
+      "previous_snapshot_id": "20260924-el-GR-qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "The expression ένα cache uses an unexplained English ordinary technical noun with an unnatural neuter Greek article in otherwise localized educational prose. Express the caching concept in natural Greek without conflating it with a buffered channel or changing the warning that concurrent map access requires protection."
+    }
+  ]
+}

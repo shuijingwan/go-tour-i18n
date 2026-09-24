@@ -1,0 +1,14 @@
+* A switch kiértékelési sorrendje
+
+A switch az eseteket felülről lefelé értékeli ki, és az első megfelelő esetnél megáll.
+
+(Például:
+
+	switch i {
+	case 0:
+	case f():
+	}
+
+nem hívja meg az `f` függvényt, ha `i==0`.)
+
+.play flowcontrol/switch-evaluation-order.go

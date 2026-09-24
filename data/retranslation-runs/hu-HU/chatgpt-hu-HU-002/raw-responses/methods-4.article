@@ -1,0 +1,24 @@
+* Mutató típusú fogadók
+
+A metódusokat mutató típusú fogadóval is deklarálhatod.
+
+Ez azt jelenti, hogy a fogadó típusának literális szintaxisa ⟪GTI18N_99f9fa4e_000001⟫*T⟪GTI18N_99f9fa4e_000002⟫, ahol ⟪GTI18N_99f9fa4e_000003⟫T⟪GTI18N_99f9fa4e_000004⟫ egy típus.
+(Maga a ⟪GTI18N_99f9fa4e_000005⟫T⟪GTI18N_99f9fa4e_000006⟫ azonban nem lehet mutató, például ⟪GTI18N_99f9fa4e_000007⟫*int⟪GTI18N_99f9fa4e_000008⟫.)
+
+Például itt a ⟪GTI18N_99f9fa4e_000009⟫Scale⟪GTI18N_99f9fa4e_000010⟫ metódust a ⟪GTI18N_99f9fa4e_000011⟫*Vertex⟪GTI18N_99f9fa4e_000012⟫ típushoz definiáltuk.
+
+A mutató típusú fogadóval rendelkező metódusok módosíthatják azt az értéket,
+amelyre a fogadó mutat (ahogyan itt a ⟪GTI18N_99f9fa4e_000013⟫Scale⟪GTI18N_99f9fa4e_000014⟫ is teszi).
+Mivel a metódusoknak gyakran módosítaniuk kell a fogadójukat, a mutató
+típusú fogadók gyakoribbak az érték típusú fogadóknál.
+
+Próbáld meg eltávolítani a ⟪GTI18N_99f9fa4e_000015⟫*⟪GTI18N_99f9fa4e_000016⟫ jelet a ⟪GTI18N_99f9fa4e_000017⟫Scale⟪GTI18N_99f9fa4e_000018⟫ függvény 16. sorban található deklarációjából,
+és figyeld meg, hogyan változik a program működése.
+
+Érték típusú fogadó esetén a ⟪GTI18N_99f9fa4e_000019⟫Scale⟪GTI18N_99f9fa4e_000020⟫ metódus az eredeti
+⟪GTI18N_99f9fa4e_000021⟫Vertex⟪GTI18N_99f9fa4e_000022⟫ érték másolatán dolgozik.
+(Ugyanez történik bármely más függvényargumentummal is.)
+A ⟪GTI18N_99f9fa4e_000023⟫Scale⟪GTI18N_99f9fa4e_000024⟫ metódusnak mutató típusú fogadóra van szüksége ahhoz, hogy módosítani tudja a ⟪GTI18N_99f9fa4e_000025⟫Vertex⟪GTI18N_99f9fa4e_000026⟫ azon értékét,
+amelyet a ⟪GTI18N_99f9fa4e_000027⟫main⟪GTI18N_99f9fa4e_000028⟫ függvényben deklaráltunk.
+
+⟪GTI18N_99f9fa4e_000029⟫

@@ -1,0 +1,15 @@
+* Exportált nevek
+
+A Go nyelvben egy név akkor exportált, ha nagybetűvel kezdődik.
+Például a `Pizza` exportált név, ahogyan a `Pi` is, amelyet a `math` csomag exportál.
+
+A `pizza` és a `pi` nem nagybetűvel kezdődik, ezért nem exportált nevek.
+
+Egy csomag importálásakor csak annak exportált neveire hivatkozhatsz.
+A nem exportált nevek a csomagon kívülről nem érhetők el.
+
+Futtasd a kódot, és figyeld meg a hibaüzenetet.
+
+A hiba kijavításához nevezd át a `math.pi` nevet `math.Pi` névre, majd próbáld újra.
+
+.play basics/exported-names.go

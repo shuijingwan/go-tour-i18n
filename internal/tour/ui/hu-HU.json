@@ -1,0 +1,458 @@
+{
+  "locale": "hu-HU",
+  "html_lang": "hu-HU",
+  "messages": {
+    "editor.format": {
+      "kind": "plain",
+      "text": "Formázás"
+    },
+    "editor.imports": {
+      "kind": "plain",
+      "text": "Importok"
+    },
+    "editor.kill": {
+      "kind": "plain",
+      "text": "Leállítás"
+    },
+    "editor.off": {
+      "kind": "plain",
+      "text": "Ki"
+    },
+    "editor.on": {
+      "kind": "plain",
+      "text": "Be"
+    },
+    "editor.reset": {
+      "kind": "plain",
+      "text": "Visszaállítás"
+    },
+    "editor.run": {
+      "kind": "plain",
+      "text": "Futtatás"
+    },
+    "editor.syntax": {
+      "kind": "plain",
+      "text": "Szintaxis"
+    },
+    "error.not_found": {
+      "kind": "plain",
+      "text": "404 — az oldal nem található"
+    },
+    "execution.build_failed": {
+      "kind": "plain",
+      "text": "A Go program fordítása sikertelen."
+    },
+    "execution.communication_error": {
+      "kind": "plain",
+      "text": "Hiba történt a távoli kiszolgálóval folytatott kommunikáció során."
+    },
+    "execution.exited": {
+      "kind": "plain",
+      "text": "A program befejeződött"
+    },
+    "execution.test_failed": {
+      "kind": "plain",
+      "text": "{count} teszt sikertelen."
+    },
+    "execution.tests_failed": {
+      "kind": "plain",
+      "text": "{count} teszt sikertelen."
+    },
+    "execution.tests_passed": {
+      "kind": "plain",
+      "text": "Minden teszt sikeres."
+    },
+    "execution.vet_failed": {
+      "kind": "plain",
+      "text": "A go vet ellenőrzés sikertelen."
+    },
+    "execution.waiting": {
+      "kind": "plain",
+      "text": "Várakozás a távoli kiszolgálóra..."
+    },
+    "feedback.context": {
+      "kind": "plain",
+      "text": "Környezet"
+    },
+    "feedback.issue_body": {
+      "kind": "plain",
+      "text": "Módosítsd a fenti címet úgy, hogy leírja a problémát, majd írd ide a visszajelzésedet, szükség esetén kóddal együtt."
+    },
+    "feedback.issue_title": {
+      "kind": "plain",
+      "text": "x/website/_content/tour: [CSERÉLD LE RÖVID LEÍRÁSRA]"
+    },
+    "feedback.open": {
+      "kind": "plain",
+      "text": "Visszajelzés küldése erről az oldalról"
+    },
+    "footer.development_log": {
+      "kind": "plain",
+      "text": "Fejlesztési napló"
+    },
+    "footer.github": {
+      "kind": "plain",
+      "text": "GitHub"
+    },
+    "footer.home": {
+      "kind": "plain",
+      "text": "Kezdőlap"
+    },
+    "footer.unofficial": {
+      "kind": "plain",
+      "text": "Yongye · Nem hivatalos, közösségi többnyelvű fordítási projekt"
+    },
+    "header.about_project": {
+      "kind": "plain",
+      "text": "A projektről"
+    },
+    "module.basics.description": {
+      "kind": "rich",
+      "text": "<p>Ez a kiindulópont: itt megismerheted a nyelv alapjait.</p><p>A változók deklarálásától a függvények meghívásáig mindent megtanulhatsz, amire a következő leckék előtt szükséged lesz.</p>"
+    },
+    "module.basics.title": {
+      "kind": "plain",
+      "text": "Alapok"
+    },
+    "module.concurrency.description": {
+      "kind": "rich",
+      "text": "<p>A Go a konkurens programozást támogató eszközöket a nyelv alapvető részeként biztosítja.</p><p>Ez a modul bemutatja a goroutine-okat és a csatornákat, valamint azt, hogyan valósíthatók meg velük különféle konkurens programozási minták.</p>"
+    },
+    "module.concurrency.title": {
+      "kind": "plain",
+      "text": "Konkurencia"
+    },
+    "module.generics.description": {
+      "kind": "rich",
+      "text": "<p>Tanuld meg, hogyan használhatsz típusparamétereket a Go függvényeiben és struktúráiban.</p>"
+    },
+    "module.generics.title": {
+      "kind": "plain",
+      "text": "Generikus programozás"
+    },
+    "module.methods.description": {
+      "kind": "rich",
+      "text": "<p>Tanuld meg, hogyan definiálhatsz metódusokat a típusokon, hogyan deklarálhatsz interfészeket, és hogyan használhatod mindezt együtt.</p>"
+    },
+    "module.methods.title": {
+      "kind": "plain",
+      "text": "Metódusok és interfészek"
+    },
+    "module.using_tour.description": {
+      "kind": "rich",
+      "text": "<p>Üdvözlünk a <a href=\"https://go.dev\">Go programozási nyelvet</a> bemutató kalauzban. A kalauz a nyelv legfontosabb jellemzőit ismerteti, elsősorban a következőket:</p>"
+    },
+    "module.using_tour.title": {
+      "kind": "plain",
+      "text": "A kalauz használata"
+    },
+    "site.architecture_languages": {
+      "kind": "plain",
+      "text": "A kiszolgálót, a sablonokat, a CSS-t, a JavaScriptet, a képeket és a betűkészleteket lehetőség szerint közösen használjuk. Minden nyelv külön kezeli a tananyag fordítását, a felület szövegeit, a terminológiát és az állapotát. Az elsőként elkészült nyelv az egyszerűsített kínai, de a rendszer további nyelvekkel bővíthető."
+    },
+    "site.architecture_playground": {
+      "kind": "plain",
+      "text": "A böngészőben futó Go-példák egy felügyelt, távoli Playground-proxyn keresztül működnek; az éles környezet nem teszi elérhetővé a helyi /socket kódfuttatási végpontot."
+    },
+    "site.architecture_title": {
+      "kind": "plain",
+      "text": "Nyomon követhető, felügyelt és bővíthető felépítés"
+    },
+    "site.architecture_upstream": {
+      "kind": "plain",
+      "text": "A projekt folyamatosan rögzíti a hivatalos upstream commitot, így megőrzi a későbbi forrásfrissítések nyomon követhető kiindulási pontját."
+    },
+    "site.browser_title": {
+      "kind": "plain",
+      "text": "Yongye · A Go-kalauz többnyelvű fordítási projektje"
+    },
+    "site.community_version": {
+      "kind": "plain",
+      "text": "Közösségi fordítás"
+    },
+    "site.continue_learning": {
+      "kind": "plain",
+      "text": "Tanulj tovább a go.dev oldalon"
+    },
+    "site.continue_learning_description": {
+      "kind": "plain",
+      "text": "A Go-kalauz csak a kezdet. A kalauz elvégzése után a go.dev webhelyen megtalálod a hivatalos dokumentációt, az oktatóanyagokat, a szabványos könyvtár referenciáját, a nyelv specifikációját és további Go-tananyagokat."
+    },
+    "site.continue_learning_title": {
+      "kind": "plain",
+      "text": "Tanulj tovább a Go-ról"
+    },
+    "site.course_pages": {
+      "kind": "plain",
+      "text": "Tananyagoldalak"
+    },
+    "site.current_language": {
+      "kind": "plain",
+      "text": "Jelenlegi nyelv"
+    },
+    "site.current_projects": {
+      "kind": "plain",
+      "text": "Aktuális fordítási projekt"
+    },
+    "site.development_environment": {
+      "kind": "plain",
+      "text": "Fejlesztői környezet"
+    },
+    "site.development_log": {
+      "kind": "plain",
+      "text": "Fejlesztési napló: A Go-kalauz többnyelvű fordítási projektje"
+    },
+    "site.enter_tour": {
+      "kind": "plain",
+      "text": "Belépés a kalauzba"
+    },
+    "site.environment": {
+      "kind": "plain",
+      "text": "Környezet"
+    },
+    "site.how_it_works": {
+      "kind": "plain",
+      "text": "A projekt működése"
+    },
+    "site.how_it_works_intro": {
+      "kind": "plain",
+      "text": "A tananyagok honosítása nem mondatról mondatra történő szövegcsere, hanem teljes tartalmi egységekre, nyomon követhető ellenőrzési állapotokra és ellenőrizhető kiadási állományokra épülő munkafolyamat."
+    },
+    "site.intro": {
+      "kind": "plain",
+      "text": "A hivatalos Go-oktatási tartalmak közösségi fordítási projektje. Elsőként az egyszerűsített kínai nyelvű változat vált elérhetővé; a projekt felépítése további nyelvek és Go-tartalmak támogatására is bővíthető."
+    },
+    "site.issue_feedback": {
+      "kind": "plain",
+      "text": "GitHub Issues"
+    },
+    "site.language_versions": {
+      "kind": "plain",
+      "text": "Nyelvi változatok"
+    },
+    "site.latest_release": {
+      "kind": "plain",
+      "text": "Legutóbbi kiadás"
+    },
+    "site.no_affiliation": {
+      "kind": "plain",
+      "text": "Ez a projekt nem áll kapcsolatban a Go projekttel; a Go projekt nem engedélyezte, és nem is támogatja hivatalosan."
+    },
+    "site.official_upstream": {
+      "kind": "plain",
+      "text": "Hivatalos upstream projekt"
+    },
+    "site.official_version": {
+      "kind": "plain",
+      "text": "Hivatalos Go-kalauz"
+    },
+    "site.open_official_tour": {
+      "kind": "plain",
+      "text": "A hivatalos Go-kalauz megnyitása"
+    },
+    "site.operations_note": {
+      "kind": "plain",
+      "text": "Ez a webhely hirdetéseket jeleníthet meg a kiszolgálók, az adatforgalom és a CDN-szolgáltatások költségeinek, valamint a projekt folyamatos fenntartási költségeinek fedezésére. A forráskód továbbra is nyilvános, és az önállóan üzemeltetett telepítések alapértelmezés szerint nem kapcsolják be e webhely hirdetési beállításait."
+    },
+    "site.project_links": {
+      "kind": "plain",
+      "text": "Projektlinkek"
+    },
+    "site.project_status": {
+      "kind": "plain",
+      "text": "A projekt állapota"
+    },
+    "site.source_code": {
+      "kind": "plain",
+      "text": "Forráskód a GitHubon"
+    },
+    "site.start_learning": {
+      "kind": "plain",
+      "text": "Kezdj tanulni"
+    },
+    "site.title": {
+      "kind": "plain",
+      "text": "A Go-kalauz többnyelvű fordítási projektje"
+    },
+    "site.tour_description": {
+      "kind": "plain",
+      "text": "Interaktív bevezetés a Go programozási nyelvbe."
+    },
+    "site.translation_validation": {
+      "kind": "plain",
+      "text": "Fordítás és ellenőrzés"
+    },
+    "site.translation_validation_intro": {
+      "kind": "plain",
+      "text": "A projekt igyekszik a tanulási élményt a hivatalos forráshoz közel tartani, és minden kiadást ellenőriz a közzététel előtt."
+    },
+    "site.unofficial": {
+      "kind": "plain",
+      "text": "Yongye gondozásában · Nem hivatalos, közösségi többnyelvű fordítási projekt"
+    },
+    "site.upstream_baseline": {
+      "kind": "plain",
+      "text": "Hivatalos forrásverzió"
+    },
+    "site.upstream_commit_time": {
+      "kind": "plain",
+      "text": "A forrásverzió commitjának időpontja"
+    },
+    "site.validation_examples": {
+      "kind": "plain",
+      "text": "Azok a Go-példák is részt vesznek az egységes ellenőrzési folyamatban, amelyek fordítható, természetes nyelvű megjegyzéseket tartalmaznak; az összes többi példa továbbra is közvetlenül a hivatalos forrást használja."
+    },
+    "site.validation_page_unit": {
+      "kind": "plain",
+      "text": "A fordítás alapegysége egy teljes tananyagoldal."
+    },
+    "site.validation_present": {
+      "kind": "plain",
+      "text": "Minden kiadás tartalmát a present feldolgozza."
+    },
+    "site.validation_render": {
+      "kind": "plain",
+      "text": "A megjelenített oldalakat a kiadás előtt ellenőrizzük."
+    },
+    "site.validation_structure": {
+      "kind": "plain",
+      "text": "Az oldalak szerkezetét összevetjük a hivatalos forrással."
+    },
+    "site.workflow_process": {
+      "kind": "plain",
+      "text": "Minden egység a fordításon, az automatikus ellenőrzésen, a Translation Quality Review-n, a promotion lépésén, a ready állapoton, a teljes változat összeállításán és a közzétételen halad át; a generált fordításokat soha nem tesszük közvetlenül közzé."
+    },
+    "site.workflow_publish": {
+      "kind": "plain",
+      "text": "A közzététel teljes, honosított változatot állít össze a kanonikus, ready állapotú fordításokból, megköveteli, hogy minden munkafolyamatbeli TranslationUnit ready állapotú legyen, majd elkészíti az éles binárist, a release.json és a SHA256SUMS fájlt, és ellenőrzi a teljes csomagot."
+    },
+    "site.workflow_review": {
+      "kind": "plain",
+      "text": "Az automatikus ellenőrzések védik a szerkezetet, feldolgozzák a present tartalmat, összevetik azt a hivatalos forrással, ellenőrzik az oldalak megjelenítését és a példák Go-kódját. A promotion előtt továbbra is kötelező a független fordításminőségi felülvizsgálat."
+    },
+    "site.workflow_title": {
+      "kind": "plain",
+      "text": "A TranslationUnittól az éles üzemig"
+    },
+    "site.workflow_units": {
+      "kind": "plain",
+      "text": "A TranslationUnit teljes Page-eket és fordításra alkalmas Example-öket egyaránt jelöl: egy Page egy teljes present.Section, egy Example pedig egy fordítható, természetes nyelvű megjegyzéseket tartalmazó teljes .go fájl."
+    },
+    "support.address": {
+      "kind": "plain",
+      "text": "Cím"
+    },
+    "support.advertising_title": {
+      "kind": "plain",
+      "text": "Tájékoztatás a hirdetésekről"
+    },
+    "support.asset": {
+      "kind": "plain",
+      "text": "Eszköz"
+    },
+    "support.copied": {
+      "kind": "plain",
+      "text": "Másolva"
+    },
+    "support.copy_address": {
+      "kind": "plain",
+      "text": "A cím másolása"
+    },
+    "support.copy_reference": {
+      "kind": "plain",
+      "text": "Az azonosító másolása"
+    },
+    "support.copy_uid": {
+      "kind": "plain",
+      "text": "Az UID másolása"
+    },
+    "support.intro": {
+      "kind": "plain",
+      "text": "Önkéntes támogatással is hozzájárulhatsz e nyelvi változat folyamatos fenntartásához. Támogatásod segít abban, hogy a változatot továbbra is karbantarthassuk és fejleszthessük."
+    },
+    "support.minimum_deposit": {
+      "kind": "plain",
+      "text": "A fogadó fél által meghatározott minimum"
+    },
+    "support.network": {
+      "kind": "plain",
+      "text": "Hálózat"
+    },
+    "support.platform_help": {
+      "kind": "plain",
+      "text": "Az ugyanazt a platformot használó felhasználók belső UID-átutalást is indíthatnak. A részleteket ellenőrizd a platformon."
+    },
+    "support.platform_title": {
+      "kind": "plain",
+      "text": "Platformon belüli átutalás (nem kötelező)"
+    },
+    "support.reference_help": {
+      "kind": "plain",
+      "text": "Ha a fizetési szolgáltatásod lehetővé teszi megjegyzés vagy hivatkozási azonosító megadását, ezt az értéket használhatod."
+    },
+    "support.reference_label": {
+      "kind": "plain",
+      "text": "Támogatási azonosító"
+    },
+    "support.section_title": {
+      "kind": "plain",
+      "text": "Támogatás és üzemeltetési költségek"
+    },
+    "support.translation_title": {
+      "kind": "plain",
+      "text": "A nyelvi változat támogatása"
+    },
+    "support.uid": {
+      "kind": "plain",
+      "text": "UID"
+    },
+    "support.usdc_network_only": {
+      "kind": "plain",
+      "text": "USDC-t kizárólag a Base hálózaton küldj."
+    },
+    "support.usdt_network_only": {
+      "kind": "plain",
+      "text": "USDT-t kizárólag a Tron (TRC20) hálózaton küldj."
+    },
+    "support.wrong_network_warning": {
+      "kind": "plain",
+      "text": "Nem megfelelő eszköz vagy hálózat használatával elveszítheted az elküldött pénzeszközöket."
+    },
+    "theme.dark": {
+      "kind": "plain",
+      "text": "Sötét téma"
+    },
+    "theme.light": {
+      "kind": "plain",
+      "text": "Világos téma"
+    },
+    "theme.system": {
+      "kind": "plain",
+      "text": "Rendszertéma"
+    },
+    "theme.toggle": {
+      "kind": "plain",
+      "text": "Téma váltása"
+    },
+    "toc.title": {
+      "kind": "plain",
+      "text": "Tartalomjegyzék"
+    },
+    "tour.list_description": {
+      "kind": "plain",
+      "text": "Böngészd a Go-kalauz moduljait és leckéit: interaktív bevezetés a Go programozási nyelvbe."
+    },
+    "tour.list_heading": {
+      "kind": "plain",
+      "text": "Üdvözlünk a Go-kalauzban"
+    },
+    "tour.list_title": {
+      "kind": "plain",
+      "text": "Tananyagjegyzék — Go-kalauz"
+    },
+    "tour.title": {
+      "kind": "plain",
+      "text": "Go-kalauz"
+    }
+  }
+}

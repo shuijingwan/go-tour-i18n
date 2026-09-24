@@ -1,0 +1,17 @@
+* Érték vagy mutató típusú fogadó választása
+
+Két oka lehet annak, hogy mutató típusú fogadót használj.
+
+Az első, hogy a metódus így módosíthatja azt az értéket, amelyre a fogadó mutat.
+
+A második, hogy minden metódushívásnál elkerülhető az érték másolása.
+Ez például akkor lehet hatékonyabb, ha a fogadó egy nagy struktúra.
+
+Ebben a példában a ⟪GTI18N_357424f2_000001⟫Scale⟪GTI18N_357424f2_000002⟫ és az ⟪GTI18N_357424f2_000003⟫Abs⟪GTI18N_357424f2_000004⟫ metódus fogadótípusa egyaránt ⟪GTI18N_357424f2_000005⟫*Vertex⟪GTI18N_357424f2_000006⟫,
+noha az ⟪GTI18N_357424f2_000007⟫Abs⟪GTI18N_357424f2_000008⟫ metódusnak nem kell módosítania a fogadóját.
+
+Általában egy adott típus összes metódusának vagy érték típusú, vagy mutató
+típusú fogadót célszerű használnia, nem pedig a kettő keverékét.
+(A következő néhány oldalon meglátjuk, miért.)
+
+⟪GTI18N_357424f2_000009⟫

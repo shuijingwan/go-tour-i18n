@@ -1,0 +1,20 @@
+* sync.Mutex
+
+Láttuk, hogy a csatornák kiválóan alkalmasak a goroutine-ok közötti kommunikációra.
+
+De mi történik, ha nincs szükség kommunikációra? Ha csupán azt szeretnénk biztosítani, hogy
+egyszerre csak egy goroutine férjen hozzá egy változóhoz, elkerülve az ütközéseket?
+
+Ezt a fogalmat _kölcsönös_kizárásnak_ nevezzük, az ezt biztosító adatszerkezet szokásos neve pedig _mutex_.
+
+A Go szabványos könyvtára a kölcsönös kizárást a
+[[/pkg/sync/#Mutex][`sync.Mutex`]] típussal és annak két metódusával biztosítja:
+
+- `Lock`
+- `Unlock`
+
+A `Lock` és az `Unlock` hívások közé zárt kódblokkot kölcsönös kizárással hajthatjuk végre, ahogyan azt az `Inc` metódus mutatja.
+
+A `defer` segítségével azt is biztosíthatjuk, hogy a mutex feloldása mindenképpen megtörténjen, mint a `Value` metódusban.
+
+.play concurrency/mutex-counter.go

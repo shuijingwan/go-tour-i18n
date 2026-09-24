@@ -1,0 +1,15 @@
+* Elemek hozzáfűzése szelethez
+
+Gyakran kell új elemeket hozzáfűzni egy szelethez, ezért a ⟪GTI18N_f2fc257e_000001⟫ beépített ⟪GTI18N_f2fc257e_000002⟫append⟪GTI18N_f2fc257e_000003⟫ függvényt biztosít erre a célra. A beépített csomag [[⟪GTI18N_f2fc257e_000004⟫][dokumentációja]] ismerteti az ⟪GTI18N_f2fc257e_000005⟫append⟪GTI18N_f2fc257e_000006⟫ működését.
+
+⟪GTI18N_f2fc257e_000007⟫
+
+Az ⟪GTI18N_f2fc257e_000008⟫s⟪GTI18N_f2fc257e_000009⟫ az ⟪GTI18N_f2fc257e_000010⟫append⟪GTI18N_f2fc257e_000011⟫ első paramétere; ez egy ⟪GTI18N_f2fc257e_000012⟫T⟪GTI18N_f2fc257e_000013⟫ típusú elemeket tartalmazó szelet. A többi paraméter a hozzáfűzendő ⟪GTI18N_f2fc257e_000014⟫T⟪GTI18N_f2fc257e_000015⟫ típusú érték.
+
+Az ⟪GTI18N_f2fc257e_000016⟫append⟪GTI18N_f2fc257e_000017⟫ visszatérési értéke olyan szelet, amely az eredeti szelet összes elemét és a megadott új értékeket is tartalmazza.
+
+Ha az ⟪GTI18N_f2fc257e_000018⟫s⟪GTI18N_f2fc257e_000019⟫ mögöttes tömbje túl kicsi az összes megadott érték befogadásához, a függvény nagyobb tömböt foglal le. A visszaadott szelet az újonnan lefoglalt tömbre fog hivatkozni.
+
+(Ha többet szeretnél megtudni a szeletekről, olvasd el a [[⟪GTI18N_f2fc257e_000020⟫][Szeletek: használat és belső működés]] című cikket.)
+
+⟪GTI18N_f2fc257e_000021⟫

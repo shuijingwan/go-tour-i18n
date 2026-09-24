@@ -1,0 +1,25 @@
+* Típusállítások
+
+A _típusállítás_ hozzáférést biztosít az interfészérték mögöttes konkrét értékéhez.
+
+	t := i.(T)
+
+Ez az utasítás azt állítja, hogy az `i` interfészérték a `T` konkrét típust tartalmazza,
+és a mögöttes `T` típusú értéket a `t` változóhoz rendeli.
+
+Ha az `i` nem `T` típusú értéket tartalmaz, az utasítás panic műveletet vált ki.
+
+Annak _ellenőrzésére_, hogy egy interfészérték egy adott típust tartalmaz-e,
+a típusállítás két értéket is visszaadhat: a mögöttes értéket
+és egy logikai értéket, amely jelzi, hogy az állítás sikeres volt-e.
+
+	t, ok := i.(T)
+
+Ha az `i` `T` típusú értéket tartalmaz, akkor a `t` a mögöttes értéket,
+az `ok` pedig a true értéket kapja.
+Ellenkező esetben az `ok` false lesz, a `t` pedig a `T` típus nullaértékét kapja,
+és nem történik panic.
+
+Figyeld meg a hasonlóságot e szintaxis és a leképezésből történő olvasás szintaxisa között.
+
+.play methods/type-assertions.go

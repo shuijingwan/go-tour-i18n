@@ -1,0 +1,31 @@
+* Feladat: ciklusok és függvények
+
+Gyakoroljuk a függvények és ciklusok használatát egy négyzetgyökfüggvény megvalósításával. Egy adott x számhoz azt a z számot keressük, amelynek négyzete, z², a lehető legközelebb van x-hez.
+
+A számítógépek rendszerint ciklus segítségével számítják ki x négyzetgyökét.
+Egy kezdeti z becslésből kiindulva annak alapján javíthatunk a becslésen, hogy z² mennyire közelíti meg x-et:
+
+	z -= (z*z - x) / (2*z)
+
+Ha ezt a lépést újra és újra elvégezzük, a becslésünk egyre pontosabb lesz, míg el nem jutunk a tényleges négyzetgyökhöz elérhető legközelebbi értékig.
+
+Valósítsd meg ezt a megadott `func`Sqrt` függvényben.
+A z megfelelő kezdeti becslése 1, a bemenettől függetlenül.
+Először ismételd meg a számítást tízszer, és minden lépésben írasd ki z értékét.
+Nézd meg, mennyire közelíted meg az eredményt x különböző értékeinél (1, 2, 3, …), és milyen gyorsan javul a becslés.
+
+Tipp: Lebegőpontos érték deklarálásához és inicializálásához használj lebegőpontos szintaxist vagy típuskonverziót:
+
+	z := 1.0
+	z := float64(1)
+
+Ezután módosítsd a ciklusfeltételt úgy, hogy a ciklus akkor álljon le, ha az érték már nem változik (vagy csak nagyon kis mértékben változik).
+Figyeld meg, hogy ehhez tíznél több vagy kevesebb iterációra van-e szükség.
+Próbálj ki más kezdeti becsléseket is z-re, például x-et vagy x/2-t.
+Mennyire közelítik meg a függvényed eredményei a szabványos könyvtár [[/pkg/math/#Sqrt][math.Sqrt]] függvényének eredményét?
+
+(*Megjegyzés:* Ha érdekel az algoritmus működése, a fenti z² − x azt mutatja meg, milyen messze van z² a célértéktől, x-től. A 2z-vel való osztás z² deriváltját használja fel, hogy a javítás mértékét z² változásának gyorsaságához igazítsa.
+Ezt az általános megközelítést [[https://en.wikipedia.org/wiki/Newton%27s_method][Newton-módszernek]] nevezik.
+Sok függvénynél jól működik, de a négyzetgyöknél különösen hatékony.)
+
+.play flowcontrol/exercise-loops-and-functions.go

@@ -1,0 +1,12 @@
+* Metódusok
+
+A Go nyelvben nincsenek osztályok.
+A típusokhoz azonban definiálhatsz metódusokat.
+
+A metódus olyan függvény, amelynek van egy speciális _fogadó_ argumentuma.
+A fogadó külön argumentumlistában szerepel a `func` kulcsszó és
+a metódus neve között.
+
+Ebben a példában az `Abs` metódus fogadója a `Vertex` típusú, `v` nevű érték.
+
+.play methods/methods.go

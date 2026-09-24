@@ -1,0 +1,7 @@
+* Select
+
+A `select` utasítás lehetővé teszi, hogy egy goroutine több kommunikációs műveletre várakozzon.
+
+A `select` addig blokkol, amíg valamelyik ága végrehajthatóvá nem válik, majd végrehajtja azt. Ha több ág is készen áll, véletlenszerűen választ közülük.
+
+.play concurrency/select.go

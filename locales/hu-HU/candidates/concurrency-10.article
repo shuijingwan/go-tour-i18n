@@ -1,0 +1,10 @@
+* Feladat: Webes feltérképező
+
+Ebben a feladatban a Go konkurens programozási eszközeivel párhuzamosan működő webes feltérképezőt készítesz.
+
+Módosítsd a `Crawl` függvényt úgy, hogy párhuzamosan kérje le az URL-eket, de egyetlen URL-t se kérjen le kétszer.
+
+_Tipp_: a már lekért URL-eket leképezésben tárolhatod gyorsítótárként, de a leképezések önmagukban
+nem biztonságosak konkurens használat esetén!
+
+.play concurrency/exercise-web-crawler.go

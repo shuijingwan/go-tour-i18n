@@ -1,0 +1,22 @@
+* Feladat: Hibák
+
+Másold át az ⟪GTI18N_41f1f733_000001⟫Sqrt⟪GTI18N_41f1f733_000002⟫ függvényedet a [[⟪GTI18N_41f1f733_000003⟫][korábbi feladatból]], és módosítsd úgy, hogy ⟪GTI18N_41f1f733_000004⟫error⟪GTI18N_41f1f733_000005⟫ értéket adjon vissza.
+
+Az ⟪GTI18N_41f1f733_000006⟫Sqrt⟪GTI18N_41f1f733_000007⟫ függvénynek negatív szám esetén nem ⟪GTI18N_41f1f733_000008⟫ hibaértéket kell visszaadnia, mivel nem támogatja a komplex számokat.
+
+Hozz létre egy új típust:
+
+⟪GTI18N_41f1f733_000009⟫
+
+Tedd ezt a típust az ⟪GTI18N_41f1f733_000010⟫error⟪GTI18N_41f1f733_000011⟫ interfész megvalósításává egy olyan
+
+⟪GTI18N_41f1f733_000012⟫
+
+metódussal, amelynél az ⟪GTI18N_41f1f733_000013⟫ErrNegativeSqrt(-2).Error()⟪GTI18N_41f1f733_000014⟫ hívás eredménye ⟪GTI18N_41f1f733_000015⟫"cannot`Sqrt`negative`number:`-2"⟪GTI18N_41f1f733_000016⟫.
+
+⟪GTI18N_41f1f733_000017⟫Megjegyzés:⟪GTI18N_41f1f733_000018⟫ Ha az ⟪GTI18N_41f1f733_000019⟫fmt.Sprint(e)⟪GTI18N_41f1f733_000020⟫ függvényt az ⟪GTI18N_41f1f733_000021⟫Error⟪GTI18N_41f1f733_000022⟫ metóduson belül hívod meg,
+a program végtelen ciklusba kerül. Ezt elkerülheted, ha előbb átalakítod az ⟪GTI18N_41f1f733_000023⟫e⟪GTI18N_41f1f733_000024⟫ értéket: ⟪GTI18N_41f1f733_000025⟫fmt.Sprint(float64(e))⟪GTI18N_41f1f733_000026⟫. Miért?
+
+Módosítsd az ⟪GTI18N_41f1f733_000027⟫Sqrt⟪GTI18N_41f1f733_000028⟫ függvényedet úgy, hogy negatív szám esetén ⟪GTI18N_41f1f733_000029⟫ErrNegativeSqrt⟪GTI18N_41f1f733_000030⟫ értéket adjon vissza.
+
+⟪GTI18N_41f1f733_000031⟫

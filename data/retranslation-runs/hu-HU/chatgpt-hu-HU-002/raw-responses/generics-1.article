@@ -1,0 +1,17 @@
+* Típusparaméterek
+
+A ⟪GTI18N_01a04510_000001⟫ függvényeit típusparaméterek segítségével úgy is megírhatod, hogy több típussal működjenek.
+A függvény típusparaméterei szögletes zárójelek között, a függvény argumentumai előtt szerepelnek.
+
+⟪GTI18N_01a04510_000002⟫
+
+Ez a deklaráció azt jelenti, hogy az ⟪GTI18N_01a04510_000003⟫s⟪GTI18N_01a04510_000004⟫ egy olyan ⟪GTI18N_01a04510_000005⟫T⟪GTI18N_01a04510_000006⟫ típusú szelet,
+amely megfelel a beépített ⟪GTI18N_01a04510_000007⟫comparable⟪GTI18N_01a04510_000008⟫ típuskorlátnak.
+Az ⟪GTI18N_01a04510_000009⟫x⟪GTI18N_01a04510_000010⟫ szintén ugyanehhez a típushoz tartozó érték.
+
+A ⟪GTI18N_01a04510_000011⟫comparable⟪GTI18N_01a04510_000012⟫ hasznos típuskorlát, mert lehetővé teszi, hogy az adott típus
+értékein a ⟪GTI18N_01a04510_000013⟫==⟪GTI18N_01a04510_000014⟫ és ⟪GTI18N_01a04510_000015⟫!=⟪GTI18N_01a04510_000016⟫ operátorokat használd. Ebben a példában egy értéket
+összehasonlítunk a szelet összes elemével, amíg egyezést nem találunk.
+Az ⟪GTI18N_01a04510_000017⟫Index⟪GTI18N_01a04510_000018⟫ függvény bármilyen összehasonlítható típussal működik.
+
+⟪GTI18N_01a04510_000019⟫

@@ -1,0 +1,21 @@
+* Képek
+
+Az [[/pkg/image/#Image][image csomag]] definiálja az `Image` interfészt:
+
+	package image
+
+	type Image interface {
+		ColorModel() color.Model
+		Bounds() Rectangle
+		At(x, y int) color.Color
+	}
+
+*Megjegyzés*: A `Rectangle` visszatérési típusa a `Bounds` metódusnál valójában [[/pkg/image/#Rectangle][`image.Rectangle`]], mivel
+a deklaráció az `image` csomagon belül található.
+(A részleteket lásd [[/pkg/image/#Image][a dokumentációban]].)
+
+A `color.Color` és a `color.Model` típusok szintén interfészek,
+de itt az előre definiált `color.RGBA` és `color.RGBAModel` megvalósításokat használjuk.
+Ezeket az interfészeket és típusokat az [[/pkg/image/color/][image/color csomag]] határozza meg.
+
+.play methods/images.go

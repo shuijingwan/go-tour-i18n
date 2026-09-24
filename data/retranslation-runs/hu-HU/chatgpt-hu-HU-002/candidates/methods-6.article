@@ -1,0 +1,23 @@
+* Metódusok és közvetett hivatkozás mutatón keresztül
+
+Az előző két programot összehasonlítva észreveheted, hogy
+a mutatóargumentumot váró függvényeknek mutatót kell átadni:
+
+	var v Vertex
+	ScaleFunc(v, 5)  // Fordítási hiba!
+	ScaleFunc(&v, 5) // OK
+
+A mutató típusú fogadóval rendelkező metódusokat viszont értékkel és mutatóval is
+meg lehet hívni:
+
+	var v Vertex
+	v.Scale(5)  // OK
+	p := &v
+	p.Scale(10) // OK
+
+A `v.Scale(5)` utasítás esetén a mutató típusú fogadóval rendelkező metódus
+akkor is automatikusan meghívódik, ha `v` érték, nem pedig mutató.
+A Go a kényelmesebb használat érdekében a `v.Scale(5)` utasítást
+`(&v).Scale(5)` alakban értelmezi, mivel a `Scale` metódusnak mutató típusú fogadója van.
+
+.play methods/indirection.go

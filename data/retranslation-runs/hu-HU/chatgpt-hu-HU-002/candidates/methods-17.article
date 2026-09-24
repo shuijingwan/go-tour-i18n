@@ -1,0 +1,12 @@
+* Stringer-interfészek
+
+Az egyik leggyakrabban használt interfész a [[/pkg/fmt/#Stringer][`Stringer`]], amelyet az [[/pkg/fmt/][`fmt`]] csomag definiál.
+
+	type Stringer interface {
+		String() string
+	}
+
+A `Stringer` olyan típus, amely karakterláncként képes leírni önmagát. Az `fmt` csomag
+(és sok más csomag is) ezt az interfészt keresi az értékek kiírásakor.
+
+.play methods/stringer.go

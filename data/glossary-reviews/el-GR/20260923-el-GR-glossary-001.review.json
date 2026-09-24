@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "evidence_type": "glossary-review-receipt",
+  "locale": "el-GR",
+  "review_id": "20260923-el-GR-glossary-001",
+  "stage": "locale-glossary-review",
+  "decision": "failed",
+  "reviewer": "chatgpt-el-GR-independent-reviewer",
+  "rubric": "glossary-review/v1",
+  "glossary_path": "locales/el-GR/glossary.yaml",
+  "glossary_sha256": "c27be82444a2287682cf8da4e680c460fa99950a45db749512638664ba676621",
+  "findings": [
+    "preferred.closure and preferred.Fibonacci closure: κλείσιμο denotes ordinary closing and is not a stable Greek programming term for a closure capturing lexical environment (moretypes/25-26); Generation must re-evaluate both together using Greek programming references. mandatory.mutex: κλείδωμα αμοιβαίου αποκλεισμού can describe the action of locking rather than the mutual-exclusion lock/data structure in concurrency/9; choose wording that distinguishes the lock object from Lock/Unlock actions."
+  ]
+}

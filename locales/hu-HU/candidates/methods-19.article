@@ -1,0 +1,26 @@
+* Hibák
+
+A Go-programok a hibaállapotot `error` értékekkel fejezik ki.
+
+Az `error` típus egy beépített interfész, amely hasonlít az `fmt.Stringer` interfészhez:
+
+	type error interface {
+		Error() string
+	}
+
+(Az `fmt.Stringer` interfészhez hasonlóan az `fmt` csomag az értékek
+kiírásakor az `error` interfészt is keresi.)
+
+A függvények gyakran `error` értéket adnak vissza; a hívó kódnak pedig
+úgy kell kezelnie a hibákat, hogy megvizsgálja, az érték egyenlő-e `nil` értékkel.
+
+	i, err := strconv.Atoi("42")
+	if err != nil {
+		fmt.Printf("couldn't convert number: %v\n", err)
+		return
+	}
+	fmt.Println("Converted integer:", i)
+
+A nil `error` sikeres működést jelez; a nem nil `error` hibát jelent.
+
+.play methods/errors.go

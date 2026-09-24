@@ -1,0 +1,1552 @@
+{
+  "schema_version": 2,
+  "locale": "hu-HU",
+  "generator_contract": "course-seo-localization-v2",
+  "pages": [
+    {
+      "page_id": "welcome/1",
+      "route": "/welcome/1",
+      "description": "Ismerd meg a Go-kalauz navigációját, a példaprogramok futtatását és szerkesztését, a kód formázását és az interaktív kísérletezés billentyűparancsait.",
+      "source_sha256": "1f581133d7fa40e6490418c6789a60a2f5e1de26c9c86d7eb6120cb58b145857",
+      "source_description_sha256": "3d937a528fff6a119ce7ece2579edec8b0895514ae2a0fe8f255b9e3cbf288b2",
+      "target_sha256": "cf2bc6dd01c140f0602661515203340a9852b6fb9a020ce82dc5432ea06f805c",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "welcome/2",
+      "route": "/welcome/2",
+      "description": "Fedezd fel a Go-kalauz elérhető fordításait, és ismerd meg, hogyan haladhatsz tovább a kalauz navigációs vezérlőivel.",
+      "source_sha256": "709f808ec4cdf683411f349cab7a4886fcae532d1c4e4cc66c8ed68cfb2dd2d3",
+      "source_description_sha256": "39c14471d1d721e97c09e0023a883f66f729a8be753bdb8a3445bd6027be8bd3",
+      "target_sha256": "f032d8f7243138ee2926b070a02e249d81da69459a82e2cbb14265982f90617c",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "welcome/4",
+      "route": "/welcome/3",
+      "description": "Telepítsd és futtasd a Go-kalauz önálló programját a saját számítógépeden, hogy internetkapcsolat nélkül is elérd a leckéket és a kódpéldákat.",
+      "source_sha256": "bb517d4b577fdb446fd029c2998d2426663b94a68f4b4e494c59af421508f683",
+      "source_description_sha256": "d13d1d18ed0fb4eb16e5348b14dbea7c4d22dfd134bb900c8d8a3736a4cbe362",
+      "target_sha256": "bf06a3812a1f5c8b90d4577a3bf0477e2744f9555c4c2c997f340e23e3a740f3",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "welcome/5",
+      "route": "/welcome/4",
+      "description": "Ismerd meg, hogyan fordítja le és futtatja a Go Playground a programokat elkülönített futtatókörnyezetben, determinisztikus idő- és erőforrás-korlátok mellett.",
+      "source_sha256": "19e6d7da57ca1d191c485754f3dd4ac87775c651b8c0ae8e05c03cbd9b225897",
+      "source_description_sha256": "30f78795b3923c7eb444a1ed4873e36d136030ec9c27c27e73099de6fd6aed4d",
+      "target_sha256": "d64651e07cc08482f37704963eb80ba79e3b529d9c500cd882bf7db625efd794",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "welcome/3",
+      "route": "/welcome/5",
+      "description": "Fejezd be a kalauz első modulját, majd válassz másik modult a leckék listájából, vagy lépj közvetlenül a következő leckére.",
+      "source_sha256": "9a6983b2e50b2fa78ff4f65683210714aea1c1575418e36796c156950ec6330d",
+      "source_description_sha256": "3db60db277b939a3039b29c11e0c3d810c3bdea9017ea7e771d87819cf3c9275",
+      "target_sha256": "524dc0fa86708c5eafbdb89480082fbda4db0d9d586731faf62d1ec197519678",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "basics/1",
+      "route": "/basics/1",
+      "description": "Ismerd meg a Go-programok csomagokba szervezését, a végrehajtás kezdetét a main csomagban, valamint a csomagnevek és az importálási útvonalak kapcsolatát.",
+      "source_sha256": "f769f12c0a028b2f0cd403d89ff39dd150405e9f2e4155875321522f08619fe0",
+      "source_description_sha256": "1b3378aa355b5676dee5d0fcb248509b5dce2570e0ad196cb725343b61ccc25b",
+      "target_sha256": "24df401ee6ac018a023e828d1666991e1a8897325770dcfdbddec58959192dc1",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "basics/2",
+      "route": "/basics/2",
+      "description": "Fogj össze több Go-importot zárójelezett, csoportos import utasításba: ez az ajánlott alternatívája a különálló importdeklarációknak.",
+      "source_sha256": "3329c9bff5f7e2b9b1e161fdebfb3804ff57cf1fb11bd4327d228328bcfb3fd0",
+      "source_description_sha256": "fdc97dfa6245b07c45ee1cf51eeaa7571b637f1d2f6c101e4ea2e77f35678fdb",
+      "target_sha256": "26e2ebcec36f40f0abbb1557c6a3ccb9af08405ee6df4a5cb28f94bee3889268",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "basics/3",
+      "route": "/basics/3",
+      "description": "Értsd meg, hogyan teszi exportálttá a nagy kezdőbetű a Go-beli neveket, és miért csak ezek az azonosítók érhetők el a csomagon kívülről.",
+      "source_sha256": "38b9c70e49184a24f63f6b12f8ba78e64c0b874ad2a6f9a5fe86267615fd1bf6",
+      "source_description_sha256": "b823e75c9decbef08bf4556fc7d2c242d0e68dfa4633c7793cf2d1d043efe6d1",
+      "target_sha256": "afc73d47b770f61f96c1c2d9c07f11bfe105f0de23b667961cad5af7b82fb4a8",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "basics/4",
+      "route": "/basics/4",
+      "description": "Definiálj Go-függvényeket nulla vagy több argumentummal, és minden paraméter típusát a hozzá tartozó változónév után add meg.",
+      "source_sha256": "accf0562d9b759c9735500d5df0d74e8f90142ed96fe5ab2f5eedc6fbd6cf6f2",
+      "source_description_sha256": "f38ebeb7c0cc84b0cba3a3836eda79d8fd5c3372f34e39aa69547bfa68ec785b",
+      "target_sha256": "dd9d029886de0d362151167ed739241144458620e8e9fc7ed5fcd7cf04dd5c87",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "basics/5",
+      "route": "/basics/5",
+      "description": "Egyszerűsítsd az azonos típusú, egymást követő függvényparaméterek deklarációját: a típust elég az utolsó paraméternév után megadni.",
+      "source_sha256": "02e7feb341329e18143e18d533fe45381883a6ba6425abb09a847e2f0edf228a",
+      "source_description_sha256": "4e6a3c46e988fbcd7357306955a0951e44e0e4ea0b62a7c05a4c95d6d3a9e84f",
+      "target_sha256": "5f52309451d851fdcfb6f692983973b86c6175b5975634070ed05ca7f5781c5c",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "basics/6",
+      "route": "/basics/6",
+      "description": "Adj vissza több eredményt egy Go-függvényből egy olyan példán keresztül, amely két karakterlánc értékét felcserélve adja vissza.",
+      "source_sha256": "b3cb4b40115066443f265e3e5ebb9fc0fd6d080784c887328fce4d6b7891ba41",
+      "source_description_sha256": "013f1d728ddcef926d38d223ca9d6a69c658dd4a9b659f72f04816f227aae020",
+      "target_sha256": "dbbfec2373ac9c13bb7953fbd8d91c090b04354dbd4b1b51dc62c93963fccf1c",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "basics/7",
+      "route": "/basics/7",
+      "description": "Használj nevesített visszatérési értékeket az eredmények jelentésének dokumentálására, és értsd meg, mikor segíti vagy rontja az olvashatóságot az argumentum nélküli return.",
+      "source_sha256": "1db20ae87ce5d9d4b20f15e4638ba2a3295a7ce781c961ef618982890fc562fa",
+      "source_description_sha256": "6c4c2ac14a37bd8b24a7cf6dc970e2ec2671ef13b301ce00d2f287cb98596512",
+      "target_sha256": "4c36908a4d2398ede55b5a35df8a34bd4fce89a67aafe926574b84731ed0f14a",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "basics/8",
+      "route": "/basics/8",
+      "description": "Deklarálj megadott típusú változókat a var kulcsszóval csomag- vagy függvényszinten, a Go név után írt típusra épülő szintaxisával.",
+      "source_sha256": "bcb1b5e17ed9dff3d46a7cd8119c0d2f9c3afbb70ca94d35fadeb4f75b4a9d13",
+      "source_description_sha256": "72da0fb9d95da65fcaaea5fbdd2c1c9ea9df4bf06793275bff4e46b1b0a97d51",
+      "target_sha256": "e5df3954cebd6afbaebc26406875dcd666446d20184fd1da4b6a184e9d802daf",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "basics/9",
+      "route": "/basics/9",
+      "description": "Inicializálj változókat var deklarációban, és hagyd, hogy a Go minden elhagyott típust a hozzá tartozó kezdőértékből következtessen ki.",
+      "source_sha256": "d51c17ba355753484b96c0eefda9fcce9f6f041a8ae2bf3e96fd0ad0c44680cc",
+      "source_description_sha256": "6d26f7a1a4f12a8438d0b7f4a4805e764a7e6852bbb561de361434032eb84e0a",
+      "target_sha256": "0fa03bdce7ddc1433ee9d6f8cf6089bf14973b9ee503b27031e85503d7fb12d9",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "basics/10",
+      "route": "/basics/10",
+      "description": "Használj := szintaxisú rövid változódeklarációkat függvényeken belül, ahol a Go megengedi az implicit var deklarációkat.",
+      "source_sha256": "f402e8e89a186d3208df5e4d983604730e71ef6c68354755f72e4580d3d7f359",
+      "source_description_sha256": "2ed42cad59a09602b3683e8051e76785ca3cb0581db8e84d0c91df15ea7f6055",
+      "target_sha256": "0a84659f34fc30361a9d08a18ff252b0183a785856794ecf503db2e05294bf9a",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "basics/11",
+      "route": "/basics/11",
+      "description": "Tekintsd át a Go logikai, karakterlánc-, egész-, lebegőpontos és komplex számtípusait, valamint a byte és rune típusokat és az egész típusok méretére vonatkozó útmutatást.",
+      "source_sha256": "836ab1dd659798dcf5e90f283c4ee794aed1d2cf0766c2ccc268fa91684e9d05",
+      "source_description_sha256": "7729889458a4d34cd6abb380c6b528035b4e9ae93dc785e99b12660c0e3f5a4e",
+      "target_sha256": "7e46c0163e3559e28da70aa20575a14e953d80c0c3c48ac422c3b40b23eac60b",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "basics/12",
+      "route": "/basics/12",
+      "description": "Ismerd meg a nem inicializált Go-változók alapértelmezett nullaértékeit: számoknál nulla, logikai értékeknél false, karakterláncoknál üres szöveg.",
+      "source_sha256": "d9ad62501c05359e7b2ac445fa92d629e11d6d378c2701b767abab76012a558e",
+      "source_description_sha256": "6ed8204794cae90282978dbae2413c8ae9e1feceba59ae10736065ad00165ca7",
+      "target_sha256": "d808537b7ce7e61e888fba51d07dc7e4737754928bd91d383cd86293b6aa846c",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "basics/13",
+      "route": "/basics/13",
+      "description": "Végezz explicit típuskonverziót, mert a Go nem engedi meg a különböző számtípusok közötti implicit értékadást.",
+      "source_sha256": "88e0e168f4c95fa4134198a32440b2d2fb1fac9aae535a9ee7148dbcda37e1b3",
+      "source_description_sha256": "9213231bcd5269a4d402ed83117584521f51191b04e30301599ce3aaedef9afe",
+      "target_sha256": "7407501fed5c68f37f4a82eb57b6f0f29aba5f7bb91b56c3f6ca0e22ae562c9a",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "basics/14",
+      "route": "/basics/14",
+      "description": "Figyeld meg, hogyan következteti ki a Go a változók típusát a típusos értékekből, és hogyan választ alapértelmezett típust a típus nélküli számkonstansoknak a pontosságuk alapján.",
+      "source_sha256": "21c4077c25629545dee0313b8b6b03e709edc4a74e1d73d9f4c9b0a49e46f6b3",
+      "source_description_sha256": "22bd9a429fe4882f0595c270aa52ac22f984d89afc93e5287829125188937dad",
+      "target_sha256": "549b614b65f3aef64580352dc4504566988f96a13c828e97f2eafb540613ec19",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "basics/15",
+      "route": "/basics/15",
+      "description": "Deklarálj karakter-, karakterlánc-, logikai és számkonstansokat a const kulcsszóval; a rövid változódeklaráció szintaxisa nem alkalmas konstansok létrehozására.",
+      "source_sha256": "964ac515c0860a54b3a7780d77c7b4862ca38b744ae1f6be4b155a4386e2a229",
+      "source_description_sha256": "9a5d122d06495fa1838331e095ca3a72b47b645a7e19bb28fc127ce13c1fbe8c",
+      "target_sha256": "029f6ebb447895f93fdd79898eaf29802ba838dcc4eab9bbac8bbd5719ed7348",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "basics/16",
+      "route": "/basics/16",
+      "description": "Ismerd meg a nagy pontosságú számkonstansokat, és azt, hogyan veszi fel egy típus nélküli konstans a környező kontextus által megkövetelt típust.",
+      "source_sha256": "0d502d48a15f7a70e257079d7db1ddafe088607110c1c06b17b4be50b362394a",
+      "source_description_sha256": "1b42764b78e1a1ca531d208244f285164d53e9cb6320ea1b5fb5b6464b1de1e3",
+      "target_sha256": "b530963470762b2af69483da77bc96d077cef215684113a83996c54f51a116ca",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "basics/17",
+      "route": "/basics/17",
+      "description": "Jelöld meg a jelenlegi lecke végét, majd térj vissza a modulok listájához új témát választani, vagy haladj tovább.",
+      "source_sha256": "f565674b974c053924bf69ef83b709dc50931526ae7fa88e71543a5cd872a190",
+      "source_description_sha256": "afff9e2c9367a5554aa90fd0f9427a37fc7420a1c93d4596668bdb3fd3ae7e5d",
+      "target_sha256": "734988c74551ef54af24205055db2226f07b63e35d872446e03dc50aa916a623",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/1",
+      "route": "/flowcontrol/1",
+      "description": "Ismerd meg a Go egyetlen ciklusszerkezetét: a for ciklus inicializálását, feltételét, utólagos utasítását, hatókörét és kötelező kapcsos zárójeleit.",
+      "source_sha256": "c6cd458bda99bffc7b753e122c56575a59508586054180be1f8d7bb1fe2391df",
+      "source_description_sha256": "b88b64bb1e63b5ebb863972f8c24e8cc545a83c115c64f401ef8fd3b114d61f5",
+      "target_sha256": "28c40f581c46339221507b430f96f118dbd92343a01ff73b3a8c4da7d4f2fc5a",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/2",
+      "route": "/flowcontrol/2",
+      "description": "Egyszerűsítsd a Go for ciklusát az opcionális inicializáló és utólagos utasítás elhagyásával, miközben megtartod a ciklusfeltételt.",
+      "source_sha256": "24a97abbb6db2b6a88017bf326a5968097263d8ba637805f2cf44c9fed25f9fe",
+      "source_description_sha256": "dd466b8b04c3284a0f1a48dc9748a434b7a7e8c8c54797785c9aec102cc04055",
+      "target_sha256": "16fdb0a2569eed13ffcd03f32994c2fda5d1b0cb1c908c77410cc5c37a45511f",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/3",
+      "route": "/flowcontrol/3",
+      "description": "Írj while jellegű ciklust Go nyelven az inicializáló és utólagos utasítás, valamint a hozzájuk tartozó pontosvesszők elhagyásával.",
+      "source_sha256": "3ed791cc935287ba6f5da4ba41f6ad84fdcbaef108ee364f769ae5204316bbb7",
+      "source_description_sha256": "917a1d2bce0a711d7aa187f22916986ec204539d59aca1aeee2686ea5692963e",
+      "target_sha256": "7c44c716c840cedb17ea2beec4b8ba4c2f029ca7efc07d5b2907f5ff834c954f",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/4",
+      "route": "/flowcontrol/4",
+      "description": "Hozz létre tömör végtelen ciklust Go nyelven egy ciklusfeltétel nélküli for utasítással.",
+      "source_sha256": "5456c129ef71c60b7502efde65c81020aaf1fa8b9178086e99223a21f6207dc6",
+      "source_description_sha256": "0b2cfd67b2c51f9ab0edbe920ad1a703701ff723f9d22673a4cde7e914eec4a9",
+      "target_sha256": "f85db2fe19836957c44acb6d0058897cf157458d6d0f83205d75c03fa120b62e",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/5",
+      "route": "/flowcontrol/5",
+      "description": "Írj Go if utasításokat a feltétel körüli kerek zárójelek nélkül, de a nyelv által megkövetelt kapcsos zárójelekkel.",
+      "source_sha256": "ce49f916c1ceb7296576ec6b8ec92524b9827be168e3f5eb2040c61fee70f639",
+      "source_description_sha256": "d49445fcd341a4fb747cb7c3e25c0f40849456c8b7be876f62a999fe2591972b",
+      "target_sha256": "cbd13525fa5ce276bef569c558bd6171ee37250314340ae680e7cd14c69cfa83",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/6",
+      "route": "/flowcontrol/6",
+      "description": "Kezdj egy if utasítást rövid utasítással, és ismerd meg az ott deklarált változók hatókörét, amely a teljes feltételes szerkezet végéig tart.",
+      "source_sha256": "02e310262214f3c5ceca8bf63ecf2ec3934641a7e2638050479b739ce077031e",
+      "source_description_sha256": "c1de9378770e7df962ac8f2962918b78a6e2e80c3305b35ab584555902c36085",
+      "target_sha256": "d5b7ba75df1bce69ae5b8453cd45c78ad943cea49713466039ebd0a3d68f3e3d",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/7",
+      "route": "/flowcontrol/7",
+      "description": "Használd az if utasítást megelőző rövid utasításban deklarált értékeket az if és a hozzá tartozó else ágban egyaránt.",
+      "source_sha256": "8666746573ce7d0ea1c12ff24c4c8170a1961eedb0600ed73ab849b4758f797c",
+      "source_description_sha256": "0a195d6914891c06915e6d43fce1ddd71c0e7d387373e53500cc56783f385e88",
+      "target_sha256": "894390fff3b2184b3aa5ad7660ae1793e3562c4bef148d9a9efb325e56b13fda",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/8",
+      "route": "/flowcontrol/8",
+      "description": "Valósíts meg négyzetgyökszámító függvényt iteratív közelítéssel, majd finomítsd a leállási feltételét, és hasonlíts össze különböző kezdőbecsléseket.",
+      "source_sha256": "d8bbee8455ff59212ef432a08312f7c7703360367325a80df3719157200316e9",
+      "source_description_sha256": "ebf228ed982779e279412f9e840bd06503969b4fe1acec70b088c10df6076e0d",
+      "target_sha256": "fa937d5a2b9eaa9264f897c789abab561bd18152f4f8e0e2829d48b81c15fe5d",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/9",
+      "route": "/flowcontrol/9",
+      "description": "Használd a Go switch utasítását tömör feltételláncként, automatikusan lezáruló ágakkal és olyan esetekkel, amelyeknek nem kell konstansnak vagy egész számnak lenniük.",
+      "source_sha256": "abdc4c295fa7b4aec2616acf83badbbf2b581a9f62e41d03ca2ff984ebb6f7ed",
+      "source_description_sha256": "fd71acf123c49872a02285878fa1caf6bb3e6f27d8b2b63976e6cba5b717c50a",
+      "target_sha256": "e363e7f4c9635a9fa83f14b8c4e4256c5c8e2439fa1d10c8084d0ddddfe20b12",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/10",
+      "route": "/flowcontrol/10",
+      "description": "Értsd meg, hogy a switch eseteit a Go felülről lefelé értékeli ki, és az első megfelelő esetnél leáll.",
+      "source_sha256": "e1479cae56a87cddb9c447fc9fd32b0ee1f983058f7ee76554965abd21975ef4",
+      "source_description_sha256": "1a06cd6f5c9aecb29e4d0fdec7cf4d11daaa7edc05631cffcecac25ad4e2e5c6",
+      "target_sha256": "214bbe8708ea2957abf250479e99d9295e6452511085be14cb342510d668ca85",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/11",
+      "route": "/flowcontrol/11",
+      "description": "Írj feltétel nélküli switch utasítást egy hosszú if-else lánc áttekinthető alternatívájaként; ez a true érték szerinti elágazással egyenértékű.",
+      "source_sha256": "714b67f479583e47080cd0f38489f465a28c002938390c4155af6dfeebb9225b",
+      "source_description_sha256": "7258dc7db21d6d08ba2df8e15f0ae6222c4fc77310073dcfb5c287c172313176",
+      "target_sha256": "8dcba9301019610a02d45d59d1dc6abfbf6e2281daf96140483ea95a0b3ea24d",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/12",
+      "route": "/flowcontrol/12",
+      "description": "Halaszd egy függvényhívás végrehajtását a körülvevő függvény visszatéréséig, miközben a halasztott hívás argumentumai azonnal kiértékelődnek.",
+      "source_sha256": "fa23a1d6ebf12f11843d38fe79c413a9c19bfcaf305ae64b75c360db24a436ec",
+      "source_description_sha256": "b0519f626762261cab62e224d08a2a1736e3a237ce8f4a8b48709c90ad8fbcec",
+      "target_sha256": "b07331acd675d6325c4bd1def096cde1fb8e11df151f5d6b576b9f6219f3d0b5",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/13",
+      "route": "/flowcontrol/13",
+      "description": "Halmozz fel több halasztott függvényhívást, és figyeld meg, hogy a körülvevő függvény visszatérésekor fordított sorrendben hajtódnak végre.",
+      "source_sha256": "73a02c24eb14597b3c5f53a09fc572f1a1f0c941adfc337c79fb14b492985fc1",
+      "source_description_sha256": "4f2d10438473b7ee08d85ca67a6fecebfe634eb93ce4d7cffd9fa2b269a15aa0",
+      "target_sha256": "cf3ac80ef87383dfc185af0d55723d438dcc6664409f6e33ca80b8b2fea8f2bf",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/14",
+      "route": "/flowcontrol/14",
+      "description": "Fejezd be a leckét, majd böngészd a rendelkezésre álló modulokat új témáért, vagy lépj a következő leckére.",
+      "source_sha256": "f565674b974c053924bf69ef83b709dc50931526ae7fa88e71543a5cd872a190",
+      "source_description_sha256": "e4aa7053180e81ac52e524fec926796e1e27bb573e7d2ef9498fe68cab34978d",
+      "target_sha256": "734988c74551ef54af24205055db2226f07b63e35d872446e03dc50aa916a623",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "moretypes/1",
+      "route": "/moretypes/1",
+      "description": "Dolgozz Go-mutatókkal címképzés és dereferálás segítségével; ismerd meg a nil nullaértéket és azt, hogy a Go nem támogatja a mutatóaritmetikát.",
+      "source_sha256": "7706eaf0d46acc79fdad3b7953e5571bf404551d71aaefafd8ba79f5761f9806",
+      "source_description_sha256": "e83399f3a2f0f13e4ce844d458d32ad97bbfe0c4eb292c2247b1a1f741adb9e3",
+      "target_sha256": "728d56cb6c5e34a5995549c62c2176fc676d4f74856ae89f8f131307830a4552",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "moretypes/2",
+      "route": "/moretypes/2",
+      "description": "Definiálj Go-struktúrát, amely több mezőt egyetlen értékbe fog össze.",
+      "source_sha256": "a18dfdaadb9739387cc9886b67e9bf920bf52ada62397a1812cfd302c64aed9b",
+      "source_description_sha256": "5a71c404683c8346f40fb4a2ce1d1d0a2136f49eae43da95f413673da1c567f2",
+      "target_sha256": "2a8b69e7446d59f81c29daf8356930d67465e4477984c0711d13be9c4cd8c5de",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "moretypes/3",
+      "route": "/moretypes/3",
+      "description": "Érd el egy Go-struktúra egyes mezőit a pontoperátor segítségével.",
+      "source_sha256": "0be9cb4a59a0d95526c208e5d8d96ebe6a15fd84b6e3a2ff9a07963226cb7b58",
+      "source_description_sha256": "3e367121c5953b979a016ce011d4ff223de69eb66185edd7df099115d7d631a0",
+      "target_sha256": "cdffe456d9ff3687c2ab9a41d73f7431758c31fc11ebd042b0a01ccc125a2bc9",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "moretypes/4",
+      "route": "/moretypes/4",
+      "description": "Érd el a struktúra mezőit struktúrára mutató mutatón keresztül is kényelmes pontjelöléssel, explicit dereferálás nélkül.",
+      "source_sha256": "29695d334b6ff809e84ae8caeb7b9dc493143236783c07c16a83ecc64514c310",
+      "source_description_sha256": "a1925946cf90f972783ebf3472729761307da90cc30c5cfdf2310eaf91b391b3",
+      "target_sha256": "471a67cf0065141f327501f1c3c0960bb4ac849928f1b85387e792ef4609cf39",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "moretypes/5",
+      "route": "/moretypes/5",
+      "description": "Hozz létre struktúraértékeket literálokkal, inicializálj név szerint kiválasztott mezőket tetszőleges sorrendben, és szerezz mutatót az \u0026 operátorral.",
+      "source_sha256": "cf9282456e2a91274c1b135a68fce58dd1590f6a2d7153f0619c97ded8bd00d1",
+      "source_description_sha256": "566428b986d24aff9e14f50ed6728a9cd31ec8de1461064cecdd73e34deac89c",
+      "target_sha256": "c076941f71b569416f36eac1b7d64e507b19c7a9c63d4190e0070452d11b80cf",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "moretypes/6",
+      "route": "/moretypes/6",
+      "description": "Deklarálj rögzített hosszúságú Go-tömböket, amelyek elemszáma a tömb típusának része, ezért a méretük nem változtatható meg.",
+      "source_sha256": "0ec503e46281eb8ff25ceba5b92c9f9c3b40517aeea77cf4878760ed0da9d29c",
+      "source_description_sha256": "3b15294f0e004adb588a19d958ebd8674ace65225f2390ff91b37d81d214feef",
+      "target_sha256": "f55ced18c3085ce8a6e3a057c5807ae9267cdb56d30e9b0fa65c6b89dfe6ed7e",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "moretypes/7",
+      "route": "/moretypes/7",
+      "description": "Hozz létre dinamikus méretű szeletnézeteket tömbökön, és válassz ki alsó korlátot tartalmazó, felső korlátot kizáró elemtartományokat.",
+      "source_sha256": "a169cf48dd659510ff7f1f8adfdbed5a247b51a1f7c3a45ae972f18921925033",
+      "source_description_sha256": "71c152fddf296a9d7a40e99b79e941cda0c04867f7344b3fb46c6cfac813cd81",
+      "target_sha256": "3f08b22fe42a913e89d8d8754bb6a4e6d27fe7247f369ba32c70c2f1063be198",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "moretypes/8",
+      "route": "/moretypes/8",
+      "description": "Értsd meg, hogy a szeletek mögöttes tömbökre hivatkoznak, így az elemek módosításai a közös tárolón osztozó más szeleteken is láthatók.",
+      "source_sha256": "e577f9e98a9c871cdc6f39ecca1bdd0965c26da3b9ab6c2a7cab42b3b0f3a568",
+      "source_description_sha256": "618088a9c7bea851e2362ee4ce74f750fe9b05c65bf0ded5ce01001710015812",
+      "target_sha256": "f232a8d18aae3085c93a40bbef13d8a4b6663083e08c4fcc7d29448108a2d276",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "moretypes/9",
+      "route": "/moretypes/9",
+      "description": "Hozz létre szeletliterált a tömbliterálok szintaxisával, de rögzített tömbhossz megadása nélkül.",
+      "source_sha256": "fb79cf8caed7abc7dfd92e90cf1bcc11d547b8af96d224f30fefc995f98dbb0b",
+      "source_description_sha256": "cfa2da2eea5f06155f696c35cd43bc84d2f7c1ca2dff42f756c5fd27791f3489",
+      "target_sha256": "bc55b63b1ec7462d68aceb510aec89d0d229473f9cf505612d7bd39780e0b0fd",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "moretypes/10",
+      "route": "/moretypes/10",
+      "description": "Hagyd el a szelet alsó vagy felső határát, hogy azok alapértelmezés szerint nullát, illetve az alapul szolgáló sorozat hosszát jelentsék.",
+      "source_sha256": "36d1f92fc5e51cddcd26be7f74a875e60bf24633dd7c8689672fa23a6720e2a1",
+      "source_description_sha256": "00c286e8ccea7f8b05a8c475819b6077a9fbb24729e0dc4cb4d2e7145e795b87",
+      "target_sha256": "535bd5120647f601e6c1f2ae6e4c08051fe7a85ae55fc817c2c1267851692f2e",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "moretypes/11",
+      "route": "/moretypes/11",
+      "description": "Különböztesd meg a szeletek hosszát és kapacitását, vizsgáld meg mindkettőt beépített függvényekkel, és csak a rendelkezésre álló kapacitáson belül szeletelj újra.",
+      "source_sha256": "e2d7d69c946e5a01d8d0eab2e07a2bf35e23453a617d5e7602ff0af5c5866d8f",
+      "source_description_sha256": "0f6094f4c28fae60bb70bd2616205d35bcfdea8d477b997d9ac0e7ae45b41654",
+      "target_sha256": "0ce12016588c234fa48283773864186b7f8976d3b347f1dcd9fc6db01b8d41af",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "moretypes/12",
+      "route": "/moretypes/12",
+      "description": "Ismerd meg a szeletek nil nullaértékét: nincs mögöttes tömbjük, hosszúságuk és kapacitásuk egyaránt nulla.",
+      "source_sha256": "e7a4bb0d5e7928c2da06312d983eba2adb533b30299025f507df183f00fefc89",
+      "source_description_sha256": "606962e7091f32e866981de754dc51784b725847cfa49f35284ceb8fe05ec9e0",
+      "target_sha256": "69ce83ceb8590dafe47ad7d6bb11ce411033c483c42b28c750cb8a90167c2b30",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "moretypes/13",
+      "route": "/moretypes/13",
+      "description": "Foglalj nullaértékekkel inicializált tömböket, és hozz létre dinamikus méretű szeleteket a make függvénnyel, szükség esetén külön kapacitás megadásával.",
+      "source_sha256": "d057e6bf75421597d430ff52f844499b5828ab2c4b4c5148ad88b6b89326ac20",
+      "source_description_sha256": "a0d0187091a138008eb18442ae1f499aa8d2fe942ecf6e524eb273d97dfb67f8",
+      "target_sha256": "9fa75a1a6cfceac0b68faedbef8cdaf2383f53a0f823ce3e2cd951c321ec470a",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "moretypes/14",
+      "route": "/moretypes/14",
+      "description": "Építs többdimenziós adatszerkezeteket olyan szeletekből, amelyeknek az elemei maguk is szeletek.",
+      "source_sha256": "d8bee22c0382cf5fd5647c4d7106165d153cb15aaed8ec82e1f06e12ad0c73d1",
+      "source_description_sha256": "2a66202c8fdba235e0c78234d01daef6898cd69c0d446f8a21a67979a1bef043",
+      "target_sha256": "b0c45cb9a08c5577017f4f6220c40031a652737ce431355619edba425c0ab9f3",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "moretypes/15",
+      "route": "/moretypes/15",
+      "description": "Fűzz elemeket egy szelethez, és értsd meg, mikor kell nagyobb mögöttes tömböt lefoglalni a rendelkezésre álló hely hiánya miatt.",
+      "source_sha256": "f2fc257e7c5f118321acc3b75e946053601532d411e8540534280d7fba795289",
+      "source_description_sha256": "5b4f57f1d1e59e6ee5cac92794e618501132356ae3710d7c3c8bf12f32041553",
+      "target_sha256": "848cc1842ccabb76ee2a0073c21d4dcc7eb100e737858bf8111ce1d28574df95",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "moretypes/16",
+      "route": "/moretypes/16",
+      "description": "Járj be szeleteket vagy leképezéseket a range segítségével; a szeleteknél megkapod az elem indexét és értékének másolatát.",
+      "source_sha256": "73fc46a2e049ce2ff4a4fc0595d717ed5d6e15b7093a6014509a48f501253186",
+      "source_description_sha256": "9fb6dada42add61186c2e79dc091c3dce567895431ef25fd18220abac6f5b215",
+      "target_sha256": "d8e28c408305c4d71d658af93e1ca4128f20494c8b7864f4fd2e97cc66fa701d",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "moretypes/17",
+      "route": "/moretypes/17",
+      "description": "Hagyd figyelmen kívül a range nem kívánt indexét vagy értékét az üres azonosítóval, vagy hagyd el a második változót, ha csak az indexre van szükséged.",
+      "source_sha256": "b52cca070f62a3ffeab3adf20f2745e1dd9aa2644a3985c23ac295e81e2c3bc9",
+      "source_description_sha256": "8c0f2bdd2a6f92dc681fa22f729da6d836747b0c4dce0f9947c019f8886c229d",
+      "target_sha256": "90381233470e5647fa1426edc54e04be1603840831614021bd6816674ba35c9e",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "moretypes/18",
+      "route": "/moretypes/18",
+      "description": "Valósíts meg képgenerátort, amely előjel nélküli bájtok kétdimenziós szeletét foglalja le, és kiszámítja a megjelenített kép értékeit.",
+      "source_sha256": "9c5fd763eaedec8e8bfb60f52713417ff247bc4467aa8a94412c55ab83c781ba",
+      "source_description_sha256": "50c352bd8a0fa28b3eb713c3691438364c9116f66e92457d0c6ee385fc2a3c44",
+      "target_sha256": "14fdc646e5903773b6bbd9fd329e55f16292e8c3c76f2f6b19ce779ef070f497",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "moretypes/19",
+      "route": "/moretypes/19",
+      "description": "Hozz létre kulcsokat értékekhez rendelő leképezéseket a make függvénnyel, és értsd meg, miért nincs a nil leképezésnek kulcsa, és miért nem vehet fel új elemet.",
+      "source_sha256": "39107d53feaffd26d7bb13103fe6e40746e9844d9b37bbf84559f7b91db312f3",
+      "source_description_sha256": "3bca4e1884f5843283b2ab833dec533c36fe7550097d1ce696ebd927fba24f29",
+      "target_sha256": "699b443b417261f83f416af36aa2e3db6277373b1c62c0290c5cc767cc962eee",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "moretypes/20",
+      "route": "/moretypes/20",
+      "description": "Inicializálj Go-leképezéseket olyan leképezésliterálokkal, amelyekben minden értékhez kötelező megadni egy kulcsot.",
+      "source_sha256": "1d3caa45093f65b50d5ebcff6a57559c3fe70faba85f3a0bb41db38c5375a507",
+      "source_description_sha256": "64b042ea9448b757f3249adcd03128e281423a7a30ac994669961db1114a4024",
+      "target_sha256": "3972494aa80bd32776601b4ac67588fd026951ba0633453ab16ee86af97a5b38",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "moretypes/21",
+      "route": "/moretypes/21",
+      "description": "Egyszerűsítsd a leképezésliterálokat az ismétlődő elemtípusok elhagyásával, ha a legfelső szintű elemtípus nevesített típus.",
+      "source_sha256": "0493179c2396f2e755fa5f1e579ce6f4cc716842ef5ee77a0b1c742210c15f9f",
+      "source_description_sha256": "c730c99a0322ec952dc3b0babf1aae15538fb08e7bf4b9d41b3580c524b4cf4c",
+      "target_sha256": "4c5d1a27a67868488fd7a265ec8af3759abbf4d17c8a6562e7736df732c02985",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "moretypes/22",
+      "route": "/moretypes/22",
+      "description": "Szúrj be, módosíts, kérj le és törölj leképezéselemeket, majd kétértékű lekérdezéssel különböztesd meg a hiányzó kulcsot a nullaértéktől.",
+      "source_sha256": "f6963bc620184c7fbea7b04c309ccf64d508a4e835500fa7dd4188e60204019f",
+      "source_description_sha256": "071308970b93a12a3ab3561c0ce18d0073cb4edd7fef6381380777864c8f6685",
+      "target_sha256": "723f971a7564265bde9345c7ccbb5d10facd4819459e20b44031a88b1d865471",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "moretypes/23",
+      "route": "/moretypes/23",
+      "description": "Valósíts meg szószámláló függvényt, amely leképezésben tartja nyilván az egyes szavak előfordulásainak számát a bemeneti karakterláncban.",
+      "source_sha256": "3214968207b659c3fb6bf92ee3d1ba0858bf7d3240dfad30fada7c5d8bddea69",
+      "source_description_sha256": "980a77135ab84953b0e8c2200b54f1ecdc0f2f7255ac497aeee281ca30b03e11",
+      "target_sha256": "e34271bdc287fb9891d7bdb7eb6876a465daa2ef3ba1a021f272b9ef38d84645",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "moretypes/24",
+      "route": "/moretypes/24",
+      "description": "Kezeld a függvényeket értékként: rendeld őket változókhoz, add át más függvények argumentumaként, és add vissza eredményként.",
+      "source_sha256": "91b508ec19d3baf6fd1b2382e54b0f4ec226e9af99d027e86d734cf081d9c897",
+      "source_description_sha256": "7071f87634550cbb36233a6ae15e5910f3b6dc71e3a4d4db8d669f30168094ef",
+      "target_sha256": "89f1bff80c5abfa5044394f9acc2cf4e9ad43f8f17f1e9aa065541087e0a2bdc",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "moretypes/25",
+      "route": "/moretypes/25",
+      "description": "Hozz létre a saját törzsükön kívüli változókra hivatkozó és azokat módosító zárványokat; minden visszaadott zárványnak saját állapota van.",
+      "source_sha256": "570e535e9c2b2d1978534eb3b42f226102b11da36a3f9e61620dc5eafdb6be5f",
+      "source_description_sha256": "46ca9eb3fb315877fb7ecde2e10d046d4c3acbd71f62b37982d5e47644e3b63c",
+      "target_sha256": "fc9529624d82297f83a65675c9cea5852ad692d4d88b839be3362434be634c4a",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "moretypes/26",
+      "route": "/moretypes/26",
+      "description": "Valósíts meg olyan függvényt, amely a Fibonacci-sorozat egymást követő számait előállító zárványt ad vissza.",
+      "source_sha256": "24f01440a7b0d638694c6cb275bf92e79e1fb2463ea2eb7d40a68cc4d6a0ed29",
+      "source_description_sha256": "e64e0a59ac166352e290c6051c98df95c58de5eea297a98fd1e648b3dbfa0517",
+      "target_sha256": "7dd64109492d5ab31c4faea28d18db52939e4c256ee503c969987bd410e2862b",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "moretypes/27",
+      "route": "/moretypes/27",
+      "description": "Zárd le az elkészült leckét: válassz másik modult a listából, vagy haladj tovább a következő leckére.",
+      "source_sha256": "f565674b974c053924bf69ef83b709dc50931526ae7fa88e71543a5cd872a190",
+      "source_description_sha256": "60d1bf20d7741180f02b9b4c6c077d6515d15097cdd8b3513427f8cce749c249",
+      "target_sha256": "8d5e33c4284031fd659120d7662a8bbe7aed0b3c2dc73cb3e9c4e8708d926177",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "methods/1",
+      "route": "/methods/1",
+      "description": "Definiálj metódusokat Go-típusokon egy speciális fogadóargumentummal, és adj viselkedést a típusokhoz osztályrendszer nélkül.",
+      "source_sha256": "8a62096b755332ede134c87493abe49231a52ce60abebcdc107bb6a64434fc72",
+      "source_description_sha256": "fb223db6446f747e780768d2e0bb40d143d440772710e6b2d978b464d0125b06",
+      "target_sha256": "02973ddc155e7e4b771e05f8356d61f7b01c896b212795e1a75af539fcb102a8",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "methods/2",
+      "route": "/methods/2",
+      "description": "Figyeld meg, hogy a Go-metódus viselkedése megegyezik egy hagyományos függvényével, ha a fogadót közönséges argumentumként írjuk fel.",
+      "source_sha256": "ade066728f85cc93e75c2472b80d532b62259a7e08e42ef36e3d05c6cfa5476d",
+      "source_description_sha256": "ce86f31a028ef9ab542bf3b70e30f4ced404ea86da994eb0055ce1530c287861",
+      "target_sha256": "c1ea6c352ad2c0c22c306eba9e54b9b3a803a36c390d46aee0af4a7055702204",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "methods/3",
+      "route": "/methods/3",
+      "description": "Deklarálj metódusokat helyben definiált, nem struktúra típusokon is, betartva, hogy a fogadó típusának ugyanahhoz a csomaghoz kell tartoznia.",
+      "source_sha256": "31c4fd0d80c8f1d96cf3efb1ecc1f9d3c0d1b5b70bb5c23bf7227b7007469588",
+      "source_description_sha256": "ac9c16d673aa0a6c164fde59b24ee32cb330a5104806181181c08599ec916cbc",
+      "target_sha256": "b977014eacdc809a1bdd617307c7aa2423d92c68be5dd7d9dc4edaf64a3027b7",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "methods/4",
+      "route": "/methods/4",
+      "description": "Használj mutató típusú fogadót, ha a metódusnak módosítania kell a fogadót; az érték típusú fogadó ezzel szemben másolaton dolgozik.",
+      "source_sha256": "99f9fa4e5c4dd46d393f40b417d0430c4e27e56f40146f5f192f55ccda4e2db3",
+      "source_description_sha256": "51681653ead1e8e1cd79df9b64aa2cc8b156fa7ea457af6483ed06598fd7af1d",
+      "target_sha256": "cd74d01f43f2ff8c2f9bf5f815a0b19a049951e6c443883564b1d2577698c032",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "methods/5",
+      "route": "/methods/5",
+      "description": "Írd át az Abs és Scale metódusokat közönséges függvényekké, majd figyeld meg a mutatóparaméter hatását és a fordításhoz szükséges módosításokat.",
+      "source_sha256": "cac8affc7a8fd7bc1c0003d8cbf5bd7c85433faea45ea1b39f3b80c2fbc5eae9",
+      "source_description_sha256": "175f241b33ef8229537e3ddd12f24f527ee8b9b13b5ef816d0a89df25fde9b86",
+      "target_sha256": "f206bbfbc424477a251c791d280b654369482878837600bed9394b224c898e22",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "methods/6",
+      "route": "/methods/6",
+      "description": "Hívj mutató típusú fogadóval rendelkező metódusokat értékeken vagy mutatókon; a Go a v.Scale(5) hívást (\u0026v).Scale(5) alakban értelmezi.",
+      "source_sha256": "39fb725b0a084ce3634dc973c215ff7a0f034c5f7b51c2ffe25934088072ebf6",
+      "source_description_sha256": "c4d49e8004cabb2c1640bd29ab1de2ace735f70c575f2b32c636c1a587d314ce",
+      "target_sha256": "c64e61ebfc35f5d4407c925422e1723487cbd887c1c8e43d4abe1260c67172be",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "methods/7",
+      "route": "/methods/7",
+      "description": "Hívj érték típusú fogadóval rendelkező metódusokat értéken vagy mutatón keresztül; a Go a metódushíváshoz automatikusan dereferálja a mutatót.",
+      "source_sha256": "61a9cb8411e6ce15dce3383a68a52c6644599e84269b3faf240129277d238f7e",
+      "source_description_sha256": "ab14363b476d06458eda3434ed9e990c715ddddc11863cdcb2c7ae3b1d0fe936",
+      "target_sha256": "1a703ae46f6b4803517108f3acf8e2971a488ead6c88275cf9ebec2616d88a21",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "methods/8",
+      "route": "/methods/8",
+      "description": "Válassz mutató típusú fogadót módosításhoz vagy nagy értékek másolásának elkerülésére, és következetesen ugyanazt a fogadófajtát használd a típus metódusainál.",
+      "source_sha256": "357424f2a76613085184054178042b442331b5689d156ac9c37e09e57c436dae",
+      "source_description_sha256": "923ca14660ea330bf1790cee51d4e1bc7bcc760ce29b54054e2ce4ee45c4f262",
+      "target_sha256": "80f30e191d2e65be9602e3232c39a58f23800f319dd644a914f47fb2d96c7086",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "methods/9",
+      "route": "/methods/9",
+      "description": "Definiálj interfészeket metódusszignatúrák halmazaként, és figyeld meg, hogyan befolyásolja a fogadó típusa, hogy egy érték vagy mutató valósítja-e meg az interfészt.",
+      "source_sha256": "39efc19ed01619130489d21e421f2c0d8947b20f408580f4ceaabce6a0feb099",
+      "source_description_sha256": "6ee25d295ab6b3a2b4e7e26502652ed739467c62bc70835860cfd77bafb8903c",
+      "target_sha256": "a6a0982aa5db44cebae9804c6af7776063f6e580f8a77a95757c5fa3a2d7c900",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "methods/10",
+      "route": "/methods/10",
+      "description": "Valósíts meg interfészeket implicit módon a megfelelő metódusok definiálásával, így az interfész deklarációja és a megvalósítás külön csomagokban is lehet.",
+      "source_sha256": "11ca99e6e83d93827daf02b177156fcb6f3c94ac8c202491dfffc5840ce4e39f",
+      "source_description_sha256": "6cf08662aae9ca82ce2cd6cd0a15e78992b0473cafa1149663a37fb9e2a7c7c2",
+      "target_sha256": "1123e991d453a3ea4959534867456321973d1d25dbe08406453f8eff405d2b76",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "methods/11",
+      "route": "/methods/11",
+      "description": "Értsd meg az interfészérték mögötti konkrét értéket és típust, valamint azt, hogy a metódushívás a konkrét típushoz kerül.",
+      "source_sha256": "ccb2ed709b887724d22fb93714702fed5de4b7a83ca976876864045ff4752270",
+      "source_description_sha256": "cd6a134e49b4453e54c30c9686447f807f2a1e050246e4d6aee73514bb2179dc",
+      "target_sha256": "e2df44218f48dce839effe1c95038b4fdcc6bd055406a3ce8068d6c57f5322aa",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "methods/12",
+      "route": "/methods/12",
+      "description": "Különböztesd meg a nil konkrét értéket tartalmazó, de nem nil interfészértéket, és írj olyan metódusokat, amelyek biztonságosan kezelik a nil fogadót.",
+      "source_sha256": "9487ca3c9872972d42af8cfa389755678fe8a7cca110b592aac2a762332febf5",
+      "source_description_sha256": "fa0e9391d2ece71351113b5ecc38a4c43baa6e6bfa6bbf4929f8154a5d39bc09",
+      "target_sha256": "3c8ffd59a9008449e111162b1fb1701aef39addc2a4a4027a81f8f83ff8517ed",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "methods/13",
+      "route": "/methods/13",
+      "description": "Ismerd meg, hogy a nil interfészértéknek sem értéke, sem konkrét típusa nincs, ezért a rajta végzett metódushívás futásidejű hibát okoz.",
+      "source_sha256": "2897922c0b088ccd46b3e42a442aeecda0787c4162db1329d0e8f39d05735547",
+      "source_description_sha256": "b4dfe6e93b9056119ee683f0c66c47a4d57c4da2ab646e1d5aaa2f7ff5193695",
+      "target_sha256": "1ebff65dfa5a4fd1057e5823e1fc6dffa7ce814da8e314532963bf063bf93ab6",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "methods/14",
+      "route": "/methods/14",
+      "description": "Használd az üres interfészt vagy vele egyenértékű any aliasát tetszőleges típusú értékek tárolására általános célú kódban.",
+      "source_sha256": "7a09a7654c8b6ac6d96a1a8ddaafac368782f89ec2e6e61f323d40eb01cbf750",
+      "source_description_sha256": "1abc921a534e41046d73ca5924ad534b905486f3528eff469b8816a3a94ad269",
+      "target_sha256": "886370451700640ad79bb38085a0f7bede085ed498c251ca14c379ee32d338d4",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "methods/15",
+      "route": "/methods/15",
+      "description": "Nyerd ki egy interfész mögötti konkrét értéket típusállítással, és használd a két eredményt adó formát, hogy típuseltéréskor elkerüld a panic-et.",
+      "source_sha256": "c205b4eb940358edea6321cfa422c3c00a560e9a6a71b08c8b3fa3ab9e4926ae",
+      "source_description_sha256": "2d146c65bc4f8cb9e2129fffc886ebe5e057615fea1b640106d6671ef8c431b1",
+      "target_sha256": "e5eec9c73d8cc86b28a7571d166af46239fff4feeb04d8b89fbf4e520230f197",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "methods/16",
+      "route": "/methods/16",
+      "description": "Vizsgálj meg több konkrét típust egy interfészértéken típus szerinti switch segítségével, és minden ágban kapj megfelelő típusú értéket.",
+      "source_sha256": "26e4da09e80d30b06368691c76ee2940139b0f6fc40cad47bb6d1d2947933c27",
+      "source_description_sha256": "d33eb15901d822bc5a23f381c6d61ac484c844a004c4bf34b699dff7de6cd24f",
+      "target_sha256": "dd21739326ce600cb5ec2972563777ad931d08b60571be48c7d2bb0b4a17f1ad",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "methods/17",
+      "route": "/methods/17",
+      "description": "Valósítsd meg a Stringer interfészt, hogy egy érték szövegesen leírhassa önmagát formázáshoz és kiíráshoz.",
+      "source_sha256": "0363038e64b6f186e1bbd55c3323a5d7770a2b728605d8e3f01ae234aff6a444",
+      "source_description_sha256": "c446522cd9230076fbeae5d023a4d73f6473469102b840b6dc474e0f33d3cd38",
+      "target_sha256": "512f95084113777a623d1a5ffd0fce78b053e2a5b08f1b21c01c2aa127799433",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "methods/18",
+      "route": "/methods/18",
+      "description": "Valósíttasd meg egy IP-címtípussal a Stringer interfészt, és formázd a négy összetevőjét pontokkal elválasztott címként.",
+      "source_sha256": "ad118644f53755586f14409e203bccfb5ac4cff7c01734157032a45648fb06d3",
+      "source_description_sha256": "7fca48e6f4206cd8d1dcaee960b79026d1c7ed9a6522f5b5c7182e7db036058b",
+      "target_sha256": "4d4fd983f449a972bfb8356eece7d6aee3c6f914b764c5c2d8a92ecbff3a9423",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "methods/19",
+      "route": "/methods/19",
+      "description": "Ábrázold a hibákat a Go beépített error interfészével, adj vissza hibaértékeket függvényekből, és ellenőrizd őket a nil értékhez viszonyítva.",
+      "source_sha256": "9eaab1fde2076c1376f78ceec0f84766c4c3b8062867436d73cef0bc77f16bd5",
+      "source_description_sha256": "b997133bc34918b752e49098ee7c596089a1a25f93d62bf29a1ed496c0a68d17",
+      "target_sha256": "120decdd3877448106c0a12ceb48e3970340e0bfec28d829236f20e2ed456e20",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "methods/20",
+      "route": "/methods/20",
+      "description": "Bővíts egy négyzetgyökszámító függvényt saját hibatípussal negatív bemenethez, és kerüld el a végtelen ciklust a hiba formázásakor.",
+      "source_sha256": "41f1f73320fde60ee5ff30d5927a19ff22d6da6a336bb776e15f2499e4f421d8",
+      "source_description_sha256": "4af48585b9125cd7437caf7d571c969ec8ae224916d9b674015446d6878f553c",
+      "target_sha256": "267fa95e5f01781ff7499234ce69cc491f3aa6f924fbafa2381b5a51a95f593c",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "methods/21",
+      "route": "/methods/21",
+      "description": "Olvass adatfolyamokat a Reader interfészen keresztül bájtszeletek feltöltésével, és kezeld a visszaadott bájtszámot, a hibákat és az adatfolyam végét jelző értéket.",
+      "source_sha256": "120c3fc9f67579cf78605cf0c9f006fc28d3569043a08079ddb645ca9c3fc3b1",
+      "source_description_sha256": "3d143859fa8cf818fcf69f355ec785aeaa9ee25613b9fb1b1f8750b88d649ba3",
+      "target_sha256": "8d89b79a7120a8a32cf22797a334f3d46ffae895d5327388a93e2fc98b6bd41c",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "methods/22",
+      "route": "/methods/22",
+      "description": "Valósíts meg olyan Reader típust, amelynek Read metódusa az ASCII A karakter végtelen adatfolyamát szolgáltatja.",
+      "source_sha256": "0df444d989996a06d6dd50f4b109af4ae1cb2302b8dd867bcbe9bf98e424d230",
+      "source_description_sha256": "b1bb526c762d827e97448d79c00210d1bb286b0a0f11f6e4c607b6ddd5f156c5",
+      "target_sha256": "0cf67b2ac9beb4a4ffded63318d267a385928616798ef1166c0c53b65a671503",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "methods/23",
+      "route": "/methods/23",
+      "description": "Burkolj be egy másik Reader olvasót saját megvalósítással, amely a betűket a ROT13 helyettesítéses titkosítással alakítja át.",
+      "source_sha256": "11d876145fae980b2e283e3fac7357a950eb20f022b7da48cc58efed5b1e8e04",
+      "source_description_sha256": "55b462b45c3316b40047228bfce6b04a7009e8d2772bf5ff3dcbd1ce7197d638",
+      "target_sha256": "a9e2bf11c89590cec5eb61bc5be20dad9dd7f26f6baecb3b3f1d823634b56f75",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "methods/24",
+      "route": "/methods/24",
+      "description": "Ismerd meg az Image interfészt a színmodell, a képhatárok és a képpontok színét lekérdező metódusok, valamint a kapcsolódó színtípusok segítségével.",
+      "source_sha256": "d80f0d46796ad415a7ded4d0cefdef6cdb58deb38d050a61eb64abb25caf27ee",
+      "source_description_sha256": "0a30974c745ec5adef7da2417dcc5308e2e69627488c5a2c9e880870c6da5c41",
+      "target_sha256": "b6382a574979ae63640948b6b90aca8b26b2fd5029f195f4380174d613e832f2",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "methods/25",
+      "route": "/methods/25",
+      "description": "Definiálj saját képtípust, amely megvalósítja a színmodellt, a téglalap alakú határokat és a képpontszínek lekérdezését a generált képekhez.",
+      "source_sha256": "a196bc59d96602c3fe72cf765419366094a5c1e96de0d24dd140887ebd1826b5",
+      "source_description_sha256": "47aa41f6a229ac42781cb3536c72a700c3617131893b661be47fa26bcd55da91",
+      "target_sha256": "45553a36885ca5abf71cc247ce4f00eb0f94e7e5785652f60632d3ce0769a9dd",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "methods/26",
+      "route": "/methods/26",
+      "description": "Zárd le a leckét, és döntsd el, hogy visszatérsz-e a modulok listájához, vagy közvetlenül a következő leckére lépsz.",
+      "source_sha256": "f565674b974c053924bf69ef83b709dc50931526ae7fa88e71543a5cd872a190",
+      "source_description_sha256": "fb9dc0de6022cba642b0d023e060400ec0eea65f5e479a0b6586e8457a3a6e1c",
+      "target_sha256": "8d5e33c4284031fd659120d7662a8bbe7aed0b3c2dc73cb3e9c4e8708d926177",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "generics/1",
+      "route": "/generics/1",
+      "description": "Írj generikus Go-függvényeket szögletes zárójelek közé írt típusparaméterekkel, és használd a comparable típuskorlátot egy szeletben egyenlőségvizsgálattal végzett kereséshez.",
+      "source_sha256": "01a045105dc8c12fb1709f122d363235c19a6464d5de7587d579524aec270dd6",
+      "source_description_sha256": "b1a9a022272688b86d0572b7ce4dd9d725f2721d2bc9e3e37c196d2ce20b6573",
+      "target_sha256": "31eb7d2c5cf41d101849ae76405ba5727a293ee965f5e7c64ccec82d419e97f4",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "generics/2",
+      "route": "/generics/2",
+      "description": "Definiálj típusparaméterekkel generikus típusokat egy olyan egyszeresen láncolt listán keresztül, amely tetszőleges típusú értékeket tárolhat.",
+      "source_sha256": "08486351895e62792a84bc3eeab6aa85df7b1658735b7239040d219812f63277",
+      "source_description_sha256": "7b1a0ed87733ae57b018fd8b291ceb880f9b20f8b11e3a3744afe5c5237dfa0d",
+      "target_sha256": "9e91a6d99829fb25816aedf08e8027a516b625f40342a463cfedb1b928f15add",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "generics/3",
+      "route": "/generics/3",
+      "description": "Jelöld meg a lecke befejezését, majd térj vissza a modulok listájához, vagy folytasd a következő leckével.",
+      "source_sha256": "f565674b974c053924bf69ef83b709dc50931526ae7fa88e71543a5cd872a190",
+      "source_description_sha256": "65816f922f9107347efd8286904bad00224481b7d9efb4ff5c998e2b8983729e",
+      "target_sha256": "8d5e33c4284031fd659120d7662a8bbe7aed0b3c2dc73cb3e9c4e8708d926177",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "concurrency/1",
+      "route": "/concurrency/1",
+      "description": "Indíts könnyű goroutine-okat, értsd meg a hívási argumentumok kiértékelésének helyét, és szinkronizáld a konkurens goroutine-ok közös memóriához való hozzáférését.",
+      "source_sha256": "d0a9c45078c2255540cfffe48744a07fa04ab5c2113e8880068b5a400ae0ebdc",
+      "source_description_sha256": "d2b2b18b050a6f45dea879d72a29023649e8ce7d55822315cb11cdc5d8330796",
+      "target_sha256": "0dd518cb4204442e2dfad18cc4930537882047af1d48b992e544aad4aa149907",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "concurrency/2",
+      "route": "/concurrency/2",
+      "description": "Küldj és fogadj típusos értékeket csatornákon keresztül, és használd az alapértelmezett blokkoló működésüket a goroutine-ok közötti szinkronizációhoz.",
+      "source_sha256": "a35e3af26b51f8c2c2a6dfaf09f9c7cab0fdb4b1b56f9e4dc9b793f1dac1e295",
+      "source_description_sha256": "1025cf5ae195d6ddacba6eba015df931afc7d88d4fb1f045e89374a0ce269218",
+      "target_sha256": "13cd727c06ce4bf0280bd20ff4547dc073c2d885ffc35700010d6f3342cd2471",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "concurrency/3",
+      "route": "/concurrency/3",
+      "description": "Hozz létre rögzített kapacitású pufferelt csatornákat, és figyeld meg, hogy a küldés telt, a fogadás pedig üres puffer esetén blokkol.",
+      "source_sha256": "caef0893a54c61f192be397f6b27a039d81dc007f98f2d203a5a287383c0682e",
+      "source_description_sha256": "841cd97624869908df1823647fdf34b37e1ad3be60d94232ea68d29df3791d3e",
+      "target_sha256": "6666f7cbc18e5d8b03f7bd1ceb706351de164a3a8be2e6d7b36a0aa1529cab5b",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "concurrency/4",
+      "route": "/concurrency/4",
+      "description": "Zárd le a csatornákat a küldő oldalon, észleld a lezárást fogadáskor, és range segítségével olvasd ki az összes elküldött értéket.",
+      "source_sha256": "3e925c6745255a443c61f25cd8131d538dc8677938f1c5021ce798465020b42e",
+      "source_description_sha256": "052b32bc75a99f8e63d851b090201f2d860fe3e0df54d1c36dfe898d791300aa",
+      "target_sha256": "98dc67f6e049b0b0c2a405ce39cc3a6a64c2b886b589b20a0b65a7991d85233f",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "concurrency/5",
+      "route": "/concurrency/5",
+      "description": "Használd a select utasítást több csatornaművelet kivárására: az egyik készen álló ág fut le, több lehetséges ág közül véletlenszerű a választás.",
+      "source_sha256": "8d8de56f080d4f702ac455aa60cb13b745472bedc9755000e8b5d6a2a898577d",
+      "source_description_sha256": "ff560a3c278c4608f677eb25977282a92605545470d352b501cb020944f5c19b",
+      "target_sha256": "4505b6a16eb1f457965d3d3bd836ed09ea3c85b89f5f1f8b5a8f8184228a4514",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "concurrency/6",
+      "route": "/concurrency/6",
+      "description": "Adj default ágat a select utasításhoz, ha blokkolás nélkül szeretnél csatornán küldést vagy fogadást megkísérelni.",
+      "source_sha256": "82e9cd932e14e6c4852fc8f865f4c45dc75845bd1a306649152ebc045f0c3b2c",
+      "source_description_sha256": "62b930aa676592e83be591ce640338cad3d4a28f8031b70020c125cae407288f",
+      "target_sha256": "3c4a36b0861c592be41bb2bb7e9ec1b3f3473e83d893e4c0b45f90294935dcdb",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "concurrency/7",
+      "route": "/concurrency/7",
+      "description": "Vizsgáld meg, hogyan hasonlíthatsz össze eltérő szerkezetű, de azonos rendezett értékeket tartalmazó bináris fákat Go-csatornák és konkurencia segítségével.",
+      "source_sha256": "7c5d3fc7bb2540285d746242f8a1d16075639648eec8909c1df52239297d2917",
+      "source_description_sha256": "1788be855428fdadd5d5755548f4a1c678aa4db359821c7a553ffecdf5e4de7c",
+      "target_sha256": "b879b60192698838817572dd7754fee079b39f9bcc9c669591151512564e26ee",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "concurrency/8",
+      "route": "/concurrency/8",
+      "description": "Valósíts meg konkurens fabejárást, és a csatornára küldött értékek alapján állapítsd meg, hogy két bináris fa azonos értéksorozatot tárol-e.",
+      "source_sha256": "b362cc15a26324acd311f7cab18a628dc1d7d9ac6d455add7d651d41acf15e9a",
+      "source_description_sha256": "5fcc3f084dff1ef87b86f2a0714ed2b130301ff803ea2c298f1be3baccf48959",
+      "target_sha256": "2499d60844f75c34aa00a1f8867c85dd1aa82b92742025095f3d9d005e42150c",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "concurrency/9",
+      "route": "/concurrency/9",
+      "description": "Védd a megosztott állapotot kölcsönös kizárással, mutex zárolásával és feloldásával, szükség esetén halasztott feloldással a megbízható felszabadításhoz.",
+      "source_sha256": "49f727794604c2ef8a8dda9508d0f412d7015cea77754c675a02b166dd9bfc93",
+      "source_description_sha256": "45500a9f438a556dd61ab13ebbd255f4da67469a93c8f12a510ac0883531cbb2",
+      "target_sha256": "8b0f7f4e0a452f46c5b987776f4a2a9482a859a3b6c38f4581d2f0c840e1517f",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "concurrency/10",
+      "route": "/concurrency/10",
+      "description": "Tedd párhuzamossá a webes feltérképezőt a Go konkurens eszközeivel, miközben minden URL-t legfeljebb egyszer kérsz le, és biztonságosan éred el a közös leképezést.",
+      "source_sha256": "bb686393225ef2335e627819a1664a84456f00b64af133af64920d43f0abdb94",
+      "source_description_sha256": "9f5eaf228169f96b0df33e42107f5e232500256bfbd275f7f9eecc516af7e7a9",
+      "target_sha256": "f013618b18f1ee230d11bec748d2627af8392b6d7f830c2ddbc87714ba9ba95b",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    },
+    {
+      "page_id": "concurrency/11",
+      "route": "/concurrency/11",
+      "description": "Tanulj tovább a Go-ról dokumentációkból, oktatóanyagokból, referenciákból, előadásokból, kódbemutatókból és a konkurenciáról vagy webalkalmazásokról szóló cikkekből.",
+      "source_sha256": "45ef131ede663b1355c0a5933634d46c393f66be8a6450b184f86a62e928a64e",
+      "source_description_sha256": "4ed88e1ec54c490baa161dd4be091fd7d22aa45b5f8855f73b8cdabc678feb44",
+      "target_sha256": "107a2200cf9c2ba47e3400897a252c83edb578a3ec42c27db8b584fe4ef3bcf3",
+      "glossary_sha256": "693361e1a2c7c7dff8795ecfa4a406e86d0d6a711066bd976fa8722b26059d4a",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-24T04:37:23Z"
+      }
+    }
+  ]
+}

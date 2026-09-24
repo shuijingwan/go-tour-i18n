@@ -1,0 +1,10 @@
+* A switch utasítás
+
+A `switch` utasítás az `if`-`else` utasítások sorozatának rövidebb megfogalmazása.
+Az első olyan esetet hajtja végre, amelynek értéke megegyezik a feltételkifejezés értékével.
+
+A Go switch utasítása hasonló a C, C++, Java, JavaScript és PHP megfelelő szerkezetéhez, azzal a különbséggel, hogy a Go csak a kiválasztott esetet hajtja végre, az utána következőket nem.
+A más nyelvekben az egyes esetek végére szükséges `break` utasítást a Go automatikusan biztosítja.
+Egy másik fontos különbség, hogy a Go switch eseteinek nem kell konstansoknak lenniük, és az értékek sem feltétlenül egész számok.
+
+.play flowcontrol/switch.go

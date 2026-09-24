@@ -1,0 +1,15 @@
+* Range és lezárás
+
+A küldő a `close` segítségével lezárhat egy csatornát, jelezve, hogy több értéket már nem fog küldeni. A fogadó a fogadási kifejezés második visszatérési értékével ellenőrizheti, hogy a csatorna lezárult-e. Például:
+
+	v, ok := <-ch
+
+Az `ok` értéke `false`, ha nincs több fogadható érték, és a csatorna lezárult.
+
+A `for`i`:=`range`c` ciklus ismételten fogad értékeket a csatornáról, amíg az le nem zárul.
+
+*Megjegyzés:* Csatornát csak a küldő zárjon le, a fogadó soha. Lezárt csatornára történő küldés panic eseményt vált ki.
+
+*További* megjegyzés:* A csatornák nem olyanok, mint a fájlok: általában nem kell lezárnod őket. A lezárás csak akkor szükséges, ha a fogadónak tudnia kell, hogy nem érkezik több érték, például egy `range` ciklus befejezéséhez.
+
+.play concurrency/range-and-close.go

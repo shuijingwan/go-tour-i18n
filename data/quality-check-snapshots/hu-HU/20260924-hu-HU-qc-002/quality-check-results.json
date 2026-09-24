@@ -1,0 +1,78 @@
+{
+  "schema_version": 2,
+  "evidence_type": "quality_check_results",
+  "locale": "hu-HU",
+  "snapshot_id": "20260924-hu-HU-qc-002",
+  "snapshot_manifest_sha256": "4d21cbcb1a32dc566e1877a3b5ac12e8d5f42079406df50fba13a25cc3323233",
+  "previous_snapshot_id": "20260924-hu-HU-qc-001",
+  "rubric": "translation-quality/v1",
+  "result_count": 13,
+  "results": [
+    {
+      "index": 2,
+      "unit_id": "welcome/2",
+      "rating": "A"
+    },
+    {
+      "index": 3,
+      "unit_id": "welcome/4",
+      "rating": "A"
+    },
+    {
+      "index": 19,
+      "unit_id": "basics/14",
+      "rating": "A"
+    },
+    {
+      "index": 23,
+      "unit_id": "flowcontrol/1",
+      "rating": "A"
+    },
+    {
+      "index": 37,
+      "unit_id": "moretypes/1",
+      "rating": "B",
+      "finding": "Revision re-QC: Two code comments still read i értékének kiolvasása a mutatón keresztül: p and i értékének módosítása a mutatón keresztül: p. The post-colon p remains detached from the pointer phrase and the Hungarian wording is unnatural for published code comments. Clarify idiomatically that both operations act on i through pointer p while preserving the code and identifiers."
+    },
+    {
+      "index": 53,
+      "unit_id": "moretypes/17",
+      "rating": "A"
+    },
+    {
+      "index": 59,
+      "unit_id": "moretypes/23",
+      "rating": "A"
+    },
+    {
+      "index": 84,
+      "unit_id": "methods/21",
+      "rating": "A"
+    },
+    {
+      "index": 86,
+      "unit_id": "methods/23",
+      "rating": "A"
+    },
+    {
+      "index": 90,
+      "unit_id": "generics/1",
+      "rating": "A"
+    },
+    {
+      "index": 100,
+      "unit_id": "concurrency/8",
+      "rating": "A"
+    },
+    {
+      "index": 107,
+      "unit_id": "example:concurrency/exercise-equivalent-binary-trees.go",
+      "rating": "A"
+    },
+    {
+      "index": 108,
+      "unit_id": "example:concurrency/exercise-web-crawler.go",
+      "rating": "A"
+    }
+  ]
+}

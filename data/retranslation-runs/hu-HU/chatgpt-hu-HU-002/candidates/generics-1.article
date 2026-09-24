@@ -1,0 +1,17 @@
+* Típusparaméterek
+
+A Go függvényeit típusparaméterek segítségével úgy is megírhatod, hogy több típussal működjenek.
+A függvény típusparaméterei szögletes zárójelek között, a függvény argumentumai előtt szerepelnek.
+
+  func Index[T comparable](s []T, x T) int
+
+Ez a deklaráció azt jelenti, hogy az `s` egy olyan `T` típusú szelet,
+amely megfelel a beépített `comparable` típuskorlátnak.
+Az `x` szintén ugyanehhez a típushoz tartozó érték.
+
+A `comparable` hasznos típuskorlát, mert lehetővé teszi, hogy az adott típus
+értékein a `==` és `!=` operátorokat használd. Ebben a példában egy értéket
+összehasonlítunk a szelet összes elemével, amíg egyezést nem találunk.
+Az `Index` függvény bármilyen összehasonlítható típussal működik.
+
+.play generics/index.go

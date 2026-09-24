@@ -1,0 +1,14 @@
+* A szeletek hossza és kapacitása
+
+Egy szeletnek _hossza_ és _kapacitása_ is van.
+
+A szelet hossza a benne található elemek száma.
+
+A szelet kapacitása a mögöttes tömbnek a szelet első elemétől számított elemszáma.
+
+Az `s` szelet hosszát és kapacitását a `len(s)`, illetve a `cap(s)` kifejezéssel kérdezheted le.
+
+Egy szelet hosszát újraszeleteléssel növelheted, ha ehhez elegendő a kapacitása.
+Próbáld meg a példaprogram egyik szeletműveletét úgy módosítani, hogy a szelet hossza meghaladja a kapacitását, és figyeld meg, mi történik.
+
+.play moretypes/slice-len-cap.go

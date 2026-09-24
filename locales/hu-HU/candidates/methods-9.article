@@ -1,0 +1,10 @@
+* Interfészek
+
+Az _interfésztípus_ metódusszignatúrák halmazaként van definiálva.
+Egy interfésztípusú érték bármely olyan értéket tartalmazhat, amely megvalósítja ezeket a metódusokat.
+
+*Megjegyzés:* A példakód 22. sorában hiba található.
+A `Vertex` (az értéktípus) nem valósítja meg az `Abser` interfészt, mert
+az `Abs` metódus csak a `*Vertex` (a mutatótípus) számára van definiálva.
+
+.play methods/interfaces.go

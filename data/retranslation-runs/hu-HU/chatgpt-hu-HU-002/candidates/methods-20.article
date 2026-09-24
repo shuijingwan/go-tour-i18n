@@ -1,0 +1,22 @@
+* Feladat: Hibák
+
+Másold át az `Sqrt` függvényedet a [[/tour/flowcontrol/8][korábbi feladatból]], és módosítsd úgy, hogy `error` értéket adjon vissza.
+
+Az `Sqrt` függvénynek negatív szám esetén nem nil hibaértéket kell visszaadnia, mivel nem támogatja a komplex számokat.
+
+Hozz létre egy új típust:
+
+	type ErrNegativeSqrt float64
+
+Tedd ezt a típust az `error` interfész megvalósításává egy olyan
+
+	func (e ErrNegativeSqrt) Error() string
+
+metódussal, amelynél az `ErrNegativeSqrt(-2).Error()` hívás eredménye `"cannot`Sqrt`negative`number:`-2"`.
+
+*Megjegyzés:* Ha az `fmt.Sprint(e)` függvényt az `Error` metóduson belül hívod meg,
+a program végtelen ciklusba kerül. Ezt elkerülheted, ha előbb átalakítod az `e` értéket: `fmt.Sprint(float64(e))`. Miért?
+
+Módosítsd az `Sqrt` függvényedet úgy, hogy negatív szám esetén `ErrNegativeSqrt` értéket adjon vissza.
+
+.play methods/exercise-errors.go

@@ -1,0 +1,25 @@
+* Típusállítások
+
+A ⟪GTI18N_c205b4eb_000001⟫típusállítás⟪GTI18N_c205b4eb_000002⟫ hozzáférést biztosít az interfészérték mögöttes konkrét értékéhez.
+
+⟪GTI18N_c205b4eb_000003⟫
+
+Ez az utasítás azt állítja, hogy az ⟪GTI18N_c205b4eb_000004⟫i⟪GTI18N_c205b4eb_000005⟫ interfészérték a ⟪GTI18N_c205b4eb_000006⟫T⟪GTI18N_c205b4eb_000007⟫ konkrét típust tartalmazza,
+és a mögöttes ⟪GTI18N_c205b4eb_000008⟫T⟪GTI18N_c205b4eb_000009⟫ típusú értéket a ⟪GTI18N_c205b4eb_000010⟫t⟪GTI18N_c205b4eb_000011⟫ változóhoz rendeli.
+
+Ha az ⟪GTI18N_c205b4eb_000012⟫i⟪GTI18N_c205b4eb_000013⟫ nem ⟪GTI18N_c205b4eb_000014⟫T⟪GTI18N_c205b4eb_000015⟫ típusú értéket tartalmaz, az utasítás ⟪GTI18N_c205b4eb_000016⟫ műveletet vált ki.
+
+Annak ⟪GTI18N_c205b4eb_000017⟫ellenőrzésére⟪GTI18N_c205b4eb_000018⟫, hogy egy interfészérték egy adott típust tartalmaz-e,
+a típusállítás két értéket is visszaadhat: a mögöttes értéket
+és egy logikai értéket, amely jelzi, hogy az állítás sikeres volt-e.
+
+⟪GTI18N_c205b4eb_000019⟫
+
+Ha az ⟪GTI18N_c205b4eb_000020⟫i⟪GTI18N_c205b4eb_000021⟫ ⟪GTI18N_c205b4eb_000022⟫T⟪GTI18N_c205b4eb_000023⟫ típusú értéket tartalmaz, akkor a ⟪GTI18N_c205b4eb_000024⟫t⟪GTI18N_c205b4eb_000025⟫ a mögöttes értéket,
+az ⟪GTI18N_c205b4eb_000026⟫ok⟪GTI18N_c205b4eb_000027⟫ pedig a true értéket kapja.
+Ellenkező esetben az ⟪GTI18N_c205b4eb_000028⟫ok⟪GTI18N_c205b4eb_000029⟫ false lesz, a ⟪GTI18N_c205b4eb_000030⟫t⟪GTI18N_c205b4eb_000031⟫ pedig a ⟪GTI18N_c205b4eb_000032⟫T⟪GTI18N_c205b4eb_000033⟫ típus nullaértékét kapja,
+és nem történik ⟪GTI18N_c205b4eb_000034⟫.
+
+Figyeld meg a hasonlóságot e szintaxis és a leképezésből történő olvasás szintaxisa között.
+
+⟪GTI18N_c205b4eb_000035⟫

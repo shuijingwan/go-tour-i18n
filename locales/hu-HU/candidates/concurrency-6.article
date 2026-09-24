@@ -1,0 +1,14 @@
+* Alapértelmezett ág kiválasztása
+
+A `default` ág egy `select` utasításban akkor hajtódik végre, ha egyetlen másik ág sem áll készen.
+
+A `default` ággal blokkolás nélkül megpróbálhatsz küldeni vagy fogadni:
+
+	select {
+	case i := <-c:
+		// az i használata
+	default:
+		// a c csatornáról történő fogadás blokkolna
+	}
+
+.play concurrency/default-selection.go
