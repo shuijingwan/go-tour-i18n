@@ -1,0 +1,24 @@
+{
+  "schema_version": 2,
+  "batch_id": "codex-mr-IN-012",
+  "locale": "mr-IN",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 1,
+  "units": [
+    {
+      "unit_id": "concurrency/4",
+      "unit_kind": "page",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "3e925c6745255a443c61f25cd8131d538dc8677938f1c5021ce798465020b42e",
+      "input_path": "inputs/concurrency-4.article",
+      "input_sha256": "f68dc9ef06de3cb5d48846ebe7786e6cc06b77ea5c05bc6d56b80f667f5dad10",
+      "protected_token_count": 16,
+      "previous_snapshot_id": "qc-005",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "Another note 标签不再拆词，但 अतिरिक्त-टीप 的连字符不够自然，且恢复后 *:* 仍形成异常强调格式；须在保持受保护外层标记的前提下修正。"
+    }
+  ]
+}

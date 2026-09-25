@@ -1,0 +1,23 @@
+* सराव: Equivalent Binary Trees
+
+*1.* `Walk` फंक्शन लागू करा.
+
+*2.* `Walk` फंक्शनची चाचणी करा.
+
+`tree.New(k)` हे `k`, `2k`, `3k`, ..., `10k` ही मूल्ये धारण करणारे, रचना यादृच्छिक पण नेहमी क्रमबद्ध असलेले binary tree तयार करते.
+
+नवा channel `ch` तयार करा आणि walker सुरू करा:
+
+	go Walk(tree.New(1), ch)
+
+मग channel मधून 10 मूल्ये वाचून print करा. ती 1, 2, 3, ..., 10 ही संख्या असली पाहिजेत.
+
+*3.* `Same` फंक्शन `Walk` वापरून लागू करा; ते `t1` आणि `t2` मध्ये तीच मूल्ये आहेत का हे ठरवेल.
+
+*4.* `Same` फंक्शनची चाचणी करा.
+
+`Same(tree.New(1),`tree.New(1))` ने true, तर `Same(tree.New(1),`tree.New(2))` ने false परत करावे.
+
+`Tree` चे documentation [[https://godoc.org/golang.org/x/tour/tree#Tree][येथे]] मिळेल.
+
+.play concurrency/exercise-equivalent-binary-trees.go

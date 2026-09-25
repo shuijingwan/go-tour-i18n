@@ -1,0 +1,12 @@
+* Range — തുടർച്ച
+
+ഇൻഡെക്സോ മൂല്യമോ ഒഴിവാക്കണമെങ്കിൽ അത് `_`-ന് അസൈൻ ചെയ്യാം.
+
+    for i, _ := range pow
+    for _, value := range pow
+
+ഇൻഡെക്സ് മാത്രം ആവശ്യമെങ്കിൽ രണ്ടാമത്തെ വേരിയബിൾ ഒഴിവാക്കാം.
+
+    for i := range pow
+
+.play moretypes/range-continued.go

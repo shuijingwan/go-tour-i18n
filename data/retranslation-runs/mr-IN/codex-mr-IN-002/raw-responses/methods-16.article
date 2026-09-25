@@ -1,0 +1,13 @@
+* Type switches
+
+⟪GTI18N_26e4da09_000001⟫type_switch⟪GTI18N_26e4da09_000002⟫ ही सलग अनेक type assertions करण्याची सुविधा देणारी रचना आहे.
+
+Type switch हा नेहमीच्या switch statement सारखा असतो; मात्र त्यातील cases मध्ये मूल्यांऐवजी types दिलेले असतात आणि त्या types ची तुलना दिलेल्या interface मूल्यामध्ये असलेल्या मूल्याच्या type शी केली जाते.
+
+⟪GTI18N_26e4da09_000003⟫येथे ⟪GTI18N_26e4da09_000004⟫ चा type ⟪GTI18N_26e4da09_000005⟫⟪GTI18N_26e4da09_000006⟫येथे ⟪GTI18N_26e4da09_000007⟫ चा type ⟪GTI18N_26e4da09_000008⟫⟪GTI18N_26e4da09_000009⟫जुळणारा case नाही; येथे ⟪GTI18N_26e4da09_000010⟫ चा type ⟪GTI18N_26e4da09_000011⟫ इतकाच आहे⟪GTI18N_26e4da09_000012⟫Type switch मधील declaration ची syntax ⟪GTI18N_26e4da09_000013⟫i.(T)⟪GTI18N_26e4da09_000014⟫ या type assertion सारखीच असते; पण विशिष्ट type ⟪GTI18N_26e4da09_000015⟫T⟪GTI18N_26e4da09_000016⟫ ऐवजी ⟪GTI18N_26e4da09_000017⟫type⟪GTI18N_26e4da09_000018⟫ keyword वापरला जातो.
+
+हा switch statement ⟪GTI18N_26e4da09_000019⟫i⟪GTI18N_26e4da09_000020⟫ या interface मूल्यामध्ये ⟪GTI18N_26e4da09_000021⟫T⟪GTI18N_26e4da09_000022⟫ किंवा ⟪GTI18N_26e4da09_000023⟫S⟪GTI18N_26e4da09_000024⟫ type चे मूल्य आहे का हे तपासतो.
+⟪GTI18N_26e4da09_000025⟫T⟪GTI18N_26e4da09_000026⟫ आणि ⟪GTI18N_26e4da09_000027⟫S⟪GTI18N_26e4da09_000028⟫ या प्रत्येक case मध्ये, ⟪GTI18N_26e4da09_000029⟫v⟪GTI18N_26e4da09_000030⟫ व्हेरिएबलचा type अनुक्रमे ⟪GTI18N_26e4da09_000031⟫T⟪GTI18N_26e4da09_000032⟫ किंवा ⟪GTI18N_26e4da09_000033⟫S⟪GTI18N_26e4da09_000034⟫ असेल आणि त्यात ⟪GTI18N_26e4da09_000035⟫i⟪GTI18N_26e4da09_000036⟫ मधील मूल्य असेल.
+Default case मध्ये (जुळणारा case नसल्यास), ⟪GTI18N_26e4da09_000037⟫v⟪GTI18N_26e4da09_000038⟫ व्हेरिएबलचा interface type आणि मूल्य ⟪GTI18N_26e4da09_000039⟫i⟪GTI18N_26e4da09_000040⟫ प्रमाणेच असते.
+
+⟪GTI18N_26e4da09_000041⟫

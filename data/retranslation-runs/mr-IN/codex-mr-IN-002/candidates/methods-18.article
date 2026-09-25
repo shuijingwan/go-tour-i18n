@@ -1,0 +1,7 @@
+* सराव: Stringers
+
+`IPAddr` type ला `fmt.Stringer` लागू करायला सांगा, जेणेकरून पत्ता चार भागांच्या dot-separated स्वरूपात print होईल.
+
+उदाहरणार्थ, `IPAddr{1,`2,`3,`4}` हे `"1.2.3.4"` असे print झाले पाहिजे.
+
+.play methods/exercise-stringer.go

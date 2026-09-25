@@ -1,0 +1,12 @@
+* Упражнение: rot13Reader
+
+Често използван подход е [[/pkg/io/#Reader][io.Reader]], който обгръща друг `io.Reader` и променя потока по определен начин.
+
+Например функцията [[/pkg/compress/gzip/#NewReader][gzip.NewReader]] приема `io.Reader` (поток от компресирани данни) и връща `*gzip.Reader`, който също реализира `io.Reader` (поток от декомпресираните данни).
+
+Реализирайте `rot13Reader`, който реализира `io.Reader`, чете от `io.Reader` и променя потока, като прилага заместващия шифър [[https://en.wikipedia.org/wiki/ROT13][rot13]] към всички букви.
+
+Типът `rot13Reader` е предоставен за вас.
+Направете го `io.Reader`, като реализирате неговия метод `Read`.
+
+.play methods/exercise-rot-reader.go

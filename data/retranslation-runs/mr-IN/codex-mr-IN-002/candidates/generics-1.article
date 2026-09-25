@@ -1,0 +1,11 @@
+* Type parameters
+
+Go फंक्शन्स type parameters वापरून अनेक types सोबत काम करतील अशा प्रकारे लिहिता येतात. फंक्शनचे type parameters त्याच्या arguments च्या आधी, चौकोनी कंसांत येतात.
+
+  func Index[T comparable](s []T, x T) int
+
+या declaration चा अर्थ `s` ही कोणत्याही `T` type ची slice आहे, जी अंगभूत constraint `comparable` पूर्ण करते. `x` हेही त्याच type चे मूल्य आहे.
+
+`comparable` हा उपयुक्त constraint आहे; त्यामुळे त्या type च्या मूल्यांवर `==` आणि `!=` operators वापरता येतात. या उदाहरणात, match सापडेपर्यंत एका मूल्याची slice मधील सर्व घटकांशी तुलना करण्यासाठी त्याचा वापर केला आहे. तुलना समर्थित करणाऱ्या कोणत्याही type साठी `Index` फंक्शन काम करते.
+
+.play generics/index.go

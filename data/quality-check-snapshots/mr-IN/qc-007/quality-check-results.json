@@ -1,0 +1,336 @@
+{
+  "schema_version": 2,
+  "evidence_type": "quality_check_results",
+  "locale": "mr-IN",
+  "snapshot_id": "qc-007",
+  "snapshot_manifest_sha256": "2bbbbda1f35f2804db41b43dd3372c3b2de58745e9680ba2fa641caa0af594e8",
+  "rubric": "translation-quality/v1",
+  "result_count": 60,
+  "results": [
+    {
+      "index": 1,
+      "unit_id": "welcome/1",
+      "rating": "C",
+      "finding": "链接将 Go programming language 错译为 Go ची सफर，造成导览与编程语言身份混淆；恢复语言名称与欢迎句关系并保留链接目标。"
+    },
+    {
+      "index": 2,
+      "unit_id": "welcome/2",
+      "rating": "B",
+      "finding": "标题 Go local 容易被理解为在本地运行 Go；应明确表达语言本地化与其他语言版本。"
+    },
+    {
+      "index": 3,
+      "unit_id": "welcome/4",
+      "rating": "A"
+    },
+    {
+      "index": 4,
+      "unit_id": "welcome/5",
+      "rating": "A"
+    },
+    {
+      "index": 5,
+      "unit_id": "welcome/3",
+      "rating": "A"
+    },
+    {
+      "index": 6,
+      "unit_id": "basics/1",
+      "rating": "A"
+    },
+    {
+      "index": 7,
+      "unit_id": "basics/2",
+      "rating": "A"
+    },
+    {
+      "index": 8,
+      "unit_id": "basics/3",
+      "rating": "A"
+    },
+    {
+      "index": 9,
+      "unit_id": "basics/4",
+      "rating": "A"
+    },
+    {
+      "index": 10,
+      "unit_id": "basics/5",
+      "rating": "A"
+    },
+    {
+      "index": 11,
+      "unit_id": "basics/6",
+      "rating": "A"
+    },
+    {
+      "index": 12,
+      "unit_id": "basics/7",
+      "rating": "B",
+      "finding": "naked return 仍以英语混入正文；应自然且一致地说明它是不带参数、返回已命名返回值的 return，并保留代码标识符。"
+    },
+    {
+      "index": 13,
+      "unit_id": "basics/8",
+      "rating": "A"
+    },
+    {
+      "index": 14,
+      "unit_id": "basics/9",
+      "rating": "A"
+    },
+    {
+      "index": 15,
+      "unit_id": "basics/10",
+      "rating": "B",
+      "finding": "short assignment statement 中普通教学词 assignment 未本地化；修订时保留 := 与短变量声明的准确含义。"
+    },
+    {
+      "index": 16,
+      "unit_id": "basics/11",
+      "rating": "B",
+      "finding": "unsigned 与 Unicode code point 的描述性文字未本地化；统一处理自然语言且不改动 Go 类型名和代码。"
+    },
+    {
+      "index": 17,
+      "unit_id": "basics/12",
+      "rating": "B",
+      "finding": "强调文本 _शून्य_मूल्य_ 用内部下划线连接正常词组，导致可见文本和格式不自然；在标记约束内恢复正常词间空格。"
+    },
+    {
+      "index": 18,
+      "unit_id": "basics/13",
+      "rating": "B",
+      "finding": "不同类型赋值的普通说明残留 assignment；本地化该词并保持必须显式转换的技术条件。"
+    },
+    {
+      "index": 19,
+      "unit_id": "basics/14",
+      "rating": "A"
+    },
+    {
+      "index": 20,
+      "unit_id": "basics/15",
+      "rating": "A"
+    },
+    {
+      "index": 21,
+      "unit_id": "basics/16",
+      "rating": "B",
+      "finding": "int 最大 64-bit 且有时更小的译文没有明确表达某些平台位宽较小；应准确说明位宽限制。"
+    },
+    {
+      "index": 22,
+      "unit_id": "basics/17",
+      "rating": "A"
+    },
+    {
+      "index": 23,
+      "unit_id": "flowcontrol/1",
+      "rating": "C",
+      "finding": "for 循环三个步骤的核心说明多次残留 condition、iteration；完整本地化执行顺序，不能只修改一处。"
+    },
+    {
+      "index": 24,
+      "unit_id": "flowcontrol/2",
+      "rating": "A"
+    },
+    {
+      "index": 25,
+      "unit_id": "flowcontrol/3",
+      "rating": "A"
+    },
+    {
+      "index": 26,
+      "unit_id": "flowcontrol/4",
+      "rating": "A"
+    },
+    {
+      "index": 27,
+      "unit_id": "flowcontrol/5",
+      "rating": "A"
+    },
+    {
+      "index": 28,
+      "unit_id": "flowcontrol/6",
+      "rating": "A"
+    },
+    {
+      "index": 29,
+      "unit_id": "flowcontrol/7",
+      "rating": "A"
+    },
+    {
+      "index": 30,
+      "unit_id": "flowcontrol/8",
+      "rating": "C",
+      "finding": "浮点数声明、牛顿法迭代与导数说明残留 floating point、iterations、derivative；一致本地化并保持公式与停止条件不变。"
+    },
+    {
+      "index": 31,
+      "unit_id": "flowcontrol/9",
+      "rating": "B",
+      "finding": "普通正文残留 condition；应与本页其他条件表达一致，并保持 switch 选择首个匹配 case 的语义。"
+    },
+    {
+      "index": 32,
+      "unit_id": "flowcontrol/10",
+      "rating": "A"
+    },
+    {
+      "index": 33,
+      "unit_id": "flowcontrol/11",
+      "rating": "A"
+    },
+    {
+      "index": 34,
+      "unit_id": "flowcontrol/12",
+      "rating": "A"
+    },
+    {
+      "index": 35,
+      "unit_id": "flowcontrol/13",
+      "rating": "B",
+      "finding": "last-in-first-out 栈顺序整段保留英文；使用自然马拉地语说明执行顺序，可保留必要技术缩写。"
+    },
+    {
+      "index": 36,
+      "unit_id": "flowcontrol/14",
+      "rating": "A"
+    },
+    {
+      "index": 37,
+      "unit_id": "moretypes/1",
+      "rating": "B",
+      "finding": "教学注释把 p 放在句尾，读写 i 的词序不自然；明确操作通过指针 p 进行并保持代码不变。"
+    },
+    {
+      "index": 38,
+      "unit_id": "moretypes/2",
+      "rating": "A"
+    },
+    {
+      "index": 39,
+      "unit_id": "moretypes/3",
+      "rating": "B",
+      "finding": "唯一教学句中的 dot、access 直接保留英文；自然表达使用点号访问 struct field。"
+    },
+    {
+      "index": 40,
+      "unit_id": "moretypes/4",
+      "rating": "B",
+      "finding": "access 多次作为普通动词残留英文；统一本地化并保持 (*p).X 与 p.X 的技术关系。"
+    },
+    {
+      "index": 41,
+      "unit_id": "moretypes/5",
+      "rating": "B",
+      "finding": "内存分配说明残留 allocate，同页 prefix 也未本地化；处理两处普通教学用语，不改变 Name: 与 \u0026。"
+    },
+    {
+      "index": 42,
+      "unit_id": "moretypes/6",
+      "rating": "A"
+    },
+    {
+      "index": 43,
+      "unit_id": "moretypes/7",
+      "rating": "C",
+      "finding": "切片定义及边界说明残留 view、colon、low、high bound、half-open range；完整本地化并保持包含低位、排除高位的规则。"
+    },
+    {
+      "index": 44,
+      "unit_id": "moretypes/8",
+      "rating": "A"
+    },
+    {
+      "index": 45,
+      "unit_id": "moretypes/9",
+      "rating": "A"
+    },
+    {
+      "index": 46,
+      "unit_id": "moretypes/10",
+      "rating": "C",
+      "finding": "上下界名称在两段正文中反复以 high/low bound 保留英文；明确低位默认 0、高位默认底层切片或数组长度，并保留切片表达式。"
+    },
+    {
+      "index": 47,
+      "unit_id": "moretypes/11",
+      "rating": "A"
+    },
+    {
+      "index": 48,
+      "unit_id": "moretypes/12",
+      "rating": "A"
+    },
+    {
+      "index": 49,
+      "unit_id": "moretypes/13",
+      "rating": "B",
+      "finding": "make 分配清零数组的说明残留 allocate；本地化内存分配，并保持返回值和容量规则。"
+    },
+    {
+      "index": 50,
+      "unit_id": "moretypes/14",
+      "rating": "A"
+    },
+    {
+      "index": 51,
+      "unit_id": "moretypes/15",
+      "rating": "B",
+      "finding": "扩容及新数组的说明反复残留 allocate；统一本地化并保持返回切片指向新数组的含义。"
+    },
+    {
+      "index": 52,
+      "unit_id": "moretypes/16",
+      "rating": "B",
+      "finding": "range 每次迭代返回索引和元素副本的说明残留 iteration；本地化该普通教学词。"
+    },
+    {
+      "index": 53,
+      "unit_id": "moretypes/17",
+      "rating": "B",
+      "finding": "通过赋值给 _ 忽略索引或值的说明残留 assignment；自然表达并保持 _ 与代码示例。"
+    },
+    {
+      "index": 54,
+      "unit_id": "moretypes/18",
+      "rating": "C",
+      "finding": "练习说明残留 unsigned、grayscale、bluescale、allocate；统一处理无符号整数、灰度及二维切片分配，同时保留 uint8、公式和代码标识符。"
+    },
+    {
+      "index": 55,
+      "unit_id": "moretypes/19",
+      "rating": "A"
+    },
+    {
+      "index": 56,
+      "unit_id": "moretypes/20",
+      "rating": "A"
+    },
+    {
+      "index": 57,
+      "unit_id": "moretypes/21",
+      "rating": "A"
+    },
+    {
+      "index": 58,
+      "unit_id": "moretypes/22",
+      "rating": "B",
+      "finding": "map 查询的 two-value assignment 仍混用 assignment；本地化并保持 elem, ok 与缺失 key 时零值语义。"
+    },
+    {
+      "index": 59,
+      "unit_id": "moretypes/23",
+      "rating": "B",
+      "finding": "练习验证说明保留 test suite；使用自然马拉地语技术表达，并保持 wc.Test 身份及成功、失败输出语义。"
+    },
+    {
+      "index": 60,
+      "unit_id": "moretypes/24",
+      "rating": "A"
+    }
+  ]
+}

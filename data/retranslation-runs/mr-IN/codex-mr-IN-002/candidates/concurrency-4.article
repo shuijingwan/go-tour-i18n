@@ -1,0 +1,15 @@
+* Range आणि Close
+
+आणखी मूल्ये पाठवली जाणार नाहीत हे दर्शवण्यासाठी sender channel `close` करू शकतो. Receive expression ला दुसरा parameter देऊन receivers channel बंद झाला आहे का ते तपासू शकतात: त्यानंतर
+
+	v, ok := <-ch
+
+`ok` चे मूल्य `false` असेल, जेव्हा घेण्यासाठी आणखी मूल्ये नसतील आणि channel बंद असेल.
+
+`for`i`:=`range`c` हा loop channel बंद होईपर्यंत त्यातून वारंवार मूल्ये घेतो.
+
+*टीप:* Channel फक्त sender ने बंद करावा; receiver ने कधीही नाही. बंद channel वर पाठवल्यास panic येतो.
+
+*आणखी*एक*टीप:* Channels files सारखे नसतात; सहसा ते बंद करण्याची गरज नसते. Receiver ला आणखी मूल्ये येणार नाहीत हे कळवायचे असेल, उदाहरणार्थ `range` loop थांबवण्यासाठीच channel बंद करणे आवश्यक असते.
+
+.play concurrency/range-and-close.go

@@ -1,0 +1,24 @@
+* त्रुटी
+
+Go प्रोग्राम त्रुटीस्थिती `error` मूल्यांनी दर्शवतात.
+
+`error` टाइप हा `fmt.Stringer` सारखा अंगभूत इंटरफेस आहे:
+
+	type error interface {
+		Error() string
+	}
+
+(`fmt.Stringer` प्रमाणेच, मूल्ये प्रिंट करताना `fmt` पॅकेज `error` इंटरफेस शोधते.)
+
+फंक्शन्स अनेकदा `error` मूल्य परत करतात आणि कॉल करणाऱ्या कोडने त्रुटी `nil` आहे का हे तपासून त्या हाताळाव्यात.
+
+	i, err := strconv.Atoi("42")
+	if err != nil {
+		fmt.Printf("couldn't convert number: %v\n", err)
+		return
+	}
+	fmt.Println("Converted integer:", i)
+
+nil `error` म्हणजे यश; non-nil `error` म्हणजे अपयश.
+
+.play methods/errors.go

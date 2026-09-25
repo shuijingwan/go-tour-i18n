@@ -1,0 +1,7 @@
+* Select
+
+`select` statement मुळे goroutine अनेक communication operations पूर्ण होण्याची वाट पाहू शकतो.
+
+`select` मधील एखादा case चालू शकत नाही तोपर्यंत थांबतो आणि मग तो case चालवतो. अनेक cases तयार असल्यास त्यांपैकी एकाची निवड यादृच्छिकपणे होते.
+
+.play concurrency/select.go

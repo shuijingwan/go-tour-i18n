@@ -1,0 +1,9 @@
+* सराव: Web Crawler
+
+या सरावात web crawler parallel करण्यासाठी Go ची concurrency features वापरा.
+
+`Crawl` फंक्शन बदला, जेणेकरून समान URL URL दोनदा fetch न करता URLs parallel fetch होतील.
+
+_सूचना_: fetch केलेल्या URLs चा cache map मध्ये ठेवता येईल; मात्र maps चा concurrent वापर सुरक्षित नसतो!
+
+.play concurrency/exercise-web-crawler.go

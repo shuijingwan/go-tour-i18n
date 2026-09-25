@@ -1,0 +1,102 @@
+{
+  "schema_version": 2,
+  "batch_id": "codex-mr-IN-006",
+  "locale": "mr-IN",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "example",
+  "unit_count": 7,
+  "units": [
+    {
+      "unit_id": "example:basics/numeric-constants.go",
+      "unit_kind": "example",
+      "source_path": "_content/tour/basics/numeric-constants.go",
+      "source_sha256": "338906e7c0e0d5e81312c97b37638442b48a621d59e69215be78eed6bd003544",
+      "input_path": "inputs/basics-numeric-constants.txt",
+      "input_sha256": "4d2c58e69c5956602f868dea6ffaca7824edc7b8af8d213494c0910aaa204b14",
+      "protected_token_count": 4,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "All three comments mix Marathi with untranslated ordinary technical words bit, shift and binary, yielding avoidable English residue; the numeric/bit-shift explanation remains technically correct. Improve naturalness and terminology consistently without changing 1\u003c\u003c1 or source code."
+    },
+    {
+      "unit_id": "example:concurrency/exercise-equivalent-binary-trees.go",
+      "unit_kind": "example",
+      "source_path": "_content/tour/concurrency/exercise-equivalent-binary-trees.go",
+      "source_sha256": "184cbbd1e662b64de6e6928d4af6f2469c7bccdbc9a8b5f477c1b694b9ab02b1",
+      "input_path": "inputs/concurrency-exercise-equivalent-binary-trees.txt",
+      "input_sha256": "7a7b9604ab994ccecd30d445793424bc7db50ec6b4b77d9d082d42f1e9cc5685",
+      "protected_token_count": 5,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "C",
+      "previous_finding": "Comments leave ordinary technical channel in English despite mandatory channel -\u003e चॅनेल (line 8); tree/trees also remain inconsistently untranslated in explanatory prose (lines 7-12). Preserve Walk, Same, t, ch, t1, t2 and code; localize the natural-language explanation."
+    },
+    {
+      "unit_id": "example:concurrency/exercise-web-crawler.go",
+      "unit_kind": "example",
+      "source_path": "_content/tour/concurrency/exercise-web-crawler.go",
+      "source_sha256": "bd6226dcae3b663a3aa1cbf502d840357ac0efb6de46e7a66612ca2834cf5e37",
+      "input_path": "inputs/concurrency-exercise-web-crawler.txt",
+      "input_sha256": "53554a1126b74da6e3bcb93c625eff1ec44f560e2817f1875202423a7d6009ab",
+      "protected_token_count": 12,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "C",
+      "previous_finding": "Comment line 11 uses untranslated slice despite mandatory slice -\u003e स्लाइस; comments lines 10-20 retain avoidable English page/recursive/crawl/implementation, and the second Crawl line starts with a stray semicolon before url, degrading the instructional explanation. Preserve code identifiers/URLs/TODO markers while fixing comment prose."
+    },
+    {
+      "unit_id": "example:concurrency/mutex-counter.go",
+      "unit_kind": "example",
+      "source_path": "_content/tour/concurrency/mutex-counter.go",
+      "source_sha256": "74488ecc347a123c8538069175ffeef5ea38577bb37b2c7a9ceb6bba47ab02b4",
+      "input_path": "inputs/concurrency-mutex-counter.txt",
+      "input_sha256": "748bfb48d6f8d0455861b810e2d04f40eb3d136ab696139d32fdd290267fde03",
+      "protected_token_count": 8,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "C",
+      "previous_finding": "Comments for Inc and Value leave key untranslated twice despite mandatory key -\u003e की (lines 17,25). Concurrent and counter are also left as English common prose (lines 11,17,25), and Lock is not consistently localized as the preferred technical verb. Preserve SafeCounter, Inc, Value, c.v and goroutine identifiers."
+    },
+    {
+      "unit_id": "example:generics/list.go",
+      "unit_kind": "example",
+      "source_path": "_content/tour/generics/list.go",
+      "source_sha256": "ab72fc4fd321f507abde796abe0830876e0f8bcd8661d9ce4ac34c3da2f68060",
+      "input_path": "inputs/generics-list.txt",
+      "input_sha256": "b226f08fdb22be19e3268827b658f86af3351f1468094b1a422890c9ed131993",
+      "protected_token_count": 3,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "The only teaching comment leaves its central descriptive term singly-linked list in English inside a Marathi sentence (line 6). The semantics and mandatory type -\u003e टाइप are correct, but the mixed-language phrasing needs minor localization or standardized transliteration; preserve List and T."
+    },
+    {
+      "unit_id": "example:moretypes/append.go",
+      "unit_kind": "example",
+      "source_path": "_content/tour/moretypes/append.go",
+      "source_sha256": "655ee5085fec61bcb38c9f029741bb1a06a414f94b8b36ed0362055b0d6b10bb",
+      "input_path": "inputs/moretypes-append.txt",
+      "input_sha256": "6327e4534f0bf9a10fe34f499c6c5c2886fc6555db634c69974a6a3ded918ed5",
+      "protected_token_count": 5,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "First teaching comment has words fused as हेnilस्लाइसवर (line 11), losing required word spacing and making the sentence visibly unnatural; remaining comments and technical meaning are correct. Preserve the nil and append Go identities."
+    },
+    {
+      "unit_id": "example:moretypes/exercise-fibonacci-closure.go",
+      "unit_kind": "example",
+      "source_path": "_content/tour/moretypes/exercise-fibonacci-closure.go",
+      "source_sha256": "a04ba02819628af3c95c045330a5ce733f9f182e755e6ba74e78c0aea602530c",
+      "input_path": "inputs/moretypes-exercise-fibonacci-closure.txt",
+      "input_sha256": "9867410ea85916eb82b006acb321957502e93cbfbd813b5390ce99fa75541181",
+      "protected_token_count": 3,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "C",
+      "previous_finding": "Both instructional comment lines leave function in English despite mandatory function -\u003e फंक्शन; their reversed sentence order is awkward and obscures the nested function-return relationship. Preserve fibonacci and Go syntax, improve only natural-language comments."
+    }
+  ]
+}

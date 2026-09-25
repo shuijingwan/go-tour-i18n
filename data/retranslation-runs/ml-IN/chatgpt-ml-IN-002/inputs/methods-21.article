@@ -1,0 +1,20 @@
+* Readers
+
+The ⟪GTI18N_120c3fc9_000001⟫io⟪GTI18N_120c3fc9_000002⟫ package specifies the ⟪GTI18N_120c3fc9_000003⟫io.Reader⟪GTI18N_120c3fc9_000004⟫ interface,
+which represents the read end of a stream of data.
+
+The Go standard library contains [[⟪GTI18N_120c3fc9_000005⟫][many implementations]] of this interface, including files, network connections, compressors, ciphers, and others.
+
+The ⟪GTI18N_120c3fc9_000006⟫io.Reader⟪GTI18N_120c3fc9_000007⟫ interface has a ⟪GTI18N_120c3fc9_000008⟫Read⟪GTI18N_120c3fc9_000009⟫ method:
+
+⟪GTI18N_120c3fc9_000010⟫
+
+⟪GTI18N_120c3fc9_000011⟫Read⟪GTI18N_120c3fc9_000012⟫ populates the given byte slice with data and returns the number of bytes
+populated and an error value. It returns an ⟪GTI18N_120c3fc9_000013⟫io.EOF⟪GTI18N_120c3fc9_000014⟫ error when the stream
+ends.
+
+The example code creates a
+[[⟪GTI18N_120c3fc9_000015⟫][⟪GTI18N_120c3fc9_000016⟫strings.Reader⟪GTI18N_120c3fc9_000017⟫]]
+and consumes its output 8 bytes at a time.
+
+⟪GTI18N_120c3fc9_000018⟫

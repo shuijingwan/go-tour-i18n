@@ -1,0 +1,17 @@
+* Errors
+
+⟪GTI18N_9eaab1fd_000001⟫ प्रोग्राम्स त्रुटीस्थिती ⟪GTI18N_9eaab1fd_000002⟫error⟪GTI18N_9eaab1fd_000003⟫ मूल्यांद्वारे दर्शवतात.
+
+⟪GTI18N_9eaab1fd_000004⟫error⟪GTI18N_9eaab1fd_000005⟫ type हा ⟪GTI18N_9eaab1fd_000006⟫fmt.Stringer⟪GTI18N_9eaab1fd_000007⟫ सारखा अंगभूत interface आहे:
+
+⟪GTI18N_9eaab1fd_000008⟫
+
+(⟪GTI18N_9eaab1fd_000009⟫fmt.Stringer⟪GTI18N_9eaab1fd_000010⟫ प्रमाणेच, मूल्ये print करताना ⟪GTI18N_9eaab1fd_000011⟫fmt⟪GTI18N_9eaab1fd_000012⟫ package ⟪GTI18N_9eaab1fd_000013⟫error⟪GTI18N_9eaab1fd_000014⟫ interface शोधते.)
+
+फंक्शन्स अनेकदा ⟪GTI18N_9eaab1fd_000015⟫error⟪GTI18N_9eaab1fd_000016⟫ मूल्य परत करतात; कॉल करणाऱ्या code ने error ⟪GTI18N_9eaab1fd_000017⟫nil⟪GTI18N_9eaab1fd_000018⟫ आहे का हे तपासून ते हाताळले पाहिजे.
+
+⟪GTI18N_9eaab1fd_000019⟫
+
+⟪GTI18N_9eaab1fd_000020⟫ मूल्य असलेला ⟪GTI18N_9eaab1fd_000021⟫error⟪GTI18N_9eaab1fd_000022⟫ म्हणजे यश. जेव्हा ⟪GTI18N_9eaab1fd_000023⟫ मूल्य नसते, तेव्हा ⟪GTI18N_9eaab1fd_000024⟫error⟪GTI18N_9eaab1fd_000025⟫ म्हणजे अपयश.
+
+⟪GTI18N_9eaab1fd_000026⟫

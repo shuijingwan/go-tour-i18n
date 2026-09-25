@@ -1,0 +1,9 @@
+* सराव: Web Crawler
+
+या सरावात web crawler parallel करण्यासाठी ⟪GTI18N_bb686393_000001⟫ ची concurrency features वापरा.
+
+⟪GTI18N_bb686393_000002⟫Crawl⟪GTI18N_bb686393_000003⟫ फंक्शन बदला, जेणेकरून समान ⟪GTI18N_bb686393_000004⟫ URL दोनदा fetch न करता URLs parallel fetch होतील.
+
+⟪GTI18N_bb686393_000005⟫सूचना⟪GTI18N_bb686393_000006⟫: fetch केलेल्या URLs चा cache map मध्ये ठेवता येईल; मात्र maps चा concurrent वापर सुरक्षित नसतो!
+
+⟪GTI18N_bb686393_000007⟫

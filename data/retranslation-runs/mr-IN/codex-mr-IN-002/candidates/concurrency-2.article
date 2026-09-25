@@ -1,0 +1,20 @@
+* Channels
+
+Channels हे typed conduit आहेत; channel operator `<-` वापरून त्यांच्यामधून मूल्ये पाठवता आणि घेता येतात.
+
+	ch <- v    // पाठवा v channel वर ch.
+	v := <-ch  // ch मधून घ्या, आणि
+	           // मूल्य v मध्ये ठेवा.
+
+(Data बाणाच्या दिशेने वाहतो.)
+
+Maps आणि slices प्रमाणे channels देखील वापरण्यापूर्वी तयार करावे लागतात:
+
+	ch := make(chan int)
+
+मूलतः, दुसरी बाजू तयार होईपर्यंत send आणि receive थांबतात. त्यामुळे explicit locks किंवा condition variables शिवाय goroutines synchronize होऊ शकतात.
+
+उदाहरणातील code slice मधील संख्यांची बेरीज करतो; काम दोन goroutines मध्ये वाटले जाते.
+दोन्ही goroutines ची गणना पूर्ण झाल्यावर अंतिम परिणाम काढला जातो.
+
+.play concurrency/channels.go

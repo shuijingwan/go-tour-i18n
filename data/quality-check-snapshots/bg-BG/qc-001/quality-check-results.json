@@ -1,0 +1,644 @@
+{
+  "schema_version": 2,
+  "evidence_type": "quality_check_results",
+  "locale": "bg-BG",
+  "snapshot_id": "qc-001",
+  "snapshot_manifest_sha256": "7b4c3c639a7226300e0dd891eb6e3c2416d2e918b391732ca505ea9d06e2406b",
+  "rubric": "translation-quality/v1",
+  "result_count": 122,
+  "results": [
+    {
+      "index": 1,
+      "unit_id": "welcome/1",
+      "rating": "A"
+    },
+    {
+      "index": 2,
+      "unit_id": "welcome/2",
+      "rating": "B",
+      "finding": "标题“Go local”译为“Go локално”，容易被理解为在本机运行 Go；本页实际介绍其他语言版本，与后续离线运行页面不同。请按该页多语言本地化语境修订标题，保留全部链接目标。"
+    },
+    {
+      "index": 3,
+      "unit_id": "welcome/4",
+      "rating": "A"
+    },
+    {
+      "index": 4,
+      "unit_id": "welcome/5",
+      "rating": "A"
+    },
+    {
+      "index": 5,
+      "unit_id": "welcome/3",
+      "rating": "A"
+    },
+    {
+      "index": 6,
+      "unit_id": "basics/1",
+      "rating": "A"
+    },
+    {
+      "index": 7,
+      "unit_id": "basics/2",
+      "rating": "A"
+    },
+    {
+      "index": 8,
+      "unit_id": "basics/3",
+      "rating": "A"
+    },
+    {
+      "index": 9,
+      "unit_id": "basics/4",
+      "rating": "A"
+    },
+    {
+      "index": 10,
+      "unit_id": "basics/5",
+      "rating": "A"
+    },
+    {
+      "index": 11,
+      "unit_id": "basics/6",
+      "rating": "A"
+    },
+    {
+      "index": 12,
+      "unit_id": "basics/7",
+      "rating": "B",
+      "finding": "原文 a 'naked' return 译为“„гол“ return”属于生硬直译且混用未格式化英文关键词；开头“Go може да има именувани връщани стойности”也不够自然。请统一表达无参数 return 的 Go 技术概念，保留其仅适合短函数及长函数影响可读性的语义。"
+    },
+    {
+      "index": 13,
+      "unit_id": "basics/8",
+      "rating": "A"
+    },
+    {
+      "index": 14,
+      "unit_id": "basics/9",
+      "rating": "A"
+    },
+    {
+      "index": 15,
+      "unit_id": "basics/10",
+      "rating": "A"
+    },
+    {
+      "index": 16,
+      "unit_id": "basics/11",
+      "rating": "B",
+      "finding": "同页标题已用 glossary preferred 的 basic type→“базов тип”，正文“Основните типове на Go”却改用与 underlying type→“основен тип”易混的术语；请统一 basic types 的表述，不改变类型列表及技术陈述。"
+    },
+    {
+      "index": 17,
+      "unit_id": "basics/12",
+      "rating": "C",
+      "finding": "原文 zero value 的正式 mandatory 译法为“нулева стойност”；正文写成“_нулева_стойност_”，两词间残留下划线，导致术语和原文强调格式受损。须恢复正确的双词术语并正确保留强调，不改变 `0`、`false`、`\"\"` 或代码。"
+    },
+    {
+      "index": 18,
+      "unit_id": "basics/13",
+      "rating": "A"
+    },
+    {
+      "index": 19,
+      "unit_id": "basics/14",
+      "rating": "A"
+    },
+    {
+      "index": 20,
+      "unit_id": "basics/15",
+      "rating": "A"
+    },
+    {
+      "index": 21,
+      "unit_id": "basics/16",
+      "rating": "A"
+    },
+    {
+      "index": 22,
+      "unit_id": "basics/17",
+      "rating": "A"
+    },
+    {
+      "index": 23,
+      "unit_id": "flowcontrol/1",
+      "rating": "A"
+    },
+    {
+      "index": 24,
+      "unit_id": "flowcontrol/2",
+      "rating": "A"
+    },
+    {
+      "index": 25,
+      "unit_id": "flowcontrol/3",
+      "rating": "A"
+    },
+    {
+      "index": 26,
+      "unit_id": "flowcontrol/4",
+      "rating": "A"
+    },
+    {
+      "index": 27,
+      "unit_id": "flowcontrol/5",
+      "rating": "A"
+    },
+    {
+      "index": 28,
+      "unit_id": "flowcontrol/6",
+      "rating": "A"
+    },
+    {
+      "index": 29,
+      "unit_id": "flowcontrol/7",
+      "rating": "A"
+    },
+    {
+      "index": 30,
+      "unit_id": "flowcontrol/8",
+      "rating": "B",
+      "finding": "原文 Starting with some guess z 的候选译文“Започвайки с някакво предполагаемо значение на z”将数学初始估计值表述为“предполагаемо значение”（含义），用词不自然且降低教学清晰度；请准确表达初始猜测的数值/近似值并与下文“приближение”一致。"
+    },
+    {
+      "index": 31,
+      "unit_id": "flowcontrol/9",
+      "rating": "A"
+    },
+    {
+      "index": 32,
+      "unit_id": "flowcontrol/10",
+      "rating": "A"
+    },
+    {
+      "index": 33,
+      "unit_id": "flowcontrol/11",
+      "rating": "A"
+    },
+    {
+      "index": 34,
+      "unit_id": "flowcontrol/12",
+      "rating": "A"
+    },
+    {
+      "index": 35,
+      "unit_id": "flowcontrol/13",
+      "rating": "A"
+    },
+    {
+      "index": 36,
+      "unit_id": "flowcontrol/14",
+      "rating": "A"
+    },
+    {
+      "index": 37,
+      "unit_id": "moretypes/1",
+      "rating": "A"
+    },
+    {
+      "index": 38,
+      "unit_id": "moretypes/2",
+      "rating": "A"
+    },
+    {
+      "index": 39,
+      "unit_id": "moretypes/3",
+      "rating": "A"
+    },
+    {
+      "index": 40,
+      "unit_id": "moretypes/4",
+      "rating": "A"
+    },
+    {
+      "index": 41,
+      "unit_id": "moretypes/5",
+      "rating": "B",
+      "finding": "原文 newly allocated struct value 被译为“новоразпределена стойност на структура”，属于生硬直译，可能模糊内存分配的技术含义；请改用自然准确的保加利亚语内存分配表述，不改变字段和指针语义。"
+    },
+    {
+      "index": 42,
+      "unit_id": "moretypes/6",
+      "rating": "A"
+    },
+    {
+      "index": 43,
+      "unit_id": "moretypes/7",
+      "rating": "A"
+    },
+    {
+      "index": 44,
+      "unit_id": "moretypes/8",
+      "rating": "A"
+    },
+    {
+      "index": 45,
+      "unit_id": "moretypes/9",
+      "rating": "B",
+      "finding": "原文 then builds a slice that references it 被译为“след което създава срез, който го реферира”；“го реферира”是生硬的英语式搭配。请以自然保加利亚语准确说明该 slice 引用刚创建的同一数组、并非复制该数组。"
+    },
+    {
+      "index": 46,
+      "unit_id": "moretypes/10",
+      "rating": "A"
+    },
+    {
+      "index": 47,
+      "unit_id": "moretypes/11",
+      "rating": "A"
+    },
+    {
+      "index": 48,
+      "unit_id": "moretypes/12",
+      "rating": "A"
+    },
+    {
+      "index": 49,
+      "unit_id": "moretypes/13",
+      "rating": "B",
+      "finding": "原文 returns a slice that refers to that array 被译为“връща срез, който реферира този масив”，存在与 moretypes/9 相同的生硬“реферира”用法；请自然表明返回的 slice 引用刚分配的数组，保留 make、长度和容量的说明。"
+    },
+    {
+      "index": 50,
+      "unit_id": "moretypes/14",
+      "rating": "A"
+    },
+    {
+      "index": 51,
+      "unit_id": "moretypes/15",
+      "rating": "A"
+    },
+    {
+      "index": 52,
+      "unit_id": "moretypes/16",
+      "rating": "A"
+    },
+    {
+      "index": 53,
+      "unit_id": "moretypes/17",
+      "rating": "A"
+    },
+    {
+      "index": 54,
+      "unit_id": "moretypes/18",
+      "rating": "A"
+    },
+    {
+      "index": 55,
+      "unit_id": "moretypes/19",
+      "rating": "A"
+    },
+    {
+      "index": 56,
+      "unit_id": "moretypes/20",
+      "rating": "A"
+    },
+    {
+      "index": 57,
+      "unit_id": "moretypes/21",
+      "rating": "A"
+    },
+    {
+      "index": 58,
+      "unit_id": "moretypes/22",
+      "rating": "A"
+    },
+    {
+      "index": 59,
+      "unit_id": "moretypes/23",
+      "rating": "A"
+    },
+    {
+      "index": 60,
+      "unit_id": "moretypes/24",
+      "rating": "A"
+    },
+    {
+      "index": 61,
+      "unit_id": "moretypes/25",
+      "rating": "A"
+    },
+    {
+      "index": 62,
+      "unit_id": "moretypes/26",
+      "rating": "A"
+    },
+    {
+      "index": 63,
+      "unit_id": "moretypes/27",
+      "rating": "A"
+    },
+    {
+      "index": 64,
+      "unit_id": "methods/1",
+      "rating": "A"
+    },
+    {
+      "index": 65,
+      "unit_id": "methods/2",
+      "rating": "A"
+    },
+    {
+      "index": 66,
+      "unit_id": "methods/3",
+      "rating": "A"
+    },
+    {
+      "index": 67,
+      "unit_id": "methods/4",
+      "rating": "A"
+    },
+    {
+      "index": 68,
+      "unit_id": "methods/5",
+      "rating": "A"
+    },
+    {
+      "index": 69,
+      "unit_id": "methods/6",
+      "rating": "A"
+    },
+    {
+      "index": 70,
+      "unit_id": "methods/7",
+      "rating": "A"
+    },
+    {
+      "index": 71,
+      "unit_id": "methods/8",
+      "rating": "A"
+    },
+    {
+      "index": 72,
+      "unit_id": "methods/9",
+      "rating": "C",
+      "finding": "EN: An _interface_type_ is defined as a set of method signatures. BG: _интерфейсен_тип_ се дефинира като множество от сигнатури на методи. The mandatory term interface type must be the two-word „интерфейсен тип“; the underscore between Bulgarian words breaks the term and emphasis formatting. Revise only the translatable phrase and maintain the original semantic statement and protected elements."
+    },
+    {
+      "index": 73,
+      "unit_id": "methods/10",
+      "rating": "A"
+    },
+    {
+      "index": 74,
+      "unit_id": "methods/11",
+      "rating": "B",
+      "finding": "EN: A specific underlying concrete type; calling a method invokes the method on its underlying type. BG: „определен базов конкретен тип“ and „базовия ѝ тип“. The adjective „базов“ suggests glossary basic type („базов тип“) rather than the underlying concrete/dynamic type; the glossary distinguishes underlying type („основен тип“). Make these two occurrences terminologically unambiguous without changing the value/type tuple or dispatch semantics."
+    },
+    {
+      "index": 75,
+      "unit_id": "methods/12",
+      "rating": "B",
+      "finding": "EN heading: Interface values with nil underlying values. BG heading: „Интерфейсни стойности с базова стойност nil“. „Базова стойност“ is an imprecise calque and blurs the nil concrete value held by a non-nil interface with a basic/zero value; body correctly says the concrete value contained in the interface is nil. Improve the heading's Bulgarian technical clarity while preserving the vital distinction between a nil concrete value and a nil interface."
+    },
+    {
+      "index": 76,
+      "unit_id": "methods/13",
+      "rating": "B",
+      "finding": "EN heading: Nil interface values. BG heading: „Интерфейсни стойности nil“ and body „Интерфейсна стойност nil“. This syntactically awkward noun+nil phrase does not clearly distinguish an interface value that is itself nil from the preceding page's non-nil interface containing a nil concrete value. Use natural Bulgarian phrasing that expressly retains that distinction; do not modify the code or claims about the missing value and concrete type."
+    },
+    {
+      "index": 77,
+      "unit_id": "methods/14",
+      "rating": "C",
+      "finding": "EN: The interface type that specifies zero methods is known as the _empty_interface_. BG: „се нарича _празен_интерфейс_“. The internal underscore incorrectly joins the two Bulgarian words and splits the emphasis span. Render the phrase as the natural two-word term „празен интерфейс“ within properly formed emphasis, preserving `interface{}`, `any`, and link/code identity."
+    },
+    {
+      "index": 78,
+      "unit_id": "methods/15",
+      "rating": "C",
+      "finding": "EN: A _type_assertion_ provides access to an interface value's underlying concrete value. BG: „_утвърждение_за_тип_ осигурява достъп ...“. The required mandatory glossary phrase „утвърждение за тип“ has been joined with erroneous internal underscores, damaging natural spacing and emphasis markup. Restore the intact three-word technical term with correct emphasis. Keep i.(T), t/ok, panic and zero-value semantics."
+    },
+    {
+      "index": 79,
+      "unit_id": "methods/16",
+      "rating": "C",
+      "finding": "EN: A _type_switch_ is a construct that permits several type assertions in series. BG: „_превключване_по_тип_ е конструкция ...“. The mandatory term „превключване по тип“ is incorrectly joined by underscores, breaking the natural three-word term and the emphasis span. Correct its spacing/formatting without changing `i.(type)`, case behavior or protected Go snippets."
+    },
+    {
+      "index": 80,
+      "unit_id": "methods/17",
+      "rating": "A"
+    },
+    {
+      "index": 81,
+      "unit_id": "methods/18",
+      "rating": "A"
+    },
+    {
+      "index": 82,
+      "unit_id": "methods/19",
+      "rating": "A"
+    },
+    {
+      "index": 83,
+      "unit_id": "methods/20",
+      "rating": "B",
+      "finding": "EN: Sqrt should return a non-nil error value when given a negative number. BG: „трябва да връща ненулева стойност за грешка“. „ненулева“ is ambiguous here because the condition is non-`nil`, not numeric nonzero; the adjoining Errors page and this exercise use `nil` explicitly. Make the nil/non-nil distinction unambiguous and consistent; preserve the prescribed literal error text and code."
+    },
+    {
+      "index": 84,
+      "unit_id": "methods/21",
+      "rating": "A"
+    },
+    {
+      "index": 85,
+      "unit_id": "methods/22",
+      "rating": "A"
+    },
+    {
+      "index": 86,
+      "unit_id": "methods/23",
+      "rating": "A"
+    },
+    {
+      "index": 87,
+      "unit_id": "methods/24",
+      "rating": "A"
+    },
+    {
+      "index": 88,
+      "unit_id": "methods/25",
+      "rating": "A"
+    },
+    {
+      "index": 89,
+      "unit_id": "methods/26",
+      "rating": "A"
+    },
+    {
+      "index": 90,
+      "unit_id": "generics/1",
+      "rating": "A"
+    },
+    {
+      "index": 91,
+      "unit_id": "generics/2",
+      "rating": "A"
+    },
+    {
+      "index": 92,
+      "unit_id": "generics/3",
+      "rating": "A"
+    },
+    {
+      "index": 93,
+      "unit_id": "concurrency/1",
+      "rating": "A"
+    },
+    {
+      "index": 94,
+      "unit_id": "concurrency/2",
+      "rating": "A"
+    },
+    {
+      "index": 95,
+      "unit_id": "concurrency/3",
+      "rating": "A"
+    },
+    {
+      "index": 96,
+      "unit_id": "concurrency/4",
+      "rating": "B",
+      "finding": "EN: *Another*note:* Channels aren't like files; you don't usually need to close them. BG: „*Друга*забележка:* Каналите не са като файловете“. The Bulgarian adjective and noun are glued together without a word space, yielding awkward/incorrect visible copy and suspect emphasis boundaries. Ensure the phrase reads naturally as two words with valid note emphasis while retaining the caveat about when channels need closing and the existing code/link targets."
+    },
+    {
+      "index": 97,
+      "unit_id": "concurrency/5",
+      "rating": "A"
+    },
+    {
+      "index": 98,
+      "unit_id": "concurrency/6",
+      "rating": "A"
+    },
+    {
+      "index": 99,
+      "unit_id": "concurrency/7",
+      "rating": "A"
+    },
+    {
+      "index": 100,
+      "unit_id": "concurrency/8",
+      "rating": "A"
+    },
+    {
+      "index": 101,
+      "unit_id": "concurrency/9",
+      "rating": "C",
+      "finding": "EN: This concept is called _mutual_exclusion_, and the conventional name ... is _mutex_. BG: „Това се нарича _взаимно_изключване_, ... _мютекс_.“ The preferred glossary term „взаимно изключване“ has an erroneous internal underscore, splitting the term/emphasis and potentially rendering an underscore literally. Restore the two-word term and valid emphasis; keep `sync.Mutex`, `Lock`, `Unlock`, mutual-exclusion and `defer` semantics unchanged."
+    },
+    {
+      "index": 102,
+      "unit_id": "concurrency/10",
+      "rating": "B",
+      "finding": "EN: Use Go's concurrency features to parallelize a web crawler. BG: „за да изпълнявате паралелно уеб робот“. This literal Bulgarian construction is unnatural and can suggest running the crawler itself in parallel rather than parallelizing the crawler's URL-fetching work. Clarify the intended parallel crawling operations consistently with the following `Crawl` sentence; preserve URL deduplication and the map concurrency warning."
+    },
+    {
+      "index": 103,
+      "unit_id": "concurrency/11",
+      "rating": "A"
+    },
+    {
+      "index": 104,
+      "unit_id": "example:basics/numeric-constants.go",
+      "rating": "A"
+    },
+    {
+      "index": 105,
+      "unit_id": "example:basics/type-inference.go",
+      "rating": "A"
+    },
+    {
+      "index": 106,
+      "unit_id": "example:concurrency/channels.go",
+      "rating": "B",
+      "finding": "EN: `x, y := \u003c-c, \u003c-c // receive from c`; BG: `x, y := \u003c-c, \u003c-c // получаваме стойност от c`. The Go statement performs TWO receives, assigning x and y separately, but Bulgarian comment newly introduces singular `стойност`, suggesting one received value. Revise only the allowed teaching comment to make the two receives unambiguous while preserving both `\u003c-c` operations, identifiers and Go semantics."
+    },
+    {
+      "index": 107,
+      "unit_id": "example:concurrency/exercise-equivalent-binary-trees.go",
+      "rating": "A"
+    },
+    {
+      "index": 108,
+      "unit_id": "example:concurrency/exercise-web-crawler.go",
+      "rating": "B",
+      "finding": "EN: `Fetch returns the body of URL and a slice of URLs found on that page.` BG: `Fetch връща съдържанието на URL и срез от URL адресите, намерени на тази страница.` The Bulgarian `съдържанието на URL` reads as the URL string itself having content, rather than the page body returned for that URL. In this web-crawler exercise this distinction matters. Clarify the page body/content associated with the URL in natural Bulgarian without changing `Fetch`, `URL`, comment structure or code."
+    },
+    {
+      "index": 109,
+      "unit_id": "example:concurrency/mutex-counter.go",
+      "rating": "A"
+    },
+    {
+      "index": 110,
+      "unit_id": "example:flowcontrol/if-and-else.go",
+      "rating": "A"
+    },
+    {
+      "index": 111,
+      "unit_id": "example:generics/index.go",
+      "rating": "B",
+      "finding": "EN: `v and x are type T, which has the comparable constraint, so we can use == here.` BG: `v и x са от тип T с ограничението comparable / което позволява тук да използваме ==.` Bulgarian requires a comma before the relative clause `което`; its omission makes the explanatory two-line teaching comment grammatically incorrect. Correct the punctuation while keeping `T`, `comparable`, `==` and the constraint/equality meaning intact."
+    },
+    {
+      "index": 112,
+      "unit_id": "example:generics/list.go",
+      "rating": "A"
+    },
+    {
+      "index": 113,
+      "unit_id": "example:methods/exercise-reader.go",
+      "rating": "A"
+    },
+    {
+      "index": 114,
+      "unit_id": "example:methods/exercise-stringer.go",
+      "rating": "A"
+    },
+    {
+      "index": 115,
+      "unit_id": "example:methods/interfaces-are-satisfied-implicitly.go",
+      "rating": "A"
+    },
+    {
+      "index": 116,
+      "unit_id": "example:methods/interfaces.go",
+      "rating": "A"
+    },
+    {
+      "index": 117,
+      "unit_id": "example:moretypes/append.go",
+      "rating": "A"
+    },
+    {
+      "index": 118,
+      "unit_id": "example:moretypes/exercise-fibonacci-closure.go",
+      "rating": "A"
+    },
+    {
+      "index": 119,
+      "unit_id": "example:moretypes/pointers.go",
+      "rating": "B",
+      "finding": "EN, later reassignment: `p = \u0026j // point to j`; BG: `p = \u0026j // създаваме указател към j`. The target says 'create a pointer to j', repeating the earlier `p := \u0026i` commentary, although this line reassigns the EXISTING pointer variable `p` to point to `j`. That distinction is the teaching purpose of this example. Revise the allowed comment to express redirecting/repointing `p` without changing `p = \u0026j` or any Go code."
+    },
+    {
+      "index": 120,
+      "unit_id": "example:moretypes/slice-len-cap.go",
+      "rating": "A"
+    },
+    {
+      "index": 121,
+      "unit_id": "example:moretypes/slices-of-slice.go",
+      "rating": "A"
+    },
+    {
+      "index": 122,
+      "unit_id": "example:moretypes/struct-literals.go",
+      "rating": "A"
+    }
+  ]
+}

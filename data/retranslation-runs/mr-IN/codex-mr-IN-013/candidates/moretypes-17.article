@@ -1,0 +1,12 @@
+* Range पुढे
+
+`_` ला मूल्य देऊन तुम्ही इंडेक्स किंवा मूल्य वगळू शकता.
+
+    for i, _ := range pow
+    for _, value := range pow
+
+तुम्हाला फक्त इंडेक्स हवा असल्यास दुसरे व्हेरिएबल वगळता येते.
+
+    for i := range pow
+
+.play moretypes/range-continued.go

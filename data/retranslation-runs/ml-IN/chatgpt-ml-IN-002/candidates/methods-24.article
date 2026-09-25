@@ -1,0 +1,19 @@
+* ചിത്രങ്ങൾ
+
+[[/pkg/image/#Image][image പാക്കേജ്]] `Image` ഇന്റർഫേസ് നിർവചിക്കുന്നു:
+
+	package image
+
+	type Image interface {
+		ColorModel() color.Model
+		Bounds() Rectangle
+		At(x, y int) color.Color
+	}
+
+*ശ്രദ്ധിക്കുക*: `Rectangle` എന്നത് `Bounds` മെഥഡിൽനിന്ന് തിരികെ ലഭിക്കുന്ന മൂല്യമാണ്; അത് യഥാർഥത്തിൽ [[/pkg/image/#Rectangle][`image.Rectangle`]] ആണ്, കാരണം പ്രഖ്യാപനം `image` പാക്കേജിനുള്ളിലാണ്.
+
+(വിശദാംശങ്ങൾക്കായി [[/pkg/image/#Image][ഡോക്യുമെന്റേഷൻ]] കാണുക.)
+
+`color.Color`, `color.Model` എന്നിവയും ഇന്റർഫേസുകളാണ്. എന്നാൽ മുൻകൂട്ടി നിർവചിച്ചിട്ടുള്ള `color.RGBA`, `color.RGBAModel` എന്നിവ ഉപയോഗിക്കുന്നതിനാൽ അവയുടെ വിശദാംശങ്ങളിലേക്ക് ഇപ്പോൾ കടക്കുന്നില്ല. ഈ ഇന്റർഫേസുകളും ടൈപ്പുകളും [[/pkg/image/color/][image/color പാക്കേജിൽ]] നിർവചിച്ചിട്ടുണ്ട്.
+
+.play methods/images.go

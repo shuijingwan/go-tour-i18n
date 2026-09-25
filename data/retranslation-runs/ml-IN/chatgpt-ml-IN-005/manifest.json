@@ -1,0 +1,63 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-ml-IN-005",
+  "locale": "ml-IN",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "example",
+  "unit_count": 4,
+  "units": [
+    {
+      "unit_id": "example:concurrency/exercise-equivalent-binary-trees.go",
+      "unit_kind": "example",
+      "source_path": "_content/tour/concurrency/exercise-equivalent-binary-trees.go",
+      "source_sha256": "184cbbd1e662b64de6e6928d4af6f2469c7bccdbc9a8b5f477c1b694b9ab02b1",
+      "input_path": "inputs/concurrency-exercise-equivalent-binary-trees.txt",
+      "input_sha256": "7a7b9604ab994ccecd30d445793424bc7db50ec6b4b77d9d082d42f1e9cc5685",
+      "protected_token_count": 5,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "In the Walk doc comment, generic tree is left untranslated as tree-യിൽ even though t is already introduced as a tree; the Same doc comment redundantly says both trees and in t1/t2, producing unnatural Malayalam. Localize the generic noun and clearly state that Walk sends all values of t to channel ch and Same checks whether t1 and t2 have the same values. Preserve Go identifiers and source comments structure."
+    },
+    {
+      "unit_id": "example:concurrency/exercise-web-crawler.go",
+      "unit_kind": "example",
+      "source_path": "_content/tour/concurrency/exercise-web-crawler.go",
+      "source_sha256": "bd6226dcae3b663a3aa1cbf502d840357ac0efb6de46e7a66612ca2834cf5e37",
+      "input_path": "inputs/concurrency-exercise-web-crawler.txt",
+      "input_sha256": "d36ed2f5dd83cdc52ca3dcc4dbb06c9b586698fd72b4a3b170d1cb286728d6a6",
+      "protected_token_count": 10,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "Both Crawl TODO comments translate fetch URLs as URL-കൾ ലഭ്യമാക്കുക / ലഭ്യമാക്കരുത്, suggesting obtaining or making URL strings available rather than fetching the webpages/resources at those URLs. Rephrase both TODOs to mean fetch pages at URLs in parallel and do not fetch the same URL twice. Keep the parallel-versus-concurrency distinction accurate and leave all code/identifiers unchanged."
+    },
+    {
+      "unit_id": "example:concurrency/mutex-counter.go",
+      "unit_kind": "example",
+      "source_path": "_content/tour/concurrency/mutex-counter.go",
+      "source_sha256": "74488ecc347a123c8538069175ffeef5ea38577bb37b2c7a9ceb6bba47ab02b4",
+      "input_path": "inputs/concurrency-mutex-counter.txt",
+      "input_sha256": "cec1e0a7b4d96ddf5fd18185e00317c7f3778c17af6b8921655220c4f8ded001",
+      "protected_token_count": 6,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "The leading comment uses the unnatural Malayalam adverb കൺകറൻറായി for concurrently; the Inc and Value documentation also leaves the generic word counter untranslated in otherwise Malayalam comments. Express safe concurrent use naturally in Malayalam without conflating concurrency with parallelism, and localize counter consistently while preserving SafeCounter, Inc, Value, key, c.v, goroutine and existing Go code."
+    },
+    {
+      "unit_id": "example:generics/list.go",
+      "unit_kind": "example",
+      "source_path": "_content/tour/generics/list.go",
+      "source_sha256": "ab72fc4fd321f507abde796abe0830876e0f8bcd8661d9ce4ac34c3da2f68060",
+      "input_path": "inputs/generics-list.txt",
+      "input_sha256": "b226f08fdb22be19e3268827b658f86af3351f1468094b1a422890c9ed131993",
+      "protected_token_count": 3,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "For singly-linked list the current phrasing ഏകദിശ ലിങ്ക്ഡ് ലിസ്റ്റ് diverges from the formally preferred glossary term ഒറ്റദിശയിൽ ബന്ധിപ്പിച്ച ലിസ്റ്റ് and uses an avoidable mixed English loan in this short explanatory comment. Bring the List documentation into alignment with the approved preferred term, retaining List, T, any and complete Go file structure; the ability to hold values of any type is otherwise correct."
+    }
+  ]
+}

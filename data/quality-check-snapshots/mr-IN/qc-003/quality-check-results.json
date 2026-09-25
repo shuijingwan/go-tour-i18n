@@ -1,0 +1,85 @@
+{
+  "schema_version": 2,
+  "evidence_type": "quality_check_results",
+  "locale": "mr-IN",
+  "snapshot_id": "qc-003",
+  "snapshot_manifest_sha256": "6c7851c743f5f682db679c7baf7b815f23c7de43ce8a5f9f08bc6ac299f43e8f",
+  "previous_snapshot_id": "qc-002",
+  "rubric": "translation-quality/v1",
+  "result_count": 13,
+  "results": [
+    {
+      "index": 67,
+      "unit_id": "methods/4",
+      "rating": "A"
+    },
+    {
+      "index": 72,
+      "unit_id": "methods/9",
+      "rating": "A"
+    },
+    {
+      "index": 77,
+      "unit_id": "methods/14",
+      "rating": "B",
+      "finding": "empty interface 术语已修复，但普通说明 any is an alias for interface{} 中仍直接使用英文 alias，需要本地化。"
+    },
+    {
+      "index": 78,
+      "unit_id": "methods/15",
+      "rating": "B",
+      "finding": "mandatory type assertion 已修复，但强调标记内的普通动词 test 仍为英文，需要在保持强调结构的同时本地化。"
+    },
+    {
+      "index": 79,
+      "unit_id": "methods/16",
+      "rating": "A"
+    },
+    {
+      "index": 93,
+      "unit_id": "concurrency/1",
+      "rating": "B",
+      "finding": "primitives 残留已解决，但 goroutine 定义中的 Go runtime 被简化为 Go，遗漏了具体的 runtime 技术概念。"
+    },
+    {
+      "index": 95,
+      "unit_id": "concurrency/3",
+      "rating": "B",
+      "finding": "buffered 已本地化，但译文在原强调标记内新增内部下划线，形成 बफर_केलेले 的不自然格式，需要保持完整词组格式。"
+    },
+    {
+      "index": 96,
+      "unit_id": "concurrency/4",
+      "rating": "B",
+      "finding": "两个说明标签已本地化，但第二个标签仍呈现 आणखी 与 टीप 连写及不自然强调格式，需要兼顾受保护结构修正。"
+    },
+    {
+      "index": 97,
+      "unit_id": "concurrency/5",
+      "rating": "A"
+    },
+    {
+      "index": 98,
+      "unit_id": "concurrency/6",
+      "rating": "B",
+      "finding": "receiving from c 的注释已无技术反转，但 मूल्य c कडून स्वीकारल्यास ब्लॉक होईल 词序仍不自然；同页 वापरा i 也有类似表达问题。"
+    },
+    {
+      "index": 101,
+      "unit_id": "concurrency/9",
+      "rating": "C",
+      "finding": "mutual exclusion 和 mutex 已修复，但 goroutine 被写为天城文 गोरुटीन，违反 glossary keep 要求，必须保留英文 goroutine。"
+    },
+    {
+      "index": 108,
+      "unit_id": "example:concurrency/exercise-web-crawler.go",
+      "rating": "B",
+      "finding": "Fetch 返回页面正文的语义已修复，但 Crawl 的两行说明缺少自然衔接，क्रॉल करते 与 शोधते 构成重复且不连贯的谓语，需要轻微润色。"
+    },
+    {
+      "index": 112,
+      "unit_id": "example:generics/list.go",
+      "rating": "A"
+    }
+  ]
+}

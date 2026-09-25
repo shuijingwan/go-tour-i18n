@@ -1,0 +1,18 @@
+* sync.Mutex
+
+Channels हे goroutines मधील communication साठी उपयुक्त आहेत हे आपण पाहिले.
+
+पण communication ची गरज नसेल तर? संघर्ष टाळण्यासाठी एका वेळी फक्त एकच goroutine ला व्हेरिएबल access करता यावा असे हवे असेल तर?
+
+या संकल्पनेला _परस्पर-वर्जन_ म्हणतात; ते पुरवणाऱ्या data structure चे रूढ नाव _म्युटेक्स_ आहे.
+
+Go ची standard library mutual exclusion साठी [[/pkg/sync/#Mutex][`sync.Mutex`]] आणि त्याच्या दोन मेथड्स देते:
+
+- `Lock`
+- `Unlock`
+
+`Lock` आणि `Unlock` कॉल्समध्ये code block ठेवून तो mutual exclusion मध्ये चालवता येतो; हे `Inc` मेथडमध्ये दाखवले आहे.
+
+`defer` वापरून `Value` मेथडप्रमाणे mutex unlock होईल याची खात्रीही करता येते.
+
+.play concurrency/mutex-counter.go

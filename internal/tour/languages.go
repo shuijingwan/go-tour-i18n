@@ -27,6 +27,7 @@ var languageRegistry = []LanguageLink{
 	{Locale: "ar", EnglishName: "Arabic", Autonym: "العربية", URL: "https://ar-go-dev.shuijingwanwq.com/"},
 	{Locale: "bn-BD", EnglishName: "Bengali", Autonym: "বাংলা", URL: "https://bn-go-dev.shuijingwanwq.com/"},
 	{Locale: "pt-BR", EnglishName: "Brazilian Portuguese", Autonym: "Português (Brasil)", URL: "https://pt-go-dev.shuijingwanwq.com/"},
+	{Locale: "bg-BG", EnglishName: "Bulgarian", Autonym: "Български", URL: "https://bg-go-dev.shuijingwanwq.com/"},
 	{Locale: "cs-CZ", EnglishName: "Czech", Autonym: "Čeština", URL: "https://cs-go-dev.shuijingwanwq.com/"},
 	{Locale: "nl-NL", EnglishName: "Dutch", Autonym: "Nederlands", URL: "https://nl-go-dev.shuijingwanwq.com/"},
 	{Locale: "en", EnglishName: "English", Autonym: "English", URL: "https://go.dev/tour/", Official: true},
@@ -41,6 +42,8 @@ var languageRegistry = []LanguageLink{
 	{Locale: "ja-JP", EnglishName: "Japanese", Autonym: "日本語", URL: "https://ja-go-dev.shuijingwanwq.com/"},
 	{Locale: "ko-KR", EnglishName: "Korean", Autonym: "한국어", URL: "https://ko-go-dev.shuijingwanwq.com/"},
 	{Locale: "ms-MY", EnglishName: "Malay", Autonym: "Bahasa Melayu", URL: "https://ms-go-dev.shuijingwanwq.com/"},
+	{Locale: "ml-IN", EnglishName: "Malayalam", Autonym: "മലയാളം", URL: "https://ml-go-dev.shuijingwanwq.com/"},
+	{Locale: "mr-IN", EnglishName: "Marathi", Autonym: "मराठी", URL: "https://mr-go-dev.shuijingwanwq.com/"},
 	{Locale: "pl-PL", EnglishName: "Polish", Autonym: "Polski", URL: "https://pl-go-dev.shuijingwanwq.com/"},
 	{Locale: "ro-RO", EnglishName: "Romanian", Autonym: "Română", URL: "https://ro-go-dev.shuijingwanwq.com/"},
 	{Locale: "zh-CN", EnglishName: "Simplified Chinese", Autonym: "简体中文", URL: "https://go-dev.shuijingwanwq.com/"},
@@ -83,6 +86,7 @@ var (
 	warsawTime      = mustLoadLocation("Europe/Warsaw")
 	romeTime        = mustLoadLocation("Europe/Rome")
 	saoPauloTime    = mustLoadLocation("America/Sao_Paulo")
+	sofiaTime       = mustLoadLocation("Europe/Sofia")
 	stockholmTime   = mustLoadLocation("Europe/Stockholm")
 	taipeiTime      = mustLoadLocation("Asia/Taipei")
 	istanbulTime    = mustLoadLocation("Europe/Istanbul")
@@ -105,6 +109,13 @@ var localeProfiles = map[string]localeProfile{
 		TimeLabel:         "UTC",
 		TimeLabelFormat:   " (%s)",
 		Direction:         "rtl",
+	},
+	"bg-BG": {
+		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",
+		TimeZone:          sofiaTime,
+		TimeLabel:         "местно време",
+		TimeLabelFormat:   " (%s)",
+		Direction:         "ltr",
 	},
 	"bn-BD": {
 		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",
@@ -180,6 +191,20 @@ var localeProfiles = map[string]localeProfile{
 		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",
 		TimeZone:          budapestTime,
 		TimeLabel:         "helyi idő",
+		TimeLabelFormat:   " (%s)",
+		Direction:         "ltr",
+	},
+	"ml-IN": {
+		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",
+		TimeZone:          kolkataTime,
+		TimeLabel:         "പ്രാദേശിക സമയം",
+		TimeLabelFormat:   " (%s)",
+		Direction:         "ltr",
+	},
+	"mr-IN": {
+		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",
+		TimeZone:          kolkataTime,
+		TimeLabel:         "स्थानिक वेळ",
 		TimeLabelFormat:   " (%s)",
 		Direction:         "ltr",
 	},

@@ -1,0 +1,13 @@
+* मेथड्स
+
+Goमध्ये classes नसतात.
+तरीही, तुम्ही types वर मेथड्स परिभाषित करू शकता.
+
+मेथड म्हणजे विशेष _receiver_ argument असलेले फंक्शन.
+
+receiver हा त्याच्या स्वतःच्या argument list मध्ये `func` keyword आणि
+मेथडचे नाव यांच्या मध्ये येतो.
+
+या उदाहरणात, `Abs` मेथडचा receiver `Vertex` type चा असून त्याचे नाव `v` आहे.
+
+.play methods/methods.go

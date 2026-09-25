@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "evidence_type": "glossary-review-receipt",
+  "locale": "mr-IN",
+  "review_id": "20260924-mr-IN-glossary-001",
+  "stage": "locale-glossary-review",
+  "decision": "failed",
+  "reviewer": "chatgpt-mr-IN-independent-reviewer",
+  "rubric": "glossary-review/v1",
+  "glossary_path": "locales/mr-IN/glossary.yaml",
+  "glossary_sha256": "360feade09f6497181f4ec77659caf44c938bcf4e19a8e977e824b9a91af3c53",
+  "findings": [
+    "Blocking: keep contains the unqualified English word present. In the current canonical Page sources basics/9 (If an initializer is present) and moretypes/22 (a key is present), present is ordinary translatable language, but in UI site.validation_present/site.workflow_review it refers to the present renderer. Global keep would protect ordinary prose and introduce English residue. Restrict preservation to the actual technical name in context, and ensure normal English present remains translatable; re-export a CURRENT reviewer bundle for full re-review."
+  ]
+}

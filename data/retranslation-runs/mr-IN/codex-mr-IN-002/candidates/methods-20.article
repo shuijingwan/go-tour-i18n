@@ -1,0 +1,21 @@
+* सराव: Errors
+
+आधीच्या सरावातील `Sqrt` फंक्शनची प्रत [[/tour/flowcontrol/8][मागील सरावातून]] करा आणि ते `error` मूल्य परत करेल असे बदला.
+
+`Sqrt` ला ऋण संख्या दिल्यास non-nilerror मूल्य परत करावे, कारण ते complex numbers हाताळत नाही.
+
+नवा type तयार करा:
+
+	type ErrNegativeSqrt float64
+
+आणि त्याला `error` बनवा; त्यासाठी त्याला खालील मेथड द्या:
+
+	func (e ErrNegativeSqrt) Error() string
+
+यामुळे `ErrNegativeSqrt(-2).Error()` ने `"cannot`Sqrt`negative`number:`-2"` परत करावे.
+
+*टीप:* `fmt.Sprint(e)` ला `Error` मेथडमध्ये कॉल केल्यास प्रोग्राम अनंत loop मध्ये जाईल. आधी `e` चे conversion करून हे टाळता येते: `fmt.Sprint(float64(e))`. असे का?
+
+ऋण संख्या दिल्यावर `Sqrt` फंक्शनने `ErrNegativeSqrt` मूल्य परत करेल असे बदला.
+
+.play methods/exercise-errors.go

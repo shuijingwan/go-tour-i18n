@@ -1,0 +1,20 @@
+* मेथड्स आणि पॉइंटर इनडायरेक्शन (2)
+
+उलट दिशेनेही अशीच गोष्ट घडते.
+
+value आर्ग्युमेंट घेणाऱ्या फंक्शनला त्या विशिष्ट type चे मूल्य द्यावे लागते:
+
+	var v Vertex
+	fmt.Println(AbsFunc(v))  // OK
+	fmt.Println(AbsFunc(&v)) // Compile error!
+
+value receivers असलेल्या मेथड्सना मात्र कॉल करताना receiver म्हणून मूल्य किंवा पॉइंटर दोन्ही देता येतात:
+
+	var v Vertex
+	fmt.Println(v.Abs()) // OK
+	p := &v
+	fmt.Println(p.Abs()) // OK
+
+या प्रकरणात, `p.Abs()` या मेथड कॉलचा अर्थ `(*p).Abs()` असा लावला जातो.
+
+.play methods/indirection-values.go

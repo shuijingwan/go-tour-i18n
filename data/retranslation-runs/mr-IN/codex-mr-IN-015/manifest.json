@@ -1,0 +1,24 @@
+{
+  "schema_version": 2,
+  "batch_id": "codex-mr-IN-015",
+  "locale": "mr-IN",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 1,
+  "units": [
+    {
+      "unit_id": "welcome/1",
+      "unit_kind": "page",
+      "source_path": "_content/tour/welcome.article",
+      "source_sha256": "1f581133d7fa40e6490418c6789a60a2f5e1de26c9c86d7eb6120cb58b145857",
+      "input_path": "inputs/welcome-1.article",
+      "input_sha256": "cf03a38655c68ab2c9232f43edce8d796b9beafbc9f68ffec47a75e36999028f",
+      "protected_token_count": 31,
+      "previous_snapshot_id": "qc-009",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "英文 Welcome to a tour of the Go programming language. 当前 [[/][Go प्रोग्रामिंग भाषा]] या भाषेच्या सफरीत तुमचे स्वागत आहे. 链接身份已正确，但链接末尾 भाषा 与紧接的 या भाषेच्या 重复，欢迎句不够自然。仅调整链接周围的马拉地语句法，使其自然准确表达参加 Go 编程语言导览；保留链接目标 /、语言身份及全部受保护结构。"
+    }
+  ]
+}

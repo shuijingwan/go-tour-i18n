@@ -1,0 +1,13 @@
+* सराव: Images
+
+आधी लिहिलेला [[⟪GTI18N_a196bc59_000001⟫][picture generator]] आठवतो? पुन्हा एक लिहूया; मात्र यावेळी तो data slice ऐवजी ⟪GTI18N_a196bc59_000002⟫image.Image⟪GTI18N_a196bc59_000003⟫ ची अंमलबजावणी परत करेल.
+
+तुमचा स्वतःचा ⟪GTI18N_a196bc59_000004⟫Image⟪GTI18N_a196bc59_000005⟫ type परिभाषित करा, [[⟪GTI18N_a196bc59_000006⟫][आवश्यक मेथड्स]] लागू करा आणि ⟪GTI18N_a196bc59_000007⟫pic.ShowImage⟪GTI18N_a196bc59_000008⟫ कॉल करा.
+
+⟪GTI18N_a196bc59_000009⟫Bounds⟪GTI18N_a196bc59_000010⟫ ने ⟪GTI18N_a196bc59_000011⟫image.Rectangle⟪GTI18N_a196bc59_000012⟫ परत करावा; उदाहरणार्थ ⟪GTI18N_a196bc59_000013⟫image.Rect(0,`0,`w,`h)⟪GTI18N_a196bc59_000014⟫.
+
+⟪GTI18N_a196bc59_000015⟫ColorModel⟪GTI18N_a196bc59_000016⟫ ने ⟪GTI18N_a196bc59_000017⟫color.RGBAModel⟪GTI18N_a196bc59_000018⟫ परत करावा.
+
+⟪GTI18N_a196bc59_000019⟫At⟪GTI18N_a196bc59_000020⟫ ने रंग परत करावा; आधीच्या picture generator मधील ⟪GTI18N_a196bc59_000021⟫v⟪GTI18N_a196bc59_000022⟫ मूल्य या उदाहरणात ⟪GTI18N_a196bc59_000023⟫color.RGBA{v,`v,`255,`255}⟪GTI18N_a196bc59_000024⟫ शी जुळते.
+
+⟪GTI18N_a196bc59_000025⟫

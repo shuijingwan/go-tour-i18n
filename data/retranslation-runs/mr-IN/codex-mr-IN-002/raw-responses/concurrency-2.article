@@ -1,0 +1,16 @@
+* Channels
+
+Channels हे typed conduit आहेत; channel operator ⟪GTI18N_a35e3af2_000001⟫<-⟪GTI18N_a35e3af2_000002⟫ वापरून त्यांच्यामधून मूल्ये पाठवता आणि घेता येतात.
+
+⟪GTI18N_a35e3af2_000003⟫पाठवा ⟪GTI18N_a35e3af2_000004⟫ channel वर ⟪GTI18N_a35e3af2_000005⟫.⟪GTI18N_a35e3af2_000006⟫⟪GTI18N_a35e3af2_000007⟫ मधून घ्या, आणि⟪GTI18N_a35e3af2_000008⟫मूल्य ⟪GTI18N_a35e3af2_000009⟫ मध्ये ठेवा.⟪GTI18N_a35e3af2_000010⟫(Data बाणाच्या दिशेने वाहतो.)
+
+Maps आणि slices प्रमाणे channels देखील वापरण्यापूर्वी तयार करावे लागतात:
+
+⟪GTI18N_a35e3af2_000011⟫
+
+मूलतः, दुसरी बाजू तयार होईपर्यंत send आणि receive थांबतात. त्यामुळे explicit locks किंवा condition variables शिवाय goroutines synchronize होऊ शकतात.
+
+उदाहरणातील code slice मधील संख्यांची बेरीज करतो; काम दोन goroutines मध्ये वाटले जाते.
+दोन्ही goroutines ची गणना पूर्ण झाल्यावर अंतिम परिणाम काढला जातो.
+
+⟪GTI18N_a35e3af2_000012⟫

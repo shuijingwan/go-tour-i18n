@@ -1,0 +1,89 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-bg-BG-006",
+  "locale": "bg-BG",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 6,
+  "units": [
+    {
+      "unit_id": "basics/12",
+      "unit_kind": "page",
+      "source_path": "_content/tour/basics.article",
+      "source_sha256": "d9ad62501c05359e7b2ac445fa92d629e11d6d378c2701b767abab76012a558e",
+      "input_path": "inputs/basics-12.article",
+      "input_sha256": "1ea463ab789d88cad33a6c7adf44fb524ea1f7e2574059f723a345f3c097faa7",
+      "protected_token_count": 9,
+      "previous_snapshot_id": "qc-002",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "EN: `Variables declared without an explicit initial value are given their _zero_value_.` BG: `... се присвоява тяхната _нулева_ стойност.` Verified using the repository's actual legacy present.Style: `_zero_value_` renders `\u003ci\u003ezero value\u003c/i\u003e`, but the revised Bulgarian renders `\u003ci\u003eнулева\u003c/i\u003e стойност`. Thus only the adjective, not the mandatory full two-word term `нулева стойност`, retains source emphasis. Preserve the whole mandatory phrase's italic span, its natural word space and all protected values/code. Important: a single underscore BETWEEN words inside a present emphasis span is converted to a space, not displayed literally; avoid repeating the previous rendering misconception."
+    },
+    {
+      "unit_id": "methods/9",
+      "unit_kind": "page",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "39efc19ed01619130489d21e421f2c0d8947b20f408580f4ceaabce6a0feb099",
+      "input_path": "inputs/methods-9.article",
+      "input_sha256": "d9eda098e85d67929359c7ca4ddb87022ceb1a3ad947a85d8da47a22e84a679a",
+      "protected_token_count": 13,
+      "previous_snapshot_id": "qc-002",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "EN: `An _interface_type_ is defined as a set of method signatures.` BG: `_интерфейсен_ тип се дефинира ...`. Legacy present renders the source's whole `interface type` in italics but the revision italicizes only `интерфейсен` and leaves `тип` outside the span. Restore full-phrase emphasis for mandatory `интерфейсен тип`, maintaining the definition, examples and all protected Go identifiers."
+    },
+    {
+      "unit_id": "methods/14",
+      "unit_kind": "page",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "7a09a7654c8b6ac6d96a1a8ddaafac368782f89ec2e6e61f323d40eb01cbf750",
+      "input_path": "inputs/methods-14.article",
+      "input_sha256": "4a12643efcc9fd5a77a573ef5187e80c1828696c6b1036d6425aae740c165af7",
+      "protected_token_count": 12,
+      "previous_snapshot_id": "qc-002",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "EN: `... known as the _empty_interface_:` BG: `... нарича _празен_ интерфейс:`. Actual legacy present rendering italicizes only `празен` while the original emphasizes the entire two-word term. Ensure the full `празен интерфейс` phrase is in one correctly rendered emphasis span, with a natural word space, without changing `interface{}`, `any` or the Go semantics."
+    },
+    {
+      "unit_id": "methods/15",
+      "unit_kind": "page",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "c205b4eb940358edea6321cfa422c3c00a560e9a6a71b08c8b3fa3ab9e4926ae",
+      "input_path": "inputs/methods-15.article",
+      "input_sha256": "de09fb3af677bf5cfb8ac741619639c9101d132f036c3cdba09219fc84550dc1",
+      "protected_token_count": 33,
+      "previous_snapshot_id": "qc-002",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "EN: `A _type_assertion_ provides access to an interface value's underlying concrete value.` BG: `_утвърждение_ за тип осигурява достъп до базовата конкретна стойност ...`. Verified legacy present rendering italicizes only the first word of the mandatory term `утвърждение за тип`, whereas the source emphasizes the entire term. Restore whole-phrase emphasis with valid present markup. Also `базовата конкретна стойност`, `базовата стойност` are awkward and can be confused with glossary basic type (`базов тип`), obscuring that this is the concrete value held by the interface. Clarify these occurrences without changing `i.(T)`, `t, ok`, panic, or zero-value behavior."
+    },
+    {
+      "unit_id": "methods/16",
+      "unit_kind": "page",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "26e4da09e80d30b06368691c76ee2940139b0f6fc40cad47bb6d1d2947933c27",
+      "input_path": "inputs/methods-16.article",
+      "input_sha256": "ec4d9702454a6eac6377c96b2e2638f746376335bc10e338a440a2cb2f3f7a4a",
+      "protected_token_count": 41,
+      "previous_snapshot_id": "qc-002",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "EN: `A _type_switch_ is a construct ...` BG: `_превключване_ по тип е конструкция ...`. Legacy present renders the source's complete three-word concept in italics, but the revision emphasizes only `превключване`, not `по тип`. Restore the complete mandatory term's emphasis with the natural three-word text; preserve `i.(type)`, branch semantics and all protected Go code."
+    },
+    {
+      "unit_id": "concurrency/9",
+      "unit_kind": "page",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "49f727794604c2ef8a8dda9508d0f412d7015cea77754c675a02b166dd9bfc93",
+      "input_path": "inputs/concurrency-9.article",
+      "input_sha256": "8b1114653df6cbf6ce416a7fdba29dd25b086ac2c22422ca0611f3161f552e19",
+      "protected_token_count": 25,
+      "previous_snapshot_id": "qc-002",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "EN: `This concept is called _mutual_exclusion_ ...` BG: `Това се нарича _взаимно_ изключване ...`. Actual present rendering italicizes only `взаимно` in the revised candidate, while the source emphasizes the entire preferred term. Restore emphasis over both words of `взаимно изключване` with valid present syntax and natural spacing; retain `sync.Mutex`, `Lock`, `Unlock`, `defer`, goroutine and mutex semantics."
+    }
+  ]
+}

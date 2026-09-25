@@ -1,0 +1,24 @@
+* പിശകുകൾ
+
+Go പ്രോഗ്രാമുകൾ പിശകിന്റെ നില `error` മൂല്യങ്ങളിലൂടെയാണ് അറിയിക്കുന്നത്.
+
+`error` ടൈപ്പ് `fmt.Stringer`-നോട് സാമ്യമുള്ള ബിൽറ്റ്-ഇൻ ഇന്റർഫേസാണ്:
+
+	type error interface {
+		Error() string
+	}
+
+(`fmt.Stringer`-ന്റെ കാര്യത്തിലെന്നപോലെ, മൂല്യങ്ങൾ പ്രിന്റ് ചെയ്യുമ്പോൾ `fmt` പാക്കേജ് `error` ഇന്റർഫേസ് അന്വേഷിക്കുന്നു.)
+
+ഫങ്ഷനുകൾ പലപ്പോഴും `error` മൂല്യം തിരികെ നൽകുന്നു. വിളിക്കുന്ന കോഡ് ആ മൂല്യം `nil` ആണോ എന്ന് പരിശോധിച്ച് പിശകുകൾ കൈകാര്യം ചെയ്യണം.
+
+	i, err := strconv.Atoi("42")
+	if err != nil {
+		fmt.Printf("couldn't convert number: %v\n", err)
+		return
+	}
+	fmt.Println("Converted integer:", i)
+
+`error` മൂല്യം nil ആണെങ്കിൽ വിജയം; nil അല്ലാത്ത `error` മൂല്യം പരാജയത്തെയാണ് സൂചിപ്പിക്കുന്നത്.
+
+.play methods/errors.go

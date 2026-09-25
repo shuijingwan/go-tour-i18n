@@ -1,0 +1,15 @@
+* Creating a slice with make
+
+Slices can be created with the built-in ⟪GTI18N_d057e6bf_000001⟫make⟪GTI18N_d057e6bf_000002⟫ function;
+this is how you create dynamically-sized arrays.
+
+The ⟪GTI18N_d057e6bf_000003⟫make⟪GTI18N_d057e6bf_000004⟫ function allocates a zeroed array
+and returns a slice that refers to that array:
+
+⟪GTI18N_d057e6bf_000005⟫
+
+To specify a capacity, pass a third argument to ⟪GTI18N_d057e6bf_000006⟫make⟪GTI18N_d057e6bf_000007⟫:
+
+⟪GTI18N_d057e6bf_000008⟫
+
+⟪GTI18N_d057e6bf_000009⟫

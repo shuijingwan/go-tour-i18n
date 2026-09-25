@@ -1,0 +1,63 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-bg-BG-005",
+  "locale": "bg-BG",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "example",
+  "unit_count": 4,
+  "units": [
+    {
+      "unit_id": "example:concurrency/channels.go",
+      "unit_kind": "example",
+      "source_path": "_content/tour/concurrency/channels.go",
+      "source_sha256": "8c3ce8583c8274e42ee0522989bf4cf2003b6f8045bcb6b16a6a79364f97aa70",
+      "input_path": "inputs/concurrency-channels.txt",
+      "input_sha256": "41c7df7e54719915d9d13ec03492b7a5ce6ecc68bdf023ce38b6da9efb27e69a",
+      "protected_token_count": 3,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "EN: `x, y := \u003c-c, \u003c-c // receive from c`; BG: `x, y := \u003c-c, \u003c-c // получаваме стойност от c`. The Go statement performs TWO receives, assigning x and y separately, but Bulgarian comment newly introduces singular `стойност`, suggesting one received value. Revise only the allowed teaching comment to make the two receives unambiguous while preserving both `\u003c-c` operations, identifiers and Go semantics."
+    },
+    {
+      "unit_id": "example:concurrency/exercise-web-crawler.go",
+      "unit_kind": "example",
+      "source_path": "_content/tour/concurrency/exercise-web-crawler.go",
+      "source_sha256": "bd6226dcae3b663a3aa1cbf502d840357ac0efb6de46e7a66612ca2834cf5e37",
+      "input_path": "inputs/concurrency-exercise-web-crawler.txt",
+      "input_sha256": "53554a1126b74da6e3bcb93c625eff1ec44f560e2817f1875202423a7d6009ab",
+      "protected_token_count": 12,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "EN: `Fetch returns the body of URL and a slice of URLs found on that page.` BG: `Fetch връща съдържанието на URL и срез от URL адресите, намерени на тази страница.` The Bulgarian `съдържанието на URL` reads as the URL string itself having content, rather than the page body returned for that URL. In this web-crawler exercise this distinction matters. Clarify the page body/content associated with the URL in natural Bulgarian without changing `Fetch`, `URL`, comment structure or code."
+    },
+    {
+      "unit_id": "example:generics/index.go",
+      "unit_kind": "example",
+      "source_path": "_content/tour/generics/index.go",
+      "source_sha256": "398dd72a4b01efa279d571667bedbcccd1bbbceaeb77218635db48edf38fd983",
+      "input_path": "inputs/generics-index.txt",
+      "input_sha256": "7abb8fdbe4d75e4a090fd429540fbbd86cad2f221a62cee51ab8195df56e2d6d",
+      "protected_token_count": 6,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "EN: `v and x are type T, which has the comparable constraint, so we can use == here.` BG: `v и x са от тип T с ограничението comparable / което позволява тук да използваме ==.` Bulgarian requires a comma before the relative clause `което`; its omission makes the explanatory two-line teaching comment grammatically incorrect. Correct the punctuation while keeping `T`, `comparable`, `==` and the constraint/equality meaning intact."
+    },
+    {
+      "unit_id": "example:moretypes/pointers.go",
+      "unit_kind": "example",
+      "source_path": "_content/tour/moretypes/pointers.go",
+      "source_sha256": "bbc4a25d868979e959aa383f0de7894135e7f8ae4b2d766e653a033178a9a378",
+      "input_path": "inputs/moretypes-pointers.txt",
+      "input_sha256": "d907add850aff00fb35329d480aa49bc4aa20ef926226715ab790262ca734c90",
+      "protected_token_count": 8,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "EN, later reassignment: `p = \u0026j // point to j`; BG: `p = \u0026j // създаваме указател към j`. The target says 'create a pointer to j', repeating the earlier `p := \u0026i` commentary, although this line reassigns the EXISTING pointer variable `p` to point to `j`. That distinction is the teaching purpose of this example. Revise the allowed comment to express redirecting/repointing `p` without changing `p = \u0026j` or any Go code."
+    }
+  ]
+}

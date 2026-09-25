@@ -1,0 +1,15 @@
+* Switch मूल्यांकनाचा क्रम
+
+Switch मध्ये cases चे मूल्यांकन वरून खाली केले जाते आणि एखादा case यशस्वी झाला की ते थांबते.
+
+(उदाहरणार्थ,
+
+	switch i {
+	case 0:
+	case f():
+	}
+
+हे `f` ला कॉल करत नाही, जर `i==0` असेल.)
+
+
+.play flowcontrol/switch-evaluation-order.go

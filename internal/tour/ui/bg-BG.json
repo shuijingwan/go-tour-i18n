@@ -1,0 +1,458 @@
+{
+  "locale": "bg-BG",
+  "html_lang": "bg-BG",
+  "messages": {
+    "editor.format": {
+      "kind": "plain",
+      "text": "Форматирай"
+    },
+    "editor.imports": {
+      "kind": "plain",
+      "text": "Импорти"
+    },
+    "editor.kill": {
+      "kind": "plain",
+      "text": "Прекрати"
+    },
+    "editor.off": {
+      "kind": "plain",
+      "text": "Изкл."
+    },
+    "editor.on": {
+      "kind": "plain",
+      "text": "Вкл."
+    },
+    "editor.reset": {
+      "kind": "plain",
+      "text": "Възстанови"
+    },
+    "editor.run": {
+      "kind": "plain",
+      "text": "Стартирай"
+    },
+    "editor.syntax": {
+      "kind": "plain",
+      "text": "Синтаксис"
+    },
+    "error.not_found": {
+      "kind": "plain",
+      "text": "404 — страницата не е намерена"
+    },
+    "execution.build_failed": {
+      "kind": "plain",
+      "text": "Компилирането с Go е неуспешно."
+    },
+    "execution.communication_error": {
+      "kind": "plain",
+      "text": "Грешка при връзката с отдалечения сървър."
+    },
+    "execution.exited": {
+      "kind": "plain",
+      "text": "Програмата приключи"
+    },
+    "execution.test_failed": {
+      "kind": "plain",
+      "text": "Неуспешен тест: {count}."
+    },
+    "execution.tests_failed": {
+      "kind": "plain",
+      "text": "Неуспешни тестове: {count}."
+    },
+    "execution.tests_passed": {
+      "kind": "plain",
+      "text": "Всички тестове са успешни."
+    },
+    "execution.vet_failed": {
+      "kind": "plain",
+      "text": "Проверката с Go vet е неуспешна."
+    },
+    "execution.waiting": {
+      "kind": "plain",
+      "text": "Изчакване на отдалечения сървър..."
+    },
+    "feedback.context": {
+      "kind": "plain",
+      "text": "Контекст"
+    },
+    "feedback.issue_body": {
+      "kind": "plain",
+      "text": "Променете заглавието по-горе, така че да описва проблема, и добавете обратната си връзка тук, включително код, ако е необходимо."
+    },
+    "feedback.issue_title": {
+      "kind": "plain",
+      "text": "x/website/_content/tour: [ЗАМЕНЕТЕ С КРАТКО ОПИСАНИЕ]"
+    },
+    "feedback.open": {
+      "kind": "plain",
+      "text": "Изпратете обратна връзка за тази страница"
+    },
+    "footer.development_log": {
+      "kind": "plain",
+      "text": "Дневник на разработката"
+    },
+    "footer.github": {
+      "kind": "plain",
+      "text": "GitHub"
+    },
+    "footer.home": {
+      "kind": "plain",
+      "text": "Начало"
+    },
+    "footer.unofficial": {
+      "kind": "plain",
+      "text": "Yongye · Неофициален общностен проект за многоезичен превод"
+    },
+    "header.about_project": {
+      "kind": "plain",
+      "text": "За проекта"
+    },
+    "module.basics.description": {
+      "kind": "rich",
+      "text": "<p>Започнете оттук, за да научите основите на езика.</p><p>Деклариране на променливи, извикване на функции и всичко необходимо, преди да преминете към следващите уроци.</p>"
+    },
+    "module.basics.title": {
+      "kind": "plain",
+      "text": "Основи"
+    },
+    "module.concurrency.description": {
+      "kind": "rich",
+      "text": "<p>Go предоставя възможности за конкурентно изпълнение като част от самия език.</p><p>Този модул разглежда goroutine и каналите и показва как се използват за реализиране на различни модели на конкурентност.</p>"
+    },
+    "module.concurrency.title": {
+      "kind": "plain",
+      "text": "Конкурентност"
+    },
+    "module.generics.description": {
+      "kind": "rich",
+      "text": "<p>Научете как да използвате параметри на тип във функции и структури на Go.</p>"
+    },
+    "module.generics.title": {
+      "kind": "plain",
+      "text": "Обобщено програмиране"
+    },
+    "module.methods.description": {
+      "kind": "rich",
+      "text": "<p>Научете как да дефинирате методи за типове, как да декларирате интерфейси и как да ги използвате заедно.</p>"
+    },
+    "module.methods.title": {
+      "kind": "plain",
+      "text": "Методи и интерфейси"
+    },
+    "module.using_tour.description": {
+      "kind": "rich",
+      "text": "<p>Добре дошли в обиколката на <a href=\"https://go.dev\">езика за програмиране Go</a>. Тя представя най-важните възможности на езика, основно:</p>"
+    },
+    "module.using_tour.title": {
+      "kind": "plain",
+      "text": "Как да използвате обиколката"
+    },
+    "site.architecture_languages": {
+      "kind": "plain",
+      "text": "Сървърът, шаблоните, CSS, JavaScript, изображенията и шрифтовете се споделят, когато това е практично. Всеки език поддържа самостоятелно преводите на курса, текстовете на интерфейса, терминологията и състоянието. Опростеният китайски е първият предоставен език и могат да се добавят още."
+    },
+    "site.architecture_playground": {
+      "kind": "plain",
+      "text": "Примерите на Go в браузъра се изпълняват чрез контролирано прокси към отдалечен Go Playground; продукционната среда не предоставя локалната точка за изпълнение на код /socket."
+    },
+    "site.architecture_title": {
+      "kind": "plain",
+      "text": "Проследима, контролирана и разширяема архитектура"
+    },
+    "site.architecture_upstream": {
+      "kind": "plain",
+      "text": "Проектът непрекъснато записва официалния upstream комит и така запазва проследима отправна версия за бъдещи обновявания на източника."
+    },
+    "site.browser_title": {
+      "kind": "plain",
+      "text": "Yongye · Многоезичен проект за превод на Обиколка на Go"
+    },
+    "site.community_version": {
+      "kind": "plain",
+      "text": "Превод от общността"
+    },
+    "site.continue_learning": {
+      "kind": "plain",
+      "text": "Продължете да учите в go.dev"
+    },
+    "site.continue_learning_description": {
+      "kind": "plain",
+      "text": "Обиколка на Go е само началото. След като я завършите, посетете go.dev за официална документация, уроци, справочник за стандартната библиотека, спецификацията на езика и още ресурси за изучаване на Go."
+    },
+    "site.continue_learning_title": {
+      "kind": "plain",
+      "text": "Продължете да изучавате Go"
+    },
+    "site.course_pages": {
+      "kind": "plain",
+      "text": "Страници на курса"
+    },
+    "site.current_language": {
+      "kind": "plain",
+      "text": "Текущ език"
+    },
+    "site.current_projects": {
+      "kind": "plain",
+      "text": "Текущ проект за превод"
+    },
+    "site.development_environment": {
+      "kind": "plain",
+      "text": "Среда за разработка"
+    },
+    "site.development_log": {
+      "kind": "plain",
+      "text": "Дневник на разработката: Многоезичен проект за превод на Обиколка на Go"
+    },
+    "site.enter_tour": {
+      "kind": "plain",
+      "text": "Към обиколката"
+    },
+    "site.environment": {
+      "kind": "plain",
+      "text": "Среда"
+    },
+    "site.how_it_works": {
+      "kind": "plain",
+      "text": "Как работи проектът"
+    },
+    "site.how_it_works_intro": {
+      "kind": "plain",
+      "text": "Локализирането на курса не е замяна изречение по изречение. То следва процес, основан на цели единици съдържание, проследими състояния на прегледа и проверими артефакти на изданието."
+    },
+    "site.intro": {
+      "kind": "plain",
+      "text": "Общностен проект за превод на официални учебни материали за Go. Опростеният китайски е първият наличен език, а структурата позволява добавянето на още езици и съдържание за Go."
+    },
+    "site.issue_feedback": {
+      "kind": "plain",
+      "text": "GitHub Issues"
+    },
+    "site.language_versions": {
+      "kind": "plain",
+      "text": "Езикови версии"
+    },
+    "site.latest_release": {
+      "kind": "plain",
+      "text": "Последно издание"
+    },
+    "site.no_affiliation": {
+      "kind": "plain",
+      "text": "Този проект не е свързан с проекта Go и не е упълномощен или одобрен от него."
+    },
+    "site.official_upstream": {
+      "kind": "plain",
+      "text": "Официален първоизточник"
+    },
+    "site.official_version": {
+      "kind": "plain",
+      "text": "Официална Обиколка на Go"
+    },
+    "site.open_official_tour": {
+      "kind": "plain",
+      "text": "Отворете официалната обиколка"
+    },
+    "site.operations_note": {
+      "kind": "plain",
+      "text": "Този сайт може да показва реклами, за да подпомогне покриването на разходите за инфраструктура като сървъри, трафик и CDN услуги, както и текущата поддръжка на проекта. Изходният код остава публичен, а самостоятелно хостваните инсталации не активират рекламната конфигурация на този сайт по подразбиране."
+    },
+    "site.project_links": {
+      "kind": "plain",
+      "text": "Връзки към проекта"
+    },
+    "site.project_status": {
+      "kind": "plain",
+      "text": "Състояние на проекта"
+    },
+    "site.source_code": {
+      "kind": "plain",
+      "text": "Изходен код в GitHub"
+    },
+    "site.start_learning": {
+      "kind": "plain",
+      "text": "Започнете да учите"
+    },
+    "site.title": {
+      "kind": "plain",
+      "text": "Многоезичен проект за превод на Обиколка на Go"
+    },
+    "site.tour_description": {
+      "kind": "plain",
+      "text": "Интерактивно въведение в езика за програмиране Go."
+    },
+    "site.translation_validation": {
+      "kind": "plain",
+      "text": "Превод и проверка"
+    },
+    "site.translation_validation_intro": {
+      "kind": "plain",
+      "text": "Проектът запазва учебното съдържание близо до официалния източник и проверява всяко издание преди публикуване."
+    },
+    "site.unofficial": {
+      "kind": "plain",
+      "text": "Поддържа се от Yongye · Неофициален общностен проект за многоезичен превод"
+    },
+    "site.upstream_baseline": {
+      "kind": "plain",
+      "text": "Базова версия на официалния източник"
+    },
+    "site.upstream_commit_time": {
+      "kind": "plain",
+      "text": "Време на последния официален комит"
+    },
+    "site.validation_examples": {
+      "kind": "plain",
+      "text": "Примерите на Go с преводими коментари на естествен език също преминават през единния процес за проверка; за всички останали примери продължава да се използва директно официалният изходен код."
+    },
+    "site.validation_page_unit": {
+      "kind": "plain",
+      "text": "Превеждат се цели страници от курса, а не отделни изречения."
+    },
+    "site.validation_present": {
+      "kind": "plain",
+      "text": "Всяко издание се обработва с парсера present."
+    },
+    "site.validation_render": {
+      "kind": "plain",
+      "text": "Проверява се как изглеждат страниците, преди да бъдат публикувани."
+    },
+    "site.validation_structure": {
+      "kind": "plain",
+      "text": "Структурата на страниците се сравнява с официалния източник."
+    },
+    "site.workflow_process": {
+      "kind": "plain",
+      "text": "Всяка единица преминава през превод, автоматична проверка, преглед на качеството на превода, включване на одобрения превод, състояние ready, изграждане на проекция и публикуване; генерираните преводи никога не се публикуват директно."
+    },
+    "site.workflow_publish": {
+      "kind": "plain",
+      "text": "Публикуването изгражда пълна локализирана проекция от одобрените канонични кандидати, изисква всяка TranslationUnit да е в състояние ready, след което създава продукционния изпълним файл, release.json и SHA256SUMS и проверява целия пакет."
+    },
+    "site.workflow_review": {
+      "kind": "plain",
+      "text": "Автоматичните проверки защитават структурата, анализират съдържанието с present, сравняват го с официалния източник, проверяват визуализирането и страниците, както и Go съдържанието на примерите. Преди включването на превода остава задължителен независим преглед на качеството му."
+    },
+    "site.workflow_title": {
+      "kind": "plain",
+      "text": "От TranslationUnit до продукционна среда"
+    },
+    "site.workflow_units": {
+      "kind": "plain",
+      "text": "TranslationUnit обхваща както цели страници (Page), така и подходящи примери (Example): Page е пълна секция present.Section, а Example е цял .go файл с преводими коментари на естествен език."
+    },
+    "support.address": {
+      "kind": "plain",
+      "text": "Адрес"
+    },
+    "support.advertising_title": {
+      "kind": "plain",
+      "text": "Информация за рекламите"
+    },
+    "support.asset": {
+      "kind": "plain",
+      "text": "Актив"
+    },
+    "support.copied": {
+      "kind": "plain",
+      "text": "Копирано"
+    },
+    "support.copy_address": {
+      "kind": "plain",
+      "text": "Копирай адреса"
+    },
+    "support.copy_reference": {
+      "kind": "plain",
+      "text": "Копирай основанието"
+    },
+    "support.copy_uid": {
+      "kind": "plain",
+      "text": "Копирай UID"
+    },
+    "support.intro": {
+      "kind": "plain",
+      "text": "Можете също така доброволно да подкрепите продължаващата поддръжка на тази езикова версия. Вашата подкрепа помага тя да продължи да се поддържа и развива."
+    },
+    "support.minimum_deposit": {
+      "kind": "plain",
+      "text": "Минимална сума за получаване"
+    },
+    "support.network": {
+      "kind": "plain",
+      "text": "Мрежа"
+    },
+    "support.platform_help": {
+      "kind": "plain",
+      "text": "Потребители на една и съща платформа могат да използват вътрешен превод чрез UID. Проверете подробностите в платформата."
+    },
+    "support.platform_title": {
+      "kind": "plain",
+      "text": "Вътрешен превод в платформата (по избор)"
+    },
+    "support.reference_help": {
+      "kind": "plain",
+      "text": "Ако платежната ви услуга поддържа бележка или основание, можете да използвате тази стойност."
+    },
+    "support.reference_label": {
+      "kind": "plain",
+      "text": "Основание за подкрепа"
+    },
+    "support.section_title": {
+      "kind": "plain",
+      "text": "Подкрепа и разходи за поддръжка"
+    },
+    "support.translation_title": {
+      "kind": "plain",
+      "text": "Подкрепете тази езикова версия"
+    },
+    "support.uid": {
+      "kind": "plain",
+      "text": "UID"
+    },
+    "support.usdc_network_only": {
+      "kind": "plain",
+      "text": "Изпращайте USDC само през мрежата Base."
+    },
+    "support.usdt_network_only": {
+      "kind": "plain",
+      "text": "Изпращайте USDT само през мрежата Tron (TRC20)."
+    },
+    "support.wrong_network_warning": {
+      "kind": "plain",
+      "text": "Използването на неправилен актив или мрежа може да доведе до загуба на средства."
+    },
+    "theme.dark": {
+      "kind": "plain",
+      "text": "Тъмна тема"
+    },
+    "theme.light": {
+      "kind": "plain",
+      "text": "Светла тема"
+    },
+    "theme.system": {
+      "kind": "plain",
+      "text": "Системна тема"
+    },
+    "theme.toggle": {
+      "kind": "plain",
+      "text": "Смени темата"
+    },
+    "toc.title": {
+      "kind": "plain",
+      "text": "Съдържание"
+    },
+    "tour.list_description": {
+      "kind": "plain",
+      "text": "Разгледайте модулите и уроците в Обиколка на Go — интерактивно въведение в езика за програмиране Go."
+    },
+    "tour.list_heading": {
+      "kind": "plain",
+      "text": "Добре дошли в Обиколка на Go"
+    },
+    "tour.list_title": {
+      "kind": "plain",
+      "text": "Съдържание на курса — Обиколка на Go"
+    },
+    "tour.title": {
+      "kind": "plain",
+      "text": "Обиколка на Go"
+    }
+  }
+}

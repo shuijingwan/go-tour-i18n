@@ -1,0 +1,13 @@
+* सराव: Images
+
+आधी लिहिलेला [[/tour/moretypes/18][picture generator]] आठवतो? पुन्हा एक लिहूया; मात्र यावेळी तो data slice ऐवजी `image.Image` ची अंमलबजावणी परत करेल.
+
+तुमचा स्वतःचा `Image` type परिभाषित करा, [[/pkg/image/#Image][आवश्यक मेथड्स]] लागू करा आणि `pic.ShowImage` कॉल करा.
+
+`Bounds` ने `image.Rectangle` परत करावा; उदाहरणार्थ `image.Rect(0,`0,`w,`h)`.
+
+`ColorModel` ने `color.RGBAModel` परत करावा.
+
+`At` ने रंग परत करावा; आधीच्या picture generator मधील `v` मूल्य या उदाहरणात `color.RGBA{v,`v,`255,`255}` शी जुळते.
+
+.play methods/exercise-images.go

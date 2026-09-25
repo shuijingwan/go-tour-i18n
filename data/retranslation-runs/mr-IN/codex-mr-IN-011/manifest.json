@@ -1,0 +1,76 @@
+{
+  "schema_version": 2,
+  "batch_id": "codex-mr-IN-011",
+  "locale": "mr-IN",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 5,
+  "units": [
+    {
+      "unit_id": "methods/14",
+      "unit_kind": "page",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "7a09a7654c8b6ac6d96a1a8ddaafac368782f89ec2e6e61f323d40eb01cbf750",
+      "input_path": "inputs/methods-14.article",
+      "input_sha256": "4a12643efcc9fd5a77a573ef5187e80c1828696c6b1036d6425aae740c165af7",
+      "protected_token_count": 12,
+      "previous_snapshot_id": "qc-004",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "英文 alias 已本地化且技术含义正确，但强调词组 रिकामा इंटरफेस 内部仍使用下划线连接两个马拉地语单词，影响正常书写和格式。"
+    },
+    {
+      "unit_id": "methods/15",
+      "unit_kind": "page",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "c205b4eb940358edea6321cfa422c3c00a560e9a6a71b08c8b3fa3ab9e4926ae",
+      "input_path": "inputs/methods-15.article",
+      "input_sha256": "de09fb3af677bf5cfb8ac741619639c9101d132f036c3cdba09219fc84550dc1",
+      "protected_token_count": 33,
+      "previous_snapshot_id": "qc-004",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "英文 test 已本地化且类型断言语义正确，但强调术语 टाइप अ‍ॅसर्शन 内仍存在不必要的内部下划线，需要整理格式。"
+    },
+    {
+      "unit_id": "concurrency/4",
+      "unit_kind": "page",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "3e925c6745255a443c61f25cd8131d538dc8677938f1c5021ce798465020b42e",
+      "input_path": "inputs/concurrency-4.article",
+      "input_sha256": "f68dc9ef06de3cb5d48846ebe7786e6cc06b77ea5c05bc6d56b80f667f5dad10",
+      "protected_token_count": 16,
+      "previous_snapshot_id": "qc-004",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "Another note 标签已解决词语连写，但内部多余星号仍拆开说明标签的强调格式；修订时须保留受保护外层结构。"
+    },
+    {
+      "unit_id": "concurrency/6",
+      "unit_kind": "page",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "82e9cd932e14e6c4852fc8f865f4c45dc75845bd1a306649152ebc045f0c3b2c",
+      "input_path": "inputs/concurrency-6.article",
+      "input_sha256": "b65274e7c29910bdc6b3a294ae171def398a09355166b8a513bdbbbd3f15b672",
+      "protected_token_count": 12,
+      "previous_snapshot_id": "qc-004",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "接收阻塞注释已自然准确，但 use i 被译为 वापरलेले मूल्य: i，将祈使指令改成已使用值的描述，未完整保留教学语气。"
+    },
+    {
+      "unit_id": "concurrency/9",
+      "unit_kind": "page",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "49f727794604c2ef8a8dda9508d0f412d7015cea77754c675a02b166dd9bfc93",
+      "input_path": "inputs/concurrency-9.article",
+      "input_sha256": "eea90ddabc34ca6cba730837ce3c5917b34821d2b4efaa00be3082377c496d3c",
+      "protected_token_count": 24,
+      "previous_snapshot_id": "qc-004",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "goroutine keep 与 mutex 已修复，但 mandatory 术语 परस्पर वर्जन 内仍残留内部下划线，造成不自然连接和强调格式。"
+    }
+  ]
+}

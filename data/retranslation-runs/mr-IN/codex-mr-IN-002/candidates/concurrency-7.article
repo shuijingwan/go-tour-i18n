@@ -1,0 +1,18 @@
+* सराव: Equivalent Binary Trees
+
+एकाच मूल्यक्रमाची अनेक वेगवेगळी binary trees असू शकतात. उदाहरणार्थ, खालील दोन binary trees मध्ये 1, 1, 2, 3, 5, 8, 13 हा क्रम साठवलेला आहे.
+
+.image /tour/static/img/tree.png
+
+दोन binary trees मध्ये तोच क्रम आहे का हे तपासणारे फंक्शन बहुतांश भाषांमध्ये बरेच गुंतागुंतीचे असते. सोपा उपाय लिहिण्यासाठी आपण Go ची concurrency आणि channels वापरू.
+
+या उदाहरणात `tree` package वापरले आहे; ते हा type परिभाषित करते:
+
+	type Tree struct {
+		Left  *Tree
+		Value int
+		Right *Tree
+	}
+
+
+पुढील वर्णन [[javascript:click('.next-page')][पुढील पानावर]] सुरू राहते.

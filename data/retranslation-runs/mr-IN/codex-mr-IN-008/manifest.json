@@ -1,0 +1,37 @@
+{
+  "schema_version": 2,
+  "batch_id": "codex-mr-IN-008",
+  "locale": "mr-IN",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "example",
+  "unit_count": 2,
+  "units": [
+    {
+      "unit_id": "example:concurrency/exercise-web-crawler.go",
+      "unit_kind": "example",
+      "source_path": "_content/tour/concurrency/exercise-web-crawler.go",
+      "source_sha256": "bd6226dcae3b663a3aa1cbf502d840357ac0efb6de46e7a66612ca2834cf5e37",
+      "input_path": "inputs/concurrency-exercise-web-crawler.txt",
+      "input_sha256": "53554a1126b74da6e3bcb93c625eff1ec44f560e2817f1875202423a7d6009ab",
+      "protected_token_count": 12,
+      "previous_snapshot_id": "qc-002",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "C",
+      "previous_finding": "English: \"Fetch returns the body of URL and a slice of URLs found on that page.\" Revised Marathi: \"Fetch हे URL आणि त्या पृष्ठावर सापडलेल्या URL चा स्लाइस परत करते.\" The phrase \"body of URL\" is mistranslated/omitted: this currently says Fetch returns the URL itself instead of the body/content of the corresponding page. This is a material technical-semantic error in the Fetcher contract. The earlier mandatory slice -\u003e स्लाइस issue is fixed, but the return-value description must be corrected without changing code, URLs or identifiers."
+    },
+    {
+      "unit_id": "example:generics/list.go",
+      "unit_kind": "example",
+      "source_path": "_content/tour/generics/list.go",
+      "source_sha256": "ab72fc4fd321f507abde796abe0830876e0f8bcd8661d9ce4ac34c3da2f68060",
+      "input_path": "inputs/generics-list.txt",
+      "input_sha256": "b226f08fdb22be19e3268827b658f86af3351f1468094b1a422890c9ed131993",
+      "protected_token_count": 3,
+      "previous_snapshot_id": "qc-002",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "English: \"// List represents a singly-linked list that holds // values of any type.\" Revised Marathi: \"// List कोणत्याही टाइपची मूल्ये धारण करणाऱ्या एकदिश दुव्यांच्या यादीचे प्रतिनिधित्व करते // .\" The previous singly-linked-list/type terminology defect is fixed, but the sentence-ending period was moved onto a separate standalone // . comment line. This is an avoidable formatting/readability defect; keep the two instructional comments natural without changing code or List/T identifiers."
+    }
+  ]
+}

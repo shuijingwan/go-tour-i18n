@@ -1,0 +1,22 @@
+* Type switches
+
+_type_switch_ ही सलग अनेक type assertions करण्याची सुविधा देणारी रचना आहे.
+
+Type switch हा नेहमीच्या switch statement सारखा असतो; मात्र त्यातील cases मध्ये मूल्यांऐवजी types दिलेले असतात आणि त्या types ची तुलना दिलेल्या interface मूल्यामध्ये असलेल्या मूल्याच्या type शी केली जाते.
+
+	switch v := i.(type) {
+	case T:
+		// येथे v चा type T
+	case S:
+		// येथे v चा type S
+	default:
+		// जुळणारा case नाही; येथे v चा type i इतकाच आहे
+	}
+
+Type switch मधील declaration ची syntax `i.(T)` या type assertion सारखीच असते; पण विशिष्ट type `T` ऐवजी `type` keyword वापरला जातो.
+
+हा switch statement `i` या interface मूल्यामध्ये `T` किंवा `S` type चे मूल्य आहे का हे तपासतो.
+`T` आणि `S` या प्रत्येक case मध्ये, `v` व्हेरिएबलचा type अनुक्रमे `T` किंवा `S` असेल आणि त्यात `i` मधील मूल्य असेल.
+Default case मध्ये (जुळणारा case नसल्यास), `v` व्हेरिएबलचा interface type आणि मूल्य `i` प्रमाणेच असते.
+
+.play methods/type-switches.go

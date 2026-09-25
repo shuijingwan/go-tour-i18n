@@ -1,0 +1,12 @@
+* सराव: rot13Reader
+
+सामान्य pattern म्हणजे दुसऱ्या [[⟪GTI18N_11d87614_000001⟫][io.Reader]] ⟪GTI18N_11d87614_000002⟫io.Reader⟪GTI18N_11d87614_000003⟫ ला wrap करणारा io.Reader; तो stream मध्ये काही बदल करतो.
+
+उदाहरणार्थ, [[⟪GTI18N_11d87614_000004⟫][gzip.NewReader]] फंक्शनला ⟪GTI18N_11d87614_000005⟫io.Reader⟪GTI18N_11d87614_000006⟫ (compressed data चा stream) दिल्यास ते ⟪GTI18N_11d87614_000007⟫*gzip.Reader⟪GTI18N_11d87614_000008⟫ परत करते; हा देखील ⟪GTI18N_11d87614_000009⟫io.Reader⟪GTI18N_11d87614_000010⟫ लागू करतो (decompressed data चा stream).
+
+⟪GTI18N_11d87614_000011⟫rot13Reader⟪GTI18N_11d87614_000012⟫ ला ⟪GTI18N_11d87614_000013⟫io.Reader⟪GTI18N_11d87614_000014⟫ लागू करायला सांगा. त्याने ⟪GTI18N_11d87614_000015⟫io.Reader⟪GTI18N_11d87614_000016⟫ मधून वाचताना सर्व अक्षरांवर [[⟪GTI18N_11d87614_000017⟫][rot13]] substitution cipher लागू करून stream बदलावा.
+
+⟪GTI18N_11d87614_000018⟫rot13Reader⟪GTI18N_11d87614_000019⟫ type तुम्हाला दिलेला आहे.
+⟪GTI18N_11d87614_000020⟫io.Reader⟪GTI18N_11d87614_000021⟫ बनवण्यासाठी त्याची ⟪GTI18N_11d87614_000022⟫Read⟪GTI18N_11d87614_000023⟫ मेथड लागू करा.
+
+⟪GTI18N_11d87614_000024⟫

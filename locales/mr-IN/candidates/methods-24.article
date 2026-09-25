@@ -1,0 +1,20 @@
+* प्रतिमा
+
+[[/pkg/image/#Image][image पॅकेज]] `Image` इंटरफेस परिभाषित करते:
+
+	package image
+
+	type Image interface {
+		ColorModel() color.Model
+		Bounds() Rectangle
+		At(x, y int) color.Color
+	}
+
+*टीप*: `Rectangle` हे `Bounds` मेथडचे परतावा मूल्य प्रत्यक्षात
+[[/pkg/image/#Rectangle][`image.Rectangle`]] आहे, कारण ही घोषणा `image` पॅकेजमध्ये आहे.
+
+(सर्व तपशीलांसाठी [[/pkg/image/#Image][दस्तऐवजीकरण]] पाहा.)
+
+`color.Color` आणि `color.Model` हे टाइपही इंटरफेसेस आहेत; पण आधीच परिभाषित केलेल्या `color.RGBA` आणि `color.RGBAModel` अंमलबजावण्या वापरून आपण ते येथे बाजूला ठेवू. हे इंटरफेसेस आणि टाइप्स [[/pkg/image/color/][image/color पॅकेज]] परिभाषित करते.
+
+.play methods/images.go

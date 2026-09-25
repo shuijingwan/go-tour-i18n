@@ -1,0 +1,57 @@
+{
+  "schema_version": 2,
+  "evidence_type": "quality_check_results",
+  "locale": "mr-IN",
+  "snapshot_id": "qc-004",
+  "snapshot_manifest_sha256": "2b0e4ae24fcfc24f1498ee93cc54cfa951de7732a6101d4fa166e3112e6ef6ea",
+  "previous_snapshot_id": "qc-003",
+  "rubric": "translation-quality/v1",
+  "result_count": 8,
+  "results": [
+    {
+      "index": 77,
+      "unit_id": "methods/14",
+      "rating": "B",
+      "finding": "英文 alias 已本地化且技术含义正确，但强调词组 रिकामा इंटरफेस 内部仍使用下划线连接两个马拉地语单词，影响正常书写和格式。"
+    },
+    {
+      "index": 78,
+      "unit_id": "methods/15",
+      "rating": "B",
+      "finding": "英文 test 已本地化且类型断言语义正确，但强调术语 टाइप अ‍ॅसर्शन 内仍存在不必要的内部下划线，需要整理格式。"
+    },
+    {
+      "index": 93,
+      "unit_id": "concurrency/1",
+      "rating": "A"
+    },
+    {
+      "index": 95,
+      "unit_id": "concurrency/3",
+      "rating": "A"
+    },
+    {
+      "index": 96,
+      "unit_id": "concurrency/4",
+      "rating": "B",
+      "finding": "Another note 标签已解决词语连写，但内部多余星号仍拆开说明标签的强调格式；修订时须保留受保护外层结构。"
+    },
+    {
+      "index": 98,
+      "unit_id": "concurrency/6",
+      "rating": "B",
+      "finding": "接收阻塞注释已自然准确，但 use i 被译为 वापरलेले मूल्य: i，将祈使指令改成已使用值的描述，未完整保留教学语气。"
+    },
+    {
+      "index": 101,
+      "unit_id": "concurrency/9",
+      "rating": "B",
+      "finding": "goroutine keep 与 mutex 已修复，但 mandatory 术语 परस्पर वर्जन 内仍残留内部下划线，造成不自然连接和强调格式。"
+    },
+    {
+      "index": 108,
+      "unit_id": "example:concurrency/exercise-web-crawler.go",
+      "rating": "A"
+    }
+  ]
+}

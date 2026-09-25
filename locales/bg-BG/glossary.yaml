@@ -1,0 +1,115 @@
+locale: bg-BG
+mandatory:
+  A Tour of Go: Обиколка на Go
+  Run: Стартирай
+  Format: Форматирай
+  Reset: Възстанови
+  type: тип
+  value: стойност
+  variable: променлива
+  constant: константа
+  function: функция
+  method: метод
+  receiver: приемник
+  pointer: указател
+  struct: структура
+  array: масив
+  slice: срез
+  map: асоциативен масив
+  interface: интерфейс
+  interface value: интерфейсна стойност
+  interface type: интерфейсен тип
+  concrete type: конкретен тип
+  package: пакет
+  channel: канал
+  mutex: мютекс
+  type parameter: параметър на тип
+  constraint: ограничение
+  type assertion: утвърждение за тип
+  type switch: превключване по тип
+  zero value: нулева стойност
+preferred:
+  buffered channel: буфериран канал
+  unbuffered channel: небуфериран канал
+  mutual exclusion: взаимно изключване
+  deadlock: взаимно блокиране
+  generic: обобщен
+  generics: обобщено програмиране
+  type inference: извеждане на тип
+  type argument: аргумент на тип
+  type set: множество от типове
+  underlying type: основен тип
+  basic type: базов тип
+  defined type: дефиниран тип
+  type alias: псевдоним на тип
+  alias declaration: декларация на псевдоним
+  exported name: експортирано име
+  exported identifier: експортиран идентификатор
+  method set: множество от методи
+  value receiver: приемник по стойност
+  pointer receiver: приемник чрез указател
+  embedding: вграждане
+  embedded field: вградено поле
+  field: поле
+  element: елемент
+  index: индекс
+  key: ключ
+  length: дължина
+  capacity: капацитет
+  loop: цикъл
+  iteration: итерация
+  closure: затваряне
+  scope: област на видимост
+  declaration: декларация
+  assignment: присвояване
+  initialization: инициализация
+  conversion: преобразуване
+  return value: връщана стойност
+  named return value: именувана връщана стойност
+  multiple return values: множество връщани стойности
+  function value: стойност на функция
+  function literal: литерал на функция
+  anonymous function: анонимна функция
+  variadic function: функция с променлив брой аргументи
+  composite literal: съставен литерал
+  short variable declaration: кратка декларация на променлива
+  package-level variable: променлива на ниво пакет
+  numeric constant: числова константа
+  untyped constant: нетипизирана константа
+  integer: цяло число
+  floating-point number: число с плаваща запетая
+  complex number: комплексно число
+  Boolean value: булева стойност
+  string: низ
+  byte: байт
+  error: грешка
+  reader: четец
+  writer: записващ обект
+  binary tree: двоично дърво
+  standard library: стандартна библиотека
+  built-in: вграден
+  concurrency: конкурентност
+  concurrent: конкурентен
+  synchronization: синхронизация
+  syntax highlighting: синтактично оцветяване
+  table of contents: съдържание
+  exercise: упражнение
+  example: пример
+forbidden:
+  - горутина
+  - горутини
+  - Go рутина
+  - Go рутини
+  - детска площадка на Go
+keep:
+  - Go
+  - Go Playground
+  - goroutine
+  - goroutines
+  - gofmt
+  - GOPATH
+  - rune
+  - URL
+  - ASCII
+  - CPU
+  - UTC

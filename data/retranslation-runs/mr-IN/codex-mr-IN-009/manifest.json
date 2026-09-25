@@ -1,0 +1,102 @@
+{
+  "schema_version": 2,
+  "batch_id": "codex-mr-IN-009",
+  "locale": "mr-IN",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 7,
+  "units": [
+    {
+      "unit_id": "methods/14",
+      "unit_kind": "page",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "7a09a7654c8b6ac6d96a1a8ddaafac368782f89ec2e6e61f323d40eb01cbf750",
+      "input_path": "inputs/methods-14.article",
+      "input_sha256": "4a12643efcc9fd5a77a573ef5187e80c1828696c6b1036d6425aae740c165af7",
+      "protected_token_count": 12,
+      "previous_snapshot_id": "qc-003",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "empty interface 术语已修复，但普通说明 any is an alias for interface{} 中仍直接使用英文 alias，需要本地化。"
+    },
+    {
+      "unit_id": "methods/15",
+      "unit_kind": "page",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "c205b4eb940358edea6321cfa422c3c00a560e9a6a71b08c8b3fa3ab9e4926ae",
+      "input_path": "inputs/methods-15.article",
+      "input_sha256": "de09fb3af677bf5cfb8ac741619639c9101d132f036c3cdba09219fc84550dc1",
+      "protected_token_count": 33,
+      "previous_snapshot_id": "qc-003",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "mandatory type assertion 已修复，但强调标记内的普通动词 test 仍为英文，需要在保持强调结构的同时本地化。"
+    },
+    {
+      "unit_id": "concurrency/1",
+      "unit_kind": "page",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "d0a9c45078c2255540cfffe48744a07fa04ab5c2113e8880068b5a400ae0ebdc",
+      "input_path": "inputs/concurrency-1.article",
+      "input_sha256": "a676e3c5e8f83962d8900d2e8df1fa0b96f3097568aef63557077a029996938c",
+      "protected_token_count": 24,
+      "previous_snapshot_id": "qc-003",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "primitives 残留已解决，但 goroutine 定义中的 Go runtime 被简化为 Go，遗漏了具体的 runtime 技术概念。"
+    },
+    {
+      "unit_id": "concurrency/3",
+      "unit_kind": "page",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "caef0893a54c61f192be397f6b27a039d81dc007f98f2d203a5a287383c0682e",
+      "input_path": "inputs/concurrency-3.article",
+      "input_sha256": "6172e9bf00b0129958419496d93dd4b065190bffa38be16e74c87b4655185712",
+      "protected_token_count": 6,
+      "previous_snapshot_id": "qc-003",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "buffered 已本地化，但译文在原强调标记内新增内部下划线，形成 बफर_केलेले 的不自然格式，需要保持完整词组格式。"
+    },
+    {
+      "unit_id": "concurrency/4",
+      "unit_kind": "page",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "3e925c6745255a443c61f25cd8131d538dc8677938f1c5021ce798465020b42e",
+      "input_path": "inputs/concurrency-4.article",
+      "input_sha256": "f68dc9ef06de3cb5d48846ebe7786e6cc06b77ea5c05bc6d56b80f667f5dad10",
+      "protected_token_count": 16,
+      "previous_snapshot_id": "qc-003",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "两个说明标签已本地化，但第二个标签仍呈现 आणखी 与 टीप 连写及不自然强调格式，需要兼顾受保护结构修正。"
+    },
+    {
+      "unit_id": "concurrency/6",
+      "unit_kind": "page",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "82e9cd932e14e6c4852fc8f865f4c45dc75845bd1a306649152ebc045f0c3b2c",
+      "input_path": "inputs/concurrency-6.article",
+      "input_sha256": "b65274e7c29910bdc6b3a294ae171def398a09355166b8a513bdbbbd3f15b672",
+      "protected_token_count": 12,
+      "previous_snapshot_id": "qc-003",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "receiving from c 的注释已无技术反转，但 मूल्य c कडून स्वीकारल्यास ब्लॉक होईल 词序仍不自然；同页 वापरा i 也有类似表达问题。"
+    },
+    {
+      "unit_id": "concurrency/9",
+      "unit_kind": "page",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "49f727794604c2ef8a8dda9508d0f412d7015cea77754c675a02b166dd9bfc93",
+      "input_path": "inputs/concurrency-9.article",
+      "input_sha256": "eea90ddabc34ca6cba730837ce3c5917b34821d2b4efaa00be3082377c496d3c",
+      "protected_token_count": 24,
+      "previous_snapshot_id": "qc-003",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "C",
+      "previous_finding": "mutual exclusion 和 mutex 已修复，但 goroutine 被写为天城文 गोरुटीन，违反 glossary keep 要求，必须保留英文 goroutine。"
+    }
+  ]
+}

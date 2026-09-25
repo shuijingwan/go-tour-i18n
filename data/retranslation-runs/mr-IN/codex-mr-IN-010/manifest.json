@@ -1,0 +1,24 @@
+{
+  "schema_version": 2,
+  "batch_id": "codex-mr-IN-010",
+  "locale": "mr-IN",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "example",
+  "unit_count": 1,
+  "units": [
+    {
+      "unit_id": "example:concurrency/exercise-web-crawler.go",
+      "unit_kind": "example",
+      "source_path": "_content/tour/concurrency/exercise-web-crawler.go",
+      "source_sha256": "bd6226dcae3b663a3aa1cbf502d840357ac0efb6de46e7a66612ca2834cf5e37",
+      "input_path": "inputs/concurrency-exercise-web-crawler.txt",
+      "input_sha256": "53554a1126b74da6e3bcb93c625eff1ec44f560e2817f1875202423a7d6009ab",
+      "protected_token_count": 12,
+      "previous_snapshot_id": "qc-003",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "Fetch 返回页面正文的语义已修复，但 Crawl 的两行说明缺少自然衔接，क्रॉल करते 与 शोधते 构成重复且不连贯的谓语，需要轻微润色。"
+    }
+  ]
+}

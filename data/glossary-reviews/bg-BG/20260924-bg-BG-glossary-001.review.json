@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "evidence_type": "glossary-review-receipt",
+  "locale": "bg-BG",
+  "review_id": "20260924-bg-BG-glossary-001",
+  "stage": "locale-glossary-review",
+  "decision": "failed",
+  "reviewer": "chatgpt-bg-BG-independent-reviewer",
+  "rubric": "glossary-review/v1",
+  "glossary_path": "locales/bg-BG/glossary.yaml",
+  "glossary_sha256": "87796d196ec6f4f9d8573c57406646e571c7711da753726bb7127cc75a902006",
+  "findings": [
+    "mandatory.Reset: Нулирай 的通常含义是将值归零，但正式编辑器 reset 实际执行 file().Content = file().OrigContent（_content/tour/static/js/controllers.js）；此全站高影响按钮的术语误导用户。请原 Generation session 重新选择能明确表示恢复原始示例代码的自然保加利亚语标签，并确保 glossary 与后续 UI 一致。",
+    "keep.Enter: Enter 只在键盘快捷键语境才是不可翻译的按键名；welcome/1 中的按键名已用内联代码保护，而 internal/tour/ui/en.json 的 site.enter_tour 是普通可翻译文案 Enter the tour。全局 keep Enter 会与该常用英文动词冲突，导致英语残留/错误保护。请原 Generation session 移除或收窄此规则，使按键身份受到保护但自然语言 Enter 得以翻译；同时检查其他只出现在受保护代码跨度的快捷键 keep 项是否有存在必要。"
+  ]
+}

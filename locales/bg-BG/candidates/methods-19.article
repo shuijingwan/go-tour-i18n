@@ -1,0 +1,26 @@
+* Грешки
+
+Програмите на Go изразяват състоянието на грешка чрез стойности от тип `error`.
+
+Типът `error` е вграден интерфейс, подобен на `fmt.Stringer`:
+
+	type error interface {
+		Error() string
+	}
+
+(Както при `fmt.Stringer`, пакетът `fmt` проверява дали стойностите реализират интерфейса `error`,
+когато ги отпечатва.)
+
+Функциите често връщат стойност от тип `error`, а извикващият код трябва да обработва грешките,
+като проверява дали грешката е равна на `nil`.
+
+	i, err := strconv.Atoi("42")
+	if err != nil {
+		fmt.Printf("couldn't convert number: %v\n", err)
+		return
+	}
+	fmt.Println("Converted integer:", i)
+
+Стойност `error`, равна на nil, означава успех; стойност `error`, различна от nil, означава неуспех.
+
+.play methods/errors.go

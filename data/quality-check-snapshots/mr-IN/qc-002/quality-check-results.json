@@ -1,0 +1,280 @@
+{
+  "schema_version": 2,
+  "evidence_type": "quality_check_results",
+  "locale": "mr-IN",
+  "snapshot_id": "qc-002",
+  "snapshot_manifest_sha256": "5927fe52e7d20b3dc283f94690642b3ef9582ad259ade2590a56d7147b282b7f",
+  "previous_snapshot_id": "qc-001",
+  "rubric": "translation-quality/v1",
+  "result_count": 51,
+  "results": [
+    {
+      "index": 1,
+      "unit_id": "welcome/1",
+      "rating": "A"
+    },
+    {
+      "index": 9,
+      "unit_id": "basics/4",
+      "rating": "A"
+    },
+    {
+      "index": 26,
+      "unit_id": "flowcontrol/4",
+      "rating": "A"
+    },
+    {
+      "index": 37,
+      "unit_id": "moretypes/1",
+      "rating": "A"
+    },
+    {
+      "index": 61,
+      "unit_id": "moretypes/25",
+      "rating": "A"
+    },
+    {
+      "index": 62,
+      "unit_id": "moretypes/26",
+      "rating": "A"
+    },
+    {
+      "index": 64,
+      "unit_id": "methods/1",
+      "rating": "A"
+    },
+    {
+      "index": 65,
+      "unit_id": "methods/2",
+      "rating": "A"
+    },
+    {
+      "index": 66,
+      "unit_id": "methods/3",
+      "rating": "A"
+    },
+    {
+      "index": 67,
+      "unit_id": "methods/4",
+      "rating": "B",
+      "finding": "English: “Try removing the * from the declaration of the Scale function on line 16 and observe how the program’s behavior changes.” Marathi: “ओळ 16 वरील फंक्शनच्या घोषणेतून * काढून Scale पाहा आणि प्रोग्रामचे वर्तन कसे बदलते ते निरीक्षण करा.” The revised sentence misplaces Scale after the removal instruction (“Scale पाहा”), so the target is awkward and no longer cleanly says to remove * from the declaration of the Scale function. Technical context remains recoverable, but this still needs minor revision."
+    },
+    {
+      "index": 68,
+      "unit_id": "methods/5",
+      "rating": "A"
+    },
+    {
+      "index": 69,
+      "unit_id": "methods/6",
+      "rating": "A"
+    },
+    {
+      "index": 70,
+      "unit_id": "methods/7",
+      "rating": "A"
+    },
+    {
+      "index": 71,
+      "unit_id": "methods/8",
+      "rating": "A"
+    },
+    {
+      "index": 72,
+      "unit_id": "methods/9",
+      "rating": "C",
+      "finding": "English: “An interface type is defined as a set of method signatures.” Marathi begins “_interface_type_ ही मेथड सिग्नेचर्सचा संच म्हणून परिभाषित केली जाते.” The visible emphasized prose term interface type is still left in English, despite mandatory interface → इंटरफेस and type → टाइप. Other occurrences were repaired, but this remaining mandatory-glossary violation blocks A."
+    },
+    {
+      "index": 73,
+      "unit_id": "methods/10",
+      "rating": "A"
+    },
+    {
+      "index": 74,
+      "unit_id": "methods/11",
+      "rating": "A"
+    },
+    {
+      "index": 75,
+      "unit_id": "methods/12",
+      "rating": "A"
+    },
+    {
+      "index": 76,
+      "unit_id": "methods/13",
+      "rating": "A"
+    },
+    {
+      "index": 77,
+      "unit_id": "methods/14",
+      "rating": "C",
+      "finding": "English: “The interface type that specifies zero methods is known as the empty interface.” Marathi: “शून्य मेथड्स निर्दिष्ट करणारा इंटरफेस टाइप _empty_interface_ म्हणून ओळखला जातो.” The emphasized prose name empty interface remains English; interface is a mandatory term (इंटरफेस). This is not code and remains a glossary/localization defect."
+    },
+    {
+      "index": 78,
+      "unit_id": "methods/15",
+      "rating": "C",
+      "finding": "English: “A type assertion provides access to an interface value’s underlying concrete value.” Marathi: “_type_assertion_ मुळे इंटरफेस मूल्याचे आधारभूत ठोस मूल्य मिळते.” The emphasized prose term type assertion remains English although mandatory type assertion → टाइप अ‍ॅसर्शन. Later uses are fixed, but this surviving mandatory violation blocks A."
+    },
+    {
+      "index": 79,
+      "unit_id": "methods/16",
+      "rating": "C",
+      "finding": "English: “A type switch is a construct that permits several type assertions in series.” Marathi: “_type_switch_ ही अशी रचना आहे जी मालिकेने अनेक टाइप अ‍ॅसर्शन्स करू देते.” The emphasized prose term type switch remains English although mandatory type switch → टाइप स्विच. The rest of the page is substantially repaired, but this mandatory violation remains."
+    },
+    {
+      "index": 80,
+      "unit_id": "methods/17",
+      "rating": "A"
+    },
+    {
+      "index": 81,
+      "unit_id": "methods/18",
+      "rating": "A"
+    },
+    {
+      "index": 82,
+      "unit_id": "methods/19",
+      "rating": "A"
+    },
+    {
+      "index": 83,
+      "unit_id": "methods/20",
+      "rating": "A"
+    },
+    {
+      "index": 84,
+      "unit_id": "methods/21",
+      "rating": "A"
+    },
+    {
+      "index": 85,
+      "unit_id": "methods/22",
+      "rating": "A"
+    },
+    {
+      "index": 86,
+      "unit_id": "methods/23",
+      "rating": "A"
+    },
+    {
+      "index": 87,
+      "unit_id": "methods/24",
+      "rating": "A"
+    },
+    {
+      "index": 88,
+      "unit_id": "methods/25",
+      "rating": "A"
+    },
+    {
+      "index": 90,
+      "unit_id": "generics/1",
+      "rating": "A"
+    },
+    {
+      "index": 91,
+      "unit_id": "generics/2",
+      "rating": "A"
+    },
+    {
+      "index": 93,
+      "unit_id": "concurrency/1",
+      "rating": "B",
+      "finding": "English: “The sync package provides useful primitives ... as there are other primitives.” Marathi retains “primitives” twice in otherwise Marathi prose: “sync पॅकेज उपयुक्त primitives देते ... कारण इतर primitives उपलब्ध आहेत.” This is avoidable English residue; the goroutine/package issues from qc-001 are fixed, but the page still needs minor localization."
+    },
+    {
+      "index": 94,
+      "unit_id": "concurrency/2",
+      "rating": "A"
+    },
+    {
+      "index": 95,
+      "unit_id": "concurrency/3",
+      "rating": "B",
+      "finding": "English: “Channels can be buffered.” Marathi: “चॅनेल _buffered_ असू शकतात.” The heading and all mandatory channel terminology are fixed, but the emphasized ordinary adjective buffered remains untranslated in prose, creating a small English-residue defect."
+    },
+    {
+      "index": 96,
+      "unit_id": "concurrency/4",
+      "rating": "B",
+      "finding": "English labels “Note:” and “Another note:” remain visible as “*Note:*” and “*Another*note:*” inside otherwise Marathi explanatory prose. The mandatory channel/parameter/expression/loop issues are fixed and technical meaning is correct, but these untranslated prose labels still need minor cleanup."
+    },
+    {
+      "index": 97,
+      "unit_id": "concurrency/5",
+      "rating": "B",
+      "finding": "English: “The select statement lets a goroutine wait on multiple communication operations.” Marathi: “select स्टेटमेंट goroutine ला अनेक communication operations साठी प्रतीक्षा करू देते.” The prior blocking-condition reversal is correctly fixed (“एखादा case चालवता येईपर्यंत ब्लॉक होतो”), but “communication operations” remains untranslated ordinary prose, so the page still needs minor localization."
+    },
+    {
+      "index": 98,
+      "unit_id": "concurrency/6",
+      "rating": "C",
+      "finding": "English code comment: “// receiving from c would block”. Marathi comment: “// मधून मूल्य स्वीकारण्याची क्रिया c कडून केल्यास ब्लॉक होते”. The revision now conveys blocking, but the Marathi word order is still seriously unnatural/garbled (“मधून ... c कडून”), so the instructional code comment is not production quality and still requires revision."
+    },
+    {
+      "index": 99,
+      "unit_id": "concurrency/7",
+      "rating": "A"
+    },
+    {
+      "index": 100,
+      "unit_id": "concurrency/8",
+      "rating": "A"
+    },
+    {
+      "index": 101,
+      "unit_id": "concurrency/9",
+      "rating": "C",
+      "finding": "English: “This concept is called mutual exclusion, and the conventional name ... is mutex.” Marathi: “या संकल्पनेला _mutual_exclusion_, म्हणजे परस्पर वर्जन म्हणतात ... प्रचलित नाव _mutex_ आहे.” Although Marathi equivalents were added, the visible emphasized prose still retains both mandatory source terms mutual exclusion and mutex in English. Mandatory forms are परस्पर वर्जन and म्युटेक्स, so the glossary defect is not fully resolved."
+    },
+    {
+      "index": 102,
+      "unit_id": "concurrency/10",
+      "rating": "A"
+    },
+    {
+      "index": 103,
+      "unit_id": "concurrency/11",
+      "rating": "A"
+    },
+    {
+      "index": 104,
+      "unit_id": "example:basics/numeric-constants.go",
+      "rating": "A"
+    },
+    {
+      "index": 107,
+      "unit_id": "example:concurrency/exercise-equivalent-binary-trees.go",
+      "rating": "A"
+    },
+    {
+      "index": 108,
+      "unit_id": "example:concurrency/exercise-web-crawler.go",
+      "rating": "C",
+      "finding": "English: \"Fetch returns the body of URL and a slice of URLs found on that page.\" Revised Marathi: \"Fetch हे URL आणि त्या पृष्ठावर सापडलेल्या URL चा स्लाइस परत करते.\" The phrase \"body of URL\" is mistranslated/omitted: this currently says Fetch returns the URL itself instead of the body/content of the corresponding page. This is a material technical-semantic error in the Fetcher contract. The earlier mandatory slice -\u003e स्लाइस issue is fixed, but the return-value description must be corrected without changing code, URLs or identifiers."
+    },
+    {
+      "index": 109,
+      "unit_id": "example:concurrency/mutex-counter.go",
+      "rating": "A"
+    },
+    {
+      "index": 112,
+      "unit_id": "example:generics/list.go",
+      "rating": "B",
+      "finding": "English: \"// List represents a singly-linked list that holds // values of any type.\" Revised Marathi: \"// List कोणत्याही टाइपची मूल्ये धारण करणाऱ्या एकदिश दुव्यांच्या यादीचे प्रतिनिधित्व करते // .\" The previous singly-linked-list/type terminology defect is fixed, but the sentence-ending period was moved onto a separate standalone // . comment line. This is an avoidable formatting/readability defect; keep the two instructional comments natural without changing code or List/T identifiers."
+    },
+    {
+      "index": 117,
+      "unit_id": "example:moretypes/append.go",
+      "rating": "A"
+    },
+    {
+      "index": 118,
+      "unit_id": "example:moretypes/exercise-fibonacci-closure.go",
+      "rating": "A"
+    }
+  ]
+}

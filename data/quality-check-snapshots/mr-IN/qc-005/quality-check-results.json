@@ -1,0 +1,38 @@
+{
+  "schema_version": 2,
+  "evidence_type": "quality_check_results",
+  "locale": "mr-IN",
+  "snapshot_id": "qc-005",
+  "snapshot_manifest_sha256": "1fc34fed1fa79f5e28b50ecdefc454f4d8e2b3ce9e6afe8f7a747e1afdfe3170",
+  "previous_snapshot_id": "qc-004",
+  "rubric": "translation-quality/v1",
+  "result_count": 5,
+  "results": [
+    {
+      "index": 77,
+      "unit_id": "methods/14",
+      "rating": "A"
+    },
+    {
+      "index": 78,
+      "unit_id": "methods/15",
+      "rating": "A"
+    },
+    {
+      "index": 96,
+      "unit_id": "concurrency/4",
+      "rating": "B",
+      "finding": "Another note 标签不再拆词，但 अतिरिक्त-टीप 的连字符不够自然，且恢复后 *:* 仍形成异常强调格式；须在保持受保护外层标记的前提下修正。"
+    },
+    {
+      "index": 98,
+      "unit_id": "concurrency/6",
+      "rating": "A"
+    },
+    {
+      "index": 101,
+      "unit_id": "concurrency/9",
+      "rating": "A"
+    }
+  ]
+}
