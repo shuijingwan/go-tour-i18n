@@ -20,7 +20,7 @@
 
 一个 locale 默认由一个长期 Generation session、一个与之独立的长期 Reviewer session，加上维护者 Local terminal 协作。下图只说明职责流，不改变任何 stage-specific authority 规定的 CLI 顺序：
 
-在该 locale 开始正式 generation 前，根据当时真实的 ChatGPT 可用额度、Codex 5 小时额度与周额度、Remote Desktop Commander 月额度、历史实测成本和并发计划，选择 `chatgpt` 或 `codex` 作为 Generation provider。ChatGPT 使用 **GPT-5.6 Sol + High**；Codex 新启动的正式 Generation 默认使用 **GPT-6 Luna + High**。两者遵守相同 TranslationUnit contract、validation、QC、revision、A-only、promotion、Course SEO semantic scope 与 Production gate。正式 generation 开始后，原则上 glossary、UI / metadata、TranslationUnit initial / revision / retry、Course SEO localization / refresh / revise replacement 和 Surface Review finding replacement 全程使用同一 provider 与已选模型；只有维护者明确批准、位于安全批次边界且有真实额度或 provider/tool 依据时才可切换，并保留逐批真实 provenance。当前 `mr-IN` 的额度依据与批次边界切换授权见 [Codex 正式语言生成执行规范](CODEX_TRANSLATION.md)。该选择不新增 schema、receipt、machine gate 或 locale state 字段。
+在该 locale 开始正式 generation 前，根据当时真实的 ChatGPT 可用额度、Codex 5 小时额度与周额度、Remote Desktop Commander 月额度、历史实测成本和并发计划，选择 `chatgpt` 或 `codex` 作为 Generation provider。ChatGPT 与 Codex 新启动的正式 Generation 默认均使用 **GPT-5.6 Sol + High**（Codex provenance：`gpt-5.6-sol-high`）。已开始的 Generation 沿用已选模型；`mr-IN` 已批准的批次边界切换到 Luna 是保留的历史授权，正在执行的 Luna batch 继续按真实 provenance 完成。两者遵守相同 TranslationUnit contract、validation、QC、revision、A-only、promotion、Course SEO semantic scope 与 Production gate。正式 generation 开始后，原则上 glossary、UI / metadata、TranslationUnit initial / revision / retry、Course SEO localization / refresh / revise replacement 和 Surface Review finding replacement 全程使用同一 provider 与已选模型；只有维护者明确批准、位于安全批次边界且有真实额度或 provider/tool 依据时才可切换，并保留逐批真实 provenance。当前 `mr-IN` 的额度依据与批次边界切换授权见 [Codex 正式语言生成执行规范](CODEX_TRANSLATION.md)。该选择不新增 schema、receipt、machine gate 或 locale state 字段。
 
 ```text
 Generation session

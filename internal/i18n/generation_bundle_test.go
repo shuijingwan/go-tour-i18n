@@ -65,18 +65,18 @@ func TestGenerationBundleResultImportIsDeterministicAtomicAndNoOverwrite(t *test
 			t.Fatal(err)
 		}
 	}
-	resultBundle, resultManifest, err := PackGenerationResultBundle(root, catalog, bundle, "codex", FormalGenerationModel, outputDir)
+	resultBundle, resultManifest, err := PackGenerationResultBundle(root, catalog, bundle, "codex", PreviousCodexGenerationModel, outputDir)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if resultManifest.Provider != "codex" || resultManifest.Model != FormalGenerationModel || len(resultManifest.Outputs) != 2 {
+	if resultManifest.Provider != "codex" || resultManifest.Model != PreviousCodexGenerationModel || len(resultManifest.Outputs) != 2 {
 		t.Fatalf("result manifest=%+v", resultManifest)
 	}
 	imported, err := ImportGenerationResultBundle(root, catalog, bundle, resultBundle)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if imported.Model != FormalGenerationModel || len(imported.InstalledPaths) != 2 {
+	if imported.Model != PreviousCodexGenerationModel || len(imported.InstalledPaths) != 2 {
 		t.Fatalf("import=%+v", imported)
 	}
 	if _, err := ImportGenerationResultBundle(root, catalog, bundle, resultBundle); err == nil || !strings.Contains(err.Error(), "already exists") {
@@ -345,7 +345,7 @@ func TestGenerationBundleDirectoryImportSupportsExampleRevisionAndRetry(t *testi
 		}
 		outputs := t.TempDir()
 		writeGenerationFixtureOutputs(t, root, exported.BatchID, outputs, manifest)
-		if _, err := ImportGenerationOutputDirectory(root, catalog, bundle, "codex", FormalGenerationModel, outputs); err != nil {
+		if _, err := ImportGenerationOutputDirectory(root, catalog, bundle, "codex", PreviousCodexGenerationModel, outputs); err != nil {
 			t.Fatal(err)
 		}
 	})
@@ -687,10 +687,10 @@ func TestFormalGenerationIdentitySupportsProviderSpecificAndHistoricalModels(t *
 		name, provider, model, batchID string
 		wantErr                        bool
 	}{
-		{name: "codex luna high", provider: "codex", model: FormalGenerationModel, batchID: "codex-locale-001"},
-		{name: "codex historical sol high", provider: "codex", model: LegacyCodexGenerationModel, batchID: "codex-locale-002"},
+		{name: "codex default sol high", provider: "codex", model: FormalGenerationModel, batchID: "codex-locale-001"},
+		{name: "codex previously approved luna high", provider: "codex", model: PreviousCodexGenerationModel, batchID: "codex-locale-002"},
 		{name: "chatgpt sol high", provider: "chatgpt", model: FormalChatGPTGenerationModel, batchID: "chatgpt-locale-001"},
-		{name: "chatgpt rejects codex model", provider: "chatgpt", model: FormalGenerationModel, batchID: "chatgpt-locale-002", wantErr: true},
+		{name: "chatgpt rejects codex-only luna model", provider: "chatgpt", model: PreviousCodexGenerationModel, batchID: "chatgpt-locale-002", wantErr: true},
 		{name: "codex rejects unknown model", provider: "codex", model: "other-model", batchID: "codex-locale-003", wantErr: true},
 	}
 	for _, tc := range tests {

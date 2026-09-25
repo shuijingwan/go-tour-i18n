@@ -16,9 +16,9 @@ import (
 const (
 	GenerationBundleSchemaVersion       = 1
 	GenerationResultBundleSchemaVersion = 1
-	FormalGenerationModel               = "gpt-6-luna-high"
+	FormalGenerationModel               = "gpt-5.6-sol-high"
 	FormalChatGPTGenerationModel        = "gpt-5.6-sol-high"
-	LegacyCodexGenerationModel          = "gpt-5.6-sol-high"
+	PreviousCodexGenerationModel        = "gpt-6-luna-high"
 )
 
 func DefaultGenerationModelForProvider(provider string) (string, error) {
@@ -886,7 +886,7 @@ func requireFormalGenerationIdentity(provider, model, batchID string) error {
 	case string(RetranslationGeneratorChatGPT):
 		modelAccepted = model == FormalChatGPTGenerationModel
 	case string(RetranslationGeneratorCodex):
-		modelAccepted = model == FormalGenerationModel || model == LegacyCodexGenerationModel
+		modelAccepted = model == FormalGenerationModel || model == PreviousCodexGenerationModel
 	}
 	if !modelAccepted {
 		return fmt.Errorf("model %s is not an accepted formal model for provider %s", model, provider)
