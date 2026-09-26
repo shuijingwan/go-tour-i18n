@@ -11,6 +11,7 @@ const localeSurfaceReviewReviewerBundleSchemaVersion = 1
 
 var localeSurfaceReviewReviewerAuthorityPaths = []string{
 	"AGENTS.md",
+	"docs/WORKFLOW_HANDOFF.md",
 	"docs/CHATGPT_LANGUAGE_GENERATION.md",
 	"docs/COURSE_SEO_METADATA.md",
 	"docs/GLOSSARY_REVIEW.md",

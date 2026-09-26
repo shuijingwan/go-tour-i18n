@@ -4,6 +4,8 @@
 
 ## Generation role 与职责边界
 
+所有 Codex Generation、独立 Reviewer 与维护者 Local terminal 阶段交接统一遵守 [正式阶段交接合同](WORKFLOW_HANDOFF.md)。交接合同不授权 Codex 越过 promotion、preview/publish、Production 或 commit/push 边界。
+
 Codex 被选为某个 locale 的 Generation provider 后，同一个长期 Generation role/session 负责该 locale 的 glossary generation / revision、UI catalog、article metadata、其他 locale-level 文案、TranslationUnit initial / revision / 需要新译文的 retry、schema v2 Course SEO localization / refresh / revise replacement，以及 Locale Surface Review finding replacement generation。Codex 新启动的正式 Generation 默认使用 GPT-5.6 Sol + High，formal provenance model 字段为 `gpt-5.6-sol-high`。已经启动的 Generation 沿用已选模型；尤其 `mr-IN` 按维护者批准在批次边界切换到 GPT-6 Luna + High 后，已启动的 Luna batch 与关联工作继续保留真实 `gpt-6-luna-high` provenance，不因本默认值更新而自动切换。原则上整个 locale 持续使用 Codex 与已选模型；模型只可在维护者明确批准、到达安全批次边界且有真实额度或 provider/tool 依据时切换。不得新增虚假 generation 记录，Course SEO 必须记录真实 provenance，也不得新增 provider selection schema、receipt、machine gate 或 locale state 字段。
 
 Codex 另有独立的 repository-level code/docs/config/schema/workflow/tooling 与复杂 failure diagnosis 职责；该职责不等于任何 locale 自动选择 Codex 作为 Generation provider。provider-neutral 的选择规则见 [多语言翻译流程](TRANSLATION_WORKFLOW.md) 与 [新增 Locale 执行手册](NEW_LOCALE_RUNBOOK.md)。

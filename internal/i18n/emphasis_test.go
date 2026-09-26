@@ -5,6 +5,8 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
+
+	"golang.org/x/tools/present"
 )
 
 func TestEmphasisItalicTranslationPassesCandidateValidator(t *testing.T) {
@@ -209,5 +211,28 @@ func validateEmphasisCandidate(t *testing.T, source, candidate string, wantValid
 	}
 	if !wantValid && err == nil {
 		t.Fatalf("invalid candidate accepted:\n%s", candidate)
+	}
+}
+
+func TestPresentVisibleTextDistinguishesValidMultiwordEmphasisFromLiteralUnderscores(t *testing.T) {
+	root := repoRoot(t)
+	valid := []byte("* Root\n\nUse _two_words_ here.\n")
+	spans, err := parsedFontSpans(root, "basics.article", valid)
+	if err != nil {
+		t.Fatal(err)
+	}
+	rendered := string(present.Style("Use _two_words_ here."))
+	if len(spans) != 1 || spans[0] != fontItalic || rendered != "Use <i>two words</i> here." || strings.Contains(rendered, "_") {
+		t.Fatalf("valid underscore-delimited multiword emphasis parsed spans=%v rendered=%q", spans, rendered)
+	}
+
+	invalid := []byte("* Root\n\nUse _two words_ here.\n")
+	spans, err = parsedFontSpans(root, "basics.article", invalid)
+	if err != nil {
+		t.Fatal(err)
+	}
+	rendered = string(present.Style("Use _two words_ here."))
+	if len(spans) != 0 || !strings.Contains(rendered, "_") {
+		t.Fatalf("space-delimited pseudo-emphasis unexpectedly parsed spans=%v rendered=%q", spans, rendered)
 	}
 }

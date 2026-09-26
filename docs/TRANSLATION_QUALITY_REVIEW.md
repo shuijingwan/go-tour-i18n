@@ -392,3 +392,36 @@ automatic validation → Candidate Snapshot → ChatGPT Quality Check → machin
 ```
 
 新增语言无需重新决定是否审核，也无需重新定义 A/B/C/D 的基本含义。语言特定的术语和表达要求可以在同一正式 rubric 下补充，但不能取消逐 TranslationUnit review 或弱化 promotion gate。
+
+## QC lineage preflight、完整重审与 Surface 定向纠错
+
+创建新 QC lineage、第一次 `record`，或执行会显著改变 pending scope 的操作前，必须先运行只读预检查：
+
+```sh
+go run -mod=readonly ./cmd/tour-i18n quality-check preflight \
+  --locale <locale> --snapshot-id <snapshot-id> \
+  [--previous-snapshot-id <finalized-snapshot>|--full-rereview]
+```
+
+输出列出已有 finalized Snapshot、结果是否已经开始、persisted/selected predecessor、可 carry-forward A、需要 QC 或 revision 的 Unit，以及预计 Reviewer Unit 数。存在既有 finalization 而新 Snapshot 未选择 predecessor 时，mode 为 `predecessor-required`；第一次 `record` 会 fail closed。维护者确实决定完整重审时，先以 `--full-rereview` 检查预计重复范围，并且只在第一次 `record` 或 `record-batch` 显式传 `--full-rereview`；结果文件建立后继续记录不得重复传该授权。结果文件一旦存在，`previous_snapshot_id` 仍不可补写或更换。
+
+Surface Review 已明确发现某个旧 A TranslationUnit 缺陷时，不把它伪装成完整重审，也不覆盖旧 A/finalization。先确保正式 Markdown finding 精确写出 Unit ID，再创建不可覆盖的 reopen receipt：
+
+```sh
+go run -mod=readonly ./cmd/tour-i18n quality-check surface-reopen \
+  --locale <locale> --reopen-id <id> \
+  --previous-snapshot-id <current-finalized-snapshot> \
+  --surface-review-id <review-id> --finding "<specific finding>" \
+  --unit-id <unit-id> [--unit-id <unit-id> ...]
+
+go run -mod=readonly ./cmd/tour-i18n retranslation export \
+  --locale <locale> --generator <provider> --allow-reexport \
+  --previous-snapshot-id <current-finalized-snapshot> \
+  --surface-reopen-id <id> --id <unit-id> [--id <unit-id> ...]
+```
+
+receipt 绑定当前 finalized predecessor、正式 Surface evidence 的 path/SHA-256、精确同 kind TU identity 和 finding；`--finding` 必须原样存在于该 Markdown，且每个 Unit ID 必须作为完整标识出现，不能用子串冒充；revision unit set 必须 exact-match。manifest 使用 `revision_feedback_source=surface_review` 与显式 authorization ID。revision 后的新 full Snapshot 仍以旧 finalized Snapshot 为 predecessor：未变化 A 正常 carry-forward，变化 Unit 进入 re-QC。任何 evidence、finalization 或 TU identity 变化都 fail closed。
+
+## Present 可见文本审核
+
+Reviewer 判断 `.article` 的下划线、强调范围或词间空格前，必须以仓库锁定的 `golang.org/x/tools/present` 实际解析结果为准。legacy Present 用同一个 marker 分隔 span 内的词：`_two_words_` 渲染为一个 italic span，用户可见文本是 `two words`，内部下划线不是缺陷；`_two words_` 因真实空格分词而不会形成同一 emphasis span，用户会看到下划线，才可能构成 finding。仓库测试直接调用实际 parser/`present.Style` 固定该正反例。不得仅搜索原始下划线就提出 finding，也不得为绕过审核放宽 protected token、restore 或 importer。

@@ -40,6 +40,7 @@ type QualityCheckResults struct {
 }
 
 type QualityCheckRecordOptions struct {
+	FullRereview       bool
 	Locale             string
 	SnapshotID         string
 	PreviousSnapshotID string
@@ -49,6 +50,7 @@ type QualityCheckRecordOptions struct {
 }
 
 type QualityCheckRecordBatchOptions struct {
+	FullRereview       bool
 	Locale             string
 	SnapshotID         string
 	PreviousSnapshotID string
@@ -144,6 +146,9 @@ func RecordQualityCheckResults(root string, catalog *Catalog, options QualityChe
 	if err := validateSnapshotID(options.SnapshotID); err != nil {
 		return nil, err
 	}
+	if options.FullRereview && options.PreviousSnapshotID != "" {
+		return nil, errors.New("previous_snapshot_id and full_rereview are mutually exclusive")
+	}
 	if options.PreviousSnapshotID != "" {
 		if err := validateSnapshotID(options.PreviousSnapshotID); err != nil {
 			return nil, err
@@ -169,6 +174,25 @@ func RecordQualityCheckResults(root string, catalog *Catalog, options QualityChe
 	existing, err := readQualityCheckResults(root, options.Locale, snapshot)
 	if err != nil {
 		return nil, err
+	}
+	if existing != nil && options.FullRereview {
+		return nil, errors.New("full_rereview may only authorize the first results write")
+	}
+	if existing == nil && options.PreviousSnapshotID == "" {
+		finalized, err := qualityCheckFinalizedSnapshotIDs(root, options.Locale)
+		if err != nil {
+			return nil, err
+		}
+		hasOtherFinalized := false
+		for _, id := range finalized {
+			if id != options.SnapshotID {
+				hasOtherFinalized = true
+				break
+			}
+		}
+		if hasOtherFinalized && !options.FullRereview {
+			return nil, errors.New("a finalized Quality Check Snapshot already exists: run quality-check preflight and select --previous-snapshot-id, or explicitly pass --full-rereview to accept repeated review")
+		}
 	}
 	previousSnapshotID, err := resolveQualityCheckResultsLineage(options.SnapshotID, existing, options.PreviousSnapshotID)
 	if err != nil {
@@ -289,7 +313,7 @@ func RecordQualityCheckResultBatch(root string, catalog *Catalog, options Qualit
 		unitIDs = append(unitIDs, unit.UnitID)
 	}
 	return RecordQualityCheckResults(root, catalog, QualityCheckRecordOptions{
-		Locale: options.Locale, SnapshotID: options.SnapshotID, PreviousSnapshotID: options.PreviousSnapshotID,
+		Locale: options.Locale, SnapshotID: options.SnapshotID, PreviousSnapshotID: options.PreviousSnapshotID, FullRereview: options.FullRereview,
 		UnitIDs: unitIDs, Rating: options.Rating,
 		Finding: options.Finding,
 	})

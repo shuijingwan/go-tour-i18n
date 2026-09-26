@@ -15,6 +15,7 @@ const QualityCheckReviewerBundleSchemaVersion = 1
 
 var qualityCheckReviewerAuthorityPaths = []string{
 	"AGENTS.md",
+	"docs/WORKFLOW_HANDOFF.md",
 	"docs/CHATGPT_LANGUAGE_GENERATION.md",
 	"docs/GLOSSARY_REVIEW.md",
 	"docs/TRANSLATION_QUALITY_REVIEW.md",

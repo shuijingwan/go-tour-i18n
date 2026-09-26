@@ -123,6 +123,24 @@ func recordLocaleSurfaceReviewACommand(root string, catalog *i18n.Catalog, args 
 	return nil
 }
 
+func recordLocaleSurfaceReviewRegistryBaselineCommand(root string, catalog *i18n.Catalog, args []string) error {
+	fs := flag.NewFlagSet("surface-review registry-baseline", flag.ContinueOnError)
+	locale := fs.String("locale", "", "locale")
+	reviewID := fs.String("review-id", "", "schema v2 review identity")
+	if err := fs.Parse(args); err != nil {
+		return err
+	}
+	if *locale == "" || *reviewID == "" || fs.NArg() != 0 {
+		return fmt.Errorf("usage: surface-review registry-baseline --locale <locale> --review-id <schema-v2-review-id>")
+	}
+	baseline, path, err := i18n.RecordLocaleSurfaceReviewRegistryBaseline(root, *locale, *reviewID, catalog)
+	if err != nil {
+		return err
+	}
+	fmt.Printf("Locale Surface Review registry baseline recorded: locale=%s review_id=%s gate_sha256=%s path=%s\n", baseline.Locale, baseline.ReviewID, baseline.GateSHA256, path)
+	return nil
+}
+
 func requireFirstProductionPlaceholderForRecordA(root, locale, reviewID string) error {
 	data, err := os.ReadFile(filepath.Join(root, "production", "identity.json"))
 	if err != nil {

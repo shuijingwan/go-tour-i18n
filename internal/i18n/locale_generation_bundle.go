@@ -20,6 +20,7 @@ const (
 
 var localeGenerationAuthorityPaths = []string{
 	"AGENTS.md",
+	"docs/WORKFLOW_HANDOFF.md",
 	"docs/CHATGPT_LANGUAGE_GENERATION.md",
 	"docs/CODEX_TRANSLATION.md",
 	"docs/GLOSSARY_REVIEW.md",

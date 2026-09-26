@@ -34,6 +34,7 @@ func DefaultGenerationModelForProvider(provider string) (string, error) {
 
 var translationUnitGenerationAuthorityPaths = []string{
 	"AGENTS.md",
+	"docs/WORKFLOW_HANDOFF.md",
 	"docs/CHATGPT_LANGUAGE_GENERATION.md",
 	"docs/CODEX_TRANSLATION.md",
 	"docs/RETRANSLATION_RUNBOOK.md",

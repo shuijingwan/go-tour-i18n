@@ -156,6 +156,8 @@ func run(args []string) error {
 		return courseMetadataSourceCommand(root, catalog, args[2:])
 	case "surface-review record-a":
 		return recordLocaleSurfaceReviewACommand(root, catalog, args[2:])
+	case "surface-review registry-baseline":
+		return recordLocaleSurfaceReviewRegistryBaselineCommand(root, catalog, args[2:])
 	case "surface-review export":
 		return exportLocaleSurfaceReviewCommand(root, catalog, args[2:])
 	case "surface-review reviewer-bundle":
@@ -554,6 +556,47 @@ func run(args []string) error {
 			return err
 		}
 		return writeRetranslationPromotionOutput(os.Stdout, result, *apply, *jsonOutput)
+	case "quality-check surface-reopen":
+		fs := flag.NewFlagSet("quality-check surface-reopen", flag.ContinueOnError)
+		locale := fs.String("locale", "", "target locale")
+		reopenID := fs.String("reopen-id", "", "immutable surface correction authorization id")
+		previousSnapshotID := fs.String("previous-snapshot-id", "", "current finalized predecessor Snapshot")
+		surfaceReviewID := fs.String("surface-review-id", "", "formal Surface Review finding id")
+		finding := fs.String("finding", "", "specific correction finding")
+		var unitIDs repeatedStrings
+		fs.Var(&unitIDs, "unit-id", "exact TranslationUnit scope; repeat as needed")
+		if err := fs.Parse(args[2:]); err != nil {
+			return err
+		}
+		if *locale == "" || *reopenID == "" || *previousSnapshotID == "" || *surfaceReviewID == "" || *finding == "" || len(unitIDs) == 0 || fs.NArg() != 0 {
+			return fmt.Errorf("usage: quality-check surface-reopen --locale <locale> --reopen-id <id> --previous-snapshot-id <finalized-snapshot> --surface-review-id <id> --finding <text> --unit-id <id>...")
+		}
+		receipt, path, err := i18n.RecordQualityCheckSurfaceReopen(root, catalog, i18n.QualityCheckSurfaceReopenOptions{Locale: *locale, ReopenID: *reopenID, PreviousSnapshotID: *previousSnapshotID, SurfaceReviewID: *surfaceReviewID, Finding: *finding, UnitIDs: unitIDs})
+		if err != nil {
+			return err
+		}
+		fmt.Printf("Quality Check surface correction reopened: locale=%s predecessor=%s reopen_id=%s units=%d path=%s\n", receipt.Locale, receipt.PreviousSnapshotID, receipt.ReopenID, receipt.UnitCount, path)
+		return nil
+	case "quality-check preflight":
+		fs := flag.NewFlagSet("quality-check preflight", flag.ContinueOnError)
+		locale := fs.String("locale", "", "target locale")
+		snapshotID := fs.String("snapshot-id", "", "prospective or active Candidate Snapshot")
+		previousSnapshotID := fs.String("previous-snapshot-id", "", "selected predecessor for exact A carry-forward")
+		fullRereview := fs.Bool("full-rereview", false, "explicitly select a full repeated review with no predecessor")
+		if err := fs.Parse(args[2:]); err != nil {
+			return err
+		}
+		if *locale == "" || *snapshotID == "" || fs.NArg() != 0 {
+			return fmt.Errorf("usage: quality-check preflight --locale <locale> --snapshot-id <snapshot> [--previous-snapshot-id <snapshot>|--full-rereview]")
+		}
+		if *previousSnapshotID != "" && *fullRereview {
+			return fmt.Errorf("--previous-snapshot-id and --full-rereview are mutually exclusive")
+		}
+		report, err := i18n.BuildQualityCheckPreflight(root, catalog, i18n.QualityCheckPreflightOptions{Locale: *locale, SnapshotID: *snapshotID, PreviousSnapshotID: *previousSnapshotID, FullRereview: *fullRereview})
+		if err != nil {
+			return err
+		}
+		return printJSON(report)
 	case "quality-check scope":
 		fs := flag.NewFlagSet("quality-check scope", flag.ContinueOnError)
 		locale := fs.String("locale", "", "target locale")
@@ -633,6 +676,7 @@ func run(args []string) error {
 		locale := fs.String("locale", "", "target locale")
 		snapshotID := fs.String("snapshot-id", "", "Candidate Snapshot id")
 		previousSnapshotID := fs.String("previous-snapshot-id", "", "previous Quality Check Snapshot id for carry-forward")
+		fullRereview := fs.Bool("full-rereview", false, "explicitly accept a full repeated review with no predecessor")
 		rating := fs.String("rating", "", "Quality Check rating: A, B, C, or D")
 		finding := fs.String("finding", "", "per-TranslationUnit finding; required for B/C/D")
 		var unitIDs repeatedStrings
@@ -647,7 +691,7 @@ func run(args []string) error {
 			return fmt.Errorf("unexpected quality-check record arguments: %s", strings.Join(fs.Args(), " "))
 		}
 		result, err := i18n.RecordQualityCheckResults(root, catalog, i18n.QualityCheckRecordOptions{
-			Locale: *locale, SnapshotID: *snapshotID, PreviousSnapshotID: *previousSnapshotID,
+			Locale: *locale, SnapshotID: *snapshotID, PreviousSnapshotID: *previousSnapshotID, FullRereview: *fullRereview,
 			UnitIDs: unitIDs, Rating: *rating, Finding: *finding,
 		})
 		if err != nil {
@@ -678,6 +722,7 @@ func run(args []string) error {
 		locale := fs.String("locale", "", "target locale")
 		snapshotID := fs.String("snapshot-id", "", "Candidate Snapshot id")
 		previousSnapshotID := fs.String("previous-snapshot-id", "", "previous Quality Check Snapshot id for carry-forward")
+		fullRereview := fs.Bool("full-rereview", false, "explicitly accept a full repeated review with no predecessor")
 		startIndex := fs.Int("start-index", 1, "first stable Candidate Snapshot index (1-based)")
 		limit := fs.Int("limit", i18n.DefaultQualityCheckBatchLimit, "maximum TranslationUnits to record")
 		rating := fs.String("rating", "", "Quality Check rating: A, B, C, or D")
@@ -692,7 +737,7 @@ func run(args []string) error {
 			return fmt.Errorf("unexpected quality-check record-batch arguments: %s", strings.Join(fs.Args(), " "))
 		}
 		result, err := i18n.RecordQualityCheckResultBatch(root, catalog, i18n.QualityCheckRecordBatchOptions{
-			Locale: *locale, SnapshotID: *snapshotID, PreviousSnapshotID: *previousSnapshotID,
+			Locale: *locale, SnapshotID: *snapshotID, PreviousSnapshotID: *previousSnapshotID, FullRereview: *fullRereview,
 			StartIndex: *startIndex, Limit: *limit, Rating: *rating, Finding: *finding,
 		})
 		if err != nil {
@@ -848,6 +893,7 @@ func parseRetranslationExportOptions(args []string) (i18n.RetranslationExportOpt
 	jsonOutput := fs.Bool("json", false, "输出完整 machine-readable JSON")
 	allowReexport := fs.Bool("allow-reexport", false, "allow explicitly requested page ids to be exported again")
 	previousSnapshotID := fs.String("previous-snapshot-id", "", "previous Candidate Snapshot containing Quality Check B/C/D revision feedback")
+	surfaceReopenID := fs.String("surface-reopen-id", "", "surface correction authorization for reopening exact prior A units")
 	var unitIDs repeatedStrings
 	fs.Var(&unitIDs, "id", "optional translation unit id; repeat for multiple units")
 	if err := fs.Parse(args); err != nil {
@@ -866,7 +912,7 @@ func parseRetranslationExportOptions(args []string) (i18n.RetranslationExportOpt
 	return i18n.RetranslationExportOptions{
 		Locale: *locale, BatchID: *batchID, Generator: selectedGenerator,
 		UnitIDs: unitIDs, UnitKind: i18n.UnitKind(*unitKind), Limit: *limit,
-		AllowReexport: *allowReexport, PreviousSnapshotID: *previousSnapshotID,
+		AllowReexport: *allowReexport, PreviousSnapshotID: *previousSnapshotID, SurfaceReopenID: *surfaceReopenID,
 	}, *jsonOutput, nil
 }
 

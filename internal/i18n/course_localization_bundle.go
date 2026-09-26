@@ -12,6 +12,7 @@ const CourseLocalizationGenerationBundleSchemaVersion = 1
 
 var courseLocalizationGenerationAuthorityPaths = []string{
 	"AGENTS.md",
+	"docs/WORKFLOW_HANDOFF.md",
 	"docs/CHATGPT_LANGUAGE_GENERATION.md",
 	"docs/CODEX_TRANSLATION.md",
 	"docs/COURSE_SEO_METADATA.md",

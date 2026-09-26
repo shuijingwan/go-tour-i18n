@@ -4,6 +4,8 @@
 
 ## 单 locale 固定会话角色
 
+所有 Generation/Reviewer/Local terminal 阶段交接统一遵守 [正式阶段交接合同](WORKFLOW_HANDOFF.md)：先完成合法的闭环内短机械操作，再提供真实 current attachment 或完整恢复命令；不得编造路径、hash 或 CURRENT。
+
 一个 locale 默认维护一个长期 **Generation session**、一个与之独立的长期 **Reviewer session**，再由维护者 **Local terminal** 执行闭环外的成组 deterministic lifecycle；闭环内短机械步骤按下文由具备仓库终端能力的 AI execution environment 自动完成。这是协作职责规则，不是机器身份系统；不得为此新增 session 字段、receipt、schema、CLI flag 或 machine gate。
 
 ### Generation session

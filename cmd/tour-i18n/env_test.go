@@ -106,6 +106,18 @@ func TestParseRetranslationExportOptionsGenerator(t *testing.T) {
 		}
 	})
 
+	t.Run("surface reopen", func(t *testing.T) {
+		options, _, err := parseRetranslationExportOptions([]string{
+			"--locale", "de-DE", "--allow-reexport", "--previous-snapshot-id", "qc-001", "--surface-reopen-id", "surface-fix-001",
+		})
+		if err != nil {
+			t.Fatal(err)
+		}
+		if !options.AllowReexport || options.PreviousSnapshotID != "qc-001" || options.SurfaceReopenID != "surface-fix-001" {
+			t.Fatalf("surface reopen options=%+v", options)
+		}
+	})
+
 	t.Run("invalid", func(t *testing.T) {
 		_, _, err := parseRetranslationExportOptions([]string{"--locale", "de-DE", "--generator", "other"})
 		if err == nil || !strings.Contains(err.Error(), "use codex or chatgpt") {

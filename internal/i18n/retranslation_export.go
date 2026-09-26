@@ -33,25 +33,27 @@ type RetranslationExportOptions struct {
 	Limit              int
 	AllowReexport      bool
 	PreviousSnapshotID string
+	SurfaceReopenID    string
 }
 
 type RetranslationBatchUnit struct {
-	UnitID                 string   `json:"unit_id"`
-	UnitKind               UnitKind `json:"unit_kind"`
-	SourcePath             string   `json:"source_path"`
-	SourceSHA256           string   `json:"source_sha256"`
-	InputPath              string   `json:"input_path"`
-	InputSHA256            string   `json:"input_sha256"`
-	ProtectedTokenCount    int      `json:"protected_token_count"`
-	PreviousSnapshotID     string   `json:"previous_snapshot_id,omitempty"`
-	RevisionFeedbackSource string   `json:"revision_feedback_source,omitempty"`
-	PreviousRating         string   `json:"previous_rating,omitempty"`
-	PreviousFinding        string   `json:"previous_finding,omitempty"`
-	PreviousReviewDecision string   `json:"previous_review_decision,omitempty"`
-	PreviousReviewSummary  string   `json:"previous_review_summary,omitempty"`
-	PreviousReviewIssues   []string `json:"previous_review_issues,omitempty"`
-	PreviousReviewPath     string   `json:"previous_review_path,omitempty"`
-	PreviousReviewSHA256   string   `json:"previous_review_sha256,omitempty"`
+	UnitID                  string   `json:"unit_id"`
+	UnitKind                UnitKind `json:"unit_kind"`
+	SourcePath              string   `json:"source_path"`
+	SourceSHA256            string   `json:"source_sha256"`
+	InputPath               string   `json:"input_path"`
+	InputSHA256             string   `json:"input_sha256"`
+	ProtectedTokenCount     int      `json:"protected_token_count"`
+	PreviousSnapshotID      string   `json:"previous_snapshot_id,omitempty"`
+	RevisionFeedbackSource  string   `json:"revision_feedback_source,omitempty"`
+	RevisionAuthorizationID string   `json:"revision_authorization_id,omitempty"`
+	PreviousRating          string   `json:"previous_rating,omitempty"`
+	PreviousFinding         string   `json:"previous_finding,omitempty"`
+	PreviousReviewDecision  string   `json:"previous_review_decision,omitempty"`
+	PreviousReviewSummary   string   `json:"previous_review_summary,omitempty"`
+	PreviousReviewIssues    []string `json:"previous_review_issues,omitempty"`
+	PreviousReviewPath      string   `json:"previous_review_path,omitempty"`
+	PreviousReviewSHA256    string   `json:"previous_review_sha256,omitempty"`
 }
 
 type RetranslationBatchManifest struct {
@@ -134,6 +136,9 @@ func ExportRetranslationBatch(root string, catalog *Catalog, options Retranslati
 	if options.PreviousSnapshotID != "" && !options.AllowReexport {
 		return nil, errors.New("--previous-snapshot-id requires --allow-reexport revision mode")
 	}
+	if options.SurfaceReopenID != "" && (options.PreviousSnapshotID == "" || !options.AllowReexport) {
+		return nil, errors.New("--surface-reopen-id requires --allow-reexport and --previous-snapshot-id")
+	}
 	limit := options.Limit
 	if limit == 0 {
 		limit = DefaultRetranslationExportLimit
@@ -175,6 +180,28 @@ func ExportRetranslationBatch(root string, catalog *Catalog, options Retranslati
 		return &RetranslationExportResult{Locale: options.Locale, AllExported: true}, nil
 	}
 	revisionFeedbackByID := map[string]revisionFeedback{}
+	var surfaceReopen *QualityCheckSurfaceReopen
+	if options.SurfaceReopenID != "" {
+		surfaceReopen, err = readCurrentQualityCheckSurfaceReopen(root, catalog, options.Locale, options.SurfaceReopenID)
+		if err != nil {
+			return nil, err
+		}
+		if surfaceReopen.PreviousSnapshotID != options.PreviousSnapshotID {
+			return nil, errors.New("surface reopen predecessor does not match --previous-snapshot-id")
+		}
+		want := map[string]bool{}
+		for _, unit := range surfaceReopen.Units {
+			want[unit.UnitID] = true
+		}
+		if len(want) != len(units) {
+			return nil, errors.New("revision unit set must exactly match surface reopen scope")
+		}
+		for _, unit := range units {
+			if !want[unit.ID] {
+				return nil, errors.New("revision unit set must exactly match surface reopen scope")
+			}
+		}
+	}
 	if options.PreviousSnapshotID != "" {
 		snapshot, err := readQualityCheckSnapshotForReview(root, options.Locale, options.PreviousSnapshotID)
 		if err != nil {
@@ -207,10 +234,17 @@ func ExportRetranslationBatch(root string, catalog *Catalog, options Retranslati
 				return nil, fmt.Errorf("revision unit %s has no current, identity-matching effective Quality Check result in previous Snapshot %s", unit.ID, options.PreviousSnapshotID)
 			}
 			if result.rating != "A" {
+				if surfaceReopen != nil {
+					return nil, fmt.Errorf("surface reopen unit %s is already non-A and must use ordinary Quality Check revision feedback", unit.ID)
+				}
 				if strings.TrimSpace(result.finding) == "" {
 					return nil, fmt.Errorf("revision unit %s has no finding in previous Snapshot %s; backfill it first", unit.ID, options.PreviousSnapshotID)
 				}
 				revisionFeedbackByID[unit.ID] = revisionFeedback{source: "quality_check", rating: result.rating, finding: result.finding}
+				continue
+			}
+			if surfaceReopen != nil {
+				revisionFeedbackByID[unit.ID] = revisionFeedback{source: "surface_review", rating: "A", finding: surfaceReopen.Finding, decision: "reopened", summary: surfaceReopen.ReopenID, reviewPath: surfaceReopen.SurfaceReviewPath, reviewSHA256: surfaceReopen.SurfaceReviewSHA256}
 				continue
 			}
 			return nil, fmt.Errorf("revision unit %s is not eligible from previous Snapshot %s: Quality Check is already A; new revision export requires Quality Check B/C/D feedback", unit.ID, options.PreviousSnapshotID)
@@ -293,6 +327,7 @@ func ExportRetranslationBatch(root string, catalog *Catalog, options Retranslati
 		if prior, ok := revisionFeedbackByID[input.unit.ID]; ok {
 			record.PreviousSnapshotID = options.PreviousSnapshotID
 			record.RevisionFeedbackSource = prior.source
+			record.RevisionAuthorizationID = options.SurfaceReopenID
 			record.PreviousRating = prior.rating
 			record.PreviousFinding = prior.finding
 			record.PreviousReviewDecision = prior.decision

@@ -250,4 +250,10 @@ go run -mod=readonly ./cmd/tour-i18n retranslation promote --locale <locale> --s
 
 ## 9. 阶段边界
 
+阶段成功、FAILED、stale、额度耗尽或 mutation-unknown 的最终交接必须遵守 [正式阶段交接合同](WORKFLOW_HANDOFF.md)，包含真实数量/evidence、唯一下一步、执行者、停止条件，以及已验证附件或未执行的完整导出命令。
+
 首次 bulk TranslationUnit Generation 仍以 Generation ZIP handoff 为输入阶段边界，不自动越过到语言审核。具备本地访问能力时，initial / revision / retry 结果均默认通过隐藏 staging 目录 import；进入 Generation / Reviewer 闭环后，export、bundle、目录 import（跨环境时 Result ZIP landing/import）、process / validation、Snapshot / scope / reviewer-bundle，以及 Reviewer 结论的 current-check / record / finalize，默认由具备仓库终端能力的当前 AI execution environment 连续完成；正式 Quality Check 仍必须使用独立于本轮生成的 ChatGPT conversation/session，所有 A-only 与 identity gate 保持不变。`promote` 是闭环收口后的维护者 Local terminal 操作，不由 AI 自动执行。UI catalog 翻译是独立流程，不属于本手册。
+
+## 10. QC lineage 与 Surface finding revision
+
+普通 QC B/C/D revision 继续使用 `--previous-snapshot-id`。已 finalization 的 A 若由正式 Surface Review finding 定向纠错，必须使用 [Translation Quality Review](TRANSLATION_QUALITY_REVIEW.md) 定义的 `quality-check surface-reopen` + `retranslation export --surface-reopen-id`，不得伪造 B/C/D、修改旧结果或丢弃其余旧 A。新 QC lineage、第一次 record 和完整重新审核先运行 `quality-check preflight`；完整重审必须显式 `--full-rereview`。

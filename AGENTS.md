@@ -1,5 +1,7 @@
 # Codex 项目导航
 
+正式阶段完成、失败、跨会话 ZIP 或维护者 Local terminal 交接时，统一遵守 [正式阶段交接合同](docs/WORKFLOW_HANDOFF.md)；AGENTS.md 只保留此导航，不复制详细合同。
+
 当用户要求评估 locale 商业优先级或选择下一门语言时，Codex 必须先读取 `docs/LOCALE_ROADMAP.md`。用户未明确指定 locale 的新增任务也先按该路线图选择；单门 locale 的正式执行仍以 `docs/NEW_LOCALE_RUNBOOK.md` 为准。
 
 当用户要求新增一门语言、建立新 locale、准备新语言首次上线或评估新 locale 完成度时，Codex 必须先读取：

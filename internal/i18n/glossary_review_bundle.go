@@ -14,6 +14,7 @@ const GlossaryReviewerBundleSchemaVersion = 1
 
 var glossaryReviewerAuthorityPaths = []string{
 	"AGENTS.md",
+	"docs/WORKFLOW_HANDOFF.md",
 	"docs/GLOSSARY_REVIEW.md",
 	"docs/NEW_LOCALE_RUNBOOK.md",
 	"docs/TERMINOLOGY_GUIDE.md",

@@ -46,6 +46,8 @@ locale / domain / CDN 决策
 
 ## 执行成本与协作
 
+阶段完成、失败、附件上传与维护者 Local terminal handoff 的最终回复统一遵守 [正式阶段交接合同](WORKFLOW_HANDOFF.md)。该合同只规定可执行交接，不改变本手册的默认调度、角色隔离或 gate。
+
 新增 locale 始终以质量 gate 为先。每个 locale 固定维护 **1 个长期 Generation role/session + 1 个独立长期 Reviewer role/session + 维护者 Local terminal**：Generation session 只产生或修订语言内容；Reviewer session 执行 Glossary Review、TranslationUnit Quality Check、revision re-QC 与 Locale Surface Review。同一个从未参与该 locale 语言 generation 的 Reviewer session 可以连续承担这些审核，不要求拆分更多 reviewer conversation/session；各 gate 范围和 evidence 独立，reviewer finding 必须回到 Generation session 产生 replacement。
 
 新增 locale 的 initial Page / Example 大批量 TranslationUnit Generation 仍由维护者 Local terminal 导出 provider-neutral Generation ZIP 并交给 Generation session。具备仓库终端访问能力时，生成者将完整输出保存在按 locale + batch 隔离的隐藏 staging，随后默认以目录 import 直接落地，不生成或下载 outputs ZIP；跨环境传输或目录不可用时保留 outputs ZIP → `result-pack` → `import` 回退。Reviewer ZIP 仍由维护者上传给独立 Reviewer。进入 Generation / Reviewer 往返后，当前 AI execution environment 默认自动完成短机械步骤，包括小批 revision/retry、审核结果 current-check / record / finalize、locale-level replacement、Surface Reviewer bundle / record-a，以及 Course SEO 结果落盘和正式 assemble / refresh / revise。promotion、build、preview / publish / Production、search closeout 与最终 Git commit / push 仍由维护者 Local terminal 成组执行。该分工不改变 gate、身份隔离或 provenance。
@@ -82,6 +84,8 @@ locale / domain / CDN 决策
 - 首页语言 registry 中的显示顺序与目标 URL。
 
 这些决定应先形成明确记录，再修改 locale 资源或生产环境。不得根据其他 locale 的目录名、端口或译法自动推导新 locale。
+
+修改 `internal/tour/languages.go` 或为新 locale 增加 Production identity **之前**，先按 [Locale Surface Review](LOCALE_SURFACE_REVIEW.md) 为需要继续保留的、仍 exact-current 的历史 schema v2 gate 运行一次 `surface-review registry-baseline`；schema v3 无需迁移，schema v1 仍保持 exact-only。baseline 必须在共享 registry 变更前生成，不能用变更后的状态倒填。该步骤不重跑旧 locale 的语言审核，也不改写旧 A receipt。
 
 首页 language registry 是 build-time registry：新 locale 的 release 会包含构建时的完整 registry，但既有 production locale 会继续运行各自已部署 release 中的 registry，直到其下一次正常 publish/deploy。正式采用 **existing locale language list = eventual consistency**。因此，新 locale 首次 production gate 只要求验证新 locale 自己的语言选择器：current identity、当前正式 registry、指向已有 locale 的链接，以及 English 指向官方 Tour。已有 locale → 新 locale 的反向链接不属于首次上线 gate；不得仅为即时出现新语言而批量重跑旧 locale 的 Quality Check、finalization、Surface Review、publish、deploy、CDN purge 或 production final。未来只有明确要求全部 locale 即时同步语言列表时，才重新评估 runtime registry 解耦。
 

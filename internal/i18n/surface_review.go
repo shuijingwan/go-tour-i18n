@@ -7,12 +7,14 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"reflect"
 	"regexp"
 )
 
 const (
 	localeSurfaceReviewASchemaVersionV1 = 1
-	localeSurfaceReviewASchemaVersion   = 2
+	localeSurfaceReviewASchemaVersionV2 = 2
+	localeSurfaceReviewASchemaVersion   = 3
 )
 const localeSurfaceReviewAStage = "locale-level-language-quality-review"
 
@@ -33,17 +35,19 @@ type LocaleSurfaceReviewAGate struct {
 // supplied by a reviewer. The config hashes cover the build-time language
 // registry, locale profile, public project copy, and SEO origin behavior.
 type LocaleSurfaceReviewAInputs struct {
-	UIEnglishSHA256                     string `json:"ui_english_sha256"`
-	UILocaleSHA256                      string `json:"ui_locale_sha256"`
-	GlossarySHA256                      string `json:"glossary_sha256"`
-	ArticleMetadataSHA256               string `json:"article_metadata_sha256"`
-	CourseMetadataSHA256                string `json:"course_metadata_sha256"`
-	CourseSourceDescriptionsSHA256      string `json:"course_source_descriptions_sha256,omitempty"`
-	CourseSourceDescriptionReviewSHA256 string `json:"course_source_description_review_sha256,omitempty"`
-	CatalogSourceSHA256                 string `json:"catalog_source_sha256"`
-	LanguagesConfigSHA256               string `json:"languages_config_sha256"`
-	ProjectConfigSHA256                 string `json:"project_config_sha256"`
-	SEOConfigSHA256                     string `json:"seo_config_sha256"`
+	UIEnglishSHA256                     string                          `json:"ui_english_sha256"`
+	UILocaleSHA256                      string                          `json:"ui_locale_sha256"`
+	GlossarySHA256                      string                          `json:"glossary_sha256"`
+	ArticleMetadataSHA256               string                          `json:"article_metadata_sha256"`
+	CourseMetadataSHA256                string                          `json:"course_metadata_sha256"`
+	CourseSourceDescriptionsSHA256      string                          `json:"course_source_descriptions_sha256,omitempty"`
+	CourseSourceDescriptionReviewSHA256 string                          `json:"course_source_description_review_sha256,omitempty"`
+	CatalogSourceSHA256                 string                          `json:"catalog_source_sha256"`
+	LanguagesConfigSHA256               string                          `json:"languages_config_sha256"`
+	LanguagesReviewProjectionSHA256     string                          `json:"languages_review_projection_sha256,omitempty"`
+	LanguageRegistryBaseline            *LanguageRegistryReviewBaseline `json:"language_registry_baseline,omitempty"`
+	ProjectConfigSHA256                 string                          `json:"project_config_sha256"`
+	SEOConfigSHA256                     string                          `json:"seo_config_sha256"`
 	// ProductionIdentitySHA256 is the v1 whole-file identity input. It remains
 	// present so historic receipts retain their original freshness semantics.
 	ProductionIdentitySHA256 string `json:"production_identity_sha256,omitempty"`
@@ -145,6 +149,21 @@ func currentLocaleSurfaceReviewAInputs(root, locale string, catalog *Catalog, sc
 		ProjectConfigSHA256:   project,
 		SEOConfigSHA256:       seo,
 	}
+	if schemaVersion >= localeSurfaceReviewASchemaVersion {
+		if err := validateCurrentLanguageRegistryCompatibility(root); err != nil {
+			return LocaleSurfaceReviewAInputs{}, fmt.Errorf("language review evidence/gate stale: language registry compatibility: %w", err)
+		}
+		projection, err := currentLanguageReviewProjectionSHA256(root, locale)
+		if err != nil {
+			return LocaleSurfaceReviewAInputs{}, fmt.Errorf("language review evidence/gate stale: language review projection: %w", err)
+		}
+		inputs.LanguagesReviewProjectionSHA256 = projection
+		baseline, err := currentLanguageRegistryReviewBaseline(root)
+		if err != nil {
+			return LocaleSurfaceReviewAInputs{}, fmt.Errorf("language review evidence/gate stale: language registry baseline: %w", err)
+		}
+		inputs.LanguageRegistryBaseline = &baseline
+	}
 	courseData, err := os.ReadFile(filepath.Join(root, "locales", locale, "course-metadata.json"))
 	if err != nil {
 		return LocaleSurfaceReviewAInputs{}, fmt.Errorf("read Locale Surface Review A course metadata: %w", err)
@@ -178,7 +197,7 @@ func currentLocaleSurfaceReviewAInputs(root, locale string, catalog *Catalog, sc
 			return LocaleSurfaceReviewAInputs{}, err
 		}
 		inputs.ProductionIdentitySHA256 = productionIdentity
-	case localeSurfaceReviewASchemaVersion:
+	case localeSurfaceReviewASchemaVersionV2, localeSurfaceReviewASchemaVersion:
 		productionPublicIdentity, err := localeSurfaceReviewPublicIdentityHash(root, locale)
 		if err != nil {
 			return LocaleSurfaceReviewAInputs{}, err
@@ -310,7 +329,11 @@ func RequireCurrentLocaleSurfaceReviewAByReviewID(root, locale, reviewID string,
 	if err != nil {
 		return LocaleSurfaceReviewAGate{}, err
 	}
-	if gate.Inputs != current {
+	currentOK, err := localeSurfaceReviewGateCurrent(root, locale, gate, data, current)
+	if err != nil {
+		return LocaleSurfaceReviewAGate{}, err
+	}
+	if !currentOK {
 		return LocaleSurfaceReviewAGate{}, fmt.Errorf("language review evidence/gate stale for %s review_id=%s; complete Locale Surface Review A again and record the current A gate", locale, reviewID)
 	}
 	return gate, nil
@@ -345,7 +368,11 @@ func currentLocaleSurfaceReviewAGates(root, locale string, catalog *Catalog) ([]
 		if err != nil {
 			return nil, err
 		}
-		if gate.Inputs != current {
+		currentOK, err := localeSurfaceReviewGateCurrent(root, locale, gate, data, current)
+		if err != nil {
+			return nil, err
+		}
+		if !currentOK {
 			continue
 		}
 		currentGates = append(currentGates, gate)
@@ -360,10 +387,37 @@ func validateLocaleSurfaceReviewAGate(gate LocaleSurfaceReviewAGate, locale stri
 	if gate.Locale != locale || gate.Stage != localeSurfaceReviewAStage || gate.Decision != "passed" || gate.ReviewID == "" || gate.Reviewer == "" {
 		return fmt.Errorf("language review evidence/gate stale: invalid Locale Surface Review A gate for %s", locale)
 	}
-	if gate.SchemaVersion != localeSurfaceReviewASchemaVersionV1 && gate.SchemaVersion != localeSurfaceReviewASchemaVersion {
+	if gate.SchemaVersion != localeSurfaceReviewASchemaVersionV1 && gate.SchemaVersion != localeSurfaceReviewASchemaVersionV2 && gate.SchemaVersion != localeSurfaceReviewASchemaVersion {
 		return fmt.Errorf("language review evidence/gate stale: unsupported Locale Surface Review A gate schema version %d", gate.SchemaVersion)
 	}
 	return nil
+}
+
+func localeSurfaceReviewInputsCurrent(recorded, current LocaleSurfaceReviewAInputs, schemaVersion int) bool {
+	if schemaVersion < localeSurfaceReviewASchemaVersion {
+		return reflect.DeepEqual(recorded, current)
+	}
+	if recorded.LanguagesReviewProjectionSHA256 == "" || recorded.LanguagesReviewProjectionSHA256 != current.LanguagesReviewProjectionSHA256 ||
+		recorded.LanguageRegistryBaseline == nil || current.LanguageRegistryBaseline == nil ||
+		!languageRegistryReviewBaselineCompatible(*recorded.LanguageRegistryBaseline, *current.LanguageRegistryBaseline) {
+		return false
+	}
+	// v3 keeps the reviewed whole-file hash as evidence. A later registry-only
+	// addition is accepted only after strict compatibility validation and an
+	// unchanged target/English/runtime review projection.
+	recorded.LanguagesConfigSHA256 = current.LanguagesConfigSHA256
+	recorded.LanguageRegistryBaseline = current.LanguageRegistryBaseline
+	return reflect.DeepEqual(recorded, current)
+}
+
+func localeSurfaceReviewGateCurrent(root, locale string, gate LocaleSurfaceReviewAGate, gateData []byte, current LocaleSurfaceReviewAInputs) (bool, error) {
+	if localeSurfaceReviewInputsCurrent(gate.Inputs, current, gate.SchemaVersion) {
+		return true, nil
+	}
+	if gate.SchemaVersion != localeSurfaceReviewASchemaVersionV2 {
+		return false, nil
+	}
+	return currentLocaleSurfaceReviewRegistryBaseline(root, locale, gate, gateData, current)
 }
 
 func hashBytes(data []byte) string { value := sha256.Sum256(data); return hex.EncodeToString(value[:]) }

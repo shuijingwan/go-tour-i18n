@@ -700,3 +700,162 @@ func TestRevisionExportRejectsQualityCheckAEvenWithLegacyFinalReview(t *testing.
 		})
 	}
 }
+
+func TestSurfaceReviewFindingCanExplicitlyReopenFinalizedAWithoutChangingHistory(t *testing.T) {
+	root, catalog, _ := makeRetranslationReviewBatchFixture(t, 2, "qc-001")
+	recordQualityCheckRatings(t, root, catalog, "qc-001", "", "A", []string{"lesson/1", "lesson/2"})
+	if _, _, err := FinalizeQualityCheck(root, catalog, QualityCheckFinalizeOptions{Locale: "zh-CN", SnapshotID: "qc-001"}); err != nil {
+		t.Fatal(err)
+	}
+	evidenceDir := filepath.Join(root, "data", "locale-surface-reviews", "zh-CN")
+	if err := os.MkdirAll(evidenceDir, 0755); err != nil {
+		t.Fatal(err)
+	}
+	evidencePath := filepath.Join(evidenceDir, "surface-failed.md")
+	if err := os.WriteFile(evidencePath, []byte("decision = failed\nTranslationUnit lesson/1: Correct the semantic defect.\n"), 0644); err != nil {
+		t.Fatal(err)
+	}
+	beforeResults, _ := os.ReadFile(qualityCheckResultsPath(root, "zh-CN", "qc-001"))
+	beforeFinalization, _ := os.ReadFile(qualityCheckFinalizationPath(root, "zh-CN", "qc-001"))
+	receipt, _, err := RecordQualityCheckSurfaceReopen(root, catalog, QualityCheckSurfaceReopenOptions{
+		Locale: "zh-CN", ReopenID: "surface-fix-001", PreviousSnapshotID: "qc-001",
+		SurfaceReviewID: "surface-failed", Finding: "Correct the semantic defect.", UnitIDs: []string{"lesson/1"},
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if receipt.UnitCount != 1 || receipt.Units[0].UnitID != "lesson/1" {
+		t.Fatalf("reopen receipt=%+v", receipt)
+	}
+	exported, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{
+		Locale: "zh-CN", UnitIDs: []string{"lesson/1"}, AllowReexport: true,
+		PreviousSnapshotID: "qc-001", SurfaceReopenID: "surface-fix-001",
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	manifestData, _ := os.ReadFile(filepath.Join(root, filepath.FromSlash(exported.BatchPath), "manifest.json"))
+	manifest, err := decodeRetranslationManifest(manifestData)
+	if err != nil {
+		t.Fatal(err)
+	}
+	unit := manifest.Units[0]
+	if unit.RevisionFeedbackSource != "surface_review" || unit.RevisionAuthorizationID != "surface-fix-001" ||
+		unit.PreviousRating != "A" || unit.PreviousFinding != "Correct the semantic defect." ||
+		unit.PreviousReviewPath != "data/locale-surface-reviews/zh-CN/surface-failed.md" {
+		t.Fatalf("surface correction provenance=%+v", unit)
+	}
+	afterResults, _ := os.ReadFile(qualityCheckResultsPath(root, "zh-CN", "qc-001"))
+	afterFinalization, _ := os.ReadFile(qualityCheckFinalizationPath(root, "zh-CN", "qc-001"))
+	if !reflect.DeepEqual(beforeResults, afterResults) || !reflect.DeepEqual(beforeFinalization, afterFinalization) {
+		t.Fatal("surface reopen modified historical QC/finalization evidence")
+	}
+}
+
+func TestSurfaceReviewReopenFailsClosedOnScopeAndEvidence(t *testing.T) {
+	root, catalog, _ := makeRetranslationReviewBatchFixture(t, 2, "qc-001")
+	recordQualityCheckRatings(t, root, catalog, "qc-001", "", "A", []string{"lesson/1", "lesson/2"})
+	if _, _, err := FinalizeQualityCheck(root, catalog, QualityCheckFinalizeOptions{Locale: "zh-CN", SnapshotID: "qc-001"}); err != nil {
+		t.Fatal(err)
+	}
+	dir := filepath.Join(root, "data", "locale-surface-reviews", "zh-CN")
+	if err := os.MkdirAll(dir, 0755); err != nil {
+		t.Fatal(err)
+	}
+	path := filepath.Join(dir, "surface-failed.md")
+	if err := os.WriteFile(path, []byte("lesson/1 finding\n"), 0644); err != nil {
+		t.Fatal(err)
+	}
+	if _, _, err := RecordQualityCheckSurfaceReopen(root, catalog, QualityCheckSurfaceReopenOptions{
+		Locale: "zh-CN", ReopenID: "bad-scope", PreviousSnapshotID: "qc-001",
+		SurfaceReviewID: "surface-failed", Finding: "finding", UnitIDs: []string{"lesson/2"},
+	}); err == nil || !strings.Contains(err.Error(), "does not name") {
+		t.Fatalf("unnamed unit accepted: %v", err)
+	}
+	if err := os.WriteFile(path, []byte("lesson/10 finding\n"), 0644); err != nil {
+		t.Fatal(err)
+	}
+	if _, _, err := RecordQualityCheckSurfaceReopen(root, catalog, QualityCheckSurfaceReopenOptions{
+		Locale: "zh-CN", ReopenID: "substring-scope", PreviousSnapshotID: "qc-001",
+		SurfaceReviewID: "surface-failed", Finding: "finding", UnitIDs: []string{"lesson/1"},
+	}); err == nil || !strings.Contains(err.Error(), "does not name") {
+		t.Fatalf("substring unit id accepted: %v", err)
+	}
+	if err := os.WriteFile(path, []byte("lesson/1 finding\n"), 0644); err != nil {
+		t.Fatal(err)
+	}
+	if _, _, err := RecordQualityCheckSurfaceReopen(root, catalog, QualityCheckSurfaceReopenOptions{
+		Locale: "zh-CN", ReopenID: "surface-fix-001", PreviousSnapshotID: "qc-001",
+		SurfaceReviewID: "surface-failed", Finding: "finding", UnitIDs: []string{"lesson/1"},
+	}); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(path, []byte("lesson/1 changed finding\n"), 0644); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{
+		Locale: "zh-CN", UnitIDs: []string{"lesson/1"}, AllowReexport: true,
+		PreviousSnapshotID: "qc-001", SurfaceReopenID: "surface-fix-001",
+	}); err == nil || !strings.Contains(err.Error(), "stale") {
+		t.Fatalf("stale Surface finding accepted: %v", err)
+	}
+}
+
+func TestQualityCheckPreflightPreventsAccidentalFullRereviewAfterFinalization(t *testing.T) {
+	root, catalog, _ := makeRetranslationReviewBatchFixture(t, 3, "qc-006")
+	recordQualityCheckRatings(t, root, catalog, "qc-006", "", "A", []string{"lesson/1", "lesson/2", "lesson/3"})
+	if _, _, err := FinalizeQualityCheck(root, catalog, QualityCheckFinalizeOptions{Locale: "zh-CN", SnapshotID: "qc-006"}); err != nil {
+		t.Fatal(err)
+	}
+	if _, _, err := CreateQualityCheckCandidateSnapshot(root, catalog, QualityCheckSnapshotOptions{Locale: "zh-CN", SnapshotID: "qc-007"}); err != nil {
+		t.Fatal(err)
+	}
+	accidental, err := BuildQualityCheckPreflight(root, catalog, QualityCheckPreflightOptions{Locale: "zh-CN", SnapshotID: "qc-007"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if accidental.Mode != "predecessor-required" || accidental.EstimatedReviewerUnits != 3 || len(accidental.FinalizedSnapshots) != 1 || accidental.FinalizedSnapshots[0] != "qc-006" {
+		t.Fatalf("accidental preflight=%+v", accidental)
+	}
+	if _, err := RecordQualityCheckResults(root, catalog, QualityCheckRecordOptions{
+		Locale: "zh-CN", SnapshotID: "qc-007", UnitIDs: []string{"lesson/1"}, Rating: "A",
+	}); err == nil || !strings.Contains(err.Error(), "finalized Quality Check Snapshot already exists") {
+		t.Fatalf("accidental first record accepted: %v", err)
+	}
+	incremental, err := BuildQualityCheckPreflight(root, catalog, QualityCheckPreflightOptions{
+		Locale: "zh-CN", SnapshotID: "qc-007", PreviousSnapshotID: "qc-006",
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if incremental.Mode != "incremental" || incremental.CarryForwardCount != 3 || incremental.EstimatedReviewerUnits != 0 {
+		t.Fatalf("incremental preflight=%+v", incremental)
+	}
+	full, err := BuildQualityCheckPreflight(root, catalog, QualityCheckPreflightOptions{
+		Locale: "zh-CN", SnapshotID: "qc-007", FullRereview: true,
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if full.Mode != "full-rereview" || !full.IntentionalRepeatedReview || full.EstimatedReviewerUnits != 3 {
+		t.Fatalf("full rereview preflight=%+v", full)
+	}
+	if _, err := RecordQualityCheckResults(root, catalog, QualityCheckRecordOptions{
+		Locale: "zh-CN", SnapshotID: "qc-007", PreviousSnapshotID: "qc-006", FullRereview: true, UnitIDs: []string{"lesson/1"}, Rating: "A",
+	}); err == nil || !strings.Contains(err.Error(), "mutually exclusive") {
+		t.Fatalf("conflicting lineage modes accepted: %v", err)
+	}
+	if _, err := RecordQualityCheckResults(root, catalog, QualityCheckRecordOptions{
+		Locale: "zh-CN", SnapshotID: "qc-007", FullRereview: true, UnitIDs: []string{"lesson/1"}, Rating: "A",
+	}); err != nil {
+		t.Fatalf("explicit full rereview first record rejected: %v", err)
+	}
+	if _, err := BuildQualityCheckPreflight(root, catalog, QualityCheckPreflightOptions{Locale: "zh-CN", SnapshotID: "qc-007", FullRereview: true}); err == nil || !strings.Contains(err.Error(), "before results start") {
+		t.Fatalf("full rereview preflight was repeated after results started: %v", err)
+	}
+	if _, err := RecordQualityCheckResults(root, catalog, QualityCheckRecordOptions{
+		Locale: "zh-CN", SnapshotID: "qc-007", FullRereview: true, UnitIDs: []string{"lesson/2"}, Rating: "A",
+	}); err == nil || !strings.Contains(err.Error(), "only authorize the first") {
+		t.Fatalf("full rereview flag was reused after lineage persistence: %v", err)
+	}
+}

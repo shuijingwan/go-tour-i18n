@@ -12,11 +12,28 @@ import (
 	"github.com/shuijingwan/go-tour-i18n/internal/tour"
 )
 
+// A real, minimal registry is required by the v3 Surface Review gate.
+const firstProductionFixtureLanguages = `package tour
+
+type LanguageLink struct { Locale, EnglishName, Autonym, URL string; Official bool }
+type localeProfile struct { TimeLabel string }
+var languageRegistry = []LanguageLink{
+  {Locale: "en", EnglishName: "English", Autonym: "English", URL: "https://go.dev/tour/", Official: true},
+  {Locale: "other-AA", EnglishName: "Other", Autonym: "Other", URL: "https://other.example/"},
+  {Locale: "zz-ZZ", EnglishName: "Test", Autonym: "Test", URL: "https://zz.example/"},
+}
+var localeProfiles = map[string]localeProfile{
+  "other-AA": {TimeLabel: "Other"},
+  "zz-ZZ": {TimeLabel: "Test"},
+}
+func languagesFor(locale string) []LanguageLink { return languageRegistry }
+`
+
 func finalizeFixture(t *testing.T) (string, *i18n.Catalog, string, string, string) {
 	t.Helper()
 	root := t.TempDir()
 	for path, body := range map[string]string{
-		"internal/tour/ui/en.json": "en", "internal/tour/ui/zz-ZZ.json": "target", "locales/zz-ZZ/glossary.yaml": "g", "locales/zz-ZZ/article-metadata.json": "a", "locales/zz-ZZ/course-metadata.json": `{"schema_version":1}`, "internal/tour/languages.go": "l", "internal/tour/project.go": "p", "internal/tour/seo.go": "s",
+		"internal/tour/ui/en.json": "en", "internal/tour/ui/zz-ZZ.json": "target", "locales/zz-ZZ/glossary.yaml": "g", "locales/zz-ZZ/article-metadata.json": "a", "locales/zz-ZZ/course-metadata.json": `{"schema_version":1}`, "internal/tour/languages.go": firstProductionFixtureLanguages, "internal/tour/project.go": "p", "internal/tour/seo.go": "s",
 		"production/identity.json":       "{\n  \"locales\": [\n    {\"locale\": \"other-AA\", \"production_hostname\": \"other.example\", \"production_public_url\": \"https://other.example/\", \"production_state\": \"first-production\"},\n    {\n      \"locale\": \"zz-ZZ\",\n      \"production_hostname\": \"zz.example\",\n      \"production_public_url\": \"https://zz.example/\",\n      \"production_state\": \"first-production\"\n    }\n  ]\n}\n",
 		"scripts/production-identity.py": "#!/usr/bin/env python3\n",
 		"README.md":                      "# README\n\n<!-- live-locales:start -->\nold\n<!-- live-locales:end -->\n",

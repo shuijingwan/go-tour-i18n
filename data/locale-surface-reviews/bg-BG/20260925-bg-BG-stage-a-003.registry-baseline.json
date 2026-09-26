@@ -1,0 +1,580 @@
+{
+  "schema_version": 1,
+  "kind": "go-tour-i18n/locale-surface-review-registry-baseline",
+  "locale": "bg-BG",
+  "review_id": "20260925-bg-BG-stage-a-003",
+  "gate_path": "data/locale-surface-reviews/bg-BG/20260925-bg-BG-stage-a-003.a-gate.json",
+  "gate_sha256": "4ed19b15f18fcfc51ff6e48580f6786ddb57b7d927a61d5ac6f3ae746f641f4c",
+  "languages_config_sha256": "091a58bc83203ca5e17be6a11d2db4c4066c96ee08c1dc2e2476a68e67947142",
+  "languages_review_projection_sha256": "7fc57c96079bbc26060ebf1ab26cf9b6fcd4aed3948cd5d1a46d1679a0ee016c",
+  "language_registry_baseline": {
+    "package_name": "tour",
+    "registry_type": "[]LanguageLink",
+    "profiles_type": "map[string]localeProfile",
+    "directives": null,
+    "entries": [
+      {
+        "locale": "ar",
+        "english_name": "Arabic",
+        "autonym": "العربية",
+        "url": "https://ar-go-dev.shuijingwanwq.com/",
+        "official": false
+      },
+      {
+        "locale": "bg-BG",
+        "english_name": "Bulgarian",
+        "autonym": "Български",
+        "url": "https://bg-go-dev.shuijingwanwq.com/",
+        "official": false
+      },
+      {
+        "locale": "bn-BD",
+        "english_name": "Bengali",
+        "autonym": "বাংলা",
+        "url": "https://bn-go-dev.shuijingwanwq.com/",
+        "official": false
+      },
+      {
+        "locale": "cs-CZ",
+        "english_name": "Czech",
+        "autonym": "Čeština",
+        "url": "https://cs-go-dev.shuijingwanwq.com/",
+        "official": false
+      },
+      {
+        "locale": "de-DE",
+        "english_name": "German",
+        "autonym": "Deutsch",
+        "url": "https://de-go-dev.shuijingwanwq.com/",
+        "official": false
+      },
+      {
+        "locale": "el-GR",
+        "english_name": "Greek",
+        "autonym": "Ελληνικά",
+        "url": "https://el-go-dev.shuijingwanwq.com/",
+        "official": false
+      },
+      {
+        "locale": "en",
+        "english_name": "English",
+        "autonym": "English",
+        "url": "https://go.dev/tour/",
+        "official": true
+      },
+      {
+        "locale": "es-ES",
+        "english_name": "Spanish",
+        "autonym": "Español",
+        "url": "https://es-go-dev.shuijingwanwq.com/",
+        "official": false
+      },
+      {
+        "locale": "fil-PH",
+        "english_name": "Filipino",
+        "autonym": "Filipino",
+        "url": "https://fil-go-dev.shuijingwanwq.com/",
+        "official": false
+      },
+      {
+        "locale": "fr-FR",
+        "english_name": "French",
+        "autonym": "Français",
+        "url": "https://fr-go-dev.shuijingwanwq.com/",
+        "official": false
+      },
+      {
+        "locale": "hi-IN",
+        "english_name": "Hindi",
+        "autonym": "हिन्दी",
+        "url": "https://hi-go-dev.shuijingwanwq.com/",
+        "official": false
+      },
+      {
+        "locale": "hu-HU",
+        "english_name": "Hungarian",
+        "autonym": "Magyar",
+        "url": "https://hu-go-dev.shuijingwanwq.com/",
+        "official": false
+      },
+      {
+        "locale": "id-ID",
+        "english_name": "Indonesian",
+        "autonym": "Bahasa Indonesia",
+        "url": "https://id-go-dev.shuijingwanwq.com/",
+        "official": false
+      },
+      {
+        "locale": "it-IT",
+        "english_name": "Italian",
+        "autonym": "Italiano",
+        "url": "https://it-go-dev.shuijingwanwq.com/",
+        "official": false
+      },
+      {
+        "locale": "ja-JP",
+        "english_name": "Japanese",
+        "autonym": "日本語",
+        "url": "https://ja-go-dev.shuijingwanwq.com/",
+        "official": false
+      },
+      {
+        "locale": "ko-KR",
+        "english_name": "Korean",
+        "autonym": "한국어",
+        "url": "https://ko-go-dev.shuijingwanwq.com/",
+        "official": false
+      },
+      {
+        "locale": "ml-IN",
+        "english_name": "Malayalam",
+        "autonym": "മലയാളം",
+        "url": "https://ml-go-dev.shuijingwanwq.com/",
+        "official": false
+      },
+      {
+        "locale": "mr-IN",
+        "english_name": "Marathi",
+        "autonym": "मराठी",
+        "url": "https://mr-go-dev.shuijingwanwq.com/",
+        "official": false
+      },
+      {
+        "locale": "ms-MY",
+        "english_name": "Malay",
+        "autonym": "Bahasa Melayu",
+        "url": "https://ms-go-dev.shuijingwanwq.com/",
+        "official": false
+      },
+      {
+        "locale": "nl-NL",
+        "english_name": "Dutch",
+        "autonym": "Nederlands",
+        "url": "https://nl-go-dev.shuijingwanwq.com/",
+        "official": false
+      },
+      {
+        "locale": "pl-PL",
+        "english_name": "Polish",
+        "autonym": "Polski",
+        "url": "https://pl-go-dev.shuijingwanwq.com/",
+        "official": false
+      },
+      {
+        "locale": "pt-BR",
+        "english_name": "Brazilian Portuguese",
+        "autonym": "Português (Brasil)",
+        "url": "https://pt-go-dev.shuijingwanwq.com/",
+        "official": false
+      },
+      {
+        "locale": "ro-RO",
+        "english_name": "Romanian",
+        "autonym": "Română",
+        "url": "https://ro-go-dev.shuijingwanwq.com/",
+        "official": false
+      },
+      {
+        "locale": "sv-SE",
+        "english_name": "Swedish",
+        "autonym": "Svenska",
+        "url": "https://sv-go-dev.shuijingwanwq.com/",
+        "official": false
+      },
+      {
+        "locale": "ta-IN",
+        "english_name": "Tamil",
+        "autonym": "தமிழ்",
+        "url": "https://ta-go-dev.shuijingwanwq.com/",
+        "official": false
+      },
+      {
+        "locale": "te-IN",
+        "english_name": "Telugu",
+        "autonym": "తెలుగు",
+        "url": "https://te-go-dev.shuijingwanwq.com/",
+        "official": false
+      },
+      {
+        "locale": "th-TH",
+        "english_name": "Thai",
+        "autonym": "ไทย",
+        "url": "https://th-go-dev.shuijingwanwq.com/",
+        "official": false
+      },
+      {
+        "locale": "tr-TR",
+        "english_name": "Turkish",
+        "autonym": "Türkçe",
+        "url": "https://tr-go-dev.shuijingwanwq.com/",
+        "official": false
+      },
+      {
+        "locale": "uk-UA",
+        "english_name": "Ukrainian",
+        "autonym": "Українська",
+        "url": "https://uk-go-dev.shuijingwanwq.com/",
+        "official": false
+      },
+      {
+        "locale": "ur-PK",
+        "english_name": "Urdu",
+        "autonym": "اردو",
+        "url": "https://ur-go-dev.shuijingwanwq.com/",
+        "official": false
+      },
+      {
+        "locale": "vi-VN",
+        "english_name": "Vietnamese",
+        "autonym": "Tiếng Việt",
+        "url": "https://vi-go-dev.shuijingwanwq.com/",
+        "official": false
+      },
+      {
+        "locale": "zh-CN",
+        "english_name": "Simplified Chinese",
+        "autonym": "简体中文",
+        "url": "https://go-dev.shuijingwanwq.com/",
+        "official": false
+      },
+      {
+        "locale": "zh-TW",
+        "english_name": "Traditional Chinese",
+        "autonym": "繁體中文（台灣）",
+        "url": "https://zh-tw-go-dev.shuijingwanwq.com/",
+        "official": false
+      }
+    ],
+    "profiles": [
+      {
+        "locale": "ar",
+        "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          time.UTC,\n\tTimeLabel:         \"UTC\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"rtl\",\n}",
+        "referenced_declarations": []
+      },
+      {
+        "locale": "bg-BG",
+        "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          sofiaTime,\n\tTimeLabel:         \"местно време\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+        "referenced_declarations": [
+          "sofiaTime=sofiaTime = mustLoadLocation(\"Europe/Sofia\")"
+        ]
+      },
+      {
+        "locale": "bn-BD",
+        "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          dhakaTime,\n\tTimeLabel:         \"স্থানীয় সময়\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+        "referenced_declarations": [
+          "dhakaTime=dhakaTime = mustLoadLocation(\"Asia/Dhaka\")"
+        ]
+      },
+      {
+        "locale": "cs-CZ",
+        "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          pragueTime,\n\tTimeLabel:         \"místní čas\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+        "referenced_declarations": [
+          "pragueTime=pragueTime = mustLoadLocation(\"Europe/Prague\")"
+        ]
+      },
+      {
+        "locale": "de-DE",
+        "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          berlinTime,\n\tTimeLabel:         \"Ortszeit\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+        "referenced_declarations": [
+          "berlinTime=berlinTime = mustLoadLocation(\"Europe/Berlin\")"
+        ]
+      },
+      {
+        "locale": "el-GR",
+        "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          athensTime,\n\tTimeLabel:         \"τοπική ώρα\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+        "referenced_declarations": [
+          "athensTime=athensTime = mustLoadLocation(\"Europe/Athens\")"
+        ]
+      },
+      {
+        "locale": "en",
+        "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          time.UTC,\n\tTimeLabel:         \"UTC\",\n\tTimeLabelFormat:   \"（%s）\",\n\tDirection:         \"ltr\",\n}",
+        "referenced_declarations": []
+      },
+      {
+        "locale": "es-ES",
+        "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          madridTime,\n\tTimeLabel:         \"hora local\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+        "referenced_declarations": [
+          "madridTime=madridTime = mustLoadLocation(\"Europe/Madrid\")"
+        ]
+      },
+      {
+        "locale": "fil-PH",
+        "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          manilaTime,\n\tTimeLabel:         \"lokal na oras\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+        "referenced_declarations": [
+          "manilaTime=manilaTime = mustLoadLocation(\"Asia/Manila\")"
+        ]
+      },
+      {
+        "locale": "fr-FR",
+        "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          parisTime,\n\tTimeLabel:         \"heure locale\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+        "referenced_declarations": [
+          "parisTime=parisTime = mustLoadLocation(\"Europe/Paris\")"
+        ]
+      },
+      {
+        "locale": "hi-IN",
+        "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          kolkataTime,\n\tTimeLabel:         \"स्थानीय समय\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+        "referenced_declarations": [
+          "kolkataTime=kolkataTime = mustLoadLocation(\"Asia/Kolkata\")"
+        ]
+      },
+      {
+        "locale": "hu-HU",
+        "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          budapestTime,\n\tTimeLabel:         \"helyi idő\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+        "referenced_declarations": [
+          "budapestTime=budapestTime = mustLoadLocation(\"Europe/Budapest\")"
+        ]
+      },
+      {
+        "locale": "id-ID",
+        "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          jakartaTime,\n\tTimeLabel:         \"waktu setempat\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+        "referenced_declarations": [
+          "jakartaTime=jakartaTime = mustLoadLocation(\"Asia/Jakarta\")"
+        ]
+      },
+      {
+        "locale": "it-IT",
+        "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          romeTime,\n\tTimeLabel:         \"ora locale\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+        "referenced_declarations": [
+          "romeTime=romeTime = mustLoadLocation(\"Europe/Rome\")"
+        ]
+      },
+      {
+        "locale": "ja-JP",
+        "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          time.FixedZone(\"UTC+9\", 9*60*60),\n\tTimeLabel:         \"日本時間\",\n\tTimeLabelFormat:   \"（%s）\",\n\tDirection:         \"ltr\",\n}",
+        "referenced_declarations": []
+      },
+      {
+        "locale": "ko-KR",
+        "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          time.FixedZone(\"UTC+9\", 9*60*60),\n\tTimeLabel:         \"한국 표준시\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+        "referenced_declarations": []
+      },
+      {
+        "locale": "ml-IN",
+        "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          kolkataTime,\n\tTimeLabel:         \"പ്രാദേശിക സമയം\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+        "referenced_declarations": [
+          "kolkataTime=kolkataTime = mustLoadLocation(\"Asia/Kolkata\")"
+        ]
+      },
+      {
+        "locale": "mr-IN",
+        "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          kolkataTime,\n\tTimeLabel:         \"स्थानिक वेळ\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+        "referenced_declarations": [
+          "kolkataTime=kolkataTime = mustLoadLocation(\"Asia/Kolkata\")"
+        ]
+      },
+      {
+        "locale": "ms-MY",
+        "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          kualaLumpurTime,\n\tTimeLabel:         \"waktu tempatan\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+        "referenced_declarations": [
+          "kualaLumpurTime=kualaLumpurTime = mustLoadLocation(\"Asia/Kuala_Lumpur\")"
+        ]
+      },
+      {
+        "locale": "nl-NL",
+        "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          amsterdamTime,\n\tTimeLabel:         \"lokale tijd\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+        "referenced_declarations": [
+          "amsterdamTime=amsterdamTime = mustLoadLocation(\"Europe/Amsterdam\")"
+        ]
+      },
+      {
+        "locale": "pl-PL",
+        "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          warsawTime,\n\tTimeLabel:         \"czas lokalny\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+        "referenced_declarations": [
+          "warsawTime=warsawTime = mustLoadLocation(\"Europe/Warsaw\")"
+        ]
+      },
+      {
+        "locale": "pt-BR",
+        "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          saoPauloTime,\n\tTimeLabel:         \"horário local\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+        "referenced_declarations": [
+          "saoPauloTime=saoPauloTime = mustLoadLocation(\"America/Sao_Paulo\")"
+        ]
+      },
+      {
+        "locale": "ro-RO",
+        "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          bucharestTime,\n\tTimeLabel:         \"ora locală\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+        "referenced_declarations": [
+          "bucharestTime=bucharestTime = mustLoadLocation(\"Europe/Bucharest\")"
+        ]
+      },
+      {
+        "locale": "sv-SE",
+        "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          stockholmTime,\n\tTimeLabel:         \"lokal tid\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+        "referenced_declarations": [
+          "stockholmTime=stockholmTime = mustLoadLocation(\"Europe/Stockholm\")"
+        ]
+      },
+      {
+        "locale": "ta-IN",
+        "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          kolkataTime,\n\tTimeLabel:         \"உள்ளூர் நேரம்\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+        "referenced_declarations": [
+          "kolkataTime=kolkataTime = mustLoadLocation(\"Asia/Kolkata\")"
+        ]
+      },
+      {
+        "locale": "te-IN",
+        "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          kolkataTime,\n\tTimeLabel:         \"స్థానిక సమయం\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+        "referenced_declarations": [
+          "kolkataTime=kolkataTime = mustLoadLocation(\"Asia/Kolkata\")"
+        ]
+      },
+      {
+        "locale": "th-TH",
+        "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          bangkokTime,\n\tTimeLabel:         \"เวลาท้องถิ่น\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+        "referenced_declarations": [
+          "bangkokTime=bangkokTime = mustLoadLocation(\"Asia/Bangkok\")"
+        ]
+      },
+      {
+        "locale": "tr-TR",
+        "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          istanbulTime,\n\tTimeLabel:         \"yerel saat\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+        "referenced_declarations": [
+          "istanbulTime=istanbulTime = mustLoadLocation(\"Europe/Istanbul\")"
+        ]
+      },
+      {
+        "locale": "uk-UA",
+        "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          kyivTime,\n\tTimeLabel:         \"місцевий час\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+        "referenced_declarations": [
+          "kyivTime=kyivTime = mustLoadLocation(\"Europe/Kyiv\")"
+        ]
+      },
+      {
+        "locale": "ur-PK",
+        "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          karachiTime,\n\tTimeLabel:         \"مقامی وقت\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"rtl\",\n}",
+        "referenced_declarations": [
+          "karachiTime=karachiTime = mustLoadLocation(\"Asia/Karachi\")"
+        ]
+      },
+      {
+        "locale": "vi-VN",
+        "expression": "{\n\tDevelopmentLogURL: \"https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/\",\n\tTimeZone:          hoChiMinhTime,\n\tTimeLabel:         \"giờ địa phương\",\n\tTimeLabelFormat:   \" (%s)\",\n\tDirection:         \"ltr\",\n}",
+        "referenced_declarations": [
+          "hoChiMinhTime=hoChiMinhTime = mustLoadLocation(\"Asia/Ho_Chi_Minh\")"
+        ]
+      },
+      {
+        "locale": "zh-CN",
+        "expression": "{\n\tDevelopmentLogURL: \"https://www.shuijingwanwq.com/series/go-tour-chinese-edition-development-series/\",\n\tTimeZone:          time.FixedZone(\"UTC+8\", 8*60*60),\n\tTimeLabel:         \"北京时间\",\n\tTimeLabelFormat:   \"（%s）\",\n\tDirection:         \"ltr\",\n}",
+        "referenced_declarations": []
+      },
+      {
+        "locale": "zh-TW",
+        "expression": "{\n\tDevelopmentLogURL: \"https://www.shuijingwanwq.com/series/go-tour-chinese-edition-development-series/\",\n\tTimeZone:          taipeiTime,\n\tTimeLabel:         \"台灣時間\",\n\tTimeLabelFormat:   \"（%s）\",\n\tDirection:         \"ltr\",\n}",
+        "referenced_declarations": [
+          "taipeiTime=taipeiTime = mustLoadLocation(\"Asia/Taipei\")"
+        ]
+      }
+    ],
+    "variables": [
+      {
+        "name": "amsterdamTime",
+        "declaration": "amsterdamTime = mustLoadLocation(\"Europe/Amsterdam\")"
+      },
+      {
+        "name": "athensTime",
+        "declaration": "athensTime = mustLoadLocation(\"Europe/Athens\")"
+      },
+      {
+        "name": "bangkokTime",
+        "declaration": "bangkokTime = mustLoadLocation(\"Asia/Bangkok\")"
+      },
+      {
+        "name": "berlinTime",
+        "declaration": "berlinTime = mustLoadLocation(\"Europe/Berlin\")"
+      },
+      {
+        "name": "bucharestTime",
+        "declaration": "bucharestTime = mustLoadLocation(\"Europe/Bucharest\")"
+      },
+      {
+        "name": "budapestTime",
+        "declaration": "budapestTime = mustLoadLocation(\"Europe/Budapest\")"
+      },
+      {
+        "name": "dhakaTime",
+        "declaration": "dhakaTime = mustLoadLocation(\"Asia/Dhaka\")"
+      },
+      {
+        "name": "hoChiMinhTime",
+        "declaration": "hoChiMinhTime = mustLoadLocation(\"Asia/Ho_Chi_Minh\")"
+      },
+      {
+        "name": "istanbulTime",
+        "declaration": "istanbulTime = mustLoadLocation(\"Europe/Istanbul\")"
+      },
+      {
+        "name": "jakartaTime",
+        "declaration": "jakartaTime = mustLoadLocation(\"Asia/Jakarta\")"
+      },
+      {
+        "name": "karachiTime",
+        "declaration": "karachiTime = mustLoadLocation(\"Asia/Karachi\")"
+      },
+      {
+        "name": "kolkataTime",
+        "declaration": "kolkataTime = mustLoadLocation(\"Asia/Kolkata\")"
+      },
+      {
+        "name": "kualaLumpurTime",
+        "declaration": "kualaLumpurTime = mustLoadLocation(\"Asia/Kuala_Lumpur\")"
+      },
+      {
+        "name": "kyivTime",
+        "declaration": "kyivTime = mustLoadLocation(\"Europe/Kyiv\")"
+      },
+      {
+        "name": "madridTime",
+        "declaration": "madridTime = mustLoadLocation(\"Europe/Madrid\")"
+      },
+      {
+        "name": "manilaTime",
+        "declaration": "manilaTime = mustLoadLocation(\"Asia/Manila\")"
+      },
+      {
+        "name": "parisTime",
+        "declaration": "parisTime = mustLoadLocation(\"Europe/Paris\")"
+      },
+      {
+        "name": "pragueTime",
+        "declaration": "pragueTime = mustLoadLocation(\"Europe/Prague\")"
+      },
+      {
+        "name": "romeTime",
+        "declaration": "romeTime = mustLoadLocation(\"Europe/Rome\")"
+      },
+      {
+        "name": "saoPauloTime",
+        "declaration": "saoPauloTime = mustLoadLocation(\"America/Sao_Paulo\")"
+      },
+      {
+        "name": "sofiaTime",
+        "declaration": "sofiaTime = mustLoadLocation(\"Europe/Sofia\")"
+      },
+      {
+        "name": "stockholmTime",
+        "declaration": "stockholmTime = mustLoadLocation(\"Europe/Stockholm\")"
+      },
+      {
+        "name": "taipeiTime",
+        "declaration": "taipeiTime = mustLoadLocation(\"Asia/Taipei\")"
+      },
+      {
+        "name": "warsawTime",
+        "declaration": "warsawTime = mustLoadLocation(\"Europe/Warsaw\")"
+      }
+    ],
+    "runtime_declarations": [
+      "import (\n\t\"fmt\"\n\t\"time\"\n)",
+      "// LanguageLink describes one build-time language site exposed on the\n// homepage. Registry order is presentation order and is shared by every\n// locale build.\ntype LanguageLink struct {\n\tLocale      string\n\tEnglishName string\n\tAutonym     string\n\tLabel       string\n\tURL         string\n\tOfficial    bool\n\tCurrent     bool\n}",
+      "// LanguageRegistry returns the homepage language registry in presentation\n// order. The returned copy cannot alter the build-time authority.\nfunc LanguageRegistry() []LanguageLink {\n\tregistry := make([]LanguageLink, len(languageRegistry))\n\tcopy(registry, languageRegistry)\n\treturn registry\n}",
+      "type localeProfile struct {\n\tDevelopmentLogURL string\n\tTimeZone          *time.Location\n\tTimeLabel         string\n\tTimeLabelFormat   string\n\tDirection         string\n}",
+      "func mustLoadLocation(name string) *time.Location {\n\tlocation, err := time.LoadLocation(name)\n\tif err != nil {\n\t\tpanic(fmt.Sprintf(\"load time zone %q: %v\", name, err))\n\t}\n\treturn location\n}",
+      "func languagesFor(locale string) ([]LanguageLink, error) {\n\tif _, ok := localeProfiles[locale]; !ok {\n\t\treturn nil, fmt.Errorf(\"unsupported site locale %q\", locale)\n\t}\n\tlanguages := make([]LanguageLink, len(languageRegistry))\n\tcopy(languages, languageRegistry)\n\tfor i := range languages {\n\t\tlanguages[i].Label = languages[i].EnglishName\n\t\tif languages[i].EnglishName != languages[i].Autonym {\n\t\t\tlanguages[i].Label += \" — \" + languages[i].Autonym\n\t\t}\n\t\tlanguages[i].Current = languages[i].Locale == locale\n\t}\n\treturn languages, nil\n}",
+      "func currentLanguage(languages []LanguageLink) (LanguageLink, error) {\n\tfor _, language := range languages {\n\t\tif language.Current {\n\t\t\treturn language, nil\n\t\t}\n\t}\n\treturn LanguageLink{}, fmt.Errorf(\"language registry has no current locale\")\n}"
+    ]
+  },
+  "production_identity_sha256": "9af4a8142014f979a1ebefc0bda7a4a103e129d46adfcbd5de61994afa5f5f42"
+}
