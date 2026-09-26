@@ -2,6 +2,27 @@
 
 本合同适用于 Generation role/session、Reviewer role/session 和具备仓库终端能力的当前 AI execution environment。它统一阶段完成、失败与人工 handoff 的最终回复；不新增持久化状态，不替代 machine gate，也不扩大 AI 权限。
 
+## Reviewer Markdown evidence 格式
+
+QC、re-QC 等新 Reviewer Markdown 必须先写入正式路径之外的临时 draft，再通过同一格式检查以原始字节、原子且不可覆盖地保存到正式目标：
+
+```sh
+go run -mod=readonly ./cmd/tour-i18n review-evidence save \
+  --input /tmp/<review-draft>.md \
+  --output <formal-review-evidence>.md
+```
+
+`surface-review evidence-scaffold` 已创建的正式待填写文件不另行复制或覆盖；Reviewer 完成填写后立即只读检查，`PASS` 后才执行正式 `surface-review record-a`：
+
+```sh
+go run -mod=readonly ./cmd/tour-i18n review-evidence check \
+  --file data/locale-surface-reviews/<locale>/<review-id>.md
+```
+
+Glossary Review 如保存独立 Markdown，也使用 `review-evidence save`。两条命令只检查非空、UTF-8/BOM、LF、行尾空白和文件末尾换行格式，不修改 Markdown 内容、不作语言审核。格式失败时，只修复尚未被正式 receipt 绑定的当前 draft 或待审核文件；不得修改历史 evidence，不得自动重新审核。正式目标已存在时 `save` 必须失败，尤其不得覆盖已被 receipt 绑定 SHA-256 的 Markdown。
+
+本文件是 Generation / Reviewer Bundle 的共享 authority。此 authority 修改后继续使用任何在途 ZIP 前，必须先执行该 bundle 对应的正式 current-check；只有检查真实判定 stale 时才按实际受影响范围重新导出。不得仅因本节新增格式规则而重译、重新审核、修改已有 A 结论或改写 finalization。
+
 ## 必填交接内容
 
 需要跨会话、交给维护者 Local terminal、等待明确继续、进入 HUMAN gate，或因失败停止时，最终回复依次提供：
