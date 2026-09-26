@@ -1,0 +1,17 @@
+* ದೋಷಗಳು
+
+⟪GTI18N_9eaab1fd_000001⟫ ಪ್ರೋಗ್ರಾಂಗಳು ದೋಷದ ಸ್ಥಿತಿಯನ್ನು ⟪GTI18N_9eaab1fd_000002⟫error⟪GTI18N_9eaab1fd_000003⟫ ಮೌಲ್ಯಗಳ ಮೂಲಕ ಸೂಚಿಸುತ್ತವೆ.
+
+⟪GTI18N_9eaab1fd_000004⟫error⟪GTI18N_9eaab1fd_000005⟫ ಟೈಪ್, ⟪GTI18N_9eaab1fd_000006⟫fmt.Stringer⟪GTI18N_9eaab1fd_000007⟫ ಗೆ ಹೋಲುವ ಅಂತರ್ನಿರ್ಮಿತ ಇಂಟರ್‌ಫೇಸ್ ಆಗಿದೆ:
+
+⟪GTI18N_9eaab1fd_000008⟫
+
+(⟪GTI18N_9eaab1fd_000009⟫fmt.Stringer⟪GTI18N_9eaab1fd_000010⟫ ನಂತೆಯೇ, ಮೌಲ್ಯಗಳನ್ನು ಮುದ್ರಿಸುವಾಗ ⟪GTI18N_9eaab1fd_000011⟫fmt⟪GTI18N_9eaab1fd_000012⟫ ಪ್ಯಾಕೇಜ್ ⟪GTI18N_9eaab1fd_000013⟫error⟪GTI18N_9eaab1fd_000014⟫ ಇಂಟರ್‌ಫೇಸ್ ಅನ್ನು ಹುಡುಕುತ್ತದೆ.)
+
+ಫಂಕ್ಷನ್‌ಗಳು ಸಾಮಾನ್ಯವಾಗಿ ⟪GTI18N_9eaab1fd_000015⟫error⟪GTI18N_9eaab1fd_000016⟫ ಮೌಲ್ಯವನ್ನು ಹಿಂತಿರುಗಿಸುತ್ತವೆ. ಕರೆ ಮಾಡುವ ಕೋಡ್ ದೋಷವು ⟪GTI18N_9eaab1fd_000017⟫nil⟪GTI18N_9eaab1fd_000018⟫ ಗೆ ಸಮಾನವೇ ಎಂದು ಪರಿಶೀಲಿಸಿ ಅದನ್ನು ನಿರ್ವಹಿಸಬೇಕು.
+
+⟪GTI18N_9eaab1fd_000019⟫
+
+⟪GTI18N_9eaab1fd_000020⟫ ಆಗಿರುವ ⟪GTI18N_9eaab1fd_000021⟫error⟪GTI18N_9eaab1fd_000022⟫ ಮೌಲ್ಯವು ಯಶಸ್ಸನ್ನು ಸೂಚಿಸುತ್ತದೆ; ⟪GTI18N_9eaab1fd_000023⟫ ಅಲ್ಲದ ⟪GTI18N_9eaab1fd_000024⟫error⟪GTI18N_9eaab1fd_000025⟫ ಮೌಲ್ಯವು ವೈಫಲ್ಯವನ್ನು ಸೂಚಿಸುತ್ತದೆ.
+
+⟪GTI18N_9eaab1fd_000026⟫

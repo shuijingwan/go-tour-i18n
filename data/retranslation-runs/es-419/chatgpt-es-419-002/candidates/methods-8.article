@@ -1,0 +1,17 @@
+* Cuándo elegir un receptor por valor o de puntero
+
+Hay dos razones para utilizar un receptor de puntero.
+
+La primera es permitir que el método modifique el valor al que apunta el receptor.
+
+La segunda es evitar copiar el valor en cada llamada al método.
+Por ejemplo, esto puede ser más eficiente si el receptor es una estructura grande.
+
+En este ejemplo, tanto `Scale` como `Abs` son métodos cuyo receptor es de tipo `*Vertex`,
+aunque el método `Abs` no necesite modificar su receptor.
+
+En general, todos los métodos de un tipo determinado deberían usar receptores
+por valor o receptores de puntero, pero no una combinación de ambos.
+(Veremos por qué en las próximas páginas).
+
+.play methods/methods-with-pointer-receivers.go

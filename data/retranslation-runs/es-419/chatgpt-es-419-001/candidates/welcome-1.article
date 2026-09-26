@@ -1,0 +1,35 @@
+* ¡Hola, 世界!
+
+Te damos la bienvenida a un recorrido por el [[/][lenguaje de programación Go]].
+
+El recorrido está organizado en módulos, a los que puedes acceder haciendo clic en
+[[javascript:highlight(".logo")][Un recorrido por Go]] en la parte superior izquierda de la página.
+
+También puedes consultar el índice en cualquier momento haciendo clic en el [[javascript:highlightAndClick(".nav")][menú]] de la parte superior derecha de la página.
+
+A lo largo del recorrido encontrarás una serie de páginas y ejercicios que podrás completar.
+
+Puedes desplazarte por ellos mediante:
+
+- [[javascript:highlight(".prev-page")]["anterior"]] o la tecla `PageUp` para ir a la página anterior,
+
+- [[javascript:highlight(".next-page")]["siguiente"]] o la tecla `PageDown` para ir a la página siguiente.
+
+El recorrido es interactivo. Haz clic ahora en el botón
+[[javascript:highlightAndClick("#run")][Ejecutar]]
+(o presiona `Shift` + `Enter`) para compilar y ejecutar el programa en
+un servidor remoto.
+El resultado se muestra debajo del código.
+
+Estos programas de ejemplo muestran distintos aspectos de Go. Los programas del recorrido sirven como punto de partida para que hagas tus propios experimentos.
+
+Modifica el programa y vuelve a ejecutarlo.
+
+Cuando hagas clic en [[javascript:highlightAndClick("#format")][Dar formato]]
+(atajo: `Ctrl` + `Enter`), el texto del editor recibirá formato mediante la herramienta
+[[/cmd/gofmt/][gofmt]]. Puedes activar y desactivar el resaltado de sintaxis
+haciendo clic en el botón [[javascript:highlightAndClick(".syntax-checkbox")][sintaxis]].
+
+Cuando quieras continuar, haz clic en la [[javascript:highlightAndClick(".next-page")][flecha derecha]] de abajo o presiona la tecla `PageDown`.
+
+.play welcome/hello.go

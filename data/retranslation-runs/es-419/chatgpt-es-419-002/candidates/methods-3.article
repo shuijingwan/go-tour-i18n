@@ -1,0 +1,12 @@
+* Métodos (continuación)
+
+También puedes declarar métodos sobre tipos que no sean estructuras.
+
+En este ejemplo, vemos un tipo numérico `MyFloat` con un método `Abs`.
+
+Solo puedes declarar un método cuyo receptor sea de un tipo definido en el mismo
+paquete que el método.
+No puedes declarar un método cuyo receptor sea de un tipo definido en otro
+paquete (esto incluye los tipos integrados, como `int`).
+
+.play methods/methods-continued.go

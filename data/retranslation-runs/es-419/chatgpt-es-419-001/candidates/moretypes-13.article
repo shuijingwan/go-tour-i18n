@@ -1,0 +1,18 @@
+* Crear un segmento con make
+
+Los segmentos se pueden crear con la función integrada `make`;
+así es como se crean arreglos de tamaño dinámico.
+
+La función `make` asigna un arreglo cuyos elementos se inicializan con su valor cero
+y devuelve un segmento que hace referencia a ese arreglo:
+
+	a := make([]int, 5)  // len(a)=5
+
+Para especificar una capacidad, pasa un tercer argumento a `make`:
+
+	b := make([]int, 0, 5) // len(b)=0, cap(b)=5
+
+	b = b[:cap(b)] // len(b)=5, cap(b)=5
+	b = b[1:]      // len(b)=4, cap(b)=4
+
+.play moretypes/making-slices.go

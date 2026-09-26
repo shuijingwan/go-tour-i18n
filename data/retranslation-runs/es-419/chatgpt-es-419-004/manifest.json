@@ -1,0 +1,37 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-es-419-004",
+  "locale": "es-419",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 2,
+  "units": [
+    {
+      "unit_id": "welcome/2",
+      "unit_kind": "page",
+      "source_path": "_content/tour/welcome.article",
+      "source_sha256": "709f808ec4cdf683411f349cab7a4886fcae532d1c4e4cc66c8ed68cfb2dd2d3",
+      "input_path": "inputs/welcome-2.article",
+      "input_sha256": "327861965423bc2754b304ecf6c3dc8db5e84ef5c009f2b4f99f276f712e5fff",
+      "protected_token_count": 17,
+      "previous_snapshot_id": "20260926-es-419-qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "index=2; EN title: * Go local; candidate title: * Go local. The unchanged English idiom/wordplay is insufficiently clear as a Spanish heading for the page introducing other-language versions; even though local is also a Spanish adjective, the intended sense is ambiguous. Have the original Generation role provide a natural pan-Latin-American Spanish heading that conveys this page topic, preserving Go as a name and all original links/directives/body."
+    },
+    {
+      "unit_id": "basics/12",
+      "unit_kind": "page",
+      "source_path": "_content/tour/basics.article",
+      "source_sha256": "d9ad62501c05359e7b2ac445fa92d629e11d6d378c2701b767abab76012a558e",
+      "input_path": "inputs/basics-12.article",
+      "input_sha256": "1ea463ab789d88cad33a6c7adf44fb524ea1f7e2574059f723a345f3c097faa7",
+      "protected_token_count": 9,
+      "previous_snapshot_id": "20260926-es-419-qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "C",
+      "previous_finding": "index=17; EN: Variables declared without an explicit initial value are given their _zero_value_.; candidate: Las variables declaradas sin un valor inicial explícito reciben su _zero_value_. Current Present parser renders italic zero value as visible English in a Spanish lesson. This leaves the central mandatory glossary term zero value=valor cero untranslated. Original Generation role must localize the content of this existing emphasis span to the approved term while preserving a single valid legacy Present italic span (underscore-separated words, not actual spaces within markup), protected tokens, and all other page content; revalidate."
+    }
+  ]
+}

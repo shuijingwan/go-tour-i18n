@@ -1,0 +1,21 @@
+* Agregar elementos a un segmento
+
+Es habitual agregar nuevos elementos a un segmento; por eso Go incluye una función integrada
+llamada `append`. La [[/pkg/builtin/#append][documentación]]
+del paquete integrado describe `append`.
+
+	func append(s []T, vs ...T) []T
+
+El primer parámetro `s` de `append` es un segmento de tipo `T`, y los demás son
+valores de tipo `T` que se agregarán al segmento.
+
+El valor devuelto por `append` es un segmento que contiene todos los elementos del
+segmento original, más los valores proporcionados.
+
+Si el arreglo subyacente de `s` es demasiado pequeño para contener todos los valores indicados,
+se asignará un arreglo más grande. El segmento devuelto apuntará a ese
+arreglo recién asignado.
+
+(Para obtener más información sobre los segmentos, lee el artículo [[/blog/go-slices-usage-and-internals][Segmentos: uso y funcionamiento interno]].)
+
+.play moretypes/append.go

@@ -1,0 +1,37 @@
+* Ejercicio: bucles y funciones
+
+Para practicar con funciones y bucles, implementemos una función de raíz cuadrada: dado un número x, queremos encontrar el número z cuyo cuadrado z² sea lo más cercano posible a x.
+
+Por lo general, las computadoras calculan la raíz cuadrada de x mediante un bucle.
+A partir de un valor inicial aproximado z, podemos ajustar z según qué tan cerca esté z² de x,
+y así obtener una mejor aproximación:
+
+⟪GTI18N_d8bbee84_000001⟫
+
+Al repetir este ajuste, la aproximación mejora cada vez más
+hasta obtener un resultado tan cercano a la raíz cuadrada real como sea posible.
+
+Implementa este procedimiento en la función ⟪GTI18N_d8bbee84_000002⟫func`Sqrt⟪GTI18N_d8bbee84_000003⟫ proporcionada.
+Una aproximación inicial razonable para z es 1, independientemente del valor de entrada.
+Para comenzar, repite el cálculo 10 veces e imprime cada valor de z.
+Observa qué tan cerca queda el resultado para distintos valores de x (1, 2, 3, ...)
+y qué tan rápido mejora la aproximación.
+
+Pista: para declarar e inicializar un valor de punto flotante,
+escríbelo con la sintaxis de punto flotante o utiliza una conversión:
+
+⟪GTI18N_d8bbee84_000004⟫
+
+Después, modifica la condición del bucle para que se detenga cuando el valor deje de
+cambiar (o solo cambie una cantidad muy pequeña).
+Observa si se necesitan más o menos de 10 iteraciones.
+Prueba otros valores iniciales para z, como x o x/2.
+¿Qué tan cerca están los resultados de tu función de los de [[⟪GTI18N_d8bbee84_000005⟫][math.Sqrt]] de la biblioteca estándar?
+
+(⟪GTI18N_d8bbee84_000006⟫Nota:⟪GTI18N_d8bbee84_000007⟫ Si te interesan los detalles del algoritmo, el valor z² − x de arriba
+indica cuánto se aleja z² del valor deseado (x), y la división entre 2z utiliza la derivada
+de z² para ajustar la magnitud del cambio según la rapidez con la que varía z².
+Este enfoque general se conoce como el [[⟪GTI18N_d8bbee84_000008⟫][método de Newton]].
+Funciona bien para muchas funciones, pero especialmente para calcular raíces cuadradas).
+
+⟪GTI18N_d8bbee84_000009⟫

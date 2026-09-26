@@ -1,0 +1,11 @@
+* Ejercicio: segmentos
+
+Implementa `Pic`. Debe devolver un segmento de longitud `dy`, en el que cada elemento sea un segmento de `dx` enteros sin signo de 8 bits. Al ejecutar el programa, se mostrará tu imagen y los enteros se interpretarán como valores de escala de grises (bueno, de tonos de azul).
+
+Tú eliges qué imagen generar. Algunas funciones interesantes son `(x+y)/2`, `x*y` y `x^y`.
+
+(Debes utilizar un bucle para asignar cada `[]uint8` dentro de `[][]uint8`).
+
+(Utiliza `uint8(intValue)` para convertir entre tipos).
+
+.play moretypes/exercise-slices.go

@@ -1,0 +1,11 @@
+* Valores de retorno con nombre
+
+Los valores de retorno de Go pueden tener nombre. En ese caso, se tratan como variables definidas al comienzo de la función.
+
+Estos nombres deben servir para documentar el significado de los valores devueltos.
+
+Una instrucción `return` sin argumentos devuelve los valores de retorno con nombre. Esto se conoce como «retorno sin argumentos».
+
+Las instrucciones de retorno sin argumentos deben usarse solo en funciones cortas, como en el ejemplo que se muestra aquí. En funciones más largas, pueden dificultar la lectura.
+
+.play basics/named-results.go

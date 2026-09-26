@@ -122,3 +122,13 @@
 - 暂缓原因：维护者于 2026-09-21 明确决定当前可以暂缓修复，不阻塞 cs-CZ 上线；后续统一评估共享语言下拉的单行展示、可用宽度与响应式行为，不增加 cs-CZ 局部特例。
 - 当前状态：`open`
 - 后续处理/核销证据：原始 preview/HUMAN gate 记录见 `data/locale-surface-reviews/cs-CZ/20260921-stage-a-002.md`。2026-09-22 已决定通过现有共享 `app.css` 修复：已上线非中文站点的既有 production HTML 使用固定 shared-assets URL，待 shared-assets 正式更新后无需重新 publish 或 deploy locale；`zh-CN` 使用同源静态资源，本轮作为已确认例外暂不升级，待下次正常上游同步和部署时获得修复。本地 `TestTourHeaderTitlesAreCenteredOnDesktopAndFitCommonMobileViewports` targeted browser regression PASS，`git diff --check` PASS；shared-assets 正式部署及实际验收尚未完成，当前保持 open。
+
+### DI-20260926-001：es-419 IndexNow 本地 key-store locale 校验不接受数字地区代码
+
+- ID：`DI-20260926-001`
+- 发现日期：`2026-09-26`
+- 发现阶段/场景：es-419 完成 Stage A、Preview、首次 Production 验收及正式 `first-production finalize`，`production_state=live`；维护者已提交 Sitemap，随后运行 `scripts/indexnow-closeout.sh --locale es-419`。
+- 问题描述：正式命令返回 `indexnow closeout: FAILED: invalid locale for IndexNow local key store`。已核对 `scripts/indexnow-closeout.py`：`LOCALE_PATTERN` 只允许纯语言或两位大写字母地区代码，`default_key_file` 因而在本地拒绝数字地区代码 `419`；此轮没有进入后续网络提交阶段。维护者另有本机域名解析问题，但本次错误不能归因于 DNS，二者分开处理。
+- 暂缓原因：维护者明确决定此次不重试、不修改 IndexNow 脚本、不重新部署；该搜索引擎 closeout 不属于 Production gate，es-419 已正式 live，Sitemap 已提交。
+- 当前状态：`open`
+- 后续处理/核销证据：暂无。恢复时先为本地 key-store locale 校验增加对 canonical 数字地区代码的精确支持并补充针对性测试，再单独核实维护者本机 DNS，最后按正式 IndexNow closeout 流程提交并保存真实 PASS evidence。不得将现有 `ml-IN` IndexNow 成功视为 es-419 的完成证据。

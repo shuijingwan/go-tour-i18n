@@ -1,0 +1,13 @@
+* Funciones (continuación)
+
+Cuando dos o más parámetros consecutivos de una función tienen nombre y comparten el mismo tipo, puedes omitir el tipo de todos excepto el último.
+
+En este ejemplo, abreviamos
+
+	x int, y int
+
+como
+
+	x, y int
+
+.play basics/functions-continued.go

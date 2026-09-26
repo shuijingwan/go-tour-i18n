@@ -1,0 +1,37 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-es-419-005",
+  "locale": "es-419",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "example",
+  "unit_count": 2,
+  "units": [
+    {
+      "unit_id": "example:concurrency/exercise-equivalent-binary-trees.go",
+      "unit_kind": "example",
+      "source_path": "_content/tour/concurrency/exercise-equivalent-binary-trees.go",
+      "source_sha256": "184cbbd1e662b64de6e6928d4af6f2469c7bccdbc9a8b5f477c1b694b9ab02b1",
+      "input_path": "inputs/concurrency-exercise-equivalent-binary-trees.txt",
+      "input_sha256": "7a7b9604ab994ccecd30d445793424bc7db50ec6b4b77d9d082d42f1e9cc5685",
+      "protected_token_count": 5,
+      "previous_snapshot_id": "20260926-es-419-qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "index=107; EN comments: // Walk walks the tree t sending all values / // from the tree to the channel ch.; es-419 candidate: // Walk recorre el árbol t y envía todos sus valores / // del árbol al canal ch. The repeated árbol creates an awkward, redundant possessive phrase (sus valores del árbol). Original Generation role: remove that redundancy with natural es-419 syntax while preserving Walk, t, ch, the complete tree-traversal/channel-send meaning, line/comment structure, and every Go code token; do not change other content."
+    },
+    {
+      "unit_id": "example:generics/index.go",
+      "unit_kind": "example",
+      "source_path": "_content/tour/generics/index.go",
+      "source_sha256": "398dd72a4b01efa279d571667bedbcccd1bbbceaeb77218635db48edf38fd983",
+      "input_path": "inputs/generics-index.txt",
+      "input_sha256": "7abb8fdbe4d75e4a090fd429540fbbd86cad2f221a62cee51ab8195df56e2d6d",
+      "protected_token_count": 6,
+      "previous_snapshot_id": "20260926-es-419-qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "index=111; EN comments: // v and x are type T, which has the comparable / // constraint, so we can use == here.; es-419 candidate: // v y x son de tipo T, que satisface la restricción comparable / // por lo que podemos utilizar == aquí. The consequence connector por lo que lacks the appropriate separating comma, making the long sentence punctuation unidiomatic. Original Generation role: correct clause punctuation in natural es-419 without changing the relationship that T satisfies comparable and permits ==, all identifier/keyword bytes, comment delimiters, code, or protected structure."
+    }
+  ]
+}

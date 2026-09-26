@@ -1,0 +1,11 @@
+* Los segmentos son como referencias a arreglos
+
+Un segmento no almacena datos;
+solo describe una sección de un arreglo subyacente.
+
+Al modificar los elementos de un segmento, se modifican los
+elementos correspondientes de su arreglo subyacente.
+
+Los demás segmentos que comparten ese mismo arreglo subyacente verán esos cambios.
+
+.play moretypes/slices-pointers.go

@@ -1,0 +1,24 @@
+* ದೋಷಗಳು
+
+Go ಪ್ರೋಗ್ರಾಂಗಳು ದೋಷದ ಸ್ಥಿತಿಯನ್ನು `error` ಮೌಲ್ಯಗಳ ಮೂಲಕ ಸೂಚಿಸುತ್ತವೆ.
+
+`error` ಟೈಪ್, `fmt.Stringer` ಗೆ ಹೋಲುವ ಅಂತರ್ನಿರ್ಮಿತ ಇಂಟರ್‌ಫೇಸ್ ಆಗಿದೆ:
+
+	type error interface {
+		Error() string
+	}
+
+(`fmt.Stringer` ನಂತೆಯೇ, ಮೌಲ್ಯಗಳನ್ನು ಮುದ್ರಿಸುವಾಗ `fmt` ಪ್ಯಾಕೇಜ್ `error` ಇಂಟರ್‌ಫೇಸ್ ಅನ್ನು ಹುಡುಕುತ್ತದೆ.)
+
+ಫಂಕ್ಷನ್‌ಗಳು ಸಾಮಾನ್ಯವಾಗಿ `error` ಮೌಲ್ಯವನ್ನು ಹಿಂತಿರುಗಿಸುತ್ತವೆ. ಕರೆ ಮಾಡುವ ಕೋಡ್ ದೋಷವು `nil` ಗೆ ಸಮಾನವೇ ಎಂದು ಪರಿಶೀಲಿಸಿ ಅದನ್ನು ನಿರ್ವಹಿಸಬೇಕು.
+
+	i, err := strconv.Atoi("42")
+	if err != nil {
+		fmt.Printf("couldn't convert number: %v\n", err)
+		return
+	}
+	fmt.Println("Converted integer:", i)
+
+nil ಆಗಿರುವ `error` ಮೌಲ್ಯವು ಯಶಸ್ಸನ್ನು ಸೂಚಿಸುತ್ತದೆ; nil ಅಲ್ಲದ `error` ಮೌಲ್ಯವು ವೈಫಲ್ಯವನ್ನು ಸೂಚಿಸುತ್ತದೆ.
+
+.play methods/errors.go

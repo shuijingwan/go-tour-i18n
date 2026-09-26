@@ -1,0 +1,12 @@
+* Range — ಮುಂದುವರಿಕೆ
+
+`_` ಗೆ ಮೌಲ್ಯ ನಿಯೋಜಿಸುವ ಮೂಲಕ ಇಂಡೆಕ್ಸ್ ಅಥವಾ ಮೌಲ್ಯವನ್ನು ನಿರ್ಲಕ್ಷಿಸಬಹುದು.
+
+    for i, _ := range pow
+    for _, value := range pow
+
+ಇಂಡೆಕ್ಸ್ ಮಾತ್ರ ಬೇಕಿದ್ದರೆ ಎರಡನೆಯ ಚರವನ್ನು ಬಿಟ್ಟುಬಿಡಬಹುದು.
+
+    for i := range pow
+
+.play moretypes/range-continued.go

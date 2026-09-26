@@ -1,0 +1,28 @@
+* Selección por tipo
+
+Una _selección_por_tipo_ es una construcción que permite realizar varias aserciones de tipo sucesivas.
+
+Una selección por tipo es similar a una instrucción switch normal, pero sus casos
+especifican tipos (no valores), que se comparan con
+el tipo del valor contenido en el valor de interfaz proporcionado.
+
+	switch v := i.(type) {
+	case T:
+		// aquí v es de tipo T
+	case S:
+		// aquí v es de tipo S
+	default:
+		// no coincide; aquí v tiene el mismo tipo que i
+	}
+
+La declaración de una selección por tipo tiene la misma sintaxis que una aserción de tipo `i.(T)`,
+pero el tipo específico `T` se sustituye por la palabra clave `type`.
+
+Esta instrucción switch comprueba si el valor de interfaz `i`
+contiene un valor de tipo `T` o `S`.
+En los casos `T` y `S`, la variable `v` será de tipo
+`T` o `S`, respectivamente, y contendrá el valor almacenado en `i`.
+En el caso predeterminado (cuando no hay coincidencia), la variable `v`
+tiene el mismo tipo de interfaz y el mismo valor que `i`.
+
+.play methods/type-switches.go

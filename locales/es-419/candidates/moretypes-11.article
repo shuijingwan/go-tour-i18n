@@ -1,0 +1,18 @@
+* Longitud y capacidad de un segmento
+
+Un segmento tiene tanto una _longitud_ como una _capacidad_.
+
+La longitud de un segmento es la cantidad de elementos que contiene.
+
+La capacidad de un segmento es la cantidad de elementos del arreglo subyacente,
+contados a partir del primer elemento del segmento.
+
+La longitud y la capacidad de un segmento `s` pueden obtenerse mediante las expresiones
+`len(s)` y `cap(s)`.
+
+Puedes ampliar la longitud de un segmento si vuelves a obtener un segmento a partir de él,
+siempre que tenga suficiente capacidad.
+Prueba a modificar una de las operaciones con segmentos del programa de ejemplo para ampliarlo
+más allá de su capacidad y observa qué sucede.
+
+.play moretypes/slice-len-cap.go

@@ -1,0 +1,634 @@
+{
+  "schema_version": 2,
+  "evidence_type": "quality_check_results",
+  "locale": "kn-IN",
+  "snapshot_id": "20260926-kn-IN-qc-001",
+  "snapshot_manifest_sha256": "95380ef8c4b0568a82c1e584374e9fb0449a34758d9a9822e873b26f52f87114",
+  "rubric": "translation-quality/v1",
+  "result_count": 122,
+  "results": [
+    {
+      "index": 1,
+      "unit_id": "welcome/1",
+      "rating": "A"
+    },
+    {
+      "index": 2,
+      "unit_id": "welcome/2",
+      "rating": "A"
+    },
+    {
+      "index": 3,
+      "unit_id": "welcome/4",
+      "rating": "A"
+    },
+    {
+      "index": 4,
+      "unit_id": "welcome/5",
+      "rating": "A"
+    },
+    {
+      "index": 5,
+      "unit_id": "welcome/3",
+      "rating": "A"
+    },
+    {
+      "index": 6,
+      "unit_id": "basics/1",
+      "rating": "A"
+    },
+    {
+      "index": 7,
+      "unit_id": "basics/2",
+      "rating": "A"
+    },
+    {
+      "index": 8,
+      "unit_id": "basics/3",
+      "rating": "A"
+    },
+    {
+      "index": 9,
+      "unit_id": "basics/4",
+      "rating": "A"
+    },
+    {
+      "index": 10,
+      "unit_id": "basics/5",
+      "rating": "A"
+    },
+    {
+      "index": 11,
+      "unit_id": "basics/6",
+      "rating": "A"
+    },
+    {
+      "index": 12,
+      "unit_id": "basics/7",
+      "rating": "A"
+    },
+    {
+      "index": 13,
+      "unit_id": "basics/8",
+      "rating": "A"
+    },
+    {
+      "index": 14,
+      "unit_id": "basics/9",
+      "rating": "A"
+    },
+    {
+      "index": 15,
+      "unit_id": "basics/10",
+      "rating": "A"
+    },
+    {
+      "index": 16,
+      "unit_id": "basics/11",
+      "rating": "A"
+    },
+    {
+      "index": 17,
+      "unit_id": "basics/12",
+      "rating": "C",
+      "finding": "major: English source first introduces emphasized zero value; Kannada candidate retains rendered English zero value inside _zero_value_, violating mandatory zero value -\u003e ಶೂನ್ಯ ಮೌಲ್ಯ. Generation must translate the visible emphasized natural-language span without breaking actual Go Present emphasis or protected structure."
+    },
+    {
+      "index": 18,
+      "unit_id": "basics/13",
+      "rating": "A"
+    },
+    {
+      "index": 19,
+      "unit_id": "basics/14",
+      "rating": "A"
+    },
+    {
+      "index": 20,
+      "unit_id": "basics/15",
+      "rating": "A"
+    },
+    {
+      "index": 21,
+      "unit_id": "basics/16",
+      "rating": "A"
+    },
+    {
+      "index": 22,
+      "unit_id": "basics/17",
+      "rating": "A"
+    },
+    {
+      "index": 23,
+      "unit_id": "flowcontrol/1",
+      "rating": "A"
+    },
+    {
+      "index": 24,
+      "unit_id": "flowcontrol/2",
+      "rating": "A"
+    },
+    {
+      "index": 25,
+      "unit_id": "flowcontrol/3",
+      "rating": "A"
+    },
+    {
+      "index": 26,
+      "unit_id": "flowcontrol/4",
+      "rating": "A"
+    },
+    {
+      "index": 27,
+      "unit_id": "flowcontrol/5",
+      "rating": "A"
+    },
+    {
+      "index": 28,
+      "unit_id": "flowcontrol/6",
+      "rating": "A"
+    },
+    {
+      "index": 29,
+      "unit_id": "flowcontrol/7",
+      "rating": "A"
+    },
+    {
+      "index": 30,
+      "unit_id": "flowcontrol/8",
+      "rating": "C",
+      "finding": "major: English says division by 2z is the derivative of z²; Kannada says 2z ಎಂಬುದು z² ನ ಉತ್ಪನ್ನ, a product rather than a derivative. Generation must restore the calculus/ Newton-method derivative semantics without altering formulas or protected structures."
+    },
+    {
+      "index": 31,
+      "unit_id": "flowcontrol/9",
+      "rating": "A"
+    },
+    {
+      "index": 32,
+      "unit_id": "flowcontrol/10",
+      "rating": "A"
+    },
+    {
+      "index": 33,
+      "unit_id": "flowcontrol/11",
+      "rating": "A"
+    },
+    {
+      "index": 34,
+      "unit_id": "flowcontrol/12",
+      "rating": "C",
+      "finding": "major: English deferred call does not execute until surrounding function returns; Kannada says ಸುತ್ತಲಿನ ಫಂಕ್ಷನ್ ಹಿಂತಿರುಗಿದ ನಂತರವೇ, implying after enclosing function has already returned. Generation must state correct Go defer timing: arguments evaluated immediately, deferred call executed at return before function returns to caller."
+    },
+    {
+      "index": 35,
+      "unit_id": "flowcontrol/13",
+      "rating": "A"
+    },
+    {
+      "index": 36,
+      "unit_id": "flowcontrol/14",
+      "rating": "A"
+    },
+    {
+      "index": 37,
+      "unit_id": "moretypes/1",
+      "rating": "B",
+      "finding": "minor: in two preformatted pointer teaching comments, Kannada moves protected identifier p unnaturally to sentence end: ಪಾಯಿಂಟರ್ ಮೂಲಕ i ಅನ್ನು ಓದಿ p and ಪಾಯಿಂಟರ್ ಮೂಲಕ i ಗೆ ಮೌಲ್ಯ ನೀಡಿ p. Generation should improve Kannada word order while retaining code, i, p, comments and protection."
+    },
+    {
+      "index": 38,
+      "unit_id": "moretypes/2",
+      "rating": "A"
+    },
+    {
+      "index": 39,
+      "unit_id": "moretypes/3",
+      "rating": "A"
+    },
+    {
+      "index": 40,
+      "unit_id": "moretypes/4",
+      "rating": "A"
+    },
+    {
+      "index": 41,
+      "unit_id": "moretypes/5",
+      "rating": "A"
+    },
+    {
+      "index": 42,
+      "unit_id": "moretypes/6",
+      "rating": "A"
+    },
+    {
+      "index": 43,
+      "unit_id": "moretypes/7",
+      "rating": "A"
+    },
+    {
+      "index": 44,
+      "unit_id": "moretypes/8",
+      "rating": "A"
+    },
+    {
+      "index": 45,
+      "unit_id": "moretypes/9",
+      "rating": "A"
+    },
+    {
+      "index": 46,
+      "unit_id": "moretypes/10",
+      "rating": "A"
+    },
+    {
+      "index": 47,
+      "unit_id": "moretypes/11",
+      "rating": "A"
+    },
+    {
+      "index": 48,
+      "unit_id": "moretypes/12",
+      "rating": "A"
+    },
+    {
+      "index": 49,
+      "unit_id": "moretypes/13",
+      "rating": "A"
+    },
+    {
+      "index": 50,
+      "unit_id": "moretypes/14",
+      "rating": "A"
+    },
+    {
+      "index": 51,
+      "unit_id": "moretypes/15",
+      "rating": "A"
+    },
+    {
+      "index": 52,
+      "unit_id": "moretypes/16",
+      "rating": "A"
+    },
+    {
+      "index": 53,
+      "unit_id": "moretypes/17",
+      "rating": "A"
+    },
+    {
+      "index": 54,
+      "unit_id": "moretypes/18",
+      "rating": "A"
+    },
+    {
+      "index": 55,
+      "unit_id": "moretypes/19",
+      "rating": "A"
+    },
+    {
+      "index": 56,
+      "unit_id": "moretypes/20",
+      "rating": "A"
+    },
+    {
+      "index": 57,
+      "unit_id": "moretypes/21",
+      "rating": "A"
+    },
+    {
+      "index": 58,
+      "unit_id": "moretypes/22",
+      "rating": "A"
+    },
+    {
+      "index": 59,
+      "unit_id": "moretypes/23",
+      "rating": "A"
+    },
+    {
+      "index": 60,
+      "unit_id": "moretypes/24",
+      "rating": "A"
+    },
+    {
+      "index": 61,
+      "unit_id": "moretypes/25",
+      "rating": "A"
+    },
+    {
+      "index": 62,
+      "unit_id": "moretypes/26",
+      "rating": "A"
+    },
+    {
+      "index": 63,
+      "unit_id": "moretypes/27",
+      "rating": "A"
+    },
+    {
+      "index": 64,
+      "unit_id": "methods/1",
+      "rating": "C",
+      "finding": "English: A method is a function with a special _receiver_ argument.; Kannada: ಮೆಥಡ್ ಎಂದರೆ ವಿಶೇಷ _receiver_ ಆರ್ಗ್ಯುಮೆಂಟ್ ಹೊಂದಿರುವ ಫಂಕ್ಷನ್.; Major. Actual Go Present renders the introduction as italic English receiver instead of mandatory ರಿಸೀವರ್. Generation must localize this emphasized natural-language term while retaining correct emphasis and protected code."
+    },
+    {
+      "index": 65,
+      "unit_id": "methods/2",
+      "rating": "A"
+    },
+    {
+      "index": 66,
+      "unit_id": "methods/3",
+      "rating": "A"
+    },
+    {
+      "index": 67,
+      "unit_id": "methods/4",
+      "rating": "A"
+    },
+    {
+      "index": 68,
+      "unit_id": "methods/5",
+      "rating": "A"
+    },
+    {
+      "index": 69,
+      "unit_id": "methods/6",
+      "rating": "A"
+    },
+    {
+      "index": 70,
+      "unit_id": "methods/7",
+      "rating": "A"
+    },
+    {
+      "index": 71,
+      "unit_id": "methods/8",
+      "rating": "A"
+    },
+    {
+      "index": 72,
+      "unit_id": "methods/9",
+      "rating": "C",
+      "finding": "English: An _interface_type_ is defined as a set of method signatures.; Kannada: _interface_type_ ಎಂದರೆ ಮೆಥಡ್ ಸಿಗ್ನೇಚರ್‌ಗಳ ಸಮೂಹದಿಂದ ವ್ಯಾಖ್ಯಾನಿಸಲಾದ ಟೈಪ್.; Major. Present displays italic English interface type instead of mandatory ಇಂಟರ್‌ಫೇಸ್ ಟೈಪ್ in the first defining sentence. Generation must localize the emphasized technical term and preserve the method-signature definition and markup."
+    },
+    {
+      "index": 73,
+      "unit_id": "methods/10",
+      "rating": "A"
+    },
+    {
+      "index": 74,
+      "unit_id": "methods/11",
+      "rating": "A"
+    },
+    {
+      "index": 75,
+      "unit_id": "methods/12",
+      "rating": "A"
+    },
+    {
+      "index": 76,
+      "unit_id": "methods/13",
+      "rating": "A"
+    },
+    {
+      "index": 77,
+      "unit_id": "methods/14",
+      "rating": "C",
+      "finding": "English: The interface type that specifies zero methods is known as the _empty_interface_:; Kannada: ಯಾವುದೇ ಮೆಥಡ್ ಅನ್ನು ಸೂಚಿಸದ ಇಂಟರ್‌ಫೇಸ್ ಟೈಪ್ ಅನ್ನು _empty_interface_ ಎನ್ನುತ್ತಾರೆ:; Major. The defining emphasized span renders English empty interface rather than mandatory ಖಾಲಿ ಇಂಟರ್‌ಫೇಸ್, despite a translated heading. Generation must localize the defining span while preserving emphasis, interface{} and any equivalence."
+    },
+    {
+      "index": 78,
+      "unit_id": "methods/15",
+      "rating": "C",
+      "finding": "English: A _type_assertion_ provides access to an interface value; Kannada: _type_assertion_ ಇಂಟರ್‌ಫೇಸ್ ಮೌಲ್ಯದೊಳಗಿನ ಆಧಾರಭೂತ ನಿರ್ದಿಷ್ಟ ಮೌಲ್ಯವನ್ನು ಪಡೆಯಲು ಅವಕಾಶ ನೀಡುತ್ತದೆ.; Major. The introductory emphasized span renders English type assertion rather than mandatory ಟೈಪ್ ಅಸರ್ಷನ್. Generation must localize the span while preserving valid emphasis and all protected i.(T), t, ok and panic semantics."
+    },
+    {
+      "index": 79,
+      "unit_id": "methods/16",
+      "rating": "C",
+      "finding": "English: A _type_switch_ is a construct that permits several type assertions in series.; Kannada: _type_switch_ ಒಂದಾದ ನಂತರ ಒಂದರಂತೆ ಹಲವು ಟೈಪ್ ಅಸರ್ಷನ್‌ಗಳನ್ನು ಪರಿಶೀಲಿಸಲು ಅವಕಾಶ ನೀಡುವ ರಚನೆ.; Major. The introductory emphasized span renders English type switch rather than mandatory ಟೈಪ್ ಸ್ವಿಚ್. Generation must localize this span while preserving switch code, case/default behavior and Present markup."
+    },
+    {
+      "index": 80,
+      "unit_id": "methods/17",
+      "rating": "A"
+    },
+    {
+      "index": 81,
+      "unit_id": "methods/18",
+      "rating": "A"
+    },
+    {
+      "index": 82,
+      "unit_id": "methods/19",
+      "rating": "A"
+    },
+    {
+      "index": 83,
+      "unit_id": "methods/20",
+      "rating": "A"
+    },
+    {
+      "index": 84,
+      "unit_id": "methods/21",
+      "rating": "A"
+    },
+    {
+      "index": 85,
+      "unit_id": "methods/22",
+      "rating": "A"
+    },
+    {
+      "index": 86,
+      "unit_id": "methods/23",
+      "rating": "A"
+    },
+    {
+      "index": 87,
+      "unit_id": "methods/24",
+      "rating": "A"
+    },
+    {
+      "index": 88,
+      "unit_id": "methods/25",
+      "rating": "A"
+    },
+    {
+      "index": 89,
+      "unit_id": "methods/26",
+      "rating": "A"
+    },
+    {
+      "index": 90,
+      "unit_id": "generics/1",
+      "rating": "A"
+    },
+    {
+      "index": 91,
+      "unit_id": "generics/2",
+      "rating": "A"
+    },
+    {
+      "index": 92,
+      "unit_id": "generics/3",
+      "rating": "A"
+    },
+    {
+      "index": 93,
+      "unit_id": "concurrency/1",
+      "rating": "A"
+    },
+    {
+      "index": 94,
+      "unit_id": "concurrency/2",
+      "rating": "A"
+    },
+    {
+      "index": 95,
+      "unit_id": "concurrency/3",
+      "rating": "B",
+      "finding": "English: Channels can be _buffered_.  Provide the buffer length; Kannada: ಚಾನೆಲ್‌ಗಳು _buffered_ ಆಗಿರಬಹುದು, ಅಂದರೆ ಬಫರ್ ಹೊಂದಿರಬಹುದು.; Minor. Present renders English buffered immediately followed by equivalent Kannada, creating avoidable bilingual duplication; the rest of the page correctly explains buffered channels. Generation must localize the italic qualifier with valid markup without changing buffer blocking, length/capacity or code."
+    },
+    {
+      "index": 96,
+      "unit_id": "concurrency/4",
+      "rating": "B",
+      "finding": "English: *Note:* Only the sender should close a channel, never the receiver.; Kannada: *Note:* ಗಮನಿಸಿ — ಚಾನೆಲ್ ಅನ್ನು ಕಳುಹಿಸುವವರೇ ಮುಚ್ಚಬೇಕು; ಸ್ವೀಕರಿಸುವವರು ಎಂದಿಗೂ ಮುಚ್ಚಬಾರದು.; Minor. Present visibly renders English bold Note: followed by Kannada ಗಮನಿಸಿ; the second English Another note: is likewise duplicated by Kannada ಇನ್ನೊಂದು ಗಮನಿಸಿ. Generation must localize both bold labels once, preserving channel-close, panic and range-loop technical semantics."
+    },
+    {
+      "index": 97,
+      "unit_id": "concurrency/5",
+      "rating": "A"
+    },
+    {
+      "index": 98,
+      "unit_id": "concurrency/6",
+      "rating": "A"
+    },
+    {
+      "index": 99,
+      "unit_id": "concurrency/7",
+      "rating": "A"
+    },
+    {
+      "index": 100,
+      "unit_id": "concurrency/8",
+      "rating": "A"
+    },
+    {
+      "index": 101,
+      "unit_id": "concurrency/9",
+      "rating": "B",
+      "finding": "English: This concept is called _mutual_exclusion_, and the conventional name for the data structure that provides it is _mutex_.; Kannada: ಈ ಪರಿಕಲ್ಪನೆಯನ್ನು _mutual_exclusion_ (ಪರಸ್ಪರ ಹೊರಗಿಡುವಿಕೆ) ಎನ್ನುತ್ತಾರೆ; ಅದನ್ನು ಒದಗಿಸುವ ಡೇಟಾ ರಚನೆಯ ಸಾಂಪ್ರದಾಯಿಕ ಹೆಸರು _mutex_ (ಮ್ಯೂಟೆಕ್ಸ್).; Minor. Present emphasizes English mutual exclusion and mutex rather than glossary mandatory Kannada forms; correct Kannada glosses in parentheses preserve meaning but duplicate terminology. Generation must focus the two italic spans on mandatory ಪರಸ್ಪರ ಹೊರಗಿಡುವಿಕೆ and ಮ್ಯೂಟೆಕ್ಸ್, preserving sync.Mutex, Lock, Unlock and defer."
+    },
+    {
+      "index": 102,
+      "unit_id": "concurrency/10",
+      "rating": "B",
+      "finding": "English: _Hint_: you can keep a cache of the URLs; Kannada: _Hint_: ಸುಳಿವು — ಈಗಾಗಲೇ ಪಡೆಯಲಾದ URL ಗಳನ್ನು ಮ್ಯಾಪ್‌ನಲ್ಲಿ ಕ್ಯಾಶ್ ಮಾಡಬಹುದು;; Minor. Present visibly renders English italic Hint followed by Kannada ಸುಳಿವು, an unnecessary double label. Generation must localize the hint label once inside valid italic markup and preserve URL caching and concurrent-map safety."
+    },
+    {
+      "index": 103,
+      "unit_id": "concurrency/11",
+      "rating": "A"
+    },
+    {
+      "index": 104,
+      "unit_id": "example:basics/numeric-constants.go",
+      "rating": "A"
+    },
+    {
+      "index": 105,
+      "unit_id": "example:basics/type-inference.go",
+      "rating": "A"
+    },
+    {
+      "index": 106,
+      "unit_id": "example:concurrency/channels.go",
+      "rating": "A"
+    },
+    {
+      "index": 107,
+      "unit_id": "example:concurrency/exercise-equivalent-binary-trees.go",
+      "rating": "A"
+    },
+    {
+      "index": 108,
+      "unit_id": "example:concurrency/exercise-web-crawler.go",
+      "rating": "A"
+    },
+    {
+      "index": 109,
+      "unit_id": "example:concurrency/mutex-counter.go",
+      "rating": "A"
+    },
+    {
+      "index": 110,
+      "unit_id": "example:flowcontrol/if-and-else.go",
+      "rating": "A"
+    },
+    {
+      "index": 111,
+      "unit_id": "example:generics/index.go",
+      "rating": "A"
+    },
+    {
+      "index": 112,
+      "unit_id": "example:generics/list.go",
+      "rating": "A"
+    },
+    {
+      "index": 113,
+      "unit_id": "example:methods/exercise-reader.go",
+      "rating": "A"
+    },
+    {
+      "index": 114,
+      "unit_id": "example:methods/exercise-stringer.go",
+      "rating": "A"
+    },
+    {
+      "index": 115,
+      "unit_id": "example:methods/interfaces-are-satisfied-implicitly.go",
+      "rating": "A"
+    },
+    {
+      "index": 116,
+      "unit_id": "example:methods/interfaces.go",
+      "rating": "A"
+    },
+    {
+      "index": 117,
+      "unit_id": "example:moretypes/append.go",
+      "rating": "A"
+    },
+    {
+      "index": 118,
+      "unit_id": "example:moretypes/exercise-fibonacci-closure.go",
+      "rating": "A"
+    },
+    {
+      "index": 119,
+      "unit_id": "example:moretypes/pointers.go",
+      "rating": "A"
+    },
+    {
+      "index": 120,
+      "unit_id": "example:moretypes/slice-len-cap.go",
+      "rating": "A"
+    },
+    {
+      "index": 121,
+      "unit_id": "example:moretypes/slices-of-slice.go",
+      "rating": "A"
+    },
+    {
+      "index": 122,
+      "unit_id": "example:moretypes/struct-literals.go",
+      "rating": "A"
+    }
+  ]
+}

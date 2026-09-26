@@ -1,0 +1,12 @@
+* Valores de interfaz con valores subyacentes nil
+
+Si el propio valor concreto contenido en la interfaz es nil,
+el método se llamará con un receptor nil.
+
+En algunos lenguajes, esto provocaría una excepción por puntero nulo,
+pero en ⟪GTI18N_9487ca3c_000001⟫ es habitual escribir métodos que manejen correctamente las llamadas
+con un receptor nil (como hace el método ⟪GTI18N_9487ca3c_000002⟫M⟪GTI18N_9487ca3c_000003⟫ de este ejemplo).
+
+Ten en cuenta que un valor de interfaz que contiene un valor concreto nil no es, en sí mismo, nil.
+
+⟪GTI18N_9487ca3c_000004⟫

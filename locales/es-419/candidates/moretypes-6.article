@@ -1,0 +1,15 @@
+* Arreglos
+
+El tipo `[n]T` es un arreglo de `n` valores de tipo `T`.
+
+La expresión
+
+	var a [10]int
+
+declara una variable `a` como un arreglo de diez enteros.
+
+La longitud de un arreglo forma parte de su tipo, por lo que no se puede cambiar su tamaño.
+Esto puede parecer una limitación, pero no te preocupes:
+Go ofrece una forma práctica de trabajar con arreglos.
+
+.play moretypes/array.go

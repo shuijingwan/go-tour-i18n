@@ -36,6 +36,16 @@ class ProductionIdentityTest(unittest.TestCase):
         self.assertEqual(len(locales), len(set(locales)))
         self.assertTrue(all(profile["production_state"] in ("first-production", "live") for profile in parsed["locales"]))
 
+    def test_numeric_region_locale(self):
+        data = copy.deepcopy(self.identity)
+        data["locales"][-1]["locale"] = "zz-419"
+        self.assertEqual(
+            self.validate(data)["locales"][-1]["locale"], "zz-419"
+        )
+        data["locales"][-1]["locale"] = "zz-4a9"
+        with self.assertRaisesRegex(MODULE.IdentityError, "not canonical"):
+            self.validate(data)
+
     def test_dutch_live_profile_is_frozen(self):
         parsed = MODULE.load_identity(self.identity_path)
         profile = next(item for item in parsed["locales"] if item["locale"] == "nl-NL")

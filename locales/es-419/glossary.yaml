@@ -1,0 +1,215 @@
+locale: es-419
+
+# Convenciones propias de es-419: español técnico natural, comprensible en toda
+# Latinoamérica; trato de tú solo cuando el original se dirige al estudiante.
+# Las correspondencias de abajo rigen el lenguaje explicativo, no el código.
+# En el recorrido, slide se expresa como página; las slides de una charla son
+# diapositivas. Las palabras inglesas que son identificadores de Go no se traducen.
+mandatory:
+  A Tour of Go: Un recorrido por Go
+  Go programming language: lenguaje de programación Go
+  Run: Ejecutar
+  Format: Dar formato
+  Reset: Restablecer
+  Kill: Detener
+  Syntax: Sintaxis
+  Imports: Importaciones
+  Table of Contents: Índice
+  exercise: ejercicio
+  lesson: lección
+  module: módulo
+  source code: código fuente
+  package: paquete
+  import path: ruta de importación
+  exported name: nombre exportado
+  unexported name: nombre no exportado
+  function: función
+  parameter: parámetro
+  argument: argumento
+  variable: variable
+  constant: constante
+  numeric constant: constante numérica
+  zero value: valor cero
+  type conversion: conversión de tipo
+  type inference: inferencia de tipos
+  array: arreglo
+  slice: segmento
+  underlying array: arreglo subyacente
+  backing array: arreglo subyacente
+  slice literal: literal de segmento
+  struct: estructura
+  struct literal: literal de estructura
+  field: campo
+  pointer: puntero
+  dereference: desreferenciar
+  method: método
+  receiver: receptor
+  pointer receiver: receptor de puntero
+  value receiver: receptor por valor
+  interface: interfaz
+  interface type: tipo de interfaz
+  interface value: valor de interfaz
+  empty interface: interfaz vacía
+  concrete type: tipo concreto
+  underlying type: tipo subyacente
+  type assertion: aserción de tipo
+  type switch: selección por tipo
+  type parameter: parámetro de tipo
+  constraint: restricción
+  generic type: tipo genérico
+  generic function: función genérica
+  channel: canal
+  buffered channel: canal con búfer
+  concurrency: concurrencia
+  parallelism: paralelismo
+  mutual exclusion: exclusión mutua
+  mutex: mutex
+  binary tree: árbol binario
+  web crawler: rastreador web
+  standard library: biblioteca estándar
+  runtime: entorno de ejecución
+  error value: valor de error
+
+# Preferencias adaptables a la sintaxis y al contexto, no sustituciones literales.
+preferred:
+  tour: recorrido
+  tour slide: página del recorrido
+  presentation slide: diapositiva
+  previous: anterior
+  next: siguiente
+  right arrow: flecha derecha
+  menu: menú
+  theme: tema
+  dark theme: tema oscuro
+  light theme: tema claro
+  system theme: tema del sistema
+  syntax highlighting: resaltado de sintaxis
+  editor: editor
+  compile: compilar
+  compilation: compilación
+  remote server: servidor remoto
+  sandbox: entorno aislado
+  output: salida
+  program: programa
+  standalone program: programa independiente
+  offline: sin conexión
+  initialization: inicialización
+  initializer: inicializador
+  variable declaration: declaración de variable
+  short variable declaration: declaración corta de variable
+  short assignment statement: instrucción de asignación corta
+  factored import: importación agrupada
+  named return value: valor de retorno con nombre
+  named return values: valores de retorno con nombre
+  naked return: retorno sin argumentos
+  basic type: tipo básico
+  untyped constant: constante sin tipo
+  integer: entero
+  floating-point value: valor de punto flotante
+  boolean: booleano
+  string: cadena
+  Unicode code point: punto de código Unicode
+  pointer arithmetic: aritmética de punteros
+  memory address: dirección de memoria
+  scope: ámbito
+  iteration: iteración
+  loop: bucle
+  infinite loop: bucle infinito
+  init statement: instrucción de inicialización
+  condition expression: expresión de condición
+  post statement: instrucción posterior
+  switch statement: instrucción switch
+  case: caso
+  deferred call: llamada diferida
+  last-in-first-out: último en entrar, primero en salir
+  function value: valor de función
+  function closure: cierre de función
+  closure: cierre
+  array literal: literal de arreglo
+  array length: longitud del arreglo
+  slice length: longitud del segmento
+  slice capacity: capacidad del segmento
+  length: longitud
+  capacity: capacidad
+  element: elemento
+  index: índice
+  half-open range: intervalo semiabierto
+  low bound: límite inferior
+  high bound: límite superior
+  slicing: obtención de segmentos
+  nil slice: segmento nil
+  map: mapa
+  map literal: literal de mapa
+  key: clave
+  value: valor
+  method signature: firma de método
+  method set: conjunto de métodos
+  implicit implementation: implementación implícita
+  pointer indirection: indirección de punteros
+  indirecting: acceso indirecto
+  nil receiver: receptor nil
+  nil interface: interfaz nil
+  underlying concrete value: valor concreto subyacente
+  generic: genérico
+  generic data structure: estructura de datos genérica
+  singly-linked list: lista simplemente enlazada
+  comparable constraint: restricción comparable
+  lightweight thread: hilo ligero
+  Go runtime: entorno de ejecución de Go
+  shared memory: memoria compartida
+  synchronize: sincronizar
+  synchronization: sincronización
+  send: enviar
+  receive: recibir
+  channel operator: operador de canal
+  buffer: búfer
+  blocking: bloqueo
+  lock: bloqueo
+  unlock: desbloquear
+  deadlock: interbloqueo
+  pipeline: canalización
+  concurrently: de forma concurrente
+  stream: flujo de datos
+  byte slice: segmento de bytes
+  end of file: fin de archivo
+  error handling: manejo de errores
+  panic: pánico
+  exercise hint: pista del ejercicio
+  exercise solution: solución del ejercicio
+  test suite: conjunto de pruebas
+  test: prueba
+  web application: aplicación web
+  browser: navegador
+  deployment: despliegue
+  official upstream: proyecto original oficial
+  community translation: traducción de la comunidad
+  validation: validación
+  independent review: revisión independiente
+
+# Solo errores inequívocos en este proyecto; no prohibir sinónimos regionales
+# legítimos ni «diapositivas», que sí describe las presentaciones enlazadas.
+forbidden:
+  - gorutina
+  - gorutinas
+  - patio de juegos de Go
+  - Patio de juegos de Go
+  - retorno desnudo
+
+# Identidades visibles en texto natural; el resto de identificadores, rutas,
+# palabras clave y código están protegidos por el protector estructural.
+keep:
+  - Go
+  - Go Playground
+  - goroutine
+  - goroutines
+  - Goroutines
+  - gofmt
+  - GOPATH
+  - URL
+  - API
+  - ASCII
+  - UTC
+  - TranslationUnit
+  - present.Section
+  - GitHub
+  - Yongye

@@ -1,0 +1,14 @@
+* Literales de segmento
+
+Un literal de segmento es como un literal de arreglo, pero sin la longitud.
+
+Este es un literal de arreglo:
+
+	[3]bool{true, true, false}
+
+Y esto crea el mismo arreglo que el ejemplo anterior,
+y después construye un segmento que hace referencia a él:
+
+	[]bool{true, true, false}
+
+.play moretypes/slice-literals.go

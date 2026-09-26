@@ -1,0 +1,15 @@
+* Range y cierre de canales
+
+Quien envía puede utilizar ⟪GTI18N_3e925c67_000001⟫close⟪GTI18N_3e925c67_000002⟫ para cerrar un canal e indicar que no se enviarán más valores. Quien recibe puede comprobar si un canal está cerrado asignando un segundo valor a la expresión de recepción: después de
+
+⟪GTI18N_3e925c67_000003⟫
+
+⟪GTI18N_3e925c67_000004⟫ok⟪GTI18N_3e925c67_000005⟫ es ⟪GTI18N_3e925c67_000006⟫false⟪GTI18N_3e925c67_000007⟫ si ya no quedan valores por recibir y el canal está cerrado.
+
+El bucle ⟪GTI18N_3e925c67_000008⟫for`i`:=`range`c⟪GTI18N_3e925c67_000009⟫ recibe valores del canal repetidamente hasta que este se cierra.
+
+⟪GTI18N_3e925c67_000010⟫Nota:⟪GTI18N_3e925c67_000011⟫ Solo quien envía debe cerrar un canal, nunca quien recibe. Enviar datos a un canal cerrado provoca un pánico.
+
+⟪GTI18N_3e925c67_000012⟫Otra*nota:⟪GTI18N_3e925c67_000013⟫ Los canales no son como los archivos; por lo general, no hace falta cerrarlos. Solo es necesario cerrarlos cuando hay que informar a quien recibe que no llegarán más valores, por ejemplo, para terminar un bucle ⟪GTI18N_3e925c67_000014⟫range⟪GTI18N_3e925c67_000015⟫.
+
+⟪GTI18N_3e925c67_000016⟫

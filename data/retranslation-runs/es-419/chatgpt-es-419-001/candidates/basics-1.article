@@ -1,0 +1,11 @@
+* Paquetes
+
+Todo programa en Go está compuesto por paquetes.
+
+La ejecución de los programas comienza en el paquete `main`.
+
+Este programa utiliza los paquetes cuyas rutas de importación son `"fmt"` y `"math/rand"`.
+
+Por convención, el nombre de un paquete coincide con el último elemento de su ruta de importación. Por ejemplo, el paquete `"math/rand"` contiene archivos que comienzan con la declaración `package`rand`.
+
+.play basics/packages.go

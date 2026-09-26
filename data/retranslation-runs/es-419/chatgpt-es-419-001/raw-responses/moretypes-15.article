@@ -1,0 +1,21 @@
+* Agregar elementos a un segmento
+
+Es habitual agregar nuevos elementos a un segmento; por eso ⟪GTI18N_f2fc257e_000001⟫ incluye una función integrada
+llamada ⟪GTI18N_f2fc257e_000002⟫append⟪GTI18N_f2fc257e_000003⟫. La [[⟪GTI18N_f2fc257e_000004⟫][documentación]]
+del paquete integrado describe ⟪GTI18N_f2fc257e_000005⟫append⟪GTI18N_f2fc257e_000006⟫.
+
+⟪GTI18N_f2fc257e_000007⟫
+
+El primer parámetro ⟪GTI18N_f2fc257e_000008⟫s⟪GTI18N_f2fc257e_000009⟫ de ⟪GTI18N_f2fc257e_000010⟫append⟪GTI18N_f2fc257e_000011⟫ es un segmento de tipo ⟪GTI18N_f2fc257e_000012⟫T⟪GTI18N_f2fc257e_000013⟫, y los demás son
+valores de tipo ⟪GTI18N_f2fc257e_000014⟫T⟪GTI18N_f2fc257e_000015⟫ que se agregarán al segmento.
+
+El valor devuelto por ⟪GTI18N_f2fc257e_000016⟫append⟪GTI18N_f2fc257e_000017⟫ es un segmento que contiene todos los elementos del
+segmento original, más los valores proporcionados.
+
+Si el arreglo subyacente de ⟪GTI18N_f2fc257e_000018⟫s⟪GTI18N_f2fc257e_000019⟫ es demasiado pequeño para contener todos los valores indicados,
+se asignará un arreglo más grande. El segmento devuelto apuntará a ese
+arreglo recién asignado.
+
+(Para obtener más información sobre los segmentos, lee el artículo [[⟪GTI18N_f2fc257e_000020⟫][Segmentos: uso y funcionamiento interno]].)
+
+⟪GTI18N_f2fc257e_000021⟫

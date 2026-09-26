@@ -11,7 +11,7 @@ func TestLocalePublicationPolicies(t *testing.T) {
 			t.Errorf("ForLocale(%q) = %q, want %q", locale, got, GoLocal)
 		}
 	}
-	for _, locale := range []string{"en", "pt-BR", "nl-NL", "es-ES", "it-IT", "ja-JP", "sv-SE", "tr-TR", "zh-TW", "new-locale"} {
+	for _, locale := range []string{"en", "pt-BR", "nl-NL", "es-ES", "es-419", "it-IT", "ja-JP", "kn-IN", "sv-SE", "tr-TR", "zh-TW", "new-locale"} {
 		if got := ForLocale(locale); got != Standard {
 			t.Errorf("ForLocale(%q) = %q, want %q", locale, got, Standard)
 		}
@@ -116,7 +116,9 @@ func TestReviewedLocaleHomeTargetsAreExact(t *testing.T) {
 		"https://id-go-dev.shuijingwanwq.com/",
 		"https://it-go-dev.shuijingwanwq.com/",
 		"https://ja-go-dev.shuijingwanwq.com/",
+		"https://kn-go-dev.shuijingwanwq.com/",
 		"https://ko-go-dev.shuijingwanwq.com/",
+		"https://es-419-go-dev.shuijingwanwq.com/",
 		"https://ms-go-dev.shuijingwanwq.com/",
 		"https://ml-go-dev.shuijingwanwq.com/",
 		"https://mr-go-dev.shuijingwanwq.com/",

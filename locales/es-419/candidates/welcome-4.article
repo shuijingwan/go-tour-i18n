@@ -1,0 +1,17 @@
+* Go sin conexión (opcional)
+
+Este recorrido también está disponible como un programa independiente que puedes utilizar
+sin acceso a Internet. Compila y ejecuta los ejemplos de código en
+tu propia computadora.
+
+Para ejecutar el recorrido localmente, primero debes
+[[/doc/install][instalar Go]] y luego ejecutar:
+
+  go install golang.org/x/website/tour@latest
+
+Esto colocará un archivo binario `tour` en el directorio de tu
+[[/cmd/go/#hdr-GOPATH_and_Modules][GOPATH]] denominado `bin`.
+Cuando ejecutes el programa del recorrido, se abrirá un navegador web que mostrará
+tu versión local del recorrido.
+
+Por supuesto, también puedes seguir el recorrido en este sitio web.
