@@ -1,0 +1,13 @@
+* Metodit ja osoittimien epäsuora käsittely
+
+Kun vertaat kahta edellistä ohjelmaa, huomaat ehkä, että osoitinargumentin odottaville funktioille on annettava osoitin:
+
+⟪GTI18N_39fb725b_000001⟫Käännösvirhe!⟪GTI18N_39fb725b_000002⟫Osoitinvastaanottimella varustettuja metodeja puolestaan voi kutsua käyttämällä vastaanottimena joko arvoa tai osoitinta:
+
+⟪GTI18N_39fb725b_000003⟫
+
+Lauseessa ⟪GTI18N_39fb725b_000004⟫v.Scale(5)⟪GTI18N_39fb725b_000005⟫ ⟪GTI18N_39fb725b_000006⟫v⟪GTI18N_39fb725b_000007⟫ on arvo eikä osoitin. Osoitinvastaanottimella varustettua metodia kutsutaan silti automaattisesti.
+Käytön helpottamiseksi ⟪GTI18N_39fb725b_000008⟫ tulkitsee lauseen ⟪GTI18N_39fb725b_000009⟫v.Scale(5)⟪GTI18N_39fb725b_000010⟫ muodossa
+⟪GTI18N_39fb725b_000011⟫(&v).Scale(5)⟪GTI18N_39fb725b_000012⟫, koska ⟪GTI18N_39fb725b_000013⟫Scale⟪GTI18N_39fb725b_000014⟫-metodilla on osoitinvastaanotin.
+
+⟪GTI18N_39fb725b_000015⟫

@@ -1,0 +1,19 @@
+* Osoitinvastaanottimet
+
+Metodeja voi määritellä käyttämään osoitinvastaanottimia.
+
+Tällöin vastaanottimen tyypin kirjoitusasu on `*T`, missä `T` on jokin tyyppi.
+(Myöskään `T` ei saa itse olla osoitintyyppi, kuten `*int`.)
+
+Esimerkiksi tässä `Scale`-metodi on määritelty tyypille `*Vertex`.
+
+Osoitinvastaanottimella varustettu metodi voi muuttaa arvoa, johon vastaanotin osoittaa. Näin toimii esimerkiksi `Scale`.
+Koska metodien on usein muutettava vastaanotintaan, osoitinvastaanottimet ovat yleisempiä kuin arvovastaanottimet.
+
+Kokeile poistaa `*` rivillä 16 olevasta `Scale`-funktion määrittelystä ja tarkkaile, miten ohjelman toiminta muuttuu.
+
+Arvovastaanotinta käytettäessä `Scale`-metodi käsittelee alkuperäisen `Vertex`-arvon kopiota.
+(Sama koskee kaikkien muidenkin funktioiden argumentteja.)
+Jotta `Scale`-metodi voisi muuttaa `Vertex`-arvoa, joka on määritelty `main`-funktiossa, sen vastaanottimen on oltava osoitinvastaanotin.
+
+.play methods/methods-pointers.go

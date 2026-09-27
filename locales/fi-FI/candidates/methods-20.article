@@ -1,0 +1,21 @@
+* Harjoitus: virheet
+
+Kopioi `Sqrt`-funktiosi [[/tour/flowcontrol/8][aiemmasta harjoituksesta]] ja muokkaa sitä palauttamaan myös `error`-arvo.
+
+Kun `Sqrt` saa negatiivisen luvun, sen tulee palauttaa muu kuin nil-virhearvo, koska funktio ei tue kompleksilukuja.
+
+Luo uusi tyyppi
+
+	type ErrNegativeSqrt float64
+
+ja tee siitä `error`-rajapinnan toteuttava määrittelemällä sille
+
+	func (e ErrNegativeSqrt) Error() string
+
+-metodi siten, että `ErrNegativeSqrt(-2).Error()` palauttaa merkkijonon `"cannot`Sqrt`negative`number:`-2"`.
+
+*Huomautus:* Jos kutsut `fmt.Sprint(e)`-funktiota `Error`-metodin sisällä, ohjelma joutuu päättymättömään silmukkaan. Voit välttää tämän muuntamalla ensin `e`-arvon: `fmt.Sprint(float64(e))`. Miksi?
+
+Muuta `Sqrt`-funktiotasi niin, että se palauttaa `ErrNegativeSqrt`-arvon, jos sille annetaan negatiivinen luku.
+
+.play methods/exercise-errors.go

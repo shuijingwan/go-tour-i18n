@@ -1,0 +1,15 @@
+* Tyhjä rajapinta
+
+Rajapintatyyppiä, jossa ei määritellä yhtään metodia, kutsutaan _tyhjäksi_ rajapinnaksi:
+
+	interface{}
+
+Tyhjä rajapinta voi sisältää minkä tahansa tyyppisen arvon.
+(Jokainen tyyppi toteuttaa vähintään nolla metodia.)
+
+`any` on tyypin `interface{}` alias, ja nämä ovat täysin samanarvoisia.
+
+Tyhjiä rajapintoja käytetään koodissa, joka käsittelee tyypiltään tuntemattomia arvoja.
+Esimerkiksi `fmt.Print` hyväksyy mielivaltaisen määrän `any`-tyyppisiä argumentteja.
+
+.play methods/empty-interface.go

@@ -1,0 +1,11 @@
+* Tyyppiparametrit
+
+⟪GTI18N_01a04510_000001⟫-kielen funktioita voi kirjoittaa toimimaan useilla eri tyypeillä tyyppiparametrien avulla. Funktion tyyppiparametrit kirjoitetaan hakasulkeisiin ennen funktion argumentteja.
+
+⟪GTI18N_01a04510_000002⟫
+
+Tämä määrittely tarkoittaa, että ⟪GTI18N_01a04510_000003⟫s⟪GTI18N_01a04510_000004⟫ on viipale, jonka alkiot voivat olla mitä tahansa ⟪GTI18N_01a04510_000005⟫T⟪GTI18N_01a04510_000006⟫-tyyppiä, joka täyttää sisäänrakennetun tyyppirajoitteen ⟪GTI18N_01a04510_000007⟫comparable⟪GTI18N_01a04510_000008⟫. Myös ⟪GTI18N_01a04510_000009⟫x⟪GTI18N_01a04510_000010⟫ on samaa tyyppiä oleva arvo.
+
+⟪GTI18N_01a04510_000011⟫comparable⟪GTI18N_01a04510_000012⟫ on hyödyllinen tyyppirajoite, joka mahdollistaa operaattorien ⟪GTI18N_01a04510_000013⟫==⟪GTI18N_01a04510_000014⟫ ja ⟪GTI18N_01a04510_000015⟫!=⟪GTI18N_01a04510_000016⟫ käytön kyseisen tyypin arvojen vertailuun. Tässä esimerkissä vertaamme arvoa viipaleen jokaiseen alkioon, kunnes löydämme vastaavuuden. ⟪GTI18N_01a04510_000017⟫Index⟪GTI18N_01a04510_000018⟫-funktio toimii kaikilla tyypeillä, joiden arvoja voidaan vertailla tällä tavalla.
+
+⟪GTI18N_01a04510_000019⟫

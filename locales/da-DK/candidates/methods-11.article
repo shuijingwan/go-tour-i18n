@@ -1,0 +1,12 @@
+* Interfaceværdier
+
+Under overfladen kan man betragte en interfaceværdi som et par bestående af en værdi og en
+konkret type:
+
+	(value, type)
+
+En interfaceværdi indeholder en værdi af en bestemt underliggende konkret type.
+Når du kalder en metode på en interfaceværdi, udføres metoden med samme navn på
+dens underliggende type.
+
+.play methods/interface-values.go

@@ -1,0 +1,24 @@
+* Osoittimet
+
+Go-kielessä on osoittimia.
+Osoitin sisältää arvon muistiosoitteen.
+
+Tyyppi `*T` on osoitin `T`-tyyppiseen arvoon. Sen nolla-arvo on `nil`.
+
+	var p *int
+
+Operaattori `&` muodostaa osoittimen operandiinsa.
+
+	i := 42
+	p = &i
+
+Operaattori `*` viittaa osoittimen osoittamaan arvoon.
+
+	fmt.Println(*p) // lue i käyttäen osoitinta p
+	*p = 21         // aseta i:n arvo käyttäen osoitinta p
+
+Tätä kutsutaan dereferoinniksi eli epäsuoraksi viittaukseksi.
+
+Toisin kuin C-kielessä, Go ei tue osoitinaritmetiikkaa.
+
+.play moretypes/pointers.go

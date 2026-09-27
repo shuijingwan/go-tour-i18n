@@ -1,0 +1,17 @@
+* Go Playground
+
+Tämä opaskierros perustuu [[https://play.golang.org/][Go Playground]] -verkkopalveluun, joka toimii [[/][golang.org]]-sivuston palvelimilla.
+
+Palvelu vastaanottaa Go-ohjelman, kääntää ja linkittää sen, suorittaa ohjelman eristetyssä suoritusympäristössä ja palauttaa sitten tulosteen.
+
+Playgroundissa suoritettavia ohjelmia koskevat seuraavat rajoitukset:
+
+- Playgroundissa aika alkaa hetkestä 2009-11-10 23:00:00 UTC (päivämäärän merkityksen selvittäminen jää lukijan harjoitukseksi). Näin ohjelmien tuloksia on helpompi tallentaa välimuistiin, koska niiden tuloste on deterministinen.
+
+- Myös suoritusaikaa sekä CPU- ja muistinkäyttöä on rajoitettu. Ohjelma ei voi muodostaa yhteyksiä ulkoisiin verkkopalvelimiin.
+
+Playground käyttää Go-kielen uusinta vakaata julkaisua.
+
+Lisätietoja saat artikkelista "[[/blog/playground][Go Playground-palvelun kulissien takana]]".
+
+.play welcome/sandbox.go

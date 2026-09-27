@@ -1,0 +1,11 @@
+* Pakker
+
+Ethvert Go-program består af pakker.
+
+Programmer begynder at køre i pakken `main`.
+
+Dette program bruger pakkerne med importstierne `"fmt"` og `"math/rand"`.
+
+Efter gængs praksis er pakkenavnet det samme som det sidste led i importstien. Pakken `"math/rand"` består eksempelvis af filer, som begynder med deklarationen `package`rand`.
+
+.play basics/packages.go

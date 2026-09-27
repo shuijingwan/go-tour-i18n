@@ -1,0 +1,16 @@
+* Kanavat
+
+Kanavat ovat tyypitettyjä tiedonsiirtoväyliä, joiden kautta arvoja voidaan lähettää ja vastaanottaa kanavaoperaattorilla ⟪GTI18N_a35e3af2_000001⟫<-⟪GTI18N_a35e3af2_000002⟫.
+
+⟪GTI18N_a35e3af2_000003⟫Lähetä ⟪GTI18N_a35e3af2_000004⟫ kanavaan ⟪GTI18N_a35e3af2_000005⟫.⟪GTI18N_a35e3af2_000006⟫Vastaanota kanavasta ⟪GTI18N_a35e3af2_000007⟫ ja⟪GTI18N_a35e3af2_000008⟫sijoita arvo muuttujaan ⟪GTI18N_a35e3af2_000009⟫.⟪GTI18N_a35e3af2_000010⟫(Data kulkee nuolen osoittamaan suuntaan.)
+
+Sanakirjojen ja viipaleiden tapaan kanavat on luotava ennen käyttöä:
+
+⟪GTI18N_a35e3af2_000011⟫
+
+Oletusarvoisesti lähetys- ja vastaanotto-operaatiot pysäyttävät suorittavan goroutinen, kunnes toinen osapuoli on valmis. Näin goroutinet voivat synkronoitua ilman eksplisiittisiä lukkoja tai ehtomuuttujia.
+
+Esimerkkikoodi laskee viipaleen lukujen summan jakamalla työn kahden goroutinen kesken.
+Kun molemmat goroutinet ovat saaneet laskentansa valmiiksi, ohjelma laskee lopullisen tuloksen.
+
+⟪GTI18N_a35e3af2_000012⟫

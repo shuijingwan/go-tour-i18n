@@ -1,0 +1,15 @@
+* Viipaleen pituus ja kapasiteetti
+
+Viipaleella on sekä _pituus_ että _kapasiteetti_.
+
+Viipaleen pituus on sen sisältämien alkioiden lukumäärä.
+
+Viipaleen kapasiteetti on taustalla olevan taulukon alkioiden lukumäärä laskettuna viipaleen ensimmäisestä alkiosta alkaen.
+
+Viipaleen `s` pituuden ja kapasiteetin saat lausekkeilla
+`len(s)` ja `cap(s)`.
+
+Viipaleen pituutta voi kasvattaa muodostamalla siitä uuden viipaleen, kunhan kapasiteetti riittää.
+Kokeile muuttaa esimerkkiohjelman viipaletoimintoa niin, että viipaleen pituus ylittää sen kapasiteetin. Katso, mitä tapahtuu.
+
+.play moretypes/slice-len-cap.go

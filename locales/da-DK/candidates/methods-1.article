@@ -1,0 +1,13 @@
+* Metoder
+
+Go har ikke klasser.
+Du kan dog definere metoder på typer.
+
+En metode er en funktion med et særligt _modtager_-argument.
+
+Modtageren står i sin egen argumentliste mellem nøgleordet `func` og
+metodens navn.
+
+I dette eksempel har metoden `Abs` en modtager af typen `Vertex` med navnet `v`.
+
+.play methods/methods.go

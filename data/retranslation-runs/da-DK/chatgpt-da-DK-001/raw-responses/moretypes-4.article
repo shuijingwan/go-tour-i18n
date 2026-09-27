@@ -1,0 +1,10 @@
+* Pointere til structs
+
+Structfelter kan tilgås gennem en pointer til en struct.
+
+Hvis vi vil tilgå feltet ⟪GTI18N_29695d33_000001⟫X⟪GTI18N_29695d33_000002⟫ i en struct, som vi har en pointer
+⟪GTI18N_29695d33_000003⟫p⟪GTI18N_29695d33_000004⟫ til, kan vi skrive ⟪GTI18N_29695d33_000005⟫(*p).X⟪GTI18N_29695d33_000006⟫.
+Den notation er dog besværlig, så sproget tillader os i stedet at
+skrive blot ⟪GTI18N_29695d33_000007⟫p.X⟪GTI18N_29695d33_000008⟫ uden eksplicit dereferering.
+
+⟪GTI18N_29695d33_000009⟫

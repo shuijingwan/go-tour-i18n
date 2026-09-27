@@ -1,0 +1,9 @@
+* Harjoitus: verkkoryömijä
+
+Tässä harjoituksessa käytät Go-kielen samanaikaisuusominaisuuksia verkkoryömijän toiminnan rinnakkaistamiseen.
+
+Muokkaa `Crawl`-funktiota niin, että se hakee URL-osoitteita rinnakkain hakematta samaa URL-osoitetta kahdesti.
+
+_Vihje_: voit tallentaa jo haetut URL-osoitteet sanakirjaan, mutta pelkkä sanakirja ei ole turvallinen samanaikaisessa käytössä!
+
+.play concurrency/exercise-web-crawler.go

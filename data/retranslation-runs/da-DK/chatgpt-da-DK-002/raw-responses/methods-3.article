@@ -1,0 +1,12 @@
+* Mere om metoder
+
+Du kan også deklarere metoder på andre typer end structs.
+
+I dette eksempel ser vi den numeriske type ⟪GTI18N_31c4fd0d_000001⟫MyFloat⟪GTI18N_31c4fd0d_000002⟫ med metoden ⟪GTI18N_31c4fd0d_000003⟫Abs⟪GTI18N_31c4fd0d_000004⟫.
+
+Du kan kun deklarere en metode, hvis modtagerens type er defineret i samme
+pakke som metoden.
+Du kan ikke deklarere en metode med en modtagertype, der er defineret i en anden
+pakke. Det gælder også de indbyggede typer som ⟪GTI18N_31c4fd0d_000005⟫int⟪GTI18N_31c4fd0d_000006⟫.
+
+⟪GTI18N_31c4fd0d_000007⟫

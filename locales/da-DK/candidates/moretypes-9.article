@@ -1,0 +1,14 @@
+* Slice-literals
+
+Et slice-literal ligner et array-literal, men uden længden.
+
+Dette er et array-literal:
+
+	[3]bool{true, true, false}
+
+Og dette opretter først det samme array som ovenfor
+og danner derefter en slice, der refererer til det:
+
+	[]bool{true, true, false}
+
+.play moretypes/slice-literals.go

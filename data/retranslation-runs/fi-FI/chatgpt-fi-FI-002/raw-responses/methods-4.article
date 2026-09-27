@@ -1,0 +1,19 @@
+* Osoitinvastaanottimet
+
+Metodeja voi määritellä käyttämään osoitinvastaanottimia.
+
+Tällöin vastaanottimen tyypin kirjoitusasu on ⟪GTI18N_99f9fa4e_000001⟫*T⟪GTI18N_99f9fa4e_000002⟫, missä ⟪GTI18N_99f9fa4e_000003⟫T⟪GTI18N_99f9fa4e_000004⟫ on jokin tyyppi.
+(Myöskään ⟪GTI18N_99f9fa4e_000005⟫T⟪GTI18N_99f9fa4e_000006⟫ ei saa itse olla osoitintyyppi, kuten ⟪GTI18N_99f9fa4e_000007⟫*int⟪GTI18N_99f9fa4e_000008⟫.)
+
+Esimerkiksi tässä ⟪GTI18N_99f9fa4e_000009⟫Scale⟪GTI18N_99f9fa4e_000010⟫-metodi on määritelty tyypille ⟪GTI18N_99f9fa4e_000011⟫*Vertex⟪GTI18N_99f9fa4e_000012⟫.
+
+Osoitinvastaanottimella varustettu metodi voi muuttaa arvoa, johon vastaanotin osoittaa. Näin toimii esimerkiksi ⟪GTI18N_99f9fa4e_000013⟫Scale⟪GTI18N_99f9fa4e_000014⟫.
+Koska metodien on usein muutettava vastaanotintaan, osoitinvastaanottimet ovat yleisempiä kuin arvovastaanottimet.
+
+Kokeile poistaa ⟪GTI18N_99f9fa4e_000015⟫*⟪GTI18N_99f9fa4e_000016⟫ rivillä 16 olevasta ⟪GTI18N_99f9fa4e_000017⟫Scale⟪GTI18N_99f9fa4e_000018⟫-funktion määrittelystä ja tarkkaile, miten ohjelman toiminta muuttuu.
+
+Arvovastaanotinta käytettäessä ⟪GTI18N_99f9fa4e_000019⟫Scale⟪GTI18N_99f9fa4e_000020⟫-metodi käsittelee alkuperäisen ⟪GTI18N_99f9fa4e_000021⟫Vertex⟪GTI18N_99f9fa4e_000022⟫-arvon kopiota.
+(Sama koskee kaikkien muidenkin funktioiden argumentteja.)
+Jotta ⟪GTI18N_99f9fa4e_000023⟫Scale⟪GTI18N_99f9fa4e_000024⟫-metodi voisi muuttaa ⟪GTI18N_99f9fa4e_000025⟫Vertex⟪GTI18N_99f9fa4e_000026⟫-arvoa, joka on määritelty ⟪GTI18N_99f9fa4e_000027⟫main⟪GTI18N_99f9fa4e_000028⟫-funktiossa, sen vastaanottimen on oltava osoitinvastaanotin.
+
+⟪GTI18N_99f9fa4e_000029⟫

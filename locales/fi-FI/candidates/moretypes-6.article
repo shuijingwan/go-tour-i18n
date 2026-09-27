@@ -1,0 +1,15 @@
+* Taulukot
+
+Tyyppi `[n]T` on taulukko, joka sisältää `n` kappaletta `T`-tyyppisiä arvoja.
+
+Lauseke
+
+	var a [10]int
+
+määrittelee muuttujan `a` kymmenen kokonaisluvun taulukoksi.
+
+Taulukon pituus on osa sen tyyppiä, joten taulukon kokoa ei voi muuttaa.
+Tämä voi tuntua rajoittavalta, mutta ei hätää:
+Go tarjoaa kätevän tavan käsitellä taulukoita.
+
+.play moretypes/array.go

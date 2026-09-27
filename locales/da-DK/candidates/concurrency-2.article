@@ -1,0 +1,20 @@
+* Kanaler
+
+Kanaler er typede forbindelser, som du kan sende og modtage værdier igennem ved hjælp af kanaloperatoren `<-`.
+
+	ch <- v    // Send v til kanalen ch.
+	v := <-ch  // Modtag fra ch, og
+	           // tildel værdien til v.
+
+(Data flyder i pilens retning.)
+
+Ligesom maps og slices skal kanaler oprettes, før de kan bruges:
+
+	ch := make(chan int)
+
+Som standard blokerer både afsendelse og modtagelse, indtil den anden part er klar. Det giver goroutiner mulighed for at synkronisere uden eksplicitte låse eller betingelsesvariabler.
+
+Eksempelkoden summerer tallene i en slice og fordeler arbejdet mellem to goroutiner.
+Når begge goroutiner er færdige med deres beregninger, udregner den det endelige resultat.
+
+.play concurrency/channels.go

@@ -1,0 +1,27 @@
+* Ændring af maps
+
+Indsæt eller opdater et element i mappet `m`:
+
+	m[key] = elem
+
+Hent et element:
+
+	elem = m[key]
+
+Slet et element:
+
+	delete(m, key)
+
+Undersøg, om en nøgle findes, med en tildeling, der giver to værdier:
+
+	elem, ok = m[key]
+
+Hvis `key` findes i `m`, er `ok` lig med `true`. Ellers er `ok` lig med `false`.
+
+Hvis `key` ikke findes i mappet, får `elem` nulværdien for mappets elementtype.
+
+*Bemærk:* Hvis `elem` eller `ok` endnu ikke er deklareret, kan du bruge en kort deklaration:
+
+	elem, ok := m[key]
+
+.play moretypes/mutating-maps.go

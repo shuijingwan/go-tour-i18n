@@ -1,0 +1,17 @@
+* For
+
+Go-kielessä on vain yksi silmukkarakenne: `for`-silmukka.
+
+Tavallisessa `for`-silmukassa on kolme puolipisteillä erotettua osaa:
+
+- alustuslause: suoritetaan ennen ensimmäistä iteraatiota
+- ehtolauseke: arvioidaan ennen jokaista iteraatiota
+- jälkilause: suoritetaan jokaisen iteraation lopussa
+
+Alustuslause on usein muuttujamäärittely. Siinä määritellyt muuttujat ovat näkyvissä vain `for`-lauseen vaikutusalueella.
+
+Silmukan suoritus päättyy, kun totuusarvoinen ehto saa arvon `false`.
+
+*Huomautus:* Toisin kuin esimerkiksi C:ssä, Javassa ja JavaScriptissä, `for`-lauseen kolmea osaa ei ympäröidä sulkeilla, ja aaltosulkeet `{`}` ovat aina pakolliset.
+
+.play flowcontrol/for.go

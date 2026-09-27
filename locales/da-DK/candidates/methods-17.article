@@ -1,0 +1,12 @@
+* Stringer-interfacet
+
+Et af de mest udbredte interfaces er [[/pkg/fmt/#Stringer][`Stringer`]], som defineres i pakken [[/pkg/fmt/][`fmt`]].
+
+	type Stringer interface {
+		String() string
+	}
+
+En `Stringer` er en type, der kan beskrive sig selv som en streng. Pakken `fmt`
+(og mange andre) leder efter dette interface, når de udskriver værdier.
+
+.play methods/stringer.go

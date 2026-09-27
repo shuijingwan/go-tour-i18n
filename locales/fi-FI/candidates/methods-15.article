@@ -1,0 +1,21 @@
+* Tyyppiväitteet
+
+_Tyyppiväite_ mahdollistaa rajapinta-arvon taustalla olevan konkreettisen arvon käyttämisen.
+
+	t := i.(T)
+
+Tämä lause väittää, että rajapinta-arvo `i` sisältää konkreettisen tyypin `T`, ja sijoittaa sen taustalla olevan `T`-tyyppisen arvon muuttujaan `t`.
+
+Jos `i` ei sisällä `T`-tyyppistä arvoa, lause aiheuttaa paniikin.
+
+Jos haluat _tarkistaa_, sisältääkö rajapinta-arvo tietyn tyyppisen arvon, tyyppiväite voi palauttaa kaksi arvoa: taustalla olevan arvon sekä totuusarvon, joka kertoo, onnistuiko väite.
+
+	t, ok := i.(T)
+
+Jos `i` sisältää `T`-tyyppisen arvon, `t` saa kyseisen taustalla olevan arvon ja `ok` on tosi.
+
+Muussa tapauksessa `ok` on epätosi ja `t` saa tyypin `T` nolla-arvon. Paniikkia ei tällöin synny.
+
+Huomaa, että tämä syntaksi muistuttaa sanakirjasta lukemisen syntaksia.
+
+.play methods/type-assertions.go

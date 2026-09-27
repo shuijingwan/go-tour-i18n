@@ -1,0 +1,16 @@
+* Kanaler
+
+Kanaler er typede forbindelser, som du kan sende og modtage værdier igennem ved hjælp af kanaloperatoren ⟪GTI18N_a35e3af2_000001⟫<-⟪GTI18N_a35e3af2_000002⟫.
+
+⟪GTI18N_a35e3af2_000003⟫Send ⟪GTI18N_a35e3af2_000004⟫ til kanalen ⟪GTI18N_a35e3af2_000005⟫.⟪GTI18N_a35e3af2_000006⟫Modtag fra ⟪GTI18N_a35e3af2_000007⟫, og⟪GTI18N_a35e3af2_000008⟫tildel værdien til ⟪GTI18N_a35e3af2_000009⟫.⟪GTI18N_a35e3af2_000010⟫(Data flyder i pilens retning.)
+
+Ligesom maps og slices skal kanaler oprettes, før de kan bruges:
+
+⟪GTI18N_a35e3af2_000011⟫
+
+Som standard blokerer både afsendelse og modtagelse, indtil den anden part er klar. Det giver goroutiner mulighed for at synkronisere uden eksplicitte låse eller betingelsesvariabler.
+
+Eksempelkoden summerer tallene i en slice og fordeler arbejdet mellem to goroutiner.
+Når begge goroutiner er færdige med deres beregninger, udregner den det endelige resultat.
+
+⟪GTI18N_a35e3af2_000012⟫

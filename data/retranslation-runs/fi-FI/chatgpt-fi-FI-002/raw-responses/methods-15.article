@@ -1,0 +1,21 @@
+* Tyyppiväitteet
+
+⟪GTI18N_c205b4eb_000001⟫Tyyppiväite⟪GTI18N_c205b4eb_000002⟫ mahdollistaa rajapinta-arvon taustalla olevan konkreettisen arvon käyttämisen.
+
+⟪GTI18N_c205b4eb_000003⟫
+
+Tämä lause väittää, että rajapinta-arvo ⟪GTI18N_c205b4eb_000004⟫i⟪GTI18N_c205b4eb_000005⟫ sisältää konkreettisen tyypin ⟪GTI18N_c205b4eb_000006⟫T⟪GTI18N_c205b4eb_000007⟫, ja sijoittaa sen taustalla olevan ⟪GTI18N_c205b4eb_000008⟫T⟪GTI18N_c205b4eb_000009⟫-tyyppisen arvon muuttujaan ⟪GTI18N_c205b4eb_000010⟫t⟪GTI18N_c205b4eb_000011⟫.
+
+Jos ⟪GTI18N_c205b4eb_000012⟫i⟪GTI18N_c205b4eb_000013⟫ ei sisällä ⟪GTI18N_c205b4eb_000014⟫T⟪GTI18N_c205b4eb_000015⟫-tyyppistä arvoa, lause aiheuttaa paniikin.
+
+Jos haluat ⟪GTI18N_c205b4eb_000016⟫tarkistaa⟪GTI18N_c205b4eb_000017⟫, sisältääkö rajapinta-arvo tietyn tyyppisen arvon, tyyppiväite voi palauttaa kaksi arvoa: taustalla olevan arvon sekä totuusarvon, joka kertoo, onnistuiko väite.
+
+⟪GTI18N_c205b4eb_000018⟫
+
+Jos ⟪GTI18N_c205b4eb_000019⟫i⟪GTI18N_c205b4eb_000020⟫ sisältää ⟪GTI18N_c205b4eb_000021⟫T⟪GTI18N_c205b4eb_000022⟫-tyyppisen arvon, ⟪GTI18N_c205b4eb_000023⟫t⟪GTI18N_c205b4eb_000024⟫ saa kyseisen taustalla olevan arvon ja ⟪GTI18N_c205b4eb_000025⟫ok⟪GTI18N_c205b4eb_000026⟫ on tosi.
+
+Muussa tapauksessa ⟪GTI18N_c205b4eb_000027⟫ok⟪GTI18N_c205b4eb_000028⟫ on epätosi ja ⟪GTI18N_c205b4eb_000029⟫t⟪GTI18N_c205b4eb_000030⟫ saa tyypin ⟪GTI18N_c205b4eb_000031⟫T⟪GTI18N_c205b4eb_000032⟫ nolla-arvon. Paniikkia ei tällöin synny.
+
+Huomaa, että tämä syntaksi muistuttaa sanakirjasta lukemisen syntaksia.
+
+⟪GTI18N_c205b4eb_000033⟫

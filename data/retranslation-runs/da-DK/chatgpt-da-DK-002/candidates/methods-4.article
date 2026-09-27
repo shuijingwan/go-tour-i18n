@@ -1,0 +1,24 @@
+* Pointermodtagere
+
+Du kan deklarere metoder med pointermodtagere.
+
+Det betyder, at modtagertypen har den bogstavelige syntaks `*T` for en type `T`.
+(Desuden må `T` ikke selv være en pointer, såsom `*int`.)
+
+For eksempel er metoden `Scale` her defineret på `*Vertex`.
+
+Metoder med pointermodtagere kan ændre den værdi, modtageren
+peger på (som `Scale` gør her).
+Da metoder ofte skal ændre deres modtager, er pointermodtagere mere
+almindelige end værdimodtagere.
+
+Prøv at fjerne `*` fra deklarationen af funktionen `Scale` på linje 16,
+og se, hvordan programmets adfærd ændrer sig.
+
+Med en værdimodtager arbejder metoden `Scale` på en kopi af den oprindelige
+`Vertex`-værdi.
+(Det er samme adfærd som for ethvert andet funktionsargument.)
+Metoden `Scale` skal have en pointermodtager for at ændre den `Vertex`-værdi,
+der er deklareret i funktionen `main`.
+
+.play methods/methods-pointers.go

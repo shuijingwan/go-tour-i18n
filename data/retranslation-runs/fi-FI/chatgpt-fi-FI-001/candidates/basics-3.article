@@ -1,0 +1,15 @@
+* Julkiset nimet
+
+Go-kielessä nimi on julkinen, jos se alkaa isolla kirjaimella.
+Esimerkiksi `Pizza` on julkinen nimi. Samoin `Pi` on julkinen nimi, jonka `math`-paketti tuo muiden pakettien käyttöön.
+
+`pizza` ja `pi` eivät ala isolla kirjaimella, joten ne eivät ole julkisia.
+
+Kun tuot paketin, voit viitata vain sen julkisiin nimiin.
+Paketin sisäiset nimet eivät ole käytettävissä paketin ulkopuolelta.
+
+Suorita koodi ja tarkastele virheilmoitusta.
+
+Korjaa virhe muuttamalla `math.pi` muotoon `math.Pi` ja yritä uudelleen.
+
+.play basics/exported-names.go

@@ -1,0 +1,7 @@
+* Funktiosulkeumat
+
+Go-kielen funktiot voivat olla sulkeumia. Sulkeuma on funktioarvo, joka viittaa oman runkonsa ulkopuolella määriteltyihin muuttujiin. Funktio voi lukea näitä muuttujia ja sijoittaa niihin uusia arvoja. Tässä mielessä funktio on sidottu muuttujiin.
+
+Esimerkiksi `adder`-funktio palauttaa sulkeuman. Jokainen sulkeuma on sidottu omaan `sum`-muuttujaansa.
+
+.play moretypes/function-closures.go

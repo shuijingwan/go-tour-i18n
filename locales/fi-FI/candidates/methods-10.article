@@ -1,0 +1,8 @@
+* Rajapinnat toteutetaan implisiittisesti
+
+Tyyppi toteuttaa rajapinnan toteuttamalla sen metodit.
+Toteutusta ei tarvitse ilmoittaa erikseen, eikä kielessä ole "implements"-avainsanaa.
+
+Implisiittiset rajapinnat erottavat rajapinnan määritelmän sen toteutuksesta. Toteutus voi siten sijaita missä tahansa paketissa ilman ennakkojärjestelyjä.
+
+.play methods/interfaces-are-satisfied-implicitly.go

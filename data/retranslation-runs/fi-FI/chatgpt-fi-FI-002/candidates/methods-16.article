@@ -1,0 +1,22 @@
+* Tyyppivalintalauseet
+
+_Tyyppivalintalause_ on rakenne, jonka avulla voidaan suorittaa useita tyyppiväitteitä peräkkäin.
+
+Tyyppivalintalause muistuttaa tavallista switch-lausetta, mutta sen tapaukset määrittävät tyyppejä (eivät arvoja), joita verrataan annetun rajapinta-arvon sisältämän arvon tyyppiin.
+
+	switch v := i.(type) {
+	case T:
+		// tässä v on tyyppiä T
+	case S:
+		// tässä v on tyyppiä S
+	default:
+		// ei osumaa: tässä v on samaa tyyppiä kuin i
+	}
+
+Tyyppivalintalauseen määrittelyssä käytetään samaa syntaksia kuin tyyppiväitteessä `i.(T)`, mutta varsinainen tyyppi `T` korvataan avainsanalla `type`.
+
+Tämä switch-lause tarkistaa, sisältääkö rajapinta-arvo `i` tyypin `T` tai `S` arvon.
+Tapauksessa `T` tai `S` muuttujan `v` tyypiksi tulee vastaavasti `T` tai `S`, ja muuttuja saa arvon, jonka `i` sisältää.
+Oletustapauksessa (kun mikään ei täsmää) muuttujalla `v` on sama rajapintatyyppi ja arvo kuin muuttujalla `i`.
+
+.play methods/type-switches.go

@@ -1,0 +1,14 @@
+* Evalueringsrækkefølge i switch
+
+En switch evaluerer sine cases oppefra og ned og stopper ved den første case, der matcher.
+
+(For eksempel:
+
+	switch i {
+	case 0:
+	case f():
+	}
+
+Her kaldes `f` ikke, hvis `i==0`.)
+
+.play flowcontrol/switch-evaluation-order.go

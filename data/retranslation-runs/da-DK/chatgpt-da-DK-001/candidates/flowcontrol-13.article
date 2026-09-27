@@ -1,0 +1,9 @@
+* Flere defer-kald
+
+Udsatte funktionskald lægges på en stak. Når en funktion returnerer, udføres dens
+udsatte kald i omvendt rækkefølge af, hvornår de blev tilføjet: sidst ind, først ud.
+
+Læs mere om defer-sætninger i dette
+[[/blog/defer-panic-and-recover][blogindlæg]].
+
+.play flowcontrol/defer-multi.go

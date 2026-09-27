@@ -1,0 +1,18 @@
+* Øvelse: Ækvivalente binære træer
+
+Mange forskellige binære træer kan indeholde den samme rækkefølge af værdier. Her er for eksempel to binære træer, der begge indeholder rækkefølgen 1, 1, 2, 3, 5, 8, 13.
+
+.image /tour/static/img/tree.png
+
+I de fleste programmeringssprog er en funktion, der kontrollerer, om to binære træer indeholder den samme rækkefølge, ret kompliceret. Vi bruger Gos samtidighed og kanaler til at skrive en enkel løsning.
+
+Dette eksempel bruger pakken `tree`, som definerer typen:
+
+	type Tree struct {
+		Left  *Tree
+		Value int
+		Right *Tree
+	}
+
+
+Fortsættelsen af beskrivelsen findes på [[javascript:click('.next-page')][næste side]].

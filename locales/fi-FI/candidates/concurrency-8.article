@@ -1,0 +1,23 @@
+* Harjoitus: samanarvoiset binääripuut
+
+*1.* Toteuta `Walk`-funktio.
+
+*2.* Testaa `Walk`-funktio.
+
+`tree.New(k)` muodostaa rakenteeltaan satunnaisen (mutta aina järjestetyn) binääripuun, joka sisältää arvot `k`, `2k`, `3k`, ..., `10k`.
+
+Luo uusi kanava `ch` ja käynnistä puun läpikäynti:
+
+	go Walk(tree.New(1), ch)
+
+Lue sen jälkeen kanavasta kymmenen arvoa ja tulosta ne. Niiden pitäisi olla luvut 1, 2, 3, ..., 10.
+
+*3.* Toteuta `Same`-funktio käyttämällä `Walk`-funktiota sen selvittämiseen, sisältävätkö `t1` ja `t2` samat arvot.
+
+*4.* Testaa `Same`-funktio.
+
+`Same(tree.New(1),`tree.New(1))`-kutsun pitäisi palauttaa true ja `Same(tree.New(1),`tree.New(2))`-kutsun false.
+
+`Tree`-tyypin dokumentaatio löytyy [[https://godoc.org/golang.org/x/tour/tree#Tree][täältä]].
+
+.play concurrency/exercise-equivalent-binary-trees.go

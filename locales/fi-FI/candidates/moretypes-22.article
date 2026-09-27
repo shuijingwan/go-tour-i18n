@@ -1,0 +1,27 @@
+* Sanakirjojen muokkaaminen
+
+Lisää alkio sanakirjaan `m` tai päivitä olemassa oleva alkio:
+
+	m[key] = elem
+
+Hae alkio:
+
+	elem = m[key]
+
+Poista alkio:
+
+	delete(m, key)
+
+Tarkista avaimen olemassaolo kaksitulosarvoisella sijoituksella:
+
+	elem, ok = m[key]
+
+Jos `key` löytyy sanakirjasta `m`, `ok` on `true`. Muussa tapauksessa `ok` on `false`.
+
+Jos `key` ei ole sanakirjassa, `elem` saa sanakirjan alkion tyypin nolla-arvon.
+
+*Huomautus:* Jos `elem`- tai `ok`-muuttujaa ei ole vielä määritelty, voit käyttää lyhyttä määrittelymuotoa:
+
+	elem, ok := m[key]
+
+.play moretypes/mutating-maps.go

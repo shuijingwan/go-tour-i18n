@@ -1,0 +1,10 @@
+* Pointere til structs
+
+Structfelter kan tilgås gennem en pointer til en struct.
+
+Hvis vi vil tilgå feltet `X` i en struct, som vi har en pointer
+`p` til, kan vi skrive `(*p).X`.
+Den notation er dog besværlig, så sproget tillader os i stedet at
+skrive blot `p.X` uden eksplicit dereferering.
+
+.play moretypes/struct-pointers.go

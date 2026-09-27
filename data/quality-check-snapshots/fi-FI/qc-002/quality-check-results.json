@@ -1,0 +1,22 @@
+{
+  "schema_version": 2,
+  "evidence_type": "quality_check_results",
+  "locale": "fi-FI",
+  "snapshot_id": "qc-002",
+  "snapshot_manifest_sha256": "6a3fad15f077ab1d36bb97c30bdbff33e511549ae17c569e01444bd92f19d082",
+  "previous_snapshot_id": "qc-001",
+  "rubric": "translation-quality/v1",
+  "result_count": 2,
+  "results": [
+    {
+      "index": 31,
+      "unit_id": "flowcontrol/9",
+      "rating": "A"
+    },
+    {
+      "index": 108,
+      "unit_id": "example:concurrency/exercise-web-crawler.go",
+      "rating": "A"
+    }
+  ]
+}

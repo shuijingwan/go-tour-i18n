@@ -48,7 +48,7 @@ class ProductionIdentityTest(unittest.TestCase):
 
     def test_new_locale_profiles_are_frozen(self):
         parsed = MODULE.load_identity(self.identity_path)
-        self.assertEqual(len(parsed["locales"]), 37)
+        self.assertEqual(len(parsed["locales"]), 39)
 
         def expected_profile(locale, hostname, port, state):
             root = f"/data/go-tour-{locale}"
@@ -80,8 +80,10 @@ class ProductionIdentityTest(unittest.TestCase):
         profiles = {profile["locale"]: profile for profile in parsed["locales"]}
         for locale, hostname, port, state in (
             ("gu-IN", "gu-go-dev.shuijingwanwq.com", 4033, "live"),
-            ("pa-IN", "pa-go-dev.shuijingwanwq.com", 4034, "first-production"),
-            ("nb-NO", "nb-go-dev.shuijingwanwq.com", 4035, "first-production"),
+            ("pa-IN", "pa-go-dev.shuijingwanwq.com", 4034, "live"),
+            ("nb-NO", "nb-go-dev.shuijingwanwq.com", 4035, "live"),
+            ("da-DK", "da-go-dev.shuijingwanwq.com", 4036, "live"),
+            ("fi-FI", "fi-go-dev.shuijingwanwq.com", 4037, "live"),
         ):
             with self.subTest(locale=locale):
                 self.assertEqual(profiles[locale], expected_profile(locale, hostname, port, state))

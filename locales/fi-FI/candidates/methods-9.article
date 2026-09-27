@@ -1,0 +1,11 @@
+* Rajapinnat
+
+_Rajapintatyyppi_ määritellään metodien allekirjoitusten joukkona.
+
+Rajapintatyyppiseen arvoon voidaan tallentaa mikä tahansa arvo, jonka tyyppi toteuttaa nämä metodit.
+
+*Huomautus:* Esimerkkikoodin rivillä 22 on virhe.
+`Vertex` (arvotyyppi) ei toteuta `Abser`-rajapintaa, koska
+`Abs`-metodi on määritelty vain tyypille `*Vertex` (osoitintyyppi).
+
+.play methods/interfaces.go

@@ -1,0 +1,26 @@
+* Perustyypit
+
+Go-kielen perustyypit ovat
+
+	bool
+
+	string
+
+	int  int8  int16  int32  int64
+	uint uint8 uint16 uint32 uint64 uintptr
+
+	byte // alias tyypille uint8
+
+	rune // alias tyypille int32
+	     // vastaa Unicode-koodipistettä
+
+	float32 float64
+
+	complex64 complex128
+
+Esimerkissä on usean tyyppisiä muuttujia. Siitä näet myös, että muuttujamäärittelyt voidaan koota lohkoiksi samaan tapaan kuin import-lauseet.
+
+`int`-, `uint`- ja `uintptr`-tyyppien leveys on tavallisesti 32-bittisissä järjestelmissä 32 bittiä ja 64-bittisissä järjestelmissä 64 bittiä.
+Kun tarvitset kokonaislukuarvon, käytä yleensä `int`-tyyppiä, ellei sinulla ole erityistä syytä käyttää määrätyn levyistä tai etumerkitöntä kokonaislukutyyppiä.
+
+.play basics/basic-types.go

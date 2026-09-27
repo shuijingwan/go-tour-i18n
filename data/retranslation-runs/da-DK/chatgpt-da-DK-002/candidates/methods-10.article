@@ -1,0 +1,9 @@
+* Interfaces implementeres implicit
+
+En type implementerer et interface ved at implementere dets metoder.
+Der kræves ingen eksplicit erklæring om hensigten og intet nøgleord som »implements«.
+
+Implicitte interfaces adskiller definitionen af et interface fra dets
+implementering, som dermed kan ligge i en hvilken som helst pakke uden forudgående koordinering.
+
+.play methods/interfaces-are-satisfied-implicitly.go

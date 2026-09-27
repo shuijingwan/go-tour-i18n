@@ -1,0 +1,16 @@
+* Det tomme interface
+
+En interfacetype uden nogen metoder kaldes det _tomme_interface_:
+
+	interface{}
+
+Et tomt interface kan indeholde værdier af enhver type.
+(Alle typer implementerer mindst nul metoder.)
+
+`any` er et alias for `interface{}`, og de to er fuldstændig
+ækvivalente.
+
+Tomme interfaces bruges i kode, der håndterer værdier af ukendt type.
+For eksempel accepterer `fmt.Print` et vilkårligt antal argumenter af typen `any`.
+
+.play methods/empty-interface.go

@@ -1,0 +1,15 @@
+* Alkioiden lisääminen viipaleeseen
+
+Uusia alkioita lisätään viipaleisiin usein. Siksi Go sisältää sisäänrakennetun `append`-funktion. Sisäänrakennetun paketin [[/pkg/builtin/#append][dokumentaatiossa]] kuvataan `append`-funktion toiminta.
+
+	func append(s []T, vs ...T) []T
+
+`s` on `append`-funktion ensimmäinen parametri. Se on `T`-tyyppisten alkioiden viipale, ja loput parametrit ovat viipaleeseen lisättäviä `T`-tyyppisiä arvoja.
+
+`append`-funktion tuloksena saadaan viipale, jossa ovat alkuperäisen viipaleen kaikki alkiot sekä annetut uudet arvot.
+
+Jos viipaleen `s` taustalla oleva taulukko ei ole riittävän suuri kaikille annettaville arvoille, varataan suurempi taulukko. Palautettu viipale osoittaa uuteen taulukkoon.
+
+(Lisätietoja viipaleista saat artikkelista [[/blog/go-slices-usage-and-internals][Viipaleet: käyttö ja sisäinen toiminta]].)
+
+.play moretypes/append.go

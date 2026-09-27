@@ -1,0 +1,19 @@
+* Viipaleet
+
+Taulukon koko on kiinteä.
+Viipale puolestaan on dynaamisesti mitoitettava ja joustava näkymä taulukon alkioihin.
+Käytännössä viipaleita käytetään paljon useammin kuin taulukoita.
+
+Tyyppi `[]T` on viipale, jonka alkiot ovat tyyppiä `T`.
+
+Viipale muodostetaan antamalla kaksi kaksoispisteellä erotettua indeksiä: ala- ja yläraja.
+
+	a[low : high]
+
+Näin valitaan puoliavoin väli, johon ensimmäinen alkio kuuluu mutta viimeinen ei.
+
+Seuraava lauseke muodostaa viipaleen, joka sisältää taulukon `a` alkiot indekseistä 1–3:
+
+	a[1:4]
+
+.play moretypes/slices.go

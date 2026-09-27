@@ -1,0 +1,11 @@
+* Puskuroidut kanavat
+
+Kanavat voivat olla _puskuroituja_. Kun haluat alustaa puskuroidun kanavan, anna puskurin pituus `make`-funktion toisena argumenttina:
+
+	ch := make(chan int, 100)
+
+Puskuroituun kanavaan lähettäminen estää etenemisen vasta, kun puskuri on täynnä. Vastaanottaminen puolestaan estää etenemisen, kun puskuri on tyhjä.
+
+Muokkaa esimerkkiä niin, että puskuriin lähetetään enemmän arvoja kuin siihen mahtuu, ja katso, mitä tapahtuu.
+
+.play concurrency/buffered-channels.go

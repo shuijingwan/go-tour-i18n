@@ -1,0 +1,31 @@
+* Harjoitus: silmukat ja funktiot
+
+Harjoitellaan funktioita ja silmukoita toteuttamalla neliöjuurifunktio. Kun annettuna on luku x, haluamme löytää luvun z, jonka neliö z² on mahdollisimman lähellä lukua x.
+
+Tietokoneet laskevat x:n neliöjuuren yleensä silmukan avulla.
+Aloitamme jostakin z:n arvauksesta ja korjaamme sitä sen perusteella, kuinka lähellä z² on lukua x. Näin saamme paremman arvauksen:
+
+	z -= (z*z - x) / (2*z)
+
+Kun toistamme tätä korjausta, arvaus tarkentuu vähitellen, kunnes pääsemme niin lähelle todellista neliöjuurta kuin mahdollista.
+
+Toteuta tämä valmiiksi annetussa `func`Sqrt`-funktiossa.
+Sopiva alkuarvaus z:lle on 1 syötteestä riippumatta.
+Toista laskutoimitus aluksi kymmenen kertaa ja tulosta z jokaisella kierroksella.
+Tarkastele, kuinka lähelle oikeaa vastausta pääset eri x:n arvoilla (1, 2, 3, ...) ja kuinka nopeasti arvaus tarkentuu.
+
+Vihje: Jos haluat määritellä ja alustaa liukulukuarvon, käytä liukulukusyntaksia tai tyyppimuunnosta:
+
+	z := 1.0
+	z := float64(1)
+
+Muuta seuraavaksi silmukan ehtoa niin, että silmukka päättyy, kun arvo ei enää muutu (tai muuttuu vain hyvin vähän).
+Selvitä, tarvitaanko tähän enemmän vai vähemmän kuin kymmenen iteraatiota.
+Kokeile z:lle myös muita alkuarvauksia, kuten x tai x/2.
+Kuinka lähelle funktiosi tulokset pääsevät standardikirjaston [[/pkg/math/#Sqrt][math.Sqrt]]-funktion tuloksia?
+
+(*Huomautus:* Jos algoritmin yksityiskohdat kiinnostavat sinua, yllä oleva z² − x kertoo, kuinka kaukana z² on tavoitearvosta x. Jakaminen luvulla 2z, joka on z²:n derivaatta, suhteuttaa z:aan tehtävän korjauksen siihen, kuinka nopeasti z² muuttuu.
+Tätä yleistä lähestymistapaa kutsutaan [[https://en.wikipedia.org/wiki/Newton%27s_method][Newtonin menetelmäksi]].
+Se toimii hyvin monien funktioiden ja erityisen hyvin neliöjuuren yhteydessä.)
+
+.play flowcontrol/exercise-loops-and-functions.go

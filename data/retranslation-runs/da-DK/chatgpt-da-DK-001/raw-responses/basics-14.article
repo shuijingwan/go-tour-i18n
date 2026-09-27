@@ -1,0 +1,13 @@
+* Typeinferens
+
+Når du deklarerer en variabel uden at angive dens type eksplicit (enten med syntaksen ⟪GTI18N_21c4077c_000001⟫:=⟪GTI18N_21c4077c_000002⟫ eller med et udtryk på formen ⟪GTI18N_21c4077c_000003⟫var`=⟪GTI18N_21c4077c_000004⟫), udledes variablens type af værdien på højre side.
+
+Hvis højre side af deklarationen har en type, får den nye variabel samme type:
+
+⟪GTI18N_21c4077c_000005⟫⟪GTI18N_21c4077c_000006⟫ er af typen ⟪GTI18N_21c4077c_000007⟫⟪GTI18N_21c4077c_000008⟫Hvis højre side derimod indeholder en numerisk konstant uden eksplicit type, kan den nye variabel få typen ⟪GTI18N_21c4077c_000009⟫int⟪GTI18N_21c4077c_000010⟫, ⟪GTI18N_21c4077c_000011⟫float64⟪GTI18N_21c4077c_000012⟫ eller ⟪GTI18N_21c4077c_000013⟫complex128⟪GTI18N_21c4077c_000014⟫ afhængigt af konstantens præcision:
+
+⟪GTI18N_21c4077c_000015⟫
+
+Prøv at ændre startværdien af ⟪GTI18N_21c4077c_000016⟫v⟪GTI18N_21c4077c_000017⟫ i eksemplets kode, og se, hvordan variablens type påvirkes.
+
+⟪GTI18N_21c4077c_000018⟫

@@ -1,0 +1,11 @@
+* Switch
+
+`switch`-lause on lyhyempi tapa kirjoittaa peräkkäisiä `if`-`else`-lauseita.
+Se suorittaa ensimmäisen tapauksen, jonka arvo on sama kuin ehtolausekkeen arvo.
+
+Go-kielen switch muistuttaa C:n, C++:n, Javan, JavaScriptin ja PHP:n vastaavaa rakennetta.
+Erona on kuitenkin se, että Go-kielessä suoritetaan vain valittu tapaus, ei kaikkia sitä seuraavia tapauksia.
+Muissa näistä kielistä jokaisen tapauksen lopussa tarvittava `break`-lause on siis Go-kielessä automaattinen.
+Toinen tärkeä ero on, että Go-kielessä switch-lauseen tapausten ei tarvitse olla vakioita eivätkä niiden arvojen kokonaislukuja.
+
+.play flowcontrol/switch.go

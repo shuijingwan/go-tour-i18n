@@ -1,0 +1,21 @@
+* sync.Mutex
+
+Vi har set, at kanaler er velegnede til kommunikation mellem goroutiner.
+
+Men hvad nu, hvis vi ikke har brug for kommunikation? Hvis vi blot vil sikre, at kun
+én goroutine ad gangen kan tilgå en variabel og dermed undgå konflikter?
+
+Dette begreb kaldes _gensidig_udelukkelse_, og den sædvanlige betegnelse for den datastruktur, som sørger for det, er en _mutex_.
+
+Gos standardbibliotek tilbyder gensidig udelukkelse med
+[[/pkg/sync/#Mutex][`sync.Mutex`]] og dens to metoder:
+
+- `Lock`
+- `Unlock`
+
+Vi kan sørge for, at en kodeblok udføres med gensidig udelukkelse ved at omslutte
+den med kald til `Lock` og `Unlock`, som vist i metoden `Inc`.
+
+Vi kan også bruge `defer` til at sikre, at mutexen låses op igen, som i metoden `Value`.
+
+.play concurrency/mutex-counter.go

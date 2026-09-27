@@ -1,0 +1,18 @@
+* Længde og kapacitet for slices
+
+En slice har både en _længde_ og en _kapacitet_.
+
+Længden af en slice er antallet af elementer, den indeholder.
+
+Kapaciteten af en slice er antallet af elementer i det underliggende array,
+regnet fra slicens første element.
+
+Du kan finde længden og kapaciteten af en slice `s` med udtrykkene
+`len(s)` og `cap(s)`.
+
+Du kan udvide en slices længde ved at danne en ny slice ud fra den,
+hvis den har tilstrækkelig kapacitet.
+Prøv at ændre en af slice-operationerne i eksempelprogrammet, så den udvider slicen
+ud over dens kapacitet, og se, hvad der sker.
+
+.play moretypes/slice-len-cap.go

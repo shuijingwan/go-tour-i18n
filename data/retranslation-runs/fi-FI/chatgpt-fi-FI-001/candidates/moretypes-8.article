@@ -1,0 +1,9 @@
+* Viipaleet ovat kuin viittauksia taulukoihin
+
+Viipale ei itse tallenna dataa, vaan kuvaa osan taustalla olevasta taulukosta.
+
+Viipaleen alkioiden muuttaminen muuttaa myös sen taustalla olevan taulukon vastaavia alkioita.
+
+Muut samaan taustalla olevaan taulukkoon viittaavat viipaleet näkevät nämä muutokset.
+
+.play moretypes/slices-pointers.go

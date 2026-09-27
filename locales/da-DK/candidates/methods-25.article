@@ -1,0 +1,13 @@
+* Øvelse: Billeder
+
+Kan du huske den [[/tour/moretypes/18][billedgenerator]], du skrev tidligere? Lad os skrive en ny, som denne gang returnerer en implementering af `image.Image` i stedet for en slice med data.
+
+Definer din egen type `Image`, implementer [[/pkg/image/#Image][de nødvendige metoder]], og kald `pic.ShowImage`.
+
+`Bounds` skal returnere en `image.Rectangle`, for eksempel `image.Rect(0,`0,`w,`h)`.
+
+`ColorModel` skal returnere `color.RGBAModel`.
+
+`At` skal returnere en farve; værdien `v` i den forrige billedgenerator svarer her til `color.RGBA{v,`v,`255,`255}`.
+
+.play methods/exercise-images.go

@@ -1,0 +1,20 @@
+* Kanavat
+
+Kanavat ovat tyypitettyjä tiedonsiirtoväyliä, joiden kautta arvoja voidaan lähettää ja vastaanottaa kanavaoperaattorilla `<-`.
+
+	ch <- v    // Lähetä v kanavaan ch.
+	v := <-ch  // Vastaanota kanavasta ch ja
+	           // sijoita arvo muuttujaan v.
+
+(Data kulkee nuolen osoittamaan suuntaan.)
+
+Sanakirjojen ja viipaleiden tapaan kanavat on luotava ennen käyttöä:
+
+	ch := make(chan int)
+
+Oletusarvoisesti lähetys- ja vastaanotto-operaatiot pysäyttävät suorittavan goroutinen, kunnes toinen osapuoli on valmis. Näin goroutinet voivat synkronoitua ilman eksplisiittisiä lukkoja tai ehtomuuttujia.
+
+Esimerkkikoodi laskee viipaleen lukujen summan jakamalla työn kahden goroutinen kesken.
+Kun molemmat goroutinet ovat saaneet laskentansa valmiiksi, ohjelma laskee lopullisen tuloksen.
+
+.play concurrency/channels.go

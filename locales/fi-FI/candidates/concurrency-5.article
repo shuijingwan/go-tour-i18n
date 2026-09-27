@@ -1,0 +1,7 @@
+* Select
+
+`select`-lauseen avulla goroutine voi odottaa useita tiedonsiirto-operaatioita samanaikaisesti.
+
+`select` estää etenemisen, kunnes jokin sen tapauksista voidaan suorittaa, ja suorittaa sitten kyseisen tapauksen. Jos useita tapauksia on valmiina, se valitsee yhden niistä satunnaisesti.
+
+.play concurrency/select.go

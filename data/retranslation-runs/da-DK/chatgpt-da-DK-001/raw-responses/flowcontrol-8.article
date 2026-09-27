@@ -1,0 +1,37 @@
+* Øvelse: Løkker og funktioner
+
+For at eksperimentere med funktioner og løkker skal vi implementere en kvadratrodsfunktion: Givet et tal x vil vi finde det tal z, hvis kvadrat z² kommer tættest på x.
+
+Computere beregner typisk kvadratroden af x ved hjælp af en løkke.
+Vi begynder med et gæt på z og kan derefter justere z ud fra, hvor tæt z² ligger på x,
+så vi får et bedre gæt:
+
+⟪GTI18N_d8bbee84_000001⟫
+
+Hvis vi gentager denne justering, bliver gættet bedre og bedre,
+indtil vi når et resultat, der ligger så tæt på den faktiske kvadratrod som muligt.
+
+Implementer dette i den angivne ⟪GTI18N_d8bbee84_000002⟫func`Sqrt⟪GTI18N_d8bbee84_000003⟫.
+Et fornuftigt udgangspunkt for z er 1, uanset inputværdien.
+Start med at gentage beregningen 10 gange, og udskriv hver værdi af z undervejs.
+Undersøg, hvor tæt du kommer på resultatet for forskellige værdier af x (1, 2, 3, ...),
+og hvor hurtigt gættet bliver bedre.
+
+Tip: For at deklarere og initialisere en flydende kommaværdi
+skal du skrive værdien med flydende kommasyntaks eller bruge en typekonvertering:
+
+⟪GTI18N_d8bbee84_000004⟫
+
+Prøv derefter at ændre løkkebetingelsen, så løkken stopper, når værdien
+ikke længere ændrer sig (eller kun ændrer sig ganske lidt).
+Undersøg, om det kræver flere eller færre end 10 iterationer.
+Prøv andre startgæt for z, for eksempel x eller x/2.
+Hvor tæt ligger din funktions resultater på [[⟪GTI18N_d8bbee84_000005⟫][math.Sqrt]] i standardbiblioteket?
+
+(⟪GTI18N_d8bbee84_000006⟫Bemærk:⟪GTI18N_d8bbee84_000007⟫ Hvis du er interesseret i algoritmens detaljer, angiver z² − x ovenfor,
+hvor langt z² er fra den ønskede værdi (x). Divisionen med 2z bruger
+den afledte af z² til at skalere justeringen efter, hvor hurtigt z² ændrer sig.
+Denne generelle fremgangsmåde kaldes [[⟪GTI18N_d8bbee84_000008⟫][Newtons metode]].
+Den fungerer godt for mange funktioner, men især godt til kvadratrødder.)
+
+⟪GTI18N_d8bbee84_000009⟫

@@ -1,0 +1,24 @@
+* Pointere
+
+Go har pointere.
+En pointer indeholder hukommelsesadressen på en værdi.
+
+Typen `*T` er en pointer til en værdi af typen `T`. Dens nulværdi er `nil`.
+
+	var p *int
+
+Operatoren `&` danner en pointer til sin operand.
+
+	i := 42
+	p = &i
+
+Operatoren `*` betegner den underliggende værdi, som pointeren peger på.
+
+	fmt.Println(*p) // læs i gennem pointeren p
+	*p = 21         // sæt i gennem pointeren p
+
+Dette kaldes at »dereferere« eller at tilgå en værdi indirekte.
+
+I modsætning til C har Go ingen pointeraritmetik.
+
+.play moretypes/pointers.go

@@ -1,0 +1,7 @@
+* Defer-kutsujen pinoaminen
+
+Myöhemmäksi siirretyt funktiokutsut lisätään pinoon. Kun funktio palauttaa, sen siirretyt kutsut suoritetaan päinvastaisessa järjestyksessä: viimeisenä lisätty kutsu suoritetaan ensimmäisenä.
+
+Lisätietoja defer-lauseista saat tästä [[/blog/defer-panic-and-recover][blogikirjoituksesta]].
+
+.play flowcontrol/defer-multi.go

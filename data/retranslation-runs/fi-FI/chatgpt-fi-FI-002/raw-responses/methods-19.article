@@ -1,0 +1,17 @@
+* Virheet
+
+⟪GTI18N_9eaab1fd_000001⟫-ohjelmissa virhetilanteita ilmaistaan ⟪GTI18N_9eaab1fd_000002⟫error⟪GTI18N_9eaab1fd_000003⟫-arvoilla.
+
+⟪GTI18N_9eaab1fd_000004⟫error⟪GTI18N_9eaab1fd_000005⟫ on sisäänrakennettu rajapintatyyppi, joka muistuttaa ⟪GTI18N_9eaab1fd_000006⟫fmt.Stringer⟪GTI18N_9eaab1fd_000007⟫-rajapintaa:
+
+⟪GTI18N_9eaab1fd_000008⟫
+
+(Kuten ⟪GTI18N_9eaab1fd_000009⟫fmt.Stringer⟪GTI18N_9eaab1fd_000010⟫-rajapinnan kohdalla, ⟪GTI18N_9eaab1fd_000011⟫fmt⟪GTI18N_9eaab1fd_000012⟫-paketti etsii ⟪GTI18N_9eaab1fd_000013⟫error⟪GTI18N_9eaab1fd_000014⟫-rajapinnan toteutusta arvoja tulostaessaan.)
+
+Funktiot palauttavat usein ⟪GTI18N_9eaab1fd_000015⟫error⟪GTI18N_9eaab1fd_000016⟫-arvon. Kutsuvan koodin tulee käsitellä virhe tarkistamalla, onko virhearvo ⟪GTI18N_9eaab1fd_000017⟫nil⟪GTI18N_9eaab1fd_000018⟫.
+
+⟪GTI18N_9eaab1fd_000019⟫
+
+⟪GTI18N_9eaab1fd_000020⟫-arvoinen ⟪GTI18N_9eaab1fd_000021⟫error⟪GTI18N_9eaab1fd_000022⟫ ilmaisee onnistumista; muusta kuin ⟪GTI18N_9eaab1fd_000023⟫-arvoisesta ⟪GTI18N_9eaab1fd_000024⟫error⟪GTI18N_9eaab1fd_000025⟫-arvosta voidaan päätellä, että toiminto epäonnistui.
+
+⟪GTI18N_9eaab1fd_000026⟫

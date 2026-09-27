@@ -1,0 +1,15 @@
+* Range ja kanavan sulkeminen
+
+Lähettäjä voi sulkea kanavan `close`-funktiolla ilmoittaakseen, ettei uusia arvoja enää lähetetä. Vastaanottaja voi tarkistaa, onko kanava suljettu, sijoittamalla vastaanottolausekkeen toisen tulosarvon muuttujaan. Lauseen
+
+	v, ok := <-ch
+
+jälkeen `ok` on `false`, jos kanava on suljettu eikä siitä ole enää arvoja vastaanotettavaksi.
+
+Silmukka `for`i`:=`range`c` vastaanottaa kanavasta arvoja toistuvasti, kunnes kanava suljetaan.
+
+*Huomautus:* Vain lähettäjän tulee sulkea kanava, ei koskaan vastaanottajan. Lähettäminen suljettuun kanavaan aiheuttaa paniikin.
+
+*Lisähuomautus:* Kanavat eivät ole tiedostojen kaltaisia: niitä ei yleensä tarvitse sulkea. Sulkeminen on tarpeen vain silloin, kun vastaanottajalle on ilmoitettava, ettei uusia arvoja ole tulossa, esimerkiksi `range`-silmukan lopettamiseksi.
+
+.play concurrency/range-and-close.go

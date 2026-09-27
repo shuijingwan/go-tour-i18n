@@ -1,0 +1,32 @@
+{
+  "schema_version": 2,
+  "evidence_type": "quality_check_results",
+  "locale": "da-DK",
+  "snapshot_id": "qc-002",
+  "snapshot_manifest_sha256": "e34a1033fe023247416b6e0084075effb29a70c794dd57653a606299a5086c68",
+  "previous_snapshot_id": "qc-001",
+  "rubric": "translation-quality/v1",
+  "result_count": 4,
+  "results": [
+    {
+      "index": 2,
+      "unit_id": "welcome/2",
+      "rating": "A"
+    },
+    {
+      "index": 51,
+      "unit_id": "moretypes/15",
+      "rating": "A"
+    },
+    {
+      "index": 93,
+      "unit_id": "concurrency/1",
+      "rating": "A"
+    },
+    {
+      "index": 108,
+      "unit_id": "example:concurrency/exercise-web-crawler.go",
+      "rating": "A"
+    }
+  ]
+}

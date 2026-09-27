@@ -1,0 +1,16 @@
+* Eksporterede navne
+
+I Go er et navn eksporteret, hvis det begynder med et stort bogstav.
+Eksempelvis er `Pizza` et eksporteret navn, og det samme gælder `Pi`, som eksporteres fra
+pakken `math`.
+
+`pizza` og `pi` begynder ikke med et stort bogstav, så de er ikke eksporterede.
+
+Når du importerer en pakke, kan du kun henvise til dens eksporterede navne.
+Navne, der ikke er eksporterede, er ikke tilgængelige uden for pakken.
+
+Kør koden, og læg mærke til fejlmeddelelsen.
+
+Ret fejlen ved at ændre `math.pi` til `math.Pi`, og prøv igen.
+
+.play basics/exported-names.go

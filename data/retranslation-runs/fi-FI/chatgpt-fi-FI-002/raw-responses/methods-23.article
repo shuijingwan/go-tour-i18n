@@ -1,0 +1,12 @@
+* Harjoitus: rot13Reader
+
+Yleinen tapa on käyttää [[⟪GTI18N_11d87614_000001⟫][io.Reader]]-lukijaa, joka käärii sisäänsä toisen ⟪GTI18N_11d87614_000002⟫io.Reader⟪GTI18N_11d87614_000003⟫-lukijan ja muokkaa tietovirtaa jollakin tavalla.
+
+Esimerkiksi [[⟪GTI18N_11d87614_000004⟫][gzip.NewReader]]-funktio saa argumentikseen ⟪GTI18N_11d87614_000005⟫io.Reader⟪GTI18N_11d87614_000006⟫-lukijan (pakatun datan virran) ja palauttaa ⟪GTI18N_11d87614_000007⟫*gzip.Reader⟪GTI18N_11d87614_000008⟫-lukijan, joka myös toteuttaa ⟪GTI18N_11d87614_000009⟫io.Reader⟪GTI18N_11d87614_000010⟫-rajapinnan (ja tuottaa puretun datan virran).
+
+Toteuta ⟪GTI18N_11d87614_000011⟫rot13Reader⟪GTI18N_11d87614_000012⟫, joka toteuttaa ⟪GTI18N_11d87614_000013⟫io.Reader⟪GTI18N_11d87614_000014⟫-rajapinnan, lukee dataa ⟪GTI18N_11d87614_000015⟫io.Reader⟪GTI18N_11d87614_000016⟫-lukijasta ja muokkaa virtaa soveltamalla [[⟪GTI18N_11d87614_000017⟫][rot13]]-korvaussalausta kaikkiin aakkosmerkkeihin.
+
+⟪GTI18N_11d87614_000018⟫rot13Reader⟪GTI18N_11d87614_000019⟫-tyyppi on jo annettu.
+Tee siitä ⟪GTI18N_11d87614_000020⟫io.Reader⟪GTI18N_11d87614_000021⟫ toteuttamalla sen ⟪GTI18N_11d87614_000022⟫Read⟪GTI18N_11d87614_000023⟫-metodi.
+
+⟪GTI18N_11d87614_000024⟫

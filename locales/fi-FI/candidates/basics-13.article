@@ -1,0 +1,20 @@
+* Tyyppimuunnokset
+
+Lauseke `T(v)` muuntaa arvon `v` tyypiksi `T`.
+
+Esimerkkejä numeerisista tyyppimuunnoksista:
+
+	var i int = 42
+	var f float64 = float64(i)
+	var u uint = uint(f)
+
+Tai yksinkertaisemmin:
+
+	i := 42
+	f := float64(i)
+	u := uint(f)
+
+Toisin kuin C-kielessä, Go-kielessä eri tyyppisten arvojen välinen sijoitus edellyttää eksplisiittistä tyyppimuunnosta.
+Kokeile poistaa esimerkistä `float64`- tai `uint`-muunnos ja katso, mitä tapahtuu.
+
+.play basics/type-conversions.go

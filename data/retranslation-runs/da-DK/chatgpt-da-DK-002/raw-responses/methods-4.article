@@ -1,0 +1,24 @@
+* Pointermodtagere
+
+Du kan deklarere metoder med pointermodtagere.
+
+Det betyder, at modtagertypen har den bogstavelige syntaks ⟪GTI18N_99f9fa4e_000001⟫*T⟪GTI18N_99f9fa4e_000002⟫ for en type ⟪GTI18N_99f9fa4e_000003⟫T⟪GTI18N_99f9fa4e_000004⟫.
+(Desuden må ⟪GTI18N_99f9fa4e_000005⟫T⟪GTI18N_99f9fa4e_000006⟫ ikke selv være en pointer, såsom ⟪GTI18N_99f9fa4e_000007⟫*int⟪GTI18N_99f9fa4e_000008⟫.)
+
+For eksempel er metoden ⟪GTI18N_99f9fa4e_000009⟫Scale⟪GTI18N_99f9fa4e_000010⟫ her defineret på ⟪GTI18N_99f9fa4e_000011⟫*Vertex⟪GTI18N_99f9fa4e_000012⟫.
+
+Metoder med pointermodtagere kan ændre den værdi, modtageren
+peger på (som ⟪GTI18N_99f9fa4e_000013⟫Scale⟪GTI18N_99f9fa4e_000014⟫ gør her).
+Da metoder ofte skal ændre deres modtager, er pointermodtagere mere
+almindelige end værdimodtagere.
+
+Prøv at fjerne ⟪GTI18N_99f9fa4e_000015⟫*⟪GTI18N_99f9fa4e_000016⟫ fra deklarationen af funktionen ⟪GTI18N_99f9fa4e_000017⟫Scale⟪GTI18N_99f9fa4e_000018⟫ på linje 16,
+og se, hvordan programmets adfærd ændrer sig.
+
+Med en værdimodtager arbejder metoden ⟪GTI18N_99f9fa4e_000019⟫Scale⟪GTI18N_99f9fa4e_000020⟫ på en kopi af den oprindelige
+⟪GTI18N_99f9fa4e_000021⟫Vertex⟪GTI18N_99f9fa4e_000022⟫-værdi.
+(Det er samme adfærd som for ethvert andet funktionsargument.)
+Metoden ⟪GTI18N_99f9fa4e_000023⟫Scale⟪GTI18N_99f9fa4e_000024⟫ skal have en pointermodtager for at ændre den ⟪GTI18N_99f9fa4e_000025⟫Vertex⟪GTI18N_99f9fa4e_000026⟫-værdi,
+der er deklareret i funktionen ⟪GTI18N_99f9fa4e_000027⟫main⟪GTI18N_99f9fa4e_000028⟫.
+
+⟪GTI18N_99f9fa4e_000029⟫

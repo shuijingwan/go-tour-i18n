@@ -1,0 +1,7 @@
+* Nil-rajapinta-arvot
+
+nil-rajapinta-arvo ei sisällä arvoa eikä konkreettista tyyppiä.
+
+Metodin kutsuminen nil-rajapinnalle aiheuttaa ajonaikaisen virheen, koska rajapinnan sisältämässä parissa ei ole tyyppiä, jonka perusteella voitaisiin valita kutsuttava _konkreettinen_ metodi.
+
+.play methods/nil-interface-values.go

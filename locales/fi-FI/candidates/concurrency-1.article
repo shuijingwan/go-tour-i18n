@@ -1,0 +1,15 @@
+* Goroutinet
+
+_goroutine_ on kevyt säie, jota Go-kielen ajonaikainen järjestelmä hallitsee.
+
+	go f(x, y, z)
+
+käynnistää uuden goroutine-suoritusyksikön, jossa suoritetaan
+
+	f(x, y, z)
+
+`f`-, `x`-, `y`- ja `z`-lausekkeet arvioidaan nykyisessä goroutine-suoritusyksikössä, mutta `f`-funktion suoritus tapahtuu uudessa goroutine-suoritusyksikössä.
+
+Goroutinet toimivat samassa osoiteavaruudessa, joten jaetun muistin käyttö on synkronoitava. [[/pkg/sync/][`sync`]]-paketti tarjoaa hyödyllisiä synkronointirakenteita, vaikka tarvitset niitä Go-kielessä melko harvoin, sillä käytettävissä on myös muita rakenteita. (Katso seuraava sivu.)
+
+.play concurrency/goroutines.go

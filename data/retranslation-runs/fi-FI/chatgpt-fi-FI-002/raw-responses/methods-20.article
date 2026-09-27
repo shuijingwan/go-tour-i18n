@@ -1,0 +1,21 @@
+* Harjoitus: virheet
+
+Kopioi ⟪GTI18N_41f1f733_000001⟫Sqrt⟪GTI18N_41f1f733_000002⟫-funktiosi [[⟪GTI18N_41f1f733_000003⟫][aiemmasta harjoituksesta]] ja muokkaa sitä palauttamaan myös ⟪GTI18N_41f1f733_000004⟫error⟪GTI18N_41f1f733_000005⟫-arvo.
+
+Kun ⟪GTI18N_41f1f733_000006⟫Sqrt⟪GTI18N_41f1f733_000007⟫ saa negatiivisen luvun, sen tulee palauttaa muu kuin ⟪GTI18N_41f1f733_000008⟫-virhearvo, koska funktio ei tue kompleksilukuja.
+
+Luo uusi tyyppi
+
+⟪GTI18N_41f1f733_000009⟫
+
+ja tee siitä ⟪GTI18N_41f1f733_000010⟫error⟪GTI18N_41f1f733_000011⟫-rajapinnan toteuttava määrittelemällä sille
+
+⟪GTI18N_41f1f733_000012⟫
+
+-metodi siten, että ⟪GTI18N_41f1f733_000013⟫ErrNegativeSqrt(-2).Error()⟪GTI18N_41f1f733_000014⟫ palauttaa merkkijonon ⟪GTI18N_41f1f733_000015⟫"cannot`Sqrt`negative`number:`-2"⟪GTI18N_41f1f733_000016⟫.
+
+⟪GTI18N_41f1f733_000017⟫Huomautus:⟪GTI18N_41f1f733_000018⟫ Jos kutsut ⟪GTI18N_41f1f733_000019⟫fmt.Sprint(e)⟪GTI18N_41f1f733_000020⟫-funktiota ⟪GTI18N_41f1f733_000021⟫Error⟪GTI18N_41f1f733_000022⟫-metodin sisällä, ohjelma joutuu päättymättömään silmukkaan. Voit välttää tämän muuntamalla ensin ⟪GTI18N_41f1f733_000023⟫e⟪GTI18N_41f1f733_000024⟫-arvon: ⟪GTI18N_41f1f733_000025⟫fmt.Sprint(float64(e))⟪GTI18N_41f1f733_000026⟫. Miksi?
+
+Muuta ⟪GTI18N_41f1f733_000027⟫Sqrt⟪GTI18N_41f1f733_000028⟫-funktiotasi niin, että se palauttaa ⟪GTI18N_41f1f733_000029⟫ErrNegativeSqrt⟪GTI18N_41f1f733_000030⟫-arvon, jos sille annetaan negatiivinen luku.
+
+⟪GTI18N_41f1f733_000031⟫

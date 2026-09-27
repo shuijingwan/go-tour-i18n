@@ -4,7 +4,7 @@
 
 新增语言统一从 [新增 Locale 执行手册](docs/NEW_LOCALE_RUNBOOK.md) 开始；不要只在 registry 中增加一行就视为完成。新 locale 必须先明确规范 locale、显示名称、domain/CDN、全站 glossary 决策和 production profile，并通过独立的 Glossary Review、TranslationUnit Quality Review 与 Locale Surface Review。
 
-语言 registry 的正式展示顺序按语言的英文名称字母顺序排列，不按加入项目的时间排列。当前顺序为 Arabic（`ar`）→ Bengali（`bn-BD`）→ Brazilian Portuguese（`pt-BR`）→ Bulgarian（`bg-BG`）→ Czech（`cs-CZ`）→ Dutch（`nl-NL`）→ English（`en`）→ Filipino（`fil-PH`）→ French（`fr-FR`）→ German（`de-DE`）→ Greek（`el-GR`）→ Gujarati（`gu-IN`）→ Hindi（`hi-IN`）→ Hungarian（`hu-HU`）→ Indonesian（`id-ID`）→ Italian（`it-IT`）→ Japanese（`ja-JP`）→ Kannada（`kn-IN`）→ Korean（`ko-KR`）→ Latin American Spanish（`es-419`）→ Malay（`ms-MY`）→ Malayalam（`ml-IN`）→ Marathi（`mr-IN`）→ Norwegian Bokmål（`nb-NO`）→ Polish（`pl-PL`）→ Punjabi（`pa-IN`）→ Romanian（`ro-RO`）→ Simplified Chinese（`zh-CN`）→ Spanish（`es-ES`）→ Swedish（`sv-SE`）→ Tamil（`ta-IN`）→ Telugu（`te-IN`）→ Thai（`th-TH`）→ Traditional Chinese（`zh-TW`）→ Turkish（`tr-TR`）→ Ukrainian（`uk-UA`）→ Urdu（`ur-PK`）→ Vietnamese（`vi-VN`）。
+语言 registry 的正式展示顺序按语言的英文名称字母顺序排列，不按加入项目的时间排列。当前顺序为 Arabic（`ar`）→ Bengali（`bn-BD`）→ Brazilian Portuguese（`pt-BR`）→ Bulgarian（`bg-BG`）→ Czech（`cs-CZ`）→ Danish（`da-DK`）→ Dutch（`nl-NL`）→ English（`en`）→ Filipino（`fil-PH`）→ Finnish（`fi-FI`）→ French（`fr-FR`）→ German（`de-DE`）→ Greek（`el-GR`）→ Gujarati（`gu-IN`）→ Hindi（`hi-IN`）→ Hungarian（`hu-HU`）→ Indonesian（`id-ID`）→ Italian（`it-IT`）→ Japanese（`ja-JP`）→ Kannada（`kn-IN`）→ Korean（`ko-KR`）→ Latin American Spanish（`es-419`）→ Malay（`ms-MY`）→ Malayalam（`ml-IN`）→ Marathi（`mr-IN`）→ Norwegian Bokmål（`nb-NO`）→ Polish（`pl-PL`）→ Punjabi（`pa-IN`）→ Romanian（`ro-RO`）→ Simplified Chinese（`zh-CN`）→ Spanish（`es-ES`）→ Swedish（`sv-SE`）→ Tamil（`ta-IN`）→ Telugu（`te-IN`）→ Thai（`th-TH`）→ Traditional Chinese（`zh-TW`）→ Turkish（`tr-TR`）→ Ukrainian（`uk-UA`）→ Urdu（`ur-PK`）→ Vietnamese（`vi-VN`）。
 
 ## 语言站点与 CDN
 
@@ -15,9 +15,11 @@
 | `pt-BR` | Português (Brasil) | <https://pt-go-dev.shuijingwanwq.com/> | Cloudflare Free | 巴西葡萄牙语社区语言站；域名 language code 为 `pt` |
 | `bg-BG` | Български | <https://bg-go-dev.shuijingwanwq.com/> | Cloudflare Free | 保加利亚语社区语言站；`html lang=bg-BG`；域名 language code 为 `bg` |
 | `cs-CZ` | Čeština | <https://cs-go-dev.shuijingwanwq.com/> | Cloudflare Free | 捷克语社区语言站；`html lang=cs-CZ`；域名 language code 为 `cs`；首次生产准备中 |
+| `da-DK` | Dansk | <https://da-go-dev.shuijingwanwq.com/> | Cloudflare Free | 丹麦语社区语言站；`html lang=da-DK`；域名 language code 为 `da`；首次生产准备中 |
 | `nl-NL` | Nederlands | <https://nl-go-dev.shuijingwanwq.com/> | Cloudflare Free | 荷兰语社区语言站；域名 language code 为 `nl` |
 | `en` | English | <https://go.dev/tour/> | Go 官方提供 | 继续使用官方 A Tour of Go；当前不建设本项目的英文社区版本，也不规划 `en-go-dev.shuijingwanwq.com` |
 | `fil-PH` | Filipino | <https://fil-go-dev.shuijingwanwq.com/> | Cloudflare Free | 菲律宾语社区语言站；`html lang=fil-PH`；域名 language code 为 `fil`；首次生产准备中 |
+| `fi-FI` | Suomi | <https://fi-go-dev.shuijingwanwq.com/> | Cloudflare Free | 芬兰语社区语言站；`html lang=fi-FI`；域名 language code 为 `fi`；首次生产准备中 |
 | `fr-FR` | Français | <https://fr-go-dev.shuijingwanwq.com/> | Cloudflare Free | 法语社区语言站；域名 language code 为 `fr` |
 | `de-DE` | Deutsch | <https://de-go-dev.shuijingwanwq.com/> | Cloudflare Free | 德语社区语言站；域名 language code 为 `de` |
 | `el-GR` | Ελληνικά | <https://el-go-dev.shuijingwanwq.com/> | Cloudflare Free | 希腊语社区语言站；`html lang=el-GR`；域名 language code 为 `el`；首次生产准备中 |

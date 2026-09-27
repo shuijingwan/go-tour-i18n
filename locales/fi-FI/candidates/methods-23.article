@@ -1,0 +1,12 @@
+* Harjoitus: rot13Reader
+
+Yleinen tapa on käyttää [[/pkg/io/#Reader][io.Reader]]-lukijaa, joka käärii sisäänsä toisen `io.Reader`-lukijan ja muokkaa tietovirtaa jollakin tavalla.
+
+Esimerkiksi [[/pkg/compress/gzip/#NewReader][gzip.NewReader]]-funktio saa argumentikseen `io.Reader`-lukijan (pakatun datan virran) ja palauttaa `*gzip.Reader`-lukijan, joka myös toteuttaa `io.Reader`-rajapinnan (ja tuottaa puretun datan virran).
+
+Toteuta `rot13Reader`, joka toteuttaa `io.Reader`-rajapinnan, lukee dataa `io.Reader`-lukijasta ja muokkaa virtaa soveltamalla [[https://en.wikipedia.org/wiki/ROT13][rot13]]-korvaussalausta kaikkiin aakkosmerkkeihin.
+
+`rot13Reader`-tyyppi on jo annettu.
+Tee siitä `io.Reader` toteuttamalla sen `Read`-metodi.
+
+.play methods/exercise-rot-reader.go

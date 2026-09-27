@@ -1,0 +1,12 @@
+* Metodit
+
+Go-kielessä ei ole luokkia.
+Tyypeille voi kuitenkin määritellä metodeja.
+
+Metodi on funktio, jolla on erityinen _vastaanotin_-argumentti.
+
+Vastaanotin kirjoitetaan omaan argumenttiluetteloonsa `func`-avainsanan ja metodin nimen väliin.
+
+Tässä esimerkissä `Abs`-metodilla on `Vertex`-tyyppinen vastaanotin, jonka nimi on `v`.
+
+.play methods/methods.go

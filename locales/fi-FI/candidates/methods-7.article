@@ -1,0 +1,20 @@
+* Metodit ja osoittimien epäsuora käsittely (2)
+
+Sama toimii myös päinvastaiseen suuntaan.
+
+Arvoargumentin odottaville funktioille on annettava täsmälleen kyseisen tyyppinen arvo:
+
+	var v Vertex
+	fmt.Println(AbsFunc(v))  // OK
+	fmt.Println(AbsFunc(&v)) // Käännösvirhe!
+
+Arvovastaanottimella varustettuja metodeja puolestaan voi kutsua käyttämällä vastaanottimena joko arvoa tai osoitinta:
+
+	var v Vertex
+	fmt.Println(v.Abs()) // OK
+	p := &v
+	fmt.Println(p.Abs()) // OK
+
+Tässä tapauksessa metodikutsu `p.Abs()` tulkitaan muodossa `(*p).Abs()`.
+
+.play methods/indirection-values.go

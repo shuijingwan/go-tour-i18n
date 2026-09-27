@@ -1,0 +1,20 @@
+* Metodit ja osoittimien epäsuora käsittely
+
+Kun vertaat kahta edellistä ohjelmaa, huomaat ehkä, että osoitinargumentin odottaville funktioille on annettava osoitin:
+
+	var v Vertex
+	ScaleFunc(v, 5)  // Käännösvirhe!
+	ScaleFunc(&v, 5) // OK
+
+Osoitinvastaanottimella varustettuja metodeja puolestaan voi kutsua käyttämällä vastaanottimena joko arvoa tai osoitinta:
+
+	var v Vertex
+	v.Scale(5)  // OK
+	p := &v
+	p.Scale(10) // OK
+
+Lauseessa `v.Scale(5)` `v` on arvo eikä osoitin. Osoitinvastaanottimella varustettua metodia kutsutaan silti automaattisesti.
+Käytön helpottamiseksi Go tulkitsee lauseen `v.Scale(5)` muodossa
+`(&v).Scale(5)`, koska `Scale`-metodilla on osoitinvastaanotin.
+
+.play methods/indirection.go

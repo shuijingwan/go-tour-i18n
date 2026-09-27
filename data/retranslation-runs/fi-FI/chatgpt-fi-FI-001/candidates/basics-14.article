@@ -1,0 +1,18 @@
+* Tyyppipäättely
+
+Kun muuttuja määritellään ilman eksplisiittistä tyyppiä (joko `:=`-syntaksilla tai `var`=`-lausekkeella), muuttujan tyyppi päätellään sijoituksen oikealla puolella olevasta arvosta.
+
+Jos määrittelyn oikealla puolella on tyypitetty arvo, uuden muuttujan tyypiksi tulee sama tyyppi:
+
+	var i int
+	j := i // j on int
+
+Kun oikealla puolella sen sijaan on tyypitön lukuvakio, uuden muuttujan tyyppi voi olla `int`, `float64` tai `complex128` vakion tarkkuudesta riippuen:
+
+	i := 42           // int
+	f := 3.142        // float64
+	g := 0.867 + 0.5i // complex128
+
+Kokeile muuttaa esimerkkikoodin `v`-muuttujan alkuarvoa ja tarkkaile, miten sen tyyppi muuttuu.
+
+.play basics/type-inference.go

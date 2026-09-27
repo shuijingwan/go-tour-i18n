@@ -1,0 +1,8 @@
+* Rakenteisiin osoittavat osoittimet
+
+Rakenteen kenttiä voi käyttää myös rakenteen arvoon osoittavan osoittimen kautta.
+
+Rakenteen kenttään `X` voisi viitata rakenteen osoittimen `p` avulla kirjoittamalla `(*p).X`.
+Tämä merkintätapa on kuitenkin kömpelö, joten kielessä voi kirjoittaa yksinkertaisesti `p.X` ilman eksplisiittistä dereferointia.
+
+.play moretypes/struct-pointers.go

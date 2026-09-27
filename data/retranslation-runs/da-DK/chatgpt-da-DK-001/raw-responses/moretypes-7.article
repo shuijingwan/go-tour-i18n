@@ -1,0 +1,23 @@
+* Slices
+
+Et array har en fast størrelse.
+En slice er derimod en fleksibel visning af elementerne i et array,
+hvor størrelsen kan ændres dynamisk.
+I praksis bruges slices langt oftere end arrays.
+
+Typen ⟪GTI18N_a169cf48_000001⟫[]T⟪GTI18N_a169cf48_000002⟫ er en slice med elementer af typen ⟪GTI18N_a169cf48_000003⟫T⟪GTI18N_a169cf48_000004⟫.
+
+En slice dannes ved at angive to indekser, en nedre og en
+øvre grænse, adskilt af et kolon:
+
+⟪GTI18N_a169cf48_000005⟫
+
+Dette vælger et halvåbent interval, som omfatter det første
+element, men ikke det sidste.
+
+Følgende udtryk opretter en slice, der omfatter
+elementerne 1 til og med 3 i ⟪GTI18N_a169cf48_000006⟫a⟪GTI18N_a169cf48_000007⟫:
+
+⟪GTI18N_a169cf48_000008⟫
+
+⟪GTI18N_a169cf48_000009⟫

@@ -1,0 +1,9 @@
+* Øvelse: Webcrawler
+
+I denne øvelse skal du bruge samtidighedsfunktionerne i Go til at lade en webcrawler arbejde parallelt.
+
+Rediger funktionen `Crawl`, så den henter URL'er parallelt uden at hente den samme URL to gange.
+
+_Tip_: Du kan bruge et map til at gemme de URL'er, der allerede er hentet, men maps er ikke i sig selv sikre at bruge samtidig fra flere goroutiner!
+
+.play concurrency/exercise-web-crawler.go

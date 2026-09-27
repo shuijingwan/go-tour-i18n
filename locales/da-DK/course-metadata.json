@@ -1,0 +1,1552 @@
+{
+  "schema_version": 2,
+  "locale": "da-DK",
+  "generator_contract": "course-seo-localization-v2",
+  "pages": [
+    {
+      "page_id": "welcome/1",
+      "route": "/welcome/1",
+      "description": "Lær at navigere i En rundtur i Go, køre og redigere eksempelprogrammer, formatere kode og bruge tastaturgenveje, mens du eksperimenterer interaktivt.",
+      "source_sha256": "1f581133d7fa40e6490418c6789a60a2f5e1de26c9c86d7eb6120cb58b145857",
+      "source_description_sha256": "3d937a528fff6a119ce7ece2579edec8b0895514ae2a0fe8f255b9e3cbf288b2",
+      "target_sha256": "05551ee08c4935079bfbce090a08ab01b5711074482841b8faba100146b50736",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "welcome/2",
+      "route": "/welcome/2",
+      "description": "Find de tilgængelige oversættelser af En rundtur i Go, og lær at fortsætte gennem rundturen med dens navigationsknapper.",
+      "source_sha256": "709f808ec4cdf683411f349cab7a4886fcae532d1c4e4cc66c8ed68cfb2dd2d3",
+      "source_description_sha256": "39c14471d1d721e97c09e0023a883f66f729a8be753bdb8a3445bd6027be8bd3",
+      "target_sha256": "60bde91f0ca0758a6db3cb35c7d69b56ad2a1eaa4be202b384719f064d1957a4",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "welcome/4",
+      "route": "/welcome/3",
+      "description": "Installer og kør den selvstændige Go-rundtur på din egen computer, så du kan bruge lektioner og kodeeksempler offline.",
+      "source_sha256": "bb517d4b577fdb446fd029c2998d2426663b94a68f4b4e494c59af421508f683",
+      "source_description_sha256": "d13d1d18ed0fb4eb16e5348b14dbea7c4d22dfd134bb900c8d8a3736a4cbe362",
+      "target_sha256": "d21e977aadd35bf2c994dbf7f6e1125a64bdcecfcb519b040537d3d780cb2193",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "welcome/5",
+      "route": "/welcome/4",
+      "description": "Forstå, hvordan Go Playground kompilerer og kører programmer i en sandkasse, herunder den deterministiske tidsindstilling og begrænsningerne på ressourceforbrug.",
+      "source_sha256": "19e6d7da57ca1d191c485754f3dd4ac87775c651b8c0ae8e05c03cbd9b225897",
+      "source_description_sha256": "30f78795b3923c7eb444a1ed4873e36d136030ec9c27c27e73099de6fd6aed4d",
+      "target_sha256": "9bc35849c9a765e4aa2bf51bebe14eae78b399edc81a8e3b12dfd05a804c148c",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "welcome/3",
+      "route": "/welcome/5",
+      "description": "Afslut rundturens første modul, og vælg et andet modul på lektionslisten eller fortsæt direkte til næste lektion.",
+      "source_sha256": "9a6983b2e50b2fa78ff4f65683210714aea1c1575418e36796c156950ec6330d",
+      "source_description_sha256": "3db60db277b939a3039b29c11e0c3d810c3bdea9017ea7e771d87819cf3c9275",
+      "target_sha256": "bc3313715dac2b95d4e2c0cf42b9562cd8f527ce5a633495c0581b345e86ba9a",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "basics/1",
+      "route": "/basics/1",
+      "description": "Lær, hvordan Go-programmer organiseres i pakker, hvorfor udførelsen begynder i pakken main, og hvordan pakkenavne hænger sammen med importstier.",
+      "source_sha256": "f769f12c0a028b2f0cd403d89ff39dd150405e9f2e4155875321522f08619fe0",
+      "source_description_sha256": "1b3378aa355b5676dee5d0fcb248509b5dce2570e0ad196cb725343b61ccc25b",
+      "target_sha256": "a0886eee393563fee1667d27be02deb7d57c6cc7e541860c1b17ec280be43aa6",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "basics/2",
+      "route": "/basics/2",
+      "description": "Gruppér flere Go-importer i en importdeklaration med parenteser, som foretrækkes frem for separate importdeklarationer.",
+      "source_sha256": "3329c9bff5f7e2b9b1e161fdebfb3804ff57cf1fb11bd4327d228328bcfb3fd0",
+      "source_description_sha256": "fdc97dfa6245b07c45ee1cf51eeaa7571b637f1d2f6c101e4ea2e77f35678fdb",
+      "target_sha256": "f2abcf72a659dcd5ee5c57ea20a2c47999750f26a175f076326d324b14ec72f5",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "basics/3",
+      "route": "/basics/3",
+      "description": "Forstå, hvordan store begyndelsesbogstaver gør navne eksporterede i Go, og hvorfor kode uden for en pakke kun kan tilgå dens eksporterede identifikatorer.",
+      "source_sha256": "38b9c70e49184a24f63f6b12f8ba78e64c0b874ad2a6f9a5fe86267615fd1bf6",
+      "source_description_sha256": "b823e75c9decbef08bf4556fc7d2c242d0e68dfa4633c7793cf2d1d043efe6d1",
+      "target_sha256": "58d7e19ca1c674ddf2314b7b656bcc69395c607c9c085d1ff1241c246f476635",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "basics/4",
+      "route": "/basics/4",
+      "description": "Definér Go-funktioner med nul eller flere argumenter, og skriv hver parameters type efter variabelnavnet.",
+      "source_sha256": "accf0562d9b759c9735500d5df0d74e8f90142ed96fe5ab2f5eedc6fbd6cf6f2",
+      "source_description_sha256": "f38ebeb7c0cc84b0cba3a3836eda79d8fd5c3372f34e39aa69547bfa68ec785b",
+      "target_sha256": "550819805d76eabb28802664213bb96299bd66ae80e390635faab559674fc485",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "basics/5",
+      "route": "/basics/5",
+      "description": "Forkort på hinanden følgende Go-funktionsparametre af samme type ved kun at skrive typen efter det sidste parameternavn.",
+      "source_sha256": "02e7feb341329e18143e18d533fe45381883a6ba6425abb09a847e2f0edf228a",
+      "source_description_sha256": "4e6a3c46e988fbcd7357306955a0951e44e0e4ea0b62a7c05a4c95d6d3a9e84f",
+      "target_sha256": "563d2426b160bb509d1f46536cd54ba0d04e47dc785b8a5b43c7b5d42bd21df8",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "basics/6",
+      "route": "/basics/6",
+      "description": "Returnér flere resultater fra en Go-funktion, illustreret med en funktion, der bytter om på to strengværdier og returnerer dem.",
+      "source_sha256": "b3cb4b40115066443f265e3e5ebb9fc0fd6d080784c887328fce4d6b7891ba41",
+      "source_description_sha256": "013f1d728ddcef926d38d223ca9d6a69c658dd4a9b659f72f04816f227aae020",
+      "target_sha256": "44e34ca5c13cfd6b9992006e5f0af5e77379b210e888ae33776e38fc35ffe41f",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "basics/7",
+      "route": "/basics/7",
+      "description": "Brug navngivne returværdier til at dokumentere resultaternes betydning, og forstå, hvornår return uden argumenter hjælper eller skader læsbarheden.",
+      "source_sha256": "1db20ae87ce5d9d4b20f15e4638ba2a3295a7ce781c961ef618982890fc562fa",
+      "source_description_sha256": "6c4c2ac14a37bd8b24a7cf6dc970e2ec2671ef13b301ce00d2f287cb98596512",
+      "target_sha256": "7e1756e08d321e1fc30fb62892831191d5895662552b265bc88646ee4a51573b",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "basics/8",
+      "route": "/basics/8",
+      "description": "Deklarér typede variabler med var på pakke- eller funktionsniveau, og følg Go-syntaksen, hvor navnet står før typen.",
+      "source_sha256": "bcb1b5e17ed9dff3d46a7cd8119c0d2f9c3afbb70ca94d35fadeb4f75b4a9d13",
+      "source_description_sha256": "72da0fb9d95da65fcaaea5fbdd2c1c9ea9df4bf06793275bff4e46b1b0a97d51",
+      "target_sha256": "426eb1dde37a7cfec814b80e1771fac0e8e8a757a3be43ae0a98a4645706d592",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "basics/9",
+      "route": "/basics/9",
+      "description": "Initialisér variabler i en var-deklaration, og lad Go udlede udeladte typer fra de tilhørende initialiseringsudtryk.",
+      "source_sha256": "d51c17ba355753484b96c0eefda9fcce9f6f041a8ae2bf3e96fd0ad0c44680cc",
+      "source_description_sha256": "6d26f7a1a4f12a8438d0b7f4a4805e764a7e6852bbb561de361434032eb84e0a",
+      "target_sha256": "af5b6ce8739f8d65fbff1de8f8b3ccecccf383d13fb72a43813cf9aa326d5a03",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "basics/10",
+      "route": "/basics/10",
+      "description": "Brug korte variabeldeklarationer med := inde i funktioner, hvor var-deklarationer med implicit type er tilladt.",
+      "source_sha256": "f402e8e89a186d3208df5e4d983604730e71ef6c68354755f72e4580d3d7f359",
+      "source_description_sha256": "2ed42cad59a09602b3683e8051e76785ca3cb0581db8e84d0c91df15ea7f6055",
+      "target_sha256": "4546d4e9289271374a10b11028f3a0bbe9cac77f24cdb13fbd564b07ad68f06d",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "basics/11",
+      "route": "/basics/11",
+      "description": "Få overblik over booleske typer, strenge, heltal, flydende kommatal, komplekse tal, byte og rune i Go samt vejledning om heltalsstørrelser.",
+      "source_sha256": "836ab1dd659798dcf5e90f283c4ee794aed1d2cf0766c2ccc268fa91684e9d05",
+      "source_description_sha256": "7729889458a4d34cd6abb380c6b528035b4e9ae93dc785e99b12660c0e3f5a4e",
+      "target_sha256": "b3f5d1971847f365cf4ffe9f2a34dcde57bb9075d04df371d6cf7d2182ca5fc7",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "basics/12",
+      "route": "/basics/12",
+      "description": "Lær nulværdierne for ikke-initialiserede Go-variabler: 0 for tal, false for booleske værdier og den tomme streng for strenge.",
+      "source_sha256": "d9ad62501c05359e7b2ac445fa92d629e11d6d378c2701b767abab76012a558e",
+      "source_description_sha256": "6ed8204794cae90282978dbae2413c8ae9e1feceba59ae10736065ad00165ca7",
+      "target_sha256": "8a01860eee216edc4ce7a345005cc56b2c4e38dd44f6878e3ba7ea1e893d0903",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "basics/13",
+      "route": "/basics/13",
+      "description": "Konvertér værdier eksplicit med typekonverteringsudtryk, da Go ikke tillader implicit tildeling mellem forskellige numeriske typer.",
+      "source_sha256": "88e0e168f4c95fa4134198a32440b2d2fb1fac9aae535a9ee7148dbcda37e1b3",
+      "source_description_sha256": "9213231bcd5269a4d402ed83117584521f51191b04e30301599ce3aaedef9afe",
+      "target_sha256": "f0f304a57950ab91633b26ce947983fe7283f8c33087ef1021098dc76678f915",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "basics/14",
+      "route": "/basics/14",
+      "description": "Se, hvordan Go udleder variabeltyper fra typede værdier og vælger standardtyper for numeriske konstanter uden eksplicit type efter deres præcision.",
+      "source_sha256": "21c4077c25629545dee0313b8b6b03e709edc4a74e1d73d9f4c9b0a49e46f6b3",
+      "source_description_sha256": "22bd9a429fe4882f0595c270aa52ac22f984d89afc93e5287829125188937dad",
+      "target_sha256": "fa9e0258653fd58076e70513c83625de378d9fa10d7d1892a92290f94cd1c284",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "basics/15",
+      "route": "/basics/15",
+      "description": "Deklarér tegn-, streng-, booleske og numeriske konstanter med const, og bemærk, at korte deklarationer ikke kan definere konstanter.",
+      "source_sha256": "964ac515c0860a54b3a7780d77c7b4862ca38b744ae1f6be4b155a4386e2a229",
+      "source_description_sha256": "9a5d122d06495fa1838331e095ca3a72b47b645a7e19bb28fc127ce13c1fbe8c",
+      "target_sha256": "ada23b414e8f3d4456aff508f9ee7d562ed4d19d749b123ac10d19636087762a",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "basics/16",
+      "route": "/basics/16",
+      "description": "Udforsk numeriske konstanter med høj præcision, og se, hvordan en konstant uden eksplicit type antager den type, som konteksten kræver.",
+      "source_sha256": "0d502d48a15f7a70e257079d7db1ddafe088607110c1c06b17b4be50b362394a",
+      "source_description_sha256": "1b42764b78e1a1ca531d208244f285164d53e9cb6320ea1b5fb5b6464b1de1e3",
+      "target_sha256": "6780968ce1b13286e1b43a0eaf0a9b905824e657d369d81ab380877ec85c3731",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "basics/17",
+      "route": "/basics/17",
+      "description": "Afslut den aktuelle lektion, og gå tilbage til modullisten for at vælge et nyt emne, eller fortsæt til næste lektion.",
+      "source_sha256": "f565674b974c053924bf69ef83b709dc50931526ae7fa88e71543a5cd872a190",
+      "source_description_sha256": "afff9e2c9367a5554aa90fd0f9427a37fc7420a1c93d4596668bdb3fd3ae7e5d",
+      "target_sha256": "01f2e1011ec0ebb3c7923e0b8228aa22dc1535544be194f4c248a52eca6e2c8e",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/1",
+      "route": "/flowcontrol/1",
+      "description": "Lær den eneste løkkekonstruktion i Go: for-løkkens initialisering, betingelse, afsluttende sætning, scope og obligatoriske klammeparenteser.",
+      "source_sha256": "c6cd458bda99bffc7b753e122c56575a59508586054180be1f8d7bb1fe2391df",
+      "source_description_sha256": "b88b64bb1e63b5ebb863972f8c24e8cc545a83c115c64f401ef8fd3b114d61f5",
+      "target_sha256": "a0301b328431191c8b09a6cf8e04c63d9b272984250975f6cb44e28676f8c053",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/2",
+      "route": "/flowcontrol/2",
+      "description": "Forenkl en for-løkke i Go ved at udelade den valgfrie initialisering og afsluttende sætning, men bevare løkkebetingelsen.",
+      "source_sha256": "24a97abbb6db2b6a88017bf326a5968097263d8ba637805f2cf44c9fed25f9fe",
+      "source_description_sha256": "dd466b8b04c3284a0f1a48dc9748a434b7a7e8c8c54797785c9aec102cc04055",
+      "target_sha256": "5a3985dae4e8de03fa00cb699b288cacbd6733bebe3b2f8d9a4a17f062d3ddd9",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/3",
+      "route": "/flowcontrol/3",
+      "description": "Skriv en while-lignende løkke i Go ved at udelade initialisering, afsluttende sætning og de tilhørende semikoloner.",
+      "source_sha256": "3ed791cc935287ba6f5da4ba41f6ad84fdcbaef108ee364f769ae5204316bbb7",
+      "source_description_sha256": "917a1d2bce0a711d7aa187f22916986ec204539d59aca1aeee2686ea5692963e",
+      "target_sha256": "6f71767b5840204869a50701ec74d01ee5e5348dd042ca19cd285a4679f39536",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/4",
+      "route": "/flowcontrol/4",
+      "description": "Opret en kortfattet uendelig løkke i Go med en for-sætning uden løkkebetingelse.",
+      "source_sha256": "5456c129ef71c60b7502efde65c81020aaf1fa8b9178086e99223a21f6207dc6",
+      "source_description_sha256": "0b2cfd67b2c51f9ab0edbe920ad1a703701ff723f9d22673a4cde7e914eec4a9",
+      "target_sha256": "f532f00fd386e97a8e6c06861b5765efe36485ee9456d8f132835ff72ed9e64d",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/5",
+      "route": "/flowcontrol/5",
+      "description": "Skriv if-sætninger i Go uden parenteser om betingelsen, men med de klammeparenteser, som sproget kræver.",
+      "source_sha256": "ce49f916c1ceb7296576ec6b8ec92524b9827be168e3f5eb2040c61fee70f639",
+      "source_description_sha256": "d49445fcd341a4fb747cb7c3e25c0f40849456c8b7be876f62a999fe2591972b",
+      "target_sha256": "e562b4c25abbec2b3dd3727ee5a9f4f2090740562e1af6ea10e9bdeb8201106a",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/6",
+      "route": "/flowcontrol/6",
+      "description": "Indled en if-sætning med en kort sætning, og lad variabler, der deklareres dér, være synlige til slutningen af if-sætningen.",
+      "source_sha256": "02e310262214f3c5ceca8bf63ecf2ec3934641a7e2638050479b739ce077031e",
+      "source_description_sha256": "c1de9378770e7df962ac8f2962918b78a6e2e80c3305b35ab584555902c36085",
+      "target_sha256": "b9982ca0996a82cdf17e5eec6e6ee1cf9c4920e7e409563ed40313fa3f7ae1ce",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/7",
+      "route": "/flowcontrol/7",
+      "description": "Brug variabler fra en if-sætnings korte indledende sætning i både dens if- og else-grene.",
+      "source_sha256": "8666746573ce7d0ea1c12ff24c4c8170a1961eedb0600ed73ab849b4758f797c",
+      "source_description_sha256": "0a195d6914891c06915e6d43fce1ddd71c0e7d387373e53500cc56783f385e88",
+      "target_sha256": "88452f9e1478f5aa730f1c200d10313ddf7ccb3fcefb470ca8518834a996765a",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/8",
+      "route": "/flowcontrol/8",
+      "description": "Implementér en kvadratrodsfunktion med en løkke, der forbedrer gættet iterativt; justér stopbetingelsen, og sammenlign forskellige startgæt.",
+      "source_sha256": "d8bbee8455ff59212ef432a08312f7c7703360367325a80df3719157200316e9",
+      "source_description_sha256": "ebf228ed982779e279412f9e840bd06503969b4fe1acec70b088c10df6076e0d",
+      "target_sha256": "d8f2a5647e7c622766f749d6f4ac0f7e08d71d1e1b14ba637537042ddc1fb086",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/9",
+      "route": "/flowcontrol/9",
+      "description": "Brug switch-sætninger i Go som korte betingelseskæder, hvor hver case afsluttes automatisk, og case-værdier ikke behøver at være konstanter eller heltal.",
+      "source_sha256": "abdc4c295fa7b4aec2616acf83badbbf2b581a9f62e41d03ca2ff984ebb6f7ed",
+      "source_description_sha256": "fd71acf123c49872a02285878fa1caf6bb3e6f27d8b2b63976e6cba5b717c50a",
+      "target_sha256": "6f943bea16c32fe436820de05d93f53a929152581d85e9a42ca3803ad6d0e393",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/10",
+      "route": "/flowcontrol/10",
+      "description": "Forstå, at en switch evaluerer sine cases fra toppen og ned og stopper ved den første case, der matcher.",
+      "source_sha256": "e1479cae56a87cddb9c447fc9fd32b0ee1f983058f7ee76554965abd21975ef4",
+      "source_description_sha256": "1a06cd6f5c9aecb29e4d0fdec7cf4d11daaa7edc05631cffcecac25ad4e2e5c6",
+      "target_sha256": "1bc32b7d41fcc1153d31b60adaaec9d0d52b93b08358d18791a42aeff99db172",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/11",
+      "route": "/flowcontrol/11",
+      "description": "Skriv en switch uden betingelse som et overskueligt alternativ til en lang if-then-else-kæde; det svarer til at bruge switch på true.",
+      "source_sha256": "714b67f479583e47080cd0f38489f465a28c002938390c4155af6dfeebb9225b",
+      "source_description_sha256": "7258dc7db21d6d08ba2df8e15f0ae6222c4fc77310073dcfb5c287c172313176",
+      "target_sha256": "b97cc13971ccebecf644aab6f47a416f0826f1a6292ea3e1dc0111ebeccf2c0d",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/12",
+      "route": "/flowcontrol/12",
+      "description": "Udskyd et funktionskald med defer, til den omgivende funktion returnerer, mens argumenterne til kaldet evalueres med det samme.",
+      "source_sha256": "fa23a1d6ebf12f11843d38fe79c413a9c19bfcaf305ae64b75c360db24a436ec",
+      "source_description_sha256": "b0519f626762261cab62e224d08a2a1736e3a237ce8f4a8b48709c90ad8fbcec",
+      "target_sha256": "db1b73dac1d046889b575d4866b2cb8a701e340aba8344569291d8abf8c9e9fa",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/13",
+      "route": "/flowcontrol/13",
+      "description": "Læg flere udsatte funktionskald på en stak, og se dem blive udført i omvendt rækkefølge, når den omgivende funktion returnerer.",
+      "source_sha256": "73a02c24eb14597b3c5f53a09fc572f1a1f0c941adfc337c79fb14b492985fc1",
+      "source_description_sha256": "4f2d10438473b7ee08d85ca67a6fecebfe634eb93ce4d7cffd9fa2b269a15aa0",
+      "target_sha256": "5c40daff693b86f94bc814146e3022aa6807522e990559babfa80759f8346a10",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/14",
+      "route": "/flowcontrol/14",
+      "description": "Afslut lektionen, og vælg enten et nyt emne blandt de tilgængelige moduler eller fortsæt til næste lektion.",
+      "source_sha256": "f565674b974c053924bf69ef83b709dc50931526ae7fa88e71543a5cd872a190",
+      "source_description_sha256": "e4aa7053180e81ac52e524fec926796e1e27bb573e7d2ef9498fe68cab34978d",
+      "target_sha256": "01f2e1011ec0ebb3c7923e0b8228aa22dc1535544be194f4c248a52eca6e2c8e",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "moretypes/1",
+      "route": "/moretypes/1",
+      "description": "Arbejd med pointere i Go ved at hente adresser og dereferere værdier; lær også om nil som nulværdi og fraværet af pointeraritmetik.",
+      "source_sha256": "7706eaf0d46acc79fdad3b7953e5571bf404551d71aaefafd8ba79f5761f9806",
+      "source_description_sha256": "e83399f3a2f0f13e4ce844d458d32ad97bbfe0c4eb292c2247b1a1f741adb9e3",
+      "target_sha256": "c7c7dcead8c3f7e543b7d05dfd2ff8759eac78d73dbb3d91456713350a4bd3bf",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "moretypes/2",
+      "route": "/moretypes/2",
+      "description": "Definér en struct i Go som én værdi, der består af en samling felter.",
+      "source_sha256": "a18dfdaadb9739387cc9886b67e9bf920bf52ada62397a1812cfd302c64aed9b",
+      "source_description_sha256": "5a71c404683c8346f40fb4a2ce1d1d0a2136f49eae43da95f413673da1c567f2",
+      "target_sha256": "39dc5e937decd6ad1230106a3f377c5320e24e83211c729f6dd229a21391619f",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "moretypes/3",
+      "route": "/moretypes/3",
+      "description": "Tilgå de enkelte felter i en Go-struct ved hjælp af punktnotation.",
+      "source_sha256": "0be9cb4a59a0d95526c208e5d8d96ebe6a15fd84b6e3a2ff9a07963226cb7b58",
+      "source_description_sha256": "3e367121c5953b979a016ce011d4ff223de69eb66185edd7df099115d7d631a0",
+      "target_sha256": "97ec5cefda9b6f8c79b70272e556e8aa16e9903adc444cf9e498b2026ed2d293",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "moretypes/4",
+      "route": "/moretypes/4",
+      "description": "Tilgå felter gennem en pointer til en struct ved hjælp af punktnotation uden at skrive en eksplicit dereferering.",
+      "source_sha256": "29695d334b6ff809e84ae8caeb7b9dc493143236783c07c16a83ecc64514c310",
+      "source_description_sha256": "a1925946cf90f972783ebf3472729761307da90cc30c5cfdf2310eaf91b391b3",
+      "target_sha256": "c09ff3447ede164cd229841b94518adc8af9ac4091d111da4eb08fcd62f08b47",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "moretypes/5",
+      "route": "/moretypes/5",
+      "description": "Opret structværdier med literaler, initialisér udvalgte felter ved navn i vilkårlig rækkefølge, og brug \u0026 til at få en pointer til en structværdi.",
+      "source_sha256": "cf9282456e2a91274c1b135a68fce58dd1590f6a2d7153f0619c97ded8bd00d1",
+      "source_description_sha256": "566428b986d24aff9e14f50ed6728a9cd31ec8de1461064cecdd73e34deac89c",
+      "target_sha256": "fe4f03ebd2fadb5083b6546d91fd6e3649f261b208399ff864ba62145b117dc3",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "moretypes/6",
+      "route": "/moretypes/6",
+      "description": "Deklarér arrays med fast længde i Go, hvor antallet af elementer indgår i arrayets type, og størrelsen ikke kan ændres.",
+      "source_sha256": "0ec503e46281eb8ff25ceba5b92c9f9c3b40517aeea77cf4878760ed0da9d29c",
+      "source_description_sha256": "3b15294f0e004adb588a19d958ebd8674ace65225f2390ff91b37d81d214feef",
+      "target_sha256": "7e26c800b743ea93ab53488c6911f989470cdbf2ec69af84a0b69707a7142250",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "moretypes/7",
+      "route": "/moretypes/7",
+      "description": "Opret slices som visninger af arrays med dynamisk størrelse, og vælg halvåbne elementintervaller med nedre og øvre grænser.",
+      "source_sha256": "a169cf48dd659510ff7f1f8adfdbed5a247b51a1f7c3a45ae972f18921925033",
+      "source_description_sha256": "71c152fddf296a9d7a40e99b79e941cda0c04867f7344b3fb46c6cfac813cd81",
+      "target_sha256": "12dedc87054c9c2811a960e05b76a36134f1058dcbf261e7ddf163784201324c",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "moretypes/8",
+      "route": "/moretypes/8",
+      "description": "Forstå, at slices refererer til underliggende arrays, så ændringer af elementer også kan ses gennem andre slices, der deler samme lager.",
+      "source_sha256": "e577f9e98a9c871cdc6f39ecca1bdd0965c26da3b9ab6c2a7cab42b3b0f3a568",
+      "source_description_sha256": "618088a9c7bea851e2362ee4ce74f750fe9b05c65bf0ded5ce01001710015812",
+      "target_sha256": "c61d087b9ac10a601a880dab206265aad7f08124e08a020c56f445cdf59df29e",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "moretypes/9",
+      "route": "/moretypes/9",
+      "description": "Opret en slice med et slice-literal, der ligner et array-literal, men ikke angiver en fast arraylængde.",
+      "source_sha256": "fb79cf8caed7abc7dfd92e90cf1bcc11d547b8af96d224f30fefc995f98dbb0b",
+      "source_description_sha256": "cfa2da2eea5f06155f696c35cd43bc84d2f7c1ca2dff42f756c5fd27791f3489",
+      "target_sha256": "92505e1f6c0c442844afb5601266513d34204c02727895f38b9bb3c840c22699",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "moretypes/10",
+      "route": "/moretypes/10",
+      "description": "Udelad en slices nedre eller øvre grænse for at bruge henholdsvis nul og længden af den underliggende sekvens som standardværdier.",
+      "source_sha256": "36d1f92fc5e51cddcd26be7f74a875e60bf24633dd7c8689672fa23a6720e2a1",
+      "source_description_sha256": "00c286e8ccea7f8b05a8c475819b6077a9fbb24729e0dc4cb4d2e7145e795b87",
+      "target_sha256": "17bd2494ea9bbfd78bcfcfa5f67effb4fcb91946b0a0101c6a00d30226dcb3cb",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "moretypes/11",
+      "route": "/moretypes/11",
+      "description": "Skeln mellem en slices længde og kapacitet, undersøg dem med indbyggede funktioner, og dan kun nye slices inden for den tilgængelige kapacitet.",
+      "source_sha256": "e2d7d69c946e5a01d8d0eab2e07a2bf35e23453a617d5e7602ff0af5c5866d8f",
+      "source_description_sha256": "0f6094f4c28fae60bb70bd2616205d35bcfdea8d477b997d9ac0e7ae45b41654",
+      "target_sha256": "a6f5114cd9c564fb6edc87ac7c55600c0d16167d39ed787270e1f903c7b82252",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "moretypes/12",
+      "route": "/moretypes/12",
+      "description": "Genkend nil som en slices nulværdi uden underliggende array og med både længde og kapacitet lig med nul.",
+      "source_sha256": "e7a4bb0d5e7928c2da06312d983eba2adb533b30299025f507df183f00fefc89",
+      "source_description_sha256": "606962e7091f32e866981de754dc51784b725847cfa49f35284ceb8fe05ec9e0",
+      "target_sha256": "ac2fc6b84f4540f25303ef9c27eb90047aca1913b9d2f8811d51a4a73b9caf3b",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "moretypes/13",
+      "route": "/moretypes/13",
+      "description": "Allokér arrays med nulværdier, og opret slices med dynamisk størrelse med make; angiv eventuelt en separat kapacitet.",
+      "source_sha256": "d057e6bf75421597d430ff52f844499b5828ab2c4b4c5148ad88b6b89326ac20",
+      "source_description_sha256": "a0d0187091a138008eb18442ae1f499aa8d2fe942ecf6e524eb273d97dfb67f8",
+      "target_sha256": "6aa33d973d0f353018098a1141fc559fc72f35ba226df78609c6ad93efe566d5",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "moretypes/14",
+      "route": "/moretypes/14",
+      "description": "Byg flerdimensionale datastrukturer ved at bruge slices, hvis elementer selv er slices.",
+      "source_sha256": "d8bee22c0382cf5fd5647c4d7106165d153cb15aaed8ec82e1f06e12ad0c73d1",
+      "source_description_sha256": "2a66202c8fdba235e0c78234d01daef6898cd69c0d446f8a21a67979a1bef043",
+      "target_sha256": "2761fd77cf565f78944b8e60e1413df36926e369d657f3c1cf35fe2aee915730",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "moretypes/15",
+      "route": "/moretypes/15",
+      "description": "Føj elementer til en slice med append, og forstå, hvornår pladsmangel i det underliggende array medfører allokering af et større array.",
+      "source_sha256": "f2fc257e7c5f118321acc3b75e946053601532d411e8540534280d7fba795289",
+      "source_description_sha256": "5b4f57f1d1e59e6ee5cac92794e618501132356ae3710d7c3c8bf12f32041553",
+      "target_sha256": "b7fe128b953c3739968ce4d1d97584bce5536dd31249a0ff6f421efd681bc428",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "moretypes/16",
+      "route": "/moretypes/16",
+      "description": "Gennemløb slices eller maps med range, og få både hvert slice-elements indeks og en kopi af dets værdi.",
+      "source_sha256": "73fc46a2e049ce2ff4a4fc0595d717ed5d6e15b7093a6014509a48f501253186",
+      "source_description_sha256": "9fb6dada42add61186c2e79dc091c3dce567895431ef25fd18220abac6f5b215",
+      "target_sha256": "b50af741924be242513b6ef1a85d1431b67f6069c240b3e268107530b84539e7",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "moretypes/17",
+      "route": "/moretypes/17",
+      "description": "Ignorér et overflødigt range-indeks eller en værdi med den blanke identifikator _, eller udelad den anden variabel, hvis kun indekset skal bruges.",
+      "source_sha256": "b52cca070f62a3ffeab3adf20f2745e1dd9aa2644a3985c23ac295e81e2c3bc9",
+      "source_description_sha256": "8c0f2bdd2a6f92dc681fa22f729da6d836747b0c4dce0f9947c019f8886c229d",
+      "target_sha256": "94670354299e5f477ef19d6ab1ffe2630b7d332ae01d586ad83c86a53289385c",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "moretypes/18",
+      "route": "/moretypes/18",
+      "description": "Implementér en billedgenerator, der allokerer en todimensional slice af 8-bit-heltal uden fortegn og beregner værdierne til et vist billede.",
+      "source_sha256": "9c5fd763eaedec8e8bfb60f52713417ff247bc4467aa8a94412c55ab83c781ba",
+      "source_description_sha256": "50c352bd8a0fa28b3eb713c3691438364c9116f66e92457d0c6ee385fc2a3c44",
+      "target_sha256": "b196113f6ec1cc34e88a157317bd94eb13ce03daed0cecb107bcc8be1f84b207",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "moretypes/19",
+      "route": "/moretypes/19",
+      "description": "Opret maps fra nøgler til værdier med make, og forstå, hvorfor et nil-map ingen nøgler har og ikke kan modtage nye elementer.",
+      "source_sha256": "39107d53feaffd26d7bb13103fe6e40746e9844d9b37bbf84559f7b91db312f3",
+      "source_description_sha256": "3bca4e1884f5843283b2ab833dec533c36fe7550097d1ce696ebd927fba24f29",
+      "target_sha256": "9390e9c34fcc8d3adc0bc3e70103ab56f79acaa3f6fccebee1865f0e0005a8f9",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "moretypes/20",
+      "route": "/moretypes/20",
+      "description": "Initialisér Go-maps med map-literals, hvor hver værdi skal have en tilhørende nøgle.",
+      "source_sha256": "1d3caa45093f65b50d5ebcff6a57559c3fe70faba85f3a0bb41db38c5375a507",
+      "source_description_sha256": "64b042ea9448b757f3249adcd03128e281423a7a30ac994669961db1114a4024",
+      "target_sha256": "b8968c28aafbb5add8e7d141be04a3d8e7730447f251f90fec35a0cbc180bbfd",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "moretypes/21",
+      "route": "/moretypes/21",
+      "description": "Forkort map-literals ved at udelade gentagne elementtyper, når elementtypen på øverste niveau er en navngiven type.",
+      "source_sha256": "0493179c2396f2e755fa5f1e579ce6f4cc716842ef5ee77a0b1c742210c15f9f",
+      "source_description_sha256": "c730c99a0322ec952dc3b0babf1aae15538fb08e7bf4b9d41b3580c524b4cf4c",
+      "target_sha256": "ca2c8b14080bfb1a854c3f51cdecd20759d882cb6d0c92f9a3f56d822bee1a1b",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "moretypes/22",
+      "route": "/moretypes/22",
+      "description": "Indsæt, opdatér, hent og slet map-elementer, og brug opslag med to returværdier til at skelne manglende nøgler fra nulværdier.",
+      "source_sha256": "f6963bc620184c7fbea7b04c309ccf64d508a4e835500fa7dd4188e60204019f",
+      "source_description_sha256": "071308970b93a12a3ab3561c0ce18d0073cb4edd7fef6381380777864c8f6685",
+      "target_sha256": "e3705959a3f5896bcfe6575c26fa2b3acecd632884244f638f21bb56a7e5c2fd",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "moretypes/23",
+      "route": "/moretypes/23",
+      "description": "Implementér en funktion til ordoptælling, der returnerer et map over, hvor mange gange hvert ord forekommer i en inputstreng.",
+      "source_sha256": "3214968207b659c3fb6bf92ee3d1ba0858bf7d3240dfad30fada7c5d8bddea69",
+      "source_description_sha256": "980a77135ab84953b0e8c2200b54f1ecdc0f2f7255ac497aeee281ca30b03e11",
+      "target_sha256": "c61ee0241c897c3e7cfeddfb1fb82fd133ba5dced63af66ab72ead6879852703",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "moretypes/24",
+      "route": "/moretypes/24",
+      "description": "Behandl funktioner som værdier, der kan tildeles variabler, gives som funktionsargumenter og returneres som resultater.",
+      "source_sha256": "91b508ec19d3baf6fd1b2382e54b0f4ec226e9af99d027e86d734cf081d9c897",
+      "source_description_sha256": "7071f87634550cbb36233a6ae15e5910f3b6dc71e3a4d4db8d669f30168094ef",
+      "target_sha256": "39fd31d00aa2506c86593e982cbadb0c926a24e3ac768ad92a478e2336c55652",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "moretypes/25",
+      "route": "/moretypes/25",
+      "description": "Opret closures, der refererer til og ændrer variabler uden for deres egen funktionskrop, hvor hver returneret closure er bundet til sin egen tilstand.",
+      "source_sha256": "570e535e9c2b2d1978534eb3b42f226102b11da36a3f9e61620dc5eafdb6be5f",
+      "source_description_sha256": "46ca9eb3fb315877fb7ecde2e10d046d4c3acbd71f62b37982d5e47644e3b63c",
+      "target_sha256": "b6c79d435f011262e70060f61a1422e330fee26ed03bffb19574bf20cc467541",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "moretypes/26",
+      "route": "/moretypes/26",
+      "description": "Implementér en funktion, der returnerer en closure, som producerer successive tal i Fibonacci-følgen.",
+      "source_sha256": "24f01440a7b0d638694c6cb275bf92e79e1fb2463ea2eb7d40a68cc4d6a0ed29",
+      "source_description_sha256": "e64e0a59ac166352e290c6051c98df95c58de5eea297a98fd1e648b3dbfa0517",
+      "target_sha256": "86e679574187c8d3f7a7ce80b986472ac01bcaf38af8d8843713fca4ebaf97f5",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "moretypes/27",
+      "route": "/moretypes/27",
+      "description": "Afslut den gennemførte lektion ved at vælge et andet modul på listen eller gå videre til den næste lektion.",
+      "source_sha256": "f565674b974c053924bf69ef83b709dc50931526ae7fa88e71543a5cd872a190",
+      "source_description_sha256": "60d1bf20d7741180f02b9b4c6c077d6515d15097cdd8b3513427f8cce749c249",
+      "target_sha256": "01f2e1011ec0ebb3c7923e0b8228aa22dc1535544be194f4c248a52eca6e2c8e",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "methods/1",
+      "route": "/methods/1",
+      "description": "Definér metoder på Go-typer med et særligt modtagerargument, så typer kan have adfærd uden et klassesystem.",
+      "source_sha256": "8a62096b755332ede134c87493abe49231a52ce60abebcdc107bb6a64434fc72",
+      "source_description_sha256": "fb223db6446f747e780768d2e0bb40d143d440772710e6b2d978b464d0125b06",
+      "target_sha256": "21f53e113797a72f66e894400bfc7b04018c86c9236472f767c4bac3b2319459",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "methods/2",
+      "route": "/methods/2",
+      "description": "Se, at en Go-metode fungerer på samme måde som en almindelig funktion, hvor modtageren skrives som et almindeligt argument.",
+      "source_sha256": "ade066728f85cc93e75c2472b80d532b62259a7e08e42ef36e3d05c6cfa5476d",
+      "source_description_sha256": "ce86f31a028ef9ab542bf3b70e30f4ced404ea86da994eb0055ce1530c287861",
+      "target_sha256": "93f00e2a73891a42942da1a78e9b8fd1f160b6c8db341158c7a0daf74e0a1dd8",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "methods/3",
+      "route": "/methods/3",
+      "description": "Deklarér metoder på lokalt definerede typer, der ikke er structs, og overhold kravet om, at modtagertypen skal høre til samme pakke.",
+      "source_sha256": "31c4fd0d80c8f1d96cf3efb1ecc1f9d3c0d1b5b70bb5c23bf7227b7007469588",
+      "source_description_sha256": "ac9c16d673aa0a6c164fde59b24ee32cb330a5104806181181c08599ec916cbc",
+      "target_sha256": "f7e1a50e9fb216ee2fc631644f32b06d7c35acec5087475476b0a8886c39ac73",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "methods/4",
+      "route": "/methods/4",
+      "description": "Brug pointermodtagere, når en metode skal ændre sin modtager, i modsætning til værdimodtagere, der arbejder på kopier.",
+      "source_sha256": "99f9fa4e5c4dd46d393f40b417d0430c4e27e56f40146f5f192f55ccda4e2db3",
+      "source_description_sha256": "51681653ead1e8e1cd79df9b64aa2cc8b156fa7ea457af6483ed06598fd7af1d",
+      "target_sha256": "03e3b3e03a21a5f11c78927531a040159ef119fbd1799d3894b112c83b323b55",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "methods/5",
+      "route": "/methods/5",
+      "description": "Omskriv metoderne Abs og Scale til almindelige funktioner, og undersøg, hvordan en ændret pointerparameter påvirker adfærden og kompilerbarheden.",
+      "source_sha256": "cac8affc7a8fd7bc1c0003d8cbf5bd7c85433faea45ea1b39f3b80c2fbc5eae9",
+      "source_description_sha256": "175f241b33ef8229537e3ddd12f24f527ee8b9b13b5ef816d0a89df25fde9b86",
+      "target_sha256": "e502528569460c4ce292610739ca5ef7122bd8b645a4ea850180f2f4c8e68d65",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "methods/6",
+      "route": "/methods/6",
+      "description": "Kald metoder med pointermodtagere på både værdier og pointere; Go fortolker eksempelvis v.Scale(5) som (\u0026v).Scale(5).",
+      "source_sha256": "39fb725b0a084ce3634dc973c215ff7a0f034c5f7b51c2ffe25934088072ebf6",
+      "source_description_sha256": "c4d49e8004cabb2c1640bd29ab1de2ace735f70c575f2b32c636c1a587d314ce",
+      "target_sha256": "da1b8d36a71edab4b9ee9cd1c8aa1bb12d8c11dc6bd2025d9b241d159fb6c7c8",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "methods/7",
+      "route": "/methods/7",
+      "description": "Kald metoder med værdimodtagere gennem både værdier og pointere, da Go automatisk derefererer pointeren ved metodekaldet.",
+      "source_sha256": "61a9cb8411e6ce15dce3383a68a52c6644599e84269b3faf240129277d238f7e",
+      "source_description_sha256": "ab14363b476d06458eda3434ed9e990c715ddddc11863cdcb2c7ae3b1d0fe936",
+      "target_sha256": "c1c90cfda350e1e036edf90041311fb1dc2332ad1382de67d129aaee13035765",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "methods/8",
+      "route": "/methods/8",
+      "description": "Vælg pointermodtagere for at kunne ændre værdien eller undgå kopiering af store værdier, og brug samme slags modtager konsekvent for en types metoder.",
+      "source_sha256": "357424f2a76613085184054178042b442331b5689d156ac9c37e09e57c436dae",
+      "source_description_sha256": "923ca14660ea330bf1790cee51d4e1bc7bcc760ce29b54054e2ce4ee45c4f262",
+      "target_sha256": "70a72811393459be1bf486cceb20671e5af7114d6e2e4aa296c795f5b9b8edd4",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "methods/9",
+      "route": "/methods/9",
+      "description": "Definér interfaces som samlinger af metodesignaturer, og se, hvordan valget af modtager afgør, om en værdi eller en pointer implementerer et interface.",
+      "source_sha256": "39efc19ed01619130489d21e421f2c0d8947b20f408580f4ceaabce6a0feb099",
+      "source_description_sha256": "6ee25d295ab6b3a2b4e7e26502652ed739467c62bc70835860cfd77bafb8903c",
+      "target_sha256": "f9a93b5c2880f0e95589b1b211832ae5af2d0e077de027dc72d9c87974b94e5c",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "methods/10",
+      "route": "/methods/10",
+      "description": "Implementér interfaces implicit ved at definere deres metoder, så interfacedeklarationer og implementeringer kan holdes adskilt på tværs af pakker.",
+      "source_sha256": "11ca99e6e83d93827daf02b177156fcb6f3c94ac8c202491dfffc5840ce4e39f",
+      "source_description_sha256": "6cf08662aae9ca82ce2cd6cd0a15e78992b0473cafa1149663a37fb9e2a7c7c2",
+      "target_sha256": "7805ece798f30e9a9918085c692982f61da31df9fc756c74473dadf15ac819f8",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "methods/11",
+      "route": "/methods/11",
+      "description": "Forstå en interfaceværdi som en underliggende konkret værdi og type, hvor metodekald videresendes til den konkrete types metode.",
+      "source_sha256": "ccb2ed709b887724d22fb93714702fed5de4b7a83ca976876864045ff4752270",
+      "source_description_sha256": "cd6a134e49b4453e54c30c9686447f807f2a1e050246e4d6aee73514bb2179dc",
+      "target_sha256": "d2d76d54bc89d1707cecf1861ad53e68001bd3fdac8309fa48ff7a1c89cc382f",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "methods/12",
+      "route": "/methods/12",
+      "description": "Skeln mellem et interface, der ikke er nil, men indeholder en konkret nil-værdi, og udform metoder, der håndterer en nil-modtager uden problemer.",
+      "source_sha256": "9487ca3c9872972d42af8cfa389755678fe8a7cca110b592aac2a762332febf5",
+      "source_description_sha256": "fa0e9391d2ece71351113b5ecc38a4c43baa6e6bfa6bbf4929f8154a5d39bc09",
+      "target_sha256": "87a38a5347c5c3891ffae28481d9be7993b47f637294870a2baec7cd9178d83b",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "methods/13",
+      "route": "/methods/13",
+      "description": "Forstå, at et nil-interface hverken indeholder en værdi eller en konkret type, så metodekald på det medfører en køretidsfejl.",
+      "source_sha256": "2897922c0b088ccd46b3e42a442aeecda0787c4162db1329d0e8f39d05735547",
+      "source_description_sha256": "b4dfe6e93b9056119ee683f0c66c47a4d57c4da2ab646e1d5aaa2f7ff5193695",
+      "target_sha256": "baa12c28598d9a21b8f336c10bbf5ca465c18cb1f698508383f608bb0c86fe86",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "methods/14",
+      "route": "/methods/14",
+      "description": "Brug det tomme interface eller det tilsvarende alias any til at opbevare værdier af vilkårlige typer i generel kode.",
+      "source_sha256": "7a09a7654c8b6ac6d96a1a8ddaafac368782f89ec2e6e61f323d40eb01cbf750",
+      "source_description_sha256": "1abc921a534e41046d73ca5924ad534b905486f3528eff469b8816a3a94ad269",
+      "target_sha256": "cb51a0cace0d95e55b75d1d2c7e0e0042d40ea9d7ff8d1905aeaaba719d4cbe1",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "methods/15",
+      "route": "/methods/15",
+      "description": "Hent den underliggende konkrete værdi fra et interface med en typeassertion, og brug formen med to resultater til at undgå panic ved typemismatch.",
+      "source_sha256": "c205b4eb940358edea6321cfa422c3c00a560e9a6a71b08c8b3fa3ab9e4926ae",
+      "source_description_sha256": "2d146c65bc4f8cb9e2129fffc886ebe5e057615fea1b640106d6671ef8c431b1",
+      "target_sha256": "73276c6cd28f5e7353e1b2afcbfac0c00c5c7ad851ed8b897702232335840aaf",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "methods/16",
+      "route": "/methods/16",
+      "description": "Brug en typeswitch til at teste en interfaceværdi mod flere konkrete typer og binde en variabel med den korrekte type i hver case.",
+      "source_sha256": "26e4da09e80d30b06368691c76ee2940139b0f6fc40cad47bb6d1d2947933c27",
+      "source_description_sha256": "d33eb15901d822bc5a23f381c6d61ac484c844a004c4bf34b699dff7de6cd24f",
+      "target_sha256": "de2c3d9908b70c15152f2107e8932457e3986d76e0b37ad03bbbd833bd403ebf",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "methods/17",
+      "route": "/methods/17",
+      "description": "Implementér interfacet Stringer, så en værdi kan beskrive sig selv som tekst, når den formateres eller udskrives.",
+      "source_sha256": "0363038e64b6f186e1bbd55c3323a5d7770a2b728605d8e3f01ae234aff6a444",
+      "source_description_sha256": "c446522cd9230076fbeae5d023a4d73f6473469102b840b6dc474e0f33d3cd38",
+      "target_sha256": "92dcf0a48b08f24b59ad23b1741a32f184b231c6455288415efd03f12faf324d",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "methods/18",
+      "route": "/methods/18",
+      "description": "Få en IP-adressetype til at implementere interfacet Stringer og formatere adressens fire dele som decimaltal adskilt af punktummer.",
+      "source_sha256": "ad118644f53755586f14409e203bccfb5ac4cff7c01734157032a45648fb06d3",
+      "source_description_sha256": "7fca48e6f4206cd8d1dcaee960b79026d1c7ed9a6522f5b5c7182e7db036058b",
+      "target_sha256": "6079c7aafb229b5581fbab5742fb67b63983664eca0ec135b1cc339d21a5848e",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "methods/19",
+      "route": "/methods/19",
+      "description": "Repræsentér fejl med det indbyggede interface error i Go, returnér fejlværdier fra funktioner, og undersøg, om de er nil.",
+      "source_sha256": "9eaab1fde2076c1376f78ceec0f84766c4c3b8062867436d73cef0bc77f16bd5",
+      "source_description_sha256": "b997133bc34918b752e49098ee7c596089a1a25f93d62bf29a1ed496c0a68d17",
+      "target_sha256": "6bd4a03c2eaea2964de92dfb9f40415570c0b092718da26bd0e844b9bea3ff89",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "methods/20",
+      "route": "/methods/20",
+      "description": "Udvid en kvadratrodsfunktion, så den returnerer en brugerdefineret fejl ved negative argumenter, og undgå en uendelig løkke ved formatering af fejlen.",
+      "source_sha256": "41f1f73320fde60ee5ff30d5927a19ff22d6da6a336bb776e15f2499e4f421d8",
+      "source_description_sha256": "4af48585b9125cd7437caf7d571c969ec8ae224916d9b674015446d6878f553c",
+      "target_sha256": "487f7181ebcbfe6957877d92f573786a014b8c20e568253d36a3da7e3d50a0c2",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "methods/21",
+      "route": "/methods/21",
+      "description": "Læs datastrømme gennem interfacet Reader ved at udfylde byte-slices og håndtere det returnerede antal bytes, fejl og signalet for datastrømmens afslutning.",
+      "source_sha256": "120c3fc9f67579cf78605cf0c9f006fc28d3569043a08079ddb645ca9c3fc3b1",
+      "source_description_sha256": "3d143859fa8cf818fcf69f355ec785aeaa9ee25613b9fb1b1f8750b88d649ba3",
+      "target_sha256": "73c2395c50bdb1495335fc3f8c6da8e5f79f14f8f2a50b6afe06f2be98e9cb57",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "methods/22",
+      "route": "/methods/22",
+      "description": "Implementér en Reader-type, hvis Read-metode leverer en uendelig datastrøm af ASCII-tegnet A.",
+      "source_sha256": "0df444d989996a06d6dd50f4b109af4ae1cb2302b8dd867bcbe9bf98e424d230",
+      "source_description_sha256": "b1bb526c762d827e97448d79c00210d1bb286b0a0f11f6e4c607b6ddd5f156c5",
+      "target_sha256": "ed8e3fdb06df5150e8841e045e785fd2753ff85f79c15ea2c574f7a1ab56d729",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "methods/23",
+      "route": "/methods/23",
+      "description": "Omslut en anden Reader med din egen implementering, der omdanner bogstaver ved hjælp af substitutionschifferet ROT13.",
+      "source_sha256": "11d876145fae980b2e283e3fac7357a950eb20f022b7da48cc58efed5b1e8e04",
+      "source_description_sha256": "55b462b45c3316b40047228bfce6b04a7009e8d2772bf5ff3dcbd1ce7197d638",
+      "target_sha256": "042dc5a1b59561bddfe36317505fa288958ee681d0a70c7da259eebf5e31f7e7",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "methods/24",
+      "route": "/methods/24",
+      "description": "Forstå interfacet Image gennem metoderne for farvemodel, billedgrænser og opslag af pixelfarver samt de tilhørende farvetyper.",
+      "source_sha256": "d80f0d46796ad415a7ded4d0cefdef6cdb58deb38d050a61eb64abb25caf27ee",
+      "source_description_sha256": "0a30974c745ec5adef7da2417dcc5308e2e69627488c5a2c9e880870c6da5c41",
+      "target_sha256": "8e50775ac024892f19667721abeb80b31f1a926d30f1329c6874a5e3cecf2600",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "methods/25",
+      "route": "/methods/25",
+      "description": "Definér din egen billedtype, der implementerer farvemodel, rektangulære grænser og opslag af pixelfarver til genererede billeder.",
+      "source_sha256": "a196bc59d96602c3fe72cf765419366094a5c1e96de0d24dd140887ebd1826b5",
+      "source_description_sha256": "47aa41f6a229ac42781cb3536c72a700c3617131893b661be47fa26bcd55da91",
+      "target_sha256": "fb530c9fcc101b47fff8745a128abf287a65cd2ed9bce594cbd296e49884e162",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "methods/26",
+      "route": "/methods/26",
+      "description": "Afslut lektionen, og beslut, om du vil vende tilbage til moduloversigten eller fortsætte direkte til den følgende lektion.",
+      "source_sha256": "f565674b974c053924bf69ef83b709dc50931526ae7fa88e71543a5cd872a190",
+      "source_description_sha256": "fb9dc0de6022cba642b0d023e060400ec0eea65f5e479a0b6586e8457a3a6e1c",
+      "target_sha256": "01f2e1011ec0ebb3c7923e0b8228aa22dc1535544be194f4c248a52eca6e2c8e",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "generics/1",
+      "route": "/generics/1",
+      "description": "Skriv generiske Go-funktioner med typeparametre i kantede parenteser, og brug typebegrænsningen comparable til lighedsbaseret søgning i slices.",
+      "source_sha256": "01a045105dc8c12fb1709f122d363235c19a6464d5de7587d579524aec270dd6",
+      "source_description_sha256": "b1a9a022272688b86d0572b7ce4dd9d725f2721d2bc9e3e37c196d2ce20b6573",
+      "target_sha256": "0d4e18aef245c5737da061f22da361c37134f75ab49676efded85cab2bc9d1ce",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "generics/2",
+      "route": "/generics/2",
+      "description": "Definér generiske typer med typeparametre, illustreret med en enkeltkædet liste, der kan gemme værdier af enhver type.",
+      "source_sha256": "08486351895e62792a84bc3eeab6aa85df7b1658735b7239040d219812f63277",
+      "source_description_sha256": "7b1a0ed87733ae57b018fd8b291ceb880f9b20f8b11e3a3744afe5c5237dfa0d",
+      "target_sha256": "4176502ee2140896de3ede35a1035e95761a3ed8891a0a3dfb604641f163e3d5",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "generics/3",
+      "route": "/generics/3",
+      "description": "Afslut den gennemførte lektion, og vend tilbage til modulkataloget, eller gå videre til den efterfølgende lektion.",
+      "source_sha256": "f565674b974c053924bf69ef83b709dc50931526ae7fa88e71543a5cd872a190",
+      "source_description_sha256": "65816f922f9107347efd8286904bad00224481b7d9efb4ff5c998e2b8983729e",
+      "target_sha256": "01f2e1011ec0ebb3c7923e0b8228aa22dc1535544be194f4c248a52eca6e2c8e",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "concurrency/1",
+      "route": "/concurrency/1",
+      "description": "Start lette goroutiner, forstå, hvor argumenterne til funktionskald evalueres, og synkronisér adgang til delt hukommelse mellem samtidige goroutiner.",
+      "source_sha256": "d0a9c45078c2255540cfffe48744a07fa04ab5c2113e8880068b5a400ae0ebdc",
+      "source_description_sha256": "d2b2b18b050a6f45dea879d72a29023649e8ce7d55822315cb11cdc5d8330796",
+      "target_sha256": "c51924daeb2fda2f74e7a17cc88dc3f3f83f54a906f4adc813eeacb47bfedd95",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "concurrency/2",
+      "route": "/concurrency/2",
+      "description": "Send og modtag typede værdier gennem kanaler, og brug deres normale blokerende adfærd til at synkronisere arbejde mellem goroutiner.",
+      "source_sha256": "a35e3af26b51f8c2c2a6dfaf09f9c7cab0fdb4b1b56f9e4dc9b793f1dac1e295",
+      "source_description_sha256": "1025cf5ae195d6ddacba6eba015df931afc7d88d4fb1f045e89374a0ce269218",
+      "target_sha256": "30a5b603e7a80ea5120f27e9c6280c12ed0cb7f7199c029373a2725bbb4aa388",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "concurrency/3",
+      "route": "/concurrency/3",
+      "description": "Opret bufferede kanaler med fast kapacitet, og se afsendelse blokere, når bufferen er fuld, og modtagelse blokere, når den er tom.",
+      "source_sha256": "caef0893a54c61f192be397f6b27a039d81dc007f98f2d203a5a287383c0682e",
+      "source_description_sha256": "841cd97624869908df1823647fdf34b37e1ad3be60d94232ea68d29df3791d3e",
+      "target_sha256": "46bb487b39bdc983bb55003cf377b437d0cd62c4e0a8973172f997b564c8fa78",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "concurrency/4",
+      "route": "/concurrency/4",
+      "description": "Luk kanaler fra afsendersiden, registrér lukning ved modtagelse, og gennemløb kanalen med range, indtil alle sendte værdier er modtaget.",
+      "source_sha256": "3e925c6745255a443c61f25cd8131d538dc8677938f1c5021ce798465020b42e",
+      "source_description_sha256": "052b32bc75a99f8e63d851b090201f2d860fe3e0df54d1c36dfe898d791300aa",
+      "target_sha256": "2d1fbc965b947b42e0212d70b9def25ffd3ba42329f950619989abc0cf375eab",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "concurrency/5",
+      "route": "/concurrency/5",
+      "description": "Brug select til at vente på flere kanaloperationer, fortsæt med en case, der er klar, og vælg tilfældigt, når flere cases kan udføres.",
+      "source_sha256": "8d8de56f080d4f702ac455aa60cb13b745472bedc9755000e8b5d6a2a898577d",
+      "source_description_sha256": "ff560a3c278c4608f677eb25977282a92605545470d352b501cb020944f5c19b",
+      "target_sha256": "ab4aa9301f3248b44be86daf340abafcc9d8e388d4728d05a396556c1c683f3e",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "concurrency/6",
+      "route": "/concurrency/6",
+      "description": "Tilføj en default-case til select, når du vil forsøge at sende til eller modtage fra en kanal uden at blokere.",
+      "source_sha256": "82e9cd932e14e6c4852fc8f865f4c45dc75845bd1a306649152ebc045f0c3b2c",
+      "source_description_sha256": "62b930aa676592e83be591ce640338cad3d4a28f8031b70020c125cae407288f",
+      "target_sha256": "f21b0323e1407617fc70c4b66def48fdd59d84bac27911f12f6abb157d662a6d",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "concurrency/7",
+      "route": "/concurrency/7",
+      "description": "Undersøg, hvordan forskelligt formede binære træer med samme ordnede værdier kan sammenlignes ved hjælp af kanaler og samtidighed i Go.",
+      "source_sha256": "7c5d3fc7bb2540285d746242f8a1d16075639648eec8909c1df52239297d2917",
+      "source_description_sha256": "1788be855428fdadd5d5755548f4a1c678aa4db359821c7a553ffecdf5e4de7c",
+      "target_sha256": "1e8be25f1b820fe3c3444b0e1f9dcc33784c5914060eaa20022b29913b5991f1",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "concurrency/8",
+      "route": "/concurrency/8",
+      "description": "Implementér en samtidig gennemløbsfunktion for træer, og brug dens kanaloutput til at afgøre, om to binære træer indeholder identiske værdifølger.",
+      "source_sha256": "b362cc15a26324acd311f7cab18a628dc1d7d9ac6d455add7d651d41acf15e9a",
+      "source_description_sha256": "5fcc3f084dff1ef87b86f2a0714ed2b130301ff803ea2c298f1be3baccf48959",
+      "target_sha256": "1f5e67838e0f88d4223dd3253bfabcd749284c5f7fc142e8c2ef06c1aeef6770",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "concurrency/9",
+      "route": "/concurrency/9",
+      "description": "Beskyt delt tilstand med gensidig udelukkelse ved at låse og låse op for en mutex, herunder med defer for at sikre oplåsning.",
+      "source_sha256": "49f727794604c2ef8a8dda9508d0f412d7015cea77754c675a02b166dd9bfc93",
+      "source_description_sha256": "45500a9f438a556dd61ab13ebbd255f4da67469a93c8f12a510ac0883531cbb2",
+      "target_sha256": "a1fb555dc5ab8d8351a5703532d47308fb35f59872d33a64fb60c18b233f3515",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "concurrency/10",
+      "route": "/concurrency/10",
+      "description": "Lad en webcrawler arbejde parallelt ved hjælp af samtidighed i Go, så ingen URL hentes to gange, og samtidig adgang til et delt map forbliver sikker.",
+      "source_sha256": "bb686393225ef2335e627819a1664a84456f00b64af133af64920d43f0abdb94",
+      "source_description_sha256": "9f5eaf228169f96b0df33e42107f5e232500256bfbd275f7f9eecc516af7e7a9",
+      "target_sha256": "7f5b2f4367fdfab58fe805e085011735f11738680fc2b609afa9a8f2f25e3392",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    },
+    {
+      "page_id": "concurrency/11",
+      "route": "/concurrency/11",
+      "description": "Lær mere om Go gennem dokumentation, vejledninger, referencer, foredrag, kodegennemgange og artikler samt ressourcer om samtidighed og webapplikationer.",
+      "source_sha256": "45ef131ede663b1355c0a5933634d46c393f66be8a6450b184f86a62e928a64e",
+      "source_description_sha256": "4ed88e1ec54c490baa161dd4be091fd7d22aa45b5f8855f73b8cdabc678feb44",
+      "target_sha256": "2e63ec9366cbe490b8746dfb6b3198537623896b559264130e698bd1407014de",
+      "glossary_sha256": "5cb7ca5903d5bcfd3db453300d91f6be7a6e90d218714fcca29b5575f42b51f8",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-27T12:25:14Z"
+      }
+    }
+  ]
+}

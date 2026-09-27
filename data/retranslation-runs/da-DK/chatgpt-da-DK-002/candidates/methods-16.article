@@ -1,0 +1,28 @@
+* Typeswitches
+
+En _typeswitch_ er en konstruktion, som tillader flere typeassertioner efter hinanden.
+
+En typeswitch ligner en almindelig switch-sætning, men dens cases
+angiver typer (ikke værdier), som sammenlignes med typen af den værdi,
+der ligger i den angivne interfaceværdi.
+
+	switch v := i.(type) {
+	case T:
+		// her har v typen T
+	case S:
+		// her har v typen S
+	default:
+		// intet match; her har v samme type som i
+	}
+
+Deklarationen i en typeswitch har samme syntaks som en typeassertion `i.(T)`,
+men den konkrete type `T` er erstattet af nøgleordet `type`.
+
+Denne switch-sætning undersøger, om interfaceværdien `i`
+indeholder en værdi af typen `T` eller `S`.
+I casene for henholdsvis `T` og `S` får variablen `v` typen
+`T` eller `S` og indeholder værdien fra `i`.
+I default-casen (hvor ingen case matcher) har variablen `v`
+samme interfacetype og værdi som `i`.
+
+.play methods/type-switches.go

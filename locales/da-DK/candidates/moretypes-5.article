@@ -1,0 +1,9 @@
+* Struct-literals
+
+Et struct-literal beskriver en nyallokeret structværdi ved at angive værdierne for dens felter.
+
+Du kan nøjes med at angive nogle af felterne ved at bruge syntaksen `Name:`. (Rækkefølgen af navngivne felter er uden betydning.)
+
+Det særlige præfiks `&` returnerer en pointer til structværdien.
+
+.play moretypes/struct-literals.go

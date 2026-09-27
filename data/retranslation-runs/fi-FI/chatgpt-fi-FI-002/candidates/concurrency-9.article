@@ -1,0 +1,18 @@
+* sync.Mutex
+
+Olemme nähneet, miten hyödyllisiä kanavat ovat goroutinejen välisessä viestinnässä.
+
+Entä jos goroutinejen ei tarvitse viestiä keskenään? Entä jos haluamme vain varmistaa, että muuttujaan pääsee käsiksi vain yksi goroutine kerrallaan, jotta ristiriitoja ei synny?
+
+Tätä kutsutaan keskinäiseksi _poissuluksi_. Sen toteuttavaa tietorakennetta kutsutaan tavallisesti _muteksiksi_.
+
+Go-kielen standardikirjasto toteuttaa keskinäisen poissulun [[/pkg/sync/#Mutex][`sync.Mutex`]]-tyypillä ja sen kahdella metodilla:
+
+- `Lock`
+- `Unlock`
+
+Voimme määrittää koodilohkon suoritettavaksi keskinäisen poissulun alaisena ympäröimällä sen `Lock`- ja `Unlock`-metodien kutsuilla, kuten `Inc`-metodissa.
+
+Voimme myös käyttää `defer`-lausetta varmistamaan muteksin lukituksen vapautumisen, kuten `Value`-metodissa.
+
+.play concurrency/mutex-counter.go

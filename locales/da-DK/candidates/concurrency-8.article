@@ -1,0 +1,23 @@
+* Øvelse: Ækvivalente binære træer
+
+*1.* Implementer funktionen `Walk`.
+
+*2.* Test funktionen `Walk`.
+
+Funktionen `tree.New(k)` opretter et binært træ med en tilfældig struktur (men altid sorteret), som indeholder værdierne `k`, `2k`, `3k`, ..., `10k`.
+
+Opret en ny kanal `ch`, og start gennemløbsfunktionen:
+
+	go Walk(tree.New(1), ch)
+
+Læs og udskriv derefter 10 værdier fra kanalen. Det skal være tallene 1, 2, 3, ..., 10.
+
+*3.* Implementer funktionen `Same` ved hjælp af `Walk` for at afgøre, om `t1` og `t2` indeholder de samme værdier.
+
+*4.* Test funktionen `Same`.
+
+`Same(tree.New(1),`tree.New(1))` skal returnere true, og `Same(tree.New(1),`tree.New(2))` skal returnere false.
+
+Du finder dokumentationen til `Tree` [[https://godoc.org/golang.org/x/tour/tree#Tree][her]].
+
+.play concurrency/exercise-equivalent-binary-trees.go

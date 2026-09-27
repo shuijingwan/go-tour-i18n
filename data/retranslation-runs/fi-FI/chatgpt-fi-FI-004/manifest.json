@@ -1,0 +1,24 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-fi-FI-004",
+  "locale": "fi-FI",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 1,
+  "units": [
+    {
+      "unit_id": "flowcontrol/9",
+      "unit_kind": "page",
+      "source_path": "_content/tour/flowcontrol.article",
+      "source_sha256": "abdc4c295fa7b4aec2616acf83badbbf2b581a9f62e41d03ca2ff984ebb6f7ed",
+      "input_path": "inputs/flowcontrol-9.article",
+      "input_sha256": "f37b6d5685fdaa10d4b235561b1abe30d5f403fa9f5b664e38b4d15240bcfe22",
+      "protected_token_count": 11,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "C",
+      "previous_finding": "F01（stable index 31；详见 data/quality-check-review-evidence/fi-FI/qc-001-page-1-60.md）：英文 Another important difference is that Go switch cases need not be constants, and the values involved need not be integers；芬兰语 Toinen tärkeä ero on, että Go-kielessä switch-lauseen tapausten ei tarvitse olla vakioita eivätkä niiden arvojen kokonaislukuja。后半句 eivätkä niiden arvojen kokonaislukuja 缺乏完整谓语，未清楚表达参与比较的值不必是整数；请原 Generation 修复并列句语法和技术含义，保留 Go 标识符与受保护结构。"
+    }
+  ]
+}

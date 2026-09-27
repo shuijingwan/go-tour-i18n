@@ -1,0 +1,16 @@
+* Typeparametre
+
+⟪GTI18N_01a04510_000001⟫-funktioner kan skrives, så de virker med flere typer ved hjælp af typeparametre.
+En funktions typeparametre står i kantede parenteser før funktionens argumenter.
+
+⟪GTI18N_01a04510_000002⟫
+
+Denne deklaration betyder, at ⟪GTI18N_01a04510_000003⟫s⟪GTI18N_01a04510_000004⟫ er en slice af en vilkårlig type ⟪GTI18N_01a04510_000005⟫T⟪GTI18N_01a04510_000006⟫, som opfylder
+den indbyggede typebegrænsning ⟪GTI18N_01a04510_000007⟫comparable⟪GTI18N_01a04510_000008⟫. ⟪GTI18N_01a04510_000009⟫x⟪GTI18N_01a04510_000010⟫ er også en værdi af samme type.
+
+⟪GTI18N_01a04510_000011⟫comparable⟪GTI18N_01a04510_000012⟫ er en nyttig typebegrænsning, som gør det muligt at bruge operatorerne ⟪GTI18N_01a04510_000013⟫==⟪GTI18N_01a04510_000014⟫ og
+⟪GTI18N_01a04510_000015⟫!=⟪GTI18N_01a04510_000016⟫ på værdier af typen. I dette eksempel bruger vi den til at sammenligne en
+værdi med alle slicens elementer, indtil vi finder et match. Funktionen ⟪GTI18N_01a04510_000017⟫Index⟪GTI18N_01a04510_000018⟫ virker
+med enhver type, der understøtter sammenligning.
+
+⟪GTI18N_01a04510_000019⟫

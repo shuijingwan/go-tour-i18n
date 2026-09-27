@@ -1,0 +1,28 @@
+* Grundlæggende typer
+
+De grundlæggende typer i Go er
+
+	bool
+
+	string
+
+	int  int8  int16  int32  int64
+	uint uint8 uint16 uint32 uint64 uintptr
+
+	byte // alias for uint8
+
+	rune // alias for int32
+	     // repræsenterer et Unicode-kodepunkt
+
+	float32 float64
+
+	complex64 complex128
+
+Eksemplet viser variabler af flere typer,
+og at variabeldeklarationer kan grupperes i blokke,
+ligesom importdeklarationer.
+
+Typerne `int`, `uint` og `uintptr` har normalt en bredde på 32 bit på 32-bit-systemer og 64 bit på 64-bit-systemer.
+Når du har brug for en heltalsværdi, bør du bruge `int`, medmindre du har en særlig grund til at bruge en heltalstype med fast størrelse eller uden fortegn.
+
+.play basics/basic-types.go

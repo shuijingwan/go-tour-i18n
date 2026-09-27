@@ -1,0 +1,18 @@
+* Harjoitus: samanarvoiset binääripuut
+
+Monet rakenteeltaan erilaiset binääripuut voivat sisältää saman arvojärjestyksen. Tässä on esimerkiksi kaksi binääripuuta, joihin on tallennettu lukujono 1, 1, 2, 3, 5, 8, 13.
+
+.image /tour/static/img/tree.png
+
+Useimmissa kielissä kahden binääripuun sisältämien arvojärjestysten vertailuun tarvitaan melko monimutkainen funktio. Toteutamme yksinkertaisen ratkaisun käyttämällä Go-kielen samanaikaisuutta ja kanavia.
+
+Tässä esimerkissä käytetään `tree`-pakettia, joka määrittelee seuraavan tyypin:
+
+	type Tree struct {
+		Left  *Tree
+		Value int
+		Right *Tree
+	}
+
+
+Harjoituksen kuvaus jatkuu [[javascript:click('.next-page')][seuraavalla sivulla]].

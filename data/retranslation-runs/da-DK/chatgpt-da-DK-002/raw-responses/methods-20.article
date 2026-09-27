@@ -1,0 +1,21 @@
+* Øvelse: Fejl
+
+Kopiér din ⟪GTI18N_41f1f733_000001⟫Sqrt⟪GTI18N_41f1f733_000002⟫-funktion fra den [[⟪GTI18N_41f1f733_000003⟫][tidligere øvelse]], og ændr den, så den returnerer en ⟪GTI18N_41f1f733_000004⟫error⟪GTI18N_41f1f733_000005⟫-værdi.
+
+⟪GTI18N_41f1f733_000006⟫Sqrt⟪GTI18N_41f1f733_000007⟫ skal returnere en fejlværdi, der ikke er nil, når argumentet er negativt, da funktionen ikke understøtter komplekse tal.
+
+Opret en ny type
+
+⟪GTI18N_41f1f733_000008⟫
+
+og få den til at implementere interfacet ⟪GTI18N_41f1f733_000009⟫error⟪GTI18N_41f1f733_000010⟫ ved at give den en metode
+
+⟪GTI18N_41f1f733_000011⟫
+
+så ⟪GTI18N_41f1f733_000012⟫ErrNegativeSqrt(-2).Error()⟪GTI18N_41f1f733_000013⟫ returnerer ⟪GTI18N_41f1f733_000014⟫"cannot`Sqrt`negative`number:`-2"⟪GTI18N_41f1f733_000015⟫.
+
+⟪GTI18N_41f1f733_000016⟫Bemærk:⟪GTI18N_41f1f733_000017⟫ Et kald til ⟪GTI18N_41f1f733_000018⟫fmt.Sprint(e)⟪GTI18N_41f1f733_000019⟫ inde i metoden ⟪GTI18N_41f1f733_000020⟫Error⟪GTI18N_41f1f733_000021⟫ vil få programmet til at gå i en uendelig løkke. Det kan du undgå ved først at konvertere ⟪GTI18N_41f1f733_000022⟫e⟪GTI18N_41f1f733_000023⟫: ⟪GTI18N_41f1f733_000024⟫fmt.Sprint(float64(e))⟪GTI18N_41f1f733_000025⟫. Hvorfor?
+
+Ændr din ⟪GTI18N_41f1f733_000026⟫Sqrt⟪GTI18N_41f1f733_000027⟫-funktion, så den returnerer en ⟪GTI18N_41f1f733_000028⟫ErrNegativeSqrt⟪GTI18N_41f1f733_000029⟫-værdi, når argumentet er negativt.
+
+⟪GTI18N_41f1f733_000030⟫

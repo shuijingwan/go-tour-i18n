@@ -1,0 +1,16 @@
+* Metoder og indirekte adgang via pointer
+
+Hvis du sammenligner de to foregående programmer, bemærker du måske, at
+funktioner med et pointerargument skal have en pointer:
+
+⟪GTI18N_39fb725b_000001⟫Kompileringsfejl!⟪GTI18N_39fb725b_000002⟫Men metoder med pointermodtagere kan kaldes med enten en værdi eller en pointer
+som modtager:
+
+⟪GTI18N_39fb725b_000003⟫
+
+I sætningen ⟪GTI18N_39fb725b_000004⟫v.Scale(5)⟪GTI18N_39fb725b_000005⟫ er ⟪GTI18N_39fb725b_000006⟫v⟪GTI18N_39fb725b_000007⟫ en værdi og ikke en pointer,
+men metoden med pointermodtageren kaldes alligevel automatisk.
+For nemheds skyld fortolker ⟪GTI18N_39fb725b_000008⟫ altså sætningen ⟪GTI18N_39fb725b_000009⟫v.Scale(5)⟪GTI18N_39fb725b_000010⟫ som
+⟪GTI18N_39fb725b_000011⟫(&v).Scale(5)⟪GTI18N_39fb725b_000012⟫, fordi metoden ⟪GTI18N_39fb725b_000013⟫Scale⟪GTI18N_39fb725b_000014⟫ har en pointermodtager.
+
+⟪GTI18N_39fb725b_000015⟫

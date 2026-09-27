@@ -1,0 +1,15 @@
+* Alkioiden lisääminen viipaleeseen
+
+Uusia alkioita lisätään viipaleisiin usein. Siksi ⟪GTI18N_f2fc257e_000001⟫ sisältää sisäänrakennetun ⟪GTI18N_f2fc257e_000002⟫append⟪GTI18N_f2fc257e_000003⟫-funktion. Sisäänrakennetun paketin [[⟪GTI18N_f2fc257e_000004⟫][dokumentaatiossa]] kuvataan ⟪GTI18N_f2fc257e_000005⟫append⟪GTI18N_f2fc257e_000006⟫-funktion toiminta.
+
+⟪GTI18N_f2fc257e_000007⟫
+
+⟪GTI18N_f2fc257e_000008⟫s⟪GTI18N_f2fc257e_000009⟫ on ⟪GTI18N_f2fc257e_000010⟫append⟪GTI18N_f2fc257e_000011⟫-funktion ensimmäinen parametri. Se on ⟪GTI18N_f2fc257e_000012⟫T⟪GTI18N_f2fc257e_000013⟫-tyyppisten alkioiden viipale, ja loput parametrit ovat viipaleeseen lisättäviä ⟪GTI18N_f2fc257e_000014⟫T⟪GTI18N_f2fc257e_000015⟫-tyyppisiä arvoja.
+
+⟪GTI18N_f2fc257e_000016⟫append⟪GTI18N_f2fc257e_000017⟫-funktion tuloksena saadaan viipale, jossa ovat alkuperäisen viipaleen kaikki alkiot sekä annetut uudet arvot.
+
+Jos viipaleen ⟪GTI18N_f2fc257e_000018⟫s⟪GTI18N_f2fc257e_000019⟫ taustalla oleva taulukko ei ole riittävän suuri kaikille annettaville arvoille, varataan suurempi taulukko. Palautettu viipale osoittaa uuteen taulukkoon.
+
+(Lisätietoja viipaleista saat artikkelista [[⟪GTI18N_f2fc257e_000020⟫][Viipaleet: käyttö ja sisäinen toiminta]].)
+
+⟪GTI18N_f2fc257e_000021⟫

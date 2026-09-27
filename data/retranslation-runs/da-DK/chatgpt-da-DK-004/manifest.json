@@ -1,0 +1,50 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-da-DK-004",
+  "locale": "da-DK",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 3,
+  "units": [
+    {
+      "unit_id": "welcome/2",
+      "unit_kind": "page",
+      "source_path": "_content/tour/welcome.article",
+      "source_sha256": "709f808ec4cdf683411f349cab7a4886fcae532d1c4e4cc66c8ed68cfb2dd2d3",
+      "input_path": "inputs/welcome-2.article",
+      "input_sha256": "1931228d38e2723294fb8d06b7a97bf4f40c3dc65025397c81123aaaff8ad365",
+      "protected_token_count": 18,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "F01: EN '* Go local' introduces Tour languages; DA '* Go lokalt' misleadingly suggests local/offline execution, conflating this page with welcome/4. Revise only the localized heading to communicate language availability while preserving Present structure."
+    },
+    {
+      "unit_id": "moretypes/15",
+      "unit_kind": "page",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "f2fc257e7c5f118321acc3b75e946053601532d411e8540534280d7fba795289",
+      "input_path": "inputs/moretypes-15.article",
+      "input_sha256": "6088b687ef801ed9c0eb38c3537cfb2d2e57037de2160d81b0f4a9aec96b8dbe",
+      "protected_token_count": 21,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "C",
+      "previous_finding": "F02: EN 'first parameter s of append is a slice of type T', next to signature func append(s []T, vs ...T) []T; DA 'en slice af typen T' wrongly suggests s has type T. Clarify that T is the element type and s has Go slice type []T, preserving protected signature."
+    },
+    {
+      "unit_id": "concurrency/1",
+      "unit_kind": "page",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "d0a9c45078c2255540cfffe48744a07fa04ab5c2113e8880068b5a400ae0ebdc",
+      "input_path": "inputs/concurrency-1.article",
+      "input_sha256": "a676e3c5e8f83962d8900d2e8df1fa0b96f3097568aef63557077a029996938c",
+      "protected_token_count": 24,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "F03: EN \"A _goroutine_ is a lightweight thread managed by the Go runtime\"; DA \"En _goroutine_ er en letvægdstråd, der styres af Go-kørselsmiljøet.\" The technical noun \"letvægdstråd\" is an incorrect Danish compound spelling in the introductory definition. Correct the spelling/naturalness, preserving Go Present \"_goroutine_\" emphasis and original technical meaning."
+    }
+  ]
+}

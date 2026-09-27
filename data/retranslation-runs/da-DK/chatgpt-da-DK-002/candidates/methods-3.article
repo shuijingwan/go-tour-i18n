@@ -1,0 +1,12 @@
+* Mere om metoder
+
+Du kan også deklarere metoder på andre typer end structs.
+
+I dette eksempel ser vi den numeriske type `MyFloat` med metoden `Abs`.
+
+Du kan kun deklarere en metode, hvis modtagerens type er defineret i samme
+pakke som metoden.
+Du kan ikke deklarere en metode med en modtagertype, der er defineret i en anden
+pakke. Det gælder også de indbyggede typer som `int`.
+
+.play methods/methods-continued.go

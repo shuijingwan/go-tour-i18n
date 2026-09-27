@@ -1,0 +1,7 @@
+* Lyhyet muuttujamäärittelyt
+
+Funktion sisällä voidaan käyttää lyhyttä `:=`-sijoituslausetta sellaisen `var`-määrittelyn sijaan, jossa tyyppi päätellään automaattisesti.
+
+Funktion ulkopuolella jokainen lause alkaa avainsanalla (`var`, `func` ja niin edelleen), joten `:=`-rakennetta ei voi käyttää siellä.
+
+.play basics/short-variable-declarations.go

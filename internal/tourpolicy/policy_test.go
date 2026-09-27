@@ -11,7 +11,7 @@ func TestLocalePublicationPolicies(t *testing.T) {
 			t.Errorf("ForLocale(%q) = %q, want %q", locale, got, GoLocal)
 		}
 	}
-	for _, locale := range []string{"en", "pt-BR", "nl-NL", "es-ES", "es-419", "gu-IN", "it-IT", "ja-JP", "kn-IN", "pa-IN", "sv-SE", "tr-TR", "zh-TW", "new-locale"} {
+	for _, locale := range []string{"en", "pt-BR", "nl-NL", "es-ES", "es-419", "gu-IN", "da-DK", "fi-FI", "it-IT", "ja-JP", "kn-IN", "pa-IN", "sv-SE", "tr-TR", "zh-TW", "new-locale"} {
 		if got := ForLocale(locale); got != Standard {
 			t.Errorf("ForLocale(%q) = %q, want %q", locale, got, Standard)
 		}
@@ -105,8 +105,10 @@ func TestReviewedLocaleHomeTargetsAreExact(t *testing.T) {
 		"https://pt-go-dev.shuijingwanwq.com/",
 		"https://bg-go-dev.shuijingwanwq.com/",
 		"https://cs-go-dev.shuijingwanwq.com/",
+		"https://da-go-dev.shuijingwanwq.com/",
 		"https://nl-go-dev.shuijingwanwq.com/",
 		"https://fil-go-dev.shuijingwanwq.com/",
+		"https://fi-go-dev.shuijingwanwq.com/",
 		"https://de-go-dev.shuijingwanwq.com/",
 		"https://fr-go-dev.shuijingwanwq.com/",
 		"https://el-go-dev.shuijingwanwq.com/",
@@ -209,6 +211,25 @@ func TestReviewedLocaleTourTargetsAreExact(t *testing.T) {
 		if got := Classify(target); got != UnknownOwnerTarget {
 			t.Errorf("Classify(%q) = %q, want %q", target, got, UnknownOwnerTarget)
 		}
+	}
+}
+
+func TestDanishAndFinnishHomeExactFailClosed(t *testing.T) {
+	for _, locale := range []struct{ name, host string }{
+		{"da-DK", "da-go-dev.shuijingwanwq.com"},
+		{"fi-FI", "fi-go-dev.shuijingwanwq.com"},
+	} {
+		t.Run(locale.name, func(t *testing.T) {
+			canonical := "https://" + locale.host + "/"
+			if got := Classify(canonical); got != SiteHome {
+				t.Fatalf("Classify(%s) = %q", canonical, got)
+			}
+			for _, invalid := range []string{"http://" + locale.host + "/", "https://" + locale.host, canonical + "?test=1", canonical + "tour/"} {
+				if got := Classify(invalid); got == SiteHome {
+					t.Errorf("noncanonical homepage accepted: %s", invalid)
+				}
+			}
+		})
 	}
 }
 

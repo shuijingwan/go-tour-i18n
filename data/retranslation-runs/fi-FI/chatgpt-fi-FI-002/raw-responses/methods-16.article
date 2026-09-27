@@ -1,0 +1,13 @@
+* Tyyppivalintalauseet
+
+⟪GTI18N_26e4da09_000001⟫Tyyppivalintalause⟪GTI18N_26e4da09_000002⟫ on rakenne, jonka avulla voidaan suorittaa useita tyyppiväitteitä peräkkäin.
+
+Tyyppivalintalause muistuttaa tavallista switch-lausetta, mutta sen tapaukset määrittävät tyyppejä (eivät arvoja), joita verrataan annetun rajapinta-arvon sisältämän arvon tyyppiin.
+
+⟪GTI18N_26e4da09_000003⟫tässä ⟪GTI18N_26e4da09_000004⟫ on tyyppiä ⟪GTI18N_26e4da09_000005⟫⟪GTI18N_26e4da09_000006⟫tässä ⟪GTI18N_26e4da09_000007⟫ on tyyppiä ⟪GTI18N_26e4da09_000008⟫⟪GTI18N_26e4da09_000009⟫ei osumaa: tässä ⟪GTI18N_26e4da09_000010⟫ on samaa tyyppiä kuin ⟪GTI18N_26e4da09_000011⟫⟪GTI18N_26e4da09_000012⟫Tyyppivalintalauseen määrittelyssä käytetään samaa syntaksia kuin tyyppiväitteessä ⟪GTI18N_26e4da09_000013⟫i.(T)⟪GTI18N_26e4da09_000014⟫, mutta varsinainen tyyppi ⟪GTI18N_26e4da09_000015⟫T⟪GTI18N_26e4da09_000016⟫ korvataan avainsanalla ⟪GTI18N_26e4da09_000017⟫type⟪GTI18N_26e4da09_000018⟫.
+
+Tämä switch-lause tarkistaa, sisältääkö rajapinta-arvo ⟪GTI18N_26e4da09_000019⟫i⟪GTI18N_26e4da09_000020⟫ tyypin ⟪GTI18N_26e4da09_000021⟫T⟪GTI18N_26e4da09_000022⟫ tai ⟪GTI18N_26e4da09_000023⟫S⟪GTI18N_26e4da09_000024⟫ arvon.
+Tapauksessa ⟪GTI18N_26e4da09_000025⟫T⟪GTI18N_26e4da09_000026⟫ tai ⟪GTI18N_26e4da09_000027⟫S⟪GTI18N_26e4da09_000028⟫ muuttujan ⟪GTI18N_26e4da09_000029⟫v⟪GTI18N_26e4da09_000030⟫ tyypiksi tulee vastaavasti ⟪GTI18N_26e4da09_000031⟫T⟪GTI18N_26e4da09_000032⟫ tai ⟪GTI18N_26e4da09_000033⟫S⟪GTI18N_26e4da09_000034⟫, ja muuttuja saa arvon, jonka ⟪GTI18N_26e4da09_000035⟫i⟪GTI18N_26e4da09_000036⟫ sisältää.
+Oletustapauksessa (kun mikään ei täsmää) muuttujalla ⟪GTI18N_26e4da09_000037⟫v⟪GTI18N_26e4da09_000038⟫ on sama rajapintatyyppi ja arvo kuin muuttujalla ⟪GTI18N_26e4da09_000039⟫i⟪GTI18N_26e4da09_000040⟫.
+
+⟪GTI18N_26e4da09_000041⟫

@@ -1,0 +1,7 @@
+* Korte variabeldeklarationer
+
+Inde i en funktion kan den korte tildelingssætning `:=` bruges i stedet for en `var`-deklaration med implicit type.
+
+Uden for en funktion begynder hver sætning med et nøgleord (`var`, `func` osv.), og derfor kan konstruktionen `:=` ikke bruges dér.
+
+.play basics/short-variable-declarations.go

@@ -1,0 +1,15 @@
+* Range ja kanavan sulkeminen
+
+Lähettäjä voi sulkea kanavan ⟪GTI18N_3e925c67_000001⟫close⟪GTI18N_3e925c67_000002⟫-funktiolla ilmoittaakseen, ettei uusia arvoja enää lähetetä. Vastaanottaja voi tarkistaa, onko kanava suljettu, sijoittamalla vastaanottolausekkeen toisen tulosarvon muuttujaan. Lauseen
+
+⟪GTI18N_3e925c67_000003⟫
+
+jälkeen ⟪GTI18N_3e925c67_000004⟫ok⟪GTI18N_3e925c67_000005⟫ on ⟪GTI18N_3e925c67_000006⟫false⟪GTI18N_3e925c67_000007⟫, jos kanava on suljettu eikä siitä ole enää arvoja vastaanotettavaksi.
+
+Silmukka ⟪GTI18N_3e925c67_000008⟫for`i`:=`range`c⟪GTI18N_3e925c67_000009⟫ vastaanottaa kanavasta arvoja toistuvasti, kunnes kanava suljetaan.
+
+⟪GTI18N_3e925c67_000010⟫Huomautus:⟪GTI18N_3e925c67_000011⟫ Vain lähettäjän tulee sulkea kanava, ei koskaan vastaanottajan. Lähettäminen suljettuun kanavaan aiheuttaa paniikin.
+
+⟪GTI18N_3e925c67_000012⟫Lisähuomautus:⟪GTI18N_3e925c67_000013⟫ Kanavat eivät ole tiedostojen kaltaisia: niitä ei yleensä tarvitse sulkea. Sulkeminen on tarpeen vain silloin, kun vastaanottajalle on ilmoitettava, ettei uusia arvoja ole tulossa, esimerkiksi ⟪GTI18N_3e925c67_000014⟫range⟪GTI18N_3e925c67_000015⟫-silmukan lopettamiseksi.
+
+⟪GTI18N_3e925c67_000016⟫

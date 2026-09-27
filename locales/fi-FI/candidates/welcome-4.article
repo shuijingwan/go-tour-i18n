@@ -1,0 +1,12 @@
+* Go ilman verkkoyhteyttä (valinnainen)
+
+Voit käyttää tätä opaskierrosta myös itsenäisenä ohjelmana ilman internetyhteyttä. Ohjelma kääntää ja suorittaa koodiesimerkit omalla tietokoneellasi.
+
+Jos haluat suorittaa opaskierroksen paikallisesti, [[/doc/install][asenna ensin Go]] ja suorita sitten seuraava komento:
+
+  go install golang.org/x/website/tour@latest
+
+Tämä asentaa `tour`-ohjelmatiedoston [[/cmd/go/#hdr-GOPATH_and_Modules][GOPATH]]-ympäristömuuttujan osoittaman hakemiston `bin`-alihakemistoon.
+Kun käynnistät opaskierrosohjelman, se avaa verkkoselaimeen opaskierroksen paikallisen version.
+
+Voit tietenkin jatkaa opaskierrosta myös tällä verkkosivustolla.

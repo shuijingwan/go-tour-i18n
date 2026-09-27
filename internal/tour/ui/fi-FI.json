@@ -1,0 +1,458 @@
+{
+  "locale": "fi-FI",
+  "html_lang": "fi-FI",
+  "messages": {
+    "editor.format": {
+      "kind": "plain",
+      "text": "Muotoile"
+    },
+    "editor.imports": {
+      "kind": "plain",
+      "text": "Tuonnit"
+    },
+    "editor.kill": {
+      "kind": "plain",
+      "text": "Pysäytä"
+    },
+    "editor.off": {
+      "kind": "plain",
+      "text": "Pois käytöstä"
+    },
+    "editor.on": {
+      "kind": "plain",
+      "text": "Käytössä"
+    },
+    "editor.reset": {
+      "kind": "plain",
+      "text": "Palauta"
+    },
+    "editor.run": {
+      "kind": "plain",
+      "text": "Suorita"
+    },
+    "editor.syntax": {
+      "kind": "plain",
+      "text": "Syntaksi"
+    },
+    "error.not_found": {
+      "kind": "plain",
+      "text": "404 Sivua ei löydy"
+    },
+    "execution.build_failed": {
+      "kind": "plain",
+      "text": "Go-ohjelman kääntäminen epäonnistui."
+    },
+    "execution.communication_error": {
+      "kind": "plain",
+      "text": "Yhteydenpito etäpalvelimeen epäonnistui."
+    },
+    "execution.exited": {
+      "kind": "plain",
+      "text": "Ohjelman suoritus päättyi"
+    },
+    "execution.test_failed": {
+      "kind": "plain",
+      "text": "{count} testi epäonnistui."
+    },
+    "execution.tests_failed": {
+      "kind": "plain",
+      "text": "{count} testiä epäonnistui."
+    },
+    "execution.tests_passed": {
+      "kind": "plain",
+      "text": "Kaikki testit läpäistiin."
+    },
+    "execution.vet_failed": {
+      "kind": "plain",
+      "text": "Go vet -tarkistus epäonnistui."
+    },
+    "execution.waiting": {
+      "kind": "plain",
+      "text": "Odotetaan etäpalvelinta..."
+    },
+    "feedback.context": {
+      "kind": "plain",
+      "text": "Konteksti"
+    },
+    "feedback.issue_body": {
+      "kind": "plain",
+      "text": "Muuta yllä oleva otsikko kuvaamaan ongelmaasi ja lisää palautteesi tähän. Liitä tarvittaessa myös koodia."
+    },
+    "feedback.issue_title": {
+      "kind": "plain",
+      "text": "x/website/_content/tour: [KORVAA LYHYELLÄ KUVAUKSELLA]"
+    },
+    "feedback.open": {
+      "kind": "plain",
+      "text": "Lähetä palautetta tästä sivusta"
+    },
+    "footer.development_log": {
+      "kind": "plain",
+      "text": "Kehityspäiväkirja"
+    },
+    "footer.github": {
+      "kind": "plain",
+      "text": "GitHub"
+    },
+    "footer.home": {
+      "kind": "plain",
+      "text": "Etusivu"
+    },
+    "footer.unofficial": {
+      "kind": "plain",
+      "text": "Yongye · Epävirallinen yhteisön monikielinen käännösprojekti"
+    },
+    "header.about_project": {
+      "kind": "plain",
+      "text": "Tietoa projektista"
+    },
+    "module.basics.description": {
+      "kind": "rich",
+      "text": "<p>Aloita tästä ja opi ohjelmointikielen perusteet.</p><p>Tutustut muuttujien määrittelyyn, funktioiden kutsumiseen ja kaikkeen muuhun, mitä tarvitset ennen seuraavia oppitunteja.</p>"
+    },
+    "module.basics.title": {
+      "kind": "plain",
+      "text": "Perusteet"
+    },
+    "module.concurrency.description": {
+      "kind": "rich",
+      "text": "<p>Go tarjoaa samanaikaisuutta tukevia ominaisuuksia osana itse ohjelmointikieltä.</p><p>Tässä moduulissa tutustut goroutineihin ja kanaviin sekä siihen, miten niiden avulla toteutetaan erilaisia samanaikaisen ohjelmoinnin malleja.</p>"
+    },
+    "module.concurrency.title": {
+      "kind": "plain",
+      "text": "Samanaikaisuus"
+    },
+    "module.generics.description": {
+      "kind": "rich",
+      "text": "<p>Opi käyttämään tyyppiparametreja Go-funktioissa ja rakenteissa.</p>"
+    },
+    "module.generics.title": {
+      "kind": "plain",
+      "text": "Geneerinen ohjelmointi"
+    },
+    "module.methods.description": {
+      "kind": "rich",
+      "text": "<p>Opi määrittelemään tyypeille metodeja ja luomaan rajapintoja sekä yhdistämään nämä ominaisuudet.</p>"
+    },
+    "module.methods.title": {
+      "kind": "plain",
+      "text": "Metodit ja rajapinnat"
+    },
+    "module.using_tour.description": {
+      "kind": "rich",
+      "text": "<p>Tervetuloa tutustumaan <a href=\"https://go.dev\">Go-ohjelmointikieleen</a>. Opaskierros käsittelee erityisesti kielen tärkeimpiä ominaisuuksia:</p>"
+    },
+    "module.using_tour.title": {
+      "kind": "plain",
+      "text": "Opaskierroksen käyttö"
+    },
+    "site.architecture_languages": {
+      "kind": "plain",
+      "text": "Palvelin, sivupohjat, CSS, JavaScript, kuvat ja fontit ovat mahdollisuuksien mukaan yhteisiä. Kukin kieli ylläpitää erikseen kurssikäännöksiään, käyttöliittymätekstejään, termistöään ja tilaansa. Yksinkertaistettu kiina oli ensimmäinen julkaistu kieli, ja muita kieliä voidaan lisätä."
+    },
+    "site.architecture_playground": {
+      "kind": "plain",
+      "text": "Selaimen Go-esimerkit suoritetaan hallitun etäkäyttöisen Playground-välityspalvelimen kautta. Tuotantoympäristö ei tarjoa paikallista /socket-koodinsuoritusrajapintaa."
+    },
+    "site.architecture_title": {
+      "kind": "plain",
+      "text": "Jäljitettävä, hallittu ja laajennettava arkkitehtuuri"
+    },
+    "site.architecture_upstream": {
+      "kind": "plain",
+      "text": "Projekti tallentaa jatkuvasti virallisen lähdeprojektin commitin, jotta tulevien lähdekoodipäivitysten lähtöversio voidaan jäljittää."
+    },
+    "site.browser_title": {
+      "kind": "plain",
+      "text": "Yongye · Go-kielen opaskierroksen monikielinen käännösprojekti"
+    },
+    "site.community_version": {
+      "kind": "plain",
+      "text": "Yhteisön käännös"
+    },
+    "site.continue_learning": {
+      "kind": "plain",
+      "text": "Jatka opiskelua osoitteessa go.dev"
+    },
+    "site.continue_learning_description": {
+      "kind": "plain",
+      "text": "Go-kielen opaskierros on vasta alkua. Kun olet suorittanut sen loppuun, löydät osoitteesta go.dev viralliset dokumentaatiot, oppaat, standardikirjaston viitemateriaalin, kielimäärityksen ja lisää Go-oppimateriaalia."
+    },
+    "site.continue_learning_title": {
+      "kind": "plain",
+      "text": "Jatka Go-kielen opiskelua"
+    },
+    "site.course_pages": {
+      "kind": "plain",
+      "text": "Kurssisivut"
+    },
+    "site.current_language": {
+      "kind": "plain",
+      "text": "Nykyinen kieli"
+    },
+    "site.current_projects": {
+      "kind": "plain",
+      "text": "Nykyinen käännösprojekti"
+    },
+    "site.development_environment": {
+      "kind": "plain",
+      "text": "Kehitysympäristö"
+    },
+    "site.development_log": {
+      "kind": "plain",
+      "text": "Kehityspäiväkirja: Go-kielen opaskierroksen monikielinen käännösprojekti"
+    },
+    "site.enter_tour": {
+      "kind": "plain",
+      "text": "Siirry opaskierrokselle"
+    },
+    "site.environment": {
+      "kind": "plain",
+      "text": "Ympäristö"
+    },
+    "site.how_it_works": {
+      "kind": "plain",
+      "text": "Näin projekti toimii"
+    },
+    "site.how_it_works_intro": {
+      "kind": "plain",
+      "text": "Kurssin lokalisointi ei ole virkkeiden korvaamista yksi kerrallaan. Työnkulku perustuu kokonaisiin sisältöyksiköihin, jäljitettäviin tarkistustiloihin ja todennettaviin julkaisupaketteihin."
+    },
+    "site.intro": {
+      "kind": "plain",
+      "text": "Yhteisön ylläpitämä virallisen Go-oppimateriaalin käännösprojekti. Yksinkertaistettu kiina on ensimmäinen saataville tullut kieli, ja projektin rakenne mahdollistaa uusien kielten ja muun Go-sisällön lisäämisen."
+    },
+    "site.issue_feedback": {
+      "kind": "plain",
+      "text": "GitHub Issues"
+    },
+    "site.language_versions": {
+      "kind": "plain",
+      "text": "Kieliversiot"
+    },
+    "site.latest_release": {
+      "kind": "plain",
+      "text": "Uusin julkaisu"
+    },
+    "site.no_affiliation": {
+      "kind": "plain",
+      "text": "Tämä projekti ei kuulu Go-projektiin, eikä Go-projekti ole valtuuttanut tai hyväksynyt sitä."
+    },
+    "site.official_upstream": {
+      "kind": "plain",
+      "text": "Virallinen lähdeprojekti"
+    },
+    "site.official_version": {
+      "kind": "plain",
+      "text": "Virallinen Go-kielen opaskierros"
+    },
+    "site.open_official_tour": {
+      "kind": "plain",
+      "text": "Avaa virallinen opaskierros"
+    },
+    "site.operations_note": {
+      "kind": "plain",
+      "text": "Tällä sivustolla voidaan näyttää mainoksia, joiden avulla katetaan infrastruktuurin, kuten palvelimien, tiedonsiirron ja CDN-palvelujen, kustannuksia sekä projektin jatkuvan ylläpidon kuluja. Lähdekoodi on edelleen julkinen, eikä sivuston mainosasetuksia oteta oletusarvoisesti käyttöön itse ylläpidetyissä asennuksissa."
+    },
+    "site.project_links": {
+      "kind": "plain",
+      "text": "Projektin linkit"
+    },
+    "site.project_status": {
+      "kind": "plain",
+      "text": "Projektin tila"
+    },
+    "site.source_code": {
+      "kind": "plain",
+      "text": "Lähdekoodi GitHubissa"
+    },
+    "site.start_learning": {
+      "kind": "plain",
+      "text": "Aloita opiskelu"
+    },
+    "site.title": {
+      "kind": "plain",
+      "text": "Go-kielen opaskierroksen monikielinen käännösprojekti"
+    },
+    "site.tour_description": {
+      "kind": "plain",
+      "text": "Interaktiivinen johdatus Go-ohjelmointikieleen."
+    },
+    "site.translation_validation": {
+      "kind": "plain",
+      "text": "Kääntäminen ja validointi"
+    },
+    "site.translation_validation_intro": {
+      "kind": "plain",
+      "text": "Projekti pyrkii säilyttämään oppimiskokemuksen virallisen lähteen mukaisena ja tarkistaa jokaisen julkaisun ennen sen julkaisemista."
+    },
+    "site.unofficial": {
+      "kind": "plain",
+      "text": "Yongyen ylläpitämä · Epävirallinen yhteisön monikielinen käännösprojekti"
+    },
+    "site.upstream_baseline": {
+      "kind": "plain",
+      "text": "Virallisen lähdekoodin lähtöversio"
+    },
+    "site.upstream_commit_time": {
+      "kind": "plain",
+      "text": "Lähdeprojektin commitin ajankohta"
+    },
+    "site.validation_examples": {
+      "kind": "plain",
+      "text": "Go-esimerkit, joissa on käännettävissä olevia luonnollisen kielen kommentteja, käyvät läpi yhtenäisen validointiprosessin. Kaikissa muissa esimerkeissä käytetään suoraan virallista lähdettä."
+    },
+    "site.validation_page_unit": {
+      "kind": "plain",
+      "text": "Käännösyksikkönä käytetään kokonaisia kurssisivuja."
+    },
+    "site.validation_present": {
+      "kind": "plain",
+      "text": "Jokainen julkaisu jäsennetään present-jäsentimellä."
+    },
+    "site.validation_render": {
+      "kind": "plain",
+      "text": "Renderöidyt sivut tarkistetaan ennen julkaisua."
+    },
+    "site.validation_structure": {
+      "kind": "plain",
+      "text": "Sivujen rakennetta verrataan viralliseen lähteeseen."
+    },
+    "site.workflow_process": {
+      "kind": "plain",
+      "text": "Jokainen yksikkö etenee käännöksen, automaattisen validoinnin, Translation Quality Review -laaduntarkistuksen, promotion-vaiheen, ready-tilan, projektion ja julkaisun kautta. Luotuja käännöksiä ei koskaan julkaista suoraan."
+    },
+    "site.workflow_publish": {
+      "kind": "plain",
+      "text": "Julkaisussa muodostetaan täydellinen lokalisoitu projektio kanonisista ready-ehdokkaista. Työnkulun jokaisen TranslationUnit-yksikön on oltava ready-tilassa. Tämän jälkeen luodaan tuotantokäyttöön tarkoitettu binääritiedosto sekä release.json ja SHA256SUMS ja tarkistetaan koko julkaisupaketti."
+    },
+    "site.workflow_review": {
+      "kind": "plain",
+      "text": "Automaattiset tarkistukset suojaavat rakennetta, jäsentävät present-sisällön, vertaavat sitä viralliseen lähteeseen, validoivat renderöinnin ja sivut sekä tarkistavat Example-esimerkkien Go-koodin. Ennen promotion-vaihetta vaaditaan lisäksi riippumaton käännösten laaduntarkistus."
+    },
+    "site.workflow_title": {
+      "kind": "plain",
+      "text": "TranslationUnit-yksiköstä tuotantoon"
+    },
+    "site.workflow_units": {
+      "kind": "plain",
+      "text": "TranslationUnit kattaa sekä kokonaiset Page-sivut että soveltuvat Example-esimerkit: Page on kokonainen present.Section, kun taas Example on kokonainen .go-tiedosto, jossa on käännettävissä olevia luonnollisen kielen kommentteja."
+    },
+    "support.address": {
+      "kind": "plain",
+      "text": "Osoite"
+    },
+    "support.advertising_title": {
+      "kind": "plain",
+      "text": "Ilmoitus mainonnasta"
+    },
+    "support.asset": {
+      "kind": "plain",
+      "text": "Varallisuuserä"
+    },
+    "support.copied": {
+      "kind": "plain",
+      "text": "Kopioitu"
+    },
+    "support.copy_address": {
+      "kind": "plain",
+      "text": "Kopioi osoite"
+    },
+    "support.copy_reference": {
+      "kind": "plain",
+      "text": "Kopioi viitetieto"
+    },
+    "support.copy_uid": {
+      "kind": "plain",
+      "text": "Kopioi UID"
+    },
+    "support.intro": {
+      "kind": "plain",
+      "text": "Voit halutessasi tukea myös tämän kieliversion jatkuvaa ylläpitoa. Tukesi auttaa pitämään kieliversion ajan tasalla ja kehittämään sitä edelleen."
+    },
+    "support.minimum_deposit": {
+      "kind": "plain",
+      "text": "Vastaanottavan palvelun vähimmäissumma"
+    },
+    "support.network": {
+      "kind": "plain",
+      "text": "Verkko"
+    },
+    "support.platform_help": {
+      "kind": "plain",
+      "text": "Saman alustan käyttäjät voivat tehdä sisäisen siirron UID-tunnuksella. Tarkista tarkemmat tiedot alustalta."
+    },
+    "support.platform_title": {
+      "kind": "plain",
+      "text": "Alustan sisäinen siirto (valinnainen)"
+    },
+    "support.reference_help": {
+      "kind": "plain",
+      "text": "Jos maksupalvelusi tukee viesti- tai viitekenttää, voit käyttää tätä arvoa."
+    },
+    "support.reference_label": {
+      "kind": "plain",
+      "text": "Tuen viitetieto"
+    },
+    "support.section_title": {
+      "kind": "plain",
+      "text": "Tuki ja käyttökustannukset"
+    },
+    "support.translation_title": {
+      "kind": "plain",
+      "text": "Tue tätä kieliversiota"
+    },
+    "support.uid": {
+      "kind": "plain",
+      "text": "UID"
+    },
+    "support.usdc_network_only": {
+      "kind": "plain",
+      "text": "Lähetä USDC:tä vain Base-verkon kautta."
+    },
+    "support.usdt_network_only": {
+      "kind": "plain",
+      "text": "Lähetä USDT:tä vain Tron (TRC20) -verkon kautta."
+    },
+    "support.wrong_network_warning": {
+      "kind": "plain",
+      "text": "Väärän varallisuuserän tai verkon käyttäminen voi johtaa varojen menetykseen."
+    },
+    "theme.dark": {
+      "kind": "plain",
+      "text": "Tumma teema"
+    },
+    "theme.light": {
+      "kind": "plain",
+      "text": "Vaalea teema"
+    },
+    "theme.system": {
+      "kind": "plain",
+      "text": "Järjestelmän teema"
+    },
+    "theme.toggle": {
+      "kind": "plain",
+      "text": "Vaihda teemaa"
+    },
+    "toc.title": {
+      "kind": "plain",
+      "text": "Sisällysluettelo"
+    },
+    "tour.list_description": {
+      "kind": "plain",
+      "text": "Tutustu Go-kielen opaskierroksen moduuleihin ja oppitunteihin. Tämä interaktiivinen opaskierros johdattaa Go-ohjelmointikieleen."
+    },
+    "tour.list_heading": {
+      "kind": "plain",
+      "text": "Tervetuloa Go-kielen opaskierrokselle"
+    },
+    "tour.list_title": {
+      "kind": "plain",
+      "text": "Kurssin sisältö — Go-kielen opaskierros"
+    },
+    "tour.title": {
+      "kind": "plain",
+      "text": "Go-kielen opaskierros"
+    }
+  }
+}

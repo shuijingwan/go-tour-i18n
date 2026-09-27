@@ -1,0 +1,12 @@
+* Interfaceværdier med underliggende nil-værdier
+
+Hvis den konkrete værdi inde i interfacet selv er nil,
+kaldes metoden med en nil-modtager.
+
+I nogle sprog ville dette udløse en null pointer exception,
+men i Go er det almindeligt at skrive metoder, der håndterer et kald
+med en nil-modtager uden problemer (som metoden `M` i dette eksempel).
+
+Bemærk, at en interfaceværdi, der indeholder en konkret nil-værdi, ikke selv er nil.
+
+.play methods/interface-values-with-nil.go

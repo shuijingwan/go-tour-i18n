@@ -1,0 +1,7 @@
+* If ja else
+
+`if`-lauseen lyhyessä alustuslauseessa määritellyt muuttujat ovat käytettävissä myös kaikissa siihen kuuluvissa `else`-lohkoissa.
+
+(Molemmat `pow`-funktion kutsut palauttavat tuloksensa ennen kuin `fmt.Println`-funktion kutsu alkaa `main`-funktiossa.)
+
+.play flowcontrol/if-and-else.go

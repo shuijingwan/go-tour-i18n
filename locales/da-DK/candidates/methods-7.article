@@ -1,0 +1,21 @@
+* Metoder og indirekte adgang via pointer (2)
+
+Det tilsvarende sker også i den modsatte retning.
+
+Funktioner, der forventer et værdiargument, skal have en værdi af netop den angivne type:
+
+	var v Vertex
+	fmt.Println(AbsFunc(v))  // OK
+	fmt.Println(AbsFunc(&v)) // Kompileringsfejl!
+
+Men metoder med værdimodtagere kan kaldes med enten en værdi eller en pointer
+som modtager:
+
+	var v Vertex
+	fmt.Println(v.Abs()) // OK
+	p := &v
+	fmt.Println(p.Abs()) // OK
+
+I dette tilfælde fortolkes metodekaldet `p.Abs()` som `(*p).Abs()`.
+
+.play methods/indirection-values.go

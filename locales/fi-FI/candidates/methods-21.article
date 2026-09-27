@@ -1,0 +1,15 @@
+* Lukijat
+
+`io`-paketti määrittelee `io.Reader`-rajapinnan, joka edustaa tietovirran lukupäätä.
+
+Go-kielen standardikirjastossa on [[https://cs.opensource.google/search?q=Read%5C(%5Cw%2B%5Cs%5C%5B%5C%5Dbyte%5C)&ss=go%2Fgo][lukuisia tämän rajapinnan toteutuksia]], muun muassa tiedostoille, verkkoyhteyksille, pakkausohjelmille ja salausmenetelmille.
+
+`io.Reader`-rajapinnassa on `Read`-metodi:
+
+	func (T) Read(b []byte) (n int, err error)
+
+`Read` täyttää annetun tavuviipaleen datalla ja palauttaa siihen kirjoitettujen tavujen määrän sekä mahdollisen virhearvon. Kun tietovirta päättyy, se palauttaa virheen `io.EOF`.
+
+Esimerkkikoodi luo [[/pkg/strings/#Reader][`strings.Reader`]]-lukijan ja käsittelee sen tuottaman datan kahdeksan tavun erissä.
+
+.play methods/reader.go

@@ -1,0 +1,24 @@
+* Typeassertioner
+
+En ⟪GTI18N_c205b4eb_000001⟫typeassertion⟪GTI18N_c205b4eb_000002⟫ giver adgang til den underliggende konkrete værdi i en interfaceværdi.
+
+⟪GTI18N_c205b4eb_000003⟫
+
+Denne sætning fastslår, at interfaceværdien ⟪GTI18N_c205b4eb_000004⟫i⟪GTI18N_c205b4eb_000005⟫ indeholder den konkrete type ⟪GTI18N_c205b4eb_000006⟫T⟪GTI18N_c205b4eb_000007⟫,
+og tildeler den underliggende ⟪GTI18N_c205b4eb_000008⟫T⟪GTI18N_c205b4eb_000009⟫-værdi til variablen ⟪GTI18N_c205b4eb_000010⟫t⟪GTI18N_c205b4eb_000011⟫.
+
+Hvis ⟪GTI18N_c205b4eb_000012⟫i⟪GTI18N_c205b4eb_000013⟫ ikke indeholder en ⟪GTI18N_c205b4eb_000014⟫T⟪GTI18N_c205b4eb_000015⟫, udløser sætningen en panic.
+
+For at ⟪GTI18N_c205b4eb_000016⟫teste⟪GTI18N_c205b4eb_000017⟫, om en interfaceværdi indeholder en bestemt type,
+kan en typeassertion returnere to værdier: den underliggende værdi
+og en boolesk værdi, der angiver, om assertionen lykkedes.
+
+⟪GTI18N_c205b4eb_000018⟫
+
+Hvis ⟪GTI18N_c205b4eb_000019⟫i⟪GTI18N_c205b4eb_000020⟫ indeholder en ⟪GTI18N_c205b4eb_000021⟫T⟪GTI18N_c205b4eb_000022⟫, får ⟪GTI18N_c205b4eb_000023⟫t⟪GTI18N_c205b4eb_000024⟫ den underliggende værdi, og ⟪GTI18N_c205b4eb_000025⟫ok⟪GTI18N_c205b4eb_000026⟫ bliver true.
+Ellers bliver ⟪GTI18N_c205b4eb_000027⟫ok⟪GTI18N_c205b4eb_000028⟫ false, og ⟪GTI18N_c205b4eb_000029⟫t⟪GTI18N_c205b4eb_000030⟫ får nulværdien for typen ⟪GTI18N_c205b4eb_000031⟫T⟪GTI18N_c205b4eb_000032⟫,
+uden at der opstår en panic.
+
+Bemærk ligheden mellem denne syntaks og syntaksen for opslag i et map.
+
+⟪GTI18N_c205b4eb_000033⟫

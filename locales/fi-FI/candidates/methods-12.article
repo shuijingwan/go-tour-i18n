@@ -1,0 +1,9 @@
+* Rajapinta-arvot, joiden taustalla on nil-arvo
+
+Jos rajapinnan sisältämä konkreettinen arvo on itse nil, metodia kutsutaan nil-vastaanottimella.
+
+Joissakin kielissä tämä aiheuttaisi nollaosoitinpoikkeuksen. Go-kielessä on kuitenkin tavallista kirjoittaa metodeja, jotka osaavat käsitellä nil-vastaanottimella tehtyjä kutsuja, kuten esimerkin `M`-metodi.
+
+Huomaa, että rajapinta-arvo, joka sisältää nil-arvoisen konkreettisen arvon, ei itse ole nil.
+
+.play methods/interface-values-with-nil.go

@@ -1,0 +1,7 @@
+* Harjoitus: Stringer-rajapinta
+
+Toteuta `IPAddr`-tyypille `fmt.Stringer`-rajapinta, jotta osoite voidaan tulostaa neljänä pisteellä erotettuna lukuna.
+
+Esimerkiksi `IPAddr{1,`2,`3,`4}` pitäisi tulostaa muodossa `"1.2.3.4"`.
+
+.play methods/exercise-stringer.go

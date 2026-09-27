@@ -1,0 +1,28 @@
+* Hei, 世界
+
+Tervetuloa tutustumaan [[/][Go-ohjelmointikieleen]].
+
+Opaskierros on jaettu moduuleihin. Pääset niiden luetteloon napsauttamalla sivun vasemmassa yläkulmassa olevaa
+[[javascript:highlight(".logo")][Go-kielen opaskierros]]-linkkiä.
+
+Voit myös avata sisällysluettelon milloin tahansa napsauttamalla sivun oikeassa yläkulmassa olevaa [[javascript:highlightAndClick(".nav")][valikkoa]].
+
+Opaskierroksen aikana pääset tutustumaan kurssisivuihin ja suorittamaan harjoituksia.
+
+Voit siirtyä sivulta toiselle seuraavasti:
+
+- Siirry edelliselle sivulle napsauttamalla [[javascript:highlight(".prev-page")]["Edellinen"]]-painiketta tai painamalla `PageUp`-näppäintä.
+
+- Siirry seuraavalle sivulle napsauttamalla [[javascript:highlight(".next-page")]["Seuraava"]]-painiketta tai painamalla `PageDown`-näppäintä.
+
+Opaskierros on interaktiivinen. Napsauta nyt [[javascript:highlightAndClick("#run")][Suorita]]-painiketta (tai paina `Shift` + `Enter`), niin ohjelma käännetään ja suoritetaan etäpalvelimella. Tulos näkyy koodin alapuolella.
+
+Nämä esimerkkiohjelmat havainnollistavat Go-kielen eri ominaisuuksia. Opaskierroksen ohjelmat on tarkoitettu lähtökohdiksi omille kokeiluillesi.
+
+Muokkaa ohjelmaa ja suorita se uudelleen.
+
+Kun napsautat [[javascript:highlightAndClick("#format")][Muotoile]]-painiketta (pikanäppäin: `Ctrl` + `Enter`), editorin teksti muotoillaan [[/cmd/gofmt/][gofmt]]-työkalulla. Voit ottaa syntaksin korostuksen käyttöön tai poistaa sen käytöstä napsauttamalla [[javascript:highlightAndClick(".syntax-checkbox")][syntaksi]]-painiketta.
+
+Kun olet valmis jatkamaan, napsauta alla olevaa [[javascript:highlightAndClick(".next-page")][oikealle osoittavaa nuolta]] tai paina `PageDown`-näppäintä.
+
+.play welcome/hello.go

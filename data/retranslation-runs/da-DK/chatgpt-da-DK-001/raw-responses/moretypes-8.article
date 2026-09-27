@@ -1,0 +1,11 @@
+* Slices fungerer som referencer til arrays
+
+En slice gemmer ingen data selv,
+men beskriver blot et udsnit af et underliggende array.
+
+Når du ændrer elementerne i en slice, ændrer du de
+tilsvarende elementer i dens underliggende array.
+
+Andre slices, som deler samme underliggende array, vil også kunne se ændringerne.
+
+⟪GTI18N_e577f9e9_000001⟫

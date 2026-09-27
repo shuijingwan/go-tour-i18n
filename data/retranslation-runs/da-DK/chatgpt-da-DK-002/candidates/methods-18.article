@@ -1,0 +1,8 @@
+* Øvelse: Stringers
+
+Få typen `IPAddr` til at implementere `fmt.Stringer`, så adressen udskrives
+som fire decimaltal adskilt af punktummer.
+
+For eksempel skal `IPAddr{1,`2,`3,`4}` udskrives som `"1.2.3.4"`.
+
+.play methods/exercise-stringer.go

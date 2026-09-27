@@ -1,0 +1,11 @@
+* Harjoitus: viipaleet
+
+Toteuta `Pic`-funktio. Sen tulee palauttaa viipale, jonka pituus on `dy` ja jonka jokainen alkio on `dx`:n pituisen 8-bittisten etumerkittömien kokonaislukujen viipale. Kun suoritat ohjelman, se näyttää tuottamasi kuvan ja tulkitsee kokonaisluvut harmaasävyiksi (tai oikeastaan sinisävyiksi).
+
+Saat itse päättää, millaisen kuvan luot. Kiinnostavia funktioita ovat esimerkiksi `(x+y)/2`, `x*y` ja `x^y`.
+
+(Jokainen `[]uint8` on varattava erikseen `[][]uint8`-viipaleen sisällä silmukan avulla.)
+
+(Käytä `uint8(intValue)`-muunnosta tyyppien välillä siirtymiseen.)
+
+.play moretypes/exercise-slices.go

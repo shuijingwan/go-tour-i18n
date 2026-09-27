@@ -1,0 +1,19 @@
+* Typeswitches
+
+En ⟪GTI18N_26e4da09_000001⟫typeswitch⟪GTI18N_26e4da09_000002⟫ er en konstruktion, som tillader flere typeassertioner efter hinanden.
+
+En typeswitch ligner en almindelig switch-sætning, men dens cases
+angiver typer (ikke værdier), som sammenlignes med typen af den værdi,
+der ligger i den angivne interfaceværdi.
+
+⟪GTI18N_26e4da09_000003⟫her har ⟪GTI18N_26e4da09_000004⟫ typen ⟪GTI18N_26e4da09_000005⟫⟪GTI18N_26e4da09_000006⟫her har ⟪GTI18N_26e4da09_000007⟫ typen ⟪GTI18N_26e4da09_000008⟫⟪GTI18N_26e4da09_000009⟫intet match; her har ⟪GTI18N_26e4da09_000010⟫ samme type som ⟪GTI18N_26e4da09_000011⟫⟪GTI18N_26e4da09_000012⟫Deklarationen i en typeswitch har samme syntaks som en typeassertion ⟪GTI18N_26e4da09_000013⟫i.(T)⟪GTI18N_26e4da09_000014⟫,
+men den konkrete type ⟪GTI18N_26e4da09_000015⟫T⟪GTI18N_26e4da09_000016⟫ er erstattet af nøgleordet ⟪GTI18N_26e4da09_000017⟫type⟪GTI18N_26e4da09_000018⟫.
+
+Denne switch-sætning undersøger, om interfaceværdien ⟪GTI18N_26e4da09_000019⟫i⟪GTI18N_26e4da09_000020⟫
+indeholder en værdi af typen ⟪GTI18N_26e4da09_000021⟫T⟪GTI18N_26e4da09_000022⟫ eller ⟪GTI18N_26e4da09_000023⟫S⟪GTI18N_26e4da09_000024⟫.
+I casene for henholdsvis ⟪GTI18N_26e4da09_000025⟫T⟪GTI18N_26e4da09_000026⟫ og ⟪GTI18N_26e4da09_000027⟫S⟪GTI18N_26e4da09_000028⟫ får variablen ⟪GTI18N_26e4da09_000029⟫v⟪GTI18N_26e4da09_000030⟫ typen
+⟪GTI18N_26e4da09_000031⟫T⟪GTI18N_26e4da09_000032⟫ eller ⟪GTI18N_26e4da09_000033⟫S⟪GTI18N_26e4da09_000034⟫ og indeholder værdien fra ⟪GTI18N_26e4da09_000035⟫i⟪GTI18N_26e4da09_000036⟫.
+I default-casen (hvor ingen case matcher) har variablen ⟪GTI18N_26e4da09_000037⟫v⟪GTI18N_26e4da09_000038⟫
+samme interfacetype og værdi som ⟪GTI18N_26e4da09_000039⟫i⟪GTI18N_26e4da09_000040⟫.
+
+⟪GTI18N_26e4da09_000041⟫

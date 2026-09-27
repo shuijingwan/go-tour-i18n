@@ -1,0 +1,15 @@
+* Tyhjä rajapinta
+
+Rajapintatyyppiä, jossa ei määritellä yhtään metodia, kutsutaan ⟪GTI18N_7a09a765_000001⟫tyhjäksi⟪GTI18N_7a09a765_000002⟫ rajapinnaksi:
+
+⟪GTI18N_7a09a765_000003⟫
+
+Tyhjä rajapinta voi sisältää minkä tahansa tyyppisen arvon.
+(Jokainen tyyppi toteuttaa vähintään nolla metodia.)
+
+⟪GTI18N_7a09a765_000004⟫any⟪GTI18N_7a09a765_000005⟫ on tyypin ⟪GTI18N_7a09a765_000006⟫interface{}⟪GTI18N_7a09a765_000007⟫ alias, ja nämä ovat täysin samanarvoisia.
+
+Tyhjiä rajapintoja käytetään koodissa, joka käsittelee tyypiltään tuntemattomia arvoja.
+Esimerkiksi ⟪GTI18N_7a09a765_000008⟫fmt.Print⟪GTI18N_7a09a765_000009⟫ hyväksyy mielivaltaisen määrän ⟪GTI18N_7a09a765_000010⟫any⟪GTI18N_7a09a765_000011⟫-tyyppisiä argumentteja.
+
+⟪GTI18N_7a09a765_000012⟫

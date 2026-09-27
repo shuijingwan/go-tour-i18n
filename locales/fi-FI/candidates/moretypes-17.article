@@ -1,0 +1,12 @@
+* Lisää range-silmukasta
+
+Voit ohittaa indeksin tai arvon sijoittamalla sen `_`-tunnisteeseen.
+
+    for i, _ := range pow
+    for _, value := range pow
+
+Jos tarvitset vain indeksin, voit jättää toisen muuttujan pois.
+
+    for i := range pow
+
+.play moretypes/range-continued.go

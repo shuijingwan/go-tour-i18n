@@ -1,0 +1,11 @@
+* Rajapinta-arvot
+
+Rajapinta-arvon voi ajatella koostuvan arvosta ja sen konkreettisesta tyypistä:
+
+	(value, type)
+
+Rajapinta-arvo sisältää tiettyä taustalla olevaa konkreettista tyyppiä edustavan arvon.
+
+Rajapinta-arvolle tehty metodikutsu suorittaa sen taustalla olevan tyypin samannimisen metodin.
+
+.play methods/interface-values.go

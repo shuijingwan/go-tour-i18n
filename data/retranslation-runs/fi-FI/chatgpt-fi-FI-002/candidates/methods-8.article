@@ -1,0 +1,15 @@
+* Arvo- tai osoitinvastaanottimen valinta
+
+Osoitinvastaanottimen käyttämiseen on kaksi syytä.
+
+Ensinnäkin metodi voi silloin muuttaa arvoa, johon sen vastaanotin osoittaa.
+
+Toiseksi näin vältetään arvon kopiointi jokaisella metodikutsulla.
+Tämä voi tehostaa toimintaa esimerkiksi silloin, kun vastaanotin on suuri rakenne.
+
+Tässä esimerkissä sekä `Scale` että `Abs` ovat metodeja, joiden vastaanottimen tyyppi on `*Vertex`, vaikka `Abs`-metodin ei tarvitse muuttaa vastaanotintaan.
+
+Yleensä kaikilla tietyn tyypin metodeilla kannattaa käyttää joko arvo- tai osoitinvastaanottimia eikä sekoittaa näitä keskenään.
+(Seuraavilla sivuilla näet, miksi.)
+
+.play methods/methods-with-pointer-receivers.go

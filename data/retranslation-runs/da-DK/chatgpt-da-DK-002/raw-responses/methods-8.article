@@ -1,0 +1,17 @@
+* Valg af værdi- eller pointermodtager
+
+Der er to grunde til at bruge en pointermodtager.
+
+Den første er, at metoden så kan ændre den værdi, som modtageren peger på.
+
+Den anden er, at man undgår at kopiere værdien ved hvert metodekald.
+Det kan for eksempel være mere effektivt, hvis modtageren er en stor struct.
+
+I dette eksempel har både ⟪GTI18N_357424f2_000001⟫Scale⟪GTI18N_357424f2_000002⟫ og ⟪GTI18N_357424f2_000003⟫Abs⟪GTI18N_357424f2_000004⟫ modtagertypen ⟪GTI18N_357424f2_000005⟫*Vertex⟪GTI18N_357424f2_000006⟫,
+selvom metoden ⟪GTI18N_357424f2_000007⟫Abs⟪GTI18N_357424f2_000008⟫ ikke behøver at ændre sin modtager.
+
+Generelt bør alle metoder på en given type bruge enten værdi- eller
+pointermodtagere og ikke en blanding af begge dele.
+(Vi ser hvorfor på de næste par sider.)
+
+⟪GTI18N_357424f2_000009⟫

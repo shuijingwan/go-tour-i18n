@@ -1,0 +1,13 @@
+* Tyyppipäättely
+
+Kun muuttuja määritellään ilman eksplisiittistä tyyppiä (joko ⟪GTI18N_21c4077c_000001⟫:=⟪GTI18N_21c4077c_000002⟫-syntaksilla tai ⟪GTI18N_21c4077c_000003⟫var`=⟪GTI18N_21c4077c_000004⟫-lausekkeella), muuttujan tyyppi päätellään sijoituksen oikealla puolella olevasta arvosta.
+
+Jos määrittelyn oikealla puolella on tyypitetty arvo, uuden muuttujan tyypiksi tulee sama tyyppi:
+
+⟪GTI18N_21c4077c_000005⟫⟪GTI18N_21c4077c_000006⟫ on ⟪GTI18N_21c4077c_000007⟫⟪GTI18N_21c4077c_000008⟫Kun oikealla puolella sen sijaan on tyypitön lukuvakio, uuden muuttujan tyyppi voi olla ⟪GTI18N_21c4077c_000009⟫int⟪GTI18N_21c4077c_000010⟫, ⟪GTI18N_21c4077c_000011⟫float64⟪GTI18N_21c4077c_000012⟫ tai ⟪GTI18N_21c4077c_000013⟫complex128⟪GTI18N_21c4077c_000014⟫ vakion tarkkuudesta riippuen:
+
+⟪GTI18N_21c4077c_000015⟫
+
+Kokeile muuttaa esimerkkikoodin ⟪GTI18N_21c4077c_000016⟫v⟪GTI18N_21c4077c_000017⟫-muuttujan alkuarvoa ja tarkkaile, miten sen tyyppi muuttuu.
+
+⟪GTI18N_21c4077c_000018⟫

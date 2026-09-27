@@ -1,0 +1,19 @@
+* Kuvat
+
+[[/pkg/image/#Image][image-paketti]] määrittelee `Image`-rajapinnan:
+
+	package image
+
+	type Image interface {
+		ColorModel() color.Model
+		Bounds() Rectangle
+		At(x, y int) color.Color
+	}
+
+*Huomautus*: `Rectangle`-arvo, jonka `Bounds`-metodi palauttaa, on itse asiassa [[/pkg/image/#Rectangle][`image.Rectangle`]], koska määrittely sijaitsee paketissa `image`.
+
+(Katso tarkemmat tiedot [[/pkg/image/#Image][dokumentaatiosta]].)
+
+Myös `color.Color`- ja `color.Model`-tyypit ovat rajapintoja, mutta sivuutamme tämän käyttämällä niiden valmiita toteutuksia `color.RGBA` ja `color.RGBAModel`. Nämä rajapinnat ja tyypit on määritelty [[/pkg/image/color/][image/color-paketissa]].
+
+.play methods/images.go

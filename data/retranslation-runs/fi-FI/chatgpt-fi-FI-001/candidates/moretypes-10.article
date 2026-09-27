@@ -1,0 +1,18 @@
+* Viipaleen oletusrajat
+
+Viipaletta muodostettaessa ylä- tai alarajan voi jättää pois, jolloin käytetään oletusarvoa.
+
+Alarajan oletusarvo on nolla, ja ylärajan oletusarvo on taustalla olevan viipaleen tai taulukon pituus.
+
+Kun taulukko on
+
+	var a [10]int
+
+seuraavat viipalelausekkeet ovat samanarvoisia:
+
+	a[0:10]
+	a[:10]
+	a[0:]
+	a[:]
+
+.play moretypes/slice-bounds.go

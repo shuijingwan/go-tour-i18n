@@ -1,0 +1,8 @@
+* Nil-interfaceværdier
+
+En nil-interfaceværdi indeholder hverken en værdi eller en konkret type.
+
+Et metodekald på et nil-interface giver en køretidsfejl, fordi der ikke findes
+nogen type i interfaceparret, som angiver, hvilken _konkret_ metode der skal kaldes.
+
+.play methods/nil-interface-values.go

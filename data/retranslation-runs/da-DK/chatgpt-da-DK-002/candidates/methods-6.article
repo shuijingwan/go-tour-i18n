@@ -1,0 +1,23 @@
+* Metoder og indirekte adgang via pointer
+
+Hvis du sammenligner de to foregående programmer, bemærker du måske, at
+funktioner med et pointerargument skal have en pointer:
+
+	var v Vertex
+	ScaleFunc(v, 5)  // Kompileringsfejl!
+	ScaleFunc(&v, 5) // OK
+
+Men metoder med pointermodtagere kan kaldes med enten en værdi eller en pointer
+som modtager:
+
+	var v Vertex
+	v.Scale(5)  // OK
+	p := &v
+	p.Scale(10) // OK
+
+I sætningen `v.Scale(5)` er `v` en værdi og ikke en pointer,
+men metoden med pointermodtageren kaldes alligevel automatisk.
+For nemheds skyld fortolker Go altså sætningen `v.Scale(5)` som
+`(&v).Scale(5)`, fordi metoden `Scale` har en pointermodtager.
+
+.play methods/indirection.go

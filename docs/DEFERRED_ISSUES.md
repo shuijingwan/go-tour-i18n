@@ -142,3 +142,13 @@
 - 暂缓原因：维护者于 2026-09-27 明确决定暂时放弃，不继续重试或排查，不重新生成密钥、不重复修改服务器配置。gu-IN 仍为正式 `live`；IndexNow closeout 不属于 Production gate，原有 Sitemap 提交状态不因本次失败改变。
 - 当前状态：`open`
 - 后续处理/核销证据：2026-09-27 实际重试的终态为 `IndexNow local key: reused` → `PROVISIONING PASS` → `verify public IndexNow key: Get "https://gu-go-dev.shuijingwanwq.com/<key>.txt": EOF` → `FAILED`。仅在维护者明确恢复时，先只读核对现有密钥对应的公网 URL、实际 HTTP/TLS/DNS 路径及 Production 公网验收结果，再依据实证决定是否使用现有正式 retry/恢复路径；mutation 状态不明确时不得盲目重复 provisioning 或生成新 key。只有取得 gu-IN 自身的 `IndexNow bootstrap: PASS` 与 `IndexNow closeout: PASS` 才可核销。
+
+### DI-20260927-002：da-DK IndexNow 公网密钥验证 EOF，closeout 暂缓
+
+- ID：`DI-20260927-002`
+- 发现日期：`2026-09-27`
+- 发现阶段/场景：da-DK 已完成 `qc-002` 122/122 A、首次 Surface Review `20260927-da-DK-stage-a-001` A gate、Preview 自动与人工验收、Production machine/browser acceptance 及 `first-production finalize`，正式 `production_state=live`。维护者确认站点地图已提交，随后执行 `scripts/indexnow-closeout.sh --locale da-DK`。
+- 问题描述：本次 IndexNow 首次执行输出 `IndexNow local key: generated` 和 `PROVISIONING PASS`，表明 locale-specific 密钥已生成、服务端 provisioning 已通过。随后 Go bootstrap 对 `https://da-go-dev.shuijingwanwq.com/<key>.txt` 的公网 HTTPS GET 返回 `EOF`，以 `indexnow closeout: FAILED: formal IndexNow bootstrap failed after provisioning` 结束（exit status 1）。公网密钥验证未通过，没有取得 IndexNow submission PASS；单凭本次 `EOF` 不足以认定是维护者本机 DNS/代理、Cloudflare、源站或 IndexNow API 故障。此前正式 Production 公网与浏览器验收均已 PASS，本次 closeout 失败不改写这些历史验收。
+- 暂缓原因：维护者于 2026-09-27 明确要求先记录 IndexNow 提交失败，暂不继续重试或排查；保留已生成的现有密钥与成功的 provisioning，不重新生成密钥、不重复部署或修改 production 配置。da-DK 保持 `live`，站点地图已由维护者提交；IndexNow 是非阻塞的上线后 Search-engine closeout。
+- 当前状态：`open`
+- 后续处理/核销证据：2026-09-27 命令 `scripts/indexnow-closeout.sh --locale da-DK` 的实际终态为 `IndexNow local key: generated` → `PROVISIONING PASS` → `verify public IndexNow key: Get "https://da-go-dev.shuijingwanwq.com/<key>.txt": EOF` → `indexnow closeout: FAILED: formal IndexNow bootstrap failed after provisioning`。仅在维护者后续明确恢复时，先只读对照现有密钥对应的公网 URL、HTTP/TLS/DNS 实际响应及已通过的 Production 公网验收；按实证确定是否使用现有正式恢复路径，复用原密钥，mutation 状态不明时不盲目重发 provisioning 或生成新 key。只有 da-DK 自身输出 `IndexNow bootstrap: PASS` 和 `IndexNow closeout: PASS` 才能核销。

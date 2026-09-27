@@ -1,0 +1,14 @@
+* Metoder og indirekte adgang via pointer (2)
+
+Det tilsvarende sker også i den modsatte retning.
+
+Funktioner, der forventer et værdiargument, skal have en værdi af netop den angivne type:
+
+⟪GTI18N_61a9cb84_000001⟫Kompileringsfejl!⟪GTI18N_61a9cb84_000002⟫Men metoder med værdimodtagere kan kaldes med enten en værdi eller en pointer
+som modtager:
+
+⟪GTI18N_61a9cb84_000003⟫
+
+I dette tilfælde fortolkes metodekaldet ⟪GTI18N_61a9cb84_000004⟫p.Abs()⟪GTI18N_61a9cb84_000005⟫ som ⟪GTI18N_61a9cb84_000006⟫(*p).Abs()⟪GTI18N_61a9cb84_000007⟫.
+
+⟪GTI18N_61a9cb84_000008⟫

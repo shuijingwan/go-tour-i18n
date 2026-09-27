@@ -1,0 +1,14 @@
+* Oletustapaus
+
+`default`-tapaus suoritetaan `select`-lauseessa silloin, kun mikään muu tapaus ei ole valmis.
+
+Käytä `default`-tapausta, kun haluat yrittää lähettämistä tai vastaanottamista ilman, että suoritus estyy:
+
+	select {
+	case i := <-c:
+		// käytä i
+	default:
+		// vastaanotto kanavasta c estäisi etenemisen
+	}
+
+.play concurrency/default-selection.go

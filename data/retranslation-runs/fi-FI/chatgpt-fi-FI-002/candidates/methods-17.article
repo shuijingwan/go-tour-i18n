@@ -1,0 +1,11 @@
+* Stringer-rajapinta
+
+Yksi yleisimmistä rajapinnoista on [[/pkg/fmt/#Stringer][`Stringer`]], jonka määrittelee [[/pkg/fmt/][`fmt`]]-paketti.
+
+	type Stringer interface {
+		String() string
+	}
+
+`Stringer` on tyyppi, joka osaa kuvata itsensä merkkijonona. `fmt`-paketti (ja moni muu paketti) etsii tämän rajapinnan toteutusta arvoja tulostaessaan.
+
+.play methods/stringer.go

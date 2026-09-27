@@ -1,0 +1,11 @@
+* Øvelse: Slices
+
+Implementer `Pic`. Funktionen skal returnere en slice med længden `dy`, hvor hvert element selv er en slice med `dx` 8-bit-heltal uden fortegn. Når du kører programmet, vises dit billede, hvor heltallene fortolkes som gråtoneværdier (eller rettere: blåtoner).
+
+Du vælger selv billedet. Interessante funktioner omfatter `(x+y)/2`, `x*y` og `x^y`.
+
+(Du skal bruge en løkke til at allokere hver `[]uint8` inde i `[][]uint8`.)
+
+(Brug `uint8(intValue)` til at konvertere mellem typer.)
+
+.play moretypes/exercise-slices.go

@@ -1,0 +1,11 @@
+* Paketit
+
+Jokainen Go-ohjelma koostuu paketeista.
+
+Ohjelman suoritus alkaa paketista `main`.
+
+Tämä ohjelma käyttää paketteja, joiden tuontipolut ovat `"fmt"` ja `"math/rand"`.
+
+Käytännön mukaan paketin nimi on sama kuin sen tuontipolun viimeinen osa. Esimerkiksi `"math/rand"`-pakettiin kuuluvat tiedostot alkavat lauseella `package`rand`.
+
+.play basics/packages.go

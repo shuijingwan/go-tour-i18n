@@ -1,0 +1,18 @@
+* sync.Mutex
+
+Olemme nähneet, miten hyödyllisiä kanavat ovat goroutinejen välisessä viestinnässä.
+
+Entä jos goroutinejen ei tarvitse viestiä keskenään? Entä jos haluamme vain varmistaa, että muuttujaan pääsee käsiksi vain yksi ⟪GTI18N_49f72779_000001⟫ kerrallaan, jotta ristiriitoja ei synny?
+
+Tätä kutsutaan keskinäiseksi ⟪GTI18N_49f72779_000002⟫poissuluksi⟪GTI18N_49f72779_000003⟫. Sen toteuttavaa tietorakennetta kutsutaan tavallisesti ⟪GTI18N_49f72779_000004⟫muteksiksi⟪GTI18N_49f72779_000005⟫.
+
+⟪GTI18N_49f72779_000006⟫-kielen standardikirjasto toteuttaa keskinäisen poissulun [[⟪GTI18N_49f72779_000007⟫][⟪GTI18N_49f72779_000008⟫sync.Mutex⟪GTI18N_49f72779_000009⟫]]-tyypillä ja sen kahdella metodilla:
+
+- ⟪GTI18N_49f72779_000010⟫Lock⟪GTI18N_49f72779_000011⟫
+- ⟪GTI18N_49f72779_000012⟫Unlock⟪GTI18N_49f72779_000013⟫
+
+Voimme määrittää koodilohkon suoritettavaksi keskinäisen poissulun alaisena ympäröimällä sen ⟪GTI18N_49f72779_000014⟫Lock⟪GTI18N_49f72779_000015⟫- ja ⟪GTI18N_49f72779_000016⟫Unlock⟪GTI18N_49f72779_000017⟫-metodien kutsuilla, kuten ⟪GTI18N_49f72779_000018⟫Inc⟪GTI18N_49f72779_000019⟫-metodissa.
+
+Voimme myös käyttää ⟪GTI18N_49f72779_000020⟫defer⟪GTI18N_49f72779_000021⟫-lausetta varmistamaan muteksin lukituksen vapautumisen, kuten ⟪GTI18N_49f72779_000022⟫Value⟪GTI18N_49f72779_000023⟫-metodissa.
+
+⟪GTI18N_49f72779_000024⟫

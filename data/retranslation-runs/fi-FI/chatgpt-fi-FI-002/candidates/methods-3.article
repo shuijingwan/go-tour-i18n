@@ -1,0 +1,10 @@
+* Lisää metodeista
+
+Metodeja voi määritellä myös muille kuin rakennetyypeille.
+
+Tässä esimerkissä näet numeerisen `MyFloat`-tyypin, jolla on `Abs`-metodi.
+
+Metodin vastaanottimen tyypin on oltava määritelty samassa paketissa kuin itse metodi.
+Metodia ei voi määritellä tyypille, joka on määritelty toisessa paketissa. Tämä koskee myös sisäänrakennettuja tyyppejä, kuten `int`.
+
+.play methods/methods-continued.go

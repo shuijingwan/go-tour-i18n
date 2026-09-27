@@ -1,0 +1,14 @@
+* Switch-lauseen arviointijärjestys
+
+Switch-lauseen tapauksia arvioidaan ylhäältä alaspäin, kunnes jokin tapaus täsmää.
+
+(Esimerkiksi
+
+	switch i {
+	case 0:
+	case f():
+	}
+
+ei kutsu funktiota `f`, jos `i==0`.)
+
+.play flowcontrol/switch-evaluation-order.go

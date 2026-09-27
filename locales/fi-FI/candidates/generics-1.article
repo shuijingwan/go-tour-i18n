@@ -1,0 +1,11 @@
+* Tyyppiparametrit
+
+Go-kielen funktioita voi kirjoittaa toimimaan useilla eri tyypeillä tyyppiparametrien avulla. Funktion tyyppiparametrit kirjoitetaan hakasulkeisiin ennen funktion argumentteja.
+
+  func Index[T comparable](s []T, x T) int
+
+Tämä määrittely tarkoittaa, että `s` on viipale, jonka alkiot voivat olla mitä tahansa `T`-tyyppiä, joka täyttää sisäänrakennetun tyyppirajoitteen `comparable`. Myös `x` on samaa tyyppiä oleva arvo.
+
+`comparable` on hyödyllinen tyyppirajoite, joka mahdollistaa operaattorien `==` ja `!=` käytön kyseisen tyypin arvojen vertailuun. Tässä esimerkissä vertaamme arvoa viipaleen jokaiseen alkioon, kunnes löydämme vastaavuuden. `Index`-funktio toimii kaikilla tyypeillä, joiden arvoja voidaan vertailla tällä tavalla.
+
+.play generics/index.go

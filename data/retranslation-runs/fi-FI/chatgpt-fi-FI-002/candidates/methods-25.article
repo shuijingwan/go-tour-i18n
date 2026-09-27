@@ -1,0 +1,13 @@
+* Harjoitus: kuvat
+
+Muistatko [[/tour/moretypes/18][aiemmin tekemäsi kuvageneraattorin]]? Tehdään toinen, mutta tällä kertaa se palauttaa `image.Image`-rajapinnan toteutuksen dataviipaleen sijasta.
+
+Määrittele oma `Image`-tyyppisi, toteuta [[/pkg/image/#Image][tarvittavat metodit]] ja kutsu `pic.ShowImage`-funktiota.
+
+`Bounds`-metodin tulee palauttaa `image.Rectangle`, esimerkiksi `image.Rect(0,`0,`w,`h)`.
+
+`ColorModel`-metodin tulee palauttaa `color.RGBAModel`.
+
+`At`-metodin tulee palauttaa väri. Edellisen kuvageneraattorin arvo `v` vastaa tässä arvoa `color.RGBA{v,`v,`255,`255}`.
+
+.play methods/exercise-images.go

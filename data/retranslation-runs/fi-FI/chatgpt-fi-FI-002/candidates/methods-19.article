@@ -1,0 +1,24 @@
+* Virheet
+
+Go-ohjelmissa virhetilanteita ilmaistaan `error`-arvoilla.
+
+`error` on sisäänrakennettu rajapintatyyppi, joka muistuttaa `fmt.Stringer`-rajapintaa:
+
+	type error interface {
+		Error() string
+	}
+
+(Kuten `fmt.Stringer`-rajapinnan kohdalla, `fmt`-paketti etsii `error`-rajapinnan toteutusta arvoja tulostaessaan.)
+
+Funktiot palauttavat usein `error`-arvon. Kutsuvan koodin tulee käsitellä virhe tarkistamalla, onko virhearvo `nil`.
+
+	i, err := strconv.Atoi("42")
+	if err != nil {
+		fmt.Printf("couldn't convert number: %v\n", err)
+		return
+	}
+	fmt.Println("Converted integer:", i)
+
+nil-arvoinen `error` ilmaisee onnistumista; muusta kuin nil-arvoisesta `error`-arvosta voidaan päätellä, että toiminto epäonnistui.
+
+.play methods/errors.go
