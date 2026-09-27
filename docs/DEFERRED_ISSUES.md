@@ -123,12 +123,22 @@
 - 当前状态：`open`
 - 后续处理/核销证据：原始 preview/HUMAN gate 记录见 `data/locale-surface-reviews/cs-CZ/20260921-stage-a-002.md`。2026-09-22 已决定通过现有共享 `app.css` 修复：已上线非中文站点的既有 production HTML 使用固定 shared-assets URL，待 shared-assets 正式更新后无需重新 publish 或 deploy locale；`zh-CN` 使用同源静态资源，本轮作为已确认例外暂不升级，待下次正常上游同步和部署时获得修复。本地 `TestTourHeaderTitlesAreCenteredOnDesktopAndFitCommonMobileViewports` targeted browser regression PASS，`git diff --check` PASS；shared-assets 正式部署及实际验收尚未完成，当前保持 open。
 
-### DI-20260926-001：es-419 IndexNow 本地 key-store locale 校验不接受数字地区代码
+### DI-20260926-001：es-419 IndexNow 本地 locale 校验与后续公网密钥验证失败
 
 - ID：`DI-20260926-001`
 - 发现日期：`2026-09-26`
-- 发现阶段/场景：es-419 完成 Stage A、Preview、首次 Production 验收及正式 `first-production finalize`，`production_state=live`；维护者已提交 Sitemap，随后运行 `scripts/indexnow-closeout.sh --locale es-419`。
-- 问题描述：正式命令返回 `indexnow closeout: FAILED: invalid locale for IndexNow local key store`。已核对 `scripts/indexnow-closeout.py`：`LOCALE_PATTERN` 只允许纯语言或两位大写字母地区代码，`default_key_file` 因而在本地拒绝数字地区代码 `419`；此轮没有进入后续网络提交阶段。维护者另有本机域名解析问题，但本次错误不能归因于 DNS，二者分开处理。
-- 暂缓原因：维护者明确决定此次不重试、不修改 IndexNow 脚本、不重新部署；该搜索引擎 closeout 不属于 Production gate，es-419 已正式 live，Sitemap 已提交。
+- 发现阶段/场景：es-419 完成 Stage A、Preview、首次 Production 验收及正式 `first-production finalize`，`production_state=live`；Google、Bing Sitemap 已由维护者提交。首次运行 `scripts/indexnow-closeout.sh --locale es-419` 因本地 locale 校验失败。2026-09-27 使用正式支持的 `--key-file` 显式密钥路径再次执行，进入后续公网验证阶段。
+- 问题描述：首次命令返回 `indexnow closeout: FAILED: invalid locale for IndexNow local key store`。`scripts/indexnow-closeout.py` 的 `LOCALE_PATTERN` 只允许纯语言或两位大写字母地区代码，本地默认 key-store 因而不接受数字地区代码 `419`。2026-09-27 维护者在仓库外的 `go-tour-indexnow/es-419/` 建立有效密钥，使用 `scripts/indexnow-closeout.sh --locale es-419 --key-file <现有受保护密钥路径>` 绕过默认 key-store 命名限制，输出 `PROVISIONING PASS`，但正式 Go bootstrap 请求公网 `https://es-419-go-dev.shuijingwanwq.com/<key>.txt` 时返回 `EOF`，最终为 `indexnow closeout: FAILED: formal IndexNow bootstrap failed after provisioning`。因此已确认存在两个不同失败阶段：默认本地校验不兼容，以及显式密钥路径下的公网密钥读取失败；`EOF` 的根因尚未确定，不能仅据此认定 DNS、代理、服务器或 IndexNow API 故障。尚未取得 IndexNow submission PASS。
+- 暂缓原因：维护者于 2026-09-27 明确决定暂时放弃重试，不调整本地代理/DNS、不修改脚本、不重复部署；现有密钥和已成功的服务端 provisioning 保留。es-419 正式 `live`，Google、Bing Sitemap 已提交；IndexNow 属于非阻塞 Search-engine closeout，不影响现有 Production gate。
 - 当前状态：`open`
-- 后续处理/核销证据：暂无。恢复时先为本地 key-store locale 校验增加对 canonical 数字地区代码的精确支持并补充针对性测试，再单独核实维护者本机 DNS，最后按正式 IndexNow closeout 流程提交并保存真实 PASS evidence。不得将现有 `ml-IN` IndexNow 成功视为 es-419 的完成证据。
+- 后续处理/核销证据：2026-09-27 实际命令输出为 `PROVISIONING PASS` → `verify public IndexNow key: Get "https://es-419-go-dev.shuijingwanwq.com/<key>.txt": EOF` → `FAILED`；未发生成功提交。仅在维护者后续明确恢复时，先只读核对同一密钥的公网 URL、实际 HTTP/TLS/DNS 路径及与已通过的 Production 公网验收的差异，保留现有密钥并复用精确 `--key-file` 路径；另外独立修复本地数字地区码正则并运行针对性测试。只有取得本 locale 的 `IndexNow bootstrap: PASS` 和 `IndexNow closeout: PASS` 才可核销；不得以其他语言的成功结果替代。
+
+### DI-20260927-001：gu-IN IndexNow 公网密钥验证连续 EOF
+
+- ID：`DI-20260927-001`
+- 发现日期：`2026-09-27`
+- 发现阶段/场景：gu-IN 已完成首次 Production 验收与 finalization，`production_state=live`；当前登记不重新核实各平台 Sitemap 提交状态。首次 IndexNow closeout 的公网密钥请求曾遇到 `EOF`；2026-09-27 明确重跑 `scripts/indexnow-closeout.sh --locale gu-IN` 再次复现。
+- 问题描述：本次正式脚本输出 `IndexNow local key: reused` 和 `PROVISIONING PASS`，随后 Go bootstrap 对 `https://gu-go-dev.shuijingwanwq.com/<key>.txt` 的公网密钥 GET 返回 `EOF`，最终为 `indexnow closeout: FAILED: formal IndexNow bootstrap failed after provisioning`。密钥已复用，服务端 provisioning 已成功，但未取得公网密钥验证或 IndexNow submission PASS。重复 `EOF` 是真实结果，其根因尚未确定；不能仅据此判定为 DNS/代理、Nginx、CDN 或 IndexNow API 故障。
+- 暂缓原因：维护者于 2026-09-27 明确决定暂时放弃，不继续重试或排查，不重新生成密钥、不重复修改服务器配置。gu-IN 仍为正式 `live`；IndexNow closeout 不属于 Production gate，原有 Sitemap 提交状态不因本次失败改变。
+- 当前状态：`open`
+- 后续处理/核销证据：2026-09-27 实际重试的终态为 `IndexNow local key: reused` → `PROVISIONING PASS` → `verify public IndexNow key: Get "https://gu-go-dev.shuijingwanwq.com/<key>.txt": EOF` → `FAILED`。仅在维护者明确恢复时，先只读核对现有密钥对应的公网 URL、实际 HTTP/TLS/DNS 路径及 Production 公网验收结果，再依据实证决定是否使用现有正式 retry/恢复路径；mutation 状态不明确时不得盲目重复 provisioning 或生成新 key。只有取得 gu-IN 自身的 `IndexNow bootstrap: PASS` 与 `IndexNow closeout: PASS` 才可核销。
