@@ -1,0 +1,7 @@
+* select
+
+`select`-setningen lar en goroutine vente på flere kommunikasjonsoperasjoner.
+
+En `select` blokkerer til ett av tilfellene kan kjøres, og kjører deretter dette tilfellet. Hvis flere tilfeller er klare, velges ett av dem tilfeldig.
+
+.play concurrency/select.go

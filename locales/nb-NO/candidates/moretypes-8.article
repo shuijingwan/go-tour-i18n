@@ -1,0 +1,9 @@
+* Slice-er som referanser til arrayer
+
+En slice lagrer ingen data selv. Den beskriver bare en del av en underliggende array.
+
+Når du endrer elementene i en slice, endrer du de tilsvarende elementene i den underliggende arrayen.
+
+Andre slice-er som deler samme underliggende array, vil også se endringene.
+
+.play moretypes/slices-pointers.go

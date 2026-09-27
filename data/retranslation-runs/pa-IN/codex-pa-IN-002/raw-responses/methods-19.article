@@ -1,0 +1,17 @@
+* ਗਲਤੀਆਂ
+
+⟪GTI18N_9eaab1fd_000001⟫ ਪ੍ਰੋਗਰਾਮ ਗਲਤੀ ਦੀ ਹਾਲਤ ਨੂੰ ⟪GTI18N_9eaab1fd_000002⟫error⟪GTI18N_9eaab1fd_000003⟫ ਮੁੱਲਾਂ ਨਾਲ ਦਰਸਾਉਂਦੇ ਹਨ।
+
+⟪GTI18N_9eaab1fd_000004⟫error⟪GTI18N_9eaab1fd_000005⟫ ਟਾਈਪ, ⟪GTI18N_9eaab1fd_000006⟫fmt.Stringer⟪GTI18N_9eaab1fd_000007⟫ ਵਰਗਾ ਬਿਲਟ-ਇਨ ਇੰਟਰਫੇਸ ਹੈ:
+
+⟪GTI18N_9eaab1fd_000008⟫
+
+(ਜਿਵੇਂ ⟪GTI18N_9eaab1fd_000009⟫fmt.Stringer⟪GTI18N_9eaab1fd_000010⟫ ਨਾਲ ਹੁੰਦਾ ਹੈ, ⟪GTI18N_9eaab1fd_000011⟫fmt⟪GTI18N_9eaab1fd_000012⟫ ਪੈਕੇਜ ਮੁੱਲ ਪ੍ਰਿੰਟ ਕਰਦੇ ਸਮੇਂ ⟪GTI18N_9eaab1fd_000013⟫error⟪GTI18N_9eaab1fd_000014⟫ ਇੰਟਰਫੇਸ ਨੂੰ ਲੱਭਦਾ ਹੈ।)
+
+ਫੰਕਸ਼ਨ ਅਕਸਰ ⟪GTI18N_9eaab1fd_000015⟫error⟪GTI18N_9eaab1fd_000016⟫ ਮੁੱਲ ਵਾਪਸ ਕਰਦੇ ਹਨ ਅਤੇ ਕਾਲ ਕਰਨ ਵਾਲੇ ਕੋਡ ਨੂੰ ਇਹ ਜਾਂਚ ਕੇ ਗਲਤੀਆਂ ਸੰਭਾਲਣੀਆਂ ਚਾਹੀਦੀਆਂ ਹਨ ਕਿ ਗਲਤੀ ⟪GTI18N_9eaab1fd_000017⟫nil⟪GTI18N_9eaab1fd_000018⟫ ਦੇ ਬਰਾਬਰ ਹੈ ਜਾਂ ਨਹੀਂ।
+
+⟪GTI18N_9eaab1fd_000019⟫
+
+nil ⟪GTI18N_9eaab1fd_000020⟫error⟪GTI18N_9eaab1fd_000021⟫ ਸਫਲਤਾ ਦਰਸਾਉਂਦਾ ਹੈ; non-nil ⟪GTI18N_9eaab1fd_000022⟫error⟪GTI18N_9eaab1fd_000023⟫ ਅਸਫਲਤਾ ਦਰਸਾਉਂਦਾ ਹੈ।
+
+⟪GTI18N_9eaab1fd_000024⟫

@@ -1,0 +1,15 @@
+* range og close
+
+En avsender kan `close` en kanal for å signalisere at det ikke kommer flere verdier. Mottakere kan kontrollere om en kanal er lukket ved å hente en ekstra verdi fra mottaksuttrykket. Etter
+
+	v, ok := <-ch
+
+er `ok` lik `false` hvis det ikke finnes flere verdier å motta og kanalen er lukket.
+
+Løkken `for`i`:=`range`c` mottar gjentatte ganger verdier fra kanalen helt til den er lukket.
+
+*Merk:* Bare avsenderen skal lukke en kanal, aldri mottakeren. Å sende til en lukket kanal utløser en panic.
+
+*En*annen*merknad:* Kanaler er ikke som filer; vanligvis trenger du ikke lukke dem. Lukking er bare nødvendig når mottakeren må få vite at det ikke kommer flere verdier, for eksempel for å avslutte en `range`-løkke.
+
+.play concurrency/range-and-close.go

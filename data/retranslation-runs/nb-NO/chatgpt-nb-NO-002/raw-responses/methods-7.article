@@ -1,0 +1,13 @@
+* Metoder og indirekte pekertilgang (2)
+
+Det samme gjelder i motsatt retning.
+
+Funksjoner som tar et verdiargument, må få en verdi av akkurat den angitte typen:
+
+⟪GTI18N_61a9cb84_000001⟫Kompileringsfeil!⟪GTI18N_61a9cb84_000002⟫mens metoder med verdimottakere kan kalles med enten en verdi eller en peker som mottaker:
+
+⟪GTI18N_61a9cb84_000003⟫
+
+I dette tilfellet tolkes metodekallet ⟪GTI18N_61a9cb84_000004⟫p.Abs()⟪GTI18N_61a9cb84_000005⟫ som ⟪GTI18N_61a9cb84_000006⟫(*p).Abs()⟪GTI18N_61a9cb84_000007⟫.
+
+⟪GTI18N_61a9cb84_000008⟫

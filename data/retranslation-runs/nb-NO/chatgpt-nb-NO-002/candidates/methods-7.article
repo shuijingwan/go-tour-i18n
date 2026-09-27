@@ -1,0 +1,20 @@
+* Metoder og indirekte pekertilgang (2)
+
+Det samme gjelder i motsatt retning.
+
+Funksjoner som tar et verdiargument, må få en verdi av akkurat den angitte typen:
+
+	var v Vertex
+	fmt.Println(AbsFunc(v))  // OK
+	fmt.Println(AbsFunc(&v)) // Kompileringsfeil!
+
+mens metoder med verdimottakere kan kalles med enten en verdi eller en peker som mottaker:
+
+	var v Vertex
+	fmt.Println(v.Abs()) // OK
+	p := &v
+	fmt.Println(p.Abs()) // OK
+
+I dette tilfellet tolkes metodekallet `p.Abs()` som `(*p).Abs()`.
+
+.play methods/indirection-values.go

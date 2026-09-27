@@ -1,0 +1,11 @@
+* Bufrede kanaler
+
+Kanaler kan være _bufrede_. Oppgi bufferlengden som det andre argumentet til `make` når du oppretter en bufret kanal:
+
+	ch := make(chan int, 100)
+
+Sending til en bufret kanal blokkerer bare når bufferen er full. Mottak blokkerer når bufferen er tom.
+
+Endre eksemplet slik at du prøver å sende flere verdier enn bufferen har plass til, og se hva som skjer.
+
+.play concurrency/buffered-channels.go

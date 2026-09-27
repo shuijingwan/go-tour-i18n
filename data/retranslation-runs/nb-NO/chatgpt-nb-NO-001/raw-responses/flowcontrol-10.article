@@ -1,0 +1,11 @@
+* Evalueringsrekkefølge i switch
+
+Tilfellene i en switch evalueres ovenfra og ned. Evalueringen stopper når et tilfelle gir treff.
+
+(For eksempel:
+
+⟪GTI18N_e1479cae_000001⟫
+
+Her kalles ikke ⟪GTI18N_e1479cae_000002⟫f⟪GTI18N_e1479cae_000003⟫ hvis ⟪GTI18N_e1479cae_000004⟫i==0⟪GTI18N_e1479cae_000005⟫.)
+
+⟪GTI18N_e1479cae_000006⟫

@@ -1,0 +1,26 @@
+* ભૂલો
+
+Go પ્રોગ્રામ ભૂલની સ્થિતિ `error` મૂલ્યો દ્વારા દર્શાવે છે.
+`error` ટાઇપ `fmt.Stringer` જેવી જ બિલ્ટ-ઇન ઇન્ટરફેસ છે:
+
+	type error interface {
+		Error() string
+	}
+
+(`fmt.Stringer` ની જેમ જ, મૂલ્યો પ્રિન્ટ કરતી વખતે `fmt` પેકેજ
+`error` ઇન્ટરફેસ શોધે છે.)
+
+ફંક્શન ઘણી વાર `error` મૂલ્ય પરત કરે છે; તેને કૉલ કરતો કોડ
+આ મૂલ્ય `nil` છે કે નહીં તેની ચકાસણી કરીને ભૂલ સંભાળે છે.
+
+	i, err := strconv.Atoi("42")
+	if err != nil {
+		fmt.Printf("couldn't convert number: %v\n", err)
+		return
+	}
+	fmt.Println("Converted integer:", i)
+
+nil `error` મૂલ્ય સફળતા દર્શાવે છે; nil ન હોય એવું
+`error` મૂલ્ય નિષ્ફળતા દર્શાવે છે.
+
+.play methods/errors.go

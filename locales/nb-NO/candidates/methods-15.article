@@ -1,0 +1,20 @@
+* Typeassertioner
+
+En _typeassertion_ gir tilgang til den underliggende konkrete verdien i en grensesnittverdi.
+
+	t := i.(T)
+
+Denne setningen hevder at grensesnittverdien `i` inneholder den konkrete typen `T` og tilordner den underliggende `T`-verdien til variabelen `t`.
+
+Hvis `i` ikke inneholder en `T`-verdi, utløser setningen en panic.
+
+For å _teste_ om en grensesnittverdi inneholder en bestemt type, kan en typeassertion returnere to verdier: den underliggende verdien og en boolsk verdi som angir om assertionen lyktes.
+
+	t, ok := i.(T)
+
+Hvis `i` inneholder en `T`-verdi, får `t` den underliggende verdien og `ok` blir true.
+Hvis ikke, blir `ok` false og `t` får nullverdien til typen `T`, uten at det utløses en panic.
+
+Legg merke til likheten mellom denne syntaksen og syntaksen for å hente verdier fra en map.
+
+.play methods/type-assertions.go

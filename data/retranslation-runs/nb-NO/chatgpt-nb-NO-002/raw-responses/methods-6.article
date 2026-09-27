@@ -1,0 +1,13 @@
+* Metoder og indirekte pekertilgang
+
+Når du sammenligner de to foregående programmene, legger du kanskje merke til at funksjoner med et pekerargument må få en peker som argument:
+
+⟪GTI18N_39fb725b_000001⟫Kompileringsfeil!⟪GTI18N_39fb725b_000002⟫mens metoder med pekermottakere kan kalles med enten en verdi eller en peker som mottaker:
+
+⟪GTI18N_39fb725b_000003⟫
+
+I setningen ⟪GTI18N_39fb725b_000004⟫v.Scale(5)⟪GTI18N_39fb725b_000005⟫ kalles metoden med pekermottaker automatisk, selv om ⟪GTI18N_39fb725b_000006⟫v⟪GTI18N_39fb725b_000007⟫ er en verdi og ikke en peker.
+For enkelhets skyld tolker ⟪GTI18N_39fb725b_000008⟫ dermed setningen ⟪GTI18N_39fb725b_000009⟫v.Scale(5)⟪GTI18N_39fb725b_000010⟫ som
+⟪GTI18N_39fb725b_000011⟫(&v).Scale(5)⟪GTI18N_39fb725b_000012⟫, siden metoden ⟪GTI18N_39fb725b_000013⟫Scale⟪GTI18N_39fb725b_000014⟫ har en pekermottaker.
+
+⟪GTI18N_39fb725b_000015⟫

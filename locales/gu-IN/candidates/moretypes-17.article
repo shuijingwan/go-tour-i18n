@@ -1,0 +1,12 @@
+* range — આગળ
+
+ઇન્ડેક્સ અથવા મૂલ્યની જરૂર ન હોય તો તેને `_` સોંપીને અવગણી શકો છો.
+
+    for i, _ := range pow
+    for _, value := range pow
+
+ફક્ત ઇન્ડેક્સ જ જોઈએ તો બીજો વેરિએબલ લખવાની જરૂર નથી.
+
+    for i := range pow
+
+.play moretypes/range-continued.go

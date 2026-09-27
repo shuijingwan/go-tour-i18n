@@ -1,0 +1,21 @@
+* ਅਭਿਆਸ: ਗਲਤੀਆਂ
+
+[[/tour/flowcontrol/8][ਪਿਛਲੇ ਅਭਿਆਸ]] ਵਿੱਚੋਂ ਆਪਣਾ `Sqrt` ਫੰਕਸ਼ਨ ਕਾਪੀ ਕਰੋ ਅਤੇ ਉਸ ਨੂੰ `error` ਮੁੱਲ ਵਾਪਸ ਕਰਨ ਲਈ ਬਦਲੋ।
+
+ਨੈਗੇਟਿਵ ਸੰਖਿਆ ਦਿੱਤੇ ਜਾਣ ਉੱਤੇ `Sqrt` ਨੂੰ non-nil ਗਲਤੀ ਮੁੱਲ ਵਾਪਸ ਕਰਨਾ ਚਾਹੀਦਾ ਹੈ, ਕਿਉਂਕਿ ਇਹ ਕੰਪਲੈਕਸ ਸੰਖਿਆਵਾਂ ਦਾ ਸਮਰਥਨ ਨਹੀਂ ਕਰਦਾ।
+
+ਇੱਕ ਨਵੀਂ ਟਾਈਪ ਬਣਾਓ
+
+	type ErrNegativeSqrt float64
+
+ਅਤੇ ਇਸ ਨੂੰ ਇਹ ਮੈਥਡ ਦੇ ਕੇ `error` ਬਣਾਓ:
+
+	func (e ErrNegativeSqrt) Error() string
+
+ਮੈਥਡ ਅਜਿਹਾ ਹੋਵੇ ਕਿ `ErrNegativeSqrt(-2).Error()`, `"cannot`Sqrt`negative`number:`-2"` ਵਾਪਸ ਕਰੇ।
+
+*ਨੋਟ:* `Error` ਮੈਥਡ ਅੰਦਰ `fmt.Sprint(e)` ਨੂੰ ਕਾਲ ਕਰਨ ਨਾਲ ਪ੍ਰੋਗਰਾਮ ਅਨੰਤ ਲੂਪ ਵਿੱਚ ਚਲਾ ਜਾਵੇਗਾ। ਪਹਿਲਾਂ `e` ਨੂੰ `fmt.Sprint(float64(e))` ਵਜੋਂ ਬਦਲ ਕੇ ਤੁਸੀਂ ਇਸ ਤੋਂ ਬਚ ਸਕਦੇ ਹੋ। ਕਿਉਂ?
+
+ਆਪਣੇ `Sqrt` ਫੰਕਸ਼ਨ ਨੂੰ ਇਸ ਤਰ੍ਹਾਂ ਬਦਲੋ ਕਿ ਨੈਗੇਟਿਵ ਸੰਖਿਆ ਮਿਲਣ ਉੱਤੇ ਇਹ `ErrNegativeSqrt` ਮੁੱਲ ਵਾਪਸ ਕਰੇ।
+
+.play methods/exercise-errors.go

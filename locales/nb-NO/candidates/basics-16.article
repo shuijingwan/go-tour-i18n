@@ -1,0 +1,11 @@
+* Tallkonstanter
+
+Tallkonstanter er _verdier_ med høy presisjon.
+
+En konstant uten spesifisert type får typen som konteksten krever.
+
+Prøv også å skrive ut `needInt(Big)`.
+
+(En `int` kan maksimalt lagre et 64-biters heltall, og noen ganger mindre.)
+
+.play basics/numeric-constants.go

@@ -1,0 +1,268 @@
+{
+  "schema_version": 2,
+  "evidence_type": "quality_check_results",
+  "locale": "pa-IN",
+  "snapshot_id": "qc-002",
+  "snapshot_manifest_sha256": "2aa0cd609b85b2b31a59630c2b306c2dc033d401d22548637bfe845554f66a89",
+  "previous_snapshot_id": "qc-001",
+  "rubric": "translation-quality/v1",
+  "result_count": 50,
+  "results": [
+    {
+      "index": 2,
+      "unit_id": "welcome/2",
+      "rating": "A"
+    },
+    {
+      "index": 3,
+      "unit_id": "welcome/4",
+      "rating": "A"
+    },
+    {
+      "index": 9,
+      "unit_id": "basics/4",
+      "rating": "A"
+    },
+    {
+      "index": 14,
+      "unit_id": "basics/9",
+      "rating": "B",
+      "finding": "英文原意是存在初始化器时可以省略变量的显式类型。当前译文虽然已将 `present` 改为“ਮੌਜੂਦ”，却仍保留了多余的英文括注“(present)”。上一轮指出的英语残留未完全解决。应删除不必要的英文解释，使条件句保持自然、完整的 Gurmukhi 表达，同时保留类型推断的准确含义。"
+    },
+    {
+      "index": 15,
+      "unit_id": "basics/10",
+      "rating": "A"
+    },
+    {
+      "index": 16,
+      "unit_id": "basics/11",
+      "rating": "A"
+    },
+    {
+      "index": 18,
+      "unit_id": "basics/13",
+      "rating": "A"
+    },
+    {
+      "index": 19,
+      "unit_id": "basics/14",
+      "rating": "A"
+    },
+    {
+      "index": 20,
+      "unit_id": "basics/15",
+      "rating": "A"
+    },
+    {
+      "index": 21,
+      "unit_id": "basics/16",
+      "rating": "A"
+    },
+    {
+      "index": 23,
+      "unit_id": "flowcontrol/1",
+      "rating": "A"
+    },
+    {
+      "index": 24,
+      "unit_id": "flowcontrol/2",
+      "rating": "A"
+    },
+    {
+      "index": 25,
+      "unit_id": "flowcontrol/3",
+      "rating": "A"
+    },
+    {
+      "index": 26,
+      "unit_id": "flowcontrol/4",
+      "rating": "A"
+    },
+    {
+      "index": 27,
+      "unit_id": "flowcontrol/5",
+      "rating": "A"
+    },
+    {
+      "index": 28,
+      "unit_id": "flowcontrol/6",
+      "rating": "A"
+    },
+    {
+      "index": 30,
+      "unit_id": "flowcontrol/8",
+      "rating": "C",
+      "finding": "英文通过牛顿法解释平方根迭代，其中 `2z` 是 `z²` 对 `z` 的导数，更新公式通过除以这一导数调整迭代步长。英文原句本身略有歧义；当前 Punjabi 的“2z ਨਾਲ ਭਾਗ ਦੇਣਾ z² ਦਾ ਅਵਕਲਜ ਹੈ”进一步明确地把“除以 2z”这一运算说成了导数，造成数学概念错误。上一轮的大量英语残留已经解决，但此处仍须修正导数与除法运算的关系。不得改变原有公式、迭代步骤或额外增加算法解释。"
+    },
+    {
+      "index": 31,
+      "unit_id": "flowcontrol/9",
+      "rating": "A"
+    },
+    {
+      "index": 33,
+      "unit_id": "flowcontrol/11",
+      "rating": "A"
+    },
+    {
+      "index": 34,
+      "unit_id": "flowcontrol/12",
+      "rating": "A"
+    },
+    {
+      "index": 35,
+      "unit_id": "flowcontrol/13",
+      "rating": "A"
+    },
+    {
+      "index": 37,
+      "unit_id": "moretypes/1",
+      "rating": "B",
+      "finding": "英文两个代码注释分别说明通过指针 `p` 读取 `i` 和设置 `i`。修订后两条注释使用“ਇਹ ਪੌਇੰਟਰ ਵਰਤੋ: p”，已经消除了原先无法辨认 `i`、`p` 关系的问题，但在 Punjabi 代码注释中仍显得生硬，标识符 `p` 被作为冒号后的附加说明。应自然地将 `p` 与指针概念结合，直接说明通过 `p` 访问和修改 `i`，同时保留全部代码、标识符及注释结构。"
+    },
+    {
+      "index": 39,
+      "unit_id": "moretypes/3",
+      "rating": "A"
+    },
+    {
+      "index": 40,
+      "unit_id": "moretypes/4",
+      "rating": "A"
+    },
+    {
+      "index": 41,
+      "unit_id": "moretypes/5",
+      "rating": "A"
+    },
+    {
+      "index": 42,
+      "unit_id": "moretypes/6",
+      "rating": "A"
+    },
+    {
+      "index": 43,
+      "unit_id": "moretypes/7",
+      "rating": "B",
+      "finding": "英文将 slice 描述为底层数组元素的 dynamically-sized, flexible view，强调它是访问底层数组元素的动态窗口，而不是独立的可视化结果。当前译文“ਗਤੀਸ਼ੀਲ ਆਕਾਰ ਵਾਲਾ, ਲਚਕੀਲਾ ਦ੍ਰਿਸ਼”使用了偏向视觉场景的“ਦ੍ਰਿਸ਼”，不够准确、自然地传达这种数据结构关系。此前关于索引、冒号和半开区间的问题已经解决；本次只需调整 slice 与底层数组之间的描述，保持其他技术说明不变。"
+    },
+    {
+      "index": 49,
+      "unit_id": "moretypes/13",
+      "rating": "A"
+    },
+    {
+      "index": 51,
+      "unit_id": "moretypes/15",
+      "rating": "A"
+    },
+    {
+      "index": 52,
+      "unit_id": "moretypes/16",
+      "rating": "A"
+    },
+    {
+      "index": 53,
+      "unit_id": "moretypes/17",
+      "rating": "A"
+    },
+    {
+      "index": 54,
+      "unit_id": "moretypes/18",
+      "rating": "A"
+    },
+    {
+      "index": 55,
+      "unit_id": "moretypes/19",
+      "rating": "A"
+    },
+    {
+      "index": 56,
+      "unit_id": "moretypes/20",
+      "rating": "A"
+    },
+    {
+      "index": 57,
+      "unit_id": "moretypes/21",
+      "rating": "A"
+    },
+    {
+      "index": 58,
+      "unit_id": "moretypes/22",
+      "rating": "B",
+      "finding": "英文说明通过双值赋值检测 map 中是否存在指定键。当前译文已自然表达“ਕੁੰਜੀ ਮੌਜੂਦ ਹੈ”，但仍附加“(present)”这一不必要的英文括注。应删除英语残留，使该操作说明符合自然 Gurmukhi，同时保持 `elem`、`ok`、`true`、`false` 与零值条件的准确性。"
+    },
+    {
+      "index": 59,
+      "unit_id": "moretypes/23",
+      "rating": "A"
+    },
+    {
+      "index": 61,
+      "unit_id": "moretypes/25",
+      "rating": "B",
+      "finding": "英文说明 closure 引用其函数体之外的变量，并能访问、修改这些变量。当前已将原来的英文“ਬਾਡੀ”替换为“ਸਰੀਰ”，但“ਆਪਣੇ ਸਰੀਰ ਤੋਂ ਬਾਹਰ ਘੋਸ਼ਿਤ ਵੇਰੀਏਬਲਾਂ”仍是偏向人体含义的生硬直译，不适合作为正式编程教材对函数体的描述。应自然地表达函数内部代码与外部变量之间的关系，保持 closure 的变量绑定、访问与赋值语义不变。"
+    },
+    {
+      "index": 75,
+      "unit_id": "methods/12",
+      "rating": "A"
+    },
+    {
+      "index": 78,
+      "unit_id": "methods/15",
+      "rating": "A"
+    },
+    {
+      "index": 86,
+      "unit_id": "methods/23",
+      "rating": "A"
+    },
+    {
+      "index": 91,
+      "unit_id": "generics/2",
+      "rating": "A"
+    },
+    {
+      "index": 94,
+      "unit_id": "concurrency/2",
+      "rating": "A"
+    },
+    {
+      "index": 96,
+      "unit_id": "concurrency/4",
+      "rating": "A"
+    },
+    {
+      "index": 102,
+      "unit_id": "concurrency/10",
+      "rating": "A"
+    },
+    {
+      "index": 107,
+      "unit_id": "example:concurrency/exercise-equivalent-binary-trees.go",
+      "rating": "A"
+    },
+    {
+      "index": 109,
+      "unit_id": "example:concurrency/mutex-counter.go",
+      "rating": "A"
+    },
+    {
+      "index": 111,
+      "unit_id": "example:generics/index.go",
+      "rating": "A"
+    },
+    {
+      "index": 112,
+      "unit_id": "example:generics/list.go",
+      "rating": "A"
+    },
+    {
+      "index": 121,
+      "unit_id": "example:moretypes/slices-of-slice.go",
+      "rating": "A"
+    }
+  ]
+}

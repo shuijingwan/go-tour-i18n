@@ -1,0 +1,19 @@
+* Slice-er
+
+En array har fast størrelse.
+En slice er derimot en fleksibel visning av elementene i en array, med dynamisk størrelse.
+I praksis brukes slice-er mye oftere enn arrayer.
+
+Typen ⟪GTI18N_a169cf48_000001⟫[]T⟪GTI18N_a169cf48_000002⟫ er en slice med elementer av typen ⟪GTI18N_a169cf48_000003⟫T⟪GTI18N_a169cf48_000004⟫.
+
+Du lager en slice ved å angi to indekser, en nedre og en øvre grense, atskilt med kolon:
+
+⟪GTI18N_a169cf48_000005⟫
+
+Dette velger et halvåpent intervall som omfatter det første elementet, men ikke det siste.
+
+Følgende uttrykk lager en slice som omfatter elementene fra og med indeks 1 til og med indeks 3 i ⟪GTI18N_a169cf48_000006⟫a⟪GTI18N_a169cf48_000007⟫:
+
+⟪GTI18N_a169cf48_000008⟫
+
+⟪GTI18N_a169cf48_000009⟫

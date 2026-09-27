@@ -1,0 +1,19 @@
+* Pekermottakere
+
+Du kan deklarere metoder med pekermottakere.
+
+Da har mottakertypen den bokstavelige syntaksen ⟪GTI18N_99f9fa4e_000001⟫*T⟪GTI18N_99f9fa4e_000002⟫ for en type ⟪GTI18N_99f9fa4e_000003⟫T⟪GTI18N_99f9fa4e_000004⟫.
+(⟪GTI18N_99f9fa4e_000005⟫T⟪GTI18N_99f9fa4e_000006⟫ kan heller ikke selv være en pekertype som ⟪GTI18N_99f9fa4e_000007⟫*int⟪GTI18N_99f9fa4e_000008⟫.)
+
+I dette eksemplet er metoden ⟪GTI18N_99f9fa4e_000009⟫Scale⟪GTI18N_99f9fa4e_000010⟫ definert på ⟪GTI18N_99f9fa4e_000011⟫*Vertex⟪GTI18N_99f9fa4e_000012⟫.
+
+Metoder med pekermottakere kan endre verdien mottakeren peker til (slik ⟪GTI18N_99f9fa4e_000013⟫Scale⟪GTI18N_99f9fa4e_000014⟫ gjør her).
+Siden metoder ofte må endre mottakeren sin, er pekermottakere vanligere enn verdimottakere.
+
+Prøv å fjerne ⟪GTI18N_99f9fa4e_000015⟫*⟪GTI18N_99f9fa4e_000016⟫ fra deklarasjonen av funksjonen ⟪GTI18N_99f9fa4e_000017⟫Scale⟪GTI18N_99f9fa4e_000018⟫ på linje 16, og se hvordan programmets oppførsel endres.
+
+Med en verdimottaker arbeider metoden ⟪GTI18N_99f9fa4e_000019⟫Scale⟪GTI18N_99f9fa4e_000020⟫ på en kopi av den opprinnelige ⟪GTI18N_99f9fa4e_000021⟫Vertex⟪GTI18N_99f9fa4e_000022⟫-verdien.
+(Dette er samme oppførsel som for alle andre funksjonsargumenter.)
+Metoden ⟪GTI18N_99f9fa4e_000023⟫Scale⟪GTI18N_99f9fa4e_000024⟫ må ha en pekermottaker for å endre ⟪GTI18N_99f9fa4e_000025⟫Vertex⟪GTI18N_99f9fa4e_000026⟫-verdien som er deklarert i funksjonen ⟪GTI18N_99f9fa4e_000027⟫main⟪GTI18N_99f9fa4e_000028⟫.
+
+⟪GTI18N_99f9fa4e_000029⟫

@@ -1,0 +1,18 @@
+* Typeinferens
+
+Når du deklarerer en variabel uten å angi typen eksplisitt (enten med syntaksen `:=` eller med et uttrykk av formen `var`=`), utledes variabelens type fra verdien på høyre side.
+
+Hvis uttrykket på høyre side har en bestemt type, får den nye variabelen samme type:
+
+	var i int
+	j := i // j er en int
+
+Men hvis høyre side inneholder en tallkonstant uten spesifisert type, kan den nye variabelen få typen `int`, `float64` eller `complex128`, avhengig av konstantens presisjon:
+
+	i := 42           // int
+	f := 3.142        // float64
+	g := 0.867 + 0.5i // complex128
+
+Prøv å endre startverdien til `v` i eksempelkoden, og se hvordan det påvirker typen.
+
+.play basics/type-inference.go

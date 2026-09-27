@@ -1,0 +1,17 @@
+* Feil
+
+Programmer i ⟪GTI18N_9eaab1fd_000001⟫ uttrykker feiltilstander med ⟪GTI18N_9eaab1fd_000002⟫error⟪GTI18N_9eaab1fd_000003⟫-verdier.
+
+Den innebygde typen ⟪GTI18N_9eaab1fd_000004⟫error⟪GTI18N_9eaab1fd_000005⟫ er et grensesnitt som ligner på ⟪GTI18N_9eaab1fd_000006⟫fmt.Stringer⟪GTI18N_9eaab1fd_000007⟫:
+
+⟪GTI18N_9eaab1fd_000008⟫
+
+(Som med ⟪GTI18N_9eaab1fd_000009⟫fmt.Stringer⟪GTI18N_9eaab1fd_000010⟫ ser pakken ⟪GTI18N_9eaab1fd_000011⟫fmt⟪GTI18N_9eaab1fd_000012⟫ etter grensesnittet ⟪GTI18N_9eaab1fd_000013⟫error⟪GTI18N_9eaab1fd_000014⟫ når den skriver ut verdier.)
+
+Funksjoner returnerer ofte en ⟪GTI18N_9eaab1fd_000015⟫error⟪GTI18N_9eaab1fd_000016⟫-verdi, og koden som kaller funksjonen, bør håndtere feil ved å undersøke om feilen er lik ⟪GTI18N_9eaab1fd_000017⟫nil⟪GTI18N_9eaab1fd_000018⟫.
+
+⟪GTI18N_9eaab1fd_000019⟫
+
+En ⟪GTI18N_9eaab1fd_000020⟫error⟪GTI18N_9eaab1fd_000021⟫-verdi som er nil, betyr at operasjonen lyktes. En ⟪GTI18N_9eaab1fd_000022⟫error⟪GTI18N_9eaab1fd_000023⟫-verdi som ikke er nil, betyr at den mislyktes.
+
+⟪GTI18N_9eaab1fd_000024⟫

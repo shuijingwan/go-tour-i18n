@@ -1,0 +1,89 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-gu-IN-004",
+  "locale": "gu-IN",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 6,
+  "units": [
+    {
+      "unit_id": "basics/11",
+      "unit_kind": "page",
+      "source_path": "_content/tour/basics.article",
+      "source_sha256": "836ab1dd659798dcf5e90f283c4ee794aed1d2cf0766c2ccc268fa91684e9d05",
+      "input_path": "inputs/basics-11.article",
+      "input_sha256": "c2557646ac0084dfa79046a92ee6c3878d0207f6c105bafc8f9013085ebc7aa8",
+      "protected_token_count": 16,
+      "previous_snapshot_id": "20260927-gu-IN-qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "C",
+      "previous_finding": "Both teaching comments invert the type-alias relationship: byte/uint8 and rune/int32. Correct Gujarati alias direction while preserving protected code and comment structure."
+    },
+    {
+      "unit_id": "moretypes/1",
+      "unit_kind": "page",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "7706eaf0d46acc79fdad3b7953e5571bf404551d71aaefafd8ba79f5761f9806",
+      "input_path": "inputs/moretypes-1.article",
+      "input_sha256": "b6b916daff7c87dfb9553a2c0e739f4ce3004aa40023a62d15e19ad5a693e67c",
+      "protected_token_count": 20,
+      "previous_snapshot_id": "20260927-gu-IN-qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "C",
+      "previous_finding": "Both pointer teaching comments glue identifier p to Gujarati verbs, producing વાંચોp and આપોp. Restore the explicit relation between pointer p and reading/writing i without changing protected code."
+    },
+    {
+      "unit_id": "moretypes/15",
+      "unit_kind": "page",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "f2fc257e7c5f118321acc3b75e946053601532d411e8540534280d7fba795289",
+      "input_path": "inputs/moretypes-15.article",
+      "input_sha256": "6088b687ef801ed9c0eb38c3537cfb2d2e57037de2160d81b0f4a9aec96b8dbe",
+      "protected_token_count": 21,
+      "previous_snapshot_id": "20260927-gu-IN-qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "The variadic values supplied to append are described as multiple formal parameters. Clarify parameter versus argument semantics for vs ...T."
+    },
+    {
+      "unit_id": "methods/10",
+      "unit_kind": "page",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "11ca99e6e83d93827daf02b177156fcb6f3c94ac8c202491dfffc5840ce4e39f",
+      "input_path": "inputs/methods-10.article",
+      "input_sha256": "fa48cb3504311f34589bfc2fc2cae535e37f0968803a164275445a77dbb6e5e8",
+      "protected_token_count": 1,
+      "previous_snapshot_id": "20260927-gu-IN-qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "C",
+      "previous_finding": "Go has no implements keyword and no explicit declaration of interface implementation. The candidate only says the keyword need not be used, implying optional syntax. Explicitly state that the keyword does not exist while preserving implicit interface implementation."
+    },
+    {
+      "unit_id": "methods/20",
+      "unit_kind": "page",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "41f1f73320fde60ee5ff30d5927a19ff22d6da6a336bb776e15f2499e4f421d8",
+      "input_path": "inputs/methods-20.article",
+      "input_sha256": "79601176789b6547ba267bb636ca302742ba87da73a5763ea8cc678f810c8e9c",
+      "protected_token_count": 31,
+      "previous_snapshot_id": "20260927-gu-IN-qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "In ordinary prose for Sqrt returning a non-nil error value, the candidate leaves error untranslated against mandatory glossary ભૂલનું મૂલ્ય. Use the glossary term while retaining protected Go identifiers and all code."
+    },
+    {
+      "unit_id": "concurrency/4",
+      "unit_kind": "page",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "3e925c6745255a443c61f25cd8131d538dc8677938f1c5021ce798465020b42e",
+      "input_path": "inputs/concurrency-4.article",
+      "input_sha256": "f68dc9ef06de3cb5d48846ebe7786e6cc06b77ea5c05bc6d56b80f667f5dad10",
+      "protected_token_count": 16,
+      "previous_snapshot_id": "20260927-gu-IN-qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "Go Present renders the bold candidate બીજી_નોંધ: with a visible internal underscore, whereas the English bold source renders Another note: with a word space. Restore natural spacing in the bold text while preserving the emphasis and protected structure."
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "evidence_type": "quality_check_surface_reopen",
+  "locale": "pa-IN",
+  "reopen_id": "20260927-pa-IN-stage-a-001-tu",
+  "previous_snapshot_id": "qc-003",
+  "previous_finalization_path": "data/quality-check-snapshots/pa-IN/qc-003/finalization.json",
+  "previous_finalization_sha256": "8f8e31e030519b4662202ebabf8eb3b1ec665f9aa052685eef216adc9aa6bd66",
+  "surface_review_id": "20260927-pa-IN-stage-a-001",
+  "surface_review_path": "data/locale-surface-reviews/pa-IN/20260927-pa-IN-stage-a-001.md",
+  "surface_review_sha256": "7cf6df1f69d20486c76328a622579d746a0fcdd20de0cbd936b1cb4377bc417b",
+  "finding": "F01 basics/12：自然语言说明保留了非 glossary keep 的英文 boolean，须改为自然且一致的 Gurmukhi 布尔类型表达，同时保留 false、列表结构、代码和技术含义。F02 concurrency/8：普通名词 walker 被直接保留为英文，须自然表达启动与 Walk 函数相关的树遍历程序，同时保留 Walk、ch、代码、步骤和技术要求。",
+  "unit_count": 2,
+  "units": [
+    {
+      "index": 17,
+      "unit_id": "basics/12",
+      "snapshot": {
+        "index": 17,
+        "unit_id": "basics/12",
+        "unit_kind": "page",
+        "selected_batch_id": "codex-pa-IN-001",
+        "source_path": "_content/tour/basics.article",
+        "source_sha256": "d9ad62501c05359e7b2ac445fa92d629e11d6d378c2701b767abab76012a558e",
+        "page_section": {
+          "article": "basics.article",
+          "section_number": 12,
+          "source_title": "Zero values",
+          "route": "/basics/12"
+        },
+        "candidate_path": "data/retranslation-runs/pa-IN/codex-pa-IN-001/candidates/basics-12.article",
+        "candidate_sha256": "a3fbbed6f77451573aff5edcc4f9f47efb1ebae20dfb26287629aa7d56e3917d",
+        "validation_path": "data/retranslation-runs/pa-IN/codex-pa-IN-001/validation/basics-12.json",
+        "validation_sha256": "fcc6986c04c439fc5dac741fdbc7f2dea64d3a9804aabac1fb5ae2e39960320b",
+        "attempt": 1
+      }
+    },
+    {
+      "index": 100,
+      "unit_id": "concurrency/8",
+      "snapshot": {
+        "index": 100,
+        "unit_id": "concurrency/8",
+        "unit_kind": "page",
+        "selected_batch_id": "codex-pa-IN-002",
+        "source_path": "_content/tour/concurrency.article",
+        "source_sha256": "b362cc15a26324acd311f7cab18a628dc1d7d9ac6d455add7d651d41acf15e9a",
+        "page_section": {
+          "article": "concurrency.article",
+          "section_number": 8,
+          "source_title": "Exercise: Equivalent Binary Trees",
+          "route": "/concurrency/8"
+        },
+        "candidate_path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/candidates/concurrency-8.article",
+        "candidate_sha256": "531488454e41d8ce85a114000603d54abb5cd69210516e07f4dbec1c57b673c0",
+        "validation_path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/validation/concurrency-8.json",
+        "validation_sha256": "cb8e96e7a4807a2e4528896f688d3a3233d422e71b8192e719fcbd16099b9a33",
+        "attempt": 1
+      }
+    }
+  ]
+}

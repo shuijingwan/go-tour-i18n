@@ -1,0 +1,7 @@
+* Flere defer-kall
+
+Utsatte funksjonskall legges på en stakk. Når en funksjon returnerer, utføres de utsatte kallene i omvendt rekkefølge av den de ble lagt til i: sist inn, først ut.
+
+Les dette [[/blog/defer-panic-and-recover][blogginnlegget]] for å lære mer om defer-setninger.
+
+.play flowcontrol/defer-multi.go

@@ -1,0 +1,22 @@
+* Type-switcher
+
+En _type-switch_ er en konstruksjon som gjør det mulig å utføre flere typeassertioner etter hverandre.
+
+En type-switch ligner på en vanlig switch-setning, men tilfellene i en type-switch angir typer (ikke verdier). Disse typene sammenlignes med typen til verdien som den aktuelle grensesnittverdien inneholder.
+
+	switch v := i.(type) {
+	case T:
+		// her har v typen T
+	case S:
+		// her har v typen S
+	default:
+		// ingen treff; her har v samme type som i
+	}
+
+Deklarasjonen i en type-switch har samme syntaks som en typeassertion `i.(T)`, men den konkrete typen `T` er erstattet med nøkkelordet `type`.
+
+Denne switch-setningen undersøker om grensesnittverdien `i` inneholder en verdi av typen `T` eller `S`.
+I tilfellene `T` og `S` vil variabelen `v` henholdsvis ha typen `T` eller `S` og inneholde verdien som `i` inneholder.
+I standardtilfellet (når ingen tilfeller passer) har variabelen `v` samme grensesnitt-type og verdi som `i`.
+
+.play methods/type-switches.go

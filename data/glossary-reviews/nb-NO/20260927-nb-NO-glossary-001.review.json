@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "evidence_type": "glossary-review-receipt",
+  "locale": "nb-NO",
+  "review_id": "20260927-nb-NO-glossary-001",
+  "stage": "locale-glossary-review",
+  "decision": "failed",
+  "reviewer": "chatgpt-gpt-5.6-sol-high-independent",
+  "rubric": "glossary-review/v1",
+  "glossary_path": "locales/nb-NO/glossary.yaml",
+  "glossary_sha256": "299caca3e1f36a538ac6660997db905fef093d7e2a348af0d4c1d49733b4e8d0",
+  "findings": [
+    "F01 major: preferred structs=struct-typer indiscriminately denotes struct types; moretypes/4 Pointers to structs refers to struct values. Distinguish plural struct values from struct types, while keeping natural Bokmal usage.",
+    "F02 major: preferred slide=side is unqualified despite bare slides hyperlinks to talk presentations in concurrency/11, as opposed to Tour slides in welcome/1 and concurrency/1. Define context-specific handling of standalone slide/slides so presentation links read lysbilder and Tour pages read sider.",
+    "F03 minor: forbidden korutine is a valid Norwegian term for the separate concept coroutine; do not globally ban it merely to reject mistranslation of goroutine.",
+    "F04 minor: keep API has no occurrence in the 122 reviewed source units or 113 English UI messages; remove it unless there is a current unprotected translatable source use."
+  ]
+}

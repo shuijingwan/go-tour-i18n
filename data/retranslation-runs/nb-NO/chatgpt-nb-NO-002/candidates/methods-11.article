@@ -1,0 +1,11 @@
+* Grensesnittverdier
+
+Under overflaten kan vi tenke på en grensesnittverdi som et par bestående av en verdi og en konkret type:
+
+	(value, type)
+
+En grensesnittverdi inneholder en verdi av en bestemt underliggende konkret type.
+
+Når du kaller en metode på en grensesnittverdi, utføres metoden med samme navn på den underliggende typen.
+
+.play methods/interface-values.go

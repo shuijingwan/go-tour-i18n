@@ -1,0 +1,11 @@
+* Navngitte returverdier
+
+Returverdiene til ⟪GTI18N_1db20ae8_000001⟫ kan navngis. Da behandles de som variabler deklarert øverst i funksjonen.
+
+Navnene bør brukes til å dokumentere hva returverdiene betyr.
+
+En ⟪GTI18N_1db20ae8_000002⟫return⟪GTI18N_1db20ae8_000003⟫-setning uten argumenter returnerer de navngitte returverdiene. Dette kalles en retur uten argumenter («naked return»).
+
+Slike returer bør bare brukes i korte funksjoner, som i eksemplet her. I lengre funksjoner kan de gjøre koden vanskeligere å lese.
+
+⟪GTI18N_1db20ae8_000004⟫

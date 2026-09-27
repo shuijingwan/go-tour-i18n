@@ -1,0 +1,18 @@
+* Oppgave: Likeverdige binærtrær
+
+Mange ulike binærtrær kan inneholde den samme sekvensen av verdier. Her er for eksempel to binærtrær som begge inneholder sekvensen 1, 1, 2, 3, 5, 8, 13.
+
+.image /tour/static/img/tree.png
+
+I de fleste språk er det ganske komplisert å skrive en funksjon som undersøker om to binærtrær inneholder samme sekvens. Vi skal bruke samtidighet og kanaler i Go til å lage en enkel løsning.
+
+Dette eksemplet bruker pakken `tree`, som definerer typen:
+
+	type Tree struct {
+		Left  *Tree
+		Value int
+		Right *Tree
+	}
+
+
+Beskrivelsen fortsetter på [[javascript:click('.next-page')][neste side]].

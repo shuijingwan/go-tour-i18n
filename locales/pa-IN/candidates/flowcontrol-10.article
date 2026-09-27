@@ -1,0 +1,15 @@
+* Switch ਦੇ ਮੁਲਾਂਕਣ ਦਾ ਕ੍ਰਮ
+
+Switch case ਉੱਪਰੋਂ ਹੇਠਾਂ ਵੱਲ ਮੁਲਾਂਕਣ ਕੀਤੇ ਜਾਂਦੇ ਹਨ ਅਤੇ ਕੋਈ case ਸਫਲ ਹੁੰਦਿਆਂ ਹੀ ਮੁਲਾਂਕਣ ਰੁਕ ਜਾਂਦਾ ਹੈ।
+
+(ਉਦਾਹਰਨ ਵਜੋਂ,
+
+	switch i {
+	case 0:
+	case f():
+	}
+
+ਜੇ `i==0` ਹੋਵੇ, ਤਾਂ ਇਹ `f` ਨੂੰ ਕਾਲ ਨਹੀਂ ਕਰਦਾ।)
+
+
+.play flowcontrol/switch-evaluation-order.go

@@ -1,0 +1,13 @@
+* Opprette en slice med make
+
+Du kan opprette slice-er med den innebygde funksjonen ⟪GTI18N_d057e6bf_000001⟫make⟪GTI18N_d057e6bf_000002⟫. Slik kan du lage arrayer med dynamisk størrelse.
+
+Funksjonen ⟪GTI18N_d057e6bf_000003⟫make⟪GTI18N_d057e6bf_000004⟫ allokerer en array der alle verdiene er satt til nullverdien, og returnerer en slice som refererer til denne arrayen:
+
+⟪GTI18N_d057e6bf_000005⟫
+
+Hvis du vil angi kapasiteten, sender du et tredje argument til ⟪GTI18N_d057e6bf_000006⟫make⟪GTI18N_d057e6bf_000007⟫:
+
+⟪GTI18N_d057e6bf_000008⟫
+
+⟪GTI18N_d057e6bf_000009⟫

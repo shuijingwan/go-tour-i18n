@@ -1,0 +1,14 @@
+* ਡਿਫਾਲਟ ਚੋਣ
+
+ਜੇ ਕੋਈ ਹੋਰ case ਤਿਆਰ ਨਾ ਹੋਵੇ, ਤਾਂ `select` ਦਾ `default` case ਚਲਾਇਆ ਜਾਂਦਾ ਹੈ।
+
+ਬਲਾਕ ਕੀਤੇ ਬਿਨਾਂ ਭੇਜਣ ਜਾਂ ਪ੍ਰਾਪਤ ਕਰਨ ਦੀ ਕੋਸ਼ਿਸ਼ ਲਈ `default` case ਵਰਤੋ:
+
+	select {
+	case i := <-c:
+		// i ਵਰਤੋ
+	default:
+		// c ਤੋਂ ਪ੍ਰਾਪਤ ਕਰਨਾ ਬਲਾਕ ਹੋਵੇਗਾ
+	}
+
+.play concurrency/default-selection.go

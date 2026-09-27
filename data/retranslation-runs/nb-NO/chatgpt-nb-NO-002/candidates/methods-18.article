@@ -1,0 +1,7 @@
+* Oppgave: Stringer
+
+La typen `IPAddr` implementere `fmt.Stringer`, slik at adressen skrives ut som fire punktumseparerte tall.
+
+For eksempel skal `IPAddr{1,`2,`3,`4}` skrives ut som `"1.2.3.4"`.
+
+.play methods/exercise-stringer.go

@@ -1,0 +1,24 @@
+* Pekere
+
+Go har pekere.
+En peker inneholder minneadressen til en verdi.
+
+Typen `*T` er en peker til en verdi av typen `T`. Nullverdien er `nil`.
+
+	var p *int
+
+Operatoren `&` oppretter en peker til operanden sin.
+
+	i := 42
+	p = &i
+
+Operatoren `*` betegner den underliggende verdien pekeren peker til.
+
+	fmt.Println(*p) // les i gjennom pekeren p
+	*p = 21         // sett i gjennom pekeren p
+
+Dette kalles «dereferering» eller «indireksjon».
+
+I motsetning til C har Go ikke pekeraritmetikk.
+
+.play moretypes/pointers.go

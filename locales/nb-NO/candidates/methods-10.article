@@ -1,0 +1,8 @@
+* Grensesnitt implementeres implisitt
+
+En type implementerer et grensesnitt ved å implementere metodene i grensesnittet.
+Det kreves ingen eksplisitt erklæring om dette, og det finnes ikke noe nøkkelord «implements».
+
+Implisitte grensesnitt skiller definisjonen av et grensesnitt fra implementasjonen. Implementasjonen kan dermed finnes i en hvilken som helst pakke, uten at dette må være avtalt på forhånd.
+
+.play methods/interfaces-are-satisfied-implicitly.go

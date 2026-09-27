@@ -1,0 +1,10 @@
+* Grensesnitt
+
+En _grensesnitt-type_ defineres som et sett med metodesignaturer.
+
+En verdi av en grensesnitt-type kan inneholde en hvilken som helst verdi som implementerer disse metodene.
+
+*Merk:* Eksempelkoden har en feil på linje 22.
+`Vertex` (verditypen) implementerer ikke `Abser`, fordi metoden `Abs` bare er definert på `*Vertex` (pekertypen).
+
+.play methods/interfaces.go

@@ -1,0 +1,9 @@
+* Grensesnittverdier med underliggende nil-verdier
+
+Hvis den konkrete verdien inne i grensesnittet selv er nil, kalles metoden med en nil-mottaker.
+
+I noen språk ville dette utløst et unntak for nullpeker, men i ⟪GTI18N_9487ca3c_000001⟫ er det vanlig å skrive metoder som håndterer å bli kalt med en nil-mottaker på en hensiktsmessig måte (slik metoden ⟪GTI18N_9487ca3c_000002⟫M⟪GTI18N_9487ca3c_000003⟫ gjør i dette eksemplet).
+
+Merk at en grensesnittverdi som inneholder en konkret nil-verdi, ikke selv er nil.
+
+⟪GTI18N_9487ca3c_000004⟫

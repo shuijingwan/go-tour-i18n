@@ -1,0 +1,63 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-nb-NO-004",
+  "locale": "nb-NO",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 4,
+  "units": [
+    {
+      "unit_id": "basics/12",
+      "unit_kind": "page",
+      "source_path": "_content/tour/basics.article",
+      "source_sha256": "d9ad62501c05359e7b2ac445fa92d629e11d6d378c2701b767abab76012a558e",
+      "input_path": "inputs/basics-12.article",
+      "input_sha256": "1ea463ab789d88cad33a6c7adf44fb524ea1f7e2574059f723a345f3c097faa7",
+      "protected_token_count": 9,
+      "previous_snapshot_id": "20260927-nb-NO-qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "C",
+      "previous_finding": "The mandatory zero value term remains English at its point of introduction. Source: Variables declared without an explicit initial value are given their _zero_value_. Candidate: Variabler som deklareres uten en eksplisitt startverdi, får sin _zero_value_. Present emphasis renders the visible English words zero value, which conflicts with the approved Bokmal nullverdi; revise the translatable visible term while preserving valid Present emphasis."
+    },
+    {
+      "unit_id": "moretypes/22",
+      "unit_kind": "page",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "f6963bc620184c7fbea7b04c309ccf64d508a4e835500fa7dd4188e60204019f",
+      "input_path": "inputs/moretypes-22.article",
+      "input_sha256": "1bdf3eb859309fc59dc2941e8bac83b48f053fb4f52d9aa8cd5c5cc33cea22f6",
+      "protected_token_count": 30,
+      "previous_snapshot_id": "20260927-nb-NO-qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "Minor technical terminology: source Test that a key is present with a two-value assignment; candidate Sjekk om en nøkkel finnes, ved hjelp av en tilordning med to returverdier. The map-index two-value assignment elem, ok = m[key] is not a function with two return values. Describe a two-value assignment without implying function return values; preserve the Go code."
+    },
+    {
+      "unit_id": "moretypes/25",
+      "unit_kind": "page",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "570e535e9c2b2d1978534eb3b42f226102b11da36a3f9e61620dc5eafdb6be5f",
+      "input_path": "inputs/moretypes-25.article",
+      "input_sha256": "72d0fffc01145a9d015510fb3622d215fe6b15cd55d59bdaaf8c80f56629e396",
+      "protected_token_count": 6,
+      "previous_snapshot_id": "20260927-nb-NO-qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "B (naturalness), index 61 moretypes/25. English title: Function closures. Candidate title: Funksjons-closure-er. The Norwegian compound combines funksjons-, the English loanword closure and a mechanical -er plural, producing an awkward triple-part hyphenated heading; body also uses closure-er. Revise the inflection and compound naturally in Bokmal while preserving the approved closure terminology and the original explanation of captured variables."
+    },
+    {
+      "unit_id": "concurrency/1",
+      "unit_kind": "page",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "d0a9c45078c2255540cfffe48744a07fa04ab5c2113e8880068b5a400ae0ebdc",
+      "input_path": "inputs/concurrency-1.article",
+      "input_sha256": "a676e3c5e8f83962d8900d2e8df1fa0b96f3097568aef63557077a029996938c",
+      "protected_token_count": 24,
+      "previous_snapshot_id": "20260927-nb-NO-qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "B (Bokmal grammar), index 93 concurrency/1. English: The evaluation of f, x, y, and z happens in the current goroutine and the execution of f happens in the new goroutine. Candidate: Uttrykkene `f`, `x`, `y` og `z` evalueres i den nåværende goroutine, mens `f` kjøres i den nye goroutine. Both phrases with den require natural definite noun forms in Bokmal. Correct the two noun phrases while preserving the goroutine technical term and the current-versus-new goroutine execution distinction."
+    }
+  ]
+}

@@ -1,0 +1,671 @@
+{
+  "schema_version": 2,
+  "evidence_type": "quality_check_results",
+  "locale": "pa-IN",
+  "snapshot_id": "qc-001",
+  "snapshot_manifest_sha256": "813446bf5c871f6b79749e145b2c68d72b75815c8735a11c676bdf1b8962dfa5",
+  "rubric": "translation-quality/v1",
+  "result_count": 122,
+  "results": [
+    {
+      "index": 1,
+      "unit_id": "welcome/1",
+      "rating": "A"
+    },
+    {
+      "index": 2,
+      "unit_id": "welcome/2",
+      "rating": "B",
+      "finding": "英文标题“Go local”指其他语言的本地化版本。当前“Go ਸਥਾਨਕ ਰੂਪ ਵਿੱਚ”容易被理解成在本机运行 Go，与“Go offline”混淆；应明确表达语言本地化。"
+    },
+    {
+      "index": 3,
+      "unit_id": "welcome/4",
+      "rating": "B",
+      "finding": "英文“builds and runs code samples”同时说明构建和运行。当前“build ਕਰਕੇ ਚਲਾਉਂਦਾ ਹੈ”留下普通英文动词；应自然表达这两个不同动作。"
+    },
+    {
+      "index": 4,
+      "unit_id": "welcome/5",
+      "rating": "A"
+    },
+    {
+      "index": 5,
+      "unit_id": "welcome/3",
+      "rating": "A"
+    },
+    {
+      "index": 6,
+      "unit_id": "basics/1",
+      "rating": "A"
+    },
+    {
+      "index": 7,
+      "unit_id": "basics/2",
+      "rating": "A"
+    },
+    {
+      "index": 8,
+      "unit_id": "basics/3",
+      "rating": "A"
+    },
+    {
+      "index": 9,
+      "unit_id": "basics/4",
+      "rating": "B",
+      "finding": "英文链接标签“article on Go's declaration syntax”指 Go 的声明语法。当前“Go ਦੇ declaration syntax ਬਾਰੇ ਲੇਖ”保留不必要的英文词，syntax 也不符合 mandatory 术语；应本地化标签而不改变链接目标。"
+    },
+    {
+      "index": 10,
+      "unit_id": "basics/5",
+      "rating": "A"
+    },
+    {
+      "index": 11,
+      "unit_id": "basics/6",
+      "rating": "A"
+    },
+    {
+      "index": 12,
+      "unit_id": "basics/7",
+      "rating": "A"
+    },
+    {
+      "index": 13,
+      "unit_id": "basics/8",
+      "rating": "A"
+    },
+    {
+      "index": 14,
+      "unit_id": "basics/9",
+      "rating": "B",
+      "finding": "英文“If an initializer is present”表达存在初始化器时可以省略类型。当前“ਇਨੀਸ਼ੀਅਲਾਈਜ਼ਰ present ਹੋਵੇ”混入普通英文 present；应采用自然 Gurmukhi 条件表达。"
+    },
+    {
+      "index": 15,
+      "unit_id": "basics/10",
+      "rating": "B",
+      "finding": "英文解释隐式类型、短变量声明语句与关键字。当前保留“implicit”“assignment”“keyword”等普通英文，形成不自然的混用；应本地化这些自然语言内容，并保持 := 的声明语义。"
+    },
+    {
+      "index": 16,
+      "unit_id": "basics/11",
+      "rating": "B",
+      "finding": "英文区分 integer value、sized integer 和 unsigned integer type。当前混用“integer”“unsigned integer”及 Gurmukhi 名称；应统一自然语言中的整数类别表达，保留 int、uint、uintptr 等代码类型。"
+    },
+    {
+      "index": 17,
+      "unit_id": "basics/12",
+      "rating": "A"
+    },
+    {
+      "index": 18,
+      "unit_id": "basics/13",
+      "rating": "B",
+      "finding": "英文强调不同类型之间的赋值要求显式转换。当前“assignment ਲਈ ਸਪਸ਼ਟ ਰੂਪਾਂਤਰਨ”留下普通英文术语；应自然表达赋值关系与显式转换的必要条件。"
+    },
+    {
+      "index": 19,
+      "unit_id": "basics/14",
+      "rating": "B",
+      "finding": "英文解释类型推断、typed/untyped 数值和常量精度。当前反复出现“syntax”，并保留“typed”“untyped”“precision”；应统一术语并以自然 Gurmukhi 表达核心解释。"
+    },
+    {
+      "index": 20,
+      "unit_id": "basics/15",
+      "rating": "C",
+      "finding": "英文说明常量的字符、字符串、布尔和数值类别，以及 const 关键字、:= 的语法限制。当前“keyword”“character”“string”“boolean”“numeric”“syntax”等英文几乎覆盖关键解释，语言本地化明显不足；须完整处理可翻译术语并保留 const、:= 的技术身份与原有语义。"
+    },
+    {
+      "index": 21,
+      "unit_id": "basics/16",
+      "rating": "B",
+      "finding": "英文强调高精度值、无显式类型常量和整数容量。当前“precision”“untyped”“integer”与其他已本地化术语混用；应统一表达并保留数值边界。"
+    },
+    {
+      "index": 22,
+      "unit_id": "basics/17",
+      "rating": "A"
+    },
+    {
+      "index": 23,
+      "unit_id": "flowcontrol/1",
+      "rating": "C",
+      "finding": "英文完整解释 for 的三个组件、执行时机、变量作用域和停止条件。当前大量保留“semicolon”“condition”“scope”“boolean condition”“parentheses”“braces”等普通英文，核心教学内容本地化不足；应系统修订，并准确保持初始化、条件判断、后置语句和作用域关系。"
+    },
+    {
+      "index": 24,
+      "unit_id": "flowcontrol/2",
+      "rating": "B",
+      "finding": "英文“init and post statements are optional”说明初始化与后置语句均可省略。当前“init ਅਤੇ post ਸਟੇਟਮੈਂਟ”术语衔接生硬；应与上一页组件名称保持一致并明确二者可选。"
+    },
+    {
+      "index": 25,
+      "unit_id": "flowcontrol/3",
+      "rating": "B",
+      "finding": "英文“drop the semicolons”指此时可以省略分号。当前“semicolon ਹਟਾ ਸਕਦੇ ਹੋ”留下普通英文标点名称；应自然本地化，并准确保留 C 的 while 与 Go 的 for 的对应关系。"
+    },
+    {
+      "index": 26,
+      "unit_id": "flowcontrol/4",
+      "rating": "B",
+      "finding": "英文说明省略循环条件可形成无限循环。当前“condition”“infinite ਲੂਪ”中英混用；应自然表达省略条件与无限循环的因果关系。"
+    },
+    {
+      "index": 27,
+      "unit_id": "flowcontrol/5",
+      "rating": "B",
+      "finding": "英文对比 if/for 可省略括号但必须使用花括号。当前“parentheses”“braces”为英文普通术语；应使用自然且一致的 Gurmukhi 名称，保留符号和可选/必需的区别。"
+    },
+    {
+      "index": 28,
+      "unit_id": "flowcontrol/6",
+      "rating": "B",
+      "finding": "英文说明 if 的短语句在条件判断前执行，以及声明变量的作用域。当前保留“condition”“scope”；应本地化概念并准确说明作用域延续到 if 结束。"
+    },
+    {
+      "index": 29,
+      "unit_id": "flowcontrol/7",
+      "rating": "A"
+    },
+    {
+      "index": 30,
+      "unit_id": "flowcontrol/8",
+      "rating": "C",
+      "finding": "英文借牛顿法讲授平方根逼近，涉及初始猜测、迭代、浮点值和导数。当前大量保留“square root”“floating-point”“initialize”“syntax”“condition”“algorithm”“derivative”“scale”等普通英文，关键教学说明本地化不足；应全面修订数学解释和练习步骤，并保留公式、代码及数学关系。"
+    },
+    {
+      "index": 31,
+      "unit_id": "flowcontrol/9",
+      "rating": "B",
+      "finding": "英文说明执行第一个匹配条件表达式的 case，且 case 的值不必是整数。当前“condition”“integer”仍为英文；应自然表达条件表达式和整数，保留 case、switch 技术身份。"
+    },
+    {
+      "index": 32,
+      "unit_id": "flowcontrol/10",
+      "rating": "A"
+    },
+    {
+      "index": 33,
+      "unit_id": "flowcontrol/11",
+      "rating": "B",
+      "finding": "英文“Switch with no condition”说明无条件 switch 相当于 switch true。当前标题及正文保留“Condition”；应自然本地化该概念，并保留 switch、true 的技术含义。"
+    },
+    {
+      "index": 34,
+      "unit_id": "flowcontrol/12",
+      "rating": "B",
+      "finding": "英文区分 defer 推迟函数执行与参数立即求值。当前“ਫੰਕਸ਼ਨ ਦੀ execution”留下普通英文；应自然表达延迟执行，并严格保持两种时机的区别。"
+    },
+    {
+      "index": 35,
+      "unit_id": "flowcontrol/13",
+      "rating": "C",
+      "finding": "英文重点为延迟调用入栈，并按后进先出顺序执行。当前依赖“stack”“push”“last-in-first-out”三个未本地化的关键概念，主要教学信息依靠英语传达；须用清晰 Gurmukhi 说明入栈及实际执行顺序。"
+    },
+    {
+      "index": 36,
+      "unit_id": "flowcontrol/14",
+      "rating": "A"
+    },
+    {
+      "index": 37,
+      "unit_id": "moretypes/1",
+      "rating": "C",
+      "finding": "英文注释分别说明“read i through pointer p”和“set i through pointer p”。当前“ਪੌਇੰਟਰ ਰਾਹੀਂ i ਨੂੰ ਪੜ੍ਹੋ p”及赋值注释将 p 错置句末，不能清楚表示 p 是间接访问 i 的指针；正文还保留“operator”“operand”“indirecting”“pointer arithmetic”。须修复两条注释的 i/p 关系并统一指针术语，代码不变。"
+    },
+    {
+      "index": 38,
+      "unit_id": "moretypes/2",
+      "rating": "A"
+    },
+    {
+      "index": 39,
+      "unit_id": "moretypes/3",
+      "rating": "B",
+      "finding": "英文说明用点访问结构体字段。当前“dot ਦੀ ਵਰਤੋਂ ਕਰਕੇ”保留普通英文标点名；应自然本地化。"
+    },
+    {
+      "index": 40,
+      "unit_id": "moretypes/4",
+      "rating": "B",
+      "finding": "英文解释 (*p).X 表示法繁琐，因此可以省略显式解引用。当前“ਇਹ notation ਔਖੀ ਹੈ”混入普通英文；应自然说明繁琐之处，并保留自动解引用语义。"
+    },
+    {
+      "index": 41,
+      "unit_id": "moretypes/5",
+      "rating": "B",
+      "finding": "英文解释新分配的结构体值、Name: 语法和特殊前缀 \u0026。当前保留“allocate”“syntax”“prefix”；应自然表达分配、语法及前缀，保持字段命名和 \u0026 返回指针的准确含义。"
+    },
+    {
+      "index": 42,
+      "unit_id": "moretypes/6",
+      "rating": "B",
+      "finding": "英文“declares an array of ten integers”指声明含十个整数的数组。当前“ਦਸ integers ਦੇ ਐਰੇ”留下英文复数；应自然表达整数数量，并保留数组长度属于其类型的关系。"
+    },
+    {
+      "index": 43,
+      "unit_id": "moretypes/7",
+      "rating": "B",
+      "finding": "英文介绍两个索引、冒号和左闭右开的区间。当前保留“index”“colon”“half-open range”；应本地化核心术语并准确说明左边界包含、右边界排除。"
+    },
+    {
+      "index": 44,
+      "unit_id": "moretypes/8",
+      "rating": "A"
+    },
+    {
+      "index": 45,
+      "unit_id": "moretypes/9",
+      "rating": "A"
+    },
+    {
+      "index": 46,
+      "unit_id": "moretypes/10",
+      "rating": "A"
+    },
+    {
+      "index": 47,
+      "unit_id": "moretypes/11",
+      "rating": "A"
+    },
+    {
+      "index": 48,
+      "unit_id": "moretypes/12",
+      "rating": "A"
+    },
+    {
+      "index": 49,
+      "unit_id": "moretypes/13",
+      "rating": "B",
+      "finding": "英文说明 make 分配零值初始化的数组并返回引用它的切片。当前“ਐਰੇ allocate ਕਰਦਾ ਹੈ”保留普通英文动词；应自然表达分配，并保持零值初始化与返回切片的关系。"
+    },
+    {
+      "index": 50,
+      "unit_id": "moretypes/14",
+      "rating": "A"
+    },
+    {
+      "index": 51,
+      "unit_id": "moretypes/15",
+      "rating": "B",
+      "finding": "英文说明底层数组容量不足时分配更大的数组，返回切片指向新数组。当前两次使用“allocate”；应自然表达分配，并准确保持扩容、容量和引用关系。"
+    },
+    {
+      "index": 52,
+      "unit_id": "moretypes/16",
+      "rating": "B",
+      "finding": "英文解释 range 遍历返回索引和对应元素的副本。当前普通语句中混用“range”“index”；应保留 range 关键字并自然表达索引和副本，不得把副本误述为原元素引用。"
+    },
+    {
+      "index": 53,
+      "unit_id": "moretypes/17",
+      "rating": "B",
+      "finding": "英文说明可以赋值给 _ 来忽略索引或值。当前“assign ਕਰਕੇ index”混入普通英文；应自然表达赋值与索引，保留空白标识符 _。"
+    },
+    {
+      "index": 54,
+      "unit_id": "moretypes/18",
+      "rating": "C",
+      "finding": "英文要求 Pic 返回长度为 dy 的切片，其元素为长度 dx、元素类型为 8 位无符号整数的切片，并解释灰度/蓝度图像。当前保留“8-bit unsigned integers”“grayscale”“bluescale”“allocate”等成组英文核心概念，练习要求本地化明显不足；须完整修订，准确保持二维切片维度、uint8、颜色值和逐行分配含义。"
+    },
+    {
+      "index": 55,
+      "unit_id": "moretypes/19",
+      "rating": "B",
+      "finding": "英文解释 map 将键映射到值，make 返回已初始化的映射。当前“keys”“key”“initialize”混用；应统一键和初始化的本地化术语，并保留 nil map 不能添加键的事实。"
+    },
+    {
+      "index": 56,
+      "unit_id": "moretypes/20",
+      "rating": "B",
+      "finding": "英文明确 map 字面量要求指定键。当前“keys ਲਾਜ਼ਮੀ ਹਨ”保留英文复数；应与相邻 map 教学页的术语一致。"
+    },
+    {
+      "index": 57,
+      "unit_id": "moretypes/21",
+      "rating": "B",
+      "finding": "英文“If the top-level type is just a type name”限定顶层类型仅为类型名称。当前“top-level ਟਾਈਪ”留下普通英文修饰语；应自然表达层级限定，避免改变省略类型的条件。"
+    },
+    {
+      "index": 58,
+      "unit_id": "moretypes/22",
+      "rating": "B",
+      "finding": "英文解释通过双值赋值检测键是否存在，缺失时 elem 取零值。当前“assignment”“key present”“element”混用；应统一键、元素及赋值术语，保持 ok 的布尔结果和零值行为准确。"
+    },
+    {
+      "index": 59,
+      "unit_id": "moretypes/23",
+      "rating": "B",
+      "finding": "英文说明 wc.Test 运行测试套件并输出成功或失败。当前“test suite ਚਲਾਉਂਦਾ ਹੈ”留下普通英文术语；应自然表达测试运行及结果输出。"
+    },
+    {
+      "index": 60,
+      "unit_id": "moretypes/24",
+      "rating": "A"
+    },
+    {
+      "index": 61,
+      "unit_id": "moretypes/25",
+      "rating": "B",
+      "finding": "英文原文说明 closure 引用函数体外部的变量，并与这些变量绑定。当前“ਆਪਣੇ ਬਾਡੀ ਤੋਂ ਬਾਹਰਲੇ ਵੇਰੀਏਬਲਾਂ”存在不自然的名词搭配和语法一致性问题。应自然表达函数体与外部变量的关系，保持 closure 访问、赋值和变量绑定的技术含义。"
+    },
+    {
+      "index": 62,
+      "unit_id": "moretypes/26",
+      "rating": "A"
+    },
+    {
+      "index": 63,
+      "unit_id": "moretypes/27",
+      "rating": "A"
+    },
+    {
+      "index": 64,
+      "unit_id": "methods/1",
+      "rating": "A"
+    },
+    {
+      "index": 65,
+      "unit_id": "methods/2",
+      "rating": "A"
+    },
+    {
+      "index": 66,
+      "unit_id": "methods/3",
+      "rating": "A"
+    },
+    {
+      "index": 67,
+      "unit_id": "methods/4",
+      "rating": "A"
+    },
+    {
+      "index": 68,
+      "unit_id": "methods/5",
+      "rating": "A"
+    },
+    {
+      "index": 69,
+      "unit_id": "methods/6",
+      "rating": "A"
+    },
+    {
+      "index": 70,
+      "unit_id": "methods/7",
+      "rating": "A"
+    },
+    {
+      "index": 71,
+      "unit_id": "methods/8",
+      "rating": "A"
+    },
+    {
+      "index": 72,
+      "unit_id": "methods/9",
+      "rating": "A"
+    },
+    {
+      "index": 73,
+      "unit_id": "methods/10",
+      "rating": "A"
+    },
+    {
+      "index": 74,
+      "unit_id": "methods/11",
+      "rating": "A"
+    },
+    {
+      "index": 75,
+      "unit_id": "methods/12",
+      "rating": "B",
+      "finding": "英文原文对比其他语言可能出现的 null pointer exception，以及 Go 中可以妥善处理 nil receiver 的方法。当前 Punjabi 正文直接保留整段英文“null pointer exception”，与其余 Gurmukhi 技术说明不协调。应采用自然、明确的 Punjabi 技术表达，保留异常与 nil receiver 的区别，不改变 non-nil interface 的关键语义。"
+    },
+    {
+      "index": 76,
+      "unit_id": "methods/13",
+      "rating": "A"
+    },
+    {
+      "index": 77,
+      "unit_id": "methods/14",
+      "rating": "A"
+    },
+    {
+      "index": 78,
+      "unit_id": "methods/15",
+      "rating": "B",
+      "finding": "英文原文说明双返回值类型断言中的第二个结果是表示断言是否成功的 boolean value。当前“ਇੱਕ boolean ਮੁੱਲ”在 Gurmukhi 自然语言中保留了未本地化的普通技术词。应统一该术语的 Punjabi 表达，保持成功、失败、零值以及不触发 panic 的条件关系；`true`、`false` 和代码表达式不变。"
+    },
+    {
+      "index": 79,
+      "unit_id": "methods/16",
+      "rating": "A"
+    },
+    {
+      "index": 80,
+      "unit_id": "methods/17",
+      "rating": "A"
+    },
+    {
+      "index": 81,
+      "unit_id": "methods/18",
+      "rating": "A"
+    },
+    {
+      "index": 82,
+      "unit_id": "methods/19",
+      "rating": "A"
+    },
+    {
+      "index": 83,
+      "unit_id": "methods/20",
+      "rating": "A"
+    },
+    {
+      "index": 84,
+      "unit_id": "methods/21",
+      "rating": "A"
+    },
+    {
+      "index": 85,
+      "unit_id": "methods/22",
+      "rating": "A"
+    },
+    {
+      "index": 86,
+      "unit_id": "methods/23",
+      "rating": "B",
+      "finding": "英文原文要求使用 ROT13 substitution cipher 转换所有字母字符。当前“rot13 substitution cipher ਲਾਗੂ ਕਰਕੇ”保留了未本地化的核心概念，形成明显的中途英语切换。应使用准确、自然的 Gurmukhi 技术表达说明替换密码的含义，同时保持 ROT13、全部字母字符和 `io.Reader` 的技术要求，以及链接目标和标识符不变。"
+    },
+    {
+      "index": 87,
+      "unit_id": "methods/24",
+      "rating": "A"
+    },
+    {
+      "index": 88,
+      "unit_id": "methods/25",
+      "rating": "A"
+    },
+    {
+      "index": 89,
+      "unit_id": "methods/26",
+      "rating": "A"
+    },
+    {
+      "index": 90,
+      "unit_id": "generics/1",
+      "rating": "A"
+    },
+    {
+      "index": 91,
+      "unit_id": "generics/2",
+      "rating": "B",
+      "finding": "英文原文介绍能够存放任意类型值的 singly-linked list 的简单类型声明。当前在 Punjabi 教学句中直接保留“singly-linked list”这一完整英文术语，缺乏一致的 Gurmukhi 表达。应选择自然且技术准确的 Punjabi 表述，明确单向链表这一数据结构概念，保持泛型类型与类型参数的原意。"
+    },
+    {
+      "index": 92,
+      "unit_id": "generics/3",
+      "rating": "A"
+    },
+    {
+      "index": 93,
+      "unit_id": "concurrency/1",
+      "rating": "A"
+    },
+    {
+      "index": 94,
+      "unit_id": "concurrency/2",
+      "rating": "B",
+      "finding": "英文原文解释 channel 的发送和接收默认会阻塞至另一方就绪，从而允许 goroutine 不使用显式 locks 或 condition variables 进行同步。当前“ਸਪਸ਼ਟ locks ਜਾਂ condition variables”在关键教学段落保留两组普通英文技术词。应以自然且一致的 Gurmukhi 表达这两种同步机制，保留阻塞条件和无需显式锁或条件变量的准确含义。"
+    },
+    {
+      "index": 95,
+      "unit_id": "concurrency/3",
+      "rating": "A"
+    },
+    {
+      "index": 96,
+      "unit_id": "concurrency/4",
+      "rating": "B",
+      "finding": "英文原文通过 `v, ok := \u003c-ch` 说明接收方可以利用第二个结果判断 channel 是否关闭。当前“receive ਐਕਸਪ੍ਰੈਸ਼ਨ ਨੂੰ ਦੂਜਾ ਪੈਰਾਮੀਟਰ ਦੇ ਕੇ”既保留普通英文 receive，又容易让读者理解为向接收表达式传入参数，而不是通过双返回值赋值取得关闭状态。应明确第二个接收结果与 `ok` 的关系，并准确保留 channel 关闭且没有更多值可接收时 `ok` 为 `false` 的条件；代码、关键字和 directive 不变。"
+    },
+    {
+      "index": 97,
+      "unit_id": "concurrency/5",
+      "rating": "A"
+    },
+    {
+      "index": 98,
+      "unit_id": "concurrency/6",
+      "rating": "A"
+    },
+    {
+      "index": 99,
+      "unit_id": "concurrency/7",
+      "rating": "A"
+    },
+    {
+      "index": 100,
+      "unit_id": "concurrency/8",
+      "rating": "A"
+    },
+    {
+      "index": 101,
+      "unit_id": "concurrency/9",
+      "rating": "A"
+    },
+    {
+      "index": 102,
+      "unit_id": "concurrency/10",
+      "rating": "B",
+      "finding": "英文原文提示 maps alone are not safe for concurrent use，重点是不能仅依靠 map 自身保证并发访问安全。当前“ਸਿਰਫ਼ ਮੈਪਾਂ ਨੂੰ ਇਕੱਠੇ ਵਰਤਣਾ ਸੁਰੱਖਿਅਤ ਨਹੀਂ ਹੈ”容易被理解为多个 map 一起使用不安全，没有充分突出并发访问这一条件。应准确说明 map 的并发使用安全性，并保持练习中并行抓取 URL、避免重复抓取及缓存已抓取 URL 的要求。"
+    },
+    {
+      "index": 103,
+      "unit_id": "concurrency/11",
+      "rating": "A"
+    },
+    {
+      "index": 104,
+      "unit_id": "example:basics/numeric-constants.go",
+      "rating": "A"
+    },
+    {
+      "index": 105,
+      "unit_id": "example:basics/type-inference.go",
+      "rating": "A"
+    },
+    {
+      "index": 106,
+      "unit_id": "example:concurrency/channels.go",
+      "rating": "A"
+    },
+    {
+      "index": 107,
+      "unit_id": "example:concurrency/exercise-equivalent-binary-trees.go",
+      "rating": "B",
+      "finding": "English comment `Walk walks the tree t sending all values from the tree to the channel ch` 描述的是遍历树并发送其中全部值。当前 Punjabi 的“ਟ੍ਰੀ t ਉੱਤੇ ਚੱਲਦਾ ਹੋਇਆ”直接套用英文 walk 的字面意义，作为树遍历的技术说明不够自然、明确。应重新组织这一处 Gurmukhi 表达，明确 Walk 遍历树 t，并把其中全部值发送到 channel ch；保持 `Walk`、`t`、`ch` 等标识符及注释结构不变。"
+    },
+    {
+      "index": 108,
+      "unit_id": "example:concurrency/exercise-web-crawler.go",
+      "rating": "A"
+    },
+    {
+      "index": 109,
+      "unit_id": "example:concurrency/mutex-counter.go",
+      "rating": "B",
+      "finding": "English comment `SafeCounter is safe to use concurrently` 强调同一计数器可以安全地接受并发访问。当前“SafeCounter ਨੂੰ ਇਕੱਠੇ ਵਰਤਣਾ ਸੁਰੱਖਿਅਤ ਹੈ”中的“ਇਕੱਠੇ”可能被理解为笼统的一起使用，没有充分明确并发访问的技术含义。此外，Inc 和 Value 的说明均保留普通英文 `counter`，语言风格不一致。应明确并发使用的含义，并自然处理普通计数器术语；保留 `SafeCounter`、`Inc`、`Value`、`key`、`goroutine`、`c.v` 及实际代码身份。"
+    },
+    {
+      "index": 110,
+      "unit_id": "example:flowcontrol/if-and-else.go",
+      "rating": "A"
+    },
+    {
+      "index": 111,
+      "unit_id": "example:generics/index.go",
+      "rating": "B",
+      "finding": "English comments 分别说明 `Index` 可以处理整数切片和字符串切片。当前 Punjabi 使用“ints ਦੀ ਸਲਾਈਸ”和“strings ਦੀ ਸਲਾਈਸ”，在自然语言注释中保留了两个不必要的英文复数，与其余 Gurmukhi 技术说明不够一致。应自然表达两种元素类型，必要时准确引用 Go 内置类型 `int` 和 `string`，同时保留 `Index`、`T`、`comparable` 和 `==` 的技术身份。"
+    },
+    {
+      "index": 112,
+      "unit_id": "example:generics/list.go",
+      "rating": "B",
+      "finding": "English comment `List represents a singly-linked list that holds values of any type` 介绍能够保存任意类型值的单向链表。当前 Punjabi 在句子中直接保留完整英文术语“singly-linked list”，核心数据结构名称未使用自然 Gurmukhi 表达。应以准确、易懂的 Punjabi 技术语言表达单向链表，保留它能保存任意类型值的含义，不修改 `List`、`T` 或 `any`。"
+    },
+    {
+      "index": 113,
+      "unit_id": "example:methods/exercise-reader.go",
+      "rating": "A"
+    },
+    {
+      "index": 114,
+      "unit_id": "example:methods/exercise-stringer.go",
+      "rating": "A"
+    },
+    {
+      "index": 115,
+      "unit_id": "example:methods/interfaces-are-satisfied-implicitly.go",
+      "rating": "A"
+    },
+    {
+      "index": 116,
+      "unit_id": "example:methods/interfaces.go",
+      "rating": "A"
+    },
+    {
+      "index": 117,
+      "unit_id": "example:moretypes/append.go",
+      "rating": "A"
+    },
+    {
+      "index": 118,
+      "unit_id": "example:moretypes/exercise-fibonacci-closure.go",
+      "rating": "A"
+    },
+    {
+      "index": 119,
+      "unit_id": "example:moretypes/pointers.go",
+      "rating": "A"
+    },
+    {
+      "index": 120,
+      "unit_id": "example:moretypes/slice-len-cap.go",
+      "rating": "A"
+    },
+    {
+      "index": 121,
+      "unit_id": "example:moretypes/slices-of-slice.go",
+      "rating": "B",
+      "finding": "English comment `Create a tic-tac-toe board` 要求创建井字游戏棋盘。当前“tic-tac-toe ਬੋਰਡ ਬਣਾਓ”将整个游戏名称保留为拉丁字母英文，与自然语言注释应使用 Gurmukhi 的要求不够一致。应选择 Gurmukhi 技术读者能够自然识别的游戏名称表达，不改变棋盘结构、`board` 标识符或 `\"X\"`、`\"O\"` 等代码字符串。"
+    },
+    {
+      "index": 122,
+      "unit_id": "example:moretypes/struct-literals.go",
+      "rating": "A"
+    }
+  ]
+}

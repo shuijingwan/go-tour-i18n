@@ -1,0 +1,8 @@
+* Range
+
+Når `range` brukes i en `for`-løkke, itererer løkken over en slice eller en map.
+
+Når du itererer over en slice med range, returneres to verdier ved hver iterasjon.
+Den første er indeksen, og den andre er en kopi av elementet ved denne indeksen.
+
+.play moretypes/range.go

@@ -1,0 +1,13 @@
+* Slice-litteraler
+
+En slice-litteral ligner på en array-litteral uten lengdeangivelsen.
+
+Dette er en array-litteral:
+
+	[3]bool{true, true, false}
+
+Dette lager den samme arrayen som ovenfor og bygger deretter en slice som refererer til den:
+
+	[]bool{true, true, false}
+
+.play moretypes/slice-literals.go

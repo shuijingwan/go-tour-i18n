@@ -1,0 +1,17 @@
+* For
+
+Go har bare én løkkekonstruksjon: `for`-løkken.
+
+Den grunnleggende `for`-løkken har tre deler, atskilt med semikolon:
+
+- initialiseringssetningen: utføres før den første iterasjonen
+- betingelsesuttrykket: evalueres før hver iterasjon
+- ettersetningen: utføres på slutten av hver iterasjon
+
+Initialiseringssetningen er ofte en variabeldeklarasjon. Variabler som deklareres der, er bare synlige innenfor området til `for`-setningen.
+
+Løkken slutter å iterere når den boolske betingelsen evalueres til `false`.
+
+*Merk:* I motsetning til språk som C, Java og JavaScript brukes det ikke parenteser rundt de tre delene av `for`-setningen, og krøllparentesene `{`}` er alltid påkrevd.
+
+.play flowcontrol/for.go

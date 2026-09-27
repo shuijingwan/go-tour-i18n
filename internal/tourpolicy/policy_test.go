@@ -11,7 +11,7 @@ func TestLocalePublicationPolicies(t *testing.T) {
 			t.Errorf("ForLocale(%q) = %q, want %q", locale, got, GoLocal)
 		}
 	}
-	for _, locale := range []string{"en", "pt-BR", "nl-NL", "es-ES", "es-419", "it-IT", "ja-JP", "kn-IN", "sv-SE", "tr-TR", "zh-TW", "new-locale"} {
+	for _, locale := range []string{"en", "pt-BR", "nl-NL", "es-ES", "es-419", "gu-IN", "it-IT", "ja-JP", "kn-IN", "pa-IN", "sv-SE", "tr-TR", "zh-TW", "new-locale"} {
 		if got := ForLocale(locale); got != Standard {
 			t.Errorf("ForLocale(%q) = %q, want %q", locale, got, Standard)
 		}
@@ -110,6 +110,7 @@ func TestReviewedLocaleHomeTargetsAreExact(t *testing.T) {
 		"https://de-go-dev.shuijingwanwq.com/",
 		"https://fr-go-dev.shuijingwanwq.com/",
 		"https://el-go-dev.shuijingwanwq.com/",
+		"https://gu-go-dev.shuijingwanwq.com/",
 		"https://go-dev.shuijingwanwq.com/",
 		"https://hi-go-dev.shuijingwanwq.com/",
 		"https://hu-go-dev.shuijingwanwq.com/",
@@ -122,7 +123,9 @@ func TestReviewedLocaleHomeTargetsAreExact(t *testing.T) {
 		"https://ms-go-dev.shuijingwanwq.com/",
 		"https://ml-go-dev.shuijingwanwq.com/",
 		"https://mr-go-dev.shuijingwanwq.com/",
+		"https://nb-go-dev.shuijingwanwq.com/",
 		"https://pl-go-dev.shuijingwanwq.com/",
+		"https://pa-go-dev.shuijingwanwq.com/",
 		"https://ro-go-dev.shuijingwanwq.com/",
 		"https://es-go-dev.shuijingwanwq.com/",
 		"https://sv-go-dev.shuijingwanwq.com/",
@@ -205,6 +208,23 @@ func TestReviewedLocaleTourTargetsAreExact(t *testing.T) {
 	} {
 		if got := Classify(target); got != UnknownOwnerTarget {
 			t.Errorf("Classify(%q) = %q, want %q", target, got, UnknownOwnerTarget)
+		}
+	}
+}
+
+func TestNorwegianBokmalHomeExactFailClosed(t *testing.T) {
+	canonical := "https://nb-go-dev.shuijingwanwq.com/"
+	if got := Classify(canonical); got != SiteHome {
+		t.Fatalf("canonical Norwegian Bokmål homepage class = %q, want %q", got, SiteHome)
+	}
+	for _, invalid := range []string{
+		"http://nb-go-dev.shuijingwanwq.com/",
+		"https://nb-go-dev.shuijingwanwq.com",
+		"https://nb-go-dev.shuijingwanwq.com/?utm_source=test",
+		"https://nb-go-dev.shuijingwanwq.com/tour/",
+	} {
+		if got := Classify(invalid); got == SiteHome {
+			t.Errorf("noncanonical Norwegian Bokmål homepage %q classified as SiteHome", invalid)
 		}
 	}
 }

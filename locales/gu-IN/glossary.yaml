@@ -1,0 +1,192 @@
+locale: gu-IN
+
+# ગુજરાતી Go શીખનાર માટેની સંપૂર્ણ પ્રારંભિક શબ્દાવલી.
+# ફરજિયાત રૂપો સામાન્ય વાંચી શકાય તેવા લખાણમાં લાગુ પડે છે; ગુજરાતી
+# વાક્યરચના પ્રમાણે વિભક્તિ, બહુવચન અને ક્રિયાપદનાં રૂપ બદલાઈ શકે છે.
+# કોડ, ઓળખકર્તા, કીવર્ડ, પાથ અને લિંકના લક્ષ્યને protector જાળવે છે.
+# Go Playground સત્તાવાર નામ તરીકે અંગ્રેજીમાં જ રહે; A Tour of Go નું
+# સ્થાનિક પ્રદર્શનનામ સર્વત્ર "Go ની સફર" રાખવું.
+mandatory:
+  A Tour of Go: Go ની સફર
+  Run: ચલાવો
+  Format: ફોર્મેટ કરો
+  Reset: રીસેટ કરો
+  Kill: બંધ કરો
+  module: મોડ્યુલ
+  lesson: પાઠ
+  exercise: અભ્યાસ
+  slide: પાનું
+  package: પેકેજ
+  import: ઇમ્પોર્ટ
+  exported name: એક્સપોર્ટ થયેલું નામ
+  unexported name: એક્સપોર્ટ ન થયેલું નામ
+  function: ફંક્શન
+  method: મેથડ
+  parameter: પેરામીટર
+  argument: આર્ગ્યુમેન્ટ
+  receiver: રિસીવર
+  pointer: પોઇન્ટર
+  pointer receiver: પોઇન્ટર રિસીવર
+  value receiver: મૂલ્ય રિસીવર
+  variable: વેરિએબલ
+  constant: કોન્સ્ટન્ટ
+  type: ટાઇપ
+  basic type: મૂળભૂત ટાઇપ
+  type conversion: ટાઇપ રૂપાંતરણ
+  type inference: ટાઇપનું અનુમાન
+  type assertion: ટાઇપ એસર્શન
+  type switch: ટાઇપ સ્વિચ
+  type parameter: ટાઇપ પેરામીટર
+  constraint: કન્સ્ટ્રેઇન્ટ
+  type constraint: ટાઇપ કન્સ્ટ્રેઇન્ટ
+  generics: જેનરિક્સ
+  generic function: જેનરિક ફંક્શન
+  generic type: જેનરિક ટાઇપ
+  interface: ઇન્ટરફેસ
+  interface type: ઇન્ટરફેસ ટાઇપ
+  interface value: ઇન્ટરફેસ મૂલ્ય
+  concrete type: ચોક્કસ ટાઇપ
+  empty interface: ખાલી ઇન્ટરફેસ
+  struct: સ્ટ્રક્ટ
+  struct field: સ્ટ્રક્ટ ફિલ્ડ
+  struct literal: સ્ટ્રક્ટ લિટરલ
+  array: એરે
+  slice: સ્લાઇસ
+  map: મેપ
+  key: કી
+  value: મૂલ્ય
+  zero value: શૂન્ય મૂલ્ય
+  length: લંબાઈ
+  capacity: ક્ષમતા
+  underlying array: આધારરૂપ એરે
+  backing array: આધારરૂપ એરે
+  channel: ચેનલ
+  buffered channel: બફરવાળી ચેનલ
+  mutex: મ્યુટેક્સ
+  mutual exclusion: મ્યુચ્યુઅલ એક્સક્લૂઝન
+  concurrency: સમવર્તિતા
+  parallelism: સમાંતરતા
+  closure: ક્લોઝર
+  function closure: ફંક્શન ક્લોઝર
+  error: ભૂલ
+  error value: ભૂલનું મૂલ્ય
+  standard library: સ્ટાન્ડર્ડ લાઇબ્રેરી
+  syntax: સિન્ટેક્સ
+  return value: રિટર્ન મૂલ્ય
+  named return value: નામ આપેલું રિટર્ન મૂલ્ય
+  naked return: આર્ગ્યુમેન્ટ વગરનું રિટર્ન
+
+# સંદર્ભ પ્રમાણે વધુ સ્વાભાવિક ગુજરાતી વાક્યરચના માન્ય છે.
+# parameter અને argument, array અને slice, concurrency અને parallelism,
+# channel અને pipeline ના અર્થ ક્યારેય એકબીજા સાથે ન ભેળવવા.
+preferred:
+  programming language: પ્રોગ્રામિંગ ભાષા
+  program: પ્રોગ્રામ
+  source code: સોર્સ કોડ
+  code editor: કોડ એડિટર
+  table of contents: વિષયસૂચિ
+  previous: પાછલું
+  next: આગળનું
+  page: પાનું
+  documentation: દસ્તાવેજીકરણ
+  tutorial: માર્ગદર્શિકા
+  syntax highlighting: સિન્ટેક્સ હાઇલાઇટિંગ
+  compiler: કમ્પાઇલર
+  compile: કમ્પાઇલ કરવું
+  build: બિલ્ડ કરવું
+  execution: અમલ
+  runtime: રનટાઇમ
+  declaration: ઘોષણા
+  initialization: પ્રારંભિક મૂલ્ય આપવું
+  initializer: પ્રારંભિક મૂલ્ય
+  assignment: મૂલ્ય સોંપવું
+  short variable declaration: વેરિએબલની ટૂંકી ઘોષણા
+  result: પરિણામ
+  numeric constant: આંકડાકીય કોન્સ્ટન્ટ
+  untyped constant: ટાઇપ નક્કી ન થયેલું કોન્સ્ટન્ટ
+  integer: પૂર્ણાંક
+  floating-point number: ફ્લોટિંગ-પોઇન્ટ સંખ્યા
+  boolean: બૂલિયન
+  string: સ્ટ્રિંગ
+  string literal: સ્ટ્રિંગ લિટરલ
+  numeric type: આંકડાકીય ટાઇપ
+  expression: અભિવ્યક્તિ
+  operator: ઑપરેટર
+  scope: સ્કોપ
+  block: બ્લોક
+  condition: શરત
+  loop: લૂપ
+  iteration: પુનરાવર્તન
+  infinite loop: અનંત લૂપ
+  case: કેસ
+  switch statement: સ્વિચ સ્ટેટમેન્ટ
+  defer statement: defer સ્ટેટમેન્ટ
+  deferred call: મુલતવી રાખેલો કૉલ
+  stack: સ્ટેક
+  last-in-first-out: છેલ્લું દાખલ, પહેલું બહાર
+  dereference: ડિરેફરન્સ કરવું
+  index: ઇન્ડેક્સ
+  half-open range: અર્ધ-ખુલ્લી રેન્જ
+  composite literal: કોમ્પોઝિટ લિટરલ
+  pointer arithmetic: પોઇન્ટર અંકગણિત
+  implement an interface: ઇન્ટરફેસનું અમલીકરણ કરવું
+  implicit implementation: સ્પષ્ટ ઘોષણા વગરનું અમલીકરણ
+  method signature: મેથડની સિગ્નેચર
+  method set: મેથડ સેટ
+  reader: રીડર
+  stream: ડેટા પ્રવાહ
+  buffer: બફર
+  send: મોકલવું
+  receive: મેળવવું
+  synchronize: સમન્વય કરવો
+  blocking: અટકીને રાહ જોવી
+  non-blocking: અટક્યા વિના
+  shared memory: સહિયારી મેમરી
+  memory address: મેમરી સરનામું
+  thread: થ્રેડ
+  lightweight thread: હળવો થ્રેડ
+  pipeline: પાઇપલાઇન
+  binary tree: બાઇનરી ટ્રી
+  web crawler: વેબ ક્રૉલર
+  race condition: રેસ કન્ડિશન
+  deadlock: ડેડલૉક
+  square root: વર્ગમૂળ
+  test: ટેસ્ટ
+  test suite: ટેસ્ટ સમૂહ
+  validation: ચકાસણી
+  quality review: ગુણવત્તા સમીક્ષા
+  official source: અધિકૃત મૂળ સ્રોત
+  release: રિલીઝ
+  environment: એન્વાયરમેન્ટ
+  remote server: દૂરસ્થ સર્વર
+  sandbox: સુરક્ષિત અલગ વાતાવરણ
+  feedback: પ્રતિસાદ
+
+# ફક્ત સ્થિર, ચોક્કસ ખોટી રીતે લખાતા સત્તાવાર નામ/વિશિષ્ટ Go શબ્દો.
+# સામાન્ય ગુજરાતી શબ્દો (જેમ કે "પાઇપ") અહીં વૈશ્વિક રીતે પ્રતિબંધિત નથી.
+forbidden:
+  - ગોરુટીન
+  - ગો રૂટીન
+  - Go પ્લેગ્રાઉન્ડ
+  - Go Play Ground
+
+# આ નામો/સંક્ષેપો વાંચી શકાય તેવા લખાણમાં પણ મૂળ લિપિમાં જ રાખવા.
+# nil એ Go નું ચોક્કસ મૂલ્ય છે; તેને સામાન્ય "શૂન્ય" તરીકે ન લખવું.
+# Go keyword/builtin/API/identifier ની સંપૂર્ણ યાદી અહીં પુનરાવર્તિત નથી.
+keep:
+  - Go
+  - Go Playground
+  - goroutine
+  - gofmt
+  - GOPATH
+  - nil
+  - URL
+  - ASCII
+  - CPU
+  - UTC
+  - GitHub
+  - Yongye
+  - USDC
+  - USDT
+  - TRC20
+  - Base

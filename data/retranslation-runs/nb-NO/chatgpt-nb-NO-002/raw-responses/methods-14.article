@@ -1,0 +1,15 @@
+* Det tomme grensesnittet
+
+En grensesnitt-type som ikke angir noen metoder, kalles et ⟪GTI18N_7a09a765_000001⟫tomt_grensesnitt⟪GTI18N_7a09a765_000002⟫:
+
+⟪GTI18N_7a09a765_000003⟫
+
+Et tomt grensesnitt kan inneholde verdier av alle typer.
+(Alle typer implementerer minst null metoder.)
+
+⟪GTI18N_7a09a765_000004⟫any⟪GTI18N_7a09a765_000005⟫ er et alias for ⟪GTI18N_7a09a765_000006⟫interface{}⟪GTI18N_7a09a765_000007⟫, og de to er fullstendig likeverdige.
+
+Tomme grensesnitt brukes i kode som håndterer verdier med ukjent type.
+For eksempel tar ⟪GTI18N_7a09a765_000008⟫fmt.Print⟪GTI18N_7a09a765_000009⟫ et vilkårlig antall argumenter av typen ⟪GTI18N_7a09a765_000010⟫any⟪GTI18N_7a09a765_000011⟫.
+
+⟪GTI18N_7a09a765_000012⟫

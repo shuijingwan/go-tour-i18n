@@ -1,0 +1,15 @@
+* Legge til elementer i en slice
+
+Det er vanlig å legge til nye elementer i en slice. Derfor har ⟪GTI18N_f2fc257e_000001⟫ en innebygd funksjon, ⟪GTI18N_f2fc257e_000002⟫append⟪GTI18N_f2fc257e_000003⟫. [[⟪GTI18N_f2fc257e_000004⟫][Dokumentasjonen]] for pakken med innebygde funksjoner beskriver ⟪GTI18N_f2fc257e_000005⟫append⟪GTI18N_f2fc257e_000006⟫.
+
+⟪GTI18N_f2fc257e_000007⟫
+
+Den første parameteren, ⟪GTI18N_f2fc257e_000008⟫s⟪GTI18N_f2fc257e_000009⟫, til ⟪GTI18N_f2fc257e_000010⟫append⟪GTI18N_f2fc257e_000011⟫ er en slice av typen ⟪GTI18N_f2fc257e_000012⟫T⟪GTI18N_f2fc257e_000013⟫. De øvrige parameterne er verdier av typen ⟪GTI18N_f2fc257e_000014⟫T⟪GTI18N_f2fc257e_000015⟫ som skal legges til i slicen.
+
+Returverdien fra ⟪GTI18N_f2fc257e_000016⟫append⟪GTI18N_f2fc257e_000017⟫ er en slice som inneholder alle elementene fra den opprinnelige slicen, i tillegg til de oppgitte verdiene.
+
+Hvis den underliggende arrayen til ⟪GTI18N_f2fc257e_000018⟫s⟪GTI18N_f2fc257e_000019⟫ er for liten til å romme alle verdiene, allokeres en større array. Den returnerte slicen vil referere til den nyallokerte arrayen.
+
+(Hvis du vil lære mer om slice-er, kan du lese artikkelen [[⟪GTI18N_f2fc257e_000020⟫][Slice-er: bruk og indre virkemåte]].)
+
+⟪GTI18N_f2fc257e_000021⟫

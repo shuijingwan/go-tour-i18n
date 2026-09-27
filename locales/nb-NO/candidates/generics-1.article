@@ -1,0 +1,11 @@
+* Typeparametere
+
+Funksjoner i Go kan skrives slik at de fungerer med flere typer ved hjelp av typeparametere. Typeparameterne til en funksjon står i hakeparenteser før funksjonens argumenter.
+
+  func Index[T comparable](s []T, x T) int
+
+Denne deklarasjonen betyr at `s` er en slice med elementer av en hvilken som helst type `T` som oppfyller den innebygde typebegrensningen `comparable`. `x` er også en verdi av samme type.
+
+`comparable` er en nyttig typebegrensning som gjør det mulig å bruke operatorene `==` og `!=` på verdier av typen. I dette eksemplet bruker vi dem til å sammenligne en verdi med hvert element i slicen til vi finner et treff. Funksjonen `Index` fungerer med alle typer som støtter sammenligning.
+
+.play generics/index.go

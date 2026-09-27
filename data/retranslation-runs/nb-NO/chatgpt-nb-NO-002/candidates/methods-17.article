@@ -1,0 +1,11 @@
+* Stringer-grensesnittet
+
+Et av de mest brukte grensesnittene er [[/pkg/fmt/#Stringer][`Stringer`]], som er definert i pakken [[/pkg/fmt/][`fmt`]].
+
+	type Stringer interface {
+		String() string
+	}
+
+En `Stringer` er en type som kan beskrive seg selv som en streng. Pakken `fmt` (og mange andre pakker) ser etter dette grensesnittet når den skal skrive ut verdier.
+
+.play methods/stringer.go

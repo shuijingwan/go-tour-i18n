@@ -1,0 +1,19 @@
+* sync.Mutex
+
+Vi har sett hvordan kanaler egner seg til kommunikasjon mellom goroutiner.
+
+Men hva om vi ikke trenger kommunikasjon? Hva om vi bare vil sikre at kun én ⟪GTI18N_49f72779_000001⟫ om gangen kan få tilgang til en variabel, slik at vi unngår konflikter?
+
+Dette konseptet kalles ⟪GTI18N_49f72779_000002⟫gjensidig_utelukkelse⟪GTI18N_49f72779_000003⟫, og datastrukturen som sørger for det, kalles vanligvis en ⟪GTI18N_49f72779_000004⟫mutex⟪GTI18N_49f72779_000005⟫.
+
+Standardbiblioteket til ⟪GTI18N_49f72779_000006⟫ tilbyr gjensidig utelukkelse gjennom
+[[⟪GTI18N_49f72779_000007⟫][⟪GTI18N_49f72779_000008⟫sync.Mutex⟪GTI18N_49f72779_000009⟫]] og de to metodene:
+
+- ⟪GTI18N_49f72779_000010⟫Lock⟪GTI18N_49f72779_000011⟫
+- ⟪GTI18N_49f72779_000012⟫Unlock⟪GTI18N_49f72779_000013⟫
+
+Vi kan sørge for at en kodeblokk kjøres med gjensidig utelukkelse ved å sette kall til ⟪GTI18N_49f72779_000014⟫Lock⟪GTI18N_49f72779_000015⟫ og ⟪GTI18N_49f72779_000016⟫Unlock⟪GTI18N_49f72779_000017⟫ rundt den, slik metoden ⟪GTI18N_49f72779_000018⟫Inc⟪GTI18N_49f72779_000019⟫ viser.
+
+Vi kan også bruke ⟪GTI18N_49f72779_000020⟫defer⟪GTI18N_49f72779_000021⟫ for å sikre at mutexen blir låst opp, slik metoden ⟪GTI18N_49f72779_000022⟫Value⟪GTI18N_49f72779_000023⟫ viser.
+
+⟪GTI18N_49f72779_000024⟫

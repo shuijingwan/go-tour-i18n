@@ -1,0 +1,76 @@
+{
+  "schema_version": 2,
+  "batch_id": "codex-pa-IN-006",
+  "locale": "pa-IN",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "example",
+  "unit_count": 5,
+  "units": [
+    {
+      "unit_id": "example:concurrency/exercise-equivalent-binary-trees.go",
+      "unit_kind": "example",
+      "source_path": "_content/tour/concurrency/exercise-equivalent-binary-trees.go",
+      "source_sha256": "184cbbd1e662b64de6e6928d4af6f2469c7bccdbc9a8b5f477c1b694b9ab02b1",
+      "input_path": "inputs/concurrency-exercise-equivalent-binary-trees.txt",
+      "input_sha256": "7a7b9604ab994ccecd30d445793424bc7db50ec6b4b77d9d082d42f1e9cc5685",
+      "protected_token_count": 5,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "English comment `Walk walks the tree t sending all values from the tree to the channel ch` 描述的是遍历树并发送其中全部值。当前 Punjabi 的“ਟ੍ਰੀ t ਉੱਤੇ ਚੱਲਦਾ ਹੋਇਆ”直接套用英文 walk 的字面意义，作为树遍历的技术说明不够自然、明确。应重新组织这一处 Gurmukhi 表达，明确 Walk 遍历树 t，并把其中全部值发送到 channel ch；保持 `Walk`、`t`、`ch` 等标识符及注释结构不变。"
+    },
+    {
+      "unit_id": "example:concurrency/mutex-counter.go",
+      "unit_kind": "example",
+      "source_path": "_content/tour/concurrency/mutex-counter.go",
+      "source_sha256": "74488ecc347a123c8538069175ffeef5ea38577bb37b2c7a9ceb6bba47ab02b4",
+      "input_path": "inputs/concurrency-mutex-counter.txt",
+      "input_sha256": "748bfb48d6f8d0455861b810e2d04f40eb3d136ab696139d32fdd290267fde03",
+      "protected_token_count": 8,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "English comment `SafeCounter is safe to use concurrently` 强调同一计数器可以安全地接受并发访问。当前“SafeCounter ਨੂੰ ਇਕੱਠੇ ਵਰਤਣਾ ਸੁਰੱਖਿਅਤ ਹੈ”中的“ਇਕੱਠੇ”可能被理解为笼统的一起使用，没有充分明确并发访问的技术含义。此外，Inc 和 Value 的说明均保留普通英文 `counter`，语言风格不一致。应明确并发使用的含义，并自然处理普通计数器术语；保留 `SafeCounter`、`Inc`、`Value`、`key`、`goroutine`、`c.v` 及实际代码身份。"
+    },
+    {
+      "unit_id": "example:generics/index.go",
+      "unit_kind": "example",
+      "source_path": "_content/tour/generics/index.go",
+      "source_sha256": "398dd72a4b01efa279d571667bedbcccd1bbbceaeb77218635db48edf38fd983",
+      "input_path": "inputs/generics-index.txt",
+      "input_sha256": "7abb8fdbe4d75e4a090fd429540fbbd86cad2f221a62cee51ab8195df56e2d6d",
+      "protected_token_count": 6,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "English comments 分别说明 `Index` 可以处理整数切片和字符串切片。当前 Punjabi 使用“ints ਦੀ ਸਲਾਈਸ”和“strings ਦੀ ਸਲਾਈਸ”，在自然语言注释中保留了两个不必要的英文复数，与其余 Gurmukhi 技术说明不够一致。应自然表达两种元素类型，必要时准确引用 Go 内置类型 `int` 和 `string`，同时保留 `Index`、`T`、`comparable` 和 `==` 的技术身份。"
+    },
+    {
+      "unit_id": "example:generics/list.go",
+      "unit_kind": "example",
+      "source_path": "_content/tour/generics/list.go",
+      "source_sha256": "ab72fc4fd321f507abde796abe0830876e0f8bcd8661d9ce4ac34c3da2f68060",
+      "input_path": "inputs/generics-list.txt",
+      "input_sha256": "b226f08fdb22be19e3268827b658f86af3351f1468094b1a422890c9ed131993",
+      "protected_token_count": 3,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "English comment `List represents a singly-linked list that holds values of any type` 介绍能够保存任意类型值的单向链表。当前 Punjabi 在句子中直接保留完整英文术语“singly-linked list”，核心数据结构名称未使用自然 Gurmukhi 表达。应以准确、易懂的 Punjabi 技术语言表达单向链表，保留它能保存任意类型值的含义，不修改 `List`、`T` 或 `any`。"
+    },
+    {
+      "unit_id": "example:moretypes/slices-of-slice.go",
+      "unit_kind": "example",
+      "source_path": "_content/tour/moretypes/slices-of-slice.go",
+      "source_sha256": "545cde9f9bc3ec940adbdcac0a801f5e834b6ee3cd5bf1b780f6f81d556562b3",
+      "input_path": "inputs/moretypes-slices-of-slice.txt",
+      "input_sha256": "4b535d47b36834b0a8a307f47d0f020ed272338a55cc85da14f24052313c453e",
+      "protected_token_count": 3,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "English comment `Create a tic-tac-toe board` 要求创建井字游戏棋盘。当前“tic-tac-toe ਬੋਰਡ ਬਣਾਓ”将整个游戏名称保留为拉丁字母英文，与自然语言注释应使用 Gurmukhi 的要求不够一致。应选择 Gurmukhi 技术读者能够自然识别的游戏名称表达，不改变棋盘结构、`board` 标识符或 `\"X\"`、`\"O\"` 等代码字符串。"
+    }
+  ]
+}

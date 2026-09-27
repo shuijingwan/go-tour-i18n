@@ -1,0 +1,7 @@
+* If og else
+
+Variabler som deklareres i en kort `if`-setning, er også tilgjengelige i alle tilhørende `else`-blokker.
+
+(Begge kallene til `pow` returnerer resultatene sine før kallet til `fmt.Println` i `main` begynner.)
+
+.play flowcontrol/if-and-else.go

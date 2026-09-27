@@ -1,0 +1,9 @@
+* Pekere til struct-verdier
+
+Du kan få tilgang til feltene i en struct-verdi gjennom en peker til den.
+
+Hvis vi vil ha tilgang til feltet ⟪GTI18N_29695d33_000001⟫X⟪GTI18N_29695d33_000002⟫ i en struct-verdi ved hjelp av struct-pekeren ⟪GTI18N_29695d33_000003⟫p⟪GTI18N_29695d33_000004⟫, kan vi skrive ⟪GTI18N_29695d33_000005⟫(*p).X⟪GTI18N_29695d33_000006⟫.
+
+Denne skrivemåten er imidlertid tungvint. Derfor lar språket oss skrive bare ⟪GTI18N_29695d33_000007⟫p.X⟪GTI18N_29695d33_000008⟫, uten eksplisitt dereferering.
+
+⟪GTI18N_29695d33_000009⟫

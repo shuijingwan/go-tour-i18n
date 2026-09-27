@@ -1,0 +1,16 @@
+* Opprette en slice med make
+
+Du kan opprette slice-er med den innebygde funksjonen `make`. Slik kan du lage arrayer med dynamisk størrelse.
+
+Funksjonen `make` allokerer en array der alle verdiene er satt til nullverdien, og returnerer en slice som refererer til denne arrayen:
+
+	a := make([]int, 5)  // len(a)=5
+
+Hvis du vil angi kapasiteten, sender du et tredje argument til `make`:
+
+	b := make([]int, 0, 5) // len(b)=0, cap(b)=5
+
+	b = b[:cap(b)] // len(b)=5, cap(b)=5
+	b = b[1:]      // len(b)=4, cap(b)=4
+
+.play moretypes/making-slices.go

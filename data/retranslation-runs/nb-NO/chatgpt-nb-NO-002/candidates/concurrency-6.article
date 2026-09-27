@@ -1,0 +1,14 @@
+* Standardtilfellet i select
+
+`default`-tilfellet i en `select` kjøres hvis ingen av de andre tilfellene er klare.
+
+Bruk et `default`-tilfelle når du vil prøve å sende eller motta uten å blokkere:
+
+	select {
+	case i := <-c:
+		// bruk i
+	default:
+		// mottak fra c ville blokkert
+	}
+
+.play concurrency/default-selection.go

@@ -1,0 +1,11 @@
+* Oppgave: Slice-er
+
+Implementer `Pic`. Funksjonen skal returnere en slice med lengden `dy`, der hvert element er en slice med `dx` 8-biters usignerte heltall. Når du kjører programmet, vises bildet ditt, og heltallene tolkes som gråtoneverdier (eller rettere sagt blåtoner).
+
+Du velger selv hvordan bildet skal se ut. Noen interessante funksjoner er `(x+y)/2`, `x*y` og `x^y`.
+
+(Du må bruke en løkke for å allokere hver enkelt `[]uint8` inne i `[][]uint8`.)
+
+(Bruk `uint8(intValue)` for å konvertere mellom typer.)
+
+.play moretypes/exercise-slices.go

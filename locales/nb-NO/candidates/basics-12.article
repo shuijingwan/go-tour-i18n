@@ -1,0 +1,12 @@
+* Nullverdier
+
+Variabler som deklareres uten en eksplisitt startverdi, får sin
+_nullverdi_.
+
+Nullverdien er:
+
+- `0` for numeriske typer,
+- `false` for boolske typer og
+- `""` (den tomme strengen) for strenger.
+
+.play basics/zero.go

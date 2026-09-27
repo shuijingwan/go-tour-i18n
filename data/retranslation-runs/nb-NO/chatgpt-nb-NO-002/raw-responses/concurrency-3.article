@@ -1,0 +1,11 @@
+* Bufrede kanaler
+
+Kanaler kan være ⟪GTI18N_caef0893_000001⟫bufrede⟪GTI18N_caef0893_000002⟫. Oppgi bufferlengden som det andre argumentet til ⟪GTI18N_caef0893_000003⟫make⟪GTI18N_caef0893_000004⟫ når du oppretter en bufret kanal:
+
+⟪GTI18N_caef0893_000005⟫
+
+Sending til en bufret kanal blokkerer bare når bufferen er full. Mottak blokkerer når bufferen er tom.
+
+Endre eksemplet slik at du prøver å sende flere verdier enn bufferen har plass til, og se hva som skjer.
+
+⟪GTI18N_caef0893_000006⟫

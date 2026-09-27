@@ -1,0 +1,13 @@
+* Go uten nettilgang (valgfritt)
+
+Denne rundturen finnes også som et frittstående program du kan bruke uten internett. Programmet bygger og kjører kodeeksemplene på din egen maskin.
+
+For å kjøre rundturen lokalt må du først [[/doc/install][installere Go]] og deretter kjøre:
+
+  go install golang.org/x/website/tour@latest
+
+Dette legger den kjørbare filen `tour` i [[/cmd/go/#hdr-GOPATH_and_Modules][GOPATH]] sin katalog `bin`.
+
+Når du kjører programmet, åpnes en nettleser som viser din lokale versjon av rundturen.
+
+Du kan selvsagt også fortsette rundturen her på nettstedet.

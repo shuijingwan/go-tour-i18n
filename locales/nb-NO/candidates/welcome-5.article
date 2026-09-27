@@ -1,0 +1,17 @@
+* Go Playground
+
+Denne rundturen bygger på [[https://play.golang.org/][Go Playground]], en nettjeneste som kjører på serverne til [[/][golang.org]].
+
+Tjenesten mottar et program skrevet i Go, kompilerer og lenker det, kjører det i en sandkasse og returnerer deretter utdataene.
+
+Det er noen begrensninger for hvilke programmer som kan kjøres i Go Playground:
+
+- I Go Playground begynner tiden 2009-11-10 23:00:00 UTC (hvorfor akkurat denne datoen er valgt, er en oppgave for leseren). Dette gjør det enklere å mellomlagre programmer, fordi de gir deterministiske utdata.
+
+- Det er også begrensninger på kjøretid, CPU-bruk og minnebruk, og programmet kan ikke kontakte eksterne nettverksverter.
+
+Go Playground bruker den nyeste stabile utgaven av Go.
+
+Les «[[/blog/playground][Inne i Go Playground]]» for å finne ut mer.
+
+.play welcome/sandbox.go

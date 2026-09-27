@@ -1,0 +1,47 @@
+{
+  "schema_version": 2,
+  "batch_id": "codex-pa-IN-008",
+  "locale": "pa-IN",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 2,
+  "units": [
+    {
+      "unit_id": "basics/12",
+      "unit_kind": "page",
+      "source_path": "_content/tour/basics.article",
+      "source_sha256": "d9ad62501c05359e7b2ac445fa92d629e11d6d378c2701b767abab76012a558e",
+      "input_path": "inputs/basics-12.article",
+      "input_sha256": "1ea463ab789d88cad33a6c7adf44fb524ea1f7e2574059f723a345f3c097faa7",
+      "protected_token_count": 9,
+      "previous_snapshot_id": "qc-003",
+      "revision_feedback_source": "surface_review",
+      "revision_authorization_id": "20260927-pa-IN-stage-a-001-tu",
+      "previous_rating": "A",
+      "previous_finding": "F01 basics/12：自然语言说明保留了非 glossary keep 的英文 boolean，须改为自然且一致的 Gurmukhi 布尔类型表达，同时保留 false、列表结构、代码和技术含义。F02 concurrency/8：普通名词 walker 被直接保留为英文，须自然表达启动与 Walk 函数相关的树遍历程序，同时保留 Walk、ch、代码、步骤和技术要求。",
+      "previous_review_decision": "reopened",
+      "previous_review_summary": "20260927-pa-IN-stage-a-001-tu",
+      "previous_review_path": "data/locale-surface-reviews/pa-IN/20260927-pa-IN-stage-a-001.md",
+      "previous_review_sha256": "7cf6df1f69d20486c76328a622579d746a0fcdd20de0cbd936b1cb4377bc417b"
+    },
+    {
+      "unit_id": "concurrency/8",
+      "unit_kind": "page",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "b362cc15a26324acd311f7cab18a628dc1d7d9ac6d455add7d651d41acf15e9a",
+      "input_path": "inputs/concurrency-8.article",
+      "input_sha256": "8025e7d08ef87ad525c6f8480c4563fc48f129676ac19716d1e1f8d44abfb368",
+      "protected_token_count": 43,
+      "previous_snapshot_id": "qc-003",
+      "revision_feedback_source": "surface_review",
+      "revision_authorization_id": "20260927-pa-IN-stage-a-001-tu",
+      "previous_rating": "A",
+      "previous_finding": "F01 basics/12：自然语言说明保留了非 glossary keep 的英文 boolean，须改为自然且一致的 Gurmukhi 布尔类型表达，同时保留 false、列表结构、代码和技术含义。F02 concurrency/8：普通名词 walker 被直接保留为英文，须自然表达启动与 Walk 函数相关的树遍历程序，同时保留 Walk、ch、代码、步骤和技术要求。",
+      "previous_review_decision": "reopened",
+      "previous_review_summary": "20260927-pa-IN-stage-a-001-tu",
+      "previous_review_path": "data/locale-surface-reviews/pa-IN/20260927-pa-IN-stage-a-001.md",
+      "previous_review_sha256": "7cf6df1f69d20486c76328a622579d746a0fcdd20de0cbd936b1cb4377bc417b"
+    }
+  ]
+}

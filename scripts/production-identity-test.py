@@ -46,6 +46,46 @@ class ProductionIdentityTest(unittest.TestCase):
         with self.assertRaisesRegex(MODULE.IdentityError, "not canonical"):
             self.validate(data)
 
+    def test_new_locale_profiles_are_frozen(self):
+        parsed = MODULE.load_identity(self.identity_path)
+        self.assertEqual(len(parsed["locales"]), 37)
+
+        def expected_profile(locale, hostname, port, state):
+            root = f"/data/go-tour-{locale}"
+            return {
+                "locale": locale,
+                "production_state": state,
+                "production_hostname": hostname,
+                "cdn": "cloudflare",
+                "origin_ssh_alias": "aliyun",
+                "origin_ip": "121.40.248.29",
+                "data_root": root,
+                "releases_root": root + "/releases",
+                "current": root + "/current",
+                "deployment_lock": root + "/.deploy.lock",
+                "systemd_service": f"go-tour-{locale}.service",
+                "service_user": "go-tour",
+                "loopback_port": port,
+                "localhost_health_url": f"http://127.0.0.1:{port}/",
+                "environment_file": "/etc/go-tour/go-tour.env",
+                "nginx_vhost_path": f"/usr/local/nginx/conf/vhost/{hostname}.conf",
+                "tls_certificate_path": f"/usr/local/nginx/conf/ssl/{hostname}.crt",
+                "tls_key_path": f"/usr/local/nginx/conf/ssl/{hostname}.key",
+                "playground_allowed_origin": f"https://{hostname}",
+                "shared_assets_policy": "shared-cloudflare",
+                "production_public_url": f"https://{hostname}/",
+                "cache_header": "CF-Cache-Status",
+            }
+
+        profiles = {profile["locale"]: profile for profile in parsed["locales"]}
+        for locale, hostname, port, state in (
+            ("gu-IN", "gu-go-dev.shuijingwanwq.com", 4033, "live"),
+            ("pa-IN", "pa-go-dev.shuijingwanwq.com", 4034, "first-production"),
+            ("nb-NO", "nb-go-dev.shuijingwanwq.com", 4035, "first-production"),
+        ):
+            with self.subTest(locale=locale):
+                self.assertEqual(profiles[locale], expected_profile(locale, hostname, port, state))
+
     def test_dutch_live_profile_is_frozen(self):
         parsed = MODULE.load_identity(self.identity_path)
         profile = next(item for item in parsed["locales"] if item["locale"] == "nl-NL")

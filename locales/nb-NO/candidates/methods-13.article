@@ -1,0 +1,7 @@
+* Nil-grensesnittverdier
+
+En grensesnittverdi som er nil, inneholder verken en verdi eller en konkret type.
+
+Å kalle en metode på et nil-grensesnitt gir en kjøretidsfeil, fordi grensesnittparet ikke inneholder noen type som kan avgjøre hvilken _konkret_ metode som skal kalles.
+
+.play methods/nil-interface-values.go

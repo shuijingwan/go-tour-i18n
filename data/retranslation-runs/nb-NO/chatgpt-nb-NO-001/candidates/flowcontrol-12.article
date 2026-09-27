@@ -1,0 +1,7 @@
+* Defer
+
+En defer-setning utsetter utførelsen av et funksjonskall til funksjonen den står i, returnerer.
+
+Argumentene til det utsatte kallet evalueres med en gang, men selve funksjonskallet utføres først når den omkringliggende funksjonen returnerer.
+
+.play flowcontrol/defer.go

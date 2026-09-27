@@ -1,0 +1,9 @@
+* Oppgave: Nettsøkerobot
+
+I denne oppgaven skal du bruke funksjonene for samtidighet i Go til å la en nettsøkerobot hente sider parallelt.
+
+Endre funksjonen `Crawl` slik at den henter URL-er parallelt uten å hente samme URL to ganger.
+
+_Tips_: Du kan bruke en map til å mellomlagre URL-ene som allerede er hentet, men en map alene er ikke trygg ved samtidig bruk!
+
+.play concurrency/exercise-web-crawler.go

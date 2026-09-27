@@ -1,0 +1,15 @@
+* Velge verdi- eller pekermottaker
+
+Det er to grunner til å bruke en pekermottaker.
+
+Den første er at metoden da kan endre verdien mottakeren peker til.
+
+Den andre er å unngå å kopiere verdien ved hvert metodekall.
+Det kan for eksempel være mer effektivt hvis mottakeren er en stor struct-verdi.
+
+I dette eksemplet har både ⟪GTI18N_357424f2_000001⟫Scale⟪GTI18N_357424f2_000002⟫ og ⟪GTI18N_357424f2_000003⟫Abs⟪GTI18N_357424f2_000004⟫ mottakertypen ⟪GTI18N_357424f2_000005⟫*Vertex⟪GTI18N_357424f2_000006⟫, selv om metoden ⟪GTI18N_357424f2_000007⟫Abs⟪GTI18N_357424f2_000008⟫ ikke trenger å endre mottakeren sin.
+
+Som hovedregel bør alle metoder på én bestemt type bruke enten verdi- eller pekermottakere, ikke en blanding av begge.
+(Vi skal se hvorfor på de neste sidene.)
+
+⟪GTI18N_357424f2_000009⟫

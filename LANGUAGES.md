@@ -4,7 +4,7 @@
 
 新增语言统一从 [新增 Locale 执行手册](docs/NEW_LOCALE_RUNBOOK.md) 开始；不要只在 registry 中增加一行就视为完成。新 locale 必须先明确规范 locale、显示名称、domain/CDN、全站 glossary 决策和 production profile，并通过独立的 Glossary Review、TranslationUnit Quality Review 与 Locale Surface Review。
 
-语言 registry 的正式展示顺序按语言的英文名称字母顺序排列，不按加入项目的时间排列。当前顺序为 Arabic（`ar`）→ Bengali（`bn-BD`）→ Brazilian Portuguese（`pt-BR`）→ Bulgarian（`bg-BG`）→ Czech（`cs-CZ`）→ Dutch（`nl-NL`）→ English（`en`）→ Filipino（`fil-PH`）→ French（`fr-FR`）→ German（`de-DE`）→ Greek（`el-GR`）→ Hindi（`hi-IN`）→ Hungarian（`hu-HU`）→ Indonesian（`id-ID`）→ Italian（`it-IT`）→ Japanese（`ja-JP`）→ Korean（`ko-KR`）→ Malay（`ms-MY`）→ Malayalam（`ml-IN`）→ Marathi（`mr-IN`）→ Polish（`pl-PL`）→ Romanian（`ro-RO`）→ Simplified Chinese（`zh-CN`）→ Spanish（`es-ES`）→ Swedish（`sv-SE`）→ Thai（`th-TH`）→ Traditional Chinese（`zh-TW`）→ Turkish（`tr-TR`）→ Ukrainian（`uk-UA`）→ Urdu（`ur-PK`）→ Vietnamese（`vi-VN`）。
+语言 registry 的正式展示顺序按语言的英文名称字母顺序排列，不按加入项目的时间排列。当前顺序为 Arabic（`ar`）→ Bengali（`bn-BD`）→ Brazilian Portuguese（`pt-BR`）→ Bulgarian（`bg-BG`）→ Czech（`cs-CZ`）→ Dutch（`nl-NL`）→ English（`en`）→ Filipino（`fil-PH`）→ French（`fr-FR`）→ German（`de-DE`）→ Greek（`el-GR`）→ Gujarati（`gu-IN`）→ Hindi（`hi-IN`）→ Hungarian（`hu-HU`）→ Indonesian（`id-ID`）→ Italian（`it-IT`）→ Japanese（`ja-JP`）→ Kannada（`kn-IN`）→ Korean（`ko-KR`）→ Latin American Spanish（`es-419`）→ Malay（`ms-MY`）→ Malayalam（`ml-IN`）→ Marathi（`mr-IN`）→ Norwegian Bokmål（`nb-NO`）→ Polish（`pl-PL`）→ Punjabi（`pa-IN`）→ Romanian（`ro-RO`）→ Simplified Chinese（`zh-CN`）→ Spanish（`es-ES`）→ Swedish（`sv-SE`）→ Tamil（`ta-IN`）→ Telugu（`te-IN`）→ Thai（`th-TH`）→ Traditional Chinese（`zh-TW`）→ Turkish（`tr-TR`）→ Ukrainian（`uk-UA`）→ Urdu（`ur-PK`）→ Vietnamese（`vi-VN`）。
 
 ## 语言站点与 CDN
 
@@ -21,6 +21,7 @@
 | `fr-FR` | Français | <https://fr-go-dev.shuijingwanwq.com/> | Cloudflare Free | 法语社区语言站；域名 language code 为 `fr` |
 | `de-DE` | Deutsch | <https://de-go-dev.shuijingwanwq.com/> | Cloudflare Free | 德语社区语言站；域名 language code 为 `de` |
 | `el-GR` | Ελληνικά | <https://el-go-dev.shuijingwanwq.com/> | Cloudflare Free | 希腊语社区语言站；`html lang=el-GR`；域名 language code 为 `el`；首次生产准备中 |
+| `gu-IN` | ગુજરાતી | <https://gu-go-dev.shuijingwanwq.com/> | Cloudflare Free | 古吉拉特语社区语言站；`html lang=gu-IN`；域名 language code 为 `gu`；已上线 |
 | `hi-IN` | हिन्दी | <https://hi-go-dev.shuijingwanwq.com/> | Cloudflare Free | 印地语社区语言站；`html lang=hi-IN`；域名 language code 为 `hi`；首次生产准备中 |
 | `hu-HU` | Magyar | <https://hu-go-dev.shuijingwanwq.com/> | Cloudflare Free | 匈牙利语社区语言站；`html lang=hu-HU`；域名 language code 为 `hu` |
 | `id-ID` | Bahasa Indonesia | <https://id-go-dev.shuijingwanwq.com/> | Cloudflare Free | 印度尼西亚语社区语言站；域名 language code 为 `id`；首次生产准备中 |
@@ -30,7 +31,9 @@
 | `ms-MY` | Bahasa Melayu | <https://ms-go-dev.shuijingwanwq.com/> | Cloudflare Free | 马来西亚马来语社区语言站；`html lang=ms-MY`；域名 language code 为 `ms`；首次生产准备中 |
 | `ml-IN` | മലയാളം | <https://ml-go-dev.shuijingwanwq.com/> | Cloudflare Free | 马拉雅拉姆语社区语言站；`html lang=ml-IN`；域名 language code 为 `ml` |
 | `mr-IN` | मराठी | <https://mr-go-dev.shuijingwanwq.com/> | Cloudflare Free | 马拉地语社区语言站；`html lang=mr-IN`；域名 language code 为 `mr` |
+| `nb-NO` | Norsk bokmål | <https://nb-go-dev.shuijingwanwq.com/> | Cloudflare Free | 挪威语（Bokmål）社区语言站；`html lang=nb-NO`；域名 language code 为 `nb`；首次生产准备中 |
 | `pl-PL` | Polski | <https://pl-go-dev.shuijingwanwq.com/> | Cloudflare Free | 波兰语社区语言站；域名 language code 为 `pl` |
+| `pa-IN` | ਪੰਜਾਬੀ | <https://pa-go-dev.shuijingwanwq.com/> | Cloudflare Free | 旁遮普语社区语言站；`html lang=pa-IN`；只使用 Gurmukhi 书写体系，不混入 Shahmukhi；域名 language code 为 `pa`；首次生产准备中 |
 | `ro-RO` | Română | <https://ro-go-dev.shuijingwanwq.com/> | Cloudflare Free | 罗马尼亚语社区语言站；`html lang=ro-RO`；域名 language code 为 `ro`；首次生产准备中 |
 | `zh-CN` | 简体中文 | <https://go-dev.shuijingwanwq.com/> | EdgeOne | 当前默认社区语言站；不创建 `zh.go-dev` 或 `zh-cn.go-dev` |
 | `es-ES` | Español | <https://es-go-dev.shuijingwanwq.com/> | Cloudflare Free | 西班牙语社区语言站；域名 language code 为 `es` |

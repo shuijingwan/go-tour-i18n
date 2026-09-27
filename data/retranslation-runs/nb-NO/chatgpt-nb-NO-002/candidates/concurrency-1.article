@@ -1,0 +1,15 @@
+* Goroutiner
+
+En _goroutine_ er en lettvektstråd som styres av Go-kjøresystemet.
+
+	go f(x, y, z)
+
+starter en ny goroutine som kjører
+
+	f(x, y, z)
+
+Uttrykkene `f`, `x`, `y` og `z` evalueres i den nåværende goroutine, mens `f` kjøres i den nye goroutine.
+
+Goroutiner kjører i samme adresseområde, så tilgang til delt minne må synkroniseres. Pakken [[/pkg/sync/][`sync`]] inneholder nyttige primitiver, men i Go trenger du dem sjelden, siden språket også har andre primitiver. (Se neste side.)
+
+.play concurrency/goroutines.go

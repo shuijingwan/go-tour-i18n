@@ -1,0 +1,9 @@
+* Pekere til struct-verdier
+
+Du kan få tilgang til feltene i en struct-verdi gjennom en peker til den.
+
+Hvis vi vil ha tilgang til feltet `X` i en struct-verdi ved hjelp av struct-pekeren `p`, kan vi skrive `(*p).X`.
+
+Denne skrivemåten er imidlertid tungvint. Derfor lar språket oss skrive bare `p.X`, uten eksplisitt dereferering.
+
+.play moretypes/struct-pointers.go

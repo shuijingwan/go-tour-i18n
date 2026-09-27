@@ -1,0 +1,7 @@
+* Funksjons-closure-er
+
+Funksjoner i Go kan være closure-er. En closure er en funksjonsverdi som refererer til variabler utenfor sin egen funksjonskropp. Funksjonen kan lese og tilordne verdier til disse variablene; slik er den «bundet» til variablene.
+
+Funksjonen `adder` returnerer for eksempel en closure. Hver closure er bundet til sin egen `sum`-variabel.
+
+.play moretypes/function-closures.go

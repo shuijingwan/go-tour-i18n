@@ -1,0 +1,14 @@
+* Lengde og kapasitet for slice-er
+
+En slice har både en ⟪GTI18N_e2d7d69c_000001⟫lengde⟪GTI18N_e2d7d69c_000002⟫ og en ⟪GTI18N_e2d7d69c_000003⟫kapasitet⟪GTI18N_e2d7d69c_000004⟫.
+
+Lengden til en slice er antallet elementer den inneholder.
+
+Kapasiteten til en slice er antallet elementer i den underliggende arrayen, regnet fra det første elementet i slicen.
+
+Lengden og kapasiteten til slicen ⟪GTI18N_e2d7d69c_000005⟫s⟪GTI18N_e2d7d69c_000006⟫ kan hentes med uttrykkene ⟪GTI18N_e2d7d69c_000007⟫len(s)⟪GTI18N_e2d7d69c_000008⟫ og ⟪GTI18N_e2d7d69c_000009⟫cap(s)⟪GTI18N_e2d7d69c_000010⟫.
+
+Du kan øke lengden til en slice ved å lage en ny slice av den, så lenge kapasiteten er stor nok.
+Prøv å endre en av slice-operasjonene i eksempelprogrammet slik at slicen utvides utover kapasiteten, og se hva som skjer.
+
+⟪GTI18N_e2d7d69c_000011⟫

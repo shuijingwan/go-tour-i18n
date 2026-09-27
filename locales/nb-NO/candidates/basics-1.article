@@ -1,0 +1,11 @@
+* Pakker
+
+Alle programmer skrevet i Go består av pakker.
+
+Programmer begynner å kjøre i pakken `main`.
+
+Dette programmet bruker pakkene med importstiene `"fmt"` og `"math/rand"`.
+
+Etter vanlig praksis er pakkenavnet det samme som det siste elementet i importstien. Pakken `"math/rand"` består for eksempel av filer som begynner med setningen `package`rand`.
+
+.play basics/packages.go

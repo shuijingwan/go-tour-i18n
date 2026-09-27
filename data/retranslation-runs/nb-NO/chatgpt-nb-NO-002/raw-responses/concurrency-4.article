@@ -1,0 +1,15 @@
+* range og close
+
+En avsender kan ⟪GTI18N_3e925c67_000001⟫close⟪GTI18N_3e925c67_000002⟫ en kanal for å signalisere at det ikke kommer flere verdier. Mottakere kan kontrollere om en kanal er lukket ved å hente en ekstra verdi fra mottaksuttrykket. Etter
+
+⟪GTI18N_3e925c67_000003⟫
+
+er ⟪GTI18N_3e925c67_000004⟫ok⟪GTI18N_3e925c67_000005⟫ lik ⟪GTI18N_3e925c67_000006⟫false⟪GTI18N_3e925c67_000007⟫ hvis det ikke finnes flere verdier å motta og kanalen er lukket.
+
+Løkken ⟪GTI18N_3e925c67_000008⟫for`i`:=`range`c⟪GTI18N_3e925c67_000009⟫ mottar gjentatte ganger verdier fra kanalen helt til den er lukket.
+
+⟪GTI18N_3e925c67_000010⟫Merk:⟪GTI18N_3e925c67_000011⟫ Bare avsenderen skal lukke en kanal, aldri mottakeren. Å sende til en lukket kanal utløser en panic.
+
+⟪GTI18N_3e925c67_000012⟫En*annen*merknad:⟪GTI18N_3e925c67_000013⟫ Kanaler er ikke som filer; vanligvis trenger du ikke lukke dem. Lukking er bare nødvendig når mottakeren må få vite at det ikke kommer flere verdier, for eksempel for å avslutte en ⟪GTI18N_3e925c67_000014⟫range⟪GTI18N_3e925c67_000015⟫-løkke.
+
+⟪GTI18N_3e925c67_000016⟫

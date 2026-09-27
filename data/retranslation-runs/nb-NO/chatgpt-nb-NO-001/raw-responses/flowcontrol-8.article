@@ -1,0 +1,30 @@
+* Oppgave: Løkker og funksjoner
+
+For å eksperimentere med funksjoner og løkker skal vi implementere en kvadratrotfunksjon: Gitt et tall x ønsker vi å finne tallet z som gjør at z² ligger så nær x som mulig.
+
+Datamaskiner beregner vanligvis kvadratroten av x ved hjelp av en løkke.
+Vi begynner med et anslag for z og justerer det etter hvor nær z² er x, slik at vi får et bedre anslag:
+
+⟪GTI18N_d8bbee84_000001⟫
+
+Ved å gjenta denne justeringen får vi stadig bedre anslag, helt til vi kommer så nær den faktiske kvadratroten som mulig.
+
+Implementer dette i den medfølgende funksjonen ⟪GTI18N_d8bbee84_000002⟫func`Sqrt⟪GTI18N_d8bbee84_000003⟫.
+Et brukbart første anslag for z er 1, uansett hvilken verdi som gis inn.
+Begynn med å gjenta beregningen 10 ganger, og skriv ut hver verdi av z underveis.
+Undersøk hvor nær svaret du kommer for ulike verdier av x (1, 2, 3, …), og hvor raskt anslaget forbedres.
+
+Tips: For å deklarere og initialisere en flyttallsverdi kan du bruke flyttallssyntaks eller en typekonvertering:
+
+⟪GTI18N_d8bbee84_000004⟫
+
+Endre deretter løkkebetingelsen slik at løkken stopper når verdien ikke lenger endrer seg (eller bare endrer seg svært lite).
+Se om det krever flere eller færre enn 10 iterasjoner.
+Prøv andre startanslag for z, for eksempel x eller x/2.
+Hvor nær ligger resultatene fra funksjonen din resultatene fra [[⟪GTI18N_d8bbee84_000005⟫][math.Sqrt]] i standardbiblioteket?
+
+(⟪GTI18N_d8bbee84_000006⟫Merk:⟪GTI18N_d8bbee84_000007⟫ Hvis du er interessert i detaljene i algoritmen, uttrykker z² − x ovenfor hvor langt z² er fra målet (x). Divisjonen med 2z er den deriverte av z², som skalerer justeringen etter hvor raskt z² endrer seg.
+Denne generelle fremgangsmåten kalles [[⟪GTI18N_d8bbee84_000008⟫][Newtons metode]].
+Den fungerer godt for mange funksjoner, men spesielt godt for kvadratrøtter.)
+
+⟪GTI18N_d8bbee84_000009⟫

@@ -1,0 +1,19 @@
+* Pekermottakere
+
+Du kan deklarere metoder med pekermottakere.
+
+Da har mottakertypen den bokstavelige syntaksen `*T` for en type `T`.
+(`T` kan heller ikke selv være en pekertype som `*int`.)
+
+I dette eksemplet er metoden `Scale` definert på `*Vertex`.
+
+Metoder med pekermottakere kan endre verdien mottakeren peker til (slik `Scale` gjør her).
+Siden metoder ofte må endre mottakeren sin, er pekermottakere vanligere enn verdimottakere.
+
+Prøv å fjerne `*` fra deklarasjonen av funksjonen `Scale` på linje 16, og se hvordan programmets oppførsel endres.
+
+Med en verdimottaker arbeider metoden `Scale` på en kopi av den opprinnelige `Vertex`-verdien.
+(Dette er samme oppførsel som for alle andre funksjonsargumenter.)
+Metoden `Scale` må ha en pekermottaker for å endre `Vertex`-verdien som er deklarert i funksjonen `main`.
+
+.play methods/methods-pointers.go

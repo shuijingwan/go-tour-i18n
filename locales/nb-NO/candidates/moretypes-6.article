@@ -1,0 +1,14 @@
+* Arrayer
+
+Typen `[n]T` er en array med `n` verdier av typen `T`.
+
+Uttrykket
+
+	var a [10]int
+
+deklarerer variabelen `a` som en array med ti heltall.
+
+Lengden til en array er en del av typen, så arrayer kan ikke endre størrelse.
+Det kan virke begrensende, men fortvil ikke: Go gir en praktisk måte å arbeide med arrayer på.
+
+.play moretypes/array.go

@@ -1,0 +1,10 @@
+* Switch
+
+En `switch`-setning er en kortere måte å skrive en rekke `if`-`else`-setninger på.
+Den kjører det første tilfellet der verdien er lik betingelsesuttrykket.
+
+En switch i Go ligner på switch i C, C++, Java, JavaScript og PHP, men Go kjører bare det valgte tilfellet, ikke alle de etterfølgende.
+I praksis er `break`-setningen som trengs på slutten av hvert tilfelle i disse språkene, automatisk innebygd i Go.
+En annen viktig forskjell er at switch-tilfeller i Go ikke behøver å være konstanter, og verdiene behøver ikke å være heltall.
+
+.play flowcontrol/switch.go

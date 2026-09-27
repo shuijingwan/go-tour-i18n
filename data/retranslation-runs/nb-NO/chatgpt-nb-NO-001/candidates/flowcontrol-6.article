@@ -1,0 +1,9 @@
+* If med en kort setning
+
+Akkurat som `for` kan en `if`-setning begynne med en kort setning som kjøres før betingelsen evalueres.
+
+Variabler som deklareres i denne setningen, er bare tilgjengelige frem til slutten av `if`-setningen.
+
+(Prøv å bruke `v` i den siste `return`-setningen.)
+
+.play flowcontrol/if-with-a-short-statement.go

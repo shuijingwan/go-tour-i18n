@@ -1,0 +1,12 @@
+* Range—ਜਾਰੀ
+
+ਤੁਸੀਂ `_` ਨੂੰ assign ਕਰਕੇ index ਜਾਂ ਮੁੱਲ ਨੂੰ ਛੱਡ ਸਕਦੇ ਹੋ।
+
+    for i, _ := range pow
+    for _, value := range pow
+
+ਜੇ ਤੁਹਾਨੂੰ ਸਿਰਫ਼ index ਚਾਹੀਦਾ ਹੈ, ਤਾਂ ਤੁਸੀਂ ਦੂਜਾ ਵੇਰੀਏਬਲ ਛੱਡ ਸਕਦੇ ਹੋ।
+
+    for i := range pow
+
+.play moretypes/range-continued.go

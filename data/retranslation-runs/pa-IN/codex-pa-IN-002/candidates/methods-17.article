@@ -1,0 +1,11 @@
+* Stringer
+
+ਸਭ ਤੋਂ ਵੱਧ ਵਰਤੇ ਜਾਣ ਵਾਲੇ ਇੰਟਰਫੇਸਾਂ ਵਿੱਚੋਂ ਇੱਕ [[/pkg/fmt/][`fmt`]] ਪੈਕੇਜ ਵੱਲੋਂ ਪਰਿਭਾਸ਼ਿਤ [[/pkg/fmt/#Stringer][`Stringer`]] ਹੈ।
+
+	type Stringer interface {
+		String() string
+	}
+
+`Stringer` ਉਹ ਟਾਈਪ ਹੈ ਜੋ ਆਪਣੇ ਆਪ ਨੂੰ ਸਟਰਿੰਗ ਵਜੋਂ ਵਰਣਨ ਕਰ ਸਕਦੀ ਹੈ। `fmt` ਪੈਕੇਜ (ਅਤੇ ਕਈ ਹੋਰ) ਮੁੱਲਾਂ ਨੂੰ ਪ੍ਰਿੰਟ ਕਰਨ ਲਈ ਇਸ ਇੰਟਰਫੇਸ ਨੂੰ ਲੱਭਦੇ ਹਨ।
+
+.play methods/stringer.go

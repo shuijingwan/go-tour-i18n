@@ -1,0 +1,20 @@
+* Metoder og indirekte pekertilgang
+
+Når du sammenligner de to foregående programmene, legger du kanskje merke til at funksjoner med et pekerargument må få en peker som argument:
+
+	var v Vertex
+	ScaleFunc(v, 5)  // Kompileringsfeil!
+	ScaleFunc(&v, 5) // OK
+
+mens metoder med pekermottakere kan kalles med enten en verdi eller en peker som mottaker:
+
+	var v Vertex
+	v.Scale(5)  // OK
+	p := &v
+	p.Scale(10) // OK
+
+I setningen `v.Scale(5)` kalles metoden med pekermottaker automatisk, selv om `v` er en verdi og ikke en peker.
+For enkelhets skyld tolker Go dermed setningen `v.Scale(5)` som
+`(&v).Scale(5)`, siden metoden `Scale` har en pekermottaker.
+
+.play methods/indirection.go

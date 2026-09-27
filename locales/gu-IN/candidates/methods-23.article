@@ -1,0 +1,12 @@
+* અભ્યાસ: rot13Reader
+
+એક સામાન્ય પેટર્નમાં [[/pkg/io/#Reader][io.Reader]] બીજા `io.Reader` ને આવરી લે છે અને ડેટા પ્રવાહમાં કોઈક ફેરફાર કરે છે.
+
+ઉદાહરણ તરીકે, [[/pkg/compress/gzip/#NewReader][gzip.NewReader]] ફંક્શન `io.Reader` (સંકુચિત ડેટાનો પ્રવાહ) સ્વીકારે છે અને `*gzip.Reader` પરત કરે છે, જે `io.Reader` નું અમલીકરણ કરે છે (વિસંકુચિત ડેટાનો પ્રવાહ).
+
+એવો `rot13Reader` અમલમાં મૂકો, જે `io.Reader` નું અમલીકરણ કરે અને `io.Reader` માંથી ડેટા વાંચીને તમામ મૂળાક્ષરો પર [[https://en.wikipedia.org/wiki/ROT13][rot13]] સ્થાનાપન સાઇફર લાગુ કરીને પ્રવાહમાં ફેરફાર કરે.
+
+`rot13Reader` ટાઇપ તમને આપવામાં આવી છે.
+તેને `io.Reader` બનાવવા તેની `Read` મેથડ અમલમાં મૂકો.
+
+.play methods/exercise-rot-reader.go

@@ -1,0 +1,17 @@
+* ⟪GTI18N_19e6d7da_000001⟫
+
+Denne rundturen bygger på [[⟪GTI18N_19e6d7da_000002⟫][⟪GTI18N_19e6d7da_000003⟫]], en nettjeneste som kjører på serverne til [[⟪GTI18N_19e6d7da_000004⟫][golang.org]].
+
+Tjenesten mottar et program skrevet i ⟪GTI18N_19e6d7da_000005⟫, kompilerer og lenker det, kjører det i en sandkasse og returnerer deretter utdataene.
+
+Det er noen begrensninger for hvilke programmer som kan kjøres i Go Playground:
+
+- I Go Playground begynner tiden 2009-11-10 23:00:00 ⟪GTI18N_19e6d7da_000006⟫ (hvorfor akkurat denne datoen er valgt, er en oppgave for leseren). Dette gjør det enklere å mellomlagre programmer, fordi de gir deterministiske utdata.
+
+- Det er også begrensninger på kjøretid, ⟪GTI18N_19e6d7da_000007⟫-bruk og minnebruk, og programmet kan ikke kontakte eksterne nettverksverter.
+
+Go Playground bruker den nyeste stabile utgaven av ⟪GTI18N_19e6d7da_000008⟫.
+
+Les «[[⟪GTI18N_19e6d7da_000009⟫][Inne i ⟪GTI18N_19e6d7da_000010⟫]]» for å finne ut mer.
+
+⟪GTI18N_19e6d7da_000011⟫
