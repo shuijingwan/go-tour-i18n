@@ -28,6 +28,7 @@ var languageRegistry = []LanguageLink{
 	{Locale: "bn-BD", EnglishName: "Bengali", Autonym: "বাংলা", URL: "https://bn-go-dev.shuijingwanwq.com/"},
 	{Locale: "pt-BR", EnglishName: "Brazilian Portuguese", Autonym: "Português (Brasil)", URL: "https://pt-go-dev.shuijingwanwq.com/"},
 	{Locale: "bg-BG", EnglishName: "Bulgarian", Autonym: "Български", URL: "https://bg-go-dev.shuijingwanwq.com/"},
+	{Locale: "hr-HR", EnglishName: "Croatian", Autonym: "Hrvatski", URL: "https://hr-go-dev.shuijingwanwq.com/"},
 	{Locale: "cs-CZ", EnglishName: "Czech", Autonym: "Čeština", URL: "https://cs-go-dev.shuijingwanwq.com/"},
 	{Locale: "da-DK", EnglishName: "Danish", Autonym: "Dansk", URL: "https://da-go-dev.shuijingwanwq.com/"},
 	{Locale: "nl-NL", EnglishName: "Dutch", Autonym: "Nederlands", URL: "https://nl-go-dev.shuijingwanwq.com/"},
@@ -53,7 +54,9 @@ var languageRegistry = []LanguageLink{
 	{Locale: "pl-PL", EnglishName: "Polish", Autonym: "Polski", URL: "https://pl-go-dev.shuijingwanwq.com/"},
 	{Locale: "pa-IN", EnglishName: "Punjabi", Autonym: "ਪੰਜਾਬੀ", URL: "https://pa-go-dev.shuijingwanwq.com/"},
 	{Locale: "ro-RO", EnglishName: "Romanian", Autonym: "Română", URL: "https://ro-go-dev.shuijingwanwq.com/"},
+	{Locale: "sr-RS", EnglishName: "Serbian", Autonym: "Српски (ћирилица)", URL: "https://sr-go-dev.shuijingwanwq.com/"},
 	{Locale: "zh-CN", EnglishName: "Simplified Chinese", Autonym: "简体中文", URL: "https://go-dev.shuijingwanwq.com/"},
+	{Locale: "sk-SK", EnglishName: "Slovak", Autonym: "Slovenčina", URL: "https://sk-go-dev.shuijingwanwq.com/"},
 	{Locale: "es-ES", EnglishName: "Spanish", Autonym: "Español", URL: "https://es-go-dev.shuijingwanwq.com/"},
 	{Locale: "sv-SE", EnglishName: "Swedish", Autonym: "Svenska", URL: "https://sv-go-dev.shuijingwanwq.com/"},
 	{Locale: "ta-IN", EnglishName: "Tamil", Autonym: "தமிழ்", URL: "https://ta-go-dev.shuijingwanwq.com/"},
@@ -110,6 +113,9 @@ var (
 	bangkokTime     = mustLoadLocation("Asia/Bangkok")
 	bucharestTime   = mustLoadLocation("Europe/Bucharest")
 	dhakaTime       = mustLoadLocation("Asia/Dhaka")
+	belgradeTime    = mustLoadLocation("Europe/Belgrade")
+	bratislavaTime  = mustLoadLocation("Europe/Bratislava")
+	zagrebTime      = mustLoadLocation("Europe/Zagreb")
 )
 
 var localeProfiles = map[string]localeProfile{
@@ -383,6 +389,27 @@ var localeProfiles = map[string]localeProfile{
 		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",
 		TimeZone:          time.FixedZone("UTC+9", 9*60*60),
 		TimeLabel:         "한국 표준시",
+		TimeLabelFormat:   " (%s)",
+		Direction:         "ltr",
+	},
+	"hr-HR": {
+		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",
+		TimeZone:          zagrebTime,
+		TimeLabel:         "lokalno vrijeme",
+		TimeLabelFormat:   " (%s)",
+		Direction:         "ltr",
+	},
+	"sr-RS": {
+		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",
+		TimeZone:          belgradeTime,
+		TimeLabel:         "локално време",
+		TimeLabelFormat:   " (%s)",
+		Direction:         "ltr",
+	},
+	"sk-SK": {
+		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",
+		TimeZone:          bratislavaTime,
+		TimeLabel:         "miestny čas",
 		TimeLabelFormat:   " (%s)",
 		Direction:         "ltr",
 	},

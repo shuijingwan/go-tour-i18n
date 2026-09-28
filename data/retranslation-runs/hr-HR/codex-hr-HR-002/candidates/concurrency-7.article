@@ -1,0 +1,18 @@
+* Vježba: istovrijedna binarna stabla
+
+Mnoga različita binarna stabla mogu sadržavati isti niz vrijednosti. Primjerice, ovdje su dva binarna stabla koja sadržavaju niz 1, 1, 2, 3, 5, 8, 13.
+
+.image /tour/static/img/tree.png
+
+Funkcija koja provjerava sadržavaju li dva binarna stabla isti niz prilično je složena u većini jezika. Upotrijebit ćemo konkurentnost i kanale jezika Go kako bismo napisali jednostavno rješenje.
+
+Ovaj primjer upotrebljava paket `tree`, koji definira tip:
+
+	type Tree struct {
+		Left  *Tree
+		Value int
+		Right *Tree
+	}
+
+
+Opis se nastavlja na [[javascript:click('.next-page')][sljedećoj stranici]].

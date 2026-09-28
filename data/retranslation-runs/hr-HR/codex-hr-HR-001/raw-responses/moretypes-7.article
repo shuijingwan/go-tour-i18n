@@ -1,0 +1,18 @@
+* Isječci
+
+Polje ima fiksnu veličinu. Isječak je, s druge strane, fleksibilan prikaz elemenata polja čija se veličina dinamički mijenja.
+U praksi su isječci mnogo češći od polja.
+
+Tip ⟪GTI18N_a169cf48_000001⟫[]T⟪GTI18N_a169cf48_000002⟫ isječak je s elementima tipa ⟪GTI18N_a169cf48_000003⟫T⟪GTI18N_a169cf48_000004⟫.
+
+Isječak se oblikuje navođenjem dvaju indeksa, donje i gornje granice, odvojenih dvotočkom:
+
+⟪GTI18N_a169cf48_000005⟫
+
+Time se odabire poluotvoreni raspon koji uključuje prvi element, ali isključuje posljednji.
+
+Sljedeći izraz stvara isječak koji uključuje elemente od 1 do 3 polja ⟪GTI18N_a169cf48_000006⟫a⟪GTI18N_a169cf48_000007⟫:
+
+⟪GTI18N_a169cf48_000008⟫
+
+⟪GTI18N_a169cf48_000009⟫

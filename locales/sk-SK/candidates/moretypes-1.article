@@ -1,0 +1,24 @@
+* Ukazovatele
+
+Jazyk Go používa ukazovatele.
+Ukazovateľ obsahuje adresu hodnoty v pamäti.
+
+Typ `*T` je ukazovateľ na hodnotu typu `T`. Jeho nulová hodnota je `nil`.
+
+	var p *int
+
+Operátor `&` vytvorí ukazovateľ na svoj operand.
+
+	i := 42
+	p = &i
+
+Operátor `*` označuje hodnotu, na ktorú ukazovateľ odkazuje.
+
+	fmt.Println(*p) // čítanie i cez ukazovateľ p
+	*p = 21         // nastavenie i cez ukazovateľ p
+
+Tento postup sa nazýva „dereferencovanie“ alebo „nepriame adresovanie“.
+
+Na rozdiel od jazyka C nemá Go aritmetiku ukazovateľov.
+
+.play moretypes/pointers.go

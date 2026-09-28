@@ -1,0 +1,24 @@
+* Potvrđivanje tipa
+
+_potvrđivanje_tipa_ omogućuje pristup temeljnoj konkretnoj vrijednosti vrijednosti sučelja.
+
+	t := i.(T)
+
+Ova naredba potvrđuje da vrijednost sučelja `i` sadržava vrijednost konkretnog tipa `T`
+i pridružuje temeljnu vrijednost tipa `T` varijabli `t`.
+
+Ako `i` ne sadržava vrijednost tipa `T`, naredba će izazvati paniku.
+
+Da biste _provjerili_ sadržava li vrijednost sučelja određeni tip,
+potvrđivanje tipa može vratiti dvije vrijednosti: temeljnu vrijednost
+i Booleovu vrijednost koja pokazuje je li potvrđivanje uspjelo.
+
+	t, ok := i.(T)
+
+Ako `i` sadržava vrijednost tipa `T`, tada će `t` biti temeljna vrijednost, a `ok` će biti true.
+U suprotnom će `ok` biti false, a `t` će biti nulta vrijednost tipa `T`,
+i pritom neće doći do panike.
+
+Obratite pozornost na sličnost ove sintakse sa sintaksom čitanja iz mape.
+
+.play methods/type-assertions.go

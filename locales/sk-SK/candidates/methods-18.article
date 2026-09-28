@@ -1,0 +1,8 @@
+* Cvičenie: Stringery
+
+Upravte typ `IPAddr` tak, aby implementoval `fmt.Stringer` a vypisoval adresu
+v bodkovanom štvorčlennom tvare.
+
+Napríklad `IPAddr{1,`2,`3,`4}` sa má vypísať ako `"1.2.3.4"`.
+
+.play methods/exercise-stringer.go

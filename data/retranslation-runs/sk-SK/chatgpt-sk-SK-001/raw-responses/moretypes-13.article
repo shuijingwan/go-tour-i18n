@@ -1,0 +1,15 @@
+* Vytvorenie rezu pomocou make
+
+Rezy možno vytvárať pomocou vstavanej funkcie ⟪GTI18N_d057e6bf_000001⟫make⟪GTI18N_d057e6bf_000002⟫;
+takto sa vytvárajú dynamicky veľké polia.
+
+Funkcia ⟪GTI18N_d057e6bf_000003⟫make⟪GTI18N_d057e6bf_000004⟫ alokuje pole vyplnené nulovými hodnotami
+a vráti rez, ktorý na toto pole odkazuje:
+
+⟪GTI18N_d057e6bf_000005⟫
+
+Ak chcete určiť kapacitu, odovzdajte funkcii ⟪GTI18N_d057e6bf_000006⟫make⟪GTI18N_d057e6bf_000007⟫ tretí argument:
+
+⟪GTI18N_d057e6bf_000008⟫
+
+⟪GTI18N_d057e6bf_000009⟫

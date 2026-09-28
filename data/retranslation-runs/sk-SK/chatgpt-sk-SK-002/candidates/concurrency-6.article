@@ -1,0 +1,14 @@
+* Predvolená vetva
+
+Vetva `default` v príkaze `select` sa vykoná, ak nie je pripravená žiadna iná vetva.
+
+Vetvu `default` použite na pokus o odoslanie alebo prijatie bez blokovania:
+
+	select {
+	case i := <-c:
+		// použi i
+	default:
+		// prijímanie z c by sa zablokovalo
+	}
+
+.play concurrency/default-selection.go

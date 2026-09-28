@@ -1,0 +1,13 @@
+* Zaključivanje tipa
+
+Kada deklarirate varijablu bez navođenja izričitog tipa (bilo uporabom sintakse ⟪GTI18N_21c4077c_000001⟫:=⟪GTI18N_21c4077c_000002⟫ bilo sintakse izraza ⟪GTI18N_21c4077c_000003⟫var`=⟪GTI18N_21c4077c_000004⟫), tip varijable zaključuje se iz vrijednosti s desne strane.
+
+Kada izraz s desne strane deklaracije ima određen tip, nova varijabla ima isti tip:
+
+⟪GTI18N_21c4077c_000005⟫⟪GTI18N_21c4077c_000006⟫ je tipa ⟪GTI18N_21c4077c_000007⟫⟪GTI18N_21c4077c_000008⟫Međutim, kada desna strana sadrži netipiziranu brojčanu konstantu, nova varijabla može biti tipa ⟪GTI18N_21c4077c_000009⟫int⟪GTI18N_21c4077c_000010⟫, ⟪GTI18N_21c4077c_000011⟫float64⟪GTI18N_21c4077c_000012⟫ ili ⟪GTI18N_21c4077c_000013⟫complex128⟪GTI18N_21c4077c_000014⟫, ovisno o preciznosti konstante:
+
+⟪GTI18N_21c4077c_000015⟫
+
+Pokušajte promijeniti početnu vrijednost varijable ⟪GTI18N_21c4077c_000016⟫v⟪GTI18N_21c4077c_000017⟫ u primjeru koda i promotrite kako to utječe na njezin tip.
+
+⟪GTI18N_21c4077c_000018⟫

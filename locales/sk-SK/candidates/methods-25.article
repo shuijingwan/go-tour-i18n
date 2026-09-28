@@ -1,0 +1,13 @@
+* Cvičenie: Obrázky
+
+Pamätáte si [[/tour/moretypes/18][generátor obrázkov]], ktorý ste vytvorili skôr? Napíšeme ďalší, no tentoraz bude namiesto rezu údajov vracať implementáciu `image.Image`.
+
+Definujte vlastný typ `Image`, implementujte [[/pkg/image/#Image][potrebné metódy]] a zavolajte `pic.ShowImage`.
+
+`Bounds` má vracať `image.Rectangle`, napríklad `image.Rect(0,`0,`w,`h)`.
+
+`ColorModel` má vracať `color.RGBAModel`.
+
+`At` má vracať farbu; hodnota `v` v predchádzajúcom generátore obrázkov zodpovedá v tomto generátore `color.RGBA{v,`v,`255,`255}`.
+
+.play methods/exercise-images.go

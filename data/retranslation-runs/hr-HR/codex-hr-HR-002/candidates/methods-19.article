@@ -1,0 +1,26 @@
+* Pogreške
+
+Programi u jeziku Go stanje pogreške izražavaju vrijednostima `error`.
+
+Tip `error` ugrađeno je sučelje slično sučelju `fmt.Stringer`:
+
+	type error interface {
+		Error() string
+	}
+
+(Kao i kod sučelja `fmt.Stringer`, paket `fmt` pri ispisivanju vrijednosti traži sučelje
+`error`.)
+
+Funkcije često vraćaju vrijednost `error`, a kod koji ih poziva trebao bi obraditi pogreške
+provjerom je li pogreška jednaka vrijednosti `nil`.
+
+	i, err := strconv.Atoi("42")
+	if err != nil {
+		fmt.Printf("couldn't convert number: %v\n", err)
+		return
+	}
+	fmt.Println("Converted integer:", i)
+
+Vrijednost `error` koja je nil označava uspjeh; vrijednost `error` koja nije nil označava neuspjeh.
+
+.play methods/errors.go

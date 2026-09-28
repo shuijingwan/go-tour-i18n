@@ -1,0 +1,19 @@
+* Príkazy switch podľa typu
+
+⟪GTI18N_26e4da09_000001⟫príkaz_switch_podľa_typu⟪GTI18N_26e4da09_000002⟫ je konštrukcia, ktorá umožňuje vykonať viacero typových asercií za sebou.
+
+Príkaz switch podľa typu sa podobá bežnému príkazu switch, ale jeho vetvy
+určujú typy (nie hodnoty) a tieto typy sa porovnávajú s
+typom hodnoty uloženej v danej hodnote rozhrania.
+
+⟪GTI18N_26e4da09_000003⟫tu má ⟪GTI18N_26e4da09_000004⟫ typ ⟪GTI18N_26e4da09_000005⟫⟪GTI18N_26e4da09_000006⟫tu má ⟪GTI18N_26e4da09_000007⟫ typ ⟪GTI18N_26e4da09_000008⟫⟪GTI18N_26e4da09_000009⟫žiadna zhoda; tu má ⟪GTI18N_26e4da09_000010⟫ rovnaký typ ako ⟪GTI18N_26e4da09_000011⟫⟪GTI18N_26e4da09_000012⟫Deklarácia v príkaze switch podľa typu má rovnakú syntax ako typová asercia ⟪GTI18N_26e4da09_000013⟫i.(T)⟪GTI18N_26e4da09_000014⟫,
+ale konkrétny typ ⟪GTI18N_26e4da09_000015⟫T⟪GTI18N_26e4da09_000016⟫ je nahradený kľúčovým slovom ⟪GTI18N_26e4da09_000017⟫type⟪GTI18N_26e4da09_000018⟫.
+
+Tento príkaz switch testuje, či hodnota rozhrania ⟪GTI18N_26e4da09_000019⟫i⟪GTI18N_26e4da09_000020⟫
+obsahuje hodnotu typu ⟪GTI18N_26e4da09_000021⟫T⟪GTI18N_26e4da09_000022⟫ alebo ⟪GTI18N_26e4da09_000023⟫S⟪GTI18N_26e4da09_000024⟫.
+V každej z vetiev ⟪GTI18N_26e4da09_000025⟫T⟪GTI18N_26e4da09_000026⟫ a ⟪GTI18N_26e4da09_000027⟫S⟪GTI18N_26e4da09_000028⟫ bude premenná ⟪GTI18N_26e4da09_000029⟫v⟪GTI18N_26e4da09_000030⟫ typu
+⟪GTI18N_26e4da09_000031⟫T⟪GTI18N_26e4da09_000032⟫, respektíve ⟪GTI18N_26e4da09_000033⟫S⟪GTI18N_26e4da09_000034⟫, a bude obsahovať hodnotu uloženú v ⟪GTI18N_26e4da09_000035⟫i⟪GTI18N_26e4da09_000036⟫.
+Vo vetve default (keď sa nič nezhoduje) má premenná ⟪GTI18N_26e4da09_000037⟫v⟪GTI18N_26e4da09_000038⟫
+rovnaký typ rozhrania aj hodnotu ako ⟪GTI18N_26e4da09_000039⟫i⟪GTI18N_26e4da09_000040⟫.
+
+⟪GTI18N_26e4da09_000041⟫

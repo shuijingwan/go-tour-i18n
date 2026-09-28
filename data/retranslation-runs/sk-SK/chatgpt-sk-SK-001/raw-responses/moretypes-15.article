@@ -1,0 +1,21 @@
+* Pridávanie prvkov do rezu
+
+Do rezu sa často pridávajú nové prvky, preto ⟪GTI18N_f2fc257e_000001⟫ poskytuje vstavanú
+funkciu ⟪GTI18N_f2fc257e_000002⟫append⟪GTI18N_f2fc257e_000003⟫. [[⟪GTI18N_f2fc257e_000004⟫][Dokumentácia]]
+vstavaného balíka opisuje funkciu ⟪GTI18N_f2fc257e_000005⟫append⟪GTI18N_f2fc257e_000006⟫.
+
+⟪GTI18N_f2fc257e_000007⟫
+
+Prvý parameter ⟪GTI18N_f2fc257e_000008⟫s⟪GTI18N_f2fc257e_000009⟫ funkcie ⟪GTI18N_f2fc257e_000010⟫append⟪GTI18N_f2fc257e_000011⟫ je rez typu ⟪GTI18N_f2fc257e_000012⟫T⟪GTI18N_f2fc257e_000013⟫ a ostatné sú
+hodnoty typu ⟪GTI18N_f2fc257e_000014⟫T⟪GTI18N_f2fc257e_000015⟫, ktoré sa majú do rezu pridať.
+
+Výsledkom funkcie ⟪GTI18N_f2fc257e_000016⟫append⟪GTI18N_f2fc257e_000017⟫ je rez obsahujúci všetky prvky
+pôvodného rezu a navyše zadané hodnoty.
+
+Ak je podkladové pole rezu ⟪GTI18N_f2fc257e_000018⟫s⟪GTI18N_f2fc257e_000019⟫ príliš malé na všetky zadané hodnoty, alokuje sa väčšie
+pole. Vrátený rez bude odkazovať na novo alokované
+pole.
+
+(Viac o rezoch sa dozviete v článku [[⟪GTI18N_f2fc257e_000020⟫][Rezy: používanie a vnútorné fungovanie]].)
+
+⟪GTI18N_f2fc257e_000021⟫

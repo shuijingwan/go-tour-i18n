@@ -1,0 +1,14 @@
+* Switch
+
+Naredba `switch` kraći je način zapisivanja niza naredbi `if`-`else`.
+Izvršava se prvi slučaj čija je vrijednost jednaka uvjetnom izrazu.
+
+Naredba switch u jeziku Go slična je onoj u jezicima C, C++, Java, JavaScript i PHP,
+uz razliku da Go izvršava samo odabrani slučaj, a ne i sve koji slijede.
+Drugim riječima, naredba `break`, koja je u tim jezicima potrebna na kraju svakog
+slučaja, u jeziku Go dodaje se automatski.
+
+Još je jedna važna razlika to što slučajevi naredbe switch u jeziku Go ne moraju
+biti konstante, a uključene vrijednosti ne moraju biti cijeli brojevi.
+
+.play flowcontrol/switch.go

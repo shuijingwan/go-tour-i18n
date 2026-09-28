@@ -1,0 +1,10 @@
+* Ukazovatele na štruktúry
+
+K poliam štruktúry možno pristupovať cez ukazovateľ na štruktúru.
+
+Ak chceme pristúpiť k poľu ⟪GTI18N_29695d33_000001⟫X⟪GTI18N_29695d33_000002⟫ štruktúry a máme ukazovateľ ⟪GTI18N_29695d33_000003⟫p⟪GTI18N_29695d33_000004⟫, môžeme
+zapísať ⟪GTI18N_29695d33_000005⟫(*p).X⟪GTI18N_29695d33_000006⟫.
+Tento zápis je však ťažkopádny, preto jazyk umožňuje namiesto neho
+zapísať iba ⟪GTI18N_29695d33_000007⟫p.X⟪GTI18N_29695d33_000008⟫ bez explicitného dereferencovania.
+
+⟪GTI18N_29695d33_000009⟫

@@ -1,0 +1,23 @@
+* Rezy
+
+Pole má pevnú veľkosť.
+Rez má naopak dynamickú veľkosť a je flexibilným pohľadom
+na prvky poľa.
+V praxi sa rezy používajú omnoho častejšie než polia.
+
+Typ `[]T` je rez s prvkami typu `T`.
+
+Rez sa vytvorí zadaním dvoch indexov, dolnej a hornej
+hranice, oddelených dvojbodkou:
+
+	a[low : high]
+
+Tým sa vyberie polootvorený interval, ktorý zahŕňa prvý
+prvok, ale nezahŕňa posledný.
+
+Nasledujúci výraz vytvorí rez obsahujúci
+prvky 1 až 3 z `a`:
+
+	a[1:4]
+
+.play moretypes/slices.go

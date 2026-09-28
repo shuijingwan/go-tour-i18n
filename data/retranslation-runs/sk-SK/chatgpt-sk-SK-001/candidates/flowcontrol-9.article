@@ -1,0 +1,13 @@
+* Switch
+
+Príkaz `switch` je kratší spôsob zápisu postupnosti príkazov `if`-`else`.
+Vykoná prvú vetvu, ktorej hodnota sa rovná podmienkovému výrazu.
+
+Switch v jazyku Go sa podobá switchu v C, C++, Jave, JavaScripte a PHP,
+ale jazyk Go vykoná iba vybranú vetvu, nie všetky nasledujúce.
+Príkaz `break`, ktorý je v týchto jazykoch potrebný na konci každej vetvy,
+je teda v jazyku Go zabezpečený automaticky.
+Ďalší dôležitý rozdiel je, že vetvy switch v jazyku Go nemusia
+byť konštanty a použité hodnoty nemusia byť celé čísla.
+
+.play flowcontrol/switch.go

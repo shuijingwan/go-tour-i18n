@@ -1,0 +1,15 @@
+* Range a zatvorenie kanála
+
+Odosielateľ môže kanál `close`, čím oznámi, že už nebudú odoslané žiadne ďalšie hodnoty. Prijímatelia môžu zistiť, či bol kanál zatvorený, priradením druhého parametra prijímacieho výrazu: po
+
+	v, ok := <-ch
+
+je `ok` rovné `false`, ak už nie sú k dispozícii žiadne hodnoty na prijatie a kanál je zatvorený.
+
+Cyklus `for`i`:=`range`c` opakovane prijíma hodnoty z kanála, kým sa kanál nezatvorí.
+
+*Poznámka:* Kanál by mal zatvárať iba odosielateľ, nikdy nie prijímateľ. Odoslanie do zatvoreného kanála vyvolá panic.
+
+*Ďalšia*poznámka:* Kanály nie sú ako súbory; zvyčajne ich netreba zatvárať. Zatvorenie je potrebné iba vtedy, keď prijímateľ musí dostať informáciu, že už neprídu žiadne ďalšie hodnoty, napríklad na ukončenie cyklu `range`.
+
+.play concurrency/range-and-close.go

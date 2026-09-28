@@ -1,0 +1,35 @@
+* Ahoj, 世界
+
+Vitajte na prehliadke [[/][programovací jazyk Go]].
+
+Prehliadka je rozdelená na moduly, ku ktorým sa dostanete kliknutím na
+[[javascript:highlight(".logo")][Prehliadka jazyka Go]] v ľavom hornom rohu stránky.
+
+Obsah si môžete kedykoľvek zobraziť kliknutím na [[javascript:highlightAndClick(".nav")][ponuku]] v pravom hornom rohu stránky.
+
+Počas prehliadky nájdete sériu stránok a cvičení, ktoré môžete absolvovať.
+
+Medzi nimi sa môžete presúvať pomocou
+
+- [[javascript:highlight(".prev-page")]["predchádzajúca"]] alebo `PageUp` a prejsť na predchádzajúcu stránku,
+
+- [[javascript:highlight(".next-page")]["nasledujúca"]] alebo `PageDown` a prejsť na nasledujúcu stránku.
+
+Prehliadka je interaktívna. Teraz kliknite na tlačidlo
+[[javascript:highlightAndClick("#run")][Spustiť]]
+(alebo stlačte `Shift` + `Enter`), čím program skompilujete a spustíte na
+vzdialenom serveri.
+Výsledok sa zobrazí pod kódom.
+
+Tieto ukážkové programy predstavujú rôzne aspekty jazyka Go. Programy v prehliadke slúžia ako východiskové body pre vaše vlastné experimenty.
+
+Upravte program a znova ho spustite.
+
+Keď kliknete na [[javascript:highlightAndClick("#format")][Formátovať]]
+(skratka: `Ctrl` + `Enter`), text v editore sa naformátuje pomocou nástroja
+[[/cmd/gofmt/][gofmt]]. Zvýrazňovanie syntaxe môžete zapnúť alebo vypnúť
+kliknutím na tlačidlo [[javascript:highlightAndClick(".syntax-checkbox")][syntax]].
+
+Keď budete pripravení pokračovať, kliknite na [[javascript:highlightAndClick(".next-page")][šípku doprava]] nižšie alebo stlačte kláves `PageDown`.
+
+.play welcome/hello.go

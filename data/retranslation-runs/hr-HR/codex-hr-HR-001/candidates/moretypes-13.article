@@ -1,0 +1,17 @@
+* Stvaranje isječka funkcijom make
+
+Isječci se mogu stvoriti ugrađenom funkcijom `make`; tako se stvaraju polja dinamičke veličine.
+
+Funkcija `make` dodjeljuje polje ispunjeno nultim vrijednostima
+i vraća isječak koji se poziva na to polje:
+
+	a := make([]int, 5)  // len(a)=5
+
+Da biste odredili kapacitet, funkciji `make` proslijedite treći argument:
+
+	b := make([]int, 0, 5) // len(b)=0, cap(b)=5
+
+	b = b[:cap(b)] // len(b)=5, cap(b)=5
+	b = b[1:]      // len(b)=4, cap(b)=4
+
+.play moretypes/making-slices.go

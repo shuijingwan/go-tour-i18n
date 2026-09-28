@@ -1,0 +1,19 @@
+* Pogreške
+
+Programi u jeziku ⟪GTI18N_9eaab1fd_000001⟫ stanje pogreške izražavaju vrijednostima ⟪GTI18N_9eaab1fd_000002⟫error⟪GTI18N_9eaab1fd_000003⟫.
+
+Tip ⟪GTI18N_9eaab1fd_000004⟫error⟪GTI18N_9eaab1fd_000005⟫ ugrađeno je sučelje slično sučelju ⟪GTI18N_9eaab1fd_000006⟫fmt.Stringer⟪GTI18N_9eaab1fd_000007⟫:
+
+⟪GTI18N_9eaab1fd_000008⟫
+
+(Kao i kod sučelja ⟪GTI18N_9eaab1fd_000009⟫fmt.Stringer⟪GTI18N_9eaab1fd_000010⟫, paket ⟪GTI18N_9eaab1fd_000011⟫fmt⟪GTI18N_9eaab1fd_000012⟫ pri ispisivanju vrijednosti traži sučelje
+⟪GTI18N_9eaab1fd_000013⟫error⟪GTI18N_9eaab1fd_000014⟫.)
+
+Funkcije često vraćaju vrijednost ⟪GTI18N_9eaab1fd_000015⟫error⟪GTI18N_9eaab1fd_000016⟫, a kod koji ih poziva trebao bi obraditi pogreške
+provjerom je li pogreška jednaka vrijednosti ⟪GTI18N_9eaab1fd_000017⟫nil⟪GTI18N_9eaab1fd_000018⟫.
+
+⟪GTI18N_9eaab1fd_000019⟫
+
+Vrijednost ⟪GTI18N_9eaab1fd_000020⟫error⟪GTI18N_9eaab1fd_000021⟫ koja je nil označava uspjeh; vrijednost ⟪GTI18N_9eaab1fd_000022⟫error⟪GTI18N_9eaab1fd_000023⟫ koja nije nil označava neuspjeh.
+
+⟪GTI18N_9eaab1fd_000024⟫

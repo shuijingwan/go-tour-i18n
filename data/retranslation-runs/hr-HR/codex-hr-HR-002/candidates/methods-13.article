@@ -1,0 +1,8 @@
+* Vrijednosti sučelja nil
+
+Vrijednost sučelja nil ne sadržava ni vrijednost ni konkretan tip.
+
+Pozivanje metode na sučelju nil uzrokuje pogrešku pri izvođenju jer u paru sučelja nema
+tipa koji bi odredio koju _konkretnu_ metodu treba pozvati.
+
+.play methods/nil-interface-values.go

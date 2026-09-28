@@ -1,0 +1,15 @@
+* Range i zatvaranje
+
+Pošiljatelj može pozvati ⟪GTI18N_3e925c67_000001⟫close⟪GTI18N_3e925c67_000002⟫ nad kanalom kako bi naznačio da više neće slati vrijednosti. Primatelji mogu provjeriti je li kanal zatvoren pridruživanjem drugog parametra izrazu primanja: nakon
+
+⟪GTI18N_3e925c67_000003⟫
+
+⟪GTI18N_3e925c67_000004⟫ok⟪GTI18N_3e925c67_000005⟫ je ⟪GTI18N_3e925c67_000006⟫false⟪GTI18N_3e925c67_000007⟫ ako više nema vrijednosti za primanje i kanal je zatvoren.
+
+Petlja ⟪GTI18N_3e925c67_000008⟫for`i`:=`range`c⟪GTI18N_3e925c67_000009⟫ uzastopno prima vrijednosti iz kanala sve dok se kanal ne zatvori.
+
+⟪GTI18N_3e925c67_000010⟫Napomena:⟪GTI18N_3e925c67_000011⟫ Kanal treba zatvoriti samo pošiljatelj, nikada primatelj. Slanje u zatvoreni kanal izazvat će paniku.
+
+⟪GTI18N_3e925c67_000012⟫Dodatna*napomena:⟪GTI18N_3e925c67_000013⟫ Kanali nisu poput datoteka; obično ih ne morate zatvarati. Zatvaranje je potrebno samo kada primatelju treba javiti da više neće stići nijedna vrijednost, primjerice radi završetka petlje ⟪GTI18N_3e925c67_000014⟫range⟪GTI18N_3e925c67_000015⟫.
+
+⟪GTI18N_3e925c67_000016⟫

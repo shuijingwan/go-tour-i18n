@@ -1,0 +1,11 @@
+* Mapy
+
+Mapa priraďuje kľúče k hodnotám.
+
+Nulová hodnota mapy je `nil`.
+Mapa s hodnotou `nil` nemá žiadne kľúče a nemožno do nej ani pridávať nové.
+
+Funkcia `make` vráti mapu zadaného typu,
+inicializovanú a pripravenú na použitie.
+
+.play moretypes/maps.go

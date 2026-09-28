@@ -1,0 +1,16 @@
+* Duljina i kapacitet isječka
+
+Isječak ima i _duljinu_ i _kapacitet_.
+
+Duljina isječka broj je elemenata koje sadržava.
+
+Kapacitet isječka broj je elemenata u temeljnom polju, računajući od prvog elementa isječka.
+
+Duljina i kapacitet isječka `s` mogu se dobiti izrazima
+`len(s)` i `cap(s)`.
+
+Duljinu isječka možete povećati ponovnim stvaranjem isječka, pod uvjetom da ima dovoljan kapacitet.
+Pokušajte promijeniti jednu od operacija nad isječkom u primjeru programa tako da ga proširite
+izvan njegova kapaciteta i pogledajte što će se dogoditi.
+
+.play moretypes/slice-len-cap.go

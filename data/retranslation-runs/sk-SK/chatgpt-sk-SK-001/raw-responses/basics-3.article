@@ -1,0 +1,16 @@
+* Exportované názvy
+
+V jazyku ⟪GTI18N_38b9c70e_000001⟫ je názov exportovaný, ak sa začína veľkým písmenom.
+Napríklad ⟪GTI18N_38b9c70e_000002⟫Pizza⟪GTI18N_38b9c70e_000003⟫ je exportovaný názov, rovnako ako ⟪GTI18N_38b9c70e_000004⟫Pi⟪GTI18N_38b9c70e_000005⟫, ktorý exportuje
+balík ⟪GTI18N_38b9c70e_000006⟫math⟪GTI18N_38b9c70e_000007⟫.
+
+⟪GTI18N_38b9c70e_000008⟫pizza⟪GTI18N_38b9c70e_000009⟫ a ⟪GTI18N_38b9c70e_000010⟫pi⟪GTI18N_38b9c70e_000011⟫ sa nezačínajú veľkým písmenom, preto nie sú exportované.
+
+Po importe balíka môžete odkazovať iba na jeho exportované názvy.
+Neexportované názvy nie sú prístupné zvonka balíka.
+
+Spustite kód a všimnite si chybové hlásenie.
+
+Chybu opravíte tak, že premenujete ⟪GTI18N_38b9c70e_000012⟫math.pi⟪GTI18N_38b9c70e_000013⟫ na ⟪GTI18N_38b9c70e_000014⟫math.Pi⟪GTI18N_38b9c70e_000015⟫ a skúsite to znova.
+
+⟪GTI18N_38b9c70e_000016⟫

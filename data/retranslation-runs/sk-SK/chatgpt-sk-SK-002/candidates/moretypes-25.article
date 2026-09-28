@@ -1,0 +1,7 @@
+* Uzávery funkcií
+
+Go funkcie môžu byť uzávermi. Uzáver je hodnota funkcie, ktorá odkazuje na premenné mimo svojho tela. Funkcia môže k odkazovaným premenným pristupovať a priraďovať im hodnoty; v tomto zmysle je funkcia k týmto premenným „viazaná“.
+
+Napríklad funkcia `adder` vracia uzáver. Každý uzáver je viazaný na vlastnú premennú `sum`.
+
+.play moretypes/function-closures.go

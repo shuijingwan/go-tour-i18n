@@ -1,0 +1,28 @@
+* Základné typy
+
+Základné typy jazyka Go sú
+
+	bool
+
+	string
+
+	int  int8  int16  int32  int64
+	uint uint8 uint16 uint32 uint64 uintptr
+
+	byte // alias pre uint8
+
+	rune // alias pre int32
+	     // predstavuje kódový bod Unicode
+
+	float32 float64
+
+	complex64 complex128
+
+Príklad ukazuje premenné viacerých typov
+a tiež to, že deklarácie premenných možno zoskupiť do blokov,
+podobne ako importné príkazy.
+
+Typy `int`, `uint` a `uintptr` majú na 32-bitových systémoch zvyčajne šírku 32 bitov a na 64-bitových systémoch 64 bitov.
+Ak potrebujete celé číslo, mali by ste použiť `int`, pokiaľ nemáte konkrétny dôvod použiť celočíselný typ s určenou šírkou alebo bez znamienka.
+
+.play basics/basic-types.go

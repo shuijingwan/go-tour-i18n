@@ -1,0 +1,9 @@
+* Slaganje naredbi defer na stog
+
+Odgođeni pozivi funkcija stavljaju se na stog. Kada se funkcija vrati, njezini
+odgođeni pozivi izvršavaju se redoslijedom posljednji unutra, prvi van.
+
+Više o naredbama defer pročitajte u ovom
+[[/blog/defer-panic-and-recover][članku na blogu]].
+
+.play flowcontrol/defer-multi.go

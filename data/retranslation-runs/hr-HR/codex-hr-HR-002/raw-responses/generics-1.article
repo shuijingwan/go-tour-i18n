@@ -1,0 +1,16 @@
+* Parametri tipa
+
+U jeziku ⟪GTI18N_01a04510_000001⟫ funkcije se mogu napisati tako da pomoću parametara tipa rade s više tipova. Parametri
+tipa funkcije nalaze se u uglatim zagradama, prije argumenata funkcije.
+
+⟪GTI18N_01a04510_000002⟫
+
+Ova deklaracija znači da je ⟪GTI18N_01a04510_000003⟫s⟪GTI18N_01a04510_000004⟫ isječak bilo kojeg tipa ⟪GTI18N_01a04510_000005⟫T⟪GTI18N_01a04510_000006⟫ koji zadovoljava
+ugrađeno ograničenje ⟪GTI18N_01a04510_000007⟫comparable⟪GTI18N_01a04510_000008⟫. ⟪GTI18N_01a04510_000009⟫x⟪GTI18N_01a04510_000010⟫ je također vrijednost istog tipa.
+
+⟪GTI18N_01a04510_000011⟫comparable⟪GTI18N_01a04510_000012⟫ korisno je ograničenje koje omogućuje uporabu operatora ⟪GTI18N_01a04510_000013⟫==⟪GTI18N_01a04510_000014⟫ i
+⟪GTI18N_01a04510_000015⟫!=⟪GTI18N_01a04510_000016⟫ nad vrijednostima tog tipa. U ovom ga primjeru upotrebljavamo za usporedbu
+vrijednosti sa svim elementima isječka dok se ne pronađe podudaranje. Funkcija ⟪GTI18N_01a04510_000017⟫Index⟪GTI18N_01a04510_000018⟫ radi
+sa svim tipovima koji podržavaju usporedbu.
+
+⟪GTI18N_01a04510_000019⟫

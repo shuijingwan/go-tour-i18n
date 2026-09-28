@@ -1,0 +1,23 @@
+* Primatelji pokazivačkog tipa
+
+Možete deklarirati metode s primateljima pokazivačkog tipa.
+
+To znači da tip primatelja ima literalnu sintaksu `*T` za neki tip `T`.
+(Pritom `T` ne može i sam biti pokazivač, primjerice `*int`.)
+
+Primjerice, ovdje je metoda `Scale` definirana na tipu `*Vertex`.
+
+Metode s primateljima pokazivačkog tipa mogu promijeniti vrijednost na koju primatelj
+pokazuje (kao što ovdje čini `Scale`). Budući da metode često trebaju mijenjati svojeg primatelja,
+primatelji pokazivačkog tipa češći su od primatelja vrijednosnog tipa.
+
+Pokušajte ukloniti `*` iz deklaracije funkcije `Scale` u 16. retku
+i promotrite kako se mijenja ponašanje programa.
+
+S primateljem vrijednosnog tipa metoda `Scale` radi na kopiji izvorne
+vrijednosti `Vertex`. (To je jednako ponašanju bilo kojeg drugog argumenta funkcije.)
+
+Metoda `Scale` mora imati primatelja pokazivačkog tipa kako bi promijenila vrijednost `Vertex`
+deklariranu u funkciji `main`.
+
+.play methods/methods-pointers.go

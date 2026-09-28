@@ -1,0 +1,19 @@
+* For
+
+Jazyk Go má iba jednu konštrukciu cyklu: cyklus `for`.
+
+Základný cyklus `for` má tri časti oddelené bodkočiarkami:
+
+- inicializačný príkaz: vykoná sa pred prvou iteráciou
+- podmienkový výraz: vyhodnotí sa pred každou iteráciou
+- záverečný príkaz: vykoná sa na konci každej iterácie
+
+Inicializačný príkaz býva často deklaráciou premennej a premenné
+takto deklarované sú viditeľné iba v rozsahu príkazu `for`.
+
+Cyklus sa prestane opakovať, keď sa logická podmienka vyhodnotí ako `false`.
+
+*Poznámka:* Na rozdiel od jazykov C, Java či JavaScript sa tri časti príkazu `for`
+neuzatvárajú do zátvoriek a zložené zátvorky `{`}` sú vždy povinné.
+
+.play flowcontrol/for.go

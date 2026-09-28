@@ -1,0 +1,14 @@
+* Literály rezov
+
+Literál rezu sa podobá literálu poľa bez uvedenia dĺžky.
+
+Toto je literál poľa:
+
+	[3]bool{true, true, false}
+
+A toto vytvorí rovnaké pole ako vyššie
+a potom rez, ktorý naň odkazuje:
+
+	[]bool{true, true, false}
+
+.play moretypes/slice-literals.go

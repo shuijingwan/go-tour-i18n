@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "evidence_type": "glossary-review-receipt",
+  "locale": "sr-RS",
+  "review_id": "20260928-sr-RS-glossary-001",
+  "stage": "locale-glossary-review",
+  "decision": "failed",
+  "reviewer": "chatgpt-gpt-5.6-sol-high",
+  "rubric": "glossary-review/v1",
+  "glossary_path": "locales/sr-RS/glossary.yaml",
+  "glossary_sha256": "6a6f19a0e307c563facec429388c850662874c8c4bd2aaab31ef0065a0418f95",
+  "findings": [
+    "F01: preferred basic type 与 underlying type 同译 основни тип；需区分 basics/11 基本类型、Go 规范 underlying type，并在 methods/11 将接口动态具体类型按上下文译为 конкретан тип。",
+    "F02: preferred underlying value=основна вредност 无法涵盖 methods/12、methods/15 的接口内具体值与 moretypes/1 的指针所指值；应使用上下文限定表达，不统一硬套译名。",
+    "F03: preferred receiver of a channel=прималац из канала 有方向歧义；应明确接收通道值的一方，并与方法 receiver 区分。"
+  ]
+}

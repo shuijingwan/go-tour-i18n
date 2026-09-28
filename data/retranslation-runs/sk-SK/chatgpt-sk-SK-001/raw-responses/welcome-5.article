@@ -1,0 +1,19 @@
+* ⟪GTI18N_19e6d7da_000001⟫
+
+Táto prehliadka je postavená na [[⟪GTI18N_19e6d7da_000002⟫][⟪GTI18N_19e6d7da_000003⟫]],
+webovej službe bežiacej na serveroch [[⟪GTI18N_19e6d7da_000004⟫][golang.org]].
+
+Služba prijme program v jazyku ⟪GTI18N_19e6d7da_000005⟫, skompiluje ho, linkuje a spustí v
+izolovanom prostredí a potom vráti jeho výstup.
+
+Programy spúšťané v Go Playground podliehajú určitým obmedzeniam:
+
+- V Go Playground začína čas hodnotou 2009-11-10 23:00:00 ⟪GTI18N_19e6d7da_000006⟫ (zistiť význam tohto dátumu je cvičenie pre čitateľa). Vďaka deterministickému výstupu sa programy dajú jednoduchšie ukladať do vyrovnávacej pamäte.
+
+- Obmedzený je aj čas vykonávania, využitie ⟪GTI18N_19e6d7da_000007⟫ a pamäte a program nemá prístup k externým sieťovým hostiteľom.
+
+Go Playground používa najnovšie stabilné vydanie jazyka ⟪GTI18N_19e6d7da_000008⟫.
+
+Viac sa dozviete v článku „[[⟪GTI18N_19e6d7da_000009⟫][Vo vnútri ⟪GTI18N_19e6d7da_000010⟫]]“.
+
+⟪GTI18N_19e6d7da_000011⟫

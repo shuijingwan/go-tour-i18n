@@ -1,0 +1,16 @@
+* Exportované názvy
+
+V jazyku Go je názov exportovaný, ak sa začína veľkým písmenom.
+Napríklad `Pizza` je exportovaný názov, rovnako ako `Pi`, ktorý exportuje
+balík `math`.
+
+`pizza` a `pi` sa nezačínajú veľkým písmenom, preto nie sú exportované.
+
+Po importe balíka môžete odkazovať iba na jeho exportované názvy.
+Neexportované názvy nie sú prístupné zvonka balíka.
+
+Spustite kód a všimnite si chybové hlásenie.
+
+Chybu opravíte tak, že premenujete `math.pi` na `math.Pi` a skúsite to znova.
+
+.play basics/exported-names.go

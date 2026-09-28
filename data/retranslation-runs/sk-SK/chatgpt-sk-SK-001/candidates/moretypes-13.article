@@ -1,0 +1,18 @@
+* Vytvorenie rezu pomocou make
+
+Rezy možno vytvárať pomocou vstavanej funkcie `make`;
+takto sa vytvárajú dynamicky veľké polia.
+
+Funkcia `make` alokuje pole vyplnené nulovými hodnotami
+a vráti rez, ktorý na toto pole odkazuje:
+
+	a := make([]int, 5)  // len(a)=5
+
+Ak chcete určiť kapacitu, odovzdajte funkcii `make` tretí argument:
+
+	b := make([]int, 0, 5) // len(b)=0, cap(b)=5
+
+	b = b[:cap(b)] // len(b)=5, cap(b)=5
+	b = b[1:]      // len(b)=4, cap(b)=4
+
+.play moretypes/making-slices.go

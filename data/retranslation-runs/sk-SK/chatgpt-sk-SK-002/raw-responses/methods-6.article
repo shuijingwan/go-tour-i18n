@@ -1,0 +1,16 @@
+* Metódy a nepriame odkazovanie cez ukazovateľ
+
+Pri porovnaní predchádzajúcich dvoch programov si môžete všimnúť, že
+funkcie s ukazovateľovým argumentom musia dostať ukazovateľ:
+
+⟪GTI18N_39fb725b_000001⟫Chyba kompilácie!⟪GTI18N_39fb725b_000002⟫zatiaľ čo pri volaní metód s ukazovateľovými prijímačmi môže byť
+prijímačom hodnota aj ukazovateľ:
+
+⟪GTI18N_39fb725b_000003⟫
+
+Pri príkaze ⟪GTI18N_39fb725b_000004⟫v.Scale(5)⟪GTI18N_39fb725b_000005⟫, hoci ⟪GTI18N_39fb725b_000006⟫v⟪GTI18N_39fb725b_000007⟫ je hodnota a nie ukazovateľ,
+sa metóda s ukazovateľovým prijímačom zavolá automaticky.
+Pre pohodlie teda ⟪GTI18N_39fb725b_000008⟫ interpretuje príkaz ⟪GTI18N_39fb725b_000009⟫v.Scale(5)⟪GTI18N_39fb725b_000010⟫ ako
+⟪GTI18N_39fb725b_000011⟫(&v).Scale(5)⟪GTI18N_39fb725b_000012⟫, pretože metóda ⟪GTI18N_39fb725b_000013⟫Scale⟪GTI18N_39fb725b_000014⟫ má ukazovateľový prijímač.
+
+⟪GTI18N_39fb725b_000015⟫

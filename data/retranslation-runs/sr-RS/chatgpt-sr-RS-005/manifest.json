@@ -1,0 +1,50 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-sr-RS-005",
+  "locale": "sr-RS",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "example",
+  "unit_count": 3,
+  "units": [
+    {
+      "unit_id": "example:basics/numeric-constants.go",
+      "unit_kind": "example",
+      "source_path": "_content/tour/basics/numeric-constants.go",
+      "source_sha256": "338906e7c0e0d5e81312c97b37638442b48a621d59e69215be78eed6bd003544",
+      "input_path": "inputs/basics-numeric-constants.txt",
+      "input_sha256": "4d2c58e69c5956602f868dea6ffaca7824edc7b8af8d213494c0910aaa204b14",
+      "protected_token_count": 4,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "F01 (stable index 104; evidence data/quality-check-snapshots/sr-RS/qc-001/independent-review-example-104-122.md): candidate phrase од 1 праћене са 100 нула is an awkward calque. Revise to natural Serbian expressing that the binary number consists of one 1 followed by 100 zeroes, preserving 1, 100, the binary meaning, and all Go code/numerals."
+    },
+    {
+      "unit_id": "example:concurrency/exercise-web-crawler.go",
+      "unit_kind": "example",
+      "source_path": "_content/tour/concurrency/exercise-web-crawler.go",
+      "source_sha256": "bd6226dcae3b663a3aa1cbf502d840357ac0efb6de46e7a66612ca2834cf5e37",
+      "input_path": "inputs/concurrency-exercise-web-crawler.txt",
+      "input_sha256": "53554a1126b74da6e3bcb93c625eff1ec44f560e2817f1875202423a7d6009ab",
+      "protected_token_count": 12,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "F02 (stable index 108; evidence data/quality-check-snapshots/sr-RS/qc-001/independent-review-example-104-122.md): teaching comments use unnatural Serbian around kept identity URL, including Не преузимајте исту URL двапут and Fetch враћа тело странице URL. Revise URL noun phrases/case/gender naturally while preserving URL, Fetch, Crawl, all code identities, the fetched-body meaning, and the requirement not to fetch the same URL twice."
+    },
+    {
+      "unit_id": "example:flowcontrol/if-and-else.go",
+      "unit_kind": "example",
+      "source_path": "_content/tour/flowcontrol/if-and-else.go",
+      "source_sha256": "9d3030966f45fb90105c0325c9a090e8ac3fce2e7c4b10106d8f75caf0e536cf",
+      "input_path": "inputs/flowcontrol-if-and-else.txt",
+      "input_sha256": "2f202f6737857e6619cb97d5503106c51872bce5d96accf07564bc3a6be44700",
+      "protected_token_count": 2,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "F03 (stable index 110; evidence data/quality-check-snapshots/sr-RS/qc-001/independent-review-example-104-122.md): comment овде не можете да користите v, међутим uses awkward sentence-final међутим following English word order. Use natural Serbian contrastive word order while preserving identifier v exactly and the scope meaning that v cannot be used here."
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+* Poradie vyhodnocovania switch
+
+Vetvy switch sa vyhodnocujú zhora nadol a vyhodnocovanie sa zastaví pri prvej úspešnej vetve.
+
+(Napríklad,
+
+	switch i {
+	case 0:
+	case f():
+	}
+
+nezavolá `f`, ak platí `i==0`.)
+
+
+.play flowcontrol/switch-evaluation-order.go

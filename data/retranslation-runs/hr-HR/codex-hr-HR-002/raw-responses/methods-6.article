@@ -1,0 +1,15 @@
+* Metode i neizravno adresiranje pokazivača
+
+Uspoređujući prethodna dva programa, mogli ste primijetiti da
+funkcije s argumentom pokazivačkog tipa moraju primiti pokazivač:
+
+⟪GTI18N_39fb725b_000001⟫Pogreška pri prevođenju!⟪GTI18N_39fb725b_000002⟫dok metode s primateljima pokazivačkog tipa pri pozivu kao primatelja prihvaćaju vrijednost ili pokazivač:
+
+⟪GTI18N_39fb725b_000003⟫
+
+Za naredbu ⟪GTI18N_39fb725b_000004⟫v.Scale(5)⟪GTI18N_39fb725b_000005⟫, iako je ⟪GTI18N_39fb725b_000006⟫v⟪GTI18N_39fb725b_000007⟫ vrijednost, a ne pokazivač,
+automatski se poziva metoda s primateljem pokazivačkog tipa.
+Radi praktičnosti, ⟪GTI18N_39fb725b_000008⟫ naredbu ⟪GTI18N_39fb725b_000009⟫v.Scale(5)⟪GTI18N_39fb725b_000010⟫ tumači kao
+⟪GTI18N_39fb725b_000011⟫(&v).Scale(5)⟪GTI18N_39fb725b_000012⟫ jer metoda ⟪GTI18N_39fb725b_000013⟫Scale⟪GTI18N_39fb725b_000014⟫ ima primatelja pokazivačkog tipa.
+
+⟪GTI18N_39fb725b_000015⟫

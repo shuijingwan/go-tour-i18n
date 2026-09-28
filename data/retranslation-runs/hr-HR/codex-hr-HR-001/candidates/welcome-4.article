@@ -1,0 +1,17 @@
+* Go izvan mreže (neobavezno)
+
+Ovaj obilazak dostupan je i kao samostalan program koji možete koristiti
+bez pristupa internetu. Primjeri koda izgrađuju se i pokreću na
+vašem računalu.
+
+Da biste obilazak pokrenuli lokalno, najprije trebate
+[[/doc/install][instalirati Go]], a zatim pokrenuti:
+
+  go install golang.org/x/website/tour@latest
+
+Time će se binarna datoteka `tour` smjestiti u
+[[/cmd/go/#hdr-GOPATH_and_Modules][GOPATH]]-ov direktorij `bin`.
+Kada pokrenete program tour, otvorit će se web-preglednik koji prikazuje
+vašu lokalnu inačicu obilaska.
+
+Naravno, obilazak možete nastaviti pratiti i na ovoj web-stranici.

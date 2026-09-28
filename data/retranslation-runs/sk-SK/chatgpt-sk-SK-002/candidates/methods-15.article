@@ -1,0 +1,25 @@
+* Typové asercie
+
+_typová_asercia_ poskytuje prístup k podkladovej konkrétnej hodnote hodnoty rozhrania.
+
+	t := i.(T)
+
+Tento príkaz tvrdí, že hodnota rozhrania `i` obsahuje konkrétny typ `T`,
+a priradí podkladovú hodnotu `T` do premennej `t`.
+
+Ak `i` neobsahuje `T`, príkaz vyvolá panic.
+
+Ak chcete _otestovať_, či hodnota rozhrania obsahuje konkrétny typ,
+typová asercia môže vrátiť dve hodnoty: podkladovú hodnotu
+a logickú hodnotu, ktorá oznamuje, či asercia uspela.
+
+	t, ok := i.(T)
+
+Ak `i` obsahuje `T`, potom `t` bude podkladová hodnota a `ok` bude true.
+
+V opačnom prípade bude `ok` false a `t` bude nulová hodnota typu `T`
+a panic nenastane.
+
+Všimnite si podobnosť tejto syntaxe so syntaxou čítania z mapy.
+
+.play methods/type-assertions.go

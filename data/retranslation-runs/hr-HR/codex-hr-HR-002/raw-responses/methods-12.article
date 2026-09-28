@@ -1,0 +1,12 @@
+* Vrijednosti sučelja s temeljnim vrijednostima nil
+
+Ako je konkretna vrijednost unutar sučelja nil,
+metoda će biti pozvana s primateljem nil.
+
+U nekim bi jezicima to izazvalo iznimku zbog null pokazivača,
+ali u jeziku ⟪GTI18N_9487ca3c_000001⟫ uobičajeno je pisati metode koje uredno obrađuju poziv
+s primateljem nil (kao metoda ⟪GTI18N_9487ca3c_000002⟫M⟪GTI18N_9487ca3c_000003⟫ u ovom primjeru).
+
+Imajte na umu da sama vrijednost sučelja koja sadržava konkretnu vrijednost nil nije nil.
+
+⟪GTI18N_9487ca3c_000004⟫

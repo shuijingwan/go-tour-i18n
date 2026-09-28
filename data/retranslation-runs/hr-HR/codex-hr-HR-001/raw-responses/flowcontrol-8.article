@@ -1,0 +1,38 @@
+* Vježba: petlje i funkcije
+
+Kako bismo se poigrali funkcijama i petljama, implementirajmo funkciju za kvadratni korijen:
+za zadani broj x želimo pronaći broj z čiji je z² što bliži broju x.
+
+Računala obično izračunavaju kvadratni korijen broja x pomoću petlje.
+Počevši od neke pretpostavke z, možemo prilagoditi z na temelju toga koliko je z² blizu broju x
+i tako dobiti bolju pretpostavku:
+
+⟪GTI18N_d8bbee84_000001⟫
+
+Ponavljanjem te prilagodbe pretpostavka postaje sve bolja
+dok ne dođemo do rezultata koji je stvarnom kvadratnom korijenu blizak koliko je moguće.
+
+Implementirajte to u zadanoj funkciji ⟪GTI18N_d8bbee84_000002⟫func`Sqrt⟪GTI18N_d8bbee84_000003⟫.
+Dobra početna pretpostavka za z jest 1, neovisno o ulaznoj vrijednosti.
+Za početak ponovite izračun deset puta i svaki put ispišite z.
+Provjerite koliko se približavate rezultatu za različite vrijednosti x (1, 2, 3, ...)
+i koliko se brzo pretpostavka poboljšava.
+
+Savjet: da biste deklarirali i inicijalizirali vrijednost s pomičnim zarezom,
+zapišite je u sintaksi s pomičnim zarezom ili upotrijebite pretvorbu:
+
+⟪GTI18N_d8bbee84_000004⟫
+
+Zatim promijenite uvjet petlje tako da se zaustavi kada se vrijednost prestane
+mijenjati (ili se mijenja samo za vrlo malen iznos).
+Provjerite zahtijeva li to više ili manje od deset iteracija.
+Isprobajte i druge početne pretpostavke za z, primjerice x ili x/2.
+Koliko su rezultati vaše funkcije bliski funkciji [[⟪GTI18N_d8bbee84_000005⟫][math.Sqrt]] iz standardne biblioteke?
+
+(⟪GTI18N_d8bbee84_000006⟫Napomena:⟪GTI18N_d8bbee84_000007⟫ Ako vas zanimaju pojedinosti algoritma, gornji izraz z² − x pokazuje
+koliko je z² udaljen od vrijednosti koju treba dosegnuti (x), a dijeljenje s 2z predstavlja derivaciju
+izraza z² i prilagođava veličinu promjene broja z brzini promjene izraza z².
+Taj opći pristup naziva se [[⟪GTI18N_d8bbee84_000008⟫][Newtonova metoda]].
+Dobar je za mnoge funkcije, a osobito za kvadratni korijen.)
+
+⟪GTI18N_d8bbee84_000009⟫

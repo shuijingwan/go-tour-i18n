@@ -1,0 +1,13 @@
+* Metode i neizravno adresiranje pokazivača (2)
+
+Isto se događa i u suprotnom smjeru.
+
+Funkcije koje primaju argument vrijednosnog tipa moraju primiti vrijednost upravo tog tipa:
+
+⟪GTI18N_61a9cb84_000001⟫Pogreška pri prevođenju!⟪GTI18N_61a9cb84_000002⟫dok metode s primateljima vrijednosnog tipa pri pozivu kao primatelja prihvaćaju vrijednost ili pokazivač:
+
+⟪GTI18N_61a9cb84_000003⟫
+
+U ovom se slučaju poziv metode ⟪GTI18N_61a9cb84_000004⟫p.Abs()⟪GTI18N_61a9cb84_000005⟫ tumači kao ⟪GTI18N_61a9cb84_000006⟫(*p).Abs()⟪GTI18N_61a9cb84_000007⟫.
+
+⟪GTI18N_61a9cb84_000008⟫

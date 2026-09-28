@@ -1,0 +1,23 @@
+* Metódy a nepriame odkazovanie cez ukazovateľ
+
+Pri porovnaní predchádzajúcich dvoch programov si môžete všimnúť, že
+funkcie s ukazovateľovým argumentom musia dostať ukazovateľ:
+
+	var v Vertex
+	ScaleFunc(v, 5)  // Chyba kompilácie!
+	ScaleFunc(&v, 5) // OK
+
+zatiaľ čo pri volaní metód s ukazovateľovými prijímačmi môže byť
+prijímačom hodnota aj ukazovateľ:
+
+	var v Vertex
+	v.Scale(5)  // OK
+	p := &v
+	p.Scale(10) // OK
+
+Pri príkaze `v.Scale(5)`, hoci `v` je hodnota a nie ukazovateľ,
+sa metóda s ukazovateľovým prijímačom zavolá automaticky.
+Pre pohodlie teda Go interpretuje príkaz `v.Scale(5)` ako
+`(&v).Scale(5)`, pretože metóda `Scale` má ukazovateľový prijímač.
+
+.play methods/indirection.go

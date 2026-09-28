@@ -1,0 +1,23 @@
+* Primatelji pokazivačkog tipa
+
+Možete deklarirati metode s primateljima pokazivačkog tipa.
+
+To znači da tip primatelja ima literalnu sintaksu ⟪GTI18N_99f9fa4e_000001⟫*T⟪GTI18N_99f9fa4e_000002⟫ za neki tip ⟪GTI18N_99f9fa4e_000003⟫T⟪GTI18N_99f9fa4e_000004⟫.
+(Pritom ⟪GTI18N_99f9fa4e_000005⟫T⟪GTI18N_99f9fa4e_000006⟫ ne može i sam biti pokazivač, primjerice ⟪GTI18N_99f9fa4e_000007⟫*int⟪GTI18N_99f9fa4e_000008⟫.)
+
+Primjerice, ovdje je metoda ⟪GTI18N_99f9fa4e_000009⟫Scale⟪GTI18N_99f9fa4e_000010⟫ definirana na tipu ⟪GTI18N_99f9fa4e_000011⟫*Vertex⟪GTI18N_99f9fa4e_000012⟫.
+
+Metode s primateljima pokazivačkog tipa mogu promijeniti vrijednost na koju primatelj
+pokazuje (kao što ovdje čini ⟪GTI18N_99f9fa4e_000013⟫Scale⟪GTI18N_99f9fa4e_000014⟫). Budući da metode često trebaju mijenjati svojeg primatelja,
+primatelji pokazivačkog tipa češći su od primatelja vrijednosnog tipa.
+
+Pokušajte ukloniti ⟪GTI18N_99f9fa4e_000015⟫*⟪GTI18N_99f9fa4e_000016⟫ iz deklaracije funkcije ⟪GTI18N_99f9fa4e_000017⟫Scale⟪GTI18N_99f9fa4e_000018⟫ u 16. retku
+i promotrite kako se mijenja ponašanje programa.
+
+S primateljem vrijednosnog tipa metoda ⟪GTI18N_99f9fa4e_000019⟫Scale⟪GTI18N_99f9fa4e_000020⟫ radi na kopiji izvorne
+vrijednosti ⟪GTI18N_99f9fa4e_000021⟫Vertex⟪GTI18N_99f9fa4e_000022⟫. (To je jednako ponašanju bilo kojeg drugog argumenta funkcije.)
+
+Metoda ⟪GTI18N_99f9fa4e_000023⟫Scale⟪GTI18N_99f9fa4e_000024⟫ mora imati primatelja pokazivačkog tipa kako bi promijenila vrijednost ⟪GTI18N_99f9fa4e_000025⟫Vertex⟪GTI18N_99f9fa4e_000026⟫
+deklariranu u funkciji ⟪GTI18N_99f9fa4e_000027⟫main⟪GTI18N_99f9fa4e_000028⟫.
+
+⟪GTI18N_99f9fa4e_000029⟫

@@ -1,0 +1,11 @@
+* Imenovane povratne vrijednosti
+
+Povratne vrijednosti jezika Go mogu biti imenovane. U tom se slučaju smatraju varijablama definiranima na početku funkcije.
+
+Ta imena treba upotrebljavati za dokumentiranje značenja povratnih vrijednosti.
+
+Naredba `return` bez argumenata vraća imenovane povratne vrijednosti. To je poznato kao „goli” povratak.
+
+Naredbe za goli povratak treba upotrebljavati samo u kratkim funkcijama, kao u ovdje prikazanom primjeru. U duljim funkcijama mogu otežati čitljivost.
+
+.play basics/named-results.go

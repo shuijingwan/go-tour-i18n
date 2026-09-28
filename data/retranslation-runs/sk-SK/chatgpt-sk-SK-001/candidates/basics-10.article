@@ -1,0 +1,7 @@
+* Skrátené deklarácie premenných
+
+Vo vnútri funkcie možno skrátený príkaz priradenia `:=` použiť namiesto deklarácie `var` s implicitným typom.
+
+Mimo funkcie sa každý príkaz začína kľúčovým slovom (`var`, `func` atď.), preto tam konštrukciu `:=` nemožno použiť.
+
+.play basics/short-variable-declarations.go

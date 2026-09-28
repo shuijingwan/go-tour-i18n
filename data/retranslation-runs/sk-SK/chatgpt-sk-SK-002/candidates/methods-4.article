@@ -1,0 +1,24 @@
+* Ukazovateľové prijímače
+
+Môžete deklarovať metódy s ukazovateľovými prijímačmi.
+
+To znamená, že typ prijímača má literálovú syntax `*T` pre určitý typ `T`.
+(Typ `T` pritom sám nemôže byť ukazovateľom, napríklad `*int`.)
+
+Napríklad metóda `Scale` je tu definovaná pre `*Vertex`.
+
+Metódy s ukazovateľovými prijímačmi môžu meniť hodnotu, na ktorú prijímač
+ukazuje (ako tu robí `Scale`).
+Keďže metódy často potrebujú meniť svoj prijímač, ukazovateľové prijímače sú
+bežnejšie než hodnotové prijímače.
+
+Skúste odstrániť `*` z deklarácie funkcie `Scale` na riadku 16
+a sledujte, ako sa zmení správanie programu.
+
+Pri hodnotovom prijímači metóda `Scale` pracuje s kópiou pôvodnej
+hodnoty `Vertex`.
+(Ide o rovnaké správanie ako pri každom inom argumente funkcie.)
+Metóda `Scale` musí mať ukazovateľový prijímač, aby zmenila hodnotu `Vertex`
+deklarovanú vo funkcii `main`.
+
+.play methods/methods-pointers.go

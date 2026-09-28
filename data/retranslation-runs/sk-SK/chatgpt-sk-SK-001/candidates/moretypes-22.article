@@ -1,0 +1,27 @@
+* Úprava máp
+
+Vloženie alebo aktualizácia prvku v mape `m`:
+
+	m[key] = elem
+
+Načítanie prvku:
+
+	elem = m[key]
+
+Odstránenie prvku:
+
+	delete(m, key)
+
+Prítomnosť kľúča otestujete priradením dvoch hodnôt:
+
+	elem, ok = m[key]
+
+Ak sa `key` nachádza v `m`, `ok` má hodnotu `true`. V opačnom prípade má `ok` hodnotu `false`.
+
+Ak `key` v mape nie je, potom `elem` nadobudne nulovú hodnotu typu prvku mapy.
+
+*Poznámka:* Ak `elem` alebo `ok` ešte neboli deklarované, môžete použiť skrátenú deklaráciu:
+
+	elem, ok := m[key]
+
+.play moretypes/mutating-maps.go

@@ -1,0 +1,24 @@
+* Potvrđivanje tipa
+
+⟪GTI18N_c205b4eb_000001⟫potvrđivanje_tipa⟪GTI18N_c205b4eb_000002⟫ omogućuje pristup temeljnoj konkretnoj vrijednosti vrijednosti sučelja.
+
+⟪GTI18N_c205b4eb_000003⟫
+
+Ova naredba potvrđuje da vrijednost sučelja ⟪GTI18N_c205b4eb_000004⟫i⟪GTI18N_c205b4eb_000005⟫ sadržava vrijednost konkretnog tipa ⟪GTI18N_c205b4eb_000006⟫T⟪GTI18N_c205b4eb_000007⟫
+i pridružuje temeljnu vrijednost tipa ⟪GTI18N_c205b4eb_000008⟫T⟪GTI18N_c205b4eb_000009⟫ varijabli ⟪GTI18N_c205b4eb_000010⟫t⟪GTI18N_c205b4eb_000011⟫.
+
+Ako ⟪GTI18N_c205b4eb_000012⟫i⟪GTI18N_c205b4eb_000013⟫ ne sadržava vrijednost tipa ⟪GTI18N_c205b4eb_000014⟫T⟪GTI18N_c205b4eb_000015⟫, naredba će izazvati paniku.
+
+Da biste ⟪GTI18N_c205b4eb_000016⟫provjerili⟪GTI18N_c205b4eb_000017⟫ sadržava li vrijednost sučelja određeni tip,
+potvrđivanje tipa može vratiti dvije vrijednosti: temeljnu vrijednost
+i Booleovu vrijednost koja pokazuje je li potvrđivanje uspjelo.
+
+⟪GTI18N_c205b4eb_000018⟫
+
+Ako ⟪GTI18N_c205b4eb_000019⟫i⟪GTI18N_c205b4eb_000020⟫ sadržava vrijednost tipa ⟪GTI18N_c205b4eb_000021⟫T⟪GTI18N_c205b4eb_000022⟫, tada će ⟪GTI18N_c205b4eb_000023⟫t⟪GTI18N_c205b4eb_000024⟫ biti temeljna vrijednost, a ⟪GTI18N_c205b4eb_000025⟫ok⟪GTI18N_c205b4eb_000026⟫ će biti true.
+U suprotnom će ⟪GTI18N_c205b4eb_000027⟫ok⟪GTI18N_c205b4eb_000028⟫ biti false, a ⟪GTI18N_c205b4eb_000029⟫t⟪GTI18N_c205b4eb_000030⟫ će biti nulta vrijednost tipa ⟪GTI18N_c205b4eb_000031⟫T⟪GTI18N_c205b4eb_000032⟫,
+i pritom neće doći do panike.
+
+Obratite pozornost na sličnost ove sintakse sa sintaksom čitanja iz mape.
+
+⟪GTI18N_c205b4eb_000033⟫

@@ -1,0 +1,9 @@
+* Sučelja se implementiraju implicitno
+
+Tip implementira sučelje tako što implementira njegove metode.
+Ne postoji izričita deklaracija namjere ni ključna riječ „implements”.
+
+Implicitna sučelja odvajaju definiciju sučelja od njegove implementacije,
+koja se zatim može pojaviti u bilo kojem paketu bez prethodnog dogovora.
+
+.play methods/interfaces-are-satisfied-implicitly.go

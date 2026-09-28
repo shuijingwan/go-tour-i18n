@@ -1,0 +1,26 @@
+* Chyby
+
+Go programy vyjadrujú chybový stav pomocou hodnôt `error`.
+
+Typ `error` je vstavané rozhranie podobné `fmt.Stringer`:
+
+	type error interface {
+		Error() string
+	}
+
+(Rovnako ako pri `fmt.Stringer`, balík `fmt` pri
+výpise hodnôt vyhľadáva rozhranie `error`.)
+
+Funkcie často vracajú hodnotu `error` a volajúci kód by mal chyby spracovať
+testom, či sa chyba rovná `nil`.
+
+	i, err := strconv.Atoi("42")
+	if err != nil {
+		fmt.Printf("couldn't convert number: %v\n", err)
+		return
+	}
+	fmt.Println("Converted integer:", i)
+
+Hodnota nil typu `error` znamená úspech; hodnota, ktorá nie je nil, typu `error` znamená zlyhanie.
+
+.play methods/errors.go

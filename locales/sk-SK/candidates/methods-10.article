@@ -1,0 +1,9 @@
+* Rozhrania sa implementujú implicitne
+
+Typ implementuje rozhranie tým, že implementuje jeho metódy.
+Nevyžaduje sa žiadna explicitná deklarácia zámeru ani kľúčové slovo „implements“.
+
+Implicitné rozhrania oddeľujú definíciu rozhrania od jeho
+implementácie, ktorá sa tak môže bez predchádzajúcej dohody nachádzať v ľubovoľnom balíku.
+
+.play methods/interfaces-are-satisfied-implicitly.go

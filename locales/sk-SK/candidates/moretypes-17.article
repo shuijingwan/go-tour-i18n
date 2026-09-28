@@ -1,0 +1,12 @@
+* Range – pokračovanie
+
+Index alebo hodnotu môžete preskočiť priradením do `_`.
+
+    for i, _ := range pow
+    for _, value := range pow
+
+Ak potrebujete iba index, druhú premennú môžete vynechať.
+
+    for i := range pow
+
+.play moretypes/range-continued.go

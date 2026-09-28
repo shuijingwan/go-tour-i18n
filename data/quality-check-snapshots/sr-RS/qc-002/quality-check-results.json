@@ -1,0 +1,48 @@
+{
+  "schema_version": 2,
+  "evidence_type": "quality_check_results",
+  "locale": "sr-RS",
+  "snapshot_id": "qc-002",
+  "snapshot_manifest_sha256": "37ef3b1092a137e731a505b87fb7e9644ca930dee73e493cce5771c4e9d38ed7",
+  "previous_snapshot_id": "qc-001",
+  "rubric": "translation-quality/v1",
+  "result_count": 7,
+  "results": [
+    {
+      "index": 17,
+      "unit_id": "basics/12",
+      "rating": "A"
+    },
+    {
+      "index": 30,
+      "unit_id": "flowcontrol/8",
+      "rating": "B",
+      "finding": "F01 (qc-002 Page re-QC; evidence data/quality-check-snapshots/sr-RS/qc-002/independent-review-page-re-qc.md): previous semantic issue is resolved, but current стварном квадратном корену ... близу uses unnatural/non-standard dative case government with близу. Preserve the restored as-close-as-possible convergence meaning, but express the relationship to the actual square root with standard natural Serbian case government; do not change formulas, protected material, links, or the subsequent stopping-condition explanation."
+    },
+    {
+      "index": 52,
+      "unit_id": "moretypes/16",
+      "rating": "A"
+    },
+    {
+      "index": 102,
+      "unit_id": "concurrency/10",
+      "rating": "A"
+    },
+    {
+      "index": 104,
+      "unit_id": "example:basics/numeric-constants.go",
+      "rating": "A"
+    },
+    {
+      "index": 108,
+      "unit_id": "example:concurrency/exercise-web-crawler.go",
+      "rating": "A"
+    },
+    {
+      "index": 110,
+      "unit_id": "example:flowcontrol/if-and-else.go",
+      "rating": "A"
+    }
+  ]
+}

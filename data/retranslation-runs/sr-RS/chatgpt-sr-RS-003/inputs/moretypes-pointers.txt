@@ -1,0 +1,1 @@
+⟪GTI18N_bbc4a25d_000001⟫point to i⟪GTI18N_bbc4a25d_000002⟫read i through the pointer⟪GTI18N_bbc4a25d_000003⟫set i through the pointer⟪GTI18N_bbc4a25d_000004⟫see the new value of i⟪GTI18N_bbc4a25d_000005⟫point to j⟪GTI18N_bbc4a25d_000006⟫divide j through the pointer⟪GTI18N_bbc4a25d_000007⟫see the new value of j⟪GTI18N_bbc4a25d_000008⟫

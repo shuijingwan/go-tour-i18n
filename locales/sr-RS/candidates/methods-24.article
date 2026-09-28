@@ -1,0 +1,21 @@
+* Слике
+
+[[/pkg/image/#Image][Пакет image]] дефинише интерфејс `Image`:
+
+	package image
+
+	type Image interface {
+		ColorModel() color.Model
+		Bounds() Rectangle
+		At(x, y int) color.Color
+	}
+
+*Напомена*: повратна вредност `Rectangle` методе `Bounds` заправо је
+[[/pkg/image/#Rectangle][`image.Rectangle`]], јер се
+декларација налази у пакету `image`.
+
+(Све детаље потражите у [[/pkg/image/#Image][документацији]].)
+
+Типови `color.Color` и `color.Model` такође су интерфејси, али ћемо то занемарити користећи унапред дефинисане имплементације `color.RGBA` и `color.RGBAModel`. Ови интерфејси и типови дефинисани су у [[/pkg/image/color/][пакету image/color]].
+
+.play methods/images.go

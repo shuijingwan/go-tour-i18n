@@ -1,0 +1,14 @@
+* Metódy a nepriame odkazovanie cez ukazovateľ (2)
+
+To isté platí aj opačným smerom.
+
+Funkcie, ktoré prijímajú hodnotový argument, musia dostať hodnotu daného konkrétneho typu:
+
+⟪GTI18N_61a9cb84_000001⟫Chyba kompilácie!⟪GTI18N_61a9cb84_000002⟫zatiaľ čo pri volaní metód s hodnotovými prijímačmi môže byť
+prijímačom hodnota aj ukazovateľ:
+
+⟪GTI18N_61a9cb84_000003⟫
+
+V tomto prípade sa volanie metódy ⟪GTI18N_61a9cb84_000004⟫p.Abs()⟪GTI18N_61a9cb84_000005⟫ interpretuje ako ⟪GTI18N_61a9cb84_000006⟫(*p).Abs()⟪GTI18N_61a9cb84_000007⟫.
+
+⟪GTI18N_61a9cb84_000008⟫

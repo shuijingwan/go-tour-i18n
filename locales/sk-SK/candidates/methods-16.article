@@ -1,0 +1,28 @@
+* Príkazy switch podľa typu
+
+_príkaz_switch_podľa_typu_ je konštrukcia, ktorá umožňuje vykonať viacero typových asercií za sebou.
+
+Príkaz switch podľa typu sa podobá bežnému príkazu switch, ale jeho vetvy
+určujú typy (nie hodnoty) a tieto typy sa porovnávajú s
+typom hodnoty uloženej v danej hodnote rozhrania.
+
+	switch v := i.(type) {
+	case T:
+		// tu má v typ T
+	case S:
+		// tu má v typ S
+	default:
+		// žiadna zhoda; tu má v rovnaký typ ako i
+	}
+
+Deklarácia v príkaze switch podľa typu má rovnakú syntax ako typová asercia `i.(T)`,
+ale konkrétny typ `T` je nahradený kľúčovým slovom `type`.
+
+Tento príkaz switch testuje, či hodnota rozhrania `i`
+obsahuje hodnotu typu `T` alebo `S`.
+V každej z vetiev `T` a `S` bude premenná `v` typu
+`T`, respektíve `S`, a bude obsahovať hodnotu uloženú v `i`.
+Vo vetve default (keď sa nič nezhoduje) má premenná `v`
+rovnaký typ rozhrania aj hodnotu ako `i`.
+
+.play methods/type-switches.go

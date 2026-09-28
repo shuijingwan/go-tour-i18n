@@ -1,0 +1,16 @@
+* Prázdne rozhranie
+
+Typ rozhrania, ktorý neurčuje žiadne metódy, sa nazýva ⟪GTI18N_7a09a765_000001⟫prázdne_rozhranie⟪GTI18N_7a09a765_000002⟫:
+
+⟪GTI18N_7a09a765_000003⟫
+
+Prázdne rozhranie môže obsahovať hodnoty ľubovoľného typu.
+(Každý typ implementuje aspoň nula metód.)
+
+⟪GTI18N_7a09a765_000004⟫any⟪GTI18N_7a09a765_000005⟫ je alias pre ⟪GTI18N_7a09a765_000006⟫interface{}⟪GTI18N_7a09a765_000007⟫ a oba zápisy sú úplne
+rovnocenné.
+
+Prázdne rozhrania používa kód, ktorý pracuje s hodnotami neznámeho typu.
+Napríklad ⟪GTI18N_7a09a765_000008⟫fmt.Print⟪GTI18N_7a09a765_000009⟫ prijíma ľubovoľný počet argumentov typu ⟪GTI18N_7a09a765_000010⟫any⟪GTI18N_7a09a765_000011⟫.
+
+⟪GTI18N_7a09a765_000012⟫

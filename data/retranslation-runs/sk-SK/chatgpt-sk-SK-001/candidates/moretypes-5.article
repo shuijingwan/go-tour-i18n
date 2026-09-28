@@ -1,0 +1,9 @@
+* Literály štruktúr
+
+Literál štruktúry označuje novú alokovanú hodnotu štruktúry tým, že uvedie hodnoty jej polí.
+
+Pomocou syntaxe `Name:` môžete uviesť iba podmnožinu polí. (Poradie pomenovaných polí pritom nie je dôležité.)
+
+Špeciálny prefix `&` vráti ukazovateľ na hodnotu štruktúry.
+
+.play moretypes/struct-literals.go

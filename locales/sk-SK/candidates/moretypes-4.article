@@ -1,0 +1,10 @@
+* Ukazovatele na štruktúry
+
+K poliam štruktúry možno pristupovať cez ukazovateľ na štruktúru.
+
+Ak chceme pristúpiť k poľu `X` štruktúry a máme ukazovateľ `p`, môžeme
+zapísať `(*p).X`.
+Tento zápis je však ťažkopádny, preto jazyk umožňuje namiesto neho
+zapísať iba `p.X` bez explicitného dereferencovania.
+
+.play moretypes/struct-pointers.go

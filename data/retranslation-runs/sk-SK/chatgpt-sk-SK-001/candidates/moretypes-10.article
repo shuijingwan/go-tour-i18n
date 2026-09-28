@@ -1,0 +1,18 @@
+* Predvolené hranice rezu
+
+Pri vytváraní rezu môžete dolnú alebo hornú hranicu vynechať a použiť jej predvolenú hodnotu.
+
+Predvolená dolná hranica je nula a predvolená horná hranica je dĺžka podkladového rezu alebo poľa.
+
+Pre pole
+
+	var a [10]int
+
+sú tieto výrazy pre rez ekvivalentné:
+
+	a[0:10]
+	a[:10]
+	a[0:]
+	a[:]
+
+.play moretypes/slice-bounds.go

@@ -1,0 +1,15 @@
+* Polia
+
+Typ `[n]T` je pole `n` hodnôt typu `T`.
+
+Výraz
+
+	var a [10]int
+
+deklaruje premennú `a` ako pole desiatich celých čísel.
+
+Dĺžka poľa je súčasťou jeho typu, takže veľkosť poľa nemožno meniť.
+Môže to pôsobiť obmedzujúco, ale nemusíte sa obávať;
+Go poskytuje pohodlný spôsob práce s poľami.
+
+.play moretypes/array.go

@@ -1,0 +1,21 @@
+* Metódy a nepriame odkazovanie cez ukazovateľ (2)
+
+To isté platí aj opačným smerom.
+
+Funkcie, ktoré prijímajú hodnotový argument, musia dostať hodnotu daného konkrétneho typu:
+
+	var v Vertex
+	fmt.Println(AbsFunc(v))  // OK
+	fmt.Println(AbsFunc(&v)) // Chyba kompilácie!
+
+zatiaľ čo pri volaní metód s hodnotovými prijímačmi môže byť
+prijímačom hodnota aj ukazovateľ:
+
+	var v Vertex
+	fmt.Println(v.Abs()) // OK
+	p := &v
+	fmt.Println(p.Abs()) // OK
+
+V tomto prípade sa volanie metódy `p.Abs()` interpretuje ako `(*p).Abs()`.
+
+.play methods/indirection-values.go

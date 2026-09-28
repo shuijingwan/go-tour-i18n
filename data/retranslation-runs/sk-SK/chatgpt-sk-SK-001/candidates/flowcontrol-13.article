@@ -1,0 +1,9 @@
+* Ukladanie defer na zásobník
+
+Odložené volania funkcií sa ukladajú na zásobník. Keď sa funkcia vracia, jej
+odložené volania sa vykonajú v poradí posledné dnu, prvé von.
+
+Viac o príkazoch defer sa dozviete v tomto
+[[/blog/defer-panic-and-recover][blogovom článku]].
+
+.play flowcontrol/defer-multi.go

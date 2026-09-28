@@ -1,0 +1,8 @@
+* Cvičenie: Stringery
+
+Upravte typ ⟪GTI18N_ad118644_000001⟫IPAddr⟪GTI18N_ad118644_000002⟫ tak, aby implementoval ⟪GTI18N_ad118644_000003⟫fmt.Stringer⟪GTI18N_ad118644_000004⟫ a vypisoval adresu
+v bodkovanom štvorčlennom tvare.
+
+Napríklad ⟪GTI18N_ad118644_000005⟫IPAddr{1,`2,`3,`4}⟪GTI18N_ad118644_000006⟫ sa má vypísať ako ⟪GTI18N_ad118644_000007⟫"1.2.3.4"⟪GTI18N_ad118644_000008⟫.
+
+⟪GTI18N_ad118644_000009⟫

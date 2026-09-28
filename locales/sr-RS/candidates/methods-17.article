@@ -1,0 +1,12 @@
+* Stringer интерфејс
+
+Један од најчешће коришћених интерфејса је [[/pkg/fmt/#Stringer][`Stringer`]], који дефинише пакет [[/pkg/fmt/][`fmt`]].
+
+	type Stringer interface {
+		String() string
+	}
+
+`Stringer` је тип који може да опише себе као ниску. Пакет `fmt`
+(као и многи други) тражи овај интерфејс када исписује вредности.
+
+.play methods/stringer.go

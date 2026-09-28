@@ -1,0 +1,16 @@
+* Parametri tipa
+
+U jeziku Go funkcije se mogu napisati tako da pomoću parametara tipa rade s više tipova. Parametri
+tipa funkcije nalaze se u uglatim zagradama, prije argumenata funkcije.
+
+  func Index[T comparable](s []T, x T) int
+
+Ova deklaracija znači da je `s` isječak bilo kojeg tipa `T` koji zadovoljava
+ugrađeno ograničenje `comparable`. `x` je također vrijednost istog tipa.
+
+`comparable` korisno je ograničenje koje omogućuje uporabu operatora `==` i
+`!=` nad vrijednostima tog tipa. U ovom ga primjeru upotrebljavamo za usporedbu
+vrijednosti sa svim elementima isječka dok se ne pronađe podudaranje. Funkcija `Index` radi
+sa svim tipovima koji podržavaju usporedbu.
+
+.play generics/index.go

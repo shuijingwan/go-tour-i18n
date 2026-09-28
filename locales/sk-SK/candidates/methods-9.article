@@ -1,0 +1,11 @@
+* Rozhrania
+
+_typ_rozhrania_ je definovaný ako množina signatúr metód.
+
+Hodnota typu rozhrania môže obsahovať ľubovoľnú hodnotu, ktorá tieto metódy implementuje.
+
+*Poznámka:* V ukážkovom kóde je na riadku 22 chyba.
+`Vertex` (hodnotový typ) neimplementuje `Abser`, pretože
+metóda `Abs` je definovaná iba pre `*Vertex` (ukazovateľový typ).
+
+.play methods/interfaces.go

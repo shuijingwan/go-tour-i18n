@@ -1,0 +1,12 @@
+* Nulové hodnoty
+
+Premenné deklarované bez explicitnej počiatočnej hodnoty dostanú svoju
+_nulovú_hodnotu_.
+
+Nulová hodnota je:
+
+- `0` pre číselné typy,
+- `false` pre logický typ a
+- `""` (prázdny reťazec) pre reťazce.
+
+.play basics/zero.go

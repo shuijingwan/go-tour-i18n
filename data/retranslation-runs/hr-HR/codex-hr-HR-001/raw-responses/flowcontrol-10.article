@@ -1,0 +1,11 @@
+* Redoslijed vrednovanja naredbe switch
+
+Slučajevi naredbe switch vrednuju se odozgo prema dolje, a vrednovanje prestaje kada neki slučaj uspije.
+
+(Primjerice,
+
+⟪GTI18N_e1479cae_000001⟫
+
+ne poziva ⟪GTI18N_e1479cae_000002⟫f⟪GTI18N_e1479cae_000003⟫ ako je ⟪GTI18N_e1479cae_000004⟫i==0⟪GTI18N_e1479cae_000005⟫.)
+
+⟪GTI18N_e1479cae_000006⟫

@@ -1,0 +1,11 @@
+* Cvičenie: Rezy
+
+Implementujte `Pic`. Funkcia má vrátiť rez dĺžky `dy`, ktorého každý prvok je rez `dx` 8-bitových celých čísel bez znamienka. Po spustení programu sa zobrazí obrázok, pričom celé čísla sa interpretujú ako hodnoty odtieňov sivej (presnejšie modrej).
+
+Výber obrázka je na vás. Zaujímavé funkcie sú napríklad `(x+y)/2`, `x*y` a `x^y`.
+
+(Na alokovanie každého `[]uint8` vo vnútri `[][]uint8` musíte použiť cyklus.)
+
+(Na konverziu medzi typmi použite `uint8(intValue)`.)
+
+.play moretypes/exercise-slices.go

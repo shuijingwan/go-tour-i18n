@@ -1,0 +1,7 @@
+* Select
+
+Naredba `select` omogućuje da goroutine čeka na više komunikacijskih operacija.
+
+Naredba `select` blokira dok se jedan od njezinih slučajeva ne može izvršiti, a zatim izvršava taj slučaj. Ako ih je spremno više, nasumično odabire jedan.
+
+.play concurrency/select.go

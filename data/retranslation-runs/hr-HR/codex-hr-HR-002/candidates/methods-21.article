@@ -1,0 +1,19 @@
+* Čitači
+
+Paket `io` definira sučelje `io.Reader`,
+koje predstavlja kraj podatkovnog toka namijenjen čitanju.
+
+Standardna biblioteka jezika Go sadržava [[https://cs.opensource.google/search?q=Read%5C(%5Cw%2B%5Cs%5C%5B%5C%5Dbyte%5C)&ss=go%2Fgo][mnoge implementacije]] tog sučelja, uključujući datoteke, mrežne veze, programe za sažimanje, šifre i drugo.
+
+Sučelje `io.Reader` ima metodu `Read`:
+
+	func (T) Read(b []byte) (n int, err error)
+
+`Read` ispunjava zadani isječak bajtova podacima te vraća broj upisanih bajtova
+i vrijednost pogreške. Kada tok završi, vraća pogrešku `io.EOF`.
+
+Kod primjera stvara
+[[/pkg/strings/#Reader][`strings.Reader`]]
+i čita njegov izlaz po osam bajtova odjednom.
+
+.play methods/reader.go

@@ -1,0 +1,102 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-sk-SK-004",
+  "locale": "sk-SK",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 7,
+  "units": [
+    {
+      "unit_id": "welcome/1",
+      "unit_kind": "page",
+      "source_path": "_content/tour/welcome.article",
+      "source_sha256": "1f581133d7fa40e6490418c6789a60a2f5e1de26c9c86d7eb6120cb58b145857",
+      "input_path": "inputs/welcome-1.article",
+      "input_sha256": "6cc34772da61fea2aebc8cf5ea8dee9adce5531ca870b0334773b92d44c4f88e",
+      "protected_token_count": 33,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "F01: In \"Vitajte na prehliadke [[/][programovací jazyk Go]].\" the mandatory citation-form term must be naturally inflected for Slovak case. Preserve the link target and terminology identity while using the grammatically required case."
+    },
+    {
+      "unit_id": "flowcontrol/8",
+      "unit_kind": "page",
+      "source_path": "_content/tour/flowcontrol.article",
+      "source_sha256": "d8bbee8455ff59212ef432a08312f7c7703360367325a80df3719157200316e9",
+      "input_path": "inputs/flowcontrol-8.article",
+      "input_sha256": "2b3e251ac7859b192831f012d7e6fcbbe95d108faa7ad9d95bdcf17b76e48451",
+      "protected_token_count": 9,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "F02: The Newton-method clause corresponding to \"the division by 2z is the derivative of z², to scale how much we adjust z by how quickly z² is changing\" is awkward and ambiguous. Express the relationship among division by 2z, the derivative of z², and scaling the correction precisely in natural Slovak; preserve formulas, identifiers and Present structure."
+    },
+    {
+      "unit_id": "moretypes/7",
+      "unit_kind": "page",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "a169cf48dd659510ff7f1f8adfdbed5a247b51a1f7c3a45ae972f18921925033",
+      "input_path": "inputs/moretypes-7.article",
+      "input_sha256": "0a00fb45417105f3622f8e6b08d9003a4e99957f46d5ee189713c54655e43cd5",
+      "protected_token_count": 9,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "C",
+      "previous_finding": "F03: \"dynamicky veľký\" incorrectly means dynamically large/big rather than dynamically-sized. Express that a slice has dynamic size, preserving slice→rez, array→pole and the fixed-size/dynamic-size technical distinction."
+    },
+    {
+      "unit_id": "moretypes/13",
+      "unit_kind": "page",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "d057e6bf75421597d430ff52f844499b5828ab2c4b4c5148ad88b6b89326ac20",
+      "input_path": "inputs/moretypes-13.article",
+      "input_sha256": "b5fcc4b0926fd89e5027aaae3636792649b572ea1a34209d698fd9e04bdc7646",
+      "protected_token_count": 9,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "C",
+      "previous_finding": "F04: \"dynamicky veľké polia\" incorrectly means dynamically large arrays rather than dynamically-sized arrays. Express the dynamic-size concept accurately, preserving make, slice, array, code identities and protected structure."
+    },
+    {
+      "unit_id": "methods/19",
+      "unit_kind": "page",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "9eaab1fde2076c1376f78ceec0f84766c4c3b8062867436d73cef0bc77f16bd5",
+      "input_path": "inputs/methods-19.article",
+      "input_sha256": "d0e83c233a107cd035d349873238de6711313568f907672121591d19cc7e0d9c",
+      "protected_token_count": 26,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "F01: The sentence corresponding to \"A nil error denotes success; a non-nil error denotes failure.\" preserves the technical distinction but has unnatural Slovak constituent ordering in the non-nil clause. Rewrite only this sentence into natural professional Slovak while preserving exactly the nil/non-nil success-versus-failure distinction and protected error identity."
+    },
+    {
+      "unit_id": "concurrency/4",
+      "unit_kind": "page",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "3e925c6745255a443c61f25cd8131d538dc8677938f1c5021ce798465020b42e",
+      "input_path": "inputs/concurrency-4.article",
+      "input_sha256": "f68dc9ef06de3cb5d48846ebe7786e6cc06b77ea5c05bc6d56b80f667f5dad10",
+      "protected_token_count": 16,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "F02: In \"Odosielateľ môže kanál close...\", protected inline-code close is preserved but embedded ungrammatically as if it were a Slovak infinitive. Restructure the sentence so close remains unchanged as Go identity while the surrounding Slovak is natural; preserve channel semantics and Present structure."
+    },
+    {
+      "unit_id": "concurrency/7",
+      "unit_kind": "page",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "7c5d3fc7bb2540285d746242f8a1d16075639648eec8909c1df52239297d2917",
+      "input_path": "inputs/concurrency-7.article",
+      "input_sha256": "4f4900e16ae4c8c24c193058f0877f06e9a7d66fe1abe952cb61df0941f8f596",
+      "protected_token_count": 7,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "F03: In \"Opis pokračuje na [[javascript:click(\\x27.next-page\\x27)][nasledujúca stránka]].\" the visible link label is left in nominative after directional \"na\". Inflect the visible label into the grammatically required Slovak case while preserving the exact javascript link target and Present link structure."
+    }
+  ]
+}

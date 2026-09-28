@@ -1,0 +1,16 @@
+* Prazno sučelje
+
+Tip sučelja koji ne navodi nijednu metodu poznat je kao ⟪GTI18N_7a09a765_000001⟫prazno_sučelje⟪GTI18N_7a09a765_000002⟫:
+
+⟪GTI18N_7a09a765_000003⟫
+
+Prazno sučelje može sadržavati vrijednosti bilo kojeg tipa.
+(Svaki tip implementira barem nula metoda.)
+
+⟪GTI18N_7a09a765_000004⟫any⟪GTI18N_7a09a765_000005⟫ je alias za ⟪GTI18N_7a09a765_000006⟫interface{}⟪GTI18N_7a09a765_000007⟫ i ta su dva zapisa potpuno
+istovrijedna.
+
+Prazna sučelja upotrebljavaju se u kodu koji obrađuje vrijednosti nepoznatog tipa.
+Primjerice, ⟪GTI18N_7a09a765_000008⟫fmt.Print⟪GTI18N_7a09a765_000009⟫ prima proizvoljan broj argumenata tipa ⟪GTI18N_7a09a765_000010⟫any⟪GTI18N_7a09a765_000011⟫.
+
+⟪GTI18N_7a09a765_000012⟫

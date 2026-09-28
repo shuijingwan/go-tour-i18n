@@ -1,0 +1,9 @@
+* Pokazivači na strukture
+
+Poljima strukture može se pristupiti putem pokazivača na strukturu.
+
+Da bismo pristupili polju ⟪GTI18N_29695d33_000001⟫X⟪GTI18N_29695d33_000002⟫ strukture kada imamo pokazivač na strukturu ⟪GTI18N_29695d33_000003⟫p⟪GTI18N_29695d33_000004⟫, mogli bismo
+napisati ⟪GTI18N_29695d33_000005⟫(*p).X⟪GTI18N_29695d33_000006⟫. Međutim, taj je zapis nespretan, pa jezik dopušta da umjesto toga
+napišemo samo ⟪GTI18N_29695d33_000007⟫p.X⟪GTI18N_29695d33_000008⟫, bez izričitog dereferenciranja.
+
+⟪GTI18N_29695d33_000009⟫

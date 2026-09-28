@@ -1,0 +1,15 @@
+* Goroutines
+
+_goroutine_ lagana je dretva kojom upravlja izvršno okruženje jezika Go.
+
+	go f(x, y, z)
+
+pokreće novu goroutine koja izvodi
+
+	f(x, y, z)
+
+Vrednovanje `f`, `x`, `y` i `z` odvija se u trenutačnoj goroutine, a izvršavanje `f` odvija se u novoj goroutine.
+
+Goroutines izvode se u istom adresnom prostoru, pa pristup dijeljenoj memoriji mora biti sinkroniziran. Paket [[/pkg/sync/][`sync`]] pruža korisne primitive, premda vam u jeziku Go uglavnom neće trebati jer postoje i drugi primitivi. (Pogledajte sljedeću stranicu.)
+
+.play concurrency/goroutines.go

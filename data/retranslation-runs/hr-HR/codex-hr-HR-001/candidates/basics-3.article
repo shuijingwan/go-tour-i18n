@@ -1,0 +1,16 @@
+* Izvezena imena
+
+U jeziku Go ime je izvezeno ako počinje velikim slovom.
+Primjerice, `Pizza` izvezeno je ime, kao i `Pi`, koje se izvozi iz
+paketa `math`.
+
+Imena `pizza` i `pi` ne počinju velikim slovom pa nisu izvezena.
+
+Kada uvezete paket, možete se pozivati samo na njegova izvezena imena.
+„Neizvezena” imena nisu dostupna izvan paketa.
+
+Pokrenite kôd i obratite pozornost na poruku o pogrešci.
+
+Da biste ispravili pogrešku, preimenujte `math.pi` u `math.Pi` i pokušajte ponovno.
+
+.play basics/exported-names.go

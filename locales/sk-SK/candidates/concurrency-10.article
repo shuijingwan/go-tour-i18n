@@ -1,0 +1,10 @@
+* Cvičenie: Webový prehľadávač
+
+V tomto cvičení použijete možnosti súbežnosti jazyka Go na paralelizáciu webového prehľadávača.
+
+Upravte funkciu `Crawl` tak, aby načítavala URL paralelne bez toho, aby rovnakú URL načítala dvakrát.
+
+_Pomôcka_: načítané URL môžete ukladať do mapy ako vyrovnávaciu pamäť, samotné mapy však
+nie sú bezpečné na súbežné používanie!
+
+.play concurrency/exercise-web-crawler.go

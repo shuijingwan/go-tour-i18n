@@ -1,0 +1,458 @@
+{
+  "locale": "sr-RS",
+  "html_lang": "sr-RS",
+  "messages": {
+    "tour.title": {
+      "kind": "plain",
+      "text": "Водич кроз Go"
+    },
+    "header.about_project": {
+      "kind": "plain",
+      "text": "О пројекту"
+    },
+    "tour.list_heading": {
+      "kind": "plain",
+      "text": "Добро дошли у Водич кроз Go"
+    },
+    "tour.list_title": {
+      "kind": "plain",
+      "text": "Садржај курса — Водич кроз Go"
+    },
+    "tour.list_description": {
+      "kind": "plain",
+      "text": "Прегледајте модуле и лекције Водича кроз Go, интерактивног увода у програмски језик Go."
+    },
+    "theme.toggle": {
+      "kind": "plain",
+      "text": "Промени тему"
+    },
+    "theme.system": {
+      "kind": "plain",
+      "text": "Системска тема"
+    },
+    "theme.dark": {
+      "kind": "plain",
+      "text": "Тамна тема"
+    },
+    "theme.light": {
+      "kind": "plain",
+      "text": "Светла тема"
+    },
+    "editor.syntax": {
+      "kind": "plain",
+      "text": "Синтакса"
+    },
+    "editor.imports": {
+      "kind": "plain",
+      "text": "Увоз"
+    },
+    "editor.on": {
+      "kind": "plain",
+      "text": "Укључено"
+    },
+    "editor.off": {
+      "kind": "plain",
+      "text": "Искључено"
+    },
+    "editor.run": {
+      "kind": "plain",
+      "text": "Покрени"
+    },
+    "editor.kill": {
+      "kind": "plain",
+      "text": "Прекини"
+    },
+    "editor.format": {
+      "kind": "plain",
+      "text": "Форматирај"
+    },
+    "editor.reset": {
+      "kind": "plain",
+      "text": "Ресетуј"
+    },
+    "toc.title": {
+      "kind": "plain",
+      "text": "Садржај"
+    },
+    "execution.waiting": {
+      "kind": "plain",
+      "text": "Чека се удаљени сервер..."
+    },
+    "execution.exited": {
+      "kind": "plain",
+      "text": "Програм је завршио рад"
+    },
+    "execution.vet_failed": {
+      "kind": "plain",
+      "text": "Провера алатом Go vet није успела."
+    },
+    "execution.build_failed": {
+      "kind": "plain",
+      "text": "Изградња помоћу Go build није успела."
+    },
+    "execution.communication_error": {
+      "kind": "plain",
+      "text": "Грешка у комуникацији са удаљеним сервером."
+    },
+    "execution.test_failed": {
+      "kind": "plain",
+      "text": "Није прошао {count} тест."
+    },
+    "execution.tests_failed": {
+      "kind": "plain",
+      "text": "Број тестова који нису прошли: {count}."
+    },
+    "execution.tests_passed": {
+      "kind": "plain",
+      "text": "Сви тестови су прошли."
+    },
+    "feedback.open": {
+      "kind": "plain",
+      "text": "Пошаљите повратне информације о овој страници"
+    },
+    "feedback.issue_title": {
+      "kind": "plain",
+      "text": "x/website/_content/tour: [УНЕСИТЕ КРАТАК ОПИС]"
+    },
+    "feedback.issue_body": {
+      "kind": "plain",
+      "text": "Измените наслов изнад тако да описује проблем, а овде додајте повратне информације и, по потреби, код."
+    },
+    "feedback.context": {
+      "kind": "plain",
+      "text": "Контекст"
+    },
+    "module.using_tour.title": {
+      "kind": "plain",
+      "text": "Како користити водич"
+    },
+    "module.using_tour.description": {
+      "kind": "rich",
+      "text": "<p>Добро дошли у водич за <a href=\"https://go.dev\">програмски језик Go</a>. Водич обухвата најважније могућности језика, пре свега:</p>"
+    },
+    "module.basics.title": {
+      "kind": "plain",
+      "text": "Основе"
+    },
+    "module.basics.description": {
+      "kind": "rich",
+      "text": "<p>Крените од почетка и упознајте све основе језика.</p><p>Научите како да декларишете променљиве, позивате функције и савладате све што вам је потребно пре наредних лекција.</p>"
+    },
+    "module.methods.title": {
+      "kind": "plain",
+      "text": "Методе и интерфејси"
+    },
+    "module.methods.description": {
+      "kind": "rich",
+      "text": "<p>Научите како да дефинишете методе за типове, декларишете интерфејсе и повежете све ове могућности.</p>"
+    },
+    "module.generics.title": {
+      "kind": "plain",
+      "text": "Генеричко програмирање"
+    },
+    "module.generics.description": {
+      "kind": "rich",
+      "text": "<p>Научите како да користите параметре типа у Go функцијама и структурама.</p>"
+    },
+    "module.concurrency.title": {
+      "kind": "plain",
+      "text": "Конкурентност"
+    },
+    "module.concurrency.description": {
+      "kind": "rich",
+      "text": "<p>Go има механизме за конкурентност уграђене у сам језик.</p><p>Овај модул обрађује механизме goroutine и канале, као и њихову примену у различитим обрасцима конкурентног извршавања.</p>"
+    },
+    "error.not_found": {
+      "kind": "plain",
+      "text": "404 — страница није пронађена"
+    },
+    "site.title": {
+      "kind": "plain",
+      "text": "Вишејезични пројекат превођења Водича кроз Go"
+    },
+    "site.browser_title": {
+      "kind": "plain",
+      "text": "Yongye · Вишејезични пројекат превођења Водича кроз Go"
+    },
+    "site.unofficial": {
+      "kind": "plain",
+      "text": "Одржава Yongye · Незванични вишејезични преводилачки пројекат заједнице"
+    },
+    "site.intro": {
+      "kind": "plain",
+      "text": "Пројекат превођења званичних материјала за учење језика Go који одржава заједница. Поједностављени кинески је први доступан језик, а структура пројекта омогућава додавање нових језика и других садржаја о језику Go."
+    },
+    "site.no_affiliation": {
+      "kind": "plain",
+      "text": "Овај пројекат није повезан са пројектом Go нити га пројекат Go овлашћује или подржава."
+    },
+    "site.start_learning": {
+      "kind": "plain",
+      "text": "Почните да учите"
+    },
+    "site.current_projects": {
+      "kind": "plain",
+      "text": "Текући пројекат превођења"
+    },
+    "site.tour_description": {
+      "kind": "plain",
+      "text": "Интерактивни увод у програмски језик Go."
+    },
+    "site.current_language": {
+      "kind": "plain",
+      "text": "Тренутни језик"
+    },
+    "site.enter_tour": {
+      "kind": "plain",
+      "text": "Отворите водич"
+    },
+    "site.project_status": {
+      "kind": "plain",
+      "text": "Статус пројекта"
+    },
+    "site.course_pages": {
+      "kind": "plain",
+      "text": "Странице курса"
+    },
+    "site.latest_release": {
+      "kind": "plain",
+      "text": "Најновије издање"
+    },
+    "site.environment": {
+      "kind": "plain",
+      "text": "Окружење"
+    },
+    "site.development_environment": {
+      "kind": "plain",
+      "text": "Развојно окружење"
+    },
+    "site.upstream_baseline": {
+      "kind": "plain",
+      "text": "Полазна верзија званичног изворног пројекта"
+    },
+    "site.upstream_commit_time": {
+      "kind": "plain",
+      "text": "Време последње потврђене измене изворног пројекта"
+    },
+    "site.language_versions": {
+      "kind": "plain",
+      "text": "Језичке верзије"
+    },
+    "site.official_version": {
+      "kind": "plain",
+      "text": "Званични Водич кроз Go"
+    },
+    "site.community_version": {
+      "kind": "plain",
+      "text": "Превод заједнице"
+    },
+    "site.open_official_tour": {
+      "kind": "plain",
+      "text": "Отворите званични водич"
+    },
+    "site.project_links": {
+      "kind": "plain",
+      "text": "Линкови пројекта"
+    },
+    "site.source_code": {
+      "kind": "plain",
+      "text": "Изворни код на GitHub-у"
+    },
+    "site.issue_feedback": {
+      "kind": "plain",
+      "text": "GitHub Issues"
+    },
+    "site.development_log": {
+      "kind": "plain",
+      "text": "Дневник развоја: Вишејезични пројекат превођења Водича кроз Go"
+    },
+    "site.official_upstream": {
+      "kind": "plain",
+      "text": "Званични изворни пројекат"
+    },
+    "site.translation_validation": {
+      "kind": "plain",
+      "text": "Превођење и валидација"
+    },
+    "site.translation_validation_intro": {
+      "kind": "plain",
+      "text": "Пројекат настоји да искуство учења остане верно званичном извору и проверава свако издање пре објављивања."
+    },
+    "site.validation_page_unit": {
+      "kind": "plain",
+      "text": "Јединица превођења је цела страница курса."
+    },
+    "site.validation_present": {
+      "kind": "plain",
+      "text": "Садржај сваког издања се парсира помоћу алата present."
+    },
+    "site.validation_structure": {
+      "kind": "plain",
+      "text": "Структура страница се упоређује са званичним извором."
+    },
+    "site.validation_render": {
+      "kind": "plain",
+      "text": "Приказане странице се проверавају пре објављивања."
+    },
+    "site.validation_examples": {
+      "kind": "plain",
+      "text": "Go примери који садрже коментаре на природном језику погодне за превођење такође пролазе јединствени поступак валидације; сви остали примери и даље се непосредно преузимају из званичног извора."
+    },
+    "site.how_it_works": {
+      "kind": "plain",
+      "text": "Како пројекат функционише"
+    },
+    "site.how_it_works_intro": {
+      "kind": "plain",
+      "text": "Локализација курса није замена реченице за реченицу. Поступак се заснива на целим јединицама садржаја, следљивом стању прегледа и проверљивим артефактима издања."
+    },
+    "site.workflow_title": {
+      "kind": "plain",
+      "text": "Од TranslationUnit до продукционог окружења"
+    },
+    "site.workflow_units": {
+      "kind": "plain",
+      "text": "TranslationUnit обухвата и целе странице и одговарајуће примере: страница је потпуна секција present.Section, а пример је цела .go датотека са коментарима на природном језику који могу да се преведу."
+    },
+    "site.workflow_process": {
+      "kind": "plain",
+      "text": "Свака јединица пролази кроз превођење, аутоматску валидацију, проверу квалитета превода, прихватање превода, стање спремности, припрему локализованог приказа и објављивање; генерисани преводи се никада не објављују непосредно."
+    },
+    "site.workflow_review": {
+      "kind": "plain",
+      "text": "Аутоматске провере штите структуру, парсирају садржај формата present, упоређују га са званичним извором, проверавају приказ и странице и валидирају Go примере. Пре прихватања превода обавезна је и независна провера његовог квалитета."
+    },
+    "site.workflow_publish": {
+      "kind": "plain",
+      "text": "При објављивању се припрема потпун локализовани приказ од канонских превода у стању спремности. Свака јединица TranslationUnit мора бити спремна; затим се праве продукциони бинарни програм, release.json и SHA256SUMS и проверава комплетан пакет."
+    },
+    "site.architecture_title": {
+      "kind": "plain",
+      "text": "Следљива архитектура са јасним контролама и могућношћу проширења"
+    },
+    "site.architecture_upstream": {
+      "kind": "plain",
+      "text": "Пројекат непрекидно бележи званичну потврђену измену изворног пројекта, чувајући проверљиву полазну верзију за будућа ажурирања извора."
+    },
+    "site.architecture_playground": {
+      "kind": "plain",
+      "text": "Go примери у прегледачу покрећу се преко контролисаног удаљеног посредника за Go Playground; продукционо окружење не излаже локални извршни endpoint /socket."
+    },
+    "site.architecture_languages": {
+      "kind": "plain",
+      "text": "Сервер, шаблони, CSS, JavaScript, слике и фонтови деле се где год је практично. Сваки језик засебно одржава преводе курса, UI текстове, терминологију и стање. Поједностављени кинески је први објављени језик, уз могућност додавања других."
+    },
+    "site.operations_note": {
+      "kind": "plain",
+      "text": "На овом сајту могу се приказивати огласи ради покривања инфраструктурних трошкова, као што су сервери, проток података и CDN услуге, као и сталних трошкова одржавања пројекта. Изворни код остаје јавно доступан, а инсталације на сопственим серверима подразумевано не активирају конфигурацију оглашавања овог сајта."
+    },
+    "support.section_title": {
+      "kind": "plain",
+      "text": "Подршка и трошкови рада"
+    },
+    "support.advertising_title": {
+      "kind": "plain",
+      "text": "Обавештење о оглашавању"
+    },
+    "support.translation_title": {
+      "kind": "plain",
+      "text": "Подржите ову језичку верзију"
+    },
+    "support.intro": {
+      "kind": "plain",
+      "text": "Можете и добровољно подржати даље одржавање ове језичке верзије. Ваша подршка помаже да се она и даље одржава и развија."
+    },
+    "support.reference_label": {
+      "kind": "plain",
+      "text": "Референца за подршку"
+    },
+    "support.reference_help": {
+      "kind": "plain",
+      "text": "Ако ваша платна услуга подржава напомену или референцу, можете да употребите ову вредност."
+    },
+    "support.copy_reference": {
+      "kind": "plain",
+      "text": "Копирај референцу"
+    },
+    "support.copy_address": {
+      "kind": "plain",
+      "text": "Копирај адресу"
+    },
+    "support.copy_uid": {
+      "kind": "plain",
+      "text": "Копирај UID"
+    },
+    "support.copied": {
+      "kind": "plain",
+      "text": "Копирано"
+    },
+    "support.asset": {
+      "kind": "plain",
+      "text": "Средство"
+    },
+    "support.network": {
+      "kind": "plain",
+      "text": "Мрежа"
+    },
+    "support.address": {
+      "kind": "plain",
+      "text": "Адреса"
+    },
+    "support.minimum_deposit": {
+      "kind": "plain",
+      "text": "Минимални износ за пријем"
+    },
+    "support.platform_title": {
+      "kind": "plain",
+      "text": "Интерни пренос на платформи (опционо)"
+    },
+    "support.uid": {
+      "kind": "plain",
+      "text": "UID"
+    },
+    "support.platform_help": {
+      "kind": "plain",
+      "text": "Корисници исте платформе могу да користе интерни пренос преко UID-а. Детаље проверите на самој платформи."
+    },
+    "support.usdc_network_only": {
+      "kind": "plain",
+      "text": "Шаљите USDC искључиво преко мреже Base."
+    },
+    "support.usdt_network_only": {
+      "kind": "plain",
+      "text": "Шаљите USDT искључиво преко мреже Tron (TRC20)."
+    },
+    "support.wrong_network_warning": {
+      "kind": "plain",
+      "text": "Коришћење погрешног средства или мреже може довести до губитка средстава."
+    },
+    "site.continue_learning_title": {
+      "kind": "plain",
+      "text": "Наставите да учите Go"
+    },
+    "site.continue_learning_description": {
+      "kind": "plain",
+      "text": "Водич кроз Go је тек почетак. Када га завршите, посетите go.dev ради званичне документације, упутстава, референце стандардне библиотеке, спецификације језика и додатних материјала за учење језика Go."
+    },
+    "site.continue_learning": {
+      "kind": "plain",
+      "text": "Наставите учење на go.dev"
+    },
+    "footer.unofficial": {
+      "kind": "plain",
+      "text": "Yongye · Незванични вишејезични преводилачки пројекат заједнице"
+    },
+    "footer.home": {
+      "kind": "plain",
+      "text": "Почетна"
+    },
+    "footer.github": {
+      "kind": "plain",
+      "text": "GitHub"
+    },
+    "footer.development_log": {
+      "kind": "plain",
+      "text": "Дневник развоја"
+    }
+  }
+}

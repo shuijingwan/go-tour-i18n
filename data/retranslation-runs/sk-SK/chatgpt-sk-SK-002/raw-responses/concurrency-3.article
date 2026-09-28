@@ -1,0 +1,11 @@
+* Bufferované kanály
+
+Kanály môžu byť ⟪GTI18N_caef0893_000001⟫bufferované⟪GTI18N_caef0893_000002⟫. Ako druhý argument funkcie ⟪GTI18N_caef0893_000003⟫make⟪GTI18N_caef0893_000004⟫ zadajte dĺžku buffera, čím inicializujete bufferovaný kanál:
+
+⟪GTI18N_caef0893_000005⟫
+
+Odosielanie do bufferovaného kanála sa zablokuje iba vtedy, keď je buffer plný. Prijímanie sa zablokuje, keď je buffer prázdny.
+
+Upravte príklad tak, aby ste prekročili kapacitu buffera, a pozrite sa, čo sa stane.
+
+⟪GTI18N_caef0893_000006⟫

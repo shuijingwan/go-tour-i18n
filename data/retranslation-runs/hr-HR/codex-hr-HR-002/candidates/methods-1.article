@@ -1,0 +1,12 @@
+* Metode
+
+Go nema klasa. Međutim, na tipovima možete definirati metode.
+
+Metoda je funkcija s posebnim argumentom koji se naziva _primatelj_.
+
+Primatelj se pojavljuje u vlastitom popisu argumenata između ključne riječi `func` i
+imena metode.
+
+U ovom primjeru metoda `Abs` ima primatelja tipa `Vertex` koji se zove `v`.
+
+.play methods/methods.go

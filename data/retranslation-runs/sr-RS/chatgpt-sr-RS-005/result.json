@@ -1,0 +1,33 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-sr-RS-005",
+  "locale": "sr-RS",
+  "unit_count": 3,
+  "restore_passed": 3,
+  "restore_failed": 0,
+  "validation_passed": 3,
+  "validation_failed": 0,
+  "units": [
+    {
+      "unit_id": "example:basics/numeric-constants.go",
+      "unit_kind": "example",
+      "status": "passed",
+      "candidate_path": "candidates/basics-numeric-constants.go",
+      "validation_path": "validation/basics-numeric-constants.json"
+    },
+    {
+      "unit_id": "example:concurrency/exercise-web-crawler.go",
+      "unit_kind": "example",
+      "status": "passed",
+      "candidate_path": "candidates/concurrency-exercise-web-crawler.go",
+      "validation_path": "validation/concurrency-exercise-web-crawler.json"
+    },
+    {
+      "unit_id": "example:flowcontrol/if-and-else.go",
+      "unit_kind": "example",
+      "status": "passed",
+      "candidate_path": "candidates/flowcontrol-if-and-else.go",
+      "validation_path": "validation/flowcontrol-if-and-else.json"
+    }
+  ]
+}

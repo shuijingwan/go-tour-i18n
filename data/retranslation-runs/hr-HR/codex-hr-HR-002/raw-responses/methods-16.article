@@ -1,0 +1,19 @@
+* Grananje prema tipu
+
+⟪GTI18N_26e4da09_000001⟫grananje_prema_tipu⟪GTI18N_26e4da09_000002⟫ konstrukcija je koja omogućuje niz od nekoliko potvrđivanja tipa.
+
+Grananje prema tipu nalik je običnoj naredbi switch, ali slučajevi u grananju
+prema tipu navode tipove (a ne vrijednosti), koji se uspoređuju s
+tipom vrijednosti sadržane u zadanoj vrijednosti sučelja.
+
+⟪GTI18N_26e4da09_000003⟫ovdje ⟪GTI18N_26e4da09_000004⟫ ima tip ⟪GTI18N_26e4da09_000005⟫⟪GTI18N_26e4da09_000006⟫ovdje ⟪GTI18N_26e4da09_000007⟫ ima tip ⟪GTI18N_26e4da09_000008⟫⟪GTI18N_26e4da09_000009⟫nema podudaranja; ovdje ⟪GTI18N_26e4da09_000010⟫ ima isti tip kao ⟪GTI18N_26e4da09_000011⟫⟪GTI18N_26e4da09_000012⟫Deklaracija u grananju prema tipu ima istu sintaksu kao potvrđivanje tipa ⟪GTI18N_26e4da09_000013⟫i.(T)⟪GTI18N_26e4da09_000014⟫,
+ali se određeni tip ⟪GTI18N_26e4da09_000015⟫T⟪GTI18N_26e4da09_000016⟫ zamjenjuje ključnom riječi ⟪GTI18N_26e4da09_000017⟫type⟪GTI18N_26e4da09_000018⟫.
+
+Ova naredba switch provjerava sadržava li vrijednost sučelja ⟪GTI18N_26e4da09_000019⟫i⟪GTI18N_26e4da09_000020⟫
+vrijednost tipa ⟪GTI18N_26e4da09_000021⟫T⟪GTI18N_26e4da09_000022⟫ ili ⟪GTI18N_26e4da09_000023⟫S⟪GTI18N_26e4da09_000024⟫.
+U slučajevima ⟪GTI18N_26e4da09_000025⟫T⟪GTI18N_26e4da09_000026⟫ i ⟪GTI18N_26e4da09_000027⟫S⟪GTI18N_26e4da09_000028⟫ varijabla ⟪GTI18N_26e4da09_000029⟫v⟪GTI18N_26e4da09_000030⟫ imat će tip
+⟪GTI18N_26e4da09_000031⟫T⟪GTI18N_26e4da09_000032⟫ odnosno ⟪GTI18N_26e4da09_000033⟫S⟪GTI18N_26e4da09_000034⟫ i sadržavat će vrijednost koju sadržava ⟪GTI18N_26e4da09_000035⟫i⟪GTI18N_26e4da09_000036⟫.
+U zadanom slučaju (kada nema podudaranja) varijabla ⟪GTI18N_26e4da09_000037⟫v⟪GTI18N_26e4da09_000038⟫ ima
+isti tip sučelja i istu vrijednost kao ⟪GTI18N_26e4da09_000039⟫i⟪GTI18N_26e4da09_000040⟫.
+
+⟪GTI18N_26e4da09_000041⟫

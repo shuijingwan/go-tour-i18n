@@ -1,0 +1,63 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-sr-RS-004",
+  "locale": "sr-RS",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 4,
+  "units": [
+    {
+      "unit_id": "basics/12",
+      "unit_kind": "page",
+      "source_path": "_content/tour/basics.article",
+      "source_sha256": "d9ad62501c05359e7b2ac445fa92d629e11d6d378c2701b767abab76012a558e",
+      "input_path": "inputs/basics-12.article",
+      "input_sha256": "1ea463ab789d88cad33a6c7adf44fb524ea1f7e2574059f723a345f3c097faa7",
+      "protected_token_count": 9,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "F01 (stable index 17; evidence data/quality-check-snapshots/sr-RS/qc-001/independent-review-page-1-60.md): English _zero_value_ is one complete Go Present emphasis span, but current _нулту_ вредност emphasizes only нулту, leaving вредност outside. Keep the correct Serbian zero-value term and revise Present raw markup so the complete term renders as one emphasis span, without visible underscores or unrelated structural changes."
+    },
+    {
+      "unit_id": "flowcontrol/8",
+      "unit_kind": "page",
+      "source_path": "_content/tour/flowcontrol.article",
+      "source_sha256": "d8bbee8455ff59212ef432a08312f7c7703360367325a80df3719157200316e9",
+      "input_path": "inputs/flowcontrol-8.article",
+      "input_sha256": "2b3e251ac7859b192831f012d7e6fcbbe95d108faa7ad9d95bdcf17b76e48451",
+      "protected_token_count": 9,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "F02 (stable index 30; evidence data/quality-check-snapshots/sr-RS/qc-001/independent-review-page-1-60.md): current све док се довољно не приближимо стварном квадратном корену means 'until we get close enough' and weakens the source's 'as close as attainable to the actual square root' convergence meaning. Restore the stronger best-attainable-approximation meaning; preserve formulas, code, links, and the following stopping-condition explanation."
+    },
+    {
+      "unit_id": "moretypes/16",
+      "unit_kind": "page",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "73fc46a2e049ce2ff4a4fc0595d717ed5d6e15b7093a6014509a48f501253186",
+      "input_path": "inputs/moretypes-16.article",
+      "input_sha256": "c6000197cd269c9d0b921190a15ad9be6cf04fc80ac9ebfd51e6174606b46f3f",
+      "protected_token_count": 5,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "C",
+      "previous_finding": "F03 (stable index 52; evidence data/quality-check-snapshots/sr-RS/qc-001/independent-review-page-1-60.md): candidate Облик петље for са оператором range ... incorrectly classifies range as an operator. In Go range is a keyword used in the for range form/range clause. Revise to an accurate form/construction description, preserving range identity and the following index/value semantics."
+    },
+    {
+      "unit_id": "concurrency/10",
+      "unit_kind": "page",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "bb686393225ef2335e627819a1664a84456f00b64af133af64920d43f0abdb94",
+      "input_path": "inputs/concurrency-10.article",
+      "input_sha256": "e4a368341386575c282bdd3363b1fcdb49ff382d31bceb8d740959b5cd562b8a",
+      "protected_token_count": 7,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "F01 (stable index 102; evidence data/quality-check-snapshots/sr-RS/qc-001/independent-review-page-61-103.md): current candidate uses URL адресе in the first clause but исту URL in the second. After omitting the head noun, gender/case agreement is unnatural and internally inconsistent. Preserve Crawl and URL identity, parallel fetching, and the requirement not to fetch the same URL twice, while using a complete natural Serbian noun structure for the same URL / URL address."
+    }
+  ]
+}

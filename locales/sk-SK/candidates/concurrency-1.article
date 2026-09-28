@@ -1,0 +1,15 @@
+* Goroutine
+
+_goroutine_ je ľahké vlákno spravované behovým prostredím Go.
+
+	go f(x, y, z)
+
+spustí novú goroutine, ktorá vykonáva
+
+	f(x, y, z)
+
+Vyhodnotenie `f`, `x`, `y` a `z` prebehne v aktuálnej goroutine a vykonanie `f` prebehne v novej goroutine.
+
+Goroutine bežia v rovnakom adresnom priestore, takže prístup k zdieľanej pamäti musí byť synchronizovaný. Balík [[/pkg/sync/][`sync`]] poskytuje užitočné primitíva, hoci v Go ich nebudete často potrebovať, pretože existujú aj iné primitíva. (Pozrite si nasledujúcu stránku.)
+
+.play concurrency/goroutines.go

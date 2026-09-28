@@ -1,0 +1,13 @@
+* Metódy
+
+Go nemá triedy.
+Môžete však definovať metódy pre typy.
+
+Metóda je funkcia so špeciálnym argumentom nazývaným _prijímač_.
+
+Prijímač sa uvádza vo vlastnom zozname argumentov medzi kľúčovým slovom `func` a
+názvom metódy.
+
+V tomto príklade má metóda `Abs` prijímač typu `Vertex` s názvom `v`.
+
+.play methods/methods.go

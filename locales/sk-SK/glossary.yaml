@@ -1,0 +1,212 @@
+locale: sk-SK
+# Slovak citation forms are terminology decisions, not literal replacements.
+# Inflect nouns and adjectives naturally for case, number and sentence context.
+# Keep Go's official identities unchanged; never translate protected code.
+mandatory:
+  A Tour of Go: Prehliadka jazyka Go
+  Go Playground: Go Playground
+  Go programming language: programovací jazyk Go
+  Previous: Predchádzajúca
+  Next: Nasledujúca
+  previous: predchádzajúca
+  next: nasledujúca
+  previous page: predchádzajúca stránka
+  next page: nasledujúca stránka
+  Run: Spustiť
+  Format: Formátovať
+  Reset: Obnoviť
+  Kill: Zastaviť
+  package: balík
+  packages: balíky
+  package name: názov balíka
+  import: import
+  import path: importná cesta
+  exported name: exportovaný názov
+  exported names: exportované názvy
+  function: funkcia
+  functions: funkcie
+  parameter: parameter
+  argument: argument
+  return value: návratová hodnota
+  variable: premenná
+  constant: konštanta
+  zero value: nulová hodnota
+  type: typ
+  type inference: odvodenie typu
+  type conversion: konverzia typu
+  pointer: ukazovateľ
+  array: pole
+  arrays: polia
+  slice: rez
+  slices: rezy
+  slice length: dĺžka rezu
+  slice capacity: kapacita rezu
+  underlying array: podkladové pole
+  map: mapa
+  maps: mapy
+  map key: kľúč mapy
+  struct: štruktúra
+  structs: štruktúry
+  struct field: pole štruktúry
+  struct literal: literál štruktúry
+  method: metóda
+  methods: metódy
+  receiver: prijímač
+  pointer receiver: ukazovateľový prijímač
+  value receiver: hodnotový prijímač
+  interface: rozhranie
+  interfaces: rozhrania
+  interface type: typ rozhrania
+  interface value: hodnota rozhrania
+  concrete type: konkrétny typ
+  empty interface: prázdne rozhranie
+  type assertion: typová asercia
+  type switch: príkaz switch podľa typu
+  method set: množina metód
+  generic function: generická funkcia
+  generic type: generický typ
+  generics: generiká
+  type parameter: typový parameter
+  type argument: typový argument
+  type constraint: typové obmedzenie
+  constraint: obmedzenie
+  concurrency: súbežnosť
+  parallelism: paralelizmus
+  channel: kanál
+  channels: kanály
+  buffered channel: bufferovaný kanál
+  unbuffered channel: nebufferovaný kanál
+  channel direction: smer kanála
+  # Uviaznutie neznamena len vzajomne cakanie: aj jedina goroutine moze trvalo blokovat.
+  deadlock: uviaznutie
+  mutual exclusion: vzájomné vylúčenie
+  mutex: mutex
+  standard library: štandardná knižnica
+  source code: zdrojový kód
+  error: chyba
+  error value: hodnota chyby
+  run-time error: chyba pri behu programu
+  tutorial: návod
+  exercise: cvičenie
+  module: modul
+  lesson: lekcia
+  table of contents: obsah
+  Basics: Základy
+  Methods and interfaces: Metódy a rozhrania
+  Generics: Generiká
+  Concurrency: Súbežnosť
+preferred:
+  program: program
+  statement: príkaz
+  expression: výraz
+  declaration: deklarácia
+  initializer: inicializátor
+  initialization: inicializácia
+  short variable declaration: skrátená deklarácia premennej
+  multiple return values: viacero návratových hodnôt
+  named return value: pomenovaná návratová hodnota
+  basic type: základný typ
+  numeric constant: číselná konštanta
+  untyped constant: netypovaná konštanta
+  integer: celé číslo
+  floating-point number: číslo s pohyblivou rádovou čiarkou
+  # Boolean is adjectival in general; choose the inflected form in each context.
+  boolean: logický
+  boolean type: logický typ
+  boolean condition: logická podmienka
+  boolean value: logická hodnota
+  string: reťazec
+  # One Unicode code point, not necessarily a complete visible character; keep code type rune unchanged.
+  rune: kódový bod Unicode
+  Unicode code point: kódový bod Unicode
+  loop: cyklus
+  iteration: iterácia
+  infinite loop: nekonečný cyklus
+  condition: podmienka
+  switch statement: príkaz switch
+  case: vetva
+  defer statement: príkaz defer
+  deferred call: odložené volanie
+  function closure: uzáver funkcie
+  closure: uzáver
+  recursion: rekurzia
+  reference: referencia
+  dereference: dereferencovanie
+  address: adresa
+  element: prvok
+  index: index
+  key: kľúč
+  value: hodnota
+  literal: literál
+  composite literal: zložený literál
+  range iteration: prechádzanie pomocou range
+  make function: vstavaná funkcia make
+  append function: vstavaná funkcia append
+  length: dĺžka
+  capacity: kapacita
+  memory allocation: alokácia pamäte
+  garbage collection: automatické uvoľňovanie pamäte
+  interface implementation: implementácia rozhrania
+  implicit implementation: implicitná implementácia
+  dynamic type: dynamický typ
+  dynamic value: dynamická hodnota
+  nil interface value: hodnota rozhrania rovná nil
+  type embedding: vkladanie typov
+  embedded type: vložený typ
+  comparable: porovnateľný
+  type set: množina typov
+  type inference from context: odvodenie typu z kontextu
+  goroutine scheduling: plánovanie vykonávania goroutine
+  communication: komunikácia
+  synchronization: synchronizácia
+  channel send: odoslanie do kanála
+  channel receive: príjem z kanála
+  blocking operation: blokujúca operácia
+  non-blocking operation: neblokujúca operácia
+  concurrency pattern: vzor súbežnosti
+  pipeline: reťazec spracovania
+  # A worker can be a goroutine, thread or process; specialize only when the source does.
+  worker: vykonávateľ úloh
+  web crawler: webový prehľadávač
+  binary tree: binárny strom
+  reader: čítač
+  stream: prúd údajov
+  test suite: súbor testov
+  source file: zdrojový súbor
+  compiler: kompilátor
+  build: zostavenie
+  compile: kompilovať
+  link: linkovať
+  sandbox: izolované prostredie
+  browser: prehliadač
+  code editor: editor kódu
+  syntax highlighting: zvýrazňovanie syntaxe
+  formatting: formátovanie
+  feedback: spätná väzba
+  official documentation: oficiálna dokumentácia
+  community translation: komunitný preklad
+  user interface: používateľské rozhranie
+  dark theme: tmavý motív
+  light theme: svetlý motív
+  system theme: systémový motív
+forbidden:
+  - Golang
+  - Go ihrisko
+  - gorutína
+  - gorutina
+  - Go rutina
+# Do not ban legitimate words such as korutina, potrubie or pole globally:
+# their meaning depends on context and differs from goroutine/channel/slice.
+keep:
+  - Go
+  - Go Playground
+  - goroutine
+  - gofmt
+  - GOPATH
+  - URL
+  - ASCII
+  - CPU
+  - UTC
+  - GitHub
+  - Yongye
+  - nil

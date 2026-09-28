@@ -1,0 +1,12 @@
+* Вежба: rot13Reader
+
+Чест образац је [[/pkg/io/#Reader][io.Reader]] који обавија други `io.Reader` и на неки начин мења ток података.
+
+На пример, функција [[/pkg/compress/gzip/#NewReader][gzip.NewReader]] прима `io.Reader` (ток компримованих података) и враћа `*gzip.Reader` који такође имплементира `io.Reader` (ток декомпримованих података).
+
+Имплементирајте `rot13Reader` који имплементира `io.Reader` и чита из `io.Reader`, мењајући ток применом супституционе шифре [[https://en.wikipedia.org/wiki/ROT13][rot13]] на сва слова.
+
+Тип `rot13Reader` већ је дат.
+Учините да имплементира `io.Reader` тако што ћете имплементирати његову методу `Read`.
+
+.play methods/exercise-rot-reader.go

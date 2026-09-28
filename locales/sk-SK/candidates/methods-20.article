@@ -1,0 +1,21 @@
+* Cvičenie: Chyby
+
+Skopírujte svoju funkciu `Sqrt` z [[/tour/flowcontrol/8][predchádzajúceho cvičenia]] a upravte ju tak, aby vracala hodnotu `error`.
+
+Pri zápornom čísle by mala `Sqrt` vrátiť chybovú hodnotu, ktorá nie je nil, pretože nepodporuje komplexné čísla.
+
+Vytvorte nový typ
+
+	type ErrNegativeSqrt float64
+
+a urobte z neho `error` tým, že mu pridáte
+
+	func (e ErrNegativeSqrt) Error() string
+
+metódu tak, aby `ErrNegativeSqrt(-2).Error()` vrátila `"cannot`Sqrt`negative`number:`-2"`.
+
+*Poznámka:* Volanie `fmt.Sprint(e)` vnútri metódy `Error` uvedie program do nekonečného cyklu. Môžete tomu zabrániť tak, že najprv skonvertujete `e`: `fmt.Sprint(float64(e))`. Prečo?
+
+Upravte svoju funkciu `Sqrt` tak, aby pri zápornom čísle vracala hodnotu `ErrNegativeSqrt`.
+
+.play methods/exercise-errors.go

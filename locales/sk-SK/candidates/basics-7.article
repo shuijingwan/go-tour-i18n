@@ -1,0 +1,11 @@
+* Pomenované návratové hodnoty
+
+Návratové hodnoty funkcií v jazyku Go môžu byť pomenované. V takom prípade sa s nimi zaobchádza ako s premennými definovanými na začiatku funkcie.
+
+Tieto názvy by mali vyjadrovať význam návratových hodnôt.
+
+Príkaz `return` bez argumentov vráti pomenované návratové hodnoty. Takýto návrat sa označuje ako „holý“ return.
+
+Príkazy holého return by sa mali používať iba v krátkych funkciách, ako v tomto príklade. V dlhších funkciách môžu zhoršiť čitateľnosť.
+
+.play basics/named-results.go

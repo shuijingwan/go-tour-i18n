@@ -1,0 +1,16 @@
+* Odabir primatelja vrijednosnog ili pokazivačkog tipa
+
+Dva su razloga za uporabu primatelja pokazivačkog tipa.
+
+Prvi je omogućiti metodi da promijeni vrijednost na koju njezin primatelj pokazuje.
+
+Drugi je izbjeći kopiranje vrijednosti pri svakom pozivu metode.
+To može biti učinkovitije ako je primatelj, primjerice, velika struktura.
+
+U ovom su primjeru i ⟪GTI18N_357424f2_000001⟫Scale⟪GTI18N_357424f2_000002⟫ i ⟪GTI18N_357424f2_000003⟫Abs⟪GTI18N_357424f2_000004⟫ metode s primateljem tipa ⟪GTI18N_357424f2_000005⟫*Vertex⟪GTI18N_357424f2_000006⟫,
+iako metoda ⟪GTI18N_357424f2_000007⟫Abs⟪GTI18N_357424f2_000008⟫ ne mora mijenjati svojeg primatelja.
+
+Općenito bi sve metode određenog tipa trebale imati ili primatelje vrijednosnog ili primatelje pokazivačkog
+tipa, a ne mješavinu obiju vrsta. (Na sljedećih nekoliko stranica vidjet ćemo zašto.)
+
+⟪GTI18N_357424f2_000009⟫

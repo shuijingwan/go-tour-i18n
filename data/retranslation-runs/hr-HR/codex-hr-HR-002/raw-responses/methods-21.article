@@ -1,0 +1,19 @@
+* Čitači
+
+Paket ⟪GTI18N_120c3fc9_000001⟫io⟪GTI18N_120c3fc9_000002⟫ definira sučelje ⟪GTI18N_120c3fc9_000003⟫io.Reader⟪GTI18N_120c3fc9_000004⟫,
+koje predstavlja kraj podatkovnog toka namijenjen čitanju.
+
+Standardna biblioteka jezika ⟪GTI18N_120c3fc9_000005⟫ sadržava [[⟪GTI18N_120c3fc9_000006⟫][mnoge implementacije]] tog sučelja, uključujući datoteke, mrežne veze, programe za sažimanje, šifre i drugo.
+
+Sučelje ⟪GTI18N_120c3fc9_000007⟫io.Reader⟪GTI18N_120c3fc9_000008⟫ ima metodu ⟪GTI18N_120c3fc9_000009⟫Read⟪GTI18N_120c3fc9_000010⟫:
+
+⟪GTI18N_120c3fc9_000011⟫
+
+⟪GTI18N_120c3fc9_000012⟫Read⟪GTI18N_120c3fc9_000013⟫ ispunjava zadani isječak bajtova podacima te vraća broj upisanih bajtova
+i vrijednost pogreške. Kada tok završi, vraća pogrešku ⟪GTI18N_120c3fc9_000014⟫io.EOF⟪GTI18N_120c3fc9_000015⟫.
+
+Kod primjera stvara
+[[⟪GTI18N_120c3fc9_000016⟫][⟪GTI18N_120c3fc9_000017⟫strings.Reader⟪GTI18N_120c3fc9_000018⟫]]
+i čita njegov izlaz po osam bajtova odjednom.
+
+⟪GTI18N_120c3fc9_000019⟫

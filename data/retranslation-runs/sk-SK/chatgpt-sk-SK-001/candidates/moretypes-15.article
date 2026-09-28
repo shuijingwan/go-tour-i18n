@@ -1,0 +1,21 @@
+* Pridávanie prvkov do rezu
+
+Do rezu sa často pridávajú nové prvky, preto Go poskytuje vstavanú
+funkciu `append`. [[/pkg/builtin/#append][Dokumentácia]]
+vstavaného balíka opisuje funkciu `append`.
+
+	func append(s []T, vs ...T) []T
+
+Prvý parameter `s` funkcie `append` je rez typu `T` a ostatné sú
+hodnoty typu `T`, ktoré sa majú do rezu pridať.
+
+Výsledkom funkcie `append` je rez obsahujúci všetky prvky
+pôvodného rezu a navyše zadané hodnoty.
+
+Ak je podkladové pole rezu `s` príliš malé na všetky zadané hodnoty, alokuje sa väčšie
+pole. Vrátený rez bude odkazovať na novo alokované
+pole.
+
+(Viac o rezoch sa dozviete v článku [[/blog/go-slices-usage-and-internals][Rezy: používanie a vnútorné fungovanie]].)
+
+.play moretypes/append.go

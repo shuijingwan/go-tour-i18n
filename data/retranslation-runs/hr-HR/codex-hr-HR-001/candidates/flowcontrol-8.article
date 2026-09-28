@@ -1,0 +1,39 @@
+* Vježba: petlje i funkcije
+
+Kako bismo se poigrali funkcijama i petljama, implementirajmo funkciju za kvadratni korijen:
+za zadani broj x želimo pronaći broj z čiji je z² što bliži broju x.
+
+Računala obično izračunavaju kvadratni korijen broja x pomoću petlje.
+Počevši od neke pretpostavke z, možemo prilagoditi z na temelju toga koliko je z² blizu broju x
+i tako dobiti bolju pretpostavku:
+
+	z -= (z*z - x) / (2*z)
+
+Ponavljanjem te prilagodbe pretpostavka postaje sve bolja
+dok ne dođemo do rezultata koji je stvarnom kvadratnom korijenu blizak koliko je moguće.
+
+Implementirajte to u zadanoj funkciji `func`Sqrt`.
+Dobra početna pretpostavka za z jest 1, neovisno o ulaznoj vrijednosti.
+Za početak ponovite izračun deset puta i svaki put ispišite z.
+Provjerite koliko se približavate rezultatu za različite vrijednosti x (1, 2, 3, ...)
+i koliko se brzo pretpostavka poboljšava.
+
+Savjet: da biste deklarirali i inicijalizirali vrijednost s pomičnim zarezom,
+zapišite je u sintaksi s pomičnim zarezom ili upotrijebite pretvorbu:
+
+	z := 1.0
+	z := float64(1)
+
+Zatim promijenite uvjet petlje tako da se zaustavi kada se vrijednost prestane
+mijenjati (ili se mijenja samo za vrlo malen iznos).
+Provjerite zahtijeva li to više ili manje od deset iteracija.
+Isprobajte i druge početne pretpostavke za z, primjerice x ili x/2.
+Koliko su rezultati vaše funkcije bliski funkciji [[/pkg/math/#Sqrt][math.Sqrt]] iz standardne biblioteke?
+
+(*Napomena:* Ako vas zanimaju pojedinosti algoritma, gornji izraz z² − x pokazuje
+koliko je z² udaljen od vrijednosti koju treba dosegnuti (x), a dijeljenje s 2z predstavlja derivaciju
+izraza z² i prilagođava veličinu promjene broja z brzini promjene izraza z².
+Taj opći pristup naziva se [[https://en.wikipedia.org/wiki/Newton%27s_method][Newtonova metoda]].
+Dobar je za mnoge funkcije, a osobito za kvadratni korijen.)
+
+.play flowcontrol/exercise-loops-and-functions.go

@@ -1,0 +1,16 @@
+* Prázdne rozhranie
+
+Typ rozhrania, ktorý neurčuje žiadne metódy, sa nazýva _prázdne_rozhranie_:
+
+	interface{}
+
+Prázdne rozhranie môže obsahovať hodnoty ľubovoľného typu.
+(Každý typ implementuje aspoň nula metód.)
+
+`any` je alias pre `interface{}` a oba zápisy sú úplne
+rovnocenné.
+
+Prázdne rozhrania používa kód, ktorý pracuje s hodnotami neznámeho typu.
+Napríklad `fmt.Print` prijíma ľubovoľný počet argumentov typu `any`.
+
+.play methods/empty-interface.go

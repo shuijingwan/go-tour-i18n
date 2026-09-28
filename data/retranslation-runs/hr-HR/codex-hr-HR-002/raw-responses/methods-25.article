@@ -1,0 +1,13 @@
+* Vježba: slike
+
+Sjećate li se [[⟪GTI18N_a196bc59_000001⟫][generatora slika]] koji ste ranije napisali? Napišimo još jedan, ali ovaj će put umjesto isječka podataka vratiti implementaciju sučelja ⟪GTI18N_a196bc59_000002⟫image.Image⟪GTI18N_a196bc59_000003⟫.
+
+Definirajte vlastiti tip ⟪GTI18N_a196bc59_000004⟫Image⟪GTI18N_a196bc59_000005⟫, implementirajte [[⟪GTI18N_a196bc59_000006⟫][potrebne metode]] i pozovite ⟪GTI18N_a196bc59_000007⟫pic.ShowImage⟪GTI18N_a196bc59_000008⟫.
+
+⟪GTI18N_a196bc59_000009⟫Bounds⟪GTI18N_a196bc59_000010⟫ treba vratiti ⟪GTI18N_a196bc59_000011⟫image.Rectangle⟪GTI18N_a196bc59_000012⟫, primjerice ⟪GTI18N_a196bc59_000013⟫image.Rect(0,`0,`w,`h)⟪GTI18N_a196bc59_000014⟫.
+
+⟪GTI18N_a196bc59_000015⟫ColorModel⟪GTI18N_a196bc59_000016⟫ treba vratiti ⟪GTI18N_a196bc59_000017⟫color.RGBAModel⟪GTI18N_a196bc59_000018⟫.
+
+⟪GTI18N_a196bc59_000019⟫At⟪GTI18N_a196bc59_000020⟫ treba vratiti boju; vrijednost ⟪GTI18N_a196bc59_000021⟫v⟪GTI18N_a196bc59_000022⟫ iz prethodnog generatora slika odgovara vrijednosti ⟪GTI18N_a196bc59_000023⟫color.RGBA{v,`v,`255,`255}⟪GTI18N_a196bc59_000024⟫ u ovom generatoru.
+
+⟪GTI18N_a196bc59_000025⟫

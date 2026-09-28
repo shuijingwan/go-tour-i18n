@@ -1,0 +1,20 @@
+* For
+
+Go ima samo jednu konstrukciju za ponavljanje, petlju `for`.
+
+Osnovna petlja `for` sastoji se od triju dijelova odvojenih točkama sa zarezom:
+
+- inicijalizacijske naredbe: izvršava se prije prve iteracije
+- uvjetnog izraza: vrednuje se prije svake iteracije
+- završne naredbe: izvršava se na kraju svake iteracije
+
+Inicijalizacijska naredba često je deklaracija varijable, a varijable
+deklarirane u njoj vidljive su samo unutar dosega naredbe `for`.
+
+Petlja prestaje s iteracijama kada se Booleov uvjet vrednuje kao `false`.
+
+*Napomena:* Za razliku od jezika kao što su C, Java ili JavaScript, tri dijela
+naredbe `for` nisu okružena zagradama, a vitičaste zagrade `{`}`
+uvijek su obavezne.
+
+.play flowcontrol/for.go

@@ -1,0 +1,11 @@
+* Balíky
+
+Každý program v jazyku Go sa skladá z balíkov.
+
+Programy sa začínajú vykonávať v balíku `main`.
+
+Tento program používa balíky s importnými cestami `"fmt"` a `"math/rand"`.
+
+Podľa konvencie je názov balíka rovnaký ako posledný prvok importnej cesty. Napríklad balík `"math/rand"` obsahuje súbory, ktoré sa začínajú príkazom `package`rand`.
+
+.play basics/packages.go

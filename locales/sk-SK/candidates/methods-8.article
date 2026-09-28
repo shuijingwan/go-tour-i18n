@@ -1,0 +1,17 @@
+* Voľba hodnotového alebo ukazovateľového prijímača
+
+Na použitie ukazovateľového prijímača existujú dva dôvody.
+
+Prvým je, že metóda môže meniť hodnotu, na ktorú jej prijímač ukazuje.
+
+Druhým je vyhnúť sa kopírovaniu hodnoty pri každom volaní metódy.
+To môže byť efektívnejšie, ak je prijímač napríklad veľká štruktúra.
+
+V tomto príklade sú `Scale` aj `Abs` metódy s prijímačom typu `*Vertex`,
+hoci metóda `Abs` svoj prijímač meniť nemusí.
+
+Vo všeobecnosti by všetky metódy daného typu mali mať buď hodnotové, alebo
+ukazovateľové prijímače, nie zmes oboch.
+(Prečo je to tak, uvidíme na niekoľkých nasledujúcich stránkach.)
+
+.play methods/methods-with-pointer-receivers.go

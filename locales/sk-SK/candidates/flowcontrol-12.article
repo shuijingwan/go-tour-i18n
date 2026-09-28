@@ -1,0 +1,9 @@
+* Defer
+
+Príkaz defer odloží vykonanie funkcie až do chvíle, keď sa okolitá
+funkcia vráti.
+
+Argumenty odloženého volania sa vyhodnotia okamžite, ale samotné volanie funkcie
+sa vykoná až po návrate z okolitej funkcie.
+
+.play flowcontrol/defer.go

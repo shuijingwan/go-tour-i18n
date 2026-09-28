@@ -1,0 +1,1552 @@
+{
+  "schema_version": 2,
+  "locale": "sk-SK",
+  "generator_contract": "course-seo-localization-v2",
+  "pages": [
+    {
+      "page_id": "welcome/1",
+      "route": "/welcome/1",
+      "description": "Naučte sa orientovať v Prehliadke jazyka Go, spúšťať a upravovať ukážkové programy, formátovať kód a používať klávesové skratky pri interaktívnom skúšaní.",
+      "source_sha256": "1f581133d7fa40e6490418c6789a60a2f5e1de26c9c86d7eb6120cb58b145857",
+      "source_description_sha256": "3d937a528fff6a119ce7ece2579edec8b0895514ae2a0fe8f255b9e3cbf288b2",
+      "target_sha256": "19ade981fc00d298395a26346a154e191ce3a3d13754d7b210c2e76c4a183a58",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "welcome/2",
+      "route": "/welcome/2",
+      "description": "Pozrite si dostupné preklady Prehliadky jazyka Go a naučte sa pokračovať v prehliadke pomocou jej navigačných ovládacích prvkov.",
+      "source_sha256": "709f808ec4cdf683411f349cab7a4886fcae532d1c4e4cc66c8ed68cfb2dd2d3",
+      "source_description_sha256": "39c14471d1d721e97c09e0023a883f66f729a8be753bdb8a3445bd6027be8bd3",
+      "target_sha256": "42f40ccb8ef49bba77f5d183691d2943773285ccd541cf53c7334b36f9f3c530",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "welcome/4",
+      "route": "/welcome/3",
+      "description": "Nainštalujte a spustite samostatnú Prehliadku jazyka Go vo vlastnom počítači, aby ste mali offline prístup k lekciám a ukážkam kódu.",
+      "source_sha256": "bb517d4b577fdb446fd029c2998d2426663b94a68f4b4e494c59af421508f683",
+      "source_description_sha256": "d13d1d18ed0fb4eb16e5348b14dbea7c4d22dfd134bb900c8d8a3736a4cbe362",
+      "target_sha256": "2f909b83c34aadfd8d67a336e4d566668718f73f082ffd9079cbbd909b6e5ad0",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "welcome/5",
+      "route": "/welcome/4",
+      "description": "Pochopte, ako Go Playground kompiluje a spúšťa programy v izolovanom prostredí vrátane deterministického času a obmedzení zdrojov.",
+      "source_sha256": "19e6d7da57ca1d191c485754f3dd4ac87775c651b8c0ae8e05c03cbd9b225897",
+      "source_description_sha256": "30f78795b3923c7eb444a1ed4873e36d136030ec9c27c27e73099de6fd6aed4d",
+      "target_sha256": "1b3de15548749d2ec7a26e6ca99786ea2211251c7c61f2468d2be85b7af911d6",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "welcome/3",
+      "route": "/welcome/5",
+      "description": "Dokončite prvý modul prehliadky a vyberte si ďalší modul zo zoznamu lekcií alebo pokračujte priamo na nasledujúcu lekciu.",
+      "source_sha256": "9a6983b2e50b2fa78ff4f65683210714aea1c1575418e36796c156950ec6330d",
+      "source_description_sha256": "3db60db277b939a3039b29c11e0c3d810c3bdea9017ea7e771d87819cf3c9275",
+      "target_sha256": "0b4d9255560be7d8721643bacfd947ddab3d83782c27a90b54c1e78059d29c63",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "basics/1",
+      "route": "/basics/1",
+      "description": "Naučte sa, ako sú programy v Go usporiadané do balíkov, prečo sa vykonávanie začína v balíku main a ako názvy balíkov súvisia s importnými cestami.",
+      "source_sha256": "f769f12c0a028b2f0cd403d89ff39dd150405e9f2e4155875321522f08619fe0",
+      "source_description_sha256": "1b3378aa355b5676dee5d0fcb248509b5dce2570e0ad196cb725343b61ccc25b",
+      "target_sha256": "1f48ed9817968b043c3a04c42996c657addbcddaa6091ec11d89727ab6b88eda",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "basics/2",
+      "route": "/basics/2",
+      "description": "Zoskupte viacero importov Go do jedného importného príkazu v zátvorkách, ktorý je uprednostňovaný pred samostatnými deklaráciami importu.",
+      "source_sha256": "3329c9bff5f7e2b9b1e161fdebfb3804ff57cf1fb11bd4327d228328bcfb3fd0",
+      "source_description_sha256": "fdc97dfa6245b07c45ee1cf51eeaa7571b637f1d2f6c101e4ea2e77f35678fdb",
+      "target_sha256": "a6751e13fcb8478f3b47f94407d9a31b3d3bc042835e392e252aa914171a7661",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "basics/3",
+      "route": "/basics/3",
+      "description": "Pochopte, ako veľké začiatočné písmeno exportuje názvy v Go a prečo kód mimo balíka pristupuje iba k jeho exportovaným identifikátorom.",
+      "source_sha256": "38b9c70e49184a24f63f6b12f8ba78e64c0b874ad2a6f9a5fe86267615fd1bf6",
+      "source_description_sha256": "b823e75c9decbef08bf4556fc7d2c242d0e68dfa4633c7793cf2d1d043efe6d1",
+      "target_sha256": "3fe0e300a3022b8c049c1944b4ce8798aa247624255cef84156773eb05ef0d22",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "basics/4",
+      "route": "/basics/4",
+      "description": "Definujte funkcie Go s nulou alebo viacerými argumentmi a zapisujte typ každého parametra za názov jeho premennej.",
+      "source_sha256": "accf0562d9b759c9735500d5df0d74e8f90142ed96fe5ab2f5eedc6fbd6cf6f2",
+      "source_description_sha256": "f38ebeb7c0cc84b0cba3a3836eda79d8fd5c3372f34e39aa69547bfa68ec785b",
+      "target_sha256": "8e272115f47405e99fd2cb8bb1bed66378c999656fe279763b02ceaab2ee47f6",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "basics/5",
+      "route": "/basics/5",
+      "description": "Skráťte po sebe idúce parametre funkcie Go s rovnakým typom tak, že typ uvediete iba za názvom posledného parametra.",
+      "source_sha256": "02e7feb341329e18143e18d533fe45381883a6ba6425abb09a847e2f0edf228a",
+      "source_description_sha256": "4e6a3c46e988fbcd7357306955a0951e44e0e4ea0b62a7c05a4c95d6d3a9e84f",
+      "target_sha256": "8a657125f40e3d6e5895d6345e862c458275ddfd49c02453887de0acaba83eb8",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "basics/6",
+      "route": "/basics/6",
+      "description": "Vracajte z funkcie Go viacero výsledkov, ako ukazuje funkcia, ktorá vymení poradie a vráti dve reťazcové hodnoty.",
+      "source_sha256": "b3cb4b40115066443f265e3e5ebb9fc0fd6d080784c887328fce4d6b7891ba41",
+      "source_description_sha256": "013f1d728ddcef926d38d223ca9d6a69c658dd4a9b659f72f04816f227aae020",
+      "target_sha256": "34c342834a28937a2cb933f15f41be562fd66db5ffb3c85f5949ede467e18ed5",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "basics/7",
+      "route": "/basics/7",
+      "description": "Používajte pomenované návratové hodnoty na vysvetlenie významu výsledkov a pochopte, kedy return bez argumentov pomáha alebo škodí čitateľnosti.",
+      "source_sha256": "1db20ae87ce5d9d4b20f15e4638ba2a3295a7ce781c961ef618982890fc562fa",
+      "source_description_sha256": "6c4c2ac14a37bd8b24a7cf6dc970e2ec2671ef13b301ce00d2f287cb98596512",
+      "target_sha256": "b9a3fd43c283ab0a0fe479550990d29b2aef19eaf4c8eb421eff8e47a9e9126d",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "basics/8",
+      "route": "/basics/8",
+      "description": "Deklarujte typované premenné pomocou var na úrovni balíka alebo funkcie podľa syntaxe Go, v ktorej názov predchádza typu.",
+      "source_sha256": "bcb1b5e17ed9dff3d46a7cd8119c0d2f9c3afbb70ca94d35fadeb4f75b4a9d13",
+      "source_description_sha256": "72da0fb9d95da65fcaaea5fbdd2c1c9ea9df4bf06793275bff4e46b1b0a97d51",
+      "target_sha256": "823cfdcc64e6b7ef33e11d0b17cafc2d7d03eef0bdfb6f84a6f585c49503a67d",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "basics/9",
+      "route": "/basics/9",
+      "description": "Inicializujte premenné v deklarácii var a nechajte Go odvodiť každý vynechaný typ z príslušného inicializátora.",
+      "source_sha256": "d51c17ba355753484b96c0eefda9fcce9f6f041a8ae2bf3e96fd0ad0c44680cc",
+      "source_description_sha256": "6d26f7a1a4f12a8438d0b7f4a4805e764a7e6852bbb561de361434032eb84e0a",
+      "target_sha256": "2fb73cd4d6ee24a1b28245ae2e563697af0b9600273a38ff7acf2bd753dc9989",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "basics/10",
+      "route": "/basics/10",
+      "description": "Používajte vo funkciách skrátené deklarácie premenných so syntaxou := tam, kde sú povolené implicitné deklarácie var.",
+      "source_sha256": "f402e8e89a186d3208df5e4d983604730e71ef6c68354755f72e4580d3d7f359",
+      "source_description_sha256": "2ed42cad59a09602b3683e8051e76785ca3cb0581db8e84d0c91df15ea7f6055",
+      "target_sha256": "c4fd7fe99275d51c0f17908ab219cfd2462cf649cc23424db57e7f5e51f3b6d8",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "basics/11",
+      "route": "/basics/11",
+      "description": "Prezrite si logické, reťazcové, celočíselné, komplexné, byte, rune a typy s pohyblivou rádovou čiarkou v Go vrátane odporúčaní pre veľkosť celých čísel.",
+      "source_sha256": "836ab1dd659798dcf5e90f283c4ee794aed1d2cf0766c2ccc268fa91684e9d05",
+      "source_description_sha256": "7729889458a4d34cd6abb380c6b528035b4e9ae93dc785e99b12660c0e3f5a4e",
+      "target_sha256": "398971e3f42053971d0e4cef76e47f4a16dbf574e29bc57c078b1c1b0bebc147",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "basics/12",
+      "route": "/basics/12",
+      "description": "Naučte sa predvolené nulové hodnoty neinicializovaných premenných Go: nula pre čísla, false pre logické hodnoty a prázdny text pre reťazce.",
+      "source_sha256": "d9ad62501c05359e7b2ac445fa92d629e11d6d378c2701b767abab76012a558e",
+      "source_description_sha256": "6ed8204794cae90282978dbae2413c8ae9e1feceba59ae10736065ad00165ca7",
+      "target_sha256": "7e15d45862b08ba324d3a228bc41b0078e768f3210f0f8a91a34fc4cc0766934",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "basics/13",
+      "route": "/basics/13",
+      "description": "Konvertujte hodnoty explicitne výrazmi na konverziu typu, pretože Go nepovoľuje implicitné priradenie medzi rôznymi číselnými typmi.",
+      "source_sha256": "88e0e168f4c95fa4134198a32440b2d2fb1fac9aae535a9ee7148dbcda37e1b3",
+      "source_description_sha256": "9213231bcd5269a4d402ed83117584521f51191b04e30301599ce3aaedef9afe",
+      "target_sha256": "cba9d352f002ad8e28c1974bc035e27ddbdf1216b2cbc1affd921bddb8da6b65",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "basics/14",
+      "route": "/basics/14",
+      "description": "Pozrite sa, ako Go odvodzuje typy premenných z typovaných hodnôt a volí predvolené typy netypovaných číselných konštánt podľa ich presnosti.",
+      "source_sha256": "21c4077c25629545dee0313b8b6b03e709edc4a74e1d73d9f4c9b0a49e46f6b3",
+      "source_description_sha256": "22bd9a429fe4882f0595c270aa52ac22f984d89afc93e5287829125188937dad",
+      "target_sha256": "7cdfc368a3e2a63624404150d8051e3dde66f0d6ece76c3b1cca0e74807be52c",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "basics/15",
+      "route": "/basics/15",
+      "description": "Deklarujte znakové, reťazcové, logické a číselné konštanty pomocou const a všimnite si, že skrátená deklarácia konštanty definovať nemôže.",
+      "source_sha256": "964ac515c0860a54b3a7780d77c7b4862ca38b744ae1f6be4b155a4386e2a229",
+      "source_description_sha256": "9a5d122d06495fa1838331e095ca3a72b47b645a7e19bb28fc127ce13c1fbe8c",
+      "target_sha256": "289a917ee93612bdf4c8227402f60f0b9b969cc83efe68f51e08d3652210c032",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "basics/16",
+      "route": "/basics/16",
+      "description": "Preskúmajte číselné konštanty s vysokou presnosťou a to, ako netypovaná konštanta preberá typ vyžadovaný okolitým kontextom.",
+      "source_sha256": "0d502d48a15f7a70e257079d7db1ddafe088607110c1c06b17b4be50b362394a",
+      "source_description_sha256": "1b42764b78e1a1ca531d208244f285164d53e9cb6320ea1b5fb5b6464b1de1e3",
+      "target_sha256": "330a751a9e8ae76ef4494887ee848eaa32b5690b25f299fedd99bee470da9fe1",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "basics/17",
+      "route": "/basics/17",
+      "description": "Označte koniec aktuálnej lekcie a potom sa vráťte do zoznamu modulov, vyberte inú tému alebo pokračujte ďalej.",
+      "source_sha256": "f565674b974c053924bf69ef83b709dc50931526ae7fa88e71543a5cd872a190",
+      "source_description_sha256": "afff9e2c9367a5554aa90fd0f9427a37fc7420a1c93d4596668bdb3fd3ae7e5d",
+      "target_sha256": "9def2037df81916ca8befc5d3f028d0f967009f0fa2f17586c4a53c7d1ce22ef",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/1",
+      "route": "/flowcontrol/1",
+      "description": "Naučte sa jediný cyklus v Go vrátane inicializácie, podmienky, príkazu po iterácii, rozsahu platnosti a povinných zložených zátvoriek.",
+      "source_sha256": "c6cd458bda99bffc7b753e122c56575a59508586054180be1f8d7bb1fe2391df",
+      "source_description_sha256": "b88b64bb1e63b5ebb863972f8c24e8cc545a83c115c64f401ef8fd3b114d61f5",
+      "target_sha256": "10c7b2d5afaadb282059ca9c023f6ca54f87bbca129933e4ad7cb21757fe43d7",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/2",
+      "route": "/flowcontrol/2",
+      "description": "Zjednodušte cyklus for v Go vynechaním voliteľnej inicializácie a príkazu po iterácii, pričom zachováte podmienku cyklu.",
+      "source_sha256": "24a97abbb6db2b6a88017bf326a5968097263d8ba637805f2cf44c9fed25f9fe",
+      "source_description_sha256": "dd466b8b04c3284a0f1a48dc9748a434b7a7e8c8c54797785c9aec102cc04055",
+      "target_sha256": "cf39228260dca3eede677c90c06d71ffabbd6fdca7d84dcccc28d624b175d49b",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/3",
+      "route": "/flowcontrol/3",
+      "description": "Vyjadrite v Go cyklus podobný while vynechaním inicializácie a príkazu po iterácii spolu s ich bodkočiarkami.",
+      "source_sha256": "3ed791cc935287ba6f5da4ba41f6ad84fdcbaef108ee364f769ae5204316bbb7",
+      "source_description_sha256": "917a1d2bce0a711d7aa187f22916986ec204539d59aca1aeee2686ea5692963e",
+      "target_sha256": "22c979e0c96a75c2212012a007b3e4d41558c2294e066933320a23639cffc967",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/4",
+      "route": "/flowcontrol/4",
+      "description": "Vytvorte v Go stručný nekonečný cyklus zápisom príkazu for bez akejkoľvek podmienky cyklu.",
+      "source_sha256": "5456c129ef71c60b7502efde65c81020aaf1fa8b9178086e99223a21f6207dc6",
+      "source_description_sha256": "0b2cfd67b2c51f9ab0edbe920ad1a703701ff723f9d22673a4cde7e914eec4a9",
+      "target_sha256": "b4bee5109cdf36b9a20e64991b1b7a340f6b29fba8a437461b953a62f207590d",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/5",
+      "route": "/flowcontrol/5",
+      "description": "Píšte príkazy if v Go bez zátvoriek okolo podmienky a zachovajte pritom povinné zložené zátvorky jazyka.",
+      "source_sha256": "ce49f916c1ceb7296576ec6b8ec92524b9827be168e3f5eb2040c61fee70f639",
+      "source_description_sha256": "d49445fcd341a4fb747cb7c3e25c0f40849456c8b7be876f62a999fe2591972b",
+      "target_sha256": "3eceab55f1187c8ae471239b3edb9de9e875534555cf72ba35fe904f1db3b78b",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/6",
+      "route": "/flowcontrol/6",
+      "description": "Začnite príkaz if krátkym príkazom a ponechajte premenné deklarované v ňom v platnosti až do konca podmieneného bloku.",
+      "source_sha256": "02e310262214f3c5ceca8bf63ecf2ec3934641a7e2638050479b739ce077031e",
+      "source_description_sha256": "c1de9378770e7df962ac8f2962918b78a6e2e80c3305b35ab584555902c36085",
+      "target_sha256": "4f4078aa530a7df53a0bfc3c38c20e398a72602fe1c299663e3ca014fe418680",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/7",
+      "route": "/flowcontrol/7",
+      "description": "Používajte hodnoty deklarované krátkym príkazom if v pridružených vetvách if aj else.",
+      "source_sha256": "8666746573ce7d0ea1c12ff24c4c8170a1961eedb0600ed73ab849b4758f797c",
+      "source_description_sha256": "0a195d6914891c06915e6d43fce1ddd71c0e7d387373e53500cc56783f385e88",
+      "target_sha256": "1ef88f2df6c669656b799c4a445b127a7671080a54a4b9080c17fefa89fec92a",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/8",
+      "route": "/flowcontrol/8",
+      "description": "Implementujte funkciu druhej odmocniny iteratívnym aproximačným cyklom, potom spresnite podmienku zastavenia a porovnajte rôzne počiatočné odhady.",
+      "source_sha256": "d8bbee8455ff59212ef432a08312f7c7703360367325a80df3719157200316e9",
+      "source_description_sha256": "ebf228ed982779e279412f9e840bd06503969b4fe1acec70b088c10df6076e0d",
+      "target_sha256": "90db282802ca70e43217af175f97f7d6d747dd647ce9cc3047453f430040539e",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/9",
+      "route": "/flowcontrol/9",
+      "description": "Používajte príkazy switch v Go ako stručné reťazce podmienok s automatickým ukončením vetiev, pričom vetvy nemusia byť konštanty ani celé čísla.",
+      "source_sha256": "abdc4c295fa7b4aec2616acf83badbbf2b581a9f62e41d03ca2ff984ebb6f7ed",
+      "source_description_sha256": "fd71acf123c49872a02285878fa1caf6bb3e6f27d8b2b63976e6cba5b717c50a",
+      "target_sha256": "b09c2b628f09d5bc2ba71862e0a42956ab980b7070fd7299bbd652e8d0801283",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/10",
+      "route": "/flowcontrol/10",
+      "description": "Pochopte, že vetvy switch sa vyhodnocujú zhora nadol a vyhodnocovanie sa zastaví hneď, ako je niektorá vetva úspešná.",
+      "source_sha256": "e1479cae56a87cddb9c447fc9fd32b0ee1f983058f7ee76554965abd21975ef4",
+      "source_description_sha256": "1a06cd6f5c9aecb29e4d0fdec7cf4d11daaa7edc05631cffcecac25ad4e2e5c6",
+      "target_sha256": "af4ff06e8a0b88bbdbee2b43bf955480982965f1c24f1915ec916c9a7b46917e",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/11",
+      "route": "/flowcontrol/11",
+      "description": "Napíšte switch bez podmienky ako čistú alternatívu k dlhému reťazcu if-then-else, ekvivalentnú prepínaniu podľa hodnoty true.",
+      "source_sha256": "714b67f479583e47080cd0f38489f465a28c002938390c4155af6dfeebb9225b",
+      "source_description_sha256": "7258dc7db21d6d08ba2df8e15f0ae6222c4fc77310073dcfb5c287c172313176",
+      "target_sha256": "b8e55d4a064609661ad15bac03cf5d29292fe883c33c7844be95cf4000262912",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/12",
+      "route": "/flowcontrol/12",
+      "description": "Odložte volanie funkcie pomocou defer až do návratu okolitej funkcie, pričom argumenty odloženého volania sa vyhodnotia okamžite.",
+      "source_sha256": "fa23a1d6ebf12f11843d38fe79c413a9c19bfcaf305ae64b75c360db24a436ec",
+      "source_description_sha256": "b0519f626762261cab62e224d08a2a1736e3a237ce8f4a8b48709c90ad8fbcec",
+      "target_sha256": "da9c1615abb9d7a3f6de3f848707c5ee5ca72fa9ae1bc8bb848f168f702194d9",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/13",
+      "route": "/flowcontrol/13",
+      "description": "Naskladajte viacero odložených volaní a sledujte ich vykonanie v poradí posledné dnu, prvé von pri návrate okolitej funkcie.",
+      "source_sha256": "73a02c24eb14597b3c5f53a09fc572f1a1f0c941adfc337c79fb14b492985fc1",
+      "source_description_sha256": "4f2d10438473b7ee08d85ca67a6fecebfe634eb93ce4d7cffd9fa2b269a15aa0",
+      "target_sha256": "0a3642508c322b4db61c76f88915eb733ca13090502b463d115e2ff1947f54c2",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/14",
+      "route": "/flowcontrol/14",
+      "description": "Dokončite lekciu a buď si prezrite dostupné moduly s novou témou, alebo prejdite na nasledujúcu lekciu.",
+      "source_sha256": "f565674b974c053924bf69ef83b709dc50931526ae7fa88e71543a5cd872a190",
+      "source_description_sha256": "e4aa7053180e81ac52e524fec926796e1e27bb573e7d2ef9498fe68cab34978d",
+      "target_sha256": "9def2037df81916ca8befc5d3f028d0f967009f0fa2f17586c4a53c7d1ce22ef",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "moretypes/1",
+      "route": "/moretypes/1",
+      "description": "Pracujte s ukazovateľmi v Go získavaním adries a dereferencovaním hodnôt, pričom nil je nulová hodnota a aritmetika ukazovateľov neexistuje.",
+      "source_sha256": "7706eaf0d46acc79fdad3b7953e5571bf404551d71aaefafd8ba79f5761f9806",
+      "source_description_sha256": "e83399f3a2f0f13e4ce844d458d32ad97bbfe0c4eb292c2247b1a1f741adb9e3",
+      "target_sha256": "034f19f07cfdfad713cf2b9e49e188c2bbaaf31c7063b11f893f7fb07ac61397",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "moretypes/2",
+      "route": "/moretypes/2",
+      "description": "Definujte štruktúru Go ako jednu hodnotu zloženú zo súboru polí.",
+      "source_sha256": "a18dfdaadb9739387cc9886b67e9bf920bf52ada62397a1812cfd302c64aed9b",
+      "source_description_sha256": "5a71c404683c8346f40fb4a2ce1d1d0a2136f49eae43da95f413673da1c567f2",
+      "target_sha256": "17e9dbc6bb5309943307d118ddf77847ac66a0701c9a6eb6a099d925e38d0e51",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "moretypes/3",
+      "route": "/moretypes/3",
+      "description": "Pristupujte k jednotlivým poliam štruktúry Go pomocou bodkovej notácie.",
+      "source_sha256": "0be9cb4a59a0d95526c208e5d8d96ebe6a15fd84b6e3a2ff9a07963226cb7b58",
+      "source_description_sha256": "3e367121c5953b979a016ce011d4ff223de69eb66185edd7df099115d7d631a0",
+      "target_sha256": "9ad4f76df3215d89aa8cfb060fab09ef6ece12336626d71d1eddb602d55d93e6",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "moretypes/4",
+      "route": "/moretypes/4",
+      "description": "Pristupujte k poliam cez ukazovateľ na štruktúru pohodlnou bodkovou notáciou bez explicitného dereferencovania.",
+      "source_sha256": "29695d334b6ff809e84ae8caeb7b9dc493143236783c07c16a83ecc64514c310",
+      "source_description_sha256": "a1925946cf90f972783ebf3472729761307da90cc30c5cfdf2310eaf91b391b3",
+      "target_sha256": "9f5d677a3a8ca42a55845968b926fc404ff49c2945912a2c428e93c8c7d51f57",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "moretypes/5",
+      "route": "/moretypes/5",
+      "description": "Vytvárajte hodnoty štruktúr pomocou literálov, inicializujte vybrané polia podľa názvu v ľubovoľnom poradí a pomocou \u0026 získajte ukazovateľ.",
+      "source_sha256": "cf9282456e2a91274c1b135a68fce58dd1590f6a2d7153f0619c97ded8bd00d1",
+      "source_description_sha256": "566428b986d24aff9e14f50ed6728a9cd31ec8de1461064cecdd73e34deac89c",
+      "target_sha256": "b5ca5377a9ddb812f891689a7ac4c13893da03b97cb2f78585b548f5b8dfbe89",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "moretypes/6",
+      "route": "/moretypes/6",
+      "description": "Deklarujte polia Go s pevnou dĺžkou, pričom počet prvkov je súčasťou typu poľa a nemožno ho meniť.",
+      "source_sha256": "0ec503e46281eb8ff25ceba5b92c9f9c3b40517aeea77cf4878760ed0da9d29c",
+      "source_description_sha256": "3b15294f0e004adb588a19d958ebd8674ace65225f2390ff91b37d81d214feef",
+      "target_sha256": "86241bb0930bca3f5369f924c73805aaa08339f8d3f4741a2b6b66385738566f",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "moretypes/7",
+      "route": "/moretypes/7",
+      "description": "Vytvárajte nad poľami rezy s dynamickou veľkosťou a vyberajte polootvorené rozsahy prvkov pomocou dolnej a hornej hranice.",
+      "source_sha256": "a169cf48dd659510ff7f1f8adfdbed5a247b51a1f7c3a45ae972f18921925033",
+      "source_description_sha256": "71c152fddf296a9d7a40e99b79e941cda0c04867f7344b3fb46c6cfac813cd81",
+      "target_sha256": "80871fb1b9b76eec82cb34fa87613ae9c4bc55f9359c40f42de9cd76c59635b9",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "moretypes/8",
+      "route": "/moretypes/8",
+      "description": "Pochopte, že rezy odkazujú na podkladové polia, takže zmeny prvkov sú viditeľné aj cez iné rezy zdieľajúce rovnaké úložisko.",
+      "source_sha256": "e577f9e98a9c871cdc6f39ecca1bdd0965c26da3b9ab6c2a7cab42b3b0f3a568",
+      "source_description_sha256": "618088a9c7bea851e2362ee4ce74f750fe9b05c65bf0ded5ce01001710015812",
+      "target_sha256": "0b12ea644bf9cb346ccc0eb934ab2b72abe9d75ac9851c3be1af90a9fd4b5bfb",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "moretypes/9",
+      "route": "/moretypes/9",
+      "description": "Vytvorte literál rezu pomocou syntaxe literálu poľa bez zadania pevnej dĺžky poľa.",
+      "source_sha256": "fb79cf8caed7abc7dfd92e90cf1bcc11d547b8af96d224f30fefc995f98dbb0b",
+      "source_description_sha256": "cfa2da2eea5f06155f696c35cd43bc84d2f7c1ca2dff42f756c5fd27791f3489",
+      "target_sha256": "f42c839d9ab93ce85c18e0dbfd3c782ae563a5809b4c3c6480970ddeb3e31f21",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "moretypes/10",
+      "route": "/moretypes/10",
+      "description": "Vynechajte dolnú alebo hornú hranicu rezu a použite ako ich predvolené hodnoty nulu a dĺžku podkladovej postupnosti.",
+      "source_sha256": "36d1f92fc5e51cddcd26be7f74a875e60bf24633dd7c8689672fa23a6720e2a1",
+      "source_description_sha256": "00c286e8ccea7f8b05a8c475819b6077a9fbb24729e0dc4cb4d2e7145e795b87",
+      "target_sha256": "8bdda06f6a3bcda38c97beddc0cc7cf1f9e78fb75404b24f7523e9ea3e3bebd1",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "moretypes/11",
+      "route": "/moretypes/11",
+      "description": "Rozlišujte dĺžku a kapacitu rezu, zisťujte obe vstavanými funkciami a znovu režte iba v medziach dostupnej kapacity.",
+      "source_sha256": "e2d7d69c946e5a01d8d0eab2e07a2bf35e23453a617d5e7602ff0af5c5866d8f",
+      "source_description_sha256": "0f6094f4c28fae60bb70bd2616205d35bcfdea8d477b997d9ac0e7ae45b41654",
+      "target_sha256": "d3f15833712dc42cedbbeb293ffb819fea9e4b5664f9d662aec4c5112ca1248c",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "moretypes/12",
+      "route": "/moretypes/12",
+      "description": "Rozpoznajte nil ako nulovú hodnotu rezu bez podkladového poľa, s dĺžkou aj kapacitou rovnou nule.",
+      "source_sha256": "e7a4bb0d5e7928c2da06312d983eba2adb533b30299025f507df183f00fefc89",
+      "source_description_sha256": "606962e7091f32e866981de754dc51784b725847cfa49f35284ceb8fe05ec9e0",
+      "target_sha256": "028710ff174f3e32a6ab3f6610d5f68fdda31fd49785534288d8ed8ccbdac378",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "moretypes/13",
+      "route": "/moretypes/13",
+      "description": "Pomocou make alokujte polia vyplnené nulovými hodnotami a získajte rezy s dynamickou veľkosťou, voliteľne so samostatne zadanou kapacitou.",
+      "source_sha256": "d057e6bf75421597d430ff52f844499b5828ab2c4b4c5148ad88b6b89326ac20",
+      "source_description_sha256": "a0d0187091a138008eb18442ae1f499aa8d2fe942ecf6e524eb273d97dfb67f8",
+      "target_sha256": "764931d86ee746cbac9dc46bf23e0c9939d671001c8cdfad7bf52ea97bc9c48b",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "moretypes/14",
+      "route": "/moretypes/14",
+      "description": "Vytvárajte viacrozmerné dátové štruktúry pomocou rezov, ktorých prvkami sú ďalšie rezy.",
+      "source_sha256": "d8bee22c0382cf5fd5647c4d7106165d153cb15aaed8ec82e1f06e12ad0c73d1",
+      "source_description_sha256": "2a66202c8fdba235e0c78234d01daef6898cd69c0d446f8a21a67979a1bef043",
+      "target_sha256": "c05a5db91c68eb367cf259d216f991a0aac16a523f8f3d3f2694549f201c668a",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "moretypes/15",
+      "route": "/moretypes/15",
+      "description": "Pridávajte prvky do rezu a pochopte, kedy nedostatok miesta v podkladovom poli spôsobí alokáciu väčšieho poľa.",
+      "source_sha256": "f2fc257e7c5f118321acc3b75e946053601532d411e8540534280d7fba795289",
+      "source_description_sha256": "5b4f57f1d1e59e6ee5cac92794e618501132356ae3710d7c3c8bf12f32041553",
+      "target_sha256": "cc5b0645a585505c691920a6b13ce6eed15bfe83fe6643e778800aa614fdc5fa",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "moretypes/16",
+      "route": "/moretypes/16",
+      "description": "Prechádzajte rezy alebo mapy pomocou range a pri reze získavajte index každého prvku spolu s kópiou jeho hodnoty.",
+      "source_sha256": "73fc46a2e049ce2ff4a4fc0595d717ed5d6e15b7093a6014509a48f501253186",
+      "source_description_sha256": "9fb6dada42add61186c2e79dc091c3dce567895431ef25fd18220abac6f5b215",
+      "target_sha256": "a336da41ed8cfed718abd7518eab4353cdb9e2a4513aec8011eaaef2badb8266",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "moretypes/17",
+      "route": "/moretypes/17",
+      "description": "Ignorujte nepotrebný index alebo hodnotu z range pomocou prázdneho identifikátora alebo vynechajte druhú premennú, ak potrebujete iba index.",
+      "source_sha256": "b52cca070f62a3ffeab3adf20f2745e1dd9aa2644a3985c23ac295e81e2c3bc9",
+      "source_description_sha256": "8c0f2bdd2a6f92dc681fa22f729da6d836747b0c4dce0f9947c019f8886c229d",
+      "target_sha256": "2f8481de2b3cdafb083f26d38509c8e1b94d244b483e888c69f3850f38094d4b",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "moretypes/18",
+      "route": "/moretypes/18",
+      "description": "Implementujte generátor obrázka, ktorý alokuje dvojrozmerný rez 8-bitových celých čísel bez znamienka a vypočíta hodnoty pre zobrazený obrázok.",
+      "source_sha256": "9c5fd763eaedec8e8bfb60f52713417ff247bc4467aa8a94412c55ab83c781ba",
+      "source_description_sha256": "50c352bd8a0fa28b3eb713c3691438364c9116f66e92457d0c6ee385fc2a3c44",
+      "target_sha256": "58903fd5b7ab090a5e058bd17ac7d3bbd29a1a811163655c1a47ba735785453d",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "moretypes/19",
+      "route": "/moretypes/19",
+      "description": "Vytvárajte mapy z kľúčov na hodnoty pomocou make a pochopte, prečo nil mapa nemá kľúče a nemožno do nej pridávať nové položky.",
+      "source_sha256": "39107d53feaffd26d7bb13103fe6e40746e9844d9b37bbf84559f7b91db312f3",
+      "source_description_sha256": "3bca4e1884f5843283b2ab833dec533c36fe7550097d1ce696ebd927fba24f29",
+      "target_sha256": "127665fd3563280c0c51a99ced83bf0b230723300f177c5c32e097c35f3ced3f",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "moretypes/20",
+      "route": "/moretypes/20",
+      "description": "Inicializujte mapy Go mapovými literálmi, ktoré pre každú hodnotu poskytujú povinný kľúč.",
+      "source_sha256": "1d3caa45093f65b50d5ebcff6a57559c3fe70faba85f3a0bb41db38c5375a507",
+      "source_description_sha256": "64b042ea9448b757f3249adcd03128e281423a7a30ac994669961db1114a4024",
+      "target_sha256": "27491a1ae905271813ce6980445269b24418f443ab8552032e29fc8833919137",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "moretypes/21",
+      "route": "/moretypes/21",
+      "description": "Skráťte mapové literály vynechaním opakovaných typov prvkov, keď je typom prvku najvyššej úrovne pomenovaný typ.",
+      "source_sha256": "0493179c2396f2e755fa5f1e579ce6f4cc716842ef5ee77a0b1c742210c15f9f",
+      "source_description_sha256": "c730c99a0322ec952dc3b0babf1aae15538fb08e7bf4b9d41b3580c524b4cf4c",
+      "target_sha256": "4aa628140f99db0fa40f2eb7fac787af913590e70dfcb9fdc58a90c95469405f",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "moretypes/22",
+      "route": "/moretypes/22",
+      "description": "Vkladajte, aktualizujte, načítavajte a mažte položky mapy a potom pomocou dvojhodnotového vyhľadania odlíšte chýbajúce kľúče od nulových hodnôt.",
+      "source_sha256": "f6963bc620184c7fbea7b04c309ccf64d508a4e835500fa7dd4188e60204019f",
+      "source_description_sha256": "071308970b93a12a3ab3561c0ce18d0073cb4edd7fef6381380777864c8f6685",
+      "target_sha256": "d15540a5d197ba9cb9fbec402388d6a11aedfcf676a62ef2dd57e27751b1a526",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "moretypes/23",
+      "route": "/moretypes/23",
+      "description": "Implementujte funkciu na počítanie slov, ktorá vráti mapu zaznamenávajúcu počet výskytov každého slova vo vstupnom reťazci.",
+      "source_sha256": "3214968207b659c3fb6bf92ee3d1ba0858bf7d3240dfad30fada7c5d8bddea69",
+      "source_description_sha256": "980a77135ab84953b0e8c2200b54f1ecdc0f2f7255ac497aeee281ca30b03e11",
+      "target_sha256": "bf3cc76a50835bae6b6a8e407f3099d82d33db4fd5d8ce1c38dbd4c2fb4445bc",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "moretypes/24",
+      "route": "/moretypes/24",
+      "description": "Používajte funkcie ako hodnoty, ktoré možno priraďovať, odovzdávať ako argumenty funkcií a vracať ako výsledky.",
+      "source_sha256": "91b508ec19d3baf6fd1b2382e54b0f4ec226e9af99d027e86d734cf081d9c897",
+      "source_description_sha256": "7071f87634550cbb36233a6ae15e5910f3b6dc71e3a4d4db8d669f30168094ef",
+      "target_sha256": "d8be096640022cfc719ab52f5bae8248a67705c892c96dd57bad4f76ff04b0bf",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "moretypes/25",
+      "route": "/moretypes/25",
+      "description": "Vytvárajte uzávery, ktoré odkazujú na premenné mimo svojich tiel a menia ich, pričom každý vrátený uzáver je viazaný na vlastný stav.",
+      "source_sha256": "570e535e9c2b2d1978534eb3b42f226102b11da36a3f9e61620dc5eafdb6be5f",
+      "source_description_sha256": "46ca9eb3fb315877fb7ecde2e10d046d4c3acbd71f62b37982d5e47644e3b63c",
+      "target_sha256": "a7b35b611685d53ab195755c348f593ec8ee970e7005c4def9f5cfbe50d600fd",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "moretypes/26",
+      "route": "/moretypes/26",
+      "description": "Implementujte funkciu, ktorá vracia uzáver vytvárajúci po sebe nasledujúce čísla Fibonacciho postupnosti.",
+      "source_sha256": "24f01440a7b0d638694c6cb275bf92e79e1fb2463ea2eb7d40a68cc4d6a0ed29",
+      "source_description_sha256": "e64e0a59ac166352e290c6051c98df95c58de5eea297a98fd1e648b3dbfa0517",
+      "target_sha256": "2b1a353b51debe6b78fb9aa1955f9057cce3f8768bc51f8305812e0c4da90b75",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "moretypes/27",
+      "route": "/moretypes/27",
+      "description": "Ukončite dokončenú lekciu výberom iného modulu zo zoznamu alebo pokračujte na nasledujúcu lekciu.",
+      "source_sha256": "f565674b974c053924bf69ef83b709dc50931526ae7fa88e71543a5cd872a190",
+      "source_description_sha256": "60d1bf20d7741180f02b9b4c6c077d6515d15097cdd8b3513427f8cce749c249",
+      "target_sha256": "dc2db7ba2a2e3bd7a264057795766565c31f4e43427d351e5bcbcf194c8acb24",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "methods/1",
+      "route": "/methods/1",
+      "description": "Definujte metódy pre typy Go pomocou špeciálneho argumentu prijímača a pridávajte tak správanie bez systému tried.",
+      "source_sha256": "8a62096b755332ede134c87493abe49231a52ce60abebcdc107bb6a64434fc72",
+      "source_description_sha256": "fb223db6446f747e780768d2e0bb40d143d440772710e6b2d978b464d0125b06",
+      "target_sha256": "ea95a12d8afc3e4e7607a644432550efdd9b15b61898b502873c1efd888a4900",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "methods/2",
+      "route": "/methods/2",
+      "description": "Pozrite sa, že metóda Go sa správa rovnako ako bežná funkcia, ktorej prijímač je zapísaný ako obyčajný argument.",
+      "source_sha256": "ade066728f85cc93e75c2472b80d532b62259a7e08e42ef36e3d05c6cfa5476d",
+      "source_description_sha256": "ce86f31a028ef9ab542bf3b70e30f4ced404ea86da994eb0055ce1530c287861",
+      "target_sha256": "1437502e309182f4f2fb56c487d1d3ec9ff669db89e8da326148c3339a3340a3",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "methods/3",
+      "route": "/methods/3",
+      "description": "Deklarujte metódy na lokálne definovaných neštruktúrových typoch a dodržte pravidlo, že typ prijímača patrí do rovnakého balíka.",
+      "source_sha256": "31c4fd0d80c8f1d96cf3efb1ecc1f9d3c0d1b5b70bb5c23bf7227b7007469588",
+      "source_description_sha256": "ac9c16d673aa0a6c164fde59b24ee32cb330a5104806181181c08599ec916cbc",
+      "target_sha256": "7715ca1fda4a9ac8dbc67ecb1ce7567af8c0d87ced0e95cbffccaca0a4ad499f",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "methods/4",
+      "route": "/methods/4",
+      "description": "Používajte ukazovateľové prijímače, keď metóda musí meniť svoj prijímač, na rozdiel od hodnotových prijímačov pracujúcich s kópiami.",
+      "source_sha256": "99f9fa4e5c4dd46d393f40b417d0430c4e27e56f40146f5f192f55ccda4e2db3",
+      "source_description_sha256": "51681653ead1e8e1cd79df9b64aa2cc8b156fa7ea457af6483ed06598fd7af1d",
+      "target_sha256": "326eee316bbb4711b454af3c3b6ab285d59b9adacb2f7bca3e804b7030c0298e",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "methods/5",
+      "route": "/methods/5",
+      "description": "Prepíšte metódy Abs a Scale ako bežné funkcie a sledujte, ako zmena ukazovateľového parametra ovplyvňuje správanie a čo treba zmeniť na kompiláciu príkladu.",
+      "source_sha256": "cac8affc7a8fd7bc1c0003d8cbf5bd7c85433faea45ea1b39f3b80c2fbc5eae9",
+      "source_description_sha256": "175f241b33ef8229537e3ddd12f24f527ee8b9b13b5ef816d0a89df25fde9b86",
+      "target_sha256": "bd0eb5c284516635c414c940a3e6b3cbfd42bf3427ef8c24c9b88e727d0bd297",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "methods/6",
+      "route": "/methods/6",
+      "description": "Volajte metódy s ukazovateľovým prijímačom na hodnotách aj ukazovateľoch, pričom Go interpretuje v.Scale(5) ako (\u0026v).Scale(5).",
+      "source_sha256": "39fb725b0a084ce3634dc973c215ff7a0f034c5f7b51c2ffe25934088072ebf6",
+      "source_description_sha256": "c4d49e8004cabb2c1640bd29ab1de2ace735f70c575f2b32c636c1a587d314ce",
+      "target_sha256": "8bc108dfb0004c11838cbf38da4c640ca614bdf02913e5951b7ec47e0926bc62",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "methods/7",
+      "route": "/methods/7",
+      "description": "Volajte metódy s hodnotovým prijímačom cez hodnoty aj ukazovatele, pretože Go pri volaní metódy ukazovateľ automaticky dereferencuje.",
+      "source_sha256": "61a9cb8411e6ce15dce3383a68a52c6644599e84269b3faf240129277d238f7e",
+      "source_description_sha256": "ab14363b476d06458eda3434ed9e990c715ddddc11863cdcb2c7ae3b1d0fe936",
+      "target_sha256": "1eccba596d32438ddc902aa7ba4c2004ee0859c6e121d3041e138a649ab71e7e",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "methods/8",
+      "route": "/methods/8",
+      "description": "Voľte ukazovateľové prijímače, aby ste umožnili zmenu hodnoty alebo sa vyhli kopírovaniu veľkých hodnôt, a používajte konzistentný druh prijímača.",
+      "source_sha256": "357424f2a76613085184054178042b442331b5689d156ac9c37e09e57c436dae",
+      "source_description_sha256": "923ca14660ea330bf1790cee51d4e1bc7bcc760ce29b54054e2ce4ee45c4f262",
+      "target_sha256": "c058d5e1d826232bd8e266bdc2728e5ab02e5c225591b693909a1c1650e13e74",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "methods/9",
+      "route": "/methods/9",
+      "description": "Definujte rozhrania ako množiny signatúr metód a sledujte, ako voľba prijímača určuje, či rozhranie implementuje hodnota alebo ukazovateľ.",
+      "source_sha256": "39efc19ed01619130489d21e421f2c0d8947b20f408580f4ceaabce6a0feb099",
+      "source_description_sha256": "6ee25d295ab6b3a2b4e7e26502652ed739467c62bc70835860cfd77bafb8903c",
+      "target_sha256": "c72510c07848b427bc0976a659296dac892a062a6df5d54e65da12f6d82a3c61",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "methods/10",
+      "route": "/methods/10",
+      "description": "Implementujte rozhrania implicitne definovaním ich metód a oddeľte tak deklarácie rozhraní od implementácií naprieč balíkmi.",
+      "source_sha256": "11ca99e6e83d93827daf02b177156fcb6f3c94ac8c202491dfffc5840ce4e39f",
+      "source_description_sha256": "6cf08662aae9ca82ce2cd6cd0a15e78992b0473cafa1149663a37fb9e2a7c7c2",
+      "target_sha256": "fb339f87231052b34638ace8781392bddfdaa39c3d79db807b613729d146fa2d",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "methods/11",
+      "route": "/methods/11",
+      "description": "Chápte hodnotu rozhrania ako dvojicu podkladovej konkrétnej hodnoty a typu, pričom volania metód smerujú na tento konkrétny typ.",
+      "source_sha256": "ccb2ed709b887724d22fb93714702fed5de4b7a83ca976876864045ff4752270",
+      "source_description_sha256": "cd6a134e49b4453e54c30c9686447f807f2a1e050246e4d6aee73514bb2179dc",
+      "target_sha256": "4b05ac0e781b9ffbecef7db89924d1130f5d50d0766e9649928a140ec2da638c",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "methods/12",
+      "route": "/methods/12",
+      "description": "Rozlíšte rozhranie, ktoré nie je nil, ale obsahuje konkrétnu hodnotu nil, a navrhujte metódy tak, aby vedeli bezpečne spracovať nil prijímač.",
+      "source_sha256": "9487ca3c9872972d42af8cfa389755678fe8a7cca110b592aac2a762332febf5",
+      "source_description_sha256": "fa0e9391d2ece71351113b5ecc38a4c43baa6e6bfa6bbf4929f8154a5d39bc09",
+      "target_sha256": "20bc21611660689423ef4db9af56e25c08259ae07136bd7c00453e2b404a24e5",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "methods/13",
+      "route": "/methods/13",
+      "description": "Pochopte, že nil rozhranie neobsahuje hodnotu ani konkrétny typ, takže volanie metódy na ňom spôsobí chybu pri behu programu.",
+      "source_sha256": "2897922c0b088ccd46b3e42a442aeecda0787c4162db1329d0e8f39d05735547",
+      "source_description_sha256": "b4dfe6e93b9056119ee683f0c66c47a4d57c4da2ab646e1d5aaa2f7ff5193695",
+      "target_sha256": "87d62694cb454b62879f5a5c1b2e47e2b66524de146dc7f6af5a41969cbddef4",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "methods/14",
+      "route": "/methods/14",
+      "description": "Používajte prázdne rozhranie alebo jeho ekvivalentný alias any na uchovávanie hodnôt ľubovoľných typov vo všeobecnom kóde.",
+      "source_sha256": "7a09a7654c8b6ac6d96a1a8ddaafac368782f89ec2e6e61f323d40eb01cbf750",
+      "source_description_sha256": "1abc921a534e41046d73ca5924ad534b905486f3528eff469b8816a3a94ad269",
+      "target_sha256": "90af6ec989e59faef21c65eae54351a03feedd80b5d82100684452b35effdc5e",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "methods/15",
+      "route": "/methods/15",
+      "description": "Získajte podkladovú konkrétnu hodnotu rozhrania pomocou typovej asercie a dvojvýsledkovou formou sa vyhnite panic pri nezhode.",
+      "source_sha256": "c205b4eb940358edea6321cfa422c3c00a560e9a6a71b08c8b3fa3ab9e4926ae",
+      "source_description_sha256": "2d146c65bc4f8cb9e2129fffc886ebe5e057615fea1b640106d6671ef8c431b1",
+      "target_sha256": "dd5ba97f7090b1994ef3c703f98f64418fcc6cb39f72002f7ef61f766a61c79c",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "methods/16",
+      "route": "/methods/16",
+      "description": "Používajte príkaz switch podľa typu na testovanie hodnoty rozhrania voči viacerým konkrétnym typom a v každej vetve získajte správne typovanú hodnotu.",
+      "source_sha256": "26e4da09e80d30b06368691c76ee2940139b0f6fc40cad47bb6d1d2947933c27",
+      "source_description_sha256": "d33eb15901d822bc5a23f381c6d61ac484c844a004c4bf34b699dff7de6cd24f",
+      "target_sha256": "c0dd5a4d15f06366ef100d4fc212803c806484cbfbde9c358224dcf5b0e6be36",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "methods/17",
+      "route": "/methods/17",
+      "description": "Implementujte rozhranie Stringer, aby sa hodnota vedela opísať ako text pre formátovanie a výpis.",
+      "source_sha256": "0363038e64b6f186e1bbd55c3323a5d7770a2b728605d8e3f01ae234aff6a444",
+      "source_description_sha256": "c446522cd9230076fbeae5d023a4d73f6473469102b840b6dc474e0f33d3cd38",
+      "target_sha256": "fdbfd934c73108b69147145ecb876c3d28ee1483e6c206e25a598db0b1761301",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "methods/18",
+      "route": "/methods/18",
+      "description": "Nechajte typ IP adresy implementovať rozhranie Stringer a formátujte jeho štyri časti v bodkovanom štvorčlennom tvare.",
+      "source_sha256": "ad118644f53755586f14409e203bccfb5ac4cff7c01734157032a45648fb06d3",
+      "source_description_sha256": "7fca48e6f4206cd8d1dcaee960b79026d1c7ed9a6522f5b5c7182e7db036058b",
+      "target_sha256": "613f8395494b13f95ed1a34cdfcd10d1e2101dc35b1da1599359af7ce63dbc37",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "methods/19",
+      "route": "/methods/19",
+      "description": "Vyjadrujte zlyhania vstavaným rozhraním error v Go, vracajte hodnoty error z funkcií a testujte ich voči nil.",
+      "source_sha256": "9eaab1fde2076c1376f78ceec0f84766c4c3b8062867436d73cef0bc77f16bd5",
+      "source_description_sha256": "b997133bc34918b752e49098ee7c596089a1a25f93d62bf29a1ed496c0a68d17",
+      "target_sha256": "2ae7a15e8b1873890f5c41610e7257c179f4cb7e09dc0e71bd1b13957785d9bc",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "methods/20",
+      "route": "/methods/20",
+      "description": "Rozšírte funkciu druhej odmocniny tak, aby pre záporné vstupy vracala vlastnú chybu, a zabráňte nekonečnému cyklu pri formátovaní tejto chyby.",
+      "source_sha256": "41f1f73320fde60ee5ff30d5927a19ff22d6da6a336bb776e15f2499e4f421d8",
+      "source_description_sha256": "4af48585b9125cd7437caf7d571c969ec8ae224916d9b674015446d6878f553c",
+      "target_sha256": "53144fee853c5f889578640fcb657257898fae1fefb46cf915cb1b553e19c345",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "methods/21",
+      "route": "/methods/21",
+      "description": "Čítajte prúdy cez rozhranie Reader vypĺňaním bajtových rezov a spracovaním vráteného počtu bajtov, chýb a signálu konca prúdu.",
+      "source_sha256": "120c3fc9f67579cf78605cf0c9f006fc28d3569043a08079ddb645ca9c3fc3b1",
+      "source_description_sha256": "3d143859fa8cf818fcf69f355ec785aeaa9ee25613b9fb1b1f8750b88d649ba3",
+      "target_sha256": "402efb34f9bcb4d2fcfbec49718d656b6cd085084f1d29c01aa1e083aea00381",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "methods/22",
+      "route": "/methods/22",
+      "description": "Implementujte typ Reader, ktorého metóda Read poskytuje nekonečný prúd ASCII znaku A.",
+      "source_sha256": "0df444d989996a06d6dd50f4b109af4ae1cb2302b8dd867bcbe9bf98e424d230",
+      "source_description_sha256": "b1bb526c762d827e97448d79c00210d1bb286b0a0f11f6e4c607b6ddd5f156c5",
+      "target_sha256": "7e47e51b531ff9b05929c3de124a0b53a7b5748b5a8671a66936ce9aee630e83",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "methods/23",
+      "route": "/methods/23",
+      "description": "Obaľte iný Reader vlastnou implementáciou, ktorá transformuje písmená pomocou substitučnej šifry ROT13.",
+      "source_sha256": "11d876145fae980b2e283e3fac7357a950eb20f022b7da48cc58efed5b1e8e04",
+      "source_description_sha256": "55b462b45c3316b40047228bfce6b04a7009e8d2772bf5ff3dcbd1ce7197d638",
+      "target_sha256": "7de4dcd80352bac5b098931f4f52d77e29387bc1c704415cd31d687616b15bc1",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "methods/24",
+      "route": "/methods/24",
+      "description": "Pochopte rozhranie Image cez jeho farebný model, hranice a metódy na zisťovanie pixelov spolu s príslušnými typmi farieb.",
+      "source_sha256": "d80f0d46796ad415a7ded4d0cefdef6cdb58deb38d050a61eb64abb25caf27ee",
+      "source_description_sha256": "0a30974c745ec5adef7da2417dcc5308e2e69627488c5a2c9e880870c6da5c41",
+      "target_sha256": "8e16292ae147036c1dc540f392e416092928e848d4d6a3686890ef7b6b5aaa1a",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "methods/25",
+      "route": "/methods/25",
+      "description": "Definujte vlastný typ obrázka, ktorý implementuje farebný model, obdĺžnikové hranice a zisťovanie farby pixelov pre generované obrázky.",
+      "source_sha256": "a196bc59d96602c3fe72cf765419366094a5c1e96de0d24dd140887ebd1826b5",
+      "source_description_sha256": "47aa41f6a229ac42781cb3536c72a700c3617131893b661be47fa26bcd55da91",
+      "target_sha256": "779900323c335c66ead4aeb831b57bde9cf79addf600494bc6fd6d030eb8cd8a",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "methods/26",
+      "route": "/methods/26",
+      "description": "Ukončite lekciu a rozhodnite sa, či sa vrátite do zoznamu modulov alebo budete pokračovať priamo na nasledujúcu lekciu.",
+      "source_sha256": "f565674b974c053924bf69ef83b709dc50931526ae7fa88e71543a5cd872a190",
+      "source_description_sha256": "fb9dc0de6022cba642b0d023e060400ec0eea65f5e479a0b6586e8457a3a6e1c",
+      "target_sha256": "dc2db7ba2a2e3bd7a264057795766565c31f4e43427d351e5bcbcf194c8acb24",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "generics/1",
+      "route": "/generics/1",
+      "description": "Píšte generické funkcie Go s typovými parametrami v hranatých zátvorkách a používajte obmedzenie comparable na vyhľadávanie v rezoch pomocou rovnosti.",
+      "source_sha256": "01a045105dc8c12fb1709f122d363235c19a6464d5de7587d579524aec270dd6",
+      "source_description_sha256": "b1a9a022272688b86d0572b7ce4dd9d725f2721d2bc9e3e37c196d2ce20b6573",
+      "target_sha256": "4646c3708ca24d9bf427eef97e0e72e1ffcfa745779013228ae2cb697b9e39b5",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "generics/2",
+      "route": "/generics/2",
+      "description": "Definujte generické typy s typovými parametrami na príklade jednosmerne prepojeného zoznamu schopného uchovávať hodnoty ľubovoľného typu.",
+      "source_sha256": "08486351895e62792a84bc3eeab6aa85df7b1658735b7239040d219812f63277",
+      "source_description_sha256": "7b1a0ed87733ae57b018fd8b291ceb880f9b20f8b11e3a3744afe5c5237dfa0d",
+      "target_sha256": "52310e188f24b337332f4580f70a7aa882e5b9744c725e0a48745926ffc8fc64",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "generics/3",
+      "route": "/generics/3",
+      "description": "Potvrďte dokončenie lekcie a potom sa vráťte do katalógu modulov alebo pokračujte na nasledujúcu lekciu.",
+      "source_sha256": "f565674b974c053924bf69ef83b709dc50931526ae7fa88e71543a5cd872a190",
+      "source_description_sha256": "65816f922f9107347efd8286904bad00224481b7d9efb4ff5c998e2b8983729e",
+      "target_sha256": "dc2db7ba2a2e3bd7a264057795766565c31f4e43427d351e5bcbcf194c8acb24",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "concurrency/1",
+      "route": "/concurrency/1",
+      "description": "Spúšťajte ľahké goroutine, pochopte, kde sa vyhodnocujú argumenty volania, a synchronizujte prístup k zdieľanej pamäti používanej súbežnými goroutine.",
+      "source_sha256": "d0a9c45078c2255540cfffe48744a07fa04ab5c2113e8880068b5a400ae0ebdc",
+      "source_description_sha256": "d2b2b18b050a6f45dea879d72a29023649e8ce7d55822315cb11cdc5d8330796",
+      "target_sha256": "0a7958c79c676adf5bd648577f45cf9b59315f10ea286905b1ea1da0bd0bc500",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "concurrency/2",
+      "route": "/concurrency/2",
+      "description": "Odosielajte a prijímajte typované hodnoty cez kanály a používajte ich predvolené blokujúce správanie na synchronizáciu práce medzi goroutine.",
+      "source_sha256": "a35e3af26b51f8c2c2a6dfaf09f9c7cab0fdb4b1b56f9e4dc9b793f1dac1e295",
+      "source_description_sha256": "1025cf5ae195d6ddacba6eba015df931afc7d88d4fb1f045e89374a0ce269218",
+      "target_sha256": "2fc5d67f1c966392b30c1cb94a5f60bc83e9ddff1d9fa0f56853c00bfc089321",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "concurrency/3",
+      "route": "/concurrency/3",
+      "description": "Vytvárajte bufferované kanály s pevnou kapacitou a sledujte blokovanie odoslania pri plnom kanáli a prijatia pri prázdnom kanáli.",
+      "source_sha256": "caef0893a54c61f192be397f6b27a039d81dc007f98f2d203a5a287383c0682e",
+      "source_description_sha256": "841cd97624869908df1823647fdf34b37e1ad3be60d94232ea68d29df3791d3e",
+      "target_sha256": "d44b1c0aadc89fc9d1cf7d5e5279f1d8a88fae7f2ae81c54bd0e8146bf938071",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "concurrency/4",
+      "route": "/concurrency/4",
+      "description": "Zatvárajte kanály na strane odosielateľa, rozpoznajte zatvorenie pri prijímaní a pomocou range pokračujte, kým sa nespotrebujú všetky odoslané hodnoty.",
+      "source_sha256": "3e925c6745255a443c61f25cd8131d538dc8677938f1c5021ce798465020b42e",
+      "source_description_sha256": "052b32bc75a99f8e63d851b090201f2d860fe3e0df54d1c36dfe898d791300aa",
+      "target_sha256": "12dafd01819d6d84bc4bee7acf1ef2deeaac0c6ef283f338dda1fa0cee8ad90e",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "concurrency/5",
+      "route": "/concurrency/5",
+      "description": "Používajte select na čakanie na viacero operácií kanálov, pokračujte pripravenou vetvou a pri viacerých možných vetvách nechajte výber na náhode.",
+      "source_sha256": "8d8de56f080d4f702ac455aa60cb13b745472bedc9755000e8b5d6a2a898577d",
+      "source_description_sha256": "ff560a3c278c4608f677eb25977282a92605545470d352b501cb020944f5c19b",
+      "target_sha256": "d694b3ebb312b25c13ecfc869b96f160a06154b0be57722f3f24bcb3ce6a50a8",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "concurrency/6",
+      "route": "/concurrency/6",
+      "description": "Pridajte do select vetvu default, keď sa má odoslanie do kanála alebo prijatie z neho vyskúšať bez blokovania.",
+      "source_sha256": "82e9cd932e14e6c4852fc8f865f4c45dc75845bd1a306649152ebc045f0c3b2c",
+      "source_description_sha256": "62b930aa676592e83be591ce640338cad3d4a28f8031b70020c125cae407288f",
+      "target_sha256": "7f89b222fcd25e0830d34326ecb2cc50a29eb3d84164a7663a22198661d326ae",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "concurrency/7",
+      "route": "/concurrency/7",
+      "description": "Sformulujte problém porovnávania rôzne tvarovaných binárnych stromov s rovnakými usporiadanými hodnotami pomocou kanálov a súbežnosti v Go.",
+      "source_sha256": "7c5d3fc7bb2540285d746242f8a1d16075639648eec8909c1df52239297d2917",
+      "source_description_sha256": "1788be855428fdadd5d5755548f4a1c678aa4db359821c7a553ffecdf5e4de7c",
+      "target_sha256": "856d1c424ccec00c077ca5ad6db2a22740820bb607774ed9520fd24f6f00448f",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "concurrency/8",
+      "route": "/concurrency/8",
+      "description": "Implementujte súbežné prechádzanie stromu a pomocou výstupu z kanála určte, či dva binárne stromy obsahujú rovnaké postupnosti hodnôt.",
+      "source_sha256": "b362cc15a26324acd311f7cab18a628dc1d7d9ac6d455add7d651d41acf15e9a",
+      "source_description_sha256": "5fcc3f084dff1ef87b86f2a0714ed2b130301ff803ea2c298f1be3baccf48959",
+      "target_sha256": "2d38821c8742063482f1fdd63f6448b7b8ca9bc105999ebb2313eb6546925bd4",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "concurrency/9",
+      "route": "/concurrency/9",
+      "description": "Chráňte zdieľaný stav vzájomným vylúčením pomocou zamknutia a odomknutia mutexu vrátane odloženého odomknutia na spoľahlivé uvoľnenie.",
+      "source_sha256": "49f727794604c2ef8a8dda9508d0f412d7015cea77754c675a02b166dd9bfc93",
+      "source_description_sha256": "45500a9f438a556dd61ab13ebbd255f4da67469a93c8f12a510ac0883531cbb2",
+      "target_sha256": "d39e63e5a220d5cf72c76e6d8a6aa2160f520ede347dd48b36aada9424e530f6",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "concurrency/10",
+      "route": "/concurrency/10",
+      "description": "Paralelizujte webový prehľadávač pomocou súbežnosti v Go a zároveň zabezpečte, aby sa žiadna URL nenačítala dvakrát a prístup k zdieľanej mape zostal bezpečný.",
+      "source_sha256": "bb686393225ef2335e627819a1664a84456f00b64af133af64920d43f0abdb94",
+      "source_description_sha256": "9f5eaf228169f96b0df33e42107f5e232500256bfbd275f7f9eecc516af7e7a9",
+      "target_sha256": "15ddd395c2bd9edaeca733a78b086c6991d6e52069f3336e6980106dc61ed8e7",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    },
+    {
+      "page_id": "concurrency/11",
+      "route": "/concurrency/11",
+      "description": "Pokračujte v učení Go pomocou dokumentácie, návodov, referencií, prednášok, prehliadok kódu, článkov a zdrojov o súbežnosti a webových aplikáciách.",
+      "source_sha256": "45ef131ede663b1355c0a5933634d46c393f66be8a6450b184f86a62e928a64e",
+      "source_description_sha256": "4ed88e1ec54c490baa161dd4be091fd7d22aa45b5f8855f73b8cdabc678feb44",
+      "target_sha256": "062af28ff286af821f6fc685ace2fe676611eb31722b0c32aef80637b0534631",
+      "glossary_sha256": "cb4467e6c30b26665ded4145d5959128b92d59f60e22b6425b33b819fed99651",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-09-28T08:01:47Z"
+      }
+    }
+  ]
+}

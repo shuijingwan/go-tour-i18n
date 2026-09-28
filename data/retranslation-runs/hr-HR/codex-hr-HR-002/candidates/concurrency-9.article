@@ -1,0 +1,21 @@
+* sync.Mutex
+
+Vidjeli smo da su kanali izvrsni za komunikaciju među goroutines.
+
+Ali što ako nam komunikacija nije potrebna? Što ako samo želimo osigurati da varijabli u određenom trenutku može pristupiti samo
+jedna goroutine kako bismo izbjegli sukobe?
+
+Taj se koncept naziva _međusobno_isključivanje_, a uobičajeni naziv podatkovne strukture koja ga omogućuje jest _mutex_.
+
+Standardna biblioteka jezika Go omogućuje međusobno isključivanje pomoću
+[[/pkg/sync/#Mutex][`sync.Mutex`]] i njegovih dviju metoda:
+
+- `Lock`
+- `Unlock`
+
+Blok koda koji se izvršava uz međusobno isključivanje možemo definirati tako da ga okružimo
+pozivima `Lock` i `Unlock`, kao što je prikazano u metodi `Inc`.
+
+Možemo upotrijebiti i `defer` kako bismo osigurali otključavanje mutexa, kao u metodi `Value`.
+
+.play concurrency/mutex-counter.go

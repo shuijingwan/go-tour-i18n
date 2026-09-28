@@ -1,0 +1,19 @@
+* ⟪GTI18N_19e6d7da_000001⟫
+
+Ovaj obilazak temelji se na [[⟪GTI18N_19e6d7da_000002⟫][⟪GTI18N_19e6d7da_000003⟫]], web-usluzi
+koja se izvodi na poslužiteljima web-mjesta [[⟪GTI18N_19e6d7da_000004⟫][golang.org]].
+
+Usluga prima program napisan u jeziku ⟪GTI18N_19e6d7da_000005⟫, prevodi ga, povezuje i pokreće
+u izoliranom okruženju, a zatim vraća izlaz.
+
+Programi koji se mogu pokrenuti u okruženju Playground imaju određena ograničenja:
+
+- Vrijeme u okruženju Playground počinje u 2009-11-10 23:00:00 ⟪GTI18N_19e6d7da_000006⟫ (utvrđivanje značenja tog datuma vježba je za čitatelja). Time se olakšava predmemoriranje programa jer im je izlaz deterministički.
+
+- Ograničeni su i vrijeme izvođenja te uporaba ⟪GTI18N_19e6d7da_000007⟫-a i memorije, a program ne može pristupati vanjskim mrežnim računalima.
+
+Playground koristi najnovije stabilno izdanje jezika ⟪GTI18N_19e6d7da_000008⟫.
+
+Za više pojedinosti pročitajte „[[⟪GTI18N_19e6d7da_000009⟫][Unutar okruženja ⟪GTI18N_19e6d7da_000010⟫]]”.
+
+⟪GTI18N_19e6d7da_000011⟫

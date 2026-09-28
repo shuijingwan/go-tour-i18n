@@ -1,0 +1,13 @@
+* Odvodenie typu
+
+Ak deklarujete premennú bez explicitného uvedenia typu (pomocou syntaxe ⟪GTI18N_21c4077c_000001⟫:=⟪GTI18N_21c4077c_000002⟫ alebo výrazu ⟪GTI18N_21c4077c_000003⟫var`=⟪GTI18N_21c4077c_000004⟫), typ premennej sa odvodí z hodnoty na pravej strane.
+
+Ak má pravá strana deklarácie určený typ, nová premenná bude mať rovnaký typ:
+
+⟪GTI18N_21c4077c_000005⟫⟪GTI18N_21c4077c_000006⟫ má typ ⟪GTI18N_21c4077c_000007⟫⟪GTI18N_21c4077c_000008⟫Ak však pravá strana obsahuje netypovanú číselnú konštantu, nová premenná môže mať typ ⟪GTI18N_21c4077c_000009⟫int⟪GTI18N_21c4077c_000010⟫, ⟪GTI18N_21c4077c_000011⟫float64⟪GTI18N_21c4077c_000012⟫ alebo ⟪GTI18N_21c4077c_000013⟫complex128⟪GTI18N_21c4077c_000014⟫ podľa presnosti konštanty:
+
+⟪GTI18N_21c4077c_000015⟫
+
+Skúste v ukážkovom kóde zmeniť počiatočnú hodnotu ⟪GTI18N_21c4077c_000016⟫v⟪GTI18N_21c4077c_000017⟫ a sledujte, ako sa zmení jej typ.
+
+⟪GTI18N_21c4077c_000018⟫

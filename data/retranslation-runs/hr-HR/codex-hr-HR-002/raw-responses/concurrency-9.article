@@ -1,0 +1,21 @@
+* sync.Mutex
+
+Vidjeli smo da su kanali izvrsni za komunikaciju među ⟪GTI18N_49f72779_000001⟫.
+
+Ali što ako nam komunikacija nije potrebna? Što ako samo želimo osigurati da varijabli u određenom trenutku može pristupiti samo
+jedna ⟪GTI18N_49f72779_000002⟫ kako bismo izbjegli sukobe?
+
+Taj se koncept naziva ⟪GTI18N_49f72779_000003⟫međusobno_isključivanje⟪GTI18N_49f72779_000004⟫, a uobičajeni naziv podatkovne strukture koja ga omogućuje jest ⟪GTI18N_49f72779_000005⟫mutex⟪GTI18N_49f72779_000006⟫.
+
+Standardna biblioteka jezika ⟪GTI18N_49f72779_000007⟫ omogućuje međusobno isključivanje pomoću
+[[⟪GTI18N_49f72779_000008⟫][⟪GTI18N_49f72779_000009⟫sync.Mutex⟪GTI18N_49f72779_000010⟫]] i njegovih dviju metoda:
+
+- ⟪GTI18N_49f72779_000011⟫Lock⟪GTI18N_49f72779_000012⟫
+- ⟪GTI18N_49f72779_000013⟫Unlock⟪GTI18N_49f72779_000014⟫
+
+Blok koda koji se izvršava uz međusobno isključivanje možemo definirati tako da ga okružimo
+pozivima ⟪GTI18N_49f72779_000015⟫Lock⟪GTI18N_49f72779_000016⟫ i ⟪GTI18N_49f72779_000017⟫Unlock⟪GTI18N_49f72779_000018⟫, kao što je prikazano u metodi ⟪GTI18N_49f72779_000019⟫Inc⟪GTI18N_49f72779_000020⟫.
+
+Možemo upotrijebiti i ⟪GTI18N_49f72779_000021⟫defer⟪GTI18N_49f72779_000022⟫ kako bismo osigurali otključavanje mutexa, kao u metodi ⟪GTI18N_49f72779_000023⟫Value⟪GTI18N_49f72779_000024⟫.
+
+⟪GTI18N_49f72779_000025⟫

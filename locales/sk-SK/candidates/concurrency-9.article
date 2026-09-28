@@ -1,0 +1,21 @@
+* sync.Mutex
+
+Videli sme, že kanály sú výborné na komunikáciu medzi goroutine.
+
+Čo však vtedy, keď komunikáciu nepotrebujeme? Čo ak chceme iba zabezpečiť, aby
+k premennej mohla naraz pristupovať len jedna goroutine, a tak sa vyhnúť konfliktom?
+
+Tento koncept sa nazýva _vzájomné_vylúčenie_ a bežný názov dátovej štruktúry, ktorá ho poskytuje, je _mutex_.
+
+Štandardná knižnica Go poskytuje vzájomné vylúčenie pomocou
+[[/pkg/sync/#Mutex][`sync.Mutex`]] a jeho dvoch metód:
+
+- `Lock`
+- `Unlock`
+
+Blok kódu môžeme nastaviť tak, aby sa vykonával vo vzájomnom vylúčení, ak ho
+obklopíme volaniami `Lock` a `Unlock`, ako ukazuje metóda `Inc`.
+
+Môžeme tiež použiť `defer`, aby sme zabezpečili odomknutie mutexu, ako v metóde `Value`.
+
+.play concurrency/mutex-counter.go

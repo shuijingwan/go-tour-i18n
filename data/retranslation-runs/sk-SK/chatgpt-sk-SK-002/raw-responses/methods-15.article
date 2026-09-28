@@ -1,0 +1,25 @@
+* Typové asercie
+
+⟪GTI18N_c205b4eb_000001⟫typová_asercia⟪GTI18N_c205b4eb_000002⟫ poskytuje prístup k podkladovej konkrétnej hodnote hodnoty rozhrania.
+
+⟪GTI18N_c205b4eb_000003⟫
+
+Tento príkaz tvrdí, že hodnota rozhrania ⟪GTI18N_c205b4eb_000004⟫i⟪GTI18N_c205b4eb_000005⟫ obsahuje konkrétny typ ⟪GTI18N_c205b4eb_000006⟫T⟪GTI18N_c205b4eb_000007⟫,
+a priradí podkladovú hodnotu ⟪GTI18N_c205b4eb_000008⟫T⟪GTI18N_c205b4eb_000009⟫ do premennej ⟪GTI18N_c205b4eb_000010⟫t⟪GTI18N_c205b4eb_000011⟫.
+
+Ak ⟪GTI18N_c205b4eb_000012⟫i⟪GTI18N_c205b4eb_000013⟫ neobsahuje ⟪GTI18N_c205b4eb_000014⟫T⟪GTI18N_c205b4eb_000015⟫, príkaz vyvolá panic.
+
+Ak chcete ⟪GTI18N_c205b4eb_000016⟫otestovať⟪GTI18N_c205b4eb_000017⟫, či hodnota rozhrania obsahuje konkrétny typ,
+typová asercia môže vrátiť dve hodnoty: podkladovú hodnotu
+a logickú hodnotu, ktorá oznamuje, či asercia uspela.
+
+⟪GTI18N_c205b4eb_000018⟫
+
+Ak ⟪GTI18N_c205b4eb_000019⟫i⟪GTI18N_c205b4eb_000020⟫ obsahuje ⟪GTI18N_c205b4eb_000021⟫T⟪GTI18N_c205b4eb_000022⟫, potom ⟪GTI18N_c205b4eb_000023⟫t⟪GTI18N_c205b4eb_000024⟫ bude podkladová hodnota a ⟪GTI18N_c205b4eb_000025⟫ok⟪GTI18N_c205b4eb_000026⟫ bude true.
+
+V opačnom prípade bude ⟪GTI18N_c205b4eb_000027⟫ok⟪GTI18N_c205b4eb_000028⟫ false a ⟪GTI18N_c205b4eb_000029⟫t⟪GTI18N_c205b4eb_000030⟫ bude nulová hodnota typu ⟪GTI18N_c205b4eb_000031⟫T⟪GTI18N_c205b4eb_000032⟫
+a panic nenastane.
+
+Všimnite si podobnosť tejto syntaxe so syntaxou čítania z mapy.
+
+⟪GTI18N_c205b4eb_000033⟫

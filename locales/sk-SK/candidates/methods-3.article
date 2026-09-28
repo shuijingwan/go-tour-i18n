@@ -1,0 +1,12 @@
+* Metódy – pokračovanie
+
+Metódu môžete deklarovať aj pre typy, ktoré nie sú štruktúrami.
+
+V tomto príklade vidíme číselný typ `MyFloat` s metódou `Abs`.
+
+Metódu môžete deklarovať iba s prijímačom, ktorého typ je definovaný v tom istom
+balíku ako metóda.
+Nemôžete deklarovať metódu s prijímačom, ktorého typ je definovaný v inom
+balíku (to zahŕňa aj vstavané typy, napríklad `int`).
+
+.play methods/methods-continued.go

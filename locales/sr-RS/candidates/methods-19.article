@@ -1,0 +1,26 @@
+* Грешке
+
+Go програми изражавају стање грешке вредностима `error`.
+
+Тип `error` је уграђени интерфејс сличан интерфејсу `fmt.Stringer`:
+
+	type error interface {
+		Error() string
+	}
+
+(Као и код `fmt.Stringer`, пакет `fmt` тражи интерфејс `error` када
+исписује вредности.)
+
+Функције често враћају вредност `error`, а код који их позива треба да обради грешке
+провером да ли је грешка једнака `nil`.
+
+	i, err := strconv.Atoi("42")
+	if err != nil {
+		fmt.Printf("couldn't convert number: %v\n", err)
+		return
+	}
+	fmt.Println("Converted integer:", i)
+
+Вредност nil за `error` означава успех; вредност `error` која није nil означава неуспех.
+
+.play methods/errors.go

@@ -1,0 +1,18 @@
+* Cvičenie: Ekvivalentné binárne stromy
+
+Môže existovať mnoho rôznych binárnych stromov s rovnakou postupnosťou uložených hodnôt. Napríklad tieto dva binárne stromy obsahujú postupnosť 1, 1, 2, 3, 5, 8, 13.
+
+.image /tour/static/img/tree.png
+
+Funkcia na overenie, či dva binárne stromy obsahujú rovnakú postupnosť, je vo väčšine jazykov pomerne zložitá. Na jednoduché riešenie použijeme súbežnosť a kanály jazyka Go.
+
+Tento príklad používa balík `tree`, ktorý definuje typ:
+
+	type Tree struct {
+		Left  *Tree
+		Value int
+		Right *Tree
+	}
+
+
+Opis pokračuje tu: [[javascript:click('.next-page')][nasledujúca stránka]].

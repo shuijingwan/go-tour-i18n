@@ -1,0 +1,19 @@
+* Čítače
+
+Balík ⟪GTI18N_120c3fc9_000001⟫io⟪GTI18N_120c3fc9_000002⟫ definuje rozhranie ⟪GTI18N_120c3fc9_000003⟫io.Reader⟪GTI18N_120c3fc9_000004⟫,
+ktoré predstavuje čítací koniec prúdu údajov.
+
+Štandardná knižnica ⟪GTI18N_120c3fc9_000005⟫ obsahuje [[⟪GTI18N_120c3fc9_000006⟫][mnoho implementácií]] tohto rozhrania vrátane súborov, sieťových spojení, kompresorov, šifier a ďalších.
+
+Rozhranie ⟪GTI18N_120c3fc9_000007⟫io.Reader⟪GTI18N_120c3fc9_000008⟫ má metódu ⟪GTI18N_120c3fc9_000009⟫Read⟪GTI18N_120c3fc9_000010⟫:
+
+⟪GTI18N_120c3fc9_000011⟫
+
+⟪GTI18N_120c3fc9_000012⟫Read⟪GTI18N_120c3fc9_000013⟫ naplní zadaný rez bajtov údajmi a vráti počet zapísaných bajtov
+a hodnotu chyby. Keď prúd údajov skončí, vráti chybu ⟪GTI18N_120c3fc9_000014⟫io.EOF⟪GTI18N_120c3fc9_000015⟫.
+
+Kód príkladu vytvorí
+[[⟪GTI18N_120c3fc9_000016⟫][⟪GTI18N_120c3fc9_000017⟫strings.Reader⟪GTI18N_120c3fc9_000018⟫]]
+a spracúva jeho výstup po 8 bajtoch.
+
+⟪GTI18N_120c3fc9_000019⟫

@@ -1,0 +1,12 @@
+* Stringery
+
+Jedným z najpoužívanejších rozhraní je [[/pkg/fmt/#Stringer][`Stringer`]], ktoré definuje balík [[/pkg/fmt/][`fmt`]].
+
+	type Stringer interface {
+		String() string
+	}
+
+`Stringer` je typ, ktorý sa dokáže opísať ako reťazec. Balík `fmt`
+(a mnoho ďalších) pri výpise hodnôt vyhľadáva toto rozhranie.
+
+.play methods/stringer.go

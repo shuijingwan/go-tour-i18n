@@ -1,0 +1,19 @@
+* Грешке
+
+⟪GTI18N_9eaab1fd_000001⟫ програми изражавају стање грешке вредностима ⟪GTI18N_9eaab1fd_000002⟫error⟪GTI18N_9eaab1fd_000003⟫.
+
+Тип ⟪GTI18N_9eaab1fd_000004⟫error⟪GTI18N_9eaab1fd_000005⟫ је уграђени интерфејс сличан интерфејсу ⟪GTI18N_9eaab1fd_000006⟫fmt.Stringer⟪GTI18N_9eaab1fd_000007⟫:
+
+⟪GTI18N_9eaab1fd_000008⟫
+
+(Као и код ⟪GTI18N_9eaab1fd_000009⟫fmt.Stringer⟪GTI18N_9eaab1fd_000010⟫, пакет ⟪GTI18N_9eaab1fd_000011⟫fmt⟪GTI18N_9eaab1fd_000012⟫ тражи интерфејс ⟪GTI18N_9eaab1fd_000013⟫error⟪GTI18N_9eaab1fd_000014⟫ када
+исписује вредности.)
+
+Функције често враћају вредност ⟪GTI18N_9eaab1fd_000015⟫error⟪GTI18N_9eaab1fd_000016⟫, а код који их позива треба да обради грешке
+провером да ли је грешка једнака ⟪GTI18N_9eaab1fd_000017⟫nil⟪GTI18N_9eaab1fd_000018⟫.
+
+⟪GTI18N_9eaab1fd_000019⟫
+
+Вредност nil за ⟪GTI18N_9eaab1fd_000020⟫error⟪GTI18N_9eaab1fd_000021⟫ означава успех; вредност ⟪GTI18N_9eaab1fd_000022⟫error⟪GTI18N_9eaab1fd_000023⟫ која није nil означава неуспех.
+
+⟪GTI18N_9eaab1fd_000024⟫

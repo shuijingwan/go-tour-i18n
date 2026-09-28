@@ -1,0 +1,16 @@
+* Kanály
+
+Kanály sú typované prenosové cesty, cez ktoré môžete odosielať a prijímať hodnoty pomocou operátora kanála ⟪GTI18N_a35e3af2_000001⟫<-⟪GTI18N_a35e3af2_000002⟫.
+
+⟪GTI18N_a35e3af2_000003⟫Odošle ⟪GTI18N_a35e3af2_000004⟫ do kanála ⟪GTI18N_a35e3af2_000005⟫.⟪GTI18N_a35e3af2_000006⟫Prijme hodnotu z ⟪GTI18N_a35e3af2_000007⟫ a⟪GTI18N_a35e3af2_000008⟫priradí ju do ⟪GTI18N_a35e3af2_000009⟫.⟪GTI18N_a35e3af2_000010⟫(Údaje tečú v smere šípky.)
+
+Rovnako ako mapy a rezy, aj kanály treba pred použitím vytvoriť:
+
+⟪GTI18N_a35e3af2_000011⟫
+
+Odosielanie a prijímanie sa predvolene blokujú, kým nie je pripravená druhá strana. Goroutine sa tak môžu synchronizovať bez explicitných zámkov alebo podmienkových premenných.
+
+Kód príkladu sčíta čísla v reze a rozdelí prácu medzi dve goroutine.
+Keď obe goroutine dokončia výpočet, vypočíta konečný výsledok.
+
+⟪GTI18N_a35e3af2_000012⟫

@@ -1,0 +1,17 @@
+* Typové parametre
+
+⟪GTI18N_01a04510_000001⟫ funkcie možno písať tak, aby pomocou typových parametrov pracovali s viacerými typmi. Typové
+parametre funkcie sa uvádzajú v hranatých zátvorkách pred
+argumentmi funkcie.
+
+⟪GTI18N_01a04510_000002⟫
+
+Táto deklarácia znamená, že ⟪GTI18N_01a04510_000003⟫s⟪GTI18N_01a04510_000004⟫ je rez ľubovoľného typu ⟪GTI18N_01a04510_000005⟫T⟪GTI18N_01a04510_000006⟫, ktorý spĺňa
+vstavané obmedzenie ⟪GTI18N_01a04510_000007⟫comparable⟪GTI18N_01a04510_000008⟫. ⟪GTI18N_01a04510_000009⟫x⟪GTI18N_01a04510_000010⟫ je tiež hodnota rovnakého typu.
+
+⟪GTI18N_01a04510_000011⟫comparable⟪GTI18N_01a04510_000012⟫ je užitočné obmedzenie, ktoré umožňuje používať operátory ⟪GTI18N_01a04510_000013⟫==⟪GTI18N_01a04510_000014⟫ a
+⟪GTI18N_01a04510_000015⟫!=⟪GTI18N_01a04510_000016⟫ na hodnotách daného typu. V tomto príklade ho používame na porovnanie
+hodnoty so všetkými prvkami rezu, kým nenájdeme zhodu. Táto funkcia ⟪GTI18N_01a04510_000017⟫Index⟪GTI18N_01a04510_000018⟫ funguje
+pre ľubovoľný typ, ktorý podporuje porovnávanie.
+
+⟪GTI18N_01a04510_000019⟫

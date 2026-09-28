@@ -1,0 +1,19 @@
+* Čítače
+
+Balík `io` definuje rozhranie `io.Reader`,
+ktoré predstavuje čítací koniec prúdu údajov.
+
+Štandardná knižnica Go obsahuje [[https://cs.opensource.google/search?q=Read%5C(%5Cw%2B%5Cs%5C%5B%5C%5Dbyte%5C)&ss=go%2Fgo][mnoho implementácií]] tohto rozhrania vrátane súborov, sieťových spojení, kompresorov, šifier a ďalších.
+
+Rozhranie `io.Reader` má metódu `Read`:
+
+	func (T) Read(b []byte) (n int, err error)
+
+`Read` naplní zadaný rez bajtov údajmi a vráti počet zapísaných bajtov
+a hodnotu chyby. Keď prúd údajov skončí, vráti chybu `io.EOF`.
+
+Kód príkladu vytvorí
+[[/pkg/strings/#Reader][`strings.Reader`]]
+a spracúva jeho výstup po 8 bajtoch.
+
+.play methods/reader.go
