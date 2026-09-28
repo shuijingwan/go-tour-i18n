@@ -64,8 +64,8 @@ func RecordQualityCheckSurfaceReopen(root string, catalog *Catalog, options Qual
 	if finding == "" || len(options.UnitIDs) == 0 {
 		return nil, "", errors.New("surface correction requires a non-empty finding and exact unit_id scope")
 	}
-	if len(options.UnitIDs) > DefaultRetranslationExportLimit {
-		return nil, "", fmt.Errorf("surface correction scope must not exceed %d TranslationUnits", DefaultRetranslationExportLimit)
+	if len(options.UnitIDs) > MaxRetranslationExportLimit {
+		return nil, "", fmt.Errorf("surface correction scope must not exceed %d TranslationUnits", MaxRetranslationExportLimit)
 	}
 	finalization, err := VerifyQualityCheckFinalization(root, catalog, options.Locale, options.PreviousSnapshotID)
 	if err != nil {
@@ -184,7 +184,7 @@ func readCurrentQualityCheckSurfaceReopen(root string, catalog *Catalog, locale,
 	}
 	expectedFinalizationPath := filepath.ToSlash(filepath.Join("data", "quality-check-snapshots", locale, receipt.PreviousSnapshotID, "finalization.json"))
 	expectedSurfacePath := filepath.ToSlash(filepath.Join("data", "locale-surface-reviews", locale, receipt.SurfaceReviewID+".md"))
-	if !reviewIDPattern.MatchString(receipt.SurfaceReviewID) || receipt.PreviousFinalizationPath != expectedFinalizationPath || receipt.SurfaceReviewPath != expectedSurfacePath || receipt.UnitCount > DefaultRetranslationExportLimit {
+	if !reviewIDPattern.MatchString(receipt.SurfaceReviewID) || receipt.PreviousFinalizationPath != expectedFinalizationPath || receipt.SurfaceReviewPath != expectedSurfacePath || receipt.UnitCount > MaxRetranslationExportLimit {
 		return nil, errors.New("quality-check surface reopen has unsafe evidence paths or scope")
 	}
 	if _, err := VerifyQualityCheckFinalization(root, catalog, locale, receipt.PreviousSnapshotID); err != nil {

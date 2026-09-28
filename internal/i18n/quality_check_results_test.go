@@ -552,6 +552,59 @@ func TestRevisionExportRequiresPreviousNonAFindingAndFreezesProvenance(t *testin
 	}
 }
 
+func TestRevisionExportLimitSixty(t *testing.T) {
+	for _, test := range []struct {
+		name, rating string
+		count        int
+	}{
+		{name: "31 B revisions", rating: "B", count: 31},
+		{name: "60 C revisions", rating: "C", count: 60},
+		{name: "D revision remains eligible", rating: "D", count: 1},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			root, catalog, _ := makeRetranslationReviewBatchFixture(t, test.count, "qc-001")
+			ids := make([]string, 0, test.count)
+			for _, page := range catalog.Pages {
+				ids = append(ids, page.ID)
+			}
+			recordQualityCheckRatings(t, root, catalog, "qc-001", "", test.rating, ids)
+			exported, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{
+				Locale: "zh-CN", UnitIDs: ids, AllowReexport: true, PreviousSnapshotID: "qc-001",
+			})
+			if err != nil {
+				t.Fatal(err)
+			}
+			if exported.UnitCount != test.count {
+				t.Fatalf("revision count=%d, want %d", exported.UnitCount, test.count)
+			}
+			manifest := readRetranslationManifest(t, root, exported.BatchID)
+			for _, unit := range manifest.Units {
+				if unit.RevisionFeedbackSource != "quality_check" || unit.PreviousRating != test.rating || unit.PreviousFinding == "" {
+					t.Fatalf("revision provenance=%+v", unit)
+				}
+			}
+		})
+	}
+
+	t.Run("61 is rejected before batch creation", func(t *testing.T) {
+		root := t.TempDir()
+		catalog := retranslationTestCatalog(61)
+		ids := make([]string, 0, len(catalog.Pages))
+		for _, page := range catalog.Pages {
+			ids = append(ids, page.ID)
+		}
+		_, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{
+			Locale: "zh-CN", UnitIDs: ids, AllowReexport: true, PreviousSnapshotID: "qc-001",
+		})
+		if err == nil || !strings.Contains(err.Error(), "must not contain more than 60 TranslationUnits") {
+			t.Fatalf("revision 61 error=%v", err)
+		}
+		if _, statErr := os.Stat(filepath.Join(root, "data", "retranslation-runs")); !os.IsNotExist(statErr) {
+			t.Fatalf("revision limit failure created batch data: %v", statErr)
+		}
+	})
+}
+
 func TestRevisionExportRejectsLegacyFinalReviewFeedbackAfterQualityCheckA(t *testing.T) {
 	root, catalog, batchID := makeRetranslationReviewBatchFixture(t, 1, "qc-001")
 	recordQualityCheckRatings(t, root, catalog, "qc-001", "", "A", []string{"lesson/1"})
@@ -750,6 +803,84 @@ func TestSurfaceReviewFindingCanExplicitlyReopenFinalizedAWithoutChangingHistory
 	if !reflect.DeepEqual(beforeResults, afterResults) || !reflect.DeepEqual(beforeFinalization, afterFinalization) {
 		t.Fatal("surface reopen modified historical QC/finalization evidence")
 	}
+}
+
+func TestSurfaceReviewReopenLimitSixtyAndHistoricalThirtyCompatibility(t *testing.T) {
+	for _, count := range []int{30, 31, 60} {
+		t.Run(fmtInt(count)+" units", func(t *testing.T) {
+			root, catalog, _ := makeRetranslationReviewBatchFixture(t, count, "qc-001")
+			ids := make([]string, 0, count)
+			var evidence strings.Builder
+			finding := "Correct the shared semantic defect."
+			evidence.WriteString("decision = failed\n" + finding + "\n")
+			for _, page := range catalog.Pages {
+				ids = append(ids, page.ID)
+				evidence.WriteString("TranslationUnit " + page.ID + "\n")
+			}
+			recordQualityCheckRatings(t, root, catalog, "qc-001", "", "A", ids)
+			if _, _, err := FinalizeQualityCheck(root, catalog, QualityCheckFinalizeOptions{Locale: "zh-CN", SnapshotID: "qc-001"}); err != nil {
+				t.Fatal(err)
+			}
+			evidenceDir := filepath.Join(root, "data", "locale-surface-reviews", "zh-CN")
+			if err := os.MkdirAll(evidenceDir, 0755); err != nil {
+				t.Fatal(err)
+			}
+			if err := os.WriteFile(filepath.Join(evidenceDir, "surface-failed.md"), []byte(evidence.String()), 0644); err != nil {
+				t.Fatal(err)
+			}
+			receipt, receiptPath, err := RecordQualityCheckSurfaceReopen(root, catalog, QualityCheckSurfaceReopenOptions{
+				Locale: "zh-CN", ReopenID: "surface-fix-001", PreviousSnapshotID: "qc-001",
+				SurfaceReviewID: "surface-failed", Finding: finding, UnitIDs: ids,
+			})
+			if err != nil {
+				t.Fatal(err)
+			}
+			if receipt.SchemaVersion != 1 || receipt.UnitCount != count {
+				t.Fatalf("surface reopen receipt=%+v", receipt)
+			}
+			before, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(receiptPath)))
+			if err != nil {
+				t.Fatal(err)
+			}
+			readBack, err := readCurrentQualityCheckSurfaceReopen(root, catalog, "zh-CN", "surface-fix-001")
+			if err != nil || readBack.UnitCount != count {
+				t.Fatalf("read surface reopen=%+v err=%v", readBack, err)
+			}
+			exported, err := ExportRetranslationBatch(root, catalog, RetranslationExportOptions{
+				Locale: "zh-CN", UnitIDs: ids, AllowReexport: true,
+				PreviousSnapshotID: "qc-001", SurfaceReopenID: "surface-fix-001",
+			})
+			if err != nil || exported.UnitCount != count {
+				t.Fatalf("surface revision export=%+v err=%v", exported, err)
+			}
+			after, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(receiptPath)))
+			if err != nil {
+				t.Fatal(err)
+			}
+			if !reflect.DeepEqual(before, after) {
+				t.Fatal("reading/exporting surface reopen rewrote its receipt")
+			}
+		})
+	}
+
+	t.Run("61 is rejected before receipt creation", func(t *testing.T) {
+		root := t.TempDir()
+		catalog := retranslationTestCatalog(61)
+		ids := make([]string, 0, len(catalog.Pages))
+		for _, page := range catalog.Pages {
+			ids = append(ids, page.ID)
+		}
+		_, _, err := RecordQualityCheckSurfaceReopen(root, catalog, QualityCheckSurfaceReopenOptions{
+			Locale: "zh-CN", ReopenID: "surface-fix-061", PreviousSnapshotID: "qc-001",
+			SurfaceReviewID: "surface-failed", Finding: "finding", UnitIDs: ids,
+		})
+		if err == nil || !strings.Contains(err.Error(), "must not exceed 60 TranslationUnits") {
+			t.Fatalf("surface reopen 61 error=%v", err)
+		}
+		if _, statErr := os.Stat(qualityCheckSurfaceReopenPath(root, "zh-CN", "surface-fix-061")); !os.IsNotExist(statErr) {
+			t.Fatalf("surface reopen limit failure created receipt: %v", statErr)
+		}
+	})
 }
 
 func TestSurfaceReviewReopenFailsClosedOnScopeAndEvidence(t *testing.T) {

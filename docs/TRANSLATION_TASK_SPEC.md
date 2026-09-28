@@ -251,3 +251,34 @@ Go 言語ツアーへようこそ。
 本文件只定义翻译任务的输入、输出和结构边界。
 
 raw response 后续如何 restore、由 validator 如何校验、如何生成完整 locale Candidate Snapshot、如何进行 Translation Quality Review，以及何时 promotion 为 canonical candidate 和 `ready` 状态，分别由相关 workflow 与规范负责。
+
+### Generation 执行者主动诊断 validator
+
+每个长期 Generation 执行者都对“自然译文与机器规则是否正确相容”承担主动诊断责任。目标语言自然句法与 validator 冲突，或执行者怀疑 validator 漏检时，不得只按报错机械改译文，也不得只凭聊天上下文宣称规则有误；应核对完整 source、完整 candidate、全部保护 token 及其 identity、restore/validation evidence，并在需要时使用仓库锁定的真实 Go Present parser/render 行为或 Go 源码语义验证判断。
+
+诊断必须明确区分：
+
+- 真实的翻译语义、完整性或自然度缺陷；
+- 非法 Go 代码、present 结构或 Section topology 改变；
+- 受保护内容、token identity、链接绑定、preformatted 或机器语义破坏；
+- validator 的确定性误报或漏报；
+- Generation 执行者自行增加、但正式规则并不要求的过度预检。
+
+Page 与 Example 的 token 顺序边界不同：
+
+- 普通 Page 可按目标语言自然语序整体移动完整 inline-code pair、完整链接及对应自然语言；完整链接移动时必须保持 label-target 绑定。不得缺失、重复或交叉 token，不得拆开 opener/closer、重新绑定链接、非法移动 directive、破坏 preformatted 结构或改变 Section topology。Page 不采用 Example 的全局固定 token 顺序约束，也不得由 Generation 执行者自行增加该约束。
+- Example 继续保持严格 token 顺序、完整 Go 文件结构和所有非注释机器语义。只有正式识别为可翻译 teaching comment 的自然语言可以改变；Go 代码、标识符、字符串、comment delimiter、机器语义注释及其顺序不得改变。
+
+规则修正应优先采用确定性、通用且最小的方案。只有证据证明某种目标语言特有的语法机制无法由通用方案正确处理时，才可提出 narrowly scoped locale-specific 规则；提案必须明确 locale、允许的精确翻译区域和结构、禁止的邻接案例及影响范围，不能为单个失败样本整体放宽共享 validator。
+
+每项 validator 改进提案必须保存：
+
+1. 完整 source 与完整 candidate；
+2. 真实 restore/validation 失败或漏检 evidence；
+3. 预期的 Go Present 解析/渲染行为或 Go 源码语义；
+4. 至少一个确实应通过的 positive fixture；
+5. 足以保护现有边界的 negative fixtures，包括适用的 token 缺失/重复/交叉、link rebind、directive 错位、preformatted/Section topology 破坏、代码或 identifier 改写。
+
+不得为绕过疑似误报而硬改自然译文、插入不自然空格、删除自然语言、伪造 retry、擅自重译已审核通过的成果，或降低 A-only Quality Check、Glossary Review、Locale Surface Review 等正式门槛。Generation 执行者可以完成诊断并保存具体的最小修改方案；生产 validator 或共享校验规则的代码修改必须先取得维护者明确批准，再交由获授权的仓库级 Codex 改造任务实施。
+
+只有已确定属于规则误报、restore 已成功、原 candidate 本来有效，且规则修复已获批并正式实施时，才按 [Retranslation 执行手册](RETRANSLATION_RUNBOOK.md) 使用 `retranslation revalidate`。真正的译文质量缺陷仍走 revision、automatic validation 与独立 re-QC；不得改写旧 validation、candidate、review evidence、provenance 或 finalization。历史 pa-IN `basics/5` attempt 1 已为 `passed`，只说明当时的 directive placement 争议应以完整 evidence 和真实 parser 行为诊断，不授权改写该历史或预设现行 validator 存在 bug。

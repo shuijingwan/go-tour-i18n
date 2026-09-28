@@ -420,7 +420,7 @@ go run -mod=readonly ./cmd/tour-i18n retranslation export \
   --surface-reopen-id <id> --id <unit-id> [--id <unit-id> ...]
 ```
 
-receipt 绑定当前 finalized predecessor、正式 Surface evidence 的 path/SHA-256、精确同 kind TU identity 和 finding；`--finding` 必须原样存在于该 Markdown，且每个 Unit ID 必须作为完整标识出现，不能用子串冒充；revision unit set 必须 exact-match。manifest 使用 `revision_feedback_source=surface_review` 与显式 authorization ID。revision 后的新 full Snapshot 仍以旧 finalized Snapshot 为 predecessor：未变化 A 正常 carry-forward，变化 Unit 进入 re-QC。任何 evidence、finalization 或 TU identity 变化都 fail closed。
+receipt 绑定当前 finalized predecessor、正式 Surface evidence 的 path/SHA-256、精确同 kind TU identity 和 finding；`--finding` 必须原样存在于该 Markdown，且每个 Unit ID 必须作为完整标识出现，不能用子串冒充；revision unit set 必须 exact-match，默认且硬性上限为 60，Page / Example 不得混合。manifest 使用 `revision_feedback_source=surface_review` 与显式 authorization ID。revision 后的新 full Snapshot 仍以旧 finalized Snapshot 为 predecessor：未变化 A 正常 carry-forward，变化 Unit 进入 re-QC。任何 evidence、finalization 或 TU identity 变化都 fail closed。
 
 ## Present 可见文本审核
 

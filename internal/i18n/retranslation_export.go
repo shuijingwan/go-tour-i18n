@@ -11,10 +11,10 @@ import (
 )
 
 const (
-	// DefaultRetranslationExportLimit remains the default for every export mode.
-	// An automatic Page selection may explicitly opt into the 60-Page baseline.
-	DefaultRetranslationExportLimit = 30
-	MaxAutomaticPageExportLimit     = 60
+	// Retranslation export batches are always kind-homogeneous and use the same
+	// default and hard limit for automatic, explicit, and revision selection.
+	DefaultRetranslationExportLimit = 60
+	MaxRetranslationExportLimit     = 60
 )
 
 type RetranslationGenerator string
@@ -146,18 +146,11 @@ func ExportRetranslationBatch(root string, catalog *Catalog, options Retranslati
 	if limit < 1 {
 		return nil, errors.New("retranslation export limit must be greater than zero")
 	}
-	automaticPageBatch := len(options.UnitIDs) == 0 && !options.AllowReexport && (options.UnitKind == "" || options.UnitKind == UnitKindPage)
-	if limit > DefaultRetranslationExportLimit {
-		if automaticPageBatch {
-			if limit > MaxAutomaticPageExportLimit {
-				return nil, fmt.Errorf("automatic page retranslation export limit must not exceed %d", MaxAutomaticPageExportLimit)
-			}
-		} else {
-			return nil, fmt.Errorf("this retranslation export mode limit must not exceed %d", DefaultRetranslationExportLimit)
-		}
+	if limit > MaxRetranslationExportLimit {
+		return nil, fmt.Errorf("retranslation export limit must not exceed %d", MaxRetranslationExportLimit)
 	}
-	if len(options.UnitIDs) > DefaultRetranslationExportLimit {
-		return nil, fmt.Errorf("a retranslation batch must not contain more than %d TranslationUnits", DefaultRetranslationExportLimit)
+	if len(options.UnitIDs) > MaxRetranslationExportLimit {
+		return nil, fmt.Errorf("a retranslation batch must not contain more than %d TranslationUnits", MaxRetranslationExportLimit)
 	}
 	if err := RequireCurrentGlossaryReview(root, options.Locale); err != nil {
 		return nil, fmt.Errorf("retranslation export requires current Glossary Review coverage: %w", err)

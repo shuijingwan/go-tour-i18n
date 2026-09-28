@@ -85,7 +85,7 @@ go run -mod=readonly ./cmd/tour-i18n retranslation export \
 
 未提供 `--batch-id` 时，`--generator chatgpt` 选择 `chatgpt-<locale>-NNN`；Codex 是兼容默认并使用 `codex-<locale>-NNN`。两种 prefix 共享同一 numeric namespace，latest export、Candidate Snapshot 与 promotion 都按 numeric suffix 判断，不按 prefix 字典序判断。显式 `--batch-id` 保持既有兼容语义；generator 不写入 manifest，也不构成可由机器证明的模型 provenance。
 
-新增 locale 的首次 Page batch 仍使用 60-Page 基线，Examples 独立；revision 与 retry 范围不变。
+新增 locale 的首次 Page batch 仍使用 60-Page 基线，Examples 独立。初次自动 Page / Example、显式 `--id`、正常 Quality Check B/C/D revision 与 Surface reopen 精确 revision export 均使用默认且硬性上限 60，Page / Example 永不混合；当前正式课程仍只有 19 个 eligible Example，不为凑满批次扩大 scope。retry 范围不变。
 
 initial Page / Example bulk export 后由 Local terminal 生成 provider-neutral Generation ZIP 并 handoff；ChatGPT 完整读取一个附件即可取得 manifest、全部 inputs、完整 glossary 与当前 authority，无需再通过 Remote Desktop Commander 逐文件读取。译文写入 `/tmp/.go-tour-i18n-generation/<locale>/<batch-id>/` 隔离目录；首次 Page / Example、revision 与 retry 都可使用同一目录 import：
 
@@ -113,6 +113,14 @@ go run -mod=readonly ./cmd/tour-i18n generation-bundle import \
 Reviewer ZIP 继续由维护者上传给独立 Reviewer。只有确需兼容 outputs ZIP / Result ZIP 或 Reviewer ZIP 时，才涉及当前产品所需的附件上传/下载；本流程没有无需用户操作即可跨 ChatGPT / Ubuntu 或跨 session 双向传送附件的通道。
 
 恢复执行前先核对 `raw-responses/` 或 retry attempt、`result.json`、`validation/`、Snapshot 与 QC evidence。若正式输出已经 import，直接从缺失的 process / retry 或后续 evidence 继续；若 automatic validation evidence 已 current，则不得覆盖输出、重复 import 或重放 validation。CLI 的 stale、exact-set 与 no-overwrite failure 是保护信号，不是要求清空既有状态后重来。
+
+### Validator 冲突的主动诊断
+
+长期 ChatGPT Generation session 在目标语言自然句法与 validator 冲突、或怀疑 validator 漏检时，必须按 [翻译任务规范](TRANSLATION_TASK_SPEC.md#generation-执行者主动诊断-validator) 主动完成证据诊断，而不是把所有报错归为译文错误或为过 gate 机械改写自然译文。诊断至少核对完整 source/candidate、全部 protected token、restore/validation evidence，必要时核对真实 Go Present 解析/渲染或 Go 源码语义，并明确区分翻译缺陷、非法结构/代码变化、受保护内容破坏、validator 误报/漏报及 session 自行增加的过度预检。
+
+普通 Page 允许完整 inline-code pair 与完整链接连同自然语言按目标语言语序整体移动，同时保持 link label-target 绑定和全部结构关系；不得对 Page 额外施加 Example 才有的全局固定 token 顺序。Example 仍严格保持 token 顺序、完整 Go 文件和非注释机器语义，只翻译正式允许的 teaching comment 自然语言。
+
+ChatGPT Generation session 可以保存完整复现、positive/negative fixtures 与确定性最小修正方案，优先提出通用修正；只有充分证据证明通用方案不适用时才提出窄化的 locale-specific 规则。它不得自行修改生产 validator 或共享校验规则，必须停在维护者批准边界并交给获授权的仓库级 Codex 任务。不得用不自然空格、删句、伪造 retry、重译已审核通过成果或降低任何语言 gate 绕过疑似误报。只有正式批准并实施规则修复、restore 已成功且原 candidate 已证实有效时，才使用正式 `retranslation revalidate`；真正的语言质量问题继续走 revision 与独立 re-QC。
 
 ## Remote Desktop Commander 安全写入
 

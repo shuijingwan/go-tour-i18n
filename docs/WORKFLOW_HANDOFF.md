@@ -34,6 +34,8 @@ Glossary Review 如保存独立 Markdown，也使用 `review-evidence save`。�
 5. 暂不能导出时：说明缺少终端、附件通道、current input 或其他真实原因，并给出正确的导出、current-check 与 SHA-256 命令，不能只写“请上传 ZIP”。
 6. 失败交接：记录已完成事实、失败 stage、mutation 为 `none` / `known` / `unknown`、最小安全恢复路径。`mutation=unknown` 时禁止盲目重放写操作。
 
+Generation 遇到自然句法与 validator 冲突或疑似漏检而需要维护者决策时，失败交接还必须附上完整 source/candidate、protected token identity、真实 restore/validation evidence、预期 parser/render 或 Go 语义，以及至少一个 positive fixture 和保护现有边界的 negative fixtures；同时明确归类为译文缺陷、非法结构/代码变化、受保护内容破坏、validator 误报/漏报，或额外过度预检。只交付具体最小提案，不自行修改生产 validator。维护者未批准规则改造前不得以 retry、硬改自然译文或降低 gate 绕过；获批修复实施后，也只有 restore 成功且原 candidate 有效的确定性规则误报才进入正式 `retranslation revalidate`。
+
 闭环内合法的短机械操作连续执行到真正需要附件上传、维护者决策、明确“继续”或 HUMAN gate。`promotion`、build、preview/browser verifier、publish、Production/deploy/verifier、search closeout、最终 commit/push 仍由维护者 Local terminal 执行。
 
 ## ZIP 交接模板
@@ -88,6 +90,8 @@ stop: 等待维护者明确“继续”；此前不启动下一次 model invocat
 当前 AI execution environment 先运行 `quality-check preflight`，确认 persisted predecessor 与 scope，再记录本组；只有 record 成功后才导出下一组，运行 `reviewer-bundle-check` 和 `sha256sum`。交接给出真实 ZIP 绝对路径、hash、stable indexes 和目标 Reviewer session。首次默认顺序固定为 Page `1–60`、Page `61–103`、Example `104–122`，每组使用新的用户请求/model invocation。
 
 ### Revision 后导出 pending Reviewer ZIP
+
+正常 Quality Check B/C/D revision 与 Surface reopen 精确 revision batch 默认且最多包含 60 个 TranslationUnits，Page / Example 分开，并只包含正式 finding 授权的精确 scope；legacy Final Review 的独立 30-Unit 审核限制不变。
 
 新 Snapshot 建立后先执行：
 

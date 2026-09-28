@@ -89,7 +89,7 @@ func TestParseRetranslationExportOptionsGenerator(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		if options.Generator != i18n.RetranslationGeneratorCodex || jsonOutput {
+		if options.Generator != i18n.RetranslationGeneratorCodex || options.Limit != 60 || jsonOutput {
 			t.Fatalf("options=%+v json=%t", options, jsonOutput)
 		}
 	})

@@ -892,7 +892,7 @@ func parseRetranslationExportOptions(args []string) (i18n.RetranslationExportOpt
 	batchID := fs.String("batch-id", "", "optional explicit batch id")
 	generator := fs.String("generator", string(i18n.RetranslationGeneratorCodex), "automatic batch generator: codex (default) or chatgpt")
 	unitKind := fs.String("unit-kind", "", "自动选批的翻译单元类型：page（默认）或 example")
-	limit := fs.Int("limit", i18n.DefaultRetranslationExportLimit, "自动批次中最多包含的独立翻译单元数（默认 30；自动 Page 选批可显式至 60，Example、显式 --id 与 revision 模式上限 30）")
+	limit := fs.Int("limit", i18n.DefaultRetranslationExportLimit, "批次中最多包含的独立翻译单元数（默认且上限 60；Page 与 Example 不得混合）")
 	jsonOutput := fs.Bool("json", false, "输出完整 machine-readable JSON")
 	allowReexport := fs.Bool("allow-reexport", false, "allow explicitly requested page ids to be exported again")
 	previousSnapshotID := fs.String("previous-snapshot-id", "", "previous Candidate Snapshot containing Quality Check B/C/D revision feedback")

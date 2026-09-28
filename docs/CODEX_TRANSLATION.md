@@ -58,9 +58,9 @@ Codex 生成或修订 glossary、UI catalog、article metadata 和其他 locale-
 
 ## 新增 locale 的首次 Page batch
 
-新增 locale 的首次 Page 翻译当前推荐生产基线是：每批目标且最多 `60` 个完整 Page TranslationUnit。TranslationUnit 仍绝对不可拆分或合并；Page 必须按正式 Catalog/source 顺序连续组织。当前 A Tour of Go 有 103 个 Page 时，典型安排为：`60 Pages → 剩余 43 Pages → Examples 独立 batch`。执行首次 Page export 时显式使用 `--unit-kind page --limit 60`，不依赖命令的默认 limit。
+新增 locale 的首次 Page 翻译当前推荐生产基线是：每批目标且最多 `60` 个完整 Page TranslationUnit。TranslationUnit 仍绝对不可拆分或合并；Page 必须按正式 Catalog/source 顺序连续组织。当前 A Tour of Go 有 103 个 Page 时，典型安排为：`60 Pages → 剩余 43 Pages → 19 Examples 独立 batch`。执行首次 Page export 时仍显式使用 `--unit-kind page --limit 60`，使推荐调度在命令中可见；CLI 当前默认同为 60。
 
-Example 必须始终独立于 Page batch，不得混合。revision batch 只包含确实需要 revision 的 TranslationUnit，不得为了凑满 60 扩大范围；retry 规则不因 Page batch 大小而改变。
+初次自动 Page / Example、显式 `--id`、正常 Quality Check B/C/D revision，以及经 `quality-check surface-reopen` 授权的精确 revision export，均使用默认且硬性上限 60。Example 必须始终独立于 Page batch，不得混合；当前正式课程仍只有 19 个 eligible Example。revision batch 只包含确实需要 revision 的 TranslationUnit，不得为了凑满 60 扩大范围；retry 规则不因 batch 上限改变。
 
 `60` 是当前推荐生产基线，不是已证明的理论最优值。es-ES 的实际执行显示小 batch 有明显固定执行成本；it-IT 已完成 60-Page batch，未暴露需要回退该规模的质量或 automatic validation 问题。因此为减少 batch 数量和人工操作采用此基线，但不从粗略额度数字推断其更省额度。新增 locale 应按本文件的窗口观察规则将 Codex 总额度作为显式运营约束；只有未来真实 evidence 表明 60 Page 导致模型超时或执行不稳定、automatic validation failure 增加、QC B/C/D 或 revision 成本增加、或 Codex 总额度/总耗时异常时，才重新调整该基线。
 
@@ -90,6 +90,14 @@ Page staging 输出为与 bundle `expected_outputs` 对应的 `.article`，Examp
 initial bulk ZIP handoff 不自行跨越到后续语言审核。进入 Generation / Reviewer 闭环后，Codex 默认自动执行当前小批工作所需的 `process`、validation、Snapshot / scope、reviewer-bundle 和审核结果落盘 / `quality-check finalize`；正式 Quality Check 仍必须由独立 ChatGPT conversation/session 完成。`promote` 属于闭环收口后的维护者 Local terminal 操作，Codex 不自动执行。
 
 Codex 生成本轮 TranslationUnit 时，后续正式 Quality Check 必须由独立 ChatGPT conversation/session 执行；生成上下文不得同时充当正式 reviewer。
+
+### Validator 冲突的主动诊断
+
+长期 Codex Generation role 在目标语言自然句法与 validator 冲突、或怀疑 validator 漏检时，必须按 [翻译任务规范](TRANSLATION_TASK_SPEC.md#generation-执行者主动诊断-validator) 主动完成证据诊断。应核对完整 source/candidate、全部 protected token、restore/validation evidence，必要时直接验证仓库锁定的真实 Go Present 解析/渲染或 Go 源码语义，并明确区分翻译缺陷、非法结构/代码变化、受保护内容破坏、validator 误报/漏报，以及 Codex 自行增加的过度预检。
+
+普通 Page 可按目标语言自然语序整体移动完整 inline-code pair、完整链接和相应自然语言，但必须保持 link label-target 绑定及 directive、preformatted、Section topology 等结构边界；不得把 Example 的全局固定 token 顺序错误地套用到 Page。Example 继续严格保持 token 顺序、完整 Go 文件与非注释机器语义，只有正式允许的 teaching comment 自然语言可以改变。
+
+Codex Generation role 可以保存完整复现、positive/negative fixtures 与确定性最小修正方案，并优先提出通用修正；只有充分证据证明通用方案不适用时才提出窄化的 locale-specific 规则。Generation role 即使具备仓库写权限，也不得因此自行修改生产 validator 或共享校验规则：真正的代码改造必须先取得维护者明确批准，再由独立获授权的 repository-level Codex 任务实施。不得以不自然空格、删句、伪造 retry、重译已审核通过成果或降低任何语言 gate 绕过疑似误报。只有正式批准并实施规则修复、restore 已成功且原 candidate 已证实有效时，才使用正式 `retranslation revalidate`；真正的语言质量问题继续走 revision 与独立 re-QC。
 
 ## Retry 与 revision
 

@@ -43,7 +43,7 @@ go run -mod=readonly ./cmd/tour-i18n retranslation export \
 
 开始翻译前，当前生成执行者必须读取当前 batch 的：
 
-新增 locale 首次 Page batch 的推荐生产基线、正式顺序、60-Page 上限、Examples 分离、revision 范围和未来调整条件，以 [Codex 正式语言生成执行规范](CODEX_TRANSLATION.md#新增-locale-的首次-page-batch) 为唯一执行规则。首次 Page export 必须显式传 `--unit-kind page --limit 60`；不得混合 Page 与 Example，也不做均衡分片。Example 自动选批、显式 `--id` 选批和全部 `--allow-reexport` revision batch 始终最多 30 个。
+新增 locale 首次 Page batch 的推荐生产基线、正式顺序和未来调整条件，以 [Codex 正式语言生成执行规范](CODEX_TRANSLATION.md#新增-locale-的首次-page-batch) 为唯一执行规则。首次 Page export 仍显式传 `--unit-kind page --limit 60`；初次自动 Page / Example、显式 `--id`、正常 Quality Check B/C/D revision 与经 `quality-check surface-reopen` 授权的精确 revision export 均使用默认且硬性上限 60。Page 与 Example 永不混合，也不做均衡分片；当前正式课程仍只有 19 个 eligible Example，不为凑满批次扩大 scope。retry scope 不因本上限改变。
 
 未传 `--batch-id` 时，batch 根据 generator 自动命名为 `codex-<locale>-NNN` 或 `chatgpt-<locale>-NNN`。两种 prefix 共享同一 numeric namespace；自动编号取实际最大序号后递增，重复 numeric suffix fail closed。同一 TranslationUnit 的 latest export/source revision 也按 numeric suffix 选择，不依赖 prefix 字典序。显式 `--batch-id` 的既有兼容行为、历史 batch 名称、manifest 和 evidence 均保持不变；manifest 不新增 provider/model/reasoning provenance。
 
@@ -205,7 +205,7 @@ go run -mod=readonly ./cmd/tour-i18n retranslation export \
 
 - 同一 Snapshot 中 Quality Check 为 B/C/D 且 finding 非空；
 
-Exporter 验证 Snapshot、Unit、result 与当前 source/candidate/validation/attempt identity；Quality Check A、缺失或 identity 不匹配均不能创建新 revision。manifest 固化 `previous_snapshot_id`、`revision_feedback_source=quality_check`、`previous_rating` 与 `previous_finding`。历史 `revision_feedback_source=final_review` 字段及 parser 仅为已有 manifest/provenance 解释保留，不能创建新 batch。每批仍最多 30 个且 Page/Example 不混合；Revision 的正式翻译输入仍是 manifest、manifest 全部 `inputs/*` 与 locale glossary 三者不可拆分。
+Exporter 验证 Snapshot、Unit、result 与当前 source/candidate/validation/attempt identity；Quality Check A、缺失或 identity 不匹配均不能创建新 revision。manifest 固化 `previous_snapshot_id`、`revision_feedback_source=quality_check`、`previous_rating` 与 `previous_finding`。历史 `revision_feedback_source=final_review` 字段及 parser 仅为已有 manifest/provenance 解释保留，不能创建新 batch。每批默认且最多 60 个，Page / Example 不混合，也不得为凑满批次扩大 revision scope；Revision 的正式翻译输入仍是 manifest、manifest 全部 `inputs/*` 与 locale glossary 三者不可拆分。
 
 ## 8. Machine finalization 与 promotion
 
