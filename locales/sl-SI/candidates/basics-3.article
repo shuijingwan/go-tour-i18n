@@ -1,0 +1,16 @@
+* Izvožena imena
+
+V jeziku Go je ime izvoženo, če se začne z veliko začetnico.
+Na primer, `Pizza` je izvoženo ime, prav tako `Pi`, ki je izvoženo iz
+paketa `math`.
+
+Imeni `pizza` in `pi` se ne začneta z veliko začetnico, zato nista izvoženi.
+
+Ko uvozite paket, se lahko sklicujete le na njegova izvožena imena.
+Neizvožena imena niso dostopna zunaj paketa.
+
+Zaženite kodo in si oglejte sporočilo o napaki.
+
+Napako odpravite tako, da `math.pi` preimenujete v `math.Pi`, nato poskusite znova.
+
+.play basics/exported-names.go

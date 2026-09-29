@@ -1,0 +1,12 @@
+* Vaja: rot13Reader
+
+Pogost vzorec je [[/pkg/io/#Reader][io.Reader]], ki ovije drug `io.Reader` in na neki način spremeni tok.
+
+Funkcija [[/pkg/compress/gzip/#NewReader][gzip.NewReader]] na primer sprejme `io.Reader` (tok stisnjenih podatkov) in vrne `*gzip.Reader`, ki prav tako implementira `io.Reader` (tok razširjenih podatkov).
+
+Implementirajte `rot13Reader`, ki implementira `io.Reader` in bere iz `io.Reader`, pri tem pa tok spreminja tako, da za vse črke uporabi nadomestno šifro [[https://en.wikipedia.org/wiki/ROT13][rot13]].
+
+Tip `rot13Reader` je že pripravljen.
+Poskrbite, da bo implementiral `io.Reader`, tako da implementirate njegovo metodo `Read`.
+
+.play methods/exercise-rot-reader.go

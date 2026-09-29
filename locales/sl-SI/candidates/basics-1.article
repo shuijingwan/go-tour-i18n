@@ -1,0 +1,11 @@
+* Paketi
+
+Vsak program Go je sestavljen iz paketov.
+
+Programi se začnejo izvajati v paketu `main`.
+
+Ta program uporablja paketa z uvoznima potema `"fmt"` in `"math/rand"`.
+
+Po dogovoru je ime paketa enako zadnjemu elementu uvozne poti. Paket `"math/rand"` na primer vsebuje datoteke, ki se začnejo s stavkom `package`rand`.
+
+.play basics/packages.go

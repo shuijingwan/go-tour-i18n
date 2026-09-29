@@ -1,0 +1,13 @@
+* Vježba: slike
+
+Sjećate li se [[/tour/moretypes/18][generatora slika]] koji ste ranije napisali? Napišimo još jedan, ali ovaj će put umjesto isječka podataka vratiti implementaciju sučelja `image.Image`.
+
+Definirajte vlastiti tip `Image`, implementirajte [[/pkg/image/#Image][potrebne metode]] i pozovite `pic.ShowImage`.
+
+`Bounds` treba vratiti `image.Rectangle`, primjerice `image.Rect(0,`0,`w,`h)`.
+
+`ColorModel` treba vratiti `color.RGBAModel`.
+
+`At` treba vratiti boju; vrijednost `v` iz prethodnog generatora slika odgovara vrijednosti `color.RGBA{v,`v,`255,`255}` u ovom generatoru.
+
+.play methods/exercise-images.go

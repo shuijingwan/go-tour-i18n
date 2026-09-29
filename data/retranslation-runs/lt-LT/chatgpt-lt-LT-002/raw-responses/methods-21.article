@@ -1,0 +1,17 @@
+* Skaitytuvai
+
+Paketas ⟪GTI18N_120c3fc9_000001⟫io⟪GTI18N_120c3fc9_000002⟫ apibrėžia sąsają ⟪GTI18N_120c3fc9_000003⟫io.Reader⟪GTI18N_120c3fc9_000004⟫, kuri atitinka duomenų srauto skaitymo galą.
+
+⟪GTI18N_120c3fc9_000005⟫ standartinėje bibliotekoje yra [[⟪GTI18N_120c3fc9_000006⟫][daug šios sąsajos įgyvendinimų]], įskaitant failus, tinklo ryšius, glaudintuvus, šifrus ir kitus.
+
+Sąsaja ⟪GTI18N_120c3fc9_000007⟫io.Reader⟪GTI18N_120c3fc9_000008⟫ turi metodą ⟪GTI18N_120c3fc9_000009⟫Read⟪GTI18N_120c3fc9_000010⟫:
+
+⟪GTI18N_120c3fc9_000011⟫
+
+⟪GTI18N_120c3fc9_000012⟫Read⟪GTI18N_120c3fc9_000013⟫ užpildo pateiktą baitų pjūvį duomenimis ir grąžina užpildytų baitų skaičių bei klaidos reikšmę. Srautui pasibaigus jis grąžina klaidą ⟪GTI18N_120c3fc9_000014⟫io.EOF⟪GTI18N_120c3fc9_000015⟫.
+
+Pavyzdžio kodas sukuria
+[[⟪GTI18N_120c3fc9_000016⟫][⟪GTI18N_120c3fc9_000017⟫strings.Reader⟪GTI18N_120c3fc9_000018⟫]]
+ir skaito jo išvestį po 8 baitus.
+
+⟪GTI18N_120c3fc9_000019⟫

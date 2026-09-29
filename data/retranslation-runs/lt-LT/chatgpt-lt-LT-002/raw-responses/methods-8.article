@@ -1,0 +1,15 @@
+* Reikšminio ar rodyklinio metodo imtuvo pasirinkimas
+
+Yra dvi priežastys naudoti rodyklinį metodo imtuvą.
+
+Pirma, kad metodas galėtų keisti reikšmę, į kurią rodo jo metodo imtuvas.
+
+Antra, kad nereikėtų kopijuoti reikšmės kiekvieną kartą iškviečiant metodą.
+Tai gali būti efektyviau, pavyzdžiui, kai metodo imtuvas yra didelė struktūra.
+
+Šiame pavyzdyje ir ⟪GTI18N_357424f2_000001⟫Scale⟪GTI18N_357424f2_000002⟫, ir ⟪GTI18N_357424f2_000003⟫Abs⟪GTI18N_357424f2_000004⟫ yra metodai, kurių metodo imtuvo tipas yra ⟪GTI18N_357424f2_000005⟫*Vertex⟪GTI18N_357424f2_000006⟫, nors metodui ⟪GTI18N_357424f2_000007⟫Abs⟪GTI18N_357424f2_000008⟫ nereikia keisti savo metodo imtuvo.
+
+Apskritai visi konkretaus tipo metodai turėtų turėti arba reikšminius, arba rodyklinius metodo imtuvus, bet ne abiejų rūšių mišinį.
+(Kituose keliuose puslapiuose pamatysime, kodėl.)
+
+⟪GTI18N_357424f2_000009⟫

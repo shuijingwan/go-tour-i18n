@@ -1,0 +1,14 @@
+* Pjūvio literalai
+
+Pjūvio literalas yra panašus į masyvo literalą, tik be ilgio.
+
+Tai yra masyvo literalas:
+
+	[3]bool{true, true, false}
+
+O ši išraiška sukuria tokį patį masyvą kaip pirmiau,
+tada sudaro į jį nukreiptą pjūvį:
+
+	[]bool{true, true, false}
+
+.play moretypes/slice-literals.go

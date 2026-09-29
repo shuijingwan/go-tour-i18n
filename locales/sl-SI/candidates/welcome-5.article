@@ -1,0 +1,19 @@
+* Go Playground
+
+Ta ogled temelji na [[https://play.golang.org/][Go Playground]], spletni
+storitvi, ki teče na strežnikih [[/][golang.org]].
+
+Storitev prejme program Go, ga prevede, poveže in zažene v
+izoliranem okolju, nato pa vrne izhod.
+
+Za programe, ki jih je mogoče izvajati v okolju Playground, veljajo omejitve:
+
+- V okolju Playground se čas začne pri 2009-11-10 23:00:00 UTC (ugotavljanje pomena tega datuma je vaja za bralca). Tako je predpomnjenje programov lažje, ker imajo determinističen izhod.
+
+- Omejeni so tudi čas izvajanja ter poraba CPU in pomnilnika, program pa ne more dostopati do zunanjih omrežnih gostiteljev.
+
+Playground uporablja najnovejšo stabilno izdajo jezika Go.
+
+Več preberite v članku »[[/blog/playground][Inside the Go Playground]]«.
+
+.play welcome/sandbox.go

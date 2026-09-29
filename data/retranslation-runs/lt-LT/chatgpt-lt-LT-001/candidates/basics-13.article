@@ -1,0 +1,21 @@
+* Tipo konvertavimas
+
+Išraiška `T(v)` konvertuoja reikšmę `v` į tipą `T`.
+
+Keletas skaitinių tipų konvertavimų:
+
+	var i int = 42
+	var f float64 = float64(i)
+	var u uint = uint(f)
+
+Arba, paprasčiau:
+
+	i := 42
+	f := float64(i)
+	u := uint(f)
+
+Skirtingai nei C kalboje, Go priskiriant skirtingų tipų reikšmes reikia
+aiškaus konvertavimo.
+Pabandykite pavyzdyje pašalinti `float64` arba `uint` konvertavimą ir pažiūrėkite, kas nutiks.
+
+.play basics/type-conversions.go

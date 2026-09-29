@@ -1,0 +1,13 @@
+* Literali isječka
+
+Literal isječka sličan je literalu polja bez duljine.
+
+Ovo je literal polja:
+
+	[3]bool{true, true, false}
+
+A ovo stvara isto polje kao gore, a zatim izrađuje isječak koji se na njega poziva:
+
+	[]bool{true, true, false}
+
+.play moretypes/slice-literals.go

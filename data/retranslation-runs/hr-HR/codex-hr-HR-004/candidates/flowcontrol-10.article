@@ -1,0 +1,14 @@
+* Redoslijed vrednovanja naredbe switch
+
+Slučajevi naredbe switch vrednuju se odozgo prema dolje, a vrednovanje se zaustavlja čim se pronađe prvi slučaj koji odgovara.
+
+(Primjerice,
+
+	switch i {
+	case 0:
+	case f():
+	}
+
+ne poziva `f` ako je `i==0`.)
+
+.play flowcontrol/switch-evaluation-order.go

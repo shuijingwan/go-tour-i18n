@@ -1,0 +1,9 @@
+* Sąsajos reikšmės su nil pamatinėmis reikšmėmis
+
+Jei konkreti reikšmė pačioje sąsajoje yra nil, metodas bus iškviestas su nil metodo imtuvu.
+
+Kai kuriose kalbose tai sukeltų nulinės rodyklės išimtį, tačiau ⟪GTI18N_9487ca3c_000001⟫ įprasta rašyti metodus, kurie tinkamai apdoroja iškvietimą su nil metodo imtuvu (kaip šiame pavyzdyje metodas ⟪GTI18N_9487ca3c_000002⟫M⟪GTI18N_9487ca3c_000003⟫).
+
+Atkreipkite dėmesį, kad sąsajos reikšmė, laikanti nil konkrečią reikšmę, pati nėra nil.
+
+⟪GTI18N_9487ca3c_000004⟫

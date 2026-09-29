@@ -1,0 +1,15 @@
+* Range ir close
+
+Siuntėjas gali užverti kanalą naudodamas `close` ir taip nurodyti, kad daugiau reikšmių nebebus siunčiama. Gavėjai gali patikrinti, ar kanalas užvertas, gavimo išraiškai priskirdami antrą parametrą: po
+
+	v, ok := <-ch
+
+`ok` yra `false`, jei nebėra gaunamų reikšmių ir kanalas užvertas.
+
+Ciklas `for`i`:=`range`c` pakartotinai gauna reikšmes iš kanalo, kol šis užveriamas.
+
+*Pastaba:* kanalą turėtų užverti tik siuntėjas, niekada ne gavėjas. Siuntimas į užvertą kanalą sukels panic.
+
+*Dar*viena*pastaba:* kanalai nėra panašūs į failus; paprastai jų užverti nereikia. Užverti kanalą būtina tik tada, kai gavėjui reikia pranešti, kad daugiau reikšmių nebus, pavyzdžiui, norint užbaigti `range` ciklą.
+
+.play concurrency/range-and-close.go

@@ -1,0 +1,21 @@
+* For
+
+Go turi tik vieną ciklo konstrukciją — `for` ciklą.
+
+Pagrindinį `for` ciklą sudaro trys kabliataškiais atskirtos dalys:
+
+- inicijavimo sakinys: vykdomas prieš pirmąją iteraciją
+- sąlygos išraiška: įvertinama prieš kiekvieną iteraciją
+- užbaigimo sakinys: vykdomas kiekvienos iteracijos pabaigoje
+
+Inicijavimo sakinys dažnai yra kintamojo deklaravimas, o jame
+deklaruoti kintamieji matomi tik `for`
+sakinio srityje.
+
+Ciklas nustoja kartotis, kai loginės sąlygos reikšmė tampa `false`.
+
+*Pastaba:* Skirtingai nei tokiose kalbose kaip C, Java ar JavaScript, trijų
+`for` sakinio dalių nereikia apskliausti, o riestiniai skliaustai `{`}`
+visada privalomi.
+
+.play flowcontrol/for.go

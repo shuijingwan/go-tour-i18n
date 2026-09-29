@@ -1,0 +1,11 @@
+* Tipo parametrai
+
+Go funkcijas galima parašyti taip, kad jos veiktų su keliais tipais, naudojant tipo parametrus. Funkcijos tipo parametrai pateikiami laužtiniuose skliaustuose prieš funkcijos argumentus.
+
+  func Index[T comparable](s []T, x T) int
+
+Ši deklaracija reiškia, kad `s` yra bet kurio tipo `T`, atitinkančio įtaisytąjį tipo apribojimą `comparable`, pjūvis. `x` taip pat yra to paties tipo reikšmė.
+
+`comparable` yra naudingas tipo apribojimas, leidžiantis su šio tipo reikšmėmis naudoti operatorius `==` ir `!=`. Šiame pavyzdyje jį naudojame reikšmei palyginti su visais pjūvio elementais, kol randamas atitikmuo. Ši funkcija `Index` veikia su bet kuriuo tipu, kurio reikšmes galima palyginti.
+
+.play generics/index.go

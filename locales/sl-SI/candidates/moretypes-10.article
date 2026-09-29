@@ -1,0 +1,18 @@
+* Privzete meje rezine
+
+Pri rezanju lahko zgornjo ali spodnjo mejo izpustite in uporabite njeno privzeto vrednost.
+
+Privzeta spodnja meja je nič, privzeta zgornja meja pa dolžina osnovne rezine ali tabele.
+
+Za tabelo
+
+	var a [10]int
+
+so naslednji izrazi za rezino enakovredni:
+
+	a[0:10]
+	a[:10]
+	a[0:]
+	a[:]
+
+.play moretypes/slice-bounds.go

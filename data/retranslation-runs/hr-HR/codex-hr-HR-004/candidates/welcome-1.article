@@ -1,0 +1,37 @@
+* Pozdrav, 世界
+
+Dobro došli u obilazak čija je tema [[/][programski jezik Go]].
+
+Obilazak je podijeljen na module kojima možete
+pristupiti klikom na
+[[javascript:highlight(".logo")][Obilazak jezika Go]] u gornjem lijevom kutu stranice.
+
+Sadržaj možete pogledati u bilo kojem trenutku klikom na [[javascript:highlightAndClick(".nav")][izbornik]] u gornjem desnom kutu stranice.
+
+Tijekom obilaska pronaći ćete niz stranica i vježbi koje trebate
+dovršiti.
+
+Kroz njih se možete kretati ovako:
+
+- kliknite [[javascript:highlight(".prev-page")]["prethodna"]] ili pritisnite `PageUp` za prijelaz na prethodnu stranicu,
+
+- kliknite [[javascript:highlight(".next-page")]["sljedeća"]] ili pritisnite `PageDown` za prijelaz na sljedeću stranicu.
+
+Obilazak je interaktivan. Sada kliknite gumb
+[[javascript:highlightAndClick("#run")][Pokreni]]
+(ili pritisnite `Shift` + `Enter`) kako biste preveli i pokrenuli program na
+udaljenom poslužitelju.
+Rezultat se prikazuje ispod koda.
+
+Ovi ogledni programi prikazuju različite značajke jezika Go. Programi u obilasku zamišljeni su kao polazišta za vaše vlastito eksperimentiranje.
+
+Uredite program i ponovno ga pokrenite.
+
+Kada kliknete [[javascript:highlightAndClick("#format")][Formatiraj]]
+(tipkovni prečac: `Ctrl` + `Enter`), tekst u uređivaču formatira se alatom
+[[/cmd/gofmt/][gofmt]]. Isticanje sintakse možete uključiti ili isključiti
+klikom na gumb [[javascript:highlightAndClick(".syntax-checkbox")][sintaksa]].
+
+Kada budete spremni nastaviti, odaberite donju poveznicu označenu kao [[javascript:highlightAndClick(".next-page")][strelica udesno]] ili pritisnite tipku `PageDown`.
+
+.play welcome/hello.go

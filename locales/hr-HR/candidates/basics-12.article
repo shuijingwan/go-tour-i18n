@@ -1,0 +1,12 @@
+* Nulte vrijednosti
+
+Varijablama deklariranima bez izričite početne vrijednosti dodjeljuje se njihova
+_nulta_vrijednost_.
+
+Nulta je vrijednost:
+
+- `0` za brojčane tipove,
+- `false` za Booleov tip i
+- `""` (prazan znakovni niz) za znakovne nizove.
+
+.play basics/zero.go

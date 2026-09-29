@@ -1,0 +1,19 @@
+* Dodavanje elemenata isječku
+
+Novi se elementi često dodaju isječku, pa Go pruža ugrađenu
+funkciju `append`. [[/pkg/builtin/#append][Dokumentacija]] ugrađenog paketa opisuje funkciju `append`.
+
+	func append(s []T, vs ...T) []T
+
+Prvi parametar `s` funkcije `append` isječak je tipa `T`, a ostali su
+vrijednosti tipa `T` koje se dodaju isječku.
+
+Vrijednost koju vraća `append` isječak je koji sadržava sve elemente
+izvornog isječka i sve proslijeđene vrijednosti.
+
+Ako je temeljno polje isječka `s` premalo za sve zadane vrijednosti, dodijelit će se veće
+polje. Vraćeni isječak pokazivat će na novododijeljeno polje.
+
+(Više o isječcima pročitajte u članku [[/blog/go-slices-usage-and-internals][Isječci: uporaba i unutarnji ustroj]].)
+
+.play moretypes/append.go

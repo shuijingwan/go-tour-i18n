@@ -1,0 +1,13 @@
+* Tipo išvedimas
+
+Deklaruojant kintamąjį ir aiškiai nenurodant tipo (naudojant ⟪GTI18N_21c4077c_000001⟫:=⟪GTI18N_21c4077c_000002⟫ sintaksę arba ⟪GTI18N_21c4077c_000003⟫var`=⟪GTI18N_21c4077c_000004⟫ išraiškos sintaksę), kintamojo tipas išvedamas iš dešinėje pusėje esančios reikšmės.
+
+Kai dešinioji deklaracijos pusė turi tipą, naujasis kintamasis yra to paties tipo:
+
+⟪GTI18N_21c4077c_000005⟫⟪GTI18N_21c4077c_000006⟫ yra ⟪GTI18N_21c4077c_000007⟫ tipo⟪GTI18N_21c4077c_000008⟫Tačiau kai dešinėje pusėje yra netipuota skaitinė konstanta, naujojo kintamojo tipas gali būti ⟪GTI18N_21c4077c_000009⟫int⟪GTI18N_21c4077c_000010⟫, ⟪GTI18N_21c4077c_000011⟫float64⟪GTI18N_21c4077c_000012⟫ arba ⟪GTI18N_21c4077c_000013⟫complex128⟪GTI18N_21c4077c_000014⟫ — tai priklauso nuo konstantos tikslumo:
+
+⟪GTI18N_21c4077c_000015⟫
+
+Pabandykite pavyzdžio kode pakeisti pradinę ⟪GTI18N_21c4077c_000016⟫v⟪GTI18N_21c4077c_000017⟫ reikšmę ir stebėkite, kaip keičiasi jos tipas.
+
+⟪GTI18N_21c4077c_000018⟫

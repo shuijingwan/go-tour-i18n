@@ -1,0 +1,11 @@
+* Žodynai
+
+Žodynas susieja raktus su reikšmėmis.
+
+Žodyno nulinė reikšmė yra `nil`.
+`nil` žodynas neturi raktų, be to, į jį negalima pridėti raktų.
+
+Funkcija `make` grąžina nurodyto tipo žodyną,
+inicializuotą ir paruoštą naudoti.
+
+.play moretypes/maps.go

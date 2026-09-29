@@ -1,0 +1,10 @@
+* Vježba: web-pauk
+
+U ovoj ćete vježbi upotrijebiti mogućnosti konkurentnosti jezika Go kako biste paralelizirali web-pauk.
+
+Izmijenite funkciju `Crawl` tako da dohvaća URL-ove paralelno, ali da isti URL ne dohvati dvaput.
+
+_Savjet_: predmemoriju dohvaćenih URL-ova možete čuvati u mapi, ali same mape nisu
+sigurne za konkurentnu uporabu!
+
+.play concurrency/exercise-web-crawler.go

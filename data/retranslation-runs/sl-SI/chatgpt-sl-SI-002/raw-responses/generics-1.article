@@ -1,0 +1,17 @@
+* Tipski parametri
+
+Funkcije jezika ⟪GTI18N_01a04510_000001⟫ lahko z uporabo tipskih parametrov napišemo tako, da delujejo z več tipi. Tipski
+parametri funkcije so zapisani med oglatimi oklepaji pred
+argumenti funkcije.
+
+⟪GTI18N_01a04510_000002⟫
+
+Ta deklaracija pomeni, da je ⟪GTI18N_01a04510_000003⟫s⟪GTI18N_01a04510_000004⟫ rezina poljubnega tipa ⟪GTI18N_01a04510_000005⟫T⟪GTI18N_01a04510_000006⟫, ki izpolnjuje
+vgrajeno omejitev ⟪GTI18N_01a04510_000007⟫comparable⟪GTI18N_01a04510_000008⟫. Tudi ⟪GTI18N_01a04510_000009⟫x⟪GTI18N_01a04510_000010⟫ je vrednost istega tipa.
+
+⟪GTI18N_01a04510_000011⟫comparable⟪GTI18N_01a04510_000012⟫ je uporabna omejitev, ki omogoča uporabo operatorjev ⟪GTI18N_01a04510_000013⟫==⟪GTI18N_01a04510_000014⟫ in
+⟪GTI18N_01a04510_000015⟫!=⟪GTI18N_01a04510_000016⟫ nad vrednostmi tipa. V tem primeru jo uporabimo za primerjanje
+vrednosti z vsemi elementi rezine, dokler ne najdemo ujemanja. Funkcija ⟪GTI18N_01a04510_000017⟫Index⟪GTI18N_01a04510_000018⟫ deluje
+za vsak tip, ki podpira primerjanje.
+
+⟪GTI18N_01a04510_000019⟫

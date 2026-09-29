@@ -1,0 +1,18 @@
+* Pratimas: lygiaverčiai dvejetainiai medžiai
+
+Gali būti daug skirtingų dvejetainių medžių, kuriuose saugoma ta pati reikšmių seka. Pavyzdžiui, štai du dvejetainiai medžiai, kuriuose saugoma seka 1, 1, 2, 3, 5, 8, 13.
+
+.image /tour/static/img/tree.png
+
+Funkcija, tikrinanti, ar dviejuose dvejetainiuose medžiuose saugoma ta pati seka, daugumoje kalbų yra gana sudėtinga. Paprastam sprendimui parašyti naudosime Go konkurentinį vykdymą ir kanalus.
+
+Šiame pavyzdyje naudojamas paketas `tree`, kuriame apibrėžtas tipas:
+
+	type Tree struct {
+		Left  *Tree
+		Value int
+		Right *Tree
+	}
+
+
+Aprašymas tęsiamas [[javascript:click('.next-page')][kitame puslapyje]].

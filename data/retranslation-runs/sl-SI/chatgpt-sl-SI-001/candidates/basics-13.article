@@ -1,0 +1,21 @@
+* Pretvorbe tipov
+
+Izraz `T(v)` pretvori vrednost `v` v tip `T`.
+
+Nekaj številskih pretvorb:
+
+	var i int = 42
+	var f float64 = float64(i)
+	var u uint = uint(f)
+
+Ali preprosteje:
+
+	i := 42
+	f := float64(i)
+	u := uint(f)
+
+Za razliko od jezika C je v jeziku Go pri prirejanju med elementi različnih tipov potrebna
+izrecna pretvorba.
+Poskusite iz primera odstraniti pretvorbi `float64` ali `uint` in poglejte, kaj se zgodi.
+
+.play basics/type-conversions.go

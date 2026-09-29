@@ -1,0 +1,13 @@
+* Vaja: slike
+
+Se spomnite [[/tour/moretypes/18][generatorja slik]], ki ste ga napisali prej? Napišimo še enega, vendar bo tokrat namesto rezine podatkov vrnil implementacijo `image.Image`.
+
+Definirajte svoj tip `Image`, implementirajte [[/pkg/image/#Image][potrebne metode]] in pokličite `pic.ShowImage`.
+
+`Bounds` naj vrne `image.Rectangle`, na primer `image.Rect(0,`0,`w,`h)`.
+
+`ColorModel` naj vrne `color.RGBAModel`.
+
+`At` naj vrne barvo; vrednost `v` iz prejšnjega generatorja slik v tem primeru ustreza `color.RGBA{v,`v,`255,`255}`.
+
+.play methods/exercise-images.go

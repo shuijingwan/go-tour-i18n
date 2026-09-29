@@ -1,0 +1,10 @@
+* Vaja: spletni pajek
+
+V tej vaji boste uporabili funkcije sočasnosti jezika Go za vzporedno izvajanje spletnega pajka.
+
+Spremenite funkcijo `Crawl` tako, da URL-je pridobiva vzporedno, ne da bi isti URL pridobila dvakrat.
+
+_Namig_: predpomnilnik že pridobljenih URL-jev lahko hranite v slovarju, vendar slovarji sami po sebi niso
+varni za sočasno uporabo!
+
+.play concurrency/exercise-web-crawler.go

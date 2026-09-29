@@ -1,0 +1,15 @@
+* Metodai ir netiesioginė prieiga per rodykles
+
+Palyginę ankstesnes dvi programas galite pastebėti, kad
+funkcijoms, kurių argumentas yra rodyklė, būtina perduoti rodyklę:
+
+⟪GTI18N_39fb725b_000001⟫Kompiliavimo klaida!⟪GTI18N_39fb725b_000002⟫o metodus su rodykliniais metodo imtuvais iškviečiant jų imtuvu gali būti tiek reikšmė, tiek rodyklė:
+
+⟪GTI18N_39fb725b_000003⟫
+
+Sakinyje ⟪GTI18N_39fb725b_000004⟫v.Scale(5)⟪GTI18N_39fb725b_000005⟫, nors ⟪GTI18N_39fb725b_000006⟫v⟪GTI18N_39fb725b_000007⟫ yra reikšmė, o ne rodyklė,
+metodas su rodykliniu metodo imtuvu iškviečiamas automatiškai.
+Patogumo dėlei ⟪GTI18N_39fb725b_000008⟫ sakinį ⟪GTI18N_39fb725b_000009⟫v.Scale(5)⟪GTI18N_39fb725b_000010⟫ interpretuoja kaip
+⟪GTI18N_39fb725b_000011⟫(&v).Scale(5)⟪GTI18N_39fb725b_000012⟫, nes metodas ⟪GTI18N_39fb725b_000013⟫Scale⟪GTI18N_39fb725b_000014⟫ turi rodyklinį metodo imtuvą.
+
+⟪GTI18N_39fb725b_000015⟫

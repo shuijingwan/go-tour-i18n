@@ -1,0 +1,19 @@
+* Isječci
+
+Polje ima fiksnu veličinu.
+Isječak, s druge strane, ima dinamičku veličinu i služi kao fleksibilan prikaz elemenata polja.
+U praksi su isječci mnogo češći od polja.
+
+Tip `[]T` isječak je s elementima tipa `T`.
+
+Isječak se oblikuje navođenjem dvaju indeksa, donje i gornje granice, odvojenih dvotočkom:
+
+	a[low : high]
+
+Time se odabire poluotvoreni raspon koji uključuje prvi element, ali isključuje posljednji.
+
+Sljedeći izraz stvara isječak koji uključuje elemente od 1 do 3 polja `a`:
+
+	a[1:4]
+
+.play moretypes/slices.go

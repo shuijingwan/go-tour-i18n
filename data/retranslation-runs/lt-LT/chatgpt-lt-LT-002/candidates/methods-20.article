@@ -1,0 +1,21 @@
+* Pratimas: klaidos
+
+Nukopijuokite savo funkciją `Sqrt` iš [[/tour/flowcontrol/8][ankstesnio pratimo]] ir pakeiskite ją taip, kad ji grąžintų `error` reikšmę.
+
+Gavusi neigiamą skaičių, `Sqrt` turėtų grąžinti ne nil klaidos reikšmę, nes funkcija nepalaiko kompleksinių skaičių.
+
+Sukurkite naują tipą
+
+	type ErrNegativeSqrt float64
+
+ir padarykite jį `error` įgyvendindami metodą
+
+	func (e ErrNegativeSqrt) Error() string
+
+taip, kad `ErrNegativeSqrt(-2).Error()` grąžintų `"cannot`Sqrt`negative`number:`-2"`.
+
+*Pastaba:* metodo `Error` viduje iškvietus `fmt.Sprint(e)`, programa pateks į begalinį ciklą. To galite išvengti pirmiausia konvertuodami `e`: `fmt.Sprint(float64(e))`. Kodėl?
+
+Pakeiskite funkciją `Sqrt` taip, kad gavusi neigiamą skaičių ji grąžintų `ErrNegativeSqrt` reikšmę.
+
+.play methods/exercise-errors.go

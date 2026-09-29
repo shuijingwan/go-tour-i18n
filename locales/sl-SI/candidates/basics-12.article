@@ -1,0 +1,12 @@
+* Ničelne vrednosti
+
+Spremenljivke, deklarirane brez izrecne začetne vrednosti, dobijo svojo
+_ničelno_vrednost_.
+
+Ničelna vrednost je:
+
+- `0` za številske tipe,
+- `false` za logični tip in
+- `""` (prazen niz) za nize.
+
+.play basics/zero.go

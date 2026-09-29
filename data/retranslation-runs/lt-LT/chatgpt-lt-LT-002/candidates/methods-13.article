@@ -1,0 +1,7 @@
+* Nil sąsajos reikšmės
+
+Nil sąsajos reikšmė nelaiko nei reikšmės, nei konkrečiojo tipo.
+
+Metodo iškvietimas nil sąsajoje sukelia vykdymo klaidą, nes sąsajos poroje nėra tipo, kuris nurodytų, kurį _konkretųjį_ metodą iškviesti.
+
+.play methods/nil-interface-values.go

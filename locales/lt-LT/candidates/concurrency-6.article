@@ -1,0 +1,14 @@
+* Numatytasis pasirinkimas
+
+`default` atvejis sakinyje `select` vykdomas, jei neparuoštas joks kitas atvejis.
+
+Naudokite `default` atvejį, kai norite pabandyti siųsti arba gauti neblokuodami vykdymo:
+
+	select {
+	case i := <-c:
+		// naudoti i
+	default:
+		// gavimas iš c blokuotų vykdymą
+	}
+
+.play concurrency/default-selection.go

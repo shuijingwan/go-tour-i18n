@@ -1,0 +1,17 @@
+* Go neprisijungus (nebūtina)
+
+Šį kursą taip pat galima naudoti kaip savarankišką programą
+be interneto ryšio. Ji sukompiliuoja ir vykdo kodo pavyzdžius
+jūsų kompiuteryje.
+
+Norėdami vykdyti kursą vietoje, pirmiausia turėsite
+[[/doc/install][įdiegti Go]], tada paleisti:
+
+  go install golang.org/x/website/tour@latest
+
+Taip `tour` dvejetainis failas bus įrašytas į jūsų
+[[/cmd/go/#hdr-GOPATH_and_Modules][GOPATH]] katalogą `bin`.
+Paleidus kurso programą, bus atverta žiniatinklio naršyklė, kurioje
+matysite vietinę kurso versiją.
+
+Žinoma, kursą galite ir toliau naudoti šioje svetainėje.

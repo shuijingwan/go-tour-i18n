@@ -1,0 +1,8 @@
+* Vaja: Stringerji
+
+Poskrbite, da tip `IPAddr` implementira `fmt.Stringer` in naslov izpiše kot
+štiri števila, ločena s pikami.
+
+Na primer, `IPAddr{1,`2,`3,`4}` naj se izpiše kot `"1.2.3.4"`.
+
+.play methods/exercise-stringer.go

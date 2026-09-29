@@ -1,0 +1,23 @@
+* Pokazivači
+
+Go ima pokazivače. Pokazivač sadržava memorijsku adresu vrijednosti.
+
+Tip `*T` pokazivač je na vrijednost tipa `T`. Njegova je nulta vrijednost `nil`.
+
+	var p *int
+
+Operator `&` stvara pokazivač na svoj operand.
+
+	i := 42
+	p = &i
+
+Operator `*` označava temeljnu vrijednost pokazivača.
+
+	fmt.Println(*p) // čitanje i putem pokazivača p
+	*p = 21         // postavljanje i putem pokazivača p
+
+To se naziva „dereferenciranje” ili „neizravno adresiranje”.
+
+Za razliku od C-a, Go nema aritmetiku pokazivača.
+
+.play moretypes/pointers.go

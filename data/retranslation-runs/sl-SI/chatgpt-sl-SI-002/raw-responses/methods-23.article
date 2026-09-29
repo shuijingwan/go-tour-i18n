@@ -1,0 +1,12 @@
+* Vaja: rot13Reader
+
+Pogost vzorec je [[⟪GTI18N_11d87614_000001⟫][io.Reader]], ki ovije drug ⟪GTI18N_11d87614_000002⟫io.Reader⟪GTI18N_11d87614_000003⟫ in na neki način spremeni tok.
+
+Funkcija [[⟪GTI18N_11d87614_000004⟫][gzip.NewReader]] na primer sprejme ⟪GTI18N_11d87614_000005⟫io.Reader⟪GTI18N_11d87614_000006⟫ (tok stisnjenih podatkov) in vrne ⟪GTI18N_11d87614_000007⟫*gzip.Reader⟪GTI18N_11d87614_000008⟫, ki prav tako implementira ⟪GTI18N_11d87614_000009⟫io.Reader⟪GTI18N_11d87614_000010⟫ (tok razširjenih podatkov).
+
+Implementirajte ⟪GTI18N_11d87614_000011⟫rot13Reader⟪GTI18N_11d87614_000012⟫, ki implementira ⟪GTI18N_11d87614_000013⟫io.Reader⟪GTI18N_11d87614_000014⟫ in bere iz ⟪GTI18N_11d87614_000015⟫io.Reader⟪GTI18N_11d87614_000016⟫, pri tem pa tok spreminja tako, da za vse črke uporabi nadomestno šifro [[⟪GTI18N_11d87614_000017⟫][rot13]].
+
+Tip ⟪GTI18N_11d87614_000018⟫rot13Reader⟪GTI18N_11d87614_000019⟫ je že pripravljen.
+Poskrbite, da bo implementiral ⟪GTI18N_11d87614_000020⟫io.Reader⟪GTI18N_11d87614_000021⟫, tako da implementirate njegovo metodo ⟪GTI18N_11d87614_000022⟫Read⟪GTI18N_11d87614_000023⟫.
+
+⟪GTI18N_11d87614_000024⟫

@@ -1,0 +1,11 @@
+* Vmesniki
+
+_tip_vmesnika_ je definiran kot množica podpisov metod.
+
+Vrednost tipa vmesnika lahko vsebuje katero koli vrednost, ki implementira te metode.
+
+*Opomba:* V vzorčni kodi je v vrstici 22 napaka.
+`Vertex` (vrednostni tip) ne implementira `Abser`, ker je
+metoda `Abs` definirana samo za `*Vertex` (kazalčni tip).
+
+.play methods/interfaces.go

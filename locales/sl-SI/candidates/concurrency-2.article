@@ -1,0 +1,20 @@
+* Kanali
+
+Kanali so tipizirani vodi, po katerih lahko z operatorjem kanala `<-` pošiljate in prejemate vrednosti.
+
+	ch <- v    // Pošlji v na kanal ch.
+	v := <-ch  // Prejmi iz ch in
+	           // priredi vrednost v.
+
+(Podatki tečejo v smeri puščice.)
+
+Tako kot slovarje in rezine je treba tudi kanale pred uporabo ustvariti:
+
+	ch := make(chan int)
+
+Privzeto se pošiljanje in prejemanje blokirata, dokler druga stran ni pripravljena. Tako se lahko goroutine sinhronizirajo brez izrecnih zaklepov ali pogojnih spremenljivk.
+
+Vzorčna koda sešteje števila v rezini in delo porazdeli med dve goroutine.
+Ko obe goroutine končata izračun, izračuna končni rezultat.
+
+.play concurrency/channels.go

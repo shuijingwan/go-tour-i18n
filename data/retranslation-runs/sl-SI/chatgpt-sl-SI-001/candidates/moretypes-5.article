@@ -1,0 +1,9 @@
+* Literali struktur
+
+Literal strukture označuje na novo dodeljeno vrednost strukture tako, da navede vrednosti njenih polj.
+
+S skladnjo `Name:` lahko navedete samo podmnožico polj. (Vrstni red poimenovanih polj ni pomemben.)
+
+Posebna predpona `&` vrne kazalec na vrednost strukture.
+
+.play moretypes/struct-literals.go

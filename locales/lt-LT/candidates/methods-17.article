@@ -1,0 +1,11 @@
+* Stringer sąsaja
+
+Viena plačiausiai naudojamų sąsajų yra [[/pkg/fmt/#Stringer][`Stringer`]], apibrėžta pakete [[/pkg/fmt/][`fmt`]].
+
+	type Stringer interface {
+		String() string
+	}
+
+`Stringer` yra tipas, galintis aprašyti save kaip eilutę. Paketas `fmt` (ir daugelis kitų) ieško šios sąsajos, kai spausdina reikšmes.
+
+.play methods/stringer.go

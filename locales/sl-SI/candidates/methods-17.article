@@ -1,0 +1,12 @@
+* Stringerji
+
+Eden najbolj razširjenih vmesnikov je [[/pkg/fmt/#Stringer][`Stringer`]], ki ga definira paket [[/pkg/fmt/][`fmt`]].
+
+	type Stringer interface {
+		String() string
+	}
+
+`Stringer` je tip, ki se zna opisati kot niz. Paket `fmt`
+(in številni drugi) pri izpisovanju vrednosti preverja, ali vrednost implementira ta vmesnik.
+
+.play methods/stringer.go

@@ -1,0 +1,17 @@
+* Go Playground
+
+Šis kursas sukurtas naudojant [[https://play.golang.org/][Go Playground]] – žiniatinklio paslaugą, veikiančią [[/][golang.org]] serveriuose.
+
+Paslauga gauna Go programą, ją sukompiliuoja, susieja ir paleidžia izoliuotoje vykdymo aplinkoje, tada grąžina išvestį.
+
+Programoms, kurias galima vykdyti Go Playground aplinkoje, taikomi tam tikri apribojimai:
+
+- Go Playground aplinkoje laikas prasideda 2009-11-10 23:00:00 UTC (šios datos reikšmės nustatymas paliekamas kaip pratimas skaitytojui). Tai palengvina programų talpinimą podėlyje, nes jų išvestis tampa deterministinė.
+
+- Taip pat ribojamas vykdymo laikas, CPU ir atminties naudojimas, o programa negali pasiekti išorinių tinklo serverių.
+
+Go Playground naudoja naujausią stabilią Go versiją.
+
+Norėdami sužinoti daugiau, perskaitykite „[[/blog/playground][Kaip veikia Go Playground]]“.
+
+.play welcome/sandbox.go

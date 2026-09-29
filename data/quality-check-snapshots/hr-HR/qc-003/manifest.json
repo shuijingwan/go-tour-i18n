@@ -1,0 +1,2216 @@
+{
+  "schema_version": 1,
+  "snapshot_id": "qc-003",
+  "locale": "hr-HR",
+  "glossary_path": "locales/hr-HR/glossary.yaml",
+  "glossary_sha256": "99fe7ec2b989d741133cfb23af3f11b8cc47ae3beb47db02d47845295c2c76a8",
+  "unit_count": 122,
+  "page_count": 103,
+  "example_count": 19,
+  "units": [
+    {
+      "index": 1,
+      "unit_id": "welcome/1",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-004",
+      "source_path": "_content/tour/welcome.article",
+      "source_sha256": "1f581133d7fa40e6490418c6789a60a2f5e1de26c9c86d7eb6120cb58b145857",
+      "page_section": {
+        "article": "welcome.article",
+        "section_number": 1,
+        "source_title": "Hello, 世界",
+        "route": "/welcome/1"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-004/candidates/welcome-1.article",
+      "candidate_sha256": "d4cb77c47a88c8afd062f2defee5345175e55a97076ed782fd3bb0a925f2e6db",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-004/validation/welcome-1.json",
+      "validation_sha256": "fe14eb2cecabdf99f703ccc404387fb75d82ba4f521dbc2b11d8c3a6389d73ff",
+      "attempt": 1
+    },
+    {
+      "index": 2,
+      "unit_id": "welcome/2",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-001",
+      "source_path": "_content/tour/welcome.article",
+      "source_sha256": "709f808ec4cdf683411f349cab7a4886fcae532d1c4e4cc66c8ed68cfb2dd2d3",
+      "page_section": {
+        "article": "welcome.article",
+        "section_number": 2,
+        "source_title": "Go local",
+        "route": "/welcome/2"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/candidates/welcome-2.article",
+      "candidate_sha256": "76c630c962905c714194164a9a011fc5440581260454b352d8f038a204783495",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/validation/welcome-2.json",
+      "validation_sha256": "8527dbdffff085e176e60e3a1ffd3f554757676e822b58e971ed65c6b2c39943",
+      "attempt": 1
+    },
+    {
+      "index": 3,
+      "unit_id": "welcome/4",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-001",
+      "source_path": "_content/tour/welcome.article",
+      "source_sha256": "bb517d4b577fdb446fd029c2998d2426663b94a68f4b4e494c59af421508f683",
+      "page_section": {
+        "article": "welcome.article",
+        "section_number": 3,
+        "source_title": "Go offline (optional)",
+        "route": "/welcome/3"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/candidates/welcome-4.article",
+      "candidate_sha256": "c456715ca84df8a1151922756955648d60cd8f43424ace0a543a0e6428c4b34a",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/validation/welcome-4.json",
+      "validation_sha256": "4523eab691806c1d474fe441b9a24289361c1362cbf81d761c02ba9aa23c0918",
+      "attempt": 1
+    },
+    {
+      "index": 4,
+      "unit_id": "welcome/5",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-001",
+      "source_path": "_content/tour/welcome.article",
+      "source_sha256": "19e6d7da57ca1d191c485754f3dd4ac87775c651b8c0ae8e05c03cbd9b225897",
+      "page_section": {
+        "article": "welcome.article",
+        "section_number": 4,
+        "source_title": "The Go Playground",
+        "route": "/welcome/4"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/candidates/welcome-5.article",
+      "candidate_sha256": "b2dddb0aec59b2ac266d069da5b8622806e63c59a9507d9b955fcb85ba79f2f4",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/validation/welcome-5.json",
+      "validation_sha256": "6682cf00f325fac056d6f4c24d5ecc1cfda894c84acd788961d2c3941ce6fbd7",
+      "attempt": 1
+    },
+    {
+      "index": 5,
+      "unit_id": "welcome/3",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-001",
+      "source_path": "_content/tour/welcome.article",
+      "source_sha256": "9a6983b2e50b2fa78ff4f65683210714aea1c1575418e36796c156950ec6330d",
+      "page_section": {
+        "article": "welcome.article",
+        "section_number": 5,
+        "source_title": "Congratulations",
+        "route": "/welcome/5"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/candidates/welcome-3.article",
+      "candidate_sha256": "a21ce4fd7195779340bb3e44e59a14bdaf09700f15b321a8c1004536c9d8b958",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/validation/welcome-3.json",
+      "validation_sha256": "8f0855c4e78bcfd069f7ee53d25d0eba19484f8deaea014fe1f2e1944e233dd4",
+      "attempt": 1
+    },
+    {
+      "index": 6,
+      "unit_id": "basics/1",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-001",
+      "source_path": "_content/tour/basics.article",
+      "source_sha256": "f769f12c0a028b2f0cd403d89ff39dd150405e9f2e4155875321522f08619fe0",
+      "page_section": {
+        "article": "basics.article",
+        "section_number": 1,
+        "source_title": "Packages",
+        "route": "/basics/1"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/candidates/basics-1.article",
+      "candidate_sha256": "178aabaf98dadc21bdc506e23568ca53605eadf454a1ce4f33c845227e71a79d",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/validation/basics-1.json",
+      "validation_sha256": "58146325be7e61723b329cccacd3abe110fcedd4ab0b42d441028d92111fe1e9",
+      "attempt": 1
+    },
+    {
+      "index": 7,
+      "unit_id": "basics/2",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-001",
+      "source_path": "_content/tour/basics.article",
+      "source_sha256": "3329c9bff5f7e2b9b1e161fdebfb3804ff57cf1fb11bd4327d228328bcfb3fd0",
+      "page_section": {
+        "article": "basics.article",
+        "section_number": 2,
+        "source_title": "Imports",
+        "route": "/basics/2"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/candidates/basics-2.article",
+      "candidate_sha256": "ae26d42a98e20f19890f2e024b951ab9a48212b97205498edab20ac01d37719f",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/validation/basics-2.json",
+      "validation_sha256": "88c76fe1d36c55eca395a947c0d6c15b430ca0887d8e90f1c94847e9d0224a46",
+      "attempt": 1
+    },
+    {
+      "index": 8,
+      "unit_id": "basics/3",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-001",
+      "source_path": "_content/tour/basics.article",
+      "source_sha256": "38b9c70e49184a24f63f6b12f8ba78e64c0b874ad2a6f9a5fe86267615fd1bf6",
+      "page_section": {
+        "article": "basics.article",
+        "section_number": 3,
+        "source_title": "Exported names",
+        "route": "/basics/3"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/candidates/basics-3.article",
+      "candidate_sha256": "55a93f0c696f46e626036dacc813570e20541d9b53f6c5dd3faf304808dcd02c",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/validation/basics-3.json",
+      "validation_sha256": "4acb6d8f1ffc66b86cfeaf19eb460b6009c52064c280f0e46990a1e3beb8a815",
+      "attempt": 1
+    },
+    {
+      "index": 9,
+      "unit_id": "basics/4",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-001",
+      "source_path": "_content/tour/basics.article",
+      "source_sha256": "accf0562d9b759c9735500d5df0d74e8f90142ed96fe5ab2f5eedc6fbd6cf6f2",
+      "page_section": {
+        "article": "basics.article",
+        "section_number": 4,
+        "source_title": "Functions",
+        "route": "/basics/4"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/candidates/basics-4.article",
+      "candidate_sha256": "38e178d173c6e2438d25ba8ec61162d2161b464320f742b5291c77994e36f409",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/validation/basics-4.json",
+      "validation_sha256": "ab28be01eb51d4cce237488e90e011ec1fdbd360a853799002b897531e2ad668",
+      "attempt": 1
+    },
+    {
+      "index": 10,
+      "unit_id": "basics/5",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-001",
+      "source_path": "_content/tour/basics.article",
+      "source_sha256": "02e7feb341329e18143e18d533fe45381883a6ba6425abb09a847e2f0edf228a",
+      "page_section": {
+        "article": "basics.article",
+        "section_number": 5,
+        "source_title": "Functions continued",
+        "route": "/basics/5"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/candidates/basics-5.article",
+      "candidate_sha256": "24ef0a416f6739745ef6af6d2f31c5f03951d71636d57ad5a9a872817edc6749",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/validation/basics-5.json",
+      "validation_sha256": "51fef5628c05a3d773bd933f1eeb108c2dca7748f2fa6d0b00b4749568acdeea",
+      "attempt": 1
+    },
+    {
+      "index": 11,
+      "unit_id": "basics/6",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-001",
+      "source_path": "_content/tour/basics.article",
+      "source_sha256": "b3cb4b40115066443f265e3e5ebb9fc0fd6d080784c887328fce4d6b7891ba41",
+      "page_section": {
+        "article": "basics.article",
+        "section_number": 6,
+        "source_title": "Multiple results",
+        "route": "/basics/6"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/candidates/basics-6.article",
+      "candidate_sha256": "4fff325b0f410c48665196bc8b0bad2c0f38480f29e8fb64046772bbd19e025e",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/validation/basics-6.json",
+      "validation_sha256": "46aa5f00ecc4a43c775648478e1706fea33e8e87ea9fc00417e31c11272e9cc2",
+      "attempt": 1
+    },
+    {
+      "index": 12,
+      "unit_id": "basics/7",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-001",
+      "source_path": "_content/tour/basics.article",
+      "source_sha256": "1db20ae87ce5d9d4b20f15e4638ba2a3295a7ce781c961ef618982890fc562fa",
+      "page_section": {
+        "article": "basics.article",
+        "section_number": 7,
+        "source_title": "Named return values",
+        "route": "/basics/7"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/candidates/basics-7.article",
+      "candidate_sha256": "706b3f98751f159ec1cbe2ab55a7fc0b2b05e8a61fa9fa128b3d27faed054b40",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/validation/basics-7.json",
+      "validation_sha256": "36157a60c6b6d1cda27f36b6b1fb7bc845201235565c31704b6e63e7309ebb20",
+      "attempt": 1
+    },
+    {
+      "index": 13,
+      "unit_id": "basics/8",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-001",
+      "source_path": "_content/tour/basics.article",
+      "source_sha256": "bcb1b5e17ed9dff3d46a7cd8119c0d2f9c3afbb70ca94d35fadeb4f75b4a9d13",
+      "page_section": {
+        "article": "basics.article",
+        "section_number": 8,
+        "source_title": "Variables",
+        "route": "/basics/8"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/candidates/basics-8.article",
+      "candidate_sha256": "de4fc1ab5e6e09fd7d8d4846a96f5e4c81760cd49bdc7f49d84699f655d43f51",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/validation/basics-8.json",
+      "validation_sha256": "2a11df6b05ab6044efa764f4c1a71cfcaa098005b448393547bcdd9508a36693",
+      "attempt": 1
+    },
+    {
+      "index": 14,
+      "unit_id": "basics/9",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-001",
+      "source_path": "_content/tour/basics.article",
+      "source_sha256": "d51c17ba355753484b96c0eefda9fcce9f6f041a8ae2bf3e96fd0ad0c44680cc",
+      "page_section": {
+        "article": "basics.article",
+        "section_number": 9,
+        "source_title": "Variables with initializers",
+        "route": "/basics/9"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/candidates/basics-9.article",
+      "candidate_sha256": "b5a0061e9bdfe9054f9158dc2ee1f5cc13eb3de66d06380552101bdc97ffa06a",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/validation/basics-9.json",
+      "validation_sha256": "974c4f09e58dc6ef6012993a10ef646ba8bc641c65b09719864ffffdcea2013f",
+      "attempt": 1
+    },
+    {
+      "index": 15,
+      "unit_id": "basics/10",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-001",
+      "source_path": "_content/tour/basics.article",
+      "source_sha256": "f402e8e89a186d3208df5e4d983604730e71ef6c68354755f72e4580d3d7f359",
+      "page_section": {
+        "article": "basics.article",
+        "section_number": 10,
+        "source_title": "Short variable declarations",
+        "route": "/basics/10"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/candidates/basics-10.article",
+      "candidate_sha256": "df569822a788a19bf7ec3d5def5ffc1ccdb3227337b6f6b6cd8ca1b095958c82",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/validation/basics-10.json",
+      "validation_sha256": "0835a8ef3a0dd8ab4a4e31225a4234a9f936ed60ae86febb526b3628b9de2827",
+      "attempt": 1
+    },
+    {
+      "index": 16,
+      "unit_id": "basics/11",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-001",
+      "source_path": "_content/tour/basics.article",
+      "source_sha256": "836ab1dd659798dcf5e90f283c4ee794aed1d2cf0766c2ccc268fa91684e9d05",
+      "page_section": {
+        "article": "basics.article",
+        "section_number": 11,
+        "source_title": "Basic types",
+        "route": "/basics/11"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/candidates/basics-11.article",
+      "candidate_sha256": "5ca55de921f6334f600dfd18869ed4026db9d437e4899813b753df424c2bbabf",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/validation/basics-11.json",
+      "validation_sha256": "3b8862be08794340b83c4914250a8e74f741bfd0ac314ec49c8bdfa876c21cdd",
+      "attempt": 1
+    },
+    {
+      "index": 17,
+      "unit_id": "basics/12",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-001",
+      "source_path": "_content/tour/basics.article",
+      "source_sha256": "d9ad62501c05359e7b2ac445fa92d629e11d6d378c2701b767abab76012a558e",
+      "page_section": {
+        "article": "basics.article",
+        "section_number": 12,
+        "source_title": "Zero values",
+        "route": "/basics/12"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/candidates/basics-12.article",
+      "candidate_sha256": "de821868e51ac83896838b3dbdf25aebc09eb087a1ca331e8efffe108a0d0839",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/validation/basics-12.json",
+      "validation_sha256": "506868e4b4bf1a5b5d3a41aa28face0995c444a0e77b124501b48be8ccf34361",
+      "attempt": 1
+    },
+    {
+      "index": 18,
+      "unit_id": "basics/13",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-001",
+      "source_path": "_content/tour/basics.article",
+      "source_sha256": "88e0e168f4c95fa4134198a32440b2d2fb1fac9aae535a9ee7148dbcda37e1b3",
+      "page_section": {
+        "article": "basics.article",
+        "section_number": 13,
+        "source_title": "Type conversions",
+        "route": "/basics/13"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/candidates/basics-13.article",
+      "candidate_sha256": "0e66851e9b42c0ccaee041fe4105a99ae7aad54c871a6c88ac428bcafec29334",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/validation/basics-13.json",
+      "validation_sha256": "fb3de79d5cd40668e521bfbef43dd5247f993a3782846c863874f85707ed85a4",
+      "attempt": 1
+    },
+    {
+      "index": 19,
+      "unit_id": "basics/14",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-001",
+      "source_path": "_content/tour/basics.article",
+      "source_sha256": "21c4077c25629545dee0313b8b6b03e709edc4a74e1d73d9f4c9b0a49e46f6b3",
+      "page_section": {
+        "article": "basics.article",
+        "section_number": 14,
+        "source_title": "Type inference",
+        "route": "/basics/14"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/candidates/basics-14.article",
+      "candidate_sha256": "e641cda854e86dc1b679e23475b84aed15eae48afc12ffdfc88a3cf0d1792504",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/validation/basics-14.json",
+      "validation_sha256": "cd87a524fe731933bcf5451ea974a5c2bdb515512411a46472f14cebe293f9bc",
+      "attempt": 1
+    },
+    {
+      "index": 20,
+      "unit_id": "basics/15",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-004",
+      "source_path": "_content/tour/basics.article",
+      "source_sha256": "964ac515c0860a54b3a7780d77c7b4862ca38b744ae1f6be4b155a4386e2a229",
+      "page_section": {
+        "article": "basics.article",
+        "section_number": 15,
+        "source_title": "Constants",
+        "route": "/basics/15"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-004/candidates/basics-15.article",
+      "candidate_sha256": "5c1b94ee1a4ef37f9e131110f5aa27c7b09da43a3ab7bf49837fdee8568ee51d",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-004/validation/basics-15.json",
+      "validation_sha256": "e76d11f595fcfc6a538ca0bc98253d7c53f154e57324a678c3384c7bd740652d",
+      "attempt": 1
+    },
+    {
+      "index": 21,
+      "unit_id": "basics/16",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-004",
+      "source_path": "_content/tour/basics.article",
+      "source_sha256": "0d502d48a15f7a70e257079d7db1ddafe088607110c1c06b17b4be50b362394a",
+      "page_section": {
+        "article": "basics.article",
+        "section_number": 16,
+        "source_title": "Numeric Constants",
+        "route": "/basics/16"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-004/candidates/basics-16.article",
+      "candidate_sha256": "da8fb51f75d517ee168f0890cc9d23c8874e9dc264b34bf9b28a7abd8f4ddb01",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-004/validation/basics-16.json",
+      "validation_sha256": "911671f46429477d968e9fa01db6219a987527c9504496d8b88d5d0c7692b4a5",
+      "attempt": 1
+    },
+    {
+      "index": 22,
+      "unit_id": "basics/17",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-001",
+      "source_path": "_content/tour/basics.article",
+      "source_sha256": "f565674b974c053924bf69ef83b709dc50931526ae7fa88e71543a5cd872a190",
+      "page_section": {
+        "article": "basics.article",
+        "section_number": 17,
+        "source_title": "Congratulations!",
+        "route": "/basics/17"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/candidates/basics-17.article",
+      "candidate_sha256": "3eb5f9aea99e9f2aa1a8f0a41b0ecf0e441b09370b710a8a0d74f2af0faf51b9",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/validation/basics-17.json",
+      "validation_sha256": "dc0bc6937b874e1e86181d0b3dbb2f3092c590cd27e25ca9871a70710eb15519",
+      "attempt": 1
+    },
+    {
+      "index": 23,
+      "unit_id": "flowcontrol/1",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-001",
+      "source_path": "_content/tour/flowcontrol.article",
+      "source_sha256": "c6cd458bda99bffc7b753e122c56575a59508586054180be1f8d7bb1fe2391df",
+      "page_section": {
+        "article": "flowcontrol.article",
+        "section_number": 1,
+        "source_title": "For",
+        "route": "/flowcontrol/1"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/candidates/flowcontrol-1.article",
+      "candidate_sha256": "617bb8dab70c6cd253f7237d8397468cb7a59c37d1270d0a532c5af9bbe1aab2",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/validation/flowcontrol-1.json",
+      "validation_sha256": "d1228202df4accd092a0725baae4e5546af3457f096f0f4ae152c4b7ebdb848b",
+      "attempt": 1
+    },
+    {
+      "index": 24,
+      "unit_id": "flowcontrol/2",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-001",
+      "source_path": "_content/tour/flowcontrol.article",
+      "source_sha256": "24a97abbb6db2b6a88017bf326a5968097263d8ba637805f2cf44c9fed25f9fe",
+      "page_section": {
+        "article": "flowcontrol.article",
+        "section_number": 2,
+        "source_title": "For continued",
+        "route": "/flowcontrol/2"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/candidates/flowcontrol-2.article",
+      "candidate_sha256": "d5904e1f81f35ab0409f45af2317c759d5480eb0f34af00153474716628bd1ac",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/validation/flowcontrol-2.json",
+      "validation_sha256": "fa8719aec5cce39348f74d061ad49d300d803241671d323a95fe8c50d238570c",
+      "attempt": 1
+    },
+    {
+      "index": 25,
+      "unit_id": "flowcontrol/3",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-001",
+      "source_path": "_content/tour/flowcontrol.article",
+      "source_sha256": "3ed791cc935287ba6f5da4ba41f6ad84fdcbaef108ee364f769ae5204316bbb7",
+      "page_section": {
+        "article": "flowcontrol.article",
+        "section_number": 3,
+        "source_title": "For is Go's \"while\"",
+        "route": "/flowcontrol/3"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/candidates/flowcontrol-3.article",
+      "candidate_sha256": "66a0b9582392e37c5d02738f4aeeb1b1f6e224307ade319674d69e173cde38c2",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/validation/flowcontrol-3.json",
+      "validation_sha256": "5ac73fe68e38b776953c1b23b296cade8097b31b9bdd0672d239a651473191b4",
+      "attempt": 1
+    },
+    {
+      "index": 26,
+      "unit_id": "flowcontrol/4",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-001",
+      "source_path": "_content/tour/flowcontrol.article",
+      "source_sha256": "5456c129ef71c60b7502efde65c81020aaf1fa8b9178086e99223a21f6207dc6",
+      "page_section": {
+        "article": "flowcontrol.article",
+        "section_number": 4,
+        "source_title": "Forever",
+        "route": "/flowcontrol/4"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/candidates/flowcontrol-4.article",
+      "candidate_sha256": "0b1547487261ca59ad07f27714e03d8094daee166cbfad315567cfa109998405",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/validation/flowcontrol-4.json",
+      "validation_sha256": "62441f53d126c7090677b09e0e09226b6b19160e11e1ea4a87368ace4222c5ae",
+      "attempt": 1
+    },
+    {
+      "index": 27,
+      "unit_id": "flowcontrol/5",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-001",
+      "source_path": "_content/tour/flowcontrol.article",
+      "source_sha256": "ce49f916c1ceb7296576ec6b8ec92524b9827be168e3f5eb2040c61fee70f639",
+      "page_section": {
+        "article": "flowcontrol.article",
+        "section_number": 5,
+        "source_title": "If",
+        "route": "/flowcontrol/5"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/candidates/flowcontrol-5.article",
+      "candidate_sha256": "1adc01708f72811d4f8778d0a5393ae99d2b78e614065bee3ca7a6d1a086ccb8",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/validation/flowcontrol-5.json",
+      "validation_sha256": "b0ebe0f80f409994c36b7e28b99921cf7a339c5d5a8f0e7025de267f242897cb",
+      "attempt": 1
+    },
+    {
+      "index": 28,
+      "unit_id": "flowcontrol/6",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-001",
+      "source_path": "_content/tour/flowcontrol.article",
+      "source_sha256": "02e310262214f3c5ceca8bf63ecf2ec3934641a7e2638050479b739ce077031e",
+      "page_section": {
+        "article": "flowcontrol.article",
+        "section_number": 6,
+        "source_title": "If with a short statement",
+        "route": "/flowcontrol/6"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/candidates/flowcontrol-6.article",
+      "candidate_sha256": "13f23f244b9f29ec5b780d721c8fdd117564a4c5cfb43362329e9f249631b08e",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/validation/flowcontrol-6.json",
+      "validation_sha256": "42ee8b8b1cdd93cdf998942a3f2dd83376a3a435769148a4ea1038f4e77df96b",
+      "attempt": 1
+    },
+    {
+      "index": 29,
+      "unit_id": "flowcontrol/7",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-001",
+      "source_path": "_content/tour/flowcontrol.article",
+      "source_sha256": "8666746573ce7d0ea1c12ff24c4c8170a1961eedb0600ed73ab849b4758f797c",
+      "page_section": {
+        "article": "flowcontrol.article",
+        "section_number": 7,
+        "source_title": "If and else",
+        "route": "/flowcontrol/7"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/candidates/flowcontrol-7.article",
+      "candidate_sha256": "c66d48ad6f62c0e89b29671574c4778ddb7ac7c607e4c56b13476220b2d868a9",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/validation/flowcontrol-7.json",
+      "validation_sha256": "90ce516492340d5ca97e094af8ef105a5d760126c78e0f7a218969526ba7ac82",
+      "attempt": 1
+    },
+    {
+      "index": 30,
+      "unit_id": "flowcontrol/8",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-001",
+      "source_path": "_content/tour/flowcontrol.article",
+      "source_sha256": "d8bbee8455ff59212ef432a08312f7c7703360367325a80df3719157200316e9",
+      "page_section": {
+        "article": "flowcontrol.article",
+        "section_number": 8,
+        "source_title": "Exercise: Loops and Functions",
+        "route": "/flowcontrol/8"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/candidates/flowcontrol-8.article",
+      "candidate_sha256": "90e9b68fc0ccce39da9afaedd08e490e9ebca037e693d1abc0edd67560f7bfbc",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/validation/flowcontrol-8.json",
+      "validation_sha256": "c777f5581fb2f40c0532b8114226461c5313cb9267845f654e793dd9268fd29e",
+      "attempt": 1
+    },
+    {
+      "index": 31,
+      "unit_id": "flowcontrol/9",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-001",
+      "source_path": "_content/tour/flowcontrol.article",
+      "source_sha256": "abdc4c295fa7b4aec2616acf83badbbf2b581a9f62e41d03ca2ff984ebb6f7ed",
+      "page_section": {
+        "article": "flowcontrol.article",
+        "section_number": 9,
+        "source_title": "Switch",
+        "route": "/flowcontrol/9"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/candidates/flowcontrol-9.article",
+      "candidate_sha256": "aa23637e0fac0ec01f0153ca0629f3817157e1f387a32cd533d848c9b3ac0661",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/validation/flowcontrol-9.json",
+      "validation_sha256": "ffb8e071ad50242ed1b9a9f44115c51f32ac821638f1b647357f00c12e78655e",
+      "attempt": 1
+    },
+    {
+      "index": 32,
+      "unit_id": "flowcontrol/10",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-004",
+      "source_path": "_content/tour/flowcontrol.article",
+      "source_sha256": "e1479cae56a87cddb9c447fc9fd32b0ee1f983058f7ee76554965abd21975ef4",
+      "page_section": {
+        "article": "flowcontrol.article",
+        "section_number": 10,
+        "source_title": "Switch evaluation order",
+        "route": "/flowcontrol/10"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-004/candidates/flowcontrol-10.article",
+      "candidate_sha256": "52920f73d450e21d85efdfe661ef14ca9282e76e97ec42bd6ede442d9537e7ed",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-004/validation/flowcontrol-10.json",
+      "validation_sha256": "dddafcb49d7a64b3f5bdaf9fb84094ec9f5e6cdf29e01c79903236739d9cb3cc",
+      "attempt": 1
+    },
+    {
+      "index": 33,
+      "unit_id": "flowcontrol/11",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-001",
+      "source_path": "_content/tour/flowcontrol.article",
+      "source_sha256": "714b67f479583e47080cd0f38489f465a28c002938390c4155af6dfeebb9225b",
+      "page_section": {
+        "article": "flowcontrol.article",
+        "section_number": 11,
+        "source_title": "Switch with no condition",
+        "route": "/flowcontrol/11"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/candidates/flowcontrol-11.article",
+      "candidate_sha256": "5e8619b6fa6ed43278ce9e30957d1ca72f756f7031649e743e80c13041aba2ac",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/validation/flowcontrol-11.json",
+      "validation_sha256": "4b84b2d86ab8f8b89bb596811318b7ccd12f0d6962516f57c51d714d73a8d5ba",
+      "attempt": 1
+    },
+    {
+      "index": 34,
+      "unit_id": "flowcontrol/12",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-001",
+      "source_path": "_content/tour/flowcontrol.article",
+      "source_sha256": "fa23a1d6ebf12f11843d38fe79c413a9c19bfcaf305ae64b75c360db24a436ec",
+      "page_section": {
+        "article": "flowcontrol.article",
+        "section_number": 12,
+        "source_title": "Defer",
+        "route": "/flowcontrol/12"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/candidates/flowcontrol-12.article",
+      "candidate_sha256": "8c53de8263428858b591f1020ba22365853376be8ab941a8aca2cb17e9d944db",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/validation/flowcontrol-12.json",
+      "validation_sha256": "0ec5e46104c837e6f03f68d7cbc87b05125affc0731edc506b8a3d2c65270818",
+      "attempt": 1
+    },
+    {
+      "index": 35,
+      "unit_id": "flowcontrol/13",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-001",
+      "source_path": "_content/tour/flowcontrol.article",
+      "source_sha256": "73a02c24eb14597b3c5f53a09fc572f1a1f0c941adfc337c79fb14b492985fc1",
+      "page_section": {
+        "article": "flowcontrol.article",
+        "section_number": 13,
+        "source_title": "Stacking defers",
+        "route": "/flowcontrol/13"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/candidates/flowcontrol-13.article",
+      "candidate_sha256": "04a3491be9035f3e6bb286d3473c121965c495f0d10c5bd0b4046947645b0673",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/validation/flowcontrol-13.json",
+      "validation_sha256": "7f7c09abeacab29623e2d3888f1e642b9f5ea5e2a30220ea38361162be7dd824",
+      "attempt": 1
+    },
+    {
+      "index": 36,
+      "unit_id": "flowcontrol/14",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-001",
+      "source_path": "_content/tour/flowcontrol.article",
+      "source_sha256": "f565674b974c053924bf69ef83b709dc50931526ae7fa88e71543a5cd872a190",
+      "page_section": {
+        "article": "flowcontrol.article",
+        "section_number": 14,
+        "source_title": "Congratulations!",
+        "route": "/flowcontrol/14"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/candidates/flowcontrol-14.article",
+      "candidate_sha256": "1cbfd18b521e5057d73eff310ac5ef1fb530ab169db20f6cb43a9d28dbb10923",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/validation/flowcontrol-14.json",
+      "validation_sha256": "717497c2479448e3ca6818620cda85de851e104a03d39d31594070d22f7dc2c1",
+      "attempt": 1
+    },
+    {
+      "index": 37,
+      "unit_id": "moretypes/1",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-001",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "7706eaf0d46acc79fdad3b7953e5571bf404551d71aaefafd8ba79f5761f9806",
+      "page_section": {
+        "article": "moretypes.article",
+        "section_number": 1,
+        "source_title": "Pointers",
+        "route": "/moretypes/1"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/candidates/moretypes-1.article",
+      "candidate_sha256": "f6d459d55363303fc63ebf4f01949d26a2e00661998f9e23c6d19a430b23bfb4",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/validation/moretypes-1.json",
+      "validation_sha256": "b9bfcbfc859c771a0f05a0f8d70398325b60b020a898892ca58de5da93ec67c7",
+      "attempt": 1
+    },
+    {
+      "index": 38,
+      "unit_id": "moretypes/2",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-001",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "a18dfdaadb9739387cc9886b67e9bf920bf52ada62397a1812cfd302c64aed9b",
+      "page_section": {
+        "article": "moretypes.article",
+        "section_number": 2,
+        "source_title": "Structs",
+        "route": "/moretypes/2"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/candidates/moretypes-2.article",
+      "candidate_sha256": "17ac89abd821c8053d0c75d3b39b9e414c149561f5f6f42103795ba69bf08442",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/validation/moretypes-2.json",
+      "validation_sha256": "ec50613b27b09c2ff30cd64eb0d49dc585a66734347e933c37cca19fba6f9670",
+      "attempt": 1
+    },
+    {
+      "index": 39,
+      "unit_id": "moretypes/3",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-001",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "0be9cb4a59a0d95526c208e5d8d96ebe6a15fd84b6e3a2ff9a07963226cb7b58",
+      "page_section": {
+        "article": "moretypes.article",
+        "section_number": 3,
+        "source_title": "Struct Fields",
+        "route": "/moretypes/3"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/candidates/moretypes-3.article",
+      "candidate_sha256": "81bcfd84622ced1c9f29f57a5fcf89c2a2889f90d58bd290456cd1ee3f9576ab",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/validation/moretypes-3.json",
+      "validation_sha256": "7c490e4f717bb0ad3a0d180e59657a1770ead27b872722da5c4c092ab8f3862e",
+      "attempt": 1
+    },
+    {
+      "index": 40,
+      "unit_id": "moretypes/4",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-001",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "29695d334b6ff809e84ae8caeb7b9dc493143236783c07c16a83ecc64514c310",
+      "page_section": {
+        "article": "moretypes.article",
+        "section_number": 4,
+        "source_title": "Pointers to structs",
+        "route": "/moretypes/4"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/candidates/moretypes-4.article",
+      "candidate_sha256": "8547286d2dc98bc2a722a192f2ec977692fe7b5c4022912fa1702ccd9fd25987",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/validation/moretypes-4.json",
+      "validation_sha256": "1b06acf8b6c60e8ae9770abf6129d2d39ac5f0ebab81da19271fd303016637ca",
+      "attempt": 1
+    },
+    {
+      "index": 41,
+      "unit_id": "moretypes/5",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-001",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "cf9282456e2a91274c1b135a68fce58dd1590f6a2d7153f0619c97ded8bd00d1",
+      "page_section": {
+        "article": "moretypes.article",
+        "section_number": 5,
+        "source_title": "Struct Literals",
+        "route": "/moretypes/5"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/candidates/moretypes-5.article",
+      "candidate_sha256": "7776b9b77b5d67dded9ab5e6459b19caf0378a8318706990882b6278426bc4e4",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/validation/moretypes-5.json",
+      "validation_sha256": "5d652ee904ef0ac52c50571cb882bba1b6b911557b417d280b3638f16fcea40e",
+      "attempt": 1
+    },
+    {
+      "index": 42,
+      "unit_id": "moretypes/6",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-001",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "0ec503e46281eb8ff25ceba5b92c9f9c3b40517aeea77cf4878760ed0da9d29c",
+      "page_section": {
+        "article": "moretypes.article",
+        "section_number": 6,
+        "source_title": "Arrays",
+        "route": "/moretypes/6"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/candidates/moretypes-6.article",
+      "candidate_sha256": "e6071db4e115b059e4c6c27184d62bfb9142707d35634f008677722e090dee11",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/validation/moretypes-6.json",
+      "validation_sha256": "c7ff3683671c12bd2a0f90c23bfef07cd4e011189fd8f6c0da98b6b3312a0e09",
+      "attempt": 1
+    },
+    {
+      "index": 43,
+      "unit_id": "moretypes/7",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-004",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "a169cf48dd659510ff7f1f8adfdbed5a247b51a1f7c3a45ae972f18921925033",
+      "page_section": {
+        "article": "moretypes.article",
+        "section_number": 7,
+        "source_title": "Slices",
+        "route": "/moretypes/7"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-004/candidates/moretypes-7.article",
+      "candidate_sha256": "a63424b3cee64dfc0758d82a7111781508bd345eb2ad3c90ccaabfd3868e45e2",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-004/validation/moretypes-7.json",
+      "validation_sha256": "b0a41b0e9141ed4a22ee3edf4c84067a8555c38fc5dfe24970773f1a13b940a3",
+      "attempt": 1
+    },
+    {
+      "index": 44,
+      "unit_id": "moretypes/8",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-001",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "e577f9e98a9c871cdc6f39ecca1bdd0965c26da3b9ab6c2a7cab42b3b0f3a568",
+      "page_section": {
+        "article": "moretypes.article",
+        "section_number": 8,
+        "source_title": "Slices are like references to arrays",
+        "route": "/moretypes/8"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/candidates/moretypes-8.article",
+      "candidate_sha256": "0b366f8e5975223c9af1636c051bea4231d74bdbdc9aa8b957f56d2ee017b48e",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/validation/moretypes-8.json",
+      "validation_sha256": "85da5d46fdbf67eb5f333ba90fa150bcc4e3eacf59921dd2521faa44f3ecab69",
+      "attempt": 1
+    },
+    {
+      "index": 45,
+      "unit_id": "moretypes/9",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-001",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "fb79cf8caed7abc7dfd92e90cf1bcc11d547b8af96d224f30fefc995f98dbb0b",
+      "page_section": {
+        "article": "moretypes.article",
+        "section_number": 9,
+        "source_title": "Slice literals",
+        "route": "/moretypes/9"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/candidates/moretypes-9.article",
+      "candidate_sha256": "328c4f7561f06fb345b49d5e1cb75efff4d7ed7ec5089db30399d86b68b3680c",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/validation/moretypes-9.json",
+      "validation_sha256": "a4c87c4f670c0ba7c04a2c7ea3f21255d08065e01050ed577a1c6134a727837e",
+      "attempt": 1
+    },
+    {
+      "index": 46,
+      "unit_id": "moretypes/10",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-001",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "36d1f92fc5e51cddcd26be7f74a875e60bf24633dd7c8689672fa23a6720e2a1",
+      "page_section": {
+        "article": "moretypes.article",
+        "section_number": 10,
+        "source_title": "Slice defaults",
+        "route": "/moretypes/10"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/candidates/moretypes-10.article",
+      "candidate_sha256": "5353fc364dcb5cb77db3e32d9f07d3181fc3b83510267a906f102672364f3ea1",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/validation/moretypes-10.json",
+      "validation_sha256": "f796a1c3f93fd456190f326a0436d021fe962aa0859f0ac5a81969bdd103ca58",
+      "attempt": 1
+    },
+    {
+      "index": 47,
+      "unit_id": "moretypes/11",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-001",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "e2d7d69c946e5a01d8d0eab2e07a2bf35e23453a617d5e7602ff0af5c5866d8f",
+      "page_section": {
+        "article": "moretypes.article",
+        "section_number": 11,
+        "source_title": "Slice length and capacity",
+        "route": "/moretypes/11"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/candidates/moretypes-11.article",
+      "candidate_sha256": "36002af41ccd887c8889adf43997643535c67b53d0f36dba4b2544565995eab2",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/validation/moretypes-11.json",
+      "validation_sha256": "31f7c3a5918f1c3d00d8238a97261e067b88fcd06a0b08f470966f9527a145e7",
+      "attempt": 1
+    },
+    {
+      "index": 48,
+      "unit_id": "moretypes/12",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-001",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "e7a4bb0d5e7928c2da06312d983eba2adb533b30299025f507df183f00fefc89",
+      "page_section": {
+        "article": "moretypes.article",
+        "section_number": 12,
+        "source_title": "Nil slices",
+        "route": "/moretypes/12"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/candidates/moretypes-12.article",
+      "candidate_sha256": "1e9bcb16086e185ad28c5283805da7d5a1e95dadc75ad9c36bc4e41ce333e688",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/validation/moretypes-12.json",
+      "validation_sha256": "e3a9bcd90f3f70d6a0d1899ee1b051d8976050856ac37a3dfd3d44d1934dcc1b",
+      "attempt": 1
+    },
+    {
+      "index": 49,
+      "unit_id": "moretypes/13",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-001",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "d057e6bf75421597d430ff52f844499b5828ab2c4b4c5148ad88b6b89326ac20",
+      "page_section": {
+        "article": "moretypes.article",
+        "section_number": 13,
+        "source_title": "Creating a slice with make",
+        "route": "/moretypes/13"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/candidates/moretypes-13.article",
+      "candidate_sha256": "d71daef74c01aa9fb70d97e9e7f009f5602356fb8353738fb0df1fe09f6ee29a",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/validation/moretypes-13.json",
+      "validation_sha256": "084ba0f5508bd484fd080fa3468eb12a3e576d277f3d3296b331f8b4d2822a4c",
+      "attempt": 1
+    },
+    {
+      "index": 50,
+      "unit_id": "moretypes/14",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-001",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "d8bee22c0382cf5fd5647c4d7106165d153cb15aaed8ec82e1f06e12ad0c73d1",
+      "page_section": {
+        "article": "moretypes.article",
+        "section_number": 14,
+        "source_title": "Slices of slices",
+        "route": "/moretypes/14"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/candidates/moretypes-14.article",
+      "candidate_sha256": "b35bdd7f39c83b7605d75259e43d5d6e3cff17c9278d16bb2828458a4d67c9f9",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/validation/moretypes-14.json",
+      "validation_sha256": "7c61fc252cf6726223cc242302d4e1a10c3b190f207228e33e5532e6aec3ebb1",
+      "attempt": 1
+    },
+    {
+      "index": 51,
+      "unit_id": "moretypes/15",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-001",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "f2fc257e7c5f118321acc3b75e946053601532d411e8540534280d7fba795289",
+      "page_section": {
+        "article": "moretypes.article",
+        "section_number": 15,
+        "source_title": "Appending to a slice",
+        "route": "/moretypes/15"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/candidates/moretypes-15.article",
+      "candidate_sha256": "3adde904c81a7d0f92e4b78c2fc514d12921e132e8a7a5b4f160e97bfa959eb8",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/validation/moretypes-15.json",
+      "validation_sha256": "a516db577a5340f25e25834e59d9b3e501760521d2ff101c01c6bead51e2495c",
+      "attempt": 1
+    },
+    {
+      "index": 52,
+      "unit_id": "moretypes/16",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-001",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "73fc46a2e049ce2ff4a4fc0595d717ed5d6e15b7093a6014509a48f501253186",
+      "page_section": {
+        "article": "moretypes.article",
+        "section_number": 16,
+        "source_title": "Range",
+        "route": "/moretypes/16"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/candidates/moretypes-16.article",
+      "candidate_sha256": "1b7a39e7f7f49873e847da6bee059470ee6a5865a4ddb71979961125a4857e81",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/validation/moretypes-16.json",
+      "validation_sha256": "53ecd21ab3947b130886d7ac4385e806071fd36dd78c44acea50696db3fe8fc5",
+      "attempt": 1
+    },
+    {
+      "index": 53,
+      "unit_id": "moretypes/17",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-001",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "b52cca070f62a3ffeab3adf20f2745e1dd9aa2644a3985c23ac295e81e2c3bc9",
+      "page_section": {
+        "article": "moretypes.article",
+        "section_number": 17,
+        "source_title": "Range continued",
+        "route": "/moretypes/17"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/candidates/moretypes-17.article",
+      "candidate_sha256": "998d13c4ff9b9a61f6930bf9a835727d23974a5969bd30c2a29fc15d8dc6ffd7",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/validation/moretypes-17.json",
+      "validation_sha256": "83c1c8444460da8a60e29751358ab2e3ed3ce739ee83765de28439217632d836",
+      "attempt": 1
+    },
+    {
+      "index": 54,
+      "unit_id": "moretypes/18",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-001",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "9c5fd763eaedec8e8bfb60f52713417ff247bc4467aa8a94412c55ab83c781ba",
+      "page_section": {
+        "article": "moretypes.article",
+        "section_number": 18,
+        "source_title": "Exercise: Slices",
+        "route": "/moretypes/18"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/candidates/moretypes-18.article",
+      "candidate_sha256": "2babaa0aeb5e3b152f82cca7723311a3121aec0928b88f1147e926c8a8183847",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/validation/moretypes-18.json",
+      "validation_sha256": "bb59514c4475445a333f9a796b8f11e9844a947561b701a2633459fd309da448",
+      "attempt": 1
+    },
+    {
+      "index": 55,
+      "unit_id": "moretypes/19",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-001",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "39107d53feaffd26d7bb13103fe6e40746e9844d9b37bbf84559f7b91db312f3",
+      "page_section": {
+        "article": "moretypes.article",
+        "section_number": 19,
+        "source_title": "Maps",
+        "route": "/moretypes/19"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/candidates/moretypes-19.article",
+      "candidate_sha256": "42ae87feccbaaf61d72a8c8b4a471b54594fe823ad790f26a488002966dad965",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/validation/moretypes-19.json",
+      "validation_sha256": "692ba8ae530f2cf00aab0e76991eceeefc8839707fde494bdca68b329e9d73fa",
+      "attempt": 1
+    },
+    {
+      "index": 56,
+      "unit_id": "moretypes/20",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-001",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "1d3caa45093f65b50d5ebcff6a57559c3fe70faba85f3a0bb41db38c5375a507",
+      "page_section": {
+        "article": "moretypes.article",
+        "section_number": 20,
+        "source_title": "Map literals",
+        "route": "/moretypes/20"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/candidates/moretypes-20.article",
+      "candidate_sha256": "8309cafba433f55603cc074ba7579db70407d3c34ba959d430f91bf2a53bfe3e",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/validation/moretypes-20.json",
+      "validation_sha256": "5b2829f0da4794d5d52b2d733f2fa14b3213d763917afae4e34901bcf5312b0b",
+      "attempt": 1
+    },
+    {
+      "index": 57,
+      "unit_id": "moretypes/21",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-001",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "0493179c2396f2e755fa5f1e579ce6f4cc716842ef5ee77a0b1c742210c15f9f",
+      "page_section": {
+        "article": "moretypes.article",
+        "section_number": 21,
+        "source_title": "Map literals continued",
+        "route": "/moretypes/21"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/candidates/moretypes-21.article",
+      "candidate_sha256": "75c94d3fde5e9a6a45fc93c958f0b61b7974ecb255d06cd784e61694fdea304a",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/validation/moretypes-21.json",
+      "validation_sha256": "77d8cde45dd0d5fa43c82571e7b0bbfc42b9056aeeb8c60485bcfbe01f8eb2fb",
+      "attempt": 1
+    },
+    {
+      "index": 58,
+      "unit_id": "moretypes/22",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-001",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "f6963bc620184c7fbea7b04c309ccf64d508a4e835500fa7dd4188e60204019f",
+      "page_section": {
+        "article": "moretypes.article",
+        "section_number": 22,
+        "source_title": "Mutating Maps",
+        "route": "/moretypes/22"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/candidates/moretypes-22.article",
+      "candidate_sha256": "40c34b6c9055214b76f063460d47a82c8751a96c0ffd1cac782144b047dda88e",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/validation/moretypes-22.json",
+      "validation_sha256": "6ebd25de6f7a40422afa8b42481b239c7dd075f2df9a6a6d31059d236a1b8849",
+      "attempt": 1
+    },
+    {
+      "index": 59,
+      "unit_id": "moretypes/23",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-001",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "3214968207b659c3fb6bf92ee3d1ba0858bf7d3240dfad30fada7c5d8bddea69",
+      "page_section": {
+        "article": "moretypes.article",
+        "section_number": 23,
+        "source_title": "Exercise: Maps",
+        "route": "/moretypes/23"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/candidates/moretypes-23.article",
+      "candidate_sha256": "fb60df88e81380e3042222695424ea578a63a6e8010a0000ba64d85c16329d67",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/validation/moretypes-23.json",
+      "validation_sha256": "d10d41ce348b7b3c12e06af31e2d157e28daa8fbd970bfd720a4a494c9ee257e",
+      "attempt": 1
+    },
+    {
+      "index": 60,
+      "unit_id": "moretypes/24",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-001",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "91b508ec19d3baf6fd1b2382e54b0f4ec226e9af99d027e86d734cf081d9c897",
+      "page_section": {
+        "article": "moretypes.article",
+        "section_number": 24,
+        "source_title": "Function values",
+        "route": "/moretypes/24"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/candidates/moretypes-24.article",
+      "candidate_sha256": "ce00caac3944872821c58e84e54243862114cea421253232bdc3713d814744c2",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-001/validation/moretypes-24.json",
+      "validation_sha256": "1c2833d199d45ace976f9dcff4e6b3bc0faca531a33e84f031b50c76e28058a7",
+      "attempt": 1
+    },
+    {
+      "index": 61,
+      "unit_id": "moretypes/25",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-002",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "570e535e9c2b2d1978534eb3b42f226102b11da36a3f9e61620dc5eafdb6be5f",
+      "page_section": {
+        "article": "moretypes.article",
+        "section_number": 25,
+        "source_title": "Function closures",
+        "route": "/moretypes/25"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/candidates/moretypes-25.article",
+      "candidate_sha256": "5f9566fb7343dc846572bddaa1e1c35acefe146680a20beabd50956d87e14085",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/validation/moretypes-25.json",
+      "validation_sha256": "c8c4bd5fb0bc5b1814cd62c02e463265ac1c1fa1c52864b28e29e5b14d56081e",
+      "attempt": 1
+    },
+    {
+      "index": 62,
+      "unit_id": "moretypes/26",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-002",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "24f01440a7b0d638694c6cb275bf92e79e1fb2463ea2eb7d40a68cc4d6a0ed29",
+      "page_section": {
+        "article": "moretypes.article",
+        "section_number": 26,
+        "source_title": "Exercise: Fibonacci closure",
+        "route": "/moretypes/26"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/candidates/moretypes-26.article",
+      "candidate_sha256": "b02db975a16a5fd4b46ee5e1ecfca020da75ce05a7cfa1dce94849be1aeedaf7",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/validation/moretypes-26.json",
+      "validation_sha256": "6fdb27f055f05babc960da089eb3fcc78db51bf8dd3a36a501562009c37b34e9",
+      "attempt": 1
+    },
+    {
+      "index": 63,
+      "unit_id": "moretypes/27",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-002",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "f565674b974c053924bf69ef83b709dc50931526ae7fa88e71543a5cd872a190",
+      "page_section": {
+        "article": "moretypes.article",
+        "section_number": 27,
+        "source_title": "Congratulations!",
+        "route": "/moretypes/27"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/candidates/moretypes-27.article",
+      "candidate_sha256": "1cbfd18b521e5057d73eff310ac5ef1fb530ab169db20f6cb43a9d28dbb10923",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/validation/moretypes-27.json",
+      "validation_sha256": "66f581ee7879016488df37868a91266af881384093f919993b78ab6be2cd8a6f",
+      "attempt": 1
+    },
+    {
+      "index": 64,
+      "unit_id": "methods/1",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-002",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "8a62096b755332ede134c87493abe49231a52ce60abebcdc107bb6a64434fc72",
+      "page_section": {
+        "article": "methods.article",
+        "section_number": 1,
+        "source_title": "Methods",
+        "route": "/methods/1"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/candidates/methods-1.article",
+      "candidate_sha256": "4b4a56f6007b1588f270646eba067bd37a73ec54729e475437d0b1efb5b723c3",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/validation/methods-1.json",
+      "validation_sha256": "f036614c36c7cc605f318c6570b6d65e8a521c873072a18136673166e4c20e34",
+      "attempt": 1
+    },
+    {
+      "index": 65,
+      "unit_id": "methods/2",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-002",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "ade066728f85cc93e75c2472b80d532b62259a7e08e42ef36e3d05c6cfa5476d",
+      "page_section": {
+        "article": "methods.article",
+        "section_number": 2,
+        "source_title": "Methods are functions",
+        "route": "/methods/2"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/candidates/methods-2.article",
+      "candidate_sha256": "93aedc0f98e14f21f32362dc6fe9404c3ce25ea83e3e566fd59c6819efb832f4",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/validation/methods-2.json",
+      "validation_sha256": "36de1e23506329dfe1e9604a01946df115d032fea80b8978b47671608c37ed84",
+      "attempt": 1
+    },
+    {
+      "index": 66,
+      "unit_id": "methods/3",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-002",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "31c4fd0d80c8f1d96cf3efb1ecc1f9d3c0d1b5b70bb5c23bf7227b7007469588",
+      "page_section": {
+        "article": "methods.article",
+        "section_number": 3,
+        "source_title": "Methods continued",
+        "route": "/methods/3"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/candidates/methods-3.article",
+      "candidate_sha256": "ae56f9319771015917ff4408fbb64a67a6c9a7a971f5b822d54ad00656071767",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/validation/methods-3.json",
+      "validation_sha256": "14b87664391ff4c3cd8f1235d1a9c9d70bb0b49a42ff13d5985c889985337e84",
+      "attempt": 1
+    },
+    {
+      "index": 67,
+      "unit_id": "methods/4",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-002",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "99f9fa4e5c4dd46d393f40b417d0430c4e27e56f40146f5f192f55ccda4e2db3",
+      "page_section": {
+        "article": "methods.article",
+        "section_number": 4,
+        "source_title": "Pointer receivers",
+        "route": "/methods/4"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/candidates/methods-4.article",
+      "candidate_sha256": "858204fb41bc3223b259d49f1195550c4caab9b9838bbb060482f64831742d53",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/validation/methods-4.json",
+      "validation_sha256": "f45811332cfd02d35bd1845608dc0b4aee31654e14bc4a4ba7153c751618e2e5",
+      "attempt": 1
+    },
+    {
+      "index": 68,
+      "unit_id": "methods/5",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-002",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "cac8affc7a8fd7bc1c0003d8cbf5bd7c85433faea45ea1b39f3b80c2fbc5eae9",
+      "page_section": {
+        "article": "methods.article",
+        "section_number": 5,
+        "source_title": "Pointers and functions",
+        "route": "/methods/5"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/candidates/methods-5.article",
+      "candidate_sha256": "6d9e4c9639d3b2b8ad681f652ef5e455c78c9bf5f5050a58c3cbf427798d1521",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/validation/methods-5.json",
+      "validation_sha256": "70d380ac576b80b6e5ee926d8a5de311539dcdb4f3bec4ffb2e9195bb42148b5",
+      "attempt": 1
+    },
+    {
+      "index": 69,
+      "unit_id": "methods/6",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-002",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "39fb725b0a084ce3634dc973c215ff7a0f034c5f7b51c2ffe25934088072ebf6",
+      "page_section": {
+        "article": "methods.article",
+        "section_number": 6,
+        "source_title": "Methods and pointer indirection",
+        "route": "/methods/6"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/candidates/methods-6.article",
+      "candidate_sha256": "07acb5d944d6aa62b65f13e6852167f6511a8f78ff31c6b4bb4dc3c9e53b125d",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/validation/methods-6.json",
+      "validation_sha256": "01600f7b4302a0af3a05c8b4afa41a26e82a3a45e5f59dc267ea1a8bafb12147",
+      "attempt": 1
+    },
+    {
+      "index": 70,
+      "unit_id": "methods/7",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-002",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "61a9cb8411e6ce15dce3383a68a52c6644599e84269b3faf240129277d238f7e",
+      "page_section": {
+        "article": "methods.article",
+        "section_number": 7,
+        "source_title": "Methods and pointer indirection (2)",
+        "route": "/methods/7"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/candidates/methods-7.article",
+      "candidate_sha256": "1afb9f11b6ed4fc8d8d3e0a976d43d4c41709d0c107d2bacb5dc76fda94e5db8",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/validation/methods-7.json",
+      "validation_sha256": "81d3b3bd33e5e8ca86addaa5eec16ddd0fb500d890a6f7efa9855895af588db1",
+      "attempt": 1
+    },
+    {
+      "index": 71,
+      "unit_id": "methods/8",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-002",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "357424f2a76613085184054178042b442331b5689d156ac9c37e09e57c436dae",
+      "page_section": {
+        "article": "methods.article",
+        "section_number": 8,
+        "source_title": "Choosing a value or pointer receiver",
+        "route": "/methods/8"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/candidates/methods-8.article",
+      "candidate_sha256": "1b1a0263cc0768a5334b1167de10af8398ea7e3abc676f5ad2447c9379924a4e",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/validation/methods-8.json",
+      "validation_sha256": "3708ab9636cf9ea90e91de8c5543e0cb1f6a7acce50ae1d40e110cc7fdbe2b6b",
+      "attempt": 1
+    },
+    {
+      "index": 72,
+      "unit_id": "methods/9",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-002",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "39efc19ed01619130489d21e421f2c0d8947b20f408580f4ceaabce6a0feb099",
+      "page_section": {
+        "article": "methods.article",
+        "section_number": 9,
+        "source_title": "Interfaces",
+        "route": "/methods/9"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/candidates/methods-9.article",
+      "candidate_sha256": "91ee7545ebd0c73cc9a7382ef3bfa9b51b2ac7dba4d4f3c0c37bb1e4895dc3a4",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/validation/methods-9.json",
+      "validation_sha256": "6d9ed76b5194d76be7c2828680ec424d5e9bdd0cb325309b79e8672d365d94ba",
+      "attempt": 1
+    },
+    {
+      "index": 73,
+      "unit_id": "methods/10",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-002",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "11ca99e6e83d93827daf02b177156fcb6f3c94ac8c202491dfffc5840ce4e39f",
+      "page_section": {
+        "article": "methods.article",
+        "section_number": 10,
+        "source_title": "Interfaces are implemented implicitly",
+        "route": "/methods/10"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/candidates/methods-10.article",
+      "candidate_sha256": "4d03c65ad88dcc891a6d87f6269eb4d9ea0356980767473f5d3004a01d04b3cd",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/validation/methods-10.json",
+      "validation_sha256": "d285f90314ffb820f37e97ec950fd0ad15ef81336e53055bcd1ddccc1d2f34de",
+      "attempt": 1
+    },
+    {
+      "index": 74,
+      "unit_id": "methods/11",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-002",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "ccb2ed709b887724d22fb93714702fed5de4b7a83ca976876864045ff4752270",
+      "page_section": {
+        "article": "methods.article",
+        "section_number": 11,
+        "source_title": "Interface values",
+        "route": "/methods/11"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/candidates/methods-11.article",
+      "candidate_sha256": "234479847e73be17c7ff1c1d5fd42febd3c66aeeab5c489a72f821466013ce5d",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/validation/methods-11.json",
+      "validation_sha256": "469ec238b23365639a7c71b11f5a04aa2a0015b71315527685f27fdaf32a8b38",
+      "attempt": 1
+    },
+    {
+      "index": 75,
+      "unit_id": "methods/12",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-002",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "9487ca3c9872972d42af8cfa389755678fe8a7cca110b592aac2a762332febf5",
+      "page_section": {
+        "article": "methods.article",
+        "section_number": 12,
+        "source_title": "Interface values with nil underlying values",
+        "route": "/methods/12"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/candidates/methods-12.article",
+      "candidate_sha256": "4ac95bacb044ff6dd72829f2434a330645ea8bea273d5a662e25d9a6fd0ba5bd",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/validation/methods-12.json",
+      "validation_sha256": "5686d2468d503751d73e37976ef9f3d55a9d4322ed232b36efda12015af05523",
+      "attempt": 1
+    },
+    {
+      "index": 76,
+      "unit_id": "methods/13",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-002",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "2897922c0b088ccd46b3e42a442aeecda0787c4162db1329d0e8f39d05735547",
+      "page_section": {
+        "article": "methods.article",
+        "section_number": 13,
+        "source_title": "Nil interface values",
+        "route": "/methods/13"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/candidates/methods-13.article",
+      "candidate_sha256": "24f739118a630b5161558f3c0e8c3e5928fab3d03f7094b12dc083389e5bbc22",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/validation/methods-13.json",
+      "validation_sha256": "702e27d2747919a5825f6e3858f92bbe04c82b0e825c9bdaeb9f58a2fcbce350",
+      "attempt": 1
+    },
+    {
+      "index": 77,
+      "unit_id": "methods/14",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-002",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "7a09a7654c8b6ac6d96a1a8ddaafac368782f89ec2e6e61f323d40eb01cbf750",
+      "page_section": {
+        "article": "methods.article",
+        "section_number": 14,
+        "source_title": "The empty interface",
+        "route": "/methods/14"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/candidates/methods-14.article",
+      "candidate_sha256": "dc5c6e79187bfdc347d8b9e252263ab286e3ad094c98ff5e02449e73bac0432f",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/validation/methods-14.json",
+      "validation_sha256": "4f276a60adb0018925273a7c71e59adc83d9d29a57de8355ca5bef792de043c8",
+      "attempt": 1
+    },
+    {
+      "index": 78,
+      "unit_id": "methods/15",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-002",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "c205b4eb940358edea6321cfa422c3c00a560e9a6a71b08c8b3fa3ab9e4926ae",
+      "page_section": {
+        "article": "methods.article",
+        "section_number": 15,
+        "source_title": "Type assertions",
+        "route": "/methods/15"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/candidates/methods-15.article",
+      "candidate_sha256": "817912bd6b0b88ea1e43164bcada95ca567bbd219f046fd6883dc7a5452b6582",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/validation/methods-15.json",
+      "validation_sha256": "4c0300a205c15f341f66d8b21a12e0ab847f4136014e8e1efe8e08c236a265fc",
+      "attempt": 1
+    },
+    {
+      "index": 79,
+      "unit_id": "methods/16",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-002",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "26e4da09e80d30b06368691c76ee2940139b0f6fc40cad47bb6d1d2947933c27",
+      "page_section": {
+        "article": "methods.article",
+        "section_number": 16,
+        "source_title": "Type switches",
+        "route": "/methods/16"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/candidates/methods-16.article",
+      "candidate_sha256": "55a82c8aee18df768326170fafa1cc111eae34d585fae4c33d03a16ac8e2c4fc",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/validation/methods-16.json",
+      "validation_sha256": "fc18a2b67833a0770c768622758292d62f09ece5aa44c76339e6a39d18252d00",
+      "attempt": 1
+    },
+    {
+      "index": 80,
+      "unit_id": "methods/17",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-002",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "0363038e64b6f186e1bbd55c3323a5d7770a2b728605d8e3f01ae234aff6a444",
+      "page_section": {
+        "article": "methods.article",
+        "section_number": 17,
+        "source_title": "Stringers",
+        "route": "/methods/17"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/candidates/methods-17.article",
+      "candidate_sha256": "a905bbe8b8c148704f169a5dcb5b9810460ac379c9be9a9e62703db0ce8b1379",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/validation/methods-17.json",
+      "validation_sha256": "4a760bf5569345e102b604be8b54dfda19e7fa21e7eee9194171daa48438bc8b",
+      "attempt": 1
+    },
+    {
+      "index": 81,
+      "unit_id": "methods/18",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-002",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "ad118644f53755586f14409e203bccfb5ac4cff7c01734157032a45648fb06d3",
+      "page_section": {
+        "article": "methods.article",
+        "section_number": 18,
+        "source_title": "Exercise: Stringers",
+        "route": "/methods/18"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/candidates/methods-18.article",
+      "candidate_sha256": "5b011f04508b45084ff9abc7ea8ae815cf9a6b87deb92a347cc77d83e49c249c",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/validation/methods-18.json",
+      "validation_sha256": "e03275c14216ed09025e3d11b65f3d6ff41e295751f593de07b57e2c55444fc7",
+      "attempt": 1
+    },
+    {
+      "index": 82,
+      "unit_id": "methods/19",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-002",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "9eaab1fde2076c1376f78ceec0f84766c4c3b8062867436d73cef0bc77f16bd5",
+      "page_section": {
+        "article": "methods.article",
+        "section_number": 19,
+        "source_title": "Errors",
+        "route": "/methods/19"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/candidates/methods-19.article",
+      "candidate_sha256": "13f68d18050bfa62cb600212b0a4f8a2adf030cfdae17064128070cd2bb2fc63",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/validation/methods-19.json",
+      "validation_sha256": "c4b06b005285764afa3a73de5788e79d01b1388a6a187fefac33b864e52d79fa",
+      "attempt": 1
+    },
+    {
+      "index": 83,
+      "unit_id": "methods/20",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-002",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "41f1f73320fde60ee5ff30d5927a19ff22d6da6a336bb776e15f2499e4f421d8",
+      "page_section": {
+        "article": "methods.article",
+        "section_number": 20,
+        "source_title": "Exercise: Errors",
+        "route": "/methods/20"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/candidates/methods-20.article",
+      "candidate_sha256": "6d8f5ef5b5db05ad99536718fb828b7519a649f9b2087396ef475cdf348e7700",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/validation/methods-20.json",
+      "validation_sha256": "5c6be198a5b1505ca9ed7722e76fe42bafae79a7ad07f5c381f374d93b80f262",
+      "attempt": 1
+    },
+    {
+      "index": 84,
+      "unit_id": "methods/21",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-002",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "120c3fc9f67579cf78605cf0c9f006fc28d3569043a08079ddb645ca9c3fc3b1",
+      "page_section": {
+        "article": "methods.article",
+        "section_number": 21,
+        "source_title": "Readers",
+        "route": "/methods/21"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/candidates/methods-21.article",
+      "candidate_sha256": "59185e606f9c92204924b7de71e5eba18ec6688de0d686de685f05e3f1987066",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/validation/methods-21.json",
+      "validation_sha256": "6026a46cfe8184771132dfde45359732ca33349aaeb159e80f6221ecb9c75b7f",
+      "attempt": 1
+    },
+    {
+      "index": 85,
+      "unit_id": "methods/22",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-002",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "0df444d989996a06d6dd50f4b109af4ae1cb2302b8dd867bcbe9bf98e424d230",
+      "page_section": {
+        "article": "methods.article",
+        "section_number": 22,
+        "source_title": "Exercise: Readers",
+        "route": "/methods/22"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/candidates/methods-22.article",
+      "candidate_sha256": "79c681de79d1699a3522868bfd9b712f42273d259df3ba4ed429a65a4d3e9132",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/validation/methods-22.json",
+      "validation_sha256": "be614db6d2fcb27e1d96b6a26b1af1ae5f4890dffd26182fe0a3fdbff03d9481",
+      "attempt": 1
+    },
+    {
+      "index": 86,
+      "unit_id": "methods/23",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-002",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "11d876145fae980b2e283e3fac7357a950eb20f022b7da48cc58efed5b1e8e04",
+      "page_section": {
+        "article": "methods.article",
+        "section_number": 23,
+        "source_title": "Exercise: rot13Reader",
+        "route": "/methods/23"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/candidates/methods-23.article",
+      "candidate_sha256": "94c74c80941a257015f4302d91043c733168da8cb37d549e339321c1c1210015",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/validation/methods-23.json",
+      "validation_sha256": "084b752accd3141b55f62b28b9c9e26ba133e9dcf1f02d29abf50aa5d27cb5af",
+      "attempt": 1
+    },
+    {
+      "index": 87,
+      "unit_id": "methods/24",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-002",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "d80f0d46796ad415a7ded4d0cefdef6cdb58deb38d050a61eb64abb25caf27ee",
+      "page_section": {
+        "article": "methods.article",
+        "section_number": 24,
+        "source_title": "Images",
+        "route": "/methods/24"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/candidates/methods-24.article",
+      "candidate_sha256": "e5e3551af3dcccd7b94c5ea761da74c0aed7f4dd8dbc663232e53a67f5aee74f",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/validation/methods-24.json",
+      "validation_sha256": "10cd15d31ac19c45af8e4abc0683c52cb396ec251cd938c28e434f14ba204c03",
+      "attempt": 1
+    },
+    {
+      "index": 88,
+      "unit_id": "methods/25",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-002",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "a196bc59d96602c3fe72cf765419366094a5c1e96de0d24dd140887ebd1826b5",
+      "page_section": {
+        "article": "methods.article",
+        "section_number": 25,
+        "source_title": "Exercise: Images",
+        "route": "/methods/25"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/candidates/methods-25.article",
+      "candidate_sha256": "474394ea20feb66e95d8fdbabcd4cb49569dedbc8c52cc2b3bbac26db5af7cd2",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/validation/methods-25.json",
+      "validation_sha256": "e0d44e6463d3022ac93a6f8005079efba4a2235e43d59abd9693a56bfe8926f3",
+      "attempt": 1
+    },
+    {
+      "index": 89,
+      "unit_id": "methods/26",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-002",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "f565674b974c053924bf69ef83b709dc50931526ae7fa88e71543a5cd872a190",
+      "page_section": {
+        "article": "methods.article",
+        "section_number": 26,
+        "source_title": "Congratulations!",
+        "route": "/methods/26"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/candidates/methods-26.article",
+      "candidate_sha256": "1cbfd18b521e5057d73eff310ac5ef1fb530ab169db20f6cb43a9d28dbb10923",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/validation/methods-26.json",
+      "validation_sha256": "f51a3d85465afcd83ee66eecaeb950e6ebc86d4f3afa640d764e5a0c92241bad",
+      "attempt": 1
+    },
+    {
+      "index": 90,
+      "unit_id": "generics/1",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-002",
+      "source_path": "_content/tour/generics.article",
+      "source_sha256": "01a045105dc8c12fb1709f122d363235c19a6464d5de7587d579524aec270dd6",
+      "page_section": {
+        "article": "generics.article",
+        "section_number": 1,
+        "source_title": "Type parameters",
+        "route": "/generics/1"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/candidates/generics-1.article",
+      "candidate_sha256": "a4166e0adde687e9c649ca78f84c1ed4138b8472a942897ac18c2bca19528a84",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/validation/generics-1.json",
+      "validation_sha256": "bde44c704bbce2fa11ed5d82bcd8e20e2ba45297411109744dd3f98765294734",
+      "attempt": 1
+    },
+    {
+      "index": 91,
+      "unit_id": "generics/2",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-002",
+      "source_path": "_content/tour/generics.article",
+      "source_sha256": "08486351895e62792a84bc3eeab6aa85df7b1658735b7239040d219812f63277",
+      "page_section": {
+        "article": "generics.article",
+        "section_number": 2,
+        "source_title": "Generic types",
+        "route": "/generics/2"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/candidates/generics-2.article",
+      "candidate_sha256": "ddd36d6c9e8f701cc956fc587cf3d355a0fab244735b8ac8e9b461fbd3bbbc07",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/validation/generics-2.json",
+      "validation_sha256": "e4882831f0d2f0da5acc854c4855ffe2c7572a3d9233fd749c706255edabb591",
+      "attempt": 1
+    },
+    {
+      "index": 92,
+      "unit_id": "generics/3",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-002",
+      "source_path": "_content/tour/generics.article",
+      "source_sha256": "f565674b974c053924bf69ef83b709dc50931526ae7fa88e71543a5cd872a190",
+      "page_section": {
+        "article": "generics.article",
+        "section_number": 3,
+        "source_title": "Congratulations!",
+        "route": "/generics/3"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/candidates/generics-3.article",
+      "candidate_sha256": "1cbfd18b521e5057d73eff310ac5ef1fb530ab169db20f6cb43a9d28dbb10923",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/validation/generics-3.json",
+      "validation_sha256": "1ea19266b14e32fac86d14e14def6427310ffaa86afff8e5d7c959d88f20e86a",
+      "attempt": 1
+    },
+    {
+      "index": 93,
+      "unit_id": "concurrency/1",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-002",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "d0a9c45078c2255540cfffe48744a07fa04ab5c2113e8880068b5a400ae0ebdc",
+      "page_section": {
+        "article": "concurrency.article",
+        "section_number": 1,
+        "source_title": "Goroutines",
+        "route": "/concurrency/1"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/candidates/concurrency-1.article",
+      "candidate_sha256": "3da9db48143e1f2f0cfbf77bd89fd3dc4391d056042e6048637796d5030c51bd",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/validation/concurrency-1.json",
+      "validation_sha256": "f7100e3f153b44f3e0dc729ce64942f58b92992c8f3e72e8c01d6c66fa1b4efd",
+      "attempt": 1
+    },
+    {
+      "index": 94,
+      "unit_id": "concurrency/2",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-002",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "a35e3af26b51f8c2c2a6dfaf09f9c7cab0fdb4b1b56f9e4dc9b793f1dac1e295",
+      "page_section": {
+        "article": "concurrency.article",
+        "section_number": 2,
+        "source_title": "Channels",
+        "route": "/concurrency/2"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/candidates/concurrency-2.article",
+      "candidate_sha256": "52cd2ae1e05bb014f284bb3e8848e54003c210bb00d85980928dba33562137b9",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/validation/concurrency-2.json",
+      "validation_sha256": "01afb0d57281d75368605ded15da7c02c69e62c717305625343335723f4c443f",
+      "attempt": 1
+    },
+    {
+      "index": 95,
+      "unit_id": "concurrency/3",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-002",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "caef0893a54c61f192be397f6b27a039d81dc007f98f2d203a5a287383c0682e",
+      "page_section": {
+        "article": "concurrency.article",
+        "section_number": 3,
+        "source_title": "Buffered Channels",
+        "route": "/concurrency/3"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/candidates/concurrency-3.article",
+      "candidate_sha256": "1b09f2464ea2a62f298d1d5146c3137d4f5e343ff7bedcb78f69ba3d337fcfeb",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/validation/concurrency-3.json",
+      "validation_sha256": "d14f2dc82b9ca46f748119b856b8c6cf33bf3c4e27b4896b4a169d93f687e934",
+      "attempt": 1
+    },
+    {
+      "index": 96,
+      "unit_id": "concurrency/4",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-002",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "3e925c6745255a443c61f25cd8131d538dc8677938f1c5021ce798465020b42e",
+      "page_section": {
+        "article": "concurrency.article",
+        "section_number": 4,
+        "source_title": "Range and Close",
+        "route": "/concurrency/4"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/candidates/concurrency-4.article",
+      "candidate_sha256": "56625d8301a7ad8207952ac61456b8abab8a9f96c5995bf86b010a90608e7d71",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/validation/concurrency-4.json",
+      "validation_sha256": "e984fac7fc4b60cbffd3ce7408c53e08a3434bbd87c54a01e1a0e458ab402768",
+      "attempt": 1
+    },
+    {
+      "index": 97,
+      "unit_id": "concurrency/5",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-002",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "8d8de56f080d4f702ac455aa60cb13b745472bedc9755000e8b5d6a2a898577d",
+      "page_section": {
+        "article": "concurrency.article",
+        "section_number": 5,
+        "source_title": "Select",
+        "route": "/concurrency/5"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/candidates/concurrency-5.article",
+      "candidate_sha256": "a77301fd39a076e0c516f48ce5ddf7bbbfc496fa9d2e993994c4bb3e75cb0e17",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/validation/concurrency-5.json",
+      "validation_sha256": "979cffc770d6254c2df033b47c72723c8b88aa1f7e331a8f740bddb29260c40d",
+      "attempt": 1
+    },
+    {
+      "index": 98,
+      "unit_id": "concurrency/6",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-002",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "82e9cd932e14e6c4852fc8f865f4c45dc75845bd1a306649152ebc045f0c3b2c",
+      "page_section": {
+        "article": "concurrency.article",
+        "section_number": 6,
+        "source_title": "Default Selection",
+        "route": "/concurrency/6"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/candidates/concurrency-6.article",
+      "candidate_sha256": "25226a87e08cee85dcfcc83917d17d2c7122b24652a8654729cadb207031919a",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/validation/concurrency-6.json",
+      "validation_sha256": "f5a1bbef1555735a71eb09205fc0e6ad210e88858cfb8d16dd65a25f01318de8",
+      "attempt": 1
+    },
+    {
+      "index": 99,
+      "unit_id": "concurrency/7",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-002",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "7c5d3fc7bb2540285d746242f8a1d16075639648eec8909c1df52239297d2917",
+      "page_section": {
+        "article": "concurrency.article",
+        "section_number": 7,
+        "source_title": "Exercise: Equivalent Binary Trees",
+        "route": "/concurrency/7"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/candidates/concurrency-7.article",
+      "candidate_sha256": "b23c1ea854e2a4efb7cde46714edfb36ea8d7707d790d345c4c2f877fc153aed",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/validation/concurrency-7.json",
+      "validation_sha256": "5312f9e9ebd7c929bdde904864d4c9b5be8f2eaba0999e8b067654c97f820f6d",
+      "attempt": 1
+    },
+    {
+      "index": 100,
+      "unit_id": "concurrency/8",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-002",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "b362cc15a26324acd311f7cab18a628dc1d7d9ac6d455add7d651d41acf15e9a",
+      "page_section": {
+        "article": "concurrency.article",
+        "section_number": 8,
+        "source_title": "Exercise: Equivalent Binary Trees",
+        "route": "/concurrency/8"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/candidates/concurrency-8.article",
+      "candidate_sha256": "90ad77886f6b8a5f4e2056f7862fcfdcb7a3c0f9862fdfe9b8dfafcad98a6d26",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/validation/concurrency-8.json",
+      "validation_sha256": "c0155ccb48f885ed103d18e3c7e4e47285b9d45d8be2a2f6473d4129f1bc4119",
+      "attempt": 1
+    },
+    {
+      "index": 101,
+      "unit_id": "concurrency/9",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-002",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "49f727794604c2ef8a8dda9508d0f412d7015cea77754c675a02b166dd9bfc93",
+      "page_section": {
+        "article": "concurrency.article",
+        "section_number": 9,
+        "source_title": "sync.Mutex",
+        "route": "/concurrency/9"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/candidates/concurrency-9.article",
+      "candidate_sha256": "9ebb64c9b3db8f931478475500e63b002010cdbd150dfd2af350a16cacdf1505",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/validation/concurrency-9.json",
+      "validation_sha256": "3574e424d7b51298acb70b4fb2fb5e928f19a7828e8d92037fe84a79e8e39c7d",
+      "attempt": 1
+    },
+    {
+      "index": 102,
+      "unit_id": "concurrency/10",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-002",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "bb686393225ef2335e627819a1664a84456f00b64af133af64920d43f0abdb94",
+      "page_section": {
+        "article": "concurrency.article",
+        "section_number": 10,
+        "source_title": "Exercise: Web Crawler",
+        "route": "/concurrency/10"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/candidates/concurrency-10.article",
+      "candidate_sha256": "d9a1e31d08c9987abf8163c152288eaf92b9273b3775da51052facaa15c2010b",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/validation/concurrency-10.json",
+      "validation_sha256": "92ca7bd66e9fecb9a1b9c7056ac36fac9f58bfb2356df7dedfc372ff1583163f",
+      "attempt": 1
+    },
+    {
+      "index": 103,
+      "unit_id": "concurrency/11",
+      "unit_kind": "page",
+      "selected_batch_id": "codex-hr-HR-002",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "45ef131ede663b1355c0a5933634d46c393f66be8a6450b184f86a62e928a64e",
+      "page_section": {
+        "article": "concurrency.article",
+        "section_number": 11,
+        "source_title": "Where to Go from here...",
+        "route": "/concurrency/11"
+      },
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/candidates/concurrency-11.article",
+      "candidate_sha256": "9fa291305e6cf07008f5dacc1b86d65a761b3bc0eea91e482fbde6b53297ade3",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-002/validation/concurrency-11.json",
+      "validation_sha256": "e8b0bdfd340aa539c075f95ec2f86a00ee1ed0055e34c0b6a4949afc685a8fd4",
+      "attempt": 1
+    },
+    {
+      "index": 104,
+      "unit_id": "example:basics/numeric-constants.go",
+      "unit_kind": "example",
+      "selected_batch_id": "codex-hr-HR-003",
+      "source_path": "_content/tour/basics/numeric-constants.go",
+      "source_sha256": "338906e7c0e0d5e81312c97b37638442b48a621d59e69215be78eed6bd003544",
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-003/candidates/basics-numeric-constants.go",
+      "candidate_sha256": "8d22dc4adee907f66fb05f4b53993a3984b3fbcc94e8eb4c573232a6bb08ab6a",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-003/validation/basics-numeric-constants.json",
+      "validation_sha256": "17125ec57dd8b21df1d6af640182ad3093ea33a4f0e97f86c6cb0a641a4b50e0",
+      "attempt": 1
+    },
+    {
+      "index": 105,
+      "unit_id": "example:basics/type-inference.go",
+      "unit_kind": "example",
+      "selected_batch_id": "codex-hr-HR-003",
+      "source_path": "_content/tour/basics/type-inference.go",
+      "source_sha256": "fb638103bfaf5990d88398765cf801cee94cd8e199cace94740cebe562afc33d",
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-003/candidates/basics-type-inference.go",
+      "candidate_sha256": "e1d6125a1cb1c20f418fc80aadd189d07259520abe5de31b09e4e4321610815b",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-003/validation/basics-type-inference.json",
+      "validation_sha256": "937b82f19f2791127baa8f8984f3639b0230c18582b241dc9864df76251fdba8",
+      "attempt": 1
+    },
+    {
+      "index": 106,
+      "unit_id": "example:concurrency/channels.go",
+      "unit_kind": "example",
+      "selected_batch_id": "codex-hr-HR-003",
+      "source_path": "_content/tour/concurrency/channels.go",
+      "source_sha256": "8c3ce8583c8274e42ee0522989bf4cf2003b6f8045bcb6b16a6a79364f97aa70",
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-003/candidates/concurrency-channels.go",
+      "candidate_sha256": "a4923d608d3cee07b47a0ce597e90a8bd56893a5463e386fea5c41a3e86f47c3",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-003/validation/concurrency-channels.json",
+      "validation_sha256": "791504a10aea88f262a9f81294932ec55cc3633d31c782a0836b00fe5bedd7fa",
+      "attempt": 1
+    },
+    {
+      "index": 107,
+      "unit_id": "example:concurrency/exercise-equivalent-binary-trees.go",
+      "unit_kind": "example",
+      "selected_batch_id": "codex-hr-HR-003",
+      "source_path": "_content/tour/concurrency/exercise-equivalent-binary-trees.go",
+      "source_sha256": "184cbbd1e662b64de6e6928d4af6f2469c7bccdbc9a8b5f477c1b694b9ab02b1",
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-003/candidates/concurrency-exercise-equivalent-binary-trees.go",
+      "candidate_sha256": "88e5b787250f40d28d8d00261d4bf2ce591061a1c207d7c6617f0bf629af726b",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-003/validation/concurrency-exercise-equivalent-binary-trees.json",
+      "validation_sha256": "69627ddb6a1056e0a3fe0ca9da9e5ae7d1ee7ceca4c440647e54632f0b0636d7",
+      "attempt": 1
+    },
+    {
+      "index": 108,
+      "unit_id": "example:concurrency/exercise-web-crawler.go",
+      "unit_kind": "example",
+      "selected_batch_id": "codex-hr-HR-005",
+      "source_path": "_content/tour/concurrency/exercise-web-crawler.go",
+      "source_sha256": "bd6226dcae3b663a3aa1cbf502d840357ac0efb6de46e7a66612ca2834cf5e37",
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-005/candidates/concurrency-exercise-web-crawler.go",
+      "candidate_sha256": "d1a722ea1e0447edb2e08abe1555375d3f684c7d00a56330c7d389fb3636a09e",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-005/validation/concurrency-exercise-web-crawler.json",
+      "validation_sha256": "c40f8d754a6b96ede0a4148701a70dec6b3b027a65f8049f83a6e2799db51de2",
+      "attempt": 1
+    },
+    {
+      "index": 109,
+      "unit_id": "example:concurrency/mutex-counter.go",
+      "unit_kind": "example",
+      "selected_batch_id": "codex-hr-HR-003",
+      "source_path": "_content/tour/concurrency/mutex-counter.go",
+      "source_sha256": "74488ecc347a123c8538069175ffeef5ea38577bb37b2c7a9ceb6bba47ab02b4",
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-003/candidates/concurrency-mutex-counter.go",
+      "candidate_sha256": "58b08110c60a3c3b9780e7a0ba04685447f65f45eb7956640f2c781f46a1d9d2",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-003/validation/concurrency-mutex-counter.json",
+      "validation_sha256": "4d15518ad2a2390e56bb88dde692d90e413248c513273c7bd410b7078f763f21",
+      "attempt": 1
+    },
+    {
+      "index": 110,
+      "unit_id": "example:flowcontrol/if-and-else.go",
+      "unit_kind": "example",
+      "selected_batch_id": "codex-hr-HR-003",
+      "source_path": "_content/tour/flowcontrol/if-and-else.go",
+      "source_sha256": "9d3030966f45fb90105c0325c9a090e8ac3fce2e7c4b10106d8f75caf0e536cf",
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-003/candidates/flowcontrol-if-and-else.go",
+      "candidate_sha256": "8b4f69f27c70e233d55d9ec588b4a6f6cbb83f418e7d57a8576a161386a4ded1",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-003/validation/flowcontrol-if-and-else.json",
+      "validation_sha256": "5ffc527438c771cfbfae756bb0d5cf2ce3fd8e03bbf56b9baefa78cf7109323e",
+      "attempt": 1
+    },
+    {
+      "index": 111,
+      "unit_id": "example:generics/index.go",
+      "unit_kind": "example",
+      "selected_batch_id": "codex-hr-HR-005",
+      "source_path": "_content/tour/generics/index.go",
+      "source_sha256": "398dd72a4b01efa279d571667bedbcccd1bbbceaeb77218635db48edf38fd983",
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-005/candidates/generics-index.go",
+      "candidate_sha256": "526999738dd4a1f59df0a7ba3ac5012aa47e4c56dbfed165643bdcd88a54d561",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-005/validation/generics-index.json",
+      "validation_sha256": "d895986d907cfb6956c41badabcc4ccbd56721611dbbc42fbd6ff280f8b20429",
+      "attempt": 1
+    },
+    {
+      "index": 112,
+      "unit_id": "example:generics/list.go",
+      "unit_kind": "example",
+      "selected_batch_id": "codex-hr-HR-003",
+      "source_path": "_content/tour/generics/list.go",
+      "source_sha256": "ab72fc4fd321f507abde796abe0830876e0f8bcd8661d9ce4ac34c3da2f68060",
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-003/candidates/generics-list.go",
+      "candidate_sha256": "e0c7e068d1f54cc5edb192948a2a85ad1f7d17566403df6e870269107dfb6339",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-003/validation/generics-list.json",
+      "validation_sha256": "6b2cb860c45e9281ddfc11882e030d338d8adca13cf9a1020a68dc13ff79d961",
+      "attempt": 1
+    },
+    {
+      "index": 113,
+      "unit_id": "example:methods/exercise-reader.go",
+      "unit_kind": "example",
+      "selected_batch_id": "codex-hr-HR-003",
+      "source_path": "_content/tour/methods/exercise-reader.go",
+      "source_sha256": "7f5acb25434e41b1641fffd602725903cd2e217fb7f8809596c4369ac0900137",
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-003/candidates/methods-exercise-reader.go",
+      "candidate_sha256": "ec10128fc2f948b62859c1c52dba8618ee2f722439858bfa87b33ca163ad80a6",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-003/validation/methods-exercise-reader.json",
+      "validation_sha256": "7632d6be5f8bf1a62b90ebba6645a36ed402e4313ca6ac492aa62a9cb408e5d1",
+      "attempt": 1
+    },
+    {
+      "index": 114,
+      "unit_id": "example:methods/exercise-stringer.go",
+      "unit_kind": "example",
+      "selected_batch_id": "codex-hr-HR-003",
+      "source_path": "_content/tour/methods/exercise-stringer.go",
+      "source_sha256": "b5bd782b7e0e7cd9541df782ccac827e8373a0867011f3fc998b8895fb470efc",
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-003/candidates/methods-exercise-stringer.go",
+      "candidate_sha256": "d08589cfcc96c12f2fd5c2b7b94ea2452038e612b5fb180f4af01bfbe697b719",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-003/validation/methods-exercise-stringer.json",
+      "validation_sha256": "99f4c54f92d9105c42b6e4cf3877e39c726ad133672bd633bc67a1ec3d3eda6a",
+      "attempt": 1
+    },
+    {
+      "index": 115,
+      "unit_id": "example:methods/interfaces-are-satisfied-implicitly.go",
+      "unit_kind": "example",
+      "selected_batch_id": "codex-hr-HR-003",
+      "source_path": "_content/tour/methods/interfaces-are-satisfied-implicitly.go",
+      "source_sha256": "44e0699af42c651abaa67a36b4c48143d33a8651adb0a6bb8e285b65ec058dc2",
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-003/candidates/methods-interfaces-are-satisfied-implicitly.go",
+      "candidate_sha256": "016eed12d43f69bc1c48caeb78936038dc202de93c0d1cd678d7671ecba4601c",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-003/validation/methods-interfaces-are-satisfied-implicitly.json",
+      "validation_sha256": "f2f11adb60947b404b28bb99edcf232fb380fb45d4228a25b48a7435d4722919",
+      "attempt": 1
+    },
+    {
+      "index": 116,
+      "unit_id": "example:methods/interfaces.go",
+      "unit_kind": "example",
+      "selected_batch_id": "codex-hr-HR-003",
+      "source_path": "_content/tour/methods/interfaces.go",
+      "source_sha256": "2530ef039212284377a46fe1063db6206d8db3a42a8138c6eed44275bb7eb10b",
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-003/candidates/methods-interfaces.go",
+      "candidate_sha256": "9c876690a0428aa545c99c418b147d33ebd4a7e6a3c2d5310bc12229da5c7da8",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-003/validation/methods-interfaces.json",
+      "validation_sha256": "6cc24222e70ae0c673f7102a1fa6c1c9a4cc43101451aac22f73c6540b1e9405",
+      "attempt": 1
+    },
+    {
+      "index": 117,
+      "unit_id": "example:moretypes/append.go",
+      "unit_kind": "example",
+      "selected_batch_id": "codex-hr-HR-003",
+      "source_path": "_content/tour/moretypes/append.go",
+      "source_sha256": "655ee5085fec61bcb38c9f029741bb1a06a414f94b8b36ed0362055b0d6b10bb",
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-003/candidates/moretypes-append.go",
+      "candidate_sha256": "51c28bc97e9684fb72634552ee582fdc6bc6d365fe731ea2749513d7149ff2ca",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-003/validation/moretypes-append.json",
+      "validation_sha256": "8eb6320b97f26f3639b36559a977282e87d5e45d0f2efef4884861c36de1f727",
+      "attempt": 1
+    },
+    {
+      "index": 118,
+      "unit_id": "example:moretypes/exercise-fibonacci-closure.go",
+      "unit_kind": "example",
+      "selected_batch_id": "codex-hr-HR-003",
+      "source_path": "_content/tour/moretypes/exercise-fibonacci-closure.go",
+      "source_sha256": "a04ba02819628af3c95c045330a5ce733f9f182e755e6ba74e78c0aea602530c",
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-003/candidates/moretypes-exercise-fibonacci-closure.go",
+      "candidate_sha256": "01a686ec8221ef7f07f703f46bd5018c1648c0472e820c09e4f1b3cffcbd1706",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-003/validation/moretypes-exercise-fibonacci-closure.json",
+      "validation_sha256": "e5eebab3b3f508583de8a9a8bd88a2fbaba98d346816210f8771a400a0a1da41",
+      "attempt": 1
+    },
+    {
+      "index": 119,
+      "unit_id": "example:moretypes/pointers.go",
+      "unit_kind": "example",
+      "selected_batch_id": "codex-hr-HR-003",
+      "source_path": "_content/tour/moretypes/pointers.go",
+      "source_sha256": "bbc4a25d868979e959aa383f0de7894135e7f8ae4b2d766e653a033178a9a378",
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-003/candidates/moretypes-pointers.go",
+      "candidate_sha256": "2da60f340aeaff08917563fdeb8f797f9b9fc25a3181a61c89bf4f94240f98d0",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-003/validation/moretypes-pointers.json",
+      "validation_sha256": "96ab9ea974e214349c5a5396d7fb600136b94407a85a203cd9159fac535a7453",
+      "attempt": 1
+    },
+    {
+      "index": 120,
+      "unit_id": "example:moretypes/slice-len-cap.go",
+      "unit_kind": "example",
+      "selected_batch_id": "codex-hr-HR-003",
+      "source_path": "_content/tour/moretypes/slice-len-cap.go",
+      "source_sha256": "b2e5f7a96c8a04998c150ebe6ce344bc198db8b18f4826e6a85ff75ae3033f98",
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-003/candidates/moretypes-slice-len-cap.go",
+      "candidate_sha256": "2d9c453c9fece6547ff37766b0e3b495257da0e18c21d78531a558e053405f63",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-003/validation/moretypes-slice-len-cap.json",
+      "validation_sha256": "25da4f0e40a13e846039c71c1ea08f227510979e1cec73e9116200cfc7a269a5",
+      "attempt": 1
+    },
+    {
+      "index": 121,
+      "unit_id": "example:moretypes/slices-of-slice.go",
+      "unit_kind": "example",
+      "selected_batch_id": "codex-hr-HR-003",
+      "source_path": "_content/tour/moretypes/slices-of-slice.go",
+      "source_sha256": "545cde9f9bc3ec940adbdcac0a801f5e834b6ee3cd5bf1b780f6f81d556562b3",
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-003/candidates/moretypes-slices-of-slice.go",
+      "candidate_sha256": "d10f6b60e5630f3be6c22d4df488cda65385c930d886bd04d32a3c03a6f481f0",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-003/validation/moretypes-slices-of-slice.json",
+      "validation_sha256": "3e7302121b38ade55b2216eb2a1d7da3b904f7bdf7a747ab66bcb7f669e44304",
+      "attempt": 1
+    },
+    {
+      "index": 122,
+      "unit_id": "example:moretypes/struct-literals.go",
+      "unit_kind": "example",
+      "selected_batch_id": "codex-hr-HR-003",
+      "source_path": "_content/tour/moretypes/struct-literals.go",
+      "source_sha256": "c54fd1b039d00a926550fd74ac26c6ed6388c8ca6fe043e64ebdaad921ba2761",
+      "candidate_path": "data/retranslation-runs/hr-HR/codex-hr-HR-003/candidates/moretypes-struct-literals.go",
+      "candidate_sha256": "22981049c81377c9d60b91fa06334cae11fec02fcbeacf8d0fd902b69240d750",
+      "validation_path": "data/retranslation-runs/hr-HR/codex-hr-HR-003/validation/moretypes-struct-literals.json",
+      "validation_sha256": "3d410df6680b9da7cffc0cee83bf65d9de4ea111365c38fb129619a2765fd125",
+      "attempt": 1
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+* Skaitytuvai
+
+Paketas `io` apibrėžia sąsają `io.Reader`, kuri atitinka duomenų srauto skaitymo galą.
+
+Go standartinėje bibliotekoje yra [[https://cs.opensource.google/search?q=Read%5C(%5Cw%2B%5Cs%5C%5B%5C%5Dbyte%5C)&ss=go%2Fgo][daug šios sąsajos įgyvendinimų]], įskaitant failus, tinklo ryšius, glaudintuvus, šifrus ir kitus.
+
+Sąsaja `io.Reader` turi metodą `Read`:
+
+	func (T) Read(b []byte) (n int, err error)
+
+`Read` užpildo pateiktą baitų pjūvį duomenimis ir grąžina užpildytų baitų skaičių bei klaidos reikšmę. Srautui pasibaigus jis grąžina klaidą `io.EOF`.
+
+Pavyzdžio kodas sukuria
+[[/pkg/strings/#Reader][`strings.Reader`]]
+ir skaito jo išvestį po 8 baitus.
+
+.play methods/reader.go

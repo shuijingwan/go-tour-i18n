@@ -1,0 +1,25 @@
+* Tipske trditve
+
+⟪GTI18N_c205b4eb_000001⟫tipska_trditev⟪GTI18N_c205b4eb_000002⟫ omogoča dostop do osnovne konkretne vrednosti vrednosti vmesnika.
+
+⟪GTI18N_c205b4eb_000003⟫
+
+Ta stavek trdi, da vrednost vmesnika ⟪GTI18N_c205b4eb_000004⟫i⟪GTI18N_c205b4eb_000005⟫ vsebuje konkretni tip ⟪GTI18N_c205b4eb_000006⟫T⟪GTI18N_c205b4eb_000007⟫
+in osnovno vrednost tipa ⟪GTI18N_c205b4eb_000008⟫T⟪GTI18N_c205b4eb_000009⟫ priredi spremenljivki ⟪GTI18N_c205b4eb_000010⟫t⟪GTI18N_c205b4eb_000011⟫.
+
+Če ⟪GTI18N_c205b4eb_000012⟫i⟪GTI18N_c205b4eb_000013⟫ ne vsebuje tipa ⟪GTI18N_c205b4eb_000014⟫T⟪GTI18N_c205b4eb_000015⟫, bo stavek sprožil panic.
+
+Če želimo ⟪GTI18N_c205b4eb_000016⟫preveriti⟪GTI18N_c205b4eb_000017⟫, ali vrednost vmesnika vsebuje določen tip,
+lahko tipska trditev vrne dve vrednosti: osnovno vrednost
+in logično vrednost, ki pove, ali je trditev uspela.
+
+⟪GTI18N_c205b4eb_000018⟫
+
+Če ⟪GTI18N_c205b4eb_000019⟫i⟪GTI18N_c205b4eb_000020⟫ vsebuje tip ⟪GTI18N_c205b4eb_000021⟫T⟪GTI18N_c205b4eb_000022⟫, bo ⟪GTI18N_c205b4eb_000023⟫t⟪GTI18N_c205b4eb_000024⟫ osnovna vrednost, ⟪GTI18N_c205b4eb_000025⟫ok⟪GTI18N_c205b4eb_000026⟫ pa bo true.
+
+Sicer bo ⟪GTI18N_c205b4eb_000027⟫ok⟪GTI18N_c205b4eb_000028⟫ false, ⟪GTI18N_c205b4eb_000029⟫t⟪GTI18N_c205b4eb_000030⟫ pa bo ničelna vrednost tipa ⟪GTI18N_c205b4eb_000031⟫T⟪GTI18N_c205b4eb_000032⟫,
+pri čemer se panic ne sproži.
+
+Opazite podobnost med to skladnjo in branjem iz slovarja.
+
+⟪GTI18N_c205b4eb_000033⟫

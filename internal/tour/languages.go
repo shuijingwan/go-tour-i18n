@@ -47,6 +47,7 @@ var languageRegistry = []LanguageLink{
 	{Locale: "kn-IN", EnglishName: "Kannada", Autonym: "ಕನ್ನಡ", URL: "https://kn-go-dev.shuijingwanwq.com/"},
 	{Locale: "ko-KR", EnglishName: "Korean", Autonym: "한국어", URL: "https://ko-go-dev.shuijingwanwq.com/"},
 	{Locale: "es-419", EnglishName: "Latin American Spanish", Autonym: "Español (Latinoamérica)", URL: "https://es-419-go-dev.shuijingwanwq.com/"},
+	{Locale: "lt-LT", EnglishName: "Lithuanian", Autonym: "Lietuvių", URL: "https://lt-go-dev.shuijingwanwq.com/"},
 	{Locale: "ms-MY", EnglishName: "Malay", Autonym: "Bahasa Melayu", URL: "https://ms-go-dev.shuijingwanwq.com/"},
 	{Locale: "ml-IN", EnglishName: "Malayalam", Autonym: "മലയാളം", URL: "https://ml-go-dev.shuijingwanwq.com/"},
 	{Locale: "mr-IN", EnglishName: "Marathi", Autonym: "मराठी", URL: "https://mr-go-dev.shuijingwanwq.com/"},
@@ -57,6 +58,7 @@ var languageRegistry = []LanguageLink{
 	{Locale: "sr-RS", EnglishName: "Serbian", Autonym: "Српски (ћирилица)", URL: "https://sr-go-dev.shuijingwanwq.com/"},
 	{Locale: "zh-CN", EnglishName: "Simplified Chinese", Autonym: "简体中文", URL: "https://go-dev.shuijingwanwq.com/"},
 	{Locale: "sk-SK", EnglishName: "Slovak", Autonym: "Slovenčina", URL: "https://sk-go-dev.shuijingwanwq.com/"},
+	{Locale: "sl-SI", EnglishName: "Slovenian", Autonym: "Slovenščina", URL: "https://sl-go-dev.shuijingwanwq.com/"},
 	{Locale: "es-ES", EnglishName: "Spanish", Autonym: "Español", URL: "https://es-go-dev.shuijingwanwq.com/"},
 	{Locale: "sv-SE", EnglishName: "Swedish", Autonym: "Svenska", URL: "https://sv-go-dev.shuijingwanwq.com/"},
 	{Locale: "ta-IN", EnglishName: "Tamil", Autonym: "தமிழ்", URL: "https://ta-go-dev.shuijingwanwq.com/"},
@@ -116,6 +118,8 @@ var (
 	belgradeTime    = mustLoadLocation("Europe/Belgrade")
 	bratislavaTime  = mustLoadLocation("Europe/Bratislava")
 	zagrebTime      = mustLoadLocation("Europe/Zagreb")
+	ljubljanaTime   = mustLoadLocation("Europe/Ljubljana")
+	vilniusTime     = mustLoadLocation("Europe/Vilnius")
 )
 
 var localeProfiles = map[string]localeProfile{
@@ -410,6 +414,20 @@ var localeProfiles = map[string]localeProfile{
 		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",
 		TimeZone:          bratislavaTime,
 		TimeLabel:         "miestny čas",
+		TimeLabelFormat:   " (%s)",
+		Direction:         "ltr",
+	},
+	"sl-SI": {
+		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",
+		TimeZone:          ljubljanaTime,
+		TimeLabel:         "lokalni čas",
+		TimeLabelFormat:   " (%s)",
+		Direction:         "ltr",
+	},
+	"lt-LT": {
+		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",
+		TimeZone:          vilniusTime,
+		TimeLabel:         "vietos laikas",
 		TimeLabelFormat:   " (%s)",
 		Direction:         "ltr",
 	},

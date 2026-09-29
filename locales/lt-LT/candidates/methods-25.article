@@ -1,0 +1,13 @@
+* Pratimas: vaizdai
+
+Prisimenate anksčiau parašytą [[/tour/moretypes/18][paveikslėlių generatorių]]? Parašykime dar vieną, tačiau šį kartą vietoj duomenų pjūvio jis grąžins `image.Image` įgyvendinimą.
+
+Apibrėžkite savo tipą `Image`, įgyvendinkite [[/pkg/image/#Image][reikiamus metodus]] ir iškvieskite `pic.ShowImage`.
+
+`Bounds` turėtų grąžinti `image.Rectangle`, pavyzdžiui, `image.Rect(0,`0,`w,`h)`.
+
+`ColorModel` turėtų grąžinti `color.RGBAModel`.
+
+`At` turėtų grąžinti spalvą; reikšmė `v` ankstesniame paveikslėlių generatoriuje čia atitinka `color.RGBA{v,`v,`255,`255}`.
+
+.play methods/exercise-images.go

@@ -1,0 +1,19 @@
+* Napake
+
+Programi ⟪GTI18N_9eaab1fd_000001⟫ izražajo stanje napake z vrednostmi ⟪GTI18N_9eaab1fd_000002⟫error⟪GTI18N_9eaab1fd_000003⟫.
+
+Tip ⟪GTI18N_9eaab1fd_000004⟫error⟪GTI18N_9eaab1fd_000005⟫ je vgrajeni vmesnik, podoben ⟪GTI18N_9eaab1fd_000006⟫fmt.Stringer⟪GTI18N_9eaab1fd_000007⟫:
+
+⟪GTI18N_9eaab1fd_000008⟫
+
+(Tako kot pri ⟪GTI18N_9eaab1fd_000009⟫fmt.Stringer⟪GTI18N_9eaab1fd_000010⟫ paket ⟪GTI18N_9eaab1fd_000011⟫fmt⟪GTI18N_9eaab1fd_000012⟫ pri
+izpisovanju vrednosti išče vmesnik ⟪GTI18N_9eaab1fd_000013⟫error⟪GTI18N_9eaab1fd_000014⟫.)
+
+Funkcije pogosto vrnejo vrednost ⟪GTI18N_9eaab1fd_000015⟫error⟪GTI18N_9eaab1fd_000016⟫, klicna koda pa naj napake obravnava
+tako, da preveri, ali je napaka enaka ⟪GTI18N_9eaab1fd_000017⟫nil⟪GTI18N_9eaab1fd_000018⟫.
+
+⟪GTI18N_9eaab1fd_000019⟫
+
+Če je vrednost ⟪GTI18N_9eaab1fd_000020⟫, ⟪GTI18N_9eaab1fd_000021⟫error⟪GTI18N_9eaab1fd_000022⟫ pomeni uspeh; če ni ⟪GTI18N_9eaab1fd_000023⟫, ⟪GTI18N_9eaab1fd_000024⟫error⟪GTI18N_9eaab1fd_000025⟫ pomeni neuspeh.
+
+⟪GTI18N_9eaab1fd_000026⟫

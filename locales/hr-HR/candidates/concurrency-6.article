@@ -1,0 +1,14 @@
+* Zadani odabir
+
+Slučaj `default` u naredbi `select` izvršava se ako nijedan drugi slučaj nije spreman.
+
+Upotrijebite slučaj `default` kako biste pokušali poslati ili primiti vrijednost bez blokiranja:
+
+	select {
+	case i := <-c:
+		// upotrijebi i
+	default:
+		// primanje iz c blokiralo bi
+	}
+
+.play concurrency/default-selection.go

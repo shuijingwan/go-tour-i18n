@@ -1,0 +1,15 @@
+* Vrstni red ovrednotenja switch
+
+Primeri stavka switch se ovrednotijo od zgoraj navzdol in se ustavijo pri prvem uspešnem primeru.
+
+(Na primer,
+
+	switch i {
+	case 0:
+	case f():
+	}
+
+ne pokliče `f`, če velja `i==0`.)
+
+
+.play flowcontrol/switch-evaluation-order.go

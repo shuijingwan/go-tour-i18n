@@ -1,0 +1,17 @@
+* Klaidos
+
+⟪GTI18N_9eaab1fd_000001⟫ programos klaidos būseną išreiškia ⟪GTI18N_9eaab1fd_000002⟫error⟪GTI18N_9eaab1fd_000003⟫ reikšmėmis.
+
+Tipas ⟪GTI18N_9eaab1fd_000004⟫error⟪GTI18N_9eaab1fd_000005⟫ yra įtaisytoji sąsaja, panaši į ⟪GTI18N_9eaab1fd_000006⟫fmt.Stringer⟪GTI18N_9eaab1fd_000007⟫:
+
+⟪GTI18N_9eaab1fd_000008⟫
+
+(Kaip ir ⟪GTI18N_9eaab1fd_000009⟫fmt.Stringer⟪GTI18N_9eaab1fd_000010⟫ atveju, paketas ⟪GTI18N_9eaab1fd_000011⟫fmt⟪GTI18N_9eaab1fd_000012⟫ spausdindamas reikšmes ieško sąsajos ⟪GTI18N_9eaab1fd_000013⟫error⟪GTI18N_9eaab1fd_000014⟫.)
+
+Funkcijos dažnai grąžina ⟪GTI18N_9eaab1fd_000015⟫error⟪GTI18N_9eaab1fd_000016⟫ reikšmę, o jas iškviečiantis kodas turėtų apdoroti klaidas tikrindamas, ar klaida lygi ⟪GTI18N_9eaab1fd_000017⟫nil⟪GTI18N_9eaab1fd_000018⟫.
+
+⟪GTI18N_9eaab1fd_000019⟫
+
+Nil ⟪GTI18N_9eaab1fd_000020⟫error⟪GTI18N_9eaab1fd_000021⟫ reiškia sėkmę, o ne nil ⟪GTI18N_9eaab1fd_000022⟫error⟪GTI18N_9eaab1fd_000023⟫ – nesėkmę.
+
+⟪GTI18N_9eaab1fd_000024⟫

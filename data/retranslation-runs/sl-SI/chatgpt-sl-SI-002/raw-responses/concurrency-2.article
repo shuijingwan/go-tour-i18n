@@ -1,0 +1,16 @@
+* Kanali
+
+Kanali so tipizirani vodi, po katerih lahko z operatorjem kanala ⟪GTI18N_a35e3af2_000001⟫<-⟪GTI18N_a35e3af2_000002⟫ pošiljate in prejemate vrednosti.
+
+⟪GTI18N_a35e3af2_000003⟫Pošlji ⟪GTI18N_a35e3af2_000004⟫ na kanal ⟪GTI18N_a35e3af2_000005⟫.⟪GTI18N_a35e3af2_000006⟫Prejmi iz ⟪GTI18N_a35e3af2_000007⟫ in⟪GTI18N_a35e3af2_000008⟫priredi vrednost ⟪GTI18N_a35e3af2_000009⟫.⟪GTI18N_a35e3af2_000010⟫(Podatki tečejo v smeri puščice.)
+
+Tako kot slovarje in rezine je treba tudi kanale pred uporabo ustvariti:
+
+⟪GTI18N_a35e3af2_000011⟫
+
+Privzeto se pošiljanje in prejemanje blokirata, dokler druga stran ni pripravljena. Tako se lahko goroutine sinhronizirajo brez izrecnih zaklepov ali pogojnih spremenljivk.
+
+Vzorčna koda sešteje števila v rezini in delo porazdeli med dve goroutini.
+Ko obe goroutini končata izračun, izračuna končni rezultat.
+
+⟪GTI18N_a35e3af2_000012⟫

@@ -1,0 +1,21 @@
+* Metode in posredni dostop prek kazalca (2)
+
+Enakovredno se zgodi tudi v obratni smeri.
+
+Funkcije, ki sprejmejo argument vrednostnega tipa, morajo prejeti vrednost tega določenega tipa:
+
+	var v Vertex
+	fmt.Println(AbsFunc(v))  // OK
+	fmt.Println(AbsFunc(&v)) // Napaka pri prevajanju!
+
+medtem ko metode s prejemniki vrednostnega tipa ob klicu sprejmejo kot
+prejemnik bodisi vrednost bodisi kazalec:
+
+	var v Vertex
+	fmt.Println(v.Abs()) // OK
+	p := &v
+	fmt.Println(p.Abs()) // OK
+
+V tem primeru se klic metode `p.Abs()` razume kot `(*p).Abs()`.
+
+.play methods/indirection-values.go

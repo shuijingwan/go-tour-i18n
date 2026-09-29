@@ -1,0 +1,7 @@
+* Funkcijska zaprtja
+
+Funkcije jezika Go so lahko zaprtja. Zaprtje je funkcijska vrednost, ki se sklicuje na spremenljivke zunaj svojega telesa. Funkcija lahko do teh spremenljivk dostopa in jim prireja vrednosti; v tem smislu je funkcija »vezana« na spremenljivke.
+
+Funkcija `adder` na primer vrne zaprtje. Vsako zaprtje je vezano na svojo spremenljivko `sum`.
+
+.play moretypes/function-closures.go

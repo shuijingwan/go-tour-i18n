@@ -1,0 +1,9 @@
+* Defer
+
+Stavek defer odloži izvajanje funkcije, dokler se okoliška
+funkcija ne vrne.
+
+Argumenti odloženega klica se ovrednotijo takoj, sam klic funkcije
+pa se ne izvede, dokler se okoliška funkcija ne vrne.
+
+.play flowcontrol/defer.go

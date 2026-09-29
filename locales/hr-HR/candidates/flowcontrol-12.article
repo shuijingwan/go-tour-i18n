@@ -1,0 +1,8 @@
+* Defer
+
+Naredba defer odgađa izvršavanje funkcije sve dok se okolna funkcija ne vrati.
+
+Argumenti odgođenog poziva vrednuju se odmah, ali poziv funkcije ne izvršava se
+sve dok se okolna funkcija ne vrati.
+
+.play flowcontrol/defer.go

@@ -1,0 +1,18 @@
+* Pjūvio kūrimas su make
+
+Pjūvius galima kurti naudojant įtaisytąją `make` funkciją;
+taip kuriami dinaminio dydžio masyvai.
+
+Funkcija `make` išskiria nulinėmis reikšmėmis užpildytą masyvą
+ir grąžina į jį nukreiptą pjūvį:
+
+	a := make([]int, 5)  // len(a)=5
+
+Norėdami nurodyti talpą, perduokite `make` trečią argumentą:
+
+	b := make([]int, 0, 5) // len(b)=0, cap(b)=5
+
+	b = b[:cap(b)] // len(b)=5, cap(b)=5
+	b = b[1:]      // len(b)=4, cap(b)=4
+
+.play moretypes/making-slices.go

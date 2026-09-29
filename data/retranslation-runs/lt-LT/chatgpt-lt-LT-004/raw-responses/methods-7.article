@@ -1,0 +1,13 @@
+* Metodai ir netiesioginė prieiga per rodykles (2)
+
+Atvirkštine kryptimi vyksta analogiškas dalykas.
+
+Funkcijoms, kurių argumentas yra reikšmė, būtina perduoti būtent to tipo reikšmę:
+
+⟪GTI18N_61a9cb84_000001⟫Kompiliavimo klaida!⟪GTI18N_61a9cb84_000002⟫o metodus su reikšminiais metodo imtuvais iškviečiant jų imtuvu gali būti tiek reikšmė, tiek rodyklė:
+
+⟪GTI18N_61a9cb84_000003⟫
+
+Šiuo atveju metodo iškvietimas ⟪GTI18N_61a9cb84_000004⟫p.Abs()⟪GTI18N_61a9cb84_000005⟫ interpretuojamas kaip ⟪GTI18N_61a9cb84_000006⟫(*p).Abs()⟪GTI18N_61a9cb84_000007⟫.
+
+⟪GTI18N_61a9cb84_000008⟫

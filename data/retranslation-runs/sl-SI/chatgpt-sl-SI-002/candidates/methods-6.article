@@ -1,0 +1,23 @@
+* Metode in posredni dostop prek kazalca
+
+Če primerjate prejšnja programa, lahko opazite, da
+morajo funkcije z argumentom kazalčnega tipa prejeti kazalec:
+
+	var v Vertex
+	ScaleFunc(v, 5)  // Napaka pri prevajanju!
+	ScaleFunc(&v, 5) // OK
+
+medtem ko metode s prejemniki kazalčnega tipa ob klicu sprejmejo kot
+prejemnik bodisi vrednost bodisi kazalec:
+
+	var v Vertex
+	v.Scale(5)  // OK
+	p := &v
+	p.Scale(10) // OK
+
+Pri stavku `v.Scale(5)` se, čeprav je `v` vrednost in ne kazalec,
+samodejno pokliče metoda s prejemnikom kazalčnega tipa.
+Zaradi priročnosti Go stavek `v.Scale(5)` razume kot
+`(&v).Scale(5)`, ker ima metoda `Scale` prejemnik kazalčnega tipa.
+
+.play methods/indirection.go

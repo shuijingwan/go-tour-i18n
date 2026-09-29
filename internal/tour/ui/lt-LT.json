@@ -1,0 +1,458 @@
+{
+  "locale": "lt-LT",
+  "html_lang": "lt-LT",
+  "messages": {
+    "tour.title": {
+      "kind": "plain",
+      "text": "Pažintis su Go"
+    },
+    "header.about_project": {
+      "kind": "plain",
+      "text": "Apie šį projektą"
+    },
+    "tour.list_heading": {
+      "kind": "plain",
+      "text": "Sveiki atvykę į Go kursą"
+    },
+    "tour.list_title": {
+      "kind": "plain",
+      "text": "Kurso katalogas — Pažintis su Go"
+    },
+    "tour.list_description": {
+      "kind": "plain",
+      "text": "Peržiūrėkite „Pažinties su Go“ modulius ir pamokas — interaktyvų įvadą į Go programavimo kalbą."
+    },
+    "theme.toggle": {
+      "kind": "plain",
+      "text": "Perjungti temą"
+    },
+    "theme.system": {
+      "kind": "plain",
+      "text": "Sistemos tema"
+    },
+    "theme.dark": {
+      "kind": "plain",
+      "text": "Tamsi tema"
+    },
+    "theme.light": {
+      "kind": "plain",
+      "text": "Šviesi tema"
+    },
+    "editor.syntax": {
+      "kind": "plain",
+      "text": "Sintaksė"
+    },
+    "editor.imports": {
+      "kind": "plain",
+      "text": "Importai"
+    },
+    "editor.on": {
+      "kind": "plain",
+      "text": "Įjungta"
+    },
+    "editor.off": {
+      "kind": "plain",
+      "text": "Išjungta"
+    },
+    "editor.run": {
+      "kind": "plain",
+      "text": "Vykdyti"
+    },
+    "editor.kill": {
+      "kind": "plain",
+      "text": "Stabdyti"
+    },
+    "editor.format": {
+      "kind": "plain",
+      "text": "Formatuoti"
+    },
+    "editor.reset": {
+      "kind": "plain",
+      "text": "Atkurti"
+    },
+    "toc.title": {
+      "kind": "plain",
+      "text": "Turinys"
+    },
+    "execution.waiting": {
+      "kind": "plain",
+      "text": "Laukiama nuotolinio serverio..."
+    },
+    "execution.exited": {
+      "kind": "plain",
+      "text": "Programa baigė darbą"
+    },
+    "execution.vet_failed": {
+      "kind": "plain",
+      "text": "Nepavyko atlikti Go vet patikros."
+    },
+    "execution.build_failed": {
+      "kind": "plain",
+      "text": "Nepavyko atlikti Go build."
+    },
+    "execution.communication_error": {
+      "kind": "plain",
+      "text": "Klaida bendraujant su nuotoliniu serveriu."
+    },
+    "execution.test_failed": {
+      "kind": "plain",
+      "text": "{count} testas nepavyko."
+    },
+    "execution.tests_failed": {
+      "kind": "plain",
+      "text": "Nepavykusių testų: {count}."
+    },
+    "execution.tests_passed": {
+      "kind": "plain",
+      "text": "Visi testai sėkmingi."
+    },
+    "feedback.open": {
+      "kind": "plain",
+      "text": "Siųsti atsiliepimą apie šį puslapį"
+    },
+    "feedback.issue_title": {
+      "kind": "plain",
+      "text": "x/website/_content/tour: [PAKEISKITE TRUMPU APRAŠYMU]"
+    },
+    "feedback.issue_body": {
+      "kind": "plain",
+      "text": "Pakeiskite aukščiau esantį pavadinimą taip, kad jis apibūdintų problemą, ir čia pridėkite savo atsiliepimą, prireikus įtraukdami kodą"
+    },
+    "feedback.context": {
+      "kind": "plain",
+      "text": "Kontekstas"
+    },
+    "module.using_tour.title": {
+      "kind": "plain",
+      "text": "Naudojimasis kursu"
+    },
+    "module.using_tour.description": {
+      "kind": "rich",
+      "text": "<p>Sveiki atvykę į <a href=\"https://go.dev\">Go programavimo kalbos</a> kursą. Kurse aptariamos svarbiausios kalbos ypatybės, daugiausia:</p>"
+    },
+    "module.basics.title": {
+      "kind": "plain",
+      "text": "Pagrindai"
+    },
+    "module.basics.description": {
+      "kind": "rich",
+      "text": "<p>Pradėkite nuo pagrindų ir susipažinkite su svarbiausiais kalbos elementais.</p><p>Kintamųjų deklaravimas, funkcijų kvietimas ir visa kita, ką reikia žinoti prieš pereinant prie kitų pamokų.</p>"
+    },
+    "module.methods.title": {
+      "kind": "plain",
+      "text": "Metodai ir sąsajos"
+    },
+    "module.methods.description": {
+      "kind": "rich",
+      "text": "<p>Sužinokite, kaip apibrėžti tipų metodus, deklaruoti sąsajas ir visa tai sujungti.</p>"
+    },
+    "module.generics.title": {
+      "kind": "plain",
+      "text": "Bendrasis programavimas"
+    },
+    "module.generics.description": {
+      "kind": "rich",
+      "text": "<p>Sužinokite, kaip naudoti tipų parametrus Go funkcijose ir struktūrose.</p>"
+    },
+    "module.concurrency.title": {
+      "kind": "plain",
+      "text": "Konkurentinis vykdymas"
+    },
+    "module.concurrency.description": {
+      "kind": "rich",
+      "text": "<p>Konkurentinio vykdymo priemonės yra Go kalbos branduolio dalis.</p><p>Šiame modulyje aptariamos goroutine ir kanalai bei tai, kaip jie naudojami skirtingiems konkurentinio vykdymo modeliams įgyvendinti.</p>"
+    },
+    "error.not_found": {
+      "kind": "plain",
+      "text": "404 — puslapis nerastas"
+    },
+    "site.title": {
+      "kind": "plain",
+      "text": "„Pažinties su Go“ daugiakalbio vertimo projektas"
+    },
+    "site.browser_title": {
+      "kind": "plain",
+      "text": "Yongye · „Pažinties su Go“ daugiakalbio vertimo projektas"
+    },
+    "site.unofficial": {
+      "kind": "plain",
+      "text": "Prižiūri Yongye · Neoficialus bendruomeninis daugiakalbio vertimo projektas"
+    },
+    "site.intro": {
+      "kind": "plain",
+      "text": "Bendruomenės prižiūrimas oficialaus Go mokomojo turinio vertimo projektas. Pirmoji prieinama kalba yra supaprastintoji kinų kalba, o struktūrą galima plėsti, kad būtų palaikoma daugiau kalbų ir Go turinio."
+    },
+    "site.no_affiliation": {
+      "kind": "plain",
+      "text": "Šis projektas nėra susijęs su Go projektu, nėra jo įgaliotas ar patvirtintas."
+    },
+    "site.start_learning": {
+      "kind": "plain",
+      "text": "Pradėti mokytis"
+    },
+    "site.current_projects": {
+      "kind": "plain",
+      "text": "Dabartinis vertimo projektas"
+    },
+    "site.tour_description": {
+      "kind": "plain",
+      "text": "Interaktyvus įvadas į Go programavimo kalbą."
+    },
+    "site.current_language": {
+      "kind": "plain",
+      "text": "Dabartinė kalba"
+    },
+    "site.enter_tour": {
+      "kind": "plain",
+      "text": "Pradėti kursą"
+    },
+    "site.project_status": {
+      "kind": "plain",
+      "text": "Projekto būsena"
+    },
+    "site.course_pages": {
+      "kind": "plain",
+      "text": "Kurso puslapiai"
+    },
+    "site.latest_release": {
+      "kind": "plain",
+      "text": "Naujausia versija"
+    },
+    "site.environment": {
+      "kind": "plain",
+      "text": "Aplinka"
+    },
+    "site.development_environment": {
+      "kind": "plain",
+      "text": "Kūrimo aplinka"
+    },
+    "site.upstream_baseline": {
+      "kind": "plain",
+      "text": "Oficialaus šaltinio bazinė versija"
+    },
+    "site.upstream_commit_time": {
+      "kind": "plain",
+      "text": "Oficialaus šaltinio commit laikas"
+    },
+    "site.language_versions": {
+      "kind": "plain",
+      "text": "Kalbų versijos"
+    },
+    "site.official_version": {
+      "kind": "plain",
+      "text": "Oficiali „Pažinties su Go“ versija"
+    },
+    "site.community_version": {
+      "kind": "plain",
+      "text": "Bendruomenės vertimas"
+    },
+    "site.open_official_tour": {
+      "kind": "plain",
+      "text": "Atverti oficialų kursą"
+    },
+    "site.project_links": {
+      "kind": "plain",
+      "text": "Projekto nuorodos"
+    },
+    "site.source_code": {
+      "kind": "plain",
+      "text": "Programos kodas GitHub"
+    },
+    "site.issue_feedback": {
+      "kind": "plain",
+      "text": "GitHub Issues"
+    },
+    "site.development_log": {
+      "kind": "plain",
+      "text": "Kūrimo žurnalas: „Pažinties su Go“ daugiakalbio vertimo projektas"
+    },
+    "site.official_upstream": {
+      "kind": "plain",
+      "text": "Oficialus pirminis šaltinis"
+    },
+    "site.translation_validation": {
+      "kind": "plain",
+      "text": "Vertimas ir tikrinimas"
+    },
+    "site.translation_validation_intro": {
+      "kind": "plain",
+      "text": "Projektas išlaiko mokymosi patirtį artimą oficialiam šaltiniui ir prieš paskelbiant patikrina kiekvieną leidimą."
+    },
+    "site.validation_page_unit": {
+      "kind": "plain",
+      "text": "Vertimo vienetais naudojami ištisi kurso puslapiai."
+    },
+    "site.validation_present": {
+      "kind": "plain",
+      "text": "Kiekvienas leidimas analizuojamas naudojant present."
+    },
+    "site.validation_structure": {
+      "kind": "plain",
+      "text": "Puslapio struktūra lyginama su oficialiu šaltiniu."
+    },
+    "site.validation_render": {
+      "kind": "plain",
+      "text": "Atvaizduoti puslapiai patikrinami prieš leidimą."
+    },
+    "site.validation_examples": {
+      "kind": "plain",
+      "text": "Go pavyzdžiai, kuriuose yra verčiamų natūralios kalbos komentarų, taip pat įtraukiami į bendrą tikrinimo darbo eigą; visi kiti pavyzdžiai ir toliau tiesiogiai naudoja oficialų šaltinį."
+    },
+    "site.how_it_works": {
+      "kind": "plain",
+      "text": "Kaip veikia projektas"
+    },
+    "site.how_it_works_intro": {
+      "kind": "plain",
+      "text": "Kurso lokalizavimas nėra sakinių keitimas po vieną. Tai darbo eiga, paremta išbaigtais turinio vienetais, atsekamomis peržiūros būsenomis ir patikrinamais leidimo artefaktais."
+    },
+    "site.workflow_title": {
+      "kind": "plain",
+      "text": "Nuo TranslationUnit iki produkcinės aplinkos"
+    },
+    "site.workflow_units": {
+      "kind": "plain",
+      "text": "TranslationUnit apima ir ištisus Page, ir tinkamus Example: Page yra visas present.Section, o Example — visas .go failas, kuriame yra verčiamų natūralios kalbos komentarų."
+    },
+    "site.workflow_process": {
+      "kind": "plain",
+      "text": "Kiekvienas vienetas pereina vertimo, automatinio tikrinimo, Translation Quality Review, promotion, ready, projection ir publish etapus; sugeneruoti vertimai niekada neskelbiami tiesiogiai."
+    },
+    "site.workflow_review": {
+      "kind": "plain",
+      "text": "Automatinės patikros saugo struktūrą, analizuoja turinį su present, lygina jį su oficialiu šaltiniu, tikrina atvaizdavimą ir puslapius bei Example Go turinį. Prieš promotion vis tiek būtina nepriklausoma vertimo kokybės peržiūra."
+    },
+    "site.workflow_publish": {
+      "kind": "plain",
+      "text": "Publikavimo metu iš kanoninių kandidatų, kurių būsena ready, sukuriama visa lokalizuota projekcija; reikalaujama, kad kiekvienas darbo eigos TranslationUnit būtų ready, tada sukuriami produkcinis dvejetainis failas, release.json ir SHA256SUMS ir patikrinamas visas paketas."
+    },
+    "site.architecture_title": {
+      "kind": "plain",
+      "text": "Atsekama, valdoma ir plečiama architektūra"
+    },
+    "site.architecture_upstream": {
+      "kind": "plain",
+      "text": "Projektas nuolat registruoja oficialaus pirminio šaltinio commit, taip išlaikydamas atsekamą bazinę versiją būsimiems šaltinio atnaujinimams."
+    },
+    "site.architecture_playground": {
+      "kind": "plain",
+      "text": "Go pavyzdžiai naršyklėje vykdomi per valdomą nuotolinį Go Playground tarpinį serverį; produkcinė aplinka neatveria vietinio /socket kodo vykdymo galinio taško."
+    },
+    "site.architecture_languages": {
+      "kind": "plain",
+      "text": "Serveris, šablonai, CSS, JavaScript, vaizdai ir šriftai, kai praktiška, yra bendri. Kiekviena kalba atskirai prižiūri kurso vertimus, UI tekstą, terminiją ir būseną. Pirmoji pateikta kalba yra supaprastintoji kinų kalba, o architektūra parengta plėtrai."
+    },
+    "site.operations_note": {
+      "kind": "plain",
+      "text": "Šioje svetainėje gali būti rodoma reklama, padedanti padengti infrastruktūros išlaidas, pvz., serverių, duomenų srauto ir CDN paslaugų, taip pat nuolatines projekto priežiūros išlaidas. Programos kodas lieka viešas, o savarankiškai talpinamuose diegimuose šios svetainės reklamos konfigūracija pagal numatymą neįjungiama."
+    },
+    "support.section_title": {
+      "kind": "plain",
+      "text": "Parama ir eksploatavimo išlaidos"
+    },
+    "support.advertising_title": {
+      "kind": "plain",
+      "text": "Pranešimas apie reklamą"
+    },
+    "support.translation_title": {
+      "kind": "plain",
+      "text": "Paremkite šią kalbos versiją"
+    },
+    "support.intro": {
+      "kind": "plain",
+      "text": "Taip pat galite savanoriškai paremti tolesnę šios kalbos versijos priežiūrą. Jūsų parama padeda tęsti šios versijos priežiūrą ir plėtrą."
+    },
+    "support.reference_label": {
+      "kind": "plain",
+      "text": "Paramos žyma"
+    },
+    "support.reference_help": {
+      "kind": "plain",
+      "text": "Jei jūsų mokėjimo paslauga palaiko pastabą arba mokėjimo žymą, galite naudoti šią reikšmę."
+    },
+    "support.copy_reference": {
+      "kind": "plain",
+      "text": "Kopijuoti žymą"
+    },
+    "support.copy_address": {
+      "kind": "plain",
+      "text": "Kopijuoti adresą"
+    },
+    "support.copy_uid": {
+      "kind": "plain",
+      "text": "Kopijuoti UID"
+    },
+    "support.copied": {
+      "kind": "plain",
+      "text": "Nukopijuota"
+    },
+    "support.asset": {
+      "kind": "plain",
+      "text": "Aktyvas"
+    },
+    "support.network": {
+      "kind": "plain",
+      "text": "Tinklas"
+    },
+    "support.address": {
+      "kind": "plain",
+      "text": "Adresas"
+    },
+    "support.minimum_deposit": {
+      "kind": "plain",
+      "text": "Minimali gavimo suma"
+    },
+    "support.platform_title": {
+      "kind": "plain",
+      "text": "Vidinis pervedimas platformoje (nebūtina)"
+    },
+    "support.uid": {
+      "kind": "plain",
+      "text": "UID"
+    },
+    "support.platform_help": {
+      "kind": "plain",
+      "text": "Tos pačios platformos naudotojai gali atlikti vidinį pervedimą pagal UID. Išsamią informaciją rasite platformoje."
+    },
+    "support.usdc_network_only": {
+      "kind": "plain",
+      "text": "USDC siųskite tik per Base tinklą."
+    },
+    "support.usdt_network_only": {
+      "kind": "plain",
+      "text": "USDT siųskite tik per Tron (TRC20) tinklą."
+    },
+    "support.wrong_network_warning": {
+      "kind": "plain",
+      "text": "Pasirinkus netinkamą aktyvą ar tinklą galima prarasti lėšas."
+    },
+    "site.continue_learning_title": {
+      "kind": "plain",
+      "text": "Tęskite Go mokymąsi"
+    },
+    "site.continue_learning_description": {
+      "kind": "plain",
+      "text": "„Pažintis su Go“ — tik pradžia. Baigę kursą apsilankykite go.dev: ten rasite oficialią dokumentaciją, vadovus, standartinės bibliotekos žinyną, kalbos specifikaciją ir daugiau Go mokymosi išteklių."
+    },
+    "site.continue_learning": {
+      "kind": "plain",
+      "text": "Tęsti mokymąsi go.dev"
+    },
+    "footer.unofficial": {
+      "kind": "plain",
+      "text": "Yongye · Neoficialus bendruomeninis daugiakalbio vertimo projektas"
+    },
+    "footer.home": {
+      "kind": "plain",
+      "text": "Pradžia"
+    },
+    "footer.github": {
+      "kind": "plain",
+      "text": "GitHub"
+    },
+    "footer.development_log": {
+      "kind": "plain",
+      "text": "Kūrimo žurnalas"
+    }
+  }
+}

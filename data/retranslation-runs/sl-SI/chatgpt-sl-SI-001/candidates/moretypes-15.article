@@ -1,0 +1,21 @@
+* Dodajanje elementov v rezino
+
+Dodajanje novih elementov v rezino je pogosto, zato Go ponuja vgrajeno
+funkcijo `append`. [[/pkg/builtin/#append][Dokumentacija]]
+vgrajenega paketa opisuje `append`.
+
+	func append(s []T, vs ...T) []T
+
+Prvi parameter `s` funkcije `append` je rezina tipa `T`, preostali argumenti pa so
+vrednosti tipa `T`, ki jih želimo dodati rezini.
+
+Rezultat funkcije `append` je rezina, ki vsebuje vse elemente
+izvirne rezine in podane vrednosti.
+
+Če je osnovna tabela rezine `s` premajhna za vse podane vrednosti, se dodeli večja
+tabela. Vrnjena rezina bo kazala na novo dodeljeno
+tabelo.
+
+(Več o rezinah preberite v članku [[/blog/go-slices-usage-and-internals][Slices: usage and internals]].)
+
+.play moretypes/append.go

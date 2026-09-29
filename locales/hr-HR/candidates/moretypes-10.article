@@ -1,0 +1,18 @@
+* Zadane granice isječka
+
+Pri stvaranju isječka možete izostaviti gornju ili donju granicu kako bi se umjesto nje upotrijebila zadana vrijednost.
+
+Zadana je vrijednost donje granice nula, a gornje granice duljina temeljnog isječka ili polja.
+
+Za polje
+
+	var a [10]int
+
+sljedeći su izrazi isječka istovrijedni:
+
+	a[0:10]
+	a[:10]
+	a[0:]
+	a[:]
+
+.play moretypes/slice-bounds.go

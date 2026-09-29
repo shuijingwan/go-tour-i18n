@@ -1,0 +1,19 @@
+* Metodai ir rodyklių dereferencijavimas
+
+Palyginę dvi ankstesnes programas galite pastebėti, kad funkcijoms su rodykliniu argumentu turi būti perduota rodyklė:
+
+	var v Vertex
+	ScaleFunc(v, 5)  // Kompiliavimo klaida!
+	ScaleFunc(&v, 5) // OK
+
+o metodai su rodykliniais metodo imtuvais iškviečiami tiek su reikšme, tiek su rodykle kaip metodo imtuvu:
+
+	var v Vertex
+	v.Scale(5)  // OK
+	p := &v
+	p.Scale(10) // OK
+
+Sakinyje `v.Scale(5)`, nors `v` yra reikšmė, o ne rodyklė, metodas su rodykliniu metodo imtuvu iškviečiamas automatiškai.
+Kitaip tariant, patogumo dėlei Go sakinį `v.Scale(5)` interpretuoja kaip `(&v).Scale(5)`, nes metodas `Scale` turi rodyklinį metodo imtuvą.
+
+.play methods/indirection.go

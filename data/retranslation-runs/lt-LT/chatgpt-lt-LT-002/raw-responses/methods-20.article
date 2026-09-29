@@ -1,0 +1,21 @@
+* Pratimas: klaidos
+
+Nukopijuokite savo funkciją ⟪GTI18N_41f1f733_000001⟫Sqrt⟪GTI18N_41f1f733_000002⟫ iš [[⟪GTI18N_41f1f733_000003⟫][ankstesnio pratimo]] ir pakeiskite ją taip, kad ji grąžintų ⟪GTI18N_41f1f733_000004⟫error⟪GTI18N_41f1f733_000005⟫ reikšmę.
+
+Gavusi neigiamą skaičių, ⟪GTI18N_41f1f733_000006⟫Sqrt⟪GTI18N_41f1f733_000007⟫ turėtų grąžinti ne nil klaidos reikšmę, nes funkcija nepalaiko kompleksinių skaičių.
+
+Sukurkite naują tipą
+
+⟪GTI18N_41f1f733_000008⟫
+
+ir padarykite jį ⟪GTI18N_41f1f733_000009⟫error⟪GTI18N_41f1f733_000010⟫ įgyvendindami metodą
+
+⟪GTI18N_41f1f733_000011⟫
+
+taip, kad ⟪GTI18N_41f1f733_000012⟫ErrNegativeSqrt(-2).Error()⟪GTI18N_41f1f733_000013⟫ grąžintų ⟪GTI18N_41f1f733_000014⟫"cannot`Sqrt`negative`number:`-2"⟪GTI18N_41f1f733_000015⟫.
+
+⟪GTI18N_41f1f733_000016⟫Pastaba:⟪GTI18N_41f1f733_000017⟫ metodo ⟪GTI18N_41f1f733_000020⟫Error⟪GTI18N_41f1f733_000021⟫ viduje iškvietus ⟪GTI18N_41f1f733_000018⟫fmt.Sprint(e)⟪GTI18N_41f1f733_000019⟫, programa pateks į begalinį ciklą. To galite išvengti pirmiausia konvertuodami ⟪GTI18N_41f1f733_000022⟫e⟪GTI18N_41f1f733_000023⟫: ⟪GTI18N_41f1f733_000024⟫fmt.Sprint(float64(e))⟪GTI18N_41f1f733_000025⟫. Kodėl?
+
+Pakeiskite funkciją ⟪GTI18N_41f1f733_000026⟫Sqrt⟪GTI18N_41f1f733_000027⟫ taip, kad gavusi neigiamą skaičių ji grąžintų ⟪GTI18N_41f1f733_000028⟫ErrNegativeSqrt⟪GTI18N_41f1f733_000029⟫ reikšmę.
+
+⟪GTI18N_41f1f733_000030⟫

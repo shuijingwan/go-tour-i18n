@@ -1,0 +1,15 @@
+* Reikšminio ar rodyklinio metodo imtuvo pasirinkimas
+
+Yra dvi priežastys naudoti rodyklinį metodo imtuvą.
+
+Pirma, kad metodas galėtų keisti reikšmę, į kurią rodo jo metodo imtuvas.
+
+Antra, kad nereikėtų kopijuoti reikšmės kiekvieną kartą iškviečiant metodą.
+Tai gali būti efektyviau, pavyzdžiui, kai metodo imtuvas yra didelė struktūra.
+
+Šiame pavyzdyje ir `Scale`, ir `Abs` yra metodai, kurių metodo imtuvo tipas yra `*Vertex`, nors metodui `Abs` nereikia keisti savo metodo imtuvo.
+
+Apskritai visi konkretaus tipo metodai turėtų turėti arba reikšminius, arba rodyklinius metodo imtuvus, bet ne abiejų rūšių mišinį.
+(Kituose keliuose puslapiuose pamatysime, kodėl.)
+
+.play methods/methods-with-pointer-receivers.go

@@ -1,0 +1,15 @@
+* Range i zatvaranje
+
+Pošiljatelj može pozvati `close` nad kanalom kako bi naznačio da više neće slati vrijednosti. Primatelji mogu provjeriti je li kanal zatvoren pridruživanjem drugog parametra izrazu primanja: nakon
+
+	v, ok := <-ch
+
+`ok` je `false` ako više nema vrijednosti za primanje i kanal je zatvoren.
+
+Petlja `for`i`:=`range`c` uzastopno prima vrijednosti iz kanala sve dok se kanal ne zatvori.
+
+*Napomena:* Kanal treba zatvoriti samo pošiljatelj, nikada primatelj. Slanje u zatvoreni kanal izazvat će paniku.
+
+*Dodatna*napomena:* Kanali nisu poput datoteka; obično ih ne morate zatvarati. Zatvaranje je potrebno samo kada primatelju treba javiti da više neće stići nijedna vrijednost, primjerice radi završetka petlje `range`.
+
+.play concurrency/range-and-close.go

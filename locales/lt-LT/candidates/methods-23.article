@@ -1,0 +1,12 @@
+* Pratimas: rot13Reader
+
+Dažnas šablonas – [[/pkg/io/#Reader][io.Reader]], apgaubiantis kitą `io.Reader` ir tam tikru būdu keičiantis srautą.
+
+Pavyzdžiui, funkcija [[/pkg/compress/gzip/#NewReader][gzip.NewReader]] priima `io.Reader` (suspaustų duomenų srautą) ir grąžina `*gzip.Reader`, kuris taip pat įgyvendina `io.Reader` (išskleistų duomenų srautą).
+
+Įgyvendinkite `rot13Reader`, kuris įgyvendina `io.Reader`, skaito iš `io.Reader` ir keičia srautą visiems raidiniams simboliams taikydamas [[https://en.wikipedia.org/wiki/ROT13][rot13]] pakeitimo šifrą.
+
+Tipas `rot13Reader` jau pateiktas.
+Padarykite jį `io.Reader` įgyvendindami jo metodą `Read`.
+
+.play methods/exercise-rot-reader.go

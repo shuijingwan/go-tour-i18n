@@ -1,0 +1,18 @@
+* Ustvarjanje rezine z make
+
+Rezine lahko ustvarite z vgrajeno funkcijo `make`;
+tako ustvarite dinamično velike tabele.
+
+Funkcija `make` dodeli tabelo, napolnjeno z ničelnimi vrednostmi,
+in vrne rezino, ki se sklicuje na to tabelo:
+
+	a := make([]int, 5)  // len(a)=5
+
+Za določitev kapacitete podajte funkciji `make` tretji argument:
+
+	b := make([]int, 0, 5) // len(b)=0, cap(b)=5
+
+	b = b[:cap(b)] // len(b)=5, cap(b)=5
+	b = b[1:]      // len(b)=4, cap(b)=4
+
+.play moretypes/making-slices.go

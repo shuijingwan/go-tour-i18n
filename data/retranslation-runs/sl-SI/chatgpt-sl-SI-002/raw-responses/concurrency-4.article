@@ -1,0 +1,15 @@
+* Range in zapiranje kanalov
+
+Pošiljatelj lahko z ⟪GTI18N_3e925c67_000001⟫close⟪GTI18N_3e925c67_000002⟫ zapre kanal in s tem sporoči, da ne bo poslal več vrednosti. Prejemniki lahko preverijo, ali je kanal zaprt, tako da izrazu za prejemanje priredijo še drugi parameter: po
+
+⟪GTI18N_3e925c67_000003⟫
+
+je ⟪GTI18N_3e925c67_000004⟫ok⟪GTI18N_3e925c67_000005⟫ enak ⟪GTI18N_3e925c67_000006⟫false⟪GTI18N_3e925c67_000007⟫, če ni več vrednosti za prejem in je kanal zaprt.
+
+Zanka ⟪GTI18N_3e925c67_000008⟫for`i`:=`range`c⟪GTI18N_3e925c67_000009⟫ zaporedoma prejema vrednosti iz kanala, dokler se ta ne zapre.
+
+⟪GTI18N_3e925c67_000010⟫Opomba:⟪GTI18N_3e925c67_000011⟫ Kanal naj zapre samo pošiljatelj, nikoli prejemnik. Pošiljanje v zaprt kanal sproži panic.
+
+⟪GTI18N_3e925c67_000012⟫Še*ena*opomba:⟪GTI18N_3e925c67_000013⟫ Kanali niso kot datoteke; navadno jih ni treba zapirati. Zapiranje je potrebno le, kadar mora prejemnik izvedeti, da novih vrednosti ne bo več, na primer za končanje zanke ⟪GTI18N_3e925c67_000014⟫range⟪GTI18N_3e925c67_000015⟫.
+
+⟪GTI18N_3e925c67_000016⟫

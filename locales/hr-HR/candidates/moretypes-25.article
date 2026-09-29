@@ -1,0 +1,7 @@
+* Funkcijska zatvorenja
+
+Funkcije u jeziku Go mogu biti funkcijska zatvorenja. Funkcijsko zatvorenje funkcijska je vrijednost koja se poziva na varijable izvan svojeg tijela. Funkcija može pristupati tim varijablama i pridruživati im vrijednosti; u tom je smislu funkcija „vezana” uz varijable.
+
+Primjerice, funkcija `adder` vraća funkcijsko zatvorenje. Svako funkcijsko zatvorenje vezano je uz vlastitu varijablu `sum`.
+
+.play moretypes/function-closures.go

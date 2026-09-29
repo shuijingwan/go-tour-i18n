@@ -1,0 +1,18 @@
+* Pjūvio ilgis ir talpa
+
+Pjūvis turi ir _ilgį_, ir _talpą_.
+
+Pjūvio ilgis yra jame esančių elementų skaičius.
+
+Pjūvio talpa yra elementų skaičius pamatiniame masyve,
+skaičiuojant nuo pirmojo pjūvio elemento.
+
+Pjūvio `s` ilgį ir talpą galima gauti naudojant išraiškas
+`len(s)` ir `cap(s)`.
+
+Pjūvio ilgį galima padidinti iš naujo suformuojant jo pjūvį,
+jei pakanka talpos.
+Pabandykite pakeisti vieną pavyzdinės programos pjūvio operaciją taip, kad pjūvis būtų išplėstas
+už jo talpos ribų, ir pažiūrėkite, kas nutiks.
+
+.play moretypes/slice-len-cap.go

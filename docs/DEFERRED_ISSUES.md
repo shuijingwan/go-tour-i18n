@@ -162,3 +162,22 @@
 - 暂缓原因：维护者于 2026-09-28 明确要求记录并暂缓处理，不继续立即重复 probe 或扩大调查；保留现有 locale-specific key 与已成功的 provisioning，不重新生成密钥、不重复修改 production 配置。sk-SK 保持正式 `live`，Google/Bing Sitemap 已提交；IndexNow 是 first-production finalize 之后的非阻塞 Search-engine closeout，不影响既有 Production、Surface Review 或 sitemap submission 结论。
 - 当前状态：`resolved`
 - 后续处理/核销证据：2026-09-28 前两次正式命令 `scripts/indexnow-closeout.sh --locale sk-SK` 的实际终态分别为 `IndexNow local key: generated` / `reused` → `PROVISIONING PASS` → probe HTTP `202` 按 1s/2s bounded retry 共 3 attempts → `IndexNow probe remained pending (HTTP 202) after 3 attempts` → `indexnow closeout: FAILED: formal IndexNow bootstrap failed after provisioning`，两次均未执行 bulk submission。稍后维护者再次运行同一正式入口，继续输出 `IndexNow local key: reused` 与 `PROVISIONING PASS`；probe 第一次仍返回 HTTP `202`，按正式 1 秒 backoff 重试后恢复，随后输出 `IndexNow bootstrap: PASS (locale=sk-SK sitemap_urls=105 submitted_urls=105)` 与 `IndexNow closeout: PASS (locale=sk-SK)`。期间未重新生成 key、未修改 Production 配置，也未绕过正式 bounded retry，因此按 sk-SK 自身成功 evidence 核销为 resolved。
+### DI-20260928-002：ChatGPT TranslationUnit 重试未优先恢复可验证的部分生成成果
+
+- ID：`DI-20260928-002`
+- 发现日期：`2026-09-28`
+- 发现阶段/场景：sl-SI 首次 TranslationUnit Generation 的 `chatgpt-sl-SI-001` 60 Page batch。首次 ChatGPT invocation 运行约二十多分钟后发生产品/消息流错误，维护者触发重试；重试输出显示重新按正式 Bundle 的全部 60 个 protected inputs 生成，而不是先恢复上一轮已经落地的部分成果。
+- 问题描述：故障后正式 batch 仍为 60 Page、`status.tsv` 仍显示 122 pending，标准 hidden staging `/tmp/.go-tour-i18n-generation/sl-SI/chatgpt-sl-SI-001/` 为空；但 `/tmp/sl-SI-chatgpt-sl-SI-001-staging.tar.gz` 与对应 `.b64` 保留了上一轮中断的 transport artifact。容器整体因截断而失败（gzip `unexpected end of file`、base64 `invalid input`），但从 tar 中仍可确定性恢复 53/60 个完整成员，缺失仅 `moretypes-18.article` 至 `moretypes-24.article`。对这 53 个恢复文件的实际检查结果为：exact member subset 无 extra、非空、UTF-8 PASS、single-LF PASS，且与正式 `chatgpt-sl-SI-001` manifest inputs 对比的 protected-token multiset 53/53 PASS。现有 ChatGPT Generation retry/recovery 路径没有在重新生成前自动扫描并复用这类“容器整体损坏但完整成员仍可验证”的 partial transport/staging 成果，因此已完成且可证明可信的 TranslationUnit 会被重复生成。该问题不改变 formal import/process/automatic validation/QC gate；恢复结果在补齐完整 batch 后仍必须走现有 exact-set、import、process 与 validation。
+- 暂缓原因：维护者明确决定先完成并提交本轮 5 门语言（塞尔维亚语、斯洛伐克语、克罗地亚语、斯洛文尼亚语、立陶宛语），之后再统一优化 Generation recovery；当前不在进行中的 locale lifecycle 中插入 tooling/schema 变更。后续优化应优先解决 retry 前的 recovery preflight，而不是通过固定小批 checkpoint 增加 RDC calls。
+- 当前状态：`open`
+- 后续处理/核销证据：待本轮 5 门语言完成提交后设计并实现确定性恢复路径。目标至少包括：retry/recovery 前扫描当前 batch 的正式输出、hidden staging、临时 staging 与可识别的 interrupted transport artifacts；只对能与 CURRENT manifest 精确绑定且通过必要 filename/UTF-8/EOF/protected identity 检查的完整 Unit 进行复用；只重新生成 missing/invalid Unit；容器整体损坏时若格式允许，不能仅因 archive 总体校验失败就丢弃其中可独立验证的完整成员。实现后以类似 53/60 partial recovery fixture 的 targeted tests、`git diff --check` 和真实 batch recovery evidence 核销。
+
+### DI-20260929-001：sl-SI IndexNow 公网密钥验证 EOF，closeout 暂缓
+
+- ID：`DI-20260929-001`
+- 发现日期：`2026-09-29`
+- 发现阶段/场景：sl-SI 已完成 `qc-004` 122/122 A、Locale Surface Review `20260929-sl-SI-stage-a-002` PASS、Preview 自动与人工验收、首次 Production machine/browser acceptance 及正式 `first-production finalize`，`production_state=live`；维护者确认站点地图已经提交。随后执行 `scripts/indexnow-closeout.sh --locale sl-SI`。
+- 问题描述：本次 IndexNow 首次执行输出 `IndexNow local key: generated` 和 `PROVISIONING PASS`，表明 locale-specific key 已生成且服务端 provisioning 已成功。随后正式 Go bootstrap 对 `https://sl-go-dev.shuijingwanwq.com/<key>.txt` 的公网 HTTPS GET 返回 `EOF`，命令以 `indexnow closeout: FAILED: formal IndexNow bootstrap failed after provisioning` 结束（exit status 1）。因此尚未取得公网密钥验证或 IndexNow submission PASS。当前 evidence 只证明 public key verification 阶段发生 EOF，不能据此进一步判定维护者本机网络、DNS/代理、Cloudflare、Nginx/源站或 IndexNow API 为根因；此前 sl-SI 正式 Production machine/browser acceptance 均已 PASS，本次失败不改写这些验收结果。
+- 暂缓原因：维护者于 2026-09-29 明确要求先记录失败，暂不继续重试或排查；保留现有 locale-specific key 与已成功的 provisioning，不重新生成 key、不重复修改 Production 配置。sl-SI 保持正式 `live`，站点地图已提交；IndexNow 属于 first-production finalize 之后的非阻塞 Search-engine closeout，不影响既有 Production、Surface Review 或 sitemap submission 结论。
+- 当前状态：`open`
+- 后续处理/核销证据：2026-09-29 实际命令 `scripts/indexnow-closeout.sh --locale sl-SI` 的终态为 `IndexNow local key: generated` → `PROVISIONING PASS` → `verify public IndexNow key: Get "https://sl-go-dev.shuijingwanwq.com/<key>.txt": EOF` → `indexnow closeout: FAILED: formal IndexNow bootstrap failed after provisioning`。后续仅在维护者明确恢复时使用现有正式入口与现有 key 重试或诊断；若再次调查，应先只读核对公网 key URL 的实际 HTTP/TLS/DNS 路径与当前 Production 公网状态，不把单次 EOF 直接归因。只有取得 sl-SI 自身的 `IndexNow bootstrap: PASS` 与 `IndexNow closeout: PASS` 才可核销。

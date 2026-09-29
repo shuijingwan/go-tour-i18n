@@ -1,0 +1,38 @@
+* Pratimas: ciklai ir funkcijos
+
+Norėdami pasipraktikuoti su funkcijomis ir ciklais, įgyvendinkime kvadratinės šaknies funkciją: duotam skaičiui x norime rasti tokį skaičių z, kad z² būtų kuo artimesnis x.
+
+Kompiuteriai x kvadratinę šaknį paprastai apskaičiuoja naudodami ciklą.
+Pradėję nuo tam tikro z spėjimo, galime koreguoti z pagal tai, kiek z² yra artimas x,
+ir taip gauti geresnį spėjimą:
+
+	z -= (z*z - x) / (2*z)
+
+Kartojant šį koregavimą spėjimas vis gerėja,
+kol gauname atsakymą, kiek įmanoma artimą tikrajai kvadratinei šakniai.
+
+Įgyvendinkite tai pateiktoje `func`Sqrt`.
+Nepriklausomai nuo įvesties, tinkamas pradinis z spėjimas yra 1.
+Iš pradžių pakartokite skaičiavimą 10 kartų ir kiekvieną kartą išspausdinkite z.
+Pažiūrėkite, kiek priartėjate prie atsakymo su įvairiomis x reikšmėmis (1, 2, 3, ...)
+ir kaip greitai spėjimas gerėja.
+
+Užuomina: norėdami deklaruoti ir inicializuoti slankiojo kablelio reikšmę,
+naudokite slankiojo kablelio sintaksę arba konvertavimą:
+
+	z := 1.0
+	z := float64(1)
+
+Tada pakeiskite ciklo sąlygą taip, kad ciklas sustotų, kai reikšmė nustoja
+keistis (arba keičiasi tik labai nedaug).
+Patikrinkite, ar tam reikia daugiau, ar mažiau nei 10 iteracijų.
+Išbandykite kitus pradinius z spėjimus, pavyzdžiui, x arba x/2.
+Kiek jūsų funkcijos rezultatai artimi standartinės bibliotekos [[/pkg/math/#Sqrt][math.Sqrt]] rezultatams?
+
+(*Pastaba:* Jei domina algoritmo detalės, pirmiau esantis z² − x parodo,
+kiek z² nutolęs nuo reikalingos reikšmės (x), o dalyba iš 2z yra z² išvestinė,
+kuri koregavimo dydį pritaiko prie z² kitimo greičio.
+Šis bendras metodas vadinamas [[https://en.wikipedia.org/wiki/Newton%27s_method][Niutono metodu]].
+Jis gerai veikia su daugeliu funkcijų, o ypač gerai — skaičiuojant kvadratinę šaknį.)
+
+.play flowcontrol/exercise-loops-and-functions.go

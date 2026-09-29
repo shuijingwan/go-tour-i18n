@@ -1,0 +1,10 @@
+* Metodai: tęsinys
+
+Metodą galite deklaruoti ir ne struktūrų tipams.
+
+Šiame pavyzdyje matome skaitinį tipą `MyFloat` su metodu `Abs`.
+
+Metodą galite deklaruoti tik su tokio tipo metodo imtuvu, kurio tipas apibrėžtas tame pačiame pakete kaip ir metodas.
+Negalite deklaruoti metodo su tokio tipo metodo imtuvu, kurio tipas apibrėžtas kitame pakete (tai apima ir įtaisytuosius tipus, pvz., `int`).
+
+.play methods/methods-continued.go

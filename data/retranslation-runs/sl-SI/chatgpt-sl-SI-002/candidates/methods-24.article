@@ -1,0 +1,21 @@
+* Slike
+
+[[/pkg/image/#Image][Paket image]] definira vmesnik `Image`:
+
+	package image
+
+	type Image interface {
+		ColorModel() color.Model
+		Bounds() Rectangle
+		At(x, y int) color.Color
+	}
+
+*Opomba*: vrnjena vrednost `Rectangle` metode `Bounds` je dejansko
+[[/pkg/image/#Rectangle][`image.Rectangle`]], ker je
+deklaracija znotraj paketa `image`.
+
+(Vse podrobnosti najdete v [[/pkg/image/#Image][dokumentaciji]].)
+
+Tipa `color.Color` in `color.Model` sta prav tako vmesnika, vendar bomo to prezrli in uporabili vnaprej določeni implementaciji `color.RGBA` in `color.RGBAModel`. Te vmesnike in tipe določa [[/pkg/image/color/][paket image/color]].
+
+.play methods/images.go

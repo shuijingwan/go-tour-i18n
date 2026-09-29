@@ -1,0 +1,38 @@
+* Vaja: zanke in funkcije
+
+Za vajo s funkcijami in zankami implementirajmo funkcijo za kvadratni koren: za dano število x želimo najti število z, katerega z² je čim bližje x.
+
+Računalniki kvadratni koren x običajno izračunajo z zanko.
+Začnemo z neko oceno z in jo glede na to, kako blizu je z² vrednosti x,
+prilagodimo ter dobimo boljšo oceno:
+
+	z -= (z*z - x) / (2*z)
+
+S ponavljanjem te prilagoditve je ocena vedno boljša,
+dokler ne dobimo rezultata, ki je dejanskemu kvadratnemu korenu tako blizu, kot je mogoče.
+
+To implementirajte v podani funkciji `func`Sqrt`.
+Dobra začetna ocena za z je 1, ne glede na vhod.
+Za začetek izračun ponovite 10-krat in sproti izpišite vsako vrednost z.
+Preverite, kako blizu rezultatu pridete pri različnih vrednostih x (1, 2, 3, ...)
+in kako hitro se ocena izboljšuje.
+
+Namig: vrednost s plavajočo vejico deklarirate in inicializirate
+tako, da uporabite zapis s plavajočo vejico ali pretvorbo:
+
+	z := 1.0
+	z := float64(1)
+
+Nato spremenite pogoj zanke tako, da se ustavi, ko se vrednost ne spreminja več
+(ali se spremeni le še za zelo majhno količino).
+Preverite, ali potrebujete več ali manj kot 10 iteracij.
+Poskusite tudi druge začetne ocene za z, na primer x ali x/2.
+Kako blizu so rezultati vaše funkcije funkciji [[/pkg/math/#Sqrt][math.Sqrt]] iz standardne knjižnice?
+
+(*Opomba:* Če vas zanimajo podrobnosti algoritma: izraz z² − x pove,
+kako daleč je z² od želene vrednosti x, deljenje z 2z pa uporablja odvod
+z² za prilagoditev velikosti popravka glede na hitrost spreminjanja z².
+Ta splošni pristop se imenuje [[https://en.wikipedia.org/wiki/Newton%27s_method][Newtonova metoda]].
+Dobro deluje za številne funkcije, še posebej pa za kvadratni koren.)
+
+.play flowcontrol/exercise-loops-and-functions.go

@@ -1,0 +1,15 @@
+* Masyvai
+
+Tipas `[n]T` yra masyvas iš `n` `T` tipo reikšmių.
+
+Išraiška
+
+	var a [10]int
+
+deklaruoja kintamąjį `a` kaip dešimties sveikųjų skaičių masyvą.
+
+Masyvo ilgis yra jo tipo dalis, todėl masyvo dydžio keisti negalima.
+Tai gali atrodyti ribojančiai, tačiau nesijaudinkite;
+Go suteikia patogų būdą dirbti su masyvais.
+
+.play moretypes/array.go

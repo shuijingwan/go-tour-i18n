@@ -1,0 +1,21 @@
+* Elementų pridėjimas prie pjūvio
+
+Naujus elementus prie pjūvio tenka pridėti dažnai, todėl Go suteikia įtaisytąją
+`append` funkciją. Įtaisytojo paketo [[/pkg/builtin/#append][dokumentacijoje]]
+aprašyta `append`.
+
+	func append(s []T, vs ...T) []T
+
+Pirmasis `append` parametras `s` yra `T` tipo pjūvis, o likę parametrai yra
+`T` reikšmės, kurias reikia pridėti prie pjūvio.
+
+`append` grąžinama reikšmė yra pjūvis, kuriame yra visi
+pradinio pjūvio elementai ir pateiktos reikšmės.
+
+Jei `s` pamatinis masyvas per mažas visoms pateiktoms reikšmėms sutalpinti,
+bus išskirtas didesnis masyvas. Grąžintas pjūvis rodys į naujai išskirtą
+masyvą.
+
+(Norėdami daugiau sužinoti apie pjūvius, skaitykite straipsnį [[/blog/go-slices-usage-and-internals][„Pjūviai: naudojimas ir vidinė sandara“]].)
+
+.play moretypes/append.go

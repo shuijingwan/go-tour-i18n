@@ -1,0 +1,28 @@
+* Stavki switch po tipu
+
+_stavek_switch_po_tipu_ je konstrukcija, ki omogoča zaporedje več tipskih trditev.
+
+Stavek switch po tipu je podoben običajnemu stavku switch, vendar primeri v
+njem določajo tipe (ne vrednosti), ti tipi pa se primerjajo
+s tipom vrednosti, ki jo vsebuje dana vrednost vmesnika.
+
+	switch v := i.(type) {
+	case T:
+		// tukaj je v tipa T
+	case S:
+		// tukaj je v tipa S
+	default:
+		// ni ujemanja; tukaj ima v isti tip kot i
+	}
+
+Deklaracija v stavku switch po tipu ima enako skladnjo kot tipska trditev `i.(T)`,
+le da je konkretni tip `T` zamenjan s ključno besedo `type`.
+
+Ta stavek switch preveri, ali vrednost vmesnika `i`
+vsebuje vrednost tipa `T` ali `S`.
+V primerih `T` in `S` bo spremenljivka `v` tipa
+`T` oziroma `S` in bo vsebovala vrednost, ki jo vsebuje `i`.
+V privzetem primeru (ko ni ujemanja) ima spremenljivka `v`
+isti tip vmesnika in isto vrednost kot `i`.
+
+.play methods/type-switches.go

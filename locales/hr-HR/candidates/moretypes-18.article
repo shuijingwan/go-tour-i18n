@@ -1,0 +1,13 @@
+* Vježba: isječci
+
+Implementirajte `Pic`. Funkcija treba vratiti isječak duljine `dy` čiji je svaki element
+isječak od `dx` osmobitnih cijelih brojeva bez predznaka. Kada pokrenete program, prikazat će vašu
+sliku tumačeći cijele brojeve kao vrijednosti u nijansama sive (zapravo plave).
+
+Odabir slike prepušten je vama. Zanimljive funkcije uključuju `(x+y)/2`, `x*y` i `x^y`.
+
+(Morate upotrijebiti petlju kako biste dodijelili svaki `[]uint8` unutar `[][]uint8`.)
+
+(Za pretvorbu između tipova upotrijebite `uint8(intValue)`.)
+
+.play moretypes/exercise-slices.go

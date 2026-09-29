@@ -1,0 +1,26 @@
+* Napake
+
+Programi Go izražajo stanje napake z vrednostmi `error`.
+
+Tip `error` je vgrajeni vmesnik, podoben `fmt.Stringer`:
+
+	type error interface {
+		Error() string
+	}
+
+(Tako kot pri `fmt.Stringer` paket `fmt` pri
+izpisovanju vrednosti išče vmesnik `error`.)
+
+Funkcije pogosto vrnejo vrednost `error`, klicna koda pa naj napake obravnava
+tako, da preveri, ali je napaka enaka `nil`.
+
+	i, err := strconv.Atoi("42")
+	if err != nil {
+		fmt.Printf("couldn't convert number: %v\n", err)
+		return
+	}
+	fmt.Println("Converted integer:", i)
+
+Če je vrednost nil, `error` pomeni uspeh; če ni nil, `error` pomeni neuspeh.
+
+.play methods/errors.go

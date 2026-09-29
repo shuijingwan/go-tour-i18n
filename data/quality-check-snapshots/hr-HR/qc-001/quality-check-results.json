@@ -1,0 +1,316 @@
+{
+  "schema_version": 2,
+  "evidence_type": "quality_check_results",
+  "locale": "hr-HR",
+  "snapshot_id": "qc-001",
+  "snapshot_manifest_sha256": "8a8f2f9fe34b4789104d84f264a7d597d1325545fa1565efb4b11042d3cc98a0",
+  "rubric": "translation-quality/v1",
+  "result_count": 60,
+  "results": [
+    {
+      "index": 1,
+      "unit_id": "welcome/1",
+      "rating": "B",
+      "finding": "存在两处轻微但明确的克罗地亚语格/支配关系问题：开头将 glossary 术语“programski jezik Go”以主格直接置于“obilazak”之后，句法不自然；末尾“kliknite ... strelica udesno”同样未按动词结构作必要的格变化。修订时应保持 glossary 概念和链接 identity，同时允许符合克罗地亚语语法的屈折与支配关系。"
+    },
+    {
+      "index": 2,
+      "unit_id": "welcome/2",
+      "rating": "A"
+    },
+    {
+      "index": 3,
+      "unit_id": "welcome/4",
+      "rating": "A"
+    },
+    {
+      "index": 4,
+      "unit_id": "welcome/5",
+      "rating": "A"
+    },
+    {
+      "index": 5,
+      "unit_id": "welcome/3",
+      "rating": "A"
+    },
+    {
+      "index": 6,
+      "unit_id": "basics/1",
+      "rating": "A"
+    },
+    {
+      "index": 7,
+      "unit_id": "basics/2",
+      "rating": "A"
+    },
+    {
+      "index": 8,
+      "unit_id": "basics/3",
+      "rating": "A"
+    },
+    {
+      "index": 9,
+      "unit_id": "basics/4",
+      "rating": "A"
+    },
+    {
+      "index": 10,
+      "unit_id": "basics/5",
+      "rating": "A"
+    },
+    {
+      "index": 11,
+      "unit_id": "basics/6",
+      "rating": "A"
+    },
+    {
+      "index": 12,
+      "unit_id": "basics/7",
+      "rating": "A"
+    },
+    {
+      "index": 13,
+      "unit_id": "basics/8",
+      "rating": "A"
+    },
+    {
+      "index": 14,
+      "unit_id": "basics/9",
+      "rating": "A"
+    },
+    {
+      "index": 15,
+      "unit_id": "basics/10",
+      "rating": "A"
+    },
+    {
+      "index": 16,
+      "unit_id": "basics/11",
+      "rating": "A"
+    },
+    {
+      "index": 17,
+      "unit_id": "basics/12",
+      "rating": "A"
+    },
+    {
+      "index": 18,
+      "unit_id": "basics/13",
+      "rating": "A"
+    },
+    {
+      "index": 19,
+      "unit_id": "basics/14",
+      "rating": "A"
+    },
+    {
+      "index": 20,
+      "unit_id": "basics/15",
+      "rating": "B",
+      "finding": "源文中的“string”在当前语境指 Go 的字符串值；译文使用“tekstne vrijednosti”，虽然可理解，但与当前 glossary 的 preferred 决策“string → znakovni niz”不一致，且技术含义不如既定术语精确。修订时应恢复与 glossary 一致且适合本句语法的字符串术语。"
+    },
+    {
+      "index": 21,
+      "unit_id": "basics/16",
+      "rating": "B",
+      "finding": "“Brojčane konstante _vrijednosti_ su visoke preciznosti.”的词序和句法不自然，使“vrijednosti”与主语的关系含混。源文明确表达“numeric constants are high-precision values”，并强调 values。修订时应清楚保持这一主谓/表语关系和强调范围。"
+    },
+    {
+      "index": 22,
+      "unit_id": "basics/17",
+      "rating": "A"
+    },
+    {
+      "index": 23,
+      "unit_id": "flowcontrol/1",
+      "rating": "A"
+    },
+    {
+      "index": 24,
+      "unit_id": "flowcontrol/2",
+      "rating": "A"
+    },
+    {
+      "index": 25,
+      "unit_id": "flowcontrol/3",
+      "rating": "A"
+    },
+    {
+      "index": 26,
+      "unit_id": "flowcontrol/4",
+      "rating": "A"
+    },
+    {
+      "index": 27,
+      "unit_id": "flowcontrol/5",
+      "rating": "A"
+    },
+    {
+      "index": 28,
+      "unit_id": "flowcontrol/6",
+      "rating": "A"
+    },
+    {
+      "index": 29,
+      "unit_id": "flowcontrol/7",
+      "rating": "A"
+    },
+    {
+      "index": 30,
+      "unit_id": "flowcontrol/8",
+      "rating": "A"
+    },
+    {
+      "index": 31,
+      "unit_id": "flowcontrol/9",
+      "rating": "A"
+    },
+    {
+      "index": 32,
+      "unit_id": "flowcontrol/10",
+      "rating": "B",
+      "finding": "“vrednovanje prestaje kada neki slučaj uspije”机械对应了 source 的“when a case succeeds”，但克罗地亚语“slučaj uspije”在 switch 技术语境中不自然，也没有清楚表达从上到下求值并在首个满足/匹配条件的 case 处停止这一含义。修订时应明确这一控制流语义。"
+    },
+    {
+      "index": 33,
+      "unit_id": "flowcontrol/11",
+      "rating": "A"
+    },
+    {
+      "index": 34,
+      "unit_id": "flowcontrol/12",
+      "rating": "A"
+    },
+    {
+      "index": 35,
+      "unit_id": "flowcontrol/13",
+      "rating": "A"
+    },
+    {
+      "index": 36,
+      "unit_id": "flowcontrol/14",
+      "rating": "A"
+    },
+    {
+      "index": 37,
+      "unit_id": "moretypes/1",
+      "rating": "A"
+    },
+    {
+      "index": 38,
+      "unit_id": "moretypes/2",
+      "rating": "A"
+    },
+    {
+      "index": 39,
+      "unit_id": "moretypes/3",
+      "rating": "A"
+    },
+    {
+      "index": 40,
+      "unit_id": "moretypes/4",
+      "rating": "A"
+    },
+    {
+      "index": 41,
+      "unit_id": "moretypes/5",
+      "rating": "A"
+    },
+    {
+      "index": 42,
+      "unit_id": "moretypes/6",
+      "rating": "A"
+    },
+    {
+      "index": 43,
+      "unit_id": "moretypes/7",
+      "rating": "C",
+      "finding": "译文“fleksibilan prikaz elemenata polja čija se veličina dinamički mijenja”使关系从句自然地附着到“polja”，容易表达成“数组的大小动态变化”，这与上一句“Polje ima fiksnu veličinu”以及 Go 的实际语义相冲突。源文的 dynamically-sized 修饰 slice，而 underlying array 大小固定。修订必须消除这一技术歧义，明确动态大小属于 isječak，而不是 polje。"
+    },
+    {
+      "index": 44,
+      "unit_id": "moretypes/8",
+      "rating": "A"
+    },
+    {
+      "index": 45,
+      "unit_id": "moretypes/9",
+      "rating": "A"
+    },
+    {
+      "index": 46,
+      "unit_id": "moretypes/10",
+      "rating": "A"
+    },
+    {
+      "index": 47,
+      "unit_id": "moretypes/11",
+      "rating": "A"
+    },
+    {
+      "index": 48,
+      "unit_id": "moretypes/12",
+      "rating": "A"
+    },
+    {
+      "index": 49,
+      "unit_id": "moretypes/13",
+      "rating": "A"
+    },
+    {
+      "index": 50,
+      "unit_id": "moretypes/14",
+      "rating": "A"
+    },
+    {
+      "index": 51,
+      "unit_id": "moretypes/15",
+      "rating": "A"
+    },
+    {
+      "index": 52,
+      "unit_id": "moretypes/16",
+      "rating": "A"
+    },
+    {
+      "index": 53,
+      "unit_id": "moretypes/17",
+      "rating": "A"
+    },
+    {
+      "index": 54,
+      "unit_id": "moretypes/18",
+      "rating": "A"
+    },
+    {
+      "index": 55,
+      "unit_id": "moretypes/19",
+      "rating": "A"
+    },
+    {
+      "index": 56,
+      "unit_id": "moretypes/20",
+      "rating": "A"
+    },
+    {
+      "index": 57,
+      "unit_id": "moretypes/21",
+      "rating": "A"
+    },
+    {
+      "index": 58,
+      "unit_id": "moretypes/22",
+      "rating": "A"
+    },
+    {
+      "index": 59,
+      "unit_id": "moretypes/23",
+      "rating": "A"
+    },
+    {
+      "index": 60,
+      "unit_id": "moretypes/24",
+      "rating": "A"
+    }
+  ]
+}

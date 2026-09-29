@@ -1,0 +1,37 @@
+* Pozdravljeni, 世界
+
+Dobrodošli v ogledu, ki predstavlja [[/][programski jezik Go]].
+
+Ogled je razdeljen na seznam modulov, do katerih
+lahko dostopate s klikom na
+[[javascript:highlight(".logo")][Ogled jezika Go]] v zgornjem levem kotu strani.
+
+Kazalo si lahko kadar koli ogledate tudi s klikom na [[javascript:highlightAndClick(".nav")][meni]] v zgornjem desnem kotu strani.
+
+Med ogledom boste našli vrsto strani in vaj,
+ki jih morate opraviti.
+
+Med njimi se lahko premikate z
+
+- [[javascript:highlight(".prev-page")]["prejšnja"]] ali tipko `PageUp` za prehod na prejšnjo stran,
+
+- [[javascript:highlight(".next-page")]["naslednja"]] ali tipko `PageDown` za prehod na naslednjo stran.
+
+Ogled je interaktiven. Zdaj kliknite gumb
+[[javascript:highlightAndClick("#run")][Zaženi]]
+(ali pritisnite `Shift` + `Enter`), da program prevedete in zaženete na
+oddaljenem strežniku.
+Rezultat se prikaže pod kodo.
+
+Ti vzorčni programi prikazujejo različne vidike jezika Go. Programi v ogledu so namenjeni kot izhodišče za vaše lastno eksperimentiranje.
+
+Spremenite program in ga znova zaženite.
+
+Ko kliknete [[javascript:highlightAndClick("#format")][Formatiraj]]
+(bližnjica: `Ctrl` + `Enter`), se besedilo v urejevalniku formatira z orodjem
+[[/cmd/gofmt/][gofmt]]. Poudarjanje skladnje lahko vklopite ali izklopite
+s klikom na gumb [[javascript:highlightAndClick(".syntax-checkbox")][skladnja]].
+
+Ko ste pripravljeni nadaljevati, kliknite spodnjo povezavo z napisom [[javascript:highlightAndClick(".next-page")][puščica desno]] ali pritisnite tipko `PageDown`.
+
+.play welcome/hello.go

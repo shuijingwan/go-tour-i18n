@@ -1,0 +1,21 @@
+* Dodajanje elementov v rezino
+
+Dodajanje novih elementov v rezino je pogosto, zato ⟪GTI18N_f2fc257e_000001⟫ ponuja vgrajeno
+funkcijo ⟪GTI18N_f2fc257e_000002⟫append⟪GTI18N_f2fc257e_000003⟫. [[⟪GTI18N_f2fc257e_000004⟫][Dokumentacija]]
+vgrajenega paketa opisuje ⟪GTI18N_f2fc257e_000005⟫append⟪GTI18N_f2fc257e_000006⟫.
+
+⟪GTI18N_f2fc257e_000007⟫
+
+Prvi parameter ⟪GTI18N_f2fc257e_000008⟫s⟪GTI18N_f2fc257e_000009⟫ funkcije ⟪GTI18N_f2fc257e_000010⟫append⟪GTI18N_f2fc257e_000011⟫ je rezina tipa ⟪GTI18N_f2fc257e_000012⟫T⟪GTI18N_f2fc257e_000013⟫, preostali argumenti pa so
+vrednosti tipa ⟪GTI18N_f2fc257e_000014⟫T⟪GTI18N_f2fc257e_000015⟫, ki jih želimo dodati rezini.
+
+Rezultat funkcije ⟪GTI18N_f2fc257e_000016⟫append⟪GTI18N_f2fc257e_000017⟫ je rezina, ki vsebuje vse elemente
+izvirne rezine in podane vrednosti.
+
+Če je osnovna tabela rezine ⟪GTI18N_f2fc257e_000018⟫s⟪GTI18N_f2fc257e_000019⟫ premajhna za vse podane vrednosti, se dodeli večja
+tabela. Vrnjena rezina bo kazala na novo dodeljeno
+tabelo.
+
+(Več o rezinah preberite v članku [[⟪GTI18N_f2fc257e_000020⟫][Slices: usage and internals]].)
+
+⟪GTI18N_f2fc257e_000021⟫

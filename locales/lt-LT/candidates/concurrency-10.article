@@ -1,0 +1,9 @@
+* Pratimas: žiniatinklio robotas
+
+Šiame pratime naudosite Go konkurentinio vykdymo priemones, kad žiniatinklio robotas veiktų lygiagrečiai.
+
+Pakeiskite funkciją `Crawl` taip, kad ji URL gautų lygiagrečiai, bet to paties URL negautų du kartus.
+
+_Užuomina_: jau gautų URL podėlį galite laikyti žodyne, tačiau vien žodynai nėra saugūs naudoti konkurentiškai!
+
+.play concurrency/exercise-web-crawler.go

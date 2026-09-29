@@ -1,0 +1,76 @@
+{
+  "schema_version": 2,
+  "batch_id": "codex-hr-HR-004",
+  "locale": "hr-HR",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 5,
+  "units": [
+    {
+      "unit_id": "welcome/1",
+      "unit_kind": "page",
+      "source_path": "_content/tour/welcome.article",
+      "source_sha256": "1f581133d7fa40e6490418c6789a60a2f5e1de26c9c86d7eb6120cb58b145857",
+      "input_path": "inputs/welcome-1.article",
+      "input_sha256": "2e23e9c502f9e06fa58f1cee028f9cbd1bfee1f453f7d6d2c5681e2bfa1e2a6f",
+      "protected_token_count": 35,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "存在两处轻微但明确的克罗地亚语格/支配关系问题：开头将 glossary 术语“programski jezik Go”以主格直接置于“obilazak”之后，句法不自然；末尾“kliknite ... strelica udesno”同样未按动词结构作必要的格变化。修订时应保持 glossary 概念和链接 identity，同时允许符合克罗地亚语语法的屈折与支配关系。"
+    },
+    {
+      "unit_id": "basics/15",
+      "unit_kind": "page",
+      "source_path": "_content/tour/basics.article",
+      "source_sha256": "964ac515c0860a54b3a7780d77c7b4862ca38b744ae1f6be4b155a4386e2a229",
+      "input_path": "inputs/basics-15.article",
+      "input_sha256": "0d756d1ef13c04c18bdee74e19d848e74bc5c419948fe4c04b8320f93cdfe6cd",
+      "protected_token_count": 5,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "源文中的“string”在当前语境指 Go 的字符串值；译文使用“tekstne vrijednosti”，虽然可理解，但与当前 glossary 的 preferred 决策“string → znakovni niz”不一致，且技术含义不如既定术语精确。修订时应恢复与 glossary 一致且适合本句语法的字符串术语。"
+    },
+    {
+      "unit_id": "basics/16",
+      "unit_kind": "page",
+      "source_path": "_content/tour/basics.article",
+      "source_sha256": "0d502d48a15f7a70e257079d7db1ddafe088607110c1c06b17b4be50b362394a",
+      "input_path": "inputs/basics-16.article",
+      "input_sha256": "39dff99d995f57cf8a2c63a189f704c3f80ab9b219500fff3207be80df606c7d",
+      "protected_token_count": 7,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "“Brojčane konstante _vrijednosti_ su visoke preciznosti.”的词序和句法不自然，使“vrijednosti”与主语的关系含混。源文明确表达“numeric constants are high-precision values”，并强调 values。修订时应清楚保持这一主谓/表语关系和强调范围。"
+    },
+    {
+      "unit_id": "flowcontrol/10",
+      "unit_kind": "page",
+      "source_path": "_content/tour/flowcontrol.article",
+      "source_sha256": "e1479cae56a87cddb9c447fc9fd32b0ee1f983058f7ee76554965abd21975ef4",
+      "input_path": "inputs/flowcontrol-10.article",
+      "input_sha256": "4882ca813d14d385d6e3c27c1ed8137f923455c8d4cb5c0d6ca1a1ce01ee0750",
+      "protected_token_count": 6,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "“vrednovanje prestaje kada neki slučaj uspije”机械对应了 source 的“when a case succeeds”，但克罗地亚语“slučaj uspije”在 switch 技术语境中不自然，也没有清楚表达从上到下求值并在首个满足/匹配条件的 case 处停止这一含义。修订时应明确这一控制流语义。"
+    },
+    {
+      "unit_id": "moretypes/7",
+      "unit_kind": "page",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "a169cf48dd659510ff7f1f8adfdbed5a247b51a1f7c3a45ae972f18921925033",
+      "input_path": "inputs/moretypes-7.article",
+      "input_sha256": "0a00fb45417105f3622f8e6b08d9003a4e99957f46d5ee189713c54655e43cd5",
+      "protected_token_count": 9,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "C",
+      "previous_finding": "译文“fleksibilan prikaz elemenata polja čija se veličina dinamički mijenja”使关系从句自然地附着到“polja”，容易表达成“数组的大小动态变化”，这与上一句“Polje ima fiksnu veličinu”以及 Go 的实际语义相冲突。源文的 dynamically-sized 修饰 slice，而 underlying array 大小固定。修订必须消除这一技术歧义，明确动态大小属于 isječak，而不是 polje。"
+    }
+  ]
+}

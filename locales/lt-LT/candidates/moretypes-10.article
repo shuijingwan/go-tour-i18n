@@ -1,0 +1,18 @@
+* Numatytosios pjūvio ribos
+
+Formuodami pjūvį galite praleisti viršutinę arba apatinę ribą ir naudoti numatytąsias reikšmes.
+
+Numatytoji apatinė riba yra nulis, o viršutinė — pamatinio pjūvio arba masyvo ilgis.
+
+Masyvui
+
+	var a [10]int
+
+šios pjūvio išraiškos yra lygiavertės:
+
+	a[0:10]
+	a[:10]
+	a[0:]
+	a[:]
+
+.play moretypes/slice-bounds.go

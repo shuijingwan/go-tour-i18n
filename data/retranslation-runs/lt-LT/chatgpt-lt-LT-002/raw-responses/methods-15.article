@@ -1,0 +1,21 @@
+* Tipo patvirtinimai
+
+⟪GTI18N_c205b4eb_000001⟫tipo_patvirtinimas⟪GTI18N_c205b4eb_000002⟫ suteikia prieigą prie sąsajos reikšmės pamatinės konkrečiosios reikšmės.
+
+⟪GTI18N_c205b4eb_000003⟫
+
+Šis sakinys patvirtina, kad sąsajos reikšmė ⟪GTI18N_c205b4eb_000004⟫i⟪GTI18N_c205b4eb_000005⟫ laiko konkretųjį tipą ⟪GTI18N_c205b4eb_000006⟫T⟪GTI18N_c205b4eb_000007⟫, ir priskiria pamatinę ⟪GTI18N_c205b4eb_000008⟫T⟪GTI18N_c205b4eb_000009⟫ reikšmę kintamajam ⟪GTI18N_c205b4eb_000010⟫t⟪GTI18N_c205b4eb_000011⟫.
+
+Jei ⟪GTI18N_c205b4eb_000012⟫i⟪GTI18N_c205b4eb_000013⟫ nelaiko ⟪GTI18N_c205b4eb_000014⟫T⟪GTI18N_c205b4eb_000015⟫, sakinys sukels panic.
+
+Norint ⟪GTI18N_c205b4eb_000016⟫patikrinti⟪GTI18N_c205b4eb_000017⟫, ar sąsajos reikšmė laiko konkretų tipą, tipo patvirtinimas gali grąžinti dvi reikšmes: pamatinę reikšmę ir loginę reikšmę, nurodančią, ar patvirtinimas pavyko.
+
+⟪GTI18N_c205b4eb_000018⟫
+
+Jei ⟪GTI18N_c205b4eb_000019⟫i⟪GTI18N_c205b4eb_000020⟫ laiko ⟪GTI18N_c205b4eb_000021⟫T⟪GTI18N_c205b4eb_000022⟫, tuomet ⟪GTI18N_c205b4eb_000023⟫t⟪GTI18N_c205b4eb_000024⟫ bus pamatinė reikšmė, o ⟪GTI18N_c205b4eb_000025⟫ok⟪GTI18N_c205b4eb_000026⟫ bus true.
+
+Priešingu atveju ⟪GTI18N_c205b4eb_000027⟫ok⟪GTI18N_c205b4eb_000028⟫ bus false, o ⟪GTI18N_c205b4eb_000029⟫t⟪GTI18N_c205b4eb_000030⟫ bus ⟪GTI18N_c205b4eb_000031⟫T⟪GTI18N_c205b4eb_000032⟫ tipo nulinė reikšmė ir panic nekils.
+
+Atkreipkite dėmesį į šios sintaksės panašumą į skaitymą iš žodyno.
+
+⟪GTI18N_c205b4eb_000033⟫

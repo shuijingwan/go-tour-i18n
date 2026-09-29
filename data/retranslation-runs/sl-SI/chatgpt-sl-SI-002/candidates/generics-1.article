@@ -1,0 +1,17 @@
+* Tipski parametri
+
+Funkcije jezika Go lahko z uporabo tipskih parametrov napišemo tako, da delujejo z več tipi. Tipski
+parametri funkcije so zapisani med oglatimi oklepaji pred
+argumenti funkcije.
+
+  func Index[T comparable](s []T, x T) int
+
+Ta deklaracija pomeni, da je `s` rezina poljubnega tipa `T`, ki izpolnjuje
+vgrajeno omejitev `comparable`. Tudi `x` je vrednost istega tipa.
+
+`comparable` je uporabna omejitev, ki omogoča uporabo operatorjev `==` in
+`!=` nad vrednostmi tipa. V tem primeru jo uporabimo za primerjanje
+vrednosti z vsemi elementi rezine, dokler ne najdemo ujemanja. Funkcija `Index` deluje
+za vsak tip, ki podpira primerjanje.
+
+.play generics/index.go

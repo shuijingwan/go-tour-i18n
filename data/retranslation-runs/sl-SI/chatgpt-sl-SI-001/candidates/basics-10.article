@@ -1,0 +1,7 @@
+* Kratke deklaracije spremenljivk
+
+Znotraj funkcije lahko kratki stavek za prirejanje `:=` uporabite namesto deklaracije `var` z implicitnim tipom.
+
+Zunaj funkcije se vsak stavek začne s ključno besedo (`var`, `func` in tako naprej), zato konstrukcija `:=` tam ni na voljo.
+
+.play basics/short-variable-declarations.go

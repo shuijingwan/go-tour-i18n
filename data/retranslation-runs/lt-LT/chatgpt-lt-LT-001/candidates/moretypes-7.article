@@ -1,0 +1,23 @@
+* Pjūviai
+
+Masyvas yra fiksuoto dydžio.
+Pjūvis, priešingai, yra dinaminio dydžio,
+lankstus vaizdas į masyvo elementus.
+Praktikoje pjūviai naudojami daug dažniau nei masyvai.
+
+Tipas `[]T` yra pjūvis, kurio elementai yra `T` tipo.
+
+Pjūvis sudaromas nurodant du indeksus — apatinę ir
+viršutinę ribą, atskirtas dvitaškiu:
+
+	a[low : high]
+
+Taip pasirenkamas pusiau atviras intervalas, į kurį pirmasis
+elementas įtraukiamas, o paskutinis — ne.
+
+Ši išraiška sukuria pjūvį, apimantį
+`a` elementus nuo 1 iki 3 imtinai:
+
+	a[1:4]
+
+.play moretypes/slices.go

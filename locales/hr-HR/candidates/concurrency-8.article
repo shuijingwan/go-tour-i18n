@@ -1,0 +1,23 @@
+* Vježba: istovrijedna binarna stabla
+
+*1.* Implementirajte funkciju `Walk`.
+
+*2.* Testirajte funkciju `Walk`.
+
+Funkcija `tree.New(k)` stvara binarno stablo nasumične strukture (ali uvijek sortirano) koje sadržava vrijednosti `k`, `2k`, `3k`, ..., `10k`.
+
+Stvorite novi kanal `ch` i pokrenite obilazak stabla:
+
+	go Walk(tree.New(1), ch)
+
+Zatim iz kanala pročitajte i ispišite deset vrijednosti. To trebaju biti brojevi 1, 2, 3, ..., 10.
+
+*3.* Implementirajte funkciju `Same` koristeći `Walk` kako biste utvrdili sadržavaju li `t1` i `t2` iste vrijednosti.
+
+*4.* Testirajte funkciju `Same`.
+
+`Same(tree.New(1),`tree.New(1))` treba vratiti true, a `Same(tree.New(1),`tree.New(2))` treba vratiti false.
+
+Dokumentaciju za `Tree` možete pronaći [[https://godoc.org/golang.org/x/tour/tree#Tree][ovdje]].
+
+.play concurrency/exercise-equivalent-binary-trees.go

@@ -1,0 +1,7 @@
+* Closure funkcijos
+
+Go funkcijos gali būti closure funkcijos. Closure – tai funkcijos reikšmė, kuri nurodo kintamuosius už savo kūno ribų. Funkcija gali pasiekti nurodytus kintamuosius ir jiems priskirti reikšmes; šia prasme funkcija yra „susieta“ su kintamaisiais.
+
+Pavyzdžiui, funkcija `adder` grąžina closure funkciją. Kiekviena closure funkcija susieta su savu kintamuoju `sum`.
+
+.play moretypes/function-closures.go

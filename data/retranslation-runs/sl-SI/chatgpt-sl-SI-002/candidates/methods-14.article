@@ -1,0 +1,16 @@
+* Prazen vmesnik
+
+Tip vmesnika, ki ne določa nobene metode, se imenuje _prazen_vmesnik_:
+
+	interface{}
+
+Prazen vmesnik lahko vsebuje vrednosti katerega koli tipa.
+(Vsak tip implementira vsaj nič metod.)
+
+`any` je vzdevek za `interface{}` in oba sta popolnoma
+enakovredna.
+
+Prazni vmesniki se uporabljajo v kodi, ki obravnava vrednosti neznanega tipa.
+Funkcija `fmt.Print` na primer sprejme poljubno število argumentov tipa `any`.
+
+.play methods/empty-interface.go

@@ -1,0 +1,7 @@
+* Trumposios kintamųjų deklaracijos
+
+Funkcijos viduje trumpąjį kintamojo deklaravimą su `:=` galima naudoti vietoj `var` deklaravimo su numanomu tipu.
+
+Už funkcijos ribų kiekvienas sakinys prasideda raktažodžiu (`var`, `func` ir t. t.), todėl konstrukcija `:=` ten negalima.
+
+.play basics/short-variable-declarations.go

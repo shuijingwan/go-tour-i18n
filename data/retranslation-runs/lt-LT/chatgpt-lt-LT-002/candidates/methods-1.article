@@ -1,0 +1,12 @@
+* Metodai
+
+Go neturi klasių.
+Tačiau tipams galite apibrėžti metodus.
+
+Metodas yra funkcija su specialiu metodo _imtuvu_ kaip argumentu.
+
+Metodo imtuvas pateikiamas atskirame argumentų sąraše tarp raktažodžio `func` ir metodo pavadinimo.
+
+Šiame pavyzdyje metodas `Abs` turi `Vertex` tipo metodo imtuvą, pavadintą `v`.
+
+.play methods/methods.go

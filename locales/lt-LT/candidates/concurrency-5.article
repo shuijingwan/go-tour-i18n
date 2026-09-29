@@ -1,0 +1,7 @@
+* Select
+
+Sakinys `select` leidžia goroutine laukti kelių komunikavimo operacijų.
+
+`select` blokuoja vykdymą, kol galima vykdyti vieną iš jo atvejų, tada vykdomas tas atvejis. Jei paruošti keli atvejai, vienas pasirenkamas atsitiktinai.
+
+.play concurrency/select.go

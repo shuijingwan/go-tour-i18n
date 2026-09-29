@@ -1,0 +1,17 @@
+* Izbira prejemnika vrednostnega ali kazalčnega tipa
+
+Za uporabo prejemnika kazalčnega tipa obstajata dva razloga.
+
+Prvi je, da lahko metoda spremeni vrednost, na katero njen prejemnik kaže.
+
+Drugi je, da se pri vsakem klicu metode izognemo kopiranju vrednosti.
+To je lahko učinkoviteje, če je prejemnik na primer velika struktura.
+
+V tem primeru sta tako `Scale` kot `Abs` metodi s prejemnikom tipa `*Vertex`,
+čeprav metodi `Abs` prejemnika ni treba spreminjati.
+
+Na splošno naj imajo vse metode določenega tipa bodisi prejemnike vrednostnega bodisi kazalčnega
+tipa, ne pa mešanice obojih.
+(V naslednjih nekaj straneh bomo videli, zakaj.)
+
+.play methods/methods-with-pointer-receivers.go

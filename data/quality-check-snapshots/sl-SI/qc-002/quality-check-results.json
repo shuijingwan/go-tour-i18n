@@ -1,0 +1,49 @@
+{
+  "schema_version": 2,
+  "evidence_type": "quality_check_results",
+  "locale": "sl-SI",
+  "snapshot_id": "qc-002",
+  "snapshot_manifest_sha256": "2462254f9a58371914532f5948e97d48d9cf44c62cab70ac024f57d557338601",
+  "previous_snapshot_id": "qc-001",
+  "rubric": "translation-quality/v1",
+  "result_count": 7,
+  "results": [
+    {
+      "index": 1,
+      "unit_id": "welcome/1",
+      "rating": "B",
+      "finding": "判定依据：上一轮标题称谓已修复，但 mandatory glossary 要求可见 link label “right arrow → puščica desno” 保持该固定显示形式；B 表示 source 技术含义与导航行为均清楚，只剩轻微但真实的 Slovenian 句法问题，在 A-only gate 下仍必须修订。当前问题：句末“spodaj kliknite na [puščica desno]”让固定 label 直接处于 klikniti na 所支配的宾语位置，导致不可变 label 的形式与自然 Slovenian 格关系不协调。Revision 要求：保持 link label “puščica desno”、原 link target 及“点击下方右箭头或按 PageDown”的完整语义不变；重构周围句法，使固定 label 不再承担与其显示形式冲突的格支配关系，不得通过改写 label 本身规避问题。"
+    },
+    {
+      "index": 17,
+      "unit_id": "basics/12",
+      "rating": "B",
+      "finding": "判定依据：英语残留已修复，当前 Present emphasis span 按正式 authority 渲染为“ničelna vrednost”，与 mandatory glossary 的术语概念一致；B 表示技术概念已正确，只剩轻微但真实的 Slovenian 形态/一致关系问题，在 A-only gate 下仍必须修订。当前问题：可见句子相当于“Spremenljivke ... dobijo svojo ničelna vrednost.”，在“dobijo svojo ...”结构中，span 内形容词和名词未按所需宾格进行自然屈折，形成明显格与一致关系错误；这不是 Present markup 缺陷。Revision 要求：保持 zero value → ničelna vrednost 的术语概念、原 emphasis span 范围和合法 Present 结构不变；仅按 Slovenian 句法对 span 内术语做必要的格和一致关系变化，不能机械复制 glossary lemma。"
+    },
+    {
+      "index": 23,
+      "unit_id": "flowcontrol/1",
+      "rating": "A"
+    },
+    {
+      "index": 94,
+      "unit_id": "concurrency/2",
+      "rating": "A"
+    },
+    {
+      "index": 101,
+      "unit_id": "concurrency/9",
+      "rating": "A"
+    },
+    {
+      "index": 102,
+      "unit_id": "concurrency/10",
+      "rating": "A"
+    },
+    {
+      "index": 108,
+      "unit_id": "example:concurrency/exercise-web-crawler.go",
+      "rating": "A"
+    }
+  ]
+}

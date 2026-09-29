@@ -1,0 +1,22 @@
+{
+  "schema_version": 2,
+  "evidence_type": "quality_check_results",
+  "locale": "hr-HR",
+  "snapshot_id": "qc-003",
+  "snapshot_manifest_sha256": "80b95ea0ca636b56f9f1fa62f32bfc652c59825c90678675984713d83940ae12",
+  "previous_snapshot_id": "qc-002",
+  "rubric": "translation-quality/v1",
+  "result_count": 2,
+  "results": [
+    {
+      "index": 108,
+      "unit_id": "example:concurrency/exercise-web-crawler.go",
+      "rating": "A"
+    },
+    {
+      "index": 111,
+      "unit_id": "example:generics/index.go",
+      "rating": "A"
+    }
+  ]
+}

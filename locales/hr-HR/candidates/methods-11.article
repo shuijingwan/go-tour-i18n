@@ -1,0 +1,13 @@
+* Vrijednosti sučelja
+
+U pozadini se vrijednosti sučelja mogu zamisliti kao par vrijednosti i
+konkretnog tipa:
+
+	(value, type)
+
+Vrijednost sučelja sadržava vrijednost određenog temeljnog konkretnog tipa.
+
+Pozivanjem metode na vrijednosti sučelja izvršava se istoimena metoda
+njezina temeljnog tipa.
+
+.play methods/interface-values.go

@@ -1,0 +1,23 @@
+* Vaja: enakovredna dvojiška drevesa
+
+*1.* Implementirajte funkcijo `Walk`.
+
+*2.* Preizkusite funkcijo `Walk`.
+
+Funkcija `tree.New(k)` zgradi naključno strukturirano (vendar vedno urejeno) dvojiško drevo z vrednostmi `k`, `2k`, `3k`, ..., `10k`.
+
+Ustvarite nov kanal `ch` in zaženite sprehod po drevesu:
+
+	go Walk(tree.New(1), ch)
+
+Nato iz kanala preberite in izpišite 10 vrednosti. To naj bodo števila 1, 2, 3, ..., 10.
+
+*3.* Implementirajte funkcijo `Same` z uporabo `Walk`, da ugotovite, ali `t1` in `t2` hranita iste vrednosti.
+
+*4.* Preizkusite funkcijo `Same`.
+
+`Same(tree.New(1),`tree.New(1))` naj vrne true, `Same(tree.New(1),`tree.New(2))` pa false.
+
+Dokumentacijo za `Tree` najdete [[https://godoc.org/golang.org/x/tour/tree#Tree][tukaj]].
+
+.play concurrency/exercise-equivalent-binary-trees.go

@@ -1,0 +1,7 @@
+* Select
+
+Stavek `select` omogoča, da goroutine čaka na več komunikacijskih operacij.
+
+`select` se blokira, dokler se ne more izvesti eden od njegovih primerov, nato pa ta primer izvede. Če je pripravljenih več primerov, enega izbere naključno.
+
+.play concurrency/select.go

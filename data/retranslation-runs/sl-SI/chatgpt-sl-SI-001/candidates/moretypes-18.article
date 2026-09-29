@@ -1,0 +1,11 @@
+* Vaja: rezine
+
+Implementirajte `Pic`. Funkcija naj vrne rezino dolžine `dy`, katere vsak element je rezina `dx` 8-bitnih nepredznačenih celih števil. Ko zaženete program, bo prikazal vašo sliko in cela števila interpretiral kot vrednosti sivin (oziroma modrin).
+
+Izbira slike je vaša. Zanimive funkcije so na primer `(x+y)/2`, `x*y` in `x^y`.
+
+(Z zanko morate dodeliti vsak `[]uint8` znotraj `[][]uint8`.)
+
+(Za pretvorbo med tipi uporabite `uint8(intValue)`.)
+
+.play moretypes/exercise-slices.go

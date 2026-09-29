@@ -1,0 +1,20 @@
+* Vaizdai
+
+[[/pkg/image/#Image][Paketas image]] apibrėžia sąsają `Image`:
+
+	package image
+
+	type Image interface {
+		ColorModel() color.Model
+		Bounds() Rectangle
+		At(x, y int) color.Color
+	}
+
+*Pastaba*: metodo `Bounds` grąžinama `Rectangle` reikšmė iš tikrųjų yra
+[[/pkg/image/#Rectangle][`image.Rectangle`]], nes deklaracija yra paketo `image` viduje.
+
+(Visą išsamią informaciją rasite [[/pkg/image/#Image][dokumentacijoje]].)
+
+Tipai `color.Color` ir `color.Model` taip pat yra sąsajos, tačiau to nepaisysime ir naudosime iš anksto apibrėžtus įgyvendinimus `color.RGBA` ir `color.RGBAModel`. Šios sąsajos ir tipai apibrėžti [[/pkg/image/color/][pakete image/color]].
+
+.play methods/images.go

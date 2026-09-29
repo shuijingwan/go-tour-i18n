@@ -1,0 +1,11 @@
+* Kanali s međuspremnikom
+
+Kanali mogu imati _međuspremnik_. Duljinu međuspremnika proslijedite kao drugi argument funkciji `make` kako biste inicijalizirali kanal s međuspremnikom:
+
+	ch := make(chan int, 100)
+
+Slanja u kanal s međuspremnikom blokiraju samo kada je međuspremnik pun. Primanja blokiraju kada je međuspremnik prazan.
+
+Izmijenite primjer tako da prepunite međuspremnik i pogledajte što će se dogoditi.
+
+.play concurrency/buffered-channels.go

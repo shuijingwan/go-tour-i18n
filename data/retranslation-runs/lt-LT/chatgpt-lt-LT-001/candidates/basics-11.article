@@ -1,0 +1,28 @@
+* Pagrindiniai tipai
+
+Go pagrindiniai tipai yra
+
+	bool
+
+	string
+
+	int  int8  int16  int32  int64
+	uint uint8 uint16 uint32 uint64 uintptr
+
+	byte // pseudonimas: uint8
+
+	rune // pseudonimas: int32
+	     // žymi Unicode kodo tašką
+
+	float32 float64
+
+	complex64 complex128
+
+Pavyzdyje parodyti kelių tipų kintamieji
+ir tai, kad kintamųjų deklaracijas galima „sugrupuoti“ į blokus,
+kaip ir import sakinius.
+
+Tipai `int`, `uint` ir `uintptr` 32 bitų sistemose paprastai yra 32 bitų pločio, o 64 bitų sistemose — 64 bitų.
+Kai reikia sveikojo skaičiaus reikšmės, turėtumėte naudoti `int`, nebent turite konkrečią priežastį naudoti nustatyto dydžio arba beženklį sveikųjų skaičių tipą.
+
+.play basics/basic-types.go

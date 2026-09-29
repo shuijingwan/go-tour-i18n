@@ -1,0 +1,9 @@
+* If s kratkom naredbom
+
+Poput naredbe `for`, naredba `if` može započeti kratkom naredbom koja se izvršava prije uvjeta.
+
+Varijable deklarirane tom naredbom u dosegu su samo do kraja naredbe `if`.
+
+(Pokušajte upotrijebiti `v` u posljednjoj naredbi `return`.)
+
+.play flowcontrol/if-with-a-short-statement.go

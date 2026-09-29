@@ -1,0 +1,22 @@
+* Metode i neizravno adresiranje pokazivača
+
+Uspoređujući prethodna dva programa, mogli ste primijetiti da
+funkcije s argumentom pokazivačkog tipa moraju primiti pokazivač:
+
+	var v Vertex
+	ScaleFunc(v, 5)  // Pogreška pri prevođenju!
+	ScaleFunc(&v, 5) // OK
+
+dok metode s primateljima pokazivačkog tipa pri pozivu kao primatelja prihvaćaju vrijednost ili pokazivač:
+
+	var v Vertex
+	v.Scale(5)  // OK
+	p := &v
+	p.Scale(10) // OK
+
+Za naredbu `v.Scale(5)`, iako je `v` vrijednost, a ne pokazivač,
+automatski se poziva metoda s primateljem pokazivačkog tipa.
+Radi praktičnosti, Go naredbu `v.Scale(5)` tumači kao
+`(&v).Scale(5)` jer metoda `Scale` ima primatelja pokazivačkog tipa.
+
+.play methods/indirection.go

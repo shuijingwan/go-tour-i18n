@@ -1,0 +1,19 @@
+* For
+
+Jezik Go ima samo eno zanko, zanko `for`.
+
+Osnovna zanka `for` ima tri dele, ločene s podpičji:
+
+- začetni stavek: izvede se pred prvo iteracijo
+- pogojni izraz: ovrednoti se pred vsako iteracijo
+- zaključni stavek: izvede se ob koncu vsake iteracije
+
+Začetni stavek je pogosto deklaracija spremenljivke; tam deklarirane
+spremenljivke so vidne samo v dosegu stavka `for`.
+
+Zanka se neha izvajati, ko se logični pogoj ovrednoti v `false`.
+
+*Opomba:* Za razliko od jezikov, kot so C, Java ali JavaScript, trije deli stavka `for` niso obdani
+z okroglimi oklepaji; zaviti oklepaji `{`}` pa so vedno obvezni.
+
+.play flowcontrol/for.go

@@ -1,0 +1,11 @@
+* Pjūviai yra tarsi nuorodos į masyvus
+
+Pjūvis pats duomenų nesaugo,
+jis tik aprašo pamatinio masyvo dalį.
+
+Pakeitus pjūvio elementus, pakeičiami ir
+atitinkami jo pamatinio masyvo elementai.
+
+Šiuos pakeitimus matys ir kiti tą patį pamatinį masyvą naudojantys pjūviai.
+
+.play moretypes/slices-pointers.go

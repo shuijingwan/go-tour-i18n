@@ -1,0 +1,24 @@
+* Klaidos
+
+Go programos klaidos būseną išreiškia `error` reikšmėmis.
+
+Tipas `error` yra įtaisytoji sąsaja, panaši į `fmt.Stringer`:
+
+	type error interface {
+		Error() string
+	}
+
+(Kaip ir `fmt.Stringer` atveju, paketas `fmt` spausdindamas reikšmes ieško sąsajos `error`.)
+
+Funkcijos dažnai grąžina `error` reikšmę, o jas iškviečiantis kodas turėtų apdoroti klaidas tikrindamas, ar klaida lygi `nil`.
+
+	i, err := strconv.Atoi("42")
+	if err != nil {
+		fmt.Printf("couldn't convert number: %v\n", err)
+		return
+	}
+	fmt.Println("Converted integer:", i)
+
+Nil `error` reiškia sėkmę, o ne nil `error` – nesėkmę.
+
+.play methods/errors.go

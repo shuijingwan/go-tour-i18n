@@ -1,0 +1,14 @@
+* Literali rezin
+
+Literal rezine je podoben literalu tabele brez dolžine.
+
+To je literal tabele:
+
+	[3]bool{true, true, false}
+
+Naslednji zapis ustvari enako tabelo kot zgoraj,
+nato pa rezino, ki se sklicuje nanjo:
+
+	[]bool{true, true, false}
+
+.play moretypes/slice-literals.go

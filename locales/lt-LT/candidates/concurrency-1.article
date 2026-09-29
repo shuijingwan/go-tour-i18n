@@ -1,0 +1,15 @@
+* Goroutine
+
+_goroutine_ yra lengvoji gija, kurią valdo Go vykdymo aplinka.
+
+	go f(x, y, z)
+
+paleidžia naują goroutine, vykdančią
+
+	f(x, y, z)
+
+`f`, `x`, `y` ir `z` įvertinami dabartinėje goroutine, o `f` vykdoma naujoje goroutine.
+
+Goroutine veikia toje pačioje adresų erdvėje, todėl prieiga prie bendros atminties turi būti sinchronizuojama. Paketas [[/pkg/sync/][`sync`]] suteikia naudingų primityvų, nors Go jų dažnai neprireiks, nes yra kitų primityvų. (Žr. kitą kurso puslapį.)
+
+.play concurrency/goroutines.go

@@ -1,0 +1,13 @@
+* Switch
+
+Stavek `switch` je krajši način za zapis zaporedja stavkov `if`-`else`.
+Izvede prvi primer, katerega vrednost je enaka pogojnemu izrazu.
+
+Switch v jeziku Go je podoben tistemu v jezikih C, C++, Java, JavaScript in PHP,
+le da Go izvede samo izbrani primer, ne pa tudi vseh naslednjih.
+Stavek `break`, ki je v teh jezikih potreben na koncu vsakega primera,
+je v jeziku Go dejansko dodan samodejno.
+Druga pomembna razlika je, da primeri v stavku switch jezika Go niso nujno
+konstante, uporabljene vrednosti pa niso nujno cela števila.
+
+.play flowcontrol/switch.go

@@ -1,0 +1,28 @@
+* Osnovni tipovi
+
+Osnovni tipovi jezika Go jesu
+
+	bool
+
+	string
+
+	int  int8  int16  int32  int64
+	uint uint8 uint16 uint32 uint64 uintptr
+
+	byte // alias za uint8
+
+	rune // alias za int32
+	     // predstavlja kodnu točku Unicodea
+
+	float32 float64
+
+	complex64 complex128
+
+Primjer prikazuje varijable nekoliko tipova,
+kao i mogućnost grupiranja deklaracija varijabli u blokove,
+jednako kao kod naredbi za uvoz.
+
+Tipovi `int`, `uint` i `uintptr` obično su široki 32 bita na 32-bitnim sustavima, odnosno 64 bita na 64-bitnim sustavima.
+Kada vam treba cjelobrojna vrijednost, upotrijebite `int`, osim ako imate poseban razlog za uporabu cjelobrojnog tipa određene veličine ili tipa bez predznaka.
+
+.play basics/basic-types.go

@@ -1,0 +1,12 @@
+* Metode – nadaljevanje
+
+Metodo lahko deklarirate tudi za tipe, ki niso strukture.
+
+V tem primeru vidimo številski tip `MyFloat` z metodo `Abs`.
+
+Metodo lahko deklarirate le s prejemnikom, katerega tip je definiran v istem
+paketu kot metoda.
+Metode ne morete deklarirati s prejemnikom, katerega tip je definiran v drugem
+paketu (to vključuje tudi vgrajene tipe, kot je `int`).
+
+.play methods/methods-continued.go

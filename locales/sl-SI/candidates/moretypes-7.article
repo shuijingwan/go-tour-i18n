@@ -1,0 +1,23 @@
+* Rezine
+
+Tabela ima fiksno velikost.
+Rezina pa je dinamično velik,
+prilagodljiv pogled na elemente tabele.
+V praksi so rezine veliko pogostejše od tabel.
+
+Tip `[]T` je rezina z elementi tipa `T`.
+
+Rezino ustvarimo z dvema indeksoma, spodnjo in
+zgornjo mejo, ločenima z dvopičjem:
+
+	a[low : high]
+
+S tem izberemo polodprti interval, ki vključuje prvi
+element, zadnjega pa ne.
+
+Naslednji izraz ustvari rezino, ki vključuje
+elemente od 1 do 3 tabele `a`:
+
+	a[1:4]
+
+.play moretypes/slices.go

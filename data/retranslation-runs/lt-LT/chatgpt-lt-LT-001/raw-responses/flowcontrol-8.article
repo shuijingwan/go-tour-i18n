@@ -1,0 +1,37 @@
+* Pratimas: ciklai ir funkcijos
+
+Norėdami pasipraktikuoti su funkcijomis ir ciklais, įgyvendinkime kvadratinės šaknies funkciją: duotam skaičiui x norime rasti tokį skaičių z, kad z² būtų kuo artimesnis x.
+
+Kompiuteriai x kvadratinę šaknį paprastai apskaičiuoja naudodami ciklą.
+Pradėję nuo tam tikro z spėjimo, galime koreguoti z pagal tai, kiek z² yra artimas x,
+ir taip gauti geresnį spėjimą:
+
+⟪GTI18N_d8bbee84_000001⟫
+
+Kartojant šį koregavimą spėjimas vis gerėja,
+kol gauname atsakymą, kiek įmanoma artimą tikrajai kvadratinei šakniai.
+
+Įgyvendinkite tai pateiktoje ⟪GTI18N_d8bbee84_000002⟫func`Sqrt⟪GTI18N_d8bbee84_000003⟫.
+Nepriklausomai nuo įvesties, tinkamas pradinis z spėjimas yra 1.
+Iš pradžių pakartokite skaičiavimą 10 kartų ir kiekvieną kartą išspausdinkite z.
+Pažiūrėkite, kiek priartėjate prie atsakymo su įvairiomis x reikšmėmis (1, 2, 3, ...)
+ir kaip greitai spėjimas gerėja.
+
+Užuomina: norėdami deklaruoti ir inicializuoti slankiojo kablelio reikšmę,
+naudokite slankiojo kablelio sintaksę arba konvertavimą:
+
+⟪GTI18N_d8bbee84_000004⟫
+
+Tada pakeiskite ciklo sąlygą taip, kad ciklas sustotų, kai reikšmė nustoja
+keistis (arba keičiasi tik labai nedaug).
+Patikrinkite, ar tam reikia daugiau, ar mažiau nei 10 iteracijų.
+Išbandykite kitus pradinius z spėjimus, pavyzdžiui, x arba x/2.
+Kiek jūsų funkcijos rezultatai artimi standartinės bibliotekos [[⟪GTI18N_d8bbee84_000005⟫][math.Sqrt]] rezultatams?
+
+(⟪GTI18N_d8bbee84_000006⟫Pastaba:⟪GTI18N_d8bbee84_000007⟫ Jei domina algoritmo detalės, pirmiau esantis z² − x parodo,
+kiek z² nutolęs nuo reikalingos reikšmės (x), o dalyba iš 2z yra z² išvestinė,
+kuri koregavimo dydį pritaiko prie z² kitimo greičio.
+Šis bendras metodas vadinamas [[⟪GTI18N_d8bbee84_000008⟫][Niutono metodu]].
+Jis gerai veikia su daugeliu funkcijų, o ypač gerai — skaičiuojant kvadratinę šaknį.)
+
+⟪GTI18N_d8bbee84_000009⟫

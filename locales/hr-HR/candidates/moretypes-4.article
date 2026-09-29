@@ -1,0 +1,9 @@
+* Pokazivači na strukture
+
+Poljima strukture može se pristupiti putem pokazivača na strukturu.
+
+Da bismo pristupili polju `X` strukture kada imamo pokazivač na strukturu `p`, mogli bismo
+napisati `(*p).X`. Međutim, taj je zapis nespretan, pa jezik dopušta da umjesto toga
+napišemo samo `p.X`, bez izričitog dereferenciranja.
+
+.play moretypes/struct-pointers.go

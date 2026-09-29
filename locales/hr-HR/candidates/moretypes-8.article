@@ -1,0 +1,9 @@
+* Isječci su poput referenci na polja
+
+Isječak ne pohranjuje nikakve podatke, nego samo opisuje dio temeljnog polja.
+
+Promjenom elemenata isječka mijenjaju se odgovarajući elementi njegova temeljnog polja.
+
+Te će promjene biti vidljive i u drugim isječcima koji dijele isto temeljno polje.
+
+.play moretypes/slices-pointers.go

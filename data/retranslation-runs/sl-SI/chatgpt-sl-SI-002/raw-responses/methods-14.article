@@ -1,0 +1,16 @@
+* Prazen vmesnik
+
+Tip vmesnika, ki ne določa nobene metode, se imenuje ⟪GTI18N_7a09a765_000001⟫prazen_vmesnik⟪GTI18N_7a09a765_000002⟫:
+
+⟪GTI18N_7a09a765_000003⟫
+
+Prazen vmesnik lahko vsebuje vrednosti katerega koli tipa.
+(Vsak tip implementira vsaj nič metod.)
+
+⟪GTI18N_7a09a765_000004⟫any⟪GTI18N_7a09a765_000005⟫ je vzdevek za ⟪GTI18N_7a09a765_000006⟫interface{}⟪GTI18N_7a09a765_000007⟫ in oba sta popolnoma
+enakovredna.
+
+Prazni vmesniki se uporabljajo v kodi, ki obravnava vrednosti neznanega tipa.
+Funkcija ⟪GTI18N_7a09a765_000008⟫fmt.Print⟪GTI18N_7a09a765_000009⟫ na primer sprejme poljubno število argumentov tipa ⟪GTI18N_7a09a765_000010⟫any⟪GTI18N_7a09a765_000011⟫.
+
+⟪GTI18N_7a09a765_000012⟫

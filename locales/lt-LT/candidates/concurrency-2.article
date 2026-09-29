@@ -1,0 +1,20 @@
+* Kanalai
+
+Kanalai yra tipizuoti duomenų perdavimo keliai, kuriais galite siųsti ir gauti reikšmes naudodami kanalo operatorių `<-`.
+
+	ch <- v    // Siųskite v į kanalą ch.
+	v := <-ch  // Gaukite iš ch ir
+	           // priskirkite reikšmę v.
+
+(Duomenys juda rodyklės kryptimi.)
+
+Kaip ir žodynus bei pjūvius, kanalus prieš naudojant reikia sukurti:
+
+	ch := make(chan int)
+
+Pagal numatymą siuntimo ir gavimo operacijos blokuoja vykdymą, kol kita pusė pasiruošusi. Tai leidžia goroutine sinchronizuotis nenaudojant aiškių užraktų ar sąlyginių kintamųjų.
+
+Pavyzdžio kodas susumuoja pjūvio skaičius, darbą paskirstydamas dviem goroutine.
+Kai abi goroutine baigia skaičiavimus, apskaičiuojamas galutinis rezultatas.
+
+.play concurrency/channels.go

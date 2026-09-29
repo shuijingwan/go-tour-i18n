@@ -1,0 +1,11 @@
+* Paketai
+
+Kiekvieną Go programą sudaro paketai.
+
+Programos pradeda veikti pakete `main`.
+
+Ši programa naudoja paketus su importavimo keliais `"fmt"` ir `"math/rand"`.
+
+Pagal susitarimą paketo pavadinimas sutampa su paskutiniu importavimo kelio elementu. Pavyzdžiui, paketą `"math/rand"` sudaro failai, prasidedantys sakiniu `package`rand`.
+
+.play basics/packages.go

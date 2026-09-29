@@ -1,0 +1,10 @@
+* Rodyklės į struktūras
+
+Struktūros laukus galima pasiekti per struktūros rodyklę.
+
+Norėdami pasiekti struktūros lauką `X`, kai turime struktūros rodyklę `p`, galėtume
+rašyti `(*p).X`.
+Tačiau toks užrašas nepatogus, todėl kalba leidžia vietoj jo
+rašyti tiesiog `p.X`, be aiškaus dereferencijavimo.
+
+.play moretypes/struct-pointers.go

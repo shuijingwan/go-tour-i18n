@@ -1,0 +1,14 @@
+* Polja
+
+Tip `[n]T` polje je od `n` vrijednosti tipa `T`.
+
+Izraz
+
+	var a [10]int
+
+deklarira varijablu `a` kao polje od deset cijelih brojeva.
+
+Duljina polja dio je njegova tipa, pa se veličina polja ne može mijenjati.
+To se može činiti ograničavajućim, ali ne brinite; Go pruža praktičan način rada s poljima.
+
+.play moretypes/array.go

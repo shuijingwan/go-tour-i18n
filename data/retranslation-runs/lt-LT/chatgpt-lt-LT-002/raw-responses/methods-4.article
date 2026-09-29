@@ -1,0 +1,19 @@
+* Rodykliniai metodo imtuvai
+
+Galite deklaruoti metodus su rodykliniais metodo imtuvais.
+
+Tai reiškia, kad tam tikram tipui ⟪GTI18N_99f9fa4e_000003⟫T⟪GTI18N_99f9fa4e_000004⟫ metodo imtuvo tipas turi literalo sintaksę ⟪GTI18N_99f9fa4e_000001⟫*T⟪GTI18N_99f9fa4e_000002⟫.
+(Be to, ⟪GTI18N_99f9fa4e_000005⟫T⟪GTI18N_99f9fa4e_000006⟫ pats negali būti rodyklė, pvz., ⟪GTI18N_99f9fa4e_000007⟫*int⟪GTI18N_99f9fa4e_000008⟫.)
+
+Pavyzdžiui, čia metodas ⟪GTI18N_99f9fa4e_000009⟫Scale⟪GTI18N_99f9fa4e_000010⟫ apibrėžtas tipui ⟪GTI18N_99f9fa4e_000011⟫*Vertex⟪GTI18N_99f9fa4e_000012⟫.
+
+Metodai su rodykliniais metodo imtuvais gali keisti reikšmę, į kurią rodo metodo imtuvas (kaip čia daro ⟪GTI18N_99f9fa4e_000013⟫Scale⟪GTI18N_99f9fa4e_000014⟫).
+Kadangi metodams dažnai reikia keisti savo metodo imtuvą, rodykliniai metodo imtuvai naudojami dažniau nei reikšminiai.
+
+Pabandykite 16 eilutėje iš funkcijos ⟪GTI18N_99f9fa4e_000017⟫Scale⟪GTI18N_99f9fa4e_000018⟫ deklaracijos pašalinti ⟪GTI18N_99f9fa4e_000015⟫*⟪GTI18N_99f9fa4e_000016⟫ ir stebėkite, kaip pasikeičia programos veikimas.
+
+Kai metodo imtuvas reikšminis, metodas ⟪GTI18N_99f9fa4e_000019⟫Scale⟪GTI18N_99f9fa4e_000020⟫ veikia su pradinės ⟪GTI18N_99f9fa4e_000021⟫Vertex⟪GTI18N_99f9fa4e_000022⟫ reikšmės kopija.
+(Taip pat elgiamasi su bet kuriuo kitu funkcijos argumentu.)
+Kad pakeistų funkcijoje ⟪GTI18N_99f9fa4e_000027⟫main⟪GTI18N_99f9fa4e_000028⟫ deklaruotą ⟪GTI18N_99f9fa4e_000025⟫Vertex⟪GTI18N_99f9fa4e_000026⟫ reikšmę, metodas ⟪GTI18N_99f9fa4e_000023⟫Scale⟪GTI18N_99f9fa4e_000024⟫ turi turėti rodyklinį metodo imtuvą.
+
+⟪GTI18N_99f9fa4e_000029⟫

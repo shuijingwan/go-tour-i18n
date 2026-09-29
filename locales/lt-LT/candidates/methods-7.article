@@ -1,0 +1,20 @@
+* Metodai ir netiesioginė prieiga per rodykles (2)
+
+Atvirkštine kryptimi vyksta analogiškas dalykas.
+
+Funkcijoms, kurių argumentas yra reikšmė, būtina perduoti būtent to tipo reikšmę:
+
+	var v Vertex
+	fmt.Println(AbsFunc(v))  // OK
+	fmt.Println(AbsFunc(&v)) // Kompiliavimo klaida!
+
+o metodus su reikšminiais metodo imtuvais iškviečiant jų imtuvu gali būti tiek reikšmė, tiek rodyklė:
+
+	var v Vertex
+	fmt.Println(v.Abs()) // OK
+	p := &v
+	fmt.Println(p.Abs()) // OK
+
+Šiuo atveju metodo iškvietimas `p.Abs()` interpretuojamas kaip `(*p).Abs()`.
+
+.play methods/indirection-values.go

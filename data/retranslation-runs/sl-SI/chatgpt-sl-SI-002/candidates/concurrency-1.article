@@ -1,0 +1,15 @@
+* Goroutine
+
+_goroutine_ je lahka nit, ki jo upravlja izvajalno okolje Go.
+
+	go f(x, y, z)
+
+zažene novo goroutine, ki izvaja
+
+	f(x, y, z)
+
+Ovrednotenje `f`, `x`, `y` in `z` poteka v trenutni goroutine, izvajanje `f` pa v novi goroutine.
+
+Goroutine se izvajajo v istem naslovnem prostoru, zato je treba dostop do skupnega pomnilnika sinhronizirati. Paket [[/pkg/sync/][`sync`]] ponuja uporabne primitive, čeprav jih v jeziku Go zaradi drugih primitivov ne boste potrebovali pogosto. (Glejte naslednjo stran.)
+
+.play concurrency/goroutines.go

@@ -1,0 +1,23 @@
+* Pratimas: lygiaverčiai dvejetainiai medžiai
+
+*1.* Įgyvendinkite funkciją `Walk`.
+
+*2.* Išbandykite funkciją `Walk`.
+
+Funkcija `tree.New(k)` sukuria atsitiktinės struktūros (bet visada surikiuotą) dvejetainį medį, kuriame saugomos reikšmės `k`, `2k`, `3k`, ..., `10k`.
+
+Sukurkite naują kanalą `ch` ir paleiskite medžio apėjimą:
+
+	go Walk(tree.New(1), ch)
+
+Tada iš kanalo perskaitykite ir išspausdinkite 10 reikšmių. Tai turėtų būti skaičiai 1, 2, 3, ..., 10.
+
+*3.* Naudodami `Walk` įgyvendinkite funkciją `Same`, kuri nustatytų, ar `t1` ir `t2` saugo tas pačias reikšmes.
+
+*4.* Išbandykite funkciją `Same`.
+
+`Same(tree.New(1),`tree.New(1))` turėtų grąžinti true, o `Same(tree.New(1),`tree.New(2))` – false.
+
+`Tree` dokumentaciją rasite [[https://godoc.org/golang.org/x/tour/tree#Tree][čia]].
+
+.play concurrency/exercise-equivalent-binary-trees.go

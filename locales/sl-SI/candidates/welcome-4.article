@@ -1,0 +1,17 @@
+* Go brez povezave (izbirno)
+
+Ta ogled je na voljo tudi kot samostojen program, ki ga lahko uporabljate
+brez dostopa do interneta. Primere kode zgradi in zažene
+na vašem računalniku.
+
+Če želite ogled zagnati lokalno, morate najprej
+[[/doc/install][namestiti Go]], nato pa zagnati:
+
+  go install golang.org/x/website/tour@latest
+
+S tem se binarni program `tour` namesti v
+[[/cmd/go/#hdr-GOPATH_and_Modules][GOPATH]], v imenik `bin`.
+Ko zaženete program tour, se odpre spletni brskalnik z vašo
+lokalno različico ogleda.
+
+Seveda lahko ogled še naprej uporabljate tudi prek tega spletnega mesta.

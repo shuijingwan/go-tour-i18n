@@ -1,0 +1,20 @@
+* Metode i neizravno adresiranje pokazivača (2)
+
+Isto se događa i u suprotnom smjeru.
+
+Funkcije koje primaju argument vrijednosnog tipa moraju primiti vrijednost upravo tog tipa:
+
+	var v Vertex
+	fmt.Println(AbsFunc(v))  // OK
+	fmt.Println(AbsFunc(&v)) // Pogreška pri prevođenju!
+
+dok metode s primateljima vrijednosnog tipa pri pozivu kao primatelja prihvaćaju vrijednost ili pokazivač:
+
+	var v Vertex
+	fmt.Println(v.Abs()) // OK
+	p := &v
+	fmt.Println(p.Abs()) // OK
+
+U ovom se slučaju poziv metode `p.Abs()` tumači kao `(*p).Abs()`.
+
+.play methods/indirection-values.go

@@ -1,0 +1,37 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-sl-SI-006",
+  "locale": "sl-SI",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 2,
+  "units": [
+    {
+      "unit_id": "welcome/1",
+      "unit_kind": "page",
+      "source_path": "_content/tour/welcome.article",
+      "source_sha256": "1f581133d7fa40e6490418c6789a60a2f5e1de26c9c86d7eb6120cb58b145857",
+      "input_path": "inputs/welcome-1.article",
+      "input_sha256": "2e23e9c502f9e06fa58f1cee028f9cbd1bfee1f453f7d6d2c5681e2bfa1e2a6f",
+      "protected_token_count": 35,
+      "previous_snapshot_id": "qc-002",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "判定依据：上一轮标题称谓已修复，但 mandatory glossary 要求可见 link label “right arrow → puščica desno” 保持该固定显示形式；B 表示 source 技术含义与导航行为均清楚，只剩轻微但真实的 Slovenian 句法问题，在 A-only gate 下仍必须修订。当前问题：句末“spodaj kliknite na [puščica desno]”让固定 label 直接处于 klikniti na 所支配的宾语位置，导致不可变 label 的形式与自然 Slovenian 格关系不协调。Revision 要求：保持 link label “puščica desno”、原 link target 及“点击下方右箭头或按 PageDown”的完整语义不变；重构周围句法，使固定 label 不再承担与其显示形式冲突的格支配关系，不得通过改写 label 本身规避问题。"
+    },
+    {
+      "unit_id": "basics/12",
+      "unit_kind": "page",
+      "source_path": "_content/tour/basics.article",
+      "source_sha256": "d9ad62501c05359e7b2ac445fa92d629e11d6d378c2701b767abab76012a558e",
+      "input_path": "inputs/basics-12.article",
+      "input_sha256": "1ea463ab789d88cad33a6c7adf44fb524ea1f7e2574059f723a345f3c097faa7",
+      "protected_token_count": 9,
+      "previous_snapshot_id": "qc-002",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "判定依据：英语残留已修复，当前 Present emphasis span 按正式 authority 渲染为“ničelna vrednost”，与 mandatory glossary 的术语概念一致；B 表示技术概念已正确，只剩轻微但真实的 Slovenian 形态/一致关系问题，在 A-only gate 下仍必须修订。当前问题：可见句子相当于“Spremenljivke ... dobijo svojo ničelna vrednost.”，在“dobijo svojo ...”结构中，span 内形容词和名词未按所需宾格进行自然屈折，形成明显格与一致关系错误；这不是 Present markup 缺陷。Revision 要求：保持 zero value → ničelna vrednost 的术语概念、原 emphasis span 范围和合法 Present 结构不变；仅按 Slovenian 句法对 span 内术语做必要的格和一致关系变化，不能机械复制 glossary lemma。"
+    }
+  ]
+}

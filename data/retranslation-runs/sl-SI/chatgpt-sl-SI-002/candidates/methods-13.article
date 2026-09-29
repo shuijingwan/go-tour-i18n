@@ -1,0 +1,8 @@
+* Vrednosti vmesnika nil
+
+Vrednost vmesnika nil ne vsebuje niti vrednosti niti konkretnega tipa.
+
+Klic metode na vmesniku nil je napaka med izvajanjem, ker v paru vmesnika ni
+tipa, ki bi določal, katero _konkretno_ metodo je treba poklicati.
+
+.play methods/nil-interface-values.go

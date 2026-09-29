@@ -1,0 +1,28 @@
+* Grananje prema tipu
+
+_grananje_prema_tipu_ konstrukcija je koja omogućuje niz od nekoliko potvrđivanja tipa.
+
+Grananje prema tipu nalik je običnoj naredbi switch, ali slučajevi u grananju
+prema tipu navode tipove (a ne vrijednosti), koji se uspoređuju s
+tipom vrijednosti sadržane u zadanoj vrijednosti sučelja.
+
+	switch v := i.(type) {
+	case T:
+		// ovdje v ima tip T
+	case S:
+		// ovdje v ima tip S
+	default:
+		// nema podudaranja; ovdje v ima isti tip kao i
+	}
+
+Deklaracija u grananju prema tipu ima istu sintaksu kao potvrđivanje tipa `i.(T)`,
+ali se određeni tip `T` zamjenjuje ključnom riječi `type`.
+
+Ova naredba switch provjerava sadržava li vrijednost sučelja `i`
+vrijednost tipa `T` ili `S`.
+U slučajevima `T` i `S` varijabla `v` imat će tip
+`T` odnosno `S` i sadržavat će vrijednost koju sadržava `i`.
+U zadanom slučaju (kada nema podudaranja) varijabla `v` ima
+isti tip sučelja i istu vrijednost kao `i`.
+
+.play methods/type-switches.go

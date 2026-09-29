@@ -1,0 +1,24 @@
+* Prejemniki kazalčnega tipa
+
+Metode lahko deklarirate s prejemniki kazalčnega tipa.
+
+To pomeni, da ima tip prejemnika literalno skladnjo ⟪GTI18N_99f9fa4e_000001⟫*T⟪GTI18N_99f9fa4e_000002⟫ za neki tip ⟪GTI18N_99f9fa4e_000003⟫T⟪GTI18N_99f9fa4e_000004⟫.
+(Poleg tega ⟪GTI18N_99f9fa4e_000005⟫T⟪GTI18N_99f9fa4e_000006⟫ sam ne sme biti kazalec, kot je ⟪GTI18N_99f9fa4e_000007⟫*int⟪GTI18N_99f9fa4e_000008⟫.)
+
+Metoda ⟪GTI18N_99f9fa4e_000009⟫Scale⟪GTI18N_99f9fa4e_000010⟫ je tukaj na primer definirana za ⟪GTI18N_99f9fa4e_000011⟫*Vertex⟪GTI18N_99f9fa4e_000012⟫.
+
+Metode s prejemniki kazalčnega tipa lahko spremenijo vrednost, na katero prejemnik
+kaže (kot tukaj počne ⟪GTI18N_99f9fa4e_000013⟫Scale⟪GTI18N_99f9fa4e_000014⟫).
+Ker morajo metode pogosto spremeniti svoj prejemnik, so prejemniki kazalčnega tipa
+pogostejši od prejemnikov vrednostnega tipa.
+
+Poskusite odstraniti ⟪GTI18N_99f9fa4e_000015⟫*⟪GTI18N_99f9fa4e_000016⟫ iz deklaracije funkcije ⟪GTI18N_99f9fa4e_000017⟫Scale⟪GTI18N_99f9fa4e_000018⟫ v vrstici 16
+in opazujte, kako se spremeni obnašanje programa.
+
+Pri prejemniku vrednostnega tipa metoda ⟪GTI18N_99f9fa4e_000019⟫Scale⟪GTI18N_99f9fa4e_000020⟫ deluje na kopiji izvirne
+vrednosti ⟪GTI18N_99f9fa4e_000021⟫Vertex⟪GTI18N_99f9fa4e_000022⟫.
+(To je enako obnašanje kot pri katerem koli drugem argumentu funkcije.)
+Metoda ⟪GTI18N_99f9fa4e_000023⟫Scale⟪GTI18N_99f9fa4e_000024⟫ mora imeti prejemnik kazalčnega tipa, da lahko spremeni vrednost ⟪GTI18N_99f9fa4e_000025⟫Vertex⟪GTI18N_99f9fa4e_000026⟫,
+deklarirano v funkciji ⟪GTI18N_99f9fa4e_000027⟫main⟪GTI18N_99f9fa4e_000028⟫.
+
+⟪GTI18N_99f9fa4e_000029⟫

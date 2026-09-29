@@ -1,0 +1,27 @@
+* Spreminjanje slovarjev
+
+Vstavite ali posodobite element v slovarju `m`:
+
+	m[key] = elem
+
+Pridobite element:
+
+	elem = m[key]
+
+Izbrišite element:
+
+	delete(m, key)
+
+Prisotnost ključa preverite s prirejanjem dveh vrednosti:
+
+	elem, ok = m[key]
+
+Če je `key` v `m`, je `ok` enak `true`. Sicer je `ok` enak `false`.
+
+Če `key` ni v slovarju, je `elem` ničelna vrednost tipa elementov slovarja.
+
+*Opomba:* Če `elem` ali `ok` še nista deklarirana, lahko uporabite kratko obliko deklaracije:
+
+	elem, ok := m[key]
+
+.play moretypes/mutating-maps.go

@@ -1,0 +1,21 @@
+* Vaja: napake
+
+Kopirajte svojo funkcijo ⟪GTI18N_41f1f733_000001⟫Sqrt⟪GTI18N_41f1f733_000002⟫ iz [[⟪GTI18N_41f1f733_000003⟫][prejšnje vaje]] in jo spremenite tako, da vrača vrednost ⟪GTI18N_41f1f733_000004⟫error⟪GTI18N_41f1f733_000005⟫.
+
+⟪GTI18N_41f1f733_000006⟫Sqrt⟪GTI18N_41f1f733_000007⟫ naj pri negativnem številu vrne vrednost napake, ki ni ⟪GTI18N_41f1f733_000008⟫, saj kompleksnih števil ne podpira.
+
+Ustvarite nov tip
+
+⟪GTI18N_41f1f733_000009⟫
+
+in poskrbite, da implementira ⟪GTI18N_41f1f733_000010⟫error⟪GTI18N_41f1f733_000011⟫, tako da mu dodate metodo
+
+⟪GTI18N_41f1f733_000012⟫
+
+pri kateri ⟪GTI18N_41f1f733_000013⟫ErrNegativeSqrt(-2).Error()⟪GTI18N_41f1f733_000014⟫ vrne ⟪GTI18N_41f1f733_000015⟫"cannot`Sqrt`negative`number:`-2"⟪GTI18N_41f1f733_000016⟫.
+
+⟪GTI18N_41f1f733_000017⟫Opomba:⟪GTI18N_41f1f733_000018⟫ Klic ⟪GTI18N_41f1f733_000019⟫fmt.Sprint(e)⟪GTI18N_41f1f733_000020⟫ znotraj metode ⟪GTI18N_41f1f733_000021⟫Error⟪GTI18N_41f1f733_000022⟫ bo program poslal v neskončno zanko. Temu se izognete tako, da najprej pretvorite ⟪GTI18N_41f1f733_000023⟫e⟪GTI18N_41f1f733_000024⟫: ⟪GTI18N_41f1f733_000025⟫fmt.Sprint(float64(e))⟪GTI18N_41f1f733_000026⟫. Zakaj?
+
+Spremenite funkcijo ⟪GTI18N_41f1f733_000027⟫Sqrt⟪GTI18N_41f1f733_000028⟫ tako, da pri negativnem številu vrne vrednost ⟪GTI18N_41f1f733_000029⟫ErrNegativeSqrt⟪GTI18N_41f1f733_000030⟫.
+
+⟪GTI18N_41f1f733_000031⟫

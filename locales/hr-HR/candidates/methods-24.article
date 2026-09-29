@@ -1,0 +1,20 @@
+* Slike
+
+[[/pkg/image/#Image][Paket image]] definira sučelje `Image`:
+
+	package image
+
+	type Image interface {
+		ColorModel() color.Model
+		Bounds() Rectangle
+		At(x, y int) color.Color
+	}
+
+*Napomena*: povratna vrijednost `Rectangle` metode `Bounds` zapravo je
+[[/pkg/image/#Rectangle][`image.Rectangle`]] jer se deklaracija nalazi unutar paketa `image`.
+
+(Sve pojedinosti potražite u [[/pkg/image/#Image][dokumentaciji]].)
+
+Tipovi `color.Color` i `color.Model` također su sučelja, ali to ćemo zanemariti uporabom unaprijed definiranih implementacija `color.RGBA` i `color.RGBAModel`. Ta sučelja i tipove definira [[/pkg/image/color/][paket image/color]].
+
+.play methods/images.go

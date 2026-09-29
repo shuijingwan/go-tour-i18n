@@ -1,0 +1,16 @@
+* Eksportuojami vardai
+
+Go vardas eksportuojamas, jei prasideda didžiąja raide.
+Pavyzdžiui, `Pizza` yra eksportuojamas vardas, kaip ir `Pi`, eksportuojamas iš
+`math` paketo.
+
+`pizza` ir `pi` neprasideda didžiąja raide, todėl nėra eksportuojami.
+
+Importavę paketą galite kreiptis tik į jo eksportuojamus vardus.
+Jokie „neeksportuojami“ vardai nėra pasiekiami iš paketo išorės.
+
+Vykdykite kodą. Atkreipkite dėmesį į klaidos pranešimą.
+
+Norėdami ištaisyti klaidą, pervadinkite `math.pi` į `math.Pi` ir bandykite dar kartą.
+
+.play basics/exported-names.go

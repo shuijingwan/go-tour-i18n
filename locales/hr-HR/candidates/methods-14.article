@@ -1,0 +1,16 @@
+* Prazno sučelje
+
+Tip sučelja koji ne navodi nijednu metodu poznat je kao _prazno_sučelje_:
+
+	interface{}
+
+Prazno sučelje može sadržavati vrijednosti bilo kojeg tipa.
+(Svaki tip implementira barem nula metoda.)
+
+`any` je alias za `interface{}` i ta su dva zapisa potpuno
+istovrijedna.
+
+Prazna sučelja upotrebljavaju se u kodu koji obrađuje vrijednosti nepoznatog tipa.
+Primjerice, `fmt.Print` prima proizvoljan broj argumenata tipa `any`.
+
+.play methods/empty-interface.go

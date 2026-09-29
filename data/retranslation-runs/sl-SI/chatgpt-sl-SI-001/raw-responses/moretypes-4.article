@@ -1,0 +1,10 @@
+* Kazalci na strukture
+
+Do polj strukture lahko dostopamo prek kazalca na strukturo.
+
+Če želimo dostopati do polja ⟪GTI18N_29695d33_000001⟫X⟪GTI18N_29695d33_000002⟫ strukture in imamo kazalec na strukturo ⟪GTI18N_29695d33_000003⟫p⟪GTI18N_29695d33_000004⟫, bi lahko
+zapisali ⟪GTI18N_29695d33_000005⟫(*p).X⟪GTI18N_29695d33_000006⟫.
+Ker je ta zapis okoren, jezik dovoljuje, da namesto tega
+zapišemo preprosto ⟪GTI18N_29695d33_000007⟫p.X⟪GTI18N_29695d33_000008⟫ brez izrecnega dereferenciranja.
+
+⟪GTI18N_29695d33_000009⟫

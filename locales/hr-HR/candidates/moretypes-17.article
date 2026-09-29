@@ -1,0 +1,12 @@
+* Range — nastavak
+
+Indeks ili vrijednost možete preskočiti pridruživanjem znaku `_`.
+
+    for i, _ := range pow
+    for _, value := range pow
+
+Ako želite samo indeks, drugu varijablu možete izostaviti.
+
+    for i := range pow
+
+.play moretypes/range-continued.go

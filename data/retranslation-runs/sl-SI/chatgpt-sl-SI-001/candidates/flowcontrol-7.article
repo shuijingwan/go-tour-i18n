@@ -1,0 +1,9 @@
+* If in else
+
+Spremenljivke, deklarirane znotraj kratkega stavka `if`, so na voljo tudi v vseh
+blokih `else`.
+
+(Oba klica `pow` vrneta rezultat, preden se začne klic `fmt.Println`
+v funkciji `main`.)
+
+.play flowcontrol/if-and-else.go

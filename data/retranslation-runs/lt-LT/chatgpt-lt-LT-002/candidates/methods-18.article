@@ -1,0 +1,7 @@
+* Pratimas: Stringer sąsaja
+
+Padarykite taip, kad tipas `IPAddr` įgyvendintų `fmt.Stringer` ir adresą spausdintų kaip keturis taškais atskirtus skaičius.
+
+Pavyzdžiui, `IPAddr{1,`2,`3,`4}` turėtų būti išspausdinta kaip `"1.2.3.4"`.
+
+.play methods/exercise-stringer.go

@@ -1,0 +1,11 @@
+* Buferiniai kanalai
+
+Kanalai gali būti _buferiniai_. Norėdami inicializuoti buferinį kanalą, kaip antrą argumentą funkcijai `make` perduokite buferio ilgį:
+
+	ch := make(chan int, 100)
+
+Siuntimas į buferinį kanalą blokuoja vykdymą tik tada, kai buferis pilnas. Gavimas blokuoja vykdymą, kai buferis tuščias.
+
+Pakeiskite pavyzdį taip, kad buferis būtų perpildytas, ir pažiūrėkite, kas nutiks.
+
+.play concurrency/buffered-channels.go

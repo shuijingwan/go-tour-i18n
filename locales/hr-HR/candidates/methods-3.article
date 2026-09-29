@@ -1,0 +1,11 @@
+* Metode — nastavak
+
+Metodu možete deklarirati i na tipovima koji nisu strukture.
+
+U ovom primjeru vidimo brojčani tip `MyFloat` s metodom `Abs`.
+
+Metodu možete deklarirati samo s primateljem čiji je tip definiran u istom
+paketu kao i metoda. Ne možete deklarirati metodu s primateljem čiji je tip definiran u drugom
+paketu (što uključuje ugrađene tipove kao što je `int`).
+
+.play methods/methods-continued.go

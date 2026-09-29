@@ -1,0 +1,24 @@
+* Kazalci
+
+Jezik Go ima kazalce.
+Kazalec hrani pomnilniški naslov vrednosti.
+
+Tip `*T` je kazalec na vrednost tipa `T`. Njegova ničelna vrednost je `nil`.
+
+	var p *int
+
+Operator `&` ustvari kazalec na svoj operand.
+
+	i := 42
+	p = &i
+
+Operator `*` označuje osnovno vrednost kazalca.
+
+	fmt.Println(*p) // preberi i prek kazalca p
+	*p = 21         // nastavi i prek kazalca p
+
+Temu pravimo »dereferenciranje« oziroma »posredni dostop«.
+
+Za razliko od jezika C Go nima aritmetike kazalcev.
+
+.play moretypes/pointers.go

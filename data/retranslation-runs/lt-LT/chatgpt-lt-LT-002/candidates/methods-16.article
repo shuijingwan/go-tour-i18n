@@ -1,0 +1,22 @@
+* Tipų switch sakiniai
+
+_tipų_switch_sakinys_ yra konstrukcija, leidžianti nuosekliai atlikti kelis tipo patvirtinimus.
+
+Tipų switch sakinys panašus į įprastą switch sakinį, tačiau tipų switch sakinio atvejai nurodo tipus (ne reikšmes), o tie tipai lyginami su nurodytoje sąsajos reikšmėje laikomos reikšmės tipu.
+
+	switch v := i.(type) {
+	case T:
+		// čia v yra tipo T
+	case S:
+		// čia v yra tipo S
+	default:
+		// atitikmens nėra; čia v yra tokio pat tipo kaip i
+	}
+
+Tipų switch sakinio deklaracijos sintaksė tokia pati kaip tipo patvirtinimo `i.(T)`, tik konkretus tipas `T` pakeičiamas raktažodžiu `type`.
+
+Šis switch sakinys tikrina, ar sąsajos reikšmė `i` laiko `T` arba `S` tipo reikšmę.
+Kiekvienu iš `T` ir `S` atvejų kintamasis `v` bus atitinkamai `T` arba `S` tipo ir laikys reikšmę, kurią laiko `i`.
+Numatytuoju atveju (kai atitikmens nėra) kintamasis `v` turi tą patį sąsajos tipą ir reikšmę kaip `i`.
+
+.play methods/type-switches.go

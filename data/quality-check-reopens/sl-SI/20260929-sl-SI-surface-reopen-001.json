@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "evidence_type": "quality_check_surface_reopen",
+  "locale": "sl-SI",
+  "reopen_id": "20260929-sl-SI-surface-reopen-001",
+  "previous_snapshot_id": "qc-003",
+  "previous_finalization_path": "data/quality-check-snapshots/sl-SI/qc-003/finalization.json",
+  "previous_finalization_sha256": "94e5a06b37b82135d19e4667bdfa30215786e2a818ca4cb7226b7961c6788388",
+  "surface_review_id": "20260929-sl-SI-stage-a-001",
+  "surface_review_path": "data/locale-surface-reviews/sl-SI/20260929-sl-SI-stage-a-001.md",
+  "surface_review_sha256": "52f837cb0a075d94aac937acc23ff33524bb7d839a52647d5341b89a8befd7d1",
+  "finding": "当前完整 Slovenian 句子机械使用主格 link label，导致 “tour of the Go programming language” 的格关系不成立。",
+  "unit_count": 1,
+  "units": [
+    {
+      "index": 1,
+      "unit_id": "welcome/1",
+      "snapshot": {
+        "index": 1,
+        "unit_id": "welcome/1",
+        "unit_kind": "page",
+        "selected_batch_id": "chatgpt-sl-SI-006",
+        "source_path": "_content/tour/welcome.article",
+        "source_sha256": "1f581133d7fa40e6490418c6789a60a2f5e1de26c9c86d7eb6120cb58b145857",
+        "page_section": {
+          "article": "welcome.article",
+          "section_number": 1,
+          "source_title": "Hello, 世界",
+          "route": "/welcome/1"
+        },
+        "candidate_path": "data/retranslation-runs/sl-SI/chatgpt-sl-SI-006/candidates/welcome-1.article",
+        "candidate_sha256": "50349fc792f882da12f78f5e7013e66d596b8a2db8b77ec5a212916a8320e260",
+        "validation_path": "data/retranslation-runs/sl-SI/chatgpt-sl-SI-006/validation/welcome-1.json",
+        "validation_sha256": "5781b7f151c2d7d648dd82b27976aa38724cd3a98c8792810f48f3b0c60b1e4c",
+        "attempt": 1
+      }
+    }
+  ]
+}

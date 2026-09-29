@@ -1,0 +1,14 @@
+* Metode in posredni dostop prek kazalca (2)
+
+Enakovredno se zgodi tudi v obratni smeri.
+
+Funkcije, ki sprejmejo argument vrednostnega tipa, morajo prejeti vrednost tega določenega tipa:
+
+⟪GTI18N_61a9cb84_000001⟫Napaka pri prevajanju!⟪GTI18N_61a9cb84_000002⟫medtem ko metode s prejemniki vrednostnega tipa ob klicu sprejmejo kot
+prejemnik bodisi vrednost bodisi kazalec:
+
+⟪GTI18N_61a9cb84_000003⟫
+
+V tem primeru se klic metode ⟪GTI18N_61a9cb84_000004⟫p.Abs()⟪GTI18N_61a9cb84_000005⟫ razume kot ⟪GTI18N_61a9cb84_000006⟫(*p).Abs()⟪GTI18N_61a9cb84_000007⟫.
+
+⟪GTI18N_61a9cb84_000008⟫

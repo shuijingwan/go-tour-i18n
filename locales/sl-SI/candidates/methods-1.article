@@ -1,0 +1,13 @@
+* Metode
+
+Jezik Go nima razredov.
+Lahko pa definirate metode za tipe.
+
+Metoda je funkcija s posebnim argumentom, imenovanim _prejemnik_.
+
+Prejemnik je naveden v svojem seznamu argumentov med ključno besedo `func` in
+imenom metode.
+
+V tem primeru ima metoda `Abs` prejemnik tipa `Vertex` z imenom `v`.
+
+.play methods/methods.go

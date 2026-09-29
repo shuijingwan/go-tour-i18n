@@ -1,0 +1,89 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-sl-SI-004",
+  "locale": "sl-SI",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 6,
+  "units": [
+    {
+      "unit_id": "welcome/1",
+      "unit_kind": "page",
+      "source_path": "_content/tour/welcome.article",
+      "source_sha256": "1f581133d7fa40e6490418c6789a60a2f5e1de26c9c86d7eb6120cb58b145857",
+      "input_path": "inputs/welcome-1.article",
+      "input_sha256": "2e23e9c502f9e06fa58f1cee028f9cbd1bfee1f453f7d6d2c5681e2bfa1e2a6f",
+      "protected_token_count": 35,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "The title uses gendered singular “Pozdravljen” while the page addresses users consistently with plural/polite forms such as “Dobrodošli”, “kliknite” and “pritisnite”; make the address/register consistent. The final “kliknite … [puščica desno] spodaj” is also syntactically incomplete in Slovenian. Keep the glossary label “puščica desno” and link target unchanged, but integrate the link naturally into Slovenian klikniti syntax."
+    },
+    {
+      "unit_id": "basics/12",
+      "unit_kind": "page",
+      "source_path": "_content/tour/basics.article",
+      "source_sha256": "d9ad62501c05359e7b2ac445fa92d629e11d6d378c2701b767abab76012a558e",
+      "input_path": "inputs/basics-12.article",
+      "input_sha256": "1ea463ab789d88cad33a6c7adf44fb524ea1f7e2574059f723a345f3c097faa7",
+      "protected_token_count": 9,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "C",
+      "previous_finding": "The emphasized visible text “zero value” remains in English in the first paragraph, violating mandatory glossary “zero value → ničelna vrednost” and conflicting with the Slovenian term used later on the same page. Localize the complete visible emphasis span while preserving valid Go Present emphasis structure and range."
+    },
+    {
+      "unit_id": "flowcontrol/1",
+      "unit_kind": "page",
+      "source_path": "_content/tour/flowcontrol.article",
+      "source_sha256": "c6cd458bda99bffc7b753e122c56575a59508586054180be1f8d7bb1fe2391df",
+      "input_path": "inputs/flowcontrol-1.article",
+      "input_sha256": "709132af629eb6dce4070b07dbbf6f15641f7bf3b0e92df4c344bbbb71b175cd",
+      "protected_token_count": 16,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "C",
+      "previous_finding": "The final Note no longer clearly distinguishes the two Go syntax facts from the English source: the three for-clause components do not require parentheses ( ) while braces { } are always required. Restore this explicit contrast without changing the code symbols or Present structure and without adding extra explanation."
+    },
+    {
+      "unit_id": "concurrency/2",
+      "unit_kind": "page",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "a35e3af26b51f8c2c2a6dfaf09f9c7cab0fdb4b1b56f9e4dc9b793f1dac1e295",
+      "input_path": "inputs/concurrency-2.article",
+      "input_sha256": "1a1001c042dcd888da4db2f0055fd5a6b964cbf6519053ed42286147567fef60",
+      "protected_token_count": 12,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "判定依据：glossary keep 明确要求技术 identity “goroutine” 原样保留；B 表示译文整体语义清楚、仅有轻微但真实的术语/语言问题，但在当前 A-only gate 下仍必须修订。当前问题：candidate 使用 “goroutini / goroutini” 等 Slovenian 词形变化，直接改变了 keep 技术 identity。Revision 要求：保持 “goroutine” 本身不变，通过周围 Slovenian 句法自然表达双数/数量关系；不得改变 channel、synchronization 或示例技术语义。"
+    },
+    {
+      "unit_id": "concurrency/9",
+      "unit_kind": "page",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "49f727794604c2ef8a8dda9508d0f412d7015cea77754c675a02b166dd9bfc93",
+      "input_path": "inputs/concurrency-9.article",
+      "input_sha256": "8120b6411295dc2710e58789e558e6c3a662e5c8be76524ee17f19448ad19d2c",
+      "protected_token_count": 26,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "判定依据：glossary keep 要求 “goroutine” 与 “mutex” 技术 identity 原样保留；B 表示技术含义仍正确，但存在轻微且真实的术语一致性/Slovenian 句法问题，在 A-only gate 下必须修订。当前问题：出现 “goroutinami”，改变了 keep identity；“sprostitev mutex” 为保留 mutex 而形成不自然的 Slovenian 名词结构。Revision 要求：保持 “goroutine” 和 “mutex” 本身不变，通过重构周围自然语言表达数量、介词与解锁关系；不得改变 sync.Mutex、Lock、Unlock、defer 或 mutual exclusion 技术含义。"
+    },
+    {
+      "unit_id": "concurrency/10",
+      "unit_kind": "page",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "bb686393225ef2335e627819a1664a84456f00b64af133af64920d43f0abdb94",
+      "input_path": "inputs/concurrency-10.article",
+      "input_sha256": "e4a368341386575c282bdd3363b1fcdb49ff382d31bceb8d740959b5cd562b8a",
+      "protected_token_count": 7,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "判定依据：English “concurrency features” 指 Go 的并发特性/能力/机制，而 glossary 将编程概念 “function” 明确定义为 “funkcija”；B 表示总体语义仍可理解，但存在轻微且真实的术语歧义，在 A-only gate 下必须修订。当前问题：“funkcije sočasnosti” 容易被理解为“并发函数”，偏离 source 的 features。Revision 要求：改为明确表达 Go 的并发特性、能力或机制，避免与 function 概念混淆；继续保持 concurrency → sočasnost 与 parallel execution 的概念边界。"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+* Range in zapiranje kanalov
+
+Pošiljatelj lahko z `close` zapre kanal in s tem sporoči, da ne bo poslal več vrednosti. Prejemniki lahko preverijo, ali je kanal zaprt, tako da izrazu za prejemanje priredijo še drugi parameter: po
+
+	v, ok := <-ch
+
+je `ok` enak `false`, če ni več vrednosti za prejem in je kanal zaprt.
+
+Zanka `for`i`:=`range`c` zaporedoma prejema vrednosti iz kanala, dokler se ta ne zapre.
+
+*Opomba:* Kanal naj zapre samo pošiljatelj, nikoli prejemnik. Pošiljanje v zaprt kanal sproži panic.
+
+*Še*ena*opomba:* Kanali niso kot datoteke; navadno jih ni treba zapirati. Zapiranje je potrebno le, kadar mora prejemnik izvedeti, da novih vrednosti ne bo več, na primer za končanje zanke `range`.
+
+.play concurrency/range-and-close.go

@@ -1,0 +1,29 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-sl-SI-007",
+  "locale": "sl-SI",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 1,
+  "units": [
+    {
+      "unit_id": "welcome/1",
+      "unit_kind": "page",
+      "source_path": "_content/tour/welcome.article",
+      "source_sha256": "1f581133d7fa40e6490418c6789a60a2f5e1de26c9c86d7eb6120cb58b145857",
+      "input_path": "inputs/welcome-1.article",
+      "input_sha256": "2e23e9c502f9e06fa58f1cee028f9cbd1bfee1f453f7d6d2c5681e2bfa1e2a6f",
+      "protected_token_count": 35,
+      "previous_snapshot_id": "qc-003",
+      "revision_feedback_source": "surface_review",
+      "revision_authorization_id": "20260929-sl-SI-surface-reopen-001",
+      "previous_rating": "A",
+      "previous_finding": "当前完整 Slovenian 句子机械使用主格 link label，导致 “tour of the Go programming language” 的格关系不成立。",
+      "previous_review_decision": "reopened",
+      "previous_review_summary": "20260929-sl-SI-surface-reopen-001",
+      "previous_review_path": "data/locale-surface-reviews/sl-SI/20260929-sl-SI-stage-a-001.md",
+      "previous_review_sha256": "52f837cb0a075d94aac937acc23ff33524bb7d839a52647d5341b89a8befd7d1"
+    }
+  ]
+}

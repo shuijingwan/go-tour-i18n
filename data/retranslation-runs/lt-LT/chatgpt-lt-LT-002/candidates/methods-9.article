@@ -1,0 +1,10 @@
+* Sąsajos
+
+_sąsajos_tipas_ apibrėžiamas kaip metodų signatūrų aibė.
+
+Sąsajos tipo reikšmė gali laikyti bet kurią reikšmę, kuri įgyvendina tuos metodus.
+
+*Pastaba:* pavyzdžio kode 22 eilutėje yra klaida.
+`Vertex` (reikšmės tipas) neįgyvendina `Abser`, nes metodas `Abs` apibrėžtas tik tipui `*Vertex` (rodyklės tipui).
+
+.play methods/interfaces.go

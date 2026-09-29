@@ -1,0 +1,11 @@
+* Poimenovane vrnjene vrednosti
+
+Vrnjene vrednosti jezika Go so lahko poimenovane. V tem primeru se obravnavajo kot spremenljivke, definirane na začetku funkcije.
+
+Ta imena naj opisujejo pomen vrnjenih vrednosti.
+
+Stavek `return` brez argumentov vrne poimenovane vrnjene vrednosti. Temu pravimo »goli« return.
+
+Gole stavke return uporabljajte le v kratkih funkcijah, kot v prikazanem primeru. V daljših funkcijah lahko poslabšajo berljivost.
+
+.play basics/named-results.go

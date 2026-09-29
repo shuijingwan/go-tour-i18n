@@ -1,0 +1,628 @@
+{
+  "schema_version": 2,
+  "evidence_type": "quality_check_results",
+  "locale": "sl-SI",
+  "snapshot_id": "qc-001",
+  "snapshot_manifest_sha256": "b57e0bc58a32cc692723ea1adb4f067120869ad77effe14606beec986c32074f",
+  "rubric": "translation-quality/v1",
+  "result_count": 122,
+  "results": [
+    {
+      "index": 1,
+      "unit_id": "welcome/1",
+      "rating": "B",
+      "finding": "The title uses gendered singular “Pozdravljen” while the page addresses users consistently with plural/polite forms such as “Dobrodošli”, “kliknite” and “pritisnite”; make the address/register consistent. The final “kliknite … [puščica desno] spodaj” is also syntactically incomplete in Slovenian. Keep the glossary label “puščica desno” and link target unchanged, but integrate the link naturally into Slovenian klikniti syntax."
+    },
+    {
+      "index": 2,
+      "unit_id": "welcome/2",
+      "rating": "A"
+    },
+    {
+      "index": 3,
+      "unit_id": "welcome/4",
+      "rating": "A"
+    },
+    {
+      "index": 4,
+      "unit_id": "welcome/5",
+      "rating": "A"
+    },
+    {
+      "index": 5,
+      "unit_id": "welcome/3",
+      "rating": "A"
+    },
+    {
+      "index": 6,
+      "unit_id": "basics/1",
+      "rating": "A"
+    },
+    {
+      "index": 7,
+      "unit_id": "basics/2",
+      "rating": "A"
+    },
+    {
+      "index": 8,
+      "unit_id": "basics/3",
+      "rating": "A"
+    },
+    {
+      "index": 9,
+      "unit_id": "basics/4",
+      "rating": "A"
+    },
+    {
+      "index": 10,
+      "unit_id": "basics/5",
+      "rating": "A"
+    },
+    {
+      "index": 11,
+      "unit_id": "basics/6",
+      "rating": "A"
+    },
+    {
+      "index": 12,
+      "unit_id": "basics/7",
+      "rating": "A"
+    },
+    {
+      "index": 13,
+      "unit_id": "basics/8",
+      "rating": "A"
+    },
+    {
+      "index": 14,
+      "unit_id": "basics/9",
+      "rating": "A"
+    },
+    {
+      "index": 15,
+      "unit_id": "basics/10",
+      "rating": "A"
+    },
+    {
+      "index": 16,
+      "unit_id": "basics/11",
+      "rating": "A"
+    },
+    {
+      "index": 17,
+      "unit_id": "basics/12",
+      "rating": "C",
+      "finding": "The emphasized visible text “zero value” remains in English in the first paragraph, violating mandatory glossary “zero value → ničelna vrednost” and conflicting with the Slovenian term used later on the same page. Localize the complete visible emphasis span while preserving valid Go Present emphasis structure and range."
+    },
+    {
+      "index": 18,
+      "unit_id": "basics/13",
+      "rating": "A"
+    },
+    {
+      "index": 19,
+      "unit_id": "basics/14",
+      "rating": "A"
+    },
+    {
+      "index": 20,
+      "unit_id": "basics/15",
+      "rating": "A"
+    },
+    {
+      "index": 21,
+      "unit_id": "basics/16",
+      "rating": "A"
+    },
+    {
+      "index": 22,
+      "unit_id": "basics/17",
+      "rating": "A"
+    },
+    {
+      "index": 23,
+      "unit_id": "flowcontrol/1",
+      "rating": "C",
+      "finding": "The final Note no longer clearly distinguishes the two Go syntax facts from the English source: the three for-clause components do not require parentheses ( ) while braces { } are always required. Restore this explicit contrast without changing the code symbols or Present structure and without adding extra explanation."
+    },
+    {
+      "index": 24,
+      "unit_id": "flowcontrol/2",
+      "rating": "A"
+    },
+    {
+      "index": 25,
+      "unit_id": "flowcontrol/3",
+      "rating": "A"
+    },
+    {
+      "index": 26,
+      "unit_id": "flowcontrol/4",
+      "rating": "A"
+    },
+    {
+      "index": 27,
+      "unit_id": "flowcontrol/5",
+      "rating": "A"
+    },
+    {
+      "index": 28,
+      "unit_id": "flowcontrol/6",
+      "rating": "A"
+    },
+    {
+      "index": 29,
+      "unit_id": "flowcontrol/7",
+      "rating": "A"
+    },
+    {
+      "index": 30,
+      "unit_id": "flowcontrol/8",
+      "rating": "A"
+    },
+    {
+      "index": 31,
+      "unit_id": "flowcontrol/9",
+      "rating": "A"
+    },
+    {
+      "index": 32,
+      "unit_id": "flowcontrol/10",
+      "rating": "A"
+    },
+    {
+      "index": 33,
+      "unit_id": "flowcontrol/11",
+      "rating": "A"
+    },
+    {
+      "index": 34,
+      "unit_id": "flowcontrol/12",
+      "rating": "A"
+    },
+    {
+      "index": 35,
+      "unit_id": "flowcontrol/13",
+      "rating": "A"
+    },
+    {
+      "index": 36,
+      "unit_id": "flowcontrol/14",
+      "rating": "A"
+    },
+    {
+      "index": 37,
+      "unit_id": "moretypes/1",
+      "rating": "A"
+    },
+    {
+      "index": 38,
+      "unit_id": "moretypes/2",
+      "rating": "A"
+    },
+    {
+      "index": 39,
+      "unit_id": "moretypes/3",
+      "rating": "A"
+    },
+    {
+      "index": 40,
+      "unit_id": "moretypes/4",
+      "rating": "A"
+    },
+    {
+      "index": 41,
+      "unit_id": "moretypes/5",
+      "rating": "A"
+    },
+    {
+      "index": 42,
+      "unit_id": "moretypes/6",
+      "rating": "A"
+    },
+    {
+      "index": 43,
+      "unit_id": "moretypes/7",
+      "rating": "A"
+    },
+    {
+      "index": 44,
+      "unit_id": "moretypes/8",
+      "rating": "A"
+    },
+    {
+      "index": 45,
+      "unit_id": "moretypes/9",
+      "rating": "A"
+    },
+    {
+      "index": 46,
+      "unit_id": "moretypes/10",
+      "rating": "A"
+    },
+    {
+      "index": 47,
+      "unit_id": "moretypes/11",
+      "rating": "A"
+    },
+    {
+      "index": 48,
+      "unit_id": "moretypes/12",
+      "rating": "A"
+    },
+    {
+      "index": 49,
+      "unit_id": "moretypes/13",
+      "rating": "A"
+    },
+    {
+      "index": 50,
+      "unit_id": "moretypes/14",
+      "rating": "A"
+    },
+    {
+      "index": 51,
+      "unit_id": "moretypes/15",
+      "rating": "A"
+    },
+    {
+      "index": 52,
+      "unit_id": "moretypes/16",
+      "rating": "A"
+    },
+    {
+      "index": 53,
+      "unit_id": "moretypes/17",
+      "rating": "A"
+    },
+    {
+      "index": 54,
+      "unit_id": "moretypes/18",
+      "rating": "A"
+    },
+    {
+      "index": 55,
+      "unit_id": "moretypes/19",
+      "rating": "A"
+    },
+    {
+      "index": 56,
+      "unit_id": "moretypes/20",
+      "rating": "A"
+    },
+    {
+      "index": 57,
+      "unit_id": "moretypes/21",
+      "rating": "A"
+    },
+    {
+      "index": 58,
+      "unit_id": "moretypes/22",
+      "rating": "A"
+    },
+    {
+      "index": 59,
+      "unit_id": "moretypes/23",
+      "rating": "A"
+    },
+    {
+      "index": 60,
+      "unit_id": "moretypes/24",
+      "rating": "A"
+    },
+    {
+      "index": 61,
+      "unit_id": "moretypes/25",
+      "rating": "A"
+    },
+    {
+      "index": 62,
+      "unit_id": "moretypes/26",
+      "rating": "A"
+    },
+    {
+      "index": 63,
+      "unit_id": "moretypes/27",
+      "rating": "A"
+    },
+    {
+      "index": 64,
+      "unit_id": "methods/1",
+      "rating": "A"
+    },
+    {
+      "index": 65,
+      "unit_id": "methods/2",
+      "rating": "A"
+    },
+    {
+      "index": 66,
+      "unit_id": "methods/3",
+      "rating": "A"
+    },
+    {
+      "index": 67,
+      "unit_id": "methods/4",
+      "rating": "A"
+    },
+    {
+      "index": 68,
+      "unit_id": "methods/5",
+      "rating": "A"
+    },
+    {
+      "index": 69,
+      "unit_id": "methods/6",
+      "rating": "A"
+    },
+    {
+      "index": 70,
+      "unit_id": "methods/7",
+      "rating": "A"
+    },
+    {
+      "index": 71,
+      "unit_id": "methods/8",
+      "rating": "A"
+    },
+    {
+      "index": 72,
+      "unit_id": "methods/9",
+      "rating": "A"
+    },
+    {
+      "index": 73,
+      "unit_id": "methods/10",
+      "rating": "A"
+    },
+    {
+      "index": 74,
+      "unit_id": "methods/11",
+      "rating": "A"
+    },
+    {
+      "index": 75,
+      "unit_id": "methods/12",
+      "rating": "A"
+    },
+    {
+      "index": 76,
+      "unit_id": "methods/13",
+      "rating": "A"
+    },
+    {
+      "index": 77,
+      "unit_id": "methods/14",
+      "rating": "A"
+    },
+    {
+      "index": 78,
+      "unit_id": "methods/15",
+      "rating": "A"
+    },
+    {
+      "index": 79,
+      "unit_id": "methods/16",
+      "rating": "A"
+    },
+    {
+      "index": 80,
+      "unit_id": "methods/17",
+      "rating": "A"
+    },
+    {
+      "index": 81,
+      "unit_id": "methods/18",
+      "rating": "A"
+    },
+    {
+      "index": 82,
+      "unit_id": "methods/19",
+      "rating": "A"
+    },
+    {
+      "index": 83,
+      "unit_id": "methods/20",
+      "rating": "A"
+    },
+    {
+      "index": 84,
+      "unit_id": "methods/21",
+      "rating": "A"
+    },
+    {
+      "index": 85,
+      "unit_id": "methods/22",
+      "rating": "A"
+    },
+    {
+      "index": 86,
+      "unit_id": "methods/23",
+      "rating": "A"
+    },
+    {
+      "index": 87,
+      "unit_id": "methods/24",
+      "rating": "A"
+    },
+    {
+      "index": 88,
+      "unit_id": "methods/25",
+      "rating": "A"
+    },
+    {
+      "index": 89,
+      "unit_id": "methods/26",
+      "rating": "A"
+    },
+    {
+      "index": 90,
+      "unit_id": "generics/1",
+      "rating": "A"
+    },
+    {
+      "index": 91,
+      "unit_id": "generics/2",
+      "rating": "A"
+    },
+    {
+      "index": 92,
+      "unit_id": "generics/3",
+      "rating": "A"
+    },
+    {
+      "index": 93,
+      "unit_id": "concurrency/1",
+      "rating": "A"
+    },
+    {
+      "index": 94,
+      "unit_id": "concurrency/2",
+      "rating": "B",
+      "finding": "判定依据：glossary keep 明确要求技术 identity “goroutine” 原样保留；B 表示译文整体语义清楚、仅有轻微但真实的术语/语言问题，但在当前 A-only gate 下仍必须修订。当前问题：candidate 使用 “goroutini / goroutini” 等 Slovenian 词形变化，直接改变了 keep 技术 identity。Revision 要求：保持 “goroutine” 本身不变，通过周围 Slovenian 句法自然表达双数/数量关系；不得改变 channel、synchronization 或示例技术语义。"
+    },
+    {
+      "index": 95,
+      "unit_id": "concurrency/3",
+      "rating": "A"
+    },
+    {
+      "index": 96,
+      "unit_id": "concurrency/4",
+      "rating": "A"
+    },
+    {
+      "index": 97,
+      "unit_id": "concurrency/5",
+      "rating": "A"
+    },
+    {
+      "index": 98,
+      "unit_id": "concurrency/6",
+      "rating": "A"
+    },
+    {
+      "index": 99,
+      "unit_id": "concurrency/7",
+      "rating": "A"
+    },
+    {
+      "index": 100,
+      "unit_id": "concurrency/8",
+      "rating": "A"
+    },
+    {
+      "index": 101,
+      "unit_id": "concurrency/9",
+      "rating": "B",
+      "finding": "判定依据：glossary keep 要求 “goroutine” 与 “mutex” 技术 identity 原样保留；B 表示技术含义仍正确，但存在轻微且真实的术语一致性/Slovenian 句法问题，在 A-only gate 下必须修订。当前问题：出现 “goroutinami”，改变了 keep identity；“sprostitev mutex” 为保留 mutex 而形成不自然的 Slovenian 名词结构。Revision 要求：保持 “goroutine” 和 “mutex” 本身不变，通过重构周围自然语言表达数量、介词与解锁关系；不得改变 sync.Mutex、Lock、Unlock、defer 或 mutual exclusion 技术含义。"
+    },
+    {
+      "index": 102,
+      "unit_id": "concurrency/10",
+      "rating": "B",
+      "finding": "判定依据：English “concurrency features” 指 Go 的并发特性/能力/机制，而 glossary 将编程概念 “function” 明确定义为 “funkcija”；B 表示总体语义仍可理解，但存在轻微且真实的术语歧义，在 A-only gate 下必须修订。当前问题：“funkcije sočasnosti” 容易被理解为“并发函数”，偏离 source 的 features。Revision 要求：改为明确表达 Go 的并发特性、能力或机制，避免与 function 概念混淆；继续保持 concurrency → sočasnost 与 parallel execution 的概念边界。"
+    },
+    {
+      "index": 103,
+      "unit_id": "concurrency/11",
+      "rating": "A"
+    },
+    {
+      "index": 104,
+      "unit_id": "example:basics/numeric-constants.go",
+      "rating": "A"
+    },
+    {
+      "index": 105,
+      "unit_id": "example:basics/type-inference.go",
+      "rating": "A"
+    },
+    {
+      "index": 106,
+      "unit_id": "example:concurrency/channels.go",
+      "rating": "A"
+    },
+    {
+      "index": 107,
+      "unit_id": "example:concurrency/exercise-equivalent-binary-trees.go",
+      "rating": "A"
+    },
+    {
+      "index": 108,
+      "unit_id": "example:concurrency/exercise-web-crawler.go",
+      "rating": "B",
+      "finding": "判定依据：English source 对 Crawl 明确表达两个独立关系——从 url 对应的起始页面递归 crawl，并以 depth 为最大深度；TODO 则要求不要重复 fetch 同一个 URL。当前总体技术语义仍可理解，因此属于 B 而非 C，但在 A-only gate 下必须修订。 当前问题：1) “strani od url do največje globine depth” 用 od ... do ... 把 url 与 depth 组织成类似范围端点，未自然表达“从 url 开始”与“最大深度 depth”两个独立关系；2) “Iste vrednosti URL ne pridobi dvakrat.” 额外引入 “vrednosti”，把“同一个 URL”不必要地改成近似“URL 的同一个值”。 Revision 要求：保持 Crawl、url、depth、URL 等代码/技术 identity 不变；明确表达 crawl 从 url 对应页面开始、递归受 depth 最大深度限制，并直接表达同一个 URL 不得重复 fetch。不得增加 source 不存在的新算法说明，也不得改变 TODO 教学任务性质或机器语义。"
+    },
+    {
+      "index": 109,
+      "unit_id": "example:concurrency/mutex-counter.go",
+      "rating": "A"
+    },
+    {
+      "index": 110,
+      "unit_id": "example:flowcontrol/if-and-else.go",
+      "rating": "A"
+    },
+    {
+      "index": 111,
+      "unit_id": "example:generics/index.go",
+      "rating": "A"
+    },
+    {
+      "index": 112,
+      "unit_id": "example:generics/list.go",
+      "rating": "A"
+    },
+    {
+      "index": 113,
+      "unit_id": "example:methods/exercise-reader.go",
+      "rating": "A"
+    },
+    {
+      "index": 114,
+      "unit_id": "example:methods/exercise-stringer.go",
+      "rating": "A"
+    },
+    {
+      "index": 115,
+      "unit_id": "example:methods/interfaces-are-satisfied-implicitly.go",
+      "rating": "A"
+    },
+    {
+      "index": 116,
+      "unit_id": "example:methods/interfaces.go",
+      "rating": "A"
+    },
+    {
+      "index": 117,
+      "unit_id": "example:moretypes/append.go",
+      "rating": "A"
+    },
+    {
+      "index": 118,
+      "unit_id": "example:moretypes/exercise-fibonacci-closure.go",
+      "rating": "A"
+    },
+    {
+      "index": 119,
+      "unit_id": "example:moretypes/pointers.go",
+      "rating": "A"
+    },
+    {
+      "index": 120,
+      "unit_id": "example:moretypes/slice-len-cap.go",
+      "rating": "A"
+    },
+    {
+      "index": 121,
+      "unit_id": "example:moretypes/slices-of-slice.go",
+      "rating": "A"
+    },
+    {
+      "index": 122,
+      "unit_id": "example:moretypes/struct-literals.go",
+      "rating": "A"
+    }
+  ]
+}

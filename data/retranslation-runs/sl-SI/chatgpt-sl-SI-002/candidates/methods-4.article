@@ -1,0 +1,24 @@
+* Prejemniki kazalčnega tipa
+
+Metode lahko deklarirate s prejemniki kazalčnega tipa.
+
+To pomeni, da ima tip prejemnika literalno skladnjo `*T` za neki tip `T`.
+(Poleg tega `T` sam ne sme biti kazalec, kot je `*int`.)
+
+Metoda `Scale` je tukaj na primer definirana za `*Vertex`.
+
+Metode s prejemniki kazalčnega tipa lahko spremenijo vrednost, na katero prejemnik
+kaže (kot tukaj počne `Scale`).
+Ker morajo metode pogosto spremeniti svoj prejemnik, so prejemniki kazalčnega tipa
+pogostejši od prejemnikov vrednostnega tipa.
+
+Poskusite odstraniti `*` iz deklaracije funkcije `Scale` v vrstici 16
+in opazujte, kako se spremeni obnašanje programa.
+
+Pri prejemniku vrednostnega tipa metoda `Scale` deluje na kopiji izvirne
+vrednosti `Vertex`.
+(To je enako obnašanje kot pri katerem koli drugem argumentu funkcije.)
+Metoda `Scale` mora imeti prejemnik kazalčnega tipa, da lahko spremeni vrednost `Vertex`,
+deklarirano v funkciji `main`.
+
+.play methods/methods-pointers.go

@@ -1,0 +1,16 @@
+* Metode in posredni dostop prek kazalca
+
+Če primerjate prejšnja programa, lahko opazite, da
+morajo funkcije z argumentom kazalčnega tipa prejeti kazalec:
+
+⟪GTI18N_39fb725b_000001⟫Napaka pri prevajanju!⟪GTI18N_39fb725b_000002⟫medtem ko metode s prejemniki kazalčnega tipa ob klicu sprejmejo kot
+prejemnik bodisi vrednost bodisi kazalec:
+
+⟪GTI18N_39fb725b_000003⟫
+
+Pri stavku ⟪GTI18N_39fb725b_000004⟫v.Scale(5)⟪GTI18N_39fb725b_000005⟫ se, čeprav je ⟪GTI18N_39fb725b_000006⟫v⟪GTI18N_39fb725b_000007⟫ vrednost in ne kazalec,
+samodejno pokliče metoda s prejemnikom kazalčnega tipa.
+Zaradi priročnosti ⟪GTI18N_39fb725b_000008⟫ stavek ⟪GTI18N_39fb725b_000009⟫v.Scale(5)⟪GTI18N_39fb725b_000010⟫ razume kot
+⟪GTI18N_39fb725b_000011⟫(&v).Scale(5)⟪GTI18N_39fb725b_000012⟫, ker ima metoda ⟪GTI18N_39fb725b_000013⟫Scale⟪GTI18N_39fb725b_000014⟫ prejemnik kazalčnega tipa.
+
+⟪GTI18N_39fb725b_000015⟫

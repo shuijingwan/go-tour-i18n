@@ -1,0 +1,13 @@
+* Metodai ir rodyklių dereferencijavimas (2)
+
+Atvirkštine kryptimi vyksta tas pats.
+
+Funkcijoms, kurios priima reikšminį argumentą, turi būti perduota būtent to tipo reikšmė:
+
+⟪GTI18N_61a9cb84_000001⟫Kompiliavimo klaida!⟪GTI18N_61a9cb84_000002⟫o metodai su reikšminiais metodo imtuvais iškviečiami tiek su reikšme, tiek su rodykle kaip metodo imtuvu:
+
+⟪GTI18N_61a9cb84_000003⟫
+
+Šiuo atveju metodo iškvietimas ⟪GTI18N_61a9cb84_000004⟫p.Abs()⟪GTI18N_61a9cb84_000005⟫ interpretuojamas kaip ⟪GTI18N_61a9cb84_000006⟫(*p).Abs()⟪GTI18N_61a9cb84_000007⟫.
+
+⟪GTI18N_61a9cb84_000008⟫

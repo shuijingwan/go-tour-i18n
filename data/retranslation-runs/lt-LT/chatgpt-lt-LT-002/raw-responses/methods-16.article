@@ -1,0 +1,13 @@
+* Tipų switch sakiniai
+
+⟪GTI18N_26e4da09_000001⟫tipų_switch_sakinys⟪GTI18N_26e4da09_000002⟫ yra konstrukcija, leidžianti nuosekliai atlikti kelis tipo patvirtinimus.
+
+Tipų switch sakinys panašus į įprastą switch sakinį, tačiau tipų switch sakinio atvejai nurodo tipus (ne reikšmes), o tie tipai lyginami su nurodytoje sąsajos reikšmėje laikomos reikšmės tipu.
+
+⟪GTI18N_26e4da09_000003⟫čia ⟪GTI18N_26e4da09_000004⟫ yra tipo ⟪GTI18N_26e4da09_000005⟫⟪GTI18N_26e4da09_000006⟫čia ⟪GTI18N_26e4da09_000007⟫ yra tipo ⟪GTI18N_26e4da09_000008⟫⟪GTI18N_26e4da09_000009⟫atitikmens nėra; čia ⟪GTI18N_26e4da09_000010⟫ yra tokio pat tipo kaip ⟪GTI18N_26e4da09_000011⟫⟪GTI18N_26e4da09_000012⟫Tipų switch sakinio deklaracijos sintaksė tokia pati kaip tipo patvirtinimo ⟪GTI18N_26e4da09_000013⟫i.(T)⟪GTI18N_26e4da09_000014⟫, tik konkretus tipas ⟪GTI18N_26e4da09_000015⟫T⟪GTI18N_26e4da09_000016⟫ pakeičiamas raktažodžiu ⟪GTI18N_26e4da09_000017⟫type⟪GTI18N_26e4da09_000018⟫.
+
+Šis switch sakinys tikrina, ar sąsajos reikšmė ⟪GTI18N_26e4da09_000019⟫i⟪GTI18N_26e4da09_000020⟫ laiko ⟪GTI18N_26e4da09_000021⟫T⟪GTI18N_26e4da09_000022⟫ arba ⟪GTI18N_26e4da09_000023⟫S⟪GTI18N_26e4da09_000024⟫ tipo reikšmę.
+Kiekvienu iš ⟪GTI18N_26e4da09_000025⟫T⟪GTI18N_26e4da09_000026⟫ ir ⟪GTI18N_26e4da09_000027⟫S⟪GTI18N_26e4da09_000028⟫ atvejų kintamasis ⟪GTI18N_26e4da09_000029⟫v⟪GTI18N_26e4da09_000030⟫ bus atitinkamai ⟪GTI18N_26e4da09_000031⟫T⟪GTI18N_26e4da09_000032⟫ arba ⟪GTI18N_26e4da09_000033⟫S⟪GTI18N_26e4da09_000034⟫ tipo ir laikys reikšmę, kurią laiko ⟪GTI18N_26e4da09_000035⟫i⟪GTI18N_26e4da09_000036⟫.
+Numatytuoju atveju (kai atitikmens nėra) kintamasis ⟪GTI18N_26e4da09_000037⟫v⟪GTI18N_26e4da09_000038⟫ turi tą patį sąsajos tipą ir reikšmę kaip ⟪GTI18N_26e4da09_000039⟫i⟪GTI18N_26e4da09_000040⟫.
+
+⟪GTI18N_26e4da09_000041⟫

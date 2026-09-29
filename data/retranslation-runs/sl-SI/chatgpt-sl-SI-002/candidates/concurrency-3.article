@@ -1,0 +1,11 @@
+* Kanali z medpomnilnikom
+
+Kanali imajo lahko _medpomnilnik_. Za inicializacijo kanala z medpomnilnikom podajte dolžino medpomnilnika kot drugi argument funkcije `make`:
+
+	ch := make(chan int, 100)
+
+Pošiljanje v kanal z medpomnilnikom se blokira samo, ko je medpomnilnik poln. Prejemanje se blokira, ko je medpomnilnik prazen.
+
+Spremenite primer tako, da medpomnilnik prepolnite, in poglejte, kaj se zgodi.
+
+.play concurrency/buffered-channels.go

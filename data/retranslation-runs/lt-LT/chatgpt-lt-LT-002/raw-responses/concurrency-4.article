@@ -1,0 +1,15 @@
+* Range ir close
+
+Siuntėjas gali užverti kanalą naudodamas ⟪GTI18N_3e925c67_000001⟫close⟪GTI18N_3e925c67_000002⟫ ir taip nurodyti, kad daugiau reikšmių nebebus siunčiama. Gavėjai gali patikrinti, ar kanalas užvertas, gavimo išraiškai priskirdami antrą parametrą: po
+
+⟪GTI18N_3e925c67_000003⟫
+
+⟪GTI18N_3e925c67_000004⟫ok⟪GTI18N_3e925c67_000005⟫ yra ⟪GTI18N_3e925c67_000006⟫false⟪GTI18N_3e925c67_000007⟫, jei nebėra gaunamų reikšmių ir kanalas užvertas.
+
+Ciklas ⟪GTI18N_3e925c67_000008⟫for`i`:=`range`c⟪GTI18N_3e925c67_000009⟫ pakartotinai gauna reikšmes iš kanalo, kol šis užveriamas.
+
+⟪GTI18N_3e925c67_000010⟫Pastaba:⟪GTI18N_3e925c67_000011⟫ kanalą turėtų užverti tik siuntėjas, niekada ne gavėjas. Siuntimas į užvertą kanalą sukels panic.
+
+⟪GTI18N_3e925c67_000012⟫Dar*viena*pastaba:⟪GTI18N_3e925c67_000013⟫ kanalai nėra panašūs į failus; paprastai jų užverti nereikia. Užverti kanalą būtina tik tada, kai gavėjui reikia pranešti, kad daugiau reikšmių nebus, pavyzdžiui, norint užbaigti ⟪GTI18N_3e925c67_000014⟫range⟪GTI18N_3e925c67_000015⟫ ciklą.
+
+⟪GTI18N_3e925c67_000016⟫

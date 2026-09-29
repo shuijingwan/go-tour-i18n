@@ -1,0 +1,27 @@
+* Izmjena mapa
+
+Umetanje ili ažuriranje elementa u mapi `m`:
+
+	m[key] = elem
+
+Dohvaćanje elementa:
+
+	elem = m[key]
+
+Brisanje elementa:
+
+	delete(m, key)
+
+Provjera prisutnosti ključa pridruživanjem dviju vrijednosti:
+
+	elem, ok = m[key]
+
+Ako se `key` nalazi u `m`, `ok` je `true`. U suprotnom je `ok` vrijednost `false`.
+
+Ako se `key` ne nalazi u mapi, `elem` je nulta vrijednost tipa elemenata mape.
+
+*Napomena:* Ako `elem` ili `ok` još nisu deklarirani, možete upotrijebiti oblik kratke deklaracije:
+
+	elem, ok := m[key]
+
+.play moretypes/mutating-maps.go

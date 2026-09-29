@@ -1,0 +1,18 @@
+* Zaključivanje tipa
+
+Kada deklarirate varijablu bez navođenja izričitog tipa (bilo uporabom sintakse `:=` bilo sintakse izraza `var`=`), tip varijable zaključuje se iz vrijednosti s desne strane.
+
+Kada izraz s desne strane deklaracije ima određen tip, nova varijabla ima isti tip:
+
+	var i int
+	j := i // j je tipa int
+
+Međutim, kada desna strana sadrži netipiziranu brojčanu konstantu, nova varijabla može biti tipa `int`, `float64` ili `complex128`, ovisno o preciznosti konstante:
+
+	i := 42           // int
+	f := 3.142        // float64
+	g := 0.867 + 0.5i // complex128
+
+Pokušajte promijeniti početnu vrijednost varijable `v` u primjeru koda i promotrite kako to utječe na njezin tip.
+
+.play basics/type-inference.go

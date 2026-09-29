@@ -1,0 +1,12 @@
+* Range: tęsinys
+
+Indeksą arba reikšmę galima praleisti priskiriant `_`.
+
+    for i, _ := range pow
+    for _, value := range pow
+
+Jei reikia tik indekso, antrąjį kintamąjį galima praleisti.
+
+    for i := range pow
+
+.play moretypes/range-continued.go

@@ -1,0 +1,21 @@
+* Tipo patvirtinimai
+
+_tipo_patvirtinimas_ suteikia prieigą prie sąsajos reikšmės pamatinės konkrečiosios reikšmės.
+
+	t := i.(T)
+
+Šis sakinys patvirtina, kad sąsajos reikšmė `i` laiko konkretųjį tipą `T`, ir priskiria pamatinę `T` reikšmę kintamajam `t`.
+
+Jei `i` nelaiko `T`, sakinys sukels panic.
+
+Norint _patikrinti_, ar sąsajos reikšmė laiko konkretų tipą, tipo patvirtinimas gali grąžinti dvi reikšmes: pamatinę reikšmę ir loginę reikšmę, nurodančią, ar patvirtinimas pavyko.
+
+	t, ok := i.(T)
+
+Jei `i` laiko `T`, tuomet `t` bus pamatinė reikšmė, o `ok` bus true.
+
+Priešingu atveju `ok` bus false, o `t` bus `T` tipo nulinė reikšmė ir panic nekils.
+
+Atkreipkite dėmesį į šios sintaksės panašumą į skaitymą iš žodyno.
+
+.play methods/type-assertions.go

@@ -1,0 +1,76 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-lt-LT-005",
+  "locale": "lt-LT",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "example",
+  "unit_count": 5,
+  "units": [
+    {
+      "unit_id": "example:concurrency/channels.go",
+      "unit_kind": "example",
+      "source_path": "_content/tour/concurrency/channels.go",
+      "source_sha256": "8c3ce8583c8274e42ee0522989bf4cf2003b6f8045bcb6b16a6a79364f97aa70",
+      "input_path": "inputs/concurrency-channels.txt",
+      "input_sha256": "41c7df7e54719915d9d13ec03492b7a5ce6ecc68bdf023ce38b6da9efb27e69a",
+      "protected_token_count": 3,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "Identifier reference accuracy: the comment translates source 'send sum to c' as 'siųsti sumą į c', inflecting the code identifier sum as an ordinary Lithuanian noun and weakening the explicit reference to variable sum. Revise so the comment clearly refers to identifiers sum and c without changing code."
+    },
+    {
+      "unit_id": "example:concurrency/exercise-web-crawler.go",
+      "unit_kind": "example",
+      "source_path": "_content/tour/concurrency/exercise-web-crawler.go",
+      "source_sha256": "bd6226dcae3b663a3aa1cbf502d840357ac0efb6de46e7a66612ca2834cf5e37",
+      "input_path": "inputs/concurrency-exercise-web-crawler.txt",
+      "input_sha256": "53554a1126b74da6e3bcb93c625eff1ec44f560e2817f1875202423a7d6009ab",
+      "protected_token_count": 12,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "Technical naturalness: 'iki didžiausio depth gylio' awkwardly combines identifier depth with natural-language gylis and does not naturally state that depth limits maximum crawl recursion depth. Revise naturally while preserving url, depth, fetcher and all code identity."
+    },
+    {
+      "unit_id": "example:concurrency/mutex-counter.go",
+      "unit_kind": "example",
+      "source_path": "_content/tour/concurrency/mutex-counter.go",
+      "source_sha256": "74488ecc347a123c8538069175ffeef5ea38577bb37b2c7a9ceb6bba47ab02b4",
+      "input_path": "inputs/concurrency-mutex-counter.txt",
+      "input_sha256": "748bfb48d6f8d0455861b810e2d04f40eb3d136ab696139d32fdd290267fde03",
+      "protected_token_count": 8,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "Concurrency expression: 'SafeCounter saugu naudoti konkurentiškai' is unnatural and can suggest ordinary competitiveness rather than concurrent use. Revise to clearly express safe concurrent use in terminology consistent with glossary concurrency=konkurentinis vykdymas, preserving SafeCounter and code identity."
+    },
+    {
+      "unit_id": "example:generics/index.go",
+      "unit_kind": "example",
+      "source_path": "_content/tour/generics/index.go",
+      "source_sha256": "398dd72a4b01efa279d571667bedbcccd1bbbceaeb77218635db48edf38fd983",
+      "input_path": "inputs/generics-index.txt",
+      "input_sha256": "7abb8fdbe4d75e4a090fd429540fbbd86cad2f221a62cee51ab8195df56e2d6d",
+      "protected_token_count": 6,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "Mandatory glossary consistency: source 'the comparable constraint' is rendered 'comparable apribojimas', omitting the frozen technical term tipo apribojimas for constraint. Preserve comparable identifier while fully expressing the type-constraint concept; do not change T, comparable, == or code."
+    },
+    {
+      "unit_id": "example:moretypes/slice-len-cap.go",
+      "unit_kind": "example",
+      "source_path": "_content/tour/moretypes/slice-len-cap.go",
+      "source_sha256": "b2e5f7a96c8a04998c150ebe6ce344bc198db8b18f4826e6a85ff75ae3033f98",
+      "input_path": "inputs/moretypes-slice-len-cap.txt",
+      "input_sha256": "c92faec8474d8d97608666881b17ead976b1b04114df32badf315dea501f5e92",
+      "protected_token_count": 4,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "Go slicing teaching naturalness: 'Atpjaukite pjūvį' sounds like physically cutting off a piece and can imply destructive removal rather than reslicing to a zero-length view. Revise to naturally describe reslicing/obtaining a zero-length slice while preserving slice=pjūvis and code."
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+* Stringeri
+
+Jedno od najraširenijih sučelja jest [[/pkg/fmt/#Stringer][`Stringer`]], koje definira paket [[/pkg/fmt/][`fmt`]].
+
+	type Stringer interface {
+		String() string
+	}
+
+`Stringer` je tip koji se može opisati kao znakovni niz. Paket `fmt`
+(kao i mnogi drugi) traži to sučelje pri ispisivanju vrijednosti.
+
+.play methods/stringer.go

@@ -1,0 +1,25 @@
+* Tipske trditve
+
+_tipska_trditev_ omogoča dostop do osnovne konkretne vrednosti vrednosti vmesnika.
+
+	t := i.(T)
+
+Ta stavek trdi, da vrednost vmesnika `i` vsebuje konkretni tip `T`
+in osnovno vrednost tipa `T` priredi spremenljivki `t`.
+
+Če `i` ne vsebuje tipa `T`, bo stavek sprožil panic.
+
+Če želimo _preveriti_, ali vrednost vmesnika vsebuje določen tip,
+lahko tipska trditev vrne dve vrednosti: osnovno vrednost
+in logično vrednost, ki pove, ali je trditev uspela.
+
+	t, ok := i.(T)
+
+Če `i` vsebuje tip `T`, bo `t` osnovna vrednost, `ok` pa bo true.
+
+Sicer bo `ok` false, `t` pa bo ničelna vrednost tipa `T`,
+pri čemer se panic ne sproži.
+
+Opazite podobnost med to skladnjo in branjem iz slovarja.
+
+.play methods/type-assertions.go

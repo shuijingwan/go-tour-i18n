@@ -1,0 +1,18 @@
+* Vaja: enakovredna dvojiška drevesa
+
+Obstaja lahko veliko različnih dvojiških dreves, ki hranijo isto zaporedje vrednosti. Tukaj sta na primer dve dvojiški drevesi, ki hranita zaporedje 1, 1, 2, 3, 5, 8, 13.
+
+.image /tour/static/img/tree.png
+
+Funkcija za preverjanje, ali dve dvojiški drevesi hranita isto zaporedje, je v večini jezikov precej zapletena. Za preprosto rešitev bomo uporabili sočasnost in kanale jezika Go.
+
+Ta primer uporablja paket `tree`, ki definira tip:
+
+	type Tree struct {
+		Left  *Tree
+		Value int
+		Right *Tree
+	}
+
+
+Opis se nadaljuje na [[javascript:click('.next-page')][naslednji strani]].

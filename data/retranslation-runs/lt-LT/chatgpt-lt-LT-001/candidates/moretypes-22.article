@@ -1,0 +1,27 @@
+* Žodynų keitimas
+
+Įterpkite arba atnaujinkite žodyno `m` elementą:
+
+	m[key] = elem
+
+Gaukite elementą:
+
+	elem = m[key]
+
+Pašalinkite elementą:
+
+	delete(m, key)
+
+Patikrinkite, ar raktas yra žodyne, naudodami dviejų reikšmių priskyrimą:
+
+	elem, ok = m[key]
+
+Jei `key` yra `m`, `ok` yra `true`. Jei ne, `ok` yra `false`.
+
+Jei `key` nėra žodyne, tuomet `elem` yra žodyno elemento tipo nulinė reikšmė.
+
+*Pastaba:* Jei `elem` arba `ok` dar nedeklaruoti, galite naudoti trumpąją deklaravimo formą:
+
+	elem, ok := m[key]
+
+.play moretypes/mutating-maps.go

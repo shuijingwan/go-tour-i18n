@@ -1,0 +1,21 @@
+* sync.Mutex
+
+Videli smo, da so kanali odlični za medsebojno komunikacijo med goroutine.
+
+Kaj pa, če komunikacije ne potrebujemo? Kaj če želimo le zagotoviti, da lahko
+do spremenljivke naenkrat dostopa samo ena ⟪GTI18N_49f72779_000001⟫, da se izognemo konfliktom?
+
+Ta koncept se imenuje ⟪GTI18N_49f72779_000002⟫medsebojno_izključevanje⟪GTI18N_49f72779_000003⟫, običajno ime podatkovne strukture, ki ga zagotavlja, pa je ⟪GTI18N_49f72779_000004⟫⟪GTI18N_49f72779_000005⟫⟪GTI18N_49f72779_000006⟫.
+
+Standardna knjižnica jezika ⟪GTI18N_49f72779_000007⟫ zagotavlja medsebojno izključevanje z
+[[⟪GTI18N_49f72779_000008⟫][⟪GTI18N_49f72779_000009⟫sync.Mutex⟪GTI18N_49f72779_000010⟫]] in njegovima metodama:
+
+- ⟪GTI18N_49f72779_000011⟫Lock⟪GTI18N_49f72779_000012⟫
+- ⟪GTI18N_49f72779_000013⟫Unlock⟪GTI18N_49f72779_000014⟫
+
+Blok kode lahko določimo tako, da se izvaja z medsebojnim izključevanjem, če ga obdamo
+s klicema ⟪GTI18N_49f72779_000015⟫Lock⟪GTI18N_49f72779_000016⟫ in ⟪GTI18N_49f72779_000017⟫Unlock⟪GTI18N_49f72779_000018⟫, kot je prikazano pri metodi ⟪GTI18N_49f72779_000019⟫Inc⟪GTI18N_49f72779_000020⟫.
+
+Uporabimo lahko tudi ⟪GTI18N_49f72779_000021⟫defer⟪GTI18N_49f72779_000022⟫, da zagotovimo, da se ⟪GTI18N_49f72779_000023⟫ odklene, kot je prikazano pri metodi ⟪GTI18N_49f72779_000024⟫Value⟪GTI18N_49f72779_000025⟫.
+
+⟪GTI18N_49f72779_000026⟫

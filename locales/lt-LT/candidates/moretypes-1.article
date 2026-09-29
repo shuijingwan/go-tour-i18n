@@ -1,0 +1,24 @@
+* Rodyklės
+
+Go turi rodykles.
+Rodyklė saugo reikšmės atminties adresą.
+
+Tipas `*T` yra rodyklė į `T` tipo reikšmę. Jos nulinė reikšmė yra `nil`.
+
+	var p *int
+
+Operatorius `&` sukuria rodyklę į savo operandą.
+
+	i := 42
+	p = &i
+
+Operatorius `*` žymi rodyklės pamatinę reikšmę.
+
+	fmt.Println(*p) // nuskaityti i per rodyklę p
+	*p = 21         // nustatyti i per rodyklę p
+
+Tai vadinama „dereferencijavimu“ arba „netiesioginiu adresavimu“.
+
+Skirtingai nei C, Go neturi rodyklių aritmetikos.
+
+.play moretypes/pointers.go

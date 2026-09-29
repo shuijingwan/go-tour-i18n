@@ -1,0 +1,19 @@
+* Rodykliniai metodo imtuvai
+
+Galite deklaruoti metodus su rodykliniais metodo imtuvais.
+
+Tai reiškia, kad tam tikram tipui `T` metodo imtuvo tipas turi literalo sintaksę `*T`.
+(Be to, `T` pats negali būti rodyklė, pvz., `*int`.)
+
+Pavyzdžiui, čia metodas `Scale` apibrėžtas tipui `*Vertex`.
+
+Metodai su rodykliniais metodo imtuvais gali keisti reikšmę, į kurią rodo metodo imtuvas (kaip čia daro `Scale`).
+Kadangi metodams dažnai reikia keisti savo metodo imtuvą, rodykliniai metodo imtuvai naudojami dažniau nei reikšminiai.
+
+Pabandykite 16 eilutėje iš funkcijos `Scale` deklaracijos pašalinti `*` ir stebėkite, kaip pasikeičia programos veikimas.
+
+Kai metodo imtuvas reikšminis, metodas `Scale` veikia su pradinės `Vertex` reikšmės kopija.
+(Taip pat elgiamasi su bet kuriuo kitu funkcijos argumentu.)
+Kad pakeistų funkcijoje `main` deklaruotą `Vertex` reikšmę, metodas `Scale` turi turėti rodyklinį metodo imtuvą.
+
+.play methods/methods-pointers.go

@@ -1,0 +1,7 @@
+* Kratke deklaracije varijabli
+
+Unutar funkcije kratka naredba pridruživanja `:=` može se upotrijebiti umjesto deklaracije `var` s implicitnim tipom.
+
+Izvan funkcije svaka naredba počinje ključnom riječi (`var`, `func` i tako dalje), pa konstrukcija `:=` nije dostupna.
+
+.play basics/short-variable-declarations.go

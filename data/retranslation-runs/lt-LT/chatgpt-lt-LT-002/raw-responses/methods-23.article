@@ -1,0 +1,12 @@
+* Pratimas: rot13Reader
+
+Dažnas šablonas – [[⟪GTI18N_11d87614_000001⟫][io.Reader]], apgaubiantis kitą ⟪GTI18N_11d87614_000002⟫io.Reader⟪GTI18N_11d87614_000003⟫ ir tam tikru būdu keičiantis srautą.
+
+Pavyzdžiui, funkcija [[⟪GTI18N_11d87614_000004⟫][gzip.NewReader]] priima ⟪GTI18N_11d87614_000005⟫io.Reader⟪GTI18N_11d87614_000006⟫ (suspaustų duomenų srautą) ir grąžina ⟪GTI18N_11d87614_000007⟫*gzip.Reader⟪GTI18N_11d87614_000008⟫, kuris taip pat įgyvendina ⟪GTI18N_11d87614_000009⟫io.Reader⟪GTI18N_11d87614_000010⟫ (išskleistų duomenų srautą).
+
+Įgyvendinkite ⟪GTI18N_11d87614_000011⟫rot13Reader⟪GTI18N_11d87614_000012⟫, kuris įgyvendina ⟪GTI18N_11d87614_000013⟫io.Reader⟪GTI18N_11d87614_000014⟫, skaito iš ⟪GTI18N_11d87614_000015⟫io.Reader⟪GTI18N_11d87614_000016⟫ ir keičia srautą visiems raidiniams simboliams taikydamas [[⟪GTI18N_11d87614_000017⟫][rot13]] pakeitimo šifrą.
+
+Tipas ⟪GTI18N_11d87614_000018⟫rot13Reader⟪GTI18N_11d87614_000019⟫ jau pateiktas.
+Padarykite jį ⟪GTI18N_11d87614_000020⟫io.Reader⟪GTI18N_11d87614_000021⟫ įgyvendindami jo metodą ⟪GTI18N_11d87614_000022⟫Read⟪GTI18N_11d87614_000023⟫.
+
+⟪GTI18N_11d87614_000024⟫

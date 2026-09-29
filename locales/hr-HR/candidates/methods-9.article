@@ -1,0 +1,11 @@
+* Sučelja
+
+_tip_sučelja_ definira se kao skup potpisa metoda.
+
+Vrijednost tipa sučelja može sadržavati bilo koju vrijednost koja implementira te metode.
+
+*Napomena:* U kodu primjera postoji pogreška u 22. retku.
+`Vertex` (vrijednosni tip) ne implementira `Abser` jer je
+metoda `Abs` definirana samo na tipu `*Vertex` (pokazivački tip).
+
+.play methods/interfaces.go

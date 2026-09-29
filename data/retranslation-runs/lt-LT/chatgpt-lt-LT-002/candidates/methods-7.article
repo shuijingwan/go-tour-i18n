@@ -1,0 +1,20 @@
+* Metodai ir rodyklių dereferencijavimas (2)
+
+Atvirkštine kryptimi vyksta tas pats.
+
+Funkcijoms, kurios priima reikšminį argumentą, turi būti perduota būtent to tipo reikšmė:
+
+	var v Vertex
+	fmt.Println(AbsFunc(v))  // OK
+	fmt.Println(AbsFunc(&v)) // Kompiliavimo klaida!
+
+o metodai su reikšminiais metodo imtuvais iškviečiami tiek su reikšme, tiek su rodykle kaip metodo imtuvu:
+
+	var v Vertex
+	fmt.Println(v.Abs()) // OK
+	p := &v
+	fmt.Println(p.Abs()) // OK
+
+Šiuo atveju metodo iškvietimas `p.Abs()` interpretuojamas kaip `(*p).Abs()`.
+
+.play methods/indirection-values.go

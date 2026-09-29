@@ -1,0 +1,15 @@
+* Switch vertinimo tvarka
+
+Switch šakos vertinamos nuo viršaus į apačią ir sustojama, kai randama tinkama šaka.
+
+(Pavyzdžiui,
+
+	switch i {
+	case 0:
+	case f():
+	}
+
+neiškviečia `f`, jei `i==0`.)
+
+
+.play flowcontrol/switch-evaluation-order.go

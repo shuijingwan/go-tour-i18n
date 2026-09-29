@@ -1,0 +1,11 @@
+* Įvardytos grąžinamos reikšmės
+
+Go grąžinamos reikšmės gali būti įvardytos. Tokiu atveju jos laikomos kintamaisiais, apibrėžtais funkcijos pradžioje.
+
+Šie vardai turėtų nusakyti grąžinamų reikšmių paskirtį.
+
+`return` sakinys be argumentų grąžina įvardytas grąžinamas reikšmes. Tai vadinama „return sakiniu be argumentų“.
+
+Tokius return sakinius reikėtų naudoti tik trumpose funkcijose, kaip šiame pavyzdyje. Ilgesnėse funkcijose jie gali pabloginti skaitomumą.
+
+.play basics/named-results.go

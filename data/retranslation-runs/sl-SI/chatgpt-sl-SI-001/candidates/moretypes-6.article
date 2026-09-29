@@ -1,0 +1,15 @@
+* Tabele
+
+Tip `[n]T` je tabela `n` vrednosti tipa `T`.
+
+Izraz
+
+	var a [10]int
+
+deklarira spremenljivko `a` kot tabelo desetih celih števil.
+
+Dolžina tabele je del njenega tipa, zato velikosti tabel ni mogoče spreminjati.
+To se morda zdi omejujoče, vendar brez skrbi;
+Go ponuja priročen način dela s tabelami.
+
+.play moretypes/array.go

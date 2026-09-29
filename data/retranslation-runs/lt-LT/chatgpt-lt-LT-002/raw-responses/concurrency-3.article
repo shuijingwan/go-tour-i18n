@@ -1,0 +1,11 @@
+* Buferiniai kanalai
+
+Kanalai gali būti ⟪GTI18N_caef0893_000001⟫buferiniai⟪GTI18N_caef0893_000002⟫. Norėdami inicializuoti buferinį kanalą, kaip antrą argumentą funkcijai ⟪GTI18N_caef0893_000003⟫make⟪GTI18N_caef0893_000004⟫ perduokite buferio ilgį:
+
+⟪GTI18N_caef0893_000005⟫
+
+Siuntimas į buferinį kanalą blokuoja vykdymą tik tada, kai buferis pilnas. Gavimas blokuoja vykdymą, kai buferis tuščias.
+
+Pakeiskite pavyzdį taip, kad buferis būtų perpildytas, ir pažiūrėkite, kas nutiks.
+
+⟪GTI18N_caef0893_000006⟫

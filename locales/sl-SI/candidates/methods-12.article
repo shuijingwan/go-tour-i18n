@@ -1,0 +1,12 @@
+* Vrednosti vmesnikov z osnovnimi vrednostmi nil
+
+Če je konkretna vrednost znotraj vmesnika sama nil,
+se bo metoda poklicala s prejemnikom nil.
+
+V nekaterih jezikih bi to povzročilo izjemo zaradi ničelnega kazalca,
+v jeziku Go pa je običajno pisati metode, ki ustrezno obravnavajo klic
+s prejemnikom nil (kot metoda `M` v tem primeru.)
+
+Upoštevajte, da vrednost vmesnika, ki vsebuje konkretno vrednost nil, sama ni nil.
+
+.play methods/interface-values-with-nil.go

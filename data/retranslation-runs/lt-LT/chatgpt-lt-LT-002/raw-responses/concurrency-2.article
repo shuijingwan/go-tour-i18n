@@ -1,0 +1,16 @@
+* Kanalai
+
+Kanalai yra tipizuoti duomenų perdavimo keliai, kuriais galite siųsti ir gauti reikšmes naudodami kanalo operatorių ⟪GTI18N_a35e3af2_000001⟫<-⟪GTI18N_a35e3af2_000002⟫.
+
+⟪GTI18N_a35e3af2_000003⟫Siųskite ⟪GTI18N_a35e3af2_000004⟫ į kanalą ⟪GTI18N_a35e3af2_000005⟫.⟪GTI18N_a35e3af2_000006⟫Gaukite iš ⟪GTI18N_a35e3af2_000007⟫ ir⟪GTI18N_a35e3af2_000008⟫priskirkite reikšmę ⟪GTI18N_a35e3af2_000009⟫.⟪GTI18N_a35e3af2_000010⟫(Duomenys juda rodyklės kryptimi.)
+
+Kaip ir žodynus bei pjūvius, kanalus prieš naudojant reikia sukurti:
+
+⟪GTI18N_a35e3af2_000011⟫
+
+Pagal numatymą siuntimo ir gavimo operacijos blokuoja vykdymą, kol kita pusė pasiruošusi. Tai leidžia goroutine sinchronizuotis nenaudojant aiškių užraktų ar sąlyginių kintamųjų.
+
+Pavyzdžio kodas susumuoja pjūvio skaičius, darbą paskirstydamas dviem goroutine.
+Kai abi goroutine baigia skaičiavimus, apskaičiuojamas galutinis rezultatas.
+
+⟪GTI18N_a35e3af2_000012⟫

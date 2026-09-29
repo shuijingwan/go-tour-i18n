@@ -1,0 +1,24 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-sl-SI-005",
+  "locale": "sl-SI",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "example",
+  "unit_count": 1,
+  "units": [
+    {
+      "unit_id": "example:concurrency/exercise-web-crawler.go",
+      "unit_kind": "example",
+      "source_path": "_content/tour/concurrency/exercise-web-crawler.go",
+      "source_sha256": "bd6226dcae3b663a3aa1cbf502d840357ac0efb6de46e7a66612ca2834cf5e37",
+      "input_path": "inputs/concurrency-exercise-web-crawler.txt",
+      "input_sha256": "53554a1126b74da6e3bcb93c625eff1ec44f560e2817f1875202423a7d6009ab",
+      "protected_token_count": 12,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "判定依据：English source 对 Crawl 明确表达两个独立关系——从 url 对应的起始页面递归 crawl，并以 depth 为最大深度；TODO 则要求不要重复 fetch 同一个 URL。当前总体技术语义仍可理解，因此属于 B 而非 C，但在 A-only gate 下必须修订。 当前问题：1) “strani od url do največje globine depth” 用 od ... do ... 把 url 与 depth 组织成类似范围端点，未自然表达“从 url 开始”与“最大深度 depth”两个独立关系；2) “Iste vrednosti URL ne pridobi dvakrat.” 额外引入 “vrednosti”，把“同一个 URL”不必要地改成近似“URL 的同一个值”。 Revision 要求：保持 Crawl、url、depth、URL 等代码/技术 identity 不变；明确表达 crawl 从 url 对应页面开始、递归受 depth 最大深度限制，并直接表达同一个 URL 不得重复 fetch。不得增加 source 不存在的新算法说明，也不得改变 TODO 教学任务性质或机器语义。"
+    }
+  ]
+}

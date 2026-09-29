@@ -1,0 +1,13 @@
+* Switch
+
+`switch` sakinys yra trumpesnis būdas užrašyti `if`-`else` sakinių seką.
+Jis vykdo pirmąją šaką, kurios reikšmė lygi sąlygos išraiškai.
+
+Go switch panašus į C, C++, Java, JavaScript ir PHP switch,
+tačiau Go vykdo tik pasirinktą šaką, o ne visas po jos esančias.
+Iš esmės `break` sakinys, kurio tose kalbose reikia kiekvienos šakos
+pabaigoje, Go pateikiamas automatiškai.
+Kitas svarbus skirtumas — Go switch šakų reikšmės nebūtinai turi
+būti konstantos, o naudojamos reikšmės nebūtinai turi būti sveikieji skaičiai.
+
+.play flowcontrol/switch.go

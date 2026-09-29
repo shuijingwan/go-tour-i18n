@@ -1,0 +1,18 @@
+* Tipo išvedimas
+
+Deklaruojant kintamąjį ir aiškiai nenurodant tipo (naudojant `:=` sintaksę arba `var`=` išraiškos sintaksę), kintamojo tipas išvedamas iš dešinėje pusėje esančios reikšmės.
+
+Kai dešinioji deklaracijos pusė turi tipą, naujasis kintamasis yra to paties tipo:
+
+	var i int
+	j := i // j yra int tipo
+
+Tačiau kai dešinėje pusėje yra netipuota skaitinė konstanta, naujojo kintamojo tipas gali būti `int`, `float64` arba `complex128` — tai priklauso nuo konstantos tikslumo:
+
+	i := 42           // int
+	f := 3.142        // float64
+	g := 0.867 + 0.5i // complex128
+
+Pabandykite pavyzdžio kode pakeisti pradinę `v` reikšmę ir stebėkite, kaip keičiasi jos tipas.
+
+.play basics/type-inference.go

@@ -1,0 +1,14 @@
+* Privzeta izbira
+
+Primer `default` v stavku `select` se izvede, če ni pripravljen noben drug primer.
+
+Primer `default` uporabite, če želite poskusiti pošiljanje ali prejemanje brez blokiranja:
+
+	select {
+	case i := <-c:
+		// uporabi i
+	default:
+		// prejemanje iz c bi se blokiralo
+	}
+
+.play concurrency/default-selection.go

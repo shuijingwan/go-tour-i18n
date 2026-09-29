@@ -1,0 +1,9 @@
+* Literali strukture
+
+Literal strukture označava novu vrijednost strukture za koju je dodijeljena memorija, navođenjem vrijednosti njezinih polja.
+
+Možete navesti samo podskup polja pomoću sintakse `Name:`. (Redoslijed imenovanih polja nije važan.)
+
+Poseban prefiks `&` vraća pokazivač na vrijednost strukture.
+
+.play moretypes/struct-literals.go

@@ -1,0 +1,19 @@
+* sync.Mutex
+
+Matėme, kad kanalai puikiai tinka goroutine tarpusavio komunikavimui.
+
+Bet ką daryti, jei komunikavimo nereikia? Jei tik norime užtikrinti, kad vienu metu kintamąjį galėtų pasiekti tik viena goroutine ir taip būtų išvengta konfliktų?
+
+Ši sąvoka vadinama _tarpusavio_išskyrimu_, o įprastas ją užtikrinančios duomenų struktūros pavadinimas yra _muteksas_.
+
+Go standartinė biblioteka tarpusavio išskyrimą suteikia naudodama
+[[/pkg/sync/#Mutex][`sync.Mutex`]] ir du jo metodus:
+
+- `Lock`
+- `Unlock`
+
+Kodo bloką, kuris turi būti vykdomas taikant tarpusavio išskyrimą, galime apibrėžti apgaubdami jį `Lock` ir `Unlock` iškvietimais, kaip parodyta metode `Inc`.
+
+Taip pat galime naudoti `defer`, kad užtikrintume mutekso atrakinimą, kaip metode `Value`.
+
+.play concurrency/mutex-counter.go

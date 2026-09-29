@@ -1,0 +1,11 @@
+* Pratimas: pjūviai
+
+Įgyvendinkite `Pic`. Ji turi grąžinti `dy` ilgio pjūvį, kurio kiekvienas elementas yra `dx` 8 bitų beženklių sveikųjų skaičių pjūvis. Paleidus programą bus parodytas jūsų paveikslėlis, sveikuosius skaičius interpretuojant kaip pilkumo (tiksliau, mėlynumo) reikšmes.
+
+Vaizdą galite pasirinkti patys. Įdomios funkcijos yra `(x+y)/2`, `x*y` ir `x^y`.
+
+(Reikia naudoti ciklą, kad kiekvienam `[]uint8`, esančiam `[][]uint8` viduje, būtų išskirta atmintis.)
+
+(Tipams konvertuoti naudokite `uint8(intValue)`.)
+
+.play moretypes/exercise-slices.go

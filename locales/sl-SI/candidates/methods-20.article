@@ -1,0 +1,21 @@
+* Vaja: napake
+
+Kopirajte svojo funkcijo `Sqrt` iz [[/tour/flowcontrol/8][prejšnje vaje]] in jo spremenite tako, da vrača vrednost `error`.
+
+`Sqrt` naj pri negativnem številu vrne vrednost napake, ki ni nil, saj kompleksnih števil ne podpira.
+
+Ustvarite nov tip
+
+	type ErrNegativeSqrt float64
+
+in poskrbite, da implementira `error`, tako da mu dodate metodo
+
+	func (e ErrNegativeSqrt) Error() string
+
+pri kateri `ErrNegativeSqrt(-2).Error()` vrne `"cannot`Sqrt`negative`number:`-2"`.
+
+*Opomba:* Klic `fmt.Sprint(e)` znotraj metode `Error` bo program poslal v neskončno zanko. Temu se izognete tako, da najprej pretvorite `e`: `fmt.Sprint(float64(e))`. Zakaj?
+
+Spremenite funkcijo `Sqrt` tako, da pri negativnem številu vrne vrednost `ErrNegativeSqrt`.
+
+.play methods/exercise-errors.go

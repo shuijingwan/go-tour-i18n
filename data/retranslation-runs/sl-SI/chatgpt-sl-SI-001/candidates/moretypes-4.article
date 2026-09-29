@@ -1,0 +1,10 @@
+* Kazalci na strukture
+
+Do polj strukture lahko dostopamo prek kazalca na strukturo.
+
+Če želimo dostopati do polja `X` strukture in imamo kazalec na strukturo `p`, bi lahko
+zapisali `(*p).X`.
+Ker je ta zapis okoren, jezik dovoljuje, da namesto tega
+zapišemo preprosto `p.X` brez izrecnega dereferenciranja.
+
+.play moretypes/struct-pointers.go
