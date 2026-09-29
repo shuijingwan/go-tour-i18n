@@ -11,6 +11,19 @@ class TestProvision(unittest.TestCase):
    root=pathlib.Path(directory)/"store"
    path,action=CLOSEOUT.default_key_file("ar",root)
    self.assertEqual(action,"generated"); self.assertEqual(path.parent.name,"ar")
+ def test_numeric_region_locale_key_store_identity(self):
+  with tempfile.TemporaryDirectory() as directory:
+   root=pathlib.Path(directory)/"store"
+   path,action=CLOSEOUT.default_key_file("es-419",root)
+   self.assertEqual(action,"generated"); self.assertEqual(path.parent.name,"es-419")
+   second,action=CLOSEOUT.default_key_file("es-419",root)
+   self.assertEqual((second,action),(path,"reused"))
+ def test_locale_key_store_rejects_malformed_locale(self):
+  with tempfile.TemporaryDirectory() as directory:
+   root=pathlib.Path(directory)/"store"
+   for locale in ("es-41","es-4199","es-4A9","es-abc","ES-419","../es-419","es-419/.."):
+    with self.subTest(locale=locale), self.assertRaises(CLOSEOUT.CloseoutError):
+     CLOSEOUT.default_key_file(locale,root)
  def test_default_key_first_run_generates_secure_key_and_second_run_reuses_it(self):
   with tempfile.TemporaryDirectory() as directory:
    root=pathlib.Path(directory)/"store"

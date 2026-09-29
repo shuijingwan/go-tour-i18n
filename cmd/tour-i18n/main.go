@@ -139,6 +139,8 @@ func run(args []string) error {
 		return checkLocaleGenerationBundleCommand(root, catalog, args[2:])
 	case "generation-bundle result-pack":
 		return packGenerationResultBundleCommand(root, catalog, args[2:])
+	case "generation-bundle recover":
+		return recoverGenerationBundleCommand(root, catalog, args[2:])
 	case "generation-bundle import":
 		return importGenerationResultBundleCommand(root, catalog, args[2:])
 	case "course-metadata assemble":

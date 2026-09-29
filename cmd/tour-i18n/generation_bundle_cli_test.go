@@ -36,3 +36,19 @@ func TestGenerationBundleDirectoryImportRequiresProviderAndModel(t *testing.T) {
 		t.Fatalf("missing direct-import provenance flags were not rejected: %v", err)
 	}
 }
+
+func TestGenerationBundleRecoverRequiresSourceAndOutput(t *testing.T) {
+	root := t.TempDir()
+	bundle := filepath.Join(root, "generation.zip")
+	if err := os.WriteFile(bundle, []byte("generation bundle fixture"), 0644); err != nil {
+		t.Fatal(err)
+	}
+	for _, args := range [][]string{
+		{"--bundle", bundle, "--output-dir", filepath.Join(root, "recovered")},
+		{"--bundle", bundle, "--source", filepath.Join(root, "partial")},
+	} {
+		if err := recoverGenerationBundleCommand(root, nil, args); err == nil || !strings.Contains(err.Error(), "usage: generation-bundle recover") {
+			t.Fatalf("args %v did not enforce recovery source/output contract: %v", args, err)
+		}
+	}
+}

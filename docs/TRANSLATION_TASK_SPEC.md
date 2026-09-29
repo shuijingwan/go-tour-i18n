@@ -130,6 +130,18 @@ go run -mod=readonly ./cmd/tour-i18n generation-bundle export \
 
 retry 仅对当前 `restore_failed` / `validation_failed` Unit 增加 `--unit-id <unit-id>`；bundle 自动绑定下一连续 attempt、当前 validation/result 和完整原 batch 输入。`manifest.json` 声明 schema、task kind、locale、batch、Unit kind、attempt、exact expected outputs、全部成员 inventory/hash 与聚合 input identity。ZIP 内仍包含原始 batch manifest、manifest 列出的全部 inputs、完整 glossary 和当前 authority；ZIP 不替代这些 semantic authority。ChatGPT 与 Codex 都读取同一 contract，不因 provider 改变内容边界。
 
+如果一次 Generation invocation、消息流或本地 transport 在正式 import 前中断，新的模型重试不得直接从零重新生成整批。先核对正式 `raw-responses/` / retry attempt、generation import provenance、`result.json`、`validation/` 与后续 evidence；若正式状态尚未落地且原 Generation Bundle 仍 CURRENT，则使用 recovery preflight 从旧 hidden staging、临时单文件或 interrupted tar/tar.gz artifact 中恢复可独立验证的完整 Unit：
+
+```sh
+go run -mod=readonly ./cmd/tour-i18n generation-bundle recover \
+  --bundle /tmp/<locale>-<batch-id>-generation.zip \
+  --source <old-staging-or-interrupted-artifact> \
+  --source <optional-second-source> \
+  --output-dir /tmp/.go-tour-i18n-generation/<locale>/<batch-id>-recovered
+```
+
+`recover` 先重验 CURRENT bundle 与正式 batch state，不覆盖 formal output；随后逐 expected output 验证 filename identity、UTF-8/no-BOM/single-LF、protected restore、glossary 与 machine candidate。损坏 archive 的总体读取/完整性错误保留为 issue，但错误发生前已经完整读取并通过上述验证的成员可以独立复用；同一 output 若出现不同的有效字节则 fail closed。命令输出 `COMPLETE` / `PARTIAL` / `NONE` 与精确 `missing:` 列表；`PARTIAL` 是成功的恢复诊断，不表示 formal import 已完成。Generation 只生成 `missing` Unit 并补入新的 recovered staging，最后仍必须让该目录满足 exact set，再走普通 `generation-bundle import`、`process` / `retry` 与 automatic validation。recovery staging 不新增 provenance/schema，正式 provenance 仍只由后续 import 记录真实 provider/model。
+
 将完整生成结果先放入按 locale + batch 隔离的本地隐藏 staging。具备同一本地文件访问能力时，initial、revision 与 retry 默认直接目录 import，不制作临时 Result ZIP：
 
 ```sh

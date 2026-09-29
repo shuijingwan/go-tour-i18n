@@ -112,7 +112,7 @@ go run -mod=readonly ./cmd/tour-i18n generation-bundle import \
 
 Reviewer ZIP 继续由维护者上传给独立 Reviewer。只有确需兼容 outputs ZIP / Result ZIP 或 Reviewer ZIP 时，才涉及当前产品所需的附件上传/下载；本流程没有无需用户操作即可跨 ChatGPT / Ubuntu 或跨 session 双向传送附件的通道。
 
-恢复执行前先核对 `raw-responses/` 或 retry attempt、`result.json`、`validation/`、Snapshot 与 QC evidence。若正式输出已经 import，直接从缺失的 process / retry 或后续 evidence 继续；若 automatic validation evidence 已 current，则不得覆盖输出、重复 import 或重放 validation。CLI 的 stale、exact-set 与 no-overwrite failure 是保护信号，不是要求清空既有状态后重来。
+恢复执行前先核对 `raw-responses/` 或 retry attempt、generation import provenance、`result.json`、`validation/`、Snapshot 与 QC evidence。若正式输出已经 import，直接从缺失的 process / retry 或后续 evidence 继续；若 automatic validation evidence 已 current，则不得覆盖输出、重复 import 或重放 validation。若产品消息流/模型 invocation 在 import 前中断且正式输出尚不存在，不得立即让 ChatGPT 重做整个 batch：先对仍 CURRENT 的 Generation Bundle 运行 `generation-bundle recover`，把旧 hidden staging、临时单文件和可识别的 interrupted tar/tar.gz artifact 作为一个或多个 `--source`，只把通过 filename、UTF-8/EOF、protected restore、glossary 与 machine candidate 检查的完整 Unit 写入新的 recovery staging；archive 尾部损坏不抹掉此前独立验证通过的完整成员。随后只生成命令列出的 `missing` Unit，补齐 exact set 后再正常 import。CLI 的 stale、conflicting valid candidate、exact-set 与 no-overwrite failure 都是保护信号，不是要求清空可信成果后重来。
 
 ### Validator 冲突的主动诊断
 

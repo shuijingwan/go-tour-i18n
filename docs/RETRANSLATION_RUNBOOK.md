@@ -51,7 +51,7 @@ go run -mod=readonly ./cmd/tour-i18n retranslation export \
 2. manifest 列出的全部 `inputs/*`；
 3. `locales/<locale>/glossary.yaml`。
 
-这三部分不可拆分。initial Page / Example bulk Generation 仍由维护者 Local terminal 导出 `generation-bundle export` ZIP 并 handoff 给 ChatGPT 或 Codex；不得改用逐文件输入或模型自行扫描工作树。生成者将完整 TranslationUnit 成组保存到按 locale + batch 隔离的隐藏 staging；具备本机访问能力时默认由 `generation-bundle import --input-dir` 直接安装，不生成或下载 outputs ZIP。确需跨环境传输、目录不可访问或恢复时，兼容使用 outputs ZIP → `result-pack` → Result ZIP import。Reviewer ZIP 继续由维护者上传给独立 Reviewer。目录与 ZIP importer 都保留现有机器安全与 provenance gate，随后仍须执行 process / validation。完整命令、current/exact-set/no-overwrite 规则见 [翻译任务规范](TRANSLATION_TASK_SPEC.md)。TranslationUnit 是翻译、validation 和 review 的最小单位；Generation Bundle 仅运输输入，不是 batch authority 或审核 evidence。
+这三部分不可拆分。initial Page / Example bulk Generation 仍由维护者 Local terminal 导出 `generation-bundle export` ZIP 并 handoff 给 ChatGPT 或 Codex；不得改用逐文件输入或模型自行扫描工作树。生成者将完整 TranslationUnit 成组保存到按 locale + batch 隔离的隐藏 staging；具备本机访问能力时默认由 `generation-bundle import --input-dir` 直接安装，不生成或下载 outputs ZIP。确需跨环境传输、目录不可访问时，兼容使用 outputs ZIP → `result-pack` → Result ZIP import。若 Generation/transport 在 import 前中断，先核对 formal state，再对仍 CURRENT 的 Generation Bundle 使用 `generation-bundle recover` 从 partial staging / interrupted tar/tar.gz 中逐 Unit 回收可验证完整成果，只重新生成其 `missing` scope；recovery staging 补齐 exact set 后仍走普通 import。Reviewer ZIP 继续由维护者上传给独立 Reviewer。目录与 ZIP importer、recovery preflight 都保留现有机器安全与 provenance gate，随后仍须执行 process / validation。完整命令、current/exact-set/no-overwrite/recovery 规则见 [翻译任务规范](TRANSLATION_TASK_SPEC.md)。TranslationUnit 是翻译、validation 和 review 的最小单位；Generation Bundle 仅运输输入，不是 batch authority 或审核 evidence。
 
 ## 3. Process 与 automatic validation
 

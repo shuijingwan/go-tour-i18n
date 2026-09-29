@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"flag"
 	"fmt"
 	"os"
@@ -113,6 +114,54 @@ func packGenerationResultBundleCommand(root string, catalog *i18n.Catalog, args 
 	}
 	fmt.Printf("Generation result bundle packed: %s (locale=%s batch=%s task=%s attempt=%d provider=%s model=%s outputs=%d)\n",
 		path, manifest.Locale, manifest.BatchID, manifest.TaskKind, manifest.Attempt, manifest.Provider, manifest.Model, len(manifest.Outputs))
+	return nil
+}
+
+func recoverGenerationBundleCommand(root string, catalog *i18n.Catalog, args []string) error {
+	fs := flag.NewFlagSet("generation-bundle recover", flag.ContinueOnError)
+	bundlePath := fs.String("bundle", "", "current generation ZIP")
+	outputDir := fs.String("output-dir", "", "new staging directory for recovered outputs")
+	jsonOutput := fs.Bool("json", false, "emit stable JSON result")
+	var sources repeatedStrings
+	fs.Var(&sources, "source", "partial staging file/directory or interrupted tar/tar.gz artifact; repeat as needed")
+	if err := fs.Parse(args); err != nil {
+		return err
+	}
+	if *bundlePath == "" || *outputDir == "" || len(sources) == 0 || fs.NArg() != 0 {
+		return fmt.Errorf("usage: generation-bundle recover --bundle <generation.zip> --source <partial-source> [--source <partial-source>...] --output-dir <new-staging-dir> [--json]")
+	}
+	bundle, err := readRegularBundleFile(*bundlePath)
+	if err != nil {
+		return err
+	}
+	result, err := i18n.RecoverGenerationOutputs(root, catalog, bundle, sources, *outputDir)
+	if err != nil {
+		return err
+	}
+	if *jsonOutput {
+		encoder := json.NewEncoder(os.Stdout)
+		encoder.SetIndent("", "  ")
+		return encoder.Encode(result)
+	}
+	status := "PARTIAL"
+	if len(result.Missing) == 0 {
+		status = "COMPLETE"
+	} else if len(result.Recovered) == 0 {
+		status = "NONE"
+	}
+	fmt.Printf("Generation recovery preflight: %s (locale=%s batch=%s task=%s attempt=%d recovered=%d missing=%d issues=%d identity=%s)\n",
+		status, result.Locale, result.BatchID, result.TaskKind, result.Attempt, len(result.Recovered), len(result.Missing), len(result.Issues), result.InputIdentitySHA256)
+	fmt.Printf("staging: %s\n", result.OutputDir)
+	for _, missing := range result.Missing {
+		fmt.Printf("missing: %s\n", filepath.Base(filepath.FromSlash(missing)))
+	}
+	for _, issue := range result.Issues {
+		if issue.Output != "" {
+			fmt.Printf("issue: %s [%s]: %s\n", issue.Source, issue.Output, issue.Reason)
+		} else {
+			fmt.Printf("issue: %s: %s\n", issue.Source, issue.Reason)
+		}
+	}
 	return nil
 }
 

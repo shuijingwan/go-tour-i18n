@@ -42,6 +42,8 @@ go run -mod=readonly ./cmd/tour-i18n generation-bundle import \
 ```
 所有路径都重验 current identity、路径、exact set、UTF-8/no-BOM/single-LF、protected restore、glossary、machine candidate 与 no-overwrite；导入持久保存既有 Result Bundle manifest 作为 provenance 记录，不新增 schema；记录真实 provider/model、Generation Bundle SHA-256、input identity、attempt 与输出 hashes。bundle 不改变 TranslationUnit 边界，也不是 authority 或质量 gate；导入后仍执行正式 process/validation 与独立 A-only QC。
 
+若 Codex invocation、CLI 会话或本地 transport 在正式 import 前中断，不直接重做整个 batch。先核对 formal output / retry attempt、generation import provenance 与后续 validation evidence；确认尚未正式落地且 Generation Bundle 仍 CURRENT 后，运行 `generation-bundle recover --bundle ... --source ... --output-dir ...`，可重复 `--source` 合并旧 hidden staging、临时单文件或 interrupted tar/tar.gz artifact。只复用逐 Unit 通过 filename、UTF-8/EOF、protected restore、glossary 与 machine candidate 检查的完整字节；总体 archive 损坏只记录 issue，不自动丢弃此前可独立验证的完整成员。Codex 只重新生成 recovery 结果中的 `missing` Unit，补齐 exact set 后再使用普通 import；不同的有效候选字节冲突、stale bundle 或已有 formal state 均 fail closed。
+
 Glossary 的制定、独立审核与 machine gate 以 [Glossary Review 规范](GLOSSARY_REVIEW.md) 为准。Codex Generation role 不得用自己的 generation 上下文审核并批准同一 glossary。
 
 ## Codex 额度边界
