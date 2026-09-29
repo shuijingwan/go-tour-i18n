@@ -1,124 +1,149 @@
 # Locale 长期路线图
 
-本文档是社区 locale 商业优先级、长期实施范围和默认排队顺序的唯一 authority。[新增 Locale 执行手册](NEW_LOCALE_RUNBOOK.md) 仍是单个新 locale 的正式执行流程 authority；本文只决定默认先做哪一门语言，不替代 locale identity freeze、语言资产、质量审核、Production 或上线流程。
+本文档是社区 locale 的长期实施范围、当前 Go Tour 剩余调度，以及未来多语言项目默认顺序的唯一 authority。[新增 Locale 执行手册](NEW_LOCALE_RUNBOOK.md) 仍是单个新 locale 的正式执行流程 authority；本文只确定规划范围与调度，不替代 locale identity freeze、语言资产、质量审核、Production 或上线流程。
 
-## 目标与范围
+## 1. 当前已完成：47 个 live community locale
 
-路线图优化目标是**长期总广告收入潜力优先**，不是广告 RPM 或单次展示价格优先。排序综合考虑：
+当前仓库已有 **47 个 `production_state=live` community locale**：
 
-- 潜在可获得搜索流量；
-- 语言和互联网人口规模；
-- 开发者规模以及 Go / 编程教育需求；
-- 本地语言内容相对英语内容的增量价值；
-- 现有 A Tour of Go 本地化带来的竞争与需求验证；
-- Google AdSense 广告价值；
-- 翻译、审核、RTL、SEO、Production 和长期维护成本。
+```text
+zh-CN  ja-JP  de-DE  fr-FR  ko-KR  es-ES  it-IT  nl-NL  pt-BR  tr-TR
+sv-SE  pl-PL  zh-TW  id-ID  vi-VN  ar     th-TH  hi-IN  bn-BD  ur-PK
+uk-UA  ro-RO  cs-CZ  ta-IN  te-IN  ms-MY  fil-PH el-GR  hu-HU  bg-BG
+mr-IN  ml-IN  kn-IN  es-419 gu-IN  pa-IN  nb-NO  da-DK  fi-FI  sr-RS
+sk-SK  hr-HR  sl-SI  lt-LT  ca-ES  et-EE  lv-LV
+```
 
-高收入小市场不会仅因 RPM 较高就自动排在巨大互联网市场之前。印度尼西亚语、越南语和南亚语言即使单位广告价值较低，也可能凭借市场规模、搜索流量和本地语言增量获得更高的长期总收入；相反，挪威语、丹麦语和芬兰语属于广告价值较高但潜在流量较小的市场，因此排位靠后。
+该清单只记录当前完成状态，不重写这些 locale 的历史或实现身份。已实施 locale 的 hostname、CDN、service、port、public URL 与 lifecycle 等 machine fact 继续以 `production/identity.json` 为 authority。
 
-当前实施范围固定为：
+## 2. 最终固定语言范围：64 个 community locale
 
-- 已有 13 个社区 locale：`zh-CN`、`ja-JP`、`de-DE`、`fr-FR`、`ko-KR`、`es-ES`、`it-IT`、`nl-NL`、`pt-BR`、`tr-TR`、`sv-SE`、`pl-PL`、`zh-TW`；
-- 下表 35 个 Standard locale；
-- Standard 路线图全部完成后，按维护者已确认的后续计划再新增香港繁体中文 `zh-HK`；该扩展不改变下表 35 个 Standard locale 的既有排序；
-- 官方 English 继续使用 <https://go.dev/tour/>，不建设本项目的英文社区 locale。
+在当前 47 个 live locale 基础上，再固定增加以下 **17 个 locale / language targets**，使 community locale 固定总数达到 **64**。这些目标是长期固定范围，不是可直接用于实现或 Production 的 identity；每个目标正式启动时仍须进入新增 Locale 执行手册，冻结其 canonical locale、`html_lang`、autonym、English name、hostname、port、service、public URL 及其他正式身份。不得根据本表提前猜测或写入这些字段。
 
-长期目标因此是 **49 个社区 locale + 官方 English 入口**。`zh-HK` 在正式启动前只属于 post-Standard 计划项，不因写入本路线图而提前冻结 canonical identity、Production identity 或任何实现字段。
+### Google 广告支持的非英语商业扩展
 
-## 默认使用规则
+| Planning target | Language / regional standard |
+| --- | --- |
+| `ru-RU` | Russian |
+| `pt-PT` | European Portuguese |
+| `zh-HK` | Hong Kong Traditional Chinese |
+| `fr-CA` | Canadian French |
+| `de-CH` | Swiss German regional standard |
+| `de-AT` | Austrian German |
+| `zh-SG` | Singapore Simplified Chinese |
 
-用户没有明确指定目标 locale 时，按以下规则执行：
+### 英语商业区域扩展
 
-1. 从 Standard 路线图中选择排名最高且尚未完成的候选；35 个 Standard locale 全部完成后，下一项才是 post-Standard `zh-HK`。
-2. 不为每一门语言重新开展全球候选分析或重新评分。
-3. 进入 [新增 Locale 执行手册](NEW_LOCALE_RUNBOOK.md)，完成单门 locale 的正式 identity freeze 与后续流程。
-4. 表中的 locale 与 post-Standard 计划项都只是 roadmap candidate identity，不是可直接用于实现或 Production 的最终身份。
+- `en-GB`
+- `en-CA`
+- `en-AU`
+- `en-IN`
+- `en-SG`
+- `en-ZA`
 
-`production/identity.json` 继续是已实施 locale 的 hostname、CDN、service、port 和 lifecycle machine authority。候选完成 identity freeze 后，如 canonical locale 与表中的 candidate identity 不同，应在本路线图中记录二者的对应关系；只有对应实现达到 `production_state=live`，该路线图候选才视为已完成。不得仅凭目录已创建、翻译已开始或表格中存在该候选就跳过它。
+当前 Go Tour 官方 English 继续使用 <https://go.dev/tour/> 的 generic `lang="en"`。上述 regional English locale 是独立商业区域扩展，不以取得 go.dev Go local 链接为前提；本项目不新增独立 `en-US` Go Tour。
 
-正式实施前仍必须按新增 Locale 执行手册明确并冻结 canonical locale、`html_lang`、autonym、English name、domain language code、hostname、CDN、port、production profile、Playground Origin 等全部身份。不得从本表直接猜测 Production identity。
+### 非 Google Publisher 支持语言
 
-以下候选有额外的 identity 或商业前提：
+以下 4 门语言固定实施，并计划在完成且 live 后申请 go.dev 的 Go local 链接：
 
-- `ar` 是语言级 roadmap identity；已冻结 canonical locale 与 `html_lang` 均为 `ar`，书写方向为 RTL，不改为 `ar-SA`、`ar-EG` 或其他区域 locale。
-- `pa-IN` 正式实施前必须明确目标书写体系和最终 locale identity。
-- `es-419` 必须先确认现有项目 locale/schema 能力可以表达冻结后的 canonical identity；不得因为本表使用该标签就假设 CLI 已支持。
-- `fil-PH` 使用 Filipino 项目 identity；不得仅因外部 UI language list 使用 Tagalog 名称就自动改成 `tl-PH`。
-- `ru-RU` 开始实施前必须重新确认当时 Google 对俄罗斯地区的广告 monetization policy。若仍不满足商业前提，应停止在该候选，不得自动转向替代广告平台。
+- Swahili
+- Kazakh
+- Persian
+- Amharic
 
-## Standard 路线图
+这四项在本路线图中只冻结 language target，不冻结 locale identity。正式启动前必须按新增 Locale 执行手册确定 canonical locale、`html_lang`、autonym、hostname、port、service、public URL 等全部实现字段。
 
-下表顺序已经冻结。排序理由解释长期总广告收入潜力与实施成本的平衡，不是 RPM 排行榜。
+### 固定范围边界
 
-| Rank | Candidate locale | English language name | 中文语言名 | 主要国家/地区 | 简洁排序理由 |
-| ---: | --- | --- | --- | --- | --- |
-| 1 | `id-ID` | Indonesian | 印度尼西亚语 / 印尼语 | 印度尼西亚 | 巨大且持续增长的互联网市场、本地语言搜索需求和开发者教育需求可用流量规模抵消较低单位广告价值，优先争取总收入。 |
-| 2 | `vi-VN` | Vietnamese | 越南语 | 越南 | 大型数字市场、活跃的编程学习需求与较高本地语言增量共同支撑可观搜索流量，总量潜力高于许多高 RPM 小市场。 |
-| 3 | `ar` | Arabic | 阿拉伯语 | 中东和北非多个阿拉伯语国家 | 跨多国的庞大语言市场提供高总流量与广告价值组合；方言、canonical identity 和 RTL 增加成本，但不足以抵消长期规模。 |
-| 4 | `th-TH` | Thai | 泰语 | 泰国 | 大型单一语言互联网市场且本地语言相对英语有明显增量，搜索流量和广告价值组合优先。 |
-| 5 | `hi-IN` | Hindi | 印地语 | 印度北部和中部 | 印度开发者与学习者规模巨大；即使英语使用会折减本地语言增量、单位广告价值较低，总可获得流量仍具高上限。 |
-| 6 | `bn-BD` | Bengali | 孟加拉语 | 孟加拉国、印度西孟加拉等 | 庞大语言人口和母语教育需求可形成规模流量，预计以总量弥补较低 RPM 与多市场维护成本。 |
-| 7 | `ur-PK` | Urdu | 乌尔都语 | 巴基斯坦、印度部分地区 | 大型语言市场和较强母语内容增量带来总流量机会；RTL、书写体系和较低广告单价提高成本后仍位居前列。 |
-| 8 | `uk-UA` | Ukrainian | 乌克兰语 | 乌克兰 | 具备明确母语内容价值、技术学习需求和可观搜索市场，规模与广告价值的组合优于后续中小市场。 |
-| 9 | `ro-RO` | Romanian | 罗马尼亚语 | 罗马尼亚、摩尔多瓦部分地区 | 中等规模互联网市场、开发者需求和本地语言增量较均衡，实施与维护复杂度相对可控。 |
-| 10 | `cs-CZ` | Czech | 捷克语 | 捷克 | 技术受众与广告价值较好，语言市场虽不大，但可获得流量、商业价值和维护成本之间较平衡。 |
-| 11 | `ta-IN` | Tamil | 泰米尔语 | 印度泰米尔纳德、斯里兰卡等 | 跨地区的大型语言人口和母语教育价值带来总量机会；较低单位广告价值与文字审核成本使其低于前十。 |
-| 12 | `te-IN` | Telugu | 泰卢固语 | 印度特伦甘纳、安得拉邦 | 大型本地语言市场与开发者学习需求可积累显著搜索流量，依靠规模而非高 RPM 获得长期价值。 |
-| 13 | `ms-MY` | Malay | 马来语 | 马来西亚、文莱 | 覆盖多个有广告价值的市场，本地语言内容有增量；总体语言人口和流量上限低于前列大型市场。 |
-| 14 | `fil-PH` | Filipino | 菲律宾语 | 菲律宾 | 大型互联网人口和开发者教育需求提供流量，但英语普及度会降低本地化的增量收益。 |
-| 15 | `hu-HU` | Hungarian | 匈牙利语 | 匈牙利 | 本地语言差异带来明确增量，技术受众与广告价值尚可；市场规模限制总收入上限。 |
-| 16 | `el-GR` | Greek | 希腊语 | 希腊、塞浦路斯部分地区 | 独立书写体系与母语内容价值有利于获取增量搜索，广告价值尚可，但总人口和维护规模限制排位。 |
-| 17 | `bg-BG` | Bulgarian | 保加利亚语 | 保加利亚 | 本地语言技术内容具有增量，实施范围可控；市场规模和预期搜索总量低于前序候选。 |
-| 18 | `mr-IN` | Marathi | 马拉地语 | 印度马哈拉施特拉邦 | 大型区域语言人口带来总量潜力，但英语/印地语竞争、较低 RPM 和文字审核成本形成折扣。 |
-| 19 | `ml-IN` | Malayalam | 马拉雅拉姆语 | 印度喀拉拉邦 | 教育与技术需求较强且母语内容有增量；区域市场规模、英语使用和维护成本限制总收入预期。 |
-| 20 | `kn-IN` | Kannada | 卡纳达语 | 印度卡纳塔克邦 | 所在地区开发者需求突出，本地语言内容可获得增量；英语竞争与较低单位价值使其保持中段。 |
-| 21 | `es-419` | Latin American Spanish | 拉丁美洲西班牙语 | 墨西哥、中南美多数西语国家 | 区域总人口与搜索流量巨大，但现有 `es-ES` 已覆盖同语言基础需求，竞争与地区变体重叠带来显著增量折扣。 |
-| 22 | `gu-IN` | Gujarati | 古吉拉特语 | 印度古吉拉特邦 | 可观区域人口和母语增量提供流量机会，但预期开发者搜索规模、广告单价与维护成本使其排在其他南亚大语言之后。 |
-| 23 | `pa-IN` | Punjabi | 旁遮普语 | 印度和巴基斯坦旁遮普地区 | 跨国大型语言社区具备流量潜力，但书写体系与 locale identity 尚需冻结，审核和维护成本提高不确定性。 |
-| 24 | `nb-NO` | Norwegian Bokmål | 挪威语（Bokmål） | 挪威 | 广告价值较高、技术受众成熟，但语言人口和可获得搜索总量较小，不能仅凭高 RPM 提前。 |
-| 25 | `da-DK` | Danish | 丹麦语 | 丹麦 | 高价值广告市场和成熟开发者受众有利，但小流量上限使长期总收入低于大型低 RPM 市场。 |
-| 26 | `fi-FI` | Finnish | 芬兰语 | 芬兰 | 技术需求与广告价值较好，本地语言有一定增量；人口与搜索规模较小，因此位于高价值小市场组后段。 |
-| 27 | `sr-RS` | Serbian | 塞尔维亚语 | 塞尔维亚 | 本地语言技术内容存在需求，但市场规模有限，且书写体系策略会增加实施和长期一致性成本。 |
-| 28 | `sk-SK` | Slovak | 斯洛伐克语 | 斯洛伐克 | 有明确母语增量和开发者受众，但小型市场以及邻近语言内容竞争限制可获得总流量。 |
-| 29 | `hr-HR` | Croatian | 克罗地亚语 | 克罗地亚 | 本地化可服务明确市场，但人口规模、邻近语言竞争和总搜索量使收入上限偏低。 |
-| 30 | `sl-SI` | Slovenian | 斯洛文尼亚语 | 斯洛文尼亚 | 广告和技术受众质量尚可，但互联网人口较小，总流量潜力不足以提前于更大市场。 |
-| 31 | `lt-LT` | Lithuanian | 立陶宛语 | 立陶宛 | 本地语言增量明确且维护复杂度可控，但市场规模较小，长期总广告收入预期有限。 |
-| 32 | `ca-ES` | Catalan | 加泰罗尼亚语 | 西班牙加泰罗尼亚等地区 | 有稳定母语需求和广告价值，但与 `es-ES` 的受众及搜索需求重叠显著，增量流量受到折扣。 |
-| 33 | `et-EE` | Estonian | 爱沙尼亚语 | 爱沙尼亚 | 数字化和技术受众质量较高，但语言人口很小，预期总展示量限制长期收入。 |
-| 34 | `lv-LV` | Latvian | 拉脱维亚语 | 拉脱维亚 | 母语内容具有增量，但市场和开发者搜索规模较小，总收入潜力低于多数 Standard 候选。 |
-| 35 | `ru-RU` | Russian | 俄语 | 俄罗斯及部分前苏联地区 | 语言人口和开发者需求本可支持大量流量，但区域广告 monetization policy 是当前商业前提风险，因此置于末位并要求实施前重新核验。 |
+除[第 4 节](#4-hebrew-唯一-conditional-gate)的 Hebrew 唯一条件项外，不建立观察名单，也不继续增加当前未列出的语言或地区变体。特别不得自动增加：
 
-## Post-Standard 扩展
+- `nn-NO`
+- `en-NZ`
+- `en-IE`
+- `nl-BE`
+- `fr-BE`
+- `fr-CH`
+- `zh-MY`
+- 其他 English regional locales
+- Bosnian
+- Macedonian
+- Icelandic
+- 其他仅因“存在合法 locale”而发现的候选
 
-35 个 Standard locale 全部完成后，再进入维护者已确认的 `zh-HK`（Hong Kong Traditional Chinese / 香港繁体中文）扩展。它不参与现有 1–35 排名，不允许在 Standard 路线图完成前被默认选择，也不得仅凭本条规划提前创建 locale 目录、修改 registry 或冻结 hostname、port、service、public URL 等 Production identity。正式启动 `zh-HK` 时，仍须按新增 Locale 执行手册重新完成完整 identity freeze，并明确它与现有 `zh-TW` 的语言、显示名、SEO、public identity 和长期维护边界。
+只有维护者明确重新开启全局语言范围评估，才允许改变上述固定语言池。普通实施阻塞、单一市场 policy 变化或发现新的合法 locale 都不得自动扩展、替换或建立候补队列。
 
-## Existing A Tour of Go 本地化证据
+## 3. 当前 Go Tour 剩余执行调度
 
-已有 A Tour of Go 本地化不是排除条件。它同时产生两个方向的信号：
+当前 Go Tour 的项目调度与未来跨项目商业排序分离，按以下顺序完成剩余目标。
 
-- 已有完整版本会形成竞争，应降低可获得增量流量预期；
-- 已有版本也证明存在母语学习需求，应作为正面需求验证。
+### 第一阶段：优先完成并申请 go.dev 链接
 
-如未来为候选维护 existing localization status，只使用以下分级：
+1. Swahili
+2. Kazakh
+3. Persian
+4. Amharic
 
-- **A**：当前 go.dev/tour 直接链接的本地化版本；
-- **B**：存在官方历史、Go Wiki 或明显仍可发现的完整版本；
-- **C**：有明确历史社区翻译，但当前官方曝光较弱；
-- **D**：当前调查没有发现明显完整本地化版本。
+这四门完成且 live 后，尽早提交 go.dev Go local 链接申请，使上游审核等待时间与后续 locale 实施并行。四门内部无需反复进行商业重排；可按当时真实的并发、额度与正式流程边界分批推进。
 
-`D` 不表示断言互联网绝对不存在翻译。当前仓库没有一份能长期支撑全部 35 个候选逐项 A/B/C/D 的已验证 provenance，因此本表不填充或固化这些状态。以后只有在保存了可维护来源且出现新 evidence 时才增加或更新该列，不得凭印象补写。
+### 第二阶段：固定商业扩展
 
-## 重新排序条件
+依次完成：
 
-路线图默认稳定；完成一门语言后机械进入下一项，不重新分析全球候选。只有出现以下明确新 evidence 时才允许重新评估：
+1. `ru-RU`
+2. `pt-PT`
+3. `zh-HK`
+4. `fr-CA`
+5. `de-CH`
+6. `de-AT`
+7. `zh-SG`
+8. `en-GB`
+9. `en-CA`
+10. `en-AU`
+11. `en-IN`
+12. `en-SG`
+13. `en-ZA`
 
-- Google AdSense 支持语言或区域 monetization policy 明显变化；
-- 已上线 locale 的真实 PV、搜索流量、RPM 或广告收入显示当前排序模型存在显著偏差；
-- 某语言出现真实的翻译质量、RTL、SEO、Production 或长期维护成本阻塞；
-- 用户明确要求重新评估。
+`ru-RU` 不再作为阻塞后续 locale 的路线图 gate。若某个目标在正式执行中出现真实 failure，按对应 runbook 保存 evidence 和恢复，不因此重新开放全球候选研究或从固定池中自动寻找替代项。
 
-完成约 10 个新的 Standard locale 后，建议进行一次 batch-level review，而不是逐门 review。重新评估必须记录使用的新 evidence 和调整理由；没有上述 evidence 时保持表中顺序。
+每个 locale 的具体启动、Generation / Reviewer、质量 gate、Production 与上线仍完全服从新增 Locale 执行手册及其引用规范。本路线图不授权提前创建 locale、冻结 Production identity 或跳过任何 gate。
 
-## Out of scope
+### 第三阶段：Hebrew feasibility experiment
 
-Hebrew 以及 ChatGPT 支持但 Google AdSense 不支持的其他语言不属于当前实施路线图；不建立 Hebrew exception 队列，也不建立 non-AdSense implementation / research queue。当前不计划通过替代广告平台扩展这些语言，原因包括广告质量、额外运维以及支付/提现可用性的不确定性。只有用户未来明确重新决策时才重新评估，不能因这些语言存在而自动扩展路线图。
+固定 64 个 community locale 全部完成后，最后执行[第 4 节](#4-hebrew-唯一-conditional-gate)规定的一次 Hebrew feasibility experiment。
+
+当前项目的全部目标与 Hebrew gate 处理完毕后，再进行一次统一 upstream source sync；不在每批新增语言之间重复同步。若 Hebrew PASS，先完成其正式新增 locale 流程再做该次统一 sync；若 FAIL，则在记录停止结论后进入统一 sync。
+
+## 4. Hebrew 唯一 conditional gate
+
+Hebrew 是固定 64 个 community locale 之外唯一的 conditional language。只有前述 64 个 locale 全部完成后，才执行一次 translation feasibility experiment：
+
+- Generation 使用 GPT-5.6 Sol + High；
+- Reviewer 使用与 Generation 独立的 GPT-5.6 Sol + High session；
+- 验证自然语言、Go 技术术语、RTL、inline code / Go identifiers、UI / SEO 等 Production 级质量；
+- experiment 只决定是否进入正式实施，不能替代正式 Glossary Review、TranslationUnit Quality Check、Locale Surface Review 或其他正式 QC。
+
+结果只有两条路径：
+
+- **PASS**：Hebrew 才进入新增 Locale 执行手册，届时再冻结全部正式 identity 并执行完整 gate；完成后 community locale 总数最多为 **65**。
+- **FAIL**：停止，不实施 Hebrew，不建立长期 watchlist，也不以其他语言替补。
+
+本次路线图不预先指定 Hebrew 的 canonical locale、`html_lang`、autonym 或任何 Production identity。
+
+## 5. Go Tour 完成后的一次性跨项目商业排序与冻结
+
+Go Tour 的固定 64 个 locale、Hebrew gate，以及 PASS 后的 Hebrew 正式实施（如适用）全部完成并取得真实运行数据后，维护者只进行 **一次最终跨项目商业排序**。可使用的数据包括：
+
+- PV；
+- Google Search impressions / clicks；
+- 国家地区来源；
+- RPM / 广告收入；
+- go.dev referral；
+- 索引表现；
+- regional variant 实际增量；
+- Generation / Reviewer 成本；
+- Production / 长期维护成本。
+
+该排序用于确定以后多语言项目的默认实施顺序，不重新开展全球候选研究，也不自动增加、替换或删除固定范围中的语言。排序完成后，将 Hebrew gate 的最终结果纳入实际语言池，并把语言池与跨项目默认顺序一起冻结。
+
+后续新多语言项目直接复用冻结后的范围与顺序，不为每个项目重新做全球语言排名。如果项目 canonical source 已经覆盖某个固定目标，则跳过该目标的 Generation，其余顺序保持不变。对于以 `en-US` 为 canonical source 的项目，`en-US` 作为源语言单独存在，不计入本路线图的 community locale 固定目标。
