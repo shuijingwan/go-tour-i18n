@@ -1,0 +1,11 @@
+* Vārdnīcas
+
+Vārdnīca sasaista atslēgas ar vērtībām.
+
+Vārdnīcas nulles vērtība ir `nil`.
+Vārdnīcai ar vērtību `nil` nav atslēgu, un tai nevar pievienot atslēgas.
+
+Funkcija `make` atgriež norādītā tipa vārdnīcu,
+kas ir inicializēta un gatava lietošanai.
+
+.play moretypes/maps.go

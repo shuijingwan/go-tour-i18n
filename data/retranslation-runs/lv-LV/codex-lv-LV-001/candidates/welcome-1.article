@@ -1,0 +1,37 @@
+* Sveika, pasaule
+
+Laipni lūdzam [[/][Go programmēšanas valodas]] ceļvedī.
+
+Ceļvedis ir sadalīts moduļos, kuriem varat
+piekļūt, lapas augšējā kreisajā stūrī noklikšķinot uz
+[[javascript:highlight(".logo")][Iepazīšanās ar Go]].
+
+Satura rādītāju jebkurā brīdī varat apskatīt arī, lapas augšējā labajā stūrī noklikšķinot uz [[javascript:highlightAndClick(".nav")][izvēlnes]].
+
+Visā ceļvedī atradīsiet virkni lapu un uzdevumu,
+kas jums jāizpilda.
+
+Starp tiem varat pārvietoties, izmantojot
+
+- [[javascript:highlight(".prev-page")][“iepriekšējā”]] vai `PageUp`, lai pārietu uz iepriekšējo lapu,
+
+- [[javascript:highlight(".next-page")][“nākamā”]] vai `PageDown`, lai pārietu uz nākamo lapu.
+
+Ceļvedis ir interaktīvs. Tagad noklikšķiniet uz pogas
+[[javascript:highlightAndClick("#run")][Palaist]]
+(vai nospiediet `Shift` + `Enter`), lai kompilētu un palaistu programmu
+attālā serverī.
+Rezultāts tiek parādīts zem koda.
+
+Šīs paraugprogrammas demonstrē dažādus Go aspektus. Ceļveža programmas ir paredzētas kā sākumpunkts jūsu pašu eksperimentiem.
+
+Rediģējiet programmu un palaidiet to vēlreiz.
+
+Kad noklikšķināt uz [[javascript:highlightAndClick("#format")][Formatēt]]
+(taustiņu kombinācija: `Ctrl` + `Enter`), teksts redaktorā tiek formatēts ar
+[[/cmd/gofmt/][gofmt]] rīku. Sintakses izcelšanu varat ieslēgt un izslēgt,
+noklikšķinot uz pogas [[javascript:highlightAndClick(".syntax-checkbox")][sintakse]].
+
+Kad esat gatavs turpināt, noklikšķiniet uz [[javascript:highlightAndClick(".next-page")][labās bultiņas]] zemāk vai nospiediet taustiņu `PageDown`.
+
+.play welcome/hello.go

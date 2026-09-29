@@ -1,0 +1,11 @@
+* Saskarnes
+
+_Saskarnes_tipu_ definē kā metožu signatūru kopu.
+
+Saskarnes tipa vērtība var glabāt jebkuru vērtību, kas īsteno šīs metodes.
+
+*Piezīme.* Parauga koda 22. rindā ir kļūda.
+`Vertex` (vērtības tips) neīsteno `Abser`, jo
+metode `Abs` ir definēta tikai tipam `*Vertex` (rādītāja tipam).
+
+.play methods/interfaces.go

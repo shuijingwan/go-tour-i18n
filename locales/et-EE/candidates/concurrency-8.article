@@ -1,0 +1,23 @@
+* Harjutus: samaväärsed kahendpuud
+
+*1.* Teosta funktsioon `Walk`.
+
+*2.* Testi funktsiooni `Walk`.
+
+Funktsioon `tree.New(k)` koostab juhusliku struktuuriga (kuid alati sorditud) kahendpuu, mis sisaldab väärtusi `k`, `2k`, `3k`, ..., `10k`.
+
+Loo uus kanal `ch` ja käivita puu läbija:
+
+	go Walk(tree.New(1), ch)
+
+Seejärel loe kanalist 10 väärtust ja trüki need välja. Tulemuseks peaksid olema arvud 1, 2, 3, ..., 10.
+
+*3.* Teosta funktsioon `Same` funktsiooni `Walk` abil, et määrata, kas `t1` ja `t2` talletavad samu väärtusi.
+
+*4.* Testi funktsiooni `Same`.
+
+`Same(tree.New(1),`tree.New(1))` peab tagastama true ja `Same(tree.New(1),`tree.New(2))` peab tagastama false.
+
+Tüübi `Tree` dokumentatsiooni leiad [[https://godoc.org/golang.org/x/tour/tree#Tree][siit]].
+
+.play concurrency/exercise-equivalent-binary-trees.go

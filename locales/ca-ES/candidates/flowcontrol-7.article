@@ -1,0 +1,9 @@
+* If i else
+
+Les variables declarades dins d'una sentència curta `if` també estan disponibles dins de qualsevol
+bloc `else`.
+
+(Les dues crides a `pow` retornen els seus resultats abans que comenci la crida a `fmt.Println`
+dins de `main`.)
+
+.play flowcontrol/if-and-else.go

@@ -1,0 +1,12 @@
+* Exercici: rot13Reader
+
+Un patró habitual és un [[/pkg/io/#Reader][io.Reader]] que embolcalla un altre `io.Reader` i modifica el flux d'alguna manera.
+
+Per exemple, la funció [[/pkg/compress/gzip/#NewReader][gzip.NewReader]] rep un `io.Reader` (un flux de dades comprimides) i retorna un `*gzip.Reader` que també implementa `io.Reader` (un flux de dades descomprimides).
+
+Implementa un `rot13Reader` que implementi `io.Reader` i llegeixi d'un `io.Reader`, modificant el flux mitjançant l'aplicació del xifrat de substitució [[https://en.wikipedia.org/wiki/ROT13][rot13]] a tots els caràcters alfabètics.
+
+Ja se't proporciona el tipus `rot13Reader`.
+Fes que sigui un `io.Reader` implementant-ne el mètode `Read`.
+
+.play methods/exercise-rot-reader.go

@@ -1,0 +1,27 @@
+* Vārdnīcu mainīšana
+
+Ievietojiet vai atjauniniet elementu vārdnīcā `m`:
+
+	m[key] = elem
+
+Iegūstiet elementu:
+
+	elem = m[key]
+
+Dzēsiet elementu:
+
+	delete(m, key)
+
+Ar divu vērtību piešķiršanu pārbaudiet, vai atslēga ir vārdnīcā:
+
+	elem, ok = m[key]
+
+Ja `key` ir vārdnīcā `m`, `ok` vērtība ir `true`. Pretējā gadījumā `ok` vērtība ir `false`.
+
+Ja `key` nav vārdnīcā, `elem` ir vārdnīcas elementu tipa nulles vērtība.
+
+*Piezīme.* Ja `elem` vai `ok` vēl nav deklarēti, varat izmantot īsās deklarācijas formu:
+
+	elem, ok := m[key]
+
+.play moretypes/mutating-maps.go

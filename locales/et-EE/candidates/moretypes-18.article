@@ -1,0 +1,11 @@
+* Harjutus: viilud
+
+Teosta `Pic`. See peab tagastama viilu pikkusega `dy`, mille iga element on viil `dx` 8-bitise märgita täisarvuga. Programmi käivitamisel kuvatakse sinu pilt, tõlgendades täisarve halltoonidena (täpsemalt sinatoonidena).
+
+Pildi valik on sinu otsustada. Huvitavad funktsioonid on näiteks `(x+y)/2`, `x*y` ja `x^y`.
+
+(Pead tsükliga eraldama iga `[]uint8` viilu väärtuse `[][]uint8` sees.)
+
+(Tüüpide vahel teisendamiseks kasuta `uint8(intValue)`.)
+
+.play moretypes/exercise-slices.go

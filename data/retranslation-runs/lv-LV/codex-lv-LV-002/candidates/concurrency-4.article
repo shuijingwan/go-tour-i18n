@@ -1,0 +1,15 @@
+* Range un Close
+
+Sūtītājs var aizvērt kanālu ar `close`, lai norādītu, ka vērtības vairs netiks sūtītas. Saņēmēji var pārbaudīt, vai kanāls ir aizvērts, saņemšanas izteiksmei piešķirot otru parametru: pēc
+
+	v, ok := <-ch
+
+`ok` ir `false`, ja vairs nav saņemamu vērtību un kanāls ir aizvērts.
+
+Cikls `for`i`:=`range`c` atkārtoti saņem vērtības no kanāla, līdz tas tiek aizvērts.
+
+*Piezīme.* Kanālu drīkst aizvērt tikai sūtītājs, nevis saņēmējs. Nosūtīšana uz aizvērtu kanālu izraisīs paniku.
+
+*Papildu*piezīme:* Kanāli nav kā faili; parasti tie nav jāaizver. Aizvēršana ir nepieciešama tikai tad, ja saņēmējam jāpaziņo, ka jaunu vērtību vairs nebūs, piemēram, lai pārtrauktu `range` ciklu.
+
+.play concurrency/range-and-close.go

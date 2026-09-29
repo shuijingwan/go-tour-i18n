@@ -1,0 +1,21 @@
+* sync.Mutex
+
+Esam redzējuši, ka kanāli ir lieliski piemēroti saziņai starp goroutines.
+
+Bet ko darīt, ja saziņa nav vajadzīga? Ja vēlamies tikai nodrošināt, ka konfliktu novēršanai
+mainīgajam vienlaikus var piekļūt tikai viena goroutine?
+
+Šo jēdzienu sauc par _savstarpējo_izslēgšanu_, bet datu struktūru, kas to nodrošina, parasti sauc par _savstarpējās_izslēgšanas_slēdzeni_.
+
+Go standarta bibliotēka nodrošina savstarpējo izslēgšanu ar
+[[/pkg/sync/#Mutex][`sync.Mutex`]] un tā divām metodēm:
+
+- `Lock`
+- `Unlock`
+
+Koda bloku, kas jāizpilda ar savstarpējo izslēgšanu, var definēt, ietverot to starp
+`Lock` un `Unlock` izsaukumiem, kā parādīts metodē `Inc`.
+
+Varam izmantot arī `defer`, lai garantētu slēdzenes atbloķēšanu, kā metodē `Value`.
+
+.play concurrency/mutex-counter.go

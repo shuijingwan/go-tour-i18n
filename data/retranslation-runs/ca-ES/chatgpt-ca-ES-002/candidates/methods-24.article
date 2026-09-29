@@ -1,0 +1,21 @@
+* Imatges
+
+[[/pkg/image/#Image][El paquet image]] defineix la interfície `Image`:
+
+	package image
+
+	type Image interface {
+		ColorModel() color.Model
+		Bounds() Rectangle
+		At(x, y int) color.Color
+	}
+
+*Nota*: el valor de retorn `Rectangle` del mètode `Bounds` és en realitat un
+[[/pkg/image/#Rectangle][`image.Rectangle`]], ja que la
+declaració és dins del paquet `image`.
+
+(Consulta [[/pkg/image/#Image][la documentació]] per veure'n tots els detalls.)
+
+Els tipus `color.Color` i `color.Model` també són interfícies, però ho ignorarem utilitzant les implementacions predefinides `color.RGBA` i `color.RGBAModel`. Aquestes interfícies i aquests tipus estan especificats pel [[/pkg/image/color/][paquet image/color]].
+
+.play methods/images.go

@@ -1,0 +1,15 @@
+* Eksporditud nimed
+
+Go puhul on nimi eksporditud, kui see algab suurtähega.
+Näiteks `Pizza` on eksporditud nimi, nagu ka `Pi`, mille ekspordib pakett `math`.
+
+`pizza` ja `pi` ei alga suurtähega, seega pole need eksporditud.
+
+Paketi importimisel saad viidata ainult selle eksporditud nimedele.
+Ühelegi eksportimata nimele ei pääse väljastpoolt paketti ligi.
+
+Käivita kood ja vaata veateadet.
+
+Vea parandamiseks nimeta `math.pi` ümber nimeks `math.Pi` ning proovi uuesti.
+
+.play basics/exported-names.go

@@ -1,0 +1,14 @@
+* Noklusējuma izvēle
+
+Ja neviens cits priekšraksta `select` gadījums nav gatavs, tiek izpildīts gadījums `default`.
+
+Izmantojiet gadījumu `default`, lai mēģinātu nosūtīt vai saņemt bez bloķēšanas:
+
+	select {
+	case i := <-c:
+		// izmantot i
+	default:
+		// saņemšana no c tiktu bloķēta
+	}
+
+.play concurrency/default-selection.go

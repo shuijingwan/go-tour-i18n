@@ -1,0 +1,25 @@
+* Assercions de tipus
+
+Una _asserció_de_tipus_ permet accedir al valor concret subjacent d'un valor d'interfície.
+
+	t := i.(T)
+
+Aquesta sentència afirma que el valor d'interfície `i` conté el tipus concret `T`
+i assigna el valor `T` subjacent a la variable `t`.
+
+Si `i` no conté un `T`, la sentència provocarà un panic.
+
+Per _comprovar_ si un valor d'interfície conté un tipus específic,
+una asserció de tipus pot retornar dos valors: el valor subjacent
+i un valor booleà que indica si l'asserció ha tingut èxit.
+
+	t, ok := i.(T)
+
+Si `i` conté un `T`, llavors `t` serà el valor subjacent i `ok` serà cert.
+
+Si no, `ok` serà fals i `t` serà el valor zero del tipus `T`,
+i no es produirà cap panic.
+
+Observa la similitud entre aquesta sintaxi i la de llegir d'un mapa.
+
+.play methods/type-assertions.go

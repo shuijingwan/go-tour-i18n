@@ -100,9 +100,29 @@ func protectTranslation(source []byte, hash string, glossary *Glossary) protecte
 	emphasisSpans := presentEmphasisDelimiterSpans(text)
 	spans = append(spans, emphasisSpans...)
 	spans = append(spans, translationKeepProtectionSpans(text, glossary, emphasisSpans, func(start, end int) bool {
-		return !withinInlineCode(start, end, inlineCodes)
+		return pageKeepProtectionAllowed(text, glossary, start, end, inlineCodes)
 	})...)
 	return protectedTranslationFromSpans(text, hash, spans)
+}
+
+func pageKeepProtectionAllowed(text string, glossary *Glossary, start, end int, inlineCodes []presentInlineCode) bool {
+	if withinInlineCode(start, end, inlineCodes) {
+		return false
+	}
+	if start > 0 && text[start-1] != '\n' {
+		return true
+	}
+	keep := text[start:end]
+	if len(keep) < 2 || keep[0] < 'A' || keep[0] > 'Z' {
+		return true
+	}
+	lower := string(keep[0]-'A'+'a') + keep[1:]
+	for _, candidate := range glossary.Keep {
+		if candidate == lower {
+			return false
+		}
+	}
+	return true
 }
 
 func translationKeepProtectionSpans(text string, glossary *Glossary, emphasisSpans []protectedSpan, allowed func(start, end int) bool) []protectedSpan {

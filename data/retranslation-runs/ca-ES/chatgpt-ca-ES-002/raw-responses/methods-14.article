@@ -1,0 +1,16 @@
+* La interfície buida
+
+El tipus d'interfície que especifica zero mètodes es coneix com a ⟪GTI18N_7a09a765_000001⟫interfície_buida⟪GTI18N_7a09a765_000002⟫:
+
+⟪GTI18N_7a09a765_000003⟫
+
+Una interfície buida pot contenir valors de qualsevol tipus.
+(Tots els tipus implementen, com a mínim, zero mètodes.)
+
+⟪GTI18N_7a09a765_000004⟫any⟪GTI18N_7a09a765_000005⟫ és un àlies de ⟪GTI18N_7a09a765_000006⟫interface{}⟪GTI18N_7a09a765_000007⟫, i tots dos són completament
+equivalents.
+
+Les interfícies buides s'utilitzen en codi que gestiona valors de tipus desconegut.
+Per exemple, ⟪GTI18N_7a09a765_000008⟫fmt.Print⟪GTI18N_7a09a765_000009⟫ accepta qualsevol nombre d'arguments de tipus ⟪GTI18N_7a09a765_000010⟫any⟪GTI18N_7a09a765_000011⟫.
+
+⟪GTI18N_7a09a765_000012⟫

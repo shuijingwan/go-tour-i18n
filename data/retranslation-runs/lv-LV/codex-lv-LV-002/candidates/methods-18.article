@@ -1,0 +1,8 @@
+* Uzdevums: Stringer tipi
+
+Lieciet tipam `IPAddr` īstenot `fmt.Stringer`, lai adrese tiktu izdrukāta
+četru ar punktiem atdalītu skaitļu formā.
+
+Piemēram, `IPAddr{1,`2,`3,`4}` jāizdrukā kā `"1.2.3.4"`.
+
+.play methods/exercise-stringer.go

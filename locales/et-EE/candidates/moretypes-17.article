@@ -1,0 +1,12 @@
+* Range, jätk
+
+Indeksi või väärtuse saad vahele jätta, omistades selle sümbolile `_`.
+
+    for i, _ := range pow
+    for _, value := range pow
+
+Kui soovid ainult indeksit, võid teise muutuja ära jätta.
+
+    for i := range pow
+
+.play moretypes/range-continued.go

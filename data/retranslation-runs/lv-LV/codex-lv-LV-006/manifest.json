@@ -1,0 +1,37 @@
+{
+  "schema_version": 2,
+  "batch_id": "codex-lv-LV-006",
+  "locale": "lv-LV",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 2,
+  "units": [
+    {
+      "unit_id": "basics/13",
+      "unit_kind": "page",
+      "source_path": "_content/tour/basics.article",
+      "source_sha256": "88e0e168f4c95fa4134198a32440b2d2fb1fac9aae535a9ee7148dbcda37e1b3",
+      "input_path": "inputs/basics-13.article",
+      "input_sha256": "9e7106bde45b0bb56355ee12264b03fde28279e3f54e970c3d9031f38b1d41d0",
+      "protected_token_count": 14,
+      "previous_snapshot_id": "qc-002",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "The previous malformed “Unlike in C, in Go...” construction has been corrected, but the complete replacement still renders English “requires an explicit conversion” as “ir nepieciešama tieša tipa pārveidošana”. Latvian tieša means direct rather than explicit, so it does not precisely preserve the Go teaching point that the conversion must be explicitly written rather than implicit. Revise this wording so the distinction between explicit and implicit type conversion is technically accurate, while retaining the glossary term tipa pārveidošana and all protected code."
+    },
+    {
+      "unit_id": "concurrency/2",
+      "unit_kind": "page",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "a35e3af26b51f8c2c2a6dfaf09f9c7cab0fdb4b1b56f9e4dc9b793f1dac1e295",
+      "input_path": "inputs/concurrency-2.article",
+      "input_sha256": "f88ab0b53baaa3421f19920457b2457b93328f959812169bdf2a0359a020d22e",
+      "protected_token_count": 15,
+      "previous_snapshot_id": "qc-002",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "The previous teaching-comment defect for v := \u003c-ch is resolved, but elsewhere in the complete replacement English “without explicit locks or condition variables” is rendered as “bez tiešām slēdzenēm vai nosacījuma mainīgajiem”. Here tiešām conveys direct locks rather than the intended absence of explicitly used locking primitives. Revise this clause so the distinction expressed by “explicit locks” is technically accurate and natural Latvian, without changing the surrounding synchronization meaning or protected Go identities."
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+* Goroutines
+
+⟪GTI18N_d0a9c450_000001⟫⟪GTI18N_d0a9c450_000002⟫⟪GTI18N_d0a9c450_000003⟫ ir viegls izpildes pavediens, ko pārvalda ⟪GTI18N_d0a9c450_000004⟫ izpildlaika vide.
+
+⟪GTI18N_d0a9c450_000005⟫
+
+palaiž jaunu ⟪GTI18N_d0a9c450_000006⟫, kas izpilda
+
+⟪GTI18N_d0a9c450_000007⟫
+
+Izteiksmju ⟪GTI18N_d0a9c450_000008⟫f⟪GTI18N_d0a9c450_000009⟫, ⟪GTI18N_d0a9c450_000010⟫x⟪GTI18N_d0a9c450_000011⟫, ⟪GTI18N_d0a9c450_000012⟫y⟪GTI18N_d0a9c450_000013⟫ un ⟪GTI18N_d0a9c450_000014⟫z⟪GTI18N_d0a9c450_000015⟫ novērtēšana notiek pašreizējā ⟪GTI18N_d0a9c450_000016⟫, bet ⟪GTI18N_d0a9c450_000017⟫f⟪GTI18N_d0a9c450_000018⟫ izpilde — jaunajā ⟪GTI18N_d0a9c450_000019⟫.
+
+Goroutines darbojas vienā adrešu telpā, tāpēc piekļuve koplietojamai atmiņai ir jāsinhronizē. Pakotne [[⟪GTI18N_d0a9c450_000020⟫][⟪GTI18N_d0a9c450_000021⟫sync⟪GTI18N_d0a9c450_000022⟫]] nodrošina noderīgus primitīvus, lai gan valodā ⟪GTI18N_d0a9c450_000023⟫ tos nevajadzēs izmantot bieži, jo ir pieejami citi primitīvi. (Skatiet nākamo lapu.)
+
+⟪GTI18N_d0a9c450_000024⟫

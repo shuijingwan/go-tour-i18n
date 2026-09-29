@@ -1,0 +1,11 @@
+* Paketid
+
+Iga Go programm koosneb pakettidest.
+
+Programmi täitmine algab paketist `main`.
+
+See programm kasutab pakette imporditeedega `"fmt"` ja `"math/rand"`.
+
+Tava kohaselt on paketi nimi sama mis imporditee viimane element. Näiteks pakett `"math/rand"` koosneb failidest, mis algavad lausega `package`rand`.
+
+.play basics/packages.go

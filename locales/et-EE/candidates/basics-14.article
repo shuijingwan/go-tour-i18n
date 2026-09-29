@@ -1,0 +1,18 @@
+* Tüübituletus
+
+Kui deklareerid muutuja ilma tüüpi selgesõnaliselt määramata (kas süntaksiga `:=` või avaldise süntaksiga `var`=`), tuletatakse muutuja tüüp paremal pool olevast väärtusest.
+
+Kui deklaratsiooni parem pool on tüübiga, saab uus muutuja sama tüübi:
+
+	var i int
+	j := i // j on int
+
+Kui aga parem pool sisaldab tüübita arvkonstanti, võib uue muutuja tüüp olla `int`, `float64` või `complex128`, olenevalt konstandi täpsusest:
+
+	i := 42           // int
+	f := 3.142        // float64
+	g := 0.867 + 0.5i // complex128
+
+Proovi muuta näidiskoodis muutuja `v` algväärtust ja jälgi, kuidas see muutuja tüüpi mõjutab.
+
+.play basics/type-inference.go

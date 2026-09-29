@@ -1,0 +1,102 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-et-EE-004",
+  "locale": "et-EE",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 7,
+  "units": [
+    {
+      "unit_id": "welcome/4",
+      "unit_kind": "page",
+      "source_path": "_content/tour/welcome.article",
+      "source_sha256": "bb517d4b577fdb446fd029c2998d2426663b94a68f4b4e494c59af421508f683",
+      "input_path": "inputs/welcome-4.article",
+      "input_sha256": "5717fa182b39ca9e42890537f01e011775b33dc32d6302166ec2ca540a67ac75",
+      "protected_token_count": 10,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "The sentence \"Programm ehitab ja käivitab koodinäited sinu enda arvutis.\" uses an unnatural English-influenced collocation \"ehitab koodinäited\" for build/compile code samples. Use natural Estonian technical wording that preserves both build/compile and run."
+    },
+    {
+      "unit_id": "basics/4",
+      "unit_kind": "page",
+      "source_path": "_content/tour/basics.article",
+      "source_sha256": "accf0562d9b759c9735500d5df0d74e8f90142ed96fe5ab2f5eedc6fbd6cf6f2",
+      "input_path": "inputs/basics-4.article",
+      "input_sha256": "8284a24938193e664c1175bdb31913117bb2330bafaa092bf3c4a60ade150f0e",
+      "protected_token_count": 9,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "The quantity phrase \"null või rohkem argumenti\" is unnatural and grammatically incorrect in Estonian. Use a natural grammatical construction for \"zero or more arguments\"."
+    },
+    {
+      "unit_id": "basics/12",
+      "unit_kind": "page",
+      "source_path": "_content/tour/basics.article",
+      "source_sha256": "d9ad62501c05359e7b2ac445fa92d629e11d6d378c2701b767abab76012a558e",
+      "input_path": "inputs/basics-12.article",
+      "input_sha256": "1ea463ab789d88cad33a6c7adf44fb524ea1f7e2574059f723a345f3c097faa7",
+      "protected_token_count": 9,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "C",
+      "previous_finding": "The first paragraph still visibly renders the English natural-language term \"zero value\" inside the Go Present emphasis span and therefore violates mandatory glossary zero value → nullväärtus. Translate the emphasized natural-language term while preserving the original emphasis/Present structure."
+    },
+    {
+      "unit_id": "methods/22",
+      "unit_kind": "page",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "0df444d989996a06d6dd50f4b109af4ae1cb2302b8dd867bcbe9bf98e424d230",
+      "input_path": "inputs/methods-22.article",
+      "input_sha256": "b9401847cfc827cd95e2abef6e41d5d91085777b05898d28d4d748bb793531ca",
+      "protected_token_count": 6,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "The phrase \"voo märgist ASCII A\" has unnatural case agreement and word order for \"an infinite stream of the ASCII character A\". Rewrite naturally so the stream is clearly composed of ASCII character A, while preserving Reader, ASCII, and A."
+    },
+    {
+      "unit_id": "generics/1",
+      "unit_kind": "page",
+      "source_path": "_content/tour/generics.article",
+      "source_sha256": "01a045105dc8c12fb1709f122d363235c19a6464d5de7587d579524aec270dd6",
+      "input_path": "inputs/generics-1.article",
+      "input_sha256": "3ff19664d7491cff23bc7f49a5fdd513a6af4184e596d7fda9cbe009b9342639",
+      "protected_token_count": 19,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "The opening sentence \"Go funktsioone saab tüübiparameetrite abil kirjutada töötama mitme tüübiga.\" uses the English-influenced and unnatural Estonian construction \"kirjutada töötama\". Rewrite naturally to express that type parameters let Go functions be written for multiple types, preserving the glossary term tüübiparameeter."
+    },
+    {
+      "unit_id": "concurrency/4",
+      "unit_kind": "page",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "3e925c6745255a443c61f25cd8131d538dc8677938f1c5021ce798465020b42e",
+      "input_path": "inputs/concurrency-4.article",
+      "input_sha256": "f68dc9ef06de3cb5d48846ebe7786e6cc06b77ea5c05bc6d56b80f667f5dad10",
+      "protected_token_count": 16,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "C",
+      "previous_finding": "The opening sentence \"Saatja saab kanali close, et näidata, et rohkem väärtusi ei saadeta.\" is syntactically incomplete and does not clearly express the source action \"A sender can close a channel\". Rewrite to state explicitly that the sender can close the channel to indicate no more values will be sent, while preserving close as the Go operation identity."
+    },
+    {
+      "unit_id": "concurrency/11",
+      "unit_kind": "page",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "45ef131ede663b1355c0a5933634d46c393f66be8a6450b184f86a62e928a64e",
+      "input_path": "inputs/concurrency-11.article",
+      "input_sha256": "2f1ab189d9f6fce66d5cd585f2b2e97637a47f7258d4730432abd81ec85ecaf0",
+      "protected_token_count": 26,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "The two visible video link titles use \"konkurentsus-\" instead of mandatory glossary concurrency → konkurrentsus, inconsistent with the same page and locale terminology. Correct both labels to the glossary spelling without changing link targets or other title meaning."
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+* Lasītāji
+
+Pakotne ⟪GTI18N_120c3fc9_000001⟫io⟪GTI18N_120c3fc9_000002⟫ definē saskarni ⟪GTI18N_120c3fc9_000003⟫io.Reader⟪GTI18N_120c3fc9_000004⟫,
+kas attēlo datu plūsmas lasīšanas galu.
+
+⟪GTI18N_120c3fc9_000005⟫ standarta bibliotēkā ir [[⟪GTI18N_120c3fc9_000006⟫][daudzi šīs saskarnes īstenojumi]], tostarp faili, tīkla savienojumi, saspiedēji, šifri un citi.
+
+Saskarnei ⟪GTI18N_120c3fc9_000007⟫io.Reader⟪GTI18N_120c3fc9_000008⟫ ir metode ⟪GTI18N_120c3fc9_000009⟫Read⟪GTI18N_120c3fc9_000010⟫:
+
+⟪GTI18N_120c3fc9_000011⟫
+
+⟪GTI18N_120c3fc9_000012⟫Read⟪GTI18N_120c3fc9_000013⟫ aizpilda doto baitu šķēlumu ar datiem un atgriež aizpildīto baitu skaitu
+un kļūdas vērtību. Kad plūsma
+beidzas, tā atgriež kļūdu ⟪GTI18N_120c3fc9_000014⟫io.EOF⟪GTI18N_120c3fc9_000015⟫.
+
+Parauga kods izveido
+[[⟪GTI18N_120c3fc9_000016⟫][⟪GTI18N_120c3fc9_000017⟫strings.Reader⟪GTI18N_120c3fc9_000018⟫]]
+un nolasa tā izvadi pa 8 baitiem vienā reizē.
+
+⟪GTI18N_120c3fc9_000019⟫

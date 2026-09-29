@@ -1,0 +1,12 @@
+* Saskarnes vērtības ar nil pamatā esošām vērtībām
+
+Ja konkrētā vērtība saskarnē pati ir nil,
+metode tiks izsaukta ar nil saņēmēju.
+
+Dažās valodās tas izraisītu nulles rādītāja izņēmumu,
+bet valodā ⟪GTI18N_9487ca3c_000001⟫ parasti raksta metodes, kas korekti apstrādā izsaukumu
+ar nil saņēmēju (kā šajā piemērā metode ⟪GTI18N_9487ca3c_000002⟫M⟪GTI18N_9487ca3c_000003⟫).
+
+Ņemiet vērā, ka saskarnes vērtība, kurā glabājas nil konkrētā vērtība, pati nav nil.
+
+⟪GTI18N_9487ca3c_000004⟫

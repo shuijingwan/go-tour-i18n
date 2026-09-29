@@ -1,0 +1,11 @@
+* Buferēti kanāli
+
+Kanāli var būt _buferēti_. Lai inicializētu buferētu kanālu, funkcijai `make` kā otro argumentu norādiet bufera garumu:
+
+	ch := make(chan int, 100)
+
+Nosūtīšana uz buferētu kanālu tiek bloķēta tikai tad, kad buferis ir pilns. Saņemšana tiek bloķēta, kad buferis ir tukšs.
+
+Mainiet piemēru tā, lai buferis tiktu pārpildīts, un pavērojiet, kas notiek.
+
+.play concurrency/buffered-channels.go

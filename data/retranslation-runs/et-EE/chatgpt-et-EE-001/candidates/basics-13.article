@@ -1,0 +1,20 @@
+* Tüübiteisendused
+
+Avaldis `T(v)` teisendab väärtuse `v` tüübiks `T`.
+
+Mõned arvulised teisendused:
+
+	var i int = 42
+	var f float64 = float64(i)
+	var u uint = uint(f)
+
+Või lihtsamalt:
+
+	i := 42
+	f := float64(i)
+	u := uint(f)
+
+Erinevalt C-st nõuab Go eri tüüpi väärtuste omistamine selgesõnalist teisendust.
+Proovi näitest eemaldada teisendused `float64` või `uint` ja vaata, mis juhtub.
+
+.play basics/type-conversions.go

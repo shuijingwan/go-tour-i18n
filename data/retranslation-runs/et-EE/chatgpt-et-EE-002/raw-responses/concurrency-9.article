@@ -1,0 +1,19 @@
+* sync.Mutex
+
+Oleme näinud, et kanalid sobivad suurepäraselt goroutine'ide vaheliseks suhtluseks.
+
+Aga mis siis, kui suhtlust pole vaja? Kui tahame lihtsalt tagada, et konfliktide vältimiseks pääseks muutujale korraga ligi ainult üks ⟪GTI18N_49f72779_000001⟫?
+
+Seda mõistet nimetatakse vastastikuseks ⟪GTI18N_49f72779_000002⟫välistamiseks⟪GTI18N_49f72779_000003⟫ ning seda tagava andmestruktuuri tavapärane nimi on ⟪GTI18N_49f72779_000004⟫mutex⟪GTI18N_49f72779_000005⟫.
+
+⟪GTI18N_49f72779_000006⟫ standardteek pakub vastastikust välistamist
+[[⟪GTI18N_49f72779_000007⟫][⟪GTI18N_49f72779_000008⟫sync.Mutex⟪GTI18N_49f72779_000009⟫]] abil ja selle kahe meetodiga:
+
+- ⟪GTI18N_49f72779_000010⟫Lock⟪GTI18N_49f72779_000011⟫
+- ⟪GTI18N_49f72779_000012⟫Unlock⟪GTI18N_49f72779_000013⟫
+
+Saame määrata koodiploki, mida täidetakse vastastikuse välistamisega, ümbritsedes selle meetodite ⟪GTI18N_49f72779_000014⟫Lock⟪GTI18N_49f72779_000015⟫ ja ⟪GTI18N_49f72779_000016⟫Unlock⟪GTI18N_49f72779_000017⟫ väljakutsetega, nagu näidatud meetodis ⟪GTI18N_49f72779_000018⟫Inc⟪GTI18N_49f72779_000019⟫.
+
+Samuti saame kasutada ⟪GTI18N_49f72779_000020⟫defer⟪GTI18N_49f72779_000021⟫-lauset, et tagada mutexi avamine, nagu meetodis ⟪GTI18N_49f72779_000022⟫Value⟪GTI18N_49f72779_000023⟫.
+
+⟪GTI18N_49f72779_000024⟫

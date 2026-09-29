@@ -1,0 +1,28 @@
+* Pamattipi
+
+Go pamattipi ir
+
+	bool
+
+	string
+
+	int  int8  int16  int32  int64
+	uint uint8 uint16 uint32 uint64 uintptr
+
+	byte // aizstājvārds tipam uint8
+
+	rune // aizstājvārds tipam int32
+	     // attēlo Unicode koda punktu
+
+	float32 float64
+
+	complex64 complex128
+
+Piemērā ir parādīti vairāku tipu mainīgie,
+kā arī tas, ka mainīgo deklarācijas var “grupēt” blokos
+tāpat kā importēšanas priekšrakstus.
+
+Tipu `int`, `uint` un `uintptr` platums parasti ir 32 biti 32 bitu sistēmās un 64 biti 64 bitu sistēmās.
+Ja nepieciešama vesela skaitļa vērtība, izmantojiet `int`, ja vien nav īpaša iemesla izmantot noteikta izmēra vai vesela skaitļa tipu bez zīmes.
+
+.play basics/basic-types.go

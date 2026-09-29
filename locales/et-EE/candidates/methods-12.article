@@ -1,0 +1,11 @@
+* Liideseväärtused, mille aluseks olev väärtus on nil
+
+Kui liideses olev konkreetne väärtus ise on nil,
+kutsutakse meetod välja nil vastuvõtjaga.
+
+Mõnes keeles põhjustaks see nullviida erindi,
+kuid Go-s on tavaline kirjutada meetodeid, mis saavad nil vastuvõtjaga väljakutsega korrektselt hakkama (nagu selles näites meetod `M`).
+
+Pane tähele, et liideseväärtus, mis hoiab nil konkreetset väärtust, ei ole ise nil.
+
+.play methods/interface-values-with-nil.go

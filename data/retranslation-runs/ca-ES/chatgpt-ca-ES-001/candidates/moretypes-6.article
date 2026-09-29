@@ -1,0 +1,15 @@
+* Matrius
+
+El tipus `[n]T` és una matriu de `n` valors de tipus `T`.
+
+L'expressió
+
+	var a [10]int
+
+declara una variable `a` com una matriu de deu enters.
+
+La longitud d'una matriu forma part del seu tipus, de manera que les matrius no es poden redimensionar.
+Això pot semblar limitant, però no et preocupis:
+Go ofereix una manera pràctica de treballar amb matrius.
+
+.play moretypes/array.go

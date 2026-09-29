@@ -744,6 +744,38 @@ func TestTranslationKeepSkipsOnlyHighConfidenceOrdinaryGoVerb(t *testing.T) {
 	}
 }
 
+func TestPageKeepProtectionAllowsSentenceInitialCaseAdaptation(t *testing.T) {
+	glossary := &Glossary{Keep: []string{"Go", "Goroutines", "goroutines", "Slices", "slices"}}
+	tests := []struct {
+		name      string
+		source    string
+		term      string
+		protected bool
+	}{
+		{"sentence initial Slices", "Slices can be created with make.\n", "Slices", false},
+		{"sentence initial Goroutines", "Goroutines run in the same address space.\n", "Goroutines", false},
+		{"title Slices", "* Slices of slices\n", "Slices", true},
+		{"mid sentence Slices", "Other Slices share the array.\n", "Slices", true},
+		{"sentence initial Go", "Go has only one looping construct.\n", "Go", true},
+		{"lowercase slices", "slices can be created with make.\n", "slices", true},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			p := protectTranslation([]byte(tt.source), "12345678", glossary)
+			got := containsString(p.Values, tt.term)
+			if got != tt.protected {
+				t.Fatalf("%q protected=%t, want %t; text=%q values=%q", tt.term, got, tt.protected, p.Text, p.Values)
+			}
+		})
+	}
+
+	upperOnly := &Glossary{Keep: []string{"Slices"}}
+	p := protectTranslation([]byte("Slices can be created with make.\n"), "12345678", upperOnly)
+	if !containsString(p.Values, "Slices") {
+		t.Fatalf("sentence-initial capitalized keep without lowercase counterpart was exposed: text=%q values=%q", p.Text, p.Values)
+	}
+}
+
 func TestTranslationKeepProtectsGoroutineButNotMap(t *testing.T) {
 	glossary, err := LoadGlossary(repoRoot(t), "zh-CN")
 	if err != nil {

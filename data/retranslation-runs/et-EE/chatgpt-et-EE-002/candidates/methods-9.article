@@ -1,0 +1,11 @@
+* Liidesed
+
+_Liidesetüüp_ defineeritakse meetodisignatuuride hulgana.
+
+Liidesetüübi väärtus võib hoida mis tahes väärtust, mis need meetodid teostab.
+
+*Märkus:* näidiskoodi real 22 on viga.
+`Vertex` (väärtustüüp) ei teosta liidest `Abser`, sest
+meetod `Abs` on defineeritud ainult tüübile `*Vertex` (viidatüüp).
+
+.play methods/interfaces.go

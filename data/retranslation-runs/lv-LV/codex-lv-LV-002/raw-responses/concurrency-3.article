@@ -1,0 +1,11 @@
+* Buferēti kanāli
+
+Kanāli var būt ⟪GTI18N_caef0893_000001⟫buferēti⟪GTI18N_caef0893_000002⟫. Lai inicializētu buferētu kanālu, funkcijai ⟪GTI18N_caef0893_000003⟫make⟪GTI18N_caef0893_000004⟫ kā otro argumentu norādiet bufera garumu:
+
+⟪GTI18N_caef0893_000005⟫
+
+Nosūtīšana uz buferētu kanālu tiek bloķēta tikai tad, kad buferis ir pilns. Saņemšana tiek bloķēta, kad buferis ir tukšs.
+
+Mainiet piemēru tā, lai buferis tiktu pārpildīts, un pavērojiet, kas notiek.
+
+⟪GTI18N_caef0893_000006⟫

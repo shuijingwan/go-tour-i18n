@@ -1,0 +1,201 @@
+locale: et-EE
+mandatory:
+  A Tour of Go: Go tutvustus
+  Go Playground: Go Playground
+  previous: Eelmine
+  next: Järgmine
+  Run: Käivita
+  Format: Vorminda
+  Reset: Lähtesta
+  Kill: Peata
+  package: pakett
+  packages: paketid
+  package name: paketi nimi
+  interface: liides
+  interfaces: liidesed
+  interface type: liidesetüüp
+  interface types: liidesetüübid
+  interface value: liideseväärtus
+  interface values: liideseväärtused
+  concrete type: konkreetne tüüp
+  concrete types: konkreetsed tüübid
+# Go type assertion reveals an interface value's concrete value; it is
+# distinct from a type conversion. Estonian programming uses "väide" for
+# assertion, so "tüübiväide" keeps that distinction concise.
+  type assertion: tüübiväide
+  type assertions: tüübiväited
+  type switch: tüübivalik
+  type switches: tüübivalikud
+  type parameter: tüübiparameeter
+  type parameters: tüübiparameetrid
+  type argument: tüübiargument
+  type arguments: tüübiargumendid
+  constraint: tüübipiirang
+  constraints: tüübipiirangud
+  type inference: tüübituletus
+  type conversion: tüübiteisendus
+# "Konkurrentsus" is used in current Estonian university material for
+# concurrency and keeps it clearly separate from parallelism.
+  concurrency: konkurrentsus
+  parallelism: paralleelsus
+  channel: kanal
+  channels: kanalid
+  buffered channel: puhverdatud kanal
+  buffered channels: puhverdatud kanalid
+  unbuffered channel: puhverdamata kanal
+  unbuffered channels: puhverdamata kanalid
+  mutual exclusion: vastastikune välistamine
+# Receiver is the Go method receiver, not a communication endpoint.
+  receiver: vastuvõtja
+  receivers: vastuvõtjad
+  pointer receiver: viitvastuvõtja
+  pointer receivers: viitvastuvõtjad
+  value receiver: väärtusvastuvõtja
+  value receivers: väärtusvastuvõtjad
+# Go's zero value is the automatically provided neutral value of a type;
+# this term must not cause the predeclared identifier nil to be translated.
+  zero value: nullväärtus
+  zero values: nullväärtused
+  standard library: standardteek
+  syntax highlighting: süntaksi esiletõstmine
+preferred:
+  Go programming language: Go programmeerimiskeel
+  tour: tutvustus
+  the tour: tutvustus
+# Tour pages are distinct from external conference or lecture slides.
+  Tour slide: tutvustuse leht
+  Tour slides: tutvustuse lehed
+  presentation slides: esitlusslaidid
+  lecture slides: loenguslaidid
+  module: moodul
+  modules: moodulid
+  lesson: õppetund
+  lessons: õppetunnid
+  exercise: harjutus
+  exercises: harjutused
+  table of contents: sisukord
+  source code: lähtekood
+  sandbox: liivakast
+  deterministic output: deterministlik väljund
+  compile: kompileerima
+  compiler: kompilaator
+  link: linkima
+  import: importima
+  import path: imporditee
+  import statement: impordilause
+  exported name: eksporditud nimi
+  unexported name: eksportimata nimi
+  function: funktsioon
+  functions: funktsioonid
+  method: meetod
+  methods: meetodid
+  method set: meetodite hulk
+  function value: funktsiooniväärtus
+  function closure: funktsiooni sulund
+  closure: sulund
+  closures: sulundid
+  argument: argument
+  arguments: argumendid
+  parameter: parameeter
+  parameters: parameetrid
+  return value: tagastusväärtus
+  return values: tagastusväärtused
+  named return values: nimelised tagastusväärtused
+  naked return: argumentideta return-lause
+  variable: muutuja
+  variables: muutujad
+  declaration: deklaratsioon
+  short variable declaration: muutuja lühideklaratsioon
+  initializer: initsialiseerija
+  constant: konstant
+  constants: konstandid
+  untyped constant: tüübita konstant
+  numeric constant: arvkonstant
+  built-in: sisseehitatud
+  underlying type: aluseks olev tüüp
+  underlying value: aluseks olev väärtus
+  defined type: defineeritud tüüp
+  named type: nimeline tüüp
+  type set: tüübihulk
+  generic: geneeriline
+  generics: geneerilised tüübid
+  generic function: geneeriline funktsioon
+  generic type: geneeriline tüüp
+  type declaration: tüübi deklaratsioon
+  struct: struktuur
+  structs: struktuurid
+  struct type: struktuuritüüp
+  struct types: struktuuritüübid
+  struct value: struktuuriväärtus
+  struct values: struktuuriväärtused
+  struct field: struktuuriväli
+  struct fields: struktuuriväljad
+  struct literal: struktuuriliteraal
+  array: massiiv
+  arrays: massiivid
+  array literal: massiiviliteraal
+# Estonian programming material uses "viilutamine" for slicing. "Viil"
+# preserves the Go distinction between a slice and an array.
+  slice: viil
+  slices: viilud
+  slice literal: viiluliteraal
+  map: kujutis
+  maps: kujutised
+  map literal: kujutiseliteraal
+  key: võti
+  keys: võtmed
+  value: väärtus
+  values: väärtused
+  pointer: viit
+  pointers: viidad
+  pointer indirection: kaudne juurdepääs viida kaudu
+  length: pikkus
+  capacity: mahutavus
+  backing array: alusmassiiv
+  loop: tsükkel
+  loops: tsüklid
+  iteration: iteratsioon
+  loop condition: tsükli tingimus
+  range form: range-kuju
+  switch statement: switch-lause
+  select statement: select-lause
+  defer statement: defer-lause
+  goroutines: goroutine'id
+  Goroutines: Goroutine'id
+  Go runtime: Go käituskeskkond
+  synchronization: sünkroniseerimine
+  buffer: puhver
+  mutex: mutex
+  lock: lukk
+  deadlock: tupik
+  binary tree: kahendpuu
+  web crawler: veebirobot
+  reader: lugeja
+  stream: andmevoog
+  error: viga
+  error value: veaväärtus
+  run-time error: käitusaegne viga
+  test suite: testikomplekt
+forbidden:
+  - Golang
+  - Go mänguväljak
+  - gorutiin
+keep:
+  - Go
+  - Go Playground
+  - goroutine
+  - gofmt
+  - GOPATH
+  - nil
+  - URL
+  - API
+  - ASCII
+  - CPU
+  - UTC
+  - GitHub
+  - Yongye
+  - CDN
+  - USDC
+  - USDT
+  - Base
+  - Tron

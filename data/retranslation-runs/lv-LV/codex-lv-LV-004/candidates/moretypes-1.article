@@ -1,0 +1,24 @@
+* Rādītāji
+
+Go ir rādītāji.
+Rādītājs glabā vērtības atmiņas adresi.
+
+Tips `*T` ir rādītājs uz tipa `T` vērtību. Tā nulles vērtība ir `nil`.
+
+	var p *int
+
+Operators `&` izveido rādītāju uz tā operandu.
+
+	i := 42
+	p = &i
+
+Operators `*` apzīmē rādītāja pamatā esošo vērtību.
+
+	fmt.Println(*p) // nolasīt i caur rādītāju p
+	*p = 21         // iestatīt i caur rādītāju p
+
+To dēvē par atsauces atcelšanu jeb netiešu piekļuvi.
+
+Atšķirībā no C valodas Go valodā nav rādītāju aritmētikas.
+
+.play moretypes/pointers.go

@@ -1,0 +1,11 @@
+* Exercise: Slices
+
+Implement ⟪GTI18N_9c5fd763_000001⟫Pic⟪GTI18N_9c5fd763_000002⟫. It should return a slice of length ⟪GTI18N_9c5fd763_000003⟫dy⟪GTI18N_9c5fd763_000004⟫, each element of which is a slice of ⟪GTI18N_9c5fd763_000005⟫dx⟪GTI18N_9c5fd763_000006⟫ 8-bit unsigned integers. When you run the program, it will display your picture, interpreting the integers as grayscale (well, bluescale) values.
+
+The choice of image is up to you. Interesting functions include ⟪GTI18N_9c5fd763_000007⟫(x+y)/2⟪GTI18N_9c5fd763_000008⟫, ⟪GTI18N_9c5fd763_000009⟫x*y⟪GTI18N_9c5fd763_000010⟫, and ⟪GTI18N_9c5fd763_000011⟫x^y⟪GTI18N_9c5fd763_000012⟫.
+
+(You need to use a loop to allocate each ⟪GTI18N_9c5fd763_000013⟫[]uint8⟪GTI18N_9c5fd763_000014⟫ inside the ⟪GTI18N_9c5fd763_000015⟫[][]uint8⟪GTI18N_9c5fd763_000016⟫.)
+
+(Use ⟪GTI18N_9c5fd763_000017⟫uint8(intValue)⟪GTI18N_9c5fd763_000018⟫ to convert between types.)
+
+⟪GTI18N_9c5fd763_000019⟫

@@ -1,0 +1,11 @@
+* Uzdevums: šķēlumi
+
+Īstenojiet `Pic`. Tai jāatgriež šķēlums ar garumu `dy`, kura katrs elements ir šķēlums ar `dx` 8 bitu bezzīmes veseliem skaitļiem. Palaižot programmu, tā parādīs jūsu attēlu, interpretējot veselos skaitļus kā pelēktoņu (precīzāk, zilo toņu) vērtības.
+
+Attēla izvēle ir jūsu ziņā. Interesantas funkcijas ir `(x+y)/2`, `x*y` un `x^y`.
+
+(Lai piešķirtu atmiņu katram `[]uint8` šķēlumam ārējā `[][]uint8` šķēlumā, jāizmanto cikls.)
+
+(Tipu pārveidošanai izmantojiet `uint8(intValue)`.)
+
+.play moretypes/exercise-slices.go

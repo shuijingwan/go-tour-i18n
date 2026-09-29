@@ -1,0 +1,19 @@
+* Lugejad
+
+Pakett ⟪GTI18N_120c3fc9_000001⟫io⟪GTI18N_120c3fc9_000002⟫ määratleb liidese ⟪GTI18N_120c3fc9_000003⟫io.Reader⟪GTI18N_120c3fc9_000004⟫,
+mis esindab andmevoo lugemisotsa.
+
+⟪GTI18N_120c3fc9_000005⟫ standardteek sisaldab selle liidese [[⟪GTI18N_120c3fc9_000006⟫][paljusid teostusi]], sealhulgas faile, võrguühendusi, tihendajaid, šifreid ja muid.
+
+Liidesel ⟪GTI18N_120c3fc9_000007⟫io.Reader⟪GTI18N_120c3fc9_000008⟫ on meetod ⟪GTI18N_120c3fc9_000009⟫Read⟪GTI18N_120c3fc9_000010⟫:
+
+⟪GTI18N_120c3fc9_000011⟫
+
+⟪GTI18N_120c3fc9_000012⟫Read⟪GTI18N_120c3fc9_000013⟫ täidab antud baidiviilu andmetega ning tagastab täidetud baitide arvu
+ja veaväärtuse. Voo lõppedes tagastab see vea ⟪GTI18N_120c3fc9_000014⟫io.EOF⟪GTI18N_120c3fc9_000015⟫.
+
+Näidiskood loob
+[[⟪GTI18N_120c3fc9_000016⟫][⟪GTI18N_120c3fc9_000017⟫strings.Reader⟪GTI18N_120c3fc9_000018⟫]]
+ja loeb selle väljundit korraga 8 baiti.
+
+⟪GTI18N_120c3fc9_000019⟫

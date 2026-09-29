@@ -1,0 +1,26 @@
+* Põhitüübid
+
+Go põhitüübid on
+
+	bool
+
+	string
+
+	int  int8  int16  int32  int64
+	uint uint8 uint16 uint32 uint64 uintptr
+
+	byte // alias tüübile uint8
+
+	rune // alias tüübile int32
+	     // tähistab Unicode'i koodipunkti
+
+	float32 float64
+
+	complex64 complex128
+
+Näide näitab mitut tüüpi muutujaid ning ka seda, et muutujadeklaratsioone saab sarnaselt impordilausetega rühmitada plokkidesse.
+
+Tüübid `int`, `uint` ja `uintptr` on 32-bitistes süsteemides tavaliselt 32 biti ja 64-bitistes süsteemides 64 biti laiused.
+Kui vajad täisarvulist väärtust, kasuta üldjuhul tüüpi `int`, välja arvatud juhul, kui sul on kindel põhjus kasutada kindla suurusega või märgita täisarvutüüpi.
+
+.play basics/basic-types.go

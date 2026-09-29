@@ -1,0 +1,19 @@
+* Errors
+
+Els programes ⟪GTI18N_9eaab1fd_000001⟫ expressen els estats d'error mitjançant valors ⟪GTI18N_9eaab1fd_000002⟫error⟪GTI18N_9eaab1fd_000003⟫.
+
+El tipus ⟪GTI18N_9eaab1fd_000004⟫error⟪GTI18N_9eaab1fd_000005⟫ és una interfície integrada semblant a ⟪GTI18N_9eaab1fd_000006⟫fmt.Stringer⟪GTI18N_9eaab1fd_000007⟫:
+
+⟪GTI18N_9eaab1fd_000008⟫
+
+(Com passa amb ⟪GTI18N_9eaab1fd_000009⟫fmt.Stringer⟪GTI18N_9eaab1fd_000010⟫, el paquet ⟪GTI18N_9eaab1fd_000011⟫fmt⟪GTI18N_9eaab1fd_000012⟫ busca la interfície ⟪GTI18N_9eaab1fd_000013⟫error⟪GTI18N_9eaab1fd_000014⟫ quan
+imprimeix valors.)
+
+Les funcions sovint retornen un valor ⟪GTI18N_9eaab1fd_000015⟫error⟪GTI18N_9eaab1fd_000016⟫, i el codi que les crida ha de gestionar els errors
+comprovant si l'error és igual a ⟪GTI18N_9eaab1fd_000017⟫nil⟪GTI18N_9eaab1fd_000018⟫.
+
+⟪GTI18N_9eaab1fd_000019⟫
+
+Un valor ⟪GTI18N_9eaab1fd_000020⟫ de tipus ⟪GTI18N_9eaab1fd_000021⟫error⟪GTI18N_9eaab1fd_000022⟫ indica èxit; un valor no-⟪GTI18N_9eaab1fd_000023⟫ de tipus ⟪GTI18N_9eaab1fd_000024⟫error⟪GTI18N_9eaab1fd_000025⟫ indica fallada.
+
+⟪GTI18N_9eaab1fd_000026⟫

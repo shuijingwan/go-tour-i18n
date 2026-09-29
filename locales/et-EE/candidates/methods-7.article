@@ -1,0 +1,20 @@
+* Meetodid ja kaudne juurdepääs viida kaudu (2)
+
+Vastupidises suunas toimub samaväärne teisendus.
+
+Väärtusargumendiga funktsioonidele tuleb anda täpselt seda tüüpi väärtus:
+
+	var v Vertex
+	fmt.Println(AbsFunc(v))  // OK
+	fmt.Println(AbsFunc(&v)) // Kompileerimisviga!
+
+samas kui väärtusvastuvõtjaga meetodi väljakutsel võib vastuvõtjaks olla nii väärtus kui ka viit:
+
+	var v Vertex
+	fmt.Println(v.Abs()) // OK
+	p := &v
+	fmt.Println(p.Abs()) // OK
+
+Sel juhul tõlgendatakse meetodi väljakutset `p.Abs()` kujul `(*p).Abs()`.
+
+.play methods/indirection-values.go

@@ -1,0 +1,13 @@
+* Uzdevums: attēli
+
+Vai atceraties iepriekš uzrakstīto [[/tour/moretypes/18][attēlu ģeneratoru]]? Uzrakstīsim vēl vienu, taču šoreiz tas datu šķēluma vietā atgriezīs saskarnes `image.Image` īstenojumu.
+
+Definējiet savu tipu `Image`, ieviesiet [[/pkg/image/#Image][nepieciešamās metodes]] un izsauciet `pic.ShowImage`.
+
+`Bounds` jāatgriež `image.Rectangle`, piemēram, `image.Rect(0,`0,`w,`h)`.
+
+`ColorModel` jāatgriež `color.RGBAModel`.
+
+`At` jāatgriež krāsa; iepriekšējā attēlu ģeneratora vērtībai `v` šajā ģeneratorā atbilst `color.RGBA{v,`v,`255,`255}`.
+
+.play methods/exercise-images.go

@@ -1,0 +1,9 @@
+* If amb una sentència curta
+
+Com `for`, la sentència `if` pot començar amb una sentència curta que s'executa abans de la condició.
+
+Les variables declarades per aquesta sentència només estan dins de l'àmbit fins al final de l'`if`.
+
+(Prova d'utilitzar `v` a l'última sentència `return`.)
+
+.play flowcontrol/if-with-a-short-statement.go

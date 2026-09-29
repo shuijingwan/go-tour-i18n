@@ -1,0 +1,38 @@
+* Uzdevums: cikli un funkcijas
+
+Lai izmēģinātu funkcijas un ciklus, ieviesīsim kvadrātsaknes funkciju: dotam skaitlim x vēlamies atrast skaitli z, kura z² ir iespējami tuvs x.
+
+Datori parasti aprēķina x kvadrātsakni, izmantojot ciklu.
+Sākot ar kādu z tuvinājumu, varam koriģēt z atkarībā no tā, cik tuvs z² ir x,
+un iegūt labāku tuvinājumu:
+
+	z -= (z*z - x) / (2*z)
+
+Atkārtojot šo korekciju, tuvinājums kļūst arvien precīzāks,
+līdz iegūstam atbildi, kas ir tik tuva īstajai kvadrātsaknei, cik vien iespējams.
+
+Ieviesiet to dotajā `func`Sqrt`.
+Neatkarīgi no ievades labs sākotnējais z tuvinājums ir 1.
+Vispirms atkārtojiet aprēķinu 10 reizes un katrā solī izdrukājiet z.
+Pārbaudiet, cik tuvu atbildei nonākat dažādām x vērtībām (1, 2, 3, ...)
+un cik ātri tuvinājums uzlabojas.
+
+Padoms. Lai deklarētu un inicializētu peldošā komata vērtību,
+izmantojiet peldošā komata sintaksi vai pārveidošanu:
+
+	z := 1.0
+	z := float64(1)
+
+Pēc tam mainiet cikla nosacījumu, lai tas apstātos, tiklīdz vērtība vairs
+nemainās (vai mainās tikai pavisam nedaudz).
+Pārbaudiet, vai tam vajag vairāk vai mazāk par 10 iterācijām.
+Izmēģiniet citus sākotnējos z tuvinājumus, piemēram, x vai x/2.
+Cik tuvi jūsu funkcijas rezultāti ir standarta bibliotēkas [[/pkg/math/#Sqrt][math.Sqrt]] rezultātiem?
+
+(*Piezīme.* Ja jūs interesē algoritma detaļas, iepriekš minētais z² − x
+parāda, cik tālu z² ir no vajadzīgās vērtības (x), savukārt dalījums ar 2z ir z² atvasinājums,
+kas mērogo z korekciju atbilstoši z² izmaiņu ātrumam.
+Šo vispārīgo pieeju sauc par [[https://en.wikipedia.org/wiki/Newton%27s_method][Ņūtona metodi]].
+Tā labi darbojas daudzām funkcijām, bet īpaši labi — kvadrātsaknei.)
+
+.play flowcontrol/exercise-loops-and-functions.go

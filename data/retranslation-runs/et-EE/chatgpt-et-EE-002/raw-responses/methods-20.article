@@ -1,0 +1,21 @@
+* Harjutus: vead
+
+Kopeeri oma funktsioon ⟪GTI18N_41f1f733_000001⟫Sqrt⟪GTI18N_41f1f733_000002⟫ [[⟪GTI18N_41f1f733_000003⟫][varasemast harjutusest]] ja muuda seda nii, et see tagastaks ⟪GTI18N_41f1f733_000004⟫error⟪GTI18N_41f1f733_000005⟫-väärtuse.
+
+⟪GTI18N_41f1f733_000006⟫Sqrt⟪GTI18N_41f1f733_000007⟫ peab negatiivse arvu korral tagastama mitte-⟪GTI18N_41f1f733_000008⟫ veaväärtuse, sest kompleksarve see ei toeta.
+
+Loo uus tüüp
+
+⟪GTI18N_41f1f733_000009⟫
+
+ja tee sellest ⟪GTI18N_41f1f733_000010⟫error⟪GTI18N_41f1f733_000011⟫, lisades sellele meetodi
+
+⟪GTI18N_41f1f733_000012⟫
+
+nii, et ⟪GTI18N_41f1f733_000013⟫ErrNegativeSqrt(-2).Error()⟪GTI18N_41f1f733_000014⟫ tagastaks ⟪GTI18N_41f1f733_000015⟫"cannot`Sqrt`negative`number:`-2"⟪GTI18N_41f1f733_000016⟫.
+
+⟪GTI18N_41f1f733_000017⟫Märkus:⟪GTI18N_41f1f733_000018⟫ väljakutse ⟪GTI18N_41f1f733_000019⟫fmt.Sprint(e)⟪GTI18N_41f1f733_000020⟫ meetodi ⟪GTI18N_41f1f733_000021⟫Error⟪GTI18N_41f1f733_000022⟫ sees viib programmi lõpmatusse tsüklisse. Seda saab vältida, teisendades esmalt ⟪GTI18N_41f1f733_000023⟫e⟪GTI18N_41f1f733_000024⟫: ⟪GTI18N_41f1f733_000025⟫fmt.Sprint(float64(e))⟪GTI18N_41f1f733_000026⟫. Miks?
+
+Muuda funktsiooni ⟪GTI18N_41f1f733_000027⟫Sqrt⟪GTI18N_41f1f733_000028⟫ nii, et see tagastaks negatiivse arvu korral ⟪GTI18N_41f1f733_000029⟫ErrNegativeSqrt⟪GTI18N_41f1f733_000030⟫-väärtuse.
+
+⟪GTI18N_41f1f733_000031⟫

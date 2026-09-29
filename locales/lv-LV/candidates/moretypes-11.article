@@ -1,0 +1,18 @@
+* Šķēluma garums un ietilpība
+
+Šķēlumam ir gan _garums_, gan _ietilpība_.
+
+Šķēluma garums ir tajā ietverto elementu skaits.
+
+Šķēluma ietilpība ir pamatā esošā masīva elementu skaits,
+sākot no šķēluma pirmā elementa.
+
+Šķēluma `s` garumu un ietilpību var iegūt ar izteiksmēm
+`len(s)` un `cap(s)`.
+
+Šķēluma garumu var palielināt, izveidojot no tā jaunu šķēlumu,
+ja vien tam ir pietiekama ietilpība.
+Mēģiniet paraugprogrammā mainīt kādu šķēluma operāciju, lai paplašinātu šķēlumu
+pāri tā ietilpībai, un pavērojiet, kas notiek.
+
+.play moretypes/slice-len-cap.go

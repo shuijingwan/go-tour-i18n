@@ -1,0 +1,8 @@
+* Range
+
+La forma `range` del bucle `for` itera sobre un slice o un mapa.
+
+Quan s'itera amb range sobre un slice, es retornen dos valors per cada iteració.
+El primer és l'índex i el segon és una còpia de l'element en aquest índex.
+
+.play moretypes/range.go

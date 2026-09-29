@@ -1,0 +1,26 @@
+* Vead
+
+Go programmid väljendavad veaolekut `error`-väärtustega.
+
+Tüüp `error` on sisseehitatud liides, mis sarnaneb liidesega `fmt.Stringer`:
+
+	type error interface {
+		Error() string
+	}
+
+(Nagu `fmt.Stringer` puhul, otsib pakett `fmt` väärtuste
+väljatrükkimisel liidest `error`.)
+
+Funktsioonid tagastavad sageli `error`-väärtuse ning väljakutsuv kood peaks vigu käsitlema,
+kontrollides, kas viga võrdub väärtusega `nil`.
+
+	i, err := strconv.Atoi("42")
+	if err != nil {
+		fmt.Printf("couldn't convert number: %v\n", err)
+		return
+	}
+	fmt.Println("Converted integer:", i)
+
+nil `error` tähendab õnnestumist; mitte-nil `error` tähendab ebaõnnestumist.
+
+.play methods/errors.go

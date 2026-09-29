@@ -1,0 +1,9 @@
+* Harjutus: veebirobot
+
+Selles harjutuses kasutad Go konkurrentsuse võimalusi veebiroboti paralleelseks tööks.
+
+Muuda funktsiooni `Crawl` nii, et URL-e hangitaks paralleelselt, kuid sama URL ei hangitaks kaks korda.
+
+_Vihje_: juba hangitud URL-id saad talletada kujutisse, kuid kujutisi pole ilma lisakaitseta ohutu konkurentselt kasutada!
+
+.play concurrency/exercise-web-crawler.go

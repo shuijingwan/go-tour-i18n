@@ -1,0 +1,15 @@
+* Massiivid
+
+Tüüp `[n]T` on massiiv, mis sisaldab `n` tüüpi `T` väärtust.
+
+Avaldis
+
+	var a [10]int
+
+deklareerib muutuja `a` kümne täisarvuga massiivina.
+
+Massiivi pikkus on osa selle tüübist, seega ei saa massiivi suurust muuta.
+See võib tunduda piirav, kuid ära muretse:
+Go pakub massiividega töötamiseks mugavat viisi.
+
+.play moretypes/array.go

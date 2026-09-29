@@ -1,0 +1,37 @@
+* Exercici: bucles i funcions
+
+Per practicar amb funcions i bucles, implementarem una funció d'arrel quadrada: donat un nombre x, volem trobar el nombre z per al qual z² sigui tan proper com sigui possible a x.
+
+Els ordinadors solen calcular l'arrel quadrada de x mitjançant un bucle.
+Partint d'una estimació z, podem ajustar z segons com de proper sigui z² a x,
+i obtenir així una estimació millor:
+
+⟪GTI18N_d8bbee84_000001⟫
+
+Repetir aquest ajust fa que l'estimació sigui cada vegada millor
+fins que arribem a una resposta tan propera a l'arrel quadrada real com sigui possible.
+
+Implementa-ho a la ⟪GTI18N_d8bbee84_000002⟫func`Sqrt⟪GTI18N_d8bbee84_000003⟫ proporcionada.
+Una bona estimació inicial per a z és 1, independentment de l'entrada.
+Per començar, repeteix el càlcul 10 vegades i imprimeix cada z durant el procés.
+Observa fins a quin punt t'acostes a la resposta per a diversos valors de x (1, 2, 3, ...)
+i amb quina rapidesa millora l'estimació.
+
+Consell: per declarar i inicialitzar un valor de coma flotant,
+utilitza sintaxi de coma flotant o una conversió:
+
+⟪GTI18N_d8bbee84_000004⟫
+
+A continuació, canvia la condició del bucle perquè s'aturi quan el valor deixi
+de canviar (o només canviï una quantitat molt petita).
+Comprova si calen més o menys de 10 iteracions.
+Prova altres estimacions inicials per a z, com x o x/2.
+Fins a quin punt s'apropen els resultats de la teva funció a [[⟪GTI18N_d8bbee84_000005⟫][math.Sqrt]] de la biblioteca estàndard?
+
+(⟪GTI18N_d8bbee84_000006⟫Nota:⟪GTI18N_d8bbee84_000007⟫ si t'interessen els detalls de l'algorisme, el z² − x d'abans
+indica a quina distància es troba z² d'on hauria de ser (x), i la divisió per 2z és la derivada
+de z², que serveix per escalar l'ajust de z segons la rapidesa amb què canvia z².
+Aquest enfocament general s'anomena [[⟪GTI18N_d8bbee84_000008⟫][mètode de Newton]].
+Funciona bé per a moltes funcions, però especialment bé per a l'arrel quadrada.)
+
+⟪GTI18N_d8bbee84_000009⟫

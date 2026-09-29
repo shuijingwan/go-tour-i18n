@@ -1,0 +1,13 @@
+* Saskarnes vērtības
+
+Iekšēji saskarnes vērtību var uztvert kā vērtības un
+konkrēta tipa pāri:
+
+	(value, type)
+
+Saskarnes vērtība glabā konkrēta pamatā esošā tipa vērtību.
+
+Izsaucot saskarnes vērtības metodi, tiek izpildīta tāda paša nosaukuma metode
+tās pamatā esošajam tipam.
+
+.play methods/interface-values.go

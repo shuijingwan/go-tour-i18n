@@ -1,0 +1,7 @@
+* Select
+
+`select`-lause võimaldab goroutine-il oodata mitut sideoperatsiooni.
+
+`select` blokeerib, kuni üht selle harudest saab täita, ja seejärel täidab selle haru. Kui valmis on mitu haru, valib see neist ühe juhuslikult.
+
+.play concurrency/select.go

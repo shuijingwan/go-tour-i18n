@@ -1,0 +1,11 @@
+* Slices: com referències a matrius
+
+Un slice no emmagatzema dades;
+només descriu una secció d'una matriu subjacent.
+
+Modificar els elements d'un slice modifica els
+elements corresponents de la seva matriu subjacent.
+
+Altres slices que comparteixin la mateixa matriu subjacent veuran aquests canvis.
+
+.play moretypes/slices-pointers.go

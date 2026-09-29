@@ -1,0 +1,19 @@
+* sync.Mutex
+
+Oleme näinud, et kanalid sobivad suurepäraselt goroutine'ide vaheliseks suhtluseks.
+
+Aga mis siis, kui suhtlust pole vaja? Kui tahame lihtsalt tagada, et konfliktide vältimiseks pääseks muutujale korraga ligi ainult üks goroutine?
+
+Seda mõistet nimetatakse vastastikuseks _välistamiseks_ ning seda tagava andmestruktuuri tavapärane nimi on _mutex_.
+
+Go standardteek pakub vastastikust välistamist
+[[/pkg/sync/#Mutex][`sync.Mutex`]] abil ja selle kahe meetodiga:
+
+- `Lock`
+- `Unlock`
+
+Saame määrata koodiploki, mida täidetakse vastastikuse välistamisega, ümbritsedes selle meetodite `Lock` ja `Unlock` väljakutsetega, nagu näidatud meetodis `Inc`.
+
+Samuti saame kasutada `defer`-lauset, et tagada mutexi avamine, nagu meetodis `Value`.
+
+.play concurrency/mutex-counter.go

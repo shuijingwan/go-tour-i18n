@@ -1,0 +1,17 @@
+* Go Playground
+
+See tutvustus kasutab [[https://play.golang.org/][Go Playground]] teenust, mis töötab [[/][golang.org]] serverites.
+
+Teenus võtab vastu Go programmi, kompileerib ja lingib selle, käivitab programmi liivakastis ning tagastab väljundi.
+
+Playgroundis käivitatavatele programmidele kehtivad mõned piirangud:
+
+- Playgroundis algab aeg hetkest 2009-11-10 23:00:00 UTC (selle kuupäeva tähenduse väljaselgitamine jääb lugejale harjutuseks). See muudab programmide vahemällu salvestamise lihtsamaks, sest nende väljund on deterministlik.
+
+- Piiratud on ka täitmisaeg ning CPU ja mälu kasutus ning programm ei pääse ligi välistele võrguressurssidele.
+
+Playground kasutab Go uusimat stabiilset väljalaset.
+
+Lisateavet leiad artiklist "[[/blog/playground][Go Playground telgitagused]]".
+
+.play welcome/sandbox.go

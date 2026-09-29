@@ -1,0 +1,20 @@
+* Kanalid
+
+Kanalid on tüübistatud ühendusteed, mille kaudu saab kanalioperaatori `<-` abil väärtusi saata ja vastu võtta.
+
+	ch <- v    // Saada v kanalisse ch.
+	v := <-ch  // Võta vastu kanalist ch ja
+	           // omista väärtus muutujale v.
+
+(Andmed liiguvad noole suunas.)
+
+Nagu kujutised ja viilud, tuleb ka kanalid enne kasutamist luua:
+
+	ch := make(chan int)
+
+Vaikimisi blokeerivad nii saatmine kui ka vastuvõtmine, kuni teine pool on valmis. See võimaldab goroutine'e sünkroniseerida ilma selgesõnaliste lukkude või tingimusmuutujateta.
+
+Näidiskood summeerib viilu arvud, jagades töö kahe goroutine'i vahel.
+Kui mõlemad goroutine'id on arvutamise lõpetanud, arvutatakse lõpptulemus.
+
+.play concurrency/channels.go

@@ -1,0 +1,9 @@
+* Apilament de defers
+
+Les crides a funcions ajornades s'afegeixen a una pila. Quan una funció retorna, les seves
+crides ajornades s'executen en ordre d'última entrada, primera sortida.
+
+Per saber-ne més sobre les sentències defer, llegeix aquesta
+[[/blog/defer-panic-and-recover][entrada del blog]].
+
+.play flowcontrol/defer-multi.go

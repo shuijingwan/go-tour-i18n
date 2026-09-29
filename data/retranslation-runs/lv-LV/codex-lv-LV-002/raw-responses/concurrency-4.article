@@ -1,0 +1,15 @@
+* Range un Close
+
+Sūtītājs var aizvērt kanālu ar ⟪GTI18N_3e925c67_000001⟫close⟪GTI18N_3e925c67_000002⟫, lai norādītu, ka vērtības vairs netiks sūtītas. Saņēmēji var pārbaudīt, vai kanāls ir aizvērts, saņemšanas izteiksmei piešķirot otru parametru: pēc
+
+⟪GTI18N_3e925c67_000003⟫
+
+⟪GTI18N_3e925c67_000004⟫ok⟪GTI18N_3e925c67_000005⟫ ir ⟪GTI18N_3e925c67_000006⟫false⟪GTI18N_3e925c67_000007⟫, ja vairs nav saņemamu vērtību un kanāls ir aizvērts.
+
+Cikls ⟪GTI18N_3e925c67_000008⟫for`i`:=`range`c⟪GTI18N_3e925c67_000009⟫ atkārtoti saņem vērtības no kanāla, līdz tas tiek aizvērts.
+
+⟪GTI18N_3e925c67_000010⟫Piezīme.⟪GTI18N_3e925c67_000011⟫ Kanālu drīkst aizvērt tikai sūtītājs, nevis saņēmējs. Nosūtīšana uz aizvērtu kanālu izraisīs paniku.
+
+⟪GTI18N_3e925c67_000012⟫Papildu*piezīme:⟪GTI18N_3e925c67_000013⟫ Kanāli nav kā faili; parasti tie nav jāaizver. Aizvēršana ir nepieciešama tikai tad, ja saņēmējam jāpaziņo, ka jaunu vērtību vairs nebūs, piemēram, lai pārtrauktu ⟪GTI18N_3e925c67_000014⟫range⟪GTI18N_3e925c67_000015⟫ ciklu.
+
+⟪GTI18N_3e925c67_000016⟫

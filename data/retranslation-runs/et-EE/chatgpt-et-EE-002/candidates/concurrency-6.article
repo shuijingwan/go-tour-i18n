@@ -1,0 +1,14 @@
+* Vaikeharu
+
+`default`-haru `select`-lauses täidetakse siis, kui ükski teine haru pole valmis.
+
+Kasuta `default`-haru, et proovida saatmist või vastuvõtmist ilma blokeerimata:
+
+	select {
+	case i := <-c:
+		// kasuta i
+	default:
+		// vastuvõtmine kanalist c blokeeriks
+	}
+
+.play concurrency/default-selection.go

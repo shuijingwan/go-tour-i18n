@@ -1,0 +1,21 @@
+* Tipu pārveidošana
+
+Izteiksme `T(v)` pārveido vērtību `v` par tipu `T`.
+
+Daži skaitlisku tipu pārveidošanas piemēri:
+
+	var i int = 42
+	var f float64 = float64(i)
+	var u uint = uint(f)
+
+Vai, izsakoties vienkāršāk:
+
+	i := 42
+	f := float64(i)
+	u := uint(f)
+
+Atšķirībā no C valodā Go, piešķirot viena tipa vērtību cita tipa mainīgajam, ir nepieciešama
+skaidri norādīta pārveidošana.
+Mēģiniet piemērā noņemt pārveidošanu uz `float64` vai `uint` un pavērojiet, kas notiek.
+
+.play basics/type-conversions.go

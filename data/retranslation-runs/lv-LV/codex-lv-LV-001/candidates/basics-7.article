@@ -1,0 +1,11 @@
+* Nosauktas atgrieztās vērtības
+
+Go atgrieztajām vērtībām var piešķirt nosaukumus. Tādā gadījumā tās tiek uzskatītas par mainīgajiem, kas definēti funkcijas sākumā.
+
+Šie nosaukumi jāizmanto, lai paskaidrotu atgriezto vērtību nozīmi.
+
+Priekšraksts `return` bez argumentiem atgriež nosauktās atgrieztās vērtības. To dēvē par “tukšo” atgriešanu.
+
+Tukšos atgriešanas priekšrakstus vajadzētu izmantot tikai īsās funkcijās, kā parādīts šajā piemērā. Garākās funkcijās tie var apgrūtināt koda lasāmību.
+
+.play basics/named-results.go

@@ -1,0 +1,16 @@
+* La interfície buida
+
+El tipus d'interfície que especifica zero mètodes es coneix com a _interfície_buida_:
+
+	interface{}
+
+Una interfície buida pot contenir valors de qualsevol tipus.
+(Tots els tipus implementen, com a mínim, zero mètodes.)
+
+`any` és un àlies de `interface{}`, i tots dos són completament
+equivalents.
+
+Les interfícies buides s'utilitzen en codi que gestiona valors de tipus desconegut.
+Per exemple, `fmt.Print` accepta qualsevol nombre d'arguments de tipus `any`.
+
+.play methods/empty-interface.go

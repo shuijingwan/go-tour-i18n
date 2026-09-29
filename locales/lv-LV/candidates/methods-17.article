@@ -1,0 +1,12 @@
+* Stringer tipi
+
+Viena no visplašāk izmantotajām saskarnēm ir [[/pkg/fmt/#Stringer][`Stringer`]], ko definē pakotne [[/pkg/fmt/][`fmt`]].
+
+	type Stringer interface {
+		String() string
+	}
+
+`Stringer` ir tips, kas spēj aprakstīt sevi kā virkni. Pakotne `fmt`
+(un daudzas citas) meklē šo saskarni, lai izdrukātu vērtības.
+
+.play methods/stringer.go

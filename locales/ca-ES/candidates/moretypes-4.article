@@ -1,0 +1,10 @@
+* Punters a estructures
+
+Es pot accedir als camps d'una estructura a través d'un punter a l'estructura.
+
+Per accedir al camp `X` d'una estructura quan tenim el punter `p` a l'estructura, podríem
+escriure `(*p).X`.
+Tanmateix, aquesta notació és feixuga, de manera que el llenguatge ens permet
+escriure simplement `p.X`, sense la desreferenciació explícita.
+
+.play moretypes/struct-pointers.go

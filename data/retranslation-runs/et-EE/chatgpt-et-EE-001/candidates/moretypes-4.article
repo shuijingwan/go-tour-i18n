@@ -1,0 +1,8 @@
+* Viidad struktuuridele
+
+Struktuuri väljadele pääseb ligi ka struktuuriviida kaudu.
+
+Kui meil on struktuuriviit `p`, võiks struktuuri väljale `X` ligi pääsemiseks kirjutada `(*p).X`.
+See märgistus on aga kohmakas, seega lubab keel kirjutada lihtsalt `p.X` ilma selgesõnalise dereferentseerimiseta.
+
+.play moretypes/struct-pointers.go

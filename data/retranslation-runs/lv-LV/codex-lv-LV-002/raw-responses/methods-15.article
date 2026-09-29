@@ -1,0 +1,25 @@
+* Tipa apgalvojumi
+
+⟪GTI18N_c205b4eb_000001⟫Tipa_apgalvojums⟪GTI18N_c205b4eb_000002⟫ nodrošina piekļuvi saskarnes vērtības pamatā esošajai konkrētajai vērtībai.
+
+⟪GTI18N_c205b4eb_000003⟫
+
+Šis priekšraksts apgalvo, ka saskarnes vērtība ⟪GTI18N_c205b4eb_000004⟫i⟪GTI18N_c205b4eb_000005⟫ glabā konkrēto tipu ⟪GTI18N_c205b4eb_000006⟫T⟪GTI18N_c205b4eb_000007⟫,
+un piešķir pamatā esošo ⟪GTI18N_c205b4eb_000008⟫T⟪GTI18N_c205b4eb_000009⟫ vērtību mainīgajam ⟪GTI18N_c205b4eb_000010⟫t⟪GTI18N_c205b4eb_000011⟫.
+
+Ja ⟪GTI18N_c205b4eb_000012⟫i⟪GTI18N_c205b4eb_000013⟫ neglabā ⟪GTI18N_c205b4eb_000014⟫T⟪GTI18N_c205b4eb_000015⟫, priekšraksts izraisīs paniku.
+
+Lai ⟪GTI18N_c205b4eb_000016⟫pārbaudītu⟪GTI18N_c205b4eb_000017⟫, vai saskarnes vērtība glabā konkrētu tipu,
+tipa apgalvojums var atgriezt divas vērtības: pamatā esošo vērtību
+un Būla vērtību, kas norāda, vai apgalvojums ir izdevies.
+
+⟪GTI18N_c205b4eb_000018⟫
+
+Ja ⟪GTI18N_c205b4eb_000019⟫i⟪GTI18N_c205b4eb_000020⟫ glabā ⟪GTI18N_c205b4eb_000021⟫T⟪GTI18N_c205b4eb_000022⟫, tad ⟪GTI18N_c205b4eb_000023⟫t⟪GTI18N_c205b4eb_000024⟫ būs pamatā esošā vērtība un ⟪GTI18N_c205b4eb_000025⟫ok⟪GTI18N_c205b4eb_000026⟫ būs true.
+
+Pretējā gadījumā ⟪GTI18N_c205b4eb_000027⟫ok⟪GTI18N_c205b4eb_000028⟫ būs false un ⟪GTI18N_c205b4eb_000029⟫t⟪GTI18N_c205b4eb_000030⟫ būs tipa ⟪GTI18N_c205b4eb_000031⟫T⟪GTI18N_c205b4eb_000032⟫ nulles vērtība,
+un panika neradīsies.
+
+Ievērojiet šīs sintakses līdzību ar lasīšanu no vārdnīcas.
+
+⟪GTI18N_c205b4eb_000033⟫

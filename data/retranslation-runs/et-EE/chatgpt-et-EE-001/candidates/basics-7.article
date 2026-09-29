@@ -1,0 +1,11 @@
+* Nimelised tagastusväärtused
+
+Go tagastusväärtused võivad olla nimelised. Sel juhul käsitletakse neid funktsiooni alguses defineeritud muutujatena.
+
+Nende nimede abil tuleks kirjeldada tagastusväärtuste tähendust.
+
+Argumentideta `return`-lause tagastab nimelised tagastusväärtused. Seda nimetatakse argumentideta return-lauseks.
+
+Argumentideta return-lauset tuleks kasutada ainult lühikestes funktsioonides, nagu siin näites. Pikemates funktsioonides võib see loetavust halvendada.
+
+.play basics/named-results.go

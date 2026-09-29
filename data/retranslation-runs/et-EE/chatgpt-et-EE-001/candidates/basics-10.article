@@ -1,0 +1,7 @@
+* Muutuja lühideklaratsioonid
+
+Funktsiooni sees võib ilmutamata tüübiga `var`-deklaratsiooni asemel kasutada lühikest omistuslauset `:=`.
+
+Väljaspool funktsiooni algab iga lause võtmesõnaga (`var`, `func` jne), mistõttu konstruktsiooni `:=` seal kasutada ei saa.
+
+.play basics/short-variable-declarations.go

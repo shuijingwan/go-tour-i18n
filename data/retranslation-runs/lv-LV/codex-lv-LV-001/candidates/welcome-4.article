@@ -1,0 +1,17 @@
+* Go bezsaistē (neobligāti)
+
+Šis ceļvedis ir pieejams arī kā savrupa programma, ko varat izmantot
+bez piekļuves internetam. Tā izveido un palaiž koda piemērus
+jūsu datorā.
+
+Lai ceļvedi palaistu lokāli, vispirms
+[[/doc/install][instalējiet Go]] un pēc tam izpildiet:
+
+  go install golang.org/x/website/tour@latest
+
+Tādējādi jūsu
+[[/cmd/go/#hdr-GOPATH_and_Modules][GOPATH]] direktorijā `bin` tiks ievietots izpildfails `tour`.
+Palaižot ceļveža programmu, tā atvērs tīmekļa pārlūkprogrammu, kurā būs redzama
+jūsu lokālā ceļveža versija.
+
+Protams, varat turpināt apgūt ceļvedi arī šajā tīmekļa vietnē.

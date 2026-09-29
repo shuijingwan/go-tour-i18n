@@ -1,0 +1,15 @@
+* Tühi liides
+
+Liidesetüüpi, mis ei määra ühtegi meetodit, nimetatakse tühjaks ⟪GTI18N_7a09a765_000001⟫liideseks⟪GTI18N_7a09a765_000002⟫:
+
+⟪GTI18N_7a09a765_000003⟫
+
+Tühi liides võib hoida mis tahes tüüpi väärtusi.
+(Iga tüüp teostab vähemalt null meetodit.)
+
+⟪GTI18N_7a09a765_000004⟫any⟪GTI18N_7a09a765_000005⟫ on tüübi ⟪GTI18N_7a09a765_000006⟫interface{}⟪GTI18N_7a09a765_000007⟫ alias ja need kaks on täielikult samaväärsed.
+
+Tühje liideseid kasutatakse koodis, mis käsitleb tundmatu tüübiga väärtusi.
+Näiteks võtab ⟪GTI18N_7a09a765_000008⟫fmt.Print⟪GTI18N_7a09a765_000009⟫ suvalise arvu argumente tüübiga ⟪GTI18N_7a09a765_000010⟫any⟪GTI18N_7a09a765_000011⟫.
+
+⟪GTI18N_7a09a765_000012⟫

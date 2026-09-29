@@ -1,0 +1,14 @@
+* Viilu pikkus ja mahutavus
+
+Viilul on nii _pikkus_ kui ka _mahutavus_.
+
+Viilu pikkus on selles sisalduvate elementide arv.
+
+Viilu mahutavus on elementide arv alusmassiivis alates viilu esimesest elemendist.
+
+Viilu `s` pikkuse ja mahutavuse saad avaldistega `len(s)` ja `cap(s)`.
+
+Viilu pikkust saab uue viilutamisega suurendada, kui selle mahutavusest piisab.
+Proovi näidisprogrammis muuta mõnd viilutamistoimingut nii, et viil ulatuks üle oma mahutavuse, ja vaata, mis juhtub.
+
+.play moretypes/slice-len-cap.go

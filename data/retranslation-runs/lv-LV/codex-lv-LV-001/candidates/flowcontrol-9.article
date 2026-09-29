@@ -1,0 +1,13 @@
+* Switch
+
+Priekšraksts `switch` ļauj īsāk pierakstīt priekšrakstu `if`-`else` virkni.
+Tas izpilda pirmo gadījumu, kura vērtība ir vienāda ar nosacījuma izteiksmi.
+
+Valodas Go switch priekšraksts līdzinās C, C++, Java, JavaScript un PHP valodu switch priekšrakstam,
+taču Go izpilda tikai izvēlēto gadījumu, nevis visus tam sekojošos.
+Faktiski priekšraksts `break`, kas šajās valodās ir vajadzīgs katra gadījuma beigās,
+valodā Go tiek nodrošināts automātiski.
+Vēl viena būtiska atšķirība ir tā, ka Go switch gadījumiem nav jābūt
+konstantēm un iesaistītajām vērtībām nav jābūt veseliem skaitļiem.
+
+.play flowcontrol/switch.go

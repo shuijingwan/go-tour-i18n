@@ -1,0 +1,16 @@
+* Mètodes i indirecció de punter
+
+Si compares els dos programes anteriors, potser observaràs que
+les funcions amb un argument punter han de rebre un punter:
+
+⟪GTI18N_39fb725b_000001⟫Error de compilació!⟪GTI18N_39fb725b_000002⟫mentre que els mètodes amb receptors de punter accepten tant un valor com un punter com a
+receptor quan es criden:
+
+⟪GTI18N_39fb725b_000003⟫
+
+Per a la sentència ⟪GTI18N_39fb725b_000004⟫v.Scale(5)⟪GTI18N_39fb725b_000005⟫, encara que ⟪GTI18N_39fb725b_000006⟫v⟪GTI18N_39fb725b_000007⟫ és un valor i no un punter,
+el mètode amb receptor de punter es crida automàticament.
+És a dir, per comoditat, ⟪GTI18N_39fb725b_000008⟫ interpreta la sentència ⟪GTI18N_39fb725b_000009⟫v.Scale(5)⟪GTI18N_39fb725b_000010⟫ com
+⟪GTI18N_39fb725b_000011⟫(&v).Scale(5)⟪GTI18N_39fb725b_000012⟫ perquè el mètode ⟪GTI18N_39fb725b_000013⟫Scale⟪GTI18N_39fb725b_000014⟫ té un receptor de punter.
+
+⟪GTI18N_39fb725b_000015⟫

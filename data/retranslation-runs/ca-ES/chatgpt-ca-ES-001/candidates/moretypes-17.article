@@ -1,0 +1,12 @@
+* Range (continuació)
+
+Pots ometre l'índex o el valor assignant-lo a `_`.
+
+    for i, _ := range pow
+    for _, value := range pow
+
+Si només vols l'índex, pots ometre la segona variable.
+
+    for i := range pow
+
+.play moretypes/range-continued.go

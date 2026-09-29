@@ -1,0 +1,21 @@
+* Pildid
+
+[[/pkg/image/#Image][Pakett image]] defineerib liidese `Image`:
+
+	package image
+
+	type Image interface {
+		ColorModel() color.Model
+		Bounds() Rectangle
+		At(x, y int) color.Color
+	}
+
+*Märkus*: meetodi `Bounds` tagastusväärtus `Rectangle` on tegelikult
+[[/pkg/image/#Rectangle][`image.Rectangle`]], sest
+deklaratsioon asub paketis `image`.
+
+(Kõik üksikasjad leiad [[/pkg/image/#Image][dokumentatsioonist]].)
+
+Tüübid `color.Color` ja `color.Model` on samuti liidesed, kuid jätame selle kõrvale, kasutades valmis teostusi `color.RGBA` ja `color.RGBAModel`. Need liidesed ja tüübid määratleb [[/pkg/image/color/][pakett image/color]].
+
+.play methods/images.go

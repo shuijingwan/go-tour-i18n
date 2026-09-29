@@ -1,0 +1,26 @@
+* Kļūdas
+
+Go programmas kļūdas stāvokli izsaka ar `error` vērtībām.
+
+Tips `error` ir iebūvēta saskarne, kas līdzinās `fmt.Stringer`:
+
+	type error interface {
+		Error() string
+	}
+
+(Tāpat kā `fmt.Stringer` gadījumā, pakotne `fmt`, drukājot vērtības,
+meklē saskarni `error`.)
+
+Funkcijas bieži atgriež `error` vērtību, un izsaucošajam kodam kļūdas jāapstrādā,
+pārbaudot, vai kļūda ir vienāda ar `nil`.
+
+	i, err := strconv.Atoi("42")
+	if err != nil {
+		fmt.Printf("couldn't convert number: %v\n", err)
+		return
+	}
+	fmt.Println("Converted integer:", i)
+
+Nil `error` apzīmē sekmīgu izpildi; `error`, kas nav nil, apzīmē kļūmi.
+
+.play methods/errors.go

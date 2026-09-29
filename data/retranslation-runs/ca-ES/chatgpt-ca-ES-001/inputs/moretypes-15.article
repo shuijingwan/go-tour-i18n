@@ -1,0 +1,21 @@
+* Appending to a ⟪GTI18N_f2fc257e_000001⟫
+
+It is common to append new elements to a ⟪GTI18N_f2fc257e_000002⟫, and so ⟪GTI18N_f2fc257e_000003⟫ provides a built-in
+⟪GTI18N_f2fc257e_000004⟫append⟪GTI18N_f2fc257e_000005⟫ function. The [[⟪GTI18N_f2fc257e_000006⟫][documentation]]
+of the built-in package describes ⟪GTI18N_f2fc257e_000007⟫append⟪GTI18N_f2fc257e_000008⟫.
+
+⟪GTI18N_f2fc257e_000009⟫
+
+The first parameter ⟪GTI18N_f2fc257e_000010⟫s⟪GTI18N_f2fc257e_000011⟫ of ⟪GTI18N_f2fc257e_000012⟫append⟪GTI18N_f2fc257e_000013⟫ is a ⟪GTI18N_f2fc257e_000014⟫ of type ⟪GTI18N_f2fc257e_000015⟫T⟪GTI18N_f2fc257e_000016⟫, and the rest are
+⟪GTI18N_f2fc257e_000017⟫T⟪GTI18N_f2fc257e_000018⟫ values to append to the ⟪GTI18N_f2fc257e_000019⟫.
+
+The resulting value of ⟪GTI18N_f2fc257e_000020⟫append⟪GTI18N_f2fc257e_000021⟫ is a ⟪GTI18N_f2fc257e_000022⟫ containing all the elements of the
+original ⟪GTI18N_f2fc257e_000023⟫ plus the provided values.
+
+If the backing array of ⟪GTI18N_f2fc257e_000024⟫s⟪GTI18N_f2fc257e_000025⟫ is too small to fit all the given values a bigger
+array will be allocated. The returned ⟪GTI18N_f2fc257e_000026⟫ will point to the newly allocated
+array.
+
+(To learn more about ⟪GTI18N_f2fc257e_000027⟫, read the [[⟪GTI18N_f2fc257e_000028⟫][⟪GTI18N_f2fc257e_000029⟫: usage and internals]] article.)
+
+⟪GTI18N_f2fc257e_000030⟫

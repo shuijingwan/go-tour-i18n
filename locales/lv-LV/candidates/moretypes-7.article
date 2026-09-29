@@ -1,0 +1,23 @@
+* Šķēlumi
+
+Masīvam ir fiksēts izmērs.
+Savukārt šķēlums ir dinamiski maināma izmēra,
+elastīgs skats uz masīva elementiem.
+Praksē šķēlumus izmanto daudz biežāk nekā masīvus.
+
+Tips `[]T` ir šķēlums ar tipa `T` elementiem.
+
+Šķēlumu veido, norādot divus indeksus — apakšējo un
+augšējo robežu —, kas atdalīti ar kolu:
+
+	a[low : high]
+
+Tādējādi tiek atlasīts pusatvērts diapazons, kurā pirmais
+elements ir iekļauts, bet pēdējais nav.
+
+Šī izteiksme izveido šķēlumu, kurā iekļauti
+`a` elementi no 1. līdz 3.:
+
+	a[1:4]
+
+.play moretypes/slices.go

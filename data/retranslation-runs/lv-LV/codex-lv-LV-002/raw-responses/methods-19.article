@@ -1,0 +1,19 @@
+* Kļūdas
+
+⟪GTI18N_9eaab1fd_000001⟫ programmas kļūdas stāvokli izsaka ar ⟪GTI18N_9eaab1fd_000002⟫error⟪GTI18N_9eaab1fd_000003⟫ vērtībām.
+
+Tips ⟪GTI18N_9eaab1fd_000004⟫error⟪GTI18N_9eaab1fd_000005⟫ ir iebūvēta saskarne, kas līdzinās ⟪GTI18N_9eaab1fd_000006⟫fmt.Stringer⟪GTI18N_9eaab1fd_000007⟫:
+
+⟪GTI18N_9eaab1fd_000008⟫
+
+(Tāpat kā ⟪GTI18N_9eaab1fd_000009⟫fmt.Stringer⟪GTI18N_9eaab1fd_000010⟫ gadījumā, pakotne ⟪GTI18N_9eaab1fd_000011⟫fmt⟪GTI18N_9eaab1fd_000012⟫, drukājot vērtības,
+meklē saskarni ⟪GTI18N_9eaab1fd_000013⟫error⟪GTI18N_9eaab1fd_000014⟫.)
+
+Funkcijas bieži atgriež ⟪GTI18N_9eaab1fd_000015⟫error⟪GTI18N_9eaab1fd_000016⟫ vērtību, un izsaucošajam kodam kļūdas jāapstrādā,
+pārbaudot, vai kļūda ir vienāda ar ⟪GTI18N_9eaab1fd_000017⟫nil⟪GTI18N_9eaab1fd_000018⟫.
+
+⟪GTI18N_9eaab1fd_000019⟫
+
+Nil ⟪GTI18N_9eaab1fd_000020⟫error⟪GTI18N_9eaab1fd_000021⟫ apzīmē sekmīgu izpildi; ⟪GTI18N_9eaab1fd_000022⟫error⟪GTI18N_9eaab1fd_000023⟫, kas nav nil, apzīmē kļūmi.
+
+⟪GTI18N_9eaab1fd_000024⟫

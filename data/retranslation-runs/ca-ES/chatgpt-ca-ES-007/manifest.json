@@ -1,0 +1,50 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-ca-ES-007",
+  "locale": "ca-ES",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 3,
+  "units": [
+    {
+      "unit_id": "moretypes/13",
+      "unit_kind": "page",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "d057e6bf75421597d430ff52f844499b5828ab2c4b4c5148ad88b6b89326ac20",
+      "input_path": "inputs/moretypes-13.article",
+      "input_sha256": "478a4eb302e03693dbcecf8198db48ae688110a9947b024e850222faf12d1e81",
+      "protected_token_count": 11,
+      "previous_snapshot_id": "qc-002",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "C",
+      "previous_finding": "Previous capitalization issue is gone, but revision «Slices es poden crear...» introduces a bare plural preverbal subject without a determiner, which is not natural/acceptable Catalan. Preserve slice technical identity and source semantics while restoring a grammatical Catalan noun phrase; if exact-case protection blocks this, diagnose the protector/contract rather than publishing the bare subject."
+    },
+    {
+      "unit_id": "moretypes/14",
+      "unit_kind": "page",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "d8bee22c0382cf5fd5647c4d7106165d153cb15aaed8ec82e1f06e12ad0c73d1",
+      "input_path": "inputs/moretypes-14.article",
+      "input_sha256": "8d692c6adf8be9121572d9f6a814f1f1f1e13c75479af77653704b63e619e818",
+      "protected_token_count": 4,
+      "previous_snapshot_id": "qc-002",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "C",
+      "previous_finding": "Revision «Slices poden contenir qualsevol tipus...» likewise introduces a bare plural preverbal subject. The earlier article+mid-sentence capitalization issue is gone, but the new structure is not publication-quality Catalan. Preserve slice identity and full source meaning while restoring natural Catalan syntax; diagnose exact-case protection if needed."
+    },
+    {
+      "unit_id": "concurrency/1",
+      "unit_kind": "page",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "d0a9c45078c2255540cfffe48744a07fa04ab5c2113e8880068b5a400ae0ebdc",
+      "input_path": "inputs/concurrency-1.article",
+      "input_sha256": "889ebc08aa5df0a75d80e018b3c8f5c49ff423621eee372d57e660c8b10e2901",
+      "protected_token_count": 25,
+      "previous_snapshot_id": "qc-002",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "C",
+      "previous_finding": "Revision «Goroutines s'executen...» removes the prior article+mid-sentence capitalization issue but introduces the same bare plural preverbal subject defect. Preserve goroutine technical identity and the same-address-space semantics while restoring grammatical Catalan; diagnose exact-case protection if needed."
+    }
+  ]
+}

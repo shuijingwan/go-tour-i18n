@@ -1,0 +1,15 @@
+* Goroutine'id
+
+_goroutine_ on kerge lõim, mida haldab Go käituskeskkond.
+
+	go f(x, y, z)
+
+käivitab uue goroutine, mis täidab
+
+	f(x, y, z)
+
+Avaldised `f`, `x`, `y` ja `z` hinnatakse praeguses goroutine-is ning `f` täidetakse uues goroutine-is.
+
+Goroutine'id töötavad samas aadressiruumis, seega tuleb juurdepääs jagatud mälule sünkroniseerida. Pakett [[/pkg/sync/][`sync`]] pakub selleks kasulikke primitiive, kuigi Go-s pole neid teiste primitiivide tõttu kuigi sageli vaja. (Vaata järgmist lehte.)
+
+.play concurrency/goroutines.go

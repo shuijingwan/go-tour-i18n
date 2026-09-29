@@ -1,0 +1,15 @@
+* Switch'i harude hindamise järjekord
+
+Switch'i harusid hinnatakse ülalt alla ja peatutakse esimese sobiva haru juures.
+
+(Näiteks
+
+	switch i {
+	case 0:
+	case f():
+	}
+
+ei kutsu välja `f`-i, kui `i==0`.)
+
+
+.play flowcontrol/switch-evaluation-order.go

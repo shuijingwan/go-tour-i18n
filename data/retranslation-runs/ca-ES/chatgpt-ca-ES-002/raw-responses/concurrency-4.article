@@ -1,0 +1,15 @@
+* Range i Close
+
+Un emissor pot ⟪GTI18N_3e925c67_000001⟫close⟪GTI18N_3e925c67_000002⟫ un canal per indicar que no s'enviaran més valors. Els receptors poden comprovar si un canal s'ha tancat assignant un segon paràmetre a l'expressió de recepció: després de
+
+⟪GTI18N_3e925c67_000003⟫
+
+⟪GTI18N_3e925c67_000004⟫ok⟪GTI18N_3e925c67_000005⟫ és ⟪GTI18N_3e925c67_000006⟫false⟪GTI18N_3e925c67_000007⟫ si no queden més valors per rebre i el canal està tancat.
+
+El bucle ⟪GTI18N_3e925c67_000008⟫for`i`:=`range`c⟪GTI18N_3e925c67_000009⟫ rep repetidament valors del canal fins que es tanca.
+
+⟪GTI18N_3e925c67_000010⟫Nota:⟪GTI18N_3e925c67_000011⟫ només l'emissor ha de tancar un canal, mai el receptor. Enviar a un canal tancat provocarà un ⟪GTI18N_3e925c67_000012⟫.
+
+⟪GTI18N_3e925c67_000013⟫Una*altra*nota:⟪GTI18N_3e925c67_000014⟫ els canals no són com els fitxers; normalment no cal tancar-los. Tancar-los només és necessari quan cal indicar al receptor que no arribaran més valors, per exemple per acabar un bucle ⟪GTI18N_3e925c67_000015⟫range⟪GTI18N_3e925c67_000016⟫.
+
+⟪GTI18N_3e925c67_000017⟫

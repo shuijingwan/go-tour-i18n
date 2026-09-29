@@ -1,0 +1,12 @@
+* Saskarnes vērtības ar nil pamatā esošām vērtībām
+
+Ja konkrētā vērtība saskarnē pati ir nil,
+metode tiks izsaukta ar nil saņēmēju.
+
+Dažās valodās tas izraisītu nulles rādītāja izņēmumu,
+bet valodā Go parasti raksta metodes, kas korekti apstrādā izsaukumu
+ar nil saņēmēju (kā šajā piemērā metode `M`).
+
+Ņemiet vērā, ka saskarnes vērtība, kurā glabājas nil konkrētā vērtība, pati nav nil.
+
+.play methods/interface-values-with-nil.go

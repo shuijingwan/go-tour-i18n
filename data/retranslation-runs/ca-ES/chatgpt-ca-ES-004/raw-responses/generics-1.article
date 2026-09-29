@@ -1,0 +1,17 @@
+* Paràmetres de tipus
+
+Les funcions ⟪GTI18N_01a04510_000001⟫ es poden escriure perquè funcionin amb diversos tipus mitjançant paràmetres de tipus. Els
+paràmetres de tipus d'una funció apareixen entre claudàtors, abans dels
+arguments de la funció.
+
+⟪GTI18N_01a04510_000002⟫
+
+Aquesta declaració vol dir que ⟪GTI18N_01a04510_000003⟫s⟪GTI18N_01a04510_000004⟫ és un ⟪GTI18N_01a04510_000005⟫ de qualsevol tipus ⟪GTI18N_01a04510_000006⟫T⟪GTI18N_01a04510_000007⟫ que compleixi la
+restricció integrada ⟪GTI18N_01a04510_000008⟫comparable⟪GTI18N_01a04510_000009⟫. ⟪GTI18N_01a04510_000010⟫x⟪GTI18N_01a04510_000011⟫ també és un valor del mateix tipus.
+
+⟪GTI18N_01a04510_000012⟫comparable⟪GTI18N_01a04510_000013⟫ és una restricció útil que permet utilitzar els operadors ⟪GTI18N_01a04510_000014⟫==⟪GTI18N_01a04510_000015⟫ i
+⟪GTI18N_01a04510_000016⟫!=⟪GTI18N_01a04510_000017⟫ sobre valors del tipus. En aquest exemple, la fem servir per comparar un
+valor amb tots els elements del ⟪GTI18N_01a04510_000018⟫ fins que trobem una coincidència. Aquesta funció ⟪GTI18N_01a04510_000019⟫Index⟪GTI18N_01a04510_000020⟫ funciona
+amb qualsevol tipus que admeti comparacions.
+
+⟪GTI18N_01a04510_000021⟫

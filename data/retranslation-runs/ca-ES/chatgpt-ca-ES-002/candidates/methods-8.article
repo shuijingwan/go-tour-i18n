@@ -1,0 +1,17 @@
+* Triar un receptor de valor o de punter
+
+Hi ha dos motius per utilitzar un receptor de punter.
+
+El primer és que permet que el mètode modifiqui el valor al qual apunta el receptor.
+
+El segon és evitar copiar el valor en cada crida al mètode.
+Això pot ser més eficient si el receptor és, per exemple, una estructura gran.
+
+En aquest exemple, tant `Scale` com `Abs` són mètodes amb un receptor de tipus `*Vertex`,
+tot i que el mètode `Abs` no necessita modificar el receptor.
+
+En general, tots els mètodes d'un tipus determinat haurien de tenir receptors de valor o bé de punter,
+però no una barreja de tots dos.
+(Veurem per què al llarg de les pàgines següents.)
+
+.play methods/methods-with-pointer-receivers.go

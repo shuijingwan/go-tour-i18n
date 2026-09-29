@@ -1,0 +1,16 @@
+* Kanalid
+
+Kanalid on tüübistatud ühendusteed, mille kaudu saab kanalioperaatori ⟪GTI18N_a35e3af2_000001⟫<-⟪GTI18N_a35e3af2_000002⟫ abil väärtusi saata ja vastu võtta.
+
+⟪GTI18N_a35e3af2_000003⟫Saada ⟪GTI18N_a35e3af2_000004⟫ kanalisse ⟪GTI18N_a35e3af2_000005⟫.⟪GTI18N_a35e3af2_000006⟫Võta vastu kanalist ⟪GTI18N_a35e3af2_000007⟫ ja⟪GTI18N_a35e3af2_000008⟫omista väärtus muutujale ⟪GTI18N_a35e3af2_000009⟫.⟪GTI18N_a35e3af2_000010⟫(Andmed liiguvad noole suunas.)
+
+Nagu kujutised ja viilud, tuleb ka kanalid enne kasutamist luua:
+
+⟪GTI18N_a35e3af2_000011⟫
+
+Vaikimisi blokeerivad nii saatmine kui ka vastuvõtmine, kuni teine pool on valmis. See võimaldab goroutine'e sünkroniseerida ilma selgesõnaliste lukkude või tingimusmuutujateta.
+
+Näidiskood summeerib viilu arvud, jagades töö kahe goroutine'i vahel.
+Kui mõlemad goroutine'id on arvutamise lõpetanud, arvutatakse lõpptulemus.
+
+⟪GTI18N_a35e3af2_000012⟫

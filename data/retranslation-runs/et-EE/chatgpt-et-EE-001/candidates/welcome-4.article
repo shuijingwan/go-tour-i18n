@@ -1,0 +1,14 @@
+* Go võrguühenduseta (valikuline)
+
+See tutvustus on saadaval ka eraldiseisva programmina, mida saad kasutada ilma internetiühenduseta. Programm ehitab ja käivitab koodinäited sinu enda arvutis.
+
+Tutvustuse kohalikuks käivitamiseks pead esmalt
+[[/doc/install][installima Go]] ja seejärel käivitama:
+
+  go install golang.org/x/website/tour@latest
+
+See paigutab binaarfaili `tour` sinu
+[[/cmd/go/#hdr-GOPATH_and_Modules][GOPATH]] kataloogi `bin`.
+Kui käivitad programmi tour, avab see veebibrauseri, kus kuvatakse tutvustuse kohalik versioon.
+
+Loomulikult võid tutvustust jätkata ka selle veebisaidi kaudu.

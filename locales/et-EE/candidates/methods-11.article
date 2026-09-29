@@ -1,0 +1,11 @@
+* Liideseväärtused
+
+Sisemiselt võib liideseväärtust käsitleda väärtuse ja konkreetse tüübi paarina:
+
+	(value, type)
+
+Liideseväärtus hoiab kindla aluseks oleva konkreetse tüübi väärtust.
+
+Meetodi väljakutse liideseväärtusel käivitab sama nimega meetodi selle aluseks oleval tüübil.
+
+.play methods/interface-values.go

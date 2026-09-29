@@ -1,0 +1,19 @@
+* Tipu izvēles priekšraksti
+
+⟪GTI18N_26e4da09_000001⟫Tipu_izvēles_priekšraksts⟪GTI18N_26e4da09_000002⟫ ir konstrukcija, kas ļauj secīgi izpildīt vairākus tipa apgalvojumus.
+
+Tipu izvēles priekšraksts līdzinās parastam switch priekšrakstam, taču tipu
+izvēles priekšraksta gadījumi norāda tipus (nevis vērtības), un šie tipi tiek salīdzināti ar
+dotajā saskarnes vērtībā glabātās vērtības tipu.
+
+⟪GTI18N_26e4da09_000003⟫šeit ⟪GTI18N_26e4da09_000004⟫ tips ir ⟪GTI18N_26e4da09_000005⟫⟪GTI18N_26e4da09_000006⟫šeit ⟪GTI18N_26e4da09_000007⟫ tips ir ⟪GTI18N_26e4da09_000008⟫⟪GTI18N_26e4da09_000009⟫nav atbilstības; šeit ⟪GTI18N_26e4da09_000010⟫ tips ir tāds pats kā ⟪GTI18N_26e4da09_000011⟫⟪GTI18N_26e4da09_000012⟫Deklarācijai tipu izvēles priekšrakstā ir tāda pati sintakse kā tipa apgalvojumam ⟪GTI18N_26e4da09_000013⟫i.(T)⟪GTI18N_26e4da09_000014⟫,
+taču konkrētais tips ⟪GTI18N_26e4da09_000015⟫T⟪GTI18N_26e4da09_000016⟫ ir aizstāts ar atslēgvārdu ⟪GTI18N_26e4da09_000017⟫type⟪GTI18N_26e4da09_000018⟫.
+
+Šis switch priekšraksts pārbauda, vai saskarnes vērtība ⟪GTI18N_26e4da09_000019⟫i⟪GTI18N_26e4da09_000020⟫
+glabā tipa ⟪GTI18N_26e4da09_000021⟫T⟪GTI18N_26e4da09_000022⟫ vai ⟪GTI18N_26e4da09_000023⟫S⟪GTI18N_26e4da09_000024⟫ vērtību.
+Gadījumā ⟪GTI18N_26e4da09_000025⟫T⟪GTI18N_26e4da09_000026⟫ mainīgā ⟪GTI18N_26e4da09_000029⟫v⟪GTI18N_26e4da09_000030⟫ tips būs ⟪GTI18N_26e4da09_000031⟫T⟪GTI18N_26e4da09_000032⟫, bet gadījumā ⟪GTI18N_26e4da09_000027⟫S⟪GTI18N_26e4da09_000028⟫ — tips
+⟪GTI18N_26e4da09_000033⟫S⟪GTI18N_26e4da09_000034⟫; abos gadījumos tas glabās vērtību, ko glabā ⟪GTI18N_26e4da09_000035⟫i⟪GTI18N_26e4da09_000036⟫.
+Noklusējuma gadījumā (kad nav atbilstības) mainīgajam ⟪GTI18N_26e4da09_000037⟫v⟪GTI18N_26e4da09_000038⟫ ir
+tāds pats saskarnes tips un vērtība kā ⟪GTI18N_26e4da09_000039⟫i⟪GTI18N_26e4da09_000040⟫.
+
+⟪GTI18N_26e4da09_000041⟫

@@ -1,0 +1,11 @@
+* Puhverdatud kanalid
+
+Kanalid võivad olla _puhverdatud_.  Puhverdatud kanali initsialiseerimiseks anna puhvri pikkus funktsiooni `make` teise argumendina:
+
+	ch := make(chan int, 100)
+
+Puhverdatud kanalisse saatmine blokeerib ainult siis, kui puhver on täis. Vastuvõtmine blokeerib, kui puhver on tühi.
+
+Muuda näidet nii, et puhver saaks üle täidetud, ja vaata, mis juhtub.
+
+.play concurrency/buffered-channels.go

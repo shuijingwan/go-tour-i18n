@@ -1,0 +1,15 @@
+* Range ja close
+
+Saatja saab kanali `close`, et näidata, et rohkem väärtusi ei saadeta. Vastuvõtjad saavad kontrollida, kas kanal on suletud, omistades vastuvõtuavaldisest ka teise väärtuse: pärast
+
+	v, ok := <-ch
+
+on `ok` väärtus `false`, kui rohkem väärtusi vastu võtta pole ja kanal on suletud.
+
+Tsükkel `for`i`:=`range`c` võtab kanalist väärtusi korduvalt vastu, kuni kanal suletakse.
+
+*Märkus:* kanali peaks sulgema ainult saatja, mitte kunagi vastuvõtja. Suletud kanalisse saatmine põhjustab panic'u.
+
+*Lisa*märkus:* kanalid ei ole nagu failid; tavaliselt pole neid vaja sulgeda. Sulgemine on vajalik ainult siis, kui vastuvõtjale tuleb teatada, et rohkem väärtusi ei tule, näiteks `range`-tsükli lõpetamiseks.
+
+.play concurrency/range-and-close.go

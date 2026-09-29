@@ -1,0 +1,8 @@
+* Exercici: Stringers
+
+Fes que el tipus `IPAddr` implementi `fmt.Stringer` per imprimir l'adreça en
+notació decimal amb punts.
+
+Per exemple, `IPAddr{1,`2,`3,`4}` s'hauria d'imprimir com `"1.2.3.4"`.
+
+.play methods/exercise-stringer.go

@@ -1,0 +1,20 @@
+* Kanāli
+
+Kanāli ir tipizēts ceļš, pa kuru var nosūtīt un saņemt vērtības, izmantojot kanāla operatoru `<-`.
+
+	ch <- v    // Nosūtīt v uz kanālu ch.
+	v := <-ch  // Saņemt no ch un
+	           // piešķirt vērtību v.
+
+(Dati plūst bultiņas virzienā.)
+
+Tāpat kā vārdnīcas un šķēlumi, kanāli pirms lietošanas ir jāizveido:
+
+	ch := make(chan int)
+
+Pēc noklusējuma nosūtīšana un saņemšana tiek bloķēta, līdz otra puse ir gatava. Tas ļauj goroutines sinhronizēties bez skaidri norādītām slēdzenēm vai nosacījumu mainīgajiem.
+
+Parauga kods saskaita šķēluma skaitļus, sadalot darbu starp divām goroutines.
+Kad abas goroutines ir pabeigušas aprēķinus, tas aprēķina gala rezultātu.
+
+.play concurrency/channels.go

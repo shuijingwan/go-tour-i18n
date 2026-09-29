@@ -1,0 +1,12 @@
+* Valors d'interfície amb valors nil subjacents
+
+Si el valor concret dins de la interfície és nil,
+el mètode es cridarà amb un receptor nil.
+
+En alguns llenguatges això provocaria una excepció de punter nul,
+però a Go és habitual escriure mètodes que gestionin correctament que se'ls cridi
+amb un receptor nil (com el mètode `M` d'aquest exemple).
+
+Tingues en compte que un valor d'interfície que conté un valor concret nil no és, ell mateix, nil.
+
+.play methods/interface-values-with-nil.go

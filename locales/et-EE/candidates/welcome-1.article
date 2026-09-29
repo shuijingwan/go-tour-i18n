@@ -1,0 +1,34 @@
+* Tere, 世界
+
+Tere tulemast [[/][Go programmeerimiskeele]] tutvustusse.
+
+Tutvustus on jagatud mooduliteks, mille loendi avamiseks klõpsa lehe vasakus ülanurgas
+[[javascript:highlight(".logo")][Go tutvustus]].
+
+Sisukorda saad igal ajal vaadata, klõpsates lehe paremas ülanurgas [[javascript:highlightAndClick(".nav")][menüüd]].
+
+Kogu tutvustuse jooksul leiad järjest lehti ja harjutusi, mis tuleb läbi teha.
+
+Nende vahel saad liikuda järgmiselt:
+
+- eelmisele lehele minekuks kasuta [[javascript:highlight(".prev-page")]["Eelmine"]] või klahvi `PageUp`,
+
+- järgmisele lehele minekuks kasuta [[javascript:highlight(".next-page")]["Järgmine"]] või klahvi `PageDown`.
+
+Tutvustus on interaktiivne. Klõpsa nüüd nuppu
+[[javascript:highlightAndClick("#run")][Käivita]]
+(või vajuta `Shift` + `Enter`), et programm kaugserveris kompileerida ja käivitada.
+Tulemus kuvatakse koodi all.
+
+Need näidisprogrammid tutvustavad Go eri tahke. Tutvustuse programmid on mõeldud lähtepunktiks sinu enda katsetustele.
+
+Muuda programmi ja käivita see uuesti.
+
+Kui klõpsad [[javascript:highlightAndClick("#format")][Vorminda]]
+(kiirklahv: `Ctrl` + `Enter`), vormindatakse redaktoris olev tekst tööriistaga
+[[/cmd/gofmt/][gofmt]]. Süntaksi esiletõstmise saad sisse või välja lülitada,
+klõpsates nuppu [[javascript:highlightAndClick(".syntax-checkbox")][süntaks]].
+
+Kui oled valmis edasi liikuma, klõpsa all olevat [[javascript:highlightAndClick(".next-page")][paremnoolt]] või vajuta klahvi `PageDown`.
+
+.play welcome/hello.go

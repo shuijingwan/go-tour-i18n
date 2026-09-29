@@ -1,0 +1,7 @@
+* Select
+
+Select priekšraksts `select` ļauj goroutine gaidīt vairākas saziņas operācijas.
+
+`select` tiek bloķēts, līdz var izpildīt kādu no tā gadījumiem, un tad izpilda šo gadījumu. Ja gatavi ir vairāki gadījumi, tas vienu izvēlas nejauši.
+
+.play concurrency/select.go

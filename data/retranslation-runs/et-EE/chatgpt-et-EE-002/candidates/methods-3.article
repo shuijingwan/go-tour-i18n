@@ -1,0 +1,11 @@
+* Meetodid, jätk
+
+Meetodi saab deklareerida ka tüübile, mis ei ole struktuur.
+
+Selles näites näeme arvulist tüüpi `MyFloat`, millel on meetod `Abs`.
+
+Meetodi saab deklareerida ainult sellise vastuvõtjaga, mille tüüp on defineeritud meetodiga samas paketis.
+Meetodit ei saa deklareerida vastuvõtjaga, mille tüüp on defineeritud mõnes teises
+paketis (sealhulgas sisseehitatud tüübid, näiteks `int`).
+
+.play methods/methods-continued.go

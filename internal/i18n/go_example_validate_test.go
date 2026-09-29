@@ -57,6 +57,30 @@ func TestValidateGoExampleCandidateAllowsNumericConstantsShiftVerbTranslation(t 
 	}
 }
 
+func TestValidateGoExampleCandidateAllowsSliceVerbTranslationButKeepsSliceNoun(t *testing.T) {
+	root := t.TempDir()
+	dir := filepath.Join(root, "locales", "ca-ES")
+	if err := os.MkdirAll(dir, 0755); err != nil {
+		t.Fatal(err)
+	}
+	body := "mandatory:\n  Go: Go\npreferred:\nforbidden:\nkeep:\n  - Slice\n  - slice\n"
+	if err := os.WriteFile(filepath.Join(dir, "glossary.yaml"), []byte(body), 0644); err != nil {
+		t.Fatal(err)
+	}
+
+	source := "package main\n\n// Slice the slice to give it zero length.\nfunc main() {}\n"
+	candidate := "package main\n\n// Torna a segmentar el slice perquè tingui longitud zero.\nfunc main() {}\n"
+	unit := goExampleValidationUnit(source)
+	if err := ValidateGoExampleCandidate(root, unit, "ca-ES", []byte(candidate)); err != nil {
+		t.Fatalf("translated Slice verb candidate: %v", err)
+	}
+
+	invalid := "package main\n\n// Torna a segmentar el segment perquè tingui longitud zero.\nfunc main() {}\n"
+	if err := ValidateGoExampleCandidate(root, unit, "ca-ES", []byte(invalid)); err == nil || !strings.Contains(err.Error(), "glossary.keep") {
+		t.Fatalf("translated technical slice noun error=%v", err)
+	}
+}
+
 func TestValidateGoExampleCandidateRejectsNonCommentChanges(t *testing.T) {
 	root := t.TempDir()
 	writeGoExampleValidationGlossary(t, root)

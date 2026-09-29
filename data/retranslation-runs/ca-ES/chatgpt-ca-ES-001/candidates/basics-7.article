@@ -1,0 +1,11 @@
+* Valors de retorn amb nom
+
+Els valors de retorn de Go poden tenir nom. Si en tenen, es tracten com a variables definides al principi de la funció.
+
+Aquests noms s'han d'utilitzar per documentar el significat dels valors de retorn.
+
+Una sentència `return` sense arguments retorna els valors de retorn amb nom. Això es coneix com un retorn «nu».
+
+Les sentències de retorn nu només s'han d'utilitzar en funcions curtes, com en l'exemple que es mostra aquí. En funcions més llargues poden perjudicar la llegibilitat.
+
+.play basics/named-results.go

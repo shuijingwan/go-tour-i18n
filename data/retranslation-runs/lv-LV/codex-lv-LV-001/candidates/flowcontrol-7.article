@@ -1,0 +1,9 @@
+* If un else
+
+Mainīgie, kas deklarēti `if` īsajā priekšrakstā, ir pieejami arī visos
+`else` blokos.
+
+(Abi `pow` izsaukumi atgriež rezultātus, pirms tiek sākts `fmt.Println`
+izsaukums funkcijā `main`.)
+
+.play flowcontrol/if-and-else.go

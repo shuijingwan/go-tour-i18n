@@ -1,0 +1,27 @@
+* Modificació de mapes
+
+Insereix o actualitza un element al mapa `m`:
+
+	m[key] = elem
+
+Recupera un element:
+
+	elem = m[key]
+
+Elimina un element:
+
+	delete(m, key)
+
+Comprova que una clau hi és present amb una assignació de dos valors:
+
+	elem, ok = m[key]
+
+Si `key` és a `m`, `ok` és `true`. Si no, `ok` és `false`.
+
+Si `key` no és al mapa, `elem` és el valor zero del tipus d'element del mapa.
+
+*Nota:* si `elem` o `ok` encara no s'han declarat, pots utilitzar una forma de declaració curta:
+
+	elem, ok := m[key]
+
+.play moretypes/mutating-maps.go

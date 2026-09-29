@@ -1,0 +1,18 @@
+* Uzdevums: līdzvērtīgi binārie koki
+
+Vienu un to pašu saglabāto vērtību secību var attēlot daudzi dažādi binārie koki. Piemēram, šeit ir divi binārie koki, kas glabā secību 1, 1, 2, 3, 5, 8, 13.
+
+.image /tour/static/img/tree.png
+
+Lielākajā daļā valodu funkcija, kas pārbauda, vai divi binārie koki glabā vienu un to pašu secību, ir diezgan sarežģīta. Vienkāršam risinājumam izmantosim Go laiksakritību un kanālus.
+
+Šajā piemērā izmantota pakotne `tree`, kas definē tipu:
+
+	type Tree struct {
+		Left  *Tree
+		Value int
+		Right *Tree
+	}
+
+
+Apraksta turpinājums ir [[javascript:click('.next-page')][nākamajā lapā]].

@@ -1,0 +1,16 @@
+* Tukša saskarne
+
+Saskarnes tips, kurā nav norādīta neviena metode, ir _tukša_saskarne_:
+
+	interface{}
+
+Tukša saskarne var glabāt jebkura tipa vērtības.
+(Katrs tips īsteno vismaz nulli metožu.)
+
+`any` ir tipa `interface{}` aizstājvārds, un abi ir pilnīgi
+līdzvērtīgi.
+
+Tukšas saskarnes izmanto kodā, kas apstrādā nezināma tipa vērtības.
+Piemēram, `fmt.Print` pieņem jebkuru skaitu tipa `any` argumentu.
+
+.play methods/empty-interface.go

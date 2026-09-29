@@ -1,0 +1,16 @@
+* Tüübiparameetrid
+
+Go funktsioone saab tüübiparameetrite abil kirjutada töötama mitme tüübiga. Funktsiooni
+tüübiparameetrid asuvad nurksulgudes enne funktsiooni
+argumente.
+
+  func Index[T comparable](s []T, x T) int
+
+See deklaratsioon tähendab, et `s` on viil suvalisest tüübist `T`, mis rahuldab
+sisseehitatud tüübipiirangut `comparable`. Ka `x` on sama tüüpi väärtus.
+
+`comparable` on kasulik tüübipiirang, mis võimaldab selle tüübi väärtustega kasutada operaatoreid `==` ja
+`!=`. Selles näites võrdleme selle abil väärtust kõigi viilu elementidega, kuni leiame vaste. Funktsioon `Index` töötab
+iga tüübiga, mis toetab võrdlemist.
+
+.play generics/index.go

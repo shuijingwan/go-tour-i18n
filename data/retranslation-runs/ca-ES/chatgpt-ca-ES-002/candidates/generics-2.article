@@ -1,0 +1,12 @@
+* Tipus genèrics
+
+A més de funcions genèriques, Go també admet tipus genèrics. Un tipus es pot
+parametritzar amb un paràmetre de tipus, cosa que pot ser útil per implementar
+estructures de dades genèriques.
+
+Aquest exemple mostra una declaració de tipus senzilla per a una llista simplement enllaçada
+que pot contenir valors de qualsevol tipus.
+
+Com a exercici, afegeix funcionalitat a aquesta implementació de llista.
+
+.play generics/list.go

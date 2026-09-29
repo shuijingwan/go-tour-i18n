@@ -1,0 +1,12 @@
+* Harjutus: rot13Reader
+
+Levinud muster on [[/pkg/io/#Reader][io.Reader]], mis ümbritseb teist `io.Reader`-it ja muudab voogu mingil viisil.
+
+Näiteks võtab funktsioon [[/pkg/compress/gzip/#NewReader][gzip.NewReader]] argumendiks `io.Reader`-i (tihendatud andmete voo) ning tagastab `*gzip.Reader`-i, mis teostab samuti liidest `io.Reader` (lahtipakitud andmete voog).
+
+Teosta `rot13Reader`, mis teostab liidest `io.Reader` ja loeb `io.Reader`-ist, muutes voogu nii, et rakendab kõigile tähestikumärkidele [[https://en.wikipedia.org/wiki/ROT13][rot13]] asendusšifrit.
+
+Tüüp `rot13Reader` on juba antud.
+Pane see teostama liidest `io.Reader`, teostades selle meetodi `Read`.
+
+.play methods/exercise-rot-reader.go

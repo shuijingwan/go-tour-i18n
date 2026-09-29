@@ -1,0 +1,24 @@
+* Receptors de punter
+
+Pots declarar mètodes amb receptors de punter.
+
+Això vol dir que el tipus del receptor té la sintaxi literal `*T` per a algun tipus `T`.
+(A més, `T` no pot ser, al seu torn, un punter com ara `*int`.)
+
+Per exemple, el mètode `Scale` d'aquí està definit sobre `*Vertex`.
+
+Els mètodes amb receptors de punter poden modificar el valor al qual apunta el receptor
+(com fa `Scale` aquí).
+Com que sovint els mètodes necessiten modificar el receptor, els receptors de punter són més
+habituals que els receptors de valor.
+
+Prova d'eliminar el `*` de la declaració de la funció `Scale` de la línia 16
+i observa com canvia el comportament del programa.
+
+Amb un receptor de valor, el mètode `Scale` opera sobre una còpia del valor
+`Vertex` original.
+(És el mateix comportament que té qualsevol altre argument de funció.)
+El mètode `Scale` ha de tenir un receptor de punter per canviar el valor `Vertex`
+declarat a la funció `main`.
+
+.play methods/methods-pointers.go

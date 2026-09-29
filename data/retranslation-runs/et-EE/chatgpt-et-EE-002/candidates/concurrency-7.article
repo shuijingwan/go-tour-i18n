@@ -1,0 +1,18 @@
+* Harjutus: samaväärsed kahendpuud
+
+Sama väärtuste jada saab talletada paljudesse erinevatesse kahendpuudesse. Näiteks siin on kaks kahendpuud, mis talletavad jada 1, 1, 2, 3, 5, 8, 13.
+
+.image /tour/static/img/tree.png
+
+Funktsioon, mis kontrollib, kas kaks kahendpuud talletavad sama jada, on enamikus keeltes üsna keeruline. Kirjutame lihtsa lahenduse, kasutades Go konkurrentsust ja kanaleid.
+
+See näide kasutab paketti `tree`, mis defineerib tüübi:
+
+	type Tree struct {
+		Left  *Tree
+		Value int
+		Right *Tree
+	}
+
+
+Kirjelduse jätk on [[javascript:click('.next-page')][järgmisel lehel]].

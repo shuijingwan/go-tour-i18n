@@ -1,0 +1,21 @@
+* Uzdevums: kļūdas
+
+Nokopējiet savu funkciju `Sqrt` no [[/tour/flowcontrol/8][iepriekšējā uzdevuma]] un mainiet to tā, lai tā atgrieztu `error` vērtību.
+
+Ja funkcijai `Sqrt` padod negatīvu skaitli, tai jāatgriež kļūdas vērtība, kas nav nil, jo tā neatbalsta kompleksus skaitļus.
+
+Izveidojiet jaunu tipu
+
+	type ErrNegativeSqrt float64
+
+un padariet to par `error`, pievienojot tam metodi
+
+	func (e ErrNegativeSqrt) Error() string
+
+tā, lai `ErrNegativeSqrt(-2).Error()` atgrieztu `"cannot`Sqrt`negative`number:`-2"`.
+
+*Piezīme.* Izsaukums `fmt.Sprint(e)` metodē `Error` ievadīs programmu bezgalīgā ciklā. No tā var izvairīties, vispirms pārveidojot `e`: `fmt.Sprint(float64(e))`. Kāpēc?
+
+Mainiet funkciju `Sqrt` tā, lai, saņemot negatīvu skaitli, tā atgrieztu `ErrNegativeSqrt` vērtību.
+
+.play methods/exercise-errors.go

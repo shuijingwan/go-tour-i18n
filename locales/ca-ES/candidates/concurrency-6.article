@@ -1,0 +1,14 @@
+* Selecció per defecte
+
+El cas `default` d'un `select` s'executa si cap altre cas està preparat.
+
+Utilitza un cas `default` per provar un enviament o una recepció sense bloquejar:
+
+	select {
+	case i := <-c:
+		// utilitza i
+	default:
+		// rebre de c es bloquejaria
+	}
+
+.play concurrency/default-selection.go

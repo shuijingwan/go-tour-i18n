@@ -1,0 +1,19 @@
+* Viilud
+
+Massiivil on fikseeritud suurus.
+Viil seevastu on dünaamilise suurusega paindlik vaade massiivi elementidele.
+Praktikas kasutatakse viile palju sagedamini kui massiive.
+
+Tüüp `[]T` on viil, mille elemendid on tüüpi `T`.
+
+Viil moodustatakse, määrates kooloniga eraldatud kaks indeksit: alumise ja ülemise piiri:
+
+	a[low : high]
+
+See valib poolavatud vahemiku, mis sisaldab esimest elementi, kuid ei sisalda viimast.
+
+Järgmine avaldis loob viilu, mis sisaldab `a` elemente indeksitega 1 kuni 3:
+
+	a[1:4]
+
+.play moretypes/slices.go

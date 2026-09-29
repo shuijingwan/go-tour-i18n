@@ -1,0 +1,13 @@
+* Viiluliteraalid
+
+Viiluliteraal on nagu massiiviliteraal, kuid ilma pikkuseta.
+
+See on massiiviliteraal:
+
+	[3]bool{true, true, false}
+
+Järgmine avaldis loob sama massiivi nagu eespool ja seejärel viilu, mis sellele viitab:
+
+	[]bool{true, true, false}
+
+.play moretypes/slice-literals.go

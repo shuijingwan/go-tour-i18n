@@ -1,0 +1,24 @@
+* Receptors de punter
+
+Pots declarar mètodes amb receptors de punter.
+
+Això vol dir que el tipus del receptor té la sintaxi literal ⟪GTI18N_99f9fa4e_000001⟫*T⟪GTI18N_99f9fa4e_000002⟫ per a algun tipus ⟪GTI18N_99f9fa4e_000003⟫T⟪GTI18N_99f9fa4e_000004⟫.
+(A més, ⟪GTI18N_99f9fa4e_000005⟫T⟪GTI18N_99f9fa4e_000006⟫ no pot ser, al seu torn, un punter com ara ⟪GTI18N_99f9fa4e_000007⟫*int⟪GTI18N_99f9fa4e_000008⟫.)
+
+Per exemple, el mètode ⟪GTI18N_99f9fa4e_000009⟫Scale⟪GTI18N_99f9fa4e_000010⟫ d'aquí està definit sobre ⟪GTI18N_99f9fa4e_000011⟫*Vertex⟪GTI18N_99f9fa4e_000012⟫.
+
+Els mètodes amb receptors de punter poden modificar el valor al qual apunta el receptor
+(com fa ⟪GTI18N_99f9fa4e_000013⟫Scale⟪GTI18N_99f9fa4e_000014⟫ aquí).
+Com que sovint els mètodes necessiten modificar el receptor, els receptors de punter són més
+habituals que els receptors de valor.
+
+Prova d'eliminar el ⟪GTI18N_99f9fa4e_000015⟫*⟪GTI18N_99f9fa4e_000016⟫ de la declaració de la funció ⟪GTI18N_99f9fa4e_000017⟫Scale⟪GTI18N_99f9fa4e_000018⟫ de la línia 16
+i observa com canvia el comportament del programa.
+
+Amb un receptor de valor, el mètode ⟪GTI18N_99f9fa4e_000019⟫Scale⟪GTI18N_99f9fa4e_000020⟫ opera sobre una còpia del valor
+⟪GTI18N_99f9fa4e_000021⟫Vertex⟪GTI18N_99f9fa4e_000022⟫ original.
+(És el mateix comportament que té qualsevol altre argument de funció.)
+El mètode ⟪GTI18N_99f9fa4e_000023⟫Scale⟪GTI18N_99f9fa4e_000024⟫ ha de tenir un receptor de punter per canviar el valor ⟪GTI18N_99f9fa4e_000025⟫Vertex⟪GTI18N_99f9fa4e_000026⟫
+declarat a la funció ⟪GTI18N_99f9fa4e_000027⟫main⟪GTI18N_99f9fa4e_000028⟫.
+
+⟪GTI18N_99f9fa4e_000029⟫

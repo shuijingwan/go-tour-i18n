@@ -1,0 +1,18 @@
+* Slice: longitud i capacitat
+
+Un slice té tant una _longitud_ com una _capacitat_.
+
+La longitud d'un slice és el nombre d'elements que conté.
+
+La capacitat d'un slice és el nombre d'elements de la matriu subjacent,
+comptant des del primer element del slice.
+
+La longitud i la capacitat d'un slice `s` es poden obtenir amb les expressions
+`len(s)` i `cap(s)`.
+
+Pots ampliar la longitud d'un slice tornant-lo a segmentar,
+sempre que tingui prou capacitat.
+Prova de canviar una de les operacions de slice del programa d'exemple per ampliar-lo
+més enllà de la seva capacitat i observa què passa.
+
+.play moretypes/slice-len-cap.go

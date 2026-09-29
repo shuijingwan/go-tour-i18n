@@ -1,0 +1,7 @@
+* If ja else
+
+`if`-i lühikeses lauses deklareeritud muutujad on saadaval ka kõigis `else`-plokkides.
+
+(Mõlemad `pow` väljakutsed tagastavad oma tulemuse enne, kui `main`-is algab `fmt.Println` väljakutse.)
+
+.play flowcontrol/if-and-else.go

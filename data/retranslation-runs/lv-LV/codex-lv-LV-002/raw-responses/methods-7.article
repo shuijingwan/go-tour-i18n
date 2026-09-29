@@ -1,0 +1,14 @@
+* Metodes un netiešā adresēšana ar rādītājiem (2)
+
+Pretējā virzienā notiek tas pats.
+
+Funkcijām, kas pieņem vērtības argumentu, jāpadod tieši attiecīgā tipa vērtība:
+
+⟪GTI18N_61a9cb84_000001⟫Kompilēšanas kļūda!⟪GTI18N_61a9cb84_000002⟫savukārt metodes ar vērtības saņēmēju izsaukšanas brīdī par
+saņēmēju pieņem gan vērtību, gan rādītāju:
+
+⟪GTI18N_61a9cb84_000003⟫
+
+Šajā gadījumā metodes izsaukumu ⟪GTI18N_61a9cb84_000004⟫p.Abs()⟪GTI18N_61a9cb84_000005⟫ interpretē kā ⟪GTI18N_61a9cb84_000006⟫(*p).Abs()⟪GTI18N_61a9cb84_000007⟫.
+
+⟪GTI18N_61a9cb84_000008⟫

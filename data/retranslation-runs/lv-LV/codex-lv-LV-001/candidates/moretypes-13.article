@@ -1,0 +1,18 @@
+* Šķēluma izveide ar make
+
+Šķēlumus var izveidot ar iebūvēto funkciju `make`;
+šādi izveido dinamiski maināma izmēra masīvus.
+
+Funkcija `make` piešķir atmiņu ar nullēm aizpildītam masīvam
+un atgriež šķēlumu, kas atsaucas uz šo masīvu:
+
+	a := make([]int, 5)  // len(a)=5
+
+Lai norādītu ietilpību, funkcijai `make` padodiet trešo argumentu:
+
+	b := make([]int, 0, 5) // len(b)=0, cap(b)=5
+
+	b = b[:cap(b)] // len(b)=5, cap(b)=5
+	b = b[1:]      // len(b)=4, cap(b)=4
+
+.play moretypes/making-slices.go

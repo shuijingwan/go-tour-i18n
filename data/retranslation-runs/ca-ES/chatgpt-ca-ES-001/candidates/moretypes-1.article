@@ -1,0 +1,24 @@
+* Punters
+
+Go té punters.
+Un punter conté l'adreça de memòria d'un valor.
+
+El tipus `*T` és un punter a un valor de tipus `T`. El seu valor zero és `nil`.
+
+	var p *int
+
+L'operador `&` genera un punter al seu operand.
+
+	i := 42
+	p = &i
+
+L'operador `*` denota el valor subjacent del punter.
+
+	fmt.Println(*p) // llegeix i a través del punter p
+	*p = 21         // assigna i a través del punter p
+
+Això es coneix com a «desreferenciació» o «indirecció».
+
+A diferència de C, Go no té aritmètica de punters.
+
+.play moretypes/pointers.go

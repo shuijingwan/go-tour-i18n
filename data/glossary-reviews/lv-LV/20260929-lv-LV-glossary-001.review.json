@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "evidence_type": "glossary-review-receipt",
+  "locale": "lv-LV",
+  "review_id": "20260929-lv-LV-glossary-001",
+  "stage": "locale-glossary-review",
+  "decision": "failed",
+  "reviewer": "chatgpt-gpt-5.6-sol-high-independent",
+  "rubric": "glossary-review/v1",
+  "glossary_path": "locales/lv-LV/glossary.yaml",
+  "glossary_sha256": "448883db5ad7629ae6310cfbc67f2fec8f2725c4c26ce82697cbcc335f513daf",
+  "findings": [
+    "F01: keep 中裸词 present 过度宽泛，与普通英语形容词冲突；移除全局 keep，仅在 Go present 工具或 present.Section 等真实技术标识语境保留原文，普通描述应自然翻译。",
+    "F02: keep 同时包含 URL 与 URLs，冻结了英语复数后缀；保留规范技术标识 URL，移除全局 URLs，使拉脱维亚语数与格语法可自然表达。",
+    "F03: forbidden 中全局禁止 konkurence 过度宽泛；该词是合法拉脱维亚语词，仅不应被用作 Go concurrency 的译法，而当前 schema 不支持语境限定，因此移除全局禁用项。"
+  ]
+}

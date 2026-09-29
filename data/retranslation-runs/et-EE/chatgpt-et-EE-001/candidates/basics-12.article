@@ -1,0 +1,12 @@
+* Nullväärtused
+
+Muutujatele, mis deklareeritakse ilma algväärtust selgesõnaliselt määramata, antakse nende
+_zero_value_.
+
+Nullväärtus on:
+
+- arvutüüpide puhul `0`,
+- tõeväärtustüübi puhul `false` ja
+- sõnede puhul `""` (tühi sõne).
+
+.play basics/zero.go

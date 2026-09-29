@@ -1,0 +1,12 @@
+* Metodes: turpinājums
+
+Metodi var deklarēt arī tipiem, kas nav struktūras.
+
+Šajā piemērā redzams skaitlisks tips `MyFloat` ar metodi `Abs`.
+
+Metodi var deklarēt tikai ar tādu saņēmēju, kura tips ir definēts tajā pašā
+pakotnē, kurā atrodas metode.
+Metodi nevar deklarēt ar tādu saņēmēju, kura tips ir definēts citā
+pakotnē (tas attiecas arī uz iebūvētajiem tipiem, piemēram, `int`).
+
+.play methods/methods-continued.go

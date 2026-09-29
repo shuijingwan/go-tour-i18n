@@ -1,0 +1,21 @@
+* Elementu pievienošana šķēlumam
+
+Šķēlumam bieži jāpievieno jauni elementi, tāpēc Go nodrošina iebūvēto
+funkciju `append`. Iebūvētās pakotnes [[/pkg/builtin/#append][dokumentācijā]]
+ir aprakstīta funkcija `append`.
+
+	func append(s []T, vs ...T) []T
+
+Funkcijas `append` pirmais parametrs `s` ir šķēlums ar tipu `T`, bet pārējie ir
+šķēlumam pievienojamās tipa `T` vērtības.
+
+`append` atgriež šķēlumu, kas satur visus sākotnējā
+šķēluma elementus un norādītās vērtības.
+
+Ja `s` pamatmasīvs ir pārāk mazs, lai tajā ietilptu visas norādītās vērtības, tiek piešķirts lielāks
+masīvs. Atgrieztais šķēlums norādīs uz jaunpiešķirto
+masīvu.
+
+(Lai uzzinātu vairāk par šķēlumiem, izlasiet rakstu [[/blog/go-slices-usage-and-internals][Šķēlumi: lietošana un iekšējā uzbūve]].)
+
+.play moretypes/append.go

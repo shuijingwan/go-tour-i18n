@@ -1,0 +1,11 @@
+* Canals amb memòria intermèdia
+
+Els canals poden tenir _memòria_intermèdia_. Proporciona la longitud de la memòria intermèdia com a segon argument de `make` per inicialitzar un canal amb memòria intermèdia:
+
+	ch := make(chan int, 100)
+
+Els enviaments a un canal amb memòria intermèdia només es bloquegen quan la memòria intermèdia és plena. Les recepcions es bloquegen quan és buida.
+
+Modifica l'exemple perquè se superi la capacitat de la memòria intermèdia i observa què passa.
+
+.play concurrency/buffered-channels.go

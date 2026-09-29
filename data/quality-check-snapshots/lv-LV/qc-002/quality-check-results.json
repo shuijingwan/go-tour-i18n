@@ -1,0 +1,129 @@
+{
+  "schema_version": 2,
+  "evidence_type": "quality_check_results",
+  "locale": "lv-LV",
+  "snapshot_id": "qc-002",
+  "snapshot_manifest_sha256": "501f7ddf7cbc7f09b55a9a28dbf7955af59152f6bd1a379d89807a6f508b6923",
+  "previous_snapshot_id": "qc-001",
+  "rubric": "translation-quality/v1",
+  "result_count": 23,
+  "results": [
+    {
+      "index": 1,
+      "unit_id": "welcome/1",
+      "rating": "A"
+    },
+    {
+      "index": 2,
+      "unit_id": "welcome/2",
+      "rating": "A"
+    },
+    {
+      "index": 5,
+      "unit_id": "welcome/3",
+      "rating": "A"
+    },
+    {
+      "index": 18,
+      "unit_id": "basics/13",
+      "rating": "B",
+      "finding": "The previous malformed “Unlike in C, in Go...” construction has been corrected, but the complete replacement still renders English “requires an explicit conversion” as “ir nepieciešama tieša tipa pārveidošana”. Latvian tieša means direct rather than explicit, so it does not precisely preserve the Go teaching point that the conversion must be explicitly written rather than implicit. Revise this wording so the distinction between explicit and implicit type conversion is technically accurate, while retaining the glossary term tipa pārveidošana and all protected code."
+    },
+    {
+      "index": 22,
+      "unit_id": "basics/17",
+      "rating": "A"
+    },
+    {
+      "index": 36,
+      "unit_id": "flowcontrol/14",
+      "rating": "A"
+    },
+    {
+      "index": 37,
+      "unit_id": "moretypes/1",
+      "rating": "A"
+    },
+    {
+      "index": 48,
+      "unit_id": "moretypes/12",
+      "rating": "A"
+    },
+    {
+      "index": 53,
+      "unit_id": "moretypes/17",
+      "rating": "A"
+    },
+    {
+      "index": 54,
+      "unit_id": "moretypes/18",
+      "rating": "A"
+    },
+    {
+      "index": 63,
+      "unit_id": "moretypes/27",
+      "rating": "A"
+    },
+    {
+      "index": 67,
+      "unit_id": "methods/4",
+      "rating": "A"
+    },
+    {
+      "index": 68,
+      "unit_id": "methods/5",
+      "rating": "A"
+    },
+    {
+      "index": 76,
+      "unit_id": "methods/13",
+      "rating": "A"
+    },
+    {
+      "index": 82,
+      "unit_id": "methods/19",
+      "rating": "A"
+    },
+    {
+      "index": 89,
+      "unit_id": "methods/26",
+      "rating": "A"
+    },
+    {
+      "index": 92,
+      "unit_id": "generics/3",
+      "rating": "A"
+    },
+    {
+      "index": 93,
+      "unit_id": "concurrency/1",
+      "rating": "A"
+    },
+    {
+      "index": 94,
+      "unit_id": "concurrency/2",
+      "rating": "B",
+      "finding": "The previous teaching-comment defect for v := \u003c-ch is resolved, but elsewhere in the complete replacement English “without explicit locks or condition variables” is rendered as “bez tiešām slēdzenēm vai nosacījuma mainīgajiem”. Here tiešām conveys direct locks rather than the intended absence of explicitly used locking primitives. Revise this clause so the distinction expressed by “explicit locks” is technically accurate and natural Latvian, without changing the surrounding synchronization meaning or protected Go identities."
+    },
+    {
+      "index": 97,
+      "unit_id": "concurrency/5",
+      "rating": "A"
+    },
+    {
+      "index": 100,
+      "unit_id": "concurrency/8",
+      "rating": "A"
+    },
+    {
+      "index": 103,
+      "unit_id": "concurrency/11",
+      "rating": "A"
+    },
+    {
+      "index": 109,
+      "unit_id": "example:concurrency/mutex-counter.go",
+      "rating": "A"
+    }
+  ]
+}

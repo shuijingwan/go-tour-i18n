@@ -1,0 +1,21 @@
+* For
+
+Valodā Go ir tikai viena cikla konstrukcija — `for` cikls.
+
+Pamata `for` ciklam ir trīs ar semikoliem atdalītas daļas:
+
+- inicializācijas priekšraksts: tiek izpildīts pirms pirmās iterācijas;
+- nosacījuma izteiksme: tiek izvērtēta pirms katras iterācijas;
+- beigu priekšraksts: tiek izpildīts katras iterācijas beigās.
+
+Inicializācijas priekšraksts bieži ir mainīgā deklarācija, un tajā
+deklarētie mainīgie ir redzami tikai priekšraksta `for`
+tvērumā.
+
+Cikls beidz iterācijas, tiklīdz Būla nosacījuma vērtība ir `false`.
+
+*Piezīme.* Atšķirībā no tādām valodām kā C, Java vai JavaScript priekšraksta
+`for` trīs daļas nav jāietver iekavās, bet figūriekavas `{`}` ir
+obligātas vienmēr.
+
+.play flowcontrol/for.go

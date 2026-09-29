@@ -1,0 +1,13 @@
+* Metodes
+
+Valodā Go nav klašu.
+Tomēr tipiem var definēt metodes.
+
+Metode ir funkcija ar īpašu _saņēmēja_ argumentu.
+
+Saņēmējs atrodas atsevišķā argumentu sarakstā starp atslēgvārdu `func` un
+metodes nosaukumu.
+
+Šajā piemērā metodes `Abs` saņēmējs ir tipa `Vertex` vērtība ar nosaukumu `v`.
+
+.play methods/methods.go

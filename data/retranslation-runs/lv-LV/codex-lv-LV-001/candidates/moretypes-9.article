@@ -1,0 +1,14 @@
+* Šķēlumu literāļi
+
+Šķēluma literālis līdzinās masīva literālim bez garuma.
+
+Šis ir masīva literālis:
+
+	[3]bool{true, true, false}
+
+Savukārt šis izveido tādu pašu masīvu kā iepriekš
+un pēc tam šķēlumu, kas uz to atsaucas:
+
+	[]bool{true, true, false}
+
+.play moretypes/slice-literals.go

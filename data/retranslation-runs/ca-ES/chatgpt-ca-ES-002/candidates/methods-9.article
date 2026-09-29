@@ -1,0 +1,11 @@
+* Interfícies
+
+Un _tipus_d'interfície_ es defineix com un conjunt de signatures de mètodes.
+
+Un valor de tipus d'interfície pot contenir qualsevol valor que implementi aquests mètodes.
+
+*Nota:* hi ha un error al codi d'exemple de la línia 22.
+`Vertex` (el tipus de valor) no implementa `Abser` perquè
+el mètode `Abs` només està definit sobre `*Vertex` (el tipus punter).
+
+.play methods/interfaces.go

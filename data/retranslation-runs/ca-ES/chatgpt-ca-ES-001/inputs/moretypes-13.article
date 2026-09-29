@@ -1,0 +1,15 @@
+* Creating a ⟪GTI18N_d057e6bf_000001⟫ with make
+
+⟪GTI18N_d057e6bf_000002⟫ can be created with the built-in ⟪GTI18N_d057e6bf_000003⟫make⟪GTI18N_d057e6bf_000004⟫ function;
+this is how you create dynamically-sized arrays.
+
+The ⟪GTI18N_d057e6bf_000005⟫make⟪GTI18N_d057e6bf_000006⟫ function allocates a zeroed array
+and returns a ⟪GTI18N_d057e6bf_000007⟫ that refers to that array:
+
+⟪GTI18N_d057e6bf_000008⟫
+
+To specify a capacity, pass a third argument to ⟪GTI18N_d057e6bf_000009⟫make⟪GTI18N_d057e6bf_000010⟫:
+
+⟪GTI18N_d057e6bf_000011⟫
+
+⟪GTI18N_d057e6bf_000012⟫

@@ -1,0 +1,15 @@
+* Switch izvērtēšanas secība
+
+Switch gadījumi tiek izvērtēti no augšas uz leju, apstājoties pie pirmā veiksmīgā gadījuma.
+
+(Piemēram,
+
+	switch i {
+	case 0:
+	case f():
+	}
+
+neizsauc `f`, ja `i==0`.)
+
+
+.play flowcontrol/switch-evaluation-order.go

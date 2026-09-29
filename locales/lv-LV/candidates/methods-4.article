@@ -1,0 +1,24 @@
+* Rādītāja saņēmēji
+
+Metodes var deklarēt ar rādītāja saņēmējiem.
+
+Tas nozīmē, ka saņēmēja tipam ir literālā sintakse `*T` kādam tipam `T`.
+(Turklāt `T` pats nevar būt rādītājs, piemēram, `*int`.)
+
+Piemēram, metode `Scale` šeit ir definēta tipam `*Vertex`.
+
+Metodes ar rādītāja saņēmējiem var mainīt vērtību, uz kuru saņēmējs
+norāda (kā to šeit dara `Scale`).
+Tā kā metodēm bieži ir jāmaina savs saņēmējs, rādītāja saņēmēji ir
+biežāk sastopami nekā vērtības saņēmēji.
+
+Mēģiniet noņemt `*` no funkcijas `Scale` deklarācijas 16. rindā
+un novērojiet, kā mainās programmas darbība.
+
+Ar vērtības saņēmēju metode `Scale` darbojas ar sākotnējās
+`Vertex` vērtības kopiju.
+(Tāpat darbojas jebkurš cits funkcijas arguments.)
+Metodei `Scale` ir nepieciešams rādītāja saņēmējs, lai mainītu `Vertex` vērtību,
+kas deklarēta funkcijā `main`.
+
+.play methods/methods-pointers.go

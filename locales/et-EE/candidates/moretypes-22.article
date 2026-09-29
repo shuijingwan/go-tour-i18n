@@ -1,0 +1,27 @@
+* Kujutiste muutmine
+
+Elemendi lisamiseks või uuendamiseks kujutises `m`:
+
+	m[key] = elem
+
+Elemendi lugemiseks:
+
+	elem = m[key]
+
+Elemendi kustutamiseks:
+
+	delete(m, key)
+
+Võtme olemasolu kontrollimiseks kasuta kahe väärtusega omistust:
+
+	elem, ok = m[key]
+
+Kui `key` leidub kujutises `m`, on `ok` väärtus `true`. Vastasel juhul on `ok` väärtus `false`.
+
+Kui `key` kujutises puudub, saab `elem` kujutise elemenditüübi nullväärtuse.
+
+*Märkus:* kui `elem` või `ok` pole veel deklareeritud, võid kasutada lühideklaratsiooni:
+
+	elem, ok := m[key]
+
+.play moretypes/mutating-maps.go

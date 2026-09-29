@@ -99,6 +99,38 @@ func TestGoExampleProtectionTreatsShiftVerbAsTranslatable(t *testing.T) {
 	}
 }
 
+func TestGoExampleProtectionTreatsSliceVerbAsTranslatable(t *testing.T) {
+	glossary := &Glossary{Keep: []string{"Slice", "slice"}}
+	positive := []byte("package main\n\n// Slice the slice to give it zero length.\nfunc main() {}\n")
+	protected, err := prepareGoExampleTranslationInput(positive, sum(positive), glossary)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(protected.Text, "Slice the ") {
+		t.Fatalf("Slice verb was protected instead of exposed: %q", protected.Text)
+	}
+	if containsString(protected.Values, "Slice") {
+		t.Fatalf("Slice verb became an independent keep token: %q", protected.Values)
+	}
+	if !containsString(protected.Values, "slice") {
+		t.Fatalf("technical slice noun was not protected: text=%q values=%q", protected.Text, protected.Values)
+	}
+
+	for _, source := range []string{
+		"package main\n\n// Slice literals are useful.\nfunc main() {}\n",
+		"package main\n\n// A Slice references an array.\nfunc main() {}\n",
+	} {
+		data := []byte(source)
+		negative, err := prepareGoExampleTranslationInput(data, sum(data), glossary)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if !containsString(negative.Values, "Slice") {
+			t.Fatalf("technical Slice was not protected: text=%q values=%q", negative.Text, negative.Values)
+		}
+	}
+}
+
 func TestGoExampleProtectionBlockAndMultipleCommentsStayOneInput(t *testing.T) {
 	source := []byte("package main\n\n/* This is a longer explanation. */\nfunc a() {}\n\n// Second explanation related to the first one.\nfunc b() {}\n")
 	unit := &TranslationUnit{ID: "example:demo.go", Kind: UnitKindExample, Source: source, SourceSHA256: sum(source)}

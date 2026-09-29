@@ -1,0 +1,23 @@
+* Uzdevums: līdzvērtīgi binārie koki
+
+*1.* Īstenojiet funkciju `Walk`.
+
+*2.* Pārbaudiet funkciju `Walk`.
+
+Funkcija `tree.New(k)` izveido nejaušas struktūras (bet vienmēr sakārtotu) bināro koku, kurā glabājas vērtības `k`, `2k`, `3k`, ..., `10k`.
+
+Izveidojiet jaunu kanālu `ch` un palaidiet koka apstaigāšanu:
+
+	go Walk(tree.New(1), ch)
+
+Tad nolasiet no kanāla un izdrukājiet 10 vērtības. Tām jābūt skaitļiem 1, 2, 3, ..., 10.
+
+*3.* Īstenojiet funkciju `Same`, izmantojot `Walk`, lai noteiktu, vai `t1` un `t2` glabā vienādas vērtības.
+
+*4.* Pārbaudiet funkciju `Same`.
+
+`Same(tree.New(1),`tree.New(1))` jāatgriež true, bet `Same(tree.New(1),`tree.New(2))` jāatgriež false.
+
+`Tree` dokumentācija ir atrodama [[https://godoc.org/golang.org/x/tour/tree#Tree][šeit]].
+
+.play concurrency/exercise-equivalent-binary-trees.go

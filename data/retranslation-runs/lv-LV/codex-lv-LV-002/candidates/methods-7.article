@@ -1,0 +1,21 @@
+* Metodes un netiešā adresēšana ar rādītājiem (2)
+
+Pretējā virzienā notiek tas pats.
+
+Funkcijām, kas pieņem vērtības argumentu, jāpadod tieši attiecīgā tipa vērtība:
+
+	var v Vertex
+	fmt.Println(AbsFunc(v))  // OK
+	fmt.Println(AbsFunc(&v)) // Kompilēšanas kļūda!
+
+savukārt metodes ar vērtības saņēmēju izsaukšanas brīdī par
+saņēmēju pieņem gan vērtību, gan rādītāju:
+
+	var v Vertex
+	fmt.Println(v.Abs()) // OK
+	p := &v
+	fmt.Println(p.Abs()) // OK
+
+Šajā gadījumā metodes izsaukumu `p.Abs()` interpretē kā `(*p).Abs()`.
+
+.play methods/indirection-values.go

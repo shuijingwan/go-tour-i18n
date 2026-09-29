@@ -28,11 +28,13 @@ var languageRegistry = []LanguageLink{
 	{Locale: "bn-BD", EnglishName: "Bengali", Autonym: "বাংলা", URL: "https://bn-go-dev.shuijingwanwq.com/"},
 	{Locale: "pt-BR", EnglishName: "Brazilian Portuguese", Autonym: "Português (Brasil)", URL: "https://pt-go-dev.shuijingwanwq.com/"},
 	{Locale: "bg-BG", EnglishName: "Bulgarian", Autonym: "Български", URL: "https://bg-go-dev.shuijingwanwq.com/"},
+	{Locale: "ca-ES", EnglishName: "Catalan", Autonym: "Català", URL: "https://ca-go-dev.shuijingwanwq.com/"},
 	{Locale: "hr-HR", EnglishName: "Croatian", Autonym: "Hrvatski", URL: "https://hr-go-dev.shuijingwanwq.com/"},
 	{Locale: "cs-CZ", EnglishName: "Czech", Autonym: "Čeština", URL: "https://cs-go-dev.shuijingwanwq.com/"},
 	{Locale: "da-DK", EnglishName: "Danish", Autonym: "Dansk", URL: "https://da-go-dev.shuijingwanwq.com/"},
 	{Locale: "nl-NL", EnglishName: "Dutch", Autonym: "Nederlands", URL: "https://nl-go-dev.shuijingwanwq.com/"},
 	{Locale: "en", EnglishName: "English", Autonym: "English", URL: "https://go.dev/tour/", Official: true},
+	{Locale: "et-EE", EnglishName: "Estonian", Autonym: "Eesti", URL: "https://et-go-dev.shuijingwanwq.com/"},
 	{Locale: "fil-PH", EnglishName: "Filipino", Autonym: "Filipino", URL: "https://fil-go-dev.shuijingwanwq.com/"},
 	{Locale: "fi-FI", EnglishName: "Finnish", Autonym: "Suomi", URL: "https://fi-go-dev.shuijingwanwq.com/"},
 	{Locale: "fr-FR", EnglishName: "French", Autonym: "Français", URL: "https://fr-go-dev.shuijingwanwq.com/"},
@@ -47,6 +49,7 @@ var languageRegistry = []LanguageLink{
 	{Locale: "kn-IN", EnglishName: "Kannada", Autonym: "ಕನ್ನಡ", URL: "https://kn-go-dev.shuijingwanwq.com/"},
 	{Locale: "ko-KR", EnglishName: "Korean", Autonym: "한국어", URL: "https://ko-go-dev.shuijingwanwq.com/"},
 	{Locale: "es-419", EnglishName: "Latin American Spanish", Autonym: "Español (Latinoamérica)", URL: "https://es-419-go-dev.shuijingwanwq.com/"},
+	{Locale: "lv-LV", EnglishName: "Latvian", Autonym: "Latviešu", URL: "https://lv-go-dev.shuijingwanwq.com/"},
 	{Locale: "lt-LT", EnglishName: "Lithuanian", Autonym: "Lietuvių", URL: "https://lt-go-dev.shuijingwanwq.com/"},
 	{Locale: "ms-MY", EnglishName: "Malay", Autonym: "Bahasa Melayu", URL: "https://ms-go-dev.shuijingwanwq.com/"},
 	{Locale: "ml-IN", EnglishName: "Malayalam", Autonym: "മലയാളം", URL: "https://ml-go-dev.shuijingwanwq.com/"},
@@ -96,6 +99,8 @@ var (
 	helsinkiTime    = mustLoadLocation("Europe/Helsinki")
 	berlinTime      = mustLoadLocation("Europe/Berlin")
 	madridTime      = mustLoadLocation("Europe/Madrid")
+	tallinnTime     = mustLoadLocation("Europe/Tallinn")
+	rigaTime        = mustLoadLocation("Europe/Riga")
 	parisTime       = mustLoadLocation("Europe/Paris")
 	pragueTime      = mustLoadLocation("Europe/Prague")
 	warsawTime      = mustLoadLocation("Europe/Warsaw")
@@ -428,6 +433,27 @@ var localeProfiles = map[string]localeProfile{
 		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",
 		TimeZone:          vilniusTime,
 		TimeLabel:         "vietos laikas",
+		TimeLabelFormat:   " (%s)",
+		Direction:         "ltr",
+	},
+	"ca-ES": {
+		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",
+		TimeZone:          madridTime,
+		TimeLabel:         "hora local",
+		TimeLabelFormat:   " (%s)",
+		Direction:         "ltr",
+	},
+	"et-EE": {
+		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",
+		TimeZone:          tallinnTime,
+		TimeLabel:         "kohalik aeg",
+		TimeLabelFormat:   " (%s)",
+		Direction:         "ltr",
+	},
+	"lv-LV": {
+		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",
+		TimeZone:          rigaTime,
+		TimeLabel:         "vietējais laiks",
 		TimeLabelFormat:   " (%s)",
 		Direction:         "ltr",
 	},

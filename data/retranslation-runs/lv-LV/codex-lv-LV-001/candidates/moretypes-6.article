@@ -1,0 +1,15 @@
+* Masīvi
+
+Tips `[n]T` ir masīvs ar `n` tipa `T` vērtībām.
+
+Izteiksme
+
+	var a [10]int
+
+deklarē mainīgo `a` kā desmit veselu skaitļu masīvu.
+
+Masīva garums ir daļa no tā tipa, tāpēc masīva izmēru nevar mainīt.
+Tas var šķist ierobežojoši, taču neuztraucieties —
+Go nodrošina ērtu veidu darbam ar masīviem.
+
+.play moretypes/array.go

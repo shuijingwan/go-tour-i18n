@@ -1,0 +1,15 @@
+* Tühi liides
+
+Liidesetüüpi, mis ei määra ühtegi meetodit, nimetatakse tühjaks _liideseks_:
+
+	interface{}
+
+Tühi liides võib hoida mis tahes tüüpi väärtusi.
+(Iga tüüp teostab vähemalt null meetodit.)
+
+`any` on tüübi `interface{}` alias ja need kaks on täielikult samaväärsed.
+
+Tühje liideseid kasutatakse koodis, mis käsitleb tundmatu tüübiga väärtusi.
+Näiteks võtab `fmt.Print` suvalise arvu argumente tüübiga `any`.
+
+.play methods/empty-interface.go

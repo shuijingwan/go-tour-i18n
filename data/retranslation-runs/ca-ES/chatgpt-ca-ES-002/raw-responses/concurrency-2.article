@@ -1,0 +1,16 @@
+* Canals
+
+Els canals són un conducte tipat a través del qual pots enviar i rebre valors amb l'operador de canal, ⟪GTI18N_a35e3af2_000001⟫<-⟪GTI18N_a35e3af2_000002⟫.
+
+⟪GTI18N_a35e3af2_000003⟫Envia ⟪GTI18N_a35e3af2_000004⟫ al canal ⟪GTI18N_a35e3af2_000005⟫.⟪GTI18N_a35e3af2_000006⟫Rep de ⟪GTI18N_a35e3af2_000007⟫ i⟪GTI18N_a35e3af2_000008⟫assigna el valor a ⟪GTI18N_a35e3af2_000009⟫.⟪GTI18N_a35e3af2_000010⟫(Les dades flueixen en la direcció de la fletxa.)
+
+Com els mapes i els ⟪GTI18N_a35e3af2_000011⟫, els canals s'han de crear abans d'utilitzar-los:
+
+⟪GTI18N_a35e3af2_000012⟫
+
+Per defecte, els enviaments i les recepcions es bloquegen fins que l'altre extrem està preparat. Això permet que les ⟪GTI18N_a35e3af2_000013⟫ se sincronitzin sense bloquejos explícits ni variables de condició.
+
+El codi d'exemple suma els nombres d'un ⟪GTI18N_a35e3af2_000014⟫ i reparteix la feina entre dues ⟪GTI18N_a35e3af2_000015⟫.
+Quan totes dues ⟪GTI18N_a35e3af2_000016⟫ han acabat el càlcul, calcula el resultat final.
+
+⟪GTI18N_a35e3af2_000017⟫

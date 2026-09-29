@@ -1,0 +1,24 @@
+{
+  "schema_version": 2,
+  "batch_id": "codex-lv-LV-005",
+  "locale": "lv-LV",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "example",
+  "unit_count": 1,
+  "units": [
+    {
+      "unit_id": "example:concurrency/mutex-counter.go",
+      "unit_kind": "example",
+      "source_path": "_content/tour/concurrency/mutex-counter.go",
+      "source_sha256": "74488ecc347a123c8538069175ffeef5ea38577bb37b2c7a9ceb6bba47ab02b4",
+      "input_path": "inputs/concurrency-mutex-counter.txt",
+      "input_sha256": "748bfb48d6f8d0455861b810e2d04f40eb3d136ab696139d32fdd290267fde03",
+      "protected_token_count": 8,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "The comments for Inc and Value render “for the given key” as “dotās key”, producing an unnatural mixed Latvian/English grammatical construction around the identifier key. The source refers to the key associated with the counter, while the current wording does not form idiomatic professional Latvian. Revise both comments so this relationship is expressed naturally in Latvian while preserving any required identifier identity and without changing the Go code."
+    }
+  ]
+}

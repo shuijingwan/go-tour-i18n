@@ -1,0 +1,25 @@
+* Tüübiväited
+
+_Tüübiväide_ annab juurdepääsu liideseväärtuse aluseks olevale konkreetsele väärtusele.
+
+	t := i.(T)
+
+See lause väidab, et liideseväärtus `i` hoiab konkreetset tüüpi `T`,
+ja omistab aluseks oleva `T` väärtuse muutujale `t`.
+
+Kui `i` ei hoia tüüpi `T`, põhjustab lause panic'u.
+
+Et _kontrollida_, kas liideseväärtus hoiab kindlat tüüpi,
+võib tüübiväide tagastada kaks väärtust: aluseks oleva väärtuse
+ja tõeväärtuse, mis näitab, kas väide õnnestus.
+
+	t, ok := i.(T)
+
+Kui `i` hoiab tüüpi `T`, on `t` aluseks olev väärtus ja `ok` väärtus true.
+
+Vastasel juhul on `ok` väärtus false ja `t` saab tüübi `T` nullväärtuse
+ning panic'ut ei teki.
+
+Pane tähele selle süntaksi sarnasust kujutisest lugemise süntaksiga.
+
+.play methods/type-assertions.go

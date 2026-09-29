@@ -1,0 +1,21 @@
+* Viitvastuvõtjad
+
+Meetodeid saab deklareerida viitvastuvõtjatega.
+
+See tähendab, et vastuvõtja tüübil on mõne tüübi `T` korral literaalne süntaks `*T`.
+(Samuti ei tohi `T` ise olla viit, näiteks `*int`.)
+
+Näiteks on siinne meetod `Scale` defineeritud tüübile `*Vertex`.
+
+Viitvastuvõtjaga meetodid saavad muuta väärtust, millele vastuvõtja
+osutab (nagu `Scale` siin teeb).
+Kuna meetoditel on sageli vaja oma vastuvõtjat muuta, kasutatakse viitvastuvõtjaid sagedamini kui väärtusvastuvõtjaid.
+
+Proovi eemaldada real 16 funktsiooni `Scale` deklaratsioonist `*` ja jälgi, kuidas programmi käitumine muutub.
+
+Väärtusvastuvõtja korral töötab meetod `Scale` algse
+`Vertex` väärtuse koopiaga.
+(Sama juhtub iga muu funktsiooni argumendiga.)
+Meetodil `Scale` peab olema viitvastuvõtja, et muuta funktsioonis `main` deklareeritud `Vertex` väärtust.
+
+.play methods/methods-pointers.go

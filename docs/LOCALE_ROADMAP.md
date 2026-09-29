@@ -20,18 +20,19 @@
 
 - 已有 13 个社区 locale：`zh-CN`、`ja-JP`、`de-DE`、`fr-FR`、`ko-KR`、`es-ES`、`it-IT`、`nl-NL`、`pt-BR`、`tr-TR`、`sv-SE`、`pl-PL`、`zh-TW`；
 - 下表 35 个 Standard locale；
+- Standard 路线图全部完成后，按维护者已确认的后续计划再新增香港繁体中文 `zh-HK`；该扩展不改变下表 35 个 Standard locale 的既有排序；
 - 官方 English 继续使用 <https://go.dev/tour/>，不建设本项目的英文社区 locale。
 
-长期目标因此是 **48 个社区 locale + 官方 English 入口**。
+长期目标因此是 **49 个社区 locale + 官方 English 入口**。`zh-HK` 在正式启动前只属于 post-Standard 计划项，不因写入本路线图而提前冻结 canonical identity、Production identity 或任何实现字段。
 
 ## 默认使用规则
 
 用户没有明确指定目标 locale 时，按以下规则执行：
 
-1. 从 Standard 路线图中选择排名最高且尚未完成的候选。
+1. 从 Standard 路线图中选择排名最高且尚未完成的候选；35 个 Standard locale 全部完成后，下一项才是 post-Standard `zh-HK`。
 2. 不为每一门语言重新开展全球候选分析或重新评分。
 3. 进入 [新增 Locale 执行手册](NEW_LOCALE_RUNBOOK.md)，完成单门 locale 的正式 identity freeze 与后续流程。
-4. 表中的 locale 只是 roadmap candidate identity，不是可直接用于实现或 Production 的最终身份。
+4. 表中的 locale 与 post-Standard 计划项都只是 roadmap candidate identity，不是可直接用于实现或 Production 的最终身份。
 
 `production/identity.json` 继续是已实施 locale 的 hostname、CDN、service、port 和 lifecycle machine authority。候选完成 identity freeze 后，如 canonical locale 与表中的 candidate identity 不同，应在本路线图中记录二者的对应关系；只有对应实现达到 `production_state=live`，该路线图候选才视为已完成。不得仅凭目录已创建、翻译已开始或表格中存在该候选就跳过它。
 
@@ -86,6 +87,10 @@
 | 33 | `et-EE` | Estonian | 爱沙尼亚语 | 爱沙尼亚 | 数字化和技术受众质量较高，但语言人口很小，预期总展示量限制长期收入。 |
 | 34 | `lv-LV` | Latvian | 拉脱维亚语 | 拉脱维亚 | 母语内容具有增量，但市场和开发者搜索规模较小，总收入潜力低于多数 Standard 候选。 |
 | 35 | `ru-RU` | Russian | 俄语 | 俄罗斯及部分前苏联地区 | 语言人口和开发者需求本可支持大量流量，但区域广告 monetization policy 是当前商业前提风险，因此置于末位并要求实施前重新核验。 |
+
+## Post-Standard 扩展
+
+35 个 Standard locale 全部完成后，再进入维护者已确认的 `zh-HK`（Hong Kong Traditional Chinese / 香港繁体中文）扩展。它不参与现有 1–35 排名，不允许在 Standard 路线图完成前被默认选择，也不得仅凭本条规划提前创建 locale 目录、修改 registry 或冻结 hostname、port、service、public URL 等 Production identity。正式启动 `zh-HK` 时，仍须按新增 Locale 执行手册重新完成完整 identity freeze，并明确它与现有 `zh-TW` 的语言、显示名、SEO、public identity 和长期维护边界。
 
 ## Existing A Tour of Go 本地化证据
 

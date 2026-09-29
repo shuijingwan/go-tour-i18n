@@ -1,0 +1,11 @@
+* Paquets
+
+Cada programa en Go està format per paquets.
+
+Els programes comencen a executar-se al paquet `main`.
+
+Aquest programa utilitza els paquets amb els camins d'importació `"fmt"` i `"math/rand"`.
+
+Per convenció, el nom del paquet és igual que l'últim element del camí d'importació. Per exemple, el paquet `"math/rand"` conté fitxers que comencen amb la sentència `package`rand`.
+
+.play basics/packages.go

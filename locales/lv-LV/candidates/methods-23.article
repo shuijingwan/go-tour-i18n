@@ -1,0 +1,12 @@
+* Uzdevums: rot13Reader
+
+Bieži izmantots risinājums ir [[/pkg/io/#Reader][io.Reader]], kas aptver citu `io.Reader` un kaut kādā veidā maina plūsmu.
+
+Piemēram, funkcija [[/pkg/compress/gzip/#NewReader][gzip.NewReader]] pieņem `io.Reader` (saspiestu datu plūsmu) un atgriež `*gzip.Reader`, kas arī īsteno `io.Reader` (atspiestu datu plūsmu).
+
+Ieviesiet `rot13Reader`, kas īsteno `io.Reader`, lasa no `io.Reader` un maina plūsmu, visām alfabēta rakstzīmēm lietojot [[https://en.wikipedia.org/wiki/ROT13][rot13]] aizvietošanas šifru.
+
+Tips `rot13Reader` jums jau ir dots.
+Lieciet tam īstenot `io.Reader`, ieviešot tā metodi `Read`.
+
+.play methods/exercise-rot-reader.go

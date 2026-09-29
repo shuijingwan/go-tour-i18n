@@ -1,0 +1,23 @@
+* Slices
+
+Una matriu té una mida fixa.
+Un slice, en canvi, és una vista flexible
+i de mida dinàmica dels elements d'una matriu.
+A la pràctica, els slices són molt més habituals que les matrius.
+
+El tipus `[]T` és un slice amb elements de tipus `T`.
+
+Un slice es forma especificant dos índexs, un límit inferior i
+un de superior, separats per dos punts:
+
+	a[low : high]
+
+Això selecciona un interval semiobert que inclou el primer
+element, però n'exclou l'últim.
+
+L'expressió següent crea un slice que inclou
+els elements de l'1 al 3 de `a`:
+
+	a[1:4]
+
+.play moretypes/slices.go

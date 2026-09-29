@@ -1,0 +1,21 @@
+* Viitvastuvõtjad
+
+Meetodeid saab deklareerida viitvastuvõtjatega.
+
+See tähendab, et vastuvõtja tüübil on mõne tüübi ⟪GTI18N_99f9fa4e_000003⟫T⟪GTI18N_99f9fa4e_000004⟫ korral literaalne süntaks ⟪GTI18N_99f9fa4e_000001⟫*T⟪GTI18N_99f9fa4e_000002⟫.
+(Samuti ei tohi ⟪GTI18N_99f9fa4e_000005⟫T⟪GTI18N_99f9fa4e_000006⟫ ise olla viit, näiteks ⟪GTI18N_99f9fa4e_000007⟫*int⟪GTI18N_99f9fa4e_000008⟫.)
+
+Näiteks on siinne meetod ⟪GTI18N_99f9fa4e_000009⟫Scale⟪GTI18N_99f9fa4e_000010⟫ defineeritud tüübile ⟪GTI18N_99f9fa4e_000011⟫*Vertex⟪GTI18N_99f9fa4e_000012⟫.
+
+Viitvastuvõtjaga meetodid saavad muuta väärtust, millele vastuvõtja
+osutab (nagu ⟪GTI18N_99f9fa4e_000013⟫Scale⟪GTI18N_99f9fa4e_000014⟫ siin teeb).
+Kuna meetoditel on sageli vaja oma vastuvõtjat muuta, kasutatakse viitvastuvõtjaid sagedamini kui väärtusvastuvõtjaid.
+
+Proovi eemaldada real 16 funktsiooni ⟪GTI18N_99f9fa4e_000017⟫Scale⟪GTI18N_99f9fa4e_000018⟫ deklaratsioonist ⟪GTI18N_99f9fa4e_000015⟫*⟪GTI18N_99f9fa4e_000016⟫ ja jälgi, kuidas programmi käitumine muutub.
+
+Väärtusvastuvõtja korral töötab meetod ⟪GTI18N_99f9fa4e_000019⟫Scale⟪GTI18N_99f9fa4e_000020⟫ algse
+⟪GTI18N_99f9fa4e_000021⟫Vertex⟪GTI18N_99f9fa4e_000022⟫ väärtuse koopiaga.
+(Sama juhtub iga muu funktsiooni argumendiga.)
+Meetodil ⟪GTI18N_99f9fa4e_000023⟫Scale⟪GTI18N_99f9fa4e_000024⟫ peab olema viitvastuvõtja, et muuta funktsioonis ⟪GTI18N_99f9fa4e_000027⟫main⟪GTI18N_99f9fa4e_000028⟫ deklareeritud ⟪GTI18N_99f9fa4e_000025⟫Vertex⟪GTI18N_99f9fa4e_000026⟫ väärtust.
+
+⟪GTI18N_99f9fa4e_000029⟫

@@ -1,0 +1,16 @@
+* Metodes un netiešā adresēšana ar rādītājiem
+
+Salīdzinot abas iepriekšējās programmas, var pamanīt, ka
+funkcijām ar rādītāja argumentu jāpadod rādītājs:
+
+⟪GTI18N_39fb725b_000001⟫Kompilēšanas kļūda!⟪GTI18N_39fb725b_000002⟫savukārt metodes ar rādītāja saņēmēju izsaukšanas brīdī par
+saņēmēju pieņem gan vērtību, gan rādītāju:
+
+⟪GTI18N_39fb725b_000003⟫
+
+Priekšrakstā ⟪GTI18N_39fb725b_000004⟫v.Scale(5)⟪GTI18N_39fb725b_000005⟫, lai gan ⟪GTI18N_39fb725b_000006⟫v⟪GTI18N_39fb725b_000007⟫ ir vērtība, nevis rādītājs,
+metode ar rādītāja saņēmēju tiek izsaukta automātiski.
+Ērtības labad ⟪GTI18N_39fb725b_000008⟫ priekšrakstu ⟪GTI18N_39fb725b_000009⟫v.Scale(5)⟪GTI18N_39fb725b_000010⟫ interpretē kā
+⟪GTI18N_39fb725b_000011⟫(&v).Scale(5)⟪GTI18N_39fb725b_000012⟫, jo metodei ⟪GTI18N_39fb725b_000013⟫Scale⟪GTI18N_39fb725b_000014⟫ ir rādītāja saņēmējs.
+
+⟪GTI18N_39fb725b_000015⟫

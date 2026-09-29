@@ -1,0 +1,25 @@
+* Tüübiväited
+
+⟪GTI18N_c205b4eb_000001⟫Tüübiväide⟪GTI18N_c205b4eb_000002⟫ annab juurdepääsu liideseväärtuse aluseks olevale konkreetsele väärtusele.
+
+⟪GTI18N_c205b4eb_000003⟫
+
+See lause väidab, et liideseväärtus ⟪GTI18N_c205b4eb_000004⟫i⟪GTI18N_c205b4eb_000005⟫ hoiab konkreetset tüüpi ⟪GTI18N_c205b4eb_000006⟫T⟪GTI18N_c205b4eb_000007⟫,
+ja omistab aluseks oleva ⟪GTI18N_c205b4eb_000008⟫T⟪GTI18N_c205b4eb_000009⟫ väärtuse muutujale ⟪GTI18N_c205b4eb_000010⟫t⟪GTI18N_c205b4eb_000011⟫.
+
+Kui ⟪GTI18N_c205b4eb_000012⟫i⟪GTI18N_c205b4eb_000013⟫ ei hoia tüüpi ⟪GTI18N_c205b4eb_000014⟫T⟪GTI18N_c205b4eb_000015⟫, põhjustab lause panic'u.
+
+Et ⟪GTI18N_c205b4eb_000016⟫kontrollida⟪GTI18N_c205b4eb_000017⟫, kas liideseväärtus hoiab kindlat tüüpi,
+võib tüübiväide tagastada kaks väärtust: aluseks oleva väärtuse
+ja tõeväärtuse, mis näitab, kas väide õnnestus.
+
+⟪GTI18N_c205b4eb_000018⟫
+
+Kui ⟪GTI18N_c205b4eb_000019⟫i⟪GTI18N_c205b4eb_000020⟫ hoiab tüüpi ⟪GTI18N_c205b4eb_000021⟫T⟪GTI18N_c205b4eb_000022⟫, on ⟪GTI18N_c205b4eb_000023⟫t⟪GTI18N_c205b4eb_000024⟫ aluseks olev väärtus ja ⟪GTI18N_c205b4eb_000025⟫ok⟪GTI18N_c205b4eb_000026⟫ väärtus true.
+
+Vastasel juhul on ⟪GTI18N_c205b4eb_000027⟫ok⟪GTI18N_c205b4eb_000028⟫ väärtus false ja ⟪GTI18N_c205b4eb_000029⟫t⟪GTI18N_c205b4eb_000030⟫ saab tüübi ⟪GTI18N_c205b4eb_000031⟫T⟪GTI18N_c205b4eb_000032⟫ nullväärtuse
+ning panic'ut ei teki.
+
+Pane tähele selle süntaksi sarnasust kujutisest lugemise süntaksiga.
+
+⟪GTI18N_c205b4eb_000033⟫

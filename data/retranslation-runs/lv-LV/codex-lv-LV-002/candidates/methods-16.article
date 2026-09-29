@@ -1,0 +1,28 @@
+* Tipu izvēles priekšraksti
+
+_Tipu_izvēles_priekšraksts_ ir konstrukcija, kas ļauj secīgi izpildīt vairākus tipa apgalvojumus.
+
+Tipu izvēles priekšraksts līdzinās parastam switch priekšrakstam, taču tipu
+izvēles priekšraksta gadījumi norāda tipus (nevis vērtības), un šie tipi tiek salīdzināti ar
+dotajā saskarnes vērtībā glabātās vērtības tipu.
+
+	switch v := i.(type) {
+	case T:
+		// šeit v tips ir T
+	case S:
+		// šeit v tips ir S
+	default:
+		// nav atbilstības; šeit v tips ir tāds pats kā i
+	}
+
+Deklarācijai tipu izvēles priekšrakstā ir tāda pati sintakse kā tipa apgalvojumam `i.(T)`,
+taču konkrētais tips `T` ir aizstāts ar atslēgvārdu `type`.
+
+Šis switch priekšraksts pārbauda, vai saskarnes vērtība `i`
+glabā tipa `T` vai `S` vērtību.
+Gadījumā `T` mainīgā `v` tips būs `T`, bet gadījumā `S` — tips
+`S`; abos gadījumos tas glabās vērtību, ko glabā `i`.
+Noklusējuma gadījumā (kad nav atbilstības) mainīgajam `v` ir
+tāds pats saskarnes tips un vērtība kā `i`.
+
+.play methods/type-switches.go

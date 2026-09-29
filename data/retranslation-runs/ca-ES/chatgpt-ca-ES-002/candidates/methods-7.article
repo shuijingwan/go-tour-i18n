@@ -1,0 +1,21 @@
+* Mètodes i indirecció de punter (2)
+
+En la direcció inversa passa l'equivalent.
+
+Les funcions que reben un argument de valor han de rebre un valor d'aquell tipus concret:
+
+	var v Vertex
+	fmt.Println(AbsFunc(v))  // OK
+	fmt.Println(AbsFunc(&v)) // Error de compilació!
+
+mentre que els mètodes amb receptors de valor accepten tant un valor com un punter com a
+receptor quan es criden:
+
+	var v Vertex
+	fmt.Println(v.Abs()) // OK
+	p := &v
+	fmt.Println(p.Abs()) // OK
+
+En aquest cas, la crida al mètode `p.Abs()` s'interpreta com `(*p).Abs()`.
+
+.play methods/indirection-values.go

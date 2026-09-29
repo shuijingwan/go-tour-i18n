@@ -1,0 +1,12 @@
+* Més sobre els mètodes
+
+També pots declarar un mètode sobre tipus que no siguin estructures.
+
+En aquest exemple veiem un tipus numèric `MyFloat` amb un mètode `Abs`.
+
+Només pots declarar un mètode amb un receptor el tipus del qual estigui definit al mateix
+paquet que el mètode.
+No pots declarar un mètode amb un receptor el tipus del qual estigui definit en un altre
+paquet (això inclou els tipus integrats, com ara `int`).
+
+.play methods/methods-continued.go

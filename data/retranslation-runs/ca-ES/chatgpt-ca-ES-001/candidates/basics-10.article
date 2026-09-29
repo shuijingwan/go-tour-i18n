@@ -1,0 +1,7 @@
+* Declaracions curtes de variables
+
+Dins d'una funció, la sentència d'assignació curta `:=` es pot utilitzar en lloc d'una declaració `var` amb tipus implícit.
+
+Fora d'una funció, totes les sentències comencen amb una paraula clau (`var`, `func`, etc.) i, per tant, la construcció `:=` no està disponible.
+
+.play basics/short-variable-declarations.go

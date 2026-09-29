@@ -1,0 +1,10 @@
+* Rādītāji uz struktūrām
+
+Struktūras laukiem var piekļūt, izmantojot struktūras rādītāju.
+
+Ja mums ir struktūras rādītājs `p`, lai piekļūtu struktūras laukam `X`, varētu
+rakstīt `(*p).X`.
+Tomēr šāds pieraksts ir neērts, tāpēc valoda ļauj tā vietā
+rakstīt vienkārši `p.X` bez skaidri norādītas atsauces atvēršanas.
+
+.play moretypes/struct-pointers.go

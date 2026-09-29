@@ -1,0 +1,7 @@
+* Īsās mainīgo deklarācijas
+
+Funkcijā īso piešķiršanas priekšrakstu `:=` var izmantot deklarācijas `var` ar netieši noteiktu tipu vietā.
+
+Ārpus funkcijas katrs priekšraksts sākas ar atslēgvārdu (`var`, `func` un tā tālāk), tāpēc konstrukcija `:=` tur nav pieejama.
+
+.play basics/short-variable-declarations.go

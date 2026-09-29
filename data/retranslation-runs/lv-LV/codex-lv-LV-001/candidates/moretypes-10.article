@@ -1,0 +1,18 @@
+* Šķēlumu noklusējuma robežas
+
+Veidojot šķēlumu, varat izlaist augšējo vai apakšējo robežu, lai tās vietā izmantotu noklusējuma vērtību.
+
+Apakšējās robežas noklusējuma vērtība ir nulle, bet augšējās robežas — pamatā esošā šķēluma vai masīva garums.
+
+Masīvam
+
+	var a [10]int
+
+šie šķēluma izteiksmju varianti ir līdzvērtīgi:
+
+	a[0:10]
+	a[:10]
+	a[0:]
+	a[:]
+
+.play moretypes/slice-bounds.go

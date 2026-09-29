@@ -1,0 +1,24 @@
+* Rādītāja saņēmēji
+
+Metodes var deklarēt ar rādītāja saņēmējiem.
+
+Tas nozīmē, ka saņēmēja tipam ir literālā sintakse ⟪GTI18N_99f9fa4e_000001⟫*T⟪GTI18N_99f9fa4e_000002⟫ kādam tipam ⟪GTI18N_99f9fa4e_000003⟫T⟪GTI18N_99f9fa4e_000004⟫.
+(Turklāt ⟪GTI18N_99f9fa4e_000005⟫T⟪GTI18N_99f9fa4e_000006⟫ pats nevar būt rādītājs, piemēram, ⟪GTI18N_99f9fa4e_000007⟫*int⟪GTI18N_99f9fa4e_000008⟫.)
+
+Piemēram, metode ⟪GTI18N_99f9fa4e_000009⟫Scale⟪GTI18N_99f9fa4e_000010⟫ šeit ir definēta tipam ⟪GTI18N_99f9fa4e_000011⟫*Vertex⟪GTI18N_99f9fa4e_000012⟫.
+
+Metodes ar rādītāja saņēmējiem var mainīt vērtību, uz kuru saņēmējs
+norāda (kā to šeit dara ⟪GTI18N_99f9fa4e_000013⟫Scale⟪GTI18N_99f9fa4e_000014⟫).
+Tā kā metodēm bieži ir jāmaina savs saņēmējs, rādītāja saņēmēji ir
+biežāk sastopami nekā vērtības saņēmēji.
+
+Mēģiniet noņemt ⟪GTI18N_99f9fa4e_000015⟫*⟪GTI18N_99f9fa4e_000016⟫ no funkcijas ⟪GTI18N_99f9fa4e_000017⟫Scale⟪GTI18N_99f9fa4e_000018⟫ deklarācijas 16. rindā
+un novērojiet, kā mainās programmas darbība.
+
+Ar vērtības saņēmēju metode ⟪GTI18N_99f9fa4e_000019⟫Scale⟪GTI18N_99f9fa4e_000020⟫ darbojas ar sākotnējās
+⟪GTI18N_99f9fa4e_000021⟫Vertex⟪GTI18N_99f9fa4e_000022⟫ vērtības kopiju.
+(Tāpat darbojas jebkurš cits funkcijas arguments.)
+Metodei ⟪GTI18N_99f9fa4e_000023⟫Scale⟪GTI18N_99f9fa4e_000024⟫ ir nepieciešams rādītāja saņēmējs, lai mainītu ⟪GTI18N_99f9fa4e_000025⟫Vertex⟪GTI18N_99f9fa4e_000026⟫ vērtību,
+kas deklarēta funkcijā ⟪GTI18N_99f9fa4e_000027⟫main⟪GTI18N_99f9fa4e_000028⟫.
+
+⟪GTI18N_99f9fa4e_000029⟫

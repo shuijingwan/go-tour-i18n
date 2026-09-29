@@ -1,0 +1,23 @@
+* Exercici: arbres binaris equivalents
+
+*1.* Implementa la funció `Walk`.
+
+*2.* Prova la funció `Walk`.
+
+La funció `tree.New(k)` construeix un arbre binari d'estructura aleatòria (però sempre ordenat) que conté els valors `k`, `2k`, `3k`, ..., `10k`.
+
+Crea un canal nou `ch` i inicia el recorregut:
+
+	go Walk(tree.New(1), ch)
+
+Després llegeix i imprimeix 10 valors del canal. Haurien de ser els nombres 1, 2, 3, ..., 10.
+
+*3.* Implementa la funció `Same` utilitzant `Walk` per determinar si `t1` i `t2` emmagatzemen els mateixos valors.
+
+*4.* Prova la funció `Same`.
+
+`Same(tree.New(1),`tree.New(1))` ha de retornar true, i `Same(tree.New(1),`tree.New(2))` ha de retornar false.
+
+Pots trobar la documentació de `Tree` [[https://godoc.org/golang.org/x/tour/tree#Tree][aquí]].
+
+.play concurrency/exercise-equivalent-binary-trees.go

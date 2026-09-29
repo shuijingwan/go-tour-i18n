@@ -1,0 +1,20 @@
+* Lectors
+
+El paquet ⟪GTI18N_120c3fc9_000001⟫io⟪GTI18N_120c3fc9_000002⟫ especifica la interfície ⟪GTI18N_120c3fc9_000003⟫io.Reader⟪GTI18N_120c3fc9_000004⟫,
+que representa l'extrem de lectura d'un flux de dades.
+
+La biblioteca estàndard de ⟪GTI18N_120c3fc9_000005⟫ conté [[⟪GTI18N_120c3fc9_000006⟫][moltes implementacions]] d'aquesta interfície, com ara fitxers, connexions de xarxa, compressors, xifradors i d'altres.
+
+La interfície ⟪GTI18N_120c3fc9_000007⟫io.Reader⟪GTI18N_120c3fc9_000008⟫ té un mètode ⟪GTI18N_120c3fc9_000009⟫Read⟪GTI18N_120c3fc9_000010⟫:
+
+⟪GTI18N_120c3fc9_000011⟫
+
+⟪GTI18N_120c3fc9_000012⟫Read⟪GTI18N_120c3fc9_000013⟫ omple amb dades el ⟪GTI18N_120c3fc9_000014⟫ de bytes proporcionat i retorna el nombre de bytes
+emplenats i un valor d'error. Retorna un error ⟪GTI18N_120c3fc9_000015⟫io.EOF⟪GTI18N_120c3fc9_000016⟫ quan el flux
+s'acaba.
+
+El codi d'exemple crea un
+[[⟪GTI18N_120c3fc9_000017⟫][⟪GTI18N_120c3fc9_000018⟫strings.Reader⟪GTI18N_120c3fc9_000019⟫]]
+i en consumeix la sortida de 8 bytes en 8 bytes.
+
+⟪GTI18N_120c3fc9_000020⟫

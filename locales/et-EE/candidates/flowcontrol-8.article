@@ -1,0 +1,31 @@
+* Harjutus: tsüklid ja funktsioonid
+
+Funktsioonide ja tsüklitega katsetamiseks teostame ruutjuure funktsiooni: arvu x korral tahame leida arvu z, mille z² on x-ile võimalikult lähedal.
+
+Arvutid arvutavad x-i ruutjuure tavaliselt tsükli abil.
+Alustades mingist z-i lähendist, saame z-i kohandada selle järgi, kui lähedal on z² väärtusele x, ning saada parema lähendi:
+
+	z -= (z*z - x) / (2*z)
+
+Seda kohandust korrates muutub lähend aina paremaks, kuni jõuame tulemuseni, mis on tegelikule ruutjuurele nii lähedal kui võimalik.
+
+Teosta see antud funktsioonis `func`Sqrt`.
+Hea algne z-i lähend on 1 olenemata sisendist.
+Alustuseks korda arvutust 10 korda ja trüki iga z vahepeal välja.
+Vaata, kui lähedale jõuad eri x-i väärtuste korral (1, 2, 3, ...) ja kui kiiresti lähend paraneb.
+
+Vihje: ujukomaarvu deklareerimiseks ja initsialiseerimiseks kasuta ujukomasüntaksit või teisendust:
+
+	z := 1.0
+	z := float64(1)
+
+Seejärel muuda tsükli tingimust nii, et tsükkel peatuks, kui väärtus enam ei muutu (või muutub ainult väga vähe).
+Vaata, kas selleks kulub rohkem või vähem kui 10 iteratsiooni.
+Proovi z-i jaoks teisi algseid lähendeid, näiteks x või x/2.
+Kui lähedased on sinu funktsiooni tulemused standardteegi funktsiooni [[/pkg/math/#Sqrt][math.Sqrt]] tulemustele?
+
+(*Märkus:* kui algoritmi üksikasjad pakuvad huvi, siis ülal olev z² − x näitab, kui kaugel on z² soovitud väärtusest x, ning jagamine 2z-ga kasutab z² tuletist, et skaleerida z-i parandust vastavalt sellele, kui kiiresti z² muutub.
+Seda üldist lähenemist nimetatakse [[https://en.wikipedia.org/wiki/Newton%27s_method][Newtoni meetodiks]].
+See töötab hästi paljude funktsioonide, eriti aga ruutjuure puhul.)
+
+.play flowcontrol/exercise-loops-and-functions.go

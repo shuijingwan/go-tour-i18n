@@ -1,0 +1,12 @@
+* Uzdevums: rot13Reader
+
+Bieži izmantots risinājums ir [[⟪GTI18N_11d87614_000001⟫][io.Reader]], kas aptver citu ⟪GTI18N_11d87614_000002⟫io.Reader⟪GTI18N_11d87614_000003⟫ un kaut kādā veidā maina plūsmu.
+
+Piemēram, funkcija [[⟪GTI18N_11d87614_000004⟫][gzip.NewReader]] pieņem ⟪GTI18N_11d87614_000005⟫io.Reader⟪GTI18N_11d87614_000006⟫ (saspiestu datu plūsmu) un atgriež ⟪GTI18N_11d87614_000007⟫*gzip.Reader⟪GTI18N_11d87614_000008⟫, kas arī īsteno ⟪GTI18N_11d87614_000009⟫io.Reader⟪GTI18N_11d87614_000010⟫ (atspiestu datu plūsmu).
+
+Ieviesiet ⟪GTI18N_11d87614_000011⟫rot13Reader⟪GTI18N_11d87614_000012⟫, kas īsteno ⟪GTI18N_11d87614_000013⟫io.Reader⟪GTI18N_11d87614_000014⟫, lasa no ⟪GTI18N_11d87614_000015⟫io.Reader⟪GTI18N_11d87614_000016⟫ un maina plūsmu, visām alfabēta rakstzīmēm lietojot [[⟪GTI18N_11d87614_000017⟫][rot13]] aizvietošanas šifru.
+
+Tips ⟪GTI18N_11d87614_000018⟫rot13Reader⟪GTI18N_11d87614_000019⟫ jums jau ir dots.
+Lieciet tam īstenot ⟪GTI18N_11d87614_000020⟫io.Reader⟪GTI18N_11d87614_000021⟫, ieviešot tā metodi ⟪GTI18N_11d87614_000022⟫Read⟪GTI18N_11d87614_000023⟫.
+
+⟪GTI18N_11d87614_000024⟫

@@ -1,0 +1,8 @@
+* Nil-liideseväärtused
+
+nil liideseväärtus ei hoia ei väärtust ega konkreetset tüüpi.
+
+Meetodi väljakutse nil liidesel on käitusaegne viga, sest liidese paaris pole tüüpi,
+mis ütleks, millist _konkreetset_ meetodit välja kutsuda.
+
+.play methods/nil-interface-values.go

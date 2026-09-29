@@ -1,0 +1,16 @@
+* Tipa parametri
+
+Go funkcijas var uzrakstīt tā, lai tās darbotos ar vairākiem tipiem, izmantojot tipa parametrus. Funkcijas
+tipa parametri atrodas kvadrātiekavās pirms funkcijas
+argumentiem.
+
+  func Index[T comparable](s []T, x T) int
+
+Šī deklarācija nozīmē, ka `s` ir jebkura tipa `T` šķēlums, kas atbilst
+iebūvētajam ierobežojumam `comparable`. Arī `x` ir tā paša tipa vērtība.
+
+`comparable` ir noderīgs ierobežojums, kas ļauj tipa vērtībām izmantot operatorus `==` un
+`!=`. Šajā piemērā to izmantojam, lai salīdzinātu vērtību ar visiem šķēluma elementiem, līdz tiek atrasta atbilstība. Funkcija `Index` darbojas
+ar jebkuru tipu, kas atbalsta salīdzināšanu.
+
+.play generics/index.go

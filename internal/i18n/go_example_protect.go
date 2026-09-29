@@ -30,6 +30,7 @@ type goExampleComment struct {
 }
 
 var goExampleShiftVerbRE = regexp.MustCompile(`^Shift\s+it\s+(?:left|right)\b`)
+var goExampleSliceVerbRE = regexp.MustCompile(`^Slice\s+the\s+slice\b`)
 
 var presentCommentMarkerRE = regexp.MustCompile(`^(?:(?:START|END)\s+[A-Z][A-Z0-9_]*|(?:OMIT|HL|HIGHLIGHT))$`)
 
@@ -90,14 +91,18 @@ func prepareGoExampleTranslationInput(source []byte, hash string, glossary *Glos
 }
 
 // goExampleKeepProtectionSpans applies the shared Example keep semantics used
-// by both input protection and candidate validation. Shift remains protected as
-// a keyboard key, while the specific English verb construction "Shift it
-// left/right" remains translatable.
+// by both input protection and candidate validation. Technical keep terms remain
+// protected, while narrow English verb constructions such as "Shift it
+// left/right" and "Slice the slice" remain translatable.
 func goExampleKeepProtectionSpans(text string, glossary *Glossary, allowed func(start, end int) bool) []protectedSpan {
 	spans := translationKeepProtectionSpans(text, glossary, nil, allowed)
 	filtered := spans[:0]
 	for _, span := range spans {
-		if text[span.start:span.end] == "Shift" && goExampleShiftVerbRE.MatchString(text[span.start:]) {
+		keep := text[span.start:span.end]
+		if keep == "Shift" && goExampleShiftVerbRE.MatchString(text[span.start:]) {
+			continue
+		}
+		if keep == "Slice" && goExampleSliceVerbRE.MatchString(text[span.start:]) {
 			continue
 		}
 		filtered = append(filtered, span)

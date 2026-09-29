@@ -1,0 +1,15 @@
+* Ordre d'avaluació del switch
+
+Els casos d'un switch s'avaluen de dalt a baix i s'aturen quan un cas té èxit.
+
+(Per exemple,
+
+	switch i {
+	case 0:
+	case f():
+	}
+
+no crida `f` si `i==0`.)
+
+
+.play flowcontrol/switch-evaluation-order.go

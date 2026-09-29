@@ -1,0 +1,19 @@
+* Sentències switch de tipus
+
+Una ⟪GTI18N_26e4da09_000001⟫sentència_switch_de_tipus⟪GTI18N_26e4da09_000002⟫ és una construcció que permet encadenar diverses assercions de tipus.
+
+Una sentència switch de tipus és semblant a una sentència switch normal, però els casos d'una sentència
+switch de tipus especifiquen tipus (no valors), i aquests tipus es comparen amb
+el tipus del valor contingut en el valor d'interfície donat.
+
+⟪GTI18N_26e4da09_000003⟫aquí ⟪GTI18N_26e4da09_000004⟫ té el tipus ⟪GTI18N_26e4da09_000005⟫⟪GTI18N_26e4da09_000006⟫aquí ⟪GTI18N_26e4da09_000007⟫ té el tipus ⟪GTI18N_26e4da09_000008⟫⟪GTI18N_26e4da09_000009⟫cap coincidència; aquí ⟪GTI18N_26e4da09_000010⟫ té el mateix tipus que ⟪GTI18N_26e4da09_000011⟫⟪GTI18N_26e4da09_000012⟫La declaració d'una sentència switch de tipus té la mateixa sintaxi que una asserció de tipus ⟪GTI18N_26e4da09_000013⟫i.(T)⟪GTI18N_26e4da09_000014⟫,
+però el tipus específic ⟪GTI18N_26e4da09_000015⟫T⟪GTI18N_26e4da09_000016⟫ se substitueix per la paraula clau ⟪GTI18N_26e4da09_000017⟫type⟪GTI18N_26e4da09_000018⟫.
+
+Aquesta sentència switch comprova si el valor d'interfície ⟪GTI18N_26e4da09_000019⟫i⟪GTI18N_26e4da09_000020⟫
+conté un valor de tipus ⟪GTI18N_26e4da09_000021⟫T⟪GTI18N_26e4da09_000022⟫ o ⟪GTI18N_26e4da09_000023⟫S⟪GTI18N_26e4da09_000024⟫.
+En cadascun dels casos ⟪GTI18N_26e4da09_000025⟫T⟪GTI18N_26e4da09_000026⟫ i ⟪GTI18N_26e4da09_000027⟫S⟪GTI18N_26e4da09_000028⟫, la variable ⟪GTI18N_26e4da09_000029⟫v⟪GTI18N_26e4da09_000030⟫ serà de tipus
+⟪GTI18N_26e4da09_000031⟫T⟪GTI18N_26e4da09_000032⟫ o ⟪GTI18N_26e4da09_000033⟫S⟪GTI18N_26e4da09_000034⟫, respectivament, i contindrà el valor que conté ⟪GTI18N_26e4da09_000035⟫i⟪GTI18N_26e4da09_000036⟫.
+En el cas per defecte (quan no hi ha cap coincidència), la variable ⟪GTI18N_26e4da09_000037⟫v⟪GTI18N_26e4da09_000038⟫ té
+el mateix tipus d'interfície i el mateix valor que ⟪GTI18N_26e4da09_000039⟫i⟪GTI18N_26e4da09_000040⟫.
+
+⟪GTI18N_26e4da09_000041⟫

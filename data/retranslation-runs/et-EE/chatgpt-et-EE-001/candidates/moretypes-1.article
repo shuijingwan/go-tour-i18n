@@ -1,0 +1,24 @@
+* Viidad
+
+Go-s on viidad.
+Viit hoiab väärtuse mäluaadressi.
+
+Tüüp `*T` on viit tüüpi `T` väärtusele. Selle nullväärtus on `nil`.
+
+	var p *int
+
+Operaator `&` loob viida oma operandile.
+
+	i := 42
+	p = &i
+
+Operaator `*` tähistab viida aluseks olevat väärtust.
+
+	fmt.Println(*p) // loe i viida p kaudu
+	*p = 21         // määra i viida p kaudu
+
+Seda nimetatakse viida dereferentseerimiseks ehk kaudseks juurdepääsuks.
+
+Erinevalt C-st puudub Go-s viitade aritmeetika.
+
+.play moretypes/pointers.go

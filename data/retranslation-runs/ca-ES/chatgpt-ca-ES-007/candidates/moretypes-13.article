@@ -1,0 +1,18 @@
+* Creació d'un slice amb make
+
+Els slices es poden crear amb la funció incorporada `make`;
+així és com es creen matrius de mida dinàmica.
+
+La funció `make` assigna una matriu inicialitzada a zero
+i retorna un slice que fa referència a aquesta matriu:
+
+	a := make([]int, 5)  // len(a)=5
+
+Per especificar una capacitat, passa un tercer argument a `make`:
+
+	b := make([]int, 0, 5) // len(b)=0, cap(b)=5
+
+	b = b[:cap(b)] // len(b)=5, cap(b)=5
+	b = b[1:]      // len(b)=4, cap(b)=4
+
+.play moretypes/making-slices.go

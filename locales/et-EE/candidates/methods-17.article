@@ -1,0 +1,12 @@
+* Stringerid
+
+Üks kõige levinumaid liideseid on [[/pkg/fmt/#Stringer][`Stringer`]], mille defineerib pakett [[/pkg/fmt/][`fmt`]].
+
+	type Stringer interface {
+		String() string
+	}
+
+`Stringer` on tüüp, mis oskab ennast sõnena kirjeldada. Pakett `fmt`
+(ja paljud teised) otsib väärtuste väljatrükkimiseks seda liidest.
+
+.play methods/stringer.go

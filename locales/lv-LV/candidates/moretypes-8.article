@@ -1,0 +1,11 @@
+* Šķēlumi līdzinās atsaucēm uz masīviem
+
+Šķēlums neglabā datus;
+tas tikai apraksta pamatā esošā masīva daļu.
+
+Mainot šķēluma elementus, tiek mainīti arī atbilstošie
+tā pamatā esošā masīva elementi.
+
+Šīs izmaiņas būs redzamas arī citiem šķēlumiem, kuriem ir tas pats pamatā esošais masīvs.
+
+.play moretypes/slices-pointers.go

@@ -1,0 +1,7 @@
+* Defer-väljakutsete virnastamine
+
+Edasilükatud funktsiooniväljakutsed lisatakse pinu peale. Funktsiooni tagastamisel täidetakse selle edasilükatud väljakutsed järjekorras „viimasena sisse, esimesena välja“.
+
+Defer-lausete kohta saad rohkem teada sellest [[/blog/defer-panic-and-recover][blogipostitusest]].
+
+.play flowcontrol/defer-multi.go

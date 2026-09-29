@@ -1,0 +1,23 @@
+* Mètodes i indirecció de punter
+
+Si compares els dos programes anteriors, potser observaràs que
+les funcions amb un argument punter han de rebre un punter:
+
+	var v Vertex
+	ScaleFunc(v, 5)  // Error de compilació!
+	ScaleFunc(&v, 5) // OK
+
+mentre que els mètodes amb receptors de punter accepten tant un valor com un punter com a
+receptor quan es criden:
+
+	var v Vertex
+	v.Scale(5)  // OK
+	p := &v
+	p.Scale(10) // OK
+
+Per a la sentència `v.Scale(5)`, encara que `v` és un valor i no un punter,
+el mètode amb receptor de punter es crida automàticament.
+És a dir, per comoditat, Go interpreta la sentència `v.Scale(5)` com
+`(&v).Scale(5)` perquè el mètode `Scale` té un receptor de punter.
+
+.play methods/indirection.go

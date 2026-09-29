@@ -1,0 +1,19 @@
+* Go Playground
+
+Šis ceļvedis ir veidots, izmantojot [[https://play.golang.org/][Go Playground]] —
+tīmekļa pakalpojumu, kas darbojas [[/][golang.org]] serveros.
+
+Pakalpojums saņem Go programmu, kompilē un sasaista to, palaiž programmu
+smilškastē un pēc tam atgriež izvadi.
+
+Programmām, kuras var palaist pakalpojumā Playground, ir daži ierobežojumi:
+
+- Pakalpojumā Playground laiks sākas 2009-11-10 23:00:00 UTC (šī datuma nozīmes noskaidrošana ir uzdevums lasītājam). Tā kā programmu izvade ir deterministiska, tās ir vieglāk ievietot kešatmiņā.
+
+- Ir ierobežots arī izpildes laiks, CPU un atmiņas lietojums, un programma nevar piekļūt ārējiem tīkla resursdatoriem.
+
+Playground izmanto jaunāko stabilo Go laidienu.
+
+Lai uzzinātu vairāk, izlasiet “[[/blog/playground][Go Playground iekšienē]]”.
+
+.play welcome/sandbox.go

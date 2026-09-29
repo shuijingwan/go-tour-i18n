@@ -1,0 +1,18 @@
+* Viilude vaikepiirid
+
+Viilutamisel võid ülemise või alumise piiri ära jätta ning kasutada selle asemel vaikeväärtust.
+
+Alumise piiri vaikeväärtus on null ning ülemise piiri vaikeväärtus on aluseks oleva viilu või massiivi pikkus.
+
+Massiivi
+
+	var a [10]int
+
+puhul on järgmised viiluavaldised samaväärsed:
+
+	a[0:10]
+	a[:10]
+	a[0:]
+	a[:]
+
+.play moretypes/slice-bounds.go

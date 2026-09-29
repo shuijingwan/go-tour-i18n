@@ -1,0 +1,9 @@
+* Les interfícies s'implementen implícitament
+
+Un tipus implementa una interfície implementant-ne els mètodes.
+No hi ha cap declaració explícita d'intenció ni cap paraula clau «implements».
+
+Les interfícies implícites desacoblen la definició d'una interfície de la seva
+implementació, que així pot aparèixer en qualsevol paquet sense cap acord previ.
+
+.play methods/interfaces-are-satisfied-implicitly.go

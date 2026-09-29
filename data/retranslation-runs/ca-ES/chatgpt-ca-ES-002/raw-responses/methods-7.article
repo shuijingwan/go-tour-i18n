@@ -1,0 +1,14 @@
+* Mètodes i indirecció de punter (2)
+
+En la direcció inversa passa l'equivalent.
+
+Les funcions que reben un argument de valor han de rebre un valor d'aquell tipus concret:
+
+⟪GTI18N_61a9cb84_000001⟫Error de compilació!⟪GTI18N_61a9cb84_000002⟫mentre que els mètodes amb receptors de valor accepten tant un valor com un punter com a
+receptor quan es criden:
+
+⟪GTI18N_61a9cb84_000003⟫
+
+En aquest cas, la crida al mètode ⟪GTI18N_61a9cb84_000004⟫p.Abs()⟪GTI18N_61a9cb84_000005⟫ s'interpreta com ⟪GTI18N_61a9cb84_000006⟫(*p).Abs()⟪GTI18N_61a9cb84_000007⟫.
+
+⟪GTI18N_61a9cb84_000008⟫

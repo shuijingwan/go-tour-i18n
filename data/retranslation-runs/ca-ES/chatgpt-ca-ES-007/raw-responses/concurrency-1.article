@@ -1,0 +1,15 @@
+* ⟪GTI18N_d0a9c450_000001⟫
+
+Una ⟪GTI18N_d0a9c450_000002⟫⟪GTI18N_d0a9c450_000003⟫⟪GTI18N_d0a9c450_000004⟫ és un fil d'execució lleuger gestionat per l'entorn d'execució de ⟪GTI18N_d0a9c450_000005⟫.
+
+⟪GTI18N_d0a9c450_000006⟫
+
+inicia una nova ⟪GTI18N_d0a9c450_000007⟫ que executa
+
+⟪GTI18N_d0a9c450_000008⟫
+
+L'avaluació de ⟪GTI18N_d0a9c450_000009⟫f⟪GTI18N_d0a9c450_000010⟫, ⟪GTI18N_d0a9c450_000011⟫x⟪GTI18N_d0a9c450_000012⟫, ⟪GTI18N_d0a9c450_000013⟫y⟪GTI18N_d0a9c450_000014⟫ i ⟪GTI18N_d0a9c450_000015⟫z⟪GTI18N_d0a9c450_000016⟫ té lloc a la ⟪GTI18N_d0a9c450_000017⟫ actual i l'execució de ⟪GTI18N_d0a9c450_000018⟫f⟪GTI18N_d0a9c450_000019⟫ té lloc a la nova ⟪GTI18N_d0a9c450_000020⟫.
+
+Les goroutines s'executen al mateix espai d'adreces, de manera que l'accés a la memòria compartida s'ha de sincronitzar. El paquet [[⟪GTI18N_d0a9c450_000021⟫][⟪GTI18N_d0a9c450_000022⟫sync⟪GTI18N_d0a9c450_000023⟫]] proporciona primitives útils, tot i que no les necessitaràs gaire a ⟪GTI18N_d0a9c450_000024⟫ perquè hi ha altres primitives. (Consulta la diapositiva següent.)
+
+⟪GTI18N_d0a9c450_000025⟫

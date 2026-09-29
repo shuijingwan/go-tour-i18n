@@ -1,0 +1,14 @@
+* Meetodid ja kaudne juurdepääs viida kaudu
+
+Kui võrrelda kahte eelmist programmi, võib märgata, et
+viitargumendiga funktsioonidele tuleb anda viit:
+
+⟪GTI18N_39fb725b_000001⟫Kompileerimisviga!⟪GTI18N_39fb725b_000002⟫samas kui viitvastuvõtjaga meetodi väljakutsel võib vastuvõtjaks olla nii väärtus kui ka viit:
+
+⟪GTI18N_39fb725b_000003⟫
+
+Lause ⟪GTI18N_39fb725b_000004⟫v.Scale(5)⟪GTI18N_39fb725b_000005⟫ korral kutsutakse viitvastuvõtjaga meetod automaatselt välja, kuigi ⟪GTI18N_39fb725b_000006⟫v⟪GTI18N_39fb725b_000007⟫ on väärtus, mitte viit.
+Mugavuse huvides tõlgendab ⟪GTI18N_39fb725b_000008⟫ lauset ⟪GTI18N_39fb725b_000009⟫v.Scale(5)⟪GTI18N_39fb725b_000010⟫ kujul
+⟪GTI18N_39fb725b_000011⟫(&v).Scale(5)⟪GTI18N_39fb725b_000012⟫, sest meetodil ⟪GTI18N_39fb725b_000013⟫Scale⟪GTI18N_39fb725b_000014⟫ on viitvastuvõtja.
+
+⟪GTI18N_39fb725b_000015⟫

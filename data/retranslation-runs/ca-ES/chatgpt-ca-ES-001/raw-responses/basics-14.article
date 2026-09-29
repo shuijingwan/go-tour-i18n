@@ -1,0 +1,13 @@
+* Inferència de tipus
+
+Quan declares una variable sense especificar-ne explícitament el tipus (ja sigui amb la sintaxi ⟪GTI18N_21c4077c_000001⟫:=⟪GTI18N_21c4077c_000002⟫ o amb la sintaxi d'expressió ⟪GTI18N_21c4077c_000003⟫var`=⟪GTI18N_21c4077c_000004⟫), el tipus de la variable s'infereix a partir del valor del costat dret.
+
+Quan el costat dret de la declaració té tipus, la nova variable té aquest mateix tipus:
+
+⟪GTI18N_21c4077c_000005⟫⟪GTI18N_21c4077c_000006⟫ és un ⟪GTI18N_21c4077c_000007⟫⟪GTI18N_21c4077c_000008⟫Però quan el costat dret conté una constant numèrica sense tipus, la nova variable pot ser un ⟪GTI18N_21c4077c_000009⟫int⟪GTI18N_21c4077c_000010⟫, un ⟪GTI18N_21c4077c_000011⟫float64⟪GTI18N_21c4077c_000012⟫ o un ⟪GTI18N_21c4077c_000013⟫complex128⟪GTI18N_21c4077c_000014⟫, segons la precisió de la constant:
+
+⟪GTI18N_21c4077c_000015⟫
+
+Prova de canviar el valor inicial de ⟪GTI18N_21c4077c_000016⟫v⟪GTI18N_21c4077c_000017⟫ al codi d'exemple i observa com afecta el seu tipus.
+
+⟪GTI18N_21c4077c_000018⟫

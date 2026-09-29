@@ -1,0 +1,15 @@
+* Range i Close
+
+Un emissor pot `close` un canal per indicar que no s'enviaran més valors. Els receptors poden comprovar si un canal s'ha tancat assignant un segon paràmetre a l'expressió de recepció: després de
+
+	v, ok := <-ch
+
+`ok` és `false` si no queden més valors per rebre i el canal està tancat.
+
+El bucle `for`i`:=`range`c` rep repetidament valors del canal fins que es tanca.
+
+*Nota:* només l'emissor ha de tancar un canal, mai el receptor. Enviar a un canal tancat provocarà un panic.
+
+*Una*altra*nota:* els canals no són com els fitxers; normalment no cal tancar-los. Tancar-los només és necessari quan cal indicar al receptor que no arribaran més valors, per exemple per acabar un bucle `range`.
+
+.play concurrency/range-and-close.go

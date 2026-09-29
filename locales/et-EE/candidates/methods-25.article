@@ -1,0 +1,13 @@
+* Harjutus: pildid
+
+Mäletad [[/tour/moretypes/18][pildigeneraatorit]], mille varem kirjutasid? Kirjutame veel ühe, kuid seekord tagastab see andmeviilu asemel liidese `image.Image` teostuse.
+
+Defineeri oma tüüp `Image`, teosta [[/pkg/image/#Image][vajalikud meetodid]] ja kutsu välja `pic.ShowImage`.
+
+`Bounds` peab tagastama `image.Rectangle`-i, näiteks `image.Rect(0,`0,`w,`h)`.
+
+`ColorModel` peab tagastama `color.RGBAModel`.
+
+`At` peab tagastama värvi; eelmise pildigeneraatori väärtusele `v` vastab siin `color.RGBA{v,`v,`255,`255}`.
+
+.play methods/exercise-images.go

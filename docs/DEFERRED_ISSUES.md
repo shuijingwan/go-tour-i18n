@@ -181,3 +181,23 @@
 - 暂缓原因：维护者于 2026-09-29 明确要求先记录失败，暂不继续重试或排查；保留现有 locale-specific key 与已成功的 provisioning，不重新生成 key、不重复修改 Production 配置。sl-SI 保持正式 `live`，站点地图已提交；IndexNow 属于 first-production finalize 之后的非阻塞 Search-engine closeout，不影响既有 Production、Surface Review 或 sitemap submission 结论。
 - 当前状态：`open`
 - 后续处理/核销证据：2026-09-29 实际命令 `scripts/indexnow-closeout.sh --locale sl-SI` 的终态为 `IndexNow local key: generated` → `PROVISIONING PASS` → `verify public IndexNow key: Get "https://sl-go-dev.shuijingwanwq.com/<key>.txt": EOF` → `indexnow closeout: FAILED: formal IndexNow bootstrap failed after provisioning`。后续仅在维护者明确恢复时使用现有正式入口与现有 key 重试或诊断；若再次调查，应先只读核对公网 key URL 的实际 HTTP/TLS/DNS 路径与当前 Production 公网状态，不把单次 EOF 直接归因。只有取得 sl-SI 自身的 `IndexNow bootstrap: PASS` 与 `IndexNow closeout: PASS` 才可核销。
+
+### DI-20260929-002：et-EE IndexNow 公网密钥验证连续 EOF，closeout 暂缓
+
+- ID：`DI-20260929-002`
+- 发现日期：`2026-09-29`
+- 发现阶段/场景：et-EE 已完成 Locale Surface Review `20260929-et-EE-stage-a-002` PASS、Preview 自动与人工验收、首次 Production machine/browser acceptance 及正式 `first-production finalize`，`production_state=live`。随后执行 `scripts/indexnow-closeout.sh --locale et-EE`，首次失败后又按同一正式入口重试一次。
+- 问题描述：第一次执行输出 `IndexNow local key: generated` 与 `PROVISIONING PASS`，随后正式 Go bootstrap 对 `https://et-go-dev.shuijingwanwq.com/<key>.txt` 的公网 HTTPS GET 返回 `EOF`，以 `indexnow closeout: FAILED: formal IndexNow bootstrap failed after provisioning` 结束（exit status 1）。第二次执行正确复用同一 locale-specific key，输出 `IndexNow local key: reused` 与 `PROVISIONING PASS`，但对同一公网 key URL 的验证再次返回 `EOF`，终态相同。两次均未取得 public key verification 或 IndexNow submission PASS。当前 evidence 只证明公网密钥验证阶段连续发生 EOF，不能据此进一步判定维护者本机网络、DNS/代理、Cloudflare、Nginx/源站或 IndexNow API 为根因；此前 et-EE 正式 Production machine/browser acceptance 均已 PASS，本次 closeout 失败不改写这些验收结果。
+- 暂缓原因：维护者于 2026-09-29 明确要求暂时停止 IndexNow 提交并先记录问题，不继续立即重试或扩大排查；保留现有 locale-specific key 与已成功的 provisioning，不重新生成 key、不重复修改 Production 配置。et-EE 保持正式 `live`；IndexNow 属于 first-production finalize 之后的非阻塞 Search-engine closeout，不影响既有 Production、Surface Review 或其他已经完成的上线 gate。
+- 当前状态：`open`
+- 后续处理/核销证据：2026-09-29 两次正式命令 `scripts/indexnow-closeout.sh --locale et-EE` 的终态分别为 `IndexNow local key: generated` / `reused` → `PROVISIONING PASS` → `verify public IndexNow key: Get "https://et-go-dev.shuijingwanwq.com/<key>.txt": EOF` → `indexnow closeout: FAILED: formal IndexNow bootstrap failed after provisioning`。后续仅在维护者明确恢复时使用现有正式入口与现有 key 重试或诊断；若再次调查，应先只读核对公网 key URL 的实际 HTTP/TLS/DNS 路径与当前 Production 公网状态，不把连续 EOF 直接归因。只有取得 et-EE 自身的 `IndexNow bootstrap: PASS` 与 `IndexNow closeout: PASS` 才可核销。
+
+### DI-20260929-003：lv-LV IndexNow 公网密钥验证连续 EOF，closeout 暂缓
+
+- ID：`DI-20260929-003`
+- 发现日期：`2026-09-29`
+- 发现阶段/场景：lv-LV 已完成 Locale Surface Review `20260929-initial-surface` PASS、首次 Production machine/browser acceptance 及正式 `first-production finalize`，`production_state=live`；维护者确认站点地图已经提交。随后连续两次执行 `scripts/indexnow-closeout.sh --locale lv-LV`。
+- 问题描述：第一次执行输出 `IndexNow local key: generated` 与 `PROVISIONING PASS`，随后正式 Go bootstrap 对 `https://lv-go-dev.shuijingwanwq.com/892bc17d3ace7aa6da7671836a951635b40cb8a7f97e4250d4cc1b4e1d26ea3b.txt` 的公网 HTTPS GET 返回 `EOF`，以 `indexnow closeout: FAILED: formal IndexNow bootstrap failed after provisioning` 结束（exit status 1）。第二次执行正确复用同一 locale-specific key，输出 `IndexNow local key: reused` 与 `PROVISIONING PASS`，但同一公网 key URL 再次返回 `EOF`，终态相同。两次均未取得 public key verification 或 IndexNow submission PASS。当前 evidence 只证明公网密钥验证阶段连续发生 EOF，不能据此进一步判定维护者本机网络、DNS/代理、Cloudflare、Nginx/源站或 IndexNow API 为根因；此前 lv-LV 正式 Production machine/browser acceptance 均已 PASS，本次 closeout 失败不改写这些验收结果。
+- 暂缓原因：维护者于 2026-09-29 明确要求先记录 IndexNow 失败，暂不继续重试或扩大排查；保留现有 locale-specific key 与已成功的 provisioning，不重新生成 key、不重复修改 Production 配置。lv-LV 保持正式 `live`，站点地图已提交；IndexNow 属于 first-production finalize 之后的非阻塞 Search-engine closeout，不影响既有 Production、Surface Review 或 sitemap submission 结论。
+- 当前状态：`open`
+- 后续处理/核销证据：2026-09-29 两次正式命令 `scripts/indexnow-closeout.sh --locale lv-LV` 的终态分别为 `IndexNow local key: generated` / `reused` → `PROVISIONING PASS` → `verify public IndexNow key: Get "https://lv-go-dev.shuijingwanwq.com/892bc17d3ace7aa6da7671836a951635b40cb8a7f97e4250d4cc1b4e1d26ea3b.txt": EOF` → `indexnow closeout: FAILED: formal IndexNow bootstrap failed after provisioning`。后续仅在维护者明确恢复时使用现有正式入口与现有 key 重试或诊断；若再次调查，应先只读核对公网 key URL 的实际 HTTP/TLS/DNS 路径与当前 Production 公网状态，不把连续 EOF 直接归因。只有取得 lv-LV 自身的 `IndexNow bootstrap: PASS` 与 `IndexNow closeout: PASS` 才可核销。

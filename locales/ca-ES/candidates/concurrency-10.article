@@ -1,0 +1,10 @@
+* Exercici: rastrejador web
+
+En aquest exercici utilitzaràs les funcionalitats de concurrència de Go per paral·lelitzar un rastrejador web.
+
+Modifica la funció `Crawl` perquè obtingui URLs en paral·lel sense obtenir el mateix URL dues vegades.
+
+_Pista_: pots mantenir en un mapa una memòria cau dels URLs que ja s'han obtingut, però els mapes per si sols no són
+segurs per a l'ús concurrent!
+
+.play concurrency/exercise-web-crawler.go

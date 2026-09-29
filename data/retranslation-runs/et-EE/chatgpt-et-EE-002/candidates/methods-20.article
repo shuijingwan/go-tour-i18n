@@ -1,0 +1,21 @@
+* Harjutus: vead
+
+Kopeeri oma funktsioon `Sqrt` [[/tour/flowcontrol/8][varasemast harjutusest]] ja muuda seda nii, et see tagastaks `error`-väärtuse.
+
+`Sqrt` peab negatiivse arvu korral tagastama mitte-nil veaväärtuse, sest kompleksarve see ei toeta.
+
+Loo uus tüüp
+
+	type ErrNegativeSqrt float64
+
+ja tee sellest `error`, lisades sellele meetodi
+
+	func (e ErrNegativeSqrt) Error() string
+
+nii, et `ErrNegativeSqrt(-2).Error()` tagastaks `"cannot`Sqrt`negative`number:`-2"`.
+
+*Märkus:* väljakutse `fmt.Sprint(e)` meetodi `Error` sees viib programmi lõpmatusse tsüklisse. Seda saab vältida, teisendades esmalt `e`: `fmt.Sprint(float64(e))`. Miks?
+
+Muuda funktsiooni `Sqrt` nii, et see tagastaks negatiivse arvu korral `ErrNegativeSqrt`-väärtuse.
+
+.play methods/exercise-errors.go

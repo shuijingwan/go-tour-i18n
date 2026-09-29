@@ -1,0 +1,7 @@
+* Funkciju slēgumi
+
+Go funkcijas var būt slēgumi. Slēgums ir funkcijas vērtība, kas atsaucas uz mainīgajiem ārpus savas funkcijas ķermeņa. Funkcija var piekļūt šiem mainīgajiem un piešķirt tiem vērtības; šajā nozīmē funkcija ir “piesaistīta” mainīgajiem.
+
+Piemēram, funkcija `adder` atgriež slēgumu. Katrs slēgums ir piesaistīts savam mainīgajam `sum`.
+
+.play moretypes/function-closures.go

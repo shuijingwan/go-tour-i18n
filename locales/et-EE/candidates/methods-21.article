@@ -1,0 +1,19 @@
+* Lugejad
+
+Pakett `io` määratleb liidese `io.Reader`,
+mis esindab andmevoo lugemisotsa.
+
+Go standardteek sisaldab selle liidese [[https://cs.opensource.google/search?q=Read%5C(%5Cw%2B%5Cs%5C%5B%5C%5Dbyte%5C)&ss=go%2Fgo][paljusid teostusi]], sealhulgas faile, võrguühendusi, tihendajaid, šifreid ja muid.
+
+Liidesel `io.Reader` on meetod `Read`:
+
+	func (T) Read(b []byte) (n int, err error)
+
+`Read` täidab antud baidiviilu andmetega ning tagastab täidetud baitide arvu
+ja veaväärtuse. Voo lõppedes tagastab see vea `io.EOF`.
+
+Näidiskood loob
+[[/pkg/strings/#Reader][`strings.Reader`]]
+ja loeb selle väljundit korraga 8 baiti.
+
+.play methods/reader.go

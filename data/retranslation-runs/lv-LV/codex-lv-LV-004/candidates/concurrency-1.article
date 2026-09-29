@@ -1,0 +1,15 @@
+* Goroutines
+
+_goroutine_ ir viegls izpildes pavediens, ko pārvalda Go izpildlaika vide.
+
+	go f(x, y, z)
+
+palaiž jaunu goroutine, kas izpilda
+
+	f(x, y, z)
+
+Izteiksmju `f`, `x`, `y` un `z` novērtēšana notiek pašreizējā goroutine, bet `f` izpilde — jaunajā goroutine.
+
+Goroutines darbojas vienā adrešu telpā, tāpēc piekļuve koplietojamai atmiņai ir jāsinhronizē. Pakotne [[/pkg/sync/][`sync`]] nodrošina noderīgus primitīvus, lai gan valodā Go tos nevajadzēs izmantot bieži, jo ir pieejami citi primitīvi. (Skatiet nākamo lapu.)
+
+.play concurrency/goroutines.go

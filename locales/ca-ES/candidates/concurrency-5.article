@@ -1,0 +1,7 @@
+* Select
+
+La sentència `select` permet que una goroutine esperi diverses operacions de comunicació.
+
+Un `select` es bloqueja fins que un dels seus casos es pot executar i, aleshores, executa aquest cas. Si n'hi ha més d'un de preparat, en tria un a l'atzar.
+
+.play concurrency/select.go

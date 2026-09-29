@@ -1,0 +1,8 @@
+* Harjutus: Stringerid
+
+Pane tüüp `IPAddr` teostama liidest `fmt.Stringer` nii, et aadress trükitakse
+punktidega eraldatud neliku kujul.
+
+Näiteks peab `IPAddr{1,`2,`3,`4}` väljatrükil olema `"1.2.3.4"`.
+
+.play methods/exercise-stringer.go

@@ -1,0 +1,9 @@
+* Defer izsaukumu kraušana
+
+Atliktie funkciju izsaukumi tiek ievietoti stekā. Kad funkcija atgriežas, tās
+atliktie izsaukumi tiek izpildīti secībā “pēdējais iekšā, pirmais ārā”.
+
+Lai uzzinātu vairāk par defer priekšrakstiem, izlasiet šo
+[[/blog/defer-panic-and-recover][emuāra ierakstu]].
+
+.play flowcontrol/defer-multi.go

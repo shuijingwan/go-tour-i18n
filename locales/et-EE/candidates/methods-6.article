@@ -1,0 +1,21 @@
+* Meetodid ja kaudne juurdepääs viida kaudu
+
+Kui võrrelda kahte eelmist programmi, võib märgata, et
+viitargumendiga funktsioonidele tuleb anda viit:
+
+	var v Vertex
+	ScaleFunc(v, 5)  // Kompileerimisviga!
+	ScaleFunc(&v, 5) // OK
+
+samas kui viitvastuvõtjaga meetodi väljakutsel võib vastuvõtjaks olla nii väärtus kui ka viit:
+
+	var v Vertex
+	v.Scale(5)  // OK
+	p := &v
+	p.Scale(10) // OK
+
+Lause `v.Scale(5)` korral kutsutakse viitvastuvõtjaga meetod automaatselt välja, kuigi `v` on väärtus, mitte viit.
+Mugavuse huvides tõlgendab Go lauset `v.Scale(5)` kujul
+`(&v).Scale(5)`, sest meetodil `Scale` on viitvastuvõtja.
+
+.play methods/indirection.go

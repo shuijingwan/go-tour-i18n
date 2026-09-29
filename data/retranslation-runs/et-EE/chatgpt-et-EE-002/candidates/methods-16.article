@@ -1,0 +1,27 @@
+* Tüübivalikud
+
+_Tüübivalik_ on konstruktsioon, mis võimaldab järjestikku teha mitu tüübiväidet.
+
+Tüübivalik sarnaneb tavalise switch-lausega, kuid tüübivaliku harud määravad
+tüübid (mitte väärtused) ning neid võrreldakse antud liideseväärtuses hoitava väärtuse tüübiga.
+
+	switch v := i.(type) {
+	case T:
+		// siin on v tüüp T
+	case S:
+		// siin on v tüüp S
+	default:
+		// sobivust pole; siin on v sama tüüpi kui i
+	}
+
+Tüübivaliku deklaratsioonil on sama süntaks mis tüübiväitel `i.(T)`,
+kuid konkreetne tüüp `T` asendatakse võtmesõnaga `type`.
+
+See switch-lause kontrollib, kas liideseväärtus `i`
+hoiab tüüpi `T` või `S` väärtust.
+Harudes `T` ja `S` on muutuja `v` tüüp
+vastavalt `T` või `S` ning muutuja hoiab väärtust, mida hoiab `i`.
+Vaikeharus (kui sobivust pole) on muutuja `v`
+sama liidesetüübi ja väärtusega nagu `i`.
+
+.play methods/type-switches.go

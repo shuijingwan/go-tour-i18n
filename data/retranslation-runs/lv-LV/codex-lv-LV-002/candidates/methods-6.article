@@ -1,0 +1,23 @@
+* Metodes un netiešā adresēšana ar rādītājiem
+
+Salīdzinot abas iepriekšējās programmas, var pamanīt, ka
+funkcijām ar rādītāja argumentu jāpadod rādītājs:
+
+	var v Vertex
+	ScaleFunc(v, 5)  // Kompilēšanas kļūda!
+	ScaleFunc(&v, 5) // OK
+
+savukārt metodes ar rādītāja saņēmēju izsaukšanas brīdī par
+saņēmēju pieņem gan vērtību, gan rādītāju:
+
+	var v Vertex
+	v.Scale(5)  // OK
+	p := &v
+	p.Scale(10) // OK
+
+Priekšrakstā `v.Scale(5)`, lai gan `v` ir vērtība, nevis rādītājs,
+metode ar rādītāja saņēmēju tiek izsaukta automātiski.
+Ērtības labad Go priekšrakstu `v.Scale(5)` interpretē kā
+`(&v).Scale(5)`, jo metodei `Scale` ir rādītāja saņēmējs.
+
+.play methods/indirection.go

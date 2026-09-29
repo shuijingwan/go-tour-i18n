@@ -1,0 +1,14 @@
+* Literals de Slice
+
+Un literal de slice és com un literal de matriu sense la longitud.
+
+Això és un literal de matriu:
+
+	[3]bool{true, true, false}
+
+I això crea la mateixa matriu que abans
+i després construeix un slice que hi fa referència:
+
+	[]bool{true, true, false}
+
+.play moretypes/slice-literals.go

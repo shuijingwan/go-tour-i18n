@@ -1,0 +1,16 @@
+* Eksportēti nosaukumi
+
+Valodā Go nosaukums ir eksportēts, ja tas sākas ar lielo burtu.
+Piemēram, `Pizza` ir eksportēts nosaukums, tāpat kā `Pi`, kas ir eksportēts no
+pakotnes `math`.
+
+`pizza` un `pi` nesākas ar lielo burtu, tāpēc tie nav eksportēti.
+
+Importējot pakotni, varat atsaukties tikai uz tās eksportētajiem nosaukumiem.
+Neeksportētie nosaukumi nav pieejami ārpus pakotnes.
+
+Palaidiet kodu. Pievērsiet uzmanību kļūdas ziņojumam.
+
+Lai kļūdu izlabotu, pārdēvējiet `math.pi` par `math.Pi` un mēģiniet vēlreiz.
+
+.play basics/exported-names.go

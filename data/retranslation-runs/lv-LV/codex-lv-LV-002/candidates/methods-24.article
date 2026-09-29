@@ -1,0 +1,20 @@
+* Attēli
+
+[[/pkg/image/#Image][Pakotne image]] definē saskarni `Image`:
+
+	package image
+
+	type Image interface {
+		ColorModel() color.Model
+		Bounds() Rectangle
+		At(x, y int) color.Color
+	}
+
+*Piezīme*: metodes `Bounds` atgrieztā `Rectangle` vērtība patiesībā ir
+[[/pkg/image/#Rectangle][`image.Rectangle`]], jo deklarācija atrodas pakotnē `image`.
+
+(Visu detalizēto informāciju skatiet [[/pkg/image/#Image][dokumentācijā]].)
+
+Tipi `color.Color` un `color.Model` arī ir saskarnes, taču to neņemsim vērā un izmantosim gatavos īstenojumus `color.RGBA` un `color.RGBAModel`. Šīs saskarnes un tipus definē [[/pkg/image/color/][pakotne image/color]].
+
+.play methods/images.go

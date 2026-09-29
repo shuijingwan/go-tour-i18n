@@ -1,0 +1,11 @@
+* Constants numèriques
+
+Les constants numèriques són _valors_ d'alta precisió.
+
+Una constant sense tipus adopta el tipus que requereix el seu context.
+
+Prova també d'imprimir `needInt(Big)`.
+
+(Un `int` pot emmagatzemar, com a màxim, un enter de 64 bits, i de vegades menys.)
+
+.play basics/numeric-constants.go

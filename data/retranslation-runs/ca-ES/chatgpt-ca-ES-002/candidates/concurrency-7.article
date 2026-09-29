@@ -1,0 +1,18 @@
+* Exercici: arbres binaris equivalents
+
+Hi pot haver molts arbres binaris diferents que emmagatzemin la mateixa seqüència de valors. Per exemple, aquí hi ha dos arbres binaris que emmagatzemen la seqüència 1, 1, 2, 3, 5, 8, 13.
+
+.image /tour/static/img/tree.png
+
+Una funció per comprovar si dos arbres binaris emmagatzemen la mateixa seqüència és força complexa en la majoria de llenguatges. Utilitzarem la concurrència i els canals de Go per escriure una solució senzilla.
+
+Aquest exemple utilitza el paquet `tree`, que defineix el tipus:
+
+	type Tree struct {
+		Left  *Tree
+		Value int
+		Right *Tree
+	}
+
+
+La descripció continua a la [[javascript:click('.next-page')][pàgina següent]].

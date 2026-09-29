@@ -1,0 +1,9 @@
+* Defer
+
+Una sentència defer ajorna l'execució d'una funció fins que la funció
+que la conté retorna.
+
+Els arguments de la crida ajornada s'avaluen immediatament, però la crida a la funció
+no s'executa fins que retorna la funció que la conté.
+
+.play flowcontrol/defer.go

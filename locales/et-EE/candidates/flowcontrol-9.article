@@ -1,0 +1,10 @@
+* Switch
+
+`switch`-lause on lühem viis kirjutada `if`-`else`-lausete jada.
+See käivitab esimese haru, mille väärtus võrdub tingimusavaldise väärtusega.
+
+Go switch sarnaneb C, C++, Java, JavaScripti ja PHP switch'iga, kuid Go käivitab ainult valitud haru, mitte kõiki sellele järgnevaid harusid.
+Sisuliselt lisatakse neis keeltes iga haru lõpus vajalik `break`-lause Go-s automaatselt.
+Teine oluline erinevus on see, et Go switch'i harud ei pea olema konstandid ning kasutatavad väärtused ei pea olema täisarvud.
+
+.play flowcontrol/switch.go

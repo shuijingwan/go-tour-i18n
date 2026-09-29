@@ -1,0 +1,17 @@
+* Vērtības vai rādītāja saņēmēja izvēle
+
+Rādītāja saņēmēju izmanto divu iemeslu dēļ.
+
+Pirmkārt, lai metode varētu mainīt vērtību, uz kuru norāda tās saņēmējs.
+
+Otrkārt, lai katrā metodes izsaukumā nebūtu jākopē vērtība.
+Tas var būt efektīvāk, piemēram, ja saņēmējs ir liela struktūra.
+
+Šajā piemērā gan `Scale`, gan `Abs` ir metodes ar saņēmēja tipu `*Vertex`,
+lai gan metodei `Abs` nav jāmaina tās saņēmējs.
+
+Parasti visām konkrētā tipa metodēm jābūt vai nu vērtības, vai rādītāja
+saņēmējiem, nevis abu veidu sajaukumam.
+(Nākamajās lapās redzēsim, kāpēc.)
+
+.play methods/methods-with-pointer-receivers.go

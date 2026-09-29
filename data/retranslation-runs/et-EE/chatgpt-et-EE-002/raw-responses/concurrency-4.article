@@ -1,0 +1,15 @@
+* Range ja close
+
+Saatja saab kanali ⟪GTI18N_3e925c67_000001⟫close⟪GTI18N_3e925c67_000002⟫, et näidata, et rohkem väärtusi ei saadeta. Vastuvõtjad saavad kontrollida, kas kanal on suletud, omistades vastuvõtuavaldisest ka teise väärtuse: pärast
+
+⟪GTI18N_3e925c67_000003⟫
+
+on ⟪GTI18N_3e925c67_000004⟫ok⟪GTI18N_3e925c67_000005⟫ väärtus ⟪GTI18N_3e925c67_000006⟫false⟪GTI18N_3e925c67_000007⟫, kui rohkem väärtusi vastu võtta pole ja kanal on suletud.
+
+Tsükkel ⟪GTI18N_3e925c67_000008⟫for`i`:=`range`c⟪GTI18N_3e925c67_000009⟫ võtab kanalist väärtusi korduvalt vastu, kuni kanal suletakse.
+
+⟪GTI18N_3e925c67_000010⟫Märkus:⟪GTI18N_3e925c67_000011⟫ kanali peaks sulgema ainult saatja, mitte kunagi vastuvõtja. Suletud kanalisse saatmine põhjustab panic'u.
+
+⟪GTI18N_3e925c67_000012⟫Lisa*märkus:⟪GTI18N_3e925c67_000013⟫ kanalid ei ole nagu failid; tavaliselt pole neid vaja sulgeda. Sulgemine on vajalik ainult siis, kui vastuvõtjale tuleb teatada, et rohkem väärtusi ei tule, näiteks ⟪GTI18N_3e925c67_000014⟫range⟪GTI18N_3e925c67_000015⟫-tsükli lõpetamiseks.
+
+⟪GTI18N_3e925c67_000016⟫

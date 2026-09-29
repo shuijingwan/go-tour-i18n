@@ -1,0 +1,25 @@
+* Tipa apgalvojumi
+
+_Tipa_apgalvojums_ nodrošina piekļuvi saskarnes vērtības pamatā esošajai konkrētajai vērtībai.
+
+	t := i.(T)
+
+Šis priekšraksts apgalvo, ka saskarnes vērtība `i` glabā konkrēto tipu `T`,
+un piešķir pamatā esošo `T` vērtību mainīgajam `t`.
+
+Ja `i` neglabā `T`, priekšraksts izraisīs paniku.
+
+Lai _pārbaudītu_, vai saskarnes vērtība glabā konkrētu tipu,
+tipa apgalvojums var atgriezt divas vērtības: pamatā esošo vērtību
+un Būla vērtību, kas norāda, vai apgalvojums ir izdevies.
+
+	t, ok := i.(T)
+
+Ja `i` glabā `T`, tad `t` būs pamatā esošā vērtība un `ok` būs true.
+
+Pretējā gadījumā `ok` būs false un `t` būs tipa `T` nulles vērtība,
+un panika neradīsies.
+
+Ievērojiet šīs sintakses līdzību ar lasīšanu no vārdnīcas.
+
+.play methods/type-assertions.go

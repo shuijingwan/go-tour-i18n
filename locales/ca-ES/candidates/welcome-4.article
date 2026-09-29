@@ -1,0 +1,17 @@
+* Go fora de línia (opcional)
+
+Aquest recorregut també està disponible com a programa autònom que pots utilitzar
+sense accés a Internet. Compila i executa els exemples de codi
+al teu propi ordinador.
+
+Per executar el recorregut localment, primer hauràs
+d'[[/doc/install][instal·lar Go]] i després executar:
+
+  go install golang.org/x/website/tour@latest
+
+Això instal·larà un binari `tour` al teu
+[[/cmd/go/#hdr-GOPATH_and_Modules][GOPATH]], dins del directori `bin`.
+Quan executis el programa del recorregut, s'obrirà un navegador web que mostrarà
+la teva versió local del recorregut.
+
+Naturalment, també pots continuar fent el recorregut des d'aquest lloc web.

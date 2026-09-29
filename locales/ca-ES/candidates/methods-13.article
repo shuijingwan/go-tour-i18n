@@ -1,0 +1,8 @@
+* Valors d'interfície nil
+
+Un valor d'interfície nil no conté ni cap valor ni cap tipus concret.
+
+Cridar un mètode sobre una interfície nil és un error en temps d'execució perquè no hi ha cap
+tipus dins de la tupla de la interfície que indiqui quin mètode _concret_ cal cridar.
+
+.play methods/nil-interface-values.go

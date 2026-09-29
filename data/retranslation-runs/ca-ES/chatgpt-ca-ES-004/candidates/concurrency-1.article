@@ -1,0 +1,15 @@
+* Goroutines
+
+Una _goroutine_ és un fil d'execució lleuger gestionat per l'entorn d'execució de Go.
+
+	go f(x, y, z)
+
+inicia una nova goroutine que executa
+
+	f(x, y, z)
+
+L'avaluació de `f`, `x`, `y` i `z` té lloc a la goroutine actual i l'execució de `f` té lloc a la nova goroutine.
+
+Goroutines s'executen al mateix espai d'adreces, de manera que l'accés a la memòria compartida s'ha de sincronitzar. El paquet [[/pkg/sync/][`sync`]] proporciona primitives útils, tot i que no les necessitaràs gaire a Go perquè hi ha altres primitives. (Consulta la diapositiva següent.)
+
+.play concurrency/goroutines.go

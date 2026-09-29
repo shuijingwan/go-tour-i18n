@@ -1,0 +1,9 @@
+* Defer
+
+Defer priekšraksts atliek funkcijas izpildi līdz brīdim, kad apkārtējā
+funkcija atgriežas.
+
+Atliktā izsaukuma argumenti tiek izvērtēti uzreiz, bet funkcijas izsaukums
+netiek izpildīts, kamēr apkārtējā funkcija nav atgriezusies.
+
+.play flowcontrol/defer.go

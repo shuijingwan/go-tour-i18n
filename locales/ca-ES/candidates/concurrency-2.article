@@ -1,0 +1,20 @@
+* Canals
+
+Els canals són conductes tipats a través dels quals pots enviar i rebre valors amb l'operador de canal, `<-`.
+
+	ch <- v    // Envia v al canal ch.
+	v := <-ch  // Rep de ch i
+	           // assigna el valor a v.
+
+(Les dades flueixen en la direcció de la fletxa.)
+
+Com els mapes i els slices, els canals s'han de crear abans d'utilitzar-los:
+
+	ch := make(chan int)
+
+Per defecte, els enviaments i les recepcions es bloquegen fins que l'altre extrem està preparat. Això permet que les goroutines se sincronitzin sense bloquejos explícits ni variables de condició.
+
+El codi d'exemple suma els nombres d'un slice i reparteix la feina entre dues goroutines.
+Quan totes dues goroutines han acabat el càlcul, calcula el resultat final.
+
+.play concurrency/channels.go

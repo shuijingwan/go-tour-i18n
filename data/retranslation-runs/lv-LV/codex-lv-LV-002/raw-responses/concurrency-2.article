@@ -1,0 +1,16 @@
+* Kanāli
+
+Kanāli ir tipizēts ceļš, pa kuru var nosūtīt un saņemt vērtības, izmantojot kanāla operatoru ⟪GTI18N_a35e3af2_000001⟫<-⟪GTI18N_a35e3af2_000002⟫.
+
+⟪GTI18N_a35e3af2_000003⟫Nosūtīt ⟪GTI18N_a35e3af2_000004⟫ uz kanālu ⟪GTI18N_a35e3af2_000005⟫.⟪GTI18N_a35e3af2_000006⟫Saņemt no ⟪GTI18N_a35e3af2_000007⟫ un⟪GTI18N_a35e3af2_000008⟫piešķirt vērtību ⟪GTI18N_a35e3af2_000009⟫.⟪GTI18N_a35e3af2_000010⟫(Dati plūst bultiņas virzienā.)
+
+Tāpat kā vārdnīcas un šķēlumi, kanāli pirms lietošanas ir jāizveido:
+
+⟪GTI18N_a35e3af2_000011⟫
+
+Pēc noklusējuma nosūtīšana un saņemšana tiek bloķēta, līdz otra puse ir gatava. Tas ļauj ⟪GTI18N_a35e3af2_000012⟫ sinhronizēties bez skaidri norādītām slēdzenēm vai nosacījumu mainīgajiem.
+
+Parauga kods saskaita šķēluma skaitļus, sadalot darbu starp divām ⟪GTI18N_a35e3af2_000013⟫.
+Kad abas ⟪GTI18N_a35e3af2_000014⟫ ir pabeigušas aprēķinus, tas aprēķina gala rezultātu.
+
+⟪GTI18N_a35e3af2_000015⟫

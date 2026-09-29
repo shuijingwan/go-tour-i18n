@@ -1,0 +1,13 @@
+* Tüübituletus
+
+Kui deklareerid muutuja ilma tüüpi selgesõnaliselt määramata (kas süntaksiga ⟪GTI18N_21c4077c_000001⟫:=⟪GTI18N_21c4077c_000002⟫ või avaldise süntaksiga ⟪GTI18N_21c4077c_000003⟫var`=⟪GTI18N_21c4077c_000004⟫), tuletatakse muutuja tüüp paremal pool olevast väärtusest.
+
+Kui deklaratsiooni parem pool on tüübiga, saab uus muutuja sama tüübi:
+
+⟪GTI18N_21c4077c_000005⟫⟪GTI18N_21c4077c_000006⟫ on ⟪GTI18N_21c4077c_000007⟫⟪GTI18N_21c4077c_000008⟫Kui aga parem pool sisaldab tüübita arvkonstanti, võib uue muutuja tüüp olla ⟪GTI18N_21c4077c_000009⟫int⟪GTI18N_21c4077c_000010⟫, ⟪GTI18N_21c4077c_000011⟫float64⟪GTI18N_21c4077c_000012⟫ või ⟪GTI18N_21c4077c_000013⟫complex128⟪GTI18N_21c4077c_000014⟫, olenevalt konstandi täpsusest:
+
+⟪GTI18N_21c4077c_000015⟫
+
+Proovi muuta näidiskoodis muutuja ⟪GTI18N_21c4077c_000016⟫v⟪GTI18N_21c4077c_000017⟫ algväärtust ja jälgi, kuidas see muutuja tüüpi mõjutab.
+
+⟪GTI18N_21c4077c_000018⟫

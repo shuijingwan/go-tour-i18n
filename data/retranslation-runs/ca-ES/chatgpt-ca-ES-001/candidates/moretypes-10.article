@@ -1,0 +1,18 @@
+* Valors predeterminats dels Slice
+
+Quan crees un slice, pots ometre el límit superior o l'inferior per utilitzar-ne els valors predeterminats.
+
+El valor predeterminat és zero per al límit inferior i la longitud del slice o de la matriu subjacent per al límit superior.
+
+Per a la matriu
+
+	var a [10]int
+
+aquestes expressions de slice són equivalents:
+
+	a[0:10]
+	a[:10]
+	a[0:]
+	a[:]
+
+.play moretypes/slice-bounds.go

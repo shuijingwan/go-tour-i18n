@@ -1,0 +1,17 @@
+* For
+
+Go-s on ainult üks tsüklikonstruktsioon: `for`-tsükkel.
+
+Tavalisel `for`-tsüklil on kolm semikoolonitega eraldatud osa:
+
+- alguslause: täidetakse enne esimest iteratsiooni
+- tingimusavaldis: hinnatakse enne iga iteratsiooni
+- järellause: täidetakse iga iteratsiooni lõpus
+
+Alguslause on sageli muutuja deklaratsioon ning seal deklareeritud muutujad on nähtavad ainult `for`-lause skoobis.
+
+Tsükkel lõpetab iteratsioonid, kui tõeväärtuslik tingimus annab tulemuseks `false`.
+
+*Märkus:* erinevalt sellistest keeltest nagu C, Java ja JavaScript ei ümbritseta `for`-lause kolme osa sulgudega ning looksulud `{`}` on alati kohustuslikud.
+
+.play flowcontrol/for.go

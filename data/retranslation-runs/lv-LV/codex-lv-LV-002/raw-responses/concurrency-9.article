@@ -1,0 +1,21 @@
+* sync.Mutex
+
+Esam redzējuši, ka kanāli ir lieliski piemēroti saziņai starp ⟪GTI18N_49f72779_000001⟫.
+
+Bet ko darīt, ja saziņa nav vajadzīga? Ja vēlamies tikai nodrošināt, ka konfliktu novēršanai
+mainīgajam vienlaikus var piekļūt tikai viena ⟪GTI18N_49f72779_000002⟫?
+
+Šo jēdzienu sauc par ⟪GTI18N_49f72779_000003⟫savstarpējo_izslēgšanu⟪GTI18N_49f72779_000004⟫, bet datu struktūru, kas to nodrošina, parasti sauc par ⟪GTI18N_49f72779_000005⟫savstarpējās_izslēgšanas_slēdzeni⟪GTI18N_49f72779_000006⟫.
+
+⟪GTI18N_49f72779_000007⟫ standarta bibliotēka nodrošina savstarpējo izslēgšanu ar
+[[⟪GTI18N_49f72779_000008⟫][⟪GTI18N_49f72779_000009⟫sync.Mutex⟪GTI18N_49f72779_000010⟫]] un tā divām metodēm:
+
+- ⟪GTI18N_49f72779_000011⟫Lock⟪GTI18N_49f72779_000012⟫
+- ⟪GTI18N_49f72779_000013⟫Unlock⟪GTI18N_49f72779_000014⟫
+
+Koda bloku, kas jāizpilda ar savstarpējo izslēgšanu, var definēt, ietverot to starp
+⟪GTI18N_49f72779_000015⟫Lock⟪GTI18N_49f72779_000016⟫ un ⟪GTI18N_49f72779_000017⟫Unlock⟪GTI18N_49f72779_000018⟫ izsaukumiem, kā parādīts metodē ⟪GTI18N_49f72779_000019⟫Inc⟪GTI18N_49f72779_000020⟫.
+
+Varam izmantot arī ⟪GTI18N_49f72779_000021⟫defer⟪GTI18N_49f72779_000022⟫, lai garantētu slēdzenes atbloķēšanu, kā metodē ⟪GTI18N_49f72779_000023⟫Value⟪GTI18N_49f72779_000024⟫.
+
+⟪GTI18N_49f72779_000025⟫

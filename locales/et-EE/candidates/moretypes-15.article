@@ -1,0 +1,15 @@
+* Elementide lisamine viilule
+
+Viilule lisatakse sageli uusi elemente, seetõttu pakub Go sisseehitatud funktsiooni `append`. Sisseehitatud paketi [[/pkg/builtin/#append][dokumentatsioon]] kirjeldab funktsiooni `append`.
+
+	func append(s []T, vs ...T) []T
+
+Funktsiooni `append` esimene parameeter `s` on tüüpi `T` elementidega viil ning ülejäänud argumendid on viilule lisatavad tüüpi `T` väärtused.
+
+Funktsiooni `append` tulemuseks on viil, mis sisaldab kõiki algse viilu elemente ja lisaks antud väärtusi.
+
+Kui `s` alusmassiiv on kõigi antud väärtuste mahutamiseks liiga väike, eraldatakse suurem massiiv. Tagastatud viil osutab äsja eraldatud massiivile.
+
+(Viilude kohta lisateabe saamiseks loe artiklit [[/blog/go-slices-usage-and-internals][Viilud: kasutamine ja sisemine töö]].)
+
+.play moretypes/append.go

@@ -1,0 +1,16 @@
+* Tipa parametri
+
+⟪GTI18N_01a04510_000001⟫ funkcijas var uzrakstīt tā, lai tās darbotos ar vairākiem tipiem, izmantojot tipa parametrus. Funkcijas
+tipa parametri atrodas kvadrātiekavās pirms funkcijas
+argumentiem.
+
+⟪GTI18N_01a04510_000002⟫
+
+Šī deklarācija nozīmē, ka ⟪GTI18N_01a04510_000003⟫s⟪GTI18N_01a04510_000004⟫ ir jebkura tipa ⟪GTI18N_01a04510_000005⟫T⟪GTI18N_01a04510_000006⟫ šķēlums, kas atbilst
+iebūvētajam ierobežojumam ⟪GTI18N_01a04510_000007⟫comparable⟪GTI18N_01a04510_000008⟫. Arī ⟪GTI18N_01a04510_000009⟫x⟪GTI18N_01a04510_000010⟫ ir tā paša tipa vērtība.
+
+⟪GTI18N_01a04510_000011⟫comparable⟪GTI18N_01a04510_000012⟫ ir noderīgs ierobežojums, kas ļauj tipa vērtībām izmantot operatorus ⟪GTI18N_01a04510_000013⟫==⟪GTI18N_01a04510_000014⟫ un
+⟪GTI18N_01a04510_000015⟫!=⟪GTI18N_01a04510_000016⟫. Šajā piemērā to izmantojam, lai salīdzinātu vērtību ar visiem šķēluma elementiem, līdz tiek atrasta atbilstība. Funkcija ⟪GTI18N_01a04510_000017⟫Index⟪GTI18N_01a04510_000018⟫ darbojas
+ar jebkuru tipu, kas atbalsta salīdzināšanu.
+
+⟪GTI18N_01a04510_000019⟫

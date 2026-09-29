@@ -1,0 +1,28 @@
+* Sentències switch de tipus
+
+Una _sentència_switch_de_tipus_ és una construcció que permet encadenar diverses assercions de tipus.
+
+Una sentència switch de tipus és semblant a una sentència switch normal, però els casos d'una sentència
+switch de tipus especifiquen tipus (no valors), i aquests tipus es comparen amb
+el tipus del valor contingut en el valor d'interfície donat.
+
+	switch v := i.(type) {
+	case T:
+		// aquí v té el tipus T
+	case S:
+		// aquí v té el tipus S
+	default:
+		// cap coincidència; aquí v té el mateix tipus que i
+	}
+
+La declaració d'una sentència switch de tipus té la mateixa sintaxi que una asserció de tipus `i.(T)`,
+però el tipus específic `T` se substitueix per la paraula clau `type`.
+
+Aquesta sentència switch comprova si el valor d'interfície `i`
+conté un valor de tipus `T` o `S`.
+En cadascun dels casos `T` i `S`, la variable `v` serà de tipus
+`T` o `S`, respectivament, i contindrà el valor que conté `i`.
+En el cas per defecte (quan no hi ha cap coincidència), la variable `v` té
+el mateix tipus d'interfície i el mateix valor que `i`.
+
+.play methods/type-switches.go

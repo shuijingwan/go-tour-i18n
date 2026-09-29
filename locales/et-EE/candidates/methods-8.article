@@ -1,0 +1,17 @@
+* Väärtus- või viitvastuvõtja valimine
+
+Viitvastuvõtja kasutamiseks on kaks põhjust.
+
+Esiteks saab meetod nii muuta väärtust, millele vastuvõtja osutab.
+
+Teiseks välditakse väärtuse kopeerimist iga meetodiväljakutse korral.
+See võib olla tõhusam, kui vastuvõtja on näiteks suur struktuur.
+
+Selles näites on nii `Scale` kui ka `Abs` meetodid vastuvõtjatüübiga `*Vertex`,
+kuigi meetodil `Abs` pole vaja oma vastuvõtjat muuta.
+
+Üldjuhul peaksid kõik antud tüübi meetodid kasutama kas väärtus- või viitvastuvõtjaid,
+mitte mõlemat läbisegi.
+(Järgmistel lehtedel näeme, miks.)
+
+.play methods/methods-with-pointer-receivers.go

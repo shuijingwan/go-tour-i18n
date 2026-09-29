@@ -1,0 +1,10 @@
+* Uzdevums: tīmekļa rāpuļprogramma
+
+Šajā uzdevumā izmantosiet Go laiksakritības iespējas, lai paralelizētu tīmekļa rāpuļprogrammu.
+
+Mainiet funkciju `Crawl` tā, lai tā izgūtu URL paralēli, vienu un to pašu URL neizgūstot divreiz.
+
+_Padoms_: izgūto URL kešatmiņu var glabāt vārdnīcā, taču vārdnīcas pašas par sevi nav
+drošas laiksakritīgai lietošanai!
+
+.play concurrency/exercise-web-crawler.go

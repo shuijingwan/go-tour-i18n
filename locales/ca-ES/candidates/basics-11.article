@@ -1,0 +1,28 @@
+* Tipus bàsics
+
+Els tipus bàsics de Go són
+
+	bool
+
+	string
+
+	int  int8  int16  int32  int64
+	uint uint8 uint16 uint32 uint64 uintptr
+
+	byte // àlies de uint8
+
+	rune // àlies de int32
+	     // representa un punt de codi Unicode
+
+	float32 float64
+
+	complex64 complex128
+
+L'exemple mostra variables de diversos tipus
+i també que les declaracions de variables es poden «factoritzar» en blocs,
+com les sentències d'importació.
+
+Els tipus `int`, `uint` i `uintptr` solen tenir una amplada de 32 bits en sistemes de 32 bits i de 64 bits en sistemes de 64 bits.
+Quan necessitis un valor enter, hauries d'utilitzar `int`, tret que tinguis un motiu concret per utilitzar un tipus enter amb mida especificada o sense signe.
+
+.play basics/basic-types.go
