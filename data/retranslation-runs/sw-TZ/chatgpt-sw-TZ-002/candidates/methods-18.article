@@ -1,0 +1,8 @@
+* Zoezi: Stringers
+
+Fanya aina ya `IPAddr` itekeleze `fmt.Stringer` ili ichapishe anwani kama
+nambari nne zilizotenganishwa kwa nukta.
+
+Kwa mfano, `IPAddr{1,`2,`3,`4}` inapaswa kuchapishwa kama `"1.2.3.4"`.
+
+.play methods/exercise-stringer.go

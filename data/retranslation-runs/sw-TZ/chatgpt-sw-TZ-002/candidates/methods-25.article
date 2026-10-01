@@ -1,0 +1,13 @@
+* Zoezi: Picha
+
+Unakumbuka [[/tour/moretypes/18][kizalishi cha picha]] ulichoandika awali? Hebu tuandike kingine, lakini wakati huu kitarejesha utekelezaji wa `image.Image` badala ya kipande cha data.
+
+Fafanua aina yako mwenyewe ya `Image`, tekeleza [[/pkg/image/#Image][mbinu zinazohitajika]], kisha uite `pic.ShowImage`.
+
+`Bounds` inapaswa kurejesha `image.Rectangle`, kama `image.Rect(0,`0,`w,`h)`.
+
+`ColorModel` inapaswa kurejesha `color.RGBAModel`.
+
+`At` inapaswa kurejesha rangi; thamani `v` katika kizalishi cha picha kilichotangulia inalingana na `color.RGBA{v,`v,`255,`255}` katika hiki.
+
+.play methods/exercise-images.go

@@ -6,6 +6,8 @@ Translation Quality Review 是所有语言翻译工作流在 promotion 前的正
 
 前置 [Glossary Review](GLOSSARY_REVIEW.md) 只审核 glossary 的术语决策本身，同样不替代本规范。Glossary 任意字节变化后，旧 Snapshot / QC carry-forward 仍按现有 glossary identity 规则 stale；新的 Glossary Review PASS 不会恢复旧 A。
 
+若 glossary 变化只使部分 TranslationUnit 的正式 protected input 发生字节变化，先重新完成完整 Glossary Review，再按 [Retranslation 执行手册](RETRANSLATION_RUNBOOK.md#glossary-induced-protected-input-stale-recovery) 只恢复这些真实 stale Unit。protected input identity 未变化的可信 candidate 不重译。恢复只解决 input/candidate identity；新的 full Snapshot 仍因 glossary identity 改变而要求完整 QC，旧 A 一律不 carry-forward。
+
 ## 正式流程
 
 所有进入 locale translation workflow 并产生翻译结果的 TranslationUnit 必须遵循：

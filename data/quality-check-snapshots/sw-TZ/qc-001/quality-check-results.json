@@ -1,0 +1,324 @@
+{
+  "schema_version": 2,
+  "evidence_type": "quality_check_results",
+  "locale": "sw-TZ",
+  "snapshot_id": "qc-001",
+  "snapshot_manifest_sha256": "c3aaf8e079e6bc845f3888da2902e2cd217b5ae1df94402ba329dcdad540d734",
+  "rubric": "translation-quality/v1",
+  "result_count": 60,
+  "results": [
+    {
+      "index": 1,
+      "unit_id": "welcome/1",
+      "rating": "A"
+    },
+    {
+      "index": 2,
+      "unit_id": "welcome/2",
+      "rating": "A"
+    },
+    {
+      "index": 3,
+      "unit_id": "welcome/4",
+      "rating": "A"
+    },
+    {
+      "index": 4,
+      "unit_id": "welcome/5",
+      "rating": "B",
+      "finding": "Source says external network hosts; target narrows this to external network servers, reducing the networking scope."
+    },
+    {
+      "index": 5,
+      "unit_id": "welcome/3",
+      "rating": "A"
+    },
+    {
+      "index": 6,
+      "unit_id": "basics/1",
+      "rating": "A"
+    },
+    {
+      "index": 7,
+      "unit_id": "basics/2",
+      "rating": "A"
+    },
+    {
+      "index": 8,
+      "unit_id": "basics/3",
+      "rating": "A"
+    },
+    {
+      "index": 9,
+      "unit_id": "basics/4",
+      "rating": "A"
+    },
+    {
+      "index": 10,
+      "unit_id": "basics/5",
+      "rating": "A"
+    },
+    {
+      "index": 11,
+      "unit_id": "basics/6",
+      "rating": "A"
+    },
+    {
+      "index": 12,
+      "unit_id": "basics/7",
+      "rating": "A"
+    },
+    {
+      "index": 13,
+      "unit_id": "basics/8",
+      "rating": "A"
+    },
+    {
+      "index": 14,
+      "unit_id": "basics/9",
+      "rating": "C",
+      "finding": "Ordinary English present remains visibly untranslated because global keep: present protected a non-technical occurrence; here it means an initializer is present."
+    },
+    {
+      "index": 15,
+      "unit_id": "basics/10",
+      "rating": "A"
+    },
+    {
+      "index": 16,
+      "unit_id": "basics/11",
+      "rating": "A"
+    },
+    {
+      "index": 17,
+      "unit_id": "basics/12",
+      "rating": "C",
+      "finding": "Target retains visible zero value in English (_zero_value_) instead of mandatory zero value → thamani sifuri."
+    },
+    {
+      "index": 18,
+      "unit_id": "basics/13",
+      "rating": "A"
+    },
+    {
+      "index": 19,
+      "unit_id": "basics/14",
+      "rating": "A"
+    },
+    {
+      "index": 20,
+      "unit_id": "basics/15",
+      "rating": "A"
+    },
+    {
+      "index": 21,
+      "unit_id": "basics/16",
+      "rating": "A"
+    },
+    {
+      "index": 22,
+      "unit_id": "basics/17",
+      "rating": "A"
+    },
+    {
+      "index": 23,
+      "unit_id": "flowcontrol/1",
+      "rating": "A"
+    },
+    {
+      "index": 24,
+      "unit_id": "flowcontrol/2",
+      "rating": "A"
+    },
+    {
+      "index": 25,
+      "unit_id": "flowcontrol/3",
+      "rating": "A"
+    },
+    {
+      "index": 26,
+      "unit_id": "flowcontrol/4",
+      "rating": "A"
+    },
+    {
+      "index": 27,
+      "unit_id": "flowcontrol/5",
+      "rating": "A"
+    },
+    {
+      "index": 28,
+      "unit_id": "flowcontrol/6",
+      "rating": "A"
+    },
+    {
+      "index": 29,
+      "unit_id": "flowcontrol/7",
+      "rating": "A"
+    },
+    {
+      "index": 30,
+      "unit_id": "flowcontrol/8",
+      "rating": "A"
+    },
+    {
+      "index": 31,
+      "unit_id": "flowcontrol/9",
+      "rating": "A"
+    },
+    {
+      "index": 32,
+      "unit_id": "flowcontrol/10",
+      "rating": "A"
+    },
+    {
+      "index": 33,
+      "unit_id": "flowcontrol/11",
+      "rating": "A"
+    },
+    {
+      "index": 34,
+      "unit_id": "flowcontrol/12",
+      "rating": "C",
+      "finding": "Target changes until the surrounding function returns into wording that requires returning a value, adding a false technical condition for defer."
+    },
+    {
+      "index": 35,
+      "unit_id": "flowcontrol/13",
+      "rating": "C",
+      "finding": "Target translates when a function returns as when a function returns a value, incorrectly tying deferred execution to functions with return values."
+    },
+    {
+      "index": 36,
+      "unit_id": "flowcontrol/14",
+      "rating": "A"
+    },
+    {
+      "index": 37,
+      "unit_id": "moretypes/1",
+      "rating": "A"
+    },
+    {
+      "index": 38,
+      "unit_id": "moretypes/2",
+      "rating": "B",
+      "finding": "Plural fields is rendered with singular uga in mkusanyiko wa uga, losing number and producing non-publication-quality Kiswahili."
+    },
+    {
+      "index": 39,
+      "unit_id": "moretypes/3",
+      "rating": "B",
+      "finding": "Uga za muundo combines singular uga with plural agreement for source plural struct fields, creating a noun-number/concord error."
+    },
+    {
+      "index": 40,
+      "unit_id": "moretypes/4",
+      "rating": "B",
+      "finding": "Opening sentence uses Uga za muundo for plural struct fields; singular uga conflicts with plural agreement."
+    },
+    {
+      "index": 41,
+      "unit_id": "moretypes/5",
+      "rating": "B",
+      "finding": "Plural fields is repeatedly rendered with singular uga while surrounding grammar is plural, causing repeated number/concord errors."
+    },
+    {
+      "index": 42,
+      "unit_id": "moretypes/6",
+      "rating": "A"
+    },
+    {
+      "index": 43,
+      "unit_id": "moretypes/7",
+      "rating": "A"
+    },
+    {
+      "index": 44,
+      "unit_id": "moretypes/8",
+      "rating": "A"
+    },
+    {
+      "index": 45,
+      "unit_id": "moretypes/9",
+      "rating": "A"
+    },
+    {
+      "index": 46,
+      "unit_id": "moretypes/10",
+      "rating": "A"
+    },
+    {
+      "index": 47,
+      "unit_id": "moretypes/11",
+      "rating": "A"
+    },
+    {
+      "index": 48,
+      "unit_id": "moretypes/12",
+      "rating": "A"
+    },
+    {
+      "index": 49,
+      "unit_id": "moretypes/13",
+      "rating": "C",
+      "finding": "Built-in make is rendered as internal (cha ndani), changing the technical classification and violating mandatory built-in → iliyojengewa ndani."
+    },
+    {
+      "index": 50,
+      "unit_id": "moretypes/14",
+      "rating": "A"
+    },
+    {
+      "index": 51,
+      "unit_id": "moretypes/15",
+      "rating": "C",
+      "finding": "Built-in is rendered as internal for append and the built-in package, inconsistent with the mandatory glossary and Go technical meaning."
+    },
+    {
+      "index": 52,
+      "unit_id": "moretypes/16",
+      "rating": "A"
+    },
+    {
+      "index": 53,
+      "unit_id": "moretypes/17",
+      "rating": "A"
+    },
+    {
+      "index": 54,
+      "unit_id": "moretypes/18",
+      "rating": "A"
+    },
+    {
+      "index": 55,
+      "unit_id": "moretypes/19",
+      "rating": "A"
+    },
+    {
+      "index": 56,
+      "unit_id": "moretypes/20",
+      "rating": "A"
+    },
+    {
+      "index": 57,
+      "unit_id": "moretypes/21",
+      "rating": "C",
+      "finding": "Source says the top-level type may be omitted from literal elements; target wording reads as leaving it in the elements, reversing or obscuring the operative syntax instruction."
+    },
+    {
+      "index": 58,
+      "unit_id": "moretypes/22",
+      "rating": "C",
+      "finding": "Ordinary English present remains visibly untranslated because global keep: present protected a non-technical occurrence; here it means a key is present."
+    },
+    {
+      "index": 59,
+      "unit_id": "moretypes/23",
+      "rating": "A"
+    },
+    {
+      "index": 60,
+      "unit_id": "moretypes/24",
+      "rating": "A"
+    }
+  ]
+}

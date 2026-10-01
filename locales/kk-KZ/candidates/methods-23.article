@@ -1,0 +1,12 @@
+* Жаттығу: rot13Reader
+
+Кең таралған үлгілердің бірі — басқа `io.Reader`-ді орап, ағынды белгілі бір жолмен өзгертетін [[/pkg/io/#Reader][io.Reader]].
+
+Мысалы, [[/pkg/compress/gzip/#NewReader][gzip.NewReader]] функциясы `io.Reader` (сығылған деректер ағыны) қабылдап, өзі де `io.Reader` іске асыратын `*gzip.Reader` (сығудан шығарылған деректер ағыны) қайтарады.
+
+`io.Reader` ішінен оқып, барлық әріптік таңбаларға [[https://en.wikipedia.org/wiki/ROT13][rot13]] алмастыру шифрын қолдану арқылы ағынды өзгертетін және `io.Reader` іске асыратын `rot13Reader` жасаңыз.
+
+`rot13Reader` түрі сізге дайын берілген.
+Оның `Read` әдісін іске асырып, `io.Reader` етіңіз.
+
+.play methods/exercise-rot-reader.go

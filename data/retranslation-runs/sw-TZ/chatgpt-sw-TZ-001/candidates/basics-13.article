@@ -1,0 +1,21 @@
+* Ubadilishaji wa aina
+
+Usemi `T(v)` hubadilisha thamani `v` kuwa aina `T`.
+
+Baadhi ya ubadilishaji wa nambari:
+
+	var i int = 42
+	var f float64 = float64(i)
+	var u uint = uint(f)
+
+Au, kwa urahisi zaidi:
+
+	i := 42
+	f := float64(i)
+	u := uint(f)
+
+Tofauti na C, katika Go ugawaji kati ya vitu vya aina tofauti unahitaji
+ubadilishaji wa aina ulio wazi.
+Jaribu kuondoa ubadilishaji wa `float64` au `uint` katika mfano uone kinachotokea.
+
+.play basics/type-conversions.go

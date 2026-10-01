@@ -1,0 +1,25 @@
+* Makosa
+
+Programu za Go huonyesha hali ya kosa kwa thamani za `error`.
+
+Aina ya `error` ni kiolesura kilichojengewa ndani kinachofanana na `fmt.Stringer`:
+
+	type error interface {
+		Error() string
+	}
+
+(Kama ilivyo kwa `fmt.Stringer`, kifurushi cha `fmt` hutafuta kiolesura cha `error` kinapochapisha thamani.)
+
+Mara nyingi vitendakazi hurejesha thamani ya `error`, na msimbo unaoviita unapaswa kushughulikia makosa
+kwa kupima kama kosa ni sawa na `nil`.
+
+	i, err := strconv.Atoi("42")
+	if err != nil {
+		fmt.Printf("couldn't convert number: %v\n", err)
+		return
+	}
+	fmt.Println("Converted integer:", i)
+
+nil `error` huashiria mafanikio; nil `error` isiyo nil huashiria kushindwa.
+
+.play methods/errors.go

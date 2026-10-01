@@ -1,0 +1,14 @@
+* انتخاب پیش‌فرض
+
+اگر هیچ case دیگری آماده نباشد، case `default` در یک `select` اجرا می‌شود.
+
+برای امتحان کردن ارسال یا دریافت بدون مسدود شدن، از case `default` استفاده کنید:
+
+	select {
+	case i := <-c:
+		// استفاده از i
+	default:
+		// دریافت از c مسدود می‌شد
+	}
+
+.play concurrency/default-selection.go

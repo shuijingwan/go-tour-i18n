@@ -1,6 +1,7 @@
 package i18n
 
 import (
+	"bytes"
 	"errors"
 	"fmt"
 	"os"
@@ -15,6 +16,8 @@ const (
 	// default and hard limit for automatic, explicit, and revision selection.
 	DefaultRetranslationExportLimit = 60
 	MaxRetranslationExportLimit     = 60
+
+	RetranslationReexportReasonGlossaryInputStale = "glossary_input_stale"
 )
 
 type RetranslationGenerator string
@@ -34,6 +37,7 @@ type RetranslationExportOptions struct {
 	AllowReexport      bool
 	PreviousSnapshotID string
 	SurfaceReopenID    string
+	GlossaryStale      bool
 }
 
 type RetranslationBatchUnit struct {
@@ -54,6 +58,11 @@ type RetranslationBatchUnit struct {
 	PreviousReviewIssues    []string `json:"previous_review_issues,omitempty"`
 	PreviousReviewPath      string   `json:"previous_review_path,omitempty"`
 	PreviousReviewSHA256    string   `json:"previous_review_sha256,omitempty"`
+	ReexportReason          string   `json:"reexport_reason,omitempty"`
+	PreviousBatchID         string   `json:"previous_batch_id,omitempty"`
+	PreviousInputPath       string   `json:"previous_input_path,omitempty"`
+	PreviousInputSHA256     string   `json:"previous_input_sha256,omitempty"`
+	PreviousProtectedTokens int      `json:"previous_protected_token_count,omitempty"`
 }
 
 type RetranslationBatchManifest struct {
@@ -108,6 +117,13 @@ type revisionFeedback struct {
 	reviewSHA256 string
 }
 
+type glossaryStaleProvenance struct {
+	batchID             string
+	inputPath           string
+	inputSHA256         string
+	protectedTokenCount int
+}
+
 // ExportRetranslationBatch writes one isolated batch of Default protected
 // inputs without invoking a model or changing formal translation state.
 func ExportRetranslationBatch(root string, catalog *Catalog, options RetranslationExportOptions) (*RetranslationExportResult, error) {
@@ -132,6 +148,12 @@ func ExportRetranslationBatch(root string, catalog *Catalog, options Retranslati
 	}
 	if options.AllowReexport && len(options.UnitIDs) == 0 {
 		return nil, errors.New("--allow-reexport requires at least one --id")
+	}
+	if options.GlossaryStale && !options.AllowReexport {
+		return nil, errors.New("--glossary-stale requires --allow-reexport")
+	}
+	if options.GlossaryStale && (options.PreviousSnapshotID != "" || options.SurfaceReopenID != "") {
+		return nil, errors.New("--glossary-stale cannot be combined with Quality Check or Surface Review revision authorization")
 	}
 	if options.PreviousSnapshotID != "" && !options.AllowReexport {
 		return nil, errors.New("--previous-snapshot-id requires --allow-reexport revision mode")
@@ -260,7 +282,15 @@ func ExportRetranslationBatch(root string, catalog *Catalog, options Retranslati
 	if err != nil {
 		return nil, err
 	}
+	var latest *latestRetranslationUnits
+	if options.GlossaryStale {
+		latest, err = selectLatestRetranslationUnits(root, catalog, options.Locale)
+		if err != nil {
+			return nil, fmt.Errorf("glossary-stale recovery latest candidate selection: %w", err)
+		}
+	}
 	prepared := make([]preparedRetranslationInput, 0, len(units))
+	glossaryStaleByID := map[string]glossaryStaleProvenance{}
 	for _, unit := range units {
 		if sum(unit.Source) != unit.SourceSHA256 {
 			return nil, fmt.Errorf("%s: hydrated source hash mismatch", unit.ID)
@@ -280,6 +310,13 @@ func ExportRetranslationBatch(root string, catalog *Catalog, options Retranslati
 		}
 		inputPath := filepath.ToSlash(filepath.Join("inputs", retranslationUnitInputName(unit)))
 		input := canonicalizeRetranslationArtifactEOF([]byte(protected.Text))
+		if options.GlossaryStale {
+			provenance, err := validateGlossaryStaleRetranslationUnit(root, options.Locale, unit, input, latest)
+			if err != nil {
+				return nil, err
+			}
+			glossaryStaleByID[unit.ID] = provenance
+		}
 		prepared = append(prepared, preparedRetranslationInput{
 			unit: unit, text: string(input), path: inputPath,
 			hash: sum(input), tokens: len(protected.Tokens),
@@ -329,6 +366,13 @@ func ExportRetranslationBatch(root string, catalog *Catalog, options Retranslati
 			record.PreviousReviewPath = prior.reviewPath
 			record.PreviousReviewSHA256 = prior.reviewSHA256
 		}
+		if prior, ok := glossaryStaleByID[input.unit.ID]; ok {
+			record.ReexportReason = RetranslationReexportReasonGlossaryInputStale
+			record.PreviousBatchID = prior.batchID
+			record.PreviousInputPath = prior.inputPath
+			record.PreviousInputSHA256 = prior.inputSHA256
+			record.PreviousProtectedTokens = prior.protectedTokenCount
+		}
 		manifest.Units = append(manifest.Units, record)
 		unitIDs = append(unitIDs, input.unit.ID)
 	}
@@ -349,6 +393,71 @@ func ExportRetranslationBatch(root string, catalog *Catalog, options Retranslati
 	return &RetranslationExportResult{
 		Locale: options.Locale, BatchID: batchID, BatchPath: batchPath,
 		UnitKind: prepared[0].unit.Kind, UnitCount: len(unitIDs), UnitIDs: unitIDs,
+	}, nil
+}
+
+func validateGlossaryStaleRetranslationUnit(root, locale string, unit *TranslationUnit, currentInput []byte, latest *latestRetranslationUnits) (glossaryStaleProvenance, error) {
+	if latest == nil {
+		return glossaryStaleProvenance{}, errors.New("glossary-stale recovery latest candidate selection is required")
+	}
+	choice, ok := latest.selectedByID[unit.ID]
+	if !ok {
+		return glossaryStaleProvenance{}, fmt.Errorf("%s: glossary-stale recovery requires a latest processed result", unit.ID)
+	}
+	if !selectedRetranslationIdentityMatches(unit, choice) {
+		return glossaryStaleProvenance{}, fmt.Errorf("%s: latest processed batch %s source identity does not match current Catalog", unit.ID, choice.batchID)
+	}
+	if choice.result.Status != "passed" {
+		return glossaryStaleProvenance{}, fmt.Errorf("%s: latest processed batch %s status %q is not passed", unit.ID, choice.batchID, choice.result.Status)
+	}
+	if choice.artifactEOF != retranslationArtifactEOFSingleLF {
+		return glossaryStaleProvenance{}, fmt.Errorf("%s: latest processed batch %s does not have an unambiguous single-LF protected-input identity", unit.ID, choice.batchID)
+	}
+	wantInputPath := filepath.ToSlash(filepath.Join("inputs", retranslationUnitInputName(unit)))
+	if choice.manifest.InputPath != wantInputPath {
+		return glossaryStaleProvenance{}, fmt.Errorf("%s: latest processed batch %s has non-canonical input_path %q", unit.ID, choice.batchID, choice.manifest.InputPath)
+	}
+	savedInput, err := os.ReadFile(filepath.Join(choice.batchDir, filepath.FromSlash(choice.manifest.InputPath)))
+	if err != nil {
+		return glossaryStaleProvenance{}, fmt.Errorf("%s: read latest saved protected input: %w", unit.ID, err)
+	}
+	if sum(savedInput) != choice.manifest.InputSHA256 {
+		return glossaryStaleProvenance{}, fmt.Errorf("%s: latest saved input hash does not match manifest", unit.ID)
+	}
+	tokens := translationTokenRE.FindAll(savedInput, -1)
+	seenTokens := map[string]bool{}
+	for _, token := range tokens {
+		value := string(token)
+		if seenTokens[value] {
+			return glossaryStaleProvenance{}, fmt.Errorf("%s: latest saved input contains duplicate protected token %s", unit.ID, value)
+		}
+		seenTokens[value] = true
+	}
+	if len(tokens) != choice.manifest.ProtectedTokenCount {
+		return glossaryStaleProvenance{}, fmt.Errorf("%s: latest saved input protected token count %d does not match manifest %d", unit.ID, len(tokens), choice.manifest.ProtectedTokenCount)
+	}
+	name := filepath.Base(filepath.FromSlash(choice.manifest.InputPath))
+	wantCandidate := filepath.ToSlash(filepath.Join("candidates", retranslationUnitCandidateName(unit)))
+	wantValidation := filepath.ToSlash(filepath.Join("validation", strings.TrimSuffix(name, filepath.Ext(name))+".json"))
+	if choice.result.CandidatePath != wantCandidate || choice.result.ValidationPath != wantValidation {
+		return glossaryStaleProvenance{}, fmt.Errorf("%s: latest processed result candidate/validation path mismatch", unit.ID)
+	}
+	validation, err := readPromotionValidation(choice.batchDir, choice.batchID, locale, choice.manifest, choice.result)
+	if err != nil {
+		return glossaryStaleProvenance{}, err
+	}
+	if validation.Status != "passed" {
+		return glossaryStaleProvenance{}, fmt.Errorf("%s: latest validation status %q is not passed", unit.ID, validation.Status)
+	}
+	if _, err := os.ReadFile(filepath.Join(choice.batchDir, filepath.FromSlash(wantCandidate))); err != nil {
+		return glossaryStaleProvenance{}, fmt.Errorf("%s: read latest candidate: %w", unit.ID, err)
+	}
+	if bytes.Equal(savedInput, currentInput) {
+		return glossaryStaleProvenance{}, fmt.Errorf("%s: current protected input has no glossary-induced drift from latest processed batch %s", unit.ID, choice.batchID)
+	}
+	return glossaryStaleProvenance{
+		batchID: choice.batchID, inputPath: choice.manifest.InputPath,
+		inputSHA256: choice.manifest.InputSHA256, protectedTokenCount: choice.manifest.ProtectedTokenCount,
 	}, nil
 }
 
@@ -569,6 +678,9 @@ func scanRetranslationBatches(base, locale string, catalog *Catalog) (map[string
 		}
 		if manifest.UnitCount != len(manifest.Units) {
 			return nil, 0, fmt.Errorf("retranslation batch %q unit_count %d does not match units %d", entry.Name(), manifest.UnitCount, len(manifest.Units))
+		}
+		if err := validateRetranslationManifestReexportProvenance(manifest); err != nil {
+			return nil, 0, fmt.Errorf("retranslation batch %q provenance: %w", entry.Name(), err)
 		}
 		for _, record := range manifest.Units {
 			unitID, unitKind := record.UnitID, record.UnitKind

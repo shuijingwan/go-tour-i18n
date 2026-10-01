@@ -1,0 +1,21 @@
+* Кескіндер
+
+[[/pkg/image/#Image][image пакеті]] `Image` интерфейсін анықтайды:
+
+	package image
+
+	type Image interface {
+		ColorModel() color.Model
+		Bounds() Rectangle
+		At(x, y int) color.Color
+	}
+
+*Ескерту*: `Bounds` әдісінің `Rectangle` қайтарылатын мәні шын мәнінде
+[[/pkg/image/#Rectangle][`image.Rectangle`]], себебі
+жариялау `image` пакетінің ішінде орналасқан.
+
+(Толық мәліметті [[/pkg/image/#Image][құжаттамадан]] қараңыз.)
+
+`color.Color` және `color.Model` түрлері де интерфейстер, бірақ алдын ала анықталған `color.RGBA` және `color.RGBAModel` іске асырылуларын пайдаланып, мұны елемейміз. Бұл интерфейстер мен түрлер [[/pkg/image/color/][image/color пакетінде]] анықталған.
+
+.play methods/images.go

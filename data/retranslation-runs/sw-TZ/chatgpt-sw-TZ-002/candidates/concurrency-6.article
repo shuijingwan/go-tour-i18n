@@ -1,0 +1,14 @@
+* Chaguo la default
+
+Case ya `default` katika `select` hutekelezwa ikiwa hakuna case nyingine iliyo tayari.
+
+Tumia case ya `default` kujaribu kutuma au kupokea bila kusubiri:
+
+	select {
+	case i := <-c:
+		// tumia i
+	default:
+		// kupokea kutoka c kungesubiri
+	}
+
+.play concurrency/default-selection.go

@@ -1,0 +1,12 @@
+* Interface values with ⟪GTI18N_9487ca3c_000001⟫ underlying values
+
+If the concrete value inside the interface itself is ⟪GTI18N_9487ca3c_000002⟫,
+the method will be called with a ⟪GTI18N_9487ca3c_000003⟫ receiver.
+
+In some languages this would trigger a null pointer exception,
+but in Go it is common to write methods that gracefully handle being called
+with a ⟪GTI18N_9487ca3c_000004⟫ receiver (as with the method ⟪GTI18N_9487ca3c_000005⟫M⟪GTI18N_9487ca3c_000006⟫ in this example.)
+
+Note that an interface value that holds a ⟪GTI18N_9487ca3c_000007⟫ concrete value is itself non-⟪GTI18N_9487ca3c_000008⟫.
+
+⟪GTI18N_9487ca3c_000009⟫

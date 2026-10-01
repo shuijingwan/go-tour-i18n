@@ -1,0 +1,27 @@
+* Kubadilisha ramani
+
+Ingiza au sasisha kipengele katika ramani `m`:
+
+	m[key] = elem
+
+Pata kipengele:
+
+	elem = m[key]
+
+Futa kipengele:
+
+	delete(m, key)
+
+Jaribu ikiwa ufunguo upo kwa ugawaji wa thamani mbili:
+
+	elem, ok = m[key]
+
+Ikiwa `key` iko katika `m`, `ok` huwa `true`. Ikiwa haipo, `ok` huwa `false`.
+
+Ikiwa `key` haipo katika ramani, basi `elem` huwa thamani sifuri ya aina ya kipengele cha ramani.
+
+*Kumbuka:* Ikiwa `elem` au `ok` bado havijatangazwa, unaweza kutumia namna ya tamko fupi:
+
+	elem, ok := m[key]
+
+.play moretypes/mutating-maps.go

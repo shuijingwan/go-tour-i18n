@@ -207,6 +207,23 @@ go run -mod=readonly ./cmd/tour-i18n retranslation export \
 
 Exporter 验证 Snapshot、Unit、result 与当前 source/candidate/validation/attempt identity；Quality Check A、缺失或 identity 不匹配均不能创建新 revision。manifest 固化 `previous_snapshot_id`、`revision_feedback_source=quality_check`、`previous_rating` 与 `previous_finding`。历史 `revision_feedback_source=final_review` 字段及 parser 仅为已有 manifest/provenance 解释保留，不能创建新 batch。每批默认且最多 60 个，Page / Example 不混合，也不得为凑满批次扩大 revision scope；Revision 的正式翻译输入仍是 manifest、manifest 全部 `inputs/*` 与 locale glossary 三者不可拆分。
 
+### Glossary-induced protected-input stale recovery
+
+candidate 已生成后若 glossary 合法变化，必须先按 [Glossary Review 规范](GLOSSARY_REVIEW.md) 对完整当前 glossary 重新取得 current PASS。旧 Candidate Snapshot 因 glossary hash 不同而 stale 是正确行为；不得放宽旧 Snapshot guard，也不得把 glossary 变化伪造成 Quality Check B/C/D、Surface Review finding、retry 或 revalidation。
+
+只对当前 canonical source + 当前 glossary 经正式 protector 重建后，与该 Unit 最新已处理 numeric batch 中保存的 protected input 字节不同的 Unit 使用：
+
+```sh
+go run -mod=readonly ./cmd/tour-i18n retranslation export \
+  --locale <locale> --generator <chatgpt|codex> \
+  --allow-reexport --glossary-stale \
+  --id <unit-id> [--id <unit-id> ...]
+```
+
+该模式不接受 `--previous-snapshot-id` 或 `--surface-reopen-id`。调用者显式列出本批 Unit；每个请求 Unit 都必须有 current-source、最新已处理且 `passed` 的 result/validation，旧 input 字节与 manifest hash 必须一致，并且当前 protected input 必须真实发生 drift，否则整批在创建前失败。Page / Example 仍不得混合，默认且硬性上限仍为 60。manifest 以 `reexport_reason=glossary_input_stale` 绑定 previous batch/input identity；Generation Bundle 使用独立 `translation-unit-glossary-stale-recovery` task kind，因此 audit 时不会与 initial、QC revision 或 Surface reopen 混淆。
+
+新 batch 后仍走普通 `generation-bundle export → import → retranslation process → automatic validation`。未发生 protected-input drift 的可信 candidate 不重译；处理完成后创建新的 full Candidate Snapshot，它会为恢复 Unit 选择新 batch、为其余 Unit 选择原 latest valid batch。由于 glossary identity 已变化，新 Snapshot 的完整 TranslationUnit Quality Check 必须全部重做，旧 A 不 carry-forward。
+
 ## 8. Machine finalization 与 promotion
 
 只有完整语言满足以下条件，才能 machine finalization：

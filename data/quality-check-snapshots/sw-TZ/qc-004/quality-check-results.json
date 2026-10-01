@@ -1,0 +1,120 @@
+{
+  "schema_version": 2,
+  "evidence_type": "quality_check_results",
+  "locale": "sw-TZ",
+  "snapshot_id": "qc-004",
+  "snapshot_manifest_sha256": "db71141d42d53a1b8322184b5b7140d6899363ae7c854bd4623c353a974222ab",
+  "previous_snapshot_id": "qc-002",
+  "rubric": "translation-quality/v1",
+  "result_count": 21,
+  "results": [
+    {
+      "index": 4,
+      "unit_id": "welcome/5",
+      "rating": "A"
+    },
+    {
+      "index": 17,
+      "unit_id": "basics/12",
+      "rating": "A"
+    },
+    {
+      "index": 34,
+      "unit_id": "flowcontrol/12",
+      "rating": "A"
+    },
+    {
+      "index": 35,
+      "unit_id": "flowcontrol/13",
+      "rating": "A"
+    },
+    {
+      "index": 38,
+      "unit_id": "moretypes/2",
+      "rating": "A"
+    },
+    {
+      "index": 39,
+      "unit_id": "moretypes/3",
+      "rating": "A"
+    },
+    {
+      "index": 40,
+      "unit_id": "moretypes/4",
+      "rating": "A"
+    },
+    {
+      "index": 41,
+      "unit_id": "moretypes/5",
+      "rating": "A"
+    },
+    {
+      "index": 47,
+      "unit_id": "moretypes/11",
+      "rating": "A"
+    },
+    {
+      "index": 49,
+      "unit_id": "moretypes/13",
+      "rating": "A"
+    },
+    {
+      "index": 51,
+      "unit_id": "moretypes/15",
+      "rating": "A"
+    },
+    {
+      "index": 57,
+      "unit_id": "moretypes/21",
+      "rating": "A"
+    },
+    {
+      "index": 61,
+      "unit_id": "moretypes/25",
+      "rating": "A"
+    },
+    {
+      "index": 64,
+      "unit_id": "methods/1",
+      "rating": "A"
+    },
+    {
+      "index": 75,
+      "unit_id": "methods/12",
+      "rating": "A"
+    },
+    {
+      "index": 76,
+      "unit_id": "methods/13",
+      "rating": "A"
+    },
+    {
+      "index": 77,
+      "unit_id": "methods/14",
+      "rating": "A"
+    },
+    {
+      "index": 82,
+      "unit_id": "methods/19",
+      "rating": "B",
+      "finding": "The nil/non-nil semantic contradiction is resolved, but the phrase isiyo nil error still uses an English-like modifier-before-noun order. Preserve the protected nil and error identities and the exact nil-error/non-nil-error semantics while expressing the relationship in natural Kiswahili."
+    },
+    {
+      "index": 87,
+      "unit_id": "methods/24",
+      "rating": "B",
+      "finding": "The revision correctly refers to both color.RGBA and color.RGBAModel, but still classifies them with singular utekelezaji uliotolewa tayari. Use a genuinely plural Kiswahili noun phrase and agreement for the two predefined implementations."
+    },
+    {
+      "index": 101,
+      "unit_id": "concurrency/9",
+      "rating": "A"
+    },
+    {
+      "index": 109,
+      "unit_id": "example:concurrency/mutex-counter.go",
+      "rating": "B",
+      "finding": "Both locking comments now use goroutine moja tu, but the following verb remains aweze, which keeps class-1/human subject agreement. Revise both comments so the numeral and verb agreement are consistently natural for the non-human technical noun goroutine, while preserving the technical identity and exact meaning that only one goroutine at a time may access c.v."
+    }
+  ]
+}

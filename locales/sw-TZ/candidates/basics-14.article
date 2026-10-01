@@ -1,0 +1,18 @@
+* Utambuzi wa aina
+
+Unapotangaza kibadilika bila kutaja aina moja kwa moja (iwe kwa kutumia sintaksia `:=` au sintaksia ya usemi `var`=`), aina ya kibadilika hutambuliwa kutokana na thamani iliyo upande wa kulia.
+
+Ikiwa upande wa kulia wa tamko una aina tayari, kibadilika kipya huwa na aina hiyo hiyo:
+
+	var i int
+	j := i // j ni int
+
+Lakini upande wa kulia ukiwa na kisobadilika cha nambari kisicho na aina, kibadilika kipya kinaweza kuwa `int`, `float64`, au `complex128` kutegemea usahihi wa kisobadilika hicho:
+
+	i := 42           // int
+	f := 3.142        // float64
+	g := 0.867 + 0.5i // complex128
+
+Jaribu kubadilisha thamani ya awali ya `v` katika msimbo wa mfano na uangalie jinsi aina yake inavyoathirika.
+
+.play basics/type-inference.go

@@ -1,0 +1,20 @@
+* Chaneli
+
+Chaneli ni njia yenye aina maalumu ambayo kupitia kwayo unaweza kutuma na kupokea thamani kwa kutumia opereta wa chaneli, `<-`.
+
+	ch <- v    // Tuma v kwenye chaneli ch.
+	v := <-ch  // Pokea kutoka ch, na
+	           // uweke thamani katika v.
+
+(Data hutiririka kuelekea upande unaoonyeshwa na kishale.)
+
+Kama ramani na vipande, chaneli lazima ziundwe kabla ya kutumiwa:
+
+	ch := make(chan int)
+
+Kwa chaguo-msingi, utumaji na upokeaji husubiri hadi upande mwingine uwe tayari. Hili huwezesha goroutines kusawazisha bila kufuli au vibadilika vya masharti vilivyo wazi.
+
+Msimbo wa mfano unajumlisha nambari katika kipande, ukigawa kazi kati ya goroutines mbili.
+Baada ya goroutines zote mbili kukamilisha hesabu zake, huhesabu matokeo ya mwisho.
+
+.play concurrency/channels.go

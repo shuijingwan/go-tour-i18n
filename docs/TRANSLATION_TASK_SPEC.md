@@ -110,7 +110,7 @@ Example 的源是完整 `.go` 文件，其流程中的 artifact 语义如下：
 2. manifest 列出的 `inputs/*` 文件；
 3. `locales/<locale>/glossary.yaml`。
 
-manifest 是任务身份的权威来源，记录 locale、batch、Translation Unit、source 身份、input 路径与保护 token 数量。新流程的 revision feedback 只来自 Quality Check B/C/D 的 rating 和 finding；它不属于 promotion evidence，也不替代新 candidate 的 QC/finalization。历史 manifest 中的 Final Review feedback 字段保持可读，不被重写。模型必须读取真实反馈，只处理 manifest 列出的 unit，并将输出写入对应文件。
+manifest 是任务身份的权威来源，记录 locale、batch、Translation Unit、source 身份、input 路径与保护 token 数量。新流程的 revision feedback 只来自 Quality Check B/C/D 的 rating 和 finding；它不属于 promotion evidence，也不替代新 candidate 的 QC/finalization。历史 manifest 中的 Final Review feedback 字段保持可读，不被重写。Glossary-induced protected-input stale recovery 不伪造 revision feedback；它以独立 `reexport_reason=glossary_input_stale` 和 previous batch/input identity 说明当前 protected input 为何需要重新生成。模型必须读取真实 provenance/feedback，只处理 manifest 列出的 unit，并将输出写入对应文件。
 
 `manifest.json`、manifest 列出的全部 `inputs/*` 与 `locales/<locale>/glossary.yaml` 是不可拆分的正式输入。任何一部分缺失，都不属于合规的正式 TranslationUnit 翻译执行。Glossary 必须在模型开始翻译前读取并用于生成译文，不是仅供 validator 在输出后检查的材料；不得因用户 Prompt 未重复提醒而省略，也不得用聊天上下文中的旧规则代替仓库当前内容。
 

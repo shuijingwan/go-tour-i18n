@@ -1,0 +1,12 @@
+* Zoezi: rot13Reader
+
+Muundo wa kawaida ni [[⟪GTI18N_11d87614_000001⟫][io.Reader]] inayofunika ⟪GTI18N_11d87614_000002⟫io.Reader⟪GTI18N_11d87614_000003⟫ nyingine, huku ikibadilisha mtiririko kwa namna fulani.
+
+Kwa mfano, kitendakazi cha [[⟪GTI18N_11d87614_000004⟫][gzip.NewReader]] hupokea ⟪GTI18N_11d87614_000005⟫io.Reader⟪GTI18N_11d87614_000006⟫ (mtiririko wa data iliyobanwa) na kurejesha ⟪GTI18N_11d87614_000007⟫*gzip.Reader⟪GTI18N_11d87614_000008⟫ ambayo pia hutekeleza ⟪GTI18N_11d87614_000009⟫io.Reader⟪GTI18N_11d87614_000010⟫ (mtiririko wa data iliyofunguliwa).
+
+Tekeleza ⟪GTI18N_11d87614_000011⟫rot13Reader⟪GTI18N_11d87614_000012⟫ inayotekeleza ⟪GTI18N_11d87614_000013⟫io.Reader⟪GTI18N_11d87614_000014⟫ na kusoma kutoka ⟪GTI18N_11d87614_000015⟫io.Reader⟪GTI18N_11d87614_000016⟫, huku ikibadilisha mtiririko kwa kutumia kisimbaji mbadala cha [[⟪GTI18N_11d87614_000017⟫][rot13]] kwa herufi zote za alfabeti.
+
+Aina ya ⟪GTI18N_11d87614_000018⟫rot13Reader⟪GTI18N_11d87614_000019⟫ tayari imetolewa.
+Ifanye iwe ⟪GTI18N_11d87614_000020⟫io.Reader⟪GTI18N_11d87614_000021⟫ kwa kutekeleza mbinu yake ya ⟪GTI18N_11d87614_000022⟫Read⟪GTI18N_11d87614_000023⟫.
+
+⟪GTI18N_11d87614_000024⟫

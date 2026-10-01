@@ -1,0 +1,28 @@
+* Aina msingi
+
+Aina msingi za Go ni
+
+	bool
+
+	string
+
+	int  int8  int16  int32  int64
+	uint uint8 uint16 uint32 uint64 uintptr
+
+	byte // jina mbadala la uint8
+
+	rune // jina mbadala la int32
+	     // huakilisha alama moja ya msimbo wa Unicode
+
+	float32 float64
+
+	complex64 complex128
+
+Mfano unaonyesha vibadilika vya aina kadhaa,
+na pia kuwa matamko ya vibadilika yanaweza kupangwa pamoja katika vizuizi,
+kama ilivyo kwa kauli za uagizaji.
+
+Aina `int`, `uint`, na `uintptr` kwa kawaida zina upana wa biti 32 kwenye mifumo ya biti 32 na biti 64 kwenye mifumo ya biti 64.
+Unapohitaji thamani ya nambari kamili, tumia `int` isipokuwa kama una sababu maalum ya kutumia aina ya nambari kamili yenye ukubwa maalum au isiyo na alama.
+
+.play basics/basic-types.go

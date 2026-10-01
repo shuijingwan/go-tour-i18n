@@ -1,0 +1,111 @@
+locale: kk-KZ
+mandatory:
+  A Tour of Go: Go тіліне шолу
+  Go programming language: Go бағдарламалау тілі
+  Run: Іске қосу
+  Format: Пішімдеу
+  Reset: Қалпына келтіру
+  package: пакет
+  function: функция
+  variable: айнымалы
+  type: түр
+  basic type: негізгі түр
+  zero value: нөлдік мән
+  type conversion: түрді түрлендіру
+  constant: тұрақты
+  numeric constant: сандық тұрақты
+  pointer: көрсеткіш
+  struct: құрылым
+  struct field: құрылым өрісі
+  array: массив
+  slice: слайс
+  slice length: слайс ұзындығы
+  slice capacity: слайс сыйымдылығы
+  map: сөздік
+  key: кілт
+  value: мән
+  method: әдіс
+  receiver: қабылдаушы
+  pointer receiver: көрсеткіш қабылдаушы
+  value receiver: мән қабылдаушы
+  interface: интерфейс
+  interface value: интерфейс мәні
+  interface type: интерфейс түрі
+  concrete type: нақты түр
+  concrete value: нақты мән
+  empty interface: бос интерфейс
+  type assertion: түрді растау
+  type switch: түр бойынша switch
+  type parameter: түр параметрі
+  generic type: жалпыланған түр
+  constraint: шектеу
+  generics: жалпылау
+  concurrency: конкуренттілік
+  channel: арна
+  buffered channel: буферленген арна
+  mutex: мьютекс
+  standard library: стандартты кітапхана
+  built-in: кіріктірілген
+  loop: цикл
+  iteration: итерация
+  closure: тұйықталу
+  function value: функция мәні
+preferred:
+  import: импорт
+  exported name: экспортталған атау
+  return value: қайтарылатын мән
+  named return value: атауы бар қайтарылатын мән
+  initializer: инициализатор
+  variable declaration: айнымалыны жариялау
+  short variable declaration: айнымалыны қысқаша жариялау
+  type inference: түрді анықтау
+  statement: нұсқау
+  expression: өрнек
+  switch statement: switch нұсқауы
+  defer statement: defer нұсқауы
+  pointer indirection: көрсеткіш арқылы жанама қатынау
+  struct literal: құрылым литералы
+  slice literal: слайс литералы
+  underlying array: негіздегі массив
+  nil slice: nil слайс
+  map literal: сөздік литералы
+  key-value pair: кілт-мән жұбы
+  implementation: іске асыру
+  implicit implementation: жасырын түрде іске асыру
+  underlying value: негіздегі мән
+  error: қате
+  send: жіберу
+  receive: қабылдау
+  close a channel: арнаны жабу
+  select statement: select нұсқауы
+  default case: default тармағы
+  synchronization: синхрондау
+  shared memory: ортақ жад
+  runtime: орындалу ортасы
+  program: бағдарлама
+  source code: бастапқы код
+  module: модуль
+  lesson: сабақ
+  course page: курс беті
+  course directory: курс каталогы
+  user interface: пайдаланушы интерфейсі
+  validation: тексеру
+  release: шығарылым
+  production: өндірістік орта
+  development environment: әзірлеу ортасы
+  official source: ресми бастапқы дереккөз
+  community translation: қауымдастық аудармасы
+  translation quality review: аударма сапасын тексеру
+  table of contents: мазмұны
+forbidden:
+  - горутина
+  - указатель
+  - срез
+keep:
+  - Go
+  - Go Playground
+  - goroutine
+  - gofmt
+  - GOPATH
+  - TranslationUnit
+  - present.Section

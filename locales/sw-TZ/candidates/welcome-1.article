@@ -1,0 +1,37 @@
+* Habari, 世界
+
+Karibu katika ziara ya [[/][lugha ya programu ya Go]].
+
+Ziara imegawanywa katika orodha ya moduli unazoweza
+kufikia kwa kubofya
+[[javascript:highlight(".logo")][Ziara ya Go]] kwenye sehemu ya juu kushoto ya ukurasa.
+
+Unaweza pia kuona jedwali la yaliyomo wakati wowote kwa kubofya [[javascript:highlightAndClick(".nav")][menyu]] kwenye sehemu ya juu kulia ya ukurasa.
+
+Katika ziara hii utapata mfululizo wa slaidi na mazoezi ya
+kukamilisha.
+
+Unaweza kuvipitia kwa kutumia
+
+- [[javascript:highlight(".prev-page")]["iliyotangulia"]] au `PageUp` kwenda kwenye ukurasa uliotangulia,
+
+- [[javascript:highlight(".next-page")]["inayofuata"]] au `PageDown` kwenda kwenye ukurasa unaofuata.
+
+Ziara hii ni shirikishi. Bofya kitufe cha
+[[javascript:highlightAndClick("#run")][Endesha]] sasa
+(au bonyeza `Shift` + `Enter`) ili kukusanya na kuendesha programu kwenye
+seva ya mbali.
+Matokeo yanaonyeshwa chini ya msimbo.
+
+Programu hizi za mfano zinaonyesha vipengele mbalimbali vya Go. Programu katika ziara zimekusudiwa kuwa sehemu za kuanzia kwa majaribio yako mwenyewe.
+
+Hariri programu kisha uiendeshe tena.
+
+Unapobofya [[javascript:highlightAndClick("#format")][Umbiza]]
+(njia ya mkato: `Ctrl` + `Enter`), maandishi katika kihariri yanaumbizwa kwa kutumia zana ya
+[[/cmd/gofmt/][gofmt]]. Unaweza kuwasha au kuzima uangaziaji wa sintaksia
+kwa kubofya kitufe cha [[javascript:highlightAndClick(".syntax-checkbox")][sintaksia]].
+
+Ukiwa tayari kuendelea, bofya [[javascript:highlightAndClick(".next-page")][kishale cha kulia]] kilicho hapa chini au bonyeza kitufe cha `PageDown`.
+
+.play welcome/hello.go

@@ -1,0 +1,23 @@
+* Vipande
+
+Safu ina ukubwa usiobadilika.
+Kwa upande mwingine, kipande ni mwonekano unaonyumbulika wa vipengele vya safu
+ambao ukubwa wake unaweza kubadilika.
+Kwa matumizi ya kawaida, vipande hutumika zaidi kuliko safu.
+
+Aina `[]T` ni kipande chenye vipengele vya aina `T`.
+
+Kipande huundwa kwa kutaja faharasa mbili, mpaka wa chini na
+mpaka wa juu, zilizotenganishwa kwa koloni:
+
+	a[low : high]
+
+Hii huchagua masafa nusu-wazi yanayojumuisha kipengele cha kwanza
+lakini hayajumuishi cha mwisho.
+
+Usemi ufuatao huunda kipande kinachojumuisha
+vipengele 1 hadi 3 vya `a`:
+
+	a[1:4]
+
+.play moretypes/slices.go

@@ -1,0 +1,17 @@
+* خطاها
+
+برنامه‌های Go وضعیت خطا را با مقادیر ⟪GTI18N_9eaab1fd_000001⟫error⟪GTI18N_9eaab1fd_000002⟫ بیان می‌کنند.
+
+نوع ⟪GTI18N_9eaab1fd_000003⟫error⟪GTI18N_9eaab1fd_000004⟫ یک رابط توکار شبیه ⟪GTI18N_9eaab1fd_000005⟫fmt.Stringer⟪GTI18N_9eaab1fd_000006⟫ است:
+
+⟪GTI18N_9eaab1fd_000007⟫
+
+(همانند ⟪GTI18N_9eaab1fd_000008⟫fmt.Stringer⟪GTI18N_9eaab1fd_000009⟫، بستهٔ ⟪GTI18N_9eaab1fd_000010⟫fmt⟪GTI18N_9eaab1fd_000011⟫ هنگام چاپ مقادیر به‌دنبال رابط ⟪GTI18N_9eaab1fd_000012⟫error⟪GTI18N_9eaab1fd_000013⟫ می‌گردد.)
+
+توابع اغلب یک مقدار ⟪GTI18N_9eaab1fd_000014⟫error⟪GTI18N_9eaab1fd_000015⟫ برمی‌گردانند و کد فراخواننده باید با بررسی برابری خطا با ⟪GTI18N_9eaab1fd_000016⟫nil⟪GTI18N_9eaab1fd_000017⟫، خطاها را مدیریت کند.
+
+⟪GTI18N_9eaab1fd_000018⟫
+
+یک ⟪GTI18N_9eaab1fd_000019⟫ ⟪GTI18N_9eaab1fd_000020⟫error⟪GTI18N_9eaab1fd_000021⟫ نشان‌دهندهٔ موفقیت است؛ یک ⟪GTI18N_9eaab1fd_000023⟫error⟪GTI18N_9eaab1fd_000024⟫ که ⟪GTI18N_9eaab1fd_000022⟫ نباشد، نشان‌دهندهٔ شکست است.
+
+⟪GTI18N_9eaab1fd_000025⟫

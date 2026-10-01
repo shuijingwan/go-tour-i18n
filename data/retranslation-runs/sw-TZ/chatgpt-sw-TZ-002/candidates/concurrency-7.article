@@ -1,0 +1,18 @@
+* Zoezi: Miti ya jozi inayolingana
+
+Kunaweza kuwa na miti mingi tofauti ya jozi inayohifadhi mfuatano uleule wa thamani. Kwa mfano, hapa kuna miti miwili ya jozi inayohifadhi mfuatano 1, 1, 2, 3, 5, 8, 13.
+
+.image /tour/static/img/tree.png
+
+Katika lugha nyingi, kitendakazi cha kukagua kama miti miwili ya jozi huhifadhi mfuatano uleule ni changamano sana. Tutatumia utekelezaji wa majukumu kwa kupishana au sambamba wa Go na chaneli zake kuandika suluhisho rahisi.
+
+Mfano huu unatumia kifurushi cha `tree`, ambacho hufafanua aina:
+
+	type Tree struct {
+		Left  *Tree
+		Value int
+		Right *Tree
+	}
+
+
+Maelezo yanaendelea kwenye [[javascript:click('.next-page')][ukurasa unaofuata]].

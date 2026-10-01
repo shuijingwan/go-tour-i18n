@@ -1,0 +1,12 @@
+* Stringer түрлері
+
+Ең кең таралған интерфейстердің бірі — [[/pkg/fmt/#Stringer][`Stringer`]], оны [[/pkg/fmt/][`fmt`]] пакеті анықтайды.
+
+	type Stringer interface {
+		String() string
+	}
+
+`Stringer` — өзін жол ретінде сипаттай алатын түр. `fmt` пакеті
+(және көптеген басқа пакеттер) мәндерді басып шығару үшін осы интерфейсті іздейді.
+
+.play methods/stringer.go

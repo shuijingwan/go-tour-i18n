@@ -1,0 +1,25 @@
+* Uthibitisho wa aina
+
+_Uthibitisho_wa_aina_ hutoa ufikiaji wa thamani halisi ya ndani ya thamani ya kiolesura.
+
+	t := i.(T)
+
+Kauli hii inathibitisha kwamba thamani ya kiolesura `i` huhifadhi aina halisi `T`
+na hugawa thamani ya ndani ya `T` kwa kibadilika `t`.
+
+Ikiwa `i` haihifadhi `T`, kauli itasababisha panic.
+
+Ili _kupima_ kama thamani ya kiolesura huhifadhi aina mahususi,
+uthibitisho wa aina unaweza kurejesha thamani mbili: thamani ya ndani
+na thamani ya Boolean inayoonyesha kama uthibitisho ulifaulu.
+
+	t, ok := i.(T)
+
+Ikiwa `i` huhifadhi `T`, basi `t` itakuwa thamani ya ndani na `ok` itakuwa true.
+
+Vinginevyo, `ok` itakuwa false na `t` itakuwa thamani sifuri ya aina `T`,
+na hakuna panic itakayotokea.
+
+Kumbuka kufanana kwa sintaksia hii na ile ya kusoma kutoka kwenye ramani.
+
+.play methods/type-assertions.go

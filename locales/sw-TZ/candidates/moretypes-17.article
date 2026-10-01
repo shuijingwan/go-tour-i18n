@@ -1,0 +1,12 @@
+* Range — inaendelea
+
+Unaweza kuruka faharasa au thamani kwa kuigawia `_`.
+
+    for i, _ := range pow
+    for _, value := range pow
+
+Ikiwa unataka faharasa pekee, unaweza kuacha kibadilika cha pili.
+
+    for i := range pow
+
+.play moretypes/range-continued.go

@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"reflect"
 	"strings"
 	"testing"
 
@@ -115,6 +116,27 @@ func TestParseRetranslationExportOptionsGenerator(t *testing.T) {
 		}
 		if !options.AllowReexport || options.PreviousSnapshotID != "qc-001" || options.SurfaceReopenID != "surface-fix-001" {
 			t.Fatalf("surface reopen options=%+v", options)
+		}
+	})
+
+	t.Run("glossary stale", func(t *testing.T) {
+		options, _, err := parseRetranslationExportOptions([]string{
+			"--locale", "de-DE", "--generator", "chatgpt", "--allow-reexport", "--glossary-stale", "--id", "basics/9",
+		})
+		if err != nil {
+			t.Fatal(err)
+		}
+		if !options.AllowReexport || !options.GlossaryStale || options.PreviousSnapshotID != "" || !reflect.DeepEqual(options.UnitIDs, []string{"basics/9"}) {
+			t.Fatalf("glossary stale options=%+v", options)
+		}
+	})
+
+	t.Run("glossary stale rejects revision authorization", func(t *testing.T) {
+		_, _, err := parseRetranslationExportOptions([]string{
+			"--locale", "de-DE", "--allow-reexport", "--glossary-stale", "--previous-snapshot-id", "qc-001", "--id", "basics/9",
+		})
+		if err == nil || !strings.Contains(err.Error(), "cannot be combined") {
+			t.Fatalf("mixed glossary/QC mode error=%v", err)
 		}
 	})
 

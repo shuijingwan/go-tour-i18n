@@ -1,0 +1,15 @@
+* Mpangilio wa tathmini ya switch
+
+Case za switch hutathminiwa kutoka juu kwenda chini, na husimama case inapofaulu.
+
+(Kwa mfano,
+
+	switch i {
+	case 0:
+	case f():
+	}
+
+haiti `f` ikiwa `i==0`.)
+
+
+.play flowcontrol/switch-evaluation-order.go

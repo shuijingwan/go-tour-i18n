@@ -1,0 +1,19 @@
+* تصاویر
+
+[[/pkg/image/#Image][بستهٔ image]] رابط `Image` را تعریف می‌کند:
+
+	package image
+
+	type Image interface {
+		ColorModel() color.Model
+		Bounds() Rectangle
+		At(x, y int) color.Color
+	}
+
+*نکته*: مقدار بازگشتی `Rectangle` از متد `Bounds` در واقع یک [[/pkg/image/#Rectangle][`image.Rectangle`]] است، زیرا اعلان درون بستهٔ `image` قرار دارد.
+
+(برای همهٔ جزئیات، [[/pkg/image/#Image][مستندات]] را ببینید.)
+
+نوع‌های `color.Color` و `color.Model` نیز رابط هستند، اما با استفاده از پیاده‌سازی‌های ازپیش‌تعریف‌شدهٔ `color.RGBA` و `color.RGBAModel` از این موضوع صرف‌نظر می‌کنیم. این رابط‌ها و نوع‌ها در [[/pkg/image/color/][بستهٔ image/color]] مشخص شده‌اند.
+
+.play methods/images.go

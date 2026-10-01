@@ -1,0 +1,12 @@
+* Stringers
+
+Mojawapo ya violesura vinavyotumika sana ni [[/pkg/fmt/#Stringer][`Stringer`]] kilichofafanuliwa na kifurushi cha [[/pkg/fmt/][`fmt`]].
+
+	type Stringer interface {
+		String() string
+	}
+
+`Stringer` ni aina inayoweza kujieleza kama mfuatano wa maandishi. Kifurushi cha `fmt`
+(na vingine vingi) hutafuta kiolesura hiki ili kuchapisha thamani.
+
+.play methods/stringer.go

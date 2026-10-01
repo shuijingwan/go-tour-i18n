@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "evidence_type": "glossary-review-receipt",
+  "locale": "sw-TZ",
+  "review_id": "20260930-sw-TZ-glossary-004",
+  "stage": "locale-glossary-review",
+  "decision": "failed",
+  "reviewer": "ChatGPT GPT-5.6 Sol High",
+  "rubric": "glossary-review/v1",
+  "glossary_path": "locales/sw-TZ/glossary.yaml",
+  "glossary_sha256": "5ea93af6b523201fe54c09cef1e44a857806511d8bb7d2080eacb7810727ff30",
+  "findings": [
+    "keep / HTTPS lacks any current natural-language occurrence in the complete 122 TranslationUnit + 113 English UI review scope; lowercase https:// occurs only in protected URL/link structure, so global keep: HTTPS unnecessarily expands do-not-translate authority."
+  ]
+}

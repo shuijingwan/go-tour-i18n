@@ -1,0 +1,39 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-sw-TZ-004",
+  "locale": "sw-TZ",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 2,
+  "units": [
+    {
+      "unit_id": "basics/9",
+      "unit_kind": "page",
+      "source_path": "_content/tour/basics.article",
+      "source_sha256": "d51c17ba355753484b96c0eefda9fcce9f6f041a8ae2bf3e96fd0ad0c44680cc",
+      "input_path": "inputs/basics-9.article",
+      "input_sha256": "67b1797848153fc7c1d848bfd9befff87170c5400eb4ceda0e28acac89ef97b9",
+      "protected_token_count": 3,
+      "reexport_reason": "glossary_input_stale",
+      "previous_batch_id": "chatgpt-sw-TZ-001",
+      "previous_input_path": "inputs/basics-9.article",
+      "previous_input_sha256": "3da1de4683ddc09bcf06ba0b55038646b32864fc1699764dfc69150c251e994b",
+      "previous_protected_token_count": 4
+    },
+    {
+      "unit_id": "moretypes/22",
+      "unit_kind": "page",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "f6963bc620184c7fbea7b04c309ccf64d508a4e835500fa7dd4188e60204019f",
+      "input_path": "inputs/moretypes-22.article",
+      "input_sha256": "1bdf3eb859309fc59dc2941e8bac83b48f053fb4f52d9aa8cd5c5cc33cea22f6",
+      "protected_token_count": 30,
+      "reexport_reason": "glossary_input_stale",
+      "previous_batch_id": "chatgpt-sw-TZ-001",
+      "previous_input_path": "inputs/moretypes-22.article",
+      "previous_input_sha256": "dc5f39c1b02da77342f5563edc3f8be60dfbf24c0abcf44bd1e55a3e4f677cd3",
+      "previous_protected_token_count": 31
+    }
+  ]
+}

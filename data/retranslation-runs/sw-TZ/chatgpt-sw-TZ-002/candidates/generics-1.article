@@ -1,0 +1,11 @@
+* Vigezo vya aina
+
+Vitendakazi vya Go vinaweza kuandikwa kufanya kazi na aina nyingi kwa kutumia vigezo vya aina. Vigezo vya aina vya kitendakazi huonekana kati ya mabano, kabla ya hoja za kitendakazi.
+
+  func Index[T comparable](s []T, x T) int
+
+Tamko hili linamaanisha kwamba `s` ni kipande cha aina yoyote `T` inayotimiza kizuizi kilichojengewa ndani `comparable`. `x` pia ni thamani ya aina hiyo hiyo.
+
+`comparable` ni kizuizi muhimu kinachowezesha kutumia opereta `==` na `!=` kwa thamani za aina hiyo. Katika mfano huu, tunakitumia kulinganisha thamani na kila elementi ya kipande hadi inayolingana ipatikane. Kitendakazi hiki cha `Index` hufanya kazi kwa aina yoyote inayounga mkono ulinganishaji.
+
+.play generics/index.go

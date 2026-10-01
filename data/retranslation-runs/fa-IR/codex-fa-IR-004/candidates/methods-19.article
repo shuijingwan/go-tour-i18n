@@ -1,0 +1,24 @@
+* خطاها
+
+برنامه‌های Go وضعیت خطا را با مقادیر `error` بیان می‌کنند.
+
+نوع `error` یک رابط توکار شبیه `fmt.Stringer` است:
+
+	type error interface {
+		Error() string
+	}
+
+(همانند `fmt.Stringer`، بستهٔ `fmt` هنگام چاپ مقادیر به‌دنبال رابط `error` می‌گردد.)
+
+توابع اغلب یک مقدار `error` برمی‌گردانند و کد فراخواننده باید با بررسی برابری خطا با `nil`، خطاها را مدیریت کند.
+
+	i, err := strconv.Atoi("42")
+	if err != nil {
+		fmt.Printf("couldn't convert number: %v\n", err)
+		return
+	}
+	fmt.Println("Converted integer:", i)
+
+مقدار `error` که nil است، نشان‌دهندهٔ موفقیت است؛ مقدار `error` که nil نباشد، نشان‌دهندهٔ شکست است.
+
+.play methods/errors.go

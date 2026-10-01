@@ -1,0 +1,21 @@
+* Zoezi: Makosa
+
+Nakili kitendakazi chako cha `Sqrt` kutoka [[/tour/flowcontrol/8][zoezi la awali]] na ukibadilishe ili kirejeshe thamani ya `error`.
+
+`Sqrt` inapaswa kurejesha thamani ya kosa isiyo nil inapopewa nambari hasi, kwa kuwa haiungi mkono nambari changamano.
+
+Unda aina mpya
+
+	type ErrNegativeSqrt float64
+
+na uifanye kuwa `error` kwa kuipa mbinu ya
+
+	func (e ErrNegativeSqrt) Error() string
+
+ili `ErrNegativeSqrt(-2).Error()` irejeshe `"cannot`Sqrt`negative`number:`-2"`.
+
+*Kumbuka:* Mwito wa `fmt.Sprint(e)` ndani ya mbinu ya `Error` utaiingiza programu katika kitanzi kisichoisha. Unaweza kuepuka hili kwa kubadilisha `e` kwanza: `fmt.Sprint(float64(e))`. Kwa nini?
+
+Badilisha kitendakazi chako cha `Sqrt` ili kirejeshe thamani ya `ErrNegativeSqrt` kinapopewa nambari hasi.
+
+.play methods/exercise-errors.go

@@ -1,0 +1,11 @@
+* Stringerها
+
+یکی از پرکاربردترین رابط‌ها، [[/pkg/fmt/#Stringer][`Stringer`]] است که بستهٔ [[/pkg/fmt/][`fmt`]] آن را تعریف می‌کند.
+
+	type Stringer interface {
+		String() string
+	}
+
+یک `Stringer` نوعی است که می‌تواند خود را به‌شکل رشته توصیف کند. بستهٔ `fmt` (و بسیاری بسته‌های دیگر) برای چاپ مقادیر به‌دنبال این رابط می‌گردد.
+
+.play methods/stringer.go

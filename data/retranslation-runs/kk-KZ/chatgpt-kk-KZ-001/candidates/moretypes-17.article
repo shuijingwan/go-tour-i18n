@@ -1,0 +1,12 @@
+* Range (жалғасы)
+
+Индексті немесе мәнді өткізіп жіберу үшін оны `_` мәніне меншіктеуге болады.
+
+    for i, _ := range pow
+    for _, value := range pow
+
+Тек индекс қажет болса, екінші айнымалыны көрсетпеуге болады.
+
+    for i := range pow
+
+.play moretypes/range-continued.go

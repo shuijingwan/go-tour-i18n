@@ -1,0 +1,12 @@
+* ادامهٔ range
+
+با انتساب به `_` می‌توانید از اندیس یا مقدار صرف‌نظر کنید.
+
+    for i, _ := range pow
+    for _, value := range pow
+
+اگر فقط اندیس را می‌خواهید، می‌توانید متغیر دوم را حذف کنید.
+
+    for i := range pow
+
+.play moretypes/range-continued.go

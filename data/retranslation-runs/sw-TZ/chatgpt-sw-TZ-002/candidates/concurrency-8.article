@@ -1,0 +1,23 @@
+* Zoezi: Miti ya jozi inayolingana
+
+*1.* Tekeleza kitendakazi cha `Walk`.
+
+*2.* Jaribu kitendakazi cha `Walk`.
+
+Kitendakazi `tree.New(k)` huunda mti wa jozi wenye muundo wa nasibu (lakini uliopangwa kila wakati) unaohifadhi thamani `k`, `2k`, `3k`, ..., `10k`.
+
+Unda chaneli mpya `ch` na uanzishe kipitiaji:
+
+	go Walk(tree.New(1), ch)
+
+Kisha soma na uchapishe thamani 10 kutoka kwenye chaneli. Zinapaswa kuwa nambari 1, 2, 3, ..., 10.
+
+*3.* Tekeleza kitendakazi cha `Same` kwa kutumia `Walk` ili kubaini kama `t1` na `t2` huhifadhi thamani zilezile.
+
+*4.* Jaribu kitendakazi cha `Same`.
+
+`Same(tree.New(1),`tree.New(1))` inapaswa kurejesha true, na `Same(tree.New(1),`tree.New(2))` inapaswa kurejesha false.
+
+Nyaraka za `Tree` zinapatikana [[https://godoc.org/golang.org/x/tour/tree#Tree][hapa]].
+
+.play concurrency/exercise-equivalent-binary-trees.go

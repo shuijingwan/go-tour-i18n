@@ -1,0 +1,21 @@
+* Picha
+
+[[/pkg/image/#Image][Kifurushi image]] hufafanua kiolesura cha `Image`:
+
+	package image
+
+	type Image interface {
+		ColorModel() color.Model
+		Bounds() Rectangle
+		At(x, y int) color.Color
+	}
+
+*Kumbuka*: thamani ya kurejesha ya `Rectangle` kutoka mbinu ya `Bounds` kwa kweli ni
+[[/pkg/image/#Rectangle][`image.Rectangle`]], kwa kuwa
+tamko liko ndani ya kifurushi `image`.
+
+(Tazama [[/pkg/image/#Image][nyaraka]] kwa maelezo yote.)
+
+Aina za `color.Color` na `color.Model` pia ni violesura, lakini tutapuuza hilo kwa kutumia `color.RGBA` kama utekelezaji uliotolewa tayari na `color.RGBAModel` kama utekelezaji mwingine uliotolewa tayari. Violesura na aina hizi hubainishwa na [[/pkg/image/color/][kifurushi image/color]].
+
+.play methods/images.go

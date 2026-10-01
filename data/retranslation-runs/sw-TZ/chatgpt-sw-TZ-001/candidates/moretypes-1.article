@@ -1,0 +1,24 @@
+* Vielekezi
+
+Go ina vielekezi.
+Kielekezi huhifadhi anwani ya kumbukumbu ya thamani.
+
+Aina `*T` ni kielekezi kinachoelekeza kwenye thamani ya aina `T`. Thamani yake sifuri ni `nil`.
+
+	var p *int
+
+Opereta `&` hutengeneza kielekezi kinachoelekeza kwenye operand yake.
+
+	i := 42
+	p = &i
+
+Opereta `*` huwakilisha thamani ya ndani ya kielekezi.
+
+	fmt.Println(*p) // soma i kupitia kielekezi p
+	*p = 21         // weka i kupitia kielekezi p
+
+Hii huitwa "dereferencing" au "indirecting".
+
+Tofauti na C, Go haina hesabu ya vielekezi.
+
+.play moretypes/pointers.go

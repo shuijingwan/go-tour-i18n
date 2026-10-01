@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "evidence_type": "glossary-review-receipt",
+  "locale": "sw-TZ",
+  "review_id": "20260930-sw-TZ-glossary-003",
+  "stage": "locale-glossary-review",
+  "decision": "failed",
+  "reviewer": "ChatGPT GPT-5.6 Sol High",
+  "rubric": "glossary-review/v1",
+  "glossary_path": "locales/sw-TZ/glossary.yaml",
+  "glossary_sha256": "047812690bc434d3389a0129900d88bf18f9fab610d23f4bfcbdd0eeb0bcc0b5",
+  "findings": [
+    "keep / Shift is overbroad: it collides with ordinary sentence-initial Shift in example:basics/numeric-constants.go; actual keyboard-key Shift occurs in inline code already protected by the TranslationUnit protector.",
+    "keep / Enter is overbroad: English UI site.enter_tour uses ordinary imperative Enter the tour; actual keyboard-key Enter occurrences are inline code already protected by the TranslationUnit protector.",
+    "keep / PageUp, PageDown, and Ctrl are unnecessary global keep entries because current formal context uses them only as inline-code keyboard identities already protected by the TranslationUnit protector."
+  ]
+}

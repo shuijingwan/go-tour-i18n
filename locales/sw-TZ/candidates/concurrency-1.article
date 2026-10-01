@@ -1,0 +1,15 @@
+* Goroutines
+
+_goroutine_ ni uzi mwepesi unaosimamiwa na mazingira ya utekelezaji ya Go.
+
+	go f(x, y, z)
+
+huanzisha goroutine mpya inayoendesha
+
+	f(x, y, z)
+
+Tathmini ya `f`, `x`, `y` na `z` hufanyika katika goroutine ya sasa, na utekelezaji wa `f` hufanyika katika goroutine mpya.
+
+Goroutines huendesha katika nafasi ileile ya anwani, hivyo ufikiaji wa kumbukumbu inayoshirikiwa lazima usawazishwe. Kifurushi cha [[/pkg/sync/][`sync`]] hutoa zana muhimu za msingi, ingawa hutazihitaji sana katika Go kwa kuwa kuna zana nyingine. (Tazama slaidi inayofuata.)
+
+.play concurrency/goroutines.go

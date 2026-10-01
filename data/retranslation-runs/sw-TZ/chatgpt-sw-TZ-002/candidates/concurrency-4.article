@@ -1,0 +1,15 @@
+* Range na kufunga
+
+Mtumaji anaweza `close` chaneli ili kuonyesha kwamba hakuna thamani zaidi zitakazotumwa. Wapokeaji wanaweza kupima kama chaneli imefungwa kwa kuipa usemi wa upokeaji kigezo cha pili: baada ya
+
+	v, ok := <-ch
+
+`ok` huwa `false` ikiwa hakuna thamani nyingine za kupokea na chaneli imefungwa.
+
+Kitanzi `for`i`:=`range`c` hupokea thamani kutoka kwenye chaneli mara kwa mara hadi itakapofungwa.
+
+*Kumbuka:* Mtumaji pekee ndiye anayepaswa kufunga chaneli, si mpokeaji kamwe. Kutuma kwenye chaneli iliyofungwa kutasababisha panic.
+
+*Kumbuka*pia:* Chaneli si kama faili; kwa kawaida huhitaji kuzifunga. Kufunga kunahitajika tu wakati mpokeaji lazima aambiwe kwamba hakuna thamani zaidi zinazokuja, kwa mfano ili kukomesha kitanzi cha `range`.
+
+.play concurrency/range-and-close.go

@@ -87,6 +87,17 @@ go run -mod=readonly ./cmd/tour-i18n retranslation export \
 
 新增 locale 的首次 Page batch 仍使用 60-Page 基线，Examples 独立。初次自动 Page / Example、显式 `--id`、正常 Quality Check B/C/D revision 与 Surface reopen 精确 revision export 均使用默认且硬性上限 60，Page / Example 永不混合；当前正式课程仍只有 19 个 eligible Example，不为凑满批次扩大 scope。retry 范围不变。
 
+若 candidate 生成后 glossary 已经合法修改并重新取得完整 current Glossary Review PASS，只有正式 protector 在当前 glossary 下重建出的 protected input 与 latest processed batch saved input 字节不同的 Unit 才进入 glossary-stale recovery：
+
+```sh
+go run -mod=readonly ./cmd/tour-i18n retranslation export \
+  --locale <locale> --generator chatgpt \
+  --allow-reexport --glossary-stale \
+  --id <unit-id> [--id <unit-id> ...]
+```
+
+该模式不是 QC revision、Surface reopen、retry 或 revalidation，不使用 stale `--previous-snapshot-id`，也不允许 unaffected Unit。其 Generation Bundle task kind 为 `translation-unit-glossary-stale-recovery`；ChatGPT 仍按当前完整 glossary 与新 protected input 生成 replacement，并以 `provider=chatgpt`、`model=gpt-5.6-sol-high` 走普通目录 import/process。input identity 未变化的 candidate 保持不动。随后必须建立 full Snapshot，并因 glossary identity 变化执行完整 QC；旧 A 不 carry-forward。
+
 initial Page / Example bulk export 后由 Local terminal 生成 provider-neutral Generation ZIP 并 handoff；ChatGPT 完整读取一个附件即可取得 manifest、全部 inputs、完整 glossary 与当前 authority，无需再通过 Remote Desktop Commander 逐文件读取。译文写入 `/tmp/.go-tour-i18n-generation/<locale>/<batch-id>/` 隔离目录；首次 Page / Example、revision 与 retry 都可使用同一目录 import：
 
 ```sh

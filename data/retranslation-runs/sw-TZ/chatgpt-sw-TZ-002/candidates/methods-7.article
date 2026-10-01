@@ -1,0 +1,21 @@
+* Mbinu na urejeleaji kupitia kielekezi (2)
+
+Jambo linalolingana hutokea kwa upande wa kinyume.
+
+Vitendakazi vinavyopokea hoja ya thamani lazima vipokee thamani ya aina hiyo mahususi:
+
+	var v Vertex
+	fmt.Println(AbsFunc(v))  // OK
+	fmt.Println(AbsFunc(&v)) // Kosa la ukusanyaji!
+
+huku mbinu zenye vipokezi vya thamani zikipokea ama thamani au kielekezi kama
+kipokezi zinapoitwa:
+
+	var v Vertex
+	fmt.Println(v.Abs()) // OK
+	p := &v
+	fmt.Println(p.Abs()) // OK
+
+Katika hali hii, mwito wa mbinu `p.Abs()` hufasiriwa kama `(*p).Abs()`.
+
+.play methods/indirection-values.go

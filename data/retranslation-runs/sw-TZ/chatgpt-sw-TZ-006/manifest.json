@@ -1,0 +1,24 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-sw-TZ-006",
+  "locale": "sw-TZ",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "example",
+  "unit_count": 1,
+  "units": [
+    {
+      "unit_id": "example:concurrency/mutex-counter.go",
+      "unit_kind": "example",
+      "source_path": "_content/tour/concurrency/mutex-counter.go",
+      "source_sha256": "74488ecc347a123c8538069175ffeef5ea38577bb37b2c7a9ceb6bba47ab02b4",
+      "input_path": "inputs/concurrency-mutex-counter.txt",
+      "input_sha256": "748bfb48d6f8d0455861b810e2d04f40eb3d136ab696139d32fdd290267fde03",
+      "protected_token_count": 8,
+      "previous_snapshot_id": "qc-002",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "Both locking comments use goroutine mmoja tu; goroutine is preserved technical terminology but mmoja uses human/class-1 numeral agreement and is unnatural for this non-human technical entity."
+    }
+  ]
+}

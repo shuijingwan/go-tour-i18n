@@ -1,0 +1,113 @@
+{
+  "schema_version": 2,
+  "evidence_type": "quality_check_results",
+  "locale": "sw-TZ",
+  "snapshot_id": "qc-003",
+  "snapshot_manifest_sha256": "a5749aa7d3e419958effeded117e9e91b58df42457d77b21961ef35b307077fe",
+  "rubric": "translation-quality/v1",
+  "result_count": 20,
+  "results": [
+    {
+      "index": 4,
+      "unit_id": "welcome/5",
+      "rating": "A"
+    },
+    {
+      "index": 17,
+      "unit_id": "basics/12",
+      "rating": "A"
+    },
+    {
+      "index": 34,
+      "unit_id": "flowcontrol/12",
+      "rating": "A"
+    },
+    {
+      "index": 35,
+      "unit_id": "flowcontrol/13",
+      "rating": "A"
+    },
+    {
+      "index": 38,
+      "unit_id": "moretypes/2",
+      "rating": "A"
+    },
+    {
+      "index": 39,
+      "unit_id": "moretypes/3",
+      "rating": "A"
+    },
+    {
+      "index": 40,
+      "unit_id": "moretypes/4",
+      "rating": "A"
+    },
+    {
+      "index": 41,
+      "unit_id": "moretypes/5",
+      "rating": "A"
+    },
+    {
+      "index": 47,
+      "unit_id": "moretypes/11",
+      "rating": "A"
+    },
+    {
+      "index": 49,
+      "unit_id": "moretypes/13",
+      "rating": "A"
+    },
+    {
+      "index": 51,
+      "unit_id": "moretypes/15",
+      "rating": "A"
+    },
+    {
+      "index": 57,
+      "unit_id": "moretypes/21",
+      "rating": "A"
+    },
+    {
+      "index": 61,
+      "unit_id": "moretypes/25",
+      "rating": "A"
+    },
+    {
+      "index": 64,
+      "unit_id": "methods/1",
+      "rating": "A"
+    },
+    {
+      "index": 75,
+      "unit_id": "methods/12",
+      "rating": "A"
+    },
+    {
+      "index": 76,
+      "unit_id": "methods/13",
+      "rating": "A"
+    },
+    {
+      "index": 77,
+      "unit_id": "methods/14",
+      "rating": "A"
+    },
+    {
+      "index": 82,
+      "unit_id": "methods/19",
+      "rating": "B",
+      "finding": "The nil/non-nil semantic contradiction is fixed, but the phrase isiyo nil error still follows an English modifier-before-noun order and remains visibly awkward in Kiswahili; revise to a natural Kiswahili noun-relative relationship while preserving the protected nil and error identities."
+    },
+    {
+      "index": 87,
+      "unit_id": "methods/24",
+      "rating": "B",
+      "finding": "The revision explicitly refers to both color.RGBA and color.RGBAModel, but still classifies them with singular utekelezaji uliotolewa tayari; use a genuinely plural Kiswahili implementation phrase/concord for the two predefined implementations."
+    },
+    {
+      "index": 101,
+      "unit_id": "concurrency/9",
+      "rating": "A"
+    }
+  ]
+}

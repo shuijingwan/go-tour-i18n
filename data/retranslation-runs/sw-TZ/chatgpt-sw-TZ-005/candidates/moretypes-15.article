@@ -1,0 +1,21 @@
+* Kuongeza vipengele kwenye kipande
+
+Ni kawaida kuongeza vipengele vipya kwenye kipande, kwa hiyo Go hutoa kitendakazi kilichojengewa ndani
+`append`. [[/pkg/builtin/#append][Nyaraka]]
+za kifurushi kilichojengewa ndani zinaeleza `append`.
+
+	func append(s []T, vs ...T) []T
+
+Kigezo cha kwanza `s` cha `append` ni kipande cha aina `T`, na vingine ni
+thamani za `T` za kuongezwa kwenye kipande.
+
+Thamani inayotokana na `append` ni kipande chenye vipengele vyote vya
+kipande cha awali pamoja na thamani zilizotolewa.
+
+Ikiwa safu ya msingi ya `s` ni ndogo sana kutoshea thamani zote zilizotolewa,
+safu kubwa zaidi itatengwa. Kipande kinachorejeshwa kitaelekeza kwenye safu mpya
+iliyotengwa.
+
+(Ili kujifunza zaidi kuhusu vipande, soma makala [[/blog/go-slices-usage-and-internals][Vipande: matumizi na undani wake]].)
+
+.play moretypes/append.go

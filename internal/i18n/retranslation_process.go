@@ -270,7 +270,48 @@ func readRetranslationProcessManifest(batchDir, locale, batchID string) (*Retran
 	if manifest.UnitCount < 1 || manifest.UnitCount != len(manifest.Units) {
 		return nil, fmt.Errorf("retranslation batch %q unit_count %d does not match units %d", batchID, manifest.UnitCount, len(manifest.Units))
 	}
+	if err := validateRetranslationManifestReexportProvenance(manifest); err != nil {
+		return nil, fmt.Errorf("retranslation batch %q provenance: %w", batchID, err)
+	}
 	return manifest, nil
+}
+
+func validateRetranslationManifestReexportProvenance(manifest *RetranslationBatchManifest) error {
+	mode := ""
+	seenOrdinary := false
+	for _, unit := range manifest.Units {
+		switch unit.ReexportReason {
+		case "":
+			seenOrdinary = true
+			if unit.PreviousBatchID != "" || unit.PreviousInputPath != "" || unit.PreviousInputSHA256 != "" || unit.PreviousProtectedTokens != 0 {
+				return fmt.Errorf("%s has previous input provenance without reexport_reason", unit.UnitID)
+			}
+		case RetranslationReexportReasonGlossaryInputStale:
+			if seenOrdinary {
+				return errors.New("batch mixes glossary-stale recovery and ordinary exports")
+			}
+			if mode == "" {
+				mode = unit.ReexportReason
+			}
+			if mode != unit.ReexportReason {
+				return errors.New("batch mixes re-export provenance modes")
+			}
+			if unit.PreviousBatchID == "" || validateBatchID(unit.PreviousBatchID) != nil || unit.PreviousBatchID == manifest.BatchID ||
+				unit.PreviousInputPath == "" || !validSHA256(unit.PreviousInputSHA256) || unit.PreviousProtectedTokens < 0 {
+				return fmt.Errorf("%s has incomplete glossary-stale previous input provenance", unit.UnitID)
+			}
+			if unit.PreviousSnapshotID != "" || unit.RevisionFeedbackSource != "" || unit.RevisionAuthorizationID != "" || unit.PreviousRating != "" || unit.PreviousFinding != "" ||
+				unit.PreviousReviewDecision != "" || unit.PreviousReviewSummary != "" || len(unit.PreviousReviewIssues) != 0 || unit.PreviousReviewPath != "" || unit.PreviousReviewSHA256 != "" {
+				return fmt.Errorf("%s mixes glossary-stale provenance with Quality Check or Surface Review feedback", unit.UnitID)
+			}
+		default:
+			return fmt.Errorf("%s has unsupported reexport_reason %q", unit.UnitID, unit.ReexportReason)
+		}
+		if mode != "" && unit.ReexportReason == "" {
+			return errors.New("batch mixes glossary-stale recovery and ordinary exports")
+		}
+	}
+	return nil
 }
 
 // legacyRetranslationManifest is the single compatibility boundary for the

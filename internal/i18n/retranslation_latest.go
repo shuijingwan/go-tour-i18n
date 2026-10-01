@@ -9,11 +9,12 @@ import (
 )
 
 type selectedRetranslationUnit struct {
-	number   int
-	batchID  string
-	batchDir string
-	manifest RetranslationBatchUnit
-	result   RetranslationUnitResult
+	number      int
+	batchID     string
+	batchDir    string
+	artifactEOF string
+	manifest    RetranslationBatchUnit
+	result      RetranslationUnitResult
 }
 
 type latestRetranslationUnits struct {
@@ -115,7 +116,8 @@ func selectLatestRetranslationUnits(root string, catalog *Catalog, locale string
 			if current, exists := selectedByID[unit.ID]; !exists || number > current.number {
 				selectedByID[unit.ID] = selectedRetranslationUnit{
 					number: number, batchID: entry.Name(), batchDir: batchDir,
-					manifest: record, result: unitResult,
+					artifactEOF: manifest.ArtifactEOF,
+					manifest:    record, result: unitResult,
 				}
 			}
 		}

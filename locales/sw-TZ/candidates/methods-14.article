@@ -1,0 +1,15 @@
+* Kiolesura tupu
+
+Aina ya kiolesura inayobainisha mbinu sifuri hujulikana kama _kiolesura_tupu_:
+
+	interface{}
+
+Kiolesura tupu kinaweza kuhifadhi thamani za aina yoyote.
+(Kila aina hutekeleza angalau mbinu sifuri.)
+
+`any` ni jina mbadala la `interface{}`, na zote mbili ni sawa kabisa.
+
+Violesura tupu hutumiwa na msimbo unaoshughulikia thamani za aina isiyojulikana.
+Kwa mfano, `fmt.Print` hupokea idadi yoyote ya hoja za aina `any`.
+
+.play methods/empty-interface.go

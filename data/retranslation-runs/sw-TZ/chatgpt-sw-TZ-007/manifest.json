@@ -1,0 +1,37 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-sw-TZ-007",
+  "locale": "sw-TZ",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 2,
+  "units": [
+    {
+      "unit_id": "methods/19",
+      "unit_kind": "page",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "9eaab1fde2076c1376f78ceec0f84766c4c3b8062867436d73cef0bc77f16bd5",
+      "input_path": "inputs/methods-19.article",
+      "input_sha256": "d0e83c233a107cd035d349873238de6711313568f907672121591d19cc7e0d9c",
+      "protected_token_count": 26,
+      "previous_snapshot_id": "qc-004",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "The nil/non-nil semantic contradiction is resolved, but the phrase isiyo nil error still uses an English-like modifier-before-noun order. Preserve the protected nil and error identities and the exact nil-error/non-nil-error semantics while expressing the relationship in natural Kiswahili."
+    },
+    {
+      "unit_id": "methods/24",
+      "unit_kind": "page",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "d80f0d46796ad415a7ded4d0cefdef6cdb58deb38d050a61eb64abb25caf27ee",
+      "input_path": "inputs/methods-24.article",
+      "input_sha256": "c0fb2bb77b1b898c87fcad279d32ee369f32f09d51c85ebbd4399a6be1adb135",
+      "protected_token_count": 26,
+      "previous_snapshot_id": "qc-004",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "The revision correctly refers to both color.RGBA and color.RGBAModel, but still classifies them with singular utekelezaji uliotolewa tayari. Use a genuinely plural Kiswahili noun phrase and agreement for the two predefined implementations."
+    }
+  ]
+}

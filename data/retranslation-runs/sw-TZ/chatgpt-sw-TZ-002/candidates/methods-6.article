@@ -1,0 +1,23 @@
+* Mbinu na urejeleaji kupitia kielekezi
+
+Ukilinganisha programu mbili zilizotangulia, unaweza kugundua kwamba
+vitendakazi vyenye hoja ya kielekezi lazima vipokee kielekezi:
+
+	var v Vertex
+	ScaleFunc(v, 5)  // Kosa la ukusanyaji!
+	ScaleFunc(&v, 5) // OK
+
+huku mbinu zenye vipokezi vya kielekezi zikipokea ama thamani au kielekezi kama
+kipokezi zinapoitwa:
+
+	var v Vertex
+	v.Scale(5)  // OK
+	p := &v
+	p.Scale(10) // OK
+
+Kwa kauli `v.Scale(5)`, ingawa `v` ni thamani na si kielekezi,
+mbinu yenye kipokezi cha kielekezi huitwa kiotomatiki.
+Yaani, kwa urahisi, Go hufasiri kauli `v.Scale(5)` kama
+`(&v).Scale(5)` kwa kuwa mbinu ya `Scale` ina kipokezi cha kielekezi.
+
+.play methods/indirection.go

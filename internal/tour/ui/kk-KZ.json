@@ -1,0 +1,458 @@
+{
+  "locale": "kk-KZ",
+  "html_lang": "kk-KZ",
+  "messages": {
+    "tour.title": {
+      "kind": "plain",
+      "text": "Go тіліне шолу"
+    },
+    "header.about_project": {
+      "kind": "plain",
+      "text": "Бұл жоба туралы"
+    },
+    "tour.list_heading": {
+      "kind": "plain",
+      "text": "Go тіліне шолуға қош келдіңіз"
+    },
+    "tour.list_title": {
+      "kind": "plain",
+      "text": "Курс каталогы — Go тіліне шолу"
+    },
+    "tour.list_description": {
+      "kind": "plain",
+      "text": "Go бағдарламалау тіліне интерактивті кіріспе — Go тіліне шолудағы модульдер мен сабақтарды шолыңыз."
+    },
+    "theme.toggle": {
+      "kind": "plain",
+      "text": "Тақырыпты ауыстыру"
+    },
+    "theme.system": {
+      "kind": "plain",
+      "text": "Жүйелік тақырып"
+    },
+    "theme.dark": {
+      "kind": "plain",
+      "text": "Қараңғы тақырып"
+    },
+    "theme.light": {
+      "kind": "plain",
+      "text": "Ашық тақырып"
+    },
+    "editor.syntax": {
+      "kind": "plain",
+      "text": "Синтаксис"
+    },
+    "editor.imports": {
+      "kind": "plain",
+      "text": "Импорттар"
+    },
+    "editor.on": {
+      "kind": "plain",
+      "text": "Қосулы"
+    },
+    "editor.off": {
+      "kind": "plain",
+      "text": "Өшірулі"
+    },
+    "editor.run": {
+      "kind": "plain",
+      "text": "Іске қосу"
+    },
+    "editor.kill": {
+      "kind": "plain",
+      "text": "Тоқтату"
+    },
+    "editor.format": {
+      "kind": "plain",
+      "text": "Пішімдеу"
+    },
+    "editor.reset": {
+      "kind": "plain",
+      "text": "Қалпына келтіру"
+    },
+    "toc.title": {
+      "kind": "plain",
+      "text": "Мазмұны"
+    },
+    "execution.waiting": {
+      "kind": "plain",
+      "text": "Қашықтағы серверден жауап күтілуде..."
+    },
+    "execution.exited": {
+      "kind": "plain",
+      "text": "Бағдарлама аяқталды"
+    },
+    "execution.vet_failed": {
+      "kind": "plain",
+      "text": "Go vet тексеруі сәтсіз аяқталды."
+    },
+    "execution.build_failed": {
+      "kind": "plain",
+      "text": "Go build сәтсіз аяқталды."
+    },
+    "execution.communication_error": {
+      "kind": "plain",
+      "text": "Қашықтағы сервермен байланысу қатесі."
+    },
+    "execution.test_failed": {
+      "kind": "plain",
+      "text": "{count} тест сәтсіз аяқталды."
+    },
+    "execution.tests_failed": {
+      "kind": "plain",
+      "text": "{count} тест сәтсіз аяқталды."
+    },
+    "execution.tests_passed": {
+      "kind": "plain",
+      "text": "Барлық тест сәтті өтті."
+    },
+    "feedback.open": {
+      "kind": "plain",
+      "text": "Осы бет туралы пікір жіберу"
+    },
+    "feedback.issue_title": {
+      "kind": "plain",
+      "text": "x/website/_content/tour: [ҚЫСҚАША СИПАТТАМАНЫ ОСЫ ЖЕРГЕ ЖАЗЫҢЫЗ]"
+    },
+    "feedback.issue_body": {
+      "kind": "plain",
+      "text": "Жоғарыдағы тақырыпты мәселені сипаттайтындай өзгертіп, пікіріңізді осында жазыңыз; қажет болса, кодты да қосыңыз."
+    },
+    "feedback.context": {
+      "kind": "plain",
+      "text": "Контекст"
+    },
+    "module.using_tour.title": {
+      "kind": "plain",
+      "text": "Шолуды пайдалану"
+    },
+    "module.using_tour.description": {
+      "kind": "rich",
+      "text": "<p><a href=\"https://go.dev\">Go бағдарламалау тілі</a> бойынша шолуға қош келдіңіз. Шолу негізінен тілдің ең маңызды мүмкіндіктерін қамтиды:</p>"
+    },
+    "module.basics.title": {
+      "kind": "plain",
+      "text": "Негіздер"
+    },
+    "module.basics.description": {
+      "kind": "rich",
+      "text": "<p>Бастау нүктесі: тілдің барлық негіздерін үйреніңіз.</p><p>Айнымалыларды жариялау, функцияларды шақыру және келесі сабақтарға өтпес бұрын білу қажет нәрселердің бәрін үйреніңіз.</p>"
+    },
+    "module.methods.title": {
+      "kind": "plain",
+      "text": "Әдістер мен интерфейстер"
+    },
+    "module.methods.description": {
+      "kind": "rich",
+      "text": "<p>Түрлер үшін әдістерді анықтауды, интерфейстерді жариялауды және олардың бәрін бірге қолдануды үйреніңіз.</p>"
+    },
+    "module.generics.title": {
+      "kind": "plain",
+      "text": "Жалпылау"
+    },
+    "module.generics.description": {
+      "kind": "rich",
+      "text": "<p>Go функциялары мен құрылымдарында түр параметрлерін пайдалануды үйреніңіз.</p>"
+    },
+    "module.concurrency.title": {
+      "kind": "plain",
+      "text": "Конкуренттілік"
+    },
+    "module.concurrency.description": {
+      "kind": "rich",
+      "text": "<p>Go негізгі тілдің бір бөлігі ретінде конкуренттілік мүмкіндіктерін ұсынады.</p><p>Бұл модульде goroutine мен арналар, сондай-ақ олардың әртүрлі конкуренттілік үлгілерін іске асыру үшін қалай қолданылатыны қарастырылады.</p>"
+    },
+    "error.not_found": {
+      "kind": "plain",
+      "text": "404 — бет табылмады"
+    },
+    "site.title": {
+      "kind": "plain",
+      "text": "Go тіліне шолу көптілді аударма жобасы"
+    },
+    "site.browser_title": {
+      "kind": "plain",
+      "text": "Yongye · Go тіліне шолу көптілді аударма жобасы"
+    },
+    "site.unofficial": {
+      "kind": "plain",
+      "text": "Yongye жүргізеді · Қауымдастықтың ресми емес көптілді аударма жобасы"
+    },
+    "site.intro": {
+      "kind": "plain",
+      "text": "Go-ны үйренуге арналған ресми материалдардың қауымдастық қолдайтын аударма жобасы. Жеңілдетілген қытай тілі — қолжетімді алғашқы тіл, ал құрылым кейін қосымша тілдер мен Go материалдарын қолдауға кеңейе алады."
+    },
+    "site.no_affiliation": {
+      "kind": "plain",
+      "text": "Бұл жоба Go жобасымен байланысты емес, одан рұқсат алмаған және оның мақұлдауына ие емес."
+    },
+    "site.start_learning": {
+      "kind": "plain",
+      "text": "Оқуды бастау"
+    },
+    "site.current_projects": {
+      "kind": "plain",
+      "text": "Ағымдағы аударма жобасы"
+    },
+    "site.tour_description": {
+      "kind": "plain",
+      "text": "Go бағдарламалау тіліне интерактивті кіріспе."
+    },
+    "site.current_language": {
+      "kind": "plain",
+      "text": "Ағымдағы тіл"
+    },
+    "site.enter_tour": {
+      "kind": "plain",
+      "text": "Шолуға өту"
+    },
+    "site.project_status": {
+      "kind": "plain",
+      "text": "Жоба күйі"
+    },
+    "site.course_pages": {
+      "kind": "plain",
+      "text": "Курс беттері"
+    },
+    "site.latest_release": {
+      "kind": "plain",
+      "text": "Соңғы шығарылым"
+    },
+    "site.environment": {
+      "kind": "plain",
+      "text": "Орта"
+    },
+    "site.development_environment": {
+      "kind": "plain",
+      "text": "Әзірлеу ортасы"
+    },
+    "site.upstream_baseline": {
+      "kind": "plain",
+      "text": "Ресми бастапқы дереккөздің базалық нұсқасы"
+    },
+    "site.upstream_commit_time": {
+      "kind": "plain",
+      "text": "Ресми бастапқы дереккөздегі commit уақыты"
+    },
+    "site.language_versions": {
+      "kind": "plain",
+      "text": "Тіл нұсқалары"
+    },
+    "site.official_version": {
+      "kind": "plain",
+      "text": "Ресми Go тіліне шолу"
+    },
+    "site.community_version": {
+      "kind": "plain",
+      "text": "Қауымдастық аудармасы"
+    },
+    "site.open_official_tour": {
+      "kind": "plain",
+      "text": "Ресми шолуды ашу"
+    },
+    "site.project_links": {
+      "kind": "plain",
+      "text": "Жоба сілтемелері"
+    },
+    "site.source_code": {
+      "kind": "plain",
+      "text": "GitHub-тағы бастапқы код"
+    },
+    "site.issue_feedback": {
+      "kind": "plain",
+      "text": "GitHub Issues"
+    },
+    "site.development_log": {
+      "kind": "plain",
+      "text": "Әзірлеу журналы: Go тіліне шолу көптілді аударма жобасы"
+    },
+    "site.official_upstream": {
+      "kind": "plain",
+      "text": "Ресми бастапқы дереккөз"
+    },
+    "site.translation_validation": {
+      "kind": "plain",
+      "text": "Аударма және тексеру"
+    },
+    "site.translation_validation_intro": {
+      "kind": "plain",
+      "text": "Жоба ресми бастапқы дереккөзге барынша жақын оқу тәжірибесін сақтайды және әр шығарылымды жарияламас бұрын тексереді."
+    },
+    "site.validation_page_unit": {
+      "kind": "plain",
+      "text": "Аудармалар толық курс беттерін бірлік ретінде пайдаланады."
+    },
+    "site.validation_present": {
+      "kind": "plain",
+      "text": "Әр шығарылым present құралымен талданады."
+    },
+    "site.validation_structure": {
+      "kind": "plain",
+      "text": "Бет құрылымы ресми бастапқы дереккөзбен салыстырылады."
+    },
+    "site.validation_render": {
+      "kind": "plain",
+      "text": "Рендерленген беттер шығарылым алдында тексеріледі."
+    },
+    "site.validation_examples": {
+      "kind": "plain",
+      "text": "Аударылатын табиғи тілдегі түсіндірмелері бар Go мысалдары да бірыңғай тексеру үдерісіне кіреді; қалған барлық мысалдар ресми бастапқы дереккөзді тікелей пайдалана береді."
+    },
+    "site.how_it_works": {
+      "kind": "plain",
+      "text": "Жоба қалай жұмыс істейді"
+    },
+    "site.how_it_works_intro": {
+      "kind": "plain",
+      "text": "Курсты жергіліктендіру сөйлемдерді бір-бірлеп алмастыру емес. Бұл толық мазмұн бірліктеріне, қадағаланатын тексеру күйлеріне және тексеруге болатын шығарылым артефактілеріне негізделген үдеріс."
+    },
+    "site.workflow_title": {
+      "kind": "plain",
+      "text": "TranslationUnit-тан өндірістік ортаға дейін"
+    },
+    "site.workflow_units": {
+      "kind": "plain",
+      "text": "TranslationUnit толық Page және жарамды Example бірліктерінің екеуін де білдіреді: Page — толық present.Section, ал Example — аударуға болатын табиғи тілдегі түсіндірмелері бар толық .go файлы."
+    },
+    "site.workflow_process": {
+      "kind": "plain",
+      "text": "Әр бірлік аударма, автоматты тексеру, аударма сапасын тексеру, promotion, ready, projection және publish кезеңдерінен өтеді; жасалған аудармалар ешқашан тікелей жарияланбайды."
+    },
+    "site.workflow_review": {
+      "kind": "plain",
+      "text": "Автоматты тексерулер құрылымды қорғайды, present мазмұнын талдайды, оны ресми бастапқы дереккөзбен салыстырады, рендерлеу мен беттерді тексереді және Example Go мазмұнын тексереді. Promotion алдында тәуелсіз аударма сапасын тексеру бәрібір қажет."
+    },
+    "site.workflow_publish": {
+      "kind": "plain",
+      "text": "Жариялау canonical ready candidate-терден толық жергіліктендірілген projection құрады, workflow-тағы әр TranslationUnit ready болуын талап етеді, содан кейін production binary, release.json және SHA256SUMS жасайды да, толық bundle-ды тексереді."
+    },
+    "site.architecture_title": {
+      "kind": "plain",
+      "text": "Қадағаланатын, бақыланатын және кеңейтілетін архитектура"
+    },
+    "site.architecture_upstream": {
+      "kind": "plain",
+      "text": "Жоба ресми бастапқы репозиторийдегі commit-ті үнемі тіркеп, болашақ бастапқы дереккөз жаңартулары үшін қадағаланатын базалық нұсқаны сақтайды."
+    },
+    "site.architecture_playground": {
+      "kind": "plain",
+      "text": "Браузердегі Go мысалдары басқарылатын қашықтағы Playground проксиі арқылы орындалады; өндірістік орта жергілікті /socket код орындау endpoint-ын ашпайды."
+    },
+    "site.architecture_languages": {
+      "kind": "plain",
+      "text": "Сервер, шаблондар, CSS, JavaScript, кескіндер және қаріптер мүмкін болған жерде ортақ пайдаланылады. Әр тіл курс аудармаларын, пайдаланушы интерфейсінің мәтінін, терминологияны және күйді дербес жүргізеді. Жеңілдетілген қытай тілі — алғашқы жарияланған тіл, кейін басқа тілдерге де орын бар."
+    },
+    "site.operations_note": {
+      "kind": "plain",
+      "text": "Бұл сайт серверлер, өткізу қабілеті және CDN қызметтері сияқты инфрақұрылым шығындарын, сондай-ақ жобаны тұрақты қолдау шығындарын өтеуге көмектесу үшін жарнама көрсетуі мүмкін. Бастапқы код ашық болып қалады, ал өз серверінде орналастырылған нұсқаларда бұл сайттың жарнама конфигурациясы әдепкі бойынша қосылмайды."
+    },
+    "support.section_title": {
+      "kind": "plain",
+      "text": "Қолдау және пайдалану шығындары"
+    },
+    "support.advertising_title": {
+      "kind": "plain",
+      "text": "Жарнама туралы ескерту"
+    },
+    "support.translation_title": {
+      "kind": "plain",
+      "text": "Осы тіл нұсқасын қолдау"
+    },
+    "support.intro": {
+      "kind": "plain",
+      "text": "Осы тіл нұсқасын әрі қарай қолдап, дамытуға ерікті түрде үлес қоса аласыз. Сіздің қолдауыңыз бұл нұсқаның тұрақты түрде қолдау көрсетіліп, дамуына көмектеседі."
+    },
+    "support.reference_label": {
+      "kind": "plain",
+      "text": "Қолдау идентификаторы"
+    },
+    "support.reference_help": {
+      "kind": "plain",
+      "text": "Төлем қызметіңіз ескертпе немесе анықтамалық мәнді қолдаса, осы мәнді пайдалана аласыз."
+    },
+    "support.copy_reference": {
+      "kind": "plain",
+      "text": "Идентификаторды көшіру"
+    },
+    "support.copy_address": {
+      "kind": "plain",
+      "text": "Мекенжайды көшіру"
+    },
+    "support.copy_uid": {
+      "kind": "plain",
+      "text": "UID-ді көшіру"
+    },
+    "support.copied": {
+      "kind": "plain",
+      "text": "Көшірілді"
+    },
+    "support.asset": {
+      "kind": "plain",
+      "text": "Актив"
+    },
+    "support.network": {
+      "kind": "plain",
+      "text": "Желі"
+    },
+    "support.address": {
+      "kind": "plain",
+      "text": "Мекенжай"
+    },
+    "support.minimum_deposit": {
+      "kind": "plain",
+      "text": "Қабылдау жағындағы ең төменгі сома"
+    },
+    "support.platform_title": {
+      "kind": "plain",
+      "text": "Платформа ішіндегі аударым (міндетті емес)"
+    },
+    "support.uid": {
+      "kind": "plain",
+      "text": "UID"
+    },
+    "support.platform_help": {
+      "kind": "plain",
+      "text": "Бір платформаны пайдаланушылар ішкі UID аударымын қолдана алады. Толық мәліметті платформадан тексеріңіз."
+    },
+    "support.usdc_network_only": {
+      "kind": "plain",
+      "text": "USDC-ті тек Base желісі арқылы жіберіңіз."
+    },
+    "support.usdt_network_only": {
+      "kind": "plain",
+      "text": "USDT-ті тек Tron (TRC20) желісі арқылы жіберіңіз."
+    },
+    "support.wrong_network_warning": {
+      "kind": "plain",
+      "text": "Қате активті немесе желіні пайдалану қаражаттың жоғалуына әкелуі мүмкін."
+    },
+    "site.continue_learning_title": {
+      "kind": "plain",
+      "text": "Go үйренуді жалғастырыңыз"
+    },
+    "site.continue_learning_description": {
+      "kind": "plain",
+      "text": "Go тіліне шолу — тек бастамасы. Оны аяқтаған соң ресми құжаттама, оқулықтар, стандартты кітапхана анықтамалығы, тіл спецификациясы және Go үйренуге арналған басқа ресурстар үшін go.dev сайтына өтіңіз."
+    },
+    "site.continue_learning": {
+      "kind": "plain",
+      "text": "go.dev сайтында оқуды жалғастыру"
+    },
+    "footer.unofficial": {
+      "kind": "plain",
+      "text": "Yongye · Қауымдастықтың ресми емес көптілді аударма жобасы"
+    },
+    "footer.home": {
+      "kind": "plain",
+      "text": "Басты бет"
+    },
+    "footer.github": {
+      "kind": "plain",
+      "text": "GitHub"
+    },
+    "footer.development_log": {
+      "kind": "plain",
+      "text": "Әзірлеу журналы"
+    }
+  }
+}

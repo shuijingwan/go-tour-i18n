@@ -1,0 +1,19 @@
+* sync.Mutex
+
+Tumeona jinsi chaneli zilivyo bora kwa mawasiliano kati ya goroutines.
+
+Lakini vipi ikiwa hatuhitaji mawasiliano? Vipi ikiwa tunataka tu kuhakikisha kwamba goroutine moja pekee inaweza kufikia kibadilika kwa wakati mmoja ili kuepuka migongano?
+
+Dhana hii huitwa _utengaji_wa_pamoja_, na jina la kawaida la muundo wa data unaoutoa ni _kufuli_ya_ufikiaji_wa_kipekee_.
+
+Maktaba sanifu ya Go hutoa utengaji wa pamoja kwa kutumia
+[[/pkg/sync/#Mutex][`sync.Mutex`]] na mbinu zake mbili:
+
+- `Lock`
+- `Unlock`
+
+Tunaweza kufafanua sehemu ya msimbo itakayotekelezwa kwa utengaji wa pamoja kwa kuizunguka kwa mwito wa `Lock` na `Unlock` kama inavyoonyeshwa katika mbinu ya `Inc`.
+
+Tunaweza pia kutumia `defer` kuhakikisha kufuli ya ufikiaji wa kipekee itafunguliwa kama katika mbinu ya `Value`.
+
+.play concurrency/mutex-counter.go

@@ -1,0 +1,21 @@
+* Zoezi: Makosa
+
+Nakili kitendakazi chako cha ⟪GTI18N_41f1f733_000001⟫Sqrt⟪GTI18N_41f1f733_000002⟫ kutoka [[⟪GTI18N_41f1f733_000003⟫][zoezi la awali]] na ukibadilishe ili kirejeshe thamani ya ⟪GTI18N_41f1f733_000004⟫error⟪GTI18N_41f1f733_000005⟫.
+
+⟪GTI18N_41f1f733_000006⟫Sqrt⟪GTI18N_41f1f733_000007⟫ inapaswa kurejesha thamani ya kosa isiyo ⟪GTI18N_41f1f733_000008⟫ inapopewa nambari hasi, kwa kuwa haiungi mkono nambari changamano.
+
+Unda aina mpya
+
+⟪GTI18N_41f1f733_000009⟫
+
+na uifanye kuwa ⟪GTI18N_41f1f733_000010⟫error⟪GTI18N_41f1f733_000011⟫ kwa kuipa mbinu ya
+
+⟪GTI18N_41f1f733_000012⟫
+
+ili ⟪GTI18N_41f1f733_000013⟫ErrNegativeSqrt(-2).Error()⟪GTI18N_41f1f733_000014⟫ irejeshe ⟪GTI18N_41f1f733_000015⟫"cannot`Sqrt`negative`number:`-2"⟪GTI18N_41f1f733_000016⟫.
+
+⟪GTI18N_41f1f733_000017⟫Kumbuka:⟪GTI18N_41f1f733_000018⟫ Mwito wa ⟪GTI18N_41f1f733_000019⟫fmt.Sprint(e)⟪GTI18N_41f1f733_000020⟫ ndani ya mbinu ya ⟪GTI18N_41f1f733_000021⟫Error⟪GTI18N_41f1f733_000022⟫ utaiingiza programu katika kitanzi kisichoisha. Unaweza kuepuka hili kwa kubadilisha ⟪GTI18N_41f1f733_000023⟫e⟪GTI18N_41f1f733_000024⟫ kwanza: ⟪GTI18N_41f1f733_000025⟫fmt.Sprint(float64(e))⟪GTI18N_41f1f733_000026⟫. Kwa nini?
+
+Badilisha kitendakazi chako cha ⟪GTI18N_41f1f733_000027⟫Sqrt⟪GTI18N_41f1f733_000028⟫ ili kirejeshe thamani ya ⟪GTI18N_41f1f733_000029⟫ErrNegativeSqrt⟪GTI18N_41f1f733_000030⟫ kinapopewa nambari hasi.
+
+⟪GTI18N_41f1f733_000031⟫

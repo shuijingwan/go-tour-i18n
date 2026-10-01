@@ -1,0 +1,27 @@
+{
+  "schema_version": 2,
+  "evidence_type": "quality_check_results",
+  "locale": "sw-TZ",
+  "snapshot_id": "qc-005",
+  "snapshot_manifest_sha256": "022ff3e2608baa956c81521d1de642e134ab05e68ef732990ffb11991fb56835",
+  "previous_snapshot_id": "qc-004",
+  "rubric": "translation-quality/v1",
+  "result_count": 3,
+  "results": [
+    {
+      "index": 82,
+      "unit_id": "methods/19",
+      "rating": "A"
+    },
+    {
+      "index": 87,
+      "unit_id": "methods/24",
+      "rating": "A"
+    },
+    {
+      "index": 109,
+      "unit_id": "example:concurrency/mutex-counter.go",
+      "rating": "A"
+    }
+  ]
+}

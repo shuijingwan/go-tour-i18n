@@ -1,0 +1,11 @@
+* Chaneli zenye bafa
+
+Chaneli zinaweza kuwa na _bafa_. Toa urefu wa bafa kama hoja ya pili kwa `make` ili kuanzisha chaneli yenye bafa:
+
+	ch := make(chan int, 100)
+
+Utumaji kwenye chaneli yenye bafa husubiri tu wakati bafa imejaa. Upokeaji husubiri wakati bafa ni tupu.
+
+Badilisha mfano ili ujaze bafa kupita uwezo wake na uone kinachotokea.
+
+.play concurrency/buffered-channels.go

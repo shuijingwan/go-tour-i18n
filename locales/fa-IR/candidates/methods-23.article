@@ -1,0 +1,12 @@
+* تمرین: rot13Reader
+
+یک الگوی رایج این است که یک [[/pkg/io/#Reader][io.Reader]]، یک `io.Reader` دیگر را در بر بگیرد و جریان را به‌شکلی تغییر دهد.
+
+برای نمونه، تابع [[/pkg/compress/gzip/#NewReader][gzip.NewReader]] یک `io.Reader` (جریانی از دادهٔ فشرده) می‌گیرد و یک `*gzip.Reader` برمی‌گرداند که آن هم `io.Reader` را پیاده‌سازی می‌کند (جریانی از دادهٔ از حالت فشرده خارج‌شده).
+
+یک `rot13Reader` پیاده‌سازی کنید که `io.Reader` را پیاده‌سازی کند، از یک `io.Reader` بخواند و با اعمال رمز جایگزینی [[https://en.wikipedia.org/wiki/ROT13][rot13]] به همهٔ نویسه‌های الفبایی، جریان را تغییر دهد.
+
+نوع `rot13Reader` برای شما فراهم شده است.
+با پیاده‌سازی متد `Read` آن، این نوع را به یک `io.Reader` تبدیل کنید.
+
+.play methods/exercise-rot-reader.go

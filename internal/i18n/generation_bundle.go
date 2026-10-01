@@ -131,6 +131,10 @@ func ExportTranslationUnitGenerationBundle(root string, catalog *Catalog, option
 	}
 	taskKind := "translation-unit-initial"
 	for _, unit := range manifest.Units {
+		if unit.ReexportReason == RetranslationReexportReasonGlossaryInputStale {
+			taskKind = "translation-unit-glossary-stale-recovery"
+			break
+		}
 		if unit.RevisionFeedbackSource != "" {
 			taskKind = "translation-unit-revision"
 			break

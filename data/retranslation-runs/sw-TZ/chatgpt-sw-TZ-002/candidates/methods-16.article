@@ -1,0 +1,28 @@
+* Switch za aina
+
+_Switch_ya_aina_ ni muundo unaoruhusu uthibitisho kadhaa wa aina kwa mfululizo.
+
+Switch ya aina ni kama kauli ya kawaida ya switch, lakini case katika switch ya aina
+hubainisha aina (si thamani), na aina hizo hulinganishwa na
+aina ya thamani inayohifadhiwa na thamani ya kiolesura iliyotolewa.
+
+	switch v := i.(type) {
+	case T:
+		// hapa v ina aina T
+	case S:
+		// hapa v ina aina S
+	default:
+		// hakuna inayolingana; hapa v ina aina ileile kama i
+	}
+
+Tamko katika switch ya aina lina sintaksia ileile kama uthibitisho wa aina `i.(T)`,
+lakini aina mahususi `T` hubadilishwa na neno kuu `type`.
+
+Kauli hii ya switch hupima kama thamani ya kiolesura `i`
+huhifadhi thamani ya aina `T` au `S`.
+Katika kila case ya `T` na `S`, kibadilika `v` kitakuwa cha aina
+`T` au `S` mtawalia, na kitahifadhi thamani inayohifadhiwa na `i`.
+Katika case ya default (ambapo hakuna inayolingana), kibadilika `v` kina
+aina na thamani ya kiolesura ileile kama `i`.
+
+.play methods/type-switches.go

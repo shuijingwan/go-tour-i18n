@@ -1,0 +1,20 @@
+* Visomaji
+
+Kifurushi cha `io` hubainisha kiolesura cha `io.Reader`,
+kinachowakilisha mwisho wa kusoma wa mtiririko wa data.
+
+Maktaba sanifu ya Go ina [[https://cs.opensource.google/search?q=Read%5C(%5Cw%2B%5Cs%5C%5B%5C%5Dbyte%5C)&ss=go%2Fgo][utekelezaji mwingi]] wa kiolesura hiki, ukiwemo faili, miunganisho ya mtandao, vikandamizaji, visimbaji fiche na mengine.
+
+Kiolesura cha `io.Reader` kina mbinu ya `Read`:
+
+	func (T) Read(b []byte) (n int, err error)
+
+`Read` hujaza kipande cha baiti kilichotolewa kwa data na hurejesha idadi ya baiti
+zilizojazwa pamoja na thamani ya kosa. Hurejesha kosa la `io.EOF` mtiririko
+unapoisha.
+
+Msimbo wa mfano huunda
+[[/pkg/strings/#Reader][`strings.Reader`]]
+na hutumia matokeo yake baiti 8 kwa wakati mmoja.
+
+.play methods/reader.go

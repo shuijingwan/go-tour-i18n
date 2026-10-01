@@ -1,0 +1,18 @@
+* Mipaka chaguo-msingi ya vipande
+
+Unapokata kipande, unaweza kuacha mpaka wa juu au wa chini ili kutumia thamani zake chaguo-msingi.
+
+Thamani chaguo-msingi ni sifuri kwa mpaka wa chini, na urefu wa kipande au safu ya ndani kwa mpaka wa juu.
+
+Kwa safu
+
+	var a [10]int
+
+semi hizi za vipande ni sawa:
+
+	a[0:10]
+	a[:10]
+	a[0:]
+	a[:]
+
+.play moretypes/slice-bounds.go

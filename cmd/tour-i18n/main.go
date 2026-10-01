@@ -897,6 +897,7 @@ func parseRetranslationExportOptions(args []string) (i18n.RetranslationExportOpt
 	limit := fs.Int("limit", i18n.DefaultRetranslationExportLimit, "批次中最多包含的独立翻译单元数（默认且上限 60；Page 与 Example 不得混合）")
 	jsonOutput := fs.Bool("json", false, "输出完整 machine-readable JSON")
 	allowReexport := fs.Bool("allow-reexport", false, "allow explicitly requested page ids to be exported again")
+	glossaryStale := fs.Bool("glossary-stale", false, "re-export only requested units whose current glossary regenerates different protected input")
 	previousSnapshotID := fs.String("previous-snapshot-id", "", "previous Candidate Snapshot containing Quality Check B/C/D revision feedback")
 	surfaceReopenID := fs.String("surface-reopen-id", "", "surface correction authorization for reopening exact prior A units")
 	var unitIDs repeatedStrings
@@ -911,13 +912,19 @@ func parseRetranslationExportOptions(args []string) (i18n.RetranslationExportOpt
 	if err := i18n.ValidateRetranslationGenerator(selectedGenerator); err != nil {
 		return i18n.RetranslationExportOptions{}, false, err
 	}
-	if *allowReexport && *previousSnapshotID == "" {
+	if *glossaryStale && !*allowReexport {
+		return i18n.RetranslationExportOptions{}, false, fmt.Errorf("--glossary-stale requires --allow-reexport")
+	}
+	if *glossaryStale && (*previousSnapshotID != "" || *surfaceReopenID != "") {
+		return i18n.RetranslationExportOptions{}, false, fmt.Errorf("--glossary-stale cannot be combined with --previous-snapshot-id or --surface-reopen-id")
+	}
+	if *allowReexport && *previousSnapshotID == "" && !*glossaryStale {
 		return i18n.RetranslationExportOptions{}, false, fmt.Errorf("--allow-reexport revision mode requires --previous-snapshot-id")
 	}
 	return i18n.RetranslationExportOptions{
 		Locale: *locale, BatchID: *batchID, Generator: selectedGenerator,
 		UnitIDs: unitIDs, UnitKind: i18n.UnitKind(*unitKind), Limit: *limit,
-		AllowReexport: *allowReexport, PreviousSnapshotID: *previousSnapshotID, SurfaceReopenID: *surfaceReopenID,
+		AllowReexport: *allowReexport, PreviousSnapshotID: *previousSnapshotID, SurfaceReopenID: *surfaceReopenID, GlossaryStale: *glossaryStale,
 	}, *jsonOutput, nil
 }
 

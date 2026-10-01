@@ -1,0 +1,26 @@
+* Қателер
+
+Go бағдарламалары қате күйін `error` мәндері арқылы білдіреді.
+
+`error` түрі — `fmt.Stringer` интерфейсіне ұқсас кіріктірілген интерфейс:
+
+	type error interface {
+		Error() string
+	}
+
+(`fmt.Stringer` сияқты, `fmt` пакеті мәндерді
+басып шығарғанда `error` интерфейсін іздейді.)
+
+Функциялар жиі `error` мәнін қайтарады, ал оларды шақыратын код қатенің
+`nil` мәніне тең екенін тексеру арқылы қателерді өңдеуі керек.
+
+	i, err := strconv.Atoi("42")
+	if err != nil {
+		fmt.Printf("couldn't convert number: %v\n", err)
+		return
+	}
+	fmt.Println("Converted integer:", i)
+
+nil `error` сәттілікті, ал nil емес `error` сәтсіздікті білдіреді.
+
+.play methods/errors.go

@@ -47,6 +47,7 @@ var languageRegistry = []LanguageLink{
 	{Locale: "it-IT", EnglishName: "Italian", Autonym: "Italiano", URL: "https://it-go-dev.shuijingwanwq.com/"},
 	{Locale: "ja-JP", EnglishName: "Japanese", Autonym: "日本語", URL: "https://ja-go-dev.shuijingwanwq.com/"},
 	{Locale: "kn-IN", EnglishName: "Kannada", Autonym: "ಕನ್ನಡ", URL: "https://kn-go-dev.shuijingwanwq.com/"},
+	{Locale: "kk-KZ", EnglishName: "Kazakh", Autonym: "Қазақша", URL: "https://kk-go-dev.shuijingwanwq.com/"},
 	{Locale: "ko-KR", EnglishName: "Korean", Autonym: "한국어", URL: "https://ko-go-dev.shuijingwanwq.com/"},
 	{Locale: "es-419", EnglishName: "Latin American Spanish", Autonym: "Español (Latinoamérica)", URL: "https://es-419-go-dev.shuijingwanwq.com/"},
 	{Locale: "lv-LV", EnglishName: "Latvian", Autonym: "Latviešu", URL: "https://lv-go-dev.shuijingwanwq.com/"},
@@ -55,6 +56,7 @@ var languageRegistry = []LanguageLink{
 	{Locale: "ml-IN", EnglishName: "Malayalam", Autonym: "മലയാളം", URL: "https://ml-go-dev.shuijingwanwq.com/"},
 	{Locale: "mr-IN", EnglishName: "Marathi", Autonym: "मराठी", URL: "https://mr-go-dev.shuijingwanwq.com/"},
 	{Locale: "nb-NO", EnglishName: "Norwegian Bokmål", Autonym: "Norsk bokmål", URL: "https://nb-go-dev.shuijingwanwq.com/"},
+	{Locale: "fa-IR", EnglishName: "Persian", Autonym: "فارسی", URL: "https://fa-go-dev.shuijingwanwq.com/"},
 	{Locale: "pl-PL", EnglishName: "Polish", Autonym: "Polski", URL: "https://pl-go-dev.shuijingwanwq.com/"},
 	{Locale: "pa-IN", EnglishName: "Punjabi", Autonym: "ਪੰਜਾਬੀ", URL: "https://pa-go-dev.shuijingwanwq.com/"},
 	{Locale: "ro-RO", EnglishName: "Romanian", Autonym: "Română", URL: "https://ro-go-dev.shuijingwanwq.com/"},
@@ -63,6 +65,7 @@ var languageRegistry = []LanguageLink{
 	{Locale: "sk-SK", EnglishName: "Slovak", Autonym: "Slovenčina", URL: "https://sk-go-dev.shuijingwanwq.com/"},
 	{Locale: "sl-SI", EnglishName: "Slovenian", Autonym: "Slovenščina", URL: "https://sl-go-dev.shuijingwanwq.com/"},
 	{Locale: "es-ES", EnglishName: "Spanish", Autonym: "Español", URL: "https://es-go-dev.shuijingwanwq.com/"},
+	{Locale: "sw-TZ", EnglishName: "Swahili", Autonym: "Kiswahili", URL: "https://sw-go-dev.shuijingwanwq.com/"},
 	{Locale: "sv-SE", EnglishName: "Swedish", Autonym: "Svenska", URL: "https://sv-go-dev.shuijingwanwq.com/"},
 	{Locale: "ta-IN", EnglishName: "Tamil", Autonym: "தமிழ்", URL: "https://ta-go-dev.shuijingwanwq.com/"},
 	{Locale: "te-IN", EnglishName: "Telugu", Autonym: "తెలుగు", URL: "https://te-go-dev.shuijingwanwq.com/"},
@@ -125,6 +128,9 @@ var (
 	zagrebTime      = mustLoadLocation("Europe/Zagreb")
 	ljubljanaTime   = mustLoadLocation("Europe/Ljubljana")
 	vilniusTime     = mustLoadLocation("Europe/Vilnius")
+	darEsSalaamTime = mustLoadLocation("Africa/Dar_es_Salaam")
+	almatyTime      = mustLoadLocation("Asia/Almaty")
+	tehranTime      = mustLoadLocation("Asia/Tehran")
 )
 
 var localeProfiles = map[string]localeProfile{
@@ -456,6 +462,27 @@ var localeProfiles = map[string]localeProfile{
 		TimeLabel:         "vietējais laiks",
 		TimeLabelFormat:   " (%s)",
 		Direction:         "ltr",
+	},
+	"sw-TZ": {
+		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",
+		TimeZone:          darEsSalaamTime,
+		TimeLabel:         "saa za eneo",
+		TimeLabelFormat:   " (%s)",
+		Direction:         "ltr",
+	},
+	"kk-KZ": {
+		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",
+		TimeZone:          almatyTime,
+		TimeLabel:         "жергілікті уақыт",
+		TimeLabelFormat:   " (%s)",
+		Direction:         "ltr",
+	},
+	"fa-IR": {
+		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",
+		TimeZone:          tehranTime,
+		TimeLabel:         "زمان محلی",
+		TimeLabelFormat:   " (%s)",
+		Direction:         "rtl",
 	},
 	// English is the catalog source and remains renderable for development,
 	// although the English language entry points to the official Tour.
