@@ -1,0 +1,458 @@
+{
+  "locale": "ru-RU",
+  "html_lang": "ru-RU",
+  "messages": {
+    "editor.format": {
+      "kind": "plain",
+      "text": "Форматировать"
+    },
+    "editor.imports": {
+      "kind": "plain",
+      "text": "Импорты"
+    },
+    "editor.kill": {
+      "kind": "plain",
+      "text": "Остановить"
+    },
+    "editor.off": {
+      "kind": "plain",
+      "text": "Выкл."
+    },
+    "editor.on": {
+      "kind": "plain",
+      "text": "Вкл."
+    },
+    "editor.reset": {
+      "kind": "plain",
+      "text": "Сбросить"
+    },
+    "editor.run": {
+      "kind": "plain",
+      "text": "Запустить"
+    },
+    "editor.syntax": {
+      "kind": "plain",
+      "text": "Синтаксис"
+    },
+    "error.not_found": {
+      "kind": "plain",
+      "text": "404 — страница не найдена"
+    },
+    "execution.build_failed": {
+      "kind": "plain",
+      "text": "Сборка Go завершилась ошибкой."
+    },
+    "execution.communication_error": {
+      "kind": "plain",
+      "text": "Ошибка связи с удалённым сервером."
+    },
+    "execution.exited": {
+      "kind": "plain",
+      "text": "Программа завершилась"
+    },
+    "execution.test_failed": {
+      "kind": "plain",
+      "text": "Не пройден {count} тест."
+    },
+    "execution.tests_failed": {
+      "kind": "plain",
+      "text": "Не пройдено тестов: {count}."
+    },
+    "execution.tests_passed": {
+      "kind": "plain",
+      "text": "Все тесты пройдены."
+    },
+    "execution.vet_failed": {
+      "kind": "plain",
+      "text": "Проверка go vet завершилась ошибкой."
+    },
+    "execution.waiting": {
+      "kind": "plain",
+      "text": "Ожидание удалённого сервера..."
+    },
+    "feedback.context": {
+      "kind": "plain",
+      "text": "Контекст"
+    },
+    "feedback.issue_body": {
+      "kind": "plain",
+      "text": "Измените заголовок выше, чтобы он описывал проблему, и добавьте здесь свой отзыв, при необходимости включив код."
+    },
+    "feedback.issue_title": {
+      "kind": "plain",
+      "text": "x/website/_content/tour: [ЗАМЕНИТЕ КРАТКИМ ОПИСАНИЕМ]"
+    },
+    "feedback.open": {
+      "kind": "plain",
+      "text": "Отправить отзыв об этой странице"
+    },
+    "footer.development_log": {
+      "kind": "plain",
+      "text": "Журнал разработки"
+    },
+    "footer.github": {
+      "kind": "plain",
+      "text": "GitHub"
+    },
+    "footer.home": {
+      "kind": "plain",
+      "text": "Главная"
+    },
+    "footer.unofficial": {
+      "kind": "plain",
+      "text": "Yongye · Неофициальный общественный проект многоязычного перевода"
+    },
+    "header.about_project": {
+      "kind": "plain",
+      "text": "О проекте"
+    },
+    "module.basics.description": {
+      "kind": "rich",
+      "text": "<p>Начните с основ и изучите базовые возможности языка.</p><p>Объявление переменных, вызов функций и всё, что нужно знать перед переходом к следующим урокам.</p>"
+    },
+    "module.basics.title": {
+      "kind": "plain",
+      "text": "Основы"
+    },
+    "module.concurrency.description": {
+      "kind": "rich",
+      "text": "<p>Go предоставляет средства конкурентности как часть самого языка.</p><p>В этом модуле рассматриваются goroutine и каналы, а также способы их применения для реализации различных шаблонов конкурентности.</p>"
+    },
+    "module.concurrency.title": {
+      "kind": "plain",
+      "text": "Конкурентность"
+    },
+    "module.generics.description": {
+      "kind": "rich",
+      "text": "<p>Узнайте, как использовать параметры типа в функциях и структурах Go.</p>"
+    },
+    "module.generics.title": {
+      "kind": "plain",
+      "text": "Обобщённое программирование"
+    },
+    "module.methods.description": {
+      "kind": "rich",
+      "text": "<p>Узнайте, как определять методы для типов, объявлять интерфейсы и объединять всё это вместе.</p>"
+    },
+    "module.methods.title": {
+      "kind": "plain",
+      "text": "Методы и интерфейсы"
+    },
+    "module.using_tour.description": {
+      "kind": "rich",
+      "text": "<p>Добро пожаловать в тур по <a href=\"https://go.dev\">языку программирования Go</a>. Тур охватывает важнейшие возможности языка, главным образом:</p>"
+    },
+    "module.using_tour.title": {
+      "kind": "plain",
+      "text": "Работа с туром"
+    },
+    "site.architecture_languages": {
+      "kind": "plain",
+      "text": "Сервер, шаблоны, CSS, JavaScript, изображения и шрифты по возможности используются совместно. Для каждого языка отдельно поддерживаются переводы курса, текст интерфейса, терминология и состояние. Первой выпущенной версией стал упрощённый китайский; архитектура позволяет добавлять новые языки."
+    },
+    "site.architecture_playground": {
+      "kind": "plain",
+      "text": "Примеры Go в браузере выполняются через контролируемый удалённый прокси Go Playground; в production локальная точка выполнения кода /socket не публикуется."
+    },
+    "site.architecture_title": {
+      "kind": "plain",
+      "text": "Отслеживаемая, управляемая и расширяемая архитектура"
+    },
+    "site.architecture_upstream": {
+      "kind": "plain",
+      "text": "Проект непрерывно фиксирует официальный upstream-коммит, сохраняя отслеживаемую базовую версию для будущих обновлений источника."
+    },
+    "site.browser_title": {
+      "kind": "plain",
+      "text": "Yongye · Проект многоязычного перевода A Tour of Go"
+    },
+    "site.community_version": {
+      "kind": "plain",
+      "text": "Перевод сообщества"
+    },
+    "site.continue_learning": {
+      "kind": "plain",
+      "text": "Продолжить обучение на go.dev"
+    },
+    "site.continue_learning_description": {
+      "kind": "plain",
+      "text": "A Tour of Go — это только начало. После его завершения посетите go.dev: там доступны официальная документация, учебные материалы, справочник стандартной библиотеки, спецификация языка и другие ресурсы для изучения Go."
+    },
+    "site.continue_learning_title": {
+      "kind": "plain",
+      "text": "Продолжайте изучать Go"
+    },
+    "site.course_pages": {
+      "kind": "plain",
+      "text": "Страницы курса"
+    },
+    "site.current_language": {
+      "kind": "plain",
+      "text": "Текущий язык"
+    },
+    "site.current_projects": {
+      "kind": "plain",
+      "text": "Текущий проект перевода"
+    },
+    "site.development_environment": {
+      "kind": "plain",
+      "text": "Среда разработки"
+    },
+    "site.development_log": {
+      "kind": "plain",
+      "text": "Журнал разработки: проект многоязычного перевода A Tour of Go"
+    },
+    "site.enter_tour": {
+      "kind": "plain",
+      "text": "Перейти к туру"
+    },
+    "site.environment": {
+      "kind": "plain",
+      "text": "Среда"
+    },
+    "site.how_it_works": {
+      "kind": "plain",
+      "text": "Как устроен проект"
+    },
+    "site.how_it_works_intro": {
+      "kind": "plain",
+      "text": "Локализация курса — не построчная замена предложений. Это процесс, построенный вокруг полных единиц контента, отслеживаемых состояний проверки и проверяемых артефактов выпуска."
+    },
+    "site.intro": {
+      "kind": "plain",
+      "text": "Проект перевода официальных учебных материалов Go, поддерживаемый сообществом. Первый доступный язык — упрощённый китайский; архитектура позволяет добавлять другие языки и материалы Go."
+    },
+    "site.issue_feedback": {
+      "kind": "plain",
+      "text": "GitHub Issues"
+    },
+    "site.language_versions": {
+      "kind": "plain",
+      "text": "Языковые версии"
+    },
+    "site.latest_release": {
+      "kind": "plain",
+      "text": "Последний выпуск"
+    },
+    "site.no_affiliation": {
+      "kind": "plain",
+      "text": "Этот проект не связан с проектом Go, не авторизован и не одобрен им."
+    },
+    "site.official_upstream": {
+      "kind": "plain",
+      "text": "Официальный upstream"
+    },
+    "site.official_version": {
+      "kind": "plain",
+      "text": "Официальная версия A Tour of Go"
+    },
+    "site.open_official_tour": {
+      "kind": "plain",
+      "text": "Открыть официальный тур"
+    },
+    "site.operations_note": {
+      "kind": "plain",
+      "text": "На этом сайте может показываться реклама, помогающая покрывать расходы на инфраструктуру, включая серверы, трафик и CDN, а также текущие затраты на сопровождение проекта. Исходный код остаётся общедоступным, а в самостоятельно развёрнутых экземплярах рекламная конфигурация этого сайта по умолчанию не включается."
+    },
+    "site.project_links": {
+      "kind": "plain",
+      "text": "Ссылки проекта"
+    },
+    "site.project_status": {
+      "kind": "plain",
+      "text": "Состояние проекта"
+    },
+    "site.source_code": {
+      "kind": "plain",
+      "text": "Исходный код на GitHub"
+    },
+    "site.start_learning": {
+      "kind": "plain",
+      "text": "Начать обучение"
+    },
+    "site.title": {
+      "kind": "plain",
+      "text": "Проект многоязычного перевода A Tour of Go"
+    },
+    "site.tour_description": {
+      "kind": "plain",
+      "text": "Интерактивное введение в язык программирования Go."
+    },
+    "site.translation_validation": {
+      "kind": "plain",
+      "text": "Перевод и валидация"
+    },
+    "site.translation_validation_intro": {
+      "kind": "plain",
+      "text": "Проект сохраняет учебный процесс максимально близким к официальному источнику и проверяет каждый выпуск перед публикацией."
+    },
+    "site.unofficial": {
+      "kind": "plain",
+      "text": "Поддерживается Yongye · Неофициальный общественный проект многоязычного перевода"
+    },
+    "site.upstream_baseline": {
+      "kind": "plain",
+      "text": "Базовая версия официального исходника"
+    },
+    "site.upstream_commit_time": {
+      "kind": "plain",
+      "text": "Время коммита в upstream"
+    },
+    "site.validation_examples": {
+      "kind": "plain",
+      "text": "Примеры Go с переводимыми комментариями на естественном языке также входят в единый процесс валидации; для всех остальных примеров по-прежнему напрямую используется официальный исходник."
+    },
+    "site.validation_page_unit": {
+      "kind": "plain",
+      "text": "Единицей перевода служит полная страница курса."
+    },
+    "site.validation_present": {
+      "kind": "plain",
+      "text": "Каждый выпуск разбирается с помощью present."
+    },
+    "site.validation_render": {
+      "kind": "plain",
+      "text": "Отрисованные страницы проверяются перед выпуском."
+    },
+    "site.validation_structure": {
+      "kind": "plain",
+      "text": "Структура страниц сравнивается с официальным источником."
+    },
+    "site.workflow_process": {
+      "kind": "plain",
+      "text": "Каждая единица проходит этапы перевода, автоматической валидации, Translation Quality Review, promotion, ready, projection и publish; сгенерированные переводы никогда не публикуются напрямую."
+    },
+    "site.workflow_publish": {
+      "kind": "plain",
+      "text": "При публикации из канонических кандидатов ready строится полная локализованная проекция; все TranslationUnit в workflow должны иметь состояние ready. Затем создаются production-бинарный файл, release.json и SHA256SUMS, после чего проверяется весь пакет."
+    },
+    "site.workflow_review": {
+      "kind": "plain",
+      "text": "Автоматические проверки защищают структуру, разбирают содержимое present, сравнивают его с официальным источником, проверяют отрисовку и страницы, а также Go-код Example. Перед promotion всё равно требуется независимая проверка качества перевода."
+    },
+    "site.workflow_title": {
+      "kind": "plain",
+      "text": "От TranslationUnit до production"
+    },
+    "site.workflow_units": {
+      "kind": "plain",
+      "text": "TranslationUnit представляет как полные Page, так и подходящие Example: Page — это полный present.Section, а Example — полный файл .go, содержащий переводимые комментарии на естественном языке."
+    },
+    "support.address": {
+      "kind": "plain",
+      "text": "Адрес"
+    },
+    "support.advertising_title": {
+      "kind": "plain",
+      "text": "Уведомление о рекламе"
+    },
+    "support.asset": {
+      "kind": "plain",
+      "text": "Актив"
+    },
+    "support.copied": {
+      "kind": "plain",
+      "text": "Скопировано"
+    },
+    "support.copy_address": {
+      "kind": "plain",
+      "text": "Копировать адрес"
+    },
+    "support.copy_reference": {
+      "kind": "plain",
+      "text": "Копировать назначение"
+    },
+    "support.copy_uid": {
+      "kind": "plain",
+      "text": "Копировать UID"
+    },
+    "support.intro": {
+      "kind": "plain",
+      "text": "Вы также можете добровольно поддержать дальнейшее сопровождение этой языковой версии. Ваша поддержка помогает продолжать её обслуживание и развитие."
+    },
+    "support.minimum_deposit": {
+      "kind": "plain",
+      "text": "Минимальная сумма для получения"
+    },
+    "support.network": {
+      "kind": "plain",
+      "text": "Сеть"
+    },
+    "support.platform_help": {
+      "kind": "plain",
+      "text": "Пользователи одной платформы могут выполнить внутренний перевод по UID. Подробности уточняйте на платформе."
+    },
+    "support.platform_title": {
+      "kind": "plain",
+      "text": "Внутренний перевод на платформе (необязательно)"
+    },
+    "support.reference_help": {
+      "kind": "plain",
+      "text": "Если ваш платёжный сервис поддерживает примечание или назначение, можно указать это значение."
+    },
+    "support.reference_label": {
+      "kind": "plain",
+      "text": "Назначение поддержки"
+    },
+    "support.section_title": {
+      "kind": "plain",
+      "text": "Поддержка и эксплуатационные расходы"
+    },
+    "support.translation_title": {
+      "kind": "plain",
+      "text": "Поддержать эту языковую версию"
+    },
+    "support.uid": {
+      "kind": "plain",
+      "text": "UID"
+    },
+    "support.usdc_network_only": {
+      "kind": "plain",
+      "text": "Отправляйте USDC только через сеть Base."
+    },
+    "support.usdt_network_only": {
+      "kind": "plain",
+      "text": "Отправляйте USDT только через сеть Tron (TRC20)."
+    },
+    "support.wrong_network_warning": {
+      "kind": "plain",
+      "text": "Использование неверного актива или сети может привести к потере средств."
+    },
+    "theme.dark": {
+      "kind": "plain",
+      "text": "Тёмная тема"
+    },
+    "theme.light": {
+      "kind": "plain",
+      "text": "Светлая тема"
+    },
+    "theme.system": {
+      "kind": "plain",
+      "text": "Системная тема"
+    },
+    "theme.toggle": {
+      "kind": "plain",
+      "text": "Переключить тему"
+    },
+    "toc.title": {
+      "kind": "plain",
+      "text": "Содержание"
+    },
+    "tour.list_description": {
+      "kind": "plain",
+      "text": "Просматривайте модули и уроки A Tour of Go — интерактивного введения в язык программирования Go."
+    },
+    "tour.list_heading": {
+      "kind": "plain",
+      "text": "Добро пожаловать в тур по Go"
+    },
+    "tour.list_title": {
+      "kind": "plain",
+      "text": "Содержание курса — A Tour of Go"
+    },
+    "tour.title": {
+      "kind": "plain",
+      "text": "A Tour of Go"
+    }
+  }
+}

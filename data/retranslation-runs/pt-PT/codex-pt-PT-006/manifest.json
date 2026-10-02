@@ -1,0 +1,24 @@
+{
+  "schema_version": 2,
+  "batch_id": "codex-pt-PT-006",
+  "locale": "pt-PT",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "example",
+  "unit_count": 1,
+  "units": [
+    {
+      "unit_id": "example:concurrency/exercise-web-crawler.go",
+      "unit_kind": "example",
+      "source_path": "_content/tour/concurrency/exercise-web-crawler.go",
+      "source_sha256": "bd6226dcae3b663a3aa1cbf502d840357ac0efb6de46e7a66612ca2834cf5e37",
+      "input_path": "inputs/concurrency-exercise-web-crawler.txt",
+      "input_sha256": "d88042da1bf264c6ab5d1868228d347ca73e9c89e196305d19274c469f4b27c1",
+      "protected_token_count": 14,
+      "previous_snapshot_id": "qc-003",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "até ao máximo indicado por depth 对 maximum recursion depth 的表达不够自然、明确；同一 Unit 的 fakeFetcher preenchido 也较生硬。应明确表达 depth 所限定的是递归抓取的最大深度，并使 populated fakeFetcher 的描述符合自然 pt-PT，同时保持标识符及技术含义不变。"
+    }
+  ]
+}

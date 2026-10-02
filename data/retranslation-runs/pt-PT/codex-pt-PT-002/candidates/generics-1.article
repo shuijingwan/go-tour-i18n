@@ -1,0 +1,17 @@
+* Parâmetros de tipo
+
+As funções de Go podem ser escritas para funcionar com vários tipos através de parâmetros de tipo. Os
+parâmetros de tipo de uma função aparecem entre parênteses retos, antes dos
+argumentos da função.
+
+  func Index[T comparable](s []T, x T) int
+
+Esta declaração significa que `s` é um slice de qualquer tipo `T` que satisfaça a
+restrição incorporada `comparable`. `x` também é um valor do mesmo tipo.
+
+`comparable` é uma restrição útil que permite utilizar os operadores `==` e
+`!=` em valores do tipo. Neste exemplo, utilizamo-la para comparar um
+valor com todos os elementos do slice até encontrar uma correspondência. Esta função `Index` funciona
+com qualquer tipo que suporte comparação.
+
+.play generics/index.go

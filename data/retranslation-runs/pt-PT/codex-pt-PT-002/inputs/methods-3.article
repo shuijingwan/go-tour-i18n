@@ -1,0 +1,12 @@
+* Methods continued
+
+You can declare a method on non-struct types, too.
+
+In this example we see a numeric type ⟪GTI18N_31c4fd0d_000001⟫MyFloat⟪GTI18N_31c4fd0d_000002⟫ with an ⟪GTI18N_31c4fd0d_000003⟫Abs⟪GTI18N_31c4fd0d_000004⟫ method.
+
+You can only declare a method with a receiver whose type is defined in the same
+package as the method.
+You cannot declare a method with a receiver whose type is defined in another
+package (which includes the built-in types such as ⟪GTI18N_31c4fd0d_000005⟫int⟪GTI18N_31c4fd0d_000006⟫).
+
+⟪GTI18N_31c4fd0d_000007⟫

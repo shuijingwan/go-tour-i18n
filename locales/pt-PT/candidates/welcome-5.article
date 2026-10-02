@@ -1,0 +1,19 @@
+* O Go Playground
+
+Esta visita guiada é construída sobre o [[https://play.golang.org/][Go Playground]], um
+serviço Web executado nos servidores de [[/][golang.org]].
+
+O serviço recebe um programa Go, compila-o, faz a ligação e executa-o num
+ambiente isolado, devolvendo depois o resultado.
+
+Existem limitações aos programas que podem ser executados no playground:
+
+- No playground, o tempo começa em 2009-11-10 23:00:00 UTC (determinar o significado desta data é um exercício para o leitor). Isto facilita o armazenamento de programas em cache ao conferir-lhes um resultado determinístico.
+
+- Existem também limites ao tempo de execução e à utilização de CPU e de memória, e o programa não pode aceder a anfitriões de rede externos.
+
+O playground utiliza a versão estável mais recente de Go.
+
+Leia "[[/blog/playground][Por dentro do Go Playground]]" para saber mais.
+
+.play welcome/sandbox.go

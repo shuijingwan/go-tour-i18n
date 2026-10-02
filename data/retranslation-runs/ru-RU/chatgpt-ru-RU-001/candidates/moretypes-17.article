@@ -1,0 +1,12 @@
+* Range: продолжение
+
+Индекс или значение можно пропустить, присвоив его `_`.
+
+    for i, _ := range pow
+    for _, value := range pow
+
+Если нужен только индекс, вторую переменную можно опустить.
+
+    for i := range pow
+
+.play moretypes/range-continued.go

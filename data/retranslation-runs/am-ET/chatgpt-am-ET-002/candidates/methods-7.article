@@ -1,0 +1,21 @@
+* ዘዴዎች እና የጠቋሚ ቀጥተኛ ያልሆነ ማጣቀሻ (2)
+
+ተመሳሳይ ነገር በተቃራኒው አቅጣጫም ይከሰታል።
+
+እሴት ነጋሪ እሴት የሚቀበሉ ተግባሮች የዚያን የተወሰነ ዓይነት እሴት መቀበል አለባቸው፦
+
+	var v Vertex
+	fmt.Println(AbsFunc(v))  // OK
+	fmt.Println(AbsFunc(&v)) // የማቀናበር ስህተት!
+
+እሴት ተቀባይ ያላቸው ዘዴዎች ግን ሲጠሩ እሴትንም ሆነ ጠቋሚን
+እንደ ተቀባይ ይቀበላሉ፦
+
+	var v Vertex
+	fmt.Println(v.Abs()) // OK
+	p := &v
+	fmt.Println(p.Abs()) // OK
+
+በዚህ ሁኔታ፣ የዘዴው ጥሪ `p.Abs()` እንደ `(*p).Abs()` ይተረጎማል።
+
+.play methods/indirection-values.go

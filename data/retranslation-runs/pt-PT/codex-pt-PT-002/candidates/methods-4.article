@@ -1,0 +1,24 @@
+* Recetores por ponteiro
+
+Pode declarar métodos com recetores por ponteiro.
+
+Isto significa que o tipo do recetor tem a sintaxe literal `*T` para algum tipo `T`.
+(Além disso, `T` não pode ser, ele próprio, um ponteiro como `*int`.)
+
+Por exemplo, o método `Scale` é aqui definido em `*Vertex`.
+
+Os métodos com recetores por ponteiro podem modificar o valor para o qual o recetor
+aponta (como `Scale` faz aqui).
+Como os métodos precisam frequentemente de modificar o respetivo recetor, os recetores por ponteiro são mais
+comuns do que os recetores por valor.
+
+Experimente remover o `*` da declaração da função `Scale` na linha 16
+e observe como o comportamento do programa muda.
+
+Com um recetor por valor, o método `Scale` opera sobre uma cópia do valor
+`Vertex` original.
+(É o mesmo comportamento de qualquer outro argumento de função.)
+O método `Scale` tem de ter um recetor por ponteiro para alterar o valor `Vertex`
+declarado na função `main`.
+
+.play methods/methods-pointers.go

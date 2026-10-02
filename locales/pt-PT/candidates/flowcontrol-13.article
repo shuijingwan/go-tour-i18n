@@ -1,0 +1,9 @@
+* Empilhamento de instruções defer
+
+As chamadas de função adiadas são colocadas numa pilha. Quando uma função termina, as respetivas
+chamadas adiadas são executadas segundo a ordem último a entrar, primeiro a sair.
+
+Para saber mais sobre instruções defer, leia esta
+[[/blog/defer-panic-and-recover][publicação no blogue]].
+
+.play flowcontrol/defer-multi.go

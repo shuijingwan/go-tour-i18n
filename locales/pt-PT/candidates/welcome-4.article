@@ -1,0 +1,17 @@
+* Go offline (opcional)
+
+Esta visita guiada também está disponível como um programa autónomo que pode utilizar
+sem acesso à Internet. O programa compila e executa os exemplos de código no
+seu próprio computador.
+
+Para executar a visita guiada localmente, terá primeiro de
+[[/doc/install][instalar Go]] e, em seguida, executar:
+
+  go install golang.org/x/website/tour@latest
+
+Isto colocará um binário `tour` no diretório `bin` do seu
+[[/cmd/go/#hdr-GOPATH_and_Modules][GOPATH]].
+Quando executar o programa da visita guiada, será aberto um browser a apresentar
+a sua versão local da visita guiada.
+
+Naturalmente, pode continuar a seguir a visita guiada através deste site.

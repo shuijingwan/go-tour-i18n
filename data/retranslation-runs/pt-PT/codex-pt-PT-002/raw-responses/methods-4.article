@@ -1,0 +1,24 @@
+* Recetores por ponteiro
+
+Pode declarar métodos com recetores por ponteiro.
+
+Isto significa que o tipo do recetor tem a sintaxe literal ⟪GTI18N_99f9fa4e_000001⟫*T⟪GTI18N_99f9fa4e_000002⟫ para algum tipo ⟪GTI18N_99f9fa4e_000003⟫T⟪GTI18N_99f9fa4e_000004⟫.
+(Além disso, ⟪GTI18N_99f9fa4e_000005⟫T⟪GTI18N_99f9fa4e_000006⟫ não pode ser, ele próprio, um ponteiro como ⟪GTI18N_99f9fa4e_000007⟫*int⟪GTI18N_99f9fa4e_000008⟫.)
+
+Por exemplo, o método ⟪GTI18N_99f9fa4e_000009⟫Scale⟪GTI18N_99f9fa4e_000010⟫ é aqui definido em ⟪GTI18N_99f9fa4e_000011⟫*Vertex⟪GTI18N_99f9fa4e_000012⟫.
+
+Os métodos com recetores por ponteiro podem modificar o valor para o qual o recetor
+aponta (como ⟪GTI18N_99f9fa4e_000013⟫Scale⟪GTI18N_99f9fa4e_000014⟫ faz aqui).
+Como os métodos precisam frequentemente de modificar o respetivo recetor, os recetores por ponteiro são mais
+comuns do que os recetores por valor.
+
+Experimente remover o ⟪GTI18N_99f9fa4e_000015⟫*⟪GTI18N_99f9fa4e_000016⟫ da declaração da função ⟪GTI18N_99f9fa4e_000017⟫Scale⟪GTI18N_99f9fa4e_000018⟫ na linha 16
+e observe como o comportamento do programa muda.
+
+Com um recetor por valor, o método ⟪GTI18N_99f9fa4e_000019⟫Scale⟪GTI18N_99f9fa4e_000020⟫ opera sobre uma cópia do valor
+⟪GTI18N_99f9fa4e_000021⟫Vertex⟪GTI18N_99f9fa4e_000022⟫ original.
+(É o mesmo comportamento de qualquer outro argumento de função.)
+O método ⟪GTI18N_99f9fa4e_000023⟫Scale⟪GTI18N_99f9fa4e_000024⟫ tem de ter um recetor por ponteiro para alterar o valor ⟪GTI18N_99f9fa4e_000025⟫Vertex⟪GTI18N_99f9fa4e_000026⟫
+declarado na função ⟪GTI18N_99f9fa4e_000027⟫main⟪GTI18N_99f9fa4e_000028⟫.
+
+⟪GTI18N_99f9fa4e_000029⟫

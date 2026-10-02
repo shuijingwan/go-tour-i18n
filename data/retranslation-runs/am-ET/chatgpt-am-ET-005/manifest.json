@@ -1,0 +1,37 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-am-ET-005",
+  "locale": "am-ET",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "example",
+  "unit_count": 2,
+  "units": [
+    {
+      "unit_id": "example:concurrency/exercise-equivalent-binary-trees.go",
+      "unit_kind": "example",
+      "source_path": "_content/tour/concurrency/exercise-equivalent-binary-trees.go",
+      "source_sha256": "184cbbd1e662b64de6e6928d4af6f2469c7bccdbc9a8b5f477c1b694b9ab02b1",
+      "input_path": "inputs/concurrency-exercise-equivalent-binary-trees.txt",
+      "input_sha256": "7a7b9604ab994ccecd30d445793424bc7db50ec6b4b77d9d082d42f1e9cc5685",
+      "protected_token_count": 5,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "Walk 的两行 teaching comment 将有限动词“ይልካል”（发送）放在第一行结束，而表示发送来源和目的地的“ከዛፉ ወደ ቻናል ch”被留到下一行，形成明显割裂、非自然的 Amharic 语序。技术含义仍可恢复，因此属于轻度语言质量问题；需在保持 Walk、t、ch、channel 术语以及既有 comment/Go 文件结构不变的情况下，使“从树到 channel 发送所有值”的修饰关系自然完整。"
+    },
+    {
+      "unit_id": "example:concurrency/exercise-web-crawler.go",
+      "unit_kind": "example",
+      "source_path": "_content/tour/concurrency/exercise-web-crawler.go",
+      "source_sha256": "bd6226dcae3b663a3aa1cbf502d840357ac0efb6de46e7a66612ca2834cf5e37",
+      "input_path": "inputs/concurrency-exercise-web-crawler.txt",
+      "input_sha256": "53554a1126b74da6e3bcb93c625eff1ec44f560e2817f1875202423a7d6009ab",
+      "protected_token_count": 12,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "C",
+      "previous_finding": "source 的 “recursively crawl” 被表达为“በተደጋጋሚ ይጎበኛል”，其含义只是“反复/重复访问”，没有准确表达递归爬取这一程序设计语义。这里描述的正是 Crawl 自身递归调用所实现的行为，因此会误导对算法的理解；需恢复明确的递归语义，同时保持 Crawl、fetcher、url、depth 等代码 identity 和完整 Go 文件机器语义不变。"
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+* range
+
+A forma `range` do ciclo `for` itera sobre uma slice ou um mapa.
+
+Ao iterar com range sobre uma slice, são devolvidos dois valores em cada iteração.
+O primeiro é o índice, e o segundo é uma cópia do elemento nesse índice.
+
+.play moretypes/range.go

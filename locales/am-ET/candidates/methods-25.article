@@ -1,0 +1,13 @@
+* ልምምድ፦ ምስሎች
+
+ቀደም ብለው የጻፉትን [[/tour/moretypes/18][የስዕል አመንጪ]] ያስታውሳሉ? ሌላ እንጻፍ፣ ነገር ግን በዚህ ጊዜ ከውሂብ ቁራጭ ይልቅ የ `image.Image` ትግበራ ይመልሳል።
+
+የራስዎን `Image` ዓይነት ይግለጹ፣ [[/pkg/image/#Image][አስፈላጊዎቹን ዘዴዎች]] ይተግብሩ፣ እና `pic.ShowImage` ን ይጥሩ።
+
+`Bounds` እንደ `image.Rect(0,`0,`w,`h)` ያለ `image.Rectangle` መመለስ አለበት።
+
+`ColorModel` `color.RGBAModel` ን መመለስ አለበት።
+
+`At` ቀለም መመለስ አለበት፤ በመጨረሻው የስዕል አመንጪ ውስጥ ያለው `v` እሴት በዚህኛው ውስጥ ከ `color.RGBA{v,`v,`255,`255}` ጋር ይዛመዳል።
+
+.play methods/exercise-images.go

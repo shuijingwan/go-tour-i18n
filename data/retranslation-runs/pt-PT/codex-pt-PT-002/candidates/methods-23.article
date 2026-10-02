@@ -1,0 +1,12 @@
+* Exercício: rot13Reader
+
+Um padrão comum é um [[/pkg/io/#Reader][io.Reader]] que envolve outro `io.Reader`, modificando o fluxo de alguma forma.
+
+Por exemplo, a função [[/pkg/compress/gzip/#NewReader][gzip.NewReader]] recebe um `io.Reader` (um fluxo de dados comprimidos) e devolve um `*gzip.Reader` que também implementa `io.Reader` (um fluxo dos dados descomprimidos).
+
+Implemente um `rot13Reader` que implemente `io.Reader` e leia de um `io.Reader`, modificando o fluxo através da aplicação da cifra de substituição [[https://en.wikipedia.org/wiki/ROT13][rot13]] a todos os caracteres alfabéticos.
+
+O tipo `rot13Reader` é-lhe fornecido.
+Faça com que seja um `io.Reader` implementando o respetivo método `Read`.
+
+.play methods/exercise-rot-reader.go

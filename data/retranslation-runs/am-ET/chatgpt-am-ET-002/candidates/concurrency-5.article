@@ -1,0 +1,7 @@
+* Select
+
+የ `select` መግለጫ goroutine በብዙ የመገናኛ ክወናዎች ላይ እንዲጠብቅ ያስችለዋል።
+
+`select` ከcases አንዱ መስራት እስኪችል ድረስ ይዘጋል፣ ከዚያም ያንን case ያስኬዳል። ብዙ cases ዝግጁ ከሆኑ አንዱን በዘፈቀደ ይመርጣል።
+
+.play concurrency/select.go

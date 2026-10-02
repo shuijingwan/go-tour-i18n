@@ -1,0 +1,19 @@
+* Erros
+
+Os programas em ⟪GTI18N_9eaab1fd_000001⟫ exprimem estados de erro através de valores ⟪GTI18N_9eaab1fd_000002⟫error⟪GTI18N_9eaab1fd_000003⟫.
+
+O tipo ⟪GTI18N_9eaab1fd_000004⟫error⟪GTI18N_9eaab1fd_000005⟫ é uma interface incorporada semelhante a ⟪GTI18N_9eaab1fd_000006⟫fmt.Stringer⟪GTI18N_9eaab1fd_000007⟫:
+
+⟪GTI18N_9eaab1fd_000008⟫
+
+(Tal como acontece com ⟪GTI18N_9eaab1fd_000009⟫fmt.Stringer⟪GTI18N_9eaab1fd_000010⟫, o pacote ⟪GTI18N_9eaab1fd_000011⟫fmt⟪GTI18N_9eaab1fd_000012⟫ procura a interface ⟪GTI18N_9eaab1fd_000013⟫error⟪GTI18N_9eaab1fd_000014⟫ ao
+imprimir valores.)
+
+As funções devolvem frequentemente um valor ⟪GTI18N_9eaab1fd_000015⟫error⟪GTI18N_9eaab1fd_000016⟫, e o código que as chama deve tratar os erros
+testando se o erro é igual a ⟪GTI18N_9eaab1fd_000017⟫nil⟪GTI18N_9eaab1fd_000018⟫.
+
+⟪GTI18N_9eaab1fd_000019⟫
+
+Um ⟪GTI18N_9eaab1fd_000020⟫ ⟪GTI18N_9eaab1fd_000021⟫error⟪GTI18N_9eaab1fd_000022⟫ indica sucesso; um ⟪GTI18N_9eaab1fd_000024⟫error⟪GTI18N_9eaab1fd_000025⟫ não ⟪GTI18N_9eaab1fd_000023⟫ indica falha.
+
+⟪GTI18N_9eaab1fd_000026⟫

@@ -1,0 +1,50 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-am-ET-006",
+  "locale": "am-ET",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 3,
+  "units": [
+    {
+      "unit_id": "basics/12",
+      "unit_kind": "page",
+      "source_path": "_content/tour/basics.article",
+      "source_sha256": "d9ad62501c05359e7b2ac445fa92d629e11d6d378c2701b767abab76012a558e",
+      "input_path": "inputs/basics-12.article",
+      "input_sha256": "1ea463ab789d88cad33a6c7adf44fb524ea1f7e2574059f723a345f3c097faa7",
+      "protected_token_count": 9,
+      "previous_snapshot_id": "qc-002",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "原先 emphasis 内 “zero value” 的漏译已经关闭；按正式 Go Present 语义，_ዜሮ_እሴት_ 会形成单一 emphasis span，并显示为“ዜሮ እሴት”。但当前完整句子“የ _ዜሮ_እሴት_ እሴታቸውን ይቀበላሉ”在 emphasis 后再次使用“እሴት”，形成相当于“zero value value”的重复名词结构，Amharic 表达明显冗余、不自然。需在保持单一正确 Present emphasis span 和“their zero value”原义的同时消除该重复。"
+    },
+    {
+      "unit_id": "concurrency/2",
+      "unit_kind": "page",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "a35e3af26b51f8c2c2a6dfaf09f9c7cab0fdb4b1b56f9e4dc9b793f1dac1e295",
+      "input_path": "inputs/concurrency-2.article",
+      "input_sha256": "1a1001c042dcd888da4db2f0055fd5a6b964cbf6519053ed42286147567fef60",
+      "protected_token_count": 12,
+      "previous_snapshot_id": "qc-002",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "qc-001 中把 blocking 错译为“关闭”的核心技术错误已经关闭；当前“ታግደው ይጠብቃሉ”正确表达了阻塞等待。但本 Unit 仍有多处开放的普通技术自然语言直接残留英文，包括首段的 operator、conduits，以及同步说明中的 locks、condition variables。这些在正式 protected input 中均属于可翻译文本，而不是受保护代码 identity；当前造成明显语言混用。需自然本地化这些术语，同时保持 \u003c-、channel、goroutine 等技术 identity 和原技术含义不变。"
+    },
+    {
+      "unit_id": "concurrency/3",
+      "unit_kind": "page",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "caef0893a54c61f192be397f6b27a039d81dc007f98f2d203a5a287383c0682e",
+      "input_path": "inputs/concurrency-3.article",
+      "input_sha256": "6172e9bf00b0129958419496d93dd4b065190bffa38be16e74c87b4655185712",
+      "protected_token_count": 6,
+      "previous_snapshot_id": "qc-002",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "qc-001 中 buffered channel 的 blocking 行为已经正确修复为“ታግዶ ይጠብቃል”，核心技术语义已关闭。但当前标题及正文仍系统性保留开放自然语言 Buffered、buffered、buffer，例如“* Buffered ቻናሎች”、“_buffered_”、“የbuffer ርዝመቱን”及“bufferው”。这些不是代码标识符、Go keyword 或 glossary keep 项，导致该页核心概念持续以英文夹杂呈现。需一致、自然地本地化这一概念，并保持 make、chan int 等机器/代码 identity 不变。"
+    }
+  ]
+}

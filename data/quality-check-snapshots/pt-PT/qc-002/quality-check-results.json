@@ -1,0 +1,254 @@
+{
+  "schema_version": 2,
+  "evidence_type": "quality_check_results",
+  "locale": "pt-PT",
+  "snapshot_id": "qc-002",
+  "snapshot_manifest_sha256": "d91664f5293530c1437575479d9442398da1833a8ba4aa913c7f70e708dceeba",
+  "previous_snapshot_id": "qc-001",
+  "rubric": "translation-quality/v1",
+  "result_count": 47,
+  "results": [
+    {
+      "index": 17,
+      "unit_id": "basics/12",
+      "rating": "A"
+    },
+    {
+      "index": 24,
+      "unit_id": "flowcontrol/2",
+      "rating": "A"
+    },
+    {
+      "index": 30,
+      "unit_id": "flowcontrol/8",
+      "rating": "A"
+    },
+    {
+      "index": 47,
+      "unit_id": "moretypes/11",
+      "rating": "A"
+    },
+    {
+      "index": 61,
+      "unit_id": "moretypes/25",
+      "rating": "A"
+    },
+    {
+      "index": 62,
+      "unit_id": "moretypes/26",
+      "rating": "A"
+    },
+    {
+      "index": 63,
+      "unit_id": "moretypes/27",
+      "rating": "A"
+    },
+    {
+      "index": 64,
+      "unit_id": "methods/1",
+      "rating": "A"
+    },
+    {
+      "index": 65,
+      "unit_id": "methods/2",
+      "rating": "A"
+    },
+    {
+      "index": 66,
+      "unit_id": "methods/3",
+      "rating": "A"
+    },
+    {
+      "index": 67,
+      "unit_id": "methods/4",
+      "rating": "A"
+    },
+    {
+      "index": 68,
+      "unit_id": "methods/5",
+      "rating": "A"
+    },
+    {
+      "index": 69,
+      "unit_id": "methods/6",
+      "rating": "A"
+    },
+    {
+      "index": 70,
+      "unit_id": "methods/7",
+      "rating": "A"
+    },
+    {
+      "index": 71,
+      "unit_id": "methods/8",
+      "rating": "A"
+    },
+    {
+      "index": 72,
+      "unit_id": "methods/9",
+      "rating": "B",
+      "finding": "正文中的强调标签 *Note:* 仍保留为英文，属于未翻译的普通自然语言；应按 pt-PT 教程语气本地化该提示标签，同时保持原有强调结构。"
+    },
+    {
+      "index": 73,
+      "unit_id": "methods/10",
+      "rating": "A"
+    },
+    {
+      "index": 74,
+      "unit_id": "methods/11",
+      "rating": "A"
+    },
+    {
+      "index": 75,
+      "unit_id": "methods/12",
+      "rating": "A"
+    },
+    {
+      "index": 76,
+      "unit_id": "methods/13",
+      "rating": "A"
+    },
+    {
+      "index": 77,
+      "unit_id": "methods/14",
+      "rating": "A"
+    },
+    {
+      "index": 78,
+      "unit_id": "methods/15",
+      "rating": "A"
+    },
+    {
+      "index": 79,
+      "unit_id": "methods/16",
+      "rating": "C",
+      "finding": "在解释 type switch 时，前句已说明各 case 指定的是“tipos (não valores)”，随后却写成“esses valores são comparados...”，造成指代自相矛盾并模糊 Go 的实际语义。应明确被比较的是各 case 所指定的类型，与接口值中所持值的类型进行匹配。"
+    },
+    {
+      "index": 80,
+      "unit_id": "methods/17",
+      "rating": "B",
+      "finding": "O pacote fmt (e muitos outros) procura esta interface... 中主语包含并列的 e muitos outros，但谓语仍用单数 procura，在 pt-PT 中搭配不自然。应修正主谓一致，同时保持 Stringer / fmt 的技术身份不变。"
+    },
+    {
+      "index": 81,
+      "unit_id": "methods/18",
+      "rating": "A"
+    },
+    {
+      "index": 82,
+      "unit_id": "methods/19",
+      "rating": "C",
+      "finding": "结尾把 source 的 “a non-nil error denotes failure” 误写成第二个 “Um nil error indica falha”，导致成功/失败条件发生实质性技术错误：当前译文同时声称 nil 表示成功和失败。必须恢复 nil 与 non-nil 两种状态的正确对立含义。"
+    },
+    {
+      "index": 83,
+      "unit_id": "methods/20",
+      "rating": "A"
+    },
+    {
+      "index": 84,
+      "unit_id": "methods/21",
+      "rating": "A"
+    },
+    {
+      "index": 85,
+      "unit_id": "methods/22",
+      "rating": "A"
+    },
+    {
+      "index": 86,
+      "unit_id": "methods/23",
+      "rating": "A"
+    },
+    {
+      "index": 87,
+      "unit_id": "methods/24",
+      "rating": "A"
+    },
+    {
+      "index": 88,
+      "unit_id": "methods/25",
+      "rating": "A"
+    },
+    {
+      "index": 89,
+      "unit_id": "methods/26",
+      "rating": "A"
+    },
+    {
+      "index": 90,
+      "unit_id": "generics/1",
+      "rating": "A"
+    },
+    {
+      "index": 91,
+      "unit_id": "generics/2",
+      "rating": "A"
+    },
+    {
+      "index": 92,
+      "unit_id": "generics/3",
+      "rating": "A"
+    },
+    {
+      "index": 93,
+      "unit_id": "concurrency/1",
+      "rating": "B",
+      "finding": "Go runtime 在当前 glossary 的 preferred 术语是 runtime do Go，但译文使用 runtime de Go。该处正是这一完整技术概念且不存在语法上必须变体的上下文，应与当前 glossary 的既定 pt-PT 术语保持一致。"
+    },
+    {
+      "index": 94,
+      "unit_id": "concurrency/2",
+      "rating": "A"
+    },
+    {
+      "index": 95,
+      "unit_id": "concurrency/3",
+      "rating": "A"
+    },
+    {
+      "index": 96,
+      "unit_id": "concurrency/4",
+      "rating": "B",
+      "finding": "Um remetente pode executar close num canal 虽可理解，但 executar close num canal 在 pt-PT 技术说明中明显生硬，且同一 Unit 后文已经自然使用“fechar um canal”。应统一为自然的关闭操作表述，并保留 close 这一 Go builtin 的技术身份。"
+    },
+    {
+      "index": 97,
+      "unit_id": "concurrency/5",
+      "rating": "A"
+    },
+    {
+      "index": 98,
+      "unit_id": "concurrency/6",
+      "rating": "A"
+    },
+    {
+      "index": 99,
+      "unit_id": "concurrency/7",
+      "rating": "A"
+    },
+    {
+      "index": 100,
+      "unit_id": "concurrency/8",
+      "rating": "A"
+    },
+    {
+      "index": 101,
+      "unit_id": "concurrency/9",
+      "rating": "B",
+      "finding": "envolvendo-o com uma chamada a Lock e Unlock 把两个独立的方法调用表述为单数“uma chamada”，技术表达不够准确且不自然。应清楚表达代码块由对 Lock 与 Unlock 的相应调用包围，同时保持两个方法名不变。"
+    },
+    {
+      "index": 102,
+      "unit_id": "concurrency/10",
+      "rating": "A"
+    },
+    {
+      "index": 103,
+      "unit_id": "concurrency/11",
+      "rating": "A"
+    }
+  ]
+}

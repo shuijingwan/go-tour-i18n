@@ -1,0 +1,15 @@
+* የSwitch ግምገማ ቅደም ተከተል
+
+የSwitch caseዎች ከላይ ወደ ታች ይገመገማሉ፣ አንድ case ሲሳካም ይቆማሉ።
+
+(ለምሳሌ፣
+
+	switch i {
+	case 0:
+	case f():
+	}
+
+`i==0` ከሆነ `f` ን አይጠራም።)
+
+
+.play flowcontrol/switch-evaluation-order.go

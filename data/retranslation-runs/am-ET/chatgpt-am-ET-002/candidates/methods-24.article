@@ -1,0 +1,21 @@
+* ምስሎች
+
+[[/pkg/image/#Image][የimage ጥቅል]] የ `Image` በይነገጽን ይገልጻል፦
+
+	package image
+
+	type Image interface {
+		ColorModel() color.Model
+		Bounds() Rectangle
+		At(x, y int) color.Color
+	}
+
+*ማስታወሻ*፦ የ `Bounds` ዘዴ የሚመልሰው `Rectangle` እሴት በእርግጥ
+[[/pkg/image/#Rectangle][`image.Rectangle`]] ነው፣ ምክንያቱም
+መግለጫው በ `image` ጥቅል ውስጥ ነው።
+
+(ሁሉንም ዝርዝሮች ለማየት [[/pkg/image/#Image][ሰነዱን]] ይመልከቱ።)
+
+የ `color.Color` እና `color.Model` ዓይነቶችም በይነገጾች ናቸው፣ ነገር ግን ቀድሞ የተገለጹትን `color.RGBA` እና `color.RGBAModel` ትግበራዎች በመጠቀም ያንን ችላ እንለዋለን። እነዚህ በይነገጾችና ዓይነቶች በ[[/pkg/image/color/][image/color ጥቅል]] ይገለጻሉ።
+
+.play methods/images.go

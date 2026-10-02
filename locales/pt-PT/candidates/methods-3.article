@@ -1,0 +1,12 @@
+* Métodos (continuação)
+
+Também pode declarar um método em tipos que não sejam estruturas.
+
+Neste exemplo, vemos um tipo numérico `MyFloat` com um método `Abs`.
+
+Só pode declarar um método com um recetor cujo tipo esteja definido no mesmo
+pacote que o método.
+Não pode declarar um método com um recetor cujo tipo esteja definido noutro
+pacote (o que inclui tipos incorporados, como `int`).
+
+.play methods/methods-continued.go

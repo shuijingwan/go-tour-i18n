@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "evidence_type": "glossary-review-receipt",
+  "locale": "pt-PT",
+  "review_id": "20261001-pt-PT-glossary-001",
+  "stage": "locale-glossary-review",
+  "decision": "failed",
+  "reviewer": "chatgpt-gpt-5.6-sol-high",
+  "rubric": "glossary-review/v1",
+  "glossary_path": "locales/pt-PT/glossary.yaml",
+  "glossary_sha256": "8ef263b0de567a83110ad844cf4f75ac57cfc8034e3a55a07e87c97390e5bb8f",
+  "findings": [
+    "section=mandatory term=Go vet failed. issue=glossary.yaml 存在无法作为 YAML authority 解析的语法问题，多个 mandatory 条目的英文 source key 含有未转义的冒号，导致完整 glossary 无法被标准 YAML parser 读取。 evidence=formal/glossary.yaml 中 Go vet failed.、Go build failed.、Error communicating with remote server. 等条目使用了包含冒号的裸 key；同类 {count} test failed. 也会触发解析失败。 required_change=Generation session 必须修复 glossary YAML 结构，使所有包含 YAML 特殊字符的术语 key 能被正式解析，并重新提交完整 glossary 供独立 Reviewer 重新审核。"
+  ]
+}

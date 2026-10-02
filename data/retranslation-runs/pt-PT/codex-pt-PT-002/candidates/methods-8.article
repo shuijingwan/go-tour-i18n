@@ -1,0 +1,17 @@
+* Escolher um recetor por valor ou por ponteiro
+
+Há duas razões para utilizar um recetor por ponteiro.
+
+A primeira é permitir que o método modifique o valor para o qual o recetor aponta.
+
+A segunda é evitar copiar o valor em cada chamada do método.
+Isto pode ser mais eficiente se o recetor for, por exemplo, uma estrutura de grandes dimensões.
+
+Neste exemplo, tanto `Scale` como `Abs` são métodos cujo tipo de recetor é `*Vertex`,
+apesar de o método `Abs` não precisar de modificar o recetor.
+
+De um modo geral, todos os métodos de um determinado tipo devem ter recetores
+por valor ou por ponteiro, mas não uma mistura dos dois.
+(Veremos a razão nas próximas páginas.)
+
+.play methods/methods-with-pointer-receivers.go

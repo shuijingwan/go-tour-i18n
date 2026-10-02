@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "evidence_type": "glossary-review-receipt",
+  "locale": "pt-PT",
+  "review_id": "20261001-pt-PT-glossary-003",
+  "stage": "locale-glossary-review",
+  "decision": "failed",
+  "reviewer": "chatgpt-gpt-5.6-sol-high",
+  "rubric": "glossary-review/v1",
+  "glossary_path": "locales/pt-PT/glossary.yaml",
+  "glossary_sha256": "c3e3b4ecf7fff454cfb441a23ad069064f3f8ccfd24909284ed56cc601d27dae",
+  "findings": [
+    "keep contains unrelated technical identities with no Go Tour glossary/source-context evidence: USDC, USDT, Base, Tron, TRC20, UID; remove them from the pt-PT glossary authority.",
+    "keep includes broad or implementation/platform terms without source-context justification and duplicates structural/protector responsibilities: /socket, CSS, JavaScript; remove them unless justified by formal source context.",
+    "The remaining glossary structure and Portuguese terminology decisions are generally coherent; re-review the complete revised glossary after the specified keep cleanup."
+  ]
+}

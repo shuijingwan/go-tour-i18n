@@ -1,0 +1,11 @@
+* Pacotes
+
+Todos os programas Go são constituídos por pacotes.
+
+Os programas começam a ser executados no pacote `main`.
+
+Este programa utiliza os pacotes com os caminhos de importação `"fmt"` e `"math/rand"`.
+
+Por convenção, o nome do pacote é igual ao último elemento do caminho de importação. Por exemplo, o pacote `"math/rand"` contém ficheiros que começam com a instrução `package`rand`.
+
+.play basics/packages.go

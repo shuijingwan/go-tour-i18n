@@ -1,0 +1,12 @@
+* Stringer-ዎች
+
+በጣም በስፋት ከሚጠቀሙባቸው በይነገጾች አንዱ በ[[/pkg/fmt/][`fmt`]] ጥቅል የተገለጸው [[/pkg/fmt/#Stringer][`Stringer`]] ነው።
+
+	type Stringer interface {
+		String() string
+	}
+
+`Stringer` ራሱን እንደ string ሊገልጽ የሚችል ዓይነት ነው። የ `fmt` ጥቅል
+(እና ሌሎች ብዙ ጥቅሎች) እሴቶችን ለማተም ይህን በይነገጽ ይፈልጋሉ።
+
+.play methods/stringer.go

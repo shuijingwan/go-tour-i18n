@@ -1,0 +1,8 @@
+* Valores de interface nil
+
+Um valor de interface nil não contém qualquer valor nem tipo concreto.
+
+Chamar um método numa interface nil é um erro em tempo de execução, porque não existe
+um tipo dentro do par da interface que indique qual método _concreto_ deve ser chamado.
+
+.play methods/nil-interface-values.go

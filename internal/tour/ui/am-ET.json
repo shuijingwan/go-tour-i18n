@@ -1,0 +1,458 @@
+{
+  "locale": "am-ET",
+  "html_lang": "am-ET",
+  "messages": {
+    "editor.format": {
+      "kind": "plain",
+      "text": "ቅርጸት"
+    },
+    "editor.imports": {
+      "kind": "plain",
+      "text": "አስገባ"
+    },
+    "editor.kill": {
+      "kind": "plain",
+      "text": "አቁም"
+    },
+    "editor.off": {
+      "kind": "plain",
+      "text": "ጠፍቷል"
+    },
+    "editor.on": {
+      "kind": "plain",
+      "text": "በርቷል"
+    },
+    "editor.reset": {
+      "kind": "plain",
+      "text": "ዳግም አስጀምር"
+    },
+    "editor.run": {
+      "kind": "plain",
+      "text": "አስኪድ"
+    },
+    "editor.syntax": {
+      "kind": "plain",
+      "text": "አገባብ"
+    },
+    "error.not_found": {
+      "kind": "plain",
+      "text": "404 ገጹ አልተገኘም"
+    },
+    "execution.build_failed": {
+      "kind": "plain",
+      "text": "Go build አልተሳካም።"
+    },
+    "execution.communication_error": {
+      "kind": "plain",
+      "text": "ከርቀት አገልጋዩ ጋር ሲገናኝ ስህተት ተፈጥሯል።"
+    },
+    "execution.exited": {
+      "kind": "plain",
+      "text": "ፕሮግራሙ አብቅቷል"
+    },
+    "execution.test_failed": {
+      "kind": "plain",
+      "text": "{count} ሙከራ አልተሳካም።"
+    },
+    "execution.tests_failed": {
+      "kind": "plain",
+      "text": "{count} ሙከራዎች አልተሳኩም።"
+    },
+    "execution.tests_passed": {
+      "kind": "plain",
+      "text": "ሁሉም ሙከራዎች ተሳክተዋል።"
+    },
+    "execution.vet_failed": {
+      "kind": "plain",
+      "text": "Go vet አልተሳካም።"
+    },
+    "execution.waiting": {
+      "kind": "plain",
+      "text": "የርቀት አገልጋዩን በመጠበቅ ላይ..."
+    },
+    "feedback.context": {
+      "kind": "plain",
+      "text": "አውድ"
+    },
+    "feedback.issue_body": {
+      "kind": "plain",
+      "text": "ከላይ ያለውን ርዕስ ችግርዎን እንዲገልጽ ይቀይሩ፣ እና አስፈላጊ ከሆነ ኮድን ጨምሮ ግብረመልስዎን እዚህ ያክሉ።"
+    },
+    "feedback.issue_title": {
+      "kind": "plain",
+      "text": "x/website/_content/tour: [አጭር መግለጫ ያስገቡ]"
+    },
+    "feedback.open": {
+      "kind": "plain",
+      "text": "ስለዚህ ገጽ ግብረመልስ ላክ"
+    },
+    "footer.development_log": {
+      "kind": "plain",
+      "text": "የልማት መዝገብ"
+    },
+    "footer.github": {
+      "kind": "plain",
+      "text": "GitHub"
+    },
+    "footer.home": {
+      "kind": "plain",
+      "text": "መነሻ"
+    },
+    "footer.unofficial": {
+      "kind": "plain",
+      "text": "Yongye · ይፋዊ ያልሆነ የማህበረሰብ ባለብዙ ቋንቋ የትርጉም ፕሮጀክት"
+    },
+    "header.about_project": {
+      "kind": "plain",
+      "text": "ስለዚህ ፕሮጀክት"
+    },
+    "module.basics.description": {
+      "kind": "rich",
+      "text": "<p>መነሻው ይህ ነው፤ የቋንቋውን መሠረታዊ ነገሮች ሁሉ ይማሩ።</p><p>የተለዋዋጭ መግለጫን መፍጠር፣ ተግባርን መጥራት እና ወደ ቀጣይ ትምህርቶች ከመሄድዎ በፊት ማወቅ ያለብዎትን ሁሉ ይማሩ።</p>"
+    },
+    "module.basics.title": {
+      "kind": "plain",
+      "text": "መሠረታዊ ነገሮች"
+    },
+    "module.concurrency.description": {
+      "kind": "rich",
+      "text": "<p>Go ተጓዳኝነትን እንደ ዋና የቋንቋው ክፍል ያቀርባል።</p><p>ይህ ሞጁል goroutine እና ቻናልን ይዳስሳል፣ እንዲሁም የተለያዩ የተጓዳኝነት ንድፎችን ለመተግበር እንዴት እንደሚጠቀሙባቸው ያሳያል።</p>"
+    },
+    "module.concurrency.title": {
+      "kind": "plain",
+      "text": "ተጓዳኝነት"
+    },
+    "module.generics.description": {
+      "kind": "rich",
+      "text": "<p>በGo ውስጥ በተግባር እና በመዋቅር ላይ የዓይነት መለኪያን እንዴት እንደሚጠቀሙ ይማሩ።</p>"
+    },
+    "module.generics.title": {
+      "kind": "plain",
+      "text": "ጄኔሪክስ"
+    },
+    "module.methods.description": {
+      "kind": "rich",
+      "text": "<p>በዓይነቶች ላይ ዘዴን እንዴት እንደሚገልጹ፣ በይነገጽን እንዴት እንደሚያውጁ እና ሁሉንም ነገር እንዴት አንድ ላይ እንደሚያዋህዱ ይማሩ።</p>"
+    },
+    "module.methods.title": {
+      "kind": "plain",
+      "text": "ዘዴ እና በይነገጽ"
+    },
+    "module.using_tour.description": {
+      "kind": "rich",
+      "text": "<p>ወደ <a href=\"https://go.dev\">Go ፕሮግራሚንግ ቋንቋ</a> ጉብኝት እንኳን ደህና መጡ። ይህ ጉብኝት የቋንቋውን እጅግ አስፈላጊ ባህሪያት በዋናነት ይሸፍናል፦</p>"
+    },
+    "module.using_tour.title": {
+      "kind": "plain",
+      "text": "A Tour of Goን መጠቀም"
+    },
+    "site.architecture_languages": {
+      "kind": "plain",
+      "text": "አገልጋዩ፣ templates፣ CSS፣ JavaScript፣ ምስሎች እና fonts ተግባራዊ በሆነበት ቦታ ይጋራሉ። እያንዳንዱ ቋንቋ የኮርስ ትርጉሞችን፣ UI ጽሑፍን፣ ቃላትን እና ሁኔታን በተናጠል ይጠብቃል። ቀለል ያለ ቻይንኛ መጀመሪያ የተሰጠው ቋንቋ ነው፣ ተጨማሪ ቋንቋዎችን ለመጨመርም ቦታ አለ።"
+    },
+    "site.architecture_playground": {
+      "kind": "plain",
+      "text": "በአሳሹ ውስጥ ያሉ የGo ምሳሌዎች በተቆጣጠረ የርቀት Playground proxy በኩል ይሰራሉ፤ production የአካባቢውን /socket የኮድ ማስኬጃ endpoint አያጋልጥም።"
+    },
+    "site.architecture_title": {
+      "kind": "plain",
+      "text": "ክትትል ሊደረግበት የሚችል፣ በቁጥጥር ሥር ያለ እና ሊስፋፋ የሚችል አርክቴክቸር"
+    },
+    "site.architecture_upstream": {
+      "kind": "plain",
+      "text": "ፕሮጀክቱ ይፋዊውን upstream commit በቀጣይነት ይመዘግባል፣ ለወደፊት የምንጭ ዝማኔዎች ሊከታተል የሚችል መነሻ ይጠብቃል።"
+    },
+    "site.browser_title": {
+      "kind": "plain",
+      "text": "Yongye · A Tour of Go ባለብዙ ቋንቋ የትርጉም ፕሮጀክት"
+    },
+    "site.community_version": {
+      "kind": "plain",
+      "text": "የማህበረሰብ ትርጉም"
+    },
+    "site.continue_learning": {
+      "kind": "plain",
+      "text": "በgo.dev ላይ Goን መማርዎን ይቀጥሉ"
+    },
+    "site.continue_learning_description": {
+      "kind": "plain",
+      "text": "A Tour of Go መጀመሪያ ብቻ ነው። ከጨረሱት በኋላ፣ ለይፋዊ ሰነዶች፣ አጋዥ ትምህርቶች፣ የመደበኛ ቤተ መጻሕፍት ማጣቀሻ፣ የቋንቋ ዝርዝር መግለጫ እና ተጨማሪ የGo መማሪያ ምንጮች go.devን ይጎብኙ።"
+    },
+    "site.continue_learning_title": {
+      "kind": "plain",
+      "text": "Goን መማርዎን ይቀጥሉ"
+    },
+    "site.course_pages": {
+      "kind": "plain",
+      "text": "የኮርስ ገጾች"
+    },
+    "site.current_language": {
+      "kind": "plain",
+      "text": "የአሁኑ ቋንቋ"
+    },
+    "site.current_projects": {
+      "kind": "plain",
+      "text": "የአሁኑ የትርጉም ፕሮጀክት"
+    },
+    "site.development_environment": {
+      "kind": "plain",
+      "text": "የልማት አካባቢ"
+    },
+    "site.development_log": {
+      "kind": "plain",
+      "text": "የልማት መዝገብ፦ A Tour of Go ባለብዙ ቋንቋ የትርጉም ፕሮጀክት"
+    },
+    "site.enter_tour": {
+      "kind": "plain",
+      "text": "ወደ A Tour of Go ይግቡ"
+    },
+    "site.environment": {
+      "kind": "plain",
+      "text": "አካባቢ"
+    },
+    "site.how_it_works": {
+      "kind": "plain",
+      "text": "ፕሮጀክቱ እንዴት እንደሚሰራ"
+    },
+    "site.how_it_works_intro": {
+      "kind": "plain",
+      "text": "የኮርስ አካባቢያዊነት ዓረፍተ ነገር በዓረፍተ ነገር መተካት አይደለም። በሙሉ የይዘት አሃዶች፣ ሊከታተሉ የሚችሉ የግምገማ ሁኔታዎች እና ሊረጋገጡ የሚችሉ የልቀት ውጤቶች ላይ የተመሠረተ የስራ ፍሰት ነው።"
+    },
+    "site.intro": {
+      "kind": "plain",
+      "text": "ለይፋዊ የGo የመማሪያ ይዘት በማህበረሰብ የሚጠበቅ የትርጉም ፕሮጀክት። ቀለል ያለ ቻይንኛ የመጀመሪያው የሚገኝ ቋንቋ ነው፣ እና መዋቅሩ ተጨማሪ ቋንቋዎችን እና የGo ይዘትን ለመደገፍ ሊስፋፋ ይችላል።"
+    },
+    "site.issue_feedback": {
+      "kind": "plain",
+      "text": "GitHub Issues"
+    },
+    "site.language_versions": {
+      "kind": "plain",
+      "text": "የቋንቋ ስሪቶች"
+    },
+    "site.latest_release": {
+      "kind": "plain",
+      "text": "የቅርብ ጊዜ ልቀት"
+    },
+    "site.no_affiliation": {
+      "kind": "plain",
+      "text": "ይህ ፕሮጀክት ከGo ፕሮጀክት ጋር ግንኙነት የለውም፣ ፈቃድ አልተሰጠውም እና በGo ፕሮጀክት አልተደገፈም።"
+    },
+    "site.official_upstream": {
+      "kind": "plain",
+      "text": "ይፋዊ upstream"
+    },
+    "site.official_version": {
+      "kind": "plain",
+      "text": "ይፋዊ A Tour of Go"
+    },
+    "site.open_official_tour": {
+      "kind": "plain",
+      "text": "ይፋዊውን A Tour of Go ክፈት"
+    },
+    "site.operations_note": {
+      "kind": "plain",
+      "text": "ይህ ጣቢያ እንደ አገልጋዮች፣ bandwidth እና CDN አገልግሎቶች ያሉ የመሠረተ ልማት ወጪዎችን እንዲሁም ፕሮጀክቱን በቀጣይነት የመጠበቅ ወጪን ለመሸፈን ማስታወቂያ ሊያሳይ ይችላል። ምንጭ ኮዱ ይፋዊ ሆኖ ይቆያል፣ እና በራስ አገልጋይ ላይ የሚደረጉ መዘርጋቶች በነባሪ የዚህን ጣቢያ የማስታወቂያ ውቅር አያነቁም።"
+    },
+    "site.project_links": {
+      "kind": "plain",
+      "text": "የፕሮጀክት አገናኞች"
+    },
+    "site.project_status": {
+      "kind": "plain",
+      "text": "የፕሮጀክት ሁኔታ"
+    },
+    "site.source_code": {
+      "kind": "plain",
+      "text": "የGitHub ምንጭ ኮድ"
+    },
+    "site.start_learning": {
+      "kind": "plain",
+      "text": "መማር ይጀምሩ"
+    },
+    "site.title": {
+      "kind": "plain",
+      "text": "A Tour of Go ባለብዙ ቋንቋ የትርጉም ፕሮጀክት"
+    },
+    "site.tour_description": {
+      "kind": "plain",
+      "text": "ለGo ፕሮግራሚንግ ቋንቋ በይነተገናኝ መግቢያ።"
+    },
+    "site.translation_validation": {
+      "kind": "plain",
+      "text": "ትርጉም እና ማረጋገጫ"
+    },
+    "site.translation_validation_intro": {
+      "kind": "plain",
+      "text": "ፕሮጀክቱ እያንዳንዱን ልቀት ከማተም በፊት በመፈተሽ የመማር ልምዱን ከይፋዊው ምንጭ ጋር ቅርብ ያደርገዋል።"
+    },
+    "site.unofficial": {
+      "kind": "plain",
+      "text": "በYongye የሚጠበቅ · ይፋዊ ያልሆነ የማህበረሰብ ባለብዙ ቋንቋ የትርጉም ፕሮጀክት"
+    },
+    "site.upstream_baseline": {
+      "kind": "plain",
+      "text": "ይፋዊ የምንጭ መነሻ"
+    },
+    "site.upstream_commit_time": {
+      "kind": "plain",
+      "text": "የupstream commit ጊዜ"
+    },
+    "site.validation_examples": {
+      "kind": "plain",
+      "text": "ሊተረጎሙ የሚችሉ የተፈጥሮ ቋንቋ አስተያየቶች ያላቸው የGo Example ፋይሎችም ወደ አንድ የማረጋገጫ የስራ ፍሰት ይገባሉ፤ ሌሎቹ Example ደግሞ ይፋዊውን ምንጭ በቀጥታ መጠቀማቸውን ይቀጥላሉ።"
+    },
+    "site.validation_page_unit": {
+      "kind": "plain",
+      "text": "ትርጉሞች ሙሉ የኮርስ ገጾችን እንደ አሃድ ይጠቀማሉ።"
+    },
+    "site.validation_present": {
+      "kind": "plain",
+      "text": "እያንዳንዱ ልቀት present በመጠቀም ይተነተናል።"
+    },
+    "site.validation_render": {
+      "kind": "plain",
+      "text": "የተቀረቡ ገጾች ከልቀት በፊት ይፈተሻሉ።"
+    },
+    "site.validation_structure": {
+      "kind": "plain",
+      "text": "የገጹ መዋቅር ከይፋዊው ምንጭ ጋር ይነጻጸራል።"
+    },
+    "site.workflow_process": {
+      "kind": "plain",
+      "text": "እያንዳንዱ አሃድ በትርጉም፣ በራስ-ሰር ማረጋገጫ፣ Translation Quality Review፣ promotion፣ ready፣ projection እና publish ውስጥ ያልፋል፤ የተፈጠሩ ትርጉሞች በቀጥታ አይታተሙም።"
+    },
+    "site.workflow_publish": {
+      "kind": "plain",
+      "text": "ማተም canonical ready candidatesን በመጠቀም ሙሉ አካባቢያዊ projection ይገነባል፣ በworkflow ውስጥ ያለ እያንዳንዱ TranslationUnit ready እንዲሆን ይጠይቃል፣ ከዚያም production binary፣ release.json እና SHA256SUMSን ፈጥሮ ሙሉ bundleን ያረጋግጣል።"
+    },
+    "site.workflow_review": {
+      "kind": "plain",
+      "text": "ራስ-ሰር ፍተሻዎች መዋቅርን ይጠብቃሉ፣ የpresent ይዘትን ይተነትናሉ፣ ከይፋዊው ምንጭ ጋር ያነጻጽራሉ፣ የቀረበውን ውጤትና ገጾችን ያረጋግጣሉ፣ እና የExample Go ይዘትን ይፈትሻሉ። promotion ከመደረጉ በፊት ገለልተኛ የትርጉም ጥራት ግምገማ አሁንም ያስፈልጋል።"
+    },
+    "site.workflow_title": {
+      "kind": "plain",
+      "text": "ከTranslationUnit ወደ production"
+    },
+    "site.workflow_units": {
+      "kind": "plain",
+      "text": "TranslationUnit ሁለቱንም ሙሉ Page እና ብቁ Example ይወክላል፦ Page ሙሉ present.Section ሲሆን፣ Example ደግሞ ሊተረጎሙ የሚችሉ የተፈጥሮ ቋንቋ አስተያየቶችን የያዘ ሙሉ .go ፋይል ነው።"
+    },
+    "support.address": {
+      "kind": "plain",
+      "text": "አድራሻ"
+    },
+    "support.advertising_title": {
+      "kind": "plain",
+      "text": "የማስታወቂያ ማሳሰቢያ"
+    },
+    "support.asset": {
+      "kind": "plain",
+      "text": "ንብረት"
+    },
+    "support.copied": {
+      "kind": "plain",
+      "text": "ተቀድቷል"
+    },
+    "support.copy_address": {
+      "kind": "plain",
+      "text": "አድራሻውን ቅዳ"
+    },
+    "support.copy_reference": {
+      "kind": "plain",
+      "text": "ማጣቀሻውን ቅዳ"
+    },
+    "support.copy_uid": {
+      "kind": "plain",
+      "text": "UIDን ቅዳ"
+    },
+    "support.intro": {
+      "kind": "plain",
+      "text": "የዚህን የቋንቋ ስሪት ቀጣይ ጥገና በፈቃድዎ መደገፍ ይችላሉ። ድጋፍዎ ይህ ስሪት መጠበቅና መሻሻሉን እንዲቀጥል ይረዳል።"
+    },
+    "support.minimum_deposit": {
+      "kind": "plain",
+      "text": "በተቀባይ ወገን ዝቅተኛው መጠን"
+    },
+    "support.network": {
+      "kind": "plain",
+      "text": "አውታረ መረብ"
+    },
+    "support.platform_help": {
+      "kind": "plain",
+      "text": "ተመሳሳይ ፕላትፎርም የሚጠቀሙ ተጠቃሚዎች ውስጣዊ የUID ዝውውርን መጠቀም ይችላሉ። ለዝርዝሩ ፕላትፎርሙን ይመልከቱ።"
+    },
+    "support.platform_title": {
+      "kind": "plain",
+      "text": "የፕላትፎርሙ ውስጣዊ ዝውውር (አማራጭ)"
+    },
+    "support.reference_help": {
+      "kind": "plain",
+      "text": "የክፍያ አገልግሎትዎ ማስታወሻ ወይም ማጣቀሻ ካስቻለ፣ ይህን እሴት መጠቀም ይችላሉ።"
+    },
+    "support.reference_label": {
+      "kind": "plain",
+      "text": "የድጋፍ ማጣቀሻ"
+    },
+    "support.section_title": {
+      "kind": "plain",
+      "text": "ድጋፍ እና የአሠራር ወጪዎች"
+    },
+    "support.translation_title": {
+      "kind": "plain",
+      "text": "ይህን የቋንቋ ስሪት ይደግፉ"
+    },
+    "support.uid": {
+      "kind": "plain",
+      "text": "UID"
+    },
+    "support.usdc_network_only": {
+      "kind": "plain",
+      "text": "USDCን በBase አውታረ መረብ ብቻ ይላኩ።"
+    },
+    "support.usdt_network_only": {
+      "kind": "plain",
+      "text": "USDTን በTron (TRC20) አውታረ መረብ ብቻ ይላኩ።"
+    },
+    "support.wrong_network_warning": {
+      "kind": "plain",
+      "text": "የተሳሳተ ንብረት ወይም አውታረ መረብ መጠቀም ገንዘብ እንዲጠፋ ሊያደርግ ይችላል።"
+    },
+    "theme.dark": {
+      "kind": "plain",
+      "text": "ጨለማ ገጽታ"
+    },
+    "theme.light": {
+      "kind": "plain",
+      "text": "ብርሃን ገጽታ"
+    },
+    "theme.system": {
+      "kind": "plain",
+      "text": "የስርዓት ገጽታ"
+    },
+    "theme.toggle": {
+      "kind": "plain",
+      "text": "ገጽታን ቀይር"
+    },
+    "toc.title": {
+      "kind": "plain",
+      "text": "የይዘት ማውጫ"
+    },
+    "tour.list_description": {
+      "kind": "plain",
+      "text": "የGo ፕሮግራሚንግ ቋንቋን በይነተገናኝ መንገድ የሚያስተዋውቀውን A Tour of Go ሞጁሎችና ትምህርቶች ያስሱ።"
+    },
+    "tour.list_heading": {
+      "kind": "plain",
+      "text": "ወደ Go ጉብኝት እንኳን ደህና መጡ"
+    },
+    "tour.list_title": {
+      "kind": "plain",
+      "text": "የኮርስ ማውጫ — A Tour of Go"
+    },
+    "tour.title": {
+      "kind": "plain",
+      "text": "A Tour of Go"
+    }
+  }
+}

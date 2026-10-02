@@ -1,0 +1,40 @@
+{
+  "schema_version": 2,
+  "batch_id": "codex-pt-PT-004",
+  "locale": "pt-PT",
+  "unit_count": 4,
+  "restore_passed": 4,
+  "restore_failed": 0,
+  "validation_passed": 4,
+  "validation_failed": 0,
+  "units": [
+    {
+      "unit_id": "basics/12",
+      "unit_kind": "page",
+      "status": "passed",
+      "candidate_path": "candidates/basics-12.article",
+      "validation_path": "validation/basics-12.json"
+    },
+    {
+      "unit_id": "flowcontrol/2",
+      "unit_kind": "page",
+      "status": "passed",
+      "candidate_path": "candidates/flowcontrol-2.article",
+      "validation_path": "validation/flowcontrol-2.json"
+    },
+    {
+      "unit_id": "flowcontrol/8",
+      "unit_kind": "page",
+      "status": "passed",
+      "candidate_path": "candidates/flowcontrol-8.article",
+      "validation_path": "validation/flowcontrol-8.json"
+    },
+    {
+      "unit_id": "moretypes/11",
+      "unit_kind": "page",
+      "status": "passed",
+      "candidate_path": "candidates/moretypes-11.article",
+      "validation_path": "validation/moretypes-11.json"
+    }
+  ]
+}

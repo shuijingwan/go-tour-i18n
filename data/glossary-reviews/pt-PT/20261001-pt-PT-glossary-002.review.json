@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "evidence_type": "glossary-review-receipt",
+  "locale": "pt-PT",
+  "review_id": "20261001-pt-PT-glossary-002",
+  "stage": "locale-glossary-review",
+  "decision": "failed",
+  "reviewer": "chatgpt-gpt-5.6-sol-high",
+  "rubric": "glossary-review/v1",
+  "glossary_path": "locales/pt-PT/glossary.yaml",
+  "glossary_sha256": "b7bc90fe54c288209d632bc975e86ed93d108a00bbcf878cf42a8f8fe5c53dcb",
+  "findings": [
+    "section=mandatory term=True / False issue=glossary.yaml 虽然可以被 YAML parser 读取，但 True 和 False 条目未作为字符串术语解析，其中 True 被标准 YAML 解析为布尔值 key（true），导致 glossary authority 中的术语键类型不稳定，无法保证后续工具按原始 UI token 精确匹配。 evidence=formal/glossary.yaml 的 mandatory 部分包含 True: Ativado 与 False: Desativado；使用标准 YAML 1.1/兼容解析器读取后会被解析为 boolean，而不是字符串。 required_change=Generation session 必须将布尔值形式的术语 key 修正为不会被 YAML 解析器转换的字符串形式，并重新提交完整 glossary 供独立 Reviewer 重新审核。"
+  ]
+}

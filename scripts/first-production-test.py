@@ -548,9 +548,13 @@ printf 200
         for guard in (
             "production_state must be first-production", "receipt is not an explicit deploy failure",
             "current does not point exactly to the receipt failed release",
-            "deployment lock is not the expected directory", "service is healthy; refusing health-failure recovery",
+            "deployment lock is not the expected directory",
             "RECOVERED_FIRST_DEPLOYMENT_HEALTH_FAILURE", "mv -T -- \"$current\" \"$recovery\"",
-            "rmdir -- \"$lock\"", "failed release preserved",
+            "RECOVERED_FIRST_DEPLOYMENT_LATE_HEALTH",
+            "healthy recovered release manifest differs from the local failed release",
+            "healthy recovered release checksum verification failed",
+            "healthy recovered service does not execute the receipt release binary",
+            "stages['deploy']", "rmdir -- \"$lock\"", "failed release preserved",
         ):
             self.assertIn(guard, source)
         self.assertNotIn("force-unlock", source)

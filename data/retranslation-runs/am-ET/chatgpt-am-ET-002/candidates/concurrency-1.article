@@ -1,0 +1,15 @@
+* goroutine-ዎች
+
+_goroutine_ በGo የማስኬጃ ጊዜ የሚተዳደር ቀላል thread ነው።
+
+	go f(x, y, z)
+
+አዲስ goroutine በመጀመር
+
+	f(x, y, z)
+
+እንዲሰራ ያደርጋል። የ `f`፣ `x`፣ `y` እና `z` ግምገማ በአሁኑ goroutine ውስጥ ይከናወናል፣ የ `f` አፈጻጸም ግን በአዲሱ goroutine ውስጥ ይከናወናል።
+
+goroutine-ዎች በአንድ የአድራሻ ቦታ ውስጥ ይሰራሉ፣ ስለዚህ የጋራ ማህደረ ትውስታን ማግኘት ማመሳሰል አለበት። የ[[/pkg/sync/][`sync`]] ጥቅል ጠቃሚ primitives ያቀርባል፣ ሆኖም በGo ውስጥ ሌሎች primitives ስላሉ ብዙ አያስፈልጉዎትም። (ቀጣዩን slide ይመልከቱ።)
+
+.play concurrency/goroutines.go

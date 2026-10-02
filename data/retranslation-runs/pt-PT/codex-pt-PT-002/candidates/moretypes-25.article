@@ -1,0 +1,7 @@
+* Closures de funções
+
+As funções de Go podem ser closures. Uma closure é um valor de função que referencia variáveis exteriores ao seu corpo. A função pode aceder às variáveis referenciadas e atribuir-lhes valores; neste sentido, a função fica «associada» às variáveis.
+
+Por exemplo, a função `adder` devolve uma closure. Cada closure fica associada à sua própria variável `sum`.
+
+.play moretypes/function-closures.go

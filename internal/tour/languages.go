@@ -24,6 +24,7 @@ type LanguageLink struct {
 
 var languageRegistry = []LanguageLink{
 	// 展示顺序按英文语言名称字母顺序排列。
+	{Locale: "am-ET", EnglishName: "Amharic", Autonym: "አማርኛ", URL: "https://am-go-dev.shuijingwanwq.com/"},
 	{Locale: "ar", EnglishName: "Arabic", Autonym: "العربية", URL: "https://ar-go-dev.shuijingwanwq.com/"},
 	{Locale: "bn-BD", EnglishName: "Bengali", Autonym: "বাংলা", URL: "https://bn-go-dev.shuijingwanwq.com/"},
 	{Locale: "pt-BR", EnglishName: "Brazilian Portuguese", Autonym: "Português (Brasil)", URL: "https://pt-go-dev.shuijingwanwq.com/"},
@@ -58,8 +59,10 @@ var languageRegistry = []LanguageLink{
 	{Locale: "nb-NO", EnglishName: "Norwegian Bokmål", Autonym: "Norsk bokmål", URL: "https://nb-go-dev.shuijingwanwq.com/"},
 	{Locale: "fa-IR", EnglishName: "Persian", Autonym: "فارسی", URL: "https://fa-go-dev.shuijingwanwq.com/"},
 	{Locale: "pl-PL", EnglishName: "Polish", Autonym: "Polski", URL: "https://pl-go-dev.shuijingwanwq.com/"},
+	{Locale: "pt-PT", EnglishName: "Portuguese (Portugal)", Autonym: "Português", URL: "https://pt-pt-go-dev.shuijingwanwq.com/"},
 	{Locale: "pa-IN", EnglishName: "Punjabi", Autonym: "ਪੰਜਾਬੀ", URL: "https://pa-go-dev.shuijingwanwq.com/"},
 	{Locale: "ro-RO", EnglishName: "Romanian", Autonym: "Română", URL: "https://ro-go-dev.shuijingwanwq.com/"},
+	{Locale: "ru-RU", EnglishName: "Russian", Autonym: "Русский", URL: "https://ru-go-dev.shuijingwanwq.com/"},
 	{Locale: "sr-RS", EnglishName: "Serbian", Autonym: "Српски (ћирилица)", URL: "https://sr-go-dev.shuijingwanwq.com/"},
 	{Locale: "zh-CN", EnglishName: "Simplified Chinese", Autonym: "简体中文", URL: "https://go-dev.shuijingwanwq.com/"},
 	{Locale: "sk-SK", EnglishName: "Slovak", Autonym: "Slovenčina", URL: "https://sk-go-dev.shuijingwanwq.com/"},
@@ -131,6 +134,9 @@ var (
 	darEsSalaamTime = mustLoadLocation("Africa/Dar_es_Salaam")
 	almatyTime      = mustLoadLocation("Asia/Almaty")
 	tehranTime      = mustLoadLocation("Asia/Tehran")
+	moscowTime      = mustLoadLocation("Europe/Moscow")
+	lisbonTime      = mustLoadLocation("Europe/Lisbon")
+	addisAbabaTime  = mustLoadLocation("Africa/Addis_Ababa")
 )
 
 var localeProfiles = map[string]localeProfile{
@@ -483,6 +489,27 @@ var localeProfiles = map[string]localeProfile{
 		TimeLabel:         "زمان محلی",
 		TimeLabelFormat:   " (%s)",
 		Direction:         "rtl",
+	},
+	"ru-RU": {
+		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",
+		TimeZone:          moscowTime,
+		TimeLabel:         "местное время",
+		TimeLabelFormat:   " (%s)",
+		Direction:         "ltr",
+	},
+	"pt-PT": {
+		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",
+		TimeZone:          lisbonTime,
+		TimeLabel:         "hora local",
+		TimeLabelFormat:   " (%s)",
+		Direction:         "ltr",
+	},
+	"am-ET": {
+		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",
+		TimeZone:          addisAbabaTime,
+		TimeLabel:         "የአካባቢ ሰዓት",
+		TimeLabelFormat:   " (%s)",
+		Direction:         "ltr",
 	},
 	// English is the catalog source and remains renderable for development,
 	// although the English language entry points to the official Tour.

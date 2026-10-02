@@ -1,0 +1,9 @@
+* defer
+
+Uma instrução defer adia a execução de uma função até a função envolvente
+terminar.
+
+Os argumentos da chamada adiada são avaliados imediatamente, mas a chamada da função
+só é executada quando a função envolvente termina.
+
+.play flowcontrol/defer.go

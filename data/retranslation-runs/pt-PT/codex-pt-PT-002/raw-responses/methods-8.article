@@ -1,0 +1,17 @@
+* Escolher um recetor por valor ou por ponteiro
+
+Há duas razões para utilizar um recetor por ponteiro.
+
+A primeira é permitir que o método modifique o valor para o qual o recetor aponta.
+
+A segunda é evitar copiar o valor em cada chamada do método.
+Isto pode ser mais eficiente se o recetor for, por exemplo, uma estrutura de grandes dimensões.
+
+Neste exemplo, tanto ⟪GTI18N_357424f2_000001⟫Scale⟪GTI18N_357424f2_000002⟫ como ⟪GTI18N_357424f2_000003⟫Abs⟪GTI18N_357424f2_000004⟫ são métodos cujo tipo de recetor é ⟪GTI18N_357424f2_000005⟫*Vertex⟪GTI18N_357424f2_000006⟫,
+apesar de o método ⟪GTI18N_357424f2_000007⟫Abs⟪GTI18N_357424f2_000008⟫ não precisar de modificar o recetor.
+
+De um modo geral, todos os métodos de um determinado tipo devem ter recetores
+por valor ou por ponteiro, mas não uma mistura dos dois.
+(Veremos a razão nas próximas páginas.)
+
+⟪GTI18N_357424f2_000009⟫

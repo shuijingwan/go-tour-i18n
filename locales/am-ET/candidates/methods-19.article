@@ -1,0 +1,26 @@
+* ስህተቶች
+
+የGo ፕሮግራሞች የስህተት ሁኔታን በ `error` እሴቶች ይገልጻሉ።
+
+የ `error` ዓይነት ከ `fmt.Stringer` ጋር የሚመሳሰል አብሮ የተሰራ በይነገጽ ነው፦
+
+	type error interface {
+		Error() string
+	}
+
+(እንደ `fmt.Stringer` ሁሉ፣ የ `fmt` ጥቅል እሴቶችን
+ሲያትም የ `error` በይነገጽን ይፈልጋል።)
+
+ተግባሮች ብዙ ጊዜ `error` እሴት ይመልሳሉ፣ እና ጠሪው ኮድ ስህተቱ ከ `nil` ጋር እኩል መሆኑን በመፈተሽ
+ስህተቶችን ማስተናገድ አለበት።
+
+	i, err := strconv.Atoi("42")
+	if err != nil {
+		fmt.Printf("couldn't convert number: %v\n", err)
+		return
+	}
+	fmt.Println("Converted integer:", i)
+
+nil `error` ስኬትን ያመለክታል፤ nil ያልሆነ `error` ደግሞ ውድቀትን ያመለክታል።
+
+.play methods/errors.go

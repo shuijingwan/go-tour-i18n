@@ -1,0 +1,63 @@
+{
+  "schema_version": 2,
+  "batch_id": "codex-pt-PT-004",
+  "locale": "pt-PT",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 4,
+  "units": [
+    {
+      "unit_id": "basics/12",
+      "unit_kind": "page",
+      "source_path": "_content/tour/basics.article",
+      "source_sha256": "d9ad62501c05359e7b2ac445fa92d629e11d6d378c2701b767abab76012a558e",
+      "input_path": "inputs/basics-12.article",
+      "input_sha256": "1ea463ab789d88cad33a6c7adf44fb524ea1f7e2574059f723a345f3c097faa7",
+      "protected_token_count": 9,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "C",
+      "previous_finding": "zero value 的 mandatory 术语是 valor zero。当前 _valor-zero_ (valor zero) 引入了不自然且未由 glossary 支持的连字符形式，同时增加了 source 中不存在的重复括注。应恢复为自然、一致的 valor zero 表达，并保持原有 emphasis/语义结构。"
+    },
+    {
+      "unit_id": "flowcontrol/2",
+      "unit_kind": "page",
+      "source_path": "_content/tour/flowcontrol.article",
+      "source_sha256": "24a97abbb6db2b6a88017bf326a5968097263d8ba637805f2cf44c9fed25f9fe",
+      "input_path": "inputs/flowcontrol-2.article",
+      "input_sha256": "593579e71b965386f37752ff22fdb6c27dc824c3f382f48496452ac59a67874e",
+      "protected_token_count": 1,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "As instruções de inicialização e posterior são opcionais. 中 de inicialização e posterior 的并列结构不自然，语法平行性不足。应以自然 pt-PT 表达两个并列概念——init statement 与 post statement——均为可选。"
+    },
+    {
+      "unit_id": "flowcontrol/8",
+      "unit_kind": "page",
+      "source_path": "_content/tour/flowcontrol.article",
+      "source_sha256": "d8bbee8455ff59212ef432a08312f7c7703360367325a80df3719157200316e9",
+      "input_path": "inputs/flowcontrol-8.article",
+      "input_sha256": "2b3e251ac7859b192831f012d7e6fcbbe95d108faa7ad9d95bdcf17b76e48451",
+      "protected_token_count": 9,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "o número z cujo z² seja... 对 English “the number z for which z²...” 的表达在 pt-PT 中生硬，cujo z² 尤其不自然。应改为自然表达“满足/使得 z² 最接近 x 的 z”，同时保持数学含义不变。"
+    },
+    {
+      "unit_id": "moretypes/11",
+      "unit_kind": "page",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "e2d7d69c946e5a01d8d0eab2e07a2bf35e23453a617d5e7602ff0af5c5866d8f",
+      "input_path": "inputs/moretypes-11.article",
+      "input_sha256": "7eb47399c55f6a60df1866de19aa729b5bb0e2c6c370a93db70510279070fea2",
+      "protected_token_count": 11,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "C",
+      "previous_finding": "Pode aumentar o comprimento de uma slice voltando a dividi-la 将 re-slicing 表达为 dividi-la，容易产生“再次把 slice 分割开”的技术含义，而这里实际指在容量允许范围内通过新的 slicing 操作扩展 slice 的长度。应修订这一技术表述，使其准确描述 re-slicing，而不暗示普通的“分割”。"
+    }
+  ]
+}

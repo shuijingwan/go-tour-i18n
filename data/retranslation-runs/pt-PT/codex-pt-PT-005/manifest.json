@@ -1,0 +1,102 @@
+{
+  "schema_version": 2,
+  "batch_id": "codex-pt-PT-005",
+  "locale": "pt-PT",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 7,
+  "units": [
+    {
+      "unit_id": "methods/9",
+      "unit_kind": "page",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "39efc19ed01619130489d21e421f2c0d8947b20f408580f4ceaabce6a0feb099",
+      "input_path": "inputs/methods-9.article",
+      "input_sha256": "d9eda098e85d67929359c7ca4ddb87022ceb1a3ad947a85d8da47a22e84a679a",
+      "protected_token_count": 13,
+      "previous_snapshot_id": "qc-002",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "正文中的强调标签 *Note:* 仍保留为英文，属于未翻译的普通自然语言；应按 pt-PT 教程语气本地化该提示标签，同时保持原有强调结构。"
+    },
+    {
+      "unit_id": "methods/16",
+      "unit_kind": "page",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "26e4da09e80d30b06368691c76ee2940139b0f6fc40cad47bb6d1d2947933c27",
+      "input_path": "inputs/methods-16.article",
+      "input_sha256": "ec4d9702454a6eac6377c96b2e2638f746376335bc10e338a440a2cb2f3f7a4a",
+      "protected_token_count": 41,
+      "previous_snapshot_id": "qc-002",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "C",
+      "previous_finding": "在解释 type switch 时，前句已说明各 case 指定的是“tipos (não valores)”，随后却写成“esses valores são comparados...”，造成指代自相矛盾并模糊 Go 的实际语义。应明确被比较的是各 case 所指定的类型，与接口值中所持值的类型进行匹配。"
+    },
+    {
+      "unit_id": "methods/17",
+      "unit_kind": "page",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "0363038e64b6f186e1bbd55c3323a5d7770a2b728605d8e3f01ae234aff6a444",
+      "input_path": "inputs/methods-17.article",
+      "input_sha256": "44bf3c379c6569a81f95a8f60c085dd8076eaf98d92d0511bc572481af6abef5",
+      "protected_token_count": 12,
+      "previous_snapshot_id": "qc-002",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "O pacote fmt (e muitos outros) procura esta interface... 中主语包含并列的 e muitos outros，但谓语仍用单数 procura，在 pt-PT 中搭配不自然。应修正主谓一致，同时保持 Stringer / fmt 的技术身份不变。"
+    },
+    {
+      "unit_id": "methods/19",
+      "unit_kind": "page",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "9eaab1fde2076c1376f78ceec0f84766c4c3b8062867436d73cef0bc77f16bd5",
+      "input_path": "inputs/methods-19.article",
+      "input_sha256": "d0e83c233a107cd035d349873238de6711313568f907672121591d19cc7e0d9c",
+      "protected_token_count": 26,
+      "previous_snapshot_id": "qc-002",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "C",
+      "previous_finding": "结尾把 source 的 “a non-nil error denotes failure” 误写成第二个 “Um nil error indica falha”，导致成功/失败条件发生实质性技术错误：当前译文同时声称 nil 表示成功和失败。必须恢复 nil 与 non-nil 两种状态的正确对立含义。"
+    },
+    {
+      "unit_id": "concurrency/1",
+      "unit_kind": "page",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "d0a9c45078c2255540cfffe48744a07fa04ab5c2113e8880068b5a400ae0ebdc",
+      "input_path": "inputs/concurrency-1.article",
+      "input_sha256": "889ebc08aa5df0a75d80e018b3c8f5c49ff423621eee372d57e660c8b10e2901",
+      "protected_token_count": 25,
+      "previous_snapshot_id": "qc-002",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "Go runtime 在当前 glossary 的 preferred 术语是 runtime do Go，但译文使用 runtime de Go。该处正是这一完整技术概念且不存在语法上必须变体的上下文，应与当前 glossary 的既定 pt-PT 术语保持一致。"
+    },
+    {
+      "unit_id": "concurrency/4",
+      "unit_kind": "page",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "3e925c6745255a443c61f25cd8131d538dc8677938f1c5021ce798465020b42e",
+      "input_path": "inputs/concurrency-4.article",
+      "input_sha256": "503d5e074437dac22f09f79994064341e64b02eb3b727e8573c8baab4326f11e",
+      "protected_token_count": 17,
+      "previous_snapshot_id": "qc-002",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "Um remetente pode executar close num canal 虽可理解，但 executar close num canal 在 pt-PT 技术说明中明显生硬，且同一 Unit 后文已经自然使用“fechar um canal”。应统一为自然的关闭操作表述，并保留 close 这一 Go builtin 的技术身份。"
+    },
+    {
+      "unit_id": "concurrency/9",
+      "unit_kind": "page",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "49f727794604c2ef8a8dda9508d0f412d7015cea77754c675a02b166dd9bfc93",
+      "input_path": "inputs/concurrency-9.article",
+      "input_sha256": "8b1114653df6cbf6ce416a7fdba29dd25b086ac2c22422ca0611f3161f552e19",
+      "protected_token_count": 25,
+      "previous_snapshot_id": "qc-002",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "envolvendo-o com uma chamada a Lock e Unlock 把两个独立的方法调用表述为单数“uma chamada”，技术表达不够准确且不自然。应清楚表达代码块由对 Lock 与 Unlock 的相应调用包围，同时保持两个方法名不变。"
+    }
+  ]
+}

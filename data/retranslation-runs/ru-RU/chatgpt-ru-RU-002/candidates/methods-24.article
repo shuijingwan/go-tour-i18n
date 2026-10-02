@@ -1,0 +1,21 @@
+* Изображения
+
+[[/pkg/image/#Image][Пакет image]] определяет интерфейс `Image`:
+
+	package image
+
+	type Image interface {
+		ColorModel() color.Model
+		Bounds() Rectangle
+		At(x, y int) color.Color
+	}
+
+*Примечание*: значение `Rectangle`, возвращаемое методом `Bounds`, на самом деле имеет тип
+[[/pkg/image/#Rectangle][`image.Rectangle`]], поскольку
+объявление находится внутри пакета `image`.
+
+(Все подробности см. в [[/pkg/image/#Image][документации]].)
+
+Типы `color.Color` и `color.Model` тоже являются интерфейсами, но мы не будем на этом останавливаться и воспользуемся готовыми реализациями `color.RGBA` и `color.RGBAModel`. Эти интерфейсы и типы определены в [[/pkg/image/color/][пакете image/color]].
+
+.play methods/images.go

@@ -1,0 +1,11 @@
+* Buffered ቻናሎች
+
+ቻናሎች _buffered_ ሊሆኑ ይችላሉ። buffered ቻናልን ለመጀመር የbuffer ርዝመቱን ለ `make` እንደ ሁለተኛ ነጋሪ እሴት ይስጡ፦
+
+	ch := make(chan int, 100)
+
+ወደ buffered ቻናል የመላክ ክወና bufferው ሙሉ ሲሆን ብቻ ታግዶ ይጠብቃል። bufferው ባዶ ሲሆን የመቀበል ክወና ታግዶ ይጠብቃል።
+
+bufferውን ከአቅሙ በላይ ለመሙላት ምሳሌውን ይቀይሩ እና ምን እንደሚከሰት ይመልከቱ።
+
+.play concurrency/buffered-channels.go

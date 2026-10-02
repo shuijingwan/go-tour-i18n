@@ -1,0 +1,12 @@
+* Range — ቀጣይ
+
+ኢንዴክስን ወይም እሴቱን ወደ `_` በመመደብ መዝለል ይችላሉ።
+
+    for i, _ := range pow
+    for _, value := range pow
+
+ኢንዴክስን ብቻ ከፈለጉ፣ ሁለተኛውን ተለዋዋጭ መተው ይችላሉ።
+
+    for i := range pow
+
+.play moretypes/range-continued.go

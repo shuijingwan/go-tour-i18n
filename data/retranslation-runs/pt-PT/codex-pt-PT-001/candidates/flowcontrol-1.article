@@ -1,0 +1,21 @@
+* for
+
+Go tem apenas uma construção de ciclo: o ciclo `for`.
+
+O ciclo `for` básico tem três componentes separados por pontos e vírgulas:
+
+- a instrução de inicialização: executada antes da primeira iteração
+- a expressão de condição: avaliada antes de cada iteração
+- a instrução posterior: executada no fim de cada iteração
+
+A instrução de inicialização é frequentemente uma declaração de variável, e as
+variáveis aí declaradas só são visíveis no âmbito da instrução
+`for`.
+
+O ciclo deixa de iterar quando a condição booleana for avaliada como `false`.
+
+*Nota:* ao contrário de outras linguagens, como C, Java ou JavaScript, os três componentes da instrução
+`for` não são rodeados por parênteses, e as chavetas `{`}` são
+sempre obrigatórias.
+
+.play flowcontrol/for.go

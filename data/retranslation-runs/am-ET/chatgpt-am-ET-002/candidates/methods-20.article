@@ -1,0 +1,21 @@
+* ልምምድ፦ ስህተቶች
+
+የ `Sqrt` ተግባርዎን ከ[[/tour/flowcontrol/8][ቀደም ካለው ልምምድ]] ይቅዱ እና `error` እሴት እንዲመልስ ያሻሽሉት።
+
+`Sqrt` complex ቁጥሮችን ስለማይደግፍ፣ አሉታዊ ቁጥር ሲሰጠው nil ያልሆነ የስህተት እሴት መመለስ አለበት።
+
+አዲስ ዓይነት ይፍጠሩ፦
+
+	type ErrNegativeSqrt float64
+
+እና ይህን
+
+	func (e ErrNegativeSqrt) Error() string
+
+ዘዴ በመስጠት `error` ያድርጉት፤ በዚህም `ErrNegativeSqrt(-2).Error()` የ `"cannot`Sqrt`negative`number:`-2"` እሴትን እንዲመልስ ያድርጉ።
+
+*ማስታወሻ፦* በ `Error` ዘዴ ውስጥ `fmt.Sprint(e)` ን መጥራት ፕሮግራሙን ወደ ማያልቅ ዙር ያስገባዋል። መጀመሪያ `e` ን በመቀየር ይህን ማስወገድ ይችላሉ፦ `fmt.Sprint(float64(e))`። ለምን?
+
+አሉታዊ ቁጥር ሲሰጠው የ `ErrNegativeSqrt` እሴት እንዲመልስ የ `Sqrt` ተግባርዎን ይቀይሩ።
+
+.play methods/exercise-errors.go

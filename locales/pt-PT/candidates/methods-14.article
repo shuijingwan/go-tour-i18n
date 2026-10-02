@@ -1,0 +1,16 @@
+* A interface vazia
+
+O tipo de interface que não especifica qualquer método é conhecido como interface _vazia_:
+
+	interface{}
+
+Uma interface vazia pode conter valores de qualquer tipo.
+(Todos os tipos implementam, pelo menos, zero métodos.)
+
+`any` é um alias de `interface{}`, e ambos são completamente
+equivalentes.
+
+As interfaces vazias são utilizadas por código que processa valores de tipo desconhecido.
+Por exemplo, `fmt.Print` recebe qualquer quantidade de argumentos do tipo `any`.
+
+.play methods/empty-interface.go

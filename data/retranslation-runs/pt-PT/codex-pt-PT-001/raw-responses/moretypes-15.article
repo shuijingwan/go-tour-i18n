@@ -1,0 +1,21 @@
+* Acrescentar elementos a uma slice
+
+É comum acrescentar novos elementos a uma slice, pelo que ⟪GTI18N_f2fc257e_000001⟫ disponibiliza uma função incorporada
+⟪GTI18N_f2fc257e_000002⟫append⟪GTI18N_f2fc257e_000003⟫. A [[⟪GTI18N_f2fc257e_000004⟫][documentação]]
+do pacote incorporado descreve ⟪GTI18N_f2fc257e_000005⟫append⟪GTI18N_f2fc257e_000006⟫.
+
+⟪GTI18N_f2fc257e_000007⟫
+
+O primeiro parâmetro ⟪GTI18N_f2fc257e_000008⟫s⟪GTI18N_f2fc257e_000009⟫ de ⟪GTI18N_f2fc257e_000010⟫append⟪GTI18N_f2fc257e_000011⟫ é uma slice do tipo ⟪GTI18N_f2fc257e_000012⟫T⟪GTI18N_f2fc257e_000013⟫, e os restantes são
+valores ⟪GTI18N_f2fc257e_000014⟫T⟪GTI18N_f2fc257e_000015⟫ a acrescentar à slice.
+
+O valor resultante de ⟪GTI18N_f2fc257e_000016⟫append⟪GTI18N_f2fc257e_000017⟫ é uma slice que contém todos os elementos da
+slice original, além dos valores fornecidos.
+
+Se o array de suporte de ⟪GTI18N_f2fc257e_000018⟫s⟪GTI18N_f2fc257e_000019⟫ for demasiado pequeno para conter todos os valores fornecidos, será alocado um
+array maior. A slice devolvida apontará para o novo array
+alocado.
+
+(Para saber mais sobre slices, leia o artigo [[⟪GTI18N_f2fc257e_000020⟫][Slices: utilização e funcionamento interno]].)
+
+⟪GTI18N_f2fc257e_000021⟫

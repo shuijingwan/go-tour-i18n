@@ -1,0 +1,15 @@
+* Range e close
+
+Um remetente pode executar ⟪GTI18N_3e925c67_000001⟫close⟪GTI18N_3e925c67_000002⟫ num canal para indicar que não serão enviados mais valores. Os recetores podem testar se um canal foi fechado atribuindo um segundo parâmetro à expressão de receção: depois de
+
+⟪GTI18N_3e925c67_000003⟫
+
+⟪GTI18N_3e925c67_000004⟫ok⟪GTI18N_3e925c67_000005⟫ é ⟪GTI18N_3e925c67_000006⟫false⟪GTI18N_3e925c67_000007⟫ se não houver mais valores para receber e o canal estiver fechado.
+
+O ciclo ⟪GTI18N_3e925c67_000008⟫for`i`:=`range`c⟪GTI18N_3e925c67_000009⟫ recebe repetidamente valores do canal até este ser fechado.
+
+⟪GTI18N_3e925c67_000010⟫Nota:⟪GTI18N_3e925c67_000011⟫ Só o remetente deve fechar um canal, nunca o recetor. Enviar para um canal fechado causará um ⟪GTI18N_3e925c67_000012⟫.
+
+⟪GTI18N_3e925c67_000013⟫Outra*nota:⟪GTI18N_3e925c67_000014⟫ Os canais não são como ficheiros; normalmente não é necessário fechá-los. Fechar só é necessário quando o recetor tem de ser informado de que já não chegarão mais valores, por exemplo, para terminar um ciclo ⟪GTI18N_3e925c67_000015⟫range⟪GTI18N_3e925c67_000016⟫.
+
+⟪GTI18N_3e925c67_000017⟫

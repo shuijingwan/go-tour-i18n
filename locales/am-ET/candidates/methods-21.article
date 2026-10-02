@@ -1,0 +1,19 @@
+* Reader-ዎች
+
+የ `io` ጥቅል የውሂብ ፍሰትን የማንበቢያ ጫፍ የሚወክለውን
+የ `io.Reader` በይነገጽ ይገልጻል።
+
+የGo መደበኛ ቤተ መጻሕፍት ፋይሎችን፣ የአውታረ መረብ ግንኙነቶችን፣ compressors፣ ciphers እና ሌሎችንም ጨምሮ የዚህ በይነገጽ [[https://cs.opensource.google/search?q=Read%5C(%5Cw%2B%5Cs%5C%5B%5C%5Dbyte%5C)&ss=go%2Fgo][ብዙ ትግበራዎችን]] ይዟል።
+
+የ `io.Reader` በይነገጽ `Read` የተባለ ዘዴ አለው፦
+
+	func (T) Read(b []byte) (n int, err error)
+
+`Read` የተሰጠውን byte ቁራጭ በውሂብ ይሞላል፣ ከዚያም የተሞሉትን bytes ብዛት
+እና የስህተት እሴት ይመልሳል። ፍሰቱ ሲያበቃ `io.EOF` ስህተት ይመልሳል።
+
+የምሳሌው ኮድ
+[[/pkg/strings/#Reader][`strings.Reader`]]
+ይፈጥራል እና ውጤቱን በአንድ ጊዜ 8 bytes እያነበበ ይጠቀማል።
+
+.play methods/reader.go

@@ -1,0 +1,12 @@
+* ልምምድ፦ rot13Reader
+
+የተለመደ ንድፍ ሌላ `io.Reader` ን ከብቦ ፍሰቱን በአንድ መንገድ የሚቀይር [[/pkg/io/#Reader][io.Reader]] ነው።
+
+ለምሳሌ፣ የ[[/pkg/compress/gzip/#NewReader][gzip.NewReader]] ተግባር `io.Reader` (የታመቀ ውሂብ ፍሰት) ይቀበል እና `io.Reader` ንም የሚተገብር `*gzip.Reader` (ያልታመቀ ውሂብ ፍሰት) ይመልሳል።
+
+`io.Reader` ን የሚያነብ እና በሁሉም የፊደል ቁምፊዎች ላይ የ[[https://en.wikipedia.org/wiki/ROT13][rot13]] መተኪያ cipherን በመተግበር ፍሰቱን የሚቀይር፣ `io.Reader` ን የሚተገብር `rot13Reader` ይተግብሩ።
+
+የ `rot13Reader` ዓይነት ተሰጥቶዎታል።
+የ `Read` ዘዴውን በመተግበር `io.Reader` ያድርጉት።
+
+.play methods/exercise-rot-reader.go

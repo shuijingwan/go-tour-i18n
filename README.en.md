@@ -13,6 +13,7 @@ The project is not maintained by Google, the Go team, or go.dev, and no affiliat
 Community-maintained translations currently in production:
 
 <!-- live-locales:start -->
+- [Amharic — አማርኛ](https://am-go-dev.shuijingwanwq.com/)
 - [Arabic — العربية](https://ar-go-dev.shuijingwanwq.com/)
 - [Bengali — বাংলা](https://bn-go-dev.shuijingwanwq.com/)
 - [Brazilian Portuguese — Português (Brasil)](https://pt-go-dev.shuijingwanwq.com/)
@@ -46,8 +47,10 @@ Community-maintained translations currently in production:
 - [Norwegian Bokmål — Norsk bokmål](https://nb-go-dev.shuijingwanwq.com/)
 - [Persian — فارسی](https://fa-go-dev.shuijingwanwq.com/)
 - [Polish — Polski](https://pl-go-dev.shuijingwanwq.com/)
+- [Portuguese (Portugal) — Português](https://pt-pt-go-dev.shuijingwanwq.com/)
 - [Punjabi — ਪੰਜਾਬੀ](https://pa-go-dev.shuijingwanwq.com/)
 - [Romanian — Română](https://ro-go-dev.shuijingwanwq.com/)
+- [Russian — Русский](https://ru-go-dev.shuijingwanwq.com/)
 - [Serbian — Српски (ћирилица)](https://sr-go-dev.shuijingwanwq.com/)
 - [Simplified Chinese — 简体中文](https://go-dev.shuijingwanwq.com/)
 - [Slovak — Slovenčina](https://sk-go-dev.shuijingwanwq.com/)

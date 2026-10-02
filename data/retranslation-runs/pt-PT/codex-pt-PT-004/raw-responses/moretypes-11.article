@@ -1,0 +1,18 @@
+* Comprimento e capacidade de uma slice
+
+Uma slice tem um ⟪GTI18N_e2d7d69c_000001⟫comprimento⟪GTI18N_e2d7d69c_000002⟫ e uma ⟪GTI18N_e2d7d69c_000003⟫capacidade⟪GTI18N_e2d7d69c_000004⟫.
+
+O comprimento de uma slice é o número de elementos que contém.
+
+A capacidade de uma slice é o número de elementos do array subjacente,
+contados a partir do primeiro elemento da slice.
+
+O comprimento e a capacidade de uma slice ⟪GTI18N_e2d7d69c_000005⟫s⟪GTI18N_e2d7d69c_000006⟫ podem ser obtidos através das expressões
+⟪GTI18N_e2d7d69c_000007⟫len(s)⟪GTI18N_e2d7d69c_000008⟫ e ⟪GTI18N_e2d7d69c_000009⟫cap(s)⟪GTI18N_e2d7d69c_000010⟫.
+
+Pode aumentar o comprimento de uma slice aplicando-lhe novamente uma expressão de slice,
+desde que tenha capacidade suficiente.
+Experimente alterar uma das operações de slice no programa de exemplo para a estender
+além da sua capacidade e veja o que acontece.
+
+⟪GTI18N_e2d7d69c_000011⟫

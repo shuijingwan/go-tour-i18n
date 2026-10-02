@@ -218,7 +218,7 @@ scripts/first-production.sh \
 
 ### FIRST_DEPLOYMENT health failure recovery
 
-首次部署在 `current` 首次指向新 release 后若 service 无法连续达到 active + HTTP 200，不存在旧 release 可以回滚。`deploy-production.sh` 会保留失败 release、`current` 和 `.deploy.lock` 作为 evidence，且不会继续 DNS stage。修复代码后必须重新 `publish` 生成新的不可变 release；不得覆盖、删除或重用失败 release，也不得直接重跑 deploy 或手工删除 lock。
+首次部署在 `current` 首次指向新 release 后若 service 无法连续达到 active + HTTP 200，不存在旧 release 可以回滚。`deploy-production.sh` 会保留失败 release、`current` 和 `.deploy.lock` 作为 evidence，且不会继续 DNS stage。不得直接重跑 deploy 或手工删除 lock。若 service 仍不健康，修复代码后必须重新 `publish` 生成新的不可变 release；不得覆盖、删除或重用失败 release。若 health timeout 后同一 service 自行恢复，则也不得把当时失败直接解释为部署通过，必须由下述正式 recovery 入口验证 current、完整 release checksum、service MainPID 对应的精确 binary 与连续 active + HTTP 200，再机械记录 deploy PASS。
 
 唯一正式恢复入口是（参数必须是保留现场对应的**旧**失败 release 本地目录）：
 
@@ -227,9 +227,9 @@ scripts/recover-first-production-health-failure.sh \
   /tmp/go-tour-release-YYYYMMDD-<locale>-<failed-shortsha>
 ```
 
-该命令不是通用解锁器。它只接受 `production_state=first-production`，并严格校验旧 release 的 failed first-production receipt：identity/release 一致、failure stage 为 `deploy`、preflight/infrastructure/Playground Origin 均 PASS，且没有任何 DNS/public/browser post-deploy stage。随后在 aliyun 精确验证 `current` 正指向该 receipt release、release 与 releases root 都是实际目录、`.deploy.lock` 是预期实际目录，并再次确认 service 不是 active + HTTP 200。任何成功/live、未知 deployment、错误 release/current、缺 lock 或已经健康的现场都 fail closed。
+该命令不是通用解锁器。它只接受 `production_state=first-production`，并严格校验旧 release 的 failed first-production receipt：identity/release 一致、failure stage 为 `deploy`、preflight/infrastructure/Playground Origin 均 PASS，且没有任何 DNS/public/browser post-deploy stage。随后在 aliyun 精确验证 `current` 正指向该 receipt release、release 与 releases root 都是实际目录、`.deploy.lock` 是预期实际目录。若 service 仍不健康，进入原有 failed-release recovery；若 service 已连续恢复为 active + HTTP 200，则额外要求远端 `SHA256SUMS` identity 与完整内容匹配本地不可变 release、MainPID 执行精确 release binary，全部通过后才删除空 lock，并在原 receipt 中机械记录 `deploy: PASS`。任何成功/live、未知 deployment、错误 release/current、缺 lock 或 identity/checksum 不一致均 fail closed。
 
-通过全部检查后，命令原子暂存 `current` symlink、删除已验证为空的 lock，再删除暂存 symlink；若 lock 删除或 INT/TERM/HUP 期间失败则恢复 `current`。失败 release 一直保留作 evidence。恢复成功后先重新 publish 新 release，再对**新** release 运行 `scripts/first-production.sh`；旧 failed receipt 不删除、不复用，新 release 会建立新的 receipt 并从完整 preflight 重新开始。
+仍不健康时，通过全部检查后，命令原子暂存 `current` symlink、删除已验证为空的 lock，再删除暂存 symlink；若 lock 删除或 INT/TERM/HUP 期间失败则恢复 `current`。失败 release 一直保留作 evidence。恢复成功后先重新 publish 新 release，再对**新** release 运行 `scripts/first-production.sh`；旧 failed receipt 不删除、不复用，新 release 会建立新的 receipt 并从完整 preflight 重新开始。已经自行恢复健康时，命令保留 `current` 与同一不可变 release、删除已验证为空的 lock、记录 deploy PASS，并打印对**同一** release 重新运行 `scripts/first-production.sh` 的唯一 resume 命令；编排器会重新执行完整 preflight，然后从 direct-origin 及后续阶段继续。
 
 preflight 在任何 production mutation 前同时检查：正式 bundle 与 identity、**唯一** current Surface Review A gate 所指向的 Markdown evidence identity，以及完整唯一且未改写的 first-production finalization placeholder；多个 current A gate 不猜测“最新”而是 fail closed。TODO/unknown locale 间接由 publish/identity gate 拒绝、两台 SSH 和 root account、port/service/data-root/vhost/certificate 冲突、EnvironmentFile 与非空 `TOUR_AD_HTML`（不输出值）、Cloudflare secret 权限与变量、zone 唯一性、目标 DNS 无冲突、Playground 两个 location 的结构一致性，以及 shared-assets origin/public SHA-256 freshness。placeholder 语义由 `tour-i18n first-production evidence-preflight` 统一实现，编排器不自行解析 Markdown；finalize 还会验证其传入的 review-id 对应 gate 本身仍为 current。它重新 export/validate 当前仓库、对照 aliyun origin，并复用正式 shared-assets public verification core（zgocloud runner、HTTP 522/525 和 curl exit 28 的 bounded retry、14/14 SHA-256 与 boundary 404），不信任历史 receipt。任一项失败时，不建立目录、unit、证书、vhost、DNS 或 Origin。
 

@@ -1,0 +1,11 @@
+* Exercício: slices
+
+Implemente `Pic`. A função deve devolver uma slice de comprimento `dy`, em que cada elemento é uma slice de `dx` inteiros sem sinal de 8 bits. Ao executar o programa, este apresentará a sua imagem, interpretando os inteiros como valores em escala de cinzentos (ou melhor, escala de azuis).
+
+A escolha da imagem fica ao seu critério. Algumas funções interessantes são `(x+y)/2`, `x*y` e `x^y`.
+
+(Tem de utilizar um ciclo para alocar cada `[]uint8` dentro de `[][]uint8`.)
+
+(Utilize `uint8(intValue)` para converter entre tipos.)
+
+.play moretypes/exercise-slices.go

@@ -1,0 +1,12 @@
+* Valores de interface com valores subjacentes nil
+
+Se o valor concreto dentro da interface for ele próprio nil,
+o método será chamado com um recetor nil.
+
+Em algumas linguagens, isto desencadearia uma exceção de ponteiro nulo,
+mas em Go é comum escrever métodos que tratam adequadamente chamadas
+com um recetor nil (como acontece com o método `M` neste exemplo).
+
+Note que um valor de interface que contém um valor concreto nil não é, ele próprio, nil.
+
+.play methods/interface-values-with-nil.go

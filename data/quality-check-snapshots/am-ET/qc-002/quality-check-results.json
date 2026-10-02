@@ -1,0 +1,95 @@
+{
+  "schema_version": 2,
+  "evidence_type": "quality_check_results",
+  "locale": "am-ET",
+  "snapshot_id": "qc-002",
+  "snapshot_manifest_sha256": "28c7a799cf9caf56a3ef3252f7f41aeb190aa01a7c19bac9c6c74a0a1767bd10",
+  "previous_snapshot_id": "qc-001",
+  "rubric": "translation-quality/v1",
+  "result_count": 16,
+  "results": [
+    {
+      "index": 2,
+      "unit_id": "welcome/2",
+      "rating": "A"
+    },
+    {
+      "index": 4,
+      "unit_id": "welcome/5",
+      "rating": "A"
+    },
+    {
+      "index": 17,
+      "unit_id": "basics/12",
+      "rating": "B",
+      "finding": "原先 emphasis 内 “zero value” 的漏译已经关闭；按正式 Go Present 语义，_ዜሮ_እሴት_ 会形成单一 emphasis span，并显示为“ዜሮ እሴት”。但当前完整句子“የ _ዜሮ_እሴት_ እሴታቸውን ይቀበላሉ”在 emphasis 后再次使用“እሴት”，形成相当于“zero value value”的重复名词结构，Amharic 表达明显冗余、不自然。需在保持单一正确 Present emphasis span 和“their zero value”原义的同时消除该重复。"
+    },
+    {
+      "index": 19,
+      "unit_id": "basics/14",
+      "rating": "A"
+    },
+    {
+      "index": 37,
+      "unit_id": "moretypes/1",
+      "rating": "A"
+    },
+    {
+      "index": 43,
+      "unit_id": "moretypes/7",
+      "rating": "A"
+    },
+    {
+      "index": 79,
+      "unit_id": "methods/16",
+      "rating": "A"
+    },
+    {
+      "index": 83,
+      "unit_id": "methods/20",
+      "rating": "A"
+    },
+    {
+      "index": 93,
+      "unit_id": "concurrency/1",
+      "rating": "A"
+    },
+    {
+      "index": 94,
+      "unit_id": "concurrency/2",
+      "rating": "B",
+      "finding": "qc-001 中把 blocking 错译为“关闭”的核心技术错误已经关闭；当前“ታግደው ይጠብቃሉ”正确表达了阻塞等待。但本 Unit 仍有多处开放的普通技术自然语言直接残留英文，包括首段的 operator、conduits，以及同步说明中的 locks、condition variables。这些在正式 protected input 中均属于可翻译文本，而不是受保护代码 identity；当前造成明显语言混用。需自然本地化这些术语，同时保持 \u003c-、channel、goroutine 等技术 identity 和原技术含义不变。"
+    },
+    {
+      "index": 95,
+      "unit_id": "concurrency/3",
+      "rating": "B",
+      "finding": "qc-001 中 buffered channel 的 blocking 行为已经正确修复为“ታግዶ ይጠብቃል”，核心技术语义已关闭。但当前标题及正文仍系统性保留开放自然语言 Buffered、buffered、buffer，例如“* Buffered ቻናሎች”、“_buffered_”、“የbuffer ርዝመቱን”及“bufferው”。这些不是代码标识符、Go keyword 或 glossary keep 项，导致该页核心概念持续以英文夹杂呈现。需一致、自然地本地化这一概念，并保持 make、chan int 等机器/代码 identity 不变。"
+    },
+    {
+      "index": 97,
+      "unit_id": "concurrency/5",
+      "rating": "A"
+    },
+    {
+      "index": 98,
+      "unit_id": "concurrency/6",
+      "rating": "A"
+    },
+    {
+      "index": 103,
+      "unit_id": "concurrency/11",
+      "rating": "A"
+    },
+    {
+      "index": 107,
+      "unit_id": "example:concurrency/exercise-equivalent-binary-trees.go",
+      "rating": "A"
+    },
+    {
+      "index": 108,
+      "unit_id": "example:concurrency/exercise-web-crawler.go",
+      "rating": "A"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+* ልምምድ፦ Stringer-ዎች
+
+አድራሻውን በነጥብ የተለያዩ አራት ቁጥሮች እንዲያትም፣ የ `IPAddr` ዓይነት `fmt.Stringer` ን እንዲተገብር ያድርጉ።
+
+ለምሳሌ፣ `IPAddr{1,`2,`3,`4}` እንደ `"1.2.3.4"` መታተም አለበት።
+
+.play methods/exercise-stringer.go

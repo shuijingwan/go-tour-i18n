@@ -1,0 +1,23 @@
+* ልምምድ፦ ተመጣጣኝ ሁለትዮሽ ዛፎች
+
+*1.* የ `Walk` ተግባርን ይተግብሩ።
+
+*2.* የ `Walk` ተግባርን ይፈትሹ።
+
+የ `tree.New(k)` ተግባር `k`፣ `2k`፣ `3k`፣ ...፣ `10k` እሴቶችን የያዘ በዘፈቀደ መዋቅር ያለው (ነገር ግን ሁልጊዜ የተደረደረ) ሁለትዮሽ ዛፍ ይፈጥራል።
+
+አዲስ ቻናል `ch` ይፍጠሩ እና walkerውን ያስጀምሩ፦
+
+	go Walk(tree.New(1), ch)
+
+ከዚያ ከቻናሉ 10 እሴቶችን አንብበው ያትሙ። 1, 2, 3, ..., 10 ቁጥሮች መሆን አለባቸው።
+
+*3.* `t1` እና `t2` ተመሳሳይ እሴቶችን እንደሚያከማቹ ለመወሰን `Walk` ን በመጠቀም የ `Same` ተግባርን ይተግብሩ።
+
+*4.* የ `Same` ተግባርን ይፈትሹ።
+
+`Same(tree.New(1),`tree.New(1))` true መመለስ አለበት፣ `Same(tree.New(1),`tree.New(2))` ደግሞ false መመለስ አለበት።
+
+የ `Tree` ሰነድ [[https://godoc.org/golang.org/x/tour/tree#Tree][እዚህ]] ይገኛል።
+
+.play concurrency/exercise-equivalent-binary-trees.go

@@ -1,0 +1,14 @@
+* Default ምርጫ
+
+በ `select` ውስጥ ያለው `default` case ሌላ ምንም case ዝግጁ ካልሆነ ይሰራል።
+
+ሳይዘጋ ለመላክ ወይም ለመቀበል ለመሞከር `default` case ይጠቀሙ፦
+
+	select {
+	case i := <-c:
+		// i እሴቱን ተጠቀም
+	default:
+		// ከ c መቀበል ይዘጋል
+	}
+
+.play concurrency/default-selection.go

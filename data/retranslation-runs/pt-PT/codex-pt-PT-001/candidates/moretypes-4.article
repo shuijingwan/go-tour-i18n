@@ -1,0 +1,10 @@
+* Ponteiros para estruturas
+
+É possível aceder aos campos de uma estrutura através de um ponteiro para a estrutura.
+
+Para aceder ao campo `X` de uma estrutura quando temos o ponteiro `p` para essa estrutura, poderíamos
+escrever `(*p).X`.
+No entanto, esta notação é pouco prática, pelo que a linguagem permite escrever apenas
+`p.X`, sem a desreferenciação explícita.
+
+.play moretypes/struct-pointers.go

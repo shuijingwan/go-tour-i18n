@@ -1,0 +1,10 @@
+* Exercício: crawler Web
+
+Neste exercício, utilizará as funcionalidades de concorrência de Go para executar um crawler Web em paralelo.
+
+Modifique a função `Crawl` para obter URLs em paralelo sem obter o mesmo URL duas vezes.
+
+_Sugestão_: pode manter em cache, num mapa, os URLs que já foram obtidos, mas os mapas, por si só, não são
+seguros para utilização concorrente!
+
+.play concurrency/exercise-web-crawler.go

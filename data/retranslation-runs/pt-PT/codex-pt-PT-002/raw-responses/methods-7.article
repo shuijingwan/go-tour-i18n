@@ -1,0 +1,14 @@
+* Métodos e indireção de ponteiros (2)
+
+O equivalente acontece no sentido inverso.
+
+As funções que recebem um argumento por valor têm de receber um valor desse tipo específico:
+
+⟪GTI18N_61a9cb84_000001⟫Compile error!⟪GTI18N_61a9cb84_000002⟫enquanto os métodos com recetores por valor recebem um valor ou um ponteiro como
+recetor quando são chamados:
+
+⟪GTI18N_61a9cb84_000003⟫
+
+Neste caso, a chamada de método ⟪GTI18N_61a9cb84_000004⟫p.Abs()⟪GTI18N_61a9cb84_000005⟫ é interpretada como ⟪GTI18N_61a9cb84_000006⟫(*p).Abs()⟪GTI18N_61a9cb84_000007⟫.
+
+⟪GTI18N_61a9cb84_000008⟫

@@ -1,0 +1,13 @@
+* Valores de interface
+
+Internamente, os valores de interface podem ser vistos como um par constituído por um valor e um
+tipo concreto:
+
+	(value, type)
+
+Um valor de interface contém um valor de um tipo concreto subjacente específico.
+
+Chamar um método num valor de interface executa o método com o mesmo nome no
+respetivo tipo subjacente.
+
+.play methods/interface-values.go

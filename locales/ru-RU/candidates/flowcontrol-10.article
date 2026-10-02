@@ -1,0 +1,15 @@
+* Порядок вычисления switch
+
+Выражения case в switch вычисляются сверху вниз; вычисление прекращается, когда находится подходящий case.
+
+(Например,
+
+	switch i {
+	case 0:
+	case f():
+	}
+
+не вызывает `f`, если `i==0`.)
+
+
+.play flowcontrol/switch-evaluation-order.go
