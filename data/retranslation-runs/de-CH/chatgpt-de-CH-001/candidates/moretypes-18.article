@@ -1,0 +1,11 @@
+* Übung: Slices
+
+Implementieren Sie `Pic`. Die Funktion soll eine Slice der Länge `dy` zurückgeben, deren jedes Element eine Slice aus `dx` vorzeichenlosen 8-Bit-Integern ist. Wenn Sie das Programm ausführen, zeigt es Ihr Bild an und interpretiert die Integer als Graustufenwerte (genauer gesagt als Blaustufenwerte).
+
+Welches Bild Sie erzeugen, bleibt Ihnen überlassen. Interessante Funktionen sind beispielsweise `(x+y)/2`, `x*y` und `x^y`.
+
+(Sie müssen eine Schleife verwenden, um jedes `[]uint8` innerhalb von `[][]uint8` zu reservieren.)
+
+(Verwenden Sie `uint8(intValue)`, um zwischen den Typen zu konvertieren.)
+
+.play moretypes/exercise-slices.go

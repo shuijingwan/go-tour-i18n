@@ -1,0 +1,15 @@
+* Auswertungsreihenfolge bei switch
+
+Die Fälle eines switch werden von oben nach unten ausgewertet; die Auswertung endet, sobald ein Fall zutrifft.
+
+(Zum Beispiel
+
+	switch i {
+	case 0:
+	case f():
+	}
+
+wird `f` nicht aufgerufen, wenn `i==0` gilt.)
+
+
+.play flowcontrol/switch-evaluation-order.go

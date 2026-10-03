@@ -1,0 +1,7 @@
+* 短變數宣告
+
+在函數內，可以使用 `:=` 短賦值陳述式，取代隱含類型的 `var` 宣告。
+
+在函數外，每個陳述式都以關鍵字開頭（ `var`、 `func` 等），因此不能使用 `:=` 結構。
+
+.play basics/short-variable-declarations.go

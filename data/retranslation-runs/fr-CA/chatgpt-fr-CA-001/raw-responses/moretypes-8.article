@@ -1,0 +1,11 @@
+* Les tranches sont comme des références à des tableaux
+
+Une tranche ne stocke aucune donnée ;
+elle décrit simplement une partie d’un tableau sous-jacent.
+
+Modifier les éléments d’une tranche modifie les
+éléments correspondants de son tableau sous-jacent.
+
+Les autres tranches qui partagent le même tableau sous-jacent verront ces modifications.
+
+⟪GTI18N_e577f9e9_000001⟫

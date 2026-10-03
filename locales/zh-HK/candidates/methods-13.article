@@ -1,0 +1,8 @@
+* nil 介面值
+
+nil 介面值既不保存值，也不保存具體類型。
+
+在 nil 介面上呼叫方法會造成執行階段錯誤，因為介面
+元組內沒有類型可指出要呼叫哪個 _具體_ 方法。
+
+.play methods/nil-interface-values.go

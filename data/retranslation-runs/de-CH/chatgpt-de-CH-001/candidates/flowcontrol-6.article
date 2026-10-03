@@ -1,0 +1,9 @@
+* If mit einer kurzen Anweisung
+
+Wie `for` kann auch die `if`-Anweisung mit einer kurzen Anweisung beginnen, die vor der Bedingung ausgeführt wird.
+
+Von dieser Anweisung deklarierte Variablen sind nur bis zum Ende des `if`-Blocks im Gültigkeitsbereich.
+
+(Versuchen Sie, `v` in der letzten `return`-Anweisung zu verwenden.)
+
+.play flowcontrol/if-with-a-short-statement.go

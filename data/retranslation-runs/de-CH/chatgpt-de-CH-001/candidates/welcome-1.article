@@ -1,0 +1,37 @@
+* Hallo, 世界
+
+Willkommen zu einer Tour durch die [[/][Programmiersprache Go]].
+
+Die Tour ist in eine Liste von Modulen gegliedert. Sie können
+darauf zugreifen, indem Sie oben links auf der Seite auf
+[[javascript:highlight(".logo")][A Tour of Go]] klicken.
+
+Das Inhaltsverzeichnis können Sie jederzeit anzeigen, indem Sie oben rechts auf der Seite auf das [[javascript:highlightAndClick(".nav")][Menü]] klicken.
+
+Während der Tour finden Sie eine Reihe von Folien und Übungen, die Sie
+bearbeiten können.
+
+Sie können darin navigieren mit
+
+- [[javascript:highlight(".prev-page")]["zurück"]] oder `PageUp`, um zur vorherigen Seite zu gelangen,
+
+- [[javascript:highlight(".next-page")]["weiter"]] oder `PageDown`, um zur nächsten Seite zu gelangen.
+
+Die Tour ist interaktiv. Klicken Sie jetzt auf die Schaltfläche
+[[javascript:highlightAndClick("#run")][Ausführen]]
+(oder drücken Sie `Shift` + `Enter`), um das Programm auf
+einem Remote-Server zu kompilieren und auszuführen.
+Das Ergebnis wird unterhalb des Codes angezeigt.
+
+Diese Beispielprogramme zeigen verschiedene Aspekte von Go. Die Programme in der Tour sind als Ausgangspunkte für eigene Experimente gedacht.
+
+Bearbeiten Sie das Programm und führen Sie es erneut aus.
+
+Wenn Sie auf [[javascript:highlightAndClick("#format")][Formatieren]] klicken
+(Tastenkürzel: `Ctrl` + `Enter`), wird der Text im Editor mit dem Werkzeug
+[[/cmd/gofmt/][gofmt]] formatiert. Die Syntaxhervorhebung können Sie ein- und ausschalten,
+indem Sie auf die Schaltfläche [[javascript:highlightAndClick(".syntax-checkbox")][Syntax]] klicken.
+
+Wenn Sie bereit sind weiterzumachen, klicken Sie unten auf den [[javascript:highlightAndClick(".next-page")][Pfeil nach rechts]] oder drücken Sie die Taste `PageDown`.
+
+.play welcome/hello.go

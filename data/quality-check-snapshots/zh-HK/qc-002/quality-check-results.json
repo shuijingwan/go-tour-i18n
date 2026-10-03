@@ -1,0 +1,53 @@
+{
+  "schema_version": 2,
+  "evidence_type": "quality_check_results",
+  "locale": "zh-HK",
+  "snapshot_id": "qc-002",
+  "snapshot_manifest_sha256": "624831941ceb98ccd8afad7f8ea1a5beec1c7a1d886a8650855443b8d5343905",
+  "previous_snapshot_id": "qc-001",
+  "rubric": "translation-quality/v1",
+  "result_count": 8,
+  "results": [
+    {
+      "index": 2,
+      "unit_id": "welcome/2",
+      "rating": "B",
+      "finding": "標題「Go 的本地化版本」雖已修正上一版把 `local` 理解為「本機」的問題，但仍把本地化版本的所屬對象寫成 `Go`，容易理解為 Go 程式語言本身有不同語言版本；本頁正文與連結實際指的是 A Tour of Go／導覽的其他語言版本。請只修訂標題，使本地化／其他語言版本的對象明確是導覽，而不是 Go 程式語言。"
+    },
+    {
+      "index": 37,
+      "unit_id": "moretypes/1",
+      "rating": "A"
+    },
+    {
+      "index": 66,
+      "unit_id": "methods/3",
+      "rating": "A"
+    },
+    {
+      "index": 73,
+      "unit_id": "methods/10",
+      "rating": "A"
+    },
+    {
+      "index": 85,
+      "unit_id": "methods/22",
+      "rating": "A"
+    },
+    {
+      "index": 102,
+      "unit_id": "concurrency/10",
+      "rating": "A"
+    },
+    {
+      "index": 116,
+      "unit_id": "example:methods/interfaces.go",
+      "rating": "A"
+    },
+    {
+      "index": 119,
+      "unit_id": "example:moretypes/pointers.go",
+      "rating": "A"
+    }
+  ]
+}

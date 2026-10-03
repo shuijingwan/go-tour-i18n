@@ -1,0 +1,12 @@
+* Types génériques
+
+En plus des fonctions génériques, Go prend aussi en charge les types génériques. Un type peut
+être paramétré par un paramètre de type, ce qui peut être utile pour implémenter
+des structures de données génériques.
+
+Cet exemple présente une déclaration de type simple pour une liste simplement chaînée
+pouvant contenir des valeurs de n’importe quel type.
+
+À titre d’exercice, ajoutez quelques fonctionnalités à cette implémentation de liste.
+
+.play generics/list.go

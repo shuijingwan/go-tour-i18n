@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "evidence_type": "glossary-review-receipt",
+  "locale": "zh-HK",
+  "review_id": "20261003-zh-HK-glossary-004",
+  "stage": "locale-glossary-review",
+  "decision": "failed",
+  "reviewer": "ChatGPT GPT-5.6 Sol High",
+  "rubric": "glossary-review/v1",
+  "glossary_path": "locales/zh-HK/glossary.yaml",
+  "glossary_sha256": "09c72b56d5b2952cf4dac1ba28b1a1324acabc9533883fc5049f7e93a31b1847",
+  "findings": [
+    "forbidden；source term/current rule: 幻燈片；問題: concurrency/11 的三個 [slides] 均指向 Go 技術演講的 presentation slides，因此「幻燈片」在這個語義下並非穩定錯誤表達。香港政府現行繁體中文內容亦直接以「幻燈片」表示簡報 slides；把它設為無語境的全局 forbidden 會誤傷當前 source 中已明確存在的合理 presentation-slide 語境，與 forbidden 只能包含穩定錯誤表達的規則衝突。修改方向: 保留 presentation slide 的項目偏好可以繼續由 contextual preferred 約束，但不要以全局 forbidden 禁止「幻燈片」；如確有需要，只能把限制收窄至會把 Tour page 誤解為 presentation slide 的特定語境。",
+    "forbidden；source term/current rule: 接口；問題: preferred 已明確把 Go 的 interface 統一為「介面」，但全局 forbidden「接口」的作用範圍遠超 Go interface。香港官方技術中文實際使用「應用程序接口（API）」等表達，因此「接口」具有合理技術語境，不能作為 locale 全局穩定錯誤詞禁止。修改方向: 維持 interface → 介面 的 Go 術語偏好即可；移除或收窄全局「接口」forbidden，避免對其他合理技術語境產生誤傷。",
+    "keep；source term/current rule: PageUp / PageDown / Shift / Enter / Ctrl；問題: 完整 122/122 source context 中，這五個項目只出現在 welcome/1 的 inline-code 鍵名位置，formal/ui-en.json 中亦沒有需要在開放自然語言內保護它們的對應文字。TRANSLATION_TASK_SPEC 已把 inline code 和其中的技術 identity 交由 protector／結構保護處理；因此這些項目不符合 keep 必須是「在可翻譯自然語言中仍需保持、且 protector 不能完整解決」的條件，屬重複的代碼／結構保護。修改方向: 從 keep 移除只由 inline-code protector 完整覆蓋的鍵名；只有存在實際開放自然語言 surface、且 protector 無法完整保護時，才應保留相應 keep 規則。"
+  ]
+}

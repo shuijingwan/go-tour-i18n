@@ -1,0 +1,12 @@
+* Méthodes (suite)
+
+Vous pouvez également déclarer une méthode sur des types qui ne sont pas des structures.
+
+Dans cet exemple, nous voyons un type numérique `MyFloat` avec une méthode `Abs`.
+
+Vous ne pouvez déclarer une méthode que si le type de son récepteur est défini dans le même
+paquet que la méthode.
+Vous ne pouvez pas déclarer de méthode avec un récepteur dont le type est défini dans un autre
+paquet (ce qui inclut les types prédéfinis comme `int`).
+
+.play methods/methods-continued.go

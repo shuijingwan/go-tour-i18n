@@ -1,0 +1,13 @@
+* 函數（續）
+
+如果兩個或以上連續的具名函數參數具有相同類型，除最後一個參數外，其餘參數的類型都可以省略。
+
+在這個範例中，我們把
+
+	x int, y int
+
+簡寫為
+
+	x, y int
+
+.play basics/functions-continued.go

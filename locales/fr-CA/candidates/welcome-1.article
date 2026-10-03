@@ -1,0 +1,37 @@
+* Bonjour, 世界
+
+Bienvenue dans une visite guidée du [[/][langage de programmation Go]].
+
+La visite guidée est divisée en une liste de modules auxquels vous pouvez
+accéder en cliquant sur
+[[javascript:highlight(".logo")][Visite guidée de Go]], en haut à gauche de la page.
+
+Vous pouvez aussi afficher la table des matières à tout moment en cliquant sur le [[javascript:highlightAndClick(".nav")][menu]], en haut à droite de la page.
+
+Tout au long de la visite guidée, vous trouverez une série de diapositives et d’exercices
+à réaliser.
+
+Vous pouvez les parcourir à l’aide de
+
+- [[javascript:highlight(".prev-page")]["précédent"]] ou de `PageUp` pour revenir à la page précédente,
+
+- [[javascript:highlight(".next-page")]["suivant"]] ou de `PageDown` pour passer à la page suivante.
+
+La visite guidée est interactive. Cliquez maintenant sur le bouton
+[[javascript:highlightAndClick("#run")][Exécuter]]
+(ou appuyez sur `Shift` + `Enter`) pour compiler et exécuter le programme sur
+un serveur distant.
+Le résultat s’affiche sous le code.
+
+Ces exemples de programmes illustrent différents aspects de Go. Les programmes de la visite guidée servent de points de départ à vos propres expérimentations.
+
+Modifiez le programme et exécutez-le de nouveau.
+
+Lorsque vous cliquez sur [[javascript:highlightAndClick("#format")][Formater]]
+(raccourci : `Ctrl` + `Enter`), le texte de l’éditeur est formaté à l’aide de l’outil
+[[/cmd/gofmt/][gofmt]]. Vous pouvez activer ou désactiver la coloration syntaxique
+en cliquant sur le bouton [[javascript:highlightAndClick(".syntax-checkbox")][syntaxe]].
+
+Lorsque vous êtes prêt à poursuivre, cliquez sur la [[javascript:highlightAndClick(".next-page")][flèche vers la droite]] ci-dessous ou appuyez sur la touche `PageDown`.
+
+.play welcome/hello.go

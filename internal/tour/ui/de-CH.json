@@ -1,0 +1,458 @@
+{
+  "locale": "de-CH",
+  "html_lang": "de-CH",
+  "messages": {
+    "editor.format": {
+      "kind": "plain",
+      "text": "Formatieren"
+    },
+    "editor.imports": {
+      "kind": "plain",
+      "text": "Imports"
+    },
+    "editor.kill": {
+      "kind": "plain",
+      "text": "Beenden"
+    },
+    "editor.off": {
+      "kind": "plain",
+      "text": "Aus"
+    },
+    "editor.on": {
+      "kind": "plain",
+      "text": "Ein"
+    },
+    "editor.reset": {
+      "kind": "plain",
+      "text": "Zurücksetzen"
+    },
+    "editor.run": {
+      "kind": "plain",
+      "text": "Ausführen"
+    },
+    "editor.syntax": {
+      "kind": "plain",
+      "text": "Syntax"
+    },
+    "error.not_found": {
+      "kind": "plain",
+      "text": "404 Seite nicht gefunden"
+    },
+    "execution.build_failed": {
+      "kind": "plain",
+      "text": "Go build fehlgeschlagen."
+    },
+    "execution.communication_error": {
+      "kind": "plain",
+      "text": "Fehler bei der Kommunikation mit dem Remote-Server."
+    },
+    "execution.exited": {
+      "kind": "plain",
+      "text": "Programm beendet"
+    },
+    "execution.test_failed": {
+      "kind": "plain",
+      "text": "{count} Test fehlgeschlagen."
+    },
+    "execution.tests_failed": {
+      "kind": "plain",
+      "text": "{count} Tests fehlgeschlagen."
+    },
+    "execution.tests_passed": {
+      "kind": "plain",
+      "text": "Alle Tests bestanden."
+    },
+    "execution.vet_failed": {
+      "kind": "plain",
+      "text": "Go vet fehlgeschlagen."
+    },
+    "execution.waiting": {
+      "kind": "plain",
+      "text": "Warten auf den Remote-Server..."
+    },
+    "feedback.context": {
+      "kind": "plain",
+      "text": "Kontext"
+    },
+    "feedback.issue_body": {
+      "kind": "plain",
+      "text": "Ändern Sie den obigen Titel, um Ihr Problem zu beschreiben, und fügen Sie hier Ihr Feedback hinzu, einschliesslich Code, falls erforderlich."
+    },
+    "feedback.issue_title": {
+      "kind": "plain",
+      "text": "x/website/_content/tour: [KURZE BESCHREIBUNG EINFÜGEN]"
+    },
+    "feedback.open": {
+      "kind": "plain",
+      "text": "Feedback zu dieser Seite senden"
+    },
+    "footer.development_log": {
+      "kind": "plain",
+      "text": "Entwicklungsprotokoll"
+    },
+    "footer.github": {
+      "kind": "plain",
+      "text": "GitHub"
+    },
+    "footer.home": {
+      "kind": "plain",
+      "text": "Startseite"
+    },
+    "footer.unofficial": {
+      "kind": "plain",
+      "text": "Yongye · Inoffizielles mehrsprachiges Community-Übersetzungsprojekt"
+    },
+    "header.about_project": {
+      "kind": "plain",
+      "text": "Über dieses Projekt"
+    },
+    "module.basics.description": {
+      "kind": "rich",
+      "text": "<p>Der Ausgangspunkt: Lernen Sie alle Grundlagen der Sprache kennen.</p><p>Variablen deklarieren, Funktionen aufrufen und alles, was Sie wissen müssen, bevor Sie mit den nächsten Lektionen fortfahren.</p>"
+    },
+    "module.basics.title": {
+      "kind": "plain",
+      "text": "Grundlagen"
+    },
+    "module.concurrency.description": {
+      "kind": "rich",
+      "text": "<p>Go stellt Funktionen zur Nebenläufigkeit als Teil der Kernsprache bereit.</p><p>Dieses Modul behandelt goroutines und Channels und zeigt, wie sie zur Umsetzung verschiedener Nebenläufigkeitsmuster verwendet werden.</p>"
+    },
+    "module.concurrency.title": {
+      "kind": "plain",
+      "text": "Nebenläufigkeit"
+    },
+    "module.generics.description": {
+      "kind": "rich",
+      "text": "<p>Lernen Sie, wie Sie Typparameter in Go-Funktionen und Structs verwenden.</p>"
+    },
+    "module.generics.title": {
+      "kind": "plain",
+      "text": "Generics"
+    },
+    "module.methods.description": {
+      "kind": "rich",
+      "text": "<p>Lernen Sie, wie Sie Methoden für Typen definieren, Interfaces deklarieren und alles zusammensetzen.</p>"
+    },
+    "module.methods.title": {
+      "kind": "plain",
+      "text": "Methoden und Interfaces"
+    },
+    "module.using_tour.description": {
+      "kind": "rich",
+      "text": "<p>Willkommen zu einer Tour durch die <a href=\"https://go.dev\">Programmiersprache Go</a>. Die Tour behandelt die wichtigsten Merkmale der Sprache, insbesondere:</p>"
+    },
+    "module.using_tour.title": {
+      "kind": "plain",
+      "text": "Die Tour verwenden"
+    },
+    "site.architecture_languages": {
+      "kind": "plain",
+      "text": "Server, Templates, CSS, JavaScript, Bilder und Schriftarten werden soweit sinnvoll gemeinsam genutzt. Jede Sprache verwaltet Kursübersetzungen, UI-Texte, Terminologie und Status unabhängig. Vereinfachtes Chinesisch ist die zuerst bereitgestellte Sprache; weitere können ergänzt werden."
+    },
+    "site.architecture_playground": {
+      "kind": "plain",
+      "text": "Go-Beispiele im Browser laufen über einen kontrollierten Remote-Playground-Proxy; in Produktion wird der lokale /socket-Endpunkt zur Codeausführung nicht exponiert."
+    },
+    "site.architecture_title": {
+      "kind": "plain",
+      "text": "Nachvollziehbare, kontrollierte und erweiterbare Architektur"
+    },
+    "site.architecture_upstream": {
+      "kind": "plain",
+      "text": "Das Projekt erfasst kontinuierlich den offiziellen Upstream-Commit und bewahrt damit eine nachvollziehbare Ausgangsbasis für künftige Quellaktualisierungen."
+    },
+    "site.browser_title": {
+      "kind": "plain",
+      "text": "Yongye · Mehrsprachiges Übersetzungsprojekt für A Tour of Go"
+    },
+    "site.community_version": {
+      "kind": "plain",
+      "text": "Community-Übersetzung"
+    },
+    "site.continue_learning": {
+      "kind": "plain",
+      "text": "Auf go.dev weiterlernen"
+    },
+    "site.continue_learning_description": {
+      "kind": "plain",
+      "text": "A Tour of Go ist nur der Anfang. Besuchen Sie nach Abschluss go.dev für offizielle Dokumentation, Tutorials, die Referenz der Standardbibliothek, die Sprachspezifikation und weitere Lernressourcen zu Go."
+    },
+    "site.continue_learning_title": {
+      "kind": "plain",
+      "text": "Weiter Go lernen"
+    },
+    "site.course_pages": {
+      "kind": "plain",
+      "text": "Kursseiten"
+    },
+    "site.current_language": {
+      "kind": "plain",
+      "text": "Aktuelle Sprache"
+    },
+    "site.current_projects": {
+      "kind": "plain",
+      "text": "Aktuelles Übersetzungsprojekt"
+    },
+    "site.development_environment": {
+      "kind": "plain",
+      "text": "Entwicklungsumgebung"
+    },
+    "site.development_log": {
+      "kind": "plain",
+      "text": "Entwicklungsprotokoll: Mehrsprachiges Übersetzungsprojekt für A Tour of Go"
+    },
+    "site.enter_tour": {
+      "kind": "plain",
+      "text": "Tour öffnen"
+    },
+    "site.environment": {
+      "kind": "plain",
+      "text": "Umgebung"
+    },
+    "site.how_it_works": {
+      "kind": "plain",
+      "text": "So funktioniert das Projekt"
+    },
+    "site.how_it_works_intro": {
+      "kind": "plain",
+      "text": "Die Lokalisierung des Kurses ist kein satzweiser Austausch. Sie basiert auf vollständigen Inhaltseinheiten, nachvollziehbaren Prüfzuständen und verifizierbaren Release-Artefakten."
+    },
+    "site.intro": {
+      "kind": "plain",
+      "text": "Ein von der Community gepflegtes Übersetzungsprojekt für offizielle Go-Lerninhalte. Vereinfachtes Chinesisch ist die erste verfügbare Sprache, und die Struktur kann um weitere Sprachen und Go-Inhalte erweitert werden."
+    },
+    "site.issue_feedback": {
+      "kind": "plain",
+      "text": "GitHub Issues"
+    },
+    "site.language_versions": {
+      "kind": "plain",
+      "text": "Sprachversionen"
+    },
+    "site.latest_release": {
+      "kind": "plain",
+      "text": "Neuester Release"
+    },
+    "site.no_affiliation": {
+      "kind": "plain",
+      "text": "Dieses Projekt ist weder mit dem Go-Projekt verbunden noch von ihm autorisiert oder befürwortet."
+    },
+    "site.official_upstream": {
+      "kind": "plain",
+      "text": "Offizieller Upstream"
+    },
+    "site.official_version": {
+      "kind": "plain",
+      "text": "Offizielle Version von A Tour of Go"
+    },
+    "site.open_official_tour": {
+      "kind": "plain",
+      "text": "Offizielle Tour öffnen"
+    },
+    "site.operations_note": {
+      "kind": "plain",
+      "text": "Diese Website kann Werbung anzeigen, um Infrastrukturkosten wie Server, Bandbreite und CDN-Dienste sowie die laufenden Kosten für die Pflege des Projekts mitzufinanzieren. Der Quellcode bleibt öffentlich, und selbst gehostete Installationen aktivieren die Werbekonfiguration dieser Website standardmässig nicht."
+    },
+    "site.project_links": {
+      "kind": "plain",
+      "text": "Projektlinks"
+    },
+    "site.project_status": {
+      "kind": "plain",
+      "text": "Projektstatus"
+    },
+    "site.source_code": {
+      "kind": "plain",
+      "text": "Quellcode auf GitHub"
+    },
+    "site.start_learning": {
+      "kind": "plain",
+      "text": "Lernen beginnen"
+    },
+    "site.title": {
+      "kind": "plain",
+      "text": "Mehrsprachiges Übersetzungsprojekt für A Tour of Go"
+    },
+    "site.tour_description": {
+      "kind": "plain",
+      "text": "Eine interaktive Einführung in die Programmiersprache Go."
+    },
+    "site.translation_validation": {
+      "kind": "plain",
+      "text": "Übersetzung und Validierung"
+    },
+    "site.translation_validation_intro": {
+      "kind": "plain",
+      "text": "Das Projekt orientiert sich beim Lernerlebnis eng an der offiziellen Quelle und prüft jede Veröffentlichung vor der Publikation."
+    },
+    "site.unofficial": {
+      "kind": "plain",
+      "text": "Betreut von Yongye · Inoffizielles mehrsprachiges Community-Übersetzungsprojekt"
+    },
+    "site.upstream_baseline": {
+      "kind": "plain",
+      "text": "Baseline der offiziellen Quelle"
+    },
+    "site.upstream_commit_time": {
+      "kind": "plain",
+      "text": "Zeitpunkt des Upstream-Commits"
+    },
+    "site.validation_examples": {
+      "kind": "plain",
+      "text": "Go-Beispiele mit übersetzbaren natürlichsprachigen Kommentaren durchlaufen ebenfalls den einheitlichen Validierungsablauf; alle anderen Beispiele verwenden weiterhin direkt die offizielle Quelle."
+    },
+    "site.validation_page_unit": {
+      "kind": "plain",
+      "text": "Vollständige Kursseiten dienen als Übersetzungseinheit."
+    },
+    "site.validation_present": {
+      "kind": "plain",
+      "text": "Jede Veröffentlichung wird mit present geparst."
+    },
+    "site.validation_render": {
+      "kind": "plain",
+      "text": "Gerenderte Seiten werden vor der Veröffentlichung geprüft."
+    },
+    "site.validation_structure": {
+      "kind": "plain",
+      "text": "Die Seitenstruktur wird mit der offiziellen Quelle verglichen."
+    },
+    "site.workflow_process": {
+      "kind": "plain",
+      "text": "Jede Einheit durchläuft Übersetzung, automatische Validierung, Translation Quality Review, Promotion, ready, Projektion und Veröffentlichung; generierte Übersetzungen werden nie direkt veröffentlicht."
+    },
+    "site.workflow_publish": {
+      "kind": "plain",
+      "text": "Beim Veröffentlichen wird aus kanonischen ready-Kandidaten eine vollständige lokalisierte Projektion erzeugt; jede Workflow-TranslationUnit muss ready sein. Anschliessend werden die Produktions-Binärdatei, release.json und SHA256SUMS erstellt und das vollständige Bundle verifiziert."
+    },
+    "site.workflow_review": {
+      "kind": "plain",
+      "text": "Automatische Prüfungen schützen die Struktur, parsen present-Inhalte, vergleichen sie mit der offiziellen Quelle, validieren Rendering und Seiten und prüfen den Go-Inhalt von Examples. Vor der Promotion ist dennoch eine unabhängige Übersetzungsqualitätsprüfung erforderlich."
+    },
+    "site.workflow_title": {
+      "kind": "plain",
+      "text": "Von TranslationUnit bis Produktion"
+    },
+    "site.workflow_units": {
+      "kind": "plain",
+      "text": "TranslationUnit umfasst sowohl vollständige Pages als auch zulässige Examples: Eine Page ist eine vollständige present.Section, während ein Example eine vollständige .go-Datei mit übersetzbaren natürlichsprachigen Kommentaren ist."
+    },
+    "support.address": {
+      "kind": "plain",
+      "text": "Adresse"
+    },
+    "support.advertising_title": {
+      "kind": "plain",
+      "text": "Hinweis zur Werbung"
+    },
+    "support.asset": {
+      "kind": "plain",
+      "text": "Asset"
+    },
+    "support.copied": {
+      "kind": "plain",
+      "text": "Kopiert"
+    },
+    "support.copy_address": {
+      "kind": "plain",
+      "text": "Adresse kopieren"
+    },
+    "support.copy_reference": {
+      "kind": "plain",
+      "text": "Referenz kopieren"
+    },
+    "support.copy_uid": {
+      "kind": "plain",
+      "text": "UID kopieren"
+    },
+    "support.intro": {
+      "kind": "plain",
+      "text": "Sie können die fortlaufende Pflege dieser Sprachversion auch freiwillig unterstützen. Ihre Unterstützung hilft dabei, diese Version weiterhin zu pflegen und weiterzuentwickeln."
+    },
+    "support.minimum_deposit": {
+      "kind": "plain",
+      "text": "Mindestbetrag beim Empfang"
+    },
+    "support.network": {
+      "kind": "plain",
+      "text": "Netzwerk"
+    },
+    "support.platform_help": {
+      "kind": "plain",
+      "text": "Nutzer derselben Plattform können einen internen Transfer per UID verwenden. Details finden Sie auf der Plattform."
+    },
+    "support.platform_title": {
+      "kind": "plain",
+      "text": "Plattforminterner Transfer (optional)"
+    },
+    "support.reference_help": {
+      "kind": "plain",
+      "text": "Wenn Ihr Zahlungsdienst eine Notiz oder Referenz unterstützt, können Sie diesen Wert verwenden."
+    },
+    "support.reference_label": {
+      "kind": "plain",
+      "text": "Unterstützungsreferenz"
+    },
+    "support.section_title": {
+      "kind": "plain",
+      "text": "Unterstützung & Betriebskosten"
+    },
+    "support.translation_title": {
+      "kind": "plain",
+      "text": "Diese Sprachversion unterstützen"
+    },
+    "support.uid": {
+      "kind": "plain",
+      "text": "UID"
+    },
+    "support.usdc_network_only": {
+      "kind": "plain",
+      "text": "Senden Sie USDC nur über das Base-Netzwerk."
+    },
+    "support.usdt_network_only": {
+      "kind": "plain",
+      "text": "Senden Sie USDT nur über das Tron-Netzwerk (TRC20)."
+    },
+    "support.wrong_network_warning": {
+      "kind": "plain",
+      "text": "Die Verwendung des falschen Assets oder Netzwerks kann zum Verlust von Guthaben führen."
+    },
+    "theme.dark": {
+      "kind": "plain",
+      "text": "Dunkles Design"
+    },
+    "theme.light": {
+      "kind": "plain",
+      "text": "Helles Design"
+    },
+    "theme.system": {
+      "kind": "plain",
+      "text": "Systemdesign"
+    },
+    "theme.toggle": {
+      "kind": "plain",
+      "text": "Design wechseln"
+    },
+    "toc.title": {
+      "kind": "plain",
+      "text": "Inhaltsverzeichnis"
+    },
+    "tour.list_description": {
+      "kind": "plain",
+      "text": "Durchsuchen Sie die Module und Lektionen von A Tour of Go, einer interaktiven Einführung in die Programmiersprache Go."
+    },
+    "tour.list_heading": {
+      "kind": "plain",
+      "text": "Willkommen zu einer Tour durch Go"
+    },
+    "tour.list_title": {
+      "kind": "plain",
+      "text": "Kursverzeichnis — A Tour of Go"
+    },
+    "tour.title": {
+      "kind": "plain",
+      "text": "A Tour of Go"
+    }
+  }
+}

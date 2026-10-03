@@ -1,0 +1,17 @@
+* Choisir un récepteur valeur ou pointeur
+
+Il y a deux raisons d’utiliser un récepteur pointeur.
+
+La première est de permettre à la méthode de modifier la valeur vers laquelle son récepteur pointe.
+
+La seconde est d’éviter de copier la valeur à chaque appel de méthode.
+Cela peut être plus efficace si, par exemple, le récepteur est une grande structure.
+
+Dans cet exemple, `Scale` et `Abs` sont toutes deux des méthodes dont le type de récepteur est `*Vertex`,
+même si la méthode `Abs` n’a pas besoin de modifier son récepteur.
+
+En général, toutes les méthodes d’un type donné devraient avoir soit des récepteurs valeurs,
+soit des récepteurs pointeurs, mais pas un mélange des deux.
+(Nous verrons pourquoi au cours des prochaines pages.)
+
+.play methods/methods-with-pointer-receivers.go

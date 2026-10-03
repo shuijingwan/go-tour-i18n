@@ -1,0 +1,21 @@
+* Methoden und Pointer-Indirektion (2)
+
+In der umgekehrten Richtung geschieht das Entsprechende.
+
+Funktionen, die ein Wert-Argument entgegennehmen, müssen einen Wert genau dieses Typs erhalten:
+
+	var v Vertex
+	fmt.Println(AbsFunc(v))  // OK
+	fmt.Println(AbsFunc(&v)) // Kompilierfehler!
+
+während Methoden mit Wert-Receivern beim Aufruf entweder einen Wert oder einen Pointer als
+Receiver akzeptieren:
+
+	var v Vertex
+	fmt.Println(v.Abs()) // OK
+	p := &v
+	fmt.Println(p.Abs()) // OK
+
+In diesem Fall wird der Methodenaufruf `p.Abs()` als `(*p).Abs()` interpretiert.
+
+.play methods/indirection-values.go

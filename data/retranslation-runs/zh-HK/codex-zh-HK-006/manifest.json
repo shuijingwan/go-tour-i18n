@@ -1,0 +1,24 @@
+{
+  "schema_version": 2,
+  "batch_id": "codex-zh-HK-006",
+  "locale": "zh-HK",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 1,
+  "units": [
+    {
+      "unit_id": "welcome/2",
+      "unit_kind": "page",
+      "source_path": "_content/tour/welcome.article",
+      "source_sha256": "709f808ec4cdf683411f349cab7a4886fcae532d1c4e4cc66c8ed68cfb2dd2d3",
+      "input_path": "inputs/welcome-2.article",
+      "input_sha256": "7ec01e577d8cbed91e0eb266d1bd0848c0913385c957bd21ce79eecdc578edcf",
+      "protected_token_count": 16,
+      "previous_snapshot_id": "qc-002",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "標題「Go 的本地化版本」雖已修正上一版把 `local` 理解為「本機」的問題，但仍把本地化版本的所屬對象寫成 `Go`，容易理解為 Go 程式語言本身有不同語言版本；本頁正文與連結實際指的是 A Tour of Go／導覽的其他語言版本。請只修訂標題，使本地化／其他語言版本的對象明確是導覽，而不是 Go 程式語言。"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+* Exercice : robot d’exploration Web
+
+Dans cet exercice, vous utiliserez les fonctionnalités de concurrence de Go pour paralléliser un robot d’exploration Web.
+
+Modifiez la fonction `Crawl` afin de récupérer des URL en parallèle sans récupérer deux fois la même URL.
+
+_Indice_ : vous pouvez conserver un cache des URL déjà récupérées dans une table associative, mais les tables associatives seules ne sont pas
+sûres pour une utilisation concurrente!
+
+.play concurrency/exercise-web-crawler.go

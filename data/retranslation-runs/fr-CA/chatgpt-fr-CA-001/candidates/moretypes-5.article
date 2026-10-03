@@ -1,0 +1,9 @@
+* Littéraux de structure
+
+Un littéral de structure désigne une nouvelle valeur de structure allouée en énumérant les valeurs de ses champs.
+
+Vous pouvez n’indiquer qu’un sous-ensemble des champs avec la syntaxe `Name:`. (L’ordre des champs nommés n’a alors aucune importance.)
+
+Le préfixe spécial `&` renvoie un pointeur vers la valeur de structure.
+
+.play moretypes/struct-literals.go

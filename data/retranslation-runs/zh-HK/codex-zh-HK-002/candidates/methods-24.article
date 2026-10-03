@@ -1,0 +1,21 @@
+* 圖像
+
+[[/pkg/image/#Image][image 套件]]定義了 `Image` 介面：
+
+	package image
+
+	type Image interface {
+		ColorModel() color.Model
+		Bounds() Rectangle
+		At(x, y int) color.Color
+	}
+
+*注意*： `Bounds` 方法傳回的 `Rectangle` 值，實際上是
+[[/pkg/image/#Rectangle][`image.Rectangle`]]，因為該
+宣告位於 `image` 套件內。
+
+（所有詳細資料請參閱[[/pkg/image/#Image][文件]]。）
+
+`color.Color` 和 `color.Model` 類型也是介面，但我們會使用預先定義的實作 `color.RGBA` 和 `color.RGBAModel`，因此可以暫且忽略。這些介面及類型由 [[/pkg/image/color/][image/color 套件]]指定。
+
+.play methods/images.go

@@ -1,0 +1,10 @@
+* Pointer auf Structs
+
+Auf Struct-Felder kann über einen Struct-Pointer zugegriffen werden.
+
+Um auf das Feld `X` eines Structs zuzugreifen, wenn der Struct-Pointer `p` vorliegt, könnten wir
+`(*p).X` schreiben.
+Diese Schreibweise ist jedoch umständlich. Deshalb erlaubt die Sprache stattdessen,
+einfach `p.X` zu schreiben, ohne explizite Dereferenzierung.
+
+.play moretypes/struct-pointers.go

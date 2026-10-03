@@ -1,0 +1,13 @@
+* 練習：圖像
+
+還記得你先前寫的[[/tour/moretypes/18][圖片產生器]]嗎？讓我們再寫一個，但這次它會傳回 `image.Image` 的實作，而不是資料切片。
+
+定義你自己的 `Image` 類型，實作[[/pkg/image/#Image][所需的方法]]，然後呼叫 `pic.ShowImage`。
+
+`Bounds` 應傳回 `image.Rectangle`，例如 `image.Rect(0,`0,`w,`h)`。
+
+`ColorModel` 應傳回 `color.RGBAModel`。
+
+`At` 應傳回一種顏色；上一個圖片產生器中的值 `v`，在這個產生器中對應於 `color.RGBA{v,`v,`255,`255}`。
+
+.play methods/exercise-images.go

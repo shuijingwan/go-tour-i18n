@@ -1,0 +1,24 @@
+* Pointer
+
+Go besitzt Pointer.
+Ein Pointer enthält die Speicheradresse eines Werts.
+
+Der Typ `*T` ist ein Pointer auf einen Wert vom Typ `T`. Sein Nullwert ist `nil`.
+
+	var p *int
+
+Der Operator `&` erzeugt einen Pointer auf seinen Operanden.
+
+	i := 42
+	p = &i
+
+Der Operator `*` bezeichnet den zugrunde liegenden Wert des Pointers.
+
+	fmt.Println(*p) // i über den Pointer p lesen
+	*p = 21         // i über den Pointer p setzen
+
+Dies wird als «Dereferenzieren» oder «Indirektion» bezeichnet.
+
+Anders als C besitzt Go keine Pointer-Arithmetik.
+
+.play moretypes/pointers.go

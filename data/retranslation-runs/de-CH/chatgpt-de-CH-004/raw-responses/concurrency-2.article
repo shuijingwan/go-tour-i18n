@@ -1,0 +1,16 @@
+* Channels
+
+Channels sind typisierte Verbindungen, über die Sie mit dem Channel-Operator ⟪GTI18N_a35e3af2_000001⟫<-⟪GTI18N_a35e3af2_000002⟫ Werte senden und empfangen können.
+
+⟪GTI18N_a35e3af2_000003⟫Sende ⟪GTI18N_a35e3af2_000004⟫ an Channel ⟪GTI18N_a35e3af2_000005⟫.⟪GTI18N_a35e3af2_000006⟫Empfange von ⟪GTI18N_a35e3af2_000007⟫ und⟪GTI18N_a35e3af2_000008⟫weise den empfangenen Wert der Variable ⟪GTI18N_a35e3af2_000009⟫ zu.⟪GTI18N_a35e3af2_000010⟫(Die Daten fliessen in Pfeilrichtung.)
+
+Wie Maps und Slices müssen Channels vor der Verwendung erstellt werden:
+
+⟪GTI18N_a35e3af2_000011⟫
+
+Standardmässig blockieren Sende- und Empfangsvorgänge, bis die jeweils andere Seite bereit ist. Dadurch können sich goroutines ohne explizite Sperren oder Bedingungsvariablen synchronisieren.
+
+Der Beispielcode summiert die Zahlen in einem Slice und verteilt die Arbeit auf zwei goroutines.
+Sobald beide goroutines ihre Berechnung abgeschlossen haben, wird das Endergebnis berechnet.
+
+⟪GTI18N_a35e3af2_000012⟫

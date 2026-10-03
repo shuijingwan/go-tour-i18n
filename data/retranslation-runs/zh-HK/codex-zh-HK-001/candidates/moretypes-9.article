@@ -1,0 +1,14 @@
+* 切片常值
+
+切片常值就像沒有長度的陣列常值。
+
+以下是陣列常值：
+
+	[3]bool{true, true, false}
+
+以下則會建立與上面相同的陣列，
+再建立一個參照該陣列的切片：
+
+	[]bool{true, true, false}
+
+.play moretypes/slice-literals.go

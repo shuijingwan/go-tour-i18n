@@ -1,0 +1,19 @@
+* 錯誤
+
+Go 程式使用 ⟪GTI18N_9eaab1fd_000001⟫error⟪GTI18N_9eaab1fd_000002⟫ 值來表示錯誤狀態。
+
+⟪GTI18N_9eaab1fd_000003⟫error⟪GTI18N_9eaab1fd_000004⟫ 類型是類似 ⟪GTI18N_9eaab1fd_000005⟫fmt.Stringer⟪GTI18N_9eaab1fd_000006⟫ 的內置介面：
+
+⟪GTI18N_9eaab1fd_000007⟫
+
+（與 ⟪GTI18N_9eaab1fd_000008⟫fmt.Stringer⟪GTI18N_9eaab1fd_000009⟫ 一樣，⟪GTI18N_9eaab1fd_000010⟫fmt⟪GTI18N_9eaab1fd_000011⟫ 套件會在
+輸出值時尋找 ⟪GTI18N_9eaab1fd_000012⟫error⟪GTI18N_9eaab1fd_000013⟫ 介面。）
+
+函數經常傳回 ⟪GTI18N_9eaab1fd_000014⟫error⟪GTI18N_9eaab1fd_000015⟫ 值，而呼叫端程式碼應測試錯誤是否等於
+⟪GTI18N_9eaab1fd_000016⟫nil⟪GTI18N_9eaab1fd_000017⟫，藉此處理錯誤。
+
+⟪GTI18N_9eaab1fd_000018⟫
+
+nil ⟪GTI18N_9eaab1fd_000019⟫error⟪GTI18N_9eaab1fd_000020⟫ 表示成功；非 nil ⟪GTI18N_9eaab1fd_000021⟫error⟪GTI18N_9eaab1fd_000022⟫ 則表示失敗。
+
+⟪GTI18N_9eaab1fd_000023⟫

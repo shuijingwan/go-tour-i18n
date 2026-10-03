@@ -1,0 +1,458 @@
+{
+  "locale": "zh-HK",
+  "html_lang": "zh-HK",
+  "messages": {
+    "tour.title": {
+      "kind": "plain",
+      "text": "Go 語言導覽"
+    },
+    "header.about_project": {
+      "kind": "plain",
+      "text": "關於本專案"
+    },
+    "tour.list_heading": {
+      "kind": "plain",
+      "text": "歡迎來到 Go 語言導覽"
+    },
+    "tour.list_title": {
+      "kind": "plain",
+      "text": "課程目錄 — Go 語言導覽"
+    },
+    "tour.list_description": {
+      "kind": "plain",
+      "text": "瀏覽 Go 語言導覽的模組和課節；這是一套互動式 Go 程式語言入門課程。"
+    },
+    "theme.toggle": {
+      "kind": "plain",
+      "text": "切換主題"
+    },
+    "theme.system": {
+      "kind": "plain",
+      "text": "跟隨系統"
+    },
+    "theme.dark": {
+      "kind": "plain",
+      "text": "深色主題"
+    },
+    "theme.light": {
+      "kind": "plain",
+      "text": "淺色主題"
+    },
+    "editor.syntax": {
+      "kind": "plain",
+      "text": "語法"
+    },
+    "editor.imports": {
+      "kind": "plain",
+      "text": "匯入"
+    },
+    "editor.on": {
+      "kind": "plain",
+      "text": "啟用"
+    },
+    "editor.off": {
+      "kind": "plain",
+      "text": "停用"
+    },
+    "editor.run": {
+      "kind": "plain",
+      "text": "執行"
+    },
+    "editor.kill": {
+      "kind": "plain",
+      "text": "終止"
+    },
+    "editor.format": {
+      "kind": "plain",
+      "text": "格式化"
+    },
+    "editor.reset": {
+      "kind": "plain",
+      "text": "重設"
+    },
+    "toc.title": {
+      "kind": "plain",
+      "text": "目錄"
+    },
+    "execution.waiting": {
+      "kind": "plain",
+      "text": "正在等待遠端伺服器……"
+    },
+    "execution.exited": {
+      "kind": "plain",
+      "text": "程式已結束"
+    },
+    "execution.vet_failed": {
+      "kind": "plain",
+      "text": "Go vet 檢查失敗。"
+    },
+    "execution.build_failed": {
+      "kind": "plain",
+      "text": "Go 建置失敗。"
+    },
+    "execution.communication_error": {
+      "kind": "plain",
+      "text": "與遠端伺服器通訊時發生錯誤。"
+    },
+    "execution.test_failed": {
+      "kind": "plain",
+      "text": "{count} 項測試失敗。"
+    },
+    "execution.tests_failed": {
+      "kind": "plain",
+      "text": "{count} 項測試失敗。"
+    },
+    "execution.tests_passed": {
+      "kind": "plain",
+      "text": "所有測試均通過。"
+    },
+    "feedback.open": {
+      "kind": "plain",
+      "text": "傳送此頁面的意見"
+    },
+    "feedback.issue_title": {
+      "kind": "plain",
+      "text": "x/website/_content/tour: [請以簡短說明取代此文字]"
+    },
+    "feedback.issue_body": {
+      "kind": "plain",
+      "text": "請修改上方標題以說明問題，並在此加入意見；如有需要，請附上程式碼"
+    },
+    "feedback.context": {
+      "kind": "plain",
+      "text": "上下文"
+    },
+    "module.using_tour.title": {
+      "kind": "plain",
+      "text": "使用本導覽"
+    },
+    "module.using_tour.description": {
+      "kind": "rich",
+      "text": "<p>歡迎使用<a href=\"https://go.dev\">Go 程式語言</a>導覽。本導覽主要涵蓋這門語言最重要的功能：</p>"
+    },
+    "module.basics.title": {
+      "kind": "plain",
+      "text": "基礎"
+    },
+    "module.basics.description": {
+      "kind": "rich",
+      "text": "<p>從起點開始，學習這門語言的所有基礎知識。</p><p>包括宣告變數、呼叫函數，以及進入下一個課節前需要掌握的一切。</p>"
+    },
+    "module.methods.title": {
+      "kind": "plain",
+      "text": "方法和介面"
+    },
+    "module.methods.description": {
+      "kind": "rich",
+      "text": "<p>學習如何在類型上定義方法、如何宣告介面，以及如何把這些概念組合運用。</p>"
+    },
+    "module.generics.title": {
+      "kind": "plain",
+      "text": "泛型"
+    },
+    "module.generics.description": {
+      "kind": "rich",
+      "text": "<p>學習如何在 Go 函數和結構中使用類型參數。</p>"
+    },
+    "module.concurrency.title": {
+      "kind": "plain",
+      "text": "並行處理"
+    },
+    "module.concurrency.description": {
+      "kind": "rich",
+      "text": "<p>Go 提供並行處理功能，並將其納入核心語言。</p><p>本模組介紹 goroutine 和通道，以及如何運用它們實作不同的並行處理模式。</p>"
+    },
+    "error.not_found": {
+      "kind": "plain",
+      "text": "404 找不到頁面"
+    },
+    "site.title": {
+      "kind": "plain",
+      "text": "Go 語言導覽多語言翻譯專案"
+    },
+    "site.browser_title": {
+      "kind": "plain",
+      "text": "Yongye · Go 語言導覽多語言翻譯專案"
+    },
+    "site.unofficial": {
+      "kind": "plain",
+      "text": "由 Yongye 維護 · 非官方社群多語言翻譯專案"
+    },
+    "site.intro": {
+      "kind": "plain",
+      "text": "由社群維護的 Go 官方學習內容翻譯專案。簡體中文是首個可用語言版本，整體架構可擴充支援更多語言和 Go 內容。"
+    },
+    "site.no_affiliation": {
+      "kind": "plain",
+      "text": "本專案與 Go 專案並無從屬關係，亦未獲其授權或認可。"
+    },
+    "site.start_learning": {
+      "kind": "plain",
+      "text": "開始學習"
+    },
+    "site.current_projects": {
+      "kind": "plain",
+      "text": "目前的翻譯專案"
+    },
+    "site.tour_description": {
+      "kind": "plain",
+      "text": "Go 程式語言互動式入門課程。"
+    },
+    "site.current_language": {
+      "kind": "plain",
+      "text": "目前語言"
+    },
+    "site.enter_tour": {
+      "kind": "plain",
+      "text": "進入導覽"
+    },
+    "site.project_status": {
+      "kind": "plain",
+      "text": "專案狀態"
+    },
+    "site.course_pages": {
+      "kind": "plain",
+      "text": "課程頁面"
+    },
+    "site.latest_release": {
+      "kind": "plain",
+      "text": "最新版本"
+    },
+    "site.environment": {
+      "kind": "plain",
+      "text": "環境"
+    },
+    "site.development_environment": {
+      "kind": "plain",
+      "text": "開發環境"
+    },
+    "site.upstream_baseline": {
+      "kind": "plain",
+      "text": "官方來源基準"
+    },
+    "site.upstream_commit_time": {
+      "kind": "plain",
+      "text": "上游提交時間"
+    },
+    "site.language_versions": {
+      "kind": "plain",
+      "text": "語言版本"
+    },
+    "site.official_version": {
+      "kind": "plain",
+      "text": "官方 Go 語言導覽"
+    },
+    "site.community_version": {
+      "kind": "plain",
+      "text": "社群翻譯"
+    },
+    "site.open_official_tour": {
+      "kind": "plain",
+      "text": "開啟官方導覽"
+    },
+    "site.project_links": {
+      "kind": "plain",
+      "text": "專案連結"
+    },
+    "site.source_code": {
+      "kind": "plain",
+      "text": "GitHub 原始程式碼"
+    },
+    "site.issue_feedback": {
+      "kind": "plain",
+      "text": "GitHub Issues"
+    },
+    "site.development_log": {
+      "kind": "plain",
+      "text": "開發日誌：Go 語言導覽多語言翻譯專案"
+    },
+    "site.official_upstream": {
+      "kind": "plain",
+      "text": "官方上游"
+    },
+    "site.translation_validation": {
+      "kind": "plain",
+      "text": "翻譯和驗證"
+    },
+    "site.translation_validation_intro": {
+      "kind": "plain",
+      "text": "本專案盡量保持貼近官方來源的學習體驗，並在每次發佈前進行檢查。"
+    },
+    "site.validation_page_unit": {
+      "kind": "plain",
+      "text": "翻譯以完整課程頁面為單位。"
+    },
+    "site.validation_present": {
+      "kind": "plain",
+      "text": "每個版本均使用 present 解析。"
+    },
+    "site.validation_structure": {
+      "kind": "plain",
+      "text": "頁面結構會與官方來源比較。"
+    },
+    "site.validation_render": {
+      "kind": "plain",
+      "text": "發佈前會檢查渲染後的頁面。"
+    },
+    "site.validation_examples": {
+      "kind": "plain",
+      "text": "帶有可翻譯自然語言註解的 Go 範例也會納入統一驗證流程；其他所有範例繼續直接使用官方來源。"
+    },
+    "site.how_it_works": {
+      "kind": "plain",
+      "text": "本專案如何運作"
+    },
+    "site.how_it_works_intro": {
+      "kind": "plain",
+      "text": "課程本地化不是逐句取代，而是以完整內容單元、可追蹤的審核狀態及可驗證的發佈產物為核心的工作流程。"
+    },
+    "site.workflow_title": {
+      "kind": "plain",
+      "text": "從 TranslationUnit 到正式環境"
+    },
+    "site.workflow_units": {
+      "kind": "plain",
+      "text": "TranslationUnit 同時代表完整 Page 和符合條件的 Example：Page 是完整的 present.Section，而 Example 是包含可翻譯自然語言註解的完整 .go 檔案。"
+    },
+    "site.workflow_process": {
+      "kind": "plain",
+      "text": "每個單元依序經過翻譯、自動驗證、翻譯品質審核、晉升、就緒、投影和發佈；生成的譯文絕不會直接發佈。"
+    },
+    "site.workflow_review": {
+      "kind": "plain",
+      "text": "自動檢查會保護結構、解析 present 內容、與官方來源比較、驗證渲染結果和頁面，並檢查 Example 的 Go 內容。晉升前仍須進行獨立的翻譯品質審核。"
+    },
+    "site.workflow_publish": {
+      "kind": "plain",
+      "text": "發佈時會從規範的就緒候選譯文建立完整的本地化投影，要求工作流程中的每個 TranslationUnit 均已就緒，然後建立正式環境二進位檔、release.json 和 SHA256SUMS，並驗證完整套件。"
+    },
+    "site.architecture_title": {
+      "kind": "plain",
+      "text": "可追蹤、可控制且可擴充的架構"
+    },
+    "site.architecture_upstream": {
+      "kind": "plain",
+      "text": "本專案持續記錄官方上游提交，保留可追蹤的基準，供日後來源更新使用。"
+    },
+    "site.architecture_playground": {
+      "kind": "plain",
+      "text": "瀏覽器中的 Go 範例會透過受控的遠端 Playground 代理執行；正式環境不會公開本機 /socket 程式碼執行端點。"
+    },
+    "site.architecture_languages": {
+      "kind": "plain",
+      "text": "在適用情況下，伺服器、範本、CSS、JavaScript、圖像和字型會共用。每個語言版本獨立維護課程翻譯、UI 文字、術語和狀態。簡體中文是首個推出的語言版本，並可擴充更多語言。"
+    },
+    "site.operations_note": {
+      "kind": "plain",
+      "text": "本網站可能顯示廣告，以協助支付伺服器、頻寬、CDN 服務等基礎設施成本，以及持續維護專案的成本。原始程式碼維持公開，自行託管的部署預設不會啟用本網站的廣告設定。"
+    },
+    "support.section_title": {
+      "kind": "plain",
+      "text": "支援與營運成本"
+    },
+    "support.advertising_title": {
+      "kind": "plain",
+      "text": "廣告聲明"
+    },
+    "support.translation_title": {
+      "kind": "plain",
+      "text": "支持此語言版本"
+    },
+    "support.intro": {
+      "kind": "plain",
+      "text": "您亦可自願支持此語言版本的持續維護。您的支持有助此版本繼續獲得維護和發展。"
+    },
+    "support.reference_label": {
+      "kind": "plain",
+      "text": "支持款項參考資料"
+    },
+    "support.reference_help": {
+      "kind": "plain",
+      "text": "如付款服務支援備註或參考資料，您可以使用此值。"
+    },
+    "support.copy_reference": {
+      "kind": "plain",
+      "text": "複製參考資料"
+    },
+    "support.copy_address": {
+      "kind": "plain",
+      "text": "複製地址"
+    },
+    "support.copy_uid": {
+      "kind": "plain",
+      "text": "複製 UID"
+    },
+    "support.copied": {
+      "kind": "plain",
+      "text": "已複製"
+    },
+    "support.asset": {
+      "kind": "plain",
+      "text": "資產"
+    },
+    "support.network": {
+      "kind": "plain",
+      "text": "網絡"
+    },
+    "support.address": {
+      "kind": "plain",
+      "text": "地址"
+    },
+    "support.minimum_deposit": {
+      "kind": "plain",
+      "text": "收款方最低金額"
+    },
+    "support.platform_title": {
+      "kind": "plain",
+      "text": "平台內部轉賬（可選）"
+    },
+    "support.uid": {
+      "kind": "plain",
+      "text": "UID"
+    },
+    "support.platform_help": {
+      "kind": "plain",
+      "text": "同一平台的用戶可使用內部 UID 轉賬。詳情請查閱該平台。"
+    },
+    "support.usdc_network_only": {
+      "kind": "plain",
+      "text": "只可透過 Base 網絡傳送 USDC。"
+    },
+    "support.usdt_network_only": {
+      "kind": "plain",
+      "text": "只可透過 Tron（TRC20）網絡傳送 USDT。"
+    },
+    "support.wrong_network_warning": {
+      "kind": "plain",
+      "text": "使用錯誤的資產或網絡可能導致資金損失。"
+    },
+    "site.continue_learning_title": {
+      "kind": "plain",
+      "text": "繼續學習 Go"
+    },
+    "site.continue_learning_description": {
+      "kind": "plain",
+      "text": "Go 語言導覽只是起點。完成後可前往 go.dev，查閱官方文件、教學、標準程式庫參考資料、語言規格及更多 Go 學習資源。"
+    },
+    "site.continue_learning": {
+      "kind": "plain",
+      "text": "前往 go.dev 繼續學習"
+    },
+    "footer.unofficial": {
+      "kind": "plain",
+      "text": "Yongye · 非官方社群多語言翻譯專案"
+    },
+    "footer.home": {
+      "kind": "plain",
+      "text": "首頁"
+    },
+    "footer.github": {
+      "kind": "plain",
+      "text": "GitHub"
+    },
+    "footer.development_log": {
+      "kind": "plain",
+      "text": "開發日誌"
+    }
+  }
+}

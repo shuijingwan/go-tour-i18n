@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "evidence_type": "glossary-review-receipt",
+  "locale": "zh-HK",
+  "review_id": "20261003-zh-HK-glossary-008",
+  "stage": "locale-glossary-review",
+  "decision": "failed",
+  "reviewer": "ChatGPT GPT-5.6 Sol High",
+  "rubric": "glossary-review/v1",
+  "glossary_path": "locales/zh-HK/glossary.yaml",
+  "glossary_sha256": "3c1b875dc494f96cd1d6e366bb8fd589d763cb74f17906495d9fbde20add6226",
+  "findings": [
+    "forbidden；source term/current rule: 協程；問題: concurrency/1 明確把 goroutine 作為 Go 專有技術 identity，並以 lightweight thread 解釋其概念；目前 keep 已要求 goroutine 保持規範 identity。完整 122/122 source context 與 English UI 中沒有 generic coroutine 概念，因此本 bundle 沒有依據把「協程」本身定義為 locale 全局錯誤表達。「協程」可合法表示與 goroutine 不同的 generic coroutine 技術概念；將其放入無語境的全局 forbidden，會把「不得把 goroutine 翻譯成協程」擴大成「任何自然語言技術語境都不得使用協程」，不符合 authority 對 forbidden 必須是穩定錯誤且不得誤傷合理技術語境的要求。修改方向: 將限制收窄為 goroutine 的術語身份政策，不要以全局 forbidden 禁止 generic「協程」概念；繼續由既有 goroutine keep／相關術語政策保證 Go 專有名稱不被本地化。"
+  ]
+}

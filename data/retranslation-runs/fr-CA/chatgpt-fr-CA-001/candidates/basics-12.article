@@ -1,0 +1,12 @@
+* Valeurs zéro
+
+Les variables déclarées sans valeur initiale explicite reçoivent leur
+_zero_value_.
+
+La valeur zéro est :
+
+- `0` pour les types numériques,
+- `false` pour le type booléen, et
+- `""` (la chaîne vide) pour les chaînes de caractères.
+
+.play basics/zero.go

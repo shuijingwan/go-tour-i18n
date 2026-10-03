@@ -1,0 +1,458 @@
+{
+  "locale": "fr-CA",
+  "html_lang": "fr-CA",
+  "messages": {
+    "editor.format": {
+      "kind": "plain",
+      "text": "Formater"
+    },
+    "editor.imports": {
+      "kind": "plain",
+      "text": "Importations"
+    },
+    "editor.kill": {
+      "kind": "plain",
+      "text": "Arrêter"
+    },
+    "editor.off": {
+      "kind": "plain",
+      "text": "Désactivé"
+    },
+    "editor.on": {
+      "kind": "plain",
+      "text": "Activé"
+    },
+    "editor.reset": {
+      "kind": "plain",
+      "text": "Réinitialiser"
+    },
+    "editor.run": {
+      "kind": "plain",
+      "text": "Exécuter"
+    },
+    "editor.syntax": {
+      "kind": "plain",
+      "text": "Syntaxe"
+    },
+    "error.not_found": {
+      "kind": "plain",
+      "text": "404 — page introuvable"
+    },
+    "execution.build_failed": {
+      "kind": "plain",
+      "text": "Échec de la compilation Go."
+    },
+    "execution.communication_error": {
+      "kind": "plain",
+      "text": "Erreur de communication avec le serveur distant."
+    },
+    "execution.exited": {
+      "kind": "plain",
+      "text": "Programme terminé"
+    },
+    "execution.test_failed": {
+      "kind": "plain",
+      "text": "{count} test a échoué."
+    },
+    "execution.tests_failed": {
+      "kind": "plain",
+      "text": "{count} tests ont échoué."
+    },
+    "execution.tests_passed": {
+      "kind": "plain",
+      "text": "Tous les tests ont réussi."
+    },
+    "execution.vet_failed": {
+      "kind": "plain",
+      "text": "Échec de Go vet."
+    },
+    "execution.waiting": {
+      "kind": "plain",
+      "text": "En attente du serveur distant…"
+    },
+    "feedback.context": {
+      "kind": "plain",
+      "text": "Contexte"
+    },
+    "feedback.issue_body": {
+      "kind": "plain",
+      "text": "Modifiez le titre ci-dessus pour décrire votre problème et ajoutez vos commentaires ici, y compris du code au besoin"
+    },
+    "feedback.issue_title": {
+      "kind": "plain",
+      "text": "x/website/_content/tour: [REMPLACEZ PAR UNE COURTE DESCRIPTION]"
+    },
+    "feedback.open": {
+      "kind": "plain",
+      "text": "Envoyer des commentaires sur cette page"
+    },
+    "footer.development_log": {
+      "kind": "plain",
+      "text": "Journal de développement"
+    },
+    "footer.github": {
+      "kind": "plain",
+      "text": "GitHub"
+    },
+    "footer.home": {
+      "kind": "plain",
+      "text": "Accueil"
+    },
+    "footer.unofficial": {
+      "kind": "plain",
+      "text": "Yongye · Projet communautaire non officiel de traduction multilingue"
+    },
+    "header.about_project": {
+      "kind": "plain",
+      "text": "À propos de ce projet"
+    },
+    "module.basics.description": {
+      "kind": "rich",
+      "text": "<p>Le point de départ : apprenez toutes les notions de base du langage.</p><p>Déclaration de variables, appels de fonctions et tout ce qu’il faut savoir avant de passer aux leçons suivantes.</p>"
+    },
+    "module.basics.title": {
+      "kind": "plain",
+      "text": "Notions de base"
+    },
+    "module.concurrency.description": {
+      "kind": "rich",
+      "text": "<p>Go fournit des fonctionnalités de concurrence au cœur du langage.</p><p>Ce module présente les goroutines et les canaux, ainsi que leur utilisation pour mettre en œuvre différents modèles de concurrence.</p>"
+    },
+    "module.concurrency.title": {
+      "kind": "plain",
+      "text": "Concurrence"
+    },
+    "module.generics.description": {
+      "kind": "rich",
+      "text": "<p>Apprenez à utiliser les paramètres de type dans les fonctions et les structures Go.</p>"
+    },
+    "module.generics.title": {
+      "kind": "plain",
+      "text": "Programmation générique"
+    },
+    "module.methods.description": {
+      "kind": "rich",
+      "text": "<p>Apprenez à définir des méthodes sur des types, à déclarer des interfaces et à assembler le tout.</p>"
+    },
+    "module.methods.title": {
+      "kind": "plain",
+      "text": "Méthodes et interfaces"
+    },
+    "module.using_tour.description": {
+      "kind": "rich",
+      "text": "<p>Bienvenue dans une visite guidée du <a href=\"https://go.dev\">langage de programmation Go</a>. Cette visite guidée présente les fonctionnalités les plus importantes du langage, principalement :</p>"
+    },
+    "module.using_tour.title": {
+      "kind": "plain",
+      "text": "Utilisation de la visite guidée"
+    },
+    "site.architecture_languages": {
+      "kind": "plain",
+      "text": "Le serveur, les gabarits, le CSS, le JavaScript, les images et les polices sont partagés lorsque cela est pratique. Chaque langue gère indépendamment les traductions du cours, le texte de l’interface, la terminologie et l’état. Le chinois simplifié est la première langue livrée, avec la possibilité d’en ajouter d’autres."
+    },
+    "site.architecture_playground": {
+      "kind": "plain",
+      "text": "Les exemples Go dans le navigateur s’exécutent par l’intermédiaire d’un proxy distant contrôlé vers le Playground; la production n’expose pas le point de terminaison local d’exécution de code /socket."
+    },
+    "site.architecture_title": {
+      "kind": "plain",
+      "text": "Architecture traçable, contrôlée et extensible"
+    },
+    "site.architecture_upstream": {
+      "kind": "plain",
+      "text": "Le projet consigne continuellement le commit officiel de la source amont afin de conserver une référence traçable pour les futures mises à jour de la source."
+    },
+    "site.browser_title": {
+      "kind": "plain",
+      "text": "Yongye · Projet de traduction multilingue de Visite guidée de Go"
+    },
+    "site.community_version": {
+      "kind": "plain",
+      "text": "Traduction communautaire"
+    },
+    "site.continue_learning": {
+      "kind": "plain",
+      "text": "Poursuivre l’apprentissage sur go.dev"
+    },
+    "site.continue_learning_description": {
+      "kind": "plain",
+      "text": "La Visite guidée de Go n’est qu’un début. Après l’avoir terminée, consultez go.dev pour accéder à la documentation officielle, aux tutoriels, à la référence de la bibliothèque standard, à la spécification du langage et à d’autres ressources d’apprentissage de Go."
+    },
+    "site.continue_learning_title": {
+      "kind": "plain",
+      "text": "Continuer à apprendre Go"
+    },
+    "site.course_pages": {
+      "kind": "plain",
+      "text": "Pages du cours"
+    },
+    "site.current_language": {
+      "kind": "plain",
+      "text": "Langue actuelle"
+    },
+    "site.current_projects": {
+      "kind": "plain",
+      "text": "Projet de traduction actuel"
+    },
+    "site.development_environment": {
+      "kind": "plain",
+      "text": "Environnement de développement"
+    },
+    "site.development_log": {
+      "kind": "plain",
+      "text": "Journal de développement : Projet de traduction multilingue de Visite guidée de Go"
+    },
+    "site.enter_tour": {
+      "kind": "plain",
+      "text": "Accéder à la visite guidée"
+    },
+    "site.environment": {
+      "kind": "plain",
+      "text": "Environnement"
+    },
+    "site.how_it_works": {
+      "kind": "plain",
+      "text": "Fonctionnement du projet"
+    },
+    "site.how_it_works_intro": {
+      "kind": "plain",
+      "text": "La localisation du cours ne consiste pas à remplacer les phrases une à une. Il s’agit d’un processus fondé sur des unités de contenu complètes, des états de révision traçables et des artefacts de publication vérifiables."
+    },
+    "site.intro": {
+      "kind": "plain",
+      "text": "Projet de traduction maintenu par la communauté pour le contenu d’apprentissage officiel de Go. Le chinois simplifié est la première langue disponible, et la structure peut évoluer afin de prendre en charge davantage de langues et de contenu Go."
+    },
+    "site.issue_feedback": {
+      "kind": "plain",
+      "text": "GitHub Issues"
+    },
+    "site.language_versions": {
+      "kind": "plain",
+      "text": "Versions linguistiques"
+    },
+    "site.latest_release": {
+      "kind": "plain",
+      "text": "Dernière version"
+    },
+    "site.no_affiliation": {
+      "kind": "plain",
+      "text": "Ce projet n’est ni affilié au projet Go, ni autorisé par lui, ni approuvé par lui."
+    },
+    "site.official_upstream": {
+      "kind": "plain",
+      "text": "Source amont officielle"
+    },
+    "site.official_version": {
+      "kind": "plain",
+      "text": "Version officielle de Visite guidée de Go"
+    },
+    "site.open_official_tour": {
+      "kind": "plain",
+      "text": "Ouvrir la visite guidée officielle"
+    },
+    "site.operations_note": {
+      "kind": "plain",
+      "text": "Ce site peut afficher de la publicité afin d’aider à couvrir les coûts d’infrastructure, comme les serveurs, la bande passante et les services CDN, ainsi que les coûts continus de maintenance du projet. Le code source reste public, et les déploiements auto-hébergés n’activent pas par défaut la configuration publicitaire de ce site."
+    },
+    "site.project_links": {
+      "kind": "plain",
+      "text": "Liens du projet"
+    },
+    "site.project_status": {
+      "kind": "plain",
+      "text": "État du projet"
+    },
+    "site.source_code": {
+      "kind": "plain",
+      "text": "Code source sur GitHub"
+    },
+    "site.start_learning": {
+      "kind": "plain",
+      "text": "Commencer à apprendre"
+    },
+    "site.title": {
+      "kind": "plain",
+      "text": "Projet de traduction multilingue de Visite guidée de Go"
+    },
+    "site.tour_description": {
+      "kind": "plain",
+      "text": "Une introduction interactive au langage de programmation Go."
+    },
+    "site.translation_validation": {
+      "kind": "plain",
+      "text": "Traduction et validation"
+    },
+    "site.translation_validation_intro": {
+      "kind": "plain",
+      "text": "Le projet maintient l’expérience d’apprentissage au plus près de la source officielle tout en vérifiant chaque version avant sa publication."
+    },
+    "site.unofficial": {
+      "kind": "plain",
+      "text": "Maintenu par Yongye · Projet communautaire non officiel de traduction multilingue"
+    },
+    "site.upstream_baseline": {
+      "kind": "plain",
+      "text": "Référence de la source officielle"
+    },
+    "site.upstream_commit_time": {
+      "kind": "plain",
+      "text": "Date du commit de la source amont"
+    },
+    "site.validation_examples": {
+      "kind": "plain",
+      "text": "Les exemples Go dont les commentaires en langage naturel peuvent être traduits sont également intégrés au processus de validation unifié; tous les autres exemples continuent d’utiliser directement la source officielle."
+    },
+    "site.validation_page_unit": {
+      "kind": "plain",
+      "text": "Les traductions utilisent des pages de cours complètes comme unité."
+    },
+    "site.validation_present": {
+      "kind": "plain",
+      "text": "Chaque version est analysée avec present."
+    },
+    "site.validation_render": {
+      "kind": "plain",
+      "text": "Les pages rendues sont vérifiées avant la publication."
+    },
+    "site.validation_structure": {
+      "kind": "plain",
+      "text": "La structure des pages est comparée à celle de la source officielle."
+    },
+    "site.workflow_process": {
+      "kind": "plain",
+      "text": "Chaque unité passe par la traduction, la validation automatique, Translation Quality Review, la promotion, l’état ready, la projection et l’étape publish; les traductions générées ne sont jamais publiées directement."
+    },
+    "site.workflow_publish": {
+      "kind": "plain",
+      "text": "La publication construit une projection localisée complète à partir des candidats canoniques à l’état ready, exige que chaque TranslationUnit du processus soit à l’état ready, puis crée le binaire de production, release.json et SHA256SUMS, et vérifie l’ensemble complet."
+    },
+    "site.workflow_review": {
+      "kind": "plain",
+      "text": "Les vérifications automatiques protègent la structure, analysent le contenu present, le comparent à la source officielle, valident le rendu et les pages, et vérifient le contenu Go des objets Example. Une revue indépendante de la qualité de la traduction reste requise avant la promotion."
+    },
+    "site.workflow_title": {
+      "kind": "plain",
+      "text": "De TranslationUnit à la production"
+    },
+    "site.workflow_units": {
+      "kind": "plain",
+      "text": "TranslationUnit représente à la fois des objets Page complets et des objets Example admissibles : un objet Page correspond à une present.Section complète, tandis qu’un objet Example correspond à un fichier .go complet contenant des commentaires en langage naturel pouvant être traduits."
+    },
+    "support.address": {
+      "kind": "plain",
+      "text": "Adresse"
+    },
+    "support.advertising_title": {
+      "kind": "plain",
+      "text": "Avis concernant la publicité"
+    },
+    "support.asset": {
+      "kind": "plain",
+      "text": "Actif"
+    },
+    "support.copied": {
+      "kind": "plain",
+      "text": "Copié"
+    },
+    "support.copy_address": {
+      "kind": "plain",
+      "text": "Copier l’adresse"
+    },
+    "support.copy_reference": {
+      "kind": "plain",
+      "text": "Copier la référence"
+    },
+    "support.copy_uid": {
+      "kind": "plain",
+      "text": "Copier l’UID"
+    },
+    "support.intro": {
+      "kind": "plain",
+      "text": "Vous pouvez également soutenir volontairement la maintenance continue de cette version linguistique. Votre soutien aide cette version à continuer d’être maintenue et développée."
+    },
+    "support.minimum_deposit": {
+      "kind": "plain",
+      "text": "Minimum de réception"
+    },
+    "support.network": {
+      "kind": "plain",
+      "text": "Réseau"
+    },
+    "support.platform_help": {
+      "kind": "plain",
+      "text": "Les utilisateurs de la même plateforme peuvent effectuer un transfert interne au moyen d’un UID. Consultez la plateforme pour plus de détails."
+    },
+    "support.platform_title": {
+      "kind": "plain",
+      "text": "Transfert interne de la plateforme (facultatif)"
+    },
+    "support.reference_help": {
+      "kind": "plain",
+      "text": "Si votre service de paiement permet d’ajouter une note ou une référence, vous pouvez utiliser cette valeur."
+    },
+    "support.reference_label": {
+      "kind": "plain",
+      "text": "Référence de soutien"
+    },
+    "support.section_title": {
+      "kind": "plain",
+      "text": "Soutien et frais d’exploitation"
+    },
+    "support.translation_title": {
+      "kind": "plain",
+      "text": "Soutenir cette version linguistique"
+    },
+    "support.uid": {
+      "kind": "plain",
+      "text": "UID"
+    },
+    "support.usdc_network_only": {
+      "kind": "plain",
+      "text": "Envoyez uniquement des USDC sur le réseau Base."
+    },
+    "support.usdt_network_only": {
+      "kind": "plain",
+      "text": "Envoyez uniquement des USDT sur le réseau Tron (TRC20)."
+    },
+    "support.wrong_network_warning": {
+      "kind": "plain",
+      "text": "L’utilisation du mauvais actif ou réseau peut entraîner une perte de fonds."
+    },
+    "theme.dark": {
+      "kind": "plain",
+      "text": "Thème sombre"
+    },
+    "theme.light": {
+      "kind": "plain",
+      "text": "Thème clair"
+    },
+    "theme.system": {
+      "kind": "plain",
+      "text": "Thème du système"
+    },
+    "theme.toggle": {
+      "kind": "plain",
+      "text": "Changer de thème"
+    },
+    "toc.title": {
+      "kind": "plain",
+      "text": "Table des matières"
+    },
+    "tour.list_description": {
+      "kind": "plain",
+      "text": "Parcourez les modules et les leçons de Visite guidée de Go, une introduction interactive au langage de programmation Go."
+    },
+    "tour.list_heading": {
+      "kind": "plain",
+      "text": "Bienvenue dans la visite guidée de Go"
+    },
+    "tour.list_title": {
+      "kind": "plain",
+      "text": "Répertoire du cours — Visite guidée de Go"
+    },
+    "tour.title": {
+      "kind": "plain",
+      "text": "Visite guidée de Go"
+    }
+  }
+}

@@ -1,0 +1,17 @@
+* Go hors ligne (facultatif)
+
+Cette visite guidée est aussi offerte sous forme de programme autonome que vous pouvez utiliser
+sans accès à Internet. Il compile et exécute les exemples de code sur
+votre propre ordinateur.
+
+Pour exécuter la visite guidée localement, vous devez d’abord
+[[/doc/install][installer Go]], puis exécuter :
+
+  go install golang.org/x/website/tour@latest
+
+Cela placera un exécutable `tour` dans le répertoire `bin` de votre
+[[/cmd/go/#hdr-GOPATH_and_Modules][GOPATH]].
+Lorsque vous exécuterez le programme de la visite guidée, il ouvrira un navigateur Web qui affichera
+votre version locale de la visite guidée.
+
+Bien entendu, vous pouvez continuer à suivre la visite guidée sur ce site Web.

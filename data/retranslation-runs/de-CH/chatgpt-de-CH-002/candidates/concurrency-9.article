@@ -1,0 +1,21 @@
+* sync.Mutex
+
+Wir haben gesehen, dass Channels hervorragend für die Kommunikation zwischen goroutines geeignet sind.
+
+Was aber, wenn wir keine Kommunikation benötigen? Was, wenn wir lediglich sicherstellen möchten, dass immer nur
+eine goroutine auf eine Variable zugreifen kann, um Konflikte zu vermeiden?
+
+Dieses Konzept heisst _gegenseitiger_Ausschluss_, und die Datenstruktur, die ihn bereitstellt, wird üblicherweise _Mutex_ genannt.
+
+Die Standardbibliothek von Go stellt gegenseitigen Ausschluss mit
+[[/pkg/sync/#Mutex][`sync.Mutex`]] und dessen zwei Methoden bereit:
+
+- `Lock`
+- `Unlock`
+
+Wir können einen Codeblock definieren, der unter gegenseitigem Ausschluss ausgeführt wird, indem wir ihn
+mit Aufrufen von `Lock` und `Unlock` umschliessen, wie bei der Methode `Inc` gezeigt.
+
+Wir können auch `defer` verwenden, um wie in der Methode `Value` sicherzustellen, dass der Mutex entsperrt wird.
+
+.play concurrency/mutex-counter.go

@@ -1,0 +1,20 @@
+* Channels
+
+Channels sind typisierte Verbindungen, über die Sie mit dem Channel-Operator `<-` Werte senden und empfangen können.
+
+	ch <- v    // Sende v an Channel ch.
+	v := <-ch  // Empfange von ch und
+	           // weise den Wert v zu.
+
+(Die Daten fliessen in Pfeilrichtung.)
+
+Wie Maps und Slices müssen Channels vor der Verwendung erstellt werden:
+
+	ch := make(chan int)
+
+Standardmässig blockieren Sende- und Empfangsvorgänge, bis die jeweils andere Seite bereit ist. Dadurch können sich goroutines ohne explizite Sperren oder Bedingungsvariablen synchronisieren.
+
+Der Beispielcode summiert die Zahlen in einem Slice und verteilt die Arbeit auf zwei goroutines.
+Sobald beide goroutines ihre Berechnung abgeschlossen haben, wird das Endergebnis berechnet.
+
+.play concurrency/channels.go

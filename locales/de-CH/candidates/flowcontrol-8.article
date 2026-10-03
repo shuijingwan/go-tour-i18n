@@ -1,0 +1,38 @@
+* Übung: Schleifen und Funktionen
+
+Um mit Funktionen und Schleifen zu experimentieren, implementieren wir eine Quadratwurzelfunktion: Für eine gegebene Zahl x wollen wir die Zahl z finden, deren z² möglichst nahe bei x liegt.
+
+Computer berechnen die Quadratwurzel von x typischerweise mit einer Schleife.
+Ausgehend von einem Schätzwert z können wir z danach anpassen, wie nahe z² an x liegt,
+und so einen besseren Schätzwert erhalten:
+
+	z -= (z*z - x) / (2*z)
+
+Durch Wiederholen dieser Anpassung wird der Schätzwert immer besser,
+bis wir ein Ergebnis erhalten, das der tatsächlichen Quadratwurzel so nahe wie möglich kommt.
+
+Implementieren Sie dies in der bereitgestellten `func`Sqrt`.
+Ein brauchbarer Anfangswert für z ist unabhängig von der Eingabe 1.
+Wiederholen Sie die Berechnung zunächst 10-mal und geben Sie dabei jedes z aus.
+Prüfen Sie für verschiedene Werte von x (1, 2, 3, ...), wie nahe Sie dem Ergebnis kommen
+und wie schnell sich der Schätzwert verbessert.
+
+Hinweis: Um einen Gleitkommawert zu deklarieren und zu initialisieren,
+verwenden Sie Gleitkommasyntax oder eine Konvertierung:
+
+	z := 1.0
+	z := float64(1)
+
+Ändern Sie als Nächstes die Schleifenbedingung so, dass sie endet, sobald sich der Wert nicht mehr
+ändert (oder nur noch um einen sehr kleinen Betrag).
+Prüfen Sie, ob dafür mehr oder weniger als 10 Iterationen erforderlich sind.
+Probieren Sie andere Anfangswerte für z aus, etwa x oder x/2.
+Wie nahe liegen die Ergebnisse Ihrer Funktion bei [[/pkg/math/#Sqrt][math.Sqrt]] aus der Standardbibliothek?
+
+(*Hinweis:* Falls Sie sich für die Details des Algorithmus interessieren: Der Ausdruck z² − x oben
+gibt an, wie weit z² vom gewünschten Wert (x) entfernt ist, und die Division durch 2z verwendet die Ableitung
+von z², um die Anpassung von z danach zu skalieren, wie schnell sich z² ändert.
+Dieser allgemeine Ansatz heisst [[https://en.wikipedia.org/wiki/Newton%27s_method][Newton-Verfahren]].
+Er funktioniert für viele Funktionen gut, besonders gut aber für Quadratwurzeln.)
+
+.play flowcontrol/exercise-loops-and-functions.go

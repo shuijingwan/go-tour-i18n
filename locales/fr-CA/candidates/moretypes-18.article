@@ -1,0 +1,11 @@
+* Exercice : tranches
+
+Implémentez `Pic`. La fonction doit renvoyer une tranche de longueur `dy`, dont chaque élément est une tranche de `dx` entiers non signés de 8 bits. Lorsque vous exécuterez le programme, il affichera votre image en interprétant les entiers comme des valeurs en niveaux de gris (en fait, en niveaux de bleu).
+
+À vous de choisir l’image. Parmi les fonctions intéressantes, essayez `(x+y)/2`, `x*y` et `x^y`.
+
+(Vous devez utiliser une boucle pour allouer chaque `[]uint8` à l’intérieur de `[][]uint8`.)
+
+(Utilisez `uint8(intValue)` pour effectuer la conversion entre les types.)
+
+.play moretypes/exercise-slices.go

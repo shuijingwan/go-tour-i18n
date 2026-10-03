@@ -1,0 +1,15 @@
+* Tableaux
+
+Le type `[n]T` est un tableau de `n` valeurs de type `T`.
+
+L’expression
+
+	var a [10]int
+
+déclare une variable `a` comme un tableau de dix entiers.
+
+La longueur d’un tableau fait partie de son type ; un tableau ne peut donc pas être redimensionné.
+Cela peut sembler contraignant, mais ne vous inquiétez pas :
+Go offre une façon pratique de travailler avec les tableaux.
+
+.play moretypes/array.go

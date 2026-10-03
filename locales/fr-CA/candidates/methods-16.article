@@ -1,0 +1,28 @@
+* Switches de type
+
+Un _switch_de_type_ est une construction qui permet d’enchaîner plusieurs assertions de type.
+
+Un switch de type ressemble à une instruction switch ordinaire, mais les cas d’un
+switch de type indiquent des types (et non des valeurs), et ces types sont comparés
+au type de la valeur contenue dans la valeur d’interface donnée.
+
+	switch v := i.(type) {
+	case T:
+		// ici, v est de type T
+	case S:
+		// ici, v est de type S
+	default:
+		// aucune correspondance; ici, v a le même type que i
+	}
+
+La déclaration d’un switch de type utilise la même syntaxe qu’une assertion de type `i.(T)`,
+mais le type précis `T` est remplacé par le mot-clé `type`.
+
+Cette instruction switch vérifie si la valeur d’interface `i`
+contient une valeur de type `T` ou `S`.
+Dans chacun des cas `T` et `S`, la variable `v` sera respectivement de type
+`T` ou `S` et contiendra la valeur contenue dans `i`.
+Dans le cas default (où il n’y a aucune correspondance), la variable `v` a
+le même type d’interface et la même valeur que `i`.
+
+.play methods/type-switches.go

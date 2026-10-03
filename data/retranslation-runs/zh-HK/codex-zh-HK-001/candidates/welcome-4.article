@@ -1,0 +1,13 @@
+* 離線使用（可選）
+
+本導覽亦提供獨立程式版本，無需連接互聯網即可使用。它會在你的電腦上建置並執行程式碼範例。
+
+若要在本機執行導覽，請先
+[[/doc/install][安裝 Go]]，然後執行：
+
+  go install golang.org/x/website/tour@latest
+
+這會在你的 [[/cmd/go/#hdr-GOPATH_and_Modules][GOPATH]] 的 `bin` 目錄中放置一個 `tour` 二進位檔。
+執行 tour 程式時，它會開啟網頁瀏覽器並顯示本機版導覽。
+
+當然，你也可以繼續透過本網站使用導覽。

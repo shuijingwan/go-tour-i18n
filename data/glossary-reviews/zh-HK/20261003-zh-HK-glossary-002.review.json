@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "evidence_type": "glossary-review-receipt",
+  "locale": "zh-HK",
+  "review_id": "20261003-zh-HK-glossary-002",
+  "stage": "locale-glossary-review",
+  "decision": "failed",
+  "reviewer": "ChatGPT GPT-5.6 Sol High",
+  "rubric": "glossary-review/v1",
+  "glossary_path": "locales/zh-HK/glossary.yaml",
+  "glossary_sha256": "ba72f132dbac5d2c600a59598d67dab462db6d5eee99ebe71c9a22d3967842c2",
+  "findings": [
+    "preferred；source term/current rule: reader → 讀取器；問題: 122/122 TranslationUnits 全量复审中确认 `reader` 存在不同语义。`welcome/5` 的 “an exercise for the reader” 明确指「读者／阅读者」，而 `methods/21`–`methods/23` 才是 `io.Reader` / 技术读取器语义。当前无语境的全局 preferred `reader → 讀取器` 会对 `welcome/5` 形成错误术语引导，因此 glossary coverage 仍不完整。修改方向: 由原 zh-HK Generation session 将 human-reader 与 technical-reader 语境明确区分；不得继续使用会覆盖两种语义的单一全局规则。"
+  ]
+}

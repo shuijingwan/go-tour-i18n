@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "evidence_type": "glossary-review-receipt",
+  "locale": "zh-HK",
+  "review_id": "20261003-zh-HK-glossary-005",
+  "stage": "locale-glossary-review",
+  "decision": "failed",
+  "reviewer": "ChatGPT GPT-5.6 Sol High",
+  "rubric": "glossary-review/v1",
+  "glossary_path": "locales/zh-HK/glossary.yaml",
+  "glossary_sha256": "2e1f85bef4c89187beade8127fa7dee28bbe69985ab2d4eb70034856020267a5",
+  "findings": [
+    "keep；source term/current rule: API；問題: 完整核對 formal/ui-en.json 與 glossary-review.json 的 122/122 source units 後，API 並未出現在任何開放、可翻譯的自然語言 source context；在本 bundle 的 formal/source context 中，API 只出現在 formal/glossary.yaml 的 keep。根據當前 authority，keep 僅用於實際出現在可翻譯自然語言中、仍必須保持技術 identity 且 protector 無法完整覆蓋的對象，因此當前 API keep 缺少正式 source 依據。修改方向: 由原 zh-HK Generation session 移除無當前開放自然語言依據的 API keep；只有正式 source/surface 實際出現 API，且確需 glossary 層保護時再加入。"
+  ]
+}

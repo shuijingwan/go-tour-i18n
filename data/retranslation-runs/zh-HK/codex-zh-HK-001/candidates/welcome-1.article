@@ -1,0 +1,33 @@
+* 你好，世界
+
+歡迎來到 [[/][Go 程式語言]]導覽。
+
+本導覽分為多個模組，你可以按一下頁面左上角的
+[[javascript:highlight(".logo")][Go 語言導覽]] 前往各個模組。
+
+你亦可隨時按一下頁面右上角的 [[javascript:highlightAndClick(".nav")][選單]]，查看目錄。
+
+導覽中有一系列頁面和練習供你完成。
+
+你可以使用以下方式瀏覽：
+
+- 按 [[javascript:highlight(".prev-page")][「上一頁」]]或 `PageUp` 前往上一個頁面；
+
+- 按 [[javascript:highlight(".next-page")][「下一頁」]]或 `PageDown` 前往下一個頁面。
+
+本導覽可以互動操作。現在按一下
+[[javascript:highlightAndClick("#run")][執行]] 按鈕
+（或按 `Shift` + `Enter`），在遠端伺服器上編譯並執行程式。
+結果會顯示在程式碼下方。
+
+這些範例程式展示 Go 的不同面向。導覽中的程式旨在作為你自行試驗的起點。
+
+修改程式，然後再次執行。
+
+按一下 [[javascript:highlightAndClick("#format")][格式化]]
+（快捷鍵： `Ctrl` + `Enter`）時，編輯器中的文字會使用
+[[/cmd/gofmt/][gofmt]] 工具格式化。你可以按一下 [[javascript:highlightAndClick(".syntax-checkbox")][語法]]按鈕，開啟或關閉語法突出顯示。
+
+準備好繼續時，請按一下下方的 [[javascript:highlightAndClick(".next-page")][向右箭嘴]]，或按 `PageDown` 鍵。
+
+.play welcome/hello.go

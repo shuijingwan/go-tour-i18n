@@ -1,0 +1,7 @@
+* Select
+
+Die Anweisung `select` ermöglicht es einer goroutine, auf mehrere Kommunikationsoperationen zu warten.
+
+Ein `select` blockiert, bis einer seiner Fälle ausgeführt werden kann, und führt dann diesen Fall aus. Sind mehrere bereit, wird zufällig einer ausgewählt.
+
+.play concurrency/select.go

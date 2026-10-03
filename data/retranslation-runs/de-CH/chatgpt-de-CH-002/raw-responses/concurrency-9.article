@@ -1,0 +1,21 @@
+* sync.Mutex
+
+Wir haben gesehen, dass Channels hervorragend für die Kommunikation zwischen goroutines geeignet sind.
+
+Was aber, wenn wir keine Kommunikation benötigen? Was, wenn wir lediglich sicherstellen möchten, dass immer nur
+eine ⟪GTI18N_49f72779_000001⟫ auf eine Variable zugreifen kann, um Konflikte zu vermeiden?
+
+Dieses Konzept heisst ⟪GTI18N_49f72779_000002⟫gegenseitiger_Ausschluss⟪GTI18N_49f72779_000003⟫, und die Datenstruktur, die ihn bereitstellt, wird üblicherweise ⟪GTI18N_49f72779_000004⟫Mutex⟪GTI18N_49f72779_000005⟫ genannt.
+
+Die Standardbibliothek von ⟪GTI18N_49f72779_000006⟫ stellt gegenseitigen Ausschluss mit
+[[⟪GTI18N_49f72779_000007⟫][⟪GTI18N_49f72779_000008⟫sync.Mutex⟪GTI18N_49f72779_000009⟫]] und dessen zwei Methoden bereit:
+
+- ⟪GTI18N_49f72779_000010⟫Lock⟪GTI18N_49f72779_000011⟫
+- ⟪GTI18N_49f72779_000012⟫Unlock⟪GTI18N_49f72779_000013⟫
+
+Wir können einen Codeblock definieren, der unter gegenseitigem Ausschluss ausgeführt wird, indem wir ihn
+mit Aufrufen von ⟪GTI18N_49f72779_000014⟫Lock⟪GTI18N_49f72779_000015⟫ und ⟪GTI18N_49f72779_000016⟫Unlock⟪GTI18N_49f72779_000017⟫ umschliessen, wie bei der Methode ⟪GTI18N_49f72779_000018⟫Inc⟪GTI18N_49f72779_000019⟫ gezeigt.
+
+Wir können auch ⟪GTI18N_49f72779_000020⟫defer⟪GTI18N_49f72779_000021⟫ verwenden, um wie in der Methode ⟪GTI18N_49f72779_000022⟫Value⟪GTI18N_49f72779_000023⟫ sicherzustellen, dass der Mutex entsperrt wird.
+
+⟪GTI18N_49f72779_000024⟫

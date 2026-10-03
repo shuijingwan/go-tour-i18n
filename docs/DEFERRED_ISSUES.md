@@ -201,3 +201,13 @@
 - 暂缓原因：维护者于 2026-09-29 明确要求先记录 IndexNow 失败，暂不继续重试或扩大排查；保留现有 locale-specific key 与已成功的 provisioning，不重新生成 key、不重复修改 Production 配置。lv-LV 保持正式 `live`，站点地图已提交；IndexNow 属于 first-production finalize 之后的非阻塞 Search-engine closeout，不影响既有 Production、Surface Review 或 sitemap submission 结论。
 - 当前状态：`resolved`
 - 后续处理/核销证据：2026-09-29 两次正式命令 `scripts/indexnow-closeout.sh --locale lv-LV` 的终态分别为 `IndexNow local key: generated` / `reused` → `PROVISIONING PASS` → `verify public IndexNow key: Get "https://lv-go-dev.shuijingwanwq.com/892bc17d3ace7aa6da7671836a951635b40cb8a7f97e4250d4cc1b4e1d26ea3b.txt": EOF` → `indexnow closeout: FAILED: formal IndexNow bootstrap failed after provisioning`。后续维护者使用现有正式入口恢复，输出 `IndexNow local key: reused` 与 `PROVISIONING PASS`，随后输出 `IndexNow bootstrap: PASS (locale=lv-LV sitemap_urls=105 submitted_urls=105)` 与 `IndexNow closeout: PASS (locale=lv-LV)`。因此按 lv-LV 自身成功 evidence 核销为 resolved。
+
+### DI-20261003-001：de-CH IndexNow 公网密钥验证 EOF，closeout 暂缓
+
+- ID：`DI-20261003-001`
+- 发现日期：`2026-10-03`
+- 发现阶段/场景：de-CH 已完成 Locale Surface Review `20261003-de-CH-stage-a-002` PASS、Preview 自动与人工验收、首次 Production machine/browser acceptance 及正式 `first-production finalize`，当前 `production_state=live`。随后执行 `scripts/indexnow-closeout.sh --locale de-CH`；本条不重新核实 Google Search Console / Bing Webmaster Tools 的 sitemap submission 状态。
+- 问题描述：本次正式命令输出 `IndexNow local key: reused` 与 `PROVISIONING PASS`，说明现有 locale-specific key 被正确复用，服务端 provisioning 已成功。随后正式 Go bootstrap 对 `https://de-ch-go-dev.shuijingwanwq.com/<key>.txt` 的公网 HTTPS GET 返回 `EOF`，命令以 `indexnow closeout: FAILED: formal IndexNow bootstrap failed after provisioning` 结束（exit status 1）。因此尚未取得 public key verification 或 IndexNow submission PASS。当前 evidence 只证明公网密钥验证阶段发生 EOF，不能据此进一步判定维护者本机网络、DNS/代理、Cloudflare、Nginx/源站或 IndexNow API 为根因；此前 de-CH 正式 Production machine/browser acceptance 均已 PASS，本次 closeout 失败不改写这些验收结果。
+- 暂缓原因：维护者于 2026-10-03 明确要求先记录问题，暂不继续重试或排查；保留现有 locale-specific key 与已成功的 provisioning，不重新生成 key、不重复修改 Production 配置。de-CH 保持正式 `live`；IndexNow 属于 first-production finalize 之后的非阻塞 Search-engine closeout，不影响既有 Production、Surface Review 或其他已完成上线 gate。
+- 当前状态：`open`
+- 后续处理/核销证据：2026-10-03 正式命令 `scripts/indexnow-closeout.sh --locale de-CH` 的终态为 `IndexNow local key: reused` → `PROVISIONING PASS` → `verify public IndexNow key: Get "https://de-ch-go-dev.shuijingwanwq.com/<key>.txt": EOF` → `indexnow closeout: FAILED: formal IndexNow bootstrap failed after provisioning`。仅在维护者明确恢复时继续使用现有正式入口与现有 key 重试或做只读诊断；不得因当前 EOF 盲目重新生成 key、重复 provisioning 或修改 Production。只有取得 de-CH 自身的 `IndexNow bootstrap: PASS` 与 `IndexNow closeout: PASS` 才可核销。

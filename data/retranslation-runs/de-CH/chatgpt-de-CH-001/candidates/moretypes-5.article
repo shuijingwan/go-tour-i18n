@@ -1,0 +1,9 @@
+* Struct-Literale
+
+Ein Struct-Literal bezeichnet einen neu angelegten Struct-Wert, indem die Werte seiner Felder aufgelistet werden.
+
+Mit der Syntax `Name:` können Sie auch nur eine Teilmenge der Felder angeben. (Die Reihenfolge benannter Felder spielt dabei keine Rolle.)
+
+Das besondere Präfix `&` gibt einen Pointer auf den Struct-Wert zurück.
+
+.play moretypes/struct-literals.go

@@ -1,0 +1,17 @@
+* Einen Wert- oder Pointer-Receiver wählen
+
+Es gibt zwei Gründe, einen Pointer-Receiver zu verwenden.
+
+Der erste ist, dass die Methode den Wert ändern kann, auf den ihr Receiver zeigt.
+
+Der zweite ist, das Kopieren des Werts bei jedem Methodenaufruf zu vermeiden.
+Das kann beispielsweise effizienter sein, wenn der Receiver ein grosser Struct ist.
+
+In diesem Beispiel sind sowohl `Scale` als auch `Abs` Methoden mit dem Receiver-Typ `*Vertex`,
+obwohl die Methode `Abs` ihren Receiver nicht ändern muss.
+
+Im Allgemeinen sollten alle Methoden eines bestimmten Typs entweder Wert- oder Pointer-
+Receiver haben, aber nicht beides gemischt.
+(Auf den nächsten Seiten sehen wir, warum.)
+
+.play methods/methods-with-pointer-receivers.go

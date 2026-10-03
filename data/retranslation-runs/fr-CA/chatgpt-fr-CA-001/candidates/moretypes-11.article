@@ -1,0 +1,18 @@
+* Longueur et capacité d’une tranche
+
+Une tranche possède à la fois une _longueur_ et une _capacité_.
+
+La longueur d’une tranche correspond au nombre d’éléments qu’elle contient.
+
+La capacité d’une tranche correspond au nombre d’éléments du tableau sous-jacent,
+en comptant à partir du premier élément de la tranche.
+
+La longueur et la capacité d’une tranche `s` peuvent être obtenues avec les expressions
+`len(s)` et `cap(s)`.
+
+Vous pouvez augmenter la longueur d’une tranche en la redécoupant,
+à condition que sa capacité soit suffisante.
+Essayez de modifier l’une des opérations de découpage dans le programme d’exemple pour l’étendre
+au-delà de sa capacité et observez ce qui se passe.
+
+.play moretypes/slice-len-cap.go

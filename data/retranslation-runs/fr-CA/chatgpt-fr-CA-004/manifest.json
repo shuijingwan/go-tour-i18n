@@ -1,0 +1,50 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-fr-CA-004",
+  "locale": "fr-CA",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 3,
+  "units": [
+    {
+      "unit_id": "welcome/2",
+      "unit_kind": "page",
+      "source_path": "_content/tour/welcome.article",
+      "source_sha256": "709f808ec4cdf683411f349cab7a4886fcae532d1c4e4cc66c8ed68cfb2dd2d3",
+      "input_path": "inputs/welcome-2.article",
+      "input_sha256": "327861965423bc2754b304ecf6c3dc8db5e84ef5c009f2b4f99f276f712e5fff",
+      "protected_token_count": 17,
+      "previous_snapshot_id": "20261003-fr-CA-qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "C",
+      "previous_finding": "Page title still contains Go local. Go must remain as technical identity, but local is ordinary English natural language and is not glossary keep; localize the natural-language part of the title naturally in fr-CA while preserving the original Go local meaning and page structure."
+    },
+    {
+      "unit_id": "basics/12",
+      "unit_kind": "page",
+      "source_path": "_content/tour/basics.article",
+      "source_sha256": "d9ad62501c05359e7b2ac445fa92d629e11d6d378c2701b767abab76012a558e",
+      "input_path": "inputs/basics-12.article",
+      "input_sha256": "1ea463ab789d88cad33a6c7adf44fb524ea1f7e2574059f723a345f3c097faa7",
+      "protected_token_count": 9,
+      "previous_snapshot_id": "20261003-fr-CA-qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "C",
+      "previous_finding": "The first paragraph still renders the English core term zero value in an emphasis span. Current mandatory glossary requires zero value -\u003e valeur zéro. Localize that emphasized term while preserving valid Go Present emphasis structure and the original meaning."
+    },
+    {
+      "unit_id": "flowcontrol/10",
+      "unit_kind": "page",
+      "source_path": "_content/tour/flowcontrol.article",
+      "source_sha256": "e1479cae56a87cddb9c447fc9fd32b0ee1f983058f7ee76554965abd21975ef4",
+      "input_path": "inputs/flowcontrol-10.article",
+      "input_sha256": "4882ca813d14d385d6e3c27c1ed8137f923455c8d4cb5c0d6ca1a1ce01ee0750",
+      "protected_token_count": 6,
+      "previous_snapshot_id": "20261003-fr-CA-qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "The phrase un cas réussit is an unnatural literal rendering of a case succeeds in fr-CA programming context. Revise it to naturally express that cases are evaluated in order and evaluation stops at the first matching / condition-satisfied case, without adding meaning."
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+* Methoden und Pointer-Indirektion
+
+Wenn Sie die beiden vorherigen Programme vergleichen, fällt Ihnen vielleicht auf, dass
+Funktionen mit einem Pointer-Argument einen Pointer erhalten müssen:
+
+	var v Vertex
+	ScaleFunc(v, 5)  // Kompilierfehler!
+	ScaleFunc(&v, 5) // OK
+
+während Methoden mit Pointer-Receivern beim Aufruf entweder einen Wert oder einen Pointer als
+Receiver akzeptieren:
+
+	var v Vertex
+	v.Scale(5)  // OK
+	p := &v
+	p.Scale(10) // OK
+
+Bei der Anweisung `v.Scale(5)` wird die Methode mit dem Pointer-Receiver automatisch aufgerufen,
+obwohl `v` ein Wert und kein Pointer ist.
+Das heisst, der Einfachheit halber interpretiert Go die Anweisung `v.Scale(5)` als
+`(&v).Scale(5)`, da die Methode `Scale` einen Pointer-Receiver hat.
+
+.play methods/indirection.go

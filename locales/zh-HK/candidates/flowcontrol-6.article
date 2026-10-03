@@ -1,0 +1,9 @@
+* 帶短陳述式的 if
+
+與 `for` 一樣， `if` 陳述式可以先執行一個短陳述式，再判斷條件。
+
+該陳述式宣告的變數，其作用域只維持至 `if` 結束。
+
+（嘗試在最後一個 `return` 陳述式中使用 `v`。）
+
+.play flowcontrol/if-with-a-short-statement.go

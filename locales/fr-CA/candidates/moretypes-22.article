@@ -1,0 +1,27 @@
+* Modification des tables associatives
+
+Insérez ou mettez à jour un élément dans la table associative `m` :
+
+	m[key] = elem
+
+Récupérez un élément :
+
+	elem = m[key]
+
+Supprimez un élément :
+
+	delete(m, key)
+
+Vérifiez la présence d’une clé avec une affectation à deux valeurs :
+
+	elem, ok = m[key]
+
+Si `key` se trouve dans `m`, `ok` vaut `true`. Sinon, `ok` vaut `false`.
+
+Si `key` ne se trouve pas dans la table associative, `elem` reçoit la valeur zéro du type des éléments de la table associative.
+
+*Remarque* : si `elem` ou `ok` n’ont pas encore été déclarés, vous pouvez utiliser une déclaration courte :
+
+	elem, ok := m[key]
+
+.play moretypes/mutating-maps.go

@@ -1,0 +1,24 @@
+* Récepteurs pointeurs
+
+Vous pouvez déclarer des méthodes avec des récepteurs pointeurs.
+
+Cela signifie que le type du récepteur utilise la syntaxe littérale `*T` pour un type `T`.
+(De plus, `T` ne peut pas être lui-même un pointeur, comme `*int`.)
+
+Par exemple, la méthode `Scale` est ici définie sur `*Vertex`.
+
+Les méthodes avec récepteur pointeur peuvent modifier la valeur vers laquelle le récepteur
+pointe (comme le fait ici `Scale`).
+Comme les méthodes doivent souvent modifier leur récepteur, les récepteurs pointeurs sont plus
+courants que les récepteurs valeurs.
+
+Essayez de retirer le `*` de la déclaration de la fonction `Scale` à la ligne 16
+et observez comment le comportement du programme change.
+
+Avec un récepteur valeur, la méthode `Scale` agit sur une copie de la valeur
+`Vertex` d’origine.
+(C’est le même comportement que pour tout autre argument de fonction.)
+La méthode `Scale` doit avoir un récepteur pointeur pour modifier la valeur `Vertex`
+déclarée dans la fonction `main`.
+
+.play methods/methods-pointers.go

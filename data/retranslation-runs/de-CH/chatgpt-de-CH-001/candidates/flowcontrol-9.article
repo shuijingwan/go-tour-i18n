@@ -1,0 +1,13 @@
+* Switch
+
+Eine `switch`-Anweisung ist eine kürzere Schreibweise für eine Folge von `if`-`else`-Anweisungen.
+Sie führt den ersten Fall aus, dessen Wert dem Bedingungsausdruck entspricht.
+
+Der switch von Go ähnelt dem in C, C++, Java, JavaScript und PHP,
+mit dem Unterschied, dass Go nur den ausgewählten Fall ausführt und nicht alle nachfolgenden.
+Die `break`-Anweisung, die in diesen Sprachen am Ende jedes Falls benötigt wird,
+ist in Go also gewissermassen automatisch vorhanden.
+Ein weiterer wichtiger Unterschied ist, dass die switch-Fälle von Go
+keine Konstanten sein müssen und die beteiligten Werte keine Integer sein müssen.
+
+.play flowcontrol/switch.go

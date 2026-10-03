@@ -1,0 +1,21 @@
+* sync.Mutex
+
+我們已看到通道非常適合 goroutine 之間的通訊。
+
+但如果我們不需要通訊呢？如果我們只想確保每次只有
+一個 goroutine 可以存取某個變數，以避免衝突，又該怎樣做？
+
+這個概念稱為 _互斥_，而提供此功能的資料結構通常稱為 _互斥鎖_。
+
+Go 標準程式庫透過
+[[/pkg/sync/#Mutex][`sync.Mutex`]] 及其兩個方法提供互斥：
+
+- `Lock`
+- `Unlock`
+
+如 `Inc` 方法所示，我們可以在一段程式碼前後
+分別呼叫 `Lock` 和 `Unlock`，以互斥方式執行該程式碼區塊。
+
+我們亦可以使用 `defer`，確保互斥鎖會像 `Value` 方法中那樣解除鎖定。
+
+.play concurrency/mutex-counter.go

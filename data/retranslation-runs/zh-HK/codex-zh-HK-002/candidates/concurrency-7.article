@@ -1,0 +1,18 @@
+* 練習：等價二元樹
+
+許多不同的二元樹都可以儲存相同的值序列。例如，以下是兩棵儲存序列 1、1、2、3、5、8、13 的二元樹。
+
+.image /tour/static/img/tree.png
+
+在大多數語言中，檢查兩棵二元樹是否儲存相同序列的函數相當複雜。我們會利用 Go 的並行處理和通道來寫出簡單的解決方案。
+
+此範例使用 `tree` 套件，該套件定義了以下類型：
+
+	type Tree struct {
+		Left  *Tree
+		Value int
+		Right *Tree
+	}
+
+
+請在[[javascript:click('.next-page')][下一頁]]繼續閱讀說明。

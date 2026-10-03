@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "evidence_type": "glossary-review-receipt",
+  "locale": "fr-CA",
+  "review_id": "20261003-fr-CA-glossary-001",
+  "stage": "locale-glossary-review",
+  "decision": "failed",
+  "reviewer": "chatgpt-gpt-5.6-sol-high",
+  "rubric": "glossary-review/v1",
+  "glossary_path": "locales/fr-CA/glossary.yaml",
+  "glossary_sha256": "f89ade023c06ff7cc08f8cdb75b4357c00510ff5872618caf9f23c3b50290a54",
+  "findings": [
+    "mandatory / buffered channel: current entry maps buffered channel to canal, collapsing it with channel and losing the source technical distinction; Generation must choose a fr-CA term that explicitly preserves the buffered property and remains consistent with channel and buffer."
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "evidence_type": "glossary-review-receipt",
+  "locale": "zh-HK",
+  "review_id": "20261003-zh-HK-glossary-007",
+  "stage": "locale-glossary-review",
+  "decision": "failed",
+  "reviewer": "ChatGPT GPT-5.6 Sol High",
+  "rubric": "glossary-review/v1",
+  "glossary_path": "locales/zh-HK/glossary.yaml",
+  "glossary_sha256": "432539857ee5be685fd832e196d24edaa5c126171ae852ef0a06c2bb3029d4cd",
+  "findings": [
+    "keep；source term/current rule: Go；問題: bare Go 被設為全局 keep，但當前開放自然語言 source 中存在並非 Go 品牌／程式語言 identity 的普通英語動詞：welcome/4 標題 Go offline (optional) 與 concurrency/11 標題 Where to Go from here...。keep 的正式實現會在適用的開放自然語言區域保護精確 keep 表面形式，因此該規則會把這些普通動詞用法也鎖定為不得翻譯，妨礙自然的香港繁體中文標題。welcome/2 的 Go local 亦具有同類語境歧義。與此同時，其他大量 Go 出現確實指程式語言品牌，不能簡單把兩類語義視為同一個無語境 identity。修改方向: 由原 Generation session 收窄 Go 的術語政策，使 Go 程式語言／品牌 identity 繼續保持 Go，但不要用會捕獲普通動詞 Go 的無語境全局 keep；必須同時確認調整後品牌用法仍有充分約束。"
+  ]
+}

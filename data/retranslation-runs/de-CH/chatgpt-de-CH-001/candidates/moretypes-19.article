@@ -1,0 +1,11 @@
+* Maps
+
+Eine Map ordnet Schlüsseln Werte zu.
+
+Der Nullwert einer Map ist `nil`.
+Eine `nil`-Map besitzt keine Schlüssel; es können ihr auch keine Schlüssel hinzugefügt werden.
+
+Die Funktion `make` gibt eine Map des angegebenen Typs zurück,
+initialisiert und einsatzbereit.
+
+.play moretypes/maps.go

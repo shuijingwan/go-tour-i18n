@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "evidence_type": "glossary-review-receipt",
+  "locale": "zh-HK",
+  "review_id": "20261003-zh-HK-glossary-001",
+  "stage": "locale-glossary-review",
+  "decision": "failed",
+  "reviewer": "ChatGPT GPT-5.6 Sol High",
+  "rubric": "glossary-review/v1",
+  "glossary_path": "locales/zh-HK/glossary.yaml",
+  "glossary_sha256": "89c36c373ebb81c975d714d9359104de40692c34db0b4f27a7fa2b6def2eb762",
+  "findings": [
+    "mandatory；source term/current rule: slide / slides → 頁面；問題: 此 mandatory 規則把兩種不同語義合併。welcome/1 與 concurrency/1 中的 slide 指 Tour 的課程頁面，譯作「頁面」合理；但 concurrency/11 的三個 [slides] 連結分別指向 Go Concurrency Patterns、Advanced Go Concurrency Patterns、A simple programming environment 的簡報／投影片資料，不是 Tour 頁面。全域 mandatory 會強制產生語義錯誤，亦使 glossary 無法正確約束完整 122 TU；修改方向: 不要以無語境的全域 mandatory 將 slide/slides 一律映射為「頁面」，應讓 Tour page 語境與 presentation-slide 語境可以明確區分。"
+  ]
+}

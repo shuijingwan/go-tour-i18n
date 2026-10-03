@@ -1,0 +1,89 @@
+{
+  "schema_version": 2,
+  "batch_id": "codex-zh-HK-004",
+  "locale": "zh-HK",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 6,
+  "units": [
+    {
+      "unit_id": "welcome/2",
+      "unit_kind": "page",
+      "source_path": "_content/tour/welcome.article",
+      "source_sha256": "709f808ec4cdf683411f349cab7a4886fcae532d1c4e4cc66c8ed68cfb2dd2d3",
+      "input_path": "inputs/welcome-2.article",
+      "input_sha256": "7ec01e577d8cbed91e0eb266d1bd0848c0913385c957bd21ce79eecdc578edcf",
+      "protected_token_count": 16,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "C",
+      "previous_finding": "標題 `Go local` 譯為「在本機使用 Go」，把本頁的語言本地化／其他語言版本語義誤解為在本機執行 Go；正文實際列出各語言版本，而且下一頁 welcome/4 才是本機／離線執行導覽。請修訂本頁標題，使其準確表達語言本地化語境，並避免與離線／本機執行概念混淆。"
+    },
+    {
+      "unit_id": "moretypes/1",
+      "unit_kind": "page",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "7706eaf0d46acc79fdad3b7953e5571bf404551d71aaefafd8ba79f5761f9806",
+      "input_path": "inputs/moretypes-1.article",
+      "input_sha256": "8dd3c67e8838b0e36819f7ffbd212900144976edecee03ba85c34c70cf5c451c",
+      "protected_token_count": 18,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "兩個 teaching comment 分別譯成 `透過指標讀取 i p` 與 `透過指標設定 i p`，`p` 的位置令中文語序不自然，亦未清楚表達 source 中「透過指標 p 讀取／設定 i」的修飾關係。請在保持 `i`、`p` 技術 identity 及既有程式碼結構不變的前提下，重組兩個註解的自然語序，使 `p` 明確屬於 pointer 的名稱。"
+    },
+    {
+      "unit_id": "methods/3",
+      "unit_kind": "page",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "31c4fd0d80c8f1d96cf3efb1ecc1f9d3c0d1b5b70bb5c23bf7227b7007469588",
+      "input_path": "inputs/methods-3.article",
+      "input_sha256": "fbb300ac3eced02920b3c88f13388f189cd99dd85fa0a3640c4a08b1fd09be32",
+      "protected_token_count": 7,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "「你只可以為接收者類型與方法定義於同一套件的方法作出宣告」語序和修飾關係不自然，閱讀時難以立即辨識 source 的限制是「receiver 的類型必須與該 method 定義在同一 package」。下一句亦有相同的修飾關係問題。請在不改變技術規則的前提下重組這兩句，使 receiver type、method 與 package 的關係清楚自然。"
+    },
+    {
+      "unit_id": "methods/10",
+      "unit_kind": "page",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "11ca99e6e83d93827daf02b177156fcb6f3c94ac8c202491dfffc5840ce4e39f",
+      "input_path": "inputs/methods-10.article",
+      "input_sha256": "fa48cb3504311f34589bfc2fc2cae535e37f0968803a164275445a77dbb6e5e8",
+      "protected_token_count": 1,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "C",
+      "previous_finding": "標題 `Interfaces are implemented implicitly` 譯為「介面會隱式實作」，語法上容易表達成「介面主動去實作其他東西」，顛倒本頁核心概念的施受關係；正文正確說明是 type 透過實作 methods 而隱式實作 interface。請修訂標題，使其明確表達「介面是被隱式實作／無需顯式宣告即可實作」的含義。"
+    },
+    {
+      "unit_id": "methods/22",
+      "unit_kind": "page",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "0df444d989996a06d6dd50f4b109af4ae1cb2302b8dd867bcbe9bf98e424d230",
+      "input_path": "inputs/methods-22.article",
+      "input_sha256": "b9401847cfc827cd95e2abef6e41d5d91085777b05898d28d4d748bb793531ca",
+      "protected_token_count": 6,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "「由字元 ASCII `'A'` 組成的無限串流」把 `ASCII` 放在「字元」之後，中文修飾次序不自然，容易把 ASCII 誤讀成字元名稱的一部分。請調整自然語序，清楚表達 source 的「ASCII character `'A'`」，並保持 `Reader`、ASCII 及 `'A'` 的技術 identity 不變。"
+    },
+    {
+      "unit_id": "concurrency/10",
+      "unit_kind": "page",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "bb686393225ef2335e627819a1664a84456f00b64af133af64920d43f0abdb94",
+      "input_path": "inputs/concurrency-10.article",
+      "input_sha256": "fe820d22f70227e74cc62efa8db9ef3e98366c12feebb098fda475149c93dd0d",
+      "protected_token_count": 6,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "提示末句「但映射本身並不適合安全地並行使用」語序生硬，`不適合` 與 `安全地` 的組合亦削弱了 source 明確的技術警告：map 本身並不具備安全的 concurrent-use 保證。請重組句子，直接、自然地表達 map 單獨用於並行存取並不安全，同時保持既有「映射／並行處理」術語。"
+    }
+  ]
+}

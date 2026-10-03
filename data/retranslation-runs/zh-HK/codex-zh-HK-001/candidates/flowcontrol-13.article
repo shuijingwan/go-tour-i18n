@@ -1,0 +1,7 @@
+* 堆疊 defer
+
+延後的函數呼叫會被推入堆疊。函數傳回時，其延後呼叫會按後進先出的順序執行。
+
+若要進一步了解 defer 陳述式，請閱讀這篇[[/blog/defer-panic-and-recover][網誌文章]]。
+
+.play flowcontrol/defer-multi.go

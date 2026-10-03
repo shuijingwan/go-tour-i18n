@@ -39,7 +39,9 @@ var languageRegistry = []LanguageLink{
 	{Locale: "fil-PH", EnglishName: "Filipino", Autonym: "Filipino", URL: "https://fil-go-dev.shuijingwanwq.com/"},
 	{Locale: "fi-FI", EnglishName: "Finnish", Autonym: "Suomi", URL: "https://fi-go-dev.shuijingwanwq.com/"},
 	{Locale: "fr-FR", EnglishName: "French", Autonym: "Français", URL: "https://fr-go-dev.shuijingwanwq.com/"},
+	{Locale: "fr-CA", EnglishName: "French (Canada)", Autonym: "Français (Canada)", URL: "https://fr-ca-go-dev.shuijingwanwq.com/"},
 	{Locale: "de-DE", EnglishName: "German", Autonym: "Deutsch", URL: "https://de-go-dev.shuijingwanwq.com/"},
+	{Locale: "de-CH", EnglishName: "German (Switzerland)", Autonym: "Deutsch (Schweiz)", URL: "https://de-ch-go-dev.shuijingwanwq.com/"},
 	{Locale: "el-GR", EnglishName: "Greek", Autonym: "Ελληνικά", URL: "https://el-go-dev.shuijingwanwq.com/"},
 	{Locale: "gu-IN", EnglishName: "Gujarati", Autonym: "ગુજરાતી", URL: "https://gu-go-dev.shuijingwanwq.com/"},
 	{Locale: "hi-IN", EnglishName: "Hindi", Autonym: "हिन्दी", URL: "https://hi-go-dev.shuijingwanwq.com/"},
@@ -74,6 +76,7 @@ var languageRegistry = []LanguageLink{
 	{Locale: "te-IN", EnglishName: "Telugu", Autonym: "తెలుగు", URL: "https://te-go-dev.shuijingwanwq.com/"},
 	{Locale: "th-TH", EnglishName: "Thai", Autonym: "ไทย", URL: "https://th-go-dev.shuijingwanwq.com/"},
 	{Locale: "zh-TW", EnglishName: "Traditional Chinese", Autonym: "繁體中文（台灣）", URL: "https://zh-tw-go-dev.shuijingwanwq.com/"},
+	{Locale: "zh-HK", EnglishName: "Traditional Chinese (Hong Kong)", Autonym: "繁體中文（香港）", URL: "https://zh-hk-go-dev.shuijingwanwq.com/"},
 	{Locale: "tr-TR", EnglishName: "Turkish", Autonym: "Türkçe", URL: "https://tr-go-dev.shuijingwanwq.com/"},
 	{Locale: "uk-UA", EnglishName: "Ukrainian", Autonym: "Українська", URL: "https://uk-go-dev.shuijingwanwq.com/"},
 	{Locale: "ur-PK", EnglishName: "Urdu", Autonym: "اردو", URL: "https://ur-go-dev.shuijingwanwq.com/"},
@@ -137,6 +140,9 @@ var (
 	moscowTime      = mustLoadLocation("Europe/Moscow")
 	lisbonTime      = mustLoadLocation("Europe/Lisbon")
 	addisAbabaTime  = mustLoadLocation("Africa/Addis_Ababa")
+	hongKongTime    = mustLoadLocation("Asia/Hong_Kong")
+	torontoTime     = mustLoadLocation("America/Toronto")
+	zurichTime      = mustLoadLocation("Europe/Zurich")
 )
 
 var localeProfiles = map[string]localeProfile{
@@ -508,6 +514,27 @@ var localeProfiles = map[string]localeProfile{
 		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",
 		TimeZone:          addisAbabaTime,
 		TimeLabel:         "የአካባቢ ሰዓት",
+		TimeLabelFormat:   " (%s)",
+		Direction:         "ltr",
+	},
+	"zh-HK": {
+		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",
+		TimeZone:          hongKongTime,
+		TimeLabel:         "香港時間",
+		TimeLabelFormat:   " (%s)",
+		Direction:         "ltr",
+	},
+	"fr-CA": {
+		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",
+		TimeZone:          torontoTime,
+		TimeLabel:         "heure locale",
+		TimeLabelFormat:   " (%s)",
+		Direction:         "ltr",
+	},
+	"de-CH": {
+		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",
+		TimeZone:          zurichTime,
+		TimeLabel:         "Ortszeit",
 		TimeLabelFormat:   " (%s)",
 		Direction:         "ltr",
 	},

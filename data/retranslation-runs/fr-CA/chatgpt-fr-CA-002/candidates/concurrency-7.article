@@ -1,0 +1,18 @@
+* Exercice : arbres binaires équivalents
+
+Il peut exister de nombreux arbres binaires différents contenant la même séquence de valeurs. Par exemple, voici deux arbres binaires qui contiennent la séquence 1, 1, 2, 3, 5, 8, 13.
+
+.image /tour/static/img/tree.png
+
+Dans la plupart des langages, une fonction qui vérifie si deux arbres binaires contiennent la même séquence est assez complexe. Nous utiliserons la concurrence et les canaux de Go pour écrire une solution simple.
+
+Cet exemple utilise le paquet `tree`, qui définit le type :
+
+	type Tree struct {
+		Left  *Tree
+		Value int
+		Right *Tree
+	}
+
+
+La description se poursuit à la [[javascript:click('.next-page')][page suivante]].

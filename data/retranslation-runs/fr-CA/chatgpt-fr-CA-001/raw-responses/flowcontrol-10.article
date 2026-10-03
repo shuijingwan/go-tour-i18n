@@ -1,0 +1,12 @@
+* Ordre d’évaluation du switch
+
+Les cas d’un switch sont évalués de haut en bas, et l’évaluation s’arrête dès qu’un cas réussit.
+
+(Par exemple,
+
+⟪GTI18N_e1479cae_000001⟫
+
+n’appelle pas ⟪GTI18N_e1479cae_000002⟫f⟪GTI18N_e1479cae_000003⟫ si ⟪GTI18N_e1479cae_000004⟫i==0⟪GTI18N_e1479cae_000005⟫.)
+
+
+⟪GTI18N_e1479cae_000006⟫

@@ -1,0 +1,21 @@
+* Ajout d’éléments à une tranche
+
+Il est courant d’ajouter de nouveaux éléments à une tranche ; Go fournit donc une fonction intégrée
+`append`. La [[/pkg/builtin/#append][documentation]]
+du paquet intégré décrit `append`.
+
+	func append(s []T, vs ...T) []T
+
+Le premier paramètre `s` de `append` est une tranche de type `T`, et les autres sont des
+valeurs de type `T` à ajouter à la tranche.
+
+La valeur renvoyée par `append` est une tranche contenant tous les éléments de la
+tranche d’origine ainsi que les valeurs fournies.
+
+Si le tableau sous-jacent de `s` est trop petit pour contenir toutes les valeurs fournies, un tableau
+plus grand sera alloué. La tranche renvoyée pointera vers ce nouveau
+tableau.
+
+(Pour en savoir plus sur les tranches, lisez l’article [[/blog/go-slices-usage-and-internals][Tranches : utilisation et fonctionnement interne]].)
+
+.play moretypes/append.go

@@ -1,0 +1,8 @@
+* 練習：Stringer
+
+讓 `IPAddr` 類型實作 `fmt.Stringer`，以四段點分表示法
+輸出位址。
+
+例如， `IPAddr{1,`2,`3,`4}` 應輸出為 `"1.2.3.4"`。
+
+.play methods/exercise-stringer.go

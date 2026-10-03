@@ -1,0 +1,25 @@
+* Typassertionen
+
+Eine _Typassertion_ ermöglicht den Zugriff auf den zugrunde liegenden konkreten Wert eines Interface-Werts.
+
+	t := i.(T)
+
+Diese Anweisung stellt sicher, dass der Interface-Wert `i` den konkreten Typ `T` enthält,
+und weist den zugrunde liegenden `T`-Wert der Variable `t` zu.
+
+Wenn `i` keinen `T` enthält, löst die Anweisung eine panic aus.
+
+Um zu _prüfen_, ob ein Interface-Wert einen bestimmten Typ enthält,
+kann eine Typassertion zwei Werte zurückgeben: den zugrunde liegenden Wert
+und einen booleschen Wert, der angibt, ob die Assertion erfolgreich war.
+
+	t, ok := i.(T)
+
+Wenn `i` einen `T` enthält, ist `t` der zugrunde liegende Wert und `ok` ist true.
+
+Andernfalls ist `ok` false und `t` der Nullwert des Typs `T`,
+ohne dass eine panic auftritt.
+
+Beachten Sie die Ähnlichkeit dieser Syntax mit dem Lesen aus einer Map.
+
+.play methods/type-assertions.go

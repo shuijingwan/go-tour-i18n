@@ -1,0 +1,21 @@
+* Ajout d’éléments à une tranche
+
+Il est courant d’ajouter de nouveaux éléments à une tranche ; ⟪GTI18N_f2fc257e_000001⟫ fournit donc une fonction intégrée
+⟪GTI18N_f2fc257e_000002⟫append⟪GTI18N_f2fc257e_000003⟫. La [[⟪GTI18N_f2fc257e_000004⟫][documentation]]
+du paquet intégré décrit ⟪GTI18N_f2fc257e_000005⟫append⟪GTI18N_f2fc257e_000006⟫.
+
+⟪GTI18N_f2fc257e_000007⟫
+
+Le premier paramètre ⟪GTI18N_f2fc257e_000008⟫s⟪GTI18N_f2fc257e_000009⟫ de ⟪GTI18N_f2fc257e_000010⟫append⟪GTI18N_f2fc257e_000011⟫ est une tranche de type ⟪GTI18N_f2fc257e_000012⟫T⟪GTI18N_f2fc257e_000013⟫, et les autres sont des
+valeurs de type ⟪GTI18N_f2fc257e_000014⟫T⟪GTI18N_f2fc257e_000015⟫ à ajouter à la tranche.
+
+La valeur renvoyée par ⟪GTI18N_f2fc257e_000016⟫append⟪GTI18N_f2fc257e_000017⟫ est une tranche contenant tous les éléments de la
+tranche d’origine ainsi que les valeurs fournies.
+
+Si le tableau sous-jacent de ⟪GTI18N_f2fc257e_000018⟫s⟪GTI18N_f2fc257e_000019⟫ est trop petit pour contenir toutes les valeurs fournies, un tableau
+plus grand sera alloué. La tranche renvoyée pointera vers ce nouveau
+tableau.
+
+(Pour en savoir plus sur les tranches, lisez l’article [[⟪GTI18N_f2fc257e_000020⟫][Tranches : utilisation et fonctionnement interne]].)
+
+⟪GTI18N_f2fc257e_000021⟫

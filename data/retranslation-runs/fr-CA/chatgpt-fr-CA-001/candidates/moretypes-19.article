@@ -1,0 +1,11 @@
+* Tables associatives
+
+Une table associative associe des clés à des valeurs.
+
+La valeur zéro d’une table associative est `nil`.
+Une table associative `nil` ne contient aucune clé, et il est impossible d’y ajouter des clés.
+
+La fonction `make` renvoie une table associative du type indiqué,
+initialisée et prête à l’emploi.
+
+.play moretypes/maps.go

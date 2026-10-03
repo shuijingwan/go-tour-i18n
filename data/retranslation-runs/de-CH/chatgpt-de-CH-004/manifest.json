@@ -1,0 +1,63 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-de-CH-004",
+  "locale": "de-CH",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 4,
+  "units": [
+    {
+      "unit_id": "welcome/5",
+      "unit_kind": "page",
+      "source_path": "_content/tour/welcome.article",
+      "source_sha256": "19e6d7da57ca1d191c485754f3dd4ac87775c651b8c0ae8e05c03cbd9b225897",
+      "input_path": "inputs/welcome-5.article",
+      "input_sha256": "a753e3b0bfe3710b02f227998646dd57fc93c94d3746538a1925e8612da1e035",
+      "protected_token_count": 9,
+      "previous_snapshot_id": "20261003-de-CH-qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "Die grammatische Einbettung des als keep geschützten Produktnamens `Go Playground` ist im Titel `Das Go Playground` und später in `des Go Playground` im Schweizer Hochdeutsch unnatürlich bzw. grammatisch problematisch. Die umgebende deutsche Grammatik muss überarbeitet werden, ohne die technische Identität `Go Playground` selbst zu verändern."
+    },
+    {
+      "unit_id": "moretypes/1",
+      "unit_kind": "page",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "7706eaf0d46acc79fdad3b7953e5571bf404551d71aaefafd8ba79f5761f9806",
+      "input_path": "inputs/moretypes-1.article",
+      "input_sha256": "b6b916daff7c87dfb9553a2c0e739f4ce3004aa40023a62d15e19ad5a693e67c",
+      "protected_token_count": 20,
+      "previous_snapshot_id": "20261003-de-CH-qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "C",
+      "previous_finding": "Die beiden übersetzten teaching comments platzieren den geschützten Identifier `p` nach dem Verb (`i über den Pointer lesen p` bzw. `i über den Pointer setzen p`). Dadurch entsteht ungrammatisches Deutsch und die im Source gemeinte Beziehung zu «pointer p» wird unnötig unklar. Die natürliche Wortstellung um die geschützten Code-/Identifier-Bestandteile muss korrigiert werden; Code und Identifier dürfen dabei nicht verändert werden."
+    },
+    {
+      "unit_id": "methods/15",
+      "unit_kind": "page",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "c205b4eb940358edea6321cfa422c3c00a560e9a6a71b08c8b3fa3ab9e4926ae",
+      "input_path": "inputs/methods-15.article",
+      "input_sha256": "de09fb3af677bf5cfb8ac741619639c9101d132f036c3cdba09219fc84550dc1",
+      "protected_token_count": 33,
+      "previous_snapshot_id": "20261003-de-CH-qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "Bei der Erklärung der Typassertion gibt „stellt sicher, dass der Interface-Wert `i` den konkreten Typ `T` enthält“ die Semantik von „asserts that“ ungenau wieder. Die Typassertion garantiert nicht, dass `i` bereits einen `T` enthält; bei nicht erfüllter Assertion tritt eine panic auf. Die Aussage muss semantisch präziser an den Source angeglichen werden."
+    },
+    {
+      "unit_id": "concurrency/2",
+      "unit_kind": "page",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "a35e3af26b51f8c2c2a6dfaf09f9c7cab0fdb4b1b56f9e4dc9b793f1dac1e295",
+      "input_path": "inputs/concurrency-2.article",
+      "input_sha256": "1a1001c042dcd888da4db2f0055fd5a6b964cbf6519053ed42286147567fef60",
+      "protected_token_count": 12,
+      "previous_snapshot_id": "20261003-de-CH-qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "C",
+      "previous_finding": "Im übersetzten teaching comment zu `v := \u003c-ch` ist die Zuweisungsbeziehung technisch falsch bzw. unklar: „weise den Wert v zu“ behandelt `v` sprachlich als den zuzuweisenden Wert und lässt das Ziel der Zuweisung offen. Der Source sagt dagegen, dass der vom Channel empfangene Wert der Variable `v` zugewiesen wird. Diese technische Beziehung muss korrekt wiedergegeben werden, ohne Code oder Identifier zu verändern."
+    }
+  ]
+}

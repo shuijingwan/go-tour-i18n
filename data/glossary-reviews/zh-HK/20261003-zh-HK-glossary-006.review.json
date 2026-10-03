@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "evidence_type": "glossary-review-receipt",
+  "locale": "zh-HK",
+  "review_id": "20261003-zh-HK-glossary-006",
+  "stage": "locale-glossary-review",
+  "decision": "failed",
+  "reviewer": "ChatGPT GPT-5.6 Sol High",
+  "rubric": "glossary-review/v1",
+  "glossary_path": "locales/zh-HK/glossary.yaml",
+  "glossary_sha256": "fa71821d55ceac4fa45c37c378391eaeb954ad7b2d21df96c10199d45b4352ba",
+  "findings": [
+    "preferred；source term/current rule: playground (Go service): no contextual rule; existing rules are mandatory Go Playground → Go Playground and keep Playground；問題: welcome/5 除了三次完整名稱「Go Playground」外，還以小寫普通名詞形式三次指代同一服務：programs that can be run in the playground、In the playground...、The playground uses...。當前 keep 只精確保護大寫 Playground，mandatory 只明確完整名稱 Go Playground；根據 authority 中 keep 的精確表面形式保護規則，這三處開放自然語言 source 沒有明確的 contextual glossary 決策，因而仍可能被譯成普通名詞「遊樂場／操場」而不觸及現有 forbidden「Go 遊樂場／Go 操場」。這不足以保證高影響術語 Go Playground 在完整 source context 中一致。修改方向: 為指代 Go Playground 服務的 lowercase playground 建立語境化術語政策，使這些同一實體的簡稱遵循既定 Playground identity；不要把所有一般意義的 playground 全局設為 keep 或 forbidden。",
+    "keep；source term/current rule: goroutine / goroutines / Goroutines; Page / Pages; Example / Examples；問題: 當前 keep 把英語語法複數和大小寫變體本身也設成必須原樣保留的技術 identity。concurrency/1 標題 Goroutines 及正文、concurrency/2 等正文中的 goroutines 都是規範 identity goroutine 的英語複數／句首形式；authority 明確規定 keep 保護規範技術 identity，不要求目標語言複製英語語法詞尾。類似地，formal/ui-en.json 的 site.workflow_units 使用 Pages/Examples 後立即以 a Page/an Example 定義兩個項目技術概念；將 Pages/Examples 本身設為 keep 會強制香港中文保留英語複數形態，而不是只保留 Page/Example 技術 identity。修改方向: 讓 keep 約束規範技術 identity，而不是把英語複數或句首形態作為獨立 do-not-translate identity；目標語言中的數量關係應由香港中文語法表達，同時繼續確保真正的 Page、Example、goroutine 技術 identity 不被本地化。"
+  ]
+}

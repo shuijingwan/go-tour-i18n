@@ -1,0 +1,13 @@
+* Méthodes
+
+Go n’a pas de classes.
+Cependant, vous pouvez définir des méthodes sur des types.
+
+Une méthode est une fonction dotée d’un argument spécial appelé _récepteur_.
+
+Le récepteur apparaît dans sa propre liste d’arguments, entre le mot-clé `func` et
+le nom de la méthode.
+
+Dans cet exemple, la méthode `Abs` a un récepteur de type `Vertex` nommé `v`.
+
+.play methods/methods.go

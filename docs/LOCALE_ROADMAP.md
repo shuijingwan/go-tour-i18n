@@ -2,9 +2,9 @@
 
 本文档是社区 locale 的长期实施范围、当前 Go Tour 剩余调度，以及未来多语言项目默认顺序的唯一 authority。[新增 Locale 执行手册](NEW_LOCALE_RUNBOOK.md) 仍是单个新 locale 的正式执行流程 authority；本文只确定规划范围与调度，不替代 locale identity freeze、语言资产、质量审核、Production 或上线流程。
 
-## 1. 当前已完成：47 个 live community locale
+## 1. 当前已完成：56 个 live community locale
 
-当前仓库已有 **47 个 `production_state=live` community locale**：
+当前仓库已有 **56 个 `production_state=live` community locale**：
 
 ```text
 zh-CN  ja-JP  de-DE  fr-FR  ko-KR  es-ES  it-IT  nl-NL  pt-BR  tr-TR
@@ -12,23 +12,19 @@ sv-SE  pl-PL  zh-TW  id-ID  vi-VN  ar     th-TH  hi-IN  bn-BD  ur-PK
 uk-UA  ro-RO  cs-CZ  ta-IN  te-IN  ms-MY  fil-PH el-GR  hu-HU  bg-BG
 mr-IN  ml-IN  kn-IN  es-419 gu-IN  pa-IN  nb-NO  da-DK  fi-FI  sr-RS
 sk-SK  hr-HR  sl-SI  lt-LT  ca-ES  et-EE  lv-LV
+sw-TZ  kk-KZ  fa-IR  am-ET  ru-RU  pt-PT  fr-CA  zh-HK  de-CH
 ```
 
 该清单只记录当前完成状态，不重写这些 locale 的历史或实现身份。已实施 locale 的 hostname、CDN、service、port、public URL 与 lifecycle 等 machine fact 继续以 `production/identity.json` 为 authority。
 
 ## 2. 最终固定语言范围：64 个 community locale
 
-在当前 47 个 live locale 基础上，再固定增加以下 **17 个 locale / language targets**，使 community locale 固定总数达到 **64**。这些目标是长期固定范围，不是可直接用于实现或 Production 的 identity；每个目标正式启动时仍须进入新增 Locale 执行手册，冻结其 canonical locale、`html_lang`、autonym、English name、hostname、port、service、public URL 及其他正式身份。不得根据本表提前猜测或写入这些字段。
+在当前 56 个 live locale 基础上，再固定增加以下 **8 个 locale / language targets**，使 community locale 固定总数达到 **64**。这些目标是长期固定范围，不是可直接用于实现或 Production 的 identity；每个目标正式启动时仍须进入新增 Locale 执行手册，冻结其 canonical locale、`html_lang`、autonym、English name、hostname、port、service、public URL 及其他正式身份。不得根据本表提前猜测或写入这些字段。
 
 ### Google 广告支持的非英语商业扩展
 
 | Planning target | Language / regional standard |
 | --- | --- |
-| `ru-RU` | Russian |
-| `pt-PT` | European Portuguese |
-| `zh-HK` | Hong Kong Traditional Chinese |
-| `fr-CA` | Canadian French |
-| `de-CH` | Swiss German regional standard |
 | `de-AT` | Austrian German |
 | `zh-SG` | Singapore Simplified Chinese |
 
@@ -43,16 +39,16 @@ sk-SK  hr-HR  sl-SI  lt-LT  ca-ES  et-EE  lv-LV
 
 当前 Go Tour 官方 English 继续使用 <https://go.dev/tour/> 的 generic `lang="en"`。上述 regional English locale 是独立商业区域扩展，不以取得 go.dev Go local 链接为前提；本项目不新增独立 `en-US` Go Tour。
 
-### 非 Google Publisher 支持语言
+### 已完成的非 Google Publisher 支持语言
 
-以下 4 门语言固定实施，并计划在完成且 live 后申请 go.dev 的 Go local 链接：
+以下 4 门语言已经完成并进入 `live`，应尽早申请 go.dev 的 Go local 链接：
 
 - Swahili
 - Kazakh
 - Persian
 - Amharic
 
-这四项在本路线图中只冻结 language target，不冻结 locale identity。正式启动前必须按新增 Locale 执行手册确定 canonical locale、`html_lang`、autonym、hostname、port、service、public URL 等全部实现字段。
+这四项的正式实现身份已由 `production/identity.json` 冻结；本节只保留完成状态和 go.dev 链接申请事项，不复制 machine identity。
 
 ### 固定范围边界
 
@@ -77,32 +73,31 @@ sk-SK  hr-HR  sl-SI  lt-LT  ca-ES  et-EE  lv-LV
 
 当前 Go Tour 的项目调度与未来跨项目商业排序分离，按以下顺序完成剩余目标。
 
-### 第一阶段：优先完成并申请 go.dev 链接
+### 第一阶段：已完成，申请 go.dev 链接
 
 1. Swahili
 2. Kazakh
 3. Persian
 4. Amharic
 
-这四门完成且 live 后，尽早提交 go.dev Go local 链接申请，使上游审核等待时间与后续 locale 实施并行。四门内部无需反复进行商业重排；可按当时真实的并发、额度与正式流程边界分批推进。
+这四门已经完成且为 `live`。尽早提交 go.dev Go local 链接申请，使上游审核等待时间与后续 locale 实施并行；链接申请不阻塞第二阶段继续实施。
 
 ### 第二阶段：固定商业扩展
 
 依次完成：
 
-1. `ru-RU`
-2. `pt-PT`
-3. `zh-HK`
-4. `fr-CA`
-5. `de-CH`
-6. `de-AT`
-7. `zh-SG`
-8. `en-GB`
-9. `en-CA`
-10. `en-AU`
-11. `en-IN`
-12. `en-SG`
-13. `en-ZA`
+已完成：`ru-RU`、`pt-PT`、`fr-CA`、`zh-HK`、`de-CH`。
+
+剩余目标依次为：
+
+1. `de-AT`
+2. `zh-SG`
+3. `en-GB`
+4. `en-CA`
+5. `en-AU`
+6. `en-IN`
+7. `en-SG`
+8. `en-ZA`
 
 `ru-RU` 不再作为阻塞后续 locale 的路线图 gate。若某个目标在正式执行中出现真实 failure，按对应 runbook 保存 evidence 和恢复，不因此重新开放全球候选研究或从固定池中自动寻找替代项。
 

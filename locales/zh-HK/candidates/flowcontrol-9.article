@@ -1,0 +1,10 @@
+* switch
+
+`switch` 陳述式是編寫一連串 `if`-`else` 陳述式的簡短方式。
+它會執行值與條件運算式相等的第一個 case。
+
+Go 的 switch 與 C、C++、Java、JavaScript 和 PHP 的 switch 相似，但 Go 只會執行選中的 case，不會執行其後所有 case。
+換言之，在這些語言中每個 case 結尾都需要的 `break` 陳述式，Go 會自動提供。
+另一個重要分別是，Go 的 switch case 不一定要是常數，相關值也不一定要是整數。
+
+.play flowcontrol/switch.go

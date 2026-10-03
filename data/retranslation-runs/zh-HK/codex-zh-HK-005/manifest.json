@@ -1,0 +1,37 @@
+{
+  "schema_version": 2,
+  "batch_id": "codex-zh-HK-005",
+  "locale": "zh-HK",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "example",
+  "unit_count": 2,
+  "units": [
+    {
+      "unit_id": "example:methods/interfaces.go",
+      "unit_kind": "example",
+      "source_path": "_content/tour/methods/interfaces.go",
+      "source_sha256": "2530ef039212284377a46fe1063db6206d8db3a42a8138c6eed44275bb7eb10b",
+      "input_path": "inputs/methods-interfaces.txt",
+      "input_sha256": "901cbe2c6b0f1a210b4b4fd856e5e9ecbacba07758f9160c20ff84b2450e96a9",
+      "protected_token_count": 5,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "最後兩行 teaching comment 被譯成「在下一行中，v 是 Vertex（而不是 *Vertex）」與下一行開頭的「，因此沒有實作 Abser。」；第二行以逗號起首，令完整中文句子的標點與換行不自然。請只調整這兩行註解的中文標點／句法銜接，使跨行閱讀自然，同時保持 v、Vertex、*Vertex、Abser 及程式碼結構不變。"
+    },
+    {
+      "unit_id": "example:moretypes/pointers.go",
+      "unit_kind": "example",
+      "source_path": "_content/tour/moretypes/pointers.go",
+      "source_sha256": "bbc4a25d868979e959aa383f0de7894135e7f8ae4b2d766e653a033178a9a378",
+      "input_path": "inputs/moretypes-pointers.txt",
+      "input_sha256": "d907add850aff00fb35329d480aa49bc4aa20ef926226715ab790262ca734c90",
+      "protected_token_count": 8,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "C",
+      "previous_finding": "註解 `divide j through the pointer` 譯為「透過指標除以 j」，中文語義變成「以 j 作除數」，顛倒了原文關係；實際程式碼 `*p = *p / 37` 是透過指標把 j 除以 37。請修訂此註解，準確表達對 j 執行除法且操作是透過指標完成，並保持 j、指標及程式碼 identity 不變。"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+* Methoden und Pointer-Indirektion (2)
+
+In der umgekehrten Richtung geschieht das Entsprechende.
+
+Funktionen, die ein Wert-Argument entgegennehmen, müssen einen Wert genau dieses Typs erhalten:
+
+⟪GTI18N_61a9cb84_000001⟫Kompilierfehler!⟪GTI18N_61a9cb84_000002⟫während Methoden mit Wert-Receivern beim Aufruf entweder einen Wert oder einen Pointer als
+Receiver akzeptieren:
+
+⟪GTI18N_61a9cb84_000003⟫
+
+In diesem Fall wird der Methodenaufruf ⟪GTI18N_61a9cb84_000004⟫p.Abs()⟪GTI18N_61a9cb84_000005⟫ als ⟪GTI18N_61a9cb84_000006⟫(*p).Abs()⟪GTI18N_61a9cb84_000007⟫ interpretiert.
+
+⟪GTI18N_61a9cb84_000008⟫

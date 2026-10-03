@@ -1,0 +1,21 @@
+* 方法與指標間接參照（2）
+
+反方向也會發生相同的情況。
+
+接收值引數的函數必須接收該特定類型的值：
+
+	var v Vertex
+	fmt.Println(AbsFunc(v))  // OK
+	fmt.Println(AbsFunc(&v)) // 編譯錯誤！
+
+而具有值接收者的方法在呼叫時，則可以接收值或指標作為
+接收者：
+
+	var v Vertex
+	fmt.Println(v.Abs()) // OK
+	p := &v
+	fmt.Println(p.Abs()) // OK
+
+在此情況下，方法呼叫 `p.Abs()` 會被解讀為 `(*p).Abs()`。
+
+.play methods/indirection-values.go

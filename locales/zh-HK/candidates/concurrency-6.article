@@ -1,0 +1,14 @@
+* default 選擇
+
+如果沒有其他 case 準備就緒，便會執行 `select` 中的 `default` case。
+
+使用 `default` case，即可嘗試傳送或接收而不會封鎖：
+
+	select {
+	case i := <-c:
+		// 使用 i
+	default:
+		// 從 c 接收會造成封鎖
+	}
+
+.play concurrency/default-selection.go
