@@ -1,0 +1,7 @@
+* Select
+
+משפט `select` מאפשר ל־goroutine להמתין למספר פעולות תקשורת.
+
+`select` נחסם עד שאחד ה־cases שלו יכול לרוץ, ואז הוא מריץ את אותו case. אם כמה מהם מוכנים, הוא בוחר אחד באקראי.
+
+.play concurrency/select.go

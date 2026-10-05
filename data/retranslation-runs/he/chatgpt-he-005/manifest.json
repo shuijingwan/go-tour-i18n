@@ -1,0 +1,37 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-he-005",
+  "locale": "he",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "example",
+  "unit_count": 2,
+  "units": [
+    {
+      "unit_id": "example:concurrency/exercise-web-crawler.go",
+      "unit_kind": "example",
+      "source_path": "_content/tour/concurrency/exercise-web-crawler.go",
+      "source_sha256": "bd6226dcae3b663a3aa1cbf502d840357ac0efb6de46e7a66612ca2834cf5e37",
+      "input_path": "inputs/concurrency-exercise-web-crawler.txt",
+      "input_sha256": "d36ed2f5dd83cdc52ca3dcc4dbb06c9b586698fd72b4a3b170d1cb286728d6a6",
+      "protected_token_count": 10,
+      "previous_snapshot_id": "20261005-he-qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "In the translated `Fetch` documentation comment, the Hebrew conjunction prefix `ו־` is stranded at the end of one comment line while the noun phrase it governs begins on the next line. In Hebrew this creates an unnatural and visibly broken RTL reading boundary, especially adjacent to the LTR token `URL`. Revise the comment phrasing so the two-line Hebrew sentence reads naturally while preserving the exact source meaning, comment structure, and technical identities."
+    },
+    {
+      "unit_id": "example:moretypes/pointers.go",
+      "unit_kind": "example",
+      "source_path": "_content/tour/moretypes/pointers.go",
+      "source_sha256": "bbc4a25d868979e959aa383f0de7894135e7f8ae4b2d766e653a033178a9a378",
+      "input_path": "inputs/moretypes-pointers.txt",
+      "input_sha256": "d907add850aff00fb35329d480aa49bc4aa20ef926226715ab790262ca734c90",
+      "protected_token_count": 8,
+      "previous_snapshot_id": "20261005-he-qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "The comment corresponding to “set i through the pointer” uses wording whose common programming sense can mean “define `i`”, even though `i` is already declared and the code is modifying its value indirectly through `*p`. This weakens the teaching distinction between declaration and mutation/assignment in a pointer example. Revise the Hebrew comment so it unambiguously describes changing the existing value through the pointer, without altering `i`, `p`, or any Go code."
+    }
+  ]
+}

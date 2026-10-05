@@ -1,0 +1,21 @@
+* מתודות ועקיפה דרך מצביע (2)
+
+אותו דבר קורה גם בכיוון ההפוך.
+
+פונקציות שמקבלות ארגומנט שהוא ערך חייבות לקבל ערך מהטיפוס המסוים הזה:
+
+	var v Vertex
+	fmt.Println(AbsFunc(v))  // OK
+	fmt.Println(AbsFunc(&v)) // שגיאת הידור!
+
+בעוד שמתודות עם מקבל שהוא ערך מקבלות כמקבל ערך או מצביע
+כאשר קוראים להן:
+
+	var v Vertex
+	fmt.Println(v.Abs()) // OK
+	p := &v
+	fmt.Println(p.Abs()) // OK
+
+במקרה הזה, הקריאה למתודה `p.Abs()` מתפרשת כ־ `(*p).Abs()`.
+
+.play methods/indirection-values.go

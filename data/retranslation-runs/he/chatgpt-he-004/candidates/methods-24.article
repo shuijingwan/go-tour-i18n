@@ -1,0 +1,21 @@
+* תמונות
+
+[[/pkg/image/#Image][החבילה image]] מגדירה את הממשק `Image`:
+
+	package image
+
+	type Image interface {
+		ColorModel() color.Model
+		Bounds() Rectangle
+		At(x, y int) color.Color
+	}
+
+*הערה*: הערך המוחזר `Rectangle` של המתודה `Bounds` הוא למעשה
+[[/pkg/image/#Rectangle][`image.Rectangle`]], מכיוון שההצהרה
+נמצאת בתוך החבילה `image`.
+
+(ראו [[/pkg/image/#Image][את התיעוד]] לכל הפרטים.)
+
+גם הטיפוסים `color.Color` ו־ `color.Model` הם ממשקים, אבל נתעלם מכך באמצעות המימושים המוגדרים מראש `color.RGBA` ו־ `color.RGBAModel`. הממשקים והטיפוסים האלה מוגדרים ב[[/pkg/image/color/][חבילה image/color]].
+
+.play methods/images.go

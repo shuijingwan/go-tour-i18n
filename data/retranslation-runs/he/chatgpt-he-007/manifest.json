@@ -1,0 +1,29 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-he-007",
+  "locale": "he",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 1,
+  "units": [
+    {
+      "unit_id": "basics/12",
+      "unit_kind": "page",
+      "source_path": "_content/tour/basics.article",
+      "source_sha256": "d9ad62501c05359e7b2ac445fa92d629e11d6d378c2701b767abab76012a558e",
+      "input_path": "inputs/basics-12.article",
+      "input_sha256": "1ea463ab789d88cad33a6c7adf44fb524ea1f7e2574059f723a345f3c097faa7",
+      "protected_token_count": 9,
+      "previous_snapshot_id": "20261005-he-qc-003",
+      "revision_feedback_source": "surface_review",
+      "revision_authorization_id": "20261005-he-stage-a-001-tu-17",
+      "previous_rating": "A",
+      "previous_finding": "In the Hebrew list defining zero values, the second bullet ends with the conjunction prefix `ו־`, while the third bullet begins separately with the empty-string item. Because these are separate rendered list items, the Hebrew conjunction is stranded on the preceding bullet instead of belonging naturally to the final coordinated item. This is a real RTL/Hebrew presentation and grammar defect in the current promoted Page candidate.",
+      "previous_review_decision": "reopened",
+      "previous_review_summary": "20261005-he-stage-a-001-tu-17",
+      "previous_review_path": "data/locale-surface-reviews/he/20261005-he-stage-a-001.md",
+      "previous_review_sha256": "b12e677e386096f1f98e5d5b9678023d6da7979e8127935dee3ea9f2a07949b1"
+    }
+  ]
+}

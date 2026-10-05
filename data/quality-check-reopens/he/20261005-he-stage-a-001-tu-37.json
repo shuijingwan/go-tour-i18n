@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "evidence_type": "quality_check_surface_reopen",
+  "locale": "he",
+  "reopen_id": "20261005-he-stage-a-001-tu-37",
+  "previous_snapshot_id": "20261005-he-qc-003",
+  "previous_finalization_path": "data/quality-check-snapshots/he/20261005-he-qc-003/finalization.json",
+  "previous_finalization_sha256": "4ec1c38fd52bc73b12c4242d3e91e481bd11ebf1e79d45907f7b36f2a7256ad6",
+  "surface_review_id": "20261005-he-stage-a-001",
+  "surface_review_path": "data/locale-surface-reviews/he/20261005-he-stage-a-001.md",
+  "surface_review_sha256": "b12e677e386096f1f98e5d5b9678023d6da7979e8127935dee3ea9f2a07949b1",
+  "finding": "The Hebrew teaching comment uses wording meaning the definition/declaration of `i`. In this code, `i` already exists and `*p = 21` changes its value indirectly through the pointer. The current wording therefore obscures the declaration-versus-assignment/mutation distinction. This is the same technical distinction previously corrected in the corresponding Example, but the Page candidate still contains the defect.",
+  "unit_count": 1,
+  "units": [
+    {
+      "index": 37,
+      "unit_id": "moretypes/1",
+      "snapshot": {
+        "index": 37,
+        "unit_id": "moretypes/1",
+        "unit_kind": "page",
+        "selected_batch_id": "chatgpt-he-001",
+        "source_path": "_content/tour/moretypes.article",
+        "source_sha256": "7706eaf0d46acc79fdad3b7953e5571bf404551d71aaefafd8ba79f5761f9806",
+        "page_section": {
+          "article": "moretypes.article",
+          "section_number": 1,
+          "source_title": "Pointers",
+          "route": "/moretypes/1"
+        },
+        "candidate_path": "data/retranslation-runs/he/chatgpt-he-001/candidates/moretypes-1.article",
+        "candidate_sha256": "8f2efa3abcff0eaba47db8f8560175f7c1c65f6eb548508455ee861a5b000cc4",
+        "validation_path": "data/retranslation-runs/he/chatgpt-he-001/validation/moretypes-1.json",
+        "validation_sha256": "62bfadf025ecad1bbf1e4682f3a278b62cfde730dd28c6989ecc02190bd3b598",
+        "attempt": 1
+      }
+    }
+  ]
+}

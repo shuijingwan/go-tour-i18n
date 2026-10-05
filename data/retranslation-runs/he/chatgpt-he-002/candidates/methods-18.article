@@ -1,0 +1,8 @@
+* תרגיל: Stringers
+
+גרמו לטיפוס `IPAddr` לממש את `fmt.Stringer` כדי להדפיס את הכתובת
+כרביעייה מופרדת בנקודות.
+
+לדוגמה, `IPAddr{1,`2,`3,`4}` צריך להיות מודפס כ־ `"1.2.3.4"`.
+
+.play methods/exercise-stringer.go

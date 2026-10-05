@@ -51,6 +51,7 @@ var languageRegistry = []LanguageLink{
 	{Locale: "de-CH", EnglishName: "German (Switzerland)", Autonym: "Deutsch (Schweiz)", URL: "https://de-ch-go-dev.shuijingwanwq.com/"},
 	{Locale: "el-GR", EnglishName: "Greek", Autonym: "Ελληνικά", URL: "https://el-go-dev.shuijingwanwq.com/"},
 	{Locale: "gu-IN", EnglishName: "Gujarati", Autonym: "ગુજરાતી", URL: "https://gu-go-dev.shuijingwanwq.com/"},
+	{Locale: "he", EnglishName: "Hebrew", Autonym: "עברית", URL: "https://he-go-dev.shuijingwanwq.com/"},
 	{Locale: "hi-IN", EnglishName: "Hindi", Autonym: "हिन्दी", URL: "https://hi-go-dev.shuijingwanwq.com/"},
 	{Locale: "hu-HU", EnglishName: "Hungarian", Autonym: "Magyar", URL: "https://hu-go-dev.shuijingwanwq.com/"},
 	{Locale: "id-ID", EnglishName: "Indonesian", Autonym: "Bahasa Indonesia", URL: "https://id-go-dev.shuijingwanwq.com/"},
@@ -130,6 +131,7 @@ var (
 	karachiTime      = mustLoadLocation("Asia/Karachi")
 	kyivTime         = mustLoadLocation("Europe/Kyiv")
 	jakartaTime      = mustLoadLocation("Asia/Jakarta")
+	jerusalemTime    = mustLoadLocation("Asia/Jerusalem")
 	kualaLumpurTime  = mustLoadLocation("Asia/Kuala_Lumpur")
 	manilaTime       = mustLoadLocation("Asia/Manila")
 	kolkataTime      = mustLoadLocation("Asia/Kolkata")
@@ -263,6 +265,13 @@ var localeProfiles = map[string]localeProfile{
 		TimeLabel:         "સ્થાનિક સમય",
 		TimeLabelFormat:   " (%s)",
 		Direction:         "ltr",
+	},
+	"he": {
+		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",
+		TimeZone:          jerusalemTime,
+		TimeLabel:         "זמן מקומי",
+		TimeLabelFormat:   " (%s)",
+		Direction:         "rtl",
 	},
 	"hi-IN": {
 		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",

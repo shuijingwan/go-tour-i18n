@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "evidence_type": "quality_check_surface_reopen",
+  "locale": "he",
+  "reopen_id": "20261005-he-stage-a-001-tu-17",
+  "previous_snapshot_id": "20261005-he-qc-003",
+  "previous_finalization_path": "data/quality-check-snapshots/he/20261005-he-qc-003/finalization.json",
+  "previous_finalization_sha256": "4ec1c38fd52bc73b12c4242d3e91e481bd11ebf1e79d45907f7b36f2a7256ad6",
+  "surface_review_id": "20261005-he-stage-a-001",
+  "surface_review_path": "data/locale-surface-reviews/he/20261005-he-stage-a-001.md",
+  "surface_review_sha256": "b12e677e386096f1f98e5d5b9678023d6da7979e8127935dee3ea9f2a07949b1",
+  "finding": "In the Hebrew list defining zero values, the second bullet ends with the conjunction prefix `ו־`, while the third bullet begins separately with the empty-string item. Because these are separate rendered list items, the Hebrew conjunction is stranded on the preceding bullet instead of belonging naturally to the final coordinated item. This is a real RTL/Hebrew presentation and grammar defect in the current promoted Page candidate.",
+  "unit_count": 1,
+  "units": [
+    {
+      "index": 17,
+      "unit_id": "basics/12",
+      "snapshot": {
+        "index": 17,
+        "unit_id": "basics/12",
+        "unit_kind": "page",
+        "selected_batch_id": "chatgpt-he-001",
+        "source_path": "_content/tour/basics.article",
+        "source_sha256": "d9ad62501c05359e7b2ac445fa92d629e11d6d378c2701b767abab76012a558e",
+        "page_section": {
+          "article": "basics.article",
+          "section_number": 12,
+          "source_title": "Zero values",
+          "route": "/basics/12"
+        },
+        "candidate_path": "data/retranslation-runs/he/chatgpt-he-001/candidates/basics-12.article",
+        "candidate_sha256": "54a5c26cdc0aad97418cff88a38384f5d363d174eb5089078f119c0751521885",
+        "validation_path": "data/retranslation-runs/he/chatgpt-he-001/validation/basics-12.json",
+        "validation_sha256": "061771f2ad1d3ec578517cb2fa012569e3361e79554a86e3ce41a505fde78fea",
+        "attempt": 1
+      }
+    }
+  ]
+}

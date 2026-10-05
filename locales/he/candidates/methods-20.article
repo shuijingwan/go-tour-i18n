@@ -1,0 +1,21 @@
+* תרגיל: שגיאות
+
+העתיקו את הפונקציה `Sqrt` מה[[/tour/flowcontrol/8][תרגיל הקודם]] ושנו אותה כך שתחזיר ערך `error`.
+
+`Sqrt` צריכה להחזיר ערך שגיאה שאינו nil כאשר ניתן לה מספר שלילי, משום שהיא אינה תומכת במספרים מרוכבים.
+
+צרו טיפוס חדש
+
+	type ErrNegativeSqrt float64
+
+והפכו אותו ל־ `error` על ידי מתן
+
+	func (e ErrNegativeSqrt) Error() string
+
+מתודה כך ש־ `ErrNegativeSqrt(-2).Error()` תחזיר `"cannot`Sqrt`negative`number:`-2"`.
+
+*הערה:* קריאה ל־ `fmt.Sprint(e)` בתוך המתודה `Error` תכניס את התוכנית ללולאה אינסופית. אפשר להימנע מכך על ידי המרה של `e` תחילה: `fmt.Sprint(float64(e))`. מדוע?
+
+שנו את הפונקציה `Sqrt` כך שתחזיר ערך `ErrNegativeSqrt` כאשר ניתן לה מספר שלילי.
+
+.play methods/exercise-errors.go

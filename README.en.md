@@ -39,6 +39,7 @@ Community-maintained translations currently in production:
 - [German (Switzerland) — Deutsch (Schweiz)](https://de-ch-go-dev.shuijingwanwq.com/)
 - [Greek — Ελληνικά](https://el-go-dev.shuijingwanwq.com/)
 - [Gujarati — ગુજરાતી](https://gu-go-dev.shuijingwanwq.com/)
+- [Hebrew — עברית](https://he-go-dev.shuijingwanwq.com/)
 - [Hindi — हिन्दी](https://hi-go-dev.shuijingwanwq.com/)
 - [Hungarian — Magyar](https://hu-go-dev.shuijingwanwq.com/)
 - [Indonesian — Bahasa Indonesia](https://id-go-dev.shuijingwanwq.com/)

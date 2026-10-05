@@ -1,0 +1,12 @@
+* Stringers
+
+אחד הממשקים הנפוצים ביותר הוא [[/pkg/fmt/#Stringer][`Stringer`]], שמוגדר בחבילה [[/pkg/fmt/][`fmt`]].
+
+	type Stringer interface {
+		String() string
+	}
+
+`Stringer` הוא טיפוס שיכול לתאר את עצמו כמחרוזת. החבילה `fmt`
+(וכך גם חבילות רבות אחרות) מחפשת את הממשק הזה כדי להדפיס ערכים.
+
+.play methods/stringer.go

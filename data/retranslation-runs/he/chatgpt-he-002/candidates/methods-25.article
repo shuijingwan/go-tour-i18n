@@ -1,0 +1,13 @@
+* תרגיל: תמונות
+
+זוכרים את [[/tour/moretypes/18][מחולל התמונות]] שכתבתם קודם? נכתוב מחולל נוסף, אבל הפעם הוא יחזיר מימוש של `image.Image` במקום פרוסת נתונים.
+
+הגדירו טיפוס `Image` משלכם, ממשו את [[/pkg/image/#Image][המתודות הנדרשות]], וקראו ל־ `pic.ShowImage`.
+
+`Bounds` צריכה להחזיר `image.Rectangle`, למשל `image.Rect(0,`0,`w,`h)`.
+
+`ColorModel` צריכה להחזיר `color.RGBAModel`.
+
+`At` צריכה להחזיר צבע; הערך `v` במחולל התמונות האחרון מתאים ל־ `color.RGBA{v,`v,`255,`255}` במחולל הזה.
+
+.play methods/exercise-images.go

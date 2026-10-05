@@ -1,0 +1,12 @@
+* Range — המשך
+
+אפשר לדלג על האינדקס או על הערך באמצעות השמה ל־ `_`.
+
+    for i, _ := range pow
+    for _, value := range pow
+
+אם רוצים רק את האינדקס, אפשר להשמיט את המשתנה השני.
+
+    for i := range pow
+
+.play moretypes/range-continued.go

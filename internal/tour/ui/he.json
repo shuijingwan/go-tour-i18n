@@ -1,0 +1,458 @@
+{
+  "locale": "he",
+  "html_lang": "he",
+  "messages": {
+    "tour.title": {
+      "kind": "plain",
+      "text": "סיור ב־Go"
+    },
+    "header.about_project": {
+      "kind": "plain",
+      "text": "על הפרויקט"
+    },
+    "tour.list_heading": {
+      "kind": "plain",
+      "text": "ברוכים הבאים לסיור ב־Go"
+    },
+    "tour.list_title": {
+      "kind": "plain",
+      "text": "מדריך הקורס — סיור ב־Go"
+    },
+    "tour.list_description": {
+      "kind": "plain",
+      "text": "עיינו במודולים ובשיעורים של סיור ב־Go, מבוא אינטראקטיבי לשפת התכנות Go."
+    },
+    "theme.toggle": {
+      "kind": "plain",
+      "text": "החלפת ערכת נושא"
+    },
+    "theme.system": {
+      "kind": "plain",
+      "text": "ערכת הנושא של המערכת"
+    },
+    "theme.dark": {
+      "kind": "plain",
+      "text": "ערכת נושא כהה"
+    },
+    "theme.light": {
+      "kind": "plain",
+      "text": "ערכת נושא בהירה"
+    },
+    "editor.syntax": {
+      "kind": "plain",
+      "text": "תחביר"
+    },
+    "editor.imports": {
+      "kind": "plain",
+      "text": "ייבואים"
+    },
+    "editor.on": {
+      "kind": "plain",
+      "text": "מופעל"
+    },
+    "editor.off": {
+      "kind": "plain",
+      "text": "כבוי"
+    },
+    "editor.run": {
+      "kind": "plain",
+      "text": "הרצה"
+    },
+    "editor.kill": {
+      "kind": "plain",
+      "text": "עצירה"
+    },
+    "editor.format": {
+      "kind": "plain",
+      "text": "עיצוב קוד"
+    },
+    "editor.reset": {
+      "kind": "plain",
+      "text": "איפוס"
+    },
+    "toc.title": {
+      "kind": "plain",
+      "text": "תוכן העניינים"
+    },
+    "execution.waiting": {
+      "kind": "plain",
+      "text": "ממתין לשרת המרוחק..."
+    },
+    "execution.exited": {
+      "kind": "plain",
+      "text": "התוכנית הסתיימה"
+    },
+    "execution.vet_failed": {
+      "kind": "plain",
+      "text": "בדיקת Go vet נכשלה."
+    },
+    "execution.build_failed": {
+      "kind": "plain",
+      "text": "בניית Go נכשלה."
+    },
+    "execution.communication_error": {
+      "kind": "plain",
+      "text": "שגיאה בתקשורת עם השרת המרוחק."
+    },
+    "execution.test_failed": {
+      "kind": "plain",
+      "text": "{count} בדיקה נכשלה."
+    },
+    "execution.tests_failed": {
+      "kind": "plain",
+      "text": "{count} בדיקות נכשלו."
+    },
+    "execution.tests_passed": {
+      "kind": "plain",
+      "text": "כל הבדיקות עברו."
+    },
+    "feedback.open": {
+      "kind": "plain",
+      "text": "שליחת משוב על הדף הזה"
+    },
+    "feedback.issue_title": {
+      "kind": "plain",
+      "text": "x/website/_content/tour: [החליפו בתיאור קצר]"
+    },
+    "feedback.issue_body": {
+      "kind": "plain",
+      "text": "שנו את הכותרת שלמעלה כך שתתאר את הבעיה והוסיפו כאן את המשוב שלכם, כולל קוד במידת הצורך"
+    },
+    "feedback.context": {
+      "kind": "plain",
+      "text": "הקשר"
+    },
+    "module.using_tour.title": {
+      "kind": "plain",
+      "text": "שימוש בסיור"
+    },
+    "module.using_tour.description": {
+      "kind": "rich",
+      "text": "<p>ברוכים הבאים לסיור על <a href=\"https://go.dev\">שפת התכנות Go</a>. הסיור מציג את התכונות החשובות ביותר של השפה, ובעיקר:</p>"
+    },
+    "module.basics.title": {
+      "kind": "plain",
+      "text": "יסודות"
+    },
+    "module.basics.description": {
+      "kind": "rich",
+      "text": "<p>נקודת הפתיחה: למדו את כל יסודות השפה.</p><p>הצהרה על משתנים, קריאה לפונקציות וכל מה שצריך לדעת לפני שממשיכים לשיעורים הבאים.</p>"
+    },
+    "module.methods.title": {
+      "kind": "plain",
+      "text": "מתודות וממשקים"
+    },
+    "module.methods.description": {
+      "kind": "rich",
+      "text": "<p>למדו כיצד להגדיר מתודות על טיפוסים, כיצד להצהיר על ממשקים וכיצד לחבר את הכול יחד.</p>"
+    },
+    "module.generics.title": {
+      "kind": "plain",
+      "text": "תכנות גנרי"
+    },
+    "module.generics.description": {
+      "kind": "rich",
+      "text": "<p>למדו כיצד להשתמש בפרמטרי טיפוס בפונקציות ובמבנים של Go.</p>"
+    },
+    "module.concurrency.title": {
+      "kind": "plain",
+      "text": "בו־זמניות"
+    },
+    "module.concurrency.description": {
+      "kind": "rich",
+      "text": "<p>Go מספקת יכולות בו־זמניות כחלק מליבת השפה.</p><p>המודול עוסק ב־goroutines ובערוצים ובאופן שבו משתמשים בהם למימוש דפוסים שונים של בו־זמניות.</p>"
+    },
+    "error.not_found": {
+      "kind": "plain",
+      "text": "הדף לא נמצא (404)"
+    },
+    "site.title": {
+      "kind": "plain",
+      "text": "פרויקט התרגום הרב־לשוני של סיור ב־Go"
+    },
+    "site.browser_title": {
+      "kind": "plain",
+      "text": "Yongye · פרויקט התרגום הרב־לשוני של סיור ב־Go"
+    },
+    "site.unofficial": {
+      "kind": "plain",
+      "text": "מתוחזק על ידי Yongye · פרויקט תרגום רב־לשוני קהילתי ולא רשמי"
+    },
+    "site.intro": {
+      "kind": "plain",
+      "text": "פרויקט תרגום המתוחזק בידי הקהילה לתוכן הלימוד הרשמי של Go. סינית מפושטת היא השפה הראשונה הזמינה, והמבנה יכול להתרחב לתמיכה בשפות נוספות ובתוכן נוסף של Go."
+    },
+    "site.no_affiliation": {
+      "kind": "plain",
+      "text": "הפרויקט אינו קשור לפרויקט Go, אינו מורשה על ידו ואינו נתמך על ידו."
+    },
+    "site.start_learning": {
+      "kind": "plain",
+      "text": "התחלת הלימוד"
+    },
+    "site.current_projects": {
+      "kind": "plain",
+      "text": "פרויקט התרגום הנוכחי"
+    },
+    "site.tour_description": {
+      "kind": "plain",
+      "text": "מבוא אינטראקטיבי לשפת התכנות Go."
+    },
+    "site.current_language": {
+      "kind": "plain",
+      "text": "השפה הנוכחית"
+    },
+    "site.enter_tour": {
+      "kind": "plain",
+      "text": "כניסה לסיור"
+    },
+    "site.project_status": {
+      "kind": "plain",
+      "text": "מצב הפרויקט"
+    },
+    "site.course_pages": {
+      "kind": "plain",
+      "text": "דפי הקורס"
+    },
+    "site.latest_release": {
+      "kind": "plain",
+      "text": "המהדורה האחרונה"
+    },
+    "site.environment": {
+      "kind": "plain",
+      "text": "סביבה"
+    },
+    "site.development_environment": {
+      "kind": "plain",
+      "text": "סביבת פיתוח"
+    },
+    "site.upstream_baseline": {
+      "kind": "plain",
+      "text": "גרסת הבסיס של המקור הרשמי"
+    },
+    "site.upstream_commit_time": {
+      "kind": "plain",
+      "text": "זמן ה־commit במקור"
+    },
+    "site.language_versions": {
+      "kind": "plain",
+      "text": "גרסאות שפה"
+    },
+    "site.official_version": {
+      "kind": "plain",
+      "text": "סיור ב־Go הרשמי"
+    },
+    "site.community_version": {
+      "kind": "plain",
+      "text": "תרגום קהילתי"
+    },
+    "site.open_official_tour": {
+      "kind": "plain",
+      "text": "פתיחת הסיור הרשמי"
+    },
+    "site.project_links": {
+      "kind": "plain",
+      "text": "קישורי הפרויקט"
+    },
+    "site.source_code": {
+      "kind": "plain",
+      "text": "קוד המקור ב־GitHub"
+    },
+    "site.issue_feedback": {
+      "kind": "plain",
+      "text": "GitHub Issues"
+    },
+    "site.development_log": {
+      "kind": "plain",
+      "text": "יומן פיתוח: פרויקט התרגום הרב־לשוני של סיור ב־Go"
+    },
+    "site.official_upstream": {
+      "kind": "plain",
+      "text": "המקור הרשמי"
+    },
+    "site.translation_validation": {
+      "kind": "plain",
+      "text": "תרגום ואימות"
+    },
+    "site.translation_validation_intro": {
+      "kind": "plain",
+      "text": "הפרויקט שומר את חוויית הלימוד קרובה למקור הרשמי ובודק כל מהדורה לפני פרסומה."
+    },
+    "site.validation_page_unit": {
+      "kind": "plain",
+      "text": "התרגומים משתמשים בדפי קורס שלמים כיחידת העבודה."
+    },
+    "site.validation_present": {
+      "kind": "plain",
+      "text": "כל מהדורה מפוענחת באמצעות present."
+    },
+    "site.validation_structure": {
+      "kind": "plain",
+      "text": "מבנה הדף מושווה למקור הרשמי."
+    },
+    "site.validation_render": {
+      "kind": "plain",
+      "text": "הדפים המרונדרים נבדקים לפני ההפצה."
+    },
+    "site.validation_examples": {
+      "kind": "plain",
+      "text": "דוגמאות Go שיש בהן הערות בשפה טבעית הניתנות לתרגום נכנסות גם הן לתהליך האימות המאוחד; כל שאר הדוגמאות ממשיכות להשתמש ישירות במקור הרשמי."
+    },
+    "site.how_it_works": {
+      "kind": "plain",
+      "text": "כך פועל הפרויקט"
+    },
+    "site.how_it_works_intro": {
+      "kind": "plain",
+      "text": "לוקליזציה של הקורס אינה החלפה משפט אחר משפט. זהו תהליך עבודה המבוסס על יחידות תוכן שלמות, מצבי סקירה הניתנים למעקב ותוצרי הפצה הניתנים לאימות."
+    },
+    "site.workflow_title": {
+      "kind": "plain",
+      "text": "מ־TranslationUnit ועד production"
+    },
+    "site.workflow_units": {
+      "kind": "plain",
+      "text": "TranslationUnit מייצגת גם Pages שלמים וגם Examples מתאימים: Page הוא present.Section שלם, ואילו Example הוא קובץ .go שלם שמכיל הערות בשפה טבעית הניתנות לתרגום."
+    },
+    "site.workflow_process": {
+      "kind": "plain",
+      "text": "כל יחידה עוברת דרך תרגום, אימות אוטומטי, Translation Quality Review, promotion, ready, projection ו־publish; תרגומים שנוצרו לעולם אינם מתפרסמים ישירות."
+    },
+    "site.workflow_review": {
+      "kind": "plain",
+      "text": "בדיקות אוטומטיות מגינות על המבנה, מפענחות תוכן באמצעות present, משוות אותו למקור הרשמי, מאמתות את הרינדור ואת הדפים ובודקות תוכן Go ב־Examples. לפני promotion עדיין נדרשת סקירת איכות תרגום עצמאית."
+    },
+    "site.workflow_publish": {
+      "kind": "plain",
+      "text": "הפרסום בונה projection מקומי מלא מהמועמדים הקנוניים במצב ready, דורש שכל TranslationUnit בתהליך העבודה תהיה ready, לאחר מכן יוצר את קובץ ה־production הבינארי, את release.json ואת SHA256SUMS ומאמת את החבילה המלאה."
+    },
+    "site.architecture_title": {
+      "kind": "plain",
+      "text": "ארכיטקטורה ניתנת למעקב, מבוקרת וניתנת להרחבה"
+    },
+    "site.architecture_upstream": {
+      "kind": "plain",
+      "text": "הפרויקט מתעד ברציפות את ה־commit הרשמי של המקור, וכך שומר גרסת בסיס ניתנת למעקב לצורך עדכוני מקור עתידיים."
+    },
+    "site.architecture_playground": {
+      "kind": "plain",
+      "text": "דוגמאות Go בדפדפן רצות דרך proxy מרוחק ומבוקר של Playground; סביבת production אינה חושפת את נקודת הקצה המקומית /socket להרצת קוד."
+    },
+    "site.architecture_languages": {
+      "kind": "plain",
+      "text": "השרת, התבניות, CSS, JavaScript, התמונות והגופנים משותפים כאשר הדבר מעשי. כל שפה מתחזקת באופן עצמאי את תרגומי הקורס, טקסט ממשק המשתמש, המונחים והמצב שלה. סינית מפושטת היא השפה הראשונה שנמסרה, ויש מקום לשפות נוספות."
+    },
+    "site.operations_note": {
+      "kind": "plain",
+      "text": "אתר זה עשוי להציג פרסומות כדי לסייע בכיסוי עלויות תשתית כגון שרתים, רוחב פס ושירותי CDN, וכן את העלות השוטפת של תחזוקת הפרויקט. קוד המקור נשאר ציבורי, ופריסות באירוח עצמי אינן מפעילות כברירת מחדל את תצורת הפרסום של אתר זה."
+    },
+    "support.section_title": {
+      "kind": "plain",
+      "text": "תמיכה ועלויות תפעול"
+    },
+    "support.advertising_title": {
+      "kind": "plain",
+      "text": "הודעה בנושא פרסום"
+    },
+    "support.translation_title": {
+      "kind": "plain",
+      "text": "תמיכה בגרסת שפה זו"
+    },
+    "support.intro": {
+      "kind": "plain",
+      "text": "אפשר גם לתמוך מרצון בהמשך התחזוקה של גרסת שפה זו. התמיכה שלכם מסייעת להמשך התחזוקה והפיתוח של הגרסה."
+    },
+    "support.reference_label": {
+      "kind": "plain",
+      "text": "אסמכתת תמיכה"
+    },
+    "support.reference_help": {
+      "kind": "plain",
+      "text": "אם שירות התשלום שלכם תומך בהערה או באסמכתה, אפשר להשתמש בערך הזה."
+    },
+    "support.copy_reference": {
+      "kind": "plain",
+      "text": "העתקת אסמכתה"
+    },
+    "support.copy_address": {
+      "kind": "plain",
+      "text": "העתקת כתובת"
+    },
+    "support.copy_uid": {
+      "kind": "plain",
+      "text": "העתקת UID"
+    },
+    "support.copied": {
+      "kind": "plain",
+      "text": "הועתק"
+    },
+    "support.asset": {
+      "kind": "plain",
+      "text": "נכס"
+    },
+    "support.network": {
+      "kind": "plain",
+      "text": "רשת"
+    },
+    "support.address": {
+      "kind": "plain",
+      "text": "כתובת"
+    },
+    "support.minimum_deposit": {
+      "kind": "plain",
+      "text": "מינימום בצד המקבל"
+    },
+    "support.platform_title": {
+      "kind": "plain",
+      "text": "העברה פנימית בפלטפורמה (אופציונלי)"
+    },
+    "support.uid": {
+      "kind": "plain",
+      "text": "UID"
+    },
+    "support.platform_help": {
+      "kind": "plain",
+      "text": "משתמשים באותה פלטפורמה יכולים לבצע העברה פנימית באמצעות UID. בדקו בפלטפורמה לפרטים."
+    },
+    "support.usdc_network_only": {
+      "kind": "plain",
+      "text": "שלחו USDC רק דרך רשת Base."
+    },
+    "support.usdt_network_only": {
+      "kind": "plain",
+      "text": "שלחו USDT רק דרך רשת Tron (TRC20)."
+    },
+    "support.wrong_network_warning": {
+      "kind": "plain",
+      "text": "שימוש בנכס או ברשת הלא נכונים עלול לגרום לאובדן כספים."
+    },
+    "site.continue_learning_title": {
+      "kind": "plain",
+      "text": "המשיכו ללמוד Go"
+    },
+    "site.continue_learning_description": {
+      "kind": "plain",
+      "text": "סיור ב־Go הוא רק ההתחלה. לאחר שתסיימו אותו, בקרו ב־go.dev לקבלת תיעוד רשמי, מדריכים, הפניה לספרייה הסטנדרטית, מפרט השפה ומשאבים נוספים ללימוד Go."
+    },
+    "site.continue_learning": {
+      "kind": "plain",
+      "text": "המשך הלימוד ב־go.dev"
+    },
+    "footer.unofficial": {
+      "kind": "plain",
+      "text": "Yongye · פרויקט תרגום רב־לשוני קהילתי ולא רשמי"
+    },
+    "footer.home": {
+      "kind": "plain",
+      "text": "דף הבית"
+    },
+    "footer.github": {
+      "kind": "plain",
+      "text": "GitHub"
+    },
+    "footer.development_log": {
+      "kind": "plain",
+      "text": "יומן פיתוח"
+    }
+  }
+}

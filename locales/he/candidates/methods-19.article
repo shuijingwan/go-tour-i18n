@@ -1,0 +1,26 @@
+* שגיאות
+
+תוכניות Go מייצגות מצב שגיאה באמצעות ערכי `error`.
+
+הטיפוס `error` הוא ממשק מובנה הדומה ל־ `fmt.Stringer`:
+
+	type error interface {
+		Error() string
+	}
+
+(כמו ב־ `fmt.Stringer`, החבילה `fmt` מחפשת את הממשק `error` בעת
+הדפסת ערכים.)
+
+פונקציות מחזירות לעיתים קרובות ערך `error`, והקוד שקורא להן צריך לטפל בשגיאות
+על ידי בדיקה אם השגיאה שווה ל־ `nil`.
+
+	i, err := strconv.Atoi("42")
+	if err != nil {
+		fmt.Printf("couldn't convert number: %v\n", err)
+		return
+	}
+	fmt.Println("Converted integer:", i)
+
+ערך `error` שהוא nil מציין הצלחה; ערך `error` שאינו nil מציין כישלון.
+
+.play methods/errors.go

@@ -1,0 +1,15 @@
+* סדר ההערכה של Switch
+
+ה־cases של switch מוערכים מלמעלה למטה, וההערכה נעצרת כאשר case מצליח.
+
+(לדוגמה,
+
+	switch i {
+	case 0:
+	case f():
+	}
+
+לא מתבצעת קריאה ל־ `f` אם `i==0`.)
+
+
+.play flowcontrol/switch-evaluation-order.go

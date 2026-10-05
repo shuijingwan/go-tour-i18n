@@ -1,0 +1,20 @@
+* Readers
+
+החבילה `io` מגדירה את הממשק `io.Reader`,
+שמייצג את קצה הקריאה של זרם נתונים.
+
+הספרייה הסטנדרטית של Go מכילה [[https://cs.opensource.google/search?q=Read%5C(%5Cw%2B%5Cs%5C%5B%5C%5Dbyte%5C)&ss=go%2Fgo][מימושים רבים]] של הממשק הזה, ובהם קבצים, חיבורי רשת, מדחסים, צפנים ועוד.
+
+לממשק `io.Reader` יש מתודה `Read`:
+
+	func (T) Read(b []byte) (n int, err error)
+
+`Read` ממלאת את פרוסת הבתים הנתונה בנתונים ומחזירה את מספר הבתים
+שמולאו וערך שגיאה. היא מחזירה שגיאת `io.EOF` כאשר הזרם
+מסתיים.
+
+קוד הדוגמה יוצר
+[[/pkg/strings/#Reader][`strings.Reader`]]
+וצורך את הפלט שלו 8 בתים בכל פעם.
+
+.play methods/reader.go

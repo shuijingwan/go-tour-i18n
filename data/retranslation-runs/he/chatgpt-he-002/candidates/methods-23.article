@@ -1,0 +1,12 @@
+* תרגיל: rot13Reader
+
+דפוס נפוץ הוא [[/pkg/io/#Reader][io.Reader]] שעוטף `io.Reader` אחר ומשנה את הזרם באופן כלשהו.
+
+לדוגמה, הפונקציה [[/pkg/compress/gzip/#NewReader][gzip.NewReader]] מקבלת `io.Reader` (זרם של נתונים דחוסים) ומחזירה `*gzip.Reader` שגם מממש `io.Reader` (זרם של הנתונים לאחר ביטול הדחיסה).
+
+ממשו `rot13Reader` שמממש `io.Reader` וקורא מ־ `io.Reader`, תוך שינוי הזרם באמצעות צופן ההחלפה [[https://en.wikipedia.org/wiki/ROT13][rot13]] על כל התווים האלפביתיים.
+
+הטיפוס `rot13Reader` כבר סופק עבורכם.
+הפכו אותו ל־ `io.Reader` באמצעות מימוש המתודה `Read` שלו.
+
+.play methods/exercise-rot-reader.go

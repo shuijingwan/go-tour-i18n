@@ -4,6 +4,14 @@
 
 ## 基线与架构
 
+### 2026-10-05 Hebrew 第 65 门 locale 正式 live，IndexNow closeout 暂缓
+
+- Hebrew（`he` / עברית）已完成 Glossary Review、122/122 TranslationUnit 独立 QC A-only、Surface finding 定向 revision / re-QC、promotion、schema v2 Course SEO、Locale Surface Review `20261005-he-stage-a-002` PASS、preview automated acceptance 与 visual HUMAN gate，并完成首次 Production machine/browser acceptance；`first-production finalize` 已 PASS，当前 `production_state=live`，public URL 为 <https://he-go-dev.shuijingwanwq.com/>。
+- `production/identity.json` 当前验证为 `production identity: PASS (65 locales)`；Hebrew 是固定 65 门 community locale 中最后完成正式 Production lifecycle 的 locale。
+- Google Search Console 与 Bing Webmaster Tools 的正式 sitemap `https://he-go-dev.shuijingwanwq.com/sitemap.xml` 已由维护者提交。
+- Hebrew IndexNow closeout 尚未完成：第一次 `scripts/indexnow-closeout.sh --locale he` 生成 locale-specific key 并取得 `PROVISIONING PASS`，随后 public key verification 返回 `EOF`；第二次执行正确复用同一 key 并再次取得 `PROVISIONING PASS`，随后同一 public key verification 返回 `read: connection reset by peer`。两次均未取得 `IndexNow bootstrap: PASS` 或 `IndexNow closeout: PASS`。
+- 本次 IndexNow failure 不回滚或改变 Hebrew 已完成的 Production、Surface Review、Google/Bing sitemap submission 结论；现有 key 与 provisioning 保留。维护者明确决定后续有空时再继续正式 IndexNow closeout，不重新生成 key、不重复修改 Production 配置。对应 deferred issue：`DI-20261005-002`。
+
 ### 2026-10-05 en-ZA 首次 Production 与 search closeout 完成
 
 - en-ZA（English (South Africa)）已完成 Glossary Review、122/122 TranslationUnit 独立 QC A-only、promotion、schema v2 Course SEO、Locale Surface Review `20261005-en-ZA-stage-a-001` PASS、preview automated acceptance 与 visual HUMAN gate，并完成首次 Production machine/browser acceptance；`first-production finalize` 已 PASS，当前 `production_state=live`，public URL 为 <https://en-za-go-dev.shuijingwanwq.com/>。

@@ -1,0 +1,19 @@
+* שגיאות
+
+תוכניות ⟪GTI18N_9eaab1fd_000001⟫ מייצגות מצב שגיאה באמצעות ערכי ⟪GTI18N_9eaab1fd_000002⟫error⟪GTI18N_9eaab1fd_000003⟫.
+
+הטיפוס ⟪GTI18N_9eaab1fd_000004⟫error⟪GTI18N_9eaab1fd_000005⟫ הוא ממשק מובנה הדומה ל־⟪GTI18N_9eaab1fd_000006⟫fmt.Stringer⟪GTI18N_9eaab1fd_000007⟫:
+
+⟪GTI18N_9eaab1fd_000008⟫
+
+(כמו ב־⟪GTI18N_9eaab1fd_000009⟫fmt.Stringer⟪GTI18N_9eaab1fd_000010⟫, החבילה ⟪GTI18N_9eaab1fd_000011⟫fmt⟪GTI18N_9eaab1fd_000012⟫ מחפשת את הממשק ⟪GTI18N_9eaab1fd_000013⟫error⟪GTI18N_9eaab1fd_000014⟫ בעת
+הדפסת ערכים.)
+
+פונקציות מחזירות לעיתים קרובות ערך ⟪GTI18N_9eaab1fd_000015⟫error⟪GTI18N_9eaab1fd_000016⟫, והקוד שקורא להן צריך לטפל בשגיאות
+על ידי בדיקה אם השגיאה שווה ל־⟪GTI18N_9eaab1fd_000017⟫nil⟪GTI18N_9eaab1fd_000018⟫.
+
+⟪GTI18N_9eaab1fd_000019⟫
+
+ערך ⟪GTI18N_9eaab1fd_000020⟫error⟪GTI18N_9eaab1fd_000021⟫ שהוא nil מציין הצלחה; ערך ⟪GTI18N_9eaab1fd_000022⟫error⟪GTI18N_9eaab1fd_000023⟫ שאינו nil מציין כישלון.
+
+⟪GTI18N_9eaab1fd_000024⟫

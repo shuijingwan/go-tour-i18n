@@ -1,0 +1,14 @@
+* בחירת ברירת מחדל
+
+ה־case `default` בתוך `select` רץ אם שום case אחר אינו מוכן.
+
+השתמשו ב־case `default` כדי לנסות שליחה או קבלה בלי להיחסם:
+
+	select {
+	case i := <-c:
+		// השתמשו ב־i
+	default:
+		// קבלה מ־c הייתה נחסמת
+	}
+
+.play concurrency/default-selection.go

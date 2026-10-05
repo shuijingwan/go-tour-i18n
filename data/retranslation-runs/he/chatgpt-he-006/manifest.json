@@ -1,0 +1,37 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-he-006",
+  "locale": "he",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 2,
+  "units": [
+    {
+      "unit_id": "moretypes/25",
+      "unit_kind": "page",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "570e535e9c2b2d1978534eb3b42f226102b11da36a3f9e61620dc5eafdb6be5f",
+      "input_path": "inputs/moretypes-25.article",
+      "input_sha256": "72d0fffc01145a9d015510fb3622d215fe6b15cd55d59bdaaf8c80f56629e396",
+      "protected_token_count": 6,
+      "previous_snapshot_id": "20261005-he-qc-002",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "The previous central closure-definition defects are resolved, but the final sentence still has a Hebrew grammatical/semantic ownership mismatch. `סגירה` is feminine, while `משלו` is masculine in the phrase describing each closure being bound to its own `sum` variable. The English source makes the closure the possessor of its own `sum` variable. Revise this possessive construction so its grammatical agreement and ownership unambiguously refer to the feminine “closure”, while preserving `sum` and the source meaning."
+    },
+    {
+      "unit_id": "concurrency/2",
+      "unit_kind": "page",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "a35e3af26b51f8c2c2a6dfaf09f9c7cab0fdb4b1b56f9e4dc9b793f1dac1e295",
+      "input_path": "inputs/concurrency-2.article",
+      "input_sha256": "f88ab0b53baaa3421f19920457b2457b93328f959812169bdf2a0359a020d22e",
+      "protected_token_count": 15,
+      "previous_snapshot_id": "20261005-he-qc-002",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "The previous “typed conduit” defect is resolved, but the complete revised Unit still contains a visibly broken Hebrew construction in the translated preformatted teaching comment for receiving from `ch`: the conjunction prefix `ו־` is left stranded at the end of one comment line, while the verb phrase it governs starts on the next line. This is unnatural RTL Hebrew and weakens readability of the code explanation. Revise the comment wording/line distribution so the conjunction remains naturally attached to its Hebrew phrase, while preserving the exact Go code, comment structure, identifiers, `\u003c-` semantics, and source meaning."
+    }
+  ]
+}
