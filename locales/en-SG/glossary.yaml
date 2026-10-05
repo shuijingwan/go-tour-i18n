@@ -1,0 +1,69 @@
+locale: en-SG
+
+# Regional policy: preserve generic English wherever it is already natural for
+# Singapore readers. Apply Singapore English preferences only where they are
+# genuine, stable usage; do not manufacture regional differences.
+# In computing contexts, program/programming remain the standard forms.
+mandatory:
+  A Tour of Go: A Tour of Go
+  Go programming language: Go programming language
+  Go Playground: Go Playground
+  Run: Run
+  Format: Format
+  Reset: Reset
+
+preferred:
+  program: program
+  programming: programming
+  package: package
+  interface: interface
+  method: method
+  receiver: receiver
+  channel: channel
+  buffered channel: buffered channel
+  slice: slice
+  map: map
+  pointer: pointer
+  struct: struct
+  function: function
+  variable: variable
+  constant: constant
+  concurrency: concurrency
+  mutex: mutex
+  generics: generics
+  generic: generic
+  type parameter: type parameter
+  type constraint: type constraint
+  constraint: constraint
+  type inference: type inference
+  type assertion: type assertion
+  type switch: type switch
+  zero value: zero value
+  built-in: built-in
+  standard library: standard library
+  error: error
+  nil: nil
+  panic: panic
+  behavior: behaviour
+  color: colour
+  grayscale: greyscale
+  organize: organise
+  initialize: initialise
+  initialized: initialised
+  initializer: initialiser
+  initializers: initialisers
+  fulfills: fulfils
+  authorized: authorised
+  localization: localisation
+  localized: localised
+  parallelize: parallelise
+  parameterized: parameterised
+  parenthesized: parenthesised
+  synchronize: synchronise
+  synchronized: synchronised
+
+forbidden:
+
+keep:
+  - Go
+  - goroutine

@@ -1,0 +1,63 @@
+{
+  "schema_version": 2,
+  "batch_id": "codex-en-IN-004",
+  "locale": "en-IN",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 4,
+  "units": [
+    {
+      "unit_id": "methods/12",
+      "unit_kind": "page",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "9487ca3c9872972d42af8cfa389755678fe8a7cca110b592aac2a762332febf5",
+      "input_path": "inputs/methods-12.article",
+      "input_sha256": "1e29bb312c35d42975fecb7252733a99f7d2c4e673a296fe41d1be047831530a",
+      "protected_token_count": 4,
+      "previous_snapshot_id": "20261005-en-IN-qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "unit_id=methods/12; defect classification: punctuation/grammar; the sentence ending with the parenthetical “(as with the method `M` in this example.)” places the full stop inside a non-independent parenthetical, leaving the enclosing sentence improperly punctuated. Revise the sentence-level punctuation while preserving the meaning and protected `M` token."
+    },
+    {
+      "unit_id": "methods/16",
+      "unit_kind": "page",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "26e4da09e80d30b06368691c76ee2940139b0f6fc40cad47bb6d1d2947933c27",
+      "input_path": "inputs/methods-16.article",
+      "input_sha256": "ec4d9702454a6eac6377c96b2e2638f746376335bc10e338a440a2cb2f3f7a4a",
+      "protected_token_count": 41,
+      "previous_snapshot_id": "20261005-en-IN-qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "unit_id=methods/16; defect classification: technical clarity / referential wording; after stating that type-switch cases specify types rather than values, the target says “those values are compared against the type...”, creating an inconsistent antecedent and avoidable technical ambiguity. Revise the reference so it consistently denotes the case types without changing the type-switch semantics or protected tokens."
+    },
+    {
+      "unit_id": "methods/25",
+      "unit_kind": "page",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "a196bc59d96602c3fe72cf765419366094a5c1e96de0d24dd140887ebd1826b5",
+      "input_path": "inputs/methods-25.article",
+      "input_sha256": "f1801970a198269602f2faf745e845b00e16b48bc583d77cdda167cf8fbd8986",
+      "protected_token_count": 25,
+      "previous_snapshot_id": "20261005-en-IN-qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "unit_id=methods/25; defect classification: grammar; “`Bounds` should return a `image.Rectangle`” uses the wrong indefinite article before `image.Rectangle`, so the sentence is not publication-quality English. Correct the article while preserving the protected type token and technical meaning."
+    },
+    {
+      "unit_id": "concurrency/7",
+      "unit_kind": "page",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "7c5d3fc7bb2540285d746242f8a1d16075639648eec8909c1df52239297d2917",
+      "input_path": "inputs/concurrency-7.article",
+      "input_sha256": "fd2c27954a25251048f59dfd9e8845d0b512e5e0ef867f40f96a0dadc823ca41",
+      "protected_token_count": 6,
+      "previous_snapshot_id": "20261005-en-IN-qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "unit_id=concurrency/7; defect classification: grammar / referential clarity; “many different binary trees with the same sequence of values stored in it” uses singular “it” without a clear grammatically agreeing antecedent for the plural trees, making the opening sentence awkward and ambiguous. Revise the reference so the relationship between each tree and the stored value sequence is clear without changing the exercise meaning."
+    }
+  ]
+}

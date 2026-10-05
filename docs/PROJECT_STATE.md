@@ -1,8 +1,21 @@
 # 项目状态
 
-更新时间：2026-09-20（北京时间）
+更新时间：2026-10-05（北京时间）
 
 ## 基线与架构
+
+### 2026-10-05 en-ZA 首次 Production 与 search closeout 完成
+
+- en-ZA（English (South Africa)）已完成 Glossary Review、122/122 TranslationUnit 独立 QC A-only、promotion、schema v2 Course SEO、Locale Surface Review `20261005-en-ZA-stage-a-001` PASS、preview automated acceptance 与 visual HUMAN gate，并完成首次 Production machine/browser acceptance；`first-production finalize` 已 PASS，当前 `production_state=live`，public URL 为 <https://en-za-go-dev.shuijingwanwq.com/>。
+- Google Search Console 与 Bing Webmaster Tools 的正式 sitemap `https://en-za-go-dev.shuijingwanwq.com/sitemap.xml` 已由维护者提交。
+- `scripts/indexnow-closeout.sh --locale en-ZA` 已完成：首次生成 locale-specific key，provisioning PASS；probe 首次返回 HTTP 202 后按正式 bounded policy 复用同一 key/payload 重试，最终 `IndexNow bootstrap: PASS (sitemap_urls=105 submitted_urls=105)`，`IndexNow closeout: PASS`。
+
+### 2026-10-05 en-AU 首次 Production 完成，IndexNow closeout 暂缓
+
+- en-AU（English (Australia)）已完成 Glossary Review、122/122 TranslationUnit 独立 QC A-only、promotion、schema v2 Course SEO、Locale Surface Review `20261005-en-AU-stage-a-001` PASS、preview automated acceptance 与 visual HUMAN gate，并完成首次 Production machine/browser acceptance；`first-production finalize` 已 PASS，当前 `production_state=live`，public URL 为 <https://en-au-go-dev.shuijingwanwq.com/>。
+- Google Search Console 与 Bing Webmaster Tools 的正式 sitemap `https://en-au-go-dev.shuijingwanwq.com/sitemap.xml` 已由维护者提交。
+- en-AU IndexNow closeout 尚未完成：首次 `scripts/indexnow-closeout.sh --locale en-AU` 生成 locale-specific key，后续两次均正确复用同一 key；三次均为 `PROVISIONING PASS` 后在 public key verification 对 `https://en-au-go-dev.shuijingwanwq.com/<key>.txt` 返回 `EOF`，因此未取得 `IndexNow bootstrap: PASS` 或 `IndexNow closeout: PASS`。
+- 本次 IndexNow failure 不回滚或改变 en-AU 已完成的 Production、Surface Review、Google/Bing sitemap submission 结论；现有 key 与 provisioning 保留。后续有空时仅使用正式入口与现有 key 恢复，不重新生成 key、不重复修改 Production 配置。对应 deferred issue：`DI-20261005-001`。
 
 ### 2026-09-20 动态选择语言生成提供方
 
