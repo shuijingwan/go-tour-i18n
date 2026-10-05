@@ -1,0 +1,16 @@
+* Channels
+
+Channels sind typisierte Leitungen, über die Sie mit dem Channel-Operator ⟪GTI18N_a35e3af2_000001⟫<-⟪GTI18N_a35e3af2_000002⟫ Werte senden und empfangen können.
+
+⟪GTI18N_a35e3af2_000003⟫⟪GTI18N_a35e3af2_000004⟫ an den Channel ⟪GTI18N_a35e3af2_000005⟫ senden.⟪GTI18N_a35e3af2_000006⟫Von ⟪GTI18N_a35e3af2_000007⟫ empfangen und⟪GTI18N_a35e3af2_000008⟫den Wert ⟪GTI18N_a35e3af2_000009⟫ zuweisen.⟪GTI18N_a35e3af2_000010⟫(Die Daten fließen in Richtung des Pfeils.)
+
+Wie Maps und Slices müssen Channels vor ihrer Verwendung erzeugt werden:
+
+⟪GTI18N_a35e3af2_000011⟫
+
+Standardmäßig blockieren Sende- und Empfangsoperationen, bis die jeweils andere Seite bereit ist. Dadurch können sich ⟪GTI18N_a35e3af2_000012⟫ ohne explizite Sperren oder Bedingungsvariablen synchronisieren.
+
+Der Beispielcode summiert die Zahlen in einer Slice und verteilt die Arbeit auf zwei ⟪GTI18N_a35e3af2_000013⟫.
+Nachdem beide ⟪GTI18N_a35e3af2_000014⟫ ihre Berechnung abgeschlossen haben, wird das Endergebnis berechnet.
+
+⟪GTI18N_a35e3af2_000015⟫

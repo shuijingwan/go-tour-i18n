@@ -1,0 +1,14 @@
+* 切片字面量
+
+切片字面量与数组字面量类似，只是没有长度。
+
+这是一个数组字面量：
+
+	[3]bool{true, true, false}
+
+下面的表达式会创建与上述相同的数组，
+然后构建一个引用该数组的切片：
+
+	[]bool{true, true, false}
+
+.play moretypes/slice-literals.go

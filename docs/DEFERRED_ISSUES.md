@@ -211,3 +211,12 @@
 - 暂缓原因：维护者于 2026-10-03 明确要求先记录问题，暂不继续重试或排查；保留现有 locale-specific key 与已成功的 provisioning，不重新生成 key、不重复修改 Production 配置。de-CH 保持正式 `live`；IndexNow 属于 first-production finalize 之后的非阻塞 Search-engine closeout，不影响既有 Production、Surface Review 或其他已完成上线 gate。
 - 当前状态：`open`
 - 后续处理/核销证据：2026-10-03 正式命令 `scripts/indexnow-closeout.sh --locale de-CH` 的终态为 `IndexNow local key: reused` → `PROVISIONING PASS` → `verify public IndexNow key: Get "https://de-ch-go-dev.shuijingwanwq.com/<key>.txt": EOF` → `indexnow closeout: FAILED: formal IndexNow bootstrap failed after provisioning`。仅在维护者明确恢复时继续使用现有正式入口与现有 key 重试或做只读诊断；不得因当前 EOF 盲目重新生成 key、重复 provisioning 或修改 Production。只有取得 de-CH 自身的 `IndexNow bootstrap: PASS` 与 `IndexNow closeout: PASS` 才可核销。
+### DI-20261004-001：en-GB IndexNow 公网密钥验证 EOF，closeout 暂缓
+
+- ID：`DI-20261004-001`
+- 发现日期：`2026-10-04`
+- 发现阶段/场景：en-GB 已完成 Locale Surface Review `20261004-en-GB-stage-a-001` PASS、Preview 自动与人工验收、首次 Production machine/browser acceptance 及正式 `first-production finalize`，当前 `production_state=live`；维护者确认 Google Search Console 与 Bing Webmaster Tools sitemap 已提交。随后执行 `scripts/indexnow-closeout.sh --locale en-GB`。
+- 问题描述：本次正式命令输出 `IndexNow local key: reused` 与 `PROVISIONING PASS`，说明现有 locale-specific key 被正确复用，服务端 provisioning 已成功。随后正式 Go bootstrap 对 `https://en-gb-go-dev.shuijingwanwq.com/<key>.txt` 的公网 HTTPS GET 返回 `EOF`，命令以 `indexnow closeout: FAILED: formal IndexNow bootstrap failed after provisioning` 结束（exit status 1）。因此尚未取得 public key verification 或 IndexNow submission PASS。当前 evidence 只证明公网密钥验证阶段发生 EOF，不能据此进一步判定维护者本机网络、DNS/代理、Cloudflare、Nginx/源站或 IndexNow API 为根因；此前 en-GB 正式 Production machine/browser acceptance 均已 PASS，本次 closeout 失败不改写这些验收结果。
+- 暂缓原因：维护者于 2026-10-04 明确要求先记录问题，暂时无法提交，不继续重试或排查；保留现有 locale-specific key 与已成功的 provisioning，不重新生成 key、不重复修改 Production 配置。en-GB 保持正式 `live`，Google/Bing sitemap 已提交；IndexNow 属于 first-production finalize 之后的非阻塞 Search-engine closeout，不影响既有 Production、Surface Review 或 sitemap submission 结论。
+- 当前状态：`open`
+- 后续处理/核销证据：2026-10-04 正式命令 `scripts/indexnow-closeout.sh --locale en-GB` 的终态为 `IndexNow local key: reused` → `PROVISIONING PASS` → `verify public IndexNow key: Get "https://en-gb-go-dev.shuijingwanwq.com/<key>.txt": EOF` → `indexnow closeout: FAILED: formal IndexNow bootstrap failed after provisioning`。仅在维护者明确恢复时继续使用现有正式入口与现有 key 重试或做只读诊断；不得因当前 EOF 盲目重新生成 key、重复 provisioning 或修改 Production。只有取得 en-GB 自身的 `IndexNow bootstrap: PASS` 与 `IndexNow closeout: PASS` 才可核销。

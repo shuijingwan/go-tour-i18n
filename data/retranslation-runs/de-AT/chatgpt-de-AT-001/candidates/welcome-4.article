@@ -1,0 +1,17 @@
+* Go offline (optional)
+
+Diese Tour ist auch als eigenständiges Programm verfügbar, das Sie
+ohne Internetzugang verwenden können. Es kompiliert die Codebeispiele
+auf Ihrem eigenen Rechner und führt sie dort aus.
+
+Um die Tour lokal auszuführen, müssen Sie zuerst
+[[/doc/install][Go installieren]] und anschließend Folgendes ausführen:
+
+  go install golang.org/x/website/tour@latest
+
+Dadurch wird eine Binärdatei namens `tour` im Verzeichnis `bin` Ihres
+[[/cmd/go/#hdr-GOPATH_and_Modules][GOPATH]] abgelegt.
+Wenn Sie das Tour-Programm starten, öffnet es einen Webbrowser mit
+Ihrer lokalen Version der Tour.
+
+Natürlich können Sie die Tour auch weiterhin über diese Website verwenden.

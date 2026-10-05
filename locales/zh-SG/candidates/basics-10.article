@@ -1,0 +1,7 @@
+* 短变量声明
+
+在函数内，可以使用 `:=` 短赋值语句来代替隐式指定类型的 `var` 声明。
+
+在函数外，每条语句都以关键字开头（ `var`、 `func` 等），因此不能使用 `:=` 结构。
+
+.play basics/short-variable-declarations.go

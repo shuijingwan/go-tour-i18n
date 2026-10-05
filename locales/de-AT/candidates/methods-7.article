@@ -1,0 +1,21 @@
+* Methoden und Zeigerindirektion (2)
+
+In umgekehrter Richtung geschieht das Entsprechende.
+
+Funktionen, die ein Wertargument erwarten, müssen einen Wert dieses konkreten Typs erhalten:
+
+	var v Vertex
+	fmt.Println(AbsFunc(v))  // OK
+	fmt.Println(AbsFunc(&v)) // Kompilierfehler!
+
+Methoden mit Wertempfängern können beim Aufruf hingegen entweder einen Wert oder einen Zeiger als
+Empfänger erhalten:
+
+	var v Vertex
+	fmt.Println(v.Abs()) // OK
+	p := &v
+	fmt.Println(p.Abs()) // OK
+
+In diesem Fall wird der Methodenaufruf `p.Abs()` als `(*p).Abs()` interpretiert.
+
+.play methods/indirection-values.go

@@ -1,0 +1,20 @@
+* Reader
+
+Das Paket ⟪GTI18N_120c3fc9_000001⟫io⟪GTI18N_120c3fc9_000002⟫ definiert das Interface ⟪GTI18N_120c3fc9_000003⟫io.Reader⟪GTI18N_120c3fc9_000004⟫,
+das das lesende Ende eines Datenstroms repräsentiert.
+
+Die ⟪GTI18N_120c3fc9_000005⟫-Standardbibliothek enthält [[⟪GTI18N_120c3fc9_000006⟫][zahlreiche Implementierungen]] dieses Interfaces, darunter Dateien, Netzwerkverbindungen, Kompressoren, Chiffren und weitere.
+
+Das Interface ⟪GTI18N_120c3fc9_000007⟫io.Reader⟪GTI18N_120c3fc9_000008⟫ besitzt eine Methode ⟪GTI18N_120c3fc9_000009⟫Read⟪GTI18N_120c3fc9_000010⟫:
+
+⟪GTI18N_120c3fc9_000011⟫
+
+⟪GTI18N_120c3fc9_000012⟫Read⟪GTI18N_120c3fc9_000013⟫ füllt die übergebene Byte-Slice mit Daten und gibt die Anzahl der
+gefüllten Bytes sowie einen Fehlerwert zurück. Wenn der Datenstrom
+endet, gibt die Methode einen Fehler ⟪GTI18N_120c3fc9_000014⟫io.EOF⟪GTI18N_120c3fc9_000015⟫ zurück.
+
+Der Beispielcode erzeugt einen
+[[⟪GTI18N_120c3fc9_000016⟫][⟪GTI18N_120c3fc9_000017⟫strings.Reader⟪GTI18N_120c3fc9_000018⟫]]
+und liest dessen Ausgabe jeweils 8 Bytes auf einmal.
+
+⟪GTI18N_120c3fc9_000019⟫

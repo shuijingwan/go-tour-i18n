@@ -293,7 +293,7 @@ var localeProfiles = map[string]localeProfile{"new-AA":{TimeLabel:newTimeLabel},
 	}
 	identityPath := filepath.Join(root, "production", "identity.json")
 	identity, _ := os.ReadFile(identityPath)
-	updatedIdentity := strings.Replace(string(identity), `{"locales":[`, `{"locales":[{"locale":"new-AA","production_hostname":"new.example","production_public_url":"https://new.example/"},`, 1)
+	updatedIdentity := strings.Replace(string(identity), `{"locales":[`, `{"locales":[{"locale":"new-AA","production_hostname":"new.example","production_public_url":"https://new.example/","production_state":"first-production"},`, 1)
 	if err := os.WriteFile(identityPath, []byte(updatedIdentity), 0644); err != nil {
 		t.Fatal(err)
 	}
@@ -335,6 +335,45 @@ func TestLocaleSurfaceReviewAGateV3StalesTargetLanguageProjection(t *testing.T) 
 	}
 }
 
+func TestLanguageRegistryCompatibilityAllowsFrozenFirstProductionWithoutRegistry(t *testing.T) {
+	root, catalog := surfaceReviewTestRoot(t)
+	identityPath := filepath.Join(root, "production", "identity.json")
+	identity, err := os.ReadFile(identityPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	identity = []byte(strings.Replace(string(identity), `{"locales":[`, `{"locales":[{"locale":"pending-AA","production_hostname":"pending.example","production_public_url":"https://pending.example/","production_state":"first-production"},`, 1))
+	if err := os.WriteFile(identityPath, identity, 0644); err != nil {
+		t.Fatal(err)
+	}
+	if err := validateCurrentLanguageRegistryCompatibility(root); err != nil {
+		t.Fatalf("frozen first-production identity blocked an unrelated locale: %v", err)
+	}
+	if _, _, err := RecordLocaleSurfaceReviewA(root, "zz-ZZ", "review-1", "reviewer", catalog); err != nil {
+		t.Fatalf("unrelated frozen first-production identity blocked target Surface Review: %v", err)
+	}
+	if _, err := currentLanguageReviewProjectionSHA256(root, "pending-AA"); err == nil {
+		t.Fatal("unregistered first-production locale unexpectedly became Surface-reviewable")
+	}
+}
+
+func TestLanguageRegistryCompatibilityRequiresLiveIdentityRegistry(t *testing.T) {
+	root, _ := surfaceReviewTestRoot(t)
+	identityPath := filepath.Join(root, "production", "identity.json")
+	identity, err := os.ReadFile(identityPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	identity = []byte(strings.Replace(string(identity), `{"locales":[`, `{"locales":[{"locale":"pending-AA","production_hostname":"pending.example","production_public_url":"https://pending.example/","production_state":"live"},`, 1))
+	if err := os.WriteFile(identityPath, identity, 0644); err != nil {
+		t.Fatal(err)
+	}
+	err = validateCurrentLanguageRegistryCompatibility(root)
+	if err == nil || !strings.Contains(err.Error(), "live production public identity locale pending-AA is missing from language registry") {
+		t.Fatalf("missing live registry entry was not rejected: %v", err)
+	}
+}
+
 func TestLanguageRegistryCompatibilityFailsClosed(t *testing.T) {
 	for name, mutations := range map[string]struct {
 		identity  func(string) string
@@ -354,6 +393,9 @@ func TestLanguageRegistryCompatibilityFailsClosed(t *testing.T) {
 		}},
 		"untrusted identity URL": {identity: func(s string) string {
 			return strings.Replace(s, `"production_public_url":"https://zz.example/"`, `"production_public_url":"http://zz.example/"`, 1)
+		}},
+		"unsupported production state": {identity: func(s string) string {
+			return strings.Replace(s, `"production_state":"first-production"`, `"production_state":"scaffold"`, 1)
 		}},
 	} {
 		t.Run(name, func(t *testing.T) {
@@ -459,7 +501,7 @@ var localeProfiles = map[string]localeProfile{"new-AA":{TimeLabel:newTimeLabel},
 	}
 	identityPath := filepath.Join(root, "production", "identity.json")
 	identity, _ := os.ReadFile(identityPath)
-	updatedIdentity := strings.Replace(string(identity), `{"locales":[`, `{"locales":[{"locale":"new-AA","production_hostname":"new.example","production_public_url":"https://new.example/"},`, 1)
+	updatedIdentity := strings.Replace(string(identity), `{"locales":[`, `{"locales":[{"locale":"new-AA","production_hostname":"new.example","production_public_url":"https://new.example/","production_state":"first-production"},`, 1)
 	if err := os.WriteFile(identityPath, []byte(updatedIdentity), 0644); err != nil {
 		t.Fatal(err)
 	}

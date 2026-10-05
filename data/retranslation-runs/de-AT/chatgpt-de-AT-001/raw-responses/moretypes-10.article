@@ -1,0 +1,15 @@
+* Standardgrenzen beim Slicing
+
+Beim Erzeugen einer Slice können Sie die obere oder untere Grenze weglassen und stattdessen deren Standardwerte verwenden.
+
+Der Standardwert für die untere Grenze ist null; für die obere Grenze ist es die Länge der zugrunde liegenden Slice bzw. des zugrunde liegenden Arrays.
+
+Für das Array
+
+⟪GTI18N_36d1f92f_000001⟫
+
+sind diese Slice-Ausdrücke gleichwertig:
+
+⟪GTI18N_36d1f92f_000002⟫
+
+⟪GTI18N_36d1f92f_000003⟫

@@ -1,0 +1,24 @@
+{
+  "schema_version": 2,
+  "batch_id": "codex-zh-SG-005",
+  "locale": "zh-SG",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "example",
+  "unit_count": 1,
+  "units": [
+    {
+      "unit_id": "example:basics/numeric-constants.go",
+      "unit_kind": "example",
+      "source_path": "_content/tour/basics/numeric-constants.go",
+      "source_sha256": "338906e7c0e0d5e81312c97b37638442b48a621d59e69215be78eed6bd003544",
+      "input_path": "inputs/basics-numeric-constants.txt",
+      "input_sha256": "4d2c58e69c5956602f868dea6ffaca7824edc7b8af8d213494c0910aaa204b14",
+      "protected_token_count": 4,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "teaching comment `Create a huge number by shifting a 1 bit left 100 places.` 被译为“将一个 1 位向左移动 100 位……”。“一个 1 位”在简体中文中语法生硬且技术指向含混，容易把“值为 1 的 bit / 将 1 左移”误读成“一个一位的对象”。需准确表达将值为 1 的位/数值向左移动 100 位这一关系，同时保持代码和数值不变。"
+    }
+  ]
+}

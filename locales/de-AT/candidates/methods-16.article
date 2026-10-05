@@ -1,0 +1,28 @@
+* Typ-Switches
+
+Ein _Typ-Switch_ ist ein Konstrukt, das mehrere Typzusicherungen nacheinander ermöglicht.
+
+Ein Typ-Switch ähnelt einer normalen switch-Anweisung, aber die Fälle in einem Typ-Switch
+geben Typen (keine Werte) an. Diese Typen werden mit dem Typ des Werts verglichen,
+den der jeweilige Interface-Wert enthält.
+
+	switch v := i.(type) {
+	case T:
+		// hier hat v den Typ T
+	case S:
+		// hier hat v den Typ S
+	default:
+		// keine Übereinstimmung; hier hat v denselben Typ wie i
+	}
+
+Die Deklaration in einem Typ-Switch hat dieselbe Syntax wie eine Typzusicherung `i.(T)`,
+wobei der konkrete Typ `T` durch das Schlüsselwort `type` ersetzt wird.
+
+Diese switch-Anweisung prüft, ob der Interface-Wert `i`
+einen Wert vom Typ `T` oder `S` enthält.
+In den Fällen `T` bzw. `S` hat die Variable `v` den Typ
+`T` bzw. `S` und enthält den von `i` gehaltenen Wert.
+Im default-Fall (wenn es keine Übereinstimmung gibt) hat die Variable `v`
+denselben Interface-Typ und Wert wie `i`.
+
+.play methods/type-switches.go

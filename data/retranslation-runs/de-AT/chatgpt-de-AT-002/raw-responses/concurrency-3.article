@@ -1,0 +1,11 @@
+* Gepufferte Channels
+
+Channels können ⟪GTI18N_caef0893_000001⟫gepuffert⟪GTI18N_caef0893_000002⟫ sein. Übergeben Sie die Länge des Puffers als zweites Argument an ⟪GTI18N_caef0893_000003⟫make⟪GTI18N_caef0893_000004⟫, um einen gepufferten Channel zu initialisieren:
+
+⟪GTI18N_caef0893_000005⟫
+
+Sendeoperationen an einen gepufferten Channel blockieren nur, wenn der Puffer voll ist. Empfangsoperationen blockieren, wenn der Puffer leer ist.
+
+Ändern Sie das Beispiel so, dass der Puffer überfüllt wird, und beobachten Sie, was passiert.
+
+⟪GTI18N_caef0893_000006⟫

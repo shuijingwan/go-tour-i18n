@@ -340,6 +340,9 @@ func validateCurrentLanguageRegistryCompatibility(root string) error {
 		if profile.Locale == "" || profile.ProductionHostname == "" || profile.ProductionPublicURL == "" {
 			return fmt.Errorf("language registry production identity has an incomplete public profile")
 		}
+		if profile.ProductionState != "first-production" && profile.ProductionState != "live" {
+			return fmt.Errorf("language registry production identity locale %s has unsupported production_state %q", profile.Locale, profile.ProductionState)
+		}
 		if _, exists := byLocale[profile.Locale]; exists {
 			return fmt.Errorf("language registry production identity has duplicate locale %s", profile.Locale)
 		}
@@ -390,10 +393,14 @@ func validateCurrentLanguageRegistryCompatibility(root string) error {
 			return fmt.Errorf("runtime locale profile %s has no community registry entry", locale)
 		}
 	}
-	for locale := range byLocale {
-		if !seenLocale[locale] {
-			return fmt.Errorf("production public identity locale %s is missing from language registry", locale)
+	for locale, profile := range byLocale {
+		if seenLocale[locale] {
+			continue
 		}
+		if profile.ProductionState == "first-production" {
+			continue
+		}
+		return fmt.Errorf("live production public identity locale %s is missing from language registry", locale)
 	}
 	return nil
 }

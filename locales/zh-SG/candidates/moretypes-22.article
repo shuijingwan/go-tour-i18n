@@ -1,0 +1,27 @@
+* 修改映射
+
+在映射 `m` 中插入或更新元素：
+
+	m[key] = elem
+
+获取元素：
+
+	elem = m[key]
+
+删除元素：
+
+	delete(m, key)
+
+通过双赋值检测键是否存在：
+
+	elem, ok = m[key]
+
+如果 `key` 在 `m` 中， `ok` 就是 `true`；否则， `ok` 就是 `false`。
+
+如果映射中不存在 `key`，那么 `elem` 就是该映射元素类型的零值。
+
+*注意：* 如果 `elem` 或 `ok` 尚未声明，可以使用短声明形式：
+
+	elem, ok := m[key]
+
+.play moretypes/mutating-maps.go

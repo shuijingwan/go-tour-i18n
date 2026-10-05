@@ -1,0 +1,8 @@
+* Übung: Stringer
+
+Sorgen Sie dafür, dass der Typ `IPAddr` `fmt.Stringer` implementiert, damit die Adresse
+in Punktnotation ausgegeben wird.
+
+`IPAddr{1,`2,`3,`4}` sollte beispielsweise als `"1.2.3.4"` ausgegeben werden.
+
+.play methods/exercise-stringer.go

@@ -1,0 +1,10 @@
+* Exercise: Web Crawler
+
+In this exercise you'll use ⟪GTI18N_bb686393_000001⟫'s concurrency features to parallelize a web crawler.
+
+Modify the ⟪GTI18N_bb686393_000002⟫Crawl⟪GTI18N_bb686393_000003⟫ function to fetch URLs in parallel without fetching the same URL twice.
+
+⟪GTI18N_bb686393_000004⟫Hint⟪GTI18N_bb686393_000005⟫: you can keep a cache of the URLs that have been fetched on a map, but maps alone are not
+safe for concurrent use!
+
+⟪GTI18N_bb686393_000006⟫

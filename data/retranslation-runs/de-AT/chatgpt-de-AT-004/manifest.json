@@ -1,0 +1,50 @@
+{
+  "schema_version": 2,
+  "batch_id": "chatgpt-de-AT-004",
+  "locale": "de-AT",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 3,
+  "units": [
+    {
+      "unit_id": "welcome/5",
+      "unit_kind": "page",
+      "source_path": "_content/tour/welcome.article",
+      "source_sha256": "19e6d7da57ca1d191c485754f3dd4ac87775c651b8c0ae8e05c03cbd9b225897",
+      "input_path": "inputs/welcome-5.article",
+      "input_sha256": "a753e3b0bfe3710b02f227998646dd57fc93c94d3746538a1925e8612da1e035",
+      "protected_token_count": 9,
+      "previous_snapshot_id": "20261004-de-AT-qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "Go Playground 的技术 identity 保持正确，但标题和正文链接标题使用 das，造成冠词搭配不自然。Generation 应只修订围绕该 keep identity 的德语语法，不得翻译或改写 Go Playground 本身。"
+    },
+    {
+      "unit_id": "moretypes/1",
+      "unit_kind": "page",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "7706eaf0d46acc79fdad3b7953e5571bf404551d71aaefafd8ba79f5761f9806",
+      "input_path": "inputs/moretypes-1.article",
+      "input_sha256": "b6b916daff7c87dfb9553a2c0e739f4ce3004aa40023a62d15e19ad5a693e67c",
+      "protected_token_count": 20,
+      "previous_snapshot_id": "20261004-de-AT-qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "两条 teaching comment i über den Zeiger lesen p / i über den Zeiger setzen p 的德语语序明显不自然。Generation 应在保持标识符 p、代码、注释结构及机器语义完整的前提下，仅重组可翻译自然语言，使两条注释达到自然德语质量。"
+    },
+    {
+      "unit_id": "concurrency/4",
+      "unit_kind": "page",
+      "source_path": "_content/tour/concurrency.article",
+      "source_sha256": "3e925c6745255a443c61f25cd8131d538dc8677938f1c5021ce798465020b42e",
+      "input_path": "inputs/concurrency-4.article",
+      "input_sha256": "f68dc9ef06de3cb5d48846ebe7786e6cc06b77ea5c05bc6d56b80f667f5dad10",
+      "protected_token_count": 16,
+      "previous_snapshot_id": "20261004-de-AT-qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "Ein Sender kann einen Channel `close`将`close`直接作为德语动词使用，句法明显不自然。Generation revision 应保留`close`的 Go builtin identity，并仅重构其周围德语，使“关闭 Channel”与调用`close` 的关系自然、明确；不得生成新的技术解释或改变受保护内容。"
+    }
+  ]
+}

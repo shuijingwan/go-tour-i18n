@@ -1,0 +1,12 @@
+* Methoden – Fortsetzung
+
+Sie können eine Methode auch für Typen deklarieren, die keine Strukturen sind.
+
+In diesem Beispiel sehen wir einen numerischen Typ `MyFloat` mit einer Methode `Abs`.
+
+Sie können eine Methode nur mit einem Empfänger deklarieren, dessen Typ im selben
+Paket wie die Methode definiert ist.
+Sie können keine Methode mit einem Empfänger deklarieren, dessen Typ in einem anderen
+Paket definiert ist (dazu gehören auch eingebaute Typen wie `int`).
+
+.play methods/methods-continued.go

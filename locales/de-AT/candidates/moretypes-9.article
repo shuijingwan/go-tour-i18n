@@ -1,0 +1,14 @@
+* Slice-Literale
+
+Ein Slice-Literal ist wie ein Array-Literal ohne Längenangabe.
+
+Dies ist ein Array-Literal:
+
+	[3]bool{true, true, false}
+
+Und dies erzeugt zunächst dasselbe Array wie oben
+und anschließend eine Slice, die darauf verweist:
+
+	[]bool{true, true, false}
+
+.play moretypes/slice-literals.go

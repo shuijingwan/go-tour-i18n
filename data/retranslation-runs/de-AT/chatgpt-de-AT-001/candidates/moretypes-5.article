@@ -1,0 +1,9 @@
+* Strukturliterale
+
+Ein Strukturliteral bezeichnet einen neu angelegten Strukturwert, indem es die Werte seiner Felder auflistet.
+
+Mit der Syntax `Name:` können Sie auch nur eine Teilmenge der Felder angeben. (Die Reihenfolge benannter Felder spielt dabei keine Rolle.)
+
+Das besondere Präfix `&` gibt einen Zeiger auf den Strukturwert zurück.
+
+.play moretypes/struct-literals.go

@@ -1,0 +1,1552 @@
+{
+  "schema_version": 2,
+  "locale": "de-AT",
+  "generator_contract": "course-seo-localization-v2",
+  "pages": [
+    {
+      "page_id": "welcome/1",
+      "route": "/welcome/1",
+      "description": "Lernen Sie, wie Sie durch Eine Tour durch Go navigieren, Beispielprogramme ausführen und bearbeiten, Code formatieren und Tastenkürzel beim interaktiven Experimentieren nutzen.",
+      "source_sha256": "1f581133d7fa40e6490418c6789a60a2f5e1de26c9c86d7eb6120cb58b145857",
+      "source_description_sha256": "3d937a528fff6a119ce7ece2579edec8b0895514ae2a0fe8f255b9e3cbf288b2",
+      "target_sha256": "9acb4840c2b179e7ed99a0ffcf3e078a217f6a692f35d65f48b1ec5178e47876",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "welcome/2",
+      "route": "/welcome/2",
+      "description": "Finden Sie verfügbare Übersetzungen für Eine Tour durch Go und erfahren Sie, wie Sie mit den Navigationselementen durch die Tour fortfahren.",
+      "source_sha256": "709f808ec4cdf683411f349cab7a4886fcae532d1c4e4cc66c8ed68cfb2dd2d3",
+      "source_description_sha256": "39c14471d1d721e97c09e0023a883f66f729a8be753bdb8a3445bd6027be8bd3",
+      "target_sha256": "b8dc117ff05c5b12a73f6155250529761d3eab2252f766ac962822a5e85faebb",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "welcome/4",
+      "route": "/welcome/3",
+      "description": "Installieren und starten Sie die eigenständige Go-Tour auf Ihrem Computer, um Lektionen und Codebeispiele auch offline zu nutzen.",
+      "source_sha256": "bb517d4b577fdb446fd029c2998d2426663b94a68f4b4e494c59af421508f683",
+      "source_description_sha256": "d13d1d18ed0fb4eb16e5348b14dbea7c4d22dfd134bb900c8d8a3736a4cbe362",
+      "target_sha256": "cde558feca5cfb21dce8c065d36e39dc7c2ce3c880e9586db4a645460c7a414d",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "welcome/5",
+      "route": "/welcome/4",
+      "description": "Verstehen Sie, wie der Go Playground Programme in einer Sandbox kompiliert und ausführt, einschließlich der deterministischen Zeit und der Ressourcenbeschränkungen.",
+      "source_sha256": "19e6d7da57ca1d191c485754f3dd4ac87775c651b8c0ae8e05c03cbd9b225897",
+      "source_description_sha256": "30f78795b3923c7eb444a1ed4873e36d136030ec9c27c27e73099de6fd6aed4d",
+      "target_sha256": "831ede9d20978b50123bd33f1071f952f06ac8b9828aff69438519bcef98db84",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T04:37:26Z"
+      }
+    },
+    {
+      "page_id": "welcome/3",
+      "route": "/welcome/5",
+      "description": "Schließen Sie das erste Tour-Modul ab und wählen Sie ein anderes Modul aus der Lektionsliste oder wechseln Sie direkt zur nächsten Lektion.",
+      "source_sha256": "9a6983b2e50b2fa78ff4f65683210714aea1c1575418e36796c156950ec6330d",
+      "source_description_sha256": "3db60db277b939a3039b29c11e0c3d810c3bdea9017ea7e771d87819cf3c9275",
+      "target_sha256": "2738942fd3527c74e0f504992329171632732aab31c419cec03c2a2a569cfa50",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "basics/1",
+      "route": "/basics/1",
+      "description": "Lernen Sie, wie Go-Programme in Paketen organisiert sind, warum die Ausführung im Paket main beginnt und wie Paketnamen mit Importpfaden zusammenhängen.",
+      "source_sha256": "f769f12c0a028b2f0cd403d89ff39dd150405e9f2e4155875321522f08619fe0",
+      "source_description_sha256": "1b3378aa355b5676dee5d0fcb248509b5dce2570e0ad196cb725343b61ccc25b",
+      "target_sha256": "cf4520e19dfe0788fbf5bbb09b6061220f255e111474ae991cce9920a9fc3499",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "basics/2",
+      "route": "/basics/2",
+      "description": "Fassen Sie mehrere Go-Importe in einer geklammerten gruppierten Importanweisung zusammen, der bevorzugten Alternative zu einzelnen Importdeklarationen.",
+      "source_sha256": "3329c9bff5f7e2b9b1e161fdebfb3804ff57cf1fb11bd4327d228328bcfb3fd0",
+      "source_description_sha256": "fdc97dfa6245b07c45ee1cf51eeaa7571b637f1d2f6c101e4ea2e77f35678fdb",
+      "target_sha256": "9facb7572da581597b1af5c54f1b790e32eb94954d3f3741fcd73ce5dade1d4c",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "basics/3",
+      "route": "/basics/3",
+      "description": "Verstehen Sie, wie Großschreibung Namen in Go exportiert und warum Code außerhalb eines Pakets nur auf dessen exportierte Namen zugreifen kann.",
+      "source_sha256": "38b9c70e49184a24f63f6b12f8ba78e64c0b874ad2a6f9a5fe86267615fd1bf6",
+      "source_description_sha256": "b823e75c9decbef08bf4556fc7d2c242d0e68dfa4633c7793cf2d1d043efe6d1",
+      "target_sha256": "3d15592e350611a1bf60729256fd7b0d1984048b11830082710c10abc160d2ff",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "basics/4",
+      "route": "/basics/4",
+      "description": "Definieren Sie Go-Funktionen mit beliebig vielen Argumenten und schreiben Sie den Typ jedes Parameters nach dessen Variablennamen.",
+      "source_sha256": "accf0562d9b759c9735500d5df0d74e8f90142ed96fe5ab2f5eedc6fbd6cf6f2",
+      "source_description_sha256": "f38ebeb7c0cc84b0cba3a3836eda79d8fd5c3372f34e39aa69547bfa68ec785b",
+      "target_sha256": "5066fe53a097bde4a1e6bd92fa40b71187eb7e300b4a2d6e06a01f676b907414",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "basics/5",
+      "route": "/basics/5",
+      "description": "Verkürzen Sie aufeinanderfolgende Go-Funktionsparameter desselben Typs, indem Sie den Typ nur nach dem letzten Parameternamen angeben.",
+      "source_sha256": "02e7feb341329e18143e18d533fe45381883a6ba6425abb09a847e2f0edf228a",
+      "source_description_sha256": "4e6a3c46e988fbcd7357306955a0951e44e0e4ea0b62a7c05a4c95d6d3a9e84f",
+      "target_sha256": "86696127facd7990442369204c630add1a10bdaafa0613711dc4df079ef9949f",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "basics/6",
+      "route": "/basics/6",
+      "description": "Geben Sie mehrere Ergebnisse aus einer Go-Funktion zurück, gezeigt an einer Funktion, die zwei Stringwerte vertauscht und zurückgibt.",
+      "source_sha256": "b3cb4b40115066443f265e3e5ebb9fc0fd6d080784c887328fce4d6b7891ba41",
+      "source_description_sha256": "013f1d728ddcef926d38d223ca9d6a69c658dd4a9b659f72f04816f227aae020",
+      "target_sha256": "8b1c041ff6fce1327fe64537ca6d4021be55eac90a6618de556ade6dee61d0cc",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "basics/7",
+      "route": "/basics/7",
+      "description": "Nutzen Sie benannte Rückgabewerte zur Dokumentation ihrer Bedeutung und verstehen Sie, wann eine argumentlose return-Anweisung die Lesbarkeit verbessert oder verschlechtert.",
+      "source_sha256": "1db20ae87ce5d9d4b20f15e4638ba2a3295a7ce781c961ef618982890fc562fa",
+      "source_description_sha256": "6c4c2ac14a37bd8b24a7cf6dc970e2ec2671ef13b301ce00d2f287cb98596512",
+      "target_sha256": "5d7cc9bd152ef2b5a9deb1dc93f9ad3884efb9500f24f1c0ee3ed73fa412a673",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "basics/8",
+      "route": "/basics/8",
+      "description": "Deklarieren Sie typisierte Variablen mit var im Paket- oder Funktions-Gültigkeitsbereich und folgen Sie dabei Go-Syntax mit Name vor Typ.",
+      "source_sha256": "bcb1b5e17ed9dff3d46a7cd8119c0d2f9c3afbb70ca94d35fadeb4f75b4a9d13",
+      "source_description_sha256": "72da0fb9d95da65fcaaea5fbdd2c1c9ea9df4bf06793275bff4e46b1b0a97d51",
+      "target_sha256": "fc5fdfc6380bfea32175d38ac70f6a2db4a0985244808a0966d1f0a93f8e734a",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "basics/9",
+      "route": "/basics/9",
+      "description": "Initialisieren Sie Variablen in einer var-Deklaration und lassen Sie Go ausgelassene Typen aus den jeweiligen Initialisierern ableiten.",
+      "source_sha256": "d51c17ba355753484b96c0eefda9fcce9f6f041a8ae2bf3e96fd0ad0c44680cc",
+      "source_description_sha256": "6d26f7a1a4f12a8438d0b7f4a4805e764a7e6852bbb561de361434032eb84e0a",
+      "target_sha256": "1adf796ca55ebabe7396ea0292ea58db0550a2e7e4129c52f8a7d55c417bd662",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "basics/10",
+      "route": "/basics/10",
+      "description": "Verwenden Sie innerhalb von Funktionen kurze Variablendeklarationen mit :=, wo implizite var-Deklarationen zulässig sind.",
+      "source_sha256": "f402e8e89a186d3208df5e4d983604730e71ef6c68354755f72e4580d3d7f359",
+      "source_description_sha256": "2ed42cad59a09602b3683e8051e76785ca3cb0581db8e84d0c91df15ea7f6055",
+      "target_sha256": "5ac2de1f99170e1f6381b249cae5e4b20bf806c9e2b741258160d6e7c83b4f8f",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "basics/11",
+      "route": "/basics/11",
+      "description": "Verschaffen Sie sich einen Überblick über Go-Typen für Boolesche Werte, Strings, Ganzzahlen, Gleitkommazahlen, komplexe Zahlen, Bytes und Runes sowie Hinweise zu Ganzzahlgrößen.",
+      "source_sha256": "836ab1dd659798dcf5e90f283c4ee794aed1d2cf0766c2ccc268fa91684e9d05",
+      "source_description_sha256": "7729889458a4d34cd6abb380c6b528035b4e9ae93dc785e99b12660c0e3f5a4e",
+      "target_sha256": "bea4654dfa5af58ec38840e82cfe42a6906295bc22711a4e2681a6080cc5b880",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "basics/12",
+      "route": "/basics/12",
+      "description": "Lernen Sie die Standard-Nullwerte nicht initialisierter Go-Variablen kennen: 0 für Zahlen, false für Boolesche Werte und leeren Text für Strings.",
+      "source_sha256": "d9ad62501c05359e7b2ac445fa92d629e11d6d378c2701b767abab76012a558e",
+      "source_description_sha256": "6ed8204794cae90282978dbae2413c8ae9e1feceba59ae10736065ad00165ca7",
+      "target_sha256": "6ba7044ca6874c009a62aed05b6f2b2eebba0ede9eb71d911514c9647fdb956b",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "basics/13",
+      "route": "/basics/13",
+      "description": "Wandeln Sie Werte mit expliziten Typumwandlungen um, da Go keine implizite Zuweisung zwischen unterschiedlichen numerischen Typen erlaubt.",
+      "source_sha256": "88e0e168f4c95fa4134198a32440b2d2fb1fac9aae535a9ee7148dbcda37e1b3",
+      "source_description_sha256": "9213231bcd5269a4d402ed83117584521f51191b04e30301599ce3aaedef9afe",
+      "target_sha256": "70800126fec6a232c4ee65b29510fbacb831dcb7c4e3fa37192bfd5f30321cb2",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "basics/14",
+      "route": "/basics/14",
+      "description": "Sehen Sie, wie Go Variablentypen aus typisierten Werten ableitet und für untypisierte numerische Konstanten abhängig von ihrer Präzision Standardtypen wählt.",
+      "source_sha256": "21c4077c25629545dee0313b8b6b03e709edc4a74e1d73d9f4c9b0a49e46f6b3",
+      "source_description_sha256": "22bd9a429fe4882f0595c270aa52ac22f984d89afc93e5287829125188937dad",
+      "target_sha256": "78ce994e1f5273a047e9ed2e00fb16b4b97cee1a9b30f3a3986dbb2ac5fb35d1",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "basics/15",
+      "route": "/basics/15",
+      "description": "Deklarieren Sie Zeichen-, String-, Boolesche und numerische Konstanten mit const und beachten Sie, dass kurze Deklarationen keine Konstanten definieren können.",
+      "source_sha256": "964ac515c0860a54b3a7780d77c7b4862ca38b744ae1f6be4b155a4386e2a229",
+      "source_description_sha256": "9a5d122d06495fa1838331e095ca3a72b47b645a7e19bb28fc127ce13c1fbe8c",
+      "target_sha256": "a5336b972062e30aadaf258ac8df51eac1a028f834cbca24d99c8816561958fc",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "basics/16",
+      "route": "/basics/16",
+      "description": "Erkunden Sie hochpräzise numerische Konstanten und wie eine untypisierte Konstante den von ihrem Kontext benötigten Typ annimmt.",
+      "source_sha256": "0d502d48a15f7a70e257079d7db1ddafe088607110c1c06b17b4be50b362394a",
+      "source_description_sha256": "1b42764b78e1a1ca531d208244f285164d53e9cb6320ea1b5fb5b6464b1de1e3",
+      "target_sha256": "5d8c2c6b174b3640f20af1e75b83d00ad4984f69530f16dfed0e6f3ec3a6b353",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "basics/17",
+      "route": "/basics/17",
+      "description": "Markieren Sie das Ende der aktuellen Lektion und wählen Sie anschließend in der Modulliste ein anderes Thema oder fahren Sie mit der nächsten Lektion fort.",
+      "source_sha256": "f565674b974c053924bf69ef83b709dc50931526ae7fa88e71543a5cd872a190",
+      "source_description_sha256": "afff9e2c9367a5554aa90fd0f9427a37fc7420a1c93d4596668bdb3fd3ae7e5d",
+      "target_sha256": "30d03f5fc9d7d3be195c9c961bf69046e05ff79132f68d9413179dcaffe24f83",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/1",
+      "route": "/flowcontrol/1",
+      "description": "Lernen Sie das einzige Schleifenkonstrukt von Go kennen, einschließlich Initialisierung, Bedingung, Post-Anweisung, Gültigkeitsbereich und erforderlicher Klammern der for-Schleife.",
+      "source_sha256": "c6cd458bda99bffc7b753e122c56575a59508586054180be1f8d7bb1fe2391df",
+      "source_description_sha256": "b88b64bb1e63b5ebb863972f8c24e8cc545a83c115c64f401ef8fd3b114d61f5",
+      "target_sha256": "c03db9a994660ee9378e4f1d8c243ddb1e8eff96dbc1f1a97152c11c6b82042b",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/2",
+      "route": "/flowcontrol/2",
+      "description": "Vereinfachen Sie eine Go-for-Schleife, indem Sie die optionalen Initialisierungs- und Post-Anweisungen weglassen und nur die Schleifenbedingung beibehalten.",
+      "source_sha256": "24a97abbb6db2b6a88017bf326a5968097263d8ba637805f2cf44c9fed25f9fe",
+      "source_description_sha256": "dd466b8b04c3284a0f1a48dc9748a434b7a7e8c8c54797785c9aec102cc04055",
+      "target_sha256": "2ad35270edb0d1cafcfd88a15f7d80e07ad9f27286e5638a8ef83b984540e609",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/3",
+      "route": "/flowcontrol/3",
+      "description": "Drücken Sie in Go eine while-artige Schleife aus, indem Sie Initialisierungs- und Post-Anweisung samt zugehörigen Semikolons weglassen.",
+      "source_sha256": "3ed791cc935287ba6f5da4ba41f6ad84fdcbaef108ee364f769ae5204316bbb7",
+      "source_description_sha256": "917a1d2bce0a711d7aa187f22916986ec204539d59aca1aeee2686ea5692963e",
+      "target_sha256": "172dbef6953cfe96c3638d71780e2672d5197f477f9002ad064d8f6cc13802ec",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/4",
+      "route": "/flowcontrol/4",
+      "description": "Erzeugen Sie in Go eine kompakte Endlosschleife, indem Sie eine for-Anweisung ohne Schleifenbedingung schreiben.",
+      "source_sha256": "5456c129ef71c60b7502efde65c81020aaf1fa8b9178086e99223a21f6207dc6",
+      "source_description_sha256": "0b2cfd67b2c51f9ab0edbe920ad1a703701ff723f9d22673a4cde7e914eec4a9",
+      "target_sha256": "c04398be21c606158af1b6c2a7a419fa11997c7c5e3d76b5077b0e7cc6bb23d0",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/5",
+      "route": "/flowcontrol/5",
+      "description": "Schreiben Sie if-Anweisungen in Go ohne Klammern um die Bedingung und behalten Sie die von der Sprache vorgeschriebenen geschweiften Klammern bei.",
+      "source_sha256": "ce49f916c1ceb7296576ec6b8ec92524b9827be168e3f5eb2040c61fee70f639",
+      "source_description_sha256": "d49445fcd341a4fb747cb7c3e25c0f40849456c8b7be876f62a999fe2591972b",
+      "target_sha256": "c1954dbe781a7de7ee5ff4a59a616a9d596b077141364bb3982a56044f84552a",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/6",
+      "route": "/flowcontrol/6",
+      "description": "Beginnen Sie eine if-Anweisung mit einer kurzen Anweisung und halten Sie dort deklarierte Variablen bis zum Ende der Bedingung im Gültigkeitsbereich.",
+      "source_sha256": "02e310262214f3c5ceca8bf63ecf2ec3934641a7e2638050479b739ce077031e",
+      "source_description_sha256": "c1de9378770e7df962ac8f2962918b78a6e2e80c3305b35ab584555902c36085",
+      "target_sha256": "9e3c98c6fd36f9780e6bb3a5460c15211df2730392cfeb91db0c15a3a95d8d56",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/7",
+      "route": "/flowcontrol/7",
+      "description": "Verwenden Sie Werte aus der kurzen Anweisung eines if sowohl im zugehörigen if- als auch im else-Zweig.",
+      "source_sha256": "8666746573ce7d0ea1c12ff24c4c8170a1961eedb0600ed73ab849b4758f797c",
+      "source_description_sha256": "0a195d6914891c06915e6d43fce1ddd71c0e7d387373e53500cc56783f385e88",
+      "target_sha256": "d25b8be7b03528ab7e41b1a7e30d6b474691f8da0e70109a9763cacc2fcd074b",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/8",
+      "route": "/flowcontrol/8",
+      "description": "Implementieren Sie eine Quadratwurzelfunktion mit iterativer Näherung, verfeinern Sie die Abbruchbedingung und vergleichen Sie verschiedene Startwerte.",
+      "source_sha256": "d8bbee8455ff59212ef432a08312f7c7703360367325a80df3719157200316e9",
+      "source_description_sha256": "ebf228ed982779e279412f9e840bd06503969b4fe1acec70b088c10df6076e0d",
+      "target_sha256": "2bf41b981b543ecb4d6084d7ea69ec42deb3e67f1169a1911b12a9dcd3ea4396",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/9",
+      "route": "/flowcontrol/9",
+      "description": "Nutzen Sie Go-switch-Anweisungen als kompakte Bedingungsketten mit automatischem Beenden der Fälle, die weder Konstanten noch Ganzzahlen sein müssen.",
+      "source_sha256": "abdc4c295fa7b4aec2616acf83badbbf2b581a9f62e41d03ca2ff984ebb6f7ed",
+      "source_description_sha256": "fd71acf123c49872a02285878fa1caf6bb3e6f27d8b2b63976e6cba5b717c50a",
+      "target_sha256": "f366758f9bbb9140e11292426637098d61cc73c683456ec5f9769434f38ef9af",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/10",
+      "route": "/flowcontrol/10",
+      "description": "Verstehen Sie, dass switch-Fälle von oben nach unten ausgewertet werden und die Auswertung endet, sobald ein Fall zutrifft.",
+      "source_sha256": "e1479cae56a87cddb9c447fc9fd32b0ee1f983058f7ee76554965abd21975ef4",
+      "source_description_sha256": "1a06cd6f5c9aecb29e4d0fdec7cf4d11daaa7edc05631cffcecac25ad4e2e5c6",
+      "target_sha256": "525214ffb6a468f5e5e4a658511cf369c12f22b096ce223109b83c068c6784d7",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/11",
+      "route": "/flowcontrol/11",
+      "description": "Schreiben Sie einen switch ohne Bedingung als übersichtliche Alternative zu einer langen if-then-else-Kette, entsprechend einem switch auf true.",
+      "source_sha256": "714b67f479583e47080cd0f38489f465a28c002938390c4155af6dfeebb9225b",
+      "source_description_sha256": "7258dc7db21d6d08ba2df8e15f0ae6222c4fc77310073dcfb5c287c172313176",
+      "target_sha256": "821a6080edc0a1103719fe3b9ec302c64c9c55771e62e8a441ac7a6c07d5055e",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/12",
+      "route": "/flowcontrol/12",
+      "description": "Verzögern Sie einen Funktionsaufruf mit defer bis zur Rückkehr der umgebenden Funktion, während seine Argumente sofort ausgewertet werden.",
+      "source_sha256": "fa23a1d6ebf12f11843d38fe79c413a9c19bfcaf305ae64b75c360db24a436ec",
+      "source_description_sha256": "b0519f626762261cab62e224d08a2a1736e3a237ce8f4a8b48709c90ad8fbcec",
+      "target_sha256": "f4c12452cc79451e4031245d7a91e76ec7f2e7037884e9ca69efcf3ad30ad467",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/13",
+      "route": "/flowcontrol/13",
+      "description": "Stapeln Sie mehrere verzögerte Aufrufe und beobachten Sie ihre Last-in-first-out-Ausführungsreihenfolge bei der Rückkehr der umgebenden Funktion.",
+      "source_sha256": "73a02c24eb14597b3c5f53a09fc572f1a1f0c941adfc337c79fb14b492985fc1",
+      "source_description_sha256": "4f2d10438473b7ee08d85ca67a6fecebfe634eb93ce4d7cffd9fa2b269a15aa0",
+      "target_sha256": "1265e40ffd1b343b986c623a04dda9f60b25df9c9feb38667da1796275bdd098",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "flowcontrol/14",
+      "route": "/flowcontrol/14",
+      "description": "Beenden Sie die Lektion und wählen Sie entweder in den verfügbaren Modulen ein neues Thema oder wechseln Sie zur folgenden Lektion.",
+      "source_sha256": "f565674b974c053924bf69ef83b709dc50931526ae7fa88e71543a5cd872a190",
+      "source_description_sha256": "e4aa7053180e81ac52e524fec926796e1e27bb573e7d2ef9498fe68cab34978d",
+      "target_sha256": "30d03f5fc9d7d3be195c9c961bf69046e05ff79132f68d9413179dcaffe24f83",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "moretypes/1",
+      "route": "/moretypes/1",
+      "description": "Arbeiten Sie mit Go-Zeigern, indem Sie Adressen ermitteln und Werte dereferenzieren; beachten Sie nil als Nullwert und das Fehlen von Zeigerarithmetik.",
+      "source_sha256": "7706eaf0d46acc79fdad3b7953e5571bf404551d71aaefafd8ba79f5761f9806",
+      "source_description_sha256": "e83399f3a2f0f13e4ce844d458d32ad97bbfe0c4eb292c2247b1a1f741adb9e3",
+      "target_sha256": "da040b4f3de9fb54ac9d1793267b959c09a3af25b13baed2ae4b52deb6714d7b",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "moretypes/2",
+      "route": "/moretypes/2",
+      "description": "Definieren Sie eine Go-Struktur als einzelnen Wert, der aus einer Sammlung von Feldern besteht.",
+      "source_sha256": "a18dfdaadb9739387cc9886b67e9bf920bf52ada62397a1812cfd302c64aed9b",
+      "source_description_sha256": "5a71c404683c8346f40fb4a2ce1d1d0a2136f49eae43da95f413673da1c567f2",
+      "target_sha256": "1b71b3b35f3a7ac189cb8dbde367c3911cf526b641ecbd016e6225a60e7c0f9b",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "moretypes/3",
+      "route": "/moretypes/3",
+      "description": "Greifen Sie mit Punktnotation auf die einzelnen Felder einer Go-Struktur zu.",
+      "source_sha256": "0be9cb4a59a0d95526c208e5d8d96ebe6a15fd84b6e3a2ff9a07963226cb7b58",
+      "source_description_sha256": "3e367121c5953b979a016ce011d4ff223de69eb66185edd7df099115d7d631a0",
+      "target_sha256": "826cd4a3c4744e3aaa10c7e52e46a1885f55bb306884d60b06fe581087a43830",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "moretypes/4",
+      "route": "/moretypes/4",
+      "description": "Greifen Sie über einen Zeiger auf eine Struktur bequem mit Punktnotation auf Felder zu, ohne eine explizite Dereferenzierung zu schreiben.",
+      "source_sha256": "29695d334b6ff809e84ae8caeb7b9dc493143236783c07c16a83ecc64514c310",
+      "source_description_sha256": "a1925946cf90f972783ebf3472729761307da90cc30c5cfdf2310eaf91b391b3",
+      "target_sha256": "5ab04b0d8687795871186c659edc83c3d93a7133e8a2788db277bcd9dc535eab",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "moretypes/5",
+      "route": "/moretypes/5",
+      "description": "Erzeugen Sie Strukturwerte mit Literalen, initialisieren Sie ausgewählte Felder per Name in beliebiger Reihenfolge und erhalten Sie mit \u0026 einen Zeiger auf einen Strukturwert.",
+      "source_sha256": "cf9282456e2a91274c1b135a68fce58dd1590f6a2d7153f0619c97ded8bd00d1",
+      "source_description_sha256": "566428b986d24aff9e14f50ed6728a9cd31ec8de1461064cecdd73e34deac89c",
+      "target_sha256": "b8f5edc9488cf5d5da9f2fd9c29ea6e234846f0c04bdf65b9a4877a231faa09c",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "moretypes/6",
+      "route": "/moretypes/6",
+      "description": "Deklarieren Sie Go-Arrays fester Länge, deren Elementanzahl Teil des Array-Typs ist und die nicht vergrößert oder verkleinert werden können.",
+      "source_sha256": "0ec503e46281eb8ff25ceba5b92c9f9c3b40517aeea77cf4878760ed0da9d29c",
+      "source_description_sha256": "3b15294f0e004adb588a19d958ebd8674ace65225f2390ff91b37d81d214feef",
+      "target_sha256": "ca79acf7073e2d812e5ff6dfc6b8f00d3b46d0bb94d7a2eefc63d2bcbdf42f09",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "moretypes/7",
+      "route": "/moretypes/7",
+      "description": "Erzeugen Sie dynamisch große Slice-Ansichten auf Arrays und wählen Sie halboffene Elementbereiche mit unterer und oberer Grenze.",
+      "source_sha256": "a169cf48dd659510ff7f1f8adfdbed5a247b51a1f7c3a45ae972f18921925033",
+      "source_description_sha256": "71c152fddf296a9d7a40e99b79e941cda0c04867f7344b3fb46c6cfac813cd81",
+      "target_sha256": "065087a6fae6b91097cc3eac623bed6d4cd85f07f7196f843239f803c96cac5f",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "moretypes/8",
+      "route": "/moretypes/8",
+      "description": "Verstehen Sie, dass Slices auf zugrunde liegende Arrays verweisen und Änderungen daher auch über andere Slices mit demselben Speicher sichtbar sind.",
+      "source_sha256": "e577f9e98a9c871cdc6f39ecca1bdd0965c26da3b9ab6c2a7cab42b3b0f3a568",
+      "source_description_sha256": "618088a9c7bea851e2362ee4ce74f750fe9b05c65bf0ded5ce01001710015812",
+      "target_sha256": "2a5c449196b6a9cee526e7c73063c2c0cf38ec3a4110f3f8db8713bb079c3fca",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "moretypes/9",
+      "route": "/moretypes/9",
+      "description": "Erzeugen Sie ein Slice-Literal mit Array-Literal-Syntax, ohne eine feste Array-Länge anzugeben.",
+      "source_sha256": "fb79cf8caed7abc7dfd92e90cf1bcc11d547b8af96d224f30fefc995f98dbb0b",
+      "source_description_sha256": "cfa2da2eea5f06155f696c35cd43bc84d2f7c1ca2dff42f756c5fd27791f3489",
+      "target_sha256": "8e7bf2ca87ea36996e78beb8db1fb9d10da9afc003f0d2231127de7d309faadf",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "moretypes/10",
+      "route": "/moretypes/10",
+      "description": "Lassen Sie untere oder obere Slice-Grenzen weg, um dafür standardmäßig null beziehungsweise die Länge der zugrunde liegenden Sequenz zu verwenden.",
+      "source_sha256": "36d1f92fc5e51cddcd26be7f74a875e60bf24633dd7c8689672fa23a6720e2a1",
+      "source_description_sha256": "00c286e8ccea7f8b05a8c475819b6077a9fbb24729e0dc4cb4d2e7145e795b87",
+      "target_sha256": "0fa8abafbe86061dca516b06c14798b907f92aa83e4f32f605dd175b1cb1f84d",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "moretypes/11",
+      "route": "/moretypes/11",
+      "description": "Unterscheiden Sie Länge und Kapazität einer Slice, prüfen Sie beide mit eingebauten Funktionen und bilden Sie daraus nur innerhalb der verfügbaren Kapazität erneut eine Slice.",
+      "source_sha256": "e2d7d69c946e5a01d8d0eab2e07a2bf35e23453a617d5e7602ff0af5c5866d8f",
+      "source_description_sha256": "0f6094f4c28fae60bb70bd2616205d35bcfdea8d477b997d9ac0e7ae45b41654",
+      "target_sha256": "5e058b3747368631659322029034510fb1d6964aff2db0344904332f4f1ae3df",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T04:37:26Z"
+      }
+    },
+    {
+      "page_id": "moretypes/12",
+      "route": "/moretypes/12",
+      "description": "Erkennen Sie nil als Nullwert eines Slice ohne zugrunde liegendes Array, dessen Länge und Kapazität beide null sind.",
+      "source_sha256": "e7a4bb0d5e7928c2da06312d983eba2adb533b30299025f507df183f00fefc89",
+      "source_description_sha256": "606962e7091f32e866981de754dc51784b725847cfa49f35284ceb8fe05ec9e0",
+      "target_sha256": "5110a5fbc2e5be3c6d2ea004842bed52b5dc89e03d69ec491557210f42a48366",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "moretypes/13",
+      "route": "/moretypes/13",
+      "description": "Allozieren Sie mit make auf null gesetzte Arrays und erhalten Sie dynamisch große Slices, optional mit separat angegebener Kapazität.",
+      "source_sha256": "d057e6bf75421597d430ff52f844499b5828ab2c4b4c5148ad88b6b89326ac20",
+      "source_description_sha256": "a0d0187091a138008eb18442ae1f499aa8d2fe942ecf6e524eb273d97dfb67f8",
+      "target_sha256": "ceb551014789321bbc667419cbeb5170ac68a69753ea3e106c11cbbf023293f1",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "moretypes/14",
+      "route": "/moretypes/14",
+      "description": "Bauen Sie mehrdimensionale Datenstrukturen auf, indem Sie Slices verwenden, deren Elemente wiederum Slices sind.",
+      "source_sha256": "d8bee22c0382cf5fd5647c4d7106165d153cb15aaed8ec82e1f06e12ad0c73d1",
+      "source_description_sha256": "2a66202c8fdba235e0c78234d01daef6898cd69c0d446f8a21a67979a1bef043",
+      "target_sha256": "472770c084860964af04fed2c5a02678fda4c71c9dbc7006e6195b95d253f2bd",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "moretypes/15",
+      "route": "/moretypes/15",
+      "description": "Hängen Sie Elemente an ein Slice an und verstehen Sie, wann unzureichender Platz im zugrunde liegenden Array die Allokation eines größeren Arrays auslöst.",
+      "source_sha256": "f2fc257e7c5f118321acc3b75e946053601532d411e8540534280d7fba795289",
+      "source_description_sha256": "5b4f57f1d1e59e6ee5cac92794e618501132356ae3710d7c3c8bf12f32041553",
+      "target_sha256": "abf7faab21fccf202f499dc70b96769ffcbeb12c80f2a385db86a3327fb9464a",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "moretypes/16",
+      "route": "/moretypes/16",
+      "description": "Iterieren Sie mit range über Slices oder Maps und erhalten Sie bei Slices den Index jedes Elements zusammen mit einer Kopie seines Werts.",
+      "source_sha256": "73fc46a2e049ce2ff4a4fc0595d717ed5d6e15b7093a6014509a48f501253186",
+      "source_description_sha256": "9fb6dada42add61186c2e79dc091c3dce567895431ef25fd18220abac6f5b215",
+      "target_sha256": "e72b8fde75c4960a685c1034e28b8e5e2bc9a57259043eea1c15dd6b92f8477f",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "moretypes/17",
+      "route": "/moretypes/17",
+      "description": "Ignorieren Sie einen nicht benötigten range-Index oder -Wert mit dem leeren Bezeichner oder lassen Sie die zweite Variable weg, wenn nur der Index benötigt wird.",
+      "source_sha256": "b52cca070f62a3ffeab3adf20f2745e1dd9aa2644a3985c23ac295e81e2c3bc9",
+      "source_description_sha256": "8c0f2bdd2a6f92dc681fa22f729da6d836747b0c4dce0f9947c019f8886c229d",
+      "target_sha256": "788e63d03f93860e11fcb4e77b3eb7b4cc8a839a461d647bad8f35aa4535c070",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "moretypes/18",
+      "route": "/moretypes/18",
+      "description": "Implementieren Sie einen Bildgenerator, der ein zweidimensionales Slice aus vorzeichenlosen 8-Bit-Ganzzahlen anlegt und Werte für ein dargestelltes Bild berechnet.",
+      "source_sha256": "9c5fd763eaedec8e8bfb60f52713417ff247bc4467aa8a94412c55ab83c781ba",
+      "source_description_sha256": "50c352bd8a0fa28b3eb713c3691438364c9116f66e92457d0c6ee385fc2a3c44",
+      "target_sha256": "abdb3c09eede2d80eeb58c7be57c27d2f902336a91ebfe43ce98fc4cabcff08c",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T04:37:26Z"
+      }
+    },
+    {
+      "page_id": "moretypes/19",
+      "route": "/moretypes/19",
+      "description": "Erzeugen Sie mit make Maps von Schlüsseln auf Werte und verstehen Sie, warum eine nil-Map keine Schlüssel enthält und keine neuen Einträge aufnehmen kann.",
+      "source_sha256": "39107d53feaffd26d7bb13103fe6e40746e9844d9b37bbf84559f7b91db312f3",
+      "source_description_sha256": "3bca4e1884f5843283b2ab833dec533c36fe7550097d1ce696ebd927fba24f29",
+      "target_sha256": "517234f2a384daa3ed161dda369f639308650aa1861f417bbd7156ee5d4f8b93",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "moretypes/20",
+      "route": "/moretypes/20",
+      "description": "Initialisieren Sie Go-Maps mit Map-Literalen, die für jeden Wert einen erforderlichen Schlüssel angeben.",
+      "source_sha256": "1d3caa45093f65b50d5ebcff6a57559c3fe70faba85f3a0bb41db38c5375a507",
+      "source_description_sha256": "64b042ea9448b757f3249adcd03128e281423a7a30ac994669961db1114a4024",
+      "target_sha256": "0adc6804221ee94fdde528a90448063f6290e910898f73a6304177a3cc667922",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "moretypes/21",
+      "route": "/moretypes/21",
+      "description": "Verkürzen Sie Map-Literale, indem Sie wiederholte Elementtypen weglassen, wenn der oberste Elementtyp ein benannter Typ ist.",
+      "source_sha256": "0493179c2396f2e755fa5f1e579ce6f4cc716842ef5ee77a0b1c742210c15f9f",
+      "source_description_sha256": "c730c99a0322ec952dc3b0babf1aae15538fb08e7bf4b9d41b3580c524b4cf4c",
+      "target_sha256": "3725f0775b16ce29ad3804e65ef56a13027ed9b25824595cb1dff87b389a762b",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "moretypes/22",
+      "route": "/moretypes/22",
+      "description": "Fügen Sie Map-Einträge ein, aktualisieren, lesen und löschen Sie sie und unterscheiden Sie mit einer Zwei-Wert-Abfrage fehlende Schlüssel von Nullwerten.",
+      "source_sha256": "f6963bc620184c7fbea7b04c309ccf64d508a4e835500fa7dd4188e60204019f",
+      "source_description_sha256": "071308970b93a12a3ab3561c0ce18d0073cb4edd7fef6381380777864c8f6685",
+      "target_sha256": "f70aadd2bc5dcda7d561a0362cdc9bd91e7f5297071636997f71edbf7fd8d1fb",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "moretypes/23",
+      "route": "/moretypes/23",
+      "description": "Implementieren Sie eine Wortzählfunktion, die eine Map zurückgibt, in der gespeichert ist, wie oft jedes Wort in einem Eingabestring vorkommt.",
+      "source_sha256": "3214968207b659c3fb6bf92ee3d1ba0858bf7d3240dfad30fada7c5d8bddea69",
+      "source_description_sha256": "980a77135ab84953b0e8c2200b54f1ecdc0f2f7255ac497aeee281ca30b03e11",
+      "target_sha256": "2f40d0d07fc9b13edde6ea709b8d030cd1c1d62813cc2e0d7b8900f66aecd3f1",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "moretypes/24",
+      "route": "/moretypes/24",
+      "description": "Behandeln Sie Funktionen als Werte, die Variablen zugewiesen, als Funktionsargumente übergeben und als Ergebnisse zurückgegeben werden können.",
+      "source_sha256": "91b508ec19d3baf6fd1b2382e54b0f4ec226e9af99d027e86d734cf081d9c897",
+      "source_description_sha256": "7071f87634550cbb36233a6ae15e5910f3b6dc71e3a4d4db8d669f30168094ef",
+      "target_sha256": "d3dd89ca6f1bc5418995981ea8ce02cdc9f0e8480427a13a49af82a148b07770",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "moretypes/25",
+      "route": "/moretypes/25",
+      "description": "Erzeugen Sie Closures, die Variablen außerhalb ihres Funktionskörpers referenzieren und verändern, wobei jede zurückgegebene Closure an ihren eigenen Zustand gebunden ist.",
+      "source_sha256": "570e535e9c2b2d1978534eb3b42f226102b11da36a3f9e61620dc5eafdb6be5f",
+      "source_description_sha256": "46ca9eb3fb315877fb7ecde2e10d046d4c3acbd71f62b37982d5e47644e3b63c",
+      "target_sha256": "f0019b2540c4cf9792c6fcc44582a07b245bde0f37c5b7602fbfbe5fac108aa2",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "moretypes/26",
+      "route": "/moretypes/26",
+      "description": "Implementieren Sie eine Funktion, die eine Closure zurückgibt, welche nacheinander Werte der Fibonacci-Folge erzeugt.",
+      "source_sha256": "24f01440a7b0d638694c6cb275bf92e79e1fb2463ea2eb7d40a68cc4d6a0ed29",
+      "source_description_sha256": "e64e0a59ac166352e290c6051c98df95c58de5eea297a98fd1e648b3dbfa0517",
+      "target_sha256": "277ed8778efc86ddf8655d419cd018226cad6601f3372860db6203238a75dc11",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "moretypes/27",
+      "route": "/moretypes/27",
+      "description": "Schließen Sie die Lektion ab und wählen Sie ein anderes Modul aus der Liste oder wechseln Sie direkt zur nächsten Lektion.",
+      "source_sha256": "f565674b974c053924bf69ef83b709dc50931526ae7fa88e71543a5cd872a190",
+      "source_description_sha256": "60d1bf20d7741180f02b9b4c6c077d6515d15097cdd8b3513427f8cce749c249",
+      "target_sha256": "30d03f5fc9d7d3be195c9c961bf69046e05ff79132f68d9413179dcaffe24f83",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "methods/1",
+      "route": "/methods/1",
+      "description": "Definieren Sie Methoden auf Go-Typen mit einem speziellen Empfängerargument und fügen Sie so Verhalten ohne Klassensystem hinzu.",
+      "source_sha256": "8a62096b755332ede134c87493abe49231a52ce60abebcdc107bb6a64434fc72",
+      "source_description_sha256": "fb223db6446f747e780768d2e0bb40d143d440772710e6b2d978b464d0125b06",
+      "target_sha256": "d8ea4cf004d660a8358bd46f03fc48f0f54669566f90c73c49752c2b02b64ff4",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "methods/2",
+      "route": "/methods/2",
+      "description": "Sehen Sie, dass sich eine Go-Methode wie eine reguläre Funktion verhält, deren Empfänger als gewöhnliches Argument geschrieben wird.",
+      "source_sha256": "ade066728f85cc93e75c2472b80d532b62259a7e08e42ef36e3d05c6cfa5476d",
+      "source_description_sha256": "ce86f31a028ef9ab542bf3b70e30f4ced404ea86da994eb0055ce1530c287861",
+      "target_sha256": "1ddaa9c2b0401239bfdeb9a971afe357183a84d23b0a5675922316213f7e20a3",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "methods/3",
+      "route": "/methods/3",
+      "description": "Deklarieren Sie Methoden auf lokal definierten Nicht-Struktur-Typen und beachten Sie, dass Empfängertypen zum selben Paket gehören müssen.",
+      "source_sha256": "31c4fd0d80c8f1d96cf3efb1ecc1f9d3c0d1b5b70bb5c23bf7227b7007469588",
+      "source_description_sha256": "ac9c16d673aa0a6c164fde59b24ee32cb330a5104806181181c08599ec916cbc",
+      "target_sha256": "b5c913a0a1f8302ac9ee3649f5878f0cd1873decd918a556e9224167530484d5",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "methods/4",
+      "route": "/methods/4",
+      "description": "Verwenden Sie Zeigerempfänger, wenn eine Methode ihren Empfänger verändern muss, im Unterschied zu Wertempfängern, die mit Kopien arbeiten.",
+      "source_sha256": "99f9fa4e5c4dd46d393f40b417d0430c4e27e56f40146f5f192f55ccda4e2db3",
+      "source_description_sha256": "51681653ead1e8e1cd79df9b64aa2cc8b156fa7ea457af6483ed06598fd7af1d",
+      "target_sha256": "3f4fee9b62dafe3ca07bfdd2999f88208785a7558d3f89f3094430bf9f41bf6e",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "methods/5",
+      "route": "/methods/5",
+      "description": "Schreiben Sie die Methoden Abs und Scale als gewöhnliche Funktionen um und beobachten Sie, wie sich ein Zeigerparameter auf Verhalten und erforderliche Änderungen zum Kompilieren auswirkt.",
+      "source_sha256": "cac8affc7a8fd7bc1c0003d8cbf5bd7c85433faea45ea1b39f3b80c2fbc5eae9",
+      "source_description_sha256": "175f241b33ef8229537e3ddd12f24f527ee8b9b13b5ef816d0a89df25fde9b86",
+      "target_sha256": "690fbc488128008335ccb66c51737d76db45dba528c0d993a8739d505533e425",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "methods/6",
+      "route": "/methods/6",
+      "description": "Rufen Sie Methoden mit Zeigerempfänger auf Werten oder Zeigern auf; Go interpretiert etwa v.Scale(5) als (\u0026v).Scale(5).",
+      "source_sha256": "39fb725b0a084ce3634dc973c215ff7a0f034c5f7b51c2ffe25934088072ebf6",
+      "source_description_sha256": "c4d49e8004cabb2c1640bd29ab1de2ace735f70c575f2b32c636c1a587d314ce",
+      "target_sha256": "c4038b0c2c72d8cc27c42f22c323151270bef185568e8f78382db6be73453478",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "methods/7",
+      "route": "/methods/7",
+      "description": "Rufen Sie Methoden mit Wertempfänger über Werte oder Zeiger auf, wobei Go den Zeiger für den Methodenaufruf automatisch dereferenziert.",
+      "source_sha256": "61a9cb8411e6ce15dce3383a68a52c6644599e84269b3faf240129277d238f7e",
+      "source_description_sha256": "ab14363b476d06458eda3434ed9e990c715ddddc11863cdcb2c7ae3b1d0fe936",
+      "target_sha256": "7f08800767acbe2d078d7650bd5d8fe559fa8e730e802496b8a5332464670e3d",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "methods/8",
+      "route": "/methods/8",
+      "description": "Wählen Sie Zeigerempfänger für Änderungen oder um Kopien großer Werte zu vermeiden, und verwenden Sie für die Methoden eines Typs eine konsistente Empfängerart.",
+      "source_sha256": "357424f2a76613085184054178042b442331b5689d156ac9c37e09e57c436dae",
+      "source_description_sha256": "923ca14660ea330bf1790cee51d4e1bc7bcc760ce29b54054e2ce4ee45c4f262",
+      "target_sha256": "6c504e9167963b7a48c4e5935cbba66ab8c521acca992d5b0bd77d20def433ec",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "methods/9",
+      "route": "/methods/9",
+      "description": "Definieren Sie Interfaces als Mengen von Methodensignaturen und sehen Sie, wie die Empfängerwahl bestimmt, ob ein Wert oder Zeiger ein Interface implementiert.",
+      "source_sha256": "39efc19ed01619130489d21e421f2c0d8947b20f408580f4ceaabce6a0feb099",
+      "source_description_sha256": "6ee25d295ab6b3a2b4e7e26502652ed739467c62bc70835860cfd77bafb8903c",
+      "target_sha256": "dbd75316627e053aa14c73544f51b7a120742bf53245f1e608459ba7ba9b360a",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "methods/10",
+      "route": "/methods/10",
+      "description": "Implementieren Sie Interfaces implizit durch ihre Methoden und entkoppeln Sie so Interface-Deklarationen von Implementierungen über Pakete hinweg.",
+      "source_sha256": "11ca99e6e83d93827daf02b177156fcb6f3c94ac8c202491dfffc5840ce4e39f",
+      "source_description_sha256": "6cf08662aae9ca82ce2cd6cd0a15e78992b0473cafa1149663a37fb9e2a7c7c2",
+      "target_sha256": "45e069415fd8a46b48db6bbfd29a2bd20d886474f2499760fa1d2ba2de18c734",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "methods/11",
+      "route": "/methods/11",
+      "description": "Modellieren Sie einen Interface-Wert als zugrunde liegenden konkreten Wert samt Typ, wobei Methodenaufrufe an diesen konkreten Typ weitergeleitet werden.",
+      "source_sha256": "ccb2ed709b887724d22fb93714702fed5de4b7a83ca976876864045ff4752270",
+      "source_description_sha256": "cd6a134e49b4453e54c30c9686447f807f2a1e050246e4d6aee73514bb2179dc",
+      "target_sha256": "e0624dfde104ce46625cbbd41c387f5421a0f33384a6207879e2a017e8529bf8",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "methods/12",
+      "route": "/methods/12",
+      "description": "Unterscheiden Sie ein Interface, das selbst nicht nil ist, aber einen konkreten Wert enthält, der nil ist, und entwerfen Sie Methoden, die einen nil-Empfänger sicher behandeln können.",
+      "source_sha256": "9487ca3c9872972d42af8cfa389755678fe8a7cca110b592aac2a762332febf5",
+      "source_description_sha256": "fa0e9391d2ece71351113b5ecc38a4c43baa6e6bfa6bbf4929f8154a5d39bc09",
+      "target_sha256": "a2629c12def7f2ca7738b1f568e4eeef4472b12553ab7f54ed91f6505bb96df1",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T04:37:26Z"
+      }
+    },
+    {
+      "page_id": "methods/13",
+      "route": "/methods/13",
+      "description": "Verstehen Sie, dass ein nil-Interface weder Wert noch konkreten Typ enthält und Methodenaufrufe darauf daher einen Laufzeitfehler verursachen.",
+      "source_sha256": "2897922c0b088ccd46b3e42a442aeecda0787c4162db1329d0e8f39d05735547",
+      "source_description_sha256": "b4dfe6e93b9056119ee683f0c66c47a4d57c4da2ab646e1d5aaa2f7ff5193695",
+      "target_sha256": "ad9d7839c89a5b4d4161f4c73605724f53c51bd14ec15f9d8b5feee357e0c324",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "methods/14",
+      "route": "/methods/14",
+      "description": "Verwenden Sie das leere Interface oder den äquivalenten Alias any, um in allgemeinem Code Werte beliebiger Typen aufzunehmen.",
+      "source_sha256": "7a09a7654c8b6ac6d96a1a8ddaafac368782f89ec2e6e61f323d40eb01cbf750",
+      "source_description_sha256": "1abc921a534e41046d73ca5924ad534b905486f3528eff469b8816a3a94ad269",
+      "target_sha256": "d231cd944e94d0da80e6fd5004fbc61a856065a80d3828ee2381cb49e57fa26a",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "methods/15",
+      "route": "/methods/15",
+      "description": "Extrahieren Sie mit einer Typzusicherung den zugrunde liegenden konkreten Wert eines Interface und vermeiden Sie mit der Zwei-Ergebnis-Form eine Panic bei Nichtübereinstimmung.",
+      "source_sha256": "c205b4eb940358edea6321cfa422c3c00a560e9a6a71b08c8b3fa3ab9e4926ae",
+      "source_description_sha256": "2d146c65bc4f8cb9e2129fffc886ebe5e057615fea1b640106d6671ef8c431b1",
+      "target_sha256": "ee475504f2b24b4802984ce16b93532bee881b5c415d41d4ef01f9fefbc61d83",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "methods/16",
+      "route": "/methods/16",
+      "description": "Verwenden Sie einen Typ-Switch, um einen Interface-Wert gegen mehrere konkrete Typen zu prüfen und in jedem Fall einen korrekt typisierten Wert zu binden.",
+      "source_sha256": "26e4da09e80d30b06368691c76ee2940139b0f6fc40cad47bb6d1d2947933c27",
+      "source_description_sha256": "d33eb15901d822bc5a23f381c6d61ac484c844a004c4bf34b699dff7de6cd24f",
+      "target_sha256": "847c0ea8df355f21ccffbb1377178ff1238dce7c8cc7fb89597e8462beed58dd",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "methods/17",
+      "route": "/methods/17",
+      "description": "Implementieren Sie das Stringer-Interface, damit ein Wert sich für Formatierung und Ausgabe selbst als Text beschreiben kann.",
+      "source_sha256": "0363038e64b6f186e1bbd55c3323a5d7770a2b728605d8e3f01ae234aff6a444",
+      "source_description_sha256": "c446522cd9230076fbeae5d023a4d73f6473469102b840b6dc474e0f33d3cd38",
+      "target_sha256": "d05b1805dbf43c763b54ad6ea9c2327bb9e2b8794fef2607375fd58884898e1d",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "methods/18",
+      "route": "/methods/18",
+      "description": "Lassen Sie einen IP-Adresstyp das Stringer-Interface implementieren und formatieren Sie seine vier Komponenten als durch Punkte getrennte Adresse.",
+      "source_sha256": "ad118644f53755586f14409e203bccfb5ac4cff7c01734157032a45648fb06d3",
+      "source_description_sha256": "7fca48e6f4206cd8d1dcaee960b79026d1c7ed9a6522f5b5c7182e7db036058b",
+      "target_sha256": "c90ed4553046d194997d5b832ada3062b1c94a4dc924b333815e21bdbebd4872",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "methods/19",
+      "route": "/methods/19",
+      "description": "Stellen Sie Fehler mit dem eingebauten error-Interface von Go dar, geben Sie Fehlerwerte aus Funktionen zurück und prüfen Sie sie gegen nil.",
+      "source_sha256": "9eaab1fde2076c1376f78ceec0f84766c4c3b8062867436d73cef0bc77f16bd5",
+      "source_description_sha256": "b997133bc34918b752e49098ee7c596089a1a25f93d62bf29a1ed496c0a68d17",
+      "target_sha256": "4cc41a001f51c944662c55fb21e3f9bc02f0486f65063bf5b898ba3278ca5376",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "methods/20",
+      "route": "/methods/20",
+      "description": "Erweitern Sie eine Quadratwurzelfunktion um einen benutzerdefinierten Fehler für negative Eingaben und vermeiden Sie beim Formatieren dieses Fehlers eine Endlosschleife.",
+      "source_sha256": "41f1f73320fde60ee5ff30d5927a19ff22d6da6a336bb776e15f2499e4f421d8",
+      "source_description_sha256": "4af48585b9125cd7437caf7d571c969ec8ae224916d9b674015446d6878f553c",
+      "target_sha256": "a9ebcf6e715e8482324043a114ba26287dea49bd97b0f005ec5a0e5f8b8fd132",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "methods/21",
+      "route": "/methods/21",
+      "description": "Lesen Sie Datenströme über das Reader-Interface, indem Sie Byte-Slices füllen und die zurückgegebene Byte-Anzahl, Fehler und das Ende-des-Datenstroms-Signal behandeln.",
+      "source_sha256": "120c3fc9f67579cf78605cf0c9f006fc28d3569043a08079ddb645ca9c3fc3b1",
+      "source_description_sha256": "3d143859fa8cf818fcf69f355ec785aeaa9ee25613b9fb1b1f8750b88d649ba3",
+      "target_sha256": "87970d013abd00a773aac92f80101768ea3415824a4e0ec7cf17b2b71412e54e",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "methods/22",
+      "route": "/methods/22",
+      "description": "Implementieren Sie einen Reader-Typ, dessen Read-Methode einen endlosen Datenstrom des ASCII-Zeichens A liefert.",
+      "source_sha256": "0df444d989996a06d6dd50f4b109af4ae1cb2302b8dd867bcbe9bf98e424d230",
+      "source_description_sha256": "b1bb526c762d827e97448d79c00210d1bb286b0a0f11f6e4c607b6ddd5f156c5",
+      "target_sha256": "d14c9c00e997410146985bca5dde3b14d5938efb9e47e735d41a037ed4ba4f35",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "methods/23",
+      "route": "/methods/23",
+      "description": "Umschließen Sie einen anderen Reader mit einer eigenen Implementierung, die alphabetische Zeichen mit der ROT13-Ersetzungschiffre transformiert.",
+      "source_sha256": "11d876145fae980b2e283e3fac7357a950eb20f022b7da48cc58efed5b1e8e04",
+      "source_description_sha256": "55b462b45c3316b40047228bfce6b04a7009e8d2772bf5ff3dcbd1ce7197d638",
+      "target_sha256": "8124690bdbc43b15c052c3739f791198607978ad69e6ced688c6b9266c74615e",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "methods/24",
+      "route": "/methods/24",
+      "description": "Verstehen Sie das Image-Interface anhand seiner Methoden für Farbmodell, Begrenzung und Pixelabfrage sowie der zugehörigen Farbtypen.",
+      "source_sha256": "d80f0d46796ad415a7ded4d0cefdef6cdb58deb38d050a61eb64abb25caf27ee",
+      "source_description_sha256": "0a30974c745ec5adef7da2417dcc5308e2e69627488c5a2c9e880870c6da5c41",
+      "target_sha256": "d91dd6f334537ef70b48bf30e3f32f37f2b16e2d4d627aa3fc306c076cc9645f",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "methods/25",
+      "route": "/methods/25",
+      "description": "Definieren Sie einen eigenen Bildtyp, der Farbmodell, rechteckige Begrenzung und Pixelfarbabfrage für erzeugte Bilder implementiert.",
+      "source_sha256": "a196bc59d96602c3fe72cf765419366094a5c1e96de0d24dd140887ebd1826b5",
+      "source_description_sha256": "47aa41f6a229ac42781cb3536c72a700c3617131893b661be47fa26bcd55da91",
+      "target_sha256": "bd4bbac7d4316a5a157c596b218f26447c1dce396647e5d5a0b0be9a9411e206",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "methods/26",
+      "route": "/methods/26",
+      "description": "Schließen Sie die Lektion ab und entscheiden Sie, ob Sie zum Modulverzeichnis zurückkehren oder direkt mit der nächsten Lektion fortfahren.",
+      "source_sha256": "f565674b974c053924bf69ef83b709dc50931526ae7fa88e71543a5cd872a190",
+      "source_description_sha256": "fb9dc0de6022cba642b0d023e060400ec0eea65f5e479a0b6586e8457a3a6e1c",
+      "target_sha256": "30d03f5fc9d7d3be195c9c961bf69046e05ff79132f68d9413179dcaffe24f83",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "generics/1",
+      "route": "/generics/1",
+      "description": "Schreiben Sie generische Go-Funktionen mit Typparametern in eckigen Klammern und nutzen Sie die Typbeschränkung comparable für gleichheitsbasierte Suchen in Slices.",
+      "source_sha256": "01a045105dc8c12fb1709f122d363235c19a6464d5de7587d579524aec270dd6",
+      "source_description_sha256": "b1a9a022272688b86d0572b7ce4dd9d725f2721d2bc9e3e37c196d2ce20b6573",
+      "target_sha256": "920c93ff87fe6d2fb4e8f644e6ea118b480986a91acacc2d28f0d9fee57f0145",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "generics/2",
+      "route": "/generics/2",
+      "description": "Definieren Sie generische Typen mit Typparametern, dargestellt an einer einfach verketteten Liste, die Werte beliebiger Typen speichern kann.",
+      "source_sha256": "08486351895e62792a84bc3eeab6aa85df7b1658735b7239040d219812f63277",
+      "source_description_sha256": "7b1a0ed87733ae57b018fd8b291ceb880f9b20f8b11e3a3744afe5c5237dfa0d",
+      "target_sha256": "dbd8a655cfb05419491476ee5c5f6782d696196b71eff1bdd07357bb36a3a33e",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "generics/3",
+      "route": "/generics/3",
+      "description": "Bestätigen Sie den Abschluss der Lektion, bevor Sie zum Modulkatalog zurückkehren oder mit der folgenden Lektion fortfahren.",
+      "source_sha256": "f565674b974c053924bf69ef83b709dc50931526ae7fa88e71543a5cd872a190",
+      "source_description_sha256": "65816f922f9107347efd8286904bad00224481b7d9efb4ff5c998e2b8983729e",
+      "target_sha256": "30d03f5fc9d7d3be195c9c961bf69046e05ff79132f68d9413179dcaffe24f83",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "concurrency/1",
+      "route": "/concurrency/1",
+      "description": "Starten Sie leichtgewichtige goroutines, verstehen Sie, wo Aufrufargumente ausgewertet werden, und synchronisieren Sie Zugriffe auf gemeinsam genutzten Speicher.",
+      "source_sha256": "d0a9c45078c2255540cfffe48744a07fa04ab5c2113e8880068b5a400ae0ebdc",
+      "source_description_sha256": "d2b2b18b050a6f45dea879d72a29023649e8ce7d55822315cb11cdc5d8330796",
+      "target_sha256": "6f7b845e2a4e55028fc51e5cc1e44543d09fd3ddc59a0d21ee784f97c38918c4",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "concurrency/2",
+      "route": "/concurrency/2",
+      "description": "Senden und empfangen Sie typisierte Werte über Channels und nutzen Sie deren standardmäßig blockierendes Verhalten zur Synchronisierung von goroutines.",
+      "source_sha256": "a35e3af26b51f8c2c2a6dfaf09f9c7cab0fdb4b1b56f9e4dc9b793f1dac1e295",
+      "source_description_sha256": "1025cf5ae195d6ddacba6eba015df931afc7d88d4fb1f045e89374a0ce269218",
+      "target_sha256": "b59ecbd90f6f7b25a5bdc29aacd443c9ee4c71932bc9681e2129ea3b88865ab6",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "concurrency/3",
+      "route": "/concurrency/3",
+      "description": "Erzeugen Sie gepufferte Channels mit fester Kapazität und beobachten Sie, dass Sendeoperationen bei vollem Puffer und Empfangsoperationen bei leerem Puffer blockieren.",
+      "source_sha256": "caef0893a54c61f192be397f6b27a039d81dc007f98f2d203a5a287383c0682e",
+      "source_description_sha256": "841cd97624869908df1823647fdf34b37e1ad3be60d94232ea68d29df3791d3e",
+      "target_sha256": "2add1b5e1c7b27968309c779f6991edd7f78c65d375bd9381d184556e720da9b",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T04:37:26Z"
+      }
+    },
+    {
+      "page_id": "concurrency/4",
+      "route": "/concurrency/4",
+      "description": "Schließen Sie Channels auf Senderseite, erkennen Sie das Schließen beim Empfangen und verwenden Sie range, bis alle übertragenen Werte verarbeitet sind.",
+      "source_sha256": "3e925c6745255a443c61f25cd8131d538dc8677938f1c5021ce798465020b42e",
+      "source_description_sha256": "052b32bc75a99f8e63d851b090201f2d860fe3e0df54d1c36dfe898d791300aa",
+      "target_sha256": "02badfdb6e1edcf4c135feca1668c44b91568e7956bf7fe8c022db81b64dbb25",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "concurrency/5",
+      "route": "/concurrency/5",
+      "description": "Verwenden Sie select, um auf mehrere Channel-Operationen zu warten, einen bereiten Fall auszuführen und bei mehreren möglichen Fällen zufällig auszuwählen.",
+      "source_sha256": "8d8de56f080d4f702ac455aa60cb13b745472bedc9755000e8b5d6a2a898577d",
+      "source_description_sha256": "ff560a3c278c4608f677eb25977282a92605545470d352b501cb020944f5c19b",
+      "target_sha256": "b5f6d80574d2f1b6568cfa67d4f2888124bc55e4fa9c53cc736c5758fc3d0e90",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "concurrency/6",
+      "route": "/concurrency/6",
+      "description": "Fügen Sie select einen default-Fall hinzu, wenn ein Sende- oder Empfangsvorgang auf einem Channel ohne Blockieren versucht werden soll.",
+      "source_sha256": "82e9cd932e14e6c4852fc8f865f4c45dc75845bd1a306649152ebc045f0c3b2c",
+      "source_description_sha256": "62b930aa676592e83be591ce640338cad3d4a28f8031b70020c125cae407288f",
+      "target_sha256": "48095dd3a408b9ddf85abb70379d6df480da6f6dca9f886d35806be4c295ac2f",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "concurrency/7",
+      "route": "/concurrency/7",
+      "description": "Formulieren Sie das Problem, unterschiedlich geformte Binärbäume mit denselben geordneten Werten mithilfe von Go-Channels und Nebenläufigkeit zu vergleichen.",
+      "source_sha256": "7c5d3fc7bb2540285d746242f8a1d16075639648eec8909c1df52239297d2917",
+      "source_description_sha256": "1788be855428fdadd5d5755548f4a1c678aa4db359821c7a553ffecdf5e4de7c",
+      "target_sha256": "569bfc8cffe2ebe7daedc93a63a686e7fa35e700f88f9fc61fb664e4282ba0c0",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "concurrency/8",
+      "route": "/concurrency/8",
+      "description": "Implementieren Sie einen nebenläufigen Baumdurchlauf und nutzen Sie dessen Channel-Ausgabe, um festzustellen, ob zwei Binärbäume identische Wertfolgen speichern.",
+      "source_sha256": "b362cc15a26324acd311f7cab18a628dc1d7d9ac6d455add7d651d41acf15e9a",
+      "source_description_sha256": "5fcc3f084dff1ef87b86f2a0714ed2b130301ff803ea2c298f1be3baccf48959",
+      "target_sha256": "b9cefe0d086cd9912f7d2248f28f30ba451dc553e225198d829fd5def99a116b",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "concurrency/9",
+      "route": "/concurrency/9",
+      "description": "Schützen Sie gemeinsam genutzten Zustand durch gegenseitigen Ausschluss mit Lock und Unlock eines Mutex, einschließlich verzögertem Unlock für zuverlässige Freigabe.",
+      "source_sha256": "49f727794604c2ef8a8dda9508d0f412d7015cea77754c675a02b166dd9bfc93",
+      "source_description_sha256": "45500a9f438a556dd61ab13ebbd255f4da67469a93c8f12a510ac0883531cbb2",
+      "target_sha256": "2f0457845982d18ee2fd6686335fe51b872391c97a79912e0e1198fe773198b3",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "concurrency/10",
+      "route": "/concurrency/10",
+      "description": "Parallelisieren Sie einen Webcrawler mit Go-Nebenläufigkeit und stellen Sie sicher, dass keine URL zweimal abgerufen wird und gemeinsam genutzte Maps sicher bleiben.",
+      "source_sha256": "bb686393225ef2335e627819a1664a84456f00b64af133af64920d43f0abdb94",
+      "source_description_sha256": "9f5eaf228169f96b0df33e42107f5e232500256bfbd275f7f9eecc516af7e7a9",
+      "target_sha256": "e49d2583b442eabfcfce7d747aa23f75b55630729d169cdccbe7e9f79f155283",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    },
+    {
+      "page_id": "concurrency/11",
+      "route": "/concurrency/11",
+      "description": "Lernen Sie Go weiter mit Dokumentation, Tutorials, Referenzen, Vorträgen, Codewalks, Artikeln sowie Ressourcen zu Nebenläufigkeit und Webanwendungen.",
+      "source_sha256": "45ef131ede663b1355c0a5933634d46c393f66be8a6450b184f86a62e928a64e",
+      "source_description_sha256": "4ed88e1ec54c490baa161dd4be091fd7d22aa45b5f8855f73b8cdabc678feb44",
+      "target_sha256": "7b395bf5f5866664ced6d9830efdfcc1c0a853eaddf1a87a63001cf1a774bde4",
+      "glossary_sha256": "611c91950a254896bdd94cd114587fcf17e1cdd5f66fcb9f2bfb9b45e387d251",
+      "generation": {
+        "provider": "chatgpt",
+        "model": "gpt-5.6-sol-high",
+        "prompt_version": "course-seo-localization-v2",
+        "generated_at": "2026-10-04T03:10:34Z"
+      }
+    }
+  ]
+}

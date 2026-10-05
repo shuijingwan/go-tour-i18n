@@ -622,12 +622,14 @@ func TestHomepageLanguageRegistryAndLocaleProfiles(t *testing.T) {
 		{Locale: "da-DK", EnglishName: "Danish", Autonym: "Dansk", URL: "https://da-go-dev.shuijingwanwq.com/"},
 		{Locale: "nl-NL", EnglishName: "Dutch", Autonym: "Nederlands", URL: "https://nl-go-dev.shuijingwanwq.com/"},
 		{Locale: "en", EnglishName: "English", Autonym: "English", URL: "https://go.dev/tour/", Official: true},
+		{Locale: "en-GB", EnglishName: "English (United Kingdom)", Autonym: "English (United Kingdom)", URL: "https://en-gb-go-dev.shuijingwanwq.com/"},
 		{Locale: "et-EE", EnglishName: "Estonian", Autonym: "Eesti", URL: "https://et-go-dev.shuijingwanwq.com/"},
 		{Locale: "fil-PH", EnglishName: "Filipino", Autonym: "Filipino", URL: "https://fil-go-dev.shuijingwanwq.com/"},
 		{Locale: "fi-FI", EnglishName: "Finnish", Autonym: "Suomi", URL: "https://fi-go-dev.shuijingwanwq.com/"},
 		{Locale: "fr-FR", EnglishName: "French", Autonym: "Français", URL: "https://fr-go-dev.shuijingwanwq.com/"},
 		{Locale: "fr-CA", EnglishName: "French (Canada)", Autonym: "Français (Canada)", URL: "https://fr-ca-go-dev.shuijingwanwq.com/"},
 		{Locale: "de-DE", EnglishName: "German", Autonym: "Deutsch", URL: "https://de-go-dev.shuijingwanwq.com/"},
+		{Locale: "de-AT", EnglishName: "German (Austria)", Autonym: "Deutsch (Österreich)", URL: "https://de-at-go-dev.shuijingwanwq.com/"},
 		{Locale: "de-CH", EnglishName: "German (Switzerland)", Autonym: "Deutsch (Schweiz)", URL: "https://de-ch-go-dev.shuijingwanwq.com/"},
 		{Locale: "el-GR", EnglishName: "Greek", Autonym: "Ελληνικά", URL: "https://el-go-dev.shuijingwanwq.com/"},
 		{Locale: "gu-IN", EnglishName: "Gujarati", Autonym: "ગુજરાતી", URL: "https://gu-go-dev.shuijingwanwq.com/"},
@@ -654,6 +656,7 @@ func TestHomepageLanguageRegistryAndLocaleProfiles(t *testing.T) {
 		{Locale: "ru-RU", EnglishName: "Russian", Autonym: "Русский", URL: "https://ru-go-dev.shuijingwanwq.com/"},
 		{Locale: "sr-RS", EnglishName: "Serbian", Autonym: "Српски (ћирилица)", URL: "https://sr-go-dev.shuijingwanwq.com/"},
 		{Locale: "zh-CN", EnglishName: "Simplified Chinese", Autonym: "简体中文", URL: "https://go-dev.shuijingwanwq.com/"},
+		{Locale: "zh-SG", EnglishName: "Simplified Chinese (Singapore)", Autonym: "简体中文（新加坡）", URL: "https://zh-sg-go-dev.shuijingwanwq.com/"},
 		{Locale: "sk-SK", EnglishName: "Slovak", Autonym: "Slovenčina", URL: "https://sk-go-dev.shuijingwanwq.com/"},
 		{Locale: "sl-SI", EnglishName: "Slovenian", Autonym: "Slovenščina", URL: "https://sl-go-dev.shuijingwanwq.com/"},
 		{Locale: "es-ES", EnglishName: "Spanish", Autonym: "Español", URL: "https://es-go-dev.shuijingwanwq.com/"},
@@ -785,6 +788,69 @@ func TestHomepageLanguageRegistryAndLocaleProfiles(t *testing.T) {
 	}
 	if got, want := deProfile.DevelopmentLogURL, "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/"; got != want {
 		t.Fatalf("de-DE development log URL = %q, want %q", got, want)
+	}
+	deATLanguages, err := languagesFor("de-AT")
+	if err != nil {
+		t.Fatal(err)
+	}
+	deATCurrent, err := currentLanguage(deATLanguages)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if deATCurrent != (LanguageLink{Locale: "de-AT", EnglishName: "German (Austria)", Autonym: "Deutsch (Österreich)", Label: "German (Austria) — Deutsch (Österreich)", URL: "https://de-at-go-dev.shuijingwanwq.com/", Current: true}) {
+		t.Fatalf("de-AT current language = %+v", deATCurrent)
+	}
+	deATProfile := localeProfiles["de-AT"]
+	if got, want := deATProfile.TimeZone.String(), "Europe/Vienna"; got != want {
+		t.Fatalf("de-AT time zone = %q, want %q", got, want)
+	}
+	if deATProfile.TimeLabel != "Ortszeit" || deATProfile.TimeLabelFormat != " (%s)" || deATProfile.Direction != "ltr" {
+		t.Fatalf("de-AT profile = %+v", deATProfile)
+	}
+	if got, want := deATProfile.DevelopmentLogURL, "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/"; got != want {
+		t.Fatalf("de-AT development log URL = %q, want %q", got, want)
+	}
+	enGBLanguages, err := languagesFor("en-GB")
+	if err != nil {
+		t.Fatal(err)
+	}
+	enGBCurrent, err := currentLanguage(enGBLanguages)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if enGBCurrent != (LanguageLink{Locale: "en-GB", EnglishName: "English (United Kingdom)", Autonym: "English (United Kingdom)", Label: "English (United Kingdom)", URL: "https://en-gb-go-dev.shuijingwanwq.com/", Current: true}) {
+		t.Fatalf("en-GB current language = %+v", enGBCurrent)
+	}
+	enGBProfile := localeProfiles["en-GB"]
+	if got, want := enGBProfile.TimeZone.String(), "Europe/London"; got != want {
+		t.Fatalf("en-GB time zone = %q, want %q", got, want)
+	}
+	if enGBProfile.TimeLabel != "local time" || enGBProfile.TimeLabelFormat != " (%s)" || enGBProfile.Direction != "ltr" {
+		t.Fatalf("en-GB profile = %+v", enGBProfile)
+	}
+	if got, want := enGBProfile.DevelopmentLogURL, "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/"; got != want {
+		t.Fatalf("en-GB development log URL = %q, want %q", got, want)
+	}
+	zhSGLanguages, err := languagesFor("zh-SG")
+	if err != nil {
+		t.Fatal(err)
+	}
+	zhSGCurrent, err := currentLanguage(zhSGLanguages)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if zhSGCurrent != (LanguageLink{Locale: "zh-SG", EnglishName: "Simplified Chinese (Singapore)", Autonym: "简体中文（新加坡）", Label: "Simplified Chinese (Singapore) — 简体中文（新加坡）", URL: "https://zh-sg-go-dev.shuijingwanwq.com/", Current: true}) {
+		t.Fatalf("zh-SG current language = %+v", zhSGCurrent)
+	}
+	zhSGProfile := localeProfiles["zh-SG"]
+	if got, want := zhSGProfile.TimeZone.String(), "Asia/Singapore"; got != want {
+		t.Fatalf("zh-SG time zone = %q, want %q", got, want)
+	}
+	if zhSGProfile.TimeLabel != "新加坡时间" || zhSGProfile.TimeLabelFormat != "（%s）" || zhSGProfile.Direction != "ltr" {
+		t.Fatalf("zh-SG profile = %+v", zhSGProfile)
+	}
+	if got, want := zhSGProfile.DevelopmentLogURL, "https://www.shuijingwanwq.com/series/go-tour-chinese-edition-development-series/"; got != want {
+		t.Fatalf("zh-SG development log URL = %q, want %q", got, want)
 	}
 	guLanguages, err := languagesFor("gu-IN")
 	if err != nil {
@@ -1288,7 +1354,7 @@ func TestHomepageLanguageRegistryAndLocaleProfiles(t *testing.T) {
 				t.Fatal(err)
 			}
 			home := string(homeBytes)
-			labels := []string{"Amharic — አማርኛ", "Arabic — العربية", "Bengali — বাংলা", "Brazilian Portuguese — Português (Brasil)", "Bulgarian — Български", "Catalan — Català", "Croatian — Hrvatski", "Czech — Čeština", "Danish — Dansk", "Dutch — Nederlands", "English", "Estonian — Eesti", "Filipino", "Finnish — Suomi", "French — Français", "French (Canada) — Français (Canada)", "German — Deutsch", "German (Switzerland) — Deutsch (Schweiz)", "Greek — Ελληνικά", "Gujarati — ગુજરાતી", "Hindi — हिन्दी", "Hungarian — Magyar", "Indonesian — Bahasa Indonesia", "Italian — Italiano", "Japanese — 日本語", "Kannada — ಕನ್ನಡ", "Kazakh — Қазақша", "Korean — 한국어", "Latin American Spanish — Español (Latinoamérica)", "Latvian — Latviešu", "Lithuanian — Lietuvių", "Malay — Bahasa Melayu", "Malayalam — മലയാളം", "Marathi — मराठी", "Norwegian Bokmål — Norsk bokmål", "Persian — فارسی", "Polish — Polski", "Portuguese (Portugal) — Português", "Punjabi — ਪੰਜਾਬੀ", "Romanian — Română", "Russian — Русский", "Serbian — Српски (ћирилица)", "Simplified Chinese — 简体中文", "Slovak — Slovenčina", "Slovenian — Slovenščina", "Spanish — Español", "Swahili — Kiswahili", "Swedish — Svenska", "Tamil — தமிழ்", "Telugu — తెలుగు", "Thai — ไทย", "Traditional Chinese — 繁體中文（台灣）", "Traditional Chinese (Hong Kong) — 繁體中文（香港）", "Turkish — Türkçe", "Ukrainian — Українська", "Urdu — اردو", "Vietnamese — Tiếng Việt"}
+			labels := []string{"Amharic — አማርኛ", "Arabic — العربية", "Bengali — বাংলা", "Brazilian Portuguese — Português (Brasil)", "Bulgarian — Български", "Catalan — Català", "Croatian — Hrvatski", "Czech — Čeština", "Danish — Dansk", "Dutch — Nederlands", "English", "English (United Kingdom)", "Estonian — Eesti", "Filipino", "Finnish — Suomi", "French — Français", "French (Canada) — Français (Canada)", "German — Deutsch", "German (Austria) — Deutsch (Österreich)", "German (Switzerland) — Deutsch (Schweiz)", "Greek — Ελληνικά", "Gujarati — ગુજરાતી", "Hindi — हिन्दी", "Hungarian — Magyar", "Indonesian — Bahasa Indonesia", "Italian — Italiano", "Japanese — 日本語", "Kannada — ಕನ್ನಡ", "Kazakh — Қазақша", "Korean — 한국어", "Latin American Spanish — Español (Latinoamérica)", "Latvian — Latviešu", "Lithuanian — Lietuvių", "Malay — Bahasa Melayu", "Malayalam — മലയാളം", "Marathi — मराठी", "Norwegian Bokmål — Norsk bokmål", "Persian — فارسی", "Polish — Polski", "Portuguese (Portugal) — Português", "Punjabi — ਪੰਜਾਬੀ", "Romanian — Română", "Russian — Русский", "Serbian — Српски (ћирилица)", "Simplified Chinese — 简体中文", "Simplified Chinese (Singapore) — 简体中文（新加坡）", "Slovak — Slovenčina", "Slovenian — Slovenščina", "Spanish — Español", "Swahili — Kiswahili", "Swedish — Svenska", "Tamil — தமிழ்", "Telugu — తెలుగు", "Thai — ไทย", "Traditional Chinese — 繁體中文（台灣）", "Traditional Chinese (Hong Kong) — 繁體中文（香港）", "Turkish — Türkçe", "Ukrainian — Українська", "Urdu — اردو", "Vietnamese — Tiếng Việt"}
 			if got, want := len(labels), len(languageRegistry); got != want {
 				t.Fatalf("homepage language label count = %d, want %d", got, want)
 			}

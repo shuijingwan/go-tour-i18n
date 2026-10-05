@@ -62,6 +62,7 @@ type localeSurfaceReviewProductionIdentity struct {
 
 type localeSurfaceReviewProductionProfile struct {
 	Locale              string `json:"locale"`
+	ProductionState     string `json:"production_state"`
 	ProductionHostname  string `json:"production_hostname"`
 	ProductionPublicURL string `json:"production_public_url"`
 }

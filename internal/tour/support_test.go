@@ -255,8 +255,12 @@ func TestHomepageSupportCopyStateIsLocalizedForEveryLocale(t *testing.T) {
 		if !strings.Contains(page, `data-copy-value="go-dev-`+language.Locale+`"`) {
 			t.Errorf("%s homepage is missing its complete locale reference copy value", language.Locale)
 		}
-		if language.Locale != "en" && copied == "Copied" {
+		baseLanguage, _, _ := strings.Cut(catalog.HTMLLang, "-")
+		if baseLanguage != "en" && copied == "Copied" {
 			t.Errorf("%s retained the English copied state", language.Locale)
+		}
+		if language.Locale == "en-GB" && copied != "Copied" {
+			t.Errorf("en-GB copied state = %q, want natural British English %q", copied, "Copied")
 		}
 		if got := strings.Count(page, `class="support-copy-icon"`); got != wantButtons {
 			t.Errorf("%s copy icon count = %d, want %d", language.Locale, got, wantButtons)

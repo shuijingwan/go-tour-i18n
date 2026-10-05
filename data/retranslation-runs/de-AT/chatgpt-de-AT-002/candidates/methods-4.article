@@ -1,0 +1,24 @@
+* Zeigerempfänger
+
+Sie können Methoden mit Zeigerempfängern deklarieren.
+
+Das bedeutet, dass der Empfängertyp die Literalsyntax `*T` für einen Typ `T` hat.
+(Außerdem darf `T` nicht selbst ein Zeiger wie `*int` sein.)
+
+Die Methode `Scale` ist hier beispielsweise für `*Vertex` definiert.
+
+Methoden mit Zeigerempfängern können den Wert ändern, auf den der Empfänger
+zeigt (wie es `Scale` hier tut).
+Da Methoden ihren Empfänger häufig ändern müssen, sind Zeigerempfänger
+häufiger als Wertempfänger.
+
+Entfernen Sie das `*` aus der Deklaration der Funktion `Scale` in Zeile 16
+und beobachten Sie, wie sich das Verhalten des Programms ändert.
+
+Bei einem Wertempfänger arbeitet die Methode `Scale` mit einer Kopie des ursprünglichen
+Werts `Vertex`.
+(Dies entspricht dem Verhalten jedes anderen Funktionsarguments.)
+Die Methode `Scale` benötigt einen Zeigerempfänger, um den Wert `Vertex` zu ändern,
+der in der Funktion `main` deklariert ist.
+
+.play methods/methods-pointers.go

@@ -1,0 +1,12 @@
+* Stringer
+
+最常见的接口之一是 [[/pkg/fmt/#Stringer][`Stringer`]]，它由 [[/pkg/fmt/][`fmt`]] 包定义。
+
+	type Stringer interface {
+		String() string
+	}
+
+`Stringer` 是一种能以字符串描述自身的类型。 `fmt` 包
+（以及许多其他包）会查找此接口来输出值。
+
+.play methods/stringer.go

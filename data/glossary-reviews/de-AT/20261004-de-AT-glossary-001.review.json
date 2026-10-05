@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "evidence_type": "glossary-review-receipt",
+  "locale": "de-AT",
+  "review_id": "20261004-de-AT-glossary-001",
+  "stage": "locale-glossary-review",
+  "decision": "failed",
+  "reviewer": "chatgpt-gpt-5.6-sol-high",
+  "rubric": "glossary-review/v1",
+  "glossary_path": "locales/de-AT/glossary.yaml",
+  "glossary_sha256": "6f237cc78dabe08b3a5a3675a3650e3f0485d7a2d8fd0359fe3ff0409bb135b5",
+  "findings": [
+    "keep / goroutine: current keep contains only \"goroutine\", but the CURRENT source/UI also contains the Go-native identity as \"goroutines\" and title-case \"Goroutines\"; keep matching is exact at token boundaries, so those forms are not covered. Generation must revise the glossary so every current natural-language surface form of the goroutine identity is explicitly preserved, without translating or localizing the Go-native name.",
+    "keep / Page, Example: current keep preserves singular \"Page\" and \"Example\", while the CURRENT UI source site.workflow_units uses the formal capitalized plurals \"Pages\" and \"Examples\"; exact keep matching does not extend singular entries to those plural tokens. Generation must make the keep policy cover the current capitalized plural workflow identities while leaving lowercase generic page/example prose translatable."
+  ]
+}

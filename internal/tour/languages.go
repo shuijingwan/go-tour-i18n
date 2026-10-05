@@ -35,12 +35,14 @@ var languageRegistry = []LanguageLink{
 	{Locale: "da-DK", EnglishName: "Danish", Autonym: "Dansk", URL: "https://da-go-dev.shuijingwanwq.com/"},
 	{Locale: "nl-NL", EnglishName: "Dutch", Autonym: "Nederlands", URL: "https://nl-go-dev.shuijingwanwq.com/"},
 	{Locale: "en", EnglishName: "English", Autonym: "English", URL: "https://go.dev/tour/", Official: true},
+	{Locale: "en-GB", EnglishName: "English (United Kingdom)", Autonym: "English (United Kingdom)", URL: "https://en-gb-go-dev.shuijingwanwq.com/"},
 	{Locale: "et-EE", EnglishName: "Estonian", Autonym: "Eesti", URL: "https://et-go-dev.shuijingwanwq.com/"},
 	{Locale: "fil-PH", EnglishName: "Filipino", Autonym: "Filipino", URL: "https://fil-go-dev.shuijingwanwq.com/"},
 	{Locale: "fi-FI", EnglishName: "Finnish", Autonym: "Suomi", URL: "https://fi-go-dev.shuijingwanwq.com/"},
 	{Locale: "fr-FR", EnglishName: "French", Autonym: "Français", URL: "https://fr-go-dev.shuijingwanwq.com/"},
 	{Locale: "fr-CA", EnglishName: "French (Canada)", Autonym: "Français (Canada)", URL: "https://fr-ca-go-dev.shuijingwanwq.com/"},
 	{Locale: "de-DE", EnglishName: "German", Autonym: "Deutsch", URL: "https://de-go-dev.shuijingwanwq.com/"},
+	{Locale: "de-AT", EnglishName: "German (Austria)", Autonym: "Deutsch (Österreich)", URL: "https://de-at-go-dev.shuijingwanwq.com/"},
 	{Locale: "de-CH", EnglishName: "German (Switzerland)", Autonym: "Deutsch (Schweiz)", URL: "https://de-ch-go-dev.shuijingwanwq.com/"},
 	{Locale: "el-GR", EnglishName: "Greek", Autonym: "Ελληνικά", URL: "https://el-go-dev.shuijingwanwq.com/"},
 	{Locale: "gu-IN", EnglishName: "Gujarati", Autonym: "ગુજરાતી", URL: "https://gu-go-dev.shuijingwanwq.com/"},
@@ -67,6 +69,7 @@ var languageRegistry = []LanguageLink{
 	{Locale: "ru-RU", EnglishName: "Russian", Autonym: "Русский", URL: "https://ru-go-dev.shuijingwanwq.com/"},
 	{Locale: "sr-RS", EnglishName: "Serbian", Autonym: "Српски (ћирилица)", URL: "https://sr-go-dev.shuijingwanwq.com/"},
 	{Locale: "zh-CN", EnglishName: "Simplified Chinese", Autonym: "简体中文", URL: "https://go-dev.shuijingwanwq.com/"},
+	{Locale: "zh-SG", EnglishName: "Simplified Chinese (Singapore)", Autonym: "简体中文（新加坡）", URL: "https://zh-sg-go-dev.shuijingwanwq.com/"},
 	{Locale: "sk-SK", EnglishName: "Slovak", Autonym: "Slovenčina", URL: "https://sk-go-dev.shuijingwanwq.com/"},
 	{Locale: "sl-SI", EnglishName: "Slovenian", Autonym: "Slovenščina", URL: "https://sl-go-dev.shuijingwanwq.com/"},
 	{Locale: "es-ES", EnglishName: "Spanish", Autonym: "Español", URL: "https://es-go-dev.shuijingwanwq.com/"},
@@ -141,8 +144,11 @@ var (
 	lisbonTime      = mustLoadLocation("Europe/Lisbon")
 	addisAbabaTime  = mustLoadLocation("Africa/Addis_Ababa")
 	hongKongTime    = mustLoadLocation("Asia/Hong_Kong")
+	singaporeTime   = mustLoadLocation("Asia/Singapore")
 	torontoTime     = mustLoadLocation("America/Toronto")
 	zurichTime      = mustLoadLocation("Europe/Zurich")
+	viennaTime      = mustLoadLocation("Europe/Vienna")
+	londonTime      = mustLoadLocation("Europe/London")
 )
 
 var localeProfiles = map[string]localeProfile{
@@ -199,6 +205,13 @@ var localeProfiles = map[string]localeProfile{
 		DevelopmentLogURL: "https://www.shuijingwanwq.com/series/go-tour-chinese-edition-development-series/",
 		TimeZone:          time.FixedZone("UTC+8", 8*60*60),
 		TimeLabel:         "北京时间",
+		TimeLabelFormat:   "（%s）",
+		Direction:         "ltr",
+	},
+	"zh-SG": {
+		DevelopmentLogURL: "https://www.shuijingwanwq.com/series/go-tour-chinese-edition-development-series/",
+		TimeZone:          singaporeTime,
+		TimeLabel:         "新加坡时间",
 		TimeLabelFormat:   "（%s）",
 		Direction:         "ltr",
 	},
@@ -531,10 +544,24 @@ var localeProfiles = map[string]localeProfile{
 		TimeLabelFormat:   " (%s)",
 		Direction:         "ltr",
 	},
+	"de-AT": {
+		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",
+		TimeZone:          viennaTime,
+		TimeLabel:         "Ortszeit",
+		TimeLabelFormat:   " (%s)",
+		Direction:         "ltr",
+	},
 	"de-CH": {
 		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",
 		TimeZone:          zurichTime,
 		TimeLabel:         "Ortszeit",
+		TimeLabelFormat:   " (%s)",
+		Direction:         "ltr",
+	},
+	"en-GB": {
+		DevelopmentLogURL: "https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/",
+		TimeZone:          londonTime,
+		TimeLabel:         "local time",
 		TimeLabelFormat:   " (%s)",
 		Direction:         "ltr",
 	},

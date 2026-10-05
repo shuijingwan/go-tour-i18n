@@ -1,0 +1,10 @@
+* Zeiger auf Strukturen
+
+Auf Strukturfelder kann über einen Zeiger auf eine Struktur zugegriffen werden.
+
+Wenn wir den Strukturzeiger ⟪GTI18N_29695d33_000003⟫p⟪GTI18N_29695d33_000004⟫ haben, könnten wir für den Zugriff auf das Feld ⟪GTI18N_29695d33_000001⟫X⟪GTI18N_29695d33_000002⟫ der Struktur
+⟪GTI18N_29695d33_000005⟫(*p).X⟪GTI18N_29695d33_000006⟫ schreiben.
+Diese Schreibweise ist jedoch umständlich. Daher erlaubt die Sprache stattdessen,
+einfach ⟪GTI18N_29695d33_000007⟫p.X⟪GTI18N_29695d33_000008⟫ ohne explizite Dereferenzierung zu schreiben.
+
+⟪GTI18N_29695d33_000009⟫

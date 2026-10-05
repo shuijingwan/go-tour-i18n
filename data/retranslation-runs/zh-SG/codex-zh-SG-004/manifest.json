@@ -1,0 +1,102 @@
+{
+  "schema_version": 2,
+  "batch_id": "codex-zh-SG-004",
+  "locale": "zh-SG",
+  "protection_mode": "default",
+  "artifact_eof": "single_lf",
+  "unit_kind": "page",
+  "unit_count": 7,
+  "units": [
+    {
+      "unit_id": "moretypes/1",
+      "unit_kind": "page",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "7706eaf0d46acc79fdad3b7953e5571bf404551d71aaefafd8ba79f5761f9806",
+      "input_path": "inputs/moretypes-1.article",
+      "input_sha256": "b6b916daff7c87dfb9553a2c0e739f4ce3004aa40023a62d15e19ad5a693e67c",
+      "protected_token_count": 20,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "C",
+      "previous_finding": "两条 preformatted teaching comment 将 “read/set `i` through the pointer `p`” 译成“通过指针读取 `i` `p`”和“通过指针设置 `i` `p`”。当前中文语序不成立，并丢失了 `p` 是所经由的指针、`i` 是被读取/设置变量的技术关系。需修正这两条注释的语义关系，同时保持 `i`、`p` 代码标识符身份不变。"
+    },
+    {
+      "unit_id": "moretypes/7",
+      "unit_kind": "page",
+      "source_path": "_content/tour/moretypes.article",
+      "source_sha256": "a169cf48dd659510ff7f1f8adfdbed5a247b51a1f7c3a45ae972f18921925033",
+      "input_path": "inputs/moretypes-7.article",
+      "input_sha256": "0a00fb45417105f3622f8e6b08d9003a4e99957f46d5ee189713c54655e43cd5",
+      "protected_token_count": 9,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "`a[1:4]` 的说明把 source 的 “elements 1 through 3” 写成“`a` 的第 1 到第 3 个元素”。中文的“第 N 个元素”通常表达序数，会与 Go 的零基索引产生歧义：`a[1:4]` 实际选择的是索引 1、2、3 的元素。需明确这里描述的是索引范围，避免序数含义。"
+    },
+    {
+      "unit_id": "methods/3",
+      "unit_kind": "page",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "31c4fd0d80c8f1d96cf3efb1ecc1f9d3c0d1b5b70bb5c23bf7227b7007469588",
+      "input_path": "inputs/methods-3.article",
+      "input_sha256": "fbb300ac3eced02920b3c88f13388f189cd99dd85fa0a3640c4a08b1fd09be32",
+      "protected_token_count": 7,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "“你只能为接收者类型与方法定义在同一个包中的情况声明方法”虽然能够恢复原意，但中文句法明显生硬，把“接收者类型必须与方法定义在同一 package”这一条件表达成了“为……情况声明方法”。需仅重组该条件句，使同包约束自然、明确，不改变技术含义。"
+    },
+    {
+      "unit_id": "methods/4",
+      "unit_kind": "page",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "99f9fa4e5c4dd46d393f40b417d0430c4e27e56f40146f5f192f55ccda4e2db3",
+      "input_path": "inputs/methods-4.article",
+      "input_sha256": "b0406d8f47643b6ebf6a8cf6f8abac464b980781260c3f1f2bc4fbbb60859588",
+      "protected_token_count": 29,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "“尝试从第 16 行函数声明中删除 `*`；该函数就是 `Scale`，并观察……”的中文组织不自然，“该函数就是 `Scale`”割裂了原文中“第 16 行 `Scale` 函数声明”这一整体修饰关系。需明确删除对象是第 16 行 `Scale` 函数声明中的 `*`，保持后续观察程序行为的指令不变。"
+    },
+    {
+      "unit_id": "methods/9",
+      "unit_kind": "page",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "39efc19ed01619130489d21e421f2c0d8947b20f408580f4ceaabce6a0feb099",
+      "input_path": "inputs/methods-9.article",
+      "input_sha256": "d9eda098e85d67929359c7ca4ddb87022ceb1a3ad947a85d8da47a22e84a679a",
+      "protected_token_count": 13,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "首个定义句仍保留 `_interface_type_`；按 Present authority，该形式用户可见为强调的 “interface type”，不是受保护代码身份。当前 glossary 将 `interface type` mandatory 定为“接口类型”，因此这里存在一处明确的 untranslated/m mandatory terminology inconsistency。需按当前 glossary 处理该可翻译强调术语，并保持 emphasis 结构。"
+    },
+    {
+      "unit_id": "methods/15",
+      "unit_kind": "page",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "c205b4eb940358edea6321cfa422c3c00a560e9a6a71b08c8b3fa3ab9e4926ae",
+      "input_path": "inputs/methods-15.article",
+      "input_sha256": "24e65f498a8f93e18f462a78b6cbbba4147639a314a5dad8c242aa46d7ee2372",
+      "protected_token_count": 35,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "首个定义句仍保留 `_type_assertion_`；实际可见文本为强调的 “type assertion”，属于可翻译自然语言，而 glossary mandatory 要求“类型断言”。同一 Unit 后文已经使用“类型断言”，因此这里还造成 Unit 内部术语不一致。需按 glossary 统一该定义处术语，同时保持 emphasis 结构。"
+    },
+    {
+      "unit_id": "methods/16",
+      "unit_kind": "page",
+      "source_path": "_content/tour/methods.article",
+      "source_sha256": "26e4da09e80d30b06368691c76ee2940139b0f6fc40cad47bb6d1d2947933c27",
+      "input_path": "inputs/methods-16.article",
+      "input_sha256": "ec4d9702454a6eac6377c96b2e2638f746376335bc10e338a440a2cb2f3f7a4a",
+      "protected_token_count": 41,
+      "previous_snapshot_id": "qc-001",
+      "revision_feedback_source": "quality_check",
+      "previous_rating": "B",
+      "previous_finding": "首个定义句仍保留 `_type_switch_`；实际可见文本为强调的 “type switch”，而 glossary mandatory 明确要求“类型选择”。后文已使用“类型选择”，因此首处定义形成明确的 untranslated terminology inconsistency。需按 glossary 统一该定义处术语，同时保持 emphasis 结构。"
+    }
+  ]
+}

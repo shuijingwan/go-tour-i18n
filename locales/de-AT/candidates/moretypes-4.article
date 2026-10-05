@@ -1,0 +1,10 @@
+* Zeiger auf Strukturen
+
+Auf Strukturfelder kann über einen Zeiger auf eine Struktur zugegriffen werden.
+
+Wenn wir den Strukturzeiger `p` haben, könnten wir für den Zugriff auf das Feld `X` der Struktur
+`(*p).X` schreiben.
+Diese Schreibweise ist jedoch umständlich. Daher erlaubt die Sprache stattdessen,
+einfach `p.X` ohne explizite Dereferenzierung zu schreiben.
+
+.play moretypes/struct-pointers.go

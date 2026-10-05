@@ -1,0 +1,59 @@
+locale: en-GB
+
+# Regional policy: preserve the generic English source wherever it is already
+# natural for UK readers. Regionalise only genuine British-English prose.
+# In computing contexts, program/programming remain the standard forms.
+mandatory:
+  A Tour of Go: A Tour of Go
+  Go programming language: Go programming language
+  Go Playground: Go Playground
+  Run: Run
+  Format: Format
+  Reset: Reset
+
+preferred:
+  program: program
+  programming: programming
+  package: package
+  function: function
+  method: method
+  receiver: receiver
+  interface: interface
+  interface value: interface value
+  interface type: interface type
+  concrete type: concrete type
+  channel: channel
+  buffered channel: buffered channel
+  unbuffered channel: unbuffered channel
+  slice: slice
+  map: map
+  pointer: pointer
+  struct: struct
+  array: array
+  type: type
+  type parameter: type parameter
+  type inference: type inference
+  type assertion: type assertion
+  type switch: type switch
+  constraint: constraint
+  generic: generic
+  generics: generics
+  module: module
+  concurrency: concurrency
+  mutex: mutex
+  zero value: zero value
+  closure: closure
+  standard library: standard library
+  built-in: built-in
+  runtime: runtime
+  error: error
+  nil: nil
+  panic: panic
+  behavior: behaviour
+  color: colour
+
+forbidden:
+
+keep:
+  - Go
+  - goroutine

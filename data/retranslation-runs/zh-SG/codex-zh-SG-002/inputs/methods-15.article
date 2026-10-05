@@ -1,0 +1,25 @@
+* Type assertions
+
+A ⟪GTI18N_c205b4eb_000001⟫type_assertion⟪GTI18N_c205b4eb_000002⟫ provides access to an interface value's underlying concrete value.
+
+⟪GTI18N_c205b4eb_000003⟫
+
+This statement asserts that the interface value ⟪GTI18N_c205b4eb_000004⟫i⟪GTI18N_c205b4eb_000005⟫ holds the concrete type ⟪GTI18N_c205b4eb_000006⟫T⟪GTI18N_c205b4eb_000007⟫
+and assigns the underlying ⟪GTI18N_c205b4eb_000008⟫T⟪GTI18N_c205b4eb_000009⟫ value to the variable ⟪GTI18N_c205b4eb_000010⟫t⟪GTI18N_c205b4eb_000011⟫.
+
+If ⟪GTI18N_c205b4eb_000012⟫i⟪GTI18N_c205b4eb_000013⟫ does not hold a ⟪GTI18N_c205b4eb_000014⟫T⟪GTI18N_c205b4eb_000015⟫, the statement will trigger a ⟪GTI18N_c205b4eb_000016⟫.
+
+To ⟪GTI18N_c205b4eb_000017⟫test⟪GTI18N_c205b4eb_000018⟫ whether an interface value holds a specific type,
+a type assertion can return two values: the underlying value
+and a boolean value that reports whether the assertion succeeded.
+
+⟪GTI18N_c205b4eb_000019⟫
+
+If ⟪GTI18N_c205b4eb_000020⟫i⟪GTI18N_c205b4eb_000021⟫ holds a ⟪GTI18N_c205b4eb_000022⟫T⟪GTI18N_c205b4eb_000023⟫, then ⟪GTI18N_c205b4eb_000024⟫t⟪GTI18N_c205b4eb_000025⟫ will be the underlying value and ⟪GTI18N_c205b4eb_000026⟫ok⟪GTI18N_c205b4eb_000027⟫ will be true.
+
+If not, ⟪GTI18N_c205b4eb_000028⟫ok⟪GTI18N_c205b4eb_000029⟫ will be false and ⟪GTI18N_c205b4eb_000030⟫t⟪GTI18N_c205b4eb_000031⟫ will be the zero value of type ⟪GTI18N_c205b4eb_000032⟫T⟪GTI18N_c205b4eb_000033⟫,
+and no ⟪GTI18N_c205b4eb_000034⟫ occurs.
+
+Note the similarity between this syntax and that of reading from a map.
+
+⟪GTI18N_c205b4eb_000035⟫

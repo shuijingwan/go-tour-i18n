@@ -1,0 +1,11 @@
+* Pakete
+
+Jedes Go-Programm besteht aus Paketen.
+
+Die Ausführung eines Programms beginnt im Paket `main`.
+
+Dieses Programm verwendet die Pakete mit den Importpfaden `"fmt"` und `"math/rand"`.
+
+Konventionsgemäß entspricht der Paketname dem letzten Element des Importpfads. Das Paket `"math/rand"` besteht beispielsweise aus Dateien, die mit der Anweisung `package`rand` beginnen.
+
+.play basics/packages.go

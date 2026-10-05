@@ -1,0 +1,14 @@
+* default 选择
+
+如果没有其他分支就绪， `default` 分支就会在 `select` 中运行。
+
+使用 `default` 分支，可以尝试发送或接收而不发生阻塞：
+
+	select {
+	case i := <-c:
+		// 使用 i
+	default:
+		// 从 c 接收会阻塞
+	}
+
+.play concurrency/default-selection.go

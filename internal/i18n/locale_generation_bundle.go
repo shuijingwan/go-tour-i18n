@@ -37,15 +37,23 @@ type LocaleGenerationBundleOptions struct {
 	ReviewID string
 }
 
+type LocaleGenerationArticleSource struct {
+	Article        string `json:"article"`
+	SourcePath     string `json:"source_path"`
+	SourceTitle    string `json:"source_title"`
+	SourceSubtitle string `json:"source_subtitle"`
+}
+
 type LocaleGenerationContext struct {
-	SchemaVersion   int                          `json:"schema_version"`
-	Kind            string                       `json:"kind"`
-	TaskKind        string                       `json:"task_kind"`
-	Locale          string                       `json:"locale"`
-	ReviewID        string                       `json:"review_id,omitempty"`
-	Instruction     string                       `json:"instruction"`
-	ExpectedOutputs []string                     `json:"expected_outputs"`
-	SourceUnits     []GlossaryReviewerSourceUnit `json:"source_units,omitempty"`
+	SchemaVersion   int                             `json:"schema_version"`
+	Kind            string                          `json:"kind"`
+	TaskKind        string                          `json:"task_kind"`
+	Locale          string                          `json:"locale"`
+	ReviewID        string                          `json:"review_id,omitempty"`
+	Instruction     string                          `json:"instruction"`
+	ExpectedOutputs []string                        `json:"expected_outputs"`
+	ArticleSources  []LocaleGenerationArticleSource `json:"article_sources,omitempty"`
+	SourceUnits     []GlossaryReviewerSourceUnit    `json:"source_units,omitempty"`
 }
 
 type LocaleGenerationBundleManifest struct {
@@ -154,6 +162,21 @@ func ExportLocaleGenerationBundle(root string, catalog *Catalog, options LocaleG
 	case LocaleGenerationTaskLocaleAssets:
 		context.Instruction = "Generate complete target UI and article metadata files from their formal English source/context and the complete reviewed glossary. Do not modify TranslationUnits or Course SEO metadata."
 		context.ExpectedOutputs = []string{"ui.json", "article-metadata.json"}
+		articleSet := catalogArticleSet(catalog)
+		articleNames := make([]string, 0, len(articleSet))
+		for article := range articleSet {
+			articleNames = append(articleNames, article)
+		}
+		sort.Strings(articleNames)
+		context.ArticleSources = make([]LocaleGenerationArticleSource, 0, len(articleNames))
+		for _, article := range articleNames {
+			sourcePath := filepath.ToSlash(filepath.Join("_content", "tour", article))
+			title, subtitle, err := sourceArticleHeader(filepath.Join(root, filepath.FromSlash(sourcePath)))
+			if err != nil {
+				return nil, LocaleGenerationBundleManifest{}, err
+			}
+			context.ArticleSources = append(context.ArticleSources, LocaleGenerationArticleSource{Article: article, SourcePath: sourcePath, SourceTitle: title, SourceSubtitle: subtitle})
+		}
 		units, _, _, err := localeWorkflowUnitList(catalog)
 		if err != nil {
 			return nil, LocaleGenerationBundleManifest{}, err

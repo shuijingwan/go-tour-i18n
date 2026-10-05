@@ -1,0 +1,9 @@
+* 带短语句的 If
+
+与 `for` 一样， `if` 语句可以先执行一条短语句，再判断条件。
+
+该语句声明的变量只在 `if` 语句结束前处于作用域内。
+
+（尝试使用 `v`，把它放在最后一条 `return` 语句中。）
+
+.play flowcontrol/if-with-a-short-statement.go

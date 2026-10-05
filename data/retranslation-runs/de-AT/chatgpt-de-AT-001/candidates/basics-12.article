@@ -1,0 +1,12 @@
+* Nullwerte
+
+Variablen, die ohne expliziten Anfangswert deklariert werden, erhalten ihren
+_Nullwert_.
+
+Der Nullwert ist:
+
+- `0` für numerische Typen,
+- `false` für den booleschen Typ und
+- `""` (der leere String) für Strings.
+
+.play basics/zero.go

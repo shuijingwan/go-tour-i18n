@@ -1,0 +1,13 @@
+* 函数（续）
+
+当两个或多个连续的命名函数参数具有相同类型时，除最后一个参数外，其他参数的类型都可以省略。
+
+在此示例中，我们将
+
+	x int, y int
+
+简写为
+
+	x, y int
+
+.play basics/functions-continued.go

@@ -1,0 +1,10 @@
+* Übung: Webcrawler
+
+In dieser Übung verwenden Sie die Nebenläufigkeitsfunktionen von Go, um einen Webcrawler zu parallelisieren.
+
+Ändern Sie die Funktion `Crawl` so, dass URLs parallel abgerufen werden, ohne dieselbe URL zweimal abzurufen.
+
+_Hinweis_: Sie können einen Cache der bereits abgerufenen URLs in einer Map führen, aber Maps allein sind
+nicht für die nebenläufige Verwendung sicher!
+
+.play concurrency/exercise-web-crawler.go

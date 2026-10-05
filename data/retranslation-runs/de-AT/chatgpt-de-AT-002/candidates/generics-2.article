@@ -1,0 +1,12 @@
+* Generische Typen
+
+Neben generischen Funktionen unterstützt Go auch generische Typen. Ein Typ kann
+mit einem Typparameter parametrisiert werden, was beispielsweise bei der Implementierung
+generischer Datenstrukturen nützlich sein kann.
+
+Dieses Beispiel zeigt eine einfache Typdeklaration für eine einfach verkettete Liste,
+die Werte eines beliebigen Typs enthalten kann.
+
+Erweitern Sie diese Listenimplementierung als Übung um zusätzliche Funktionalität.
+
+.play generics/list.go
