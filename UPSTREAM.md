@@ -8,7 +8,7 @@
 
 - 仓库 URL：<https://github.com/golang/website.git>
 - 示例本地只读目录：`$HOME/code/go-website-upstream`（可按实际环境调整）
-- 分支：`master`
+- 历史导入分支：`master`（不实时跟踪）
 - 固定 commit：`db076098077c07d3cef1b85a2cf56ff52777f587`
 - Go 版本：`go1.26.0 linux/amd64`
 - 首次确认日期：2026-08-02
@@ -82,7 +82,9 @@ go run -mod=readonly ./cmd/tour-i18n upstream preview \
 
 Security 的 canonical family 是 `/doc/security/**`；`/security/**` 是向该 family 的 legacy redirect，不是反向 canonical。Tour 的 persistent page ID、present.Section/source stale contract不变；Markdown/HTML/YAML 使用 surface-specific content-unit/parser，不强迫使用 Tour Section identity。后续 sync 比较逐文件 role/route/content/dependency 和 package impact，遇到 ambiguous/unknown 必须人工映射；不能只用 whole commit 判定所有 package stale。
 
-V2-C 唯一一次正式 sync 当前 **deferred**：[Site v2 Architecture 第 10 节](docs/SITE_V2_ARCHITECTURE.md#10-upstream-contract-与-deferred-v2-c) 固化四个 tracked issue 的 canonical list。四个 issue 全部达到维护者预期完成状态，且维护者显式重开阶段后才能执行。允许先完成 V2-A、V2-B 与不依赖最终 freeze 的 runtime foundation；不得因自行判断 upstream 稳定而提前 sync。V2-C 后必须取得 final Site v2 inventory/current-stale closure，才进入第一门 `learn-docs-v1` campaign。
+V2-C1 前，`golang/website@db076098077c07d3cef1b85a2cf56ff52777f587` 是主动选择并冻结的正式 English source authority，不代表今天最新 upstream。architecture/runtime/campaign/independent review/activation/Preview/Production 均可基于它推进；不增加 Production 前联网 drift gate，不 fetch/pull upstream，不临时同步判断 master 漂移。
+
+V2-C1 唯一一次正式 sync 当前 **deferred**：[Site v2 Architecture 第 10 节](docs/SITE_V2_ARCHITECTURE.md#10-upstream-contract-与-deferred-v2-c1) 固化四个 tracked issue。四个 issue 全部达到维护者预期完成状态且维护者显式重开后才执行。调度为 V2-D → 正式模型 benchmark → 连续 locale campaign → frozen-baseline Preview/Production → 显式重开 V2-C1 → 一次 sync → exact reconciliation。sync 不阻塞第一批 campaign/Production。最终逐 package/file/route/dependency/content-unit 比较，只处理真实 affected/stale scope；unaffected translation/review/QC/SEO/Surface 结合 V2-B lineage 继续复用，不改历史 evidence，不因 whole commit 变化默认全量重译或全 locale stale。
 
 ## 基线验证命令
 

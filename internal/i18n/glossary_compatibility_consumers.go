@@ -148,3 +148,98 @@ func HistoricalTourSurfacePackage(root, locale, reviewID, glossarySHA string, da
 	}
 	return append(output, '\n'), nil
 }
+
+// HistoricalTourSurfacePackageForDeltaPlanning proves original exact bytes only.
+// It does not assert that affected language is current or grant any PASS.
+func HistoricalTourSurfacePackageForDeltaPlanning(root, locale, reviewID, glossarySHA string, data []byte, catalog *Catalog) ([]byte, error) {
+	path, err := LocaleSurfaceReviewAGatePath(root, locale, reviewID)
+	if err != nil {
+		return nil, err
+	}
+	relative, err := repositoryRelativePath(root, path)
+	if err != nil {
+		return nil, err
+	}
+	gateData, err := readCompatibilityFile(root, relative)
+	if err != nil {
+		return nil, err
+	}
+	var gate LocaleSurfaceReviewAGate
+	if err := decodeStrictCourseSourceDescriptionReviewJSON(gateData, &gate); err != nil {
+		return nil, err
+	}
+	if err := validateLocaleSurfaceReviewAGate(gate, locale); err != nil {
+		return nil, err
+	}
+	var pkg LocaleSurfaceReviewPackage
+	if err := decodeStrictCourseSourceDescriptionReviewJSON(data, &pkg); err != nil {
+		return nil, err
+	}
+	if pkg.Locale != locale || gate.ReviewID != reviewID || !historicalDeltaInputsExact(gate.Inputs, pkg.Inputs) {
+		return nil, fmt.Errorf("historical language/config projection is stale")
+	}
+	if glossarySHA != pkg.Glossary.SHA256 {
+
+		bytes, err := readArchivedGlossary(root, locale, glossarySHA)
+		if err != nil {
+			return nil, err
+		}
+		pkg.Glossary.SHA256 = glossarySHA
+		pkg.Glossary.Text = string(bytes)
+		pkg.Inputs.GlossarySHA256 = glossarySHA
+	}
+	if gate.Inputs.ProjectConfigSHA256 != pkg.Inputs.ProjectConfigSHA256 || gate.Inputs.SEOConfigSHA256 != pkg.Inputs.SEOConfigSHA256 {
+		var b TourSurfaceConfigBaseline
+		if gate.SchemaVersion == localeSurfaceReviewASchemaVersionV4 {
+			if !recordedTourSurfaceConfigProjectionValid(root, gate.Inputs) {
+				return nil, fmt.Errorf("historical config bytes unavailable")
+			}
+			b.Project = GlossaryArchiveReference{"data/surface-config-history/" + gate.Inputs.ProjectConfigSHA256 + ".go", gate.Inputs.ProjectConfigSHA256}
+			b.SEO = GlossaryArchiveReference{"data/surface-config-history/" + gate.Inputs.SEOConfigSHA256 + ".go", gate.Inputs.SEOConfigSHA256}
+		} else {
+			if !historicalTourSurfaceConfigCompatible(root, locale, gate, gateData) {
+				return nil, fmt.Errorf("historical config bytes unavailable")
+			}
+			bytes, err := readCompatibilityFile(root, surfaceConfigBaselinePath(locale, reviewID))
+			if err != nil {
+				return nil, err
+			}
+			if err := decodeStrictCourseSourceDescriptionReviewJSON(bytes, &b); err != nil {
+				return nil, err
+			}
+		}
+		for _, input := range []struct {
+			original string
+			ref      GlossaryArchiveReference
+		}{{"internal/tour/project.go", b.Project}, {"internal/tour/seo.go", b.SEO}} {
+			ref, original := input.ref, input.original
+			bytes, err := readCompatibilityFile(root, ref.Path)
+			if err != nil {
+				return nil, err
+			}
+			found := false
+			for i := range pkg.OtherSurfaces {
+				if pkg.OtherSurfaces[i].Path == original {
+					pkg.OtherSurfaces[i].SHA256 = ref.SHA256
+					pkg.OtherSurfaces[i].SourceText = string(bytes)
+					found = true
+				}
+			}
+			if !found {
+				return nil, fmt.Errorf("missing exact historical config context")
+			}
+		}
+		pkg.Inputs.ProjectConfigSHA256 = gate.Inputs.ProjectConfigSHA256
+		pkg.Inputs.SEOConfigSHA256 = gate.Inputs.SEOConfigSHA256
+	}
+	output, err := json.MarshalIndent(pkg, "", "  ")
+	if err != nil {
+		return nil, err
+	}
+	return append(output, '\n'), nil
+}
+
+func historicalDeltaInputsExact(a, b LocaleSurfaceReviewAInputs) bool {
+	a.GlossarySHA256 = b.GlossarySHA256
+	return a.UILocaleSHA256 == b.UILocaleSHA256 && a.ArticleMetadataSHA256 == b.ArticleMetadataSHA256 && a.CourseMetadataSHA256 == b.CourseMetadataSHA256 && a.CatalogSourceSHA256 == b.CatalogSourceSHA256 && a.CourseSourceDescriptionsSHA256 == b.CourseSourceDescriptionsSHA256 && a.CourseSourceDescriptionReviewSHA256 == b.CourseSourceDescriptionReviewSHA256 && a.ProductionPublicIdentitySHA256 == b.ProductionPublicIdentitySHA256 && a.ProjectConfigSHA256 == b.ProjectConfigSHA256 && a.SEOConfigSHA256 == b.SEOConfigSHA256
+}

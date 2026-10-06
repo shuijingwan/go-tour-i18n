@@ -174,7 +174,7 @@ func ExportRetranslationBatch(root string, catalog *Catalog, options Retranslati
 	if len(options.UnitIDs) > MaxRetranslationExportLimit {
 		return nil, fmt.Errorf("a retranslation batch must not contain more than %d TranslationUnits", MaxRetranslationExportLimit)
 	}
-	if err := RequireCurrentGlossaryReview(root, options.Locale); err != nil {
+	if err := RequireNewLanguageGlossaryReview(root, options.Locale); err != nil {
 		return nil, fmt.Errorf("retranslation export requires current Glossary Review coverage: %w", err)
 	}
 

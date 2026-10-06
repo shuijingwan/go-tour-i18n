@@ -36,6 +36,14 @@ func LoadArticleMetadata(root, locale string, catalog *Catalog) (map[string]Arti
 	if err != nil {
 		return nil, fmt.Errorf("read article metadata: %w", err)
 	}
+	return ValidateArticleMetadataBytes(locale, catalog, data)
+}
+
+func ValidateArticleMetadataBytes(locale string, catalog *Catalog, data []byte) (map[string]ArticleMetadata, error) {
+	var strict articleMetadataFile
+	if err := decodeStrictCourseSourceDescriptionReviewJSON(data, &strict); err != nil {
+		return nil, err
+	}
 	decoder := json.NewDecoder(bytes.NewReader(data))
 	decoder.DisallowUnknownFields()
 	var file articleMetadataFile

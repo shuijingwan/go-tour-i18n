@@ -411,11 +411,21 @@ func BuildGlobal(root string, snapshot []byte) (*Global, error) {
 	}
 	g := &Global{Schema: GlobalSchema, PublicName: PublicName, UpstreamRepository: "https://github.com/golang/website.git", UpstreamCommit: tour.FrozenUpstreamCommit, SnapshotSHA256: digest(snapshot), Sources: sources,
 		Versions: []Version{{"site-v1", []string{"tour-v1"}}, {"site-v2", []string{"tour-v1", "site-v2-shell", "learn-docs-v1"}}},
-		Surfaces: []Surface{{"tour", "tour-v1", "/tour/**", "present.Section", "legacy-formal-local"}, {"homepage", "site-v2-shell", "/", "site-surface", "requires-independent-completion"}, {"translation", "site-v2-shell", "/translation/", "site-surface", "requires-independent-completion"}},
+		Surfaces: []Surface{{"tour", "tour-v1", "/tour/**", "present.Section", "legacy-formal-local"}, {"homepage", "site-v2-shell", "/", UnitContract, "requires-independent-completion"}, {"translation", "site-v2-shell", "/translation/", UnitContract, "requires-independent-completion"}},
 		Packages: []Package{{ID: "tour-v1", Activation: "legacy-evidence", Routes: []string{"/tour/", "/tour/list"}, Surfaces: []string{"tour"}}, {ID: "site-v2-shell", Activation: "independent-shell-gates", Routes: []string{"/", "/translation/"}, Surfaces: []string{"homepage", "translation"}}, {ID: "learn-docs-v1", Activation: "atomic-locale-package", Routes: []string{}, Surfaces: []string{"learn", "tutorial", "database", "modules", "security"}}},
 	}
 	for i, id := range g.Packages[2].Surfaces {
-		g.Surfaces = append(g.Surfaces, Surface{id, "learn-docs-v1", strings.TrimPrefix(learnRoots[i], "_content") + "/**", "surface-specific-pending", "requires-independent-completion"})
+		g.Surfaces = append(g.Surfaces, Surface{id, "learn-docs-v1", strings.TrimPrefix(learnRoots[i], "_content") + "/**", UnitContract, "requires-independent-completion"})
+	}
+	for _, s := range ShellSources() {
+		b, err := readRegular(root, s.Path)
+		if err != nil {
+			return nil, err
+		}
+		s.Origin = "repository"
+		s.SHA256 = digest(b)
+		s.Dependencies = []Dependency{}
+		g.Sources = append(g.Sources, s)
 	}
 	for _, p := range catalog.Pages {
 		// Page.Route remains the Tour-internal identity; scope owns its public projection.
@@ -443,6 +453,9 @@ func BuildGlobal(root string, snapshot []byte) (*Global, error) {
 	}
 	for i := range g.Packages {
 		p := &g.Packages[i]
+		if p.ID == "site-v2-shell" || p.ID == "learn-docs-v1" {
+			p.ParserContract = UnitContract
+		}
 		sort.Strings(p.Routes)
 		part := []Source{}
 		for _, s := range g.Sources {

@@ -184,6 +184,11 @@ func glossaryCompatibilityEvidencePath(locale, identity string) (string, error) 
 }
 
 func currentGlossaryReviewReference(root, locale, sha string) (GlossaryArchiveReference, error) {
+	if rs, err := currentUnifiedReviews(root, locale); err != nil {
+		return GlossaryArchiveReference{}, err
+	} else if len(rs) > 0 {
+		return RequireUnifiedGlossaryReview(root, locale)
+	}
 	if err := RequireCurrentGlossaryReview(root, locale); err != nil {
 		return GlossaryArchiveReference{}, err
 	}
@@ -206,6 +211,22 @@ func validateCompatibilityReview(root, locale, sha string, reference GlossaryArc
 	}
 	if sum(data) != reference.SHA256 {
 		return fmt.Errorf("compatibility Review hash mismatch")
+	}
+	if strings.HasPrefix(reference.Path, "data/unified-glossary-reviews/") {
+		var r UnifiedGlossaryReview
+		if err := decodeStrictCourseSourceDescriptionReviewJSON(data, &r); err != nil {
+			return err
+		}
+		if err := validateUnifiedReview(r, locale); err != nil {
+			return err
+		}
+		if err := validateUnifiedReviewBundle(root, r); err != nil {
+			return err
+		}
+		if r.GlossarySHA != sha || r.Decision != "passed" || reference.Path != UnifiedGlossaryReviewPath(locale, r.ReviewID) {
+			return fmt.Errorf("unified compatibility Review mismatch")
+		}
+		return nil
 	}
 	var receipt GlossaryReviewReceipt
 	if err := decodeStrictCourseSourceDescriptionReviewJSON(data, &receipt); err != nil {

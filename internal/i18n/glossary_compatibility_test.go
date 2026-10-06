@@ -26,6 +26,7 @@ func compatibilityFixture(t *testing.T) (string, *Catalog, string) {
 	if _, _, err := RecordGlossaryReview(root, "zh-CN", "original", "independent-reviewer", "passed", nil); err != nil {
 		t.Fatal(err)
 	}
+	recordSyntheticUnifiedReview(t, root, "original-unified")
 	addProcessedPromotionBatch(t, root, catalog, "codex-zh-CN-001", []string{"lesson/1", "lesson/2", "lesson/3"})
 	materializeSnapshotSources(t, root, catalog)
 	article, _ := os.ReadFile(filepath.Join(root, "_content/tour/lesson.article"))
@@ -76,6 +77,7 @@ func compatibilityChange(t *testing.T, root string, data string, id string) stri
 	if _, _, err := RecordGlossaryReview(root, "zh-CN", id, "independent-reviewer", "passed", nil); err != nil {
 		t.Fatal(err)
 	}
+	recordSyntheticUnifiedReview(t, root, id+"-unified")
 	return sum([]byte(data))
 }
 

@@ -335,19 +335,30 @@ func CheckLocale(root string, g *Global, locale string) (*Locale, error) {
 	if err := i18n.ValidateLocaleName(locale); err != nil {
 		return nil, err
 	}
-	b, err := readRegular(root, LocalePath(locale))
+	l, err := readLocaleAuthority(root, g, locale)
 	if err != nil {
 		return nil, err
 	}
-	var got Locale
-	if err := StrictJSON(b, &got); err != nil {
-		return nil, err
-	}
+	got := *l
 	if got.Locale != locale {
 		return nil, fmt.Errorf("locale scope identity mismatch")
 	}
 	if err := ValidateLocale(g, got); err != nil {
 		return nil, err
+	}
+	legacyGot := got
+	legacyGot.Packages = []Completion{}
+	for _, c := range got.Packages {
+		if c.Package == "tour-v1" {
+			legacyGot.Packages = append(legacyGot.Packages, c)
+			continue
+		}
+		if err := checkPackageCompletion(root, g, locale, c); err != nil {
+			return nil, err
+		}
+	}
+	if len(legacyGot.Packages) == 0 {
+		return &got, nil
 	}
 	profiles, err := liveProfiles(root)
 	if err != nil {
@@ -359,15 +370,15 @@ func CheckLocale(root string, g *Global, locale string) (*Locale, error) {
 	}
 	for _, p := range profiles {
 		if p.Locale == locale {
-			if len(got.Packages) == 0 {
+			if len(legacyGot.Packages) == 0 {
 				return &got, nil // no completion claim, therefore no evidence to accept
 			}
 			want, err := legacyLocale(root, g, catalog, p)
 			if err != nil {
 				return nil, err
 			}
-			if !reflect.DeepEqual(got, *want) {
-				if err := compatibleLegacyCompletion(root, g, catalog, p, got, *want); err != nil {
+			if !reflect.DeepEqual(legacyGot, *want) {
+				if err := compatibleLegacyCompletion(root, g, catalog, p, legacyGot, *want); err != nil {
 					return nil, fmt.Errorf("%s content completion STALE: %w", locale, err)
 				}
 			}

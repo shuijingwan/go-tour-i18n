@@ -1,5 +1,14 @@
 # 新增 Locale 执行手册
 
+## Versionless locale authority（V2-D 收敛）
+
+v1/v2/v3 是 implementation/content-package milestone，不是 locale language governance namespace。Content package 可以版本化；Locale language system 不版本化。全站只有 `locales/<locale>/glossary.yaml`，不得 Tour/Docs/v2 split。current executable migration、统一 corpus、一次完整 glossary generation/refresh、统一 structured assets、完整 Page TU 与 delta-aware integrated Surface contract 见 [Site v2 Workflow](SITE_V2_WORKFLOW.md)。本节是全站扩展入口；下文旧 Tour workflow/evidence 保持兼容，不授权重复初始化 locale 或改写历史证据。
+
+已有 Tour-complete locale 首次扩展：一次 unified glossary refresh → 一次独立 full unified Review → compatibility → 一次 pending structured-assets Generation → 两批 Learn/Docs Page Generation / 两批 Page QC → 一次 integrated Surface Review。unchanged Tour/UI/meta/SEO carry；只有真实 affected scope reopen。新 locale 从零执行同一 locale campaign，glossary 与 structured-assets 各一次，Tour 和 Learn/Docs 各用其 surface-specific parser/TU batches；没有第二次“V2 locale init”。Course SEO 是 Page-derived consumer，按自己的 canonical source/ready target contract 单列，不强行并入 structured-assets；没有 Learn/Docs canonical SEO authority时不创建 SEO target。
+
+新 unified receipt `go-learning/unified-glossary-review/v1` 与 old v1/Tour legacy coverage additive 共存。新 Generation 要求 current unified coverage；旧 completion仍按旧 evidence合法验证。unified current exact优先；多个 current unified receipts、glossary/corpus mismatch fail closed。旧 receipt immutable，不 retroactively upgrade corpus coverage。glossary bytes不变但 corpus变了仍需一次 full unified Review；不猜造 corpus compatibility shortcut。新 glossary byte change须 full unified PASS后才用 V2-B semantic delta/精确 lineage复用旧结果。
+
+
 本文档是新增一门社区语言的唯一高层入口。它把 locale 准备、翻译、语言表层审核、首次生产部署和上线验收串成一条发布路径，但不复制各阶段的正式细则。执行具体阶段时，必须进入本文引用的对应规范。
 
 本文适用于新增 locale；已有 locale 的 TranslationUnit 修订仍从 [多语言翻译流程](TRANSLATION_WORKFLOW.md) 开始，日常生产发布直接使用 [生产运维手册](PRODUCTION_RUNBOOK.md) 的维护部署流程。
@@ -131,8 +140,9 @@ go run -mod=readonly ./cmd/tour-i18n glossary-review reviewer-bundle-check \
   --locale <locale> --bundle /tmp/<locale>-glossary-reviewer.zip
 go run -mod=readonly ./cmd/tour-i18n glossary-review record \
   --locale <locale> --review-id <review-id> \
-  --reviewer <reviewer> --decision passed
-go run -mod=readonly ./cmd/tour-i18n glossary-review check --locale <locale>
+  --reviewer <reviewer> --generation-session <generation-session> \
+  --bundle /tmp/<locale>-glossary-reviewer.zip --decision passed
+go run -mod=readonly ./cmd/tour-i18n glossary-review check --locale <locale> --coverage unified
 ```
 
 只有 PASS 后，Generation session 才正式生成 UI catalog 与 article metadata，并继续 TranslationUnit generation。Reviewer 若返回 failed finding，只由 Generation session 修订 glossary；修订后重新完整审核。Glossary Review 不替代最终 Locale Surface Review。
@@ -152,7 +162,7 @@ go run -mod=readonly ./cmd/tour-i18n glossary-review check --locale <locale>
 
 UI catalog、首页和 metadata 不属于 TranslationUnit candidate、status、Quality Check、machine finalization 或 promotion。它们必须在后续 Surface Review 中单独验收。
 
-Glossary Review PASS 后，UI/article generation 使用 `generation-bundle locale-export --task locale-assets`，并在使用结果前执行 `generation-bundle locale-check`。bundle 完整绑定 English UI/article source、当前 target、reviewed glossary、locale identity 与 authority，但不直接覆盖 skeleton 文件；Generation / Reviewer 闭环中的当前 AI execution environment 默认完成结构校验与正式落盘。
+Unified Glossary Review PASS 后，`generation-bundle locale-export --task locale-assets` 是统一 structured-assets 入口：一次 invocation 处理当前 registered Tour UI、article metadata、shell 与 Learn data，只输出 generation-required exact set，carried asset不重新输出。在使用结果前执行 `generation-bundle locale-check`；按 [Site v2 Workflow](SITE_V2_WORKFLOW.md) 的 composite import/subasset validator 验证结果后，再由具备仓库终端能力的 AI 完成既有 Tour canonical asset 落盘步骤。bundle 不直接覆盖 skeleton，Course SEO derived generation 单列。
 
 `status.tsv` 不是语言资产，也不得从其他 locale 复制。`locale init` 已调用与 `status init` 相同的正式 catalog 初始化逻辑；不要再次运行会因文件已存在而 fail closed 的 `status init`。第一次进入 TranslationUnit retranslation export 前立即校验：
 

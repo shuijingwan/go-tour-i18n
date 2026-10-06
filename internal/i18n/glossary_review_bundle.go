@@ -27,6 +27,16 @@ func VerifyCurrentGlossaryReviewerBundle(root, locale string, catalog *Catalog, 
 	if err != nil {
 		return GlossaryReviewerBundleManifest{}, err
 	}
+	if bytes.Contains(files["manifest.json"], []byte("go-learning/unified-glossary-bundle/v1")) {
+		m, err := CheckUnifiedGlossaryBundle(root, bundle)
+		if err != nil {
+			return GlossaryReviewerBundleManifest{}, err
+		}
+		if m.Locale != locale || m.Role != "reviewer" {
+			return GlossaryReviewerBundleManifest{}, fmt.Errorf("Reviewer identity mismatch")
+		}
+		return GlossaryReviewerBundleManifest{SchemaVersion: 2, Kind: m.Schema, Locale: m.Locale, GlossarySHA256: m.GlossarySHA, InputIdentitySHA256: m.Identity, Files: m.Files}, nil
+	}
 	var manifest GlossaryReviewerBundleManifest
 	if err := decodeStrictBundleJSON(files["manifest.json"], &manifest); err != nil {
 		return manifest, fmt.Errorf("parse glossary reviewer bundle manifest: %w", err)
@@ -37,7 +47,7 @@ func VerifyCurrentGlossaryReviewerBundle(root, locale string, catalog *Catalog, 
 	if err := ValidateTransportBundleInventory(files, manifest.Files, true); err != nil {
 		return manifest, err
 	}
-	current, currentManifest, err := ExportGlossaryReviewerBundle(root, locale, catalog)
+	current, currentManifest, err := ExportLegacyGlossaryReviewerBundle(root, locale, catalog)
 	if err != nil {
 		return manifest, err
 	}
@@ -80,6 +90,15 @@ type GlossaryReviewerBundleManifest struct {
 }
 
 func ExportGlossaryReviewerBundle(root, locale string, catalog *Catalog) ([]byte, GlossaryReviewerBundleManifest, error) {
+	b, m, err := ExportUnifiedGlossaryBundle(root, locale, "reviewer")
+	if err != nil {
+		return nil, GlossaryReviewerBundleManifest{}, err
+	}
+	return b, GlossaryReviewerBundleManifest{SchemaVersion: 2, Kind: m.Schema, Locale: m.Locale, GlossarySHA256: m.GlossarySHA, InputIdentitySHA256: m.Identity, Files: m.Files}, nil
+}
+
+// ExportLegacyGlossaryReviewerBundle reads historical Tour-only transport.
+func ExportLegacyGlossaryReviewerBundle(root, locale string, catalog *Catalog) ([]byte, GlossaryReviewerBundleManifest, error) {
 	if catalog == nil {
 		return nil, GlossaryReviewerBundleManifest{}, fmt.Errorf("glossary reviewer bundle catalog is required")
 	}

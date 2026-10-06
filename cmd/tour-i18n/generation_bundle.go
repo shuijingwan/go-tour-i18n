@@ -6,8 +6,10 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/shuijingwan/go-tour-i18n/internal/i18n"
+	"github.com/shuijingwan/go-tour-i18n/internal/sitecontent"
 )
 
 func exportGenerationBundleCommand(root string, catalog *i18n.Catalog, args []string) error {
@@ -47,6 +49,26 @@ func exportLocaleGenerationBundleCommand(root string, catalog *i18n.Catalog, arg
 	if *locale == "" || *taskKind == "" || *output == "" || fs.NArg() != 0 {
 		return fmt.Errorf("usage: generation-bundle locale-export --locale <locale> --task <glossary|locale-assets|surface-replacement> [--review-id <review-id>] --output <output.zip>")
 	}
+	if *taskKind == "glossary" {
+		if err := sitecontent.CheckUnifiedCorpus(root); err != nil {
+			return err
+		}
+	}
+	if *taskKind == "locale-assets" {
+		if *reviewID != "" {
+			return fmt.Errorf("locale-assets cannot carry review-id")
+		}
+		data, m, err := sitecontent.ExportStructuredAssets(root, *locale)
+		if err != nil {
+			return err
+		}
+		p, err := writeNewTransportOutput(*output, data)
+		if err != nil {
+			return err
+		}
+		fmt.Printf("Unified structured Generation bundle: %s outputs=%d identity=%s\n", p, len(m.Plan.Expected), m.Identity)
+		return nil
+	}
 	data, manifest, err := i18n.ExportLocaleGenerationBundle(root, catalog, i18n.LocaleGenerationBundleOptions{Locale: *locale, TaskKind: *taskKind, ReviewID: *reviewID})
 	if err != nil {
 		return err
@@ -71,6 +93,18 @@ func checkLocaleGenerationBundleCommand(root string, catalog *i18n.Catalog, args
 	bundle, err := readRegularBundleFile(*bundlePath)
 	if err != nil {
 		return err
+	}
+	files, err := i18n.ReadTransportBundle(bundle, 256, 32<<20)
+	if err != nil {
+		return err
+	}
+	if strings.Contains(string(files["manifest.json"]), sitecontent.StructuredSchema) {
+		m, err := sitecontent.CheckStructuredAssetsBundle(root, bundle)
+		if err != nil {
+			return err
+		}
+		fmt.Printf("Unified structured bundle CURRENT: %s\n", m.Identity)
+		return nil
 	}
 	manifest, err := i18n.VerifyCurrentLocaleGenerationBundle(root, catalog, bundle)
 	if err != nil {

@@ -138,10 +138,17 @@ func RecordGlossaryReview(root, locale, reviewID, reviewer, decision string, fin
 	return receipt, path, nil
 }
 
-// RequireCurrentGlossaryReview accepts exactly one current authority: either a
-// passed formal receipt or one fixed legacy migration entry. It never derives
-// legacy coverage dynamically from arbitrary Surface Review gates.
+// RequireCurrentGlossaryReview proves historical/current Tour coverage. A unique
+// current passed unified review takes precedence; well-formed failed/conflicting
+// campaign reviews do not shadow exact-valid old Tour evidence. Corrupt unified
+// artifacts still fail closed. New language work must use the strict unified gate.
 func RequireCurrentGlossaryReview(root, locale string) error {
+	if rs, err := currentUnifiedReviews(root, locale); err != nil {
+		return err
+	} else if len(rs) == 1 && rs[0].Decision == "passed" {
+		_, err := RequireUnifiedGlossaryReview(root, locale)
+		return err
+	}
 	if err := ValidateLocaleName(locale); err != nil {
 		return err
 	}

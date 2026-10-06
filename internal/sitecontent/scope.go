@@ -7,7 +7,6 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
-	"io"
 	"io/fs"
 	"os"
 	"path"
@@ -17,6 +16,7 @@ import (
 	"strings"
 
 	"github.com/shuijingwan/go-tour-i18n/internal/contentidentity"
+	"github.com/shuijingwan/go-tour-i18n/internal/i18n"
 )
 
 const GlobalPath = "data/site-content-scope.json"
@@ -44,6 +44,7 @@ type Package struct {
 	Dependencies   []Dependency `json:"contract_dependencies"`
 	SourceIdentity string       `json:"source_identity_sha256"`
 	Identity       string       `json:"identity_sha256"`
+	ParserContract string       `json:"parser_contract,omitempty"`
 }
 type Dependency struct {
 	Kind   string `json:"kind"`
@@ -94,54 +95,7 @@ func validRoute(s string) bool {
 }
 
 // StrictJSON also rejects duplicate object members; encoding/json alone accepts them.
-func StrictJSON(b []byte, v any) error {
-	d := json.NewDecoder(bytes.NewReader(b))
-	var walk func() error
-	walk = func() error {
-		t, err := d.Token()
-		if err != nil {
-			return err
-		}
-		if t == json.Delim('{') {
-			seen := map[string]bool{}
-			for d.More() {
-				k, err := d.Token()
-				if err != nil {
-					return err
-				}
-				s, ok := k.(string)
-				if !ok || seen[s] {
-					return fmt.Errorf("duplicate/invalid JSON member %v", k)
-				}
-				seen[s] = true
-				if err := walk(); err != nil {
-					return err
-				}
-			}
-			_, err = d.Token()
-			return err
-		}
-		if t == json.Delim('[') {
-			for d.More() {
-				if err := walk(); err != nil {
-					return err
-				}
-			}
-			_, err = d.Token()
-			return err
-		}
-		return nil
-	}
-	if err := walk(); err != nil {
-		return err
-	}
-	if _, err := d.Token(); err != io.EOF {
-		return fmt.Errorf("trailing JSON")
-	}
-	d = json.NewDecoder(bytes.NewReader(b))
-	d.DisallowUnknownFields()
-	return d.Decode(v)
-}
+func StrictJSON(b []byte, v any) error { return contentidentity.StrictJSON(b, v) }
 
 func readRegular(root, p string) ([]byte, error) {
 	if !validPath(p) {
@@ -195,6 +149,9 @@ func ValidateGlobal(g Global) error {
 			return fmt.Errorf("duplicate/empty package")
 		}
 		packages[p.ID] = p
+		if packageWorkflow(p.ID) && p.ParserContract != UnitContract {
+			return fmt.Errorf("unknown package parser contract: %s", p.ID)
+		}
 		for _, r := range p.Routes {
 			if !validRoute(r) || routes[r] {
 				return fmt.Errorf("duplicate/invalid canonical route %q", r)
@@ -315,6 +272,39 @@ func packageByID(g *Global, id string) (Package, error) {
 }
 func LocalePath(locale string) string { return "locales/" + locale + "/content-scope.json" }
 
+// Missing sparse authority is incomplete, never a completion claim. The locale
+// itself must already have its existing canonical identity; no second init.
+func readLocaleAuthority(root string, g *Global, locale string) (*Locale, error) {
+	if err := i18n.ValidateLocaleName(locale); err != nil {
+		return nil, err
+	}
+	b, err := readRegular(root, LocalePath(locale))
+	if os.IsNotExist(err) {
+		identityBytes, err := readRegular(root, "locales/"+locale+"/locale.json")
+		if err != nil {
+			return nil, err
+		}
+		if err := i18n.ValidateLocaleIdentityBytes(locale, identityBytes); err != nil {
+			return nil, err
+		}
+		return &Locale{Schema: LocaleSchema, Locale: locale, Packages: []Completion{}}, nil
+	}
+	if err != nil {
+		return nil, err
+	}
+	var l Locale
+	if err := StrictJSON(b, &l); err != nil {
+		return nil, err
+	}
+	if l.Locale != locale {
+		return nil, fmt.Errorf("locale scope identity mismatch")
+	}
+	if err := ValidateLocale(g, l); err != nil {
+		return nil, err
+	}
+	return &l, nil
+}
+
 func ValidateLocale(g *Global, l Locale) error {
 	if l.Schema != LocaleSchema || !validPath(l.Locale) || path.Base(l.Locale) != l.Locale || l.Packages == nil {
 		return fmt.Errorf("invalid locale content scope")
@@ -334,6 +324,17 @@ func ValidateLocale(g *Global, l Locale) error {
 		}
 		switch c.State {
 		case "complete":
+			if packageWorkflow(c.Package) {
+				if c.EvidenceKind != PackageCompletionKind || c.LegacySurfaceState != "" || len(c.Evidence) != 2 || !validSHA(c.ContextIdentity) || c.EvidenceIdentity != identity(c.Evidence) || !reflect.DeepEqual(c.Routes, p.Routes) || !reflect.DeepEqual(c.Surfaces, p.Surfaces) || !reflect.DeepEqual(c.RouteFamilies, routeFamilies(c.Package)) {
+					return fmt.Errorf("unsupported/unproven atomic package completion")
+				}
+				for _, r := range c.Evidence {
+					if !validPath(r.Path) || !validSHA(r.SHA256) {
+						return fmt.Errorf("invalid completion evidence reference")
+					}
+				}
+				continue
+			}
 			// V2-A only admits the verified existing Tour closure; future activation requires new gates.
 			if c.Package != "tour-v1" || c.EvidenceKind != "legacy-tour-closure/v1" || (c.LegacySurfaceState != "current" && c.LegacySurfaceState != "historical-verified") || len(c.Evidence) == 0 || !validSHA(c.ContextIdentity) || c.EvidenceIdentity != identity(c.Evidence) || !reflect.DeepEqual(c.Routes, p.Routes) || !reflect.DeepEqual(c.Surfaces, p.Surfaces) || !reflect.DeepEqual(c.RouteFamilies, []string{"/tour/**"}) {
 				return fmt.Errorf("unsupported/unproven completion")

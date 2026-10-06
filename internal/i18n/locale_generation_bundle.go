@@ -70,6 +70,16 @@ type LocaleGenerationBundleManifest struct {
 // for locale-level language generation. Formal mutation remains with the
 // existing task-specific local workflow; this bundle is not a receipt or gate.
 func ExportLocaleGenerationBundle(root string, catalog *Catalog, options LocaleGenerationBundleOptions) ([]byte, LocaleGenerationBundleManifest, error) {
+	if options.TaskKind == LocaleGenerationTaskGlossary {
+		if options.ReviewID != "" {
+			return nil, LocaleGenerationBundleManifest{}, fmt.Errorf("glossary generation cannot use surface Review ID")
+		}
+		b, m, err := ExportUnifiedGlossaryBundle(root, options.Locale, "generation")
+		if err != nil {
+			return nil, LocaleGenerationBundleManifest{}, err
+		}
+		return b, LocaleGenerationBundleManifest{SchemaVersion: 2, Kind: m.Schema, TaskKind: "glossary", Locale: m.Locale, InputIdentitySHA256: m.Identity, Files: m.Files}, nil
+	}
 	if catalog == nil {
 		return nil, LocaleGenerationBundleManifest{}, fmt.Errorf("locale generation bundle catalog is required")
 	}
@@ -89,7 +99,7 @@ func ExportLocaleGenerationBundle(root string, catalog *Catalog, options LocaleG
 		return nil, LocaleGenerationBundleManifest{}, fmt.Errorf("review_id is only valid for surface-replacement")
 	}
 	if options.TaskKind != LocaleGenerationTaskGlossary {
-		if err := RequireCurrentGlossaryReview(root, options.Locale); err != nil {
+		if err := RequireNewLanguageGlossaryReview(root, options.Locale); err != nil {
 			return nil, LocaleGenerationBundleManifest{}, fmt.Errorf("%s generation requires current Glossary Review coverage: %w", options.TaskKind, err)
 		}
 	}
@@ -245,6 +255,16 @@ func VerifyCurrentLocaleGenerationBundle(root string, catalog *Catalog, bundle [
 	files, err := ReadTransportBundle(bundle, 512, 256<<20)
 	if err != nil {
 		return LocaleGenerationBundleManifest{}, err
+	}
+	if bytes.Contains(files["manifest.json"], []byte("go-learning/unified-glossary-bundle/v1")) {
+		m, err := CheckUnifiedGlossaryBundle(root, bundle)
+		if err != nil {
+			return LocaleGenerationBundleManifest{}, err
+		}
+		if m.Role != "generation" {
+			return LocaleGenerationBundleManifest{}, fmt.Errorf("Generation role mismatch")
+		}
+		return LocaleGenerationBundleManifest{SchemaVersion: 2, Kind: m.Schema, TaskKind: "glossary", Locale: m.Locale, InputIdentitySHA256: m.Identity, Files: m.Files}, nil
 	}
 	var manifest LocaleGenerationBundleManifest
 	if err := decodeStrictBundleJSON(files["manifest.json"], &manifest); err != nil {

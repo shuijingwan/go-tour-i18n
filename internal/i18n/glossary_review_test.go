@@ -129,8 +129,8 @@ func TestLegacyGlossaryReviewCoverageIsFixedAndByteBound(t *testing.T) {
 	if err := RequireCurrentGlossaryReview(root, locale); err != nil {
 		t.Fatalf("current fixed legacy coverage: %v", err)
 	}
-	if _, err := ExportRetranslationBatch(root, retranslationTestCatalog(1), RetranslationExportOptions{Locale: locale}); err != nil {
-		t.Fatalf("legacy locale export: %v", err)
+	if _, err := ExportRetranslationBatch(root, retranslationTestCatalog(1), RetranslationExportOptions{Locale: locale}); err == nil || !strings.Contains(err.Error(), "unified Glossary Review") {
+		t.Fatalf("new generation accepted Tour-only coverage: %v", err)
 	}
 	data, err := os.ReadFile(glossaryPath)
 	if err != nil {
@@ -305,7 +305,9 @@ func writeLegacyGlossaryReviewTestSurfaceGate(t *testing.T, root, locale string)
 		t.Fatal(err)
 	}
 	gate := LocaleSurfaceReviewAGate{
-		SchemaVersion: localeSurfaceReviewASchemaVersion,
+		// Fixed legacy coverage models historical evidence, not a new v4 review.
+		// Floating to the latest schema would omit its required source identity.
+		SchemaVersion: localeSurfaceReviewASchemaVersionV3,
 		Locale:        locale,
 		ReviewID:      "historic-review",
 		Stage:         localeSurfaceReviewAStage,

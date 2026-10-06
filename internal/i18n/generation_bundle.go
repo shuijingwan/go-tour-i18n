@@ -116,7 +116,7 @@ func ExportTranslationUnitGenerationBundle(root string, catalog *Catalog, option
 	if err := validateBatchID(options.BatchID); err != nil {
 		return nil, GenerationBundleManifest{}, err
 	}
-	if err := RequireCurrentGlossaryReview(root, options.Locale); err != nil {
+	if err := RequireNewLanguageGlossaryReview(root, options.Locale); err != nil {
 		return nil, GenerationBundleManifest{}, fmt.Errorf("generation bundle requires current Glossary Review coverage: %w", err)
 	}
 	batchDir := filepath.Join(root, "data", "retranslation-runs", options.Locale, options.BatchID)

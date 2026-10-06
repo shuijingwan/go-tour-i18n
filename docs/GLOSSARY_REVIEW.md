@@ -1,5 +1,16 @@
 # Glossary Review 规范
 
+## Versionless locale authority（V2-D 收敛）
+
+v1/v2/v3 是 implementation/content-package milestone，不是 locale language governance namespace。Content package 可以版本化；Locale language system 不版本化。全站只有 `locales/<locale>/glossary.yaml`，不得 Tour/Docs/v2 split。current executable migration、统一 corpus、一次完整 glossary generation/refresh、统一 structured assets、完整 Page TU 与 delta-aware integrated Surface contract 见 [Site v2 Workflow](SITE_V2_WORKFLOW.md)。本节是全站扩展入口；下文旧 Tour workflow/evidence 保持兼容，不授权重复初始化 locale 或改写历史证据。
+
+已有 Tour-complete locale 首次扩展：一次 unified glossary refresh → 一次独立 full unified Review → compatibility → 一次 pending structured-assets Generation → 两批 Learn/Docs Page Generation / 两批 Page QC → 一次 integrated Surface Review。unchanged Tour/UI/meta/SEO carry；只有真实 affected scope reopen。新 locale 从零执行同一 locale campaign，glossary 与 structured-assets 各一次，Tour 和 Learn/Docs 各用其 surface-specific parser/TU batches；没有第二次“V2 locale init”。Course SEO 是 Page-derived consumer，按自己的 canonical source/ready target contract 单列，不强行并入 structured-assets；没有 Learn/Docs canonical SEO authority时不创建 SEO target。
+
+新 unified receipt `go-learning/unified-glossary-review/v1` 与 old v1/Tour legacy coverage additive 共存。新 Generation 要求 current unified coverage；旧 completion仍按旧 evidence合法验证。unified current exact优先；多个 current unified receipts、glossary/corpus mismatch fail closed。旧 receipt immutable，不 retroactively upgrade corpus coverage。glossary bytes不变但 corpus变了仍需一次 full unified Review；不猜造 corpus compatibility shortcut。新 glossary byte change须 full unified PASS后才用 V2-B semantic delta/精确 lineage复用旧结果。
+
+历史/current Tour completion 的 `RequireCurrentGlossaryReview` 优先接受唯一 current PASS unified review；well-formed FAILED 或 conflicting unified campaign receipts 不遮蔽仍 exact-valid 的旧 Tour formal/legacy proof。glossary bytes 真正改变后，旧 proof 不再匹配，不能 fallback carry。新工作使用 `RequireNewLanguageGlossaryReview` / `RequireUnifiedGlossaryReview`，仍严格拒绝 FAILED、conflicting 或 stale unified authority。malformed/schema/self-identity/unsafe-path/archived bundle 损坏属于证据完整性错误，两类 gate 均 fail closed，不以 legacy fallback 掩盖。
+
+
 Glossary Review 是新 locale 在正式语言生成前对完整 `locales/<locale>/glossary.yaml` 执行的独立语言审核。它验证术语决策本身是否可作为全站 authority；TranslationUnit Quality Check 只验证 candidate 是否遵守 glossary，不能替代本阶段。
 
 ## 顺序与职责
@@ -11,8 +22,8 @@ locale init
 → Generation session 制定完整 glossary
 → generation-independent Reviewer session 完整 Glossary Review
 → AI execution environment 记录并检查 current passed receipt
-→ Generation session 生成 UI / article metadata
-→ TranslationUnit generation
+→ Generation session 一次 Unified Structured Assets（只输出 pending assets）
+→ 同一 locale campaign 内 Tour TranslationUnits / Learn-Docs Pages generation
 → TranslationUnit Quality Check / promotion / Course SEO
 → Locale Surface Review
 ```
@@ -53,7 +64,7 @@ go run -mod=readonly ./cmd/tour-i18n glossary-review reviewer-bundle-check \
   --bundle /tmp/<locale>-glossary-reviewer.zip
 ```
 
-ZIP 包含完整 glossary、locale identity、122 TranslationUnit 的完整 English/source context、English UI、正式 catalog TSV、术语与审核 authority，以及 exact inventory/hash。相同 working tree 重复导出必须 byte-stable；记录结论前必须运行 current-check，任何 glossary、source 或 authority 变化都使旧 ZIP fail closed。bundle 只是 transport，不是 receipt 或 review decision，Reviewer 不得在审核 session 生成 replacement。
+新 ZIP 包含完整 glossary、locale identity、完整 Unified Glossary Source Corpus、术语与审核 authority，以及 exact inventory/hash。Corpus 已机械覆盖 Tour、UI、metadata、canonical SEO、shell、Learn data 和 Learn/Docs Page；不再只使用 122 Tour TU。相同 working tree 重复导出必须 byte-stable；记录结论前必须运行 current-check，任何 glossary、source 或 authority 变化都使旧 ZIP fail closed。bundle 只是 transport，不是 receipt 或 review decision，Reviewer 不得在审核 session 生成 replacement。
 
 ## Receipt 与 current gate
 
@@ -64,25 +75,29 @@ go run -mod=readonly ./cmd/tour-i18n glossary-review record \
   --locale <locale> \
   --review-id <review-id> \
   --reviewer <reviewer> \
+  --generation-session <generation-session> \
+  --bundle /tmp/<locale>-glossary-reviewer.zip \
   --decision passed
 
 go run -mod=readonly ./cmd/tour-i18n glossary-review record \
   --locale <locale> \
   --review-id <review-id> \
   --reviewer <reviewer> \
+  --generation-session <generation-session> \
+  --bundle /tmp/<locale>-glossary-reviewer.zip \
   --decision failed \
   --finding '<specific finding>'
 ```
 
-产物为 `data/glossary-reviews/<locale>/<review-id>.review.json`，绑定 `schema_version`、`evidence_type`、`locale`、`review_id`、`stage`、`decision`、`reviewer`、`rubric = glossary-review/v1`、规范 glossary path 和 CLI 从当前正式文件计算的 SHA-256。Receipt 不覆盖；新一轮审核使用新的 review-id。
+新产物为 `data/unified-glossary-reviews/<locale>/<review-id>.review.json`，绑定完整 glossary path/SHA、corpus identity、Reviewer Bundle/input identity、独立 session、decision/findings、rubric 和可重算 self identity。Receipt/Reviewer ZIP/glossary archive 均不覆盖；新一轮审核使用新的 review-id。旧 `data/glossary-reviews/**` v1 receipt 与 fixed legacy coverage 继续只作为可信历史/Tour coverage，不改写、不冒称统一 corpus coverage。
 
 检查 current gate：
 
 ```sh
-go run -mod=readonly ./cmd/tour-i18n glossary-review check --locale <locale>
+go run -mod=readonly ./cmd/tour-i18n glossary-review check --locale <locale> --coverage unified
 ```
 
-`check` 重新读取当前 glossary。missing、malformed、wrong locale、non-passed、schema/evidence/stage 或 rubric mismatch、glossary path/SHA mismatch、重复 current receipt，或正式 receipt 与 legacy coverage 同时成为 current authority，都 fail closed。Glossary 任意字节变化会使旧 receipt stale。聊天记录不是 evidence。
+unified `check` 同时重新读取当前完整 glossary 和 corpus identity。missing、malformed、wrong locale、non-passed、rubric/path/hash/input mismatch、多个 current unified receipts 均 fail closed。exact current unified receipt 优先，旧 Tour-only receipt 不参与 ambiguity。Glossary byte change 或 corpus identity change 都使旧 unified receipt stale。默认 `--coverage tour` 保留旧 Tour coverage 检查；聊天记录不是 evidence。
 
 所有首次及后续正式 `retranslation export` 都调用同一 gate；没有 current coverage 时不会创建 batch 或其他 export artifact。Glossary Review PASS 只证明当前 glossary 已完成独立审核，不证明任何 UI、metadata、TranslationUnit candidate 或 Course SEO 已通过审核。
 

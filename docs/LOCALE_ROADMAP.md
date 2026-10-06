@@ -1,5 +1,14 @@
 # Locale 长期路线图
 
+## Versionless locale authority（V2-D 收敛）
+
+v1/v2/v3 是 implementation/content-package milestone，不是 locale language governance namespace。Content package 可以版本化；Locale language system 不版本化。全站只有 `locales/<locale>/glossary.yaml`，不得 Tour/Docs/v2 split。current executable migration、统一 corpus、一次完整 glossary generation/refresh、统一 structured assets、完整 Page TU 与 delta-aware integrated Surface contract 见 [Site v2 Workflow](SITE_V2_WORKFLOW.md)。本节是全站扩展入口；下文旧 Tour workflow/evidence 保持兼容，不授权重复初始化 locale 或改写历史证据。
+
+已有 Tour-complete locale 首次扩展：一次 unified glossary refresh → 一次独立 full unified Review → compatibility → 一次 pending structured-assets Generation → 两批 Learn/Docs Page Generation / 两批 Page QC → 一次 integrated Surface Review。unchanged Tour/UI/meta/SEO carry；只有真实 affected scope reopen。新 locale 从零执行同一 locale campaign，glossary 与 structured-assets 各一次，Tour 和 Learn/Docs 各用其 surface-specific parser/TU batches；没有第二次“V2 locale init”。Course SEO 是 Page-derived consumer，按自己的 canonical source/ready target contract 单列，不强行并入 structured-assets；没有 Learn/Docs canonical SEO authority时不创建 SEO target。
+
+新 unified receipt `go-learning/unified-glossary-review/v1` 与 old v1/Tour legacy coverage additive 共存。新 Generation 要求 current unified coverage；旧 completion仍按旧 evidence合法验证。unified current exact优先；多个 current unified receipts、glossary/corpus mismatch fail closed。旧 receipt immutable，不 retroactively upgrade corpus coverage。glossary bytes不变但 corpus变了仍需一次 full unified Review；不猜造 corpus compatibility shortcut。新 glossary byte change须 full unified PASS后才用 V2-B semantic delta/精确 lineage复用旧结果。
+
+
 本文档是社区 locale 的长期实施范围、当前 Go Tour 剩余调度，以及未来多语言项目默认顺序的唯一 authority。[新增 Locale 执行手册](NEW_LOCALE_RUNBOOK.md) 仍是单个新 locale 的正式执行流程 authority；本文只确定规划范围与调度，不替代 locale identity freeze、语言资产、质量审核、Production 或上线流程。
 
 ## 1. 当前已完成：65 个 live community locale
@@ -85,15 +94,18 @@ Hebrew 的 Google Search Console 与 Bing Webmaster Tools sitemap 已提交；�
 → 剩余 IndexNow closeout 已全部完成
 → V2-A Architecture / Content Scope
 → V2-B compatibility / freshness gates
-→ 可继续不依赖最终 upstream freeze 的 V2 runtime foundation
-→ 维护者确认跟踪的 4 个 upstream Go issue 完成，并明确重新打开 V2-C
-→ V2-C 只执行一次 upstream source sync（当前 deferred）
-→ final Site v2 inventory / current-stale closure
+→ V2-D runtime / localization workflow foundation
+→ 正式模型 benchmark
+→ 连续 learn-docs-v1 locale campaign
+→ frozen-baseline Preview / Production
+→ 4 个 tracked issue 完成 + 维护者显式重开 V2-C1
+→ V2-C1 只执行一次 upstream source sync（当前 deferred）
+→ exact source/package/content-unit reconciliation；只处理真实 stale 范围
 → 基于真实运行数据只执行一次跨项目商业排序
 → 冻结以后多语言项目的语言池与默认顺序
 ```
 
-Hebrew 已于 2026-10-06 取得自身 `IndexNow bootstrap: PASS` 与 `IndexNow closeout: PASS`，此前对应 deferred issue 已核销。当前不再存在 IndexNow closeout blocker。维护者已明确暂缓 V2-C 唯一一次 upstream source sync，等待当前跟踪的 4 个 upstream Go issue 全部达到预期完成状态；不得自行提前同步，也不得改成每批 locale 同步。Site v2 的 content package 与第一门 `learn-docs-v1` locale campaign 前置条件见 [Site v2 Architecture authority](SITE_V2_ARCHITECTURE.md)。
+Hebrew 已于 2026-10-06 取得自身 `IndexNow bootstrap: PASS` 与 `IndexNow closeout: PASS`，此前对应 deferred issue 已核销。当前不再存在 IndexNow closeout blocker。V2-C1 前主动冻结 `db076098077c07d3cef1b85a2cf56ff52777f587` 为正式 English source authority，允许 campaign/review/activation/Preview/Production；不表示今天最新 master，不增加联网 drift gate，不 fetch/pull/sync。V2-C1 等待 [Architecture 第 10 节](SITE_V2_ARCHITECTURE.md#10-upstream-contract-与-deferred-v2-c1) 的四个 issue 全部达到预期状态并显式重开，不阻塞第一批 locale。最终 sync 只精确处理 affected scope，复用 unaffected evidence/V2-B lineage，不改写历史、不默认全量重译。
 
 此前完成的 Swahili、Kazakh、Persian、Amharic 仍应按既有运营计划申请或维护 go.dev Go local 链接；该事项不改变它们已经 `live` 的完成状态。
 
@@ -109,7 +121,7 @@ Google Search Console 与 Bing Webmaster Tools 已提交 Hebrew 的正式 `/site
 
 ## 5. Go Tour 完成后的一次性跨项目商业排序与冻结
 
-固定 65 个 community locale 全部完成、Hebrew 已按完整正式流程进入 `live`、一次统一 upstream source sync 完成并取得真实运行数据后，维护者只进行 **一次最终跨项目商业排序**。可使用的数据包括：
+固定 65 个 community locale 已全部完成。维护者仍只进行 **一次最终跨项目商业排序**；最终排序/冻结可等待 V2-C1 与真实 Site v2 运行数据，不阻塞第一批 Site v2 locale 实施。可使用的数据包括：
 
 - PV；
 - Google Search impressions / clicks；

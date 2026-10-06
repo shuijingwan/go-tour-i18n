@@ -2,6 +2,18 @@
 
 本文是 Site v2 架构与内容范围的正式 authority；V2-A 建立 contract、schema、离线 inventory/current-check 和可信 legacy bootstrap，不是翻译、runtime 切换或 Production 授权。单门 locale 的既有正式 gates 仍以各 Runbook 为准。
 
+V2-D runtime / shell与Learn-Docs content-unit / transport / independent QC / atomic activation 的 executable contract 见 [Site v2 Workflow](SITE_V2_WORKFLOW.md)。V2-D 不生成 locale 翻译，不激活 incomplete package，不切换既有 Tour runtime。
+
+## Versionless Locale Architecture
+
+正式采用“版本无关的 Locale 持续演进模型”。v1/v2/v3 是 repository implementation / content-package / source-contract milestones，不是 locale language governance namespace。**Content package 可以版本化；Locale language system 不版本化。** package 是 source/completion/reuse boundary，不是 language-governance boundary。
+
+每个 locale 永远只有同一个 locale identity、一份 `locales/<locale>/glossary.yaml`、一个长期 Generation session 和一个独立长期 Reviewer session。Tour / Learn / Docs / future registered surface 共享 terminology、provenance、compatibility、stale/carry 和 integrated Surface Review。新增 package 只处理新内容、shared surfaces 与真实 affected scope；exact source/protection/target/QC/glossary/public context unchanged 的历史成果继续 carry，不因 milestone、whole upstream commit 或无关 document 变化重做。
+
+统一 source registry 是 `data/glossary-source-corpus.json` 的 contributors：由正式 Tour parsers、English UI、canonical article/SEO authority、Content Scope 注册的 shell/Page/Learn data 机械投影。structured-assets consumer 使用同一 contributor metadata，不维护另一份 surface 名单。当前正式 Learn/Docs Page TU 是完整物理 Page（49），internal slots 只负责保护/重建/影响分析；7 YAML 和 shell 属于 shared structured-assets。固定 Page stable index authority 在 `data/learn-docs-pages.json`。
+
+新 unified Glossary Review 同时绑定完整 glossary bytes + current corpus identity；旧 Tour-only receipt/legacy coverage immutable，仍验证旧 Tour completion。exact unified current Review 优先，旧 receipts 不参与 unified ambiguity；新语言工作要求 unified coverage。具体 machine contract、CLI 与 migration 顺序见 [Site v2 Workflow](SITE_V2_WORKFLOW.md)。
+
 ## 1. 版本、命名与职责边界
 
 canonical English public project name：**Go Learning & Documentation Translations**；中文维护语义：**Go 学习与文档多语言翻译项目**。这是 public / user-visible identity，不是技术身份迁移。V2-A 只冻结命名 contract，不修改现有 Tour 文案与其审核证据；后续正式 Site surfaces 才生成/审核新文案。
@@ -31,7 +43,7 @@ canonical English public project name：**Go Learning & Documentation Translatio
 
 Global machine schema 定义 versions、packages、surfaces、source kind/path/origin/hash、canonical route、redirect alias/raw/resolved destination、asset/data dependency、package contract dependency、activation/publication semantics、upstream repository/commit、source/package/global SHA-256。不保存任何 locale 动态完成状态。`tour-v1` article 是多页面源，canonical routes 来自持久 Tour catalog，不是假定一个文件一个 URL。Tour inventory 是 physical source closure，不替代其现有 Page / Example catalog；既有 103 Page / 19 eligible Example 的 TranslationUnit membership仍由原 catalog 决定，不根据文件数量或 asset 存储分类扩展/删除旧 Unit。
 
-per-locale state 是 **sparse completion authority**：只持久记录正式 `complete` package 的 package/scope identity、source authority、completed surfaces、local canonical routes/route families、completion evidence refs/digest、validated context identity。global package 在 locale file 中缺席，machine-readably 等价于 `incomplete`；禁止持久保存 incomplete record 或其 package/source identity。check/status 从 global package set + locale completion set 推导完整状态。未完成 shell / Learn-Docs source 变化、未来 global package additive 扩展均不使已有 Tour completion stale，也不要求修改全部 locale files；已完成 Tour 自身 identity 变化仍必须 stale。unknown package、伪造 completion fail closed；V2-A 只接受既有 `legacy-tour-closure/v1`，不接受 `site-v2-shell`、`learn-docs-v1` 或 future package complete。未来 activation 需先扩展 evidence-kind contract 和正式 gates，不能手写 `complete` 绕过。
+per-locale state 是 **sparse completion authority**：只持久记录正式 `complete` package 的 package/scope identity、source authority、completed surfaces、local canonical routes/route families、completion evidence refs/digest、validated context identity。global package 在 locale file 中缺席，machine-readably 等价于 `incomplete`；禁止持久保存 incomplete record 或其 package/source identity。check/status 从 global package set + locale completion set 推导完整状态。未完成 shell / Learn-Docs source 变化、未来 global package additive 扩展均不使已有 Tour completion stale，也不要求修改全部 locale files；已完成 Tour 自身 identity 变化仍必须 stale。unknown package、伪造 completion fail closed；V2-A 历史只接受既有 `legacy-tour-closure/v1`。V2-D additive 接受 shell/Learn-Docs 的 `independent-package-closure/v1`，但必须重算完整 current source/parser、provenance、validation 与独立 A-only finalization；没有 evidence 的 complete 不合法。future unknown package 仍不允许 activation。
 
 `tour-v1` public canonical projection 固定为 `/tour/`、`/tour/list` 与 current formal catalog 的 103 个 `/tour/<article>/<section>`，合计 105 routes，例如 `/tour/basics/1`、`/tour/welcome/1`。catalog 内部 `Page.Route`（如 `/basics/1`）不变，但不得作为 Site public canonical route。
 
@@ -150,31 +162,34 @@ shared-authority cleanup debt：`internal/sitecontent` 当前暂时复用 `inter
 
 preference：**AdsUnsupported > GoLocal > Standard**。目前另有 4 门 Google Ads 不支持的 locale，本轮不猜代码、不从语言 tag/路线图推导、不冻结名单。首次 Site v2 locale Production 前必须依据正式广告配置及真实支持情况冻结显式 locale set。`/translation/` 和其他站内页面不得绕过 GoLocal Tour policy。最终广告 runtime 最迟第一门 Site v2 / learn-docs-v1 locale Production 前实现并通过 machine/browser gates；V2-A 只记录目标。
 
-## 10. Upstream contract 与 deferred V2-C
+## 10. Upstream contract 与 deferred V2-C1
 
-V2-C 唯一一次正式 upstream source sync **deferred**。本节是 frozen tracked upstream issue set 的 canonical authority：
+V2-C1 唯一一次正式 upstream source sync **deferred**。V2-C1 前，`golang/website@db076098077c07d3cef1b85a2cf56ff52777f587` 是本项目主动选择并冻结的正式 English source authority；architecture、runtime、localization campaign、independent review、package activation、Preview 与 Production 均允许基于该 baseline 推进。这不表示本地 checkout 等于今天官方最新 upstream，也不实时跟踪 master。本节是 frozen tracked upstream issue set 的 canonical authority：
 
 - `golang/go#81336`
 - `golang/go#81482`
 - `golang/go#81596`
 - `golang/go#81958`
 
-正式 gate 必须同时满足：以上四个 issue 全部达到维护者预期完成状态 **并且** 维护者显式重新打开 V2-C。部分完成不自动重开阶段。本轮不联网查询最新状态、不执行 sync、不自行判断“已足够稳定”。
+正式 gate 必须同时满足：以上四个 issue 全部达到维护者预期完成状态 **并且** 维护者显式重新打开 V2-C1。部分完成不自动重开阶段。重开前不 fetch/pull/sync，也不为判断 master 漂移临时同步；不增加每次 Production 前联网 drift check，不把最新 upstream 状态作为 locale Production blocker。只按 frozen source/package identity 完成正式 gate。
 
 ```text
 65 Tour locale live + IndexNow closeout complete
 → V2-A Architecture / Content Scope
 → V2-B compatibility / freshness gates
-→ 可继续不依赖最终 freeze 的 V2 runtime foundation
-→ 维护者明确确认 4 个 upstream issue 完成并重新打开 V2-C
-→ V2-C 唯一一次 upstream source sync
-→ final Site v2 inventory / current-stale closure
-→ 第一门完整 learn-docs-v1 locale campaign
+→ V2-D runtime / localization workflow foundation
+→ 正式模型 benchmark
+→ 可连续执行完整 learn-docs-v1 locale campaign
+→ 按 frozen baseline 完成 Preview / Production
+→ 4 个 issue 完成 + 维护者显式重开 V2-C1
+→ V2-C1 唯一一次 upstream source sync
+→ exact source/package/content-unit reconciliation
+→ 已完成 / 已上线 / 在途 locale 仅处理真实 stale 范围
 ```
 
-一次性跨项目商业排序仍按路线图，只在统一 sync 与真实运行数据就绪后执行一次，不每批 sync。V2-C 的 global baseline、package inventory、per-file SHA/role/route、redirect/asset/data dependency 与 package impact共同决定 current/stale；需要 manual mapping 的 ambiguous 不自动 apply。
+一次性跨项目商业排序仍按路线图，最终排序/冻结可等待 V2-C1 与真实 Site v2 流量、收入、referral、indexing、维护成本数据；不阻塞第一批 Site v2 locale。V2-C1 后逐 package/file/route/dependency/content-unit 比较；unaffected translation/review/QC/SEO/Surface 继续复用，使用 V2-B glossary compatibility/freshness lineage，仅 affected scope reopen/revision/re-QC/Surface refresh。historical evidence 不改写，全量重译不是默认恢复方案，whole upstream commit 变化不自动使所有已上线 locale stale。route change 显式映射，ambiguous 停止人工确认。
 
-Tour 的 persistent page identity、`present.Section` TranslationUnit 与 source-stale contract继续保留。Learn/Docs Markdown/HTML/YAML 使用 surface-specific parser/content-unit identity；本轮不把它们塞入 Tour Section，也不实现翻译 engine。V2-C final inventory closure 前的 V2-A snapshot 只是现有 baseline，不是第一门翻译 campaign 的最终 freeze。
+Tour 的 persistent page identity、`present.Section` TranslationUnit 与 source-stale contract继续保留。Learn/Docs Markdown/HTML/YAML 使用 surface-specific parser/content-unit identity。V2-A snapshot 是 pre-V2-C1 正式冻结 baseline；基于它通过全部 gate 的 locale 不因 V2-C1 尚未执行而不合法。
 
 ## 11. V2-A deterministic commands 与停止点
 

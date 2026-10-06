@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/shuijingwan/go-tour-i18n/internal/i18n"
+	"github.com/shuijingwan/go-tour-i18n/internal/sitecontent"
 )
 
 func exportGlossaryReviewerBundleCommand(root string, catalog *i18n.Catalog, args []string) error {
@@ -17,6 +18,9 @@ func exportGlossaryReviewerBundleCommand(root string, catalog *i18n.Catalog, arg
 	if *locale == "" || *output == "" || fs.NArg() != 0 {
 		return fmt.Errorf("usage: glossary-review reviewer-bundle --locale <locale> --output <output.zip>")
 	}
+	if err := sitecontent.CheckUnifiedCorpus(root); err != nil {
+		return err
+	}
 	data, manifest, err := i18n.ExportGlossaryReviewerBundle(root, *locale, catalog)
 	if err != nil {
 		return err
@@ -25,8 +29,8 @@ func exportGlossaryReviewerBundleCommand(root string, catalog *i18n.Catalog, arg
 	if err != nil {
 		return err
 	}
-	fmt.Printf("Glossary Review reviewer bundle exported: %s (locale=%s units=%d pages=%d examples=%d glossary_sha256=%s identity=%s)\n",
-		path, manifest.Locale, manifest.UnitCount, manifest.PageCount, manifest.ExampleCount, manifest.GlossarySHA256, manifest.InputIdentitySHA256)
+	fmt.Printf("Unified Glossary Review reviewer bundle exported: %s (locale=%s glossary_sha256=%s input_identity=%s)\n",
+		path, manifest.Locale, manifest.GlossarySHA256, manifest.InputIdentitySHA256)
 	return nil
 }
 

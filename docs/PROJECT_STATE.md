@@ -1,8 +1,25 @@
 # 项目状态
 
+V2-D final architecture采用Versionless Locale Architecture：v1/v2/v3是implementation/content-package milestones，不是locale language governance namespace。统一source corpus authority为 `data/glossary-source-corpus.json`（403 contributors、3,004 contexts），stable Page authority为 `data/learn-docs-pages.json`。正式执行contract见 [Site v2 Workflow](SITE_V2_WORKFLOW.md)。本轮仅foundation，不生成真实locale language/evidence。
+
+
 更新时间：2026-10-06（北京时间）
 
 ## 基线与架构
+
+### 2026-10-06 Site v2-D Runtime / Localization Workflow Foundation
+
+- 新 authority：[Site v2 workflow](SITE_V2_WORKFLOW.md)。neutral `internal/site` 提供 opt-in coverage resolver、真实 missing-route 404、直接官方 navigation fallback、frozen redirect exact/subtree semantics、local canonical/sitemap 与 advertising policy；现有 Tour runtime/Playground/SEO/publish 入口没有切换。
+- shell 两个独立 English source 与 parser contract 已通过受限静态升级正式绑定 global Content Scope；原 Tour package identity 保持 `926ee5bf113ecc24d9128ed4531e740092f2ca88f6f154cf101f6b8478ed83a9`。Learn/Docs 从未变的 frozen ZIP 提取 49 page + 7 data，共 56 localizable sources、2,646 internal linguistic slots（v2 parser；formal Page TU=49，structured data=7）；6 redirect/18 asset 不生成语言单元。
+- current full glossary Generation transport、独立 Reviewer transport/QC、A-only finalization、V2-B semantic compatibility lineage、package-atomic activation 与 read-only exact reconciliation hook 已建立。Versionless Locale Architecture 与 shared corpus/structured-assets contract 已收敛；formal Page stable index 1–49，Generation/QC 固定30/19两组，slot packing仅internal diagnostic。旧Tour completion与历史 evidence保持兼容，新Generation必须unified corpus Review PASS。
+- final architecture focused tests PASS；统一 corpus 为 373,363 projected UTF-8 bytes，identity 为 `c7fd8d5aff9593c04dbc5e03f3e6a4976ccb263eb444dc4a4015de05bfcf6822`。隔离扩展 fixture 证明旧 Tour 122 TU carry、新 Learn/Docs 56 文件进入 integrated Surface reviewed scope，不重新审核旧 Page。最终一次 `content-scope check --all` 为 `CURRENT locales=65`，global identity 为 `4549ffd8ef832d38968e9118661160c7cfc2207f9fe83fb08a2f5ae36868b212`。65 locale 仍仅持有 Tour completion，shell/learn-docs 均 incomplete；现有 glossary、语言、Snapshot/QC/Surface/SEO evidence、Production identity/live state 均未改写。
+- V2-D 广告机制验收不阻塞；第一门 Site v2 Production 前唯一 advertising blocker 是维护者冻结具有正式依据的 unsupported locale explicit set，未从路线图语言名猜 tag。未执行翻译、benchmark、V2-C1、upstream fetch/pull、Preview/Production、commit/push；停止在 foundation。
+
+### 2026-10-06 pre-V2-C1 正式冻结与调度更新
+
+- `golang/website@db076098077c07d3cef1b85a2cf56ff52777f587` 是主动冻结的正式 English source authority，不表示今天官方最新 master。V2-D → 模型 benchmark → 连续 learn-docs-v1 campaign → independent review/atomic activation → frozen-baseline Preview/Production 均获调度允许；本轮不执行语言生成或 Production。
+- V2-C1 仍 deferred，仅四个 tracked issue 达到维护者预期状态并显式重开后执行一次 sync；不阻塞 campaign/Production，不增加联网 drift gate，不 fetch/pull/sync。
+- 最终 sync 逐 package/file/route/dependency/content-unit reconciliation，仅真实 affected scope stale/revision/re-QC/Surface refresh；unaffected 成果结合 V2-B lineage 复用，历史 evidence 不改写，whole commit 不等价于全 locale stale。最终商业排序可等待 V2-C1 与真实运行数据，不阻塞第一批实施。
 
 ### 2026-10-06 Site v2-A Architecture / Content Scope
 

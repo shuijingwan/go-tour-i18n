@@ -32,49 +32,49 @@
       "id": "homepage",
       "package": "site-v2-shell",
       "route_family": "/",
-      "parser": "site-surface",
+      "parser": "go-learning/content-units/v2",
       "publication": "requires-independent-completion"
     },
     {
       "id": "translation",
       "package": "site-v2-shell",
       "route_family": "/translation/",
-      "parser": "site-surface",
+      "parser": "go-learning/content-units/v2",
       "publication": "requires-independent-completion"
     },
     {
       "id": "learn",
       "package": "learn-docs-v1",
       "route_family": "/learn/**",
-      "parser": "surface-specific-pending",
+      "parser": "go-learning/content-units/v2",
       "publication": "requires-independent-completion"
     },
     {
       "id": "tutorial",
       "package": "learn-docs-v1",
       "route_family": "/doc/tutorial/**",
-      "parser": "surface-specific-pending",
+      "parser": "go-learning/content-units/v2",
       "publication": "requires-independent-completion"
     },
     {
       "id": "database",
       "package": "learn-docs-v1",
       "route_family": "/doc/database/**",
-      "parser": "surface-specific-pending",
+      "parser": "go-learning/content-units/v2",
       "publication": "requires-independent-completion"
     },
     {
       "id": "modules",
       "package": "learn-docs-v1",
       "route_family": "/doc/modules/**",
-      "parser": "surface-specific-pending",
+      "parser": "go-learning/content-units/v2",
       "publication": "requires-independent-completion"
     },
     {
       "id": "security",
       "package": "learn-docs-v1",
       "route_family": "/doc/security/**",
-      "parser": "surface-specific-pending",
+      "parser": "go-learning/content-units/v2",
       "publication": "requires-independent-completion"
     }
   ],
@@ -208,8 +208,9 @@
         "translation"
       ],
       "contract_dependencies": [],
-      "source_identity_sha256": "33bcca38889d970f7e61d5f7ca6a047a9146c7018f6f12e6909b0aea7e760356",
-      "identity_sha256": "4e2d64e84b34e803894ff21cd9b8988edad1c6109a97ac022977237ce69aedf5"
+      "source_identity_sha256": "47159675ea272d607193f0af5ac3e4e60c843d1f1bcc2390526cc8a3cc185609",
+      "identity_sha256": "7d4ca4233d62e04980d21d4223d22657cbe670aaa31832528f9f5b7f17f82be4",
+      "parser_contract": "go-learning/content-units/v2"
     },
     {
       "id": "learn-docs-v1",
@@ -305,7 +306,8 @@
         }
       ],
       "source_identity_sha256": "3cd2840855c4e17073980ed0844df361efa6e195548614f0ee7e9fd4b1a4851e",
-      "identity_sha256": "e1212e774ac6855c07096e43779ee90bac7872058bbf8fce8f3ab6c4631673ef"
+      "identity_sha256": "bcd457bfd9c459548e391f0e90262c5ef3cd4e2a41d0f7430a6680cfd579696d",
+      "parser_contract": "go-learning/content-units/v2"
     }
   ],
   "source_inventory": [
@@ -1322,6 +1324,26 @@
       "package": "learn-docs-v1",
       "surface": "learn",
       "source_sha256": "c6bcce772bcc13f0efd1aeb027b48651da5aef2a8ee654ec7d46938b5dc18120",
+      "dependencies": []
+    },
+    {
+      "source_path": "data/site-shell/home.html",
+      "source_kind": "page",
+      "origin": "repository",
+      "package": "site-v2-shell",
+      "surface": "homepage",
+      "canonical_route": "/",
+      "source_sha256": "cac0fc622a49b6c5ebaa80f53fb9234040df3ff4fb0d16d6213487330e586362",
+      "dependencies": []
+    },
+    {
+      "source_path": "data/site-shell/translation.html",
+      "source_kind": "page",
+      "origin": "repository",
+      "package": "site-v2-shell",
+      "surface": "translation",
+      "canonical_route": "/translation/",
+      "source_sha256": "04ab70b5086539b36c55c504ee5cf302037b95c3abf4904824b079a8c316be6c",
       "dependencies": []
     },
     {
@@ -2648,5 +2670,5 @@
       "dependencies": []
     }
   ],
-  "identity_sha256": "cff2f7a6435d807363682a724c1062a9c31f28c6966c3277eec2814731c95f43"
+  "identity_sha256": "4549ffd8ef832d38968e9118661160c7cfc2207f9fe83fb08a2f5ae36868b212"
 }

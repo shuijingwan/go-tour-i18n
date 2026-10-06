@@ -99,7 +99,7 @@ type CourseLocalizationGenerationBundleManifest struct {
 // for schema-v2 Course SEO generation. It does not change Course SEO authority,
 // metadata, status, or any review gate.
 func ExportCourseLocalizationGenerationBundle(root, locale string, catalog *Catalog) ([]byte, CourseLocalizationGenerationBundleManifest, error) {
-	if err := RequireCurrentGlossaryReview(root, locale); err != nil {
+	if err := RequireNewLanguageGlossaryReview(root, locale); err != nil {
 		return nil, CourseLocalizationGenerationBundleManifest{}, err
 	}
 	if catalog == nil {
