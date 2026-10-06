@@ -218,11 +218,11 @@ func ExportRetranslationBatch(root string, catalog *Catalog, options Retranslati
 		}
 	}
 	if options.PreviousSnapshotID != "" {
-		snapshot, err := readQualityCheckSnapshotForReview(root, options.Locale, options.PreviousSnapshotID)
+		snapshot, err := readQualityCheckSnapshot(root, options.Locale, options.PreviousSnapshotID, false)
 		if err != nil {
 			return nil, fmt.Errorf("previous Quality Check Snapshot: %w", err)
 		}
-		effectiveSnapshot, effectiveResults, err := loadEffectiveQualityCheckResults(root, options.Locale, options.PreviousSnapshotID, map[string]bool{})
+		effectiveSnapshot, effectiveResults, err := loadEffectiveQualityCheckResults(root, options.Locale, options.PreviousSnapshotID, map[string]bool{}, catalog)
 		if err != nil {
 			return nil, err
 		}

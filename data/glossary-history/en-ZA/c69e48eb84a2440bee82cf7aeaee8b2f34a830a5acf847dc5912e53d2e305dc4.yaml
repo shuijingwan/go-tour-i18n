@@ -1,0 +1,43 @@
+locale: en-ZA
+mandatory:
+  Run: Run
+  Format: Format
+  Reset: Reset
+preferred:
+  Go programming language: Go programming language
+  package: package
+  interface: interface
+  method: method
+  channel: channel
+  slice: slice
+  map: map
+  pointer: pointer
+  struct: struct
+  function: function
+  variable: variable
+  constant: constant
+  concurrency: concurrency
+  mutex: mutex
+  generics: generics
+  type parameter: type parameter
+  type constraint: type constraint
+  program: program
+  behavior: behaviour
+  color: colour
+  organize: organise
+  initialize: initialise
+  initialized: initialised
+  synchronize: synchronise
+  synchronized: synchronised
+  parallelize: parallelise
+  grayscale: greyscale
+forbidden:
+  # No stable globally forbidden wording is needed for this locale.
+  # American spellings are not treated as inherently wrong.
+keep:
+  - A Tour of Go
+  - Go Playground
+  - Go
+  - goroutine
+  - goroutines
+  - Goroutines

@@ -1,0 +1,176 @@
+# sr-RS: Serbian (Cyrillic). Terms apply to prose and UI; code identity stays protected.
+# Inflect Serbian terms naturally in sentences. UI action labels use imperatives.
+# The official product name Go Playground remains unchanged; do not translate it.
+# The Go-specific name goroutine remains in Latin script, including in Serbian prose.
+locale: sr-RS
+mandatory:
+  A Tour of Go: Водич кроз Go
+  Run: Покрени
+  Format: Форматирај
+  Reset: Ресетуј
+  Kill: Прекини
+  Table of Contents: Садржај
+  Using the tour: Како користити водич
+  Basics: Основе
+  Methods and interfaces: Методе и интерфејси
+  Generics: Генеричко програмирање
+  Concurrency: Конкурентност
+  Exercise: Вежба
+  Congratulations!: Честитамо!
+  package: пакет
+  function: функција
+  method: метода
+  receiver: прималац
+  pointer: показивач
+  pointer receiver: прималац показивачког типа
+  value receiver: прималац вредносног типа
+  struct: структура
+  struct field: поље структуре
+  array: низ
+  slice: исечак
+  slice literal: литерал исечка
+  array literal: литерал низа
+  struct literal: литерал структуре
+  slice length: дужина исечка
+  slice capacity: капацитет исечка
+  map: мапа
+  map key: кључ мапе
+  interface: интерфејс
+  interface type: тип интерфејса
+  interface value: вредност интерфејса
+  empty interface: празан интерфејс
+  concrete type: конкретан тип
+  type assertion: асерција типа
+  type switch: гранање по типу
+  type parameter: параметар типа
+  constraint: ограничење
+  type constraint: ограничење типа
+  type inference: закључивање о типу
+  generic type: генерички тип
+  generic function: генеричка функција
+  channel: канал
+  buffered channel: баферовани канал
+  unbuffered channel: небаферовани канал
+  mutex: мутекс
+  zero value: нулта вредност
+  return value: повратна вредност
+  named return value: именована повратна вредност
+  standard library: стандардна библиотека
+  built-in function: уграђена функција
+  variable: променљива
+  constant: константа
+  declaration: декларација
+  assignment: додела
+  iteration: итерација
+  loop: петља
+  error: грешка
+  source code: изворни код
+  programming language: програмски језик
+preferred:
+  Welcome to a tour of Go: Добро дошли у Водич кроз Go
+  Go programming language: програмски језик Go
+  course: курс
+  course page: страница курса
+  lesson: лекција
+  module: модул
+  course directory: садржај курса
+  playground: окружење за испробавање кода
+  editor: уређивач кода
+  syntax highlighting: истицање синтаксе
+  import: увоз
+  import statement: наредба за увоз
+  exported name: извезено име
+  exported names: извезена имена
+  package name: назив пакета
+  function call: позив функције
+  function value: функцијска вредност
+  function closure: функцијско затворење
+  closure: затворење
+  argument: аргумент
+  parameter: параметар
+  short variable declaration: кратка декларација променљиве
+  # F01: basics/11: basic types are Go primitive types, not a named type's underlying type.
+  basic type: основни тип
+  type conversion: конверзија типа
+  type: тип
+  value: вредност
+  reference: референца
+  index: индекс
+  capacity: капацитет
+  length: дужина
+  slicing: издвајање исечка
+  append: додавање елемената
+  map literal: литерал мапе
+  mutating maps: измена мапа
+  pointer indirection: индирекција преко показивача
+  dereference: дереференцирање
+  method set: скуп метода
+  method signature: потпис методе
+  implicit implementation: имплицитна имплементација
+  implements an interface: имплементира интерфејс
+  # F01: Go spec underlying type is distinct from basic type. In methods/11,
+  # underlying (concrete) type is the concrete dynamic type held by an interface.
+  underlying type: тип који је у основи
+  underlying concrete type: конкретан тип који интерфејс садржи
+  # F02: No universal mapping for bare underlying value: in methods/12 and
+  # methods/15 it is the concrete value held by the interface; in moretypes/1
+  # it is the value pointed to by a pointer. Translate each use in context.
+  concrete value inside the interface: конкретна вредност у интерфејсу
+  underlying concrete value: конкретна вредност сачувана у интерфејсу
+  pointer's underlying value: вредност на коју показивач указује
+  runtime: извршно окружење
+  lightweight thread: лака нит
+  concurrent execution: конкурентно извршавање
+  parallel execution: паралелно извршавање
+  parallelism: паралелизам
+  channel operator: оператор канала
+  send: слање
+  receive: пријем
+  sender: пошиљалац
+  # F03: A channel's receiving side is not a method receiver (прималац).
+  receiver of a channel: страна која прима вредности из канала
+  close a channel: затворити канал
+  default selection: подразумевани избор
+  switch statement: наредба switch
+  select statement: наредба select
+  deferred call: одложени позив
+  defer statement: наредба defer
+  last-in-first-out: последњи ушао, први изашао
+  infinite loop: бесконачна петља
+  compiler: компајлер
+  compile: компајлирати
+  build: изградња
+  test: тест
+  test suite: скуп тестова
+  remote server: удаљени сервер
+  feedback: повратне информације
+  reset the editor: вратити уређивач у почетно стање
+  format the code: форматирати код
+  run the program: покренути програм
+  web crawler: веб-паук
+  binary tree: бинарно стабло
+  root: корен
+  reader: читач
+  image: слика
+  pixel: пиксел
+  hexadecimal: хексадецимални
+  hexadecimal value: хексадецимална вредност
+forbidden:
+  - Го Плејграунд
+  - типски прекидач
+keep:
+  - Go
+  - Go Playground
+  - goroutine
+  - gofmt
+  - GOPATH
+  - API
+  - URL
+  - ASCII
+  - CPU
+  - UTC
+  - GitHub
+  - HTTP
+  - HTTPS
+  - CDN
+  - TranslationUnit

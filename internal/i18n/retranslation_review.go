@@ -455,7 +455,7 @@ func RecordRetranslationReviewBatch(root string, catalog *Catalog, options Retra
 		return nil, fmt.Errorf("limit must not exceed %d, got %d", DefaultRetranslationReviewBatchLimit, options.Limit)
 	}
 
-	snapshot, err := readQualityCheckSnapshotForReview(root, options.Locale, options.SnapshotID)
+	snapshot, err := readQualityCheckSnapshotForReview(root, options.Locale, options.SnapshotID, catalog)
 	if err != nil {
 		return nil, err
 	}
@@ -554,7 +554,7 @@ func BuildRetranslationReviewScope(root string, catalog *Catalog, options Retran
 	if err := validateSnapshotID(options.SnapshotID); err != nil {
 		return nil, err
 	}
-	snapshot, err := readQualityCheckSnapshotForReview(root, options.Locale, options.SnapshotID)
+	snapshot, err := readQualityCheckSnapshotForReview(root, options.Locale, options.SnapshotID, catalog)
 	if err != nil {
 		return nil, err
 	}
@@ -709,11 +709,15 @@ func reviewMatchesSnapshotIdentity(locale string, snapshot QualityCheckSnapshotU
 		review.Summary != "" && review.Issues != nil
 }
 
-func readQualityCheckSnapshotForReview(root, locale, snapshotID string) (*QualityCheckSnapshotManifest, error) {
-	return readQualityCheckSnapshot(root, locale, snapshotID, true)
+func readQualityCheckSnapshotForReview(root, locale, snapshotID string, catalogs ...*Catalog) (*QualityCheckSnapshotManifest, error) {
+	return readQualityCheckSnapshot(root, locale, snapshotID, true, catalogs...)
 }
 
-func readQualityCheckSnapshot(root, locale, snapshotID string, verifyCurrentGlossary bool) (*QualityCheckSnapshotManifest, error) {
+func readQualityCheckSnapshot(root, locale, snapshotID string, verifyCurrentGlossary bool, catalogs ...*Catalog) (*QualityCheckSnapshotManifest, error) {
+	var catalog *Catalog
+	if len(catalogs) > 0 {
+		catalog = catalogs[0]
+	}
 	path := filepath.Join(root, "data", "quality-check-snapshots", locale, snapshotID, "manifest.json")
 	data, err := os.ReadFile(path)
 	if err != nil {
@@ -744,7 +748,13 @@ func readQualityCheckSnapshot(root, locale, snapshotID string, verifyCurrentGlos
 			return nil, fmt.Errorf("quality-check snapshot %q glossary: %w", snapshotID, err)
 		}
 		if sum(glossaryData) != manifest.GlossarySHA256 {
-			return nil, fmt.Errorf("quality-check snapshot %q glossary hash mismatch", snapshotID)
+			// Historical manifests are immutable. Only a verified per-Unit
+			// compatibility proof can admit their original glossary identity.
+			for _, unit := range manifest.Units {
+				if !glossaryScopeCompatible(root, locale, manifest.GlossarySHA256, sum(glossaryData), "tu:"+unit.UnitID, catalog) {
+					return nil, fmt.Errorf("quality-check snapshot %q glossary hash mismatch: %s", snapshotID, unit.UnitID)
+				}
+			}
 		}
 	}
 	seen := make(map[string]bool, len(manifest.Units))

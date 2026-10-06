@@ -1,0 +1,55 @@
+locale: am-ET
+mandatory:
+  goroutine: goroutine
+  channel: ቻናል
+  package: ጥቅል
+  function: ተግባር
+  method: ዘዴ
+  interface: በይነገጽ
+  struct: መዋቅር
+  pointer: ጠቋሚ
+  slice: ቁራጭ
+  map: ካርታ
+  array: ድርድር
+  variable: ተለዋዋጭ
+  constant: ቋሚ
+  type: ዓይነት
+  type assertion: የዓይነት ማረጋገጫ
+  type parameter: የዓይነት መለኪያ
+  constraint: ገደብ
+  interface value: የበይነገጽ እሴት
+  interface type: የበይነገጽ ዓይነት
+  concrete type: የተወሰነ ዓይነት
+  standard library: መደበኛ ቤተ መጻሕፍት
+  built-in: አብሮ የተሰራ
+  type inference: የዓይነት ግምት
+  iteration: ድግግሞሽ
+  loop: ዙር
+  receiver: ተቀባይ
+  mutex: mutex
+  A Tour of Go: A Tour of Go
+  Go Playground: Go Playground
+preferred:
+  compiler: አቀናባሪ
+  runtime: የማስኬጃ ጊዜ
+  error: ስህተት
+  package name: የጥቅል ስም
+  import: አስገባ
+  export: ላክ
+  variable declaration: የተለዋዋጭ መግለጫ
+  concurrency: ተጓዳኝነት
+  parallelism: ትይዩነት
+forbidden:
+  - ጎ ፕሮግራም
+  - ጉሩቲን
+keep:
+  - Go
+  - goroutine
+  - gofmt
+  - GOPATH
+  - URL
+  - API
+  - ASCII
+  - UTC
+  - HTTP
+  - HTTPS

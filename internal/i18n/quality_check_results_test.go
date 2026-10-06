@@ -253,6 +253,9 @@ func TestQualityCheckScopeDoesNotCarryAcrossGlossaryChange(t *testing.T) {
 	if err := os.WriteFile(glossaryPath, append(data, []byte("# quality policy changed\n")...), 0644); err != nil {
 		t.Fatal(err)
 	}
+	if _, _, err := RecordGlossaryReview(root, "zh-CN", "changed-review", "independent-reviewer", "passed", nil); err != nil {
+		t.Fatal(err)
+	}
 	if _, _, err := CreateQualityCheckCandidateSnapshot(root, catalog, QualityCheckSnapshotOptions{Locale: "zh-CN", SnapshotID: "qc-002"}); err != nil {
 		t.Fatal(err)
 	}

@@ -134,7 +134,7 @@ func LoadCourseMetadata(root, locale string, catalog *Catalog) (*CourseMetadata,
 			return nil, err
 		}
 	}
-	return validateCourseMetadataWithSourceDescriptions(data, locale, catalog, targets, glossary, sourceDescriptions)
+	return validateCourseMetadataWithSourceDescriptions(data, locale, catalog, targets, glossary, sourceDescriptions, courseGlossaryCompatibility(root, locale, catalog, sum(glossary)))
 }
 
 func loadReadyCourseMetadataInputs(root, locale string, catalog *Catalog) (map[string][]byte, []byte, error) {
@@ -285,7 +285,7 @@ func RefreshCourseMetadata(root string, catalog *Catalog, options CourseMetadata
 	staleByID := make(map[string]bool, len(catalog.Pages))
 	for _, page := range catalog.Pages {
 		entry := baseByID[page.ID]
-		if courseMetadataEntryIsStale(base, entry, page, targets[page.ID], glossaryHash, sourceByID) {
+		if courseMetadataEntryIsStale(base, entry, page, targets[page.ID], glossaryHash, sourceByID, courseGlossaryCompatibility(root, options.Locale, catalog, glossaryHash)(entry)) {
 			stale = append(stale, page.ID)
 			staleByID[page.ID] = true
 		}
@@ -329,7 +329,7 @@ func RefreshCourseMetadata(root string, catalog *Catalog, options CourseMetadata
 		return nil, nil, fmt.Errorf("encode refreshed course metadata: %w", err)
 	}
 	data = append(data, '\n')
-	if _, err := validateCourseMetadataWithSourceDescriptions(data, options.Locale, catalog, targets, glossary, sourceDescriptions); err != nil {
+	if _, err := validateCourseMetadataWithSourceDescriptions(data, options.Locale, catalog, targets, glossary, sourceDescriptions, courseGlossaryCompatibility(root, options.Locale, catalog, sum(glossary))); err != nil {
 		return nil, nil, fmt.Errorf("validate refreshed course metadata: %w", err)
 	}
 	return data, stale, nil
@@ -384,7 +384,7 @@ func ReviseCourseMetadata(root string, catalog *Catalog, options CourseMetadataR
 		}
 		sourceByID = courseSourceDescriptionsByID(sourceDescriptions)
 	}
-	validatedBase, err := validateCourseMetadataWithSourceDescriptions(baseData, options.Locale, catalog, targets, glossary, sourceDescriptions)
+	validatedBase, err := validateCourseMetadataWithSourceDescriptions(baseData, options.Locale, catalog, targets, glossary, sourceDescriptions, courseGlossaryCompatibility(root, options.Locale, catalog, sum(glossary)))
 	if err != nil {
 		return nil, nil, fmt.Errorf("course metadata revision base is not current and valid; use course-metadata refresh for stale identity: %w", err)
 	}
@@ -425,7 +425,7 @@ func ReviseCourseMetadata(root string, catalog *Catalog, options CourseMetadataR
 		return nil, nil, fmt.Errorf("encode revised course metadata: %w", err)
 	}
 	data = append(data, '\n')
-	if _, err := validateCourseMetadataWithSourceDescriptions(data, options.Locale, catalog, targets, glossary, sourceDescriptions); err != nil {
+	if _, err := validateCourseMetadataWithSourceDescriptions(data, options.Locale, catalog, targets, glossary, sourceDescriptions, courseGlossaryCompatibility(root, options.Locale, catalog, sum(glossary))); err != nil {
 		return nil, nil, fmt.Errorf("validate revised course metadata: %w", err)
 	}
 	return data, revised, nil
@@ -515,14 +515,14 @@ func courseMetadataBaseIndex(metadata *CourseMetadata, catalog *Catalog) (map[st
 	return entries, nil
 }
 
-func courseMetadataEntryIsStale(metadata *CourseMetadata, entry CoursePageMetadata, page Page, target []byte, glossaryHash string, sourceByID map[string]CourseSourceDescriptionPage) bool {
+func courseMetadataEntryIsStale(metadata *CourseMetadata, entry CoursePageMetadata, page Page, target []byte, glossaryHash string, sourceByID map[string]CourseSourceDescriptionPage, compatible ...bool) bool {
 	contract, prompt, err := courseMetadataContract(metadata.SchemaVersion)
 	if err != nil {
 		return true
 	}
 	stale := metadata.GeneratorContract != contract || entry.Route != page.Route ||
 		entry.SourceSHA256 != page.SourceSHA256 || entry.TargetSHA256 != sum(target) ||
-		entry.GlossarySHA256 != glossaryHash || entry.Generation.PromptVersion != prompt
+		(entry.GlossarySHA256 != glossaryHash && (len(compatible) == 0 || !compatible[0])) || entry.Generation.PromptVersion != prompt
 	if metadata.SchemaVersion == CourseMetadataSchemaVersionV2 {
 		source, ok := sourceByID[page.ID]
 		stale = stale || !ok || entry.SourceDescriptionSHA256 != sum([]byte(source.Description))
@@ -544,7 +544,7 @@ func validateCourseMetadata(data []byte, locale string, catalog *Catalog, target
 	return validateCourseMetadataWithSourceDescriptions(data, locale, catalog, targets, glossary, nil)
 }
 
-func validateCourseMetadataWithSourceDescriptions(data []byte, locale string, catalog *Catalog, targets map[string][]byte, glossary []byte, sourceDescriptions *CourseSourceDescriptions) (*CourseMetadata, error) {
+func validateCourseMetadataWithSourceDescriptions(data []byte, locale string, catalog *Catalog, targets map[string][]byte, glossary []byte, sourceDescriptions *CourseSourceDescriptions, compatible ...func(CoursePageMetadata) bool) (*CourseMetadata, error) {
 	var metadata CourseMetadata
 	if err := decodeStrictJSON(data, &metadata); err != nil {
 		return nil, fmt.Errorf("parse course metadata: %w", err)
@@ -618,7 +618,7 @@ func validateCourseMetadataWithSourceDescriptions(data []byte, locale string, ca
 		if entry.TargetSHA256 != sum(target) {
 			return nil, fmt.Errorf("%s: target_sha256 is stale", entry.PageID)
 		}
-		if entry.GlossarySHA256 != glossaryHash {
+		if entry.GlossarySHA256 != glossaryHash && (len(compatible) == 0 || !compatible[0](entry)) {
 			return nil, fmt.Errorf("%s: glossary_sha256 is stale", entry.PageID)
 		}
 		if entry.Generation.PromptVersion != prompt {

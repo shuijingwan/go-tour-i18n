@@ -142,7 +142,7 @@ go run -mod=readonly ./cmd/tour-i18n surface-review record-a \
 
 course metadata 为 schema v2 时，inputs 还绑定完整 canonical English source-description asset SHA 与当前 passed source-description review authority identity。因此 canonical asset 或其 current review authority 变化会使 locale A gate stale。course metadata 为 schema v1 时，这两个输入保持不存在；仅仅新增或修改全局 source-description asset/gate 不会使历史或新记录的 v1 locale A gate stale。
 
-新记录使用 **schema v3**。除 `languages.go`（由下文 v3 精准 freshness 规则处理）外，v3 只从解析后的 `production/identity.json` 绑定目标 locale 的稳定 public identity projection：`locale`、`production_hostname`、`production_public_url`。该 projection 以固定 JSON encoding 后 hash；目标 profile 必须恰好一个，三个字段均非空，缺失、重复或 malformed identity 均 fail closed。它不绑定 `production_state`、port、service、data-root/release/current/lock、TLS/vhost、CDN/cache header、shared 配置或其他 locale profile；这些 lifecycle/基础设施变化本身不要求重新进行语言质量审核。
+新记录使用 **schema v4**，继承 schema v3 registry/target projection，并嵌入 [Tour config projection](GLOSSARY_COMPATIBILITY.md)。v3/v4 从解析后的 `production/identity.json` 绑定目标 locale 稳定 public identity：`locale`、`production_hostname`、`production_public_url`。projection 使用固定 JSON encoding/hash；目标 profile 恰好一个且字段非空，缺失、重复、malformed 均 fail closed。仍不绑定 state、port、service、data-root、TLS、CDN、其他 locale 或 infrastructure-only 变化。
 
 历史 **schema v1/v2** receipt 保持各自原语义：v1 继续比较整份 `production/identity.json`，v2 继续比较目标 locale public identity projection；默认都 exact-match 整份 `languages.go`。v1 永远不采用 v3 语义；v2 也不会自动升级，只有在原 gate 仍 exact-current 时显式生成独立 registry baseline，才允许后续按下文兼容性规则继续验证。旧 A receipt 本身不被改写或伪造。未知 schema 同样 fail closed。
 
@@ -264,7 +264,7 @@ Surface Review 只使用 `passed` 或 `failed`，不采用 TranslationUnit 的 A
 ## 缺陷回流
 
 - TranslationUnit candidate 缺陷：回到 revision batch，完成全套 A-only 链后重新 projection 和 Surface Review。
-- glossary 决策缺失或冲突：Generation session 更新该 locale glossary，重新通过 current Glossary Review gate；既有 TU Snapshot / QC carry-forward 按原规则 stale，并同步修订、重审受影响表层。
+- glossary 决策缺失或冲突：先归档原 bytes，Generation session 更新完整 glossary，独立 Reviewer 重新完整 Review PASS。按 [Glossary Compatibility](GLOSSARY_COMPATIBILITY.md) 判定 exact scope；旧 TU A 只经 verified lineage 继承，受影响表层必须修订并取得必要独立审核。
 - Course SEO localized description 语言质量缺陷：它不属于 TranslationUnit 缺陷；identity stale 时按 Course SEO workflow 由 Generation session 产生 refresh 所需的新 description，identity current 时由 Generation session 产生明确 revise subset；具备仓库终端能力的当前 AI execution environment 默认把 strict result 落盘并运行 `course-metadata refresh` / `revise`，机械更新所选 description 与真实 provenance，最后回到未参与 replacement generation 的 Reviewer session 重审。
 - UI、首页、list、metadata 或其他 SEO 缺陷：由 Generation session 产生修订语言内容，当前 AI execution environment 默认完成闭环内的资产落盘、validator / current-check 与重新导出，再由未参与 replacement generation 的 Reviewer session 重审受影响范围。
 
@@ -285,9 +285,11 @@ go run -mod=readonly ./cmd/tour-i18n generation-bundle locale-check \
 
 ## Schema v3 registry 精准 freshness
 
-新 `record-a` 写 schema v3。receipt 仍保存整份 `internal/tour/languages.go` SHA-256，并保存两层不可变证据：目标 locale/official English/目标 profile 的 review projection，以及记录当时**全部** registry entries、全部既有 runtime profiles（含其引用声明）、全部非 registry/profile 变量，以及共享 import/const/type/function declarations 的结构化 baseline。整文件 hash 相同时按原输入验证；hash 变化时，只有目标 projection 不变、结构化 baseline 中每个旧 entry、旧 profile 和旧变量都在当前结构中逐项原样存在、共享 runtime declarations 完全一致、新增变量均由新增 locale profile 实际引用，且当前 registry 通过严格 compatibility check，已有语言质量结论才保持 current。
+Site v2-B 后新 `record-a` 写 schema v4，完整继承本节 v3 registry 规则，并新增 [glossary compatibility / Tour config projection](GLOSSARY_COMPATIBILITY.md)。本节对历史 v1/v2/v3 registry 的权限边界保持；glossary/config freshness 则组合新的独立 evidence，不能凭 registry baseline 豁免。
 
-compatibility check fail closed 验证 registry 与 `production/identity.json` 的 locale/URL 唯一性、HTTPS canonical root URL、community hostname/public URL exact join、registry 中每个 community locale 的 runtime profile、不得存在 orphan profile、唯一 official `https://go.dev/tour/` English 入口和 English-name 顺序。`production_state=live` 的 public identity 必须已经存在于 registry；仅用于提前冻结并行工作身份的 `production_state=first-production` locale 可以暂时尚未进入 registry/profile，因此不会阻塞其他 locale 的 Stage A。反过来，只要某 community locale 已进入 registry，就仍必须 exact-match 自己的 Production public identity 并拥有完整 runtime profile；目标 locale 在导出/记录自己的 Surface Review 前还必须能形成 target registry/profile projection，因此不能借此跳过自己的 registry/profile 落定。只有在全部旧 entry/profile/runtime 基线不变时，后续 locale 的完整 additive registry + profile + 必要引用变量才能通过；修改任何既有 locale（不只目标 locale）的 `Autonym`、`EnglishName`、URL、受保护 profile/引用声明，或增加未被新 locale profile 引用的变量，或修改共享 selector runtime 语义，都必须 stale。UI、glossary、article/Course SEO、catalog/TU identity、project/SEO 输入仍按原规则 stale。
+v3/v4 receipt 保存整份 `internal/tour/languages.go` SHA-256、目标 locale/official English/profile review projection，以及记录当时全部 registry entries、既有 runtime profiles（含引用声明）、非 registry/profile variables 和 shared declarations 的结构化 baseline。whole hash 变化时，目标 projection、每个旧 entry/profile/variable 与 shared runtime 必须原样存在；新增 variables 由新增 profile 实际引用，且 current registry 严格 compatibility check 通过，才保留原语言结论。
+
+compatibility check fail closed 验证 registry/Production locale 和 URL唯一、HTTPS root、community public identity exact join、全部 runtime profiles、无 orphan、唯一 official English 和 English-name 顺序。live 必须在 registry；尚未进入 registry 的 first-production identity 不阻塞其他 locale，但目标 locale 自身仍须完整 registry/profile。后续只允许全部旧 entry/profile/runtime 不变的完整 additive entry/profile/referenced variables。任何旧 locale 名称、URL、profile、引用声明或 selector 语义改变均 stale。UI/article/Course/catalog/source identity 仍 exact；glossary 和 project/SEO 仅可通过 V2-B 独立 evidence 组合兼容，不能借 registry 规则豁免。
 
 历史 schema v1 receipt 始终按原 exact hash 语义解释。历史 schema v2 receipt 默认同样 exact-match；只有在 registry 修改前，对仍 exact-current 的指定 v2 gate 显式记录独立 baseline，后续才可使用同一套 projection + compatibility 规则。这不会改写旧 gate，也不会产生新的 A 结论。baseline 绑定旧 gate path/SHA、旧 `languages.go` SHA、当时目标 projection、全部既有 registry entry/profile/variable/shared-runtime 结构以及 Production identity SHA，且不可覆盖：
 

@@ -1,0 +1,201 @@
+locale: lt-LT
+# Lithuanian entries below are terminology decisions and citation forms, not
+# blind string replacements. Inflect Lithuanian nouns and adjectives naturally
+# in sentences while preserving the same technical concept.
+# Protected Go keywords, built-ins, API names, paths and identifiers remain
+# code identities; they are intentionally not duplicated wholesale in keep.
+mandatory:
+  A Tour of Go: Pažintis su Go
+  Go Playground: Go Playground
+  previous: Ankstesnis
+  next: Kitas
+  Run: Vykdyti
+  Format: Formatuoti
+  Reset: Atkurti
+  Kill: Stabdyti
+  package: paketas
+  packages: paketai
+  package name: paketo pavadinimas
+  interface: sąsaja
+  interfaces: sąsajos
+  interface type: sąsajos tipas
+  interface types: sąsajos tipai
+  interface value: sąsajos reikšmė
+  interface values: sąsajos reikšmės
+  concrete type: konkretusis tipas
+  concrete types: konkretieji tipai
+  type assertion: tipo patvirtinimas
+  type assertions: tipo patvirtinimai
+  type switch: tipų switch sakinys
+  type switches: tipų switch sakiniai
+  type parameter: tipo parametras
+  type parameters: tipo parametrai
+  type argument: tipo argumentas
+  type arguments: tipo argumentai
+  constraint: tipo apribojimas
+  constraints: tipo apribojimai
+  type inference: tipo išvedimas
+  type conversion: tipo konvertavimas
+  concurrency: konkurentinis vykdymas
+  parallelism: lygiagretusis vykdymas
+  channel: kanalas
+  channels: kanalai
+  buffered channel: buferinis kanalas
+  buffered channels: buferiniai kanalai
+  unbuffered channel: nebuferinis kanalas
+  unbuffered channels: nebuferiniai kanalai
+  mutual exclusion: tarpusavio išskyrimas
+# In Go method terminology, receiver is the special method parameter.
+# Do not translate it as a person or a channel value recipient.
+  receiver: metodo imtuvas
+  receivers: metodo imtuvai
+  pointer receiver: rodyklinis metodo imtuvas
+  pointer receivers: rodykliniai metodo imtuvai
+  value receiver: reikšminis metodo imtuvas
+  value receivers: reikšminiai metodo imtuvai
+  zero value: nulinė reikšmė
+  zero values: nulinės reikšmės
+  standard library: standartinė biblioteka
+  syntax highlighting: sintaksės paryškinimas
+preferred:
+  Go programming language: Go programavimo kalba
+  tour: kursas
+  the tour: kursas
+  Tour slide: kurso puslapis
+  Tour slides: kurso puslapiai
+  presentation slide: pateikties skaidrė
+  presentation slides: pateikties skaidrės
+  lecture slide: paskaitos skaidrė
+  lecture slides: paskaitos skaidrės
+  module: modulis
+  modules: moduliai
+  lesson: pamoka
+  lessons: pamokos
+  exercise: pratimas
+  exercises: pratimai
+  table of contents: turinys
+  source code: programos kodas
+  sandbox: izoliuota vykdymo aplinka
+  deterministic output: deterministinė išvestis
+  compile: kompiliuoti
+  compiler: kompiliatorius
+  import: importuoti
+  import path: importavimo kelias
+  import statement: import sakinys
+  exported name: eksportuojamas vardas
+  exported names: eksportuojami vardai
+  unexported name: neeksportuojamas vardas
+  unexported names: neeksportuojami vardai
+  function: funkcija
+  functions: funkcijos
+  method: metodas
+  methods: metodai
+  method set: metodų aibė
+  function value: funkcijos reikšmė
+# Lithuanian developer material often leaves the established English term
+# closure in technical prose; keep it as a preferred term rather than branding
+# it as a protected code identity.
+  function closure: closure funkcija
+  closure: closure
+  argument: argumentas
+  arguments: argumentai
+  parameter: parametras
+  parameters: parametrai
+  return value: grąžinama reikšmė
+  return values: grąžinamos reikšmės
+  named return values: įvardytos grąžinamos reikšmės
+  naked return: return sakinys be argumentų
+  variable: kintamasis
+  variables: kintamieji
+  declaration: deklaravimas
+  variable declaration: kintamojo deklaravimas
+  short variable declaration: trumpasis kintamojo deklaravimas
+  initializer: inicializatorius
+  constant: konstanta
+  constants: konstantos
+  untyped constant: netipuota konstanta
+  numeric constant: skaitinė konstanta
+  built-in: įtaisytasis
+  underlying type: pamatinis tipas
+  underlying value: pamatinė reikšmė
+  defined type: apibrėžtas tipas
+  named type: vardinis tipas
+  type set: tipų aibė
+  generic: bendrasis
+  generics: bendrasis programavimas
+  generic function: bendroji funkcija
+  generic type: bendrasis tipas
+  type declaration: tipo deklaravimas
+  struct: struktūra
+  struct type: struktūros tipas
+  struct types: struktūros tipai
+  struct value: struktūros reikšmė
+  struct values: struktūros reikšmės
+  struct field: struktūros laukas
+  struct fields: struktūros laukai
+  struct literal: struktūros literalas
+  array: masyvas
+  arrays: masyvai
+# Here slice is the Go sequence-view concept; code tokens such as []T remain
+# protected independently from this natural-language teaching term.
+  slice: pjūvis
+  slices: pjūviai
+  slice literal: pjūvio literalas
+  nil slice: nil pjūvis
+# Go map is the key-value data structure, not a geographic map.
+  map: žodynas
+  maps: žodynai
+  map literal: žodyno literalas
+  key: raktas
+  keys: raktai
+  value: reikšmė
+  values: reikšmės
+  pointer: rodyklė
+  pointers: rodyklės
+  dereference: dereferencijuoti
+  length: ilgis
+  capacity: talpa
+  backing array: pamatinis masyvas
+  underlying array: pamatinis masyvas
+  loop: ciklas
+  iteration: iteracija
+  loop condition: ciklo sąlyga
+  switch statement: switch sakinys
+  select statement: select sakinys
+  defer statement: defer sakinys
+  Go runtime: Go vykdymo aplinka
+  synchronization: sinchronizavimas
+  buffer: buferis
+  mutex: muteksas
+  lock: užraktas
+  deadlock: aklavietė
+  pipeline: apdorojimo grandinė
+  binary tree: dvejetainis medis
+  web crawler: žiniatinklio robotas
+  reader: skaitytuvas
+  stream: srautas
+  error: klaida
+  error value: klaidos reikšmė
+  run-time error: vykdymo klaida
+  test suite: testų rinkinys
+forbidden:
+  - Golang
+  - Go žaidimų aikštelė
+  - Go žaidimų aikštė
+  - gorutina
+  - gorutinas
+# These are natural-language identities/standard technical names whose spelling
+# must remain stable. The list deliberately excludes the broad set of protected
+# Go keywords, built-ins, package paths and API identifiers.
+keep:
+  - Go
+  - Go Playground
+  - goroutine
+  - gofmt
+  - GOPATH
+  - URL
+  - ASCII
+  - CPU
+  - UTC
+  - GitHub
+  - Yongye

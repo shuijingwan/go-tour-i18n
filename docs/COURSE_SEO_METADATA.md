@@ -324,7 +324,7 @@ v2 只有全部 identity 当前时才合法：
 - English Page source 改变 → canonical source description stale → source review gate stale → dependent v2 metadata 不得 current；
 - canonical English description 改变 → 对应 `source_description_sha256` 改变 → 对应 locale Page stale；
 - canonical locale target 改变 → 对应 `target_sha256` stale；
-- locale glossary 任意字节改变 → 该 locale 全部 `glossary_sha256` stale；
+- locale glossary 任意 byte change → 原完整 Glossary Review stale；新 full PASS 后，每 page 要求 exact current SHA 或 [Glossary Compatibility](GLOSSARY_COMPATIBILITY.md) 的 `seo:` + `seo-page:` verified lineage，affected/missing/stale page 才刷新；不改写 unaffected page 的历史 generation SHA/provenance；
 - Page set/order、route 或 catalog identity 不一致 → fail closed；
 - schema、generator contract 或 prompt version 不受支持 → fail closed。
 

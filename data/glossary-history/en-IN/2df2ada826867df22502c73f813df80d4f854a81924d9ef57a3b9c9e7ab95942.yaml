@@ -1,0 +1,65 @@
+locale: en-IN
+mandatory:
+  Run: Run
+  Format: Format
+  Reset: Reset
+  Program: Program
+  Programs: Programs
+  program: program
+  programs: programs
+  package: package
+  function: function
+  method: method
+  receiver: receiver
+  pointer: pointer
+  pointer receiver: pointer receiver
+  value receiver: value receiver
+  struct: struct
+  array: array
+  slice: slice
+  map: map
+  interface: interface
+  interface value: interface value
+  interface type: interface type
+  concrete type: concrete type
+  type assertion: type assertion
+  type switch: type switch
+  type parameter: type parameter
+  constraint: constraint
+  channel: channel
+  buffered channel: buffered channel
+  mutex: mutex
+  zero value: zero value
+  type inference: type inference
+  standard library: standard library
+preferred:
+  behavior: behaviour
+  capitalized: capitalised
+  color: colour
+  fulfill: fulfil
+  fulfills: fulfils
+  grayscale: greyscale
+  initialize: initialise
+  initialized: initialised
+  initializer: initialiser
+  initializers: initialisers
+  localization: localisation
+  localized: localised
+  organize: organise
+  parallelize: parallelise
+  parameterized: parameterised
+  parenthesized: parenthesised
+  synchronize: synchronise
+  synchronized: synchronised
+forbidden:
+  - Golang
+  - GoLang
+keep:
+  - A Tour of Go
+  - Go
+  - Go Playground
+  - goroutine
+  - goroutines
+  - Goroutine
+  - Goroutines
+  - TranslationUnit

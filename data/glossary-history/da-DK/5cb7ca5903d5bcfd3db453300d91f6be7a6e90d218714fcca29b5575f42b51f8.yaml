@@ -1,0 +1,198 @@
+locale: da-DK
+mandatory:
+  A Tour of Go: En rundtur i Go
+  Go Playground: Go Playground
+  previous: Forrige
+  next: Næste
+  Run: Kør
+  Format: Formatér
+  Reset: Nulstil
+  Kill: Stop
+  package: pakke
+  packages: pakker
+  package name: pakkenavn
+# In Go, "interface" is a familiar Danish programming loanword. The UI
+# concept "user interface" is instead "brugergrænseflade".
+  interface: interface
+  interfaces: interfaces
+  interface type: interfacetype
+  interface types: interfacetyper
+  interface value: interfaceværdi
+  interface values: interfaceværdier
+  concrete type: konkret type
+  concrete types: konkrete typer
+# An assertion inspects and extracts an interface's concrete value;
+# it is not a type conversion or merely a boolean type check.
+  type assertion: typeassertion
+  type assertions: typeassertioner
+  type switch: typeswitch
+  type switches: typeswitches
+  type parameter: typeparameter
+  type parameters: typeparametre
+  type argument: typeargument
+  type arguments: typeargumenter
+  constraint: typebegrænsning
+  constraints: typebegrænsninger
+  type inference: typeinferens
+  type conversion: typekonvertering
+# Concurrency and parallelism are distinct concepts.
+  concurrency: samtidighed
+  parallelism: parallelitet
+  channel: kanal
+  channels: kanaler
+  buffered channel: bufferet kanal
+  buffered channels: bufferede kanaler
+  unbuffered channel: ubufferet kanal
+  unbuffered channels: ubufferede kanaler
+  mutual exclusion: gensidig udelukkelse
+  pointer receiver: pointermodtager
+  pointer receivers: pointermodtagere
+  value receiver: værdimodtager
+  value receivers: værdimodtagere
+  receiver: modtager
+  receivers: modtagere
+  zero value: nulværdi
+  zero values: nulværdier
+  standard library: standardbibliotek
+  syntax highlighting: syntaksfremhævning
+preferred:
+  Go programming language: programmeringssproget Go
+  tour: rundtur
+  the tour: rundturen
+# The interactive Tour contains pages; the external conference talks
+# linked in concurrency/11 have presentation slides, not Tour pages.
+  Tour slide: side i rundturen
+  Tour slides: sider i rundturen
+  presentation slides: præsentationsslides
+  lecture slides: foredragsslides
+  module: modul
+  modules: moduler
+  lesson: lektion
+  lessons: lektioner
+  exercise: øvelse
+  exercises: øvelser
+  table of contents: indholdsfortegnelse
+  source code: kildekode
+  sandbox: sandkasse
+  deterministic output: deterministisk output
+  compile: kompilere
+  compiler: compiler
+  link: linke
+  import: importere
+  import path: importsti
+  import statement: importdeklaration
+  exported name: eksporteret navn
+  unexported name: ikke-eksporteret navn
+  function: funktion
+  functions: funktioner
+  method: metode
+  methods: metoder
+  method set: metodemængde
+  function value: funktionsværdi
+  function closure: closure
+  closure: closure
+  argument: argument
+  parameter: parameter
+  return value: returværdi
+  return values: returværdier
+  named return values: navngivne returværdier
+  naked return: return uden argumenter
+  variable: variabel
+  variables: variabler
+  declaration: deklaration
+  short variable declaration: kort variabeldeklaration
+  initializer: initialiseringsudtryk
+  constant: konstant
+  untyped constant: konstant uden eksplicit type
+  numeric constant: numerisk konstant
+  built-in: indbygget
+  underlying type: underliggende type
+  underlying value: underliggende værdi
+  defined type: defineret type
+  named type: navngiven type
+  type set: typemængde
+  generic: generisk
+  generics: generisk programmering
+  generic function: generisk funktion
+  generic type: generisk type
+  type declaration: typedeklaration
+# Borrowed Go terms are deliberate Danish prose terminology, not keep rules:
+# code tokens and identifiers are still preserved by the protector.
+# A struct value is not the same thing as a struct type; "structs" may
+# denote either in context, so avoid globally expanding it to "structtyper".
+  struct: struct
+  structs: structs
+  struct type: structtype
+  struct types: structtyper
+  struct value: structværdi
+  struct values: structværdier
+  struct field: structfelt
+  struct literal: struct-literal
+  array: array
+  arrays: arrays
+  array literal: array-literal
+  slice: slice
+  slices: slices
+  slice literal: slice-literal
+  map: map
+  maps: maps
+  map literal: map-literal
+  key: nøgle
+  value: værdi
+  pointer: pointer
+  pointers: pointere
+  dereference: dereferere
+  pointer indirection: indirekte adgang via pointer
+  length: længde
+  capacity: kapacitet
+  backing array: underliggende array
+  loop: løkke
+  loops: løkker
+  iteration: iteration
+  loop condition: løkkebetingelse
+  switch statement: switch-sætning
+  select statement: select-sætning
+  defer statement: defer-sætning
+  goroutines: goroutiner
+  Goroutines: Goroutiner
+  Go runtime: Go-kørselsmiljø
+  synchronization: synkronisering
+  buffer: buffer
+  mutex: mutex
+  lock: lås
+  deadlock: deadlock
+  pipeline: pipeline
+  binary tree: binært træ
+  web crawler: webcrawler
+  reader: læser
+  stream: datastrøm
+  error: fejl
+  error value: fejlværdi
+  run-time error: køretidsfejl
+  test suite: testsuite
+forbidden:
+  - Golang
+  - Go-legeplads
+  - Go legeplads
+  - gorutine
+  - go-rutine
+# "korutine" is a legitimate word for a different concept (coroutine);
+# it must not replace Go's goroutine, but is not globally forbidden.
+keep:
+  - Go
+  - Go Playground
+  - goroutine
+  - gofmt
+  - GOPATH
+  - URL
+  - API
+  - ASCII
+  - CPU
+  - UTC
+  - GitHub
+  - Yongye
+  - CDN
+  - USDC
+  - USDT
+  - Base
+  - Tron

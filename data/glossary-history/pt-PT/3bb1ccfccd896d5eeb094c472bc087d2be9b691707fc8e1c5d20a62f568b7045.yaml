@@ -1,0 +1,216 @@
+locale: pt-PT
+
+# Decisões obrigatórias para nomes e controlos de elevado impacto, mensagens
+# de execução e conceitos de Go cuja tradução tem de ser uniforme em todas as
+# superfícies deste locale.
+mandatory:
+  A Tour of Go: Uma visita guiada ao Go
+  previous: anterior
+  next: seguinte
+  menu: menu
+  right arrow: seta para a direita
+  Run: Executar
+  Kill: Terminar
+  Format: Formatar
+  Reset: Repor
+  Toggle theme: Alternar tema
+  System theme: Tema do sistema
+  Dark theme: Tema escuro
+  Light theme: Tema claro
+  Syntax: Sintaxe
+  Imports: Importações
+  # Usam-se as identidades do catálogo porque On/Off são booleanos YAML 1.1.
+  editor.on: Ativado
+  editor.off: Desativado
+  Table of Contents: Índice
+  slide: página
+  slides: páginas
+  constraint: restrição
+  constraints: restrições
+  type assertion: asserção de tipo
+  type assertions: asserções de tipo
+  type switch: switch de tipo
+  type switches: switches de tipo
+  interface value: valor de interface
+  interface values: valores de interface
+  interface type: tipo de interface
+  interface types: tipos de interface
+  concrete type: tipo concreto
+  concrete types: tipos concretos
+  type parameter: parâmetro de tipo
+  type parameters: parâmetros de tipo
+  type inference: inferência de tipos
+  channel: canal
+  channels: canais
+  pointer receiver: recetor por ponteiro
+  pointer receivers: recetores por ponteiro
+  value receiver: recetor por valor
+  value receivers: recetores por valor
+  zero value: valor zero
+  Waiting for remote server...: A aguardar pelo servidor remoto...
+  Program exited: O programa terminou
+  Go vet failed.: A verificação do Go vet falhou.
+  Go build failed.: A compilação do Go falhou.
+  Error communicating with remote server.: Erro ao comunicar com o servidor remoto.
+  test failed: teste falhou
+  tests failed: testes falharam
+  All tests passed.: Todos os testes passaram.
+
+# Orientações terminológicas para prosa técnica. As formas inglesas mantidas
+# como empréstimos consolidados continuam aqui (em vez de keep) porque são
+# conceitos traduzíveis e a capitalização ou o número pode depender da frase.
+preferred:
+  Go programming language: linguagem de programação Go
+  tour: visita guiada
+  the tour: a visita guiada
+  interactive introduction: introdução interativa
+  module: módulo
+  lesson: lição
+  exercise: exercício
+  course: curso
+  course directory: índice do curso
+  course page: página do curso
+  official documentation: documentação oficial
+  tutorial: tutorial
+  standard library: biblioteca standard
+  language specification: especificação da linguagem
+  source code: código-fonte
+  community translation: tradução da comunidade
+  official upstream: upstream oficial
+  official source baseline: referência da fonte oficial
+  release: versão
+  development environment: ambiente de desenvolvimento
+  production: produção
+  package: pacote
+  packages: pacotes
+  package name: nome do pacote
+  import path: caminho de importação
+  import statement: instrução de importação
+  exported name: nome exportado
+  unexported name: nome não exportado
+  return value: valor de retorno
+  named return value: valor de retorno nomeado
+  naked return: retorno sem argumentos
+  initializer: inicializador
+  short variable declaration: declaração curta de variável
+  basic type: tipo básico
+  type conversion: conversão de tipo
+  numeric constant: constante numérica
+  iteration: iteração
+  loop: ciclo
+  loop condition: condição do ciclo
+  switch statement: instrução switch
+  defer statement: instrução defer
+  pointer: ponteiro
+  pointers: ponteiros
+  dereferencing: desreferenciação
+  indirection: indireção
+  struct: estrutura
+  structs: estruturas
+  struct field: campo de estrutura
+  struct literal: literal de estrutura
+  array: array
+  arrays: arrays
+  slice: slice
+  slices: slices
+  underlying array: array subjacente
+  backing array: array de suporte
+  length: comprimento
+  capacity: capacidade
+  map: mapa
+  maps: mapas
+  map literal: literal de mapa
+  function value: valor de função
+  closure: closure
+  closures: closures
+  method: método
+  receiver: recetor
+  method signature: assinatura de método
+  interface: interface
+  underlying value: valor subjacente
+  underlying type: tipo subjacente
+  empty interface: interface vazia
+  generic function: função genérica
+  generic type: tipo genérico
+  linked list: lista ligada
+  singly-linked list: lista simplesmente ligada
+  concurrency: concorrência
+  buffered channel: canal com buffer
+  send: envio
+  receive: receção
+  mutual exclusion: exclusão mútua
+  mutex: mutex
+  thread: thread
+  Go runtime: runtime do Go
+  run-time error: erro em tempo de execução
+  runtime message: mensagem de execução
+  remote server: servidor remoto
+  sandbox: ambiente isolado
+  deterministic output: resultado determinístico
+  syntax highlighting: realce de sintaxe
+  test suite: conjunto de testes
+  web crawler: crawler Web
+  code sample: exemplo de código
+  file: ficheiro
+  user: utilizador
+  application: aplicação
+  screen: ecrã
+  web browser: browser
+  compilation: compilação
+  input: entrada
+  output: saída
+
+# Formas incompatíveis com a variante pt-PT ou com decisões nominais deste
+# projeto. A lista evita apenas erros estáveis, sem proibir palavras que possam
+# ser corretas noutros contextos.
+forbidden:
+  - Um Tour por Go
+  - Tour de Go
+  - Parque infantil do Go
+  - Área de recreio do Go
+  - usuário
+  - usuários
+  - aplicativo
+  - aplicativos
+  - tela
+  - telas
+  - rodar
+  - rodando
+  - resetar
+  - ressetar
+  - assertação
+  - assertações
+
+# Identidades técnicas e nomes próprios que permanecem exatamente como estão
+# quando surgem em linguagem natural. Não duplica keywords, builtins, APIs,
+# caminhos ou identificadores já protegidos estruturalmente.
+keep:
+  - Go
+  - Go Playground
+  - go.dev
+  - gofmt
+  - GOPATH
+  - goroutine
+  - goroutines
+  - Goroutines
+  - nil
+  - panic
+  - PageUp
+  - PageDown
+  - Shift
+  - Enter
+  - Ctrl
+  - URL
+  - URLs
+  - API
+  - APIs
+  - ASCII
+  - CPU
+  - UTC
+  - GitHub
+  - GitHub Issues
+  - TranslationUnit
+  - present.Section
+  - release.json
+  - SHA256SUMS
+  - CDN

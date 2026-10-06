@@ -1,0 +1,101 @@
+locale: zh-SG
+mandatory:
+  A Tour of Go: Go 语言之旅
+  Run: 运行
+  Format: 格式化
+  Reset: 重置
+  package: 包
+  interface: 接口
+  interface value: 接口值
+  interface type: 接口类型
+  concrete type: 具体类型
+  channel: 通道
+  buffered channel: 缓冲通道
+  unbuffered channel: 无缓冲通道
+  slice: 切片
+  map: 映射
+  pointer: 指针
+  method: 方法
+  receiver: 接收者
+  value receiver: 值接收者
+  pointer receiver: 指针接收者
+  method signature: 方法签名
+  method set: 方法集
+  type: 类型
+  type parameter: 类型参数
+  type inference: 类型推断
+  type assertion: 类型断言
+  type switch: 类型选择
+  constraint: 约束
+  generic: 泛型
+  generics: 泛型
+  struct: 结构体
+  array: 数组
+  function: 函数
+  variable: 变量
+  constant: 常量
+  import: 导入
+  module: 模块
+  concurrency: 并发
+  error: 错误
+  embedding: 嵌入
+  zero value: 零值
+  closure: 闭包
+  mutex: 互斥锁
+  mutual exclusion: 互斥
+  standard library: 标准库
+  built-in: 内置
+preferred:
+  Go programming language: Go 编程语言
+  tour: 教程
+  the tour: 本教程
+  playground: Go Playground
+  sandbox: 沙箱
+  package name: 包名
+  import path: 导入路径
+  import statement: 导入语句
+  exported name: 导出名称
+  unexported name: 未导出名称
+  type conversion: 类型转换
+  underlying type: 底层类型
+  underlying value: 底层值
+  underlying array: 底层数组
+  backing array: 底层数组
+  function value: 函数值
+  return value: 返回值
+  named return value: 命名返回值
+  short variable declaration: 短变量声明
+  declaration: 声明
+  statement: 语句
+  expression: 表达式
+  field: 字段
+  literal: 字面量
+  length: 长度
+  capacity: 容量
+  iteration: 迭代
+  loop: 循环
+  loop condition: 循环条件
+  exercise: 练习
+  syntax highlighting: 语法高亮
+  runtime: 运行时
+  switch statement: switch 语句
+  range form: range 形式
+  range loop: range 循环
+  defer statement: defer 语句
+  deferred call: 延迟调用
+  select statement: select 语句
+  default case: default 分支
+  close a channel: 关闭通道
+forbidden:
+  - Golang
+  - Go 游乐场
+  - Go 操场
+  - Go 协程
+keep:
+  - Go
+  - Go Playground
+  - gofmt
+  - URL
+  - goroutine
+  - nil
+  - panic

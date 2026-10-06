@@ -265,7 +265,13 @@ func validateUnifiedPromotionEvidence(root, batchDir string, catalog *Catalog, u
 	}
 	protected, err := prepareTranslationUnitInput(unit, glossary)
 	if err != nil || (!bytes.Equal(input, []byte(protected.Text)) && !bytes.Equal(input, canonicalizeRetranslationArtifactEOF([]byte(protected.Text)))) || len(protected.Tokens) != manifest.ProtectedTokenCount {
-		return 0, fmt.Errorf("%s: regenerated protected input differs from saved input", unit.ID)
+		// Constraint removal can change protection without changing accepted
+		// language semantics. Restore only through an archived glossary tied to
+		// this exact historical candidate and a verified compatible scope.
+		protected, err = compatibleHistoricalProtectedInput(root, catalog, locale, unit, manifest, input, candidate)
+		if err != nil {
+			return 0, fmt.Errorf("%s: regenerated protected input differs from saved input: %w", unit.ID, err)
+		}
 	}
 	extension := filepath.Ext(filepath.Base(manifest.InputPath))
 	flatID := strings.TrimSuffix(filepath.Base(manifest.InputPath), extension)

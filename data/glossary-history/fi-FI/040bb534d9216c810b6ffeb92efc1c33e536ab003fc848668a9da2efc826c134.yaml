@@ -1,0 +1,185 @@
+locale: fi-FI
+# Finnish entries are citation forms, not literal replacements. Inflect nouns,
+# adjectives and compounds according to their roles in each Finnish sentence.
+# Preserve the technical identity of Go, Go Playground and goroutine when
+# adding Finnish case endings; never translate protected code or identifiers.
+mandatory:
+  A Tour of Go: Go-kielen opaskierros
+  Go Playground: Go Playground
+  previous: Edellinen
+  next: Seuraava
+  Run: Suorita
+  Format: Muotoile
+  Reset: Palauta
+  Kill: Pysäytä
+  package: paketti
+  packages: paketit
+  package name: paketin nimi
+  interface: rajapinta
+  interfaces: rajapinnat
+  interface type: rajapintatyyppi
+  interface types: rajapintatyypit
+  interface value: rajapinta-arvo
+  interface values: rajapinta-arvot
+  concrete type: konkreettinen tyyppi
+  concrete types: konkreettiset tyypit
+  type assertion: tyyppiväite
+  type assertions: tyyppiväitteet
+  type switch: tyyppivalintalause
+  type switches: tyyppivalintalauseet
+  type parameter: tyyppiparametri
+  type parameters: tyyppiparametrit
+  type argument: tyyppiargumentti
+  type arguments: tyyppiargumentit
+  constraint: tyyppirajoite
+  constraints: tyyppirajoitteet
+  type inference: tyyppipäättely
+  type conversion: tyyppimuunnos
+  concurrency: samanaikaisuus
+  parallelism: rinnakkaisuus
+  channel: kanava
+  channels: kanavat
+  buffered channel: puskuroitu kanava
+  buffered channels: puskuroidut kanavat
+  unbuffered channel: puskuroimaton kanava
+  unbuffered channels: puskuroimattomat kanavat
+  mutual exclusion: keskinäinen poissulku
+# For Go methods, receiver denotes the special method parameter, not
+# a person or goroutine receiving a value from a channel. Inflect
+# vastaanotin and its compounds naturally in Finnish sentences.
+  receiver: vastaanotin
+  receivers: vastaanottimet
+  pointer receiver: osoitinvastaanotin
+  pointer receivers: osoitinvastaanottimet
+  value receiver: arvovastaanotin
+  value receivers: arvovastaanottimet
+  zero value: nolla-arvo
+  zero values: nolla-arvot
+  standard library: standardikirjasto
+  syntax highlighting: syntaksin korostus
+preferred:
+  Go programming language: Go-ohjelmointikieli
+  tour: opaskierros
+  the tour: opaskierros
+  Tour slide: kurssisivu
+  Tour slides: kurssisivut
+  presentation slides: esityksen diat
+  lecture slides: luennon diat
+  module: moduuli
+  modules: moduulit
+  lesson: oppitunti
+  lessons: oppitunnit
+  exercise: harjoitus
+  exercises: harjoitukset
+  table of contents: sisällysluettelo
+  source code: lähdekoodi
+  sandbox: eristetty suoritusympäristö
+  deterministic output: deterministinen tuloste
+  compile: kääntää
+  compiler: kääntäjä
+  import: tuoda
+  import path: tuontipolku
+  import statement: import-lause
+  exported name: julkinen nimi
+  unexported name: paketin sisäinen nimi
+  function: funktio
+  functions: funktiot
+  method: metodi
+  methods: metodit
+  method set: metodijoukko
+  function value: funktioarvo
+  function closure: sulkeuma
+  closure: sulkeuma
+  argument: argumentti
+  parameter: parametri
+  return value: paluuarvo
+  named return values: nimetyt paluuarvot
+  naked return: argumentiton return-lause
+  variable: muuttuja
+  declaration: määrittely
+  variable declaration: muuttujamäärittely
+  short variable declaration: lyhyt muuttujamäärittely
+  initializer: alustuslauseke
+  constant: vakio
+  untyped constant: tyypitön vakio
+  numeric constant: lukuvakio
+  built-in: sisäänrakennettu
+  underlying type: taustalla oleva tyyppi
+  underlying value: taustalla oleva arvo
+  defined type: määritelty tyyppi
+  named type: nimetty tyyppi
+  type set: tyyppijoukko
+  generic: geneerinen
+  generics: geneerinen ohjelmointi
+  generic function: geneerinen funktio
+  generic type: geneerinen tyyppi
+  type declaration: tyyppimäärittely
+  struct: rakenne
+  struct type: rakennetyyppi
+  struct types: rakennetyypit
+  struct value: rakenteen arvo
+  struct values: rakenteen arvot
+  struct field: rakenteen kenttä
+  struct literal: rakenneliteraali
+  array: taulukko
+  arrays: taulukot
+  slice: viipale
+  slices: viipaleet
+  slice literal: viipaleliteraali
+  nil slice: nil-viipale
+  map: sanakirja
+  maps: sanakirjat
+  map literal: sanakirjaliteraali
+  key: avain
+  value: arvo
+  pointer: osoitin
+  pointers: osoittimet
+  dereference: dereferoida
+  length: pituus
+  capacity: kapasiteetti
+  backing array: taustalla oleva taulukko
+  underlying array: taustalla oleva taulukko
+  loop: silmukka
+  iteration: iteraatio
+  loop condition: silmukan ehto
+  switch statement: switch-lause
+  select statement: select-lause
+  defer statement: defer-lause
+  goroutines: goroutinet
+  Goroutines: Goroutinet
+  Go runtime: Go:n ajonaikainen järjestelmä
+  synchronization: synkronointi
+  buffer: puskuri
+  mutex: muteksi
+  lock: lukko
+  deadlock: umpilukko
+  pipeline: käsittelyputki
+  present parser: present-jäsennin
+  binary tree: binääripuu
+  web crawler: verkkoryömijä
+  reader: lukija
+  stream: tietovirta
+  error: virhe
+  error value: virhearvo
+  run-time error: ajonaikainen virhe
+  test suite: testikokonaisuus
+forbidden:
+  - Golang
+  - Go-leikkikenttä
+  - go-rutiini
+  - gorutiini
+# A coroutine is not the same concept as Go's goroutine; do not globally ban
+# the Finnish word korutiini when the English source actually means coroutine.
+keep:
+  - Go
+  - Go Playground
+  - goroutine
+  - gofmt
+  - GOPATH
+  - URL
+  - ASCII
+  - CPU
+  - UTC
+  - GitHub
+  - Yongye
+  - nil

@@ -14,7 +14,9 @@ import (
 const (
 	localeSurfaceReviewASchemaVersionV1 = 1
 	localeSurfaceReviewASchemaVersionV2 = 2
-	localeSurfaceReviewASchemaVersion   = 3
+	localeSurfaceReviewASchemaVersionV3 = 3
+	localeSurfaceReviewASchemaVersion   = 4
+	localeSurfaceReviewASchemaVersionV4 = 4
 )
 const localeSurfaceReviewAStage = "locale-level-language-quality-review"
 
@@ -35,6 +37,8 @@ type LocaleSurfaceReviewAGate struct {
 // supplied by a reviewer. The config hashes cover the build-time language
 // registry, locale profile, public project copy, and SEO origin behavior.
 type LocaleSurfaceReviewAInputs struct {
+	TourLanguageContextSHA256           string                          `json:"tour_language_context_sha256,omitempty"`
+	TourConfigProjection                *TourSurfaceConfigProjections   `json:"tour_config_projection,omitempty"`
 	UIEnglishSHA256                     string                          `json:"ui_english_sha256"`
 	UILocaleSHA256                      string                          `json:"ui_locale_sha256"`
 	GlossarySHA256                      string                          `json:"glossary_sha256"`
@@ -150,7 +154,19 @@ func currentLocaleSurfaceReviewAInputs(root, locale string, catalog *Catalog, sc
 		ProjectConfigSHA256:   project,
 		SEOConfigSHA256:       seo,
 	}
-	if schemaVersion >= localeSurfaceReviewASchemaVersion {
+	if schemaVersion == localeSurfaceReviewASchemaVersionV4 {
+		projection, err := currentTourSurfaceConfigProjections(root)
+		if err != nil {
+			return LocaleSurfaceReviewAInputs{}, fmt.Errorf("language review evidence/gate stale: Tour config projection: %w", err)
+		}
+		inputs.TourConfigProjection = projection
+		contextSHA, err := currentTourLanguageContextSHA256(root, locale, catalog)
+		if err != nil {
+			return LocaleSurfaceReviewAInputs{}, err
+		}
+		inputs.TourLanguageContextSHA256 = contextSHA
+	}
+	if schemaVersion >= localeSurfaceReviewASchemaVersionV3 {
 		if err := validateCurrentLanguageRegistryCompatibility(root); err != nil {
 			return LocaleSurfaceReviewAInputs{}, fmt.Errorf("language review evidence/gate stale: language registry compatibility: %w", err)
 		}
@@ -198,7 +214,7 @@ func currentLocaleSurfaceReviewAInputs(root, locale string, catalog *Catalog, sc
 			return LocaleSurfaceReviewAInputs{}, err
 		}
 		inputs.ProductionIdentitySHA256 = productionIdentity
-	case localeSurfaceReviewASchemaVersionV2, localeSurfaceReviewASchemaVersion:
+	case localeSurfaceReviewASchemaVersionV2, localeSurfaceReviewASchemaVersionV3, localeSurfaceReviewASchemaVersionV4:
 		productionPublicIdentity, err := localeSurfaceReviewPublicIdentityHash(root, locale)
 		if err != nil {
 			return LocaleSurfaceReviewAInputs{}, err
@@ -256,11 +272,14 @@ func RecordLocaleSurfaceReviewA(root, locale, reviewID, reviewer string, catalog
 	} else if !os.IsNotExist(err) {
 		return nil, "", err
 	}
-	inputs, err := CurrentLocaleSurfaceReviewAInputs(root, locale, catalog)
+	inputs, err := currentLocaleSurfaceReviewAInputs(root, locale, catalog, localeSurfaceReviewASchemaVersionV4)
 	if err != nil {
 		return nil, "", err
 	}
-	gate := &LocaleSurfaceReviewAGate{SchemaVersion: localeSurfaceReviewASchemaVersion, Locale: locale, ReviewID: reviewID, Stage: localeSurfaceReviewAStage, Decision: "passed", Reviewer: reviewer, Inputs: inputs}
+	if err := archiveRecordedTourSurfaceConfig(root, inputs); err != nil {
+		return nil, "", err
+	}
+	gate := &LocaleSurfaceReviewAGate{SchemaVersion: localeSurfaceReviewASchemaVersionV4, Locale: locale, ReviewID: reviewID, Stage: localeSurfaceReviewAStage, Decision: "passed", Reviewer: reviewer, Inputs: inputs}
 	data, err := json.MarshalIndent(gate, "", "  ")
 	if err != nil {
 		return nil, "", err
@@ -330,7 +349,7 @@ func RequireCurrentLocaleSurfaceReviewAByReviewID(root, locale, reviewID string,
 	if err != nil {
 		return LocaleSurfaceReviewAGate{}, err
 	}
-	currentOK, err := localeSurfaceReviewGateCurrent(root, locale, gate, data, current)
+	currentOK, err := localeSurfaceReviewGateCurrent(root, locale, gate, data, current, catalog)
 	if err != nil {
 		return LocaleSurfaceReviewAGate{}, err
 	}
@@ -369,7 +388,7 @@ func currentLocaleSurfaceReviewAGates(root, locale string, catalog *Catalog) ([]
 		if err != nil {
 			return nil, err
 		}
-		currentOK, err := localeSurfaceReviewGateCurrent(root, locale, gate, data, current)
+		currentOK, err := localeSurfaceReviewGateCurrent(root, locale, gate, data, current, catalog)
 		if err != nil {
 			return nil, err
 		}
@@ -388,14 +407,27 @@ func validateLocaleSurfaceReviewAGate(gate LocaleSurfaceReviewAGate, locale stri
 	if gate.Locale != locale || gate.Stage != localeSurfaceReviewAStage || gate.Decision != "passed" || gate.ReviewID == "" || gate.Reviewer == "" {
 		return fmt.Errorf("language review evidence/gate stale: invalid Locale Surface Review A gate for %s", locale)
 	}
-	if gate.SchemaVersion != localeSurfaceReviewASchemaVersionV1 && gate.SchemaVersion != localeSurfaceReviewASchemaVersionV2 && gate.SchemaVersion != localeSurfaceReviewASchemaVersion {
+	if gate.SchemaVersion != localeSurfaceReviewASchemaVersionV1 && gate.SchemaVersion != localeSurfaceReviewASchemaVersionV2 && gate.SchemaVersion != localeSurfaceReviewASchemaVersionV3 && gate.SchemaVersion != localeSurfaceReviewASchemaVersionV4 {
 		return fmt.Errorf("language review evidence/gate stale: unsupported Locale Surface Review A gate schema version %d", gate.SchemaVersion)
+	}
+	if gate.SchemaVersion == localeSurfaceReviewASchemaVersionV4 && !validSHA256(gate.Inputs.TourLanguageContextSHA256) {
+		return fmt.Errorf("language review evidence/gate stale: missing v4 source context identity")
 	}
 	return nil
 }
 
 func localeSurfaceReviewInputsCurrent(recorded, current LocaleSurfaceReviewAInputs, schemaVersion int) bool {
-	if schemaVersion < localeSurfaceReviewASchemaVersion {
+	if schemaVersion == localeSurfaceReviewASchemaVersionV4 {
+		if recorded.TourConfigProjection == nil || current.TourConfigProjection == nil ||
+			!tourConfigProjectionCompatible(recorded.TourConfigProjection.Project, current.TourConfigProjection.Project) ||
+			!tourConfigProjectionCompatible(recorded.TourConfigProjection.SEO, current.TourConfigProjection.SEO) {
+			return false
+		}
+		recorded.ProjectConfigSHA256 = current.ProjectConfigSHA256
+		recorded.SEOConfigSHA256 = current.SEOConfigSHA256
+		recorded.TourConfigProjection = current.TourConfigProjection
+	}
+	if schemaVersion < localeSurfaceReviewASchemaVersionV3 {
 		return reflect.DeepEqual(recorded, current)
 	}
 	if recorded.LanguagesReviewProjectionSHA256 == "" || recorded.LanguagesReviewProjectionSHA256 != current.LanguagesReviewProjectionSHA256 ||
@@ -411,7 +443,30 @@ func localeSurfaceReviewInputsCurrent(recorded, current LocaleSurfaceReviewAInpu
 	return reflect.DeepEqual(recorded, current)
 }
 
-func localeSurfaceReviewGateCurrent(root, locale string, gate LocaleSurfaceReviewAGate, gateData []byte, current LocaleSurfaceReviewAInputs) (bool, error) {
+func localeSurfaceReviewGateCurrent(root, locale string, gate LocaleSurfaceReviewAGate, gateData []byte, current LocaleSurfaceReviewAInputs, catalogs ...*Catalog) (bool, error) {
+	var catalog *Catalog
+	if len(catalogs) > 0 {
+		catalog = catalogs[0]
+	}
+	if gate.SchemaVersion == localeSurfaceReviewASchemaVersionV4 && !recordedTourSurfaceConfigProjectionValid(root, gate.Inputs) {
+		return false, nil
+	}
+	if gate.Inputs.GlossarySHA256 != current.GlossarySHA256 {
+		if !glossaryScopeCompatible(root, locale, gate.Inputs.GlossarySHA256, current.GlossarySHA256, "*", catalog) {
+			return false, nil
+		}
+		if gate.SchemaVersion < localeSurfaceReviewASchemaVersionV4 && !historicalCompletedTourLanguageContextCurrent(root, locale, gate, gateData, catalog) {
+			return false, nil
+		}
+		gate.Inputs.GlossarySHA256 = current.GlossarySHA256
+	}
+	if gate.SchemaVersion < localeSurfaceReviewASchemaVersionV4 && (gate.Inputs.ProjectConfigSHA256 != current.ProjectConfigSHA256 || gate.Inputs.SEOConfigSHA256 != current.SEOConfigSHA256) {
+		if !historicalTourSurfaceConfigCompatible(root, locale, gate, gateData) {
+			return false, nil
+		}
+		gate.Inputs.ProjectConfigSHA256 = current.ProjectConfigSHA256
+		gate.Inputs.SEOConfigSHA256 = current.SEOConfigSHA256
+	}
 	if localeSurfaceReviewInputsCurrent(gate.Inputs, current, gate.SchemaVersion) {
 		return true, nil
 	}

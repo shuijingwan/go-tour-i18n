@@ -1,0 +1,237 @@
+locale: sl-SI
+mandatory:
+  A Tour of Go: Ogled jezika Go
+  Go programming language: programski jezik Go
+  Run: Zaženi
+  Format: Formatiraj
+  Reset: Ponastavi
+  Kill: Ustavi
+  Syntax: Skladnja
+  Imports: Uvozi
+  previous: prejšnja
+  next: naslednja
+  menu: meni
+  right arrow: puščica desno
+  slides: strani
+  page: stran
+  module: modul
+  lesson: lekcija
+  exercise: vaja
+  table of contents: kazalo
+  Using the tour: Uporaba ogleda
+  Basics: Osnove
+  Methods and interfaces: Metode in vmesniki
+  Generics: Generiki
+  Concurrency: Sočasnost
+  package: paket
+  import: uvoz
+  import path: uvozna pot
+  exported name: izvoženo ime
+  function: funkcija
+  function argument: argument funkcije
+  parameter: parameter
+  return value: vrnjena vrednost
+  named return value: poimenovana vrnjena vrednost
+  variable: spremenljivka
+  initializer: inicializator
+  short variable declaration: kratka deklaracija spremenljivke
+  basic type: osnovni tip
+  zero value: ničelna vrednost
+  type: tip
+  value: vrednost
+  type conversion: pretvorba tipa
+  type inference: izpeljava tipov
+  constant: konstanta
+  numeric constant: številska konstanta
+  loop: zanka
+  iteration: iteracija
+  statement: stavek
+  expression: izraz
+  scope: doseg
+  defer statement: stavek defer
+  deferred call: odloženi klic
+  stack: sklad
+  pointer: kazalec
+  dereferencing: dereferenciranje
+  struct: struktura
+  struct field: polje strukture
+  struct literal: literal strukture
+  array: tabela
+  array literal: literal tabele
+  slice: rezina
+  slice literal: literal rezine
+  slice length: dolžina rezine
+  slice capacity: kapaciteta rezine
+  underlying array: osnovna tabela
+  map: slovar
+  map literal: literal slovarja
+  map key: ključ slovarja
+  key: ključ
+  function value: funkcijska vrednost
+  closure: zaprtje
+  method: metoda
+  receiver: prejemnik
+  pointer receiver: prejemnik kazalčnega tipa
+  value receiver: prejemnik vrednostnega tipa
+  interface: vmesnik
+  interface type: tip vmesnika
+  interface value: vrednost vmesnika
+  concrete type: konkretni tip
+  empty interface: prazen vmesnik
+  type assertion: tipska trditev
+  type switch: stavek switch po tipu
+  method signature: podpis metode
+  error: napaka
+  reader: bralnik
+  stream: tok
+  type parameter: tipski parameter
+  constraint: omejitev
+  generic function: generična funkcija
+  generic type: generični tip
+  concurrency: sočasnost
+  parallelism: vzporednost
+  channel: kanal
+  buffered channel: kanal z medpomnilnikom
+  unbuffered channel: kanal brez medpomnilnika
+  send: pošiljanje
+  receive: prejemanje
+  mutual exclusion: medsebojno izključevanje
+  binary tree: dvojiško drevo
+  web crawler: spletni pajek
+  standard library: standardna knjižnica
+  source code: izvorna koda
+preferred:
+  tour: ogled
+  course: tečaj
+  course page: stran tečaja
+  program: program
+  run: zagnati
+  format the code: formatirati kodo
+  reset the editor: ponastaviti urejevalnik
+  playground: okolje Go Playground
+  compile: prevesti
+  compiler: prevajalnik
+  build: gradnja
+  link: povezati
+  run-time error: napaka med izvajanjem
+  error value: vrednost napake
+  Go runtime: izvajalno okolje Go
+  remote server: oddaljeni strežnik
+  web service: spletna storitev
+  sandbox: izolirano okolje
+  syntax highlighting: poudarjanje skladnje
+  factored import statement: združeni stavek za uvoz
+  declaration: deklaracija
+  assignment: prirejanje
+  multiple return values: več vrnjenih vrednosti
+  boolean type: logični tip
+  boolean value: logična vrednost
+  string: niz
+  integer: celo število
+  floating-point value: vrednost s plavajočo vejico
+  numeric type: številski tip
+  untyped constant: netipizirana konstanta
+  short statement: kratki stavek
+  condition: pogoj
+  condition expression: pogojni izraz
+  switch statement: stavek switch
+  select statement: stavek select
+  default selection: privzeta izbira
+  infinite loop: neskončna zanka
+  last-in-first-out: zadnji noter, prvi ven
+  pointer arithmetic: aritmetika kazalcev
+  pointer indirection: posredni dostop prek kazalca
+  backing array: osnovna tabela
+  half-open range: polodprti interval
+  reference: referenca
+  index: indeks
+  element: element
+  length: dolžina
+  capacity: kapaciteta
+  underlying value: osnovna vrednost
+  underlying type: osnovni tip
+  concrete value: konkretna vrednost
+  implementation: implementacija
+  implement: implementirati
+  implicit implementation: implicitna implementacija
+  dynamic type: dinamični tip
+  type argument: tipski argument
+  type constraint: tipska omejitev
+  generics: generiki
+  generic data structure: generična podatkovna struktura
+  singly-linked list: enosmerno povezani seznam
+  function closure: funkcijsko zaprtje
+  lightweight thread: lahka nit
+  thread: nit
+  address space: naslovni prostor
+  concurrent execution: sočasno izvajanje
+  parallel execution: vzporedno izvajanje
+  synchronize: sinhronizirati
+  synchronization: sinhronizacija
+  lock: zaklep
+  condition variable: pogojna spremenljivka
+  buffer: medpomnilnik
+  sender: pošiljatelj
+  receiver of a channel: prejemnik kanala
+  close a channel: zapreti kanal
+  channel direction: smer kanala
+  channel operator: operator kanala
+  channel send: pošiljanje po kanalu
+  channel receive: prejemanje iz kanala
+  blocking operation: blokirajoča operacija
+  non-blocking operation: neblokirajoča operacija
+  deadlock: smrtni objem
+  test suite: zbirka testov
+  source file: izvorna datoteka
+  grayscale: sivine
+  code example: primer kode
+  runtime: izvajalno okolje
+  feedback: povratne informacije
+  browser: brskalnik
+  code editor: urejevalnik kode
+  official documentation: uradna dokumentacija
+  community translation: prevod skupnosti
+  user interface: uporabniški vmesnik
+  dark theme: temna tema
+  light theme: svetla tema
+  system theme: sistemska tema
+forbidden:
+  - Golang
+  - Go tura
+  - tura po Go
+  - Go igrišče
+  - igrišče Go
+  - interfejs
+  - gorutina
+  - gorutine
+  - odrezek
+keep:
+  - Go
+  - Go Playground
+  - Playground
+  - Go vet
+  - Go build
+  - gofmt
+  - GOPATH
+  - goroutine
+  - mutex
+  - nil
+  - TranslationUnit
+  - Page
+  - Example
+  - present.Section
+  - GitHub
+  - Yongye
+  - UID
+  - USDC
+  - USDT
+  - Base
+  - Tron
+  - TRC20
+  - CDN
+  - URL
+  - ASCII
+  - CPU
+  - UTC
+  - release.json
+  - SHA256SUMS

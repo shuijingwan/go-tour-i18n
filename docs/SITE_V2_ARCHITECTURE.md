@@ -27,7 +27,7 @@ canonical English public project name：**Go Learning & Documentation Translatio
 - 全局静态 authority：`data/site-content-scope.json`，schema `go-learning/site-content-scope/v1`。
 - 每个 locale 独立 authority：`locales/<locale>/content-scope.json`，schema `go-learning/locale-content-scope/v1`。
 - 离线 frozen source inventory snapshot：`data/site-content-sources.zip`。它不是 Generation/Reviewer bundle，不是 runtime content，也不是 upstream sync；保存可重算的 frozen bytes，避免 current-check 依赖仓库外 checkout/网络。初始化从 clean frozen checkout 只读生成，后续 current-check 只使用仓库内 snapshot。
-- `data/glossary-compatibility.schema.json` 是 V2-B compatibility evidence **design schema**，V2-A 不产生 compatibility PASS、不执行 impact engine。
+- `data/glossary-compatibility.schema.json` 在 V2-A 是 design schema；V2-B 已正式化为 executable contract。实现与执行入口是 [Glossary Compatibility / Freshness Gates](GLOSSARY_COMPATIBILITY.md)。V2-A 历史不补造 compatibility PASS。
 
 Global machine schema 定义 versions、packages、surfaces、source kind/path/origin/hash、canonical route、redirect alias/raw/resolved destination、asset/data dependency、package contract dependency、activation/publication semantics、upstream repository/commit、source/package/global SHA-256。不保存任何 locale 动态完成状态。`tour-v1` article 是多页面源，canonical routes 来自持久 Tour catalog，不是假定一个文件一个 URL。Tour inventory 是 physical source closure，不替代其现有 Page / Example catalog；既有 103 Page / 19 eligible Example 的 TranslationUnit membership仍由原 catalog 决定，不根据文件数量或 asset 存储分类扩展/删除旧 Unit。
 
@@ -68,13 +68,13 @@ redirect handlers 有精确与 subtree 匹配；subtree `Handler` 使用固定�
 
 完成 closure 不仅依赖 live：复用现有 Current Glossary Review（含既有固定 legacy coverage authority）、原始 passed Locale Surface Review A receipt 与对应 Markdown，读取真实 catalog/status，验证全部 canonical ready TranslationUnits、source/structure/术语、UI、article metadata、current Course SEO、其他正式 Tour surfaces。另选取既有 full A-only QC finalization，逐 Unit 比较其 Snapshot 的 candidate/source SHA 与当前全部 canonical bytes，调用现有只读 finalization verifier 验证实际 QC/carry-forward lineage；尤其不能只靠 Page SEO hash 推定 19 个 Example 已审核。使用与既有 CLI 相同的 committed catalog + source hydration，不重新生成历史 catalog identity。completion refs 绑定原 gate/Markdown、必要 registry compatibility baseline、locale identity/status、glossary、UI、metadata、全部 canonical candidates，以及真实 finalization、Snapshot manifests、QC results、selected candidates/validation evidence；validated context digest 同时绑定 read-only Surface package input、source/config 和该 locale 的 live deployment projection。
 
-`legacy_surface_gate_state` 明确区分 `current` 与 `historical-verified`：优先复用当前正式 gate；部分旧 live locale 的 whole shared English UI / registry identity 已变化，不能伪称 current Surface A。历史分支只认可既有 passed receipt 的 locale-owned UI、glossary、article/Course metadata、catalog/source-description authority、project/SEO config 与当前实际字节完全一致，v2/v3 target public identity也必须一致；缺失或语言/source mismatch fail closed。该分支只记录既有 Site v1 completion，不发新 A gate，不授予新 Production/publication，不宣称 shared config compatibility PASS。旧全文件 currentness debt 保留到 V2-B；当前生产 Site v1 成果不因此机械重新翻译。
+`legacy_surface_gate_state` 区分 `current` 与 `historical-verified`：部分旧 locale 的 shared English UI/registry 已变，不能伪称 current Surface A。历史 locale-owned language/source/public identity仍 exact；V2-B仅通过严格 glossary lineage/config baseline组合兼容，并要求原 completion完整 context digest可重建。该分支不发新 A、不授予新 Production/publication权限，不改写历史 completion。相关 full-source proof与 v4 identity见 [Glossary Compatibility](GLOSSARY_COMPATIBILITY.md)。
 
 既有 promotion 对文本 artifact 的合法 EOF 投影是“恰好一个 final LF”。Snapshot 保留原 raw candidate SHA；bootstrap 先验证实际 selected bytes 与原 SHA 完全一致，仅对该已有 EOF 规则的投影与 canonical bytes 比较，不容许任何其他字节差异，不改写 Snapshot。A-only finalization/current lineage 仍由原 verifier 检查。
 
 这是可信 Site v1 成果的 deterministic migration，不是新 Reviewer 决策、QC generation、promotion、发布或 Production 测试。历史 Snapshot/QC/Surface/Production evidence 字节不变；不新造审核，不重写历史语言 provenance。现有 promotion 后的 ready canonical state + 验证过的既有 Surface A 语言证据与正式 export validator 是本次 closure；不虚构旧 Snapshot 中不存在的术语依赖，不要求对全部历史 QC 再跑一遍 lifecycle。
 
-Bootstrap 仅持久保存 `tour-v1=complete`；`site-v2-shell=incomplete`、`learn-docs-v1=incomplete` 由缺席记录推导，不复制 65 份未完成 package identity。当前已有 Site v1 `/` 项目页的正式成果仍保留，但不冒称新 Site v2 homepage 已完成。后续 config/glossary compatibility 在 V2-B 解决前，旧 gates 的 currentness 仍原样 fail closed，V2-A 不绕过它们。
+Bootstrap仅持久保存 `tour-v1=complete`；shell/Learn/Docs 未完成状态由缺席推导，不复制65份未完成 package。当前 Site v1项目页成果不冒称 Site v2 homepage完成。V2-A历史不绕过原 gates；V2-B新增 independent archive/compatibility/projection evidence向前扩展，仍 fail closed且不重写历史成果。
 
 ## 5. Homepage、translation、coverage-aware links
 
@@ -98,17 +98,17 @@ canonical 指向该 locale 真正存在的 local canonical route；alias 不同�
 
 未来一门 locale 原则上一次连续完成完整 `learn-docs-v1`，内部允许合理 Generation/Review batch，但不得 tutorial/database/modules 分裂成长期多轮 campaign。Generation → independent review → automatic validation → machine gates 全包完成后，一次切换 local coverage，不提前暴露某个目录的半成品。不同 locale 独立 campaign/activation。
 
-## 7. Unified glossary 与 compatibility evidence design
+## 7. Unified glossary 与正式 compatibility evidence
 
 每个 locale 永久只有 `locales/<locale>/glossary.yaml` 一份全站 glossary。Tour / Learn / Docs / future surface 共享；禁止 core/Tour/Docs/Learn glossary、surface extension 或 surface-owned 永久 terminology layer。
 
 **Glossary Review currentness 不变**：full glossary 任意字节变化，旧 receipt stale；必须重新取得 generation-independent **full Glossary Review PASS**。impact analysis 不代替或缩小 full Review。
 
-**Downstream compatibility 独立**：新 full Review PASS 后，不应只因 whole glossary SHA 改变机械 reopen 全部旧 Tour artifact。V2-B 将实现 old glossary → new glossary → normalized semantic delta → deterministic impact → compatibility lineage。
+**Downstream compatibility 独立**：新 full Review PASS 后，V2-B 使用 old archived glossary → new archived glossary → normalized semantic delta → deterministic impact → compatibility lineage，不因 whole SHA 不同自动全量 reopen。没有可验证 evidence 时仍 fail closed。
 
-design schema 绑定：schema/evidence kind、locale、old/new glossary SHA-256、新 full Review receipt ref/hash、normalization/algorithm version、mandatory/preferred/forbidden/keep 的 normalized delta、source authority、source/candidate/UI/article-metadata/Course SEO/other surface context inventory、affected scopes、unaffected/compatible scopes、prior evidence lineage、evidence self identity。规范化 entry 保留 source/targets/context_rule；旧/新值分别保留，删除为 null，语义顺序/歧义不得被无损证明以外的 normalization 隐藏。
+正式 schema `go-learning/glossary-compatibility/v1` 绑定 locale、old/new immutable bytes refs/SHA、新 full Review ref/file SHA、normalization/algorithm version、四类 normalized delta、exact source/candidate/UI/article/Course SEO/other context、完整互斥 affected/compatible scopes、prior lineage 与 self identity。真实 loader 的 mapping/list 转为 category/term/old/new，删除为 null，不保留从未正式使用的 design-only targets/context_rule shape。
 
-V2-B machine validator 必须：严格 schema/version/path/hash、sorted/unique normalized sets、delta 与实际 old/new bytes 一致、新 full Review current/pass、context exact-set 与实际内容一致、affected/compatible scope 完整且互斥、每条 lineage 可验证、自 digest 重算；unknown/context mismatch/无法安全证明 unaffected 一律 affected。old/new glossary refs 必须能读取与各自 full SHA 相符的真实 bytes；旧版本需要不可变 archive/lineage，不得只凭旧 SHA 猜旧术语。跨语言 token boundary、Go identifier、大小写、短词与多义上下文、forbidden/keep 及 target occurrence 都必须保守；不是简单 grep 未命中即 unaffected。本轮 JSON Schema 只是 design，不能凭符合 JSON shape 授予 compatibility PASS。
+V2-B machine validator 重建 glossary delta、当前 exact inventory、完整分类与 self identity，并验证每个 archive/Review/lineage ref 的原始 bytes。strict JSON 拒绝 unknown/duplicate/trailing；schema/version/path/hash/context mismatch、断链/分支/未知 parser 均 fail closed。Normalization 和 impact 算法版本、四类术语规则、Unicode boundary/protected structure 与精确消费端见正式 runbook；符合 JSON shape 本身不授予 compatibility PASS。
 
 若新增 `SQL transaction` / `FIPS 140` 等 Docs-only terms，并通过真实 Tour source/candidate/UI/metadata/SEO/surface context 完整证明 Tour unaffected，可保留 Tour candidate/QC/SEO/UI/metadata/其他 surfaces。若变更 `interface`、`channel`、`function`、`module` 或 Tour 实用术语，精确找 affected scope → stale → reopen/revision/re-review；不得容许同一 locale 内 Tour 与 Docs 术语冲突。
 
@@ -116,7 +116,7 @@ V2-B machine validator 必须：严格 schema/version/path/hash、sorted/unique 
 
 ## 8. whole-SHA/config freshness debt：V2-B scope
 
-以下是对当前代码的实际审计，不是已实现的新行为：
+下表保留 V2-A 的 coupling 审计及 V2-B 处理边界；现行实现、CLI、档案路径、schema v4 与验证规则以 [正式 V2-B runbook](GLOSSARY_COMPATIBILITY.md) 为准：
 
 | 当前绑定点 | 实际 code / coupling | V2-B 处理边界 |
 | --- | --- | --- |

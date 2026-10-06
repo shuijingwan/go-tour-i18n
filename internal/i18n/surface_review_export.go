@@ -123,7 +123,9 @@ func ExportLocaleSurfaceReviewPackage(root, locale string, catalog *Catalog) ([]
 	if err != nil {
 		return nil, LocaleSurfaceReviewPackageCoverage{}, err
 	}
-	inputs, err := CurrentLocaleSurfaceReviewAInputs(root, locale, catalog)
+	// Keep the established transport projection byte-stable for Site v1
+	// closure. New A receipts separately bind the v4 config projection.
+	inputs, err := currentLocaleSurfaceReviewAInputs(root, locale, catalog, localeSurfaceReviewASchemaVersionV3)
 	if err != nil {
 		return nil, LocaleSurfaceReviewPackageCoverage{}, err
 	}

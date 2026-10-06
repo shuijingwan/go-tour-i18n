@@ -15,12 +15,14 @@ import (
 	"reflect"
 	"sort"
 	"strings"
+
+	"github.com/shuijingwan/go-tour-i18n/internal/contentidentity"
 )
 
 const GlobalPath = "data/site-content-scope.json"
 const SnapshotPath = "data/site-content-sources.zip"
 const GlobalSchema = "go-learning/site-content-scope/v1"
-const LocaleSchema = "go-learning/locale-content-scope/v1"
+const LocaleSchema = contentidentity.LocaleSchema
 const PublicName = "Go Learning & Documentation Translations"
 
 type Version struct {
@@ -73,29 +75,9 @@ type Global struct {
 	Sources            []Source  `json:"source_inventory"`
 	Identity           string    `json:"identity_sha256"`
 }
-type Reference struct {
-	Path   string `json:"path"`
-	SHA256 string `json:"sha256"`
-}
-type Completion struct {
-	Package            string      `json:"package"`
-	State              string      `json:"state"`
-	PackageIdentity    string      `json:"package_identity_sha256"`
-	SourceIdentity     string      `json:"source_authority_sha256"`
-	Surfaces           []string    `json:"completed_surfaces"`
-	Routes             []string    `json:"local_canonical_routes"`
-	RouteFamilies      []string    `json:"local_route_families"`
-	EvidenceKind       string      `json:"evidence_kind"`
-	Evidence           []Reference `json:"evidence"`
-	EvidenceIdentity   string      `json:"evidence_identity_sha256"`
-	ContextIdentity    string      `json:"validated_context_sha256"`
-	LegacySurfaceState string      `json:"legacy_surface_gate_state"`
-}
-type Locale struct {
-	Schema   string       `json:"schema"`
-	Locale   string       `json:"locale"`
-	Packages []Completion `json:"packages"`
-}
+type Reference = contentidentity.Reference
+type Completion = contentidentity.Completion
+type Locale = contentidentity.Locale
 
 func digest(b []byte) string { h := sha256.Sum256(b); return hex.EncodeToString(h[:]) }
 func identity(v any) string  { b, _ := json.Marshal(v); return digest(b) }

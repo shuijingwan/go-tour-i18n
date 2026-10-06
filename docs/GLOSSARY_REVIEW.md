@@ -98,6 +98,6 @@ go run -mod=readonly ./cmd/tour-i18n glossary-review check --locale <locale>
 
 Glossary Review 不替代 automatic validation、Candidate Snapshot、A-only TranslationUnit Quality Check、machine finalization、promotion、Course SEO schema v2、Locale Surface Review、preview machine acceptance、visual HUMAN gate 或 Production gate。
 
-Glossary 变化后，既有 TranslationUnit Snapshot / QC carry-forward 仍按当前 identity 规则 stale；新的 Glossary Review PASS 不会恢复旧 A。最终 Locale Surface Review 仍完整检查 glossary 决策在 UI、metadata、TranslationUnit context、Course SEO 与其他 surfaces 中的实际一致性，并继续做完整 source ↔ target 语言质量审核。
+Glossary 变化前必须按 [Glossary Compatibility](GLOSSARY_COMPATIBILITY.md) 归档当前 exact bytes。任意 byte change 后仍须完整独立 Glossary Review CURRENT PASS；该 PASS 本身不会恢复旧 A。之后只有可验证的逐 scope compatibility lineage 才允许未受影响 A carry-forward，受影响或无法证明的 scope 仍 stale。最终 Locale Surface Review 的完整语言质量范围不变。
 
-若 glossary 变化发生在 candidate generation 之后，current PASS 后按 [Retranslation 执行手册](RETRANSLATION_RUNBOOK.md#glossary-induced-protected-input-stale-recovery) 比较每个目标 Unit 的 current protected input 与 latest saved input，只重新生成真实 drift 的 Unit；input identity 未变化的可信 candidate 继续复用。恢复后的 full Snapshot 仍必须完整重做 Quality Check，旧 A 不 carry-forward。
+若 glossary 变化发生在 candidate generation 之后，current PASS 后按 [Retranslation 执行手册](RETRANSLATION_RUNBOOK.md#glossary-induced-protected-input-stale-recovery) 比较 current protected input 与 latest saved input，只重新生成真实 drift Unit。恢复后的 Snapshot 仍完整；旧 A 只有 exact identity + verified compatibility lineage 才继承，其他 Unit 必须正式 QC。

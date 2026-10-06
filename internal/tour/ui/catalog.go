@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"html"
 	"io"
 	"io/fs"
 	"regexp"
@@ -229,8 +230,19 @@ func validateCatalog(catalog Catalog) error {
 }
 
 // Rich messages are constrained to the frozen Tour module-description markup.
+var richMarkupTag = regexp.MustCompile(`(?:<p>|</p>|<a href="https://go.dev">|</a>)`)
+
+// VisibleMessageText uses exactly the catalog's markup whitelist. It excludes
+// link destinations and decodes rendered entities for glossary impact checks.
+func VisibleMessageText(message Message) (string, error) {
+	if message.Kind == "plain" { return message.Text, nil }
+	if message.Kind != "rich" { return "", fmt.Errorf("unknown message kind %q", message.Kind) }
+	if err := validateRichMarkup(message.Text); err != nil { return "", err }
+	return html.UnescapeString(richMarkupTag.ReplaceAllString(message.Text, " ")), nil
+}
+
 func validateRichMarkup(text string) error {
-	tag := regexp.MustCompile(`(?:<p>|</p>|<a href="https://go.dev">|</a>)`)
+	tag := richMarkupTag
 	stack := []string{}
 	position := 0
 	for _, match := range tag.FindAllStringIndex(text, -1) {

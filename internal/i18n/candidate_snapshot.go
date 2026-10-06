@@ -63,6 +63,9 @@ func CreateQualityCheckCandidateSnapshot(root string, catalog *Catalog, options 
 	if err := validateSnapshotID(options.SnapshotID); err != nil {
 		return nil, "", err
 	}
+	if err := RequireCurrentGlossaryReview(root, options.Locale); err != nil {
+		return nil, "", err
+	}
 	glossaryPath := filepath.ToSlash(filepath.Join("locales", options.Locale, "glossary.yaml"))
 	glossaryData, err := readSnapshotReferencedFile(root, glossaryPath)
 	if err != nil {

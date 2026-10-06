@@ -1,0 +1,150 @@
+locale: kn-IN
+
+# ಕನ್ನಡ ತಾಂತ್ರಿಕ ಬೋಧನೆಗಾಗಿ ಸ್ಥಿರ ಪದಪ್ರಯೋಗ. ಈ ನಿಯಮಗಳು ಓದಲು ಬರುವ ಪಠ್ಯಕ್ಕೆ;
+# Go ಕೀವರ್ಡ್‌ಗಳು, ಗುರುತಿನ ಹೆಸರುಗಳು, ಕೋಡ್, ಪಥಗಳು ಮತ್ತು ಲಿಂಕ್ ಗುರಿಗಳನ್ನು protector ಪ್ರತ್ಯೇಕವಾಗಿ ರಕ್ಷಿಸುತ್ತದೆ.
+# ಕನ್ನಡ ವಾಕ್ಯರಚನೆಗೆ ತಕ್ಕಂತೆ ವಿಭಕ್ತಿ/ಬಹುವಚನ ಸೇರಿಸಬಹುದು; ತಾಂತ್ರಿಕ ಅರ್ಥ ಬದಲಾಗಬಾರದು.
+mandatory:
+  A Tour of Go: Go ಕಲಿಕಾ ಪ್ರವಾಸ
+  Run: ಚಲಾಯಿಸಿ
+  Format: ಸ್ವರೂಪಗೊಳಿಸಿ
+  Reset: ಮರುಹೊಂದಿಸಿ
+  Kill: ನಿಲ್ಲಿಸಿ
+  module: ಘಟಕ
+  lesson: ಪಾಠ
+  exercise: ಅಭ್ಯಾಸ
+  package: ಪ್ಯಾಕೇಜ್
+  import: ಇಂಪೋರ್ಟ್
+  exported name: ಎಕ್ಸ್‌ಪೋರ್ಟ್ ಮಾಡಿದ ಹೆಸರು
+  unexported name: ಎಕ್ಸ್‌ಪೋರ್ಟ್ ಮಾಡದ ಹೆಸರು
+  function: ಫಂಕ್ಷನ್
+  method: ಮೆಥಡ್
+  parameter: ಪ್ಯಾರಾಮೀಟರ್
+  argument: ಆರ್ಗ್ಯುಮೆಂಟ್
+  receiver: ರಿಸೀವರ್
+  pointer: ಪಾಯಿಂಟರ್
+  pointer receiver: ಪಾಯಿಂಟರ್ ರಿಸೀವರ್
+  value receiver: ಮೌಲ್ಯ ರಿಸೀವರ್
+  variable: ಚರ
+  constant: ಸ್ಥಿರಾಂಕ
+  type: ಟೈಪ್
+  basic type: ಮೂಲ ಟೈಪ್
+  concrete type: ನಿರ್ದಿಷ್ಟ ಟೈಪ್
+  underlying type: ಆಧಾರಭೂತ ಟೈಪ್
+  type conversion: ಟೈಪ್ ಪರಿವರ್ತನೆ
+  type inference: ಟೈಪ್ ನಿರ್ಣಯ
+  type assertion: ಟೈಪ್ ಅಸರ್ಷನ್
+  type switch: ಟೈಪ್ ಸ್ವಿಚ್
+  type parameter: ಟೈಪ್ ಪ್ಯಾರಾಮೀಟರ್
+  constraint: ನಿರ್ಬಂಧ
+  interface: ಇಂಟರ್‌ಫೇಸ್
+  interface type: ಇಂಟರ್‌ಫೇಸ್ ಟೈಪ್
+  interface value: ಇಂಟರ್‌ಫೇಸ್ ಮೌಲ್ಯ
+  empty interface: ಖಾಲಿ ಇಂಟರ್‌ಫೇಸ್
+  array: ಅರೇ
+  slice: ಸ್ಲೈಸ್
+  underlying array: ಆಧಾರ ಅರೇ
+  backing array: ಆಧಾರ ಅರೇ
+  map: ಮ್ಯಾಪ್
+  channel: ಚಾನೆಲ್
+  buffered channel: ಬಫರ್ ಹೊಂದಿದ ಚಾನೆಲ್
+  unbuffered channel: ಬಫರ್ ಇಲ್ಲದ ಚಾನೆಲ್
+  pipeline: ಪೈಪ್‌ಲೈನ್
+  mutex: ಮ್ಯೂಟೆಕ್ಸ್
+  mutual exclusion: ಪರಸ್ಪರ ಹೊರಗಿಡುವಿಕೆ
+  concurrency: ಸಹವರ್ತಿ ಕಾರ್ಯನಿರ್ವಹಣೆ
+  parallelism: ಸಮಾನಾಂತರ ಕಾರ್ಯನಿರ್ವಹಣೆ
+  zero value: ಶೂನ್ಯ ಮೌಲ್ಯ
+  closure: ಕ್ಲೋಶರ್
+  generic type: ಜೆನೆರಿಕ್ ಟೈಪ್
+  generic function: ಜೆನೆರಿಕ್ ಫಂಕ್ಷನ್
+  length: ಉದ್ದ
+  capacity: ಸಾಮರ್ಥ್ಯ
+
+# ಸಾಮಾನ್ಯ ಇಂಗ್ಲಿಷ್ ಪದಕ್ಕೆ ಅನೇಕ ಅರ್ಥಗಳಿದ್ದರೆ ಸಂದರ್ಭ ನೋಡಿ ಬಳಸಬೇಕು.
+# welcome/1 ರ slides = ಪಾಠದ ಪುಟಗಳು; concurrency/11 ರ ಉಪನ್ಯಾಸ slides = ಸ್ಲೈಡ್‌ಗಳು.
+# Go ನ map, slice ಮತ್ತು channel ಗಳನ್ನು ಕೋಡ್ ಹೊರಗಿನ ವಿವರಣೆಯಲ್ಲಿಯೂ ಕನ್ನಡೀಕರಿಸಬೇಕು;
+# ಆ ಗುರುತುಗಳ Go ಕೀವರ್ಡ್/ಟೈಪ್/ಕೋಡ್ ರೂಪವನ್ನು ಮಾತ್ರ ಬದಲಿಸಬಾರದು.
+preferred:
+  tour: ಕಲಿಕಾ ಪ್ರವಾಸ
+  programming language: ಪ್ರೋಗ್ರಾಮಿಂಗ್ ಭಾಷೆ
+  source code: ಮೂಲ ಕೋಡ್
+  documentation: ದಸ್ತಾವೇಜು
+  standard library: ಪ್ರಮಾಣಿತ ಲೈಬ್ರರಿ
+  syntax: ಸಿಂಟ್ಯಾಕ್ಸ್
+  syntax highlighting: ಸಿಂಟ್ಯಾಕ್ಸ್ ಹೈಲೈಟಿಂಗ್
+  compiler: ಕಂಪೈಲರ್
+  compile: ಕಂಪೈಲ್ ಮಾಡು
+  declaration: ಘೋಷಣೆ
+  initialization: ಆರಂಭಿಕೀಕರಣ
+  initializer: ಆರಂಭಿಕ ಮೌಲ್ಯ
+  assignment: ಮೌಲ್ಯ ನಿಯೋಜನೆ
+  short variable declaration: ಸಂಕ್ಷಿಪ್ತ ಚರ ಘೋಷಣೆ
+  return value: ಹಿಂತಿರುಗುವ ಮೌಲ್ಯ
+  named return value: ಹೆಸರಿಸಲಾದ ಹಿಂತಿರುಗುವ ಮೌಲ್ಯ
+  naked return: ಆರ್ಗ್ಯುಮೆಂಟ್ ಇಲ್ಲದ return
+  boolean: ಬೂಲಿಯನ್
+  integer: ಪೂರ್ಣಾಂಕ
+  floating-point: ಫ್ಲೋಟಿಂಗ್ ಪಾಯಿಂಟ್
+  complex number: ಸಂಕೀರ್ಣ ಸಂಖ್ಯೆ
+  string: ಸ್ಟ್ರಿಂಗ್
+  struct: ಸ್ಟ್ರಕ್ಟ್
+  struct field: ಸ್ಟ್ರಕ್ಟ್ ಫೀಲ್ಡ್
+  struct literal: ಸ್ಟ್ರಕ್ಟ್ ಲಿಟರಲ್
+  slice literal: ಸ್ಲೈಸ್ ಲಿಟರಲ್
+  map literal: ಮ್ಯಾಪ್ ಲಿಟರಲ್
+  field: ಫೀಲ್ಡ್
+  index: ಇಂಡೆಕ್ಸ್
+  low bound: ಕೆಳಗಿನ ಮಿತಿ
+  high bound: ಮೇಲಿನ ಮಿತಿ
+  half-open range: ಕೊನೆಯ ಮೌಲ್ಯವನ್ನು ಹೊರತುಪಡಿಸುವ ಶ್ರೇಣಿ
+  iteration: ಪುನರಾವರ್ತನೆ
+  loop: ಲೂಪ್
+  scope: ವ್ಯಾಪ್ತಿ
+  operator: ಆಪರೇಟರ್
+  dereferencing: ಪಾಯಿಂಟರ್ ಸೂಚಿಸಿದ ಮೌಲ್ಯವನ್ನು ಪಡೆಯುವುದು
+  deferred call: ಮುಂದೂಡಿದ ಫಂಕ್ಷನ್ ಕರೆ
+  function value: ಫಂಕ್ಷನ್ ಮೌಲ್ಯ
+  method signature: ಮೆಥಡ್ ಸಿಗ್ನೇಚರ್
+  implementation: ಅನುಷ್ಠಾನ
+  generic: ಜೆನೆರಿಕ್
+  comparable: ಹೋಲಿಸಬಹುದಾದ
+  linked list: ಲಿಂಕ್‌ಡ್ ಲಿಸ್ಟ್
+  binary tree: ಬೈನರಿ ಟ್ರೀ
+  channel operator: ಚಾನೆಲ್ ಆಪರೇಟರ್
+  buffer: ಬಫರ್
+  synchronization: ಸಮನ್ವಯ
+  thread: ಥ್ರೆಡ್
+  lightweight thread: ಹಗುರವಾದ ಥ್ರೆಡ್
+  runtime: ರನ್‌ಟೈಮ್
+  remote server: ದೂರಸ್ಥ ಸರ್ವರ್
+  sandbox: ಪ್ರತ್ಯೇಕಿತ ಕಾರ್ಯಪರಿಸರ
+  error: ದೋಷ
+  panic: ಪ್ಯಾನಿಕ್
+  web crawler: ವೆಬ್ ಕ್ರಾಲರ್
+
+# ಸಂಪೂರ್ಣ ಪದಪ್ರಯೋಗ ಮಾತ್ರ ನಿಷಿದ್ಧ; ಬೇರೆ ಸಂದರ್ಭಗಳಲ್ಲಿ ಸರಿಯಾದ ಸಾಮಾನ್ಯ ಪದಗಳನ್ನು ನಿಷೇಧಿಸಬೇಡಿ.
+forbidden:
+  - ಗೋರೂಟೀನ್
+  - ಗೋ ರೂಟೀನ್
+  - Go ಪ್ಲೇಗ್ರೌಂಡ್
+  - Go Play Ground
+
+# ಓದಬಹುದಾದ ಪಠ್ಯದಲ್ಲಿಯೂ ಅಧಿಕೃತ ಗುರುತನ್ನು ಉಳಿಸಬೇಕಾದ ಹೆಸರುಗಳು/ಸಂಕ್ಷೇಪಗಳು ಮಾತ್ರ.
+# goroutine ಗೆ ಕನ್ನಡ ವಿವರಣೆಯನ್ನು ಮೊದಲ ಬಾರಿಗೆ ಸೇರಿಸಬಹುದು; ಹೆಸರು ಮಾತ್ರ goroutine ಆಗಿಯೇ ಇರಲಿ.
+# Go Playground ಅನ್ನು ಅಧಿಕೃತ ಉತ್ಪನ್ನನಾಮವಾಗಿಯೇ ಉಳಿಸಿ; ವಿವರಣಾತ್ಮಕ ವಾಕ್ಯವನ್ನು ಕನ್ನಡದಲ್ಲಿ ಬರೆಯಿರಿ.
+keep:
+  - Go
+  - Go Playground
+  - goroutine
+  - gofmt
+  - GOPATH
+  - nil
+  - URL
+  - ASCII
+  - CPU
+  - UTC
+  - GitHub
+  - Yongye
+  - USDC
+  - USDT
+  - TRC20

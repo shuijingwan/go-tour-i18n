@@ -1,0 +1,83 @@
+locale: de-CH
+mandatory:
+  Run: Ausführen
+  Format: Formatieren
+  Reset: Zurücksetzen
+  slide: Folie
+  slides: Folien
+  package: Paket
+  function: Funktion
+  variable: Variable
+  constant: Konstante
+  type: Typ
+  struct: Struct
+  array: Array
+  slice: Slice
+  map: Map
+  pointer: Pointer
+  method: Methode
+  interface: Interface
+  receiver: Receiver
+  channel: Channel
+  mutex: Mutex
+  type parameter: Typparameter
+  constraint: Constraint
+  type assertion: Typassertion
+  type switch: Typ-Switch
+  type inference: Typinferenz
+  zero value: Nullwert
+  concurrency: Nebenläufigkeit
+preferred:
+  buffered channel: gepufferter Channel
+  range: range
+  select: select
+  generic: generisch
+  generics: Generics
+  generic type: generischer Typ
+  exported name: exportierter Name
+  exported: exportiert
+  import path: Importpfad
+  argument: Argument
+  parameter: Parameter
+  return value: Rückgabewert
+  named return value: benannter Rückgabewert
+  short variable declaration: kurze Variablendeklaration
+  pointer receiver: Pointer-Receiver
+  value receiver: Wert-Receiver
+  field: Feld
+  literal: Literal
+  struct literal: Struct-Literal
+  array literal: Array-Literal
+  slice literal: Slice-Literal
+  map literal: Map-Literal
+  length: Länge
+  capacity: Kapazität
+  underlying array: zugrunde liegendes Array
+  backing array: zugrunde liegendes Array
+  underlying type: zugrunde liegender Typ
+  underlying value: zugrunde liegender Wert
+  concrete type: konkreter Typ
+  interface value: Interface-Wert
+  empty interface: leeres Interface
+  closure: Closure
+  dereference: dereferenzieren
+  loop: Schleife
+  iteration: Iteration
+  scope: Gültigkeitsbereich
+  built-in: eingebaut
+  standard library: Standardbibliothek
+  mutual exclusion: gegenseitiger Ausschluss
+  exercise: Übung
+  module: Modul
+  lesson: Lektion
+forbidden:
+  - "ß"
+keep:
+  - A Tour of Go
+  - Go
+  - Go Playground
+  - Playground
+  - goroutine
+  - TranslationUnit
+  - present.Section
+  - gofmt

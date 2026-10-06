@@ -97,14 +97,15 @@ type QualityCheckScopeOptions struct {
 }
 
 type QualityCheckScopeUnit struct {
-	Index          int                        `json:"index"`
-	UnitID         string                     `json:"unit_id"`
-	UnitKind       UnitKind                   `json:"unit_kind"`
-	BatchID        string                     `json:"batch_id"`
-	Rating         string                     `json:"rating,omitempty"`
-	FromSnapshotID string                     `json:"from_snapshot_id,omitempty"`
-	Reason         QualityCheckScopeReason    `json:"reason,omitempty"`
-	RequiredAction QualityCheckRequiredAction `json:"required_action,omitempty"`
+	CompatibilityChain []GlossaryArchiveReference `json:"compatibility_chain,omitempty"`
+	Index              int                        `json:"index"`
+	UnitID             string                     `json:"unit_id"`
+	UnitKind           UnitKind                   `json:"unit_kind"`
+	BatchID            string                     `json:"batch_id"`
+	Rating             string                     `json:"rating,omitempty"`
+	FromSnapshotID     string                     `json:"from_snapshot_id,omitempty"`
+	Reason             QualityCheckScopeReason    `json:"reason,omitempty"`
+	RequiredAction     QualityCheckRequiredAction `json:"required_action,omitempty"`
 }
 
 type QualityCheckScope struct {
@@ -129,11 +130,12 @@ type QualityCheckScope struct {
 }
 
 type effectiveQualityCheckResult struct {
-	rating     string
-	finding    string
-	rubric     string
-	snapshotID string
-	unit       QualityCheckSnapshotUnit
+	compatibilityChain []GlossaryArchiveReference
+	rating             string
+	finding            string
+	rubric             string
+	snapshotID         string
+	unit               QualityCheckSnapshotUnit
 }
 
 func RecordQualityCheckResults(root string, catalog *Catalog, options QualityCheckRecordOptions) (*QualityCheckRecordResult, error) {
@@ -167,7 +169,7 @@ func RecordQualityCheckResults(root string, catalog *Catalog, options QualityChe
 	if len(options.UnitIDs) == 0 {
 		return nil, errors.New("at least one quality-check unit_id is required")
 	}
-	snapshot, err := readQualityCheckSnapshotForReview(root, options.Locale, options.SnapshotID)
+	snapshot, err := readQualityCheckSnapshotForReview(root, options.Locale, options.SnapshotID, catalog)
 	if err != nil {
 		return nil, err
 	}
@@ -291,7 +293,7 @@ func RecordQualityCheckResultBatch(root string, catalog *Catalog, options Qualit
 	if limit > DefaultQualityCheckBatchLimit {
 		return nil, fmt.Errorf("quality-check limit must not exceed %d", DefaultQualityCheckBatchLimit)
 	}
-	snapshot, err := readQualityCheckSnapshotForReview(root, options.Locale, options.SnapshotID)
+	snapshot, err := readQualityCheckSnapshotForReview(root, options.Locale, options.SnapshotID, catalog)
 	if err != nil {
 		return nil, err
 	}
@@ -324,7 +326,7 @@ func BackfillQualityCheckFinding(root string, catalog *Catalog, options QualityC
 	if finding == "" {
 		return nil, errors.New("quality-check finding must be non-empty")
 	}
-	snapshot, err := readQualityCheckSnapshotForReview(root, options.Locale, options.SnapshotID)
+	snapshot, err := readQualityCheckSnapshotForReview(root, options.Locale, options.SnapshotID, catalog)
 	if err != nil {
 		return nil, err
 	}
@@ -374,7 +376,7 @@ func BuildQualityCheckScope(root string, catalog *Catalog, options QualityCheckS
 	if err := validateSnapshotID(options.SnapshotID); err != nil {
 		return nil, err
 	}
-	current, err := readQualityCheckSnapshotForReview(root, options.Locale, options.SnapshotID)
+	current, err := readQualityCheckSnapshotForReview(root, options.Locale, options.SnapshotID, catalog)
 	if err != nil {
 		return nil, err
 	}
@@ -410,7 +412,7 @@ func BuildQualityCheckScope(root string, catalog *Catalog, options QualityCheckS
 		if previousSnapshotID == options.SnapshotID {
 			return nil, errors.New("quality-check result lineage contains a cycle")
 		}
-		previous, previousEffective, err = loadEffectiveQualityCheckResults(root, options.Locale, previousSnapshotID, map[string]bool{})
+		previous, previousEffective, err = loadEffectiveQualityCheckResults(root, options.Locale, previousSnapshotID, map[string]bool{}, catalog)
 		if err != nil {
 			return nil, err
 		}
@@ -452,7 +454,11 @@ func BuildQualityCheckScope(root string, catalog *Catalog, options QualityCheckS
 			scope.Pending = append(scope.Pending, base)
 			continue
 		}
-		if previous != nil && previous.GlossarySHA256 != current.GlossarySHA256 {
+		resolution := GlossaryCompatibilityResolution{Status: "exact"}
+		if previous != nil {
+			resolution = ResolveGlossaryCompatibility(root, options.Locale, previous.GlossarySHA256, current.GlossarySHA256, "tu:"+unit.UnitID, catalog)
+		}
+		if resolution.Status != "exact" && resolution.Status != "compatible" {
 			base.Reason = QualityCheckScopeReasonGlossaryChanged
 			base.RequiredAction = QualityCheckActionRequired
 			scope.Pending = append(scope.Pending, base)
@@ -472,6 +478,7 @@ func BuildQualityCheckScope(root string, catalog *Catalog, options QualityCheckS
 		}
 		base.Rating = prior.rating
 		base.FromSnapshotID = prior.snapshotID
+		base.CompatibilityChain = append(append([]GlossaryArchiveReference(nil), prior.compatibilityChain...), resolution.Chain...)
 		addQualityCheckRating(scope, prior.rating)
 		if prior.rating == "A" {
 			scope.CarryForward = append(scope.CarryForward, base)
@@ -503,7 +510,11 @@ func resolveQualityCheckResultsLineage(snapshotID string, existing *QualityCheck
 	)
 }
 
-func loadEffectiveQualityCheckResults(root, locale, snapshotID string, seen map[string]bool) (*QualityCheckSnapshotManifest, map[string]effectiveQualityCheckResult, error) {
+func loadEffectiveQualityCheckResults(root, locale, snapshotID string, seen map[string]bool, catalogs ...*Catalog) (*QualityCheckSnapshotManifest, map[string]effectiveQualityCheckResult, error) {
+	var catalog *Catalog
+	if len(catalogs) > 0 {
+		catalog = catalogs[0]
+	}
 	if seen[snapshotID] {
 		return nil, nil, errors.New("quality-check result lineage contains a cycle")
 	}
@@ -522,16 +533,16 @@ func loadEffectiveQualityCheckResults(root, locale, snapshotID string, seen map[
 		return snapshot, effective, nil
 	}
 	if results.PreviousSnapshotID != "" {
-		previous, inherited, err := loadEffectiveQualityCheckResults(root, locale, results.PreviousSnapshotID, seen)
+		previous, inherited, err := loadEffectiveQualityCheckResults(root, locale, results.PreviousSnapshotID, seen, catalog)
 		if err != nil {
 			return nil, nil, err
 		}
-		if previous.GlossarySHA256 == snapshot.GlossarySHA256 {
-			for _, unit := range snapshot.Units {
-				prior, ok := inherited[unit.UnitID]
-				if ok && qualityCheckSnapshotIdentityMatches(unit, prior.unit) {
-					effective[unit.UnitID] = prior
-				}
+		for _, unit := range snapshot.Units {
+			prior, ok := inherited[unit.UnitID]
+			resolution := ResolveGlossaryCompatibility(root, locale, previous.GlossarySHA256, snapshot.GlossarySHA256, "tu:"+unit.UnitID, catalog)
+			if ok && qualityCheckSnapshotIdentityMatches(unit, prior.unit) && (resolution.Status == "exact" || (prior.rating == "A" && resolution.Status == "compatible")) {
+				prior.compatibilityChain = append(append([]GlossaryArchiveReference(nil), prior.compatibilityChain...), resolution.Chain...)
+				effective[unit.UnitID] = prior
 			}
 		}
 	}

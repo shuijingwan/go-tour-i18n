@@ -258,7 +258,7 @@ var languageRegistry = []LanguageLink{
 }
 var localeProfiles = map[string]localeProfile{"other-AA":{TimeLabel:"Other"}, "zz-ZZ":{TimeLabel:"Test"}}
 func languagesFor(locale string) []LanguageLink { return languageRegistry }
-`, "internal/tour/project.go": "project", "internal/tour/seo.go": "seo", "production/identity.json": `{"locales":[{"locale":"other-AA","production_hostname":"other.example","production_public_url":"https://other.example/","production_state":"live","loopback_port":4200},{"locale":"zz-ZZ","production_hostname":"zz.example","production_public_url":"https://zz.example/","production_state":"first-production","loopback_port":4100,"systemd_service":"go-tour-zz.service","cdn":"cloudflare"}]}`,
+`, "internal/tour/project.go": "package tour\nconst ProjectName = \"project\"\n", "internal/tour/seo.go": "package tour\nconst TourRoute = \"/tour/\"\n", "production/identity.json": `{"locales":[{"locale":"other-AA","production_hostname":"other.example","production_public_url":"https://other.example/","production_state":"live","loopback_port":4200},{"locale":"zz-ZZ","production_hostname":"zz.example","production_public_url":"https://zz.example/","production_state":"first-production","loopback_port":4100,"systemd_service":"go-tour-zz.service","cdn":"cloudflare"}]}`,
 	}
 	for path, text := range files {
 		full := filepath.Join(root, path)
@@ -269,7 +269,7 @@ func languagesFor(locale string) []LanguageLink { return languageRegistry }
 			t.Fatal(err)
 		}
 	}
-	return root, &Catalog{Pages: []Page{{ID: "lesson/1", Source: []byte("source"), SourceSHA256: sum([]byte("source"))}}}
+	return root, &Catalog{Pages: []Page{{ID: "lesson/1", Article: "lesson.article", Source: []byte("source"), SourceSHA256: sum([]byte("source"))}}}
 }
 
 func TestLocaleSurfaceReviewAGateV3AllowsOnlyCompatibleRegistryAddition(t *testing.T) {

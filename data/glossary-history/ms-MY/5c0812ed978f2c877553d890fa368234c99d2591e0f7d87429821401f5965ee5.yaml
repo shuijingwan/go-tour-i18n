@@ -1,0 +1,174 @@
+locale: ms-MY
+
+# Keputusan istilah untuk Bahasa Melayu (Malaysia). Istilah merujuk kepada
+# konsep dalam teks pembelajaran; kata kunci, pengecam dan kod Go dilindungi
+# secara berasingan oleh protector. Jangan salin dasar bahasa Indonesia.
+mandatory:
+  exercise: latihan
+  package: pakej
+  function: fungsi
+  variable: pemboleh ubah
+  constant: pemalar
+  type: jenis
+  basic type: jenis asas
+  underlying type: jenis dasar
+  concrete type: jenis konkrit
+  type parameter: parameter jenis
+  type inference: inferens jenis
+  type assertion: penegasan jenis
+  type switch: pemilihan jenis
+  method: kaedah
+  receiver: penerima
+  pointer: penunjuk
+  value receiver: penerima nilai
+  pointer receiver: penerima penunjuk
+  struct: struktur
+  interface: antara muka
+  interface type: jenis antara muka
+  interface value: nilai antara muka
+  array: tatasusunan
+  slice: hirisan
+  underlying array: tatasusunan yang mendasari
+  map: peta
+  channel: saluran
+  pipeline: saluran pemprosesan
+  buffered channel: saluran berpenimbal
+  unbuffered channel: saluran tanpa penimbal
+  constraint: kekangan
+  zero value: nilai sifar
+  generic type: jenis generik
+  generic function: fungsi generik
+  length: panjang
+  capacity: kapasiti
+  concurrency: keserentakan
+  mutual exclusion: pengecualian bersama
+  Run: Jalankan
+  Format: Formatkan
+  Reset: Tetapkan semula
+
+# Preferred membimbing terjemahan mengikut konteks; bukan penggantian rentetan.
+# Istilah closure sengaja dipinjam untuk membezakannya daripada menutup saluran.
+preferred:
+  Go programming language: bahasa pengaturcaraan Go
+  tour: jelajah
+  module: modul
+  page: halaman
+  # welcome/1: "slides and exercises" ialah halaman tutorial dan latihan.
+  # concurrency/11: "slides" pada pautan ceramah ialah slaid pembentangan.
+  # Jangan gunakan satu terjemahan wajib untuk kedua-dua konteks ini.
+  slide: halaman (tutorial) atau slaid (pembentangan), mengikut konteks
+  slides: halaman (tutorial) atau slaid (pembentangan), mengikut konteks
+  lesson: pelajaran
+  table of contents: senarai kandungan
+  navigation: navigasi
+  program: atur cara
+  source code: kod sumber
+  code editor: penyunting kod
+  editor: penyunting
+  syntax highlighting: penyerlahan sintaks
+  command: perintah
+  command line: baris perintah
+  import: import
+  imported package: pakej yang diimport
+  exported name: nama yang dieksport
+  statement: pernyataan
+  declaration: pengisytiharan
+  variable declaration: pengisytiharan pemboleh ubah
+  short variable declaration: pengisytiharan ringkas pemboleh ubah
+  initializer: nilai permulaan
+  initialization: pemulaan
+  assignment: pengumpukan
+  expression: ungkapan
+  result: hasil
+  return value: nilai pulangan
+  named return value: nilai pulangan bernama
+  multiple results: berbilang hasil
+  argument: argumen
+  parameter: parameter
+  type conversion: penukaran jenis
+  numeric constant: pemalar angka
+  untyped constant: pemalar tanpa jenis
+  precision: ketepatan
+  boolean: Boolean
+  integer: integer
+  floating-point number: nombor titik terapung
+  complex number: nombor kompleks
+  loop: gelung
+  iteration: lelaran
+  condition: syarat
+  branch: cabang
+  case: kes
+  switch statement: pernyataan switch
+  defer statement: pernyataan defer
+  deferred call: panggilan tertunda
+  literal: literal
+  struct field: medan struktur
+  struct literal: literal struktur
+  slice literal: literal hirisan
+  map literal: literal peta
+  index: indeks
+  element: elemen
+  key: kunci
+  key-value pair: pasangan kunci-nilai
+  nil slice: hirisan nil
+  empty interface: antara muka kosong
+  implicitly implemented: dilaksanakan secara tersirat
+  implementation: pelaksanaan
+  dereference: nyahrujukan
+  pointer indirection: capaian tidak langsung melalui penunjuk
+  memory address: alamat ingatan
+  shared memory: ingatan dikongsi
+  function value: nilai fungsi
+  closure: closure
+  function closure: closure fungsi
+  linked list: senarai berangkai
+  singly-linked list: senarai berangkai tunggal
+  generic data structure: struktur data generik
+  reader: pembaca
+  stream: aliran data
+  error: ralat
+  buffer: penimbal
+  buffer length: panjang penimbal
+  send: hantar
+  receive: terima
+  synchronization: penyegerakan
+  concurrent execution: pelaksanaan serentak
+  parallel execution: pelaksanaan selari
+  thread: bebenang
+  lightweight thread: bebenang ringan
+  mutex: mutex
+  lock: kunci
+  unlock: nyahkunci
+  deadlock: kebuntuan
+  compiler: pengkompil
+  compile: kompil
+  standard library: pustaka piawai
+  web crawler: perangkak web
+  binary tree: pokok binari
+  equivalent binary tree: pokok binari setara
+  recursion: rekursi
+  Kill: Hentikan
+  Syntax: Sintaks
+
+# Bentuk salah yang jelas bagi kandungan A Tour of Go ini sahaja.
+# Jangan larang varian bahasa Melayu yang sah dalam konteks lain.
+forbidden:
+  - gorutin
+  - Taman Permainan Go
+
+# Identiti jenama/teknikal yang benar-benar muncul dalam teks semula jadi.
+# Sintaks, nama pakej dan identifier dalam kod sudah diurus oleh protector.
+keep:
+  - A Tour of Go
+  - Go Playground
+  - Go
+  - goroutine
+  - nil
+  - panic
+  - gofmt
+  - GOPATH
+  - URL
+  - CPU
+  - UTC
+  - GitHub
+  - Stringer

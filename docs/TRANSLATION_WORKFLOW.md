@@ -123,7 +123,7 @@ candidate 完成 automatic validation 后，先生成覆盖完整 locale workflo
 
 Candidate Snapshot 只冻结本轮审核使用的唯一完整 candidate 集合。Quality Check 使用 `quality-check scope` 与 `quality-check-results.json`，revision 后只 carry-forward identity 完全未变的 A。全 Snapshot A 后，`quality-check finalize` 机械验证完整 lineage 与 identity 并生成独立 `finalization.json`；新 promotion 只接受匹配当前 Snapshot 的 finalization，且仍重验底层 source/input/glossary/candidate/validation/retry evidence。历史 Final Review evidence 原样保留，仅用于历史解释与验证。
 
-若已生成 candidate 后 glossary 变化，先重新完成完整 Glossary Review；随后只对当前 protector 输出与 latest saved input 真实不同的 Unit 使用 Retranslation Runbook 定义的 glossary-stale recovery，不重译 unaffected candidate。恢复后的 Snapshot 仍为 full Snapshot；glossary identity 变化使旧 QC A 全部不可 carry-forward，必须完整重审。
+若已生成 candidate 后 glossary 变化，先归档原 exact bytes，重新完成完整 Glossary Review，再按 [Glossary Compatibility](GLOSSARY_COMPATIBILITY.md) 生成逐 scope 证据。只有 current protector 输出与 latest saved input 真实不同的 Unit 使用 glossary-stale recovery；恢复后的 Snapshot 仍完整。旧 QC A 可经 exact identity + verified compatibility lineage 精确继承，affected/missing/stale scope 仍须正式 QC。
 
 ## 4. 发布部署
 

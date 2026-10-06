@@ -192,6 +192,20 @@ func legacyQCClosure(root, locale string, catalog *i18n.Catalog, statuses []i18n
 		if err != nil {
 			return nil, err
 		}
+		if normalized.GlossarySHA256 != glossarySHA {
+			compatible := true
+			for _, u := range normalized.Units {
+				r := i18n.ResolveGlossaryCompatibility(root, locale, normalized.GlossarySHA256, glossarySHA, "tu:"+u.UnitID, catalog)
+				if r.Status != "compatible" {
+					compatible = false
+					break
+				}
+			}
+			if !compatible {
+				continue
+			}
+			normalized.GlossarySHA256 = glossarySHA
+		}
 		if !finalizationMatchesCanonical(normalized, locale, e.Name(), glossarySHA, current) {
 			continue
 		}
@@ -276,11 +290,11 @@ func legacySurfaceReceipt(root, locale string, catalog *i18n.Catalog) (i18n.Loca
 		if err := StrictJSON(b, &g); err != nil {
 			return g, "", err
 		}
-		if g.Locale != locale || g.ReviewID+".a-gate.json" != e.Name() || g.Stage != "locale-level-language-quality-review" || g.Decision != "passed" || g.Reviewer == "" || g.SchemaVersion < 1 || g.SchemaVersion > 3 {
+		if g.Locale != locale || g.ReviewID+".a-gate.json" != e.Name() || g.Stage != "locale-level-language-quality-review" || g.Decision != "passed" || g.Reviewer == "" || g.SchemaVersion < 1 || g.SchemaVersion > 4 {
 			return g, "", fmt.Errorf("invalid historical Surface receipt %s", e.Name())
 		}
 		a, c := g.Inputs, current
-		if !historicalLanguageInputsMatch(a, c, g.SchemaVersion) {
+		if (g.SchemaVersion == 4 || !historicalLanguageInputsMatch(a, c, g.SchemaVersion)) && !i18n.HistoricalLocaleSurfaceLanguageInputsCompatible(root, locale, g, b, current, catalog) {
 			continue
 		}
 		md, err := readRegular(root, dir+"/"+g.ReviewID+".md")
@@ -353,12 +367,70 @@ func CheckLocale(root string, g *Global, locale string) (*Locale, error) {
 				return nil, err
 			}
 			if !reflect.DeepEqual(got, *want) {
-				return nil, fmt.Errorf("%s content completion STALE: legacy evidence/context changed", locale)
+				if err := compatibleLegacyCompletion(root, g, catalog, p, got, *want); err != nil {
+					return nil, fmt.Errorf("%s content completion STALE: %w", locale, err)
+				}
 			}
 			return &got, nil
 		}
 	}
 	return nil, fmt.Errorf("locale is not a verified legacy live locale")
+}
+
+func compatibleLegacyCompletion(root string, g *Global, catalog *i18n.Catalog, profile liveProfile, recorded, current Locale) error {
+	if len(recorded.Packages) != 1 || len(current.Packages) != 1 {
+		return fmt.Errorf("legacy package exact-set changed")
+	}
+	old, next := recorded.Packages[0], current.Packages[0]
+	refs := map[string]Reference{}
+	for _, r := range next.Evidence {
+		refs[r.Path] = r
+	}
+	oldGlossary := ""
+	reviewID := ""
+	for _, r := range old.Evidence {
+		got, ok := refs[r.Path]
+		if !ok {
+			return fmt.Errorf("historical evidence set changed")
+		}
+		if r.Path == "locales/"+profile.Locale+"/glossary.yaml" {
+			oldGlossary = r.SHA256
+		} else if r.SHA256 != got.SHA256 {
+			return fmt.Errorf("historical language evidence bytes changed: %s", r.Path)
+		}
+		if strings.HasSuffix(r.Path, ".a-gate.json") {
+			reviewID = strings.TrimSuffix(filepath.Base(r.Path), ".a-gate.json")
+		}
+		delete(refs, r.Path)
+	}
+	if len(refs) != 0 || oldGlossary == "" || reviewID == "" {
+		return fmt.Errorf("historical evidence exact-set changed")
+	}
+	context, _, err := i18n.ExportLocaleSurfaceReviewPackage(root, profile.Locale, catalog)
+	if err != nil {
+		return err
+	}
+	historical, err := i18n.HistoricalTourSurfacePackage(root, profile.Locale, reviewID, oldGlossary, context, catalog)
+	if err != nil {
+		return err
+	}
+	restoredIdentity := identity(struct {
+		Profile                liveProfile
+		ValidatedContextSHA256 string
+	}{profile, digest(historical)})
+	if restoredIdentity != old.ContextIdentity {
+		return fmt.Errorf("historical full context digest changed")
+	}
+	next.ContextIdentity = restoredIdentity
+	next.Evidence = old.Evidence
+	next.EvidenceIdentity = old.EvidenceIdentity
+	// The same exact original passed gate can become compatible current language
+	// evidence; retain the historical completion's original state in this view.
+	next.LegacySurfaceState = old.LegacySurfaceState
+	if !reflect.DeepEqual(old, next) {
+		return fmt.Errorf("historical package identity changed")
+	}
+	return ValidateLocale(g, recorded)
 }
 
 // BootstrapTour preflights every closure and output before creating any state.

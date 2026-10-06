@@ -49,6 +49,9 @@ func RevalidateRetranslationCandidate(root string, catalog *Catalog, options Ret
 	if err := ValidateLocaleName(options.Locale); err != nil {
 		return nil, err
 	}
+	if err := RequireCurrentGlossaryReview(root, options.Locale); err != nil {
+		return nil, err
+	}
 	if err := validateBatchID(options.BatchID); err != nil {
 		return nil, err
 	}

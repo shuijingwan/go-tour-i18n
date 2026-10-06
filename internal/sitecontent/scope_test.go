@@ -412,7 +412,7 @@ func TestHistoricalLanguageEvidenceBoundary(t *testing.T) {
 	}
 }
 
-func TestGlossaryCompatibilityDesignSchema(t *testing.T) {
+func TestGlossaryCompatibilityFormalSchema(t *testing.T) {
 	b, err := readRegular(repositoryRoot(t), "data/glossary-compatibility.schema.json")
 	if err != nil {
 		t.Fatal(err)
@@ -423,8 +423,15 @@ func TestGlossaryCompatibilityDesignSchema(t *testing.T) {
 	}
 	var defs map[string]json.RawMessage
 	json.Unmarshal(schema["$defs"], &defs)
-	if len(defs) != 5 {
-		t.Fatal("incomplete compatibility design")
+	for _, name := range []string{"reference", "delta", "context", "scope"} {
+		if defs[name] == nil {
+			t.Fatalf("missing executable evidence definition %s", name)
+		}
+	}
+	var id string
+	json.Unmarshal(schema["$id"], &id)
+	if id != i18n.GlossaryCompatibilitySchema {
+		t.Fatal("compatibility schema/code identity differs")
 	}
 	if !bytes.Contains(b, []byte(`"mandatory", "preferred", "forbidden", "keep"`)) {
 		t.Fatal("missing terminology categories")

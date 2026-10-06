@@ -190,6 +190,19 @@ func visibleCandidateTextBytes(source, candidate string) []bool {
 	for _, match := range directiveLineRE.FindAllStringIndex(candidate, -1) {
 		mask(match[0], match[1], false)
 	}
+	// All present directives are protected identities, including .code and
+	// future parser-supported directives, rather than natural-language text.
+	for offset, rest := 0, candidate; rest != ""; {
+		line, tail, hasNewline := strings.Cut(rest, "\n")
+		if directiveRE.MatchString(line) {
+			mask(offset, offset+len(line), false)
+		}
+		offset += len(line) + 1
+		if !hasNewline {
+			break
+		}
+		rest = tail
+	}
 	for _, code := range append(presentInlineCodes(candidate), linkLabelInlineCodes(candidate)...) {
 		mask(code.Start, code.End, false)
 	}

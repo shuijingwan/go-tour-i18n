@@ -1,0 +1,182 @@
+locale: nb-NO
+mandatory:
+  A Tour of Go: En rundtur i Go
+  Go Playground: Go Playground
+  previous: Forrige
+  next: Neste
+  Run: Kjør
+  Format: Formater
+  Reset: Tilbakestill
+  Kill: Stopp
+  package: pakke
+  packages: pakker
+  package name: pakkenavn
+  interface: grensesnitt
+  interfaces: grensesnitt
+  interface type: grensesnitt-type
+  interface types: grensesnitt-typer
+  interface value: grensesnittverdi
+  interface values: grensesnittverdier
+  concrete type: konkret type
+  concrete types: konkrete typer
+  type assertion: typeassertion
+  type assertions: typeassertioner
+  type switch: type-switch
+  type switches: type-switcher
+  type parameter: typeparameter
+  type parameters: typeparametere
+  type argument: typeargument
+  type arguments: typeargumenter
+  constraint: typebegrensning
+  constraints: typebegrensninger
+  type inference: typeinferens
+  type conversion: typekonvertering
+  concurrency: samtidighet
+  parallelism: parallellitet
+  channel: kanal
+  channels: kanaler
+  buffered channel: bufret kanal
+  buffered channels: bufrede kanaler
+  unbuffered channel: ubufret kanal
+  unbuffered channels: ubufrede kanaler
+  mutual exclusion: gjensidig utelukkelse
+  pointer receiver: pekermottaker
+  pointer receivers: pekermottakere
+  value receiver: verdimottaker
+  value receivers: verdimottakere
+  receiver: mottaker
+  receivers: mottakere
+  zero value: nullverdi
+  zero values: nullverdier
+  standard library: standardbibliotek
+  syntax highlighting: syntaksutheving
+preferred:
+  Go programming language: programmeringsspråket Go
+  tour: rundtur
+  the tour: rundturen
+# Context-sensitive slides: Tour lessons are sider; standalone links to
+ # presentation slides in concurrency/11 are lysbilder, not Tour pages.
+  Tour slide: side i rundturen
+  Tour slides: sider i rundturen
+  presentation slides: lysbilder
+  lecture slides: lysbilder
+  module: modul
+  modules: moduler
+  lesson: leksjon
+  lessons: leksjoner
+  exercise: oppgave
+  exercises: oppgaver
+  table of contents: innholdsfortegnelse
+  source code: kildekode
+  sandbox: sandkasse
+  deterministic output: deterministisk utdata
+  compile: kompilere
+  compiler: kompilator
+  link: lenke
+  import: importere
+  import path: importsti
+  import statement: importsetning
+  exported name: eksportert navn
+  unexported name: ikke-eksportert navn
+  function: funksjon
+  functions: funksjoner
+  method: metode
+  methods: metoder
+  method set: metodesett
+  function value: funksjonsverdi
+  function closure: closure
+  closure: closure
+  argument: argument
+  parameter: parameter
+  return value: returverdi
+  named return values: navngitte returverdier
+  naked return: retur uten argumenter
+  variable: variabel
+  declaration: deklarasjon
+  short variable declaration: kort variabeldeklarasjon
+  initializer: initialiseringsuttrykk
+  constant: konstant
+  untyped constant: konstant uten spesifisert type
+  numeric constant: tallkonstant
+  built-in: innebygd
+  underlying type: underliggende type
+  underlying value: underliggende verdi
+  defined type: definert type
+  named type: navngitt type
+  type set: typemengde
+  generic: generisk
+  generics: generisk programmering
+  generic function: generisk funksjon
+  generic type: generisk type
+  type declaration: typedeklarasjon
+# Context-sensitive structs: moretypes/2 introduces the struct construct.
+ # In moretypes/4, pointers point to struct values, not type objects.
+ # Never render every English 'structs' as 'struct-typer'.
+  struct: struct
+  struct type: struct-type
+  struct types: struct-typer
+  struct value: struct-verdi
+  struct values: struct-verdier
+  struct field: struct-felt
+  struct literal: struct-litteral
+  array: array
+  arrays: arrayer
+  slice: slice
+  slices: slice-er
+  slice literal: slice-litteral
+  map: map
+  maps: map-er
+  map literal: map-litteral
+  key: nøkkel
+  value: verdi
+  pointer: peker
+  pointers: pekere
+  dereference: dereferere
+  length: lengde
+  capacity: kapasitet
+  backing array: underliggende array
+  loop: løkke
+  iteration: iterasjon
+  loop condition: løkkebetingelse
+  switch statement: switch-setning
+  select statement: select-setning
+  defer statement: defer-setning
+  goroutines: goroutiner
+  Goroutines: Goroutiner
+  Go runtime: Go-kjøresystemet
+  synchronization: synkronisering
+  buffer: buffer
+  mutex: mutex
+  lock: lås
+  deadlock: vranglås
+  pipeline: pipeline
+  present parser: present
+  binary tree: binærtre
+  web crawler: nettsøkerobot
+  reader: leser
+  stream: datastrøm
+  error: feil
+  error value: feilverdi
+  run-time error: kjøretidsfeil
+  test suite: testsamling
+forbidden:
+  - Golang
+  - Go-lekeplass
+  - Go lekeplass
+  - gorutine
+  - go-rutine
+  - Go-rutine
+# 'korutine' denotes the separate coroutine concept and is not globally
+# forbidden; it must not be used in place of Go's 'goroutine'.
+keep:
+  - Go
+  - Go Playground
+  - goroutine
+  - gofmt
+  - GOPATH
+  - URL
+  - ASCII
+  - CPU
+  - UTC
+  - GitHub
+  - Yongye

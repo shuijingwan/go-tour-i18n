@@ -39,7 +39,7 @@ func BuildQualityCheckPreflight(root string, catalog *Catalog, options QualityCh
 	if err != nil {
 		return nil, err
 	}
-	snapshot, err := readQualityCheckSnapshotForReview(root, options.Locale, options.SnapshotID)
+	snapshot, err := readQualityCheckSnapshotForReview(root, options.Locale, options.SnapshotID, catalog)
 	if err != nil {
 		return nil, err
 	}

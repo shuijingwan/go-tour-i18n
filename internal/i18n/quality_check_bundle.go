@@ -126,7 +126,7 @@ func ExportQualityCheckReviewerBundle(root string, catalog *Catalog, options Qua
 	}
 	kind := selectedScope[0].UnitKind
 
-	snapshot, err := readQualityCheckSnapshotForReview(root, options.Locale, options.SnapshotID)
+	snapshot, err := readQualityCheckSnapshotForReview(root, options.Locale, options.SnapshotID, catalog)
 	if err != nil {
 		return nil, QualityCheckReviewerBundleManifest{}, err
 	}
@@ -155,6 +155,26 @@ func ExportQualityCheckReviewerBundle(root string, catalog *Catalog, options Qua
 		if !seenFormal[bundlePath] {
 			seenFormal[bundlePath] = true
 			entries = append(entries, entry{bundlePath, repositoryPath, data})
+		}
+	}
+	for _, carried := range scope.CarryForward {
+		for _, ref := range carried.CompatibilityChain {
+			data, err := readCompatibilityFile(root, ref.Path)
+			if err != nil || sum(data) != ref.SHA256 {
+				return nil, QualityCheckReviewerBundleManifest{}, fmt.Errorf("carry-forward compatibility evidence changed")
+			}
+			addFormal("formal/compatibility/"+ref.SHA256+".json", ref.Path, data)
+			var evidence GlossaryCompatibilityEvidence
+			if err := decodeStrictCourseSourceDescriptionReviewJSON(data, &evidence); err != nil {
+				return nil, QualityCheckReviewerBundleManifest{}, err
+			}
+			for _, input := range []GlossaryArchiveReference{evidence.OldGlossary, evidence.NewGlossary, evidence.NewFullReview} {
+				bytes, err := readCompatibilityFile(root, input.Path)
+				if err != nil || sum(bytes) != input.SHA256 {
+					return nil, QualityCheckReviewerBundleManifest{}, fmt.Errorf("compatibility input changed")
+				}
+				addFormal("formal/compatibility/"+input.SHA256+filepath.Ext(input.Path), input.Path, bytes)
+			}
 		}
 	}
 	for _, scopeUnit := range selectedScope {

@@ -103,7 +103,7 @@ go run -mod=readonly ./cmd/tour-i18n quality-check preflight \
 
 只有 predecessor、carry-forward 与待审数量符合实际 revision 身份，才导出当前 pending Reviewer ZIP。交接停止于独立 Reviewer 的新 invocation，不自动把 replacement 评为 A。
 
-Glossary 变化造成 protected-input stale 时，不使用上述 QC/Surface finding authorization。先确认新的完整 Glossary Review current PASS，再用 `retranslation export --allow-reexport --glossary-stale` 只导出与 latest saved input 真实字节不同的同 kind Unit。新 batch 经过普通 Generation Bundle/import/process 后建立新的 full Snapshot；交接必须明确未变化 candidate 被复用，同时由于 glossary identity 已变化，后续 QC 是完整重审，旧 A 不 carry-forward。
+Glossary 变化前按 [Glossary Compatibility](GLOSSARY_COMPATIBILITY.md) 归档原 bytes；新完整 Glossary Review CURRENT PASS 后生成精确 compatibility evidence。protected-input stale 使用 `retranslation export --allow-reexport --glossary-stale`，只导出有真实 input drift 的同 kind Unit，不伪造 QC/Surface finding。新 batch 普通 import/process 后建立当前 full Snapshot；交接列出实际 carried A 来源/compatibility chain、affected/pending exact-set，不能再笼统宣称全量重审或全部自动继承。
 
 ### Surface Review PASS 后移交 preview
 

@@ -35,11 +35,12 @@ type QualityCheckFinalizationInput struct {
 	SHA256     string `json:"sha256"`
 }
 type QualityCheckFinalizationUnit struct {
-	Index            int                      `json:"index"`
-	UnitID           string                   `json:"unit_id"`
-	SourceSnapshotID string                   `json:"source_snapshot_id"`
-	Rating           string                   `json:"rating"`
-	Snapshot         QualityCheckSnapshotUnit `json:"snapshot"`
+	CompatibilityChain []GlossaryArchiveReference `json:"compatibility_chain,omitempty"`
+	Index              int                        `json:"index"`
+	UnitID             string                     `json:"unit_id"`
+	SourceSnapshotID   string                     `json:"source_snapshot_id"`
+	Rating             string                     `json:"rating"`
+	Snapshot           QualityCheckSnapshotUnit   `json:"snapshot"`
 }
 type QualityCheckFinalizeOptions struct {
 	Locale, SnapshotID string
@@ -60,7 +61,18 @@ func FinalizeQualityCheck(root string, catalog *Catalog, options QualityCheckFin
 	if err := validateSnapshotID(options.SnapshotID); err != nil {
 		return nil, "", err
 	}
+	if err := RequireCurrentGlossaryReview(root, options.Locale); err != nil {
+		return nil, "", err
+	}
 	path := qualityCheckFinalizationPath(root, options.Locale, options.SnapshotID)
+	snapshot, err := readQualityCheckSnapshot(root, options.Locale, options.SnapshotID, false)
+	if err != nil {
+		return nil, "", err
+	}
+	glossary, err := readCompatibilityFile(root, glossaryReviewGlossaryPath(options.Locale))
+	if err != nil || sum(glossary) != snapshot.GlossarySHA256 {
+		return nil, "", errors.New("new finalization requires a Snapshot of the current complete glossary")
+	}
 	if _, err := os.Stat(path); err == nil {
 		return nil, "", fmt.Errorf("quality-check finalization already exists: %s", filepath.ToSlash(path))
 	} else if !os.IsNotExist(err) {
@@ -81,7 +93,7 @@ func FinalizeQualityCheck(root string, catalog *Catalog, options QualityCheckFin
 }
 
 func buildQualityCheckFinalization(root string, catalog *Catalog, locale, snapshotID string, now func() time.Time) (*QualityCheckFinalization, error) {
-	snapshot, err := readQualityCheckSnapshotForReview(root, locale, snapshotID)
+	snapshot, err := readQualityCheckSnapshotForReview(root, locale, snapshotID, catalog)
 	if err != nil {
 		return nil, err
 	}
@@ -92,7 +104,7 @@ func buildQualityCheckFinalization(root string, catalog *Catalog, locale, snapsh
 	if !scope.ReadyForFinalization || scope.ACount != snapshot.UnitCount || scope.BCount != 0 || scope.CCount != 0 || scope.DCount != 0 || scope.PendingCount != 0 {
 		return nil, errors.New("quality-check finalization requires complete A-only Quality Check coverage")
 	}
-	_, effective, err := loadEffectiveQualityCheckResults(root, locale, snapshotID, map[string]bool{})
+	_, effective, err := loadEffectiveQualityCheckResults(root, locale, snapshotID, map[string]bool{}, catalog)
 	if err != nil {
 		return nil, err
 	}
@@ -113,7 +125,7 @@ func buildQualityCheckFinalization(root string, catalog *Catalog, locale, snapsh
 		if !ok || result.rating != "A" || result.rubric != TranslationQualityRubric || !qualityCheckSnapshotIdentityMatches(unit, result.unit) {
 			return nil, fmt.Errorf("snapshot index %d (%s) lacks an identity-matching A Quality Check", unit.Index, unit.UnitID)
 		}
-		units = append(units, QualityCheckFinalizationUnit{Index: unit.Index, UnitID: unit.UnitID, SourceSnapshotID: result.snapshotID, Rating: result.rating, Snapshot: unit})
+		units = append(units, QualityCheckFinalizationUnit{Index: unit.Index, UnitID: unit.UnitID, SourceSnapshotID: result.snapshotID, Rating: result.rating, Snapshot: unit, CompatibilityChain: result.compatibilityChain})
 	}
 	if now == nil {
 		now = time.Now

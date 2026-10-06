@@ -230,7 +230,7 @@ func courseMetadataStalePageIDs(root string, catalog *Catalog, locale string, ba
 	sourceByID := courseSourceDescriptionsByID(sourceDescriptions)
 	stale := []string{}
 	for _, page := range catalog.Pages {
-		if courseMetadataEntryIsStale(base, baseByID[page.ID], page, targets[page.ID], sum(glossary), sourceByID) {
+		if courseMetadataEntryIsStale(base, baseByID[page.ID], page, targets[page.ID], sum(glossary), sourceByID, courseGlossaryCompatibility(root, locale, catalog, sum(glossary))(baseByID[page.ID])) {
 			stale = append(stale, page.ID)
 		}
 	}

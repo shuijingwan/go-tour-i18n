@@ -84,7 +84,7 @@ func RecordQualityCheckSurfaceReopen(root string, catalog *Catalog, options Qual
 	if !bytes.Contains(surfaceData, []byte(finding)) {
 		return nil, "", errors.New("formal Surface Review evidence does not contain the exact finding")
 	}
-	snapshot, err := readQualityCheckSnapshotForReview(root, options.Locale, options.PreviousSnapshotID)
+	snapshot, err := readQualityCheckSnapshotForReview(root, options.Locale, options.PreviousSnapshotID, catalog)
 	if err != nil {
 		return nil, "", err
 	}
@@ -201,7 +201,7 @@ func readCurrentQualityCheckSurfaceReopen(root string, catalog *Catalog, locale,
 	if strings.TrimSpace(receipt.Finding) != receipt.Finding || !bytes.Contains(surfaceData, []byte(receipt.Finding)) {
 		return nil, errors.New("quality-check surface reopen finding is stale")
 	}
-	snapshot, err := readQualityCheckSnapshotForReview(root, locale, receipt.PreviousSnapshotID)
+	snapshot, err := readQualityCheckSnapshotForReview(root, locale, receipt.PreviousSnapshotID, catalog)
 	if err != nil {
 		return nil, err
 	}

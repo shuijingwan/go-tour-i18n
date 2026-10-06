@@ -103,7 +103,7 @@ func RecordGlossaryReview(root, locale, reviewID, reviewer, decision string, fin
 	if _, err := LoadGlossary(root, locale); err != nil {
 		return nil, "", fmt.Errorf("validate Glossary Review input %s: %w", glossaryPath, err)
 	}
-	glossary, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(glossaryPath)))
+	glossary, err := readCompatibilityFile(root, glossaryPath)
 	if err != nil {
 		return nil, "", fmt.Errorf("read Glossary Review input %s: %w", glossaryPath, err)
 	}
@@ -126,6 +126,11 @@ func RecordGlossaryReview(root, locale, reviewID, reviewer, decision string, fin
 	}
 	if err := os.MkdirAll(filepath.Dir(path), 0755); err != nil {
 		return nil, "", fmt.Errorf("create Glossary Review directory: %w", err)
+	}
+	if decision == "passed" {
+		if _, err := archiveGlossaryBytes(root, locale, glossary); err != nil {
+			return nil, "", fmt.Errorf("archive reviewed glossary before receipt: %w", err)
+		}
 	}
 	if err := writeGlossaryReviewAtomic(path, data); err != nil {
 		return nil, "", err
