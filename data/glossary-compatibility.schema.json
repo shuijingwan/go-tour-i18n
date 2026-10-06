@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "go-learning/glossary-compatibility-design/v1",
+  "title": "V2-B glossary compatibility evidence contract (design only; not an executable gate)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "evidence_kind", "locale", "old_glossary_sha256", "new_glossary_sha256", "old_glossary", "new_glossary", "new_full_review", "normalization_version", "impact_algorithm_version", "normalized_semantic_delta", "source_authority_sha256", "context_inventory", "affected_scopes", "compatible_scopes", "lineage", "evidence_identity_sha256"],
+  "properties": {
+    "schema": {"const": "go-learning/glossary-compatibility/v1"},
+    "evidence_kind": {"const": "glossary-downstream-compatibility"},
+    "locale": {"type": "string", "pattern": "^[a-z]{2,8}(-[A-Za-z0-9]{2,8})*$"},
+    "old_glossary_sha256": {"$ref": "#/$defs/sha256"},
+    "new_glossary_sha256": {"$ref": "#/$defs/sha256"},
+    "old_glossary": {"$ref": "#/$defs/reference"},
+    "new_glossary": {"$ref": "#/$defs/reference"},
+    "new_full_review": {"$ref": "#/$defs/reference"},
+    "normalization_version": {"type": "string", "minLength": 1},
+    "impact_algorithm_version": {"type": "string", "minLength": 1},
+    "normalized_semantic_delta": {
+      "type": "array",
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["category", "term", "old", "new"],
+        "properties": {
+          "category": {"enum": ["mandatory", "preferred", "forbidden", "keep"]},
+          "term": {"type": "string", "minLength": 1},
+          "old": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/entry"}]},
+          "new": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/entry"}]}
+        }
+      }
+    },
+    "source_authority_sha256": {"$ref": "#/$defs/sha256"},
+    "context_inventory": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/context"}},
+    "affected_scopes": {"type": "array", "items": {"$ref": "#/$defs/scope"}},
+    "compatible_scopes": {"type": "array", "items": {"$ref": "#/$defs/scope"}},
+    "lineage": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/reference"}},
+    "evidence_identity_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "reference": {
+      "type": "object", "additionalProperties": false, "required": ["path", "sha256"],
+      "properties": {"path": {"type": "string", "minLength": 1}, "sha256": {"$ref": "#/$defs/sha256"}}
+    },
+    "entry": {
+      "type": "object", "additionalProperties": false, "required": ["source", "targets", "context_rule"],
+      "properties": {
+        "source": {"type": "string", "minLength": 1},
+        "targets": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "context_rule": {"type": "string"}
+      }
+    },
+    "context": {
+      "type": "object", "additionalProperties": false, "required": ["scope", "kind", "path", "sha256", "parser_version"],
+      "properties": {
+        "scope": {"type": "string", "minLength": 1},
+        "kind": {"enum": ["source", "candidate", "ui", "article-metadata", "course-seo", "surface"]},
+        "path": {"type": "string", "minLength": 1},
+        "sha256": {"$ref": "#/$defs/sha256"},
+        "parser_version": {"type": "string", "minLength": 1}
+      }
+    },
+    "scope": {
+      "type": "object", "additionalProperties": false, "required": ["id", "context_identity_sha256", "reason"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "context_identity_sha256": {"$ref": "#/$defs/sha256"},
+        "reason": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}

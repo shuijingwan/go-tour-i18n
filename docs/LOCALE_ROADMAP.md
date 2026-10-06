@@ -76,19 +76,24 @@ de-AT  zh-SG  en-GB  en-CA  en-AU  en-IN  en-SG  en-ZA  he
 
 当前 Go Tour 的 **65 个固定 community locale 已全部完成正式语言实施并进入 `live`**，不再存在 remaining locale target，也不得自动重新开放全球候选研究或建立候补队列。
 
-Hebrew 的 Google Search Console 与 Bing Webmaster Tools sitemap 已提交；IndexNow provisioning 已成功，但公网 key verification 在两次正式尝试中分别遇到 `EOF` 与 `connection reset by peer`，因此 IndexNow closeout 暂缓并按 `docs/DEFERRED_ISSUES.md` 中的真实 issue evidence 后续恢复。该失败不回滚 Hebrew 已通过的 Surface Review、preview、first-production machine/browser acceptance 或 `production_state=live`。
+Hebrew 的 Google Search Console 与 Bing Webmaster Tools sitemap 已提交；此前暂缓的 IndexNow closeout 已于 2026-10-06 使用既有 locale-specific key 和正式入口恢复完成，取得 `IndexNow bootstrap: PASS (locale=he sitemap_urls=105 submitted_urls=105)` 与 `IndexNow closeout: PASS (locale=he)`。同轮 `et-EE`、`de-CH`、`en-GB`、`en-AU` 的 deferred IndexNow closeout 也全部恢复并取得各自 PASS，仓库记录中的剩余 IndexNow closeout 已全部完成。
 
 当前一次性收口顺序为：
 
 ```text
 固定 65 个 locale 已全部 live
-→ 完成 Hebrew 暂缓的 IndexNow closeout
-→ 只执行一次 upstream source sync
+→ 剩余 IndexNow closeout 已全部完成
+→ V2-A Architecture / Content Scope
+→ V2-B compatibility / freshness gates
+→ 可继续不依赖最终 upstream freeze 的 V2 runtime foundation
+→ 维护者确认跟踪的 4 个 upstream Go issue 完成，并明确重新打开 V2-C
+→ V2-C 只执行一次 upstream source sync（当前 deferred）
+→ final Site v2 inventory / current-stale closure
 → 基于真实运行数据只执行一次跨项目商业排序
 → 冻结以后多语言项目的语言池与默认顺序
 ```
 
-在 Hebrew IndexNow closeout 尚未取得自身 `IndexNow bootstrap: PASS` 与 `IndexNow closeout: PASS` 前，不把它伪记为 search-engine closeout 完成；也不因该非阻塞第三方 submission failure 重开 locale Production lifecycle。
+Hebrew 已于 2026-10-06 取得自身 `IndexNow bootstrap: PASS` 与 `IndexNow closeout: PASS`，此前对应 deferred issue 已核销。当前不再存在 IndexNow closeout blocker。维护者已明确暂缓 V2-C 唯一一次 upstream source sync，等待当前跟踪的 4 个 upstream Go issue 全部达到预期完成状态；不得自行提前同步，也不得改成每批 locale 同步。Site v2 的 content package 与第一门 `learn-docs-v1` locale campaign 前置条件见 [Site v2 Architecture authority](SITE_V2_ARCHITECTURE.md)。
 
 此前完成的 Swahili、Kazakh、Persian、Amharic 仍应按既有运营计划申请或维护 go.dev Go local 链接；该事项不改变它们已经 `live` 的完成状态。
 
@@ -100,7 +105,7 @@ Hebrew（`he` / עברית）已按统一[新增 Locale 执行手册](NEW_LOCALE
 
 Hebrew 的 RTL、bidi / mixed-direction text、inline code、Go identifiers、LTR technical tokens 周围标点、UI、Course SEO、runtime、mobile / desktop rendered surface 均已通过现有统一 gate 验证。正式 `first-production finalize` 已 PASS，`production/identity.json` 当前验证为 65 locales 且 Hebrew 为 `production_state=live`。
 
-Google Search Console 与 Bing Webmaster Tools 已提交 Hebrew 的正式 `/sitemap.xml`。IndexNow 当前仅剩非阻塞 closeout 恢复：保留已有 locale-specific key 和已成功 provisioning，后续只使用正式入口继续，不重新生成 key、不重复修改 Production 配置。
+Google Search Console 与 Bing Webmaster Tools 已提交 Hebrew 的正式 `/sitemap.xml`。IndexNow 已于 2026-10-06 使用既有 locale-specific key 和正式入口恢复完成，最终 `IndexNow bootstrap: PASS (locale=he sitemap_urls=105 submitted_urls=105)`、`IndexNow closeout: PASS (locale=he)`；未重新生成 key，也未修改 Production 配置。
 
 ## 5. Go Tour 完成后的一次性跨项目商业排序与冻结
 

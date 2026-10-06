@@ -1,0 +1,1663 @@
+{
+  "schema": "go-learning/locale-content-scope/v1",
+  "locale": "pa-IN",
+  "packages": [
+    {
+      "package": "tour-v1",
+      "state": "complete",
+      "package_identity_sha256": "926ee5bf113ecc24d9128ed4531e740092f2ca88f6f154cf101f6b8478ed83a9",
+      "source_authority_sha256": "48d09f17bf06e4beb9d05bb5b70465f5c6677406d84a3b9d125307f17d63c054",
+      "completed_surfaces": [
+        "tour"
+      ],
+      "local_canonical_routes": [
+        "/tour/",
+        "/tour/basics/1",
+        "/tour/basics/10",
+        "/tour/basics/11",
+        "/tour/basics/12",
+        "/tour/basics/13",
+        "/tour/basics/14",
+        "/tour/basics/15",
+        "/tour/basics/16",
+        "/tour/basics/17",
+        "/tour/basics/2",
+        "/tour/basics/3",
+        "/tour/basics/4",
+        "/tour/basics/5",
+        "/tour/basics/6",
+        "/tour/basics/7",
+        "/tour/basics/8",
+        "/tour/basics/9",
+        "/tour/concurrency/1",
+        "/tour/concurrency/10",
+        "/tour/concurrency/11",
+        "/tour/concurrency/2",
+        "/tour/concurrency/3",
+        "/tour/concurrency/4",
+        "/tour/concurrency/5",
+        "/tour/concurrency/6",
+        "/tour/concurrency/7",
+        "/tour/concurrency/8",
+        "/tour/concurrency/9",
+        "/tour/flowcontrol/1",
+        "/tour/flowcontrol/10",
+        "/tour/flowcontrol/11",
+        "/tour/flowcontrol/12",
+        "/tour/flowcontrol/13",
+        "/tour/flowcontrol/14",
+        "/tour/flowcontrol/2",
+        "/tour/flowcontrol/3",
+        "/tour/flowcontrol/4",
+        "/tour/flowcontrol/5",
+        "/tour/flowcontrol/6",
+        "/tour/flowcontrol/7",
+        "/tour/flowcontrol/8",
+        "/tour/flowcontrol/9",
+        "/tour/generics/1",
+        "/tour/generics/2",
+        "/tour/generics/3",
+        "/tour/list",
+        "/tour/methods/1",
+        "/tour/methods/10",
+        "/tour/methods/11",
+        "/tour/methods/12",
+        "/tour/methods/13",
+        "/tour/methods/14",
+        "/tour/methods/15",
+        "/tour/methods/16",
+        "/tour/methods/17",
+        "/tour/methods/18",
+        "/tour/methods/19",
+        "/tour/methods/2",
+        "/tour/methods/20",
+        "/tour/methods/21",
+        "/tour/methods/22",
+        "/tour/methods/23",
+        "/tour/methods/24",
+        "/tour/methods/25",
+        "/tour/methods/26",
+        "/tour/methods/3",
+        "/tour/methods/4",
+        "/tour/methods/5",
+        "/tour/methods/6",
+        "/tour/methods/7",
+        "/tour/methods/8",
+        "/tour/methods/9",
+        "/tour/moretypes/1",
+        "/tour/moretypes/10",
+        "/tour/moretypes/11",
+        "/tour/moretypes/12",
+        "/tour/moretypes/13",
+        "/tour/moretypes/14",
+        "/tour/moretypes/15",
+        "/tour/moretypes/16",
+        "/tour/moretypes/17",
+        "/tour/moretypes/18",
+        "/tour/moretypes/19",
+        "/tour/moretypes/2",
+        "/tour/moretypes/20",
+        "/tour/moretypes/21",
+        "/tour/moretypes/22",
+        "/tour/moretypes/23",
+        "/tour/moretypes/24",
+        "/tour/moretypes/25",
+        "/tour/moretypes/26",
+        "/tour/moretypes/27",
+        "/tour/moretypes/3",
+        "/tour/moretypes/4",
+        "/tour/moretypes/5",
+        "/tour/moretypes/6",
+        "/tour/moretypes/7",
+        "/tour/moretypes/8",
+        "/tour/moretypes/9",
+        "/tour/welcome/1",
+        "/tour/welcome/2",
+        "/tour/welcome/3",
+        "/tour/welcome/4",
+        "/tour/welcome/5"
+      ],
+      "local_route_families": [
+        "/tour/**"
+      ],
+      "evidence_kind": "legacy-tour-closure/v1",
+      "evidence": [
+        {
+          "path": "data/locale-surface-reviews/pa-IN/20260927-pa-IN-stage-a-002.a-gate.json",
+          "sha256": "3008782ff9a45b755d6529883057b92aa3d4df4cde17948762f3e0d22de6684b"
+        },
+        {
+          "path": "data/locale-surface-reviews/pa-IN/20260927-pa-IN-stage-a-002.md",
+          "sha256": "3d503d4a269b71e22b018203026e517c4d2bd9d814d3bae881599f479ce8f1c5"
+        },
+        {
+          "path": "data/quality-check-snapshots/pa-IN/qc-001/manifest.json",
+          "sha256": "813446bf5c871f6b79749e145b2c68d72b75815c8735a11c676bdf1b8962dfa5"
+        },
+        {
+          "path": "data/quality-check-snapshots/pa-IN/qc-001/quality-check-results.json",
+          "sha256": "19ae19d734f556636c53a4a48d0e022f4618ef8075c9ba011865805934c4f8d6"
+        },
+        {
+          "path": "data/quality-check-snapshots/pa-IN/qc-002/manifest.json",
+          "sha256": "2aa0cd609b85b2b31a59630c2b306c2dc033d401d22548637bfe845554f66a89"
+        },
+        {
+          "path": "data/quality-check-snapshots/pa-IN/qc-002/quality-check-results.json",
+          "sha256": "4a63b383ea7f3ffed44799db28e1efd63f7b725b6eaad249c27373e277e533bc"
+        },
+        {
+          "path": "data/quality-check-snapshots/pa-IN/qc-003/manifest.json",
+          "sha256": "b9cf87704936659dfd6520aaaeccdd572cb5b7c12738965a857dbffdf485cc04"
+        },
+        {
+          "path": "data/quality-check-snapshots/pa-IN/qc-003/quality-check-results.json",
+          "sha256": "0540af5169a2bf52e9257404ad10cb9e54e5eeb16a916f9638536c21a9f0f550"
+        },
+        {
+          "path": "data/quality-check-snapshots/pa-IN/qc-004/finalization.json",
+          "sha256": "3940afccef6345f40b47a29aeb1632c4fd7806983fe43e4fd3d2cecd35c6baf8"
+        },
+        {
+          "path": "data/quality-check-snapshots/pa-IN/qc-004/manifest.json",
+          "sha256": "d55843c76aad33c0dd753c0c40a0ca1751d3d2c57a87a4edcaa2c64117f26085"
+        },
+        {
+          "path": "data/quality-check-snapshots/pa-IN/qc-004/quality-check-results.json",
+          "sha256": "9a4341a02d01e249ff4ca198b5e60b27d52c6a20b1fd0afe0ed8beb40db6e0b9"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-001/candidates/basics-1.article",
+          "sha256": "6f7af91135d2e7c8d294e38800556f9477142cd61640e78e6531f36b62a75b45"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-001/candidates/basics-17.article",
+          "sha256": "76bb3864e84c03934ffeabe9d317d8e3f14ceae4367ac72d1fd529a81509bf5f"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-001/candidates/basics-2.article",
+          "sha256": "3fe92aef71c4aa4857e8d0433dda805956ab733662c5d99dd59d65277b1879bb"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-001/candidates/basics-3.article",
+          "sha256": "8aa13908ce23fd45a7399cb6f4e7dab604e40b1e318f64e0b0aa98087f2d800f"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-001/candidates/basics-5.article",
+          "sha256": "16c562f3efbb2935fd360f9b1b673477c54b8ca976f0c188e9bf993994797bc6"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-001/candidates/basics-6.article",
+          "sha256": "bcd1533d5172c3c4563d1ba614565c609824c081284af8d53d5cd55384305101"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-001/candidates/basics-7.article",
+          "sha256": "bcf680ef54bd21ceae1e9ad1d6380430ee0991cec840658866beb457fc9cdbc4"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-001/candidates/basics-8.article",
+          "sha256": "705f9cc080cc0a3fb9d068ce7fb8a1458acb33c5d4eb457709364753a6a187c7"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-001/candidates/flowcontrol-10.article",
+          "sha256": "cff8fc88c945fbdec1733180e57669b5522433678600a901d3eb3e885851f5ab"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-001/candidates/flowcontrol-14.article",
+          "sha256": "76bb3864e84c03934ffeabe9d317d8e3f14ceae4367ac72d1fd529a81509bf5f"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-001/candidates/flowcontrol-7.article",
+          "sha256": "62389a9060d59079d526fee3c6233c152e019988794c485381259bb9aa40f4a6"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-001/candidates/moretypes-10.article",
+          "sha256": "1dc3a8d31ff64d18ee150e9b034dbf25a9b36a007bc586c806963dcffcd6300f"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-001/candidates/moretypes-11.article",
+          "sha256": "73d457dc7dc388823f3f1dd7a91c1fc65655f15836319e3288a86ab11b6f04ef"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-001/candidates/moretypes-12.article",
+          "sha256": "9a91206b1dfedca249c3ef7e2ba40639ab81c2a0c470f5589dfb1c04d4713372"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-001/candidates/moretypes-14.article",
+          "sha256": "9e263afde5b9ad2ba3be83ac2740f1a15a779092123de61af95824dfb3d5f7b8"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-001/candidates/moretypes-2.article",
+          "sha256": "9e33747d6cedb06bf72bd21a1000a29b63fb867f6d2dcf38b9d7234b116df655"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-001/candidates/moretypes-24.article",
+          "sha256": "a4b1508fb6206933c3befcdca09a5023a0a3a540ba115f568d2af9e353b57944"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-001/candidates/moretypes-8.article",
+          "sha256": "34ac590095bbb21a827aca4b7236c81f145b5dd2e8e6305c32d970422df2ac7d"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-001/candidates/moretypes-9.article",
+          "sha256": "8f1c792151235add3c2cc8917d4f250c0effb401621498ecbe71a13015e6f848"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-001/candidates/welcome-1.article",
+          "sha256": "6f9231f1dd014d9ae8d324ca1087236c3a4ead3efff2b8204ea89ad00af87a5a"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-001/candidates/welcome-3.article",
+          "sha256": "8fc8d26e0d6176306cf60019ddd54b05ccd5a98fe2746bfa24d365137ca6c928"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-001/candidates/welcome-5.article",
+          "sha256": "a444a4951ef20370ba63dde539dfc6377c7ee906ca3a068d64d487e35176b061"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-001/validation/basics-1.json",
+          "sha256": "c0afc381ce5a9c114378cabcc270c21791aa05016890ed66a0f453e96d278b7b"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-001/validation/basics-17.json",
+          "sha256": "4b1c52cbd84fbc5900e2009740b01cbab1395a29031c974d78d2716e8ef1056b"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-001/validation/basics-2.json",
+          "sha256": "e1595cbcf690148932e80acb4c75e60102ecafea1bdcc8a671bbd4cd2ac963c3"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-001/validation/basics-3.json",
+          "sha256": "cd14e4d2dd03157ae596615a1336270c574ec24c8c8c9766598139961ec72649"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-001/validation/basics-5.json",
+          "sha256": "0aa34375271b124bee4bbb744c9e51421374d643413d764cb80e54ede79ea9dc"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-001/validation/basics-6.json",
+          "sha256": "2863d3a435cf42a1149ad24a3a32bbf3c8c223a06d8202bab6715d20708d8b8a"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-001/validation/basics-7.json",
+          "sha256": "ce4907e5f4b5d0768eb4cba7d68d50ba2ce78c1d5688596ff1718907d5e241ee"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-001/validation/basics-8.json",
+          "sha256": "f843a4eb54b8b2a5d04c63b1455740d1ae845a8472029f1e1200dc97123860f0"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-001/validation/flowcontrol-10.json",
+          "sha256": "311cedd90c8ccb31d3ff855b041c50b5b192f3eb2c2c6b49c67d4d029d53783b"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-001/validation/flowcontrol-14.json",
+          "sha256": "0c65f30ee052a259e28319a0436d1304c4bf3c45e743d4a416cb7d1ef74b57b3"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-001/validation/flowcontrol-7.json",
+          "sha256": "abdca5e1a6f539c376056c16147ca504d48adf2b59c123dcaa0e55fc9484afdd"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-001/validation/moretypes-10.json",
+          "sha256": "d78ab9393f7cea7380d0ee0dbbc339aa6911a1586508843892457fe097ff59ce"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-001/validation/moretypes-11.json",
+          "sha256": "bd41c171209994459c4fc6cb23bab3df73ba9bebcd20b17dbc1e1901f23ec1b8"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-001/validation/moretypes-12.json",
+          "sha256": "70bc74529bb291e97afe855070b3bcac294f37029390eafbc13e0fb776459197"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-001/validation/moretypes-14.json",
+          "sha256": "59f4e08699001be0d414f5b3a64e4e00652e46846e153552f7aa541f28c5f083"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-001/validation/moretypes-2.json",
+          "sha256": "4f38691442446db6084fc136ff47c1681881b9bf1c496c742be4467a29c33267"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-001/validation/moretypes-24.json",
+          "sha256": "67017e1cd4354ac26f6a196435fcaab4e5ea684ed0fdcaf8111a4e9c8a9def5e"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-001/validation/moretypes-8.json",
+          "sha256": "cfb6c37908988985e9fda28ae9dbcc11067217de03b5fe8205cdf90db742b719"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-001/validation/moretypes-9.json",
+          "sha256": "0cdbf9870976649ce6f5127b558ca9a2756b2b788ae56fd43305db048c4c841f"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-001/validation/welcome-1.json",
+          "sha256": "1046c937e472c59e58c71a7e050d095c846839077a8a7b48a445411f1de3971d"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-001/validation/welcome-3.json",
+          "sha256": "21c197dc12b35eee84e6cfabfa2865180a2998bef02c3b544330c1c598e02f77"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-001/validation/welcome-5.json",
+          "sha256": "e381229130c9b0c5604562bdbc0b8e095f693342620fbed5fd1bfb982e5e0e42"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/candidates/concurrency-1.article",
+          "sha256": "3555d1880c1920bf3a81f29385cc549a5499dabcca6ec0e8d96a2f2819525aa3"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/candidates/concurrency-11.article",
+          "sha256": "c8fad12d5921d1e5d26b0ade4cfd6dffa8e350a1a507aacab8ebaeea17788e25"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/candidates/concurrency-3.article",
+          "sha256": "cbd0f80a81eab37bfad8172297a6af5fdf48094ed00124676ea12ea90449bf10"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/candidates/concurrency-5.article",
+          "sha256": "269326ae122fc64a9cf8eccd8bc6be9648a553ae13317ab1f5a6cef9f750a2a3"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/candidates/concurrency-6.article",
+          "sha256": "528a82d376fb040b04abf7dea6ca520247e63919b47d3b080251c272b383be86"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/candidates/concurrency-7.article",
+          "sha256": "d55d7e142f7834675914b4bf459af278503fd07356f20668856fc45e75d651c1"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/candidates/concurrency-9.article",
+          "sha256": "3b0cb2ddae514c5f26aa2972e2d94f9ae9d2df674b2ed6d06abf2151ecbc0559"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/candidates/generics-1.article",
+          "sha256": "e06224428d9c2c46f5acd4bc9d99d903199e1d9334d677812179e6a9e89b3958"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/candidates/generics-3.article",
+          "sha256": "f0337e0f0a654c964d9a5c63836da36eab498f91f4bbe026e72d3bec153a2435"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/candidates/methods-1.article",
+          "sha256": "47976763aa9bfab8dc5e8d4efa307c8eef6dc7c77692c9e83bb25819846cf25f"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/candidates/methods-10.article",
+          "sha256": "806d8b8700d275f197b2608bf7792528456cb8cd64760bb4eca9bf68727d58fc"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/candidates/methods-11.article",
+          "sha256": "f5e9383326358ab1904ac0253aaf4baa34317a808615872f306040cdc8eaa015"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/candidates/methods-13.article",
+          "sha256": "ff407a97f0949a7c22c964a51225334ebe7a246d0cbfec2111530a83ca9b032e"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/candidates/methods-14.article",
+          "sha256": "a8fd15c2b537251c8c1c1bbb7fa4d2e678cd1650305a76a05b6912989ffa7457"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/candidates/methods-16.article",
+          "sha256": "5ad353479a808f7553c1576dc50bc2cee1416ca4c94c8848c2be6339738aa53b"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/candidates/methods-17.article",
+          "sha256": "36a276ee022dd73e3d8dd161e9ec3decef76c38891ac75ed3b16e41263f2d429"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/candidates/methods-18.article",
+          "sha256": "f70990ca69906b79cc76eba5463108131214b8f3f9b6aeeced7cbfd4f6c652f8"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/candidates/methods-19.article",
+          "sha256": "9595a8cea4a77b8f016bdaf88bed6b5fe4a86acb8798dd981f7febeb4a063788"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/candidates/methods-2.article",
+          "sha256": "1938fdbb09a0af1d2f75c3db392d43da8cddc2259b7cc53b07363c72f4e41d75"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/candidates/methods-20.article",
+          "sha256": "8ea769053bfed32625eee1d8ad81aafe4c3663599cb4a81c95602c5852aecdeb"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/candidates/methods-21.article",
+          "sha256": "1ef7c35d9b92b9dbcf850c1a04caf94e6d84d957ced47ebd8264815f33cc85a6"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/candidates/methods-22.article",
+          "sha256": "2e3337ae9e51b221b119cdbfb1a408999ee2749a4c4e817b62919f46fe5fb540"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/candidates/methods-24.article",
+          "sha256": "ee7f778b975eb93bef2ec0317bd85d1b6010e464cadd4f142af6765d073edfc3"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/candidates/methods-25.article",
+          "sha256": "1038d94475691f106d50d985834920cb375a277e18813b66d5c4b1cb6f40c62d"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/candidates/methods-26.article",
+          "sha256": "f0337e0f0a654c964d9a5c63836da36eab498f91f4bbe026e72d3bec153a2435"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/candidates/methods-3.article",
+          "sha256": "387823b63c473376e253feafcdb9da52e6a09c5409ad793b80befe17e6ac11a9"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/candidates/methods-4.article",
+          "sha256": "de6fc942ae047eb7fb7e9947771caaca2d55ecff467291cf6b1957de96d7eb48"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/candidates/methods-5.article",
+          "sha256": "8f0994128495da4b801ba42b51647797391315703bed40956739d69b29f0988e"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/candidates/methods-6.article",
+          "sha256": "99a45b41c75c165e1b3326db54ec97ea5c17c51d3742d58919faf1001b074ac2"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/candidates/methods-7.article",
+          "sha256": "2f4048a0235a099ec3b5e3d595e00e71a3a74b848d496027019b373bff7beb51"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/candidates/methods-8.article",
+          "sha256": "519bc568afd829286ff4b8f13c33ccda9cda632a51f2853243c6fc9cce52b482"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/candidates/methods-9.article",
+          "sha256": "266415dae64e09cdc22b9071a49efe32435d0c7d90ef4183a61d15720fb85d52"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/candidates/moretypes-26.article",
+          "sha256": "eebc46e5cb3f2848764d00ab0d6c93d2294505c603bb40ba93b1ba44252fdd73"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/candidates/moretypes-27.article",
+          "sha256": "f0337e0f0a654c964d9a5c63836da36eab498f91f4bbe026e72d3bec153a2435"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/validation/concurrency-1.json",
+          "sha256": "56cf44c8afb6d4ed5e6bdb3bec9b99d8895a43054a316c3b386162e1ca837a92"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/validation/concurrency-11.json",
+          "sha256": "7b3b0e90976177f729881791b4f59b1f69ba3f3989ecf4c0f6fdcd8a78bd7154"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/validation/concurrency-3.json",
+          "sha256": "194c5c163be80a9a7af6ce122836a2e5bc5113e8d3f8fb393fd8169804f49a47"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/validation/concurrency-5.json",
+          "sha256": "25e4c6111971ecc5cbe7a0e2bb0183e787b05eb7a741e7a8d69909fb58544026"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/validation/concurrency-6.json",
+          "sha256": "500c44c82f34ddfe5acb719af9def0105fb11071bcbad9921c91354ad934ab1e"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/validation/concurrency-7.json",
+          "sha256": "36c2d4e62e88e9280623bc2417cd63816361e40d49d5943f354da2fe4c2636a9"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/validation/concurrency-9.json",
+          "sha256": "dfd07be77b87a318b8184f126ae5120c6429e18a6ce66b8bb3b47c4adafc85f3"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/validation/generics-1.json",
+          "sha256": "cf7bd39e5986c7caf72cdb44e811a9917efe2a2745aecf8065c668ba585891d2"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/validation/generics-3.json",
+          "sha256": "b5307c3be13ea2047915c2de426b1ac7724d70f3094b59bd8eb99eda309d338d"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/validation/methods-1.json",
+          "sha256": "c609a704efe2c9c43c2d64e4a1a49e0ce0666cc34a0145fa3dd018251b640f9d"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/validation/methods-10.json",
+          "sha256": "d4579b522898f3091668a09799c593b15d624404735af20d895c747068812dba"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/validation/methods-11.json",
+          "sha256": "1824f8a48613a7f695668df0e45de3b8007cf7936c4e01e4f0933ac49ef4bbfa"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/validation/methods-13.json",
+          "sha256": "e575756afc85f2304150f961da496d891525b1a0ee20bfbfead793adc1c84416"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/validation/methods-14.json",
+          "sha256": "6d8ff88d57e8a0b4504b4a02ee7b7cdd2b195aea41ed8a6234cbb67beabdec63"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/validation/methods-16.json",
+          "sha256": "5f5e8fe600c8d892ddd624797e39c30725eb341a1baa0e0c575bbccba82ce850"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/validation/methods-17.json",
+          "sha256": "d8173e1cb34962fc20c8dd60af755969c6a46e8f927586f093e99572ffe055ac"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/validation/methods-18.json",
+          "sha256": "429b0b503ac326d591a2ccf2b090f436bd3e728820fae2a080da6252ad2e3629"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/validation/methods-19.json",
+          "sha256": "90854ae087c1dea4b0866596239eff3e1a1056e0af11c4aabe8b6b53a84e9b54"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/validation/methods-2.json",
+          "sha256": "20a94d56d48d8aa4d998ec9d7afcb74a2643ca0d7ace65463d73942ca819bf7b"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/validation/methods-20.json",
+          "sha256": "728ac108cc5c14462b9625ca880bd57b29c9b22c18d5ee8a42cf83cc4e024dcb"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/validation/methods-21.json",
+          "sha256": "72e9a7250afd1658929276d265545a1fd98ec404a3d97686e0f18fe3f33f3942"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/validation/methods-22.json",
+          "sha256": "118838093f43ad69e2fbd585688e543fe9b4eef8e3866a4060595d54a67cd7a1"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/validation/methods-24.json",
+          "sha256": "b1c2c55488c1d88ce856cf9c64d21134b4e0363cf136b3cbd5430d0d3707087f"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/validation/methods-25.json",
+          "sha256": "63d6f368b98bf4c470f893643ecd5673392e3cc0d6cd5607687446d9abd791d4"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/validation/methods-26.json",
+          "sha256": "6828942caea873438ac683d03ffb63452d72f50fb93039d85a15691a774b2ee8"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/validation/methods-3.json",
+          "sha256": "3d0ba8c5ee68f835acadb3a548291cba26bf1ad66c0638b471602353f07ca2db"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/validation/methods-4.json",
+          "sha256": "646dd32ce7d864cb7cddad30f6a6eaff071e66f4a080753c7bd2d4a74fd9eb8f"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/validation/methods-5.json",
+          "sha256": "ab4771fab416a062c014f196ab06cc8f309301530213cb6e2536de72036e867d"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/validation/methods-6.json",
+          "sha256": "dae347d4f0262346f80e98fb6a9ce6518a25376b9ac6bc03bb53963771dd1e7e"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/validation/methods-7.json",
+          "sha256": "d57ddfc17b51cfe198b049193ef891d25741e7d6b8b66ecc5c588fe9a03ab491"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/validation/methods-8.json",
+          "sha256": "5339ff3f93cbab0b046dc5b647e345d77f9b3e7d1ccafdec1b9ff6007e4b8264"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/validation/methods-9.json",
+          "sha256": "37ebae5391a1f3ddf307c2f7df19033867291a707a8d5876cfc61a7bf16bc5e6"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/validation/moretypes-26.json",
+          "sha256": "7383753d3a7ac774d348fc6e90bec7dff7cf11d6dad2fdc6d0a00e09b68ba9bc"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-002/validation/moretypes-27.json",
+          "sha256": "921ad7035aeb4cb0fb571bddf4d378eb63b7711daf80b74059fea8e64cb78c30"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-003/candidates/basics-numeric-constants.go",
+          "sha256": "b42673169228f3d728deb2e1d5f065aa94862e51772fe75db44f076e6036768c"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-003/candidates/basics-type-inference.go",
+          "sha256": "d7d64a01844e9de23083455d97f6cf465858ed31ebc87fd0f6a1f1c47f727a82"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-003/candidates/concurrency-channels.go",
+          "sha256": "b27879b7fa5c374509879c9db2a43e7690a14d88df24b32813c868ba4a39f7ec"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-003/candidates/concurrency-exercise-web-crawler.go",
+          "sha256": "e827f272efccb5d22ad33be20e3518654655c8ad2f120bbe1b443e3d831a053b"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-003/candidates/flowcontrol-if-and-else.go",
+          "sha256": "99527f240d40fdcf611ec10cda27e41becf77c6c157e49f18b2f265de7a77d01"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-003/candidates/methods-exercise-reader.go",
+          "sha256": "a15e49d0aba7297882580ebd2cb35064714e1f6a2742429bc438144f87409907"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-003/candidates/methods-exercise-stringer.go",
+          "sha256": "e030c788163e6aeca5071c4ae9f441ea20d5c2d177957232938a9d69456511a6"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-003/candidates/methods-interfaces-are-satisfied-implicitly.go",
+          "sha256": "c530163e4ab8618ccad44c52bacfa596f752ab7e1da19e5c952853b9c3d0a4bd"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-003/candidates/methods-interfaces.go",
+          "sha256": "aef6a933ced4365dd2f42d7a50b45b0523f2f4f796b5ea9bb3c701922a03dfd6"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-003/candidates/moretypes-append.go",
+          "sha256": "37e465fe45fba91c7e1b6fe91e9aa95e9e315af392af0ce40fd380f7d71bdd83"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-003/candidates/moretypes-exercise-fibonacci-closure.go",
+          "sha256": "1c61cbf1e57409111ac0d8b35963aea40e6a423cc6ac16a0efd8a7230a740d6d"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-003/candidates/moretypes-pointers.go",
+          "sha256": "dd5b262d7da68fa0d66fcd6762814fe247f6683a6d33d9336bef6cdc7eefdfcd"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-003/candidates/moretypes-slice-len-cap.go",
+          "sha256": "c11198324f8de9b4a087fd7014d01eb1a64232bceb10b6056092b4397a9c6549"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-003/candidates/moretypes-struct-literals.go",
+          "sha256": "3e70f1e4d142a31551aef695e4616639f28979e13748486b263eba3fe8063157"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-003/validation/basics-numeric-constants.json",
+          "sha256": "0d1810bf7aec070fdcb9063f8b7b45592239da3463521ae92aebf84f6a84fcbb"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-003/validation/basics-type-inference.json",
+          "sha256": "1485d5122a1aabcdd498543e19d0361e8421c5bc8b49f424c30f5465ae59a488"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-003/validation/concurrency-channels.json",
+          "sha256": "adbf67282fb7d87af28d8f358a835de80cb977ef05b7a84e4a05684f15a75f45"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-003/validation/concurrency-exercise-web-crawler.json",
+          "sha256": "3b96b5a46d36a1dc8757a1f24536ff31cfe7b2e4a17fedaca159b37c3914d610"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-003/validation/flowcontrol-if-and-else.json",
+          "sha256": "38c2b1381c2f31b50a92f1d60a80226800ff1c2bad54a1d3c9c9b86ee5b2deb4"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-003/validation/methods-exercise-reader.json",
+          "sha256": "63f82b091ff65087d7b2076e998facd27f3916adb7a27d8936e93c6c2b0db552"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-003/validation/methods-exercise-stringer.json",
+          "sha256": "ea62741233c9ef9718b9908c4546096d1c5fb442dfeb567d326a3425cb5ef4b4"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-003/validation/methods-interfaces-are-satisfied-implicitly.json",
+          "sha256": "a3db884c6983aba2e6fe3a6cfc390aaa50295a4b371ab85b73bb60d73c55d49f"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-003/validation/methods-interfaces.json",
+          "sha256": "d22ce2a70ef27a7e3ce2e68f9386eb0a8e16c690b1b739fe0e48d2899e3127c4"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-003/validation/moretypes-append.json",
+          "sha256": "e64a4444c5e853d77658c7f15dee4bd5a1fa7e5d36331a02f4a2036933e7c182"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-003/validation/moretypes-exercise-fibonacci-closure.json",
+          "sha256": "4dc02999fbade7ae7abe8cf9295e150e6ea457771b5b2f228f1ba18f22204b9e"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-003/validation/moretypes-pointers.json",
+          "sha256": "6a25ff840a4ce45b6b5bfba74d9bd594b80f6d761b44e20cf6d911cf5685f3a2"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-003/validation/moretypes-slice-len-cap.json",
+          "sha256": "9a8ffc3dd18a03bb3e389afd20ccbd99d0ca892f79538c73027dde18c152a973"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-003/validation/moretypes-struct-literals.json",
+          "sha256": "8d412ac58cd3246f0b3c40b4fcc470d35b18a4f9a64e2508dac9b38d95f8fe4c"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-004/candidates/basics-10.article",
+          "sha256": "b4e9a80a337a1d9ca4d17cd9152aa6f834cce639b873e85d59fcaa611d622fd5"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-004/candidates/basics-11.article",
+          "sha256": "f0939ed33c4ec4a1a42ec7c02cbf1fe9bc05ace5f865bf88b50574d4bfe7a8a7"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-004/candidates/basics-13.article",
+          "sha256": "f95cde4df38b629cce58960c97a7f147089766772d49c160b4ad27d08731c270"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-004/candidates/basics-14.article",
+          "sha256": "cc91ecc91bf5d5afc08db267497535afb891e876a1214148d30d2b50e4fedc15"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-004/candidates/basics-15.article",
+          "sha256": "e65734380b22886d06f55fd408107b66ee84a88e3e2c9910022492bc1f56faf4"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-004/candidates/basics-16.article",
+          "sha256": "2622ac27da8d74d317f7971a01a84344ed426890099f13e49dc31c1e160103bb"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-004/candidates/basics-4.article",
+          "sha256": "8c1d822b19b569ae66deafe03bcbad24cb9efe9d393da607bd84e47805c0ba2d"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-004/candidates/flowcontrol-1.article",
+          "sha256": "e75634a3e6c9d225ae60733daa98991a007c0eb5aad3df0d2ca4fa4c6829860b"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-004/candidates/flowcontrol-11.article",
+          "sha256": "cc4c9787c43519dcf42bf4b206bb91c5aed466202c67b5739547ec3a06a58775"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-004/candidates/flowcontrol-12.article",
+          "sha256": "50084669b72ecb6d2fb77dd70516f4202bc69340812ed734d6d073fb7deea1c1"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-004/candidates/flowcontrol-13.article",
+          "sha256": "a44cf72ce761e8fdaffe5ce5e222f638efecf97c3dd4b3eb4280e998ac977d45"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-004/candidates/flowcontrol-2.article",
+          "sha256": "db5590ac2cc5050dd8b95465bafc115ddc6b8c4b7f8dc500db73522678419567"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-004/candidates/flowcontrol-3.article",
+          "sha256": "3cc7dfde9d2ba7b6aa5b758242677adaa370924464ce6ad0a29f8d79d3a50c00"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-004/candidates/flowcontrol-4.article",
+          "sha256": "5833d518e23a68bdfaeb67ce9f6038e4fddbae341f3d026c5ce00a5dd8db8af7"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-004/candidates/flowcontrol-5.article",
+          "sha256": "41c39d81c15c05b31171cc5cbb33650bbc57bd38225c31f3568c8cee071937e2"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-004/candidates/flowcontrol-6.article",
+          "sha256": "e04a4d6a0127edf528f119c906a75964d609e79c7b46daff788339025bd1d7c1"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-004/candidates/flowcontrol-9.article",
+          "sha256": "9b92f2d47a11bc260efcedc412ccefbf5a3120435a8c457ada2b57ddb2fc69a1"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-004/candidates/moretypes-13.article",
+          "sha256": "fa74197bbe7f047d20aca66ed40b06aafb4e8d85407f236db0b54b35a3cd894c"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-004/candidates/moretypes-15.article",
+          "sha256": "91477c2f7f79f90f95ba1190f35be97de83fa62bd302889a9bd59bc5a9d28a5f"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-004/candidates/moretypes-16.article",
+          "sha256": "1f0a890201b7637a3e8912aa277b91a0e2c9b736e7bf6b5503da58a9d0d6c914"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-004/candidates/moretypes-3.article",
+          "sha256": "16183fe826c3c74595047d767bcd3c5a276c9fd089b40ed6b661e39ff1879eff"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-004/candidates/moretypes-4.article",
+          "sha256": "2eb6ef4e386e7a8fcdf125d2d6f04fa4b216d6d28300ff526d9cf0450ea90966"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-004/candidates/moretypes-5.article",
+          "sha256": "8d8ec87732abf48509ad2010798b7c0799fe86242917cb7ecc91510f4a9d4b4c"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-004/candidates/moretypes-6.article",
+          "sha256": "153140493e590e1913611e41f115b721427fb99998f21122b895ec5bd030ecd7"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-004/candidates/welcome-2.article",
+          "sha256": "0eab0b19d8a239ed3e7f703fd527cc23be1a71f672700089e1e5195342518a83"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-004/candidates/welcome-4.article",
+          "sha256": "9c42ea0383ae00bcf55df1e0ae2333da738e1832a647e3bb08827c924568fe93"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-004/validation/basics-10.json",
+          "sha256": "a707fcd6fb642349275222e556e9b8d602432508fa4007543df1fa2ef3e8d344"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-004/validation/basics-11.json",
+          "sha256": "edf979be99295313c00b1e0bbb7db9915291c005495edd8251cca2b3fbffe5fa"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-004/validation/basics-13.json",
+          "sha256": "161afdb5cd77577e161ba915dd9e849fbcf95e22b188b3fa2cf8740e1937c84f"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-004/validation/basics-14.json",
+          "sha256": "d6e7035cf1b6d43dd757bd7c9af64274127a49dd7e34c0c46e8bed07971df6a9"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-004/validation/basics-15.json",
+          "sha256": "bf3cbd574119bebae6f73b454b83febaf2ed699e6511cccba2851aa7c2dab655"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-004/validation/basics-16.json",
+          "sha256": "c0f60f6802278f57d125f86c6016141fbbdeb5b14e9987301f016c1b96f745cd"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-004/validation/basics-4.json",
+          "sha256": "2af661279c7fbf6c52d321f733893595f59bff06a04692d3f201b5f2d361723e"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-004/validation/flowcontrol-1.json",
+          "sha256": "700314c92b559b324541737627722746b36fb26d1e92518680710fbadd00aecb"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-004/validation/flowcontrol-11.json",
+          "sha256": "fdc73d766ad81e9d80e45bb87da6f50afcc3b410fef896e11df95612aff71e64"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-004/validation/flowcontrol-12.json",
+          "sha256": "4f1c73559641eadaf393a0b03ce4d9cca11e0c6cd17e836d805df1a0ac813e09"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-004/validation/flowcontrol-13.json",
+          "sha256": "ea5e35bcebef3fc03882aacf878e46c7ee7000eb461fb66de0ca290815dc13c4"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-004/validation/flowcontrol-2.json",
+          "sha256": "a101577e813555bf923f1dc2643b6bab541ca75ae22616bbddfb949cf39ace65"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-004/validation/flowcontrol-3.json",
+          "sha256": "4ea2c7ebcc6e072c50fa1df472ae8e8c72900e67bf6aca2d3ce8185cc633e170"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-004/validation/flowcontrol-4.json",
+          "sha256": "8c977175dee9db264a88215da6e0a4361c17ef6611110420f4e32719abe73590"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-004/validation/flowcontrol-5.json",
+          "sha256": "8e6fa7cef600dd666ff43b113b0bb6998e1c4b639254232b7bb6a5c9bd0d7b4b"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-004/validation/flowcontrol-6.json",
+          "sha256": "867022b465689b2feff8ee3012e0f7717d222da8496884515e1991351e9a6ee3"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-004/validation/flowcontrol-9.json",
+          "sha256": "5bca09c570154db1fad837e28d96cce7a089d65096e0d34c053d1c7ec01a1d92"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-004/validation/moretypes-13.json",
+          "sha256": "6c1ca661e40684df9ee5a020b2d7e73b902e9a980f756e2c7d16282db927e33d"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-004/validation/moretypes-15.json",
+          "sha256": "a8cad019d20d7cab8197ad0b4e04bc6b2a7489ea2890850e0f6810eefc92a50c"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-004/validation/moretypes-16.json",
+          "sha256": "72b7ab61d99f0d1ff7d476c857bc8aee2b2cd70a57feb933933211d9e6b8645c"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-004/validation/moretypes-3.json",
+          "sha256": "daa06ba1ffa13b783f411fab070dc170965e73b6ba1dd777c35c08947f80c48e"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-004/validation/moretypes-4.json",
+          "sha256": "d5f39034c11ee6fc802967ab7a745cb55490bba5b3acf52925fd9d4760737c0d"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-004/validation/moretypes-5.json",
+          "sha256": "ecce551af121f4c26be69034d4ce9fd36b7d8bb6d27510c5eb65ba05bb825ac7"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-004/validation/moretypes-6.json",
+          "sha256": "ce40ecf97c35fb4f8bb415c20253acc5b601ca368322f9867cfa4c5e36545a90"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-004/validation/welcome-2.json",
+          "sha256": "67f556e0064a0d6587993d12d231f5a9cdbcaf52ab45e3042c9cd06aee779301"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-004/validation/welcome-4.json",
+          "sha256": "f41c07fadfb21930fa66738e99da29979e5ae6971a9400596b152593bcd8a11e"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-005/candidates/concurrency-10.article",
+          "sha256": "7aa87831805ce62ff86144b776b94079a2baf87c155d2d518ace0f32c89ce55c"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-005/candidates/concurrency-2.article",
+          "sha256": "88f7eb889132cab9ac97419815b56bbe78c8637f672d8b2b812267a058af3550"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-005/candidates/concurrency-4.article",
+          "sha256": "0bfe578e515aeb4e873488fe5bd04dd10a4fd19c048cbffc580cfd9b76399b1c"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-005/candidates/generics-2.article",
+          "sha256": "875478c0b18d4dc30ae205d626a520981a7fc56128134a5d23b6f1f86c3eb6d8"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-005/candidates/methods-12.article",
+          "sha256": "354e5476476ac216f55057b59591f6ce30bcc003878719a69a80237cfc1440b1"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-005/candidates/methods-15.article",
+          "sha256": "d401463a74d08db4a3774decf49ba081614f0e8c77830dac279d6dcb4996e22f"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-005/candidates/methods-23.article",
+          "sha256": "68a45fc7c122111a033a4650a8c7897f188cd6716e1585b385f4195ef07619ef"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-005/candidates/moretypes-17.article",
+          "sha256": "a55a87d03c1f4946d994d40405e29454ffb6051982fb39e1517223ecca139525"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-005/candidates/moretypes-18.article",
+          "sha256": "29467ced6cda0e8a9bd9a8eeacd98c9fad04f38b1ef9a964f094bcddd9939545"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-005/candidates/moretypes-19.article",
+          "sha256": "77dc9a5b8a2528503c0228ed12fbadd9109eb622316ebcb016a73acab56e48d6"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-005/candidates/moretypes-20.article",
+          "sha256": "575c53e24d673d7c650e301c9a6b9fbd02aad992734d46ec4d5b753eb551e479"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-005/candidates/moretypes-21.article",
+          "sha256": "9182127ba2055ecd8f2f220be669d5e0e1a62c8067e7cdc5f8e3b0092b7ab705"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-005/candidates/moretypes-23.article",
+          "sha256": "9ce637b64d5033d1bbe628be6305eef9d9d41bd0f5a6d5162a52dd1730993dab"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-005/validation/concurrency-10.json",
+          "sha256": "6e3502244e8a9c4e4587ceb287a329d1261b874feaf51035f74970e828f86b42"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-005/validation/concurrency-2.json",
+          "sha256": "480b5ae1005fb6364519639d2ae9e225b49dc5da7f7e781024a5f0ca7a69fc0e"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-005/validation/concurrency-4.json",
+          "sha256": "e6d0dcbe0571c7789f89be1e3164034f4f5bdb15b2c77537defe4f3dcbfcad79"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-005/validation/generics-2.json",
+          "sha256": "e084bc805f1625ba6689ed83e011158754ca0d10f2fc844cc2d131ef41c886f0"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-005/validation/methods-12.json",
+          "sha256": "34d53e651c37ad3262058d9fc8c23425212e0570ecee93cb80d4a1c5706ea6c2"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-005/validation/methods-15.json",
+          "sha256": "a55b9d35ea35b4ce4c798a31e022c67ca92eb96496dba801cd6b1adcf579fea6"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-005/validation/methods-23.json",
+          "sha256": "051ec6e12e9c8631cd3297f667ef7e2f4147850e40bec482885612cddd17f893"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-005/validation/moretypes-17.json",
+          "sha256": "43d01ec433d47260335ee94b07a35b2084a9ecd704e5df66e0f3276a87048488"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-005/validation/moretypes-18.json",
+          "sha256": "50d8fc877ae020a56c49f9abed20763175969ae8c791837cb6a0fb66608ee6ba"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-005/validation/moretypes-19.json",
+          "sha256": "ef94534ce70a1f18fbc65acfcb68fa8f871b5de32a7ae7ee9ac5533f304ae8f3"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-005/validation/moretypes-20.json",
+          "sha256": "ebf3ee9302482075e8fe667b4d26db923e25d382ee321d1e96a76008caa1336c"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-005/validation/moretypes-21.json",
+          "sha256": "4c1db4ccfd023bbebb08cdccb5c42ff9de223f973ef4b1b70ef8d106e7eb6d33"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-005/validation/moretypes-23.json",
+          "sha256": "84b8475c19b18a2cb8506b36279f4ee63bb5af3efaa24cfc4176d453b5aea687"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-006/candidates/concurrency-exercise-equivalent-binary-trees.go",
+          "sha256": "df45f9c591c5b02f53033bb0d0b815097c14af80c63b9e3635ff17e05582c76f"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-006/candidates/concurrency-mutex-counter.go",
+          "sha256": "a9652ed45197bc731aac83eca6849b02165cb2a8d3c0bf666ecd076f214184f6"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-006/candidates/generics-index.go",
+          "sha256": "afec40bbe2901d8b9e42bdf24cb54fa99be8169c45e6b67fafdb007417634100"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-006/candidates/generics-list.go",
+          "sha256": "63d16b7e257f591f4d32461050df7fb3250b84eace157bf1270d3c67b8285eff"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-006/candidates/moretypes-slices-of-slice.go",
+          "sha256": "0245e2ef69b7e695d601347fdae84864891856ff086f1238bd415fa4f95e309c"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-006/validation/concurrency-exercise-equivalent-binary-trees.json",
+          "sha256": "0d2a42adba76383f8231e84e82ba9d17a9fb07aced81619bc602ed462edf38a0"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-006/validation/concurrency-mutex-counter.json",
+          "sha256": "90eeda41f24275d68fe2e53a00f4bbd6c70979eba7690a93deb1d5c127eeb087"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-006/validation/generics-index.json",
+          "sha256": "bef53a4faaf92631c554e525fdfa5f7d7508f7dbf507d5b2dc2f6ab5ec09cac6"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-006/validation/generics-list.json",
+          "sha256": "a5c4e0ef1f5ab8476168f58c4d645f9e836d39a0e8886bafe6ae49daff8d1eb6"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-006/validation/moretypes-slices-of-slice.json",
+          "sha256": "f9468e091f8db3ec8d029bdbbcd739c3c19cd0a07587cc832c03fb4fb1011f19"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-007/candidates/basics-9.article",
+          "sha256": "e49ec37991c4c040cbb924cea180eace3ade99039180cbc6f476c4eea590088f"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-007/candidates/flowcontrol-8.article",
+          "sha256": "cdf17353e2c88ffdf0ec3752d27fef46206c56db4ecdde97d3138ef10eb0b009"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-007/candidates/moretypes-1.article",
+          "sha256": "f1b41cd064c8daea389f8e92b969e6abc85df23ee6624cb408176c78bacf9020"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-007/candidates/moretypes-22.article",
+          "sha256": "1e4911399f97119e4ed535ddae561bce5de662a85282ba68ea9790389d2e4bb0"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-007/candidates/moretypes-25.article",
+          "sha256": "c42aa65bdde0a34e64a81ba70cc40dbccd0b235d3b485a6db73d91953207e876"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-007/candidates/moretypes-7.article",
+          "sha256": "d42fa19a68910790df3a39d5362f058cde488880f35878d95f907d6b0f1600b8"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-007/validation/basics-9.json",
+          "sha256": "c8a156b233bddcecda8b328e4f3a2d17d3872ead3350c4dff7f1893c3b48f49a"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-007/validation/flowcontrol-8.json",
+          "sha256": "181288b5d7f85e4e811ce4461ce2e37c0406c24849851b8a42a75c0a67d18c27"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-007/validation/moretypes-1.json",
+          "sha256": "14d3d6c814e2362b0a9594379619c441ee7e42ff74bcfb246df0149e748c6a7b"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-007/validation/moretypes-22.json",
+          "sha256": "c77ab1e480316d04387afeac229a06ce9ccb0586334a5d47e79b3128fc3174cb"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-007/validation/moretypes-25.json",
+          "sha256": "d62c2eba8e236d9077ebc7a8e4f58d7ea0a5afe3c71a0d0d28a9b4e1c7650bfc"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-007/validation/moretypes-7.json",
+          "sha256": "13ee0750a5352c21d3042867539ab1628fb6b629ce48ed02318d0a31f546cede"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-008/candidates/basics-12.article",
+          "sha256": "c4833d8e2a24d5ce97c1f97687ad7a663d52ff70800433deb87589f1b243f4c5"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-008/candidates/concurrency-8.article",
+          "sha256": "a9cf820867bb4d77c5af9b9081403502de10e26849b46c738994706b319ead17"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-008/validation/basics-12.json",
+          "sha256": "df961a311bb100d6bffbd82d4c7e74b1d594661ba4fcefa59b164b53804124ff"
+        },
+        {
+          "path": "data/retranslation-runs/pa-IN/codex-pa-IN-008/validation/concurrency-8.json",
+          "sha256": "07b12b062c47ee1a1e547ffed5f5b4aaaf03fc3f87965537db0937c248245019"
+        },
+        {
+          "path": "internal/tour/ui/pa-IN.json",
+          "sha256": "f7a4f5266a84608fa80f4b3b9978585409838457001e3aefbb1d02c8c7925ea6"
+        },
+        {
+          "path": "locales/pa-IN/article-metadata.json",
+          "sha256": "c467c5df5ae128f18ce97f86cf03ed60a2a9ee2a43739c774bff16c102172a37"
+        },
+        {
+          "path": "locales/pa-IN/candidates/basics-1.article",
+          "sha256": "6f7af91135d2e7c8d294e38800556f9477142cd61640e78e6531f36b62a75b45"
+        },
+        {
+          "path": "locales/pa-IN/candidates/basics-10.article",
+          "sha256": "b4e9a80a337a1d9ca4d17cd9152aa6f834cce639b873e85d59fcaa611d622fd5"
+        },
+        {
+          "path": "locales/pa-IN/candidates/basics-11.article",
+          "sha256": "f0939ed33c4ec4a1a42ec7c02cbf1fe9bc05ace5f865bf88b50574d4bfe7a8a7"
+        },
+        {
+          "path": "locales/pa-IN/candidates/basics-12.article",
+          "sha256": "c4833d8e2a24d5ce97c1f97687ad7a663d52ff70800433deb87589f1b243f4c5"
+        },
+        {
+          "path": "locales/pa-IN/candidates/basics-13.article",
+          "sha256": "f95cde4df38b629cce58960c97a7f147089766772d49c160b4ad27d08731c270"
+        },
+        {
+          "path": "locales/pa-IN/candidates/basics-14.article",
+          "sha256": "cc91ecc91bf5d5afc08db267497535afb891e876a1214148d30d2b50e4fedc15"
+        },
+        {
+          "path": "locales/pa-IN/candidates/basics-15.article",
+          "sha256": "e65734380b22886d06f55fd408107b66ee84a88e3e2c9910022492bc1f56faf4"
+        },
+        {
+          "path": "locales/pa-IN/candidates/basics-16.article",
+          "sha256": "2622ac27da8d74d317f7971a01a84344ed426890099f13e49dc31c1e160103bb"
+        },
+        {
+          "path": "locales/pa-IN/candidates/basics-17.article",
+          "sha256": "76bb3864e84c03934ffeabe9d317d8e3f14ceae4367ac72d1fd529a81509bf5f"
+        },
+        {
+          "path": "locales/pa-IN/candidates/basics-2.article",
+          "sha256": "3fe92aef71c4aa4857e8d0433dda805956ab733662c5d99dd59d65277b1879bb"
+        },
+        {
+          "path": "locales/pa-IN/candidates/basics-3.article",
+          "sha256": "8aa13908ce23fd45a7399cb6f4e7dab604e40b1e318f64e0b0aa98087f2d800f"
+        },
+        {
+          "path": "locales/pa-IN/candidates/basics-4.article",
+          "sha256": "8c1d822b19b569ae66deafe03bcbad24cb9efe9d393da607bd84e47805c0ba2d"
+        },
+        {
+          "path": "locales/pa-IN/candidates/basics-5.article",
+          "sha256": "16c562f3efbb2935fd360f9b1b673477c54b8ca976f0c188e9bf993994797bc6"
+        },
+        {
+          "path": "locales/pa-IN/candidates/basics-6.article",
+          "sha256": "bcd1533d5172c3c4563d1ba614565c609824c081284af8d53d5cd55384305101"
+        },
+        {
+          "path": "locales/pa-IN/candidates/basics-7.article",
+          "sha256": "bcf680ef54bd21ceae1e9ad1d6380430ee0991cec840658866beb457fc9cdbc4"
+        },
+        {
+          "path": "locales/pa-IN/candidates/basics-8.article",
+          "sha256": "705f9cc080cc0a3fb9d068ce7fb8a1458acb33c5d4eb457709364753a6a187c7"
+        },
+        {
+          "path": "locales/pa-IN/candidates/basics-9.article",
+          "sha256": "e49ec37991c4c040cbb924cea180eace3ade99039180cbc6f476c4eea590088f"
+        },
+        {
+          "path": "locales/pa-IN/candidates/basics-numeric-constants.go",
+          "sha256": "b42673169228f3d728deb2e1d5f065aa94862e51772fe75db44f076e6036768c"
+        },
+        {
+          "path": "locales/pa-IN/candidates/basics-type-inference.go",
+          "sha256": "d7d64a01844e9de23083455d97f6cf465858ed31ebc87fd0f6a1f1c47f727a82"
+        },
+        {
+          "path": "locales/pa-IN/candidates/concurrency-1.article",
+          "sha256": "3555d1880c1920bf3a81f29385cc549a5499dabcca6ec0e8d96a2f2819525aa3"
+        },
+        {
+          "path": "locales/pa-IN/candidates/concurrency-10.article",
+          "sha256": "7aa87831805ce62ff86144b776b94079a2baf87c155d2d518ace0f32c89ce55c"
+        },
+        {
+          "path": "locales/pa-IN/candidates/concurrency-11.article",
+          "sha256": "c8fad12d5921d1e5d26b0ade4cfd6dffa8e350a1a507aacab8ebaeea17788e25"
+        },
+        {
+          "path": "locales/pa-IN/candidates/concurrency-2.article",
+          "sha256": "88f7eb889132cab9ac97419815b56bbe78c8637f672d8b2b812267a058af3550"
+        },
+        {
+          "path": "locales/pa-IN/candidates/concurrency-3.article",
+          "sha256": "cbd0f80a81eab37bfad8172297a6af5fdf48094ed00124676ea12ea90449bf10"
+        },
+        {
+          "path": "locales/pa-IN/candidates/concurrency-4.article",
+          "sha256": "0bfe578e515aeb4e873488fe5bd04dd10a4fd19c048cbffc580cfd9b76399b1c"
+        },
+        {
+          "path": "locales/pa-IN/candidates/concurrency-5.article",
+          "sha256": "269326ae122fc64a9cf8eccd8bc6be9648a553ae13317ab1f5a6cef9f750a2a3"
+        },
+        {
+          "path": "locales/pa-IN/candidates/concurrency-6.article",
+          "sha256": "528a82d376fb040b04abf7dea6ca520247e63919b47d3b080251c272b383be86"
+        },
+        {
+          "path": "locales/pa-IN/candidates/concurrency-7.article",
+          "sha256": "d55d7e142f7834675914b4bf459af278503fd07356f20668856fc45e75d651c1"
+        },
+        {
+          "path": "locales/pa-IN/candidates/concurrency-8.article",
+          "sha256": "a9cf820867bb4d77c5af9b9081403502de10e26849b46c738994706b319ead17"
+        },
+        {
+          "path": "locales/pa-IN/candidates/concurrency-9.article",
+          "sha256": "3b0cb2ddae514c5f26aa2972e2d94f9ae9d2df674b2ed6d06abf2151ecbc0559"
+        },
+        {
+          "path": "locales/pa-IN/candidates/concurrency-channels.go",
+          "sha256": "b27879b7fa5c374509879c9db2a43e7690a14d88df24b32813c868ba4a39f7ec"
+        },
+        {
+          "path": "locales/pa-IN/candidates/concurrency-exercise-equivalent-binary-trees.go",
+          "sha256": "df45f9c591c5b02f53033bb0d0b815097c14af80c63b9e3635ff17e05582c76f"
+        },
+        {
+          "path": "locales/pa-IN/candidates/concurrency-exercise-web-crawler.go",
+          "sha256": "e827f272efccb5d22ad33be20e3518654655c8ad2f120bbe1b443e3d831a053b"
+        },
+        {
+          "path": "locales/pa-IN/candidates/concurrency-mutex-counter.go",
+          "sha256": "a9652ed45197bc731aac83eca6849b02165cb2a8d3c0bf666ecd076f214184f6"
+        },
+        {
+          "path": "locales/pa-IN/candidates/flowcontrol-1.article",
+          "sha256": "e75634a3e6c9d225ae60733daa98991a007c0eb5aad3df0d2ca4fa4c6829860b"
+        },
+        {
+          "path": "locales/pa-IN/candidates/flowcontrol-10.article",
+          "sha256": "cff8fc88c945fbdec1733180e57669b5522433678600a901d3eb3e885851f5ab"
+        },
+        {
+          "path": "locales/pa-IN/candidates/flowcontrol-11.article",
+          "sha256": "cc4c9787c43519dcf42bf4b206bb91c5aed466202c67b5739547ec3a06a58775"
+        },
+        {
+          "path": "locales/pa-IN/candidates/flowcontrol-12.article",
+          "sha256": "50084669b72ecb6d2fb77dd70516f4202bc69340812ed734d6d073fb7deea1c1"
+        },
+        {
+          "path": "locales/pa-IN/candidates/flowcontrol-13.article",
+          "sha256": "a44cf72ce761e8fdaffe5ce5e222f638efecf97c3dd4b3eb4280e998ac977d45"
+        },
+        {
+          "path": "locales/pa-IN/candidates/flowcontrol-14.article",
+          "sha256": "76bb3864e84c03934ffeabe9d317d8e3f14ceae4367ac72d1fd529a81509bf5f"
+        },
+        {
+          "path": "locales/pa-IN/candidates/flowcontrol-2.article",
+          "sha256": "db5590ac2cc5050dd8b95465bafc115ddc6b8c4b7f8dc500db73522678419567"
+        },
+        {
+          "path": "locales/pa-IN/candidates/flowcontrol-3.article",
+          "sha256": "3cc7dfde9d2ba7b6aa5b758242677adaa370924464ce6ad0a29f8d79d3a50c00"
+        },
+        {
+          "path": "locales/pa-IN/candidates/flowcontrol-4.article",
+          "sha256": "5833d518e23a68bdfaeb67ce9f6038e4fddbae341f3d026c5ce00a5dd8db8af7"
+        },
+        {
+          "path": "locales/pa-IN/candidates/flowcontrol-5.article",
+          "sha256": "41c39d81c15c05b31171cc5cbb33650bbc57bd38225c31f3568c8cee071937e2"
+        },
+        {
+          "path": "locales/pa-IN/candidates/flowcontrol-6.article",
+          "sha256": "e04a4d6a0127edf528f119c906a75964d609e79c7b46daff788339025bd1d7c1"
+        },
+        {
+          "path": "locales/pa-IN/candidates/flowcontrol-7.article",
+          "sha256": "62389a9060d59079d526fee3c6233c152e019988794c485381259bb9aa40f4a6"
+        },
+        {
+          "path": "locales/pa-IN/candidates/flowcontrol-8.article",
+          "sha256": "cdf17353e2c88ffdf0ec3752d27fef46206c56db4ecdde97d3138ef10eb0b009"
+        },
+        {
+          "path": "locales/pa-IN/candidates/flowcontrol-9.article",
+          "sha256": "9b92f2d47a11bc260efcedc412ccefbf5a3120435a8c457ada2b57ddb2fc69a1"
+        },
+        {
+          "path": "locales/pa-IN/candidates/flowcontrol-if-and-else.go",
+          "sha256": "99527f240d40fdcf611ec10cda27e41becf77c6c157e49f18b2f265de7a77d01"
+        },
+        {
+          "path": "locales/pa-IN/candidates/generics-1.article",
+          "sha256": "e06224428d9c2c46f5acd4bc9d99d903199e1d9334d677812179e6a9e89b3958"
+        },
+        {
+          "path": "locales/pa-IN/candidates/generics-2.article",
+          "sha256": "875478c0b18d4dc30ae205d626a520981a7fc56128134a5d23b6f1f86c3eb6d8"
+        },
+        {
+          "path": "locales/pa-IN/candidates/generics-3.article",
+          "sha256": "f0337e0f0a654c964d9a5c63836da36eab498f91f4bbe026e72d3bec153a2435"
+        },
+        {
+          "path": "locales/pa-IN/candidates/generics-index.go",
+          "sha256": "afec40bbe2901d8b9e42bdf24cb54fa99be8169c45e6b67fafdb007417634100"
+        },
+        {
+          "path": "locales/pa-IN/candidates/generics-list.go",
+          "sha256": "63d16b7e257f591f4d32461050df7fb3250b84eace157bf1270d3c67b8285eff"
+        },
+        {
+          "path": "locales/pa-IN/candidates/methods-1.article",
+          "sha256": "47976763aa9bfab8dc5e8d4efa307c8eef6dc7c77692c9e83bb25819846cf25f"
+        },
+        {
+          "path": "locales/pa-IN/candidates/methods-10.article",
+          "sha256": "806d8b8700d275f197b2608bf7792528456cb8cd64760bb4eca9bf68727d58fc"
+        },
+        {
+          "path": "locales/pa-IN/candidates/methods-11.article",
+          "sha256": "f5e9383326358ab1904ac0253aaf4baa34317a808615872f306040cdc8eaa015"
+        },
+        {
+          "path": "locales/pa-IN/candidates/methods-12.article",
+          "sha256": "354e5476476ac216f55057b59591f6ce30bcc003878719a69a80237cfc1440b1"
+        },
+        {
+          "path": "locales/pa-IN/candidates/methods-13.article",
+          "sha256": "ff407a97f0949a7c22c964a51225334ebe7a246d0cbfec2111530a83ca9b032e"
+        },
+        {
+          "path": "locales/pa-IN/candidates/methods-14.article",
+          "sha256": "a8fd15c2b537251c8c1c1bbb7fa4d2e678cd1650305a76a05b6912989ffa7457"
+        },
+        {
+          "path": "locales/pa-IN/candidates/methods-15.article",
+          "sha256": "d401463a74d08db4a3774decf49ba081614f0e8c77830dac279d6dcb4996e22f"
+        },
+        {
+          "path": "locales/pa-IN/candidates/methods-16.article",
+          "sha256": "5ad353479a808f7553c1576dc50bc2cee1416ca4c94c8848c2be6339738aa53b"
+        },
+        {
+          "path": "locales/pa-IN/candidates/methods-17.article",
+          "sha256": "36a276ee022dd73e3d8dd161e9ec3decef76c38891ac75ed3b16e41263f2d429"
+        },
+        {
+          "path": "locales/pa-IN/candidates/methods-18.article",
+          "sha256": "f70990ca69906b79cc76eba5463108131214b8f3f9b6aeeced7cbfd4f6c652f8"
+        },
+        {
+          "path": "locales/pa-IN/candidates/methods-19.article",
+          "sha256": "9595a8cea4a77b8f016bdaf88bed6b5fe4a86acb8798dd981f7febeb4a063788"
+        },
+        {
+          "path": "locales/pa-IN/candidates/methods-2.article",
+          "sha256": "1938fdbb09a0af1d2f75c3db392d43da8cddc2259b7cc53b07363c72f4e41d75"
+        },
+        {
+          "path": "locales/pa-IN/candidates/methods-20.article",
+          "sha256": "8ea769053bfed32625eee1d8ad81aafe4c3663599cb4a81c95602c5852aecdeb"
+        },
+        {
+          "path": "locales/pa-IN/candidates/methods-21.article",
+          "sha256": "1ef7c35d9b92b9dbcf850c1a04caf94e6d84d957ced47ebd8264815f33cc85a6"
+        },
+        {
+          "path": "locales/pa-IN/candidates/methods-22.article",
+          "sha256": "2e3337ae9e51b221b119cdbfb1a408999ee2749a4c4e817b62919f46fe5fb540"
+        },
+        {
+          "path": "locales/pa-IN/candidates/methods-23.article",
+          "sha256": "68a45fc7c122111a033a4650a8c7897f188cd6716e1585b385f4195ef07619ef"
+        },
+        {
+          "path": "locales/pa-IN/candidates/methods-24.article",
+          "sha256": "ee7f778b975eb93bef2ec0317bd85d1b6010e464cadd4f142af6765d073edfc3"
+        },
+        {
+          "path": "locales/pa-IN/candidates/methods-25.article",
+          "sha256": "1038d94475691f106d50d985834920cb375a277e18813b66d5c4b1cb6f40c62d"
+        },
+        {
+          "path": "locales/pa-IN/candidates/methods-26.article",
+          "sha256": "f0337e0f0a654c964d9a5c63836da36eab498f91f4bbe026e72d3bec153a2435"
+        },
+        {
+          "path": "locales/pa-IN/candidates/methods-3.article",
+          "sha256": "387823b63c473376e253feafcdb9da52e6a09c5409ad793b80befe17e6ac11a9"
+        },
+        {
+          "path": "locales/pa-IN/candidates/methods-4.article",
+          "sha256": "de6fc942ae047eb7fb7e9947771caaca2d55ecff467291cf6b1957de96d7eb48"
+        },
+        {
+          "path": "locales/pa-IN/candidates/methods-5.article",
+          "sha256": "8f0994128495da4b801ba42b51647797391315703bed40956739d69b29f0988e"
+        },
+        {
+          "path": "locales/pa-IN/candidates/methods-6.article",
+          "sha256": "99a45b41c75c165e1b3326db54ec97ea5c17c51d3742d58919faf1001b074ac2"
+        },
+        {
+          "path": "locales/pa-IN/candidates/methods-7.article",
+          "sha256": "2f4048a0235a099ec3b5e3d595e00e71a3a74b848d496027019b373bff7beb51"
+        },
+        {
+          "path": "locales/pa-IN/candidates/methods-8.article",
+          "sha256": "519bc568afd829286ff4b8f13c33ccda9cda632a51f2853243c6fc9cce52b482"
+        },
+        {
+          "path": "locales/pa-IN/candidates/methods-9.article",
+          "sha256": "266415dae64e09cdc22b9071a49efe32435d0c7d90ef4183a61d15720fb85d52"
+        },
+        {
+          "path": "locales/pa-IN/candidates/methods-exercise-reader.go",
+          "sha256": "a15e49d0aba7297882580ebd2cb35064714e1f6a2742429bc438144f87409907"
+        },
+        {
+          "path": "locales/pa-IN/candidates/methods-exercise-stringer.go",
+          "sha256": "e030c788163e6aeca5071c4ae9f441ea20d5c2d177957232938a9d69456511a6"
+        },
+        {
+          "path": "locales/pa-IN/candidates/methods-interfaces-are-satisfied-implicitly.go",
+          "sha256": "c530163e4ab8618ccad44c52bacfa596f752ab7e1da19e5c952853b9c3d0a4bd"
+        },
+        {
+          "path": "locales/pa-IN/candidates/methods-interfaces.go",
+          "sha256": "aef6a933ced4365dd2f42d7a50b45b0523f2f4f796b5ea9bb3c701922a03dfd6"
+        },
+        {
+          "path": "locales/pa-IN/candidates/moretypes-1.article",
+          "sha256": "f1b41cd064c8daea389f8e92b969e6abc85df23ee6624cb408176c78bacf9020"
+        },
+        {
+          "path": "locales/pa-IN/candidates/moretypes-10.article",
+          "sha256": "1dc3a8d31ff64d18ee150e9b034dbf25a9b36a007bc586c806963dcffcd6300f"
+        },
+        {
+          "path": "locales/pa-IN/candidates/moretypes-11.article",
+          "sha256": "73d457dc7dc388823f3f1dd7a91c1fc65655f15836319e3288a86ab11b6f04ef"
+        },
+        {
+          "path": "locales/pa-IN/candidates/moretypes-12.article",
+          "sha256": "9a91206b1dfedca249c3ef7e2ba40639ab81c2a0c470f5589dfb1c04d4713372"
+        },
+        {
+          "path": "locales/pa-IN/candidates/moretypes-13.article",
+          "sha256": "fa74197bbe7f047d20aca66ed40b06aafb4e8d85407f236db0b54b35a3cd894c"
+        },
+        {
+          "path": "locales/pa-IN/candidates/moretypes-14.article",
+          "sha256": "9e263afde5b9ad2ba3be83ac2740f1a15a779092123de61af95824dfb3d5f7b8"
+        },
+        {
+          "path": "locales/pa-IN/candidates/moretypes-15.article",
+          "sha256": "91477c2f7f79f90f95ba1190f35be97de83fa62bd302889a9bd59bc5a9d28a5f"
+        },
+        {
+          "path": "locales/pa-IN/candidates/moretypes-16.article",
+          "sha256": "1f0a890201b7637a3e8912aa277b91a0e2c9b736e7bf6b5503da58a9d0d6c914"
+        },
+        {
+          "path": "locales/pa-IN/candidates/moretypes-17.article",
+          "sha256": "a55a87d03c1f4946d994d40405e29454ffb6051982fb39e1517223ecca139525"
+        },
+        {
+          "path": "locales/pa-IN/candidates/moretypes-18.article",
+          "sha256": "29467ced6cda0e8a9bd9a8eeacd98c9fad04f38b1ef9a964f094bcddd9939545"
+        },
+        {
+          "path": "locales/pa-IN/candidates/moretypes-19.article",
+          "sha256": "77dc9a5b8a2528503c0228ed12fbadd9109eb622316ebcb016a73acab56e48d6"
+        },
+        {
+          "path": "locales/pa-IN/candidates/moretypes-2.article",
+          "sha256": "9e33747d6cedb06bf72bd21a1000a29b63fb867f6d2dcf38b9d7234b116df655"
+        },
+        {
+          "path": "locales/pa-IN/candidates/moretypes-20.article",
+          "sha256": "575c53e24d673d7c650e301c9a6b9fbd02aad992734d46ec4d5b753eb551e479"
+        },
+        {
+          "path": "locales/pa-IN/candidates/moretypes-21.article",
+          "sha256": "9182127ba2055ecd8f2f220be669d5e0e1a62c8067e7cdc5f8e3b0092b7ab705"
+        },
+        {
+          "path": "locales/pa-IN/candidates/moretypes-22.article",
+          "sha256": "1e4911399f97119e4ed535ddae561bce5de662a85282ba68ea9790389d2e4bb0"
+        },
+        {
+          "path": "locales/pa-IN/candidates/moretypes-23.article",
+          "sha256": "9ce637b64d5033d1bbe628be6305eef9d9d41bd0f5a6d5162a52dd1730993dab"
+        },
+        {
+          "path": "locales/pa-IN/candidates/moretypes-24.article",
+          "sha256": "a4b1508fb6206933c3befcdca09a5023a0a3a540ba115f568d2af9e353b57944"
+        },
+        {
+          "path": "locales/pa-IN/candidates/moretypes-25.article",
+          "sha256": "c42aa65bdde0a34e64a81ba70cc40dbccd0b235d3b485a6db73d91953207e876"
+        },
+        {
+          "path": "locales/pa-IN/candidates/moretypes-26.article",
+          "sha256": "eebc46e5cb3f2848764d00ab0d6c93d2294505c603bb40ba93b1ba44252fdd73"
+        },
+        {
+          "path": "locales/pa-IN/candidates/moretypes-27.article",
+          "sha256": "f0337e0f0a654c964d9a5c63836da36eab498f91f4bbe026e72d3bec153a2435"
+        },
+        {
+          "path": "locales/pa-IN/candidates/moretypes-3.article",
+          "sha256": "16183fe826c3c74595047d767bcd3c5a276c9fd089b40ed6b661e39ff1879eff"
+        },
+        {
+          "path": "locales/pa-IN/candidates/moretypes-4.article",
+          "sha256": "2eb6ef4e386e7a8fcdf125d2d6f04fa4b216d6d28300ff526d9cf0450ea90966"
+        },
+        {
+          "path": "locales/pa-IN/candidates/moretypes-5.article",
+          "sha256": "8d8ec87732abf48509ad2010798b7c0799fe86242917cb7ecc91510f4a9d4b4c"
+        },
+        {
+          "path": "locales/pa-IN/candidates/moretypes-6.article",
+          "sha256": "153140493e590e1913611e41f115b721427fb99998f21122b895ec5bd030ecd7"
+        },
+        {
+          "path": "locales/pa-IN/candidates/moretypes-7.article",
+          "sha256": "d42fa19a68910790df3a39d5362f058cde488880f35878d95f907d6b0f1600b8"
+        },
+        {
+          "path": "locales/pa-IN/candidates/moretypes-8.article",
+          "sha256": "34ac590095bbb21a827aca4b7236c81f145b5dd2e8e6305c32d970422df2ac7d"
+        },
+        {
+          "path": "locales/pa-IN/candidates/moretypes-9.article",
+          "sha256": "8f1c792151235add3c2cc8917d4f250c0effb401621498ecbe71a13015e6f848"
+        },
+        {
+          "path": "locales/pa-IN/candidates/moretypes-append.go",
+          "sha256": "37e465fe45fba91c7e1b6fe91e9aa95e9e315af392af0ce40fd380f7d71bdd83"
+        },
+        {
+          "path": "locales/pa-IN/candidates/moretypes-exercise-fibonacci-closure.go",
+          "sha256": "1c61cbf1e57409111ac0d8b35963aea40e6a423cc6ac16a0efd8a7230a740d6d"
+        },
+        {
+          "path": "locales/pa-IN/candidates/moretypes-pointers.go",
+          "sha256": "dd5b262d7da68fa0d66fcd6762814fe247f6683a6d33d9336bef6cdc7eefdfcd"
+        },
+        {
+          "path": "locales/pa-IN/candidates/moretypes-slice-len-cap.go",
+          "sha256": "c11198324f8de9b4a087fd7014d01eb1a64232bceb10b6056092b4397a9c6549"
+        },
+        {
+          "path": "locales/pa-IN/candidates/moretypes-slices-of-slice.go",
+          "sha256": "0245e2ef69b7e695d601347fdae84864891856ff086f1238bd415fa4f95e309c"
+        },
+        {
+          "path": "locales/pa-IN/candidates/moretypes-struct-literals.go",
+          "sha256": "3e70f1e4d142a31551aef695e4616639f28979e13748486b263eba3fe8063157"
+        },
+        {
+          "path": "locales/pa-IN/candidates/welcome-1.article",
+          "sha256": "6f9231f1dd014d9ae8d324ca1087236c3a4ead3efff2b8204ea89ad00af87a5a"
+        },
+        {
+          "path": "locales/pa-IN/candidates/welcome-2.article",
+          "sha256": "0eab0b19d8a239ed3e7f703fd527cc23be1a71f672700089e1e5195342518a83"
+        },
+        {
+          "path": "locales/pa-IN/candidates/welcome-3.article",
+          "sha256": "8fc8d26e0d6176306cf60019ddd54b05ccd5a98fe2746bfa24d365137ca6c928"
+        },
+        {
+          "path": "locales/pa-IN/candidates/welcome-4.article",
+          "sha256": "9c42ea0383ae00bcf55df1e0ae2333da738e1832a647e3bb08827c924568fe93"
+        },
+        {
+          "path": "locales/pa-IN/candidates/welcome-5.article",
+          "sha256": "a444a4951ef20370ba63dde539dfc6377c7ee906ca3a068d64d487e35176b061"
+        },
+        {
+          "path": "locales/pa-IN/course-metadata.json",
+          "sha256": "a5bd8adba7dcb4fc664218a6d7c01031fe655ec049433b495b736523340f6f4d"
+        },
+        {
+          "path": "locales/pa-IN/glossary.yaml",
+          "sha256": "0ac67f16705086586ad4a01a78b2f4e0efd2cb374d826dead931ef3d8f8840c7"
+        },
+        {
+          "path": "locales/pa-IN/locale.json",
+          "sha256": "4d66c2c64a63395380a864b8213e75832c439b2b4d491f5df2e7f8ea5dce9c91"
+        },
+        {
+          "path": "locales/pa-IN/status.tsv",
+          "sha256": "ccf48cbd0114c6877e980be8e87e42e1624bee80ef748cc94d5fa0ccf01eb96a"
+        }
+      ],
+      "evidence_identity_sha256": "18e122b985d727d56ead85a21ff9c82468e81d376152d93b65a5741d8c6a9fcd",
+      "validated_context_sha256": "454243446c6f2a5e5a433754dbda1d7d5276870ebc684366fd120a6a401424e4",
+      "legacy_surface_gate_state": "current"
+    }
+  ]
+}

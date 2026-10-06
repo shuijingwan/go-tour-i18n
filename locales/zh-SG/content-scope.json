@@ -1,0 +1,1647 @@
+{
+  "schema": "go-learning/locale-content-scope/v1",
+  "locale": "zh-SG",
+  "packages": [
+    {
+      "package": "tour-v1",
+      "state": "complete",
+      "package_identity_sha256": "926ee5bf113ecc24d9128ed4531e740092f2ca88f6f154cf101f6b8478ed83a9",
+      "source_authority_sha256": "48d09f17bf06e4beb9d05bb5b70465f5c6677406d84a3b9d125307f17d63c054",
+      "completed_surfaces": [
+        "tour"
+      ],
+      "local_canonical_routes": [
+        "/tour/",
+        "/tour/basics/1",
+        "/tour/basics/10",
+        "/tour/basics/11",
+        "/tour/basics/12",
+        "/tour/basics/13",
+        "/tour/basics/14",
+        "/tour/basics/15",
+        "/tour/basics/16",
+        "/tour/basics/17",
+        "/tour/basics/2",
+        "/tour/basics/3",
+        "/tour/basics/4",
+        "/tour/basics/5",
+        "/tour/basics/6",
+        "/tour/basics/7",
+        "/tour/basics/8",
+        "/tour/basics/9",
+        "/tour/concurrency/1",
+        "/tour/concurrency/10",
+        "/tour/concurrency/11",
+        "/tour/concurrency/2",
+        "/tour/concurrency/3",
+        "/tour/concurrency/4",
+        "/tour/concurrency/5",
+        "/tour/concurrency/6",
+        "/tour/concurrency/7",
+        "/tour/concurrency/8",
+        "/tour/concurrency/9",
+        "/tour/flowcontrol/1",
+        "/tour/flowcontrol/10",
+        "/tour/flowcontrol/11",
+        "/tour/flowcontrol/12",
+        "/tour/flowcontrol/13",
+        "/tour/flowcontrol/14",
+        "/tour/flowcontrol/2",
+        "/tour/flowcontrol/3",
+        "/tour/flowcontrol/4",
+        "/tour/flowcontrol/5",
+        "/tour/flowcontrol/6",
+        "/tour/flowcontrol/7",
+        "/tour/flowcontrol/8",
+        "/tour/flowcontrol/9",
+        "/tour/generics/1",
+        "/tour/generics/2",
+        "/tour/generics/3",
+        "/tour/list",
+        "/tour/methods/1",
+        "/tour/methods/10",
+        "/tour/methods/11",
+        "/tour/methods/12",
+        "/tour/methods/13",
+        "/tour/methods/14",
+        "/tour/methods/15",
+        "/tour/methods/16",
+        "/tour/methods/17",
+        "/tour/methods/18",
+        "/tour/methods/19",
+        "/tour/methods/2",
+        "/tour/methods/20",
+        "/tour/methods/21",
+        "/tour/methods/22",
+        "/tour/methods/23",
+        "/tour/methods/24",
+        "/tour/methods/25",
+        "/tour/methods/26",
+        "/tour/methods/3",
+        "/tour/methods/4",
+        "/tour/methods/5",
+        "/tour/methods/6",
+        "/tour/methods/7",
+        "/tour/methods/8",
+        "/tour/methods/9",
+        "/tour/moretypes/1",
+        "/tour/moretypes/10",
+        "/tour/moretypes/11",
+        "/tour/moretypes/12",
+        "/tour/moretypes/13",
+        "/tour/moretypes/14",
+        "/tour/moretypes/15",
+        "/tour/moretypes/16",
+        "/tour/moretypes/17",
+        "/tour/moretypes/18",
+        "/tour/moretypes/19",
+        "/tour/moretypes/2",
+        "/tour/moretypes/20",
+        "/tour/moretypes/21",
+        "/tour/moretypes/22",
+        "/tour/moretypes/23",
+        "/tour/moretypes/24",
+        "/tour/moretypes/25",
+        "/tour/moretypes/26",
+        "/tour/moretypes/27",
+        "/tour/moretypes/3",
+        "/tour/moretypes/4",
+        "/tour/moretypes/5",
+        "/tour/moretypes/6",
+        "/tour/moretypes/7",
+        "/tour/moretypes/8",
+        "/tour/moretypes/9",
+        "/tour/welcome/1",
+        "/tour/welcome/2",
+        "/tour/welcome/3",
+        "/tour/welcome/4",
+        "/tour/welcome/5"
+      ],
+      "local_route_families": [
+        "/tour/**"
+      ],
+      "evidence_kind": "legacy-tour-closure/v1",
+      "evidence": [
+        {
+          "path": "data/locale-surface-reviews/zh-SG/20261004-zh-SG-surface-002.a-gate.json",
+          "sha256": "e0b197659c4fa3da4f2e7516196f43dea32e412f00e7d2a3c64ada8bc87576df"
+        },
+        {
+          "path": "data/locale-surface-reviews/zh-SG/20261004-zh-SG-surface-002.md",
+          "sha256": "ae4eb2dc0d3a671c6ffabde7833e0c36c5717cbfdc8cbb2385feb578fabf2cab"
+        },
+        {
+          "path": "data/quality-check-snapshots/zh-SG/qc-001/manifest.json",
+          "sha256": "56e42ddb72a36ce96055b72a3849f07403dce1bcb2686efcf3a945b0fc3b0f29"
+        },
+        {
+          "path": "data/quality-check-snapshots/zh-SG/qc-001/quality-check-results.json",
+          "sha256": "dc1be39292ccb57af0e257688a2178ed3c94278fef35d0117ac5274366b2d316"
+        },
+        {
+          "path": "data/quality-check-snapshots/zh-SG/qc-002/finalization.json",
+          "sha256": "d48fb6b85faca4c85868732f6d5a4d157736bd38687534296561bc329e9719e5"
+        },
+        {
+          "path": "data/quality-check-snapshots/zh-SG/qc-002/manifest.json",
+          "sha256": "46934cb74364fa94059eab1c15364eabc970b78b0a2c998eeff9e7b2dc7bc12e"
+        },
+        {
+          "path": "data/quality-check-snapshots/zh-SG/qc-002/quality-check-results.json",
+          "sha256": "d53c14e07dd18ae7a6212ec3051e3a7ef807c453a59c74827c1e38b6710a46ed"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/candidates/basics-1.article",
+          "sha256": "9ae587fb346b94f76662af5dc03b982af2e052db390a1cc0d93483d84e33eb8c"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/candidates/basics-10.article",
+          "sha256": "86f56168d9e2d8e347c597dc603a81decb766cae5eca6d2709ebc51e8a79d8d0"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/candidates/basics-11.article",
+          "sha256": "9cfe08d5d9b1dc1a949e73a64f859e75a21534ebf1580ab7e6bc05afbe887b32"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/candidates/basics-12.article",
+          "sha256": "c8935338a6d121238c510e4ab97fa3145a48f32f44a82089d11d1f99bb468256"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/candidates/basics-13.article",
+          "sha256": "228aa524d59887f812ddd2dbd8e50e378977b95ee32492ae5d7d69122b553db0"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/candidates/basics-14.article",
+          "sha256": "1548050817e5739e1a67b9e5cb75b35c3662ce587dcbfdbe9b5a0dfb58fb5d51"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/candidates/basics-15.article",
+          "sha256": "54b9b60c0f763aaebe2cd39151ee73290dbd395397f54f5672714c884348f51d"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/candidates/basics-16.article",
+          "sha256": "176d1f7d5034377ac03407a2cf4ba401e69b65bd3bfab2c9b7d9b03763f24ca1"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/candidates/basics-17.article",
+          "sha256": "eacf24c0bdd8667e47380ab66b2dc8a5c6dd6cade8aab8f8e6feb90db56aea67"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/candidates/basics-2.article",
+          "sha256": "2706eb9ea75d80e18c35f9bd8769b7a5e651a06d27586c9ac0f59cb2ec1a7bbc"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/candidates/basics-3.article",
+          "sha256": "5f5e0072730435ab01e569be78c108b298ee86d87142aa5f4ab02fae272a033d"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/candidates/basics-4.article",
+          "sha256": "ef62fa52d0914c20e80c8566afd557c2172ad45b28212cf8b6fa560abb754a12"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/candidates/basics-5.article",
+          "sha256": "ead2bafc09c55f5b5f6d2b67852651cf47dc19611e31447851fe06625d3bd6cf"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/candidates/basics-6.article",
+          "sha256": "7e990b6ddf6448771e75ba45676399f5b28adeb243d381c08d8ba4ff9b9bcd28"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/candidates/basics-7.article",
+          "sha256": "e07647ef3e651b38304ea6c67a824ddd6169e4ef7148c814fb29fb8beaa10393"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/candidates/basics-8.article",
+          "sha256": "02d16b73b4a58a8a460a1598e54badf15459ed2656e0b28203b1a640cb6c4377"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/candidates/basics-9.article",
+          "sha256": "8666f4afeb5b7f2980a2ad3910ebce143255966078fb9a87f4fc361ba033f02f"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/candidates/flowcontrol-1.article",
+          "sha256": "2d6157adcb282ab48ef1d214f5e1e486d134f4f72832cd08c856484c642fa8aa"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/candidates/flowcontrol-10.article",
+          "sha256": "e60387bda49d9699cd8617ce27b6efa6d5bef65fce10f4028b44d0865fa1ba26"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/candidates/flowcontrol-11.article",
+          "sha256": "6e3064ba970548c5d852ddfad1decf4e2295a0c0870df5b50051b4de172a11cb"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/candidates/flowcontrol-12.article",
+          "sha256": "6a72ea94e29060ac3958867c95340ba8e28a77dea8738b32c7554773efd2b5b8"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/candidates/flowcontrol-13.article",
+          "sha256": "4ecdd1583c816f7c7c7b0427c82ecbd0e207e98bb567e0db23cc94dd6bb8e917"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/candidates/flowcontrol-14.article",
+          "sha256": "eacf24c0bdd8667e47380ab66b2dc8a5c6dd6cade8aab8f8e6feb90db56aea67"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/candidates/flowcontrol-2.article",
+          "sha256": "d9a954155d2cf7504e9cae8223ce7ff9236e340a7a66a36f642ffa6960d57b92"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/candidates/flowcontrol-3.article",
+          "sha256": "f5d6800c827d20bb0064ce82ddb1f2db93bbf78bed42d5ebb98c9a9a37d28bae"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/candidates/flowcontrol-4.article",
+          "sha256": "5cd3d61179b6535c000793e0e13eeb1b8a72c488091a92c60826cce2e500da51"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/candidates/flowcontrol-5.article",
+          "sha256": "1378c43226de44eefacea62a37a653cf02c1a07b79fb4498f3f4386ef55bf216"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/candidates/flowcontrol-6.article",
+          "sha256": "937d99d5d3da28927a020560ff1e0cf29af79dee4ac11e41519d0f21e183a5a3"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/candidates/flowcontrol-7.article",
+          "sha256": "4927ba7e2cd17d223c97fd10092cb5662946877b03140ab5b7f525390fa30b15"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/candidates/flowcontrol-8.article",
+          "sha256": "099b268ca08a6452764bfd7966cd66f58d442271bcf2a1fb2d785dfed6d0bd25"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/candidates/flowcontrol-9.article",
+          "sha256": "82159264b431572b9b6a280cddc6efad2db6d0edd430b17e26bbf04de3a5c21e"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/candidates/moretypes-10.article",
+          "sha256": "2cae51d5e8b03e8bf2c690b69778ba2ebd2c53d4dd6bcdffe4aa3d5bc81ed1c4"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/candidates/moretypes-11.article",
+          "sha256": "c8b80e923fe93e08c68a7f9fc384d85a7f174b1c9917a955f065bcb1a637b8fc"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/candidates/moretypes-12.article",
+          "sha256": "0595af1f5406708291545b0d6253c44af46a8a4448531165a96db4dc8e28c1e8"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/candidates/moretypes-13.article",
+          "sha256": "d7ba75b8d579bf16d7e2a30090fa8113da459c3c7bfb069065b507fb5d6e356f"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/candidates/moretypes-14.article",
+          "sha256": "d1d0a3510bfef543351f029293dc658a72a63e92875d9a12b8aba715c025af18"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/candidates/moretypes-15.article",
+          "sha256": "d1405e29a98f384b8af7d3d619149fca721336db8fd62309695ab4d5ef02e76d"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/candidates/moretypes-16.article",
+          "sha256": "23baba46390be9e5498f4c74e17d28af68407a68ef5a7615f6ba2a02b5fddf08"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/candidates/moretypes-17.article",
+          "sha256": "ecfbd986f012e802e63258c2f60a10a5892d285497a87ba17f7e81effbaf545c"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/candidates/moretypes-18.article",
+          "sha256": "dcecaec2a6fd6e00ca1a65cc08da64885f604dfc10b427d6ac1f8ff4f87d96a6"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/candidates/moretypes-19.article",
+          "sha256": "5e51ffc6325fe8505a3e58f7251f881e1a73a45bebc6195903fe0725ba5e989f"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/candidates/moretypes-2.article",
+          "sha256": "5c1525f493bc0be328f02b2b5b0fb7fa3e716cffa8c68573a3cba4c7773e7434"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/candidates/moretypes-20.article",
+          "sha256": "2e4ad28ab70ef152548144e841f6180ad181ac3a0776ad3018cf6d31b504dff0"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/candidates/moretypes-21.article",
+          "sha256": "e9965362b1fbd6b09306314e67fd1431681d5198ed33085df2c537bcdc403531"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/candidates/moretypes-22.article",
+          "sha256": "6be7ac68842fe36dc13a2de84a5c427a35793ac914b69decdc901d6931cc4ddb"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/candidates/moretypes-23.article",
+          "sha256": "1fbe2de312d87c86a7f06436b845ca68346f8fffd2661cb5293af9fb25b495c2"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/candidates/moretypes-24.article",
+          "sha256": "45c1a9f5d14e981349602630462f1472ef74acac2822d11236b4f3a8263ed440"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/candidates/moretypes-3.article",
+          "sha256": "aba03bfc581a658b13c5fe23ea651762702b5dcb1bde4379c86cf0303af35272"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/candidates/moretypes-4.article",
+          "sha256": "62cc02c102572fa82f6ef2b27bf9c7c02aa6208bc8be9921b4e2509a49447aac"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/candidates/moretypes-5.article",
+          "sha256": "75540b13edcbfbd253d04f1a4e6cf9ca1b5dbaf982b746194675d3c73f5b7fc8"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/candidates/moretypes-6.article",
+          "sha256": "5b360a8d188c6c8a1b219e5f4ac58baccdbf87262ada36d0fe901dceccf5334a"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/candidates/moretypes-8.article",
+          "sha256": "a1b59b42cf242cd2d125d8913ebb743217c5a29aa4d568a253ce9630f3131a55"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/candidates/moretypes-9.article",
+          "sha256": "49764b61b228f3fc73ede70b8bf7b67bf49b0773da309566eec02e3e9f0bb1d9"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/candidates/welcome-1.article",
+          "sha256": "992a65e2f198d7971f4fa4099557124303600e72b0281c78947c4dbf47c3cd44"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/candidates/welcome-2.article",
+          "sha256": "c9fd207f55ccd5a676a62215476e634a8cac0a3963a731b2bad2252df1fabb57"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/candidates/welcome-3.article",
+          "sha256": "b15bcaec5bd873ffe0ee0bf8a6bb255b7eb718eeeedcd9e710d2ee62aee50ee4"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/candidates/welcome-4.article",
+          "sha256": "d3d0c423081cf72307ecbd2068bdde823ee55e47e825890a1503fbb2000942f9"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/candidates/welcome-5.article",
+          "sha256": "e8d291857664ead6469d4f02b27249a528a38a222f1f6da9674a34fe1161a232"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/validation/basics-1.json",
+          "sha256": "3e9f6e0066847f23de2945680da9ad0422b610e44523fee0db965f57aaa047c5"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/validation/basics-10.json",
+          "sha256": "23aadea37e115b3e8a974b48092a424c3fe652739a53125aaf5a7bbe80816704"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/validation/basics-11.json",
+          "sha256": "8e3d10169bb0e20ac1e5d59cad7593fab768a8fc6b81412e52583af400a88d73"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/validation/basics-12.json",
+          "sha256": "e840c779c56c241c241ed75debbcf86be1211b20f30fa5f28b8d6e7a486dbdf1"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/validation/basics-13.json",
+          "sha256": "8bc45f9ca3ab458144fcdf7bbd10ae16cf872a1f697ce9928c28d9cf106b314c"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/validation/basics-14.json",
+          "sha256": "a9562af35f3d3f4c085a77de714d97916d984285b2cfa9a1436b7e8aaf608cf1"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/validation/basics-15.json",
+          "sha256": "99e26fb44ce4492e07c158c660ddbabfcdf616809ef5bc4f7112f6aef45c9173"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/validation/basics-16.json",
+          "sha256": "6a923d85a4e92803979e90fb22a45a5658a67c358bb2f7e166038ef849b15289"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/validation/basics-17.json",
+          "sha256": "9809497713dda21bfd6c3a5a583b4cfd200d79af20ed7addca98e5c243f2f83b"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/validation/basics-2.json",
+          "sha256": "119188da29777e4cd735b8117e7794acecfaf47fbb4b4a1c9d2f46336e6063be"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/validation/basics-3.json",
+          "sha256": "937455ea202b8921cbb2bdbe6133de8b75f4115307b49406ad78f0664d59c02a"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/validation/basics-4.json",
+          "sha256": "96bd07d7214c7761fc583f2c729d9b5dd5c29086b1581c9ce06c581c80d172fd"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/validation/basics-5.json",
+          "sha256": "b226648177f28159611c9c4486eaabe50aa6849736dfcc5e28a0db0712152421"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/validation/basics-6.json",
+          "sha256": "43586aef577456220f443cee2b577862ab48c370cb88e3014e4187136f84e3d2"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/validation/basics-7.json",
+          "sha256": "d5c5bb1b9e949a71e7ea9e01cc27fe7934a3fa6f4eae657ec58641b89f9ab8df"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/validation/basics-8.json",
+          "sha256": "877e7af71cfdb22bb00a1b008bbd5449aac19dcc29f98042eb2c0df3dce89971"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/validation/basics-9.json",
+          "sha256": "24b685b1f7d571459ec81417d3f78f7c15a19348ac38a6c4a45e190535cf008d"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/validation/flowcontrol-1.json",
+          "sha256": "ba0a078a1ba72a629c57a091dd8bf72361330457ca7672b4b0966c90afe2818d"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/validation/flowcontrol-10.json",
+          "sha256": "baf9c453146236c00f7a1af07b455777dd3c469bc6a5d004159d3b60df3711fd"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/validation/flowcontrol-11.json",
+          "sha256": "11f2f70a300258dff5c90dfc383ede6d110317f07d9065c3d650e9b55b41713b"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/validation/flowcontrol-12.json",
+          "sha256": "a3598a41783b8724081305f797f92754974cd8655223c9654dd116b49b590e2a"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/validation/flowcontrol-13.json",
+          "sha256": "330f8089002da9bf16304c779c35c197bbde8999c6444d26995637cf1ca70853"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/validation/flowcontrol-14.json",
+          "sha256": "094e518bcf9ca7144fc0c3644eaa23f544035411472ff898b2b9b3dc6e1380f3"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/validation/flowcontrol-2.json",
+          "sha256": "89181fe31a9f6462c1677131e0d399ccef6fc022f87d53ee7537ebc8e6130298"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/validation/flowcontrol-3.json",
+          "sha256": "038a4061dc1e7be801477be920b3a806973d43a1afb11cd270f7260607610498"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/validation/flowcontrol-4.json",
+          "sha256": "2a9d9326f0e37a6c10cbe1200ae0d78d322fd604dd075e60c80ba29d8f90d653"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/validation/flowcontrol-5.json",
+          "sha256": "2b1be3dfea665577d1937b85ad83f55ca16ff3571ae4ff8ea1b8da778b2c4f89"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/validation/flowcontrol-6.json",
+          "sha256": "dd272a0ae258386dfa390f825dcf3a1d1545a992c835b95903e06fcdbbe181a2"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/validation/flowcontrol-7.json",
+          "sha256": "7ec12d773a234a407ad3f200bdd355d34549624f59e3f730059cf56f2fdd5cb4"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/validation/flowcontrol-8.json",
+          "sha256": "91373dfd79dc45a9fbbe11cde0dfed9d1098b44f3a2436faa24184eb2b6acc17"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/validation/flowcontrol-9.json",
+          "sha256": "b0b23f329582f7d33fc16c41c8255a724fc80e2e4881f9295c2d87d955e973c2"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/validation/moretypes-10.json",
+          "sha256": "cec1fb2f31409901b07428549a7d15eb3935f75425af59f54edc27384cb349d9"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/validation/moretypes-11.json",
+          "sha256": "3b01ee922107211a8c50dd9db69fc50ae59a18aef64665cdd6f83da90d1c85f1"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/validation/moretypes-12.json",
+          "sha256": "7ed79ce602a9b1b60667a2325592fc3985b2b752c7464d51db1460b96fc74ae4"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/validation/moretypes-13.json",
+          "sha256": "0d3c6a145df420c0a63db95ecc43f99d0f3bb287e149ccd0aa1d44b224786409"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/validation/moretypes-14.json",
+          "sha256": "de25a50dc65a3d2163a8f28b4e82b55e34ea36b565eb7c06a6613869bb3fc700"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/validation/moretypes-15.json",
+          "sha256": "1c8ca106971bb450990a105e877ce485ab4d32c460f807b3dd0b69d1965d0e17"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/validation/moretypes-16.json",
+          "sha256": "48b6a4f7ca41236a9a8cb2ac4068fdc7fda3b8f28414b1b405278bbecb000c8e"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/validation/moretypes-17.json",
+          "sha256": "468d0e05b510bcb84a6a5556f23d352c4278f0014d12ab64a52b45b703888bac"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/validation/moretypes-18.json",
+          "sha256": "699fd7ab91e5fed596119f64e631ea4bc4e6d90540ae46908070a6af9cf1cebf"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/validation/moretypes-19.json",
+          "sha256": "ab1538a4fbe84758e39af89bd98501bc94b6f5ae7092734dfbaa9564c76a559d"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/validation/moretypes-2.json",
+          "sha256": "0f0c572569e199802013e0a0d59834ebcc37d80a02b4f56467b83cef596aac7d"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/validation/moretypes-20.json",
+          "sha256": "dcde41f257a56bd46afa8201c78cb059faf9df8b54850fc4331fdc7dc1366217"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/validation/moretypes-21.json",
+          "sha256": "bbb8a7c33637af0ee3d39672b037108b38a9ba078d362e847cf014420eeaf317"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/validation/moretypes-22.json",
+          "sha256": "a341532118a2a51f8e25855f9e4db5f47298a9e09af6b13d138f0ccbf182fd24"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/validation/moretypes-23.json",
+          "sha256": "54b7b871cd3483e2a227a75292f0bc476a9c5eaa957be534adf067e41ae221c8"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/validation/moretypes-24.json",
+          "sha256": "8d51d3ad20c89f3ad59b70d99193b9c7dfe5ad1e68372754eeaa6ab39cad0b65"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/validation/moretypes-3.json",
+          "sha256": "06888b3289d5b691fe6e0fd4d4b69981419a1091f2a88028049f8be1a5b64a90"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/validation/moretypes-4.json",
+          "sha256": "036d746ad82c6229a1fca87095bbfa0571094958ef2a4f31963365df27f25f31"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/validation/moretypes-5.json",
+          "sha256": "0caa39a160fe7b6004db84d376d1942972dbad5484ac3fbb8ac51e9af0bd1ac1"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/validation/moretypes-6.json",
+          "sha256": "3f141da57ac8f49ebcd23675caf7f1d76b18f6a27476ebd3ea8fe4e5f4691cb4"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/validation/moretypes-8.json",
+          "sha256": "6ac0784206290dc39b88804bf3991809a096a55bdb3a6903c902941236892262"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/validation/moretypes-9.json",
+          "sha256": "079aaa27ed42197d7369fbccc93988fded2f1a913e942a94246f6eca6946f2c7"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/validation/welcome-1.json",
+          "sha256": "f41f626cb826d42c9c4c2686e9cd0294986bc99f08c2fd0256ca24bc504dd063"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/validation/welcome-2.json",
+          "sha256": "7cd0407b63050d08b02523d554700e66aae003986edc70d38b2bede112475dab"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/validation/welcome-3.json",
+          "sha256": "cad683daf7765c2db8fcf32b2a9a05dcf8ab4e75039dcbfbddf85e7d228149c3"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/validation/welcome-4.json",
+          "sha256": "0503728155d8a3175bbf174b5654e2bd21a0f007e1127381d4a7fca2951e66b7"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-001/validation/welcome-5.json",
+          "sha256": "02d109dc72d1b3bc766ab9ee6f1c4735a120c55afa5ebd7161ec998f0e475885"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/candidates/concurrency-1.article",
+          "sha256": "5ed7c88d59ace904f174d606282637ca2a79fb07396bc7fb094c355a2cae2896"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/candidates/concurrency-10.article",
+          "sha256": "4e1b8f5d86aa3c9a383e8390680671f2d13bf4b633c811d43c58fdbb775953e3"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/candidates/concurrency-11.article",
+          "sha256": "7d5f1da4e6a6c35f5c9eff4f6bec16e160f0cd33989befd81beb1d759596fe7b"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/candidates/concurrency-2.article",
+          "sha256": "5d7c37868d3b82e99e5172b9d6a896a95c643ace51f6e1f4d110b989a1737c98"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/candidates/concurrency-3.article",
+          "sha256": "36cea799380962e00dc37a04f06f78c43671b5a0563fd3861dc6c218d3f51c81"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/candidates/concurrency-4.article",
+          "sha256": "474c7adccbd37a32ab19348e9906f48cca8c3b537b6224fff0b225347979e2ce"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/candidates/concurrency-5.article",
+          "sha256": "2264dc6b16df457f0d712fade01eae91f2820d6e3bb1807a214eeb6af260aab3"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/candidates/concurrency-6.article",
+          "sha256": "475770be2b40e15a06147aefd100146c5118222a32c074ff24069464266b10c1"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/candidates/concurrency-7.article",
+          "sha256": "fcba7d86970941c37283599c2a256973d32bdcf7a2f2018438b23c33920607e8"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/candidates/concurrency-8.article",
+          "sha256": "55fe6035678f03925f50c5d9f11dac8e5ab0f6591f20dff2a1a02368ac83af32"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/candidates/concurrency-9.article",
+          "sha256": "21ae4ceab7dbf08cf8bd8d16272e86464963c41cf71602040de0b921d2bf3c05"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/candidates/generics-1.article",
+          "sha256": "2eee446fb13c3ec01aa399fd99fbb31dae103716fd9b407ec610294ef7431810"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/candidates/generics-2.article",
+          "sha256": "0d4aa99d02dd62dcde06781e3631904968ac562b6c6ec8b24718be69e9d6e384"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/candidates/generics-3.article",
+          "sha256": "eacf24c0bdd8667e47380ab66b2dc8a5c6dd6cade8aab8f8e6feb90db56aea67"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/candidates/methods-1.article",
+          "sha256": "4dec4dfa1c1a297f69174a94cb165c049a87e4fa6386109e73a3a1623ad057ea"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/candidates/methods-10.article",
+          "sha256": "11edfab5e4e096e6ed311d5718bf4ef87957da9d79bff1a7430952ff24afdc9c"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/candidates/methods-11.article",
+          "sha256": "5c1578986358ff09b81d598f1bc2c8ecceceb850b0902a7638a0d8b5bd92e6a9"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/candidates/methods-12.article",
+          "sha256": "4a75221b9439c87028aab657019376550e14208724a417fcc30cfca1b3242e8a"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/candidates/methods-13.article",
+          "sha256": "018ab474c06f8d40788257596408cfa1613f4c846f0235158f1ad77e75814240"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/candidates/methods-14.article",
+          "sha256": "e64a0ebf8a367a6b3d37176c61c9cd7f3c9790085b1ef26f7f873c2f2d318962"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/candidates/methods-17.article",
+          "sha256": "6ad6cf1bdf491ab6f1815bfc24e3a154f9479e780c613642d02e40d118f8e3c1"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/candidates/methods-18.article",
+          "sha256": "61479b487e84c53a83a5f49e6f0560b17553eef390b82db38893e8c6a3872ae0"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/candidates/methods-19.article",
+          "sha256": "ca70daf309f87260ca518b85dadff3cec71869fe288be8b5db55dcae3ecafd86"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/candidates/methods-2.article",
+          "sha256": "ea75340084e9c6202968bdfac72eb041b11d21f07954940ab7bbc35d5ab4b2d1"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/candidates/methods-20.article",
+          "sha256": "463f91947e04dd1d34dbd21df10929b804a01c5a6f3f1f90046e6d3b1d4c5f11"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/candidates/methods-21.article",
+          "sha256": "8b13e4360f292691eb9873f0722614f555d0ca19f3b24f16b862c6c915e8ba3e"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/candidates/methods-22.article",
+          "sha256": "e240380f631f75fa230105bdc4e3fcf34bf6c7362184d4921420683c72766661"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/candidates/methods-23.article",
+          "sha256": "61ae25dde9cb224e32d0df04f05aa7489851ef54067f22fadbc358e8cb58342d"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/candidates/methods-24.article",
+          "sha256": "8f7c79cd87dcac354ceaf14be2953d9ccbf1ac6980f531228592e82c79812b86"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/candidates/methods-25.article",
+          "sha256": "46c579e5725cc4d6dd23d55478ea3fbe0005329abdab2d0c774d38685f51a62f"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/candidates/methods-26.article",
+          "sha256": "eacf24c0bdd8667e47380ab66b2dc8a5c6dd6cade8aab8f8e6feb90db56aea67"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/candidates/methods-5.article",
+          "sha256": "a1ebc4509a0f3db831fa01c23f6bf57c1d18dd44186538bcd7a20483de7acbaa"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/candidates/methods-6.article",
+          "sha256": "ec5730e7d92f3759b65f0be4437dad9d6c9cecfb6e6ff7cfb84e97961440b50f"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/candidates/methods-7.article",
+          "sha256": "f60c91d22825280f50a8bf6965930fc1f3ac99f7adefdcbed6f17bf94422e1bf"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/candidates/methods-8.article",
+          "sha256": "95e6978e724248ec1b633df83adf080b85b13a2e899822af1782d4785431b58f"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/candidates/moretypes-25.article",
+          "sha256": "87d62ac111304a7430c8b3ab35249031f555843a1bf3a1f6b5d648c20ad51f04"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/candidates/moretypes-26.article",
+          "sha256": "b49f2760b9adda4b963d1e01e370ebbf331b3d66c8b22544597a3c2ea23bb8b2"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/candidates/moretypes-27.article",
+          "sha256": "eacf24c0bdd8667e47380ab66b2dc8a5c6dd6cade8aab8f8e6feb90db56aea67"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/validation/concurrency-1.json",
+          "sha256": "d9f130346f92b4466ee1c8390d3c9bf0e9d794fb7670d4f39f00bff8386a60b4"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/validation/concurrency-10.json",
+          "sha256": "781afcc12a313e5c82edd74d65282921194594d719475828c8991ba5e9729300"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/validation/concurrency-11.json",
+          "sha256": "f61c960d6383101a44af7d77c1f2cfed98366ff4f793ce67c9206e49b9766c51"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/validation/concurrency-2.json",
+          "sha256": "f3175cd52c1aea994a81896fc71c9a5e57a47777bde03be0c16e7aa59eff07ef"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/validation/concurrency-3.json",
+          "sha256": "56084c2f3c0640e23ca0362b01f0a3251cc5168176203d2c325f35f19a157530"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/validation/concurrency-4.json",
+          "sha256": "32f81d23c07a472e888eaf7a2dce45c21fe7c5c1c222595fe769445c8ccd3e21"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/validation/concurrency-5.json",
+          "sha256": "1a4b5bea4d6d9b88bec24814900a73e496ff8c9a2ed42dd9874c2799b5fc158e"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/validation/concurrency-6.json",
+          "sha256": "4ecaf1a7c23698f1799a07ff057d1fb8440a1b6c0e1d74dd6c883e3b5d99fecb"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/validation/concurrency-7.json",
+          "sha256": "5f10cce3f2ffb6a3a487d53bf12b1c994236eaf26d1d4224a119435ada7e68a8"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/validation/concurrency-8.json",
+          "sha256": "7e05f06d2082b6420293556bed11b983a6c4cbd62f5130b0c5b3c959a6cd2855"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/validation/concurrency-9.json",
+          "sha256": "391a7ad9fc4ea0627845be2e91a4d0b992c333dcfc629aacb84fb30f9d300b73"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/validation/generics-1.json",
+          "sha256": "690c9f1a078b2427c89a400eb8b581550fd00036441adb5d9886dec3f741a221"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/validation/generics-2.json",
+          "sha256": "9a290f14a870b96cc927784b17c0ed4bbc97f98ffa8a91e299fbd7a82e614322"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/validation/generics-3.json",
+          "sha256": "32684b8f2018858b6d6c897909548cddb675cef1c91835a350c5fe7706e9df9f"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/validation/methods-1.json",
+          "sha256": "93bf8da85578174c71b29f8b1d5190cc8f4730314e8f59314320ae34ed34af72"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/validation/methods-10.json",
+          "sha256": "7eca30d6dac9d162baec70eb62fa89145f68256c5edc96e2a435c65690ca5b00"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/validation/methods-11.json",
+          "sha256": "76e48f07e1c0cb6adeac083936eac5d000536c8e854b886dbf27a2a1b8f07b67"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/validation/methods-12.json",
+          "sha256": "4f154eb93904caa832a700828fae18f1d62bfed7378550de2c667ec917fb1190"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/validation/methods-13.json",
+          "sha256": "c881336a3984e7e2b0fd572a495edad108c4a92fd83d5fbcfd4dc40fec07fd0c"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/validation/methods-14.json",
+          "sha256": "622ae8ab02fdd54f97be6b5648ac5e75527d954aa6ae10a03e8b93bf75aa190f"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/validation/methods-17.json",
+          "sha256": "db3ec414bb69d3b77f6eb19a9ce42d1308bc9daa385a81a4a61202374b91c2be"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/validation/methods-18.json",
+          "sha256": "a88c700d1d7a5a6a17274f07f2a94de3b4550740335adc7b1f6fafe3f7e1170f"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/validation/methods-19.json",
+          "sha256": "75a4eb1b89ad614cc47682dafdb9c260bd940ba308db17029f74e0138bfca09c"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/validation/methods-2.json",
+          "sha256": "43ca10f3ef0e4b6e0d303fcc6c767e5d13ec1718a001b2552b9b49456fca77fb"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/validation/methods-20.json",
+          "sha256": "cbc9c29b99378a0f0acc84695e000956fcc0a571926fd4345cf573bdb1df949b"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/validation/methods-21.json",
+          "sha256": "7120998626428682335aabf771433f41fd3ca2c4f4660984656a1871964c02f8"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/validation/methods-22.json",
+          "sha256": "f5c18f8498e1aef8291c66edfa5cd32ba61f02077fe7d164b35777f0690f521a"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/validation/methods-23.json",
+          "sha256": "d57f1344d289d6f2d3a41f8db62310048c10bf3c6737af90f1d2c04b8726bbf2"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/validation/methods-24.json",
+          "sha256": "054f9520885910bec1ec65ccbda4a4eb9e2d67ecc70ee5fa16d3d2b54c7a69a7"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/validation/methods-25.json",
+          "sha256": "6943a80d5d87311ae4eb284735a0c644d10e67b21792fd26a45b11bdadc827e0"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/validation/methods-26.json",
+          "sha256": "5d9cef85f2ff303c6cfcb1f28f63b06fb4376c280ed55e8b13ce3105efd9e9d2"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/validation/methods-5.json",
+          "sha256": "c8e033c2d803cab8aaf590f489c255eb493da7b25ca39e90089e967a8ec82991"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/validation/methods-6.json",
+          "sha256": "341bb78c83c06825e01bc72bf42d7e8385a0aeac92ad637bb8266a4b13efb0a1"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/validation/methods-7.json",
+          "sha256": "caaf7a118222214916f79899491b412c28a6d6a2c655e567193ff1b940794c92"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/validation/methods-8.json",
+          "sha256": "49d2ba076150e625aae3ddf395b27a3f44e95e14d9349707940b7e5c330293ff"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/validation/moretypes-25.json",
+          "sha256": "3d9323a287ddb6e03184be2e59aa3024a3873a14b114d32955dd8b88195c1a50"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/validation/moretypes-26.json",
+          "sha256": "ee9fd7acd69a19d98dc3f5711f4446a1920acaf1a3be6981f0feb579d3419dbc"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-002/validation/moretypes-27.json",
+          "sha256": "07412e31860a7dfd8173fa1e3a00c59763e517b0836943cd68be768de74f8bdf"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-003/candidates/basics-type-inference.go",
+          "sha256": "81de926782814ff4ee1f19cc1e3accf2243959d095a1fea0f3d7218fb2cbb105"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-003/candidates/concurrency-channels.go",
+          "sha256": "2db4d19d1c3a1ff490b202eb1c1463079e61c7db6c361fc3010d0392948b022e"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-003/candidates/concurrency-exercise-equivalent-binary-trees.go",
+          "sha256": "601b411d2df8d5d568e4f1eb93c1c638fb865a15d6f7439fabab79ffe639c447"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-003/candidates/concurrency-exercise-web-crawler.go",
+          "sha256": "c61b07a61ac88e4f51f5fcd534719a93cd7f791ed9eb53ddb2963838c8808f5a"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-003/candidates/concurrency-mutex-counter.go",
+          "sha256": "2fec646eceb4233f7b2c186c8a2898ead291e51a453c20ad4f3dab5cb98f9b11"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-003/candidates/flowcontrol-if-and-else.go",
+          "sha256": "0cdc1c2a8c77f71638d3183d1d0fd5a4fba73f1852ad7c996e02784ff91e109a"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-003/candidates/generics-index.go",
+          "sha256": "5bd49cc71996e4a601a7311cee3253e44df1c50a6f4088b878f50789d9af3a53"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-003/candidates/generics-list.go",
+          "sha256": "b5201fc9003934b1f2c95d86defe1d517d2db00d45cfbd059582503f1ba06943"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-003/candidates/methods-exercise-reader.go",
+          "sha256": "42debb637747c8f44bc2a4d936741036fe9ef0cc6dc8d7f0898b25b146e3f45c"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-003/candidates/methods-exercise-stringer.go",
+          "sha256": "3a24c4d2a8a634f470474d225266a3ee77d1222221209a5dbc646eecacfe56e9"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-003/candidates/methods-interfaces-are-satisfied-implicitly.go",
+          "sha256": "d117c3ffa314941817bb19e1dbacb2a7398dcf480e5a3885c88e0ca2dd27189c"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-003/candidates/methods-interfaces.go",
+          "sha256": "e81f2cece3318b0651a5f78b1a801264d3f4b3a1f6a008db5d18749aa5ae4068"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-003/candidates/moretypes-append.go",
+          "sha256": "5cca0d01bca2ab4093d37723828125d960a95b61759dacc572eb1c6111607600"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-003/candidates/moretypes-exercise-fibonacci-closure.go",
+          "sha256": "a6606722f7300ad71177f0b2d9765439567567e0aea0e51eb62e6a7ea9c182c9"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-003/candidates/moretypes-pointers.go",
+          "sha256": "15d808bbc65c9cf25f232b8e18da0fa7a3f57338e15d0002694aec9baab79567"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-003/candidates/moretypes-slice-len-cap.go",
+          "sha256": "3483812e0876123252f8b5a8c245991dddba5e634f7620da45e544e95f652651"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-003/candidates/moretypes-slices-of-slice.go",
+          "sha256": "f2cc2e4af143bdd0ad66a9a0284042b9bd1ae04331a865fe973a19ba80d7f068"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-003/candidates/moretypes-struct-literals.go",
+          "sha256": "d5ff3e4d0ac0e1e19c2022e59b42aeb5c03a6a441bc9a3bfc5895872b563aaf6"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-003/validation/basics-type-inference.json",
+          "sha256": "fbedc5bd120959111f9f5d29c323a384a5bd5afbe1130d097da15f56340e7bb2"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-003/validation/concurrency-channels.json",
+          "sha256": "b8040a386733ac8b3259828505c5cd545ede41f31b515df8c9f3774dc0f5e648"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-003/validation/concurrency-exercise-equivalent-binary-trees.json",
+          "sha256": "1e09b6e65924eec51a31c87bfa1222158e3efc95121f2a534f17d074e9ce423d"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-003/validation/concurrency-exercise-web-crawler.json",
+          "sha256": "2656b88e8092609abe8c6862752f8f2783c97d3aa2a802460495b4fc5b593974"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-003/validation/concurrency-mutex-counter.json",
+          "sha256": "cbed5a1534f0bec695153405cbff9f00409780854225b7a7258616657cdeea91"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-003/validation/flowcontrol-if-and-else.json",
+          "sha256": "d039f0ce0194f1d5890b9e3943ddc7e543de5e73a92b210db5b85cd8757d8753"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-003/validation/generics-index.json",
+          "sha256": "8b784e6fc71ef85e587e4a36ab1630f89c90d882fc335dd1091665c376a43060"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-003/validation/generics-list.json",
+          "sha256": "ffe1e25061ca667a609d7d1fe11aac91b78bcbf89d088b16f2e6d8678b437f30"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-003/validation/methods-exercise-reader.json",
+          "sha256": "bd40ef03207b7cac2752a6c0203b630ce34ccc89898f3f3438d4f8665c81e085"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-003/validation/methods-exercise-stringer.json",
+          "sha256": "b0426a648114e5daa6ced6e75b69f15116159c1340b1c21f85ee2c5ee549a4cf"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-003/validation/methods-interfaces-are-satisfied-implicitly.json",
+          "sha256": "7504fb710f56029c4f94aab0e6c888b6012b126d6f7d2ac4b069b11b166a6fee"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-003/validation/methods-interfaces.json",
+          "sha256": "c8f14b59e0596bdb25def9e66eacfa5625cf4007d22ef0fd5519833775e388c6"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-003/validation/moretypes-append.json",
+          "sha256": "ed5df29af8f647b5301c003efb3f95c0e85525ba0ee277b0fc367c9a9d429796"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-003/validation/moretypes-exercise-fibonacci-closure.json",
+          "sha256": "cc2480790c1ef643391bd5648e477a105fc849c72739b3fef6c51af254a18d1b"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-003/validation/moretypes-pointers.json",
+          "sha256": "abef4270e85fb9bdc2a5eb32c2beb481c1ab3ccd61edef98b7a2097b6ca2a81a"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-003/validation/moretypes-slice-len-cap.json",
+          "sha256": "5992d382d6ce469e25c26418c891b38dd398239080b20167c93ecff7923afc36"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-003/validation/moretypes-slices-of-slice.json",
+          "sha256": "9387cf5f74458a3d5b2c9f6487cd9b652e1edfd55fc02e8411867bd82d508e5c"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-003/validation/moretypes-struct-literals.json",
+          "sha256": "35dc08e99cf02b4821bf904ff66b9dfd4e374ca51dde2bb4c68d5a575d2289e4"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-004/candidates/methods-15.article",
+          "sha256": "59e84afe7e07ed8f85bd741cff3afe5c69b3d9a61e1c8f133942b317152a0001"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-004/candidates/methods-16.article",
+          "sha256": "70b06a806ecd14a6bb69492fb716572b16269ad17aa750fcb6014432888e666b"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-004/candidates/methods-3.article",
+          "sha256": "ad6b070d08a8cc1b8e42f258b6dcd8e41de51a3dd61b4b67026450d182b21904"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-004/candidates/methods-4.article",
+          "sha256": "ac8d7626d6e20c3c9fefc01d9866fb1c7009f469dc81af283e10efbc99bd27df"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-004/candidates/methods-9.article",
+          "sha256": "38ef8e3cfee04289e285f999f763661471dc0f4e56ab5929ab1c632e872ddae0"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-004/candidates/moretypes-1.article",
+          "sha256": "7358b8067da548d8db5d2c9418c51ea32e440121c61daf81755d2c12b1b1f952"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-004/candidates/moretypes-7.article",
+          "sha256": "abfbfc4eecfe37169ca6156aebcff9b6e272b34a81bf0dca38d6a58dd033229f"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-004/validation/methods-15.json",
+          "sha256": "786551bf3d10e095bfd326ed4e9661d73369e086bd68c1ef2cb2edbfed340308"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-004/validation/methods-16.json",
+          "sha256": "56979d468f228d942cc457aa054fd26b7e58adf38f23b1cd0757e8e0a537349f"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-004/validation/methods-3.json",
+          "sha256": "8a178db78b37561468d32f395e7a2b55af40a7069d1eb25f06837fc2c094d9db"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-004/validation/methods-4.json",
+          "sha256": "37951444fb2bf8ef54d411c9ffb8a265c4dd7666f97e25807ecab8c5cd2b1e9e"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-004/validation/methods-9.json",
+          "sha256": "3f211165c43586fc5a49d765fb2641237ee2abef62fcb7f27e3844bbb3ec3682"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-004/validation/moretypes-1.json",
+          "sha256": "8dba21840bbd5d372700a040d8b6ab726466518407de6c06d752a9634e357eb5"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-004/validation/moretypes-7.json",
+          "sha256": "e0e7fb73f2789fa8ddbd79075a6eb9e5019599ba74d298aec648157124fba05a"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-005/candidates/basics-numeric-constants.go",
+          "sha256": "6234e3804e08d9e8f347c33bd77d1c2e5f958937c4b7ad5f57f3be2d4ca1bbb2"
+        },
+        {
+          "path": "data/retranslation-runs/zh-SG/codex-zh-SG-005/validation/basics-numeric-constants.json",
+          "sha256": "f4b6a2422b7028d05609e3fbbda8a19319e510074eafcdc7e7dab2dbe4a93148"
+        },
+        {
+          "path": "internal/tour/ui/zh-SG.json",
+          "sha256": "18c9045ea4b211bff1d869e391abb0f30195ed34e56d66ba1cc14839d22c1f20"
+        },
+        {
+          "path": "locales/zh-SG/article-metadata.json",
+          "sha256": "3683cb197cba049157969747a9703b5271795cbfb864071fc7118b457283f1c3"
+        },
+        {
+          "path": "locales/zh-SG/candidates/basics-1.article",
+          "sha256": "9ae587fb346b94f76662af5dc03b982af2e052db390a1cc0d93483d84e33eb8c"
+        },
+        {
+          "path": "locales/zh-SG/candidates/basics-10.article",
+          "sha256": "86f56168d9e2d8e347c597dc603a81decb766cae5eca6d2709ebc51e8a79d8d0"
+        },
+        {
+          "path": "locales/zh-SG/candidates/basics-11.article",
+          "sha256": "9cfe08d5d9b1dc1a949e73a64f859e75a21534ebf1580ab7e6bc05afbe887b32"
+        },
+        {
+          "path": "locales/zh-SG/candidates/basics-12.article",
+          "sha256": "c8935338a6d121238c510e4ab97fa3145a48f32f44a82089d11d1f99bb468256"
+        },
+        {
+          "path": "locales/zh-SG/candidates/basics-13.article",
+          "sha256": "228aa524d59887f812ddd2dbd8e50e378977b95ee32492ae5d7d69122b553db0"
+        },
+        {
+          "path": "locales/zh-SG/candidates/basics-14.article",
+          "sha256": "1548050817e5739e1a67b9e5cb75b35c3662ce587dcbfdbe9b5a0dfb58fb5d51"
+        },
+        {
+          "path": "locales/zh-SG/candidates/basics-15.article",
+          "sha256": "54b9b60c0f763aaebe2cd39151ee73290dbd395397f54f5672714c884348f51d"
+        },
+        {
+          "path": "locales/zh-SG/candidates/basics-16.article",
+          "sha256": "176d1f7d5034377ac03407a2cf4ba401e69b65bd3bfab2c9b7d9b03763f24ca1"
+        },
+        {
+          "path": "locales/zh-SG/candidates/basics-17.article",
+          "sha256": "eacf24c0bdd8667e47380ab66b2dc8a5c6dd6cade8aab8f8e6feb90db56aea67"
+        },
+        {
+          "path": "locales/zh-SG/candidates/basics-2.article",
+          "sha256": "2706eb9ea75d80e18c35f9bd8769b7a5e651a06d27586c9ac0f59cb2ec1a7bbc"
+        },
+        {
+          "path": "locales/zh-SG/candidates/basics-3.article",
+          "sha256": "5f5e0072730435ab01e569be78c108b298ee86d87142aa5f4ab02fae272a033d"
+        },
+        {
+          "path": "locales/zh-SG/candidates/basics-4.article",
+          "sha256": "ef62fa52d0914c20e80c8566afd557c2172ad45b28212cf8b6fa560abb754a12"
+        },
+        {
+          "path": "locales/zh-SG/candidates/basics-5.article",
+          "sha256": "ead2bafc09c55f5b5f6d2b67852651cf47dc19611e31447851fe06625d3bd6cf"
+        },
+        {
+          "path": "locales/zh-SG/candidates/basics-6.article",
+          "sha256": "7e990b6ddf6448771e75ba45676399f5b28adeb243d381c08d8ba4ff9b9bcd28"
+        },
+        {
+          "path": "locales/zh-SG/candidates/basics-7.article",
+          "sha256": "e07647ef3e651b38304ea6c67a824ddd6169e4ef7148c814fb29fb8beaa10393"
+        },
+        {
+          "path": "locales/zh-SG/candidates/basics-8.article",
+          "sha256": "02d16b73b4a58a8a460a1598e54badf15459ed2656e0b28203b1a640cb6c4377"
+        },
+        {
+          "path": "locales/zh-SG/candidates/basics-9.article",
+          "sha256": "8666f4afeb5b7f2980a2ad3910ebce143255966078fb9a87f4fc361ba033f02f"
+        },
+        {
+          "path": "locales/zh-SG/candidates/basics-numeric-constants.go",
+          "sha256": "6234e3804e08d9e8f347c33bd77d1c2e5f958937c4b7ad5f57f3be2d4ca1bbb2"
+        },
+        {
+          "path": "locales/zh-SG/candidates/basics-type-inference.go",
+          "sha256": "81de926782814ff4ee1f19cc1e3accf2243959d095a1fea0f3d7218fb2cbb105"
+        },
+        {
+          "path": "locales/zh-SG/candidates/concurrency-1.article",
+          "sha256": "5ed7c88d59ace904f174d606282637ca2a79fb07396bc7fb094c355a2cae2896"
+        },
+        {
+          "path": "locales/zh-SG/candidates/concurrency-10.article",
+          "sha256": "4e1b8f5d86aa3c9a383e8390680671f2d13bf4b633c811d43c58fdbb775953e3"
+        },
+        {
+          "path": "locales/zh-SG/candidates/concurrency-11.article",
+          "sha256": "7d5f1da4e6a6c35f5c9eff4f6bec16e160f0cd33989befd81beb1d759596fe7b"
+        },
+        {
+          "path": "locales/zh-SG/candidates/concurrency-2.article",
+          "sha256": "5d7c37868d3b82e99e5172b9d6a896a95c643ace51f6e1f4d110b989a1737c98"
+        },
+        {
+          "path": "locales/zh-SG/candidates/concurrency-3.article",
+          "sha256": "36cea799380962e00dc37a04f06f78c43671b5a0563fd3861dc6c218d3f51c81"
+        },
+        {
+          "path": "locales/zh-SG/candidates/concurrency-4.article",
+          "sha256": "474c7adccbd37a32ab19348e9906f48cca8c3b537b6224fff0b225347979e2ce"
+        },
+        {
+          "path": "locales/zh-SG/candidates/concurrency-5.article",
+          "sha256": "2264dc6b16df457f0d712fade01eae91f2820d6e3bb1807a214eeb6af260aab3"
+        },
+        {
+          "path": "locales/zh-SG/candidates/concurrency-6.article",
+          "sha256": "475770be2b40e15a06147aefd100146c5118222a32c074ff24069464266b10c1"
+        },
+        {
+          "path": "locales/zh-SG/candidates/concurrency-7.article",
+          "sha256": "fcba7d86970941c37283599c2a256973d32bdcf7a2f2018438b23c33920607e8"
+        },
+        {
+          "path": "locales/zh-SG/candidates/concurrency-8.article",
+          "sha256": "55fe6035678f03925f50c5d9f11dac8e5ab0f6591f20dff2a1a02368ac83af32"
+        },
+        {
+          "path": "locales/zh-SG/candidates/concurrency-9.article",
+          "sha256": "21ae4ceab7dbf08cf8bd8d16272e86464963c41cf71602040de0b921d2bf3c05"
+        },
+        {
+          "path": "locales/zh-SG/candidates/concurrency-channels.go",
+          "sha256": "2db4d19d1c3a1ff490b202eb1c1463079e61c7db6c361fc3010d0392948b022e"
+        },
+        {
+          "path": "locales/zh-SG/candidates/concurrency-exercise-equivalent-binary-trees.go",
+          "sha256": "601b411d2df8d5d568e4f1eb93c1c638fb865a15d6f7439fabab79ffe639c447"
+        },
+        {
+          "path": "locales/zh-SG/candidates/concurrency-exercise-web-crawler.go",
+          "sha256": "c61b07a61ac88e4f51f5fcd534719a93cd7f791ed9eb53ddb2963838c8808f5a"
+        },
+        {
+          "path": "locales/zh-SG/candidates/concurrency-mutex-counter.go",
+          "sha256": "2fec646eceb4233f7b2c186c8a2898ead291e51a453c20ad4f3dab5cb98f9b11"
+        },
+        {
+          "path": "locales/zh-SG/candidates/flowcontrol-1.article",
+          "sha256": "2d6157adcb282ab48ef1d214f5e1e486d134f4f72832cd08c856484c642fa8aa"
+        },
+        {
+          "path": "locales/zh-SG/candidates/flowcontrol-10.article",
+          "sha256": "e60387bda49d9699cd8617ce27b6efa6d5bef65fce10f4028b44d0865fa1ba26"
+        },
+        {
+          "path": "locales/zh-SG/candidates/flowcontrol-11.article",
+          "sha256": "6e3064ba970548c5d852ddfad1decf4e2295a0c0870df5b50051b4de172a11cb"
+        },
+        {
+          "path": "locales/zh-SG/candidates/flowcontrol-12.article",
+          "sha256": "6a72ea94e29060ac3958867c95340ba8e28a77dea8738b32c7554773efd2b5b8"
+        },
+        {
+          "path": "locales/zh-SG/candidates/flowcontrol-13.article",
+          "sha256": "4ecdd1583c816f7c7c7b0427c82ecbd0e207e98bb567e0db23cc94dd6bb8e917"
+        },
+        {
+          "path": "locales/zh-SG/candidates/flowcontrol-14.article",
+          "sha256": "eacf24c0bdd8667e47380ab66b2dc8a5c6dd6cade8aab8f8e6feb90db56aea67"
+        },
+        {
+          "path": "locales/zh-SG/candidates/flowcontrol-2.article",
+          "sha256": "d9a954155d2cf7504e9cae8223ce7ff9236e340a7a66a36f642ffa6960d57b92"
+        },
+        {
+          "path": "locales/zh-SG/candidates/flowcontrol-3.article",
+          "sha256": "f5d6800c827d20bb0064ce82ddb1f2db93bbf78bed42d5ebb98c9a9a37d28bae"
+        },
+        {
+          "path": "locales/zh-SG/candidates/flowcontrol-4.article",
+          "sha256": "5cd3d61179b6535c000793e0e13eeb1b8a72c488091a92c60826cce2e500da51"
+        },
+        {
+          "path": "locales/zh-SG/candidates/flowcontrol-5.article",
+          "sha256": "1378c43226de44eefacea62a37a653cf02c1a07b79fb4498f3f4386ef55bf216"
+        },
+        {
+          "path": "locales/zh-SG/candidates/flowcontrol-6.article",
+          "sha256": "937d99d5d3da28927a020560ff1e0cf29af79dee4ac11e41519d0f21e183a5a3"
+        },
+        {
+          "path": "locales/zh-SG/candidates/flowcontrol-7.article",
+          "sha256": "4927ba7e2cd17d223c97fd10092cb5662946877b03140ab5b7f525390fa30b15"
+        },
+        {
+          "path": "locales/zh-SG/candidates/flowcontrol-8.article",
+          "sha256": "099b268ca08a6452764bfd7966cd66f58d442271bcf2a1fb2d785dfed6d0bd25"
+        },
+        {
+          "path": "locales/zh-SG/candidates/flowcontrol-9.article",
+          "sha256": "82159264b431572b9b6a280cddc6efad2db6d0edd430b17e26bbf04de3a5c21e"
+        },
+        {
+          "path": "locales/zh-SG/candidates/flowcontrol-if-and-else.go",
+          "sha256": "0cdc1c2a8c77f71638d3183d1d0fd5a4fba73f1852ad7c996e02784ff91e109a"
+        },
+        {
+          "path": "locales/zh-SG/candidates/generics-1.article",
+          "sha256": "2eee446fb13c3ec01aa399fd99fbb31dae103716fd9b407ec610294ef7431810"
+        },
+        {
+          "path": "locales/zh-SG/candidates/generics-2.article",
+          "sha256": "0d4aa99d02dd62dcde06781e3631904968ac562b6c6ec8b24718be69e9d6e384"
+        },
+        {
+          "path": "locales/zh-SG/candidates/generics-3.article",
+          "sha256": "eacf24c0bdd8667e47380ab66b2dc8a5c6dd6cade8aab8f8e6feb90db56aea67"
+        },
+        {
+          "path": "locales/zh-SG/candidates/generics-index.go",
+          "sha256": "5bd49cc71996e4a601a7311cee3253e44df1c50a6f4088b878f50789d9af3a53"
+        },
+        {
+          "path": "locales/zh-SG/candidates/generics-list.go",
+          "sha256": "b5201fc9003934b1f2c95d86defe1d517d2db00d45cfbd059582503f1ba06943"
+        },
+        {
+          "path": "locales/zh-SG/candidates/methods-1.article",
+          "sha256": "4dec4dfa1c1a297f69174a94cb165c049a87e4fa6386109e73a3a1623ad057ea"
+        },
+        {
+          "path": "locales/zh-SG/candidates/methods-10.article",
+          "sha256": "11edfab5e4e096e6ed311d5718bf4ef87957da9d79bff1a7430952ff24afdc9c"
+        },
+        {
+          "path": "locales/zh-SG/candidates/methods-11.article",
+          "sha256": "5c1578986358ff09b81d598f1bc2c8ecceceb850b0902a7638a0d8b5bd92e6a9"
+        },
+        {
+          "path": "locales/zh-SG/candidates/methods-12.article",
+          "sha256": "4a75221b9439c87028aab657019376550e14208724a417fcc30cfca1b3242e8a"
+        },
+        {
+          "path": "locales/zh-SG/candidates/methods-13.article",
+          "sha256": "018ab474c06f8d40788257596408cfa1613f4c846f0235158f1ad77e75814240"
+        },
+        {
+          "path": "locales/zh-SG/candidates/methods-14.article",
+          "sha256": "e64a0ebf8a367a6b3d37176c61c9cd7f3c9790085b1ef26f7f873c2f2d318962"
+        },
+        {
+          "path": "locales/zh-SG/candidates/methods-15.article",
+          "sha256": "59e84afe7e07ed8f85bd741cff3afe5c69b3d9a61e1c8f133942b317152a0001"
+        },
+        {
+          "path": "locales/zh-SG/candidates/methods-16.article",
+          "sha256": "70b06a806ecd14a6bb69492fb716572b16269ad17aa750fcb6014432888e666b"
+        },
+        {
+          "path": "locales/zh-SG/candidates/methods-17.article",
+          "sha256": "6ad6cf1bdf491ab6f1815bfc24e3a154f9479e780c613642d02e40d118f8e3c1"
+        },
+        {
+          "path": "locales/zh-SG/candidates/methods-18.article",
+          "sha256": "61479b487e84c53a83a5f49e6f0560b17553eef390b82db38893e8c6a3872ae0"
+        },
+        {
+          "path": "locales/zh-SG/candidates/methods-19.article",
+          "sha256": "ca70daf309f87260ca518b85dadff3cec71869fe288be8b5db55dcae3ecafd86"
+        },
+        {
+          "path": "locales/zh-SG/candidates/methods-2.article",
+          "sha256": "ea75340084e9c6202968bdfac72eb041b11d21f07954940ab7bbc35d5ab4b2d1"
+        },
+        {
+          "path": "locales/zh-SG/candidates/methods-20.article",
+          "sha256": "463f91947e04dd1d34dbd21df10929b804a01c5a6f3f1f90046e6d3b1d4c5f11"
+        },
+        {
+          "path": "locales/zh-SG/candidates/methods-21.article",
+          "sha256": "8b13e4360f292691eb9873f0722614f555d0ca19f3b24f16b862c6c915e8ba3e"
+        },
+        {
+          "path": "locales/zh-SG/candidates/methods-22.article",
+          "sha256": "e240380f631f75fa230105bdc4e3fcf34bf6c7362184d4921420683c72766661"
+        },
+        {
+          "path": "locales/zh-SG/candidates/methods-23.article",
+          "sha256": "61ae25dde9cb224e32d0df04f05aa7489851ef54067f22fadbc358e8cb58342d"
+        },
+        {
+          "path": "locales/zh-SG/candidates/methods-24.article",
+          "sha256": "8f7c79cd87dcac354ceaf14be2953d9ccbf1ac6980f531228592e82c79812b86"
+        },
+        {
+          "path": "locales/zh-SG/candidates/methods-25.article",
+          "sha256": "46c579e5725cc4d6dd23d55478ea3fbe0005329abdab2d0c774d38685f51a62f"
+        },
+        {
+          "path": "locales/zh-SG/candidates/methods-26.article",
+          "sha256": "eacf24c0bdd8667e47380ab66b2dc8a5c6dd6cade8aab8f8e6feb90db56aea67"
+        },
+        {
+          "path": "locales/zh-SG/candidates/methods-3.article",
+          "sha256": "ad6b070d08a8cc1b8e42f258b6dcd8e41de51a3dd61b4b67026450d182b21904"
+        },
+        {
+          "path": "locales/zh-SG/candidates/methods-4.article",
+          "sha256": "ac8d7626d6e20c3c9fefc01d9866fb1c7009f469dc81af283e10efbc99bd27df"
+        },
+        {
+          "path": "locales/zh-SG/candidates/methods-5.article",
+          "sha256": "a1ebc4509a0f3db831fa01c23f6bf57c1d18dd44186538bcd7a20483de7acbaa"
+        },
+        {
+          "path": "locales/zh-SG/candidates/methods-6.article",
+          "sha256": "ec5730e7d92f3759b65f0be4437dad9d6c9cecfb6e6ff7cfb84e97961440b50f"
+        },
+        {
+          "path": "locales/zh-SG/candidates/methods-7.article",
+          "sha256": "f60c91d22825280f50a8bf6965930fc1f3ac99f7adefdcbed6f17bf94422e1bf"
+        },
+        {
+          "path": "locales/zh-SG/candidates/methods-8.article",
+          "sha256": "95e6978e724248ec1b633df83adf080b85b13a2e899822af1782d4785431b58f"
+        },
+        {
+          "path": "locales/zh-SG/candidates/methods-9.article",
+          "sha256": "38ef8e3cfee04289e285f999f763661471dc0f4e56ab5929ab1c632e872ddae0"
+        },
+        {
+          "path": "locales/zh-SG/candidates/methods-exercise-reader.go",
+          "sha256": "42debb637747c8f44bc2a4d936741036fe9ef0cc6dc8d7f0898b25b146e3f45c"
+        },
+        {
+          "path": "locales/zh-SG/candidates/methods-exercise-stringer.go",
+          "sha256": "3a24c4d2a8a634f470474d225266a3ee77d1222221209a5dbc646eecacfe56e9"
+        },
+        {
+          "path": "locales/zh-SG/candidates/methods-interfaces-are-satisfied-implicitly.go",
+          "sha256": "d117c3ffa314941817bb19e1dbacb2a7398dcf480e5a3885c88e0ca2dd27189c"
+        },
+        {
+          "path": "locales/zh-SG/candidates/methods-interfaces.go",
+          "sha256": "e81f2cece3318b0651a5f78b1a801264d3f4b3a1f6a008db5d18749aa5ae4068"
+        },
+        {
+          "path": "locales/zh-SG/candidates/moretypes-1.article",
+          "sha256": "7358b8067da548d8db5d2c9418c51ea32e440121c61daf81755d2c12b1b1f952"
+        },
+        {
+          "path": "locales/zh-SG/candidates/moretypes-10.article",
+          "sha256": "2cae51d5e8b03e8bf2c690b69778ba2ebd2c53d4dd6bcdffe4aa3d5bc81ed1c4"
+        },
+        {
+          "path": "locales/zh-SG/candidates/moretypes-11.article",
+          "sha256": "c8b80e923fe93e08c68a7f9fc384d85a7f174b1c9917a955f065bcb1a637b8fc"
+        },
+        {
+          "path": "locales/zh-SG/candidates/moretypes-12.article",
+          "sha256": "0595af1f5406708291545b0d6253c44af46a8a4448531165a96db4dc8e28c1e8"
+        },
+        {
+          "path": "locales/zh-SG/candidates/moretypes-13.article",
+          "sha256": "d7ba75b8d579bf16d7e2a30090fa8113da459c3c7bfb069065b507fb5d6e356f"
+        },
+        {
+          "path": "locales/zh-SG/candidates/moretypes-14.article",
+          "sha256": "d1d0a3510bfef543351f029293dc658a72a63e92875d9a12b8aba715c025af18"
+        },
+        {
+          "path": "locales/zh-SG/candidates/moretypes-15.article",
+          "sha256": "d1405e29a98f384b8af7d3d619149fca721336db8fd62309695ab4d5ef02e76d"
+        },
+        {
+          "path": "locales/zh-SG/candidates/moretypes-16.article",
+          "sha256": "23baba46390be9e5498f4c74e17d28af68407a68ef5a7615f6ba2a02b5fddf08"
+        },
+        {
+          "path": "locales/zh-SG/candidates/moretypes-17.article",
+          "sha256": "ecfbd986f012e802e63258c2f60a10a5892d285497a87ba17f7e81effbaf545c"
+        },
+        {
+          "path": "locales/zh-SG/candidates/moretypes-18.article",
+          "sha256": "dcecaec2a6fd6e00ca1a65cc08da64885f604dfc10b427d6ac1f8ff4f87d96a6"
+        },
+        {
+          "path": "locales/zh-SG/candidates/moretypes-19.article",
+          "sha256": "5e51ffc6325fe8505a3e58f7251f881e1a73a45bebc6195903fe0725ba5e989f"
+        },
+        {
+          "path": "locales/zh-SG/candidates/moretypes-2.article",
+          "sha256": "5c1525f493bc0be328f02b2b5b0fb7fa3e716cffa8c68573a3cba4c7773e7434"
+        },
+        {
+          "path": "locales/zh-SG/candidates/moretypes-20.article",
+          "sha256": "2e4ad28ab70ef152548144e841f6180ad181ac3a0776ad3018cf6d31b504dff0"
+        },
+        {
+          "path": "locales/zh-SG/candidates/moretypes-21.article",
+          "sha256": "e9965362b1fbd6b09306314e67fd1431681d5198ed33085df2c537bcdc403531"
+        },
+        {
+          "path": "locales/zh-SG/candidates/moretypes-22.article",
+          "sha256": "6be7ac68842fe36dc13a2de84a5c427a35793ac914b69decdc901d6931cc4ddb"
+        },
+        {
+          "path": "locales/zh-SG/candidates/moretypes-23.article",
+          "sha256": "1fbe2de312d87c86a7f06436b845ca68346f8fffd2661cb5293af9fb25b495c2"
+        },
+        {
+          "path": "locales/zh-SG/candidates/moretypes-24.article",
+          "sha256": "45c1a9f5d14e981349602630462f1472ef74acac2822d11236b4f3a8263ed440"
+        },
+        {
+          "path": "locales/zh-SG/candidates/moretypes-25.article",
+          "sha256": "87d62ac111304a7430c8b3ab35249031f555843a1bf3a1f6b5d648c20ad51f04"
+        },
+        {
+          "path": "locales/zh-SG/candidates/moretypes-26.article",
+          "sha256": "b49f2760b9adda4b963d1e01e370ebbf331b3d66c8b22544597a3c2ea23bb8b2"
+        },
+        {
+          "path": "locales/zh-SG/candidates/moretypes-27.article",
+          "sha256": "eacf24c0bdd8667e47380ab66b2dc8a5c6dd6cade8aab8f8e6feb90db56aea67"
+        },
+        {
+          "path": "locales/zh-SG/candidates/moretypes-3.article",
+          "sha256": "aba03bfc581a658b13c5fe23ea651762702b5dcb1bde4379c86cf0303af35272"
+        },
+        {
+          "path": "locales/zh-SG/candidates/moretypes-4.article",
+          "sha256": "62cc02c102572fa82f6ef2b27bf9c7c02aa6208bc8be9921b4e2509a49447aac"
+        },
+        {
+          "path": "locales/zh-SG/candidates/moretypes-5.article",
+          "sha256": "75540b13edcbfbd253d04f1a4e6cf9ca1b5dbaf982b746194675d3c73f5b7fc8"
+        },
+        {
+          "path": "locales/zh-SG/candidates/moretypes-6.article",
+          "sha256": "5b360a8d188c6c8a1b219e5f4ac58baccdbf87262ada36d0fe901dceccf5334a"
+        },
+        {
+          "path": "locales/zh-SG/candidates/moretypes-7.article",
+          "sha256": "abfbfc4eecfe37169ca6156aebcff9b6e272b34a81bf0dca38d6a58dd033229f"
+        },
+        {
+          "path": "locales/zh-SG/candidates/moretypes-8.article",
+          "sha256": "a1b59b42cf242cd2d125d8913ebb743217c5a29aa4d568a253ce9630f3131a55"
+        },
+        {
+          "path": "locales/zh-SG/candidates/moretypes-9.article",
+          "sha256": "49764b61b228f3fc73ede70b8bf7b67bf49b0773da309566eec02e3e9f0bb1d9"
+        },
+        {
+          "path": "locales/zh-SG/candidates/moretypes-append.go",
+          "sha256": "5cca0d01bca2ab4093d37723828125d960a95b61759dacc572eb1c6111607600"
+        },
+        {
+          "path": "locales/zh-SG/candidates/moretypes-exercise-fibonacci-closure.go",
+          "sha256": "a6606722f7300ad71177f0b2d9765439567567e0aea0e51eb62e6a7ea9c182c9"
+        },
+        {
+          "path": "locales/zh-SG/candidates/moretypes-pointers.go",
+          "sha256": "15d808bbc65c9cf25f232b8e18da0fa7a3f57338e15d0002694aec9baab79567"
+        },
+        {
+          "path": "locales/zh-SG/candidates/moretypes-slice-len-cap.go",
+          "sha256": "3483812e0876123252f8b5a8c245991dddba5e634f7620da45e544e95f652651"
+        },
+        {
+          "path": "locales/zh-SG/candidates/moretypes-slices-of-slice.go",
+          "sha256": "f2cc2e4af143bdd0ad66a9a0284042b9bd1ae04331a865fe973a19ba80d7f068"
+        },
+        {
+          "path": "locales/zh-SG/candidates/moretypes-struct-literals.go",
+          "sha256": "d5ff3e4d0ac0e1e19c2022e59b42aeb5c03a6a441bc9a3bfc5895872b563aaf6"
+        },
+        {
+          "path": "locales/zh-SG/candidates/welcome-1.article",
+          "sha256": "992a65e2f198d7971f4fa4099557124303600e72b0281c78947c4dbf47c3cd44"
+        },
+        {
+          "path": "locales/zh-SG/candidates/welcome-2.article",
+          "sha256": "c9fd207f55ccd5a676a62215476e634a8cac0a3963a731b2bad2252df1fabb57"
+        },
+        {
+          "path": "locales/zh-SG/candidates/welcome-3.article",
+          "sha256": "b15bcaec5bd873ffe0ee0bf8a6bb255b7eb718eeeedcd9e710d2ee62aee50ee4"
+        },
+        {
+          "path": "locales/zh-SG/candidates/welcome-4.article",
+          "sha256": "d3d0c423081cf72307ecbd2068bdde823ee55e47e825890a1503fbb2000942f9"
+        },
+        {
+          "path": "locales/zh-SG/candidates/welcome-5.article",
+          "sha256": "e8d291857664ead6469d4f02b27249a528a38a222f1f6da9674a34fe1161a232"
+        },
+        {
+          "path": "locales/zh-SG/course-metadata.json",
+          "sha256": "302ee155ba9d5122cdf09219c39c1df229301a0e033a51eeb193263f6ae70a93"
+        },
+        {
+          "path": "locales/zh-SG/glossary.yaml",
+          "sha256": "5e8bcea52e28c8bdc49d1be09446030d7a1c26c575e11892158e73b3a60a2fb2"
+        },
+        {
+          "path": "locales/zh-SG/locale.json",
+          "sha256": "26dc3d79b12cb8b6a264a0f968758b16a82aef1808b18f6e3402894df0a9b833"
+        },
+        {
+          "path": "locales/zh-SG/status.tsv",
+          "sha256": "f5c54457384196e6ca6b9926b11a442a974df23a43443ec96f156b8d09031353"
+        }
+      ],
+      "evidence_identity_sha256": "f8683f3ea43ea47d0aec123917dd19250a918bd3d13b548ebf05640fdcb51ce5",
+      "validated_context_sha256": "2452736f3ddbd2cbfa6e3ee198e51d3700882ef95441aac9a8c34b0cd5017568",
+      "legacy_surface_gate_state": "current"
+    }
+  ]
+}

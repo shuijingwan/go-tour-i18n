@@ -1,8 +1,23 @@
 # 项目状态
 
-更新时间：2026-10-05（北京时间）
+更新时间：2026-10-06（北京时间）
 
 ## 基线与架构
+
+### 2026-10-06 Site v2-A Architecture / Content Scope
+
+- 正式架构 authority：[Site v2 Architecture](SITE_V2_ARCHITECTURE.md)。public naming 冻结为 `Go Learning & Documentation Translations`，legacy repository/module/Production identity 保持；`site-v1`、`site-v2` 与增量 `learn-docs-v1` 分离。
+- `data/site-content-scope.json`、离线 frozen inventory snapshot、65 个独立 `locales/<locale>/content-scope.json` 已建立。bootstrap 只读复用/验证真实历史 Surface / A-only QC finalization、完整 candidate/source identity、canonical ready candidates、metadata/SEO、glossary gate 与 live registry/deployment identity；sparse completion authority 只持久记录 `tour-v1=complete`，另外两个 package 从缺席推导 incomplete，不绑定未完成 package identity。Tour public canonical routes 为 `/tour/`、`/tour/list` 与 103 个 `/tour/<article>/<section>`，共 105 个；内部 catalog identity 未变。
+- Surface evidence 真实区分为 36 个 `current` 与 29 个 `historical-verified`；后者仅证明可信 Site v1 completion，不冒称新的 current Surface A 或 Production 授权。shared English UI / registry whole-identity freshness debt 与 glossary/config compatibility implementation 已纳入 V2-B，历史 evidence 未改写。
+- frozen baseline 仍为 `db076098077c07d3cef1b85a2cf56ff52777f587`，exact inventory 80 files：49 page + 7 data（56 localizable）、6 redirect、18 asset。YAML 与 HTML-comment JSON Redirect 均纳入 inventory；`modules/pruning.md` 是 redirect-only，不作为 canonical page。Security canonical 为 `/doc/security/**`；本轮没有 upstream sync、runtime activation、翻译、Production、publish/deploy 或 Git commit/push。
+- V2-A 完成后停止。V2-C 唯一一次 sync 当前 deferred，须维护者确认跟踪的 4 个 upstream issue 达到预期状态并明确重开；不是当前自动下一步。正式调度仍只由 [Locale 路线图](LOCALE_ROADMAP.md) 管理。
+
+### 2026-10-06 剩余 IndexNow closeout 全部完成
+
+- 维护者重新执行正式 `scripts/indexnow-closeout.sh` 恢复此前 deferred 的 `et-EE`、`de-CH`、`en-GB`、`en-AU` 与 `he`，全部复用既有 locale-specific key，未重新生成 key、未修改 Production 配置。
+- `et-EE`、`de-CH`、`en-GB`、`en-AU` 均在首次 probe HTTP 202 后按正式 bounded policy 复用同一 key/payload 重试，最终分别取得 `IndexNow bootstrap: PASS (sitemap_urls=105 submitted_urls=105)` 与 `IndexNow closeout: PASS`。
+- Hebrew 第一次恢复仍在 public key verification 返回 `EOF`；随后再次使用同一正式入口与现有 key，取得 `IndexNow bootstrap: PASS (locale=he sitemap_urls=105 submitted_urls=105)` 与 `IndexNow closeout: PASS (locale=he)`。
+- 对应 deferred issues `DI-20260929-002`、`DI-20261003-001`、`DI-20261004-001`、`DI-20261005-001`、`DI-20261005-002` 均已核销为 `resolved`。仓库记录中的剩余 IndexNow closeout 已全部完成；后续调度以 `docs/LOCALE_ROADMAP.md` 更新后的 V2-A / V2-B / deferred V2-C 顺序为准，不因此自动执行 upstream source sync。
 
 ### 2026-10-05 Hebrew 第 65 门 locale 正式 live，IndexNow closeout 暂缓
 
@@ -239,7 +254,7 @@
 - Section：103/103 ready；article metadata：7/7；公共 UI：已完成；production publish：已实现并正式部署；production 自动部署脚本：首次真实生产验证通过；浏览器最终验收：通过；生产 Playground 执行链路迁移至 ZgoCloud 固定代理：已完成生产部署和真实用户验收。
 - 本轮 ChatGPT 全量重译、canonical promotion、upstream revision stale retranslation、正式 production release、生产部署和线上最终验收均已完成。当前在线 release 为 `/data/go-tour/releases/20260820-zh-CN-6ae139c`，正式服务内容已切换至 upstream `645042eb697eaf69e33a9af00c6b5b3fffdead5a` 的 122-unit workflow（103 Pages、19 eligible Examples）。
 
-## 下一阶段
+## 第一阶段历史下一阶段（已被上述后续状态取代）
 
 - `/tour/list` 是否加入 sitemap（104 → 105）作为独立 SEO 完整性事项评估；当前 sitemap 仍为 104 个唯一 URL，不将该事项混入已完成的重译与上线状态。
 - 按冻结 upstream 基线与现有同步规则继续评估后续 upstream 同步。

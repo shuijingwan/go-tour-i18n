@@ -2,7 +2,7 @@
 
 ## 文档用途
 
-本文档记录 `go-tour-i18n` 所基于的官方上游版本、首次 Tour 范围导入及后续同步规则。
+本文档记录 `go-tour-i18n` 所基于的官方上游版本、首次 Tour 范围导入及后续同步规则。Site v2 增量 Content Scope 与版本边界见 [Site v2 Architecture authority](docs/SITE_V2_ARCHITECTURE.md)；public rename 不改变 module/repository/Production identity。
 
 ## 当前上游信息
 
@@ -40,7 +40,7 @@
 - 官方上游目录保持只读和干净，不在其中开发本项目功能。
 - 原样文件按字节和 SHA-256 验证。
 - 上游发生变化时，不自动覆盖未来译文。
-- 每次同步只更新已经核验并纳入本项目最小 Tour 源码闭包的文件。
+- 每次同步只更新已经核验并纳入正式 content package 源码闭包的文件；既有 Tour scope 与持久 identity 继续保留。
 
 后续每次同步必须：
 
@@ -75,6 +75,14 @@ go run -mod=readonly ./cmd/tour-i18n upstream preview \
 - `welcome/2` 因新增链接改变 protected structure，被 preview 保守标为 `ambiguous`。人工核对确认其 article、section、route 与标题未变，仍是同一 “Go local” Section，明确保留持久 `page_id=welcome/2`；未创建、移动或重编号 ID。
 - `welcome.article` 已逐字节同步。官方 CSS 修复的真实 DOM 是 `.output > pre > span`；本项目既有 `.output > pre` 规则通过可继承的 `white-space: pre-wrap` 与 `overflow-wrap: anywhere` 已覆盖同一溢出场景，并保留更完整的多语言布局改造，因此未机械覆盖或重复追加官方规则。浏览器回归测试直接覆盖 span DOM。
 - `catalog write --allow-source-change` 重建三个 source catalog 后，最终 preview 为 Page 103、Example 93、conditional 2 全部 `unchanged`。所有 locale 的 `welcome/2` canonical status 保留旧 source hash，因而正确进入 stale；本轮未执行重译、Quality Check、promotion、发布或部署。
+
+## Site v2 package source contract（V2-A）
+
+当前 global frozen baseline 不变。`data/site-content-scope.json` 与仓库内离线 `data/site-content-sources.zip` 绑定 package/per-file SHA-256、role、canonical route、redirect、asset/data/contract dependencies。V2-A 只从 clean frozen checkout 生成 inventory snapshot，不导入 Learn/Docs runtime、不执行 source sync。`learn-docs-v1` 的真实 80-file closure 是 49 page、7 data、6 redirect、18 asset（56 localizable）；同时解析 YAML 与 HTML-comment JSON metadata，包括 `modules/pruning.md` 的 `Redirect`，redirect alias 不作为 canonical page。
+
+Security 的 canonical family 是 `/doc/security/**`；`/security/**` 是向该 family 的 legacy redirect，不是反向 canonical。Tour 的 persistent page ID、present.Section/source stale contract不变；Markdown/HTML/YAML 使用 surface-specific content-unit/parser，不强迫使用 Tour Section identity。后续 sync 比较逐文件 role/route/content/dependency 和 package impact，遇到 ambiguous/unknown 必须人工映射；不能只用 whole commit 判定所有 package stale。
+
+V2-C 唯一一次正式 sync 当前 **deferred**：[Site v2 Architecture 第 10 节](docs/SITE_V2_ARCHITECTURE.md#10-upstream-contract-与-deferred-v2-c) 固化四个 tracked issue 的 canonical list。四个 issue 全部达到维护者预期完成状态，且维护者显式重开阶段后才能执行。允许先完成 V2-A、V2-B 与不依赖最终 freeze 的 runtime foundation；不得因自行判断 upstream 稳定而提前 sync。V2-C 后必须取得 final Site v2 inventory/current-stale closure，才进入第一门 `learn-docs-v1` campaign。
 
 ## 基线验证命令
 

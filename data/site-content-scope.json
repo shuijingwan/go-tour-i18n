@@ -1,0 +1,2652 @@
+{
+  "schema": "go-learning/site-content-scope/v1",
+  "public_name": "Go Learning \u0026 Documentation Translations",
+  "upstream_repository": "https://github.com/golang/website.git",
+  "upstream_commit": "db076098077c07d3cef1b85a2cf56ff52777f587",
+  "snapshot_sha256": "79dafb0bd0fd9bc7c41d43348e758c8d471580b84e8c01fae51f3bd85bbff226",
+  "site_versions": [
+    {
+      "id": "site-v1",
+      "packages": [
+        "tour-v1"
+      ]
+    },
+    {
+      "id": "site-v2",
+      "packages": [
+        "tour-v1",
+        "site-v2-shell",
+        "learn-docs-v1"
+      ]
+    }
+  ],
+  "surfaces": [
+    {
+      "id": "tour",
+      "package": "tour-v1",
+      "route_family": "/tour/**",
+      "parser": "present.Section",
+      "publication": "legacy-formal-local"
+    },
+    {
+      "id": "homepage",
+      "package": "site-v2-shell",
+      "route_family": "/",
+      "parser": "site-surface",
+      "publication": "requires-independent-completion"
+    },
+    {
+      "id": "translation",
+      "package": "site-v2-shell",
+      "route_family": "/translation/",
+      "parser": "site-surface",
+      "publication": "requires-independent-completion"
+    },
+    {
+      "id": "learn",
+      "package": "learn-docs-v1",
+      "route_family": "/learn/**",
+      "parser": "surface-specific-pending",
+      "publication": "requires-independent-completion"
+    },
+    {
+      "id": "tutorial",
+      "package": "learn-docs-v1",
+      "route_family": "/doc/tutorial/**",
+      "parser": "surface-specific-pending",
+      "publication": "requires-independent-completion"
+    },
+    {
+      "id": "database",
+      "package": "learn-docs-v1",
+      "route_family": "/doc/database/**",
+      "parser": "surface-specific-pending",
+      "publication": "requires-independent-completion"
+    },
+    {
+      "id": "modules",
+      "package": "learn-docs-v1",
+      "route_family": "/doc/modules/**",
+      "parser": "surface-specific-pending",
+      "publication": "requires-independent-completion"
+    },
+    {
+      "id": "security",
+      "package": "learn-docs-v1",
+      "route_family": "/doc/security/**",
+      "parser": "surface-specific-pending",
+      "publication": "requires-independent-completion"
+    }
+  ],
+  "packages": [
+    {
+      "id": "tour-v1",
+      "activation": "legacy-evidence",
+      "canonical_routes": [
+        "/tour/",
+        "/tour/basics/1",
+        "/tour/basics/10",
+        "/tour/basics/11",
+        "/tour/basics/12",
+        "/tour/basics/13",
+        "/tour/basics/14",
+        "/tour/basics/15",
+        "/tour/basics/16",
+        "/tour/basics/17",
+        "/tour/basics/2",
+        "/tour/basics/3",
+        "/tour/basics/4",
+        "/tour/basics/5",
+        "/tour/basics/6",
+        "/tour/basics/7",
+        "/tour/basics/8",
+        "/tour/basics/9",
+        "/tour/concurrency/1",
+        "/tour/concurrency/10",
+        "/tour/concurrency/11",
+        "/tour/concurrency/2",
+        "/tour/concurrency/3",
+        "/tour/concurrency/4",
+        "/tour/concurrency/5",
+        "/tour/concurrency/6",
+        "/tour/concurrency/7",
+        "/tour/concurrency/8",
+        "/tour/concurrency/9",
+        "/tour/flowcontrol/1",
+        "/tour/flowcontrol/10",
+        "/tour/flowcontrol/11",
+        "/tour/flowcontrol/12",
+        "/tour/flowcontrol/13",
+        "/tour/flowcontrol/14",
+        "/tour/flowcontrol/2",
+        "/tour/flowcontrol/3",
+        "/tour/flowcontrol/4",
+        "/tour/flowcontrol/5",
+        "/tour/flowcontrol/6",
+        "/tour/flowcontrol/7",
+        "/tour/flowcontrol/8",
+        "/tour/flowcontrol/9",
+        "/tour/generics/1",
+        "/tour/generics/2",
+        "/tour/generics/3",
+        "/tour/list",
+        "/tour/methods/1",
+        "/tour/methods/10",
+        "/tour/methods/11",
+        "/tour/methods/12",
+        "/tour/methods/13",
+        "/tour/methods/14",
+        "/tour/methods/15",
+        "/tour/methods/16",
+        "/tour/methods/17",
+        "/tour/methods/18",
+        "/tour/methods/19",
+        "/tour/methods/2",
+        "/tour/methods/20",
+        "/tour/methods/21",
+        "/tour/methods/22",
+        "/tour/methods/23",
+        "/tour/methods/24",
+        "/tour/methods/25",
+        "/tour/methods/26",
+        "/tour/methods/3",
+        "/tour/methods/4",
+        "/tour/methods/5",
+        "/tour/methods/6",
+        "/tour/methods/7",
+        "/tour/methods/8",
+        "/tour/methods/9",
+        "/tour/moretypes/1",
+        "/tour/moretypes/10",
+        "/tour/moretypes/11",
+        "/tour/moretypes/12",
+        "/tour/moretypes/13",
+        "/tour/moretypes/14",
+        "/tour/moretypes/15",
+        "/tour/moretypes/16",
+        "/tour/moretypes/17",
+        "/tour/moretypes/18",
+        "/tour/moretypes/19",
+        "/tour/moretypes/2",
+        "/tour/moretypes/20",
+        "/tour/moretypes/21",
+        "/tour/moretypes/22",
+        "/tour/moretypes/23",
+        "/tour/moretypes/24",
+        "/tour/moretypes/25",
+        "/tour/moretypes/26",
+        "/tour/moretypes/27",
+        "/tour/moretypes/3",
+        "/tour/moretypes/4",
+        "/tour/moretypes/5",
+        "/tour/moretypes/6",
+        "/tour/moretypes/7",
+        "/tour/moretypes/8",
+        "/tour/moretypes/9",
+        "/tour/welcome/1",
+        "/tour/welcome/2",
+        "/tour/welcome/3",
+        "/tour/welcome/4",
+        "/tour/welcome/5"
+      ],
+      "surfaces": [
+        "tour"
+      ],
+      "contract_dependencies": [],
+      "source_identity_sha256": "48d09f17bf06e4beb9d05bb5b70465f5c6677406d84a3b9d125307f17d63c054",
+      "identity_sha256": "926ee5bf113ecc24d9128ed4531e740092f2ca88f6f154cf101f6b8478ed83a9"
+    },
+    {
+      "id": "site-v2-shell",
+      "activation": "independent-shell-gates",
+      "canonical_routes": [
+        "/",
+        "/translation/"
+      ],
+      "surfaces": [
+        "homepage",
+        "translation"
+      ],
+      "contract_dependencies": [],
+      "source_identity_sha256": "33bcca38889d970f7e61d5f7ca6a047a9146c7018f6f12e6909b0aea7e760356",
+      "identity_sha256": "4e2d64e84b34e803894ff21cd9b8988edad1c6109a97ac022977237ce69aedf5"
+    },
+    {
+      "id": "learn-docs-v1",
+      "activation": "atomic-locale-package",
+      "canonical_routes": [
+        "/doc/database/",
+        "/doc/database/cancel-operations",
+        "/doc/database/change-data",
+        "/doc/database/execute-transactions",
+        "/doc/database/manage-connections",
+        "/doc/database/open-handle",
+        "/doc/database/prepared-statements",
+        "/doc/database/querying",
+        "/doc/database/sql-injection",
+        "/doc/modules/developing",
+        "/doc/modules/gomod-ref",
+        "/doc/modules/layout",
+        "/doc/modules/major-version",
+        "/doc/modules/managing-dependencies",
+        "/doc/modules/managing-source",
+        "/doc/modules/publishing",
+        "/doc/modules/release-workflow",
+        "/doc/modules/version-numbers",
+        "/doc/security/",
+        "/doc/security/best-practices",
+        "/doc/security/decisions",
+        "/doc/security/fips140",
+        "/doc/security/fuzz/",
+        "/doc/security/fuzz/technical",
+        "/doc/security/policy",
+        "/doc/security/threat-model",
+        "/doc/security/vuln/",
+        "/doc/security/vuln/cna",
+        "/doc/security/vuln/database",
+        "/doc/security/vuln/editor",
+        "/doc/tutorial/",
+        "/doc/tutorial/add-a-test",
+        "/doc/tutorial/call-module-code",
+        "/doc/tutorial/compile-install",
+        "/doc/tutorial/create-module",
+        "/doc/tutorial/database-access",
+        "/doc/tutorial/fuzz",
+        "/doc/tutorial/generics",
+        "/doc/tutorial/getting-started",
+        "/doc/tutorial/govulncheck",
+        "/doc/tutorial/govulncheck-ide",
+        "/doc/tutorial/greetings-multiple-people",
+        "/doc/tutorial/handle-errors",
+        "/doc/tutorial/json",
+        "/doc/tutorial/module-conclusion",
+        "/doc/tutorial/random-greeting",
+        "/doc/tutorial/web-service-gin",
+        "/doc/tutorial/workspaces",
+        "/learn/"
+      ],
+      "surfaces": [
+        "learn",
+        "tutorial",
+        "database",
+        "modules",
+        "security"
+      ],
+      "contract_dependencies": [
+        {
+          "kind": "contract",
+          "path": "internal/web/page.go",
+          "sha256": "18db6fbb0e128592900aab0ba2d693c79c207be3786f9f8b4ca74c3a262fd911"
+        },
+        {
+          "kind": "contract",
+          "path": "internal/web/site.go",
+          "sha256": "e104da7645bc3e815250b0a6a2402cccd83e11ded8ccd9cd69beaf0f523ce083"
+        },
+        {
+          "kind": "contract",
+          "path": "internal/redirect/redirect.go",
+          "sha256": "55b9d4ace03fe40fc9e71ef5b599728017737e1fbbbfd54d6efd723f6fd96a4c"
+        },
+        {
+          "kind": "contract",
+          "path": "_content/site.tmpl",
+          "sha256": "88d7b52a319081fa9bf5a93143f152d83fc1f22465a39c5f553ff99c86ad754c"
+        },
+        {
+          "kind": "contract",
+          "path": "_content/article.tmpl",
+          "sha256": "746e52366676822add35938775325dd3aebc7c2ceaf6af80c33b857fc10cddc9"
+        },
+        {
+          "kind": "contract",
+          "path": "_content/doc/default.tmpl",
+          "sha256": "942269f2e14a4402d0e82bccd504b4d7e4c5481b183f4b9c66340cd9f70d745a"
+        }
+      ],
+      "source_identity_sha256": "3cd2840855c4e17073980ed0844df361efa6e195548614f0ee7e9fd4b1a4851e",
+      "identity_sha256": "e1212e774ac6855c07096e43779ee90bac7872058bbf8fce8f3ab6c4631673ef"
+    }
+  ],
+  "source_inventory": [
+    {
+      "source_path": "_content/doc/database/cancel-operations.md",
+      "source_kind": "page",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "database",
+      "canonical_route": "/doc/database/cancel-operations",
+      "source_sha256": "c71ef831003d93f55e7ffb503aadb883797e574b21d905caa42c783cf02ff683",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/doc/database/change-data.md",
+      "source_kind": "page",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "database",
+      "canonical_route": "/doc/database/change-data",
+      "source_sha256": "7d33ffb1904495008147b115fbace5f82640e209c492b13f406363a61837bb55",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/doc/database/execute-transactions.md",
+      "source_kind": "page",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "database",
+      "canonical_route": "/doc/database/execute-transactions",
+      "source_sha256": "3e8e4ee1071772b796cf0e467f4a2cc8065e866385604116a6ddd3d0b07ee59f",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/doc/database/index.md",
+      "source_kind": "page",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "database",
+      "canonical_route": "/doc/database/",
+      "source_sha256": "8335626ef100c20d927f52d02c60850eca7b0e9d4c097c796484529a7f3dd3c9",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/doc/database/manage-connections.md",
+      "source_kind": "page",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "database",
+      "canonical_route": "/doc/database/manage-connections",
+      "source_sha256": "c0af88c4644c5118003126a32219fd786b47ae719f267d9b22cbc4954628ee0d",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/doc/database/open-handle.md",
+      "source_kind": "page",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "database",
+      "canonical_route": "/doc/database/open-handle",
+      "source_sha256": "544c86d9189672ad1008bed23999c977e1013042cb5d3d30a145b0efb6bcf58c",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/doc/database/prepared-statements.md",
+      "source_kind": "page",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "database",
+      "canonical_route": "/doc/database/prepared-statements",
+      "source_sha256": "37854cb2a8e7ef640129566162422472821faadcbab8dd2a7514513d40eff004",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/doc/database/querying.md",
+      "source_kind": "page",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "database",
+      "canonical_route": "/doc/database/querying",
+      "source_sha256": "02e399c4e8b9895689676f976ce052da6d6efa6f6bed3c7368314a47e3314864",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/doc/database/sql-injection.md",
+      "source_kind": "page",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "database",
+      "canonical_route": "/doc/database/sql-injection",
+      "source_sha256": "b8dac8aa9f02e71bd0b5dda8f6e26706ff22e19c0a3149aae53946b2b10f864a",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/doc/modules/developing.md",
+      "source_kind": "page",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "modules",
+      "canonical_route": "/doc/modules/developing",
+      "source_sha256": "b536e09618906a025e579d4715c3218dd4cc32ba4b1a4554d8dd6e582a7f8ed8",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/doc/modules/gomod-ref.md",
+      "source_kind": "page",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "modules",
+      "canonical_route": "/doc/modules/gomod-ref",
+      "source_sha256": "f2d3e578640d2a9522a9667b8a203e6a14d60509df1e5c04ad54ca14a6c3d8bd",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/doc/modules/images/multiple-modules.png",
+      "source_kind": "asset",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "modules",
+      "source_sha256": "d18c3852bd5b9ba4eed1195fd55f0ec1f65566434c8e25e5f83a3f17587155a5",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/doc/modules/images/single-module.png",
+      "source_kind": "asset",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "modules",
+      "source_sha256": "487f2c03661f6e24ca99c9a942c16cdf7d4c79602dc4e46d1c1e9c1adf9f92a4",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/doc/modules/images/source-hierarchy.png",
+      "source_kind": "asset",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "modules",
+      "source_sha256": "123c0aa632538b193968c3a28e7ffe2666c588b3d1221d2fecd42fc4dda72777",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/doc/modules/images/v2-branch-module.png",
+      "source_kind": "asset",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "modules",
+      "source_sha256": "21de9959709938d0243518892e85060a22c44bb87f1de02cdc711e86c980ac89",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/doc/modules/images/v2-module.png",
+      "source_kind": "asset",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "modules",
+      "source_sha256": "acd04a2e136211f3b40324693fdab5789d475d9b24232e5fc6b27c6316970e5c",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/doc/modules/images/version-number.png",
+      "source_kind": "asset",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "modules",
+      "source_sha256": "d3681fbcd845a4fe2ef354221dfeb203af192fce2b7f72dbd188ef2fe6d4d7dd",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/doc/modules/layout.md",
+      "source_kind": "page",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "modules",
+      "canonical_route": "/doc/modules/layout",
+      "source_sha256": "3cf064a34e84e48dc66ffdf9277fea2b2c9fdc52d0b5dd7d4de506fb8eeba4a5",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/doc/modules/major-version.md",
+      "source_kind": "page",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "modules",
+      "canonical_route": "/doc/modules/major-version",
+      "source_sha256": "7d052c1b96c1d537cfede56c69dc92684344172ff03ef2bc87c33d2271c5d36c",
+      "dependencies": [
+        {
+          "kind": "asset",
+          "path": "_content/doc/modules/images/v2-branch-module.png",
+          "sha256": "21de9959709938d0243518892e85060a22c44bb87f1de02cdc711e86c980ac89"
+        }
+      ]
+    },
+    {
+      "source_path": "_content/doc/modules/managing-dependencies.md",
+      "source_kind": "page",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "modules",
+      "canonical_route": "/doc/modules/managing-dependencies",
+      "source_sha256": "0d0ba363e0214a23116f0d4e6e016968a31412674970839d0caa7957e17b1ee7",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/doc/modules/managing-source.md",
+      "source_kind": "page",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "modules",
+      "canonical_route": "/doc/modules/managing-source",
+      "source_sha256": "9edc5cfdd586954d36a2851147eff163cf3e71aaebf3c3499a1a3934245b6a5b",
+      "dependencies": [
+        {
+          "kind": "asset",
+          "path": "_content/doc/modules/images/multiple-modules.png",
+          "sha256": "d18c3852bd5b9ba4eed1195fd55f0ec1f65566434c8e25e5f83a3f17587155a5"
+        },
+        {
+          "kind": "asset",
+          "path": "_content/doc/modules/images/single-module.png",
+          "sha256": "487f2c03661f6e24ca99c9a942c16cdf7d4c79602dc4e46d1c1e9c1adf9f92a4"
+        },
+        {
+          "kind": "asset",
+          "path": "_content/doc/modules/images/source-hierarchy.png",
+          "sha256": "123c0aa632538b193968c3a28e7ffe2666c588b3d1221d2fecd42fc4dda72777"
+        }
+      ]
+    },
+    {
+      "source_path": "_content/doc/modules/pruning.md",
+      "source_kind": "redirect",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "modules",
+      "redirect_alias": "/doc/modules/pruning",
+      "redirect_destination": "/doc/modules/managing-dependencies",
+      "resolved_redirect_destination": "/doc/modules/managing-dependencies",
+      "source_sha256": "a991714bb6d58eb3874bb08311c2a6c29f381fc9a15a6694d093bbf35705e8b0",
+      "dependencies": [
+        {
+          "kind": "contract",
+          "path": "internal/redirect/redirect.go",
+          "sha256": "55b9d4ace03fe40fc9e71ef5b599728017737e1fbbbfd54d6efd723f6fd96a4c"
+        }
+      ]
+    },
+    {
+      "source_path": "_content/doc/modules/publishing.md",
+      "source_kind": "page",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "modules",
+      "canonical_route": "/doc/modules/publishing",
+      "source_sha256": "b01eeb7a552c865ef4333be351060487e835185b1345b6d378e26f4e46c46b9f",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/doc/modules/release-workflow.md",
+      "source_kind": "page",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "modules",
+      "canonical_route": "/doc/modules/release-workflow",
+      "source_sha256": "27cf24c2eb872b60acadfd57f3a39fffdd3bb01ef35880cb640a6724864b6b6d",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/doc/modules/version-numbers.md",
+      "source_kind": "page",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "modules",
+      "canonical_route": "/doc/modules/version-numbers",
+      "source_sha256": "43668bda4143e7107f12dc3b3d9a49a1b15f96e1ba1c93c1a6a464b7fbfabbd5",
+      "dependencies": [
+        {
+          "kind": "asset",
+          "path": "_content/doc/modules/images/version-number.png",
+          "sha256": "d3681fbcd845a4fe2ef354221dfeb203af192fce2b7f72dbd188ef2fe6d4d7dd"
+        }
+      ]
+    },
+    {
+      "source_path": "_content/doc/security/best-practices.md",
+      "source_kind": "page",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "security",
+      "canonical_route": "/doc/security/best-practices",
+      "source_sha256": "9f1184cde64388824a4d5cb19ee5938b3fe75ce5b5378ee2475552b8da6dcbe4",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/doc/security/decisions.md",
+      "source_kind": "page",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "security",
+      "canonical_route": "/doc/security/decisions",
+      "source_sha256": "6c15e82b42de1a7fa6b2984144570d2ded12f1b7df86e15a82fb54226be487b4",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/doc/security/fips140.md",
+      "source_kind": "page",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "security",
+      "canonical_route": "/doc/security/fips140",
+      "source_sha256": "c171065cde5e7a0a9597d89e59bb9e8cb3e614ff096e032b3580ebf2709902e4",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/doc/security/fuzz/example-dark.png",
+      "source_kind": "asset",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "security",
+      "source_sha256": "a0f564d5373947f8d98afe4eb9c824b1d85af018fb327a9a197801a151d82ec0",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/doc/security/fuzz/example.png",
+      "source_kind": "asset",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "security",
+      "source_sha256": "36e7d100aa440a49dc68c6c0e5c4fd5aadaaedcd7ee8cfd9907ee506164d5f62",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/doc/security/fuzz/index.md",
+      "source_kind": "page",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "security",
+      "canonical_route": "/doc/security/fuzz/",
+      "source_sha256": "69bd18d0702cab7d9f3a9a4e1fb20f316cbefc518d0e804c7e753a538bd15bbb",
+      "dependencies": [
+        {
+          "kind": "asset",
+          "path": "_content/doc/security/fuzz/example-dark.png",
+          "sha256": "a0f564d5373947f8d98afe4eb9c824b1d85af018fb327a9a197801a151d82ec0"
+        },
+        {
+          "kind": "asset",
+          "path": "_content/doc/security/fuzz/example.png",
+          "sha256": "36e7d100aa440a49dc68c6c0e5c4fd5aadaaedcd7ee8cfd9907ee506164d5f62"
+        }
+      ]
+    },
+    {
+      "source_path": "_content/doc/security/fuzz/seq-diagram.png",
+      "source_kind": "asset",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "security",
+      "source_sha256": "348a3fb0a0910117769de6c552273ec815eeace132070a7e7ef9e76572a9561f",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/doc/security/fuzz/technical.md",
+      "source_kind": "page",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "security",
+      "canonical_route": "/doc/security/fuzz/technical",
+      "source_sha256": "30f0008d41be96f888cf08aaa8b7cf9101b93d1438ad17d8838016f74fc263b6",
+      "dependencies": [
+        {
+          "kind": "asset",
+          "path": "_content/doc/security/fuzz/seq-diagram.png",
+          "sha256": "348a3fb0a0910117769de6c552273ec815eeace132070a7e7ef9e76572a9561f"
+        }
+      ]
+    },
+    {
+      "source_path": "_content/doc/security/index.md",
+      "source_kind": "page",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "security",
+      "canonical_route": "/doc/security/",
+      "source_sha256": "272aa1d0fb5c22f687b747955f1927a78be8ad0f19169096cb0437e9f7fb1b45",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/doc/security/policy.md",
+      "source_kind": "page",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "security",
+      "canonical_route": "/doc/security/policy",
+      "source_sha256": "a5b5e3a901c57743ad9f6da63e0f73668273b1ca17cacd865e7becc32bc69d28",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/doc/security/threat-model.md",
+      "source_kind": "page",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "security",
+      "canonical_route": "/doc/security/threat-model",
+      "source_sha256": "c58e1f16eb682643adc1d6a74502920aa1700b02463eca04f26949a0a6fd0b9d",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/doc/security/vuln/architecture.png",
+      "source_kind": "asset",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "security",
+      "source_sha256": "1da90d1e9841c32d558f6cdcaad25f131f3ed790e62c65f1b0c52f7520f0f647",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/doc/security/vuln/cna.md",
+      "source_kind": "page",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "security",
+      "canonical_route": "/doc/security/vuln/cna",
+      "source_sha256": "baeefa9cc4fcf4983062a2012ebdf4940357d7084333bf470a27a7d00f6e1a73",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/doc/security/vuln/database.md",
+      "source_kind": "page",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "security",
+      "canonical_route": "/doc/security/vuln/database",
+      "source_sha256": "57d52ce73fb1eb5d02a6889de1604bdd9e0edd8617d507a575acf401c228c1a7",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/doc/security/vuln/editor.md",
+      "source_kind": "page",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "security",
+      "canonical_route": "/doc/security/vuln/editor",
+      "source_sha256": "0b494da11a9af83183ed913e3c72f4bd8e9a7b7a9359a3b5d66a1abbf6145363",
+      "dependencies": [
+        {
+          "kind": "asset",
+          "path": "_content/doc/security/vuln/vscode.gif",
+          "sha256": "d61a27a165a4213b4a324ea78989b4143343417ac842413419c7207e3bd45ea4"
+        }
+      ]
+    },
+    {
+      "source_path": "_content/doc/security/vuln/index.md",
+      "source_kind": "page",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "security",
+      "canonical_route": "/doc/security/vuln/",
+      "source_sha256": "67c5adf783fd88accf098042728568e8c9ad3e2a04fb390ba147678a38a2a823",
+      "dependencies": [
+        {
+          "kind": "asset",
+          "path": "_content/doc/security/vuln/architecture.png",
+          "sha256": "1da90d1e9841c32d558f6cdcaad25f131f3ed790e62c65f1b0c52f7520f0f647"
+        }
+      ]
+    },
+    {
+      "source_path": "_content/doc/security/vuln/vscode.gif",
+      "source_kind": "asset",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "security",
+      "source_sha256": "d61a27a165a4213b4a324ea78989b4143343417ac842413419c7207e3bd45ea4",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/doc/security/vuln/vulncheck.md",
+      "source_kind": "redirect",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "security",
+      "redirect_alias": "/doc/security/vuln/vulncheck",
+      "redirect_destination": "https://pkg.go.dev/golang.org/x/vuln/cmd/govulncheck",
+      "resolved_redirect_destination": "https://pkg.go.dev/golang.org/x/vuln/cmd/govulncheck",
+      "source_sha256": "ada3b285c0acb5ab7cecb24db413de2e57bd0614954ab56811be47e49e5e42bf",
+      "dependencies": [
+        {
+          "kind": "contract",
+          "path": "internal/redirect/redirect.go",
+          "sha256": "55b9d4ace03fe40fc9e71ef5b599728017737e1fbbbfd54d6efd723f6fd96a4c"
+        }
+      ]
+    },
+    {
+      "source_path": "_content/doc/security/vulncheck.md",
+      "source_kind": "redirect",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "security",
+      "redirect_alias": "/doc/security/vulncheck",
+      "redirect_destination": "/security/vuln/vulncheck",
+      "resolved_redirect_destination": "/doc/security/vuln/",
+      "source_sha256": "f0307648bddcb6de5406453d3e3ba456f609d90487369376b5dbaf4b5635d656",
+      "dependencies": [
+        {
+          "kind": "contract",
+          "path": "internal/redirect/redirect.go",
+          "sha256": "55b9d4ace03fe40fc9e71ef5b599728017737e1fbbbfd54d6efd723f6fd96a4c"
+        }
+      ]
+    },
+    {
+      "source_path": "_content/doc/security/vulndb/api.md",
+      "source_kind": "redirect",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "security",
+      "redirect_alias": "/doc/security/vulndb/api",
+      "redirect_destination": "/security/vuln/database",
+      "resolved_redirect_destination": "/doc/security/vuln/database",
+      "source_sha256": "ee2ec0360acd97a64cf903deb6524b487b6e1d31899ad0d7200255f85c7de259",
+      "dependencies": [
+        {
+          "kind": "contract",
+          "path": "internal/redirect/redirect.go",
+          "sha256": "55b9d4ace03fe40fc9e71ef5b599728017737e1fbbbfd54d6efd723f6fd96a4c"
+        }
+      ]
+    },
+    {
+      "source_path": "_content/doc/security/vulndb/index.md",
+      "source_kind": "redirect",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "security",
+      "redirect_alias": "/doc/security/vulndb/",
+      "redirect_destination": "/security/vuln",
+      "resolved_redirect_destination": "/doc/security/vuln/",
+      "source_sha256": "a3484b5aadcb45ddf1d22c4cc07a0e6b0831d84bdd5a6fc95f1674c587753d7b",
+      "dependencies": [
+        {
+          "kind": "contract",
+          "path": "internal/redirect/redirect.go",
+          "sha256": "55b9d4ace03fe40fc9e71ef5b599728017737e1fbbbfd54d6efd723f6fd96a4c"
+        }
+      ]
+    },
+    {
+      "source_path": "_content/doc/security/vulndb/policy.md",
+      "source_kind": "redirect",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "security",
+      "redirect_alias": "/doc/security/vulndb/policy",
+      "redirect_destination": "/security/vuln/cna",
+      "resolved_redirect_destination": "/doc/security/vuln/cna",
+      "source_sha256": "a418e363b1a9bf36c88e2813b2c00ebfb22ea17927ae032138ddc9b5be1387d4",
+      "dependencies": [
+        {
+          "kind": "contract",
+          "path": "internal/redirect/redirect.go",
+          "sha256": "55b9d4ace03fe40fc9e71ef5b599728017737e1fbbbfd54d6efd723f6fd96a4c"
+        }
+      ]
+    },
+    {
+      "source_path": "_content/doc/tutorial/add-a-test.html",
+      "source_kind": "page",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "tutorial",
+      "canonical_route": "/doc/tutorial/add-a-test",
+      "source_sha256": "d5ea155f25736df5051fddc35df81af3600b57700972d8fde4c344345c9a0ca0",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/doc/tutorial/call-module-code.html",
+      "source_kind": "page",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "tutorial",
+      "canonical_route": "/doc/tutorial/call-module-code",
+      "source_sha256": "e15097929f143836d6b0ba6f7ed56b1a6f61fec64d8e4fbab78407af439a2460",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/doc/tutorial/compile-install.html",
+      "source_kind": "page",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "tutorial",
+      "canonical_route": "/doc/tutorial/compile-install",
+      "source_sha256": "207de8898ceffd8fe454d8d94ffabe348b1579dd0c5dbd31cd5625f39291d3a0",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/doc/tutorial/create-module.html",
+      "source_kind": "page",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "tutorial",
+      "canonical_route": "/doc/tutorial/create-module",
+      "source_sha256": "e86bbbcbb07dbd6aa9a5e3e00ddf7525888f8f4298299818b9c7cf7b2407d144",
+      "dependencies": [
+        {
+          "kind": "asset",
+          "path": "_content/doc/tutorial/images/function-syntax.png",
+          "sha256": "7efd01ec98551ce4ab5895943c2441f46c306c01a36c769b8e11f24ab9bcb850"
+        }
+      ]
+    },
+    {
+      "source_path": "_content/doc/tutorial/database-access.md",
+      "source_kind": "page",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "tutorial",
+      "canonical_route": "/doc/tutorial/database-access",
+      "source_sha256": "006b82bedadb9fbf37ab24e3e7e09ae8f86abc8870d0b1df45e67b4d6ea337e1",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/doc/tutorial/editor_tutorial_1.png",
+      "source_kind": "asset",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "tutorial",
+      "source_sha256": "270327de2bcfc6780864bdb3338944f9e734975aaf51c7b13202f1deee64fd5f",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/doc/tutorial/editor_tutorial_2.png",
+      "source_kind": "asset",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "tutorial",
+      "source_sha256": "b600bf6e33520902b8e53677d6f0680283df9f0d425c89acbc5cf08eeb1447bc",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/doc/tutorial/editor_tutorial_3.png",
+      "source_kind": "asset",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "tutorial",
+      "source_sha256": "9911532454e63290afd03905dba07f7d3417364820c6348e0bdd2f4cf9116da5",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/doc/tutorial/editor_tutorial_4.png",
+      "source_kind": "asset",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "tutorial",
+      "source_sha256": "57c6b3fabead94c7208267e5e215343a582c8618de064f97a9245b63bcc40431",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/doc/tutorial/editor_tutorial_5.png",
+      "source_kind": "asset",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "tutorial",
+      "source_sha256": "629b502a4db1d611665b2828db9f9a22d52559bb1e8c61a9c381e735c9100c87",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/doc/tutorial/fuzz.md",
+      "source_kind": "page",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "tutorial",
+      "canonical_route": "/doc/tutorial/fuzz",
+      "source_sha256": "91f902e95484e8320b35801d1bb22c12b90f08983a3a269ca373cce96c8cc903",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/doc/tutorial/generics.md",
+      "source_kind": "page",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "tutorial",
+      "canonical_route": "/doc/tutorial/generics",
+      "source_sha256": "c15398a80cb69b1b0d486d14bb35ccb2a807a4fbcac6b7bd5319a997513aa67f",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/doc/tutorial/getting-started.html",
+      "source_kind": "page",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "tutorial",
+      "canonical_route": "/doc/tutorial/getting-started",
+      "source_sha256": "b4794678dc335ab850ceb21bc7b3a9896a401717d906a5242758803b444d45bd",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/doc/tutorial/govulncheck-ide.md",
+      "source_kind": "page",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "tutorial",
+      "canonical_route": "/doc/tutorial/govulncheck-ide",
+      "source_sha256": "b0173a57e407fe2937c85ed434dee7037eee0a9d91f495cb4d43a4e6f7dabd35",
+      "dependencies": [
+        {
+          "kind": "asset",
+          "path": "_content/doc/tutorial/editor_tutorial_1.png",
+          "sha256": "270327de2bcfc6780864bdb3338944f9e734975aaf51c7b13202f1deee64fd5f"
+        },
+        {
+          "kind": "asset",
+          "path": "_content/doc/tutorial/editor_tutorial_2.png",
+          "sha256": "b600bf6e33520902b8e53677d6f0680283df9f0d425c89acbc5cf08eeb1447bc"
+        },
+        {
+          "kind": "asset",
+          "path": "_content/doc/tutorial/editor_tutorial_3.png",
+          "sha256": "9911532454e63290afd03905dba07f7d3417364820c6348e0bdd2f4cf9116da5"
+        },
+        {
+          "kind": "asset",
+          "path": "_content/doc/tutorial/editor_tutorial_4.png",
+          "sha256": "57c6b3fabead94c7208267e5e215343a582c8618de064f97a9245b63bcc40431"
+        },
+        {
+          "kind": "asset",
+          "path": "_content/doc/tutorial/editor_tutorial_5.png",
+          "sha256": "629b502a4db1d611665b2828db9f9a22d52559bb1e8c61a9c381e735c9100c87"
+        }
+      ]
+    },
+    {
+      "source_path": "_content/doc/tutorial/govulncheck.md",
+      "source_kind": "page",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "tutorial",
+      "canonical_route": "/doc/tutorial/govulncheck",
+      "source_sha256": "6517f5eb2bc73ca2e1befbb643fcc5cd4d381dbbf404acf03bc12395393809f9",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/doc/tutorial/greetings-multiple-people.html",
+      "source_kind": "page",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "tutorial",
+      "canonical_route": "/doc/tutorial/greetings-multiple-people",
+      "source_sha256": "8119036dcc03148e6bdadf5c5e5f39a1b01d1175b4875ff04ce9591636e3e84b",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/doc/tutorial/handle-errors.html",
+      "source_kind": "page",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "tutorial",
+      "canonical_route": "/doc/tutorial/handle-errors",
+      "source_sha256": "10e61d7f50095845bd2e313add841500b189bb7ddda6c3b7fee248f8cdc53a89",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/doc/tutorial/images/function-syntax.graffle",
+      "source_kind": "asset",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "tutorial",
+      "source_sha256": "8af7a96252dfc9fcfac3b01634a4c631dd6bd2feba7176cb931b1100e16c7c55",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/doc/tutorial/images/function-syntax.png",
+      "source_kind": "asset",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "tutorial",
+      "source_sha256": "7efd01ec98551ce4ab5895943c2441f46c306c01a36c769b8e11f24ab9bcb850",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/doc/tutorial/index.html",
+      "source_kind": "page",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "tutorial",
+      "canonical_route": "/doc/tutorial/",
+      "source_sha256": "c9ecfeee2bb8e450f8f30e38b997cd663b0d904021299d5cb400796e1b43eb55",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/doc/tutorial/json.md",
+      "source_kind": "page",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "tutorial",
+      "canonical_route": "/doc/tutorial/json",
+      "source_sha256": "9bb5bed860a71bdb4dc9776c9eff2e5f4a40f1ca9851851bfd1619c1793970be",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/doc/tutorial/module-conclusion.html",
+      "source_kind": "page",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "tutorial",
+      "canonical_route": "/doc/tutorial/module-conclusion",
+      "source_sha256": "94311530fc64ba2d3f5d25e60f68df4d37248d255ecde743214d22d786f70f40",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/doc/tutorial/random-greeting.html",
+      "source_kind": "page",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "tutorial",
+      "canonical_route": "/doc/tutorial/random-greeting",
+      "source_sha256": "9951ede236291e2db0beaa868159e101bc2983f9754c587c3ab3954fa26cdfbe",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/doc/tutorial/web-service-gin.md",
+      "source_kind": "page",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "tutorial",
+      "canonical_route": "/doc/tutorial/web-service-gin",
+      "source_sha256": "3342ff17a8b087b5d5a2a3c03d3fbcf4197eafd943c65a05c62c43df0cf33cf4",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/doc/tutorial/workspaces.md",
+      "source_kind": "page",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "tutorial",
+      "canonical_route": "/doc/tutorial/workspaces",
+      "source_sha256": "4991323de780ed74be6286cb07f2b1cfae1c03d27aa80ff864a151782bd293de",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/learn/books.yaml",
+      "source_kind": "data",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "learn",
+      "source_sha256": "929aff40ecf99c211788d4edc7bd88697e290a3f7976559f39ba6403dcc8f19a",
+      "dependencies": [
+        {
+          "kind": "asset",
+          "path": "_content/images/learn/concurrency-in-go.png",
+          "sha256": "df5c4ec6d4291f5fd8e163c509c84772ed85b162ac2b1e0f636d8a51d61ce001"
+        },
+        {
+          "kind": "asset",
+          "path": "_content/images/learn/get-programming-with-go.jpeg",
+          "sha256": "2ea7e4bd51466dc340c1c6a6263b58cacf2230b389ced92bcbc86de63db4c0bc"
+        },
+        {
+          "kind": "asset",
+          "path": "_content/images/learn/go-programming-blueprints.png",
+          "sha256": "93b6c34aa03c34ad22b0aea276f6dfe30d17e9ae1f3537eca22029d4c33a85e8"
+        },
+        {
+          "kind": "asset",
+          "path": "_content/images/learn/go-programming-language-book.png",
+          "sha256": "5f78af42041654a555b930a40f2b9805c619cc8ef21712e4413c88543df4f5e1"
+        },
+        {
+          "kind": "asset",
+          "path": "_content/images/learn/introducing-go-book.png",
+          "sha256": "6e9a1429e983b1a83ca0bfefdc91acd0c1c9ceee8631ff6ca616a0974ef1f277"
+        }
+      ]
+    },
+    {
+      "source_path": "_content/learn/cloud.yaml",
+      "source_kind": "data",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "learn",
+      "source_sha256": "7cdd8b50ec77c3207c7edbcb2cd8920f5180a0937054b5d91f30104da8f83347",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/learn/courses.yaml",
+      "source_kind": "data",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "learn",
+      "source_sha256": "41e32c5136468d2cafed0876c0fddae0c909d408b30616850858f66af5b4b425",
+      "dependencies": [
+        {
+          "kind": "asset",
+          "path": "_content/images/learn/codecademy_dark.svg",
+          "sha256": "3cc58e79ef63ad476a10f65545307b2729f64e9932e71858a2616cecfc15d8f3"
+        },
+        {
+          "kind": "asset",
+          "path": "_content/images/learn/codecademy_light.svg",
+          "sha256": "05de2f4942295f297d854ea63342215b423cf37c335afe4a895f947eb6805ce2"
+        },
+        {
+          "kind": "asset",
+          "path": "_content/images/learn/codelabs_dark.svg",
+          "sha256": "cda96e10b898cfd580b380437c056bb29ab1f73b075229e07836d6678dd33f63"
+        },
+        {
+          "kind": "asset",
+          "path": "_content/images/learn/codelabs_light.svg",
+          "sha256": "bfab673d5fe7de2c03a786cbf0745c8713c9911d9ac70f642a0727d22d0e65ed"
+        },
+        {
+          "kind": "asset",
+          "path": "_content/images/learn/exercism_dark.svg",
+          "sha256": "5524964a145b401bcc6ad5991b73ae2f306e5905a101e3b9d6b8f8aab4b8f4a6"
+        },
+        {
+          "kind": "asset",
+          "path": "_content/images/learn/exercism_light.svg",
+          "sha256": "5dbff3f9c47193d280049dac01b00611440188677afbabba212a83abd625f41b"
+        },
+        {
+          "kind": "asset",
+          "path": "_content/images/learn/gophercises_dark.png",
+          "sha256": "c2177c870382fdff0fb908957f3f2b9679ff04677927a4b9382cf7ae6a1827d7"
+        },
+        {
+          "kind": "asset",
+          "path": "_content/images/learn/gophercises_light.png",
+          "sha256": "c2177c870382fdff0fb908957f3f2b9679ff04677927a4b9382cf7ae6a1827d7"
+        }
+      ]
+    },
+    {
+      "source_path": "_content/learn/guided.yaml",
+      "source_kind": "data",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "learn",
+      "source_sha256": "6df4750d39a30238a3bb460caa0fd59865d7d84f8e36278a1a92e668deb4935b",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/learn/index.md",
+      "source_kind": "page",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "learn",
+      "canonical_route": "/learn/",
+      "source_sha256": "0fde7be422a294f252116fe27325131192cd6931aa1ea84779f2e1d5c0fface9",
+      "dependencies": [
+        {
+          "kind": "asset",
+          "path": "_content/images/gophers/motorcycle.svg",
+          "sha256": "b9b975338d4536f91bfef44ba87c5ecc5973907a32441b531b6b922bbf622fce"
+        },
+        {
+          "kind": "data",
+          "path": "_content/learn/books.yaml",
+          "sha256": "929aff40ecf99c211788d4edc7bd88697e290a3f7976559f39ba6403dcc8f19a"
+        },
+        {
+          "kind": "data",
+          "path": "_content/learn/cloud.yaml",
+          "sha256": "7cdd8b50ec77c3207c7edbcb2cd8920f5180a0937054b5d91f30104da8f83347"
+        },
+        {
+          "kind": "data",
+          "path": "_content/learn/guided.yaml",
+          "sha256": "6df4750d39a30238a3bb460caa0fd59865d7d84f8e36278a1a92e668deb4935b"
+        },
+        {
+          "kind": "data",
+          "path": "_content/learn/quickstart.yaml",
+          "sha256": "89e1c3cd9ccefbb21ef3f83a167924df22dcd51a8412b3e4a9d258dddff45cc7"
+        },
+        {
+          "kind": "data",
+          "path": "_content/learn/training.yaml",
+          "sha256": "f471d8a25ff9751ce9d7e5f260e3e2d3f7a89f969b8dcd09d8cc5485ebbdb9b3"
+        },
+        {
+          "kind": "data",
+          "path": "_content/learn/tutorials.yaml",
+          "sha256": "c6bcce772bcc13f0efd1aeb027b48651da5aef2a8ee654ec7d46938b5dc18120"
+        }
+      ]
+    },
+    {
+      "source_path": "_content/learn/quickstart.yaml",
+      "source_kind": "data",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "learn",
+      "source_sha256": "89e1c3cd9ccefbb21ef3f83a167924df22dcd51a8412b3e4a9d258dddff45cc7",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/learn/training.yaml",
+      "source_kind": "data",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "learn",
+      "source_sha256": "f471d8a25ff9751ce9d7e5f260e3e2d3f7a89f969b8dcd09d8cc5485ebbdb9b3",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/learn/tutorials.yaml",
+      "source_kind": "data",
+      "origin": "frozen-upstream",
+      "package": "learn-docs-v1",
+      "surface": "learn",
+      "source_sha256": "c6bcce772bcc13f0efd1aeb027b48651da5aef2a8ee654ec7d46938b5dc18120",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/basics.article",
+      "source_kind": "page",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "1bed8a29ace157da2620d465ff65ff1dd6a0ae8b425dd6440b733aa6bfb1ce4d",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/basics/basic-types.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "b214090d7339363b9fb71a610c679273a2f75be7b4ea7dad4b1a3316868db4fa",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/basics/constants.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "99ef5d2f2a6b56116d6d5443ed8e35a590fd992707d5df38d2c85a82da94996f",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/basics/exported-names.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "dddb6dd98a3c7188c71178c508211d9975cc00b25b6d2649e1396452ccf52460",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/basics/functions-continued.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "efffe9abaa00e893adaf45998ffffe09425acbabf741c285fb039d72703e730f",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/basics/functions.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "fc3e2710007330e7a05845fc55b872a4af709b66a5afbdb57e2998ed3661260f",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/basics/imports.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "86b9dc32666cb9ecffe93b3033e60d818a146b0f679b612588126ecfc3eddb7f",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/basics/multiple-results.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "b84c0812c927736bccd57c29e023e5538b8167c12b8946c0b0549bdf24fc8aff",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/basics/named-results.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "526ddb81900c9ec089c3c1acc71dac28ee7eefc969f950d0be6265841f96709f",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/basics/numeric-constants.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "338906e7c0e0d5e81312c97b37638442b48a621d59e69215be78eed6bd003544",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/basics/packages.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "c7be4714c613e20f2ea101de9a267aaa542af90e3a92919aa991efed3c10f398",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/basics/short-variable-declarations.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "319e1a228353a44542f1e91d7150b79e121ae70f3b49c10c27a76ce8e11b06d2",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/basics/type-conversions.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "6d219de564c655056a484d123bafbbb6d1aaa41702704b84b2ab034e056bbb40",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/basics/type-inference.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "fb638103bfaf5990d88398765cf801cee94cd8e199cace94740cebe562afc33d",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/basics/variables-with-initializers.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "f470597679bb5a8c3260a4221ec0ca2e1a395ead6903141fc151798a68c85f80",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/basics/variables.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "bcf80088c0f91a10670dee99f1b893bf0a4e500016a8d83a463d58f7bc79d844",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/basics/zero.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "8e2b1829c95853f41ac3296378ba6950e05c2d7dd456bc72b410a9f6d6766e70",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/concurrency.article",
+      "source_kind": "page",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "83e3871d1591d90c14ac6538d9a737fa17c85f63077b18d3cb50d958df63a515",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/concurrency/buffered-channels.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "985ae9927256e1fcfbb38905536bbfb40394a9ba2f488eab942f94760b4d3375",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/concurrency/channels.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "8c3ce8583c8274e42ee0522989bf4cf2003b6f8045bcb6b16a6a79364f97aa70",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/concurrency/default-selection.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "609707c5ac8020cb1b2b763eaf9aa65afabcf2897aa5f938a288c1db5b2b463b",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/concurrency/exercise-equivalent-binary-trees.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "184cbbd1e662b64de6e6928d4af6f2469c7bccdbc9a8b5f477c1b694b9ab02b1",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/concurrency/exercise-web-crawler.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "bd6226dcae3b663a3aa1cbf502d840357ac0efb6de46e7a66612ca2834cf5e37",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/concurrency/goroutines.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "0e82448c75a618ad8ec8a9c4396f14553ac595137754647720c01b53498db0c5",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/concurrency/mutex-counter.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "74488ecc347a123c8538069175ffeef5ea38577bb37b2c7a9ceb6bba47ab02b4",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/concurrency/range-and-close.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "8979277aa338b1bce2934470910228501057da7be029fae1a2e1f553ea2517aa",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/concurrency/select.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "9853f886f8330b956db3faee4356105674d71cb5c1ab3d4329d9bd8ea7ef13d1",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/flowcontrol.article",
+      "source_kind": "page",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "024a07db02f6476bbd686a8a8370120f5ea031a4ca8121d18e8e2e3b18710e6c",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/flowcontrol/defer-multi.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "84e007df11a8090367b40946439a4fbbe13cb989b1cbe9046983576116e992e3",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/flowcontrol/defer.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "db8fa9dbebc8ecf1451440ebb5e6fd32ba6f2fe49a7dc10d082a80d1a9c59778",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/flowcontrol/exercise-loops-and-functions.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "65c691645723bcb2833055c22641d02e971fb57d044589144c0cabba247ba9d5",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/flowcontrol/for-continued.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "fc2be4f6f553d27f7b7fc9ef4ec03fad76e9c565b8cbcb10c0235e9876561b09",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/flowcontrol/for-is-gos-while.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "1dcd8eeb9853933f7636119ae7016f3c43c585deac17f287219af7675f907660",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/flowcontrol/for.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "2c766a2c3d82101e66bee04248c9588151a23773a967e306c0f8af6d569f9448",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/flowcontrol/forever.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "89e280ca202edd87d791d92d73b32d339eab4ff7c9ed2948fee4ac2e3283e655",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/flowcontrol/if-and-else.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "9d3030966f45fb90105c0325c9a090e8ac3fce2e7c4b10106d8f75caf0e536cf",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/flowcontrol/if-with-a-short-statement.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "1c8e9c80f45dd885d8f47e72701fa34f21ba1d8f6a10493b5d34531770eaa279",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/flowcontrol/if.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "464cb1fed8f8d7c0277373e949a55265814bee4f868ac1ede6e0500fdbd07e7c",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/flowcontrol/switch-evaluation-order.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "9e94bbb667be85e810c1aff77e343ec9cc5473b24670979d27c03caf0bef21db",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/flowcontrol/switch-with-no-condition.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "6eb1d9d6150a37ec43f4825932239b4365e9be3bff5f8619152af0de5c44b247",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/flowcontrol/switch.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "3d0ac9adffeae7ad793b8168c19f39003877fa1c1574c6cbb6436e54c935b158",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/generics.article",
+      "source_kind": "page",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "8182e3b9d553bc1cb3757104a2efb50adaa50d2edf6bc5071beee810f11186df",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/generics/index.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "398dd72a4b01efa279d571667bedbcccd1bbbceaeb77218635db48edf38fd983",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/generics/list.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "ab72fc4fd321f507abde796abe0830876e0f8bcd8661d9ce4ac34c3da2f68060",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/methods.article",
+      "source_kind": "page",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "c2323c8c35db26bd14cc374c9ac889ebc071e0236054cfb62c331867aa450d87",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/methods/empty-interface.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "d85f8033bcd5c306b883c2f8b1090950a409f0895a39bfe851a78a4cbd58fe98",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/methods/errors.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "a0825fe6310af87e48e7f46b5290814df190d1e9533d0132fd663d6bb7f3236e",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/methods/exercise-errors.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "faa69218d18d0b588bea07ccdc1dcbc26667e545ed94f0c4168ad8a4ae7c6c24",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/methods/exercise-images.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "774bbc5fa4b7284d4302f5a504f34642b89d276f845b455ecbca5abd4cada25f",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/methods/exercise-reader.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "7f5acb25434e41b1641fffd602725903cd2e217fb7f8809596c4369ac0900137",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/methods/exercise-rot-reader.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "9972063506e3a9193e7761d1118c2bd3680ed8a56f855f788403b8a193edbaa2",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/methods/exercise-stringer.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "b5bd782b7e0e7cd9541df782ccac827e8373a0867011f3fc998b8895fb470efc",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/methods/images.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "f2a68b69faf69d6423136d22afd361228c002625dbff2641ed348ef4379f84f6",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/methods/indirection-values.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "5dfa900c0c4f276ef92a2dc81f7353cee53949d9617e73185910b4335bb71329",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/methods/indirection.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "e5c7b1c4569c712d707cfd850c0b0cd431e2dca2b691d743aa990cbf51ba7d90",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/methods/interface-values-with-nil.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "17037492cd56a27644f2056b86e4e89c30926e51808c9806de37be4f12d287a7",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/methods/interface-values.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "5134a50770b5a809f4dba508ddaedb24aa670556e428a940ccae642423f5cb5e",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/methods/interfaces-are-satisfied-implicitly.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "44e0699af42c651abaa67a36b4c48143d33a8651adb0a6bb8e285b65ec058dc2",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/methods/interfaces.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "2530ef039212284377a46fe1063db6206d8db3a42a8138c6eed44275bb7eb10b",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/methods/methods-continued.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "98d5a7354796ef23f7c85e478fd4024590003eb7a945d9a4b3511a834eab6d72",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/methods/methods-funcs.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "8bd4fd3afccbebcdbf0f44c5165f99b27f4a0bd6a0734cad74a5660c04248a89",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/methods/methods-pointers-explained.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "eddc74d43e02c068a3d8a3b2425ca18792071ec6fafad70242da499908ef1e3e",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/methods/methods-pointers.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "89165956b72e9a9a2b92bedb481e260e09684cee9a8bed6a63f1b9a9fc23ec9a",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/methods/methods-with-pointer-receivers.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "4b18eaff90f92cccaf08a516e840f39805fe7285281592c7afb556c0831bafb6",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/methods/methods.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "b08219899abbce3b140ab63aea2798511e8418581e9bac1309431eae1bfddf5b",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/methods/nil-interface-values.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "6a2d88c5166f626da9d32e2cbb7fdd650b918f93375fdfcee8a2b74defb5818c",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/methods/reader.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "efe45163df17ea9c24da5ad0ba634265f680165183bb0bc98ed33b171c5164e0",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/methods/stringer.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "5ec1e0c528bbd763109e2034c0924b42fa257df8881b0f28dc053ab1c3de4c36",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/methods/type-assertions.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "a6ec653d5e517d292e3f052089594de8857188faba4080f758a46929ae52cf2c",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/methods/type-switches.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "ce4166a505edf4d9963f0ef0ae719cfdfa9c9291e3fd1d446432d61a712dc93a",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/moretypes.article",
+      "source_kind": "page",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "12cbd01c6ee3ecfc3ed1b91d51478eed0c7153e8f5f8abebe1da58920144e205",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/moretypes/append.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "655ee5085fec61bcb38c9f029741bb1a06a414f94b8b36ed0362055b0d6b10bb",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/moretypes/array.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "fbc7787edd0ae7b8ff62951529c15895dfb8cd987322bd69fb13bc4d7244209f",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/moretypes/exercise-fibonacci-closure.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "a04ba02819628af3c95c045330a5ce733f9f182e755e6ba74e78c0aea602530c",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/moretypes/exercise-maps.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "a520696047b06ca711783426e6c00e9673f8eda06cf3b6180a72a6b8cfc3a362",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/moretypes/exercise-slices.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "62284c50db0f192347f6a25f704d8d5781a3e8d838644ba25db5de953ce14cc9",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/moretypes/function-closures.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "e8fbd0cecfb7816c426e9ec3065d2fe77a192b592578c2f979eebdfc15e6ea63",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/moretypes/function-values.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "ebd880dd3dc47483d0fb2e60139e7562b3e324141a562d46f6f2f09872141e03",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/moretypes/making-slices.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "a4dbf0f6f266bb68e7da1cdcbdba7c4bb8711a3065c93ad2dffd7fc4f7c09b1d",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/moretypes/map-literals-continued.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "08d059d62b2154f62396758512eee17c321d69a7d58c5f65ef55e2d6ac7681c9",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/moretypes/map-literals.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "4c046a6dc458fa624c61e0d0a6d1f21184254c048cb8bec6aa43e88f66f86e91",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/moretypes/maps.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "007f3e93922a26b368d17452d4fdae812fde53c59f13e1c391e02c25f4a7dd98",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/moretypes/mutating-maps.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "a8f33f1af579189d54372c64e2c9648110b968ea5972e58cc261f7ff9f96a15b",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/moretypes/nil-slices.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "73d805ba5558987b2695d6c72ba640a91bc59eade8741a61505f871e665ed1d9",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/moretypes/pointers.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "bbc4a25d868979e959aa383f0de7894135e7f8ae4b2d766e653a033178a9a378",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/moretypes/range-continued.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "35d4b89b2875bcdabc0521134d46756f7ab6fbf5bfb22ebd57c9eab15804b6eb",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/moretypes/range.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "9b446c2eee69714d5ce96301dd1ae23e8b8b360d1efb93b4aab1e992eda1f404",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/moretypes/slice-bounds.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "1b981b8e3c99c40507901b603eda4e46188777b8cd817288f7afd734bffaa264",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/moretypes/slice-len-cap.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "b2e5f7a96c8a04998c150ebe6ce344bc198db8b18f4826e6a85ff75ae3033f98",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/moretypes/slice-literals.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "b085416ef12627bbd6034c78314d61df30a66e4b5d2b3b6cbfebd5befa27c897",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/moretypes/slices-of-slice.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "545cde9f9bc3ec940adbdcac0a801f5e834b6ee3cd5bf1b780f6f81d556562b3",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/moretypes/slices-pointers.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "632c673f8ab65d6b80ea9ed95cad3f4076d54b1d5bfdf3b53fdd279bd2ba569f",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/moretypes/slices.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "0e12dd1947600bbecd652f30e9f40e387507d297f3a67d055e257db1ba948834",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/moretypes/struct-fields.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "ceb61b9ed4a0107277c23920ae484ef4ce15722a5e5acc314ce911a0deeb32a6",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/moretypes/struct-literals.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "c54fd1b039d00a926550fd74ac26c6ed6388c8ca6fe043e64ebdaad921ba2761",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/moretypes/struct-pointers.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "961b37937f55e07ca6fa25dc6c1d98bb44b442685b6cbedf1b3b05688756c09e",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/moretypes/structs.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "5d31b8e45b54ec0bceab81f1c5172523b21b5664c822c665501b6466a4e46c64",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/site-metadata.json",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "9888459673a70294cd7a79557867ff9d9c0f4f5ee227fb285454ef71e07d5bf1",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/solutions/README",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "1da009415a2fa3f29af178215349ad8ac8a086b9a74f357c3a7682db395a2101",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/solutions/binarytrees.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "3276c6628b5a36c2c41683aa4eb28834272f8af6598923ec5d6b908b04e72bb8",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/solutions/binarytrees_quit.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "25157973b97a82b066516ea92df34bbb6ea26294603a471be5523b2ab19a8f03",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/solutions/errors.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "d41cb89d4e7c6fc70f8295fa933a95b50b058a6566b7a731f57ca41fb0894418",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/solutions/fib.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "02018f3bc639db5424e173efcdacd9c789a041dc60f55184ea4cc1299e0ac7f8",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/solutions/http.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "148fbb73dca1c25687538feccd1e4b19dc67a4af7c28b52cdbeab361ca20d8fe",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/solutions/image.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "d78cda6272212f8a73bd991efa502753b4ff36edcd004b21539c2111b16b547f",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/solutions/loops.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "eb6db8129feb19a3ce8b1aae02b7f579f9ea3b14af233d5a0b37c495a781dc7d",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/solutions/maps.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "2573eaf263713147101f200ec239d1cc7db9657cc95d30667f5c2fb7087ff12c",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/solutions/readers.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "6086e0029480b202ff1d5bc81ac9d6343103f25afd40ac56635d0cf65e41038a",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/solutions/rot13.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "a46d83576a2ef31663d22225a32740c3ab70d3dc11066318ec471c57cd2a854f",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/solutions/slices.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "95119b8cd62eb8b0998ad80be30fe642931f52a06ddf80676c684f4438728d40",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/solutions/stringers.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "270d781f1e5696bde89be0aa97c7fe86ff832547a94e32cfe571e7acecdec5c0",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/solutions/webcrawler.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "490f194b0e0610dde7196a8cb2ebec643586a6f05f94a1aabe7a29fb526b8882",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/static/css/app.css",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "12eaaaec8fca2b18e0f2ded9e2538444b14349478e28904b59794e148effa5c3",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/static/go-dev/course-ad.css",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "8c39a3433e3ffabbaa3f7f2fe0b6d49d7c6f80abc72b401b03a8e4ce2ccd8705",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/static/go-dev/course-ad.js",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "51637657e333617467541ba82ce497c32fbb840242d9f8cccac894d8951e8774",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/static/img/favicon.ico",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "cc1981269d7435d205eec16f531192cf12452f6b230f8c8a936236175777fc12",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/static/img/gopher.png",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "6ebffb91e71e654f4ebbbb55673449ad1d1437d373685874e59647ce92d69f2b",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/static/img/tree.png",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "cec93820212ffbcb1660ba877e551b553fc295838e487b105d4e3994bf99fb32",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/static/js/app.js",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "099aa1cca5d4e694fc1719411293ea5439dda8f4bbe45a40bf46213e981a51ed",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/static/js/controllers.js",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "0807be157f002b5f91ff55ec1233c4dce6c5932fc5913b6bfde215b67e22308d",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/static/js/directives.js",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "2d1cc0a600ce3727ae0f9537f79b7500338688dae57737589f22d2bb3ebd0c95",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/static/js/page.js",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "c95f29cdf827a5b288fa8296bf7b0b2711fbca0daf607098309825c52e189646",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/static/js/services.js",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "f614587aeca0e46ccde10de9d1fbcb92ba3e558a2eb44ca111d67564c9e5ae73",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/static/js/support.js",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "2c6fb8da3271a29f19a1e6e0ddd76d5465991d746fcfa152e4b0690b1ebaef10",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/static/js/values.js",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "adb346c81037d0c1a65a201ed6191c4f69a24d913ec0861f79b389581f6fed4f",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/static/lib/angular-ui.min.js",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "a410f8bf4a06b2ffd097fd7630c761dee535c9fdbe4e0f0de309b33525f7adb3",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/static/lib/angular.min.js",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "b799b5bbd9f1a1d763d3bfc1c88bce9f0b347e72fcf796188a030f0f0a700d7f",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/static/lib/codemirror/AUTHORS",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "e84789644b31f64dc111cc527afa785d61868735392c6d5e7d7fc92ee04db016",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/static/lib/codemirror/LICENSE",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "a3f2fe2ac6b471aa80c737c5d283dd049bdc903a73835ee6d4d2cac02fdd53bf",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/static/lib/codemirror/README",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "59c44ed16b6f776cee11774403d4f6ab7f8eff95246e326bf7fbc6869012e6f8",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/static/lib/codemirror/lib/codemirror.css",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "b55e7aadeb9e5f9681910b5b6654669b019ee50e71c9777441f2be8daf2bf002",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/static/lib/codemirror/lib/codemirror.js",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "e816592a29d8879f106dcc3228903952d70e29fb4f167d49fa15bee238cb8933",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/static/lib/codemirror/mode/go/go.js",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "ad0fa2e56e74b914409f1585ed217c21386011c9461f6ef620429bbff8220368",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/static/lib/jquery-ui.min.js",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "9528ca634fecad433d044ddd3e6f9ce1f068d5d932dafdbb19d8e6daea1968bd",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/static/lib/jquery.min.js",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "d8f9afbf492e4c139e9d2bcb9ba6ef7c14921eb509fb703bc7a3f911b774eff8",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/static/partials/editor.html",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "1fc9e5eb93efcf3f3730f53a0fb6c6990f649a3b0f83602f30200da54685ece2",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/static/partials/feedback-button.html",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "13c33a8869b9afeb14f7d6b6ca769d023e84343886e13a5e0c9504e23b449ed7",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/static/partials/lesson.html",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "a0a398aa091b075465a00c565bb9960180a278aee3343f6fd50deedf0cf94864",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/static/partials/list.html",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "89339f5288d56a145a6bd71fef1aa879cfd4e5591984050d7f75d3acab462742",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/static/partials/toc-button.html",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "58966d1f04de1bd90a8489efdec9232cb6f212a5ef6e1c260b4b1028bd95e604",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/static/partials/toc.html",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "960edb464cc8c2b40b94c3c2db7bef777b69eba421bbdd08a922f3bf1deefaaf",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/template/action.tmpl",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "db4cb2b06a009d226e7bc42388a4a1e61a31143a388daa36594e7c21314315e0",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/template/home.tmpl",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "b4adce4d6cc8370424448467a1d6e017a24a33526874bdfea2e939150ffed401",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/template/index.tmpl",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "161962d9073704b9ace70f7e77172e86818c67a52293be9ed6649b50da40168b",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/welcome.article",
+      "source_kind": "page",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "02e76aa5fa99b049d80339372698d823da15e3cc02b5ab5e1cf6dc3b51797a51",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/welcome/hello.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "e3b8f04479ba8d86edf3dd3ef095b6f7b6200bcbd361e951be97ea507fdff72f",
+      "dependencies": []
+    },
+    {
+      "source_path": "_content/tour/welcome/sandbox.go",
+      "source_kind": "asset",
+      "origin": "repository",
+      "package": "tour-v1",
+      "surface": "tour",
+      "source_sha256": "4eb8090f7e6b57f2e9fec950060721974187c98007124044135c816c24a3ba53",
+      "dependencies": []
+    }
+  ],
+  "identity_sha256": "cff2f7a6435d807363682a724c1062a9c31f28c6966c3277eec2814731c95f43"
+}

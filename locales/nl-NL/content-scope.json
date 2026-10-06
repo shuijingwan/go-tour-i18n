@@ -1,0 +1,1655 @@
+{
+  "schema": "go-learning/locale-content-scope/v1",
+  "locale": "nl-NL",
+  "packages": [
+    {
+      "package": "tour-v1",
+      "state": "complete",
+      "package_identity_sha256": "926ee5bf113ecc24d9128ed4531e740092f2ca88f6f154cf101f6b8478ed83a9",
+      "source_authority_sha256": "48d09f17bf06e4beb9d05bb5b70465f5c6677406d84a3b9d125307f17d63c054",
+      "completed_surfaces": [
+        "tour"
+      ],
+      "local_canonical_routes": [
+        "/tour/",
+        "/tour/basics/1",
+        "/tour/basics/10",
+        "/tour/basics/11",
+        "/tour/basics/12",
+        "/tour/basics/13",
+        "/tour/basics/14",
+        "/tour/basics/15",
+        "/tour/basics/16",
+        "/tour/basics/17",
+        "/tour/basics/2",
+        "/tour/basics/3",
+        "/tour/basics/4",
+        "/tour/basics/5",
+        "/tour/basics/6",
+        "/tour/basics/7",
+        "/tour/basics/8",
+        "/tour/basics/9",
+        "/tour/concurrency/1",
+        "/tour/concurrency/10",
+        "/tour/concurrency/11",
+        "/tour/concurrency/2",
+        "/tour/concurrency/3",
+        "/tour/concurrency/4",
+        "/tour/concurrency/5",
+        "/tour/concurrency/6",
+        "/tour/concurrency/7",
+        "/tour/concurrency/8",
+        "/tour/concurrency/9",
+        "/tour/flowcontrol/1",
+        "/tour/flowcontrol/10",
+        "/tour/flowcontrol/11",
+        "/tour/flowcontrol/12",
+        "/tour/flowcontrol/13",
+        "/tour/flowcontrol/14",
+        "/tour/flowcontrol/2",
+        "/tour/flowcontrol/3",
+        "/tour/flowcontrol/4",
+        "/tour/flowcontrol/5",
+        "/tour/flowcontrol/6",
+        "/tour/flowcontrol/7",
+        "/tour/flowcontrol/8",
+        "/tour/flowcontrol/9",
+        "/tour/generics/1",
+        "/tour/generics/2",
+        "/tour/generics/3",
+        "/tour/list",
+        "/tour/methods/1",
+        "/tour/methods/10",
+        "/tour/methods/11",
+        "/tour/methods/12",
+        "/tour/methods/13",
+        "/tour/methods/14",
+        "/tour/methods/15",
+        "/tour/methods/16",
+        "/tour/methods/17",
+        "/tour/methods/18",
+        "/tour/methods/19",
+        "/tour/methods/2",
+        "/tour/methods/20",
+        "/tour/methods/21",
+        "/tour/methods/22",
+        "/tour/methods/23",
+        "/tour/methods/24",
+        "/tour/methods/25",
+        "/tour/methods/26",
+        "/tour/methods/3",
+        "/tour/methods/4",
+        "/tour/methods/5",
+        "/tour/methods/6",
+        "/tour/methods/7",
+        "/tour/methods/8",
+        "/tour/methods/9",
+        "/tour/moretypes/1",
+        "/tour/moretypes/10",
+        "/tour/moretypes/11",
+        "/tour/moretypes/12",
+        "/tour/moretypes/13",
+        "/tour/moretypes/14",
+        "/tour/moretypes/15",
+        "/tour/moretypes/16",
+        "/tour/moretypes/17",
+        "/tour/moretypes/18",
+        "/tour/moretypes/19",
+        "/tour/moretypes/2",
+        "/tour/moretypes/20",
+        "/tour/moretypes/21",
+        "/tour/moretypes/22",
+        "/tour/moretypes/23",
+        "/tour/moretypes/24",
+        "/tour/moretypes/25",
+        "/tour/moretypes/26",
+        "/tour/moretypes/27",
+        "/tour/moretypes/3",
+        "/tour/moretypes/4",
+        "/tour/moretypes/5",
+        "/tour/moretypes/6",
+        "/tour/moretypes/7",
+        "/tour/moretypes/8",
+        "/tour/moretypes/9",
+        "/tour/welcome/1",
+        "/tour/welcome/2",
+        "/tour/welcome/3",
+        "/tour/welcome/4",
+        "/tour/welcome/5"
+      ],
+      "local_route_families": [
+        "/tour/**"
+      ],
+      "evidence_kind": "legacy-tour-closure/v1",
+      "evidence": [
+        {
+          "path": "data/locale-surface-reviews/nl-NL/20260916-header-navigation.a-gate.json",
+          "sha256": "ea6846ef582578de55433def5f66f9f8ba7e9ea1c475509aef3c6062960fe80e"
+        },
+        {
+          "path": "data/locale-surface-reviews/nl-NL/20260916-header-navigation.md",
+          "sha256": "c9ac216d67d6e02795337ff18facf81804fefab3fbccc80e9b6cbf7da2affd8c"
+        },
+        {
+          "path": "data/quality-check-snapshots/nl-NL/qc-001/manifest.json",
+          "sha256": "8ed61d1b4fb510e426b97d26f22d34c42472e4598bbf325eee854708dc86772a"
+        },
+        {
+          "path": "data/quality-check-snapshots/nl-NL/qc-001/quality-check-results.json",
+          "sha256": "35222b03ef6a2a2ce1611f8130cf7e33352d35e6a673fee67aa3cbd83dbd6712"
+        },
+        {
+          "path": "data/quality-check-snapshots/nl-NL/qc-002/manifest.json",
+          "sha256": "11ae8e6a3f8f8ce0bbdd256ada9f2c725d586189c47f1db1d8926f556a6d9899"
+        },
+        {
+          "path": "data/quality-check-snapshots/nl-NL/qc-002/quality-check-results.json",
+          "sha256": "6fe23b47ec56085b5abf69125ee768fda6554ed9559dee408333fcacd9ba9412"
+        },
+        {
+          "path": "data/quality-check-snapshots/nl-NL/qc-003/finalization.json",
+          "sha256": "a8b61349fcdf2e759f3f9ef2b64d0300801b8802c598f42a97aa2425297594c2"
+        },
+        {
+          "path": "data/quality-check-snapshots/nl-NL/qc-003/manifest.json",
+          "sha256": "e3cd98b1db88d9691153ead8f48db155a957d5b5c946c39f04428ad8eb481efe"
+        },
+        {
+          "path": "data/quality-check-snapshots/nl-NL/qc-003/quality-check-results.json",
+          "sha256": "38dd69748c349a36acde927afc94dea86e40850ff7110281a1657710428d605f"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/candidates/basics-10.article",
+          "sha256": "bfc9d3adcde304e1eb4e0e3c6d47e62b628ba32235690b5beae0f7e7f285175b"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/candidates/basics-11.article",
+          "sha256": "0c4e73780dd265145fc8457adda8b12e065ae14515f447ad557d1fbc17995ed5"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/candidates/basics-12.article",
+          "sha256": "c39cdeccbbbe5073a373698efee11d07f4e4d1296dfe57ea1b970ce54e3802c1"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/candidates/basics-13.article",
+          "sha256": "711c034910346d9c8a4afa3ec778b77fe9766fc8fbed1f6bd8fd080859191295"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/candidates/basics-14.article",
+          "sha256": "2c49f9adfb12353ea6cc687ad28d4ab5bdd5fbaf34fc2edd2c32931d405e39ba"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/candidates/basics-15.article",
+          "sha256": "b6f44da64443fec46d03967ae7253296d7d69c1a0950b86408c8502f9fd57d58"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/candidates/basics-16.article",
+          "sha256": "24e7a7309585e15434641901fa67e4b78f45d7ac8ab9d4291f6a955f29487ba8"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/candidates/basics-17.article",
+          "sha256": "6c9f51ed2c40cf4cf918309bc1ceafb4b6f8c4242c7a91242e1750386d6e51d7"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/candidates/basics-2.article",
+          "sha256": "c2c488b724ef70421f0e2b7a566256e9bcff2d22ababc05cfea467f8155ff087"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/candidates/basics-3.article",
+          "sha256": "b0513c54f9522675a210981db1293145f2f22b493060646bd5136eccb53805bd"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/candidates/basics-4.article",
+          "sha256": "a8c31fcd74f70cb61acc7485cdb8c4c1d124f310371af5b73f21a8001f2c9f7a"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/candidates/basics-5.article",
+          "sha256": "2d98d6301f7fe1fee16b649af16e39f96c03b5b7fec90729108be38e03a30ff5"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/candidates/basics-6.article",
+          "sha256": "fd60be72bb6da9e643329511185fc0c381c48bfcb860e235a474ebdf5128a68a"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/candidates/basics-7.article",
+          "sha256": "c46130451d8a6840b50d97f79b4e1c7d031d1c6aaae6e32cd141e74b165774fc"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/candidates/basics-8.article",
+          "sha256": "5084485bac924bcf9569e25f33f96431adf868d4cc6b32987eb7c0965fd9f9cd"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/candidates/basics-9.article",
+          "sha256": "39f3d3ff769c24249c45fd13c7b15d07f350a2df861a80239709a2665dd5fc0d"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/candidates/flowcontrol-1.article",
+          "sha256": "09585068c3e19a2c14f0641bc4b16ddfa618ec24edc550ab0d3e6a62ff4792c4"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/candidates/flowcontrol-11.article",
+          "sha256": "9da83cd42ff9594bbc9d5409ed8fdc20b19374a2f2f0bfd0a0be5bc77fde687a"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/candidates/flowcontrol-12.article",
+          "sha256": "2c4045619be43231b2526cc91fc3f76266c2daccaa8c0a2488d647dcd2203194"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/candidates/flowcontrol-13.article",
+          "sha256": "1029db4ac1082e0b0f8271feb2ee21bfb7b07838ccd5714c8a6badba9de99da2"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/candidates/flowcontrol-14.article",
+          "sha256": "6c9f51ed2c40cf4cf918309bc1ceafb4b6f8c4242c7a91242e1750386d6e51d7"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/candidates/flowcontrol-2.article",
+          "sha256": "a7c7efe66e97131e18cc4e72fba57b2e550dcc8faae76be601ccdbd0b0bb1b08"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/candidates/flowcontrol-3.article",
+          "sha256": "b314de765f2bbd089d1570569343851f5016e8926e2aa60e71543c0d521da84d"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/candidates/flowcontrol-4.article",
+          "sha256": "d160aa4459568382d384d0cd3091e813ccade723d8a229aab1e4343a68c738a7"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/candidates/flowcontrol-5.article",
+          "sha256": "d4d6ddc22e2ddedff4c1154c88074402d6bc8eabc7399fb66d80675761f3b57f"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/candidates/flowcontrol-6.article",
+          "sha256": "25a751778835847c3431fd7d66082501ac6e5abe7b0bef100712bf8dea9ba168"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/candidates/flowcontrol-7.article",
+          "sha256": "4edbbe0cfaa1e8c785f8a3d9a22eed6e119bc35bebacb2b72ce32ca26ad98b85"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/candidates/flowcontrol-9.article",
+          "sha256": "9601d577b77bd6857551bfb9c5e6c138ed51c59bdbe9a05ecf2855ad536b2d1d"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/candidates/moretypes-1.article",
+          "sha256": "4fd09b7b3edb0430f060e4c58e1c646623c5e6233bbedff217d0ae19559ee4c0"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/candidates/moretypes-10.article",
+          "sha256": "5a3498062a1a77c99626408a6bfd159e773826e001487a67040bc7f01551f5bf"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/candidates/moretypes-11.article",
+          "sha256": "ac7c3f3952f3acf303de1bc9b7835cf9993de9994f36509b42cbcc963321edc9"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/candidates/moretypes-12.article",
+          "sha256": "0300b857b0349317cfe96dac72aebf8999f903c8dda50d107158f6cdfeadee72"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/candidates/moretypes-13.article",
+          "sha256": "46c8609da7b1d8d5902548546f94d6eb0b36190f44fce4ac5ffff4388a8bb58b"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/candidates/moretypes-14.article",
+          "sha256": "0cf8bc7e8b7f0e50bf701917c0f8b66d557e98b47882e3d577fcb23ca73eb021"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/candidates/moretypes-15.article",
+          "sha256": "ba6dff78fef306363aa85cebeb329b50abdfdf8fa696ff95b7c9d40bea6cef13"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/candidates/moretypes-16.article",
+          "sha256": "fc652ca240fd451118cdd87f70b818fd6f8d5f0b705175feeeb510e951ca2cc2"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/candidates/moretypes-17.article",
+          "sha256": "94050a38b3251ef058ca84ffbfac8d3017edfa14f53b288c2b9c8c7acb44117b"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/candidates/moretypes-19.article",
+          "sha256": "8f7d7abfa4358aa1d2fdc234f30b98627e9308212445c770c8fb3d969a21fff0"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/candidates/moretypes-2.article",
+          "sha256": "baa275bd751dc3ea49276c84880d83b31f570659f9c7350be24634c860468994"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/candidates/moretypes-20.article",
+          "sha256": "c9f30f3b35d8ccdcf4fce775744d7b1a0219a90f4efd45307ba2b3c39430c8e2"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/candidates/moretypes-21.article",
+          "sha256": "3ecdc4e68f5d22ff6538e47c470ad0b3ae390252c403c928b6d1fe4849147afc"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/candidates/moretypes-22.article",
+          "sha256": "1179f71c661f08315ee3409b8bed43166721eb0a5484bd4879bb36f9826b6941"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/candidates/moretypes-23.article",
+          "sha256": "0205d6446cb5dcd599401e469fd64e3b6762e201cec217769e8c077cbac069dd"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/candidates/moretypes-24.article",
+          "sha256": "8eb58fff851aaa4f11b0a3ec5dbc0a31556fc2e79f8e4e9b61c10a5d55b92f6b"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/candidates/moretypes-3.article",
+          "sha256": "2a9c51a17f4ce05b33b0d756e0c5e345c95c9f643e80e3561fe4f0801418d5ff"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/candidates/moretypes-4.article",
+          "sha256": "5d9ee9e3d857f6133171343b60f3d374392c728c4ea513201bf6e9df441421c6"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/candidates/moretypes-5.article",
+          "sha256": "84af161a71f5d34523534954fb96eecc59c475b53e998bf9657ccb0cdf5d05c5"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/candidates/moretypes-6.article",
+          "sha256": "64c29328e4f08e4227a173c83b027952cbc1e83d277bb9e6fc2ff48358f776bb"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/candidates/moretypes-8.article",
+          "sha256": "ccac0eb610e69cdef2618a9a303ff50d44dad1e3ce324283d9ab069f02cc16ac"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/candidates/moretypes-9.article",
+          "sha256": "0de3551c4dc2df401ec28136e89faed59ef1f54ae2deb64f8d70400c3d7b1206"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/candidates/welcome-1.article",
+          "sha256": "87976269775269184483ed33a9d3254e1c28fa12b1983f83c4c1a726f31d96bf"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/candidates/welcome-3.article",
+          "sha256": "9d517ba09771fb2e62d3266ea036b291a3d3d8a6f0fec5388fdd0956029ff77b"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/candidates/welcome-4.article",
+          "sha256": "552f0f54654a1d9a4b4acfc5b19a8e1e5ef87c5ab746fed0da5c98294cb9688e"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/candidates/welcome-5.article",
+          "sha256": "fb3c39b59093c1e0add223220b985a25c4a1488b157c021d7c420d64adbd5a70"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/validation/basics-10.json",
+          "sha256": "ae6a33be49ba3f5880eaf51100d15fad37727748e92b0861311ea5de94fa135a"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/validation/basics-11.json",
+          "sha256": "8abd718e41d0bf25bcec7caeb5b8687fa56c9637a93c39fc1ae67fc2c2918bfb"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/validation/basics-12.json",
+          "sha256": "f46e345cedd2f3b22c0203b2915e75b774f0efb545627310348362a550280b8c"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/validation/basics-13.json",
+          "sha256": "75c1d0909b0e38f9758b7f9dd95a44966860b49b2cb9bb9604077d30a070fe83"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/validation/basics-14.json",
+          "sha256": "9f2cea6da2568031a8b8282be26edc2e8f4ab08ac2ff348b168256ac37db1bea"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/validation/basics-15.json",
+          "sha256": "a0eab04344ed6d652d998e344cfd3811790761070843ef83b4b70fbe43ceae4f"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/validation/basics-16.json",
+          "sha256": "f26a8f2d43dc995d4e401542bf290016cc84d774143059ba0d3df62810fa8100"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/validation/basics-17.json",
+          "sha256": "9e347574539a55fcbf3dae82dab973edd86d99663be364b05376e9d5472c7f64"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/validation/basics-2.json",
+          "sha256": "844495d9be952cbe417ef0a855774fac3fb124276a9dcf8e126922a2471acb9f"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/validation/basics-3.json",
+          "sha256": "52750fefbae7a5c99734e3bac2b77398ae8a37c2d7c4e5ae0cade21a2f76252c"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/validation/basics-4.json",
+          "sha256": "535736fb7695cfd23ae00daf16206b66033e1dcc65a9b94a932287be806cdfa0"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/validation/basics-5.json",
+          "sha256": "b2cacf8a3d7244e81f000b1507e78d8dca57be65c8035cd93b7057826f84c9b9"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/validation/basics-6.json",
+          "sha256": "46864e37d53f2b936e3f6aecba96a5e93a9dc677789f6772aadab422f6fcead3"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/validation/basics-7.json",
+          "sha256": "774e0d9a868c1724a0230e26fbf4377ce690aa57eee734e8c533f6e162ac17ba"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/validation/basics-8.json",
+          "sha256": "af1f3b13b546e1fe9256301d8bfa61ff288d1207684047a1f3f52b67f26030eb"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/validation/basics-9.json",
+          "sha256": "655b06efe80db7fb06e562fe84b9dbffada2852147c845ced84ecb9f15995b67"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/validation/flowcontrol-1.json",
+          "sha256": "fd51eea66447869b6b5ec8195d90617671cb7f264966fe0053930981b83007eb"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/validation/flowcontrol-11.json",
+          "sha256": "09d94dd9af66930a8c6ba2b89df77e3b4611021214ba168235383e343564dad2"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/validation/flowcontrol-12.json",
+          "sha256": "101bca25b982203227454475c0af31b31daef20733b3233c52ac41b036b19804"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/validation/flowcontrol-13.json",
+          "sha256": "d642ae251afd3a129b3eb49474e5afb40209debcf5b16725f2ca7d78744ca3aa"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/validation/flowcontrol-14.json",
+          "sha256": "c155140ec6f5e89b5feebed3863e6de51fda3c36d20ee3de15facb5249431d08"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/validation/flowcontrol-2.json",
+          "sha256": "4f38f1cb7ec4d85c0900ada41e70e29860507a3be55aabb28575a785602f2e97"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/validation/flowcontrol-3.json",
+          "sha256": "aee95498b9f5832a709019d114b3f3342e13e28e5b15f610ed95e3347f483491"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/validation/flowcontrol-4.json",
+          "sha256": "8a1dec6e8f2958b135ba9d66ff1dca12f6436e9f65adf2c7feb30dcc21cf513e"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/validation/flowcontrol-5.json",
+          "sha256": "fd7a843f012bb0d8cb2d26c9efca90016edfdd665f7469271b298cbcdc5e67f5"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/validation/flowcontrol-6.json",
+          "sha256": "23a628e41fcb26e0142870ac7f379d36cd4f2862b75c5a8449263f841c983a74"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/validation/flowcontrol-7.json",
+          "sha256": "70a3ab6747b77ee4eea216f8d03f742fbbe0b276798da8dcd43c1fe9796851e3"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/validation/flowcontrol-9.json",
+          "sha256": "9ee9b29f9541993b6106afbac4d70c14a13fadf34d99d8891b7c45fd5115b5c7"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/validation/moretypes-1.json",
+          "sha256": "e2d37fa2327193bdf609d20c0a98524c356dd4ee4a177f350368b370cfa8464f"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/validation/moretypes-10.json",
+          "sha256": "f31b0d18d10792379b757430d80a61a254fc6ed6c901988c6b553ea63989c162"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/validation/moretypes-11.json",
+          "sha256": "c6a4c0cf554ebb4847ebc81a71d1db53a2f4c3c6fd76d0c950b4b345e0e1a05d"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/validation/moretypes-12.json",
+          "sha256": "24732e3a827af54108b1234bb6f205c217afe148af0fa404c039a1703c465e99"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/validation/moretypes-13.json",
+          "sha256": "3b3ec26076f17047755b66564d7a8a649d4547e1e8021a86996dd30bdaabac3c"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/validation/moretypes-14.json",
+          "sha256": "9ef4784890bc932b3520a5670ec5f9fb5eb4d6a16e1e3f28fcb19917c7a8f50e"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/validation/moretypes-15.json",
+          "sha256": "5e2215c8366a90dda603fa07a2b027c762fbbb38562b68c9e23397ac6b8df17e"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/validation/moretypes-16.json",
+          "sha256": "d142983956ad9e38cc35c44707f7fc3cfb38c6529195a02cba2c668a1b8c5837"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/validation/moretypes-17.json",
+          "sha256": "076ca30856d5810f16bab1d549707c4a79f58d57018232f15d7bae8122299247"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/validation/moretypes-19.json",
+          "sha256": "03f184ce92f380ea82fb13a8d3a179410429044414571e71233a1b8ac0868c97"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/validation/moretypes-2.json",
+          "sha256": "df66a07b03e75b82d2a89557971506a2e0decd6eb0bb1d8b59c9110a6f3157f1"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/validation/moretypes-20.json",
+          "sha256": "b8eb91ab9b369152d0db581a841187d41bfc3e2ff74a7a5f748e9ddc63943243"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/validation/moretypes-21.json",
+          "sha256": "f535db24a08f2cadde7b790c3dd5b48ee9d7c0943b7b19729488987dd1d100a5"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/validation/moretypes-22.json",
+          "sha256": "0caaa6ea4deaf2a4ff2b0e23be169f00fe56522a551dc75d0ba27a04f5496aa7"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/validation/moretypes-23.json",
+          "sha256": "f59a4e74a1f1e08112d5c1c2ee68a0d4c5f67c4527e49ba22ceb08b3e3f46d70"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/validation/moretypes-24.json",
+          "sha256": "e37cbdb58220f7689ed9fad91b26be367d0b9576f1dacd0e67ef2541ef43fe89"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/validation/moretypes-3.json",
+          "sha256": "7c38adff27e4e4e1f50e6647d7eec4e14e5c108b350ab0447cfc9d8d432b1b1b"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/validation/moretypes-4.json",
+          "sha256": "9fe93a11290b8382302c0c11580c3fc1ada8f683a180b258495e20b08a11c122"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/validation/moretypes-5.json",
+          "sha256": "e47f34b8b2df055057f3b54775ca308cfe70f17ad62e911fbe84c67522788b83"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/validation/moretypes-6.json",
+          "sha256": "560894ec6a4d056cfe11d11afbe73f1ecf38c4a8fbb451af8a7e2159b9481a6d"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/validation/moretypes-8.json",
+          "sha256": "2a445f3c938796c8053126a4d0c236a9243ab60fed797a7a9d4fe9437fd1521b"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/validation/moretypes-9.json",
+          "sha256": "d8ea722f42eecf00b4209b4a156454de3457f847cf84359711bc6ea5e732b5f6"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/validation/welcome-1.json",
+          "sha256": "4956c617ea77129b683ed865f1b397fd4657d4f32413982a575e4f121af6305e"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/validation/welcome-3.json",
+          "sha256": "8987695e1e5d6f12a035b2f0d3b8f97e15277acaa6c2ccf1de5eb0886afef66f"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/validation/welcome-4.json",
+          "sha256": "fe31037478f1056ffcd89dd4b6ce0850c4578ffcf870ea77464e6bc366349bcd"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-001/validation/welcome-5.json",
+          "sha256": "d9e36bed5a637ceca2874a6f0676c329b0f82be83fa3f793f21f0d382d7bbf0c"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/candidates/concurrency-1.article",
+          "sha256": "ab9678d253f4a68fe7a526ed83eb8a93d89b8726360f3593cd0e98124f626353"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/candidates/concurrency-10.article",
+          "sha256": "bfabd1e0ec3d13205a5fdf4319ddb42dc04cad391ae809f9a8128933cc23a7ac"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/candidates/concurrency-11.article",
+          "sha256": "09511b426cf3864be0025c9a68a5feb187dd0f69b19973841054c4c59643be08"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/candidates/concurrency-2.article",
+          "sha256": "beb37aa53f38fd92b505de24c78195ee6c36af8524a484e72cfa3862262e2607"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/candidates/concurrency-3.article",
+          "sha256": "984d6cb5f00d77f620ef19ed20c61547d2087256e54c2c59b7ffec4fb0ac0950"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/candidates/concurrency-5.article",
+          "sha256": "1f1f5f770552477be66efa9962661bc765be7bf21a9c996e428d97a9763209ca"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/candidates/concurrency-6.article",
+          "sha256": "c71465ccc97bad516faf1f074a78fb5f5ba244bc33fb885c08be618fb864d0cb"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/candidates/concurrency-7.article",
+          "sha256": "1af89ed100eb76b59f957edb16237cca30ca873955b364c75bf7f021b6fdec98"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/candidates/concurrency-8.article",
+          "sha256": "4bc8f66a8257b6d27d9917c28b19d0f25afcb65ffd3f12274fe4ff27d4f88812"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/candidates/concurrency-9.article",
+          "sha256": "caa781df2ea01cfca5b2c9e0478d478d8c903bce3e0786ad9593133de906a56d"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/candidates/generics-1.article",
+          "sha256": "93c359b15e8884c2d05bef2bc7d70cdddd176c17de35b981c8a44d2c16517d6a"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/candidates/generics-2.article",
+          "sha256": "970578437caab404bbad5ca3449f607a597ee64514c41d757b54dbd57cef2f60"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/candidates/generics-3.article",
+          "sha256": "59bf91dde82964b28b960379653d0dc5d9ac07a47635bd60ce22ab52b878760a"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/candidates/methods-1.article",
+          "sha256": "41c54d08d1566cd220d5c99b2ff25376cea5f576f50b5d7b618b437d519adac5"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/candidates/methods-10.article",
+          "sha256": "ebba0e9bc592d36556b97103efccaa568554095a32058fd76f3a57aec692c7d9"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/candidates/methods-11.article",
+          "sha256": "239dfebe15cbee6429d2a7ebecb31aaa7394e4dcb373d5f900fae58e025f1688"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/candidates/methods-12.article",
+          "sha256": "103825d8152349b64293f5469e6634a43d00a5781ae2d4bd3df83f2344dcb7d1"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/candidates/methods-13.article",
+          "sha256": "702d9e2d43b9fd36a418bcc83581412782ff21bbaabcc6eaee3a2e1a34415d16"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/candidates/methods-14.article",
+          "sha256": "230983ecfb9371ea0c6649ff79fa2c10a0fd774e0b7150cbc705eb18e6a105d0"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/candidates/methods-15.article",
+          "sha256": "81e79c46fb1a3f5a885888a2b3b4f06d701c60a3e1dac6bc2abbc0bb2fc47d1e"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/candidates/methods-16.article",
+          "sha256": "0eac45dde022894cb388e0f892e67fdc5a5376ed9b41ed8127cf42ebe421e377"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/candidates/methods-17.article",
+          "sha256": "e685390dc71b24c441718ef4d6e059e8f4f036baa51c2718708fee9070303097"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/candidates/methods-18.article",
+          "sha256": "5096b9083906d760eb936fb0e184f310290ee7e70bcc4a160d566a040511a251"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/candidates/methods-19.article",
+          "sha256": "482a51c22c276982d02bd94c0f6bca8cc8db579674c7469e40651de60cafdec5"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/candidates/methods-2.article",
+          "sha256": "2ff6e2fd51b6ca403c2d0d697a79835528243e0085e620de7ea330cdf19eb713"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/candidates/methods-20.article",
+          "sha256": "866794d3129637facd3867fb875b4d63365a8d6bd9d5e94a392ae2acbd9237a2"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/candidates/methods-21.article",
+          "sha256": "6ec8ae650320ec0fcb9d0baad2f90e2b328ccfe1b89bcc036567e93ec8e29c97"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/candidates/methods-22.article",
+          "sha256": "f8cb6ff5a405c6f5b9902c6eca4062ec7d2f9870506c3d76d8078bbfb0558c53"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/candidates/methods-23.article",
+          "sha256": "6dc7126745f5fd2964fe9f9f28d892245a993163b84872a72ea7758da9710ef8"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/candidates/methods-24.article",
+          "sha256": "69b1d3c03797529b0e5d5aa3406d82a249c3a4599e31b62f9aaba190e7123846"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/candidates/methods-25.article",
+          "sha256": "31d8c30380552ed41c4fa29be50e04771a3bb90331589fc11600bcb99696ee20"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/candidates/methods-26.article",
+          "sha256": "59bf91dde82964b28b960379653d0dc5d9ac07a47635bd60ce22ab52b878760a"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/candidates/methods-3.article",
+          "sha256": "90a29e9ea0ff5c7f4b4b54e8143eeb87fb03334691a5ac478cf53845e8dcfde3"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/candidates/methods-4.article",
+          "sha256": "4cf6b112b29b201a9086f7d264a9d224814fc21766918f71f4f76f1969b9e6cb"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/candidates/methods-5.article",
+          "sha256": "883fdc72c678431b8e29e1829228474e27d237fe5dc5483eaf9c2c741901ea54"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/candidates/methods-6.article",
+          "sha256": "49aa14444691cb23cf6a1a54af8f07bd4ddcf0c6cc4045f1e9919cd1934fccd5"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/candidates/methods-7.article",
+          "sha256": "dd3e87e1293590f1fe4723b45365e16a8a1ed22c3de52812f34e9ca8122be8c0"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/candidates/methods-8.article",
+          "sha256": "f4fe83dbf12159d0d1cf987fc285102786041c8282fed989296b44625cfbe04b"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/candidates/methods-9.article",
+          "sha256": "abbffce3d611b8d0ac94bf6605d313d01ff8f4917c2159f33194b0ff52991799"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/candidates/moretypes-26.article",
+          "sha256": "85adc433d43920720892cf0488f44ad8f8804ccfcca41954ceeec7fa31cd928e"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/candidates/moretypes-27.article",
+          "sha256": "59bf91dde82964b28b960379653d0dc5d9ac07a47635bd60ce22ab52b878760a"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/validation/concurrency-1.json",
+          "sha256": "4cd04810e1961bd5070abe0a3ed203bcda0c787469f9524d1fd9820e4a03cf95"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/validation/concurrency-10.json",
+          "sha256": "0f2ba8ba2b47ac1c3d38b15163c24bdfedd3680278c19bd5c00a8603454df682"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/validation/concurrency-11.json",
+          "sha256": "a61992473af5d55be6201d36b0fd32bf872b0cb9b4cba47468866b3d1c5e217f"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/validation/concurrency-2.json",
+          "sha256": "350aad3b8e5097232d659818ad1338e90e23e258e256afa6728fee330009d52a"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/validation/concurrency-3.json",
+          "sha256": "ad99fe637617a57a5980eb64ab82efecc30fe083d98b5dba6f001069abdc041d"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/validation/concurrency-5.json",
+          "sha256": "19bc8528c071f779ed4075302b0b92ec04f3c543298d414baa5d539713064a8b"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/validation/concurrency-6.json",
+          "sha256": "5f0bd86b40db87d0308baa4c89f90ae348091149588c52b758d3f8e4025b0e6f"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/validation/concurrency-7.json",
+          "sha256": "d19c611ceeff35d1b90bd6bc6d2239fd68f563b392ea407077514852b44c2db5"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/validation/concurrency-8.json",
+          "sha256": "ca80fd630b15dc12a544996e4747db4ffb89156d42d33de1685ef456a6d6a503"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/validation/concurrency-9.json",
+          "sha256": "86b6bae59e7ae617f808d38fddeb63619282a71ba3bcb638c5836d0a59d2435c"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/validation/generics-1.json",
+          "sha256": "78a7f057afdaef3c5bb0a10929b5b024ae0934ed019e5d625ea951ae4759fa67"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/validation/generics-2.json",
+          "sha256": "908dec56c83f85e67234f6df54fd47cedc2dbf3b497727e536d88222af09657f"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/validation/generics-3.json",
+          "sha256": "74160c878cac0dc079b1da8b4b479688e26f17b0d9e2441084e5ee0fe4bbb516"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/validation/methods-1.json",
+          "sha256": "6b72613ed2a2e5be8d0e806f04c853086e378fa00b9d69bf771c422d4d3b1d34"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/validation/methods-10.json",
+          "sha256": "b40711357e7ceadcf8fa3bfb620638617e01ade1848063660785433868840623"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/validation/methods-11.json",
+          "sha256": "574cd6d5dc40f96055b258aace75c637cc84182ef1a98e74a47d70563271ab89"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/validation/methods-12.json",
+          "sha256": "b0361ccb370a9bb2340dfb980964934ff7608cf36a1994158ae1fb19753cab6f"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/validation/methods-13.json",
+          "sha256": "d278a160faf852508fb0c5a2c2c8e33e42aebb73b5581cdd10fa81f45d1d61e0"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/validation/methods-14.json",
+          "sha256": "c027198782912316c54515b36d9ddbe441347cd8451ff79ddcfcba04c98a70d6"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/validation/methods-15.json",
+          "sha256": "a0fc6f861797a61adfc21210a19e6540a0f4e838432d82c80047592aeefbf9c9"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/validation/methods-16.json",
+          "sha256": "f54b1fe6b71fddaf78d03eac75f241b43387bf57f0ef188e859d71f3c8069101"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/validation/methods-17.json",
+          "sha256": "f9648ce0ae47c328917087c7a526bd681ae1e4312e7abea835e0c9526ee2ac18"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/validation/methods-18.json",
+          "sha256": "60361e8a3cb5525922216e955d6c481875510a2f8fd98c37b762a9c7cb5eabd7"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/validation/methods-19.json",
+          "sha256": "fc2c6775b3dba4a9973e5df8365460ef76ddf895e7f28eb0dd74910ef4fc2358"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/validation/methods-2.json",
+          "sha256": "b51cdba9433f8bc676483e486674e24ec30b00eb2845cbb8afbbc98a05b3f475"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/validation/methods-20.json",
+          "sha256": "c1b2fec90986b8d162d8dffa35ee36300a68602560bad50e6e51a0d01f24b7d0"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/validation/methods-21.json",
+          "sha256": "423633aa9c41a373f5d16dc01354238350b08b5ed2db16f477069e991b2ddb06"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/validation/methods-22.json",
+          "sha256": "242e8f2699f72b2aa66b6ada50719b12cd46dbbafb7b40626763cbceca6dd380"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/validation/methods-23.json",
+          "sha256": "5da454cd977d18b10f72f567ea56559e07a8173f59746a50b31cbb86816a2d3e"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/validation/methods-24.json",
+          "sha256": "f24bbd3a8dd75e2cc10fbf1539950ae6a0ccc9543151fbf9a40ee642fc474d7d"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/validation/methods-25.json",
+          "sha256": "5c6bbb9ff1275e1e5669db77731410de9adecfc07b55bb21624b778b767abac1"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/validation/methods-26.json",
+          "sha256": "f1aa193139953936fa592c9a9d939c7c496dce681bc99dcc1d7cbbbeb4a0161c"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/validation/methods-3.json",
+          "sha256": "1f1673eee2e267b07c2e2cfcdb7c054bf5300d5b00aa357d3973229e0c0fd740"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/validation/methods-4.json",
+          "sha256": "101a5608b5accb42b6c140fc8f66fdc924f2cb099ba0d9c319ef422ed7085822"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/validation/methods-5.json",
+          "sha256": "ce8840afb57e3fee02215b4dfea58b26e77e63def2d4dd55dcd753e6727f9a9e"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/validation/methods-6.json",
+          "sha256": "c9ccb1670070696574e9636b1f8f75a0e52f5123306671cb478b198e314c46ab"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/validation/methods-7.json",
+          "sha256": "ad9ef3a5b814caf1144a983b29c1baccf393fff7cb12aabd5911aa37df5cee40"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/validation/methods-8.json",
+          "sha256": "88c3b7801a65c207539df94ded3cb97a5300a9c4a02b83a5df7a5a4c0322746e"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/validation/methods-9.json",
+          "sha256": "e224fd5061b45a9dc00711756a8c18a27d0e70e539e18d7672ad45969a234be6"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/validation/moretypes-26.json",
+          "sha256": "c3a2aef84580ed53e17f96d1078ade4affb147d3b6266d8bc4d0636e6e23a787"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-002/validation/moretypes-27.json",
+          "sha256": "8363d1e2d2e3bbad46ce2750e2834ed34a19bf141c86f24b65c638ffa71e6279"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-003/candidates/basics-numeric-constants.go",
+          "sha256": "e858b16484cdc6339ab4b41c3a970a9dc267b7cab0685deaa935c53c7f682e0b"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-003/candidates/basics-type-inference.go",
+          "sha256": "eddbb61a9642af17429a3f3f1c786507afce973b32509ebb8dc74d07ccf234b7"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-003/candidates/concurrency-channels.go",
+          "sha256": "449f95466c72d753a0d4bf2fc7b5ad93173d1d07c79cd272856382830313228a"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-003/candidates/concurrency-exercise-equivalent-binary-trees.go",
+          "sha256": "68c3fc04d1908714b844fb3d147e693039b64edf7b888f60c9571a40a006ca4a"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-003/candidates/concurrency-exercise-web-crawler.go",
+          "sha256": "5e7de6ae3630467c932e49b8f999d8429a58d8555288cff4ecb124c559e4d3f4"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-003/candidates/concurrency-mutex-counter.go",
+          "sha256": "4602cbdf8c55b1a5c9ac51bd743a47712f951ffdfe385fb948182001c22ea253"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-003/candidates/flowcontrol-if-and-else.go",
+          "sha256": "719c8beccc420ba8f18cd8914bd5946b3ed2b1b77c93c878dd2dd65946b7ee65"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-003/candidates/generics-index.go",
+          "sha256": "9d2073fefb1fc83d4062f37057d616c7080c8895adfe5786105a4c0845f574a5"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-003/candidates/generics-list.go",
+          "sha256": "e9b645dbe1f872595014d32d8a1ec87f2a8fab8f53fdaa912d1cdbeb0e9b49c2"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-003/candidates/methods-exercise-reader.go",
+          "sha256": "0f750db9721320797238c018b0d03203bca63ed994d04e32675c58a07cbef823"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-003/candidates/methods-exercise-stringer.go",
+          "sha256": "dbc94374f99a2dd22d49ff98a87fb84c3cee7c0cfcee560a0cb9af8f7779dcd3"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-003/candidates/methods-interfaces-are-satisfied-implicitly.go",
+          "sha256": "05c79f21c0292c088bb61f77ef6b05e1774f8424646c93df9f22daba853ca618"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-003/candidates/methods-interfaces.go",
+          "sha256": "e3cb971176648733976f25e7bff7efe219e7b55fa3d6c6dc26815206953c315b"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-003/candidates/moretypes-append.go",
+          "sha256": "61db3792d53b809d3d9a9a15437005e165874bc33492a9cf2774ba36f32ee183"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-003/candidates/moretypes-exercise-fibonacci-closure.go",
+          "sha256": "a971df87895fedf23ce36f829bc236a65cbf0d07e6f7b5ee885ab975ec721432"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-003/candidates/moretypes-pointers.go",
+          "sha256": "ee5d385428a491f3cb5558661f1334bdadb41d0b0485e1fd666e75f1499209a9"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-003/candidates/moretypes-slice-len-cap.go",
+          "sha256": "f18a7e08fcb81859b742214a21a3e8da12bea205e99099451b2121530c3c0856"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-003/candidates/moretypes-slices-of-slice.go",
+          "sha256": "95d54e6c00c7689ae883b7717d050020e5e606040b5a1aa3b63387784cbcd2ab"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-003/candidates/moretypes-struct-literals.go",
+          "sha256": "061649e682778057ee1fec92632e64cf5d0766f99389d941929989e33b18e653"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-003/validation/basics-numeric-constants.json",
+          "sha256": "f87f46e59fba3f89547e70f93db887a61ed7fce0ff3b0a32856535f8436f5ff2"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-003/validation/basics-type-inference.json",
+          "sha256": "f312e8b68d5e130ae6a21cc281b8a00e60d810546a5cfff3aad465e15c467170"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-003/validation/concurrency-channels.json",
+          "sha256": "6052ca5a3fbc3a39befe1b5dd74e4d1fa5120482521ded53db71fac68abe9db7"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-003/validation/concurrency-exercise-equivalent-binary-trees.json",
+          "sha256": "6f688d0219a6872d55279c451aa2db6f266cada3b88527d2045f174c8ff06d50"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-003/validation/concurrency-exercise-web-crawler.json",
+          "sha256": "7e30b5573fd05c85f4c1c6f95e48bb4182932b8601c45eb1d939201dca3d8137"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-003/validation/concurrency-mutex-counter.json",
+          "sha256": "c9d1aef4c87da86bc30e17b3dbf511035218a5ad906d1a2c67125a11e8381cf2"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-003/validation/flowcontrol-if-and-else.json",
+          "sha256": "844e7825b33c5b1904614bc621a1d26769f01888a633d8ef3e744d05ee1c9792"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-003/validation/generics-index.json",
+          "sha256": "23782b8670a168b902ed1e3480d19f52411086513660680bf32d32d2fcefacb6"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-003/validation/generics-list.json",
+          "sha256": "87c43f810a27c3fc1b87f9503797cb83915e32c017a44dfc9c5dddcd5936e165"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-003/validation/methods-exercise-reader.json",
+          "sha256": "54df92f1532be78bde953743d67d6943fe64d5942556972c0a5631c0adb3d834"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-003/validation/methods-exercise-stringer.json",
+          "sha256": "e6368457d8b395857bf12ec637edbb46dc1b43d03fd2a87b73bd7ba41fe43ce6"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-003/validation/methods-interfaces-are-satisfied-implicitly.json",
+          "sha256": "99d3b45ae9b6a23c34dc4cc09d0be5780a2ee2a940a8539af0adcbf6c57e10be"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-003/validation/methods-interfaces.json",
+          "sha256": "0ec4b3f2cd48f3cff2718eaeb73534338bc835330550cb1177bdd49e35ba4136"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-003/validation/moretypes-append.json",
+          "sha256": "9f65bf0c3544af1d1eabb484f92e287844c1cc54050c39b088b850ff0e3474e9"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-003/validation/moretypes-exercise-fibonacci-closure.json",
+          "sha256": "d44939a465d4ccefa4387dcee8610223b1c11bbf546ab0b57f0533d002beed43"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-003/validation/moretypes-pointers.json",
+          "sha256": "d5f89380ff3618bce3b73cc8d808141577a85fc3c04f4f2738a42624f0bad348"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-003/validation/moretypes-slice-len-cap.json",
+          "sha256": "59d16c7ee974c38fea0146197299e0588088331f2c13e60c0dd2e4926317d930"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-003/validation/moretypes-slices-of-slice.json",
+          "sha256": "e6efd013634a945825e7e49bbcbdc2dc86dac9deed320d7ff11a8c628b25bcf4"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-003/validation/moretypes-struct-literals.json",
+          "sha256": "2587a13abc401bc64213b69317b7176750d45349b966b5d641268b159b6896a4"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-004/candidates/basics-1.article",
+          "sha256": "b06d2e00fb70fc6e542553ca090417368e987cb1276e623b94dea8f9f6e3be47"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-004/candidates/concurrency-4.article",
+          "sha256": "8dc5f5327b18c53a841735089eac7108d7c3e958269f80bb61c3e74f4edb3752"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-004/candidates/flowcontrol-10.article",
+          "sha256": "7672c31e72ebd6d15bfa42718869d9be60176a986d080a3639f1ffb306f0ab9c"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-004/candidates/flowcontrol-8.article",
+          "sha256": "4e1e55175ea4b6f0db6fb97b4d7bd65a412342bc23409d978f422869ceb7fa8d"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-004/candidates/moretypes-18.article",
+          "sha256": "99cdbb077463ba59ce71a4dba9afc576f72dd57d96097c6b05fb95bbc9929292"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-004/candidates/moretypes-25.article",
+          "sha256": "826cee2003c885cbd9f9e9f63d4b1db7f9a5119ff83e48fd5f71014031a668d2"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-004/candidates/moretypes-7.article",
+          "sha256": "756c40d3517bb8cd59adb852542732883d9d6dc8582076fd18f2f8721ace6c6f"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-004/validation/basics-1.json",
+          "sha256": "93a657deaa40e6b411c37634ad0cad5c4fb3bcfac7be740718ec01584a094141"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-004/validation/concurrency-4.json",
+          "sha256": "a32712a87b876266493286c20e7b4fad9693eb9ea48856dc3c0ddd4748af10db"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-004/validation/flowcontrol-10.json",
+          "sha256": "04646d4d5f4b7477e58118a38e943d9c12d83ca5187b3ca48e7561ab09a83711"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-004/validation/flowcontrol-8.json",
+          "sha256": "652fb6f299e947c6b33be1b603af0b281e005f12d0f85a73466791f954bc72ea"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-004/validation/moretypes-18.json",
+          "sha256": "c4c1c9ea516aa3d69036abb4e349926932c9516751380cb0598886534bd61333"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-004/validation/moretypes-25.json",
+          "sha256": "01bfaacd1247482b08e5cc112bb1077263b30b6a5dfb54e079a088e9d2acaf35"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-004/validation/moretypes-7.json",
+          "sha256": "d5b8616a6c20099c369eec00dc1dc963c24f8f9f5f077fd25dc180a04cbab5b5"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-005/candidates/welcome-2.article",
+          "sha256": "e7ae3c29131927569ff35524c5818b32a7d59741b9025d465a4eaa535eebafa3"
+        },
+        {
+          "path": "data/retranslation-runs/nl-NL/codex-nl-NL-005/validation/welcome-2.json",
+          "sha256": "b725c4e9acaa4f123694ac756c6179d0c4bf75a62e6c1a11a0bd995a1ee4fd3e"
+        },
+        {
+          "path": "internal/tour/ui/nl-NL.json",
+          "sha256": "f0def50dac27d6c537939015d03d82c5c97bec808be71c436f9f1d5aff155266"
+        },
+        {
+          "path": "locales/nl-NL/article-metadata.json",
+          "sha256": "f9e72ec9afceec00d7fc45cf55baef3d41729e1eee4ab8d183947b0e61d17b75"
+        },
+        {
+          "path": "locales/nl-NL/candidates/basics-1.article",
+          "sha256": "b06d2e00fb70fc6e542553ca090417368e987cb1276e623b94dea8f9f6e3be47"
+        },
+        {
+          "path": "locales/nl-NL/candidates/basics-10.article",
+          "sha256": "bfc9d3adcde304e1eb4e0e3c6d47e62b628ba32235690b5beae0f7e7f285175b"
+        },
+        {
+          "path": "locales/nl-NL/candidates/basics-11.article",
+          "sha256": "0c4e73780dd265145fc8457adda8b12e065ae14515f447ad557d1fbc17995ed5"
+        },
+        {
+          "path": "locales/nl-NL/candidates/basics-12.article",
+          "sha256": "c39cdeccbbbe5073a373698efee11d07f4e4d1296dfe57ea1b970ce54e3802c1"
+        },
+        {
+          "path": "locales/nl-NL/candidates/basics-13.article",
+          "sha256": "711c034910346d9c8a4afa3ec778b77fe9766fc8fbed1f6bd8fd080859191295"
+        },
+        {
+          "path": "locales/nl-NL/candidates/basics-14.article",
+          "sha256": "2c49f9adfb12353ea6cc687ad28d4ab5bdd5fbaf34fc2edd2c32931d405e39ba"
+        },
+        {
+          "path": "locales/nl-NL/candidates/basics-15.article",
+          "sha256": "b6f44da64443fec46d03967ae7253296d7d69c1a0950b86408c8502f9fd57d58"
+        },
+        {
+          "path": "locales/nl-NL/candidates/basics-16.article",
+          "sha256": "24e7a7309585e15434641901fa67e4b78f45d7ac8ab9d4291f6a955f29487ba8"
+        },
+        {
+          "path": "locales/nl-NL/candidates/basics-17.article",
+          "sha256": "6c9f51ed2c40cf4cf918309bc1ceafb4b6f8c4242c7a91242e1750386d6e51d7"
+        },
+        {
+          "path": "locales/nl-NL/candidates/basics-2.article",
+          "sha256": "c2c488b724ef70421f0e2b7a566256e9bcff2d22ababc05cfea467f8155ff087"
+        },
+        {
+          "path": "locales/nl-NL/candidates/basics-3.article",
+          "sha256": "b0513c54f9522675a210981db1293145f2f22b493060646bd5136eccb53805bd"
+        },
+        {
+          "path": "locales/nl-NL/candidates/basics-4.article",
+          "sha256": "a8c31fcd74f70cb61acc7485cdb8c4c1d124f310371af5b73f21a8001f2c9f7a"
+        },
+        {
+          "path": "locales/nl-NL/candidates/basics-5.article",
+          "sha256": "2d98d6301f7fe1fee16b649af16e39f96c03b5b7fec90729108be38e03a30ff5"
+        },
+        {
+          "path": "locales/nl-NL/candidates/basics-6.article",
+          "sha256": "fd60be72bb6da9e643329511185fc0c381c48bfcb860e235a474ebdf5128a68a"
+        },
+        {
+          "path": "locales/nl-NL/candidates/basics-7.article",
+          "sha256": "c46130451d8a6840b50d97f79b4e1c7d031d1c6aaae6e32cd141e74b165774fc"
+        },
+        {
+          "path": "locales/nl-NL/candidates/basics-8.article",
+          "sha256": "5084485bac924bcf9569e25f33f96431adf868d4cc6b32987eb7c0965fd9f9cd"
+        },
+        {
+          "path": "locales/nl-NL/candidates/basics-9.article",
+          "sha256": "39f3d3ff769c24249c45fd13c7b15d07f350a2df861a80239709a2665dd5fc0d"
+        },
+        {
+          "path": "locales/nl-NL/candidates/basics-numeric-constants.go",
+          "sha256": "e858b16484cdc6339ab4b41c3a970a9dc267b7cab0685deaa935c53c7f682e0b"
+        },
+        {
+          "path": "locales/nl-NL/candidates/basics-type-inference.go",
+          "sha256": "eddbb61a9642af17429a3f3f1c786507afce973b32509ebb8dc74d07ccf234b7"
+        },
+        {
+          "path": "locales/nl-NL/candidates/concurrency-1.article",
+          "sha256": "ab9678d253f4a68fe7a526ed83eb8a93d89b8726360f3593cd0e98124f626353"
+        },
+        {
+          "path": "locales/nl-NL/candidates/concurrency-10.article",
+          "sha256": "bfabd1e0ec3d13205a5fdf4319ddb42dc04cad391ae809f9a8128933cc23a7ac"
+        },
+        {
+          "path": "locales/nl-NL/candidates/concurrency-11.article",
+          "sha256": "09511b426cf3864be0025c9a68a5feb187dd0f69b19973841054c4c59643be08"
+        },
+        {
+          "path": "locales/nl-NL/candidates/concurrency-2.article",
+          "sha256": "beb37aa53f38fd92b505de24c78195ee6c36af8524a484e72cfa3862262e2607"
+        },
+        {
+          "path": "locales/nl-NL/candidates/concurrency-3.article",
+          "sha256": "984d6cb5f00d77f620ef19ed20c61547d2087256e54c2c59b7ffec4fb0ac0950"
+        },
+        {
+          "path": "locales/nl-NL/candidates/concurrency-4.article",
+          "sha256": "8dc5f5327b18c53a841735089eac7108d7c3e958269f80bb61c3e74f4edb3752"
+        },
+        {
+          "path": "locales/nl-NL/candidates/concurrency-5.article",
+          "sha256": "1f1f5f770552477be66efa9962661bc765be7bf21a9c996e428d97a9763209ca"
+        },
+        {
+          "path": "locales/nl-NL/candidates/concurrency-6.article",
+          "sha256": "c71465ccc97bad516faf1f074a78fb5f5ba244bc33fb885c08be618fb864d0cb"
+        },
+        {
+          "path": "locales/nl-NL/candidates/concurrency-7.article",
+          "sha256": "1af89ed100eb76b59f957edb16237cca30ca873955b364c75bf7f021b6fdec98"
+        },
+        {
+          "path": "locales/nl-NL/candidates/concurrency-8.article",
+          "sha256": "4bc8f66a8257b6d27d9917c28b19d0f25afcb65ffd3f12274fe4ff27d4f88812"
+        },
+        {
+          "path": "locales/nl-NL/candidates/concurrency-9.article",
+          "sha256": "caa781df2ea01cfca5b2c9e0478d478d8c903bce3e0786ad9593133de906a56d"
+        },
+        {
+          "path": "locales/nl-NL/candidates/concurrency-channels.go",
+          "sha256": "449f95466c72d753a0d4bf2fc7b5ad93173d1d07c79cd272856382830313228a"
+        },
+        {
+          "path": "locales/nl-NL/candidates/concurrency-exercise-equivalent-binary-trees.go",
+          "sha256": "68c3fc04d1908714b844fb3d147e693039b64edf7b888f60c9571a40a006ca4a"
+        },
+        {
+          "path": "locales/nl-NL/candidates/concurrency-exercise-web-crawler.go",
+          "sha256": "5e7de6ae3630467c932e49b8f999d8429a58d8555288cff4ecb124c559e4d3f4"
+        },
+        {
+          "path": "locales/nl-NL/candidates/concurrency-mutex-counter.go",
+          "sha256": "4602cbdf8c55b1a5c9ac51bd743a47712f951ffdfe385fb948182001c22ea253"
+        },
+        {
+          "path": "locales/nl-NL/candidates/flowcontrol-1.article",
+          "sha256": "09585068c3e19a2c14f0641bc4b16ddfa618ec24edc550ab0d3e6a62ff4792c4"
+        },
+        {
+          "path": "locales/nl-NL/candidates/flowcontrol-10.article",
+          "sha256": "7672c31e72ebd6d15bfa42718869d9be60176a986d080a3639f1ffb306f0ab9c"
+        },
+        {
+          "path": "locales/nl-NL/candidates/flowcontrol-11.article",
+          "sha256": "9da83cd42ff9594bbc9d5409ed8fdc20b19374a2f2f0bfd0a0be5bc77fde687a"
+        },
+        {
+          "path": "locales/nl-NL/candidates/flowcontrol-12.article",
+          "sha256": "2c4045619be43231b2526cc91fc3f76266c2daccaa8c0a2488d647dcd2203194"
+        },
+        {
+          "path": "locales/nl-NL/candidates/flowcontrol-13.article",
+          "sha256": "1029db4ac1082e0b0f8271feb2ee21bfb7b07838ccd5714c8a6badba9de99da2"
+        },
+        {
+          "path": "locales/nl-NL/candidates/flowcontrol-14.article",
+          "sha256": "6c9f51ed2c40cf4cf918309bc1ceafb4b6f8c4242c7a91242e1750386d6e51d7"
+        },
+        {
+          "path": "locales/nl-NL/candidates/flowcontrol-2.article",
+          "sha256": "a7c7efe66e97131e18cc4e72fba57b2e550dcc8faae76be601ccdbd0b0bb1b08"
+        },
+        {
+          "path": "locales/nl-NL/candidates/flowcontrol-3.article",
+          "sha256": "b314de765f2bbd089d1570569343851f5016e8926e2aa60e71543c0d521da84d"
+        },
+        {
+          "path": "locales/nl-NL/candidates/flowcontrol-4.article",
+          "sha256": "d160aa4459568382d384d0cd3091e813ccade723d8a229aab1e4343a68c738a7"
+        },
+        {
+          "path": "locales/nl-NL/candidates/flowcontrol-5.article",
+          "sha256": "d4d6ddc22e2ddedff4c1154c88074402d6bc8eabc7399fb66d80675761f3b57f"
+        },
+        {
+          "path": "locales/nl-NL/candidates/flowcontrol-6.article",
+          "sha256": "25a751778835847c3431fd7d66082501ac6e5abe7b0bef100712bf8dea9ba168"
+        },
+        {
+          "path": "locales/nl-NL/candidates/flowcontrol-7.article",
+          "sha256": "4edbbe0cfaa1e8c785f8a3d9a22eed6e119bc35bebacb2b72ce32ca26ad98b85"
+        },
+        {
+          "path": "locales/nl-NL/candidates/flowcontrol-8.article",
+          "sha256": "4e1e55175ea4b6f0db6fb97b4d7bd65a412342bc23409d978f422869ceb7fa8d"
+        },
+        {
+          "path": "locales/nl-NL/candidates/flowcontrol-9.article",
+          "sha256": "9601d577b77bd6857551bfb9c5e6c138ed51c59bdbe9a05ecf2855ad536b2d1d"
+        },
+        {
+          "path": "locales/nl-NL/candidates/flowcontrol-if-and-else.go",
+          "sha256": "719c8beccc420ba8f18cd8914bd5946b3ed2b1b77c93c878dd2dd65946b7ee65"
+        },
+        {
+          "path": "locales/nl-NL/candidates/generics-1.article",
+          "sha256": "93c359b15e8884c2d05bef2bc7d70cdddd176c17de35b981c8a44d2c16517d6a"
+        },
+        {
+          "path": "locales/nl-NL/candidates/generics-2.article",
+          "sha256": "970578437caab404bbad5ca3449f607a597ee64514c41d757b54dbd57cef2f60"
+        },
+        {
+          "path": "locales/nl-NL/candidates/generics-3.article",
+          "sha256": "59bf91dde82964b28b960379653d0dc5d9ac07a47635bd60ce22ab52b878760a"
+        },
+        {
+          "path": "locales/nl-NL/candidates/generics-index.go",
+          "sha256": "9d2073fefb1fc83d4062f37057d616c7080c8895adfe5786105a4c0845f574a5"
+        },
+        {
+          "path": "locales/nl-NL/candidates/generics-list.go",
+          "sha256": "e9b645dbe1f872595014d32d8a1ec87f2a8fab8f53fdaa912d1cdbeb0e9b49c2"
+        },
+        {
+          "path": "locales/nl-NL/candidates/methods-1.article",
+          "sha256": "41c54d08d1566cd220d5c99b2ff25376cea5f576f50b5d7b618b437d519adac5"
+        },
+        {
+          "path": "locales/nl-NL/candidates/methods-10.article",
+          "sha256": "ebba0e9bc592d36556b97103efccaa568554095a32058fd76f3a57aec692c7d9"
+        },
+        {
+          "path": "locales/nl-NL/candidates/methods-11.article",
+          "sha256": "239dfebe15cbee6429d2a7ebecb31aaa7394e4dcb373d5f900fae58e025f1688"
+        },
+        {
+          "path": "locales/nl-NL/candidates/methods-12.article",
+          "sha256": "103825d8152349b64293f5469e6634a43d00a5781ae2d4bd3df83f2344dcb7d1"
+        },
+        {
+          "path": "locales/nl-NL/candidates/methods-13.article",
+          "sha256": "702d9e2d43b9fd36a418bcc83581412782ff21bbaabcc6eaee3a2e1a34415d16"
+        },
+        {
+          "path": "locales/nl-NL/candidates/methods-14.article",
+          "sha256": "230983ecfb9371ea0c6649ff79fa2c10a0fd774e0b7150cbc705eb18e6a105d0"
+        },
+        {
+          "path": "locales/nl-NL/candidates/methods-15.article",
+          "sha256": "81e79c46fb1a3f5a885888a2b3b4f06d701c60a3e1dac6bc2abbc0bb2fc47d1e"
+        },
+        {
+          "path": "locales/nl-NL/candidates/methods-16.article",
+          "sha256": "0eac45dde022894cb388e0f892e67fdc5a5376ed9b41ed8127cf42ebe421e377"
+        },
+        {
+          "path": "locales/nl-NL/candidates/methods-17.article",
+          "sha256": "e685390dc71b24c441718ef4d6e059e8f4f036baa51c2718708fee9070303097"
+        },
+        {
+          "path": "locales/nl-NL/candidates/methods-18.article",
+          "sha256": "5096b9083906d760eb936fb0e184f310290ee7e70bcc4a160d566a040511a251"
+        },
+        {
+          "path": "locales/nl-NL/candidates/methods-19.article",
+          "sha256": "482a51c22c276982d02bd94c0f6bca8cc8db579674c7469e40651de60cafdec5"
+        },
+        {
+          "path": "locales/nl-NL/candidates/methods-2.article",
+          "sha256": "2ff6e2fd51b6ca403c2d0d697a79835528243e0085e620de7ea330cdf19eb713"
+        },
+        {
+          "path": "locales/nl-NL/candidates/methods-20.article",
+          "sha256": "866794d3129637facd3867fb875b4d63365a8d6bd9d5e94a392ae2acbd9237a2"
+        },
+        {
+          "path": "locales/nl-NL/candidates/methods-21.article",
+          "sha256": "6ec8ae650320ec0fcb9d0baad2f90e2b328ccfe1b89bcc036567e93ec8e29c97"
+        },
+        {
+          "path": "locales/nl-NL/candidates/methods-22.article",
+          "sha256": "f8cb6ff5a405c6f5b9902c6eca4062ec7d2f9870506c3d76d8078bbfb0558c53"
+        },
+        {
+          "path": "locales/nl-NL/candidates/methods-23.article",
+          "sha256": "6dc7126745f5fd2964fe9f9f28d892245a993163b84872a72ea7758da9710ef8"
+        },
+        {
+          "path": "locales/nl-NL/candidates/methods-24.article",
+          "sha256": "69b1d3c03797529b0e5d5aa3406d82a249c3a4599e31b62f9aaba190e7123846"
+        },
+        {
+          "path": "locales/nl-NL/candidates/methods-25.article",
+          "sha256": "31d8c30380552ed41c4fa29be50e04771a3bb90331589fc11600bcb99696ee20"
+        },
+        {
+          "path": "locales/nl-NL/candidates/methods-26.article",
+          "sha256": "59bf91dde82964b28b960379653d0dc5d9ac07a47635bd60ce22ab52b878760a"
+        },
+        {
+          "path": "locales/nl-NL/candidates/methods-3.article",
+          "sha256": "90a29e9ea0ff5c7f4b4b54e8143eeb87fb03334691a5ac478cf53845e8dcfde3"
+        },
+        {
+          "path": "locales/nl-NL/candidates/methods-4.article",
+          "sha256": "4cf6b112b29b201a9086f7d264a9d224814fc21766918f71f4f76f1969b9e6cb"
+        },
+        {
+          "path": "locales/nl-NL/candidates/methods-5.article",
+          "sha256": "883fdc72c678431b8e29e1829228474e27d237fe5dc5483eaf9c2c741901ea54"
+        },
+        {
+          "path": "locales/nl-NL/candidates/methods-6.article",
+          "sha256": "49aa14444691cb23cf6a1a54af8f07bd4ddcf0c6cc4045f1e9919cd1934fccd5"
+        },
+        {
+          "path": "locales/nl-NL/candidates/methods-7.article",
+          "sha256": "dd3e87e1293590f1fe4723b45365e16a8a1ed22c3de52812f34e9ca8122be8c0"
+        },
+        {
+          "path": "locales/nl-NL/candidates/methods-8.article",
+          "sha256": "f4fe83dbf12159d0d1cf987fc285102786041c8282fed989296b44625cfbe04b"
+        },
+        {
+          "path": "locales/nl-NL/candidates/methods-9.article",
+          "sha256": "abbffce3d611b8d0ac94bf6605d313d01ff8f4917c2159f33194b0ff52991799"
+        },
+        {
+          "path": "locales/nl-NL/candidates/methods-exercise-reader.go",
+          "sha256": "0f750db9721320797238c018b0d03203bca63ed994d04e32675c58a07cbef823"
+        },
+        {
+          "path": "locales/nl-NL/candidates/methods-exercise-stringer.go",
+          "sha256": "dbc94374f99a2dd22d49ff98a87fb84c3cee7c0cfcee560a0cb9af8f7779dcd3"
+        },
+        {
+          "path": "locales/nl-NL/candidates/methods-interfaces-are-satisfied-implicitly.go",
+          "sha256": "05c79f21c0292c088bb61f77ef6b05e1774f8424646c93df9f22daba853ca618"
+        },
+        {
+          "path": "locales/nl-NL/candidates/methods-interfaces.go",
+          "sha256": "e3cb971176648733976f25e7bff7efe219e7b55fa3d6c6dc26815206953c315b"
+        },
+        {
+          "path": "locales/nl-NL/candidates/moretypes-1.article",
+          "sha256": "4fd09b7b3edb0430f060e4c58e1c646623c5e6233bbedff217d0ae19559ee4c0"
+        },
+        {
+          "path": "locales/nl-NL/candidates/moretypes-10.article",
+          "sha256": "5a3498062a1a77c99626408a6bfd159e773826e001487a67040bc7f01551f5bf"
+        },
+        {
+          "path": "locales/nl-NL/candidates/moretypes-11.article",
+          "sha256": "ac7c3f3952f3acf303de1bc9b7835cf9993de9994f36509b42cbcc963321edc9"
+        },
+        {
+          "path": "locales/nl-NL/candidates/moretypes-12.article",
+          "sha256": "0300b857b0349317cfe96dac72aebf8999f903c8dda50d107158f6cdfeadee72"
+        },
+        {
+          "path": "locales/nl-NL/candidates/moretypes-13.article",
+          "sha256": "46c8609da7b1d8d5902548546f94d6eb0b36190f44fce4ac5ffff4388a8bb58b"
+        },
+        {
+          "path": "locales/nl-NL/candidates/moretypes-14.article",
+          "sha256": "0cf8bc7e8b7f0e50bf701917c0f8b66d557e98b47882e3d577fcb23ca73eb021"
+        },
+        {
+          "path": "locales/nl-NL/candidates/moretypes-15.article",
+          "sha256": "ba6dff78fef306363aa85cebeb329b50abdfdf8fa696ff95b7c9d40bea6cef13"
+        },
+        {
+          "path": "locales/nl-NL/candidates/moretypes-16.article",
+          "sha256": "fc652ca240fd451118cdd87f70b818fd6f8d5f0b705175feeeb510e951ca2cc2"
+        },
+        {
+          "path": "locales/nl-NL/candidates/moretypes-17.article",
+          "sha256": "94050a38b3251ef058ca84ffbfac8d3017edfa14f53b288c2b9c8c7acb44117b"
+        },
+        {
+          "path": "locales/nl-NL/candidates/moretypes-18.article",
+          "sha256": "99cdbb077463ba59ce71a4dba9afc576f72dd57d96097c6b05fb95bbc9929292"
+        },
+        {
+          "path": "locales/nl-NL/candidates/moretypes-19.article",
+          "sha256": "8f7d7abfa4358aa1d2fdc234f30b98627e9308212445c770c8fb3d969a21fff0"
+        },
+        {
+          "path": "locales/nl-NL/candidates/moretypes-2.article",
+          "sha256": "baa275bd751dc3ea49276c84880d83b31f570659f9c7350be24634c860468994"
+        },
+        {
+          "path": "locales/nl-NL/candidates/moretypes-20.article",
+          "sha256": "c9f30f3b35d8ccdcf4fce775744d7b1a0219a90f4efd45307ba2b3c39430c8e2"
+        },
+        {
+          "path": "locales/nl-NL/candidates/moretypes-21.article",
+          "sha256": "3ecdc4e68f5d22ff6538e47c470ad0b3ae390252c403c928b6d1fe4849147afc"
+        },
+        {
+          "path": "locales/nl-NL/candidates/moretypes-22.article",
+          "sha256": "1179f71c661f08315ee3409b8bed43166721eb0a5484bd4879bb36f9826b6941"
+        },
+        {
+          "path": "locales/nl-NL/candidates/moretypes-23.article",
+          "sha256": "0205d6446cb5dcd599401e469fd64e3b6762e201cec217769e8c077cbac069dd"
+        },
+        {
+          "path": "locales/nl-NL/candidates/moretypes-24.article",
+          "sha256": "8eb58fff851aaa4f11b0a3ec5dbc0a31556fc2e79f8e4e9b61c10a5d55b92f6b"
+        },
+        {
+          "path": "locales/nl-NL/candidates/moretypes-25.article",
+          "sha256": "826cee2003c885cbd9f9e9f63d4b1db7f9a5119ff83e48fd5f71014031a668d2"
+        },
+        {
+          "path": "locales/nl-NL/candidates/moretypes-26.article",
+          "sha256": "85adc433d43920720892cf0488f44ad8f8804ccfcca41954ceeec7fa31cd928e"
+        },
+        {
+          "path": "locales/nl-NL/candidates/moretypes-27.article",
+          "sha256": "59bf91dde82964b28b960379653d0dc5d9ac07a47635bd60ce22ab52b878760a"
+        },
+        {
+          "path": "locales/nl-NL/candidates/moretypes-3.article",
+          "sha256": "2a9c51a17f4ce05b33b0d756e0c5e345c95c9f643e80e3561fe4f0801418d5ff"
+        },
+        {
+          "path": "locales/nl-NL/candidates/moretypes-4.article",
+          "sha256": "5d9ee9e3d857f6133171343b60f3d374392c728c4ea513201bf6e9df441421c6"
+        },
+        {
+          "path": "locales/nl-NL/candidates/moretypes-5.article",
+          "sha256": "84af161a71f5d34523534954fb96eecc59c475b53e998bf9657ccb0cdf5d05c5"
+        },
+        {
+          "path": "locales/nl-NL/candidates/moretypes-6.article",
+          "sha256": "64c29328e4f08e4227a173c83b027952cbc1e83d277bb9e6fc2ff48358f776bb"
+        },
+        {
+          "path": "locales/nl-NL/candidates/moretypes-7.article",
+          "sha256": "756c40d3517bb8cd59adb852542732883d9d6dc8582076fd18f2f8721ace6c6f"
+        },
+        {
+          "path": "locales/nl-NL/candidates/moretypes-8.article",
+          "sha256": "ccac0eb610e69cdef2618a9a303ff50d44dad1e3ce324283d9ab069f02cc16ac"
+        },
+        {
+          "path": "locales/nl-NL/candidates/moretypes-9.article",
+          "sha256": "0de3551c4dc2df401ec28136e89faed59ef1f54ae2deb64f8d70400c3d7b1206"
+        },
+        {
+          "path": "locales/nl-NL/candidates/moretypes-append.go",
+          "sha256": "61db3792d53b809d3d9a9a15437005e165874bc33492a9cf2774ba36f32ee183"
+        },
+        {
+          "path": "locales/nl-NL/candidates/moretypes-exercise-fibonacci-closure.go",
+          "sha256": "a971df87895fedf23ce36f829bc236a65cbf0d07e6f7b5ee885ab975ec721432"
+        },
+        {
+          "path": "locales/nl-NL/candidates/moretypes-pointers.go",
+          "sha256": "ee5d385428a491f3cb5558661f1334bdadb41d0b0485e1fd666e75f1499209a9"
+        },
+        {
+          "path": "locales/nl-NL/candidates/moretypes-slice-len-cap.go",
+          "sha256": "f18a7e08fcb81859b742214a21a3e8da12bea205e99099451b2121530c3c0856"
+        },
+        {
+          "path": "locales/nl-NL/candidates/moretypes-slices-of-slice.go",
+          "sha256": "95d54e6c00c7689ae883b7717d050020e5e606040b5a1aa3b63387784cbcd2ab"
+        },
+        {
+          "path": "locales/nl-NL/candidates/moretypes-struct-literals.go",
+          "sha256": "061649e682778057ee1fec92632e64cf5d0766f99389d941929989e33b18e653"
+        },
+        {
+          "path": "locales/nl-NL/candidates/welcome-1.article",
+          "sha256": "87976269775269184483ed33a9d3254e1c28fa12b1983f83c4c1a726f31d96bf"
+        },
+        {
+          "path": "locales/nl-NL/candidates/welcome-2.article",
+          "sha256": "e7ae3c29131927569ff35524c5818b32a7d59741b9025d465a4eaa535eebafa3"
+        },
+        {
+          "path": "locales/nl-NL/candidates/welcome-3.article",
+          "sha256": "9d517ba09771fb2e62d3266ea036b291a3d3d8a6f0fec5388fdd0956029ff77b"
+        },
+        {
+          "path": "locales/nl-NL/candidates/welcome-4.article",
+          "sha256": "552f0f54654a1d9a4b4acfc5b19a8e1e5ef87c5ab746fed0da5c98294cb9688e"
+        },
+        {
+          "path": "locales/nl-NL/candidates/welcome-5.article",
+          "sha256": "fb3c39b59093c1e0add223220b985a25c4a1488b157c021d7c420d64adbd5a70"
+        },
+        {
+          "path": "locales/nl-NL/course-metadata.json",
+          "sha256": "8dbfbdb19cf7ee5dcf7ca2786836c8da4c0bf80d19aa50faec8c204ff5a9fa3c"
+        },
+        {
+          "path": "locales/nl-NL/glossary.yaml",
+          "sha256": "d68f8e2c79b5c109767764b06b05f48bccf639e3d538c3cad54efaae2397b8f8"
+        },
+        {
+          "path": "locales/nl-NL/locale.json",
+          "sha256": "fb0d5dff1eba6a62a6aa887c2416fc8ef7aa8c351535b3f5e8e0fcf3036ee0e4"
+        },
+        {
+          "path": "locales/nl-NL/status.tsv",
+          "sha256": "d62155a5500997883968a3bf60bb105a37ffdff1113dd6a8aa849ae4a26f99bd"
+        }
+      ],
+      "evidence_identity_sha256": "64d353ece9ea39c00e02d2fa252f37a09785f6beee699ae531e92d6006286c69",
+      "validated_context_sha256": "296a885b80749a87708d7ad7b6cf8d9fad49f91338ebaa02d10925d54c0033e3",
+      "legacy_surface_gate_state": "historical-verified"
+    }
+  ]
+}

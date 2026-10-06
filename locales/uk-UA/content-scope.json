@@ -1,0 +1,1647 @@
+{
+  "schema": "go-learning/locale-content-scope/v1",
+  "locale": "uk-UA",
+  "packages": [
+    {
+      "package": "tour-v1",
+      "state": "complete",
+      "package_identity_sha256": "926ee5bf113ecc24d9128ed4531e740092f2ca88f6f154cf101f6b8478ed83a9",
+      "source_authority_sha256": "48d09f17bf06e4beb9d05bb5b70465f5c6677406d84a3b9d125307f17d63c054",
+      "completed_surfaces": [
+        "tour"
+      ],
+      "local_canonical_routes": [
+        "/tour/",
+        "/tour/basics/1",
+        "/tour/basics/10",
+        "/tour/basics/11",
+        "/tour/basics/12",
+        "/tour/basics/13",
+        "/tour/basics/14",
+        "/tour/basics/15",
+        "/tour/basics/16",
+        "/tour/basics/17",
+        "/tour/basics/2",
+        "/tour/basics/3",
+        "/tour/basics/4",
+        "/tour/basics/5",
+        "/tour/basics/6",
+        "/tour/basics/7",
+        "/tour/basics/8",
+        "/tour/basics/9",
+        "/tour/concurrency/1",
+        "/tour/concurrency/10",
+        "/tour/concurrency/11",
+        "/tour/concurrency/2",
+        "/tour/concurrency/3",
+        "/tour/concurrency/4",
+        "/tour/concurrency/5",
+        "/tour/concurrency/6",
+        "/tour/concurrency/7",
+        "/tour/concurrency/8",
+        "/tour/concurrency/9",
+        "/tour/flowcontrol/1",
+        "/tour/flowcontrol/10",
+        "/tour/flowcontrol/11",
+        "/tour/flowcontrol/12",
+        "/tour/flowcontrol/13",
+        "/tour/flowcontrol/14",
+        "/tour/flowcontrol/2",
+        "/tour/flowcontrol/3",
+        "/tour/flowcontrol/4",
+        "/tour/flowcontrol/5",
+        "/tour/flowcontrol/6",
+        "/tour/flowcontrol/7",
+        "/tour/flowcontrol/8",
+        "/tour/flowcontrol/9",
+        "/tour/generics/1",
+        "/tour/generics/2",
+        "/tour/generics/3",
+        "/tour/list",
+        "/tour/methods/1",
+        "/tour/methods/10",
+        "/tour/methods/11",
+        "/tour/methods/12",
+        "/tour/methods/13",
+        "/tour/methods/14",
+        "/tour/methods/15",
+        "/tour/methods/16",
+        "/tour/methods/17",
+        "/tour/methods/18",
+        "/tour/methods/19",
+        "/tour/methods/2",
+        "/tour/methods/20",
+        "/tour/methods/21",
+        "/tour/methods/22",
+        "/tour/methods/23",
+        "/tour/methods/24",
+        "/tour/methods/25",
+        "/tour/methods/26",
+        "/tour/methods/3",
+        "/tour/methods/4",
+        "/tour/methods/5",
+        "/tour/methods/6",
+        "/tour/methods/7",
+        "/tour/methods/8",
+        "/tour/methods/9",
+        "/tour/moretypes/1",
+        "/tour/moretypes/10",
+        "/tour/moretypes/11",
+        "/tour/moretypes/12",
+        "/tour/moretypes/13",
+        "/tour/moretypes/14",
+        "/tour/moretypes/15",
+        "/tour/moretypes/16",
+        "/tour/moretypes/17",
+        "/tour/moretypes/18",
+        "/tour/moretypes/19",
+        "/tour/moretypes/2",
+        "/tour/moretypes/20",
+        "/tour/moretypes/21",
+        "/tour/moretypes/22",
+        "/tour/moretypes/23",
+        "/tour/moretypes/24",
+        "/tour/moretypes/25",
+        "/tour/moretypes/26",
+        "/tour/moretypes/27",
+        "/tour/moretypes/3",
+        "/tour/moretypes/4",
+        "/tour/moretypes/5",
+        "/tour/moretypes/6",
+        "/tour/moretypes/7",
+        "/tour/moretypes/8",
+        "/tour/moretypes/9",
+        "/tour/welcome/1",
+        "/tour/welcome/2",
+        "/tour/welcome/3",
+        "/tour/welcome/4",
+        "/tour/welcome/5"
+      ],
+      "local_route_families": [
+        "/tour/**"
+      ],
+      "evidence_kind": "legacy-tour-closure/v1",
+      "evidence": [
+        {
+          "path": "data/locale-surface-reviews/uk-UA/20260921-first-production.a-gate.json",
+          "sha256": "38dbb5e89e3bc2344bc6a6a73056dc0b8267a71f7793c34c6795ab347c495d9f"
+        },
+        {
+          "path": "data/locale-surface-reviews/uk-UA/20260921-first-production.md",
+          "sha256": "1374ede0a0aee1111c6f7e584346fdd3531d5d714f8a71aa9f6f8b533f4586e7"
+        },
+        {
+          "path": "data/quality-check-snapshots/uk-UA/qc-001/manifest.json",
+          "sha256": "1438707dbddaa757e85091812b4083c1d4731ca0b9deb8014db0e96903e7aa1b"
+        },
+        {
+          "path": "data/quality-check-snapshots/uk-UA/qc-001/quality-check-results.json",
+          "sha256": "11d7fdd0658e6f8f1a0c985cb8b5c08011f993b9c4fcc0d3ffd21614c963b947"
+        },
+        {
+          "path": "data/quality-check-snapshots/uk-UA/qc-002/finalization.json",
+          "sha256": "ea6aa9daa969d211e6167676fb329cb9923f6c5e0c949ce56e8bea5c5e066f3e"
+        },
+        {
+          "path": "data/quality-check-snapshots/uk-UA/qc-002/manifest.json",
+          "sha256": "2e95ef0779bfcad90850f5f5ca089b8b684b02fa1d595afbdf1e96de1d820d02"
+        },
+        {
+          "path": "data/quality-check-snapshots/uk-UA/qc-002/quality-check-results.json",
+          "sha256": "ee9feb1a8549e495aac3950a3f390cd1be71843dd6eaf2ae8d68154f5d8319b0"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/candidates/basics-1.article",
+          "sha256": "ed7bf411e6641f4cbfa15d4bc12eb7da0211160205ad90e37eb8d6d04a2bb6c8"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/candidates/basics-10.article",
+          "sha256": "723e6a2cd24466d93ad0533e28cb488305a5e972bdc5b3924f049922d4e864eb"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/candidates/basics-11.article",
+          "sha256": "13676831c62df0111e4c65616c4bdc32a2a225e3d8fef2e922e8840d256bdb1d"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/candidates/basics-12.article",
+          "sha256": "34d6f8d9e1edecc53acd5110c62031b3baab5b65b590a513562e377d9892cac3"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/candidates/basics-13.article",
+          "sha256": "09183021422c8534ee21abe56e797119a930b82e8047ecf769daf6d9c43c6edc"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/candidates/basics-14.article",
+          "sha256": "b3adcb632a46d4058900fcd87d11ae2335ea816d3d63a4bfb3b1c7fca96a7d08"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/candidates/basics-15.article",
+          "sha256": "48139c2dffdcf1b0e9cfc1fb9c490c5b2f3c4c347af2072a73f26a03e853b9b3"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/candidates/basics-16.article",
+          "sha256": "1a00c1a9d8db3fbc58f78e7096daf170b60686315a9ca66fac55e02204520759"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/candidates/basics-17.article",
+          "sha256": "83624f78b2c1175964b6ee07dad611cfe63443ad6f03cf4fa06b913f0a5a2451"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/candidates/basics-2.article",
+          "sha256": "fdf538019107d5433a7903a738a45328931252a867e05181d5042de42ab335e9"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/candidates/basics-3.article",
+          "sha256": "63f372e23647933e011a1ce63df821db05a458bb50c84a3f71ab693847f8db50"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/candidates/basics-4.article",
+          "sha256": "dd2201c1b993160a0190b178478a2658099612eba2438843c144ec445c3ab649"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/candidates/basics-5.article",
+          "sha256": "125cd7e90678121a8db5f28a5e6ed22d5579d514208e9f076fcc74b7d30569d5"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/candidates/basics-6.article",
+          "sha256": "45bb2f66e54f2f9d3643e8de3e817360177af687dd976071bf57f81748461f0a"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/candidates/basics-7.article",
+          "sha256": "4d38e31d2baf6eb63693a9d5735a9c51e7785c9b796f75e4246a5675836104c0"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/candidates/basics-8.article",
+          "sha256": "e79f9fe1d2c5ed0774e81c05cdcdabcec1ff14fcd5b379d3f494b0da0c8e28dc"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/candidates/basics-9.article",
+          "sha256": "25f6dc6da4f686ed74586f3c823ae3ad83b73e9551333acd73b06592e03aac87"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/candidates/flowcontrol-1.article",
+          "sha256": "44f718412998f588498106b64e6bd9318bce48f19b0c71aeaa874d9c2ce83c00"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/candidates/flowcontrol-10.article",
+          "sha256": "7be13b50d4633555fc4b1569bddfd1e5bd9e68ae8c1ec4ddeb3ae7599038917d"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/candidates/flowcontrol-11.article",
+          "sha256": "1cc4fd5624252b2ffa9699a166bb59df45fa5f6673453951d4f6eeaeae1f3074"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/candidates/flowcontrol-12.article",
+          "sha256": "4a771ceb5ed68ef03409ea48a3af9ef725ac703218914241e5597a06e6bd9e92"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/candidates/flowcontrol-13.article",
+          "sha256": "21b14904ddfd92409e86514db2c5fff5a6de2080d1cceb17a04481c32d57c98f"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/candidates/flowcontrol-14.article",
+          "sha256": "83624f78b2c1175964b6ee07dad611cfe63443ad6f03cf4fa06b913f0a5a2451"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/candidates/flowcontrol-2.article",
+          "sha256": "a97e2f486b61c338f806ac5d7ceecc4ff35c457a9e4c9fa85893299ea7d9e572"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/candidates/flowcontrol-3.article",
+          "sha256": "11d8cc870bdb55bef1dafb08a44df4b0436e82a84dd95e67c056808212720484"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/candidates/flowcontrol-4.article",
+          "sha256": "da36bb53e8db4617358be82f5b596786223fee0e82af57d509f14594d6149204"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/candidates/flowcontrol-5.article",
+          "sha256": "23538198b6d653eab68e0d29f5b5992e6a0617a53a97a0627c7fc91aa5118217"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/candidates/flowcontrol-6.article",
+          "sha256": "094567949eed3fc4cca6b77a9e2d25b79b43a16ba8df0cc8790cf2e50a2d5995"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/candidates/flowcontrol-7.article",
+          "sha256": "236074d7633f149cdb96b42832420abf2e9b83879e6a497b8ab2dbd84776c43f"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/candidates/flowcontrol-8.article",
+          "sha256": "6249394c545ac5e76fd9ed0dbcb7ff70dc40eb27c6b19ecf5a33ceaa8cd047d1"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/candidates/flowcontrol-9.article",
+          "sha256": "254467d474e22921694a71ce5b24cbebc02ba69303145dbfbd5e2f1f32dee47b"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/candidates/moretypes-1.article",
+          "sha256": "7d33121f1f143a06b6b5de568778541bfc467d819f01ea0ea0c223cd67bbc07d"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/candidates/moretypes-10.article",
+          "sha256": "7bb7f21c1e57448a9f9541284f940eefd5115e1fd282aad0c1eeb4771c847701"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/candidates/moretypes-11.article",
+          "sha256": "246aba57dd7c75db33f89101a22d587932261264a2da240243d65e8b6737e563"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/candidates/moretypes-12.article",
+          "sha256": "4d937d69d98d9c8dd4cf9657f8a2f6e1acf9d6094e51cff51af4ac6a311e3ea8"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/candidates/moretypes-13.article",
+          "sha256": "f28126a442f66ac4219c2cc0b3d2f539bd9501cb19789d641d137c63e27db504"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/candidates/moretypes-14.article",
+          "sha256": "7f6fbbc063888e141e4a34c20b427db6f574490f0887caa6c493b539600a2fe8"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/candidates/moretypes-15.article",
+          "sha256": "64dad504ba7f0d22612ef395ed05cd694b255ccfe4e84bb9bba3bc90811c39fc"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/candidates/moretypes-16.article",
+          "sha256": "f86d783ca4c6c4ee2a4472e8b8b67727d5b9d5cbcac6ee8730179c249a1edda2"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/candidates/moretypes-17.article",
+          "sha256": "ddd50d24ddd282c80447ab33147ae118a083b613b4c0356382175f7add0ba661"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/candidates/moretypes-18.article",
+          "sha256": "355d07368b14fa2505983eab7f2c4e74b0ae39b57bdb7ea506f77b30e75f0213"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/candidates/moretypes-19.article",
+          "sha256": "9357febb3ab1b722529c7e9c01acf3fa2456b4faf6eae8ea259002c87fd35cfb"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/candidates/moretypes-2.article",
+          "sha256": "7205b0a8e7ba7690f2005fdc20b66a5e7d62658625101c98dd814e4988ce564f"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/candidates/moretypes-20.article",
+          "sha256": "9ccc169c0d7f6e5a8c6db1a5239f2ed0116a96389b5ac9e46f1dffb97ee0fdb4"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/candidates/moretypes-21.article",
+          "sha256": "55277bb5a5bcb6cbb34f69c14b6f4ceb0d902f7996e11b8e20ed0499402ed29f"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/candidates/moretypes-22.article",
+          "sha256": "35200ee193bf5a1918ccadd40f67e0b75a1b237bb224e3cb296ad55ea8f8ca76"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/candidates/moretypes-23.article",
+          "sha256": "11c448dd202d78bf3ed898b72a18021d5c0b18ad84523f64c22e0b48f11d82a8"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/candidates/moretypes-24.article",
+          "sha256": "55ec5c49086d5417d6f75d2743ad7702c9750a35a7b47138494b27d2e86ff1f4"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/candidates/moretypes-3.article",
+          "sha256": "5e05ee6256b264351456924dbefb6f7663575991e6bfa30deb772ba4aabf86f9"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/candidates/moretypes-4.article",
+          "sha256": "0bb4bd5e67443a38a6c0e5d8dfbb740dbb61ce7f4b2c5338a3ed4f28e924d872"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/candidates/moretypes-5.article",
+          "sha256": "00aaa9be57b77190018218791afb51246c3750c92480557981095fb71f202df3"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/candidates/moretypes-6.article",
+          "sha256": "0e9a048d1770cf1a9080ece779b446d101804f97ea0caee44377cc513d1e8b44"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/candidates/moretypes-7.article",
+          "sha256": "e2a41ee2484da002f77ae5abdf5a59f24b4f7a37dc03c4efec9c2a35efc672e4"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/candidates/moretypes-8.article",
+          "sha256": "8e981c313f21eb6b7b18b5719981684df2784185b63081ccf633e0ee02f20072"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/candidates/moretypes-9.article",
+          "sha256": "6d1dc56ed4d283c7826d4069a9a5a83b4aeb1d8e3d0e783b4918d93f0ba00196"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/candidates/welcome-1.article",
+          "sha256": "83dc3d8e2338f1bd6fcffbcaedf0f494711ac1dca2d7c4c864f18e2f00f03f4d"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/candidates/welcome-2.article",
+          "sha256": "c45d7ecc311085d47844a9b87fbb9444d88640ea65e17b4ce38c97ada836e3ff"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/candidates/welcome-3.article",
+          "sha256": "543032e37682debbc0548bea37c2bf7e23aae324d85d0de3e193b4c6fc8c8ad2"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/candidates/welcome-4.article",
+          "sha256": "a749b2b2019b18ec32421367df2888b18f642039bac7261e4c999fbd02e946d3"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/candidates/welcome-5.article",
+          "sha256": "ef8954eae0385f29c6a08cd7076b7a1d2d45e2caf738c0f3f32e92f8955cb19c"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/validation/basics-1.json",
+          "sha256": "d9e87114900fd929a5a97d9a6fc2c9f2d257ed6614ee870b2c45d88bc4c6dc9f"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/validation/basics-10.json",
+          "sha256": "cd1647c918e3433e79ebcb1507e45f94d9491cbadd5625224df8c87d27d2f445"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/validation/basics-11.json",
+          "sha256": "7ccbf350a3c7a65860f02b56c28fbbea2094407010ff0a05eacad2f210b568e3"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/validation/basics-12.json",
+          "sha256": "141f9e1ede3838a9c57ab1b8f1257f1ed7cb98f8e8692c4627844c553a68413b"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/validation/basics-13.json",
+          "sha256": "41525a29840275dfea439c30369eaaac4ffd7c9e4098683b3369e5760610c0bc"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/validation/basics-14.json",
+          "sha256": "53ce4722c1c7cc30bc63a492d4fd7e7cc1a343f233d5c2f5006cbb90e0afc0f7"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/validation/basics-15.json",
+          "sha256": "5b69195a008f0bb3b8315331bcdd87d031a90269dedd5cf2844840b01a5e08c6"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/validation/basics-16.json",
+          "sha256": "2f28546212d796c59e2ba8dc09a7dbf3eb2a9b7e616184fa0e15ca7e446897fb"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/validation/basics-17.json",
+          "sha256": "72c88d46410a046cad6dac3b0ceb0cb986c97ec0c601cd3a16b1a7290e7b8fbb"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/validation/basics-2.json",
+          "sha256": "397687542aca0587b0ea9609cab8844bb9ec459739acceebebc8d9fc169c5273"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/validation/basics-3.json",
+          "sha256": "1d5d3775767c560d3cb632ea2a43dba0455326a2913c1d5d78f4fe80e25b469c"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/validation/basics-4.json",
+          "sha256": "35d72702464731fb5b769dff9e8b2a04b8bc470d84406c1a4dea32658b7688a3"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/validation/basics-5.json",
+          "sha256": "eb9c2f4f435ab2658332e3f663cde5c3864cb8caa116dcb14b21606bb06b75cc"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/validation/basics-6.json",
+          "sha256": "e1f67348cdb6530ffe5f29d237235bc585da26dd04db68287d0fab791df37688"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/validation/basics-7.json",
+          "sha256": "5efd130f598c1933417f45c3955fe9029f6076ddbdb8df15b6d43558a9c285de"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/validation/basics-8.json",
+          "sha256": "fd4d3b9ecacd123d773479995ebe9c6ebbdfd4fcb9961c5e2dbf4f6a9e695fb7"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/validation/basics-9.json",
+          "sha256": "ca29f8805d7a56ad397bd437d374f3df273852c66b558cd97ae19591999be961"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/validation/flowcontrol-1.json",
+          "sha256": "1ad79eb269c8f02f92189c8865f8fea9189d9cc037f938935332c2ba85caf1ff"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/validation/flowcontrol-10.json",
+          "sha256": "f36be08938193d42008a87e927aa0f15d074980990852537b9c78bdd82f15969"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/validation/flowcontrol-11.json",
+          "sha256": "944a706882472d4a862f5214b63784c4f2cd2196bec7f6f9607b170015483121"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/validation/flowcontrol-12.json",
+          "sha256": "bb3a441494815c64ca9d243fbf23432579bc72c0623015eab77392febbf6bbf0"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/validation/flowcontrol-13.json",
+          "sha256": "93e01a633f6d79bf8aca356bc53d7d0f9c1fa353ecc725a2e7c04016a1a12c5d"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/validation/flowcontrol-14.json",
+          "sha256": "40a509ee9c63f08d85a6125e00c2e778efd451e3c5cf8d80a857454f4ca103c6"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/validation/flowcontrol-2.json",
+          "sha256": "e9f994a4c121cb1084c1810bc7e641a5958d4fb477fa80779bf98c26f2d8afc1"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/validation/flowcontrol-3.json",
+          "sha256": "d5c158e0043a297804c6d7a428c37e6464dc0aaa6608fad55b351241fa9b1a4a"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/validation/flowcontrol-4.json",
+          "sha256": "33d914740330b6b80c161a0111e7d2b89f183989cef025dd160c1618afc259c9"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/validation/flowcontrol-5.json",
+          "sha256": "7f51de1b981bdcb70857dbcbc64d4311deb279bf86e8ff547ba19076b62dace0"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/validation/flowcontrol-6.json",
+          "sha256": "f318cf979b09535df073ae30a167c04da3812c4bfd1a4a828cb2a5aae90eca2e"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/validation/flowcontrol-7.json",
+          "sha256": "9232e6413fb965734abd487bbdc81c5320d8fd371415bf5e82f23c2e88d78f4c"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/validation/flowcontrol-8.json",
+          "sha256": "85497c1d1010b6f0413214b614a46f17cdacf91cb0130abbddaa2ea6e408d443"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/validation/flowcontrol-9.json",
+          "sha256": "574db3ea15be8c5d9b3f76b692bf0f5d9421f96a937f1746244e191fbc60f683"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/validation/moretypes-1.json",
+          "sha256": "53afc45ff2cb0c912d5cc43ea08184453a4b8d3d5d2f45bb2747bad693eafbf9"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/validation/moretypes-10.json",
+          "sha256": "13ea1b7889ac3fa10fb3aeece804d57bf892c15249e2133755702c21bd39f08d"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/validation/moretypes-11.json",
+          "sha256": "fc930abaad886f295eaf973df385a7dca7efdf4e763a50069bd4083d358037ac"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/validation/moretypes-12.json",
+          "sha256": "0f67fbefdaaf5ec44f896a9defe59aa1df0aa0f62b4fc96d21b83dafa1898bda"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/validation/moretypes-13.json",
+          "sha256": "4c6ba868a858bb2fd35bb8f4ecdca85285096232a6a18913d9c20497da251464"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/validation/moretypes-14.json",
+          "sha256": "0813d565ba72908080acd67aac7e04890362caeaa98a97ed9f5aafa28c98d0cb"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/validation/moretypes-15.json",
+          "sha256": "467fa1f293c1ef5e3cacce4c12325fa226490856799759d9198c508f4ab3be06"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/validation/moretypes-16.json",
+          "sha256": "9e45af0de218ac62b0df2e74af7c2ea93dc67d44b5250639038ba53c6960c471"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/validation/moretypes-17.json",
+          "sha256": "2d2edf140463332c294b79f77ea0e95e6047353e26c588d9e931217efd172897"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/validation/moretypes-18.json",
+          "sha256": "8bc73932b5aaf3e3fee2092acebae5683f738463fcd4f3fa2580fe7740f47898"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/validation/moretypes-19.json",
+          "sha256": "d4b32b789f42810d4e10ddfc49b7e1c8824f34a803cc1265d945f5f558487d84"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/validation/moretypes-2.json",
+          "sha256": "7b2353004ec302480121ec94f3ef02a11b20dab62778587b4d21e2b0ba0e16d8"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/validation/moretypes-20.json",
+          "sha256": "88b1c3abca320687989454933cf859076f65b479ddeb8a89bbda02665c97245e"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/validation/moretypes-21.json",
+          "sha256": "b44a3646fef423bb2bbaf38c5770c195b9814d27033f3e6b6a21c7bc8e61e39b"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/validation/moretypes-22.json",
+          "sha256": "b3b6ea0b7cb31342cfb9c9c984c6ff65a6e0c4931b4cda35c78069259ee59b71"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/validation/moretypes-23.json",
+          "sha256": "e7a0fb45b0d4d8d23b6b20c7447f4de9bf016d0ff17bffd307204d5d9f67b3f3"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/validation/moretypes-24.json",
+          "sha256": "5c06a45bfa95bae0fe3e23c0772541e64f733d1a46a2a4ef94c0db6ec1cc48cb"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/validation/moretypes-3.json",
+          "sha256": "47d26fd04a47e3ca79e0d10a8254e58548c4323cff14af7ea41411f156104bc5"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/validation/moretypes-4.json",
+          "sha256": "90aea6114f0afef00075b1782e305f4dcd6288915ce54e8daca6474c0007f56a"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/validation/moretypes-5.json",
+          "sha256": "9e062aab4f2aabcdbd6ec8aa8974f82f561b17bc9134cdb792ec155eaaab060b"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/validation/moretypes-6.json",
+          "sha256": "5c808a152c79bf7b430b94f48badffd60fed49cde58a1c7c36c5f4c973c1f303"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/validation/moretypes-7.json",
+          "sha256": "7c380e15eaa2d9f11253e51156cd2090af2057ec367d7000b6e5a9ec6f4fcea8"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/validation/moretypes-8.json",
+          "sha256": "a1550bfed14706f6f0561c2b610e855deb062d32d9df367e637e7090dcb5993b"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/validation/moretypes-9.json",
+          "sha256": "c519debb053d006f5fb1e3d5f28c15509820c0b2a4579efa4ba8cc5d1aa7cd3c"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/validation/welcome-1.json",
+          "sha256": "fc9da7f77e84cf02e81f6bd6555ba119e0b5220e520c0ff4e351425b4b5f5700"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/validation/welcome-2.json",
+          "sha256": "1f681fc80123371431748f5fd4681b91e2dfcfbccf337770458e0cf21df3a549"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/validation/welcome-3.json",
+          "sha256": "59abb46edf369b0e8a2c36770a2a0307032d1558359f7193b168477443734cd6"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/validation/welcome-4.json",
+          "sha256": "c4a6b67fcf0923739307c9524f0d833071ccb5e63832837a6780c6f0e3ebc12c"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-001/validation/welcome-5.json",
+          "sha256": "2a743cce3785536123c3a1392ed56e73cced83b1fdf92de714b857f0e24f26bd"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/candidates/concurrency-1.article",
+          "sha256": "a995224ea27f27007c2120da6b50599728cb9bb6078818160b01a6e6e7bf22c8"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/candidates/concurrency-11.article",
+          "sha256": "93f93cba64866b4e8a6ac7656b30e23043b8b0a6596b74ce0beee6aa2b35ea60"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/candidates/concurrency-2.article",
+          "sha256": "a08efd848e225004c172a398ffe6691c5c8f1a7a38ea5734a3985e22c3ef9269"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/candidates/concurrency-3.article",
+          "sha256": "480c28086b6f4a3a8a946df1e4564b02f872ee5a9a300c03d414ea1b55e6da3e"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/candidates/concurrency-4.article",
+          "sha256": "413a51c63b98bd211cad03b86e8c83a07929439da581198624b99f022fc0ff17"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/candidates/concurrency-5.article",
+          "sha256": "5c9649d3a24028ee88b8e75e84a5c771d2582e512d2bff21f2d444a59e161f8a"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/candidates/concurrency-6.article",
+          "sha256": "8ed347ee8e14f7706605809b76b74b37c8b19775d348b0a20dd22cccd78b3224"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/candidates/concurrency-7.article",
+          "sha256": "34bb3784e2c0a63428ea9d5b865eb959f8c4292a061e34e139ad0f42c2322d3f"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/candidates/concurrency-8.article",
+          "sha256": "4b6ecc85991e1fc75462c533702e6c7d50beae9ba3b136e646344d2fc80fce70"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/candidates/concurrency-9.article",
+          "sha256": "a0ee809abd42791ca2fe3a321f1415277fcd6023575345f48a3c7d27ad3df1fc"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/candidates/generics-1.article",
+          "sha256": "455304692c26e9bafdab7059bebff7c2414cb992461a58843c2877f1eb1ee13e"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/candidates/generics-2.article",
+          "sha256": "684673bfbc131bbbabe46e8245a07238409d524510b902715afbec0de27ecf52"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/candidates/generics-3.article",
+          "sha256": "83624f78b2c1175964b6ee07dad611cfe63443ad6f03cf4fa06b913f0a5a2451"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/candidates/methods-1.article",
+          "sha256": "701759a6ddb1405e60988e0e18a718abf1ffbb2e6ec70e0900c0397633cc34af"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/candidates/methods-10.article",
+          "sha256": "bb197264fcf3fd5dc93190a6fbb8acc2c3925a3de4cbba173fba31504ef0356b"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/candidates/methods-11.article",
+          "sha256": "2a0fcf640ea4da9c474d0c1ff7fd55632b096d9f09853de0f4056d27ceca2c06"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/candidates/methods-12.article",
+          "sha256": "09de8a4c8d0edf9199d0a2005fdb935ee135a79947011ea16a1e8ad43973f939"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/candidates/methods-13.article",
+          "sha256": "a65b104c43389f79ba3926447d5c651baa2ac3e28dee3a1011ed322fa8969fc2"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/candidates/methods-14.article",
+          "sha256": "2bdfe421e82c546cd88b657bf068965c13a96bfd4ab85369be8cd7cdb770ee0f"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/candidates/methods-15.article",
+          "sha256": "8496ae416ee0c89c2d47d6e748ca609aec90163a14396ad4b61b13a028f62ed5"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/candidates/methods-16.article",
+          "sha256": "7da36d11e25e1bc5c7f5a5f442067565c77123ad589bffb5c6b05f06084e974f"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/candidates/methods-17.article",
+          "sha256": "83cf235dd30d9f8c02d5cb90004ded687584ad6b2da8f31aff6918f0ef4477e4"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/candidates/methods-18.article",
+          "sha256": "2049e7f00a332796ca1efbbea0321e8d5b3469cdcb04d753da395dea3bf72ad4"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/candidates/methods-19.article",
+          "sha256": "b4771326554ce81cef2704929097aaa406f264981fa22a89db92838ba6bb04d8"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/candidates/methods-2.article",
+          "sha256": "67e1be31ba8d86646fed08f439b5451ebdb75b5014fb8e699269de8c2a784ef0"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/candidates/methods-20.article",
+          "sha256": "66df77db130142897cafd105b13c8269095795fdb30ee9815dd9b9a5e1b93bf0"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/candidates/methods-21.article",
+          "sha256": "244ef5db047e935e31590b8d5eeae0b7f8971f27b0bab4b591c723088ae97543"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/candidates/methods-22.article",
+          "sha256": "fe69860289139686241aebe25a7988e165c1b4fa884ce33258bfc0c1c6d9729d"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/candidates/methods-23.article",
+          "sha256": "ef13c7eb5f3de7f154b514bfd2178b6f28aef9420cb02dd258ee6c1e484a52a5"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/candidates/methods-24.article",
+          "sha256": "bf5b540d4015d30649ccc3c300a5efadf5a2c68c73dfaa60e252c7bb9aee6fa9"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/candidates/methods-25.article",
+          "sha256": "06656c280df7fd4fd348cd05ab9f19ec53cedfe950b4d27b84641b83dc8dd0e9"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/candidates/methods-26.article",
+          "sha256": "83624f78b2c1175964b6ee07dad611cfe63443ad6f03cf4fa06b913f0a5a2451"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/candidates/methods-3.article",
+          "sha256": "a74f031f053229a513437611ad5fd13a0da20df08d470fb956437dae1d1f3fd3"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/candidates/methods-4.article",
+          "sha256": "93717c0b34735f54dcac625f7ca3418cbed53433857f681b328baadbe35e56cb"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/candidates/methods-5.article",
+          "sha256": "9ded13eddd6658882d6425ce1d9d22ae915ee9baeb041ad76c1347874e178137"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/candidates/methods-6.article",
+          "sha256": "190f741b2e2646ce24d6ed87fcec09be2424c32622b1a06d7a8e58838261fb5a"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/candidates/methods-7.article",
+          "sha256": "ae046f92510b82a671a62e92ac882a96fff79ebeddf254fd443339528f2466c2"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/candidates/methods-8.article",
+          "sha256": "5c5e6f58335fc32baa7a56e5fbe4bb80e2a70b4f3b861c65374dda94a11cf10f"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/candidates/methods-9.article",
+          "sha256": "c313b6e0acd2e3a8640742935d831d7fa3c7dc9e111e2b4324f9830c37ffd69d"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/candidates/moretypes-26.article",
+          "sha256": "8742c85d2117818ec6dc624cf73106d44a01f9b9f79796b514a17ce5950755ca"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/candidates/moretypes-27.article",
+          "sha256": "83624f78b2c1175964b6ee07dad611cfe63443ad6f03cf4fa06b913f0a5a2451"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/validation/concurrency-1.json",
+          "sha256": "d3b82a50d3641b08c14b4627345dec7aa74576a4f05798cf87804328b5009de0"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/validation/concurrency-11.json",
+          "sha256": "4f4db51ecf9725787b1b965f63d115ef2afbcc47bd5995d1f87b92adbc6b4e96"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/validation/concurrency-2.json",
+          "sha256": "9c1c56a86a55ed2e673927673d0886f0f54c496c0aa974bf8acf566db229be04"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/validation/concurrency-3.json",
+          "sha256": "acbefb918da6e4e9575876d3c45f5a1e427020f0c62349cc2e9d2ec7b5991627"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/validation/concurrency-4.json",
+          "sha256": "f25be34a51ba772c131d7cbd939fe19419ba303d88ba5b2cff093d6c8cb19318"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/validation/concurrency-5.json",
+          "sha256": "ec2998a02ffffd691ec141fa8908458041957780e0d68013ab8861822c8e337e"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/validation/concurrency-6.json",
+          "sha256": "6616a25f3827aaa842ac15b7df1c8418b101457c81ac96e6a1d6da4041651485"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/validation/concurrency-7.json",
+          "sha256": "52da1b7cfea8edaf403aac43e13ef564d0d9e47a38f3a5aa6fc406666100bdb4"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/validation/concurrency-8.json",
+          "sha256": "c9b3214c5089746a5ba1a990f09259ac5344ae13180996810ae38c4ed7d371c9"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/validation/concurrency-9.json",
+          "sha256": "d2b90973c9f2f12e2b6759dbfbbf12fe1791d7f6402ecae8605e050ce7d3011d"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/validation/generics-1.json",
+          "sha256": "a1ef9221e51329f9adea38b2ffd62c3f8d47e4893fdb817e784b1f37ada3b4b7"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/validation/generics-2.json",
+          "sha256": "d9c545ded0aa555d3c5e1dc2d000771ca4bf8403b3f1ae74c9a47c2643fb590f"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/validation/generics-3.json",
+          "sha256": "89f336aa7d529671332299f052199efd4cc1ec7f042d715af3d892fe81bed617"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/validation/methods-1.json",
+          "sha256": "d5309a1f7ee49841443cec08dec7d5a7cc2ca9aecb245636abf2e3426e44931c"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/validation/methods-10.json",
+          "sha256": "c1f7f772bcfe3e43c366cede91fd71a32102994ba568ed9ff6ebb3310aed80ab"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/validation/methods-11.json",
+          "sha256": "cccd3bc7cb5687687ce9a8d8fd0d241f72e3dc729263e93ba1a77ee8e8b4c2d9"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/validation/methods-12.json",
+          "sha256": "6a94e0b579aa7c1abfe781d391993e5d7d44d393f73399fb3b5ffa4efb1f9c69"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/validation/methods-13.json",
+          "sha256": "96dc3f6620489eb374a0ff73c908b620579fdcf347b748401675ec604f454d51"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/validation/methods-14.json",
+          "sha256": "ecf65ca1379ea535d481b366d4788179a365c6f4b3575bcc70a1a3d7168162c9"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/validation/methods-15.json",
+          "sha256": "bd1f9be28239759f7cb07d708fc5aea71e00af316d8d2b1616b862164b2c217c"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/validation/methods-16.json",
+          "sha256": "cfdb0f32e863f585bbb6dea2c547279c2f9c8944230a2365d3aeb9f065d79d9d"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/validation/methods-17.json",
+          "sha256": "e73c42c6dcf5f2507f030b9c4fb43a2aa738cd5e0a5d48f958839036a28495a3"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/validation/methods-18.json",
+          "sha256": "162aab3a726a11d491db30458c33b133f5a35dca16c9be082a1cb36a23632d14"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/validation/methods-19.json",
+          "sha256": "a48eaec17c174c6a6f2c49d70546e7fbb58675a4cb618886044a9fe5b432f371"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/validation/methods-2.json",
+          "sha256": "4a85d46a9b01055340488c6b4db281a1ad2d4240b4b36e3a1f0739280c391631"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/validation/methods-20.json",
+          "sha256": "5d5172ef9126aadf24a03dfb39056d060d81103cd6f0073079fd7edab5b76dd0"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/validation/methods-21.json",
+          "sha256": "48cc7ffa04f87338a3105f38b686d9dd6cf7ff90df9c5ec9e1cc0718eb6be6df"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/validation/methods-22.json",
+          "sha256": "5bb12df92e9b00f22dc14ac4c89b56971659b2255434cef5c779230c751133bd"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/validation/methods-23.json",
+          "sha256": "6e75df02d7e2e8bdcb516bab5e92d3a613be606740c9fa344ea03e8982db6348"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/validation/methods-24.json",
+          "sha256": "86f1f9c42b300a4c87d657f73c36fb646fe9f491c246adc3652950b60f3cdf42"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/validation/methods-25.json",
+          "sha256": "8ef7def60917d938ed770c44fb1557ad6f89ede5d935c7746f2019dca67d7e29"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/validation/methods-26.json",
+          "sha256": "8814fbc63fb9dadf5bd58b6402387ee6b493c444e13f62f31a19d1f65b2eac51"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/validation/methods-3.json",
+          "sha256": "7ee163cfd5c86256593f240c874bff3833afec473a89c7fb0377d242c875f3a3"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/validation/methods-4.json",
+          "sha256": "fa6d14da34e133c507709f96cdb3da7bcff1c8de5450bc4c7776365ff17c5828"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/validation/methods-5.json",
+          "sha256": "d9b73d059d45a78b4e4e279696cfaa0504c571ab31c4a9668cc5cf48004c53fd"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/validation/methods-6.json",
+          "sha256": "12b3315340937b6d5570c6af9605560f47b377c647ac9c1601001021b6d60f78"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/validation/methods-7.json",
+          "sha256": "818e18e566996ff4a7f1f8d3da3d5ff111ee92ab1d11e740e2f113e5b290f30b"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/validation/methods-8.json",
+          "sha256": "db8fa57137f55516a96d32fd140e4df3ba9ce6caab8e54baade1a178c6689357"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/validation/methods-9.json",
+          "sha256": "d1dd000eb06a5e84c79ec3790f0e15e111b8f81f7c013f0f92736e6a8f2bb8a8"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/validation/moretypes-26.json",
+          "sha256": "2edf7b3f3e11d1562b12c3b6c39ab61790f062c0e1fd75543bb61f1691247c78"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-002/validation/moretypes-27.json",
+          "sha256": "6ed248b634ae1578d41c99880a7235027946e22c1c36ab0387eab35212a96d81"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-003/candidates/basics-numeric-constants.go",
+          "sha256": "dc037f24a99804c93d1150776cc04b039932f709df31c374265fb30d8ca5d882"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-003/candidates/basics-type-inference.go",
+          "sha256": "def7265617de0bef8215975c6d24de0314d3a88ebd295badac169dd7a117af96"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-003/candidates/concurrency-channels.go",
+          "sha256": "a896ab5a7a2732e8fe6d59d8d05b4f42736da15d3bb50d4580d9104d1daaaa1a"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-003/candidates/concurrency-exercise-equivalent-binary-trees.go",
+          "sha256": "221c4e74eff017900a833ef1d65a97291185d3cdec56efe1c160b1129d0ed8ed"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-003/candidates/concurrency-mutex-counter.go",
+          "sha256": "83b4258c62f1cf20582a225523c9c3b38fea8b261bfab73c1f74bb5a54ad34be"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-003/candidates/flowcontrol-if-and-else.go",
+          "sha256": "796d4dd60fca4b99f3af6baa9ef8aa0224e0148ed6f7d4074e14c8ad5454ffed"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-003/candidates/generics-index.go",
+          "sha256": "06de858a934e009265ee3decddf2d0b13cd1b9188a93543e30b56ac7f180dc53"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-003/candidates/generics-list.go",
+          "sha256": "431aa2d860cac3f7cb448e9eb2a4f83ed46e305870f7385adab89815f81c910c"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-003/candidates/methods-exercise-reader.go",
+          "sha256": "7e13b6be1da2ebe31f80c20c48d29b8639dd08359ca177c7d60a581e67a0cd38"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-003/candidates/methods-exercise-stringer.go",
+          "sha256": "10f237a1e0b11ac299f9665dd1c8436d0050805b48237b4daba7a7446be155f1"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-003/candidates/methods-interfaces-are-satisfied-implicitly.go",
+          "sha256": "969b0c7960708795c1b454a82dbddb7f798ac3b00a84595548d99a3b07b6e29e"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-003/candidates/methods-interfaces.go",
+          "sha256": "a0e9a9095b161f253d2e5dba5c755a65a0e2c4f3327538f58b919f336be13c23"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-003/candidates/moretypes-append.go",
+          "sha256": "8fabfafe5a20bb5e1213f3e488e86ce49f3cfbcc183607e771009cb35c3f520d"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-003/candidates/moretypes-exercise-fibonacci-closure.go",
+          "sha256": "ded5376e9a99f3720c283ecfe8a8c40ff28b8236db291175c9cc496214203ea2"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-003/candidates/moretypes-pointers.go",
+          "sha256": "73b77199596cd639ff56c756c628eb39b0c8474ff1c299e7b2a817e5c8b1a270"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-003/candidates/moretypes-slice-len-cap.go",
+          "sha256": "8b808197e26a5d14c38701c7c0feb2628d8dd6cf1c8c80bb05313b07522a6fb8"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-003/candidates/moretypes-slices-of-slice.go",
+          "sha256": "0cbeda6c5151cd89c3073a161c934cec1e5c978e3bba1e3a56fa0a56c7bb4aaa"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-003/candidates/moretypes-struct-literals.go",
+          "sha256": "8d9287845d1426e3fc986763fa626d05fb5ddb8cc305e8a0203b7c89b1995891"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-003/validation/basics-numeric-constants.json",
+          "sha256": "bdc52015035a7c76714f60bf59c06fae4ec06bd247c1b41efaca334a1d18a219"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-003/validation/basics-type-inference.json",
+          "sha256": "2e222c75ea157e0813900183337bf2349dd993d91be82d79dd0f361514c355a4"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-003/validation/concurrency-channels.json",
+          "sha256": "4a979784669e5cc50a55657cc3e52d3e86b0ff2110549e91708d4f4146c1d721"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-003/validation/concurrency-exercise-equivalent-binary-trees.json",
+          "sha256": "6042323618b2ccc776d8c7c9d1564f7baa228e8241f936ea949f785aa285b23b"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-003/validation/concurrency-mutex-counter.json",
+          "sha256": "5502d6042659bc56ed62becee1ec301013c94455f66a6aed1832f7235858c072"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-003/validation/flowcontrol-if-and-else.json",
+          "sha256": "e5513a1694fb87793566b6302b7111bab767cdf256145c789308d68e9848555b"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-003/validation/generics-index.json",
+          "sha256": "3d5e2a0984196e19fc09051d792e45f1b92d6d5085a71586a036b14ec2796ee2"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-003/validation/generics-list.json",
+          "sha256": "6ce065ebaf4f5803338413e2b311593e17e9cb403f49cd9ca20b9adeff63659a"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-003/validation/methods-exercise-reader.json",
+          "sha256": "c29e54b9d4fe7545db5b9fda17c5b81f24689b1d09701c0d842513b7901e48f3"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-003/validation/methods-exercise-stringer.json",
+          "sha256": "b84a38cebc32d6407fdb136514c864b7c100c2c1e15b22c7a33b8a1521fbd696"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-003/validation/methods-interfaces-are-satisfied-implicitly.json",
+          "sha256": "9dbcbf6dc27cdbfaa0f10db6f94d36e9d2d5df6e70ec1e1e74da54889a5e6471"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-003/validation/methods-interfaces.json",
+          "sha256": "090f2dc3ab032418296327527cd71f9d76e6e9df0319c6a1a10cebefcb5180bd"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-003/validation/moretypes-append.json",
+          "sha256": "f75d84574d1526f47203c8645ba4daa61acf0bc525a5386958c619a0f936da8e"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-003/validation/moretypes-exercise-fibonacci-closure.json",
+          "sha256": "38b574731ad89b6523b62db4463fd3e381481f01055eefee5bec52ad8a961c67"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-003/validation/moretypes-pointers.json",
+          "sha256": "dcf64af2cc6d5f95418aaa64785e236485ad92bffdf7c5362cc39b78c9367126"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-003/validation/moretypes-slice-len-cap.json",
+          "sha256": "602bf305f0ba29bb733a1b6117576a1ab121af7b344dc382138c32268b524667"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-003/validation/moretypes-slices-of-slice.json",
+          "sha256": "21054745720d561b4c56879a5772363e9f5397a7b4f385c0712e8e5a33587e73"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-003/validation/moretypes-struct-literals.json",
+          "sha256": "3738e649bc5095bd540628cd62aec40e4cefc4393be58ba3e95f3efc01b40d65"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-004/candidates/concurrency-10.article",
+          "sha256": "a2093ca3a2f585c24413b7d79e5e2eca220ee2149793d0bd347b089b8cba202d"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-004/candidates/moretypes-25.article",
+          "sha256": "c2dcb73f756e1b228b99f1c087a0d723ba0e3846183f854e1f306539e7f344fc"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-004/validation/concurrency-10.json",
+          "sha256": "f06045200e31592e2ca30d36db045973c37a0cbd0a28e26f69517f062e8b57ee"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-004/validation/moretypes-25.json",
+          "sha256": "e315adb6135681b2aa81ead5f4baa8c3138b18e1b896a62d74f04e0496fa86db"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-005/candidates/concurrency-exercise-web-crawler.go",
+          "sha256": "451675a43c3ebb69d5281135e1fde909bb1f1ce65bcd6650c65f23685b70c531"
+        },
+        {
+          "path": "data/retranslation-runs/uk-UA/codex-uk-UA-005/validation/concurrency-exercise-web-crawler.json",
+          "sha256": "1487f71a80fb1153cdebb980f92e9eb8e253faea03460ec32bd0197198b844c2"
+        },
+        {
+          "path": "internal/tour/ui/uk-UA.json",
+          "sha256": "f98c7be991a0fb6a727d03d61070c29948aef975567e03b0d901db82f4d49af4"
+        },
+        {
+          "path": "locales/uk-UA/article-metadata.json",
+          "sha256": "311fa49fadd268f451658e3c872d858b1ac3feef6a29476f6a8cfb925f5960bc"
+        },
+        {
+          "path": "locales/uk-UA/candidates/basics-1.article",
+          "sha256": "ed7bf411e6641f4cbfa15d4bc12eb7da0211160205ad90e37eb8d6d04a2bb6c8"
+        },
+        {
+          "path": "locales/uk-UA/candidates/basics-10.article",
+          "sha256": "723e6a2cd24466d93ad0533e28cb488305a5e972bdc5b3924f049922d4e864eb"
+        },
+        {
+          "path": "locales/uk-UA/candidates/basics-11.article",
+          "sha256": "13676831c62df0111e4c65616c4bdc32a2a225e3d8fef2e922e8840d256bdb1d"
+        },
+        {
+          "path": "locales/uk-UA/candidates/basics-12.article",
+          "sha256": "34d6f8d9e1edecc53acd5110c62031b3baab5b65b590a513562e377d9892cac3"
+        },
+        {
+          "path": "locales/uk-UA/candidates/basics-13.article",
+          "sha256": "09183021422c8534ee21abe56e797119a930b82e8047ecf769daf6d9c43c6edc"
+        },
+        {
+          "path": "locales/uk-UA/candidates/basics-14.article",
+          "sha256": "b3adcb632a46d4058900fcd87d11ae2335ea816d3d63a4bfb3b1c7fca96a7d08"
+        },
+        {
+          "path": "locales/uk-UA/candidates/basics-15.article",
+          "sha256": "48139c2dffdcf1b0e9cfc1fb9c490c5b2f3c4c347af2072a73f26a03e853b9b3"
+        },
+        {
+          "path": "locales/uk-UA/candidates/basics-16.article",
+          "sha256": "1a00c1a9d8db3fbc58f78e7096daf170b60686315a9ca66fac55e02204520759"
+        },
+        {
+          "path": "locales/uk-UA/candidates/basics-17.article",
+          "sha256": "83624f78b2c1175964b6ee07dad611cfe63443ad6f03cf4fa06b913f0a5a2451"
+        },
+        {
+          "path": "locales/uk-UA/candidates/basics-2.article",
+          "sha256": "fdf538019107d5433a7903a738a45328931252a867e05181d5042de42ab335e9"
+        },
+        {
+          "path": "locales/uk-UA/candidates/basics-3.article",
+          "sha256": "63f372e23647933e011a1ce63df821db05a458bb50c84a3f71ab693847f8db50"
+        },
+        {
+          "path": "locales/uk-UA/candidates/basics-4.article",
+          "sha256": "dd2201c1b993160a0190b178478a2658099612eba2438843c144ec445c3ab649"
+        },
+        {
+          "path": "locales/uk-UA/candidates/basics-5.article",
+          "sha256": "125cd7e90678121a8db5f28a5e6ed22d5579d514208e9f076fcc74b7d30569d5"
+        },
+        {
+          "path": "locales/uk-UA/candidates/basics-6.article",
+          "sha256": "45bb2f66e54f2f9d3643e8de3e817360177af687dd976071bf57f81748461f0a"
+        },
+        {
+          "path": "locales/uk-UA/candidates/basics-7.article",
+          "sha256": "4d38e31d2baf6eb63693a9d5735a9c51e7785c9b796f75e4246a5675836104c0"
+        },
+        {
+          "path": "locales/uk-UA/candidates/basics-8.article",
+          "sha256": "e79f9fe1d2c5ed0774e81c05cdcdabcec1ff14fcd5b379d3f494b0da0c8e28dc"
+        },
+        {
+          "path": "locales/uk-UA/candidates/basics-9.article",
+          "sha256": "25f6dc6da4f686ed74586f3c823ae3ad83b73e9551333acd73b06592e03aac87"
+        },
+        {
+          "path": "locales/uk-UA/candidates/basics-numeric-constants.go",
+          "sha256": "dc037f24a99804c93d1150776cc04b039932f709df31c374265fb30d8ca5d882"
+        },
+        {
+          "path": "locales/uk-UA/candidates/basics-type-inference.go",
+          "sha256": "def7265617de0bef8215975c6d24de0314d3a88ebd295badac169dd7a117af96"
+        },
+        {
+          "path": "locales/uk-UA/candidates/concurrency-1.article",
+          "sha256": "a995224ea27f27007c2120da6b50599728cb9bb6078818160b01a6e6e7bf22c8"
+        },
+        {
+          "path": "locales/uk-UA/candidates/concurrency-10.article",
+          "sha256": "a2093ca3a2f585c24413b7d79e5e2eca220ee2149793d0bd347b089b8cba202d"
+        },
+        {
+          "path": "locales/uk-UA/candidates/concurrency-11.article",
+          "sha256": "93f93cba64866b4e8a6ac7656b30e23043b8b0a6596b74ce0beee6aa2b35ea60"
+        },
+        {
+          "path": "locales/uk-UA/candidates/concurrency-2.article",
+          "sha256": "a08efd848e225004c172a398ffe6691c5c8f1a7a38ea5734a3985e22c3ef9269"
+        },
+        {
+          "path": "locales/uk-UA/candidates/concurrency-3.article",
+          "sha256": "480c28086b6f4a3a8a946df1e4564b02f872ee5a9a300c03d414ea1b55e6da3e"
+        },
+        {
+          "path": "locales/uk-UA/candidates/concurrency-4.article",
+          "sha256": "413a51c63b98bd211cad03b86e8c83a07929439da581198624b99f022fc0ff17"
+        },
+        {
+          "path": "locales/uk-UA/candidates/concurrency-5.article",
+          "sha256": "5c9649d3a24028ee88b8e75e84a5c771d2582e512d2bff21f2d444a59e161f8a"
+        },
+        {
+          "path": "locales/uk-UA/candidates/concurrency-6.article",
+          "sha256": "8ed347ee8e14f7706605809b76b74b37c8b19775d348b0a20dd22cccd78b3224"
+        },
+        {
+          "path": "locales/uk-UA/candidates/concurrency-7.article",
+          "sha256": "34bb3784e2c0a63428ea9d5b865eb959f8c4292a061e34e139ad0f42c2322d3f"
+        },
+        {
+          "path": "locales/uk-UA/candidates/concurrency-8.article",
+          "sha256": "4b6ecc85991e1fc75462c533702e6c7d50beae9ba3b136e646344d2fc80fce70"
+        },
+        {
+          "path": "locales/uk-UA/candidates/concurrency-9.article",
+          "sha256": "a0ee809abd42791ca2fe3a321f1415277fcd6023575345f48a3c7d27ad3df1fc"
+        },
+        {
+          "path": "locales/uk-UA/candidates/concurrency-channels.go",
+          "sha256": "a896ab5a7a2732e8fe6d59d8d05b4f42736da15d3bb50d4580d9104d1daaaa1a"
+        },
+        {
+          "path": "locales/uk-UA/candidates/concurrency-exercise-equivalent-binary-trees.go",
+          "sha256": "221c4e74eff017900a833ef1d65a97291185d3cdec56efe1c160b1129d0ed8ed"
+        },
+        {
+          "path": "locales/uk-UA/candidates/concurrency-exercise-web-crawler.go",
+          "sha256": "451675a43c3ebb69d5281135e1fde909bb1f1ce65bcd6650c65f23685b70c531"
+        },
+        {
+          "path": "locales/uk-UA/candidates/concurrency-mutex-counter.go",
+          "sha256": "83b4258c62f1cf20582a225523c9c3b38fea8b261bfab73c1f74bb5a54ad34be"
+        },
+        {
+          "path": "locales/uk-UA/candidates/flowcontrol-1.article",
+          "sha256": "44f718412998f588498106b64e6bd9318bce48f19b0c71aeaa874d9c2ce83c00"
+        },
+        {
+          "path": "locales/uk-UA/candidates/flowcontrol-10.article",
+          "sha256": "7be13b50d4633555fc4b1569bddfd1e5bd9e68ae8c1ec4ddeb3ae7599038917d"
+        },
+        {
+          "path": "locales/uk-UA/candidates/flowcontrol-11.article",
+          "sha256": "1cc4fd5624252b2ffa9699a166bb59df45fa5f6673453951d4f6eeaeae1f3074"
+        },
+        {
+          "path": "locales/uk-UA/candidates/flowcontrol-12.article",
+          "sha256": "4a771ceb5ed68ef03409ea48a3af9ef725ac703218914241e5597a06e6bd9e92"
+        },
+        {
+          "path": "locales/uk-UA/candidates/flowcontrol-13.article",
+          "sha256": "21b14904ddfd92409e86514db2c5fff5a6de2080d1cceb17a04481c32d57c98f"
+        },
+        {
+          "path": "locales/uk-UA/candidates/flowcontrol-14.article",
+          "sha256": "83624f78b2c1175964b6ee07dad611cfe63443ad6f03cf4fa06b913f0a5a2451"
+        },
+        {
+          "path": "locales/uk-UA/candidates/flowcontrol-2.article",
+          "sha256": "a97e2f486b61c338f806ac5d7ceecc4ff35c457a9e4c9fa85893299ea7d9e572"
+        },
+        {
+          "path": "locales/uk-UA/candidates/flowcontrol-3.article",
+          "sha256": "11d8cc870bdb55bef1dafb08a44df4b0436e82a84dd95e67c056808212720484"
+        },
+        {
+          "path": "locales/uk-UA/candidates/flowcontrol-4.article",
+          "sha256": "da36bb53e8db4617358be82f5b596786223fee0e82af57d509f14594d6149204"
+        },
+        {
+          "path": "locales/uk-UA/candidates/flowcontrol-5.article",
+          "sha256": "23538198b6d653eab68e0d29f5b5992e6a0617a53a97a0627c7fc91aa5118217"
+        },
+        {
+          "path": "locales/uk-UA/candidates/flowcontrol-6.article",
+          "sha256": "094567949eed3fc4cca6b77a9e2d25b79b43a16ba8df0cc8790cf2e50a2d5995"
+        },
+        {
+          "path": "locales/uk-UA/candidates/flowcontrol-7.article",
+          "sha256": "236074d7633f149cdb96b42832420abf2e9b83879e6a497b8ab2dbd84776c43f"
+        },
+        {
+          "path": "locales/uk-UA/candidates/flowcontrol-8.article",
+          "sha256": "6249394c545ac5e76fd9ed0dbcb7ff70dc40eb27c6b19ecf5a33ceaa8cd047d1"
+        },
+        {
+          "path": "locales/uk-UA/candidates/flowcontrol-9.article",
+          "sha256": "254467d474e22921694a71ce5b24cbebc02ba69303145dbfbd5e2f1f32dee47b"
+        },
+        {
+          "path": "locales/uk-UA/candidates/flowcontrol-if-and-else.go",
+          "sha256": "796d4dd60fca4b99f3af6baa9ef8aa0224e0148ed6f7d4074e14c8ad5454ffed"
+        },
+        {
+          "path": "locales/uk-UA/candidates/generics-1.article",
+          "sha256": "455304692c26e9bafdab7059bebff7c2414cb992461a58843c2877f1eb1ee13e"
+        },
+        {
+          "path": "locales/uk-UA/candidates/generics-2.article",
+          "sha256": "684673bfbc131bbbabe46e8245a07238409d524510b902715afbec0de27ecf52"
+        },
+        {
+          "path": "locales/uk-UA/candidates/generics-3.article",
+          "sha256": "83624f78b2c1175964b6ee07dad611cfe63443ad6f03cf4fa06b913f0a5a2451"
+        },
+        {
+          "path": "locales/uk-UA/candidates/generics-index.go",
+          "sha256": "06de858a934e009265ee3decddf2d0b13cd1b9188a93543e30b56ac7f180dc53"
+        },
+        {
+          "path": "locales/uk-UA/candidates/generics-list.go",
+          "sha256": "431aa2d860cac3f7cb448e9eb2a4f83ed46e305870f7385adab89815f81c910c"
+        },
+        {
+          "path": "locales/uk-UA/candidates/methods-1.article",
+          "sha256": "701759a6ddb1405e60988e0e18a718abf1ffbb2e6ec70e0900c0397633cc34af"
+        },
+        {
+          "path": "locales/uk-UA/candidates/methods-10.article",
+          "sha256": "bb197264fcf3fd5dc93190a6fbb8acc2c3925a3de4cbba173fba31504ef0356b"
+        },
+        {
+          "path": "locales/uk-UA/candidates/methods-11.article",
+          "sha256": "2a0fcf640ea4da9c474d0c1ff7fd55632b096d9f09853de0f4056d27ceca2c06"
+        },
+        {
+          "path": "locales/uk-UA/candidates/methods-12.article",
+          "sha256": "09de8a4c8d0edf9199d0a2005fdb935ee135a79947011ea16a1e8ad43973f939"
+        },
+        {
+          "path": "locales/uk-UA/candidates/methods-13.article",
+          "sha256": "a65b104c43389f79ba3926447d5c651baa2ac3e28dee3a1011ed322fa8969fc2"
+        },
+        {
+          "path": "locales/uk-UA/candidates/methods-14.article",
+          "sha256": "2bdfe421e82c546cd88b657bf068965c13a96bfd4ab85369be8cd7cdb770ee0f"
+        },
+        {
+          "path": "locales/uk-UA/candidates/methods-15.article",
+          "sha256": "8496ae416ee0c89c2d47d6e748ca609aec90163a14396ad4b61b13a028f62ed5"
+        },
+        {
+          "path": "locales/uk-UA/candidates/methods-16.article",
+          "sha256": "7da36d11e25e1bc5c7f5a5f442067565c77123ad589bffb5c6b05f06084e974f"
+        },
+        {
+          "path": "locales/uk-UA/candidates/methods-17.article",
+          "sha256": "83cf235dd30d9f8c02d5cb90004ded687584ad6b2da8f31aff6918f0ef4477e4"
+        },
+        {
+          "path": "locales/uk-UA/candidates/methods-18.article",
+          "sha256": "2049e7f00a332796ca1efbbea0321e8d5b3469cdcb04d753da395dea3bf72ad4"
+        },
+        {
+          "path": "locales/uk-UA/candidates/methods-19.article",
+          "sha256": "b4771326554ce81cef2704929097aaa406f264981fa22a89db92838ba6bb04d8"
+        },
+        {
+          "path": "locales/uk-UA/candidates/methods-2.article",
+          "sha256": "67e1be31ba8d86646fed08f439b5451ebdb75b5014fb8e699269de8c2a784ef0"
+        },
+        {
+          "path": "locales/uk-UA/candidates/methods-20.article",
+          "sha256": "66df77db130142897cafd105b13c8269095795fdb30ee9815dd9b9a5e1b93bf0"
+        },
+        {
+          "path": "locales/uk-UA/candidates/methods-21.article",
+          "sha256": "244ef5db047e935e31590b8d5eeae0b7f8971f27b0bab4b591c723088ae97543"
+        },
+        {
+          "path": "locales/uk-UA/candidates/methods-22.article",
+          "sha256": "fe69860289139686241aebe25a7988e165c1b4fa884ce33258bfc0c1c6d9729d"
+        },
+        {
+          "path": "locales/uk-UA/candidates/methods-23.article",
+          "sha256": "ef13c7eb5f3de7f154b514bfd2178b6f28aef9420cb02dd258ee6c1e484a52a5"
+        },
+        {
+          "path": "locales/uk-UA/candidates/methods-24.article",
+          "sha256": "bf5b540d4015d30649ccc3c300a5efadf5a2c68c73dfaa60e252c7bb9aee6fa9"
+        },
+        {
+          "path": "locales/uk-UA/candidates/methods-25.article",
+          "sha256": "06656c280df7fd4fd348cd05ab9f19ec53cedfe950b4d27b84641b83dc8dd0e9"
+        },
+        {
+          "path": "locales/uk-UA/candidates/methods-26.article",
+          "sha256": "83624f78b2c1175964b6ee07dad611cfe63443ad6f03cf4fa06b913f0a5a2451"
+        },
+        {
+          "path": "locales/uk-UA/candidates/methods-3.article",
+          "sha256": "a74f031f053229a513437611ad5fd13a0da20df08d470fb956437dae1d1f3fd3"
+        },
+        {
+          "path": "locales/uk-UA/candidates/methods-4.article",
+          "sha256": "93717c0b34735f54dcac625f7ca3418cbed53433857f681b328baadbe35e56cb"
+        },
+        {
+          "path": "locales/uk-UA/candidates/methods-5.article",
+          "sha256": "9ded13eddd6658882d6425ce1d9d22ae915ee9baeb041ad76c1347874e178137"
+        },
+        {
+          "path": "locales/uk-UA/candidates/methods-6.article",
+          "sha256": "190f741b2e2646ce24d6ed87fcec09be2424c32622b1a06d7a8e58838261fb5a"
+        },
+        {
+          "path": "locales/uk-UA/candidates/methods-7.article",
+          "sha256": "ae046f92510b82a671a62e92ac882a96fff79ebeddf254fd443339528f2466c2"
+        },
+        {
+          "path": "locales/uk-UA/candidates/methods-8.article",
+          "sha256": "5c5e6f58335fc32baa7a56e5fbe4bb80e2a70b4f3b861c65374dda94a11cf10f"
+        },
+        {
+          "path": "locales/uk-UA/candidates/methods-9.article",
+          "sha256": "c313b6e0acd2e3a8640742935d831d7fa3c7dc9e111e2b4324f9830c37ffd69d"
+        },
+        {
+          "path": "locales/uk-UA/candidates/methods-exercise-reader.go",
+          "sha256": "7e13b6be1da2ebe31f80c20c48d29b8639dd08359ca177c7d60a581e67a0cd38"
+        },
+        {
+          "path": "locales/uk-UA/candidates/methods-exercise-stringer.go",
+          "sha256": "10f237a1e0b11ac299f9665dd1c8436d0050805b48237b4daba7a7446be155f1"
+        },
+        {
+          "path": "locales/uk-UA/candidates/methods-interfaces-are-satisfied-implicitly.go",
+          "sha256": "969b0c7960708795c1b454a82dbddb7f798ac3b00a84595548d99a3b07b6e29e"
+        },
+        {
+          "path": "locales/uk-UA/candidates/methods-interfaces.go",
+          "sha256": "a0e9a9095b161f253d2e5dba5c755a65a0e2c4f3327538f58b919f336be13c23"
+        },
+        {
+          "path": "locales/uk-UA/candidates/moretypes-1.article",
+          "sha256": "7d33121f1f143a06b6b5de568778541bfc467d819f01ea0ea0c223cd67bbc07d"
+        },
+        {
+          "path": "locales/uk-UA/candidates/moretypes-10.article",
+          "sha256": "7bb7f21c1e57448a9f9541284f940eefd5115e1fd282aad0c1eeb4771c847701"
+        },
+        {
+          "path": "locales/uk-UA/candidates/moretypes-11.article",
+          "sha256": "246aba57dd7c75db33f89101a22d587932261264a2da240243d65e8b6737e563"
+        },
+        {
+          "path": "locales/uk-UA/candidates/moretypes-12.article",
+          "sha256": "4d937d69d98d9c8dd4cf9657f8a2f6e1acf9d6094e51cff51af4ac6a311e3ea8"
+        },
+        {
+          "path": "locales/uk-UA/candidates/moretypes-13.article",
+          "sha256": "f28126a442f66ac4219c2cc0b3d2f539bd9501cb19789d641d137c63e27db504"
+        },
+        {
+          "path": "locales/uk-UA/candidates/moretypes-14.article",
+          "sha256": "7f6fbbc063888e141e4a34c20b427db6f574490f0887caa6c493b539600a2fe8"
+        },
+        {
+          "path": "locales/uk-UA/candidates/moretypes-15.article",
+          "sha256": "64dad504ba7f0d22612ef395ed05cd694b255ccfe4e84bb9bba3bc90811c39fc"
+        },
+        {
+          "path": "locales/uk-UA/candidates/moretypes-16.article",
+          "sha256": "f86d783ca4c6c4ee2a4472e8b8b67727d5b9d5cbcac6ee8730179c249a1edda2"
+        },
+        {
+          "path": "locales/uk-UA/candidates/moretypes-17.article",
+          "sha256": "ddd50d24ddd282c80447ab33147ae118a083b613b4c0356382175f7add0ba661"
+        },
+        {
+          "path": "locales/uk-UA/candidates/moretypes-18.article",
+          "sha256": "355d07368b14fa2505983eab7f2c4e74b0ae39b57bdb7ea506f77b30e75f0213"
+        },
+        {
+          "path": "locales/uk-UA/candidates/moretypes-19.article",
+          "sha256": "9357febb3ab1b722529c7e9c01acf3fa2456b4faf6eae8ea259002c87fd35cfb"
+        },
+        {
+          "path": "locales/uk-UA/candidates/moretypes-2.article",
+          "sha256": "7205b0a8e7ba7690f2005fdc20b66a5e7d62658625101c98dd814e4988ce564f"
+        },
+        {
+          "path": "locales/uk-UA/candidates/moretypes-20.article",
+          "sha256": "9ccc169c0d7f6e5a8c6db1a5239f2ed0116a96389b5ac9e46f1dffb97ee0fdb4"
+        },
+        {
+          "path": "locales/uk-UA/candidates/moretypes-21.article",
+          "sha256": "55277bb5a5bcb6cbb34f69c14b6f4ceb0d902f7996e11b8e20ed0499402ed29f"
+        },
+        {
+          "path": "locales/uk-UA/candidates/moretypes-22.article",
+          "sha256": "35200ee193bf5a1918ccadd40f67e0b75a1b237bb224e3cb296ad55ea8f8ca76"
+        },
+        {
+          "path": "locales/uk-UA/candidates/moretypes-23.article",
+          "sha256": "11c448dd202d78bf3ed898b72a18021d5c0b18ad84523f64c22e0b48f11d82a8"
+        },
+        {
+          "path": "locales/uk-UA/candidates/moretypes-24.article",
+          "sha256": "55ec5c49086d5417d6f75d2743ad7702c9750a35a7b47138494b27d2e86ff1f4"
+        },
+        {
+          "path": "locales/uk-UA/candidates/moretypes-25.article",
+          "sha256": "c2dcb73f756e1b228b99f1c087a0d723ba0e3846183f854e1f306539e7f344fc"
+        },
+        {
+          "path": "locales/uk-UA/candidates/moretypes-26.article",
+          "sha256": "8742c85d2117818ec6dc624cf73106d44a01f9b9f79796b514a17ce5950755ca"
+        },
+        {
+          "path": "locales/uk-UA/candidates/moretypes-27.article",
+          "sha256": "83624f78b2c1175964b6ee07dad611cfe63443ad6f03cf4fa06b913f0a5a2451"
+        },
+        {
+          "path": "locales/uk-UA/candidates/moretypes-3.article",
+          "sha256": "5e05ee6256b264351456924dbefb6f7663575991e6bfa30deb772ba4aabf86f9"
+        },
+        {
+          "path": "locales/uk-UA/candidates/moretypes-4.article",
+          "sha256": "0bb4bd5e67443a38a6c0e5d8dfbb740dbb61ce7f4b2c5338a3ed4f28e924d872"
+        },
+        {
+          "path": "locales/uk-UA/candidates/moretypes-5.article",
+          "sha256": "00aaa9be57b77190018218791afb51246c3750c92480557981095fb71f202df3"
+        },
+        {
+          "path": "locales/uk-UA/candidates/moretypes-6.article",
+          "sha256": "0e9a048d1770cf1a9080ece779b446d101804f97ea0caee44377cc513d1e8b44"
+        },
+        {
+          "path": "locales/uk-UA/candidates/moretypes-7.article",
+          "sha256": "e2a41ee2484da002f77ae5abdf5a59f24b4f7a37dc03c4efec9c2a35efc672e4"
+        },
+        {
+          "path": "locales/uk-UA/candidates/moretypes-8.article",
+          "sha256": "8e981c313f21eb6b7b18b5719981684df2784185b63081ccf633e0ee02f20072"
+        },
+        {
+          "path": "locales/uk-UA/candidates/moretypes-9.article",
+          "sha256": "6d1dc56ed4d283c7826d4069a9a5a83b4aeb1d8e3d0e783b4918d93f0ba00196"
+        },
+        {
+          "path": "locales/uk-UA/candidates/moretypes-append.go",
+          "sha256": "8fabfafe5a20bb5e1213f3e488e86ce49f3cfbcc183607e771009cb35c3f520d"
+        },
+        {
+          "path": "locales/uk-UA/candidates/moretypes-exercise-fibonacci-closure.go",
+          "sha256": "ded5376e9a99f3720c283ecfe8a8c40ff28b8236db291175c9cc496214203ea2"
+        },
+        {
+          "path": "locales/uk-UA/candidates/moretypes-pointers.go",
+          "sha256": "73b77199596cd639ff56c756c628eb39b0c8474ff1c299e7b2a817e5c8b1a270"
+        },
+        {
+          "path": "locales/uk-UA/candidates/moretypes-slice-len-cap.go",
+          "sha256": "8b808197e26a5d14c38701c7c0feb2628d8dd6cf1c8c80bb05313b07522a6fb8"
+        },
+        {
+          "path": "locales/uk-UA/candidates/moretypes-slices-of-slice.go",
+          "sha256": "0cbeda6c5151cd89c3073a161c934cec1e5c978e3bba1e3a56fa0a56c7bb4aaa"
+        },
+        {
+          "path": "locales/uk-UA/candidates/moretypes-struct-literals.go",
+          "sha256": "8d9287845d1426e3fc986763fa626d05fb5ddb8cc305e8a0203b7c89b1995891"
+        },
+        {
+          "path": "locales/uk-UA/candidates/welcome-1.article",
+          "sha256": "83dc3d8e2338f1bd6fcffbcaedf0f494711ac1dca2d7c4c864f18e2f00f03f4d"
+        },
+        {
+          "path": "locales/uk-UA/candidates/welcome-2.article",
+          "sha256": "c45d7ecc311085d47844a9b87fbb9444d88640ea65e17b4ce38c97ada836e3ff"
+        },
+        {
+          "path": "locales/uk-UA/candidates/welcome-3.article",
+          "sha256": "543032e37682debbc0548bea37c2bf7e23aae324d85d0de3e193b4c6fc8c8ad2"
+        },
+        {
+          "path": "locales/uk-UA/candidates/welcome-4.article",
+          "sha256": "a749b2b2019b18ec32421367df2888b18f642039bac7261e4c999fbd02e946d3"
+        },
+        {
+          "path": "locales/uk-UA/candidates/welcome-5.article",
+          "sha256": "ef8954eae0385f29c6a08cd7076b7a1d2d45e2caf738c0f3f32e92f8955cb19c"
+        },
+        {
+          "path": "locales/uk-UA/course-metadata.json",
+          "sha256": "d9533a0148b12d4f3b0d674af47e4ec0c759f76a4fbea5ea851038039a14fe64"
+        },
+        {
+          "path": "locales/uk-UA/glossary.yaml",
+          "sha256": "b7cd31bb74115626a7aeeb75056f9876bb36aa529bcc660794dabfc91fbadd2e"
+        },
+        {
+          "path": "locales/uk-UA/locale.json",
+          "sha256": "7d841d10785a262e2da1b6a3cf746aa34778d0509507d50b5c51915dfd37f7ec"
+        },
+        {
+          "path": "locales/uk-UA/status.tsv",
+          "sha256": "330c97ae6e676602ff289b8f87aa401df63d8d47a16ccc742ce8e30b446a4d92"
+        }
+      ],
+      "evidence_identity_sha256": "8ce326bf114c1c40101c7b6c09cbf7428fee9a65f87bef51b3460a9e76146093",
+      "validated_context_sha256": "6d4e54659b2250f5c8c3a9d76ebb575084d4c2aa59f35f48877dcce6381d59b8",
+      "legacy_surface_gate_state": "historical-verified"
+    }
+  ]
+}

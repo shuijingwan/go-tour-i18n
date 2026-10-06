@@ -1,0 +1,1647 @@
+{
+  "schema": "go-learning/locale-content-scope/v1",
+  "locale": "gu-IN",
+  "packages": [
+    {
+      "package": "tour-v1",
+      "state": "complete",
+      "package_identity_sha256": "926ee5bf113ecc24d9128ed4531e740092f2ca88f6f154cf101f6b8478ed83a9",
+      "source_authority_sha256": "48d09f17bf06e4beb9d05bb5b70465f5c6677406d84a3b9d125307f17d63c054",
+      "completed_surfaces": [
+        "tour"
+      ],
+      "local_canonical_routes": [
+        "/tour/",
+        "/tour/basics/1",
+        "/tour/basics/10",
+        "/tour/basics/11",
+        "/tour/basics/12",
+        "/tour/basics/13",
+        "/tour/basics/14",
+        "/tour/basics/15",
+        "/tour/basics/16",
+        "/tour/basics/17",
+        "/tour/basics/2",
+        "/tour/basics/3",
+        "/tour/basics/4",
+        "/tour/basics/5",
+        "/tour/basics/6",
+        "/tour/basics/7",
+        "/tour/basics/8",
+        "/tour/basics/9",
+        "/tour/concurrency/1",
+        "/tour/concurrency/10",
+        "/tour/concurrency/11",
+        "/tour/concurrency/2",
+        "/tour/concurrency/3",
+        "/tour/concurrency/4",
+        "/tour/concurrency/5",
+        "/tour/concurrency/6",
+        "/tour/concurrency/7",
+        "/tour/concurrency/8",
+        "/tour/concurrency/9",
+        "/tour/flowcontrol/1",
+        "/tour/flowcontrol/10",
+        "/tour/flowcontrol/11",
+        "/tour/flowcontrol/12",
+        "/tour/flowcontrol/13",
+        "/tour/flowcontrol/14",
+        "/tour/flowcontrol/2",
+        "/tour/flowcontrol/3",
+        "/tour/flowcontrol/4",
+        "/tour/flowcontrol/5",
+        "/tour/flowcontrol/6",
+        "/tour/flowcontrol/7",
+        "/tour/flowcontrol/8",
+        "/tour/flowcontrol/9",
+        "/tour/generics/1",
+        "/tour/generics/2",
+        "/tour/generics/3",
+        "/tour/list",
+        "/tour/methods/1",
+        "/tour/methods/10",
+        "/tour/methods/11",
+        "/tour/methods/12",
+        "/tour/methods/13",
+        "/tour/methods/14",
+        "/tour/methods/15",
+        "/tour/methods/16",
+        "/tour/methods/17",
+        "/tour/methods/18",
+        "/tour/methods/19",
+        "/tour/methods/2",
+        "/tour/methods/20",
+        "/tour/methods/21",
+        "/tour/methods/22",
+        "/tour/methods/23",
+        "/tour/methods/24",
+        "/tour/methods/25",
+        "/tour/methods/26",
+        "/tour/methods/3",
+        "/tour/methods/4",
+        "/tour/methods/5",
+        "/tour/methods/6",
+        "/tour/methods/7",
+        "/tour/methods/8",
+        "/tour/methods/9",
+        "/tour/moretypes/1",
+        "/tour/moretypes/10",
+        "/tour/moretypes/11",
+        "/tour/moretypes/12",
+        "/tour/moretypes/13",
+        "/tour/moretypes/14",
+        "/tour/moretypes/15",
+        "/tour/moretypes/16",
+        "/tour/moretypes/17",
+        "/tour/moretypes/18",
+        "/tour/moretypes/19",
+        "/tour/moretypes/2",
+        "/tour/moretypes/20",
+        "/tour/moretypes/21",
+        "/tour/moretypes/22",
+        "/tour/moretypes/23",
+        "/tour/moretypes/24",
+        "/tour/moretypes/25",
+        "/tour/moretypes/26",
+        "/tour/moretypes/27",
+        "/tour/moretypes/3",
+        "/tour/moretypes/4",
+        "/tour/moretypes/5",
+        "/tour/moretypes/6",
+        "/tour/moretypes/7",
+        "/tour/moretypes/8",
+        "/tour/moretypes/9",
+        "/tour/welcome/1",
+        "/tour/welcome/2",
+        "/tour/welcome/3",
+        "/tour/welcome/4",
+        "/tour/welcome/5"
+      ],
+      "local_route_families": [
+        "/tour/**"
+      ],
+      "evidence_kind": "legacy-tour-closure/v1",
+      "evidence": [
+        {
+          "path": "data/locale-surface-reviews/gu-IN/20260927-gu-IN-stage-a-002.a-gate.json",
+          "sha256": "0d0d5249607bb5fb3120a983c15da6f6378a467f5417572b90c947e6d8fcd1b6"
+        },
+        {
+          "path": "data/locale-surface-reviews/gu-IN/20260927-gu-IN-stage-a-002.md",
+          "sha256": "e18b173156d4c6e958a0e4eca8fcadd0bd8a74eec1f80cb0cfbcf61a7185e1e6"
+        },
+        {
+          "path": "data/quality-check-snapshots/gu-IN/20260927-gu-IN-qc-001/manifest.json",
+          "sha256": "9e2439603ddb028435537e8ff5294709350b395f951df085805d9ccc4dfdd2a9"
+        },
+        {
+          "path": "data/quality-check-snapshots/gu-IN/20260927-gu-IN-qc-001/quality-check-results.json",
+          "sha256": "c3a5f79ab7bbab9a9bcefb956487a244fe62af71764824335bef46907f53bc3c"
+        },
+        {
+          "path": "data/quality-check-snapshots/gu-IN/20260927-gu-IN-qc-002/finalization.json",
+          "sha256": "03f0c584f8ed64d46798c7e5847218ace6558a57f033fa84d4c500142ed2e5f2"
+        },
+        {
+          "path": "data/quality-check-snapshots/gu-IN/20260927-gu-IN-qc-002/manifest.json",
+          "sha256": "746f1ee72a7a9635e31f7ce1d03df15e6979ab31b117087353c7439fdca9b236"
+        },
+        {
+          "path": "data/quality-check-snapshots/gu-IN/20260927-gu-IN-qc-002/quality-check-results.json",
+          "sha256": "ea08ddf969aeab864f71c679bffc666de0a4eef388a9861554c7f05a1e960327"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/candidates/basics-1.article",
+          "sha256": "8b8140eb646014af62cfe1578f92575bd63ae08525f3a2e5743eb0d0d0a8e957"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/candidates/basics-10.article",
+          "sha256": "47a32b7811baa038aff1e671944d7ae95d6a0840e34501f6f1875cc14ee04ef6"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/candidates/basics-12.article",
+          "sha256": "7886398d8e3eb536c927bc25dc42ffe4b673cde7ea18eadfb0e3cfe3829ff805"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/candidates/basics-13.article",
+          "sha256": "9f2e2e5687a12402e584161f217fc0b8a11043273ab7e9a0273f6e47eac4a657"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/candidates/basics-14.article",
+          "sha256": "9ce1a2c25776beea21f58ea6f27a59891d24dc2cb79176884a200ac16e3d0d4f"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/candidates/basics-15.article",
+          "sha256": "e0ca0221f2ae916b6dd2de61d581a64ea2484cb92895a560e562b9926b4e7b54"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/candidates/basics-16.article",
+          "sha256": "4a623855c61bd6b2c53f7448477ca4f849303f1c8f8b5c92ee5c59b3eb0acae7"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/candidates/basics-17.article",
+          "sha256": "66985beffd93ee4d087af5b4385a517bf9c7ba1f799b79984008fd744077b6b5"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/candidates/basics-2.article",
+          "sha256": "50b519cacdf51b31a5017a0c45380ffb808f329859397763ab90c07f9ff8347b"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/candidates/basics-3.article",
+          "sha256": "33cfd8cc763a00166dbd9e3584879b32add242db711979fdc85869722306359c"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/candidates/basics-4.article",
+          "sha256": "8e459c9be3223555a300eba66049035349dc1370cd27a05786af98d5ccfbe007"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/candidates/basics-5.article",
+          "sha256": "fc8839c7a44239fc189c233424eae66af9838c9b577d0b412fb329b05e73eb41"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/candidates/basics-6.article",
+          "sha256": "0cf9c639a5cf153367ead724691d50055b77649621eeb170737d7d6277620a73"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/candidates/basics-7.article",
+          "sha256": "8a179e0c186a115eebc24c94e45b39e127ea1943f95b1399a9c27d8cc0ed4006"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/candidates/basics-8.article",
+          "sha256": "99a71f398235fe1329629e07f709ef0f277f77cdf344b42635fc8dcd25a30b57"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/candidates/basics-9.article",
+          "sha256": "7233b50355f06bfe0b3009f62766ebe25ee68034c73953bd934f164d0ddee305"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/candidates/flowcontrol-1.article",
+          "sha256": "6184be876eabac07500871ed399f856225fde87943754010866fc914692a66d6"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/candidates/flowcontrol-10.article",
+          "sha256": "4aafbec04ef5147d74cc02d8032fd67d4c1c1a06e0d9675fbfee7af6367383ac"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/candidates/flowcontrol-11.article",
+          "sha256": "1a17aa16b224e1809d4e9a842cccae047c9dce3c8f79bd2fe3467badaba8cf22"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/candidates/flowcontrol-12.article",
+          "sha256": "97de150fd31dbd105dc920b617da9a5d329f84f5b65c450b6f421516a033f7ca"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/candidates/flowcontrol-13.article",
+          "sha256": "ca9bd08ee5735a820e5da85f8efa7af08b92b48eda5a4ac9bef4f319bb1b6dda"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/candidates/flowcontrol-14.article",
+          "sha256": "66985beffd93ee4d087af5b4385a517bf9c7ba1f799b79984008fd744077b6b5"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/candidates/flowcontrol-2.article",
+          "sha256": "0c43056d630c43d6612f1fe10695c10ee014b667bd1805ce4c2ef20853a55f08"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/candidates/flowcontrol-3.article",
+          "sha256": "4399444133cc6e4fabc49ffdc071f569691089ad9f60daf76559351097578cb1"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/candidates/flowcontrol-4.article",
+          "sha256": "e04f17533d73a1dda701ab7aa8c8c9ef12b0d5caa60412024c74fc4f1a8518cc"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/candidates/flowcontrol-5.article",
+          "sha256": "6b934e555d4f037a3608fc908e099a59393b45dfd490b717dea8a050bdfb69b7"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/candidates/flowcontrol-6.article",
+          "sha256": "6de1063cbf51de896eb0fec41d27bb46ea145e732764a25ba9b8523282f5d544"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/candidates/flowcontrol-7.article",
+          "sha256": "2fa2cba62bd3961c928024109a03187417215049ab88097f5cfaf58acefc7f4e"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/candidates/flowcontrol-8.article",
+          "sha256": "5980304a67ed5c235cb56cf21d009daf18225196fcebe0fb8cb4e73bef848014"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/candidates/flowcontrol-9.article",
+          "sha256": "114c0413e544dc50609bce1af632f91ddfedf687d58902dab20455cad0b3d7fe"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/candidates/moretypes-10.article",
+          "sha256": "e432cb623e2df679ad09e846085adaf91b4d68aaa01ffece8029071455da21f0"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/candidates/moretypes-11.article",
+          "sha256": "6a4daeb6837c4d3298da315a91741a13a34989a265b24fc881dfbf23e65ab1d9"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/candidates/moretypes-12.article",
+          "sha256": "ab2ad7499706959710c3060d9d1ae3a541b327873d7f72558b43276d6d050775"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/candidates/moretypes-13.article",
+          "sha256": "b3908e5e6524ac0cf88af1255e035a725e8e3ed6397475cbfd7ec978f2966d89"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/candidates/moretypes-14.article",
+          "sha256": "1e9e708820e38f00209fbb4f1f520fef68e2a3e1ef9c963f5500bc33705aa3eb"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/candidates/moretypes-16.article",
+          "sha256": "2087a7fd9821330998e482a82bd27bc66d36868cbf21456ebeca8450d02abfbe"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/candidates/moretypes-17.article",
+          "sha256": "0fe104ad1309866d87089eca4db4f7d9cb5fbe104867703490e4b8c367004fac"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/candidates/moretypes-18.article",
+          "sha256": "e71a65451a3598404541940be18032dac36efe34fee068d6fe7f54c4de504793"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/candidates/moretypes-19.article",
+          "sha256": "188be896e227652ab6cbf0101cf7d6fba22ef340f92d6476ba55a6502fda4678"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/candidates/moretypes-2.article",
+          "sha256": "65f84a5b385959971c67a1f9741cc8f796234a298ecc1c87bd98a1032987d0b5"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/candidates/moretypes-20.article",
+          "sha256": "76cec5e4bb87c1cef5308eba704d2445336c1a0a05dd114f835f82a0cbd78929"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/candidates/moretypes-21.article",
+          "sha256": "4db398b2d8fac2d8a33dd5ddfcd820809685f60334ca64cb178038e4107cb91d"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/candidates/moretypes-22.article",
+          "sha256": "7ec538ad264df65ccc40a1639f8fac6ce9ee52cbb663d151de59080e3bcbbaba"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/candidates/moretypes-23.article",
+          "sha256": "e32edfb90b3b4696b1fc8168b87be2d3b4aa01aecb24d77d165251edbdc73a04"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/candidates/moretypes-24.article",
+          "sha256": "1b5d61172efecf70ebe0d9274666a599639045c9b4c0fcc2a904c2fc7dd3ff38"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/candidates/moretypes-3.article",
+          "sha256": "a104c45c1adf9c47b9e1f3f3eaa7259df8d8530591dc0a8cc36d4b3f07f837b8"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/candidates/moretypes-4.article",
+          "sha256": "8a269976aba6d99b5f942fb516d3bb11fad9ffd82c2d6e76629515477a5163bc"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/candidates/moretypes-5.article",
+          "sha256": "ba6117663ab691952f44ee4f7c6e1eabf550332a6308eb3e3614ee9bda51188e"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/candidates/moretypes-6.article",
+          "sha256": "57e2444cc5c95e4be07216da8c2085cc926cde5309e613fb343e670a00618eb5"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/candidates/moretypes-7.article",
+          "sha256": "99ae3b4987a8f1cabb5a34991e5bc0b9efc56f98436e8b9b493b8791f460ba6c"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/candidates/moretypes-8.article",
+          "sha256": "991612f5fdf62ba82e871492da60701394e9bf49d577dc7f4d6ac6d9807a9606"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/candidates/moretypes-9.article",
+          "sha256": "d8fd2336e843234958f016bd58236cb8c89e52f78a6bcfe9841bd13055bb859a"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/candidates/welcome-1.article",
+          "sha256": "a26c80468a74588b7d681b50ba48585878cff3d4e7c3e8772bcb06d3ad31ade5"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/candidates/welcome-2.article",
+          "sha256": "6c8bd61182503b1d055ea84b6b8c88998ef017e4224f59b4be4ff6fa1274edd7"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/candidates/welcome-3.article",
+          "sha256": "6ae25511b7c4d8080ca99a138dfbccc2c4c225e12462b01b6a41c77c742d5a1a"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/candidates/welcome-4.article",
+          "sha256": "4c3a2f9fdea906f48b1a9dccb7e696dda865f3f309a3dea42d371faf8416ace7"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/candidates/welcome-5.article",
+          "sha256": "d488eb7cd3594a5b88de395006be263aac5036bc51a0ce14835981606e8302cf"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/validation/basics-1.json",
+          "sha256": "8c54dc686b9cb4d3c1370b4fa526fdca65f612ce78d552c28d42ad577b714878"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/validation/basics-10.json",
+          "sha256": "921f6edc67018466efcba05d61578fd61f089e9a77db609f78196aaf5e731ca0"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/validation/basics-12.json",
+          "sha256": "4524ddb8c3e016786c57dc7bc1f75db23afbef943274b8026e01f71b39b3ad10"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/validation/basics-13.json",
+          "sha256": "06ba52c28a7289628f1af203e28ea81079cd609fc061d68020d074e4e2e873c5"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/validation/basics-14.json",
+          "sha256": "07ef8af91f163bd6a7a0baf76c204d791a49ad192acf6e721a756bbbb30aac36"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/validation/basics-15.json",
+          "sha256": "7db2a2ede2e8081ca2036f3cdd66d9e34b102a70de7ba08aacb744e65ff8195f"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/validation/basics-16.json",
+          "sha256": "bf67581377bc799099c618db68879a14a9b1ccfa1c5b83ab0bdf70b2544bc150"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/validation/basics-17.json",
+          "sha256": "dd88aa91d6d2b2a1db903f7425df3aba4d815db9ece13ab7f4e5f82b6d799004"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/validation/basics-2.json",
+          "sha256": "3752281ddf6ae71672a8641df43f69d57446ae0fe5f858d33155779aff0b38ac"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/validation/basics-3.json",
+          "sha256": "c41cb3e9b726b1abb3ee56a94c8c3604b2166f1d84ce9519c4457f6ee67552ab"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/validation/basics-4.json",
+          "sha256": "5d828ba020252310149e31f8840dbeb12e366b8eb5e16301905577e74ea7304c"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/validation/basics-5.json",
+          "sha256": "05dcedd1f400861bc34c993abee5e2fd03541603ff6203c8d9a3f0cf2a9245a8"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/validation/basics-6.json",
+          "sha256": "b34bd8fde4553615b33d5bce799a6b8b9a7f8894e565e52093640cec0120741a"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/validation/basics-7.json",
+          "sha256": "b01ffd668b4e7e87023adb4b599abb895f0455e59dda2a8655b686564ea21b36"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/validation/basics-8.json",
+          "sha256": "3f72df47c32c658bb8b90bb25a4425510e180c8fe57e02334ae9b228ef735349"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/validation/basics-9.json",
+          "sha256": "a6e9d6ee564e2853725cbcb67b12252e7d93314483c52d8fd56f3ccef5268218"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/validation/flowcontrol-1.json",
+          "sha256": "f35c8642e1126026817f9b11c6c87aded17b04655a7111784bf74ee4189ad577"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/validation/flowcontrol-10.json",
+          "sha256": "da22b1bbc3d04c92b3dbf78144cda60e9e3774d3e023a67eb91ded7a8b0d67a8"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/validation/flowcontrol-11.json",
+          "sha256": "67cbbe62e628aaa3e1a96067fc177277af03d08cd4d7a01c012dca92dbdd94fe"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/validation/flowcontrol-12.json",
+          "sha256": "1a273ebecae20076c750beecbb6e45d5ece9e5c3aca3325ac491bd6a8f25c700"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/validation/flowcontrol-13.json",
+          "sha256": "70a2eac090c231599d31ae68da1a649b25e9b17219abf8c86c1570c1c267f1b4"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/validation/flowcontrol-14.json",
+          "sha256": "dcc6a239cefd4098585d4d41b0cba4cdb135a0e5d1597343eec92bfe8652436e"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/validation/flowcontrol-2.json",
+          "sha256": "6aeb85cc28122e4ad758bee0ca9dc2c415cf028f9f102f2cc51ca91e4ce8fb92"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/validation/flowcontrol-3.json",
+          "sha256": "6fada160536351e6e02c2afd7568977cf0ccb3c9022fb19d433075e710c3a588"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/validation/flowcontrol-4.json",
+          "sha256": "7a4291e0c440b38dcd7a6e6674dd7a806e85eaffa0d3d974a0ec788c13c1f645"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/validation/flowcontrol-5.json",
+          "sha256": "321040a7511391445999d26c34d2f43fe72e95300f7cd47f4d5239747bffd9c7"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/validation/flowcontrol-6.json",
+          "sha256": "faad7ef32723fe103316bf4b5db8e0dc454467bbdb7d769352e5a04d4807260d"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/validation/flowcontrol-7.json",
+          "sha256": "fa368f66fca0103959c1be09598feafa9dcdecfeb510916cd5b6310d7979e013"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/validation/flowcontrol-8.json",
+          "sha256": "23903ddb5ed0054423ba567a9094eaa4e1edb7938b361f602061ddf1a18a93e8"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/validation/flowcontrol-9.json",
+          "sha256": "8c207333dc322e7f2c6221de3f024b7885cdde77d36e03280c0c8060004cc91a"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/validation/moretypes-10.json",
+          "sha256": "5c7394192ec333f514e1a48c22df5441fd7035213ba5dc8a4698c1f6de70a319"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/validation/moretypes-11.json",
+          "sha256": "a888b689a4369dd7f559573a98ce7a79bfefa97e7638adb249e4423eee1ec525"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/validation/moretypes-12.json",
+          "sha256": "1384660a0a47c20cbd3cd41eea382250f4ce122964b8ba7d776efa1fef3105c5"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/validation/moretypes-13.json",
+          "sha256": "fe84cc93fb84f42e0c1780c73da9cec0924b7a093fdee0cb25b5d157d58f511d"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/validation/moretypes-14.json",
+          "sha256": "3065e11005219b8cde13e214f1a507a74151039f75c3e41ee3462d4ce056de3e"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/validation/moretypes-16.json",
+          "sha256": "58f8a38c7a97f875b108296763eda350cd07bd90e0f1cdae76ce6869a6a44393"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/validation/moretypes-17.json",
+          "sha256": "3703ac2e67ba0f0f3ae54b552ce9bebcb23f7df95d9cbc4363831a19d6220bc1"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/validation/moretypes-18.json",
+          "sha256": "b2ca237a584914c4e518b4995e1a1cdbe7704e9f4f725ac3184718c41ba5da38"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/validation/moretypes-19.json",
+          "sha256": "c432391a856a4ed657e0d224af469edfc503cc56b1fa69d054f00ce749676b98"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/validation/moretypes-2.json",
+          "sha256": "1f53ccf2870af53032e8c34963f1b20972ad46e6e504963dc065f0605e244af0"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/validation/moretypes-20.json",
+          "sha256": "7e1ce5dc69680de39cdef6106e8ac4d071e4d73d251d4549b02a76e124e1fa92"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/validation/moretypes-21.json",
+          "sha256": "cb1d83581b1a1019dca17d8cb8276cd0dd986fb3d47f99db6d2aa8023c983a59"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/validation/moretypes-22.json",
+          "sha256": "a5498d8aee6f56c36861d9d11c60f46f7f01a02e2356996f08e1783e9f622598"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/validation/moretypes-23.json",
+          "sha256": "77433276553277d431fc3647496fba6d95bbdf088a3f47e60bfc60c681508ed9"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/validation/moretypes-24.json",
+          "sha256": "71cbd5187f5cb1108939605896b6667fdefd1e3ce873fe005332ec2614c8df89"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/validation/moretypes-3.json",
+          "sha256": "106ad2d94ba0125ae358fe3abddc57761ee640a83e77de61040f835d83fa5cbe"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/validation/moretypes-4.json",
+          "sha256": "cf9e09ff997be2993bd7098ec88f9801287d4abfce275b8761858670f01c5883"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/validation/moretypes-5.json",
+          "sha256": "0266a22723f3d58b5caa432277a891782784f9042672a686c63783a568785b1d"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/validation/moretypes-6.json",
+          "sha256": "19c5eaea12e2999c4c88840a7dde09e1eefa3d618fe979c015135561421a76a1"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/validation/moretypes-7.json",
+          "sha256": "e4b6e24280ba7f0c38a6c68422d241fbbdf475c5415781e3b13bb750198d6505"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/validation/moretypes-8.json",
+          "sha256": "bf84e0ea70a57ace7747b0273c19db22a838882cacf21f1a078f4a067334b2e6"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/validation/moretypes-9.json",
+          "sha256": "305395d6d720604d245e6f5983f0dfeb90d3e72bd5469bb0c273e68cbd776b11"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/validation/welcome-1.json",
+          "sha256": "1b75eb699b472865713409e86edbd71d1a62a6082a207b148bf5f6b50b8046e8"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/validation/welcome-2.json",
+          "sha256": "db232fa5bf457f00e6da363514a7c07e971e8839a09ceb21d7e9a154805c632e"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/validation/welcome-3.json",
+          "sha256": "6209c55b4a4b02e4de6a4c1ccd134a6ff4b2eeb88269a8532abf4279d2c651f1"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/validation/welcome-4.json",
+          "sha256": "20245a1cde00a6369750e87493d9e56a86779a4df972636f49ae03e7e67682c7"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-001/validation/welcome-5.json",
+          "sha256": "b588e41692f452714d75d7371a464b064f9a787ac24f249eca47b7143b473cb9"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/candidates/concurrency-1.article",
+          "sha256": "ff1abe60b22185de9946f693410f562e7d19f396c68a48e56e54679212d6135c"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/candidates/concurrency-10.article",
+          "sha256": "dc3a82bfafa4b0eb2c72a587e00afa7cb02a2bfd2003ec51f3ce441aef850ea4"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/candidates/concurrency-11.article",
+          "sha256": "376855b251679cb35355a6e4e57a0017bbfc4aaa28304faa8937c5a8fcc01f0a"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/candidates/concurrency-2.article",
+          "sha256": "2c398d3cbb1a058413a5cb05b98a43d306754d202b2034071a613a5d56cc729a"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/candidates/concurrency-3.article",
+          "sha256": "6b3659334a3ffaa8fa5722abfd3d06f29989f1a8c6cc196209dddcd5b0c291cb"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/candidates/concurrency-5.article",
+          "sha256": "de5922b59472ca563b023af0d3366e5a56cf4e12a77176917e6297f1b7390990"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/candidates/concurrency-6.article",
+          "sha256": "5aed9f3f228f803579257de654dfd997883c084e58adb34381873525f8c8bfbb"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/candidates/concurrency-7.article",
+          "sha256": "1bccfea1d8719d3918139741ffb449c8258c3ba1676ef106fa0d3383a03ddd84"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/candidates/concurrency-8.article",
+          "sha256": "96042871e12c4cbfda075d356d139be9503f15450dfc7218356d7c79bfdb5df6"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/candidates/concurrency-9.article",
+          "sha256": "dc9b768c01428037e921eb26f672eb488f52af7c9aba2fd6bd9afabd441c7198"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/candidates/generics-1.article",
+          "sha256": "b8377b713cbfc462b0eddce84e0c50e264f768062f6eab3b933cd8e70e5aa2a8"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/candidates/generics-2.article",
+          "sha256": "1d84bd1e4f7c115cee6c3a5293b0789502464c106531482f39ff99933c6ec1ed"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/candidates/generics-3.article",
+          "sha256": "3fe65a0bc9dc08abd811eb9f99d8d843cdddef0508d255f54515ad776ed06214"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/candidates/methods-1.article",
+          "sha256": "97b075ca399c33d5bc94537821b262487399cdba1a84fa95b44b4d25f12b6082"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/candidates/methods-11.article",
+          "sha256": "6c303bb9ba167ba015d60e887ccd342d881c9c71c1cc158bb41dfeb80e9d40d6"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/candidates/methods-12.article",
+          "sha256": "be5b4c72ba8ce327c66ceb3af21610d8b6eb293748380b1e38b4fb037146b5e7"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/candidates/methods-13.article",
+          "sha256": "c1a1cd03aae1996f7a0eada7d38e1f6d9efa8170e7a5557ba3f348cdac45c47e"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/candidates/methods-14.article",
+          "sha256": "bc539fd3790691bf7696e3aa8bbc7b406e71c903cc9593dedb55aab3dbd44107"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/candidates/methods-15.article",
+          "sha256": "6a9130e87be53de0fda2243727928d62e10dfccb9dcdf227b317e823c62a97a9"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/candidates/methods-16.article",
+          "sha256": "b93ef67c60d9bbde9b6bf223c7d0119210e2e671e12ec1c60e067175bbb78bf7"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/candidates/methods-17.article",
+          "sha256": "88a67f3cfa56ba04d08f86fc6787a1efad20b6e9f2b1e64f7ea0e95521dbeec8"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/candidates/methods-18.article",
+          "sha256": "20e925fd640764a6b4b71f540e2dd9ff675e0af36722726a9324a00b94a57318"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/candidates/methods-19.article",
+          "sha256": "f051440f723b48650b8e5a3472a15f4b18581028676409d67135859b49962877"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/candidates/methods-2.article",
+          "sha256": "52232d17f95185f676af5620e8d523e5b65e9344c2e3256d619dae1130a73afc"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/candidates/methods-21.article",
+          "sha256": "3692ff7b9fac7f4c09f3f098510217440fca4d2e841c02d36cf17be21a4e358d"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/candidates/methods-22.article",
+          "sha256": "bbabc8b55a9d6fe935f19d01a4a7e73f8a265147cc51f9c3427d1153974512ea"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/candidates/methods-23.article",
+          "sha256": "dc5001a43d60305eb30253f873de5a9651d691f0a9c2835fdfe12b62c072e024"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/candidates/methods-24.article",
+          "sha256": "f166b3cee44a713e6e28ab5d2c384e14cc87317b673e014f4b1bb95230831d6c"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/candidates/methods-25.article",
+          "sha256": "64129391419f489277716b451d83433343eda5c557acb241806e4f89c755f657"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/candidates/methods-26.article",
+          "sha256": "3fe65a0bc9dc08abd811eb9f99d8d843cdddef0508d255f54515ad776ed06214"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/candidates/methods-3.article",
+          "sha256": "87eab885817d783a55be5092f1169f0c1ef2e7a6204e9b5e99ff4ac39029fe43"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/candidates/methods-4.article",
+          "sha256": "e25f1118e7d926940fdc30b66a2e35b061d3272a45785e14cf12f554883ba72d"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/candidates/methods-5.article",
+          "sha256": "07c725c01ed6ce6a71c98facd359a24cf88a1f9877da010f0aa80025806b339e"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/candidates/methods-6.article",
+          "sha256": "bb3f2eeef6158250e4d1089fbd7ee1a9fcf604b54273078a23e559aec0018540"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/candidates/methods-7.article",
+          "sha256": "47167cc8c49523829713b47896daa6f01c115239331064d1214e6beae702a20a"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/candidates/methods-8.article",
+          "sha256": "81a8806107864cb125fd574302c8f1798d64e3935c4d64afe2116233a83278fa"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/candidates/methods-9.article",
+          "sha256": "47ea39fb32a29ed58514a6a53f7d721f27c4426362f89b243121870c16d4f3bf"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/candidates/moretypes-25.article",
+          "sha256": "6600fd99f851f65c8272b3873fd7950bb1206c9cc7b1b8284b4f86d8f071a259"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/candidates/moretypes-26.article",
+          "sha256": "3d6580aa091b757efebb89ac57f31467f27e015788ba347b43d17c0a681286d0"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/candidates/moretypes-27.article",
+          "sha256": "3fe65a0bc9dc08abd811eb9f99d8d843cdddef0508d255f54515ad776ed06214"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/validation/concurrency-1.json",
+          "sha256": "5d25eef976c09992c69fa0164555d6ad96eae193264a000f171dfd3062f2394a"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/validation/concurrency-10.json",
+          "sha256": "3ac25c697ee8b5f4e9db36b1f322a211b386e38aa9046b206511949c22311e5f"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/validation/concurrency-11.json",
+          "sha256": "2e806edc1db68906687548f75f9b027d3baa623b4cabf7d0acebc27c7d8314a5"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/validation/concurrency-2.json",
+          "sha256": "01f17d6338b9ceec38572aca5a335e77f7c199cf1e19f75e5ddf6e1383d65ef5"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/validation/concurrency-3.json",
+          "sha256": "918d8a381f0a2f2640c3ae60b2f1149051571d8604a974ba104d380d06d36118"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/validation/concurrency-5.json",
+          "sha256": "ad59f905e83a513ef71b9887e1c5f04d7fd9aa004f2be3298e46746d9bfabaf8"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/validation/concurrency-6.json",
+          "sha256": "1a6f033e312c1367beaa4dddc7030dcacb67e33c76f5d11a41b7f1e22e7269fa"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/validation/concurrency-7.json",
+          "sha256": "725b3141a5cf3373ff8862bc7e547a2cd80f07ddf0731e7c067e3367f38f1b5a"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/validation/concurrency-8.json",
+          "sha256": "ae970bca3b7ca66f98989650e4fe59589f3d6e72d2e0084430c333935a6e4d56"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/validation/concurrency-9.json",
+          "sha256": "114b53a6b0edca160bd102d2519c878512fbe1116f918b4fc4d7b13d5715dced"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/validation/generics-1.json",
+          "sha256": "69e55aab0985f33dd297669a0333e516652375cee6e881c5891206672f51122a"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/validation/generics-2.json",
+          "sha256": "10778c7def9c2003a03db151a8cadadd112d4a856d8c3d8f72f754cada2e1f9e"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/validation/generics-3.json",
+          "sha256": "163e6778574fed9d7f3175210a731a62efa4e3b98b4b92c8cb09161b9cdba33a"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/validation/methods-1.json",
+          "sha256": "e53bdddb8401d85e963422fa13cbccf32be519585e34cd50abd027f791c1e1c3"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/validation/methods-11.json",
+          "sha256": "1d66a17e75be13bb57767fbbc731b0aaf13f9733d9f52976016e83ddcfbd2acb"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/validation/methods-12.json",
+          "sha256": "787c68095649956048fb922a0f942e1940131579ff15ebbb0780f41b2f9416c4"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/validation/methods-13.json",
+          "sha256": "438994772204914f40baa39bf3625a9bf9a4a199ad82457be3be09b13a5289b6"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/validation/methods-14.json",
+          "sha256": "69b17eef8c54f7ce5e78bb3c0649c67effc4881e51b6b10bcaacdada1f1b15ad"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/validation/methods-15.json",
+          "sha256": "814af1b4e57f39586283b4e87e5b100e246e2ee68e5f32c506eda32342210dff"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/validation/methods-16.json",
+          "sha256": "ffd86e67ff3482895e4c9400b52b7094ebe39c66d20d91fb09f3f3f891b6fd2f"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/validation/methods-17.json",
+          "sha256": "84cac07a3dead1735a764bef9761ad3da83586cde8f8df07bf24f398df52fd54"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/validation/methods-18.json",
+          "sha256": "f496a8eee9c3fd8c6f3225e773a575082c128755501f00dd70fdd5c8baedcec9"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/validation/methods-19.json",
+          "sha256": "5fc5a73fbdd4f3985c3d901cf53662d6e44aa070328a1df8266876dcd87d6387"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/validation/methods-2.json",
+          "sha256": "379293ec32685e0e4d50feabb1e2e6c10c716aa55120efdc351905cac389f40c"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/validation/methods-21.json",
+          "sha256": "64f75266d8dc844d6fea9a62d08bc864a18ba63ccd36188ae3442314747d4667"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/validation/methods-22.json",
+          "sha256": "43a48f6e739a13c81183dcaaf67ddbac032233ec14ea0c91f49cfbeb92ad381c"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/validation/methods-23.json",
+          "sha256": "f485cce40956166ecac2cc424441d89ee5a6ef295e620e488e4ef1ce65bfee62"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/validation/methods-24.json",
+          "sha256": "bff611fe08f2362a37fe272cc736711e9ea4d61510c51d14f8806012a6fa1d84"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/validation/methods-25.json",
+          "sha256": "d2a6bdf142d471498c20f37d5d1214e43971ae3dfabee147d4836a503f8d8be2"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/validation/methods-26.json",
+          "sha256": "bd0e081643972cc71c84d9ac0d838658ed12933d16cc3cb71d673a960657b63a"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/validation/methods-3.json",
+          "sha256": "be9e591774656c586a042c7d979d078a9ad61da257d4fbb363f82543d8daeca6"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/validation/methods-4.json",
+          "sha256": "2822570449d6bc6692bbd0de609bade103a1eff0590b873d88799ed1e1bc0ce7"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/validation/methods-5.json",
+          "sha256": "d1520bbe3b3128f7e70063d1890a794dedd07ef9899e9460b7232a871e6abd48"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/validation/methods-6.json",
+          "sha256": "ca361a7dfbb95e7f177c2173d398ed31b7391e5d20c33d1ce90b10abe6e17716"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/validation/methods-7.json",
+          "sha256": "5fb6df1ee29e471aa7973d6159e5c2d72d30b455cd4b3865a752ddf490c5856e"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/validation/methods-8.json",
+          "sha256": "037359ae71799bfff3b81baa7f497824cfdb198cb40e1af6bb96290d30dc8ad5"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/validation/methods-9.json",
+          "sha256": "79933f1643d2873cf8c95e2eb63d6750420a58e4cc88c4c99e31b2b8554c1728"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/validation/moretypes-25.json",
+          "sha256": "99a55f4a036dd37a5c5c360480c4ac392c290a8b336f71ef3271d78d523ada88"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/validation/moretypes-26.json",
+          "sha256": "49f2a66581d26ec5cbcf4ca1a4aeb35f7ac29d765985e3c2844bc031520ca969"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-002/validation/moretypes-27.json",
+          "sha256": "357f79dd8c54c0a412e9dc5e0858317f41b46ebf892257c1c5cf7b6b68f08c79"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-003/candidates/basics-numeric-constants.go",
+          "sha256": "29f29ffad5d40d811844ce8e2df4c050f7e37b016354f86c8fbd7d5f28daaf60"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-003/candidates/basics-type-inference.go",
+          "sha256": "a23dda66b9989ab06cfdcedc60ce9eafa8b7e9142e12d03393e9b450d0f4524f"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-003/candidates/concurrency-channels.go",
+          "sha256": "a67c83965d2354aa4a5ea041bf89f2c769ac12891bcb1e992b488e897c6ddd62"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-003/candidates/concurrency-mutex-counter.go",
+          "sha256": "a2994511e28ccc8ab7b466b158500332eaf1ee54e9fda702f6887e7342771c20"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-003/candidates/flowcontrol-if-and-else.go",
+          "sha256": "bbc35bab8520fbe430e01011e04b881b8dab0e27c2869173fc20f71fe6d50d55"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-003/candidates/generics-index.go",
+          "sha256": "a5369b767dd9cb28bcec79c163ed63570c5b6f9a8aaab3ff1dbde9981b4c29c0"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-003/candidates/generics-list.go",
+          "sha256": "faa87e394dfa6e34db846bf9f3ec0e325a66ac663bab93877d3b01f0d417906a"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-003/candidates/methods-exercise-reader.go",
+          "sha256": "36f6f96087b159e152edcfd61bd630b632933a4e96709782dedf66bf11c75be2"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-003/candidates/methods-exercise-stringer.go",
+          "sha256": "d1b84eefdd07be279232e71cf604851114a436ce390c077c82c04062474fa6ee"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-003/candidates/methods-interfaces-are-satisfied-implicitly.go",
+          "sha256": "7e2a6b54b40b6ae278d995a20e8f0c4f8bae97bd42840b7e1770a9fbc8020b56"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-003/candidates/methods-interfaces.go",
+          "sha256": "affe0109947f183158a515c1f37808dfd9bc7da291da022d6109a6b7bcc37c85"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-003/candidates/moretypes-append.go",
+          "sha256": "1299606d61966072989ad9fb05438cac4bfdf333d6360831ffacf6a82d669c15"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-003/candidates/moretypes-exercise-fibonacci-closure.go",
+          "sha256": "597343d5d1dfad77ba14f36364621ea1fcb88806fcc8a9f002faad313e4b4b81"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-003/candidates/moretypes-pointers.go",
+          "sha256": "fc473e2f2763289f97430787d52f8fe7bc6604a81f5fa6b7667f5803d17b556e"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-003/candidates/moretypes-slice-len-cap.go",
+          "sha256": "9f752763f2b8c57178f5b2d1dfa31ccd0dacf8ac03acd23e718ca850b2f9b145"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-003/candidates/moretypes-slices-of-slice.go",
+          "sha256": "d7e888c37f74e6da9f8bc23aedda6a34fbd7bea7cb761d407e1b6f9ece0a7779"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-003/candidates/moretypes-struct-literals.go",
+          "sha256": "c6ed2ff28f63692b80e8bdf4f9651fb2a8ce9bb245da9567fcdeffeaad818a9f"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-003/validation/basics-numeric-constants.json",
+          "sha256": "3c28c30cb7840440eae9ba8560b9f743c39832acfca9cfc9593a14cc2a8d9062"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-003/validation/basics-type-inference.json",
+          "sha256": "6d3e2ef42b4bfee45f75d1a69e4c57448bfe74323d8b6354a61dd4f65d233315"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-003/validation/concurrency-channels.json",
+          "sha256": "57c97da3f9c27b743378ea742c7744c72d63d3a01a64c9a735a9c14b52708f09"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-003/validation/concurrency-mutex-counter.json",
+          "sha256": "6eb916ff2bda70ad880a932d10932e1c3b8670aa9da5764681deb63585505792"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-003/validation/flowcontrol-if-and-else.json",
+          "sha256": "54624be492b448a70aab48793f91ab56c1f34630d9f51bd66961e19598780f64"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-003/validation/generics-index.json",
+          "sha256": "e7b46ac9054c1c06189b6509494ad7f1c084c729f99417200b94d1467fcf9e34"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-003/validation/generics-list.json",
+          "sha256": "7681dce78add1cdcb5d3c8abf995b1e245a63ce05616b794489655ceb9b37560"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-003/validation/methods-exercise-reader.json",
+          "sha256": "5baa3ad66ca4e1d8e58445946d854b76cd3d581eb1d51f9d1036f87ec05f0c3e"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-003/validation/methods-exercise-stringer.json",
+          "sha256": "1d3a961f54fc5949471310b9c5e623d5e5a12c87e3fa80c2d9a128a117062888"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-003/validation/methods-interfaces-are-satisfied-implicitly.json",
+          "sha256": "600b284f9485ae25aa9fc9e8ab56e2afbdade59581fd317b21435fdf1fd80e9a"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-003/validation/methods-interfaces.json",
+          "sha256": "aeba27102d7edda265ca4f575d69486982198c08d5fc09c70a96bdc20111c355"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-003/validation/moretypes-append.json",
+          "sha256": "c38ed0fbc0a3975603e9dff2caef93b6683b1146bd576b5d4e7fc4e7107d8018"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-003/validation/moretypes-exercise-fibonacci-closure.json",
+          "sha256": "156342929be97c8668e3a26f93539f2753e96d64b1a0521beb33b77ecf611035"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-003/validation/moretypes-pointers.json",
+          "sha256": "3de7132c5a5d4a2ba22ba5b8fa95342ea3b325ab9163fb8bc845d79e469a56be"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-003/validation/moretypes-slice-len-cap.json",
+          "sha256": "e9ef68dea06e28418144c99f3af7b667f92e124bd0cf8d0379563f851bfa00d1"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-003/validation/moretypes-slices-of-slice.json",
+          "sha256": "6373c95f2ebe4c6327543f330dc2c4281c242f3adfba35be5e94488c4ece7ff1"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-003/validation/moretypes-struct-literals.json",
+          "sha256": "826cd0d6feef8924f9f1abfa95a143529866d197383a00d41104b13073f0bb3c"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-004/candidates/basics-11.article",
+          "sha256": "0c79bab9261cbbc2a04a6e980e749c0e88ed6c6c40717c8c9d5874c46710e8cb"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-004/candidates/concurrency-4.article",
+          "sha256": "72d315c1d3f139c470c22b8c179071c92fc012d16ca1f10a6d307e883cf7da37"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-004/candidates/methods-10.article",
+          "sha256": "fb1d635b9b64903bef73579e228f1d60145e187e2158b2924692970636265124"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-004/candidates/methods-20.article",
+          "sha256": "d17993b6010666dc624541a1f0a8ebd798e2a3ad3bf1305a9e3d69444ff209da"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-004/candidates/moretypes-1.article",
+          "sha256": "f36f322c0224093601d4bc974e98f4cb11d0ac37c52337dfc650b0ecaed817e9"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-004/candidates/moretypes-15.article",
+          "sha256": "7c752fa0a71746d9b678a753b45b20a48808663eba94d1bb0fb626283ea86d22"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-004/validation/basics-11.json",
+          "sha256": "1a8f9fb820cefaf50e3751de8da810dffad64a31b15b142eeadfea6be1e2c46b"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-004/validation/concurrency-4.json",
+          "sha256": "adb1697d1fee86f46770a179b777b144956481e538ba713a8ea8f63326871855"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-004/validation/methods-10.json",
+          "sha256": "03f5aa5c42b44b5059c69ae5f9b533026a7fcfd119bc80becb916d3badf6faed"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-004/validation/methods-20.json",
+          "sha256": "85702a109540d18dc7fcfcee7bf9e8179e93abc4e9536ccb2587c5acd4d9691d"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-004/validation/moretypes-1.json",
+          "sha256": "a0a3af842ec62ab87518766f9ac754d135f4792842661af08e601c08cd56ad43"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-004/validation/moretypes-15.json",
+          "sha256": "9ea9c9febd1537762659b70cb41ee886cad34b01cb2fbc27acc1efa331b03c32"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-005/candidates/concurrency-exercise-equivalent-binary-trees.go",
+          "sha256": "ac9e77e4ed3b5f8ff2d1aee62823d5bcb112c595b20a6db5025ab938be325805"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-005/candidates/concurrency-exercise-web-crawler.go",
+          "sha256": "e3755e7812b4867ea5121474cec1205fa17eba7ad61602e82144c2cb45abada2"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-005/validation/concurrency-exercise-equivalent-binary-trees.json",
+          "sha256": "4e67802466adae123e676dbd029044ff803da392d0d7c3cbda5e9b78180358df"
+        },
+        {
+          "path": "data/retranslation-runs/gu-IN/chatgpt-gu-IN-005/validation/concurrency-exercise-web-crawler.json",
+          "sha256": "e8243723063cca7518227541c477ba2180b348c4b04979c87a00ee2c23781bf0"
+        },
+        {
+          "path": "internal/tour/ui/gu-IN.json",
+          "sha256": "da32c0083431287b51dbe38109296791c13f1d6044a0122ffc68ccdac70b1772"
+        },
+        {
+          "path": "locales/gu-IN/article-metadata.json",
+          "sha256": "569d4482253d592f9ffce42a5268f82ce948582dfff1f87a21ecf9f2257db24a"
+        },
+        {
+          "path": "locales/gu-IN/candidates/basics-1.article",
+          "sha256": "8b8140eb646014af62cfe1578f92575bd63ae08525f3a2e5743eb0d0d0a8e957"
+        },
+        {
+          "path": "locales/gu-IN/candidates/basics-10.article",
+          "sha256": "47a32b7811baa038aff1e671944d7ae95d6a0840e34501f6f1875cc14ee04ef6"
+        },
+        {
+          "path": "locales/gu-IN/candidates/basics-11.article",
+          "sha256": "0c79bab9261cbbc2a04a6e980e749c0e88ed6c6c40717c8c9d5874c46710e8cb"
+        },
+        {
+          "path": "locales/gu-IN/candidates/basics-12.article",
+          "sha256": "7886398d8e3eb536c927bc25dc42ffe4b673cde7ea18eadfb0e3cfe3829ff805"
+        },
+        {
+          "path": "locales/gu-IN/candidates/basics-13.article",
+          "sha256": "9f2e2e5687a12402e584161f217fc0b8a11043273ab7e9a0273f6e47eac4a657"
+        },
+        {
+          "path": "locales/gu-IN/candidates/basics-14.article",
+          "sha256": "9ce1a2c25776beea21f58ea6f27a59891d24dc2cb79176884a200ac16e3d0d4f"
+        },
+        {
+          "path": "locales/gu-IN/candidates/basics-15.article",
+          "sha256": "e0ca0221f2ae916b6dd2de61d581a64ea2484cb92895a560e562b9926b4e7b54"
+        },
+        {
+          "path": "locales/gu-IN/candidates/basics-16.article",
+          "sha256": "4a623855c61bd6b2c53f7448477ca4f849303f1c8f8b5c92ee5c59b3eb0acae7"
+        },
+        {
+          "path": "locales/gu-IN/candidates/basics-17.article",
+          "sha256": "66985beffd93ee4d087af5b4385a517bf9c7ba1f799b79984008fd744077b6b5"
+        },
+        {
+          "path": "locales/gu-IN/candidates/basics-2.article",
+          "sha256": "50b519cacdf51b31a5017a0c45380ffb808f329859397763ab90c07f9ff8347b"
+        },
+        {
+          "path": "locales/gu-IN/candidates/basics-3.article",
+          "sha256": "33cfd8cc763a00166dbd9e3584879b32add242db711979fdc85869722306359c"
+        },
+        {
+          "path": "locales/gu-IN/candidates/basics-4.article",
+          "sha256": "8e459c9be3223555a300eba66049035349dc1370cd27a05786af98d5ccfbe007"
+        },
+        {
+          "path": "locales/gu-IN/candidates/basics-5.article",
+          "sha256": "fc8839c7a44239fc189c233424eae66af9838c9b577d0b412fb329b05e73eb41"
+        },
+        {
+          "path": "locales/gu-IN/candidates/basics-6.article",
+          "sha256": "0cf9c639a5cf153367ead724691d50055b77649621eeb170737d7d6277620a73"
+        },
+        {
+          "path": "locales/gu-IN/candidates/basics-7.article",
+          "sha256": "8a179e0c186a115eebc24c94e45b39e127ea1943f95b1399a9c27d8cc0ed4006"
+        },
+        {
+          "path": "locales/gu-IN/candidates/basics-8.article",
+          "sha256": "99a71f398235fe1329629e07f709ef0f277f77cdf344b42635fc8dcd25a30b57"
+        },
+        {
+          "path": "locales/gu-IN/candidates/basics-9.article",
+          "sha256": "7233b50355f06bfe0b3009f62766ebe25ee68034c73953bd934f164d0ddee305"
+        },
+        {
+          "path": "locales/gu-IN/candidates/basics-numeric-constants.go",
+          "sha256": "29f29ffad5d40d811844ce8e2df4c050f7e37b016354f86c8fbd7d5f28daaf60"
+        },
+        {
+          "path": "locales/gu-IN/candidates/basics-type-inference.go",
+          "sha256": "a23dda66b9989ab06cfdcedc60ce9eafa8b7e9142e12d03393e9b450d0f4524f"
+        },
+        {
+          "path": "locales/gu-IN/candidates/concurrency-1.article",
+          "sha256": "ff1abe60b22185de9946f693410f562e7d19f396c68a48e56e54679212d6135c"
+        },
+        {
+          "path": "locales/gu-IN/candidates/concurrency-10.article",
+          "sha256": "dc3a82bfafa4b0eb2c72a587e00afa7cb02a2bfd2003ec51f3ce441aef850ea4"
+        },
+        {
+          "path": "locales/gu-IN/candidates/concurrency-11.article",
+          "sha256": "376855b251679cb35355a6e4e57a0017bbfc4aaa28304faa8937c5a8fcc01f0a"
+        },
+        {
+          "path": "locales/gu-IN/candidates/concurrency-2.article",
+          "sha256": "2c398d3cbb1a058413a5cb05b98a43d306754d202b2034071a613a5d56cc729a"
+        },
+        {
+          "path": "locales/gu-IN/candidates/concurrency-3.article",
+          "sha256": "6b3659334a3ffaa8fa5722abfd3d06f29989f1a8c6cc196209dddcd5b0c291cb"
+        },
+        {
+          "path": "locales/gu-IN/candidates/concurrency-4.article",
+          "sha256": "72d315c1d3f139c470c22b8c179071c92fc012d16ca1f10a6d307e883cf7da37"
+        },
+        {
+          "path": "locales/gu-IN/candidates/concurrency-5.article",
+          "sha256": "de5922b59472ca563b023af0d3366e5a56cf4e12a77176917e6297f1b7390990"
+        },
+        {
+          "path": "locales/gu-IN/candidates/concurrency-6.article",
+          "sha256": "5aed9f3f228f803579257de654dfd997883c084e58adb34381873525f8c8bfbb"
+        },
+        {
+          "path": "locales/gu-IN/candidates/concurrency-7.article",
+          "sha256": "1bccfea1d8719d3918139741ffb449c8258c3ba1676ef106fa0d3383a03ddd84"
+        },
+        {
+          "path": "locales/gu-IN/candidates/concurrency-8.article",
+          "sha256": "96042871e12c4cbfda075d356d139be9503f15450dfc7218356d7c79bfdb5df6"
+        },
+        {
+          "path": "locales/gu-IN/candidates/concurrency-9.article",
+          "sha256": "dc9b768c01428037e921eb26f672eb488f52af7c9aba2fd6bd9afabd441c7198"
+        },
+        {
+          "path": "locales/gu-IN/candidates/concurrency-channels.go",
+          "sha256": "a67c83965d2354aa4a5ea041bf89f2c769ac12891bcb1e992b488e897c6ddd62"
+        },
+        {
+          "path": "locales/gu-IN/candidates/concurrency-exercise-equivalent-binary-trees.go",
+          "sha256": "ac9e77e4ed3b5f8ff2d1aee62823d5bcb112c595b20a6db5025ab938be325805"
+        },
+        {
+          "path": "locales/gu-IN/candidates/concurrency-exercise-web-crawler.go",
+          "sha256": "e3755e7812b4867ea5121474cec1205fa17eba7ad61602e82144c2cb45abada2"
+        },
+        {
+          "path": "locales/gu-IN/candidates/concurrency-mutex-counter.go",
+          "sha256": "a2994511e28ccc8ab7b466b158500332eaf1ee54e9fda702f6887e7342771c20"
+        },
+        {
+          "path": "locales/gu-IN/candidates/flowcontrol-1.article",
+          "sha256": "6184be876eabac07500871ed399f856225fde87943754010866fc914692a66d6"
+        },
+        {
+          "path": "locales/gu-IN/candidates/flowcontrol-10.article",
+          "sha256": "4aafbec04ef5147d74cc02d8032fd67d4c1c1a06e0d9675fbfee7af6367383ac"
+        },
+        {
+          "path": "locales/gu-IN/candidates/flowcontrol-11.article",
+          "sha256": "1a17aa16b224e1809d4e9a842cccae047c9dce3c8f79bd2fe3467badaba8cf22"
+        },
+        {
+          "path": "locales/gu-IN/candidates/flowcontrol-12.article",
+          "sha256": "97de150fd31dbd105dc920b617da9a5d329f84f5b65c450b6f421516a033f7ca"
+        },
+        {
+          "path": "locales/gu-IN/candidates/flowcontrol-13.article",
+          "sha256": "ca9bd08ee5735a820e5da85f8efa7af08b92b48eda5a4ac9bef4f319bb1b6dda"
+        },
+        {
+          "path": "locales/gu-IN/candidates/flowcontrol-14.article",
+          "sha256": "66985beffd93ee4d087af5b4385a517bf9c7ba1f799b79984008fd744077b6b5"
+        },
+        {
+          "path": "locales/gu-IN/candidates/flowcontrol-2.article",
+          "sha256": "0c43056d630c43d6612f1fe10695c10ee014b667bd1805ce4c2ef20853a55f08"
+        },
+        {
+          "path": "locales/gu-IN/candidates/flowcontrol-3.article",
+          "sha256": "4399444133cc6e4fabc49ffdc071f569691089ad9f60daf76559351097578cb1"
+        },
+        {
+          "path": "locales/gu-IN/candidates/flowcontrol-4.article",
+          "sha256": "e04f17533d73a1dda701ab7aa8c8c9ef12b0d5caa60412024c74fc4f1a8518cc"
+        },
+        {
+          "path": "locales/gu-IN/candidates/flowcontrol-5.article",
+          "sha256": "6b934e555d4f037a3608fc908e099a59393b45dfd490b717dea8a050bdfb69b7"
+        },
+        {
+          "path": "locales/gu-IN/candidates/flowcontrol-6.article",
+          "sha256": "6de1063cbf51de896eb0fec41d27bb46ea145e732764a25ba9b8523282f5d544"
+        },
+        {
+          "path": "locales/gu-IN/candidates/flowcontrol-7.article",
+          "sha256": "2fa2cba62bd3961c928024109a03187417215049ab88097f5cfaf58acefc7f4e"
+        },
+        {
+          "path": "locales/gu-IN/candidates/flowcontrol-8.article",
+          "sha256": "5980304a67ed5c235cb56cf21d009daf18225196fcebe0fb8cb4e73bef848014"
+        },
+        {
+          "path": "locales/gu-IN/candidates/flowcontrol-9.article",
+          "sha256": "114c0413e544dc50609bce1af632f91ddfedf687d58902dab20455cad0b3d7fe"
+        },
+        {
+          "path": "locales/gu-IN/candidates/flowcontrol-if-and-else.go",
+          "sha256": "bbc35bab8520fbe430e01011e04b881b8dab0e27c2869173fc20f71fe6d50d55"
+        },
+        {
+          "path": "locales/gu-IN/candidates/generics-1.article",
+          "sha256": "b8377b713cbfc462b0eddce84e0c50e264f768062f6eab3b933cd8e70e5aa2a8"
+        },
+        {
+          "path": "locales/gu-IN/candidates/generics-2.article",
+          "sha256": "1d84bd1e4f7c115cee6c3a5293b0789502464c106531482f39ff99933c6ec1ed"
+        },
+        {
+          "path": "locales/gu-IN/candidates/generics-3.article",
+          "sha256": "3fe65a0bc9dc08abd811eb9f99d8d843cdddef0508d255f54515ad776ed06214"
+        },
+        {
+          "path": "locales/gu-IN/candidates/generics-index.go",
+          "sha256": "a5369b767dd9cb28bcec79c163ed63570c5b6f9a8aaab3ff1dbde9981b4c29c0"
+        },
+        {
+          "path": "locales/gu-IN/candidates/generics-list.go",
+          "sha256": "faa87e394dfa6e34db846bf9f3ec0e325a66ac663bab93877d3b01f0d417906a"
+        },
+        {
+          "path": "locales/gu-IN/candidates/methods-1.article",
+          "sha256": "97b075ca399c33d5bc94537821b262487399cdba1a84fa95b44b4d25f12b6082"
+        },
+        {
+          "path": "locales/gu-IN/candidates/methods-10.article",
+          "sha256": "fb1d635b9b64903bef73579e228f1d60145e187e2158b2924692970636265124"
+        },
+        {
+          "path": "locales/gu-IN/candidates/methods-11.article",
+          "sha256": "6c303bb9ba167ba015d60e887ccd342d881c9c71c1cc158bb41dfeb80e9d40d6"
+        },
+        {
+          "path": "locales/gu-IN/candidates/methods-12.article",
+          "sha256": "be5b4c72ba8ce327c66ceb3af21610d8b6eb293748380b1e38b4fb037146b5e7"
+        },
+        {
+          "path": "locales/gu-IN/candidates/methods-13.article",
+          "sha256": "c1a1cd03aae1996f7a0eada7d38e1f6d9efa8170e7a5557ba3f348cdac45c47e"
+        },
+        {
+          "path": "locales/gu-IN/candidates/methods-14.article",
+          "sha256": "bc539fd3790691bf7696e3aa8bbc7b406e71c903cc9593dedb55aab3dbd44107"
+        },
+        {
+          "path": "locales/gu-IN/candidates/methods-15.article",
+          "sha256": "6a9130e87be53de0fda2243727928d62e10dfccb9dcdf227b317e823c62a97a9"
+        },
+        {
+          "path": "locales/gu-IN/candidates/methods-16.article",
+          "sha256": "b93ef67c60d9bbde9b6bf223c7d0119210e2e671e12ec1c60e067175bbb78bf7"
+        },
+        {
+          "path": "locales/gu-IN/candidates/methods-17.article",
+          "sha256": "88a67f3cfa56ba04d08f86fc6787a1efad20b6e9f2b1e64f7ea0e95521dbeec8"
+        },
+        {
+          "path": "locales/gu-IN/candidates/methods-18.article",
+          "sha256": "20e925fd640764a6b4b71f540e2dd9ff675e0af36722726a9324a00b94a57318"
+        },
+        {
+          "path": "locales/gu-IN/candidates/methods-19.article",
+          "sha256": "f051440f723b48650b8e5a3472a15f4b18581028676409d67135859b49962877"
+        },
+        {
+          "path": "locales/gu-IN/candidates/methods-2.article",
+          "sha256": "52232d17f95185f676af5620e8d523e5b65e9344c2e3256d619dae1130a73afc"
+        },
+        {
+          "path": "locales/gu-IN/candidates/methods-20.article",
+          "sha256": "d17993b6010666dc624541a1f0a8ebd798e2a3ad3bf1305a9e3d69444ff209da"
+        },
+        {
+          "path": "locales/gu-IN/candidates/methods-21.article",
+          "sha256": "3692ff7b9fac7f4c09f3f098510217440fca4d2e841c02d36cf17be21a4e358d"
+        },
+        {
+          "path": "locales/gu-IN/candidates/methods-22.article",
+          "sha256": "bbabc8b55a9d6fe935f19d01a4a7e73f8a265147cc51f9c3427d1153974512ea"
+        },
+        {
+          "path": "locales/gu-IN/candidates/methods-23.article",
+          "sha256": "dc5001a43d60305eb30253f873de5a9651d691f0a9c2835fdfe12b62c072e024"
+        },
+        {
+          "path": "locales/gu-IN/candidates/methods-24.article",
+          "sha256": "f166b3cee44a713e6e28ab5d2c384e14cc87317b673e014f4b1bb95230831d6c"
+        },
+        {
+          "path": "locales/gu-IN/candidates/methods-25.article",
+          "sha256": "64129391419f489277716b451d83433343eda5c557acb241806e4f89c755f657"
+        },
+        {
+          "path": "locales/gu-IN/candidates/methods-26.article",
+          "sha256": "3fe65a0bc9dc08abd811eb9f99d8d843cdddef0508d255f54515ad776ed06214"
+        },
+        {
+          "path": "locales/gu-IN/candidates/methods-3.article",
+          "sha256": "87eab885817d783a55be5092f1169f0c1ef2e7a6204e9b5e99ff4ac39029fe43"
+        },
+        {
+          "path": "locales/gu-IN/candidates/methods-4.article",
+          "sha256": "e25f1118e7d926940fdc30b66a2e35b061d3272a45785e14cf12f554883ba72d"
+        },
+        {
+          "path": "locales/gu-IN/candidates/methods-5.article",
+          "sha256": "07c725c01ed6ce6a71c98facd359a24cf88a1f9877da010f0aa80025806b339e"
+        },
+        {
+          "path": "locales/gu-IN/candidates/methods-6.article",
+          "sha256": "bb3f2eeef6158250e4d1089fbd7ee1a9fcf604b54273078a23e559aec0018540"
+        },
+        {
+          "path": "locales/gu-IN/candidates/methods-7.article",
+          "sha256": "47167cc8c49523829713b47896daa6f01c115239331064d1214e6beae702a20a"
+        },
+        {
+          "path": "locales/gu-IN/candidates/methods-8.article",
+          "sha256": "81a8806107864cb125fd574302c8f1798d64e3935c4d64afe2116233a83278fa"
+        },
+        {
+          "path": "locales/gu-IN/candidates/methods-9.article",
+          "sha256": "47ea39fb32a29ed58514a6a53f7d721f27c4426362f89b243121870c16d4f3bf"
+        },
+        {
+          "path": "locales/gu-IN/candidates/methods-exercise-reader.go",
+          "sha256": "36f6f96087b159e152edcfd61bd630b632933a4e96709782dedf66bf11c75be2"
+        },
+        {
+          "path": "locales/gu-IN/candidates/methods-exercise-stringer.go",
+          "sha256": "d1b84eefdd07be279232e71cf604851114a436ce390c077c82c04062474fa6ee"
+        },
+        {
+          "path": "locales/gu-IN/candidates/methods-interfaces-are-satisfied-implicitly.go",
+          "sha256": "7e2a6b54b40b6ae278d995a20e8f0c4f8bae97bd42840b7e1770a9fbc8020b56"
+        },
+        {
+          "path": "locales/gu-IN/candidates/methods-interfaces.go",
+          "sha256": "affe0109947f183158a515c1f37808dfd9bc7da291da022d6109a6b7bcc37c85"
+        },
+        {
+          "path": "locales/gu-IN/candidates/moretypes-1.article",
+          "sha256": "f36f322c0224093601d4bc974e98f4cb11d0ac37c52337dfc650b0ecaed817e9"
+        },
+        {
+          "path": "locales/gu-IN/candidates/moretypes-10.article",
+          "sha256": "e432cb623e2df679ad09e846085adaf91b4d68aaa01ffece8029071455da21f0"
+        },
+        {
+          "path": "locales/gu-IN/candidates/moretypes-11.article",
+          "sha256": "6a4daeb6837c4d3298da315a91741a13a34989a265b24fc881dfbf23e65ab1d9"
+        },
+        {
+          "path": "locales/gu-IN/candidates/moretypes-12.article",
+          "sha256": "ab2ad7499706959710c3060d9d1ae3a541b327873d7f72558b43276d6d050775"
+        },
+        {
+          "path": "locales/gu-IN/candidates/moretypes-13.article",
+          "sha256": "b3908e5e6524ac0cf88af1255e035a725e8e3ed6397475cbfd7ec978f2966d89"
+        },
+        {
+          "path": "locales/gu-IN/candidates/moretypes-14.article",
+          "sha256": "1e9e708820e38f00209fbb4f1f520fef68e2a3e1ef9c963f5500bc33705aa3eb"
+        },
+        {
+          "path": "locales/gu-IN/candidates/moretypes-15.article",
+          "sha256": "7c752fa0a71746d9b678a753b45b20a48808663eba94d1bb0fb626283ea86d22"
+        },
+        {
+          "path": "locales/gu-IN/candidates/moretypes-16.article",
+          "sha256": "2087a7fd9821330998e482a82bd27bc66d36868cbf21456ebeca8450d02abfbe"
+        },
+        {
+          "path": "locales/gu-IN/candidates/moretypes-17.article",
+          "sha256": "0fe104ad1309866d87089eca4db4f7d9cb5fbe104867703490e4b8c367004fac"
+        },
+        {
+          "path": "locales/gu-IN/candidates/moretypes-18.article",
+          "sha256": "e71a65451a3598404541940be18032dac36efe34fee068d6fe7f54c4de504793"
+        },
+        {
+          "path": "locales/gu-IN/candidates/moretypes-19.article",
+          "sha256": "188be896e227652ab6cbf0101cf7d6fba22ef340f92d6476ba55a6502fda4678"
+        },
+        {
+          "path": "locales/gu-IN/candidates/moretypes-2.article",
+          "sha256": "65f84a5b385959971c67a1f9741cc8f796234a298ecc1c87bd98a1032987d0b5"
+        },
+        {
+          "path": "locales/gu-IN/candidates/moretypes-20.article",
+          "sha256": "76cec5e4bb87c1cef5308eba704d2445336c1a0a05dd114f835f82a0cbd78929"
+        },
+        {
+          "path": "locales/gu-IN/candidates/moretypes-21.article",
+          "sha256": "4db398b2d8fac2d8a33dd5ddfcd820809685f60334ca64cb178038e4107cb91d"
+        },
+        {
+          "path": "locales/gu-IN/candidates/moretypes-22.article",
+          "sha256": "7ec538ad264df65ccc40a1639f8fac6ce9ee52cbb663d151de59080e3bcbbaba"
+        },
+        {
+          "path": "locales/gu-IN/candidates/moretypes-23.article",
+          "sha256": "e32edfb90b3b4696b1fc8168b87be2d3b4aa01aecb24d77d165251edbdc73a04"
+        },
+        {
+          "path": "locales/gu-IN/candidates/moretypes-24.article",
+          "sha256": "1b5d61172efecf70ebe0d9274666a599639045c9b4c0fcc2a904c2fc7dd3ff38"
+        },
+        {
+          "path": "locales/gu-IN/candidates/moretypes-25.article",
+          "sha256": "6600fd99f851f65c8272b3873fd7950bb1206c9cc7b1b8284b4f86d8f071a259"
+        },
+        {
+          "path": "locales/gu-IN/candidates/moretypes-26.article",
+          "sha256": "3d6580aa091b757efebb89ac57f31467f27e015788ba347b43d17c0a681286d0"
+        },
+        {
+          "path": "locales/gu-IN/candidates/moretypes-27.article",
+          "sha256": "3fe65a0bc9dc08abd811eb9f99d8d843cdddef0508d255f54515ad776ed06214"
+        },
+        {
+          "path": "locales/gu-IN/candidates/moretypes-3.article",
+          "sha256": "a104c45c1adf9c47b9e1f3f3eaa7259df8d8530591dc0a8cc36d4b3f07f837b8"
+        },
+        {
+          "path": "locales/gu-IN/candidates/moretypes-4.article",
+          "sha256": "8a269976aba6d99b5f942fb516d3bb11fad9ffd82c2d6e76629515477a5163bc"
+        },
+        {
+          "path": "locales/gu-IN/candidates/moretypes-5.article",
+          "sha256": "ba6117663ab691952f44ee4f7c6e1eabf550332a6308eb3e3614ee9bda51188e"
+        },
+        {
+          "path": "locales/gu-IN/candidates/moretypes-6.article",
+          "sha256": "57e2444cc5c95e4be07216da8c2085cc926cde5309e613fb343e670a00618eb5"
+        },
+        {
+          "path": "locales/gu-IN/candidates/moretypes-7.article",
+          "sha256": "99ae3b4987a8f1cabb5a34991e5bc0b9efc56f98436e8b9b493b8791f460ba6c"
+        },
+        {
+          "path": "locales/gu-IN/candidates/moretypes-8.article",
+          "sha256": "991612f5fdf62ba82e871492da60701394e9bf49d577dc7f4d6ac6d9807a9606"
+        },
+        {
+          "path": "locales/gu-IN/candidates/moretypes-9.article",
+          "sha256": "d8fd2336e843234958f016bd58236cb8c89e52f78a6bcfe9841bd13055bb859a"
+        },
+        {
+          "path": "locales/gu-IN/candidates/moretypes-append.go",
+          "sha256": "1299606d61966072989ad9fb05438cac4bfdf333d6360831ffacf6a82d669c15"
+        },
+        {
+          "path": "locales/gu-IN/candidates/moretypes-exercise-fibonacci-closure.go",
+          "sha256": "597343d5d1dfad77ba14f36364621ea1fcb88806fcc8a9f002faad313e4b4b81"
+        },
+        {
+          "path": "locales/gu-IN/candidates/moretypes-pointers.go",
+          "sha256": "fc473e2f2763289f97430787d52f8fe7bc6604a81f5fa6b7667f5803d17b556e"
+        },
+        {
+          "path": "locales/gu-IN/candidates/moretypes-slice-len-cap.go",
+          "sha256": "9f752763f2b8c57178f5b2d1dfa31ccd0dacf8ac03acd23e718ca850b2f9b145"
+        },
+        {
+          "path": "locales/gu-IN/candidates/moretypes-slices-of-slice.go",
+          "sha256": "d7e888c37f74e6da9f8bc23aedda6a34fbd7bea7cb761d407e1b6f9ece0a7779"
+        },
+        {
+          "path": "locales/gu-IN/candidates/moretypes-struct-literals.go",
+          "sha256": "c6ed2ff28f63692b80e8bdf4f9651fb2a8ce9bb245da9567fcdeffeaad818a9f"
+        },
+        {
+          "path": "locales/gu-IN/candidates/welcome-1.article",
+          "sha256": "a26c80468a74588b7d681b50ba48585878cff3d4e7c3e8772bcb06d3ad31ade5"
+        },
+        {
+          "path": "locales/gu-IN/candidates/welcome-2.article",
+          "sha256": "6c8bd61182503b1d055ea84b6b8c88998ef017e4224f59b4be4ff6fa1274edd7"
+        },
+        {
+          "path": "locales/gu-IN/candidates/welcome-3.article",
+          "sha256": "6ae25511b7c4d8080ca99a138dfbccc2c4c225e12462b01b6a41c77c742d5a1a"
+        },
+        {
+          "path": "locales/gu-IN/candidates/welcome-4.article",
+          "sha256": "4c3a2f9fdea906f48b1a9dccb7e696dda865f3f309a3dea42d371faf8416ace7"
+        },
+        {
+          "path": "locales/gu-IN/candidates/welcome-5.article",
+          "sha256": "d488eb7cd3594a5b88de395006be263aac5036bc51a0ce14835981606e8302cf"
+        },
+        {
+          "path": "locales/gu-IN/course-metadata.json",
+          "sha256": "183548f6e1810a890d9ec452a96c5f3c8e0d0f81924868270403a238b2a7a847"
+        },
+        {
+          "path": "locales/gu-IN/glossary.yaml",
+          "sha256": "9e9698f4281fb2be23f5532d3e6804f85eec5dbc25759044ce8b233d7e85c377"
+        },
+        {
+          "path": "locales/gu-IN/locale.json",
+          "sha256": "108636d3d729fa74381177013ca341416b9b430775b264eafcf103a640647f8c"
+        },
+        {
+          "path": "locales/gu-IN/status.tsv",
+          "sha256": "dc1c89a4baa2cc7164fe5e43d71b1cf3d2e28dc073ee322b11784cf0135f17c7"
+        }
+      ],
+      "evidence_identity_sha256": "697b792c5da010f83c9b0888d22c91b9d9d24c3e722692d9bc9b19819a5afc3a",
+      "validated_context_sha256": "eec40b1dfec055673cb606a77092738b632da650bf74841161846e19f739708b",
+      "legacy_surface_gate_state": "current"
+    }
+  ]
+}

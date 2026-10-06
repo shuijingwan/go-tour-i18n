@@ -1,0 +1,1639 @@
+{
+  "schema": "go-learning/locale-content-scope/v1",
+  "locale": "ja-JP",
+  "packages": [
+    {
+      "package": "tour-v1",
+      "state": "complete",
+      "package_identity_sha256": "926ee5bf113ecc24d9128ed4531e740092f2ca88f6f154cf101f6b8478ed83a9",
+      "source_authority_sha256": "48d09f17bf06e4beb9d05bb5b70465f5c6677406d84a3b9d125307f17d63c054",
+      "completed_surfaces": [
+        "tour"
+      ],
+      "local_canonical_routes": [
+        "/tour/",
+        "/tour/basics/1",
+        "/tour/basics/10",
+        "/tour/basics/11",
+        "/tour/basics/12",
+        "/tour/basics/13",
+        "/tour/basics/14",
+        "/tour/basics/15",
+        "/tour/basics/16",
+        "/tour/basics/17",
+        "/tour/basics/2",
+        "/tour/basics/3",
+        "/tour/basics/4",
+        "/tour/basics/5",
+        "/tour/basics/6",
+        "/tour/basics/7",
+        "/tour/basics/8",
+        "/tour/basics/9",
+        "/tour/concurrency/1",
+        "/tour/concurrency/10",
+        "/tour/concurrency/11",
+        "/tour/concurrency/2",
+        "/tour/concurrency/3",
+        "/tour/concurrency/4",
+        "/tour/concurrency/5",
+        "/tour/concurrency/6",
+        "/tour/concurrency/7",
+        "/tour/concurrency/8",
+        "/tour/concurrency/9",
+        "/tour/flowcontrol/1",
+        "/tour/flowcontrol/10",
+        "/tour/flowcontrol/11",
+        "/tour/flowcontrol/12",
+        "/tour/flowcontrol/13",
+        "/tour/flowcontrol/14",
+        "/tour/flowcontrol/2",
+        "/tour/flowcontrol/3",
+        "/tour/flowcontrol/4",
+        "/tour/flowcontrol/5",
+        "/tour/flowcontrol/6",
+        "/tour/flowcontrol/7",
+        "/tour/flowcontrol/8",
+        "/tour/flowcontrol/9",
+        "/tour/generics/1",
+        "/tour/generics/2",
+        "/tour/generics/3",
+        "/tour/list",
+        "/tour/methods/1",
+        "/tour/methods/10",
+        "/tour/methods/11",
+        "/tour/methods/12",
+        "/tour/methods/13",
+        "/tour/methods/14",
+        "/tour/methods/15",
+        "/tour/methods/16",
+        "/tour/methods/17",
+        "/tour/methods/18",
+        "/tour/methods/19",
+        "/tour/methods/2",
+        "/tour/methods/20",
+        "/tour/methods/21",
+        "/tour/methods/22",
+        "/tour/methods/23",
+        "/tour/methods/24",
+        "/tour/methods/25",
+        "/tour/methods/26",
+        "/tour/methods/3",
+        "/tour/methods/4",
+        "/tour/methods/5",
+        "/tour/methods/6",
+        "/tour/methods/7",
+        "/tour/methods/8",
+        "/tour/methods/9",
+        "/tour/moretypes/1",
+        "/tour/moretypes/10",
+        "/tour/moretypes/11",
+        "/tour/moretypes/12",
+        "/tour/moretypes/13",
+        "/tour/moretypes/14",
+        "/tour/moretypes/15",
+        "/tour/moretypes/16",
+        "/tour/moretypes/17",
+        "/tour/moretypes/18",
+        "/tour/moretypes/19",
+        "/tour/moretypes/2",
+        "/tour/moretypes/20",
+        "/tour/moretypes/21",
+        "/tour/moretypes/22",
+        "/tour/moretypes/23",
+        "/tour/moretypes/24",
+        "/tour/moretypes/25",
+        "/tour/moretypes/26",
+        "/tour/moretypes/27",
+        "/tour/moretypes/3",
+        "/tour/moretypes/4",
+        "/tour/moretypes/5",
+        "/tour/moretypes/6",
+        "/tour/moretypes/7",
+        "/tour/moretypes/8",
+        "/tour/moretypes/9",
+        "/tour/welcome/1",
+        "/tour/welcome/2",
+        "/tour/welcome/3",
+        "/tour/welcome/4",
+        "/tour/welcome/5"
+      ],
+      "local_route_families": [
+        "/tour/**"
+      ],
+      "evidence_kind": "legacy-tour-closure/v1",
+      "evidence": [
+        {
+          "path": "data/locale-surface-reviews/ja-JP/20260916-header-nav-final.a-gate.json",
+          "sha256": "1cf9393f2d47564c82b7edd3385b11d72ea2be7c84178d70546dba57394f8881"
+        },
+        {
+          "path": "data/locale-surface-reviews/ja-JP/20260916-header-nav-final.md",
+          "sha256": "0b16c9652732f09ee7e4a2474aaa50ea76bc6b1a382317194db3902956703568"
+        },
+        {
+          "path": "data/quality-check-snapshots/ja-JP/qc-004/finalization.json",
+          "sha256": "4ef9c256717e79e70b3d72ade95781dec547abffd6cfc8aba75a2c119f044329"
+        },
+        {
+          "path": "data/quality-check-snapshots/ja-JP/qc-004/manifest.json",
+          "sha256": "8fbf1b6fe9bd68741507c6a6fa9110c71d75abfbb67aca9910017098d56cd8e0"
+        },
+        {
+          "path": "data/quality-check-snapshots/ja-JP/qc-004/quality-check-results.json",
+          "sha256": "cd05520d9fb04c44480987ee37e423efeb24974d946976f2c31f3bc9a3b128d7"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-001/candidates/basics-16.article",
+          "sha256": "cd7d452231b9ecbc85040b71b6722f8c37d042f33ccb7c48f877eb553b7f5eb6"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-001/validation/basics-16.json",
+          "sha256": "494419f2dc69b99b9dad8693839961315c1f7bb73b02b6cdf40506623081461f"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-003/candidates/concurrency-11.article",
+          "sha256": "e9fbc57b34c52fc513e28a14041fd0fc5e87d558cdb70043eebecb73163126fe"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-003/validation/concurrency-11.json",
+          "sha256": "ebd0fcfbc5da0b66a85436af2c0444c84a72814414ea0e790662c3dce1a821e1"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-005/candidates/basics-1.article",
+          "sha256": "f7889c9ee70b38e0f2bec04d2c36f7c29f6c6f460478bccf81408e0d2d066244"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-005/candidates/basics-13.article",
+          "sha256": "b1e5140612868c38e25648bd8cd100805722986441a25d7066cdf1288cf86edd"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-005/candidates/basics-15.article",
+          "sha256": "5eaf1bc0f70551d71cd5781d72b740e2198b2aa5cb7aadf989fa0324d6e7a452"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-005/candidates/basics-17.article",
+          "sha256": "ddb0af5ca5d7d09bcf5869d7fec257f32e470857876edcf771596fe295e520e4"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-005/candidates/basics-5.article",
+          "sha256": "30125eeafae733ce6975d42b321f0baeb8717841b95656e5573fe95d2e98a402"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-005/candidates/basics-6.article",
+          "sha256": "690a0f395a90effab054164c90ec350f3f16f14b974b270bce7c44df5c3a80b6"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-005/candidates/welcome-3.article",
+          "sha256": "2a4b35f056e96594544afad4b1c554aa4f58e7c483913becfabf281f2c05cb07"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-005/validation/basics-1.json",
+          "sha256": "aed42d212059510b3447290b9128a818a8416e63f22cfa12e694c3271410d8ca"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-005/validation/basics-13.json",
+          "sha256": "c9a9e95211a40ec041419f80c6f16eb40edb6508724a5079b97578fde7bdc165"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-005/validation/basics-15.json",
+          "sha256": "ad9ebddd13347c38cdfd3de9400d57a453edfea26d1a1ceba8705c8e1f50baf4"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-005/validation/basics-17.json",
+          "sha256": "9ae01f6a7914484ff0ebdb31f05f470a6c1421787e2c64f3c2150bf46b76aeea"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-005/validation/basics-5.json",
+          "sha256": "6884a4dc3d14776a80d4b18232d1642fb9dc4a8d1557f93bddd223018e368346"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-005/validation/basics-6.json",
+          "sha256": "9184c80e8b201bb11c724d563ea4c97045da4ae3cd960c03ba90678c24b5b7f4"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-005/validation/welcome-3.json",
+          "sha256": "733a503e5e2b53bfc9d5afb91028a52577997d7bdc55fff1db919abfb6d422af"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-006/candidates/basics-10.article",
+          "sha256": "6d11755469c733eec00319dd548dbcf56111fcf16ebbfe37a2549df9c764e3fa"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-006/candidates/basics-3.article",
+          "sha256": "ddbf1ea17556e2e56f716c93c061f34c7d4d15aae2a253621e13b552b0d75684"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-006/candidates/basics-4.article",
+          "sha256": "43a2732fb1fc1e2d2ed7eb67593ab884e32da6d0dfd93c1431728fd023ac7fe0"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-006/candidates/basics-7.article",
+          "sha256": "4c6922dec4795b805a9e696095ecf3a0cde5a1bac04b8697834bb0c5ce8f64e9"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-006/candidates/basics-8.article",
+          "sha256": "71d20436bee82f583ec0664746074611dcc8a641c9560ac42eb8bcedb9b7b837"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-006/candidates/basics-9.article",
+          "sha256": "68a78ea658385cbe9e402b461651504bc3aca32d993b92aed22818ed719e2b6d"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-006/validation/basics-10.json",
+          "sha256": "bd7233014771fbf9ea5b09c6770943e31e55783c4799eba97087c7b9f59b969c"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-006/validation/basics-3.json",
+          "sha256": "f047f4d44559029c79abc85da0a6c132c2916c01041978957a9d0310561cce18"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-006/validation/basics-4.json",
+          "sha256": "e907b73e012ccb568bee24d4206b010c936314c16b6c1bc532cb78d502cb06b3"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-006/validation/basics-7.json",
+          "sha256": "d4e94dd077f5896edd42a705f270b994990069e62e6423a4752e1b1ec5cfcc68"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-006/validation/basics-8.json",
+          "sha256": "55c1b7cdc674121faf226e26a42570c015204067f4e172deba0ea0d293719611"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-006/validation/basics-9.json",
+          "sha256": "c7a2406fd6ae505655551b06fd00f59a859fcdc811515ec944591d8eebfc8d9e"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-009/candidates/flowcontrol-12.article",
+          "sha256": "7469bdad455e6a695b67888aadd62a159225ae60c6cda25317f60a8ea773faeb"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-009/candidates/flowcontrol-5.article",
+          "sha256": "dc4862ad7996732cc9ee584706b1cd7174f148b1dc6ec9529efe48b9708ad697"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-009/candidates/flowcontrol-9.article",
+          "sha256": "629af4df0b2eabfbd2adc34385588bd0d421533654f16c0be9105316206549b8"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-009/validation/flowcontrol-12.json",
+          "sha256": "b54703c9fc058a6e66478fb72adcad7918929500ed7fc93d70094e2951deab22"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-009/validation/flowcontrol-5.json",
+          "sha256": "1bfef09350034ca2ab98abf03ba1cdb90782f428414e8ab5f4501230a1ebf1ac"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-009/validation/flowcontrol-9.json",
+          "sha256": "1005d750706c2a507727350be228fa66be5d21a4c0c3485b472dd71bbded47e8"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-010/candidates/moretypes-10.article",
+          "sha256": "d5c930427762be840d0baa87282cb476207e261a2e02e55c44dd3d8c32c2f83d"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-010/candidates/moretypes-11.article",
+          "sha256": "7b4e06dcc618021f33b361710a92d525ac34618bd6df11748e8fc3c2b159e100"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-010/candidates/moretypes-12.article",
+          "sha256": "998377ebe169815ab9ea5426abdb22053319ea377ba7d2acd1eeb81742e86ab9"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-010/candidates/moretypes-13.article",
+          "sha256": "2415fd8753e5f36ed993f03debf0cb4652618f56f63b3f87d072983e330736b0"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-010/candidates/moretypes-14.article",
+          "sha256": "79c895f0db340ea56eef708bdc593fcf74b8d988ffd310faffd39a68c66436dd"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-010/candidates/moretypes-15.article",
+          "sha256": "f9559949e45a1118cba5469600a280ef0c5459c652db8eca1b0ab3230587cf53"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-010/candidates/moretypes-16.article",
+          "sha256": "5016bf0be927c19684cb8fe75b3aba27b2b560845f564c9853d6891cb2a57a9f"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-010/candidates/moretypes-17.article",
+          "sha256": "8f0c82e9d3f89aeff72514c6f154415eea6da3108a7642a3124b5373760137a6"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-010/candidates/moretypes-18.article",
+          "sha256": "5dc11318612e72ee1ad12580a875566589a4c7b93aedfbb5cd4aaa5210adb22b"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-010/candidates/moretypes-19.article",
+          "sha256": "98c30c764b234794a04f538d538c541c77d4cbf64372d24adc246ca1e528621e"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-010/candidates/moretypes-20.article",
+          "sha256": "45cb44cb351237651cf77c6fa489be679604fd80fa3df1205cc87dcf30820d1e"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-010/candidates/moretypes-21.article",
+          "sha256": "9a5128d056973ef80eb88652c09657d0efaa7517f6a577240ad5dcb4aa54d249"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-010/candidates/moretypes-22.article",
+          "sha256": "1372a8f42b74e43fb8eb1809b9cf317eee95ce694ee78af38dcc1bad7aaa9da6"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-010/candidates/moretypes-23.article",
+          "sha256": "39e4e142a154e4416843496b96805731e9d807673bdd917abe3e965b79c52376"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-010/candidates/moretypes-24.article",
+          "sha256": "aabcad6cde37205d6c81479d383e2a1840846d642cd4d3f1d2085a85fb8a7405"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-010/candidates/moretypes-25.article",
+          "sha256": "9f38a5e4cbf313fc005ff71754b5b73ef09b3d0591ac75cdd4cb14ad7e8e3ca7"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-010/candidates/moretypes-26.article",
+          "sha256": "d2eff02f25cbe1d639d1cb882bcd28bcecef8259d52147ba0bdc676b54c9fabe"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-010/candidates/moretypes-7.article",
+          "sha256": "25034a3868828f712901c70e1294d10e6168e9725ece2f7eaf8b92af982fe5dd"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-010/candidates/moretypes-8.article",
+          "sha256": "93a10bf423902a11dea687c16603e16e9eb33b39b9ac291f2bc54f8fd75b05cd"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-010/candidates/moretypes-9.article",
+          "sha256": "2bf8470309a1169a8681b762a0e9f86335f8668b03bd9f4918745a79e15fecec"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-010/validation/moretypes-10.json",
+          "sha256": "aa38ab79f32e7244ee6d038aeeee445fce28b4afb03a8ba83f9fdd9f571ae14d"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-010/validation/moretypes-11.json",
+          "sha256": "e9e6c05b4fcc1da10f34dae57fe22c984f1d787241e2ea06701a3ef662a4c72e"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-010/validation/moretypes-12.json",
+          "sha256": "d95562fe287905740a268549a244e9a597b28010f296f680db861b0c4d56d443"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-010/validation/moretypes-13.json",
+          "sha256": "2940bd1297a14b4fdf6ad114f19b5da89581054eaedd9499eb507a28a549bf2c"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-010/validation/moretypes-14.json",
+          "sha256": "6ec419e32e450e6f36776425e15f7d30e9974bdf46af890653a90dc92ed20134"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-010/validation/moretypes-15.json",
+          "sha256": "b75e6519f4956342e84ceb3cc7bdef45fe68a2ad78f6dd3ac28ee3038536ec82"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-010/validation/moretypes-16.json",
+          "sha256": "ddec0eaf1a0cf7532370a84a26dd3e68f33f691c381848be8da0f4d2685ee210"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-010/validation/moretypes-17.json",
+          "sha256": "925284eefc2148ecede06e6d389234d94cb85fb6415fe7c2ec699f68f8e4d8b2"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-010/validation/moretypes-18.json",
+          "sha256": "c51ac17364fe8b1d158aa69f0a11b642cbdc794af5e9d31e986f29ca53e66a4d"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-010/validation/moretypes-19.json",
+          "sha256": "9eda4b481376511c5e8e3dd953c3f0e8d457c9914e6b2a9be25370eb22f00bab"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-010/validation/moretypes-20.json",
+          "sha256": "f34bea22274288474896ec3d43ffcf3d8588d5f97eefe14edfba75742a4e4fa0"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-010/validation/moretypes-21.json",
+          "sha256": "12b7ae3711e5cdf29075453618c93ba4cc96c08f35979101aeb8ce36f89ef20a"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-010/validation/moretypes-22.json",
+          "sha256": "3119e5748fde2c04a9c8b424a4844246c6a4b573af30add6432e884fdd98b916"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-010/validation/moretypes-23.json",
+          "sha256": "25670a00aae95b904459a75fe4255528531866dec1b4630ed8c2cb2bf946ba84"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-010/validation/moretypes-24.json",
+          "sha256": "913d728ec14570aa91460577dcc9b6c0d5e828093d3939fd22282006afe21f46"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-010/validation/moretypes-25.json",
+          "sha256": "6c0503b3e69263f5930b338aaf75cfa33d768d712782a754ce0360b56b9822ff"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-010/validation/moretypes-26.json",
+          "sha256": "ca45f2f280a8d96eeaf3c0ed0457988be47ed458fbce90832a2b584dba818eae"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-010/validation/moretypes-7.json",
+          "sha256": "f23267b357347dc9982fe0bbbc3848069f005ddad05a5b644c3f2e29954121c8"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-010/validation/moretypes-8.json",
+          "sha256": "5ffa9447d50fd7e0449dc99e8ef37e9fc7bb3f6d273920ac2dea3076a6f79924"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-010/validation/moretypes-9.json",
+          "sha256": "9bddc0f2cab6225af9074777cb14d87238ff8e26caa703bf9acecffaa5822b3c"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-011/candidates/methods-1.article",
+          "sha256": "26faff7aa68aad0ba69c49e0f7e0859ff684a4c61c088073fc413406a07ab452"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-011/candidates/methods-10.article",
+          "sha256": "2dd2319871779d4e346eff15dab55dfaacd9439ea1177544bd3c545183c3e607"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-011/candidates/methods-11.article",
+          "sha256": "6c63c3e4bb4e3164b66479bba99fc9de23963cc22bcdc05fcf040c8456d7eade"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-011/candidates/methods-12.article",
+          "sha256": "435b8056806eeb89703fb9582f82d4e3cbd28c22a8005de1d5b8135dd3f824e8"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-011/candidates/methods-13.article",
+          "sha256": "a71a31e8fa78e5687f257ef5f30be87911503fae98f72c7e15b00d50f7404933"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-011/candidates/methods-15.article",
+          "sha256": "8ba72eb22e571403fb5514c7d79c882e19e2288f2ff22a4aa4ab95c69cddae34"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-011/candidates/methods-16.article",
+          "sha256": "667e462389e779953d53fbd14f95246c0561f5099d01e83ff947ae289676f0f5"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-011/candidates/methods-17.article",
+          "sha256": "537a7f1d668abad92e5a0d5ae8b4ac831941c34458d0f397304da168fe25381b"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-011/candidates/methods-18.article",
+          "sha256": "84996a53c2662e41267b743893fb85a7a8381583559b9eccc9f8196a8afbe714"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-011/candidates/methods-19.article",
+          "sha256": "138b269588bbb145d836a981de90fabd0a952c2d47f8321b67cf025599d2e4b1"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-011/candidates/methods-2.article",
+          "sha256": "1f93acb80c7026a7c80b0ff5dccb2b25ef8112fb11d0f118a2376ba63aad9649"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-011/candidates/methods-3.article",
+          "sha256": "3afaeca1e7e579c85683702fb59a3f27bc5db4c522d1732f1d0d2fbdca155616"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-011/candidates/methods-4.article",
+          "sha256": "fea862c7ae076f302ddf421ab48632fc508958626d156b8fd6a47b13f502007b"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-011/candidates/methods-5.article",
+          "sha256": "ea671d51d367f6b12f01a1427b5779d9813914b5293a799bead1d01b3eaf5c6f"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-011/candidates/methods-6.article",
+          "sha256": "51a19a36d0db09ff77392601b18d326cdc1ba0824c36ac6d568d5a5b666f85d9"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-011/candidates/methods-7.article",
+          "sha256": "8a50a520025c659c2c0019099f20191c3e6863cdfbcd97ecf1e87ae242ae152f"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-011/candidates/methods-8.article",
+          "sha256": "b3242a682bb25e377b54dd58cad6449ace31951faca8786621d60d7d41b4c40f"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-011/candidates/methods-9.article",
+          "sha256": "ff11dc28de2e7d220f52b5b54e2513123ab874a2708f48f9296a9b550dbaadd5"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-011/candidates/moretypes-27.article",
+          "sha256": "d4fd140e0b619b384446c6776044d0365bbdc7523f37b3d356d7002c22db6b3a"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-011/validation/methods-1.json",
+          "sha256": "c2e61a66c2ffe3a82b8b8de8e9da8dff92ebfb2aa52b79d302b7bc4363c7d0e1"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-011/validation/methods-10.json",
+          "sha256": "a09c0e57ce4c9a41b607b768ec8089d40ec13d8d36a4380be5dfc3d6bea08048"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-011/validation/methods-11.json",
+          "sha256": "47f93a812b8c8d7ee4cf1ac2d4533cdf0e28adef03c0ca5bc2068fb41268562d"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-011/validation/methods-12.json",
+          "sha256": "59adbed54fd8cbb1feafec425710715ce4cb60645c593851fd3282dec6c185d6"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-011/validation/methods-13.json",
+          "sha256": "fb2c812d6d5c0130ee1e14e30dde89eadff7d1c27f82c6394f3ccd11d394e95c"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-011/validation/methods-15.json",
+          "sha256": "4303b151653ed1e1fd06d16bac0e364663a8ef698bada414c2399790ddb39721"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-011/validation/methods-16.json",
+          "sha256": "9626a4ab0d13bda0b9d0a4c32b2d72af12e51e1ac36ce035f719c7c98f586edc"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-011/validation/methods-17.json",
+          "sha256": "ec218d7cd87cede11b5f289b094e81191fa7bbd57e9c23e5b92ce75265c7ed0b"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-011/validation/methods-18.json",
+          "sha256": "bd91c9f80b5377e604354a84fd4fa026e03a7a5aa324f9d8a50259cf3b39103f"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-011/validation/methods-19.json",
+          "sha256": "6a4cea2a7cd06c9cb6710784bfb328a033db85a5cc9cb83760b7b2ffced16f3e"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-011/validation/methods-2.json",
+          "sha256": "e50757d3d6b51d8a6c7d30b0b0a5ddd998ffdcb5660cdf553a6821eb639ef583"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-011/validation/methods-3.json",
+          "sha256": "63aafc6c44ea653a02f2264a01988ef48eab0f0bc17112e10793b22b87b977c8"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-011/validation/methods-4.json",
+          "sha256": "3e2db9fe7c2f9d12531c4bc9cb5163a980f0767f1080d12fec9ca0af67408569"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-011/validation/methods-5.json",
+          "sha256": "31ec7fe914d0acadd5dc1d2ef209d722632f04ef7726fadec1d37d184be43203"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-011/validation/methods-6.json",
+          "sha256": "f87444754b84530690fc59544195d4bd2aeca0d4604ffd1fd7876d2352f9fef1"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-011/validation/methods-7.json",
+          "sha256": "cd211b833ccd51259052da789fc7716916d26343f1726c7cc010ea99afb9b937"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-011/validation/methods-8.json",
+          "sha256": "da1e284560323965512fe2aefec4bc7359c6532b629f41f696ccf8ea721329a4"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-011/validation/methods-9.json",
+          "sha256": "58a3ef5d0a6901bed6e54ad7ceea34408c25349a994665a14f453213f1b4695b"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-011/validation/moretypes-27.json",
+          "sha256": "60ac018a62586e4678142f64202a83e39a32e69a58c159999ae58f45539e00b4"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-012/candidates/concurrency-1.article",
+          "sha256": "a5d895b6da292cb0e2075d2b6b18d8d65dad8c9033abf90c49dad88cdce1459e"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-012/candidates/concurrency-10.article",
+          "sha256": "736fe11071ca66f981b8d2c945fef3ee6fc2fa565de6b9eb4a801a439bd7bcdc"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-012/candidates/concurrency-2.article",
+          "sha256": "a4e9451ad6616ee5b64f0db29b695beec59b20fd1b2ab584dd4f47f8c9a557ed"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-012/candidates/concurrency-3.article",
+          "sha256": "fe0afda672423bd1d844f56184d4406042090a3f95d9503cbf1a614963d2d799"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-012/candidates/concurrency-4.article",
+          "sha256": "3802c95d7b9c42eff1b97262f6666a05d6791dc2672fb601678ada1b79795c5d"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-012/candidates/concurrency-5.article",
+          "sha256": "a905c6758ce7c784890315db1efa80ea73da3f9237ef3b4c2597b4b950887312"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-012/candidates/concurrency-6.article",
+          "sha256": "3f7a47092a7652670e988c0f252f1ab9d4d1beb1770e8eef611c93c097d57c89"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-012/candidates/concurrency-7.article",
+          "sha256": "cd4faa3e817915b6c3e5e4f61f656f1a7fc50744ecb1b08633cea10b2f7eb394"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-012/candidates/concurrency-8.article",
+          "sha256": "ccad6ccd331a9bb0cd333b53fd3a99d5e906b0dc4864d04e0d63404a91c072e0"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-012/candidates/concurrency-9.article",
+          "sha256": "7d8e522ca2e91260498b9cf38a8621519b07c1ccbeb1d6fbee05cab6ffd57dc4"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-012/candidates/generics-1.article",
+          "sha256": "f50f9587070de82aa8569c64a19bb16f6e7d50665d81489e7c74c9d892371001"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-012/candidates/generics-2.article",
+          "sha256": "357735ec19e0fdffc6e416e8ddad94191d2b60149abc3590ca5adbe89c592bc5"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-012/candidates/generics-3.article",
+          "sha256": "d4fd140e0b619b384446c6776044d0365bbdc7523f37b3d356d7002c22db6b3a"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-012/candidates/methods-20.article",
+          "sha256": "1e38f6f05fde4eed211625859b53ba639ad83a11a4c3bb7cc21a53474f47c312"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-012/candidates/methods-21.article",
+          "sha256": "26d2aa507eb13edab57506608b0812948f2a41e7391a54b4647bd9955c78cd93"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-012/candidates/methods-22.article",
+          "sha256": "8d04bf318b15a89692c5422380eddb2929f726bd1e893470ccd35a184aab2889"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-012/candidates/methods-23.article",
+          "sha256": "5a605e2d403533e2afa611f0b117f1da033b91f61c9f05fbc61a0634ef10fe1e"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-012/candidates/methods-24.article",
+          "sha256": "c243f774e8ac96a3d682e631165b42d2eb19ce89277277aac36d796e313add35"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-012/candidates/methods-25.article",
+          "sha256": "d5286de2f88497e17e0e30b2b169b6cc7fbf998a605f086fa8908000f4cae1a9"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-012/candidates/methods-26.article",
+          "sha256": "d4fd140e0b619b384446c6776044d0365bbdc7523f37b3d356d7002c22db6b3a"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-012/validation/concurrency-1.json",
+          "sha256": "b7bec488d2359dcd4f2d98d21739badd51147741bfdab3dc8e1e29eaf894e5ee"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-012/validation/concurrency-10.json",
+          "sha256": "f8229faaf40c69a3c49aa7b502f75ac1d9de6d438a0034aa5c0a8f0644d3bcdf"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-012/validation/concurrency-2.json",
+          "sha256": "4d16a4b28ac6d8dea778f56e1c89d045b4822273ebb9ea3582558807bf5d1c4f"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-012/validation/concurrency-3.json",
+          "sha256": "75eab954c05ff5fc274b93e74967d2d9f87f25da40f384f90c7ae8b2e9f3194f"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-012/validation/concurrency-4.json",
+          "sha256": "59ffb47e224361439f48edde80be4f305e9cab6ad332f35ddbaed1024ab2180c"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-012/validation/concurrency-5.json",
+          "sha256": "03b28a40b054c0a13ed14b944a1e53a10ef27ec13f337a51814d0ec326046ee8"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-012/validation/concurrency-6.json",
+          "sha256": "dab0381dacef596a4ff18d3b5b34b5a2edae9c02972551bbca34d06984cbd883"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-012/validation/concurrency-7.json",
+          "sha256": "e5cb239e5af56b22189b21ac5bf0fd0a27421c25abc50749b7e50c04fa216a3e"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-012/validation/concurrency-8.json",
+          "sha256": "523256a38a661d9d112ace4e5da49b3c4f4256e2309dd1429d4ce0494138def0"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-012/validation/concurrency-9.json",
+          "sha256": "721b4bcf1dd838806139950ed7d25d8fa31d948fb1b877bf06b3e364fb27fbc2"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-012/validation/generics-1.json",
+          "sha256": "18398f8145764853a0349cb9151c30114e90d453bd75530dcd4722b9d7b99aa0"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-012/validation/generics-2.json",
+          "sha256": "96844f37e4f5fe806cdce658219749a2ffc81d56f197d2f66e39929d70d4a27f"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-012/validation/generics-3.json",
+          "sha256": "19828cf9e5ae6f2796604420fcf11602d59cc8fec6b8079a2dd68b6f8e9f7462"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-012/validation/methods-20.json",
+          "sha256": "16eb998e501b20a3e2248962ecb018fd61d2683245d1230e46434c769acd91e2"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-012/validation/methods-21.json",
+          "sha256": "33c124838310a9cee85cbd62b81ffe3c1bbb8c0692442d39b3cfa3eb6bd03b0c"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-012/validation/methods-22.json",
+          "sha256": "f1259ad4064f3790ea50dc15407f0da365c3861dc80b972f4f37e06da8147826"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-012/validation/methods-23.json",
+          "sha256": "e0ecec74a59d70501a2426f7ff36b1193babc1d8945de96037b5728f9b68fbd9"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-012/validation/methods-24.json",
+          "sha256": "a95952bf299f1e991caa9c5f1798375e4c3a68bdadaa768ae7dd4dad7ede0402"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-012/validation/methods-25.json",
+          "sha256": "9e0b7dea5beaa05993131d84a77bb2327a6cd7aba4a05ef6811b21f45e40d9bc"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-012/validation/methods-26.json",
+          "sha256": "96ff435287b56279c6eaf26ad3f5893067fbfcb3e31c122dd1b0914f33575c03"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-013/candidates/basics-numeric-constants.go",
+          "sha256": "8e1449e6411c08b3225b7aa5a77ed32c3afbb208769c64e976a43496517ac42f"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-013/candidates/basics-type-inference.go",
+          "sha256": "dea12f9c1dc23ea900c50c16cb7e378e21bd96ae5860e2d0b9d125d7096f7ee1"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-013/candidates/concurrency-channels.go",
+          "sha256": "b8ec05051c8c4448601babebbb0dc5eb4d0786212734bec3f4c3dc1ec497a50a"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-013/candidates/concurrency-exercise-equivalent-binary-trees.go",
+          "sha256": "68c1b9f6a148910febdd6be41dad852373e356714996754ac6dc455cb5e97a0b"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-013/candidates/concurrency-exercise-web-crawler.go",
+          "sha256": "52e97e9011ac7b488fbfef9379ceb39034a7c3240048a98e245099e3303e1c4c"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-013/candidates/concurrency-mutex-counter.go",
+          "sha256": "722c2bab9e1b7ad8daefcf5a26834acd8cb441a4089cbda1b490d8e2685f4441"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-013/candidates/flowcontrol-if-and-else.go",
+          "sha256": "a445822b403de2a6aa586ad772f89f11927c0659b8a800a1f70bcc0109aeb174"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-013/candidates/generics-index.go",
+          "sha256": "a64cb4e21de837a432d023e4722eeaadff0f5e98ec9f3ac7b47ed3c482156c3f"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-013/candidates/generics-list.go",
+          "sha256": "fec5fff664cdc9febca1a3d74422bd8dfcd9514f033fe08783ed130241e17b3c"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-013/candidates/methods-exercise-reader.go",
+          "sha256": "d285cbd52ae84d35bffadb7a1456cce91fa2e5faeea2b9d60fbbebe0b4096d15"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-013/candidates/methods-exercise-stringer.go",
+          "sha256": "aafa5ce079559ef016aa5e3ac3a7224cf9b59781b7196f81e6caba6e77d60ef2"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-013/candidates/methods-interfaces-are-satisfied-implicitly.go",
+          "sha256": "8b333ff85a66d9770e6a21cff4060270a81d1e51ccdbdaefbc91e6b999a9472f"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-013/candidates/methods-interfaces.go",
+          "sha256": "468513d9314bd0645a77e04d06320f8cb0c4aa81b78500b1be95afe4a25d68fe"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-013/candidates/moretypes-append.go",
+          "sha256": "7f1767eaab7222ff5feaa96e3821da58a81e14c3b58668f7cc9e903abe5f4689"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-013/candidates/moretypes-exercise-fibonacci-closure.go",
+          "sha256": "54e194a0e24ba1ca49eda6e5cf004af235c7e4d1de58712facaeb3fe07b6e06d"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-013/candidates/moretypes-pointers.go",
+          "sha256": "8d75390cb6c3faf0c3c3481afaedb0743f626970069b489c711fb03642fdac89"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-013/candidates/moretypes-slice-len-cap.go",
+          "sha256": "5d7255176e3316dc1ba123137218a40dd4154b2d372d9f2850e21d3ad45b496f"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-013/candidates/moretypes-slices-of-slice.go",
+          "sha256": "520d4edcb52f7de4d7969d0dde5c89572341c0c0b582f105e08fce839e66d4ea"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-013/candidates/moretypes-struct-literals.go",
+          "sha256": "f2457762e001931201d4dccf698d42fec36da598b1ecad628136cff75a7d4d40"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-013/validation/basics-numeric-constants.json",
+          "sha256": "68f0c048b637c1cd93b0a088eb90e9cdec84504c7545973bbd2a3c33bd0a1fe9"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-013/validation/basics-type-inference.json",
+          "sha256": "5e688053639c905a273ee17ffe288938cd1ca1ec7df26fa60132448c5a74a805"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-013/validation/concurrency-channels.json",
+          "sha256": "8738b658fc71bd1eef5b16e65e1e8106866d1d395ec1788b5cdc420eb2b480af"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-013/validation/concurrency-exercise-equivalent-binary-trees.json",
+          "sha256": "9e7f308932248fc45ba5320353487756a95837b4d1143e744ea832b1f94c9ae3"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-013/validation/concurrency-exercise-web-crawler.json",
+          "sha256": "e763dcd8314bd9e9bfe1461ad5d17e152435f088ee355e6592cb95fa6fa02428"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-013/validation/concurrency-mutex-counter.json",
+          "sha256": "b4bd47c8ca18db3444d921bb9816105f4bc0acfdd1f8ca277d4922abf91dc8e7"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-013/validation/flowcontrol-if-and-else.json",
+          "sha256": "9969b9dfb16e6514ac684753f26445611f4469e390309ac5755b703d9de260ac"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-013/validation/generics-index.json",
+          "sha256": "3adf5fb394603b61f83b9fc68dc4a07520313c923eeca123777f897f0e950c8d"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-013/validation/generics-list.json",
+          "sha256": "cf330ba1fe7e77aae52e92b78e66474be65e9dcc11a5830fe71c1cacc734759f"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-013/validation/methods-exercise-reader.json",
+          "sha256": "2cb4af839fe04d5c13cfb16e23fe6ff739def40c679fae363f7c07459ad0b792"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-013/validation/methods-exercise-stringer.json",
+          "sha256": "65c46938b1386c40e149d128529e501ae802f32c922f8919ea9f6dd37094bbdd"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-013/validation/methods-interfaces-are-satisfied-implicitly.json",
+          "sha256": "7ceb5c9bd4986273be1fefb142292e4cdf91b8f4f16ba60f69661d099b2d1168"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-013/validation/methods-interfaces.json",
+          "sha256": "1c2723d230a109448d513148f1488d63543a069bf0b607718ccf93b8c5f3589e"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-013/validation/moretypes-append.json",
+          "sha256": "1d4c15cee9f42f08bf0f7ebc124a049b5e4a7a9c3ffb1f1b6b871586d4df8b3c"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-013/validation/moretypes-exercise-fibonacci-closure.json",
+          "sha256": "02c0a331c7db1cd51f98363139800450ae5f7b15e5aa155c2cb9caf78d3ab112"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-013/validation/moretypes-pointers.json",
+          "sha256": "7491debdde303accc2bbf6e0d2f7529c96d508947b521a8e8868eece27b19d79"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-013/validation/moretypes-slice-len-cap.json",
+          "sha256": "4b77ccf64e5ee9ae7ee468aac846846a947935ca92c66ace7b949c8148fb4fc5"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-013/validation/moretypes-slices-of-slice.json",
+          "sha256": "bc1d59d0cdfbbc78b994ef39c59633c9704d7500043295eced2cd30766b2d852"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-013/validation/moretypes-struct-literals.json",
+          "sha256": "8f7cf0137594dd28ae0a002c0513ca2344ec22c5cd0d5a3e071593461acdf8e3"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-014/candidates/basics-11.article",
+          "sha256": "bb64c972327c706e34fc98ab73c2886f41feeaae71031c9fa95bf6205a0a5ab8"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-014/candidates/basics-12.article",
+          "sha256": "8956b039a6f8d6914fb0b3a9e2d56efc0cfa09a3bb0c8b060599667ec2b90505"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-014/candidates/basics-14.article",
+          "sha256": "ff8037921e38542e4fa92ee7115689719e809abee4be4507d7363390a13df14b"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-014/candidates/basics-2.article",
+          "sha256": "d1167368ca4352071ec2355c1572d8f8acfce0290e06389e6e238a28ad309825"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-014/candidates/flowcontrol-10.article",
+          "sha256": "b719b00327549ccf408d23e87a1defb7eeb7d13dc871b718b228f4cf7b937743"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-014/candidates/flowcontrol-11.article",
+          "sha256": "836fedf9c9ebb2e604c0524ebf6e0585b9bf4197088c103d1908da0dc6988740"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-014/candidates/flowcontrol-13.article",
+          "sha256": "2bac3a59d85132ac32422c4bf99eebaefcba0d248e7ae90505a2ee90dca9d30d"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-014/candidates/flowcontrol-14.article",
+          "sha256": "821343f0c3aebeac31454f38babf0df4dd3bd2ffa6aeda93a140febd3944c701"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-014/candidates/flowcontrol-2.article",
+          "sha256": "426786348f292ccef676f76004b4b35aaa231b3fc131543870c47c21c8907a66"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-014/candidates/flowcontrol-3.article",
+          "sha256": "3840773032fb84870dd5e2e62b3d9a4dd832ac51b85efb31b67ec47dd209c3be"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-014/candidates/flowcontrol-4.article",
+          "sha256": "ebc53f83b3a810aa378c8c1b70cdb20228af3f77ca248fe48bc27e17f3037f2e"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-014/candidates/flowcontrol-6.article",
+          "sha256": "46034c286b6d1ccfe163e1d39c06e7ec4be0367ea4b83f09307199a3989c3d1f"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-014/candidates/flowcontrol-7.article",
+          "sha256": "5ad11edfd0633ad52f4811e9778b07332aacc2d3e809411975a83d1926eb88c0"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-014/candidates/flowcontrol-8.article",
+          "sha256": "a806e739e18d99ac18d1460e540fd079a8b934c5f4f13d97cff454dd054c0181"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-014/candidates/moretypes-1.article",
+          "sha256": "efecf3cdbed236edb55e519d844e1c4061343e5dcfc7312e309578f4c97988c4"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-014/candidates/moretypes-2.article",
+          "sha256": "456489d9f6c4c9625fbd7615bcc1784ec7a705e69aa53afc5f346a9ad80d6ba6"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-014/candidates/moretypes-3.article",
+          "sha256": "521c3a0a9495fd4e5ff77b66cad56478c26c666db046f2649da1af55e90276e1"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-014/candidates/moretypes-4.article",
+          "sha256": "ba96ef711061479c4e71833e93e54ab3951eb237f350a06876d8b6043561acd0"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-014/candidates/moretypes-5.article",
+          "sha256": "dcbf71b022c15d52d9fe96f13f364a0368ae24a8fa7b44d186d59d32a6bf3342"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-014/candidates/moretypes-6.article",
+          "sha256": "6a3cba6164e47e678b9aaf6138c565d01a95a914aaa6f83bfdcbd495fdd6603c"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-014/candidates/welcome-1.article",
+          "sha256": "1a1ac6e7cecc3c033921e1ffcbb11f79ee9a180bd5914953bbb81304d213b4c1"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-014/candidates/welcome-4.article",
+          "sha256": "c8044112a1e92416b781bbaa6e85163e746978c77825fbc134ac46759075ae5c"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-014/candidates/welcome-5.article",
+          "sha256": "4807ed2c575e821b996c1e33c2ebf0f9c4c8e3533b4775ab9f682aadc328661c"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-014/validation/basics-11.json",
+          "sha256": "a585a43e6ebd1ed29bebe9ca7e88ce17c449bd067fd9710b826677b8569552b1"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-014/validation/basics-12.json",
+          "sha256": "9b712e1015d4bf6439ab1e10b28e710e1ba38c71f56c5b406a8acbc9cdad1a6f"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-014/validation/basics-14.json",
+          "sha256": "696a732060ea3337c2e6713dc55f8a14b0fdb775b6bb9b1b18220f4343e9a219"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-014/validation/basics-2.json",
+          "sha256": "3bb6971cf26cc07152e4dfcb2c575a546b4d0b707ef5ac0b62a5016128b52f29"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-014/validation/flowcontrol-10.json",
+          "sha256": "2d1de5b1a2c5969278b43834969c73ddfd473022d221534f51b51e6520ee4b05"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-014/validation/flowcontrol-11.json",
+          "sha256": "9e03e538842beff04385a2d3ef8ba4e011dcf940777bc6dd817b2c3d667263b2"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-014/validation/flowcontrol-13.json",
+          "sha256": "4d5bc6c6ac93d9b739f88d915e7b4a492ab030a8241c73377ec73aa0bbbfe7d0"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-014/validation/flowcontrol-14.json",
+          "sha256": "0c5adb779a0e5edc8cbe58e33140aaa451907d26b059c41b9957f52a54d947c0"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-014/validation/flowcontrol-2.json",
+          "sha256": "e9faae856721bcb4a688d0ac5cdc38c357defc76ef65e0a7bc5c173da2ef1da2"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-014/validation/flowcontrol-3.json",
+          "sha256": "08cc2ffc1ab662d75a01f2e7d9db2249fe8359c8f75edc8c1f0ff5b753a0c1ae"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-014/validation/flowcontrol-4.json",
+          "sha256": "dc3997aa4d59e54790ecff34924a31a7ed3ae41a99d8638a6b5c079f44ab2685"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-014/validation/flowcontrol-6.json",
+          "sha256": "600be331b7c752af25ced5e0a0459f4b07db44d34036bc883946675b1fa1ac1b"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-014/validation/flowcontrol-7.json",
+          "sha256": "831a75746357d65b87a9721f3a996a5dffc9873642162468114b3298bc0d6a87"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-014/validation/flowcontrol-8.json",
+          "sha256": "4c7b9bf03aa75ca66d8af6de1a6c6870864e3fac8768bebe95a9551b95cd73c6"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-014/validation/moretypes-1.json",
+          "sha256": "829504e451c489ccbd9388348fca17f7d71cd1cc18278b2a633357dccf196fa0"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-014/validation/moretypes-2.json",
+          "sha256": "6c0b58f7705efc10342f3f467ca2c6b7999be49f44a0d08f2d67878771d74456"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-014/validation/moretypes-3.json",
+          "sha256": "a8823b613f8cda03dc78d8d7b3d3df516ca602e731cad2b1e8f601fa9f31f5fc"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-014/validation/moretypes-4.json",
+          "sha256": "2236fdcb930e3264beed06f88dce93fa1ea1fd69405226a044460181f0c5aed2"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-014/validation/moretypes-5.json",
+          "sha256": "9f241985a0186da607e6c4d526f5826f11db4f9f55639a3d5346f0f32f83144d"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-014/validation/moretypes-6.json",
+          "sha256": "ba2871953a83355dc58d23ac56096dab09198e79fdebf0865ab773bdc87ccd70"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-014/validation/welcome-1.json",
+          "sha256": "1f3425a0b816752b1892793b1a9f035451132d460c6ec1424b2e911e85aa4ed9"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-014/validation/welcome-4.json",
+          "sha256": "bd005225a9ac8894a7ae97b0efc3fdf7fd0a51d336a52903b7d94723014bc84c"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-014/validation/welcome-5.json",
+          "sha256": "6225fb5a9de78618758f102784be3211f02eede7401eb4dd614aa1ad31445ab3"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-015/candidates/flowcontrol-1.article",
+          "sha256": "2d07651b05f96e2537d10c8c46819e45ba123763ce607bf64692bf49973a7b7a"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-015/candidates/methods-14.article",
+          "sha256": "cc7e370ddfa6088d390210ff720bba22b10950956e2c015b6f49c820e2d910a0"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-015/validation/flowcontrol-1.json",
+          "sha256": "1c0cb1074b216e1e5ce19fb55d82555845ce44ba153ddae0ebf55b623067b745"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/chatgpt-ja-JP-015/validation/methods-14.json",
+          "sha256": "a3f2507ca0213f8fe38272b971162e43ca90c04cddc05a2161b2ff70f91b3f6b"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/codex-ja-JP-016/candidates/welcome-2.article",
+          "sha256": "083a41497117cc2aeca5e65b65da56c15b72588fd74286e9a5dcad14e0d9f67e"
+        },
+        {
+          "path": "data/retranslation-runs/ja-JP/codex-ja-JP-016/validation/welcome-2.json",
+          "sha256": "60c968eacbd3284f35707e22b1f7d1bfa413b373f09334fc00c5cb1203dc6d32"
+        },
+        {
+          "path": "internal/tour/ui/ja-JP.json",
+          "sha256": "a9b17c435aba2047375a95f32ea1d34e665cffff4a7d26a986f66691fb2306a4"
+        },
+        {
+          "path": "locales/ja-JP/article-metadata.json",
+          "sha256": "f9c5a7f0cd2a164241e0133abdf77b4ad80fc991aed16fc78d6f1cfaa9a3cd5d"
+        },
+        {
+          "path": "locales/ja-JP/candidates/basics-1.article",
+          "sha256": "6766271297b1fd453eca00059cd53327ef119572c5cf37eeb833e352a2325377"
+        },
+        {
+          "path": "locales/ja-JP/candidates/basics-10.article",
+          "sha256": "6d11755469c733eec00319dd548dbcf56111fcf16ebbfe37a2549df9c764e3fa"
+        },
+        {
+          "path": "locales/ja-JP/candidates/basics-11.article",
+          "sha256": "377ccdd20b5dfc9f30a57ae6834a7f309f8ea681b4d5ad89a75112fcd4b768ef"
+        },
+        {
+          "path": "locales/ja-JP/candidates/basics-12.article",
+          "sha256": "fae7577204987c340b9d9a37036c476cb2d586682241cde401254960ed4914b7"
+        },
+        {
+          "path": "locales/ja-JP/candidates/basics-13.article",
+          "sha256": "651ec0fb924c86151d6f76e27348de4daf106424bcad7544b5810d3e9b521315"
+        },
+        {
+          "path": "locales/ja-JP/candidates/basics-14.article",
+          "sha256": "eb8ab0710b268bb898b1fdad07d422cfd1d950b25cdd65e2e94e3b02dc779d53"
+        },
+        {
+          "path": "locales/ja-JP/candidates/basics-15.article",
+          "sha256": "d2788c8dd6922b167421abb98177f7d18de286d5fca3d8d62e3ccdca9bb4d6ce"
+        },
+        {
+          "path": "locales/ja-JP/candidates/basics-16.article",
+          "sha256": "0542f79c90bf9fc6119a304949ac6835c6b5bcdfb9fe8299a5d7cfe436650081"
+        },
+        {
+          "path": "locales/ja-JP/candidates/basics-17.article",
+          "sha256": "ddb0af5ca5d7d09bcf5869d7fec257f32e470857876edcf771596fe295e520e4"
+        },
+        {
+          "path": "locales/ja-JP/candidates/basics-2.article",
+          "sha256": "bc94107d45e168bdc8bebc73897d30fb688946bd25ff5e5e49b434e9e1e386b7"
+        },
+        {
+          "path": "locales/ja-JP/candidates/basics-3.article",
+          "sha256": "ddbf1ea17556e2e56f716c93c061f34c7d4d15aae2a253621e13b552b0d75684"
+        },
+        {
+          "path": "locales/ja-JP/candidates/basics-4.article",
+          "sha256": "43a2732fb1fc1e2d2ed7eb67593ab884e32da6d0dfd93c1431728fd023ac7fe0"
+        },
+        {
+          "path": "locales/ja-JP/candidates/basics-5.article",
+          "sha256": "ded6bbbcfdbc63d48894854e01e30617e2a34dcf3a40295fbc050754c3d3aef3"
+        },
+        {
+          "path": "locales/ja-JP/candidates/basics-6.article",
+          "sha256": "f3d5330c05cbf078caa280ae30fc994dddef6ae0186a7277d8dcf084e6fb6d14"
+        },
+        {
+          "path": "locales/ja-JP/candidates/basics-7.article",
+          "sha256": "4c6922dec4795b805a9e696095ecf3a0cde5a1bac04b8697834bb0c5ce8f64e9"
+        },
+        {
+          "path": "locales/ja-JP/candidates/basics-8.article",
+          "sha256": "71d20436bee82f583ec0664746074611dcc8a641c9560ac42eb8bcedb9b7b837"
+        },
+        {
+          "path": "locales/ja-JP/candidates/basics-9.article",
+          "sha256": "68a78ea658385cbe9e402b461651504bc3aca32d993b92aed22818ed719e2b6d"
+        },
+        {
+          "path": "locales/ja-JP/candidates/basics-numeric-constants.go",
+          "sha256": "8e1449e6411c08b3225b7aa5a77ed32c3afbb208769c64e976a43496517ac42f"
+        },
+        {
+          "path": "locales/ja-JP/candidates/basics-type-inference.go",
+          "sha256": "dea12f9c1dc23ea900c50c16cb7e378e21bd96ae5860e2d0b9d125d7096f7ee1"
+        },
+        {
+          "path": "locales/ja-JP/candidates/concurrency-1.article",
+          "sha256": "a5d895b6da292cb0e2075d2b6b18d8d65dad8c9033abf90c49dad88cdce1459e"
+        },
+        {
+          "path": "locales/ja-JP/candidates/concurrency-10.article",
+          "sha256": "4ed90670199c8da3ef2fdb6a9687479dd0071a8a1271d53ac9fd17068c20cb3d"
+        },
+        {
+          "path": "locales/ja-JP/candidates/concurrency-11.article",
+          "sha256": "09d0a23fe88e36a175c1cda17cda9035d1efe4084bb3ff3ee5f519796336fa1a"
+        },
+        {
+          "path": "locales/ja-JP/candidates/concurrency-2.article",
+          "sha256": "1fe8efabe80d50be2bada016ad0eb968a58cdcbb4120aa4e39f4b7153563bbb8"
+        },
+        {
+          "path": "locales/ja-JP/candidates/concurrency-3.article",
+          "sha256": "7a073e7ee60451aef552cab321b32a5d08654cac9e8618cbc438348c13df6300"
+        },
+        {
+          "path": "locales/ja-JP/candidates/concurrency-4.article",
+          "sha256": "3802c95d7b9c42eff1b97262f6666a05d6791dc2672fb601678ada1b79795c5d"
+        },
+        {
+          "path": "locales/ja-JP/candidates/concurrency-5.article",
+          "sha256": "3440f034f0b1311bb1b37b0066450908fd2da01e7abc1527c8c028c4507877fc"
+        },
+        {
+          "path": "locales/ja-JP/candidates/concurrency-6.article",
+          "sha256": "3f7a47092a7652670e988c0f252f1ab9d4d1beb1770e8eef611c93c097d57c89"
+        },
+        {
+          "path": "locales/ja-JP/candidates/concurrency-7.article",
+          "sha256": "3124edc5adf7613c2ba576312f7eaca71e767ec28197d4a566487d26f83b8233"
+        },
+        {
+          "path": "locales/ja-JP/candidates/concurrency-8.article",
+          "sha256": "cb76e3a084d2a23d7e280924de459b96d40fdddd6434d5882c90c5e924fc7e3c"
+        },
+        {
+          "path": "locales/ja-JP/candidates/concurrency-9.article",
+          "sha256": "7d8e522ca2e91260498b9cf38a8621519b07c1ccbeb1d6fbee05cab6ffd57dc4"
+        },
+        {
+          "path": "locales/ja-JP/candidates/concurrency-channels.go",
+          "sha256": "b8ec05051c8c4448601babebbb0dc5eb4d0786212734bec3f4c3dc1ec497a50a"
+        },
+        {
+          "path": "locales/ja-JP/candidates/concurrency-exercise-equivalent-binary-trees.go",
+          "sha256": "68c1b9f6a148910febdd6be41dad852373e356714996754ac6dc455cb5e97a0b"
+        },
+        {
+          "path": "locales/ja-JP/candidates/concurrency-exercise-web-crawler.go",
+          "sha256": "52e97e9011ac7b488fbfef9379ceb39034a7c3240048a98e245099e3303e1c4c"
+        },
+        {
+          "path": "locales/ja-JP/candidates/concurrency-mutex-counter.go",
+          "sha256": "722c2bab9e1b7ad8daefcf5a26834acd8cb441a4089cbda1b490d8e2685f4441"
+        },
+        {
+          "path": "locales/ja-JP/candidates/flowcontrol-1.article",
+          "sha256": "2d07651b05f96e2537d10c8c46819e45ba123763ce607bf64692bf49973a7b7a"
+        },
+        {
+          "path": "locales/ja-JP/candidates/flowcontrol-10.article",
+          "sha256": "b719b00327549ccf408d23e87a1defb7eeb7d13dc871b718b228f4cf7b937743"
+        },
+        {
+          "path": "locales/ja-JP/candidates/flowcontrol-11.article",
+          "sha256": "754701500d04fca7deb148ab57fc88318a895085db98b54c725a66d386de6131"
+        },
+        {
+          "path": "locales/ja-JP/candidates/flowcontrol-12.article",
+          "sha256": "13a8ab738234c827c53c56480074bf9b5f520de08ed9f04356dbe560cb875dd1"
+        },
+        {
+          "path": "locales/ja-JP/candidates/flowcontrol-13.article",
+          "sha256": "2bac3a59d85132ac32422c4bf99eebaefcba0d248e7ae90505a2ee90dca9d30d"
+        },
+        {
+          "path": "locales/ja-JP/candidates/flowcontrol-14.article",
+          "sha256": "821343f0c3aebeac31454f38babf0df4dd3bd2ffa6aeda93a140febd3944c701"
+        },
+        {
+          "path": "locales/ja-JP/candidates/flowcontrol-2.article",
+          "sha256": "37c4efc0d996b70753daab5d254cb849d1bec00ce6c7d3a9885190e42301a23e"
+        },
+        {
+          "path": "locales/ja-JP/candidates/flowcontrol-3.article",
+          "sha256": "3840773032fb84870dd5e2e62b3d9a4dd832ac51b85efb31b67ec47dd209c3be"
+        },
+        {
+          "path": "locales/ja-JP/candidates/flowcontrol-4.article",
+          "sha256": "8aae90d6a5bf028ae213f792aa9b9059f6e438d2238b78eba76c295aff332eb6"
+        },
+        {
+          "path": "locales/ja-JP/candidates/flowcontrol-5.article",
+          "sha256": "7f54d306fa973440631544b580d969f76ee1c627d05f76949a59c36e73af2699"
+        },
+        {
+          "path": "locales/ja-JP/candidates/flowcontrol-6.article",
+          "sha256": "46034c286b6d1ccfe163e1d39c06e7ec4be0367ea4b83f09307199a3989c3d1f"
+        },
+        {
+          "path": "locales/ja-JP/candidates/flowcontrol-7.article",
+          "sha256": "5ad11edfd0633ad52f4811e9778b07332aacc2d3e809411975a83d1926eb88c0"
+        },
+        {
+          "path": "locales/ja-JP/candidates/flowcontrol-8.article",
+          "sha256": "63e15d6482806544ec7c1175aa23c5aa47ef25d8dab4011790d1d8ab0e887ff0"
+        },
+        {
+          "path": "locales/ja-JP/candidates/flowcontrol-9.article",
+          "sha256": "2dd10f4f4d1d831d3a72701ea70cef3c804f36f3cb2bba45429a18be6b3e764e"
+        },
+        {
+          "path": "locales/ja-JP/candidates/flowcontrol-if-and-else.go",
+          "sha256": "a445822b403de2a6aa586ad772f89f11927c0659b8a800a1f70bcc0109aeb174"
+        },
+        {
+          "path": "locales/ja-JP/candidates/generics-1.article",
+          "sha256": "f50f9587070de82aa8569c64a19bb16f6e7d50665d81489e7c74c9d892371001"
+        },
+        {
+          "path": "locales/ja-JP/candidates/generics-2.article",
+          "sha256": "df31633de2e127578cc8f3c70f25f79703f76217a472d65ff2e229e5bf730eef"
+        },
+        {
+          "path": "locales/ja-JP/candidates/generics-3.article",
+          "sha256": "b59c33ac7fe1fafd4345a6f168a3623e53ba45b5ef0a2689f2a9927469050783"
+        },
+        {
+          "path": "locales/ja-JP/candidates/generics-index.go",
+          "sha256": "a64cb4e21de837a432d023e4722eeaadff0f5e98ec9f3ac7b47ed3c482156c3f"
+        },
+        {
+          "path": "locales/ja-JP/candidates/generics-list.go",
+          "sha256": "fec5fff664cdc9febca1a3d74422bd8dfcd9514f033fe08783ed130241e17b3c"
+        },
+        {
+          "path": "locales/ja-JP/candidates/methods-1.article",
+          "sha256": "26faff7aa68aad0ba69c49e0f7e0859ff684a4c61c088073fc413406a07ab452"
+        },
+        {
+          "path": "locales/ja-JP/candidates/methods-10.article",
+          "sha256": "fab37de8902961569c4062f81d8479525062bb01c5add730925d49bd81e98554"
+        },
+        {
+          "path": "locales/ja-JP/candidates/methods-11.article",
+          "sha256": "774135284eb26176cc665f77124bf53c0dbb50b19bbfb0c020781d75f822b08f"
+        },
+        {
+          "path": "locales/ja-JP/candidates/methods-12.article",
+          "sha256": "438d1a33573ca2f30d9a3e23024a2c7b6eb3bbbddf53ccfc4a62774bd1b6c299"
+        },
+        {
+          "path": "locales/ja-JP/candidates/methods-13.article",
+          "sha256": "a71a31e8fa78e5687f257ef5f30be87911503fae98f72c7e15b00d50f7404933"
+        },
+        {
+          "path": "locales/ja-JP/candidates/methods-14.article",
+          "sha256": "cc7e370ddfa6088d390210ff720bba22b10950956e2c015b6f49c820e2d910a0"
+        },
+        {
+          "path": "locales/ja-JP/candidates/methods-15.article",
+          "sha256": "a486df3527c8af538823e5b03b6d10cc4042a989121a8066ddf7d4c3b51cf852"
+        },
+        {
+          "path": "locales/ja-JP/candidates/methods-16.article",
+          "sha256": "b0d5b53cc2f6a4f59deff6c99781902658a060e0528e65a00b6912e51ce9153e"
+        },
+        {
+          "path": "locales/ja-JP/candidates/methods-17.article",
+          "sha256": "11d07961d0b6ef59c95f257d7a9f5dfc651389eb650c3560093920c70190131c"
+        },
+        {
+          "path": "locales/ja-JP/candidates/methods-18.article",
+          "sha256": "db97f115a90390daa7016ec84e672b7738631664a9be58df2b3362c488d6fe59"
+        },
+        {
+          "path": "locales/ja-JP/candidates/methods-19.article",
+          "sha256": "163a0486d7d140dd0a8ab4f100cc461275c902b2415f236599e7869c23c9eca3"
+        },
+        {
+          "path": "locales/ja-JP/candidates/methods-2.article",
+          "sha256": "8c6c89909255f1e0b48f4466b6eeab179974a009ce5658bd91687438ba885f0e"
+        },
+        {
+          "path": "locales/ja-JP/candidates/methods-20.article",
+          "sha256": "1e38f6f05fde4eed211625859b53ba639ad83a11a4c3bb7cc21a53474f47c312"
+        },
+        {
+          "path": "locales/ja-JP/candidates/methods-21.article",
+          "sha256": "b3a45b47f0badad420e5002ab0711fa21f1e6a3a7fc8eab98d99d7026bb73f99"
+        },
+        {
+          "path": "locales/ja-JP/candidates/methods-22.article",
+          "sha256": "8d04bf318b15a89692c5422380eddb2929f726bd1e893470ccd35a184aab2889"
+        },
+        {
+          "path": "locales/ja-JP/candidates/methods-23.article",
+          "sha256": "5a605e2d403533e2afa611f0b117f1da033b91f61c9f05fbc61a0634ef10fe1e"
+        },
+        {
+          "path": "locales/ja-JP/candidates/methods-24.article",
+          "sha256": "c243f774e8ac96a3d682e631165b42d2eb19ce89277277aac36d796e313add35"
+        },
+        {
+          "path": "locales/ja-JP/candidates/methods-25.article",
+          "sha256": "d5286de2f88497e17e0e30b2b169b6cc7fbf998a605f086fa8908000f4cae1a9"
+        },
+        {
+          "path": "locales/ja-JP/candidates/methods-26.article",
+          "sha256": "b59c33ac7fe1fafd4345a6f168a3623e53ba45b5ef0a2689f2a9927469050783"
+        },
+        {
+          "path": "locales/ja-JP/candidates/methods-3.article",
+          "sha256": "3afaeca1e7e579c85683702fb59a3f27bc5db4c522d1732f1d0d2fbdca155616"
+        },
+        {
+          "path": "locales/ja-JP/candidates/methods-4.article",
+          "sha256": "fea862c7ae076f302ddf421ab48632fc508958626d156b8fd6a47b13f502007b"
+        },
+        {
+          "path": "locales/ja-JP/candidates/methods-5.article",
+          "sha256": "b2ac7b58eaefc8bc45daeb48970cf356523efc45496ec34520702324499c17e3"
+        },
+        {
+          "path": "locales/ja-JP/candidates/methods-6.article",
+          "sha256": "51a19a36d0db09ff77392601b18d326cdc1ba0824c36ac6d568d5a5b666f85d9"
+        },
+        {
+          "path": "locales/ja-JP/candidates/methods-7.article",
+          "sha256": "96eb5403f200c06e77cb2b1c0627ff389445beaa61a15b4dd4ce050a6d0d0ec9"
+        },
+        {
+          "path": "locales/ja-JP/candidates/methods-8.article",
+          "sha256": "23aeeaa580e5d61fc5df1507dec67b291b253d4ade65827a5f64aeb2e7859131"
+        },
+        {
+          "path": "locales/ja-JP/candidates/methods-9.article",
+          "sha256": "62edeecf7350d3b7407e82dd6a318c814bacb29bcc54d02e4be1497c7e77088a"
+        },
+        {
+          "path": "locales/ja-JP/candidates/methods-exercise-reader.go",
+          "sha256": "d285cbd52ae84d35bffadb7a1456cce91fa2e5faeea2b9d60fbbebe0b4096d15"
+        },
+        {
+          "path": "locales/ja-JP/candidates/methods-exercise-stringer.go",
+          "sha256": "aafa5ce079559ef016aa5e3ac3a7224cf9b59781b7196f81e6caba6e77d60ef2"
+        },
+        {
+          "path": "locales/ja-JP/candidates/methods-interfaces-are-satisfied-implicitly.go",
+          "sha256": "8b333ff85a66d9770e6a21cff4060270a81d1e51ccdbdaefbc91e6b999a9472f"
+        },
+        {
+          "path": "locales/ja-JP/candidates/methods-interfaces.go",
+          "sha256": "468513d9314bd0645a77e04d06320f8cb0c4aa81b78500b1be95afe4a25d68fe"
+        },
+        {
+          "path": "locales/ja-JP/candidates/moretypes-1.article",
+          "sha256": "f19f6f4b8da5c7d45bdbf8dc2c77c323674562046a741a6db192708ff2673d19"
+        },
+        {
+          "path": "locales/ja-JP/candidates/moretypes-10.article",
+          "sha256": "6f530b896f1483c362f974c0f1d5312e43165753b5f8c9c610bd664a93b72401"
+        },
+        {
+          "path": "locales/ja-JP/candidates/moretypes-11.article",
+          "sha256": "6c8338a3c5a3148d1f4f6551cc9c8ee6303124b68c6406f8998c8729abe3453a"
+        },
+        {
+          "path": "locales/ja-JP/candidates/moretypes-12.article",
+          "sha256": "07eecfe15293c9987ae432e56cc4a34c625bdd1f940721bded1b55b2071af10d"
+        },
+        {
+          "path": "locales/ja-JP/candidates/moretypes-13.article",
+          "sha256": "cab6e3e07d2dd8e25ea35f749c09065b65a36a2425e93bfdc795a58e75991017"
+        },
+        {
+          "path": "locales/ja-JP/candidates/moretypes-14.article",
+          "sha256": "356f666fcfc1ff14db056834f27c95cbe888934cc021d6de2b21bcdabb634e94"
+        },
+        {
+          "path": "locales/ja-JP/candidates/moretypes-15.article",
+          "sha256": "f9559949e45a1118cba5469600a280ef0c5459c652db8eca1b0ab3230587cf53"
+        },
+        {
+          "path": "locales/ja-JP/candidates/moretypes-16.article",
+          "sha256": "5016bf0be927c19684cb8fe75b3aba27b2b560845f564c9853d6891cb2a57a9f"
+        },
+        {
+          "path": "locales/ja-JP/candidates/moretypes-17.article",
+          "sha256": "251b93835d83d62e5f17e77a890ec945bb1a6e833081fc3f3ac4f9eed3ed40fa"
+        },
+        {
+          "path": "locales/ja-JP/candidates/moretypes-18.article",
+          "sha256": "5dc11318612e72ee1ad12580a875566589a4c7b93aedfbb5cd4aaa5210adb22b"
+        },
+        {
+          "path": "locales/ja-JP/candidates/moretypes-19.article",
+          "sha256": "b2e61a098bbe3422d86f83e4ae947086647c6cd39ae9e1649c8c40951d11a631"
+        },
+        {
+          "path": "locales/ja-JP/candidates/moretypes-2.article",
+          "sha256": "a3bf7df5c69d6833d2e58a66c7cb752f2e4e4f2197c9316ba3c61807da69d160"
+        },
+        {
+          "path": "locales/ja-JP/candidates/moretypes-20.article",
+          "sha256": "cb6e03de277432f054901a68ace6b5500ff863db7f1fc10d5168636d448edc29"
+        },
+        {
+          "path": "locales/ja-JP/candidates/moretypes-21.article",
+          "sha256": "871cec00dc37dfd0446aa75b9f50796ca23a9776162f70c413de009b190e5943"
+        },
+        {
+          "path": "locales/ja-JP/candidates/moretypes-22.article",
+          "sha256": "5a1c1044fec9961f0894f34345e797d698d78451cf2fe197127b2c10042186be"
+        },
+        {
+          "path": "locales/ja-JP/candidates/moretypes-23.article",
+          "sha256": "096707193f6929f6c8f245a36678e95c0b64e0c7ce72969af4bc661bd6dc4979"
+        },
+        {
+          "path": "locales/ja-JP/candidates/moretypes-24.article",
+          "sha256": "aaef9dc0560829860f5c3c15754b37c55ac3430f4f54a6b1fdb82e5bcbecdcd5"
+        },
+        {
+          "path": "locales/ja-JP/candidates/moretypes-25.article",
+          "sha256": "5b51037c25925a0945b8c38cdec683366a7279e710cd5fb5c37c6223c8606fba"
+        },
+        {
+          "path": "locales/ja-JP/candidates/moretypes-26.article",
+          "sha256": "d2eff02f25cbe1d639d1cb882bcd28bcecef8259d52147ba0bdc676b54c9fabe"
+        },
+        {
+          "path": "locales/ja-JP/candidates/moretypes-27.article",
+          "sha256": "b59c33ac7fe1fafd4345a6f168a3623e53ba45b5ef0a2689f2a9927469050783"
+        },
+        {
+          "path": "locales/ja-JP/candidates/moretypes-3.article",
+          "sha256": "38ca6debc31f4b397c58478191c0b1a66bbc5c3368a346bfabd83592c2f48d61"
+        },
+        {
+          "path": "locales/ja-JP/candidates/moretypes-4.article",
+          "sha256": "ba96ef711061479c4e71833e93e54ab3951eb237f350a06876d8b6043561acd0"
+        },
+        {
+          "path": "locales/ja-JP/candidates/moretypes-5.article",
+          "sha256": "d0b7302cc0da80d26f48d8340f335b102ef35706eb17004516d885d8cfa20995"
+        },
+        {
+          "path": "locales/ja-JP/candidates/moretypes-6.article",
+          "sha256": "99dffea8c12d4ccbb42fbd2d4f4f4d4b411f49939dff20fd7e37f66e87a903f5"
+        },
+        {
+          "path": "locales/ja-JP/candidates/moretypes-7.article",
+          "sha256": "8435a18fc01bae6454d2deaab92e464c69b3d1fa91b03cbf39465f7c3749c9ae"
+        },
+        {
+          "path": "locales/ja-JP/candidates/moretypes-8.article",
+          "sha256": "8d13245f76d4dac5af8c36b9f91949d9fdfcf5cfae67cd219f99c88265ccf046"
+        },
+        {
+          "path": "locales/ja-JP/candidates/moretypes-9.article",
+          "sha256": "2c2c18684fe30e5f462c16501fa9286db6bd8562f182c8eeb45b09448a808831"
+        },
+        {
+          "path": "locales/ja-JP/candidates/moretypes-append.go",
+          "sha256": "7f1767eaab7222ff5feaa96e3821da58a81e14c3b58668f7cc9e903abe5f4689"
+        },
+        {
+          "path": "locales/ja-JP/candidates/moretypes-exercise-fibonacci-closure.go",
+          "sha256": "54e194a0e24ba1ca49eda6e5cf004af235c7e4d1de58712facaeb3fe07b6e06d"
+        },
+        {
+          "path": "locales/ja-JP/candidates/moretypes-pointers.go",
+          "sha256": "8d75390cb6c3faf0c3c3481afaedb0743f626970069b489c711fb03642fdac89"
+        },
+        {
+          "path": "locales/ja-JP/candidates/moretypes-slice-len-cap.go",
+          "sha256": "5d7255176e3316dc1ba123137218a40dd4154b2d372d9f2850e21d3ad45b496f"
+        },
+        {
+          "path": "locales/ja-JP/candidates/moretypes-slices-of-slice.go",
+          "sha256": "520d4edcb52f7de4d7969d0dde5c89572341c0c0b582f105e08fce839e66d4ea"
+        },
+        {
+          "path": "locales/ja-JP/candidates/moretypes-struct-literals.go",
+          "sha256": "f2457762e001931201d4dccf698d42fec36da598b1ecad628136cff75a7d4d40"
+        },
+        {
+          "path": "locales/ja-JP/candidates/welcome-1.article",
+          "sha256": "e16f7249524232fda2594567bc350b99c5d8d8b660e19c6767c6ed0c249c34da"
+        },
+        {
+          "path": "locales/ja-JP/candidates/welcome-2.article",
+          "sha256": "083a41497117cc2aeca5e65b65da56c15b72588fd74286e9a5dcad14e0d9f67e"
+        },
+        {
+          "path": "locales/ja-JP/candidates/welcome-3.article",
+          "sha256": "2a4b35f056e96594544afad4b1c554aa4f58e7c483913becfabf281f2c05cb07"
+        },
+        {
+          "path": "locales/ja-JP/candidates/welcome-4.article",
+          "sha256": "c8044112a1e92416b781bbaa6e85163e746978c77825fbc134ac46759075ae5c"
+        },
+        {
+          "path": "locales/ja-JP/candidates/welcome-5.article",
+          "sha256": "4807ed2c575e821b996c1e33c2ebf0f9c4c8e3533b4775ab9f682aadc328661c"
+        },
+        {
+          "path": "locales/ja-JP/course-metadata.json",
+          "sha256": "6e6659254ff867e8427b27d47f3d2dfaa0639b7bc17a342f25e22c15abfb2e00"
+        },
+        {
+          "path": "locales/ja-JP/glossary.yaml",
+          "sha256": "42d1cc8edcf027dc3a97b7775db1fc74781289b7fc8548508d3937b186bd1af4"
+        },
+        {
+          "path": "locales/ja-JP/locale.json",
+          "sha256": "01643d293debce9b2ff06b9ba173816d14d68e1d2ea3ff71f9b8959f8515928e"
+        },
+        {
+          "path": "locales/ja-JP/status.tsv",
+          "sha256": "827a527aa59080eb0787ec483fc1d426be5a2ead7fe4ec1515c1feaf516fbd43"
+        }
+      ],
+      "evidence_identity_sha256": "1d386f7da737146d45002756b141af7a25710b191bc7b3340052777f16e6f955",
+      "validated_context_sha256": "82b380234a83fbed5b7831249b5fd2758f5deb578770eaa7999a614281925813",
+      "legacy_surface_gate_state": "historical-verified"
+    }
+  ]
+}

@@ -1,0 +1,1655 @@
+{
+  "schema": "go-learning/locale-content-scope/v1",
+  "locale": "lv-LV",
+  "packages": [
+    {
+      "package": "tour-v1",
+      "state": "complete",
+      "package_identity_sha256": "926ee5bf113ecc24d9128ed4531e740092f2ca88f6f154cf101f6b8478ed83a9",
+      "source_authority_sha256": "48d09f17bf06e4beb9d05bb5b70465f5c6677406d84a3b9d125307f17d63c054",
+      "completed_surfaces": [
+        "tour"
+      ],
+      "local_canonical_routes": [
+        "/tour/",
+        "/tour/basics/1",
+        "/tour/basics/10",
+        "/tour/basics/11",
+        "/tour/basics/12",
+        "/tour/basics/13",
+        "/tour/basics/14",
+        "/tour/basics/15",
+        "/tour/basics/16",
+        "/tour/basics/17",
+        "/tour/basics/2",
+        "/tour/basics/3",
+        "/tour/basics/4",
+        "/tour/basics/5",
+        "/tour/basics/6",
+        "/tour/basics/7",
+        "/tour/basics/8",
+        "/tour/basics/9",
+        "/tour/concurrency/1",
+        "/tour/concurrency/10",
+        "/tour/concurrency/11",
+        "/tour/concurrency/2",
+        "/tour/concurrency/3",
+        "/tour/concurrency/4",
+        "/tour/concurrency/5",
+        "/tour/concurrency/6",
+        "/tour/concurrency/7",
+        "/tour/concurrency/8",
+        "/tour/concurrency/9",
+        "/tour/flowcontrol/1",
+        "/tour/flowcontrol/10",
+        "/tour/flowcontrol/11",
+        "/tour/flowcontrol/12",
+        "/tour/flowcontrol/13",
+        "/tour/flowcontrol/14",
+        "/tour/flowcontrol/2",
+        "/tour/flowcontrol/3",
+        "/tour/flowcontrol/4",
+        "/tour/flowcontrol/5",
+        "/tour/flowcontrol/6",
+        "/tour/flowcontrol/7",
+        "/tour/flowcontrol/8",
+        "/tour/flowcontrol/9",
+        "/tour/generics/1",
+        "/tour/generics/2",
+        "/tour/generics/3",
+        "/tour/list",
+        "/tour/methods/1",
+        "/tour/methods/10",
+        "/tour/methods/11",
+        "/tour/methods/12",
+        "/tour/methods/13",
+        "/tour/methods/14",
+        "/tour/methods/15",
+        "/tour/methods/16",
+        "/tour/methods/17",
+        "/tour/methods/18",
+        "/tour/methods/19",
+        "/tour/methods/2",
+        "/tour/methods/20",
+        "/tour/methods/21",
+        "/tour/methods/22",
+        "/tour/methods/23",
+        "/tour/methods/24",
+        "/tour/methods/25",
+        "/tour/methods/26",
+        "/tour/methods/3",
+        "/tour/methods/4",
+        "/tour/methods/5",
+        "/tour/methods/6",
+        "/tour/methods/7",
+        "/tour/methods/8",
+        "/tour/methods/9",
+        "/tour/moretypes/1",
+        "/tour/moretypes/10",
+        "/tour/moretypes/11",
+        "/tour/moretypes/12",
+        "/tour/moretypes/13",
+        "/tour/moretypes/14",
+        "/tour/moretypes/15",
+        "/tour/moretypes/16",
+        "/tour/moretypes/17",
+        "/tour/moretypes/18",
+        "/tour/moretypes/19",
+        "/tour/moretypes/2",
+        "/tour/moretypes/20",
+        "/tour/moretypes/21",
+        "/tour/moretypes/22",
+        "/tour/moretypes/23",
+        "/tour/moretypes/24",
+        "/tour/moretypes/25",
+        "/tour/moretypes/26",
+        "/tour/moretypes/27",
+        "/tour/moretypes/3",
+        "/tour/moretypes/4",
+        "/tour/moretypes/5",
+        "/tour/moretypes/6",
+        "/tour/moretypes/7",
+        "/tour/moretypes/8",
+        "/tour/moretypes/9",
+        "/tour/welcome/1",
+        "/tour/welcome/2",
+        "/tour/welcome/3",
+        "/tour/welcome/4",
+        "/tour/welcome/5"
+      ],
+      "local_route_families": [
+        "/tour/**"
+      ],
+      "evidence_kind": "legacy-tour-closure/v1",
+      "evidence": [
+        {
+          "path": "data/locale-surface-reviews/lv-LV/20260929-initial-surface.a-gate.json",
+          "sha256": "36c6b8163f317c031dd3841802625757df0a6b8b8449da8d308bcacd814f4a23"
+        },
+        {
+          "path": "data/locale-surface-reviews/lv-LV/20260929-initial-surface.md",
+          "sha256": "dbe03079cc4ab2c9416d2d61bdd16ef4146eb053301011384fcec61b5d2c3a3e"
+        },
+        {
+          "path": "data/quality-check-snapshots/lv-LV/qc-001/manifest.json",
+          "sha256": "7cc95954d243a4035110a08097340fadf55a668ff27e27baff74b394de674081"
+        },
+        {
+          "path": "data/quality-check-snapshots/lv-LV/qc-001/quality-check-results.json",
+          "sha256": "3e7809a174a93ad1dfa7540be26e03a23dcc240edc44cc61505a31bcf722d096"
+        },
+        {
+          "path": "data/quality-check-snapshots/lv-LV/qc-002/manifest.json",
+          "sha256": "501f7ddf7cbc7f09b55a9a28dbf7955af59152f6bd1a379d89807a6f508b6923"
+        },
+        {
+          "path": "data/quality-check-snapshots/lv-LV/qc-002/quality-check-results.json",
+          "sha256": "82647892acf2e55dee7ab4c9b71cc40761bc677ed4ce566262df1e87d71e8653"
+        },
+        {
+          "path": "data/quality-check-snapshots/lv-LV/qc-003/finalization.json",
+          "sha256": "823ca0aca7c5074e4341b33b290c928d85e7e319dd315c8d7ba35038f1d4a44f"
+        },
+        {
+          "path": "data/quality-check-snapshots/lv-LV/qc-003/manifest.json",
+          "sha256": "b5eb8d50fe18c41774256bdbb18b341c2709760c1329419e09c3b767d80e2f4c"
+        },
+        {
+          "path": "data/quality-check-snapshots/lv-LV/qc-003/quality-check-results.json",
+          "sha256": "893eaf9dad5cf919e98ddb39b96d629162c4b7128aed16826d85e7c80f21759d"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/candidates/basics-1.article",
+          "sha256": "51b6b01878ecc999b8442ac236e0e2f1932f13d4964992791bc4272eedeac8aa"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/candidates/basics-10.article",
+          "sha256": "96a289700b196ad415c153e06acfbea1475a5bb0db29540c29b886c2abadecee"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/candidates/basics-11.article",
+          "sha256": "0d8801049601753b2e8413588654808585247c4af90d9e868c6e358d3364060e"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/candidates/basics-12.article",
+          "sha256": "02244a0eeaad99d474e01bb6e6bbdf99329ee0ebf2ccaf88a0899df8f516f9fe"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/candidates/basics-14.article",
+          "sha256": "4008ae899f1b1509384034fcf4f485058adf7b916e2be87235337ea4ed5ccbd2"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/candidates/basics-15.article",
+          "sha256": "00ae00929ea4c75ad07fa27ded67e2255a96e5dc54674e2484154658326e3849"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/candidates/basics-16.article",
+          "sha256": "6b1f8094220aa938728a078d057ca7f6763c04539e26155074b082a84901388b"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/candidates/basics-2.article",
+          "sha256": "559e7d735cd04128b2d53d8e397f516c82df3f43e618a646f380f8d41decca14"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/candidates/basics-3.article",
+          "sha256": "517d3431d3240731f3ec3e050a2f6c5551f4453dd46a42980a0d709cf629a4c8"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/candidates/basics-4.article",
+          "sha256": "c145a0fbf771a6b1c2a0d41a8e9846bfde69929fed08c1ea94fb1cae964429d7"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/candidates/basics-5.article",
+          "sha256": "b1d39aba6773ce16b191e7f5e7564c4c33d66d2bb83a9c880d3e6c43c2f800ad"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/candidates/basics-6.article",
+          "sha256": "5102e4c46ed1c11887e27c7b92584ec8f2d72ad1cdc085b5ea75d0d8b6e5bcf0"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/candidates/basics-7.article",
+          "sha256": "43c4353ca0401cc27639b249c3c62e6872406999846013878d2b62b44938ab8e"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/candidates/basics-8.article",
+          "sha256": "581f8ba621498090ee325bf82220844c1c7bdaaecea4f2eecf24ab821771d6ad"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/candidates/basics-9.article",
+          "sha256": "82c1fa18e37076988c431a1f1207a2fbb4a881c1b1f47ae824a73bbb5c1dc1b2"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/candidates/flowcontrol-1.article",
+          "sha256": "00b4a83a83110de9eb925fc265be0ab4e9aff7faf5c8cbf3a1f625235658e40b"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/candidates/flowcontrol-10.article",
+          "sha256": "6e158a53457ac629181136cc62a94699027bb5786e1803ecb2606753e6bd18c6"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/candidates/flowcontrol-11.article",
+          "sha256": "03f0d1af794bee04d2dc39e6c96e39190390ffd8fede86c50238a3b22a8160f0"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/candidates/flowcontrol-12.article",
+          "sha256": "306dfb95f7974bacf9d8cf735d225719e092ad60c52064f7cdcbe487a9ab8eab"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/candidates/flowcontrol-13.article",
+          "sha256": "d83341b795ca778e74c09056404d3aee756e4a91b20601f315f220d561ae714f"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/candidates/flowcontrol-2.article",
+          "sha256": "14bc0ce06fbeb7c1773da66cea4b1a1bcdeabaade6f7819a9c7266486d26d403"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/candidates/flowcontrol-3.article",
+          "sha256": "09529a9d0109401e02b2200917133165fed5f90791e86784a31ce1d1bde815ed"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/candidates/flowcontrol-4.article",
+          "sha256": "9cfc8edd7bccde9c07fedd9c0a88df416ad9148d729f971b53e110c229244e71"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/candidates/flowcontrol-5.article",
+          "sha256": "8a3b6d7b74206262a8bde1a4203cf66437a28d3d208953dbcba17b73a7de6ab3"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/candidates/flowcontrol-6.article",
+          "sha256": "682f6183ff891e736a3fd23080ccd96ebe77423005a0fa111809ce9d42e5d3b6"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/candidates/flowcontrol-7.article",
+          "sha256": "9c063377015c34fb213f29e1c2ac51221575d77bc10794b23962ee5b5d59a086"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/candidates/flowcontrol-8.article",
+          "sha256": "81d1cf468abc45cfbdcbe8f8e9c4f2a7547191948a558ec8537b9f41bce0aa2a"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/candidates/flowcontrol-9.article",
+          "sha256": "a612bdba489748b8ed862b7b4648571dea9ea4d971449c8f698aaff8b9d8327f"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/candidates/moretypes-10.article",
+          "sha256": "0b2b987d0627b8e8b652ece2ad98068f60363de870cd29946c8426833e5a3a7a"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/candidates/moretypes-11.article",
+          "sha256": "6bbbcea518d1e92fa4f1b87201e7c0861d4061c576f8b2cd1bf22e7fc38e0ce3"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/candidates/moretypes-13.article",
+          "sha256": "7d932018633335587179425943478582eb179b32a32d3bbf971259900e2876d7"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/candidates/moretypes-14.article",
+          "sha256": "fc256a5503415cd759ec89f750692247e7051b3f9a6e035c86013ca4b72a61cf"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/candidates/moretypes-15.article",
+          "sha256": "fb3f3a2658bdd0f4eecf727ba4b51b778a0812683476c0f35288200dc0253cc2"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/candidates/moretypes-16.article",
+          "sha256": "d8ab043c279651f58ea4a1e40cc2352b48e0ff32a75a1593a84a15bedfd51656"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/candidates/moretypes-19.article",
+          "sha256": "ccf6ee3d499fcdad63a35086218ea93844deacdbd20b7610bc87a3d090b818a4"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/candidates/moretypes-2.article",
+          "sha256": "b5ff6968f049c372dab9646606a1a165be33b5da31d5414e061db7f39025a223"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/candidates/moretypes-20.article",
+          "sha256": "9b5a52aef9816e56ef6a94f772e9382dca772b03c1545402d363acc597544cc1"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/candidates/moretypes-21.article",
+          "sha256": "bbbeebbee159a712ab94ba2d99957f0c6a7baedc2db47f57fcb61e6ff161869c"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/candidates/moretypes-22.article",
+          "sha256": "1655586689f37ad7af9ae2f7ed16d2c871daaea707f5eac829d477a9be45aaf7"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/candidates/moretypes-23.article",
+          "sha256": "ac8d4c5ae602de15e7d0872c8506de00ee6774775e015fd7b1d901f60a8a0660"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/candidates/moretypes-24.article",
+          "sha256": "5296e334223fba4683559873b3e728da273fba925f1d9b73a46282875b6a53b8"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/candidates/moretypes-3.article",
+          "sha256": "7ab7ddff445950b16169047700f36866c184cc7a95fdf3a9e945b59dc2a3a10f"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/candidates/moretypes-4.article",
+          "sha256": "86b710ee5b9465415d1ef1da2048ab4a48f567eac41582fa6d641f864889f125"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/candidates/moretypes-5.article",
+          "sha256": "e0a3e26de93619378322ed2e5c4c2031f2a031d0eff1c834bde6ada713d2bf10"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/candidates/moretypes-6.article",
+          "sha256": "49f8f4ec16d8c3687609228168349acbdfbd95e9bf273f38f74c72f53cb29e7e"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/candidates/moretypes-7.article",
+          "sha256": "40a45c9871d26e251d1cd09060abc9bb5f70105fa486314f560a30504c73187d"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/candidates/moretypes-8.article",
+          "sha256": "97200826d30508c612a3db698411a1f9a7dbbb873188aec6c16f75df2e5377a3"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/candidates/moretypes-9.article",
+          "sha256": "7e7508940b5aa92a5eec88ff3eadacb4da021ec15781dc604e2a0915c1b9ebd7"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/candidates/welcome-4.article",
+          "sha256": "015a308b94bae72aa85b198cb1393f4b0520addda8a4766f68dacdffe24c3286"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/candidates/welcome-5.article",
+          "sha256": "cda2163749a6bf74b382d5650affb07944660d0559e5439e4ae2f2f37cccb069"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/validation/basics-1.json",
+          "sha256": "821ba9f82aa04ade0d2f7d9a95a7615b649b925b2e23ff7eecd2c79eeaaf3387"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/validation/basics-10.json",
+          "sha256": "9421faa0644d39089c145119d811b937e5f7b01e70e32f43dfb555c205e3e274"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/validation/basics-11.json",
+          "sha256": "645d5c9d5be07b3da895dea2127192d840e0b6f5a53938af197042da8ef56fda"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/validation/basics-12.json",
+          "sha256": "91181bb57643759b503f229ea16a302f5fbbf4016b04279dff356edcf2cc4e42"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/validation/basics-14.json",
+          "sha256": "0a4a287af4d11af16b54a155978cc3470bbe29ac0218c61b69ed436d4e1385f0"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/validation/basics-15.json",
+          "sha256": "8c2a0138333fbb305be2e75384209cd174b13e516c362dbb568ab1912b93c0fa"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/validation/basics-16.json",
+          "sha256": "67ff2d22eb9ddbdbf2e5578fd7a5c1a7351d5bb6d671d1029b87ad7560059f61"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/validation/basics-2.json",
+          "sha256": "87479b78f279706781b0bd9e36e23c8f0bdbb74fca75b0d76c5aa64d342c1385"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/validation/basics-3.json",
+          "sha256": "68abd53788b3721b32277baff19b1253978d6379320eddf3b4b6058e0dc484ee"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/validation/basics-4.json",
+          "sha256": "1991f2534cb5f52cba27c4deb1d21d828a5daf49f7515bcfb8e1a6de8e788aee"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/validation/basics-5.json",
+          "sha256": "7739a36995d83b9bdbc89b038e6057850723eee86df3ab5d7830fd7447612e07"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/validation/basics-6.json",
+          "sha256": "e88012ca9b1fff4cfdef539430d68ba77b2de2705a40cb4459b2ad1e49e0e9bb"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/validation/basics-7.json",
+          "sha256": "8f7e407436a4652a93116054011e70044648df790aa19d375ecfe4ea80b1f669"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/validation/basics-8.json",
+          "sha256": "5404374afad47b3ba6d2b0b48d33a98c67cb78d3d1e1291dfe7a7931766aac3f"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/validation/basics-9.json",
+          "sha256": "f58871dac18c7d51985a72c4bf57d911af5cf0df4672e7aeec29e4bc982d4857"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/validation/flowcontrol-1.json",
+          "sha256": "163ff3157e8d41f0d2f4b773a91430c89b20afb2d841d812176c0f732f549a8e"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/validation/flowcontrol-10.json",
+          "sha256": "0b1fe20f56e61baf6946ca28c3cb0004fb9fcbc3a0afb45afeca4333d2574a21"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/validation/flowcontrol-11.json",
+          "sha256": "ed8bd7f2b0e6af63a005597f2265b1ff1fe609d7ab3c80fe9187e35f0bad711d"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/validation/flowcontrol-12.json",
+          "sha256": "3b1f71a9edfc0484575894900abb3cfb780f08062b0aca9ccaf7fa32f84f34d0"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/validation/flowcontrol-13.json",
+          "sha256": "e54256d6bd618ba88f9ada7811ea41b06ef9a3c48cb508ce3b677d23e3ea28ed"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/validation/flowcontrol-2.json",
+          "sha256": "270cbf6539fc964871b1437b4681e913e801cbd6168c7c120e2a97a17197563e"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/validation/flowcontrol-3.json",
+          "sha256": "8b2d6f270277c5c6377335c418fda0557b71d1d751c0d273e999a5e33451add5"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/validation/flowcontrol-4.json",
+          "sha256": "31417c7546f937c628e0a3e2ae1b4a69f0d18e54e863cc6da9bac07373f912cd"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/validation/flowcontrol-5.json",
+          "sha256": "17244a60ed2ef2f8c0d8b21cf1158e1e6189d3039671c2cde26c845b4b47564a"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/validation/flowcontrol-6.json",
+          "sha256": "3de08e948857c08ad3a42dce11d9a65e12ce3f2465b6f19e89bd5fa4e6d3d4e6"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/validation/flowcontrol-7.json",
+          "sha256": "8faf7d0e4419f9d0bfd63f9b7df17bca7b3dcc7cfc2b40ae37000799e462c313"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/validation/flowcontrol-8.json",
+          "sha256": "f3e352d40a3e27571d0bc66468b9dad2fbf5600d457578ae5f28117ca04eef65"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/validation/flowcontrol-9.json",
+          "sha256": "53421e64a1689a75b13bd4148618a8de331dff9b1a74c72dbff806ec81c18022"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/validation/moretypes-10.json",
+          "sha256": "3cb2ede6a97d7ef543721aa9d3dfbf5270bf21c0660729bb8fbb3004e7391bee"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/validation/moretypes-11.json",
+          "sha256": "77210c4788d2f634ba64418fc356514e8ca7c8410b206020e5e65d0f3162907e"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/validation/moretypes-13.json",
+          "sha256": "cb2bc7eb06c25f164be880061fbcefc6a7f4b10d0864eaf09e0f7ae394cf2c8e"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/validation/moretypes-14.json",
+          "sha256": "8040d64ecae85e3985f30b58d10695bc848dc77f37a0940a9c61da4a34728c7b"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/validation/moretypes-15.json",
+          "sha256": "3f9a47cbd8a800ecfb121c7c572b1fdf9daa80b20d1c12d7c5cd8b97840dd86d"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/validation/moretypes-16.json",
+          "sha256": "b2f54b57ebfb679e9087930d50fac6943f96fef79655491f3ae82efcb991227a"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/validation/moretypes-19.json",
+          "sha256": "08d40a526f0aca6115a495a9bdd22f133c8086884a6f91cca40c57c4021384c0"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/validation/moretypes-2.json",
+          "sha256": "1a84e87326fa5d94f3c253077d092a0a0eb740b479909b230a8c166d0e6b839f"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/validation/moretypes-20.json",
+          "sha256": "1fc7d22f0b46009b812c7b383bba6676f7fa01a9a40526741da55b1985d86f08"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/validation/moretypes-21.json",
+          "sha256": "aefaefc7d70b32652843514e307f337ad9f71736379feb43b56b45e51723ffbd"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/validation/moretypes-22.json",
+          "sha256": "d5b4513cd381d7ca08b718dbcb040655255a277d9f69ccce6adf94b87e026b3f"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/validation/moretypes-23.json",
+          "sha256": "c1de456814f7e3061b1fbf650077e3bd95d14efc8d6409615840a49051fcbf3d"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/validation/moretypes-24.json",
+          "sha256": "5c37a516c26aebcf9cfbfa3cc9127c8abc1c83c41f6a4991d30f4dba78659992"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/validation/moretypes-3.json",
+          "sha256": "c2478189906963bb6bf8c938dbf14de3734c338b61f0e0334a99a1435dc3ec1d"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/validation/moretypes-4.json",
+          "sha256": "205c3446518fd36440d434df8e3c429522b0b70e657a67d0461ded781064af69"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/validation/moretypes-5.json",
+          "sha256": "d5184c8d265c2ffc7777366189d35b670c4c666b75d516669f5712ee61aa5120"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/validation/moretypes-6.json",
+          "sha256": "1234ca38c8149ea8b3007c2f401b114989f82db3fb55b4095ce26d16705a05c3"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/validation/moretypes-7.json",
+          "sha256": "ce44b68690aed388a5de0115e24d1027800b14eab0f315c028c60e13cae1ae8b"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/validation/moretypes-8.json",
+          "sha256": "67df31955c21d0bbd842b5ab554e32c774fa0a3cee035b68441443c102d0cf51"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/validation/moretypes-9.json",
+          "sha256": "7c166b5e9952abcb144d42f445dbdba374af2490a480fb410723729341f3238d"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/validation/welcome-4.json",
+          "sha256": "a6b4868f21e9fdcd2ab05a3c5868a953ec1f4e5628002c741c3236d0db84cd35"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-001/validation/welcome-5.json",
+          "sha256": "f0a5225bb6d2667c0df41e4a5672294f319d8cbd319c6d3a8994bca621f7c7a0"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-002/candidates/concurrency-10.article",
+          "sha256": "439cf090fe944f1f53137561bdd318c0c206f1eb1dff659df15e9a89afd47648"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-002/candidates/concurrency-3.article",
+          "sha256": "86353bab47d27f6ede0dea6c7b1184a6bcdf7e7060bb8c4d2e18ee9dc18722eb"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-002/candidates/concurrency-4.article",
+          "sha256": "2c87ab1d06125e5aece382c54206659c0a057c3e354577733e175b2ce19748c7"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-002/candidates/concurrency-6.article",
+          "sha256": "8a3c25b5d35965afdb7ec85b4aae32f8829ec62c6f5331824814d92c158299ac"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-002/candidates/concurrency-7.article",
+          "sha256": "859c69e6d9236734baa0fb887468ae66fdc1442988be5be4b409b9ec99857e24"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-002/candidates/concurrency-9.article",
+          "sha256": "f328b18916e7bb2b7056d10a0525dd8a7891b831aa9d5e3f4ad4955dd67f9fe7"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-002/candidates/generics-1.article",
+          "sha256": "a7fcf7c8eb16ea5f7a8c688376e1d4db388ff5a181d902f68e478b331db480d2"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-002/candidates/generics-2.article",
+          "sha256": "24c08c2cfbd257803968b38b1dc9b7dc60bd0a65ab7c6f54d45d8b6c10a50e7a"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-002/candidates/methods-1.article",
+          "sha256": "3495510c21e04e9a3c285762eb2fd88c0762bfec50353462482fc6bb2d67ec63"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-002/candidates/methods-10.article",
+          "sha256": "a095f34269ccf40f6dcc860661987bb51bbccbf662e12413d8857e8fed6142cd"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-002/candidates/methods-11.article",
+          "sha256": "753b765237d9dfe31d7ae5e92109fde1f71d71630c799a0f31b9c71660aec8c6"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-002/candidates/methods-12.article",
+          "sha256": "e8a9e1d5478b254560b9c9e5ccb738fa3cfb18bf7a3a751b94a78a0e0d370330"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-002/candidates/methods-14.article",
+          "sha256": "ea855c50798c8b544885cb0be6ed46dc1aedf2af45eff5971415fc3a1f6a1ede"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-002/candidates/methods-15.article",
+          "sha256": "16e6fd6f62ee32e687e44150c2c2e750d58927b9fb75d7b460dfae82dcdbc3b4"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-002/candidates/methods-16.article",
+          "sha256": "b2bc8b67ad199a287d86e104efb36812a10fb31050cad39bbd9a06a8d1863596"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-002/candidates/methods-17.article",
+          "sha256": "06b26c30ddfd1030d31cd026fe4e7f173103da6630961016cda2daf7730fe506"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-002/candidates/methods-18.article",
+          "sha256": "9ae630e99484dbf02aacad5fc3d8423646fa212ff0ee6f74469033477f6bf930"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-002/candidates/methods-2.article",
+          "sha256": "fe270240e231482467352e7f8fb4ae8d58c82b2f1c8cd1e3127392bb0434c04f"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-002/candidates/methods-20.article",
+          "sha256": "337c23fc3e49c606a7ba8d036084882dbe35fb95f9828195ac2dd02b788dae84"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-002/candidates/methods-21.article",
+          "sha256": "b224c2fee1ea73df739b51216d04d8c379d5270fd4200c2e92913604f0c99ce9"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-002/candidates/methods-22.article",
+          "sha256": "ce8a552ac3f5598a7f8b487c625a780cbea2ef8a6fbdc9f03371e3389ecc6373"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-002/candidates/methods-23.article",
+          "sha256": "0bf7d8cf48e9c8ae48d4f1166de4c76db83abb0a45342016e3bf58e03a448aa5"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-002/candidates/methods-24.article",
+          "sha256": "f794cdb4cc64117832ae14c3b35c83a986c6f7cbe0e482295368e9eb968b426c"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-002/candidates/methods-25.article",
+          "sha256": "acd0dba9d325311d5f9c0ca94c04fed9bf4fbe4b8d79f308bdb03a9c528692fd"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-002/candidates/methods-3.article",
+          "sha256": "5f55681159ae10c7b01ee7b824ab1866d996136d2a4bf31d2c8e7ab5fbb451f6"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-002/candidates/methods-6.article",
+          "sha256": "702892a893921011da933709219aab5a0d8d40ab934c029230d255bb9f6ca994"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-002/candidates/methods-7.article",
+          "sha256": "fa4f814fec4c6f15a3661d109fbade118c4042e90991de1eefc5f6dfa233f190"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-002/candidates/methods-8.article",
+          "sha256": "8dcb39ca641d91e3adb3f728ff492648b5830f72f1e999763f3c4c902d422e89"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-002/candidates/methods-9.article",
+          "sha256": "bf14dd8ca47de034cf555a9e89c685ed6978340c0144b7774cdc0ae7c17d59cf"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-002/candidates/moretypes-25.article",
+          "sha256": "0b88524d32fd2579f18ed79c61a5a1c57288a18396b38992c01b791c97c135ea"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-002/candidates/moretypes-26.article",
+          "sha256": "e53da4f16c7f2e850bef66e6957bb4bb56bdc21279e5d6cbc8394d9222456fc4"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-002/validation/concurrency-10.json",
+          "sha256": "b3949789c1cefa4cb3bd5238b1be139c8df3587f395d36a50900ea1de2c7a3a1"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-002/validation/concurrency-3.json",
+          "sha256": "fbb6746e77f478c95e6e1ddbca470bae0b50ec303123be9e3e8c6f3f8133fe27"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-002/validation/concurrency-4.json",
+          "sha256": "804c23fd9aaacd87bd389533a9f13dcd90a39364a6154d7dae48db7394876d29"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-002/validation/concurrency-6.json",
+          "sha256": "b774bb582978f30d7445b56df9da24ee2931c1c346b32baca0b4fe69a5dc3a00"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-002/validation/concurrency-7.json",
+          "sha256": "7f2199e68a5f13c7ca8e424d759769d3ce47bd22094da42bfa0e0ba270cee02d"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-002/validation/concurrency-9.json",
+          "sha256": "7892687bdc391c5405c687d889d00ddd965e341395c94a6e6523d17e0976feaa"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-002/validation/generics-1.json",
+          "sha256": "c7755dc2b53382b3fa0a5195987b5f7e8bb2ff9a28469f2d011b3d60ee3f008f"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-002/validation/generics-2.json",
+          "sha256": "5f336cfd1f674c6e0c5117eece4e55e7694fbfc18b62219b27e14fc1ffc016b9"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-002/validation/methods-1.json",
+          "sha256": "5692380f17bebba53ca330bb8c735a9db3adb022aedac5a28cb0898d9ab74634"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-002/validation/methods-10.json",
+          "sha256": "3b7b29991630d702422bc1afa21abbb45f1eda4bc5cc1a31a4c75c02df990112"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-002/validation/methods-11.json",
+          "sha256": "d2b08d0adee0295fc15bc5651e943b2ec5176df0903fa95f31b9f374fd0a20c5"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-002/validation/methods-12.json",
+          "sha256": "50c9983cbbd5f35b895cb286f75f2ac0cce32c3eeb20261a9b8658f04deb5516"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-002/validation/methods-14.json",
+          "sha256": "c1a836066eedeafa47bb60b94770a80f961e643f2294db127d23ea955ecdfae8"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-002/validation/methods-15.json",
+          "sha256": "f12b5679b05e879a4c5e286bc8a6f2e144e8a927cb6d4c718d20fe9839966fb3"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-002/validation/methods-16.json",
+          "sha256": "f668688d7460cfc969618b3239cb336261c8db10f186cd7bcfb749ada1ed5c42"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-002/validation/methods-17.json",
+          "sha256": "f89bf4bfc01af77edd117590df877c900abb0549095cfd0e3a1c5e9f6921f543"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-002/validation/methods-18.json",
+          "sha256": "f0900469cdb20923da552c5a7ff03d37a7820fcca40b31e6768e4c948482d959"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-002/validation/methods-2.json",
+          "sha256": "9e5d770a04c851e7baeff52dd214a406fb18bd45f93392cb3edd877c1c82fae9"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-002/validation/methods-20.json",
+          "sha256": "8669410f5d4cc9230b5933f40d92b390e62c45e0776a197b18e8642d6cd107b1"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-002/validation/methods-21.json",
+          "sha256": "24742c8a8e41bfa3c7e84514998c3974ddb9bc51c8b2d13139306ed38615e7c7"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-002/validation/methods-22.json",
+          "sha256": "e18ac9944ed341af9cdaa77e85c7afaf73c03b655a85bf9eb225ba95d98fcb3a"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-002/validation/methods-23.json",
+          "sha256": "4536a91194975dd97514e499ec74b72875b6f62a2c0331c6b4f025a453cb8981"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-002/validation/methods-24.json",
+          "sha256": "957395f721f6d1cd9f3a4458a6f447daf287596076812e0e5511eb665688432e"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-002/validation/methods-25.json",
+          "sha256": "eee7f093977113fff6d2e4f78fcf0eb7611d23df1d6e892c0626bf58d926918d"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-002/validation/methods-3.json",
+          "sha256": "6f4f90c89b037e4a624092aff15f098b831e8135f6bbd5fde034a0ae10a318f7"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-002/validation/methods-6.json",
+          "sha256": "20d313b0ab3a78d04fe156cc233a2df3f17e598638fa2ebc3716a52ff46f95ee"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-002/validation/methods-7.json",
+          "sha256": "869343dd5c69e1e9c31c88f6b2cfa471ad01ac4860b0afd4f386886e64a59ba4"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-002/validation/methods-8.json",
+          "sha256": "4f96b84d4bb1895516fb7161f66e686248ab70c6841adffd477689e8ad4610fd"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-002/validation/methods-9.json",
+          "sha256": "6f5c988c8c8a53bfa913655f01fe01f38c959aa70edb5a2ae4e90c7e744b90f9"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-002/validation/moretypes-25.json",
+          "sha256": "6e1ed35720fbedc5e270c25c1efbdea624e02f47eada23011e86bed7492afd61"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-002/validation/moretypes-26.json",
+          "sha256": "1e634c8e4e1da0d5c1fc1245a0f2300ce7747e491ec9dad794d06a38c7c5053a"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-003/candidates/basics-numeric-constants.go",
+          "sha256": "ef618fa605ab91b3467628e6dddd09cb5f998990dbd2c675c2ccb6e78c7743e8"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-003/candidates/basics-type-inference.go",
+          "sha256": "b07d7264d6df6407ab042656143b555ccdbf8a42776ecad744e29bf6430fa70c"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-003/candidates/concurrency-channels.go",
+          "sha256": "fe3541c5456c6ca3c05daeecde2498ded67963863535b1c589c74ce4e8401788"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-003/candidates/concurrency-exercise-equivalent-binary-trees.go",
+          "sha256": "32d38b5485f14c919e7cfc037ffdd9dc693f7c4c67d505a17ed9a860ba7eef78"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-003/candidates/concurrency-exercise-web-crawler.go",
+          "sha256": "adeaf13bf68f2dd64238c6c3d95ecb2b34d87838e415c3be2f60bb0fac520a99"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-003/candidates/flowcontrol-if-and-else.go",
+          "sha256": "558f499c4c9463a3e91782edac65c8052c1785c9284c7ea30a6a01ec71818d60"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-003/candidates/generics-index.go",
+          "sha256": "d66c634808aedf142b2a10b376513f6a9671a97899e655c4eec15eab7886b2f5"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-003/candidates/generics-list.go",
+          "sha256": "740d9987062d69761218797f4ada05853d8dbd5ab24be8562ea0614af3a0bc3f"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-003/candidates/methods-exercise-reader.go",
+          "sha256": "d9ef30b0c9e204e1deac0da9018cbe9e021d1e623e11d73d2e9a806fb78eb581"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-003/candidates/methods-exercise-stringer.go",
+          "sha256": "14a6524f937c4b4af05d7ff6f7ee1b9f286bdc159dd7962619d0e3bc043eaa11"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-003/candidates/methods-interfaces-are-satisfied-implicitly.go",
+          "sha256": "01ee64257f92b590d313301e46d0924f81275ae0bc228c7b5fe020b247632fc0"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-003/candidates/methods-interfaces.go",
+          "sha256": "1524a35cc14816645bad1543b19709c86d2c4c6b370bc72bfc1da1d74addcab4"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-003/candidates/moretypes-append.go",
+          "sha256": "133f02cb25771fbe93af87855a6782cebaa3b4128779739e9ceb6d7cbdffe144"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-003/candidates/moretypes-exercise-fibonacci-closure.go",
+          "sha256": "6db6cc69f356749f2c45465a3a97e45ed5ae8735094034037a199c9d4baa6f48"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-003/candidates/moretypes-pointers.go",
+          "sha256": "2863d816d9321894389892d2e591d7ad0d550671fa6e342a1026baf508e88873"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-003/candidates/moretypes-slice-len-cap.go",
+          "sha256": "83b4e9f1e85eeb655e871968ff0e58300270826693781fe66eeb4cb126dbd852"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-003/candidates/moretypes-slices-of-slice.go",
+          "sha256": "5d880262ed36b39270d38d8cc3dfa5f83cebb4fbb92a487f1dd4f629f2c86cbe"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-003/candidates/moretypes-struct-literals.go",
+          "sha256": "ef15bef936e4f4bf5bae8994b844d762195b9d2f110ca2eb5989416eaf28656d"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-003/validation/basics-numeric-constants.json",
+          "sha256": "9981ebd243df73cf358fa32d216700edec21e7b33ff430115d11602b28c757e4"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-003/validation/basics-type-inference.json",
+          "sha256": "9b975efcbeaf58b848129af9f2fc7fe3546974fe989754977832f04a409b6752"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-003/validation/concurrency-channels.json",
+          "sha256": "bbc03fb43175ccba32859c40ab21f155b505a94d02ec409f046ce1a7240af658"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-003/validation/concurrency-exercise-equivalent-binary-trees.json",
+          "sha256": "345c74f221b3b94323e36eb5bd2751073a7d70ca0ad7179871e6c3312d34e4e0"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-003/validation/concurrency-exercise-web-crawler.json",
+          "sha256": "6802411e224716bfeab04a49de785a8dc363e24cebcff8786e183513a59181bf"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-003/validation/flowcontrol-if-and-else.json",
+          "sha256": "1815a7a15d2b5e2119eafdf9406cab3ffd102d2f362cb1c54302e03d36dddcd3"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-003/validation/generics-index.json",
+          "sha256": "8b32c47da3f75f2510c87942788a1a457fdb4c3c0b99e487ca2ebcf2ba529d4d"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-003/validation/generics-list.json",
+          "sha256": "95578c488ace48a5303dc8e2431529debc89f1b29fa3f73f86836721f0bf2821"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-003/validation/methods-exercise-reader.json",
+          "sha256": "9e2e2eff304a2f8b985df34600574c12176f4ae6d567ca62d855a3024291024b"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-003/validation/methods-exercise-stringer.json",
+          "sha256": "747fab11a75419cbb1096c43b408567d1a662b0e1826f7ac173d069c1f51c6d2"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-003/validation/methods-interfaces-are-satisfied-implicitly.json",
+          "sha256": "3930bb5928d4e4cf171523ecebfac88c7e6395d50587a4a566f4e69e86264c78"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-003/validation/methods-interfaces.json",
+          "sha256": "53f336f09db471c558d1daa4693347ff4baf410c689cf4f918274ee1c0f3ca8c"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-003/validation/moretypes-append.json",
+          "sha256": "a89a456e2ac71c352602ca82046bbdbcf642c3d033d87b06d4297f1a6a48130a"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-003/validation/moretypes-exercise-fibonacci-closure.json",
+          "sha256": "6bec1d8aab163d95e0827524985af52fdb1793a601471632f426e4aa11f860cf"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-003/validation/moretypes-pointers.json",
+          "sha256": "620e132cbb4c94f6956bcda139bc74fae0979854054458b88eafec485181109a"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-003/validation/moretypes-slice-len-cap.json",
+          "sha256": "bbeefcd89c5ee2c6b5f0aa9e6f367d3f385bbe3ae5a764da4ef5c52e35647a3c"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-003/validation/moretypes-slices-of-slice.json",
+          "sha256": "8ef7b4ecf80380a9f3f47c2d4b69e68542fa85e00647f1945004ef18828cec91"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-003/validation/moretypes-struct-literals.json",
+          "sha256": "385dcc38acffc038a105ecbc2dcdb0973fdc3e7c8c045dba5409751e9e9f28d7"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-004/candidates/basics-17.article",
+          "sha256": "cda9a1fef7c500d958d534c03cfc992f116e7cdd6880dce05a3ca1fb4ad80e59"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-004/candidates/concurrency-1.article",
+          "sha256": "1e141c464e683f0c1aaccabf318e6aaca156fbce9cd2164e213bbadf2060d3a7"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-004/candidates/concurrency-11.article",
+          "sha256": "812192d60555da877a72478bcbcb548ca969f8c6382ec93d3acae971399308ae"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-004/candidates/concurrency-5.article",
+          "sha256": "f3ca9ddc256ea505dee8e47c2e3298689123bb6f809bfdea6021d7b6eb3ff2ee"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-004/candidates/concurrency-8.article",
+          "sha256": "88578498d8e038a03572452d8edf3d383260f894817a42a2c92f73c57c0c806e"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-004/candidates/flowcontrol-14.article",
+          "sha256": "cda9a1fef7c500d958d534c03cfc992f116e7cdd6880dce05a3ca1fb4ad80e59"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-004/candidates/generics-3.article",
+          "sha256": "cda9a1fef7c500d958d534c03cfc992f116e7cdd6880dce05a3ca1fb4ad80e59"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-004/candidates/methods-13.article",
+          "sha256": "46b5354ac8db0e124e806254abf3f8e5460e157f6aa45033d6f297083689bd3c"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-004/candidates/methods-19.article",
+          "sha256": "1208230dabdb8c07f0a8c1d54379de267c95ef972d60fef05271ff994810cf2f"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-004/candidates/methods-26.article",
+          "sha256": "cda9a1fef7c500d958d534c03cfc992f116e7cdd6880dce05a3ca1fb4ad80e59"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-004/candidates/methods-4.article",
+          "sha256": "4f276c5f2a73ebcaa8da28b557d547f0545c8a5fa2f976337bc99120f2c61b68"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-004/candidates/methods-5.article",
+          "sha256": "104b2b8094146ac5ca6104ddaecdf6006ca8f253644e1476449f1f274406c7e4"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-004/candidates/moretypes-1.article",
+          "sha256": "07434cdd6296d9a10425961d470e2212ba4dc3a0e3e0b9f8896140ba1a8ebb48"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-004/candidates/moretypes-12.article",
+          "sha256": "b90dc4d922aae42f694cd0c994683f3ab9f58764b7a2ff49aede5fdf5421df25"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-004/candidates/moretypes-17.article",
+          "sha256": "9b8549e31f065685beab2f5068d96b42fd907aeb8afbc11ff83cec29ca7a10c2"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-004/candidates/moretypes-18.article",
+          "sha256": "1b8a97954913e0f23c80943228f0550768bf01921804538e108030e065e54e97"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-004/candidates/moretypes-27.article",
+          "sha256": "cda9a1fef7c500d958d534c03cfc992f116e7cdd6880dce05a3ca1fb4ad80e59"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-004/candidates/welcome-1.article",
+          "sha256": "0530cddd747422341c80d28a6a463bf87bd3ee092504188929270948cdce9afb"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-004/candidates/welcome-2.article",
+          "sha256": "b257fe1c5b34ae111c63550a54df0580fa1b7dbe039722447e680365969f110b"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-004/candidates/welcome-3.article",
+          "sha256": "258eaefe1c7bc563f3c503f8421fe6a1624472ef354ea8239915654c332f871b"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-004/validation/basics-17.json",
+          "sha256": "e8a66ee2115706ea2b92a47fa6346a2a0c07085772b9d9390378b9a50998a652"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-004/validation/concurrency-1.json",
+          "sha256": "2aade7c18e428532265c60489012dbde473def1b8fa0755a0a911ea8f89cba80"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-004/validation/concurrency-11.json",
+          "sha256": "cb6194eb6bdf926e04b71cd10ff8be5240a4a7f06693271f9548e8efe34f482d"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-004/validation/concurrency-5.json",
+          "sha256": "c7337d9e11050323c38365a6c6dab02d2fa854e36bddb74cf4a7bee965edccdb"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-004/validation/concurrency-8.json",
+          "sha256": "3755aab9edd7df335eb1b5681396b30de783334a173d486bab350408a75adb76"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-004/validation/flowcontrol-14.json",
+          "sha256": "11e5ed95ac94786585ab7abdfccdc8b8dfce7b609f269afc12e11a27851b828a"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-004/validation/generics-3.json",
+          "sha256": "3737ce780de212998faaa8283496f5a8adcaf2ed424a51d4f0818617201c83bc"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-004/validation/methods-13.json",
+          "sha256": "89011497dd446c48baa0ebbbf35c6a9732c4668a80b4f6d04284123c6008b6f8"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-004/validation/methods-19.json",
+          "sha256": "cc64085a5090a9e98c7f3a4a225ed88ac18b4da2f9f785e45a8a5b7bc4a7f733"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-004/validation/methods-26.json",
+          "sha256": "2061178e4627b8a9b11944e29d9f88f82084ee4ef8f2ff10eb7ec84711201e02"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-004/validation/methods-4.json",
+          "sha256": "5eaa71386dc6a51b5759c7b9cf99d6980cf7dc2821fde838602c412e005cda8d"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-004/validation/methods-5.json",
+          "sha256": "0225ac0cb0007e35dbc6df88398a567377ee44ab4f0bf1a2ecb2c7c699fa33b8"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-004/validation/moretypes-1.json",
+          "sha256": "b5e58e3616bcd91842f5d48a323035111e5d7afaf1d00dad2446859215e48a04"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-004/validation/moretypes-12.json",
+          "sha256": "aae132de3c141c50ce499b2e8097e080444f12007bc41924bb049abd1d07602a"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-004/validation/moretypes-17.json",
+          "sha256": "ae7f92135d70dba350ebb377f1e3437aa50effdbe0e23b44a92f879597b5f2fd"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-004/validation/moretypes-18.json",
+          "sha256": "623dcf7b790b7466b2ea8ca007abcfcbdc28d6aec41fe7f5cef9adb37b75f59d"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-004/validation/moretypes-27.json",
+          "sha256": "a819d3526555f44024f2ee1e912562b617836f53cd064dfaca179ce9d8f73dbe"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-004/validation/welcome-1.json",
+          "sha256": "d99d17d5917ce92d911886c5dc9e5ac0da376c31bfbe26a8165b687f71cf4ec7"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-004/validation/welcome-2.json",
+          "sha256": "bbd47cacd9f0cb513d75fc83ed5697c8fded5712fee04af524d06e5ca9af1dbf"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-004/validation/welcome-3.json",
+          "sha256": "9b3c1cc6457870aff2ebd7d69894b88c74fb77e66bc3f77b8f858355f06fb5cd"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-005/candidates/concurrency-mutex-counter.go",
+          "sha256": "d779d58c7ea17a832f91f8446e207c5a8781ea1c7e032b6efe91c7d6df651802"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-005/validation/concurrency-mutex-counter.json",
+          "sha256": "94039798cf8ca2e78898ddc037ebbf26019d493376672eb85ba9e45f78efbabb"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-006/candidates/basics-13.article",
+          "sha256": "18a20411cb56e00bb6540061e0f95fb4f166d2b4ca9b8c2433261a6cee92fdc1"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-006/candidates/concurrency-2.article",
+          "sha256": "4af33e2137ae599abb7798dcc7d1ce726ecf4e4f6ca89669dd2e1d5e4279f75c"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-006/validation/basics-13.json",
+          "sha256": "ed64a86fd88bcdf490a88bccd5a71ac48d0ce900fddfa86816aa715b9055fbdd"
+        },
+        {
+          "path": "data/retranslation-runs/lv-LV/codex-lv-LV-006/validation/concurrency-2.json",
+          "sha256": "9dbeebf5a45082f2b17a229542437adb95b4501cfc01cbf7de35b0b65ad1b073"
+        },
+        {
+          "path": "internal/tour/ui/lv-LV.json",
+          "sha256": "34c908475921e66785325cf257457f3c0d9495d0e4d1e787c0254c2fa57af220"
+        },
+        {
+          "path": "locales/lv-LV/article-metadata.json",
+          "sha256": "0745616f90083e33ac1c14de8793cdb695335b296ca2ea5bf4b4ab728520a8f9"
+        },
+        {
+          "path": "locales/lv-LV/candidates/basics-1.article",
+          "sha256": "51b6b01878ecc999b8442ac236e0e2f1932f13d4964992791bc4272eedeac8aa"
+        },
+        {
+          "path": "locales/lv-LV/candidates/basics-10.article",
+          "sha256": "96a289700b196ad415c153e06acfbea1475a5bb0db29540c29b886c2abadecee"
+        },
+        {
+          "path": "locales/lv-LV/candidates/basics-11.article",
+          "sha256": "0d8801049601753b2e8413588654808585247c4af90d9e868c6e358d3364060e"
+        },
+        {
+          "path": "locales/lv-LV/candidates/basics-12.article",
+          "sha256": "02244a0eeaad99d474e01bb6e6bbdf99329ee0ebf2ccaf88a0899df8f516f9fe"
+        },
+        {
+          "path": "locales/lv-LV/candidates/basics-13.article",
+          "sha256": "18a20411cb56e00bb6540061e0f95fb4f166d2b4ca9b8c2433261a6cee92fdc1"
+        },
+        {
+          "path": "locales/lv-LV/candidates/basics-14.article",
+          "sha256": "4008ae899f1b1509384034fcf4f485058adf7b916e2be87235337ea4ed5ccbd2"
+        },
+        {
+          "path": "locales/lv-LV/candidates/basics-15.article",
+          "sha256": "00ae00929ea4c75ad07fa27ded67e2255a96e5dc54674e2484154658326e3849"
+        },
+        {
+          "path": "locales/lv-LV/candidates/basics-16.article",
+          "sha256": "6b1f8094220aa938728a078d057ca7f6763c04539e26155074b082a84901388b"
+        },
+        {
+          "path": "locales/lv-LV/candidates/basics-17.article",
+          "sha256": "cda9a1fef7c500d958d534c03cfc992f116e7cdd6880dce05a3ca1fb4ad80e59"
+        },
+        {
+          "path": "locales/lv-LV/candidates/basics-2.article",
+          "sha256": "559e7d735cd04128b2d53d8e397f516c82df3f43e618a646f380f8d41decca14"
+        },
+        {
+          "path": "locales/lv-LV/candidates/basics-3.article",
+          "sha256": "517d3431d3240731f3ec3e050a2f6c5551f4453dd46a42980a0d709cf629a4c8"
+        },
+        {
+          "path": "locales/lv-LV/candidates/basics-4.article",
+          "sha256": "c145a0fbf771a6b1c2a0d41a8e9846bfde69929fed08c1ea94fb1cae964429d7"
+        },
+        {
+          "path": "locales/lv-LV/candidates/basics-5.article",
+          "sha256": "b1d39aba6773ce16b191e7f5e7564c4c33d66d2bb83a9c880d3e6c43c2f800ad"
+        },
+        {
+          "path": "locales/lv-LV/candidates/basics-6.article",
+          "sha256": "5102e4c46ed1c11887e27c7b92584ec8f2d72ad1cdc085b5ea75d0d8b6e5bcf0"
+        },
+        {
+          "path": "locales/lv-LV/candidates/basics-7.article",
+          "sha256": "43c4353ca0401cc27639b249c3c62e6872406999846013878d2b62b44938ab8e"
+        },
+        {
+          "path": "locales/lv-LV/candidates/basics-8.article",
+          "sha256": "581f8ba621498090ee325bf82220844c1c7bdaaecea4f2eecf24ab821771d6ad"
+        },
+        {
+          "path": "locales/lv-LV/candidates/basics-9.article",
+          "sha256": "82c1fa18e37076988c431a1f1207a2fbb4a881c1b1f47ae824a73bbb5c1dc1b2"
+        },
+        {
+          "path": "locales/lv-LV/candidates/basics-numeric-constants.go",
+          "sha256": "ef618fa605ab91b3467628e6dddd09cb5f998990dbd2c675c2ccb6e78c7743e8"
+        },
+        {
+          "path": "locales/lv-LV/candidates/basics-type-inference.go",
+          "sha256": "b07d7264d6df6407ab042656143b555ccdbf8a42776ecad744e29bf6430fa70c"
+        },
+        {
+          "path": "locales/lv-LV/candidates/concurrency-1.article",
+          "sha256": "1e141c464e683f0c1aaccabf318e6aaca156fbce9cd2164e213bbadf2060d3a7"
+        },
+        {
+          "path": "locales/lv-LV/candidates/concurrency-10.article",
+          "sha256": "439cf090fe944f1f53137561bdd318c0c206f1eb1dff659df15e9a89afd47648"
+        },
+        {
+          "path": "locales/lv-LV/candidates/concurrency-11.article",
+          "sha256": "812192d60555da877a72478bcbcb548ca969f8c6382ec93d3acae971399308ae"
+        },
+        {
+          "path": "locales/lv-LV/candidates/concurrency-2.article",
+          "sha256": "4af33e2137ae599abb7798dcc7d1ce726ecf4e4f6ca89669dd2e1d5e4279f75c"
+        },
+        {
+          "path": "locales/lv-LV/candidates/concurrency-3.article",
+          "sha256": "86353bab47d27f6ede0dea6c7b1184a6bcdf7e7060bb8c4d2e18ee9dc18722eb"
+        },
+        {
+          "path": "locales/lv-LV/candidates/concurrency-4.article",
+          "sha256": "2c87ab1d06125e5aece382c54206659c0a057c3e354577733e175b2ce19748c7"
+        },
+        {
+          "path": "locales/lv-LV/candidates/concurrency-5.article",
+          "sha256": "f3ca9ddc256ea505dee8e47c2e3298689123bb6f809bfdea6021d7b6eb3ff2ee"
+        },
+        {
+          "path": "locales/lv-LV/candidates/concurrency-6.article",
+          "sha256": "8a3c25b5d35965afdb7ec85b4aae32f8829ec62c6f5331824814d92c158299ac"
+        },
+        {
+          "path": "locales/lv-LV/candidates/concurrency-7.article",
+          "sha256": "859c69e6d9236734baa0fb887468ae66fdc1442988be5be4b409b9ec99857e24"
+        },
+        {
+          "path": "locales/lv-LV/candidates/concurrency-8.article",
+          "sha256": "88578498d8e038a03572452d8edf3d383260f894817a42a2c92f73c57c0c806e"
+        },
+        {
+          "path": "locales/lv-LV/candidates/concurrency-9.article",
+          "sha256": "f328b18916e7bb2b7056d10a0525dd8a7891b831aa9d5e3f4ad4955dd67f9fe7"
+        },
+        {
+          "path": "locales/lv-LV/candidates/concurrency-channels.go",
+          "sha256": "fe3541c5456c6ca3c05daeecde2498ded67963863535b1c589c74ce4e8401788"
+        },
+        {
+          "path": "locales/lv-LV/candidates/concurrency-exercise-equivalent-binary-trees.go",
+          "sha256": "32d38b5485f14c919e7cfc037ffdd9dc693f7c4c67d505a17ed9a860ba7eef78"
+        },
+        {
+          "path": "locales/lv-LV/candidates/concurrency-exercise-web-crawler.go",
+          "sha256": "adeaf13bf68f2dd64238c6c3d95ecb2b34d87838e415c3be2f60bb0fac520a99"
+        },
+        {
+          "path": "locales/lv-LV/candidates/concurrency-mutex-counter.go",
+          "sha256": "d779d58c7ea17a832f91f8446e207c5a8781ea1c7e032b6efe91c7d6df651802"
+        },
+        {
+          "path": "locales/lv-LV/candidates/flowcontrol-1.article",
+          "sha256": "00b4a83a83110de9eb925fc265be0ab4e9aff7faf5c8cbf3a1f625235658e40b"
+        },
+        {
+          "path": "locales/lv-LV/candidates/flowcontrol-10.article",
+          "sha256": "6e158a53457ac629181136cc62a94699027bb5786e1803ecb2606753e6bd18c6"
+        },
+        {
+          "path": "locales/lv-LV/candidates/flowcontrol-11.article",
+          "sha256": "03f0d1af794bee04d2dc39e6c96e39190390ffd8fede86c50238a3b22a8160f0"
+        },
+        {
+          "path": "locales/lv-LV/candidates/flowcontrol-12.article",
+          "sha256": "306dfb95f7974bacf9d8cf735d225719e092ad60c52064f7cdcbe487a9ab8eab"
+        },
+        {
+          "path": "locales/lv-LV/candidates/flowcontrol-13.article",
+          "sha256": "d83341b795ca778e74c09056404d3aee756e4a91b20601f315f220d561ae714f"
+        },
+        {
+          "path": "locales/lv-LV/candidates/flowcontrol-14.article",
+          "sha256": "cda9a1fef7c500d958d534c03cfc992f116e7cdd6880dce05a3ca1fb4ad80e59"
+        },
+        {
+          "path": "locales/lv-LV/candidates/flowcontrol-2.article",
+          "sha256": "14bc0ce06fbeb7c1773da66cea4b1a1bcdeabaade6f7819a9c7266486d26d403"
+        },
+        {
+          "path": "locales/lv-LV/candidates/flowcontrol-3.article",
+          "sha256": "09529a9d0109401e02b2200917133165fed5f90791e86784a31ce1d1bde815ed"
+        },
+        {
+          "path": "locales/lv-LV/candidates/flowcontrol-4.article",
+          "sha256": "9cfc8edd7bccde9c07fedd9c0a88df416ad9148d729f971b53e110c229244e71"
+        },
+        {
+          "path": "locales/lv-LV/candidates/flowcontrol-5.article",
+          "sha256": "8a3b6d7b74206262a8bde1a4203cf66437a28d3d208953dbcba17b73a7de6ab3"
+        },
+        {
+          "path": "locales/lv-LV/candidates/flowcontrol-6.article",
+          "sha256": "682f6183ff891e736a3fd23080ccd96ebe77423005a0fa111809ce9d42e5d3b6"
+        },
+        {
+          "path": "locales/lv-LV/candidates/flowcontrol-7.article",
+          "sha256": "9c063377015c34fb213f29e1c2ac51221575d77bc10794b23962ee5b5d59a086"
+        },
+        {
+          "path": "locales/lv-LV/candidates/flowcontrol-8.article",
+          "sha256": "81d1cf468abc45cfbdcbe8f8e9c4f2a7547191948a558ec8537b9f41bce0aa2a"
+        },
+        {
+          "path": "locales/lv-LV/candidates/flowcontrol-9.article",
+          "sha256": "a612bdba489748b8ed862b7b4648571dea9ea4d971449c8f698aaff8b9d8327f"
+        },
+        {
+          "path": "locales/lv-LV/candidates/flowcontrol-if-and-else.go",
+          "sha256": "558f499c4c9463a3e91782edac65c8052c1785c9284c7ea30a6a01ec71818d60"
+        },
+        {
+          "path": "locales/lv-LV/candidates/generics-1.article",
+          "sha256": "a7fcf7c8eb16ea5f7a8c688376e1d4db388ff5a181d902f68e478b331db480d2"
+        },
+        {
+          "path": "locales/lv-LV/candidates/generics-2.article",
+          "sha256": "24c08c2cfbd257803968b38b1dc9b7dc60bd0a65ab7c6f54d45d8b6c10a50e7a"
+        },
+        {
+          "path": "locales/lv-LV/candidates/generics-3.article",
+          "sha256": "cda9a1fef7c500d958d534c03cfc992f116e7cdd6880dce05a3ca1fb4ad80e59"
+        },
+        {
+          "path": "locales/lv-LV/candidates/generics-index.go",
+          "sha256": "d66c634808aedf142b2a10b376513f6a9671a97899e655c4eec15eab7886b2f5"
+        },
+        {
+          "path": "locales/lv-LV/candidates/generics-list.go",
+          "sha256": "740d9987062d69761218797f4ada05853d8dbd5ab24be8562ea0614af3a0bc3f"
+        },
+        {
+          "path": "locales/lv-LV/candidates/methods-1.article",
+          "sha256": "3495510c21e04e9a3c285762eb2fd88c0762bfec50353462482fc6bb2d67ec63"
+        },
+        {
+          "path": "locales/lv-LV/candidates/methods-10.article",
+          "sha256": "a095f34269ccf40f6dcc860661987bb51bbccbf662e12413d8857e8fed6142cd"
+        },
+        {
+          "path": "locales/lv-LV/candidates/methods-11.article",
+          "sha256": "753b765237d9dfe31d7ae5e92109fde1f71d71630c799a0f31b9c71660aec8c6"
+        },
+        {
+          "path": "locales/lv-LV/candidates/methods-12.article",
+          "sha256": "e8a9e1d5478b254560b9c9e5ccb738fa3cfb18bf7a3a751b94a78a0e0d370330"
+        },
+        {
+          "path": "locales/lv-LV/candidates/methods-13.article",
+          "sha256": "46b5354ac8db0e124e806254abf3f8e5460e157f6aa45033d6f297083689bd3c"
+        },
+        {
+          "path": "locales/lv-LV/candidates/methods-14.article",
+          "sha256": "ea855c50798c8b544885cb0be6ed46dc1aedf2af45eff5971415fc3a1f6a1ede"
+        },
+        {
+          "path": "locales/lv-LV/candidates/methods-15.article",
+          "sha256": "16e6fd6f62ee32e687e44150c2c2e750d58927b9fb75d7b460dfae82dcdbc3b4"
+        },
+        {
+          "path": "locales/lv-LV/candidates/methods-16.article",
+          "sha256": "b2bc8b67ad199a287d86e104efb36812a10fb31050cad39bbd9a06a8d1863596"
+        },
+        {
+          "path": "locales/lv-LV/candidates/methods-17.article",
+          "sha256": "06b26c30ddfd1030d31cd026fe4e7f173103da6630961016cda2daf7730fe506"
+        },
+        {
+          "path": "locales/lv-LV/candidates/methods-18.article",
+          "sha256": "9ae630e99484dbf02aacad5fc3d8423646fa212ff0ee6f74469033477f6bf930"
+        },
+        {
+          "path": "locales/lv-LV/candidates/methods-19.article",
+          "sha256": "1208230dabdb8c07f0a8c1d54379de267c95ef972d60fef05271ff994810cf2f"
+        },
+        {
+          "path": "locales/lv-LV/candidates/methods-2.article",
+          "sha256": "fe270240e231482467352e7f8fb4ae8d58c82b2f1c8cd1e3127392bb0434c04f"
+        },
+        {
+          "path": "locales/lv-LV/candidates/methods-20.article",
+          "sha256": "337c23fc3e49c606a7ba8d036084882dbe35fb95f9828195ac2dd02b788dae84"
+        },
+        {
+          "path": "locales/lv-LV/candidates/methods-21.article",
+          "sha256": "b224c2fee1ea73df739b51216d04d8c379d5270fd4200c2e92913604f0c99ce9"
+        },
+        {
+          "path": "locales/lv-LV/candidates/methods-22.article",
+          "sha256": "ce8a552ac3f5598a7f8b487c625a780cbea2ef8a6fbdc9f03371e3389ecc6373"
+        },
+        {
+          "path": "locales/lv-LV/candidates/methods-23.article",
+          "sha256": "0bf7d8cf48e9c8ae48d4f1166de4c76db83abb0a45342016e3bf58e03a448aa5"
+        },
+        {
+          "path": "locales/lv-LV/candidates/methods-24.article",
+          "sha256": "f794cdb4cc64117832ae14c3b35c83a986c6f7cbe0e482295368e9eb968b426c"
+        },
+        {
+          "path": "locales/lv-LV/candidates/methods-25.article",
+          "sha256": "acd0dba9d325311d5f9c0ca94c04fed9bf4fbe4b8d79f308bdb03a9c528692fd"
+        },
+        {
+          "path": "locales/lv-LV/candidates/methods-26.article",
+          "sha256": "cda9a1fef7c500d958d534c03cfc992f116e7cdd6880dce05a3ca1fb4ad80e59"
+        },
+        {
+          "path": "locales/lv-LV/candidates/methods-3.article",
+          "sha256": "5f55681159ae10c7b01ee7b824ab1866d996136d2a4bf31d2c8e7ab5fbb451f6"
+        },
+        {
+          "path": "locales/lv-LV/candidates/methods-4.article",
+          "sha256": "4f276c5f2a73ebcaa8da28b557d547f0545c8a5fa2f976337bc99120f2c61b68"
+        },
+        {
+          "path": "locales/lv-LV/candidates/methods-5.article",
+          "sha256": "104b2b8094146ac5ca6104ddaecdf6006ca8f253644e1476449f1f274406c7e4"
+        },
+        {
+          "path": "locales/lv-LV/candidates/methods-6.article",
+          "sha256": "702892a893921011da933709219aab5a0d8d40ab934c029230d255bb9f6ca994"
+        },
+        {
+          "path": "locales/lv-LV/candidates/methods-7.article",
+          "sha256": "fa4f814fec4c6f15a3661d109fbade118c4042e90991de1eefc5f6dfa233f190"
+        },
+        {
+          "path": "locales/lv-LV/candidates/methods-8.article",
+          "sha256": "8dcb39ca641d91e3adb3f728ff492648b5830f72f1e999763f3c4c902d422e89"
+        },
+        {
+          "path": "locales/lv-LV/candidates/methods-9.article",
+          "sha256": "bf14dd8ca47de034cf555a9e89c685ed6978340c0144b7774cdc0ae7c17d59cf"
+        },
+        {
+          "path": "locales/lv-LV/candidates/methods-exercise-reader.go",
+          "sha256": "d9ef30b0c9e204e1deac0da9018cbe9e021d1e623e11d73d2e9a806fb78eb581"
+        },
+        {
+          "path": "locales/lv-LV/candidates/methods-exercise-stringer.go",
+          "sha256": "14a6524f937c4b4af05d7ff6f7ee1b9f286bdc159dd7962619d0e3bc043eaa11"
+        },
+        {
+          "path": "locales/lv-LV/candidates/methods-interfaces-are-satisfied-implicitly.go",
+          "sha256": "01ee64257f92b590d313301e46d0924f81275ae0bc228c7b5fe020b247632fc0"
+        },
+        {
+          "path": "locales/lv-LV/candidates/methods-interfaces.go",
+          "sha256": "1524a35cc14816645bad1543b19709c86d2c4c6b370bc72bfc1da1d74addcab4"
+        },
+        {
+          "path": "locales/lv-LV/candidates/moretypes-1.article",
+          "sha256": "07434cdd6296d9a10425961d470e2212ba4dc3a0e3e0b9f8896140ba1a8ebb48"
+        },
+        {
+          "path": "locales/lv-LV/candidates/moretypes-10.article",
+          "sha256": "0b2b987d0627b8e8b652ece2ad98068f60363de870cd29946c8426833e5a3a7a"
+        },
+        {
+          "path": "locales/lv-LV/candidates/moretypes-11.article",
+          "sha256": "6bbbcea518d1e92fa4f1b87201e7c0861d4061c576f8b2cd1bf22e7fc38e0ce3"
+        },
+        {
+          "path": "locales/lv-LV/candidates/moretypes-12.article",
+          "sha256": "b90dc4d922aae42f694cd0c994683f3ab9f58764b7a2ff49aede5fdf5421df25"
+        },
+        {
+          "path": "locales/lv-LV/candidates/moretypes-13.article",
+          "sha256": "7d932018633335587179425943478582eb179b32a32d3bbf971259900e2876d7"
+        },
+        {
+          "path": "locales/lv-LV/candidates/moretypes-14.article",
+          "sha256": "fc256a5503415cd759ec89f750692247e7051b3f9a6e035c86013ca4b72a61cf"
+        },
+        {
+          "path": "locales/lv-LV/candidates/moretypes-15.article",
+          "sha256": "fb3f3a2658bdd0f4eecf727ba4b51b778a0812683476c0f35288200dc0253cc2"
+        },
+        {
+          "path": "locales/lv-LV/candidates/moretypes-16.article",
+          "sha256": "d8ab043c279651f58ea4a1e40cc2352b48e0ff32a75a1593a84a15bedfd51656"
+        },
+        {
+          "path": "locales/lv-LV/candidates/moretypes-17.article",
+          "sha256": "9b8549e31f065685beab2f5068d96b42fd907aeb8afbc11ff83cec29ca7a10c2"
+        },
+        {
+          "path": "locales/lv-LV/candidates/moretypes-18.article",
+          "sha256": "1b8a97954913e0f23c80943228f0550768bf01921804538e108030e065e54e97"
+        },
+        {
+          "path": "locales/lv-LV/candidates/moretypes-19.article",
+          "sha256": "ccf6ee3d499fcdad63a35086218ea93844deacdbd20b7610bc87a3d090b818a4"
+        },
+        {
+          "path": "locales/lv-LV/candidates/moretypes-2.article",
+          "sha256": "b5ff6968f049c372dab9646606a1a165be33b5da31d5414e061db7f39025a223"
+        },
+        {
+          "path": "locales/lv-LV/candidates/moretypes-20.article",
+          "sha256": "9b5a52aef9816e56ef6a94f772e9382dca772b03c1545402d363acc597544cc1"
+        },
+        {
+          "path": "locales/lv-LV/candidates/moretypes-21.article",
+          "sha256": "bbbeebbee159a712ab94ba2d99957f0c6a7baedc2db47f57fcb61e6ff161869c"
+        },
+        {
+          "path": "locales/lv-LV/candidates/moretypes-22.article",
+          "sha256": "1655586689f37ad7af9ae2f7ed16d2c871daaea707f5eac829d477a9be45aaf7"
+        },
+        {
+          "path": "locales/lv-LV/candidates/moretypes-23.article",
+          "sha256": "ac8d4c5ae602de15e7d0872c8506de00ee6774775e015fd7b1d901f60a8a0660"
+        },
+        {
+          "path": "locales/lv-LV/candidates/moretypes-24.article",
+          "sha256": "5296e334223fba4683559873b3e728da273fba925f1d9b73a46282875b6a53b8"
+        },
+        {
+          "path": "locales/lv-LV/candidates/moretypes-25.article",
+          "sha256": "0b88524d32fd2579f18ed79c61a5a1c57288a18396b38992c01b791c97c135ea"
+        },
+        {
+          "path": "locales/lv-LV/candidates/moretypes-26.article",
+          "sha256": "e53da4f16c7f2e850bef66e6957bb4bb56bdc21279e5d6cbc8394d9222456fc4"
+        },
+        {
+          "path": "locales/lv-LV/candidates/moretypes-27.article",
+          "sha256": "cda9a1fef7c500d958d534c03cfc992f116e7cdd6880dce05a3ca1fb4ad80e59"
+        },
+        {
+          "path": "locales/lv-LV/candidates/moretypes-3.article",
+          "sha256": "7ab7ddff445950b16169047700f36866c184cc7a95fdf3a9e945b59dc2a3a10f"
+        },
+        {
+          "path": "locales/lv-LV/candidates/moretypes-4.article",
+          "sha256": "86b710ee5b9465415d1ef1da2048ab4a48f567eac41582fa6d641f864889f125"
+        },
+        {
+          "path": "locales/lv-LV/candidates/moretypes-5.article",
+          "sha256": "e0a3e26de93619378322ed2e5c4c2031f2a031d0eff1c834bde6ada713d2bf10"
+        },
+        {
+          "path": "locales/lv-LV/candidates/moretypes-6.article",
+          "sha256": "49f8f4ec16d8c3687609228168349acbdfbd95e9bf273f38f74c72f53cb29e7e"
+        },
+        {
+          "path": "locales/lv-LV/candidates/moretypes-7.article",
+          "sha256": "40a45c9871d26e251d1cd09060abc9bb5f70105fa486314f560a30504c73187d"
+        },
+        {
+          "path": "locales/lv-LV/candidates/moretypes-8.article",
+          "sha256": "97200826d30508c612a3db698411a1f9a7dbbb873188aec6c16f75df2e5377a3"
+        },
+        {
+          "path": "locales/lv-LV/candidates/moretypes-9.article",
+          "sha256": "7e7508940b5aa92a5eec88ff3eadacb4da021ec15781dc604e2a0915c1b9ebd7"
+        },
+        {
+          "path": "locales/lv-LV/candidates/moretypes-append.go",
+          "sha256": "133f02cb25771fbe93af87855a6782cebaa3b4128779739e9ceb6d7cbdffe144"
+        },
+        {
+          "path": "locales/lv-LV/candidates/moretypes-exercise-fibonacci-closure.go",
+          "sha256": "6db6cc69f356749f2c45465a3a97e45ed5ae8735094034037a199c9d4baa6f48"
+        },
+        {
+          "path": "locales/lv-LV/candidates/moretypes-pointers.go",
+          "sha256": "2863d816d9321894389892d2e591d7ad0d550671fa6e342a1026baf508e88873"
+        },
+        {
+          "path": "locales/lv-LV/candidates/moretypes-slice-len-cap.go",
+          "sha256": "83b4e9f1e85eeb655e871968ff0e58300270826693781fe66eeb4cb126dbd852"
+        },
+        {
+          "path": "locales/lv-LV/candidates/moretypes-slices-of-slice.go",
+          "sha256": "5d880262ed36b39270d38d8cc3dfa5f83cebb4fbb92a487f1dd4f629f2c86cbe"
+        },
+        {
+          "path": "locales/lv-LV/candidates/moretypes-struct-literals.go",
+          "sha256": "ef15bef936e4f4bf5bae8994b844d762195b9d2f110ca2eb5989416eaf28656d"
+        },
+        {
+          "path": "locales/lv-LV/candidates/welcome-1.article",
+          "sha256": "0530cddd747422341c80d28a6a463bf87bd3ee092504188929270948cdce9afb"
+        },
+        {
+          "path": "locales/lv-LV/candidates/welcome-2.article",
+          "sha256": "b257fe1c5b34ae111c63550a54df0580fa1b7dbe039722447e680365969f110b"
+        },
+        {
+          "path": "locales/lv-LV/candidates/welcome-3.article",
+          "sha256": "258eaefe1c7bc563f3c503f8421fe6a1624472ef354ea8239915654c332f871b"
+        },
+        {
+          "path": "locales/lv-LV/candidates/welcome-4.article",
+          "sha256": "015a308b94bae72aa85b198cb1393f4b0520addda8a4766f68dacdffe24c3286"
+        },
+        {
+          "path": "locales/lv-LV/candidates/welcome-5.article",
+          "sha256": "cda2163749a6bf74b382d5650affb07944660d0559e5439e4ae2f2f37cccb069"
+        },
+        {
+          "path": "locales/lv-LV/course-metadata.json",
+          "sha256": "47499f0617b438687439a504c80de6be61e90126c8c54e2538add6f5c0a3265b"
+        },
+        {
+          "path": "locales/lv-LV/glossary.yaml",
+          "sha256": "9faa2fa019cb5e2e32b18877c52df605fbc86d98145a77f66575d492892b8353"
+        },
+        {
+          "path": "locales/lv-LV/locale.json",
+          "sha256": "eb0c824920bb43f2f2ad2c4656b5d3fb0679bde84f36e0f10c4d47f992e97b48"
+        },
+        {
+          "path": "locales/lv-LV/status.tsv",
+          "sha256": "193b3b59ad04b3716c9573cfd4284b6e759b1ff2e2f8fc20be22fee1c62a0af9"
+        }
+      ],
+      "evidence_identity_sha256": "81e7c3082e4c28a3414c7eee944b0eb0c9a43f75b7e463fa10b49b4d41c3f998",
+      "validated_context_sha256": "16a06879bf72891ad680da2e4205d310629222d6d8e7910a2081c004fa32cef3",
+      "legacy_surface_gate_state": "current"
+    }
+  ]
+}

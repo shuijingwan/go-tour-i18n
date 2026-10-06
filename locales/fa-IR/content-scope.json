@@ -1,0 +1,1647 @@
+{
+  "schema": "go-learning/locale-content-scope/v1",
+  "locale": "fa-IR",
+  "packages": [
+    {
+      "package": "tour-v1",
+      "state": "complete",
+      "package_identity_sha256": "926ee5bf113ecc24d9128ed4531e740092f2ca88f6f154cf101f6b8478ed83a9",
+      "source_authority_sha256": "48d09f17bf06e4beb9d05bb5b70465f5c6677406d84a3b9d125307f17d63c054",
+      "completed_surfaces": [
+        "tour"
+      ],
+      "local_canonical_routes": [
+        "/tour/",
+        "/tour/basics/1",
+        "/tour/basics/10",
+        "/tour/basics/11",
+        "/tour/basics/12",
+        "/tour/basics/13",
+        "/tour/basics/14",
+        "/tour/basics/15",
+        "/tour/basics/16",
+        "/tour/basics/17",
+        "/tour/basics/2",
+        "/tour/basics/3",
+        "/tour/basics/4",
+        "/tour/basics/5",
+        "/tour/basics/6",
+        "/tour/basics/7",
+        "/tour/basics/8",
+        "/tour/basics/9",
+        "/tour/concurrency/1",
+        "/tour/concurrency/10",
+        "/tour/concurrency/11",
+        "/tour/concurrency/2",
+        "/tour/concurrency/3",
+        "/tour/concurrency/4",
+        "/tour/concurrency/5",
+        "/tour/concurrency/6",
+        "/tour/concurrency/7",
+        "/tour/concurrency/8",
+        "/tour/concurrency/9",
+        "/tour/flowcontrol/1",
+        "/tour/flowcontrol/10",
+        "/tour/flowcontrol/11",
+        "/tour/flowcontrol/12",
+        "/tour/flowcontrol/13",
+        "/tour/flowcontrol/14",
+        "/tour/flowcontrol/2",
+        "/tour/flowcontrol/3",
+        "/tour/flowcontrol/4",
+        "/tour/flowcontrol/5",
+        "/tour/flowcontrol/6",
+        "/tour/flowcontrol/7",
+        "/tour/flowcontrol/8",
+        "/tour/flowcontrol/9",
+        "/tour/generics/1",
+        "/tour/generics/2",
+        "/tour/generics/3",
+        "/tour/list",
+        "/tour/methods/1",
+        "/tour/methods/10",
+        "/tour/methods/11",
+        "/tour/methods/12",
+        "/tour/methods/13",
+        "/tour/methods/14",
+        "/tour/methods/15",
+        "/tour/methods/16",
+        "/tour/methods/17",
+        "/tour/methods/18",
+        "/tour/methods/19",
+        "/tour/methods/2",
+        "/tour/methods/20",
+        "/tour/methods/21",
+        "/tour/methods/22",
+        "/tour/methods/23",
+        "/tour/methods/24",
+        "/tour/methods/25",
+        "/tour/methods/26",
+        "/tour/methods/3",
+        "/tour/methods/4",
+        "/tour/methods/5",
+        "/tour/methods/6",
+        "/tour/methods/7",
+        "/tour/methods/8",
+        "/tour/methods/9",
+        "/tour/moretypes/1",
+        "/tour/moretypes/10",
+        "/tour/moretypes/11",
+        "/tour/moretypes/12",
+        "/tour/moretypes/13",
+        "/tour/moretypes/14",
+        "/tour/moretypes/15",
+        "/tour/moretypes/16",
+        "/tour/moretypes/17",
+        "/tour/moretypes/18",
+        "/tour/moretypes/19",
+        "/tour/moretypes/2",
+        "/tour/moretypes/20",
+        "/tour/moretypes/21",
+        "/tour/moretypes/22",
+        "/tour/moretypes/23",
+        "/tour/moretypes/24",
+        "/tour/moretypes/25",
+        "/tour/moretypes/26",
+        "/tour/moretypes/27",
+        "/tour/moretypes/3",
+        "/tour/moretypes/4",
+        "/tour/moretypes/5",
+        "/tour/moretypes/6",
+        "/tour/moretypes/7",
+        "/tour/moretypes/8",
+        "/tour/moretypes/9",
+        "/tour/welcome/1",
+        "/tour/welcome/2",
+        "/tour/welcome/3",
+        "/tour/welcome/4",
+        "/tour/welcome/5"
+      ],
+      "local_route_families": [
+        "/tour/**"
+      ],
+      "evidence_kind": "legacy-tour-closure/v1",
+      "evidence": [
+        {
+          "path": "data/locale-surface-reviews/fa-IR/20261001-fa-IR-stage-a-002.a-gate.json",
+          "sha256": "f04ffb1d0a92eb28f9142bb5121a348896635fcbcde5debf508497ef71c10abe"
+        },
+        {
+          "path": "data/locale-surface-reviews/fa-IR/20261001-fa-IR-stage-a-002.md",
+          "sha256": "86740a1e31f01d68fb87d1f678aa39b88facdd98138a8c063b18ced20cf4fd73"
+        },
+        {
+          "path": "data/quality-check-snapshots/fa-IR/qc-001/manifest.json",
+          "sha256": "475784d8c866aa00c1ed616d94f6365a2cd4bad0caaddaca5556086866f26248"
+        },
+        {
+          "path": "data/quality-check-snapshots/fa-IR/qc-001/quality-check-results.json",
+          "sha256": "e0649caea0a918d448487c4a140f798b4d8ae4324e2ca32bb6622d18cefa311a"
+        },
+        {
+          "path": "data/quality-check-snapshots/fa-IR/qc-002/finalization.json",
+          "sha256": "93f0ae4bd912808d559d02ca52e2fb74ef8ff316dd03cb8a5c405f6b5a36ef11"
+        },
+        {
+          "path": "data/quality-check-snapshots/fa-IR/qc-002/manifest.json",
+          "sha256": "3fe36195c5a5e7b041adab82b49701766b5f1d54b498d28f6ae2de7a7ddba3f2"
+        },
+        {
+          "path": "data/quality-check-snapshots/fa-IR/qc-002/quality-check-results.json",
+          "sha256": "c31eec8b1eb735fa29db7b050444d9a2a9689151d64f8ffe5d4ebcc46efc4716"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/candidates/basics-1.article",
+          "sha256": "7342d4e84ae5a8ecce1c8d737c228beb66e6ec0e0d58213d637c987e32d75642"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/candidates/basics-10.article",
+          "sha256": "f965a887a025fe43320f51a17d13c7ccdb5c3a988b9694aac6746a24937a64a2"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/candidates/basics-11.article",
+          "sha256": "e74b0a605a9c62985bf5545750892a7400e47a4fb068eef9a7208aee40030b66"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/candidates/basics-12.article",
+          "sha256": "76d4dc231cf6debd6f3dee766e31803f0d7d93d8f643eca84645d72655883c45"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/candidates/basics-13.article",
+          "sha256": "0b5b6995957a2fa495923e635bf50bf289fbe1ff7f2176cce8998023b8cc6f6d"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/candidates/basics-14.article",
+          "sha256": "2bb8abb66209c598cd02bf0f7cfc190591cc8fc75ab25d02054790f04253f2ab"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/candidates/basics-15.article",
+          "sha256": "797b81483c5283a34936cbda86e51501f7cba5f62548a345e5eba52b2a78c1ff"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/candidates/basics-16.article",
+          "sha256": "5f54246bb142b8595fa75f03a4917928c871d83d919eb0e4d2dc3649d2b84e02"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/candidates/basics-17.article",
+          "sha256": "13a4cac5f0e0794a9dfbb579cebc89680a41b1df98f8014ecf96d8c622a236a0"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/candidates/basics-2.article",
+          "sha256": "86a87180d178f540e44ed3b65bb5a7ce505ee1eb3586aa5681487418dd5ed276"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/candidates/basics-3.article",
+          "sha256": "9270b44f93cf004272acbfb4ff5dbd8ea13f5b0d7367bfd4a423379944c932e1"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/candidates/basics-4.article",
+          "sha256": "8d1258585de0a7c268a6557823e95be737150c16a9f471b0b363adfefddecbc0"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/candidates/basics-5.article",
+          "sha256": "53bb7cf85ccdf9cd42d98d3c4f52e7e8e9fa02e958d91c6f109c658d027df1ac"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/candidates/basics-6.article",
+          "sha256": "c80899e0aba2e28dcce11a74f32ca11f8327e746d6e0b73153a2ceb41121edf7"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/candidates/basics-7.article",
+          "sha256": "d2b478b7bdc1d6bec9b7216e0d1046e7856a787fc53f843249333c709ccd117d"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/candidates/basics-8.article",
+          "sha256": "532d0fd0a0c4d56c5b4ab6b93cab0bc5fea5b560bca76272e688f6c17d381efe"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/candidates/basics-9.article",
+          "sha256": "53071db8a4f54ac448a9a30d60e5eea75cf9dfcd6cb098706be17afdd7e427f1"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/candidates/flowcontrol-1.article",
+          "sha256": "c60ed0e3a720dcae62a3829d7626ae079f1ef0d2f3da876f7402a71b481322e6"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/candidates/flowcontrol-11.article",
+          "sha256": "4c9ecedca7ada5d94af9472ac300085cae4d1101c6de65e1fb5cad8ca6b0ed8e"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/candidates/flowcontrol-12.article",
+          "sha256": "76cd1000075fe728a91057057e2b132b800eee6e4cb11ce49252e400cc08d54b"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/candidates/flowcontrol-13.article",
+          "sha256": "59668e6eb9be18565bf0e1a00c2dfe8a05aedfdbbd2728dad632e10ee5e79776"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/candidates/flowcontrol-14.article",
+          "sha256": "13a4cac5f0e0794a9dfbb579cebc89680a41b1df98f8014ecf96d8c622a236a0"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/candidates/flowcontrol-2.article",
+          "sha256": "2e67d89c60cb5d619e63ecc71d1d60f5c00e4dd4fe2b344b632fe9cada60c888"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/candidates/flowcontrol-3.article",
+          "sha256": "4f8bdbcdd51ea3f363c3d1946c851cae3d105d61e7bb4f12b86f1e2da3391fae"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/candidates/flowcontrol-4.article",
+          "sha256": "9a5413244bf68511b21130e28907d93671b321be33498bb5c5f200ee6d57bff9"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/candidates/flowcontrol-5.article",
+          "sha256": "2814195c4d33d9a665a350a9f04255cdb48475fbd411665723ec141e12186206"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/candidates/flowcontrol-6.article",
+          "sha256": "be240fbfc0c2ad08d0bd8a72378e4d0080005b4677146733bdcdda8030e2c24e"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/candidates/flowcontrol-7.article",
+          "sha256": "9327066c6a4d63a50ee031f002c720a10a6e9e52166a852faa7756a984e73558"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/candidates/flowcontrol-8.article",
+          "sha256": "a63ffbd67a540fbee09fe55e04d7d338fc4d706ec6cc955052ac419b9b698155"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/candidates/flowcontrol-9.article",
+          "sha256": "c1e9235a92d8375938ef2ca78b6b1b41b9ac9becb7c2f1da1595d6c740e767f5"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/candidates/moretypes-1.article",
+          "sha256": "8c4157525b795f4bf230e16e33acb6e384e822bfc90448b10a44d8507b279ac8"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/candidates/moretypes-10.article",
+          "sha256": "7a725e945aef2c05e875414952eeae60e471b486611aa65f4b8f0961ab70bbb3"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/candidates/moretypes-11.article",
+          "sha256": "7aefb3c1d660c4f7b653d5779d775e1d9baa93150a7f2cc00b00c7e6776f18d1"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/candidates/moretypes-12.article",
+          "sha256": "de489903b554df39a7799ab2ddb08d83fe65f8c1f07c21f549fae7266ea0b914"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/candidates/moretypes-13.article",
+          "sha256": "be1ac0052ea45868f5c9147391b35ff4de4ac6f2f9323ca12b79dc4825075786"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/candidates/moretypes-14.article",
+          "sha256": "dc9eedd9aa89e6d39595de09f6ca37e2bc64d578bc169fddf645d5de84164a76"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/candidates/moretypes-15.article",
+          "sha256": "e8ffb492a7494fa582a8d245592b7470d4cecae9f041bb670fbc90fa5039fbdc"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/candidates/moretypes-17.article",
+          "sha256": "c9fca203228255add93fefb14c8572afcbacd996bd835a2de7ce3b13068900de"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/candidates/moretypes-18.article",
+          "sha256": "295d3613dd83faa196f815512393f2d119379b134b3eb161da2cde0495fb0a23"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/candidates/moretypes-19.article",
+          "sha256": "a2dbba3c0280fc8ab3fbf5552e9b4f253d9cc4f10ec993cb491d444ef01b13de"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/candidates/moretypes-2.article",
+          "sha256": "2da5cc7153fc9a726dfe47960501bf6e2b3332751d6ad657c100e3e19ccf822f"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/candidates/moretypes-20.article",
+          "sha256": "c557e32f6ce937e2749a0f503d78413fd029fb1a49110fae66708e6ee3cfa1db"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/candidates/moretypes-21.article",
+          "sha256": "cde3331e73bd755b2185830094d97fc14f82b6051a99618dcbb914577a219b7e"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/candidates/moretypes-22.article",
+          "sha256": "54fb835145274979ce10159d15fc16b166408f98c3a0cc2bcfd06a3885fac9b3"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/candidates/moretypes-23.article",
+          "sha256": "dc95f3ecf6407cc674e0fe78859ad919fc20f4ebab04693a67f07e3ea7954e50"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/candidates/moretypes-24.article",
+          "sha256": "fe2e47a7d150351ef196eb88555fd084ff4e0e4219b95d709d735e34074bf7c1"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/candidates/moretypes-3.article",
+          "sha256": "1b7e2533a5783326e6aaa58d27fccec1fe67e0b3ec22e5c58ae3864e5b8327cf"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/candidates/moretypes-4.article",
+          "sha256": "299baba1b84cbbd0d11b62123c76a14c07aac09265c69abef6c0d2dd3c0bd186"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/candidates/moretypes-5.article",
+          "sha256": "cfed47d5681bfbce4072707e11d4c772928a0eefb0b5f244179b27e1555f9b53"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/candidates/moretypes-6.article",
+          "sha256": "590cf53d27a2e92c602a752731142d1a5711cb5454ecd1e8ecfeb1261fff4c4a"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/candidates/moretypes-7.article",
+          "sha256": "393fc299e0ceb2621d6317641da46f78fd03c2bce24c803fa2165279c70ae579"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/candidates/moretypes-8.article",
+          "sha256": "f16584c82a7c5082b12b2411238a4377b3a597345ddfa664a8cc126d9a1e5570"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/candidates/moretypes-9.article",
+          "sha256": "f28a1a0118bf70bb5e38612f8bffebb841b549d3224633a20f75325771cfa395"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/candidates/welcome-3.article",
+          "sha256": "0f22513f5f1f4c3ec47fb86bbceb216d651569fced15290dbfeecfea9e618a4b"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/candidates/welcome-4.article",
+          "sha256": "88f1c42e079fcb47638900231577b48ecb50f2746d289812ec85c17fd5898728"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/candidates/welcome-5.article",
+          "sha256": "cefb1a4308a662c7fd5a030335a85b8b560d223444b6d651852f21b7c5da771a"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/validation/basics-1.json",
+          "sha256": "3c15d0551a62bb2a435cb828e2ae30528c9229821c589938ab3eb129b2364f82"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/validation/basics-10.json",
+          "sha256": "c2b169d11eec7c7a4ff658f869ac9c64dc81f824766efc644c0a755d6463c07d"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/validation/basics-11.json",
+          "sha256": "e8b8ec5af63d4d56c502c2a8f84a28b96d7486a399c704a370b989f20433bd62"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/validation/basics-12.json",
+          "sha256": "15301266394c349928c1fe319fa1d107a66d281f80595989a762d192ebfba423"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/validation/basics-13.json",
+          "sha256": "2b5f5f95915cda05cf956c26692aba9107c9e0794492a6ccb9d4f4825d9038f5"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/validation/basics-14.json",
+          "sha256": "4c3071652f1d533599390b37f42d5f6bf9007e27dce17c25f788b02568e8e00a"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/validation/basics-15.json",
+          "sha256": "387a9896d52eee23d80d8bad9344685dbc5afe0967d4cefb8ba7d94914f614c2"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/validation/basics-16.json",
+          "sha256": "b200fabb67d91b4dd64fe1d3d1900cd4533013c5c87ca512cd70d3eab974082b"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/validation/basics-17.json",
+          "sha256": "e58defd3907a366fc4249cd027f691d1cfa0c5b612eb2a4261b9b5ae1ae86a5f"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/validation/basics-2.json",
+          "sha256": "1e2932dfa66f591297229598e3c67ee5b8c43e824776dc2d2a90a1940a5253ca"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/validation/basics-3.json",
+          "sha256": "91366a49d4cd1685831d5a366df5cb0aaeb44c3a9e53644fcba57c510746f1c6"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/validation/basics-4.json",
+          "sha256": "724211b053c665a22247e1819394240251dad30da14f855bbc2f3073794b32b4"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/validation/basics-5.json",
+          "sha256": "7f9a68acab54ec3f89b4d28fa4b2a1f0c77d59b42586f2c666b364703c8eb66d"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/validation/basics-6.json",
+          "sha256": "a56c68bbed3c02e9c077132f5057ac979fa246b56a325b23211a5de05a46f05c"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/validation/basics-7.json",
+          "sha256": "87c0783346358dd08b7c4a1ceddf2913714e96708e7b44f22eee97502e1b5689"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/validation/basics-8.json",
+          "sha256": "c398985be90129ff63c5a90ba691e2a8db298a4a582c4c97a3a912ff636e3873"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/validation/basics-9.json",
+          "sha256": "9f26aae5377ddc846a09a67483e387e734a6994f0be84db6f3520e2a8736b95b"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/validation/flowcontrol-1.json",
+          "sha256": "46cfe0834d9805a8ffec9445d611a9bb4e7e0c234f09cc72c3c8b0d368c11b48"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/validation/flowcontrol-11.json",
+          "sha256": "8d4c021a132ed254afa0b189934b9bd5adcdabe02648a7285c07b77f8fe941d3"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/validation/flowcontrol-12.json",
+          "sha256": "0938a7be06368e234077f421f02f098e7a10a99968f8a83351f563f891ca1a9b"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/validation/flowcontrol-13.json",
+          "sha256": "e1df26ed55071d61c8b9c14cc8569efaa9ef9e90028112efc1fd21be6c55a9ac"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/validation/flowcontrol-14.json",
+          "sha256": "57ca343a4fbe15f6ded69b12a556044c943dcba90da695fbae138c4711e385d3"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/validation/flowcontrol-2.json",
+          "sha256": "5571a9ad966f64dc982b5de5368d033721b6c8a487f9b22aec9246d8e0d2d806"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/validation/flowcontrol-3.json",
+          "sha256": "8f99845fa06e56c7e05737557d0af4b8cfbd0abf92bb047e890d9fa263afc722"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/validation/flowcontrol-4.json",
+          "sha256": "8aa539b86c60e251155a8d467c9e721397398b3f8c6ede2e20934a2acd8f0ac1"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/validation/flowcontrol-5.json",
+          "sha256": "ce025fce19d6720998ac29c50b0e60e93d88dc6370832a264bc67f77e8b09f63"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/validation/flowcontrol-6.json",
+          "sha256": "82981ee8d428df7d9b8d7672e268c90d3981d17636f066fb59bc080484acf274"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/validation/flowcontrol-7.json",
+          "sha256": "429eee12e2440ba3fd9b7fa480ee82d56b8ea6815595872682acde3ec9fb6be5"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/validation/flowcontrol-8.json",
+          "sha256": "7ac50d2df016a8aab8d705851c8f1b9c5183c581d10867552ae3e40ff538934c"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/validation/flowcontrol-9.json",
+          "sha256": "d22856e2c4574ff7feeb077f6f81d1ea66f3ba6e99abe00a6affd1849e589d37"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/validation/moretypes-1.json",
+          "sha256": "c4dba58874b500af2fe1bb78dd4e9db56a3048c45a48e9d20204cbf7e4884f9c"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/validation/moretypes-10.json",
+          "sha256": "7d694524f5b7da3b8396dadf230556cd6e587f4093484b23f74424a09c4cc6db"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/validation/moretypes-11.json",
+          "sha256": "013f9497dca71b9bc96728b45f67ef4c24597746640b4dfb1e1e8d1af29b6d40"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/validation/moretypes-12.json",
+          "sha256": "8153f6ffe9ef3a93dfc37285cdcdd4975d3bd4b08c700fde05b930ef06d660bb"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/validation/moretypes-13.json",
+          "sha256": "dd21eacb52f5676ec2e297bcc54cd19292f5e1976d7769f841eda7ae64220cdd"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/validation/moretypes-14.json",
+          "sha256": "91e33d955762b6382aa9fff7eac9f1fe87969afe427a3efaef58bb68ac86efbd"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/validation/moretypes-15.json",
+          "sha256": "1e4ed43cb1fd0ed268d60894d65ad583b6d764debe60ba9112af586ec8f883c6"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/validation/moretypes-17.json",
+          "sha256": "2aacb40051e3c38866ffb2e1363f5fd952c65b4fca06671fddaa6ea75d6e87c3"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/validation/moretypes-18.json",
+          "sha256": "5ed698c8a6cd0e4faadc19e6b01f62e65c538fbb1cc9d3f3fe4e070f9b7ba693"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/validation/moretypes-19.json",
+          "sha256": "3bc570c383dd78250ba28c199649ad37e3d1e689d9e0e77790eed4611e157efb"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/validation/moretypes-2.json",
+          "sha256": "26ee8ead95835365b8f9497aaab7a172ac15a3e9ad226ecd87af2b60355307a6"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/validation/moretypes-20.json",
+          "sha256": "c266ffbb0db6b55d804b04f7895dce12511414afbb49dbb07cec8f2c92eb85da"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/validation/moretypes-21.json",
+          "sha256": "3c76eb610b811d4b32013ae2ed89d3aa976e1f8626aadc1cef2ba7166d846dd4"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/validation/moretypes-22.json",
+          "sha256": "07b9c7a0d19ae652717d54b55eab47da50f5dbb988c5249625cc85152dffc119"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/validation/moretypes-23.json",
+          "sha256": "32445365652ccaf27f2957604f14ccafbb20df3d2ceb5d54eea2b7b493660bd3"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/validation/moretypes-24.json",
+          "sha256": "9115b7d2e8048f3056c2b1b2e2df053ee1609667991b1ee97abe1e91915efe7d"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/validation/moretypes-3.json",
+          "sha256": "40f5f5f083e2e00d5c3a3d3143c81ab47f389444a5b179cf85fe015b68f13f18"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/validation/moretypes-4.json",
+          "sha256": "d5d649fdd052d1cac5f6d1761ee959a6cd55a7387ce54dbe2e283e8b780d56f9"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/validation/moretypes-5.json",
+          "sha256": "5b42f60116007f586003bbebbdb680657269b04c96e78835e08b2133af1ffb7a"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/validation/moretypes-6.json",
+          "sha256": "8bfa501a92b24b6d04dcbb94ffa12656781077c705d0fe90c695669477d64087"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/validation/moretypes-7.json",
+          "sha256": "c9c16550f8756329552c32e0977d214a7e2921b9297d29589995bdf892f74f84"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/validation/moretypes-8.json",
+          "sha256": "586f4da96d93f0568c0a855b6b03fe4db6cc945fc9765705ee80743b5e56d16e"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/validation/moretypes-9.json",
+          "sha256": "1128a9bfe626179a35d6719b7abd07624d8c11ce29293f325f77506361bb3bda"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/validation/welcome-3.json",
+          "sha256": "9ba8a3a26aa2a84fb8073149814fbb4e6bb151c09332947ef3bb51d45eac5af6"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/validation/welcome-4.json",
+          "sha256": "45dad70ca69cf401cec24b4582e37071a7a3d7eabab1ee849bee592a36b5b8af"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-001/validation/welcome-5.json",
+          "sha256": "10856201c54b3292d86f5a66d6512fb47efd392b76172bae661d916c32aa8f76"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/candidates/concurrency-1.article",
+          "sha256": "dff6c9b1646cd4c7ad34e6db7571431139d9e5c1dec69ef5953bee3c6ef910a1"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/candidates/concurrency-10.article",
+          "sha256": "91657d52c1cd3d5a9f12a1f4e6d19d419332c8180843e8d3696128d6a3ea2c71"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/candidates/concurrency-11.article",
+          "sha256": "c32df5b8c9d9a78c6209bceff5cd840e117de27b078fe3ccfc4f13b825bc1d37"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/candidates/concurrency-2.article",
+          "sha256": "4ae02b5f92a226663b1a1d4c68934a2029049093f573658e3e048712ab20a813"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/candidates/concurrency-4.article",
+          "sha256": "f4b6673995d92a9f41893a64a3be757d1000f832517ab0c049c604700fbe4fef"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/candidates/concurrency-5.article",
+          "sha256": "0157786f47de646c7b02350d5ef22b8c4a81b751aec93114b0f68c1b03a49933"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/candidates/concurrency-6.article",
+          "sha256": "707612e088734135d0ca7623322192157c75cc4368200fa92c5abecff955aa19"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/candidates/concurrency-7.article",
+          "sha256": "b42ef5b44536dfdd72643c056fd5ec535f91efe99714d4e1aff5db0130a54f36"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/candidates/concurrency-8.article",
+          "sha256": "4e51f38e5794b032b4546184d1aaec58f8eaa506f657b1e91eafd9edf9a371d6"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/candidates/concurrency-9.article",
+          "sha256": "da5f897a42d22779ed587205375815c6a87f98f7ea0c70e14a2d2b97bc1ff55a"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/candidates/generics-1.article",
+          "sha256": "d2d3ae2fed97f9631315f5f5decbbb00a9a0c52fb574c746ffd4da57a00473cd"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/candidates/generics-2.article",
+          "sha256": "2905e8380bd2fba063d2ec410cc7e404ce60972c080c44e6ce49f7f7a018eb5d"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/candidates/generics-3.article",
+          "sha256": "13a4cac5f0e0794a9dfbb579cebc89680a41b1df98f8014ecf96d8c622a236a0"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/candidates/methods-1.article",
+          "sha256": "5c4d2142437dc05ff3100179a8b52e563e7978659b7cc9a87d2937733546fdd2"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/candidates/methods-10.article",
+          "sha256": "c3734d943c4540fc86d09703c08f7abf9676caf911bfa48b646311d0d0123a34"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/candidates/methods-11.article",
+          "sha256": "1e820f9c498510f82fa1c94c785e399068fc1b312a1a9f23bc452f90f22acafc"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/candidates/methods-13.article",
+          "sha256": "6329a388d0fef48855bc0d7d20495895e4924bfc86ebc207a907196d9d813847"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/candidates/methods-14.article",
+          "sha256": "035a61e395ac614138a01f51c885fa6052a24e605a8b892640b1102eae792126"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/candidates/methods-15.article",
+          "sha256": "dfbd232f9bd08aab3d785537768da873cbea7b12f834b17ded3584c14aba6b72"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/candidates/methods-16.article",
+          "sha256": "169d158fe3ac7281d5758910a781b8a933c00c86ea78f34a62ff44086689eba2"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/candidates/methods-17.article",
+          "sha256": "f4634a8292ae3e184ae3a8cb7c06c4571be67a570a2da21fd4c016661dc8ce56"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/candidates/methods-18.article",
+          "sha256": "ef729e37cdda995f5cb030128dcb5148b330c8a413c6ed884bd61d19c2d7f93f"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/candidates/methods-2.article",
+          "sha256": "cfa16148b84ddc9aea2a5b6056b195e0c6612d1624c47d56f3512a986a198d5e"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/candidates/methods-22.article",
+          "sha256": "8dbb481b68b2a6f9eeed3b4c1b7dcea7611809024153e653c9011fcdd63769cb"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/candidates/methods-23.article",
+          "sha256": "0b15b141e3f56a33ceb3f2bc62567a53ba5707f20095ef07f799b5a30dfba496"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/candidates/methods-24.article",
+          "sha256": "5e6ce7c208740858d6fb2c6dced767a63cbb11f924864d8747be646197f0bb68"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/candidates/methods-25.article",
+          "sha256": "e2a121e786436966fafd61ae22d72e85af1f8173e10e988f372193626644b357"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/candidates/methods-26.article",
+          "sha256": "13a4cac5f0e0794a9dfbb579cebc89680a41b1df98f8014ecf96d8c622a236a0"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/candidates/methods-3.article",
+          "sha256": "5e2b54ff9d96368ff1a81877d144dbd093619c842bc6d3f5ca1a1200a3d694e5"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/candidates/methods-4.article",
+          "sha256": "ca84c0d4d0145b7c47f6753b40aa93370cd6015b952044d13dec7ddf2a46e891"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/candidates/methods-5.article",
+          "sha256": "42517a30af1a9fb418139d9b88eab4c8025200a15e6605b4c861187866a17c1c"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/candidates/methods-6.article",
+          "sha256": "8984a4bc7f136b7dd1c08ab1a79082c822290f951f30bb946962244302f5f8ba"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/candidates/methods-7.article",
+          "sha256": "bc7f04938e71ce995ad7f60dbc92f90db520914fd21fc3c6756af3c69e4b349d"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/candidates/methods-8.article",
+          "sha256": "358836c6b00c405f12bf8b02333467f1e0713bb559aa782bde8084c3cffa9196"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/candidates/methods-9.article",
+          "sha256": "8922cb83594898efe51e1b6b05677fd5be7620fb32193dbbe5e9e80f6a1acbbd"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/candidates/moretypes-25.article",
+          "sha256": "fe3104c8e58f794f126aab345409320b71b072633c0a34125d35913a682f2dca"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/candidates/moretypes-26.article",
+          "sha256": "f628fd211788d68f0d2ac3e6374ef892f846a6442f3c776aeae2d5a5aec85270"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/candidates/moretypes-27.article",
+          "sha256": "13a4cac5f0e0794a9dfbb579cebc89680a41b1df98f8014ecf96d8c622a236a0"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/validation/concurrency-1.json",
+          "sha256": "52ae28061c24cc559361509664847b35164aea1b46b0291600fd4b8c1bc10a6f"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/validation/concurrency-10.json",
+          "sha256": "2c547ca3f666376a1d513d12e91c0d44328aa33c0c8c8310d0812e8091d65de9"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/validation/concurrency-11.json",
+          "sha256": "7c03e20f119e6ca286fe3d363e529c8d0ac27ffd39239e14c172b3973ebd1a2b"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/validation/concurrency-2.json",
+          "sha256": "b549052f383e1c68b1edbcd7f7578d2955d4e936526db9a8619024b150cb7ea2"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/validation/concurrency-4.json",
+          "sha256": "239ff0b6146d5dded6a2502aeb0578f890cadc4e05688431a91895844e1c9bde"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/validation/concurrency-5.json",
+          "sha256": "d3c1de59d2c6e52590d543291da5ea566fab37b2361e15f78438d8ce0ac3965b"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/validation/concurrency-6.json",
+          "sha256": "09e29b1dad30ff236ed6a9bc50a08934886d9bf1877ae122805a8d0e6bb3cd7f"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/validation/concurrency-7.json",
+          "sha256": "23de50a69485e409c7378921800c96088fc4a303d4fbc0d786762ad3b924d61b"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/validation/concurrency-8.json",
+          "sha256": "399d4291c34d3dd263bdebf1fa5473ade1c614c2533d1fd292fd0ad92262998f"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/validation/concurrency-9.json",
+          "sha256": "7783aa6595a1366866d5e056576978178390101208ce468e3aec554bbc27a593"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/validation/generics-1.json",
+          "sha256": "68c2a9ccfbacfe4a11f101c97dd319af09a94f32a1362ffcc237911a2cf50cf2"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/validation/generics-2.json",
+          "sha256": "72790424135d022f0f54b01e4d74897660d2001351b8fefa50c1a21db8fa6d29"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/validation/generics-3.json",
+          "sha256": "c9bc6060530623c748e9e84a95595cc75447c07164fd2202730d241dcc9299a3"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/validation/methods-1.json",
+          "sha256": "a98adf2bdf49c53b283ef74517b8baa489035d567371765b3f3c20ae43bebd1f"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/validation/methods-10.json",
+          "sha256": "33af54c940824db34526c596c87d3695253e1259653077b696e8e900732ef899"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/validation/methods-11.json",
+          "sha256": "bfc91097437dcd6bd9101a6f8935b2686b3210ee976032febe17bb04c38a32cf"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/validation/methods-13.json",
+          "sha256": "bf3b3a9e7b7ceeed48a70a7aa567589c0f0727c0254ff685749b5c0e1368b8ba"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/validation/methods-14.json",
+          "sha256": "f237abcac8abd22b053dc903a8e0058ba6f6e92325dcb196915e4e7ac5e35bed"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/validation/methods-15.json",
+          "sha256": "022ec95fa41f7e8a54899d287d744cc6c68146769a902be4d9e65ae9ef440fad"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/validation/methods-16.json",
+          "sha256": "6712a48ce47843edb7246855bbbd1e8c5fe5cb067b247ab6323942195c66c02e"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/validation/methods-17.json",
+          "sha256": "93d385cb2263b68e5aa47002df163991cf1643c02ca27086496279d6aa7617e7"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/validation/methods-18.json",
+          "sha256": "3b6a578e340ff56489fada3e99ed29548dbf868071ead32fb0a71832016b7770"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/validation/methods-2.json",
+          "sha256": "c800ef9c997fb647ec0a247e875149cf0b9b87c7e7aa1759ede1dafffc0bcd13"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/validation/methods-22.json",
+          "sha256": "fec28240cc072a089529bbeeec9aab48dad205ac0e9b47ade75a5c99104149a2"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/validation/methods-23.json",
+          "sha256": "b158a9eadb42aeace95722628fe3ec05debc9428ba6544758056d70a49f4c12c"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/validation/methods-24.json",
+          "sha256": "8cc1fdce7b68c0be8061aca0e220425bdcbf9ea589a939ef4d60bd11914d19ee"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/validation/methods-25.json",
+          "sha256": "7b566613ead982f6af278bc5259edfdba5d42cce0508f46d836740cf02b9f6da"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/validation/methods-26.json",
+          "sha256": "5c30a044cb13deb59befda9038960f54450988ac4f0e9de6e234a66e98719ab3"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/validation/methods-3.json",
+          "sha256": "78d04f7ff529933ff0af22464b9052ccf5ebc712bcc93cee3aa720a85a505647"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/validation/methods-4.json",
+          "sha256": "60f834de906ad4486b00bef23c764d2598cb896b604d66285a43bac2d4d76618"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/validation/methods-5.json",
+          "sha256": "87b8f4bc3e82d034b071bee591f37dd62a8910cc05eb265b898a937f62c490d9"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/validation/methods-6.json",
+          "sha256": "479880090db7cd102e73b03bbcda230c1ef8291aa6b147f510b1a6f23e406631"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/validation/methods-7.json",
+          "sha256": "f67bc579989f2d0a3e5552955688de041b1e8a7696514f98a9f5cea1616e2d58"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/validation/methods-8.json",
+          "sha256": "16667d2f1e450c8a319e16386cf1f3191cfca2e739dab8fbfae184c1ce97562c"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/validation/methods-9.json",
+          "sha256": "7d9a70a5a93ab2496ecbeb63a343d9c5c54192fb93a61d1eebce071267881d2e"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/validation/moretypes-25.json",
+          "sha256": "80bbc7496b7c9510ee0d0c6336168df808e1c00e0c7d02e58b1f1a3bd3d98bd0"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/validation/moretypes-26.json",
+          "sha256": "b3b3ed3a924e3d928e9123c0922ee80c7019b0cb1d1e959113f3a19f458d1604"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-002/validation/moretypes-27.json",
+          "sha256": "f9bb8f9ccfecd47bafa76e12bc9a781a93960c24d97279ba48b9c3227a26a2bc"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-003/candidates/basics-numeric-constants.go",
+          "sha256": "ee66ad0e11aaaeecde13619d71ef725052cbfdc952adc02f4c214b5eec996f95"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-003/candidates/basics-type-inference.go",
+          "sha256": "5bf6d2f7c812b6d7ea54be3e2f9552b32e8acc6661e274472de8e12c647d242f"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-003/candidates/concurrency-channels.go",
+          "sha256": "918459679219820774f733cd0bbd456328e41b9e820e21909f383b08ef5cc72f"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-003/candidates/concurrency-exercise-equivalent-binary-trees.go",
+          "sha256": "6fd4f4adeb859fb98d8c243327eee2c17aa76c93224997ff5f7988b7b6e530d3"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-003/candidates/concurrency-mutex-counter.go",
+          "sha256": "e0deb804c21dadfb685f4fde6024d8f151fdd90c5b5e093359ec4fcd0552afd0"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-003/candidates/generics-index.go",
+          "sha256": "31f7536db2843ab0bcdc00606738f029da9611fd6944623cad53a1df7a7a657b"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-003/candidates/methods-exercise-reader.go",
+          "sha256": "252ad38cb63e7268d7a91cbf7e37ab71cd081d0e8a8ae06be7fe5d685b6d0b32"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-003/candidates/methods-exercise-stringer.go",
+          "sha256": "3859fc090aa6147ae2d48d2c43d70333fb1b3e4f202cf5524b194dc62b69a231"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-003/candidates/methods-interfaces-are-satisfied-implicitly.go",
+          "sha256": "021d535c63ea62c60dc1b556a0343b6bbd2aefe1f4e5af84d27d19d9c175c086"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-003/candidates/methods-interfaces.go",
+          "sha256": "e3da9ee91b9ea65abd2921ce2bcc3576f833405d4f5226052ce8e962a129caab"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-003/candidates/moretypes-append.go",
+          "sha256": "24ad3e4e258a6bda3718506ad771bc0d6fb77e4852df8d0befd1b725006273bd"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-003/candidates/moretypes-exercise-fibonacci-closure.go",
+          "sha256": "5e688ceb8b06d837af8ecfeea30073f66ae1e1b249d16fcaded473c886027841"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-003/candidates/moretypes-pointers.go",
+          "sha256": "da9e67a431696577180383782079a608605cb05d4fefe3057dd52c293d7ab8ed"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-003/candidates/moretypes-slice-len-cap.go",
+          "sha256": "7ccdfd596e743915f20f06a681f18400a9598588198965a7b4f8b80752acd8f5"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-003/candidates/moretypes-slices-of-slice.go",
+          "sha256": "7739b314e3b31d4f608362b80d83dc9a01dbfd8761ea04fffd9ea785d33eb315"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-003/candidates/moretypes-struct-literals.go",
+          "sha256": "da78fe7c412c1675dec899ac4af55f60103ce9123d458a0ced8e3312e7e02c27"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-003/validation/basics-numeric-constants.json",
+          "sha256": "1a34778fa8a67972030786b55b59f1cd93db79f66b52b3c6e61b687911afe988"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-003/validation/basics-type-inference.json",
+          "sha256": "b37108f5b2a43bddb7609e7723d797bc21025afc1b211f8a16c70682f4786b99"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-003/validation/concurrency-channels.json",
+          "sha256": "84673927c656ff83a1ed99cfb36df75cfbd6975ec0b33d16a6536ce91b55b541"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-003/validation/concurrency-exercise-equivalent-binary-trees.json",
+          "sha256": "5923ecadb85050f15d4ea738a6de2a1f8360c74e65202b4dea64ad23c9b9a3a1"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-003/validation/concurrency-mutex-counter.json",
+          "sha256": "58b947d639dd2c1a23e6ef00b0afadff56c69dcc621b1dea84b8fa021be1ad85"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-003/validation/generics-index.json",
+          "sha256": "ffb4040c294d6a4ba2074968d81dcae61d60e310b99df478b85400d07463e237"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-003/validation/methods-exercise-reader.json",
+          "sha256": "cef7bb8f5d2e57c6a20d4b9ae77f845e8bbed7f71b1237cb5992632ae02a1a2e"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-003/validation/methods-exercise-stringer.json",
+          "sha256": "e2cf003341a98ef244eb6eb1810050998942548ea65777decea39d22a9ecc0bc"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-003/validation/methods-interfaces-are-satisfied-implicitly.json",
+          "sha256": "7f172129410a3a1247caba6b81ba29c57a1c225796613fa94e63de619b994bef"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-003/validation/methods-interfaces.json",
+          "sha256": "1541c972fcd0e2eab124c96bae15a6ea24a67ee5a5d11ade195b153f7a602c06"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-003/validation/moretypes-append.json",
+          "sha256": "a09baa1c5501f23ceb6d7fdfa0b92f4ae5258edd7a9c16e63a44b34b51eaf228"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-003/validation/moretypes-exercise-fibonacci-closure.json",
+          "sha256": "02d39fe08f3700cd8cb1cbf59219345d9d6ce4f574c5068cc09373b3fe146c8c"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-003/validation/moretypes-pointers.json",
+          "sha256": "8fb2bf47a6ce34226c533ce12bf28345750c3aabee912676bec43969a767b271"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-003/validation/moretypes-slice-len-cap.json",
+          "sha256": "3766feaae82d90afffae9bb8a3222ca328c0963953c38d84c8a24f86e86fef2c"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-003/validation/moretypes-slices-of-slice.json",
+          "sha256": "c1c43ad7e54231bbe0e868c503c025b604942dba029bfb9850e7286e7cb7f9e2"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-003/validation/moretypes-struct-literals.json",
+          "sha256": "0be6b98f2a7304219002b0de0f690da5d2081efb5cdc9e932afe7ece28598b03"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-004/candidates/concurrency-3.article",
+          "sha256": "b5ebde996f53f25eb430ca13cd423bfa80272c234d9a6651bdd0626f33974a79"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-004/candidates/flowcontrol-10.article",
+          "sha256": "171a52a75adde40f3ba63a9a18e2ed3cf792b6c518d402fd69db18c5976d84a2"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-004/candidates/methods-12.article",
+          "sha256": "4b1085e9a168aad32369ecc16276d31485624c176858303f70489526367b42e1"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-004/candidates/methods-19.article",
+          "sha256": "c386ca64fb1c23afe89d29592ddb2e0da65b00e7ba33bc893778208480c65d52"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-004/candidates/methods-20.article",
+          "sha256": "0a6c90d67746ebb5ecf011652f6a2c952a5ba996dee27d2473ee7a72657938a9"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-004/candidates/methods-21.article",
+          "sha256": "512f06922782a7863e507790ca34a2291ff8d3aa7297efb3aa3a562cdd0b08a9"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-004/candidates/moretypes-16.article",
+          "sha256": "762a70ead3db9527a2c09c22c7f99e0accac6568457b03f689550909419c2dd1"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-004/candidates/welcome-1.article",
+          "sha256": "507a02b85cb603d15cf07da4f657dd063b3f8d20102e129425b157f4706311fd"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-004/candidates/welcome-2.article",
+          "sha256": "766a4e5ebcbb682ec86d6264fbeec67487997541f158ba0583bcdad7837d0090"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-004/validation/concurrency-3.json",
+          "sha256": "42fa9e355cd28305570f4206decf4017e8a62bb40e17672239d261badb68fea7"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-004/validation/flowcontrol-10.json",
+          "sha256": "6fd9288c0aaca39fae8181313e0cb94bbad102ebc9f83b5a8c60e27c5c9be7a5"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-004/validation/methods-12.json",
+          "sha256": "ccb6c593fb5d121d536827f451e1659cc1a4170799f22ff64587b7fc1688702e"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-004/validation/methods-19.json",
+          "sha256": "a5fc890d414f0953a585e09c622b2760ef6c9cada9334618632600c2e747b5b2"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-004/validation/methods-20.json",
+          "sha256": "cc0333ab260f093d87e336ea748acacc2a72beb07870b706c87c0f09cd136236"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-004/validation/methods-21.json",
+          "sha256": "c92aa8dcf9cde5454f8ef2de5c3dcd7963bf85684efde23fae695bd567862104"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-004/validation/moretypes-16.json",
+          "sha256": "eba1f9b24624dd3dc5365a388078f2ecf8194d1684556757c156d805f6f38fae"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-004/validation/welcome-1.json",
+          "sha256": "7e9a029215fb0a295013c3bb3bd17d2da21de893eef3598fc33d908956222de1"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-004/validation/welcome-2.json",
+          "sha256": "d916cd9ac1f3e1c20a3b4682ae407e2c73143544ba6c983e22bd9246cca39383"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-005/candidates/concurrency-exercise-web-crawler.go",
+          "sha256": "4957a53a7cc14e63e2a8b3ec394178389ee0bdeb27a019383d2776c49858e881"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-005/candidates/flowcontrol-if-and-else.go",
+          "sha256": "e1149a853f13a099cd873333cd0c901686be63c6bd1294b446fc72aa97802e5c"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-005/candidates/generics-list.go",
+          "sha256": "a2f24592ef71ce80758e934b340765b825d55f8e461def87ed20ed8be0deaad9"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-005/validation/concurrency-exercise-web-crawler.json",
+          "sha256": "346ac9377f987c8f47b250ac01ef94fddbf4c01cfff7d1d67195d566d3d4637c"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-005/validation/flowcontrol-if-and-else.json",
+          "sha256": "b7de9615c749d86cc4eb16fde200bbda2967902b182a027347e6c3ff6bb6a97e"
+        },
+        {
+          "path": "data/retranslation-runs/fa-IR/codex-fa-IR-005/validation/generics-list.json",
+          "sha256": "107ecac3adfc3f6b5e62249126f418a0276e1ad4ba0f62de70ab219c9a06c56c"
+        },
+        {
+          "path": "internal/tour/ui/fa-IR.json",
+          "sha256": "255566d847f660d009e881d5b7604c9c4e35570287275e1b1194ae408587caa3"
+        },
+        {
+          "path": "locales/fa-IR/article-metadata.json",
+          "sha256": "8056138e0fb412c12bdc3167f9f45658d2e843dfef94e91f3709a48a4532e2f7"
+        },
+        {
+          "path": "locales/fa-IR/candidates/basics-1.article",
+          "sha256": "7342d4e84ae5a8ecce1c8d737c228beb66e6ec0e0d58213d637c987e32d75642"
+        },
+        {
+          "path": "locales/fa-IR/candidates/basics-10.article",
+          "sha256": "f965a887a025fe43320f51a17d13c7ccdb5c3a988b9694aac6746a24937a64a2"
+        },
+        {
+          "path": "locales/fa-IR/candidates/basics-11.article",
+          "sha256": "e74b0a605a9c62985bf5545750892a7400e47a4fb068eef9a7208aee40030b66"
+        },
+        {
+          "path": "locales/fa-IR/candidates/basics-12.article",
+          "sha256": "76d4dc231cf6debd6f3dee766e31803f0d7d93d8f643eca84645d72655883c45"
+        },
+        {
+          "path": "locales/fa-IR/candidates/basics-13.article",
+          "sha256": "0b5b6995957a2fa495923e635bf50bf289fbe1ff7f2176cce8998023b8cc6f6d"
+        },
+        {
+          "path": "locales/fa-IR/candidates/basics-14.article",
+          "sha256": "2bb8abb66209c598cd02bf0f7cfc190591cc8fc75ab25d02054790f04253f2ab"
+        },
+        {
+          "path": "locales/fa-IR/candidates/basics-15.article",
+          "sha256": "797b81483c5283a34936cbda86e51501f7cba5f62548a345e5eba52b2a78c1ff"
+        },
+        {
+          "path": "locales/fa-IR/candidates/basics-16.article",
+          "sha256": "5f54246bb142b8595fa75f03a4917928c871d83d919eb0e4d2dc3649d2b84e02"
+        },
+        {
+          "path": "locales/fa-IR/candidates/basics-17.article",
+          "sha256": "13a4cac5f0e0794a9dfbb579cebc89680a41b1df98f8014ecf96d8c622a236a0"
+        },
+        {
+          "path": "locales/fa-IR/candidates/basics-2.article",
+          "sha256": "86a87180d178f540e44ed3b65bb5a7ce505ee1eb3586aa5681487418dd5ed276"
+        },
+        {
+          "path": "locales/fa-IR/candidates/basics-3.article",
+          "sha256": "9270b44f93cf004272acbfb4ff5dbd8ea13f5b0d7367bfd4a423379944c932e1"
+        },
+        {
+          "path": "locales/fa-IR/candidates/basics-4.article",
+          "sha256": "8d1258585de0a7c268a6557823e95be737150c16a9f471b0b363adfefddecbc0"
+        },
+        {
+          "path": "locales/fa-IR/candidates/basics-5.article",
+          "sha256": "53bb7cf85ccdf9cd42d98d3c4f52e7e8e9fa02e958d91c6f109c658d027df1ac"
+        },
+        {
+          "path": "locales/fa-IR/candidates/basics-6.article",
+          "sha256": "c80899e0aba2e28dcce11a74f32ca11f8327e746d6e0b73153a2ceb41121edf7"
+        },
+        {
+          "path": "locales/fa-IR/candidates/basics-7.article",
+          "sha256": "d2b478b7bdc1d6bec9b7216e0d1046e7856a787fc53f843249333c709ccd117d"
+        },
+        {
+          "path": "locales/fa-IR/candidates/basics-8.article",
+          "sha256": "532d0fd0a0c4d56c5b4ab6b93cab0bc5fea5b560bca76272e688f6c17d381efe"
+        },
+        {
+          "path": "locales/fa-IR/candidates/basics-9.article",
+          "sha256": "53071db8a4f54ac448a9a30d60e5eea75cf9dfcd6cb098706be17afdd7e427f1"
+        },
+        {
+          "path": "locales/fa-IR/candidates/basics-numeric-constants.go",
+          "sha256": "ee66ad0e11aaaeecde13619d71ef725052cbfdc952adc02f4c214b5eec996f95"
+        },
+        {
+          "path": "locales/fa-IR/candidates/basics-type-inference.go",
+          "sha256": "5bf6d2f7c812b6d7ea54be3e2f9552b32e8acc6661e274472de8e12c647d242f"
+        },
+        {
+          "path": "locales/fa-IR/candidates/concurrency-1.article",
+          "sha256": "dff6c9b1646cd4c7ad34e6db7571431139d9e5c1dec69ef5953bee3c6ef910a1"
+        },
+        {
+          "path": "locales/fa-IR/candidates/concurrency-10.article",
+          "sha256": "91657d52c1cd3d5a9f12a1f4e6d19d419332c8180843e8d3696128d6a3ea2c71"
+        },
+        {
+          "path": "locales/fa-IR/candidates/concurrency-11.article",
+          "sha256": "c32df5b8c9d9a78c6209bceff5cd840e117de27b078fe3ccfc4f13b825bc1d37"
+        },
+        {
+          "path": "locales/fa-IR/candidates/concurrency-2.article",
+          "sha256": "4ae02b5f92a226663b1a1d4c68934a2029049093f573658e3e048712ab20a813"
+        },
+        {
+          "path": "locales/fa-IR/candidates/concurrency-3.article",
+          "sha256": "b5ebde996f53f25eb430ca13cd423bfa80272c234d9a6651bdd0626f33974a79"
+        },
+        {
+          "path": "locales/fa-IR/candidates/concurrency-4.article",
+          "sha256": "f4b6673995d92a9f41893a64a3be757d1000f832517ab0c049c604700fbe4fef"
+        },
+        {
+          "path": "locales/fa-IR/candidates/concurrency-5.article",
+          "sha256": "0157786f47de646c7b02350d5ef22b8c4a81b751aec93114b0f68c1b03a49933"
+        },
+        {
+          "path": "locales/fa-IR/candidates/concurrency-6.article",
+          "sha256": "707612e088734135d0ca7623322192157c75cc4368200fa92c5abecff955aa19"
+        },
+        {
+          "path": "locales/fa-IR/candidates/concurrency-7.article",
+          "sha256": "b42ef5b44536dfdd72643c056fd5ec535f91efe99714d4e1aff5db0130a54f36"
+        },
+        {
+          "path": "locales/fa-IR/candidates/concurrency-8.article",
+          "sha256": "4e51f38e5794b032b4546184d1aaec58f8eaa506f657b1e91eafd9edf9a371d6"
+        },
+        {
+          "path": "locales/fa-IR/candidates/concurrency-9.article",
+          "sha256": "da5f897a42d22779ed587205375815c6a87f98f7ea0c70e14a2d2b97bc1ff55a"
+        },
+        {
+          "path": "locales/fa-IR/candidates/concurrency-channels.go",
+          "sha256": "918459679219820774f733cd0bbd456328e41b9e820e21909f383b08ef5cc72f"
+        },
+        {
+          "path": "locales/fa-IR/candidates/concurrency-exercise-equivalent-binary-trees.go",
+          "sha256": "6fd4f4adeb859fb98d8c243327eee2c17aa76c93224997ff5f7988b7b6e530d3"
+        },
+        {
+          "path": "locales/fa-IR/candidates/concurrency-exercise-web-crawler.go",
+          "sha256": "4957a53a7cc14e63e2a8b3ec394178389ee0bdeb27a019383d2776c49858e881"
+        },
+        {
+          "path": "locales/fa-IR/candidates/concurrency-mutex-counter.go",
+          "sha256": "e0deb804c21dadfb685f4fde6024d8f151fdd90c5b5e093359ec4fcd0552afd0"
+        },
+        {
+          "path": "locales/fa-IR/candidates/flowcontrol-1.article",
+          "sha256": "c60ed0e3a720dcae62a3829d7626ae079f1ef0d2f3da876f7402a71b481322e6"
+        },
+        {
+          "path": "locales/fa-IR/candidates/flowcontrol-10.article",
+          "sha256": "171a52a75adde40f3ba63a9a18e2ed3cf792b6c518d402fd69db18c5976d84a2"
+        },
+        {
+          "path": "locales/fa-IR/candidates/flowcontrol-11.article",
+          "sha256": "4c9ecedca7ada5d94af9472ac300085cae4d1101c6de65e1fb5cad8ca6b0ed8e"
+        },
+        {
+          "path": "locales/fa-IR/candidates/flowcontrol-12.article",
+          "sha256": "76cd1000075fe728a91057057e2b132b800eee6e4cb11ce49252e400cc08d54b"
+        },
+        {
+          "path": "locales/fa-IR/candidates/flowcontrol-13.article",
+          "sha256": "59668e6eb9be18565bf0e1a00c2dfe8a05aedfdbbd2728dad632e10ee5e79776"
+        },
+        {
+          "path": "locales/fa-IR/candidates/flowcontrol-14.article",
+          "sha256": "13a4cac5f0e0794a9dfbb579cebc89680a41b1df98f8014ecf96d8c622a236a0"
+        },
+        {
+          "path": "locales/fa-IR/candidates/flowcontrol-2.article",
+          "sha256": "2e67d89c60cb5d619e63ecc71d1d60f5c00e4dd4fe2b344b632fe9cada60c888"
+        },
+        {
+          "path": "locales/fa-IR/candidates/flowcontrol-3.article",
+          "sha256": "4f8bdbcdd51ea3f363c3d1946c851cae3d105d61e7bb4f12b86f1e2da3391fae"
+        },
+        {
+          "path": "locales/fa-IR/candidates/flowcontrol-4.article",
+          "sha256": "9a5413244bf68511b21130e28907d93671b321be33498bb5c5f200ee6d57bff9"
+        },
+        {
+          "path": "locales/fa-IR/candidates/flowcontrol-5.article",
+          "sha256": "2814195c4d33d9a665a350a9f04255cdb48475fbd411665723ec141e12186206"
+        },
+        {
+          "path": "locales/fa-IR/candidates/flowcontrol-6.article",
+          "sha256": "be240fbfc0c2ad08d0bd8a72378e4d0080005b4677146733bdcdda8030e2c24e"
+        },
+        {
+          "path": "locales/fa-IR/candidates/flowcontrol-7.article",
+          "sha256": "9327066c6a4d63a50ee031f002c720a10a6e9e52166a852faa7756a984e73558"
+        },
+        {
+          "path": "locales/fa-IR/candidates/flowcontrol-8.article",
+          "sha256": "a63ffbd67a540fbee09fe55e04d7d338fc4d706ec6cc955052ac419b9b698155"
+        },
+        {
+          "path": "locales/fa-IR/candidates/flowcontrol-9.article",
+          "sha256": "c1e9235a92d8375938ef2ca78b6b1b41b9ac9becb7c2f1da1595d6c740e767f5"
+        },
+        {
+          "path": "locales/fa-IR/candidates/flowcontrol-if-and-else.go",
+          "sha256": "e1149a853f13a099cd873333cd0c901686be63c6bd1294b446fc72aa97802e5c"
+        },
+        {
+          "path": "locales/fa-IR/candidates/generics-1.article",
+          "sha256": "d2d3ae2fed97f9631315f5f5decbbb00a9a0c52fb574c746ffd4da57a00473cd"
+        },
+        {
+          "path": "locales/fa-IR/candidates/generics-2.article",
+          "sha256": "2905e8380bd2fba063d2ec410cc7e404ce60972c080c44e6ce49f7f7a018eb5d"
+        },
+        {
+          "path": "locales/fa-IR/candidates/generics-3.article",
+          "sha256": "13a4cac5f0e0794a9dfbb579cebc89680a41b1df98f8014ecf96d8c622a236a0"
+        },
+        {
+          "path": "locales/fa-IR/candidates/generics-index.go",
+          "sha256": "31f7536db2843ab0bcdc00606738f029da9611fd6944623cad53a1df7a7a657b"
+        },
+        {
+          "path": "locales/fa-IR/candidates/generics-list.go",
+          "sha256": "a2f24592ef71ce80758e934b340765b825d55f8e461def87ed20ed8be0deaad9"
+        },
+        {
+          "path": "locales/fa-IR/candidates/methods-1.article",
+          "sha256": "5c4d2142437dc05ff3100179a8b52e563e7978659b7cc9a87d2937733546fdd2"
+        },
+        {
+          "path": "locales/fa-IR/candidates/methods-10.article",
+          "sha256": "c3734d943c4540fc86d09703c08f7abf9676caf911bfa48b646311d0d0123a34"
+        },
+        {
+          "path": "locales/fa-IR/candidates/methods-11.article",
+          "sha256": "1e820f9c498510f82fa1c94c785e399068fc1b312a1a9f23bc452f90f22acafc"
+        },
+        {
+          "path": "locales/fa-IR/candidates/methods-12.article",
+          "sha256": "4b1085e9a168aad32369ecc16276d31485624c176858303f70489526367b42e1"
+        },
+        {
+          "path": "locales/fa-IR/candidates/methods-13.article",
+          "sha256": "6329a388d0fef48855bc0d7d20495895e4924bfc86ebc207a907196d9d813847"
+        },
+        {
+          "path": "locales/fa-IR/candidates/methods-14.article",
+          "sha256": "035a61e395ac614138a01f51c885fa6052a24e605a8b892640b1102eae792126"
+        },
+        {
+          "path": "locales/fa-IR/candidates/methods-15.article",
+          "sha256": "dfbd232f9bd08aab3d785537768da873cbea7b12f834b17ded3584c14aba6b72"
+        },
+        {
+          "path": "locales/fa-IR/candidates/methods-16.article",
+          "sha256": "169d158fe3ac7281d5758910a781b8a933c00c86ea78f34a62ff44086689eba2"
+        },
+        {
+          "path": "locales/fa-IR/candidates/methods-17.article",
+          "sha256": "f4634a8292ae3e184ae3a8cb7c06c4571be67a570a2da21fd4c016661dc8ce56"
+        },
+        {
+          "path": "locales/fa-IR/candidates/methods-18.article",
+          "sha256": "ef729e37cdda995f5cb030128dcb5148b330c8a413c6ed884bd61d19c2d7f93f"
+        },
+        {
+          "path": "locales/fa-IR/candidates/methods-19.article",
+          "sha256": "c386ca64fb1c23afe89d29592ddb2e0da65b00e7ba33bc893778208480c65d52"
+        },
+        {
+          "path": "locales/fa-IR/candidates/methods-2.article",
+          "sha256": "cfa16148b84ddc9aea2a5b6056b195e0c6612d1624c47d56f3512a986a198d5e"
+        },
+        {
+          "path": "locales/fa-IR/candidates/methods-20.article",
+          "sha256": "0a6c90d67746ebb5ecf011652f6a2c952a5ba996dee27d2473ee7a72657938a9"
+        },
+        {
+          "path": "locales/fa-IR/candidates/methods-21.article",
+          "sha256": "512f06922782a7863e507790ca34a2291ff8d3aa7297efb3aa3a562cdd0b08a9"
+        },
+        {
+          "path": "locales/fa-IR/candidates/methods-22.article",
+          "sha256": "8dbb481b68b2a6f9eeed3b4c1b7dcea7611809024153e653c9011fcdd63769cb"
+        },
+        {
+          "path": "locales/fa-IR/candidates/methods-23.article",
+          "sha256": "0b15b141e3f56a33ceb3f2bc62567a53ba5707f20095ef07f799b5a30dfba496"
+        },
+        {
+          "path": "locales/fa-IR/candidates/methods-24.article",
+          "sha256": "5e6ce7c208740858d6fb2c6dced767a63cbb11f924864d8747be646197f0bb68"
+        },
+        {
+          "path": "locales/fa-IR/candidates/methods-25.article",
+          "sha256": "e2a121e786436966fafd61ae22d72e85af1f8173e10e988f372193626644b357"
+        },
+        {
+          "path": "locales/fa-IR/candidates/methods-26.article",
+          "sha256": "13a4cac5f0e0794a9dfbb579cebc89680a41b1df98f8014ecf96d8c622a236a0"
+        },
+        {
+          "path": "locales/fa-IR/candidates/methods-3.article",
+          "sha256": "5e2b54ff9d96368ff1a81877d144dbd093619c842bc6d3f5ca1a1200a3d694e5"
+        },
+        {
+          "path": "locales/fa-IR/candidates/methods-4.article",
+          "sha256": "ca84c0d4d0145b7c47f6753b40aa93370cd6015b952044d13dec7ddf2a46e891"
+        },
+        {
+          "path": "locales/fa-IR/candidates/methods-5.article",
+          "sha256": "42517a30af1a9fb418139d9b88eab4c8025200a15e6605b4c861187866a17c1c"
+        },
+        {
+          "path": "locales/fa-IR/candidates/methods-6.article",
+          "sha256": "8984a4bc7f136b7dd1c08ab1a79082c822290f951f30bb946962244302f5f8ba"
+        },
+        {
+          "path": "locales/fa-IR/candidates/methods-7.article",
+          "sha256": "bc7f04938e71ce995ad7f60dbc92f90db520914fd21fc3c6756af3c69e4b349d"
+        },
+        {
+          "path": "locales/fa-IR/candidates/methods-8.article",
+          "sha256": "358836c6b00c405f12bf8b02333467f1e0713bb559aa782bde8084c3cffa9196"
+        },
+        {
+          "path": "locales/fa-IR/candidates/methods-9.article",
+          "sha256": "8922cb83594898efe51e1b6b05677fd5be7620fb32193dbbe5e9e80f6a1acbbd"
+        },
+        {
+          "path": "locales/fa-IR/candidates/methods-exercise-reader.go",
+          "sha256": "252ad38cb63e7268d7a91cbf7e37ab71cd081d0e8a8ae06be7fe5d685b6d0b32"
+        },
+        {
+          "path": "locales/fa-IR/candidates/methods-exercise-stringer.go",
+          "sha256": "3859fc090aa6147ae2d48d2c43d70333fb1b3e4f202cf5524b194dc62b69a231"
+        },
+        {
+          "path": "locales/fa-IR/candidates/methods-interfaces-are-satisfied-implicitly.go",
+          "sha256": "021d535c63ea62c60dc1b556a0343b6bbd2aefe1f4e5af84d27d19d9c175c086"
+        },
+        {
+          "path": "locales/fa-IR/candidates/methods-interfaces.go",
+          "sha256": "e3da9ee91b9ea65abd2921ce2bcc3576f833405d4f5226052ce8e962a129caab"
+        },
+        {
+          "path": "locales/fa-IR/candidates/moretypes-1.article",
+          "sha256": "8c4157525b795f4bf230e16e33acb6e384e822bfc90448b10a44d8507b279ac8"
+        },
+        {
+          "path": "locales/fa-IR/candidates/moretypes-10.article",
+          "sha256": "7a725e945aef2c05e875414952eeae60e471b486611aa65f4b8f0961ab70bbb3"
+        },
+        {
+          "path": "locales/fa-IR/candidates/moretypes-11.article",
+          "sha256": "7aefb3c1d660c4f7b653d5779d775e1d9baa93150a7f2cc00b00c7e6776f18d1"
+        },
+        {
+          "path": "locales/fa-IR/candidates/moretypes-12.article",
+          "sha256": "de489903b554df39a7799ab2ddb08d83fe65f8c1f07c21f549fae7266ea0b914"
+        },
+        {
+          "path": "locales/fa-IR/candidates/moretypes-13.article",
+          "sha256": "be1ac0052ea45868f5c9147391b35ff4de4ac6f2f9323ca12b79dc4825075786"
+        },
+        {
+          "path": "locales/fa-IR/candidates/moretypes-14.article",
+          "sha256": "dc9eedd9aa89e6d39595de09f6ca37e2bc64d578bc169fddf645d5de84164a76"
+        },
+        {
+          "path": "locales/fa-IR/candidates/moretypes-15.article",
+          "sha256": "e8ffb492a7494fa582a8d245592b7470d4cecae9f041bb670fbc90fa5039fbdc"
+        },
+        {
+          "path": "locales/fa-IR/candidates/moretypes-16.article",
+          "sha256": "762a70ead3db9527a2c09c22c7f99e0accac6568457b03f689550909419c2dd1"
+        },
+        {
+          "path": "locales/fa-IR/candidates/moretypes-17.article",
+          "sha256": "c9fca203228255add93fefb14c8572afcbacd996bd835a2de7ce3b13068900de"
+        },
+        {
+          "path": "locales/fa-IR/candidates/moretypes-18.article",
+          "sha256": "295d3613dd83faa196f815512393f2d119379b134b3eb161da2cde0495fb0a23"
+        },
+        {
+          "path": "locales/fa-IR/candidates/moretypes-19.article",
+          "sha256": "a2dbba3c0280fc8ab3fbf5552e9b4f253d9cc4f10ec993cb491d444ef01b13de"
+        },
+        {
+          "path": "locales/fa-IR/candidates/moretypes-2.article",
+          "sha256": "2da5cc7153fc9a726dfe47960501bf6e2b3332751d6ad657c100e3e19ccf822f"
+        },
+        {
+          "path": "locales/fa-IR/candidates/moretypes-20.article",
+          "sha256": "c557e32f6ce937e2749a0f503d78413fd029fb1a49110fae66708e6ee3cfa1db"
+        },
+        {
+          "path": "locales/fa-IR/candidates/moretypes-21.article",
+          "sha256": "cde3331e73bd755b2185830094d97fc14f82b6051a99618dcbb914577a219b7e"
+        },
+        {
+          "path": "locales/fa-IR/candidates/moretypes-22.article",
+          "sha256": "54fb835145274979ce10159d15fc16b166408f98c3a0cc2bcfd06a3885fac9b3"
+        },
+        {
+          "path": "locales/fa-IR/candidates/moretypes-23.article",
+          "sha256": "dc95f3ecf6407cc674e0fe78859ad919fc20f4ebab04693a67f07e3ea7954e50"
+        },
+        {
+          "path": "locales/fa-IR/candidates/moretypes-24.article",
+          "sha256": "fe2e47a7d150351ef196eb88555fd084ff4e0e4219b95d709d735e34074bf7c1"
+        },
+        {
+          "path": "locales/fa-IR/candidates/moretypes-25.article",
+          "sha256": "fe3104c8e58f794f126aab345409320b71b072633c0a34125d35913a682f2dca"
+        },
+        {
+          "path": "locales/fa-IR/candidates/moretypes-26.article",
+          "sha256": "f628fd211788d68f0d2ac3e6374ef892f846a6442f3c776aeae2d5a5aec85270"
+        },
+        {
+          "path": "locales/fa-IR/candidates/moretypes-27.article",
+          "sha256": "13a4cac5f0e0794a9dfbb579cebc89680a41b1df98f8014ecf96d8c622a236a0"
+        },
+        {
+          "path": "locales/fa-IR/candidates/moretypes-3.article",
+          "sha256": "1b7e2533a5783326e6aaa58d27fccec1fe67e0b3ec22e5c58ae3864e5b8327cf"
+        },
+        {
+          "path": "locales/fa-IR/candidates/moretypes-4.article",
+          "sha256": "299baba1b84cbbd0d11b62123c76a14c07aac09265c69abef6c0d2dd3c0bd186"
+        },
+        {
+          "path": "locales/fa-IR/candidates/moretypes-5.article",
+          "sha256": "cfed47d5681bfbce4072707e11d4c772928a0eefb0b5f244179b27e1555f9b53"
+        },
+        {
+          "path": "locales/fa-IR/candidates/moretypes-6.article",
+          "sha256": "590cf53d27a2e92c602a752731142d1a5711cb5454ecd1e8ecfeb1261fff4c4a"
+        },
+        {
+          "path": "locales/fa-IR/candidates/moretypes-7.article",
+          "sha256": "393fc299e0ceb2621d6317641da46f78fd03c2bce24c803fa2165279c70ae579"
+        },
+        {
+          "path": "locales/fa-IR/candidates/moretypes-8.article",
+          "sha256": "f16584c82a7c5082b12b2411238a4377b3a597345ddfa664a8cc126d9a1e5570"
+        },
+        {
+          "path": "locales/fa-IR/candidates/moretypes-9.article",
+          "sha256": "f28a1a0118bf70bb5e38612f8bffebb841b549d3224633a20f75325771cfa395"
+        },
+        {
+          "path": "locales/fa-IR/candidates/moretypes-append.go",
+          "sha256": "24ad3e4e258a6bda3718506ad771bc0d6fb77e4852df8d0befd1b725006273bd"
+        },
+        {
+          "path": "locales/fa-IR/candidates/moretypes-exercise-fibonacci-closure.go",
+          "sha256": "5e688ceb8b06d837af8ecfeea30073f66ae1e1b249d16fcaded473c886027841"
+        },
+        {
+          "path": "locales/fa-IR/candidates/moretypes-pointers.go",
+          "sha256": "da9e67a431696577180383782079a608605cb05d4fefe3057dd52c293d7ab8ed"
+        },
+        {
+          "path": "locales/fa-IR/candidates/moretypes-slice-len-cap.go",
+          "sha256": "7ccdfd596e743915f20f06a681f18400a9598588198965a7b4f8b80752acd8f5"
+        },
+        {
+          "path": "locales/fa-IR/candidates/moretypes-slices-of-slice.go",
+          "sha256": "7739b314e3b31d4f608362b80d83dc9a01dbfd8761ea04fffd9ea785d33eb315"
+        },
+        {
+          "path": "locales/fa-IR/candidates/moretypes-struct-literals.go",
+          "sha256": "da78fe7c412c1675dec899ac4af55f60103ce9123d458a0ced8e3312e7e02c27"
+        },
+        {
+          "path": "locales/fa-IR/candidates/welcome-1.article",
+          "sha256": "507a02b85cb603d15cf07da4f657dd063b3f8d20102e129425b157f4706311fd"
+        },
+        {
+          "path": "locales/fa-IR/candidates/welcome-2.article",
+          "sha256": "766a4e5ebcbb682ec86d6264fbeec67487997541f158ba0583bcdad7837d0090"
+        },
+        {
+          "path": "locales/fa-IR/candidates/welcome-3.article",
+          "sha256": "0f22513f5f1f4c3ec47fb86bbceb216d651569fced15290dbfeecfea9e618a4b"
+        },
+        {
+          "path": "locales/fa-IR/candidates/welcome-4.article",
+          "sha256": "88f1c42e079fcb47638900231577b48ecb50f2746d289812ec85c17fd5898728"
+        },
+        {
+          "path": "locales/fa-IR/candidates/welcome-5.article",
+          "sha256": "cefb1a4308a662c7fd5a030335a85b8b560d223444b6d651852f21b7c5da771a"
+        },
+        {
+          "path": "locales/fa-IR/course-metadata.json",
+          "sha256": "92496a642567a49b61204504aa14f602490a8d82929332c9486e7f33d3e353c3"
+        },
+        {
+          "path": "locales/fa-IR/glossary.yaml",
+          "sha256": "30ba3c8576818bfcc49db3fa6178124e9da535e1c75c2dc8642d1f6cdca3dfe2"
+        },
+        {
+          "path": "locales/fa-IR/locale.json",
+          "sha256": "c082980000d3775b7c6b4447ad0986ff57262ed0b93856f3407228b191fb26b0"
+        },
+        {
+          "path": "locales/fa-IR/status.tsv",
+          "sha256": "25f507c9320be0116cec002be65ec4742e79862853133d5e6492028c689d3c1f"
+        }
+      ],
+      "evidence_identity_sha256": "98dd0358916f77e4327efbd666fa2536fd7b53d7057ebabb44fd169640f1db22",
+      "validated_context_sha256": "4e2d0456724a54b6cb0b69cc88e3470e4db2c9b70c208f121d30c3e63d8dc195",
+      "legacy_surface_gate_state": "current"
+    }
+  ]
+}
