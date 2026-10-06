@@ -7,6 +7,14 @@ V2-D final architecture采用Versionless Locale Architecture：v1/v2/v3是implem
 
 ## 基线与架构
 
+### 2026-10-06 跨项目 66-locale pre-real-data commercial execution order 已冻结
+
+- 唯一 planning authority 为 [Locale 路线图](LOCALE_ROADMAP.md#5-跨项目-66-locale-广告收入潜力默认执行顺序)：当前 Go project 仍为 **65 个 `production_state=live` community locale**；跨项目 commercial target pool 为当前 65 + `en-US`，共 **66** 个目标。
+- 官方 Go English source authority 仍是 <https://go.dev/tour/> 的 generic `lang="en"`；仅在 commercial scheduling 层视为覆盖 `en-US`。不新增 `en-US` Go locale、hostname 或 Production identity，不作 source identity conversion。当前 Site v2 / future Go content package campaign 跳过 rank 1 `en-US`，从 rank 2 `zh-CN` 开始；其他项目按 canonical source covered → skip 规则保持其余相对顺序。
+- 基础 ranking 唯一最终目标是长期广告收入潜力；proxy 只用于估计。ad-platform support、GoLocal、official-link 不进入基础商业 ranking。`sw-TZ` / `kk-KZ` / `fa-IR` / `am-ET` 保留维护者明确授权的项目级生态 override，只改变该项目实施顺序，不改变 66-locale base order。
+- 当前冻结顺序立即用于 Site v2 campaign、future content package 和未来多语言项目，不重新开放全球候选研究。future one-time empirical re-ranking 仍等待 V2-C1 后足够真实运行数据，与当前执行顺序分离；在此之前不按 CPM 文章或单一平台 policy 反复调整。
+- 本轮仅更新 docs / planning authority，没有修改 production identity、locale registry、language assets 或 review evidence；V2-C1 保持 deferred，未执行 benchmark、翻译、Production 或 Git commit/push。
+
 ### 2026-10-06 Site v2-D Runtime / Localization Workflow Foundation
 
 - 新 authority：[Site v2 workflow](SITE_V2_WORKFLOW.md)。neutral `internal/site` 提供 opt-in coverage resolver、真实 missing-route 404、直接官方 navigation fallback、frozen redirect exact/subtree semantics、local canonical/sitemap 与 advertising policy；现有 Tour runtime/Playground/SEO/publish 入口没有切换。
@@ -19,7 +27,7 @@ V2-D final architecture采用Versionless Locale Architecture：v1/v2/v3是implem
 
 - `golang/website@db076098077c07d3cef1b85a2cf56ff52777f587` 是主动冻结的正式 English source authority，不表示今天官方最新 master。V2-D → 模型 benchmark → 连续 learn-docs-v1 campaign → independent review/atomic activation → frozen-baseline Preview/Production 均获调度允许；本轮不执行语言生成或 Production。
 - V2-C1 仍 deferred，仅四个 tracked issue 达到维护者预期状态并显式重开后执行一次 sync；不阻塞 campaign/Production，不增加联网 drift gate，不 fetch/pull/sync。
-- 最终 sync 逐 package/file/route/dependency/content-unit reconciliation，仅真实 affected scope stale/revision/re-QC/Surface refresh；unaffected 成果结合 V2-B lineage 复用，历史 evidence 不改写，whole commit 不等价于全 locale stale。最终商业排序可等待 V2-C1 与真实运行数据，不阻塞第一批实施。
+- 最终 sync 逐 package/file/route/dependency/content-unit reconciliation，仅真实 affected scope stale/revision/re-QC/Surface refresh；unaffected 成果结合 V2-B lineage 复用，历史 evidence 不改写，whole commit 不等价于全 locale stale。当时保留的未来真实数据排序原则现明确为一次 empirical re-ranking；当前 campaign 已按上述同日新决策使用冻结的 66-locale pre-real-data 商业顺序，Go 跳过 `en-US`，从 `zh-CN` 开始。
 
 ### 2026-10-06 Site v2-A Architecture / Content Scope
 

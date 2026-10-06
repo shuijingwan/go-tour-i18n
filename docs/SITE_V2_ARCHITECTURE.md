@@ -187,7 +187,9 @@ V2-C1 唯一一次正式 upstream source sync **deferred**。V2-C1 前，`golang
 → 已完成 / 已上线 / 在途 locale 仅处理真实 stale 范围
 ```
 
-一次性跨项目商业排序仍按路线图，最终排序/冻结可等待 V2-C1 与真实 Site v2 流量、收入、referral、indexing、维护成本数据；不阻塞第一批 Site v2 locale。V2-C1 后逐 package/file/route/dependency/content-unit 比较；unaffected translation/review/QC/SEO/Surface 继续复用，使用 V2-B glossary compatibility/freshness lineage，仅 affected scope reopen/revision/re-QC/Surface refresh。historical evidence 不改写，全量重译不是默认恢复方案，whole upstream commit 变化不自动使所有已上线 locale stale。route change 显式映射，ambiguous 停止人工确认。
+当前 pre-real-data 66-locale commercial execution order 已由唯一 planning authority [Locale 路线图](LOCALE_ROADMAP.md#5-跨项目-66-locale-广告收入潜力默认执行顺序) 冻结，Site v2 campaign 现在已有确定默认顺序。当前 Go source 仍为官方 generic `lang="en"`，仅在 commercial scheduling 层视为覆盖并跳过 rank 1 `en-US`，第一个实际商业 target 为 rank 2 `zh-CN`；不新增 `en-US` Go locale，不改变 current 65 Production identity、frozen English source authority 或 V2-C1 deferred 条件。V2-C1 后有足够真实运行数据时，仍可按路线图执行一次 empirical re-ranking；它与当前冻结执行顺序分离，此前不反复调整基础顺序。
+
+V2-C1 后逐 package/file/route/dependency/content-unit 比较；unaffected translation/review/QC/SEO/Surface 继续复用，使用 V2-B glossary compatibility/freshness lineage，仅 affected scope reopen/revision/re-QC/Surface refresh。historical evidence 不改写，全量重译不是默认恢复方案，whole upstream commit 变化不自动使所有已上线 locale stale。route change 显式映射，ambiguous 停止人工确认。
 
 Tour 的 persistent page identity、`present.Section` TranslationUnit 与 source-stale contract继续保留。Learn/Docs Markdown/HTML/YAML 使用 surface-specific parser/content-unit identity。V2-A snapshot 是 pre-V2-C1 正式冻结 baseline；基于它通过全部 gate 的 locale 不因 V2-C1 尚未执行而不合法。
 

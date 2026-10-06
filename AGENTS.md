@@ -8,6 +8,8 @@ Site v2 architecture、Content Scope、增量 content package、coverage-aware r
 
 当用户要求评估 locale 商业优先级或选择下一门语言时，Codex 必须先读取 `docs/LOCALE_ROADMAP.md`。用户未明确指定 locale 的新增任务也先按该路线图选择；单门 locale 的正式执行仍以 `docs/NEW_LOCALE_RUNBOOK.md` 为准。
 
+locale 商业选择使用路线图当前冻结的 66-locale cross-project commercial execution order；canonical source 已覆盖的目标跳过，其余相对顺序不变。当前 Go generic `en` 仅在 commercial scheduling 层跳过 `en-US`，从 `zh-CN` 开始，不改变正式 Go source authority 或 65-locale Production scope。project-specific strategic override 只有维护者明确授权时才使用，不修改 base commercial order。
+
 当用户要求新增一门语言、建立新 locale、准备新语言首次上线或评估新 locale 完成度时，Codex 必须先读取：
 
 1. `docs/NEW_LOCALE_RUNBOOK.md`
