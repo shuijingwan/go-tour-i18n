@@ -1,16 +1,16 @@
-# go-tour-i18n
+# Go Learning & Documentation Translations
 
 [简体中文](README.md) | **English**
 
-## About the project
+`go-tour-i18n` remains the legacy-stable technical repository name. The public project name is **Go Learning & Documentation Translations**.
 
-`go-tour-i18n` is a community-maintained, unofficial project for translating, validating, synchronizing, and publishing a multilingual [A Tour of Go](https://go.dev/tour/).
+This is a community-maintained, unofficial localization project for Go learning and documentation content. It began with A Tour of Go and now extends to the site shell, Learn, Docs, and future content packages under one versionless locale, terminology, independent-review, validation, and publication system.
 
-The project is not maintained by Google, the Go team, or go.dev, and no affiliation, endorsement, or sponsorship is implied. Its source code and original Tour content come from the official Go project upstream.
+The project is not maintained by Google, the Go team, or go.dev, and no affiliation, authorization, endorsement, or sponsorship is implied. English source authority comes from official Go content; Site v2 / Learn / Docs currently use the repository's formally frozen source baseline.
 
-## Live translations
+## Live language versions
 
-Community-maintained translations currently in production:
+The Go project currently has **65 community Production locales**. The public sites below follow the same presentation order used by the project homepage:
 
 <!-- live-locales:start -->
 - [Amharic — አማርኛ](https://am-go-dev.shuijingwanwq.com/)
@@ -80,34 +80,92 @@ Community-maintained translations currently in production:
 - [Vietnamese — Tiếng Việt](https://vi-go-dev.shuijingwanwq.com/)
 <!-- live-locales:end -->
 
-- Official English version: [A Tour of Go](https://go.dev/tour/)
+- Official English content: [Go](https://go.dev/) / [A Tour of Go](https://go.dev/tour/)
+- Development log: [Go Learning & Documentation Translations](https://en.shuijingwanwq.com/series/go-tour-chinese-edition-development-series-en/)
 - Bug reports and feedback: [GitHub Issues](https://github.com/shuijingwan/go-tour-i18n/issues)
-- Project development blog (primarily in Chinese): [A Tour of Go multilingual translation project](https://www.shuijingwanwq.com/series/go-tour-chinese-edition-development-series/)
 
-The current production lifecycle and public URL for every community locale are defined by [`production/identity.json`](production/identity.json), the sole machine authority for production identity.
+The formal hostname, CDN, service, and Production lifecycle for every community locale are defined by [`production/identity.json`](production/identity.json), the sole machine authority for Production identity. Stable technical identities such as `go-tour-i18n`, the Go module, `cmd/tour-i18n`, existing hostnames, and Production infrastructure are intentionally preserved as the public project scope expands.
 
-## How the project works
+## Project scope
 
-The repository maintains a fixed upstream Tour baseline and a repeatable path from source to each language site:
+The project uses a **Versionless Locale Architecture**: v1 / v2 / v3 are implementation or content-package milestones, not language-governance namespaces. Each locale keeps one continuing identity, unified glossary, Generation / Reviewer provenance, and trusted historical results.
 
-1. synchronize and audit source changes from the official Go repository;
-2. translate complete, versioned TranslationUnits using locale-specific terminology;
-3. validate structure, protected content, metadata, UI text, and runnable examples;
-4. perform per-TranslationUnit quality review before promotion;
-5. build, verify, and publish a complete locale only after its required content is ready; and
-6. continue multilingual maintenance as upstream content and locale coverage evolve.
+Current formal content scope includes:
 
-For maintainer-level details, see the [translation workflow](docs/TRANSLATION_WORKFLOW.md), [new-locale runbook](docs/NEW_LOCALE_RUNBOOK.md), [locale surface review](docs/LOCALE_SURFACE_REVIEW.md), and [production runbook](docs/PRODUCTION_RUNBOOK.md).
+- `tour-v1`: A Tour of Go, with public canonical routes under `/tour/**`;
+- `site-v2-shell`: the localized homepage `/` and project information page `/translation/`;
+- `learn-docs-v1`: Learn, Tutorial, Database, Modules, and Security;
+- future content packages: added through the formal source registry without creating a separate language-governance system.
 
-## Project status and maintenance
+Each locale permanently uses a single `locales/<locale>/glossary.yaml`. When a new package is added, trusted unchanged results are carried forward; only genuinely new, stale, or affected scope is reopened.
 
-The project is actively maintained, and its language coverage continues to expand. The live translation list above is generated from the current production identity and language registry; detailed lifecycle state remains in [`production/identity.json`](production/identity.json) rather than being duplicated here. Broader implementation and maintenance context is available in [PROJECT_STATE.md](docs/PROJECT_STATE.md).
+## Current status
 
-## Upstream and third-party components
+- 65 community locales are currently `production_state=live`.
+- The mature Tour package remains existing Production coverage; Site v2 expands on top of it instead of redoing trusted unchanged Tour work.
+- The current frozen English source authority for Site v2 is `golang/website@db076098077c07d3cef1b85a2cf56ff52777f587`.
+- `learn-docs-v1` currently contains 49 complete Page TranslationUnits; structured assets separately cover the site shell and Learn data.
+- V2-C1 upstream sync remains deferred until the maintainer explicitly reopens it for one formal reconciliation.
+- Site v2 locale scheduling follows the current planning authority in [`docs/LOCALE_ROADMAP.md`](docs/LOCALE_ROADMAP.md).
 
-The Tour baseline is synchronized from the official [`golang/website`](https://github.com/golang/website) repository. Source provenance and synchronization policy are documented in [UPSTREAM.md](UPSTREAM.md) and [UPSTREAM_MANIFEST.tsv](UPSTREAM_MANIFEST.tsv).
+For the current detailed project state, see [`docs/PROJECT_STATE.md`](docs/PROJECT_STATE.md).
 
-Some historical frontend components are imported unchanged. Their versions and license information are recorded in [THIRD_PARTY.md](THIRD_PARTY.md).
+## Translation and review workflow
+
+Formal localization does not end when a model produces text. The core workflow is:
+
+```text
+Unified Glossary Generation / Refresh
+→ Independent Unified Glossary Review
+→ Structured Assets / TranslationUnit Generation
+→ automatic validation
+→ Independent TranslationUnit QC
+→ exact revision / re-QC
+→ A-only finalization
+→ package closure
+→ Integrated Surface Review
+→ activation
+→ Preview / Production
+```
+
+Generation and Reviewer sessions must remain independent. Reviewers provide findings, ratings, and decisions only; they do not generate their own replacements. Page, Example, structured-asset, Surface, and Production gates are governed by the current formal workflow and runbooks.
+
+Maintainer entry points:
+
+- [Project collaboration guide](AGENTS.md)
+- [Formal workflow handoff contract](docs/WORKFLOW_HANDOFF.md)
+- [Site v2 Architecture](docs/SITE_V2_ARCHITECTURE.md)
+- [Site v2 Workflow](docs/SITE_V2_WORKFLOW.md)
+- [Translation workflow](docs/TRANSLATION_WORKFLOW.md)
+- [Translation task specification](docs/TRANSLATION_TASK_SPEC.md)
+- [Glossary Review](docs/GLOSSARY_REVIEW.md)
+- [Locale Surface Review](docs/LOCALE_SURFACE_REVIEW.md)
+- [Production Runbook](docs/PRODUCTION_RUNBOOK.md)
+
+## Local development
+
+Use the Go toolchain required by the current repository. From the repository root, the local Tour runtime can be started with:
+
+```bash
+go run -mod=readonly ./tour -http 127.0.0.1:3999 -openbrowser=false
+```
+
+Then open <http://127.0.0.1:3999/tour/>.
+
+> **Security warning:** the local Tour `/socket` can execute example code using the Go environment on the machine running the Tour. It is for local development only, should remain bound to loopback, and must not be exposed directly to the public internet. Production uses the formal remote execution path instead.
+
+Repository coding and documentation work should follow the targeted-test policy in [`AGENTS.md`](AGENTS.md) rather than mechanically expanding into repository-wide lifecycle tests.
+
+## Upstream sources
+
+- Official repository: <https://github.com/golang/website.git>
+- Current frozen source commit: `db076098077c07d3cef1b85a2cf56ff52777f587`
+- Source / package / content-scope authority: [`docs/SITE_V2_ARCHITECTURE.md`](docs/SITE_V2_ARCHITECTURE.md) and [`docs/SITE_V2_WORKFLOW.md`](docs/SITE_V2_WORKFLOW.md)
+- Historical Tour synchronization and per-file provenance: [UPSTREAM.md](UPSTREAM.md) and [UPSTREAM_MANIFEST.tsv](UPSTREAM_MANIFEST.tsv)
+
+## Third-party components
+
+Historical Tour frontend components and their license evidence are documented in [THIRD_PARTY.md](THIRD_PARTY.md).
 
 ## Support the project
 
@@ -150,8 +208,6 @@ Users on the same exchange may use its internal transfer feature with the UID wh
 
 `go-dev-project`
 
-If the payment service supports a note, reference, or memo field, this value can be used.
-
 ## License
 
-The upstream source code and Tour content use the BSD-style [LICENSE](LICENSE) included in this repository. Unless stated otherwise, translations, tools, and documentation created for this project are provided under the same license. [PATENTS](PATENTS) contains the upstream patent grant, while third-party code and assets remain subject to their own licenses as documented in [THIRD_PARTY.md](THIRD_PARTY.md).
+Project code is licensed under the [BSD 3-Clause License](LICENSE). Official Go upstream content and third-party components remain subject to their respective licenses and provenance notices.

@@ -16,7 +16,7 @@ V2-D runtime / shell与Learn-Docs content-unit / transport / independent QC / at
 
 ## 1. 版本、命名与职责边界
 
-canonical English public project name：**Go Learning & Documentation Translations**；中文维护语义：**Go 学习与文档多语言翻译项目**。这是 public / user-visible identity，不是技术身份迁移。V2-A 只冻结命名 contract，不修改现有 Tour 文案与其审核证据；后续正式 Site surfaces 才生成/审核新文案。
+canonical English public project name：**Go Learning & Documentation Translations**；中文维护语义：**Go 学习与文档多语言本地化项目**。这是 public / user-visible identity，不是技术身份迁移。V2-A 只冻结命名 contract，不修改现有 Tour 文案与其审核证据；后续正式 Site surfaces 才生成/审核新文案。
 
 | Identity | 语义 | Coverage |
 | --- | --- | --- |
