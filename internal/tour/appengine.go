@@ -37,7 +37,7 @@ func registerHandlersLocaleWithRuntimeHead(mux *http.ServeMux, locale, playgroun
 	adHTML = ""
 	if includeRuntimeHead {
 		analyticsHTML = template.HTML(os.Getenv("TOUR_ANALYTICS"))
-		if tourpolicy.ForLocale(locale).TourAdsEnabled() {
+		if tourpolicy.AdvertisingForLocale(locale).TourAdsEnabled() {
 			adHTML = template.HTML(os.Getenv("TOUR_AD_HTML"))
 		}
 	}

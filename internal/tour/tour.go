@@ -199,7 +199,7 @@ func newPageTemplateData(catalog ui.Catalog, metadata SiteMetadata) (pageTemplat
 		Languages:                languages,
 		CurrentLanguage:          currentLanguage,
 		SEOOrigin:                seoOrigin,
-		TourAdsEnabled:           tourpolicy.ForLocale(catalog.Locale).TourAdsEnabled(),
+		TourAdsEnabled:           tourpolicy.AdvertisingForLocale(catalog.Locale).TourAdsEnabled(),
 		OwnerContentLinksEnabled: tourpolicy.ForLocale(catalog.Locale).OwnerContentLinksEnabled(),
 		Support:                  support,
 	}, nil
@@ -309,7 +309,7 @@ func renderHome(catalog ui.Catalog, metadata SiteMetadata) ([]byte, error) {
 }
 
 func adHTMLForLocale(locale string) template.HTML {
-	if !tourpolicy.ForLocale(locale).TourAdsEnabled() {
+	if !tourpolicy.AdvertisingForLocale(locale).TourAdsEnabled() {
 		return ""
 	}
 	return adHTML
@@ -523,7 +523,7 @@ func footerHandler(w http.ResponseWriter, r *http.Request) {
 func initScript(mux *http.ServeMux, socketAddr, transport, playgroundBaseURL string, catalog ui.Catalog, descriptions map[string]string, courseMetadataRequired bool) error {
 	modTime := time.Now()
 	b := new(bytes.Buffer)
-	bootstrap, err := jsBootstrap(catalog, descriptions, courseMetadataRequired, tourpolicy.ForLocale(catalog.Locale))
+	bootstrap, err := jsBootstrap(catalog, descriptions, courseMetadataRequired, tourpolicy.AdvertisingForLocale(catalog.Locale))
 	if err != nil {
 		return err
 	}
@@ -619,7 +619,7 @@ var jsModules = []struct {
 	{"concurrency", "module.concurrency.title", "module.concurrency.description"},
 }
 
-func jsBootstrap(catalog ui.Catalog, descriptions map[string]string, courseMetadataRequired bool, policy tourpolicy.Publication) ([]byte, error) {
+func jsBootstrap(catalog ui.Catalog, descriptions map[string]string, courseMetadataRequired bool, policy tourpolicy.Advertising) ([]byte, error) {
 	i18n, err := jsI18nBootstrap(catalog)
 	if err != nil {
 		return nil, err
@@ -636,7 +636,7 @@ func jsBootstrap(catalog ui.Catalog, descriptions map[string]string, courseMetad
 		TourAdsEnabled bool `json:"tourAdsEnabled"`
 	}{policy.TourAdsEnabled()})
 	if err != nil {
-		return nil, fmt.Errorf("encode Tour publication policy: %w", err)
+		return nil, fmt.Errorf("encode Tour advertising policy: %w", err)
 	}
 	result := append(i18n, modules...)
 	result = append(result, seo...)

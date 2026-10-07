@@ -289,6 +289,10 @@ func TestProductionHandlerAdHTMLConfiguration(t *testing.T) {
 	}{
 		{name: "go-local disabled", locale: "zh-CN", tourCount: 0},
 		{name: "go-local ignores configured HTML", locale: "zh-CN", value: marker, tourCount: 0},
+		{name: "sw ads-unsupported ignores configured HTML", locale: "sw-TZ", value: marker, tourCount: 0},
+		{name: "kk ads-unsupported ignores configured HTML", locale: "kk-KZ", value: marker, tourCount: 0},
+		{name: "fa ads-unsupported ignores configured HTML", locale: "fa-IR", value: marker, tourCount: 0},
+		{name: "am ads-unsupported ignores configured HTML", locale: "am-ET", value: marker, tourCount: 0},
 		{name: "standard disabled", locale: "ja-JP", tourCount: 0},
 		{name: "standard enabled", locale: "ja-JP", value: marker, tourCount: 1},
 	} {

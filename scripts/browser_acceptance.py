@@ -112,10 +112,16 @@ def publication_policy(locale):
         policy = json.loads(result.stdout)
     except json.JSONDecodeError as exc:
         raise BrowserFailure(f"read publication policy for {locale}: invalid JSON") from exc
-    if (not isinstance(policy, dict) or set(policy) != {"locale", "publication", "tour_ads_enabled"} or
+    if (not isinstance(policy, dict) or set(policy) != {"locale", "publication", "advertising", "tour_ads_enabled"} or
             policy["locale"] != locale or policy["publication"] not in ("standard", "go-local") or
+            policy["advertising"] not in ("ads-unsupported", "go-local", "standard") or
             not isinstance(policy["tour_ads_enabled"], bool)):
         raise BrowserFailure(f"read publication policy for {locale}: invalid result {policy!r}")
+    expected_ads = policy["advertising"] == "standard"
+    if policy["tour_ads_enabled"] != expected_ads:
+        raise BrowserFailure(f"read publication policy for {locale}: inconsistent advertising result {policy!r}")
+    if policy["advertising"] == "go-local" and policy["publication"] != "go-local":
+        raise BrowserFailure(f"read publication policy for {locale}: go-local advertising without go-local publication")
     return policy
 
 
@@ -1055,7 +1061,7 @@ def acceptance(base, locale, profile, shared, proxy_server=None):
                             f"editor browser identity failed: {snapshot}")
                 validate_desktop_course_layout(chrome)
                 assert_true(browser_ad_gate(snapshot, chrome.network_requests(), policy["tour_ads_enabled"]),
-                            f"editor/ad browser identity failed for publication={policy['publication']}: editor={snapshot}")
+                            f"editor/ad browser identity failed for publication={policy['publication']} advertising={policy['advertising']}: editor={snapshot}")
                 if profile["shared_assets_policy"] == "shared-cloudflare":
                     assert_true(snapshot["shared"], "shared assets were not requested")
                 return snapshot
@@ -1190,7 +1196,7 @@ def preview_acceptance(base, locale, profile, shared, registry, descriptions, li
                     validate_mobile_course_editor_layout(chrome)
                 if not policy["tour_ads_enabled"]:
                     assert_true(browser_ad_gate(editor, chrome.network_requests(), False),
-                                f"go-local preview retains Tour ad surface: {editor}")
+                                f"no-ad preview retains Tour ad surface: {editor}")
                 return editor
 
             wait_for_condition(preview_editor_ready, "preview editor dependency convergence")

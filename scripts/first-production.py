@@ -194,6 +194,34 @@ def release_locale(release_dir: pathlib.Path) -> str:
     return locale
 
 
+def publication_policy(locale: str) -> dict:
+    command = ["go", "run", "-mod=readonly", "./cmd/tour-i18n", "policy", "publication", "--locale", locale]
+    try:
+        result = subprocess.run(command, cwd=ROOT, text=True, capture_output=True, timeout=60, check=False)
+    except (OSError, subprocess.SubprocessError) as exc:
+        raise FirstProductionError("preflight", "current publication/advertising policy", str(exc), "修复 policy publication current-check") from exc
+    if result.returncode != 0:
+        raise FirstProductionError(
+            "preflight", "current publication/advertising policy",
+            f"exit={result.returncode} stderr={result.stderr.strip()!r}",
+            "修复 policy publication current-check",
+        )
+    try:
+        policy = json.loads(result.stdout)
+    except json.JSONDecodeError as exc:
+        raise FirstProductionError("preflight", "valid publication/advertising policy JSON", str(exc), "修复 policy publication current-check") from exc
+    if (not isinstance(policy, dict) or set(policy) != {"locale", "publication", "advertising", "tour_ads_enabled"} or
+            policy.get("locale") != locale or policy.get("publication") not in ("standard", "go-local") or
+            policy.get("advertising") not in ("ads-unsupported", "go-local", "standard") or
+            not isinstance(policy.get("tour_ads_enabled"), bool)):
+        raise FirstProductionError("preflight", "valid publication/advertising policy", repr(policy), "修复 policy publication current-check")
+    if policy["tour_ads_enabled"] != (policy["advertising"] == "standard"):
+        raise FirstProductionError("preflight", "advertising/tour_ads_enabled consistency", repr(policy), "修复 advertising authority")
+    if policy["advertising"] == "go-local" and policy["publication"] != "go-local":
+        raise FirstProductionError("preflight", "go-local advertising requires go-local publication", repr(policy), "修复 advertising authority")
+    return policy
+
+
 def safe_release_name(release_dir: pathlib.Path) -> str:
     name = release_dir.name
     if not name.startswith("go-tour-release-"):
@@ -403,12 +431,14 @@ validate_local_release "$1" >/dev/null
         expected_remote = f'{p["releases_root"]}/{self.release_name}'
         expected_unit_sha = hashlib.sha256(systemd_unit_text(p).encode()).hexdigest()
         expected_vhost_sha = hashlib.sha256(nginx_vhost_text(p).encode()).hexdigest()
+        policy = publication_policy(self.locale)
+        tour_ads_enabled = "1" if policy["tour_ads_enabled"] else "0"
         script = r'''set -Eeuo pipefail
 data_root=$1; releases=$2; current=$3; lock=$4; service=$5; user=$6; port=$7
 health=$8; env_file=$9; vhost=${10}; cert=${11}; key=${12}; hostname=${13}
 secret=${14}; zone=${15}; origin_ip=${16}; expected_remote=${17}; resume_deployed=${18}
 expected_unit_sha=${19}; expected_vhost_sha=${20}
-nginx=${21}; cf_socks=${22}
+nginx=${21}; cf_socks=${22}; tour_ads_enabled=${23}
 fail() { printf '[first-production:aliyun] ERROR: %s\n' "$*" >&2; exit 1; }
 [[ $(id -u) == 0 ]] || fail 'SSH account must be root'
 for command_name in base64 chown chmod curl dirname grep id install mktemp mv openssl python3 readlink service sha256sum ss stat systemctl; do command -v "$command_name" >/dev/null || fail "missing tool: $command_name"; done
@@ -419,7 +449,11 @@ set -a; . "$secret"; set +a
 [[ -n ${CF_Token:-} ]] || fail "Cloudflare secret source does not define non-empty CF_Token: $secret"
 [[ -f $env_file && ! -L $env_file && $(stat -c '%U:%G %a' "$env_file") == 'root:root 600' ]] || fail "EnvironmentFile must be root:root mode 0600: $env_file"
 set -a; . "$env_file"; set +a
-[[ -n ${TOUR_AD_HTML:-} ]] || fail 'TOUR_AD_HTML is missing or empty (value is not printed)'
+if [[ $tour_ads_enabled == 1 ]]; then
+  [[ -n ${TOUR_AD_HTML:-} ]] || fail 'TOUR_AD_HTML is missing or empty for an advertising-enabled locale (value is not printed)'
+elif [[ $tour_ads_enabled != 0 ]]; then
+  fail "invalid tour advertising gate: $tour_ads_enabled"
+fi
 id "$user" >/dev/null 2>&1 || fail "service user missing: $user"
 if [[ -e $data_root || -L $data_root ]]; then
   [[ -d $data_root && ! -L $data_root && $(readlink -f "$data_root") == "$data_root" ]] || fail "invalid data root: $data_root"
@@ -546,6 +580,7 @@ printf 'zone_id=%s\n' "$zone_id"
             s["cloudflare_secret_file"], s["cloudflare_zone_name"], p["origin_ip"],
             expected_remote, resume_deployed, expected_unit_sha, expected_vhost_sha,
             ALIYUN_ONEINSTACK_NGINX, f"127.0.0.1:{self.cf_socks_aliyun_port}",
+            tour_ads_enabled,
         ), capture=True, stage="preflight")
 
     def zgocloud_preflight(self):

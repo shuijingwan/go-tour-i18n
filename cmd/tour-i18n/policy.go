@@ -19,12 +19,14 @@ func publicationPolicyCommand(args []string) error {
 	if *locale == "" || len(fs.Args()) != 0 {
 		return fmt.Errorf("usage: tour-i18n policy publication --locale <locale>")
 	}
-	policy := tourpolicy.ForLocale(*locale)
+	publication := tourpolicy.ForLocale(*locale)
+	advertising := tourpolicy.AdvertisingForLocale(*locale)
 	result, err := json.Marshal(struct {
 		Locale         string                 `json:"locale"`
 		Publication    tourpolicy.Publication `json:"publication"`
+		Advertising    tourpolicy.Advertising `json:"advertising"`
 		TourAdsEnabled bool                   `json:"tour_ads_enabled"`
-	}{*locale, policy, policy.TourAdsEnabled()})
+	}{*locale, publication, advertising, advertising.TourAdsEnabled()})
 	if err != nil {
 		return fmt.Errorf("encode publication policy: %w", err)
 	}

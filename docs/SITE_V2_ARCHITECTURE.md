@@ -150,17 +150,19 @@ V2-B 要覆盖上述 Snapshot reader、scope、effective QC、reviewer/finalizat
 
 shared-authority cleanup debt：`internal/sitecontent` 当前暂时复用 `internal/tour.FrozenUpstreamCommit`。在 V2-B freshness projection 完成前不为中性化常量改动 `internal/tour/project.go`，避免制造新的 whole-file Surface stale；后续共享 authority cleanup 不属于 V2-A repair。
 
-## 9. Advertising / publication 目标（未实现）
+## 9. Advertising / publication
 
-本轮不改变 `internal/tourpolicy`、AdSense/config 或 Tour runtime semantics；现有 publication/reachability agreement继续有效。
+`internal/tourpolicy` 是 publication 与 advertising classification 的共享正式 authority。两个维度彼此独立：`Publication` 继续决定 GoLocal publication / owner-content/navigation semantics；`Advertising` 单独决定广告资格。不得为了无广告把 locale 伪装成 `GoLocal`，也不得从 locale tag、语言名称、广告平台列表或网络查询动态推断 advertising classification。
 
-| 显式 policy | `/` | `/translation/` | `/tour/**` | 正式 Learn / Docs / 其他 Site v2 pages |
+维护者于 2026-10-07 正式冻结 `AdsUnsupported` explicit locale set：`sw-TZ`、`kk-KZ`、`fa-IR`、`am-ET`。四门的 publication 仍为 `Standard`。`GoLocal` 仍且仅为 `zh-CN`、`fr-FR`、`de-DE`、`ko-KR`。
+
+| 显式 advertising policy | `/` | `/translation/` | `/tour/**` | 正式 Learn / Docs / 其他 Site v2 pages |
 | --- | --- | --- | --- | --- |
-| `AdsUnsupported` | 无广告 | 无广告 | 无广告 | 全站无广告 |
+| `AdsUnsupported`：`sw-TZ`、`kk-KZ`、`fa-IR`、`am-ET` | 无广告 | 无广告 | 无广告 | 全站无广告 |
 | `GoLocal`：`zh-CN`、`fr-FR`、`de-DE`、`ko-KR` | 无广告 | 无广告 | 无广告 | 允许广告，仍满足现有 GoLocal agreement |
 | `Standard` | 无广告 | 无广告 | 允许广告 | 允许广告，除非更高显式 policy 禁止 |
 
-preference：**AdsUnsupported > GoLocal > Standard**。目前另有 4 门 Google Ads 不支持的 locale，本轮不猜代码、不从语言 tag/路线图推导、不冻结名单。首次 Site v2 locale Production 前必须依据正式广告配置及真实支持情况冻结显式 locale set。`/translation/` 和其他站内页面不得绕过 GoLocal Tour policy。最终广告 runtime 最迟第一门 Site v2 / learn-docs-v1 locale Production 前实现并通过 machine/browser gates；V2-A 只记录目标。
+优先级：**AdsUnsupported > GoLocal > Standard**。Site v2 `AdPolicy` 与旧 Tour runtime 都投影同一 `internal/tourpolicy` advertising authority，不维护第二份 unsupported locale list。`/translation/` 和其他站内页面不得绕过 GoLocal Tour policy；`AdsUnsupported` 则在所有 current/future local surfaces 禁止广告。原“unsupported explicit locale set 尚未冻结”的 Production blocker 已解除；machine/browser/first-production gate 必须按该共享 authority 验证。
 
 ## 10. Upstream contract 与 deferred V2-C1
 

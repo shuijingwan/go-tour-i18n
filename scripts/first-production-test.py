@@ -576,7 +576,8 @@ printf 200
     def test_aliyun_uses_formal_oneinstack_nginx_without_path_lookup(self):
         identity = FIRST.IDENTITY.load_identity(ROOT / "production" / "identity.json")
         instance = FIRST.Orchestrator.__new__(FIRST.Orchestrator)
-        instance.profile = next(profile for profile in identity["locales"] if profile["locale"] == "ko-KR")
+        instance.locale = "ko-KR"
+        instance.profile = next(profile for profile in identity["locales"] if profile["locale"] == instance.locale)
         instance.shared = identity["shared"]
         instance.cf_socks_aliyun_port = 1080
         instance.release_name = "20260902-ko-KR-test"
@@ -592,8 +593,9 @@ printf 200
         self.assertEqual(instance.aliyun_preflight(), "zone_id=test")
         host, preflight, args, _ = calls.pop()
         self.assertEqual(host, identity["shared"]["aliyun_ssh_alias"])
-        self.assertEqual(args[-2], FIRST.ALIYUN_ONEINSTACK_NGINX)
-        self.assertTrue(args[-1].startswith("127.0.0.1:"))
+        self.assertEqual(args[-3], FIRST.ALIYUN_ONEINSTACK_NGINX)
+        self.assertTrue(args[-2].startswith("127.0.0.1:"))
+        self.assertEqual(args[-1], "0")
         self.assertIn("nginx=${21}", preflight)
         self.assertIn('[[ -x $nginx ]]', preflight)
         self.assertNotIn(" mv nginx openssl ", preflight)
@@ -605,6 +607,49 @@ printf 200
         self.assertIn('if ! "$nginx" -t; then', infrastructure)
         self.assertIn('"$nginx" -t && service nginx reload', infrastructure)
         self.assertNotIn("if ! nginx -t", infrastructure)
+
+    def test_first_production_preflight_binds_tour_ad_requirement_to_shared_policy(self):
+        identity = FIRST.IDENTITY.load_identity(ROOT / "production" / "identity.json")
+        instance = FIRST.Orchestrator.__new__(FIRST.Orchestrator)
+        instance.shared = identity["shared"]
+        instance.cf_socks_aliyun_port = 1080
+        instance.release_name = "policy-test"
+        instance.stage_passed = lambda stage: False
+        calls = []
+
+        def fake_ssh(host, script, args=(), **kwargs):
+            calls.append((host, script, args, kwargs))
+            return "zone_id=test"
+
+        instance.ssh = fake_ssh
+        cases = (
+            ("sw-TZ", {"locale": "sw-TZ", "publication": "standard", "advertising": "ads-unsupported", "tour_ads_enabled": False}, "0"),
+            ("zh-CN", {"locale": "zh-CN", "publication": "go-local", "advertising": "go-local", "tour_ads_enabled": False}, "0"),
+            ("ja-JP", {"locale": "ja-JP", "publication": "standard", "advertising": "standard", "tour_ads_enabled": True}, "1"),
+        )
+        for locale, policy, expected in cases:
+            instance.locale = locale
+            instance.profile = next(profile for profile in identity["locales"] if profile["locale"] == locale)
+            with mock.patch.object(FIRST, "publication_policy", return_value=policy):
+                self.assertEqual(instance.aliyun_preflight(), "zone_id=test")
+            _, script, args, _ = calls.pop()
+            self.assertEqual(args[-1], expected)
+            self.assertIn("if [[ $tour_ads_enabled == 1 ]]; then", script)
+            self.assertIn("TOUR_AD_HTML is missing or empty for an advertising-enabled locale", script)
+
+    def test_publication_policy_reports_frozen_ads_unsupported_without_changing_publication(self):
+        for locale in ("sw-TZ", "kk-KZ", "fa-IR", "am-ET"):
+            policy = FIRST.publication_policy(locale)
+            self.assertEqual(BROWSER.CORE.publication_policy(locale), policy)
+            self.assertEqual(policy["publication"], "standard")
+            self.assertEqual(policy["advertising"], "ads-unsupported")
+            self.assertFalse(policy["tour_ads_enabled"])
+        go_local = FIRST.publication_policy("zh-CN")
+        self.assertEqual((go_local["publication"], go_local["advertising"], go_local["tour_ads_enabled"]),
+                         ("go-local", "go-local", False))
+        standard = FIRST.publication_policy("ja-JP")
+        self.assertEqual((standard["publication"], standard["advertising"], standard["tour_ads_enabled"]),
+                         ("standard", "standard", True))
 
     def test_zgocloud_uses_formal_oneinstack_nginx_for_preflight_mutation_and_recovery(self):
         identity = FIRST.IDENTITY.load_identity(ROOT / "production" / "identity.json")

@@ -11,10 +11,46 @@ func TestLocalePublicationPolicies(t *testing.T) {
 			t.Errorf("ForLocale(%q) = %q, want %q", locale, got, GoLocal)
 		}
 	}
-	for _, locale := range []string{"en", "pt-BR", "nl-NL", "es-ES", "es-419", "gu-IN", "da-DK", "fi-FI", "it-IT", "ja-JP", "kn-IN", "pa-IN", "sv-SE", "tr-TR", "zh-TW", "new-locale"} {
+	for _, locale := range []string{"en", "en-IN", "en-ZA", "he", "pt-BR", "nl-NL", "es-ES", "es-419", "gu-IN", "da-DK", "fi-FI", "it-IT", "ja-JP", "kn-IN", "pa-IN", "sv-SE", "tr-TR", "zh-TW", "new-locale"} {
 		if got := ForLocale(locale); got != Standard {
 			t.Errorf("ForLocale(%q) = %q, want %q", locale, got, Standard)
 		}
+	}
+}
+
+func TestLocaleAdvertisingPolicies(t *testing.T) {
+	if len(adsUnsupportedLocales) != 4 {
+		t.Fatalf("adsUnsupportedLocales count = %d, want 4", len(adsUnsupportedLocales))
+	}
+	for _, locale := range []string{"sw-TZ", "kk-KZ", "fa-IR", "am-ET"} {
+		if got := ForLocale(locale); got != Standard {
+			t.Errorf("ForLocale(%q) = %q, want Standard", locale, got)
+		}
+		if got := AdvertisingForLocale(locale); got != AdsUnsupported {
+			t.Errorf("AdvertisingForLocale(%q) = %q, want %q", locale, got, AdsUnsupported)
+		}
+		if AdvertisingForLocale(locale).TourAdsEnabled() {
+			t.Errorf("AdvertisingForLocale(%q) unexpectedly enables Tour ads", locale)
+		}
+		if !ForLocale(locale).OwnerContentLinksEnabled() {
+			t.Errorf("AdsUnsupported locale %q incorrectly inherited GoLocal owner-link restrictions", locale)
+		}
+	}
+	for _, locale := range []string{"zh-CN", "fr-FR", "de-DE", "ko-KR"} {
+		if got := AdvertisingForLocale(locale); got != AdsGoLocal || got.TourAdsEnabled() {
+			t.Errorf("AdvertisingForLocale(%q) = %q, want no-ad %q", locale, got, AdsGoLocal)
+		}
+	}
+	for _, locale := range []string{"ja-JP", "sv-SE", "tr-TR"} {
+		if got := AdvertisingForLocale(locale); got != AdsStandard || !got.TourAdsEnabled() {
+			t.Errorf("AdvertisingForLocale(%q) = %q, want ad-enabled %q", locale, got, AdsStandard)
+		}
+	}
+}
+
+func TestAdsUnsupportedPrecedesGoLocal(t *testing.T) {
+	if got := advertisingForLocale("zh-CN", map[string]bool{"zh-CN": true}); got != AdsUnsupported {
+		t.Fatalf("synthetic overlap = %q, want %q", got, AdsUnsupported)
 	}
 }
 
@@ -81,8 +117,18 @@ func TestReviewedOfficialTargetsAndFailClosedSiteContent(t *testing.T) {
 
 func TestUnknownOwnerTargetsRequireClassification(t *testing.T) {
 	for _, target := range []string{
+		"https://en-in-go-dev.shuijingwanwq.com/",
+		"https://en-za-go-dev.shuijingwanwq.com/",
+		"https://he-go-dev.shuijingwanwq.com/",
+	} {
+		if got := Classify(target); got != SiteHome {
+			t.Errorf("Classify(%q) = %q, want SiteHome", target, got)
+		}
+	}
+	for _, target := range []string{
 		"https://marketing.shuijingwanwq.com/offer",
 		"https://marketing-go-dev.shuijingwanwq.com/tour/",
+		"https://not-a-real-go-dev.shuijingwanwq.com/",
 		"https://fr-go-dev.shuijingwanwq.com/tour/welcome/1",
 		"https://go-dev.shuijingwanwq.com/tour/welcome/1",
 	} {
@@ -112,8 +158,10 @@ func TestReviewedLocaleHomeTargetsAreExact(t *testing.T) {
 		"https://nl-go-dev.shuijingwanwq.com/",
 		"https://en-au-go-dev.shuijingwanwq.com/",
 		"https://en-ca-go-dev.shuijingwanwq.com/",
+		"https://en-in-go-dev.shuijingwanwq.com/",
 		"https://en-gb-go-dev.shuijingwanwq.com/",
 		"https://en-sg-go-dev.shuijingwanwq.com/",
+		"https://en-za-go-dev.shuijingwanwq.com/",
 		"https://et-go-dev.shuijingwanwq.com/",
 		"https://fil-go-dev.shuijingwanwq.com/",
 		"https://fi-go-dev.shuijingwanwq.com/",
@@ -125,6 +173,7 @@ func TestReviewedLocaleHomeTargetsAreExact(t *testing.T) {
 		"https://el-go-dev.shuijingwanwq.com/",
 		"https://gu-go-dev.shuijingwanwq.com/",
 		"https://go-dev.shuijingwanwq.com/",
+		"https://he-go-dev.shuijingwanwq.com/",
 		"https://zh-sg-go-dev.shuijingwanwq.com/",
 		"https://hi-go-dev.shuijingwanwq.com/",
 		"https://hu-go-dev.shuijingwanwq.com/",

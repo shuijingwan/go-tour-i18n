@@ -106,7 +106,7 @@ existing Tour locale core expansion理想新增invocations（无revision）：Un
 
 保留已验收neutral opt-in `internal/site`：coverage由current Content Scope证据驱动；local covered canonical链接当前origin，未覆盖navigation直接go.dev；直接localmissing请求真实404。external URL原样；Security canonical `/doc/security/**`，legacyalias保持frozen exact/subtree fixed-target语义，只有targetlocalcovered才redirect。sitemap/canonical只含complete真实localcanonical，排除alias/data/assets/fallback。旧65Tour runtime不切换。
 
-Advertising优先级AdsUnsupported > GoLocal > Standard；GoLocal zh-CN/fr-FR/de-DE/ko-KR；homepage/translation永远无广告，GoLocal Tour无广告。**唯一advertising Production blocker**仍为维护者冻结unsupported explicit locale set；不猜语言tag、不联网推断。
+Advertising优先级 AdsUnsupported > GoLocal > Standard；`internal/tourpolicy` 是共享 classification authority。维护者已于 2026-10-07 冻结 AdsUnsupported exact set：sw-TZ/kk-KZ/fa-IR/am-ET，四门 publication 仍为 Standard；GoLocal 仍为 zh-CN/fr-FR/de-DE/ko-KR。homepage/translation 永远无广告，GoLocal Tour 无广告但 Learn/Docs 可按正式 Site policy 显示广告，AdsUnsupported 全站所有 current/future surfaces 无广告。原 unsupported-set Production blocker 已解除；不猜语言 tag、不联网推断、不另建第二份名单。
 
 futureC1：source/file/route/dependency/content-unit reconcile → rebuildonecorpus → onerefresh/review → compatibility → exactnew/stalegeneration/QC → integratedSurface → activation。unchangedcarry、removedretire、newgeneration、changedPage stale、ambiguousexplicitmapping；不以wholecommit invalidation65locale。internal slots保留精确diagnostics，formalPage是review/revision boundary。
 

@@ -274,6 +274,7 @@ func TestRenderedAssetURLsFollowLocaleAndEnvironment(t *testing.T) {
 		{"zh production", "zh-CN", production, ""},
 		{"ja preview", "ja-JP", development, ""},
 		{"ja production", "ja-JP", production, assets.BaseURL},
+		{"sw production no ads", "sw-TZ", production, assets.BaseURL},
 	} {
 		t.Run(test.name, func(t *testing.T) {
 			catalog, err := ui.Load(test.locale)
@@ -318,12 +319,11 @@ func TestRenderedAssetURLsFollowLocaleAndEnvironment(t *testing.T) {
 			} {
 				want := test.prefix + "/" + logicalPath
 				got := strings.Contains(string(index), want)
-				if test.locale == "zh-CN" {
-					if got {
-						t.Errorf("go-local Tour index unexpectedly includes ad asset URL %q", want)
-					}
-				} else if !got {
-					t.Errorf("standard Tour index does not use locale-selected ad asset URL %q", want)
+				adsEnabled := tourpolicy.AdvertisingForLocale(test.locale).TourAdsEnabled()
+				if !adsEnabled && got {
+					t.Errorf("%s Tour index unexpectedly includes ad asset URL %q", test.locale, want)
+				} else if adsEnabled && !got {
+					t.Errorf("%s ad-enabled Tour index does not use locale-selected ad asset URL %q", test.locale, want)
 				}
 			}
 		})
@@ -1594,6 +1594,7 @@ func TestRenderAdHTML(t *testing.T) {
 		{name: "go-local configured", locale: "zh-CN", value: `<script data-test="ad"></script>`},
 		{name: "standard empty", locale: "ja-JP", value: ""},
 		{name: "standard configured", locale: "ja-JP", value: `<script data-test="ad"></script>`, wantTour: true},
+		{name: "ads-unsupported configured", locale: "sw-TZ", value: `<script data-test="ad"></script>`},
 	} {
 		t.Run(test.name, func(t *testing.T) {
 			catalog, err := ui.Load(test.locale)
@@ -1634,7 +1635,7 @@ func TestTourPublicationRuntimePolicy(t *testing.T) {
 	adHTML = `<script data-test="ad"></script>`
 	hrefRE := regexp.MustCompile(`(?i)<a\b[^>]*\bhref="([^"]+)"`)
 
-	for _, locale := range []string{"zh-CN", "fr-FR", "de-DE", "ko-KR", "ja-JP", "sv-SE", "tr-TR", "zh-TW"} {
+	for _, locale := range []string{"zh-CN", "fr-FR", "de-DE", "ko-KR", "sw-TZ", "kk-KZ", "fa-IR", "am-ET", "ja-JP", "sv-SE", "tr-TR", "zh-TW"} {
 		t.Run(locale, func(t *testing.T) {
 			catalog, err := ui.Load(locale)
 			if err != nil {
@@ -1651,8 +1652,9 @@ func TestTourPublicationRuntimePolicy(t *testing.T) {
 				t.Fatal(err)
 			}
 			goLocal := tourpolicy.ForLocale(locale) == tourpolicy.GoLocal
+			adsEnabled := tourpolicy.AdvertisingForLocale(locale).TourAdsEnabled()
 			for pageName, page := range map[string]string{"home": string(home), "tour": string(index)} {
-				wantAd := pageName == "tour" && !goLocal
+				wantAd := pageName == "tour" && adsEnabled
 				if gotAd := strings.Contains(page, `data-test="ad"`); gotAd != wantAd {
 					t.Errorf("%s %s ad presence = %t, want %t", locale, pageName, gotAd, wantAd)
 				}
@@ -1674,11 +1676,11 @@ func TestTourPublicationRuntimePolicy(t *testing.T) {
 				t.Errorf("%s standard Tour omits development-log URL %q", locale, logURL)
 			}
 			adAsset := "tour/static/go-dev/course-ad"
-			if goLocal && strings.Contains(string(index), adAsset) {
-				t.Errorf("%s Tour includes course-ad assets", locale)
+			if !adsEnabled && strings.Contains(string(index), adAsset) {
+				t.Errorf("%s no-ad Tour includes course-ad assets", locale)
 			}
-			if !goLocal && !strings.Contains(string(index), adAsset) {
-				t.Errorf("%s standard Tour omits course-ad assets", locale)
+			if adsEnabled && !strings.Contains(string(index), adAsset) {
+				t.Errorf("%s ad-enabled Tour omits course-ad assets", locale)
 			}
 
 			mux := http.NewServeMux()
@@ -1689,7 +1691,7 @@ func TestTourPublicationRuntimePolicy(t *testing.T) {
 			mux.ServeHTTP(recorder, httptest.NewRequest(http.MethodGet, "/tour/script.js", nil))
 			script := recorder.Body.String()
 			wantPolicy := `"tourAdsEnabled":false`
-			if !goLocal {
+			if adsEnabled {
 				wantPolicy = `"tourAdsEnabled":true`
 			}
 			if !strings.Contains(script, wantPolicy) {

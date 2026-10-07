@@ -138,27 +138,44 @@ func TestSiteFoundationAliasesAndSitemap(t *testing.T) {
 	}
 }
 func TestSiteFoundationAdvertising(t *testing.T) {
-	p := AdPolicy{Unsupported: map[string]bool{"synthetic-unsupported": true, "zh-CN": true}}
-	if p.ForLocale("zh-CN") != AdsUnsupported || p.ForLocale("fr-FR") != GoLocal || p.ForLocale("ja-JP") != Standard {
-		t.Fatal("precedence")
+	p := AdPolicy{}
+	for _, locale := range []string{"sw-TZ", "kk-KZ", "fa-IR", "am-ET"} {
+		if p.ForLocale(locale) != AdsUnsupported {
+			t.Fatalf("%s advertising = %q, want %q", locale, p.ForLocale(locale), AdsUnsupported)
+		}
 	}
-	if p.ProductionPreflight() == nil {
-		t.Fatal("unfrozen explicit set passed")
+	if p.ForLocale("zh-CN") != GoLocal || p.ForLocale("fr-FR") != GoLocal || p.ForLocale("ja-JP") != Standard {
+		t.Fatal("advertising classification precedence")
 	}
-	for _, locale := range []string{"synthetic-unsupported", "zh-CN", "fr-FR", "ja-JP"} {
+	if err := p.ProductionPreflight(); err != nil {
+		t.Fatalf("frozen advertising authority failed preflight: %v", err)
+	}
+	for _, locale := range []string{"sw-TZ", "kk-KZ", "fa-IR", "am-ET", "zh-CN", "fr-FR", "ja-JP"} {
 		for _, route := range []string{"/", "/translation/"} {
 			if p.Enabled(locale, route, true) {
-				t.Fatal("shell ads")
+				t.Fatalf("%s %s unexpectedly enables shell ads", locale, route)
 			}
 		}
 	}
-	for _, locale := range []string{"zh-CN", "fr-FR", "de-DE", "ko-KR", "ja-JP", "sw-TZ", "kk-KZ", "fa-IR", "am-ET"} {
-		neutral := AdPolicy{}
-		if neutral.Enabled(locale, "/tour/basics/1", true) != tourpolicy.ForLocale(locale).TourAdsEnabled() {
-			t.Fatal("legacy Tour regression")
+	for _, locale := range []string{"sw-TZ", "kk-KZ", "fa-IR", "am-ET"} {
+		for _, route := range []string{"/tour/basics/1", "/learn/", "/doc/security/"} {
+			if p.Enabled(locale, route, true) {
+				t.Fatalf("%s %s unexpectedly enables ads", locale, route)
+			}
 		}
 	}
-	if !p.Enabled("fr-FR", "/doc/security/", true) || !p.Enabled("ja-JP", "/tour/", true) || p.Enabled("synthetic-unsupported", "/doc/security/", true) || p.Enabled("ja-JP", "/doc/security/", false) || p.Enabled("ja-JP", "/security/", true) {
-		t.Fatal("route ad policy")
+	for _, locale := range []string{"zh-CN", "fr-FR", "de-DE", "ko-KR"} {
+		if p.Enabled(locale, "/tour/basics/1", true) || !p.Enabled(locale, "/doc/security/", true) {
+			t.Fatalf("%s GoLocal route advertising mismatch", locale)
+		}
+	}
+	if !p.Enabled("ja-JP", "/tour/basics/1", true) || !p.Enabled("ja-JP", "/doc/security/", true) ||
+		p.Enabled("ja-JP", "/doc/security/", false) || p.Enabled("ja-JP", "/security/", true) {
+		t.Fatal("standard/coverage route ad policy")
+	}
+	for _, locale := range []string{"sw-TZ", "kk-KZ", "fa-IR", "am-ET"} {
+		if tourpolicy.ForLocale(locale) != tourpolicy.Standard {
+			t.Fatalf("%s publication changed from Standard", locale)
+		}
 	}
 }

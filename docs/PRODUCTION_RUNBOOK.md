@@ -68,7 +68,7 @@ TOUR_ANALYTICS='<Google Analytics HTML><Baidu Analytics HTML>'
 
 本地开发默认不设置该变量，因此不会加载生产统计代码。实际统计代码以及具体统计 ID 不写入 Git 仓库；公开前端标识也不在本手册中固定记录。
 
-Google AdSense 使用独立的 `TOUR_AD_HTML`。该变量包含 production AdSense HTML / loader；production runtime 将其视为受信任 HTML，注入每个完整页面的 HTML shell。实际 AdSense HTML、publisher ID 和完整变量值不写入 Git 仓库。
+Google AdSense 使用独立的 `TOUR_AD_HTML`。该变量包含 production AdSense HTML / loader；只有当前 shared advertising authority 判定 Tour 广告启用的 locale 才会读取并注入该受信任 HTML。`GoLocal` 与 `AdsUnsupported` runtime 即使环境文件中仍残留该变量，也必须忽略并不注入。实际 AdSense HTML、publisher ID 和完整变量值不写入 Git 仓库。
 
 当前课程页共享广告架构保持不变：课程 editor partial 提供手动 `course-ad` mount 容器，Angular route view 在 link / `$destroy` 时调用其 mount / unmount，模板加载课程广告 CSS/JS；该 helper 创建 responsive AdSense `ins` 并请求广告。当前课程广告正在运行 ABCD 自然流量实验：A/B/C/D 各 25%，同一浏览器 tab session 通过 `sessionStorage` 保持稳定，存储不可用时回退为当前 window 内存；A/B/C 分别限制容器最大宽度为 336/468/728px，D 保持不限制宽度的 Responsive 对照组。四组均保持 `data-ad-format="auto"` 和 `data-full-width-responsive="true"`，不使用固定尺寸广告。局部 layout protection 只移除 AdSense/Funding Choices 曾写入编辑器祖先的两种高度覆盖，以保持课程高度和 footer 布局。课程页广告资源与 Auto Ads 一起构成最终广告形态，并非“只注入 Auto Ads、不插入手工广告位”。本手册不重新设计这套共享广告架构。
 
@@ -91,27 +91,34 @@ Google AdSense 使用独立的 `TOUR_AD_HTML`。该变量包含 production AdSen
 EnvironmentFile=/etc/go-tour/go-tour.env
 ```
 
-目标 production service 必须引用包含有效 `TOUR_AD_HTML` 的正确 `EnvironmentFile`；该引用可以直接写在 unit 本体中，也可以由既有 drop-in 引入，新 locale 不要求为了形式统一额外创建 drop-in。新增或修改 systemd drop-in 时执行 `systemctl daemon-reload`；仅修改 `EnvironmentFile` 内容时，无需因文件内容变化本身执行 `daemon-reload`，但必须重启相关 production service，使新进程重新读取统计和广告环境变量。修改 `TOUR_AD_HTML` 后同样必须重启相关 production service 才会读取新值。不要在 shell 历史、发布包或其他仓库文件中复制完整统计或广告 HTML。
+目标 production service 必须引用正确的 `EnvironmentFile`；该引用可以直接写在 unit 本体中，也可以由既有 drop-in 引入，新 locale 不要求为了形式统一额外创建 drop-in。`Advertising=standard` 且 Tour 广告启用的 locale 必须在该文件中提供有效、非空 `TOUR_AD_HTML`；`GoLocal` / `AdsUnsupported` 不要求非空广告变量，并且 runtime 必须忽略可能残留的值。新增或修改 systemd drop-in 时执行 `systemctl daemon-reload`；仅修改 `EnvironmentFile` 内容时，无需因文件内容变化本身执行 `daemon-reload`，但必须重启相关 production service，使新进程重新读取统计和广告环境变量。修改 `TOUR_AD_HTML` 后同样必须重启相关 production service 才会读取新值。不要在 shell 历史、发布包或其他仓库文件中复制完整统计或广告 HTML。
 
 修改 `TOUR_ANALYTICS`、`TOUR_AD_HTML` 或其他影响 HTML shell 的内容后，必须在相关 service restart 后按“Production CDN 缓存策略”刷新对应 language hostname；不要仅根据源站验证或 `deploy-production.sh` 的 public HTTP 200 就判断新 release 已在全部 CDN 边缘节点生效。公开的 `/socket` 既有安全原则保持不变：production 不注册或开放本地 Socket transport，普通请求和 WebSocket Upgrade 均应保持 404。
 
 ### 广告职责、首次接入与最终验收边界
 
-publication policy 的唯一 authority 是 `internal/tourpolicy`：`standard` Tour 保持广告能力；`go-local` Tour 必须无广告。Auto Ads、课程页手动广告、Angular SPA mount/unmount 生命周期、局部 AdSense layout protection，以及覆盖这些行为的 browser tests，都是项目共享实现。新增 locale 不重新设计共享架构，也不把广告纳入 TranslationUnit 或 Locale-level language quality review。
+publication 与 advertising 是独立 policy 维度，共享唯一 authority `internal/tourpolicy`。`Publication` 中 `GoLocal` 仍且仅为 `zh-CN`、`fr-FR`、`de-DE`、`ko-KR`，继续控制既有 owner-content/navigation agreement；不得为了禁用广告把其他 locale 改成 GoLocal。`Advertising` 的维护者冻结优先级为 **AdsUnsupported > GoLocal > Standard**：
 
-`standard` locale 必须在**首次 production release 激活前**完成以下 production 广告接入准备：
+- `AdsUnsupported`：`sw-TZ`、`kk-KZ`、`fa-IR`、`am-ET`。四门 publication 仍为 `Standard`，但整个站点所有 current/future surfaces 均不得显示广告；
+- `GoLocal`：homepage、`/translation/`、Tour 无广告；Learn/Docs 可按正式 Site policy 显示广告；
+- `Standard`：homepage、`/translation/` 无广告；Tour 与正式 Learn/Docs 可显示广告。
 
-- 确认目标 locale 的 production service 引用包含有效 `TOUR_AD_HTML` 的正确 `EnvironmentFile`；该文件可由 unit 本体或既有 drop-in 引入，无需为新 locale 额外创建 drop-in；
+该 exact set 不从 locale tag、语言名称、Google/其他广告平台列表或联网查询动态推断；也不写入 `production/identity.json`。Auto Ads、课程页手动广告、Angular SPA mount/unmount 生命周期、局部 AdSense layout protection，以及覆盖这些行为的 browser tests，都是项目共享实现。新增 locale 不重新设计共享架构，也不把广告纳入 TranslationUnit 或 Locale-level language quality review。
+
+Tour 广告启用的 `Standard` locale 必须在**首次 production release 激活前**完成以下 production 广告接入准备：
+
+- 确认目标 locale 的 production service 引用正确 `EnvironmentFile`，并包含有效、非空 `TOUR_AD_HTML`；该文件可由 unit 本体或既有 drop-in 引入，无需为新 locale 额外创建 drop-in；
 - 完成 Auto Ads 所需的 production 配置；
-- 准备并验收课程广告 CSS/JS 的 production asset 来源（zh-CN 为同源；非中文 locale 按共享 assets 策略）；
-- 非中文 locale 使用 shared-assets 时，在首次上线前确认共享的 `course-ad.css` 与 `course-ad.js` 已部署，且已完成缓存验收；这项广告专项检查不能替代完整 14 文件 current-state freshness gate，后者按“非中文共享静态资源第一版”和 shared-assets 发布状态机执行。
+- 准备并验收课程广告 CSS/JS 的 production asset 来源（zh-CN 为同源历史布局，但 zh-CN 当前属于 GoLocal、不加载广告资源；非中文广告启用 locale 按共享 assets 策略）；
+- 非中文广告启用 locale 使用 shared-assets 时，在首次上线前确认共享的 `course-ad.css` 与 `course-ad.js` 已部署，且已完成缓存验收；这项广告专项检查不能替代完整 shared-assets current-state freshness gate。
 
-`go-local` locale 不接入上述 Tour 广告资源；其 production acceptance 改为证明 Tour 不存在广告 mount、slot、loader 或本项目广告 request opportunity。此阶段不改变首页或其他非 Tour 内容的既有策略。
+`GoLocal` 与 `AdsUnsupported` locale 不接入 Tour 广告 runtime；first-production preflight 仍要求正式 `EnvironmentFile` 本身存在、权限正确，但不得因 `TOUR_AD_HTML` 缺失/为空而失败。即使环境文件残留非空 `TOUR_AD_HTML`，runtime 也必须证明不注入 loader/HTML，不加载课程广告 CSS/JS，不初始化 mount/slot，也不产生本项目广告 request opportunity。`AdsUnsupported` 还要求 Site v2 Learn/Docs/future surfaces 同样保持无广告。
 
-首次 production 激活后，只在同一次最终 production acceptance 中按 publication policy 完成轻量广告确认，并记录在现有 `data/locale-surface-reviews/<locale>/<review-id>.md` 的 `production verification result`：
+首次 production 激活后，只在同一次最终 production acceptance 中按 shared advertising policy 完成轻量广告确认，并记录在现有 `data/locale-surface-reviews/<locale>/<review-id>.md` 的 `production verification result`：
 
-- `standard`：实际 production HTML 已加载或生成预期的 AdSense loader / Auto Ads head 配置，课程页存在手动广告 mount，浏览器存在真实广告请求机会；广告可为 filled 或 unfilled，不以填充为通过条件；
-- `go-local`：Tour 不存在 AdSense loader、已初始化的手动广告 mount/slot 或本项目广告 request opportunity；
+- `Standard` 且 Tour 广告启用：实际 production HTML 已加载或生成预期的 AdSense loader / Auto Ads head 配置，课程页存在手动广告 mount，浏览器存在真实广告请求机会；广告可为 filled 或 unfilled，不以填充为通过条件；
+- `GoLocal`：Tour 不存在 AdSense loader、已初始化的手动广告 mount/slot、`course-ad.js/css` request 或本项目广告 request opportunity；Learn/Docs 按正式 Site policy 单独判定；
+- `AdsUnsupported`：整个站点所有已覆盖 surface 均不存在广告 loader、已初始化 mount/slot、广告 helper request 或本项目广告 request opportunity；
 - 课程高度与 footer 没有明显布局异常；
 - SPA 跳到下一页正常。
 
@@ -231,7 +238,7 @@ scripts/recover-first-production-health-failure.sh \
 
 仍不健康时，通过全部检查后，命令原子暂存 `current` symlink、删除已验证为空的 lock，再删除暂存 symlink；若 lock 删除或 INT/TERM/HUP 期间失败则恢复 `current`。失败 release 一直保留作 evidence。恢复成功后先重新 publish 新 release，再对**新** release 运行 `scripts/first-production.sh`；旧 failed receipt 不删除、不复用，新 release 会建立新的 receipt 并从完整 preflight 重新开始。已经自行恢复健康时，命令保留 `current` 与同一不可变 release、删除已验证为空的 lock、记录 deploy PASS，并打印对**同一** release 重新运行 `scripts/first-production.sh` 的唯一 resume 命令；编排器会重新执行完整 preflight，然后从 direct-origin 及后续阶段继续。
 
-preflight 在任何 production mutation 前同时检查：正式 bundle 与 identity、**唯一** current Surface Review A gate 所指向的 Markdown evidence identity，以及完整唯一且未改写的 first-production finalization placeholder；多个 current A gate 不猜测“最新”而是 fail closed。TODO/unknown locale 间接由 publish/identity gate 拒绝、两台 SSH 和 root account、port/service/data-root/vhost/certificate 冲突、EnvironmentFile 与非空 `TOUR_AD_HTML`（不输出值）、Cloudflare secret 权限与变量、zone 唯一性、目标 DNS 无冲突、Playground 两个 location 的结构一致性，以及 shared-assets origin/public SHA-256 freshness。placeholder 语义由 `tour-i18n first-production evidence-preflight` 统一实现，编排器不自行解析 Markdown；finalize 还会验证其传入的 review-id 对应 gate 本身仍为 current。它重新 export/validate 当前仓库、对照 aliyun origin，并复用正式 shared-assets public verification core（zgocloud runner、HTTP 522/525 和 curl exit 28 的 bounded retry、14/14 SHA-256 与 boundary 404），不信任历史 receipt。任一项失败时，不建立目录、unit、证书、vhost、DNS 或 Origin。
+preflight 在任何 production mutation 前同时检查：正式 bundle 与 identity、**唯一** current Surface Review A gate 所指向的 Markdown evidence identity，以及完整唯一且未改写的 first-production finalization placeholder；多个 current A gate 不猜测“最新”而是 fail closed。TODO/unknown locale 间接由 publish/identity gate 拒绝、两台 SSH 和 root account、port/service/data-root/vhost/certificate 冲突、EnvironmentFile、shared advertising policy（仅 Tour 广告启用的 `Standard` locale 要求非空 `TOUR_AD_HTML`，不输出值）、Cloudflare secret 权限与变量、zone 唯一性、目标 DNS 无冲突、Playground 两个 location 的结构一致性，以及 shared-assets origin/public SHA-256 freshness。placeholder 语义由 `tour-i18n first-production evidence-preflight` 统一实现，编排器不自行解析 Markdown；finalize 还会验证其传入的 review-id 对应 gate 本身仍为 current。它重新 export/validate 当前仓库、对照 aliyun origin，并复用正式 shared-assets public verification core（zgocloud runner、HTTP 522/525 和 curl exit 28 的 bounded retry、14/14 SHA-256 与 boundary 404），不信任历史 receipt。任一项失败时，不建立目录、unit、证书、vhost、DNS 或 Origin。
 
 Cloudflare control-plane 专用网络通道也在 preflight 建立：调用机先以 invocation-scoped SSH `-D 127.0.0.1:<local-port>` 连接 zgocloud，再以 SSH `-R 127.0.0.1:<aliyun-port>:127.0.0.1:<local-port>` 连接 aliyun；两个 listener 都只绑定 loopback，且 `ExitOnForwardFailure=yes`/`GatewayPorts=no`。因此 aliyun 的 curl 经 `--socks5-hostname 127.0.0.1:<aliyun-port>` 从 zgocloud 出口完成 DNS 和 TCP，但 HTTPS/TLS 与 `Authorization: Bearer $CF_Token` 仍只在 aliyun 的 curl 进程和 Cloudflare 之间建立，调用机与 zgocloud 都看不到 token 明文。建链失败立即停止，绝不回退 aliyun 直连；正常、失败、INT、TERM、HUP 都关闭两个 ControlMaster 和转发 socket。该 endpoint、端口、token 和 tunnel 细节不写入 receipt 或日志。
 

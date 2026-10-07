@@ -2,9 +2,10 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package tourpolicy holds the publication policy shared by locale projection
-// and the Tour runtime. It intentionally classifies audited link targets by
-// their meaning instead of treating a URL prefix as proof of its destination.
+// Package tourpolicy holds the publication and advertising policy shared by
+// locale projection, Site v2, production verification, and the Tour runtime.
+// It intentionally classifies audited link targets by their meaning instead of
+// treating a URL prefix as proof of its destination.
 package tourpolicy
 
 import (
@@ -20,6 +21,27 @@ const (
 	GoLocal  Publication = "go-local"
 )
 
+// Advertising is independent from Publication. A locale can remain Standard
+// for owner-content/navigation semantics while advertising is explicitly
+// unsupported across the whole site.
+type Advertising string
+
+const (
+	AdsUnsupported Advertising = "ads-unsupported"
+	AdsGoLocal     Advertising = "go-local"
+	AdsStandard    Advertising = "standard"
+)
+
+// adsUnsupportedLocales is the single maintainer-frozen authority for locales
+// that must never expose advertising on any project surface. Do not infer this
+// set from language tags, advertising-provider support, or locale metadata.
+var adsUnsupportedLocales = map[string]bool{
+	"sw-TZ": true,
+	"kk-KZ": true,
+	"fa-IR": true,
+	"am-ET": true,
+}
+
 // ForLocale returns the explicit publication policy for a locale. Locales not
 // named here deliberately default to Standard; registry tests ensure every
 // supported locale has that default verified.
@@ -32,7 +54,21 @@ func ForLocale(locale string) Publication {
 	}
 }
 
-func (p Publication) TourAdsEnabled() bool { return p == Standard }
+func AdvertisingForLocale(locale string) Advertising {
+	return advertisingForLocale(locale, adsUnsupportedLocales)
+}
+
+func advertisingForLocale(locale string, unsupported map[string]bool) Advertising {
+	if unsupported[locale] {
+		return AdsUnsupported
+	}
+	if ForLocale(locale) == GoLocal {
+		return AdsGoLocal
+	}
+	return AdsStandard
+}
+
+func (p Advertising) TourAdsEnabled() bool { return p == AdsStandard }
 
 // OwnerContentLinksEnabled reports whether a Tour publication may link to
 // owner-controlled content sites. This is independent of whether a target has
@@ -82,8 +118,10 @@ var siteHomeTargets = map[string]bool{
 	"https://nl-go-dev.shuijingwanwq.com/":     true,
 	"https://en-au-go-dev.shuijingwanwq.com/":  true,
 	"https://en-ca-go-dev.shuijingwanwq.com/":  true,
+	"https://en-in-go-dev.shuijingwanwq.com/":  true,
 	"https://en-gb-go-dev.shuijingwanwq.com/":  true,
 	"https://en-sg-go-dev.shuijingwanwq.com/":  true,
+	"https://en-za-go-dev.shuijingwanwq.com/":  true,
 	"https://et-go-dev.shuijingwanwq.com/":     true,
 	"https://fil-go-dev.shuijingwanwq.com/":    true,
 	"https://fi-go-dev.shuijingwanwq.com/":     true,
@@ -95,6 +133,7 @@ var siteHomeTargets = map[string]bool{
 	"https://el-go-dev.shuijingwanwq.com/":     true,
 	"https://gu-go-dev.shuijingwanwq.com/":     true,
 	"https://go-dev.shuijingwanwq.com/":        true,
+	"https://he-go-dev.shuijingwanwq.com/":     true,
 	"https://zh-sg-go-dev.shuijingwanwq.com/":  true,
 	"https://hi-go-dev.shuijingwanwq.com/":     true,
 	"https://hu-go-dev.shuijingwanwq.com/":     true,

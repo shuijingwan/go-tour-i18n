@@ -217,10 +217,11 @@ class PreviewBrowserTest(unittest.TestCase):
         self.assertFalse(CORE.browser_ad_gate(standard, ad_request, False))
 
     def test_browser_policy_bridge_uses_go_authority(self):
-        result = mock.Mock(returncode=0, stdout='{"locale":"example","publication":"go-local","tour_ads_enabled":false}\n', stderr="")
+        result = mock.Mock(returncode=0, stdout='{"locale":"example","publication":"go-local","advertising":"go-local","tour_ads_enabled":false}\n', stderr="")
         with mock.patch.object(CORE.subprocess, "run", return_value=result) as run:
             policy = CORE.publication_policy("example")
         self.assertEqual(policy["publication"], "go-local")
+        self.assertEqual(policy["advertising"], "go-local")
         self.assertFalse(policy["tour_ads_enabled"])
         self.assertEqual(run.call_args.args[0], ["go", "run", "-mod=readonly", "./cmd/tour-i18n", "policy", "publication", "--locale", "example"])
 

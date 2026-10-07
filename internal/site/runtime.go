@@ -196,29 +196,20 @@ func (r *Resolver) Handler(pages map[string]http.Handler) (http.Handler, error) 
 	}), nil
 }
 
-type Advertising string
+type Advertising = tourpolicy.Advertising
 
 const (
-	AdsUnsupported Advertising = "ads-unsupported"
-	GoLocal        Advertising = "go-local"
-	Standard       Advertising = "standard"
+	AdsUnsupported Advertising = tourpolicy.AdsUnsupported
+	GoLocal        Advertising = tourpolicy.AdsGoLocal
+	Standard       Advertising = tourpolicy.AdsStandard
 )
 
-// AdPolicy accepts only an explicitly frozen set. Empty/nil sets are useful for
-// mechanism tests but do not authorize the first Site v2 Production.
-type AdPolicy struct {
-	Unsupported     map[string]bool
-	AuthorityFrozen bool
-}
+// AdPolicy projects the shared maintainer-frozen advertising authority into
+// Site v2 route eligibility. It intentionally owns no locale set of its own.
+type AdPolicy struct{}
 
-func (p AdPolicy) ForLocale(locale string) Advertising {
-	if p.Unsupported[locale] {
-		return AdsUnsupported
-	}
-	if tourpolicy.ForLocale(locale) == tourpolicy.GoLocal {
-		return GoLocal
-	}
-	return Standard
+func (AdPolicy) ForLocale(locale string) Advertising {
+	return tourpolicy.AdvertisingForLocale(locale)
 }
 func (p AdPolicy) Enabled(locale, canonical string, covered bool) bool {
 	if !covered || canonical == "/" || canonical == "/translation/" {
@@ -233,9 +224,8 @@ func (p AdPolicy) Enabled(locale, canonical string, covered bool) bool {
 	}
 	return canonical == "/learn/" || strings.HasPrefix(canonical, "/doc/tutorial/") || strings.HasPrefix(canonical, "/doc/database/") || strings.HasPrefix(canonical, "/doc/modules/") || strings.HasPrefix(canonical, "/doc/security/")
 }
-func (p AdPolicy) ProductionPreflight() error {
-	if !p.AuthorityFrozen {
-		return fmt.Errorf("Site v2 advertising blocker: explicit unsupported locale set requires maintainer-frozen authority")
-	}
+func (AdPolicy) ProductionPreflight() error {
+	// The explicit unsupported set is now frozen in internal/tourpolicy and is
+	// shared by Site v2 and the legacy Tour runtime.
 	return nil
 }
